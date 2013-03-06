@@ -40,7 +40,7 @@ import org.caleydo.vis.rank.ui.TableBodyUI;
  * @author Samuel Gratzl
  *
  */
-public class TableStackedColumnUI extends ACompositeTableColumnUI<StackedRankColumnModel> {
+public class StackedColumnUI extends ACompositeTableColumnUI<StackedRankColumnModel> {
 
 	private final PropertyChangeListener listener = new PropertyChangeListener() {
 		@Override
@@ -53,7 +53,7 @@ public class TableStackedColumnUI extends ACompositeTableColumnUI<StackedRankCol
 		}
 	};
 
-	public TableStackedColumnUI(StackedRankColumnModel model) {
+	public StackedColumnUI(StackedRankColumnModel model) {
 		super(model);
 		model.addPropertyChangeListener(StackedRankColumnModel.PROP_ALIGNMENT, listener);
 		model.addPropertyChangeListener(ACompositeRankColumnModel.PROP_CHILDREN, listener);
@@ -67,7 +67,7 @@ public class TableStackedColumnUI extends ACompositeTableColumnUI<StackedRankCol
 
 	@Override
 	protected GLElement wrap(ARankColumnModel model) {
-		ITableColumnUI ui = TableColumnUIs.createBody(model, false);
+		ITableColumnUI ui = ColumnUIs.createBody(model, false);
 		return ui.setData(model.getTable().getData(), this);
 	}
 
@@ -130,7 +130,7 @@ public class TableStackedColumnUI extends ACompositeTableColumnUI<StackedRankCol
 	}
 
 	@Override
-	public VAlign getAlignment(TableColumnUI model) {
+	public VAlign getAlignment(ColumnUI model) {
 		int combinedAlign = this.model.getAlignment();
 		if (combinedAlign < 0)
 			return VAlign.LEFT;
@@ -139,7 +139,7 @@ public class TableStackedColumnUI extends ACompositeTableColumnUI<StackedRankCol
 	}
 
 	@Override
-	public boolean hasFreeSpace(TableColumnUI model) {
+	public boolean hasFreeSpace(ColumnUI model) {
 		int combinedAlign = this.model.getAlignment();
 		if (combinedAlign < 0)
 			return true;

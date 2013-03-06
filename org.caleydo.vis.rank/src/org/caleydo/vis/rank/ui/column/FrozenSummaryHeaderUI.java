@@ -25,8 +25,8 @@ import org.caleydo.vis.rank.model.FrozenRankColumnModel;
  * @author Samuel Gratzl
  *
  */
-public class TableFrozenSummaryHeaderUI extends ATableColumnHeaderUI {
-	public TableFrozenSummaryHeaderUI(final FrozenRankColumnModel model, boolean interactive) {
+public class FrozenSummaryHeaderUI extends AColumnHeaderUI {
+	public FrozenSummaryHeaderUI(final FrozenRankColumnModel model, boolean interactive) {
 		super(model, interactive, true, true, false, false);
 	}
 }

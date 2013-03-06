@@ -25,8 +25,8 @@ import org.caleydo.vis.rank.model.ARankColumnModel;
  * @author Samuel Gratzl
  *
  */
-public class TableColumnHeaderUI extends ATableColumnHeaderUI {
-	public TableColumnHeaderUI(final ARankColumnModel model, boolean interactive, boolean draggable) {
+public class ColumnHeaderUI extends AColumnHeaderUI {
+	public ColumnHeaderUI(final ARankColumnModel model, boolean interactive, boolean draggable) {
 		super(model, interactive, draggable, true, true, true);
 	}
 }

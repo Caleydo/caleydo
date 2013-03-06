@@ -35,13 +35,13 @@ public interface IColumModelLayout {
 	 * @param tableColumnUI
 	 * @return
 	 */
-	boolean hasFreeSpace(TableColumnUI tableColumnUI);
+	boolean hasFreeSpace(ColumnUI tableColumnUI);
 
 	/**
 	 * @param tableColumnUI
 	 * @return
 	 */
-	VAlign getAlignment(TableColumnUI tableColumnUI);
+	VAlign getAlignment(ColumnUI tableColumnUI);
 
 	int getRankDelta(IRow row);
 

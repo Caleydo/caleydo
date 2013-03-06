@@ -16,10 +16,10 @@ import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 import org.caleydo.vis.rank.ui.IColumnRenderInfo;
 
-public class TableColumnUI extends AnimatedGLElementContainer implements ITableColumnUI, IGLLayout, IColumnRenderInfo {
+public class ColumnUI extends AnimatedGLElementContainer implements ITableColumnUI, IGLLayout, IColumnRenderInfo {
 	private final ARankColumnModel model;
 
-	public TableColumnUI(ARankColumnModel model) {
+	public ColumnUI(ARankColumnModel model) {
 		this.model = model;
 		this.setLayoutData(model);
 		this.setDefaultInTransition(ReRankTransition.INSTANCE);
@@ -47,7 +47,7 @@ public class TableColumnUI extends AnimatedGLElementContainer implements ITableC
 	}
 
 	@Override
-	public TableColumnUI setData(Iterable<IRow> rows, IColumModelLayout parent) {
+	public ColumnUI setData(Iterable<IRow> rows, IColumModelLayout parent) {
 		int s = size();
 		int i = 0;
 		Iterator<IRow> it = rows.iterator();

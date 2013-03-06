@@ -140,7 +140,7 @@ public class ACompositeTableColumnHeaderUI<T extends ACompositeRankColumnModel> 
 	 * @return
 	 */
 	private GLElement wrap(ARankColumnModel model) {
-		return TableColumnUIs.createHeader(model, this.interactive, false);
+		return ColumnUIs.createHeader(model, this.interactive, false);
 	}
 
 	@Override

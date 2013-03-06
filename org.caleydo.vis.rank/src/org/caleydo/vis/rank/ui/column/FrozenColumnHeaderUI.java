@@ -32,10 +32,10 @@ import org.caleydo.vis.rank.ui.RenderStyle;
  * @author Samuel Gratzl
  *
  */
-public class TableFrozenColumnHeaderUI extends ACompositeTableColumnHeaderUI<FrozenRankColumnModel> {
-	public TableFrozenColumnHeaderUI(FrozenRankColumnModel model, boolean interactive) {
+public class FrozenColumnHeaderUI extends ACompositeTableColumnHeaderUI<FrozenRankColumnModel> {
+	public FrozenColumnHeaderUI(FrozenRankColumnModel model, boolean interactive) {
 		super(model, interactive);
-		super.add(0, new TableFrozenSummaryHeaderUI(model, interactive));
+		super.add(0, new FrozenSummaryHeaderUI(model, interactive));
 	}
 
 	@Override

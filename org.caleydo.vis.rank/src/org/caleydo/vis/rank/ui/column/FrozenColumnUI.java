@@ -39,11 +39,11 @@ import com.jogamp.common.util.IntIntHashMap;
  * @author Samuel Gratzl
  *
  */
-public class TableFrozenColumnUI extends ACompositeTableColumnUI<FrozenRankColumnModel> {
+public class FrozenColumnUI extends ACompositeTableColumnUI<FrozenRankColumnModel> {
 	private float[] rowPositions;
 	private IntIntHashMap indexToRank;
 
-	public TableFrozenColumnUI(FrozenRankColumnModel model) {
+	public FrozenColumnUI(FrozenRankColumnModel model) {
 		super(model);
 
 		indexToRank = new IntIntHashMap();
@@ -55,7 +55,7 @@ public class TableFrozenColumnUI extends ACompositeTableColumnUI<FrozenRankColum
 
 	@Override
 	protected GLElement wrap(ARankColumnModel model) {
-		ITableColumnUI ui = TableColumnUIs.createBody(model, false);
+		ITableColumnUI ui = ColumnUIs.createBody(model, false);
 		return ui.setData(model.getTable().getData(), this);
 	}
 
@@ -215,12 +215,12 @@ public class TableFrozenColumnUI extends ACompositeTableColumnUI<FrozenRankColum
 	}
 
 	@Override
-	public VAlign getAlignment(TableColumnUI model) {
+	public VAlign getAlignment(ColumnUI model) {
 		return VAlign.LEFT;
 	}
 
 	@Override
-	public boolean hasFreeSpace(TableColumnUI model) {
+	public boolean hasFreeSpace(ColumnUI model) {
 		return true;
 	}
 

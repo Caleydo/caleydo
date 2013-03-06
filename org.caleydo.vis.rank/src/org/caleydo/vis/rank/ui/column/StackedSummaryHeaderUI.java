@@ -34,10 +34,10 @@ import org.caleydo.vis.rank.ui.RenderStyle;
  * @author Samuel Gratzl
  *
  */
-public class TableStackedSummaryHeaderUI extends ATableColumnHeaderUI {
+public class StackedSummaryHeaderUI extends AColumnHeaderUI {
 	private PropertyChangeListener onAlignmentChange;
 
-	public TableStackedSummaryHeaderUI(final StackedRankColumnModel model, boolean interactive) {
+	public StackedSummaryHeaderUI(final StackedRankColumnModel model, boolean interactive) {
 		super(model, interactive, interactive, false, true, true);
 	}
 

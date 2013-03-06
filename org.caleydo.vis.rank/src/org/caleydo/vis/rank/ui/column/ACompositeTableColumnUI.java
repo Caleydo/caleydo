@@ -164,7 +164,7 @@ public abstract class ACompositeTableColumnUI<T extends ACompositeRankColumnMode
 	@Override
 	public GLElement setData(Iterable<IRow> data, IColumModelLayout parent) {
 		for (GLElement col : this)
-			((TableColumnUI) col).setData(data, this);
+			((ColumnUI) col).setData(data, this);
 		return this;
 	}
 

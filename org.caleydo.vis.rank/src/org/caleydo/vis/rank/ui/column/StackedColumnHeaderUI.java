@@ -40,14 +40,14 @@ import org.caleydo.vis.rank.ui.StackedSeparatorUI;
  * @author Samuel Gratzl
  *
  */
-public class TableStackedColumnHeaderUI extends ACompositeTableColumnHeaderUI<StackedRankColumnModel> {
+public class StackedColumnHeaderUI extends ACompositeTableColumnHeaderUI<StackedRankColumnModel> {
 	public final AlignmentDragInfo align = new AlignmentDragInfo();
 
 	private final PropertyChangeListener alignmentChanged = GLPropertyChangeListeners.relayoutOnEvent(this);
 
-	public TableStackedColumnHeaderUI(StackedRankColumnModel model, boolean interactive) {
+	public StackedColumnHeaderUI(StackedRankColumnModel model, boolean interactive) {
 		super(model, interactive);
-		this.add(0, new TableStackedSummaryHeaderUI(model, interactive));
+		this.add(0, new StackedSummaryHeaderUI(model, interactive));
 		model.addPropertyChangeListener(StackedRankColumnModel.PROP_ALIGNMENT, alignmentChanged);
 	}
 

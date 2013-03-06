@@ -28,21 +28,21 @@ import org.caleydo.vis.rank.model.StackedRankColumnModel;
  * @author Samuel Gratzl
  *
  */
-public class TableColumnUIs {
+public class ColumnUIs {
 	public static GLElement createHeader(ARankColumnModel model, boolean interactive, boolean allowComplex) {
 		if (allowComplex && model instanceof StackedRankColumnModel)
-			return new TableStackedColumnHeaderUI((StackedRankColumnModel) model, interactive);
+			return new StackedColumnHeaderUI((StackedRankColumnModel) model, interactive);
 		if (allowComplex && model instanceof FrozenRankColumnModel)
-			return new TableFrozenColumnHeaderUI((FrozenRankColumnModel) model, interactive);
-		return new TableColumnHeaderUI(model, interactive, interactive);
+			return new FrozenColumnHeaderUI((FrozenRankColumnModel) model, interactive);
+		return new ColumnHeaderUI(model, interactive, interactive);
 	}
 
 	public static ITableColumnUI createBody(ARankColumnModel model, boolean allowComplex) {
 		if (allowComplex && model instanceof StackedRankColumnModel)
-			return new TableStackedColumnUI((StackedRankColumnModel) model);
+			return new StackedColumnUI((StackedRankColumnModel) model);
 		if (allowComplex && model instanceof FrozenRankColumnModel)
-			return new TableFrozenColumnUI((FrozenRankColumnModel) model);
-		return new TableColumnUI(model);
+			return new FrozenColumnUI((FrozenRankColumnModel) model);
+		return new ColumnUI(model);
 	}
 
 }

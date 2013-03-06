@@ -65,7 +65,7 @@ import org.eclipse.swt.SWT;
  * @author Samuel Gratzl
  *
  */
-public class ATableColumnHeaderUI extends AnimatedGLElementContainer implements IGLLayout, IColumnRenderInfo {
+public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLayout, IColumnRenderInfo {
 	private final static int HIST = 0;
 	private final static int DRAG_WEIGHT = 1;
 	private final static int BUTTONS = 2;
@@ -96,7 +96,7 @@ public class ATableColumnHeaderUI extends AnimatedGLElementContainer implements 
 	private boolean canChangeWeight;
 
 
-	public ATableColumnHeaderUI(final ARankColumnModel model, boolean interactive, boolean moveable, boolean hasTitle,
+	public AColumnHeaderUI(final ARankColumnModel model, boolean interactive, boolean moveable, boolean hasTitle,
 			boolean hasHist, boolean canChangeWeight) {
 		this.model = model;
 		model.addPropertyChangeListener(ICollapseableColumnMixin.PROP_COLLAPSED, collapsedChanged);
