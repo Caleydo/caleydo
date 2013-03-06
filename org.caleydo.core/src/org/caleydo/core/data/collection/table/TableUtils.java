@@ -33,6 +33,7 @@ import org.caleydo.core.id.IDType;
 import org.caleydo.core.io.DataDescription;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.NumericalProperties;
+import org.caleydo.core.io.parser.ascii.LinearDataParser;
 import org.caleydo.core.io.parser.ascii.TabularDataParser;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
@@ -109,8 +110,13 @@ public class TableUtils {
 		}
 		dataDomain.setTable(table);
 
-		TabularDataParser parser = new TabularDataParser(dataDomain, dataSetDescription);
-		parser.loadData();
+		if (!dataSetDescription.isLinearSource()) {
+			TabularDataParser parser = new TabularDataParser(dataDomain, dataSetDescription);
+			parser.loadData();
+		} else {
+			LinearDataParser parser = new LinearDataParser(dataDomain, dataSetDescription);
+			parser.loadData();
+		}
 
 		table.normalize();
 
@@ -123,7 +129,7 @@ public class TableUtils {
 
 	/**
 	 * cleans the input data transformation to known one if possible
-	 * 
+	 *
 	 * @param dataTransformation
 	 * @return
 	 */

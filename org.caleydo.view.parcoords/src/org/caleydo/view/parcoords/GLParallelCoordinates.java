@@ -22,7 +22,6 @@ import static org.caleydo.view.parcoords.PCRenderStyle.ANGULAR_POLYGON_COLOR;
 import static org.caleydo.view.parcoords.PCRenderStyle.AXIS_MARKER_WIDTH;
 import static org.caleydo.view.parcoords.PCRenderStyle.AXIS_Z;
 import static org.caleydo.view.parcoords.PCRenderStyle.LABEL_Z;
-import static org.caleydo.view.parcoords.PCRenderStyle.NAN_Y_OFFSET;
 import static org.caleydo.view.parcoords.PCRenderStyle.NUMBER_AXIS_MARKERS;
 import static org.caleydo.view.parcoords.PCRenderStyle.X_AXIS_COLOR;
 import static org.caleydo.view.parcoords.PCRenderStyle.X_AXIS_LINE_WIDTH;
@@ -472,7 +471,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 			currentX = axisSpacings.get(dimensionCount);
 			currentY = table.getNormalizedValue(dimensionID, recordID);
 			if (Float.isNaN(currentY)) {
-				currentY = NAN_Y_OFFSET / renderStyle.getAxisHeight();
+				currentY = -pixelGLConverter.getGLHeightForPixelHeight(PCRenderStyle.NAN_Y_OFFSET);
 			}
 			if (dimensionCount != 0) {
 				if (renderCaption) {
@@ -635,7 +634,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 			if (!isRenderedRemote()) {
 
 				float xOrigin = axisSpacings.get(count);
-				float nanYOrigin = -pixelGLConverter.getGLHeightForPixelHeight(15);
+				float nanYOrigin = -pixelGLConverter.getGLHeightForPixelHeight(PCRenderStyle.NAN_Y_OFFSET);
 
 				// nan texture is 16x16 - set half of that
 				float buttonWidht = pixelGLConverter.getGLWidthForPixelWidth(6);

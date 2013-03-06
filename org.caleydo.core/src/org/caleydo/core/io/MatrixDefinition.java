@@ -52,6 +52,26 @@ public class MatrixDefinition {
 	protected String dataSourcePath;
 
 	/**
+	 * <p>
+	 * Flag for determining whether the data source is stored in a matrix format (false) or in a linear format (true),
+	 * i.e., one row has idtype1 and idtype2 plus a value.
+	 * </p>
+	 * <p>
+	 * e.g.:
+	 * 
+	 * <pre>
+	 * Sample1 | Gene1 | 0.4
+	 * Sample1 | Gene2 | 0.6
+	 * </pre>
+	 * 
+	 * </p>
+	 * <p>
+	 * Defaults to false.
+	 * </p>
+	 */
+	protected boolean isLinearSource = false;
+
+	/**
 	 * The number of lines which should be ignored for parsing, i.e. that don't contain data. They may contain the line
 	 * containing the IDs. This defaults to 1 line for the IDs.
 	 */
@@ -104,6 +124,21 @@ public class MatrixDefinition {
 	 */
 	public String getDataSourcePath() {
 		return dataSourcePath;
+	}
+
+	/**
+	 * @param isLinearSource
+	 *            setter, see {@link isLinearSource}
+	 */
+	public void setLinearSource(boolean isLinearSource) {
+		this.isLinearSource = isLinearSource;
+	}
+
+	/**
+	 * @return the isLinearSource, see {@link #isLinearSource}
+	 */
+	public boolean isLinearSource() {
+		return isLinearSource;
 	}
 
 	/**

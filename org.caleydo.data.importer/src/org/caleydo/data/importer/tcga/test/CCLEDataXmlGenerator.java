@@ -43,6 +43,8 @@ public class CCLEDataXmlGenerator extends DataSetDescriptionSerializer {
 
 	public static final String COPY_NUMBER = DROPBOX_CCLE_FOLDER + "CCLE_copynumber_byGene_2012-09-29.txt";
 
+	public static final String COMPOUND_CELL_DATA = DROPBOX_CCLE_FOLDER
+			+ "CCLE_NP24.2009_Drug_data_2012.02.20_changed_delimiter.csv";
 	// public static final String CLINICAL = DROPBOX_CCLE_FOLDER + "clinical/clinical_patient_public_GBM.txt";
 
 	// public static final String MUTATION = DROPBOX_CCLE_FOLDER
@@ -68,11 +70,9 @@ public class CCLEDataXmlGenerator extends DataSetDescriptionSerializer {
 	@Override
 	protected void setUpDataSetDescriptions() {
 
-
-
 		sampleIDSpecification = new IDSpecification();
-		sampleIDSpecification.setIdCategory("SAMPLE");
-		sampleIDSpecification.setIdType("SAMPLE");
+		sampleIDSpecification.setIdCategory("CELL_LINE");
+		sampleIDSpecification.setIdType("CELL_LINE");
 		IDTypeParsingRules idTypeParsingRules = new IDTypeParsingRules();
 		idTypeParsingRules.setDefault(true);
 		sampleIDSpecification.setIdTypeParsingRules(idTypeParsingRules);
@@ -89,6 +89,8 @@ public class CCLEDataXmlGenerator extends DataSetDescriptionSerializer {
 		projectDescription.add(setUpMRNAData());
 		// projectDescription.add(setUpMutationData());
 		projectDescription.add(setUpCopyNumberData());
+
+		projectDescription.add(setUpCompoundCellData());
 		// projectDescription.add(setUpClinicalData());
 
 	}
@@ -179,40 +181,36 @@ public class CCLEDataXmlGenerator extends DataSetDescriptionSerializer {
 		return copyNumberData;
 	}
 
-	// private DataSetDescription setUpClinicalData() {
-	// DataSetDescription clinicalData = new DataSetDescription();
-	// clinicalData.setDataSetName("Clinical");
-	//
-	// clinicalData.setDataSourcePath(CLINICAL);
-	// clinicalData.setNumberOfHeaderLines(1);
-	//
-	// DataDescription dataDescription = new DataDescription(EDataClass.NATURAL_NUMBER, EDataType.INTEGER,
-	// new NumericalProperties());
-	// ParsingRule parsingRule = new ParsingRule();
-	// parsingRule.setFromColumn(10);
-	// parsingRule.setToColumn(11);
-	// parsingRule.setColumnDescripton(new ColumnDescription(dataDescription));
-	// clinicalData.addParsingRule(parsingRule);
-	// parsingRule = new ParsingRule();
-	// parsingRule.setFromColumn(13);
-	// parsingRule.setToColumn(15);
-	// parsingRule.setColumnDescripton(new ColumnDescription(dataDescription));
-	// clinicalData.addParsingRule(parsingRule);
-	//
-	// IDSpecification clinicalIdSpecification = new IDSpecification();
-	// clinicalIdSpecification.setIdType("clinical");
-	//
-	// clinicalData.setColumnIDSpecification(clinicalIdSpecification);
-	// clinicalData.setRowIDSpecification(sampleIDSpecification);
-	//
-	// // columnLabels.add("Days to birth");
-	// // columnLabels.add("Days to death");
-	// // columnLabels.add("Days to last followup");
-	// // columnLabels.add("Days to tumor progression");
-	// // columnLabels.add("Days to tumor recurrence");
-	//
-	// return clinicalData;
-	// }
+	private DataSetDescription setUpCompoundCellData() {
+
+		DataSetDescription compoundCellData = new DataSetDescription(ECreateDefaultProperties.NUMERICAL);
+		compoundCellData.setDelimiter(";");
+		compoundCellData.setDataSetName("compound/cell effect");
+		compoundCellData.setLinearSource(true);
+
+		compoundCellData.setDataSourcePath(COMPOUND_CELL_DATA);
+		compoundCellData.setNumberOfHeaderLines(1);
+
+		// the cell line column
+		compoundCellData.setColumnOfRowIds(0);
+
+		// the column of the second id (compounds)
+		compoundCellData.setRowOfColumnIDs(2);
+
+		ParsingRule parsingRule = new ParsingRule();
+		parsingRule.setFromColumn(10);
+		parsingRule.setColumnDescripton(new ColumnDescription());
+		compoundCellData.addParsingRule(parsingRule);
+
+		IDSpecification compoundIDSpecification = new IDSpecification();
+		compoundIDSpecification.setIdType("compound");
+
+		compoundCellData.setColumnIDSpecification(compoundIDSpecification);
+		compoundCellData.setRowIDSpecification(sampleIDSpecification);
+		compoundCellData.addRowGroupingSpecification(sampleGrouping);
+
+		return compoundCellData;
+	}
 
 	// private DataSetDescription setUpMutationData() {
 	// DataSetDescription mutationDataMetaInfo = new DataSetDescription(ECreateDefaultProperties.CATEGORICAL);

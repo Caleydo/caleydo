@@ -100,7 +100,7 @@ public class PCRenderStyle extends GeneralRenderStyle {
 
 	public static final int NUMBER_AXIS_MARKERS = 9;
 
-	public static final int NAN_Y_OFFSET = 3;
+	public static final int NAN_Y_OFFSET = 15;
 
 	protected float fOcclusionPrevAlpha = 0.1f;
 
