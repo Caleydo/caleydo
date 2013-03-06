@@ -38,7 +38,7 @@ public class GLPathwayWindow extends AnimatedGLElementContainer {
 
 	protected final MultiFormInfo info;
 
-	public GLPathwayWindow(PathwayGraph pathway, GLSubGraph view, MultiFormInfo info) {
+	public GLPathwayWindow(PathwayGraph pathway, GLSubGraph view, final MultiFormInfo info) {
 		setLayout(GLLayouts.LAYERS);
 		this.info = info;
 

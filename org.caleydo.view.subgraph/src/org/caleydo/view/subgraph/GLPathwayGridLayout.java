@@ -59,6 +59,24 @@ public class GLPathwayGridLayout implements IGLLayout {
 		columns.add(column);
 	}
 
+	public void setLevel1(GLPathwayWindow window) {
+		PathwayColumn parentColumn = null;
+		for (PathwayColumn column : columns) {
+			for (GLPathwayWindow w : column.windows) {
+				if (w == window) {
+					parentColumn = column;
+					break;
+				}
+			}
+		}
+		if (parentColumn != null) {
+			parentColumn.windows.remove(window);
+			if (parentColumn.windows.size() == 0)
+				columns.remove(parentColumn);
+		}
+		addColumn(window);
+	}
+
 	@Override
 	public void doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
 

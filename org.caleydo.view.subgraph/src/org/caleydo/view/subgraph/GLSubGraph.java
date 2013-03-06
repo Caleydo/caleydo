@@ -508,13 +508,27 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	}
 
 	@Override
-	public void activeRendererChanged(MultiFormRenderer multiFormRenderer, int rendererID, int previousRendererID) {
+	public void activeRendererChanged(MultiFormRenderer multiFormRenderer, int rendererID, int previousRendererID,
+			boolean wasTriggeredByUser) {
 
 		if (pathInfo == null || !pathInfo.isInitialized())
 			return;
 		if (multiFormRenderer == pathInfo.multiFormRenderer) {
 			EEmbeddingID embeddingID = pathInfo.getEmbeddingIDFromRendererID(rendererID);
 			setPathLevel(embeddingID);
+		}
+		if (wasTriggeredByUser) {
+			for (PathwayMultiFormInfo info : pathwayInfos) {
+				if (info.multiFormRenderer == multiFormRenderer && rendererID != previousRendererID) {
+					if (info.getEmbeddingIDFromRendererID(rendererID) == EEmbeddingID.PATHWAY_LEVEL1) {
+						pathwayLayout.setLevel1(info.window);
+						info.age = currentPathwayAge--;
+						lastUsedRenderer = info.multiFormRenderer;
+						pathwayRow.relayout();
+						break;
+					}
+				}
+			}
 		}
 	}
 
