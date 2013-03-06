@@ -456,6 +456,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 			if (this.armDropColum) {
 				Pair<GLElement, ARankColumnModel> info = m.getFirstDraggable(ARankColumnModel.class);
 				m.removeDraggable(info.getFirst());
+				m.setDropable(ARankColumnModel.class, false);
 				context.setCursor(-1);
 				if (info != null)
 					model.combine(info.getSecond());
