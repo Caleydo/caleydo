@@ -140,6 +140,7 @@ public class GLSubGraphAugmentation extends GLElement {
 	}
 
 	public void renderPortalLinks(GLGraphics g){
+		if(this.portals==null)return;
 		for(Rectangle2D rect : this.portals){
 			ArrayList<Rectangle2D> items= new ArrayList<>();		
 			items.add(new Rectangle2D.Double(rect.getCenterX(), rect.getCenterY(), rect.getWidth(), rect.getHeight()));
