@@ -31,7 +31,7 @@ public class BubbleSetGLRenderer {
 	private Texture bubbleSetsTexture;
 	private TextureRenderer texRenderer=null;
 	
-	private SetOutline setOutline;
+	public SetOutline setOutline;
 	private AbstractShapeGenerator shaper;
 	private CanvasComponent bubblesetCanvas;
 	private int numberOfGroups=-1;

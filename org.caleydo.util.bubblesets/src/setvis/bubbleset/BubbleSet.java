@@ -201,6 +201,21 @@ public class BubbleSet implements SetOutline {
         // use default paramters
     }
 
+    public void setParameter(final int routingIterations, final int marchingIterations,
+            final int pixelGroup, final double edgeR0, final double edgeR1,
+            final double nodeR0, final double nodeR1, final double morphBuffer,
+            final int skip) {
+        maxRoutingIterations = routingIterations;
+        maxMarchingIterations = marchingIterations;
+        this.pixelGroup = pixelGroup;
+        this.edgeR0 = edgeR0;
+        this.edgeR1 = edgeR1;
+        this.nodeR0 = nodeR0;
+        this.nodeR1 = nodeR1;
+        this.morphBuffer = morphBuffer;
+        this.skip = skip;        
+    }
+    
     protected boolean useVirtualEdges=true;
     public void useVirtualEdges(boolean value)
     {
