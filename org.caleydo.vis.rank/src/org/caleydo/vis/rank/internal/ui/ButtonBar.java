@@ -17,12 +17,15 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.vis.rank.ui;
+package org.caleydo.vis.rank.internal.ui;
 
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
+import org.caleydo.vis.rank.ui.RenderStyle;
+
+import com.google.common.collect.Iterables;
 
 /**
  * @author Samuel Gratzl
@@ -30,7 +33,7 @@ import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
  */
 public class ButtonBar extends GLElementContainer {
 	public ButtonBar() {
-		super(GLLayouts.flowHorizontal(2));
+		super(GLLayouts.flowHorizontal(1));
 		setSize(Float.NaN, RenderStyle.BUTTON_WIDTH);
 	}
 
@@ -39,5 +42,10 @@ public class ButtonBar extends GLElementContainer {
 	}
 	public void addSpacer() {
 		this.add(new GLElement());
+	}
+
+	public float getMinWidth() {
+		int buttons = Iterables.size(Iterables.filter(this, GLButton.class));
+		return buttons * (RenderStyle.BUTTON_WIDTH + 1);
 	}
 }

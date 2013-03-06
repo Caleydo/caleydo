@@ -28,6 +28,7 @@ import org.caleydo.core.view.opengl.layout2.basic.GLButton;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton.ISelectionCallback;
 import org.caleydo.core.view.opengl.layout2.basic.RadioController;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
+import org.caleydo.vis.rank.internal.ui.ButtonBar;
 import org.caleydo.vis.rank.layout.RowHeightLayouts;
 import org.caleydo.vis.rank.layout.RowHeightLayouts.IRowHeightLayout;
 import org.caleydo.vis.rank.model.RankTableModel;

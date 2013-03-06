@@ -49,6 +49,7 @@ import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingListenerComposite;
+import org.caleydo.vis.rank.internal.ui.ButtonBar;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IExplodeableColumnMixin;
@@ -56,7 +57,6 @@ import org.caleydo.vis.rank.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IHideableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IMappedColumnMixin;
 import org.caleydo.vis.rank.model.mixin.ISnapshotableColumnMixin;
-import org.caleydo.vis.rank.ui.ButtonBar;
 import org.caleydo.vis.rank.ui.IColumnRenderInfo;
 import org.caleydo.vis.rank.ui.RenderStyle;
 import org.eclipse.swt.SWT;
@@ -403,7 +403,14 @@ public class ATableColumnHeaderUI extends AnimatedGLElementContainer implements 
 					- (hasTitle ? LABEL_HEIGHT : 0));
 
 			IGLLayoutElement buttons = children.get(BUTTONS);
-			buttons.setBounds(2, 2, w - 4, canDrag ? RenderStyle.BUTTON_WIDTH : 0);
+			float minWidth = (buttons.asElement() instanceof ButtonBar) ? ((ButtonBar) buttons.asElement())
+					.getMinWidth() : 0;
+			if ((w - 4) < minWidth) {
+				float missing = minWidth - (w - 4);
+				buttons.setBounds(-missing * 0.5f, 2, minWidth, canDrag ? RenderStyle.BUTTON_WIDTH : 0);
+			} else {
+				buttons.setBounds(2, 2, w - 4, canDrag ? RenderStyle.BUTTON_WIDTH : 0);
+			}
 
 			IGLLayoutElement uncollapse = children.get(UNCOLLAPSE);
 			uncollapse.setBounds((w - RenderStyle.BUTTON_WIDTH) * .5f, 2, RenderStyle.BUTTON_WIDTH,
