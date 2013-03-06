@@ -212,7 +212,13 @@ public class GLPathwayGridLayout implements IGLLayout {
 			for (PathwayColumn sourceColumn : columns) {
 				for (PathwayColumn destColumn : columns) {
 					if (sourceColumn != destColumn) {
-						if (sourceColumn.getMinHeight() + destColumn.getMinHeight() <= h) {
+						// Only merge columns whose height is smaller than the total height, and that either both
+						// contain only level1 views or both contain lower level views
+						if ((sourceColumn.getMinHeight() + destColumn.getMinHeight() <= h)
+								&& ((sourceColumn.getLevelScore() == EEmbeddingID.PATHWAY_LEVEL1.renderPriority() && destColumn
+										.getLevelScore() == EEmbeddingID.PATHWAY_LEVEL1.renderPriority()) || ((sourceColumn
+										.getLevelScore() < EEmbeddingID.PATHWAY_LEVEL1.renderPriority() && destColumn
+										.getLevelScore() < EEmbeddingID.PATHWAY_LEVEL1.renderPriority())))) {
 							destColumn.merge(sourceColumn);
 							columnToRemove = sourceColumn;
 							columnsMerged = true;
