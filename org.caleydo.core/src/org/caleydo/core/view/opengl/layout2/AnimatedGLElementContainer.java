@@ -82,7 +82,6 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 	private IInTransition defaultInTransition = InOutTransitions.SLIDE_HOR_IN;
 	private IOutTransition defaultOutTransition = InOutTransitions.SLIDE_HOR_OUT;
 
-
 	public AnimatedGLElementContainer() {
 
 	}
@@ -114,8 +113,7 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 	 *            setter, see {@link defaultMoveTransition}
 	 */
 	public AnimatedGLElementContainer setDefaultMoveTransition(IMoveTransition transition) {
-		this.defaultMoveTransition = transition == null ? MoveTransitions.MOVE_AND_GROW_LINEAR
-				: transition;
+		this.defaultMoveTransition = transition == null ? MoveTransitions.MOVE_AND_GROW_LINEAR : transition;
 		return this;
 	}
 
@@ -124,8 +122,16 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 	 *            setter, see {@link defaultOutTransition}
 	 */
 	public AnimatedGLElementContainer setDefaultOutTransition(IOutTransition transition) {
-		this.defaultOutTransition = transition == null ? InOutTransitions.SLIDE_HOR_OUT
-				: transition;
+		this.defaultOutTransition = transition == null ? InOutTransitions.SLIDE_HOR_OUT : transition;
+		return this;
+	}
+
+	/**
+	 * @param defaultDuration
+	 *            setter, see {@link defaultDuration}
+	 */
+	public AnimatedGLElementContainer setDefaultDuration(IDuration defaultDuration) {
+		this.defaultDuration = defaultDuration;
 		return this;
 	}
 
@@ -134,6 +140,7 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 		super.relayout();
 		this.forceLayout = true;
 	}
+
 	/**
 	 * @param layout
 	 *            setter, see {@link layout}
@@ -291,7 +298,7 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 		IGLElementParent ex = child.getParent();
 		boolean doInit = ex == null;
 		if (ex == this) {
-			//internal move
+			// internal move
 			children.remove(child);
 		} else if (ex != null) {
 			doInit = ex.moved(child);
@@ -300,7 +307,6 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 		if (doInit && context != null)
 			child.init(context);
 	}
-
 
 	private void takeDown(GLElement child, boolean checkLayoutAnimations) {
 		child.takeDown();
@@ -317,7 +323,6 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 					it.remove();
 		}
 	}
-
 
 	public final int indexOf(GLElement child) {
 		return children.indexOf(child);
@@ -372,7 +377,6 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 		animate();
 		return old;
 	}
-
 
 	public final void remove(GLElement child) {
 		remove(child, defaultDuration);
