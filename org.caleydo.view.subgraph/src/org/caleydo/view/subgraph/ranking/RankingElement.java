@@ -44,7 +44,7 @@ import org.caleydo.vis.rank.model.FloatRankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.StringRankColumnModel;
-import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
+import org.caleydo.vis.rank.model.mapping.PiecewiseLinearMapping;
 import org.caleydo.vis.rank.ui.TableBodyUI;
 import org.caleydo.vis.rank.ui.TableHeaderUI;
 
@@ -68,7 +68,7 @@ public class RankingElement extends GLElementContainer {
 		this.table = new RankTableModel(new RankTableConfigBase() {
 			@Override
 			public boolean isInteractive() {
-				return false;
+				return true;
 			}
 		});
 		table.addPropertyChangeListener(RankTableModel.PROP_SELECTED_ROW, onSelectRow);
@@ -146,7 +146,7 @@ public class RankingElement extends GLElementContainer {
 			}
 		};
 		table.addColumn(new FloatRankColumnModel(pathwaySize, GLRenderers.drawText("Score", VAlign.CENTER), Color.BLUE,
-				Color.LIGHT_GRAY, new PiecewiseMapping(0, Float.NaN), FloatInferrers.MEAN));
+				Color.LIGHT_GRAY, new PiecewiseLinearMapping(0, Float.NaN), FloatInferrers.MEAN));
 
 		// add data
 		Collection<PathwayRow> data = new ArrayList<>();
