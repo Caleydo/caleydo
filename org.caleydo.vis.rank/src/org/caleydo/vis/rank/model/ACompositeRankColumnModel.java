@@ -150,6 +150,11 @@ public abstract class ACompositeRankColumnModel extends ARankColumnModel impleme
 	}
 
 	@Override
+	public boolean isHidden(ARankColumnModel model) {
+		return false;
+	}
+
+	@Override
 	public final boolean isDestroyAble(ARankColumnModel model) {
 		return false;
 	}

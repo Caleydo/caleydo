@@ -657,7 +657,7 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 			setLayout(GLLayouts.flowVertical(0));
 			this.add(new DataDomainQueryUI(queries));
 			this.add(new TableHeaderUI(table));
-			this.add(new TableBodyUI(table, RowHeightLayouts.LINEAR));
+			this.add(new TableBodyUI(table, RowHeightLayouts.FISH_EYE));
 		}
 	}
 }

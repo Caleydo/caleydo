@@ -6,6 +6,7 @@ import java.util.List;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.AnimatedGLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.core.view.opengl.layout2.animation.ALayoutAnimation;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.vis.rank.model.ARankColumnModel;
@@ -32,6 +33,17 @@ public class TableColumnUI extends AnimatedGLElementContainer implements ITableC
 	 */
 	public ARankColumnModel getModel() {
 		return model;
+	}
+
+	@Override
+	protected ALayoutAnimation createMoveAnimation(IGLLayoutElement elem) {
+		if (!getColumnParent().causesReorderingLayouting()) {
+			this.setDefaultMoveTransition(null);
+			ALayoutAnimation anim = super.createMoveAnimation(elem);
+			this.setDefaultMoveTransition(ReRankTransition.INSTANCE);
+			return anim;
+		}
+		return super.createMoveAnimation(elem);
 	}
 
 	@Override

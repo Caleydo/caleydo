@@ -60,7 +60,7 @@ public class RankedVis extends GLElementContainer {
 		setLayout(GLLayouts.flowVertical(0));
 
 		this.add(new TableHeaderUI(table));
-		this.add(new TableBodyUI(table, RowHeightLayouts.LINEAR));
+		this.add(new TableBodyUI(table, RowHeightLayouts.FISH_EYE));
 
 		this.add(new ColumnPoolUI(table));
 	}

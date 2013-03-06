@@ -17,44 +17,27 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.vis.rank.model.mixin;
+package org.caleydo.vis.rank.ui;
 
-import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDragInfo;
+import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.core.view.opengl.layout2.GLElementContainer;
+import org.caleydo.core.view.opengl.layout2.basic.GLButton;
+import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 
 /**
- * contract that the column can be hidden
- *
  * @author Samuel Gratzl
  *
  */
-public interface IHideableColumnMixin extends IDragInfo, IRankColumnModel {
-	/**
-	 * currently hide able in its state
-	 *
-	 * @return
-	 */
-	boolean isHideAble();
+public class ButtonBar extends GLElementContainer {
+	public ButtonBar() {
+		super(GLLayouts.flowHorizontal(2));
+		setSize(Float.NaN, RenderStyle.BUTTON_WIDTH);
+	}
 
-	/**
-	 * triggers to hide this column
-	 *
-	 * @return successful?
-	 */
-	boolean hide();
-
-	boolean isHidden();
-
-	/**
-	 * currently destroy able in its state
-	 *
-	 * @return
-	 */
-	boolean isDestroyAble();
-
-	/**
-	 * triggers to destroy this column
-	 *
-	 * @return successful?
-	 */
-	boolean destroy();
+	public void addButton(GLButton b) {
+		this.add(b.setSize(RenderStyle.BUTTON_WIDTH, -1));
+	}
+	public void addSpacer() {
+		this.add(new GLElement());
+	}
 }

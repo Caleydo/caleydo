@@ -44,4 +44,6 @@ public interface IColumModelLayout {
 	VAlign getAlignment(TableColumnUI tableColumnUI);
 
 	int getRankDelta(IRow row);
+
+	boolean causesReorderingLayouting();
 }

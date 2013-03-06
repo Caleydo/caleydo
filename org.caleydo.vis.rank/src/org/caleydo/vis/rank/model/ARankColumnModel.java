@@ -231,6 +231,10 @@ public abstract class ARankColumnModel implements IDragInfo, IRankColumnModel {
 		return parent.isHideAble(this);
 	}
 
+	public boolean isHidden() {
+		return parent.isHidden(this);
+	}
+
 	public boolean isDestroyAble() {
 		return parent.isDestroyAble(this);
 	}

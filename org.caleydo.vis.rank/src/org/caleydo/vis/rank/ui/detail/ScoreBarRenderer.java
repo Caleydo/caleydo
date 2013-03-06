@@ -64,7 +64,7 @@ public class ScoreBarRenderer implements IGLRenderer {
 				g.color(1 - v, 1 - v, 1 - v, 1);
 			else {
 				float[] rgb = collapseColor.getColorComponents(null);
-				g.color(rgb[0], rgb[1], rgb[2], 1 - v);
+				g.color(rgb[0], rgb[1], rgb[2], v);
 			}
 			g.fillRect(w * 0.1f, h * 0.1f, w * 0.8f, h * 0.8f);
 			if (inferred) {
@@ -75,7 +75,7 @@ public class ScoreBarRenderer implements IGLRenderer {
 			}
 		} else {
 			// score bar
-			g.color(model.getColor()).fillRect(0, h * 0.1f, w * v, h * 0.8f);
+			g.color(color).fillRect(0, h * 0.1f, w * v, h * 0.8f);
 			if (inferred) {
 				g.gl.glLineStipple(1, (short) 0xAAAA);
 				g.gl.glEnable(GL2.GL_LINE_STIPPLE);

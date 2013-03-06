@@ -70,12 +70,17 @@ import org.caleydo.vis.rank.ui.column.TableColumnUIs;
 public final class TableBodyUI extends AnimatedGLElementContainer implements IGLLayout,
 		IColumModelLayout {
 	private final RankTableModel table;
-	private final IRowHeightLayout rowLayout;
+
+	private IRowHeightLayout rowLayout;
+	private String reason;
+
 	private final PropertyChangeListener listener = new PropertyChangeListener() {
+
 		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
 			switch (evt.getPropertyName()) {
 			case RankTableModel.PROP_ORDER:
+				reason = evt.getPropertyName();
 				rankDeltas = (int[]) evt.getOldValue();
 				update();
 				break;
@@ -83,6 +88,7 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 			case IRankColumnParent.PROP_INVALID:
 			case ARankColumnModel.PROP_WEIGHT:
 			case ICollapseableColumnMixin.PROP_COLLAPSED:
+				reason = evt.getPropertyName();
 				update();
 				break;
 			case IRankColumnParent.PROP_DATA:
@@ -124,6 +130,17 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 			}
 		});
 		setLayout(this);
+	}
+
+	/**
+	 * @param rowLayout
+	 *            setter, see {@link rowLayout}
+	 */
+	public void setRowLayout(IRowHeightLayout rowLayout) {
+		if (this.rowLayout == rowLayout)
+			return;
+		this.rowLayout = rowLayout;
+		update();
 	}
 
 	public void addOnRowPick(IPickingListener l) {
@@ -250,6 +267,18 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 		}
 	}
 
+	/**
+	 * @return the reason, see {@link #reason}
+	 */
+	public String getReason() {
+		return reason;
+	}
+
+	@Override
+	public boolean causesReorderingLayouting() {
+		return reason != null && reason != RankTableModel.PROP_SELECTED_ROW;
+	}
+
 	public float[] computeRowPositions(float h, int numRows, int selectedRank) {
 		float[] hs = rowLayout.compute(numRows, selectedRank, h - 5);
 		float acc = 0;
@@ -319,6 +348,9 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 		if (rankDeltas != null)
 			triggerRankAnimations(w, h);
 		rankDeltas = null; // a single run with the rank deltas, not used anymore
+
+		reason = null;
+
 		g.popResourceLocator();
 	}
 

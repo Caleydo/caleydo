@@ -82,6 +82,15 @@ public abstract class ACompositeTableColumnUI<T extends ACompositeRankColumnMode
 	}
 
 	@Override
+	public boolean causesReorderingLayouting() {
+		return !hasOwnOrder() ? getColumnModelParent().causesReorderingLayouting() : false;
+	}
+
+	protected IColumModelLayout getColumnModelParent() {
+		return (IColumModelLayout) getParent();
+	}
+
+	@Override
 	protected void takeDown() {
 		model.removePropertyChangeListener(ACompositeRankColumnModel.PROP_CHILDREN, listener);
 		super.takeDown();

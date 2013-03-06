@@ -17,35 +17,34 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package university;
+package demo;
 
 import java.lang.reflect.Field;
-import java.util.Objects;
 
+import org.caleydo.vis.rank.data.AFloatFunction;
 import org.caleydo.vis.rank.model.IRow;
-
-import com.google.common.base.Function;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class ReflectionData implements Function<IRow, String> {
+public class ReflectionFloatData extends AFloatFunction<IRow> {
 	private final Field field;
 
-	public ReflectionData(Field field) {
+	public ReflectionFloatData(Field field) {
 		this.field = field;
 		field.setAccessible(true);
 	}
 
 	@Override
-	public String apply(IRow in) {
+	public float applyPrimitive(IRow in) {
 		try {
-			return Objects.toString(field.get(in));
+			Number v = (Number) field.get(in);
+			return v.floatValue();
 		} catch (IllegalArgumentException | IllegalAccessException e) {
 			e.printStackTrace();
 		}
-		return null;
+		return Float.NaN;
 	}
 }
 

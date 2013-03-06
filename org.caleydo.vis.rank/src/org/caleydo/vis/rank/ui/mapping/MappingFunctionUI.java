@@ -46,7 +46,6 @@ import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton.EButtonMode;
 import org.caleydo.core.view.opengl.layout2.basic.RadioController;
-import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
@@ -58,6 +57,7 @@ import org.caleydo.vis.rank.model.DataUtils;
 import org.caleydo.vis.rank.model.SimpleHistogram;
 import org.caleydo.vis.rank.model.mapping.IMappingFunction;
 import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
+import org.caleydo.vis.rank.ui.ButtonBar;
 import org.caleydo.vis.rank.ui.RenderStyle;
 import org.caleydo.vis.rank.ui.RenderUtils;
 import org.eclipse.swt.widgets.Display;
@@ -106,8 +106,8 @@ public class MappingFunctionUI extends GLElementContainer implements GLButton.IS
 		this.add(new RawHistogramElement(raw.map(FloatFunctions.normalize(model.getActMin(), model.getActMax()))));
 		this.add(new NormalizedHistogramElement());
 		this.add(new CodeElement());
-		GLElementContainer buttons = new GLElementContainer(GLLayouts.flowHorizontal(1));
-		buttons.add(new GLElement()); // spacer
+		ButtonBar buttons = new ButtonBar();
+		buttons.addSpacer();
 		GLButton b = new GLButton();
 		b.setRenderer(GLRenderers.fillImage(RenderStyle.ICON_MAPPING_RESET));
 		b.setCallback(this);

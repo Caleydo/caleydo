@@ -17,34 +17,36 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package university;
+package org.caleydo.vis.rank.layout;
 
-import java.lang.reflect.Field;
+import java.util.Arrays;
 
-import org.caleydo.vis.rank.data.AFloatFunction;
-import org.caleydo.vis.rank.model.IRow;
+import org.caleydo.vis.rank.layout.RowHeightLayouts.IRowHeightLayout;
+import org.caleydo.vis.rank.ui.RenderStyle;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class ReflectionFloatData extends AFloatFunction<IRow> {
-	private final Field field;
+class UniformRowHeightLayout implements IRowHeightLayout {
+	private static final float ROW_HEIGHT = 20;
 
-	public ReflectionFloatData(Field field) {
-		this.field = field;
-		field.setAccessible(true);
+	UniformRowHeightLayout() {
+	}
+
+
+	@Override
+	public float[] compute(int numRows, int selectedRowIndex, float h) {
+		h -= ROW_HEIGHT;
+		int visibleRows = (int) Math.round(Math.floor(h / ROW_HEIGHT));
+		float[] r;
+		r = new float[Math.min(numRows, visibleRows + 1)];
+		Arrays.fill(r, ROW_HEIGHT);
+		return r;
 	}
 
 	@Override
-	public float applyPrimitive(IRow in) {
-		try {
-			Number v = (Number) field.get(in);
-			return v.floatValue();
-		} catch (IllegalArgumentException | IllegalAccessException e) {
-			e.printStackTrace();
-		}
-		return Float.NaN;
+	public String getIcon() {
+		return RenderStyle.ICON_ALIGN_UNIFORM;
 	}
 }
-

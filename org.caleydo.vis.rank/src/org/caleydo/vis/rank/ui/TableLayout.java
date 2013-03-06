@@ -17,44 +17,34 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.vis.rank.model.mixin;
+package org.caleydo.vis.rank.ui;
 
-import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDragInfo;
+import java.util.List;
+
+import org.caleydo.core.view.opengl.layout2.layout.GLFlowLayout;
+import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
+import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 
 /**
- * contract that the column can be hidden
- *
  * @author Samuel Gratzl
  *
  */
-public interface IHideableColumnMixin extends IDragInfo, IRankColumnModel {
-	/**
-	 * currently hide able in its state
-	 *
-	 * @return
-	 */
-	boolean isHideAble();
+public class TableLayout extends GLFlowLayout {
+	private final boolean hasButtons;
 
-	/**
-	 * triggers to hide this column
-	 *
-	 * @return successful?
-	 */
-	boolean hide();
+	public TableLayout(boolean hasButtons) {
+		super(false, 0, GLPadding.ZERO);
+		this.hasButtons = hasButtons;
+	}
 
-	boolean isHidden();
-
-	/**
-	 * currently destroy able in its state
-	 *
-	 * @return
-	 */
-	boolean isDestroyAble();
-
-	/**
-	 * triggers to destroy this column
-	 *
-	 * @return successful?
-	 */
-	boolean destroy();
+	@Override
+	public void doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
+		if (!hasButtons || children.size() < 1) {
+			super.doLayout(children, w, h);
+			return;
+		}
+		IGLLayoutElement buttons = children.get(0);
+		buttons.setBounds(0, 0, w, buttons.getSetHeight());
+		super.doLayout(children.subList(1, children.size()), w, h);
+	}
 }

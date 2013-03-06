@@ -99,8 +99,8 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 		String value = data.apply(parent.getLayoutDataAs(IRow.class, null));
 		if (value == null)
 			return;
-		float hi = Math.min(h, 18);
-		g.drawText(value, 1, 1 + (h - hi) * 0.5f, w - 2, hi - 2);
+		float hi = Math.min(h, 19);
+		g.drawText(value, 1, (h - hi) * 0.5f, w - 2, hi - 5);
 	}
 
 	@Override

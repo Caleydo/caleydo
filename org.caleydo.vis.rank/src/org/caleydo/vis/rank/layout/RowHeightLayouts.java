@@ -45,55 +45,13 @@ public class RowHeightLayouts {
 		 * @return
 		 */
 		float[] compute(int numRows, int selectedRowIndex, float h);
+
+		String getIcon();
 	}
 
-	public static final IRowHeightLayout UNIFORM = new IRowHeightLayout() {
-		@Override
-		public float[] compute(int numRows, int selectedRowIndex, float h) {
-			int visibleRows = (int) Math.round(Math.floor(h / 22));
-			float[] r = new float[Math.min(numRows, visibleRows)];
-			Arrays.fill(r, 20);
-			return r;
-		}
-	};
+	public static final IRowHeightLayout UNIFORM = new UniformRowHeightLayout();
 
-	public static final IRowHeightLayout LINEAR = new IRowHeightLayout() {
-		@Override
-		public float[] compute(int numRows, int selectedRowIndex, float h) {
-			final float firstHeight = 22;
-			final float selectedHeight = 35;
-			final float minHeight = 3;
-			final float minDelta = 0.25f;
-			final float maxDelta = 0.75f;
-
-			int numDeltas = (numRows - 1) * (numRows) / 2;
-			if ((firstHeight * numRows - numDeltas * minDelta) < h) {
-				// TODO
-				System.out.println();
-			}
-
-			float[] r = new float[numRows];
-			float act = firstHeight;
-
-			float delta = -0.25f;
-			float acc = 0;
-			for (int i = 0; i < numRows; ++i) {
-				r[i] = act;
-				act += delta;
-				if (act <= minHeight)
-					delta = 0;
-				if (i == selectedRowIndex) {
-					r[i] = selectedHeight;
-				}
-				acc += r[i];
-				if (acc >= (h - act)) {
-					r = Arrays.copyOf(r, i + 1);
-					break;
-				}
-			}
-			return r;
-		}
-	};
+	public static final IRowHeightLayout FISH_EYE = new FishEyeRowHeightLayout();
 
 	public static final IRowHeightLayout JUST_SELECTED = new IRowHeightLayout() {
 		@Override
@@ -104,6 +62,11 @@ public class RowHeightLayouts {
 			Arrays.fill(r, 0);
 			r[selectedRowIndex] = h;
 			return r;
+		}
+
+		@Override
+		public String getIcon() {
+			return null;
 		}
 	};
 
@@ -118,6 +81,11 @@ public class RowHeightLayouts {
 			Arrays.fill(r, delta);
 			r[selectedRowIndex] = delta * 3;
 			return r;
+		}
+
+		@Override
+		public String getIcon() {
+			return null;
 		}
 	};
 }

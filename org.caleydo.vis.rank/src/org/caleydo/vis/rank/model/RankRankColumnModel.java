@@ -64,6 +64,6 @@ public class RankRankColumnModel extends ARankColumnModel implements IGLRenderer
 			return;
 		float hi = Math.min(h, 16);
 		String value = String.format("%2d.", getTable().getVisualRank(parent.getLayoutDataAs(IRow.class, null)));
-		g.drawText(value, 1, 1 + (h - hi) * 0.5f, w - 2, hi - 2);
+		g.drawText(value, 1, (h - hi) * 0.5f, w - 2, hi - 3);
 	}
 }

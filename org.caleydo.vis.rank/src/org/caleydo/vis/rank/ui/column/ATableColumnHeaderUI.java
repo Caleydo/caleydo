@@ -43,7 +43,6 @@ import org.caleydo.core.view.opengl.layout2.animation.MoveTransitions;
 import org.caleydo.core.view.opengl.layout2.animation.Transitions;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton.ISelectionCallback;
-import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
@@ -57,6 +56,7 @@ import org.caleydo.vis.rank.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IHideableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IMappedColumnMixin;
 import org.caleydo.vis.rank.model.mixin.ISnapshotableColumnMixin;
+import org.caleydo.vis.rank.ui.ButtonBar;
 import org.caleydo.vis.rank.ui.IColumnRenderInfo;
 import org.caleydo.vis.rank.ui.RenderStyle;
 import org.eclipse.swt.SWT;
@@ -286,13 +286,12 @@ public class ATableColumnHeaderUI extends AnimatedGLElementContainer implements 
 	}
 
 	protected GLElementContainer createButtons() {
-		GLElementContainer buttons = new GLElementContainer(GLLayouts.flowHorizontal(2));
+		ButtonBar buttons = new ButtonBar();
 		buttons.setzDelta(.5f);
 
 		if (model instanceof ISnapshotableColumnMixin) {
 			final ISnapshotableColumnMixin m = (ISnapshotableColumnMixin) model;
 			final GLButton b = new GLButton();
-			b.setSize(RenderStyle.BUTTON_WIDTH, -1);
 			b.setRenderer(GLRenderers.fillImage(RenderStyle.ICON_FREEZE));
 			b.setTooltip("Take a snapshot of the current state");
 			final ISelectionCallback callback = new ISelectionCallback() {
@@ -303,12 +302,11 @@ public class ATableColumnHeaderUI extends AnimatedGLElementContainer implements 
 				}
 			};
 			b.setCallback(callback);
-			buttons.add(b);
+			buttons.addButton(b);
 		}
 		if (model instanceof IFilterColumnMixin) {
 			final IFilterColumnMixin m = (IFilterColumnMixin) model;
 			final GLButton b = new GLButton();
-			b.setSize(RenderStyle.BUTTON_WIDTH, -1);
 			b.setRenderer(GLRenderers.fillImage(RenderStyle.ICON_FILTER_DISABLED));
 			b.setSelectedRenderer(GLRenderers.fillImage(RenderStyle.ICON_FILTER));
 			b.setSelected(m.isFiltered());
@@ -329,12 +327,11 @@ public class ATableColumnHeaderUI extends AnimatedGLElementContainer implements 
 				}
 			};
 			model.addPropertyChangeListener(IFilterColumnMixin.PROP_FILTER, filterChangedListener);
-			buttons.add(b);
+			buttons.addButton(b);
 		}
 		if (model instanceof IMappedColumnMixin) {
 			final IMappedColumnMixin m = (IMappedColumnMixin) model;
 			GLButton b = new GLButton();
-			b.setSize(RenderStyle.BUTTON_WIDTH, -1);
 			b.setRenderer(GLRenderers.fillImage(RenderStyle.ICON_MAPPING));
 			b.setTooltip("Edit the mapping of this column");
 			b.setCallback(new ISelectionCallback() {
@@ -343,12 +340,11 @@ public class ATableColumnHeaderUI extends AnimatedGLElementContainer implements 
 					m.editMapping(get(HIST), context);
 				}
 			});
-			buttons.add(b);
+			buttons.addButton(b);
 		}
 		if (model instanceof IExplodeableColumnMixin) {
 			final IExplodeableColumnMixin m = (IExplodeableColumnMixin) model;
 			GLButton b = new GLButton();
-			b.setSize(RenderStyle.BUTTON_WIDTH, -1);
 			b.setRenderer(GLRenderers.fillImage(RenderStyle.ICON_EXPLODE));
 			b.setTooltip("Split this combined column in individual ones");
 			b.setCallback(new ISelectionCallback() {
@@ -357,7 +353,7 @@ public class ATableColumnHeaderUI extends AnimatedGLElementContainer implements 
 					m.explode();
 				}
 			});
-			buttons.add(b);
+			buttons.addButton(b);
 		}
 		buttons.add(new GLElement()); // spacer
 
@@ -365,7 +361,6 @@ public class ATableColumnHeaderUI extends AnimatedGLElementContainer implements 
 			final ICollapseableColumnMixin m = (ICollapseableColumnMixin) model;
 			if (m.isCollapseAble()) {
 				GLButton b = new GLButton();
-				b.setSize(RenderStyle.BUTTON_WIDTH, -1);
 				b.setRenderer(GLRenderers.fillImage(RenderStyle.ICON_UNCOLLAPSE));
 				b.setCallback(new ISelectionCallback() {
 					@Override
@@ -374,13 +369,12 @@ public class ATableColumnHeaderUI extends AnimatedGLElementContainer implements 
 					}
 				});
 				b.setTooltip("Toggle Collapse / Expand of this column");
-				buttons.add(b);
+				buttons.addButton(b);
 			}
 		}
 		if (model instanceof IHideableColumnMixin) {
 			final IHideableColumnMixin m = (IHideableColumnMixin) model;
 			GLButton b = new GLButton();
-			b.setSize(RenderStyle.BUTTON_WIDTH, -1);
 			b.setRenderer(GLRenderers.fillImage(RenderStyle.ICON_HIDE));
 			b.setTooltip("Removes this column");
 			b.setCallback(new ISelectionCallback() {
@@ -390,7 +384,7 @@ public class ATableColumnHeaderUI extends AnimatedGLElementContainer implements 
 						m.hide();
 				}
 			});
-			buttons.add(b);
+			buttons.addButton(b);
 		}
 		return buttons;
 	}

@@ -97,6 +97,8 @@ public class ColumnPoolUI extends GLElementContainer {
 			return;
 		Pair<GLElement, IHideableColumnMixin> pair = context.getMouseLayer().getFirstDraggable(
 					IHideableColumnMixin.class);
+		if (pair.getSecond().isHidden())
+			return;
 		switch(pick.getPickingMode()) {
 		case MOUSE_OVER:
 			if (!pair.getSecond().isHideAble())

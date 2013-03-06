@@ -411,6 +411,11 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 	}
 
 	@Override
+	public boolean isHidden(ARankColumnModel model) {
+		return pool.contains(model);
+	}
+
+	@Override
 	public RankTableModel getTable() {
 		return this;
 	}

@@ -98,10 +98,16 @@ public interface IRankColumnParent extends IRankColumnModel {
 	 * @param aRankColumnModel
 	 * @return
 	 */
-	boolean canTakeSnapshot(ARankColumnModel aRankColumnModel);
+	boolean canTakeSnapshot(ARankColumnModel model);
 
 	/**
 	 * @param aRankColumnModel
 	 */
-	void takeSnapshot(ARankColumnModel aRankColumnModel);
+	void takeSnapshot(ARankColumnModel model);
+
+	/**
+	 * @param aRankColumnModel
+	 * @return
+	 */
+	boolean isHidden(ARankColumnModel model);
 }

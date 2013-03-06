@@ -45,6 +45,8 @@ import org.caleydo.vis.rank.model.StringRankColumnModel;
 import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
 
 import demo.ARankTableDemo;
+import demo.ReflectionData;
+import demo.ReflectionFloatData;
 
 /**
  * @author Samuel Gratzl

@@ -24,17 +24,13 @@ import java.awt.Dimension;
 import java.io.IOException;
 
 import org.caleydo.core.view.opengl.canvas.IGLKeyListener;
-import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLSandBox;
-import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
 import org.caleydo.vis.rank.config.RankTableConfigBase;
 import org.caleydo.vis.rank.layout.RowHeightLayouts;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.StackedRankColumnModel;
-import org.caleydo.vis.rank.ui.ColumnPoolUI;
-import org.caleydo.vis.rank.ui.TableBodyUI;
-import org.caleydo.vis.rank.ui.TableHeaderUI;
+import org.caleydo.vis.rank.ui.TableUI;
 
 import com.google.common.collect.Iterables;
 
@@ -48,7 +44,7 @@ public abstract class ARankTableDemo extends GLSandBox {
 	protected final RankTableModel table;
 
 	public ARankTableDemo(String name) {
-		super(name, new GLElementContainer(GLLayouts.flowVertical(0)), new GLPadding(5),
+		super(name, new TableUI(), new GLPadding(5),
 				new Dimension(800, 600));
 		this.table = new RankTableModel(new RankTableConfigBase() {
 			@Override
@@ -89,11 +85,8 @@ public abstract class ARankTableDemo extends GLSandBox {
 
 	private void createUI() {
 		// visual part
-		GLElementContainer root = (GLElementContainer) getRoot();
-		root.add(new TableHeaderUI(table));
-		root.add(new TableBodyUI(table, RowHeightLayouts.LINEAR));
-
-		root.add(new ColumnPoolUI(table));
+		TableUI root = (TableUI) getRoot();
+		root.init(table, RowHeightLayouts.FISH_EYE, RowHeightLayouts.UNIFORM);
 	}
 
 	public static float toFloat(String[] l, int i) {

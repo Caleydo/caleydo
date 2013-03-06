@@ -17,44 +17,35 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.vis.rank.model.mixin;
+package demo;
 
-import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDragInfo;
+import java.lang.reflect.Field;
+import java.util.Objects;
+
+import org.caleydo.vis.rank.model.IRow;
+
+import com.google.common.base.Function;
 
 /**
- * contract that the column can be hidden
- *
  * @author Samuel Gratzl
  *
  */
-public interface IHideableColumnMixin extends IDragInfo, IRankColumnModel {
-	/**
-	 * currently hide able in its state
-	 *
-	 * @return
-	 */
-	boolean isHideAble();
+public class ReflectionData implements Function<IRow, String> {
+	private final Field field;
 
-	/**
-	 * triggers to hide this column
-	 *
-	 * @return successful?
-	 */
-	boolean hide();
+	public ReflectionData(Field field) {
+		this.field = field;
+		field.setAccessible(true);
+	}
 
-	boolean isHidden();
-
-	/**
-	 * currently destroy able in its state
-	 *
-	 * @return
-	 */
-	boolean isDestroyAble();
-
-	/**
-	 * triggers to destroy this column
-	 *
-	 * @return successful?
-	 */
-	boolean destroy();
+	@Override
+	public String apply(IRow in) {
+		try {
+			return Objects.toString(field.get(in));
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 }
+

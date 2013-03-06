@@ -115,18 +115,18 @@ public class TableStackedColumnUI extends ACompositeTableColumnUI<StackedRankCol
 			TableBodyUI.hideUnused(children, w, h, used);
 		} else {
 			// simple
-			((IColumModelLayout) getParent()).layoutRows(model, children, w, h, rowPositions);
+			getColumnModelParent().layoutRows(model, children, w, h, rowPositions);
 		}
 	}
 
 	@Override
 	public float[] getRowPositions() {
-		return ((IColumModelLayout) getParent()).getRowPositions();
+		return getColumnModelParent().getRowPositions();
 	}
 
 	@Override
 	public int getRankDelta(IRow row) {
-		return ((IColumModelLayout) getParent()).getRankDelta(row);
+		return getColumnModelParent().getRankDelta(row);
 	}
 
 	@Override

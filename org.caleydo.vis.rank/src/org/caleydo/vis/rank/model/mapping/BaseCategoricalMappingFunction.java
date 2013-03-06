@@ -36,9 +36,10 @@ public class BaseCategoricalMappingFunction<T> extends AFloatFunction<T> impleme
 
 	public BaseCategoricalMappingFunction(Set<T> items) {
 		int i = 1;
-		float f = 1.f / mapping.size();
+		float f = 1.f / items.size();
 		for (T key : items)
 			mapping.put(key, (i++) * f);
+		System.out.println(mapping);
 	}
 
 	public BaseCategoricalMappingFunction(BaseCategoricalMappingFunction<T> copy) {
