@@ -92,7 +92,7 @@ public class RenderStyle {
 	 * @return
 	 */
 	public static int hightlightAnimationDuration(int delta) {
-		return delta == Integer.MIN_VALUE ? 2000 : Math.min(Math.abs(delta) * 400, 2000);
+		return delta == Integer.MIN_VALUE ? 2000 : Math.min(Math.abs(delta) * 2000, 2000);
 	}
 
 	/**
