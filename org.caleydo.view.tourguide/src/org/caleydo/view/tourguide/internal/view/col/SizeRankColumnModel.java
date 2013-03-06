@@ -89,9 +89,7 @@ public class SizeRankColumnModel extends ABasicFilterableRankColumnModel impleme
 
 
 	@Override
-	public void editFilter(GLElement summary) {
-		System.out.println("eding");
-		new Throwable().printStackTrace();
+	public void editFilter(GLElement summary, IGLElementContext context) {
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
@@ -177,8 +175,7 @@ public class SizeRankColumnModel extends ABasicFilterableRankColumnModel impleme
 		protected void onMouseReleased(Pick pick) {
 			if (pick.isAnyDragging())
 				return;
-			System.out.println("start edit");
-			editFilter(this);
+			editFilter(this, context);
 		}
 
 		@Override
