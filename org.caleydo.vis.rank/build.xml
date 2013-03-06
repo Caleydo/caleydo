@@ -4,25 +4,6 @@
 	<property name="eclipse.plugins" location="${eclipse.pdebuild.home}/../" />
 	<property name="caleydo.workspace" location="${basedir}/../" />
 
-	<condition property="swt.platform" value="win32.win32">
-		<os family="windows" />
-	</condition>
-	<condition property="swt.platform" value="gtk.linux">
-		<os family="unix" />
-	</condition>
-	<condition property="swt.platform" value="cocoa.macosx">
-		<os family="mac" />
-	</condition>
-	<condition property="jogl.platform" value="windows-amd64">
-		<os family="windows" />
-	</condition>
-	<condition property="jogl.platform" value="linux-amd64">
-		<os family="unix" />
-	</condition>
-	<condition property="jogl.platform" value="macosx-universal">
-		<os family="mac" />
-	</condition>
-	
 	<!-- ================================= 
           target: clean              
          ================================= -->
@@ -35,33 +16,36 @@
 		<mkdir dir="target" />
 		<tempfile destdir="target" prefix="tmp" property="tmp.location" />
 		<mkdir dir="${tmp.location}" />
-		<copy todir="${tmp.location}">
+		<copy todir="${tmp.location}"  flatten="true">
 			<fileset dir="${eclipse.plugins}">
-				<include name="org.eclipse.core.runtime_3.8.0.v20120521-2346.jar" />
-				<include name="org.eclipse.osgi_3.8.1.v20120830-144521.jar" />
-				<include name="org.eclipse.equinox.common_3.6.100.v20120522-1841.jar" />
-				<include name="org.eclipse.core.jobs_3.5.300.v20120622-204750.jar" />
-				<include name="org.eclipse.equinox.registry_3.5.200.v20120522-1841.jar" />
-				<include name="org.eclipse.equinox.preferences_3.5.0.v20120522-1841.jar" />
-				<include name="org.eclipse.core.contenttype_3.4.200.v20120523-2004.jar" />
-				<include name="org.eclipse.equinox.app_1.3.100.v20120522-1841.jar" />
-				<include name="org.eclipse.rcp_4.2.0.v201209141800.jar" />
-				<include name="org.eclipse.swt_3.100.1.v4234e.jar" />
-				<include name="org.eclipse.swt.${swt.platform}.x86_64_3.100.1.v4234e.jar"/><!--win32.win32.x86_64_3.100.1.v4234e.jar-->
-				<include name="org.eclipse.jface_3.8.101.v20120817-083647.jar" />
-				<include name="org.eclipse.core.commands_3.6.1.v20120814-150512.jar" />
-				<include name="org.eclipse.e4.ui.model.workbench_0.10.1.v20120523-1955.jar" />
-				<include name="org.eclipse.emf.ecore_2.8.1.v20120911-0500.jar" />
-				<include name="org.eclipse.emf.common_2.8.0.v20120911-0500.jar" />
-				<include name="org.eclipse.emf.ecore.xmi_2.8.0.v20120911-0500.jar" />
-				<include name="org.eclipse.core.resources_3.8.1.v20120802-154922.jar" />
-				<include name="org.eclipse.ui_3.103.0.v20120705-114351.jar" />
-				<include name="org.eclipse.ui.workbench_3.103.1.v20120906-120042.jar" />
-				<include name="org.eclipse.e4.ui.workbench3_0.12.0.v20120521-2329.jar" />
-				<include name="com.google.guava_10.0.1.v201203051515.jar" />
-			</fileset>
-			<fileset dir="${eclipse.plugins}\org.eclipse.core.runtime.compatibility.registry_3.5.100.v20120521-2346">
-				<include name="runtime_registry_compatibility.jar" />
+				<include name="org.eclipse.core.commands_3.6.*.jar" />
+				<include name="org.eclipse.core.contenttype_3.4.200.*.jar" />
+				<include name="org.eclipse.core.jobs_3.5.*.jar" />
+				<include name="org.eclipse.core.resources_3.8.1.*.jar" />
+				<include name="org.eclipse.core.runtime_3.8.*.jar" />
+				<include name="org.eclipse.core.runtime.compatibility.registry_3.5.*/runtime_registry_compatibility.jar" />
+
+				<include name="org.eclipse.e4.ui.workbench3_0.12.0.*.jar" />
+				<include name="org.eclipse.e4.ui.model.workbench_0.10.1.*.jar" />
+				
+				<include name="org.eclipse.emf.ecore_2.8.*.jar" />
+				<include name="org.eclipse.emf.common_2.8.*.jar" />
+				<include name="org.eclipse.emf.ecore.xmi_2.8.*.jar" />
+								
+				<include name="org.eclipse.equinox.common_3.6.*.jar" />
+				<include name="org.eclipse.equinox.registry_3.5.*.jar" />
+				<include name="org.eclipse.equinox.preferences_3.5.*.jar" />
+				<include name="org.eclipse.equinox.app_1.3.100.*.jar" />
+
+				<include name="org.eclipse.jface_3.8.*jar" />
+				<include name="org.eclipse.osgi_3.8.*.jar" />
+				<include name="org.eclipse.rcp_4.2.*.jar" />
+				<include name="org.eclipse.swt_3.100.1.*.jar" />
+				
+				<include name="org.eclipse.ui_3.1*.jar" />
+				<include name="org.eclipse.ui.workbench_3.1*.jar" />
+				
+				<include name="com.google.guava_10.0.1.*.jar" />												
 			</fileset>
 		</copy>
 		
@@ -88,9 +72,37 @@
 			
 		<copy todir="${tmp.location}" flatten="true">
 			<fileset dir="${caleydo.workspace}/libs/org.caleydo.lib.jogl/lib/jogl">
-				<include name="gluegen-rt-natives-${jogl.platform}.jar"/>
-				<include name="jogl-all-natives-${jogl.platform}.jar"/>
+				<include name="gluegen-rt-natives-*.jar"/>
+				<include name="jogl-all-natives-*.jar"/>
 			</fileset>
+		</copy>
+		
+		<fileset dir="${eclipse.plugins}" id="specific.windows">
+			<include name="org.eclipse.swt.win32.win32.x86_64_3.100.1.*.jar"/>
+		</fileset>
+		<pathconvert targetos="unix" property="university.classpath.windows" pathsep=" " >
+			<fileset refid="specific.windows" />
+			<map from="${eclipse.plugins}/" to=''/>
+		</pathconvert>
+		<fileset dir="${eclipse.plugins}" id="specific.linux">
+			<include name="org.eclipse.swt.gtk.linux.x86_64_3.100.1.*.jar"/>
+		</fileset>
+		<pathconvert targetos="unix" property="university.classpath.linux" pathsep=" " >
+			<fileset refid="specific.linux" />
+			<map from="${eclipse.plugins}/" to=''/>
+		</pathconvert>
+		<fileset dir="${eclipse.plugins}" id="specific.mac">
+			<include name="org.eclipse.swt.cocoa.macosx.x86_64_3.100.1.*.jar"/>
+		</fileset>
+		<pathconvert targetos="unix" property="university.classpath.mac" pathsep=" " >
+			<fileset refid="specific.mac" />
+			<map from="${eclipse.plugins}/" to=''/>
+		</pathconvert>
+		
+		<copy todir="${tmp.location}">
+			<fileset refid="specific.windows" />
+			<fileset refid="specific.linux" />
+			<fileset refid="specific.mac" />
 		</copy>
 		
 		<copy todir="${tmp.location}">
@@ -103,17 +115,21 @@
 		</copy>
 		
 		<copy todir="${tmp.location}">
-			<zipfileset src="${eclipse.plugins}/org.eclipse.jdt.ui_3.8.1.v20120814-144251.jar" includes="jar-in-jar-loader.zip"/>
+			<zipfileset src="${eclipse.plugins}/org.eclipse.jdt.ui_3.8.2.v20130107-165834.jar" includes="jar-in-jar-loader.zip"/>
 		</copy>
 		<unzip dest="${tmp.location}" src="${tmp.location}/jar-in-jar-loader.zip" />
 		<delete file="${tmp.location}/jar-in-jar-loader.zip" />
 		
 		<jar destfile="target/University.jar" basedir="${tmp.location}">
 			<manifest>
-				<attribute name="Main-Class" value="org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader" />
+				<!--<attribute name="Main-Class" value="org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader" />-->
+				<attribute name="Main-Class" value="JarInJarLauncher" />
 				<attribute name="Rsrc-Main-Class" value="university.University" />
 				<attribute name="Class-Path" value="." />
 				<attribute name="Rsrc-Class-Path" value="./ ${university.classpath}" />
+				<attribute name="Rsrc-Class-Path-win" value="${university.classpath.windows}" />
+				<attribute name="Rsrc-Class-Path-linux" value="${university.classpath.linux}" />
+				<attribute name="Rsrc-Class-Path-mac" value="${university.classpath.mac}" />
 			</manifest>
 		</jar>
 					
