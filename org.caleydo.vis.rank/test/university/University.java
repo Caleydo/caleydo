@@ -20,8 +20,6 @@
 package university;
 
 import java.awt.Color;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -39,7 +37,6 @@ import org.caleydo.vis.rank.model.ARow;
 import org.caleydo.vis.rank.model.CategoricalRankColumnModel;
 import org.caleydo.vis.rank.model.FloatRankColumnModel;
 import org.caleydo.vis.rank.model.RankRankColumnModel;
-import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.StackedRankColumnModel;
 import org.caleydo.vis.rank.model.StringRankColumnModel;
 import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
@@ -65,19 +62,6 @@ public class University extends ARankTableDemo {
 		List<UniversityRow> rows = readData();
 		table.addData(rows);
 		Map<String, String> metaData = readCountriesCategories();
-
-		// scan columns
-		this.table.addPropertyChangeListener(RankTableModel.PROP_REGISTER, new PropertyChangeListener() {
-			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
-				if (evt.getOldValue() != null) {
-					eventListeners.unregister(evt.getOldValue());
-				}
-				if (evt.getNewValue() != null)
-					eventListeners.register(evt.getNewValue());
-			}
-		});
-
 		table.addColumn(new RankRankColumnModel());
 		table.addColumn(new StringRankColumnModel(GLRenderers.drawText("University", VAlign.CENTER),
 				StringRankColumnModel.DFEAULT));

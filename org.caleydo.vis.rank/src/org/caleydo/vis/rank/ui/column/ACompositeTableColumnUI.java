@@ -70,20 +70,17 @@ public abstract class ACompositeTableColumnUI<T extends ACompositeRankColumnMode
 		}
 	}
 
+	@Override
+	public GLElement asGLElement() {
+		return this;
+	}
+
 	/**
 	 * @return the model, see {@link #model}
 	 */
+	@Override
 	public T getModel() {
 		return model;
-	}
-
-	public boolean hasOwnOrder() {
-		return false;
-	}
-
-	@Override
-	public boolean causesReorderingLayouting() {
-		return !hasOwnOrder() ? getColumnModelParent().causesReorderingLayouting() : false;
 	}
 
 	protected IColumModelLayout getColumnModelParent() {

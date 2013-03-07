@@ -33,6 +33,7 @@ import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.StackedRankColumnModel;
 import org.caleydo.vis.rank.model.mixin.IMultiColumnMixin.MultiFloat;
+import org.caleydo.vis.rank.ui.ColumnRankerUI;
 import org.caleydo.vis.rank.ui.RenderStyle;
 import org.caleydo.vis.rank.ui.TableBodyUI;
 
@@ -78,13 +79,12 @@ public class StackedColumnUI extends ACompositeTableColumnUI<StackedRankColumnMo
 	}
 
 	@Override
-	public void layoutRows(ARankColumnModel model, List<? extends IGLLayoutElement> children, float w, float h,
-			float[] rowPositions) {
+	public void layoutRows(ARankColumnModel model, List<? extends IGLLayoutElement> children, float w, float h) {
 		int combinedAlign = this.model.getAlignment();
 		int index = this.model.indexOf(model);
 		if (combinedAlign >= 0 && index != combinedAlign) {
 			// moving around
-			int[] ranks = this.model.getTable().getOrder();
+			int[] ranks = this.model.getMyRanker().getOrder();
 			float[] weights = new float[this.model.size()];
 			for (int i = 0; i < weights.length; ++i)
 				weights[i] = this.model.get(i).getWeight();
@@ -93,7 +93,7 @@ public class StackedColumnUI extends ACompositeTableColumnUI<StackedRankColumnMo
 			BitSet used = new BitSet(children.size());
 			used.set(0, children.size());
 			int ri = 0;
-			for (float hr : rowPositions) {
+			for (float hr : getRanker(model).getRowPositions()) {
 				int r = ranks[ri++];
 				IGLLayoutElement row = children.get(r);
 				used.clear(r);
@@ -112,25 +112,25 @@ public class StackedColumnUI extends ACompositeTableColumnUI<StackedRankColumnMo
 				row.setBounds(x, y, w, hr - y);
 				y = hr;
 			}
-			TableBodyUI.hideUnused(children, w, h, used);
+			TableBodyUI.hideUnusedColumns(children, w, h, used);
 		} else {
 			// simple
-			getColumnModelParent().layoutRows(model, children, w, h, rowPositions);
+			getColumnModelParent().layoutRows(model, children, w, h);
 		}
 	}
 
 	@Override
-	public float[] getRowPositions() {
-		return getColumnModelParent().getRowPositions();
+	public ColumnRankerUI getRanker(ARankColumnModel model) {
+		return getColumnModelParent().getRanker(model);
 	}
 
 	@Override
-	public int getRankDelta(IRow row) {
-		return getColumnModelParent().getRankDelta(row);
+	public boolean causesReorderingLayouting() {
+		return getColumnModelParent().causesReorderingLayouting();
 	}
 
 	@Override
-	public VAlign getAlignment(ColumnUI model) {
+	public VAlign getAlignment(ITableColumnUI model) {
 		int combinedAlign = this.model.getAlignment();
 		if (combinedAlign < 0)
 			return VAlign.LEFT;
@@ -139,7 +139,7 @@ public class StackedColumnUI extends ACompositeTableColumnUI<StackedRankColumnMo
 	}
 
 	@Override
-	public boolean hasFreeSpace(ColumnUI model) {
+	public boolean hasFreeSpace(ITableColumnUI model) {
 		int combinedAlign = this.model.getAlignment();
 		if (combinedAlign < 0)
 			return true;

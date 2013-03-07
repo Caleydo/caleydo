@@ -55,7 +55,7 @@ public class ScoreSummary extends GLElement {
 		}
 	};
 	private IRow selectedRow = null;
-	private final IRankableColumnMixin model;
+	protected final IRankableColumnMixin model;
 
 	public ScoreSummary(IRankableColumnMixin model, boolean interactive) {
 		this.model = model;

@@ -46,12 +46,7 @@ public abstract class ARankTableDemo extends GLSandBox {
 	public ARankTableDemo(String name) {
 		super(name, new TableUI(), new GLPadding(5),
 				new Dimension(800, 600));
-		this.table = new RankTableModel(new RankTableConfigBase() {
-			@Override
-			public boolean isInteractive() {
-				return true;
-			}
-		});
+		this.table = new RankTableModel(new RankTableConfigBase());
 		try {
 			createModel();
 		} catch (NoSuchFieldException | IOException e1) {
@@ -86,7 +81,7 @@ public abstract class ARankTableDemo extends GLSandBox {
 	private void createUI() {
 		// visual part
 		TableUI root = (TableUI) getRoot();
-		root.init(table, RowHeightLayouts.FISH_EYE, RowHeightLayouts.UNIFORM);
+		root.init(table, true, RowHeightLayouts.FISH_EYE, RowHeightLayouts.UNIFORM);
 	}
 
 	public static float toFloat(String[] l, int i) {

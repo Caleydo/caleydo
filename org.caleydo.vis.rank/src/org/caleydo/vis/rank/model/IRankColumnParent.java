@@ -19,10 +19,6 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.model;
 
-import java.beans.PropertyChangeListener;
-import java.util.BitSet;
-import java.util.Iterator;
-
 import org.caleydo.vis.rank.model.mixin.IRankColumnModel;
 
 
@@ -31,15 +27,8 @@ import org.caleydo.vis.rank.model.mixin.IRankColumnModel;
  *
  */
 public interface IRankColumnParent extends IRankColumnModel {
-	String PROP_DATA = "data";
-	String PROP_INVALID = "invalid";
 
-	Iterator<IRow> getCurrentOrder();
-
-	BitSet getCurrentFilter();
-
-	int getCurrentSize();
-
+	ColumnRanker getMyRanker(ARankColumnModel model);
 	/**
 	 * @param aBasicRankColumnModel
 	 * @return
@@ -85,29 +74,9 @@ public interface IRankColumnParent extends IRankColumnModel {
 	void move(ARankColumnModel model, int index);
 
 	/**
-	 * @param index
-	 * @return
-	 */
-	IRow getCurrent(int rank);
-
-	void addPropertyChangeListener(String propertyName, PropertyChangeListener listener);
-
-	void removePropertyChangeListener(String propertyName, PropertyChangeListener listener);
-
-	/**
-	 * @param aRankColumnModel
-	 * @return
-	 */
-	boolean canTakeSnapshot(ARankColumnModel model);
-
-	/**
-	 * @param aRankColumnModel
-	 */
-	void takeSnapshot(ARankColumnModel model);
-
-	/**
 	 * @param aRankColumnModel
 	 * @return
 	 */
 	boolean isHidden(ARankColumnModel model);
+
 }

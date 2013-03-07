@@ -17,21 +17,37 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.vis.rank.model;
+package org.caleydo.vis.rank.internal.ui;
+
+import org.eclipse.jface.dialogs.IInputValidator;
+import org.eclipse.jface.dialogs.InputDialog;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Shell;
 
 /**
- * a thing that is a row
- *
  * @author Samuel Gratzl
  *
  */
-public interface IRow {
-	int getIndex();
+public class MultiLineInputDialog extends InputDialog {
+	public MultiLineInputDialog(Shell parentShell, String dialogTitle, String dialogMessage, String initialValue,
+			IInputValidator validator) {
+		super(parentShell, dialogTitle, dialogMessage, initialValue, validator);
+	}
 
-	/**
-	 * the data index of the row
-	 *
-	 * @param index
-	 */
-	void setIndex(int index);
+	@Override
+	protected int getInputTextStyle() {
+		return SWT.MULTI | SWT.BORDER | SWT.V_SCROLL;
+	}
+
+	@Override
+	protected Control createDialogArea(Composite parent) {
+		Control res = super.createDialogArea(parent);
+		((GridData) this.getText().getLayoutData()).heightHint = 100;
+		return res;
+	}
+
 }
+

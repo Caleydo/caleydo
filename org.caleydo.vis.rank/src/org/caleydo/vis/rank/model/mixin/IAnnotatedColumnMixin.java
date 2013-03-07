@@ -17,16 +17,20 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.vis.rank.ui.column;
+package org.caleydo.vis.rank.model.mixin;
 
-import org.caleydo.vis.rank.model.FrozenRankColumnModel;
+import org.caleydo.core.view.opengl.layout2.GLElement;
 
 /**
+ * mixin that the column has a annotation
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
-public class FrozenSummaryHeaderUI extends AColumnHeaderUI {
-	public FrozenSummaryHeaderUI(final FrozenRankColumnModel model, boolean interactive) {
-		super(model, interactive, true, true, false, false);
-	}
+public interface IAnnotatedColumnMixin {
+	String PROP_ANNOTATION = "annotation";
+
+	void editAnnotation(GLElement summary);
+
+	String getAnnotation();
 }

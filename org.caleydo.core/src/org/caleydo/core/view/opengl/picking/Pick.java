@@ -134,7 +134,6 @@ public class Pick {
 	 * @return
 	 */
 	public PickingMode getPickingMode() {
-
 		return ePickingMode;
 	}
 
@@ -143,7 +142,6 @@ public class Pick {
 	 * occurred.
 	 */
 	public Point getPickedPoint() {
-
 		return pickedPoint;
 	}
 

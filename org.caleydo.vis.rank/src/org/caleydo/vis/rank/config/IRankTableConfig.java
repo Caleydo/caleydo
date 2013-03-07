@@ -65,13 +65,6 @@ public interface IRankTableConfig {
 	boolean isDefaultHideAble();
 
 	/**
-	 * is this whole table interactive
-	 *
-	 * @return
-	 */
-	boolean isInteractive();
-
-	/**
 	 * triggers that indead of hide a column it will be destroyed
 	 *
 	 * @return

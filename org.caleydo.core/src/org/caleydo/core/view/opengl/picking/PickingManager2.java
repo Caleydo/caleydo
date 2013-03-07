@@ -127,7 +127,7 @@ public class PickingManager2 extends APickingManager<PickingManager2.PickingEntr
 		PickingMode mode = convertToPickingMode(view.getGLMouseListener());
 		Point pickPoint = view.getGLMouseListener().getPickedPoint();
 
-		super.doPicking(mode, pickPoint, gl, new Runnable() {
+		super.doPicking(mode, pickPoint, null, gl, new Runnable() {
 			@Override
 			public void run() {
 				view.display(gl);

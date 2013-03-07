@@ -35,4 +35,6 @@ public interface IRankColumnModel {
 	IRankColumnModel getParent();
 
 	IRankColumnModel clone();
+
+	String getTooltip();
 }

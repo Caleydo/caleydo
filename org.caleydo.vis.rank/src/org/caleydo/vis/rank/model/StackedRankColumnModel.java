@@ -23,14 +23,21 @@ import java.awt.Color;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import org.caleydo.core.event.EventListenerManager.ListenTo;
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.vis.rank.internal.event.FilterEvent;
+import org.caleydo.vis.rank.internal.ui.MultiLineInputDialog;
 import org.caleydo.vis.rank.internal.ui.TextRenderer;
+import org.caleydo.vis.rank.model.mixin.IAnnotatedColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IHideableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
-import org.caleydo.vis.rank.model.mixin.ISnapshotableColumnMixin;
 import org.caleydo.vis.rank.ui.RenderStyle;
 import org.caleydo.vis.rank.ui.detail.ScoreBarRenderer;
 import org.caleydo.vis.rank.ui.detail.ScoreSummary;
+import org.eclipse.jface.dialogs.InputDialog;
+import org.eclipse.jface.window.Window;
+import org.eclipse.swt.widgets.Display;
 
 /**
  * the stacked column
@@ -38,8 +45,8 @@ import org.caleydo.vis.rank.ui.detail.ScoreSummary;
  * @author Samuel Gratzl
  *
  */
-public class StackedRankColumnModel extends AMultiRankColumnModel implements ISnapshotableColumnMixin,
-		IHideableColumnMixin {
+public class StackedRankColumnModel extends AMultiRankColumnModel implements IHideableColumnMixin,
+		IAnnotatedColumnMixin {
 	public static final String PROP_ALIGNMENT = "alignment";
 
 	private final PropertyChangeListener weightChanged = new PropertyChangeListener() {
@@ -53,6 +60,8 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 	 */
 	private int alignment = 0;
 
+	private String annotation = "";
+
 	public StackedRankColumnModel() {
 		super(Color.GRAY, new Color(0.90f, .90f, .90f));
 		setHeaderRenderer(new TextRenderer("AND", this));
@@ -62,6 +71,7 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 	public StackedRankColumnModel(StackedRankColumnModel copy) {
 		super(copy);
 		this.alignment = copy.alignment;
+		this.annotation = copy.annotation;
 		setHeaderRenderer(new TextRenderer("AND", this));
 		float w = 0; // recompute as added and set
 		for (ARankColumnModel c : this)
@@ -81,6 +91,36 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 	@Override
 	public float getPreferredWidth() {
 		return getWeight() + RenderStyle.COLUMN_SPACE * size() + 6;
+	}
+
+	/**
+	 * @return the annotation, see {@link #annotation}
+	 */
+	@Override
+	public String getAnnotation() {
+		return annotation;
+	}
+
+	protected void setAnnotation(String annotation) {
+		propertySupport.firePropertyChange(PROP_ANNOTATION, this.annotation, this.annotation = annotation);
+	}
+
+	@Override
+	public void editAnnotation(final GLElement summary) {
+		Display.getDefault().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				InputDialog d = new MultiLineInputDialog(null, "Edit Annotation of: " + getTooltip(),
+						"Edit Annotation",
+						annotation, null);
+				if (d.open() == Window.OK) {
+					String v = d.getValue().trim();
+					if (v.length() == 0)
+						v = null;
+					EventPublisher.publishEvent(new FilterEvent(v).to(summary));
+				}
+			}
+		});
 	}
 
 	@Override
@@ -133,7 +173,7 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 
 	@Override
 	public GLElement createSummary(boolean interactive) {
-		return new ScoreSummary(this, interactive);
+		return new MyElement(this, interactive);
 	}
 
 	@Override
@@ -208,8 +248,14 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 		this.setAlignment(-alignment - 1);
 	}
 
-	@Override
-	public void takeSnapshot() {
-		parent.takeSnapshot(this);
+	static class MyElement extends ScoreSummary {
+		public MyElement(StackedRankColumnModel model, boolean interactive) {
+			super(model, interactive);
+		}
+
+		@ListenTo(sendToMe = true)
+		private void onSetAnnotation(FilterEvent event) {
+			((StackedRankColumnModel) model).setAnnotation(event.getFilter().toString());
+		}
 	}
 }

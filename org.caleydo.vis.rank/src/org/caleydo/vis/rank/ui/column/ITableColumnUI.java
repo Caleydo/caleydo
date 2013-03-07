@@ -20,6 +20,7 @@
 package org.caleydo.vis.rank.ui.column;
 
 import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
 
 /**
@@ -27,9 +28,13 @@ import org.caleydo.vis.rank.model.IRow;
  *
  */
 public interface ITableColumnUI {
+	ARankColumnModel getModel();
+
 	GLElement setData(Iterable<IRow> rows, IColumModelLayout parent);
 
 	void update();
 
 	GLElement get(int index);
+
+	GLElement asGLElement();
 }

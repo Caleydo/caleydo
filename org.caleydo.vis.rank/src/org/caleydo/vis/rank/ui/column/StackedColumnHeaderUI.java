@@ -59,7 +59,7 @@ public class StackedColumnHeaderUI extends ACompositeTableColumnHeaderUI<Stacked
 	}
 
 	@Override
-	protected GLElement wrap(ARankColumnModel model) {
+	protected GLElement wrapImpl(ARankColumnModel model) {
 		return ColumnUIs.createHeader(model, this.interactive, false);
 	}
 
@@ -85,6 +85,11 @@ public class StackedColumnHeaderUI extends ACompositeTableColumnHeaderUI<Stacked
 				((StackedSeparatorUI) sep.asElement()).setAlignment(this.model.getAlignment());
 			}
 		}
+	}
+
+	@Override
+	protected float getTopPadding() {
+		return HIST_HEIGHT + LABEL_HEIGHT;
 	}
 
 	@Override

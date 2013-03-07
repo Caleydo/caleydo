@@ -32,9 +32,7 @@ import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
-import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
-import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.vis.rank.internal.event.FilterEvent;
 import org.caleydo.vis.rank.model.mixin.IRankColumnModel;
 import org.caleydo.vis.rank.ui.GLPropertyChangeListeners;
@@ -104,26 +102,25 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 	}
 
 	@Override
-	public final void editFilter(GLElement summary, IGLElementContext context) {
+	public final void editFilter(final GLElement summary, IGLElementContext context) {
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				InputDialog d = new InputDialog(null, "Filter column: " + getHeaderRenderer().toString(),
+				InputDialog d = new InputDialog(null, "Filter column: " + getTooltip(),
 						"Edit Filter (use * as wildcard)", filter, null);
 				if (d.open() == Window.OK) {
 					String v = d.getValue().trim();
 					if (v.length() == 0)
 						v = null;
-					EventPublisher.publishEvent(new FilterEvent(v).to(StringRankColumnModel.this));
+					EventPublisher.publishEvent(new FilterEvent(v).to(summary));
 				}
 			}
 		});
 	}
 
-	@ListenTo(sendToMe = true)
-	private void onSetFilter(FilterEvent event) {
+	protected void setFilter(String filter) {
 		invalidAllFilter();
-		propertySupport.firePropertyChange(PROP_FILTER, this.filter, this.filter = (String) event.getFilter());
+		propertySupport.firePropertyChange(PROP_FILTER, this.filter, this.filter = filter);
 	}
 
 	@Override
@@ -144,7 +141,7 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 		return "\\Q" + filter.replace("*", "\\E.*\\Q") + "\\E";
 	}
 
-	private class MyElement extends PickableGLElement {
+	private class MyElement extends GLElement {
 		private final PropertyChangeListener repaintListner = GLPropertyChangeListeners.repaintOnEvent(this);
 
 		public MyElement(boolean interactive) {
@@ -166,13 +163,6 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 		}
 
 		@Override
-		protected void onMouseReleased(Pick pick) {
-			if (pick.isAnyDragging())
-				return;
-			editFilter(this, context);
-		}
-
-		@Override
 		protected void renderImpl(GLGraphics g, float w, float h) {
 			super.renderImpl(g, w, h);
 			if (w < 20)
@@ -183,5 +173,11 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 				t = filter;
 			g.drawText(t, 4, 18, w - 4, 12);
 		}
+
+		@ListenTo(sendToMe = true)
+		private void onSetFilter(FilterEvent event) {
+			setFilter((String) event.getFilter());
+		}
+
 	}
 }

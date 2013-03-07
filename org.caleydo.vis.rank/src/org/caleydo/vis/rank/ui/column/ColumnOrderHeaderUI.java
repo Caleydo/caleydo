@@ -17,21 +17,16 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.vis.rank.model;
+package org.caleydo.vis.rank.ui.column;
+
+import org.caleydo.vis.rank.model.ARankColumnModel;
 
 /**
- * a thing that is a row
- *
  * @author Samuel Gratzl
  *
  */
-public interface IRow {
-	int getIndex();
-
-	/**
-	 * the data index of the row
-	 *
-	 * @param index
-	 */
-	void setIndex(int index);
+public class ColumnOrderHeaderUI extends AColumnHeaderUI {
+	public ColumnOrderHeaderUI(ARankColumnModel model, boolean interactive) {
+		super(model, interactive, interactive, true, false, true);
+	}
 }

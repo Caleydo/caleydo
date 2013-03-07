@@ -113,6 +113,11 @@ public abstract class ARankColumnModel implements IDragInfo, IRankColumnModel {
 		return header;
 	}
 
+	@Override
+	public String getTooltip() {
+		return header.toString();
+	}
+
 
 	public final void addPropertyChangeListener(PropertyChangeListener listener) {
 		propertySupport.addPropertyChangeListener(listener);
@@ -246,7 +251,12 @@ public abstract class ARankColumnModel implements IDragInfo, IRankColumnModel {
 		return getTable().destroy(this);
 	}
 
-	public boolean canTakeSnapshot() {
-		return parent.canTakeSnapshot(this);
+	public ColumnRanker getMyRanker() {
+		return parent.getMyRanker(this);
 	}
+
+	public void onRankingInvalid() {
+
+	}
+
 }

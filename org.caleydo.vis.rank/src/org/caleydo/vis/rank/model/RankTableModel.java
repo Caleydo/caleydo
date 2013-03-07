@@ -28,16 +28,15 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Objects;
 
 import org.caleydo.vis.rank.config.IRankTableConfig;
 import org.caleydo.vis.rank.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IMappedColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IRankColumnModel;
-import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 
-import com.google.common.collect.Iterators;
-import com.jogamp.common.util.IntIntHashMap;
+import com.google.common.collect.Iterables;
 
 /**
  * basic model abstraction of a ranked list
@@ -45,12 +44,12 @@ import com.jogamp.common.util.IntIntHashMap;
  * @author Samuel Gratzl
  *
  */
-public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
+public class RankTableModel implements IRankColumnParent {
 	public static final String PROP_SELECTED_ROW = "selectedRow";
-	public static final String PROP_ORDER = "order";
 	public static final String PROP_COLUMNS = "columns";
 	public static final String PROP_POOL = "pool";
 	public static final String PROP_REGISTER = "register";
+	public static final String PROP_DATA = "data";
 
 	private final PropertyChangeSupport propertySupport = new PropertyChangeSupport(this);
 
@@ -66,15 +65,13 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 	private final PropertyChangeListener resort = new PropertyChangeListener() {
 		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
-			dirtyOrder = true;
-			fireInvalid();
+			findCorrespondingRanker((IRankColumnModel) evt.getSource()).dirtyOrder();
 		}
 	};
 	private final PropertyChangeListener refilter = new PropertyChangeListener() {
 		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
-			dirtyFilter = true;
-			fireInvalid();
+			findCorrespondingRanker((IRankColumnModel) evt.getSource()).dirtyFilter();
 		}
 	};
 
@@ -92,57 +89,28 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 	 */
 	private BitSet dataMask;
 
-	private int selectedRank = -1;
 	private IRow selectedRow = null;
 
-	private boolean dirtyFilter = true;
-	/**
-	 * current filter to select data
-	 */
-	private BitSet filter;
-
-	private boolean dirtyOrder = true;
-	/**
-	 * currently column used for ordering
-	 */
-	private IRankableColumnMixin orderBy;
-	/**
-	 * current order
-	 *
-	 * <pre>
-	 * order[i] = data index
-	 * </pre>
-	 */
-	private int[] order;
-	private IntIntHashMap exaequoOffsets = new IntIntHashMap();
+	private final ColumnRanker defaultRanker;
 
 	/**
 	 *
 	 */
 	public RankTableModel(IRankTableConfig config) {
 		this.config = config;
+		this.defaultRanker = new ColumnRanker(this);
 	}
 
 	public RankTableModel(RankTableModel copy) {
 		this.config = copy.config;
-		this.order = copy.order;
-		this.exaequoOffsets = new IntIntHashMap();
-		this.exaequoOffsets.putAll(copy.exaequoOffsets);
-		this.dirtyFilter = copy.dirtyOrder;
-		this.filter = copy.filter;
-		this.dirtyFilter = copy.dirtyFilter;
-		this.selectedRank = copy.selectedRank;
 		this.selectedRow = copy.selectedRow;
 		this.dataMask = copy.dataMask;
 		this.data.addAll(copy.data);
+		this.defaultRanker = new ColumnRanker(copy.defaultRanker, this);
 		for(ARankColumnModel c : copy.pool)
 			this.pool.add(c.clone());
 		for(ARankColumnModel c : copy.columns)
 			this.columns.add(c.clone());
-		if (copy.orderBy != null) {
-			int i = copy.columns.indexOf(copy.orderBy);
-			this.orderBy = (IRankableColumnMixin) this.columns.get(i);
-		}
 	}
 
 	@Override
@@ -162,13 +130,7 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 		this.pool.clear();
 		this.dataMask = null;
 		this.data.clear();
-		this.selectedRank = -1;
 		this.selectedRow = null;
-		this.dirtyFilter = this.dirtyOrder = true;
-		this.exaequoOffsets.clear();
-		this.filter = null;
-		this.order = null;
-		this.orderBy = null;
 	}
 
 	/**
@@ -184,12 +146,34 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 			r.setIndex(s++);
 		this.data.addAll(rows);
 		propertySupport.fireIndexedPropertyChange(PROP_DATA, s, null, rows);
-		dirtyFilter = true;
-		fireInvalid();
+		for (ColumnRanker order : findAllColumnRankers()) {
+			order.dirtyFilter();
+		}
 	}
 
-	protected void fireInvalid() {
-		propertySupport.firePropertyChange(PROP_INVALID, false, true);
+	public IRow getSelectedRow() {
+		return selectedRow;
+	}
+
+	/**
+	 * @param selectedRow
+	 *            setter, see {@link selectedRow}
+	 */
+	public void setSelectedRow(IRow selectedRow) {
+		propertySupport.firePropertyChange(PROP_SELECTED_ROW, this.selectedRow, this.selectedRow = selectedRow);
+	}
+
+	public void selectNextRow() {
+		if (selectedRow == null)
+			setSelectedRow(defaultRanker.selectFirst());
+		else
+			setSelectedRow(defaultRanker.selectNext(selectedRow));
+	}
+
+	public void selectPreviousRow() {
+		if (selectedRow == null)
+			return;
+		setSelectedRow(defaultRanker.selectPrevious(selectedRow));
 	}
 
 	/**
@@ -209,8 +193,8 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 		}
 		this.dataMask = (BitSet) dataMask.clone();
 		if (change) {
-			dirtyFilter = true;
-			fireInvalid();
+			for (ColumnRanker r : findAllColumnRankers())
+				r.dirtyFilter();
 		}
 	}
 
@@ -243,27 +227,7 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 		col.init(this);
 		this.columns.add(index, col); // intelligent positioning
 		propertySupport.fireIndexedPropertyChange(PROP_COLUMNS, index, null, col);
-		checkOrderChanges(index, col);
-	}
-
-	/**
-	 * are the current changes, e.g. moving triggers changes in the filtering or ordering?
-	 *
-	 * @param index
-	 * @param col
-	 */
-	private void checkOrderChanges(int index, ARankColumnModel col) {
-		if (col instanceof IFilterColumnMixin && ((IFilterColumnMixin) col).isFiltered()) { // filter elements changed
-			dirtyFilter = true;
-			fireInvalid();
-			return;
-		}
-		if (findFirstRankable() != orderBy) { // order by changed
-			dirtyOrder = true;
-			fireInvalid();
-			return;
-		}
-
+		findCorrespondingRanker(index).checkOrderChanges(col);
 	}
 
 	@Override
@@ -275,7 +239,8 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 			columns.add(to, model);
 			columns.remove(from < to ? from : from + 1);
 			propertySupport.fireIndexedPropertyChange(PROP_COLUMNS, to, from, model);
-			checkOrderChanges(to, model);
+			// FIXME
+			// checkOrderChanges(to, model);
 		} else {
 			model.getParent().detach(model);
 			add(to, model);
@@ -284,7 +249,8 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 
 	@Override
 	public boolean isMoveAble(ARankColumnModel model, int index) {
-		return config.isMoveAble(model) && model.getParent().isHideAble(model);
+		return config.isMoveAble(model) && model.getParent().isHideAble(model)
+				&& !((model instanceof OrderColumn) && index == 0);
 	}
 
 	@Override
@@ -294,14 +260,14 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 		to.init(this);
 		propertySupport.fireIndexedPropertyChange(PROP_COLUMNS, i, from, to);
 		from.takeDown();
-		checkOrderChanges(i, to);
+		findCorrespondingRanker(i).checkOrderChanges(to);
 	}
+
 
 	@Override
 	public void detach(ARankColumnModel model) {
 		remove(model);
 		removeFromPool(model);
-		checkOrderChanges(-1, model);
 	}
 
 	/**
@@ -352,10 +318,11 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 		int index = columns.indexOf(model);
 		if (index < 0)
 			return;
+		ColumnRanker r = findCorrespondingRanker(index);
 		columns.remove(model);
 		propertySupport.fireIndexedPropertyChange(PROP_COLUMNS, index, model, null);
 		model.takeDown();
-		checkOrderChanges(index, model);
+		r.checkOrderChanges(model);
 	}
 
 	public boolean destroy(ARankColumnModel col) {
@@ -373,7 +340,6 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 		model.init(this);
 		ARankColumnModel.uncollapse(model);
 		propertySupport.fireIndexedPropertyChange(PROP_POOL, bak, null, model);
-		checkOrderChanges(-1, model);
 	}
 
 	void removeFromPool(ARankColumnModel model) {
@@ -434,36 +400,7 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 			propertySupport.fireIndexedPropertyChange(PROP_COLUMNS, index + 1, null,
 					children.subList(1, children.size()));
 		}
-		checkOrderChanges(index, children.get(0));
-	}
-
-	@Override
-	public boolean canTakeSnapshot(ARankColumnModel model) {
-		return true;
-	}
-
-	@Override
-	public void takeSnapshot(ARankColumnModel model) {
-		ARankColumnModel c = model.clone();
-		FrozenRankColumnModel frozen = new FrozenRankColumnModel(getOrder(), getCurrentFilter());
-		setup(frozen);
-		// before the first frozen
-		int i = 0;
-		for (ARankColumnModel col : this.columns) {
-			if (col instanceof FrozenRankColumnModel)
-				break;
-			++i;
-		}
-		add(i, frozen);
-		frozen.add(c);
-	}
-
-	private IRankableColumnMixin findFirstRankable() {
-		for (ARankColumnModel col : this.columns) {
-			if (col instanceof IRankableColumnMixin)
-				return (IRankableColumnMixin) col;
-		}
-		return null;
+		findCorrespondingRanker(index).checkOrderChanges(children.get(0));
 	}
 
 	/**
@@ -500,211 +437,10 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 		}
 	}
 
-	private Iterator<IFilterColumnMixin> findAllFiltered() {
-		return Iterators.filter(findAllColumns(), IFilterColumnMixin.class);
-	}
-
-
-	public int size() {
-		if (!dirtyOrder && order != null)
-			return order.length;
-		if (!dirtyFilter && filter != null)
-			return filter.cardinality();
-		checkOrder();
-		return order.length;
-	}
-
-	/**
-	 * performs filtering
-	 */
-	private void filter() {
-		if (!dirtyFilter)
-			return;
-		dirtyFilter = false;
-		// System.out.println("filter");
-		// start with data mask
-		if (dataMask != null)
-			filter = (BitSet) dataMask.clone();
-		else {
-			filter = new BitSet(data.size());
-			filter.set(0, data.size());
-		}
-
-		for (Iterator<IFilterColumnMixin> it = findAllFiltered(); it.hasNext();) {
-			it.next().filter(data, filter);
-		}
-
-		// selected not visible anymore?
-		if (selectedRow != null && !filter.get(selectedRow.getIndex()))
-			setSelectedRow(-1);
-
-		dirtyOrder = true;
-		order();
-	}
-
-	private void checkOrder() {
-		if (dirtyFilter) {
-			filter();
-		} else
-			order();
-	}
-
-	/**
-	 * sorts the current data
-	 */
-	private void order() {
-		if (!dirtyOrder)
-			return;
-		dirtyOrder = false;
-		// System.out.println("sort");
-		order = null;
-		int[] deltas = null;
-		boolean anyDelta = false;
-
-		// by what
-		orderBy = findFirstRankable();
-		exaequoOffsets.clear();
-		if (orderBy == null) {
-			List<IRow> tmp = new ArrayList<>(data.size());
-			for (int i = 0; i < data.size(); ++i) {
-				if (!filter.get(i)) {
-					data.get(i).setRank(-1);
-				} else {
-					tmp.add(data.get(i));
-				}
-			}
-			int[] tmp2 = new int[tmp.size()];
-			deltas = new int[tmp2.length];
-			for (int i = 0; i < tmp2.length; ++i) {
-				IRow r = tmp.get(i);
-				tmp2[i] = r.getIndex();
-				exaequoOffsets.put(i, -i);
-				if (r.getRank() < 0) {
-					anyDelta = true;
-					deltas[i] = Integer.MIN_VALUE;
-				} else {
-					int delta = i - r.getRank();
-					deltas[i] = delta;
-					anyDelta = anyDelta || delta != 0;
-				}
-				r.setRank(i);
-			}
-			order = tmp2;
-		} else {
-			List<IntFloat> tmp = new ArrayList<>(data.size());
-			for (int i = 0; i < data.size(); ++i) {
-				if (!filter.get(i)) {
-					data.get(i).setRank(-1);
-				} else {
-					tmp.add(new IntFloat(i, orderBy.applyPrimitive(data.get(i))));
-				}
-			}
-			Collections.sort(tmp);
-
-			int[] tmp2 = new int[tmp.size()];
-			deltas = new int[tmp2.length];
-			int offset = 0;
-			float last = Float.NaN;
-			for (int i = 0; i < tmp.size(); ++i) {
-				IntFloat pair = tmp.get(i);
-				tmp2[i] = pair.id;
-				IRow r = data.get(tmp2[i]);
-				if (last == pair.value) {
-					offset++;
-					exaequoOffsets.put(i, offset);
-				} else {
-					offset = 0;
-				}
-				if (r.getRank() < 0) {
-					anyDelta = true;
-					deltas[i] = Integer.MIN_VALUE;
-				} else {
-					int delta = i - r.getRank();
-					deltas[i] = delta;
-					anyDelta = anyDelta || delta != 0;
-				}
-				r.setRank(i);
-				last = pair.value;
-			}
-			order = tmp2;
-		}
-		if (anyDelta)
-			propertySupport.firePropertyChange(PROP_ORDER, deltas, order);
-	}
-
-	private static final class IntFloat implements Comparable<IntFloat> {
-		private final int id;
-		private final float value;
-
-		public IntFloat(int id, float value) {
-			this.id = id;
-			this.value = value;
-		}
-
-		@Override
-		public int compareTo(IntFloat o) {
-			return -Float.compare(value, o.value);
-		}
-	}
-
-	/**
-	 * @param selectedRow
-	 *            setter, see {@link selectedRow}
-	 */
-	public void setSelectedRow(int selectedRank) {
-		checkOrder();
-		if (selectedRank >= order.length)
-			selectedRank = order.length - 1;
-		else if (selectedRank < 0) {
-			selectedRank = -1;
-		}
-		if (this.selectedRank == selectedRank)
-			return;
-		this.selectedRank = selectedRank;
-		propertySupport.firePropertyChange(PROP_SELECTED_ROW, this.selectedRow,
-				this.selectedRow = getCurrent(selectedRank));
-	}
-
-	public int getVisualRank(IRow row) {
-		int r = row.getRank();
-		if (r < 0)
-			return -1;
-		if (exaequoOffsets.containsKey(r)) {
-			return r - exaequoOffsets.get(r) + 1;
-		}
-		return r + 1;
-	}
-
-	public boolean hasDefinedRank() {
-		checkOrder();
-		return orderBy != null;
-	}
-
-	public void selectNextRow() {
-		if (selectedRow == null)
-			setSelectedRow(0);
-		else
-			setSelectedRow(selectedRow.getRank() + 1);
-	}
-
-	public void selectPreviousRow() {
-		if (selectedRow == null)
-			return;
-		setSelectedRow(selectedRow.getRank() - 1);
-	}
-
-	/**
-	 * @return the selectedRow, see {@link #selectedRow}
-	 */
-	public IRow getSelectedRow() {
-		return selectedRow;
-	}
-
 	public final void addPropertyChangeListener(PropertyChangeListener listener) {
 		propertySupport.addPropertyChangeListener(listener);
 	}
 
-	@Override
 	public final void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
 		propertySupport.addPropertyChangeListener(propertyName, listener);
 	}
@@ -713,7 +449,6 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 		propertySupport.removePropertyChangeListener(listener);
 	}
 
-	@Override
 	public final void removePropertyChangeListener(String propertyName, PropertyChangeListener listener) {
 		propertySupport.removePropertyChangeListener(propertyName, listener);
 	}
@@ -726,59 +461,34 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 		return this.data.size();
 	}
 
-	@Override
-	public IRow getCurrent(int rank) {
-		if (rank < 0)
-			return null;
-		checkOrder();
-		return data.get(order[rank]);
+	private ColumnRanker findCorrespondingRanker(IRankColumnModel model) {
+		if (model == null)
+			return findCorrespondingRanker(-1);
+		return findCorrespondingRanker(columns.indexOf(model));
+	}
+
+	private ColumnRanker findCorrespondingRanker(int index) {
+		if (index <= 0)
+			return defaultRanker;
+		for (ListIterator<ARankColumnModel> it = columns.listIterator(index); it.hasPrevious();) {
+			ARankColumnModel m = it.previous();
+			if (m instanceof OrderColumn)
+				return ((OrderColumn) m).getRanker();
+		}
+		return defaultRanker;
+	}
+
+	private Iterable<ColumnRanker> findAllColumnRankers() {
+		List<ColumnRanker> r = new ArrayList<>();
+		for (ARankColumnModel col : columns)
+			if (col instanceof OrderColumn)
+				r.add(((OrderColumn) col).getRanker());
+		return Iterables.concat(Collections.singleton(defaultRanker), r);
 	}
 
 	@Override
-	public BitSet getCurrentFilter() {
-		filter();
-		return filter;
-	}
-
-	@Override
-	public Iterator<IRow> getCurrentOrder() {
-		return this.iterator();
-	}
-
-	@Override
-	public int getCurrentSize() {
-		return size();
-	}
-
-	/**
-	 * @return
-	 */
-	public int[] getOrder() {
-		checkOrder();
-		return order;
-	}
-
-	@Override
-	public Iterator<IRow> iterator() {
-		checkOrder();
-		return new Iterator<IRow>() {
-			int cursor = 0;
-
-			@Override
-			public boolean hasNext() {
-				return cursor < order.length;
-			}
-
-			@Override
-			public IRow next() {
-				return data.get(order[cursor++]);
-			}
-
-			@Override
-			public void remove() {
-				throw new UnsupportedOperationException();
-			}
-		};
+	public ColumnRanker getMyRanker(ARankColumnModel model) {
+		return findCorrespondingRanker(model);
 	}
 
 	/**
@@ -788,17 +498,69 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 		return config;
 	}
 
-	/**
-	 * @return
-	 */
-	public int getSelectedRank() {
-		return selectedRank;
-	}
-
 	@Override
 	public IRankColumnModel getParent() {
 		return null;
 	}
 
+	@Override
+	public String getTooltip() {
+		return "RankTable";
+	}
+
+	/**
+	 * @param columnRanker
+	 */
+	public void fireRankingInvalidOf(ColumnRanker ranker) {
+		int start = getStartIndex(ranker);
+		for (ListIterator<ARankColumnModel> it = columns.listIterator(start); it.hasNext();) {
+			ARankColumnModel m = it.next();
+			if (m instanceof OrderColumn)
+				break;
+			m.onRankingInvalid();
+		}
+		if (ranker == defaultRanker) {
+			for (ARankColumnModel m : this.pool)
+				m.onRankingInvalid();
+		}
+	}
+
+	public Iterator<ARankColumnModel> getColumnsOf(ColumnRanker ranker) {
+		int start = getStartIndex(ranker);
+		if (start >= columns.size())
+			return Collections.emptyIterator();
+
+		List<ARankColumnModel> r = new ArrayList<>(columns.size() - start);
+		for (ListIterator<ARankColumnModel> it = columns.listIterator(start); it.hasNext();) {
+			ARankColumnModel m = it.next();
+			if (m instanceof OrderColumn)
+				break;
+			r.add(m);
+		}
+		return r.iterator();
+	}
+
+	private int getStartIndex(ColumnRanker ranker) {
+		int start = 0;
+		if (ranker != defaultRanker) { // find the start
+			for (ARankColumnModel col : columns) {
+				start++;
+				if ((col instanceof OrderColumn) && ((OrderColumn) col).getRanker() == ranker)
+					break;
+			}
+		}
+		return start;
+	}
+
+	/**
+	 * @return the dataMask, see {@link #dataMask}
+	 */
+	public BitSet getDataMask() {
+		return dataMask;
+	}
+
+	public IRow getDataItem(int index) {
+		return data.get(index);
+	}
 }
 

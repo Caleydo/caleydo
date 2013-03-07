@@ -24,7 +24,6 @@ package org.caleydo.vis.rank.model;
  *
  */
 public class ARow implements IRow {
-	private int rank = -1;
 	private int index = 0;
 
 	/**
@@ -42,34 +41,5 @@ public class ARow implements IRow {
 	@Override
 	public void setIndex(int index) {
 		this.index = index;
-	}
-
-	/**
-	 * @return the rank, see {@link #rank}
-	 */
-	@Override
-	public int getRank() {
-		return rank;
-	}
-
-	/**
-	 * @param rank
-	 *            setter, see {@link rank}
-	 */
-	@Override
-	public void setRank(int rank) {
-		this.rank = rank;
-	}
-
-	@Override
-	public int compareTo(IRow o) {
-		int rank2 = o.getRank();
-		if (rank == rank2)
-			return 0;
-		if (rank < 0)
-			return 1;
-		if (rank2 < 0)
-			return -1;
-		return rank - rank2;
 	}
 }

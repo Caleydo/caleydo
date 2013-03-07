@@ -21,6 +21,8 @@ package org.caleydo.core.view.opengl.picking;
 
 import java.awt.Point;
 
+import org.caleydo.core.view.opengl.canvas.IGLMouseListener.IMouseEvent;
+
 /**
  * basic class for picking entry handling
  *
@@ -59,7 +61,7 @@ abstract class APickingEntry {
 	 * @param mouse
 	 * @param depth
 	 */
-	public void fire(PickingMode mode, Point mouse, float depth, boolean isAnyDragging) {
+	public void fire(PickingMode mode, Point mouse, float depth, boolean isAnyDragging, IMouseEvent event) {
 		if ((mode == PickingMode.CLICKED || mode == PickingMode.DRAGGED || mode == PickingMode.MOUSE_MOVED)
 				&& dragStart == null) {
 			dragStart = lastPoint = (Point) mouse.clone();
@@ -69,10 +71,10 @@ abstract class APickingEntry {
 		if (mode == PickingMode.DRAGGED || mode == PickingMode.MOUSE_MOVED) {
 			int dx = mouse.x - lastPoint.x;
 			int dy = mouse.y - lastPoint.y;
-			pick = new AdvancedPick(objectId, mode, mouse, dragStart, depth, dx, dy, isAnyDragging);
+			pick = new AdvancedPick(objectId, mode, mouse, dragStart, depth, dx, dy, isAnyDragging, event);
 			lastPoint = mouse;
 		} else
-			pick = new AdvancedPick(objectId, mode, mouse, dragStart, depth, 0, 0, isAnyDragging);
+			pick = new AdvancedPick(objectId, mode, mouse, dragStart, depth, 0, 0, isAnyDragging, event);
 		pick.setDoDragging(dragging);
 
 		fire(pick);

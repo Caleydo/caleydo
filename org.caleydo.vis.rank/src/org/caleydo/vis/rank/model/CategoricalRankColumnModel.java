@@ -27,7 +27,6 @@ import java.util.BitSet;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -36,9 +35,7 @@ import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
-import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
-import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.vis.rank.internal.event.FilterEvent;
 import org.caleydo.vis.rank.ui.GLPropertyChangeListeners;
 import org.caleydo.vis.rank.ui.IColumnRenderInfo;
@@ -117,22 +114,20 @@ public class CategoricalRankColumnModel<CATEGORY_TYPE> extends ABasicFilterableR
 	}
 
 	@Override
-	public final void editFilter(GLElement summary, IGLElementContext context) {
+	public final void editFilter(final GLElement summary, IGLElementContext context) {
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				new CategoricalFilterDialog(new Shell()).open();
+				new CategoricalFilterDialog(new Shell(), summary).open();
 			}
 		});
 	}
 
-	@SuppressWarnings("unchecked")
-	@ListenTo(sendToMe = true)
-	private void onSetFilter(FilterEvent event) {
+	protected void setFilter(Collection<CATEGORY_TYPE> filter) {
 		invalidAllFilter();
 		Set<CATEGORY_TYPE> bak = new HashSet<>(this.selection);
 		this.selection.clear();
-		this.selection.addAll((Collection<CATEGORY_TYPE>) event.getFilter());
+		this.selection.addAll(filter);
 		propertySupport.firePropertyChange(PROP_FILTER, bak, this.selection);
 	}
 
@@ -156,15 +151,17 @@ public class CategoricalRankColumnModel<CATEGORY_TYPE> extends ABasicFilterableR
 	private class CategoricalFilterDialog extends Dialog {
 		// the visual selection widget group
 		private CheckboxTableViewer categoriesUI;
+		private final Object receiver;
 
-		public CategoricalFilterDialog(Shell shell) {
+		public CategoricalFilterDialog(Shell shell, Object receiver) {
 			super(shell);
+			this.receiver = receiver;
 		}
 
 		@Override
 		public void create() {
 			super.create();
-			getShell().setText("Edit Filter of " + getHeaderRenderer());
+			getShell().setText("Edit Filter of " + getTooltip());
 			this.setBlockOnOpen(false);
 		}
 
@@ -218,7 +215,7 @@ public class CategoricalRankColumnModel<CATEGORY_TYPE> extends ABasicFilterableR
 			for (Object score : categoriesUI.getCheckedElements()) {
 				r.add(score);
 			}
-			publishEvent(new FilterEvent(r).to(CategoricalRankColumnModel.this));
+			publishEvent(new FilterEvent(r).to(receiver));
 			super.okPressed();
 		}
 	}
@@ -228,8 +225,8 @@ public class CategoricalRankColumnModel<CATEGORY_TYPE> extends ABasicFilterableR
 	 */
 	public Map<CATEGORY_TYPE, Integer> getHist() {
 		Map<CATEGORY_TYPE, Integer> hist = new HashMap<>();
-		for(Iterator<IRow> it = parent.getCurrentOrder(); it.hasNext(); ) {
-			CATEGORY_TYPE v = getCatValue(it.next());
+		for (IRow r : getMyRanker()) {
+			CATEGORY_TYPE v = getCatValue(r);
 			if (v == null) // TODO nan
 				continue;
 			Integer c = hist.get(v);
@@ -241,7 +238,7 @@ public class CategoricalRankColumnModel<CATEGORY_TYPE> extends ABasicFilterableR
 		return hist;
 	}
 
-	private class MyElement extends PickableGLElement {
+	private class MyElement extends GLElement {
 		private final PropertyChangeListener repaintListner = GLPropertyChangeListeners.repaintOnEvent(this);
 
 		public MyElement(boolean interactive) {
@@ -263,13 +260,6 @@ public class CategoricalRankColumnModel<CATEGORY_TYPE> extends ABasicFilterableR
 		}
 
 		@Override
-		protected void onMouseReleased(Pick pick) {
-			if (pick.isAnyDragging())
-				return;
-			editFilter(this, context);
-		}
-
-		@Override
 		protected void renderImpl(GLGraphics g, float w, float h) {
 			super.renderImpl(g, w, h);
 			if (((IColumnRenderInfo) getParent()).isCollapsed())
@@ -279,6 +269,12 @@ public class CategoricalRankColumnModel<CATEGORY_TYPE> extends ABasicFilterableR
 			if (isFiltered())
 				t = selection.size() + " out of " + metaData.size();
 			g.drawText(t, 4, 18, w - 4, 12);
+		}
+
+		@SuppressWarnings("unchecked")
+		@ListenTo(sendToMe = true)
+		private void onSetFilter(FilterEvent event) {
+			setFilter((Collection<CATEGORY_TYPE>) event.getFilter());
 		}
 	}
 }

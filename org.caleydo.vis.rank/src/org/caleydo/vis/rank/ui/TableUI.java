@@ -42,7 +42,7 @@ public class TableUI extends GLElementContainer implements ISelectionCallback {
 	public TableUI() {
 	}
 
-	public void init(RankTableModel table, IRowHeightLayout... layouts) {
+	public void init(RankTableModel table, boolean interactive, IRowHeightLayout... layouts) {
 		setLayout(new TableLayout(layouts.length > 1));
 		if (layouts.length > 1) {
 			ButtonBar buttons = new ButtonBar();
@@ -57,9 +57,9 @@ public class TableUI extends GLElementContainer implements ISelectionCallback {
 			}
 			this.add(buttons);
 		}
-		this.add(new TableHeaderUI(table));
+		this.add(new TableHeaderUI(table, interactive));
 		this.add(new TableBodyUI(table, layouts.length == 0 ? RowHeightLayouts.UNIFORM : layouts[0]));
-		if (table.getConfig().isInteractive() && !table.getConfig().isDestroyOnHide())
+		if (interactive && !table.getConfig().isDestroyOnHide())
 			this.add(new ColumnPoolUI(table));
 	}
 

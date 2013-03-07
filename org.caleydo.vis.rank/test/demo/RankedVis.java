@@ -59,19 +59,14 @@ public class RankedVis extends GLElementContainer {
 		this.table = table;
 		setLayout(GLLayouts.flowVertical(0));
 
-		this.add(new TableHeaderUI(table));
+		this.add(new TableHeaderUI(table, true));
 		this.add(new TableBodyUI(table, RowHeightLayouts.FISH_EYE));
 
 		this.add(new ColumnPoolUI(table));
 	}
 
 	public static void main(String[] args) {
-		RankTableModel table = new RankTableModel(new RankTableConfigBase() {
-			@Override
-			public boolean isInteractive() {
-				return true;
-			}
-		});
+		RankTableModel table = new RankTableModel(new RankTableConfigBase());
 		table.addColumn(new RankRankColumnModel());
 		table.addColumn(new StringRankColumnModel(GLRenderers.drawText("Label", VAlign.CENTER),
 				StringRankColumnModel.DFEAULT));

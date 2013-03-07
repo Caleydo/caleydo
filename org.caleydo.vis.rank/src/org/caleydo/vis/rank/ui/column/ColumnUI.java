@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.AnimatedGLElementContainer;
+import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.animation.ALayoutAnimation;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
@@ -31,8 +32,14 @@ public class ColumnUI extends AnimatedGLElementContainer implements ITableColumn
 	/**
 	 * @return the model, see {@link #model}
 	 */
+	@Override
 	public ARankColumnModel getModel() {
 		return model;
+	}
+
+	@Override
+	public GLElement asGLElement() {
+		return this;
 	}
 
 	@Override
@@ -72,7 +79,7 @@ public class ColumnUI extends AnimatedGLElementContainer implements ITableColumn
 	@Override
 	public void doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
 		final IColumModelLayout p = (IColumModelLayout) getParent();
-		p.layoutRows(model, children, w, h,p.getRowPositions());
+		p.layoutRows(model, children, w, h);
 	}
 
 	@Override

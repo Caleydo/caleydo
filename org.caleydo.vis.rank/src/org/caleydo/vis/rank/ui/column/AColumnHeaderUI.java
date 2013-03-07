@@ -48,9 +48,9 @@ import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
-import org.caleydo.core.view.opengl.picking.PickingListenerComposite;
 import org.caleydo.vis.rank.internal.ui.ButtonBar;
 import org.caleydo.vis.rank.model.ARankColumnModel;
+import org.caleydo.vis.rank.model.mixin.IAnnotatedColumnMixin;
 import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IExplodeableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IFilterColumnMixin;
@@ -65,7 +65,7 @@ import org.eclipse.swt.SWT;
  * @author Samuel Gratzl
  *
  */
-public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLayout, IColumnRenderInfo {
+public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLayout, IColumnRenderInfo, ILabelProvider {
 	private final static int HIST = 0;
 	private final static int DRAG_WEIGHT = 1;
 	private final static int BUTTONS = 2;
@@ -79,6 +79,8 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 	private boolean isCollapsed;
 
 	private boolean isDragging;
+	private boolean headerHovered;
+
 	protected final ARankColumnModel model;
 	private PropertyChangeListener filterChangedListener;
 	private final PropertyChangeListener collapsedChanged = new PropertyChangeListener() {
@@ -87,13 +89,11 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 			onCollapsedChanged(evt.getNewValue() == Boolean.TRUE);
 		}
 	};
-	private final boolean hasTitle;
-	private boolean moveable;
+	private int dragPickingId = -1;
 
-	private final PickingListenerComposite headerPick = new PickingListenerComposite(2);
-	private int headerPickingId = -1;
-	private boolean headerHovered;
-	private boolean canChangeWeight;
+	private final boolean hasTitle;
+	private final boolean canChangeWeight;
+	private final boolean moveable;
 
 
 	public AColumnHeaderUI(final ARankColumnModel model, boolean interactive, boolean moveable, boolean hasTitle,
@@ -167,26 +167,28 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 	@Override
 	protected void init(IGLElementContext context) {
 		super.init(context);
-		headerPick.add(context.createTooltip(new ILabelProvider() {
-			@Override
-			public String getProviderName() {
-				return null;
-			}
-
-			@Override
-			public String getLabel() {
-				return model.getHeaderRenderer().toString();
-			}
-		}));
-		headerPick.add(new IPickingListener() {
+		onPick(context.createTooltip(this));
+		dragPickingId = context.registerPickingListener(new IPickingListener() {
 			@Override
 			public void pick(Pick pick) {
-				onLabelPick(pick);
+				onDragPick(pick);
 			}
 		});
-		headerPickingId = context.registerPickingListener(headerPick);
 	}
 
+	@Override
+	public String getProviderName() {
+		return null;
+	}
+
+	@Override
+	public String getLabel() {
+		String ann = ((model instanceof IAnnotatedColumnMixin) ? ((IAnnotatedColumnMixin) model).getAnnotation().trim()
+				: "");
+		if (ann.trim().isEmpty())
+			return model.getTooltip();
+		return model.getTooltip() + "\n" + ann;
+	}
 
 	protected void onCollapsedChanged(boolean isCollapsed) {
 		if (this.isCollapsed == isCollapsed)
@@ -208,8 +210,8 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 
 	@Override
 	protected void takeDown() {
-		context.unregisterPickingListener(headerPickingId);
-		headerPickingId = -1;
+		context.unregisterPickingListener(dragPickingId);
+		dragPickingId = -1;
 		model.removePropertyChangeListener(IFilterColumnMixin.PROP_FILTER, filterChangedListener);
 		model.removePropertyChangeListener(ICollapseableColumnMixin.PROP_COLLAPSED, collapsedChanged);
 		super.takeDown();
@@ -225,8 +227,8 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 	protected void renderPickImpl(GLGraphics g, float w, float h) {
 		if (moveable) {
 			g.incZ();
-			g.pushName(headerPickingId);
-			g.fillRect(0, 0, w, LABEL_HEIGHT);
+			g.pushName(dragPickingId);
+			g.fillRect(0, 0, w, h);
 			g.popName();
 			g.decZ();
 		}
@@ -252,39 +254,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 		}
 	}
 
-	/**
-	 * @param pick
-	 */
-	protected void onLabelPick(Pick pick) {
-		switch (pick.getPickingMode()) {
-		case CLICKED:
-			if (pick.isAnyDragging())
-				return;
-			pick.setDoDragging(true);
-			onDragColumn(pick);
-			break;
-		case MOUSE_RELEASED:
-			if (pick.isDoDragging())
-				onDropColumn(pick);
-			break;
-		case MOUSE_OVER:
-			if (pick.isAnyDragging())
-				return;
-			this.headerHovered = true;
-			context.setCursor(SWT.CURSOR_HAND);
-			repaint();
-			break;
-		case MOUSE_OUT:
-			if (this.headerHovered) {
-				this.headerHovered = false;
-				context.setCursor(-1);
-				repaint();
-			}
-			break;
-		default:
-			break;
-		}
-	}
+
 
 	protected GLElementContainer createButtons() {
 		ButtonBar buttons = new ButtonBar();
@@ -337,6 +307,19 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 				@Override
 				public void onSelectionChanged(GLButton button, boolean selected) {
 					m.explode();
+				}
+			});
+			buttons.addButton(b);
+		}
+		if (model instanceof IAnnotatedColumnMixin) {
+			final IAnnotatedColumnMixin m = (IAnnotatedColumnMixin) model;
+			GLButton b = new GLButton();
+			b.setRenderer(GLRenderers.fillImage(RenderStyle.ICON_EDIT_ANNOTATION));
+			b.setTooltip("Edit the annotation of this element");
+			b.setCallback(new ISelectionCallback() {
+				@Override
+				public void onSelectionChanged(GLButton button, boolean selected) {
+					m.editAnnotation(get(HIST));
 				}
 			});
 			buttons.addButton(b);
@@ -425,6 +408,39 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 
 	}
 
+	/**
+	 * @param pick
+	 */
+	protected void onDragPick(Pick pick) {
+		switch (pick.getPickingMode()) {
+		case CLICKED:
+			if (pick.isAnyDragging())
+				return;
+			pick.setDoDragging(true);
+			onDragColumn(pick);
+			break;
+		case MOUSE_RELEASED:
+			if (pick.isDoDragging())
+				onDropColumn(pick);
+			break;
+		case MOUSE_OVER:
+			if (pick.isAnyDragging())
+				return;
+			this.headerHovered = true;
+			context.setCursor(SWT.CURSOR_HAND);
+			repaint();
+			break;
+		case MOUSE_OUT:
+			if (this.headerHovered) {
+				this.headerHovered = false;
+				context.setCursor(-1);
+				repaint();
+			}
+			break;
+		default:
+			break;
+		}
+	}
 
 	protected void onMainPick(Pick pick) {
 		IMouseLayer m = context.getMouseLayer();

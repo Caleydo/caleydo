@@ -20,10 +20,6 @@
 package org.caleydo.vis.rank.model;
 
 import java.awt.Color;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.util.BitSet;
-import java.util.Iterator;
 
 import org.caleydo.vis.rank.model.mixin.IMultiColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
@@ -35,12 +31,6 @@ import com.google.common.collect.Iterables;
  *
  */
 public abstract class AMultiRankColumnModel extends ACompositeRankColumnModel implements IMultiColumnMixin {
-	private final PropertyChangeListener listener = new PropertyChangeListener() {
-		@Override
-		public void propertyChange(PropertyChangeEvent evt) {
-			propertySupport.firePropertyChange(evt);
-		}
-	};
 	public AMultiRankColumnModel(Color color, Color bgColor) {
 		super(color, bgColor);
 	}
@@ -50,27 +40,13 @@ public abstract class AMultiRankColumnModel extends ACompositeRankColumnModel im
 	}
 
 	@Override
-	protected void init(IRankColumnParent parent) {
-		parent.addPropertyChangeListener(PROP_DATA, listener);
-		parent.addPropertyChangeListener(PROP_INVALID, listener);
-		super.init(parent);
-	}
-
-	@Override
-	protected void takeDown() {
-		parent.removePropertyChangeListener(PROP_DATA, listener);
-		parent.removePropertyChangeListener(PROP_INVALID, listener);
-		super.takeDown();
-	}
-
-	@Override
 	public final Float apply(IRow row) {
 		return applyPrimitive(row);
 	}
 
 	@Override
 	public final SimpleHistogram getHist(int bins) {
-		return DataUtils.getHist(bins, parent.getCurrentOrder(), this);
+		return DataUtils.getHist(bins, getMyRanker().iterator(), this);
 	}
 
 	@Override
@@ -109,22 +85,7 @@ public abstract class AMultiRankColumnModel extends ACompositeRankColumnModel im
 	}
 
 	@Override
-	public Iterator<IRow> getCurrentOrder() {
-		return parent.getCurrentOrder();
-	}
-
-	@Override
-	public BitSet getCurrentFilter() {
-		return parent.getCurrentFilter();
-	}
-
-	@Override
-	public int getCurrentSize() {
-		return parent.getCurrentSize();
-	}
-
-	@Override
-	public IRow getCurrent(int index) {
-		return parent.getCurrent(index);
+	public ColumnRanker getMyRanker(ARankColumnModel model) {
+		return getMyRanker();
 	}
 }

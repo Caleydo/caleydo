@@ -24,26 +24,28 @@ import java.util.List;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.vis.rank.model.ARankColumnModel;
-import org.caleydo.vis.rank.model.IRow;
+import org.caleydo.vis.rank.ui.ColumnRankerUI;
 
 public interface IColumModelLayout {
-	void layoutRows(ARankColumnModel model, List<? extends IGLLayoutElement> children, float w, float h,
-			float[] rowPositions);
-
-	float[] getRowPositions();
-	/**
-	 * @param tableColumnUI
-	 * @return
-	 */
-	boolean hasFreeSpace(ColumnUI tableColumnUI);
+	void layoutRows(ARankColumnModel model, List<? extends IGLLayoutElement> children, float w, float h);
 
 	/**
 	 * @param tableColumnUI
 	 * @return
 	 */
-	VAlign getAlignment(ColumnUI tableColumnUI);
+	boolean hasFreeSpace(ITableColumnUI tableColumnUI);
 
-	int getRankDelta(IRow row);
+	/**
+	 * @param tableColumnUI
+	 * @return
+	 */
+	VAlign getAlignment(ITableColumnUI tableColumnUI);
 
+	ColumnRankerUI getRanker(ARankColumnModel model);
+
+	/**
+	 * @return
+	 */
 	boolean causesReorderingLayouting();
+
 }

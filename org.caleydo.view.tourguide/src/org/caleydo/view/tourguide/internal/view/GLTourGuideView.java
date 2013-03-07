@@ -151,18 +151,6 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 				onSelectRow((PerspectiveRow) evt.getOldValue(), (PerspectiveRow) evt.getNewValue());
 			}
 		});
-		this.table.addPropertyChangeListener(RankTableModel.PROP_REGISTER, new PropertyChangeListener() {
-			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
-				if (evt.getOldValue() != null) {
-					destroy((ARankColumnModel) evt.getOldValue());
-					eventListeners.unregister(evt.getOldValue());
-				}
-				if (evt.getNewValue() != null)
-					eventListeners.register(evt.getNewValue());
-			}
-		});
-
 		this.table.addColumn(new RankRankColumnModel());
 		this.table.addColumn(new PerspectiveRankColumnModel(this));
 		this.stacked = new StackedRankColumnModel();
@@ -261,7 +249,8 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 	}
 
 	private void scheduleAllOf(Collection<IScore> toCompute) {
-		ComputeForScoreJob job = new ComputeForScoreJob(toCompute, table.getData(), table.getCurrentFilter(), this);
+		ComputeForScoreJob job = new ComputeForScoreJob(toCompute, table.getData(),
+				table.getMyRanker(null).getFilter(), this);
 		if (job.hasThingsToDo()) {
 			getPopupLayer().show(waiting, null, 0);
 			job.schedule();
@@ -501,7 +490,7 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 		PerspectiveRow selected = (PerspectiveRow) table.getSelectedRow();
 		if (selected != null && selected.getPerspective() != null
 				&& selected.getPerspective().getID() == event.getTablePerspectiveID()) {
-			this.table.setSelectedRow(-1);
+			this.table.setSelectedRow(null);
 		}
 
 		// this.scoreQueryUI.updateAddToStratomexState();
@@ -650,11 +639,6 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 	}
 
 	@Override
-	public boolean isInteractive() {
-		return true;
-	}
-
-	@Override
 	public boolean isDestroyOnHide() {
 		return true;
 	}
@@ -663,7 +647,7 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 		public TourGuideVis() {
 			setLayout(GLLayouts.flowVertical(0));
 			this.add(new DataDomainQueryUI(queries));
-			this.add(new TableHeaderUI(table));
+			this.add(new TableHeaderUI(table, true));
 			this.add(new TableBodyUI(table, RowHeightLayouts.FISH_EYE));
 		}
 	}

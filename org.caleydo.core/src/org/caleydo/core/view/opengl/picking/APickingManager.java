@@ -135,7 +135,9 @@ public abstract class APickingManager<T extends APickingEntry> {
 		// for each event
 		for (Pair<IMouseEvent, PickingMode> event : events) {
 			PickingMode converted = convert(event.getFirst(), event.getSecond());
+			IMouseEvent mouseEvent = event.getFirst();
 			Point key = event.getFirst().getPoint();
+
 			List<PickHit> data = cache.get(key);
 
 			if (event.getSecond() == PickingMode.MOUSE_OUT && !mouseIn.isEmpty()) {
@@ -143,13 +145,13 @@ public abstract class APickingManager<T extends APickingEntry> {
 					data = doPickingImpl(key.x, key.y, gl, toRender);
 					cache.put(key, data);
 				}
-				fireListeners(data, PickingMode.MOUSE_OUT, key);
+				fireListeners(data, PickingMode.MOUSE_OUT, key, mouseEvent);
 			} else if (converted != null) {
 				if (data == null) {
 					data = doPickingImpl(key.x, key.y, gl, toRender);
 					cache.put(key, data);
 				}
-				fireListeners(data, converted, key);
+				fireListeners(data, converted, key, mouseEvent);
 			}
 		}
 		return;
@@ -211,7 +213,7 @@ public abstract class APickingManager<T extends APickingEntry> {
 	 * @param entries
 	 *            the list of picking entries to check
 	 */
-	protected void doPicking(PickingMode mode, Point mousePos, final GL2 gl, Runnable toRender) {
+	protected void doPicking(PickingMode mode, Point mousePos, IMouseEvent event, final GL2 gl, Runnable toRender) {
 		if (mode == null) // nothing changed
 			return;
 
@@ -219,10 +221,10 @@ public abstract class APickingManager<T extends APickingEntry> {
 		if (mousePos != null) {
 			hits = doPickingImpl(mousePos.x, mousePos.y, gl, toRender);
 		}
-		fireListeners(hits, mode, mousePos);
+		fireListeners(hits, mode, mousePos, event);
 	}
 
-	private void fireListeners(List<PickHit> hits, PickingMode mode, Point mousePos) {
+	private void fireListeners(List<PickHit> hits, PickingMode mode, Point mousePos, IMouseEvent event) {
 		PickHit nearest = hits.isEmpty() ? null : hits.get(0);
 		float depth = nearest == null ? 0 : nearest.getZMin();
 
@@ -244,7 +246,7 @@ public abstract class APickingManager<T extends APickingEntry> {
 				wasMouseIn.set(entry.pickingId);
 			} else {
 				// send mouse out
-				entry.fire(PickingMode.MOUSE_OUT, mousePos, depth, isAnyDragging);
+				entry.fire(PickingMode.MOUSE_OUT, mousePos, depth, isAnyDragging, event);
 			}
 		}
 		this.mouseIn.clear();
@@ -260,9 +262,9 @@ public abstract class APickingManager<T extends APickingEntry> {
 				continue;
 			if (!wasMouseIn.get(name)) {
 				// send mouse in
-				entry.fire(PickingMode.MOUSE_OVER, mousePos, depth, isAnyDragging);
+				entry.fire(PickingMode.MOUSE_OVER, mousePos, depth, isAnyDragging, event);
 			}
-			entry.fire(mode, mousePos, depth, isAnyDragging);
+			entry.fire(mode, mousePos, depth, isAnyDragging, event);
 			// query again for handling removal in between
 			entry = get(name);
 			if (entry != null) {

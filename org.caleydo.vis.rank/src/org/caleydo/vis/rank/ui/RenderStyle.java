@@ -47,6 +47,7 @@ public class RenderStyle {
 	public static final String ICON_FILTER = ICON_PREFIX + "filter.png";
 	public static final String ICON_MAPPING = ICON_PREFIX + "pencil_ruler.png";
 	public static final String ICON_EXPLODE = ICON_PREFIX + "dynamite.png";
+	public static final String ICON_EDIT_ANNOTATION = ICON_PREFIX + "note_edit.png";
 	public static final String ICON_UNCOLLAPSE = ICON_PREFIX + "bullet_toggle_minus.png";
 	public static final String ICON_HIDE = ICON_PREFIX + "delete.png";
 	public static final String ICON_DRAG = ICON_PREFIX + "drag.png";
@@ -78,6 +79,7 @@ public class RenderStyle {
 	public static final float LABEL_HEIGHT = 20;
 
 	public static final Color COLOR_SELECTED_ROW = new Color(0, 0, 0, 128);
+	public static final Color COLOR_BACKGROUND_EVEN = new Color(240, 240, 255);
 	public static final Color COLOR_BAND = new Color(0.90f, 0.90f, 0.90f);
 
 	public static final float FROZEN_BAND_WIDTH = 50;

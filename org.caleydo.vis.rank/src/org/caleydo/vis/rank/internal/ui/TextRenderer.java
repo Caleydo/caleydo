@@ -27,7 +27,7 @@ public class TextRenderer implements IGLRenderer {
 	public String toString() {
 		StringBuilder b = new StringBuilder(prefix + " ");
 		for (ARankColumnModel r : model) {
-			b.append(r.getHeaderRenderer().toString()).append(", ");
+			b.append(r.getTooltip()).append(", ");
 		}
 		b.setLength(b.length() - 2);
 		return b.toString();

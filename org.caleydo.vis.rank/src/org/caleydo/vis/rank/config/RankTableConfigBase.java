@@ -67,11 +67,6 @@ public class RankTableConfigBase implements IRankTableConfig {
 	}
 
 	@Override
-	public boolean isInteractive() {
-		return true;
-	}
-
-	@Override
 	public boolean isDestroyOnHide() {
 		return false;
 	}

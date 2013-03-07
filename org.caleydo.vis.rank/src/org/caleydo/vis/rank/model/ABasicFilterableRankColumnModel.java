@@ -44,7 +44,7 @@ public abstract class ABasicFilterableRankColumnModel extends ARankColumnModel i
 		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
 			switch (evt.getPropertyName()) {
-			case IRankColumnParent.PROP_DATA:
+			case RankTableModel.PROP_DATA:
 				@SuppressWarnings("unchecked")
 				Collection<IRow> news = (Collection<IRow>) evt.getNewValue();
 				maskInvalid.set(getTable().getDataSize() - news.size(), getTable().getDataSize());
@@ -65,13 +65,13 @@ public abstract class ABasicFilterableRankColumnModel extends ARankColumnModel i
 
 	@Override
 	protected void init(IRankColumnParent table) {
-		table.addPropertyChangeListener(IRankColumnParent.PROP_DATA, listener);
 		super.init(table);
+		getTable().addPropertyChangeListener(RankTableModel.PROP_DATA, listener);
 	}
 
 	@Override
 	protected void takeDown() {
-		parent.removePropertyChangeListener(IRankColumnParent.PROP_DATA, listener);
+		getTable().removePropertyChangeListener(RankTableModel.PROP_DATA, listener);
 		super.takeDown();
 	}
 

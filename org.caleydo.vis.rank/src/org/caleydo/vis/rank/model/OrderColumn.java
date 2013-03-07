@@ -19,19 +19,47 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.model;
 
+import java.awt.Color;
+
+import org.caleydo.core.view.opengl.layout2.GLElement;
+
 /**
- * a thing that is a row
+ * a column that orders it right elements
  *
  * @author Samuel Gratzl
  *
  */
-public interface IRow {
-	int getIndex();
+public class OrderColumn extends ARankColumnModel {
+
+	public OrderColumn(Color color, Color bgColor) {
+		super(Color.LIGHT_GRAY, new Color(0.9f, .9f, .9f));
+	}
+
+	private OrderColumn(ARankColumnModel copy) {
+		super(copy);
+	}
+
+	@Override
+	public OrderColumn clone() {
+		return new OrderColumn(this);
+	}
+
+	@Override
+	public GLElement createSummary(boolean interactive) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public GLElement createValue() {
+		return null;
+	}
 
 	/**
-	 * the data index of the row
-	 *
-	 * @param index
+	 * @return
 	 */
-	void setIndex(int index);
+	public ColumnRanker getRanker() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

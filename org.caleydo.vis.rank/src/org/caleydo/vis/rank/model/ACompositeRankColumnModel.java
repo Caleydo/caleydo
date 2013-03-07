@@ -50,7 +50,7 @@ public abstract class ACompositeRankColumnModel extends ARankColumnModel impleme
 	}
 
 	public boolean canAdd(ARankColumnModel model) {
-		return model != this;
+		return model != this && !(model instanceof OrderColumn);
 	}
 
 	final boolean add(ARankColumnModel model) {
@@ -184,16 +184,6 @@ public abstract class ACompositeRankColumnModel extends ARankColumnModel impleme
 			propertySupport.fireIndexedPropertyChange(PROP_CHILDREN, index + 1, null,
 					children.subList(1, children.size()));
 		}
-	}
-
-	@Override
-	public boolean canTakeSnapshot(ARankColumnModel aRankColumnModel) {
-		return false;
-	}
-
-	@Override
-	public void takeSnapshot(ARankColumnModel aRankColumnModel) {
-		// should not happen
 	}
 
 	public boolean isFlatAdding(ACompositeRankColumnModel t) {
