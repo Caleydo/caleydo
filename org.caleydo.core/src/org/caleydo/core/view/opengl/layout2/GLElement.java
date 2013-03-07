@@ -264,9 +264,17 @@ public class GLElement implements IHasGLLayoutData {
 		float y = bounds_layout.y;
 		float w = bounds_layout.width;
 		float h = bounds_layout.height;
+		return areValidBounds(x, y, w, h);
+	}
+
+	public static boolean areValidBounds(float x, float y, float w, float h) {
 		if (w <= 0 || h <= 0 || Float.isNaN(w) || Float.isNaN(h) || Float.isNaN(x) || Float.isNaN(y))
 			return false;
 		return true;
+	}
+
+	public static boolean areValidBounds(Vec4f xywh) {
+		return areValidBounds(xywh.x(), xywh.y(), xywh.z(), xywh.w());
 	}
 
 	/**

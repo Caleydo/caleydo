@@ -333,7 +333,7 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 	}
 
 	public final void add(int index, GLElement child) {
-		add(children.size(), child, defaultDuration, child.getLayoutDataAs(IInTransition.class, defaultInTransition));
+		add(index, child, defaultDuration, child.getLayoutDataAs(IInTransition.class, defaultInTransition));
 	}
 
 	public final void add(GLElement child, int duration) {
@@ -355,7 +355,11 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 
 	public final void add(int index, GLElement child, IDuration duration, IInTransition animation) {
 		int startIn = 0;
-		assert child.getParent() == null; // no parent yet
+		if (child.getParent() == this) {
+			int from = indexOf(child);
+			if (from < index) // as we remove before we insert
+				index--;
+		}
 		// we want to add this child now but smooth it in, so we are interested in its final position in the future at
 		// the future state
 		this.layoutAnimations.add(createInAnimation(child.layoutElement, startIn, duration, animation));
