@@ -27,7 +27,6 @@ import java.util.BitSet;
 import java.util.Collection;
 import java.util.List;
 
-import org.caleydo.core.event.EventListenerManager;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
@@ -65,31 +64,15 @@ public class RankingElement extends GLElementContainer {
 		}
 	};
 
-	public RankingElement(GLSubGraph view, final EventListenerManager eventListeners) {
+	public RankingElement(GLSubGraph view) {
 		this.view = view;
-		this.table = new RankTableModel(new RankTableConfigBase() {
-			@Override
-			public boolean isInteractive() {
-				return true;
-			}
-		});
+		this.table = new RankTableModel(new RankTableConfigBase());
 		table.addPropertyChangeListener(RankTableModel.PROP_SELECTED_ROW, onSelectRow);
-		// scan columns for events
-		this.table.addPropertyChangeListener(RankTableModel.PROP_REGISTER, new PropertyChangeListener() {
-			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
-				if (evt.getOldValue() != null) {
-					eventListeners.unregister(evt.getOldValue());
-				}
-				if (evt.getNewValue() != null)
-					eventListeners.register(evt.getNewValue());
-			}
-		});
 
-		initTable(table, eventListeners);
+		initTable(table);
 
 		setLayout(GLLayouts.flowVertical(0));
-		this.add(new TableHeaderUI(table));
+		this.add(new TableHeaderUI(table, true));
 		TableBodyUI body = new TableBodyUI(table, RowHeightLayouts.UNIFORM);
 		body.addOnRowPick(new IPickingListener() {
 			@Override
@@ -111,7 +94,7 @@ public class RankingElement extends GLElementContainer {
 	 */
 	protected void onRowPick(Pick pick) {
 		int rank = pick.getObjectID();
-		PathwayRow row = (PathwayRow) table.getCurrent(rank);
+		PathwayRow row = (PathwayRow) table.getMyRanker(null).get(rank);
 		System.out.println(row + " " + pick.getPickingMode());
 	}
 
@@ -150,7 +133,7 @@ public class RankingElement extends GLElementContainer {
 	 * @param eventListeners2
 	 * @param table2
 	 */
-	private static void initTable(RankTableModel table, EventListenerManager eventListeners) {
+	private static void initTable(RankTableModel table) {
 		// add columns
 		table.addColumn(new StringRankColumnModel(GLRenderers.drawText("Pathway", VAlign.CENTER),
 				StringRankColumnModel.DFEAULT));
