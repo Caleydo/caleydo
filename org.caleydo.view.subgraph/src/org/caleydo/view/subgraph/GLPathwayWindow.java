@@ -36,10 +36,15 @@ import org.caleydo.view.subgraph.GLSubGraph.MultiFormInfo;
 public class GLPathwayWindow extends AnimatedGLElementContainer {
 
 	protected final MultiFormInfo info;
+	protected final GLElementViewSwitchingBar viewSwitchingBar;
+	protected final GLSubGraph view;
+	protected final GLPathwayBackground background;
+	protected boolean active = false;
 
 	public GLPathwayWindow(PathwayGraph pathway, GLSubGraph view, final MultiFormInfo info) {
 		setLayout(GLLayouts.LAYERS);
 		this.info = info;
+		this.view = view;
 
 		GLElementContainer multiFormContainer = new GLElementContainer(new GLSizeRestrictiveFlowLayout(false, 1,
 				GLPadding.ZERO));
@@ -50,11 +55,12 @@ public class GLPathwayWindow extends AnimatedGLElementContainer {
 		info.container = container;
 		// multiFormRendererAdapter.onPick(pl);
 
-		GLElementViewSwitchingBar viewSwitchingBar = new GLElementViewSwitchingBar(info.multiFormRenderer);
-		GLPathwayBackground bg = new GLPathwayBackground(view);
+		viewSwitchingBar = new GLElementViewSwitchingBar(info.multiFormRenderer);
+		background = new GLPathwayBackground(this);
 		titleBar.add(viewSwitchingBar);
+		viewSwitchingBar.setVisibility(EVisibility.NONE);
 
-		add(bg);
+		add(background);
 		add(multiFormContainer);
 	}
 
@@ -71,6 +77,27 @@ public class GLPathwayWindow extends AnimatedGLElementContainer {
 	 */
 	public MultiFormInfo getInfo() {
 		return info;
+	}
+
+	public void setActive(boolean active) {
+		if (active == this.active)
+			return;
+
+		GLPathwayWindow activeWindow = view.getActiveWindow();
+
+		if (active) {
+			if (activeWindow != null && activeWindow != this) {
+				activeWindow.setActive(false);
+			}
+			view.setActiveWindow(this);
+			viewSwitchingBar.setVisibility(EVisibility.VISIBLE);
+			// currentActiveBackground.bar.setVisibility(EVisibility.NONE);
+			repaint();
+		} else {
+			viewSwitchingBar.setVisibility(EVisibility.NONE);
+		}
+		background.setHovered(active);
+		this.active = active;
 	}
 
 }

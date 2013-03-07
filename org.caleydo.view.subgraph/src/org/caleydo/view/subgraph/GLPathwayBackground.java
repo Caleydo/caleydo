@@ -33,10 +33,10 @@ import org.caleydo.core.view.opengl.picking.Pick;
 public class GLPathwayBackground extends PickableGLElement {
 
 	protected boolean hovered = false;
-	protected GLSubGraph view;
+	protected final GLPathwayWindow parentWindow;
 
-	public GLPathwayBackground(GLSubGraph view) {
-		this.view = view;
+	public GLPathwayBackground(GLPathwayWindow parentWindow) {
+		this.parentWindow = parentWindow;
 	}
 
 	@Override
@@ -63,17 +63,29 @@ public class GLPathwayBackground extends PickableGLElement {
 
 	@Override
 	protected void onMouseOver(Pick pick) {
-		GLPathwayBackground currentActiveBackground = view.getCurrentActiveBackground();
+		parentWindow.setActive(true);
+		// GLPathwayBackground currentActiveBackground = view.getCurrentActiveBackground();
+		//
+		// if (currentActiveBackground != null && currentActiveBackground != this) {
+		// currentActiveBackground.hovered = false;
+		// // currentActiveBackground.bar.setVisibility(EVisibility.NONE);
+		// currentActiveBackground.repaint();
+		// }
+		// view.setCurrentActiveBackground(this);
+		// // bar.setVisibility(EVisibility.VISIBLE);
+		// hovered = true;
+		// repaint();
+	}
 
-		if (currentActiveBackground != null && currentActiveBackground != this) {
-			currentActiveBackground.hovered = false;
-			// currentActiveBackground.bar.setVisibility(EVisibility.NONE);
-			currentActiveBackground.repaint();
+	/**
+	 * @param hovered
+	 *            setter, see {@link hovered}
+	 */
+	public void setHovered(boolean hovered) {
+		if (hovered != this.hovered) {
+			this.hovered = hovered;
+			repaint();
 		}
-		view.setCurrentActiveBackground(this);
-		// bar.setVisibility(EVisibility.VISIBLE);
-		hovered = true;
-		repaint();
 	}
 
 }

@@ -82,7 +82,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	private AnimatedGLElementContainer nodeInfoContainer = new AnimatedGLElementContainer(
 			new GLSizeRestrictiveFlowLayout(true, 10, GLPadding.ZERO));
 
-	private GLPathwayBackground currentActiveBackground = null;
+	private GLPathwayWindow activeWindow = null;
 
 	// private List<IPathwayRepresentation> pathwayRepresentations = new ArrayList<>();
 
@@ -106,6 +106,8 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	protected static int currentPathwayAge = Integer.MAX_VALUE;
 
 	protected MultiFormRenderer lastUsedRenderer;
+
+	protected MultiFormRenderer lastUsedLevel1Renderer;
 
 	protected GLPathwayGridLayout pathwayLayout = new GLPathwayGridLayout(this, GLPadding.ZERO, 10);
 
@@ -263,6 +265,8 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		if (info.multiFormRenderer.getActiveRendererID() != rendererID) {
 			info.multiFormRenderer.setActive(rendererID);
 		}
+		lastUsedLevel1Renderer = info.multiFormRenderer;
+		lastUsedRenderer = info.multiFormRenderer;
 		// for (PathwayMultiFormInfo pathwayInfo : pathwayInfos) {
 		// pathwayInfo.multiFormRenderer.setActive(pathwayInfo.embeddingIDToRendererIDs.get(
 		// EEmbeddingID.PATHWAY_LEVEL2).get(0));
@@ -314,8 +318,6 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 
 		GLPathwayWindow window = new GLPathwayWindow(pathway, this, info);
 		info.window = window;
-
-		lastUsedRenderer = renderer;
 		parent.add(window);
 	}
 
@@ -499,13 +501,14 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 				if (info.multiFormRenderer == multiFormRenderer) {
 					if (info.getEmbeddingIDFromRendererID(rendererID) == EEmbeddingID.PATHWAY_LEVEL1) {
 						pathwayLayout.setLevel1(info.window);
-						info.age = currentPathwayAge--;
-						lastUsedRenderer = info.multiFormRenderer;
-
-						break;
+						lastUsedLevel1Renderer = info.multiFormRenderer;
 					}
+					info.age = currentPathwayAge--;
+					lastUsedRenderer = info.multiFormRenderer;
+					break;
 				}
 			}
+
 			pathwayRow.relayout();
 		}
 	}
@@ -542,18 +545,18 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	}
 
 	/**
-	 * @return the currentActiveBackground, see {@link #currentActiveBackground}
+	 * @return the currentActiveBackground, see {@link #activeWindow}
 	 */
-	public GLPathwayBackground getCurrentActiveBackground() {
-		return currentActiveBackground;
+	public GLPathwayWindow getActiveWindow() {
+		return activeWindow;
 	}
 
 	/**
 	 * @param currentActiveBackground
 	 *            setter, see {@link currentActiveBackground}
 	 */
-	public void setCurrentActiveBackground(GLPathwayBackground currentActiveBackground) {
-		this.currentActiveBackground = currentActiveBackground;
+	public void setActiveWindow(GLPathwayWindow activeWindow) {
+		this.activeWindow = activeWindow;
 	}
 
 	/**
