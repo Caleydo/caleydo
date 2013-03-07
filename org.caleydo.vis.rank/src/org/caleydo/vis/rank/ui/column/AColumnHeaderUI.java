@@ -42,6 +42,7 @@ import org.caleydo.core.view.opengl.layout2.animation.Durations;
 import org.caleydo.core.view.opengl.layout2.animation.MoveTransitions;
 import org.caleydo.core.view.opengl.layout2.animation.Transitions;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton;
+import org.caleydo.core.view.opengl.layout2.basic.GLButton.EButtonMode;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton.ISelectionCallback;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
@@ -52,6 +53,7 @@ import org.caleydo.vis.rank.internal.ui.ButtonBar;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.mixin.IAnnotatedColumnMixin;
 import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
+import org.caleydo.vis.rank.model.mixin.ICompressColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IExplodeableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IHideableColumnMixin;
@@ -91,7 +93,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 	};
 	private int dragPickingId = -1;
 
-	private final boolean hasTitle;
+	private boolean hasTitle;
 	private final boolean canChangeWeight;
 	private final boolean moveable;
 
@@ -147,6 +149,17 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 			onCollapsedChanged(!isCollapsed); // force a change
 		}
 
+	}
+
+	/**
+	 * @param hasTitle
+	 *            setter, see {@link hasTitle}
+	 */
+	public void setHasTitle(boolean hasTitle) {
+		if (this.hasTitle == hasTitle)
+			return;
+		this.hasTitle = hasTitle;
+		relayout();
 	}
 
 	@Override
@@ -354,6 +367,22 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 				b.setTooltip("Toggle Collapse / Expand of this column");
 				buttons.addButton(b);
 			}
+		}
+		if (model instanceof ICompressColumnMixin) {
+			final ICompressColumnMixin m = (ICompressColumnMixin) model;
+
+			GLButton b = new GLButton(EButtonMode.CHECKBOX);
+			b.setRenderer(GLRenderers.fillImage(RenderStyle.ICON_UNCOLLAPSE));
+			b.setSelectedRenderer(GLRenderers.fillImage(RenderStyle.ICON_COLLAPSE));
+			b.setSelected(m.isCompressed());
+			b.setCallback(new ISelectionCallback() {
+				@Override
+				public void onSelectionChanged(GLButton button, boolean selected) {
+					m.setCompressed(selected);
+				}
+			});
+			b.setTooltip("Toggle Compress / Unpack of this column");
+			buttons.addButton(b);
 		}
 		if (model instanceof IHideableColumnMixin) {
 			final IHideableColumnMixin m = (IHideableColumnMixin) model;

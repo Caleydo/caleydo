@@ -28,10 +28,10 @@ import java.util.List;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
-import org.caleydo.vis.rank.model.ACompositeRankColumnModel;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.StackedRankColumnModel;
+import org.caleydo.vis.rank.model.mixin.ICompressColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IMultiColumnMixin.MultiFloat;
 import org.caleydo.vis.rank.ui.RenderStyle;
 import org.caleydo.vis.rank.ui.TableBodyUI;
@@ -49,14 +49,23 @@ public class StackedColumnUI extends ACompositeTableColumnUI<StackedRankColumnMo
 			case StackedRankColumnModel.PROP_ALIGNMENT:
 				onAlignmentChanged();
 				break;
+			case ICompressColumnMixin.PROP_COMPRESSED:
+				onCompressedChanged();
+				break;
 			}
 		}
 	};
 
 	public StackedColumnUI(StackedRankColumnModel model) {
-		super(model);
+		super(model, 1);
 		model.addPropertyChangeListener(StackedRankColumnModel.PROP_ALIGNMENT, listener);
-		model.addPropertyChangeListener(ACompositeRankColumnModel.PROP_CHILDREN, listener);
+		model.addPropertyChangeListener(ICompressColumnMixin.PROP_COMPRESSED, listener);
+		this.add(0, wrap(model));
+	}
+
+	protected void onCompressedChanged() {
+		relayout();
+		relayoutParent();
 	}
 
 	protected void onAlignmentChanged() {
@@ -74,14 +83,28 @@ public class StackedColumnUI extends ACompositeTableColumnUI<StackedRankColumnMo
 	@Override
 	protected void takeDown() {
 		model.removePropertyChangeListener(StackedRankColumnModel.PROP_ALIGNMENT, listener);
+		model.removePropertyChangeListener(ICompressColumnMixin.PROP_COMPRESSED, listener);
 		super.takeDown();
+	}
+
+	@Override
+	public void doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
+		IGLLayoutElement elem = children.get(0);
+		if (model.isCompressed()) {
+			elem.setBounds(0, 0, w, h);
+			for (IGLLayoutElement child : children.subList(1, children.size()))
+				child.hide();
+		} else {
+			elem.hide();
+			super.doLayout(children, w, h);
+		}
 	}
 
 	@Override
 	public void layoutRows(ARankColumnModel model, List<? extends IGLLayoutElement> children, float w, float h) {
 		int combinedAlign = this.model.getAlignment();
 		int index = this.model.indexOf(model);
-		if (combinedAlign >= 0 && index != combinedAlign) {
+		if (combinedAlign >= 0 && index != combinedAlign && index >= 0) {
 			// moving around
 			int[] ranks = this.model.getMyRanker().getOrder();
 			float[] weights = new float[this.model.size()];
@@ -134,7 +157,7 @@ public class StackedColumnUI extends ACompositeTableColumnUI<StackedRankColumnMo
 		if (combinedAlign < 0)
 			return VAlign.LEFT;
 		int index = this.model.indexOf(model.getModel());
-		return index >= combinedAlign ? VAlign.LEFT : VAlign.RIGHT;
+		return (index >= combinedAlign || index < 0) ? VAlign.LEFT : VAlign.RIGHT;
 	}
 
 	@Override
@@ -143,6 +166,8 @@ public class StackedColumnUI extends ACompositeTableColumnUI<StackedRankColumnMo
 		if (combinedAlign < 0)
 			return true;
 		int index = this.model.indexOf(model.getModel());
+		if (index < 0)
+			return true;
 		return index >= combinedAlign ? (index == (this.model.size() - 1)) : (index == 0);
 	}
 }

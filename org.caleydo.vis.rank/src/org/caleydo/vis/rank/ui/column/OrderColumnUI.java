@@ -53,6 +53,7 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 		this.ranker = ranker;
 		this.model = model;
 		ranker.addPropertyChangeListener(ColumnRanker.PROP_ORDER, this);
+		ranker.addPropertyChangeListener(ColumnRanker.PROP_INVALID, this);
 		setLayoutData(model);
 	}
 
@@ -88,12 +89,15 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 			rankDeltas = (int[]) evt.getOldValue();
 			updateMeAndMyChildren();
 			break;
+		case ColumnRanker.PROP_INVALID:
+			updateMeAndMyChildren();
 		}
 	}
 
 	@Override
 	protected void takeDown() {
 		ranker.removePropertyChangeListener(ColumnRanker.PROP_ORDER, this);
+		ranker.removePropertyChangeListener(ColumnRanker.PROP_INVALID, this);
 		super.takeDown();
 	}
 

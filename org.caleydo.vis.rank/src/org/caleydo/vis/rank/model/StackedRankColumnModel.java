@@ -31,6 +31,7 @@ import org.caleydo.vis.rank.internal.event.FilterEvent;
 import org.caleydo.vis.rank.internal.ui.MultiLineInputDialog;
 import org.caleydo.vis.rank.internal.ui.TextRenderer;
 import org.caleydo.vis.rank.model.mixin.IAnnotatedColumnMixin;
+import org.caleydo.vis.rank.model.mixin.ICompressColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IHideableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.ISnapshotableColumnMixin;
@@ -48,7 +49,7 @@ import org.eclipse.swt.widgets.Display;
  *
  */
 public class StackedRankColumnModel extends AMultiRankColumnModel implements IHideableColumnMixin,
-		IAnnotatedColumnMixin, ISnapshotableColumnMixin {
+		IAnnotatedColumnMixin, ISnapshotableColumnMixin, ICompressColumnMixin {
 	public static final String PROP_ALIGNMENT = "alignment";
 
 	private final PropertyChangeListener weightChanged = new PropertyChangeListener() {
@@ -61,6 +62,8 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements IHi
 	 * which is the current aligned column index or -1 for all
 	 */
 	private int alignment = 0;
+	private boolean isCompressed = false;
+	private float compressedWidth = 100;
 
 	private String annotation = "";
 
@@ -74,6 +77,8 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements IHi
 		super(copy);
 		this.alignment = copy.alignment;
 		this.annotation = copy.annotation;
+		this.compressedWidth = copy.compressedWidth;
+		this.isCompressed = copy.isCompressed;
 		setHeaderRenderer(new TextRenderer("AND", this));
 		setWeight(0);
 		cloneInitChildren();
@@ -90,6 +95,8 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements IHi
 
 	@Override
 	public float getPreferredWidth() {
+		if (isCompressed)
+			return compressedWidth;
 		return getWeight() + RenderStyle.COLUMN_SPACE * size() + 6;
 	}
 
@@ -136,6 +143,10 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements IHi
 
 	@Override
 	public ARankColumnModel addWeight(float delta) {
+		if (isCompressed) {
+			propertySupport.firePropertyChange(PROP_WEIGHT, this.compressedWidth, this.compressedWidth += delta);
+			return this;
+		}
 		// uniformly distribute the weight to my children
 		if (children.isEmpty())
 			addDirectWeight(delta);
@@ -257,5 +268,18 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements IHi
 		private void onSetAnnotation(FilterEvent event) {
 			((StackedRankColumnModel) model).setAnnotation(Objects.toString(event.getFilter(), null));
 		}
+	}
+
+	/**
+	 * @return the isCompressed, see {@link #isCompressed}
+	 */
+	@Override
+	public boolean isCompressed() {
+		return isCompressed;
+	}
+
+	@Override
+	public void setCompressed(boolean compressed) {
+		this.propertySupport.firePropertyChange(PROP_COMPRESSED, this.isCompressed, this.isCompressed = compressed);
 	}
 }

@@ -48,6 +48,7 @@ public abstract class ACompositeTableColumnUI<T extends ACompositeRankColumnMode
 		IGLLayout, IColumModelLayout, ITableColumnUI {
 
 	protected final T model;
+	private final int firstColumn;
 	private final PropertyChangeListener listener = new PropertyChangeListener() {
 		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
@@ -60,8 +61,9 @@ public abstract class ACompositeTableColumnUI<T extends ACompositeRankColumnMode
 	};
 
 
-	public ACompositeTableColumnUI(T model) {
+	public ACompositeTableColumnUI(T model, int firstColumn) {
 		this.model = model;
+		this.firstColumn = firstColumn;
 		setLayout(this);
 		setLayoutData(model);
 		model.addPropertyChangeListener(ACompositeRankColumnModel.PROP_CHILDREN, listener);
@@ -99,7 +101,7 @@ public abstract class ACompositeTableColumnUI<T extends ACompositeRankColumnMode
 		if (evt.getOldValue() instanceof Integer) {
 			// moved
 			int movedFrom = (Integer) evt.getOldValue();
-			this.add(index, get(movedFrom));
+			this.add(firstColumn + index, get(firstColumn + movedFrom));
 		} else if (evt.getOldValue() == null) { // added
 			Collection<GLElement> news = null;
 			if (evt.getNewValue() instanceof ARankColumnModel) {
@@ -109,11 +111,11 @@ public abstract class ACompositeTableColumnUI<T extends ACompositeRankColumnMode
 				for (ARankColumnModel c : (Collection<ARankColumnModel>) evt.getNewValue())
 					news.add(wrap(c));
 			}
-			asList().addAll(index, news);
+			asList().addAll(firstColumn + index, news);
 		} else if (evt.getNewValue() == null) {// removed
-			remove(index);
+			remove(firstColumn + index);
 		} else { // replaced
-			set(index, wrap((ARankColumnModel) evt.getNewValue()));
+			set(firstColumn + index, wrap((ARankColumnModel) evt.getNewValue()));
 		}
 		relayoutChildren();
 		relayout();
@@ -130,7 +132,7 @@ public abstract class ACompositeTableColumnUI<T extends ACompositeRankColumnMode
 	@Override
 	public void doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
 		float x = getLeftPadding();
-		for (IGLLayoutElement col : children) {
+		for (IGLLayoutElement col : children.subList(firstColumn, children.size())) {
 			ARankColumnModel model = col.getLayoutDataAs(ARankColumnModel.class, null);
 			col.setBounds(x, 0, model.getPreferredWidth(), h);
 			x += model.getPreferredWidth() + RenderStyle.COLUMN_SPACE;
