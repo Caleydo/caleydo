@@ -73,7 +73,7 @@ public class PiecewiseMapping extends ScriptedMappingFunction implements Iterabl
 		if (isDefinedMapping && this.toJavaScript().equals(code))
 			return true;
 		mapping.clear();
-		// TODO
+		// TODO an intelligent approach to re interpret the source
 		return false;
 	}
 

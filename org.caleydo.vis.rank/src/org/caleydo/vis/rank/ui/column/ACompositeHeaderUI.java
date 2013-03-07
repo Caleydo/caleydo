@@ -75,7 +75,7 @@ public abstract class ACompositeHeaderUI extends GLElementContainer implements I
 		boolean hasCurrentThick = false;
 		for (ARankColumnModel col : children) {
 			GLElement elem = wrap(col);
-			if (elem instanceof ACompositeHeaderUI)
+			if (elem instanceof IThickHeader)
 				hasCurrentThick = true;
 			this.add(elem);
 			numColumns++;
@@ -116,7 +116,7 @@ public abstract class ACompositeHeaderUI extends GLElementContainer implements I
 			}
 			numColumns += news.size();
 			if (!hasThick) {
-				setHasThick(Iterables.any(news, Predicates.instanceOf(ACompositeHeaderUI.class)));
+				setHasThick(Iterables.any(news, Predicates.instanceOf(IThickHeader.class)));
 			}
 			asList().addAll(index + firstColumn, news);
 			if (interactive) {
@@ -129,11 +129,11 @@ public abstract class ACompositeHeaderUI extends GLElementContainer implements I
 			numColumns--;
 			if (interactive)
 				remove(this.size() - 1); // remove last separator
-			setHasThick(Iterables.any(this, Predicates.instanceOf(ACompositeHeaderUI.class)));
+			setHasThick(Iterables.any(this, Predicates.instanceOf(IThickHeader.class)));
 		} else { // replaced
 			takeDown(get(index + firstColumn).getLayoutDataAs(ARankColumnModel.class, null));
 			set(index + firstColumn, wrap((ARankColumnModel) evt.getNewValue()));
-			setHasThick(Iterables.any(this, Predicates.instanceOf(ACompositeHeaderUI.class)));
+			setHasThick(Iterables.any(this, Predicates.instanceOf(IThickHeader.class)));
 		}
 	}
 
@@ -180,7 +180,7 @@ public abstract class ACompositeHeaderUI extends GLElementContainer implements I
 		for (int i = 0; i < columns.size(); ++i) {
 			IGLLayoutElement col = columns.get(i);
 			ARankColumnModel model = col.getLayoutDataAs(ARankColumnModel.class, null);
-			if (col.asElement() instanceof ACompositeTableColumnHeaderUI)
+			if (col.asElement() instanceof IThickHeader)
 				col.setBounds(x, 0, model.getPreferredWidth(), h);
 			else
 				col.setBounds(x, y, model.getPreferredWidth(), hn);

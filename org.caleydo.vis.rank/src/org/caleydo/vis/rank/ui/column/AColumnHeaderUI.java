@@ -183,8 +183,8 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 
 	@Override
 	public String getLabel() {
-		String ann = ((model instanceof IAnnotatedColumnMixin) ? ((IAnnotatedColumnMixin) model).getAnnotation().trim()
-				: "");
+		String ann = ((model instanceof IAnnotatedColumnMixin) ? ((IAnnotatedColumnMixin) model).getAnnotation() : null);
+		ann = ann == null ? "" : ann.trim();
 		if (ann.trim().isEmpty())
 			return model.getTooltip();
 		return model.getTooltip() + "\n" + ann;
@@ -326,20 +326,17 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 		}
 		if (model instanceof ISnapshotableColumnMixin) {
 			final ISnapshotableColumnMixin m = (ISnapshotableColumnMixin) model;
-			if (m.canTakeSnapshot()) {
-				final GLButton b = new GLButton();
-				b.setRenderer(GLRenderers.fillImage(RenderStyle.ICON_FREEZE));
-				b.setTooltip("Take a snapshot of the current state");
-				final ISelectionCallback callback = new ISelectionCallback() {
-					@Override
-					public void onSelectionChanged(GLButton button, boolean selected) {
-						if (m.canTakeSnapshot())
-							m.takeSnapshot();
-					}
-				};
-				b.setCallback(callback);
-				buttons.addButton(b);
-			}
+			final GLButton b = new GLButton();
+			b.setRenderer(GLRenderers.fillImage(RenderStyle.ICON_FREEZE));
+			b.setTooltip("Take a snapshot of the current state");
+			final ISelectionCallback callback = new ISelectionCallback() {
+				@Override
+				public void onSelectionChanged(GLButton button, boolean selected) {
+					m.takeSnapshot();
+				}
+			};
+			b.setCallback(callback);
+			buttons.addButton(b);
 		}
 		buttons.addSpacer();
 

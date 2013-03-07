@@ -202,8 +202,7 @@ public abstract class ARankColumnModel implements IDragInfo, IRankColumnModel {
 	}
 
 	static void uncollapse(ARankColumnModel model) {
-		if (model instanceof ICollapseableColumnMixin)
-			((ICollapseableColumnMixin) model).setCollapsed(false);
+		model.setCollapsed(false);
 	}
 
 	public boolean isCollapsed() {
@@ -257,6 +256,10 @@ public abstract class ARankColumnModel implements IDragInfo, IRankColumnModel {
 
 	public void onRankingInvalid() {
 
+	}
+
+	public void takeSnapshot() {
+		getTable().addSnapshot(this);
 	}
 
 }

@@ -22,6 +22,7 @@ package org.caleydo.vis.rank.model;
 import java.awt.Color;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Objects;
 
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventPublisher;
@@ -32,6 +33,7 @@ import org.caleydo.vis.rank.internal.ui.TextRenderer;
 import org.caleydo.vis.rank.model.mixin.IAnnotatedColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IHideableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
+import org.caleydo.vis.rank.model.mixin.ISnapshotableColumnMixin;
 import org.caleydo.vis.rank.ui.RenderStyle;
 import org.caleydo.vis.rank.ui.detail.ScoreBarRenderer;
 import org.caleydo.vis.rank.ui.detail.ScoreSummary;
@@ -46,7 +48,7 @@ import org.eclipse.swt.widgets.Display;
  *
  */
 public class StackedRankColumnModel extends AMultiRankColumnModel implements IHideableColumnMixin,
-		IAnnotatedColumnMixin {
+		IAnnotatedColumnMixin, ISnapshotableColumnMixin {
 	public static final String PROP_ALIGNMENT = "alignment";
 
 	private final PropertyChangeListener weightChanged = new PropertyChangeListener() {
@@ -73,10 +75,8 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements IHi
 		this.alignment = copy.alignment;
 		this.annotation = copy.annotation;
 		setHeaderRenderer(new TextRenderer("AND", this));
-		float w = 0; // recompute as added and set
-		for (ARankColumnModel c : this)
-			w += c.getWeight();
-		setWeight(w);
+		setWeight(0);
+		cloneInitChildren();
 	}
 
 	@Override
@@ -255,7 +255,7 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements IHi
 
 		@ListenTo(sendToMe = true)
 		private void onSetAnnotation(FilterEvent event) {
-			((StackedRankColumnModel) model).setAnnotation(event.getFilter().toString());
+			((StackedRankColumnModel) model).setAnnotation(Objects.toString(event.getFilter(), null));
 		}
 	}
 }

@@ -227,7 +227,7 @@ public class RankTableModel implements IRankColumnParent {
 		col.init(this);
 		this.columns.add(index, col); // intelligent positioning
 		propertySupport.fireIndexedPropertyChange(PROP_COLUMNS, index, null, col);
-		findCorrespondingRanker(index).checkOrderChanges(col);
+		findCorrespondingRanker(index).checkOrderChanges(null, col);
 	}
 
 	@Override
@@ -236,11 +236,16 @@ public class RankTableModel implements IRankColumnParent {
 		if (model.getParent() == this && from >= 0) { // move within the same parent
 			if (from == to)
 				return;
+			ColumnRanker rOld = findCorrespondingRanker(from);
+			ColumnRanker rNew = findCorrespondingRanker(to);
 			columns.add(to, model);
 			columns.remove(from < to ? from : from + 1);
 			propertySupport.fireIndexedPropertyChange(PROP_COLUMNS, to, from, model);
-			// FIXME
-			// checkOrderChanges(to, model);
+			if (rOld != rNew) {
+				rOld.checkOrderChanges(model, null);
+				rNew.checkOrderChanges(null, model);
+			} else
+				rOld.checkOrderChanges(null, model);
 		} else {
 			model.getParent().detach(model);
 			add(to, model);
@@ -260,7 +265,7 @@ public class RankTableModel implements IRankColumnParent {
 		to.init(this);
 		propertySupport.fireIndexedPropertyChange(PROP_COLUMNS, i, from, to);
 		from.takeDown();
-		findCorrespondingRanker(i).checkOrderChanges(to);
+		findCorrespondingRanker(i).checkOrderChanges(from, to);
 	}
 
 
@@ -291,14 +296,14 @@ public class RankTableModel implements IRankColumnParent {
 	}
 
 	private void setup(ARankColumnModel col) {
-		col.init(this);
 		if (col instanceof StackedRankColumnModel)
 			col.addPropertyChangeListener(ARankColumnModel.PROP_WEIGHT, resort);
 		col.addPropertyChangeListener(IMappedColumnMixin.PROP_MAPPING, refilter);
 		col.addPropertyChangeListener(IFilterColumnMixin.PROP_FILTER, refilter);
 		if (col instanceof ACompositeRankColumnModel) {
-			for (ARankColumnModel child : ((ACompositeRankColumnModel) col))
+			for (ARankColumnModel child : ((ACompositeRankColumnModel) col)) {
 				setup(child);
+			}
 		}
 		propertySupport.firePropertyChange(PROP_REGISTER, null, col);
 	}
@@ -322,7 +327,7 @@ public class RankTableModel implements IRankColumnParent {
 		columns.remove(model);
 		propertySupport.fireIndexedPropertyChange(PROP_COLUMNS, index, model, null);
 		model.takeDown();
-		r.checkOrderChanges(model);
+		r.checkOrderChanges(model, null);
 	}
 
 	public boolean destroy(ARankColumnModel col) {
@@ -400,7 +405,7 @@ public class RankTableModel implements IRankColumnParent {
 			propertySupport.fireIndexedPropertyChange(PROP_COLUMNS, index + 1, null,
 					children.subList(1, children.size()));
 		}
-		findCorrespondingRanker(index).checkOrderChanges(children.get(0));
+		findCorrespondingRanker(index).checkOrderChanges(model, children.get(0));
 	}
 
 	/**
@@ -561,6 +566,14 @@ public class RankTableModel implements IRankColumnParent {
 
 	public IRow getDataItem(int index) {
 		return data.get(index);
+	}
+
+	/**
+	 * @param aRankColumnModel
+	 */
+	public void addSnapshot(ARankColumnModel model) {
+		addColumn(new OrderColumn(new ColumnRanker(this)));
+		addColumn(model.clone());
 	}
 }
 

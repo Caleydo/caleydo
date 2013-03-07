@@ -76,30 +76,37 @@ public class ColumnRanker implements Iterable<IRow> {
 		this.dirtyOrder = clone.dirtyOrder;
 	}
 
+	public ColumnRanker clone(RankTableModel table) {
+		return new ColumnRanker(this, table);
+	}
+
 	/**
 	 * are the current changes, e.g. moving triggers changes in the filtering or ordering?
 	 *
-	 * @param index
+	 * @param invalid
 	 * @param col
 	 */
-	private void checkOrderChanges(int index, ARankColumnModel col) {
-		// FIXME
-		// if (col instanceof IFilterColumnMixin && ((IFilterColumnMixin) col).isFiltered()) { // filter elements
-		// changed
-		// dirtyFilter = true;
-		// fireInvalid();
-		// return;
-		// }
-		// if (findFirstRankable() != orderBy) { // order by changed
-		// dirtyOrder = true;
-		// fireInvalid();
-		// return;
-		// }
-	}
-
-	public void checkOrderChanges(ARankColumnModel model) {
-		// TODO Auto-generated method stub
-
+	public void checkOrderChanges(ARankColumnModel from, ARankColumnModel to) {
+		if (from instanceof IFilterColumnMixin && ((IFilterColumnMixin) from).isFiltered()) { // filter elements
+			dirtyFilter = true;
+			fireInvalid();
+			return;
+		}
+		if (to instanceof IFilterColumnMixin && ((IFilterColumnMixin) to).isFiltered()) { // filter elements
+			dirtyFilter = true;
+			fireInvalid();
+			return;
+		}
+		if (from == orderBy) {
+			dirtyOrder = true;
+			fireInvalid();
+			return;
+		}
+		if (findFirstRankable() != orderBy) {
+			dirtyOrder = true;
+			fireInvalid();
+			return;
+		}
 	}
 
 	private IRankableColumnMixin findFirstRankable() {

@@ -55,6 +55,7 @@ import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.OrderColumn;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
+import org.caleydo.vis.rank.ui.column.ACompositeTableColumnUI;
 import org.caleydo.vis.rank.ui.column.ColumnUIs;
 import org.caleydo.vis.rank.ui.column.IColumModelLayout;
 import org.caleydo.vis.rank.ui.column.ITableColumnUI;
@@ -157,8 +158,10 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 	 * @param source
 	 */
 	protected void onRankerChanged(ARankColumnModel model) {
-		ColumnRanker ranker = model.getMyRanker();
-		updateChildrenOf(ranker);
+		if (model instanceof OrderColumn) {
+			updateChildrenOf(((OrderColumn) model).getRanker());
+		} else
+			updateChildrenOf(model.getMyRanker());
 	}
 
 	private void updateChildrenOf(ColumnRanker ranker) {
@@ -223,7 +226,7 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 		int index = evt.getIndex();
 		if (evt.getOldValue() instanceof Integer) {// moved
 			int movedFrom = (Integer) evt.getOldValue();
-			add(FIRST_COLUMN + index, get(movedFrom));
+			add(FIRST_COLUMN + index, get(FIRST_COLUMN + movedFrom));
 		} else if (evt.getOldValue() == null) { // new
 			Collection<GLElement> news = null;
 			if (evt.getNewValue() instanceof ARankColumnModel) {
@@ -256,11 +259,11 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 	}
 
 	private GLElement wrap(ARankColumnModel new_) {
+		init(new_);
 		if (new_ instanceof OrderColumn) {
 			OrderColumn c = (OrderColumn) new_;
 			return new ColumnRankerUI(c, c.getRanker());
 		}
-		init(new_);
 		return ColumnUIs.createBody(new_, true).setData(table.getData(), this);
 	}
 
@@ -391,17 +394,23 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 		return last;
 	}
 
+	private ITableColumnUI getLast(ACompositeTableColumnUI<?> col) {
+		return col.getLastChild();
+	}
+
 	private void renderSubArea(GLGraphics g, float x, ColumnRankerUI act, ITableColumnUI last, IRow selected,
 			boolean pick) {
-		Vec4f bounds2 = last.asGLElement().getBounds();
+		Vec4f bounds2 = last.asGLElement().getBounds(); // get w
 		float w = bounds2.x() + bounds2.z() - x;
 		if (w <= 0)
 			return;
+
 		boolean even = true;
 		enlargeRankPickers(act.getRanker().size());
 		int i = -1;
+
 		for (IRow rankedRow : act.getRanker()) {
-			Vec4f bounds = last.get(rankedRow.getIndex()).getBounds();
+			Vec4f bounds = getRowBounds(last, rankedRow.getIndex());
 			i++;
 			if (bounds.z() <= 0 || bounds.w() <= 0)
 				continue;
@@ -423,7 +432,7 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 
 	void renderLineHighlight(GLGraphics g, int rowIndex, float alpha, int delta, ColumnRankerUI ranker) {
 		ITableColumnUI column = getLastCorrespondingColumn(ranker);
-		Vec4f bounds = column.get(rowIndex).getBounds();
+		Vec4f bounds = getRowBounds(column, rowIndex);
 		if (bounds.w() < 0 || bounds.z() < 0)
 			return;
 		float calpha = RenderStyle.computeHighlightAlpha(alpha, delta);
@@ -435,6 +444,18 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 		float w = column.asGLElement().getLocation().x() + column.asGLElement().getSize().x() - x;
 		g.fillRect(x, bounds.y(), w, bounds.w());
 		g.incZ();
+	}
+
+	/**
+	 * @param column
+	 * @param rowIndex
+	 * @return
+	 */
+	private Vec4f getRowBounds(ITableColumnUI column, int rowIndex) {
+		if (column instanceof ACompositeTableColumnUI<?>) {
+			column = getLast((ACompositeTableColumnUI<?>) column);
+		}
+		return column.get(rowIndex).getBounds();
 	}
 
 	void triggerRankAnimations(ColumnRankerUI ranker, int[] rankDeltas) {

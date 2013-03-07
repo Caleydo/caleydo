@@ -94,7 +94,6 @@ public class ScriptedMappingFunction extends AMappingFunction {
 			Compilable c = (Compilable) engine;
 			script = c.compile(fullCode(code));
 		} catch (ScriptException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return script;

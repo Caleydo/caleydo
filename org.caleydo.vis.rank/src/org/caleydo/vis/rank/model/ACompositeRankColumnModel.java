@@ -45,8 +45,13 @@ public abstract class ACompositeRankColumnModel extends ARankColumnModel impleme
 	public ACompositeRankColumnModel(ACompositeRankColumnModel copy) {
 		super(copy);
 		for (ARankColumnModel c : copy.children) {
-			this.add(c.clone());
+			this.children.add(c.clone());
 		}
+	}
+
+	protected final void cloneInitChildren() {
+		for (ARankColumnModel c : children)
+			init(c);
 	}
 
 	public boolean canAdd(ARankColumnModel model) {

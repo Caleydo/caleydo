@@ -24,7 +24,5 @@ package org.caleydo.vis.rank.model.mixin;
  *
  */
 public interface ISnapshotableColumnMixin {
-	boolean canTakeSnapshot();
-
 	void takeSnapshot();
 }

@@ -42,6 +42,7 @@ import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IHideableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IMappedColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
+import org.caleydo.vis.rank.model.mixin.ISnapshotableColumnMixin;
 import org.caleydo.vis.rank.ui.detail.ScoreBarRenderer;
 import org.caleydo.vis.rank.ui.detail.ScoreSummary;
 import org.caleydo.vis.rank.ui.mapping.MappingFunctionUIs;
@@ -51,7 +52,7 @@ import org.caleydo.vis.rank.ui.mapping.MappingFunctionUIs;
  *
  */
 public class FloatRankColumnModel extends ARankColumnModel implements IMappedColumnMixin, IRankableColumnMixin,
-		ICollapseableColumnMixin, IHideableColumnMixin {
+		ICollapseableColumnMixin, IHideableColumnMixin, ISnapshotableColumnMixin {
 	private SimpleHistogram cacheHist = null;
 	private boolean dirtyMinMax = true;
 	private final IMappingFunction mapping;

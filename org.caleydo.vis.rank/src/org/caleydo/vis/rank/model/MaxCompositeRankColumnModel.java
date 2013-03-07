@@ -54,6 +54,7 @@ public class MaxCompositeRankColumnModel extends AMultiRankColumnModel implement
 		super(copy);
 		setHeaderRenderer(new TextRenderer("OR", this));
 		this.valueRenderer = new MultiRenderer(this, copy.valueRenderer.getLayout());
+		cloneInitChildren();
 	}
 
 

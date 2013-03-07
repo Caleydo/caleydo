@@ -20,8 +20,21 @@
 package org.caleydo.vis.rank.model;
 
 import java.awt.Color;
+import java.util.Objects;
 
+import org.caleydo.core.event.EventListenerManager.ListenTo;
+import org.caleydo.core.event.EventPublisher;
+import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
+import org.caleydo.vis.rank.internal.event.FilterEvent;
+import org.caleydo.vis.rank.internal.ui.MultiLineInputDialog;
+import org.caleydo.vis.rank.model.mixin.IAnnotatedColumnMixin;
+import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
+import org.caleydo.vis.rank.model.mixin.IHideableColumnMixin;
+import org.eclipse.jface.dialogs.InputDialog;
+import org.eclipse.jface.window.Window;
+import org.eclipse.swt.widgets.Display;
 
 /**
  * a column that orders it right elements
@@ -29,14 +42,21 @@ import org.caleydo.core.view.opengl.layout2.GLElement;
  * @author Samuel Gratzl
  *
  */
-public class OrderColumn extends ARankColumnModel {
+public class OrderColumn extends ARankColumnModel implements IAnnotatedColumnMixin, IHideableColumnMixin,
+		ICollapseableColumnMixin {
+	private String annotation = "";
+	private final ColumnRanker ranker;
 
-	public OrderColumn(Color color, Color bgColor) {
+	public OrderColumn(ColumnRanker ranker) {
 		super(Color.LIGHT_GRAY, new Color(0.9f, .9f, .9f));
+		this.ranker = ranker;
+		setHeaderRenderer(GLRenderers.drawText("Order Adapter", VAlign.CENTER));
 	}
 
-	private OrderColumn(ARankColumnModel copy) {
+	private OrderColumn(OrderColumn copy) {
 		super(copy);
+		setHeaderRenderer(copy.getHeaderRenderer());
+		this.ranker = copy.ranker.clone(getTable()); // FIXME not working
 	}
 
 	@Override
@@ -46,8 +66,7 @@ public class OrderColumn extends ARankColumnModel {
 
 	@Override
 	public GLElement createSummary(boolean interactive) {
-		// TODO Auto-generated method stub
-		return null;
+		return new MyElement();
 	}
 
 	@Override
@@ -56,10 +75,41 @@ public class OrderColumn extends ARankColumnModel {
 	}
 
 	/**
-	 * @return
+	 * @return the ranker, see {@link #ranker}
 	 */
 	public ColumnRanker getRanker() {
-		// TODO Auto-generated method stub
-		return null;
+		return ranker;
+	}
+
+	protected void setAnnotation(String annotation) {
+		propertySupport.firePropertyChange(PROP_ANNOTATION, this.annotation, this.annotation = annotation);
+	}
+
+	@Override
+	public void editAnnotation(final GLElement summary) {
+		Display.getDefault().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				InputDialog d = new MultiLineInputDialog(null, "Edit Annotation of: " + getTooltip(),
+						"Edit Annotation", annotation, null);
+				if (d.open() == Window.OK) {
+					String v = d.getValue().trim();
+					if (v.length() == 0)
+						v = null;
+					EventPublisher.publishEvent(new FilterEvent(v).to(summary));
+				}
+			}
+		});
+	}
+	@Override
+	public String getAnnotation() {
+		return annotation;
+	}
+
+	class MyElement extends GLElement {
+		@ListenTo(sendToMe = true)
+		private void onSetAnnotation(FilterEvent event) {
+			setAnnotation(Objects.toString(event.getFilter(), null));
+		}
 	}
 }

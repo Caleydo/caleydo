@@ -28,7 +28,8 @@ import org.caleydo.vis.rank.ui.SeparatorUI;
  * @author Samuel Gratzl
  *
  */
-public abstract class ACompositeTableColumnHeaderUI<T extends ACompositeRankColumnModel> extends ACompositeHeaderUI {
+public abstract class ACompositeTableColumnHeaderUI<T extends ACompositeRankColumnModel> extends ACompositeHeaderUI
+		implements IThickHeader {
 	private static final int SUMMARY = 0;
 
 	protected final T model;

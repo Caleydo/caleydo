@@ -171,5 +171,12 @@ public abstract class ACompositeTableColumnUI<T extends ACompositeRankColumnMode
 			g.update();
 		relayout();
 	}
+
+	public ITableColumnUI getLastChild() {
+		for (int i = this.size() - 1; i >= 0; --i)
+			if (get(i) instanceof ITableColumnUI)
+				return (ITableColumnUI) get(i);
+		return null;
+	}
 }
 
