@@ -470,12 +470,14 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 					contextMenuCreator.addContextMenuItem(menuItem);
 
 				} else if (vertexRep.getType() == EPathwayVertexType.gene) {
-					for (PathwayVertex pathwayVertex : vertexRep.getPathwayVertices()) {
-						for (Integer davidID : pathwayItemManager.getDavidIdByPathwayVertex(pathwayVertex)) {
-							GeneMenuItemContainer contexMenuItemContainer = new GeneMenuItemContainer();
-							contexMenuItemContainer.setDataDomain(dataDomain);
-							contexMenuItemContainer.setData(pathwayDataDomain.getDavidIDType(), davidID);
-							contextMenuCreator.addContextMenuItemContainer(contexMenuItemContainer);
+					if (!isRenderedRemote()) {
+						for (PathwayVertex pathwayVertex : vertexRep.getPathwayVertices()) {
+							for (Integer davidID : pathwayItemManager.getDavidIdByPathwayVertex(pathwayVertex)) {
+								GeneMenuItemContainer contexMenuItemContainer = new GeneMenuItemContainer();
+								contexMenuItemContainer.setDataDomain(dataDomain);
+								contexMenuItemContainer.setData(pathwayDataDomain.getDavidIDType(), davidID);
+								contextMenuCreator.addContextMenuItemContainer(contexMenuItemContainer);
+							}
 						}
 					}
 					for (VertexRepBasedContextMenuItem item : addedContextMenuItems) {
@@ -761,53 +763,32 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 
 		float pathwayAspectRatio = pathwayWidth / pathwayHeight;
 		float viewFrustumAspectRatio = viewFrustumWidth / viewFrustumHeight;
-		boolean pathwayFitsViewFrustum = true;
+		// boolean pathwayFitsViewFrustum = true;
 
 		// float rendererAspectRatio = x / y;
 		// float imageAspectRatio = (float) baseImage.getWidth() / (float) baseImage.getHeight();
 
 		if (isRenderedRemote()) {
+			float renderWidth;
+			float renderHeight;
 
-			// float renderWidth;
-			// float renderHeight;
-			// if (viewFrustumAspectRatio > pathwayAspectRatio) {
-			// renderWidth = (viewFrustumHeight / pathwayHeight) * pathwayWidth;
-			// renderHeight = viewFrustumHeight;
-			// } else {
-			// renderWidth = viewFrustumWidth;
-			// renderHeight = (viewFrustumWidth / pathwayWidth) * pathwayHeight;
-			// }
-			//
-			// vecScaling.setX()
-
-			if (viewFrustumAspectRatio < pathwayAspectRatio && pathwayWidth > viewFrustumWidth) {
-
-				vecScaling.setX((viewFrustum.getRight() - viewFrustum.getLeft()) / pathwayWidth);
-				vecScaling.setY(vecScaling.x());
-
-				vecTranslation.set(
-						(viewFrustum.getRight() - viewFrustum.getLeft() - pathwayWidth * vecScaling.x()) / 2.0f,
-						(viewFrustum.getTop() - viewFrustum.getBottom() - pathwayHeight * vecScaling.y()) / 2.0f, 0);
-				pathwayFitsViewFrustum = false;
-			}
-
-			if (viewFrustumAspectRatio >= pathwayAspectRatio && pathwayHeight > viewFrustumHeight) {
-
-				vecScaling.setY((viewFrustum.getTop() - viewFrustum.getBottom()) / pathwayHeight);
-				vecScaling.setX(vecScaling.y());
-
-				vecTranslation.set(
-						(viewFrustum.getRight() - viewFrustum.getLeft() - pathwayWidth * vecScaling.x()) / 2.0f,
-						(viewFrustum.getTop() - viewFrustum.getBottom() - pathwayHeight * vecScaling.y()) / 2.0f, 0);
-				pathwayFitsViewFrustum = false;
-			}
-
-			if (pathwayFitsViewFrustum) {
+			if (pathwayWidth <= viewFrustumWidth && pathwayHeight <= viewFrustumHeight) {
 				vecScaling.set(1, 1, 1f);
-
-				vecTranslation.set((viewFrustum.getRight() - viewFrustum.getLeft()) / 2.0f - pathwayWidth / 2.0f,
-						(viewFrustum.getTop() - viewFrustum.getBottom()) / 2.0f - pathwayHeight / 2.0f, 0);
+				renderWidth = pathwayWidth;
+				renderHeight = pathwayHeight;
+			} else {
+				if (viewFrustumAspectRatio > pathwayAspectRatio) {
+					renderWidth = (viewFrustumHeight / pathwayHeight) * pathwayWidth;
+					renderHeight = viewFrustumHeight;
+				} else {
+					renderWidth = viewFrustumWidth;
+					renderHeight = (viewFrustumWidth / pathwayWidth) * pathwayHeight;
+				}
+				vecScaling.set(renderWidth / pathwayWidth, renderHeight / pathwayHeight, 1);
 			}
+			vecTranslation.set((viewFrustumWidth - renderWidth) / 2.0f, (viewFrustumHeight - renderHeight) / 2.0f, 0);
+			return;
+
 		}
 
 		// Center pathway in x direction
