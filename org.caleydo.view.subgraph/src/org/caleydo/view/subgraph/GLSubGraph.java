@@ -20,6 +20,7 @@ import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
+import org.caleydo.core.event.view.MinSizeUpdateEvent;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
@@ -635,7 +636,8 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 					for (PathwayVertexRep portalVertexRep : portalVertexRepsInPathway) {
 						Rectangle2D rect = getAbsoluteVertexLocation(pathwayRepresentation, portalVertexRep,
 								info.container);
-						portalRects.add(rect);
+						if (rect != null)
+							portalRects.add(rect);
 					}
 					if (nodeRect == null && pathwayRepresentation.getPathway().containsVertex(vertexRep))
 						nodeRect = getAbsoluteVertexLocation(pathwayRepresentation, vertexRep, info.container);
@@ -668,6 +670,11 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 			// MoveTransitions.GROW_LINEAR));
 			// baseContainer.setSize(Float.NaN, 80);
 			// nodeInfoContainer.relayout();
+		}
+
+		@ListenTo(restrictExclusiveToEventSpace = true)
+		public void onMinSizeUpdate(MinSizeUpdateEvent event) {
+			pathwayRow.relayout();
 		}
 
 	}
