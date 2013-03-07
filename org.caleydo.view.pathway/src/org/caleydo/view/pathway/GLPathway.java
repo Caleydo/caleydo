@@ -763,7 +763,22 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 		float viewFrustumAspectRatio = viewFrustumWidth / viewFrustumHeight;
 		boolean pathwayFitsViewFrustum = true;
 
+		// float rendererAspectRatio = x / y;
+		// float imageAspectRatio = (float) baseImage.getWidth() / (float) baseImage.getHeight();
+
 		if (isRenderedRemote()) {
+
+			// float renderWidth;
+			// float renderHeight;
+			// if (viewFrustumAspectRatio > pathwayAspectRatio) {
+			// renderWidth = (viewFrustumHeight / pathwayHeight) * pathwayWidth;
+			// renderHeight = viewFrustumHeight;
+			// } else {
+			// renderWidth = viewFrustumWidth;
+			// renderHeight = (viewFrustumWidth / pathwayWidth) * pathwayHeight;
+			// }
+			//
+			// vecScaling.setX()
 
 			if (viewFrustumAspectRatio < pathwayAspectRatio && pathwayWidth > viewFrustumWidth) {
 

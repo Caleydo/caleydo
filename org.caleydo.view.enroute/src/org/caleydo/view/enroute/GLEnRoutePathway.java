@@ -378,9 +378,8 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	}
 
 	private void setMinViewSize(int minWidthPixels, int minHeightPixels) {
-		SetMinViewSizeEvent event = new SetMinViewSizeEvent();
+		SetMinViewSizeEvent event = new SetMinViewSizeEvent(this);
 		event.setMinViewSize(minWidthPixels, minHeightPixels);
-		event.setView(this);
 		eventPublisher.triggerEvent(event);
 		// System.out.println("minsize: " + minHeightPixels);
 		setLayoutDirty();
@@ -618,8 +617,10 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 	@ListenTo
 	public void onPathRendererChanged(PathRendererChangedEvent event) {
-		setLayoutDirty();
-		pathRendererChanged = true;
+		if (event.getPathRenderer() == pathRenderer) {
+			setLayoutDirty();
+			pathRendererChanged = true;
+		}
 	}
 
 	@Override

@@ -185,8 +185,8 @@ public class EnRoutePathRenderer extends VerticalPathRenderer {
 			}
 		}
 
-		minHeightPixels = Math.max(minViewHeightRequiredByBranchNodes,
-				pixelGLConverter.getPixelHeightForGLHeight(pathwayHeight));
+		setMinHeightPixels(Math.max(minViewHeightRequiredByBranchNodes,
+				pixelGLConverter.getPixelHeightForGLHeight(pathwayHeight)));
 	}
 
 	// @Override

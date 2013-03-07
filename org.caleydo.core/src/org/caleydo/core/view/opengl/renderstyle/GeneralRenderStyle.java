@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,12 +8,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -28,7 +28,7 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 
 /**
  * Render Styles for the whole system
- * 
+ *
  * @author Alexander Lex
  * @author Marc Streit
  */
@@ -117,8 +117,7 @@ public class GeneralRenderStyle {
 		float fScaling;
 		if (viewFrustum.getWidth() > viewFrustum.getHeight()) {
 			fScaling = viewFrustum.getWidth();
-		}
-		else {
+		} else {
 			fScaling = viewFrustum.getHeight();
 		}
 		return fScaling;
@@ -165,9 +164,8 @@ public class GeneralRenderStyle {
 
 	private void sendSetMinSizeEvent(AGLView view) {
 		EventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
-		SetMinViewSizeEvent event = new SetMinViewSizeEvent();
+		SetMinViewSizeEvent event = new SetMinViewSizeEvent(view);
 		event.setMinViewSize(minViewWidth, minViewHeight);
-		event.setView(view);
 		eventPublisher.triggerEvent(event);
 	}
 }

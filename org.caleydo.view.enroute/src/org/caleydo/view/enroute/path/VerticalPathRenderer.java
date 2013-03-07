@@ -161,8 +161,8 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 			}
 		}
 
-		minHeightPixels = Math.max(minViewHeightRequiredByBranchNodes,
-				pixelGLConverter.getPixelHeightForGLHeight(minPathHeight));
+		setMinHeightPixels(Math.max(minViewHeightRequiredByBranchNodes,
+				pixelGLConverter.getPixelHeightForGLHeight(minPathHeight)));
 
 	}
 
@@ -306,7 +306,7 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 			}
 			if (segmentIndex == pathSegments.size() - 1) {
 				renderPathwayTitle(gl, segmentIndex, topPathwayTitleLimit,
-						y - pixelGLConverter.getGLHeightForPixelHeight(minHeightPixels));
+						y - pixelGLConverter.getGLHeightForPixelHeight(getMinHeightPixels()));
 				segmentIndex++;
 			}
 		}
@@ -348,8 +348,8 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 	@Override
 	public void setSizeConfig(PathSizeConfiguration sizeConfig) {
 		super.setSizeConfig(sizeConfig);
-		minWidthPixels = sizeConfig.branchAreaWidth + sizeConfig.pathAreaWidth
-				+ (pathway == null ? sizeConfig.pathwayTitleAreaWidth : 0);
+		setMinWidthPixels(sizeConfig.branchAreaWidth + sizeConfig.pathAreaWidth
+				+ (pathway == null ? sizeConfig.pathwayTitleAreaWidth : 0));
 	}
 
 }

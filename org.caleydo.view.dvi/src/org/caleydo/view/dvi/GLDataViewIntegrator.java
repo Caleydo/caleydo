@@ -119,14 +119,11 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
 /**
- * This class is responsible for providing an overview of all loaded datasets
- * and opened views and their relationships.
+ * This class is responsible for providing an overview of all loaded datasets and opened views and their relationships.
  *
  * @author Christian Partl
  */
-public class GLDataViewIntegrator
-	extends AGLView
-	implements IViewCommandHandler {
+public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler {
 
 	public static String VIEW_TYPE = "org.caleydo.view.dvi";
 
@@ -302,8 +299,10 @@ public class GLDataViewIntegrator
 	/**
 	 * Builds the display list for a given display list index.
 	 *
-	 * @param gl Instance of GL2.
-	 * @param iGLDisplayListIndex Index of the display list.
+	 * @param gl
+	 *            Instance of GL2.
+	 * @param iGLDisplayListIndex
+	 *            Index of the display list.
 	 */
 	private void buildDisplayList(final GL2 gl, int iGLDisplayListIndex) {
 		gl.glNewList(iGLDisplayListIndex, GL2.GL_COMPILE);
@@ -380,9 +379,8 @@ public class GLDataViewIntegrator
 			isMinSizeApplied = false;
 
 			EventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
-			SetMinViewSizeEvent event = new SetMinViewSizeEvent();
+			SetMinViewSizeEvent event = new SetMinViewSizeEvent(this);
 			event.setMinViewSize(minViewWidthPixels, minViewHeightPixels);
-			event.setView(this);
 			eventPublisher.triggerEvent(event);
 			// parentComposite.getParent();
 		}
@@ -403,8 +401,7 @@ public class GLDataViewIntegrator
 			if ((edge.getNode1() instanceof ViewNode) || (edge.getNode2() instanceof ViewNode)) {
 				// Render later transparent in foreground
 				bandConnectedNodes.add(edge);
-			}
-			else {
+			} else {
 				renderEdge(gl, edge, connectionBandRenderer);
 			}
 		}
@@ -483,8 +480,7 @@ public class GLDataViewIntegrator
 
 		CreateViewFromTablePerspectiveEventListener createViewFromTablePerspectiveEventListener = new CreateViewFromTablePerspectiveEventListener();
 		createViewFromTablePerspectiveEventListener.setHandler(this);
-		listeners.register(CreateViewFromTablePerspectiveEvent.class,
-				createViewFromTablePerspectiveEventListener);
+		listeners.register(CreateViewFromTablePerspectiveEvent.class, createViewFromTablePerspectiveEventListener);
 
 		ApplySpecificGraphLayoutEventListener applySpecificGraphLayoutEventListener = new ApplySpecificGraphLayoutEventListener();
 		applySpecificGraphLayoutEventListener.setHandler(this);
@@ -522,7 +518,6 @@ public class GLDataViewIntegrator
 		listeners.unregisterAll();
 	}
 
-
 	@Override
 	public void handleRedrawView() {
 		setDisplayListDirty();
@@ -539,9 +534,8 @@ public class GLDataViewIntegrator
 			waitForMinSizeApplication = true;
 
 			EventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
-			SetMinViewSizeEvent event = new SetMinViewSizeEvent();
+			SetMinViewSizeEvent event = new SetMinViewSizeEvent(this);
 			event.setMinViewSize(minViewWidthPixels, minViewHeightPixels);
-			event.setView(this);
 			eventPublisher.triggerEvent(event);
 		}
 	}
@@ -659,8 +653,7 @@ public class GLDataViewIntegrator
 					AEdgeRenderer edgeRenderer = graphLayout.getLayoutSpecificEdgeRenderer(edge);
 					edge.setEdgeRenderer(edgeRenderer);
 				}
-			}
-			else {
+			} else {
 				if (viewNodes != null) {
 					viewNodes.remove(viewNode);
 					if (viewNodes.isEmpty()) // clean empty
@@ -783,8 +776,7 @@ public class GLDataViewIntegrator
 			IDCategory category = e.getIdCategory();
 			if (category != null) {
 				stringBuffer.append(e.getIdCategory().getCategoryName());
-			}
-			else {
+			} else {
 				stringBuffer.append("Unknown Mapping");
 			}
 			if (iterator.hasNext()) {
@@ -796,9 +788,7 @@ public class GLDataViewIntegrator
 	}
 
 	/**
-	 * FIXME:
-	 * DOKU!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	 * !!!!!!!!!!!
+	 * FIXME: DOKU!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! !!!!!!!!!!!
 	 *
 	 * @param dataDomain
 	 * @param recordPerspectiveID
@@ -868,8 +858,7 @@ public class GLDataViewIntegrator
 					dimensionGroup.setPerspectiveID(dimensionPerspective.getPerspectiveID());
 					dataDomain.getTable().registerDimensionPerspective(dimensionPerspective);
 					currentDimensionPerspeciveID = dimensionPerspective.getPerspectiveID();
-				}
-				else {
+				} else {
 					dimensionPerspective = dataDomain.getTable().getDimensionPerspective(dimensionPerspectiveID);
 				}
 
@@ -887,8 +876,7 @@ public class GLDataViewIntegrator
 					recordGroup.setPerspectiveID(recordPerspective.getPerspectiveID());
 					dataDomain.getTable().registerRecordPerspective(recordPerspective);
 					currentRecordPerspeciveID = recordPerspective.getPerspectiveID();
-				}
-				else {
+				} else {
 					recordPerspective = dataDomain.getTable().getRecordPerspective(recordPerspectiveID);
 				}
 
@@ -935,8 +923,7 @@ public class GLDataViewIntegrator
 					if (PlatformUI.getWorkbench().getActiveWorkbenchWindow() != null) {
 						PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(viewID);
 					}
-				}
-				catch (PartInitException e) {
+				} catch (PartInitException e) {
 					e.printStackTrace();
 				}
 			}
@@ -962,8 +949,7 @@ public class GLDataViewIntegrator
 								.showView(viewID, secondaryID, IWorkbenchPage.VIEW_ACTIVATE);
 
 					}
-				}
-				catch (PartInitException e) {
+				} catch (PartInitException e) {
 					e.printStackTrace();
 				}
 			}
@@ -987,8 +973,7 @@ public class GLDataViewIntegrator
 			for (IDVINode node : dataGraph.getNodes()) {
 				node.setGraphLayout(graphLayout);
 			}
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			Logger.log(new Status(IStatus.ERROR, this.toString(), "Failed to create Graph Layout", e));
 		}
 
@@ -1058,10 +1043,8 @@ public class GLDataViewIntegrator
 		// TODO: delete layout managers
 	}
 
-
 	/**
-	 * Opens an input dialog in order to rename the specified
-	 * {@link ILabelHolder}.
+	 * Opens an input dialog in order to rename the specified {@link ILabelHolder}.
 	 *
 	 * @param labelHolder
 	 */
@@ -1086,8 +1069,7 @@ public class GLDataViewIntegrator
 				if (dialog.open() == Window.OK) {
 					if (labelHolder instanceof IDefaultLabelHolder) {
 						((IDefaultLabelHolder) labelHolder).setLabel(dialog.getValue(), false);
-					}
-					else {
+					} else {
 						labelHolder.setLabel(dialog.getValue());
 					}
 					for (IDVINode node : dataGraph.getNodes()) {

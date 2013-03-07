@@ -35,6 +35,8 @@ import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
 import org.caleydo.core.data.selection.IEventBasedSelectionManagerUser;
+import org.caleydo.core.event.EventPublisher;
+import org.caleydo.core.event.view.MinSizeUpdateEvent;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
@@ -934,5 +936,31 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	 */
 	public void setBranchPathExtractionEventSpace(String branchPathExtractionEventSpace) {
 		this.branchPathExtractionEventSpace = branchPathExtractionEventSpace;
+	}
+
+	/**
+	 * @param minHeightPixels
+	 *            setter, see {@link minHeightPixels}
+	 */
+	public void setMinHeightPixels(int minHeightPixels) {
+		if (minHeightPixels == this.minHeightPixels)
+			return;
+		this.minHeightPixels = minHeightPixels;
+		MinSizeUpdateEvent event = new MinSizeUpdateEvent(this, minHeightPixels, minWidthPixels);
+		event.setEventSpace(pathwayPathEventSpace);
+		EventPublisher.INSTANCE.triggerEvent(event);
+	}
+
+	/**
+	 * @param minWidthPixels
+	 *            setter, see {@link minWidthPixels}
+	 */
+	public void setMinWidthPixels(int minWidthPixels) {
+		if (minWidthPixels == this.minWidthPixels)
+			return;
+		this.minWidthPixels = minWidthPixels;
+		MinSizeUpdateEvent event = new MinSizeUpdateEvent(this, minHeightPixels, minWidthPixels);
+		event.setEventSpace(pathwayPathEventSpace);
+		EventPublisher.INSTANCE.triggerEvent(event);
 	}
 }

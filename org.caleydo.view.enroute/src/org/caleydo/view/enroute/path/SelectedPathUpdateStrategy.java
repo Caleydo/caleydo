@@ -21,6 +21,8 @@ package org.caleydo.view.enroute.path;
 
 import java.util.List;
 
+import org.caleydo.core.event.EventPublisher;
+import org.caleydo.core.event.view.MinSizeUpdateEvent;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.listener.EnablePathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.PathwayPathSelectionEvent;
@@ -53,6 +55,9 @@ public class SelectedPathUpdateStrategy extends APathUpdateStrategy {
 	@Override
 	public void triggerPathUpdate() {
 		triggerPathUpdate(renderer.pathSegments);
+		MinSizeUpdateEvent event = new MinSizeUpdateEvent(renderer, renderer.minHeightPixels, renderer.minWidthPixels);
+		event.setEventSpace(pathwayPathEventSpace);
+		EventPublisher.INSTANCE.triggerEvent(event);
 	}
 
 	@Override

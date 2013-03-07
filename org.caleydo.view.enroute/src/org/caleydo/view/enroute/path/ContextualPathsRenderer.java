@@ -39,7 +39,9 @@ import org.caleydo.core.event.AEventListener;
 import org.caleydo.core.event.EventListenerManager;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventListenerManagers;
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.IListenerOwner;
+import org.caleydo.core.event.view.MinSizeUpdateEvent;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
@@ -231,6 +233,7 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 		VerticalPathRenderer renderer = new VerticalPathRenderer(view, tablePerspectives);
 
 		renderer.setUpdateStrategy(new FixedPathUpdateStrategy(renderer, eventSpace, isPathSelectionMode, this));
+		renderer.pathwayPathEventSpace = eventSpace;
 		renderer.setTablePerspectives(tablePerspectives);
 		renderer.setPathway(pathway);
 		renderer.setBranchPathExtractionEventSpace(BRANCH_PATH_EVENTSPACE);
@@ -349,6 +352,7 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 
 		setDisplayListDirty();
 		layout.updateLayout();
+		triggerMinSizeUpdate();
 	}
 
 	@ListenTo(restrictExclusiveToEventSpace = true)
@@ -403,6 +407,15 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 			}
 			pathRendererWithMostEqualNodes.setPath(selectedPathSegments);
 		}
+
+		triggerMinSizeUpdate();
+
+	}
+
+	private void triggerMinSizeUpdate() {
+		MinSizeUpdateEvent e = new MinSizeUpdateEvent(this, getMinWidthPixels(), getMinHeightPixels());
+		e.setEventSpace(eventSpace);
+		EventPublisher.INSTANCE.triggerEvent(e);
 	}
 
 	private boolean isPathFromPathway(List<PathwayPath> pathSegments, PathwayGraph pathway) {

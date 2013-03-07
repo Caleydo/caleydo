@@ -22,6 +22,8 @@ package org.caleydo.view.enroute.path;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.caleydo.core.event.EventPublisher;
+import org.caleydo.core.event.view.MinSizeUpdateEvent;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -82,7 +84,9 @@ public class FixedPathUpdateStrategy extends APathUpdateStrategy {
 
 	@Override
 	public void triggerPathUpdate() {
-
+		MinSizeUpdateEvent event = new MinSizeUpdateEvent(renderer, renderer.minHeightPixels, renderer.minWidthPixels);
+		event.setEventSpace(pathwayPathEventSpace);
+		EventPublisher.INSTANCE.triggerEvent(event);
 	}
 
 	@Override
