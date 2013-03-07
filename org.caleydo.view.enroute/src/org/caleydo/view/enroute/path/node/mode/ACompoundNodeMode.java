@@ -48,8 +48,10 @@ public abstract class ACompoundNodeMode extends ALinearizeableNodeMode {
 		gl.glPushName(pickingManager.getPickingID(view.getID(), EPickingType.LINEARIZABLE_NODE.name(), node.hashCode()));
 		gl.glPushMatrix();
 		gl.glTranslatef(position.x(), position.y(), position.z());
+		gl.glColor4f(backgroundColor[0], backgroundColor[1], backgroundColor[2], pathwayPathRenderer.getNodeAlpha());
 		gl.glColor4fv(backgroundColor, 0);
 		GLPrimitives.renderCircle(glu, radius / 2.0f, 16);
+		// gl.glColor4f(0, 0, 0, pathwayPathRenderer.getNodeAlpha());
 		gl.glColor4f(0, 0, 0, 1);
 		GLPrimitives.renderCircleBorder(gl, glu, radius / 2.0f, 16, 0.1f);
 		gl.glPopMatrix();
@@ -63,7 +65,7 @@ public abstract class ACompoundNodeMode extends ALinearizeableNodeMode {
 		Collections.sort(selectionTypes);
 		Collections.reverse(selectionTypes);
 		colorCalculator.calculateColors(selectionTypes);
-		backgroundColor = colorCalculator.getPrimaryColor().getRGBA();
+		backgroundColor = colorCalculator.getPrimaryColor().getRGB();
 	}
 
 	@Override

@@ -70,6 +70,8 @@ public class CompoundNodeLinearizedMode extends ACompoundNodeMode {
 
 			@Override
 			public void clicked(Pick pick) {
+				if (!node.isPickable())
+					return;
 				EventBasedSelectionManager selectionManager = pathwayPathRenderer.getMetaboliteSelectionManager();
 				EventBasedSelectionManager geneSelectionManager = pathwayPathRenderer.getGeneSelectionManager();
 				geneSelectionManager.clearSelection(SelectionType.SELECTION);
@@ -85,6 +87,8 @@ public class CompoundNodeLinearizedMode extends ACompoundNodeMode {
 
 			@Override
 			public void mouseOver(Pick pick) {
+				if (!node.isPickable())
+					return;
 				EventBasedSelectionManager selectionManager = pathwayPathRenderer.getMetaboliteSelectionManager();
 				EventBasedSelectionManager geneSelectionManager = pathwayPathRenderer.getGeneSelectionManager();
 				geneSelectionManager.clearSelection(SelectionType.MOUSE_OVER);
@@ -99,7 +103,8 @@ public class CompoundNodeLinearizedMode extends ACompoundNodeMode {
 
 			@Override
 			public void mouseOut(Pick pick) {
-
+				if (!node.isPickable())
+					return;
 				EventBasedSelectionManager selectionManager = pathwayPathRenderer.getMetaboliteSelectionManager();
 				selectionManager.removeFromType(SelectionType.MOUSE_OVER, node.getPrimaryPathwayVertexRep().getName()
 						.hashCode());

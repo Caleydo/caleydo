@@ -666,7 +666,9 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 		Set<IPickingListener> pickingListeners = typePickingListeners.get(pickingType);
 
 		if (pickingListeners != null) {
-			for (IPickingListener pickingListener : pickingListeners) {
+			// Create copy of picking listeners to avoid concurrent modification issues when a picking listener tries to
+			// register or unregister a picking listener to this set
+			for (IPickingListener pickingListener : new HashSet<>(pickingListeners)) {
 				notifyPickingListener(pickingListener, pickingMode, pick);
 			}
 		}
@@ -678,7 +680,9 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 		pickingListeners = map.get(pickedObjectID);
 
 		if (pickingListeners != null) {
-			for (IPickingListener pickingListener : pickingListeners) {
+			// Create copy of picking listeners to avoid concurrent modification issues when a picking listener tries to
+			// register or unregister a picking listener to this set
+			for (IPickingListener pickingListener : new HashSet<>(pickingListeners)) {
 				notifyPickingListener(pickingListener, pickingMode, pick);
 			}
 		}

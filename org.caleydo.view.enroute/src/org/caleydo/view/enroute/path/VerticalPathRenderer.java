@@ -166,8 +166,7 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 		setMinHeightPixels(Math.max(minViewHeightRequiredByBranchNodes,
 				pixelGLConverter.getPixelHeightForGLHeight(minPathHeight)));
 		setMinWidthPixels(pixelGLConverter.getPixelWidthForGLWidth(branchColumnWidth
-				+ (pathway == null ? pathwayTitleColumnWidth : 0)
-				+ pathColumnWidth));
+				+ (pathway == null ? pathwayTitleColumnWidth : 0) + pathColumnWidth));
 
 	}
 
@@ -176,6 +175,11 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 		GLU glu = new GLU();
 		gl.glEnable(GL.GL_BLEND);
 		gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
+		// gl.glEnable(GL2.GL_POLYGON_STIPPLE);
+		// gl.glPolygonStipple(0x01);
+		// gl.glAl
+		// gl.glBlendColor(1f, 1f, 1f, 0.9f);
+		// gl.glBlendFunc(GL2.GL_ONE, GL2.GL_CONSTANT_COLOR);
 		gl.glEnable(GL.GL_LINE_SMOOTH);
 
 		renderPathwayBorders(gl);

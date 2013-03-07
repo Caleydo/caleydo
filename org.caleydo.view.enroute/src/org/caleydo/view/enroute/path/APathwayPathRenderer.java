@@ -170,6 +170,11 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	 */
 	protected String branchPathExtractionEventSpace;
 
+	/**
+	 * Alpha value that shall be used by nodes for rendering.s
+	 */
+	protected float nodeAlpha = 1f;
+
 	protected EventBasedSelectionManager geneSelectionManager;
 	protected EventBasedSelectionManager metaboliteSelectionManager;
 	protected EventBasedSelectionManager sampleSelectionManager;
@@ -621,6 +626,10 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	public void setExpandedBranchSummaryNode(BranchSummaryNode expandedBranchSummaryNode) {
 		if (this.expandedBranchSummaryNode != expandedBranchSummaryNode) {
 			this.expandedBranchSummaryNode = expandedBranchSummaryNode;
+			for (ALinearizableNode node : pathNodes) {
+				node.setPickable(expandedBranchSummaryNode == null);
+			}
+
 			PathRendererChangedEvent event = new PathRendererChangedEvent(this);
 			event.setSender(this);
 			GeneralManager.get().getEventPublisher().triggerEvent(event);
@@ -905,6 +914,8 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 
 		@Override
 		protected void rightClicked(Pick pick) {
+			if (!node.isPickable())
+				return;
 			addContextMenuItems(nodeContextMenuItems);
 			if (allowBranchPathExtraction && branchNodesToLinearizedNodesMap.keySet().contains(node)) {
 				ShowPathEvent event = new ShowPathEvent(getBranchPath(node));
@@ -962,5 +973,12 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 		MinSizeUpdateEvent event = new MinSizeUpdateEvent(this, minHeightPixels, minWidthPixels);
 		event.setEventSpace(pathwayPathEventSpace);
 		EventPublisher.INSTANCE.triggerEvent(event);
+	}
+
+	/**
+	 * @return the nodeAlpha, see {@link #nodeAlpha}
+	 */
+	public float getNodeAlpha() {
+		return nodeAlpha;
 	}
 }

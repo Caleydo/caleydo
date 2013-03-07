@@ -54,6 +54,11 @@ public abstract class ANode implements ILabelProvider {
 
 	protected PickingManager pickingManager;
 
+	/**
+	 * Determines whether the node shall be pickable.
+	 */
+	protected boolean isPickable = true;
+
 	public ANode(AGLView view) {
 		this.pixelGLConverter = view.getPixelGLConverter();
 		this.view = view;
@@ -139,6 +144,21 @@ public abstract class ANode implements ILabelProvider {
 
 	public float getWidth() {
 		return pixelGLConverter.getGLHeightForPixelHeight(getWidthPixels());
+	}
+
+	/**
+	 * @param isPickable
+	 *            setter, see {@link isPickable}
+	 */
+	public void setPickable(boolean isPickable) {
+		this.isPickable = isPickable;
+	}
+
+	/**
+	 * @return the isPickable, see {@link #isPickable}
+	 */
+	public boolean isPickable() {
+		return isPickable;
 	}
 
 }

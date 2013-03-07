@@ -104,7 +104,8 @@ public class CompoundNodePreviewMode extends ACompoundNodeMode {
 		pickingListener = new APickingListener() {
 			@Override
 			public void clicked(Pick pick) {
-
+				if (!node.isPickable())
+					return;
 				ALinearizableNode branchNode = node;
 				while (branchNode.getParentNode() != null) {
 					branchNode = branchNode.getParentNode();
@@ -119,7 +120,8 @@ public class CompoundNodePreviewMode extends ACompoundNodeMode {
 
 			@Override
 			public void mouseOver(Pick pick) {
-
+				if (!node.isPickable())
+					return;
 				EventBasedSelectionManager selectionManager = pathwayPathRenderer.getMetaboliteSelectionManager();
 				selectionManager.clearSelection(SelectionType.MOUSE_OVER);
 				selectionManager.addToType(SelectionType.MOUSE_OVER, node.getPrimaryPathwayVertexRep().getName()
@@ -133,7 +135,8 @@ public class CompoundNodePreviewMode extends ACompoundNodeMode {
 
 			@Override
 			public void mouseOut(Pick pick) {
-
+				if (!node.isPickable())
+					return;
 				EventBasedSelectionManager selectionManager = pathwayPathRenderer.getMetaboliteSelectionManager();
 				selectionManager.removeFromType(SelectionType.MOUSE_OVER, node.getPrimaryPathwayVertexRep().getName()
 						.hashCode());

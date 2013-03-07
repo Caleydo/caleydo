@@ -97,6 +97,8 @@ public class ComplexNodePreviewMode extends ALayoutBasedNodeMode implements ICom
 		pickingListener = new APickingListener() {
 			@Override
 			public void clicked(Pick pick) {
+				if (!node.isPickable())
+					return;
 
 				ALinearizableNode branchNode = node;
 				while (branchNode.getParentNode() != null) {

@@ -108,7 +108,8 @@ public class RemoveNodeButtonAttributeRenderer extends ANodeAttributeRenderer {
 
 				@Override
 				public void mouseOver(Pick pick) {
-
+					if (!node.isPickable())
+						return;
 					// List<ALinearizableNode> pathNodes = pathwayPathRenderer.getPathNodes();
 					// int index = pathNodes.indexOf(node);
 
@@ -128,6 +129,8 @@ public class RemoveNodeButtonAttributeRenderer extends ANodeAttributeRenderer {
 
 				@Override
 				public void clicked(Pick pick) {
+					if (!node.isPickable())
+						return;
 					RemoveEnRouteNodeEvent event = new RemoveEnRouteNodeEvent((ALinearizableNode) node);
 					event.setSender(this);
 					GeneralManager.get().getEventPublisher().triggerEvent(event);

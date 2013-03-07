@@ -66,7 +66,6 @@ public abstract class AGeneNodeMode extends ALayoutBasedNodeMode implements ICol
 		colorCalculator.calculateColors(allSelectionTypes);
 		backgroundColor = colorCalculator.getPrimaryColor().getRGBA();
 		gradientColor = colorCalculator.getSecondaryColor().getRGBA();
-
 	}
 
 	@Override
