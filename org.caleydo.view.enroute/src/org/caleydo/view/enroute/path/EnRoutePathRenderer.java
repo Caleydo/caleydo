@@ -120,7 +120,9 @@ public class EnRoutePathRenderer extends VerticalPathRenderer {
 	@Override
 	public void updateLayout() {
 
-		float branchColumnWidth = pixelGLConverter.getGLWidthForPixelWidth(sizeConfig.branchAreaWidth);
+		float branchColumnWidth = pixelGLConverter
+				.getGLWidthForPixelWidth(expandedBranchSummaryNode == null ? sizeConfig.collapsedBranchAreaWidth
+						: sizeConfig.expandedBranchAreaWidth);
 		float pathColumnWidth = pixelGLConverter.getGLWidthForPixelWidth(sizeConfig.pathAreaWidth);
 		float pathwayTitleColumnWidth = pixelGLConverter.getGLWidthForPixelWidth(sizeConfig.pathwayTitleAreaWidth);
 
@@ -187,6 +189,8 @@ public class EnRoutePathRenderer extends VerticalPathRenderer {
 
 		setMinHeightPixels(Math.max(minViewHeightRequiredByBranchNodes,
 				pixelGLConverter.getPixelHeightForGLHeight(pathwayHeight)));
+		setMinWidthPixels(pixelGLConverter.getPixelWidthForGLWidth(branchColumnWidth
+				+ (pathway == null ? pathwayTitleColumnWidth : 0) + pathColumnWidth));
 	}
 
 	// @Override

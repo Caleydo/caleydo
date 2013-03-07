@@ -118,7 +118,9 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 	@Override
 	protected void updateLayout() {
 
-		float branchColumnWidth = pixelGLConverter.getGLWidthForPixelWidth(sizeConfig.branchAreaWidth);
+		float branchColumnWidth = pixelGLConverter
+				.getGLWidthForPixelWidth(expandedBranchSummaryNode == null ? sizeConfig.collapsedBranchAreaWidth
+						: sizeConfig.expandedBranchAreaWidth);
 		float pathColumnWidth = pixelGLConverter.getGLWidthForPixelWidth(sizeConfig.pathAreaWidth);
 		float pathwayTitleColumnWidth = pixelGLConverter.getGLWidthForPixelWidth(sizeConfig.pathwayTitleAreaWidth);
 
@@ -163,6 +165,9 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 
 		setMinHeightPixels(Math.max(minViewHeightRequiredByBranchNodes,
 				pixelGLConverter.getPixelHeightForGLHeight(minPathHeight)));
+		setMinWidthPixels(pixelGLConverter.getPixelWidthForGLWidth(branchColumnWidth
+				+ (pathway == null ? pathwayTitleColumnWidth : 0)
+				+ pathColumnWidth));
 
 	}
 
@@ -348,8 +353,10 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 	@Override
 	public void setSizeConfig(PathSizeConfiguration sizeConfig) {
 		super.setSizeConfig(sizeConfig);
-		setMinWidthPixels(sizeConfig.branchAreaWidth + sizeConfig.pathAreaWidth
-				+ (pathway == null ? sizeConfig.pathwayTitleAreaWidth : 0));
+		setMinWidthPixels((expandedBranchSummaryNode == null ? this.sizeConfig.collapsedBranchAreaWidth
+				: this.sizeConfig.expandedBranchAreaWidth)
+				+ this.sizeConfig.pathAreaWidth
+				+ (pathway == null ? this.sizeConfig.pathwayTitleAreaWidth : 0));
 	}
 
 }

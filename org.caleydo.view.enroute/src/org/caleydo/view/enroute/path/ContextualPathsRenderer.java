@@ -412,6 +412,15 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 
 	}
 
+	@ListenTo
+	public void onMinSizeUpdate(MinSizeUpdateEvent event) {
+		ElementLayout layout = renderers.get(event.getMinSizeObject());
+		if (layout != null) {
+			APathwayPathRenderer renderer = (APathwayPathRenderer) event.getMinSizeObject();
+			layout.setDynamicSizeUnitsX(renderer.getMinWidthPixels());
+		}
+	}
+
 	private void triggerMinSizeUpdate() {
 		MinSizeUpdateEvent e = new MinSizeUpdateEvent(this, getMinWidthPixels(), getMinHeightPixels());
 		e.setEventSpace(eventSpace);

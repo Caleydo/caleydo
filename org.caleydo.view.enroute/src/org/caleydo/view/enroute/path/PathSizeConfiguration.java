@@ -32,19 +32,21 @@ public class PathSizeConfiguration {
 
 	public static final PathSizeConfiguration DEFAULT = new Builder().rectangleNodeWidth(70).rectangleNodeHeight(20)
 			.circleNodeRadius(10).minNodeSpacing(50).nodeTextHeight(16).pathStartSpacing(30).pathEndSpacing(14)
-			.rowHeight(60).branchNodeToPathNodeVerticalSpacing(20).branchAreaWidth(100).pathAreaWidth(150)
-			.branchNodeLeftSideSpacing(8).pathwayTextHeight(16).pathwayTitleAreaWidth(20).dataPreviewRowHeight(30)
-			.branchSummaryNodeWidth(90).branchSummaryNodeTextHeight(14).branchSummaryNodeBranchAreaSpacing(8)
+			.rowHeight(60).branchNodeToPathNodeVerticalSpacing(20).collapsedBranchAreaWidth(100)
+			.expandedBranchAreaWidth(100).pathAreaWidth(150).branchNodeLeftSideSpacing(8).pathwayTextHeight(16)
+			.pathwayTitleAreaWidth(20).dataPreviewRowHeight(30).branchSummaryNodeWidthCollapsed(90)
+			.branchSummaryNodeWidthExpanded(90).branchSummaryNodeTextHeight(14).branchSummaryNodeBranchAreaSpacing(8)
 			.branchSummaryNodeBranchNodeSpacing(20).pathwayBorderWidth(10).edgeArrowSize(15).edgeArrwoBaseLineSize(10)
-			.edgeTextHeight(13).build();
+			.edgeTextHeight(13).branchNodesShowDataPreview(true).build();
 
 	public static final PathSizeConfiguration COMPACT = new Builder().rectangleNodeWidth(40).rectangleNodeHeight(14)
 			.circleNodeRadius(7).minNodeSpacing(40).nodeTextHeight(12).pathStartSpacing(30).pathEndSpacing(14)
-			.rowHeight(40).branchNodeToPathNodeVerticalSpacing(10).branchAreaWidth(65).pathAreaWidth(50)
-			.branchNodeLeftSideSpacing(6).pathwayTextHeight(12).pathwayTitleAreaWidth(14).dataPreviewRowHeight(20)
-			.branchSummaryNodeWidth(50).branchSummaryNodeTextHeight(12).branchSummaryNodeBranchAreaSpacing(4)
+			.rowHeight(40).branchNodeToPathNodeVerticalSpacing(10).collapsedBranchAreaWidth(40)
+			.expandedBranchAreaWidth(65).pathAreaWidth(50).branchNodeLeftSideSpacing(6).pathwayTextHeight(12)
+			.pathwayTitleAreaWidth(14).dataPreviewRowHeight(20).branchSummaryNodeWidthCollapsed(25)
+			.branchSummaryNodeWidthExpanded(50).branchSummaryNodeTextHeight(12).branchSummaryNodeBranchAreaSpacing(4)
 			.branchSummaryNodeBranchNodeSpacing(10).pathwayBorderWidth(6).edgeArrowSize(10).edgeArrwoBaseLineSize(6)
-			.edgeTextHeight(9).build();
+			.edgeTextHeight(9).branchNodesShowDataPreview(false).build();
 
 	public static final PathSizeConfiguration ENROUTE_DEFAULT = new Builder(DEFAULT).pathStartSpacing(60)
 			.pathEndSpacing(60).minNodeSpacing(40).build();
@@ -81,9 +83,13 @@ public class PathSizeConfiguration {
 	 */
 	protected final int branchSummaryNodeTextHeight;
 	/**
-	 * Width of {@link BranchSummaryNode}s.
+	 * Width of collapsed {@link BranchSummaryNode}s.
 	 */
-	protected final int branchSummaryNodeWidth;
+	protected final int branchSummaryNodeWidthCollapsed;
+	/**
+	 * Width of collapsed {@link BranchSummaryNode}s.
+	 */
+	protected final int branchSummaryNodeWidthExpanded;
 	/**
 	 * The height of the row that shows the preview of data that maps to the node.
 	 */
@@ -133,9 +139,13 @@ public class PathSizeConfiguration {
 	 */
 	protected final int branchNodeToPathNodeVerticalSpacing;
 	/**
-	 * Width of the area for branch nodes.
+	 * Width of the area for branch nodes when there are only collapsed branch nodes.
 	 */
-	protected final int branchAreaWidth;
+	protected final int collapsedBranchAreaWidth;
+	/**
+	 * Width of the area for branch nodes when there is at least one expanded branch nodes.
+	 */
+	protected final int expandedBranchAreaWidth;
 	/**
 	 * Width of the path area.
 	 */
@@ -144,6 +154,10 @@ public class PathSizeConfiguration {
 	 * Side spacing of branch nodes.
 	 */
 	protected final int branchNodeLeftSideSpacing;
+	/**
+	 * Determines, whether the branch nodes show a more detailed data preview.
+	 */
+	protected final boolean branchNodesShowDataPreview;
 
 	public static class Builder {
 		protected int rectangleNodeWidth;
@@ -155,7 +169,8 @@ public class PathSizeConfiguration {
 		protected int pathEndSpacing;
 		protected int rowHeight;
 		protected int branchNodeToPathNodeVerticalSpacing;
-		protected int branchAreaWidth;
+		protected int collapsedBranchAreaWidth;
+		protected int expandedBranchAreaWidth;
 		protected int pathAreaWidth;
 		protected int branchNodeLeftSideSpacing;
 		protected int pathwayTextHeight;
@@ -164,11 +179,18 @@ public class PathSizeConfiguration {
 		protected int branchSummaryNodeBranchNodeSpacing;
 		protected int branchSummaryNodeBranchAreaSpacing;
 		protected int branchSummaryNodeTextHeight;
-		protected int branchSummaryNodeWidth;
+		protected int branchSummaryNodeWidthCollapsed;
+		protected int branchSummaryNodeWidthExpanded;
 		protected int pathwayBorderWidth;
 		protected int edgeTextHeight;
 		protected int edgeArrwoBaseLineSize;
 		protected int edgeArrowSize;
+		protected boolean branchNodesShowDataPreview;
+
+		public Builder branchNodesShowDataPreview(boolean value) {
+			this.branchNodesShowDataPreview = value;
+			return this;
+		}
 
 		public Builder edgeArrwoBaseLineSize(int value) {
 			this.edgeArrwoBaseLineSize = value;
@@ -205,8 +227,13 @@ public class PathSizeConfiguration {
 			return this;
 		}
 
-		public Builder branchSummaryNodeWidth(int value) {
-			this.branchSummaryNodeWidth = value;
+		public Builder branchSummaryNodeWidthCollapsed(int value) {
+			this.branchSummaryNodeWidthCollapsed = value;
+			return this;
+		}
+
+		public Builder branchSummaryNodeWidthExpanded(int value) {
+			this.branchSummaryNodeWidthExpanded = value;
 			return this;
 		}
 
@@ -230,8 +257,13 @@ public class PathSizeConfiguration {
 			return this;
 		}
 
-		public Builder branchAreaWidth(int value) {
-			this.branchAreaWidth = value;
+		public Builder collapsedBranchAreaWidth(int value) {
+			this.collapsedBranchAreaWidth = value;
+			return this;
+		}
+
+		public Builder expandedBranchAreaWidth(int value) {
+			this.expandedBranchAreaWidth = value;
 			return this;
 		}
 
@@ -298,7 +330,8 @@ public class PathSizeConfiguration {
 			pathEndSpacing = config.pathEndSpacing;
 			rowHeight = config.rowHeight;
 			branchNodeToPathNodeVerticalSpacing = config.branchNodeToPathNodeVerticalSpacing;
-			branchAreaWidth = config.branchAreaWidth;
+			collapsedBranchAreaWidth = config.collapsedBranchAreaWidth;
+			expandedBranchAreaWidth = config.collapsedBranchAreaWidth;
 			pathAreaWidth = config.pathAreaWidth;
 			branchNodeLeftSideSpacing = config.branchNodeLeftSideSpacing;
 			pathwayTextHeight = config.pathwayTextHeight;
@@ -307,11 +340,14 @@ public class PathSizeConfiguration {
 			branchSummaryNodeBranchAreaSpacing = config.branchSummaryNodeBranchAreaSpacing;
 			branchSummaryNodeBranchNodeSpacing = config.branchSummaryNodeBranchNodeSpacing;
 			branchSummaryNodeTextHeight = config.branchSummaryNodeTextHeight;
-			branchSummaryNodeWidth = config.branchSummaryNodeWidth;
+			branchSummaryNodeWidthCollapsed = config.branchSummaryNodeWidthCollapsed;
+			branchSummaryNodeWidthExpanded = config.branchSummaryNodeWidthExpanded;
 			pathwayBorderWidth = config.pathwayBorderWidth;
 			edgeTextHeight = config.edgeTextHeight;
 			edgeArrowSize = config.edgeArrowSize;
 			edgeArrwoBaseLineSize = config.edgeArrwoBaseLineSize;
+			rectangleNodeWidth = config.rectangleNodeWidth;
+			branchNodesShowDataPreview = config.branchNodesShowDataPreview;
 		}
 
 		public PathSizeConfiguration build() {
@@ -329,7 +365,8 @@ public class PathSizeConfiguration {
 		pathEndSpacing = builder.pathEndSpacing;
 		rowHeight = builder.rowHeight;
 		branchNodeToPathNodeVerticalSpacing = builder.branchNodeToPathNodeVerticalSpacing;
-		branchAreaWidth = builder.branchAreaWidth;
+		collapsedBranchAreaWidth = builder.collapsedBranchAreaWidth;
+		expandedBranchAreaWidth = builder.expandedBranchAreaWidth;
 		pathAreaWidth = builder.pathAreaWidth;
 		branchNodeLeftSideSpacing = builder.branchNodeLeftSideSpacing;
 		pathwayTextHeight = builder.pathwayTextHeight;
@@ -338,11 +375,20 @@ public class PathSizeConfiguration {
 		branchSummaryNodeBranchAreaSpacing = builder.branchSummaryNodeBranchAreaSpacing;
 		branchSummaryNodeBranchNodeSpacing = builder.branchSummaryNodeBranchNodeSpacing;
 		branchSummaryNodeTextHeight = builder.branchSummaryNodeTextHeight;
-		branchSummaryNodeWidth = builder.branchSummaryNodeWidth;
+		branchSummaryNodeWidthCollapsed = builder.branchSummaryNodeWidthCollapsed;
+		branchSummaryNodeWidthExpanded = builder.branchSummaryNodeWidthExpanded;
 		pathwayBorderWidth = builder.pathwayBorderWidth;
 		edgeTextHeight = builder.edgeTextHeight;
 		edgeArrowSize = builder.edgeArrowSize;
 		edgeArrwoBaseLineSize = builder.edgeArrwoBaseLineSize;
+		branchNodesShowDataPreview = builder.branchNodesShowDataPreview;
+	}
+
+	/**
+	 * @return the branchNodesShowDataPreview, see {@link #branchNodesShowDataPreview}
+	 */
+	public boolean isBranchNodesShowDataPreview() {
+		return branchNodesShowDataPreview;
 	}
 
 	/**
@@ -395,10 +441,17 @@ public class PathSizeConfiguration {
 	}
 
 	/**
-	 * @return the branchAreaWidth, see {@link #branchAreaWidth}
+	 * @return the branchAreaWidth, see {@link #collapsedBranchAreaWidth}
 	 */
-	public int getBranchAreaWidth() {
-		return branchAreaWidth;
+	public int getCollapsedBranchAreaWidth() {
+		return collapsedBranchAreaWidth;
+	}
+
+	/**
+	 * @return the branchAreaWidth, see {@link #expandedBranchAreaWidth}
+	 */
+	public int getExpandedBranchAreaWidth() {
+		return expandedBranchAreaWidth;
 	}
 
 	/**
@@ -472,10 +525,17 @@ public class PathSizeConfiguration {
 	}
 
 	/**
-	 * @return the branchSummaryNodeWidth, see {@link #branchSummaryNodeWidth}
+	 * @return the branchSummaryNodeWidth, see {@link #branchSummaryNodeWidthCollapsed}
 	 */
-	public int getBranchSummaryNodeWidth() {
-		return branchSummaryNodeWidth;
+	public int getBranchSummaryNodeWidthCollapsed() {
+		return branchSummaryNodeWidthCollapsed;
+	}
+
+	/**
+	 * @return the branchSummaryNodeWidth, see {@link #branchSummaryNodeWidthExpanded}
+	 */
+	public int getBranchSummaryNodeWidthExpanded() {
+		return branchSummaryNodeWidthExpanded;
 	}
 
 	/**

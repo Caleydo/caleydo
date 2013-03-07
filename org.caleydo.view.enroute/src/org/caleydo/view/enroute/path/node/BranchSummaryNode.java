@@ -227,7 +227,7 @@ public class BranchSummaryNode extends ANode {
 
 		numNodesLabelLayout.setRenderer(numNodesLabelRenderer);
 		numNodesLabelLayout.setPixelSizeY(textHeight);
-		numNodesLabelLayout.setPixelSizeX(NUM_NODES_LABEL_WIDTH_PIXELS);
+		numNodesLabelLayout.setPixelSizeX(textHeight);
 
 		ElementLayout horizontalSpacing = new ElementLayout();
 		horizontalSpacing.setPixelSizeX(SPACING_PIXELS);
@@ -322,7 +322,8 @@ public class BranchSummaryNode extends ANode {
 
 	@Override
 	public int getWidthPixels() {
-		return pathwayPathRenderer.getSizeConfig().getBranchSummaryNodeWidth();
+		return isCollapsed ? pathwayPathRenderer.getSizeConfig().getBranchSummaryNodeWidthCollapsed()
+				: pathwayPathRenderer.getSizeConfig().getBranchSummaryNodeWidthExpanded();
 	}
 
 	@Override

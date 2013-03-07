@@ -91,7 +91,7 @@ public class GeneNodePreviewMode extends AGeneNodeMode {
 		heightPixels = 0;
 		Column previewRow = null;
 
-		if (node.getMappedDavidIDs().size() > 0) {
+		if (node.getMappedDavidIDs().size() > 0 && pathwayPathRenderer.getSizeConfig().isBranchNodesShowDataPreview()) {
 			previewRow = createPreviewRow(horizontalSpacing, verticalSpacing);
 		}
 
