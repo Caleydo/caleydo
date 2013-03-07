@@ -38,6 +38,8 @@ import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.AnimatedGLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.core.view.opengl.layout2.animation.ACustomAnimation;
+import org.caleydo.core.view.opengl.layout2.animation.Durations;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
@@ -335,7 +337,7 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 		// push my resource locator to find the icons
 		g.pushResourceLocator(ResourceLocators.classLoader(this.getClass().getClassLoader()));
 
-		renderBackgroundLines(g);
+		renderBackgroundLines(g, false);
 
 		super.renderImpl(g, w, h);
 
@@ -346,21 +348,23 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 
 	@Override
 	protected void renderPickImpl(GLGraphics g, float w, float h) {
-		renderBackgroundLines(g);
+		renderBackgroundLines(g, true);
 		super.renderPickImpl(g, w, h);
 	}
 
-	private void renderBackgroundLines(GLGraphics g) {
+	private void renderBackgroundLines(GLGraphics g, boolean pick) {
 		IRow selected = table.getSelectedRow();
 
 		float x = 0;
 		ColumnRankerUI act = null;
 		ITableColumnUI last = null;
 
-		for(ITableColumnUI col : Iterables.filter(this, ITableColumnUI.class)) {
+		g.decZ();
+
+		for (ITableColumnUI col : Iterables.filter(this, ITableColumnUI.class)) {
 			if (col instanceof ColumnRankerUI) {
 				if (last != null) {
-					renderSubArea(g, x, act, last, selected);
+					renderSubArea(g, x, act, last, selected, pick);
 				}
 				act = (ColumnRankerUI) col;
 				x = act.getLocation().x() + act.getSize().x();
@@ -368,11 +372,27 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 			last = col;
 		}
 		if (last != null && size() > 1) {
-			renderSubArea(g, x, act, last, selected);
+			renderSubArea(g, x, act, last, selected, pick);
 		}
+		g.incZ();
 	}
 
-	private void renderSubArea(GLGraphics g, float x, ColumnRankerUI act, ITableColumnUI last, IRow selected) {
+	private ITableColumnUI getLastCorrespondingColumn(ColumnRankerUI target) {
+		ITableColumnUI last = null;
+		boolean found = false;
+		for (ITableColumnUI col : Iterables.filter(this, ITableColumnUI.class)) {
+			if (col instanceof ColumnRankerUI && found) {
+				if (last != null)
+					return last;
+			}
+			found = found || col == target;
+			last = col;
+		}
+		return last;
+	}
+
+	private void renderSubArea(GLGraphics g, float x, ColumnRankerUI act, ITableColumnUI last, IRow selected,
+			boolean pick) {
 		Vec4f bounds2 = last.asGLElement().getBounds();
 		float w = bounds2.x() + bounds2.z() - x;
 		if (w <= 0)
@@ -385,15 +405,51 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 			i++;
 			if (bounds.z() <= 0 || bounds.w() <= 0)
 				continue;
-			if (rankedRow == selected)
-				g.color(RenderStyle.COLOR_SELECTED_ROW);
-			else
-				g.color(even ? RenderStyle.COLOR_BACKGROUND_EVEN : Color.WHITE);
-
-			g.pushName(pickingIDs[i]);
-			g.fillRect(x, bounds.y() + 3, w, bounds.w());
-			g.popName();
+			if (pick)
+				g.pushName(pickingIDs[i]);
+			else {
+				if (rankedRow == selected)
+					g.color(RenderStyle.COLOR_SELECTED_ROW);
+				else
+					g.color(RenderStyle.COLOR_BACKGROUND_EVEN);
+			}
+			if (pick || even || rankedRow == selected)
+				g.fillRect(x, bounds.y() + 3, w, bounds.w());
+			if (pick)
+				g.popName();
 			even = !even;
+		}
+	}
+
+	void renderLineHighlight(GLGraphics g, int rowIndex, float alpha, int delta, ColumnRankerUI ranker) {
+		ITableColumnUI column = getLastCorrespondingColumn(ranker);
+		Vec4f bounds = column.get(rowIndex).getBounds();
+		if (bounds.w() < 0 || bounds.z() < 0)
+			return;
+		float calpha = RenderStyle.computeHighlightAlpha(alpha, delta);
+		Color base = delta < 0 ? Color.GREEN : Color.RED;
+		Color c = new Color(base.getRed(), base.getGreen(), base.getBlue(), (int) (calpha * 255));
+		g.decZ();
+		g.color(c);
+		float x = ranker.getLocation().x();
+		float w = column.asGLElement().getLocation().x() + column.asGLElement().getSize().x() - x;
+		g.fillRect(x, bounds.y(), w, bounds.w());
+		g.incZ();
+	}
+
+	void triggerRankAnimations(ColumnRankerUI ranker, int[] rankDeltas) {
+		assert rankDeltas != null;
+		ITableColumnUI col = getLastCorrespondingColumn(ranker);
+		if (col == null)
+			return;
+		for (int i = 0; i < rankDeltas.length; ++i) {
+			int delta = rankDeltas[i];
+			if (delta == 0 || delta == Integer.MAX_VALUE)
+				continue;
+			IRow r = ranker.getRanker().get(i);
+			if (r == null)
+				continue;
+			this.animate(new LineHighlightAnimation(delta, r.getIndex(), ranker));
 		}
 	}
 
@@ -430,5 +486,33 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 	@Override
 	public boolean hasFreeSpace(ITableColumnUI tableColumnUI) {
 		return true;
+	}
+
+	class LineHighlightAnimation extends ACustomAnimation {
+		private final int rowIndex;
+		private final ColumnRankerUI ranker;
+		private final int delta;
+
+		public LineHighlightAnimation(int delta, int rowIndex, ColumnRankerUI ranker) {
+			super(0, Durations.fix(RenderStyle.hightlightAnimationDuration(delta)));
+			this.delta = delta;
+			this.ranker = ranker;
+			this.rowIndex = rowIndex;
+		}
+
+		@Override
+		protected void firstTime(GLGraphics g, float w, float h) {
+			animate(g, 0, w, h);
+		}
+
+		@Override
+		protected void animate(GLGraphics g, float alpha, float w, float h) {
+			renderLineHighlight(g, rowIndex, alpha, delta, ranker);
+		}
+
+		@Override
+		protected void lastTime(GLGraphics g, float w, float h) {
+			animate(g, 1, w, h);
+		}
 	}
 }

@@ -23,6 +23,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.ColumnRanker;
 import org.caleydo.vis.rank.model.IRow;
@@ -133,112 +134,15 @@ public class ColumnRankerUI extends GLElement implements PropertyChangeListener,
 		relayout();
 	}
 
-	//
-	// if (rankDeltas != null)
-	// triggerRankAnimations(w, h);
-	// rankDeltas = null; // a single run with the rank deltas, not used anymore
-	//
-	// reason = null;
-	// }
-	//
-	// private void triggerRankAnimations(float w, float h) {
-	// assert rankDeltas != null;
-	// ITableColumnUI col = findFirstSimpleCol();
-	// if (col == null)
-	// return;
-	// for (int i = 0; i < rankDeltas.length; ++i) {
-	// int delta = rankDeltas[i];
-	// if (delta == 0 || delta == Integer.MAX_VALUE)
-	// continue;
-	// IRow r = table.getMyRanker(null).get(i);
-	// if (r == null)
-	// continue;
-	// this.animate(new LineHighlightAnimation(delta, r));
-	// }
-	// }
-	//
-	// protected static void renderLineHighlight(GLGraphics g, IRow row, float alpha, int delta, float w) {
-	// Vec4f bounds = getRowBounds(row);
-	// if (bounds == null || delta == Integer.MIN_VALUE)
-	// return;
-	// float calpha = RenderStyle.computeHighlightAlpha(alpha, delta);
-	// Color base = delta < 0 ? Color.GREEN : Color.RED; // TODO alpha
-	// Color c = new Color(base.getRed(), base.getGreen(), base.getBlue(), (int) (calpha * 255));
-	// g.decZ();
-	// g.color(c);
-	// renderSubLine(g, w, bounds.y() + 1, bounds.w() - 2);
-	// g.incZ();
-	// }
-	//
-	//
-	// private ITableColumnUI findFirstSimpleCol() {
-	// for (GLElement elem : this) {
-	// if (elem instanceof ITableColumnUI && (!(elem instanceof ACompositeTableColumnUI)))
-	// return (ITableColumnUI) elem;
-	// }
-	// return null;
-	// }
-	//
-	// private static void renderSubLine(GLGraphics g, float w, float y, float hi) {
-	// // just for elements that haven't an own order
-	// float x = 0;
-	// for (GLElement child : this) {
-	// if (child instanceof ACompositeTableColumnUI && ((ACompositeTableColumnUI<?>) child).hasOwnOrder()) {
-	// Vec4f l = child.getBounds();
-	// g.fillRect(x, y + 3, l.x() - x, hi);
-	// x = l.x() + l.z();
-	// }
-	// }
-	// Vec4f last = get(size() - 1).getBounds();
-	// if (x < (last.x() + last.z()))
-	// g.fillRect(x, y + 3, last.x() + last.z() - x, hi);
-	// }
-	//
-	// @Override
-	// protected void renderPickImpl(GLGraphics g, float w, float h) {
-	// float y = 0;
-	// for (int i = 0; i < rowPositions.length; ++i) {
-	// g.pushName(pickingIDs[i]);
-	// renderSubLine(g, w, y, rowPositions[i] - y);
-	// y = rowPositions[i];
-	// g.popName();
-	// }
-	// super.renderPickImpl(g, w, h);
-	// }
-	//
-	// /**
-	// * @return the rowPositions, see {@link #rowPositions}
-	// */
-	//
-	// static class LineHighlightAnimation extends ACustomAnimation {
-	// private final IRow row;
-	// private final int delta;
-	//
-	// public LineHighlightAnimation(int delta, IRow row) {
-	// super(0, Durations.fix(RenderStyle.hightlightAnimationDuration(delta)));
-	// this.delta = delta;
-	// this.row = row;
-	// }
-	//
-	// @Override
-	// protected void firstTime(GLGraphics g, float w, float h) {
-	// animate(g, 0, w, h);
-	// }
-	//
-	// @Override
-	// protected void animate(GLGraphics g, float alpha, float w, float h) {
-	// renderLineHighlight(g, row, alpha, delta, w);
-	// }
-	//
-	// @Override
-	// protected void lastTime(GLGraphics g, float w, float h) {
-	// animate(g, 1, w, h);
-	// }
-	// }
-	//
-	//
-	//
-	//
+	@Override
+	protected void renderImpl(GLGraphics g, float w, float h) {
+		super.renderImpl(g, w, h);
+
+		if (rankDeltas != null) {
+			getTableBodyUI().triggerRankAnimations(this, rankDeltas);
+			rankDeltas = null; // a single run with the rank deltas, not used anymore
+		}
+	}
 
 	// @Override
 	// protected void renderImpl(GLGraphics g, float w, float h) {

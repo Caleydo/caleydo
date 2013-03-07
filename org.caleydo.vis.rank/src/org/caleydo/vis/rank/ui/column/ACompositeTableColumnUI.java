@@ -139,9 +139,9 @@ public abstract class ACompositeTableColumnUI<T extends ACompositeRankColumnMode
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
-		g.decZ().decZ();
+		g.decZ().decZ().decZ();
 		g.color(model.getBgColor()).fillRect(0, 0, w, h);
-		g.incZ().incZ();
+		g.incZ().incZ().incZ();
 		// float x = get(stacked.getAlignment()).getLocation().x();
 		// g.color(Color.BLUE).drawLine(x, 0, x, h);
 		if (!model.isCollapsed())

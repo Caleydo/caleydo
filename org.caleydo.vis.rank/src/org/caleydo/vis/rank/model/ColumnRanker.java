@@ -243,8 +243,8 @@ public class ColumnRanker implements Iterable<IRow> {
 			order = newOrder;
 			ranks = newRanks;
 		}
-		// if (anyDelta)
-		// table.firePropertyChange(RankTableModel.PROP_ORDER, deltas, order);
+		if (anyDelta)
+			propertySupport.firePropertyChange(PROP_ORDER, deltas, order);
 	}
 
 	private static final class IntFloat implements Comparable<IntFloat> {
