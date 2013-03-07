@@ -25,8 +25,8 @@ import org.caleydo.vis.rank.model.ARankColumnModel;
  * @author Samuel Gratzl
  *
  */
-public class ColumnOrderHeaderUI extends AColumnHeaderUI implements IThickHeader {
-	public ColumnOrderHeaderUI(ARankColumnModel model, boolean interactive) {
+public class OrderColumnHeaderUI extends AColumnHeaderUI implements IThickHeader {
+	public OrderColumnHeaderUI(ARankColumnModel model, boolean interactive) {
 		super(model, interactive, interactive, true, true, true);
 	}
 }

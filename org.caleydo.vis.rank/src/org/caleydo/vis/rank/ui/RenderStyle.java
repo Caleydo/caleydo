@@ -82,7 +82,6 @@ public class RenderStyle {
 	public static final Color COLOR_BACKGROUND_EVEN = new Color(240, 240, 255);
 	public static final Color COLOR_BAND = new Color(0.90f, 0.90f, 0.90f);
 
-	public static final float FROZEN_BAND_WIDTH = 50;
 	public static final float BUTTON_WIDTH = 16;
 
 

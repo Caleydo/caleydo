@@ -33,7 +33,7 @@ public class ColumnUIs {
 		if (allowComplex && model instanceof StackedRankColumnModel)
 			return new StackedColumnHeaderUI((StackedRankColumnModel) model, interactive);
 		if (model instanceof OrderColumn)
-			return new ColumnOrderHeaderUI(model, interactive);
+			return new OrderColumnHeaderUI(model, interactive);
 		return new ColumnHeaderUI(model, interactive, interactive);
 	}
 

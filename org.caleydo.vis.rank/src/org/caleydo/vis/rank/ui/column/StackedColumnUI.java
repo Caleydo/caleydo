@@ -33,7 +33,6 @@ import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.StackedRankColumnModel;
 import org.caleydo.vis.rank.model.mixin.IMultiColumnMixin.MultiFloat;
-import org.caleydo.vis.rank.ui.ColumnRankerUI;
 import org.caleydo.vis.rank.ui.RenderStyle;
 import org.caleydo.vis.rank.ui.TableBodyUI;
 
@@ -120,7 +119,7 @@ public class StackedColumnUI extends ACompositeTableColumnUI<StackedRankColumnMo
 	}
 
 	@Override
-	public ColumnRankerUI getRanker(ARankColumnModel model) {
+	public OrderColumnUI getRanker(ARankColumnModel model) {
 		return getColumnModelParent().getRanker(model);
 	}
 
