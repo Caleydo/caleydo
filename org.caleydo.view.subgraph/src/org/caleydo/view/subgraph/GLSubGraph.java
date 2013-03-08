@@ -57,6 +57,7 @@ import org.caleydo.datadomain.pathway.listener.ShowPortalNodesEvent;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.subgraph.event.ShowNodeInfoEvent;
 import org.caleydo.view.subgraph.event.ShowPathwayBrowserEvent;
+import org.caleydo.view.subgraph.ranking.PathwaySelectors;
 import org.caleydo.view.subgraph.ranking.RankingElement;
 import org.eclipse.swt.widgets.Composite;
 
@@ -111,10 +112,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 
 	protected GLPathwayGridLayout pathwayLayout = new GLPathwayGridLayout(this, GLPadding.ZERO, 10);
 
-	// /**
-	// * Maps from the embeddingID to all associated {@link MultiFormRenderer}s and their wrapping {@link GLElement}.
-	// */
-	// private Map<String, List<Pair<MultiFormRenderer, GLElement>>> multiFormRenderers = new HashMap<>();
+	protected RankingElement rankingElement = new RankingElement(this);
 
 	/**
 	 * Constructor.
@@ -130,7 +128,6 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		column.add(baseContainer);
 		nodeInfoContainer.setSize(Float.NaN, 0);
 		column.add(nodeInfoContainer);
-		RankingElement rankingElement = new RankingElement(this);
 		rankingElement.setSize(200, Float.NaN);
 		baseContainer.add(rankingElement);
 		// pathwayRow.setLayout(new GLMultiFormPathwayLayout(10, GLPadding.ZERO, this, pathwayRow));
@@ -671,6 +668,8 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 
 		@ListenTo(restrictExclusiveToEventSpace = true)
 		public void onShowPathwayBrowser(ShowPathwayBrowserEvent event) {
+			rankingElement.setSelector(new PathwaySelectors.EquivalentVertexSelector(event.getVertexRep(), false));
+
 			// GLNodeInfo nodeInfo = new GLNodeInfo(event.getVertexRep());
 			// nodeInfo.setSize(80, 80);
 			// baseContainer.add(nodeInfo, 200, new InOutTransitionBase(InOutInitializers.RIGHT,

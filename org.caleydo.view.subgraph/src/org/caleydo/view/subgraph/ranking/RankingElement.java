@@ -37,10 +37,9 @@ import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.subgraph.GLSubGraph;
 import org.caleydo.vis.rank.config.RankTableConfigBase;
-import org.caleydo.vis.rank.data.AFloatFunction;
 import org.caleydo.vis.rank.data.FloatInferrers;
-import org.caleydo.vis.rank.data.IFloatFunction;
 import org.caleydo.vis.rank.layout.RowHeightLayouts;
+import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.FloatRankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.RankTableModel;
@@ -56,6 +55,8 @@ import org.caleydo.vis.rank.ui.TableHeaderUI;
 public class RankingElement extends GLElementContainer {
 	private final RankTableModel table;
 	private final GLSubGraph view;
+	private IPathwaySelector selector = PathwaySelectors.ALL;
+	private ARankColumnModel currentRankColumnModel;
 	private final PropertyChangeListener onSelectRow = new PropertyChangeListener() {
 
 		@Override
@@ -109,31 +110,22 @@ public class RankingElement extends GLElementContainer {
 		view.addPathway(newValue.getPathway());
 	}
 
-	private void selectPathways() {
+	private void updateRows() {
 		List<IRow> data = table.getData();
 		BitSet dataMask = new BitSet(data.size());
 		int i = 0;
 		for (IRow row : data) {
 			// select all rows
-			dataMask.set(i++, isSelected(((PathwayRow) row).getPathway()));
+			dataMask.set(i++, selector.isSelected(((PathwayRow) row).getPathway()));
 		}
 		table.setDataMask(dataMask);
-	}
-
-	/**
-	 * @param pathway
-	 * @return
-	 */
-	private boolean isSelected(PathwayGraph pathway) {
-		// logic whether to select a path or not
-		return true;
 	}
 
 	/**
 	 * @param eventListeners2
 	 * @param table2
 	 */
-	private static void initTable(RankTableModel table) {
+	private void initTable(RankTableModel table) {
 		// add columns
 		table.addColumn(new StringRankColumnModel(GLRenderers.drawText("Pathway", VAlign.CENTER),
 				StringRankColumnModel.DFEAULT));
@@ -146,16 +138,15 @@ public class RankingElement extends GLElementContainer {
 		// }
 		// }));
 
-		IFloatFunction<IRow> pathwaySize = new AFloatFunction<IRow>() {
-			@Override
-			public float applyPrimitive(IRow in) {
-				PathwayRow r = (PathwayRow) in;
-				return r.getPathway().vertexSet().size();
-			}
-		};
-		table.addColumn(new FloatRankColumnModel(pathwaySize, GLRenderers.drawText("Score", VAlign.CENTER), Color.BLUE,
-				Color.LIGHT_GRAY, new PiecewiseMapping(0, Float.NaN), FloatInferrers.MEAN));
-
+		// IFloatFunction<IRow> pathwaySize = new AFloatFunction<IRow>() {
+		// @Override
+		// public float applyPrimitive(IRow in) {
+		// PathwayRow r = (PathwayRow) in;
+		// return r.getPathway().vertexSet().size();
+		// }
+		// };
+		currentRankColumnModel = createDefaultFloatRankColumnModel(selector);
+		table.addColumn(currentRankColumnModel);
 		// add data
 		Collection<PathwayRow> data = new ArrayList<>();
 		for (PathwayGraph g : PathwayManager.get().getAllItems()) {
@@ -163,6 +154,24 @@ public class RankingElement extends GLElementContainer {
 		}
 
 		table.addData(data);
+		updateRows();
+	}
 
+	private FloatRankColumnModel createDefaultFloatRankColumnModel(IPathwaySelector selector) {
+		return new FloatRankColumnModel(selector.getRankingFunction(), GLRenderers.drawText(
+				selector.getRankingCriterion(), VAlign.CENTER), Color.BLUE, Color.LIGHT_GRAY, new PiecewiseMapping(0,
+				Float.NaN), FloatInferrers.MEAN);
+	}
+
+	/**
+	 * @param selector
+	 *            setter, see {@link selector}
+	 */
+	public void setSelector(IPathwaySelector selector) {
+		this.selector = selector;
+		FloatRankColumnModel newRankModel = createDefaultFloatRankColumnModel(selector);
+		table.replace(currentRankColumnModel, newRankModel);
+		currentRankColumnModel = newRankModel;
+		updateRows();
 	}
 }
