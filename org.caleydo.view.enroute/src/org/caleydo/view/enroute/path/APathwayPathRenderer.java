@@ -450,12 +450,7 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 				// TODO: Verify that this is also the right approach for
 				// enzymes and ortholog
 				GeneNode geneNode = new GeneNode(this, textRenderer, view, new GeneNodeLinearizedMode(view, this));
-				int commaIndex = currentVertexRep.getName().indexOf(',');
-				if (commaIndex > 0) {
-					geneNode.setLabel(currentVertexRep.getName().substring(0, commaIndex));
-				} else {
-					geneNode.setLabel(currentVertexRep.getName());
-				}
+				geneNode.setLabel(currentVertexRep.getShortName());
 				geneNode.addPathwayVertexRep(currentVertexRep);
 				geneNode.init();
 				node = geneNode;

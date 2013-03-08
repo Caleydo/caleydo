@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -34,27 +34,28 @@ import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
 
 /**
  * <p>
- * A <code>PathwayVertexRep</code> is a visible representation of a node (a
- * {@link PathwayVertex}) in a pathway texture. It may contain 1-n
- * {@link PathwayVertex} objects.
+ * A <code>PathwayVertexRep</code> is a visible representation of a node (a {@link PathwayVertex}) in a pathway texture.
+ * It may contain 1-n {@link PathwayVertex} objects.
  * </p>
  * <p>
- * The representation contains information on the type of shape, the position
- * and the size of the representation.
+ * The representation contains information on the type of shape, the position and the size of the representation.
  * </p>
- * 
+ *
  * @author Marc Streit
  * @author Alexander Lex
  */
-public class PathwayVertexRep
-	implements Serializable, IUniqueObject {
+public class PathwayVertexRep implements Serializable, IUniqueObject {
 
 	private static final long serialVersionUID = 1L;
 
 	/** A unique id of the vertex rep */
 	private int id;
 
-	private String name;
+	private final String name;
+	/**
+	 * Name that only consists of the first gene name of {@link #name}.
+	 */
+	private final String shortName;
 
 	/** The type of shape that this vertex rep uses */
 	private EPathwayVertexShape shape;
@@ -65,8 +66,7 @@ public class PathwayVertexRep
 	private static IDType idType = IDType.getIDType(EGeneIDTypes.PATHWAY_VERTEX_REP.name());
 
 	/**
-	 * The {@link PathwayVertex} objects that map to this representation there
-	 * might be several
+	 * The {@link PathwayVertex} objects that map to this representation there might be several
 	 */
 	private List<PathwayVertex> pathwayVertices = new ArrayList<PathwayVertex>();
 
@@ -74,7 +74,7 @@ public class PathwayVertexRep
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param name
 	 * @param shapeType
 	 * @param coords
@@ -85,13 +85,13 @@ public class PathwayVertexRep
 
 		shape = EPathwayVertexShape.valueOf(shapeType);
 		this.name = name;
-
+		this.shortName = extractShortName(name);
 		setCoordsByCommaSeparatedString(coords);
 	}
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param name
 	 * @param shapeType
 	 * @param x
@@ -110,12 +110,23 @@ public class PathwayVertexRep
 			shape = EPathwayVertexShape.valueOf(shapeType);
 
 		this.name = name;
+		this.shortName = extractShortName(name);
 		setRectangularCoords(x, y, width, height);
 	}
 
+	private String extractShortName(String name) {
+		int commaIndex = name.indexOf(',');
+		String shortName;
+		if (commaIndex > 0) {
+			shortName = name.substring(0, commaIndex);
+		} else {
+			shortName = name;
+		}
+		return shortName;
+	}
+
 	/**
-	 * Example: 213,521,202,515,248,440,261,447,213,521 Currently used for
-	 * BioCarta input.
+	 * Example: 213,521,202,515,248,440,261,447,213,521 Currently used for BioCarta input.
 	 */
 	private void setCoordsByCommaSeparatedString(final String sCoords) {
 
@@ -151,6 +162,7 @@ public class PathwayVertexRep
 	/**
 	 * @return the id, see {@link #id}
 	 */
+	@Override
 	public int getID() {
 		return id;
 	}
@@ -158,6 +170,13 @@ public class PathwayVertexRep
 	public String getName() {
 
 		return name;
+	}
+
+	/**
+	 * @return the shortName, see {@link #shortName}
+	 */
+	public String getShortName() {
+		return shortName;
 	}
 
 	public EPathwayVertexShape getShapeType() {
@@ -210,15 +229,15 @@ public class PathwayVertexRep
 	}
 
 	/**
-	 * @return The pathwayVertices, see {@link #pathwayVertices}, or an empty
-	 *         list if no vertices can be resolved.
+	 * @return The pathwayVertices, see {@link #pathwayVertices}, or an empty list if no vertices can be resolved.
 	 */
 	public List<PathwayVertex> getPathwayVertices() {
 		return pathwayVertices;
 	}
 
 	/**
-	 * @param pathway setter, see {@link #pathway}
+	 * @param pathway
+	 *            setter, see {@link #pathway}
 	 */
 	public void setPathway(PathwayGraph pathway) {
 		this.pathway = pathway;
@@ -232,17 +251,16 @@ public class PathwayVertexRep
 	}
 
 	/**
-	 * Returns the type of the pathway vertex underneath, assuming that alle
-	 * vertex reps are of the same type
+	 * Returns the type of the pathway vertex underneath, assuming that alle vertex reps are of the same type
 	 */
 	public EPathwayVertexType getType() {
 		return pathwayVertices.get(0).getType();
 	}
 
 	/**
-	 * Returns all david IDs of all vertices stored in this
-	 * <code>PathwayVertexRep</code>, or an empty list if no IDs can be mapped.
-	 * 
+	 * Returns all david IDs of all vertices stored in this <code>PathwayVertexRep</code>, or an empty list if no IDs
+	 * can be mapped.
+	 *
 	 * @see PathwayItemManager#getDavidIDsByPathwayVertexRep(PathwayVertexRep)
 	 */
 	public ArrayList<Integer> getDavidIDs() {
