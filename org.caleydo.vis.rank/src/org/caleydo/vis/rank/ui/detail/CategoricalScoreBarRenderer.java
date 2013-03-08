@@ -21,31 +21,28 @@ package org.caleydo.vis.rank.ui.detail;
 
 import java.awt.Color;
 
-import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
-import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.rank.model.CategoricalRankRankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
 
 /**
- * 
- * 
+ *
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
-public class CategoricalScoreBarRenderer implements IGLRenderer {
-	private final CategoricalRankRankColumnModel<?> model;
+public class CategoricalScoreBarRenderer extends ScoreBarElement {
 
 	public CategoricalScoreBarRenderer(CategoricalRankRankColumnModel<?> model) {
-		this.model = model;
+		super(model);
 	}
 
 	@Override
-	public void render(GLGraphics g, float w, float h, GLElement parent) {
-		final IRow r = parent.getLayoutDataAs(IRow.class, null); // current row
+	protected void renderImpl(GLGraphics g, float w, float h) {
+		final IRow r = getLayoutDataAs(IRow.class, null); // current row
 		float v = model.applyPrimitive(r);
 		boolean inferred = model.isValueInferred(r);
-		Color color = model.getColor(r);
-		ScoreBarRenderer.renderValue(g, w, h, parent, r, v, inferred, model, false, color, color);
+		Color color = ((CategoricalRankRankColumnModel<?>) model).getColor(r);
+		renderValue(g, w, h, this, r, v, inferred, model, false, color, color);
 	}
 }

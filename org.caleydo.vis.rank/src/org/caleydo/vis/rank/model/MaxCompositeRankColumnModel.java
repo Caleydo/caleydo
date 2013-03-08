@@ -24,7 +24,6 @@ import java.beans.PropertyChangeListener;
 
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
-import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.rank.internal.ui.TextRenderer;
 import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IExplodeableColumnMixin;
@@ -41,18 +40,14 @@ import org.caleydo.vis.rank.ui.detail.StackedScoreSummary;
 public class MaxCompositeRankColumnModel extends AMultiRankColumnModel implements IRankableColumnMixin,
 		IHideableColumnMixin, IExplodeableColumnMixin, ICollapseableColumnMixin {
 
-	private final MultiRenderer valueRenderer;
-
 	public MaxCompositeRankColumnModel() {
 		super(Color.GRAY, new Color(0.95f, 0.95f, 0.95f));
 		setHeaderRenderer(new TextRenderer("MAX", this));
-		this.valueRenderer = new MultiRenderer(this);
 	}
 
 	public MaxCompositeRankColumnModel(MaxCompositeRankColumnModel copy) {
 		super(copy);
 		setHeaderRenderer(new TextRenderer("MAX", this));
-		this.valueRenderer = new MultiRenderer(this);
 		cloneInitChildren();
 	}
 
@@ -69,7 +64,7 @@ public class MaxCompositeRankColumnModel extends AMultiRankColumnModel implement
 
 	@Override
 	public GLElement createValue() {
-		return new RepaintingGLElement(valueRenderer);
+		return new RepaintingGLElement();
 	}
 
 	@Override
@@ -138,11 +133,11 @@ public class MaxCompositeRankColumnModel extends AMultiRankColumnModel implement
 		return model instanceof MaxCompositeRankColumnModel;
 	}
 
-	private class RepaintingGLElement extends GLElement {
+	private class RepaintingGLElement extends MultiRenderer {
 		private final PropertyChangeListener l = GLPropertyChangeListeners.repaintOnEvent(this);
 
-		public RepaintingGLElement(IGLRenderer renderer) {
-			super(renderer);
+		public RepaintingGLElement() {
+			super(MaxCompositeRankColumnModel.this);
 		}
 		@Override
 		protected void init(IGLElementContext context) {

@@ -27,6 +27,7 @@ import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.mixin.IMappedColumnMixin;
@@ -39,19 +40,30 @@ import org.caleydo.vis.rank.ui.IColumnRenderInfo;
  * @author Samuel Gratzl
  *
  */
-public class ScoreBarRenderer implements IGLRenderer {
-	private final IRankableColumnMixin model;
+public class ScoreBarElement extends PickableGLElement {
+	protected final IRankableColumnMixin model;
 
-	public ScoreBarRenderer(IRankableColumnMixin model) {
+	public ScoreBarElement(IRankableColumnMixin model) {
 		this.model = model;
+		setVisibility(EVisibility.VISIBLE);
 	}
 
 	@Override
-	public void render(GLGraphics g, float w, float h, GLElement parent) {
-		final IRow r = parent.getLayoutDataAs(IRow.class, null); // current row
+	protected void renderImpl(GLGraphics g, float w, float h) {
+		final IRow r = getLayoutDataAs(IRow.class, null); // current row
 		float v = model.applyPrimitive(r);
 		boolean inferred = model.isValueInferred(r);
-		renderValue(g, w, h, parent, r, v, inferred, model, false, model.getColor(), null);
+		renderValue(g, w, h, this, r, v, inferred, model, false, model.getColor(), null);
+	}
+
+	@Override
+	protected String getTooltip() {
+		final IRow r = getLayoutDataAs(IRow.class, null); // current row
+		float v = model.applyPrimitive(r);
+		if (Float.isNaN(v) || v < 0)
+			return null;
+		boolean inferred = model.isValueInferred(r);
+		return getText(r, v, model, inferred);
 	}
 
 	static void renderValue(GLGraphics g, float w, float h, GLElement parent, final IRow r, float v, boolean inferred,
@@ -84,12 +96,32 @@ public class ScoreBarRenderer implements IGLRenderer {
 			}
 
 			if (model.getTable().getSelectedRow() == r) { // is selected, render the value
-				String text = (model instanceof IMappedColumnMixin) ? ((IMappedColumnMixin) model).getRawValue(r)
-						: Formatter.formatNumber(v);
+				String text = getText(r, v, model, inferred);
 				float hi = getTextHeight(h);
 				renderLabel(g, (h - hi) * 0.5f, w, hi, text, v, parent);
 			}
 		}
+	}
+
+	@Override
+	protected void renderPickImpl(GLGraphics g, float w, float h) {
+		if (getVisibility() != EVisibility.PICKABLE)
+			return;
+		IColumnRenderInfo renderInfo = getRenderInfo(this);
+		if ((renderInfo.hasFreeSpace() && renderInfo.getAlignment() == VAlign.LEFT)) {
+			g.fillRect(0, 0, w, h);
+		} else {
+			final IRow r = getLayoutDataAs(IRow.class, null); // current row
+			float v = model.applyPrimitive(r);
+			if (!Float.isNaN(v) && v > 0)
+				g.fillRect(0, 0, w * v, h);
+		}
+	}
+
+	private static String getText(final IRow r, float v, IRankableColumnMixin model, boolean inferred) {
+		String text = (model instanceof IMappedColumnMixin) ? ((IMappedColumnMixin) model).getRawValue(r) : Formatter
+				.formatNumber(v);
+		return text + (inferred ? "*" : "");
 	}
 
 	static float getTextHeight(float h) {

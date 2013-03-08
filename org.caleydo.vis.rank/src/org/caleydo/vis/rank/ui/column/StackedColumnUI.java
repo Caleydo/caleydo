@@ -120,6 +120,7 @@ public class StackedColumnUI extends ACompositeTableColumnUI<StackedRankColumnMo
 		int combinedAlign = this.model.getAlignment();
 		int index = this.model.indexOf(model);
 		if (combinedAlign >= 0 && index != combinedAlign && index >= 0) {
+			IRow selected = this.model.getTable().getSelectedRow();
 			// moving around
 			int[] ranks = this.model.getMyRanker().getOrder();
 			float[] weights = new float[this.model.size()];
@@ -148,6 +149,7 @@ public class StackedColumnUI extends ACompositeTableColumnUI<StackedRankColumnMo
 				}
 				row.setBounds(x, y, w, hr - y);
 				y = hr;
+				row.asElement().setVisibility(data == selected ? EVisibility.PICKABLE : EVisibility.VISIBLE);
 			}
 			TableBodyUI.hideUnusedColumns(children, w, h, used);
 		} else {

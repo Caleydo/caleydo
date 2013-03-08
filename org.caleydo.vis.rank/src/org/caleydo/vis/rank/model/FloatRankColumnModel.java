@@ -43,7 +43,7 @@ import org.caleydo.vis.rank.model.mixin.IHideableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IMappedColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.ISnapshotableColumnMixin;
-import org.caleydo.vis.rank.ui.detail.ScoreBarRenderer;
+import org.caleydo.vis.rank.ui.detail.ScoreBarElement;
 import org.caleydo.vis.rank.ui.detail.ScoreSummary;
 import org.caleydo.vis.rank.ui.mapping.MappingFunctionUIs;
 
@@ -67,7 +67,6 @@ public class FloatRankColumnModel extends ARankColumnModel implements IMappedCol
 			propertySupport.firePropertyChange(PROP_MAPPING, null, data);
 		}
 	};
-	private final IGLRenderer valueRenderer = new ScoreBarRenderer(this);
 
 	public FloatRankColumnModel(IFloatFunction<IRow> data, IGLRenderer header, Color color, Color bgColor,
 			PiecewiseMapping mapping, IFloatInferrer missingValue) {
@@ -110,7 +109,7 @@ public class FloatRankColumnModel extends ARankColumnModel implements IMappedCol
 
 	@Override
 	public GLElement createValue() {
-		return new GLElement(valueRenderer);
+		return new ScoreBarElement(this);
 	}
 
 	@Override

@@ -63,9 +63,16 @@ public class PickableGLElement extends GLElement {
 
 			@Override
 			public String getLabel() {
-				return tooltip;
+				return getTooltip();
 			}
 		}));
+	}
+
+	/**
+	 * @return
+	 */
+	protected String getTooltip() {
+		return tooltip;
 	}
 
 	/**

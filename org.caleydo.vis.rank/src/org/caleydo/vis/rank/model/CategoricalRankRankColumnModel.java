@@ -94,8 +94,6 @@ public class CategoricalRankRankColumnModel<CATEGORY_TYPE> extends ABasicFiltera
 		}
 	};
 
-	private final CategoricalScoreBarRenderer valueRenderer = new CategoricalScoreBarRenderer(this);
-
 	public CategoricalRankRankColumnModel(IGLRenderer header, final Function<IRow, CATEGORY_TYPE> data,
 			Map<CATEGORY_TYPE, CategoryInfo> metaData, ICategoricalMappingFunction<CATEGORY_TYPE> mapping) {
 		super(Color.GRAY, new Color(.95f, .95f, .95f));
@@ -134,7 +132,7 @@ public class CategoricalRankRankColumnModel<CATEGORY_TYPE> extends ABasicFiltera
 
 	@Override
 	public GLElement createValue() {
-		return new GLElement(valueRenderer);
+		return new CategoricalScoreBarRenderer(this);
 	}
 
 	@Override

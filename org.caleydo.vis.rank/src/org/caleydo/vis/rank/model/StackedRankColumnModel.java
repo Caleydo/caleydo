@@ -37,7 +37,7 @@ import org.caleydo.vis.rank.model.mixin.IHideableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.ISnapshotableColumnMixin;
 import org.caleydo.vis.rank.ui.RenderStyle;
-import org.caleydo.vis.rank.ui.detail.ScoreBarRenderer;
+import org.caleydo.vis.rank.ui.detail.ScoreBarElement;
 import org.caleydo.vis.rank.ui.detail.ScoreSummary;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.window.Window;
@@ -194,7 +194,7 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements IHi
 
 	@Override
 	public GLElement createValue() {
-		return new GLElement(new ScoreBarRenderer(this));
+		return new ScoreBarElement(this);
 	}
 
 	@Override

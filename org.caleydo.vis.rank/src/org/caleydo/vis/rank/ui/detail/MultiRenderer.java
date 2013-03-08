@@ -19,14 +19,9 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.ui.detail;
 
-import static org.caleydo.vis.rank.ui.detail.ScoreBarRenderer.getRenderInfo;
-import static org.caleydo.vis.rank.ui.detail.ScoreBarRenderer.renderValue;
-
 import java.awt.Color;
 
-import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
-import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.mixin.IMultiColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IMultiColumnMixin.MultiFloat;
@@ -34,26 +29,24 @@ import org.caleydo.vis.rank.model.mixin.IMultiColumnMixin.MultiFloat;
  * @author Samuel Gratzl
  *
  */
-public class MultiRenderer implements IGLRenderer {
-	private final IMultiColumnMixin model;
-
+public class MultiRenderer extends ScoreBarElement {
 	public MultiRenderer(IMultiColumnMixin model) {
-		this.model = model;
+		super(model);
 	}
 
-
 	@Override
-	public void render(GLGraphics g, float w, float h, GLElement parent) {
-		final IRow r = parent.getLayoutDataAs(IRow.class, null);
-		MultiFloat v = model.getSplittedValue(r);
-		boolean inferred = model.isValueInferred(r);
+	public void renderImpl(GLGraphics g, float w, float h) {
+		final IRow r = getLayoutDataAs(IRow.class, null);
+		IMultiColumnMixin mmodel = (IMultiColumnMixin) model;
+		MultiFloat v = mmodel.getSplittedValue(r);
+		boolean inferred = mmodel.isValueInferred(r);
 		float vr = v.get();
 		if (v.repr < 0)
 			return;
-		Color[] colors = model.getColors();
-		renderValue(g, w, h, parent, r, vr, inferred, model, false, colors[v.repr], colors[v.repr]);
+		Color[] colors = mmodel.getColors();
+		renderValue(g, w, h, this, r, vr, inferred, model, false, colors[v.repr], colors[v.repr]);
 
-		if (model.getTable().getSelectedRow() == r && !getRenderInfo(parent).isCollapsed()) {
+		if (model.getTable().getSelectedRow() == r && !getRenderInfo(this).isCollapsed()) {
 			for (int i = 0; i < v.size(); ++i) {
 				if (i == v.repr)
 					continue;

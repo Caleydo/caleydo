@@ -425,9 +425,11 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 			if (bounds.z() <= 0 || bounds.w() <= 0)
 				continue;
 			if (pick) {
-				g.pushName(pickingIDs[i]);
-				g.fillRect(x, bounds.y(), w, bounds.w());
-				g.popName();
+				if (selected != rankedRow) { // the selected row is not pickable again
+					g.pushName(pickingIDs[i]);
+					g.fillRect(x, bounds.y(), w, bounds.w());
+					g.popName();
+				}
 			} else if (rankedRow == selected) {
 				g.color(RenderStyle.COLOR_SELECTED_ROW);
 				g.incZ();
@@ -458,6 +460,7 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 
 	@Override
 	public void layoutRows(ARankColumnModel model, List<? extends IGLLayoutElement> children, float w, float h) {
+		IRow selected = table.getSelectedRow();
 		Iterator<IRow> ranks = model.getMyRanker().iterator();
 		// align simple all the same x
 		BitSet used = new BitSet(children.size());
@@ -466,11 +469,13 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 		for (float hr : getRanker(model).getRowPositions()) {
 			if (!ranks.hasNext())
 				break;
-			int r = ranks.next().getIndex();
+			IRow rank = ranks.next();
+			int r = rank.getIndex();
 			IGLLayoutElement row = children.get(r);
 			used.clear(r);
 			row.setBounds(RenderStyle.COLUMN_SPACE, y, w, hr - y);
 			y = hr;
+			row.asElement().setVisibility(rank == selected ? EVisibility.PICKABLE : EVisibility.VISIBLE);
 		}
 		hideUnusedColumns(children, w, h, used);
 	}
