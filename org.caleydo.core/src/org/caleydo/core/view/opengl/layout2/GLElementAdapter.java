@@ -145,12 +145,12 @@ public class GLElementAdapter extends GLElement {
 
 		g.save();
 		final GL2 gl = g.gl;
-		gl.glTranslatef(0, 0, g.z());
-		// swap the origin to the top bottom corner
-		// convert the coordinate system to
-		// 0,h w,h
-		// 0,0 w,0
-		gl.glTranslatef(0, h, 0);
+		// gl.glTranslatef(0, 0, g.z());
+		// // swap the origin to the top bottom corner
+		// // convert the coordinate system to
+		// // 0,h w,h
+		// // 0,0 w,0
+		gl.glTranslatef(0, h, g.z());
 		gl.glScalef(1, -1, 1);
 
 		g.checkError();

@@ -224,7 +224,7 @@ public class SelectionManager implements IListenerOwner, Cloneable {
 	 */
 	public synchronized Set<Integer> getElements(SelectionType selectionType) {
 		if (hashSelectionTypes.containsKey(selectionType))
-			return hashSelectionTypes.get(selectionType).keySet();
+			return new HashSet<>(hashSelectionTypes.get(selectionType).keySet());
 
 		return null;
 	}
