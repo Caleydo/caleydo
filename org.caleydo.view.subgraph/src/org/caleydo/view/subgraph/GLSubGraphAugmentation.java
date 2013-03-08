@@ -55,7 +55,7 @@ public class GLSubGraphAugmentation extends GLElement {
 	
 	private List<IGLRenderer> renderers = new ArrayList<>();
 	private BubbleSetGLRenderer bubbleSetRenderer=new BubbleSetGLRenderer();
-	public BubbleSetGLRenderer getBubbleSetGLRenderer(){return this.bubbleSetRenderer;}
+	//public BubbleSetGLRenderer getBubbleSetGLRenderer(){return this.bubbleSetRenderer;}
 	
 	public void init(final GL2 gl){
 		bubbleSetRenderer.init(gl);
@@ -67,13 +67,13 @@ public class GLSubGraphAugmentation extends GLElement {
 		pxlWidth=newPxlWidth;
 		pxlHeight=newPxlHeight;
 	}
-
+	public boolean isDirty=false;
 	
 	public static class ConnectionRenderer implements IGLRenderer {
 
 		protected final Rectangle2D loc1;
 		protected final Rectangle2D loc2;
-		
+
 		private Color portalBSColor=new Color(1.0f,0.0f,0.0f); 
 
 		public ConnectionRenderer(Rectangle2D loc1, Rectangle2D loc2) {
@@ -101,6 +101,8 @@ public class GLSubGraphAugmentation extends GLElement {
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
+		if(this.isDirty){
+			this.isDirty=false;
 		//prepare bubbleSet texture
 		this.bubbleSetRenderer.clearBubbleSet();
 		this.bubbleSetRenderer.setSize(pxlWidth, pxlHeight);
@@ -142,8 +144,11 @@ public class GLSubGraphAugmentation extends GLElement {
 		//				edgeR0,edgeR1, nodeR0, nodeR1, 
 		//				morphBuffer,skip) 
 
-		this.renderPortalLinks(g);
-		this.bubbleSetRenderer.update(g.gl,null,0);	
+			this.renderPortalLinks(g);
+			this.bubbleSetRenderer.update(g.gl,null,0);	
+			g.gl.glTranslatef(0.f, 0.f, -1.0f);
+		}
+		g.gl.glTranslatef(0.f, 0.f, 1.0f);
 		this.bubbleSetRenderer.renderPxl(g.gl, pxlWidth, pxlHeight);		
 		g.gl.glTranslatef(0.f, 0.f, -1.0f);		
 	}

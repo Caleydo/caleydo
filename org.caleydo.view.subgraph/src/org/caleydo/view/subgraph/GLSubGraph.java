@@ -396,7 +396,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	}
 
 	protected void updatePathLinks() {
-
+		augmentation.isDirty=true;
 		augmentation.setPxlSize(this.getParentGLCanvas().getWidth(), this.getParentGLCanvas().getHeight());
 
 		augmentation.clearRenderers();
