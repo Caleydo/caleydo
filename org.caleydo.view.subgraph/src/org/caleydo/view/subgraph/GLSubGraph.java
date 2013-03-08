@@ -54,6 +54,7 @@ import org.caleydo.datadomain.pathway.graph.PathwayPath;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.listener.PathwayPathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.ShowPortalNodesEvent;
+import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.subgraph.event.ShowNodeInfoEvent;
 import org.caleydo.view.subgraph.event.ShowPathwayBrowserEvent;
@@ -203,18 +204,22 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 
 	private void createRemoteRenderedViews() {
 		if (remoteRenderedPathwayMultiformViewIDs == null) {
-			// addPathway(PathwayManager.get().getPathwayByTitle("Glioma", EPathwayDatabaseType.KEGG));
+			addPathway(PathwayManager.get().getPathwayByTitle("Glioma", EPathwayDatabaseType.KEGG));
 			// addPathway(PathwayManager.get().getPathwayByTitle("Pathways in cancer", EPathwayDatabaseType.KEGG));
-			pathInfo = new MultiFormInfo();
-			createMultiformRenderer(tablePerspectives, EnumSet.of(EEmbeddingID.PATH_LEVEL1, EEmbeddingID.PATH_LEVEL2),
-					baseContainer, 0.3f, pathInfo);
-			// This assumes that a path level 2 view exists.
-			int rendererID = pathInfo.embeddingIDToRendererIDs.get(EEmbeddingID.PATH_LEVEL2).get(0);
-			if (pathInfo.multiFormRenderer.getActiveRendererID() != rendererID) {
-				pathInfo.multiFormRenderer.setActive(rendererID);
-			} else {
-				setPathLevel(EEmbeddingID.PATH_LEVEL2);
-			}
+			// addPathway(PathwayManager.get().getPathwayByTitle("Pathways in cancer", EPathwayDatabaseType.KEGG));
+			// addPathway(PathwayManager.get().getPathwayByTitle("Glioma", EPathwayDatabaseType.KEGG));
+
+			// pathInfo = new MultiFormInfo();
+			// createMultiformRenderer(tablePerspectives, EnumSet.of(EEmbeddingID.PATH_LEVEL1,
+			// EEmbeddingID.PATH_LEVEL2),
+			// baseContainer, 0.3f, pathInfo);
+			// // This assumes that a path level 2 view exists.
+			// int rendererID = pathInfo.embeddingIDToRendererIDs.get(EEmbeddingID.PATH_LEVEL2).get(0);
+			// if (pathInfo.multiFormRenderer.getActiveRendererID() != rendererID) {
+			// pathInfo.multiFormRenderer.setActive(rendererID);
+			// } else {
+			// setPathLevel(EEmbeddingID.PATH_LEVEL2);
+			// }
 
 		}
 	}

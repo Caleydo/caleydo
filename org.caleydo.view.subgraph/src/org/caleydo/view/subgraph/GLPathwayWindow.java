@@ -53,6 +53,7 @@ public class GLPathwayWindow extends AnimatedGLElementContainer {
 		GLElementAdapter container = new GLElementAdapter(view, info.multiFormRenderer, true);
 		multiFormContainer.add(container);
 		info.container = container;
+		// container.setVisibility(EVisibility.HIDDEN);
 		// multiFormRendererAdapter.onPick(pl);
 
 		viewSwitchingBar = new GLElementViewSwitchingBar(info.multiFormRenderer);
