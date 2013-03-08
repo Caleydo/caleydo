@@ -350,7 +350,7 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 			removePath(renderer);
 		}
 
-		setDisplayListDirty();
+		setDisplayListDirty(true);
 		layout.updateLayout();
 		triggerMinSizeUpdate();
 	}
@@ -438,7 +438,7 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 
 	@Override
 	public boolean isDisplayListDirty() {
-		if (isDisplayListDirty)
+		if (super.isDisplayListDirty())
 			return true;
 		for (APathwayPathRenderer renderer : renderers.keySet()) {
 			if (renderer.isDisplayListDirty())

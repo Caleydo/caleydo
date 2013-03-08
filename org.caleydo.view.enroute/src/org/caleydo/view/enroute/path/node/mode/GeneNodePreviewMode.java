@@ -230,7 +230,7 @@ public class GeneNodePreviewMode extends AGeneNodeMode {
 				}
 				selectionManager.triggerSelectionUpdateEvent();
 
-				pathwayPathRenderer.setDisplayListDirty();
+				pathwayPathRenderer.setDisplayListDirty(true);
 			}
 
 			@Override
@@ -243,7 +243,7 @@ public class GeneNodePreviewMode extends AGeneNodeMode {
 				}
 				selectionManager.triggerSelectionUpdateEvent();
 
-				pathwayPathRenderer.setDisplayListDirty();
+				pathwayPathRenderer.setDisplayListDirty(true);
 			}
 
 		};

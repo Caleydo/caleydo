@@ -123,7 +123,7 @@ public class LabelRenderer
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.caleydo.core.view.opengl.layout.util.APickableLayoutRenderer#addPickingID(java.lang.String, int)
 	 */
 	@Override
@@ -134,7 +134,7 @@ public class LabelRenderer
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.caleydo.core.view.opengl.layout.util.APickableLayoutRenderer#addPickingIDs(java.util.List)
 	 */
 	@Override
@@ -150,7 +150,7 @@ public class LabelRenderer
 			label = labelProvider.getLabel();
 
 		if (!prevLabel.equals(label)) {
-			setDisplayListDirty();
+			setDisplayListDirty(true);
 		}
 		prevLabel = label;
 	}

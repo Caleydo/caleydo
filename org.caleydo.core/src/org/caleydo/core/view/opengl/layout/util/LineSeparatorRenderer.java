@@ -41,7 +41,7 @@ public class LineSeparatorRenderer extends ALayoutRenderer {
 		if (lineWidth == this.lineWidth)
 			return;
 		this.lineWidth = lineWidth;
-		setDisplayListDirty();
+		setDisplayListDirty(true);
 	}
 
 	@Override

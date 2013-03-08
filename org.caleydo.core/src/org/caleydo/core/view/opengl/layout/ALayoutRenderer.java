@@ -48,9 +48,9 @@ import org.caleydo.core.view.opengl.layout.util.ViewLayoutRenderer;
  * </p>
  *
  * <p>
- * If a specific ALayoutRenderer wants its content to be rendered in a display list, {@link #permitsWrappingDisplayLists()} must
- * return true. However, the use of display lists also depends on whether the {@link LayoutManager} of the associated
- * <code>ElementLayout</code> permits display lists.
+ * If a specific ALayoutRenderer wants its content to be rendered in a display list,
+ * {@link #permitsWrappingDisplayLists()} must return true. However, the use of display lists also depends on whether
+ * the {@link LayoutManager} of the associated <code>ElementLayout</code> permits display lists.
  * </p>
  *
  * @author Alexander Lex
@@ -73,7 +73,7 @@ public abstract class ALayoutRenderer {
 	/**
 	 * Determines whether the display list for this renderer should be rebuilt.
 	 */
-	protected boolean isDisplayListDirty = true;
+	private boolean isDisplayListDirty = true;
 
 	// protected PixelGLConverter pixelGLConverter;
 
@@ -103,7 +103,7 @@ public abstract class ALayoutRenderer {
 			gl.glNewList(displayListIndex, GL2.GL_COMPILE);
 			renderContent(gl);
 			gl.glEndList();
-			isDisplayListDirty = false;
+			setDisplayListDirty(false);
 		}
 
 		if (permitsWrappingDisplayLists() && displayListsAllowedByLayoutManager) {
@@ -159,7 +159,7 @@ public abstract class ALayoutRenderer {
 	public void setLimits(float x, float y) {
 		this.x = x;
 		this.y = y;
-		setDisplayListDirty();
+		setDisplayListDirty(true);
 	}
 
 	/** Calculate spacing if required */
@@ -192,10 +192,10 @@ public abstract class ALayoutRenderer {
 	}
 
 	/**
-	 * Sets the display list of this renderer dirty.
+	 * Sets {@link #isDisplayListDirty()}
 	 */
-	public void setDisplayListDirty() {
-		this.isDisplayListDirty = true;
+	public void setDisplayListDirty(boolean isDisplayListDirty) {
+		this.isDisplayListDirty = isDisplayListDirty;
 	}
 
 	/**

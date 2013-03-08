@@ -123,12 +123,12 @@ public final class LayoutRendererAdapter extends ALayoutRenderer implements IGLE
 
 	@Override
 	public void repaint() {
-		setDisplayListDirty();
+		setDisplayListDirty(true);
 	}
 
 	@Override
 	public void repaintPick() {
-		setDisplayListDirty();
+		setDisplayListDirty(true);
 	}
 
 	@Override

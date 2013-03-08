@@ -196,9 +196,9 @@ public class MultiFormRenderer extends AForwardingRenderer implements IEmbeddedV
 			if (!isInitialized)
 				init();
 			currentRenderer.setLimits(x, y);
-			MultiFormRenderer.this.isDisplayListDirty = true;
-			currentRenderer.setDisplayListDirty();
 			isActive = true;
+			MultiFormRenderer.super.setDisplayListDirty(true);
+			currentRenderer.setDisplayListDirty(true);
 		}
 
 		void init() {
@@ -247,9 +247,9 @@ public class MultiFormRenderer extends AForwardingRenderer implements IEmbeddedV
 			}
 			currentRenderer = renderer;
 			currentRenderer.setLimits(x, y);
-			MultiFormRenderer.this.isDisplayListDirty = true;
-			currentRenderer.setDisplayListDirty();
 			isActive = true;
+			MultiFormRenderer.super.setDisplayListDirty(true);
+			currentRenderer.setDisplayListDirty(true);
 		}
 
 		@Override
@@ -671,10 +671,10 @@ public class MultiFormRenderer extends AForwardingRenderer implements IEmbeddedV
 	}
 
 	@Override
-	public void setDisplayListDirty() {
+	public void setDisplayListDirty(boolean isDisplayListDiry) {
 		if (!ensureValidRenderer())
 			return;
-		super.setDisplayListDirty();
+		super.setDisplayListDirty(isDisplayListDiry);
 	}
 
 	@Override

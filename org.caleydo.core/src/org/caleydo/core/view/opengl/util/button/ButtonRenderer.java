@@ -170,7 +170,7 @@ public class ButtonRenderer extends APickableLayoutRenderer {
 
 	public void setTextureRotation(ETextureRotation textureRotation) {
 		this.textureRotation = textureRotation;
-		setDisplayListDirty();
+		setDisplayListDirty(true);
 	}
 
 	/**
@@ -179,7 +179,7 @@ public class ButtonRenderer extends APickableLayoutRenderer {
 	 */
 	public ButtonRenderer setZCoordinate(float zCoordinate) {
 		this.zCoordinate = zCoordinate;
-		setDisplayListDirty();
+		setDisplayListDirty(true);
 		return this;
 	}
 

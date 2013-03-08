@@ -111,12 +111,12 @@ public class ColorRenderer extends APickableLayoutRenderer {
 
 	public void setColor(float[] color) {
 		this.color = color;
-		setDisplayListDirty();
+		setDisplayListDirty(true);
 	}
 
 	public void setBorderColor(float[] borderColor) {
 		this.borderColor = borderColor;
-		setDisplayListDirty();
+		setDisplayListDirty(true);
 	}
 
 	public float[] getBorderColor() {
@@ -125,7 +125,7 @@ public class ColorRenderer extends APickableLayoutRenderer {
 
 	public void setBorderWidth(int borderWidth) {
 		this.borderWidth = borderWidth;
-		setDisplayListDirty();
+		setDisplayListDirty(true);
 	}
 
 	public int getBorderWidth() {
@@ -134,7 +134,7 @@ public class ColorRenderer extends APickableLayoutRenderer {
 
 	public void setDrawBorder(boolean drawBorder) {
 		this.drawBorder = drawBorder;
-		setDisplayListDirty();
+		setDisplayListDirty(true);
 	}
 
 	public boolean isDrawBorder() {
@@ -147,7 +147,7 @@ public class ColorRenderer extends APickableLayoutRenderer {
 	 */
 	public void setGradientColor(float[] gradientColor) {
 		this.gradientColor = gradientColor;
-		setDisplayListDirty();
+		setDisplayListDirty(true);
 	}
 
 	/**
@@ -163,7 +163,7 @@ public class ColorRenderer extends APickableLayoutRenderer {
 	 */
 	public void setHorizontalGradient(boolean isHorizontalGradient) {
 		this.isHorizontalGradient = isHorizontalGradient;
-		setDisplayListDirty();
+		setDisplayListDirty(true);
 	}
 
 	/**
@@ -179,7 +179,7 @@ public class ColorRenderer extends APickableLayoutRenderer {
 	 */
 	public void setUseGradient(boolean useGradient) {
 		this.useGradient = useGradient;
-		setDisplayListDirty();
+		setDisplayListDirty(true);
 	}
 
 	/**

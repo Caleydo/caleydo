@@ -690,16 +690,16 @@ public class ElementLayout implements Comparable<ElementLayout> {
 
 		if (foregroundRenderers != null) {
 			for (ALayoutRenderer renderer : foregroundRenderers) {
-				renderer.setDisplayListDirty();
+				renderer.setDisplayListDirty(true);
 			}
 		}
 		if (backgroundRenderers != null) {
 			for (ALayoutRenderer renderer : backgroundRenderers) {
-				renderer.setDisplayListDirty();
+				renderer.setDisplayListDirty(true);
 			}
 		}
 		if (renderer != null) {
-			renderer.setDisplayListDirty();
+			renderer.setDisplayListDirty(true);
 		}
 
 	}

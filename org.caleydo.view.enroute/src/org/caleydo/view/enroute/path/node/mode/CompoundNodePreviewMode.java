@@ -130,7 +130,7 @@ public class CompoundNodePreviewMode extends ACompoundNodeMode {
 
 				node.setSelectionType(SelectionType.MOUSE_OVER);
 				// circleColor = SelectionType.MOUSE_OVER.getColor();
-				pathwayPathRenderer.setDisplayListDirty();
+				pathwayPathRenderer.setDisplayListDirty(true);
 			}
 
 			@Override
@@ -144,7 +144,7 @@ public class CompoundNodePreviewMode extends ACompoundNodeMode {
 
 				node.setSelectionType(SelectionType.NORMAL);
 				// circleColor = DEFAULT_CIRCLE_COLOR;
-				pathwayPathRenderer.setDisplayListDirty();
+				pathwayPathRenderer.setDisplayListDirty(true);
 			}
 		};
 		view.addIDPickingListener(pickingListener, EPickingType.LINEARIZABLE_NODE.name(), node.hashCode());

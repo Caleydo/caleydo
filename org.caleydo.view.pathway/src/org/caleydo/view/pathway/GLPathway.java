@@ -20,7 +20,6 @@ import gleem.linalg.Vec3f;
 
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -161,7 +160,8 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 	/**
 	 * Own texture manager is needed for each GL2 context, because textures cannot be bound to multiple GL2 contexts.
 	 */
-	private HashMap<GL, GLPathwayTextureManager> hashGLcontext2TextureManager;
+	// private HashMap<GL, GLPathwayTextureManager> hashGLcontext2TextureManager;
+	private GLPathwayTextureManager pathwayTextureManager;
 
 	private Vec3f vecScaling;
 	private Vec3f vecTranslation;
@@ -231,7 +231,7 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 		pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get().getDataDomainByType(
 				"org.caleydo.datadomain.pathway");
 
-		hashGLcontext2TextureManager = new HashMap<GL, GLPathwayTextureManager>();
+		// hashGLcontext2TextureManager = new HashMap<GL, GLPathwayTextureManager>();
 
 		vertexSelectionManager = new EventBasedSelectionManager(this, IDType.getIDType(EGeneIDTypes.PATHWAY_VERTEX_REP
 				.name()));
@@ -645,9 +645,10 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 		}
 
 		// Create new pathway manager for GL2 context
-		if (!hashGLcontext2TextureManager.containsKey(gl)) {
-			hashGLcontext2TextureManager.put(gl, new GLPathwayTextureManager());
-		}
+		pathwayTextureManager = new GLPathwayTextureManager();
+		// if (!hashGLcontext2TextureManager.containsKey(gl)) {
+		// hashGLcontext2TextureManager.put(gl, new GLPathwayTextureManager());
+		// }
 
 		calculatePathwayScaling(gl, pathway);
 		pathwayManager.setPathwayVisibilityState(pathway, true);
@@ -664,7 +665,9 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 		float textureOffset = 0.0f;// to avoid z fighting
 		if (enablePathwayTexture) {
 			float fPathwayTransparency = 1.0f;
-			hashGLcontext2TextureManager.get(gl).renderPathway(gl, this, pathway, fPathwayTransparency, false);
+
+			pathwayTextureManager.renderPathway(gl, this, pathway, fPathwayTransparency, false);
+			// hashGLcontext2TextureManager.get(gl);
 		}
 
 		float pathwayHeight = pixelGLConverter.getGLHeightForPixelHeight(pathway.getHeight());
@@ -691,7 +694,7 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 			gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_KEEP);
 			gl.glPushName(generalManager.getViewManager().getPickingManager()
 					.getPickingID(uniqueID, EPickingType.PATHWAY_TEXTURE_SELECTION.name(), 0));
-			hashGLcontext2TextureManager.get(gl).renderPathway(gl, this, pathway, fPathwayTransparency, false);
+			pathwayTextureManager.renderPathway(gl, this, pathway, fPathwayTransparency, false);
 			gl.glPopName();
 
 			gl.glStencilFunc(GL.GL_GREATER, 1, 0xff);
@@ -745,7 +748,7 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 
 	private void calculatePathwayScaling(final GL2 gl, final PathwayGraph pathway) {
 
-		if (hashGLcontext2TextureManager.get(gl) == null)
+		if (pathwayTextureManager == null)
 			return;
 
 		int pathwayPixelWidth = pathway.getWidth();

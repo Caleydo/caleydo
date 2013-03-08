@@ -478,7 +478,7 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 
 	@Override
 	public void notifyOfSelectionChange(EventBasedSelectionManager selectionManager) {
-		setDisplayListDirty();
+		setDisplayListDirty(true);
 	}
 
 	/**
@@ -534,9 +534,9 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	@Override
 	protected void prepare() {
 		updateStrategy.processEvents();
-		if (isDisplayListDirty()) {
-			updateLayout();
-		}
+		// if (isDisplayListDirty()) {
+		// updateLayout();
+		// }
 	}
 
 	/**
@@ -552,6 +552,7 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 			setExpandedBranchSummaryNode(null);
 			setPath(newPathSegments);
 			updateStrategy.triggerPathUpdate();
+			setDisplayListDirty(true);
 		}
 	}
 
@@ -626,14 +627,15 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	public void setExpandedBranchSummaryNode(BranchSummaryNode expandedBranchSummaryNode) {
 		if (this.expandedBranchSummaryNode != expandedBranchSummaryNode) {
 			this.expandedBranchSummaryNode = expandedBranchSummaryNode;
-			for (ALinearizableNode node : pathNodes) {
-				node.setPickable(expandedBranchSummaryNode == null);
-			}
+			// for (ALinearizableNode node : pathNodes) {
+			// node.setPickable(expandedBranchSummaryNode == null);
+			// }
 
 			PathRendererChangedEvent event = new PathRendererChangedEvent(this);
 			event.setSender(this);
 			GeneralManager.get().getEventPublisher().triggerEvent(event);
 			updateLayout();
+			setDisplayListDirty(true);
 		}
 	}
 

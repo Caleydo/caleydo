@@ -103,7 +103,7 @@ public class RemoveNodeButtonAttributeRenderer extends ANodeAttributeRenderer {
 				@Override
 				protected void timedMouseOut(Pick pick) {
 					showRemoveButton = false;
-					pathwayPathRenderer.setDisplayListDirty();
+					pathwayPathRenderer.setDisplayListDirty(true);
 				}
 
 				@Override
@@ -117,7 +117,7 @@ public class RemoveNodeButtonAttributeRenderer extends ANodeAttributeRenderer {
 							|| pathwayPathRenderer.isLastNode((ALinearizableNode) node)) {
 						super.mouseOver(pick);
 						showRemoveButton = true;
-						pathwayPathRenderer.setDisplayListDirty();
+						pathwayPathRenderer.setDisplayListDirty(true);
 					}
 				}
 			};

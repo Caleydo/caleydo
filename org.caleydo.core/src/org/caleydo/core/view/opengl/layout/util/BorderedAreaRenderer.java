@@ -56,7 +56,7 @@ public class BorderedAreaRenderer extends APickableLayoutRenderer {
 	 */
 	public void setColor(float[] color) {
 		this.color = color;
-		setDisplayListDirty();
+		setDisplayListDirty(true);
 	}
 
 	public float[] getColor() {

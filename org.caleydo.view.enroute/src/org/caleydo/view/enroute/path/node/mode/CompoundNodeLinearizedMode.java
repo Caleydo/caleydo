@@ -81,7 +81,7 @@ public class CompoundNodeLinearizedMode extends ACompoundNodeMode {
 				selectionManager.triggerSelectionUpdateEvent();
 
 				node.setSelectionType(SelectionType.SELECTION);
-				pathwayPathRenderer.setDisplayListDirty();
+				pathwayPathRenderer.setDisplayListDirty(true);
 
 			}
 
@@ -98,7 +98,7 @@ public class CompoundNodeLinearizedMode extends ACompoundNodeMode {
 				selectionManager.triggerSelectionUpdateEvent();
 
 				node.setSelectionType(SelectionType.MOUSE_OVER);
-				pathwayPathRenderer.setDisplayListDirty();
+				pathwayPathRenderer.setDisplayListDirty(true);
 			}
 
 			@Override
@@ -112,7 +112,7 @@ public class CompoundNodeLinearizedMode extends ACompoundNodeMode {
 
 				node.setSelectionType(SelectionType.NORMAL);
 				// circleColor = DEFAULT_CIRCLE_COLOR;
-				pathwayPathRenderer.setDisplayListDirty();
+				pathwayPathRenderer.setDisplayListDirty(true);
 			}
 		};
 		view.addIDPickingListener(pickingListener, EPickingType.LINEARIZABLE_NODE.name(), node.hashCode());

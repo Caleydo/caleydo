@@ -42,9 +42,9 @@ public class AForwardingRenderer extends ALayoutRenderer {
 	}
 
 	@Override
-	public void setDisplayListDirty() {
-		super.setDisplayListDirty();
-		currentRenderer.setDisplayListDirty();
+	public void setDisplayListDirty(boolean isDisplayListDirty) {
+		super.setDisplayListDirty(isDisplayListDirty);
+		currentRenderer.setDisplayListDirty(isDisplayListDirty);
 	}
 
 	@Override
@@ -68,8 +68,7 @@ public class AForwardingRenderer extends ALayoutRenderer {
 	@Override
 	protected void prepare() {
 		currentRenderer.prepare();
-		if (currentRenderer.isDisplayListDirty())
-			super.setDisplayListDirty();
+		super.setDisplayListDirty(currentRenderer.isDisplayListDirty());
 	}
 
 	@Override
