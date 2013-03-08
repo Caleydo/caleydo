@@ -170,10 +170,12 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 		for (ITableColumnUI r : Iterables.filter(this, ITableColumnUI.class)) {
 			if (r instanceof OrderColumnUI) {
 				OrderColumnUI cr = (OrderColumnUI) r;
+				if (started) {
+					((OrderColumnUI) r).repaintAll(); // repaint the next one
+					break;
+				}
 				if (ranker != cr.getRanker())
 					continue;
-				if (started)
-					break;
 				started = true;
 			}
 			if (started)

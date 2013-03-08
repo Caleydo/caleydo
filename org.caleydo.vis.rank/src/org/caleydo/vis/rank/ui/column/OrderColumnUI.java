@@ -175,8 +175,35 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 		}
 		g.restore();
 		super.renderImpl(g, w, h);
-
 	}
+
+	@Override
+	protected void renderPickImpl(GLGraphics g, float w, float h) {
+		if (dontneedToRender(w))
+			return;
+		TableBodyUI body = getTableBodyUI();
+		OrderColumnUI previousRanker = body.getRanker(model);
+		ITableColumnUI previous = body.getLastCorrespondingColumn(previousRanker, true);
+		ITableColumnUI self = body.getLastCorrespondingColumn(this, true);
+		if (self == null || self == this || previous == null || previous instanceof OrderColumnUI)
+			return;
+
+		g.save();
+		g.gl.glTranslatef(0, 0, g.z());
+		int i = -1;
+		for (IRow row : model.getRanker()) {
+			i++;
+			Vec4f left = previous.get(row.getIndex()).getBounds();
+			Vec4f right = self.get(row.getIndex()).getBounds();
+			if (!areValidBounds(left) || !areValidBounds(right))
+				continue;
+			g.pushName(body.getRankPickingId(i));
+			renderBand(g, left, right, w, false, false, false);
+			g.popName();
+		}
+		g.restore();
+	}
+
 
 	private boolean dontneedToRender(float w) {
 		return model == null || model.isCollapsed() || w < 20;

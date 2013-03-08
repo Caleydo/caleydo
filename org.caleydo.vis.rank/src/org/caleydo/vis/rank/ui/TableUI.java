@@ -27,6 +27,7 @@ import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton.ISelectionCallback;
 import org.caleydo.core.view.opengl.layout2.basic.RadioController;
+import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.rank.internal.ui.ButtonBar;
 import org.caleydo.vis.rank.layout.RowHeightLayouts;
@@ -43,7 +44,7 @@ public class TableUI extends GLElementContainer implements ISelectionCallback {
 	}
 
 	public void init(RankTableModel table, boolean interactive, IRowHeightLayout... layouts) {
-		setLayout(new TableLayout(layouts.length > 1));
+		setLayout(GLLayouts.flowVertical(0));
 		if (layouts.length > 1) {
 			ButtonBar buttons = new ButtonBar();
 			buttons.setzDelta(0.5f);
