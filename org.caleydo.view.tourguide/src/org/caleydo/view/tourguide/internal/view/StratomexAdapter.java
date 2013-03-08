@@ -590,7 +590,7 @@ public class StratomexAdapter {
 			}
 		}
 		if (rec == null) { //not found create a new one
-			rec = dataDomain.convertForeignRecordPerspective(underlyingRP);
+			rec = dataDomain.convertForeignPerspective(underlyingRP);
 			dataDomain.getTable().registerRecordPerspective(rec);
 		}
 		return dataDomain.getTablePerspective(rec.getPerspectiveID(), dim.getPerspectiveID(), false);

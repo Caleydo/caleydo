@@ -1,16 +1,16 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
  * University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
  * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
  * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU General Public License along with this program. If not, see
  * <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -90,7 +90,7 @@ import org.caleydo.core.util.color.mapping.ColorMapper;
  * {@link ATableBasedDataDomain}s are initialized using a {@link DataDomainConfiguration} object, which can be either
  * specified or taken from a default initialization of an implementing sub-class.
  * </p>
- *
+ * 
  * @author Alexander Lex
  * @author Marc Streit
  */
@@ -238,7 +238,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 	/**
 	 * Sets the {@link #table} of this dataDomain. The table may not be null. Initializes {@link #recordPerspectiveIDs}
 	 * and {@link #dimensionPerspectiveIDs}.
-	 *
+	 * 
 	 * @param table
 	 *            The new set which replaced the currently loaded one.
 	 */
@@ -265,9 +265,9 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 	 * <p>
 	 * If such a container exists already, the existing container is returned. If not, a new container is created and
 	 * the datadomain will be notified.
-	 *
+	 * 
 	 * </p>
-	 *
+	 * 
 	 * @param recordPerspectiveID
 	 * @param dimensionPerspectiveID
 	 * @return
@@ -282,7 +282,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 	 * <p>
 	 * If such a container exists already, the existing container is returned. If not, a new container is created.
 	 * </p>
-	 *
+	 * 
 	 * @param recordPerspectiveID
 	 * @param dimensionPerspectiveID
 	 * @param flag
@@ -321,7 +321,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 
 	/**
 	 * Returns a data container based on its key
-	 *
+	 * 
 	 * @param tablePerspectiveKey
 	 * @return
 	 */
@@ -337,7 +337,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 
 	/**
 	 * Returns whether a {@link TablePerspective} Object exists in this datadomain for the given perspectiveIDs.
-	 *
+	 * 
 	 * @param recordPerspectiveID
 	 * @param dimensionPerspectiveID
 	 * @return
@@ -411,7 +411,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 
 	/**
 	 * Returns a clone of the record selection manager. This is the preferred way to initialize SelectionManagers.
-	 *
+	 * 
 	 * @return a clone of the record selection manager
 	 */
 	public SelectionManager getRecordSelectionManager() {
@@ -420,7 +420,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 
 	/**
 	 * Returns a clone of the dimension selection manager. This is the preferred way to initialize SelectionManagers.
-	 *
+	 * 
 	 * @return a clone of the dimension selection manager
 	 */
 	public SelectionManager getDimensionSelectionManager() {
@@ -430,7 +430,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 	/**
 	 * Returns a clone of the record group selection manager. This is the preferred way to initialize SelectionManagers.
 	 * *
-	 *
+	 * 
 	 * @return a clone of the dimension selection manager
 	 */
 	public SelectionManager getRecordGroupSelectionManager() {
@@ -439,7 +439,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 
 	/**
 	 * Returns the virtual array for the type
-	 *
+	 * 
 	 * @param recordPerspectiveID
 	 *            the type of VA requested
 	 * @return
@@ -451,7 +451,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 
 	/**
 	 * Returns the virtual array for the type
-	 *
+	 * 
 	 * @param dimensionPerspectiveID
 	 *            the type of VA requested
 	 * @return
@@ -502,7 +502,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 	/**
 	 * Initiates clustering based on the parameters passed. Sends out an event to all affected views upon positive
 	 * completion to replace their VA.
-	 *
+	 * 
 	 * @param tableID
 	 *            ID of the set to cluster
 	 * @param clusterState
@@ -653,7 +653,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 	 * This method is called by the {@link ForeignSelectionUpdateListener}, signaling that a selection form another
 	 * dataDomain is available. If possible, it is converted to be compatible with the local dataDomain and then sent
 	 * out via a {@link SelectionUpdateEvent}.
-	 *
+	 * 
 	 * @param dataDomainType
 	 *            the type of the dataDomain for which this selectionUpdate is intended
 	 * @param delta
@@ -676,7 +676,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 	/**
 	 * This method is called if a record VA Update was requested, but the dataDomainType specified was not this
 	 * dataDomains type. Concrete handling can only be done in concrete dataDomains.
-	 *
+	 * 
 	 * @param tableID
 	 * @param dataDomainType
 	 * @param vaType
@@ -688,7 +688,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 
 	/**
 	 * Returns the denomination for the records. For genetic data for example this would be "Gene"
-	 *
+	 * 
 	 * @param capitalized
 	 *            if true, the label is returned capitalized, e.g., "Gene", if false it would be "gene"
 	 * @param plural
@@ -730,7 +730,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 
 	/**
 	 * Get the human readable record label for the id, which is of the {@link #recordIDType}.
-	 *
+	 * 
 	 * @param id
 	 *            the id to convert to a human readable label
 	 * @return the readable label
@@ -741,7 +741,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 
 	/**
 	 * Get the human readable dimension label for the id, which is of the {@link #dimensionIDType}.
-	 *
+	 * 
 	 * @param id
 	 *            the id to convert to a human readable label
 	 * @return the readable label
@@ -752,7 +752,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 
 	/**
 	 * Get the human readable record label for the id, which is of the type specified.
-	 *
+	 * 
 	 * @param idType
 	 *            the IDType of the id passed
 	 * @param id
@@ -869,33 +869,43 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 
 	/**
 	 * <p>
-	 * Converts a {@link Perspective} with an IDType that is not the {@link #recordIDType} to a new Perspective with the
-	 * recordIDType.
+	 * Converts a {@link Perspective} with an IDType that is not the {@link #recordIDType} or the
+	 * {@link #dimensionIDType}, but is of the same {@link IDCategory} as one of the two to a new Perspective with the
+	 * local {@link IDType}.
 	 * </p>
 	 * <p>
 	 * Grouping, and naming is preserved, sample elements and trees are not.
 	 * </p>
 	 */
-	public Perspective convertForeignRecordPerspective(Perspective foreignPerspective) {
+	public Perspective convertForeignPerspective(Perspective foreignPerspective) {
 
-		if (foreignPerspective.getIdType().getIDCategory() != recordIDCategory) {
+		IDType localIDType;
+		IDMappingManager idMappingManager;
+		if (foreignPerspective.getIdType().getIDCategory() == recordIDCategory) {
+			localIDType = this.recordIDType;
+			idMappingManager = this.recordIDMappingManager;
+		} else if (foreignPerspective.getIdType().getIDCategory() == dimensionIDCategory) {
+			localIDType = this.dimensionIDType;
+			idMappingManager = this.dimensionIDMappingManager;
+		} else {
 			throw new IllegalArgumentException("Can not convert from " + foreignPerspective.getIdType() + " to "
-					+ recordIDType);
+					+ this.recordIDType + " or " + this.dimensionIDType);
 		}
-		if (foreignPerspective.getIdType() == recordIDType)
+
+		if (foreignPerspective.getIdType() == localIDType)
 			return foreignPerspective;
 
-		VirtualArray foreignRecordVA = foreignPerspective.getVirtualArray();
+		VirtualArray foreignVA = foreignPerspective.getVirtualArray();
 
-		GroupList recordGroupList = foreignRecordVA.getGroupList();
+		GroupList groupList = foreignVA.getGroupList();
 
 		PerspectiveInitializationData data = new PerspectiveInitializationData();
-		ArrayList<Integer> indices = new ArrayList<Integer>(foreignRecordVA.size());
-		ArrayList<Integer> groupSizes = new ArrayList<Integer>(recordGroupList.size());
-		ArrayList<Integer> sampleElements = new ArrayList<Integer>(recordGroupList.size());
-		ArrayList<String> groupNames = new ArrayList<String>(recordGroupList.size());
+		ArrayList<Integer> indices = new ArrayList<Integer>(foreignVA.size());
+		ArrayList<Integer> groupSizes = new ArrayList<Integer>(groupList.size());
+		ArrayList<Integer> sampleElements = new ArrayList<Integer>(groupList.size());
+		ArrayList<String> groupNames = new ArrayList<String>(groupList.size());
 
-		for (Group foreignGroup : recordGroupList) {
+		for (Group foreignGroup : groupList) {
 			// initialize number of groups with 0
 			groupSizes.add(0);
 			sampleElements.add(0);
@@ -904,9 +914,8 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 		}
 
 		int count = 0;
-		IIDTypeMapper<Integer, Integer> mapper = recordIDMappingManager.getIDTypeMapper(foreignRecordVA.getIdType(),
-				recordIDType);
-		for (Integer foreignVAID : foreignRecordVA) {
+		IIDTypeMapper<Integer, Integer> mapper = idMappingManager.getIDTypeMapper(foreignVA.getIdType(), localIDType);
+		for (Integer foreignVAID : foreignVA) {
 			Set<Integer> localVAIDS = mapper.apply(foreignVAID);
 			if (localVAIDS == null)
 				continue;
@@ -914,8 +923,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 				if (localVAID == null)
 					continue;
 				indices.add(localVAID);
-				int groupIndex = recordGroupList.getGroupOfVAIndex(foreignRecordVA.indexOf(foreignVAID))
-						.getGroupIndex();
+				int groupIndex = groupList.getGroupOfVAIndex(foreignVA.indexOf(foreignVAID)).getGroupIndex();
 				groupSizes.set(groupIndex, groupSizes.get(groupIndex) + 1);
 				sampleElements.set(groupIndex, count);
 				count++;
@@ -925,11 +933,11 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 
 		data.setData(indices, groupSizes, sampleElements, groupNames);
 
-		Perspective localRecordPerspective = new Perspective(this, recordIDType);
-		localRecordPerspective.setIDType(recordIDType);
-		localRecordPerspective.init(data);
-		localRecordPerspective.setLabel(foreignPerspective.getLabel(), foreignPerspective.isLabelDefault());
-		return localRecordPerspective;
+		Perspective localPerspective = new Perspective(this, localIDType);
+		localPerspective.setIDType(localIDType);
+		localPerspective.init(data);
+		localPerspective.setLabel(foreignPerspective.getLabel(), foreignPerspective.isLabelDefault());
+		return localPerspective;
 
 	}
 

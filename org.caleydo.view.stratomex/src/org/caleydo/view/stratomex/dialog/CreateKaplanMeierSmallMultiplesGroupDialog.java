@@ -191,7 +191,7 @@ tableBasedDataDomain,
 						.getRecordPerspective();
 
 				Perspective convertedRecordPerspective = dataDomain
-						.convertForeignRecordPerspective(foreignRecordPerspective);
+						.convertForeignPerspective(foreignRecordPerspective);
 
 				Perspective singleDimensionPerspective = (Perspective) item
 						.getData();

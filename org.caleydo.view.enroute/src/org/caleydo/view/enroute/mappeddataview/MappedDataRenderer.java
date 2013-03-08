@@ -85,7 +85,9 @@ public class MappedDataRenderer {
 	/**
 	 * Table perspectives rendered.
 	 */
-	private ArrayList<TablePerspective> tablePerspectives = new ArrayList<>();
+	private ArrayList<TablePerspective> geneTablePerspectives = new ArrayList<>();
+
+	private ArrayList<TablePerspective> contextualTablePerspectives = new ArrayList<>();
 
 	/**
 	 * the distance from the left edge of this renderer to the left edge of the window
@@ -245,9 +247,9 @@ public class MappedDataRenderer {
 		 * the inner list one element layout for every gene in the linearized pathway
 		 */
 		ArrayList<ArrayList<ElementLayout>> rowListForTablePerspectives = new ArrayList<ArrayList<ElementLayout>>(
-				(int) (tablePerspectives.size() * 1.6));
+				geneTablePerspectives.size());
 
-		for (int count = 0; count < tablePerspectives.size(); count++) {
+		for (int count = 0; count < geneTablePerspectives.size(); count++) {
 			rowListForTablePerspectives.add(new ArrayList<ElementLayout>(linearizedNodes.size() * 2));
 		}
 
@@ -329,15 +331,11 @@ public class MappedDataRenderer {
 			for (Integer davidID : subDavidIDs) {
 
 				Row row = new Row("Row " + davidID);
-				// RowBackgroundRenderer rowBackgroundRenderer = new
-				// RowBackgroundRenderer(
-				// color);
-				// row.addBackgroundRenderer(rowBackgroundRenderer);
 				row.setAbsoluteSizeY(rowHeight);
 				// row.setDebug(true);
 				dataSetColumn.append(row);
 
-				for (int tablePerspectiveCount = 0; tablePerspectiveCount < tablePerspectives.size(); tablePerspectiveCount++) {
+				for (int tablePerspectiveCount = 0; tablePerspectiveCount < geneTablePerspectives.size(); tablePerspectiveCount++) {
 
 					ElementLayout tablePerspectiveLayout = new ElementLayout("TablePerspective "
 							+ tablePerspectiveCount + " / " + idCount);
@@ -348,7 +346,7 @@ public class MappedDataRenderer {
 
 					row.append(tablePerspectiveLayout);
 					rowListForTablePerspectives.get(tablePerspectiveCount).add(tablePerspectiveLayout);
-					if (tablePerspectiveCount != tablePerspectives.size() - 1) {
+					if (tablePerspectiveCount != geneTablePerspectives.size() - 1) {
 						row.append(xSpacing);
 					}
 				}
@@ -363,11 +361,15 @@ public class MappedDataRenderer {
 				captionColumn.append(rowCaption);
 
 				if (!isHighlightLayout) {
+					if (relationShipRenderer == null) {
+						throw new IllegalStateException("Relationshiprenderer was null");
+					} else {
 
-					if (idCount == 0)
-						relationShipRenderer.topRightLayout = row;
-					if (idCount == subDavidIDs.size() - 1)
-						relationShipRenderer.bottomRightLayout = row;
+						if (idCount == 0)
+							relationShipRenderer.topRightLayout = row;
+						if (idCount == subDavidIDs.size() - 1)
+							relationShipRenderer.bottomRightLayout = row;
+					}
 				}
 
 				idCount++;
@@ -385,24 +387,28 @@ public class MappedDataRenderer {
 		// dataSetColumn.add(0, captionRow);
 		dataSetColumn.add(0, topCaptionRow);
 
+		Row nonGeneRow = new Row("nonGeneRow");
+		nonGeneRow.setPixelSizeY(50);
+		dataSetColumn.add(1, nonGeneRow);
+
 		Row bottomCaptionRow = new Row("captionRow");
 		// captionRow.setDebug(true);
 		bottomCaptionRow.setPixelSizeY(50);
 		// dataSetColumn.add(0, captionRow);
 		dataSetColumn.append(bottomCaptionRow);
 
-		for (int tablePerspectiveCount = 0; tablePerspectiveCount < tablePerspectives.size(); tablePerspectiveCount++) {
+		for (int tablePerspectiveCount = 0; tablePerspectiveCount < geneTablePerspectives.size(); tablePerspectiveCount++) {
 
 			ColumnCaptionLayout topCaptionLayout = new ColumnCaptionLayout(parentView, this);
 			topCaptionRow.append(topCaptionLayout);
 
 			ColumnCaptionLayout bottomCaptionLayout = new ColumnCaptionLayout(parentView, this);
 			bottomCaptionRow.append(bottomCaptionLayout);
-			if (tablePerspectiveCount != tablePerspectives.size() - 1) {
+			if (tablePerspectiveCount != geneTablePerspectives.size() - 1) {
 				bottomCaptionRow.append(xSpacing);
 				topCaptionRow.append(xSpacing);
 			}
-			prepareData(tablePerspectives.get(tablePerspectiveCount),
+			prepareData(geneTablePerspectives.get(tablePerspectiveCount),
 					rowListForTablePerspectives.get(tablePerspectiveCount), topCaptionLayout, bottomCaptionLayout,
 					davidIDs, isHighlightLayout);
 		}
@@ -415,14 +421,18 @@ public class MappedDataRenderer {
 		}
 	}
 
+	private void renderRows(List<Integer> IDs) {
+
+	}
+
 	private void calcMinWidthPixels() {
 
 		minWidthPixels = 0;
 
 		// Calculate content specific width
-		for (int i = 0; i < tablePerspectives.size(); i++) {
+		for (int i = 0; i < geneTablePerspectives.size(); i++) {
 
-			TablePerspective tablePerspective = tablePerspectives.get(i);
+			TablePerspective tablePerspective = geneTablePerspectives.get(i);
 			Perspective experimentPerspective;
 			GeneticDataDomain dataDomain = (GeneticDataDomain) tablePerspective.getDataDomain();
 			Group group = null;
@@ -442,7 +452,7 @@ public class MappedDataRenderer {
 			}
 		}
 
-		minWidthPixels += (tablePerspectives.size() - 1) * SPACING_PIXEL_WIDTH;
+		minWidthPixels += (geneTablePerspectives.size() - 1) * SPACING_PIXEL_WIDTH;
 		minWidthPixels += CAPTION_COLUMN_PIXEL_WIDTH;
 	}
 
@@ -528,15 +538,11 @@ public class MappedDataRenderer {
 						.setRenderer(new MutationStatusMatrixRowContentRenderer(geneID, davidID, dataDomain,
 								tablePerspective, experimentPerspective, parentView, this, group, isHighlightLayout));
 
-				tablePerspectiveLayout.setDynamicSizeUnitsX((int) Math
+				tablePerspectiveLayout.setDynamicSizeUnitsX((int) Math.ceil(experimentPerspective.getVirtualArray()
+						.size() * 2.0f / MutationStatusMatrixRowContentRenderer.NUM_ROWS));
 
-				.ceil(experimentPerspective.getVirtualArray().size() * 2.0f
-						/ MutationStatusMatrixRowContentRenderer.NUM_ROWS));
-
-				bottomCaptionLayout.setDynamicSizeUnitsX((int) Math
-
-				.ceil(experimentPerspective.getVirtualArray().size() * 2.0f
-						/ MutationStatusMatrixRowContentRenderer.NUM_ROWS));
+				bottomCaptionLayout.setDynamicSizeUnitsX((int) Math.ceil(experimentPerspective.getVirtualArray().size()
+						* 2.0f / MutationStatusMatrixRowContentRenderer.NUM_ROWS));
 				topCaptionLayout.setDynamicSizeUnitsX((int) Math.ceil(experimentPerspective.getVirtualArray().size()
 						* 2.0f / MutationStatusMatrixRowContentRenderer.NUM_ROWS));
 
@@ -641,11 +647,19 @@ public class MappedDataRenderer {
 	}
 
 	/**
-	 * @param tablePerspectives
-	 *            setter, see {@link tablePerspectives}
+	 * @param geneTablePerspectives
+	 *            setter, see {@link geneTablePerspectives}
 	 */
-	public void setTablePerspectives(ArrayList<TablePerspective> tablePerspectives) {
-		this.tablePerspectives = tablePerspectives;
+	public void setGeneTablePerspectives(ArrayList<TablePerspective> geneTablePerspectives) {
+		this.geneTablePerspectives = geneTablePerspectives;
+	}
+
+	/**
+	 * @param contextualTablePerspectives
+	 *            setter, see {@link contextualTablePerspectives}
+	 */
+	public void setContextualTablePerspectives(ArrayList<TablePerspective> contextualTablePerspectives) {
+		this.contextualTablePerspectives = contextualTablePerspectives;
 	}
 
 	public void destroy(GL2 gl) {

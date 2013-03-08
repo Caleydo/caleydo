@@ -521,7 +521,7 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 								perspectiveRenderer.getPerspectiveID());
 
 						Perspective convertedPerspective = this.dataDomain
-								.convertForeignRecordPerspective(recordPerspective);
+								.convertForeignPerspective(recordPerspective);
 						convertedPerspective.setDefault(false);
 						this.dataDomain.getTable().registerRecordPerspective(convertedPerspective);
 					}

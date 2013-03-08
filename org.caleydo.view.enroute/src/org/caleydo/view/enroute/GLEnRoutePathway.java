@@ -26,10 +26,13 @@ import java.util.Set;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
+import org.caleydo.core.data.datadomain.DataSupportDefinitions;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.datadomain.IDataSupportDefinition;
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
 import org.caleydo.core.data.selection.IEventBasedSelectionManagerUser;
 import org.caleydo.core.data.virtualarray.group.GroupList;
@@ -55,7 +58,6 @@ import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
-import org.caleydo.datadomain.genetic.GeneticDataSupportDefinition;
 import org.caleydo.datadomain.pathway.IPathwayRepresentation;
 import org.caleydo.datadomain.pathway.VertexRepBasedContextMenuItem;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
@@ -443,31 +445,83 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		// height);
 	}
 
+	public void addContextualPerspectives(TablePerspective originalContextualTablePerspective) {
+
+		ATableBasedDataDomain contextualDataDomain = originalContextualTablePerspective.getDataDomain();
+
+		ArrayList<TablePerspective> contextTablePerspectives = new ArrayList<>();
+		for (TablePerspective resolvedGeneTablePerspective : resolvedTablePerspectives) {
+
+			Perspective dimensionPerspective = null;
+			Perspective recordPerspective = null;
+
+			if (((GeneticDataDomain) resolvedGeneTablePerspective.getDataDomain()).isGeneRecord()) {
+				if (contextualDataDomain.getDimensionIDCategory().equals(
+						resolvedGeneTablePerspective.getDataDomain().getDimensionIDCategory())) {
+					dimensionPerspective = contextualDataDomain.convertForeignPerspective(resolvedGeneTablePerspective
+							.getDimensionPerspective());
+					recordPerspective = originalContextualTablePerspective.getRecordPerspective();
+
+				} else if (contextualDataDomain.getRecordIDCategory().equals(
+						resolvedGeneTablePerspective.getDataDomain().getDimensionIDCategory())) {
+					recordPerspective = contextualDataDomain.convertForeignPerspective(resolvedGeneTablePerspective
+							.getDimensionPerspective());
+					dimensionPerspective = originalContextualTablePerspective.getDimensionPerspective();
+				}
+			} else {
+				if (contextualDataDomain.getDimensionIDCategory().equals(
+						resolvedGeneTablePerspective.getDataDomain().getRecordIDCategory())) {
+					dimensionPerspective = contextualDataDomain.convertForeignPerspective(resolvedGeneTablePerspective
+							.getRecordPerspective());
+					recordPerspective = originalContextualTablePerspective.getRecordPerspective();
+
+				} else if (contextualDataDomain.getRecordIDCategory().equals(
+						resolvedGeneTablePerspective.getDataDomain().getRecordIDCategory())) {
+					recordPerspective = contextualDataDomain.convertForeignPerspective(resolvedGeneTablePerspective
+							.getRecordPerspective());
+					dimensionPerspective = originalContextualTablePerspective.getDimensionPerspective();
+				}
+			}
+
+			if (dimensionPerspective != null) {
+
+				TablePerspective contextTablePerspective = new TablePerspective(contextualDataDomain,
+						recordPerspective, dimensionPerspective);
+				contextTablePerspectives.add(contextTablePerspective);
+			}
+		}
+
+		mappedDataRenderer.setContextualTablePerspectives(contextTablePerspectives);
+	}
+
 	@Override
 	public void addTablePerspective(TablePerspective newTablePerspective) {
-
-		tablePerspectives.add(newTablePerspective);
 		ArrayList<TablePerspective> newTablePerspectives = new ArrayList<TablePerspective>(1);
 		newTablePerspectives.add(newTablePerspective);
-		resolveSubTablePerspectives(newTablePerspectives);
-
-		pathRenderer.setTablePerspectives(resolvedTablePerspectives);
-		mappedDataRenderer.setTablePerspectives(resolvedTablePerspectives);
-		dataDomains.add(newTablePerspective.getDataDomain());
-
-		TablePerspectivesChangedEvent event = new TablePerspectivesChangedEvent(this);
-		event.setSender(this);
-		GeneralManager.get().getEventPublisher().triggerEvent(event);
-		setLayoutDirty();
+		addTablePerspectives(newTablePerspectives);
 	}
 
 	@Override
 	public void addTablePerspectives(List<TablePerspective> newTablePerspectives) {
+
+		Iterator<TablePerspective> tpIterator = newTablePerspectives.iterator();
+		while (tpIterator.hasNext()) {
+			TablePerspective newTablePerspective = tpIterator.next();
+			if (!(newTablePerspective.getDataDomain() instanceof GeneticDataDomain)) {
+				addContextualPerspectives(newTablePerspective);
+				tpIterator.remove();
+			}
+		}
+
+		if (newTablePerspectives.isEmpty()) {
+			return;
+		}
+
 		tablePerspectives.addAll(newTablePerspectives);
 		resolveSubTablePerspectives(newTablePerspectives);
 
 		pathRenderer.setTablePerspectives(resolvedTablePerspectives);
-		mappedDataRenderer.setTablePerspectives(resolvedTablePerspectives);
+		mappedDataRenderer.setGeneTablePerspectives(resolvedTablePerspectives);
 		for (TablePerspective tablePerspective : newTablePerspectives) {
 			dataDomains.add(tablePerspective.getDataDomain());
 		}
@@ -631,7 +685,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 	@Override
 	public IDataSupportDefinition getDataSupportDefinition() {
-		return new GeneticDataSupportDefinition();
+		return DataSupportDefinitions.all;
 	}
 
 	/**

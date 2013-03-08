@@ -10,7 +10,6 @@ public class enRouteVisInfo implements IEmbeddedVisualizationInfo {
 
 	@Override
 	public EScalingEntity getPrimaryWidthScalingEntity() {
-
 		return EScalingEntity.DIMENSION;
 	}
 
