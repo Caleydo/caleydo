@@ -45,10 +45,14 @@ import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
@@ -151,6 +155,7 @@ public class CategoricalRankColumnModel<CATEGORY_TYPE> extends ABasicFilterableR
 
 		@Override
 		public void create() {
+			setShellStyle(SWT.DIALOG_TRIM | SWT.RESIZE | SWT.MAX | SWT.APPLICATION_MODAL);
 			super.create();
 			getShell().setText("Edit Filter of " + getTooltip());
 			this.setBlockOnOpen(false);
@@ -172,6 +177,8 @@ public class CategoricalRankColumnModel<CATEGORY_TYPE> extends ABasicFilterableR
 			table.setHeaderVisible(true);
 			table.setLinesVisible(true);
 			table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+
+			categoriesUI.setComparator(new ViewerComparator());
 
 			TableViewerColumn tableColumn;
 			tableColumn = new TableViewerColumn(categoriesUI, SWT.LEAD);
@@ -195,6 +202,15 @@ public class CategoricalRankColumnModel<CATEGORY_TYPE> extends ABasicFilterableR
 			Point point = categoriesUI.getTable().computeSize(SWT.DEFAULT, SWT.DEFAULT);
 			categoriesUI.getTable().setSize(point);
 			sc.setMinSize(point);
+
+			final Button b = new Button(parent, SWT.CHECK);
+			b.setText("Select All / None");
+			b.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					categoriesUI.setAllChecked(b.getSelection());
+				}
+			});
 
 			applyDialogFont(parent);
 			return parent;

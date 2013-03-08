@@ -262,6 +262,19 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements IHi
 		return r;
 	}
 
+	public void setDistributions(float[] distributions) {
+		assert this.size() == distributions.length;
+		float sum = 0;
+		for (float v : distributions)
+			sum += v;
+		float factor = this.getWeight() / sum;
+		int i = 0;
+		for (ARankColumnModel col : this) {
+			float w = distributions[i] * factor;
+			col.setWeight(w);
+		}
+	}
+
 	public boolean isAlignAll() {
 		return alignment < 0;
 	}

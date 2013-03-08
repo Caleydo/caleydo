@@ -32,12 +32,18 @@ import java.util.Locale;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDragInfo;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.core.view.opengl.layout2.renderer.RoundedRectRenderer;
+import org.caleydo.core.view.opengl.picking.IPickingListener;
+import org.caleydo.core.view.opengl.picking.Pick;
+import org.caleydo.core.view.opengl.picking.PickingMode;
+import org.caleydo.vis.rank.internal.event.DistributionChangedEvent;
 import org.caleydo.vis.rank.model.ACompositeRankColumnModel;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.StackedRankColumnModel;
@@ -70,6 +76,14 @@ public class StackedColumnHeaderUI extends ACompositeHeaderUI implements IThickH
 		}
 	};
 
+	private final IPickingListener onDistributionClicked = new IPickingListener() {
+		@Override
+		public void pick(Pick pick) {
+			onDistributionsClicked(pick);
+		}
+	};
+	private int distributionClickedPickingId = -1;
+
 	public StackedColumnHeaderUI(StackedRankColumnModel model, boolean interactive) {
 		super(interactive, 1);
 		this.model = model;
@@ -95,7 +109,14 @@ public class StackedColumnHeaderUI extends ACompositeHeaderUI implements IThickH
 	}
 
 	@Override
+	protected void init(IGLElementContext context) {
+		distributionClickedPickingId = context.registerPickingListener(onDistributionClicked);
+		super.init(context);
+	}
+
+	@Override
 	protected void takeDown() {
+		context.unregisterPickingListener(distributionClickedPickingId);
 		model.removePropertyChangeListener(StackedRankColumnModel.PROP_ALIGNMENT, listener);
 		model.removePropertyChangeListener(ACompositeRankColumnModel.PROP_CHILDREN, childrenChanged);
 		model.removePropertyChangeListener(ICompressColumnMixin.PROP_COMPRESSED, listener);
@@ -200,7 +221,27 @@ public class StackedColumnHeaderUI extends ACompositeHeaderUI implements IThickH
 
 	@Override
 	protected void renderPickImpl(GLGraphics g, float w, float h) {
+		g.pushName(distributionClickedPickingId);
+		float yi = HIST_HEIGHT + 7;
+		float hi = LABEL_HEIGHT - 6;
+		float x = COLUMN_SPACE + 2;
+		g.fillRect(x, yi, w - x, hi);
+		g.popName();
 		super.renderPickImpl(g, w, h);
+	}
+
+	/**
+	 * @param pick
+	 */
+	protected void onDistributionsClicked(Pick pick) {
+		if (pick.isAnyDragging() || pick.getPickingMode() != PickingMode.DOUBLE_CLICKED)
+			return;
+		EditDistributionsDialog.show(this.model, this);
+	}
+
+	@ListenTo(sendToMe = true)
+	private void onDistributinChanged(DistributionChangedEvent event) {
+		model.setDistributions(event.getDistributions());
 	}
 
 	@Override
