@@ -141,14 +141,12 @@ public abstract class ACompositeTableColumnUI<T extends ACompositeRankColumnMode
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
-		if (!model.isCollapsed())
-			super.renderImpl(g, w, h);
+		super.renderImpl(g, w, h);
 	}
 
 	@Override
 	protected void renderPickImpl(GLGraphics g, float w, float h) {
-		if (!model.isCollapsed())
-			super.renderPickImpl(g, w, h);
+		super.renderPickImpl(g, w, h);
 	}
 
 	protected float getLeftPadding() {

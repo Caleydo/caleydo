@@ -376,8 +376,8 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 			final ICompressColumnMixin m = (ICompressColumnMixin) model;
 
 			GLButton b = new GLButton(EButtonMode.CHECKBOX);
-			b.setRenderer(GLRenderers.fillImage(RenderStyle.ICON_UNCOLLAPSE));
-			b.setSelectedRenderer(GLRenderers.fillImage(RenderStyle.ICON_COLLAPSE));
+			b.setRenderer(GLRenderers.fillImage(RenderStyle.ICON_COMPRESS));
+			b.setSelectedRenderer(GLRenderers.fillImage(RenderStyle.ICON_UNCOMPRESS));
 			b.setSelected(m.isCompressed());
 			b.setCallback(new ISelectionCallback() {
 				@Override

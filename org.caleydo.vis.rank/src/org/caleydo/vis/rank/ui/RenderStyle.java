@@ -42,13 +42,15 @@ public class RenderStyle {
 	public static final String ICON_TRASH = ICON_PREFIX + "user_trash_full.png";
 	public static final String ICON_CIRCLE = ICON_PREFIX + "circle.png";
 	public static final String ICON_ARROW = ICON_PREFIX + "arrow.png";
-	public static final String ICON_COLLAPSE = ICON_PREFIX + "bullet_toggle_plus.png";
 	public static final String ICON_FILTER_DISABLED = ICON_PREFIX + "filter_disabled.png";
 	public static final String ICON_FILTER = ICON_PREFIX + "filter.png";
 	public static final String ICON_MAPPING = ICON_PREFIX + "pencil_ruler.png";
 	public static final String ICON_EXPLODE = ICON_PREFIX + "dynamite.png";
 	public static final String ICON_EDIT_ANNOTATION = ICON_PREFIX + "note_edit.png";
+	public static final String ICON_COLLAPSE = ICON_PREFIX + "bullet_toggle_plus.png";
 	public static final String ICON_UNCOLLAPSE = ICON_PREFIX + "bullet_toggle_minus.png";
+	public static final String ICON_COMPRESS = ICON_PREFIX + "bullet_arrow_left.png";
+	public static final String ICON_UNCOMPRESS = ICON_PREFIX + "bullet_arrow_right.png";
 	public static final String ICON_HIDE = ICON_PREFIX + "delete.png";
 	public static final String ICON_DRAG = ICON_PREFIX + "drag.png";
 	public static final String ICON_ALIGN_CLASSIC = ICON_PREFIX + "align_classic.png";

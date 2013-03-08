@@ -133,8 +133,9 @@ public class MappingFunctionUI extends GLElementContainer implements GLButton.IS
 		h -= y;
 
 		IGLLayoutElement text = children.get(MappingFunctionUI.TEXT);
-		text.setBounds(PADDING, y + h - MappingFunctionUI.TEXT_HEIGHT, w - PADDING * 2, MappingFunctionUI.TEXT_HEIGHT);
-		h -= MappingFunctionUI.TEXT_HEIGHT;
+		text.setBounds(PADDING, y + h - MappingFunctionUI.TEXT_HEIGHT - 3, w - PADDING * 2,
+				MappingFunctionUI.TEXT_HEIGHT);
+		h -= MappingFunctionUI.TEXT_HEIGHT - 3;
 
 		h -= PADDING;
 		w -= 2 * PADDING;

@@ -66,7 +66,7 @@ public class ScoreBarRenderer implements IGLRenderer {
 				float[] rgb = collapseColor.getColorComponents(null);
 				g.color(rgb[0], rgb[1], rgb[2], v);
 			}
-			g.fillRect(w * 0.1f, h * 0.1f, w * 0.8f, h * 0.8f);
+			g.fillRect(0, 1, w - 2, h - 2);
 			if (inferred) {
 				g.gl.glLineStipple(4, (short) 0xAAAA);
 				g.gl.glEnable(GL2.GL_LINE_STIPPLE);

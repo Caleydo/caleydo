@@ -84,7 +84,7 @@ class PopupElement extends GLElementContainer implements IGLLayout, IGLRenderer,
 		this.add(resize);
 
 		if (bounds != null)
-			this.setBounds(bounds.x(), bounds.y(), bounds.z() + 6, bounds.w() + 3 + (hasHeader ? 8 : 3));
+			this.setBounds(bounds.x(), bounds.y(), bounds.z(), bounds.w() + (hasHeader ? 8 : 0));
 		setVisibility(EVisibility.PICKABLE); // as a barrier to the underlying
 	}
 
@@ -140,7 +140,8 @@ class PopupElement extends GLElementContainer implements IGLLayout, IGLRenderer,
 	public void doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
 		IGLLayoutElement body = children.get(0);
 		boolean moveAble = isFlagSet(FLAG_MOVEABLE);
-		body.setBounds(3, (moveAble ? 8 : 3), w - 6, h - 3 - (moveAble ? 8 : 3));
+		float offset = isFlagSet(FLAG_BORDER) ? 1 : 0;
+		body.setBounds(offset, (moveAble ? 8 : offset), w - offset * 2, h - (moveAble ? 8 : offset * 2));
 		IGLLayoutElement close = children.get(1);
 		close.setBounds(w - 8, -4, 14, 14);
 		IGLLayoutElement resize = children.get(2);
@@ -161,11 +162,12 @@ class PopupElement extends GLElementContainer implements IGLLayout, IGLRenderer,
 			RoundedRectRenderer.render(g, 0, 0, w, 8, 3, 2, RoundedRectRenderer.FLAG_FILL
 					| RoundedRectRenderer.FLAG_TOP);
 		}
+		super.renderImpl(g, w, h);
 		if (isFlagSet(FLAG_BORDER)) {
 			// g.color(Color.LIGHT_GRAY).fillRoundedRect(0, 0, w, h, 3);
-			g.color(Color.BLACK).drawRoundedRect(0, 0, w, h, 3);
+			g.color(Color.BLACK);
+			RoundedRectRenderer.render(g, 0, 0, w, h, 3, 2, RoundedRectRenderer.FLAG_TOP);
 		}
-		super.renderImpl(g, w, h);
 	}
 
 	@Override

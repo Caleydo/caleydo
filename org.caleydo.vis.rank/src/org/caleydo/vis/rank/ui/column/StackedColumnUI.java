@@ -32,6 +32,7 @@ import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.StackedRankColumnModel;
+import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.ICompressColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IMultiColumnMixin.MultiFloat;
 import org.caleydo.vis.rank.ui.RenderStyle;
@@ -51,6 +52,7 @@ public class StackedColumnUI extends ACompositeTableColumnUI<StackedRankColumnMo
 				onAlignmentChanged();
 				break;
 			case ICompressColumnMixin.PROP_COMPRESSED:
+			case ICollapseableColumnMixin.PROP_COLLAPSED:
 				onCompressedChanged();
 				break;
 			}
@@ -61,6 +63,7 @@ public class StackedColumnUI extends ACompositeTableColumnUI<StackedRankColumnMo
 		super(model, 1);
 		model.addPropertyChangeListener(StackedRankColumnModel.PROP_ALIGNMENT, listener);
 		model.addPropertyChangeListener(ICompressColumnMixin.PROP_COMPRESSED, listener);
+		model.addPropertyChangeListener(ICollapseableColumnMixin.PROP_COLLAPSED, listener);
 		this.add(0, wrap(model));
 	}
 
@@ -85,6 +88,7 @@ public class StackedColumnUI extends ACompositeTableColumnUI<StackedRankColumnMo
 	protected void takeDown() {
 		model.removePropertyChangeListener(StackedRankColumnModel.PROP_ALIGNMENT, listener);
 		model.removePropertyChangeListener(ICompressColumnMixin.PROP_COMPRESSED, listener);
+		model.removePropertyChangeListener(ICollapseableColumnMixin.PROP_COLLAPSED, listener);
 		super.takeDown();
 	}
 

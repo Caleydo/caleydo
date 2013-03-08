@@ -31,6 +31,7 @@ import org.caleydo.vis.rank.internal.event.FilterEvent;
 import org.caleydo.vis.rank.internal.ui.MultiLineInputDialog;
 import org.caleydo.vis.rank.internal.ui.TextRenderer;
 import org.caleydo.vis.rank.model.mixin.IAnnotatedColumnMixin;
+import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.ICompressColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IHideableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
@@ -49,7 +50,7 @@ import org.eclipse.swt.widgets.Display;
  *
  */
 public class StackedRankColumnModel extends AMultiRankColumnModel implements IHideableColumnMixin,
-		IAnnotatedColumnMixin, ISnapshotableColumnMixin, ICompressColumnMixin {
+		IAnnotatedColumnMixin, ISnapshotableColumnMixin, ICompressColumnMixin, ICollapseableColumnMixin {
 	public static final String PROP_ALIGNMENT = "alignment";
 
 	private final PropertyChangeListener weightChanged = new PropertyChangeListener() {
@@ -95,6 +96,8 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements IHi
 
 	@Override
 	public float getPreferredWidth() {
+		if (isCollapsed())
+			return COLLAPSED_WIDTH;
 		if (isCompressed)
 			return compressedWidth;
 		return getWeight() + RenderStyle.COLUMN_SPACE * size() + 6;
@@ -275,7 +278,7 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements IHi
 	 */
 	@Override
 	public boolean isCompressed() {
-		return isCompressed;
+		return isCompressed || isCollapsed();
 	}
 
 	@Override

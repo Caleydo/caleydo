@@ -41,6 +41,7 @@ import org.caleydo.core.view.opengl.layout2.renderer.RoundedRectRenderer;
 import org.caleydo.vis.rank.model.ACompositeRankColumnModel;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.StackedRankColumnModel;
+import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.ICompressColumnMixin;
 import org.caleydo.vis.rank.ui.RenderStyle;
 import org.caleydo.vis.rank.ui.SeparatorUI;
@@ -63,7 +64,8 @@ public class StackedColumnHeaderUI extends ACompositeHeaderUI implements IThickH
 				relayout();
 				break;
 			case ICompressColumnMixin.PROP_COMPRESSED:
-				onCompressedChanged((Boolean) evt.getNewValue());
+			case ICollapseableColumnMixin.PROP_COLLAPSED:
+				onCompressedChanged();
 			}
 		}
 	};
@@ -76,6 +78,7 @@ public class StackedColumnHeaderUI extends ACompositeHeaderUI implements IThickH
 		model.addPropertyChangeListener(ACompositeRankColumnModel.PROP_CHILDREN, childrenChanged);
 		model.addPropertyChangeListener(StackedRankColumnModel.PROP_ALIGNMENT, listener);
 		model.addPropertyChangeListener(ICompressColumnMixin.PROP_COMPRESSED, listener);
+		model.addPropertyChangeListener(ICollapseableColumnMixin.PROP_COLLAPSED, listener);
 		init(model);
 	}
 
@@ -96,6 +99,7 @@ public class StackedColumnHeaderUI extends ACompositeHeaderUI implements IThickH
 		model.removePropertyChangeListener(StackedRankColumnModel.PROP_ALIGNMENT, listener);
 		model.removePropertyChangeListener(ACompositeRankColumnModel.PROP_CHILDREN, childrenChanged);
 		model.removePropertyChangeListener(ICompressColumnMixin.PROP_COMPRESSED, listener);
+		model.removePropertyChangeListener(ICollapseableColumnMixin.PROP_COLLAPSED, listener);
 		super.takeDown();
 	}
 
@@ -127,8 +131,8 @@ public class StackedColumnHeaderUI extends ACompositeHeaderUI implements IThickH
 	}
 
 
-	protected void onCompressedChanged(boolean isCompressed) {
-		((StackedSummaryHeaderUI) get(SUMMARY)).setHasTitle(isCompressed);
+	protected void onCompressedChanged() {
+		((StackedSummaryHeaderUI) get(SUMMARY)).setHasTitle(model.isCompressed());
 		relayout();
 		relayoutParent();
 	}
