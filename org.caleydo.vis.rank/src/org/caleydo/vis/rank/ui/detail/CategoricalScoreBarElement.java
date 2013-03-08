@@ -43,6 +43,6 @@ public class CategoricalScoreBarElement extends ScoreBarElement {
 		float v = model.applyPrimitive(r);
 		boolean inferred = model.isValueInferred(r);
 		Color color = ((CategoricalRankRankColumnModel<?>) model).getColor(r);
-		renderValue(g, w, h, this, r, v, inferred, model, false, color, color);
+		renderValue(g, w, h, r, v, inferred, false, color, color);
 	}
 }

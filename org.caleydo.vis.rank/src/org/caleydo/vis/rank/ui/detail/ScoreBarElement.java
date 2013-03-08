@@ -25,12 +25,12 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
-import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.mixin.IMappedColumnMixin;
+import org.caleydo.vis.rank.model.mixin.IRankColumnModel;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 import org.caleydo.vis.rank.ui.IColumnRenderInfo;
 
@@ -53,7 +53,7 @@ public class ScoreBarElement extends PickableGLElement {
 		final IRow r = getLayoutDataAs(IRow.class, null); // current row
 		float v = model.applyPrimitive(r);
 		boolean inferred = model.isValueInferred(r);
-		renderValue(g, w, h, this, r, v, inferred, model, false, model.getColor(), null);
+		renderValue(g, w, h, r, v, inferred, false, model.getColor(), null);
 	}
 
 	@Override
@@ -63,14 +63,14 @@ public class ScoreBarElement extends PickableGLElement {
 		if (Float.isNaN(v) || v < 0)
 			return null;
 		boolean inferred = model.isValueInferred(r);
-		return getText(r, v, model, inferred);
+		return getText(r, model, v, inferred);
 	}
 
-	static void renderValue(GLGraphics g, float w, float h, GLElement parent, final IRow r, float v, boolean inferred,
-			IRankableColumnMixin model, boolean align, Color color, Color collapseColor) {
+	protected void renderValue(GLGraphics g, float w, float h, final IRow r, float v, boolean inferred, boolean align,
+			Color color, Color collapseColor) {
 		if (Float.isNaN(v) || v <= 0)
 			return;
-		if (getRenderInfo(parent).isCollapsed()) {
+		if (getRenderInfo().isCollapsed()) {
 			// if collapsed use a brightness encoding
 			if (collapseColor == null)
 				g.color(1 - v, 1 - v, 1 - v, 1);
@@ -96,18 +96,22 @@ public class ScoreBarElement extends PickableGLElement {
 			}
 
 			if (model.getTable().getSelectedRow() == r) { // is selected, render the value
-				String text = getText(r, v, model, inferred);
-				float hi = getTextHeight(h);
-				renderLabel(g, (h - hi) * 0.5f, w, hi, text, v, parent);
+				renderText(g, w, h, r, v, inferred);
 			}
 		}
+	}
+
+	protected void renderText(GLGraphics g, float w, float h, final IRow r, float v, boolean inferred) {
+		String text = getText(r, model, v, inferred);
+		float hi = getTextHeight(h);
+		renderLabel(g, (h - hi) * 0.5f, w, hi, text, v);
 	}
 
 	@Override
 	protected void renderPickImpl(GLGraphics g, float w, float h) {
 		if (getVisibility() != EVisibility.PICKABLE)
 			return;
-		IColumnRenderInfo renderInfo = getRenderInfo(this);
+		IColumnRenderInfo renderInfo = getRenderInfo();
 		if ((renderInfo.hasFreeSpace() && renderInfo.getAlignment() == VAlign.LEFT)) {
 			g.fillRect(0, 0, w, h);
 		} else {
@@ -118,7 +122,7 @@ public class ScoreBarElement extends PickableGLElement {
 		}
 	}
 
-	private static String getText(final IRow r, float v, IRankableColumnMixin model, boolean inferred) {
+	protected static String getText(final IRow r, IRankColumnModel model, float v, boolean inferred) {
 		String text = (model instanceof IMappedColumnMixin) ? ((IMappedColumnMixin) model).getRawValue(r) : Formatter
 				.formatNumber(v);
 		return text + (inferred ? "*" : "");
@@ -129,17 +133,17 @@ public class ScoreBarElement extends PickableGLElement {
 		return hi;
 	}
 
-	static IColumnRenderInfo getRenderInfo(GLElement parent) {
-		return (IColumnRenderInfo) parent.getParent();
+	protected final IColumnRenderInfo getRenderInfo() {
+		return (IColumnRenderInfo) getParent();
 	}
 
-	static void renderLabel(GLGraphics g, float y, float w, float h, String text, float v, GLElement parent) {
+	protected void renderLabel(GLGraphics g, float y, float w, float h, String text, float v) {
 		if (h < 5)
 			return;
 		float tw = g.text.getTextWidth(text, h);
-		boolean hasFreeSpace = getRenderInfo(parent).hasFreeSpace();
+		boolean hasFreeSpace = getRenderInfo().hasFreeSpace();
 
-		VAlign alignment = getRenderInfo(parent).getAlignment();
+		VAlign alignment = getRenderInfo().getAlignment();
 		float space = (hasFreeSpace && alignment == VAlign.LEFT) ? w : (v * w) - 2;
 		if (tw < space)
 			g.drawText(text, 2, y, space, h, VAlign.LEFT);
