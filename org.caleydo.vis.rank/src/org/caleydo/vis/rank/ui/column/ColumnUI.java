@@ -10,7 +10,6 @@ import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.animation.ALayoutAnimation;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
-import org.caleydo.vis.rank.internal.ui.anim.ReRankTransition;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
@@ -23,9 +22,9 @@ public class ColumnUI extends AnimatedGLElementContainer implements ITableColumn
 	public ColumnUI(ARankColumnModel model) {
 		this.model = model;
 		this.setLayoutData(model);
-		this.setDefaultInTransition(ReRankTransition.INSTANCE);
-		this.setDefaultMoveTransition(ReRankTransition.INSTANCE);
-		this.setDefaultOutTransition(ReRankTransition.INSTANCE);
+		// this.setDefaultInTransition(ReRankTransition.INSTANCE);
+		// this.setDefaultMoveTransition(ReRankTransition.INSTANCE);
+		// this.setDefaultOutTransition(ReRankTransition.INSTANCE);
 		this.setLayout(this);
 	}
 
@@ -44,12 +43,12 @@ public class ColumnUI extends AnimatedGLElementContainer implements ITableColumn
 
 	@Override
 	protected ALayoutAnimation createMoveAnimation(IGLLayoutElement elem) {
-		if (!getColumnParent().causesReorderingLayouting()) {
-			this.setDefaultMoveTransition(null);
-			ALayoutAnimation anim = super.createMoveAnimation(elem);
-			this.setDefaultMoveTransition(ReRankTransition.INSTANCE);
-			return anim;
-		}
+		// if (!getColumnParent().causesReorderingLayouting()) {
+		// this.setDefaultMoveTransition(null);
+		// ALayoutAnimation anim = super.createMoveAnimation(elem);
+		// this.setDefaultMoveTransition(ReRankTransition.INSTANCE);
+		// return anim;
+		// }
 		return super.createMoveAnimation(elem);
 	}
 

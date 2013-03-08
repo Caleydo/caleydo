@@ -28,7 +28,6 @@ import java.beans.PropertyChangeListener;
 
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
-import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.ColumnRanker;
 import org.caleydo.vis.rank.model.IRow;
@@ -153,8 +152,6 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 		if (dontneedToRender(w))
 			return;
 
-		ConnectionBandRenderer renderer = new ConnectionBandRenderer();
-		renderer.init(g.gl);
 		TableBodyUI body = getTableBodyUI();
 		OrderColumnUI previousRanker = body.getRanker(model);
 		ITableColumnUI previous = body.getLastCorrespondingColumn(previousRanker, true);
@@ -174,7 +171,7 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 				continue;
 			boolean isEvenRight = i % 2 == 0;
 			boolean isEvenLeft = previousRanker.getRanker().getRank(row) % 2 == 0;
-			renderBand(g, renderer, left, right, w, selectedRank == i, isEvenLeft, isEvenRight);
+			renderBand(g, left, right, w, selectedRank == i, isEvenLeft, isEvenRight);
 		}
 		g.restore();
 		super.renderImpl(g, w, h);
@@ -185,81 +182,21 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 		return model == null || model.isCollapsed() || w < 20;
 	}
 
-	private void renderBand(GLGraphics g, ConnectionBandRenderer renderer, Vec4f left, Vec4f right, float w,
+	private void renderBand(GLGraphics g, Vec4f left, Vec4f right, float w,
 			boolean isSelected, boolean isEvenLeft, boolean isEvenRight) {
-		float z = isSelected ? 0.1f : 0.f;
-		float offset = w * 0.25f;
-//		ArrayList<Vec3f> inputPoints = new ArrayList<Vec3f>();
-//		inputPoints.add(new Vec3f(-1, left.y(), z));
-//		inputPoints.add(new Vec3f(-1 + offset, left.y(), z));
-//		inputPoints.add(new Vec3f(w - offset, right.y(), z));
-//		inputPoints.add(new Vec3f(w, right.y(), z));
-//
-//		final int NUMBER_OF_SPLINE_POINTS = w < 20 ? 5 : (w < 100) ? 10 : 20;
-//		List<Vec3f> outputPoints = new NURBSCurve(inputPoints, NUMBER_OF_SPLINE_POINTS).getCurvePoints();
-//
-//		inputPoints.clear();
-//		inputPoints.add(new Vec3f(-1, left.y() + left.w(), z));
-//		inputPoints.add(new Vec3f(-1 + offset, left.y() + left.w(), z));
-//		inputPoints.add(new Vec3f(w - offset, right.y() + right.w(), z));
-//		inputPoints.add(new Vec3f(w, right.y() + right.w(), z));
-//
-//		List<Vec3f> points = new NURBSCurve(inputPoints, NUMBER_OF_SPLINE_POINTS).getCurvePoints();
-//		Collections.reverse(points);
-//		outputPoints.addAll(points);
 		if (isSelected) {
 			g.incZ();
-
-			g.color(Color.GRAY);
-			g.drawLine(0, left.y(), w, right.y());
-			g.drawLine(0, left.y() + left.w(), w, right.y() + right.w());
 			g.color(RenderStyle.COLOR_SELECTED_ROW);
 			g.fillPolygon(new Vec2f(-1, left.y()), new Vec2f(w, right.y()), new Vec2f(w, right.y() + right.w()),
 					new Vec2f(-1, left.y() + left.w()));
 
-			// (0, left.y() + left.w() * 0.5f, w, right.y() + right.w() * 0.5f);
+			g.color(RenderStyle.COLOR_SELECTED_BORDER);
+			g.drawLine(0, left.y(), w, right.y());
+			g.drawLine(0, left.y() + left.w(), w, right.y() + right.w());
 			g.decZ();
 			return;
 		}
-		// else if (isEvenRight)
-		// g.color(RenderStyle.COLOR_BACKGROUND_EVEN);
-		// else
 		g.color(Color.GRAY);
-		//renderer.render(g.gl, outputPoints);
-		float radiusl = 0; // Math.min(4, left.w() * .5f);
-		//g.fillCircle(radiusl, left.y() + left.w() * 0.5f, radiusl);
-		float radiusr = 0;//Math.min(4, right.w() * 0.5f);
-		//g.fillCircle(w - radiusr, right.y() + right.w() * 0.5f, radiusr);
-		g.drawLine(radiusl, left.y() + left.w() * 0.5f, w - radiusr, right.y() + right.w() * 0.5f);
-	}
-
-	@Override
-	protected void renderPickImpl(GLGraphics g, float w, float h) {
-		if (dontneedToRender(w))
-			return;
-
-		ConnectionBandRenderer renderer = new ConnectionBandRenderer();
-		renderer.init(g.gl);
-		TableBodyUI body = getTableBodyUI();
-		OrderColumnUI previousRanker = body.getRanker(model);
-		ITableColumnUI previous = body.getLastCorrespondingColumn(previousRanker, true);
-		ITableColumnUI self = body.getLastCorrespondingColumn(this, true);
-		if (self == null || self == this || previous == null || previous instanceof OrderColumnUI)
-			return;
-
-		g.save();
-		g.gl.glTranslatef(0, 0, g.z());
-		int i = -1;
-		for (IRow row : model.getRanker()) {
-			i++;
-			Vec4f left = previous.get(row.getIndex()).getBounds();
-			Vec4f right = self.get(row.getIndex()).getBounds();
-			if (!areValidBounds(left) || !areValidBounds(right))
-				continue;
-			g.pushName(body.getRankPickingId(i));
-			renderBand(g, renderer, left, right, w, false, false, false);
-			g.popName();
-		}
-		g.restore();
+		g.drawLine(0, left.y() + left.w() * 0.5f, w - 0, right.y() + right.w() * 0.5f);
 	}
 }

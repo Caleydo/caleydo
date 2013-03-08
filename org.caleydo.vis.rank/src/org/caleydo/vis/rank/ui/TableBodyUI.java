@@ -427,7 +427,8 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 				g.incZ();
 				g.fillRect(x, bounds.y(), w, bounds.w());
 				g.color(RenderStyle.COLOR_SELECTED_BORDER);
-				g.drawRect(x, bounds.y(), w, bounds.w());
+				g.drawLine(x, bounds.y(), x + w, bounds.y());
+				g.drawLine(x, bounds.y() + bounds.w(), x + w, bounds.y() + bounds.w());
 				g.decZ();
 			} else if (!even) {
 				g.color(RenderStyle.COLOR_BACKGROUND_EVEN);
