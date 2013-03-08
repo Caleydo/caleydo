@@ -534,9 +534,9 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	@Override
 	protected void prepare() {
 		updateStrategy.processEvents();
-		// if (isDisplayListDirty()) {
-		// updateLayout();
-		// }
+		if (isDisplayListDirty()) {
+			updateLayout();
+		}
 	}
 
 	/**

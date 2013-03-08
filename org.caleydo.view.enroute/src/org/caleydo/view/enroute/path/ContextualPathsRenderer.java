@@ -287,9 +287,9 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 	@Override
 	protected void prepare() {
 		processEvents();
-		if (isDisplayListDirty()) {
-			layout.updateLayout();
-		}
+		// if (isDisplayListDirty()) {
+		// layout.updateLayout();
+		// }
 	}
 
 	/**
@@ -438,8 +438,8 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 
 	@Override
 	public boolean isDisplayListDirty() {
-		if (super.isDisplayListDirty())
-			return true;
+		// if (super.isDisplayListDirty())
+		// return true;
 		for (APathwayPathRenderer renderer : renderers.keySet()) {
 			if (renderer.isDisplayListDirty())
 				return true;

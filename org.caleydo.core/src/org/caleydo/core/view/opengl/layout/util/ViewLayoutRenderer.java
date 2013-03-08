@@ -53,6 +53,8 @@ public class ViewLayoutRenderer extends ALayoutRenderer {
 
 	@Override
 	public void setLimits(float x, float y) {
+		if (Float.compare(this.x, x) == 0 && Float.compare(this.y, y) == 0)
+			return;
 		super.setLimits(x, y);
 		PixelGLConverter pixelGLConverter = view.getPixelGLConverter();
 		// FIXME: the coordinates are not correct.

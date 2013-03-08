@@ -104,14 +104,12 @@ public final class EdgeRenderUtil {
 			// TODO: This is just a default edge. Is this right?
 			PathwayReactionEdgeRep reactionEdge = (PathwayReactionEdgeRep) edge;
 
-			ClosedArrowRenderer arrowRenderer = new ClosedArrowRenderer(pixelGLConverter);
-			LineEndArrowRenderer lineEndArrowRenderer = new LineEndArrowRenderer(false, arrowRenderer);
+			LineEndArrowRenderer lineEndArrowRenderer = createDefaultLineEndArrowRenderer(pixelGLConverter, sizeConfig);
 
 			connectionRenderer.addAttributeRenderer(lineEndArrowRenderer);
 
 			if (reactionEdge.getType() == EPathwayReactionEdgeType.reversible) {
-				arrowRenderer = new ClosedArrowRenderer(pixelGLConverter);
-				lineEndArrowRenderer = new LineEndArrowRenderer(true, arrowRenderer);
+				lineEndArrowRenderer = createDefaultLineEndArrowRenderer(pixelGLConverter, sizeConfig);
 				connectionRenderer.addAttributeRenderer(lineEndArrowRenderer);
 			}
 
