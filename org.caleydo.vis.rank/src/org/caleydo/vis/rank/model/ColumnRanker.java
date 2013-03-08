@@ -296,7 +296,7 @@ public class ColumnRanker implements Iterable<IRow> {
 		if (rank < 0)
 			return null;
 		checkOrder();
-		if (order.length < rank)
+		if (order.length <= rank)
 			return null;
 		return table.getDataItem(order[rank]);
 	}
@@ -370,7 +370,10 @@ public class ColumnRanker implements Iterable<IRow> {
 	}
 
 	public IRow selectNext(IRow row) {
-		return get(getRank(row) + 1);
+		int r = getRank(row);
+		if (r == order.length - 1)
+			return row;
+		return get(r + 1);
 	}
 
 	public IRow selectPrevious(IRow row) {

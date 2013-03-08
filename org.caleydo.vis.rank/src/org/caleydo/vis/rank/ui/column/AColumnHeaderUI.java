@@ -507,6 +507,11 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 					model.combine(info.getSecond());
 			}
 			break;
+		case DOUBLE_CLICKED:
+			if (getParent() instanceof StackedColumnHeaderUI) {
+				StackedColumnHeaderUI p = ((StackedColumnHeaderUI) getParent());
+				p.setAlignment(this.model);
+			}
 		default:
 			break;
 		}

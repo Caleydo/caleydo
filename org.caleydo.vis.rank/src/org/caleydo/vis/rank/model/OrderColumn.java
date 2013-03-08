@@ -50,7 +50,7 @@ public class OrderColumn extends ARankColumnModel implements IAnnotatedColumnMix
 	public OrderColumn(ColumnRanker ranker) {
 		super(Color.LIGHT_GRAY, new Color(0.9f, .9f, .9f));
 		this.ranker = ranker;
-		setHeaderRenderer(GLRenderers.drawText("Order Adapter", VAlign.CENTER));
+		setHeaderRenderer(GLRenderers.drawText("Separator", VAlign.CENTER));
 	}
 
 	private OrderColumn(OrderColumn copy) {

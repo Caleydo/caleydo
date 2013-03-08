@@ -82,7 +82,8 @@ public class StackedColumnHeaderUI extends ACompositeHeaderUI implements IThickH
 
 	@Override
 	protected GLElement wrapImpl(ARankColumnModel model) {
-		return ColumnUIs.createHeader(model, this.interactive, false);
+		GLElement g = ColumnUIs.createHeader(model, this.interactive, false);
+		return g;
 	}
 
 	@Override
@@ -152,6 +153,17 @@ public class StackedColumnHeaderUI extends ACompositeHeaderUI implements IThickH
 			// g.drawLine(x, yi, x, yi + hi + 2);
 		}
 		super.renderImpl(g, w, h);
+		if (!model.isCompressed()) {
+			g.lineWidth(2);
+			g.incZ();
+			g.color(new Color(0.85f, .85f, .85f)).renderRoundedRect(false, 0, 0, w, HIST_HEIGHT + 4, 5, 3, true, true,
+					false,
+					false);
+			g.drawLine(0, HIST_HEIGHT + 4, 0, h);
+			g.drawLine(w, HIST_HEIGHT + 4, w, h);
+			g.lineWidth(1);
+			g.decZ();
+		}
 	}
 
 	public void setAlignment(int index) {
@@ -175,6 +187,14 @@ public class StackedColumnHeaderUI extends ACompositeHeaderUI implements IThickH
 	}
 
 	public static class AlignmentDragInfo implements IDragInfo {
+
+	}
+
+	/**
+	 * @param model2
+	 */
+	public void setAlignment(ARankColumnModel model2) {
+		// TODO Auto-generated method stub
 
 	}
 

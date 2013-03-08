@@ -95,7 +95,6 @@ public class FloatRankColumnModel extends ARankColumnModel implements IMappedCol
 		return new FloatRankColumnModel(this);
 	}
 
-
 	@Override
 	public void onRankingInvalid() {
 		cacheHist = null;
@@ -144,6 +143,7 @@ public class FloatRankColumnModel extends ARankColumnModel implements IMappedCol
 		final BitSet filter = getMyRanker().getFilter();
 		return new IFloatIterator() {
 			int act = 0;
+
 			@Override
 			public boolean hasNext() {
 				return act >= 0 && filter.nextSetBit(act + 1) >= 0;

@@ -62,7 +62,9 @@ public class University extends ARankTableDemo {
 		List<UniversityRow> rows = readData();
 		table.addData(rows);
 		Map<String, String> metaData = readCountriesCategories();
-		table.addColumn(new RankRankColumnModel());
+		RankRankColumnModel rankRankColumnModel = new RankRankColumnModel();
+		rankRankColumnModel.setWeight(35);
+		table.addColumn(rankRankColumnModel);
 		table.addColumn(new StringRankColumnModel(GLRenderers.drawText("University", VAlign.CENTER),
 				StringRankColumnModel.DFEAULT));
 		// as categorical
@@ -82,33 +84,38 @@ public class University extends ARankTableDemo {
 		table.addColumnTo(
 				stacked,
 				new FloatRankColumnModel(new ReflectionFloatData(field("teaching")), GLRenderers.drawText("Teaching",
-						VAlign.CENTER), Color.decode("#8DD3C7"), Color.decode("#EEEEEE"), new PiecewiseMapping(0,
+						VAlign.CENTER), Color.decode("#FC9272"), Color.decode("#FEE0D2"),
+						new PiecewiseMapping(0,
 						100), FloatInferrers.MEDIAN).setWeight((float) 30 * 5));
 		table.addColumnTo(
 				stacked,
 				new FloatRankColumnModel(new ReflectionFloatData(field("research")), GLRenderers.drawText("Research",
-						VAlign.CENTER), Color.decode("#FFFFB3"), Color.decode("#EEEEEE"), new PiecewiseMapping(0,
+						VAlign.CENTER), Color.decode("#9ECAE1"), Color.decode("#DEEBF7"),
+						new PiecewiseMapping(0,
 						100), FloatInferrers.MEDIAN).setWeight((float) 30 * 5));
 		table.addColumnTo(
 				stacked,
 				new FloatRankColumnModel(new ReflectionFloatData(field("citations")), GLRenderers.drawText("Citations",
-						VAlign.CENTER), Color.decode("#BEBADA"), Color.decode("#EEEEEE"), new PiecewiseMapping(0,
+						VAlign.CENTER), Color.decode("#A1D99B"), Color.decode("#E5F5E0"),
+						new PiecewiseMapping(0,
 						100), FloatInferrers.MEDIAN).setWeight((float) 30 * 5));
 		table.addColumnTo(
 				stacked,
 				new FloatRankColumnModel(new ReflectionFloatData(field("incomeFromIndustry")), GLRenderers.drawText(
-						"Income From Industry", VAlign.CENTER), Color.decode("#FB8072"), Color.decode("#EEEEEE"),
+						"Income From Industry", VAlign.CENTER), Color.decode("#C994C7"), Color.decode("#E7E1EF"),
 						new PiecewiseMapping(0, 100), FloatInferrers.MEDIAN).setWeight(7.5f * 5));
 		table.addColumnTo(
 				stacked,
 				new FloatRankColumnModel(new ReflectionFloatData(field("internationalMix")), GLRenderers.drawText(
-						"International Mix", VAlign.CENTER), Color.decode("#80B1D3"), Color.decode("#EEEEEE"),
+						"International Mix", VAlign.CENTER), Color.decode("#FDBB84"),
+ Color.decode("#FEE8C8"),
 						new PiecewiseMapping(0, 100), FloatInferrers.MEDIAN).setWeight(2.5f * 5));
 
 		table.addColumn(new FloatRankColumnModel(new ReflectionFloatData(field("overallScore")), GLRenderers.drawText(
-				"Overall Score", VAlign.CENTER), Color.decode("#ffb380"), Color.decode("#ffe6d5"),
+				"Overall Score", VAlign.CENTER), Color.decode("#DFC27D"), Color.decode("#F6E8C3"),
 				new PiecewiseMapping(0, 100), FloatInferrers.MEDIAN));
 	}
+
 
 	private static Map<String, String> readCountriesCategories() throws IOException {
 		Map<String, String> metaData = new HashMap<>();

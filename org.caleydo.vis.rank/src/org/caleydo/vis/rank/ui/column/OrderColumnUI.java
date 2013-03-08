@@ -19,19 +19,16 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.ui.column;
 
-import gleem.linalg.Vec3f;
+import gleem.linalg.Vec2f;
 import gleem.linalg.Vec4f;
 
+import java.awt.Color;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
-import org.caleydo.core.view.opengl.util.vislink.NURBSCurve;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.ColumnRanker;
 import org.caleydo.vis.rank.model.IRow;
@@ -192,31 +189,48 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 			boolean isSelected, boolean isEvenLeft, boolean isEvenRight) {
 		float z = isSelected ? 0.1f : 0.f;
 		float offset = w * 0.25f;
-		ArrayList<Vec3f> inputPoints = new ArrayList<Vec3f>();
-		inputPoints.add(new Vec3f(-1, left.y(), z));
-		inputPoints.add(new Vec3f(-1 + offset, left.y(), z));
-		inputPoints.add(new Vec3f(w - offset, right.y(), z));
-		inputPoints.add(new Vec3f(w, right.y(), z));
+//		ArrayList<Vec3f> inputPoints = new ArrayList<Vec3f>();
+//		inputPoints.add(new Vec3f(-1, left.y(), z));
+//		inputPoints.add(new Vec3f(-1 + offset, left.y(), z));
+//		inputPoints.add(new Vec3f(w - offset, right.y(), z));
+//		inputPoints.add(new Vec3f(w, right.y(), z));
+//
+//		final int NUMBER_OF_SPLINE_POINTS = w < 20 ? 5 : (w < 100) ? 10 : 20;
+//		List<Vec3f> outputPoints = new NURBSCurve(inputPoints, NUMBER_OF_SPLINE_POINTS).getCurvePoints();
+//
+//		inputPoints.clear();
+//		inputPoints.add(new Vec3f(-1, left.y() + left.w(), z));
+//		inputPoints.add(new Vec3f(-1 + offset, left.y() + left.w(), z));
+//		inputPoints.add(new Vec3f(w - offset, right.y() + right.w(), z));
+//		inputPoints.add(new Vec3f(w, right.y() + right.w(), z));
+//
+//		List<Vec3f> points = new NURBSCurve(inputPoints, NUMBER_OF_SPLINE_POINTS).getCurvePoints();
+//		Collections.reverse(points);
+//		outputPoints.addAll(points);
+		if (isSelected) {
+			g.incZ();
 
-		final int NUMBER_OF_SPLINE_POINTS = w < 20 ? 5 : (w < 100) ? 10 : 20;
-		List<Vec3f> outputPoints = new NURBSCurve(inputPoints, NUMBER_OF_SPLINE_POINTS).getCurvePoints();
-
-		inputPoints.clear();
-		inputPoints.add(new Vec3f(-1, left.y() + left.w(), z));
-		inputPoints.add(new Vec3f(-1 + offset, left.y() + left.w(), z));
-		inputPoints.add(new Vec3f(w - offset, right.y() + right.w(), z));
-		inputPoints.add(new Vec3f(w, right.y() + right.w(), z));
-
-		List<Vec3f> points = new NURBSCurve(inputPoints, NUMBER_OF_SPLINE_POINTS).getCurvePoints();
-		Collections.reverse(points);
-		outputPoints.addAll(points);
-		if (isSelected)
+			g.color(Color.GRAY);
+			g.drawLine(0, left.y(), w, right.y());
+			g.drawLine(0, left.y() + left.w(), w, right.y() + right.w());
 			g.color(RenderStyle.COLOR_SELECTED_ROW);
-		else if (isEvenRight)
-			g.color(RenderStyle.COLOR_BACKGROUND_EVEN);
-		else
-			g.color(RenderStyle.COLOR_BAND);
-		renderer.render(g.gl, outputPoints);
+			g.fillPolygon(new Vec2f(-1, left.y()), new Vec2f(w, right.y()), new Vec2f(w, right.y() + right.w()),
+					new Vec2f(-1, left.y() + left.w()));
+
+			// (0, left.y() + left.w() * 0.5f, w, right.y() + right.w() * 0.5f);
+			g.decZ();
+			return;
+		}
+		// else if (isEvenRight)
+		// g.color(RenderStyle.COLOR_BACKGROUND_EVEN);
+		// else
+		g.color(Color.GRAY);
+		//renderer.render(g.gl, outputPoints);
+		float radiusl = 0; // Math.min(4, left.w() * .5f);
+		//g.fillCircle(radiusl, left.y() + left.w() * 0.5f, radiusl);
+		float radiusr = 0;//Math.min(4, right.w() * 0.5f);
+		//g.fillCircle(w - radiusr, right.y() + right.w() * 0.5f, radiusr);
+		g.drawLine(radiusl, left.y() + left.w() * 0.5f, w - radiusr, right.y() + right.w() * 0.5f);
 	}
 
 	@Override

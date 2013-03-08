@@ -19,8 +19,6 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.ui;
 
-import java.awt.Color;
-
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
@@ -34,9 +32,9 @@ import org.caleydo.vis.rank.ui.column.StackedColumnHeaderUI.AlignmentDragInfo;
 
 /**
  * a special {@link SeparatorUI}, which is draggable determined by the given {@link IMoveHereChecker}
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public class StackedSeparatorUI extends SeparatorUI {
 	private boolean isAlignment = false;
@@ -72,7 +70,8 @@ public class StackedSeparatorUI extends SeparatorUI {
 	protected void renderImpl(GLGraphics g, float w, float h) {
 		if (this.isAlignment) {
 			float c = w * 0.5f;
-			g.fillImage(g.getTexture(RenderStyle.ICON_ARROW), c - 7, -20, 14, 27, new Color(0, 0, 1, 0.5f));
+			renderTriangle(g, w);
+			// g.fillImage(g.getTexture(RenderStyle.ICON_ARROW), c - 7, -20, 14, 27, new Color(0, 0, 1, 0.5f));
 		}
 		super.renderImpl(g, w, h);
 	}

@@ -418,18 +418,21 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 			i++;
 			if (bounds.z() <= 0 || bounds.w() <= 0)
 				continue;
-			if (pick)
+			if (pick) {
 				g.pushName(pickingIDs[i]);
-			else {
-				if (rankedRow == selected)
-					g.color(RenderStyle.COLOR_SELECTED_ROW);
-				else
-					g.color(RenderStyle.COLOR_BACKGROUND_EVEN);
-			}
-			if (pick || even || rankedRow == selected)
 				g.fillRect(x, bounds.y() + 3, w, bounds.w());
-			if (pick)
 				g.popName();
+			} else if (rankedRow == selected) {
+				g.color(new Color(180, 180, 180));
+				g.incZ();
+				g.fillRect(x, bounds.y() + 3, w, bounds.w());
+				g.color(new Color(128, 128, 128));
+				g.drawRect(x, bounds.y() + 3, w, bounds.w());
+				g.decZ();
+			} else if (even) {
+				g.color(new Color(240, 240, 240));
+				g.fillRect(x, bounds.y() + 3, w, bounds.w());
+			}
 			even = !even;
 		}
 	}

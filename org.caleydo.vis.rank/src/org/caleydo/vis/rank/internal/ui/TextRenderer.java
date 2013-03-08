@@ -25,11 +25,12 @@ public class TextRenderer implements IGLRenderer {
 
 	@Override
 	public String toString() {
-		StringBuilder b = new StringBuilder(prefix + " ");
+		StringBuilder b = new StringBuilder(prefix + "(");
 		for (ARankColumnModel r : model) {
 			b.append(r.getTooltip()).append(", ");
 		}
 		b.setLength(b.length() - 2);
+		b.append(")");
 		return b.toString();
 	}
 }

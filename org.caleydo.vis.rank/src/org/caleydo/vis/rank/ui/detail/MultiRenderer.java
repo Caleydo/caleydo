@@ -66,29 +66,48 @@ public class MultiRenderer implements IGLRenderer {
 			g.fillRect(w * 0.1f, h * 0.1f, w * 0.8f, h * 0.8f);
 			return;
 		}
-		// boolean inferred = model.isValueInferred(r);
-		// TODO inferred vis
+		if (v.repr < 0)
+			return;
+		boolean selected = model.getTable().getSelectedRow() == r;
 		Color[] colors = model.getColors();
-		if (v.repr >= 0) {
-			boolean selected = model.getTable().getSelectedRow() == r;
-			float[] heights = layout.compute(v.size(), v.repr, h * 0.8f);
-			float y = h * 0.1f;
-			for (int i = 0; i < heights.length; ++i) {
-				if (v.values[i] <= 0 || Float.isNaN(v.values[i]))
+		g.color(colors[v.repr]).fillRect(0, 1, w * v.values[v.repr], h - 2);
+		Color cbase = colors[v.repr];
+		if (selected) {
+			for (int i = 0; i < v.size(); ++i) {
+				if (i == v.repr)
 					continue;
-				float hi = heights[i];
-				if (hi <= 0)
-					continue;
-				g.color(colors[i]).fillRect(0, y, w * v.values[i], hi);
-				if (selected) {
-					ARankColumnModel modeli = model.get(i);
-					String text = (modeli instanceof IMappedColumnMixin) ? ((IMappedColumnMixin) modeli).getRawValue(r)
-								: Formatter.formatNumber(v.values[i]);
-					float hli = getTextHeight(hi);
-					ScoreBarRenderer.renderLabel(g, y + (hi - hli) * 0.5f, w, hli, text, v.values[i], parent);
-				}
-				y += hi;
+				float vi = v.values[i];
+				g.color(Color.WHITE);
+				g.fillRect(w * vi - 2, h * 0.3f, 5, (h - 1 - h * 0.3f));
+				if (colors[i] == cbase)
+					g.color(Color.DARK_GRAY);
+				else
+					g.color(colors[i]);
+				g.drawLine(w * vi, 1 + h * 0.3f, w * vi, h - 1);
 			}
 		}
+
+		if (selected) {
+			ARankColumnModel modeli = model.get(v.repr);
+			String text = (modeli instanceof IMappedColumnMixin) ? ((IMappedColumnMixin) modeli).getRawValue(r)
+					: Formatter.formatNumber(v.values[v.repr]);
+			float hli = getTextHeight(h);
+			ScoreBarRenderer.renderLabel(g, (h - hli) * 0.5f, w, hli, text, v.values[v.repr], parent);
+		}
+		// boolean inferred = model.isValueInferred(r);
+		// TODO inferred vis
+
+		// if (v.repr >= 0) {
+		// float[] heights = layout.compute(v.size(), v.repr, h * 0.8f);
+		// float y = h * 0.1f;
+		// for (int i = 0; i < heights.length; ++i) {
+		// if (v.values[i] <= 0 || Float.isNaN(v.values[i]))
+		// continue;
+		// float hi = heights[i];
+		// if (hi <= 0)
+		// continue;
+		// y += hi;
+		// }
+		// }
 	}
 }

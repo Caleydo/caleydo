@@ -63,7 +63,11 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 	private String filter;
 
 	public StringRankColumnModel(IGLRenderer header, final Function<IRow, String> data) {
-		super(Color.GRAY, new Color(.95f, .95f, .95f));
+		this(header, data, Color.GRAY, new Color(.95f, .95f, .95f));
+	}
+
+	public StringRankColumnModel(IGLRenderer header, final Function<IRow, String> data, Color color, Color bgColor) {
+		super(color, bgColor);
 		setHeaderRenderer(header);
 		this.data = data;
 	}
@@ -98,7 +102,7 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 		if (value == null)
 			return;
 		float hi = Math.min(h, 19);
-		g.drawText(value, 1, (h - hi) * 0.5f, w - 2, hi - 5);
+		g.drawText(value, 3, (h - hi) * 0.5f, w - 7, hi - 5);
 	}
 
 	@Override

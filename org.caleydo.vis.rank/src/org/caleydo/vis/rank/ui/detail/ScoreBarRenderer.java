@@ -75,7 +75,7 @@ public class ScoreBarRenderer implements IGLRenderer {
 			}
 		} else {
 			// score bar
-			g.color(color).fillRect(0, h * 0.1f, w * v, h * 0.8f);
+			g.color(color).fillRect(0, 1, w * v, h - 2);
 			if (inferred) {
 				g.gl.glLineStipple(1, (short) 0xAAAA);
 				g.gl.glEnable(GL2.GL_LINE_STIPPLE);
@@ -108,6 +108,8 @@ public class ScoreBarRenderer implements IGLRenderer {
 		boolean hasFreeSpace = getRenderInfo(parent).hasFreeSpace();
 
 		VAlign alignment = getRenderInfo(parent).getAlignment();
-		g.drawText(text, 2, y, (hasFreeSpace && alignment == VAlign.LEFT) ? w : (v * w) - 2, h, VAlign.LEFT);
+		float space = (hasFreeSpace && alignment == VAlign.LEFT) ? w : (v * w) - 2;
+		if (tw < space)
+			g.drawText(text, 2, y, space, h, VAlign.LEFT);
 	}
 }

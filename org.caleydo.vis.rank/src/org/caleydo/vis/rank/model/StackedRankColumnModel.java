@@ -68,7 +68,7 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements IHi
 	private String annotation = "";
 
 	public StackedRankColumnModel() {
-		super(Color.GRAY, new Color(0.90f, .90f, .90f));
+		super(Color.GRAY, new Color(0.95f, .95f, .95f));
 		setHeaderRenderer(new TextRenderer("SUM", this));
 		setWeight(0);
 	}

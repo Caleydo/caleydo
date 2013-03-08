@@ -67,12 +67,18 @@ public class CategoricalRankColumnModel<CATEGORY_TYPE> extends ABasicFilterableR
 
 	public CategoricalRankColumnModel(IGLRenderer header, final Function<IRow, CATEGORY_TYPE> data,
 			Map<CATEGORY_TYPE, String> metaData) {
-		super(Color.GRAY, new Color(.95f, .95f, .95f));
+		this(header, data, metaData, Color.GRAY, new Color(.95f, .95f, .95f));
+	}
+
+	public CategoricalRankColumnModel(IGLRenderer header, final Function<IRow, CATEGORY_TYPE> data,
+			Map<CATEGORY_TYPE, String> metaData, Color color, Color bgColor) {
+		super(color, bgColor);
 		setHeaderRenderer(header);
 		this.data = data;
 		this.metaData = metaData;
 		this.selection.addAll(metaData.keySet());
 	}
+
 
 	public CategoricalRankColumnModel(CategoricalRankColumnModel<CATEGORY_TYPE> copy) {
 		super(copy);
