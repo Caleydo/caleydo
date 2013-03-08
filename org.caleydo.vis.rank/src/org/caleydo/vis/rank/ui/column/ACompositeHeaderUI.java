@@ -179,7 +179,9 @@ public abstract class ACompositeHeaderUI extends GLElementContainer implements I
 		for (int i = 0; i < columns.size(); ++i) {
 			IGLLayoutElement col = columns.get(i);
 			ARankColumnModel model = col.getLayoutDataAs(ARankColumnModel.class, null);
-			if (col.asElement() instanceof IThickHeader)
+			if (col.asElement() instanceof OrderColumnHeaderUI)
+				col.setBounds(x, y + HIST_HEIGHT / 2, model.getPreferredWidth(), hn - HIST_HEIGHT / 2);
+			else if (col.asElement() instanceof IThickHeader)
 				col.setBounds(x, 0, model.getPreferredWidth(), h);
 			else
 				col.setBounds(x, y, model.getPreferredWidth(), hn);

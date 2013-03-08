@@ -42,12 +42,12 @@ public class MappingFunctionUIs {
 		if (model instanceof PiecewiseMapping) {
 			m.addMode(new PiecewiseMappingCrossUI((PiecewiseMapping) model, true));
 			m.addMode(new PiecewiseMappingParallelUI((PiecewiseMapping) model, true));
-			m.addMode(new PiecewiseMappingCrossUI((PiecewiseMapping) model, false));
+			// m.addMode(new PiecewiseMappingCrossUI((PiecewiseMapping) model, false));
 			m.addMode(new PiecewiseMappingParallelUI((PiecewiseMapping) model, false));
 		} else {
 			m.addMode(new MappingCrossUI<IMappingFunction>(model, true));
 			m.addMode(new MappingParallelUI<IMappingFunction>(model, true));
-			m.addMode(new MappingCrossUI<IMappingFunction>(model, false));
+			// m.addMode(new MappingCrossUI<IMappingFunction>(model, false));
 			m.addMode(new MappingParallelUI<IMappingFunction>(model, false));
 		}
 		return m;

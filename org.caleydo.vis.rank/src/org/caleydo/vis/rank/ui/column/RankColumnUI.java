@@ -22,6 +22,7 @@ public class RankColumnUI extends ColumnUI {
 			IRow row = elem.getLayoutDataAs(IRow.class, null);
 			int delta = ranker.getRankDelta(row);
 			if (delta != 0 && delta != Integer.MAX_VALUE) {
+				removeStyleAnimationsOf(elem.asElement());
 				animate(elem.asElement(), RenderStyle.hightlightAnimationDuration(delta), ColorTransition.get(delta));
 			}
 		}

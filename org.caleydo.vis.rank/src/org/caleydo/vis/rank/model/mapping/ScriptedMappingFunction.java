@@ -169,6 +169,8 @@ public class ScriptedMappingFunction extends AMappingFunction {
 			Object r = compileScript().eval(bindings);
 			if (r instanceof Number)
 				return ((Number) r).floatValue();
+		} catch (MappedValueException e) {
+			return e.getValue();
 		} catch (ScriptException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -317,14 +317,18 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 	}
 
 	private void removeAnimationsOf(GLElement child, boolean checkLayoutAnimations) {
-		for (Iterator<StyleAnimation> it = styleAnimations.iterator(); it.hasNext();)
-			if (it.next().getAnimatedElement() == child)
-				it.remove();
+		removeStyleAnimationsOf(child);
 		if (checkLayoutAnimations) {
 			for (Iterator<ALayoutAnimation> it = layoutAnimations.iterator(); it.hasNext();)
 				if (it.next().getAnimatedElement() == child)
 					it.remove();
 		}
+	}
+
+	protected final void removeStyleAnimationsOf(GLElement child) {
+		for (Iterator<StyleAnimation> it = styleAnimations.iterator(); it.hasNext();)
+			if (it.next().getAnimatedElement() == child)
+				it.remove();
 	}
 
 	public final int indexOf(GLElement child) {
