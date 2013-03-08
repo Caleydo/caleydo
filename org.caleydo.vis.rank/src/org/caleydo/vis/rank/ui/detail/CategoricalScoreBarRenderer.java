@@ -45,8 +45,6 @@ public class CategoricalScoreBarRenderer implements IGLRenderer {
 		final IRow r = parent.getLayoutDataAs(IRow.class, null); // current row
 		float v = model.applyPrimitive(r);
 		boolean inferred = model.isValueInferred(r);
-		if (Float.isNaN(v) || v <= 0)
-			return;
 		Color color = model.getColor(r);
 		ScoreBarRenderer.renderValue(g, w, h, parent, r, v, inferred, model, false, color, color);
 	}

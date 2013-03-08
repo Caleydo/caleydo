@@ -478,10 +478,11 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 		case MOUSE_OVER:
 			if (!pick.isDoDragging() && m.hasDraggable(ARankColumnModel.class)) {
 				Pair<GLElement, ARankColumnModel> pair = m.getFirstDraggable(ARankColumnModel.class);
-				if (model.isCombineAble(pair.getSecond())) {
+				if (model.isCombineAble(pair.getSecond(), RenderStyle.isCloneDragging(pick))) {
 					m.setDropable(ARankColumnModel.class, true);
 					this.armDropColum = true;
-					armDropHint = model.getTable().getConfig().getCombineStringHint(model, pair.getSecond());
+					armDropHint = model.getTable().getConfig()
+							.getCombineStringHint(model, pair.getSecond(), RenderStyle.getCombineMode(pick));
 					repaint();
 				}
 			} else if (!pick.isAnyDragging()) {
@@ -507,7 +508,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 				m.setDropable(ARankColumnModel.class, false);
 				context.setCursor(-1);
 				if (info != null)
-					model.combine(info.getSecond());
+					model.combine(info.getSecond(), RenderStyle.isCloneDragging(pick), RenderStyle.getCombineMode(pick));
 			}
 			break;
 		case DOUBLE_CLICKED:

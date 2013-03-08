@@ -21,6 +21,9 @@ package org.caleydo.vis.rank.ui;
 
 import java.awt.Color;
 
+import org.caleydo.core.view.opengl.picking.AdvancedPick;
+import org.caleydo.core.view.opengl.picking.Pick;
+
 
 /**
  * @author Samuel Gratzl
@@ -116,4 +119,22 @@ public class RenderStyle {
 		return (1 - alpha) * 0.5f;
 	}
 
+	public static boolean isCloneDragging(Pick pick) {
+		if (pick instanceof AdvancedPick)
+			return ((AdvancedPick) pick).isCtrlDown();
+		return false;
+	}
+
+	/**
+	 * @param pick
+	 * @return
+	 */
+	public static int getCombineMode(Pick pick) {
+		if (!(pick instanceof AdvancedPick))
+			return 0;
+		AdvancedPick apick = (AdvancedPick) pick;
+		if (apick.isAltDown())
+			return 1;
+		return 0;
+	}
 }

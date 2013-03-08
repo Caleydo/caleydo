@@ -43,6 +43,8 @@ import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Display;
 
+import com.google.common.collect.Iterables;
+
 /**
  * the stacked column
  *
@@ -205,6 +207,14 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements IHi
 	}
 
 	@Override
+	public boolean isValueInferred(IRow row) {
+		for (IRankableColumnMixin child : Iterables.filter(this, IRankableColumnMixin.class))
+			if (child.isValueInferred(row))
+				return true;
+		return false;
+	}
+
+	@Override
 	public MultiFloat getSplittedValue(IRow row) {
 		float[] s = new float[this.size()];
 		int i = 0;
@@ -284,5 +294,10 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements IHi
 	@Override
 	public void setCompressed(boolean compressed) {
 		this.propertySupport.firePropertyChange(PROP_COMPRESSED, this.isCompressed, this.isCompressed = compressed);
+	}
+
+	@Override
+	public boolean isFlatAdding(ACompositeRankColumnModel model) {
+		return model instanceof StackedRankColumnModel;
 	}
 }

@@ -32,27 +32,31 @@ public interface IRankTableConfig {
 	 * is this column moveable
 	 *
 	 * @param model
+	 * @param clone
 	 * @return
 	 */
-	boolean isMoveAble(ARankColumnModel model);
+	boolean isMoveAble(ARankColumnModel model, boolean clone);
 
 	/**
 	 * creates a new combined column caused by dragging two columns onto each other
-	 *
+	 * 
+	 * @param combineMode
+	 * 
 	 * @return
 	 */
-	ACompositeRankColumnModel createNewCombined();
+	ACompositeRankColumnModel createNewCombined(int combineMode);
 
 	/**
 	 * are these columsn combine able
 	 *
 	 * @param model
 	 * @param with
+	 * @param clone
 	 * @return
 	 */
-	boolean isCombineAble(ARankColumnModel model, ARankColumnModel with);
+	boolean isCombineAble(ARankColumnModel model, ARankColumnModel with, boolean clone);
 
-	String getCombineStringHint(ARankColumnModel model, ARankColumnModel with);
+	String getCombineStringHint(ARankColumnModel model, ARankColumnModel with, int combineMode);
 
 	/**
 	 * @return
@@ -70,5 +74,18 @@ public interface IRankTableConfig {
 	 * @return
 	 */
 	boolean isDestroyOnHide();
+
+	/**
+	 * @param combineMode
+	 * @return
+	 */
+	Class<? extends ACompositeRankColumnModel> getCombineClassFor(int combineMode);
+
+	/**
+	 * @param t
+	 * @param combineMode
+	 * @return
+	 */
+	boolean canBeReusedForCombining(ACompositeRankColumnModel t, int combineMode);
 
 }

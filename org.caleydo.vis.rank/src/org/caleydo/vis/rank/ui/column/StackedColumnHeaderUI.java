@@ -204,14 +204,14 @@ public class StackedColumnHeaderUI extends ACompositeHeaderUI implements IThickH
 	}
 
 	@Override
-	public boolean canMoveHere(int index, ARankColumnModel model) {
-		return this.model.isMoveAble(model, index);
+	public boolean canMoveHere(int index, ARankColumnModel model, boolean clone) {
+		return this.model.isMoveAble(model, index, clone);
 	}
 
 	@Override
-	public void moveHere(int index, ARankColumnModel model) {
-		assert canMoveHere(index, model);
-		this.model.move(model, index);
+	public void moveHere(int index, ARankColumnModel model, boolean clone) {
+		assert canMoveHere(index, model, clone);
+		this.model.move(model, index, clone);
 	}
 
 	public static class AlignmentDragInfo implements IDragInfo {

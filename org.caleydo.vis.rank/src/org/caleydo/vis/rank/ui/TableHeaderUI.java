@@ -73,14 +73,14 @@ public final class TableHeaderUI extends ACompositeHeaderUI {
 	}
 
 	@Override
-	public boolean canMoveHere(int index, ARankColumnModel model) {
-		return table.isMoveAble(model, index);
+	public boolean canMoveHere(int index, ARankColumnModel model, boolean clone) {
+		return table.isMoveAble(model, index, clone);
 	}
 
 	@Override
-	public void moveHere(int index, ARankColumnModel model) {
-		assert canMoveHere(index, model);
-		this.table.move(model, index);
+	public void moveHere(int index, ARankColumnModel model, boolean clone) {
+		assert canMoveHere(index, model, clone);
+		this.table.move(model, index, clone);
 	}
 }
 

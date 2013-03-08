@@ -51,13 +51,13 @@ public class ScoreBarRenderer implements IGLRenderer {
 		final IRow r = parent.getLayoutDataAs(IRow.class, null); // current row
 		float v = model.applyPrimitive(r);
 		boolean inferred = model.isValueInferred(r);
-		if (Float.isNaN(v) || v <= 0)
-			return;
 		renderValue(g, w, h, parent, r, v, inferred, model, false, model.getColor(), null);
 	}
 
 	static void renderValue(GLGraphics g, float w, float h, GLElement parent, final IRow r, float v, boolean inferred,
 			IRankableColumnMixin model, boolean align, Color color, Color collapseColor) {
+		if (Float.isNaN(v) || v <= 0)
+			return;
 		if (getRenderInfo(parent).isCollapsed()) {
 			// if collapsed use a brightness encoding
 			if (collapseColor == null)
@@ -70,7 +70,7 @@ public class ScoreBarRenderer implements IGLRenderer {
 			if (inferred) {
 				g.gl.glLineStipple(4, (short) 0xAAAA);
 				g.gl.glEnable(GL2.GL_LINE_STIPPLE);
-				g.color(0, 0, 0, .5f).drawRect(w * 0.1f + 1, h * 0.1f + 1, w * 0.8f - 2, h * 0.8f - 2);
+				g.color(0, 0, 0, .5f).drawRect(1, 2, w - 4, h - 4);
 				g.gl.glDisable(GL2.GL_LINE_STIPPLE);
 			}
 		} else {

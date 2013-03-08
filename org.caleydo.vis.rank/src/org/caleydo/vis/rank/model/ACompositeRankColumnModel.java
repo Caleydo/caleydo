@@ -77,7 +77,7 @@ public abstract class ACompositeRankColumnModel extends ARankColumnModel impleme
 
 	protected void init(ARankColumnModel model) {
 		model.init(this);
-		ARankColumnModel.uncollapse(model);
+		model.setCollapsed(false);
 	}
 
 	protected void takeDown(ARankColumnModel model) {
@@ -89,14 +89,16 @@ public abstract class ACompositeRankColumnModel extends ARankColumnModel impleme
 	}
 
 	@Override
-	public final void move(ARankColumnModel model, int to) {
-		if (model.getParent() == this) { // move within the same parent
+	public final void move(ARankColumnModel model, int to, boolean clone) {
+		if (!clone && model.getParent() == this) { // move within the same parent
 			int from = this.children.indexOf(model);
 			if (from == to)
 				return;
 			children.add(to, model);
 			children.remove(from < to ? from : from + 1);
 			propertySupport.fireIndexedPropertyChange(PROP_CHILDREN, to, from, model);
+		} else if (clone) {
+			getTable().addColumnTo(this, to, model.clone());
 		} else {
 			model.getParent().detach(model);
 			add(to, model);
@@ -104,8 +106,8 @@ public abstract class ACompositeRankColumnModel extends ARankColumnModel impleme
 	}
 
 	@Override
-	public boolean isMoveAble(ARankColumnModel model, int index) {
-		return canAdd(model) && model.getParent().isHideAble(model);
+	public boolean isMoveAble(ARankColumnModel model, int index, boolean clone) {
+		return canAdd(model) && (clone || model.getParent().isHideAble(model));
 	}
 
 	@Override
@@ -191,8 +193,6 @@ public abstract class ACompositeRankColumnModel extends ARankColumnModel impleme
 		}
 	}
 
-	public boolean isFlatAdding(ACompositeRankColumnModel t) {
-		return false;
-	}
+	public abstract boolean isFlatAdding(ACompositeRankColumnModel model);
 
 }

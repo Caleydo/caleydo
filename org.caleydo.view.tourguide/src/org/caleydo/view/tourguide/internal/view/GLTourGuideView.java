@@ -79,7 +79,7 @@ import org.caleydo.view.tourguide.internal.view.ui.DataDomainQueryUI;
 import org.caleydo.view.tourguide.spi.IScoreFactory;
 import org.caleydo.view.tourguide.spi.score.IRegisteredScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
-import org.caleydo.vis.rank.config.IRankTableConfig;
+import org.caleydo.vis.rank.config.RankTableConfigBase;
 import org.caleydo.vis.rank.layout.RowHeightLayouts;
 import org.caleydo.vis.rank.model.ACompositeRankColumnModel;
 import org.caleydo.vis.rank.model.ARankColumnModel;
@@ -95,7 +95,7 @@ import org.eclipse.swt.widgets.Shell;
  * @author Samuel Gratzl
  *
  */
-public class GLTourGuideView extends AGLElementView implements IGLKeyListener, IRankTableConfig, IAddToStratomex {
+public class GLTourGuideView extends AGLElementView implements IGLKeyListener, IAddToStratomex {
 	public static final String VIEW_TYPE = "org.caleydo.view.tool.tourguide";
 	public static final String VIEW_NAME = "Tour Guide";
 
@@ -144,7 +144,22 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 	public GLTourGuideView(IGLCanvas glCanvas) {
 		super(glCanvas, VIEW_TYPE, VIEW_NAME);
 
-		this.table = new RankTableModel(this);
+		this.table = new RankTableModel(new RankTableConfigBase() {
+			@Override
+			public boolean isMoveAble(ARankColumnModel model, boolean clone) {
+				if (model instanceof ScoreRankColumnModel) {
+					IScore s = ((ScoreRankColumnModel) model).getScore();
+					if (!s.supports(mode))
+						return false;
+				}
+				return super.isMoveAble(model, clone);
+			}
+
+			@Override
+			public boolean isDestroyOnHide() {
+				return true;
+			}
+		});
 		this.table.addPropertyChangeListener(RankTableModel.PROP_SELECTED_ROW, new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
@@ -283,7 +298,7 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 	private void addColumns(Collection<IScore> scores) {
 		for (IScore s : scores) {
 			if (s instanceof MultiScore) {
-				ACompositeRankColumnModel combined = createNewCombined();
+				ACompositeRankColumnModel combined = table.getConfig().createNewCombined(0);
 				table.addColumnTo(stacked, combined);
 				for (IScore s2 : ((MultiScore) s)) {
 					table.addColumnTo(combined, new ScoreRankColumnModel(s2));
@@ -597,50 +612,6 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 		if (!stratomex.is(event.getViewID()))
 			return;
 		stratomex.replaceBricks(event.getOldPerspective(), event.getNewPerspective());
-	}
-
-	@Override
-	public boolean isMoveAble(ARankColumnModel model) {
-		if (model instanceof ScoreRankColumnModel) {
-			IScore s = ((ScoreRankColumnModel) model).getScore();
-			if (!s.supports(mode))
-				return false;
-		}
-		return true;
-	}
-
-	@Override
-	public ACompositeRankColumnModel createNewCombined() {
-		return new MaxCompositeRankColumnModel(RowHeightLayouts.JUST_SELECTED);
-	}
-
-	@Override
-	public boolean isCombineAble(ARankColumnModel model, ARankColumnModel with) {
-		if (!MaxCompositeRankColumnModel.canBeChild(model) || !MaxCompositeRankColumnModel.canBeChild(with))
-			return false;
-		return true;
-	}
-
-	@Override
-	public String getCombineStringHint(ARankColumnModel model, ARankColumnModel with) {
-		if (model instanceof StackedRankColumnModel)
-			return "AND";
-		return "OR";
-	}
-
-	@Override
-	public boolean isDefaultCollapseAble() {
-		return true;
-	}
-
-	@Override
-	public boolean isDefaultHideAble() {
-		return true;
-	}
-
-	@Override
-	public boolean isDestroyOnHide() {
-		return true;
 	}
 
 	private class TourGuideVis extends GLElementContainer {

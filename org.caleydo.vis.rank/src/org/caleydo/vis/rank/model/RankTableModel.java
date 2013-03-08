@@ -208,6 +208,16 @@ public class RankTableModel implements IRankColumnParent {
 		add(col);
 	}
 
+	public void addColumn(int index, ARankColumnModel col) {
+		setup(col);
+		add(index, col);
+	}
+
+	public void addColumnTo(ACompositeRankColumnModel parent, int index, ARankColumnModel col) {
+		setup(col);
+		parent.add(index, col);
+	}
+
 	/**
 	 * see {@link #addColumn(ARankColumnModel)} but append the column to the given parent
 	 *
@@ -215,8 +225,7 @@ public class RankTableModel implements IRankColumnParent {
 	 * @param col
 	 */
 	public void addColumnTo(ACompositeRankColumnModel parent, ARankColumnModel col) {
-		setup(col);
-		parent.add(col);
+		addColumnTo(parent, parent.size(), col);
 	}
 
 	private void add(ARankColumnModel col) {
@@ -231,9 +240,9 @@ public class RankTableModel implements IRankColumnParent {
 	}
 
 	@Override
-	public final void move(ARankColumnModel model, int to) {
+	public final void move(ARankColumnModel model, int to, boolean clone) {
 		int from = this.columns.indexOf(model);
-		if (model.getParent() == this && from >= 0) { // move within the same parent
+		if (!clone && model.getParent() == this && from >= 0) { // move within the same parent
 			if (from == to)
 				return;
 			ColumnRanker rOld = findCorrespondingRanker(from);
@@ -246,6 +255,8 @@ public class RankTableModel implements IRankColumnParent {
 				rNew.checkOrderChanges(null, model);
 			} else
 				rOld.checkOrderChanges(null, model);
+		} else if (clone) {
+			addColumn(to, model.clone());
 		} else {
 			model.getParent().detach(model);
 			add(to, model);
@@ -253,8 +264,8 @@ public class RankTableModel implements IRankColumnParent {
 	}
 
 	@Override
-	public boolean isMoveAble(ARankColumnModel model, int index) {
-		return config.isMoveAble(model) && model.getParent().isHideAble(model)
+	public boolean isMoveAble(ARankColumnModel model, int index, boolean clone) {
+		return config.isMoveAble(model, clone) && (clone || model.getParent().isHideAble(model))
 				&& !((model instanceof OrderColumn) && index == 0);
 	}
 
@@ -276,23 +287,24 @@ public class RankTableModel implements IRankColumnParent {
 	}
 
 	/**
+	 * @param combineMode
 	 * @return
 	 */
-	ACompositeRankColumnModel createCombined() {
-		ACompositeRankColumnModel new_ = config.createNewCombined();
+	ACompositeRankColumnModel createCombined(int combineMode) {
+		ACompositeRankColumnModel new_ = config.createNewCombined(combineMode);
 		setup(new_);
 		return new_;
 	}
 
 
-	public boolean isCombineAble(ARankColumnModel model, ARankColumnModel with) {
+	public boolean isCombineAble(ARankColumnModel model, ARankColumnModel with, boolean clone) {
 		if (model == with)
 			return false;
 		if (model.getParent() == with || with.getParent() == model) // already children
 			return false;
-		if (!with.getParent().isHideAble(with)) // b must be hide able
+		if (!clone && !with.getParent().isHideAble(with)) // b must be hide able
 			return false;
-		return config.isCombineAble(model, with);
+		return config.isCombineAble(model, with, clone);
 	}
 
 	private void setup(ARankColumnModel col) {
@@ -343,7 +355,7 @@ public class RankTableModel implements IRankColumnParent {
 		int bak = pool.size();
 		this.pool.add(model);
 		model.init(this);
-		ARankColumnModel.uncollapse(model);
+		model.setCollapsed(false);
 		propertySupport.fireIndexedPropertyChange(PROP_POOL, bak, null, model);
 	}
 

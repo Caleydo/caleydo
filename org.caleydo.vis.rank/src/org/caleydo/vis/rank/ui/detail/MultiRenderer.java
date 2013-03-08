@@ -20,18 +20,14 @@
 package org.caleydo.vis.rank.ui.detail;
 
 import static org.caleydo.vis.rank.ui.detail.ScoreBarRenderer.getRenderInfo;
-import static org.caleydo.vis.rank.ui.detail.ScoreBarRenderer.getTextHeight;
+import static org.caleydo.vis.rank.ui.detail.ScoreBarRenderer.renderValue;
 
 import java.awt.Color;
 
-import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
-import org.caleydo.vis.rank.layout.RowHeightLayouts.IRowHeightLayout;
-import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
-import org.caleydo.vis.rank.model.mixin.IMappedColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IMultiColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IMultiColumnMixin.MultiFloat;
 /**
@@ -40,18 +36,9 @@ import org.caleydo.vis.rank.model.mixin.IMultiColumnMixin.MultiFloat;
  */
 public class MultiRenderer implements IGLRenderer {
 	private final IMultiColumnMixin model;
-	private final IRowHeightLayout layout;
 
-	public MultiRenderer(IMultiColumnMixin model, IRowHeightLayout layout) {
+	public MultiRenderer(IMultiColumnMixin model) {
 		this.model = model;
-		this.layout = layout;
-	}
-
-	/**
-	 * @return the layout, see {@link #layout}
-	 */
-	public IRowHeightLayout getLayout() {
-		return layout;
 	}
 
 
@@ -59,55 +46,26 @@ public class MultiRenderer implements IGLRenderer {
 	public void render(GLGraphics g, float w, float h, GLElement parent) {
 		final IRow r = parent.getLayoutDataAs(IRow.class, null);
 		MultiFloat v = model.getSplittedValue(r);
+		boolean inferred = model.isValueInferred(r);
+		float vr = v.get();
 		if (v.repr < 0)
 			return;
-		if (getRenderInfo(parent).isCollapsed()) {
-			g.color(1-v.get(),1-v.get(),1-v.get(),1);
-			g.fillRect(w * 0.1f, h * 0.1f, w * 0.8f, h * 0.8f);
-			return;
-		}
-		if (v.repr < 0)
-			return;
-		boolean selected = model.getTable().getSelectedRow() == r;
 		Color[] colors = model.getColors();
-		g.color(colors[v.repr]).fillRect(0, 1, w * v.values[v.repr], h - 2);
-		Color cbase = colors[v.repr];
-		if (selected) {
+		renderValue(g, w, h, parent, r, vr, inferred, model, false, colors[v.repr], colors[v.repr]);
+
+		if (model.getTable().getSelectedRow() == r && !getRenderInfo(parent).isCollapsed()) {
 			for (int i = 0; i < v.size(); ++i) {
 				if (i == v.repr)
 					continue;
 				float vi = v.values[i];
 				g.color(Color.WHITE);
 				g.fillRect(w * vi - 2, h * 0.3f, 5, (h - 1 - h * 0.3f));
-				if (colors[i] == cbase)
+				if (colors[i] == colors[v.repr])
 					g.color(Color.DARK_GRAY);
 				else
 					g.color(colors[i]);
 				g.drawLine(w * vi, 1 + h * 0.3f, w * vi, h - 1);
 			}
 		}
-
-		if (selected) {
-			ARankColumnModel modeli = model.get(v.repr);
-			String text = (modeli instanceof IMappedColumnMixin) ? ((IMappedColumnMixin) modeli).getRawValue(r)
-					: Formatter.formatNumber(v.values[v.repr]);
-			float hli = getTextHeight(h);
-			ScoreBarRenderer.renderLabel(g, (h - hli) * 0.5f, w, hli, text, v.values[v.repr], parent);
-		}
-		// boolean inferred = model.isValueInferred(r);
-		// TODO inferred vis
-
-		// if (v.repr >= 0) {
-		// float[] heights = layout.compute(v.size(), v.repr, h * 0.8f);
-		// float y = h * 0.1f;
-		// for (int i = 0; i < heights.length; ++i) {
-		// if (v.values[i] <= 0 || Float.isNaN(v.values[i]))
-		// continue;
-		// float hi = heights[i];
-		// if (hi <= 0)
-		// continue;
-		// y += hi;
-		// }
-		// }
 	}
 }

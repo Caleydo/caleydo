@@ -59,14 +59,6 @@ public abstract class AMultiRankColumnModel extends ACompositeRankColumnModel im
 	}
 
 	@Override
-	public boolean isValueInferred(IRow row) {
-		for(IRankableColumnMixin child : Iterables.filter(this, IRankableColumnMixin.class))
-			if (child.isValueInferred(row))
-				return true;
-		return false;
-	}
-
-	@Override
 	public final boolean[] isValueInferreds(IRow row) {
 		boolean[] r = new boolean[size()];
 		int i = 0;

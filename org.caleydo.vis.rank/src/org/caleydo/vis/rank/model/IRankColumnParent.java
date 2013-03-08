@@ -69,9 +69,9 @@ public interface IRankColumnParent extends IRankColumnModel {
 	 */
 	boolean isCollapseAble(ARankColumnModel model);
 
-	boolean isMoveAble(ARankColumnModel model, int index);
+	boolean isMoveAble(ARankColumnModel model, int index, boolean clone);
 
-	void move(ARankColumnModel model, int index);
+	void move(ARankColumnModel model, int index, boolean clone);
 
 	/**
 	 * @param aRankColumnModel

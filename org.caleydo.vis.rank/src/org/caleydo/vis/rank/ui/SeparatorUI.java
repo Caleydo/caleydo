@@ -92,7 +92,7 @@ public class SeparatorUI extends PickableGLElement {
 		if (!m.hasDraggable(ARankColumnModel.class))
 			return;
 		Pair<GLElement, ARankColumnModel> info = m.getFirstDraggable(ARankColumnModel.class);
-		if (!model.canMoveHere(index, info.getSecond()))
+		if (!model.canMoveHere(index, info.getSecond(), RenderStyle.isCloneDragging(pick)))
 			return;
 		m.setDropable(ARankColumnModel.class, true);
 		armed = true;
@@ -117,14 +117,17 @@ public class SeparatorUI extends PickableGLElement {
 		m.setDropable(ARankColumnModel.class, false);
 		Pair<GLElement, ARankColumnModel> info = m.getFirstDraggable(ARankColumnModel.class);
 		m.removeDraggable(info.getFirst());
+		m.setDropable(ARankColumnModel.class, false);
 		context.setCursor(-1);
 		armed = false;
-		model.moveHere(index, info.getSecond());
+		model.moveHere(index, info.getSecond(), RenderStyle.isCloneDragging(pick));
 	}
 
-	public interface IMoveHereChecker {
-		boolean canMoveHere(int index, ARankColumnModel model);
 
-		void moveHere(int index, ARankColumnModel model);
+
+	public interface IMoveHereChecker {
+		boolean canMoveHere(int index, ARankColumnModel model, boolean clone);
+
+		void moveHere(int index, ARankColumnModel model, boolean clone);
 	}
 }

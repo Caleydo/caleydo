@@ -19,7 +19,6 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.config;
 
-import org.caleydo.vis.rank.layout.RowHeightLayouts;
 import org.caleydo.vis.rank.model.ACompositeRankColumnModel;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.MaxCompositeRankColumnModel;
@@ -31,17 +30,27 @@ import org.caleydo.vis.rank.model.StackedRankColumnModel;
  */
 public class RankTableConfigBase implements IRankTableConfig {
 	@Override
-	public boolean isMoveAble(ARankColumnModel model) {
+	public boolean isMoveAble(ARankColumnModel model, boolean clone) {
 		return true;
 	}
 
 	@Override
-	public ACompositeRankColumnModel createNewCombined() {
-		return new MaxCompositeRankColumnModel(RowHeightLayouts.JUST_SELECTED);
+	public Class<? extends ACompositeRankColumnModel> getCombineClassFor(int combineMode) {
+		return MaxCompositeRankColumnModel.class;
 	}
 
 	@Override
-	public boolean isCombineAble(ARankColumnModel model, ARankColumnModel with) {
+	public ACompositeRankColumnModel createNewCombined(int combineMode) {
+		return new MaxCompositeRankColumnModel();
+	}
+
+	@Override
+	public boolean canBeReusedForCombining(ACompositeRankColumnModel t, int combineMode) {
+		return true;
+	}
+
+	@Override
+	public boolean isCombineAble(ARankColumnModel model, ARankColumnModel with, boolean clone) {
 		if (model instanceof ACompositeRankColumnModel && ((ACompositeRankColumnModel)model).canAdd(with))
 			return true;
 		if (!MaxCompositeRankColumnModel.canBeChild(model) || !MaxCompositeRankColumnModel.canBeChild(with))
@@ -50,7 +59,7 @@ public class RankTableConfigBase implements IRankTableConfig {
 	}
 
 	@Override
-	public String getCombineStringHint(ARankColumnModel model, ARankColumnModel with) {
+	public String getCombineStringHint(ARankColumnModel model, ARankColumnModel with, int combineMode) {
 		if (model instanceof StackedRankColumnModel)
 			return "SUM";
 		return "MAX";
