@@ -28,11 +28,12 @@ import org.caleydo.datadomain.pathway.listener.AVertexRepBasedEvent;
  * @author Christian Partl
  *
  */
-public class ShowPathwaysWithVertexEvent extends AVertexRepBasedEvent {
-	public ShowPathwaysWithVertexEvent() {
+public class ShowCommonNodePathwaysEvent extends AVertexRepBasedEvent {
+	public ShowCommonNodePathwaysEvent() {
 	}
 
-	public ShowPathwaysWithVertexEvent(PathwayVertexRep vertexRep) {
+	public ShowCommonNodePathwaysEvent(PathwayVertexRep vertexRep) {
 		super(vertexRep);
 	}
+
 }

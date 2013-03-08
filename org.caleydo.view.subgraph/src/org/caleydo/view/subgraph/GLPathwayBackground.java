@@ -87,7 +87,7 @@ public class GLPathwayBackground extends PickableGLElement {
 			ShowCommonNodesPathwaysEvent event = new ShowCommonNodesPathwaysEvent(info.pathway);
 			event.setEventSpace(parentWindow.view.getPathEventSpace());
 			parentWindow.view.getContextMenuCreator().add(
-					new GenericContextMenuItem("Show pathways with common nodes", event));
+					new GenericContextMenuItem("Show Pathways with Common Nodes", event));
 		}
 
 	}

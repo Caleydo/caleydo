@@ -55,9 +55,10 @@ import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.listener.PathwayPathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.ShowPortalNodesEvent;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
+import org.caleydo.view.subgraph.contextmenu.ShowCommonNodeItem;
+import org.caleydo.view.subgraph.event.ShowCommonNodePathwaysEvent;
 import org.caleydo.view.subgraph.event.ShowCommonNodesPathwaysEvent;
 import org.caleydo.view.subgraph.event.ShowNodeInfoEvent;
-import org.caleydo.view.subgraph.event.ShowPathwaysWithVertexEvent;
 import org.caleydo.view.subgraph.ranking.PathwayFilters;
 import org.caleydo.view.subgraph.ranking.PathwayRankings;
 import org.caleydo.view.subgraph.ranking.RankingElement;
@@ -310,8 +311,8 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 					pathway = pathwayRepresentation.getPathway();
 					pathwayRepresentation.addVertexRepBasedContextMenuItem(new VertexRepBasedContextMenuItem(
 							"Show Node Info", ShowNodeInfoEvent.class, pathEventSpace));
-					pathwayRepresentation.addVertexRepBasedContextMenuItem(new VertexRepBasedContextMenuItem(
-							"Show Related Pathways", ShowPathwaysWithVertexEvent.class, pathEventSpace));
+					pathwayRepresentation.addVertexRepBasedContextMenuItem(new ShowCommonNodeItem(
+							ShowCommonNodePathwaysEvent.class, pathEventSpace));
 					pathwayRepresentation.addVertexRepBasedContextMenuItem(new VertexRepBasedContextMenuItem(
 							"Show Portal Nodes", ShowPortalNodesEvent.class, pathEventSpace));
 				}
@@ -669,7 +670,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		}
 
 		@ListenTo(restrictExclusiveToEventSpace = true)
-		public void onShowPathwaysWithVertex(ShowPathwaysWithVertexEvent event) {
+		public void onShowPathwaysWithVertex(ShowCommonNodePathwaysEvent event) {
 			rankingElement.setFilter(new PathwayFilters.CommonVertexFilter(event.getVertexRep(), false));
 			rankingElement.setRanking(new PathwayRankings.CommonVerticesRanking(event.getVertexRep().getPathway()));
 
