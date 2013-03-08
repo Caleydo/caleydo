@@ -26,11 +26,14 @@ import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
+import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
+import org.caleydo.vis.rank.model.mixin.IHideableColumnMixin;
 /**
  * @author Samuel Gratzl
  *
  */
-public class RankRankColumnModel extends ARankColumnModel implements IGLRenderer {
+public class RankRankColumnModel extends ARankColumnModel implements IGLRenderer, ICollapseableColumnMixin,
+		IHideableColumnMixin {
 
 	public RankRankColumnModel() {
 		super(Color.GRAY, new Color(0.95f, .95f, .95f));
@@ -63,8 +66,8 @@ public class RankRankColumnModel extends ARankColumnModel implements IGLRenderer
 		ColumnRanker ranker = getMyRanker();
 		if (h < 5 || w < 15 || !ranker.hasDefinedRank())
 			return;
-		float hi = Math.min(h, 16);
+		float hi = Math.min(h, 12);
 		String value = String.format("%2d.", ranker.getVisualRank(parent.getLayoutDataAs(IRow.class, null)));
-		g.drawText(value, 1, (h - hi) * 0.5f, w - 10, hi - 3, VAlign.RIGHT);
+		g.drawText(value, 1, (h - hi) * 0.5f, w - 10, hi, VAlign.RIGHT);
 	}
 }

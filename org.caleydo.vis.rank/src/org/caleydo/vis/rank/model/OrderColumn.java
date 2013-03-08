@@ -47,16 +47,16 @@ public class OrderColumn extends ARankColumnModel implements IAnnotatedColumnMix
 	private String annotation = "";
 	private final ColumnRanker ranker;
 
-	public OrderColumn(ColumnRanker ranker) {
+	public OrderColumn() {
 		super(Color.LIGHT_GRAY, new Color(0.9f, .9f, .9f));
-		this.ranker = ranker;
+		this.ranker = new ColumnRanker(this);
 		setHeaderRenderer(GLRenderers.drawText("Separator", VAlign.CENTER));
 	}
 
 	private OrderColumn(OrderColumn copy) {
 		super(copy);
 		setHeaderRenderer(copy.getHeaderRenderer());
-		this.ranker = copy.ranker.clone(getTable()); // FIXME not working
+		this.ranker = copy.ranker.clone(this);
 	}
 
 	@Override

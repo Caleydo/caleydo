@@ -59,16 +59,35 @@ public class ColumnRanker implements Iterable<IRow> {
 	private IntIntHashMap ranks = new IntIntHashMap();
 	private final IntIntHashMap exaequoOffsets = new IntIntHashMap();
 	private boolean dirtyOrder = true;
-	private final RankTableModel table;
+
 	private IRankableColumnMixin orderBy;
 
-	public ColumnRanker(RankTableModel table) {
+	/**
+	 * the table can be null, use {@link #getTable()}
+	 */
+	private final RankTableModel table;
+	/**
+	 * can be null just for getting the {@link RankTableModel}
+	 */
+	private final OrderColumn model;
+
+	private ColumnRanker(RankTableModel table, OrderColumn model) {
 		this.table = table;
+		this.model = model;
 		this.ranks.setKeyNotFoundValue(-1);
 	}
 
-	public ColumnRanker(ColumnRanker clone, RankTableModel table) {
-		this(table);
+	public ColumnRanker(RankTableModel table) {
+		this(table, null);
+	}
+
+	public ColumnRanker(OrderColumn model) {
+		this(null, model);
+	}
+
+	public ColumnRanker(ColumnRanker clone, RankTableModel table, OrderColumn model) {
+		this(table, model);
+		this.ranks.setKeyNotFoundValue(-1);
 		this.filter = clone.filter;
 		this.dirtyFilter = clone.dirtyFilter;
 		this.order = clone.order;
@@ -76,8 +95,19 @@ public class ColumnRanker implements Iterable<IRow> {
 		this.dirtyOrder = clone.dirtyOrder;
 	}
 
+
+	public ColumnRanker clone(OrderColumn model) {
+		return new ColumnRanker(this, null, model);
+	}
+
 	public ColumnRanker clone(RankTableModel table) {
-		return new ColumnRanker(this, table);
+		return new ColumnRanker(this, table, null);
+	}
+
+	private RankTableModel getTable() {
+		if (table != null)
+			return table;
+		return model.getTable();
 	}
 
 	/**
@@ -110,7 +140,7 @@ public class ColumnRanker implements Iterable<IRow> {
 	}
 
 	private IRankableColumnMixin findFirstRankable() {
-		for (Iterator<ARankColumnModel> it = table.getColumnsOf(this); it.hasNext();) {
+		for (Iterator<ARankColumnModel> it = getMyColumns(); it.hasNext();) {
 			ARankColumnModel col = it.next();
 			if (col instanceof IRankableColumnMixin)
 				return (IRankableColumnMixin) col;
@@ -118,8 +148,12 @@ public class ColumnRanker implements Iterable<IRow> {
 		return null;
 	}
 
+	private Iterator<ARankColumnModel> getMyColumns() {
+		return getTable().getColumnsOf(this);
+	}
+
 	private Iterator<IFilterColumnMixin> findAllFiltered() {
-		return Iterators.filter(table.getColumnsOf(this), IFilterColumnMixin.class);
+		return Iterators.filter(getMyColumns(), IFilterColumnMixin.class);
 	}
 
 	public int size() {
@@ -138,6 +172,7 @@ public class ColumnRanker implements Iterable<IRow> {
 		if (!dirtyFilter)
 			return;
 		dirtyFilter = false;
+		RankTableModel table = getTable();
 		BitSet dataMask = table.getDataMask();
 		final List<IRow> data = table.getData();
 		// System.out.println("filter");
@@ -181,7 +216,7 @@ public class ColumnRanker implements Iterable<IRow> {
 
 		exaequoOffsets.clear();
 
-		final List<IRow> data = table.getData();
+		final List<IRow> data = getTable().getData();
 		if (orderBy == null) {
 			List<IRow> targetOrderItems = new ArrayList<>(data.size());
 			for (int i = 0; i < data.size(); ++i) {
@@ -298,7 +333,7 @@ public class ColumnRanker implements Iterable<IRow> {
 		checkOrder();
 		if (order.length <= rank)
 			return null;
-		return table.getDataItem(order[rank]);
+		return getTable().getDataItem(order[rank]);
 	}
 
 	/**
@@ -320,6 +355,7 @@ public class ColumnRanker implements Iterable<IRow> {
 	@Override
 	public Iterator<IRow> iterator() {
 		checkOrder();
+		final RankTableModel table = getTable();
 		return new Iterator<IRow>() {
 			int cursor = 0;
 
@@ -354,7 +390,7 @@ public class ColumnRanker implements Iterable<IRow> {
 	 *
 	 */
 	private void fireInvalid() {
-		table.fireRankingInvalidOf(this);
+		getTable().fireRankingInvalidOf(this);
 		propertySupport.firePropertyChange(PROP_INVALID, false, true);
 	}
 
@@ -362,7 +398,7 @@ public class ColumnRanker implements Iterable<IRow> {
 	 * @return
 	 */
 	public int getSelectedRank() {
-		return getRank(table.getSelectedRow());
+		return getRank(getTable().getSelectedRow());
 	}
 
 	public IRow selectFirst() {
@@ -394,5 +430,12 @@ public class ColumnRanker implements Iterable<IRow> {
 
 	public final void removePropertyChangeListener(String propertyName, PropertyChangeListener listener) {
 		propertySupport.removePropertyChangeListener(propertyName, listener);
+	}
+
+	@Override
+	public String toString() {
+		if (model != null)
+			return model.getTooltip();
+		return "defaultOne";
 	}
 }

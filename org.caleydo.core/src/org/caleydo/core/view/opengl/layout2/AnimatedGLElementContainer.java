@@ -237,8 +237,7 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 					}
 				}
 				if (elem.hasChanged()) { // create a move animation
-					ALayoutAnimation anim = createMoveAnimation(elem.wrappee);
-					anim.init(elem.before, elem.after);
+					ALayoutAnimation anim = createMoveAnimation(elem.wrappee, elem.before, elem.after);
 					layoutAnimations.add(anim);
 				}
 			}
@@ -254,13 +253,17 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 		return delta;
 	}
 
-	protected ALayoutAnimation createMoveAnimation(IGLLayoutElement elem) {
+	protected ALayoutAnimation createMoveAnimation(IGLLayoutElement elem, Vec4f before, Vec4f after) {
 		if (defaultDuration == Durations.NO) {
-			return new DummyAnimation(EAnimationType.MOVE, elem);
+			DummyAnimation d = new DummyAnimation(EAnimationType.MOVE, elem);
+			d.init(before, after);
+			return d;
 		}
 		final IDuration duration = elem.getLayoutDataAs(IDuration.class, defaultDuration);
 		final IMoveTransition animation = elem.getLayoutDataAs(IMoveTransition.class, defaultMoveTransition);
-		return new MoveAnimation(0, duration, elem, animation);
+		MoveAnimation anim = new MoveAnimation(0, duration, elem, animation);
+		anim.init(before, after);
+		return anim;
 	}
 
 	protected ALayoutAnimation createInAnimation(IGLLayoutElement elem, int startIn, IDuration duration,
@@ -530,6 +533,11 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 	@Override
 	public final Iterator<GLElement> iterator() {
 		return Iterators.unmodifiableIterator(children.iterator());
+	}
+
+	@Override
+	public <P, R> R accept(IGLElementVisitor<P, R> visitor, P para) {
+		return visitor.visit(this, para);
 	}
 
 	private static class RecordingLayoutElement extends AGLLayoutElement {

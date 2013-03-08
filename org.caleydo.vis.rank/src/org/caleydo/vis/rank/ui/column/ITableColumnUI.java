@@ -37,4 +37,6 @@ public interface ITableColumnUI {
 	GLElement get(int index);
 
 	GLElement asGLElement();
+
+	void checkLayout();
 }

@@ -395,7 +395,6 @@ public class PiecewiseMappingCrossUI extends MappingCrossUI<PiecewiseMapping> im
 				this.hovered = false;
 				this.repaint();
 				getParent().repaint();
-				fireCallback();
 			}
 		}
 	}

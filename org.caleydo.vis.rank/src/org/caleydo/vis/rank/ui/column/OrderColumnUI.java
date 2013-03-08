@@ -145,7 +145,6 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
 		if (rankDeltas != null) {
-			getTableBodyUI().triggerRankAnimations(this, rankDeltas);
 			rankDeltas = null; // a single run with the rank deltas, not used anymore
 		}
 		// render the bands
@@ -206,7 +205,7 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 
 
 	private boolean dontneedToRender(float w) {
-		return model == null || model.isCollapsed() || w < 20;
+		return model == null || model.isCollapsed() || w < 10;
 	}
 
 	private void renderBand(GLGraphics g, Vec4f left, Vec4f right, float w,
@@ -221,9 +220,9 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 			g.drawLine(0, left.y(), w, right.y());
 			g.drawLine(0, left.y() + left.w(), w, right.y() + right.w());
 			g.decZ();
-			return;
+		} else {
+			g.color(Color.GRAY);
+			g.drawLine(-1, left.y() + left.w() * 0.5f, w, right.y() + right.w() * 0.5f);
 		}
-		g.color(Color.GRAY);
-		g.drawLine(0, left.y() + left.w() * 0.5f, w - 0, right.y() + right.w() * 0.5f);
 	}
 }

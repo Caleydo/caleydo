@@ -106,7 +106,7 @@ public class RankTableModel implements IRankColumnParent {
 		this.selectedRow = copy.selectedRow;
 		this.dataMask = copy.dataMask;
 		this.data.addAll(copy.data);
-		this.defaultRanker = new ColumnRanker(copy.defaultRanker, this);
+		this.defaultRanker = copy.defaultRanker.clone(this);
 		for(ARankColumnModel c : copy.pool)
 			this.pool.add(c.clone());
 		for(ARankColumnModel c : copy.columns)
@@ -469,6 +469,8 @@ public class RankTableModel implements IRankColumnParent {
 	private ColumnRanker findCorrespondingRanker(IRankColumnModel model) {
 		if (model == null)
 			return findCorrespondingRanker(-1);
+		while (model.getParent() != this)
+			model = model.getParent();
 		return findCorrespondingRanker(columns.indexOf(model));
 	}
 
@@ -572,7 +574,8 @@ public class RankTableModel implements IRankColumnParent {
 	 * @param aRankColumnModel
 	 */
 	public void addSnapshot(ARankColumnModel model) {
-		addColumn(new OrderColumn(new ColumnRanker(this)));
+		addColumn(new OrderColumn());
+		addColumn(new RankRankColumnModel());
 		addColumn(model.clone());
 	}
 }

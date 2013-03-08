@@ -186,8 +186,7 @@ public class GLElement implements IHasGLLayoutData {
 	 * @param g
 	 */
 	public final void render(GLGraphics g) {
-		if (dirtyLayout)
-			layout();
+		checkLayout();
 		if (!needToRender()) {
 			cache.invalidate(context.getDisplayListPool());
 			return;
@@ -203,10 +202,11 @@ public class GLElement implements IHasGLLayoutData {
 			cache.begin(context.getDisplayListPool(), g, w, h);
 			renderImpl(g, w, h);
 			cache.end(context.getDisplayListPool(), g);
-			// } else {
-			// // cache visualization
-			// g.color(1, 0, 1, 0.1f).incZ(1).fillRect(0, 0, w, h).incZ(-1);
+//		} else {
+//			// cache visualization
+//			g.color(1, 0, 1, 0.1f).incZ(1).fillRect(0, 0, w, h).incZ(-1);
 		}
+
 		g.move(-x, -y);
 		g.incZ(-zDelta);
 	}
@@ -230,8 +230,7 @@ public class GLElement implements IHasGLLayoutData {
 	 * @param g
 	 */
 	public final void renderPick(GLGraphics g) {
-		if (dirtyLayout)
-			layout();
+		checkLayout();
 		if (!needToRender()) {
 			pickCache.invalidate(context.getDisplayListPool());
 			return;
@@ -255,6 +254,14 @@ public class GLElement implements IHasGLLayoutData {
 		}
 		g.move(-x, -y);
 		g.incZ(-zDelta);
+	}
+
+	/**
+	 * checks if the layout is dirty and it is is so perform the layouting
+	 */
+	public final void checkLayout() {
+		if (dirtyLayout)
+			layout();
 	}
 
 	private boolean needToRender() {
@@ -604,7 +611,7 @@ public class GLElement implements IHasGLLayoutData {
 		this.bounds_layout.width = w;
 		this.bounds_layout.height = h;
 		if (bounds_layout.width > 0 && bounds_layout.height > 0)
-			layout();
+			relayout();
 	}
 
 	public <P, R> R accept(IGLElementVisitor<P, R> visitor, P para) {

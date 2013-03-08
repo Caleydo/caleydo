@@ -22,7 +22,6 @@ package org.caleydo.vis.rank.ui;
 import gleem.linalg.Vec2f;
 import gleem.linalg.Vec4f;
 
-import java.awt.Color;
 import java.beans.IndexedPropertyChangeEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -38,8 +37,6 @@ import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.AnimatedGLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
-import org.caleydo.core.view.opengl.layout2.animation.ACustomAnimation;
-import org.caleydo.core.view.opengl.layout2.animation.Durations;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
@@ -341,6 +338,11 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 		// push my resource locator to find the icons
 		g.pushResourceLocator(ResourceLocators.classLoader(this.getClass().getClassLoader()));
 
+		// first check all layouts
+		for (GLElement child : this) {
+			child.checkLayout();
+		}
+
 		renderBackgroundLines(g, false);
 
 		super.renderImpl(g, w, h);
@@ -388,7 +390,7 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 			if (col instanceof OrderColumnUI && found) {
 				if (last != null) {
 					if (unwrapCombined && last instanceof ACompositeTableColumnUI<?>)
-						return getLast((ACompositeTableColumnUI<?>) last);
+						last = getLast((ACompositeTableColumnUI<?>) last);
 					return last;
 				}
 			}
@@ -396,7 +398,9 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 			last = col;
 		}
 		if (unwrapCombined && last instanceof ACompositeTableColumnUI<?>)
-			return getLast((ACompositeTableColumnUI<?>) last);
+			last = getLast((ACompositeTableColumnUI<?>) last);
+		if (last == target)
+			return null;
 		return last;
 	}
 
@@ -440,24 +444,6 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 		}
 	}
 
-	void renderLineHighlight(GLGraphics g, int rowIndex, float alpha, int delta, OrderColumnUI ranker) {
-		ITableColumnUI column = getLastCorrespondingColumn(ranker, false);
-		if (column == null)
-			return;
-		Vec4f bounds = getRowBounds(column, rowIndex);
-		if (bounds.w() < 0 || bounds.z() < 0)
-			return;
-		float calpha = RenderStyle.computeHighlightAlpha(alpha, delta);
-		Color base = delta < 0 ? Color.GREEN : Color.RED;
-		Color c = new Color(base.getRed(), base.getGreen(), base.getBlue(), (int) (calpha * 255));
-		g.decZ();
-		g.color(c);
-		float x = ranker.getLocation().x();
-		float w = column.asGLElement().getLocation().x() + column.asGLElement().getSize().x() - x;
-		g.fillRect(x, bounds.y(), w, bounds.w());
-		g.incZ();
-	}
-
 	/**
 	 * @param column
 	 * @param rowIndex
@@ -468,22 +454,6 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 			column = getLast((ACompositeTableColumnUI<?>) column);
 		}
 		return column.get(rowIndex).getBounds();
-	}
-
-	public void triggerRankAnimations(OrderColumnUI ranker, int[] rankDeltas) {
-		assert rankDeltas != null;
-		ITableColumnUI col = getLastCorrespondingColumn(ranker, false);
-		if (col == null)
-			return;
-		for (int i = 0; i < rankDeltas.length; ++i) {
-			int delta = rankDeltas[i];
-			if (delta == 0 || delta == Integer.MAX_VALUE)
-				continue;
-			IRow r = ranker.getRanker().get(i);
-			if (r == null)
-				continue;
-			this.animate(new LineHighlightAnimation(delta, r.getIndex(), ranker));
-		}
 	}
 
 	@Override
@@ -519,33 +489,5 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 	@Override
 	public boolean hasFreeSpace(ITableColumnUI tableColumnUI) {
 		return true;
-	}
-
-	class LineHighlightAnimation extends ACustomAnimation {
-		private final int rowIndex;
-		private final OrderColumnUI ranker;
-		private final int delta;
-
-		public LineHighlightAnimation(int delta, int rowIndex, OrderColumnUI ranker) {
-			super(0, Durations.fix(RenderStyle.hightlightAnimationDuration(delta)));
-			this.delta = delta;
-			this.ranker = ranker;
-			this.rowIndex = rowIndex;
-		}
-
-		@Override
-		protected void firstTime(GLGraphics g, float w, float h) {
-			animate(g, 0, w, h);
-		}
-
-		@Override
-		protected void animate(GLGraphics g, float alpha, float w, float h) {
-			renderLineHighlight(g, rowIndex, alpha, delta, ranker);
-		}
-
-		@Override
-		protected void lastTime(GLGraphics g, float w, float h) {
-			animate(g, 1, w, h);
-		}
 	}
 }
