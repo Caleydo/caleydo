@@ -30,7 +30,7 @@ import org.caleydo.vis.rank.model.mixin.IExplodeableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IHideableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 import org.caleydo.vis.rank.ui.GLPropertyChangeListeners;
-import org.caleydo.vis.rank.ui.detail.MultiRenderer;
+import org.caleydo.vis.rank.ui.detail.MultiScoreBarElement;
 import org.caleydo.vis.rank.ui.detail.StackedScoreSummary;
 
 /**
@@ -133,7 +133,7 @@ public class MaxCompositeRankColumnModel extends AMultiRankColumnModel implement
 		return model instanceof MaxCompositeRankColumnModel;
 	}
 
-	private class RepaintingGLElement extends MultiRenderer {
+	private class RepaintingGLElement extends MultiScoreBarElement {
 		private final PropertyChangeListener l = GLPropertyChangeListeners.repaintOnEvent(this);
 
 		public RepaintingGLElement() {

@@ -46,7 +46,7 @@ import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 import org.caleydo.vis.rank.ui.GLPropertyChangeListeners;
 import org.caleydo.vis.rank.ui.IColumnRenderInfo;
 import org.caleydo.vis.rank.ui.RenderUtils;
-import org.caleydo.vis.rank.ui.detail.CategoricalScoreBarRenderer;
+import org.caleydo.vis.rank.ui.detail.CategoricalScoreBarElement;
 import org.caleydo.vis.rank.ui.mapping.MappingFunctionUIs;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -132,7 +132,7 @@ public class CategoricalRankRankColumnModel<CATEGORY_TYPE> extends ABasicFiltera
 
 	@Override
 	public GLElement createValue() {
-		return new CategoricalScoreBarRenderer(this);
+		return new CategoricalScoreBarElement(this);
 	}
 
 	@Override
