@@ -52,6 +52,7 @@ import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.PathwayPath;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
+import org.caleydo.datadomain.pathway.listener.EnablePathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.PathwayPathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.ShowPortalNodesEvent;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
@@ -116,6 +117,17 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	protected GLPathwayGridLayout pathwayLayout = new GLPathwayGridLayout(this, GLPadding.ZERO, 10);
 
 	protected RankingElement rankingElement = new RankingElement(this);
+
+	/**
+	 * Determines whether path selection mode is currently active.
+	 */
+	protected boolean isPathSelectionMode = false;
+
+	/**
+	 * Determines whether a new pathway was recently added. This information is needed to send events when dependent
+	 * views need to be initialized in the first display cycle.
+	 */
+	protected boolean wasPathwayAdded = false;
 
 	/**
 	 * Constructor.
@@ -276,6 +288,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		// }
 
 		pathwayInfos.add(info);
+		wasPathwayAdded = true;
 		// pathwayRow.add(pathwayColumn);
 	}
 
@@ -481,6 +494,12 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		if (isLayoutDirty)
 			updateAugmentation = true;
 		super.display(gl);
+		if (wasPathwayAdded) {
+			EnablePathSelectionEvent event = new EnablePathSelectionEvent(isPathSelectionMode);
+			event.setEventSpace(pathEventSpace);
+			eventPublisher.triggerEvent(event);
+			wasPathwayAdded = false;
+		}
 		// The augmentation has to be updated after the layout was updated in super; updating on relayout would be too
 		// early, as the layout is not adapted at that time.
 		if (updateAugmentation)
@@ -673,13 +692,6 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		public void onShowPathwaysWithVertex(ShowCommonNodePathwaysEvent event) {
 			rankingElement.setFilter(new PathwayFilters.CommonVertexFilter(event.getVertexRep(), false));
 			rankingElement.setRanking(new PathwayRankings.CommonVerticesRanking(event.getVertexRep().getPathway()));
-
-			// GLNodeInfo nodeInfo = new GLNodeInfo(event.getVertexRep());
-			// nodeInfo.setSize(80, 80);
-			// baseContainer.add(nodeInfo, 200, new InOutTransitionBase(InOutInitializers.RIGHT,
-			// MoveTransitions.GROW_LINEAR));
-			// baseContainer.setSize(Float.NaN, 80);
-			// nodeInfoContainer.relayout();
 		}
 
 		@ListenTo(restrictExclusiveToEventSpace = true)
@@ -691,13 +703,11 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		public void onShowPathwaysWithVertex(ShowCommonNodesPathwaysEvent event) {
 			rankingElement.setFilter(new PathwayFilters.CommonVerticesFilter(event.getPathway(), false));
 			rankingElement.setRanking(new PathwayRankings.CommonVerticesRanking(event.getPathway()));
+		}
 
-			// GLNodeInfo nodeInfo = new GLNodeInfo(event.getVertexRep());
-			// nodeInfo.setSize(80, 80);
-			// baseContainer.add(nodeInfo, 200, new InOutTransitionBase(InOutInitializers.RIGHT,
-			// MoveTransitions.GROW_LINEAR));
-			// baseContainer.setSize(Float.NaN, 80);
-			// nodeInfoContainer.relayout();
+		@ListenTo(restrictExclusiveToEventSpace = true)
+		public void onEnablePathSelection(EnablePathSelectionEvent event) {
+			isPathSelectionMode = event.isPathSelectionMode();
 		}
 	}
 }
