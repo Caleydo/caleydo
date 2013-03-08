@@ -46,13 +46,13 @@ public class MaxCompositeRankColumnModel extends AMultiRankColumnModel implement
 
 	public MaxCompositeRankColumnModel(IRowHeightLayout layout) {
 		super(Color.GRAY, new Color(0.95f, 0.95f, 0.95f));
-		setHeaderRenderer(new TextRenderer("OR", this));
+		setHeaderRenderer(new TextRenderer("MAX", this));
 		this.valueRenderer = new MultiRenderer(this, layout);
 	}
 
 	public MaxCompositeRankColumnModel(MaxCompositeRankColumnModel copy) {
 		super(copy);
-		setHeaderRenderer(new TextRenderer("OR", this));
+		setHeaderRenderer(new TextRenderer("MAX", this));
 		this.valueRenderer = new MultiRenderer(this, copy.valueRenderer.getLayout());
 		cloneInitChildren();
 	}

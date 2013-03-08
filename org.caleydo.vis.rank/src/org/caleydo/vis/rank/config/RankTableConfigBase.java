@@ -52,8 +52,8 @@ public class RankTableConfigBase implements IRankTableConfig {
 	@Override
 	public String getCombineStringHint(ARankColumnModel model, ARankColumnModel with) {
 		if (model instanceof StackedRankColumnModel)
-			return "AND";
-		return "OR";
+			return "SUM";
+		return "MAX";
 	}
 
 	@Override

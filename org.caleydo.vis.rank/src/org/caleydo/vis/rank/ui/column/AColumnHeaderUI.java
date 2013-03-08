@@ -262,7 +262,8 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 		}
 		if (this.armDropColum) {
 			g.incZ(0.6f);
-			g.drawText(armDropHint, 2, 2, w - 4, h - 4, VAlign.CENTER);
+			float hi = Math.min(h - 4, 18);
+			g.drawText(armDropHint, 2, 2 + (h - hi) * .5f, w - 4, hi, VAlign.CENTER);
 			g.incZ(-0.6f);
 		}
 	}
