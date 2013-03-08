@@ -35,6 +35,7 @@ import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
+import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.rank.internal.event.FilterEvent;
 import org.caleydo.vis.rank.ui.GLPropertyChangeListeners;
@@ -60,7 +61,7 @@ import com.google.common.base.Function;
  * @author Samuel Gratzl
  *
  */
-public class CategoricalRankColumnModel<CATEGORY_TYPE> extends ABasicFilterableRankColumnModel implements IGLRenderer {
+public class CategoricalRankColumnModel<CATEGORY_TYPE> extends ABasicFilterableRankColumnModel {
 	private final Function<IRow, CATEGORY_TYPE> data;
 	private Set<CATEGORY_TYPE> selection = new HashSet<>();
 	private Map<CATEGORY_TYPE, String> metaData;
@@ -100,23 +101,7 @@ public class CategoricalRankColumnModel<CATEGORY_TYPE> extends ABasicFilterableR
 
 	@Override
 	public GLElement createValue() {
-		return new GLElement(this);
-	}
-
-	@Override
-	public void render(GLGraphics g, float w, float h, GLElement parent) {
-		if (h < 5)
-			return;
-		CATEGORY_TYPE value = getCatValue(parent.getLayoutDataAs(IRow.class, null));
-		if (value == null)
-			return;
-		String info = metaData.get(value);
-		if (info == null)
-			return;
-		float hi = Math.min(h, 18);
-		if (!(((IColumnRenderInfo) parent.getParent()).isCollapsed())) {
-			g.drawText(info, 1, 1 + (h - hi) * 0.5f, w - 2, hi - 5);
-		}
+		return new MyValueElement();
 	}
 
 	@Override
@@ -281,6 +266,33 @@ public class CategoricalRankColumnModel<CATEGORY_TYPE> extends ABasicFilterableR
 		@ListenTo(sendToMe = true)
 		private void onSetFilter(FilterEvent event) {
 			setFilter((Collection<CATEGORY_TYPE>) event.getFilter());
+		}
+	}
+
+	class MyValueElement extends PickableGLElement {
+		public MyValueElement() {
+			setVisibility(EVisibility.VISIBLE);
+		}
+
+		@Override
+		protected void renderImpl(GLGraphics g, float w, float h) {
+			if (h < 5)
+				return;
+			String info = getTooltip();
+			if (info == null)
+				return;
+			float hi = Math.min(h, 18);
+			if (!(((IColumnRenderInfo) getParent()).isCollapsed())) {
+				g.drawText(info, 1, 1 + (h - hi) * 0.5f, w - 2, hi - 5);
+			}
+		}
+
+		@Override
+		protected String getTooltip() {
+			CATEGORY_TYPE value = getCatValue(getLayoutDataAs(IRow.class, null));
+			if (value == null)
+				return null;
+			return metaData.get(value);
 		}
 	}
 }

@@ -32,6 +32,7 @@ import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
+import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.rank.internal.event.FilterEvent;
 import org.caleydo.vis.rank.model.mixin.IRankColumnModel;
@@ -48,7 +49,7 @@ import com.google.common.base.Function;
  * @author Samuel Gratzl
  *
  */
-public class StringRankColumnModel extends ABasicFilterableRankColumnModel implements IGLRenderer {
+public class StringRankColumnModel extends ABasicFilterableRankColumnModel {
 	public static final Function<IRow, String> DFEAULT = new Function<IRow, String>() {
 		@Override
 		public String apply(IRow row) {
@@ -91,18 +92,7 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 
 	@Override
 	public GLElement createValue() {
-		return new GLElement(this);
-	}
-
-	@Override
-	public void render(GLGraphics g, float w, float h, GLElement parent) {
-		if (h < 5)
-			return;
-		String value = data.apply(parent.getLayoutDataAs(IRow.class, null));
-		if (value == null)
-			return;
-		float hi = Math.min(h, 19);
-		g.drawText(value, 3, (h - hi) * 0.5f, w - 7, hi - 5);
+		return new MyValueElement();
 	}
 
 	@Override
@@ -183,5 +173,27 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 			setFilter((String) event.getFilter());
 		}
 
+	}
+
+	class MyValueElement extends PickableGLElement {
+		public MyValueElement() {
+			setVisibility(EVisibility.VISIBLE);
+		}
+
+		@Override
+		protected void renderImpl(GLGraphics g, float w, float h) {
+			if (h < 5)
+				return;
+			String value = getTooltip();
+			if (value == null)
+				return;
+			float hi = Math.min(h, 19);
+			g.drawText(value, 3, (h - hi) * 0.5f, w - 7, hi - 5);
+		}
+
+		@Override
+		protected String getTooltip() {
+			return data.apply(getLayoutDataAs(IRow.class, null));
+		}
 	}
 }
