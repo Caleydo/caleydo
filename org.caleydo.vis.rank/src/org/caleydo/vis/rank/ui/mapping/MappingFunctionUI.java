@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.ui.mapping;
 
+import static org.caleydo.vis.rank.ui.RenderStyle.LABEL_HEIGHT;
 import static org.caleydo.vis.rank.ui.RenderStyle.binsForWidth;
 
 import java.awt.Color;
@@ -62,6 +63,7 @@ import org.caleydo.vis.rank.ui.RenderStyle;
 import org.caleydo.vis.rank.ui.RenderUtils;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+
 
 /**
  * ui for a {@link PiecewiseMapping}
@@ -273,41 +275,57 @@ public class MappingFunctionUI extends GLElementContainer implements GLButton.IS
 	}
 
 	class HistogramElement extends GLElement {
-		protected void render(GLGraphics g, boolean vertical, float min, float max, float w, float h, float minM, float maxM,
-				SimpleHistogram hist) {
-			if (vertical) {
-				g.drawText(Formatter.formatNumber(max), 0, -14, 38, 12, VAlign.LEFT);
-				g.drawText(Formatter.formatNumber(min), 0, h + 2, 38, 12, VAlign.LEFT);
-			} else {
-				g.drawText(Formatter.formatNumber(min), -40, h - 14, 38, 12, VAlign.RIGHT);
-				g.drawText(Formatter.formatNumber(max), w + 2, h - 14, 38, 12, VAlign.LEFT);
-			}
+		private final String text;
 
-			g.color(backgroundColor).fillRect(0, 0, w, h);
-			g.color(color).drawRect(0, 0, w, h);
+		public HistogramElement(String label) {
+			this.text = label;
+		}
+
+		protected void render(GLGraphics g, boolean vertical, float min, float max, float w, float h, float minM,
+				float maxM, SimpleHistogram hist, boolean textBelowHist) {
+
+			float histy = textBelowHist ? 0 : LABEL_HEIGHT;
 
 			if (vertical) {
 				g.save();
 				g.gl.glRotatef(-90, 0, 0, 1);
-				g.move(-h, 0);
-				RenderUtils.renderHist(g, hist, h, w, -1, color, Color.BLACK);
+				g.move(-h, histy);
+				float tmp = w;
+				w = h;
+				h = tmp;
+				g.color(backgroundColor).fillRect(0, 0, w, h - LABEL_HEIGHT);
+				g.color(color).drawRect(0, 0, w, h - LABEL_HEIGHT);
+				float texty = textBelowHist ? (h - LABEL_HEIGHT) : -LABEL_HEIGHT;
+				g.drawText(text, 0, texty, w, LABEL_HEIGHT - 5,
+						VAlign.CENTER);
+				g.drawText(Formatter.formatNumber(min), 0, texty + 5, w, 12, VAlign.LEFT);
+				g.drawText(Formatter.formatNumber(max), 0, texty + 5, w, 12, VAlign.RIGHT);
+				RenderUtils.renderHist(g, hist, w, h - LABEL_HEIGHT, -1, color, Color.BLACK);
 
 				if (!Float.isNaN(minM)) {
-					g.color(0, 0, 0, 0.25f).fillRect(0, 0, minM * h, w);
+					g.color(0, 0, 0, 0.25f).fillRect(0, 0, minM * w, h - LABEL_HEIGHT);
 				}
 				if (!Float.isNaN(maxM)) {
-					g.color(0, 0, 0, 0.25f).fillRect(maxM * h, 0, (1 - maxM) * h, w);
+					g.color(0, 0, 0, 0.25f).fillRect(maxM * w, 0, (1 - maxM) * w, h - LABEL_HEIGHT);
 				}
 				g.restore();
 			} else {
-				RenderUtils.renderHist(g, hist, w, h, -1, color, Color.BLACK);
+				float texty = textBelowHist ? (h - LABEL_HEIGHT) : 0;
+				g.drawText(text, 0, texty, w, LABEL_HEIGHT - 5, VAlign.CENTER);
+				g.drawText(Formatter.formatNumber(min), 0, texty + 5, w, 12, VAlign.LEFT);
+				g.drawText(Formatter.formatNumber(max), 0, texty + 5, w, 12, VAlign.RIGHT);
+				g.color(backgroundColor).fillRect(0, histy, w, h - LABEL_HEIGHT);
+				g.color(color).drawRect(0, histy, w, h - LABEL_HEIGHT);
+				g.move(0, histy);
+				RenderUtils.renderHist(g, hist, w, h - LABEL_HEIGHT, -1, color, Color.BLACK);
 
 				if (!Float.isNaN(minM)) {
-					g.color(0, 0, 0, 0.25f).fillRect(0, 0, minM * w, h);
+					g.color(0, 0, 0, 0.25f).fillRect(0, 0, minM * w, h - LABEL_HEIGHT);
 				}
 				if (!Float.isNaN(maxM)) {
-					g.color(0, 0, 0, 0.25f).fillRect(maxM * w, 0, (1 - maxM) * w, h);
+					g.color(0, 0, 0, 0.25f).fillRect(maxM * w, 0, (1 - maxM) * w, h - LABEL_HEIGHT);
 				}
+				g.move(0, -histy);
 			}
 		}
 	}
@@ -315,6 +333,7 @@ public class MappingFunctionUI extends GLElementContainer implements GLButton.IS
 	class RawHistogramElement extends HistogramElement {
 		private IFloatList data;
 		private RawHistogramElement(IFloatList raw) {
+			super("Original");
 			this.data = raw;
 		}
 		@Override
@@ -332,12 +351,16 @@ public class MappingFunctionUI extends GLElementContainer implements GLButton.IS
 				maxM = normalizeRaw(m[0]);
 			}
 
-			SimpleHistogram hist = DataUtils.getHist(binsForWidth(vertical ? h : w), data);
-			render(g, vertical, model.getActMin(), model.getActMax(), w, h, minM, maxM, hist);
+			SimpleHistogram hist = DataUtils.getHist(binsForWidth((vertical ? h : w) - LABEL_HEIGHT), data);
+			render(g, vertical, model.getActMin(), model.getActMax(), w, h, minM, maxM, hist,
+					getLayoutDataAs(Boolean.class, Boolean.FALSE));
 		}
 	}
 
 	class NormalizedHistogramElement extends HistogramElement {
+		public NormalizedHistogramElement() {
+			super("Normalized");
+		}
 		@Override
 		protected void renderImpl(GLGraphics g, float w, float h) {
 			super.renderImpl(g, w, h);
@@ -348,7 +371,8 @@ public class MappingFunctionUI extends GLElementContainer implements GLButton.IS
 			float maxM = model.getMaxTo();
 			if (maxM >= 1)
 				maxM = Float.NaN;
-			render(g, vertical, 0, 1, w, h, minM, maxM, computeHist(vertical ? h : w));
+			render(g, vertical, 0, 1, w, h, minM, maxM, computeHist((vertical ? h : w) - LABEL_HEIGHT),
+					getLayoutDataAs(Boolean.class, Boolean.FALSE));
 		}
 	}
 

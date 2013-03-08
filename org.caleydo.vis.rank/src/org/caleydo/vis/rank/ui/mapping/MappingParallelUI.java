@@ -52,15 +52,18 @@ public class MappingParallelUI<T extends IMappingFunction> extends AMappingFunct
 	@Override
 	public void doLayout(IGLLayoutElement raw, IGLLayoutElement norm, IGLLayoutElement canvas, float x, float y,
 			float w, float h) {
+		final float histHeight = HIST_HEIGHT + RenderStyle.LABEL_HEIGHT;
 		if (isHorizontal) {
-			norm.setBounds(x + GAP, y, w - GAP * 2, HIST_HEIGHT);
-			raw.setBounds(x + GAP, y + h - HIST_HEIGHT, w - GAP * 2, HIST_HEIGHT);
-			canvas.setBounds(x + GAP, y + HIST_HEIGHT + GAP, w - GAP * 2, h - HIST_HEIGHT * 2 - GAP * 2);
+			norm.setBounds(x + GAP, y, w - GAP * 2, histHeight);
+			raw.setBounds(x + GAP, y + h - histHeight, w - GAP * 2, histHeight);
+			canvas.setBounds(x + GAP, y + histHeight + GAP, w - GAP * 2, h - histHeight * 2 - GAP * 2);
 		} else {
-			raw.setBounds(x, y + GAP, HIST_HEIGHT, h - GAP * 2);
-			norm.setBounds(x + w - HIST_HEIGHT, y + GAP, HIST_HEIGHT, h - GAP * 2);
-			canvas.setBounds(x + HIST_HEIGHT + GAP, y + GAP, x + w - HIST_HEIGHT * 2 - GAP * 2, h - GAP * 2);
+			raw.setBounds(x, y + GAP, histHeight, h - GAP * 2);
+			norm.setBounds(x + w - histHeight, y + GAP, histHeight, h - GAP * 2);
+			canvas.setBounds(x + histHeight + GAP, y + GAP, x + w - histHeight * 2 - GAP * 2, h - GAP * 2);
 		}
+		raw.asElement().setLayoutData(isHorizontal);
+		norm.asElement().setLayoutData(!isHorizontal);
 	}
 
 	@Override

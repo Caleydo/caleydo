@@ -54,27 +54,28 @@ public class MappingCrossUI<T extends IMappingFunction> extends AMappingFunction
 	@Override
 	public void doLayout(IGLLayoutElement raw, IGLLayoutElement norm, IGLLayoutElement canvas, float x, float y,
 			float w, float h) {
+		final float histHeight = HIST_HEIGHT + RenderStyle.LABEL_HEIGHT;
 		Vec2f rawL;
 		Vec2f normL;
 		Vec2f canvasL;
 		if (isNormalLeft) {
-			rawL = new Vec2f(x + HIST_HEIGHT + GAP, y + h - HIST_HEIGHT);
+			rawL = new Vec2f(x + histHeight + GAP, y + h - histHeight);
 			normL = new Vec2f(x, y + GAP + x);
-			canvasL = new Vec2f(HIST_HEIGHT + GAP + x, y + GAP + x);
+			canvasL = new Vec2f(histHeight + GAP + x, y + GAP + x);
 		} else {
-			rawL = new Vec2f(x, y + h - HIST_HEIGHT);
-			normL = new Vec2f(w - x - HIST_HEIGHT, y + GAP);
+			rawL = new Vec2f(x, y + h - histHeight);
+			normL = new Vec2f(w - x - histHeight, y + GAP);
 			canvasL = new Vec2f(x, y + GAP);
 		}
 
-		raw.setBounds(rawL.x(), rawL.y(), w - HIST_HEIGHT - GAP * 2,
-				HIST_HEIGHT);
-		norm.setBounds(normL.x(), normL.y(), HIST_HEIGHT, h - HIST_HEIGHT - GAP * 2);
-
+		raw.setBounds(rawL.x(), rawL.y(), w - histHeight - GAP * 2, histHeight);
+		raw.asElement().setLayoutData(Boolean.TRUE);
+		norm.setBounds(normL.x(), normL.y(), histHeight, h - histHeight - GAP * 2);
+		norm.asElement().setLayoutData(!isNormalLeft);
 		float x_canvas = canvasL.x();
 		float y_canvas = canvasL.y();
-		float w_canvas = w - HIST_HEIGHT - GAP * 2;
-		float h_canvas = h - HIST_HEIGHT - GAP * 2;
+		float w_canvas = w - histHeight - GAP * 2;
+		float h_canvas = h - histHeight - GAP * 2;
 		canvas.setBounds(x_canvas, y_canvas, w_canvas, h_canvas);
 	}
 
