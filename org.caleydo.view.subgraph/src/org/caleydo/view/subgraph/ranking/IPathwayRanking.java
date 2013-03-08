@@ -19,30 +19,26 @@
  *******************************************************************************/
 package org.caleydo.view.subgraph.ranking;
 
-import org.caleydo.datadomain.pathway.graph.PathwayGraph;
-import org.caleydo.vis.rank.model.ARow;
+import org.caleydo.vis.rank.data.IFloatFunction;
+import org.caleydo.vis.rank.model.IRow;
 
 /**
- * @author Samuel Gratzl
+ * Defines a ranking of pathways.
  *
+ * @author Christian Partl
+ * 
  */
-public class PathwayRow extends ARow {
-	private final PathwayGraph pathway;
-
-	public PathwayRow(PathwayGraph pathway) {
-		this.pathway = pathway;
-	}
+public interface IPathwayRanking {
 
 	/**
-	 * @return the pathway, see {@link #pathway}
+	 * 
+	 * @return String indicating the criterion that was used to rank the pathways.
 	 */
-	public PathwayGraph getPathway() {
-		return pathway;
-	}
+	public String getRankingCriterion();
 
-	@Override
-	public String toString() {
-		return pathway.getTitle();
-	}
-
+	/**
+	 * 
+	 * @return The function that is used to rank pathways
+	 */
+	public IFloatFunction<IRow> getRankingFunction();
 }

@@ -19,11 +19,7 @@
  *******************************************************************************/
 package org.caleydo.view.subgraph.ranking;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
-import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.vis.rank.data.AFloatFunction;
 import org.caleydo.vis.rank.data.IFloatFunction;
@@ -35,14 +31,12 @@ import org.caleydo.vis.rank.model.IRow;
  * @author Christian Partl
  *
  */
-public final class PathwaySelectors {
+public final class PathwayRankings {
 
-	public static final IPathwaySelector ALL = new IPathwaySelector() {
+	private PathwayRankings() {
+	}
 
-		@Override
-		public boolean isSelected(PathwayGraph pathway) {
-			return true;
-		}
+	public static final IPathwayRanking SIZE = new IPathwayRanking() {
 
 		@Override
 		public String getRankingCriterion() {
@@ -61,33 +55,17 @@ public final class PathwaySelectors {
 		}
 	};
 
-	public static class EquivalentVertexSelector implements IPathwaySelector {
+	public static class CommonVerticesRanking implements IPathwayRanking {
 
-		private Set<PathwayGraph> pathways = new HashSet<>();
-		private PathwayVertexRep vertexRep;
+		private PathwayGraph pathway;
 
-		public EquivalentVertexSelector(PathwayVertexRep vertexRep, boolean selectSourcePathway) {
-			this.vertexRep = vertexRep;
-			Set<PathwayVertexRep> vertices = PathwayManager.get().getEquivalentVertexReps(vertexRep);
-			for (PathwayVertexRep v : vertices) {
-				PathwayGraph pathway = v.getPathway();
-				if (!selectSourcePathway && vertexRep.getPathway() == pathway)
-					continue;
-				pathways.add(pathway);
-			}
-			if (selectSourcePathway) {
-				pathways.add(vertexRep.getPathway());
-			}
-		}
-
-		@Override
-		public boolean isSelected(PathwayGraph pathway) {
-			return pathways.contains(pathway);
+		public CommonVerticesRanking(PathwayGraph pathway) {
+			this.pathway = pathway;
 		}
 
 		@Override
 		public String getRankingCriterion() {
-			return "Common Nodes";
+			return "Common nodes / pathway size";
 		}
 
 		@Override
@@ -97,9 +75,8 @@ public final class PathwaySelectors {
 				public float applyPrimitive(IRow in) {
 
 					PathwayRow r = (PathwayRow) in;
-					if (!pathways.contains(r.getPathway()))
-						return 0;
-					return PathwayManager.get().getNumEquivalentVertexReps(vertexRep.getPathway(), r.getPathway());
+					return (float) PathwayManager.get().getNumEquivalentVertexReps(pathway, r.getPathway())
+							/ (float) PathwayManager.get().filterEquivalentVertexReps(r.getPathway()).size();
 				}
 			};
 		}

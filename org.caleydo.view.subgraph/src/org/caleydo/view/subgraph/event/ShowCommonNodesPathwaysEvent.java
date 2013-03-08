@@ -19,20 +19,50 @@
  *******************************************************************************/
 package org.caleydo.view.subgraph.event;
 
-import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
-import org.caleydo.datadomain.pathway.listener.AVertexRepBasedEvent;
+import org.caleydo.core.event.AEvent;
+import org.caleydo.datadomain.pathway.graph.PathwayGraph;
+import org.caleydo.view.subgraph.ranking.RankingElement;
 
 /**
- * Event that triggers showing all pathways related to a specific {@link PathwayVertexRep}.
+ * Event that signals that the {@link RankingElement} should rank the pathways by the nodes in common with the pathway
+ * of this event.
  *
  * @author Christian Partl
  *
  */
-public class ShowPathwayBrowserEvent extends AVertexRepBasedEvent {
-	public ShowPathwayBrowserEvent() {
+public class ShowCommonNodesPathwaysEvent extends AEvent {
+
+	protected PathwayGraph pathway;
+
+	/**
+	 *
+	 */
+	public ShowCommonNodesPathwaysEvent() {
+		// TODO Auto-generated constructor stub
 	}
 
-	public ShowPathwayBrowserEvent(PathwayVertexRep vertexRep) {
-		super(vertexRep);
+	public ShowCommonNodesPathwaysEvent(PathwayGraph pathway) {
+		this.pathway = pathway;
 	}
+
+	@Override
+	public boolean checkIntegrity() {
+		return pathway != null;
+	}
+
+	/**
+	 * @param pathway
+	 *            setter, see {@link pathway}
+	 */
+	public void setPathway(PathwayGraph pathway) {
+		this.pathway = pathway;
+	}
+
+	/**
+	 * @return the pathway, see {@link #pathway}
+	 */
+	public PathwayGraph getPathway() {
+		return pathway;
+	}
+
 }

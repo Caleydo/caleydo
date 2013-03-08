@@ -20,29 +20,21 @@
 package org.caleydo.view.subgraph.ranking;
 
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
-import org.caleydo.vis.rank.model.ARow;
 
 /**
- * @author Samuel Gratzl
+ * Used to select certain pathways to be shown by the {@link RankingElement}.
+ *
+ * @author Christian Partl
  *
  */
-public class PathwayRow extends ARow {
-	private final PathwayGraph pathway;
-
-	public PathwayRow(PathwayGraph pathway) {
-		this.pathway = pathway;
-	}
+public interface IPathwayFilter {
 
 	/**
-	 * @return the pathway, see {@link #pathway}
+	 * Determines whether the specified pathway shall be shown.
+	 *
+	 * @param pathway
+	 * @return
 	 */
-	public PathwayGraph getPathway() {
-		return pathway;
-	}
-
-	@Override
-	public String toString() {
-		return pathway.getTitle();
-	}
+	public boolean showPathway(PathwayGraph pathway);
 
 }

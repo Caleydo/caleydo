@@ -17,38 +17,22 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.subgraph.ranking;
+package org.caleydo.view.subgraph.event;
 
-import org.caleydo.datadomain.pathway.graph.PathwayGraph;
-import org.caleydo.vis.rank.data.IFloatFunction;
-import org.caleydo.vis.rank.model.IRow;
+import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
+import org.caleydo.datadomain.pathway.listener.AVertexRepBasedEvent;
 
 /**
- * Used to select certain pathways to be shown by the {@link RankingElement}.
+ * Event that triggers showing all pathways related to a specific {@link PathwayVertexRep}.
  *
  * @author Christian Partl
  *
  */
-public interface IPathwaySelector {
+public class ShowPathwaysWithVertexEvent extends AVertexRepBasedEvent {
+	public ShowPathwaysWithVertexEvent() {
+	}
 
-	/**
-	 * Determines whether the specified pathway shall be selected for display.
-	 *
-	 * @param pathway
-	 * @return
-	 */
-	public boolean isSelected(PathwayGraph pathway);
-
-	/**
-	 *
-	 * @return String indicating the criterion that was used to rank the pathways.
-	 */
-	public String getRankingCriterion();
-
-	/**
-	 *
-	 * @return The function that is used to rank pathways
-	 */
-	public IFloatFunction<IRow> getRankingFunction();
-
+	public ShowPathwaysWithVertexEvent(PathwayVertexRep vertexRep) {
+		super(vertexRep);
+	}
 }

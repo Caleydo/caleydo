@@ -55,7 +55,8 @@ import org.caleydo.vis.rank.ui.TableHeaderUI;
 public class RankingElement extends GLElementContainer {
 	private final RankTableModel table;
 	private final GLSubGraph view;
-	private IPathwaySelector selector = PathwaySelectors.ALL;
+	private IPathwayFilter filter = PathwayFilters.NONE;
+	private IPathwayRanking ranking = PathwayRankings.SIZE;
 	private ARankColumnModel currentRankColumnModel;
 	private final PropertyChangeListener onSelectRow = new PropertyChangeListener() {
 
@@ -110,13 +111,13 @@ public class RankingElement extends GLElementContainer {
 		view.addPathway(newValue.getPathway());
 	}
 
-	private void updateRows() {
+	private void applyFilter() {
 		List<IRow> data = table.getData();
 		BitSet dataMask = new BitSet(data.size());
 		int i = 0;
 		for (IRow row : data) {
 			// select all rows
-			dataMask.set(i++, selector.isSelected(((PathwayRow) row).getPathway()));
+			dataMask.set(i++, filter.showPathway(((PathwayRow) row).getPathway()));
 		}
 		table.setDataMask(dataMask);
 	}
@@ -145,7 +146,7 @@ public class RankingElement extends GLElementContainer {
 		// return r.getPathway().vertexSet().size();
 		// }
 		// };
-		currentRankColumnModel = createDefaultFloatRankColumnModel(selector);
+		currentRankColumnModel = createDefaultFloatRankColumnModel(ranking);
 		table.addColumn(currentRankColumnModel);
 		// add data
 		Collection<PathwayRow> data = new ArrayList<>();
@@ -154,24 +155,32 @@ public class RankingElement extends GLElementContainer {
 		}
 
 		table.addData(data);
-		updateRows();
+		applyFilter();
 	}
 
-	private FloatRankColumnModel createDefaultFloatRankColumnModel(IPathwaySelector selector) {
-		return new FloatRankColumnModel(selector.getRankingFunction(), GLRenderers.drawText(
-				selector.getRankingCriterion(), VAlign.CENTER), Color.BLUE, Color.LIGHT_GRAY, new PiecewiseMapping(0,
+	private FloatRankColumnModel createDefaultFloatRankColumnModel(IPathwayRanking ranking) {
+		return new FloatRankColumnModel(ranking.getRankingFunction(), GLRenderers.drawText(
+				ranking.getRankingCriterion(), VAlign.CENTER), Color.BLUE, Color.LIGHT_GRAY, new PiecewiseMapping(0,
 				Float.NaN), FloatInferrers.MEAN);
 	}
 
 	/**
-	 * @param selector
-	 *            setter, see {@link selector}
+	 * @param filter
+	 *            setter, see {@link filter}
 	 */
-	public void setSelector(IPathwaySelector selector) {
-		this.selector = selector;
-		FloatRankColumnModel newRankModel = createDefaultFloatRankColumnModel(selector);
+	public void setFilter(IPathwayFilter filter) {
+		this.filter = filter;
+		applyFilter();
+	}
+
+	/**
+	 * @param ranking
+	 *            setter, see {@link ranking}
+	 */
+	public void setRanking(IPathwayRanking ranking) {
+		this.ranking = ranking;
+		FloatRankColumnModel newRankModel = createDefaultFloatRankColumnModel(ranking);
 		table.replace(currentRankColumnModel, newRankModel);
 		currentRankColumnModel = newRankModel;
-		updateRows();
 	}
 }
