@@ -479,6 +479,64 @@ public class PathwayManager extends AManager<PathwayGraph> {
 	}
 
 	/**
+	 * Gets the number of equivalent vertexReps of two pathways. Each equivalent vertexRep is only counted once, i.e.,
+	 * if a vertexRep of pathway1 has 2 equivalent vertexReps in pathway2, it only counts for 1 equivalence.
+	 *
+	 * @param pathway1
+	 * @param pathway2
+	 * @return
+	 */
+	public int getNumEquivalentVertexReps(PathwayGraph pathway1, PathwayGraph pathway2) {
+		// Set<PathwayVertexRep> uniquePathway1VertexReps = new HashSet<>();
+		Set<PathwayVertexRep> uniquePathway1VertexReps = filterEquivalentVertexReps(pathway1);
+
+		int sum = 0;
+		for (PathwayVertexRep v1 : uniquePathway1VertexReps) {
+			Set<PathwayVertexRep> equivalentVertexReps = getEquivalentVertexRepsInPathway(v1, pathway2);
+			if (equivalentVertexReps.size() > 0) {
+				sum++;
+			}
+		}
+
+		return sum;
+	}
+
+	/**
+	 * Filters all vertexReps that are equivalent within a pathway such that the returned set does not contain any
+	 * equivalent vertexReps. It is not determined which of n equivalent vertexReps will be in the returned set.
+	 *
+	 * @param pathway
+	 * @return
+	 */
+	public Set<PathwayVertexRep> filterEquivalentVertexReps(PathwayGraph pathway) {
+		Set<PathwayVertexRep> uniquePathwayVertexReps = new HashSet<>(pathway.vertexSet());
+		Set<PathwayVertexRep> equivalentVertexReps = new HashSet<>();
+		boolean vertexRepsToRemove = false;
+		do {
+			vertexRepsToRemove = false;
+			equivalentVertexReps.clear();
+			for (PathwayVertexRep v : uniquePathwayVertexReps) {
+				equivalentVertexReps = getEquivalentVertexRepsInPathway(v, v.getPathway());
+				for (PathwayVertexRep eV : equivalentVertexReps) {
+					if (uniquePathwayVertexReps.contains(eV)) {
+						vertexRepsToRemove = true;
+						break;
+					}
+
+				}
+				if (vertexRepsToRemove)
+					break;
+			}
+			if (vertexRepsToRemove) {
+				for (PathwayVertexRep v : equivalentVertexReps) {
+					uniquePathwayVertexReps.remove(v);
+				}
+			}
+		} while (vertexRepsToRemove);
+		return uniquePathwayVertexReps;
+	}
+
+	/**
 	 * Convenience method for {@link #getEquivalentVertexRepsInPathway(PathwayVertexRep, null)}.
 	 *
 	 *
@@ -523,10 +581,10 @@ public class PathwayManager extends AManager<PathwayGraph> {
 	 * there is no unambiguous way to continue, the direction of edges changes, the pathway ends, or the
 	 * {@link #maxBranchSwitchingPathLength} is reached. The specified <code>PathwayVertexRep</code> that represents the
 	 * start of the path is added at the beginning of the path.
-	 * 
+	 *
 	 * @param vertexRep
 	 *            The <code>PathwayVertexRep</code> that represents the start of the branch path.
-	 * 
+	 *
 	 * @param isLeavingPath
 	 *            Determines whether the path leaves or comes into the specified vertexRep.
 	 * @param maxPathLength
