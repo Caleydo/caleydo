@@ -20,7 +20,6 @@
 package org.caleydo.vis.rank.ui.column;
 
 
-import java.awt.Color;
 import java.beans.IndexedPropertyChangeEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -142,12 +141,6 @@ public abstract class ACompositeTableColumnUI<T extends ACompositeRankColumnMode
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
-		g.decZ().decZ();
-		g.color(new Color(0.85f, .85f, .85f)).lineWidth(2);
-		g.drawLine(-1, -5, 0, h).drawLine(w - 1, -10, w - 1, h).lineWidth(1);
-		g.incZ().incZ();
-		// float x = get(stacked.getAlignment()).getLocation().x();
-		// g.color(Color.BLUE).drawLine(x, 0, x, h);
 		if (!model.isCollapsed())
 			super.renderImpl(g, w, h);
 	}

@@ -41,7 +41,6 @@ import org.caleydo.vis.rank.ui.GLPropertyChangeListeners;
 import org.caleydo.vis.rank.ui.RenderStyle;
 import org.caleydo.vis.rank.ui.SeparatorUI;
 import org.caleydo.vis.rank.ui.SeparatorUI.IMoveHereChecker;
-import org.caleydo.vis.rank.ui.StackedSeparatorUI;
 
 import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
@@ -96,7 +95,7 @@ public abstract class ACompositeHeaderUI extends GLElementContainer implements I
 	}
 
 	protected SeparatorUI createSeparator(int index) {
-		return new StackedSeparatorUI(this, 0);
+		return new SeparatorUI(this, 0);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -175,7 +174,7 @@ public abstract class ACompositeHeaderUI extends GLElementContainer implements I
 			separators = children.subList(numColumns + 1 + firstColumn, children.size());
 			assert separators.size() == columns.size();
 			final IGLLayoutElement sep0 = children.get(numColumns + firstColumn);
-			sep0.setBounds(x + 3, y, COLUMN_SPACE, hn); // left separator
+			sep0.setBounds(x, y, COLUMN_SPACE, hn); // left separator
 		}
 		for (int i = 0; i < columns.size(); ++i) {
 			IGLLayoutElement col = columns.get(i);

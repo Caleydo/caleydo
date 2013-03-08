@@ -19,25 +19,30 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.ui.column;
 
+import static org.caleydo.core.view.opengl.layout2.renderer.RoundedRectRenderer.renderRoundedCorner;
 import static org.caleydo.vis.rank.ui.RenderStyle.COLUMN_SPACE;
 import static org.caleydo.vis.rank.ui.RenderStyle.HIST_HEIGHT;
 import static org.caleydo.vis.rank.ui.RenderStyle.LABEL_HEIGHT;
 
-import java.awt.Color;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 import java.util.Locale;
+
+import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDragInfo;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
+import org.caleydo.core.view.opengl.layout2.renderer.RoundedRectRenderer;
 import org.caleydo.vis.rank.model.ACompositeRankColumnModel;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.StackedRankColumnModel;
 import org.caleydo.vis.rank.model.mixin.ICompressColumnMixin;
+import org.caleydo.vis.rank.ui.RenderStyle;
 import org.caleydo.vis.rank.ui.SeparatorUI;
 import org.caleydo.vis.rank.ui.StackedSeparatorUI;
 /**
@@ -106,7 +111,7 @@ public class StackedColumnHeaderUI extends ACompositeHeaderUI implements IThickH
 			return;
 		}
 
-		summary.setBounds(0, 0, w, HIST_HEIGHT + 4);
+		summary.setBounds(2, 2, w - 4, HIST_HEIGHT);
 
 		super.doLayout(children, w, h);
 
@@ -121,10 +126,16 @@ public class StackedColumnHeaderUI extends ACompositeHeaderUI implements IThickH
 		}
 	}
 
+
 	protected void onCompressedChanged(boolean isCompressed) {
 		((StackedSummaryHeaderUI) get(SUMMARY)).setHasTitle(isCompressed);
 		relayout();
 		relayoutParent();
+	}
+
+	@Override
+	protected float getLeftPadding() {
+		return RenderStyle.COLUMN_SPACE + 3;
 	}
 
 	@Override
@@ -135,13 +146,37 @@ public class StackedColumnHeaderUI extends ACompositeHeaderUI implements IThickH
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
 		if (!model.isCompressed()) {
-			g.color(model.getBgColor()).fillRect(0, HIST_HEIGHT, w, h - HIST_HEIGHT);
+			g.decZ().decZ();
+			g.color(model.getBgColor());
+			RoundedRectRenderer.render(g, 0, 0, w, h, RenderStyle.HEADER_ROUNDED_RADIUS, 3,
+					RoundedRectRenderer.FLAG_FILL | RoundedRectRenderer.FLAG_TOP);
+
+			g.lineWidth(RenderStyle.COLOR_STACKED_BORDER_WIDTH);
+			g.color(RenderStyle.COLOR_STACKED_BORDER);
+			GL2 gl = g.gl;
+			float z = g.z();
+			gl.glBegin(GL.GL_LINE_STRIP);
+			{
+				gl.glVertex3f(0, h, z);
+				renderRoundedCorner(g, 0, 0, RenderStyle.HEADER_ROUNDED_RADIUS, 3,
+						RoundedRectRenderer.FLAG_TOP_LEFT);
+				renderRoundedCorner(g, w - RenderStyle.HEADER_ROUNDED_RADIUS, 0, RenderStyle.HEADER_ROUNDED_RADIUS, 3,
+						RoundedRectRenderer.FLAG_TOP_RIGHT);
+				gl.glVertex3f(w, h, z);
+			}
+			gl.glEnd();
+			g.lineWidth(1);
+			g.incZ().incZ();
+
 			// render the distributions
 			float[] distributions = model.getDistributions();
 			float yi = HIST_HEIGHT + 7;
 			float hi = LABEL_HEIGHT - 6;
 			float x = COLUMN_SPACE + 2;
-			g.color(Color.GRAY).drawLine(x, yi - 4, w - 2, yi - 4);
+			g.lineWidth(RenderStyle.COLOR_STACKED_BORDER_WIDTH);
+			g.color(RenderStyle.COLOR_STACKED_BORDER);
+			g.drawLine(0, HIST_HEIGHT + 4, w, HIST_HEIGHT + 4);
+			g.lineWidth(1);
 			for (int i = 0; i < numColumns; ++i) {
 				float wi = model.get(i).getPreferredWidth() + COLUMN_SPACE;
 				// g.drawLine(x, yi, x, yi + hi + 2);
@@ -153,17 +188,6 @@ public class StackedColumnHeaderUI extends ACompositeHeaderUI implements IThickH
 			// g.drawLine(x, yi, x, yi + hi + 2);
 		}
 		super.renderImpl(g, w, h);
-		if (!model.isCompressed()) {
-			g.lineWidth(2);
-			g.incZ();
-			g.color(new Color(0.85f, .85f, .85f)).renderRoundedRect(false, 0, 0, w, HIST_HEIGHT + 4, 5, 3, true, true,
-					false,
-					false);
-			g.drawLine(0, HIST_HEIGHT + 4, 0, h);
-			g.drawLine(w, HIST_HEIGHT + 4, w, h);
-			g.lineWidth(1);
-			g.decZ();
-		}
 	}
 
 	public void setAlignment(int index) {
@@ -193,9 +217,12 @@ public class StackedColumnHeaderUI extends ACompositeHeaderUI implements IThickH
 	/**
 	 * @param model2
 	 */
-	public void setAlignment(ARankColumnModel model2) {
-		// TODO Auto-generated method stub
-
+	public void setAlignment(ARankColumnModel child) {
+		int index = model.indexOf(child);
+		if (model.getAlignment() == index)
+			model.setAlignment(index + 1);
+		else
+			model.setAlignment(index);
 	}
 
 }

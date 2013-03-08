@@ -325,10 +325,10 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 		for (IGLLayoutElement col : children) {
 			ARankColumnModel model = col.getLayoutDataAs(ARankColumnModel.class, null);
 			if (model == null) {
-				col.setBounds(x, 3, 1, h - 3);
+				col.setBounds(x, 0, 1, h);
 				x += 1;
 			} else {
-				col.setBounds(x, 3, model.getPreferredWidth(), h - 3);
+				col.setBounds(x, 0, model.getPreferredWidth(), h);
 				x += model.getPreferredWidth() + RenderStyle.COLUMN_SPACE;
 			}
 		}
@@ -420,18 +420,18 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 				continue;
 			if (pick) {
 				g.pushName(pickingIDs[i]);
-				g.fillRect(x, bounds.y() + 3, w, bounds.w());
+				g.fillRect(x, bounds.y(), w, bounds.w());
 				g.popName();
 			} else if (rankedRow == selected) {
-				g.color(new Color(180, 180, 180));
+				g.color(RenderStyle.COLOR_SELECTED_ROW);
 				g.incZ();
-				g.fillRect(x, bounds.y() + 3, w, bounds.w());
-				g.color(new Color(128, 128, 128));
-				g.drawRect(x, bounds.y() + 3, w, bounds.w());
+				g.fillRect(x, bounds.y(), w, bounds.w());
+				g.color(RenderStyle.COLOR_SELECTED_BORDER);
+				g.drawRect(x, bounds.y(), w, bounds.w());
 				g.decZ();
-			} else if (even) {
-				g.color(new Color(240, 240, 240));
-				g.fillRect(x, bounds.y() + 3, w, bounds.w());
+			} else if (!even) {
+				g.color(RenderStyle.COLOR_BACKGROUND_EVEN);
+				g.fillRect(x, bounds.y(), w, bounds.w());
 			}
 			even = !even;
 		}

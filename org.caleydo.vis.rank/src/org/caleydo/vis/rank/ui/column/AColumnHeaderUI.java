@@ -23,7 +23,6 @@ import static org.caleydo.core.view.opengl.layout2.layout.GLLayouts.defaultValue
 import static org.caleydo.vis.rank.ui.RenderStyle.LABEL_HEIGHT;
 import gleem.linalg.Vec2f;
 
-import java.awt.Color;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
@@ -47,6 +46,7 @@ import org.caleydo.core.view.opengl.layout2.basic.GLButton.ISelectionCallback;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
+import org.caleydo.core.view.opengl.layout2.renderer.RoundedRectRenderer;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.vis.rank.internal.ui.ButtonBar;
@@ -249,7 +249,9 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 	}
 
 	protected void renderBackground(GLGraphics g, float w, float h) {
-		g.color(model.getBgColor()).renderRoundedRect(true, 0, 0, w, h, 5, 2, true, true, false, false);
+		g.color(model.getBgColor());
+		RoundedRectRenderer.render(g, 0, 0, w, h, RenderStyle.HEADER_ROUNDED_RADIUS, 3, RoundedRectRenderer.FLAG_FILL
+				| RoundedRectRenderer.FLAG_TOP);
 		if (isCollapsed)
 			return;
 		if (hasTitle) {
@@ -258,7 +260,8 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 			g.move(-2, -2);
 		}
 		if (headerHovered) {
-			g.color(Color.BLACK).renderRoundedRect(false, 0, 0, w, h, 5, 2, true, true, false, false);
+			RoundedRectRenderer.render(g, 0, 0, w, h, RenderStyle.HEADER_ROUNDED_RADIUS, 3,
+					RoundedRectRenderer.FLAG_TOP);
 		}
 		if (this.armDropColum) {
 			g.incZ(0.6f);
@@ -512,6 +515,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 				StackedColumnHeaderUI p = ((StackedColumnHeaderUI) getParent());
 				p.setAlignment(this.model);
 			}
+			break;
 		default:
 			break;
 		}

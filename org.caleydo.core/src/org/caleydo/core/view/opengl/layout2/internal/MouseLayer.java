@@ -125,7 +125,11 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 
 	@Override
 	public boolean removeDraggable(GLElement element) {
-		return this.remove(element);
+		this.dropAbles.remove(element.getLayoutDataAs(IDragInfo.class, null));
+		boolean r = this.remove(element);
+		if (this.isEmpty())
+			this.dropAbleTypes.clear();
+		return r;
 	}
 
 	@Override

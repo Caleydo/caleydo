@@ -39,6 +39,7 @@ import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
+import org.caleydo.core.view.opengl.layout2.renderer.RoundedRectRenderer;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.eclipse.swt.SWT;
@@ -156,7 +157,9 @@ class PopupElement extends GLElementContainer implements IGLLayout, IGLRenderer,
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
 		if (isFlagSet(FLAG_MOVEABLE)) {
-			g.color(Color.BLACK).renderRoundedRect(true, 0, 0, w, 8, 3, 2, true, true, false, false);
+			g.color(Color.BLACK);
+			RoundedRectRenderer.render(g, 0, 0, w, 8, 3, 2, RoundedRectRenderer.FLAG_FILL
+					| RoundedRectRenderer.FLAG_TOP);
 		}
 		if (isFlagSet(FLAG_BORDER)) {
 			// g.color(Color.LIGHT_GRAY).fillRoundedRect(0, 0, w, h, 3);

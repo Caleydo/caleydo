@@ -27,6 +27,7 @@ import java.util.List;
 
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
@@ -98,6 +99,16 @@ public class StackedColumnUI extends ACompositeTableColumnUI<StackedRankColumnMo
 			elem.hide();
 			super.doLayout(children, w, h);
 		}
+	}
+
+	@Override
+	protected void renderImpl(GLGraphics g, float w, float h) {
+		g.decZ().decZ();
+		g.color(RenderStyle.COLOR_STACKED_BORDER).lineWidth(RenderStyle.COLOR_STACKED_BORDER_WIDTH);
+		g.drawLine(-1, 0, -1, h).drawLine(w - 1, 0, w - 1, h);
+		g.incZ().incZ();
+		g.lineWidth(1);
+		super.renderImpl(g, w, h);
 	}
 
 	@Override

@@ -38,6 +38,7 @@ import org.caleydo.core.view.opengl.layout2.animation.MoveTransitions.IMoveTrans
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
+import org.caleydo.core.view.opengl.layout2.renderer.RoundedRectRenderer;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.vis.rank.model.ARankColumnModel;
@@ -47,6 +48,7 @@ import org.caleydo.vis.rank.model.SimpleHistogram;
 import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IMultiColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IMultiColumnMixin.MultiFloat;
+import org.caleydo.vis.rank.ui.RenderStyle;
 import org.caleydo.vis.rank.ui.RenderUtils;
 
 /**
@@ -179,7 +181,9 @@ public class StackedScoreSummary extends GLElementContainer implements IGLLayout
 
 		@Override
 		protected void renderImpl(GLGraphics g, float w, float h) {
-			g.color(model.getBgColor()).renderRoundedRect(true, 0, 0, w, h, 5, 2, true, true, false, false);
+			g.color(model.getBgColor());
+			RoundedRectRenderer.render(g, 0, 0, w, h, RenderStyle.HEADER_ROUNDED_RADIUS, 3,
+					RoundedRectRenderer.FLAG_FILL | RoundedRectRenderer.FLAG_TOP);
 			super.renderImpl(g, w, h);
 		}
 	}

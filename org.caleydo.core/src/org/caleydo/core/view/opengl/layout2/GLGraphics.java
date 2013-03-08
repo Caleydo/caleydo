@@ -13,6 +13,7 @@ import javax.media.opengl.glu.GLU;
 import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.util.color.IColor;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
+import org.caleydo.core.view.opengl.layout2.renderer.RoundedRectRenderer;
 import org.caleydo.core.view.opengl.util.GLPrimitives;
 import org.caleydo.core.view.opengl.util.text.ITextRenderer;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
@@ -303,79 +304,8 @@ public class GLGraphics {
 	}
 
 	public GLGraphics fillRoundedRect(float x, float y, float w, float h, float radius, int segments) {
-		return renderRoundedRect(true, x, y, w, h, radius, segments, true, true, true, true);
-	}
-
-	public GLGraphics renderRoundedRect(boolean fill, float x, float y, float w, float h, float radius, int segments,
-			boolean topLeft, boolean topRight, boolean bottomLeft, boolean bottomRight) {
-		assert w < radius * 2;
-		assert h < radius * 2;
-		if (radius <= 0)
-			return renderRect(fill, x, y, w, h);
-		int count = 0;
-		if (segments % 2 == 1) // make it even
-			segments++;
-		float[] offsets;
-
-		if (segments < 2)
-			offsets = new float[0];
-		else {
-			offsets = new float[segments-1];
-			double delta = Math.toRadians(90.f / segments);
-			double act = delta;
-			for(int i = 0; i < offsets.length; ++i) {
-				offsets[i] = radius - (float) Math.sin(act) * radius;
-				act += delta;
-			}
-		}
-		final int ol = offsets.length - 1;
-
-		gl.glBegin(fill ? GL2.GL_POLYGON : GL.GL_LINE_LOOP);
-
-		count += 4;
-
-		if (topLeft) {
-			gl.glVertex3f(x, y + radius, z);
-			for (int i = 0; i < offsets.length; ++i) {
-				gl.glVertex3f(x + offsets[ol - i], y + offsets[i], z);
-			}
-			gl.glVertex3f(x + radius, y, z);
-			count += offsets.length;
-		} else
-			gl.glVertex3f(x, y, z);
-
-		if (topRight) {
-			gl.glVertex3f(x + w - radius, y, z);
-			// round
-			for (int i = 0; i < offsets.length; ++i) {
-				gl.glVertex3f(x + w - offsets[i], y + offsets[ol - i], z);
-			}
-			gl.glVertex3f(x + w, y + radius, z);
-			count += offsets.length;
-		} else
-			gl.glVertex3f(x + w, y, z);
-
-		if (bottomRight) {
-			gl.glVertex3f(x + w, y + h - radius, z);
-			for (int i = 0; i < offsets.length; ++i) {
-				gl.glVertex3f(x + w - offsets[ol - i], y + h - offsets[i], z);
-			}
-			gl.glVertex3f(x + w - radius, y + h, z);
-			count += offsets.length;
-		} else
-			gl.glVertex3f(x + w, y + h, z);
-
-		if (bottomLeft) {
-			gl.glVertex3f(x + radius, y + h, z);
-			for (int i = 0; i < offsets.length; ++i) {
-				gl.glVertex3f(x + offsets[i], y + h - offsets[ol - i], z);
-			}
-			gl.glVertex3f(x, y + h - radius, z);
-			count += offsets.length;
-		} else
-			gl.glVertex3f(x, y + h, z);
-
-		gl.glEnd();
+		int count = RoundedRectRenderer.render(this, x, y, w, h, radius, segments, RoundedRectRenderer.FLAG_FILL
+				| RoundedRectRenderer.FLAG_ALL);
 		stats.incRoundedRect(count);
 		return this;
 	}
@@ -541,7 +471,9 @@ public class GLGraphics {
 	}
 
 	public GLGraphics drawRoundedRect(float x, float y, float w, float h, float radius, int segments) {
-		return renderRoundedRect(false, x, y, w, h, radius, segments, true, true, true, true);
+		int count = RoundedRectRenderer.render(this, x, y, w, h, radius, segments, RoundedRectRenderer.FLAG_ALL);
+		stats.incRoundedRect(count);
+		return this;
 	}
 
 	/**

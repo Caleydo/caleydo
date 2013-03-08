@@ -21,8 +21,6 @@ package org.caleydo.vis.rank.ui;
 
 import gleem.linalg.Vec2f;
 
-import java.awt.Color;
-
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
@@ -68,14 +66,14 @@ public class SeparatorUI extends PickableGLElement {
 	}
 
 	protected void renderHint(GLGraphics g, float w, float h) {
-		float c = w * 0.5f;
 		renderTriangle(g, w);
-		// g.fillImage(g.getTexture(RenderStyle.ICON_ARROW), c - 7, -20, 14, 27, Color.BLUE);
-		g.color(Color.DARK_GRAY).fillRect(0, -20, w, h + 20);
+		g.fillRect(0, 0, w, h);
 	}
 
 	protected void renderTriangle(GLGraphics g, float w) {
-		g.color(Color.DARK_GRAY).fillPolygon(new Vec2f(0, 3), new Vec2f(-5, -10), new Vec2f(w + 5, -10),
+		g.color(RenderStyle.COLOR_ALIGN_MARKER);
+		g.drawPath(true, new Vec2f(0, 3), new Vec2f(-5, -10), new Vec2f(w + 5, -10), new Vec2f(w, 3));
+		g.fillPolygon(new Vec2f(0, 3), new Vec2f(-5, -10), new Vec2f(w + 5, -10),
 				new Vec2f(w, 3));
 	}
 

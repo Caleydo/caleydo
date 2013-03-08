@@ -39,10 +39,6 @@ import org.caleydo.vis.rank.ui.column.StackedColumnHeaderUI.AlignmentDragInfo;
 public class StackedSeparatorUI extends SeparatorUI {
 	private boolean isAlignment = false;
 
-	public StackedSeparatorUI(IMoveHereChecker model) {
-		this(model, 0);
-	}
-
 	public StackedSeparatorUI(IMoveHereChecker model, int index) {
 		super(model, index);
 	}
@@ -69,9 +65,7 @@ public class StackedSeparatorUI extends SeparatorUI {
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
 		if (this.isAlignment) {
-			float c = w * 0.5f;
 			renderTriangle(g, w);
-			// g.fillImage(g.getTexture(RenderStyle.ICON_ARROW), c - 7, -20, 14, 27, new Color(0, 0, 1, 0.5f));
 		}
 		super.renderImpl(g, w, h);
 	}
