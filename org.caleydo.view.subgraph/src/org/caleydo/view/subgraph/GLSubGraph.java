@@ -37,6 +37,7 @@ import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormRenderer;
 import org.caleydo.core.view.opengl.layout2.AGLElementGLView;
 import org.caleydo.core.view.opengl.layout2.AnimatedGLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.core.view.opengl.layout2.GLElement.EVisibility;
 import org.caleydo.core.view.opengl.layout2.GLElementAdapter;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.animation.InOutInitializers;
@@ -147,10 +148,24 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		GLElementContainer column = new GLElementContainer(new GLSizeRestrictiveFlowLayout(false, 10, GLPadding.ZERO));
 		column.add(baseContainer);
 		nodeInfoContainer.setSize(Float.NaN, 0);
-		column.add(experimentalDataMappingElement);
+		final GLWindow dataMappingWindow = new GLWindow("Data Mapping", this);
+		dataMappingWindow.setSize(Float.NaN, 150);
+		dataMappingWindow.setContent(experimentalDataMappingElement);
+		dataMappingWindow.onClose(new ICloseWindowListener() {
+
+			@Override
+			public void onWindowClosed(GLWindow window) {
+				dataMappingWindow.setVisibility(EVisibility.NONE);
+			}
+		});
+
+		column.add(dataMappingWindow);
 		column.add(nodeInfoContainer);
-		rankingElement.setSize(200, Float.NaN);
-		baseContainer.add(rankingElement);
+		GLWindow rankingWindow = new GLWindow("Pathways", this);
+		rankingWindow.setSize(200, Float.NaN);
+		rankingWindow.setContent(rankingElement);
+
+		baseContainer.add(rankingWindow);
 		// pathwayRow.setLayout(new GLMultiFormPathwayLayout(10, GLPadding.ZERO, this, pathwayRow));
 		pathwayRow.setLayout(pathwayLayout);
 		// pathwayRow.setDefaultDuration(Durations.fix(600));

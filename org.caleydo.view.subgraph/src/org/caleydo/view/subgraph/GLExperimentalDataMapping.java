@@ -32,7 +32,7 @@ public class GLExperimentalDataMapping extends AnimatedGLElementContainer {
 
 	public GLExperimentalDataMapping(GLSubGraph view) {
 		this.view = view;
-		setSize(Float.NaN, 150);
+		// setSize(Float.NaN, 150);
 		// TODO: setLayout for child GLElements
 		// setLayout(GLLayouts.flowHorizontal(5));
 	}
