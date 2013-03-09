@@ -14,7 +14,6 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.view.enroute.path.APathwayPathRenderer;
-import org.caleydo.view.enroute.path.node.ANodeAttributeRenderer;
 
 /**
  * Base class for all nodes that make use of layouts.
@@ -50,11 +49,6 @@ public abstract class ALayoutBasedNodeMode extends ALinearizeableNodeMode {
 
 		layoutManager.render(gl);
 		gl.glPopMatrix();
-
-		for (ANodeAttributeRenderer attributeRenderer : attributeRenderers) {
-			attributeRenderer.render(gl);
-		}
-
 	}
 
 	@Override

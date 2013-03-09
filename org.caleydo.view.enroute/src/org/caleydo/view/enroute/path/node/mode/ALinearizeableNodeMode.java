@@ -6,10 +6,10 @@ package org.caleydo.view.enroute.path.node.mode;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
-import org.caleydo.core.data.selection.EventBasedSelectionManager;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
@@ -37,6 +37,11 @@ public abstract class ALinearizeableNodeMode {
 	 * The background color of the node.
 	 */
 	protected float[] backgroundColor = DEFAULT_BACKGROUND_COLOR;
+
+	/**
+	 * Color of the node highlight.
+	 */
+	protected float[] highlightColor;
 
 	protected AGLView view;
 
@@ -70,6 +75,35 @@ public abstract class ALinearizeableNodeMode {
 	public abstract void render(GL2 gl, GLU glu);
 
 	/**
+	 * Renders a node's hightlight.
+	 *
+	 * @param gl
+	 * @param glu
+	 */
+	public void renderHighlight(GL2 gl, GLU glu) {
+		// this is actually very ugly and just right for the current situation
+
+		for (ANodeAttributeRenderer attributeRenderer : attributeRenderers) {
+			attributeRenderer.render(gl);
+		}
+
+		if (!determineHighlightColor())
+			return;
+		float x = node.getPosition().x() - node.getWidth() / 2.0f;
+		float y = node.getPosition().y() - node.getHeight() / 2.0f;
+		gl.glDisable(GL.GL_BLEND);
+		gl.glColor4f(highlightColor[0], highlightColor[1], highlightColor[2], 1f);
+		gl.glBegin(GL.GL_LINE_LOOP);
+		gl.glVertex3f(x, y, 0.3f);
+		gl.glVertex3f(x + node.getWidth(), y, 0.3f);
+		gl.glVertex3f(x + node.getWidth(), y + node.getHeight(), 0.3f);
+		gl.glVertex3f(x + 0, y + node.getHeight(), 0.3f);
+		gl.glEnd();
+
+		gl.glEnable(GL.GL_BLEND);
+	}
+
+	/**
 	 * Applies the mode for the specified node.
 	 *
 	 * @param node
@@ -92,14 +126,11 @@ public abstract class ALinearizeableNodeMode {
 	protected abstract void init();
 
 	/**
-	 * This method is intended to set the background color according to the selection status of the data that is
-	 * associated with the {@link #node}
+	 * This method should set {@link #highlightColor} and return whether the node needs to be highlighted.
 	 *
 	 * @param selectionManager
 	 */
-	protected void determineBackgroundColor(EventBasedSelectionManager selectionManager) {
-		backgroundColor = DEFAULT_BACKGROUND_COLOR;
-	}
+	protected abstract boolean determineHighlightColor();
 
 	/**
 	 * Method that shall be called when the mode is no longer needed.

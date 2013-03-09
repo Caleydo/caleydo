@@ -178,6 +178,7 @@ public class EnRoutePathRenderer extends VerticalPathRenderer {
 			}
 
 			pathwayHeight += spacing.getCurrentAnchorNodeSpacing();
+			setLayoutDirty(true);
 		}
 
 		if (expandedBranchSummaryNode != null) {
@@ -212,7 +213,7 @@ public class EnRoutePathRenderer extends VerticalPathRenderer {
 
 	@Override
 	protected boolean permitsWrappingDisplayLists() {
-		return true;
+		return false;
 	}
 
 }

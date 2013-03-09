@@ -167,12 +167,16 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 				pixelGLConverter.getPixelHeightForGLHeight(minPathHeight)));
 		setMinWidthPixels(pixelGLConverter.getPixelWidthForGLWidth(branchColumnWidth
 				+ (pathway == null ? pathwayTitleColumnWidth : 0) + pathColumnWidth));
+		setLayoutDirty(true);
 
 	}
 
 	@Override
 	protected void renderContent(GL2 gl) {
-		GLU glu = new GLU();
+
+		if (layoutDisplayListIndex == -1)
+			layoutDisplayListIndex = gl.glGenLists(1);
+
 		gl.glEnable(GL.GL_BLEND);
 		gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
 		// gl.glEnable(GL2.GL_POLYGON_STIPPLE);
@@ -181,29 +185,54 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 		// gl.glBlendColor(1f, 1f, 1f, 0.9f);
 		// gl.glBlendFunc(GL2.GL_ONE, GL2.GL_CONSTANT_COLOR);
 		gl.glEnable(GL.GL_LINE_SMOOTH);
+		GLU glu = null;
+		if (isLayoutDirty()) {
 
-		renderPathwayBorders(gl);
+			gl.glNewList(layoutDisplayListIndex, GL2.GL_COMPILE);
 
-		for (int i = 0; i < pathNodes.size(); i++) {
-			ALinearizableNode node = pathNodes.get(i);
+			glu = new GLU();
+			// gl.glPushMatrix();
+			// gl.glTranslatef(0, 0, 0.2f);
 
-			node.render(gl, glu);
-			renderBranchNodes(gl, glu, node);
+			renderPathwayBorders(gl);
+
+			for (ALinearizableNode node : pathNodes) {
+				node.render(gl, glu);
+				renderBranchNodes(gl, glu, node);
+			}
+
+			if (expandedBranchSummaryNode != null) {
+				renderBranchSummaryNode(gl, glu, expandedBranchSummaryNode);
+				gl.glColor4f(1, 1, 1, 0.9f);
+
+				gl.glBegin(GL2.GL_QUADS);
+				gl.glVertex3f(0, 0, 0.1f);
+				gl.glVertex3f(x, 0, 0.1f);
+				gl.glVertex3f(x, y, 0.1f);
+				gl.glVertex3f(0, y, 0.1f);
+				gl.glEnd();
+			}
+
+			renderEdges(gl, pathNodes);
+			// gl.glPopMatrix();
+			gl.glEndList();
+			setLayoutDirty(false);
+
 		}
 
+		// Rendering highlights without a display list is actually less expensive
+		if (glu == null)
+			glu = new GLU();
+		for (ALinearizableNode node : pathNodes) {
+			node.renderHighlight(gl, glu);
+		}
 		if (expandedBranchSummaryNode != null) {
-			renderBranchSummaryNode(gl, glu, expandedBranchSummaryNode);
-			gl.glColor4f(1, 1, 1, 0.9f);
-
-			gl.glBegin(GL2.GL_QUADS);
-			gl.glVertex3f(0, 0, 0.1f);
-			gl.glVertex3f(x, 0, 0.1f);
-			gl.glVertex3f(x, y, 0.1f);
-			gl.glVertex3f(0, y, 0.1f);
-			gl.glEnd();
+			for (ALinearizableNode node : expandedBranchSummaryNode.getBranchNodes()) {
+				node.renderHighlight(gl, glu);
+			}
 		}
 
-		renderEdges(gl, pathNodes);
+		gl.glCallList(layoutDisplayListIndex);
 	}
 
 	/**
@@ -351,7 +380,7 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 
 	@Override
 	protected boolean permitsWrappingDisplayLists() {
-		return true;
+		return false;
 	}
 
 	@Override

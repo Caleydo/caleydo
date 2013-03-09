@@ -175,6 +175,9 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	 */
 	protected float nodeAlpha = 1f;
 
+	protected int layoutDisplayListIndex = -1;
+	private boolean isLayoutDirty = true;
+
 	protected EventBasedSelectionManager geneSelectionManager;
 	protected EventBasedSelectionManager metaboliteSelectionManager;
 	protected EventBasedSelectionManager sampleSelectionManager;
@@ -473,7 +476,7 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 
 	@Override
 	public void notifyOfSelectionChange(EventBasedSelectionManager selectionManager) {
-		setDisplayListDirty(true);
+
 	}
 
 	/**
@@ -529,9 +532,15 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	@Override
 	protected void prepare() {
 		updateStrategy.processEvents();
-		if (isDisplayListDirty()) {
-			updateLayout();
-		}
+		// if (isDisplayListDirty()) {
+		// updateLayout();
+		// }
+	}
+
+	@Override
+	public void setLimits(float x, float y) {
+		super.setLimits(x, y);
+		updateLayout();
 	}
 
 	/**
@@ -547,7 +556,7 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 			setExpandedBranchSummaryNode(null);
 			setPath(newPathSegments);
 			updateStrategy.triggerPathUpdate();
-			setDisplayListDirty(true);
+//			setDisplayListDirty(true);
 		}
 	}
 
@@ -630,7 +639,7 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 			event.setSender(this);
 			GeneralManager.get().getEventPublisher().triggerEvent(event);
 			updateLayout();
-			setDisplayListDirty(true);
+//			setDisplayListDirty(true);
 		}
 	}
 
@@ -978,4 +987,20 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	public float getNodeAlpha() {
 		return nodeAlpha;
 	}
+
+	/**
+	 * @param isLayoutDirty
+	 *            setter, see {@link isLayoutDirty}
+	 */
+	public void setLayoutDirty(boolean isLayoutDirty) {
+		this.isLayoutDirty = isLayoutDirty;
+	}
+
+	/**
+	 * @return the isLayoutDirty, see {@link #isLayoutDirty}
+	 */
+	public boolean isLayoutDirty() {
+		return isLayoutDirty;
+	}
+
 }

@@ -137,11 +137,17 @@ public class ComplexNodeLinearizedMode extends ALinearizeableNodeMode implements
 		for (ALinearizableNode node : complexNode.getNodes()) {
 			node.render(gl, glu);
 		}
+	}
 
+	@Override
+	public void renderHighlight(GL2 gl, GLU glu) {
+		ComplexNode complexNode = (ComplexNode) node;
+		for (ALinearizableNode node : complexNode.getNodes()) {
+			node.renderHighlight(gl, glu);
+		}
 		for (ANodeAttributeRenderer attributeRenderer : attributeRenderers) {
 			attributeRenderer.render(gl);
 		}
-
 	}
 
 	@Override
@@ -158,6 +164,10 @@ public class ComplexNodeLinearizedMode extends ALinearizeableNodeMode implements
 		}
 	}
 
+	@Override
+	protected boolean determineHighlightColor() {
+		return false;
+	}
 
 
 	// @Override

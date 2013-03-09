@@ -350,7 +350,7 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 			removePath(renderer);
 		}
 
-		setDisplayListDirty(true);
+		// setDisplayListDirty(true);
 		layout.updateLayout();
 		triggerMinSizeUpdate();
 	}

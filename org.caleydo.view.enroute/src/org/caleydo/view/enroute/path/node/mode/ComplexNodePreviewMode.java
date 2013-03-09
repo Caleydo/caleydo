@@ -124,4 +124,9 @@ public class ComplexNodePreviewMode extends ALayoutBasedNodeMode implements ICom
 
 	}
 
+	@Override
+	protected boolean determineHighlightColor() {
+		return false;
+	}
+
 }

@@ -5,7 +5,6 @@ package org.caleydo.view.enroute.path.node.mode;
 
 import gleem.linalg.Vec3f;
 
-import java.util.Collections;
 import java.util.List;
 
 import javax.media.opengl.GL2;
@@ -59,13 +58,22 @@ public abstract class ACompoundNodeMode extends ALinearizeableNodeMode {
 	}
 
 	@Override
-	protected void determineBackgroundColor(EventBasedSelectionManager selectionManager) {
+	protected boolean determineHighlightColor() {
+		EventBasedSelectionManager selectionManager = pathwayPathRenderer.getMetaboliteSelectionManager();
 		List<SelectionType> selectionTypes = selectionManager.getSelectionTypes(node.getPrimaryPathwayVertexRep()
 				.getName().hashCode());
-		Collections.sort(selectionTypes);
-		Collections.reverse(selectionTypes);
-		colorCalculator.calculateColors(selectionTypes);
-		backgroundColor = colorCalculator.getPrimaryColor().getRGBA();
+		if (selectionTypes.contains(SelectionType.SELECTION)) {
+			highlightColor = SelectionType.SELECTION.getColor();
+			return true;
+		} else if (selectionTypes.contains(SelectionType.MOUSE_OVER)) {
+			highlightColor = SelectionType.MOUSE_OVER.getColor();
+			return true;
+		}
+		return false;
+		// Collections.sort(selectionTypes);
+		// Collections.reverse(selectionTypes);
+		// colorCalculator.calculateColors(selectionTypes);
+		// backgroundColor = colorCalculator.getPrimaryColor().getRGBA();
 	}
 
 	@Override

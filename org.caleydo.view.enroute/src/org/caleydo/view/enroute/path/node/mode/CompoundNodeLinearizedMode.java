@@ -12,6 +12,7 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
+import org.caleydo.core.view.opengl.util.GLPrimitives;
 import org.caleydo.view.enroute.EPickingType;
 import org.caleydo.view.enroute.path.APathwayPathRenderer;
 import org.caleydo.view.enroute.path.node.ALinearizableNode;
@@ -55,13 +56,36 @@ public class CompoundNodeLinearizedMode extends ACompoundNodeMode {
 	public void render(GL2 gl, GLU glu) {
 
 		// circleColor = SelectionType.MOUSE_OVER.getColor();
-		determineBackgroundColor(pathwayPathRenderer.getMetaboliteSelectionManager());
+		// determineHighlightColor(pathwayPathRenderer.getMetaboliteSelectionManager());
 		renderCircle(gl, glu, node.getPosition(), pixelGLConverter.getGLHeightForPixelHeight(node.getHeightPixels()));
 
 		for (ANodeAttributeRenderer attributeRenderer : attributeRenderers) {
 			attributeRenderer.render(gl);
 		}
 
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see org.caleydo.view.enroute.path.node.mode.ALinearizeableNodeMode#renderHighlight(javax.media.opengl.GL2,
+	 * javax.media.opengl.glu.GLU)
+	 */
+	@Override
+	public void renderHighlight(GL2 gl, GLU glu) {
+
+		for (ANodeAttributeRenderer attributeRenderer : attributeRenderers) {
+			attributeRenderer.render(gl);
+		}
+
+		if (!determineHighlightColor())
+			return;
+		gl.glColor3fv(highlightColor, 0);
+		gl.glPushMatrix();
+		gl.glTranslatef(node.getPosition().x(), node.getPosition().y(), 1);
+		GLPrimitives.renderCircleBorder(gl, glu,
+				pixelGLConverter.getGLHeightForPixelHeight(node.getHeightPixels()) / 2.0f, 16, 0.1f);
+		gl.glPopMatrix();
 	}
 
 	@Override
@@ -81,7 +105,7 @@ public class CompoundNodeLinearizedMode extends ACompoundNodeMode {
 				selectionManager.triggerSelectionUpdateEvent();
 
 				node.setSelectionType(SelectionType.SELECTION);
-				pathwayPathRenderer.setDisplayListDirty(true);
+				// pathwayPathRenderer.setHighlightDirty(true);
 
 			}
 
@@ -98,7 +122,7 @@ public class CompoundNodeLinearizedMode extends ACompoundNodeMode {
 				selectionManager.triggerSelectionUpdateEvent();
 
 				node.setSelectionType(SelectionType.MOUSE_OVER);
-				pathwayPathRenderer.setDisplayListDirty(true);
+				// pathwayPathRenderer.setHighlightDirty(true);
 			}
 
 			@Override
@@ -112,7 +136,7 @@ public class CompoundNodeLinearizedMode extends ACompoundNodeMode {
 
 				node.setSelectionType(SelectionType.NORMAL);
 				// circleColor = DEFAULT_CIRCLE_COLOR;
-				pathwayPathRenderer.setDisplayListDirty(true);
+				// pathwayPathRenderer.setHighlightDirty(true);
 			}
 		};
 		view.addIDPickingListener(pickingListener, EPickingType.LINEARIZABLE_NODE.name(), node.hashCode());

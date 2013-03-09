@@ -114,7 +114,7 @@ public class GeneNodeLinearizedMode extends AGeneNodeMode {
 
 				node.setSelectionType(SelectionType.SELECTION);
 				// colorRenderer.setColor(SelectionType.MOUSE_OVER.getColor());
-				pathwayPathRenderer.setDisplayListDirty(true);
+				// pathwayPathRenderer.setHighlightDirty(true);
 				// view.setDisplayListDirty();
 
 			}
@@ -135,7 +135,7 @@ public class GeneNodeLinearizedMode extends AGeneNodeMode {
 
 				node.setSelectionType(SelectionType.MOUSE_OVER);
 				// colorRenderer.setColor(SelectionType.MOUSE_OVER.getColor());
-				pathwayPathRenderer.setDisplayListDirty(true);
+				// pathwayPathRenderer.setHighlightDirty(true);
 
 			}
 
@@ -151,7 +151,7 @@ public class GeneNodeLinearizedMode extends AGeneNodeMode {
 
 				// node.setSelectionType(SelectionType.NORMAL);
 				// colorRenderer.setColor(new float[] { 1, 1, 1, 1 });
-				pathwayPathRenderer.setDisplayListDirty(true);
+				// pathwayPathRenderer.setHighlightDirty(true);
 
 			}
 		};

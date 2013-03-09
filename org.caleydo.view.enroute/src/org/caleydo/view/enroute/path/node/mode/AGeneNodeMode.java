@@ -3,8 +3,6 @@
  */
 package org.caleydo.view.enroute.path.node.mode;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.media.opengl.GL2;
@@ -45,27 +43,32 @@ public abstract class AGeneNodeMode extends ALayoutBasedNodeMode implements ICol
 
 	@Override
 	public void render(GL2 gl, GLU glu) {
-		determineBackgroundColor(pathwayPathRenderer.getGeneSelectionManager());
+		// determineBackgroundColor(pathwayPathRenderer.getGeneSelectionManager());
 		super.render(gl, glu);
-
 	}
 
 	@Override
-	protected void determineBackgroundColor(EventBasedSelectionManager selectionManager) {
-		List<SelectionType> allSelectionTypes = new ArrayList<SelectionType>();
+	protected boolean determineHighlightColor() {
+		boolean highlight = false;
+		EventBasedSelectionManager selectionManager = pathwayPathRenderer.getGeneSelectionManager();
 		for (Integer davidId : node.getPrimaryPathwayVertexRep().getDavidIDs()) {
 			List<SelectionType> selectionTypes = selectionManager.getSelectionTypes(davidId);
-			for (SelectionType selectionType : selectionTypes) {
-				if (!allSelectionTypes.contains(selectionType)) {
-					allSelectionTypes.add(selectionType);
-				}
+			if (selectionTypes.contains(SelectionType.SELECTION)) {
+				highlightColor = SelectionType.SELECTION.getColor();
+				return true;
+			} else if (selectionTypes.contains(SelectionType.MOUSE_OVER)) {
+				highlightColor = SelectionType.MOUSE_OVER.getColor();
+				highlight = true;
 			}
+
 		}
-		Collections.sort(allSelectionTypes);
-		Collections.reverse(allSelectionTypes);
-		colorCalculator.calculateColors(allSelectionTypes);
-		backgroundColor = colorCalculator.getPrimaryColor().getRGBA();
-		gradientColor = colorCalculator.getSecondaryColor().getRGBA();
+		return highlight;
+
+		// Collections.sort(allSelectionTypes);
+		// Collections.reverse(allSelectionTypes);
+		// colorCalculator.calculateColors(allSelectionTypes);
+		// backgroundColor = colorCalculator.getPrimaryColor().getRGBA();
+		// gradientColor = colorCalculator.getSecondaryColor().getRGBA();
 	}
 
 	@Override

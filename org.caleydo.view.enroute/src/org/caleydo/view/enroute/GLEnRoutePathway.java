@@ -55,6 +55,8 @@ import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
+import org.caleydo.core.view.opengl.layout.util.multiform.DefaultVisInfo;
+import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
@@ -197,8 +199,10 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		layoutManager = new LayoutManager(viewFrustum, pixelGLConverter);
 		layoutManager.setUseDisplayLists(true);
 		ElementLayout pathElementLayout = new ElementLayout();
+		MultiFormRenderer mr = new MultiFormRenderer(this, false);
+		mr.addLayoutRenderer(pathRenderer, null, new DefaultVisInfo(), true);
 		pathElementLayout.setPixelSizeX(pathRenderer.getMinWidthPixels());
-		pathElementLayout.setRenderer(pathRenderer);
+		pathElementLayout.setRenderer(mr);
 		layoutManager.setBaseElementLayout(pathElementLayout);
 		layoutManager.updateLayout();
 

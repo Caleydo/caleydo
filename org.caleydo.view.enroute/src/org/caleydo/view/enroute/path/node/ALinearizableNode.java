@@ -87,6 +87,11 @@ public abstract class ALinearizableNode extends ANode implements ILabelProvider 
 		mode.render(gl, glu);
 	}
 
+	@Override
+	public void renderHighlight(GL2 gl, GLU glu) {
+		mode.renderHighlight(gl, glu);
+	}
+
 	/**
 	 * @param mode
 	 *            setter, see {@link mode}

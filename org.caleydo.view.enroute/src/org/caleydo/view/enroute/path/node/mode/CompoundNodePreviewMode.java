@@ -18,7 +18,6 @@ import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.enroute.EPickingType;
 import org.caleydo.view.enroute.path.APathwayPathRenderer;
 import org.caleydo.view.enroute.path.node.ALinearizableNode;
-import org.caleydo.view.enroute.path.node.ANodeAttributeRenderer;
 import org.caleydo.view.enroute.path.node.CompoundNode;
 
 /**
@@ -68,7 +67,7 @@ public class CompoundNodePreviewMode extends ACompoundNodeMode {
 		float leftX = nodePosition.x() - width / 2.0f;
 		float bottomY = nodePosition.y() - height / 2.0f;
 
-		determineBackgroundColor(pathwayPathRenderer.getMetaboliteSelectionManager());
+		// determineHighlightColor(pathwayPathRenderer.getMetaboliteSelectionManager());
 
 		gl.glPushName(pickingManager.getPickingID(view.getID(), EPickingType.LINEARIZABLE_NODE.name(), node.hashCode()));
 		gl.glColor4fv(backgroundColor, 0);
@@ -93,9 +92,9 @@ public class CompoundNodePreviewMode extends ACompoundNodeMode {
 
 		renderCircle(gl, glu, circlePosition, textHeight);
 
-		for (ANodeAttributeRenderer attributeRenderer : attributeRenderers) {
-			attributeRenderer.render(gl);
-		}
+		// for (ANodeAttributeRenderer attributeRenderer : attributeRenderers) {
+		// attributeRenderer.render(gl);
+		// }
 
 	}
 
@@ -130,7 +129,7 @@ public class CompoundNodePreviewMode extends ACompoundNodeMode {
 
 				node.setSelectionType(SelectionType.MOUSE_OVER);
 				// circleColor = SelectionType.MOUSE_OVER.getColor();
-				pathwayPathRenderer.setDisplayListDirty(true);
+				// pathwayPathRenderer.setHighlightDirty(true);
 			}
 
 			@Override
@@ -144,7 +143,7 @@ public class CompoundNodePreviewMode extends ACompoundNodeMode {
 
 				node.setSelectionType(SelectionType.NORMAL);
 				// circleColor = DEFAULT_CIRCLE_COLOR;
-				pathwayPathRenderer.setDisplayListDirty(true);
+				// pathwayPathRenderer.setHighlightDirty(true);
 			}
 		};
 		view.addIDPickingListener(pickingListener, EPickingType.LINEARIZABLE_NODE.name(), node.hashCode());

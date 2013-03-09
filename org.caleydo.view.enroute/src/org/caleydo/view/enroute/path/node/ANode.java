@@ -83,6 +83,14 @@ public abstract class ANode implements ILabelProvider {
 	public abstract void render(GL2 gl, GLU glu);
 
 	/**
+	 * Renders the highlight of a node.
+	 *
+	 * @param gl
+	 * @param glu
+	 */
+	public abstract void renderHighlight(GL2 gl, GLU glu);
+
+	/**
 	 * @return The point a connection line can connect to at the top of the node.
 	 */
 	public Vec3f getTopConnectionPoint() {
