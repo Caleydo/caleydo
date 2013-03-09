@@ -19,11 +19,17 @@
  *******************************************************************************/
 package org.caleydo.view.subgraph;
 
+import org.caleydo.core.util.base.DefaultLabelProvider;
+import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.core.view.opengl.layout2.basic.GLButton;
+import org.caleydo.core.view.opengl.layout2.basic.GLButton.EButtonMode;
+import org.caleydo.core.view.opengl.layout2.basic.GLButton.ISelectionCallback;
 import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
 import org.caleydo.core.view.opengl.layout2.layout.GLSizeRestrictiveFlowLayout;
+import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 
 /**
  * Bar with text on it.
@@ -33,20 +39,39 @@ import org.caleydo.core.view.opengl.layout2.layout.GLSizeRestrictiveFlowLayout;
  */
 public class GLTitleBar extends GLElementContainer {
 
-	protected final String text;
+	protected final ILabelProvider labelProvider;
+	protected final GLButton closeButton;
 
 	public GLTitleBar(String text) {
+		this(new DefaultLabelProvider(text));
+	}
+
+	public GLTitleBar(ILabelProvider labelProvider) {
 		super();
-		this.text = text;
+		this.labelProvider = labelProvider;
 		setSize(Float.NaN, 20);
 		setLayout(new GLSizeRestrictiveFlowLayout(true, 2, new GLPadding(3, 2)));
 		add(new GLElement() {
 
 			@Override
 			protected void renderImpl(GLGraphics g, float w, float h) {
-				g.drawText(GLTitleBar.this.text, 0, -2, w, h);
+				g.drawText(GLTitleBar.this.labelProvider, 0, -2, w, h);
 			}
 		});
+		closeButton = new GLButton(EButtonMode.BUTTON);
+		closeButton.setSize(16, 16);
+		closeButton.setTooltip("Close");
+		closeButton.setRenderer(GLRenderers.fillImage("resources/icons/general/remove.png"));
+		closeButton.setCallback(new ISelectionCallback() {
+
+			@Override
+			public void onSelectionChanged(GLButton button, boolean selected) {
+				if (selected) {
+					System.out.println("close");
+				}
+			}
+		});
+		add(closeButton);
 	}
 
 	@Override

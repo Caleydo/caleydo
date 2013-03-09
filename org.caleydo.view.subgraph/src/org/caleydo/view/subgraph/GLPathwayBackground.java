@@ -20,12 +20,9 @@
 package org.caleydo.view.subgraph;
 
 import org.caleydo.core.util.color.Color;
-import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 import org.caleydo.core.view.opengl.picking.Pick;
-import org.caleydo.view.subgraph.GLSubGraph.PathwayMultiFormInfo;
-import org.caleydo.view.subgraph.event.ShowCommonNodesPathwaysEvent;
 
 /**
  * Renders a pickable background behind pathway elements.
@@ -36,9 +33,9 @@ import org.caleydo.view.subgraph.event.ShowCommonNodesPathwaysEvent;
 public class GLPathwayBackground extends PickableGLElement {
 
 	protected boolean hovered = false;
-	protected final GLPathwayWindow parentWindow;
+	protected final GLWindow parentWindow;
 
-	public GLPathwayBackground(GLPathwayWindow parentWindow) {
+	public GLPathwayBackground(GLWindow parentWindow) {
 		this.parentWindow = parentWindow;
 	}
 
@@ -78,18 +75,6 @@ public class GLPathwayBackground extends PickableGLElement {
 		// // bar.setVisibility(EVisibility.VISIBLE);
 		// hovered = true;
 		// repaint();
-	}
-
-	@Override
-	protected void onRightClicked(Pick pick) {
-		if (parentWindow.info instanceof PathwayMultiFormInfo) {
-			PathwayMultiFormInfo info = (PathwayMultiFormInfo) parentWindow.info;
-			ShowCommonNodesPathwaysEvent event = new ShowCommonNodesPathwaysEvent(info.pathway);
-			event.setEventSpace(parentWindow.view.getPathEventSpace());
-			parentWindow.view.getContextMenuCreator().add(
-					new GenericContextMenuItem("Show Pathways with Common Nodes", event));
-		}
-
 	}
 
 	/**

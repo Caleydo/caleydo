@@ -78,6 +78,23 @@ public class GLPathwayGridLayout implements IGLLayout {
 		addColumn(window);
 	}
 
+	public void removeWindow(GLPathwayWindow window) {
+		PathwayColumn columnToRemove = null;
+		for (PathwayColumn column : columns) {
+			if (column.windows.contains(window)) {
+				column.windows.remove(window);
+				if (column.windows.size() == 0) {
+					columnToRemove = column;
+				}
+				break;
+			}
+		}
+		if (columnToRemove != null) {
+			columns.remove(columnToRemove);
+		}
+
+	}
+
 	@Override
 	public void doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
 

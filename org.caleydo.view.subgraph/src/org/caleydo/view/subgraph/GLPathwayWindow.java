@@ -19,50 +19,48 @@
  *******************************************************************************/
 package org.caleydo.view.subgraph;
 
-import org.caleydo.core.view.opengl.layout2.AnimatedGLElementContainer;
+import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
 import org.caleydo.core.view.opengl.layout2.GLElementAdapter;
-import org.caleydo.core.view.opengl.layout2.GLElementContainer;
-import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
-import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
-import org.caleydo.core.view.opengl.layout2.layout.GLSizeRestrictiveFlowLayout;
 import org.caleydo.core.view.opengl.layout2.util.GLElementViewSwitchingBar;
-import org.caleydo.datadomain.pathway.graph.PathwayGraph;
+import org.caleydo.core.view.opengl.picking.APickingListener;
+import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.subgraph.GLSubGraph.MultiFormInfo;
+import org.caleydo.view.subgraph.GLSubGraph.PathwayMultiFormInfo;
+import org.caleydo.view.subgraph.event.ShowCommonNodesPathwaysEvent;
 
 /**
  * @author Christian
  *
  */
-public class GLPathwayWindow extends AnimatedGLElementContainer {
+public class GLPathwayWindow extends GLWindow {
 
 	protected final MultiFormInfo info;
 	protected final GLElementViewSwitchingBar viewSwitchingBar;
-	protected final GLSubGraph view;
-	protected final GLPathwayBackground background;
-	protected boolean active = false;
 
-	public GLPathwayWindow(PathwayGraph pathway, GLSubGraph view, final MultiFormInfo info) {
-		setLayout(GLLayouts.LAYERS);
+	public GLPathwayWindow(String title, GLSubGraph view, MultiFormInfo info) {
+		super(title, view);
 		this.info = info;
-		this.view = view;
 
-		GLElementContainer multiFormContainer = new GLElementContainer(new GLSizeRestrictiveFlowLayout(false, 1,
-				GLPadding.ZERO));
-		GLTitleBar titleBar = new GLTitleBar(pathway == null ? "" : pathway.getTitle());
-		multiFormContainer.add(titleBar);
 		GLElementAdapter container = new GLElementAdapter(view, info.multiFormRenderer, true);
-		multiFormContainer.add(container);
 		info.container = container;
-		// container.setVisibility(EVisibility.HIDDEN);
-		// multiFormRendererAdapter.onPick(pl);
+		setContent(container);
 
 		viewSwitchingBar = new GLElementViewSwitchingBar(info.multiFormRenderer);
-		background = new GLPathwayBackground(this);
-		titleBar.add(viewSwitchingBar);
+		titleBar.add(titleBar.size() - 1, viewSwitchingBar);
 		viewSwitchingBar.setVisibility(EVisibility.NONE);
+		background.onPick(new APickingListener() {
+			@Override
+			protected void rightClicked(Pick pick) {
+				if (GLPathwayWindow.this.info instanceof PathwayMultiFormInfo) {
+					PathwayMultiFormInfo info = (PathwayMultiFormInfo) GLPathwayWindow.this.info;
+					ShowCommonNodesPathwaysEvent event = new ShowCommonNodesPathwaysEvent(info.pathway);
+					event.setEventSpace(GLPathwayWindow.this.view.getPathEventSpace());
+					GLPathwayWindow.this.view.getContextMenuCreator().add(
+							new GenericContextMenuItem("Show Pathways with Common Nodes", event));
+				}
 
-		add(background);
-		add(multiFormContainer);
+			}
+		});
 	}
 
 	public int getMinWidth() {
@@ -80,25 +78,14 @@ public class GLPathwayWindow extends AnimatedGLElementContainer {
 		return info;
 	}
 
+	@Override
 	public void setActive(boolean active) {
-		if (active == this.active)
-			return;
-
-		GLPathwayWindow activeWindow = view.getActiveWindow();
-
+		super.setActive(active);
 		if (active) {
-			if (activeWindow != null && activeWindow != this) {
-				activeWindow.setActive(false);
-			}
-			view.setActiveWindow(this);
 			viewSwitchingBar.setVisibility(EVisibility.VISIBLE);
-			// currentActiveBackground.bar.setVisibility(EVisibility.NONE);
-			repaint();
 		} else {
 			viewSwitchingBar.setVisibility(EVisibility.NONE);
 		}
-		background.setHovered(active);
-		this.active = active;
 	}
 
 }

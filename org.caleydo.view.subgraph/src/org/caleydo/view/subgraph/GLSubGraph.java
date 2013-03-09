@@ -56,6 +56,7 @@ import org.caleydo.datadomain.pathway.listener.EnablePathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.PathwayPathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.ShowPortalNodesEvent;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
+import org.caleydo.view.subgraph.GLWindow.ICloseWindowListener;
 import org.caleydo.view.subgraph.contextmenu.ShowCommonNodeItem;
 import org.caleydo.view.subgraph.event.ShowCommonNodePathwaysEvent;
 import org.caleydo.view.subgraph.event.ShowCommonNodesPathwaysEvent;
@@ -87,7 +88,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	private AnimatedGLElementContainer nodeInfoContainer = new AnimatedGLElementContainer(
 			new GLSizeRestrictiveFlowLayout(true, 10, GLPadding.ZERO));
 
-	private GLPathwayWindow activeWindow = null;
+	private GLWindow activeWindow = null;
 
 	// private List<IPathwayRepresentation> pathwayRepresentations = new ArrayList<>();
 
@@ -298,7 +299,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	}
 
 	private void createMultiformRenderer(List<TablePerspective> tablePerspectives, EnumSet<EEmbeddingID> embeddingIDs,
-			AnimatedGLElementContainer parent, Object layoutData, MultiFormInfo info) {
+			final AnimatedGLElementContainer parent, Object layoutData, MultiFormInfo info) {
 
 		// GLElementContainer backgroundContainer = new GLElementContainer(GLLayouts.LAYERS);
 		// backgroundContainer.setLayoutData(layoutData);
@@ -337,7 +338,16 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 			}
 		}
 
-		GLPathwayWindow window = new GLPathwayWindow(pathway, this, info);
+		final GLPathwayWindow window = new GLPathwayWindow(pathway == null ? "" : pathway.getTitle(), this, info);
+		if (pathway != null) {
+			window.onClose(new ICloseWindowListener() {
+				@Override
+				public void onWindowClosed(GLWindow w) {
+					pathwayLayout.removeWindow(window);
+					parent.remove(window);
+				}
+			});
+		}
 		info.window = window;
 		parent.add(window);
 	}
@@ -575,7 +585,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	/**
 	 * @return the currentActiveBackground, see {@link #activeWindow}
 	 */
-	public GLPathwayWindow getActiveWindow() {
+	public GLWindow getActiveWindow() {
 		return activeWindow;
 	}
 
@@ -583,7 +593,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	 * @param currentActiveBackground
 	 *            setter, see {@link currentActiveBackground}
 	 */
-	public void setActiveWindow(GLPathwayWindow activeWindow) {
+	public void setActiveWindow(GLWindow activeWindow) {
 		this.activeWindow = activeWindow;
 	}
 
