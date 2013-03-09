@@ -116,6 +116,10 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 
 	protected GLPathwayGridLayout pathwayLayout = new GLPathwayGridLayout(this, GLPadding.ZERO, 10);
 
+	protected GLExperimentalDataMapping experimentalDataMappingElement = new GLExperimentalDataMapping(this);
+	/**
+	 * The element that shows the ranked pathway list
+	 */
 	protected RankingElement rankingElement = new RankingElement(this);
 
 	/**
@@ -142,6 +146,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		GLElementContainer column = new GLElementContainer(new GLSizeRestrictiveFlowLayout(false, 10, GLPadding.ZERO));
 		column.add(baseContainer);
 		nodeInfoContainer.setSize(Float.NaN, 0);
+		column.add(experimentalDataMappingElement);
 		column.add(nodeInfoContainer);
 		rankingElement.setSize(200, Float.NaN);
 		baseContainer.add(rankingElement);
