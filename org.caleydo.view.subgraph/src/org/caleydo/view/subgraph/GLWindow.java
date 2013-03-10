@@ -24,11 +24,14 @@ import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.view.opengl.layout2.AnimatedGLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
+import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton;
+import org.caleydo.core.view.opengl.layout2.basic.GLButton.EButtonMode;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton.ISelectionCallback;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
 import org.caleydo.core.view.opengl.layout2.layout.GLSizeRestrictiveFlowLayout;
+import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 
 /**
  * @author Christian
@@ -41,7 +44,10 @@ public class GLWindow extends AnimatedGLElementContainer {
 	protected final GLTitleBar titleBar;
 	protected final GLPathwayBackground background;
 	protected final GLElementContainer baseContainer;
+	protected final GLButton slideInButton;
 	protected boolean active = false;
+	protected boolean showCloseButton = true;
+	protected boolean showSlideInButton = false;
 
 	public GLWindow(ILabelProvider titleLabelProvider, GLSubGraph view) {
 		this.view = view;
@@ -50,8 +56,27 @@ public class GLWindow extends AnimatedGLElementContainer {
 		setLayout(GLLayouts.LAYERS);
 		baseContainer = new GLElementContainer(new GLSizeRestrictiveFlowLayout(false, 1, GLPadding.ZERO));
 		baseContainer.add(titleBar);
+		GLElementContainer sliderButtonContainer = new GLElementContainer(GLLayouts.flowHorizontal(0));
+
+		slideInButton = new GLButton(EButtonMode.BUTTON);
+		slideInButton.setSize(20, 5);
+		slideInButton.setRenderer(new IGLRenderer() {
+
+			@Override
+			public void render(GLGraphics g, float w, float h, GLElement parent) {
+				g.color(0.6f, 0.6f, 0.6f, 1f).fillRoundedRect(0, -10, 50, 10, 2);
+				g.fillRect(-5, -5, 60, 5);
+				g.color(1f, 1f, 1f, 1f).fillRoundedRect(0, -10, 50, 10, 2);
+
+			}
+		});
+		sliderButtonContainer.add(new GLElement());
+		sliderButtonContainer.add(slideInButton);
+		sliderButtonContainer.add(new GLElement());
+
 		add(background);
 		add(baseContainer);
+		add(sliderButtonContainer);
 	}
 
 	public GLWindow(String title, GLSubGraph view) {
@@ -70,12 +95,33 @@ public class GLWindow extends AnimatedGLElementContainer {
 			}
 			view.setActiveWindow(this);
 			repaint();
-			titleBar.closeButton.setVisibility(EVisibility.PICKABLE);
+			if (showCloseButton)
+				titleBar.closeButton.setVisibility(EVisibility.PICKABLE);
 		} else {
 			titleBar.closeButton.setVisibility(EVisibility.NONE);
 		}
 		background.setHovered(active);
 		this.active = active;
+	}
+
+	/**
+	 * @param showCloseButton
+	 *            setter, see {@link showCloseButton}
+	 */
+	public void setShowCloseButton(boolean showCloseButton) {
+		this.showCloseButton = showCloseButton;
+		if (showCloseButton)
+			titleBar.closeButton.setVisibility(EVisibility.PICKABLE);
+		else
+			titleBar.closeButton.setVisibility(EVisibility.NONE);
+	}
+
+	/**
+	 * @param showSlideInButton
+	 *            setter, see {@link showSlideInButton}
+	 */
+	public void setShowSlideInButton(boolean showSlideInButton) {
+		this.showSlideInButton = showSlideInButton;
 	}
 
 	/**
@@ -112,4 +158,5 @@ public class GLWindow extends AnimatedGLElementContainer {
 		 */
 		public void onWindowClosed(GLWindow window);
 	}
+
 }
