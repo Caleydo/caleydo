@@ -565,9 +565,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 			} else {
 				resolvedTablePerspectives.add(tablePerspective);
 			}
-
 		}
-
 	}
 
 	@Override

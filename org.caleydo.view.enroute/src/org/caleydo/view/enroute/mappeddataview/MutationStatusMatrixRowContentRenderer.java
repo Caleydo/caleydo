@@ -130,7 +130,7 @@ public class MutationStatusMatrixRowContentRenderer extends ACategoricalRowConte
 		float lowerEdge = rowHeight * rowIndex;
 
 		// gl.glPushName(parentView.getPickingManager().getPickingID(
-		// parentView.getID(), PickingType.GENE.name(), davidID));
+		// parentView.getID(), PickingType.GENE.name(), rowID));
 
 		Integer sampleID = columnIDMappingManager.getID(resolvedColumnIDType, parent.sampleIDType, columnID);
 		if (sampleID != null) {

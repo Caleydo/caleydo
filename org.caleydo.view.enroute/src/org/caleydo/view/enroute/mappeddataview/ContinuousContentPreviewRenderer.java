@@ -14,7 +14,6 @@ import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.table.TablePerspectiveStatistics;
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.collection.Algorithms;
 import org.caleydo.core.util.color.Color;
 
@@ -31,22 +30,22 @@ public class ContinuousContentPreviewRenderer extends AContentPreviewRenderer {
 	/**
 	 * @param initializer
 	 */
-	public ContinuousContentPreviewRenderer(int davidID, TablePerspective tablePerspective,
+	public ContinuousContentPreviewRenderer(int rowID, TablePerspective tablePerspective,
 			EventBasedSelectionManager geneSelectionManager, EventBasedSelectionManager sampleSelectionManager) {
-		super(davidID, tablePerspective, geneSelectionManager, sampleSelectionManager);
+		super(rowID, tablePerspective, geneSelectionManager, sampleSelectionManager);
 		colorCalculator.setBaseColor(new Color(MappedDataRenderer.SUMMARY_BAR_COLOR));
-		if (geneID == null)
+		if (resolvedRowID == null)
 			return;
 		average = TablePerspectiveStatistics.calculateAverage(experimentPerspective.getVirtualArray(),
-				dataDomain.getTable(), IDType.getIDType("DAVID"), geneID);
+				dataDomain.getTable(), resolvedRowIDType, resolvedRowID);
 
 	}
 
 	@Override
 	public void renderContent(GL2 gl) {
-		if (geneID == null || average == null)
+		if (resolvedRowID == null || average == null)
 			return;
-		List<SelectionType> geneSelectionTypes = geneSelectionManager.getSelectionTypes(davidID);
+		List<SelectionType> geneSelectionTypes = geneSelectionManager.getSelectionTypes(rowID);
 		// ArrayList<SelectionType> selectionTypes = parent.sampleGroupSelectionManager
 		// .getSelectionTypes(group.getID());
 		// if (selectionTypes.size() > 0

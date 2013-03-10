@@ -32,11 +32,11 @@ public class CategoricalContentPreviewRenderer extends AContentPreviewRenderer {
 	public CategoricalContentPreviewRenderer(int davidID, TablePerspective tablePerspective,
 			EventBasedSelectionManager geneSelectionManager, EventBasedSelectionManager sampleSelectionManager) {
 		super(davidID, tablePerspective, geneSelectionManager, sampleSelectionManager);
-		if (geneID == null)
+		if (resolvedRowID == null)
 			return;
 
 		VirtualArray geneVA = new VirtualArray(dataDomain.getGeneIDType());
-		geneVA.append(geneID);
+		geneVA.append(resolvedRowID);
 		// FIXME: Bad Hack for determination of bucket count
 		histogram = TablePerspectiveStatistics.calculateHistogram(dataDomain.getTable(), experimentPerspective
 				.getVirtualArray(), geneVA, dataDomain.getLabel().toLowerCase().contains("copy") ? 5 : 2);
@@ -44,10 +44,10 @@ public class CategoricalContentPreviewRenderer extends AContentPreviewRenderer {
 
 	@Override
 	public void renderContent(GL2 gl) {
-		if (geneID == null)
+		if (resolvedRowID == null)
 			return;
 
-		List<SelectionType> geneSelectionTypes = geneSelectionManager.getSelectionTypes(davidID);
+		List<SelectionType> geneSelectionTypes = geneSelectionManager.getSelectionTypes(rowID);
 
 		// ArrayList<SelectionType> selectionTypes = parent.sampleGroupSelectionManager
 		// .getSelectionTypes(group.getID());

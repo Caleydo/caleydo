@@ -28,11 +28,11 @@ public class CopyNumberRowContentRenderer extends ACategoricalRowContentRenderer
 
 	@Override
 	public void init() {
-		if (rowID == null)
+		if (resolvedRowID == null)
 			return;
 
-		VirtualArray dimensionVirtualArray = new VirtualArray(dataDomain.getPrimaryIDType(rowIDType));
-		dimensionVirtualArray.append(rowID);
+		VirtualArray dimensionVirtualArray = new VirtualArray(resolvedRowIDType);
+		dimensionVirtualArray.append(resolvedRowID);
 		histogram = TablePerspectiveStatistics.calculateHistogram(dataDomain.getTable(),
 				columnPerspective.getVirtualArray(), dimensionVirtualArray, 5);
 
@@ -63,7 +63,7 @@ public class CopyNumberRowContentRenderer extends ACategoricalRowContentRenderer
 
 			float value;
 			if (rowID != null) {
-				value = dataDomain.getNormalizedValue(rowIDType, rowID, columnIDType, columnID);
+				value = dataDomain.getNormalizedValue(resolvedRowIDType, resolvedRowID, resolvedColumnIDType, columnID);
 
 				if (value < 0.5001 && value > 0.499) {
 					experimentCount++;
@@ -104,7 +104,7 @@ public class CopyNumberRowContentRenderer extends ACategoricalRowContentRenderer
 				float upperEdge = value * y;
 
 				// gl.glPushName(parentView.getPickingManager().getPickingID(
-				// parentView.getID(), PickingType.GENE.name(), davidID));
+				// parentView.getID(), PickingType.GENE.name(), rowID));
 
 				Integer resolvedColumnID = columnIDMappingManager.getID(dataDomain.getPrimaryIDType(columnIDType),
 						parent.sampleIDType, columnID);

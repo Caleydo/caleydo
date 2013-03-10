@@ -603,7 +603,7 @@ public class MappedDataRenderer {
 				resolvedRowIDType = rowIDType;
 			}
 
-			// geneIDs.add(davidID);
+			// geneIDs.add(rowID);
 			ElementLayout tablePerspectiveLayout = rowLayouts.get(rowCount);
 
 			if (sampleGroupSelectionManager.checkStatus(abstractGroupType, group.getID())) {
@@ -649,7 +649,7 @@ public class MappedDataRenderer {
 
 				// tablePerspectiveLayout
 				// .setRenderer(new MutationStatusRowContentRenderer(
-				// rowID, davidID, dataDomain, tablePerspective,
+				// rowID, rowID, dataDomain, tablePerspective,
 				// columnPerspective, parentView, this, group,
 				// isHighlightLayout));
 			} else {

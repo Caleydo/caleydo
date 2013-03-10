@@ -136,7 +136,7 @@ public class ContinuousContentRenderer extends ContentRenderer {
 				float upperEdge = value * y;
 
 				// gl.glPushName(parentView.getPickingManager().getPickingID(
-				// parentView.getID(), PickingType.GENE.name(), davidID));
+				// parentView.getID(), PickingType.GENE.name(), rowID));
 
 				Integer resolvedSampleID = columnIDMappingManager.getID(dataDomain.getPrimaryIDType(columnIDType),
 						parent.sampleIDType, columnID);

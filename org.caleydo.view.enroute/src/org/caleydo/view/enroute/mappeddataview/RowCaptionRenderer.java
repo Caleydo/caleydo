@@ -57,7 +57,7 @@ public class RowCaptionRenderer extends SelectableRenderer {
 	 *            the <code>CaleydoTextRenderer</code> of the parent GL view
 	 * @param pixelGLConverter
 	 *            the <code>PixelGLConverter</code> of the parent GL view
-	 * @param davidID
+	 * @param rowID
 	 *            the id used for the resolution of the human readable id type that is rendered
 	 * @param backgroundColor
 	 *            RGBA value of the background color.
