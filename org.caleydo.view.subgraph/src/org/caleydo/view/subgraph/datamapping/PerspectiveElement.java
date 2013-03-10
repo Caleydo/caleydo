@@ -21,7 +21,6 @@ package org.caleydo.view.subgraph.datamapping;
 
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
-import org.caleydo.core.view.opengl.layout2.basic.GLButton;
 
 /**
  * Element representing a perspective (stratification) element in the data mapping view.
@@ -29,28 +28,16 @@ import org.caleydo.core.view.opengl.layout2.basic.GLButton;
  * @author Marc streit
  *
  */
-public class PerspectiveElement extends GLButton implements GLButton.ISelectionCallback {
+public class PerspectiveElement extends ADataMappingElement {
 
 	protected final Perspective perspective;
 
-	protected final String pathEventSpace;
+	public PerspectiveElement(Perspective perspective, DataMappingState dmState) {
 
-	public PerspectiveElement(Perspective perspective, String pathEventSpace) {
-
+		super(dmState);
 		setLayoutData(perspective);
+		// setCallback(this);
 		this.perspective = perspective;
-		this.pathEventSpace = pathEventSpace;
-
-		setMode(EButtonMode.CHECKBOX);
-		setSize(150, 18);
-		setCallback(this);
-	}
-
-	@Override
-	public void onSelectionChanged(GLButton button, boolean selected) {
-		// TODO Auto-generated method stub
-
-		System.out.println("TEST");
 	}
 
 	@Override

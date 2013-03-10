@@ -29,36 +29,24 @@ import org.caleydo.core.view.opengl.layout2.basic.GLButton;
  * @author Marc streit
  *
  */
-public class TableBasedDataDomainElement extends GLButton implements GLButton.ISelectionCallback {
+public class TableBasedDataDomainElement extends ADataMappingElement implements GLButton.ISelectionCallback {
 
 	protected final ATableBasedDataDomain dd;
 
-	protected final String pathEventSpace;
+	public TableBasedDataDomainElement(ATableBasedDataDomain dd, DataMappingState dmState) {
 
-	public TableBasedDataDomainElement(ATableBasedDataDomain dd, String pathEventSpace) {
-
-		setLayoutData(dd);
-		this.dd = dd;
-		this.pathEventSpace = pathEventSpace;
-
-		setMode(EButtonMode.CHECKBOX);
-		setSize(150, 18);
+		super(dmState);
 		setCallback(this);
+		this.dd = dd;
 	}
 
 	@Override
 	public void onSelectionChanged(GLButton button, boolean selected) {
 
-		if (selected) {
-
-			// AddTablePerspectivesEvent event = new AddTablePerspectivesEvent(tablePerspective);
-			// event.setReceiver(view);
-			// event.setSender(this);
-			// event.setEventSpace(pathEventSpace);
-			// EventPublisher.publishEvent(event);
-		}
-		// else
-
+		if (selected)
+			dmState.addDataDomain(dd);
+		else
+			dmState.removeDataDomain(dd);
 	}
 
 	@Override

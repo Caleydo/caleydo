@@ -19,12 +19,19 @@
  *******************************************************************************/
 package org.caleydo.view.subgraph.datamapping;
 
+import java.util.List;
+
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
+import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.view.opengl.layout2.AnimatedGLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.core.view.opengl.layout2.basic.GLButton;
+import org.caleydo.core.view.opengl.layout2.basic.GLButton.ISelectionCallback;
+import org.caleydo.core.view.opengl.layout2.basic.RadioController;
 import org.caleydo.core.view.opengl.layout2.layout.GLFlowLayout;
 import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
 import org.caleydo.view.subgraph.GLSubGraph;
@@ -33,11 +40,13 @@ import org.caleydo.view.subgraph.GLSubGraph;
  * Data mapping for selecting datasets and perspectives.
  *
  * @author Marc Streit
- * 
+ *
  */
-public class GLExperimentalDataMapping extends AnimatedGLElementContainer {// implements ISelectionCallback {
+public class GLExperimentalDataMapping extends AnimatedGLElementContainer implements ISelectionCallback {
 
 	protected final GLSubGraph view;
+
+	protected final DataMappingState dmState;
 
 	public GLExperimentalDataMapping(GLSubGraph view) {
 		this.view = view;
@@ -45,11 +54,20 @@ public class GLExperimentalDataMapping extends AnimatedGLElementContainer {// im
 		setLayout(new GLFlowLayout(false, 2, new GLPadding(2)));
 		setSize(-1, 40);
 
-		GLElementContainer ddElements = new GLElementContainer(new GLFlowLayout(true, 10, new GLPadding(5)));
-		this.add(ddElements);
+		dmState = new DataMappingState(view.getPathEventSpace());
 
-		// FIXME: from which dataset should we take the stratifications? currently we always take them from mRNA
-		ATableBasedDataDomain mRNAdd = null;
+		GLElementContainer ddElements = new GLElementContainer(new GLFlowLayout(true, 10, new GLPadding(5)));
+		GLElementContainer stratElements = new GLElementContainer(new GLFlowLayout(true, 10, new GLPadding(5)));
+
+		addPerspectiveElements(stratElements);
+		addDataDomainElements(ddElements);
+
+		this.add(ddElements);
+		this.add(stratElements);
+
+	}
+
+	private void addDataDomainElements(GLElementContainer ddElements) {
 
 		ddElements.add(new GLElement() {
 			@Override
@@ -57,21 +75,16 @@ public class GLExperimentalDataMapping extends AnimatedGLElementContainer {// im
 				g.drawText("Data sets:", 0, -2, w, h);
 			}
 		}.setSize(100, 15));
-		// RadioController radio = new RadioController(this);
 		for (ATableBasedDataDomain dd : DataDomainManager.get().getDataDomainsByType(ATableBasedDataDomain.class)) {
-			TableBasedDataDomainElement ddElement = new TableBasedDataDomainElement(dd, view.getPathEventSpace());
+			TableBasedDataDomainElement ddElement = new TableBasedDataDomainElement(dd, dmState);
 			ddElements.add(ddElement);
-			// radio.add(ddElement);
 
 			if (dd.getLabel().equals("mRNA"))
-				mRNAdd = dd;
+				ddElement.setSelected(true);
 		}
+	}
 
-		GLElementContainer stratElements = new GLElementContainer(new GLFlowLayout(true, 10, new GLPadding(5)));
-		this.add(stratElements);
-
-		if (mRNAdd == null)
-			return;
+	private void addPerspectiveElements(GLElementContainer stratElements) {
 
 		stratElements.add(new GLElement() {
 			@Override
@@ -80,10 +93,29 @@ public class GLExperimentalDataMapping extends AnimatedGLElementContainer {// im
 			}
 		}.setSize(100, 15));
 
-		for (String recordPerspectiveIDs : mRNAdd.getRecordPerspectiveIDs()) {
-			stratElements.add(new PerspectiveElement(mRNAdd.getTable().getRecordPerspective(recordPerspectiveIDs), view
-					.getPathEventSpace()));
+		// FIXME: from which dataset should we take the stratifications? currently we always take them from mRNA
+		ATableBasedDataDomain mRNAdd = null;
+		for (ATableBasedDataDomain dd : DataDomainManager.get().getDataDomainsByType(ATableBasedDataDomain.class)) {
+			if (dd.getLabel().equals("mRNA")) {
+				mRNAdd = dd;
+				break;
+			}
 		}
+
+		if (mRNAdd == null)
+			return;
+
+		RadioController radio = new RadioController(this);
+		for (String recordPerspectiveIDs : mRNAdd.getRecordPerspectiveIDs()) {
+			PerspectiveElement perspective = new PerspectiveElement(mRNAdd.getTable().getRecordPerspective(
+					recordPerspectiveIDs), dmState);
+			stratElements.add(perspective);
+			radio.add(perspective);
+		}
+
+		// Set default data
+		dmState.setPerspective(mRNAdd.getTable().getDefaultRecordPerspective());
+		dmState.addDataDomain(mRNAdd);
 	}
 
 	@Override
@@ -99,8 +131,13 @@ public class GLExperimentalDataMapping extends AnimatedGLElementContainer {// im
 		// possible)
 	}
 
-	// @Override
-	// public void onSelectionChanged(GLButton button, boolean selected) {
-	// System.out.println("RADIO");
-	// }
+	@Override
+	public void onSelectionChanged(GLButton button, boolean selected) {
+
+		dmState.setPerspective(button.getLayoutDataAs(Perspective.class, null));
+	}
+
+	public List<TablePerspective> getTablePerspectives() {
+		return dmState.getTablePerspectives();
+	}
 }
