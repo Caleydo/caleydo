@@ -530,6 +530,8 @@ public class MappedDataRenderer {
 				experimentPerspective = tablePerspective.getRecordPerspective();
 				group = tablePerspective.getRecordGroup();
 			}
+			if (group == null)
+				continue;
 
 			if (sampleGroupSelectionManager.checkStatus(abstractGroupType, group.getID())) {
 				minWidthPixels += ABSTRACT_GROUP_PIXEL_WIDTH;
