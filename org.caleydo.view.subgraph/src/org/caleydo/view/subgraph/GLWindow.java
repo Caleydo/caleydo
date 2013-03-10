@@ -19,6 +19,8 @@
  *******************************************************************************/
 package org.caleydo.view.subgraph;
 
+import gleem.linalg.Vec2f;
+
 import org.caleydo.core.util.base.DefaultLabelProvider;
 import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.view.opengl.layout2.AnimatedGLElementContainer;
@@ -47,7 +49,7 @@ public class GLWindow extends AnimatedGLElementContainer {
 	protected final GLButton slideInButton;
 	protected boolean active = false;
 	protected boolean showCloseButton = true;
-	protected boolean showSlideInButton = false;
+	protected ESlideInButtonPosition buttonPosition = ESlideInButtonPosition.NONE;
 
 	public GLWindow(ILabelProvider titleLabelProvider, GLSubGraph view) {
 		this.view = view;
@@ -56,27 +58,19 @@ public class GLWindow extends AnimatedGLElementContainer {
 		setLayout(GLLayouts.LAYERS);
 		baseContainer = new GLElementContainer(new GLSizeRestrictiveFlowLayout(false, 1, GLPadding.ZERO));
 		baseContainer.add(titleBar);
-		GLElementContainer sliderButtonContainer = new GLElementContainer(GLLayouts.flowHorizontal(0));
 
-		slideInButton = new GLButton(EButtonMode.BUTTON);
-		slideInButton.setSize(20, 5);
-		slideInButton.setRenderer(new IGLRenderer() {
-
-			@Override
-			public void render(GLGraphics g, float w, float h, GLElement parent) {
-				g.color(0.6f, 0.6f, 0.6f, 1f).fillRoundedRect(0, -10, 50, 10, 2);
-				g.fillRect(-5, -5, 60, 5);
-				g.color(1f, 1f, 1f, 1f).fillRoundedRect(0, -10, 50, 10, 2);
-
-			}
-		});
-		sliderButtonContainer.add(new GLElement());
-		sliderButtonContainer.add(slideInButton);
-		sliderButtonContainer.add(new GLElement());
+		slideInButton = new GLButton(EButtonMode.CHECKBOX);
+		// slideInButton.setSize(20, 5);
+		SlideInButtonRenderer buttonRenderer = new SlideInButtonRenderer();
+		slideInButton.setRenderer(buttonRenderer);
+		slideInButton.setPicker(buttonRenderer);
+		slideInButton.setHoverEffect(null);
+		slideInButton.setSelected(true);
+		slideInButton.setCallback(new SlideInButtonCallBack());
 
 		add(background);
 		add(baseContainer);
-		add(sliderButtonContainer);
+		add(slideInButton);
 	}
 
 	public GLWindow(String title, GLSubGraph view) {
@@ -117,11 +111,11 @@ public class GLWindow extends AnimatedGLElementContainer {
 	}
 
 	/**
-	 * @param showSlideInButton
-	 *            setter, see {@link showSlideInButton}
+	 * @param buttonPosition
+	 *            setter, see {@link buttonPosition}
 	 */
-	public void setShowSlideInButton(boolean showSlideInButton) {
-		this.showSlideInButton = showSlideInButton;
+	public void setButtonPosition(ESlideInButtonPosition buttonPosition) {
+		this.buttonPosition = buttonPosition;
 	}
 
 	/**
@@ -157,6 +151,64 @@ public class GLWindow extends AnimatedGLElementContainer {
 		 * Called when the close button of the window was pressed.
 		 */
 		public void onWindowClosed(GLWindow window);
+	}
+
+	public enum ESlideInButtonPosition {
+		NONE, LEFT, RIGHT, TOP, BOTTOM;
+	}
+
+	protected class SlideInButtonRenderer implements IGLRenderer {
+
+		@Override
+		public void render(GLGraphics g, float w, float h, GLElement parent) {
+			switch (buttonPosition) {
+			case NONE:
+				return;
+			case LEFT:
+				g.color(0.6f, 0.6f, 0.6f, 1f).fillRoundedRect(-10, h / 2.0f - 25, 10, 50, 2);
+				break;
+			case BOTTOM:
+				g.color(0.6f, 0.6f, 0.6f, 1f).fillRoundedRect(w / 2.0f - 25, h, 50, 10, 2);
+				break;
+			case RIGHT:
+				g.color(0.6f, 0.6f, 0.6f, 1f).fillRoundedRect(w, h / 2.0f - 25, 10, 50, 2);
+				break;
+			case TOP:
+				g.color(0.6f, 0.6f, 0.6f, 1f).fillRoundedRect(w / 2.0f - 25, -10, 50, 10, 2);
+				break;
+			default:
+				break;
+			}
+
+		}
+	}
+
+	protected class SlideInButtonCallBack implements ISelectionCallback {
+
+		private Vec2f previousWindowSize;
+
+		@Override
+		public void onSelectionChanged(GLButton button, boolean selected) {
+			if (selected) {
+				if (buttonPosition == ESlideInButtonPosition.LEFT || buttonPosition == ESlideInButtonPosition.RIGHT) {
+					setSize(previousWindowSize.x(), Float.NaN);
+				} else {
+					setSize(Float.NaN, previousWindowSize.y());
+				}
+				background.setVisibility(EVisibility.PICKABLE);
+				baseContainer.setVisibility(EVisibility.VISIBLE);
+
+			} else {
+				previousWindowSize = new Vec2f(getSize());
+				if (buttonPosition == ESlideInButtonPosition.LEFT || buttonPosition == ESlideInButtonPosition.RIGHT) {
+					setSize(1, Float.NaN);
+				} else {
+					setSize(Float.NaN, 1);
+				}
+				background.setVisibility(EVisibility.NONE);
+				baseContainer.setVisibility(EVisibility.NONE);
+			}
+		}
 	}
 
 }

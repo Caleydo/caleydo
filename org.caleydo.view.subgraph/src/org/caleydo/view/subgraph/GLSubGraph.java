@@ -53,6 +53,7 @@ import org.caleydo.datadomain.pathway.listener.EnablePathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.PathwayPathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.ShowPortalNodesEvent;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
+import org.caleydo.view.subgraph.GLWindow.ESlideInButtonPosition;
 import org.caleydo.view.subgraph.GLWindow.ICloseWindowListener;
 import org.caleydo.view.subgraph.contextmenu.ShowCommonNodeItem;
 import org.caleydo.view.subgraph.datamapping.GLExperimentalDataMapping;
@@ -155,12 +156,14 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 				dataMappingWindow.setVisibility(EVisibility.NONE);
 			}
 		});
+		dataMappingWindow.setButtonPosition(ESlideInButtonPosition.TOP);
 
 		column.add(dataMappingWindow);
 		column.add(nodeInfoContainer);
 		GLWindow rankingWindow = new GLWindow("Pathways", this);
 		rankingWindow.setSize(200, Float.NaN);
 		rankingWindow.setContent(rankingElement);
+		rankingWindow.setButtonPosition(ESlideInButtonPosition.RIGHT);
 
 		baseContainer.add(rankingWindow);
 		// pathwayRow.setLayout(new GLMultiFormPathwayLayout(10, GLPadding.ZERO, this, pathwayRow));
@@ -180,8 +183,9 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	public void init(GL2 gl) {
 		super.init(gl);
 		pathInfo = new MultiFormInfo();
-		createMultiformRenderer(experimentalDataMappingElement.getTablePerspectives(),
+		createMultiformRenderer(new ArrayList<>(experimentalDataMappingElement.getTablePerspectives()),
 				EnumSet.of(EEmbeddingID.PATH_LEVEL1, EEmbeddingID.PATH_LEVEL2), baseContainer, 0.3f, pathInfo);
+		pathInfo.window.setButtonPosition(ESlideInButtonPosition.LEFT);
 		// This assumes that a path level 2 view exists.
 		int rendererID = pathInfo.embeddingIDToRendererIDs.get(EEmbeddingID.PATH_LEVEL2).get(0);
 		if (pathInfo.multiFormRenderer.getActiveRendererID() != rendererID) {
@@ -207,8 +211,6 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	@Override
 	public void registerEventListeners() {
 		super.registerEventListeners();
-		// eventListeners.register(AddTablePerspectivesEvent.class, new
-		// AddTablePerspectivesListener().setHandler(this));
 		eventListeners.register(pathEventSpaceHandler, pathEventSpace);
 	}
 
@@ -217,72 +219,25 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		gl.glDeleteLists(displayListIndex, 1);
 	}
 
-	// @Override
-	// public IDataSupportDefinition getDataSupportDefinition() {
-	// return DataSupportDefinitions.tableBased;
-	// }
-
-	// @Override
-	// public void addTablePerspective(TablePerspective newTablePerspective) {
-	// if (newTablePerspective != null) {
-	// tablePerspectives.add(newTablePerspective);
-	// }
-	// createRemoteRenderedViews();
-	// }
-	//
-	// @Override
-	// public void addTablePerspectives(List<TablePerspective> newTablePerspectives) {
-	// if (newTablePerspectives != null) {
-	// for (TablePerspective tablePerspective : newTablePerspectives) {
-	// if (tablePerspective != null) {
-	// tablePerspectives.add(tablePerspective);
-	// }
-	// }
-	// }
-	// createRemoteRenderedViews();
-	// }
-
-	// private void createRemoteRenderedViews() {
-	// if (remoteRenderedPathwayMultiformViewIDs == null) {
-	// // addPathway(PathwayManager.get().getPathwayByTitle("Glioma", EPathwayDatabaseType.KEGG));
-	// // addPathway(PathwayManager.get().getPathwayByTitle("Pathways in cancer", EPathwayDatabaseType.KEGG));
-	// // addPathway(PathwayManager.get().getPathwayByTitle("Pathways in cancer", EPathwayDatabaseType.KEGG));
-	// // addPathway(PathwayManager.get().getPathwayByTitle("Glioma", EPathwayDatabaseType.KEGG));
-	//
-	// }
-	// }
-
 	public void addPathway(PathwayGraph pathway) {
-		//
-		// if (tablePerspectives.size() <= 0)
-		// return;
 
 		PathwayDataDomain pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get().getDataDomainByType(
 				PathwayDataDomain.DATA_DOMAIN_TYPE);
-
-		TablePerspective tablePerspective = experimentalDataMappingElement.getTablePerspectives().get(0);
+		List<TablePerspective> tablePerspectives = new ArrayList<>(
+				experimentalDataMappingElement.getTablePerspectives());
+		TablePerspective tablePerspective = tablePerspectives.get(0);
 		Perspective recordPerspective = tablePerspective.getRecordPerspective();
-		// Perspective newRecordPerspective = new Perspective(tablePerspective.getDataDomain(),
-		// oldRecordPerspective.getIdType());
-
-		// PerspectiveInitializationData data = new PerspectiveInitializationData();
-		// data.setData(oldRecordPerspective.getVirtualArray());
-		//
-		// newRecordPerspective.init(data);
-
 		Perspective dimensionPerspective = tablePerspective.getDimensionPerspective();
-		// Perspective newDimensionPerspective = new Perspective(tablePerspective.getDataDomain(),
-		// oldDimensionPerspective.getIdType());
-		// data = new PerspectiveInitializationData();
-		// data.setData(oldDimensionPerspective.getVirtualArray());
 
-		// newDimensionPerspective.init(data);
 		PathwayTablePerspective pathwayTablePerspective = new PathwayTablePerspective(tablePerspective.getDataDomain(),
 				pathwayDataDomain, recordPerspective, dimensionPerspective, pathway);
 		pathwayDataDomain.addTablePerspective(pathwayTablePerspective);
 
 		List<TablePerspective> pathwayTablePerspectives = new ArrayList<>(1);
 		pathwayTablePerspectives.add(pathwayTablePerspective);
+		for (int i = 1; i < tablePerspectives.size(); i++) {
+			pathwayTablePerspectives.add(tablePerspectives.get(i));
+		}
 
 		PathwayMultiFormInfo info = new PathwayMultiFormInfo();
 		info.pathway = pathway;
@@ -300,14 +255,9 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		}
 		lastUsedLevel1Renderer = info.multiFormRenderer;
 		lastUsedRenderer = info.multiFormRenderer;
-		// for (PathwayMultiFormInfo pathwayInfo : pathwayInfos) {
-		// pathwayInfo.multiFormRenderer.setActive(pathwayInfo.embeddingIDToRendererIDs.get(
-		// EEmbeddingID.PATHWAY_LEVEL2).get(0));
-		// }
 
 		pathwayInfos.add(info);
 		wasPathwayAdded = true;
-		// pathwayRow.add(pathwayColumn);
 	}
 
 	private void createMultiformRenderer(List<TablePerspective> tablePerspectives, EnumSet<EEmbeddingID> embeddingIDs,
@@ -363,16 +313,6 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		info.window = window;
 		parent.add(window);
 	}
-
-	// @Override
-	// public List<TablePerspective> getTablePerspectives() {
-	// return new ArrayList<>(tablePerspectives);
-	// }
-	//
-	// @Override
-	// public void removeTablePerspective(int tablePerspectiveID) {
-	// // TODO: implement
-	// }
 
 	@Override
 	public List<AGLView> getRemoteRenderedViews() {
