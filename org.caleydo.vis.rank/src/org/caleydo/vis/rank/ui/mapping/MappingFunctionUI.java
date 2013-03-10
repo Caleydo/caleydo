@@ -334,7 +334,7 @@ public class MappingFunctionUI extends GLElementContainer implements GLButton.IS
 	class RawHistogramElement extends HistogramElement {
 		private IFloatList data;
 		private RawHistogramElement(IFloatList raw) {
-			super("Original");
+			super("Raw");
 			this.data = raw;
 		}
 		@Override
@@ -360,7 +360,7 @@ public class MappingFunctionUI extends GLElementContainer implements GLButton.IS
 
 	class NormalizedHistogramElement extends HistogramElement {
 		public NormalizedHistogramElement() {
-			super("Normalized");
+			super("Score");
 		}
 		@Override
 		protected void renderImpl(GLGraphics g, float w, float h) {

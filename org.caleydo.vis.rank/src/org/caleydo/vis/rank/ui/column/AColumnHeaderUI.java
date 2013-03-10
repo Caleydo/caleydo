@@ -332,7 +332,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 			final IAnnotatedColumnMixin m = (IAnnotatedColumnMixin) model;
 			GLButton b = new GLButton();
 			b.setRenderer(GLRenderers.fillImage(RenderStyle.ICON_EDIT_ANNOTATION));
-			b.setTooltip("Edit the annotation of this element");
+			b.setTooltip("Edit label");
 			b.setCallback(new ISelectionCallback() {
 				@Override
 				public void onSelectionChanged(GLButton button, boolean selected) {
