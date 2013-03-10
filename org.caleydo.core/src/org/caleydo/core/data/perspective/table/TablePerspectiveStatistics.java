@@ -312,7 +312,7 @@ public class TablePerspectiveStatistics {
 		Collection<Integer> ids;
 		if (!resolvedObjectIDType.equals(objectIDType)) {
 			ids = IDMappingManagerRegistry.get().getIDMappingManager(objectIDType)
-					.getID(objectIDType, resolvedObjectIDType, objectID);
+					.getIDAsSet(objectIDType, resolvedObjectIDType, objectID);
 		} else {
 			ids = new ArrayList<Integer>(1);
 			ids.add(objectID);
