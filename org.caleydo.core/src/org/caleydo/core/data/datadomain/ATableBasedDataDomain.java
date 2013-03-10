@@ -1,16 +1,16 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
  * University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
  * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
  * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with this program. If not, see
  * <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -90,7 +90,7 @@ import org.caleydo.core.util.color.mapping.ColorMapper;
  * {@link ATableBasedDataDomain}s are initialized using a {@link DataDomainConfiguration} object, which can be either
  * specified or taken from a default initialization of an implementing sub-class.
  * </p>
- * 
+ *
  * @author Alexander Lex
  * @author Marc Streit
  */
@@ -238,7 +238,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 	/**
 	 * Sets the {@link #table} of this dataDomain. The table may not be null. Initializes {@link #recordPerspectiveIDs}
 	 * and {@link #dimensionPerspectiveIDs}.
-	 * 
+	 *
 	 * @param table
 	 *            The new set which replaced the currently loaded one.
 	 */
@@ -265,9 +265,9 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 	 * <p>
 	 * If such a container exists already, the existing container is returned. If not, a new container is created and
 	 * the datadomain will be notified.
-	 * 
+	 *
 	 * </p>
-	 * 
+	 *
 	 * @param recordPerspectiveID
 	 * @param dimensionPerspectiveID
 	 * @return
@@ -282,7 +282,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 	 * <p>
 	 * If such a container exists already, the existing container is returned. If not, a new container is created.
 	 * </p>
-	 * 
+	 *
 	 * @param recordPerspectiveID
 	 * @param dimensionPerspectiveID
 	 * @param flag
@@ -321,7 +321,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 
 	/**
 	 * Returns a data container based on its key
-	 * 
+	 *
 	 * @param tablePerspectiveKey
 	 * @return
 	 */
@@ -337,7 +337,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 
 	/**
 	 * Returns whether a {@link TablePerspective} Object exists in this datadomain for the given perspectiveIDs.
-	 * 
+	 *
 	 * @param recordPerspectiveID
 	 * @param dimensionPerspectiveID
 	 * @return
@@ -411,7 +411,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 
 	/**
 	 * Returns a clone of the record selection manager. This is the preferred way to initialize SelectionManagers.
-	 * 
+	 *
 	 * @return a clone of the record selection manager
 	 */
 	public SelectionManager getRecordSelectionManager() {
@@ -420,7 +420,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 
 	/**
 	 * Returns a clone of the dimension selection manager. This is the preferred way to initialize SelectionManagers.
-	 * 
+	 *
 	 * @return a clone of the dimension selection manager
 	 */
 	public SelectionManager getDimensionSelectionManager() {
@@ -430,7 +430,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 	/**
 	 * Returns a clone of the record group selection manager. This is the preferred way to initialize SelectionManagers.
 	 * *
-	 * 
+	 *
 	 * @return a clone of the dimension selection manager
 	 */
 	public SelectionManager getRecordGroupSelectionManager() {
@@ -439,7 +439,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 
 	/**
 	 * Returns the virtual array for the type
-	 * 
+	 *
 	 * @param recordPerspectiveID
 	 *            the type of VA requested
 	 * @return
@@ -451,7 +451,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 
 	/**
 	 * Returns the virtual array for the type
-	 * 
+	 *
 	 * @param dimensionPerspectiveID
 	 *            the type of VA requested
 	 * @return
@@ -502,7 +502,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 	/**
 	 * Initiates clustering based on the parameters passed. Sends out an event to all affected views upon positive
 	 * completion to replace their VA.
-	 * 
+	 *
 	 * @param tableID
 	 *            ID of the set to cluster
 	 * @param clusterState
@@ -653,7 +653,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 	 * This method is called by the {@link ForeignSelectionUpdateListener}, signaling that a selection form another
 	 * dataDomain is available. If possible, it is converted to be compatible with the local dataDomain and then sent
 	 * out via a {@link SelectionUpdateEvent}.
-	 * 
+	 *
 	 * @param dataDomainType
 	 *            the type of the dataDomain for which this selectionUpdate is intended
 	 * @param delta
@@ -676,7 +676,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 	/**
 	 * This method is called if a record VA Update was requested, but the dataDomainType specified was not this
 	 * dataDomains type. Concrete handling can only be done in concrete dataDomains.
-	 * 
+	 *
 	 * @param tableID
 	 * @param dataDomainType
 	 * @param vaType
@@ -688,7 +688,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 
 	/**
 	 * Returns the denomination for the records. For genetic data for example this would be "Gene"
-	 * 
+	 *
 	 * @param capitalized
 	 *            if true, the label is returned capitalized, e.g., "Gene", if false it would be "gene"
 	 * @param plural
@@ -730,7 +730,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 
 	/**
 	 * Get the human readable record label for the id, which is of the {@link #recordIDType}.
-	 * 
+	 *
 	 * @param id
 	 *            the id to convert to a human readable label
 	 * @return the readable label
@@ -741,7 +741,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 
 	/**
 	 * Get the human readable dimension label for the id, which is of the {@link #dimensionIDType}.
-	 * 
+	 *
 	 * @param id
 	 *            the id to convert to a human readable label
 	 * @return the readable label
@@ -752,7 +752,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 
 	/**
 	 * Get the human readable record label for the id, which is of the type specified.
-	 * 
+	 *
 	 * @param idType
 	 *            the IDType of the id passed
 	 * @param id
@@ -860,6 +860,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 	}
 
 	// TODO this is never called!
+
 	@Override
 	public void unregisterEventListeners() {
 		super.unregisterEventListeners();
@@ -979,5 +980,104 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 
 		System.out.println("Arrived" + valueColumn.toString());
 
+	}
+
+	// ================ New ID based interface ======================
+
+	/**
+	 * Returns the normalized value of the table by using the IDTypes to identify record/dimension. Wrapper around
+	 * {@link Table#getNormalizedValue(Integer, Integer)}.
+	 *
+	 * @param idType1
+	 * @param id1
+	 * @param idType2
+	 * @param id2
+	 * @return
+	 */
+	public float getNormalizedValue(IDType idType1, Integer id1, IDType idType2, Integer id2) {
+		if (idType1.equals(recordIDType) && idType2.equals(dimensionIDType)) {
+			return table.getNormalizedValue(id2, id1);
+		} else if (idType2.equals(recordIDType) && idType1.equals(dimensionIDType)) {
+			return table.getNormalizedValue(id1, id2);
+		}
+		throw new IllegalStateException("At least one of the ID types " + idType1 + " " + idType2
+				+ " not registered with this datadomain " + this.toString());
+	}
+
+	/**
+	 * Resolves IDTypes to record/dimension and calls {@link Table#getRawAsString(Integer, Integer)}
+	 *
+	 * @param idType1
+	 * @param id1
+	 * @param idType2
+	 * @param id2
+	 * @return
+	 */
+	public String getRawAsString(IDType idType1, Integer id1, IDType idType2, Integer id2) {
+		if (idType1.equals(recordIDType) && idType2.equals(dimensionIDType)) {
+			return table.getRawAsString(id2, id1);
+		} else if (idType2.equals(recordIDType) && idType1.equals(dimensionIDType)) {
+			return table.getRawAsString(id1, id2);
+		}
+		throw new IllegalStateException("At least one of the ID types " + idType1 + " " + idType2
+				+ " not registered with this datadomain " + this.toString());
+	}
+
+	/**
+	 * Returns true if the type is identical with a primary IDType, i.e., either recordIDType or dimensionIDType.
+	 *
+	 * @param candidateType
+	 * @return
+	 */
+
+	public boolean isPrimaryIDType(IDType candidateType) {
+		if (candidateType.equals(recordIDType))
+			return true;
+		else if (candidateType.equals(dimensionIDType))
+			return true;
+		return false;
+	}
+
+	/**
+	 * Returns the primary type of this datadomain that is of the same category as the provided IDType.
+	 *
+	 * @param candidateType
+	 * @return
+	 */
+	public IDType getPrimaryIDType(IDType candidateType) {
+		if (recordIDType.getIDCategory().isOfCategory(candidateType)) {
+			return recordIDType;
+		} else if (dimensionIDType.getIDCategory().isOfCategory(candidateType)) {
+			return dimensionIDType;
+		}
+		throw new IllegalStateException("ID type " + candidateType + " not registered with this datadomain "
+				+ this.toString());
+	}
+
+	/**
+	 * Convenience wrapper for {@link #getOppositeIDType(IDCategory)}
+	 *
+	 * @param idType
+	 * @return
+	 */
+	public IDType getOppositeIDType(IDType idType) {
+		return getOppositeIDType(idType.getIDCategory());
+	}
+
+	/**
+	 * Returns the ID type "opposite" to the given id category. If the passed id category matches the record id category
+	 * the id type for dimensions is returned and vice versa.
+	 *
+	 * @param idCategory
+	 * @return
+	 */
+	public IDType getOppositeIDType(IDCategory idCategory) {
+		if (idCategory.equals(recordIDCategory)) {
+			return dimensionIDType;
+		} else if (idCategory.equals(dimensionIDCategory)) {
+			return recordIDType;
+		}
+		throw new IllegalStateException("ID Category " + idCategory + " not registered with this datadomain "
+				+ this.toString());
 	}
 }

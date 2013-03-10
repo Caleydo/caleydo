@@ -22,16 +22,16 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.Histogram;
-import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.collection.Algorithms;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
-import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.view.enroute.EPickingType;
 
 /**
@@ -42,27 +42,25 @@ public abstract class ACategoricalRowContentRenderer extends ContentRenderer {
 
 	protected static final int MAX_HISTOGRAM_BAR_WIDTH_PIXELS = 20;
 
-	protected MappedDataRenderer parent;
-
 	Histogram histogram;
 	boolean useShading = true;
 
 	/**
 	 *
 	 */
-	public ACategoricalRowContentRenderer(Integer geneID, Integer davidID, GeneticDataDomain dataDomain,
-			TablePerspective tablePerspective, Perspective experimentPerspective, AGLView parentView,
+	public ACategoricalRowContentRenderer(IDType rowIDType, Integer rowID, IDType resolvedRowIDType,
+			Integer resolvedRowID, ATableBasedDataDomain dataDomain, Perspective columnPerspective, AGLView parentView,
 			MappedDataRenderer parent, Group group, boolean isHighlightMode) {
+		super(rowIDType, rowID, resolvedRowIDType, resolvedRowID, dataDomain, columnPerspective, parentView, parent,
+				group, isHighlightMode);
 
-		super(geneID, davidID, dataDomain, tablePerspective, experimentPerspective, parentView, group, isHighlightMode);
-		this.parent = parent;
 	}
 
 	@Override
 	public void renderContent(GL2 gl) {
-		if (geneID == null)
+		if (rowID == null)
 			return;
-		List<SelectionType> geneSelectionTypes = parent.geneSelectionManager.getSelectionTypes(davidID);
+		List<SelectionType> geneSelectionTypes = parent.rowSelectionManager.getSelectionTypes(rowIDType, rowID);
 
 		List<SelectionType> selectionTypes = parent.sampleGroupSelectionManager.getSelectionTypes(group.getID());
 		if (selectionTypes.size() > 0 && selectionTypes.contains(MappedDataRenderer.abstractGroupType)) {
@@ -99,8 +97,8 @@ public abstract class ACategoricalRowContentRenderer extends ContentRenderer {
 			// }
 			// }
 
-			if (parent.selectedBucketNumber == bucketNumber && parent.selectedBucketGeneID == geneID
-					&& parent.selectedBucketExperimentPerspective == experimentPerspective) {
+			if (parent.selectedBucketNumber == bucketNumber && parent.selectedBucketGeneID == rowID
+					&& parent.selectedBucketExperimentPerspective == columnPerspective) {
 				selectionTypes.add(SelectionType.SELECTION);
 			} else {
 				selectionTypes.remove(SelectionType.SELECTION);
@@ -164,12 +162,12 @@ public abstract class ACategoricalRowContentRenderer extends ContentRenderer {
 				// System.out.println("Bucket: " + pick.getObjectID());
 
 				parent.sampleSelectionManager.clearSelection(SelectionType.SELECTION);
-				parent.sampleSelectionManager.addToType(SelectionType.SELECTION, sampleIDType,
+				parent.sampleSelectionManager.addToType(SelectionType.SELECTION, columnIDType,
 						histogram.getIDsForBucketFromBucketID(histogram.getBucketID(pick.getObjectID())));
 				parent.sampleSelectionManager.triggerSelectionUpdateEvent();
 				parent.selectedBucketNumber = pick.getObjectID();
-				parent.selectedBucketGeneID = geneID;
-				parent.selectedBucketExperimentPerspective = experimentPerspective;
+				parent.selectedBucketGeneID = rowID;
+				parent.selectedBucketExperimentPerspective = columnPerspective;
 				parentView.setDisplayListDirty();
 			}
 

@@ -4,37 +4,38 @@ import java.util.List;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspectiveStatistics;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.collection.Algorithms;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.view.enroute.EPickingType;
 
 public class MutationStatusRowContentRenderer extends ACategoricalRowContentRenderer {
 
-	public MutationStatusRowContentRenderer(Integer geneID, Integer davidID, GeneticDataDomain dataDomain,
-			TablePerspective tablePerspective, Perspective experimentPerspective, AGLView parentView,
+	public MutationStatusRowContentRenderer(IDType rowIDType, Integer rowID, IDType resolvedRowIDType,
+			Integer resolvedRowID, ATableBasedDataDomain dataDomain, Perspective columnPerspective, AGLView parentView,
 			MappedDataRenderer parent, Group group, boolean isHighlightMode) {
 
-		super(geneID, davidID, dataDomain, tablePerspective, experimentPerspective, parentView, parent, group,
-				isHighlightMode);
+		super(rowIDType, rowID, resolvedRowIDType, resolvedRowID, dataDomain, columnPerspective, parentView, parent,
+				group, isHighlightMode);
+
 	}
 
 	@Override
 	public void init() {
-		if (geneID == null)
+		if (rowID == null)
 			return;
 
-		VirtualArray dimensionVirtualArray = new VirtualArray(dataDomain.getGeneIDType());
-		dimensionVirtualArray.append(geneID);
+		VirtualArray dimensionVirtualArray = new VirtualArray(resolvedRowIDType);
+		dimensionVirtualArray.append(rowID);
 		histogram = TablePerspectiveStatistics.calculateHistogram(dataDomain.getTable(),
-				experimentPerspective.getVirtualArray(), dimensionVirtualArray, 2);
+				columnPerspective.getVirtualArray(), dimensionVirtualArray, 2);
 
 		registerPickingListener();
 
@@ -43,17 +44,17 @@ public class MutationStatusRowContentRenderer extends ACategoricalRowContentRend
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void renderAllBars(GL2 gl, List<SelectionType> geneSelectionTypes) {
-		float xIncrement = x / experimentPerspective.getVirtualArray().size();
+		float xIncrement = x / columnPerspective.getVirtualArray().size();
 		int experimentCount = 0;
 
-		for (Integer sampleID : experimentPerspective.getVirtualArray()) {
+		for (Integer columnID : columnPerspective.getVirtualArray()) {
 
 			float value;
-			if (geneID != null) {
-				value = dataDomain.getNormalizedGeneValue(geneID, sampleID);
+			if (rowID != null) {
+				value = dataDomain.getNormalizedValue(resolvedRowIDType, rowID, resolvedColumnIDType, columnID);
 
 				List<SelectionType> experimentSelectionTypes = parent.sampleSelectionManager.getSelectionTypes(
-						sampleIDType, sampleID);
+						columnIDType, columnID);
 
 				float[] mappedColor = dataDomain.getColorMapper().getColor(value);
 				float[] baseColor = new float[] { mappedColor[0], mappedColor[1], mappedColor[2], 1f };
@@ -86,8 +87,8 @@ public class MutationStatusRowContentRenderer extends ACategoricalRowContentRend
 				// gl.glPushName(parentView.getPickingManager().getPickingID(
 				// parentView.getID(), PickingType.GENE.name(), davidID));
 
-				Integer resolvedSampleID = sampleIDMappingManager.getID(dataDomain.getSampleIDType(),
-						parent.sampleIDType, sampleID);
+				Integer resolvedSampleID = columnIDMappingManager.getID(resolvedColumnIDType, parent.sampleIDType,
+						columnID);
 				if (resolvedSampleID != null) {
 					gl.glPushName(parentView.getPickingManager().getPickingID(parentView.getID(),
 							EPickingType.SAMPLE.name(), resolvedSampleID));

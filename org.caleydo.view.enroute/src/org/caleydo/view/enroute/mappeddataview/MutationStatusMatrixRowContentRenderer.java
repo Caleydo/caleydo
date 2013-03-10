@@ -20,16 +20,16 @@ import java.util.List;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspectiveStatistics;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.collection.Algorithms;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.view.enroute.EPickingType;
 
 /**
@@ -42,23 +42,23 @@ public class MutationStatusMatrixRowContentRenderer extends ACategoricalRowConte
 
 	public static final int NUM_ROWS = 6;
 
-	public MutationStatusMatrixRowContentRenderer(Integer geneID, Integer davidID, GeneticDataDomain dataDomain,
-			TablePerspective tablePerspective, Perspective experimentPerspective, AGLView parentView,
+	public MutationStatusMatrixRowContentRenderer(IDType rowIDType, Integer rowID, IDType resolvedRowIDType,
+			Integer resolvedRowID, ATableBasedDataDomain dataDomain, Perspective columnPerspective, AGLView parentView,
 			MappedDataRenderer parent, Group group, boolean isHighlightMode) {
+		super(rowIDType, rowID, resolvedRowIDType, resolvedRowID, dataDomain, columnPerspective, parentView, parent,
+				group, isHighlightMode);
 
-		super(geneID, davidID, dataDomain, tablePerspective, experimentPerspective, parentView, parent, group,
-				isHighlightMode);
 	}
 
 	@Override
 	public void init() {
-		if (geneID == null)
+		if (resolvedRowID == null)
 			return;
 
-		VirtualArray dimensionVirtualArray = new VirtualArray(dataDomain.getGeneIDType());
-		dimensionVirtualArray.append(geneID);
+		VirtualArray dimensionVirtualArray = new VirtualArray(resolvedRowIDType);
+		dimensionVirtualArray.append(resolvedRowID);
 		histogram = TablePerspectiveStatistics.calculateHistogram(dataDomain.getTable(),
-				experimentPerspective.getVirtualArray(), dimensionVirtualArray, 2);
+				columnPerspective.getVirtualArray(), dimensionVirtualArray, 2);
 
 		registerPickingListener();
 	}
@@ -66,11 +66,10 @@ public class MutationStatusMatrixRowContentRenderer extends ACategoricalRowConte
 	@Override
 	protected void renderAllBars(GL2 gl, List<SelectionType> geneSelectionTypes) {
 
-		if (geneID == null)
+		if (resolvedRowID == null)
 			return;
 
-		float matrixColumnWidth = x
-				/ (float) Math.ceil((float) experimentPerspective.getVirtualArray().size() / NUM_ROWS);
+		float matrixColumnWidth = x / (float) Math.ceil((float) columnPerspective.getVirtualArray().size() / NUM_ROWS);
 		float matrixRowHeight = y / NUM_ROWS;
 		int vaIndex = 0;
 		int columnIndex = 0;
@@ -79,13 +78,14 @@ public class MutationStatusMatrixRowContentRenderer extends ACategoricalRowConte
 			useShading = false;
 		}
 
-		while (vaIndex < experimentPerspective.getVirtualArray().size()) {
-			for (int rowIndex = 0; (rowIndex < NUM_ROWS) && (vaIndex < experimentPerspective.getVirtualArray().size()); rowIndex++) {
-				Integer sampleID = experimentPerspective.getVirtualArray().get(vaIndex);
-				float value = dataDomain.getNormalizedGeneValue(geneID, sampleID);
+		while (vaIndex < columnPerspective.getVirtualArray().size()) {
+			for (int rowIndex = 0; (rowIndex < NUM_ROWS) && (vaIndex < columnPerspective.getVirtualArray().size()); rowIndex++) {
+				Integer columnID = columnPerspective.getVirtualArray().get(vaIndex);
+				float value = dataDomain.getNormalizedValue(resolvedRowIDType, resolvedRowID, resolvedColumnIDType,
+						columnID);
 
 				if (useShading || value > 0.0001f) {
-					renderMatrixCell(gl, rowIndex, columnIndex, matrixRowHeight, matrixColumnWidth, sampleID, value,
+					renderMatrixCell(gl, rowIndex, columnIndex, matrixRowHeight, matrixColumnWidth, columnID, value,
 							geneSelectionTypes);
 				}
 
@@ -98,9 +98,9 @@ public class MutationStatusMatrixRowContentRenderer extends ACategoricalRowConte
 
 	@SuppressWarnings("unchecked")
 	private void renderMatrixCell(GL2 gl, int rowIndex, int columnIndex, float rowHeight, float columnWidth,
-			int sampleID, float value, List<SelectionType> geneSelectionTypes) {
-		List<SelectionType> experimentSelectionTypes = parent.sampleSelectionManager.getSelectionTypes(sampleIDType,
-				sampleID);
+			int columnID, float value, List<SelectionType> geneSelectionTypes) {
+		List<SelectionType> experimentSelectionTypes = parent.sampleSelectionManager.getSelectionTypes(
+				resolvedColumnIDType, columnID);
 
 		float[] mappedColor = dataDomain.getColorMapper().getColor(value);
 		float[] baseColor = new float[] { mappedColor[0], mappedColor[1], mappedColor[2], 1f };
@@ -132,11 +132,10 @@ public class MutationStatusMatrixRowContentRenderer extends ACategoricalRowConte
 		// gl.glPushName(parentView.getPickingManager().getPickingID(
 		// parentView.getID(), PickingType.GENE.name(), davidID));
 
-		Integer resolvedSampleID = sampleIDMappingManager.getID(dataDomain.getSampleIDType(), parent.sampleIDType,
-				sampleID);
-		if (resolvedSampleID != null) {
+		Integer sampleID = columnIDMappingManager.getID(resolvedColumnIDType, parent.sampleIDType, columnID);
+		if (sampleID != null) {
 			gl.glPushName(parentView.getPickingManager().getPickingID(parentView.getID(), EPickingType.SAMPLE.name(),
-					resolvedSampleID));
+					sampleID));
 		}
 
 		if (value < 0.5f) {
@@ -212,7 +211,7 @@ public class MutationStatusMatrixRowContentRenderer extends ACategoricalRowConte
 			gl.glEnd();
 
 		}
-		if (resolvedSampleID != null)
+		if (sampleID != null)
 			gl.glPopName();
 	}
 }

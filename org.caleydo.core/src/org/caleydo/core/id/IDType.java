@@ -235,9 +235,14 @@ public class IDType {
 		return idCategory;
 	}
 
+	/** Returns true if the provided id type can be resolved to this one, else false. */
+	public boolean resolvesTo(IDType idType) {
+		return idCategory.isOfCategory(idType);
+	}
+
 	@Override
 	public String toString() {
-		return typeName;
+		return "[IDType of " + idCategory + ": " + typeName + "]";
 	}
 
 	/**

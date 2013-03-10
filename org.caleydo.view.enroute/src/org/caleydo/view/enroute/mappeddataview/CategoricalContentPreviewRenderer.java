@@ -61,7 +61,7 @@ public class CategoricalContentPreviewRenderer extends AContentPreviewRenderer {
 		selectionLists.add(geneSelectionTypes);
 
 		for (Integer sampleID : experimentPerspective.getVirtualArray()) {
-			// Integer resolvedSampleID = sampleIDMappingManager.getID(
+			// Integer resolvedSampleID = columnIDMappingManager.getID(
 			// dataDomain.getSampleIDType(), parent.sampleIDType,
 			// experimentID);
 
@@ -95,9 +95,9 @@ public class CategoricalContentPreviewRenderer extends AContentPreviewRenderer {
 
 		for (int bucketNumber = 0; bucketNumber < histogram.size(); bucketNumber++) {
 			// Set<SelectionType> sampleSelectionTypes = new HashSet<>();
-			// for (Integer id : experimentPerspective.getVirtualArray()) {
+			// for (Integer id : columnPerspective.getVirtualArray()) {
 			// List<SelectionType> selectionTypes = parent.sampleSelectionManager.getSelectionTypes(
-			// experimentPerspective.getIdType(), id);
+			// columnPerspective.getIdType(), id);
 			// if (selectionTypes != null) {
 			// sampleSelectionTypes.addAll(selectionTypes);
 			// }
@@ -106,7 +106,7 @@ public class CategoricalContentPreviewRenderer extends AContentPreviewRenderer {
 			// List<SelectionType> selectionTypes = new ArrayList<>(sampleSelectionTypes);
 			// Collections.sort(selectionTypes);
 			// for (Integer sampleID : histogram.getIDsForBucket(bucketNumber)) {
-			// sampleSelectionTypes.addAll(parent.sampleSelectionManager.getSelectionTypes(sampleIDType, sampleID));
+			// sampleSelectionTypes.addAll(parent.sampleSelectionManager.getSelectionTypes(columnIDType, sampleID));
 			// }
 			float[] baseColor = dataDomain.getColorMapper().getColor((float) bucketCount / (histogram.size() - 1));
 			colorCalculator.setBaseColor(new Color(baseColor[0], baseColor[1], baseColor[2]));

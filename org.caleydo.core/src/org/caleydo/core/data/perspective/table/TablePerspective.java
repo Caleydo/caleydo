@@ -207,6 +207,34 @@ public class TablePerspective implements IDefaultLabelHolder {
 	}
 
 	/**
+	 * Convenience wrapper for {@link #getPerspective(IDType)}
+	 *
+	 * @param idType
+	 * @return
+	 */
+	public Perspective getPerspective(IDType idType) {
+		return getPerspective(idType.getIDCategory());
+	}
+
+	/**
+	 * Returns the perspective matching the idCategory
+	 *
+	 * @param idCategory
+	 * @return
+	 * @throws IllegalStateException
+	 *             if idCategory is not registered with this perspective
+	 */
+	public Perspective getPerspective(IDCategory idCategory) {
+		if (recordPerspective.getIdType().getIDCategory().equals(idCategory)) {
+			return recordPerspective;
+		} else if (dimensionPerspective.getIdType().getIDCategory().equals(idCategory)) {
+			return dimensionPerspective;
+		} else {
+			throw new IllegalStateException("ID Category " + idCategory + " not available for this perspective.");
+		}
+	}
+
+	/**
 	 * @return the recordPerspective, see {@link #recordPerspective}
 	 */
 	@XmlTransient
@@ -238,7 +266,7 @@ public class TablePerspective implements IDefaultLabelHolder {
 	 * @param dimensionPerspective
 	 *            setter, see {@link #dimensionPerspective}
 	 */
-	public void setAVariablePerspective(Perspective dimensionPerspective) {
+	public void setDimensionPerspective(Perspective dimensionPerspective) {
 		if (this.dimensionPerspective != null)
 			throw new IllegalStateException("Illegal to change perspectives of TablePerspectives.");
 		this.dimensionPerspective = dimensionPerspective;
@@ -335,6 +363,31 @@ public class TablePerspective implements IDefaultLabelHolder {
 	 */
 	public void setRecordGroup(Group recordGroup) {
 		this.recordGroup = recordGroup;
+	}
+
+	/**
+	 * Convenience wrapper for {@link #getGroup(IDCategory)}
+	 *
+	 * @param idType
+	 * @return
+	 */
+	public Group getGroup(IDType idType) {
+		return getGroup(idType.getIDCategory());
+	}
+
+	/**
+	 * Returns the group matching to the specified {@link IDCategory}
+	 *
+	 * @param idCategory
+	 * @return
+	 */
+	public Group getGroup(IDCategory idCategory) {
+		if (idCategory.isOfCategory(recordPerspective.getIdType())) {
+			return recordGroup;
+		} else if (idCategory.isOfCategory(dimensionPerspective.getIdType())) {
+			return dimensionGroup;
+		}
+		throw new IllegalStateException("No group for this category :" + idCategory);
 	}
 
 	/**

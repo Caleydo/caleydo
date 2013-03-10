@@ -22,14 +22,16 @@ import java.util.Set;
 
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
+import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.SelectionTypeEvent;
 import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.id.IDCategory;
+import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -40,10 +42,10 @@ import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
-import org.caleydo.datadomain.genetic.EGeneIDTypes;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.view.enroute.EPickingType;
 import org.caleydo.view.enroute.GLEnRoutePathway;
+import org.caleydo.view.enroute.path.PathSizeConfiguration;
 import org.caleydo.view.enroute.path.node.ALinearizableNode;
 import org.caleydo.view.enroute.path.node.ComplexNode;
 
@@ -116,7 +118,8 @@ public class MappedDataRenderer {
 	private LayoutManager highlightLayoutManger;
 	private ViewFrustum viewFrustum;
 
-	EventBasedSelectionManager geneSelectionManager;
+	EventBasedSelectionManager rowSelectionManager;
+	EventBasedSelectionManager contextRowSelectionManager;
 	EventBasedSelectionManager sampleSelectionManager;
 	EventBasedSelectionManager sampleGroupSelectionManager;
 
@@ -133,7 +136,7 @@ public class MappedDataRenderer {
 	 */
 	public MappedDataRenderer(GLEnRoutePathway parentView) {
 		this.parentView = parentView;
-		geneSelectionManager = parentView.getGeneSelectionManager();
+		rowSelectionManager = parentView.getGeneSelectionManager();
 
 		List<GeneticDataDomain> dataDomains = DataDomainManager.get().getDataDomainsByType(GeneticDataDomain.class);
 		if (dataDomains.size() != 0) {
@@ -221,6 +224,9 @@ public class MappedDataRenderer {
 		Row baseRow = new Row("baseRow");
 		layoutManager.setBaseElementLayout(baseRow);
 
+		ElementLayout xSpacing = new ElementLayout();
+		xSpacing.setPixelSizeX(SPACING_PIXEL_WIDTH);
+
 		float[] color;
 		// baseRow.setDebug(true);
 		Column dataSetColumn = new Column("dataSetColumn");
@@ -246,6 +252,82 @@ public class MappedDataRenderer {
 		 * A list of lists of element layouts where the outer list contains one nested list for every data container and
 		 * the inner list one element layout for every gene in the linearized pathway
 		 */
+		ArrayList<ArrayList<ElementLayout>> rowListForContextTablePerspectives = new ArrayList<ArrayList<ElementLayout>>(
+				contextualTablePerspectives.size());
+
+		IDType contextRowIDType = null;
+		List<Integer> contextIDs = new ArrayList<Integer>();
+		if (contextualTablePerspectives != null && !contextualTablePerspectives.isEmpty()) {
+
+			for (int count = 0; count < contextualTablePerspectives.size(); count++) {
+				rowListForContextTablePerspectives.add(new ArrayList<ElementLayout>());
+			}
+			TablePerspective contextTPerspective = contextualTablePerspectives.get(0);
+			contextRowIDType = contextTPerspective.getDataDomain().getOppositeIDType(sampleIDType);
+			int i = 0;
+			for (Integer rowID : contextTPerspective.getPerspective(contextRowIDType).getVirtualArray()) {
+				contextIDs.add(rowID);
+				if (i % 2 == 0)
+					color = EVEN_BACKGROUND_COLOR;
+				else
+					color = ODD_BACKGROUND_COLOR;
+
+				Row row = new Row("Row " + i);
+				row.setAbsoluteSizeY(rowHeight);
+				// row.setDebug(true);
+				dataSetColumn.append(row);
+
+				for (int tablePerspectiveCount = 0; tablePerspectiveCount < contextualTablePerspectives.size(); tablePerspectiveCount++) {
+
+					ElementLayout tablePerspectiveLayout = new ElementLayout("TablePerspective "
+							+ tablePerspectiveCount + " / " + i);
+					// tablePerspectiveRow.setPixelSizeX(5);
+					if (!isHighlightLayout) {
+						tablePerspectiveLayout.addBackgroundRenderer(new RowBackgroundRenderer(color));
+					}
+
+					row.append(tablePerspectiveLayout);
+					rowListForContextTablePerspectives.get(tablePerspectiveCount).add(tablePerspectiveLayout);
+					if (tablePerspectiveCount != contextualTablePerspectives.size() - 1) {
+						row.append(xSpacing);
+					}
+				}
+				ElementLayout rowCaption = new ElementLayout();
+				rowCaption.setAbsoluteSizeY(rowHeight);
+
+				if (isHighlightLayout) {
+					RowCaptionRenderer captionRenderer = new RowCaptionRenderer(i, parentView, this, color);
+					rowCaption.setRenderer(captionRenderer);
+				}
+
+				captionColumn.append(rowCaption);
+				i++;
+
+				if (i > 2)
+					break;
+
+				PathSizeConfiguration oldConfig = parentView.getPathRenderer().getSizeConfig();
+
+				PathSizeConfiguration newConfig = new PathSizeConfiguration.Builder(oldConfig).pathStartSpacing(
+						PathSizeConfiguration.DEFAULT.getPathStartSpacing()
+								+ parentView.getPixelGLConverter().getPixelHeightForGLHeight(rowHeight) * 3 + 10)
+						.build();
+				parentView.getPathRenderer().setSizeConfig(newConfig);
+				previousNodePosition = 0;
+
+			}
+
+			ElementLayout spacing = new ElementLayout();
+			spacing.setPixelSizeY(10);
+			dataSetColumn.append(spacing);
+			captionColumn.append(spacing);
+
+		}
+
+		/**
+		 * A list of lists of element layouts where the outer list contains one nested list for every data container and
+		 * the inner list one element layout for every gene in the linearized pathway
+		 */
 		ArrayList<ArrayList<ElementLayout>> rowListForTablePerspectives = new ArrayList<ArrayList<ElementLayout>>(
 				geneTablePerspectives.size());
 
@@ -254,9 +336,6 @@ public class MappedDataRenderer {
 		}
 
 		ArrayList<Integer> davidIDs = new ArrayList<Integer>(linearizedNodes.size() * 2);
-
-		ElementLayout xSpacing = new ElementLayout();
-		xSpacing.setPixelSizeX(SPACING_PIXEL_WIDTH);
 
 		ArrayList<ALinearizableNode> resolvedNodes = new ArrayList<ALinearizableNode>();
 
@@ -292,6 +371,7 @@ public class MappedDataRenderer {
 
 			if (previousNodePosition > 0 && deviation > 0) {
 				ElementLayout spacing = new ElementLayout();
+				spacing.setDebug(true);
 				spacing.setAbsoluteSizeY(deviation);
 				dataSetColumn.append(spacing);
 				captionColumn.append(spacing);
@@ -387,17 +467,26 @@ public class MappedDataRenderer {
 		// dataSetColumn.add(0, captionRow);
 		dataSetColumn.add(0, topCaptionRow);
 
-		Row nonGeneRow = new Row("nonGeneRow");
-		nonGeneRow.setPixelSizeY(50);
-		dataSetColumn.add(1, nonGeneRow);
-
 		Row bottomCaptionRow = new Row("captionRow");
 		// captionRow.setDebug(true);
 		bottomCaptionRow.setPixelSizeY(50);
 		// dataSetColumn.add(0, captionRow);
 		dataSetColumn.append(bottomCaptionRow);
 
+		// for (int contextPerspectiveCount = 0; contextPerspectiveCount < contextualTablePerspectives.size();
+		// contextPerspectiveCount++)
+		// {
+		//
+		//
+		// }
 		for (int tablePerspectiveCount = 0; tablePerspectiveCount < geneTablePerspectives.size(); tablePerspectiveCount++) {
+			if (contextualTablePerspectives != null && contextualTablePerspectives.size() > 0
+					&& contextRowIDType != null) {
+				TablePerspective contextTablePerspective = contextualTablePerspectives.get(tablePerspectiveCount);
+
+				prepareData(contextTablePerspective, rowListForContextTablePerspectives.get(tablePerspectiveCount),
+						null, null, contextRowIDType, contextIDs, isHighlightLayout);
+			}
 
 			ColumnCaptionLayout topCaptionLayout = new ColumnCaptionLayout(parentView, this);
 			topCaptionRow.append(topCaptionLayout);
@@ -408,9 +497,10 @@ public class MappedDataRenderer {
 				bottomCaptionRow.append(xSpacing);
 				topCaptionRow.append(xSpacing);
 			}
+
 			prepareData(geneTablePerspectives.get(tablePerspectiveCount),
 					rowListForTablePerspectives.get(tablePerspectiveCount), topCaptionLayout, bottomCaptionLayout,
-					davidIDs, isHighlightLayout);
+					IDType.getIDType("DAVID"), davidIDs, isHighlightLayout);
 		}
 		calcMinWidthPixels();
 
@@ -419,10 +509,6 @@ public class MappedDataRenderer {
 		if (!parentView.isFitWidthToScreen() && viewFrustum.getWidth() < minWidth) {
 			viewFrustum.setRight(minWidth);
 		}
-	}
-
-	private void renderRows(List<Integer> IDs) {
-
 	}
 
 	private void calcMinWidthPixels() {
@@ -456,57 +542,65 @@ public class MappedDataRenderer {
 		minWidthPixels += CAPTION_COLUMN_PIXEL_WIDTH;
 	}
 
-	/** Fills the layout with data specific for the data containers */
-	private void prepareData(TablePerspective tablePerspective, ArrayList<ElementLayout> rowLayouts,
-			ColumnCaptionLayout topCaptionLayout, ColumnCaptionLayout bottomCaptionLayout, ArrayList<Integer> davidIDs,
-			boolean isHighlightLayout) {
-		GeneticDataDomain dataDomain = (GeneticDataDomain) tablePerspective.getDataDomain();
+	/**
+	 * Fills the layout with data specific for the data containers
+	 *
+	 * @param tablePerspective
+	 *            the perspective containing the data
+	 * @param rowLayouts
+	 * @param topCaptionLayout
+	 * @param bottomCaptionLayout
+	 * @param rowIDType
+	 * @param rowIDs
+	 * @param isHighlightLayout
+	 */
+	private void prepareData(TablePerspective tablePerspective, List<ElementLayout> rowLayouts,
+			ColumnCaptionLayout topCaptionLayout, ColumnCaptionLayout bottomCaptionLayout, IDType rowIDType,
+			List<Integer> rowIDs, boolean isHighlightLayout) {
+		ATableBasedDataDomain dataDomain = tablePerspective.getDataDomain();
 
-		Perspective experimentPerspective;
-		if (dataDomain.isGeneRecord()) {
-			experimentPerspective = tablePerspective.getDimensionPerspective();
-		} else {
-			experimentPerspective = tablePerspective.getRecordPerspective();
-		}
+		Perspective columnPerspective;
+		IDType columnIDType = dataDomain.getOppositeIDType(rowIDType);
+
+		columnPerspective = tablePerspective.getPerspective(columnIDType);
 
 		Group group = null;
-		if (dataDomain.isGeneRecord()) {
-			group = tablePerspective.getDimensionGroup();
-			if (group == null) {
-				group = tablePerspective.getDimensionPerspective().getVirtualArray().getGroupList().get(0);
-				group.setLabel(tablePerspective.getLabel(), tablePerspective.isLabelDefault());
-			}
-		} else {
-			group = tablePerspective.getRecordGroup();
-			if (group == null) {
-				group = tablePerspective.getRecordPerspective().getVirtualArray().getGroupList().get(0);
-				group.setLabel(tablePerspective.getLabel(), tablePerspective.isLabelDefault());
-			}
-		}
-		if (isHighlightLayout) {
-			topCaptionLayout.init(group, experimentPerspective, dataDomain);
-			bottomCaptionLayout.init(group, experimentPerspective, dataDomain);
+
+		group = tablePerspective.getGroup(columnIDType);
+		if (group == null) {
+			group = tablePerspective.getPerspective(columnIDType).getVirtualArray().getGroupList().get(0);
+			group.setLabel(tablePerspective.getLabel(), tablePerspective.isLabelDefault());
 		}
 
-		IDType geneIDTYpe = dataDomain.getGeneIDType();
+		if (isHighlightLayout && topCaptionLayout != null && bottomCaptionLayout != null) {
+			topCaptionLayout.init(group, columnPerspective, dataDomain);
+			bottomCaptionLayout.init(group, columnPerspective, dataDomain);
+		}
+
+		IDType resolvedRowIDType;
+		Integer resolvedRowID;
+
+		// IDType geneIDTYpe = dataDomain.getGeneIDType();
 		// ArrayList<Integer> geneIDs = new ArrayList<Integer>(davidIDs.size());
-		for (int rowCount = 0; rowCount < davidIDs.size(); rowCount++) {
-			Integer davidID = davidIDs.get(rowCount);
-			Set<Integer> geneIDs = dataDomain.getGeneIDMappingManager().getIDAsSet(IDType.getIDType("DAVID"),
-					geneIDTYpe, davidID);
-			Integer geneID;
-			if (geneIDs == null) {
-				// System.out.println("No mapping for david: " + davidID);
-				geneID = null;
+		for (int rowCount = 0; rowCount < rowIDs.size(); rowCount++) {
+			Integer rowID = rowIDs.get(rowCount);
+			if (!dataDomain.isPrimaryIDType(rowIDType)) {
+				resolvedRowIDType = dataDomain.getPrimaryIDType(rowIDType);
+				Set<Integer> convertedIDs = IDMappingManagerRegistry.get().getIDMappingManager(rowIDType)
+						.getIDAsSet(rowIDType, resolvedRowIDType, rowID);
 
-			} else {
-				geneID = geneIDs.iterator().next();
-				if (geneIDs.size() > 1) {
+				if (convertedIDs == null) {
+					resolvedRowID = null;
+				} else {
+					resolvedRowID = convertedIDs.iterator().next();
+					if (convertedIDs.size() > 1) {
 
-					Set<String> names = dataDomain.getGeneIDMappingManager().getIDAsSet(IDType.getIDType("DAVID"),
-							IDCategory.getIDCategory(EGeneIDTypes.GENE.name()).getHumanReadableIDType(), davidID);
-					System.out.println("Here's the problem: " + names + " / " + geneIDs);
+						System.out.println("Here's the problem: " + convertedIDs);
+					}
 				}
+			} else {
+				resolvedRowID = rowID;
+				resolvedRowIDType = rowIDType;
 			}
 
 			// geneIDs.add(davidID);
@@ -514,14 +608,19 @@ public class MappedDataRenderer {
 
 			if (sampleGroupSelectionManager.checkStatus(abstractGroupType, group.getID())) {
 				tablePerspectiveLayout.setPixelSizeX(ABSTRACT_GROUP_PIXEL_WIDTH);
-				bottomCaptionLayout.setPixelSizeX(ABSTRACT_GROUP_PIXEL_WIDTH);
-				topCaptionLayout.setPixelSizeX(ABSTRACT_GROUP_PIXEL_WIDTH);
+				if (topCaptionLayout != null && bottomCaptionLayout != null) {
+					bottomCaptionLayout.setPixelSizeX(ABSTRACT_GROUP_PIXEL_WIDTH);
+					topCaptionLayout.setPixelSizeX(ABSTRACT_GROUP_PIXEL_WIDTH);
+				}
 			} else {
 				// float width = 1.0f / usedTablePerspectives.size();
 				// tablePerspectiveLayout.setRatioSizeX(0.2);
-				tablePerspectiveLayout.setDynamicSizeUnitsX(experimentPerspective.getVirtualArray().size());
-				bottomCaptionLayout.setDynamicSizeUnitsX(experimentPerspective.getVirtualArray().size());
-				topCaptionLayout.setDynamicSizeUnitsX(experimentPerspective.getVirtualArray().size());
+
+				tablePerspectiveLayout.setDynamicSizeUnitsX(columnPerspective.getVirtualArray().size());
+				if (topCaptionLayout != null && bottomCaptionLayout != null) {
+					bottomCaptionLayout.setDynamicSizeUnitsX(columnPerspective.getVirtualArray().size());
+					topCaptionLayout.setDynamicSizeUnitsX(columnPerspective.getVirtualArray().size());
+				}
 			}
 
 			// ALayoutRenderer columnCaptionRenderer = new
@@ -531,29 +630,31 @@ public class MappedDataRenderer {
 
 			// FIXME: BAAAAD Hack to distinguish categorical data
 			if (dataDomain.getLabel().toLowerCase().contains("copy")) {
-				tablePerspectiveLayout.setRenderer(new CopyNumberRowContentRenderer(geneID, davidID, dataDomain,
-						tablePerspective, experimentPerspective, parentView, this, group, isHighlightLayout));
+				tablePerspectiveLayout.setRenderer(new CopyNumberRowContentRenderer(rowIDType, rowID,
+						resolvedRowIDType, resolvedRowID, dataDomain, columnPerspective, parentView, this, group,
+						isHighlightLayout));
 			} else if (dataDomain.getLabel().toLowerCase().contains("mutation")) {
-				tablePerspectiveLayout
-						.setRenderer(new MutationStatusMatrixRowContentRenderer(geneID, davidID, dataDomain,
-								tablePerspective, experimentPerspective, parentView, this, group, isHighlightLayout));
+				tablePerspectiveLayout.setRenderer(new MutationStatusMatrixRowContentRenderer(rowIDType, rowID,
+						resolvedRowIDType, resolvedRowID, dataDomain, columnPerspective, parentView, this, group,
+						isHighlightLayout));
 
-				tablePerspectiveLayout.setDynamicSizeUnitsX((int) Math.ceil(experimentPerspective.getVirtualArray()
-						.size() * 2.0f / MutationStatusMatrixRowContentRenderer.NUM_ROWS));
-
-				bottomCaptionLayout.setDynamicSizeUnitsX((int) Math.ceil(experimentPerspective.getVirtualArray().size()
+				tablePerspectiveLayout.setDynamicSizeUnitsX((int) Math.ceil(columnPerspective.getVirtualArray().size()
 						* 2.0f / MutationStatusMatrixRowContentRenderer.NUM_ROWS));
-				topCaptionLayout.setDynamicSizeUnitsX((int) Math.ceil(experimentPerspective.getVirtualArray().size()
-						* 2.0f / MutationStatusMatrixRowContentRenderer.NUM_ROWS));
+				if (topCaptionLayout != null && bottomCaptionLayout != null) {
+					bottomCaptionLayout.setDynamicSizeUnitsX((int) Math.ceil(columnPerspective.getVirtualArray().size()
+							* 2.0f / MutationStatusMatrixRowContentRenderer.NUM_ROWS));
+					topCaptionLayout.setDynamicSizeUnitsX((int) Math.ceil(columnPerspective.getVirtualArray().size()
+							* 2.0f / MutationStatusMatrixRowContentRenderer.NUM_ROWS));
+				}
 
 				// tablePerspectiveLayout
 				// .setRenderer(new MutationStatusRowContentRenderer(
-				// geneID, davidID, dataDomain, tablePerspective,
-				// experimentPerspective, parentView, this, group,
+				// rowID, davidID, dataDomain, tablePerspective,
+				// columnPerspective, parentView, this, group,
 				// isHighlightLayout));
 			} else {
-				tablePerspectiveLayout.setRenderer(new ContinuousContentRenderer(geneID, davidID, dataDomain,
-						tablePerspective, experimentPerspective, parentView, this, group, isHighlightLayout));
+				tablePerspectiveLayout.setRenderer(new ContinuousContentRenderer(rowIDType, rowID, resolvedRowIDType,
+						resolvedRowID, dataDomain, columnPerspective, parentView, this, group, isHighlightLayout));
 			}
 
 		}
@@ -565,9 +666,9 @@ public class MappedDataRenderer {
 
 			@Override
 			public void clicked(Pick pick) {
-				geneSelectionManager.clearSelection(SelectionType.SELECTION);
-				geneSelectionManager.addToType(SelectionType.SELECTION, pick.getObjectID());
-				geneSelectionManager.triggerSelectionUpdateEvent();
+				rowSelectionManager.clearSelection(SelectionType.SELECTION);
+				rowSelectionManager.addToType(SelectionType.SELECTION, pick.getObjectID());
+				rowSelectionManager.triggerSelectionUpdateEvent();
 				parentView.setDisplayListDirty();
 
 			}
@@ -575,16 +676,16 @@ public class MappedDataRenderer {
 			@Override
 			public void mouseOver(Pick pick) {
 
-				geneSelectionManager.addToType(SelectionType.MOUSE_OVER, pick.getObjectID());
-				geneSelectionManager.triggerSelectionUpdateEvent();
+				rowSelectionManager.addToType(SelectionType.MOUSE_OVER, pick.getObjectID());
+				rowSelectionManager.triggerSelectionUpdateEvent();
 				parentView.setDisplayListDirty();
 
 			}
 
 			@Override
 			public void mouseOut(Pick pick) {
-				geneSelectionManager.removeFromType(SelectionType.MOUSE_OVER, pick.getObjectID());
-				geneSelectionManager.triggerSelectionUpdateEvent();
+				rowSelectionManager.removeFromType(SelectionType.MOUSE_OVER, pick.getObjectID());
+				rowSelectionManager.triggerSelectionUpdateEvent();
 
 				parentView.setDisplayListDirty();
 
@@ -660,6 +761,14 @@ public class MappedDataRenderer {
 	 */
 	public void setContextualTablePerspectives(ArrayList<TablePerspective> contextualTablePerspectives) {
 		this.contextualTablePerspectives = contextualTablePerspectives;
+
+		if (contextualTablePerspectives != null && !contextualTablePerspectives.isEmpty()) {
+			if (contextRowSelectionManager == null) {
+				contextRowSelectionManager = new EventBasedSelectionManager(parentView, contextualTablePerspectives
+						.get(0).getDataDomain().getOppositeIDType(sampleIDType));
+			}
+		}
+
 	}
 
 	public void destroy(GL2 gl) {
@@ -668,6 +777,18 @@ public class MappedDataRenderer {
 		if (baseLayoutManger != null)
 			baseLayoutManger.destroy(gl);
 		sampleGroupSelectionManager.unregisterEventListeners();
+	}
+
+	SelectionManager getSelectionManager(IDType idType) {
+
+		if (sampleSelectionManager.getIDType().resolvesTo(idType))
+			return sampleSelectionManager;
+		else if (rowSelectionManager.getIDType().resolvesTo(idType))
+			return rowSelectionManager;
+		else if (contextRowSelectionManager != null && contextRowSelectionManager.getIDType().resolvesTo(idType))
+			return contextRowSelectionManager;
+
+		return null;
 	}
 
 }

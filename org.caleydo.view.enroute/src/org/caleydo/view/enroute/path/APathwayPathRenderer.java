@@ -480,7 +480,7 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	}
 
 	/**
-	 * @return the geneSelectionManager, see {@link #geneSelectionManager}
+	 * @return the rowSelectionManager, see {@link #rowSelectionManager}
 	 */
 	public EventBasedSelectionManager getGeneSelectionManager() {
 		return geneSelectionManager;

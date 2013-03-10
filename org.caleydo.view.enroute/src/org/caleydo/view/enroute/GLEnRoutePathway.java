@@ -576,7 +576,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	}
 
 	/**
-	 * @return the geneSelectionManager, see {@link #geneSelectionManager}
+	 * @return the rowSelectionManager, see {@link #rowSelectionManager}
 	 */
 	public EventBasedSelectionManager getGeneSelectionManager() {
 		return geneSelectionManager;

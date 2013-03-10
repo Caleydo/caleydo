@@ -32,6 +32,7 @@ import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.id.IDMappingManager;
+import org.caleydo.core.id.IDType;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
@@ -1136,17 +1137,8 @@ public class GLPathwayAugmentationRenderer {
 
 		Average average = null;
 		for (Integer davidID : mappedDavidIds) {
-
-			Set<Integer> expressionIndices = idMappingManager.<Integer, Integer> getIDAsSet(glPathwayView
-					.getPathwayDataDomain().getDavidIDType(), glPathwayView.getDataDomain().getGeneIDType(), davidID);
-			if (expressionIndices == null)
-				continue;
-
-			for (Integer expressionIndex : expressionIndices) {
-				average = TablePerspectiveStatistics.calculateAverage(selectedSamplesVA, glPathwayView.getDataDomain()
-						.getTable(), expressionIndex);
-
-			}
+			average = TablePerspectiveStatistics.calculateAverage(selectedSamplesVA, glPathwayView.getDataDomain()
+					.getTable(), IDType.getIDType("DAVID"), davidID);
 			return average;
 		}
 

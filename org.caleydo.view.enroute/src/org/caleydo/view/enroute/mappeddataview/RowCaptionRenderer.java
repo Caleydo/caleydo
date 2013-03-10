@@ -74,7 +74,7 @@ public class RowCaptionRenderer extends SelectableRenderer {
 
 	@Override
 	public void renderContent(GL2 gl) {
-		List<SelectionType> selectionTypes = parent.geneSelectionManager.getSelectionTypes(davidID);
+		List<SelectionType> selectionTypes = parent.rowSelectionManager.getSelectionTypes(davidID);
 
 		colorCalculator.calculateColors(selectionTypes);
 		float[] topBarColor = colorCalculator.getPrimaryColor().getRGBA();

@@ -38,6 +38,7 @@ import org.jgrapht.graph.DefaultDirectedWeightedGraph;
 import com.google.common.base.Function;
 import com.google.common.collect.Sets;
 
+
 /**
  * <p>
  * Handles the mapping between IDs of different {@link IDType}s that share a common {@link IDCategory}.
@@ -568,7 +569,7 @@ public class IDMappingManager {
 			path = DijkstraShortestPath.findPathBetween(mappingGraph, source, destination);
 		} catch (IllegalArgumentException e) {
 			Logger.log(new Status(IStatus.ERROR, this.toString(), "One of the data types " + source + " and "
-					+ destination + " is not registered with this IDMappingManager."));
+					+ destination + " is not registered with this IDMappingManager (" + toString() + ")."));
 
 			// data type is not in the mapping
 			return null;
@@ -879,7 +880,7 @@ public class IDMappingManager {
 
 	@Override
 	public String toString() {
-		return "IDMappingManager for " + idCategory + " with registered id types: " + hashMappingType2Map.keySet();
+		return "IDMappingManager for " + idCategory;// + " with registered id types: " + hashMappingType2Map.keySet();
 	}
 
 	/**

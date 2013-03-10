@@ -1,21 +1,18 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
  *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
+ * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
+ * University Linz </p>
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
  * version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
+ * You should have received a copy of the GNU General Public License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.view.enroute.mappeddataview;
 
@@ -25,19 +22,19 @@ import java.util.List;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.Average;
-import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.table.TablePerspectiveStatistics;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.util.collection.Algorithms;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
-import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.view.enroute.EPickingType;
 
 /**
@@ -52,13 +49,12 @@ public class ContinuousContentRenderer extends ContentRenderer {
 	boolean useShading = true;
 	private int rendererID;
 
-	protected MappedDataRenderer parent;
-
-	public ContinuousContentRenderer(Integer geneID, Integer davidID, GeneticDataDomain dataDomain,
-			TablePerspective tablePerspective, Perspective experimentPerspective, AGLView parentView,
+	public ContinuousContentRenderer(IDType rowIDType, Integer rowID, IDType resolvedRowIDType, Integer resolvedRowID,
+			ATableBasedDataDomain dataDomain, Perspective columnPerspective, AGLView parentView,
 			MappedDataRenderer parent, Group group, boolean isHighlightMode) {
-		super(geneID, davidID, dataDomain, tablePerspective, experimentPerspective, parentView, group, isHighlightMode);
-		this.parent = parent;
+		super(rowIDType, rowID, resolvedRowIDType, resolvedRowID, dataDomain, columnPerspective, parentView, parent,
+				group, isHighlightMode);
+
 		synchronized (rendererIDCounter) {
 			rendererID = rendererIDCounter++;
 		}
@@ -66,52 +62,53 @@ public class ContinuousContentRenderer extends ContentRenderer {
 		init();
 	}
 
-
 	@Override
 	public void init() {
-		if (geneID == null)
+		if (rowID == null)
 			return;
-		average = TablePerspectiveStatistics.calculateAverage(experimentPerspective.getVirtualArray(),
-				dataDomain.getTable(), geneID);
+		average = TablePerspectiveStatistics.calculateAverage(columnPerspective.getVirtualArray(),
+				dataDomain.getTable(), resolvedRowIDType, resolvedRowID);
 
 		registerPickingListener();
 	}
 
 	@Override
 	public void renderContent(GL2 gl) {
-		if (x / experimentPerspective.getVirtualArray().size() < parentView.getPixelGLConverter()
+		if (x / columnPerspective.getVirtualArray().size() < parentView.getPixelGLConverter()
 				.getGLWidthForPixelWidth(3)) {
 			useShading = false;
 		}
 
-		if (geneID == null)
+		if (rowID == null)
 			return;
-		List<SelectionType> geneSelectionTypes = parent.geneSelectionManager.getSelectionTypes(davidID);
+		List<SelectionType> rowSelectionTypes;
+
+		rowSelectionTypes = parent.getSelectionManager(rowIDType).getSelectionTypes(rowIDType, rowID);
 
 		List<SelectionType> selectionTypes = parent.sampleGroupSelectionManager.getSelectionTypes(group.getID());
 		if (selectionTypes.size() > 0 && selectionTypes.contains(MappedDataRenderer.abstractGroupType)) {
 
-			renderAverageBar(gl, geneSelectionTypes);
+			renderAverageBar(gl, rowSelectionTypes);
 		} else {
-			renderAllBars(gl, geneSelectionTypes);
+			renderAllBars(gl, rowSelectionTypes);
 		}
 
 	}
 
 	@SuppressWarnings("unchecked")
 	private void renderAllBars(GL2 gl, List<SelectionType> geneSelectionTypes) {
-		float xIncrement = x / experimentPerspective.getVirtualArray().size();
+		float xIncrement = x / columnPerspective.getVirtualArray().size();
 		int experimentCount = 0;
 
-		for (Integer sampleID : experimentPerspective.getVirtualArray()) {
+		for (Integer columnID : columnPerspective.getVirtualArray()) {
 
 			float value;
-			if (geneID != null) {
+			if (rowID != null) {
 
-				value = dataDomain.getNormalizedGeneValue(geneID, sampleID);
+				value = dataDomain.getNormalizedValue(resolvedRowIDType, resolvedRowID, resolvedColumnIDType, columnID);
 
 				List<SelectionType> experimentSelectionTypes = parent.sampleSelectionManager.getSelectionTypes(
-						sampleIDType, sampleID);
+						columnIDType, columnID);
 
 				float[] topBarColor = MappedDataRenderer.BAR_COLOR;
 				float[] bottomBarColor = MappedDataRenderer.BAR_COLOR;
@@ -141,14 +138,14 @@ public class ContinuousContentRenderer extends ContentRenderer {
 				// gl.glPushName(parentView.getPickingManager().getPickingID(
 				// parentView.getID(), PickingType.GENE.name(), davidID));
 
-				Integer resolvedSampleID = sampleIDMappingManager.getID(dataDomain.getSampleIDType(),
-						parent.sampleIDType, sampleID);
+				Integer resolvedSampleID = columnIDMappingManager.getID(dataDomain.getPrimaryIDType(columnIDType),
+						parent.sampleIDType, columnID);
 				if (resolvedSampleID != null) {
 					gl.glPushName(parentView.getPickingManager().getPickingID(parentView.getID(),
 							EPickingType.SAMPLE.name(), resolvedSampleID));
 				}
 				gl.glPushName(parentView.getPickingManager().getPickingID(parentView.getID(),
-						EPickingType.SAMPLE.name() + hashCode(), sampleID));
+						EPickingType.SAMPLE.name() + hashCode(), columnID));
 
 				gl.glBegin(GL2.GL_QUADS);
 
@@ -191,13 +188,13 @@ public class ContinuousContentRenderer extends ContentRenderer {
 		List<List<SelectionType>> selectionLists = new ArrayList<List<SelectionType>>();
 		selectionLists.add(geneSelectionTypes);
 
-		// for (Integer sampleID : experimentPerspective.getVirtualArray()) {
-		// // Integer resolvedSampleID = sampleIDMappingManager.getID(
+		// for (Integer sampleID : columnPerspective.getVirtualArray()) {
+		// // Integer resolvedSampleID = columnIDMappingManager.getID(
 		// // dataDomain.getSampleIDType(), parent.sampleIDType,
 		// // experimentID);
 		//
 		// selectionLists.add(parent.sampleSelectionManager.getSelectionTypes(
-		// sampleIDType, sampleID));
+		// columnIDType, sampleID));
 		// }
 
 		colorCalculator.calculateColors(Algorithms.mergeListsToUniqueList(selectionLists));
@@ -263,7 +260,7 @@ public class ContinuousContentRenderer extends ContentRenderer {
 
 				parent.sampleSelectionManager.clearSelection(SelectionType.SELECTION);
 
-				parent.sampleSelectionManager.addToType(SelectionType.SELECTION, sampleIDType, experimentPerspective
+				parent.sampleSelectionManager.addToType(SelectionType.SELECTION, columnIDType, columnPerspective
 						.getVirtualArray().getIDs());
 				parent.sampleSelectionManager.triggerSelectionUpdateEvent();
 
@@ -278,7 +275,7 @@ public class ContinuousContentRenderer extends ContentRenderer {
 
 		parentView.addIDPickingListener(pickingListener, EPickingType.SAMPLE_GROUP_RENDERER.name(), rendererID);
 
-		for (final Integer sampleID : experimentPerspective.getVirtualArray()) {
+		for (final Integer sampleID : columnPerspective.getVirtualArray()) {
 			// FIXME: add one type listener
 			parentView.addIDPickingTooltipListener(new ILabelProvider() {
 
@@ -289,7 +286,9 @@ public class ContinuousContentRenderer extends ContentRenderer {
 
 				@Override
 				public String getLabel() {
-					return "" + dataDomain.getRawGeneValue(geneID, sampleID);
+					return ""
+							+ dataDomain.getRawAsString(resolvedRowIDType, resolvedRowID, resolvedColumnIDType,
+									sampleID);
 				}
 			}, EPickingType.SAMPLE.name() + hashCode(), sampleID);
 

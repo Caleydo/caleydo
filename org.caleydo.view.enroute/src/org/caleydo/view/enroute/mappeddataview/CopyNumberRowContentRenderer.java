@@ -5,38 +5,36 @@ import java.util.List;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspectiveStatistics;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.collection.Algorithms;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.view.enroute.EPickingType;
 
 public class CopyNumberRowContentRenderer extends ACategoricalRowContentRenderer {
 
-
-	public CopyNumberRowContentRenderer(Integer geneID, Integer davidID, GeneticDataDomain dataDomain,
-			TablePerspective tablePerspective, Perspective experimentPerspective, AGLView parentView,
+	public CopyNumberRowContentRenderer(IDType rowIDType, Integer rowID, IDType resolvedRowIDType,
+			Integer resolvedRowID, ATableBasedDataDomain dataDomain, Perspective columnPerspective, AGLView parentView,
 			MappedDataRenderer parent, Group group, boolean isHighlightMode) {
-
-		super(geneID, davidID, dataDomain, tablePerspective, experimentPerspective, parentView, parent, group,
-				isHighlightMode);
+		super(rowIDType, rowID, resolvedRowIDType, resolvedRowID, dataDomain, columnPerspective, parentView, parent,
+				group, isHighlightMode);
 	}
 
 	@Override
 	public void init() {
-		if (geneID == null)
+		if (rowID == null)
 			return;
 
-		VirtualArray dimensionVirtualArray = new VirtualArray(dataDomain.getGeneIDType());
-		dimensionVirtualArray.append(geneID);
+		VirtualArray dimensionVirtualArray = new VirtualArray(dataDomain.getPrimaryIDType(rowIDType));
+		dimensionVirtualArray.append(rowID);
 		histogram = TablePerspectiveStatistics.calculateHistogram(dataDomain.getTable(),
-				experimentPerspective.getVirtualArray(), dimensionVirtualArray, 5);
+				columnPerspective.getVirtualArray(), dimensionVirtualArray, 5);
 
 		registerPickingListener();
 
@@ -45,11 +43,11 @@ public class CopyNumberRowContentRenderer extends ACategoricalRowContentRenderer
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void renderAllBars(GL2 gl, List<SelectionType> geneSelectionTypes) {
-		if (x / experimentPerspective.getVirtualArray().size() < parentView.getPixelGLConverter()
+		if (x / columnPerspective.getVirtualArray().size() < parentView.getPixelGLConverter()
 				.getGLWidthForPixelWidth(3)) {
 			useShading = false;
 		}
-		float xIncrement = x / experimentPerspective.getVirtualArray().size();
+		float xIncrement = x / columnPerspective.getVirtualArray().size();
 		int experimentCount = 0;
 
 		// float[] tempTopBarColor = topBarColor;
@@ -61,11 +59,11 @@ public class CopyNumberRowContentRenderer extends ACategoricalRowContentRenderer
 		gl.glVertex3f(x, 0.5f * y, z);
 		gl.glEnd();
 
-		for (Integer sampleID : experimentPerspective.getVirtualArray()) {
+		for (Integer columnID : columnPerspective.getVirtualArray()) {
 
 			float value;
-			if (geneID != null) {
-				value = dataDomain.getNormalizedGeneValue(geneID, sampleID);
+			if (rowID != null) {
+				value = dataDomain.getNormalizedValue(rowIDType, rowID, columnIDType, columnID);
 
 				if (value < 0.5001 && value > 0.499) {
 					experimentCount++;
@@ -73,7 +71,7 @@ public class CopyNumberRowContentRenderer extends ACategoricalRowContentRenderer
 				}
 
 				List<SelectionType> experimentSelectionTypes = parent.sampleSelectionManager.getSelectionTypes(
-						sampleIDType, sampleID);
+						columnIDType, columnID);
 
 				float[] baseColor = dataDomain.getColorMapper().getColor(value);
 				float[] topBarColor = baseColor;
@@ -108,10 +106,10 @@ public class CopyNumberRowContentRenderer extends ACategoricalRowContentRenderer
 				// gl.glPushName(parentView.getPickingManager().getPickingID(
 				// parentView.getID(), PickingType.GENE.name(), davidID));
 
-				Integer resolvedSampleID = sampleIDMappingManager.getID(dataDomain.getSampleIDType(),
-						parent.sampleIDType, sampleID);
+				Integer resolvedColumnID = columnIDMappingManager.getID(dataDomain.getPrimaryIDType(columnIDType),
+						parent.sampleIDType, columnID);
 				gl.glPushName(parentView.getPickingManager().getPickingID(parentView.getID(),
-						EPickingType.SAMPLE.name(), resolvedSampleID));
+						EPickingType.SAMPLE.name(), resolvedColumnID));
 
 				gl.glColor3fv(bottomBarColor, 0);
 				gl.glBegin(GL2.GL_QUADS);

@@ -20,10 +20,16 @@
 package org.caleydo.core.data.perspective.table;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.table.Table;
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.perspective.variable.Perspective;
+import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
 import org.caleydo.core.data.virtualarray.VirtualArray;
+import org.caleydo.core.id.IDMappingManagerRegistry;
+import org.caleydo.core.id.IDType;
 
 /**
  * <p>
@@ -229,7 +235,7 @@ public class TablePerspectiveStatistics {
 		for (Integer recordID : recordVA) {
 
 			Average averageRecord = calculateAverage(dimensionVA, referenceTablePerspective.getDataDomain().getTable(),
-					recordID);
+					referenceTablePerspective.getRecordPerspective().getIdType(), recordID);
 
 			averageRecords.add(averageRecord);
 		}
@@ -255,7 +261,7 @@ public class TablePerspectiveStatistics {
 
 		for (Integer dimensionID : dimensionVA) {
 			Average averageDimension = calculateAverage(recordVA, referenceTablePerspective.getDataDomain().getTable(),
-					dimensionID);
+					referenceTablePerspective.getDimensionPerspective().getIdType(), dimensionID);
 			averageDimensions.add(averageDimension);
 		}
 	}
@@ -281,7 +287,7 @@ public class TablePerspectiveStatistics {
 	 * @param objectID
 	 * @return
 	 */
-	public static Average calculateAverage(VirtualArray virtualArray, Table table, Integer objectID) {
+	public static Average calculateAverage(VirtualArray virtualArray, Table table, IDType objectIDType, Integer objectID) {
 		Average averageDimension = new Average();
 		double sumOfValues = 0;
 		// sum of squares
@@ -289,35 +295,45 @@ public class TablePerspectiveStatistics {
 
 		int nrValidValues = 0;
 
+		ATableBasedDataDomain dataDomain = table.getDataDomain();
+
+		IDType virtualArrayIDType = virtualArray.getIdType();
+		IDType resolvedVAIDType = dataDomain.getPrimaryIDType(virtualArrayIDType);
+		IDType resolvedObjectIDType = dataDomain.getPrimaryIDType(objectIDType);
+
+		if (!resolvedVAIDType.equals(virtualArrayIDType)) {
+			PerspectiveInitializationData data = new PerspectiveInitializationData();
+			data.setData(virtualArray);
+			Perspective tempPerspective = new Perspective(dataDomain, virtualArrayIDType);
+			tempPerspective.init(data);
+			virtualArray = dataDomain.convertForeignPerspective(tempPerspective).getVirtualArray();
+		}
+
+		Collection<Integer> ids;
+		if (!resolvedObjectIDType.equals(objectIDType)) {
+			ids = IDMappingManagerRegistry.get().getIDMappingManager(objectIDType)
+					.getID(objectIDType, resolvedObjectIDType, objectID);
+		} else {
+			ids = new ArrayList<Integer>(1);
+			ids.add(objectID);
+		}
+
+		if (ids == null)
+			return null;
+		// IDMappingManager idMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(virtualArrayIDType);
+
 		for (Integer virtualArrayID : virtualArray) {
 			Float value;
-			if (virtualArray instanceof VirtualArray) {
-				if (virtualArray.getIdType() != null
-						&& !virtualArray.getIdType().equals(table.getDataDomain().getRecordIDType())) {
-					virtualArrayID = table.getDataDomain().getRecordIDMappingManager()
-							.getID(virtualArray.getIdType(), table.getDataDomain().getRecordIDType(), virtualArrayID);
-					if (virtualArrayID == null)
-						continue;
-				}
 
-				value = table.getNormalizedValue(objectID, virtualArrayID);
-			} else {
-				if (virtualArray.getIdType() != null
-						&& !virtualArray.getIdType().equals(table.getDataDomain().getDimensionIDType())) {
-					virtualArrayID = table
-							.getDataDomain()
-							.getRecordIDMappingManager()
-							.getID(virtualArray.getIdType(), table.getDataDomain().getDimensionIDType(), virtualArrayID);
-					if (virtualArrayID == null)
-						continue;
-				}
+			for (Integer id : ids) {
+				value = table.getDataDomain().getNormalizedValue(resolvedObjectIDType, id, resolvedVAIDType,
+						virtualArrayID);
 
-				value = table.getNormalizedValue(virtualArrayID, objectID);
-			}
-			if (value != null && !value.isNaN()) {
-				sumOfValues += value;
-				sqrSum += Math.pow(value, 2);
-				nrValidValues++;
+				if (value != null && !value.isNaN()) {
+					sumOfValues += value;
+					sqrSum += Math.pow(value, 2);
+					nrValidValues++;
+				}
 			}
 		}
 		averageDimension.arithmeticMean = sumOfValues / nrValidValues;

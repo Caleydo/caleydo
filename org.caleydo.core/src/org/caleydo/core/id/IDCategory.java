@@ -183,6 +183,16 @@ public class IDCategory {
 	}
 
 	/**
+	 * Convenience method that checks whether an {@link IDType} is of this category.
+	 *
+	 * @param idType
+	 * @return
+	 */
+	public boolean isOfCategory(IDType idType) {
+		return idType.getIDCategory().equals(this);
+	}
+
+	/**
 	 * @param denomination
 	 *            setter, see {@link #denomination}
 	 */
