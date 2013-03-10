@@ -158,7 +158,6 @@ public class TablePerspective implements IDefaultLabelHolder {
 	 * Empty constructor, nothing initialized
 	 */
 	public TablePerspective() {
-		System.out.println("S");
 	}
 
 	/**
@@ -540,5 +539,10 @@ public class TablePerspective implements IDefaultLabelHolder {
 	 */
 	public TablePerspective getParentTablePerspective() {
 		return parentTablePerspective;
+	}
+
+	@Override
+	public String toString() {
+		return "[D: " + dimensionPerspective.toString() + "; R: " + recordPerspective + "]";
 	}
 }

@@ -591,9 +591,6 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		return metaboliteSelectionManager;
 	}
 
-	public List<TablePerspective> getResolvedTablePerspectives() {
-		return resolvedTablePerspectives;
-	}
 
 	@Override
 	public Set<IDataDomain> getDataDomains() {

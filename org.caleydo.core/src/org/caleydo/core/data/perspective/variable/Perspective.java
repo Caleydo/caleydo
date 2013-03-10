@@ -539,7 +539,7 @@ public class Perspective implements IDefaultLabelHolder {
 
 	@Override
 	public String toString() {
-		return perspectiveID + ", size: " + (virtualArray == null ? -1 : virtualArray.size());
+		return "[P for " + idType + ", size: " + (virtualArray == null ? -1 : virtualArray.size()) + "]";
 	}
 
 	@Override
