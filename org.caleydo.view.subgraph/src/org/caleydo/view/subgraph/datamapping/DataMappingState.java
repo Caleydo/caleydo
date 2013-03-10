@@ -83,9 +83,8 @@ public class DataMappingState {
 		event.setSender(this);
 		EventPublisher.publishEvent(event);
 
+		mappedTablePerspectives.remove(hashDDToTablePerspective.get(dd));
 		hashDDToTablePerspective.remove(dd);
-		mappedTablePerspectives.remove(dd);
-
 	}
 
 	public void setPerspective(Perspective perspective) {

@@ -115,7 +115,7 @@ public class GLExperimentalDataMapping extends AnimatedGLElementContainer implem
 
 		// Set default data
 		dmState.setPerspective(mRNAdd.getTable().getDefaultRecordPerspective());
-		dmState.addDataDomain(mRNAdd);
+		// dmState.addDataDomain(mRNAdd);
 	}
 
 	@Override
