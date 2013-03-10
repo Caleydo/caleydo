@@ -14,12 +14,14 @@ import java.util.Set;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.datadomain.DataDomainManager;
+import org.caleydo.core.data.datadomain.IDataSupportDefinition;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.view.MinSizeUpdateEvent;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
 import org.caleydo.core.view.ViewManager;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -62,7 +64,8 @@ import org.caleydo.view.subgraph.ranking.PathwayRankings;
 import org.caleydo.view.subgraph.ranking.RankingElement;
 import org.eclipse.swt.widgets.Composite;
 
-public class GLSubGraph extends AGLElementGLView implements IGLRemoteRenderingView, IMultiFormChangeListener {
+public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspectiveBasedView, IGLRemoteRenderingView,
+		IMultiFormChangeListener {
 
 	public static String VIEW_TYPE = "org.caleydo.view.subgraph";
 
@@ -733,5 +736,64 @@ public class GLSubGraph extends AGLElementGLView implements IGLRemoteRenderingVi
 		public void onEnablePathSelection(EnablePathSelectionEvent event) {
 			isPathSelectionMode = event.isPathSelectionMode();
 		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see org.caleydo.core.view.ITablePerspectiveBasedView#getDataSupportDefinition()
+	 */
+	@Override
+	public IDataSupportDefinition getDataSupportDefinition() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see
+	 * org.caleydo.core.view.IMultiTablePerspectiveBasedView#addTablePerspective(org.caleydo.core.data.perspective.table
+	 * .TablePerspective)
+	 */
+	@Override
+	public void addTablePerspective(TablePerspective newTablePerspective) {
+		// TODO Auto-generated method stub
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see org.caleydo.core.view.IMultiTablePerspectiveBasedView#addTablePerspectives(java.util.List)
+	 */
+	@Override
+	public void addTablePerspectives(List<TablePerspective> newTablePerspectives) {
+		// TODO Auto-generated method stub
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see org.caleydo.core.view.IMultiTablePerspectiveBasedView#getTablePerspectives()
+	 */
+	@Override
+	public List<TablePerspective> getTablePerspectives() {
+		// TODO Auto-generated method stub
+		return experimentalDataMappingElement.getTablePerspectives();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see
+	 * org.caleydo.core.view.IMultiTablePerspectiveBasedView#removeTablePerspective(org.caleydo.core.data.perspective
+	 * .table.TablePerspective)
+	 */
+	@Override
+	public void removeTablePerspective(TablePerspective tablePerspective) {
+		// TODO Auto-generated method stub
+
 	}
 }
