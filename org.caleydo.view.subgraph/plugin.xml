@@ -9,7 +9,7 @@
             class="org.caleydo.view.subgraph.RcpGLSubGraphView"
             icon="resources/icons/icon.png"
             id="org.caleydo.view.subgraph"
-            name="SubGraph">
+            name="Entourage">
       </view>
    </extension>
    <extension
@@ -46,7 +46,7 @@
       <command
             defaultHandler="org.caleydo.view.subgraph.command.handler.OpenSubGraphHandler"
             id="org.caleydo.view.subgraph.command.opensubgraph"
-            name="SubGraph">
+            name="Entourage">
       </command>
    </extension>
    <extension

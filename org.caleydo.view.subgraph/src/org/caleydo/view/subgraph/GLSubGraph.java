@@ -69,7 +69,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 
 	public static String VIEW_TYPE = "org.caleydo.view.subgraph";
 
-	public static String VIEW_NAME = "SubGraph";
+	public static String VIEW_NAME = "Entourage";
 
 	// private List<TablePerspective> tablePerspectives = new ArrayList<>();
 
