@@ -877,7 +877,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 				contextMenuCreator.addContextMenuItem(new RenameBrickItem(getID()));
 
 				contextMenuCreator.addContextMenuItem(new RemoveColumnItem(stratomex, getBrickColumn()
-						.getTablePerspective().getID()));
+						.getTablePerspective()));
 				contextMenuCreator.addContextMenuItem(new ExportBrickDataItem(GLBrick.this, false));
 				contextMenuCreator.addContextMenuItem(new ExportBrickDataItem(GLBrick.this, true));
 			}

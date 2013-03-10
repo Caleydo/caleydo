@@ -281,8 +281,7 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 							// which is
 							// intended to be used once the clustering is
 							// complete
-							Perspective newRecordPerspective = new Perspective(dataDomain, dataDomain
-									.getRecordIDType());
+							Perspective newRecordPerspective = new Perspective(dataDomain, dataDomain.getRecordIDType());
 
 							// we temporarily set the old va to the new
 							// perspective,
@@ -337,7 +336,7 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 					@Override
 					public void run() {
 						RemoveTablePerspectiveEvent event = new RemoveTablePerspectiveEvent(brick.getBrickColumn()
-								.getTablePerspective().getID(), brick.getStratomex());
+								.getTablePerspective(), brick.getStratomex());
 						event.setSender(this);
 						GeneralManager.get().getEventPublisher().triggerEvent(event);
 					}

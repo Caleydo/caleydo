@@ -32,6 +32,8 @@ import org.caleydo.core.event.EventListenerManagers;
 import org.caleydo.core.event.IListenerOwner;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
+import org.caleydo.core.view.listener.RemoveTablePerspectiveEvent;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.PathwayPath;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
@@ -127,6 +129,18 @@ public abstract class APathUpdateStrategy implements IListenerOwner {
 		event.setPathSegments(segments);
 		event.setSender(this);
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
+	}
+
+	@ListenTo
+	public void onAddTablePerspectives(AddTablePerspectivesEvent event) {
+		renderer.tablePerspectives.addAll(event.getTablePerspectives());
+		renderer.setLayoutDirty(true);
+	}
+
+	@ListenTo
+	public void onRemoveTablePerspectives(RemoveTablePerspectiveEvent event) {
+		renderer.tablePerspectives.remove(event.getTablePerspective());
+		renderer.setLayoutDirty(true);
 	}
 
 	@ListenTo(restrictExclusiveToEventSpace = true)

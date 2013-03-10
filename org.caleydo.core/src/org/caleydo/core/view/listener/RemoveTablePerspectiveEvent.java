@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.core.view.listener;
 
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
 
@@ -31,7 +32,7 @@ import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
 public class RemoveTablePerspectiveEvent extends AEvent {
 
 	/** The ID of the table perspective to be removed */
-	int tablePerspectiveID = -1;
+	private TablePerspective tablePerspective;
 
 	/**
 	 * The view that is intended to remove the specified table perspective
@@ -41,35 +42,34 @@ public class RemoveTablePerspectiveEvent extends AEvent {
 	public RemoveTablePerspectiveEvent() {
 	}
 
-	public RemoveTablePerspectiveEvent(int tablePerspectiveID) {
-		this.tablePerspectiveID = tablePerspectiveID;
+	public RemoveTablePerspectiveEvent(TablePerspective tablePerspective) {
+		this.tablePerspective = tablePerspective;
 	}
 
-	public RemoveTablePerspectiveEvent(int tablePerspectiveID, IMultiTablePerspectiveBasedView receiver) {
-		this.tablePerspectiveID = tablePerspectiveID;
+	public RemoveTablePerspectiveEvent(TablePerspective tablePerspective, IMultiTablePerspectiveBasedView receiver) {
+		this.tablePerspective = tablePerspective;
 		this.receiver = receiver;
 	}
 
 	/**
-	 * @param tablePerspectiveID
-	 *            setter, see {@link #tablePerspectiveID}
+	 * @return the tablePerspective, see {@link #tablePerspective}
 	 */
-	public void setTablePerspectiveID(int tablePerspectiveID) {
-		this.tablePerspectiveID = tablePerspectiveID;
+	public TablePerspective getTablePerspective() {
+		return tablePerspective;
 	}
 
 	/**
-	 * @return the tablePerspectiveID, see {@link #tablePerspectiveID}
+	 * @param tablePerspective
+	 *            setter, see {@link tablePerspective}
 	 */
-	public int getTablePerspectiveID() {
-		return tablePerspectiveID;
+	public void setTablePerspective(TablePerspective tablePerspective) {
+		this.tablePerspective = tablePerspective;
 	}
 
 	@Override
 	public boolean checkIntegrity() {
-		if (tablePerspectiveID < 0)
-			return false;
-		return true;
+
+		return tablePerspective != null;
 	}
 
 	/**

@@ -500,11 +500,11 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 	private void onStratomexRemoveBrick(RemoveTablePerspectiveEvent event) {
 		if (!stratomex.is(event.getReceiver()))
 			return;
-		stratomex.removeBrick(event.getTablePerspectiveID());
+		stratomex.removeBrick(event.getTablePerspective().getID());
 
 		PerspectiveRow selected = (PerspectiveRow) table.getSelectedRow();
 		if (selected != null && selected.getPerspective() != null
-				&& selected.getPerspective().getID() == event.getTablePerspectiveID()) {
+				&& selected.getPerspective() == event.getTablePerspective()) {
 			this.table.setSelectedRow(null);
 		}
 

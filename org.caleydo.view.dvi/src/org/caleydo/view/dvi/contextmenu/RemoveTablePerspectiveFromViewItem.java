@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.caleydo.view.dvi.contextmenu;
 
@@ -9,20 +9,17 @@ import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.listener.RemoveTablePerspectiveEvent;
 
 /**
- * Item to remove a {@link TablePerspective} from a
- * {@link IMultiTablePerspectiveBasedView}.
- * 
+ * Item to remove a {@link TablePerspective} from a {@link IMultiTablePerspectiveBasedView}.
+ *
  * @author Christian Partl
- * 
+ *
  */
 public class RemoveTablePerspectiveFromViewItem extends AContextMenuItem {
 
-	public RemoveTablePerspectiveFromViewItem(TablePerspective tablePerspective,
-			IMultiTablePerspectiveBasedView view) {
+	public RemoveTablePerspectiveFromViewItem(TablePerspective tablePerspective, IMultiTablePerspectiveBasedView view) {
 		setLabel("Remove " + tablePerspective.getLabel() + " from " + view.getLabel());
 
-		RemoveTablePerspectiveEvent event = new RemoveTablePerspectiveEvent(
-				tablePerspective.getID(), view);
+		RemoveTablePerspectiveEvent event = new RemoveTablePerspectiveEvent(tablePerspective, view);
 		event.setSender(this);
 		registerEvent(event);
 	}

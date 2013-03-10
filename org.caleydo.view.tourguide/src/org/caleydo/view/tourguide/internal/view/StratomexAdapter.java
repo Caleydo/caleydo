@@ -125,6 +125,7 @@ public class StratomexAdapter {
 		}
 		this.brickColumns.clear();
 	}
+
 	/**
 	 * binds this adapter to a concrete stratomex instance
 	 *
@@ -235,7 +236,8 @@ public class StratomexAdapter {
 	private static Pair<TablePerspective, Group> findReferencingGSEATablePerspective(Collection<IScore> scores) {
 		for (IScore s : (scores == null ? Collections.<IScore> emptyList() : scores)) {
 			if (s instanceof IComputedStratificationScore) {
-				Pair<TablePerspective, Group> p = GeneSetEnrichmentScoreFactory.resolve(((IComputedStratificationScore) s).getAlgorithm());
+				Pair<TablePerspective, Group> p = GeneSetEnrichmentScoreFactory
+						.resolve(((IComputedStratificationScore) s).getAlgorithm());
 				if (p != null) {
 					return p;
 				}
@@ -305,7 +307,7 @@ public class StratomexAdapter {
 	 */
 	private TablePerspective asPerspective(TablePerspective underlying, PathwayGraph pathway) {
 		PathwayDataDomain pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get().getDataDomainByType(
-					PathwayDataDomain.DATA_DOMAIN_TYPE);
+				PathwayDataDomain.DATA_DOMAIN_TYPE);
 
 		for (PathwayTablePerspective p : pathwayDataDomain.getTablePerspectives()) {
 			if (p.getPathway().equals(pathway) && p.getRecordPerspective().equals(underlying.getRecordPerspective())
@@ -346,8 +348,8 @@ public class StratomexAdapter {
 					createDependent(strat, clinicialVariables);
 				} else {
 					updateBrickColumn(currentPreview, strat);
-					int update = Math.min(clinicialVariables.size(),currentDependentPreviews.size());
-					for(int i = 0; i < update; ++i) {
+					int update = Math.min(clinicialVariables.size(), currentDependentPreviews.size());
+					for (int i = 0; i < update; ++i) {
 						TablePerspective to = asPerspective(strat, clinicialVariables.get(i));
 						updateKaplanMaierBrickColumn(currentDependentPreviews.get(i), to, strat);
 						currentDependentPreviews.set(i, to);
@@ -427,8 +429,7 @@ public class StratomexAdapter {
 	}
 
 	private void clearHighlightRows(Perspective strat) {
-		AEvent event = new SelectElementsEvent(Collections.<Integer> emptyList(), strat
-				.getIdType(),
+		AEvent event = new SelectElementsEvent(Collections.<Integer> emptyList(), strat.getIdType(),
 				this.previewSelectionType, receiver, this);
 		event.setEventSpace(strat.getDataDomain().getDataDomainID());
 		triggerEvent(event);
@@ -441,8 +442,6 @@ public class StratomexAdapter {
 		event.setEventSpace(new_.getDataDomain().getDataDomainID());
 		triggerEvent(event);
 	}
-
-
 
 	/**
 	 * persists or and table perspective of the given
@@ -471,7 +470,6 @@ public class StratomexAdapter {
 			}
 		}
 	}
-
 
 	private void addToStratomexGeneSet(PerspectiveRow elem, Collection<IScore> visibleColumns) {
 		Pair<TablePerspective, Group> undderlyingPair = findReferencingGSEATablePerspective(visibleColumns);
@@ -515,7 +513,7 @@ public class StratomexAdapter {
 				&& from.getDimensionPerspective().equals(to.getDimensionPerspective()))
 			triggerEvent(new ReplaceKaplanMaierPerspectiveEvent(receiver.getID(), to, from, underlying));
 		else {
-			triggerEvent(new RemoveTablePerspectiveEvent(from.getID(), receiver));
+			triggerEvent(new RemoveTablePerspectiveEvent(from, receiver));
 			triggerDelayedEvent(new AddKaplanMaiertoStratomexEvent(to, underlying, receiver));
 		}
 	}
@@ -523,7 +521,7 @@ public class StratomexAdapter {
 	private void removeBrickColumn(TablePerspective strat) {
 		if (strat == null)
 			return;
-		triggerEvent(new RemoveTablePerspectiveEvent(strat.getID(), receiver));
+		triggerEvent(new RemoveTablePerspectiveEvent(strat, receiver));
 	}
 
 	private void unhighlightBrickColumn(TablePerspective strat) {
@@ -561,7 +559,7 @@ public class StratomexAdapter {
 		ATableBasedDataDomain dataDomain = DataDomainOracle.getClinicalDataDomain();
 
 		Perspective dim = null;
-		for(String id : dataDomain.getDimensionPerspectiveIDs()) {
+		for (String id : dataDomain.getDimensionPerspectiveIDs()) {
 			Perspective d = dataDomain.getTable().getDimensionPerspective(id);
 			VirtualArray va = d.getVirtualArray();
 			if (va.size() == 1 && va.get(0) == clinicalVariable) {
@@ -569,7 +567,7 @@ public class StratomexAdapter {
 				break;
 			}
 		}
-		if (dim == null) { //not yet existing create a new one
+		if (dim == null) { // not yet existing create a new one
 			dim = new Perspective(dataDomain, dataDomain.getDimensionIDType());
 			PerspectiveInitializationData data = new PerspectiveInitializationData();
 			data.setData(Lists.newArrayList(clinicalVariable));
@@ -582,20 +580,21 @@ public class StratomexAdapter {
 		Perspective rec = null;
 		Perspective underlyingRP = underlying.getRecordPerspective();
 
-		for(String id : dataDomain.getRecordPerspectiveIDs()) {
+		for (String id : dataDomain.getRecordPerspectiveIDs()) {
 			Perspective r = dataDomain.getTable().getRecordPerspective(id);
-			if (r.getDataDomain().equals(underlying.getDataDomain()) && r.isLabelDefault() == underlyingRP.isLabelDefault() && r.getLabel().equals(underlyingRP.getLabel())) {
+			if (r.getDataDomain().equals(underlying.getDataDomain())
+					&& r.isLabelDefault() == underlyingRP.isLabelDefault()
+					&& r.getLabel().equals(underlyingRP.getLabel())) {
 				rec = r;
 				break;
 			}
 		}
-		if (rec == null) { //not found create a new one
+		if (rec == null) { // not found create a new one
 			rec = dataDomain.convertForeignPerspective(underlyingRP);
 			dataDomain.getTable().registerRecordPerspective(rec);
 		}
 		return dataDomain.getTablePerspective(rec.getPerspectiveID(), dim.getPerspectiveID(), false);
 	}
-
 
 	private void triggerEvent(AEvent event) {
 		if (event == null)

@@ -151,6 +151,8 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 	private LayoutManager layoutManager;
 
+	private String pathwayPathEventSpace;
+
 	/**
 	 * Constructor.
 	 *
@@ -412,10 +414,12 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 		addTablePerspectivesListener = new AddTablePerspectivesListener();
 		addTablePerspectivesListener.setHandler(this);
+		addTablePerspectivesListener.setEventSpace(pathwayPathEventSpace);
 		eventPublisher.addListener(AddTablePerspectivesEvent.class, addTablePerspectivesListener);
 
 		removeTablePerspectiveListener = new RemoveTablePerspectiveListener();
 		removeTablePerspectiveListener.setHandler(this);
+		removeTablePerspectiveListener.setEventSpace(pathwayPathEventSpace);
 		eventPublisher.addListener(RemoveTablePerspectiveEvent.class, removeTablePerspectiveListener);
 
 	}
@@ -597,14 +601,14 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	}
 
 	@Override
-	public void removeTablePerspective(int tablePerspectiveID) {
+	public void removeTablePerspective(TablePerspective tablePerspective) {
 
-		for (TablePerspective tablePerspective : tablePerspectives) {
-			if (tablePerspective.getID() == tablePerspectiveID) {
-				IDataDomain dataDomain = tablePerspective.getDataDomain();
+		for (TablePerspective t : tablePerspectives) {
+			if (t == tablePerspective) {
+				IDataDomain dataDomain = t.getDataDomain();
 				boolean removeDataDomain = true;
 				for (TablePerspective tp : tablePerspectives) {
-					if (tp != tablePerspective && tp.getDataDomain() == dataDomain) {
+					if (tp != t && tp.getDataDomain() == dataDomain) {
 						removeDataDomain = false;
 						break;
 					}
@@ -619,8 +623,8 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		Iterator<TablePerspective> tablePerspectiveIterator = tablePerspectives.iterator();
 
 		while (tablePerspectiveIterator.hasNext()) {
-			TablePerspective tablePerspective = tablePerspectiveIterator.next();
-			if (tablePerspective.getID() == tablePerspectiveID) {
+			TablePerspective t = tablePerspectiveIterator.next();
+			if (t == tablePerspective) {
 				tablePerspectiveIterator.remove();
 			}
 		}
@@ -695,6 +699,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	 */
 	public void setPathwayPathEventSpace(String pathwayPathEventSpace) {
 		pathRenderer.getUpdateStrategy().setPathwayPathEventSpace(pathwayPathEventSpace);
+		this.pathwayPathEventSpace = pathwayPathEventSpace;
 	}
 
 	/**

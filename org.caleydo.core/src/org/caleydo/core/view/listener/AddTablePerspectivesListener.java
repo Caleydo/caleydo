@@ -33,42 +33,37 @@ import org.caleydo.core.view.ITablePerspectiveBasedView;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 
 /**
- * Listener for {@link AddTablePerspectivesEvent}s for setting data containers
- * to {@link IMultiTablePerspectiveBasedView}s.
+ * Listener for {@link AddTablePerspectivesEvent}s for setting data containers to
+ * {@link IMultiTablePerspectiveBasedView}s.
  *
  * @author Alexander Lex
  *
  */
-public class AddTablePerspectivesListener extends
-		AEventListener<ITablePerspectiveBasedView> {
+public class AddTablePerspectivesListener extends AEventListener<ITablePerspectiveBasedView> {
 
 	@Override
 	public void handleEvent(AEvent event) {
 
 		if (event instanceof AddTablePerspectivesEvent) {
 			AddTablePerspectivesEvent addTablePerspectivesEvent = (AddTablePerspectivesEvent) event;
-			if (addTablePerspectivesEvent.getReceiver() == handler) {
+			if (addTablePerspectivesEvent.getReceiver() == handler || addTablePerspectivesEvent.getReceiver() == null) {
 				List<TablePerspective> validTablePerspectives = new ArrayList<TablePerspective>(
 						addTablePerspectivesEvent.getTablePerspectives().size());
-				for (TablePerspective tablePerspective : addTablePerspectivesEvent
-						.getTablePerspectives()) {
-					if (handler.getDataSupportDefinition().apply(
-							tablePerspective.getDataDomain())) {
+				for (TablePerspective tablePerspective : addTablePerspectivesEvent.getTablePerspectives()) {
+					if (handler.getDataSupportDefinition().apply(tablePerspective.getDataDomain())) {
 						validTablePerspectives.add(tablePerspective);
 					}
 				}
 				if (validTablePerspectives.size() == 0) {
 					// Make clear for (e.g. for DVI) that no perspectives have
 					// been added.
-					TablePerspectivesChangedEvent e = new TablePerspectivesChangedEvent(
-							(AGLView) handler);
+					TablePerspectivesChangedEvent e = new TablePerspectivesChangedEvent((AGLView) handler);
 					e.setSender(this);
 					GeneralManager.get().getEventPublisher().triggerEvent(e);
 				} else {
 
 					if (handler instanceof IMultiTablePerspectiveBasedView) {
-						((IMultiTablePerspectiveBasedView) handler)
-								.addTablePerspectives(validTablePerspectives);
+						((IMultiTablePerspectiveBasedView) handler).addTablePerspectives(validTablePerspectives);
 					} else if (handler instanceof ISingleTablePerspectiveBasedView) {
 						ISingleTablePerspectiveBasedView view = ((ISingleTablePerspectiveBasedView) handler);
 						if (validTablePerspectives.isEmpty()) {
@@ -76,16 +71,13 @@ public class AddTablePerspectivesListener extends
 
 						}
 						if (validTablePerspectives.size() > 1) {
-							throw new IllegalStateException(
-									"Tried to set multiple perspectives ("
-											+ validTablePerspectives.toString()
-											+ ")s for a single table perspective view ("
-											+ view.toString() + ")");
+							throw new IllegalStateException("Tried to set multiple perspectives ("
+									+ validTablePerspectives.toString() + ")s for a single table perspective view ("
+									+ view.toString() + ")");
 						}
 
-					view
-								.setTablePerspective(validTablePerspectives.get(0));
-					view.setDataDomain(validTablePerspectives.get(0).getDataDomain());
+						view.setTablePerspective(validTablePerspectives.get(0));
+						view.setDataDomain(validTablePerspectives.get(0).getDataDomain());
 
 					}
 				}

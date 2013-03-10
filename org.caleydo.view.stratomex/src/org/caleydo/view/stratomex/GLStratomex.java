@@ -1157,21 +1157,21 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	}
 
 	@Override
-	public void removeTablePerspective(int tablePerspectiveID) {
+	public void removeTablePerspective(TablePerspective tablePerspective) {
 
 		Iterator<TablePerspective> tablePerspectiveIterator = tablePerspectives.iterator();
 
 		while (tablePerspectiveIterator.hasNext()) {
 			TablePerspective container = tablePerspectiveIterator.next();
-			if (container.getID() == tablePerspectiveID) {
+			if (container == tablePerspective) {
 				tablePerspectiveIterator.remove();
 			}
 		}
 
-		brickColumnManager.removeBrickColumn(tablePerspectiveID);
+		brickColumnManager.removeBrickColumn(tablePerspective.getID());
 		// remove uninitalized referenced
 		for (Iterator<BrickColumn> it = uninitializedSubViews.iterator(); it.hasNext();) {
-			if (it.next().getTablePerspective().getID() == tablePerspectiveID)
+			if (it.next().getTablePerspective() == tablePerspective)
 				it.remove();
 		}
 		initLayouts();
@@ -1184,7 +1184,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		List<TablePerspective> tmp = new ArrayList<>(getTablePerspectives());
 		for (TablePerspective p : tmp) {
 			if (dataDomainID.equals(p.getDataDomain().getDataDomainID()))
-				removeTablePerspective(p.getID());
+				removeTablePerspective(p);
 		}
 		System.out.println();
 	}
