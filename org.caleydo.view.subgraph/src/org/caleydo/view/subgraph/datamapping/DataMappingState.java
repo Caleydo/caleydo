@@ -78,7 +78,7 @@ public class DataMappingState {
 		if (!hashDDToTablePerspective.containsKey(dd))
 			return;
 
-		AEvent event = new RemoveTablePerspectiveEvent(hashDDToTablePerspective.get(dd).getID());
+		AEvent event = new RemoveTablePerspectiveEvent(hashDDToTablePerspective.get(dd));
 		event.setEventSpace(eventSpace);
 		event.setSender(this);
 		EventPublisher.publishEvent(event);
