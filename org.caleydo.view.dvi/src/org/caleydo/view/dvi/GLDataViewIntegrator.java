@@ -41,7 +41,6 @@ import org.caleydo.core.data.datadomain.graph.DataDomainGraph;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
-import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.events.DimensionVAUpdateEvent;
 import org.caleydo.core.data.virtualarray.events.RecordVAUpdateEvent;
@@ -425,12 +424,6 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 			if (maxDataAmount < dataNode.getDataDomain().getDataAmount())
 				maxDataAmount = dataNode.getDataDomain().getDataAmount();
 		}
-	}
-
-	@Override
-	public void broadcastElements(EVAOperation type) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override

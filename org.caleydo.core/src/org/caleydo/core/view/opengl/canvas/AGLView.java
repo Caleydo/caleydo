@@ -35,7 +35,6 @@ import javax.media.opengl.awt.GLCanvas;
 import javax.media.opengl.fixedfunc.GLLightingFunc;
 import javax.media.opengl.fixedfunc.GLMatrixFunc;
 
-import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
 import org.caleydo.core.event.IListenerOwner;
@@ -890,13 +889,6 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 		return viewCamera;
 	}
 
-	/**
-	 * Broadcast elements only with a given type. This is used only for pathways so that the genes in a pathway are
-	 * removed when it is closed
-	 */
-	@Deprecated
-	public void broadcastElements(EVAOperation type) {
-	}
 
 	public void setRemoteLevelElement(RemoteLevelElement element) {
 		this.remoteLevelElement = element;
@@ -1133,7 +1125,6 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	 */
 	public final void destroy(GL2 gl) {
 		System.out.println("destroy " + label);
-		this.broadcastElements(EVAOperation.REMOVE_ELEMENT);
 
 		pickingManager.removeViewSpecificData(uniqueID);
 		unregisterEventListeners();

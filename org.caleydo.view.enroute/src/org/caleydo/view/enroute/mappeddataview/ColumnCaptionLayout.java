@@ -59,14 +59,15 @@ public class ColumnCaptionLayout extends Column {
 		this.group = group;
 		ElementLayout caption = new ElementLayout();
 		this.append(caption);
-		ColumnCaptionRenderer renderer = new ColumnCaptionRenderer(parentView, parent, group, samplePerspective,
-				dataDomain);
-		caption.setRenderer(renderer);
-
 		Button button = new Button(EPickingType.SAMPLE_GROUP_VIEW_MODE.name(), group.getID(),
 				EIconTextures.ABSTRACT_BAR_ICON);
-		ButtonRenderer buttonRender = new ButtonRenderer.Builder(parentView, button).build();
+		ColumnCaptionRenderer renderer = new ColumnCaptionRenderer(parentView, parent, group, samplePerspective,
+				dataDomain, button);
+		caption.setRenderer(renderer);
 
+
+		button.setVisible(false);
+		ButtonRenderer buttonRender = new ButtonRenderer.Builder(parentView, button).build();
 		ElementLayout spacing = new ElementLayout();
 		spacing.setPixelSizeY(2);
 
@@ -77,4 +78,5 @@ public class ColumnCaptionLayout extends Column {
 		buttonLayout.setRenderer(buttonRender);
 		this.append(buttonLayout);
 	}
+
 }

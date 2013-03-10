@@ -288,6 +288,8 @@ public class TablePerspectiveStatistics {
 	 * @return
 	 */
 	public static Average calculateAverage(VirtualArray virtualArray, Table table, IDType objectIDType, Integer objectID) {
+		if (objectID == null || virtualArray.size() == 0)
+			return null;
 		Average averageDimension = new Average();
 		double sumOfValues = 0;
 		// sum of squares

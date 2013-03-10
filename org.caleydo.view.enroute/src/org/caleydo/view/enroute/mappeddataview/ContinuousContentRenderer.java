@@ -103,7 +103,7 @@ public class ContinuousContentRenderer extends ContentRenderer {
 		for (Integer columnID : columnPerspective.getVirtualArray()) {
 
 			float value;
-			if (rowID != null) {
+			if (resolvedRowID != null) {
 
 				value = dataDomain.getNormalizedValue(resolvedRowIDType, resolvedRowID, resolvedColumnIDType, columnID);
 

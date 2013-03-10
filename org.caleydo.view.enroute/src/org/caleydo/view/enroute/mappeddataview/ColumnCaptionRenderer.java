@@ -28,7 +28,9 @@ import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.picking.APickingListener;
+import org.caleydo.core.view.opengl.picking.ATimedMouseOutPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
+import org.caleydo.core.view.opengl.util.button.Button;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.view.enroute.EPickingType;
 
@@ -45,9 +47,12 @@ public class ColumnCaptionRenderer extends SelectableRenderer implements ILabelP
 	Perspective samplePerspective;
 	APickingListener groupPickingListener;
 	protected MappedDataRenderer parent;
+	private Button button;
+
+	private int pickingID;
 
 	public ColumnCaptionRenderer(AGLView parentView, MappedDataRenderer parent, Group group,
-			Perspective samplePerspective, ATableBasedDataDomain dataDomain) {
+			Perspective samplePerspective, ATableBasedDataDomain dataDomain, Button button) {
 
 		super(parentView, dataDomain.getColor());
 		this.textRenderer = parentView.getTextRenderer();
@@ -56,18 +61,23 @@ public class ColumnCaptionRenderer extends SelectableRenderer implements ILabelP
 		this.label = group.getLabel();
 		this.samplePerspective = samplePerspective;
 		this.parent = parent;
+		this.button = button;
 
 		registerPickingListener();
+
+		pickingID = parentView.getPickingManager().getPickingID(parentView.getID(), EPickingType.SAMPLE_GROUP.name(),
+				group.getID());
 
 	}
 
 	@Override
 	protected void finalize() throws Throwable {
-		// unregisterPickingListener();
+
 	}
 
 	@Override
 	public void renderContent(GL2 gl) {
+
 		// float sideSpacing = pixelGLConverter.getGLWidthForPixelWidth(8);
 		float sideSpacing = 0;
 
@@ -80,8 +90,7 @@ public class ColumnCaptionRenderer extends SelectableRenderer implements ILabelP
 		float[] topBarColor = colorCalculator.getPrimaryColor().getRGB();
 		float[] bottomBarColor = colorCalculator.getSecondaryColor().getRGB();
 
-		gl.glPushName(parentView.getPickingManager().getPickingID(parentView.getID(), EPickingType.SAMPLE_GROUP.name(),
-				group.getID()));
+		gl.glPushName(pickingID);
 
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glColor3fv(bottomBarColor, 0);
@@ -130,7 +139,6 @@ public class ColumnCaptionRenderer extends SelectableRenderer implements ILabelP
 
 			@Override
 			public void mouseOver(Pick pick) {
-
 				parent.sampleGroupSelectionManager.addToType(SelectionType.MOUSE_OVER, pick.getObjectID());
 				parent.sampleGroupSelectionManager.triggerSelectionUpdateEvent();
 				parentView.setDisplayListDirty();
@@ -141,19 +149,33 @@ public class ColumnCaptionRenderer extends SelectableRenderer implements ILabelP
 			public void mouseOut(Pick pick) {
 				parent.sampleGroupSelectionManager.removeFromType(SelectionType.MOUSE_OVER, pick.getObjectID());
 				parent.sampleGroupSelectionManager.triggerSelectionUpdateEvent();
-
 				parentView.setDisplayListDirty();
 
 			}
 		};
 
-		parentView.addIDPickingListener(groupPickingListener, EPickingType.SAMPLE_GROUP.name(), group.getID());
+		ATimedMouseOutPickingListener timedMouseOutListener = new ATimedMouseOutPickingListener() {
+			@Override
+			public void mouseOver(Pick pick) {
+				super.mouseOver(pick);
+				button.setVisible(true);
+				parentView.setDisplayListDirty();
+			}
 
+			@Override
+			protected void timedMouseOut(Pick pick) {
+				button.setVisible(false);
+				parentView.setDisplayListDirty();
+			}
+		};
+
+		parentView.addIDPickingListener(groupPickingListener, EPickingType.SAMPLE_GROUP.name(), group.getID());
+		parentView.addIDPickingListener(timedMouseOutListener, EPickingType.SAMPLE_GROUP.name(), group.getID());
 		parentView.addIDPickingTooltipListener(this, EPickingType.SAMPLE_GROUP.name(), group.getID());
+
 	}
 
 	private void unregisterPickingListener() {
-		// parentView.removePickingListener(groupPickingListener);
 		parentView.removeAllIDPickingListeners(EPickingType.SAMPLE_GROUP.name(), group.getID());
 	}
 
@@ -164,7 +186,6 @@ public class ColumnCaptionRenderer extends SelectableRenderer implements ILabelP
 
 	@Override
 	public String getLabel() {
-		// Set<Integer> selectedElementIDs = parent.sampleGroupSelectionManager.getElements(SelectionType.SELECTION);
 		int numSelectedElementsInGroup = 0;
 		for (Integer id : samplePerspective.getVirtualArray()) {
 			List<SelectionType> experimentSelectionTypes = parent.sampleSelectionManager.getSelectionTypes(
@@ -172,12 +193,6 @@ public class ColumnCaptionRenderer extends SelectableRenderer implements ILabelP
 			if (experimentSelectionTypes.contains(SelectionType.SELECTION))
 				numSelectedElementsInGroup++;
 		}
-
-		// for (Integer selectedElementID : selectedElementIDs) {
-		// if (samplePerspective.getVirtualArray().contains(selectedElementID))
-		// numSelectedElementsInGroup++;
-		// }
-
 		return group.getLabel() + ", Elements: " + group.getSize() + ", Selected: " + numSelectedElementsInGroup;
 	}
 

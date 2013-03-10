@@ -45,7 +45,6 @@ import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.events.SelectionCommandListener;
-import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.events.RecordVAUpdateEvent;
 import org.caleydo.core.data.virtualarray.similarity.RelationAnalyzer;
@@ -1023,23 +1022,12 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 
 	}
 
-	// @Override
-	// public void handleClearSelections() {
-	// clearAllSelections();
-	//
-	// }
-
 	public void clearAllSelections() {
 		if (recordSelectionManager != null)
 			recordSelectionManager.clearSelections();
 		updateConnectionLinesBetweenColumns();
 	}
 
-	@Override
-	public void broadcastElements(EVAOperation type) {
-		// TODO Auto-generated method stub
-
-	}
 
 	@Override
 	public List<AGLView> getRemoteRenderedViews() {

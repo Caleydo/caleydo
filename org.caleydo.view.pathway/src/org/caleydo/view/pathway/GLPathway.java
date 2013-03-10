@@ -37,10 +37,6 @@ import org.caleydo.core.data.selection.IEventBasedSelectionManagerUser;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
-import org.caleydo.core.data.virtualarray.EVAOperation;
-import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
-import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
-import org.caleydo.core.data.virtualarray.events.VADeltaEvent;
 import org.caleydo.core.event.EventListenerManager;
 import org.caleydo.core.event.EventListenerManagers;
 import org.caleydo.core.event.data.DataDomainUpdateEvent;
@@ -608,14 +604,6 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 	public void display(final GL2 gl) {
 		checkForHits(gl);
 
-		// gl.glColor3f(1, 0, 0);
-		// gl.glBegin(GL2.GL_POLYGON);
-		// gl.glVertex3f(0, 0, 0);
-		// gl.glVertex3f(0, 1, 0);
-		// gl.glVertex3f(1, 1, 0);
-		// gl.glVertex3f(1, 0, 0);
-		// gl.glEnd();
-
 		if (isDisplayListDirty) {
 			calculatePathwayScaling(gl, pathway);
 			rebuildPathwayDisplayList(gl, displayListIndex);
@@ -821,29 +809,6 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 		setDisplayListDirty();
 
 		gLPathwayAugmentationRenderer.enableNeighborhood(bEnableNeighborhood);
-	}
-
-	@Override
-	public void broadcastElements(EVAOperation type) {
-
-		if (pathway == null)
-			return;
-
-		VirtualArrayDelta delta = new VirtualArrayDelta(tablePerspective.getRecordPerspective().getPerspectiveID(),
-				pathwayDataDomain.getDavidIDType());
-
-		for (PathwayVertexRep vertexRep : pathway.vertexSet()) {
-			for (Integer davidID : vertexRep.getDavidIDs()) {
-				delta.add(VADeltaItem.create(type, davidID));
-			}
-		}
-
-		VADeltaEvent virtualArrayDeltaEvent = new VADeltaEvent();
-		virtualArrayDeltaEvent.setSender(this);
-		virtualArrayDeltaEvent.setEventSpace(dataDomain.getDataDomainID());
-		virtualArrayDeltaEvent.setVirtualArrayDelta(delta);
-		virtualArrayDeltaEvent.setInfo(VIEW_NAME);
-		eventPublisher.triggerEvent(virtualArrayDeltaEvent);
 	}
 
 	@Override
