@@ -59,6 +59,7 @@ import org.caleydo.datadomain.pathway.listener.ShowPortalNodesEvent;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.subgraph.GLWindow.ICloseWindowListener;
 import org.caleydo.view.subgraph.contextmenu.ShowCommonNodeItem;
+import org.caleydo.view.subgraph.datamapping.GLExperimentalDataMapping;
 import org.caleydo.view.subgraph.event.ShowCommonNodePathwaysEvent;
 import org.caleydo.view.subgraph.event.ShowCommonNodesPathwaysEvent;
 import org.caleydo.view.subgraph.event.ShowNodeInfoEvent;
@@ -149,7 +150,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		column.add(baseContainer);
 		nodeInfoContainer.setSize(Float.NaN, 0);
 		final GLWindow dataMappingWindow = new GLWindow("Data Mapping", this);
-		dataMappingWindow.setSize(Float.NaN, 150);
+		dataMappingWindow.setSize(Float.NaN, 80);
 		dataMappingWindow.setContent(experimentalDataMappingElement);
 		dataMappingWindow.onClose(new ICloseWindowListener() {
 
