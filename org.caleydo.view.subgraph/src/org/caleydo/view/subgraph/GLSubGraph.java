@@ -33,7 +33,6 @@ import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormRenderer;
 import org.caleydo.core.view.opengl.layout2.AGLElementGLView;
 import org.caleydo.core.view.opengl.layout2.AnimatedGLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLElement;
-import org.caleydo.core.view.opengl.layout2.GLElement.EVisibility;
 import org.caleydo.core.view.opengl.layout2.GLElementAdapter;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.animation.InOutInitializers;
@@ -149,13 +148,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		final GLWindow dataMappingWindow = new GLWindow("Data Mapping", this);
 		dataMappingWindow.setSize(Float.NaN, 80);
 		dataMappingWindow.setContent(experimentalDataMappingElement);
-		dataMappingWindow.onClose(new ICloseWindowListener() {
-
-			@Override
-			public void onWindowClosed(GLWindow window) {
-				dataMappingWindow.setVisibility(EVisibility.NONE);
-			}
-		});
+		dataMappingWindow.setShowCloseButton(false);
 		dataMappingWindow.setButtonPosition(ESlideInButtonPosition.TOP);
 
 		column.add(dataMappingWindow);
@@ -164,6 +157,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		rankingWindow.setSize(200, Float.NaN);
 		rankingWindow.setContent(rankingElement);
 		rankingWindow.setButtonPosition(ESlideInButtonPosition.RIGHT);
+		rankingWindow.setShowCloseButton(false);
 
 		baseContainer.add(rankingWindow);
 		// pathwayRow.setLayout(new GLMultiFormPathwayLayout(10, GLPadding.ZERO, this, pathwayRow));
@@ -186,6 +180,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		createMultiformRenderer(new ArrayList<>(experimentalDataMappingElement.getTablePerspectives()),
 				EnumSet.of(EEmbeddingID.PATH_LEVEL1, EEmbeddingID.PATH_LEVEL2), baseContainer, 0.3f, pathInfo);
 		pathInfo.window.setButtonPosition(ESlideInButtonPosition.LEFT);
+		pathInfo.window.setShowCloseButton(false);
 		// This assumes that a path level 2 view exists.
 		int rendererID = pathInfo.embeddingIDToRendererIDs.get(EEmbeddingID.PATH_LEVEL2).get(0);
 		if (pathInfo.multiFormRenderer.getActiveRendererID() != rendererID) {
