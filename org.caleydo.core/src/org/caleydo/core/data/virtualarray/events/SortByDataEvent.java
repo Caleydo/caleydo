@@ -16,6 +16,7 @@
  *******************************************************************************/
 package org.caleydo.core.data.virtualarray.events;
 
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.event.AEvent;
 
 /**
@@ -30,6 +31,9 @@ public class SortByDataEvent extends AEvent {
 	private String dataDomainID;
 	/** The table persepctive that is the basis for the sorting */
 	private String tablePerspectiveKey;
+
+	private TablePerspective tablePerspective;
+
 	/** The id of the perspective to be sorted */
 	private String perspectiveID;
 	/** The id of the row/column out of the "other" perspective that is used for determining the sorting */
@@ -39,6 +43,13 @@ public class SortByDataEvent extends AEvent {
 	 *
 	 */
 	public SortByDataEvent() {
+	}
+
+	public SortByDataEvent(String dataDomainID, TablePerspective tablePerspective, String perspectiveID, Integer id) {
+		this.dataDomainID = dataDomainID;
+		this.tablePerspective = tablePerspective;
+		this.perspectiveID = perspectiveID;
+		this.id = id;
 	}
 
 	public SortByDataEvent(String dataDomainID, String tablePerspectiveKey, String perspectiveID, Integer id) {
@@ -79,6 +90,21 @@ public class SortByDataEvent extends AEvent {
 	}
 
 	/**
+	 * @param tablePerspective
+	 *            setter, see {@link tablePerspective}
+	 */
+	public void setTablePerspective(TablePerspective tablePerspective) {
+		this.tablePerspective = tablePerspective;
+	}
+
+	/**
+	 * @return the tablePerspective, see {@link #tablePerspective}
+	 */
+	public TablePerspective getTablePerspective() {
+		return tablePerspective;
+	}
+
+	/**
 	 * @param tablePerspectiveKey
 	 *            setter, see {@link tablePerspectiveKey}
 	 */
@@ -110,7 +136,8 @@ public class SortByDataEvent extends AEvent {
 
 	@Override
 	public boolean checkIntegrity() {
-		if (id != null && tablePerspectiveKey != null && dataDomainID != null && perspectiveID != null)
+		if (id != null && (tablePerspectiveKey != null || tablePerspective != null) && dataDomainID != null
+				&& perspectiveID != null)
 			return true;
 
 		return false;

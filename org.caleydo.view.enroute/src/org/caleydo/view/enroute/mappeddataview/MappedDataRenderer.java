@@ -30,10 +30,15 @@ import org.caleydo.core.data.selection.EventBasedSelectionManager;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.SelectionTypeEvent;
+import org.caleydo.core.data.virtualarray.events.SortByDataEvent;
 import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.event.AEvent;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.view.contextmenu.AContextMenuItem;
+import org.caleydo.core.view.contextmenu.ContextMenuCreator;
+import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.Column;
@@ -125,6 +130,8 @@ public class MappedDataRenderer {
 	EventBasedSelectionManager sampleGroupSelectionManager;
 
 	EventBasedSelectionManager contextRowSelectionManager;
+
+	protected ContextMenuCreator contextMenuCreator = new ContextMenuCreator();
 
 	/** The mapping Type all samples understand */
 	IDType sampleIDType;
@@ -307,7 +314,7 @@ public class MappedDataRenderer {
 				captionColumn.append(rowCaption);
 				i++;
 
-				if (i > 2)
+				if (i > 3)
 					break;
 
 				PathSizeConfiguration oldConfig = parentView.getPathRenderer().getSizeConfig();
@@ -768,12 +775,12 @@ public class MappedDataRenderer {
 	 * @param contextualTablePerspectives
 	 *            setter, see {@link contextualTablePerspectives}
 	 */
-	public void setContextualTablePerspectives(ArrayList<TablePerspective> contextualTablePerspectives) {
+	public void setContextualTablePerspectives(final ArrayList<TablePerspective> contextualTablePerspectives) {
 		this.contextualTablePerspectives = contextualTablePerspectives;
 
 		if (contextualTablePerspectives != null && !contextualTablePerspectives.isEmpty()) {
-			IDType contextRowIDType = contextualTablePerspectives.get(0).getDataDomain()
-					.getOppositeIDType(sampleIDType);
+			final ATableBasedDataDomain dataDomain = contextualTablePerspectives.get(0).getDataDomain();
+			IDType contextRowIDType = dataDomain.getOppositeIDType(sampleIDType);
 
 			if (contextRowSelectionManager == null) {
 				contextRowSelectionManager = new EventBasedSelectionManager(parentView, contextRowIDType);
@@ -805,6 +812,23 @@ public class MappedDataRenderer {
 
 						parentView.setDisplayListDirty();
 
+					}
+
+					@Override
+					protected void rightClicked(Pick pick) {
+						List<AEvent> sortEvents = new ArrayList<>();
+						for (TablePerspective tablePerspective : contextualTablePerspectives) {
+							SortByDataEvent sortEvent = new SortByDataEvent(dataDomain.getDataDomainID(),
+									tablePerspective, tablePerspective.getRecordPerspective()
+											.getPerspectiveID(), pick.getObjectID());
+							sortEvent.setSender(this);
+							sortEvents.add(sortEvent);
+						}
+
+						AContextMenuItem sortByDimensionItem = new GenericContextMenuItem("Sort by this axis ",
+								sortEvents);
+
+						parentView.getContextMenuCreator().addContextMenuItem(sortByDimensionItem);
 					}
 				}, contextRowIDType.getTypeName());
 

@@ -946,8 +946,10 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 	public void handleVASorting(SortByDataEvent event) {
 		if (!event.getDataDomainID().equals(dataDomainID))
 			return;
-
-		TablePerspective tPerspective = getTablePerspective(event.getTablePerspectiveKey());
+		TablePerspective tPerspective = event.getTablePerspective();
+		if (tPerspective == null) {
+			tPerspective = getTablePerspective(event.getTablePerspectiveKey());
+		}
 
 		Perspective perspective = null;
 
@@ -955,6 +957,8 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 
 		VirtualArray virtualArray;
 		ArrayList<Float> valueColumn = null;
+		if (tPerspective == null)
+			return;
 		if (tPerspective.getRecordPerspective().getPerspectiveID().equals(event.getPerspectiveID())) {
 			perspective = tPerspective.getRecordPerspective();
 			virtualArray = perspective.getVirtualArray();

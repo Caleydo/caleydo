@@ -503,7 +503,10 @@ public class VirtualArray implements Iterable<Integer>, Cloneable {
 
 	public synchronized void sort(List<Float> values) {
 		ValueBasedComparator comparator = new ValueBasedComparator(values);
-		Collections.sort(virtualArrayList, comparator);
+		if (virtualArrayList.size() == comparator.values.size())
+			Collections.sort(virtualArrayList, comparator);
+		else
+			throw new IllegalStateException("VA and comparator are not of equal size");
 
 	}
 
@@ -519,7 +522,7 @@ public class VirtualArray implements Iterable<Integer>, Cloneable {
 
 		@Override
 		public int compare(Integer o1, Integer o2) {
-			return values.get(o1).compareTo(values.get(o2));
+			return values.get(indexOf(o1)).compareTo(values.get(indexOf(o2)));
 		}
 
 	}
