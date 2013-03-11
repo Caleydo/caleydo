@@ -18,6 +18,7 @@ package org.caleydo.core.data.virtualarray.events;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.event.AEvent;
+import org.caleydo.core.id.IDType;
 
 /**
  * Event that signals that a virtual array should be sorted based on it's values
@@ -35,7 +36,7 @@ public class SortByDataEvent extends AEvent {
 	private TablePerspective tablePerspective;
 
 	/** The id of the perspective to be sorted */
-	private String perspectiveID;
+	private IDType perspectiveIDType;
 	/** The id of the row/column out of the "other" perspective that is used for determining the sorting */
 	private Integer id;
 
@@ -45,17 +46,17 @@ public class SortByDataEvent extends AEvent {
 	public SortByDataEvent() {
 	}
 
-	public SortByDataEvent(String dataDomainID, TablePerspective tablePerspective, String perspectiveID, Integer id) {
+	public SortByDataEvent(String dataDomainID, TablePerspective tablePerspective, IDType perspectiveIDType, Integer id) {
 		this.dataDomainID = dataDomainID;
 		this.tablePerspective = tablePerspective;
-		this.perspectiveID = perspectiveID;
+		this.perspectiveIDType = perspectiveIDType;
 		this.id = id;
 	}
 
-	public SortByDataEvent(String dataDomainID, String tablePerspectiveKey, String perspectiveID, Integer id) {
+	public SortByDataEvent(String dataDomainID, String tablePerspectiveKey, IDType perspectiveIDType, Integer id) {
 		this.dataDomainID = dataDomainID;
 		this.tablePerspectiveKey = tablePerspectiveKey;
-		this.perspectiveID = perspectiveID;
+		this.perspectiveIDType = perspectiveIDType;
 		this.id = id;
 	}
 
@@ -75,18 +76,18 @@ public class SortByDataEvent extends AEvent {
 	}
 
 	/**
-	 * @param perspectiveID
-	 *            setter, see {@link perspectiveID}
+	 * @param perspectiveIDType
+	 *            setter, see {@link perspectiveIDType}
 	 */
-	public void setPerspectiveID(String perspectiveID) {
-		this.perspectiveID = perspectiveID;
+	public void setPerspectiveIDType(IDType perspectiveIDType) {
+		this.perspectiveIDType = perspectiveIDType;
 	}
 
 	/**
-	 * @return the perspectiveID, see {@link #perspectiveID}
+	 * @return the perspectiveIDType, see {@link #perspectiveIDType}
 	 */
-	public String getPerspectiveID() {
-		return perspectiveID;
+	public IDType getPerspectiveIDType() {
+		return perspectiveIDType;
 	}
 
 	/**
@@ -137,7 +138,7 @@ public class SortByDataEvent extends AEvent {
 	@Override
 	public boolean checkIntegrity() {
 		if (id != null && (tablePerspectiveKey != null || tablePerspective != null) && dataDomainID != null
-				&& perspectiveID != null)
+				&& perspectiveIDType != null)
 			return true;
 
 		return false;

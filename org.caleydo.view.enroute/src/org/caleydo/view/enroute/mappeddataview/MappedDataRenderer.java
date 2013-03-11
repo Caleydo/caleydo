@@ -37,7 +37,6 @@ import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
-import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
@@ -97,6 +96,8 @@ public class MappedDataRenderer {
 
 	private ArrayList<TablePerspective> contextualTablePerspectives = new ArrayList<>();
 
+	private List<ALinearizableNode> linearizedNodes;
+
 	/**
 	 * the distance from the left edge of this renderer to the left edge of the window
 	 */
@@ -130,8 +131,6 @@ public class MappedDataRenderer {
 	EventBasedSelectionManager sampleGroupSelectionManager;
 
 	EventBasedSelectionManager contextRowSelectionManager;
-
-	protected ContextMenuCreator contextMenuCreator = new ContextMenuCreator();
 
 	/** The mapping Type all samples understand */
 	IDType sampleIDType;
@@ -224,12 +223,17 @@ public class MappedDataRenderer {
 	public void setLinearizedNodes(List<ALinearizableNode> linearizedNodes) {
 
 		relationShipRenderers = new ArrayList<RelationshipRenderer>(linearizedNodes.size());
-		createLayout(linearizedNodes, baseLayoutManger, false);
-		createLayout(linearizedNodes, highlightLayoutManger, true);
+		this.linearizedNodes = linearizedNodes;
+		reBuildLayout();
 	}
 
-	private void createLayout(List<ALinearizableNode> linearizedNodes, LayoutManager layoutManager,
-			boolean isHighlightLayout) {
+	/** Re-builds the layout from scratch */
+	public void reBuildLayout() {
+		createLayout(baseLayoutManger, false);
+		createLayout(highlightLayoutManger, true);
+	}
+
+	private void createLayout(LayoutManager layoutManager, boolean isHighlightLayout) {
 
 		Row baseRow = new Row("baseRow");
 		layoutManager.setBaseElementLayout(baseRow);
@@ -780,7 +784,7 @@ public class MappedDataRenderer {
 
 		if (contextualTablePerspectives != null && !contextualTablePerspectives.isEmpty()) {
 			final ATableBasedDataDomain dataDomain = contextualTablePerspectives.get(0).getDataDomain();
-			IDType contextRowIDType = dataDomain.getOppositeIDType(sampleIDType);
+			final IDType contextRowIDType = dataDomain.getOppositeIDType(sampleIDType);
 
 			if (contextRowSelectionManager == null) {
 				contextRowSelectionManager = new EventBasedSelectionManager(parentView, contextRowIDType);
@@ -819,8 +823,8 @@ public class MappedDataRenderer {
 						List<AEvent> sortEvents = new ArrayList<>();
 						for (TablePerspective tablePerspective : contextualTablePerspectives) {
 							SortByDataEvent sortEvent = new SortByDataEvent(dataDomain.getDataDomainID(),
-									tablePerspective, tablePerspective.getRecordPerspective()
-											.getPerspectiveID(), pick.getObjectID());
+									tablePerspective, sampleIDType, pick
+											.getObjectID());
 							sortEvent.setSender(this);
 							sortEvents.add(sortEvent);
 						}
@@ -855,6 +859,13 @@ public class MappedDataRenderer {
 			return contextRowSelectionManager;
 
 		return null;
+	}
+
+	/**
+	 * @return the contextualTablePerspectives, see {@link #contextualTablePerspectives}
+	 */
+	public ArrayList<TablePerspective> getContextualTablePerspectives() {
+		return contextualTablePerspectives;
 	}
 
 }

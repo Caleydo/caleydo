@@ -1470,7 +1470,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 		contextMenuCreator.addContextMenuItem(menuItem);
 
 		SortByDataEvent sortEvent = new SortByDataEvent(dataDomain.getDataDomainID(),
-				tablePerspective.getTablePerspectiveKey(), tablePerspective.getRecordPerspective().getPerspectiveID(),
+				tablePerspective.getTablePerspectiveKey(), tablePerspective.getRecordPerspective().getIdType(),
 				dimensionID);
 		sortEvent.setSender(this);
 

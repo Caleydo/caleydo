@@ -504,7 +504,10 @@ public class VirtualArray implements Iterable<Integer>, Cloneable {
 	public synchronized void sort(List<Float> values) {
 		ValueBasedComparator comparator = new ValueBasedComparator(values);
 		if (virtualArrayList.size() == comparator.values.size())
+ {
 			Collections.sort(virtualArrayList, comparator);
+			setHashDirty();
+		}
 		else
 			throw new IllegalStateException("VA and comparator are not of equal size");
 

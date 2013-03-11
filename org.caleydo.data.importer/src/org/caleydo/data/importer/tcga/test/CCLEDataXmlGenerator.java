@@ -119,7 +119,7 @@ public class CCLEDataXmlGenerator extends DataSetDescriptionSerializer {
 		mrnaData.setColumnIDSpecification(sampleIDSpecification);
 		mrnaData.setColumnOfRowIds(1);
 
-		mrnaData.addColumnGroupingSpecification(sampleGrouping);
+		// mrnaData.addColumnGroupingSpecification(sampleGrouping);
 
 		// DataProcessingDescription dataProcessingDescription = new DataProcessingDescription();
 		// ClusterConfiguration clusterConfiguration = new ClusterConfiguration();
@@ -176,7 +176,7 @@ public class CCLEDataXmlGenerator extends DataSetDescriptionSerializer {
 		copyNumberData.setRowIDSpecification(geneIDSpecification);
 		copyNumberData.setColumnIDSpecification(sampleIDSpecification);
 
-		copyNumberData.addColumnGroupingSpecification(sampleGrouping);
+		// copyNumberData.addColumnGroupingSpecification(sampleGrouping);
 
 		return copyNumberData;
 	}
@@ -207,6 +207,7 @@ public class CCLEDataXmlGenerator extends DataSetDescriptionSerializer {
 
 		compoundCellData.setColumnIDSpecification(compoundIDSpecification);
 		compoundCellData.setRowIDSpecification(sampleIDSpecification);
+
 		compoundCellData.addRowGroupingSpecification(sampleGrouping);
 
 		return compoundCellData;

@@ -52,6 +52,7 @@ import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
 import org.caleydo.core.data.virtualarray.events.DimensionVAUpdateEvent;
 import org.caleydo.core.data.virtualarray.events.IVADeltaHandler;
+import org.caleydo.core.data.virtualarray.events.PerspectiveUpdatedEvent;
 import org.caleydo.core.data.virtualarray.events.RecordVAUpdateEvent;
 import org.caleydo.core.data.virtualarray.events.ReplacePerspectiveEvent;
 import org.caleydo.core.data.virtualarray.events.ReplacePerspectiveListener;
@@ -959,30 +960,21 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 		ArrayList<Float> valueColumn = null;
 		if (tPerspective == null)
 			return;
-		if (tPerspective.getRecordPerspective().getPerspectiveID().equals(event.getPerspectiveID())) {
-			perspective = tPerspective.getRecordPerspective();
-			virtualArray = perspective.getVirtualArray();
 
-			valueColumn = new ArrayList<>(virtualArray.size());
-			for (Integer recordIndex : virtualArray) {
-				valueColumn.add(table.getNormalizedValue(event.getId(), recordIndex));
-			}
+		IDType pIDType = event.getPerspectiveIDType();
+		perspective = tPerspective.getPerspective(pIDType);
+		virtualArray = perspective.getVirtualArray();
 
-		} else if (tPerspective.getDimensionPerspective().getPerspectiveID().equals(event.getPerspectiveID())) {
-			perspective = tPerspective.getDimensionPerspective();
-			virtualArray = perspective.getVirtualArray();
-
-			valueColumn = new ArrayList<>(virtualArray.size());
-			for (Integer dimensionIndex : virtualArray) {
-				valueColumn.add(table.getNormalizedValue(dimensionIndex, event.getId()));
-			}
-		} else {
-			throw new IllegalStateException("Table and value perspective key's don't sync up");
+		valueColumn = new ArrayList<>(virtualArray.size());
+		for (Integer index : virtualArray) {
+			valueColumn.add(getNormalizedValue(getPrimaryIDType(pIDType), index, getOppositeIDType(pIDType),
+					event.getId()));
 		}
 
 		perspective.sort(valueColumn);
-
-		System.out.println("Arrived" + valueColumn.toString());
+		PerspectiveUpdatedEvent pUpdateEvent = new PerspectiveUpdatedEvent(perspective);
+		pUpdateEvent.setSender(this);
+		eventPublisher.triggerEvent(pUpdateEvent);
 
 	}
 

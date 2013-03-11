@@ -170,9 +170,9 @@ public class TablePerspective implements IDefaultLabelHolder {
 		this.dataDomain = dataDomain;
 		this.dataDomainID = dataDomain.getDataDomainID();
 		this.recordPerspective = recordPerspective;
-		recordPerspectiveID = recordPerspective.getPerspectiveID();
+		this.recordPerspectiveID = recordPerspective.getPerspectiveID();
 		this.dimensionPerspective = dimensionPerspective;
-		dimensionPerspectiveID = dimensionPerspective.getPerspectiveID();
+		this.dimensionPerspectiveID = dimensionPerspective.getPerspectiveID();
 		createKey();
 	}
 

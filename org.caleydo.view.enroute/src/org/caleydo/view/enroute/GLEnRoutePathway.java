@@ -35,6 +35,7 @@ import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
 import org.caleydo.core.data.selection.IEventBasedSelectionManagerUser;
+import org.caleydo.core.data.virtualarray.events.PerspectiveUpdatedEvent;
 import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.event.EventListenerManager;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
@@ -591,7 +592,6 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		return metaboliteSelectionManager;
 	}
 
-
 	@Override
 	public Set<IDataDomain> getDataDomains() {
 		return new HashSet<IDataDomain>(dataDomains);
@@ -677,6 +677,30 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		if (event.getPathRenderer() == pathRenderer) {
 			setLayoutDirty();
 			pathRendererChanged = true;
+		}
+	}
+
+	@ListenTo
+	public void updatePerspective(PerspectiveUpdatedEvent event) {
+		for (TablePerspective perspective : resolvedTablePerspectives) {
+			if (perspective.getRecordPerspective().equals(event.getPerspective())
+					|| perspective.getDimensionPerspective().equals(event.getPerspective())) {
+				updateLayout();
+			}
+		}
+
+		for (TablePerspective perspective : tablePerspectives) {
+			if (perspective.getRecordPerspective().equals(event.getPerspective())
+					|| perspective.getDimensionPerspective().equals(event.getPerspective())) {
+				updateLayout();
+			}
+		}
+
+		for (TablePerspective perspective : mappedDataRenderer.getContextualTablePerspectives()) {
+			if (perspective.getRecordPerspective().equals(event.getPerspective())
+					|| perspective.getDimensionPerspective().equals(event.getPerspective())) {
+				updateLayout();
+			}
 		}
 	}
 

@@ -46,10 +46,9 @@ import org.eclipse.core.runtime.Status;
 
 /**
  * <p>
- * A {@link Perspective} holds all relevant meta data for either records through the
- * {@link Perspective} or dimensions through the {@link Perspective}. For many uses both, a
- * Perspective and a DimsenionPerspective are necessary. {@link TablePerspective} is designed to hold
- * combinations of Record- and AVariablePerspectives.
+ * A {@link Perspective} holds all relevant meta data for either records through the {@link Perspective} or dimensions
+ * through the {@link Perspective}. For many uses both, a Perspective and a DimsenionPerspective are necessary.
+ * {@link TablePerspective} is designed to hold combinations of Record- and AVariablePerspectives.
  * </p>
  * <p>
  * Among the information the DataPerspectives holds are:
@@ -72,7 +71,13 @@ public class Perspective implements IDefaultLabelHolder {
 
 	/** The unique ID of the perspective */
 	@XmlElement
-	protected String perspectiveID;
+	private String perspectiveID;
+
+	/**
+	 * ID that is set if this perspective is synchronized across datasets. The perspectives that are kept in-sync across
+	 * dataset share the same ID.
+	 */
+	private String crossDatasetID = null;
 
 	/** A human-readable description of the perspective */
 	private String label;
@@ -89,14 +94,14 @@ public class Perspective implements IDefaultLabelHolder {
 	 * should not use this perspective
 	 */
 	@XmlElement
-	protected boolean isPrivate;
+	private boolean isPrivate;
 
 	/**
 	 * Flag determining whether this perspective is the default perspective . A default perspective is defined for every
 	 * {@link Table}. It should reflect "the whole dataset". This is used for instance by the support views.
 	 */
 	@XmlElement
-	protected boolean isDefault;
+	private boolean isDefault;
 
 	/**
 	 * Flag telling us whether the tree has been automatically generated (i.e., is the default tree), or whether it has
@@ -104,28 +109,28 @@ public class Perspective implements IDefaultLabelHolder {
 	 * example.
 	 */
 	@XmlElement
-	boolean isTreeDefaultTree = true;
+	private boolean isTreeDefaultTree = true;
 
 	/** The dataDomain this perspective belongs to */
 	@XmlTransient
-	protected IDataDomain dataDomain;
+	private IDataDomain dataDomain;
 
 	@XmlTransient
-	protected IDType idType;
+	private IDType idType;
 
 	/** The {@link VirtualArray} of this DataPerspective. */
-	protected VirtualArray virtualArray;
+	private VirtualArray virtualArray;
 
 	/**
 	 * The root not of the tree from this perspectives view. This enables the perspective to use only part of the tree
 	 */
 	@XmlElement
-	protected ClusterNode rootNode;
+	private ClusterNode rootNode;
 	/**
 	 * The filter manager that manages and holds all filters applied to this prespective.
 	 */
 	@XmlTransient
-	protected FilterManager filterManager;
+	private FilterManager filterManager;
 
 	@XmlTransient
 	private ClusterTree tree;
@@ -365,8 +370,8 @@ public class Perspective implements IDefaultLabelHolder {
 
 	/**
 	 * <p>
-	 * {@link Perspective}s are initialized by providing a {@link PerspectiveInitializationData} object, which
-	 * can contain a number of different combinations of information to initialize the perspective.
+	 * {@link Perspective}s are initialized by providing a {@link PerspectiveInitializationData} object, which can
+	 * contain a number of different combinations of information to initialize the perspective.
 	 * </p>
 	 * <p>
 	 * If null is passed, an empty perspective is created.
@@ -411,12 +416,9 @@ public class Perspective implements IDefaultLabelHolder {
 		}
 	}
 
-
-
 	public void setVADelta(VirtualArrayDelta delta) {
 		virtualArray.setDelta(delta);
 	}
-
 
 	// -------------------------- Initialization Methods
 	// -------------------------------------
