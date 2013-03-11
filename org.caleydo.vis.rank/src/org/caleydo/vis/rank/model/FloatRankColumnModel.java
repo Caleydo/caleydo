@@ -128,7 +128,7 @@ public class FloatRankColumnModel extends ARankColumnModel implements IMappedCol
 		m.setzDelta(0.5f);
 		Vec2f location = summary.getAbsoluteLocation();
 		Vec2f size = summary.getSize();
-		context.getPopupLayer().show(m, new Vec4f(location.x(), location.y() + size.y(), 260, 260));
+		context.getPopupLayer().show(m, new Vec4f(location.x(), location.y() + size.y(), 260, 300));
 	}
 
 	private IFloatList asData() {

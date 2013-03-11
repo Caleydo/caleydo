@@ -32,7 +32,7 @@ import org.caleydo.vis.rank.ui.RenderStyle;
  */
 public class MappingParallelUI<T extends IMappingFunction> extends AMappingFunctionMode<T> {
 	private static final float GAP = 10;
-	private boolean isHorizontal;
+	protected boolean isHorizontal;
 
 	public MappingParallelUI(T model, boolean isHorizontal) {
 		super(model);
