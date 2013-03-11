@@ -577,6 +577,18 @@ public class PathwayManager extends AManager<PathwayGraph> {
 	}
 
 	/**
+	 *
+	 * @param vertexRep1
+	 * @param vertexRep2
+	 * @return True if the vertexReps are the same or equivalent, false otherwise.
+	 */
+	public boolean areVerticesEquivalent(PathwayVertexRep vertexRep1, PathwayVertexRep vertexRep2) {
+		return (vertexRep1 == vertexRep2)
+				|| (vertexRep1.getPathwayVertices().size() == vertexRep2.getPathwayVertices().size() && vertexRep1
+						.getPathwayVertices().containsAll(vertexRep2.getPathwayVertices()));
+	}
+
+	/**
 	 * Calculates a path consisting of {@link PathwayVertexRep} objects for a specified vertexRep. This path ends if
 	 * there is no unambiguous way to continue, the direction of edges changes, the pathway ends, or the
 	 * {@link #maxBranchSwitchingPathLength} is reached. The specified <code>PathwayVertexRep</code> that represents the

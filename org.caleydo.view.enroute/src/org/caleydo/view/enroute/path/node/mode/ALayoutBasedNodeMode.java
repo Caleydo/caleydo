@@ -34,6 +34,7 @@ public abstract class ALayoutBasedNodeMode extends ALinearizeableNodeMode {
 		super(view, pathwayPathRenderer);
 		this.pixelGLConverter = view.getPixelGLConverter();
 		layoutManager = new LayoutManager(new ViewFrustum(), pixelGLConverter);
+		layoutManager.setUseDisplayLists(false);
 	}
 
 	@Override

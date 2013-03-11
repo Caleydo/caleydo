@@ -220,6 +220,8 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 
 		}
 
+
+
 		// Rendering highlights without a display list is actually less expensive
 		if (glu == null)
 			glu = new GLU();
@@ -363,8 +365,8 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 		gl.glPushMatrix();
 		gl.glTranslatef(pathwayTitlePositionX, bottomPathwayTitleLimit + (maxTextWidth - requiredTextWidth) / 2.0f, 0);
 		gl.glRotatef(90, 0, 0, 1);
-		// gl.glColor3f(0, 0, 0);
-		// textRenderer.setColor(0, 0, 0, 1);
+		gl.glColor3f(0, 0, 0);
+		textRenderer.setColor(0, 0, 0, 1);
 		textRenderer.renderTextInBounds(gl, text, 0, 0, 0, maxTextWidth, pathwayTitleTextHeight);
 		gl.glPopMatrix();
 	}

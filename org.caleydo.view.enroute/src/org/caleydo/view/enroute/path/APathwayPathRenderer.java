@@ -189,7 +189,7 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 		this.view = view;
 		this.tablePerspectives = tablePerspectives;
 		this.pixelGLConverter = view.getPixelGLConverter();
-		this.textRenderer = view.getTextRenderer();
+		this.textRenderer = new CaleydoTextRenderer(24);
 
 		geneSelectionManager = new EventBasedSelectionManager(this, IDType.getIDType("DAVID"));
 		geneSelectionManager.registerEventListeners();

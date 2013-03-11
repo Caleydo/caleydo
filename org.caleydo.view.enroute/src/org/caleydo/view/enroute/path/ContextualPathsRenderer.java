@@ -330,7 +330,7 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 		for (PathwayVertexRep vertexRep : vertexReps) {
 			boolean createNewPath = true;
 			for (APathwayPathRenderer renderer : renderers.keySet()) {
-				if (PathUtility.containsVertexRep(renderer.pathSegments, vertexRep)) {
+				if (PathUtil.containsVertexRep(renderer.pathSegments, vertexRep)) {
 					renderersToRemove.remove(renderer);
 					createNewPath = false;
 					break;
@@ -371,14 +371,14 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 
 		boolean isSelectedPathShown = false;
 		if (selectedPathRenderer != null) {
-			isSelectedPathShown = PathUtility.isPathShown(selectedPathRenderer.pathSegments, selectedPathSegments,
+			isSelectedPathShown = PathUtil.isPathShown(selectedPathRenderer.pathSegments, selectedPathSegments,
 					pathway);
 			if (isSelectedPathShown)
 				return;
 		}
 
 		for (APathwayPathRenderer renderer : renderers.keySet()) {
-			isSelectedPathShown = PathUtility.isPathShown(renderer.pathSegments, selectedPathSegments, pathway);
+			isSelectedPathShown = PathUtil.isPathShown(renderer.pathSegments, selectedPathSegments, pathway);
 			if (isSelectedPathShown) {
 				selectedPathRenderer = renderer;
 				return;
@@ -389,7 +389,7 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 		int maxEqualVertices = 0;
 		int selectedPathRendererEqualVertices = 0;
 		for (APathwayPathRenderer renderer : renderers.keySet()) {
-			int numEqualVertices = PathUtility.getNumEqualVertices(renderer.pathSegments, selectedPathSegments);
+			int numEqualVertices = PathUtil.getNumEqualVertices(renderer.pathSegments, selectedPathSegments);
 			if (maxEqualVertices < numEqualVertices) {
 				pathRendererWithMostEqualNodes = renderer;
 				maxEqualVertices = numEqualVertices;
@@ -486,7 +486,7 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 		protected void onShowBranchPath(ShowPathEvent event) {
 			boolean isPathShown = false;
 			for (APathwayPathRenderer renderer : renderers.keySet()) {
-				isPathShown = PathUtility.isPathShown(renderer.pathSegments, event.getPathSegments(), pathway);
+				isPathShown = PathUtil.isPathShown(renderer.pathSegments, event.getPathSegments(), pathway);
 				if (renderer.expandedBranchSummaryNode != null) {
 					renderer.expandedBranchSummaryNode.setCollapsed(true);
 					renderer.setExpandedBranchSummaryNode(null);

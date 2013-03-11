@@ -286,7 +286,6 @@ public class BranchSummaryNode extends ANode {
 
 	}
 
-
 	@Override
 	public void renderHighlight(GL2 gl, GLU glu) {
 		if (!isCollapsed) {

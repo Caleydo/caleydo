@@ -32,7 +32,10 @@ import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
  * @author Christian Partl
  *
  */
-public final class PathUtility {
+public final class PathUtil {
+
+	private PathUtil() {
+	}
 
 	/**
 	 * @param segments

@@ -30,6 +30,7 @@ import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.listener.EnablePathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.PathwayPathSelectionEvent;
+import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.enroute.path.node.ALinearizableNode;
 
 /**
@@ -47,6 +48,11 @@ public class FixedPathUpdateStrategy extends APathUpdateStrategy {
 	 * Determines whether clicking a path node will create a new selected path or finish path selection.
 	 */
 	protected boolean createNewPathSelection = true;
+
+	/**
+	 * Determines whether the selected path is a continuation from other pathways.
+	 */
+	protected boolean isSelectedPathContinuation = false;
 
 	/**
 	 * Determines whether the path will be selected by moving the mouse over nodes. This is only possible if
@@ -108,8 +114,25 @@ public class FixedPathUpdateStrategy extends APathUpdateStrategy {
 		protected void clicked(Pick pick) {
 
 			if (isPathSelectionMode) {
+				isSelectedPathContinuation = false;
+				if (!selectedPathSegments.isEmpty()) {
+					List<PathwayVertexRep> lastSegment = selectedPathSegments.get(selectedPathSegments.size() - 1);
+					if (lastSegment.size() > 1) {
+						for (PathwayVertexRep v : node.getVertexReps()) {
+							if (v != lastSegment.get(lastSegment.size() - 1)
+									&& PathwayManager.get().areVerticesEquivalent(v,
+											lastSegment.get(lastSegment.size() - 1))) {
+								isSelectedPathContinuation = true;
+								createNewPathSelection = true;
+								break;
+							}
+						}
+					}
+				}
 				if (createNewPathSelection) {
-					selectedPathSegments.clear();
+					if (!isSelectedPathContinuation) {
+						selectedPathSegments.clear();
+					}
 					List<PathwayVertexRep> firstSegment = new ArrayList<>();
 					firstSegment.add(node.getVertexReps().get(node.getVertexReps().size() - 1));
 					selectedPathSegments.add(firstSegment);
@@ -125,9 +148,11 @@ public class FixedPathUpdateStrategy extends APathUpdateStrategy {
 			if (isPathSelectionMode && !createNewPathSelection
 					&& renderer.pathNodes.indexOf(node) > renderer.pathNodes.indexOf(selectedPathStartNode)) {
 				Pair<Integer, Integer> fromIndexPair = renderer.determinePathSegmentAndIndexOfPathNode(
-						selectedPathStartNode, selectedPathSegments.get(0).get(0));
+						selectedPathStartNode, selectedPathSegments.get(selectedPathSegments.size() - 1).get(0));
 				Pair<Integer, Integer> toIndexPair = renderer.determinePathSegmentAndIndexOfPathNode(node,
 						node.getPrimaryPathwayVertexRep());
+				if (fromIndexPair == null || toIndexPair == null)
+					return;
 
 				List<List<PathwayVertexRep>> segments = new ArrayList<>(renderer.pathSegments.subList(
 						fromIndexPair.getFirst(), toIndexPair.getFirst() + 1));
@@ -144,7 +169,8 @@ public class FixedPathUpdateStrategy extends APathUpdateStrategy {
 					endSegment = new ArrayList<>(endSegment.subList(toIndexPair.getSecond(), endSegment.size()));
 					segments.set(segments.size() - 1, startSegment);
 				}
-				selectedPathSegments = segments;
+				selectedPathSegments.remove(selectedPathSegments.size() - 1);
+				selectedPathSegments.addAll(segments);
 				triggerPathUpdate(selectedPathSegments);
 			}
 		}
@@ -155,7 +181,7 @@ public class FixedPathUpdateStrategy extends APathUpdateStrategy {
 		if (renderer != contextualPathsRenderer.getSelectedPathRenderer())
 			return true;
 
-		if (PathUtility.isPathShown(newPath, selectedPathSegments, renderer.pathway))
+		if (PathUtil.isPathShown(newPath, selectedPathSegments, renderer.pathway))
 			return true;
 		return false;
 	}

@@ -112,7 +112,7 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel {
 		});
 	}
 
-	protected void setFilter(String filter) {
+	public void setFilter(String filter) {
 		invalidAllFilter();
 		propertySupport.firePropertyChange(PROP_FILTER, this.filter, this.filter = filter);
 	}
