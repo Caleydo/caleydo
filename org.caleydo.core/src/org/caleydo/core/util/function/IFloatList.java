@@ -50,10 +50,10 @@ public interface IFloatList extends List<Float> {
 
 	/**
 	 * simple statistics 0...min 1...max,2..mean,3..count,4..sum,5..sqrsum more may follow
-	 * 
+	 *
 	 * @return
 	 */
-	float[] computeStats();
+	FloatStatistics computeStats();
 
 	@Override
 	IFloatIterator iterator();

@@ -37,6 +37,7 @@ import org.caleydo.core.io.gui.dataimport.widget.ICallback;
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.util.function.ArrayFloatList;
 import org.caleydo.core.util.function.FloatFunctions;
+import org.caleydo.core.util.function.FloatStatistics;
 import org.caleydo.core.util.function.IFloatList;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
@@ -53,12 +54,14 @@ import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.core.view.opengl.picking.Pick;
+import org.caleydo.data.loader.ResourceLocators;
 import org.caleydo.vis.rank.internal.event.CodeUpdateEvent;
 import org.caleydo.vis.rank.internal.ui.ButtonBar;
 import org.caleydo.vis.rank.model.DataUtils;
 import org.caleydo.vis.rank.model.SimpleHistogram;
 import org.caleydo.vis.rank.model.mapping.IMappingFunction;
 import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
+import org.caleydo.vis.rank.model.mapping.ScriptedMappingFunction;
 import org.caleydo.vis.rank.ui.RenderStyle;
 import org.caleydo.vis.rank.ui.RenderUtils;
 import org.eclipse.swt.widgets.Display;
@@ -196,15 +199,17 @@ public class MappingFunctionUI extends GLElementContainer implements GLButton.IS
 
 			@Override
 			public void run() {
-				new JSEditorDialog(new Shell(), MappingFunctionUI.this, model).open();
+				new JSEditorDialog(new Shell(), MappingFunctionUI.this, (ScriptedMappingFunction) model).open();
 			}
 		});
 	}
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
+		g.pushResourceLocator(ResourceLocators.classLoader(this.getClass().getClassLoader()));
 		g.color(0.95f, .95f, .95f, 0.95f).fillRect(0, 0, w, h);
 		super.renderImpl(g, w, h);
+		g.popResourceLocator();
 	}
 
 	protected final void fireCallback() {
@@ -395,7 +400,8 @@ public class MappingFunctionUI extends GLElementContainer implements GLButton.IS
 
 		@Override
 		protected void onDoubleClicked(Pick pick) {
-			openJSEditor();
+			if (model instanceof ScriptedMappingFunction)
+				openJSEditor();
 		}
 	}
 
@@ -406,8 +412,8 @@ public class MappingFunctionUI extends GLElementContainer implements GLButton.IS
 		for (int i = 0; i < arr.length; ++i)
 			arr[i] = r.nextFloat();
 		IFloatList data = new ArrayFloatList(arr);
-		float[] s = data.computeStats();
-		model.setAct(s[0], s[1]);
+		FloatStatistics s = data.computeStats();
+		model.setActStatistics(s);
 		final MappingFunctionUI root = new MappingFunctionUI(model, data, Color.GRAY, Color.LIGHT_GRAY, null);
 		root.addMode(new PiecewiseMappingCrossUI(model, true));
 		root.addMode(new PiecewiseMappingParallelUI(model, true));

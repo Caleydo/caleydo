@@ -30,7 +30,6 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptException;
 
 import org.caleydo.vis.rank.internal.event.CodeUpdateEvent;
-import org.caleydo.vis.rank.model.mapping.IMappingFunction;
 import org.caleydo.vis.rank.model.mapping.ScriptedMappingFunction;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IMessageProvider;
@@ -52,14 +51,14 @@ import org.eclipse.swt.widgets.Text;
 public class JSEditorDialog extends TitleAreaDialog {
 	private final Object receiver;
 	private final ScriptEngine engine;
-	private IMappingFunction model;
+	private ScriptedMappingFunction model;
 
 	private Text codeUI;
 	private Text testUI;
 	private Text testOutputUI;
 	private CompiledScript script;
 
-	public JSEditorDialog(Shell parentShell, Object receiver, IMappingFunction model) {
+	public JSEditorDialog(Shell parentShell, Object receiver, ScriptedMappingFunction model) {
 		super(parentShell);
 		setBlockOnOpen(false);
 		this.receiver = receiver;
@@ -135,8 +134,7 @@ public class JSEditorDialog extends TitleAreaDialog {
 				return;
 			Bindings b = engine.createBindings();
 			b.put("v", f);
-			b.put("v_min", model.getActMin());
-			b.put("v_max", model.getActMax());
+			model.addBindings(b);
 			testOutputUI.setText(Objects.toString(script.eval(b)));
 		} catch(NumberFormatException e) {
 			testOutputUI.setText("Invalid input: " + e.getMessage());
@@ -153,8 +151,8 @@ public class JSEditorDialog extends TitleAreaDialog {
 			// dummy test
 			Bindings b = engine.createBindings();
 			b.put("v", 0.5f);
-			b.put("v_min", model.getActMin());
-			b.put("v_max", model.getActMax());
+			b.put("data_min", model.getActMin());
+			b.put("data_max", model.getActMax());
 			Object r = script.eval(b);
 			if (!(r instanceof Number)) {
 				setErrorMessage("function must return a float value");

@@ -75,7 +75,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 	private final static int UNCOLLAPSE = 3;
 
 	private final IRankTableUIConfig config;
-	private boolean canDrag;
+	private boolean isHovered;
 	private boolean armDropColum;
 	private String armDropHint;
 
@@ -105,7 +105,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 
 		setLayout(this);
 		setLayoutData(model);
-		if (config.isMoveAble())
+		if (config.isInteractive())
 			this.setVisibility(EVisibility.PICKABLE);
 		this.onPick(new IPickingListener() {
 			@Override
@@ -410,7 +410,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 
 		if (config.isInteractive()) {
 			IGLLayoutElement weight = children.get(DRAG_WEIGHT);
-			weight.setBounds(w, hasTitle ? LABEL_HEIGHT : 0, (canDrag && config.canChangeWeights()) ? 8 : 0, h
+			weight.setBounds(w, hasTitle ? LABEL_HEIGHT : 0, (isHovered && config.canChangeWeights()) ? 8 : 0, h
 					- (hasTitle ? LABEL_HEIGHT : 0));
 
 			IGLLayoutElement buttons = children.get(BUTTONS);
@@ -418,14 +418,14 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 					.getMinWidth() : 0;
 			if ((w - 4) < minWidth) {
 				float missing = minWidth - (w - 4);
-				buttons.setBounds(-missing * 0.5f, 2, minWidth, canDrag ? RenderStyle.BUTTON_WIDTH : 0);
+				buttons.setBounds(-missing * 0.5f, 2, minWidth, isHovered ? RenderStyle.BUTTON_WIDTH : 0);
 			} else {
-				buttons.setBounds(2, 2, w - 4, canDrag ? RenderStyle.BUTTON_WIDTH : 0);
+				buttons.setBounds(2, 2, w - 4, isHovered ? RenderStyle.BUTTON_WIDTH : 0);
 			}
 
 			IGLLayoutElement uncollapse = children.get(UNCOLLAPSE);
 			uncollapse.setBounds((w - RenderStyle.BUTTON_WIDTH) * .5f, 2, RenderStyle.BUTTON_WIDTH,
-					canDrag ? RenderStyle.BUTTON_WIDTH : 0);
+					isHovered ? RenderStyle.BUTTON_WIDTH : 0);
 
 			for (IGLLayoutElement r : children.subList(UNCOLLAPSE + 1, children.size()))
 				r.setBounds(defaultValue(r.getSetX(), 0), defaultValue(r.getSetY(), h),
@@ -469,10 +469,12 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 	}
 
 	protected void onMainPick(Pick pick) {
+		if (context == null)
+			return;
 		IMouseLayer m = context.getMouseLayer();
 		switch (pick.getPickingMode()) {
 		case MOUSE_OVER:
-			if (!pick.isDoDragging() && m.hasDraggable(ARankColumnModel.class)) {
+			if (config.isMoveAble() && !pick.isDoDragging() && m.hasDraggable(ARankColumnModel.class)) {
 				Pair<GLElement, ARankColumnModel> pair = m.getFirstDraggable(ARankColumnModel.class);
 				if (model.isCombineAble(pair.getSecond(), RenderStyle.isCloneDragging(pick))) {
 					m.setDropable(ARankColumnModel.class, true);
@@ -482,7 +484,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 					repaint();
 				}
 			} else if (!pick.isAnyDragging()) {
-				this.canDrag = true;
+				this.isHovered = true;
 				this.relayout();
 			}
 			break;
@@ -492,8 +494,8 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 				m.setDropable(ARankColumnModel.class, false);
 				repaint();
 			}
-			if (this.canDrag) {
-				this.canDrag = false;
+			if (this.isHovered) {
+				this.isHovered = false;
 				this.relayout();
 			}
 			break;

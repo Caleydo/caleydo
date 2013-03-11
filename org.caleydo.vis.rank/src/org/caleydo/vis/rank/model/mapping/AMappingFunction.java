@@ -20,6 +20,7 @@
 package org.caleydo.vis.rank.model.mapping;
 
 import org.caleydo.core.util.function.AFloatFunction;
+import org.caleydo.core.util.function.FloatStatistics;
 
 /**
  * @author Samuel Gratzl
@@ -29,62 +30,53 @@ public abstract class AMappingFunction extends AFloatFunction implements IMappin
 	private final float fromMin;
 	private final float fromMax;
 
-	private float actMin;
-	private float actMax;
+	protected FloatStatistics actStats;
 
 	public AMappingFunction(float fromMin, float fromMax) {
 		this.fromMin = fromMin;
 		this.fromMax = fromMax;
-		this.actMin = 0;
-		if (!Float.isNaN(fromMin)) {
-			this.actMin = fromMin;
-		}
-		this.actMax = 1;
-		if (!Float.isNaN(fromMax)) {
-			this.actMax = fromMax;
-		}
 	}
 
 	public AMappingFunction(AMappingFunction copy) {
 		this.fromMin = copy.fromMin;
 		this.fromMax = copy.fromMax;
-		this.actMin = copy.actMin;
-		this.actMax = copy.actMax;
+		this.actStats = copy.actStats;
 	}
 
 	@Override
 	public abstract IMappingFunction clone();
 
 	@Override
-	public void setAct(float min, float max) {
-		if (Float.isNaN(fromMin))
-			actMin = min;
-		if (Float.isNaN(fromMax))
-			actMax = max;
+	public void setActStatistics(FloatStatistics stats) {
+		this.actStats = stats;
 	}
 
 	protected final boolean isDefaultMin(float k) {
 		boolean id = !isMinDefined();
 		boolean ad = !isMaxDefined();
-		if (id && ad && (Math.abs(k - actMin) < Math.abs(k - actMax)))
+		if (id && ad && (Math.abs(k - getActMin()) < Math.abs(k - getActMax())))
 			return true;
 		return id;
 	}
 
 	/**
-	 * @return the actMin, see {@link #actMin}
+	 * @return
 	 */
 	@Override
-	public final float getActMin() {
-		return actMin;
+	public float getActMin() {
+		if (!Float.isNaN(fromMin))
+			return fromMin;
+		return actStats == null ? 0 : actStats.getMin();
 	}
 
 	/**
-	 * @return the actMax, see {@link #actMax}
+	 * @return
 	 */
 	@Override
-	public final float getActMax() {
-		return actMax;
+	public float getActMax() {
+		if (!Float.isNaN(fromMax))
+			return fromMax;
+		return actStats == null ? 1 : actStats.getMax();
 	}
 
 	/**

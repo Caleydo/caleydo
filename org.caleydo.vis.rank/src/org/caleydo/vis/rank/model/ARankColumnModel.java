@@ -196,7 +196,7 @@ public abstract class ARankColumnModel implements IDragInfo, IRankColumnModel {
 
 	private static void createNewCombined(ARankColumnModel model, ARankColumnModel with, boolean clone,
 			int combineMode, final RankTableModel table) {
-		ACompositeRankColumnModel new_ = table.createCombined(combineMode);
+		ACompositeRankColumnModel new_ = table.getConfig().createNewCombined(combineMode);
 		new_.setWeight(model.getWeight());
 		model.getParent().replace(model, new_);
 		addAll(model, false, table, new_);

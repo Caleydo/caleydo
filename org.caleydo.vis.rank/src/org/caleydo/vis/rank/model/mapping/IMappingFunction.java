@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.model.mapping;
 
+import org.caleydo.core.util.function.FloatStatistics;
 import org.caleydo.core.util.function.IFloatFunction;
 
 /**
@@ -29,8 +30,6 @@ public interface IMappingFunction extends IFloatFunction {
 	String toJavaScript();
 
 	void fromJavaScript(String code);
-
-	void setAct(float min, float max);
 
 	float[] getMappedMin();
 
@@ -44,6 +43,10 @@ public interface IMappingFunction extends IFloatFunction {
 
 	boolean isMappingDefault();
 
+	float getActMin();
+
+	float getActMax();
+
 	/**
 	 * @return
 	 */
@@ -56,8 +59,5 @@ public interface IMappingFunction extends IFloatFunction {
 
 	float getMinTo();
 
-
-	float getActMin();
-
-	float getActMax();
+	void setActStatistics(FloatStatistics stats);
 }

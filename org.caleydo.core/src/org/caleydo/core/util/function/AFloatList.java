@@ -75,33 +75,8 @@ public abstract class AFloatList extends AbstractList<Float> implements IFloatLi
 	}
 
 	@Override
-	public final float[] computeStats() {
-		return computeStats(this.iterator());
-	}
-
-	public static float[] computeStats(IFloatIterator it) {
-		float min = Float.POSITIVE_INFINITY;
-		float max = Float.NEGATIVE_INFINITY;
-		int count = 0;
-		float sum = 0;
-		float sqrsum=0;
-		boolean any = false;
-		while (it.hasNext()) {
-			float v = it.nextPrimitive();
-			if (Float.isNaN(v))
-				continue;
-			count++;
-			sum+=v;
-			sqrsum+=v*v;
-			if (v < min)
-				min = v;
-			if (max < v)
-				max = v;
-			any = true;
-		}
-		if (!any)
-			return new float[] { Float.NaN, Float.NaN, Float.NaN, 0, 0, 0 };
-		return new float[] { min, max, sum / count, count, sum, sqrsum };
+	public final FloatStatistics computeStats() {
+		return FloatStatistics.compute(this.iterator());
 	}
 
 	@Override

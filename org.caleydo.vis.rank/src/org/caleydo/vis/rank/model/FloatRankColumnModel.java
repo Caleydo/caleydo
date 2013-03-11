@@ -23,12 +23,15 @@ import gleem.linalg.Vec2f;
 import gleem.linalg.Vec4f;
 
 import java.awt.Color;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.BitSet;
 import java.util.List;
 
 import org.caleydo.core.io.gui.dataimport.widget.ICallback;
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.util.function.AFloatList;
+import org.caleydo.core.util.function.FloatStatistics;
 import org.caleydo.core.util.function.IFloatIterator;
 import org.caleydo.core.util.function.IFloatList;
 import org.caleydo.core.view.opengl.layout2.GLElement;
@@ -54,9 +57,11 @@ import org.caleydo.vis.rank.ui.mapping.MappingFunctionUIs;
 public class FloatRankColumnModel extends ARankColumnModel implements IMappedColumnMixin, IRankableColumnMixin,
 		ICollapseableColumnMixin, IHideableColumnMixin, ISnapshotableColumnMixin {
 	private SimpleHistogram cacheHist = null;
-	private boolean dirtyMinMax = true;
-	private final IMappingFunction mapping;
+
+	private boolean dirtyDataStats = true;
 	private float missingValue;
+
+	private final IMappingFunction mapping;
 	private final IFloatInferrer missingValueInferer;
 
 	private final IFloatFunction<IRow> data;
@@ -65,6 +70,13 @@ public class FloatRankColumnModel extends ARankColumnModel implements IMappedCol
 		public void on(IMappingFunction data) {
 			cacheHist = null;
 			propertySupport.firePropertyChange(PROP_MAPPING, null, data);
+		}
+	};
+	private final PropertyChangeListener dataListener = new PropertyChangeListener() {
+		@Override
+		public void propertyChange(PropertyChangeEvent evt) {
+			dirtyDataStats = true;
+			missingValue = Float.NaN;
 		}
 	};
 
@@ -85,7 +97,7 @@ public class FloatRankColumnModel extends ARankColumnModel implements IMappedCol
 		this.missingValueInferer = copy.missingValueInferer;
 		setHeaderRenderer(copy.getHeaderRenderer());
 		this.missingValue = copy.missingValue;
-		this.dirtyMinMax = copy.dirtyMinMax;
+		this.dirtyDataStats = copy.dirtyDataStats;
 		this.cacheHist = copy.cacheHist;
 	}
 
@@ -97,8 +109,6 @@ public class FloatRankColumnModel extends ARankColumnModel implements IMappedCol
 	@Override
 	public void onRankingInvalid() {
 		cacheHist = null;
-		dirtyMinMax = true;
-		missingValue = Float.NaN;
 		super.onRankingInvalid();
 	}
 
@@ -137,9 +147,30 @@ public class FloatRankColumnModel extends ARankColumnModel implements IMappedCol
 		};
 	}
 
-	private IFloatIterator asDataIterator() {
-		final List<IRow> data2 = getTable().getData();
-		final BitSet filter = getMyRanker().getFilter();
+	@Override
+	protected void init(IRankColumnParent parent) {
+		super.init(parent);
+		getTable().addPropertyChangeListener(RankTableModel.PROP_DATA, dataListener);
+		getTable().addPropertyChangeListener(RankTableModel.PROP_DATA_MASK, dataListener);
+	}
+
+	@Override
+	protected void takeDown() {
+		getTable().addPropertyChangeListener(RankTableModel.PROP_DATA, dataListener);
+		getTable().addPropertyChangeListener(RankTableModel.PROP_DATA_MASK, dataListener);
+		super.takeDown();
+	}
+
+	private IFloatIterator asRawDataIterator() {
+		RankTableModel table = getTable();
+		final List<IRow> data2 = table.getData();
+		BitSet tmp = table.getDataMask();
+		if (tmp == null) {
+			tmp = new BitSet(data2.size());
+			tmp.set(0, data2.size());
+		}
+		final BitSet filter = tmp;
+
 		return new IFloatIterator() {
 			int act = 0;
 
@@ -180,16 +211,16 @@ public class FloatRankColumnModel extends ARankColumnModel implements IMappedCol
 
 	private float computeMissingValue() {
 		if (Float.isNaN(missingValue)) {
-			missingValue = missingValueInferer.infer(asDataIterator(), getMyRanker().size());
+			missingValue = missingValueInferer.infer(asRawDataIterator(), getMyRanker().size());
 		}
 		return missingValue;
 	}
 
 	private void checkMapping() {
-		if (dirtyMinMax && mapping.isMappingDefault() && !mapping.hasDefinedMappingBounds()) {
-			float[] minmax = AFloatList.computeStats(asDataIterator());
-			mapping.setAct(minmax[0], minmax[1]);
-			dirtyMinMax = false;
+		if (dirtyDataStats && mapping.isMappingDefault() && !mapping.hasDefinedMappingBounds()) {
+			FloatStatistics stats = FloatStatistics.compute(asRawDataIterator());
+			mapping.setActStatistics(stats);
+			dirtyDataStats = false;
 		}
 	}
 

@@ -572,7 +572,8 @@ public class GLGraphics {
 	 * shortcut to {@link GL2#glTranslatef(float, float, float)
 	 */
 	public GLGraphics move(float x, float y) {
-		gl.glTranslatef(x, y, 0);
+		if (x != 0 || y != 0)
+			gl.glTranslatef(x, y, 0);
 		return this;
 	}
 

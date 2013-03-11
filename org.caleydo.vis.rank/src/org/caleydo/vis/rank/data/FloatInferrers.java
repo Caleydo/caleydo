@@ -21,7 +21,7 @@ package org.caleydo.vis.rank.data;
 
 import java.util.Arrays;
 
-import org.caleydo.core.util.function.AFloatList;
+import org.caleydo.core.util.function.FloatStatistics;
 import org.caleydo.core.util.function.IFloatIterator;
 
 /**
@@ -32,7 +32,7 @@ public class FloatInferrers {
 	public static IFloatInferrer MEAN = new IFloatInferrer() {
 		@Override
 		public float infer(IFloatIterator it, int size) {
-			return AFloatList.computeStats(it)[2];
+			return FloatStatistics.compute(it).getMean();
 		}
 	};
 

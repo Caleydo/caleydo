@@ -91,6 +91,9 @@ public class RankTableModel implements IRankColumnParent {
 
 	private IRow selectedRow = null;
 
+	/**
+	 * ranker used by default
+	 */
 	private final ColumnRanker defaultRanker;
 
 	/**
@@ -198,6 +201,13 @@ public class RankTableModel implements IRankColumnParent {
 		}
 	}
 
+	/**
+	 * @return the dataMask, see {@link #dataMask}
+	 */
+	public BitSet getDataMask() {
+		return dataMask;
+	}
+
 	public void add(ARankColumnModel col) {
 		add(columns.size(), col);
 	}
@@ -250,15 +260,6 @@ public class RankTableModel implements IRankColumnParent {
 		takeDown(from);
 		findCorrespondingRanker(i).checkOrderChanges(from, to);
 	}
-
-	/**
-	 * @param combineMode
-	 * @return
-	 */
-	ACompositeRankColumnModel createCombined(int combineMode) {
-		return config.createNewCombined(combineMode);
-	}
-
 
 	public boolean isCombineAble(ARankColumnModel model, ARankColumnModel with, boolean clone) {
 		if (model == with)
@@ -497,13 +498,6 @@ public class RankTableModel implements IRankColumnParent {
 			}
 		}
 		return start;
-	}
-
-	/**
-	 * @return the dataMask, see {@link #dataMask}
-	 */
-	public BitSet getDataMask() {
-		return dataMask;
 	}
 
 	public IRow getDataItem(int index) {
