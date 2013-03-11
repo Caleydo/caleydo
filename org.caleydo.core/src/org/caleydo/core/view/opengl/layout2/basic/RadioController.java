@@ -25,6 +25,9 @@ import java.util.List;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton.EButtonMode;
 
 /**
+ * a controller class for a bunch of gl buttons that act as a single radio group, i.e only one can be selected at one
+ * time
+ *
  * @author Samuel Gratzl
  *
  */
@@ -38,6 +41,11 @@ public class RadioController implements GLButton.ISelectionCallback {
 		this.callback = callback;
 	}
 
+	/**
+	 * adds another button to this controller
+	 *
+	 * @param b
+	 */
 	public void add(GLButton b) {
 		buttons.add(b);
 		b.setMode(EButtonMode.BUTTON);
@@ -45,6 +53,11 @@ public class RadioController implements GLButton.ISelectionCallback {
 		b.setCallback(this);
 	}
 
+	/**
+	 * sets the selected index
+	 *
+	 * @param index
+	 */
 	public void setSelected(int index) {
 		if (this.selected == index)
 			return;
@@ -56,6 +69,13 @@ public class RadioController implements GLButton.ISelectionCallback {
 		}
 		this.selected = index;
 		callback.onSelectionChanged(index < 0 ? null : buttons.get(index), true);
+	}
+
+	/**
+	 * @return the selected, see {@link #selected}
+	 */
+	public int getSelected() {
+		return selected;
 	}
 
 	@Override

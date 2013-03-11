@@ -285,7 +285,7 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements IHi
 		float factor = this.getWeight() / sum;
 		int i = 0;
 		for (ARankColumnModel col : this) {
-			float w = distributions[i] * factor;
+			float w = distributions[i++] * factor;
 			col.setWeight(w);
 		}
 	}
