@@ -124,9 +124,9 @@
                   icon="resources/icons/pathway.png"
                   isDefaultView="false"
                   visInfo="org.caleydo.view.pathway.PathwayVisInfo">
-               <RendererCreator
+               <ViewCreator
                      class="org.caleydo.view.pathway.PathwayTextureCreator">
-               </RendererCreator>
+               </ViewCreator>
             </Embedding>
          </ParentView>
       </EmbeddingInfo>

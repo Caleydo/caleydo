@@ -105,7 +105,7 @@ import org.jgrapht.graph.GraphPathImpl;
 
 /**
  * Single OpenGL2 pathway view
- *
+ * 
  * @author Marc Streit
  * @author Alexander Lex
  */
@@ -198,6 +198,9 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 	 */
 	private boolean isPathSelectionMode = false;
 	private SelectPathAction selectPathAction = null;
+
+	private int minHeightPixels = -1;
+	private int minWidthPixels = -1;
 
 	/**
 	 * Event space for events that synchronize a pathway path.
@@ -937,6 +940,8 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 
 	@Override
 	public int getMinPixelHeight() {
+		if (minHeightPixels != -1)
+			return minHeightPixels;
 		if (pathway == null)
 			return 120;
 		return (int) (pathway.getHeight() / 2.0f);
@@ -944,6 +949,8 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 
 	@Override
 	public int getMinPixelWidth() {
+		if (minWidthPixels != -1)
+			return minWidthPixels;
 		if (pathway == null)
 			return 120;
 		return (int) (pathway.getWidth() / 2.0f);
@@ -1425,7 +1432,7 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 
 	/**
 	 * Highlights all nodes equivalent to the specified {@link PathwayVertexRep}.
-	 *
+	 * 
 	 * @param vertexRep
 	 */
 	public void highlightPortalNodes(PathwayVertexRep vertexRep) {
@@ -1477,6 +1484,22 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 	public void enablePathSelection(boolean isPathSelection) {
 		this.isPathSelectionMode = isPathSelection;
 		isPathStartSelected = false;
+	}
+
+	/**
+	 * @param minHeightPixels
+	 *            setter, see {@link minHeightPixels}
+	 */
+	public void setMinHeightPixels(int minHeightPixels) {
+		this.minHeightPixels = minHeightPixels;
+	}
+
+	/**
+	 * @param minWidthPixels
+	 *            setter, see {@link minWidthPixels}
+	 */
+	public void setMinWidthPixels(int minWidthPixels) {
+		this.minWidthPixels = minWidthPixels;
 	}
 
 }
