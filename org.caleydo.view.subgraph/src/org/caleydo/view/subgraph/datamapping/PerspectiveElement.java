@@ -49,7 +49,7 @@ public class PerspectiveElement extends ADataMappingElement {
 			g.fillImage("resources/icons/dataassignment/accept_disabled.png", 3, 2, 14, 14);
 		}
 
-		g.color(perspective.getDataDomain().getColor()).fillRect(18, 2, 14, 14);
-		g.drawText(perspective, 18 + 18, 1, w - 18, 14);
+		// g.color(perspective.getDataDomain().getColor()).fillRect(18, 2, 14, 14);
+		g.drawText(perspective, 18, 1, w - 18, 14);
 	}
 }
