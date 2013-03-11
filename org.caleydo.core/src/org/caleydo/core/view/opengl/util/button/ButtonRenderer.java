@@ -195,9 +195,10 @@ public class ButtonRenderer extends APickableLayoutRenderer {
 		if (!button.isVisible())
 			return;
 
-		pushNames(gl);
+
 		gl.glPushName(view.getPickingManager()
 				.getPickingID(view.getID(), button.getPickingType(), button.getButtonID()));
+		pushNames(gl);
 
 		Vec3f lowerLeftCorner = new Vec3f(0, 0, zCoordinate);
 		Vec3f lowerRightCorner = new Vec3f(x, 0, zCoordinate);

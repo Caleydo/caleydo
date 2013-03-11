@@ -133,13 +133,13 @@ public abstract class APathUpdateStrategy implements IListenerOwner {
 
 	@ListenTo(restrictExclusiveToEventSpace = true)
 	public void onAddTablePerspectives(AddTablePerspectivesEvent event) {
-		renderer.tablePerspectives.addAll(event.getTablePerspectives());
+		// renderer.tablePerspectives.addAll(event.getTablePerspectives());
 		renderer.setLayoutDirty(true);
 	}
 
 	@ListenTo(restrictExclusiveToEventSpace = true)
 	public void onRemoveTablePerspectives(RemoveTablePerspectiveEvent event) {
-		renderer.tablePerspectives.remove(event.getTablePerspective());
+		// renderer.tablePerspectives.remove(event.getTablePerspective());
 		renderer.setLayoutDirty(true);
 	}
 

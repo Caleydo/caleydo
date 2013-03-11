@@ -234,7 +234,7 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 
 		renderer.setUpdateStrategy(new FixedPathUpdateStrategy(renderer, eventSpace, isPathSelectionMode, this));
 		renderer.pathwayPathEventSpace = eventSpace;
-		renderer.setTablePerspectives(tablePerspectives);
+		// renderer.setTablePerspectives(tablePerspectives);
 		renderer.setPathway(pathway);
 		renderer.setBranchPathExtractionEventSpace(BRANCH_PATH_EVENTSPACE);
 		renderer.setAllowBranchPathExtraction(true);
