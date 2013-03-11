@@ -302,6 +302,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 				public void onWindowClosed(GLWindow w) {
 					pathwayLayout.removeWindow(window);
 					parent.remove(window);
+					pathwayInfos.remove(window.info);
 				}
 			});
 		}

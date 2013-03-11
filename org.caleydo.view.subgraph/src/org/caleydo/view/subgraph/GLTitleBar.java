@@ -66,9 +66,6 @@ public class GLTitleBar extends GLElementContainer {
 
 			@Override
 			public void onSelectionChanged(GLButton button, boolean selected) {
-				if (selected) {
-					System.out.println("close");
-				}
 			}
 		});
 		add(closeButton);
