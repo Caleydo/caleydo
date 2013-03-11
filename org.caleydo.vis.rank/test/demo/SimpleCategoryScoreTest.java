@@ -48,7 +48,7 @@ public class SimpleCategoryScoreTest extends ARankTableDemo {
 	}
 	@Override
 	protected void createModel() throws IOException, NoSuchFieldException {
-		table.addColumn(new RankRankColumnModel());
+		table.add(new RankRankColumnModel());
 
 		Map<String, CategoryInfo> metaData = new HashMap<>();
 		metaData.put("Cat 1", new CategoryInfo("Category 1", Color.RED));
@@ -56,8 +56,8 @@ public class SimpleCategoryScoreTest extends ARankTableDemo {
 		metaData.put("Cat 3", new CategoryInfo("Category 3", Color.GREEN));
 		metaData.put("Cat 4", new CategoryInfo("Category 4", Color.YELLOW));
 
-		table.addColumn(new CategoricalRankRankColumnModel<String>(GLRenderers.drawText("Category"),
-				new ReflectionData(field("value")), metaData,
+		table.add(new CategoricalRankRankColumnModel<String>(GLRenderers.drawText("Category"),
+				new ReflectionData<String>(field("value"), String.class), metaData,
  new BaseCategoricalMappingFunction<String>(metaData
 						.keySet())));
 

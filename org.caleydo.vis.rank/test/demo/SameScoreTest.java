@@ -50,8 +50,8 @@ public class SameScoreTest extends ARankTableDemo {
 	}
 	@Override
 	protected void createModel() throws IOException, NoSuchFieldException {
-		table.addColumn(new RankRankColumnModel());
-		table.addColumn(
+		table.add(new RankRankColumnModel());
+		table.add(
 				new FloatRankColumnModel(new AFloatFunction<IRow>() {
 					@Override
 					public float applyPrimitive(IRow in) {

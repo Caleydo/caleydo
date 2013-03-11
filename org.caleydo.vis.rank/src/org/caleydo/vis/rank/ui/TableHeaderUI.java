@@ -25,6 +25,7 @@ import static org.caleydo.vis.rank.ui.RenderStyle.LABEL_HEIGHT;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.data.loader.ResourceLocators;
+import org.caleydo.vis.rank.config.IRankTableUIConfig;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.ui.column.ACompositeHeaderUI;
@@ -39,8 +40,8 @@ import org.caleydo.vis.rank.ui.column.ColumnUIs;
 public final class TableHeaderUI extends ACompositeHeaderUI {
 	private final RankTableModel table;
 
-	public TableHeaderUI(RankTableModel table, boolean interactive) {
-		super(interactive, 0);
+	public TableHeaderUI(RankTableModel table, IRankTableUIConfig config) {
+		super(config, 0);
 		this.table = table;
 		this.table.addPropertyChangeListener(RankTableModel.PROP_COLUMNS, childrenChanged);
 		setLayoutData(table);
@@ -56,7 +57,7 @@ public final class TableHeaderUI extends ACompositeHeaderUI {
 
 	@Override
 	protected GLElement wrapImpl(ARankColumnModel model) {
-		return ColumnUIs.createHeader(model, interactive, true);
+		return ColumnUIs.createHeader(model, config, true);
 	}
 
 	@Override

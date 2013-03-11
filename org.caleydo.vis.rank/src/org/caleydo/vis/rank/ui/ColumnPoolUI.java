@@ -38,6 +38,8 @@ import org.caleydo.core.view.opengl.layout2.layout.GLFlowLayout;
 import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
+import org.caleydo.vis.rank.config.IRankTableUIConfig;
+import org.caleydo.vis.rank.config.RankTableUIConfigs;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.mixin.IHideableColumnMixin;
@@ -74,8 +76,11 @@ public class ColumnPoolUI extends GLElementContainer {
 	};
 	private boolean armed;
 
-	public ColumnPoolUI(RankTableModel table) {
+	private final IRankTableUIConfig config;
+
+	public ColumnPoolUI(RankTableModel table, IRankTableUIConfig config) {
 		this.table = table;
+		this.config = RankTableUIConfigs.nonInteractive(config);
 		table.addPropertyChangeListener(RankTableModel.PROP_POOL, listener);
 		setLayout(new GLFlowLayout(true, 5, new GLPadding(5)));
 		setSize(-1, LABEL_HEIGHT + HIST_HEIGHT);
@@ -129,7 +134,7 @@ public class ColumnPoolUI extends GLElementContainer {
 	}
 
 	private GLElement wrap(ARankColumnModel hidden) {
-		return new ColumnHeaderUI(hidden, false, true).setSize(100, -1);
+		return new ColumnHeaderUI(hidden, config).setSize(100, -1);
 	}
 
 	@Override
@@ -205,7 +210,7 @@ public class ColumnPoolUI extends GLElementContainer {
 				Pair<GLElement, ARankColumnModel> draggable = context.getMouseLayer().getFirstDraggable(
 						ARankColumnModel.class);
 				context.getMouseLayer().removeDraggable(draggable.getFirst());
-				table.destroy(draggable.getSecond());
+				table.removeFromPool(draggable.getSecond());
 				context.setCursor(-1);
 				armed = false;
 				repaint();

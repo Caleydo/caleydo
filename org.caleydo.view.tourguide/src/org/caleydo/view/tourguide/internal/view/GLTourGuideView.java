@@ -80,6 +80,7 @@ import org.caleydo.view.tourguide.spi.IScoreFactory;
 import org.caleydo.view.tourguide.spi.score.IRegisteredScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
 import org.caleydo.vis.rank.config.RankTableConfigBase;
+import org.caleydo.vis.rank.config.RankTableUIConfigs;
 import org.caleydo.vis.rank.layout.RowHeightLayouts;
 import org.caleydo.vis.rank.model.ACompositeRankColumnModel;
 import org.caleydo.vis.rank.model.ARankColumnModel;
@@ -166,11 +167,11 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 				onSelectRow((PerspectiveRow) evt.getOldValue(), (PerspectiveRow) evt.getNewValue());
 			}
 		});
-		this.table.addColumn(new RankRankColumnModel());
-		this.table.addColumn(new PerspectiveRankColumnModel(this));
+		this.table.add(new RankRankColumnModel());
+		this.table.add(new PerspectiveRankColumnModel(this));
 		this.stacked = new StackedRankColumnModel();
-		this.table.addColumn(stacked);
-		this.table.addColumn(new SizeRankColumnModel());
+		this.table.add(stacked);
+		this.table.add(new SizeRankColumnModel());
 
 		for (EDataDomainQueryMode mode : EDataDomainQueryMode.values()) {
 			for (IDataDomain dd : mode.getAllDataDomains()) {
@@ -299,12 +300,12 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 		for (IScore s : scores) {
 			if (s instanceof MultiScore) {
 				ACompositeRankColumnModel combined = table.getConfig().createNewCombined(0);
-				table.addColumnTo(stacked, combined);
+				stacked.add(combined);
 				for (IScore s2 : ((MultiScore) s)) {
-					table.addColumnTo(combined, new ScoreRankColumnModel(s2));
+					combined.add(new ScoreRankColumnModel(s2));
 				}
 			} else {
-				table.addColumnTo(stacked, new ScoreRankColumnModel(s));
+				stacked.add(new ScoreRankColumnModel(s));
 			}
 		}
 	}
@@ -618,7 +619,7 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 		public TourGuideVis() {
 			setLayout(GLLayouts.flowVertical(0));
 			this.add(new DataDomainQueryUI(queries));
-			this.add(new TableHeaderUI(table, true));
+			this.add(new TableHeaderUI(table, RankTableUIConfigs.DEFAULT));
 			this.add(new TableBodyUI(table, RowHeightLayouts.FISH_EYE));
 		}
 	}

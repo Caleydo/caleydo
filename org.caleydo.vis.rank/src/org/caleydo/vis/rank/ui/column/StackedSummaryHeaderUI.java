@@ -27,6 +27,7 @@ import org.caleydo.core.view.opengl.layout2.basic.GLButton;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton.EButtonMode;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton.ISelectionCallback;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
+import org.caleydo.vis.rank.config.IRankTableUIConfig;
 import org.caleydo.vis.rank.model.StackedRankColumnModel;
 import org.caleydo.vis.rank.ui.RenderStyle;
 
@@ -37,8 +38,8 @@ import org.caleydo.vis.rank.ui.RenderStyle;
 public class StackedSummaryHeaderUI extends AColumnHeaderUI {
 	private PropertyChangeListener onAlignmentChange;
 
-	public StackedSummaryHeaderUI(final StackedRankColumnModel model, boolean interactive) {
-		super(model, interactive, interactive, false, true, true);
+	public StackedSummaryHeaderUI(final StackedRankColumnModel model, IRankTableUIConfig config) {
+		super(model, config, false, true);
 	}
 
 	@Override

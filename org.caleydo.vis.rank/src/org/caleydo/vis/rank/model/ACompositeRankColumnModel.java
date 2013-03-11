@@ -58,11 +58,11 @@ public abstract class ACompositeRankColumnModel extends ARankColumnModel impleme
 		return model != this && !(model instanceof OrderColumn);
 	}
 
-	final boolean add(ARankColumnModel model) {
+	public final boolean add(ARankColumnModel model) {
 		return add(size(), model);
 	}
 
-	final boolean add(int index, ARankColumnModel model) {
+	public final boolean add(int index, ARankColumnModel model) {
 		if (!canAdd(model))
 			return false;
 		init(model);
@@ -98,9 +98,9 @@ public abstract class ACompositeRankColumnModel extends ARankColumnModel impleme
 			children.remove(from < to ? from : from + 1);
 			propertySupport.fireIndexedPropertyChange(PROP_CHILDREN, to, from, model);
 		} else if (clone) {
-			getTable().addColumnTo(this, to, model.clone());
+			add(to, model.clone());
 		} else {
-			model.getParent().detach(model);
+			model.getParent().remove(model);
 			add(to, model);
 		}
 	}
@@ -119,6 +119,7 @@ public abstract class ACompositeRankColumnModel extends ARankColumnModel impleme
 		takeDown(from);
 	}
 
+	@Override
 	public final void remove(ARankColumnModel model) {
 		int i = this.children.indexOf(model);
 		if (i < 0)
@@ -172,11 +173,6 @@ public abstract class ACompositeRankColumnModel extends ARankColumnModel impleme
 	}
 
 	@Override
-	public void detach(ARankColumnModel model) {
-		remove(model);
-	}
-
-	@Override
 	public void explode(ACompositeRankColumnModel model) {
 		int index = this.children.indexOf(model);
 		List<ARankColumnModel> children = model.getChildren();
@@ -185,7 +181,6 @@ public abstract class ACompositeRankColumnModel extends ARankColumnModel impleme
 		this.children.set(index, children.get(0));
 		propertySupport.fireIndexedPropertyChange(PROP_CHILDREN, index, model, children.get(0));
 		takeDown(model);
-		getTable().destroy(model);
 		if (children.size() > 1) {
 			this.children.addAll(index + 1, children.subList(1, children.size()));
 			propertySupport.fireIndexedPropertyChange(PROP_CHILDREN, index + 1, null,

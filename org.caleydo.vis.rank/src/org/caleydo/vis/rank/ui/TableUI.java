@@ -29,6 +29,7 @@ import org.caleydo.core.view.opengl.layout2.basic.GLButton.ISelectionCallback;
 import org.caleydo.core.view.opengl.layout2.basic.RadioController;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
+import org.caleydo.vis.rank.config.IRankTableUIConfig;
 import org.caleydo.vis.rank.internal.ui.ButtonBar;
 import org.caleydo.vis.rank.layout.RowHeightLayouts;
 import org.caleydo.vis.rank.layout.RowHeightLayouts.IRowHeightLayout;
@@ -43,7 +44,7 @@ public class TableUI extends GLElementContainer implements ISelectionCallback {
 	public TableUI() {
 	}
 
-	public void init(RankTableModel table, boolean interactive, IRowHeightLayout... layouts) {
+	public void init(RankTableModel table, IRankTableUIConfig config, IRowHeightLayout... layouts) {
 		setLayout(GLLayouts.flowVertical(0));
 		if (layouts.length > 1) {
 			ButtonBar buttons = new ButtonBar();
@@ -58,10 +59,10 @@ public class TableUI extends GLElementContainer implements ISelectionCallback {
 			}
 			this.add(buttons);
 		}
-		this.add(new TableHeaderUI(table, interactive));
+		this.add(new TableHeaderUI(table, config));
 		this.add(new TableBodyUI(table, layouts.length == 0 ? RowHeightLayouts.UNIFORM : layouts[0]));
-		if (interactive && !table.getConfig().isDestroyOnHide())
-			this.add(new ColumnPoolUI(table));
+		if (config.isInteractive() && !table.getConfig().isDestroyOnHide())
+			this.add(new ColumnPoolUI(table, config));
 	}
 
 	private static final IGLRenderer renderer = new  IGLRenderer() {

@@ -33,7 +33,9 @@ import org.caleydo.vis.rank.internal.ui.TextRenderer;
 import org.caleydo.vis.rank.model.mixin.IAnnotatedColumnMixin;
 import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.ICompressColumnMixin;
+import org.caleydo.vis.rank.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IHideableColumnMixin;
+import org.caleydo.vis.rank.model.mixin.IMappedColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.ISnapshotableColumnMixin;
 import org.caleydo.vis.rank.ui.RenderStyle;
@@ -55,12 +57,21 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements IHi
 		IAnnotatedColumnMixin, ISnapshotableColumnMixin, ICompressColumnMixin, ICollapseableColumnMixin {
 	public static final String PROP_ALIGNMENT = "alignment";
 
-	private final PropertyChangeListener weightChanged = new PropertyChangeListener() {
+	private final PropertyChangeListener listener = new PropertyChangeListener() {
 		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
-			onWeightChanged((float) evt.getNewValue() - (float) evt.getOldValue());
+			switch(evt.getPropertyName()) {
+			case PROP_WEIGHT:
+				onWeightChanged((float) evt.getNewValue() - (float) evt.getOldValue());
+				break;
+			case IFilterColumnMixin.PROP_FILTER:
+			case IMappedColumnMixin.PROP_MAPPING:
+				propertySupport.firePropertyChange(evt);
+				break;
+			}
 		}
 	};
+
 	/**
 	 * which is the current aligned column index or -1 for all
 	 */
@@ -138,7 +149,9 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements IHi
 	@Override
 	protected void init(ARankColumnModel model) {
 		super.init(model);
-		model.addPropertyChangeListener(PROP_WEIGHT, weightChanged);
+		model.addPropertyChangeListener(PROP_WEIGHT, listener);
+		model.addPropertyChangeListener(IFilterColumnMixin.PROP_FILTER, listener);
+		model.addPropertyChangeListener(IMappedColumnMixin.PROP_MAPPING, listener);
 		addDirectWeight(model.getWeight());
 	}
 
@@ -175,7 +188,9 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements IHi
 	@Override
 	protected void takeDown(ARankColumnModel model) {
 		super.takeDown(model);
-		model.removePropertyChangeListener(PROP_WEIGHT, weightChanged);
+		model.removePropertyChangeListener(PROP_WEIGHT, listener);
+		model.removePropertyChangeListener(IFilterColumnMixin.PROP_FILTER, listener);
+		model.removePropertyChangeListener(IMappedColumnMixin.PROP_MAPPING, listener);
 		addDirectWeight(-model.getWeight());
 		if (alignment > size() - 2) {
 			setAlignment(alignment - 1);

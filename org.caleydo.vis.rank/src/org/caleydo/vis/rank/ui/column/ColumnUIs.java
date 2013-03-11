@@ -20,6 +20,7 @@
 package org.caleydo.vis.rank.ui.column;
 
 import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.vis.rank.config.IRankTableUIConfig;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.OrderColumn;
 import org.caleydo.vis.rank.model.RankRankColumnModel;
@@ -30,12 +31,12 @@ import org.caleydo.vis.rank.model.StackedRankColumnModel;
  *
  */
 public class ColumnUIs {
-	public static GLElement createHeader(ARankColumnModel model, boolean interactive, boolean allowComplex) {
+	public static GLElement createHeader(ARankColumnModel model, IRankTableUIConfig config, boolean allowComplex) {
 		if (allowComplex && model instanceof StackedRankColumnModel)
-			return new StackedColumnHeaderUI((StackedRankColumnModel) model, interactive);
+			return new StackedColumnHeaderUI((StackedRankColumnModel) model, config);
 		if (model instanceof OrderColumn)
-			return new OrderColumnHeaderUI(model, interactive);
-		return new ColumnHeaderUI(model, interactive, interactive);
+			return new OrderColumnHeaderUI(model, config);
+		return new ColumnHeaderUI(model, config);
 	}
 
 	public static ITableColumnUI createBody(ARankColumnModel model, boolean allowComplex) {

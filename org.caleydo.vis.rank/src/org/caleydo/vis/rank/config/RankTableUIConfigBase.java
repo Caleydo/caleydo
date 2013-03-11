@@ -17,17 +17,37 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.vis.rank.ui.column;
+package org.caleydo.vis.rank.config;
 
-import org.caleydo.vis.rank.config.IRankTableUIConfig;
-import org.caleydo.vis.rank.model.ARankColumnModel;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class OrderColumnHeaderUI extends AColumnHeaderUI implements IThickHeader {
-	public OrderColumnHeaderUI(ARankColumnModel model, IRankTableUIConfig config) {
-		super(model, config, true, true);
+public class RankTableUIConfigBase implements IRankTableUIConfig {
+	private final boolean isInteractive;
+	private final boolean isMoveAble;
+	private final boolean canChangeWeights;
+
+	public RankTableUIConfigBase(boolean isInteractive, boolean isMoveAble, boolean canChangeWeights) {
+		this.isInteractive = isInteractive;
+		this.isMoveAble = isMoveAble;
+		this.canChangeWeights = canChangeWeights;
 	}
+
+	@Override
+	public boolean isInteractive() {
+		return isInteractive;
+	}
+
+	@Override
+	public boolean isMoveAble() {
+		return isMoveAble;
+	}
+
+	@Override
+	public boolean canChangeWeights() {
+		return canChangeWeights;
+	}
+
 }

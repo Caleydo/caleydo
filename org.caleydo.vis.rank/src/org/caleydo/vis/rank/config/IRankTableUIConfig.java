@@ -17,45 +17,17 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.internal.event;
+package org.caleydo.vis.rank.config;
 
-import org.caleydo.core.event.ADirectedEvent;
 
 /**
- * simple generic event for filtering changes
- *
  * @author Samuel Gratzl
  *
  */
-public class SizeFilterEvent extends ADirectedEvent {
-	private Integer min;
-	private Integer max;
+public interface IRankTableUIConfig {
+	boolean isInteractive();
 
-	/**
-	 * @param filter
-	 */
-	public SizeFilterEvent(Integer min, Integer max) {
-		super();
-		this.min = min;
-		this.max = max;
-	}
+	boolean isMoveAble();
 
-	/**
-	 * @return the min, see {@link #min}
-	 */
-	public Integer getMin() {
-		return min;
-	}
-
-	/**
-	 * @return the max, see {@link #max}
-	 */
-	public Integer getMax() {
-		return max;
-	}
-
-	@Override
-	public boolean checkIntegrity() {
-		return true;
-	}
+	boolean canChangeWeights();
 }

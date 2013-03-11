@@ -168,13 +168,10 @@ public abstract class ARankColumnModel implements IDragInfo, IRankColumnModel {
 	private static boolean combine(ARankColumnModel model, ARankColumnModel with, boolean clone, int combineMode) {
 		final RankTableModel table = model.getTable();
 		model.setCollapsed(false);
-		if (!clone)
-			with.setCollapsed(false);
+		with.setCollapsed(false);
 
 		boolean isWithComposite = with instanceof ACompositeRankColumnModel;
 		boolean isModelComposite = model instanceof ACompositeRankColumnModel;
-		if (!clone)
-			with.getParent().detach(with);
 		if (isModelComposite) {
 			ACompositeRankColumnModel t = (ACompositeRankColumnModel) model;
 			if (table.getConfig().canBeReusedForCombining(t, combineMode)) {
@@ -211,22 +208,26 @@ public abstract class ARankColumnModel implements IDragInfo, IRankColumnModel {
 		boolean isWithComposite = with instanceof ACompositeRankColumnModel;
 
 		if (isWithComposite && model.isFlatAdding((ACompositeRankColumnModel) with)) {
+			if (with.getParent() != null)
+				with.getParent().remove(with);
 			ACompositeRankColumnModel w = (ACompositeRankColumnModel) with;
 			Collection<ARankColumnModel> tmp = new ArrayList<>(w.getChildren());
 			if (clone) {
 				for (ARankColumnModel wi : tmp)
-					table.addColumnTo(model, wi.clone());
+					model.add(wi.clone());
 			} else {
 				for (ARankColumnModel wi : tmp) {
-					w.detach(wi);
+					w.remove(wi);
 					model.add(wi);
 				}
-				table.destroy(w);
 			}
 		} else if (clone)
-			table.addColumnTo(model, with.clone());
-		else
+			model.add(with.clone());
+		else {
+			if (with.getParent() != null)
+				with.getParent().remove(with);
 			model.add(with);
+		}
 	}
 
 	public boolean isCollapsed() {
@@ -271,7 +272,8 @@ public abstract class ARankColumnModel implements IDragInfo, IRankColumnModel {
 	public boolean destroy() {
 		if (!isDestroyAble())
 			return false;
-		return getTable().destroy(this);
+		getParent().remove(this);
+		return true;
 	}
 
 	public ColumnRanker getMyRanker() {

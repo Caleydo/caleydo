@@ -32,6 +32,7 @@ import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.vis.rank.config.RankTableConfigBase;
+import org.caleydo.vis.rank.config.RankTableUIConfigs;
 import org.caleydo.vis.rank.data.AFloatFunction;
 import org.caleydo.vis.rank.data.FloatInferrers;
 import org.caleydo.vis.rank.layout.RowHeightLayouts;
@@ -59,34 +60,32 @@ public class RankedVis extends GLElementContainer {
 		this.table = table;
 		setLayout(GLLayouts.flowVertical(0));
 
-		this.add(new TableHeaderUI(table, true));
+		this.add(new TableHeaderUI(table, RankTableUIConfigs.DEFAULT));
 		this.add(new TableBodyUI(table, RowHeightLayouts.FISH_EYE));
 
-		this.add(new ColumnPoolUI(table));
+		this.add(new ColumnPoolUI(table, RankTableUIConfigs.DEFAULT));
 	}
 
 	public static void main(String[] args) {
 		RankTableModel table = new RankTableModel(new RankTableConfigBase());
-		table.addColumn(new RankRankColumnModel());
-		table.addColumn(new StringRankColumnModel(GLRenderers.drawText("Label", VAlign.CENTER),
-				StringRankColumnModel.DFEAULT));
+		table.add(new RankRankColumnModel());
+		table.add(new StringRankColumnModel(GLRenderers.drawText("Label", VAlign.CENTER),
+				StringRankColumnModel.DEFAULT));
 
 		final StackedRankColumnModel stacked = new StackedRankColumnModel();
-		table.addColumn(stacked);
+		table.add(stacked);
 
-		table.addColumnTo(
-				stacked,
-				new FloatRankColumnModel(new SimpleAcc(1), GLRenderers.drawText("Float", VAlign.CENTER), Color
+		stacked.add(new FloatRankColumnModel(new SimpleAcc(1), GLRenderers.drawText("Float", VAlign.CENTER), Color
 						.decode("#ffb380"), Color.decode("#ffe6d5"), new PiecewiseMapping(0, Float.NaN),
 						FloatInferrers.MEAN));
-		table.addColumnTo(stacked,
+		stacked.add(
 				new FloatRankColumnModel(new SimpleAcc(2), GLRenderers.drawText("Float2", VAlign.CENTER), Color
 						.decode("#80ffb3"), Color.decode("#e3f4d7"), new PiecewiseMapping(0, 1),
 						FloatInferrers.MEAN));
 
-		table.addColumn(new FloatRankColumnModel(new SimpleAcc(3), GLRenderers.drawText("Float3", VAlign.CENTER), Color
+		stacked.add(new FloatRankColumnModel(new SimpleAcc(3), GLRenderers.drawText("Float3", VAlign.CENTER), Color
 				.decode("#5fd3bc"), Color.decode("#d5fff6"), new PiecewiseMapping(0, 1), FloatInferrers.MEAN));
-		table.addColumn(new FloatRankColumnModel(new SimpleAcc(4), GLRenderers.drawText("Float4", VAlign.CENTER), Color
+		stacked.add(new FloatRankColumnModel(new SimpleAcc(4), GLRenderers.drawText("Float4", VAlign.CENTER), Color
 				.decode("#ffb380"), Color.decode("#ffe6d5"), new PiecewiseMapping(0, 1), FloatInferrers.MEAN));
 
 

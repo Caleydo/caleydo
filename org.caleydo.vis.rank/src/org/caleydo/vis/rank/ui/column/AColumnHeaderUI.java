@@ -49,6 +49,7 @@ import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.layout2.renderer.RoundedRectRenderer;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
+import org.caleydo.vis.rank.config.IRankTableUIConfig;
 import org.caleydo.vis.rank.internal.ui.ButtonBar;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.mixin.IAnnotatedColumnMixin;
@@ -73,7 +74,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 	private final static int BUTTONS = 2;
 	private final static int UNCOLLAPSE = 3;
 
-	private final boolean interactive;
+	private final IRankTableUIConfig config;
 	private boolean canDrag;
 	private boolean armDropColum;
 	private String armDropHint;
@@ -94,22 +95,17 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 	private int dragPickingId = -1;
 
 	private boolean hasTitle;
-	private final boolean canChangeWeight;
-	private final boolean moveable;
 
 
-	public AColumnHeaderUI(final ARankColumnModel model, boolean interactive, boolean moveable, boolean hasTitle,
-			boolean hasHist, boolean canChangeWeight) {
+	public AColumnHeaderUI(final ARankColumnModel model, IRankTableUIConfig config, boolean hasTitle, boolean hasHist) {
 		this.model = model;
 		model.addPropertyChangeListener(ICollapseableColumnMixin.PROP_COLLAPSED, collapsedChanged);
-		this.interactive = interactive;
-		this.moveable = moveable;
+		this.config = config;
 		this.hasTitle = hasTitle;
-		this.canChangeWeight = canChangeWeight;
 
 		setLayout(this);
 		setLayoutData(model);
-		if (moveable)
+		if (config.isMoveAble())
 			this.setVisibility(EVisibility.PICKABLE);
 		this.onPick(new IPickingListener() {
 			@Override
@@ -118,11 +114,11 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 			}
 		});
 		if (hasHist) {
-			this.add(model.createSummary(interactive).setLayoutData(Durations.NO), 0);
+			this.add(model.createSummary(config.isInteractive()).setLayoutData(Durations.NO), 0);
 		} else {
 			this.add(new GLElement().setVisibility(EVisibility.HIDDEN));
 		}
-		if (interactive) {
+		if (config.isInteractive()) {
 			this.add(new DragElement().setLayoutData(MoveTransitions.GROW_LINEAR), 0);
 			this.add(
 					createButtons().setLayoutData(
@@ -207,14 +203,14 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 		if (this.isCollapsed == isCollapsed)
 			return;
 		this.isCollapsed = isCollapsed;
-		if (!interactive)
+		if (!config.isInteractive())
 			return;
 		if (isCollapsed) {
 			this.get(DRAG_WEIGHT).setVisibility(EVisibility.HIDDEN);
 			this.get(BUTTONS).setVisibility(EVisibility.HIDDEN);
 			this.get(UNCOLLAPSE).setVisibility(EVisibility.PICKABLE);
 		} else {
-			this.get(DRAG_WEIGHT).setVisibility(canChangeWeight ? EVisibility.PICKABLE: EVisibility.HIDDEN);
+			this.get(DRAG_WEIGHT).setVisibility(config.canChangeWeights() ? EVisibility.PICKABLE : EVisibility.HIDDEN);
 			this.get(BUTTONS).setVisibility(EVisibility.VISIBLE);
 			this.get(UNCOLLAPSE).setVisibility(EVisibility.HIDDEN);
 		}
@@ -238,7 +234,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 
 	@Override
 	protected void renderPickImpl(GLGraphics g, float w, float h) {
-		if (moveable) {
+		if (config.isMoveAble()) {
 			g.incZ();
 			g.pushName(dragPickingId);
 			g.fillRect(0, 0, w, h);
@@ -412,9 +408,9 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 		IGLLayoutElement hist = children.get(HIST);
 		hist.setBounds(1, hasTitle ? LABEL_HEIGHT : 0, w - 2, h - (hasTitle ? LABEL_HEIGHT : 0));
 
-		if (interactive) {
+		if (config.isInteractive()) {
 			IGLLayoutElement weight = children.get(DRAG_WEIGHT);
-			weight.setBounds(w, hasTitle ? LABEL_HEIGHT : 0, (canDrag && canChangeWeight) ? 8 : 0, h
+			weight.setBounds(w, hasTitle ? LABEL_HEIGHT : 0, (canDrag && config.canChangeWeights()) ? 8 : 0, h
 					- (hasTitle ? LABEL_HEIGHT : 0));
 
 			IGLLayoutElement buttons = children.get(BUTTONS);

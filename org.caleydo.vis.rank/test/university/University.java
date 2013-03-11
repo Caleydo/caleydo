@@ -36,6 +36,7 @@ import org.caleydo.vis.rank.data.FloatInferrers;
 import org.caleydo.vis.rank.model.ARow;
 import org.caleydo.vis.rank.model.CategoricalRankColumnModel;
 import org.caleydo.vis.rank.model.FloatRankColumnModel;
+import org.caleydo.vis.rank.model.IntegerRankColumnModel;
 import org.caleydo.vis.rank.model.RankRankColumnModel;
 import org.caleydo.vis.rank.model.StackedRankColumnModel;
 import org.caleydo.vis.rank.model.StringRankColumnModel;
@@ -64,54 +65,50 @@ public class University extends ARankTableDemo {
 		Map<String, String> metaData = readCountriesCategories();
 		RankRankColumnModel rankRankColumnModel = new RankRankColumnModel();
 		rankRankColumnModel.setWeight(35);
-		table.addColumn(rankRankColumnModel);
-		table.addColumn(new StringRankColumnModel(GLRenderers.drawText("University", VAlign.CENTER),
-				StringRankColumnModel.DFEAULT));
+		table.add(rankRankColumnModel);
+		table.add(new StringRankColumnModel(GLRenderers.drawText("University", VAlign.CENTER),
+				StringRankColumnModel.DEFAULT));
 		// as categorical
-		table.addColumn(new CategoricalRankColumnModel<String>(GLRenderers.drawText("Country",
-				VAlign.CENTER), new ReflectionData(field("country")), metaData));
+		table.add(new CategoricalRankColumnModel<String>(GLRenderers.drawText("Country",
+ VAlign.CENTER),
+				new ReflectionData<String>(field("country"), String.class), metaData));
 		// as string
 		// table.addColumn(eventListeners.register(new StringRankColumnModel(GLRenderers.drawText("Country",
 		// VAlign.CENTER),
 		// new ReflectionData(field("country")))));
 
 
-		table.addColumn(new StringRankColumnModel(GLRenderers.drawText("Year Founded", VAlign.CENTER),
-				new ReflectionData(field("yearFounded"))));
+		table.add(new IntegerRankColumnModel(GLRenderers.drawText("Year Founded", VAlign.CENTER),
+				new ReflectionData<Integer>(field("yearFounded"), Integer.class)));
 
 		final StackedRankColumnModel stacked = new StackedRankColumnModel();
-		table.addColumn(stacked);
-		table.addColumnTo(
-				stacked,
+		table.add(stacked);
+		stacked.add(
 				new FloatRankColumnModel(new ReflectionFloatData(field("teaching")), GLRenderers.drawText("Teaching",
 						VAlign.CENTER), Color.decode("#FC9272"), Color.decode("#FEE0D2"),
 						new PiecewiseMapping(0,
 						100), FloatInferrers.MEDIAN).setWeight((float) 30 * 5));
-		table.addColumnTo(
-				stacked,
+		stacked.add(
 				new FloatRankColumnModel(new ReflectionFloatData(field("research")), GLRenderers.drawText("Research",
 						VAlign.CENTER), Color.decode("#9ECAE1"), Color.decode("#DEEBF7"),
 						new PiecewiseMapping(0,
 						100), FloatInferrers.MEDIAN).setWeight((float) 30 * 5));
-		table.addColumnTo(
-				stacked,
+		stacked.add(
 				new FloatRankColumnModel(new ReflectionFloatData(field("citations")), GLRenderers.drawText("Citations",
 						VAlign.CENTER), Color.decode("#A1D99B"), Color.decode("#E5F5E0"),
 						new PiecewiseMapping(0,
 						100), FloatInferrers.MEDIAN).setWeight((float) 30 * 5));
-		table.addColumnTo(
-				stacked,
+		stacked.add(
 				new FloatRankColumnModel(new ReflectionFloatData(field("incomeFromIndustry")), GLRenderers.drawText(
 						"Income From Industry", VAlign.CENTER), Color.decode("#C994C7"), Color.decode("#E7E1EF"),
 						new PiecewiseMapping(0, 100), FloatInferrers.MEDIAN).setWeight(7.5f * 5));
-		table.addColumnTo(
-				stacked,
+		stacked.add(
 				new FloatRankColumnModel(new ReflectionFloatData(field("internationalMix")), GLRenderers.drawText(
 						"International Mix", VAlign.CENTER), Color.decode("#FDBB84"),
  Color.decode("#FEE8C8"),
 						new PiecewiseMapping(0, 100), FloatInferrers.MEDIAN).setWeight(2.5f * 5));
 
-		table.addColumn(new FloatRankColumnModel(new ReflectionFloatData(field("overallScore")), GLRenderers.drawText(
+		table.add(new FloatRankColumnModel(new ReflectionFloatData(field("overallScore")), GLRenderers.drawText(
 				"Overall Score", VAlign.CENTER), Color.decode("#DFC27D"), Color.decode("#F6E8C3"),
 				new PiecewiseMapping(0, 100), FloatInferrers.MEDIAN));
 	}

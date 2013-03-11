@@ -20,7 +20,6 @@
 package demo;
 
 import java.lang.reflect.Field;
-import java.util.Objects;
 
 import org.caleydo.vis.rank.model.IRow;
 
@@ -30,18 +29,25 @@ import com.google.common.base.Function;
  * @author Samuel Gratzl
  *
  */
-public class ReflectionData implements Function<IRow, String> {
+public class ReflectionData<T> implements Function<IRow, T> {
 	private final Field field;
+	private final Class<T> clazz;
 
-	public ReflectionData(Field field) {
+	public ReflectionData(Field field, Class<T> clazz) {
 		this.field = field;
+		this.clazz = clazz;
 		field.setAccessible(true);
 	}
 
 	@Override
-	public String apply(IRow in) {
+	public T apply(IRow in) {
 		try {
-			return Objects.toString(field.get(in));
+			Object r = field.get(in);
+			if (clazz == String.class)
+				return clazz.cast(r == null ? "" : r.toString());
+			if (clazz.isInstance(r))
+				return clazz.cast(r);
+			return null;
 		} catch (IllegalArgumentException | IllegalAccessException e) {
 			e.printStackTrace();
 		}

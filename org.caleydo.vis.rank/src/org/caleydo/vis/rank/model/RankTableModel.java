@@ -48,8 +48,8 @@ public class RankTableModel implements IRankColumnParent {
 	public static final String PROP_SELECTED_ROW = "selectedRow";
 	public static final String PROP_COLUMNS = "columns";
 	public static final String PROP_POOL = "pool";
-	public static final String PROP_REGISTER = "register";
 	public static final String PROP_DATA = "data";
+	public static final String PROP_DATA_MASK = "datamask";
 
 	private final PropertyChangeSupport propertySupport = new PropertyChangeSupport(this);
 
@@ -191,49 +191,20 @@ public class RankTableModel implements IRankColumnParent {
 				this.dataMask.clear(getDataSize(), this.dataMask.size());
 			change = !this.dataMask.isEmpty(); // same data subset
 		}
-		this.dataMask = (BitSet) dataMask.clone();
+		propertySupport.firePropertyChange(PROP_DATA_MASK, dataMask, this.dataMask = (BitSet) dataMask.clone());
 		if (change) {
 			for (ColumnRanker r : findAllColumnRankers())
 				r.dirtyFilter();
 		}
 	}
 
-	/**
-	 * add and registered a new column to this table
-	 *
-	 * @param col
-	 */
-	public void addColumn(ARankColumnModel col) {
-		setup(col);
-		add(col);
-	}
-
-	public void addColumn(int index, ARankColumnModel col) {
-		setup(col);
-		add(index, col);
-	}
-
-	public void addColumnTo(ACompositeRankColumnModel parent, int index, ARankColumnModel col) {
-		setup(col);
-		parent.add(index, col);
-	}
-
-	/**
-	 * see {@link #addColumn(ARankColumnModel)} but append the column to the given parent
-	 *
-	 * @param parent
-	 * @param col
-	 */
-	public void addColumnTo(ACompositeRankColumnModel parent, ARankColumnModel col) {
-		addColumnTo(parent, parent.size(), col);
-	}
-
-	private void add(ARankColumnModel col) {
+	public void add(ARankColumnModel col) {
 		add(columns.size(), col);
 	}
 
-	private void add(int index, ARankColumnModel col) {
+	public void add(int index, ARankColumnModel col) {
 		col.init(this);
+		setup(col);
 		this.columns.add(index, col); // intelligent positioning
 		propertySupport.fireIndexedPropertyChange(PROP_COLUMNS, index, null, col);
 		findCorrespondingRanker(index).checkOrderChanges(null, col);
@@ -256,9 +227,9 @@ public class RankTableModel implements IRankColumnParent {
 			} else
 				rOld.checkOrderChanges(null, model);
 		} else if (clone) {
-			addColumn(to, model.clone());
+			add(to, model.clone());
 		} else {
-			model.getParent().detach(model);
+			model.getParent().remove(model);
 			add(to, model);
 		}
 	}
@@ -276,14 +247,8 @@ public class RankTableModel implements IRankColumnParent {
 		to.init(this);
 		propertySupport.fireIndexedPropertyChange(PROP_COLUMNS, i, from, to);
 		from.takeDown();
+		takeDown(from);
 		findCorrespondingRanker(i).checkOrderChanges(from, to);
-	}
-
-
-	@Override
-	public void detach(ARankColumnModel model) {
-		remove(model);
-		removeFromPool(model);
 	}
 
 	/**
@@ -291,9 +256,7 @@ public class RankTableModel implements IRankColumnParent {
 	 * @return
 	 */
 	ACompositeRankColumnModel createCombined(int combineMode) {
-		ACompositeRankColumnModel new_ = config.createNewCombined(combineMode);
-		setup(new_);
-		return new_;
+		return config.createNewCombined(combineMode);
 	}
 
 
@@ -308,44 +271,29 @@ public class RankTableModel implements IRankColumnParent {
 	}
 
 	private void setup(ARankColumnModel col) {
-		if (col instanceof StackedRankColumnModel)
-			col.addPropertyChangeListener(ARankColumnModel.PROP_WEIGHT, resort);
+		col.addPropertyChangeListener(ARankColumnModel.PROP_WEIGHT, resort);
 		col.addPropertyChangeListener(IMappedColumnMixin.PROP_MAPPING, refilter);
 		col.addPropertyChangeListener(IFilterColumnMixin.PROP_FILTER, refilter);
-		if (col instanceof ACompositeRankColumnModel) {
-			for (ARankColumnModel child : ((ACompositeRankColumnModel) col)) {
-				setup(child);
-			}
-		}
-		propertySupport.firePropertyChange(PROP_REGISTER, null, col);
 	}
 
 	private void takeDown(ARankColumnModel col) {
 		col.removePropertyChangeListener(ARankColumnModel.PROP_WEIGHT, resort);
 		col.removePropertyChangeListener(IMappedColumnMixin.PROP_MAPPING, refilter);
 		col.removePropertyChangeListener(IFilterColumnMixin.PROP_FILTER, refilter);
-		if (col instanceof ACompositeRankColumnModel) {
-			for (ARankColumnModel child : ((ACompositeRankColumnModel) col))
-				takeDown(child);
-		}
-		propertySupport.firePropertyChange(PROP_REGISTER, col, null);
 	}
 
-	private void remove(ARankColumnModel model) {
+	@Override
+	public void remove(ARankColumnModel model) {
 		int index = columns.indexOf(model);
-		if (index < 0)
+		if (index < 0) { // maybe in the pool
+			removeFromPool(model);
 			return;
+		}
 		ColumnRanker r = findCorrespondingRanker(index);
 		columns.remove(model);
 		propertySupport.fireIndexedPropertyChange(PROP_COLUMNS, index, model, null);
 		model.takeDown();
 		r.checkOrderChanges(model, null);
-	}
-
-	public boolean destroy(ARankColumnModel col) {
-		removeFromPool(col);
-		takeDown(col);
-		return true;
 	}
 
 	/**
@@ -359,7 +307,7 @@ public class RankTableModel implements IRankColumnParent {
 		propertySupport.fireIndexedPropertyChange(PROP_POOL, bak, null, model);
 	}
 
-	void removeFromPool(ARankColumnModel model) {
+	public void removeFromPool(ARankColumnModel model) {
 		int index = pool.indexOf(model);
 		if (index < 0)
 			return;
@@ -371,9 +319,7 @@ public class RankTableModel implements IRankColumnParent {
 	@Override
 	public boolean hide(ARankColumnModel model) {
 		remove(model);
-		if (config.isDestroyOnHide()) {
-			destroy(model);
-		} else
+		if (!config.isDestroyOnHide())
 			addToPool(model);
 		return true;
 	}
@@ -403,13 +349,15 @@ public class RankTableModel implements IRankColumnParent {
 		return this;
 	}
 
+	/**
+	 * explodes the given composite model into its components, i.e children
+	 */
 	@Override
 	public void explode(ACompositeRankColumnModel model) {
 		int index = this.columns.indexOf(model);
 		List<ARankColumnModel> children = model.getChildren();
 		for (ARankColumnModel child : children)
 			child.init(this);
-		getTable().destroy(model);
 		this.columns.set(index, children.get(0));
 		propertySupport.fireIndexedPropertyChange(PROP_COLUMNS, index, model, children.get(0));
 		if (children.size() > 1) {
@@ -432,26 +380,6 @@ public class RankTableModel implements IRankColumnParent {
 	 */
 	public List<ARankColumnModel> getPool() {
 		return Collections.unmodifiableList(pool);
-	}
-
-	/**
-	 * finds all columns, by flatten combined columns
-	 *
-	 * @return
-	 */
-	public Iterator<ARankColumnModel> findAllColumns() {
-		Collection<ARankColumnModel> c = new ArrayList<>();
-		findAllColumns(c, this.columns);
-		return c.iterator();
-	}
-
-	private void findAllColumns(Collection<ARankColumnModel> c, Iterable<ARankColumnModel> cols) {
-		for (ARankColumnModel col : cols) {
-			if (col instanceof ACompositeRankColumnModel) {
-				findAllColumns(c, (ACompositeRankColumnModel) col);
-			} else
-				c.add(col);
-		}
 	}
 
 	public final void addPropertyChangeListener(PropertyChangeListener listener) {
@@ -530,7 +458,7 @@ public class RankTableModel implements IRankColumnParent {
 	/**
 	 * @param columnRanker
 	 */
-	public void fireRankingInvalidOf(ColumnRanker ranker) {
+	void fireRankingInvalidOf(ColumnRanker ranker) {
 		int start = getStartIndex(ranker);
 		for (ListIterator<ARankColumnModel> it = columns.listIterator(start); it.hasNext();) {
 			ARankColumnModel m = it.next();
@@ -544,7 +472,7 @@ public class RankTableModel implements IRankColumnParent {
 		}
 	}
 
-	public Iterator<ARankColumnModel> getColumnsOf(ColumnRanker ranker) {
+	Iterator<ARankColumnModel> getColumnsOf(ColumnRanker ranker) {
 		int start = getStartIndex(ranker);
 		if (start >= columns.size())
 			return Collections.emptyIterator();
@@ -583,12 +511,14 @@ public class RankTableModel implements IRankColumnParent {
 	}
 
 	/**
-	 * @param aRankColumnModel
+	 * adds a snapshot of the given column including a separator and a rank column
+	 *
+	 * @param model
 	 */
 	public void addSnapshot(ARankColumnModel model) {
-		addColumn(new OrderColumn());
-		addColumn(new RankRankColumnModel());
-		addColumn(model.clone());
+		add(new OrderColumn());
+		add(new RankRankColumnModel());
+		add(model.clone());
 	}
 }
 

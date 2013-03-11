@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.ui.column;
 
+import org.caleydo.vis.rank.config.IRankTableUIConfig;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 
 /**
@@ -26,7 +27,7 @@ import org.caleydo.vis.rank.model.ARankColumnModel;
  *
  */
 public class ColumnHeaderUI extends AColumnHeaderUI {
-	public ColumnHeaderUI(final ARankColumnModel model, boolean interactive, boolean draggable) {
-		super(model, interactive, draggable, true, true, true);
+	public ColumnHeaderUI(ARankColumnModel model, IRankTableUIConfig config) {
+		super(model, config, true, true);
 	}
 }

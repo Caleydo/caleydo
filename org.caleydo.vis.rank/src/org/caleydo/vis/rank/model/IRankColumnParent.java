@@ -55,7 +55,7 @@ public interface IRankColumnParent extends IRankColumnModel {
 	/**
 	 * @param with
 	 */
-	void detach(ARankColumnModel model);
+	void remove(ARankColumnModel model);
 
 	/**
 	 * @param model

@@ -43,6 +43,7 @@ import org.caleydo.core.view.opengl.layout2.renderer.RoundedRectRenderer;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingMode;
+import org.caleydo.vis.rank.config.IRankTableUIConfig;
 import org.caleydo.vis.rank.internal.event.DistributionChangedEvent;
 import org.caleydo.vis.rank.model.ACompositeRankColumnModel;
 import org.caleydo.vis.rank.model.ARankColumnModel;
@@ -84,11 +85,11 @@ public class StackedColumnHeaderUI extends ACompositeHeaderUI implements IThickH
 	};
 	private int distributionClickedPickingId = -1;
 
-	public StackedColumnHeaderUI(StackedRankColumnModel model, boolean interactive) {
-		super(interactive, 1);
+	public StackedColumnHeaderUI(StackedRankColumnModel model, IRankTableUIConfig config) {
+		super(config, 1);
 		this.model = model;
 		setLayoutData(model);
-		this.add(0, new StackedSummaryHeaderUI(model, interactive));
+		this.add(0, new StackedSummaryHeaderUI(model, config));
 		model.addPropertyChangeListener(ACompositeRankColumnModel.PROP_CHILDREN, childrenChanged);
 		model.addPropertyChangeListener(StackedRankColumnModel.PROP_ALIGNMENT, listener);
 		model.addPropertyChangeListener(ICompressColumnMixin.PROP_COMPRESSED, listener);
@@ -104,7 +105,7 @@ public class StackedColumnHeaderUI extends ACompositeHeaderUI implements IThickH
 
 	@Override
 	protected GLElement wrapImpl(ARankColumnModel model) {
-		GLElement g = ColumnUIs.createHeader(model, this.interactive, false);
+		GLElement g = ColumnUIs.createHeader(model, config, false);
 		return g;
 	}
 
@@ -141,7 +142,7 @@ public class StackedColumnHeaderUI extends ACompositeHeaderUI implements IThickH
 		super.doLayout(children, w, h);
 
 		// update the alignment infos
-		if (interactive) {
+		if (config.isMoveAble()) {
 			List<? extends IGLLayoutElement> separators = children.subList(numColumns + 2, children.size());
 			final IGLLayoutElement sep0 = children.get(numColumns + 1);
 			((StackedSeparatorUI) sep0.asElement()).setAlignment(this.model.getAlignment());

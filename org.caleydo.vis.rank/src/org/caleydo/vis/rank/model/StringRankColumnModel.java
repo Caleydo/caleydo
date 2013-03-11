@@ -50,7 +50,7 @@ import com.google.common.base.Function;
  *
  */
 public class StringRankColumnModel extends ABasicFilterableRankColumnModel {
-	public static final Function<IRow, String> DFEAULT = new Function<IRow, String>() {
+	public static final Function<IRow, String> DEFAULT = new Function<IRow, String>() {
 		@Override
 		public String apply(IRow row) {
 			if (row instanceof ILabelProvider) {

@@ -35,7 +35,7 @@ import org.caleydo.vis.rank.ui.detail.StackedScoreSummary;
 
 /**
  * @author Samuel Gratzl
- *
+ * 
  */
 public class MaxCompositeRankColumnModel extends AMultiRankColumnModel implements IRankableColumnMixin,
 		IHideableColumnMixin, IExplodeableColumnMixin, ICollapseableColumnMixin {

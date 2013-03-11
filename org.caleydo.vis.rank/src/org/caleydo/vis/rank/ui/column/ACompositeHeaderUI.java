@@ -35,6 +35,7 @@ import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
+import org.caleydo.vis.rank.config.IRankTableUIConfig;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
 import org.caleydo.vis.rank.ui.GLPropertyChangeListeners;
@@ -59,13 +60,13 @@ public abstract class ACompositeHeaderUI extends GLElementContainer implements I
 		}
 	};
 
-	protected final boolean interactive;
+	protected final IRankTableUIConfig config;
 	private boolean hasThick;
 
 	private final int firstColumn;
 
-	public ACompositeHeaderUI(boolean interactive, int firstColumn) {
-		this.interactive = interactive;
+	public ACompositeHeaderUI(IRankTableUIConfig config, int firstColumn) {
+		this.config = config;
 		setLayout(this);
 		this.firstColumn = firstColumn;
 	}
@@ -79,7 +80,7 @@ public abstract class ACompositeHeaderUI extends GLElementContainer implements I
 			this.add(elem);
 			numColumns++;
 		}
-		if (interactive) {
+		if (config.isMoveAble()) {
 			this.add(createSeparator(0)); // left
 			for (int i = 0; i < numColumns; ++i)
 				this.add(createSeparator(i + 1));
@@ -118,7 +119,7 @@ public abstract class ACompositeHeaderUI extends GLElementContainer implements I
 				setHasThick(Iterables.any(news, Predicates.instanceOf(IThickHeader.class)));
 			}
 			asList().addAll(index + firstColumn, news);
-			if (interactive) {
+			if (config.isMoveAble()) {
 				for (int i = 0; i < news.size(); ++i)
 					add(createSeparator(0));
 			}
@@ -126,7 +127,7 @@ public abstract class ACompositeHeaderUI extends GLElementContainer implements I
 			takeDown(get(index + firstColumn).getLayoutDataAs(ARankColumnModel.class, null));
 			remove(index + firstColumn);
 			numColumns--;
-			if (interactive)
+			if (config.isMoveAble())
 				remove(this.size() - 1); // remove last separator
 			setHasThick(Iterables.any(this, Predicates.instanceOf(IThickHeader.class)));
 		} else { // replaced
@@ -170,7 +171,7 @@ public abstract class ACompositeHeaderUI extends GLElementContainer implements I
 		float x = getLeftPadding();
 		float y = getTopPadding() + (hasThick ? HIST_HEIGHT + LABEL_HEIGHT : 0);
 		float hn = h - y;
-		if (interactive) {
+		if (config.isMoveAble()) {
 			separators = children.subList(numColumns + 1 + firstColumn, children.size());
 			assert separators.size() == columns.size();
 			final IGLLayoutElement sep0 = children.get(numColumns + firstColumn);
@@ -186,7 +187,7 @@ public abstract class ACompositeHeaderUI extends GLElementContainer implements I
 			else
 				col.setBounds(x, y, model.getPreferredWidth(), hn);
 			x += model.getPreferredWidth() + COLUMN_SPACE;
-			if (interactive && separators != null) {
+			if (config.isMoveAble() && separators != null) {
 				IGLLayoutElement sep = separators.get(i);
 				sep.setBounds(x - COLUMN_SPACE, y, COLUMN_SPACE, hn);
 				((SeparatorUI) sep.asElement()).setIndex(i + 1);

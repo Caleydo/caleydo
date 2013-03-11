@@ -27,6 +27,7 @@ import org.caleydo.core.view.opengl.canvas.IGLKeyListener;
 import org.caleydo.core.view.opengl.layout2.GLSandBox;
 import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
 import org.caleydo.vis.rank.config.RankTableConfigBase;
+import org.caleydo.vis.rank.config.RankTableUIConfigs;
 import org.caleydo.vis.rank.layout.RowHeightLayouts;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.StackedRankColumnModel;
@@ -81,7 +82,7 @@ public abstract class ARankTableDemo extends GLSandBox {
 	private void createUI() {
 		// visual part
 		TableUI root = (TableUI) getRoot();
-		root.init(table, true, RowHeightLayouts.FISH_EYE, RowHeightLayouts.UNIFORM);
+		root.init(table, RankTableUIConfigs.DEFAULT, RowHeightLayouts.FISH_EYE, RowHeightLayouts.UNIFORM);
 	}
 
 	public static float toFloat(String[] l, int i) {
