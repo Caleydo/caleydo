@@ -119,9 +119,11 @@ public class MappedDataRenderer {
 	private ViewFrustum viewFrustum;
 
 	EventBasedSelectionManager rowSelectionManager;
-	EventBasedSelectionManager contextRowSelectionManager;
+
 	EventBasedSelectionManager sampleSelectionManager;
 	EventBasedSelectionManager sampleGroupSelectionManager;
+
+	EventBasedSelectionManager contextRowSelectionManager;
 
 	/** The mapping Type all samples understand */
 	IDType sampleIDType;
@@ -296,7 +298,8 @@ public class MappedDataRenderer {
 				rowCaption.setAbsoluteSizeY(rowHeight);
 
 				if (isHighlightLayout) {
-					RowCaptionRenderer captionRenderer = new RowCaptionRenderer(i, parentView, this, color);
+					RowCaptionRenderer captionRenderer = new RowCaptionRenderer(contextRowIDType, rowID, parentView,
+							this, color);
 					rowCaption.setRenderer(captionRenderer);
 				}
 
@@ -334,6 +337,8 @@ public class MappedDataRenderer {
 		for (int count = 0; count < geneTablePerspectives.size(); count++) {
 			rowListForTablePerspectives.add(new ArrayList<ElementLayout>(linearizedNodes.size() * 2));
 		}
+
+		IDType davidIDType = IDType.getIDType("DAVID");
 
 		ArrayList<Integer> davidIDs = new ArrayList<Integer>(linearizedNodes.size() * 2);
 
@@ -434,7 +439,8 @@ public class MappedDataRenderer {
 				rowCaption.setAbsoluteSizeY(rowHeight);
 
 				if (isHighlightLayout) {
-					RowCaptionRenderer captionRenderer = new RowCaptionRenderer(davidID, parentView, this, color);
+					RowCaptionRenderer captionRenderer = new RowCaptionRenderer(davidIDType, davidID, parentView, this,
+							color);
 					rowCaption.setRenderer(captionRenderer);
 				}
 
@@ -500,7 +506,7 @@ public class MappedDataRenderer {
 
 			prepareData(geneTablePerspectives.get(tablePerspectiveCount),
 					rowListForTablePerspectives.get(tablePerspectiveCount), topCaptionLayout, bottomCaptionLayout,
-					IDType.getIDType("DAVID"), davidIDs, isHighlightLayout);
+					davidIDType, davidIDs, isHighlightLayout);
 		}
 		calcMinWidthPixels();
 
@@ -692,7 +698,7 @@ public class MappedDataRenderer {
 				parentView.setDisplayListDirty();
 
 			}
-		}, EPickingType.GENE.name());
+		}, rowSelectionManager.getIDType().getTypeName());
 
 		parentView.addTypePickingListener(new APickingListener() {
 
@@ -765,9 +771,42 @@ public class MappedDataRenderer {
 		this.contextualTablePerspectives = contextualTablePerspectives;
 
 		if (contextualTablePerspectives != null && !contextualTablePerspectives.isEmpty()) {
+			IDType contextRowIDType = contextualTablePerspectives.get(0).getDataDomain()
+					.getOppositeIDType(sampleIDType);
+
 			if (contextRowSelectionManager == null) {
-				contextRowSelectionManager = new EventBasedSelectionManager(parentView, contextualTablePerspectives
-						.get(0).getDataDomain().getOppositeIDType(sampleIDType));
+				contextRowSelectionManager = new EventBasedSelectionManager(parentView, contextRowIDType);
+
+				parentView.addTypePickingListener(new APickingListener() {
+
+					@Override
+					public void clicked(Pick pick) {
+						contextRowSelectionManager.clearSelection(SelectionType.SELECTION);
+						contextRowSelectionManager.addToType(SelectionType.SELECTION, pick.getObjectID());
+						contextRowSelectionManager.triggerSelectionUpdateEvent();
+						parentView.setDisplayListDirty();
+
+					}
+
+					@Override
+					public void mouseOver(Pick pick) {
+
+						contextRowSelectionManager.addToType(SelectionType.MOUSE_OVER, pick.getObjectID());
+						contextRowSelectionManager.triggerSelectionUpdateEvent();
+						parentView.setDisplayListDirty();
+
+					}
+
+					@Override
+					public void mouseOut(Pick pick) {
+						contextRowSelectionManager.removeFromType(SelectionType.MOUSE_OVER, pick.getObjectID());
+						contextRowSelectionManager.triggerSelectionUpdateEvent();
+
+						parentView.setDisplayListDirty();
+
+					}
+				}, contextRowIDType.getTypeName());
+
 			}
 		}
 

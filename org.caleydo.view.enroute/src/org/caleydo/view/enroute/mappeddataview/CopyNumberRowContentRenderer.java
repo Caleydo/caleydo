@@ -104,7 +104,7 @@ public class CopyNumberRowContentRenderer extends ACategoricalRowContentRenderer
 				float upperEdge = value * y;
 
 				// gl.glPushName(parentView.getPickingManager().getPickingID(
-				// parentView.getID(), PickingType.GENE.name(), rowID));
+				// parentView.getID(), PickingType.ROW_PRIMARY.name(), rowID));
 
 				Integer resolvedColumnID = columnIDMappingManager.getID(dataDomain.getPrimaryIDType(columnIDType),
 						parent.sampleIDType, columnID);

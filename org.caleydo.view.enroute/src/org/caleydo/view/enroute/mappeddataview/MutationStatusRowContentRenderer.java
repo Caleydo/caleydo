@@ -85,7 +85,7 @@ public class MutationStatusRowContentRenderer extends ACategoricalRowContentRend
 				float upperEdge = value * y;
 
 				// gl.glPushName(parentView.getPickingManager().getPickingID(
-				// parentView.getID(), PickingType.GENE.name(), rowID));
+				// parentView.getID(), PickingType.ROW_PRIMARY.name(), rowID));
 
 				Integer resolvedSampleID = columnIDMappingManager.getID(resolvedColumnIDType, parent.sampleIDType,
 						columnID);
