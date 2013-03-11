@@ -154,11 +154,11 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		column.add(dataMappingWindow);
 		column.add(nodeInfoContainer);
 		GLWindow rankingWindow = new GLWindow("Pathways", this);
-		rankingWindow.setSize(200, Float.NaN);
+		rankingWindow.setSize(100, Float.NaN);
 		rankingWindow.setContent(rankingElement);
 		rankingWindow.setButtonPosition(ESlideInButtonPosition.RIGHT);
 		rankingWindow.setShowCloseButton(false);
-
+		rankingElement.setWindow(rankingWindow);
 		baseContainer.add(rankingWindow);
 		// pathwayRow.setLayout(new GLMultiFormPathwayLayout(10, GLPadding.ZERO, this, pathwayRow));
 		pathwayRow.setLayout(pathwayLayout);

@@ -199,7 +199,9 @@ public class GLPathwayGridLayout implements IGLLayout {
 		Set<PathwayColumn> level1Columns = new HashSet<>();
 		int minTotalLevel1Size = 0;
 		int totalFixedSize = 0;
-		for (PathwayColumn column : columns) {
+		List<PathwayColumn> copyColumns = new ArrayList<>(columns);
+		Collections.reverse(copyColumns);
+		for (PathwayColumn column : copyColumns) {
 			if (column.getLevelScore() == EEmbeddingID.PATHWAY_LEVEL1.renderPriority()) {
 				level1Columns.add(column);
 				minTotalLevel1Size += column.getMinWidth();
@@ -211,7 +213,7 @@ public class GLPathwayGridLayout implements IGLLayout {
 		}
 
 		float currentPositionX = padding.left;
-		for (PathwayColumn column : columns) {
+		for (PathwayColumn column : copyColumns) {
 			float columnWidth = 0;
 			if (minTotalLevel1Size == 0) {
 				columnWidth = ((float) column.getMinWidth() / (float) totalFixedSize) * getFreeHorizontalSpace(w);
