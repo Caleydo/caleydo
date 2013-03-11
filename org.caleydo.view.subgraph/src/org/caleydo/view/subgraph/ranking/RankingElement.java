@@ -24,7 +24,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.BitSet;
-import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
@@ -36,8 +36,8 @@ import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.subgraph.GLSubGraph;
+import org.caleydo.vis.rank.config.IRankTableUIConfig;
 import org.caleydo.vis.rank.config.RankTableConfigBase;
-import org.caleydo.vis.rank.config.RankTableUIConfigs;
 import org.caleydo.vis.rank.data.FloatInferrers;
 import org.caleydo.vis.rank.layout.RowHeightLayouts;
 import org.caleydo.vis.rank.model.ARankColumnModel;
@@ -75,7 +75,22 @@ public class RankingElement extends GLElementContainer {
 		initTable(table);
 
 		setLayout(GLLayouts.flowVertical(0));
-		this.add(new TableHeaderUI(table, RankTableUIConfigs.DEFAULT));
+		this.add(new TableHeaderUI(table, new IRankTableUIConfig() {
+			@Override
+			public boolean isMoveAble() {
+				return false;
+			}
+
+			@Override
+			public boolean isInteractive() {
+				return true;
+			}
+
+			@Override
+			public boolean canChangeWeights() {
+				return false;
+			}
+		}));
 		TableBodyUI body = new TableBodyUI(table, RowHeightLayouts.UNIFORM);
 		body.addOnRowPick(new IPickingListener() {
 			@Override
@@ -150,10 +165,11 @@ public class RankingElement extends GLElementContainer {
 		currentRankColumnModel = createDefaultFloatRankColumnModel(ranking);
 		table.add(currentRankColumnModel);
 		// add data
-		Collection<PathwayRow> data = new ArrayList<>();
+		List<PathwayRow> data = new ArrayList<>();
 		for (PathwayGraph g : PathwayManager.get().getAllItems()) {
 			data.add(new PathwayRow(g));
 		}
+		Collections.sort(data);
 
 		table.addData(data);
 		applyFilter();

@@ -26,7 +26,7 @@ import org.caleydo.vis.rank.model.ARow;
  * @author Samuel Gratzl
  *
  */
-public class PathwayRow extends ARow {
+public class PathwayRow extends ARow implements Comparable<PathwayRow> {
 	private final PathwayGraph pathway;
 
 	public PathwayRow(PathwayGraph pathway) {
@@ -43,6 +43,11 @@ public class PathwayRow extends ARow {
 	@Override
 	public String toString() {
 		return pathway.getTitle();
+	}
+
+	@Override
+	public int compareTo(PathwayRow o) {
+		return String.CASE_INSENSITIVE_ORDER.compare(toString(), o.toString());
 	}
 
 }
