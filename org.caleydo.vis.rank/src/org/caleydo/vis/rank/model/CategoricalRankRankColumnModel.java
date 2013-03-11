@@ -40,6 +40,7 @@ import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.rank.internal.event.FilterEvent;
+import org.caleydo.vis.rank.model.CategoricalRankColumnModel.ArrayTreeContentProvider;
 import org.caleydo.vis.rank.model.mapping.ICategoricalMappingFunction;
 import org.caleydo.vis.rank.model.mixin.IMappedColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
@@ -48,20 +49,12 @@ import org.caleydo.vis.rank.ui.IColumnRenderInfo;
 import org.caleydo.vis.rank.ui.RenderUtils;
 import org.caleydo.vis.rank.ui.detail.CategoricalScoreBarElement;
 import org.caleydo.vis.rank.ui.mapping.MappingFunctionUIs;
-import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
-import org.eclipse.jface.viewers.TableViewerColumn;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.ScrolledComposite;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
+import org.eclipse.jface.viewers.ViewerComparator;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Table;
+import org.eclipse.ui.dialogs.CheckedTreeSelectionDialog;
 
 import com.google.common.base.Function;
 
@@ -140,7 +133,46 @@ public class CategoricalRankRankColumnModel<CATEGORY_TYPE> extends ABasicFiltera
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				new CategoricalFilterDialog(new Shell(), summary).open();
+				final Shell shell = new Shell();
+				final Set<CATEGORY_TYPE> data = metaData.keySet();
+				org.eclipse.jface.viewers.ILabelProvider label = new ColumnLabelProvider() {
+					@Override
+					public String getText(Object element) {
+						@SuppressWarnings("unchecked")
+						CATEGORY_TYPE k = (CATEGORY_TYPE) element;
+						return metaData.get(k).getLabel();
+					}
+
+					@Override
+					public org.eclipse.swt.graphics.Color getBackground(Object element) {
+						@SuppressWarnings("unchecked")
+						CATEGORY_TYPE k = (CATEGORY_TYPE) element;
+						return toSWT(metaData.get(k).getColor());
+					}
+
+					protected org.eclipse.swt.graphics.Color toSWT(Color color) {
+						return new org.eclipse.swt.graphics.Color(shell.getDisplay(), color.getRed(), color
+								.getGreen(), color.getBlue());
+					}
+
+				};
+				CheckedTreeSelectionDialog dialog = new CheckedTreeSelectionDialog(shell, label,
+						new ArrayTreeContentProvider());
+				dialog.setTitle("Edit Filter of " + getHeaderRenderer().toString());
+				dialog.setMessage(getTooltip());
+				dialog.setInput(data);
+				dialog.setInitialSelections(selection.toArray());
+				dialog.setComparator(new ViewerComparator());
+
+				if (dialog.open() == Window.OK) {
+					Object[] result = dialog.getResult();
+
+					Set<Object> r = new HashSet<>();
+					for (int i = 0; i < result.length; i++) {
+						r.add(result[i]);
+					}
+					publishEvent(new FilterEvent(r).to(summary));
+				}
 			}
 		});
 	}
@@ -232,96 +264,6 @@ public class CategoricalRankRankColumnModel<CATEGORY_TYPE> extends ABasicFiltera
 			mask.set(i, selection.contains(v));
 		}
 	}
-
-	private class CategoricalFilterDialog extends Dialog {
-		// the visual selection widget group
-		private CheckboxTableViewer categoriesUI;
-		private final Object receiver;
-
-		public CategoricalFilterDialog(Shell shell, Object receiver) {
-			super(shell);
-			this.receiver = receiver;
-		}
-
-		@Override
-		public void create() {
-			super.create();
-			getShell().setText("Edit Filter of " + getTooltip());
-			this.setBlockOnOpen(false);
-		}
-
-		@Override
-		protected Control createDialogArea(Composite parent) {
-			parent = (Composite) super.createDialogArea(parent);
-
-			ScrolledComposite sc = new ScrolledComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL);
-			sc.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-			sc.setExpandVertical(false);
-			sc.setExpandHorizontal(false);
-
-			this.categoriesUI = CheckboxTableViewer.newCheckList(sc, SWT.BORDER | SWT.FULL_SELECTION);
-			categoriesUI.getTable().setLayoutData(
-					new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
-			Table table = categoriesUI.getTable();
-			table.setHeaderVisible(true);
-			table.setLinesVisible(true);
-			table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-
-			TableViewerColumn tableColumn;
-			tableColumn = new TableViewerColumn(categoriesUI, SWT.LEAD);
-			tableColumn.getColumn().setText("Color");
-			tableColumn.getColumn().setWidth(50);
-			tableColumn.setLabelProvider(new ColumnLabelProvider() {
-				@Override
-				public org.eclipse.swt.graphics.Color getBackground(Object element) {
-					@SuppressWarnings("unchecked")
-					CATEGORY_TYPE k = (CATEGORY_TYPE) element;
-					return toSWT(metaData.get(k).getColor());
-				}
-			});
-			tableColumn = new TableViewerColumn(categoriesUI, SWT.LEAD);
-			tableColumn.getColumn().setText("Category");
-			tableColumn.getColumn().setWidth(200);
-			tableColumn.setLabelProvider(new ColumnLabelProvider() {
-				@Override
-				public String getText(Object element) {
-					@SuppressWarnings("unchecked")
-					CATEGORY_TYPE k = (CATEGORY_TYPE) element;
-					return metaData.get(k).getLabel();
-				}
-			});
-			categoriesUI.setContentProvider(ArrayContentProvider.getInstance());
-			categoriesUI.setInput(metaData.keySet());
-			for (Object s : selection) {
-				categoriesUI.setChecked(s, true);
-			}
-
-			sc.setContent(categoriesUI.getTable());
-			Point point = categoriesUI.getTable().computeSize(SWT.DEFAULT, SWT.DEFAULT);
-			categoriesUI.getTable().setSize(point);
-			sc.setMinSize(point);
-
-			applyDialogFont(parent);
-			return parent;
-		}
-
-		protected org.eclipse.swt.graphics.Color toSWT(Color color) {
-			return new org.eclipse.swt.graphics.Color(getShell().getDisplay(), color.getRed(), color.getGreen(),
-					color.getBlue());
-		}
-
-		@Override
-		protected void okPressed() {
-			Set<Object> r = new HashSet<>();
-			for (Object score : categoriesUI.getCheckedElements()) {
-				r.add(score);
-			}
-			publishEvent(new FilterEvent(r).to(receiver));
-			super.okPressed();
-		}
-	}
-
-
 
 	private class MyElement extends GLElement {
 		private final PropertyChangeListener repaintListner = GLPropertyChangeListeners.repaintOnEvent(this);

@@ -20,7 +20,11 @@
 package org.caleydo.vis.rank.ui.detail;
 
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
@@ -70,17 +74,24 @@ public class MultiScoreBarElement extends ScoreBarElement {
 		renderValue(g, w, h, r, vr, inferred, false, colors[v.repr], colors[v.repr]);
 
 		if (model.getTable().getSelectedRow() == r && !getRenderInfo().isCollapsed()) {
+			List<Pair.ComparablePair<Float, Integer>> tmp = new ArrayList<>(v.size());
 			for (int i = 0; i < v.size(); ++i) {
 				if (i == v.repr)
 					continue;
-				float vi = v.values[i];
-				g.color(Color.WHITE);
-				g.fillRect(w * vi - 2, h * 0.3f, 5, (h - 1 - h * 0.3f));
+				tmp.add(Pair.make(v.values[i], i));
+			}
+			Collections.sort(tmp, Collections.reverseOrder());
+
+			g.color(1, 1, 1, 0.8f).fillRect(0, 1, w * vr, h * 0.3f);
+			for (Pair.ComparablePair<Float, Integer> pair : tmp) {
+				int i = pair.getSecond();
+				float vi = pair.getFirst() * w;
 				if (colors[i] == colors[v.repr])
 					g.color(Color.DARK_GRAY);
 				else
 					g.color(colors[i]);
-				g.drawLine(w * vi, 1 + h * 0.3f, w * vi, h - 1);
+				g.fillRect(0, 1, vi, h * 0.2f);
+				g.fillRect(Math.max(vi - 2, 0), 1, 3, h * 0.3f);
 			}
 		}
 	}
