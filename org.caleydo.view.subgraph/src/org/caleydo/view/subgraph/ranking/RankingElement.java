@@ -37,6 +37,7 @@ import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.subgraph.GLSubGraph;
 import org.caleydo.vis.rank.config.RankTableConfigBase;
+import org.caleydo.vis.rank.config.RankTableUIConfigs;
 import org.caleydo.vis.rank.data.FloatInferrers;
 import org.caleydo.vis.rank.layout.RowHeightLayouts;
 import org.caleydo.vis.rank.model.ARankColumnModel;
@@ -74,7 +75,7 @@ public class RankingElement extends GLElementContainer {
 		initTable(table);
 
 		setLayout(GLLayouts.flowVertical(0));
-		this.add(new TableHeaderUI(table, true));
+		this.add(new TableHeaderUI(table, RankTableUIConfigs.DEFAULT));
 		TableBodyUI body = new TableBodyUI(table, RowHeightLayouts.UNIFORM);
 		body.addOnRowPick(new IPickingListener() {
 			@Override
@@ -128,8 +129,8 @@ public class RankingElement extends GLElementContainer {
 	 */
 	private void initTable(RankTableModel table) {
 		// add columns
-		table.addColumn(new StringRankColumnModel(GLRenderers.drawText("Pathway", VAlign.CENTER),
-				StringRankColumnModel.DFEAULT));
+		table.add(new StringRankColumnModel(GLRenderers.drawText("Pathway", VAlign.CENTER),
+				StringRankColumnModel.DEFAULT));
 		// table.addColumn(new StringRankColumnModel(GLRenderers.drawText("Pathway Type", VAlign.CENTER),
 		// new Function<IRow, String>() {
 		// @Override
@@ -147,7 +148,7 @@ public class RankingElement extends GLElementContainer {
 		// }
 		// };
 		currentRankColumnModel = createDefaultFloatRankColumnModel(ranking);
-		table.addColumn(currentRankColumnModel);
+		table.add(currentRankColumnModel);
 		// add data
 		Collection<PathwayRow> data = new ArrayList<>();
 		for (PathwayGraph g : PathwayManager.get().getAllItems()) {
