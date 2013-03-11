@@ -27,18 +27,20 @@ import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
+import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.ATimedMouseOutPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.button.Button;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.view.enroute.EPickingType;
+import org.caleydo.view.enroute.SelectionColorCalculator;
 
 /**
  * @author Alexander Lex
  *
  */
-public class ColumnCaptionRenderer extends SelectableRenderer implements ILabelProvider {
+public class ColumnCaptionRenderer extends ALayoutRenderer implements ILabelProvider {
 
 	private Group group;
 	private CaleydoTextRenderer textRenderer;
@@ -50,11 +52,15 @@ public class ColumnCaptionRenderer extends SelectableRenderer implements ILabelP
 	private Button button;
 
 	private int pickingID;
+	private AGLView parentView;
+	private SelectionColorCalculator colorCalculator;
+
+
 
 	public ColumnCaptionRenderer(AGLView parentView, MappedDataRenderer parent, Group group,
 			Perspective samplePerspective, ATableBasedDataDomain dataDomain, Button button) {
-
-		super(parentView, dataDomain.getColor());
+		this.parentView = parentView;
+		colorCalculator = new SelectionColorCalculator(dataDomain.getColor());
 		this.textRenderer = parentView.getTextRenderer();
 		this.pixelGLConverter = parentView.getPixelGLConverter();
 		this.group = group;

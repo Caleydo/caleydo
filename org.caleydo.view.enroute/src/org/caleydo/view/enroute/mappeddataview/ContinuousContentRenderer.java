@@ -112,6 +112,14 @@ public class ContinuousContentRenderer extends ContentRenderer {
 
 				float[] topBarColor = MappedDataRenderer.BAR_COLOR;
 				float[] bottomBarColor = MappedDataRenderer.BAR_COLOR;
+				// FIXME - bad hack
+				if (rowIDType.getIDCategory().getCategoryName().equals("GENE")) {
+					topBarColor = MappedDataRenderer.BAR_COLOR;
+					bottomBarColor = MappedDataRenderer.BAR_COLOR;
+				} else {
+					topBarColor = MappedDataRenderer.CONTEXT_BAR_COLOR;
+					bottomBarColor = MappedDataRenderer.CONTEXT_BAR_COLOR;
+				}
 
 				List<SelectionType> selectionTypes = Algorithms.mergeListsToUniqueList(experimentSelectionTypes,
 						geneSelectionTypes);

@@ -28,7 +28,9 @@ import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
+import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
+import org.caleydo.view.enroute.SelectionColorCalculator;
 
 /**
  * Renders a row caption based on david IDs
@@ -36,7 +38,7 @@ import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
  * @author Alexander Lex
  *
  */
-public class RowCaptionRenderer extends SelectableRenderer {
+public class RowCaptionRenderer extends ALayoutRenderer {
 
 	private CaleydoTextRenderer textRenderer;
 	private PixelGLConverter pixelGLConverter;
@@ -45,6 +47,9 @@ public class RowCaptionRenderer extends SelectableRenderer {
 
 	private IDType rowIDType;
 	private Integer rowID;
+
+	private AGLView parentView;
+	private SelectionColorCalculator colorCalculator;
 
 	/**
 	 * Constructor
@@ -60,8 +65,9 @@ public class RowCaptionRenderer extends SelectableRenderer {
 	 */
 	public RowCaptionRenderer(IDType rowIDType, Integer rowID, AGLView parentView, MappedDataRenderer parent,
 			float[] backgroundColor) {
-		super(parentView, new Color(backgroundColor));
 
+		this.parentView = parentView;
+		colorCalculator = new SelectionColorCalculator(new Color(backgroundColor));
 		this.rowID = rowID;
 		this.rowIDType = rowIDType;
 		this.parent = parent;
@@ -111,8 +117,8 @@ public class RowCaptionRenderer extends SelectableRenderer {
 		float sideSpacing = pixelGLConverter.getGLWidthForPixelWidth(8);
 		float height = pixelGLConverter.getGLHeightForPixelHeight(15);
 		IDMappingManager rowIDMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(rowIDType);
-		String rowName = rowIDMappingManager.getID(rowIDType, rowIDType.getIDCategory().getHumanReadableIDType(),
-				rowID);
+		String rowName = rowIDMappingManager
+				.getID(rowIDType, rowIDType.getIDCategory().getHumanReadableIDType(), rowID);
 		if (rowName != null)
 			textRenderer.renderTextInBounds(gl, rowName, sideSpacing, (y - height) / 2, 0.1f, x, height);
 

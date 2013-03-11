@@ -66,6 +66,7 @@ public class MappedDataRenderer {
 	public static float[] CAPTION_BACKGROUND_COLOR = { 220f / 255f, 220f / 255, 220f / 255, 1f };
 
 	public static float[] BAR_COLOR = { 43f / 255f, 140f / 255, 190f / 255, 1f };
+	public static float[] CONTEXT_BAR_COLOR = { 0.3f, 0.3f, 0.3f, 1f };
 
 	public static float[] SUMMARY_BAR_COLOR = { 49f / 255f, 163f / 255, 84f / 255, 1f };
 

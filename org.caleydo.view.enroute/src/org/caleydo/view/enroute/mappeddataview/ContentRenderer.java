@@ -24,13 +24,15 @@ import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.picking.APickingListener;
+import org.caleydo.view.enroute.SelectionColorCalculator;
 
 /**
  * @author alexsb
  *
  */
-public abstract class ContentRenderer extends SelectableRenderer {
+public abstract class ContentRenderer extends ALayoutRenderer {
 
 	/** The primary mapping type of the id category for rows */
 	IDType rowIDType;
@@ -54,6 +56,8 @@ public abstract class ContentRenderer extends SelectableRenderer {
 
 	APickingListener pickingListener;
 
+	SelectionColorCalculator colorCalculator;
+
 	/**
 	 * Determines whether the renderer should render in highlight mode.
 	 */
@@ -62,12 +66,21 @@ public abstract class ContentRenderer extends SelectableRenderer {
 	MappedDataRenderer parent;
 
 	IDMappingManager columnIDMappingManager;
+	AGLView parentView;
 
 	public ContentRenderer(IDType rowIDType, Integer rowID, IDType resolvedRowIDType, Integer resolvedRowID,
 			ATableBasedDataDomain dataDomain, Perspective columnPerspective, AGLView parentView,
 			MappedDataRenderer parent, Group group, boolean isHighlightMode) {
+		this.parentView = parentView;
+		Color barColor;
+		// FIXME - bad hack
+		if (rowIDType.getIDCategory().getCategoryName().equals("GENE")) {
+			barColor = new Color(MappedDataRenderer.BAR_COLOR);
+		} else {
+			barColor = new Color(MappedDataRenderer.CONTEXT_BAR_COLOR);
+		}
+		colorCalculator = new SelectionColorCalculator(barColor);
 
-		super(parentView, new Color(MappedDataRenderer.BAR_COLOR));
 		this.parent = parent;
 
 		this.rowIDType = rowIDType;
