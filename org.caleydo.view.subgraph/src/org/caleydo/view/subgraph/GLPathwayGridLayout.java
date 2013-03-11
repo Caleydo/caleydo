@@ -299,6 +299,38 @@ public class GLPathwayGridLayout implements IGLLayout {
 			if (levelDown != level) {
 				int rendererID = info.embeddingIDToRendererIDs.get(levelDown).get(0);
 				info.multiFormRenderer.setActive(rendererID);
+				PathwayColumn columnOfInfo = null;
+				for (PathwayColumn column : columns) {
+					for (GLPathwayWindow window : column.windows) {
+						if (window.info == info) {
+							columnOfInfo = column;
+							break;
+						}
+					}
+					if (columnOfInfo != null)
+						break;
+				}
+				if (columnOfInfo != null) {
+					boolean level1Present = false;
+					boolean level2OrHigherPresent = false;
+					List<GLPathwayWindow> lowerLevelWindows = new ArrayList<>();
+					for (GLPathwayWindow window : columnOfInfo.windows) {
+						if (window.info.getEmbeddingIDFromRendererID(window.info.multiFormRenderer
+								.getActiveRendererID()) == EEmbeddingID.PATHWAY_LEVEL1) {
+							level1Present = true;
+						} else {
+							level2OrHigherPresent = true;
+							lowerLevelWindows.add(window);
+						}
+					}
+					if (level1Present && level2OrHigherPresent) {
+						PathwayColumn newColumn = new PathwayColumn();
+						newColumn.windows.addAll(lowerLevelWindows);
+						columns.add(columns.indexOf(columnOfInfo), newColumn);
+						columnOfInfo.windows.removeAll(lowerLevelWindows);
+					}
+				}
+
 				return true;
 			}
 		}
