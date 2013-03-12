@@ -19,7 +19,6 @@
  *******************************************************************************/
 package org.caleydo.view.subgraph;
 
-import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -43,11 +42,12 @@ public class GLPathwayBackground extends PickableGLElement {
 	protected void renderImpl(GLGraphics g, float w, float h) {
 		super.renderImpl(g, w, h);
 
-		if (hovered) {
-			g.color(new Color(255, 234, 183));
-		} else {
-			g.color(0.95f, 0.95f, 0.95f, 1f);
-		}
+		// if (hovered) {
+		// g.color(new Color(255, 234, 183));
+		// } else {
+		//
+		// }
+		g.color(0.95f, 0.95f, 0.95f, 1f);
 		g.incZ(-0.2f);
 		g.fillRoundedRect(0, 0, w, h, 7);
 		g.incZ(0.2f);

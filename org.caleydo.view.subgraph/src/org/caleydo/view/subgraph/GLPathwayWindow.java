@@ -19,6 +19,9 @@
  *******************************************************************************/
 package org.caleydo.view.subgraph;
 
+import java.util.List;
+import java.util.Map.Entry;
+
 import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
 import org.caleydo.core.view.opengl.layout2.GLElementAdapter;
 import org.caleydo.core.view.opengl.layout2.util.GLElementViewSwitchingBar;
@@ -48,6 +51,37 @@ public class GLPathwayWindow extends GLWindow {
 		viewSwitchingBar = new GLElementViewSwitchingBar(info.multiFormRenderer);
 		titleBar.add(titleBar.size() - 1, viewSwitchingBar);
 		viewSwitchingBar.setVisibility(EVisibility.NONE);
+		for (Entry<EEmbeddingID, List<Integer>> entry : info.embeddingIDToRendererIDs.entrySet()) {
+			for (Integer rendererID : entry.getValue()) {
+				String toolTip = null;
+				switch (entry.getKey()) {
+				case PATHWAY_LEVEL1:
+					toolTip = "Pathway";
+					break;
+				case PATHWAY_LEVEL2:
+					toolTip = "Pathway Thumbnail with Context Paths";
+					break;
+				case PATHWAY_LEVEL3:
+					toolTip = "Pathway Thumbnail";
+					break;
+				case PATHWAY_LEVEL4:
+					toolTip = "Minimize";
+					break;
+				case PATH_LEVEL1:
+					toolTip = "Selected Path with Detailed Experimental Data";
+					break;
+				case PATH_LEVEL2:
+					toolTip = "Selected Path";
+					break;
+				default:
+					break;
+				}
+				if (toolTip != null) {
+					viewSwitchingBar.setButtonToolTip(toolTip, rendererID);
+				}
+			}
+		}
+
 		background.onPick(new APickingListener() {
 			@Override
 			protected void rightClicked(Pick pick) {
@@ -61,6 +95,11 @@ public class GLPathwayWindow extends GLWindow {
 
 			}
 		});
+		if (info instanceof PathwayMultiFormInfo) {
+			PathwayMultiFormInfo pathwayInfo = (PathwayMultiFormInfo) info;
+			background.setTooltip(pathwayInfo.pathway.getTitle());
+		}
+
 	}
 
 	public int getMinWidth() {
