@@ -97,7 +97,7 @@
                viewID="org.caleydo.view.subgraph">
             <Embedding
                   embeddingID="org.caleydo.view.subgraph.path.level2"
-                  icon="resources/icons/enroute.png"
+                  icon="resources/icons/path.png"
                   isDefaultView="true"
                   visInfo="org.caleydo.view.enroute.path.PathVisInfo">
                <RendererCreator
