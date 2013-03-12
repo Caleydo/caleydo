@@ -26,6 +26,8 @@ import org.caleydo.core.view.ViewManager;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
+import org.caleydo.core.view.opengl.canvas.IGLKeyListener;
+import org.caleydo.core.view.opengl.canvas.IGLKeyListener.IKeyEvent;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.layout.util.multiform.IMultiFormChangeListener;
@@ -132,6 +134,8 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	 */
 	protected boolean wasPathwayAdded = false;
 
+	private boolean isAltKeyDown=false;
+	private boolean isShiftKeyDown=false;
 	/**
 	 * Constructor.
 	 *
@@ -170,6 +174,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 
 		root.add(column);
 		root.add(augmentation);
+		registeKeyListeners();
 
 	}
 
@@ -198,6 +203,26 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		return serializedForm;
 	}
 
+	protected void registeKeyListeners() {
+
+		parentGLCanvas.addKeyListener(new IGLKeyListener() {
+			@Override
+			public void keyPressed(IKeyEvent e) {
+
+				augmentation.showPortals(e.isKeyDown('p'));
+				
+			}
+
+			@Override
+			public void keyReleased(IKeyEvent e) {
+
+				augmentation.showPortals(e.isKeyDown('p'));
+
+			}
+		});
+	}
+	
+	
 	@Override
 	public String toString() {
 		return "Subgraph view";

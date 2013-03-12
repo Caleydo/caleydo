@@ -52,6 +52,7 @@ public class GLSubGraphAugmentation extends GLElement {
 	private Color portalColor=new Color(1.0f,0.0f,0.0f);
 
 	private Rectangle2D portalStartNode;
+	private boolean isShowPortals=false;
 	
 	private List<IGLRenderer> renderers = new ArrayList<>();
 	private BubbleSetGLRenderer bubbleSetRenderer=new BubbleSetGLRenderer();
@@ -101,14 +102,14 @@ public class GLSubGraphAugmentation extends GLElement {
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
-		if(this.isDirty){
+		if(this.isDirty){		
 			this.isDirty=false;
 		//prepare bubbleSet texture
 		this.bubbleSetRenderer.clearBubbleSet();
 		this.bubbleSetRenderer.setSize(pxlWidth, pxlHeight);
 		bubbleSetItems.clear();
 		bubbleSetEdges.clear();
-		
+
 		if (path != null) {
 			int i=0;
 			Rectangle2D prevRect=new Rectangle2D.Double(0f,0f,0f,0f);
@@ -143,22 +144,32 @@ public class GLSubGraphAugmentation extends GLElement {
 		//	  BubbleSet(routingIterations, marchingIterations,pixelGroup, 
 		//				edgeR0,edgeR1, nodeR0, nodeR1, 
 		//				morphBuffer,skip) 
-
-			this.renderPortalLinks(g);
-			this.bubbleSetRenderer.update(g.gl,null,0);	
+			if(this.portals!=null &&  isShowPortals){
+				for(Rectangle2D rect : this.portals){
+					ArrayList<Rectangle2D> items= new ArrayList<>();		
+					items.add(new Rectangle2D.Double(rect.getCenterX(), rect.getCenterY(), rect.getWidth(), rect.getHeight()));
+					this.bubbleSetRenderer.addGroup(items, null , portalColor);
+				}
+			}
+			this.bubbleSetRenderer.update(g.gl,null,0);				
 			g.gl.glTranslatef(0.f, 0.f, -1.0f);
 		}
-		g.gl.glTranslatef(0.f, 0.f, 1.0f);
-		this.bubbleSetRenderer.renderPxl(g.gl, pxlWidth, pxlHeight);		
+		g.gl.glTranslatef(0.f, 0.f, 1.0f);			
+
+		this.bubbleSetRenderer.renderPxl(g.gl, pxlWidth, pxlHeight);
+		this.renderPortalLinks(g);
 		g.gl.glTranslatef(0.f, 0.f, -1.0f);		
 	}
 
+	public void showPortals(boolean boolVal)
+	{		
+		isShowPortals=boolVal;
+		isDirty=true;
+	}
+	
 	public void renderPortalLinks(GLGraphics g){
-		if(this.portals==null)return;
+		if(this.portals==null || !isShowPortals)return;
 		for(Rectangle2D rect : this.portals){
-			ArrayList<Rectangle2D> items= new ArrayList<>();		
-			items.add(new Rectangle2D.Double(rect.getCenterX(), rect.getCenterY(), rect.getWidth(), rect.getHeight()));
-			this.bubbleSetRenderer.addGroup(items, null , portalColor);
 			g.color(1, 0, 0, 1)
 			.lineWidth(2)
 			.drawLine((float) this.portalStartNode.getCenterX(), (float) this.portalStartNode.getCenterY(), 
