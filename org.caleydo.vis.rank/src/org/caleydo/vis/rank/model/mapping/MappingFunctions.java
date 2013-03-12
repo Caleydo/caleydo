@@ -59,4 +59,12 @@ public class MappingFunctions {
 			return in;
 		return clamp01((in - min) / (max - min));
 	}
+
+	public static float log(float in) {
+		return (float) Math.log(in);
+	}
+
+	public static float log10(float in) {
+		return (float) Math.log10(in);
+	}
 }

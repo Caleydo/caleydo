@@ -190,13 +190,8 @@ public class ScriptedMappingFunction extends AMappingFunction {
 		bindings.put("v_min", getActMin());
 		bindings.put("v_max", getActMax());
 		if (actStats != null) {
-			bindings.put("data_min", actStats.getMin());
-			bindings.put("data_max", actStats.getMax());
-			bindings.put("data_mean", actStats.getMean());
-			bindings.put("data_var", actStats.getVariance());
-			bindings.put("data_sd", actStats.getStandardDeviation());
-			bindings.put("data_n", actStats.getN());
-			bindings.put("data_nans", actStats.getNaNs());
+			bindings.put("data", actStats);
 		}
 	}
+
 }

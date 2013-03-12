@@ -176,7 +176,7 @@ public class GLElement implements IHasGLLayoutData {
 	}
 
 	@Override
-	public final <T> T getLayoutDataAs(Class<T> clazz, T default_) {
+	public <T> T getLayoutDataAs(Class<T> clazz, T default_) {
 		return GLLayouts.resolveLayoutData(clazz, layoutData, default_);
 	}
 
@@ -302,6 +302,8 @@ public class GLElement implements IHasGLLayoutData {
 	 * @param picker
 	 */
 	public final GLElement setPicker(IGLRenderer picker) {
+		if (picker == null)
+			picker = GLRenderers.DUMMY;
 		if (this.picker == picker)
 			return this;
 		this.picker = picker;
@@ -310,16 +312,32 @@ public class GLElement implements IHasGLLayoutData {
 	}
 
 	/**
+	 * @return the picker, see {@link #picker}
+	 */
+	public final IGLRenderer getPicker() {
+		return picker;
+	}
+
+	/**
 	 * setter for {@link #renderer}
 	 *
 	 * @param renderer
 	 */
 	public final GLElement setRenderer(IGLRenderer renderer) {
+		if (renderer == null)
+			renderer = GLRenderers.DUMMY;
 		if (this.renderer == renderer)
 			return this;
 		this.renderer = renderer;
 		repaint();
 		return this;
+	}
+
+	/**
+	 * @return the renderer, see {@link #renderer}
+	 */
+	public final IGLRenderer getRenderer() {
+		return renderer;
 	}
 
 	/**

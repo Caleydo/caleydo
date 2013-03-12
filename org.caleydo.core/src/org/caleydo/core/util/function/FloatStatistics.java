@@ -40,12 +40,12 @@ public class FloatStatistics {
 		return sum / n;
 	}
 
-	public float getVariance() {
+	public float getVar() {
 		return (n * sqrsum - (sum * sum)) / (n * (n - 1));
 	}
 
-	public float getStandardDeviation() {
-		return (float) Math.sqrt(getVariance());
+	public float getSd() {
+		return (float) Math.sqrt(getVar());
 	}
 
 	/**
@@ -117,4 +117,21 @@ public class FloatStatistics {
 			return new FloatStatistics(Float.NaN, Float.NaN, 0, 0, 0, 0);
 		return new FloatStatistics(min, max, sum, sqrsum, n, nans);
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("FloatStatistics [");
+		builder.append("min=").append(min);
+		builder.append(", max=").append(max);
+		builder.append(", mean=").append(getMean());
+		builder.append(", var=").append(getVar());
+		builder.append(", sd=").append(getSd());
+		builder.append(", n=").append(n);
+		builder.append(", nans=").append(nans);
+		builder.append(", sum=").append(sum);
+		builder.append("]");
+		return builder.toString();
+	}
+
 }

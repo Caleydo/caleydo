@@ -158,6 +158,7 @@ public class PiecewiseMapping extends ScriptedMappingFunction implements Iterabl
 	}
 
 	public void clear() {
+		this.isDefinedMapping = true;
 		mapping.clear();
 	}
 

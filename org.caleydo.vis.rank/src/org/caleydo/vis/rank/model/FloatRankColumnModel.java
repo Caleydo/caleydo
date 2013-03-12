@@ -217,7 +217,7 @@ public class FloatRankColumnModel extends ARankColumnModel implements IMappedCol
 	}
 
 	private void checkMapping() {
-		if (dirtyDataStats && mapping.isMappingDefault() && !mapping.hasDefinedMappingBounds()) {
+		if (dirtyDataStats) {
 			FloatStatistics stats = FloatStatistics.compute(asRawDataIterator());
 			mapping.setActStatistics(stats);
 			dirtyDataStats = false;

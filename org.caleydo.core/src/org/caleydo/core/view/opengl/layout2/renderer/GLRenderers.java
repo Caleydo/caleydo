@@ -24,6 +24,7 @@ import java.awt.Color;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
 
 /**
  * factory class for {@link IGLRenderer}
@@ -92,11 +93,15 @@ public final class GLRenderers {
 	}
 
 	public static IGLRenderer drawText(final String text, final VAlign valign) {
+		return drawText(text, valign, GLPadding.ZERO);
+	}
+
+	public static IGLRenderer drawText(final String text, final VAlign valign, final GLPadding padding) {
 		return new IGLRenderer() {
 
 			@Override
 			public void render(GLGraphics g, float w, float h, GLElement parent) {
-				g.drawText(text, 0, 0, w, h, valign);
+				g.drawText(text, padding.left, padding.top, w - padding.hor(), h - padding.vert(), valign);
 			}
 
 			@Override
@@ -144,7 +149,7 @@ public final class GLRenderers {
 				g.drawRect(0, 0, w, h);
 				break;
 			case FILL_ROUNDED_RECT:
-				g.drawRoundedRect(0, 0, w, h, Math.min(w, h) * 0.25f);
+				g.fillRoundedRect(0, 0, w, h, Math.min(w, h) * 0.25f);
 				break;
 			case FILL_RECT:
 				g.fillRect(0, 0, w, h);

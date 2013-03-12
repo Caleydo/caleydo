@@ -19,11 +19,7 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.layout2.basic;
 
-import java.awt.Color;
-
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
-import org.caleydo.core.view.opengl.layout2.PickableGLElement;
-import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.core.view.opengl.picking.AdvancedPick;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -34,28 +30,12 @@ import org.caleydo.core.view.opengl.picking.Pick;
  * @author Samuel Gratzl
  *
  */
-public class GLButton extends PickableGLElement {
-	/**
-	 * is mouse over
-	 */
-	private boolean hovered = false;
-	/**
-	 * is mouse down
-	 */
-	private boolean armed = false;
+public class GLButton extends AGLButton {
 	/**
 	 * is selected
 	 */
 	private boolean selected = false;
 
-	/**
-	 * effect to render when the mouse is over the component
-	 */
-	private IGLRenderer hoverEffect = GLRenderers.drawRoundedRect(Color.DARK_GRAY);
-	/**
-	 * effect to render when the mouse is down
-	 */
-	private IGLRenderer armedEffect = GLRenderers.fillRoundedRect(new Color(1, 1, 1, 0.3f));
 	/**
 	 * effect to render when the component is selected
 	 */
@@ -95,36 +75,6 @@ public class GLButton extends PickableGLElement {
 	 */
 	public EButtonMode getMode() {
 		return mode;
-	}
-
-	/**
-	 * @param armedEffect
-	 *            setter, see {@link armedEffect}
-	 */
-	public GLButton setArmedEffect(IGLRenderer armedEffect) {
-		if (armedEffect == null)
-			armedEffect = GLRenderers.DUMMY;
-		if (this.armedEffect.equals(armedEffect))
-			return this;
-		this.armedEffect = armedEffect;
-		if (armed)
-			repaint();
-		return this;
-	}
-
-	/**
-	 * @param hoverEffect
-	 *            setter, see {@link hoverEffect}
-	 */
-	public GLButton setHoverEffect(IGLRenderer hoverEffect) {
-		if (hoverEffect == null)
-			hoverEffect = GLRenderers.DUMMY;
-		if (this.hoverEffect.equals(hoverEffect))
-			return this;
-		this.hoverEffect = hoverEffect;
-		if (hovered)
-			repaint();
-		return this;
 	}
 
 	/**
@@ -215,23 +165,6 @@ public class GLButton extends PickableGLElement {
 		default:
 			break;
 		}
-		repaint();
-	}
-
-	@Override
-	protected void onMouseOver(Pick pick) {
-		if (pick.isAnyDragging())
-			return;
-		hovered = true;
-		repaint();
-	}
-
-	@Override
-	protected void onMouseOut(Pick pick) {
-		if (!hovered)
-			return;
-		armed = false;
-		hovered = false;
 		repaint();
 	}
 

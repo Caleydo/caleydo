@@ -21,6 +21,7 @@ package org.caleydo.vis.rank.ui.mapping;
 
 import static org.caleydo.core.event.EventPublisher.publishEvent;
 
+import java.io.StringWriter;
 import java.util.Objects;
 
 import javax.script.Bindings;
@@ -49,6 +50,8 @@ import org.eclipse.swt.widgets.Text;
  *
  */
 public class JSEditorDialog extends TitleAreaDialog {
+	private static final String DEFAULT_MESSAGE = "that maps the input value in the variable named: \"value\" to a 0..1 range\n"
+			+ "where \"value_min\" and \"value_max\" are the current or defined minimal/maximal input values";
 	private final Object receiver;
 	private final ScriptEngine engine;
 	private ScriptedMappingFunction model;
@@ -58,11 +61,14 @@ public class JSEditorDialog extends TitleAreaDialog {
 	private Text testOutputUI;
 	private CompiledScript script;
 
+	private StringWriter w = new StringWriter();
+
 	public JSEditorDialog(Shell parentShell, Object receiver, ScriptedMappingFunction model) {
 		super(parentShell);
 		setBlockOnOpen(false);
 		this.receiver = receiver;
 		this.engine = ScriptedMappingFunction.createEngine();
+		this.engine.getContext().setWriter(w);
 		this.model = model;
 	}
 
@@ -72,10 +78,7 @@ public class JSEditorDialog extends TitleAreaDialog {
 		getShell().setText("Edit JavaScript Mapping Function");
 		setTitle("Edit JavaScript Mapping Function");
 		// Set the message
-		setMessage(
-"that maps the input value in the variable named: \"value\" to a 0..1 range\n"
-						+ "where \"value_min\" and \"value_max\" are the current or defined minimal/maximal input values",
-				IMessageProvider.INFORMATION);
+		setMessage(DEFAULT_MESSAGE, IMessageProvider.INFORMATION);
 	}
 
 	@Override
@@ -132,10 +135,17 @@ public class JSEditorDialog extends TitleAreaDialog {
 			float f = Float.parseFloat(testUI.getText());
 			if (!verifyCode())
 				return;
+			w.getBuffer().setLength(0); // reset
 			Bindings b = engine.createBindings();
 			b.put("v", f);
 			model.addBindings(b);
-			testOutputUI.setText(Objects.toString(script.eval(b)));
+			String output = Objects.toString(script.eval(b));
+			testOutputUI.setText(output);
+			String extra = w.toString();
+			if (extra.length() > 0)
+				setMessage(extra, IMessageProvider.WARNING);
+			else
+				setMessage(DEFAULT_MESSAGE, IMessageProvider.INFORMATION);
 		} catch(NumberFormatException e) {
 			testOutputUI.setText("Invalid input: " + e.getMessage());
 		} catch (ScriptException e) {
@@ -151,8 +161,7 @@ public class JSEditorDialog extends TitleAreaDialog {
 			// dummy test
 			Bindings b = engine.createBindings();
 			b.put("v", 0.5f);
-			b.put("data_min", model.getActMin());
-			b.put("data_max", model.getActMax());
+			model.addBindings(b);
 			Object r = script.eval(b);
 			if (!(r instanceof Number)) {
 				setErrorMessage("function must return a float value");

@@ -28,12 +28,24 @@ import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 public class GLElementAccessor {
 	/**
 	 * just the container should access the layout data and here just for layouting purpose
-	 * 
+	 *
 	 * @param elem
 	 * @return
 	 */
 	@Deprecated
 	public static IGLLayoutElement asLayoutElement(GLElement elem) {
 		return elem.layoutElement;
+	}
+
+	public static void setParent(GLElement elem, IGLElementParent parent) {
+		elem.setParent(parent);
+	}
+
+	public static void init(GLElement elem, IGLElementContext context) {
+		elem.init(context);
+	}
+
+	public static void takeDown(GLElement elem) {
+		elem.takeDown();
 	}
 }

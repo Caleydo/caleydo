@@ -25,6 +25,7 @@ import static org.caleydo.vis.rank.ui.RenderStyle.binsForWidth;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -47,6 +48,7 @@ import org.caleydo.core.view.opengl.layout2.GLSandBox;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton.EButtonMode;
+import org.caleydo.core.view.opengl.layout2.basic.GLComboBox;
 import org.caleydo.core.view.opengl.layout2.basic.RadioController;
 import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
@@ -74,7 +76,8 @@ import org.eclipse.swt.widgets.Shell;
  * @author Samuel Gratzl
  *
  */
-public class MappingFunctionUI extends GLElementContainer implements GLButton.ISelectionCallback, IGLLayout {
+public class MappingFunctionUI extends GLElementContainer implements GLButton.ISelectionCallback, IGLLayout,
+		GLComboBox.ISelectionCallback<EStandardMappings> {
 
 	private static final float PADDING = 5;
 
@@ -112,6 +115,20 @@ public class MappingFunctionUI extends GLElementContainer implements GLButton.IS
 		this.add(new NormalizedHistogramElement());
 		this.add(new CodeElement());
 		ButtonBar buttons = new ButtonBar();
+		buttons.addSpacer();
+		GLComboBox<EStandardMappings> mappings = new GLComboBox<>(Arrays.asList(EStandardMappings.values()),
+				GLComboBox.DEFAULT);
+		mappings.setRenderer(new IGLRenderer() {
+			@Override
+			public void render(GLGraphics g, float w, float h, GLElement parent) {
+				g.color(Color.BLACK).drawRect(0, 0, w, h);
+				g.drawText("Standard Mappings", 1, h * 0.25f, w - 2, h * 0.5f);
+			}
+		});
+		mappings.setCallback(this);
+		mappings.setSize(RenderStyle.BUTTON_WIDTH * 4, Float.NaN);
+		mappings.setTooltip("Select a standard mapping function");
+		buttons.add(mappings);
 		buttons.addSpacer();
 		GLButton b = new GLButton();
 		b.setRenderer(GLRenderers.fillImage(RenderStyle.ICON_MAPPING_RESET));
@@ -183,6 +200,18 @@ public class MappingFunctionUI extends GLElementContainer implements GLButton.IS
 			// switch
 			set(SPECIFIC, modes.get(id));
 		}
+	}
+
+	@Override
+	public void onSelectionChanged(GLComboBox<? extends EStandardMappings> widget, EStandardMappings item) {
+		if (item == null)
+			return;
+		item.apply(model);
+		AMappingFunctionMode<?> active = getActive();
+		active.reset();
+		repaintMapping();
+		widget.setSelected(-1); // reset selection
+		fireCallback();
 	}
 
 	@ListenTo(sendToMe = true)
@@ -304,8 +333,8 @@ public class MappingFunctionUI extends GLElementContainer implements GLButton.IS
 				float texty = textBelowHist ? (h - LABEL_HEIGHT) : -LABEL_HEIGHT;
 				g.drawText(text, 0, texty, w, LABEL_HEIGHT - 5,
 						VAlign.CENTER);
-				g.drawText(Formatter.formatNumber(min), 0, texty + 5, w, 12, VAlign.LEFT);
-				g.drawText(Formatter.formatNumber(max), 0, texty + 5, w, 12, VAlign.RIGHT);
+				g.drawText(Formatter.formatNumber(min), 0, texty + 3, w, 12, VAlign.LEFT);
+				g.drawText(Formatter.formatNumber(max), 0, texty + 3, w, 12, VAlign.RIGHT);
 				RenderUtils.renderHist(g, hist, w, h - LABEL_HEIGHT, -1, color, Color.BLACK);
 
 				if (!Float.isNaN(minM)) {
@@ -318,8 +347,8 @@ public class MappingFunctionUI extends GLElementContainer implements GLButton.IS
 			} else {
 				float texty = textBelowHist ? (h - LABEL_HEIGHT) : 0;
 				g.drawText(text, 0, texty, w, LABEL_HEIGHT - 5, VAlign.CENTER);
-				g.drawText(Formatter.formatNumber(min), 0, texty + 5, w, 12, VAlign.LEFT);
-				g.drawText(Formatter.formatNumber(max), 0, texty + 5, w, 12, VAlign.RIGHT);
+				g.drawText(Formatter.formatNumber(min), 0, texty + 3, w, 12, VAlign.LEFT);
+				g.drawText(Formatter.formatNumber(max), 0, texty + 3, w, 12, VAlign.RIGHT);
 				g.color(backgroundColor).fillRect(0, histy, w, h - LABEL_HEIGHT);
 				g.color(color).drawRect(0, histy, w, h - LABEL_HEIGHT);
 				g.move(0, histy);
