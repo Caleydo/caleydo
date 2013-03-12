@@ -1308,11 +1308,12 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 		// //pathSegments.get(pathSegments.size()-1).setPathway(selectedPath);
 		// //pathSegments.set(pathSeg, element)
 		// }
-		if (pathSegments.size() > 0)
-			pathSegments.set(pathSegments.size() - 1, new PathwayPath(selectedPath));
-		else
-			pathSegments.add(new PathwayPath(selectedPath));
-			
+		if(selectedPath!=null){
+			if (pathSegments.size() > 0)
+				pathSegments.set(pathSegments.size() - 1, new PathwayPath(selectedPath));
+			else
+				pathSegments.add(new PathwayPath(selectedPath));
+		}
 		pathEvent.setPathSegments(pathSegments);
 		pathEvent.setSender(this);
 		pathEvent.setEventSpace(pathwayPathEventSpace);
