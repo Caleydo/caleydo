@@ -56,7 +56,12 @@ public interface IGLKeyListener {
 		
 		boolean isAltDown();
 		
+		boolean isUpDown();
+		
+		boolean isDownDown();
+		
 		boolean isKeyDown(char c);
+
 	}
 
 	public enum ESpecialKey {

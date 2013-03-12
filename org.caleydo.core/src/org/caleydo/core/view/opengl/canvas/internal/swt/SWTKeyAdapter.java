@@ -143,6 +143,24 @@ final class SWTKeyAdapter implements KeyListener {
 			else
 				return (event.stateMask & SWT.ALT) != 0 && !isKey(ESpecialKey.ALT);
 		}
+		
+		@Override
+		public boolean isUpDown() {
+
+			if (pressed)
+				return (event.stateMask & SWT.UP) != 0 || isKey(ESpecialKey.UP);
+			else
+				return (event.stateMask & SWT.UP) != 0 && !isKey(ESpecialKey.UP);
+		}
+		
+		@Override
+		public boolean isDownDown() {
+
+			if (pressed)
+				return (event.stateMask & SWT.DOWN) != 0 || isKey(ESpecialKey.DOWN);
+			else
+				return (event.stateMask & SWT.DOWN) != 0 && !isKey(ESpecialKey.DOWN);
+		}
 	}
 
 }
