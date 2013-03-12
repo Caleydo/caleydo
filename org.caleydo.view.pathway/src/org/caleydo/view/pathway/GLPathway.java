@@ -368,6 +368,16 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 				}// if (e.isControlDown() && (e.getKeyCode() == 79))
 				isControlKeyDown = e.isControlDown();
 				isShiftKeyDown = e.isShiftDown();
+				
+				if(e.isDownDown()){
+					selectedPathID--;
+					selectedPathID--;
+					selectNextPath();
+				}
+
+				if(e.isUpDown())
+					selectNextPath();
+				
 			}
 
 			@Override
@@ -692,7 +702,7 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 			gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_KEEP);
 			textureOffset -= 2f * PathwayRenderStyle.Z_OFFSET;
 			gl.glTranslatef(0.0f, 0.0f, textureOffset);
-			//overlayBubbleSets(gl);
+			overlayBubbleSets(gl);
 
 			gl.glEnable(GL.GL_DEPTH_TEST);
 			gl.glDisable(GL.GL_STENCIL_TEST);
@@ -714,10 +724,10 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 			this.bubbleSet.clear();
 			this.bubbleSet.setPathwayGraph(pathway);
 
-			// this.bubbleSet.addAllPaths(allPaths);
+			this.bubbleSet.addAllPaths(allPaths);
 			//
 			// this.bubbleSet.addPathSegements(pathSegments);
-			this.bubbleSet.addPortals(portalVertexReps);
+			//this.bubbleSet.addPortals(portalVertexReps);
 
 			// update texture
 			this.bubbleSet.getBubbleSetGLRenderer().setSize(pathway.getWidth(), pathway.getHeight());
@@ -1298,6 +1308,11 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 		// //pathSegments.get(pathSegments.size()-1).setPathway(selectedPath);
 		// //pathSegments.set(pathSeg, element)
 		// }
+		if (pathSegments.size() > 0)
+			pathSegments.set(pathSegments.size() - 1, new PathwayPath(selectedPath));
+		else
+			pathSegments.add(new PathwayPath(selectedPath));
+			
 		pathEvent.setPathSegments(pathSegments);
 		pathEvent.setSender(this);
 		pathEvent.setEventSpace(pathwayPathEventSpace);
