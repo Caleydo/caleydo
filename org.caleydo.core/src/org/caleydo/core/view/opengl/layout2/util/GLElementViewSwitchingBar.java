@@ -108,6 +108,19 @@ public class GLElementViewSwitchingBar extends GLElementContainer implements IMu
 		}
 	}
 
+	/**
+	 * Sets the tooltip of the button of the associated renderer.
+	 *
+	 * @param toolTip
+	 * @param rendererID
+	 */
+	public void setButtonToolTip(String toolTip, int rendererID) {
+		GLButton button = buttons.get(rendererID);
+		if (button != null) {
+			button.setTooltip(toolTip);
+		}
+	}
+
 	private void createButtonsForMultiformRenderer(MultiFormRenderer multiFormRenderer) {
 		Set<Integer> rendererIDs = multiFormRenderer.getRendererIDs();
 		List<Integer> idList = new ArrayList<>(rendererIDs);
