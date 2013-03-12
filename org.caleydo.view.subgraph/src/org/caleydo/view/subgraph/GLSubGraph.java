@@ -27,7 +27,6 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.IGLKeyListener;
-import org.caleydo.core.view.opengl.canvas.IGLKeyListener.IKeyEvent;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.layout.util.multiform.IMultiFormChangeListener;
@@ -134,8 +133,9 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	 */
 	protected boolean wasPathwayAdded = false;
 
-	private boolean isAltKeyDown=false;
-	private boolean isShiftKeyDown=false;
+	private boolean isAltKeyDown = false;
+	private boolean isShiftKeyDown = false;
+
 	/**
 	 * Constructor.
 	 *
@@ -210,7 +210,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 			public void keyPressed(IKeyEvent e) {
 
 				augmentation.showPortals(e.isKeyDown('p'));
-				
+
 			}
 
 			@Override
@@ -221,8 +221,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 			}
 		});
 	}
-	
-	
+
 	@Override
 	public String toString() {
 		return "Subgraph view";
@@ -320,7 +319,8 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 			}
 		}
 
-		final GLPathwayWindow window = new GLPathwayWindow(pathway == null ? "" : pathway.getTitle(), this, info);
+		final GLPathwayWindow window = new GLPathwayWindow(pathway == null ? "" : pathway.getTitle(), this, info,
+				pathway == null);
 		if (pathway != null) {
 			window.onClose(new ICloseWindowListener() {
 				@Override

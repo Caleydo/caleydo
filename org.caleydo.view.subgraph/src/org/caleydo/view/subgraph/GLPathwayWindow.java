@@ -40,11 +40,12 @@ public class GLPathwayWindow extends GLWindow {
 	protected final MultiFormInfo info;
 	protected final GLElementViewSwitchingBar viewSwitchingBar;
 
-	public GLPathwayWindow(String title, GLSubGraph view, MultiFormInfo info) {
+	public GLPathwayWindow(String title, GLSubGraph view, MultiFormInfo info, boolean isScrollable) {
 		super(title, view);
 		this.info = info;
 
-		GLElementAdapter container = new GLElementAdapter(view, info.multiFormRenderer, true);
+		GLElementAdapter container = isScrollable ? new ScrollableGLElementAdapter(view, info.multiFormRenderer)
+				: new GLElementAdapter(view, info.multiFormRenderer, true);
 		info.container = container;
 		setContent(container);
 
