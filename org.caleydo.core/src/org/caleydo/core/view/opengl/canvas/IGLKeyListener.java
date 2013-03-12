@@ -53,9 +53,13 @@ public interface IGLKeyListener {
 		 * @return whether the control key was already down or become down
 		 */
 		boolean isControlDown();
+		
+		boolean isAltDown();
+		
+		boolean isKeyDown(char c);
 	}
 
 	public enum ESpecialKey {
-		CONTROL, SHIFT, LEFT, RIGHT, UP, DOWN
+		ALT, CONTROL, SHIFT, LEFT, RIGHT, UP, DOWN 
 	}
 }

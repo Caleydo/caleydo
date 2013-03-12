@@ -692,7 +692,7 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 			gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_KEEP);
 			textureOffset -= 2f * PathwayRenderStyle.Z_OFFSET;
 			gl.glTranslatef(0.0f, 0.0f, textureOffset);
-			overlayBubbleSets(gl);
+			//overlayBubbleSets(gl);
 
 			gl.glEnable(GL.GL_DEPTH_TEST);
 			gl.glDisable(GL.GL_STENCIL_TEST);
@@ -1267,12 +1267,12 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 			// TODO: make sure that this is the last vertex of the last path segment
 			if (selectedPath != null && vertexRep == selectedPath.getEndVertex()
 					&& selectedPath.getEdgeList().size() > 0) {
-				// ShowPortalNodesEvent e = new ShowPortalNodesEvent(vertexRep);
-				// e.setSender(this);
-				// e.setEventSpace(pathwayPathEventSpace);
-				// eventPublisher.triggerEvent(e);
-				// the event will not be sent back to this pathway object, so highlight must be triggered here
-				// highlightPortalNodes(vertexRep);
+				 ShowPortalNodesEvent e = new ShowPortalNodesEvent(vertexRep);
+				 e.setSender(this);
+				 e.setEventSpace(pathwayPathEventSpace);
+				 eventPublisher.triggerEvent(e);
+				 //the event will not be sent back to this pathway object, so highlight must be triggered here
+				highlightPortalNodes(vertexRep);
 			}
 		}
 
@@ -1436,7 +1436,7 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 	 * @param vertexRep
 	 */
 	public void highlightPortalNodes(PathwayVertexRep vertexRep) {
-
+		
 		portalVertexReps = PathwayManager.get().getEquivalentVertexRepsInPathway(vertexRep, pathway);
 
 	}
