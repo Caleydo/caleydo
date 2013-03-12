@@ -129,7 +129,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	/**
 	 * The current minimum width in Pixels of this view.
 	 */
-	private int currentMinWidth = 0;
+	private int minWidth = 0;
 
 	/**
 	 * Determines, whether the rendered content is fit to the width of the view. (With an absolute view minimum
@@ -153,6 +153,8 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	private LayoutManager layoutManager;
 
 	private String pathwayPathEventSpace;
+
+	private int minHeight = 0;
 
 	/**
 	 * Constructor.
@@ -361,7 +363,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	 */
 	private void adaptViewSize(int minViewWidth, int minViewHeightRequiredByPath) {
 		boolean updateWidth = minViewWidth > parentGLCanvas.getWidth()
-				|| (minViewWidth < parentGLCanvas.getWidth() && (minViewWidth > currentMinWidth || minViewWidth + 3 < currentMinWidth));
+				|| (minViewWidth < parentGLCanvas.getWidth() && (minViewWidth > minWidth || minViewWidth + 3 < minWidth));
 
 		boolean updateHeight = false;
 
@@ -375,15 +377,14 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 			// System.out.println("setting min width:" + minViewWidth);
 			if (fitToViewWidth) {
-				currentMinWidth = pathRenderer.getMinWidthPixels() + DATA_COLUMN_WIDTH_PIXELS;
+				minWidth = pathRenderer.getMinWidthPixels() + DATA_COLUMN_WIDTH_PIXELS;
 			} else {
-				currentMinWidth = updateWidth ? minViewWidth + 3 : pathRenderer.getMinWidthPixels()
-						+ DATA_COLUMN_WIDTH_PIXELS;
+				minWidth = updateWidth ? minViewWidth + 3 : pathRenderer.getMinWidthPixels() + DATA_COLUMN_WIDTH_PIXELS;
 			}
 
-			setMinViewSize(currentMinWidth, minViewHeightRequiredByPath + 3);
+			setMinViewSize(minWidth, minViewHeightRequiredByPath + 3);
 		}
-
+		minHeight = minViewHeightRequiredByPath + 3;
 	}
 
 	private void setMinViewSize(int minWidthPixels, int minHeightPixels) {
@@ -392,6 +393,16 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		eventPublisher.triggerEvent(event);
 		// System.out.println("minsize: " + minHeightPixels);
 		setLayoutDirty();
+	}
+
+	@Override
+	public int getMinPixelHeight() {
+		return minHeight;
+	}
+
+	@Override
+	public int getMinPixelWidth() {
+		return minWidth;
 	}
 
 	@Override
@@ -668,7 +679,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	@ListenTo
 	public void onFitToViewWidth(FitToViewWidthEvent event) {
 		this.fitToViewWidth = event.isFitToViewWidth();
-		currentMinWidth = 0;
+		minWidth = 0;
 		setLayoutDirty();
 	}
 
