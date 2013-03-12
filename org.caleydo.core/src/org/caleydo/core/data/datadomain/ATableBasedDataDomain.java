@@ -881,18 +881,10 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 	 */
 	public Perspective convertForeignPerspective(Perspective foreignPerspective) {
 
-		IDType localIDType;
-		IDMappingManager idMappingManager;
-		if (foreignPerspective.getIdType().getIDCategory() == recordIDCategory) {
-			localIDType = this.recordIDType;
-			idMappingManager = this.recordIDMappingManager;
-		} else if (foreignPerspective.getIdType().getIDCategory() == dimensionIDCategory) {
-			localIDType = this.dimensionIDType;
-			idMappingManager = this.dimensionIDMappingManager;
-		} else {
-			throw new IllegalArgumentException("Can not convert from " + foreignPerspective.getIdType() + " to "
-					+ this.recordIDType + " or " + this.dimensionIDType);
-		}
+		foreignPerspective.setCrossDatasetID(foreignPerspective.getPerspectiveID());
+
+		IDType localIDType = getPrimaryIDType(foreignPerspective.getIdType());
+		IDMappingManager idMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(localIDType);
 
 		if (foreignPerspective.getIdType() == localIDType)
 			return foreignPerspective;
@@ -912,7 +904,6 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 			groupSizes.add(0);
 			sampleElements.add(0);
 			groupNames.add(foreignGroup.getLabel());
-
 		}
 
 		int count = 0;
@@ -936,6 +927,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 		data.setData(indices, groupSizes, sampleElements, groupNames);
 
 		Perspective localPerspective = new Perspective(this, localIDType);
+		localPerspective.setCrossDatasetID(foreignPerspective.getCrossDatasetID());
 		localPerspective.setIDType(localIDType);
 		localPerspective.init(data);
 		localPerspective.setLabel(foreignPerspective.getLabel(), foreignPerspective.isLabelDefault());

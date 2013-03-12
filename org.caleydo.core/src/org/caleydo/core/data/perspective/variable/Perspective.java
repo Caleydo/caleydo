@@ -242,6 +242,21 @@ public class Perspective implements IDefaultLabelHolder {
 	}
 
 	/**
+	 * @param crossDatasetID
+	 *            setter, see {@link crossDatasetID}
+	 */
+	public void setCrossDatasetID(String crossDatasetID) {
+		this.crossDatasetID = crossDatasetID;
+	}
+
+	/**
+	 * @return the crossDatasetID, see {@link #crossDatasetID}
+	 */
+	public String getCrossDatasetID() {
+		return crossDatasetID;
+	}
+
+	/**
 	 * @param idType
 	 *            setter, see {@link #idType}
 	 */

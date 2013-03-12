@@ -228,7 +228,7 @@ public class MappedDataRenderer {
 	}
 
 	/** Re-builds the layout from scratch */
-	public void reBuildLayout() {
+	private void reBuildLayout() {
 		createLayout(baseLayoutManger, false);
 		createLayout(highlightLayoutManger, true);
 	}

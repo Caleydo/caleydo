@@ -246,8 +246,8 @@ public class TablePerspective implements IDefaultLabelHolder {
 	 *            setter, see {@link #recordPerspective}
 	 */
 	public void setRecordPerspective(Perspective recordPerspective) {
-		if (this.recordPerspective != null)
-			throw new IllegalStateException("Illegal to change perspectives of TablePerspectives.");
+		// if (this.recordPerspective != null)
+		// throw new IllegalStateException("Illegal to change perspectives of TablePerspectives.");
 		this.recordPerspective = recordPerspective;
 		this.recordPerspectiveID = recordPerspective.getPerspectiveID();
 		createKey();
@@ -266,8 +266,8 @@ public class TablePerspective implements IDefaultLabelHolder {
 	 *            setter, see {@link #dimensionPerspective}
 	 */
 	public void setDimensionPerspective(Perspective dimensionPerspective) {
-		if (this.dimensionPerspective != null)
-			throw new IllegalStateException("Illegal to change perspectives of TablePerspectives.");
+		// if (this.dimensionPerspective != null)
+		// throw new IllegalStateException("Illegal to change perspectives of TablePerspectives.");
 		this.dimensionPerspective = dimensionPerspective;
 		dimensionPerspectiveID = dimensionPerspective.getPerspectiveID();
 		createKey();

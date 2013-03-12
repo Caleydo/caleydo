@@ -182,11 +182,11 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		pathRenderer.setUpdateStrategy(new SelectedPathUpdateStrategy(pathRenderer,
 				GLPathway.DEFAULT_PATHWAY_PATH_EVENT_SPACE));
 		mappedDataRenderer = new MappedDataRenderer(this);
-
 	}
 
 	@Override
 	public void init(GL2 gl) {
+
 		displayListIndex = gl.glGenLists(1);
 		layoutDisplayListIndex = gl.glGenLists(1);
 		textRenderer = new CaleydoTextRenderer(24);
@@ -493,7 +493,6 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 			}
 
 			if (dimensionPerspective != null) {
-
 				TablePerspective contextTablePerspective = new TablePerspective(contextualDataDomain,
 						recordPerspective, dimensionPerspective);
 				contextTablePerspectives.add(contextTablePerspective);
@@ -683,26 +682,46 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 	@ListenTo
 	public void updatePerspective(PerspectiveUpdatedEvent event) {
-		for (TablePerspective perspective : resolvedTablePerspectives) {
-			if (perspective.getRecordPerspective().equals(event.getPerspective())
-					|| perspective.getDimensionPerspective().equals(event.getPerspective())) {
+		checkAndUpdatePerspectives(event, resolvedTablePerspectives);
+		checkAndUpdatePerspectives(event, tablePerspectives);
+		checkAndUpdatePerspectives(event, mappedDataRenderer.getContextualTablePerspectives());
+
+	}
+
+	private void checkAndUpdatePerspectives(PerspectiveUpdatedEvent event, List<TablePerspective> perspectivesToCheck) {
+		Iterator<TablePerspective> pIterator = perspectivesToCheck.iterator();
+		while (pIterator.hasNext()) {
+			TablePerspective tPerspective = pIterator.next();
+
+			if (tPerspective.getRecordPerspective().equals(event.getPerspective())
+					|| tPerspective.getDimensionPerspective().equals(event.getPerspective())) {
+				updateLayout();
+			} else if (tPerspective.getRecordPerspective().getCrossDatasetID() != null
+					&& event.getPerspective().getCrossDatasetID() != null
+					&& tPerspective.getRecordPerspective().getCrossDatasetID()
+							.equals(event.getPerspective().getCrossDatasetID())) {
+
+
+				Perspective perspective = tPerspective.getDataDomain().convertForeignPerspective(
+						event.getPerspective());
+
+				tPerspective.setRecordPerspective(perspective);
+				// TablePerspective newTPerstpective = new TablePerspective(tPerspective.getDataDomain(), perspective,
+				// tPerspective.getDimensionPerspective());
+				// pIterator.remove();
+				// pIterator.
+				updateLayout();
+			} else if (tPerspective.getDimensionPerspective().getCrossDatasetID() != null
+					&& event.getPerspective().getCrossDatasetID() != null
+					&& tPerspective.getDimensionPerspective().getCrossDatasetID()
+							.equals(event.getPerspective().getCrossDatasetID())) {
+				Perspective newPerspective = tPerspective.getDataDomain().convertForeignPerspective(
+						event.getPerspective());
+				tPerspective.setDimensionPerspective(newPerspective);
 				updateLayout();
 			}
 		}
 
-		for (TablePerspective perspective : tablePerspectives) {
-			if (perspective.getRecordPerspective().equals(event.getPerspective())
-					|| perspective.getDimensionPerspective().equals(event.getPerspective())) {
-				updateLayout();
-			}
-		}
-
-		for (TablePerspective perspective : mappedDataRenderer.getContextualTablePerspectives()) {
-			if (perspective.getRecordPerspective().equals(event.getPerspective())
-					|| perspective.getDimensionPerspective().equals(event.getPerspective())) {
-				updateLayout();
-			}
-		}
 	}
 
 	@Override
