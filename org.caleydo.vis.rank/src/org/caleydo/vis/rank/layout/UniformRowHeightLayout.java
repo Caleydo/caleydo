@@ -19,9 +19,9 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.layout;
 
-import java.util.Arrays;
+import java.util.BitSet;
 
-import org.caleydo.vis.rank.layout.RowHeightLayouts.IRowHeightLayout;
+import org.caleydo.vis.rank.model.ColumnRanker;
 import org.caleydo.vis.rank.ui.RenderStyle;
 
 /**
@@ -34,19 +34,84 @@ class UniformRowHeightLayout implements IRowHeightLayout {
 	UniformRowHeightLayout() {
 	}
 
-
 	@Override
-	public float[] compute(int numRows, int selectedRowIndex, float h) {
-		h -= ROW_HEIGHT;
-		int visibleRows = (int) Math.round(Math.floor(h / ROW_HEIGHT));
-		float[] r;
-		r = new float[Math.min(numRows, visibleRows + 1)];
-		Arrays.fill(r, ROW_HEIGHT);
-		return r;
+	public IRowLayoutInstance layout(ColumnRanker ranker, float h, int size, int offset, boolean forceOffset) {
+		final int selectedRank = ranker.getSelectedRank();
+
+		final int visibleRows = (int) Math.round(Math.floor((h - 5) / ROW_HEIGHT));
+		int[] order = ranker.getOrder();
+		final int numRows = order.length;
+
+		// clamping
+		if (offset < 0)
+			offset = 0;
+		if (visibleRows >= numRows)
+			offset = 0;
+		if (offset >= (numRows - visibleRows))
+			offset = numRows - visibleRows;
+
+		// let the selected index be visible
+		if (selectedRank >= 0 && !forceOffset) {
+			if (selectedRank < offset)
+				offset = selectedRank;
+			if (selectedRank >= (offset + visibleRows))
+				offset = selectedRank - visibleRows - 1;
+		}
+
+		float y = 0;
+		int numVisibles = 0;
+		BitSet unused = new BitSet(size);
+		unused.set(0, size);
+		for (int r = 0; r < order.length; ++r) {
+			int rowIndex = order[r];
+			unused.clear(rowIndex);
+			if (r < offset)
+				continue;
+			float hr = ROW_HEIGHT;
+			y += hr;
+			numVisibles++;
+			if ((y + hr + 5) >= h)
+				break;
+		}
+		return new UniformRowLayoutInstance(order, offset, numVisibles, unused, h);
 	}
 
 	@Override
 	public String getIcon() {
 		return RenderStyle.ICON_ALIGN_UNIFORM;
+	}
+
+	private static class UniformRowLayoutInstance extends ARowLayoutInstance {
+		private final int[] order;
+		private final BitSet unused;
+		private final float h;
+
+		public UniformRowLayoutInstance(int[] order, int offset, int numVisibles, BitSet unused, float h) {
+			super(offset, numVisibles);
+			this.order = order;
+			this.unused = unused;
+			this.h = h;
+		}
+
+		@Override
+		public int getSize() {
+			return order.length;
+		}
+
+		@Override
+		public void layout(ISetHeight setter) {
+			float y = 0;
+			for (int r = 0; r < offset; ++r)
+				setter.set(order[r], 0, 0);
+			for (int r = offset; r < (offset + numVisibles); ++r) {
+				int rowIndex = order[r];
+				float hr = ROW_HEIGHT;
+				setter.set(rowIndex, y, hr);
+				y += hr;
+			}
+			for (int i = unused.nextSetBit(0); i >= 0; i = unused.nextSetBit(i + 1)) {
+				setter.set(i, h, 0);
+			}
+		}
 	}
 }

@@ -28,6 +28,12 @@ import java.beans.PropertyChangeListener;
 
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.core.view.opengl.layout2.IGLElementContext;
+import org.caleydo.core.view.opengl.picking.IPickingListener;
+import org.caleydo.core.view.opengl.picking.Pick;
+import org.caleydo.vis.rank.layout.IRowHeightLayout;
+import org.caleydo.vis.rank.layout.IRowHeightLayout.ISetHeight;
+import org.caleydo.vis.rank.layout.IRowLayoutInstance;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.ColumnRanker;
 import org.caleydo.vis.rank.model.IRow;
@@ -39,15 +45,24 @@ import org.caleydo.vis.rank.ui.TableBodyUI;
  * @author Samuel Gratzl
  *
  */
-public class OrderColumnUI extends GLElement implements PropertyChangeListener, ITableColumnUI {
+public class OrderColumnUI extends GLElement implements PropertyChangeListener, ITableColumnUI, IPickingListener {
 	private final ColumnRanker ranker;
 	private final OrderColumn model;
-	private float[] rowPositions;
-	private int[] rankDeltas;
+	private int scrollBarPickingId = -1;
+	private IRowHeightLayout rowLayout;
+	private IRowLayoutInstance rowLayoutInstance;
 
-	public OrderColumnUI(OrderColumn model, ColumnRanker ranker) {
+	private int[] rankDeltas;
+	private boolean scrollBarOver;
+	private float scrollOffsetAcc = 0;
+	private int scrollOffset = 0;
+	private boolean isScrollingUpdate;
+	private boolean becauseOfRedordering;
+
+	public OrderColumnUI(OrderColumn model, ColumnRanker ranker, IRowHeightLayout rowLayout) {
 		this.ranker = ranker;
 		this.model = model;
+		this.rowLayout = rowLayout;
 		ranker.addPropertyChangeListener(ColumnRanker.PROP_ORDER, this);
 		ranker.addPropertyChangeListener(ColumnRanker.PROP_INVALID, this);
 		setLayoutData(model);
@@ -56,6 +71,23 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 	private TableBodyUI getTableBodyUI() {
 		return (TableBodyUI) getParent();
 	}
+
+	/**
+	 * @return the rowLayout, see {@link #rowLayout}
+	 */
+	public IRowHeightLayout getRowLayout() {
+		return rowLayout;
+	}
+
+	/**
+	 * @param rowLayout
+	 *            setter, see {@link rowLayout}
+	 */
+	public void setRowLayout(IRowHeightLayout rowLayout) {
+		this.rowLayout = rowLayout;
+	}
+
+
 	/**
 	 * @return the ranker, see {@link #ranker}
 	 */
@@ -83,29 +115,53 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 		switch (evt.getPropertyName()) {
 		case ColumnRanker.PROP_ORDER:
 			rankDeltas = (int[]) evt.getOldValue();
+			becauseOfRedordering = true;
 			updateMeAndMyChildren();
 			break;
 		case ColumnRanker.PROP_INVALID:
+			becauseOfRedordering = true;
 			updateMeAndMyChildren();
 		}
 	}
 
 	@Override
+	protected void init(IGLElementContext context) {
+		scrollBarPickingId = context.registerPickingListener(this);
+		super.init(context);
+	}
+
+	@Override
 	protected void takeDown() {
+		context.unregisterPickingListener(scrollBarPickingId);
 		ranker.removePropertyChangeListener(ColumnRanker.PROP_ORDER, this);
 		ranker.removePropertyChangeListener(ColumnRanker.PROP_INVALID, this);
 		super.takeDown();
 	}
 
-	private void updateMeAndMyChildren() {
-		getTableBodyUI().updateMyChildren(this);
+	/**
+	 * @return the becauseOfRedordering, see {@link #becauseOfRedordering}
+	 */
+	public boolean isBecauseOfRedordering() {
+		return becauseOfRedordering;
+	}
+
+	public void layoutingDown() {
+		becauseOfRedordering = false;
 	}
 
 	@Override
 	protected void layout() {
+		rowLayoutInstance = rowLayout.layout(ranker, getSize().y(), ranker.getTable().getDataSize(), scrollOffset,
+				isScrollingUpdate);
+		isScrollingUpdate = false;
+		scrollOffset = rowLayoutInstance.getOffset();
+		if (!rowLayoutInstance.needsScrollBar())
+			scrollOffsetAcc = 0;
 		super.layout();
-		float h = getSize().y();
-		rowPositions = computeRowPositions(h, ranker.size(), ranker.getSelectedRank());
+	}
+
+	private void updateMeAndMyChildren() {
+		getTableBodyUI().updateMyChildren(this);
 	}
 
 	public int getRankDelta(IRow row) {
@@ -118,20 +174,6 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 		return result;
 	}
 
-	public float[] getRowPositions() {
-		return rowPositions;
-	}
-
-	private float[] computeRowPositions(float h, int numRows, int selectedRank) {
-		float[] hs = getTableBodyUI().getRowLayout().compute(numRows, selectedRank, h - 5);
-		float acc = 0;
-		for (int i = 0; i < hs.length; ++i) {
-			hs[i] += acc;
-			acc = hs[i];
-		}
-		return hs;
-	}
-
 	@Override
 	public GLElement setData(Iterable<IRow> rows, IColumModelLayout parent) {
 		return this;
@@ -142,86 +184,203 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 		relayout();
 	}
 
+	public boolean needsScrollBar() {
+		checkLayout();
+		return rowLayoutInstance.needsScrollBar();
+	}
+
+	public boolean renderScrollBar(GLGraphics g, float w, float h, boolean left) {
+		if (!rowLayoutInstance.needsScrollBar())
+			return false;
+		float factor = h / rowLayoutInstance.getSize();
+		g.incZ().incZ();
+		g.color(scrollBarOver ? Color.DARK_GRAY : Color.GRAY).fillRect(
+				(left ? -1 : w - RenderStyle.SCROLLBAR_WIDTH + 1),
+				rowLayoutInstance.getOffset() * factor,
+				RenderStyle.SCROLLBAR_WIDTH,
+				rowLayoutInstance.getNumVisibles() * factor);
+		g.decZ().decZ();
+		return true;
+	}
+
+	public void renderPickScrollBar(GLGraphics g, float w, float h, boolean left) {
+		if (!rowLayoutInstance.needsScrollBar())
+			return;
+		g.incZ().incZ();
+		g.pushName(scrollBarPickingId);
+		g.fillRect(left ? 0 : w - RenderStyle.SCROLLBAR_WIDTH, 0, RenderStyle.SCROLLBAR_WIDTH, h);
+		g.popName();
+		g.decZ().decZ();
+	}
+
+	@Override
+	public void pick(Pick pick) {
+		if (pick.isAnyDragging() && !pick.isDoDragging())
+			return;
+		switch (pick.getPickingMode()) {
+		case MOUSE_OVER:
+			scrollBarOver = true;
+			repaint();
+			break;
+		case CLICKED:
+			float y = toRelative(pick.getPickedPoint()).y();
+			float factor = getSize().y() / rowLayoutInstance.getSize();
+			int index = (int) (y / factor);
+			if (index >= rowLayoutInstance.getOffset()
+					&& index <= (rowLayoutInstance.getOffset() + rowLayoutInstance.getNumVisibles()))
+				pick.setDoDragging(true);
+			else {
+				setScrollOffset(index - rowLayoutInstance.getNumVisibles() / 2);
+			}
+			repaint();
+			break;
+		case DRAGGED:
+			scrollOffsetAcc += pick.getDy() / getSize().y() * rowLayoutInstance.getSize();
+			int delta = Math.round(scrollOffsetAcc);
+			if (delta == 0)
+				return;
+			scrollOffsetAcc -= delta;
+			setScrollOffset(scrollOffset + delta);
+			break;
+		case MOUSE_RELEASED:
+			repaint();
+			break;
+		case MOUSE_OUT:
+			scrollBarOver = false;
+			repaint();
+			break;
+		default:
+			break;
+		}
+	}
+
+	/**
+	 * @param newOffset
+	 */
+	private void setScrollOffset(int newOffset) {
+		newOffset = Math.max(0, Math.min(rowLayoutInstance.getSize() - rowLayoutInstance.getNumVisibles(), newOffset));
+		if (scrollOffset == newOffset)
+			return;
+		this.scrollOffset = newOffset;
+		isScrollingUpdate = true;
+		updateMeAndMyChildren();
+	}
+
+	public void layoutRows(ISetHeight setter) {
+		rowLayoutInstance.layout(setter);
+	}
+
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
 		if (rankDeltas != null) {
 			rankDeltas = null; // a single run with the rank deltas, not used anymore
 		}
-		// render the bands
-		if (dontneedToRender(w))
-			return;
 
 		TableBodyUI body = getTableBodyUI();
-		OrderColumnUI previousRanker = body.getRanker(model);
-		ITableColumnUI previous = body.getLastCorrespondingColumn(previousRanker, true);
-		ITableColumnUI self = body.getLastCorrespondingColumn(this, true);
-		if (self == null || self == this || previous == null || previous instanceof OrderColumnUI)
-			return;
-		int selectedRank = model.getRanker().getSelectedRank();
 
-		g.save();
-		g.gl.glTranslatef(0, 0, g.z());
-		int i = -1;
-		for(IRow row : model.getRanker()) {
-			i++;
-			Vec4f left = previous.get(row.getIndex()).getBounds();
-			Vec4f right = self.get(row.getIndex()).getBounds();
-			if (!areValidBounds(left) || !areValidBounds(right))
-				continue;
-			boolean isEvenRight = i % 2 == 0;
-			boolean isEvenLeft = previousRanker.getRanker().getRank(row) % 2 == 0;
-			renderBand(g, left, right, w, selectedRank == i, isEvenLeft, isEvenRight);
+		OrderColumnUI previousRanker = model == null ? null : body.getRanker(model);
+		if (previousRanker == null)
+			return;
+
+		// render the bands
+		if (!dontneedToRenderBands(w)) {
+			ITableColumnUI previous = body.getLastCorrespondingColumn(previousRanker, true);
+			ITableColumnUI self = body.getLastCorrespondingColumn(this, true);
+			if (self == null || self == this || previous == null || previous instanceof OrderColumnUI)
+				return;
+			int selectedRank = model.getRanker().getSelectedRank();
+
+			int i = -1;
+			for (IRow row : model.getRanker()) {
+				i++;
+				Vec4f left = previous.get(row.getIndex()).getBounds();
+				Vec4f right = self.get(row.getIndex()).getBounds();
+				if (!areValidBounds(left) && !areValidBounds(right))
+					continue;
+				renderBand(g, left, right, w, selectedRank == i);
+			}
 		}
-		g.restore();
+		previousRanker.renderScrollBar(g, w, h, true); // render left
+		this.renderScrollBar(g, w, h, false); // render right
+
 		super.renderImpl(g, w, h);
 	}
 
 	@Override
 	protected void renderPickImpl(GLGraphics g, float w, float h) {
-		if (dontneedToRender(w))
-			return;
 		TableBodyUI body = getTableBodyUI();
-		OrderColumnUI previousRanker = body.getRanker(model);
+		OrderColumnUI previousRanker = model == null ? null : body.getRanker(model);
+		if (previousRanker == null)
+			return;
+
+		previousRanker.renderPickScrollBar(g, w, h, true); // render left
+		this.renderPickScrollBar(g, w, h, false); // render right
+
+		if (dontneedToRenderBands(w))
+			return;
+
+		boolean hasLeftScrollBar = previousRanker.needsScrollBar();
+		boolean hasRightScrollBar = needsScrollBar();
+
 		ITableColumnUI previous = body.getLastCorrespondingColumn(previousRanker, true);
 		ITableColumnUI self = body.getLastCorrespondingColumn(this, true);
 		if (self == null || self == this || previous == null || previous instanceof OrderColumnUI)
 			return;
 
-		g.save();
-		g.gl.glTranslatef(0, 0, g.z());
+		g.move(hasLeftScrollBar ? RenderStyle.SCROLLBAR_WIDTH : 0, 0);
+		if (hasLeftScrollBar)
+			w -= RenderStyle.SCROLLBAR_WIDTH;
+		if (hasRightScrollBar)
+			w -= RenderStyle.SCROLLBAR_WIDTH;
 		int i = -1;
 		for (IRow row : model.getRanker()) {
 			i++;
 			Vec4f left = previous.get(row.getIndex()).getBounds();
 			Vec4f right = self.get(row.getIndex()).getBounds();
-			if (!areValidBounds(left) || !areValidBounds(right))
+			if (!areValidBounds(left) && !areValidBounds(right))
 				continue;
 			g.pushName(body.getRankPickingId(i));
-			renderBand(g, left, right, w, false, false, false);
+			renderBand(g, left, right, w, false);
 			g.popName();
 		}
-		g.restore();
+		g.move(hasLeftScrollBar ? -RenderStyle.SCROLLBAR_WIDTH : 0, 0);
 	}
 
 
-	private boolean dontneedToRender(float w) {
+	private boolean dontneedToRenderBands(float w) {
 		return model == null || model.isCollapsed() || w < 10;
 	}
 
-	private void renderBand(GLGraphics g, Vec4f left, Vec4f right, float w,
-			boolean isSelected, boolean isEvenLeft, boolean isEvenRight) {
+	private void renderBand(GLGraphics g, Vec4f left, Vec4f right, float w, boolean isSelected) {
+		boolean isLeftValid = areValidBounds(left);
+		boolean isRightValid = areValidBounds(right);
 		if (isSelected) {
 			g.incZ();
-			g.color(RenderStyle.COLOR_SELECTED_ROW);
-			g.fillPolygon(new Vec2f(-1, left.y()), new Vec2f(w, right.y()), new Vec2f(w, right.y() + right.w()),
-					new Vec2f(-1, left.y() + left.w()));
-
-			g.color(RenderStyle.COLOR_SELECTED_BORDER);
-			g.drawLine(0, left.y(), w, right.y());
-			g.drawLine(0, left.y() + left.w(), w, right.y() + right.w());
+			if (isLeftValid && isRightValid) {
+				g.color(RenderStyle.COLOR_SELECTED_ROW);
+				g.fillPolygon(new Vec2f(-1, left.y()), new Vec2f(w, right.y()), new Vec2f(w, right.y() + right.w()),
+						new Vec2f(-1, left.y() + left.w()));
+				g.color(RenderStyle.COLOR_SELECTED_BORDER);
+				g.drawLine(0, left.y(), w, right.y());
+				g.drawLine(0, left.y() + left.w(), w, right.y() + right.w());
+			} else if (isLeftValid) {
+				g.color(RenderStyle.COLOR_SELECTED_ROW);
+				g.fillPolygon(new Vec2f(-1, left.y()), new Vec2f(w, right.y()), new Vec2f(-1, left.y() + left.w()));
+				g.color(RenderStyle.COLOR_SELECTED_BORDER);
+				g.drawLine(0, left.y(), w, right.y());
+				g.drawLine(0, left.y() + left.w(), w, right.y());
+			} else if (isRightValid) {
+				g.color(RenderStyle.COLOR_SELECTED_ROW);
+				g.fillPolygon(new Vec2f(-1, left.y()), new Vec2f(w, right.y()), new Vec2f(w, right.y() + right.w()));
+				g.color(RenderStyle.COLOR_SELECTED_BORDER);
+				g.drawLine(0, left.y(), w, right.y());
+				g.drawLine(0, left.y(), w, right.y() + right.w());
+			}
 			g.decZ();
 		} else {
 			g.color(Color.GRAY);
+			if (!isRightValid && isSelected)
+				System.out.println(right);
 			g.drawLine(-1, left.y() + left.w() * 0.5f, w, right.y() + right.w() * 0.5f);
 		}
 	}

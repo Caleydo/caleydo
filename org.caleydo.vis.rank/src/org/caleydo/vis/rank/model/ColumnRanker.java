@@ -104,7 +104,7 @@ public class ColumnRanker implements Iterable<IRow> {
 		return new ColumnRanker(this, table, null);
 	}
 
-	private RankTableModel getTable() {
+	public RankTableModel getTable() {
 		if (table != null)
 			return table;
 		return model.getTable();

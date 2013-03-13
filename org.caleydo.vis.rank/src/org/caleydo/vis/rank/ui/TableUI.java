@@ -31,8 +31,8 @@ import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.rank.config.IRankTableUIConfig;
 import org.caleydo.vis.rank.internal.ui.ButtonBar;
+import org.caleydo.vis.rank.layout.IRowHeightLayout;
 import org.caleydo.vis.rank.layout.RowHeightLayouts;
-import org.caleydo.vis.rank.layout.RowHeightLayouts.IRowHeightLayout;
 import org.caleydo.vis.rank.model.RankTableModel;
 
 /**

@@ -35,6 +35,7 @@ import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.rank.internal.event.FilterEvent;
+import org.caleydo.vis.rank.model.mixin.IGrabRemainingHorizontalSpace;
 import org.caleydo.vis.rank.model.mixin.IRankColumnModel;
 import org.caleydo.vis.rank.ui.GLPropertyChangeListeners;
 import org.eclipse.jface.dialogs.InputDialog;
@@ -49,7 +50,7 @@ import com.google.common.base.Function;
  * @author Samuel Gratzl
  *
  */
-public class StringRankColumnModel extends ABasicFilterableRankColumnModel {
+public class StringRankColumnModel extends ABasicFilterableRankColumnModel implements IGrabRemainingHorizontalSpace {
 	public static final Function<IRow, String> DEFAULT = new Function<IRow, String>() {
 		@Override
 		public String apply(IRow row) {

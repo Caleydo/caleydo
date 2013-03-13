@@ -93,6 +93,7 @@ public class RenderStyle {
 	public static final Color COLOR_STACKED_BORDER = new Color(0.85f, .85f, .85f);
 	public static final float COLOR_STACKED_BORDER_WIDTH = 1;
 	public static final float HEADER_ROUNDED_RADIUS = 5;
+	public static final float SCROLLBAR_WIDTH = 5;
 
 
 	/**

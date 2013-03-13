@@ -38,6 +38,7 @@ import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.rank.internal.event.FilterEvent;
+import org.caleydo.vis.rank.model.mixin.IGrabRemainingHorizontalSpace;
 import org.caleydo.vis.rank.ui.GLPropertyChangeListeners;
 import org.caleydo.vis.rank.ui.IColumnRenderInfo;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -55,7 +56,8 @@ import com.google.common.base.Function;
  * @author Samuel Gratzl
  *
  */
-public class CategoricalRankColumnModel<CATEGORY_TYPE> extends ABasicFilterableRankColumnModel {
+public class CategoricalRankColumnModel<CATEGORY_TYPE> extends ABasicFilterableRankColumnModel implements
+		IGrabRemainingHorizontalSpace {
 	private final Function<IRow, CATEGORY_TYPE> data;
 	private Set<CATEGORY_TYPE> selection = new HashSet<>();
 	private Map<CATEGORY_TYPE, String> metaData;

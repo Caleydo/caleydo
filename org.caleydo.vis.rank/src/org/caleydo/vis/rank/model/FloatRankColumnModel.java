@@ -37,6 +37,7 @@ import org.caleydo.core.util.function.IFloatList;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
+import org.caleydo.vis.rank.data.AFloatFunction;
 import org.caleydo.vis.rank.data.IFloatFunction;
 import org.caleydo.vis.rank.data.IFloatInferrer;
 import org.caleydo.vis.rank.model.mapping.IMappingFunction;
@@ -199,12 +200,12 @@ public class FloatRankColumnModel extends ARankColumnModel implements IMappedCol
 		};
 	}
 
-	protected float map(float value) {
+	protected float map(float value, boolean handleNaNs) {
 		if (Float.isNaN(value))
 			value = computeMissingValue();
 		checkMapping();
 		float r = mapping.apply(value);
-		if (Float.isNaN(r))
+		if (Float.isNaN(r) && handleNaNs)
 			return 0;
 		return r;
 	}
@@ -231,7 +232,7 @@ public class FloatRankColumnModel extends ARankColumnModel implements IMappedCol
 
 	@Override
 	public float applyPrimitive(IRow row) {
-		return map(data.applyPrimitive(row));
+		return map(data.applyPrimitive(row), true);
 	}
 
 	@Override
@@ -251,6 +252,11 @@ public class FloatRankColumnModel extends ARankColumnModel implements IMappedCol
 	public SimpleHistogram getHist(int bins) {
 		if (cacheHist != null && cacheHist.size() == bins)
 			return cacheHist;
-		return cacheHist = DataUtils.getHist(bins, getMyRanker().iterator(), this);
+		return cacheHist = DataUtils.getHist(bins, getMyRanker().iterator(), new AFloatFunction<IRow>() {
+			@Override
+			public float applyPrimitive(IRow in) {
+				return map(data.applyPrimitive(in), false);
+			}
+		});
 	}
 }

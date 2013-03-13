@@ -15,6 +15,7 @@ public class RankColumnUI extends ColumnUI {
 		super(model);
 	}
 
+
 	@Override
 	protected ALayoutAnimation createMoveAnimation(IGLLayoutElement elem, Vec4f before, Vec4f after) {
 		if (areValidBounds(after)) {

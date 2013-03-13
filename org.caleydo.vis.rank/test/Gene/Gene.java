@@ -23,23 +23,23 @@ import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.Field;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
+import org.caleydo.vis.rank.data.AFloatFunction;
 import org.caleydo.vis.rank.data.FloatInferrers;
 import org.caleydo.vis.rank.model.ARow;
 import org.caleydo.vis.rank.model.FloatRankColumnModel;
+import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.RankRankColumnModel;
 import org.caleydo.vis.rank.model.StackedRankColumnModel;
 import org.caleydo.vis.rank.model.StringRankColumnModel;
 import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
 
 import demo.ARankTableDemo;
-import demo.ReflectionFloatData;
 
 /**
  * @author Samuel Gratzl
@@ -54,6 +54,60 @@ public class Gene extends ARankTableDemo {
 		super("mutsig pancan12");
 	}
 
+	enum TumorType {
+		LUSC_TP, READ_TP, GBM_TP, BLCA_TP;
+	}
+
+
+	static class TumorTypeRow {
+		public static final int NUM_COLUMNS = 7;
+		public static final int COL_RANK = 0;
+		public static final int COL_nflank = 1;
+		public static final int COL_nsil = 2;
+		public static final int COL_nnon = 3;
+		public static final int COL_nnull = 4;
+		public static final int COL_p = 5;
+		public static final int COL_q = 6;
+
+		private float rank;
+		private float nflank;
+		private float nsil;
+		private float nnon;
+		private float nnull;
+		private float p;
+		private float q;
+
+		public TumorTypeRow(String[] l, int offset) {
+			rank = toFloat(l, offset++);
+			nflank = toFloat(l, offset++);
+			nsil = toFloat(l, offset++);
+			nnon = toFloat(l, offset++);
+			nnull = toFloat(l, offset++);
+			p = toFloat(l, offset++);
+			q = toFloat(l, offset++);
+		}
+
+		public float get(int index) {
+			switch (index) {
+			case COL_RANK:
+				return rank;
+			case COL_nflank:
+				return nflank;
+			case COL_nsil:
+				return nsil;
+			case COL_nnon:
+				return nnon;
+			case COL_nnull:
+				return nnull;
+			case COL_p:
+				return p;
+			case COL_q:
+				return q;
+			}
+			return 0;
+		}
+	}
+
 	@Override
 	protected void createModel() throws IOException, NoSuchFieldException {
 		List<GeneRow> rows = readData();
@@ -63,110 +117,41 @@ public class Gene extends ARankTableDemo {
 		table.add(rankRankColumnModel);
 		table.add(new StringRankColumnModel(GLRenderers.drawText("Gene", VAlign.CENTER), StringRankColumnModel.DEFAULT));
 
+
+		createPValue(TumorTypeRow.COL_p, "p", Color.decode("#DFC27D"), Color.decode("#F6E8C3"));
+		createPValue(TumorTypeRow.COL_q, "q", Color.decode("#DFC27D"), Color.decode("#F6E8C3"));
+		createUnBound(TumorTypeRow.COL_nflank, "nflank", Color.decode("#9ECAE1"), Color.decode("#DEEBF7"));
+		createUnBound(TumorTypeRow.COL_nsil, "nsil", Color.decode("#A1D99B"), Color.decode("#E5F5E0"));
+		createUnBound(TumorTypeRow.COL_nnon, "nnon", Color.decode("#C994C7"), Color.decode("#E7E1EF"));
+		createUnBound(TumorTypeRow.COL_nnull, "nnull", Color.decode("#FDBB84"), Color.decode("#FEE8C8"));
+	}
+
+	private StackedRankColumnModel createPValue(final int column, final String label, Color color, Color bgColor) {
 		StackedRankColumnModel stacked = new StackedRankColumnModel();
 		table.add(stacked);
-		stacked.add(new FloatRankColumnModel(new ReflectionFloatData(field("LUSC_TP_p")), GLRenderers.drawText(
-				"LUSC_TP_p", VAlign.CENTER), Color.decode("#DFC27D"), Color.decode("#F6E8C3"), new PiecewiseMapping(0,
-				1), FloatInferrers.MEDIAN));
-		stacked.add(new FloatRankColumnModel(new ReflectionFloatData(field("READ_TP_p")), GLRenderers.drawText(
-				"READ_TP_p", VAlign.CENTER), Color.decode("#DFC27D"), Color.decode("#F6E8C3"), new PiecewiseMapping(0,
-				1), FloatInferrers.MEDIAN));
-		stacked.add(new FloatRankColumnModel(new ReflectionFloatData(field("GBM_TP_p")), GLRenderers.drawText(
-				"GBM_TP_p", VAlign.CENTER), Color.decode("#DFC27D"), Color.decode("#F6E8C3"),
-				new PiecewiseMapping(0, 1), FloatInferrers.MEDIAN));
-		stacked.add(new FloatRankColumnModel(new ReflectionFloatData(field("BLCA_TP_p")), GLRenderers.drawText(
-				"BLCA_TP_p", VAlign.CENTER), Color.decode("#DFC27D"), Color.decode("#F6E8C3"), new PiecewiseMapping(0,
-				1), FloatInferrers.MEDIAN));
+		for (TumorType type : TumorType.values()) {
+			stacked.add(new FloatRankColumnModel(new ValueGetter(type, column), GLRenderers.drawText(type.name() + "_"
+					+ label, VAlign.CENTER), color, bgColor, pValueMapping(), FloatInferrers.MEDIAN));
+		}
+		return stacked;
+	}
 
-		stacked = new StackedRankColumnModel();
+	private StackedRankColumnModel createUnBound(final int column, final String label, Color color, Color bgColor) {
+		StackedRankColumnModel stacked = new StackedRankColumnModel();
 		table.add(stacked);
-		stacked.add(new FloatRankColumnModel(new ReflectionFloatData(field("LUSC_TP_q")), GLRenderers.drawText(
-				"LUSC_TP_q", VAlign.CENTER), Color.decode("#DFC27D"), Color.decode("#F6E8C3"), new PiecewiseMapping(0,
-				1), FloatInferrers.MEDIAN));
-		stacked.add(new FloatRankColumnModel(new ReflectionFloatData(field("READ_TP_q")), GLRenderers.drawText(
-				"READ_TP_q", VAlign.CENTER), Color.decode("#DFC27D"), Color.decode("#F6E8C3"), new PiecewiseMapping(0,
-				1), FloatInferrers.MEDIAN));
-		stacked.add(new FloatRankColumnModel(new ReflectionFloatData(field("GBM_TP_q")), GLRenderers.drawText(
-				"GBM_TP_q", VAlign.CENTER), Color.decode("#DFC27D"), Color.decode("#F6E8C3"), new PiecewiseMapping(0,
-				1), FloatInferrers.MEDIAN));
-		stacked.add(new FloatRankColumnModel(new ReflectionFloatData(field("BLCA_TP_q")), GLRenderers.drawText(
-				"BLCA_TP_q", VAlign.CENTER), Color.decode("#DFC27D"), Color.decode("#F6E8C3"), new PiecewiseMapping(0,
-				1), FloatInferrers.MEDIAN));
+		for (TumorType type : TumorType.values()) {
+			stacked.add(new FloatRankColumnModel(new ValueGetter(type, column), GLRenderers.drawText(type.name() + "_"
+					+ label, VAlign.CENTER), color, bgColor, new PiecewiseMapping(0, Float.NaN), FloatInferrers.MEDIAN));
+		}
+		return stacked;
+	}
 
-		// stacked = new StackedRankColumnModel();
-		// table.add(stacked);
-		// stacked.add(new FloatRankColumnModel(new ReflectionFloatData(field("LUSC_TP_rank")), GLRenderers.drawText(
-		// "LUSC_TP_rank", VAlign.CENTER), Color.decode("#FC9272"), Color.decode("#FEE0D2"), new PiecewiseMapping(
-		// 0, Float.NaN), FloatInferrers.MEDIAN).setWeight((float) 20 * 5));
-		// stacked.add(new FloatRankColumnModel(new ReflectionFloatData(field("READ_TP_rank")), GLRenderers.drawText(
-		// "READ_TP_rank", VAlign.CENTER), Color.decode("#FC9272"), Color.decode("#FEE0D2"), new PiecewiseMapping(
-		// 0, Float.NaN), FloatInferrers.MEDIAN).setWeight((float) 20 * 5));
-		// stacked.add(new FloatRankColumnModel(new ReflectionFloatData(field("GBM_TP_rank")), GLRenderers.drawText(
-		// "GBM_TP_rank", VAlign.CENTER), Color.decode("#FC9272"), Color.decode("#FEE0D2"), new PiecewiseMapping(
-		// 0, Float.NaN), FloatInferrers.MEDIAN).setWeight((float) 20 * 5));
-		// stacked.add(new FloatRankColumnModel(new ReflectionFloatData(field("BLCA_TP_rank")), GLRenderers.drawText(
-		// "BLCA_TP_rank", VAlign.CENTER), Color.decode("#FC9272"), Color.decode("#FEE0D2"), new PiecewiseMapping(
-		// 0, Float.NaN), FloatInferrers.MEDIAN).setWeight((float) 20 * 5));
-
-		stacked = new StackedRankColumnModel();
-		table.add(stacked);
-		stacked.add(new FloatRankColumnModel(new ReflectionFloatData(field("LUSC_TP_nflank")), GLRenderers.drawText(
-				"LUSC_TP_nflank", VAlign.CENTER), Color.decode("#9ECAE1"), Color.decode("#DEEBF7"),
-				new PiecewiseMapping(0, Float.NaN), FloatInferrers.MEDIAN).setWeight((float) 20 * 5));
-		stacked.add(new FloatRankColumnModel(new ReflectionFloatData(field("READ_TP_nflank")), GLRenderers.drawText(
-				"READ_TP_nflank", VAlign.CENTER), Color.decode("#9ECAE1"), Color.decode("#DEEBF7"),
-				new PiecewiseMapping(0, Float.NaN), FloatInferrers.MEDIAN).setWeight((float) 20 * 5));
-		stacked.add(new FloatRankColumnModel(new ReflectionFloatData(field("GBM_TP_nflank")), GLRenderers.drawText(
-				"GBM_TP_nflank", VAlign.CENTER), Color.decode("#9ECAE1"), Color.decode("#DEEBF7"),
-				new PiecewiseMapping(0, Float.NaN), FloatInferrers.MEDIAN).setWeight((float) 20 * 5));
-		stacked.add(new FloatRankColumnModel(new ReflectionFloatData(field("BLCA_TP_nflank")), GLRenderers.drawText(
-				"BLCA_TP_nflank", VAlign.CENTER), Color.decode("#9ECAE1"), Color.decode("#DEEBF7"),
-				new PiecewiseMapping(0, Float.NaN), FloatInferrers.MEDIAN).setWeight((float) 20 * 5));
-
-		stacked = new StackedRankColumnModel();
-		table.add(stacked);
-		stacked.add(new FloatRankColumnModel(new ReflectionFloatData(field("LUSC_TP_nsil")), GLRenderers.drawText(
-				"LUSC_TP_nsil", VAlign.CENTER), Color.decode("#A1D99B"), Color.decode("#E5F5E0"), new PiecewiseMapping(
-				0, Float.NaN), FloatInferrers.MEDIAN).setWeight((float) 20 * 5));
-		stacked.add(new FloatRankColumnModel(new ReflectionFloatData(field("READ_TP_nsil")), GLRenderers.drawText(
-				"READ_TP_nsil", VAlign.CENTER), Color.decode("#A1D99B"), Color.decode("#E5F5E0"), new PiecewiseMapping(
-				0, Float.NaN), FloatInferrers.MEDIAN).setWeight((float) 20 * 5));
-		stacked.add(new FloatRankColumnModel(new ReflectionFloatData(field("GBM_TP_nsil")), GLRenderers.drawText(
-				"GBM_TP_nsil", VAlign.CENTER), Color.decode("#A1D99B"), Color.decode("#E5F5E0"), new PiecewiseMapping(
-				0, Float.NaN), FloatInferrers.MEDIAN).setWeight((float) 20 * 5));
-		stacked.add(new FloatRankColumnModel(new ReflectionFloatData(field("BLCA_TP_nsil")), GLRenderers.drawText(
-				"BLCA_TP_nsil", VAlign.CENTER), Color.decode("#A1D99B"), Color.decode("#E5F5E0"), new PiecewiseMapping(
-				0, Float.NaN), FloatInferrers.MEDIAN).setWeight((float) 20 * 5));
-
-		stacked = new StackedRankColumnModel();
-		table.add(stacked);
-		stacked.add(new FloatRankColumnModel(new ReflectionFloatData(field("LUSC_TP_nnon")), GLRenderers.drawText(
-				"LUSC_TP_nnon", VAlign.CENTER), Color.decode("#C994C7"), Color.decode("#E7E1EF"), new PiecewiseMapping(
-				0, Float.NaN), FloatInferrers.MEDIAN).setWeight(20f * 5));
-		stacked.add(new FloatRankColumnModel(new ReflectionFloatData(field("READ_TP_nnon")), GLRenderers.drawText(
-				"READ_TP_nnon", VAlign.CENTER), Color.decode("#C994C7"), Color.decode("#E7E1EF"), new PiecewiseMapping(
-				0, Float.NaN), FloatInferrers.MEDIAN).setWeight(20f * 5));
-		stacked.add(new FloatRankColumnModel(new ReflectionFloatData(field("GBM_TP_nnon")), GLRenderers.drawText(
-				"GBM_TP_nnon", VAlign.CENTER), Color.decode("#C994C7"), Color.decode("#E7E1EF"), new PiecewiseMapping(
-				0, Float.NaN), FloatInferrers.MEDIAN).setWeight(20f * 5));
-		stacked.add(new FloatRankColumnModel(new ReflectionFloatData(field("BLCA_TP_nnon")), GLRenderers.drawText(
-				"BLCA_TP_nnon", VAlign.CENTER), Color.decode("#C994C7"), Color.decode("#E7E1EF"), new PiecewiseMapping(
-				0, Float.NaN), FloatInferrers.MEDIAN).setWeight(20f * 5));
-
-		stacked = new StackedRankColumnModel();
-		table.add(stacked);
-		stacked.add(new FloatRankColumnModel(new ReflectionFloatData(field("LUSC_TP_nnull")), GLRenderers.drawText(
-				"LUSC_TP_nnull", VAlign.CENTER), Color.decode("#FDBB84"), Color.decode("#FEE8C8"),
-				new PiecewiseMapping(0, Float.NaN), FloatInferrers.MEDIAN).setWeight(20f * 5));
-		stacked.add(new FloatRankColumnModel(new ReflectionFloatData(field("READ_TP_nnull")), GLRenderers.drawText(
-				"READ_TP_nnull", VAlign.CENTER), Color.decode("#FDBB84"), Color.decode("#FEE8C8"),
-				new PiecewiseMapping(0, Float.NaN), FloatInferrers.MEDIAN).setWeight(20f * 5));
-		stacked.add(new FloatRankColumnModel(new ReflectionFloatData(field("GBM_TP_nnull")), GLRenderers.drawText(
-				"GBM_TP_nnull", VAlign.CENTER), Color.decode("#FDBB84"), Color.decode("#FEE8C8"), new PiecewiseMapping(
-				0, Float.NaN), FloatInferrers.MEDIAN).setWeight(20f * 5));
-		stacked.add(new FloatRankColumnModel(new ReflectionFloatData(field("BLCA_TP_nnull")), GLRenderers.drawText(
-				"BLCA_TP_nnull", VAlign.CENTER), Color.decode("#FDBB84"), Color.decode("#FEE8C8"),
-				new PiecewiseMapping(0, Float.NaN), FloatInferrers.MEDIAN).setWeight(20f * 5));
+	private PiecewiseMapping pValueMapping() {
+		PiecewiseMapping p = new PiecewiseMapping(0, 1);
+		p.clear();
+		p.put(0, 1);
+		p.put(0.8f, 0);
+		return p;
 	}
 
 	private static List<GeneRow> readData() throws IOException {
@@ -174,88 +159,44 @@ public class Gene extends ARankTableDemo {
 		try (BufferedReader r = new BufferedReader(new InputStreamReader(
 				Gene.class.getResourceAsStream("mutsig_pancan12_all.txt"), Charset.forName("UTF-8")))) {
 			String line;
-			r.readLine();
+			r.readLine(); // skip label
 			while ((line = r.readLine()) != null) {
 				String[] l = line.split("\t");
 				GeneRow row = new GeneRow();
 				// row.rank = Integer.parseInt(l[0]);
 				row.gene = l[0];
-				// row.LUSC_TP_rank = Integer.parseInt(l[1]);
-				row.LUSC_TP_nflank = toFloat(l, 2);
-				row.LUSC_TP_nsil = toFloat(l, 3);
-				row.LUSC_TP_nnon = toFloat(l, 4);
-				row.LUSC_TP_nnull = toFloat(l, 5);
-				row.LUSC_TP_p = toFloat(l, 6);
-				row.LUSC_TP_q = toFloat(l, 7);
-
-				// row.READ_TP_rank = Integer.parseInt(l[8]);
-				row.READ_TP_nflank = toFloat(l, 9);
-				row.READ_TP_nsil = toFloat(l, 10);
-				row.READ_TP_nnon = toFloat(l, 11);
-				row.READ_TP_nnull = toFloat(l, 12);
-				row.READ_TP_p = toFloat(l, 13);
-				row.READ_TP_q = toFloat(l, 14);
-
-				// row.GBM_TP_rank = Integer.parseInt(l[15]);
-				row.GBM_TP_nflank = toFloat(l, 16);
-				row.GBM_TP_nsil = toFloat(l, 17);
-				row.GBM_TP_nnon = toFloat(l, 18);
-				row.GBM_TP_nnull = toFloat(l, 19);
-				row.GBM_TP_p = toFloat(l, 20);
-				row.GBM_TP_q = toFloat(l, 21);
-
-				// row.BLCA_TP_rank = Integer.parseInt(l[22]);
-				row.BLCA_TP_nflank = toFloat(l, 23);
-				row.BLCA_TP_nsil = toFloat(l, 24);
-				row.BLCA_TP_nnon = toFloat(l, 25);
-				row.BLCA_TP_nnull = toFloat(l, 26);
-				row.BLCA_TP_p = toFloat(l, 27);
-				row.BLCA_TP_q = toFloat(l, 2);
-
+				int offset = 1;
+				row.tumorTypes = new TumorTypeRow[TumorType.values().length];
+				for (int i = 0; i < row.tumorTypes.length; ++i) {
+					row.tumorTypes[i] = new TumorTypeRow(l, offset);
+					offset += TumorTypeRow.NUM_COLUMNS;
+				}
 				rows.add(row);
 			}
 		}
 		return rows;
 	}
 
-	public static Field field(String f) throws NoSuchFieldException {
-		return GeneRow.class.getDeclaredField(f);
-	}
+	static class ValueGetter extends AFloatFunction<IRow> {
+		private final int index;
+		private final int subindex;
 
+		public ValueGetter(TumorType type, int column) {
+			this.index = type.ordinal();
+			this.subindex = column;
+		}
+
+		@Override
+		public float applyPrimitive(IRow in) {
+			GeneRow r = (GeneRow) in;
+			return r.tumorTypes[index].get(subindex);
+		}
+
+	}
 	static class GeneRow extends ARow {
 		public int rank;
 		public String gene;
-		public float LUSC_TP_rank;
-		public float LUSC_TP_nflank;
-		public float LUSC_TP_nsil;
-		public float LUSC_TP_nnon;
-		public float LUSC_TP_nnull;
-		public float LUSC_TP_p;
-		public float LUSC_TP_q;
-
-		public float READ_TP_rank;
-		public float READ_TP_nflank;
-		public float READ_TP_nsil;
-		public float READ_TP_nnon;
-		public float READ_TP_nnull;
-		public float READ_TP_p;
-		public float READ_TP_q;
-
-		public float GBM_TP_rank;
-		public float GBM_TP_nflank;
-		public float GBM_TP_nsil;
-		public float GBM_TP_nnon;
-		public float GBM_TP_nnull;
-		public float GBM_TP_p;
-		public float GBM_TP_q;
-
-		public float BLCA_TP_rank;
-		public float BLCA_TP_nflank;
-		public float BLCA_TP_nsil;
-		public float BLCA_TP_nnon;
-		public float BLCA_TP_nnull;
-		public float BLCA_TP_p;
-		public float BLCA_TP_q;
+		public TumorTypeRow[] tumorTypes;
 
 		@Override
 		public String toString() {

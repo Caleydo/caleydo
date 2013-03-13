@@ -55,7 +55,6 @@ import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
-import com.google.common.collect.Lists;
 
 /**
  * a element container that is animated!
@@ -217,7 +216,7 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 		Vec2f size = getSize();
 
 		if (dirtyAnimation || forceLayout) {
-			List<ALayoutAnimation> tmp = Lists.newArrayList(layoutAnimations);
+			List<ALayoutAnimation> tmp = new LinkedList<>(layoutAnimations);
 
 			Collection<GLElement> elems = asSeenIn(0);
 			List<RecordingLayoutElement> l = new ArrayList<>(elems.size());
@@ -468,7 +467,7 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 		final int delta = nextDelta();
 
 		// layout updates
-		List<GLElement> extras = new ArrayList<>();
+		List<GLElement> extras = new ArrayList<>(3);
 		for (Iterator<ALayoutAnimation> it = layoutAnimations.iterator(); it.hasNext();) {
 			ALayoutAnimation anim = it.next();
 			if (anim.apply(delta, size.x(), size.y())) { // done

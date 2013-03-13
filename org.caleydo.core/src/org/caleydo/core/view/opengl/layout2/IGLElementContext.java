@@ -54,7 +54,7 @@ public interface IGLElementContext {
 	 *
 	 * @param pickingID
 	 */
-	void unregisterPickingListener(int pickingID);
+	void unregisterPickingListener(int pickingId);
 
 	/**
 	 * returns the {@link TextureManager} of this context
@@ -116,7 +116,7 @@ public interface IGLElementContext {
 
 	/**
 	 * shows the context menu, defined by the given items
-	 * 
+	 *
 	 * @param items
 	 */
 	void showContextMenu(Iterable<? extends AContextMenuItem> items);

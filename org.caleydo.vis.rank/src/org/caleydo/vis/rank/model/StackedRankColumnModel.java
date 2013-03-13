@@ -124,7 +124,7 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements IHi
 		return annotation;
 	}
 
-	protected void setAnnotation(String annotation) {
+	public void setAnnotation(String annotation) {
 		propertySupport.firePropertyChange(PROP_ANNOTATION, this.annotation, this.annotation = annotation);
 	}
 
@@ -215,7 +215,9 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements IHi
 	@Override
 	public float applyPrimitive(IRow row) {
 		float s = 0;
-		for (ARankColumnModel col : this) {
+		final int size = children.size();
+		for (int i = 0; i < size; ++i) {
+			ARankColumnModel col = children.get(i);
 			s += ((IRankableColumnMixin) col).applyPrimitive(row) * col.getWeight();
 		}
 		return s / getWeight();

@@ -17,21 +17,14 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.vis.rank.layout;
-
-import org.caleydo.vis.rank.model.MaxCompositeRankColumnModel;
+package org.caleydo.vis.rank.model.mixin;
 
 /**
- * row height layouts determine on the one hand the row heights of items and will also be used for layouting the rows of
- * a {@link MaxCompositeRankColumnModel}
- *
+ * marker interface that this column can grab the remaining free horizontal space
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
-public class RowHeightLayouts {
+public interface IGrabRemainingHorizontalSpace {
 
-
-	public static final IRowHeightLayout UNIFORM = new UniformRowHeightLayout();
-
-	public static final IRowHeightLayout FISH_EYE = new FishEyeRowHeightLayout();
 }

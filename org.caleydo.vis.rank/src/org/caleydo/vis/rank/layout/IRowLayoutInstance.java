@@ -19,19 +19,20 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.layout;
 
-import org.caleydo.vis.rank.model.MaxCompositeRankColumnModel;
+import org.caleydo.vis.rank.layout.IRowHeightLayout.ISetHeight;
 
 /**
- * row height layouts determine on the one hand the row heights of items and will also be used for layouting the rows of
- * a {@link MaxCompositeRankColumnModel}
- *
  * @author Samuel Gratzl
  *
  */
-public class RowHeightLayouts {
+public interface IRowLayoutInstance {
+	boolean needsScrollBar();
 
+	int getOffset();
 
-	public static final IRowHeightLayout UNIFORM = new UniformRowHeightLayout();
+	int getSize();
 
-	public static final IRowHeightLayout FISH_EYE = new FishEyeRowHeightLayout();
+	int getNumVisibles();
+
+	void layout(ISetHeight setter);
 }

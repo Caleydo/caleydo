@@ -27,7 +27,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.BitSet;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -44,7 +43,8 @@ import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingListenerComposite;
 import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.data.loader.ResourceLocators;
-import org.caleydo.vis.rank.layout.RowHeightLayouts.IRowHeightLayout;
+import org.caleydo.vis.rank.layout.IRowHeightLayout;
+import org.caleydo.vis.rank.layout.IRowHeightLayout.ISetHeight;
 import org.caleydo.vis.rank.model.ACompositeRankColumnModel;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.ColumnRanker;
@@ -52,6 +52,7 @@ import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.OrderColumn;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
+import org.caleydo.vis.rank.model.mixin.IGrabRemainingHorizontalSpace;
 import org.caleydo.vis.rank.ui.column.ACompositeTableColumnUI;
 import org.caleydo.vis.rank.ui.column.ColumnUIs;
 import org.caleydo.vis.rank.ui.column.IColumModelLayout;
@@ -70,7 +71,6 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 	private final static int FIRST_COLUMN = 1;
 	private final RankTableModel table;
 
-	private IRowHeightLayout rowLayout;
 	private boolean isSelectedRowChanged = false;
 
 	private final PropertyChangeListener listener = new PropertyChangeListener() {
@@ -104,8 +104,7 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 	public TableBodyUI(final RankTableModel table, IRowHeightLayout rowLayout) {
 		setAnimateByDefault(false);
 		this.table = table;
-		this.rowLayout = rowLayout;
-		this.add(new OrderColumnUI(null, table.getMyRanker(null)));
+		this.add(new OrderColumnUI(null, table.getMyRanker(null), rowLayout));
 		this.table.addPropertyChangeListener(RankTableModel.PROP_DATA, listener);
 		this.table.addPropertyChangeListener(RankTableModel.PROP_COLUMNS, listener);
 		this.table.addPropertyChangeListener(RankTableModel.PROP_SELECTED_ROW, listener);
@@ -150,6 +149,13 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 			if (r.getRanker() == ranker)
 				return r;
 		return null;
+	}
+
+	private OrderColumnUI getLastRanker() {
+		OrderColumnUI last = null;
+		for (OrderColumnUI r : Iterables.filter(this, OrderColumnUI.class))
+			last = r;
+		return last;
 	}
 
 	/**
@@ -200,9 +206,9 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 	 *            setter, see {@link rowLayout}
 	 */
 	public void setRowLayout(IRowHeightLayout rowLayout) {
-		if (this.rowLayout == rowLayout)
-			return;
-		this.rowLayout = rowLayout;
+		for (OrderColumnUI g : Iterables.filter(this, OrderColumnUI.class)) {
+			g.setRowLayout(rowLayout);
+		}
 		update();
 	}
 
@@ -210,7 +216,7 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 	 * @return the rowLayout, see {@link #rowLayout}
 	 */
 	public IRowHeightLayout getRowLayout() {
-		return rowLayout;
+		return getDefaultrankerUI().getRowLayout();
 	}
 
 	public void addOnRowPick(IPickingListener l) {
@@ -262,7 +268,7 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 		init(new_);
 		if (new_ instanceof OrderColumn) {
 			OrderColumn c = (OrderColumn) new_;
-			return new OrderColumnUI(c, c.getRanker());
+			return new OrderColumnUI(c, c.getRanker(), getDefaultrankerUI().getRowLayout());
 		}
 		return ColumnUIs.createBody(new_, true).setData(table.getData(), this);
 	}
@@ -321,16 +327,29 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 	public void doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
 		// align the columns normally
 		float x = RenderStyle.COLUMN_SPACE;
-		for (IGLLayoutElement col : children) {
+
+		Iterator<? extends IGLLayoutElement> it = children.iterator();
+		while (it.hasNext()) {
+			IGLLayoutElement col = it.next();
 			ARankColumnModel model = col.getLayoutDataAs(ARankColumnModel.class, null);
 			if (model == null) {
 				col.setBounds(x, 0, 1, h);
 				x += 1;
 			} else {
-				col.setBounds(x, 0, model.getPreferredWidth(), h);
-				x += model.getPreferredWidth() + RenderStyle.COLUMN_SPACE;
+				float wi = model.getPreferredWidth();
+				if ((x + wi + RenderStyle.COLUMN_SPACE) > w) {
+					col.hide();
+					break;
+				}
+				if (!it.hasNext() && model instanceof IGrabRemainingHorizontalSpace) {
+					wi = w - x - RenderStyle.SCROLLBAR_WIDTH;
+				}
+				col.setBounds(x, 0, wi, h);
+				x += wi + RenderStyle.COLUMN_SPACE;
 			}
 		}
+		while(it.hasNext())
+			it.next().hide();
 	}
 
 	@Override
@@ -338,14 +357,17 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 		// push my resource locator to find the icons
 		g.pushResourceLocator(ResourceLocators.classLoader(this.getClass().getClassLoader()));
 
-		// first check all layouts
-		for (GLElement child : this) {
+		for (GLElement child : this)
 			child.checkLayout();
+		for (OrderColumnUI child : Iterables.filter(this, OrderColumnUI.class)) {
+			child.layoutingDown();
 		}
 
-		renderBackgroundLines(g, false);
+		renderBackgroundLines(g, w, false);
 
 		super.renderImpl(g, w, h);
+
+		getLastRanker().renderScrollBar(g, w, h, false);
 
 		g.popResourceLocator();
 
@@ -354,11 +376,14 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 
 	@Override
 	protected void renderPickImpl(GLGraphics g, float w, float h) {
-		renderBackgroundLines(g, true);
+		renderBackgroundLines(g, w, true);
+
 		super.renderPickImpl(g, w, h);
+
+		getLastRanker().renderPickScrollBar(g, w, h, false);
 	}
 
-	private void renderBackgroundLines(GLGraphics g, boolean pick) {
+	private void renderBackgroundLines(GLGraphics g, float w, boolean pick) {
 		IRow selected = table.getSelectedRow();
 
 		float x = 0;
@@ -368,9 +393,13 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 		g.decZ();
 
 		for (ITableColumnUI col : Iterables.filter(this, ITableColumnUI.class)) {
+			if (!GLElement.areValidBounds(col.asGLElement().getBounds()))
+				break;
 			if (col instanceof OrderColumnUI) {
 				if (last != null) {
-					renderSubArea(g, x, act, last, selected, pick);
+					Vec4f bounds2 = last.asGLElement().getBounds(); // get w
+					float wi = bounds2.x() + bounds2.z() - x;
+					renderSubArea(g, x, act, last, selected, pick, wi);
 				}
 				act = (OrderColumnUI) col;
 				x = act.getLocation().x() + act.getSize().x();
@@ -378,7 +407,7 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 			last = col;
 		}
 		if (last != null && size() > 1) {
-			renderSubArea(g, x, act, last, selected, pick);
+			renderSubArea(g, x, act, last, selected, pick, w - x - RenderStyle.SCROLLBAR_WIDTH);
 		}
 		g.incZ();
 	}
@@ -409,20 +438,19 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 	}
 
 	private void renderSubArea(GLGraphics g, float x, OrderColumnUI act, ITableColumnUI last, IRow selected,
-			boolean pick) {
-		Vec4f bounds2 = last.asGLElement().getBounds(); // get w
-		float w = bounds2.x() + bounds2.z() - x;
+			boolean pick, float w) {
 		if (w <= 0)
 			return;
 
-		boolean even = true;
+		boolean even = false;
 		enlargeRankPickers(act.getRanker().size());
 		int i = -1;
 
 		for (IRow rankedRow : act.getRanker()) {
 			Vec4f bounds = getRowBounds(last, rankedRow.getIndex());
 			i++;
-			if (bounds.z() <= 0 || bounds.w() <= 0)
+			even = !even;
+			if (!GLElement.areValidBounds(bounds))
 				continue;
 			if (pick) {
 				if (selected != rankedRow) { // the selected row is not pickable again
@@ -442,7 +470,6 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 				g.color(RenderStyle.COLOR_BACKGROUND_EVEN);
 				g.fillRect(x, bounds.y(), w, bounds.w());
 			}
-			even = !even;
 		}
 	}
 
@@ -459,31 +486,20 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 	}
 
 	@Override
-	public void layoutRows(ARankColumnModel model, List<? extends IGLLayoutElement> children, float w, float h) {
+	public void layoutRows(ARankColumnModel model, final List<? extends IGLLayoutElement> children, final float w,
+			float h) {
 		IRow selected = table.getSelectedRow();
-		Iterator<IRow> ranks = model.getMyRanker().iterator();
-		// align simple all the same x
-		BitSet used = new BitSet(children.size());
-		used.set(0, children.size());
-		float y = 0;
-		for (float hr : getRanker(model).getRowPositions()) {
-			if (!ranks.hasNext())
-				break;
-			IRow rank = ranks.next();
-			int r = rank.getIndex();
-			IGLLayoutElement row = children.get(r);
-			used.clear(r);
-			row.setBounds(RenderStyle.COLUMN_SPACE, y, w, hr - y);
-			y = hr;
-			row.asElement().setVisibility(rank == selected ? EVisibility.PICKABLE : EVisibility.VISIBLE);
-		}
-		hideUnusedColumns(children, w, h, used);
-	}
+		final int selectedIndex = (selected == null ? -1 : selected.getIndex());
 
-	public static void hideUnusedColumns(List<? extends IGLLayoutElement> children, float w, float h, BitSet used) {
-		for (int unused = used.nextSetBit(0); unused >= 0; unused = used.nextSetBit(unused + 1)) {
-			children.get(unused).setBounds(RenderStyle.COLUMN_SPACE, h, w, 0);
-		}
+		ISetHeight setter = new ISetHeight() {
+			@Override
+			public void set(int index, float y, float h) {
+				IGLLayoutElement row = children.get(index);
+				row.setBounds(RenderStyle.COLUMN_SPACE, y, w - RenderStyle.COLUMN_SPACE, h);
+				row.asElement().setVisibility(index == selectedIndex ? EVisibility.PICKABLE : EVisibility.VISIBLE);
+			}
+		};
+		getRanker(model).layoutRows(setter);
 	}
 
 	@Override

@@ -19,9 +19,9 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.layout;
 
-import java.util.Arrays;
+import java.util.BitSet;
 
-import org.caleydo.vis.rank.layout.RowHeightLayouts.IRowHeightLayout;
+import org.caleydo.vis.rank.model.ColumnRanker;
 import org.caleydo.vis.rank.ui.RenderStyle;
 
 /**
@@ -32,42 +32,122 @@ class FishEyeRowHeightLayout implements IRowHeightLayout {
 	private static final float MAX_ROW_HEIGHT = 40;
 	private static final float MIN_ROW_HEIGHT = 3;
 
-	FishEyeRowHeightLayout() {
-	}
+	private static final float[] fishEyeHeights;
 
-	private static float rowHeightFor(int distance) {
-		if (distance == 0)
-			return MAX_ROW_HEIGHT;
-		if (distance > 25)
-			return MIN_ROW_HEIGHT;
-		float ratio = distance / 25.f;
-		float hi = 30 * (float) (1 - Math.sqrt(ratio));
-		return MIN_ROW_HEIGHT + hi;
-	}
-
-	@Override
-	public float[] compute(final int numRows, int selectedRowIndex, float h) {
-		if (selectedRowIndex < 0) // default first
-			selectedRowIndex = 0;
-
-		float[] r = new float[numRows];
-		float sum = 0;
-		for (int i = 0; i < r.length; ++i) {
-			int delta = Math.abs(i - selectedRowIndex);
-			float hi = rowHeightFor(delta);
-			r[i] = hi;
-			sum += hi;
-			if (sum >= h) {
-				r = Arrays.copyOf(r, i);
-				break;
-			}
+	static {
+		fishEyeHeights = new float[26];
+		fishEyeHeights[0] = MAX_ROW_HEIGHT;
+		for (int i = 1; i < fishEyeHeights.length; ++i) {
+			float ratio = i / (float) fishEyeHeights.length;
+			float hi = 30 * (float) (1 - Math.sqrt(ratio));
+			fishEyeHeights[i] = fishEyeHeights[i - 1] + MIN_ROW_HEIGHT + hi;
 		}
-		return r;
+	}
+
+	FishEyeRowHeightLayout() {
 	}
 
 	@Override
 	public String getIcon() {
 		return RenderStyle.ICON_ALIGN_FISH;
+	}
+
+	private static float rowHeight(int distance) {
+		distance = Math.abs(distance);
+		float hr;
+		if (distance == 0) {
+			hr = fishEyeHeights[0];
+		} else if (distance < fishEyeHeights.length) {
+			hr = fishEyeHeights[distance] - fishEyeHeights[distance - 1];
+		} else {
+			hr = MIN_ROW_HEIGHT;
+		}
+		return hr;
+	}
+
+	@Override
+	public IRowLayoutInstance layout(ColumnRanker ranker, float h, int size, int offset, boolean forceOffset) {
+		int selectedRank = ranker.getSelectedRank();
+		if (selectedRank < 0)
+			selectedRank = 0;
+
+		int[] order = ranker.getOrder();
+		final int numRows = order.length;
+		if (offset > numRows)
+			offset = numRows - 1;
+
+		// let the selected index be visible
+		if (selectedRank >= 0 && !forceOffset) {
+			if (selectedRank < offset) // before
+				offset = selectedRank;
+			else {
+				float topSum = 5;
+				if (selectedRank >= fishEyeHeights.length)
+					topSum += MIN_ROW_HEIGHT * (fishEyeHeights.length - selectedRank);
+				if (selectedRank > 0)
+					topSum += fishEyeHeights[Math.min(selectedRank, fishEyeHeights.length - 1)];
+				while (topSum > h) {// after
+					offset++;
+					topSum -= rowHeight(selectedRank - offset + 1); // TODO check
+				}
+				System.out.println(topSum + " " + h);
+			}
+		}
+
+		float y = 0;
+		int numVisibles = 0;
+		BitSet unused = new BitSet(size);
+		unused.set(0, size);
+		for (int r = 0; r < offset; ++r)
+			unused.clear(order[r]);
+
+		for (int r = offset; r < order.length; ++r) {
+			unused.clear(order[r]);
+			float hr = rowHeight(selectedRank - r);
+			y += hr;
+			numVisibles++;
+			if ((y + rowHeight(selectedRank - r - 1) + 5) >= h)
+				break;
+		}
+
+		return new FishEyeImpl(order, offset, numVisibles, selectedRank, unused, h);
+	}
+
+	class FishEyeImpl extends ARowLayoutInstance {
+		private final int[] order;
+		private final BitSet unused;
+		private final float h;
+		private final int base;
+
+		public FishEyeImpl(int[] order, int offset, int numVisibles, int base, BitSet unused, float h) {
+			super(offset, numVisibles);
+			this.order = order;
+			this.unused = unused;
+			this.h = h;
+			this.base = base;
+		}
+
+		@Override
+		public int getSize() {
+			return order.length;
+		}
+
+		@Override
+		public void layout(ISetHeight setter) {
+			float y = 0;
+			for (int r = 0; r < offset; ++r)
+				setter.set(order[r], 0, 0);
+			for (int r = offset; r < (offset + numVisibles); ++r) {
+				int rowIndex = order[r];
+				float hr = rowHeight(base - r);
+				setter.set(rowIndex, y, hr);
+				y += hr;
+			}
+			for (int i = unused.nextSetBit(0); i >= 0; i = unused.nextSetBit(i + 1)) {
+				setter.set(i, h, 0);
+			}
+		}
+
 	}
 }
 

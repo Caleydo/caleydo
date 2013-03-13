@@ -96,6 +96,10 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 		shell.setSize(dim.width, dim.height);
 
 		this.animator = new FPSAnimator(canvas.asGLAutoDrawAble(), 30);
+
+		// ENABLE to print the fps to System.err
+		// animator.setUpdateFPSFrames(100, System.err);
+
 		this.loader = loader;
 		this.canvas.addMouseListener(pickingManager.getListener());
 		this.canvas.addKeyListener(new IGLKeyListener() {
@@ -227,9 +231,9 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 		return viewFrustum.getBottom();
 	}
 
-
 	@Override
 	public void display(GLAutoDrawable drawable) {
+
 		eventListeners.processEvents();
 
 		GL2 gl = drawable.getGL().getGL2();
@@ -273,8 +277,6 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 
 		g.move(-padding.left, -padding.right);
 		g.destroy();
-
-		drawable.swapBuffers();
 	}
 
 	@Override
@@ -319,7 +321,6 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 		try {
 			shell.open();
 			animator.start();
-
 			while (!shell.isDisposed()) {
 				if (!display.readAndDispatch())
 					display.sleep();

@@ -50,6 +50,7 @@ import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.StackedRankColumnModel;
 import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.ICompressColumnMixin;
+import org.caleydo.vis.rank.ui.IColumnRenderInfo;
 import org.caleydo.vis.rank.ui.RenderStyle;
 import org.caleydo.vis.rank.ui.SeparatorUI;
 import org.caleydo.vis.rank.ui.StackedSeparatorUI;
@@ -57,7 +58,7 @@ import org.caleydo.vis.rank.ui.StackedSeparatorUI;
  * @author Samuel Gratzl
  *
  */
-public class StackedColumnHeaderUI extends ACompositeHeaderUI implements IThickHeader {
+public class StackedColumnHeaderUI extends ACompositeHeaderUI implements IThickHeader, IColumnRenderInfo {
 	protected static final int SUMMARY = 0;
 	public final AlignmentDragInfo align = new AlignmentDragInfo();
 
@@ -269,6 +270,21 @@ public class StackedColumnHeaderUI extends ACompositeHeaderUI implements IThickH
 			model.setAlignment(index + 1);
 		else
 			model.setAlignment(index);
+	}
+
+	@Override
+	public boolean isCollapsed() {
+		return model.isCollapsed();
+	}
+
+	@Override
+	public VAlign getAlignment() {
+		return VAlign.LEFT;
+	}
+
+	@Override
+	public boolean hasFreeSpace() {
+		return true;
 	}
 
 }

@@ -1,11 +1,16 @@
 package org.caleydo.vis.rank.ui.column;
 
+import gleem.linalg.Vec4f;
+
 import java.util.Iterator;
 import java.util.List;
 
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.AnimatedGLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.core.view.opengl.layout2.animation.AAnimation.EAnimationType;
+import org.caleydo.core.view.opengl.layout2.animation.ALayoutAnimation;
+import org.caleydo.core.view.opengl.layout2.animation.DummyAnimation;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.vis.rank.internal.ui.anim.ReRankTransition;
@@ -24,6 +29,16 @@ public class ColumnUI extends AnimatedGLElementContainer implements ITableColumn
 		this.setDefaultMoveTransition(ReRankTransition.INSTANCE);
 		this.setDefaultOutTransition(ReRankTransition.INSTANCE);
 		this.setLayout(this);
+	}
+
+	@Override
+	protected ALayoutAnimation createMoveAnimation(IGLLayoutElement elem, Vec4f before, Vec4f after) {
+		if (!getColumnParent().getRanker(model).isBecauseOfRedordering()) {
+			DummyAnimation d = new DummyAnimation(EAnimationType.MOVE, elem);
+			d.init(before, after);
+			return d;
+		}
+		return super.createMoveAnimation(elem, before, after);
 	}
 
 	/**

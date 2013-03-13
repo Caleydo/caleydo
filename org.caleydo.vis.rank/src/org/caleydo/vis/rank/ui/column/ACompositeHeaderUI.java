@@ -180,13 +180,27 @@ public abstract class ACompositeHeaderUI extends GLElementContainer implements I
 		for (int i = 0; i < columns.size(); ++i) {
 			IGLLayoutElement col = columns.get(i);
 			ARankColumnModel model = col.getLayoutDataAs(ARankColumnModel.class, null);
+			float wi = model.getPreferredWidth();
+
+			if ((x + wi + RenderStyle.COLUMN_SPACE) > w) {
+				// hide the rest
+				for (; i < columns.size(); ++i) {
+					columns.get(i).hide();
+				}
+				if (config.isMoveAble() && separators != null) {
+					for (; i < columns.size(); ++i)
+						separators.get(i).hide();
+				}
+				break;
+			}
+
 			if (col.asElement() instanceof OrderColumnHeaderUI)
-				col.setBounds(x, y + HIST_HEIGHT / 2, model.getPreferredWidth(), hn - HIST_HEIGHT / 2);
+				col.setBounds(x, y + HIST_HEIGHT / 2, wi, hn - HIST_HEIGHT / 2);
 			else if (col.asElement() instanceof IThickHeader)
-				col.setBounds(x, 0, model.getPreferredWidth(), h);
+				col.setBounds(x, 0, wi, h);
 			else
-				col.setBounds(x, y, model.getPreferredWidth(), hn);
-			x += model.getPreferredWidth() + COLUMN_SPACE;
+				col.setBounds(x, y, wi, hn);
+			x += wi + COLUMN_SPACE;
 			if (config.isMoveAble() && separators != null) {
 				IGLLayoutElement sep = separators.get(i);
 				sep.setBounds(x - COLUMN_SPACE, y, COLUMN_SPACE, hn);

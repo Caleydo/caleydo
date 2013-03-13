@@ -22,13 +22,13 @@ package org.caleydo.vis.rank.ui.column;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.BitSet;
 import java.util.List;
 
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
+import org.caleydo.vis.rank.layout.IRowHeightLayout.ISetHeight;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.StackedRankColumnModel;
@@ -36,7 +36,6 @@ import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.ICompressColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IMultiColumnMixin.MultiFloat;
 import org.caleydo.vis.rank.ui.RenderStyle;
-import org.caleydo.vis.rank.ui.TableBodyUI;
 
 /**
  * @author Samuel Gratzl
@@ -116,46 +115,49 @@ public class StackedColumnUI extends ACompositeTableColumnUI<StackedRankColumnMo
 	}
 
 	@Override
-	public void layoutRows(ARankColumnModel model, List<? extends IGLLayoutElement> children, float w, float h) {
-		int combinedAlign = this.model.getAlignment();
-		int index = this.model.indexOf(model);
+	public void layoutRows(ARankColumnModel model, final List<? extends IGLLayoutElement> children, final float w,
+			float h) {
+		final int combinedAlign = this.model.getAlignment();
+		final int index = this.model.indexOf(model);
 		if (combinedAlign >= 0 && index != combinedAlign && index >= 0) {
-			IRow selected = this.model.getTable().getSelectedRow();
 			// moving around
-			int[] ranks = this.model.getMyRanker().getOrder();
-			float[] weights = new float[this.model.size()];
+			final float[] weights = new float[this.model.size()];
 			for (int i = 0; i < weights.length; ++i)
 				weights[i] = this.model.get(i).getWeight();
 
-			float y = 0;
-			BitSet used = new BitSet(children.size());
-			used.set(0, children.size());
-			int ri = 0;
-			for (float hr : getRanker(model).getRowPositions()) {
-				int r = ranks[ri++];
-				IGLLayoutElement row = children.get(r);
-				used.clear(r);
-				IRow data = row.getLayoutDataAs(IRow.class, null);
-				float x = 0;
-				MultiFloat vs = this.model.getSplittedValue(data);
-				if (index < combinedAlign) {
-					for (int i = index; i < combinedAlign; ++i)
-						x += -vs.values[i] + weights[i] - RenderStyle.COLUMN_SPACE;
-					x += RenderStyle.COLUMN_SPACE;
-				} else {
-					for (int i = combinedAlign; i < index; ++i)
-						x += vs.values[i] - weights[i] + RenderStyle.COLUMN_SPACE;
-					x += RenderStyle.COLUMN_SPACE;
+			IRow selected = this.model.getTable().getSelectedRow();
+			final int selectedIndex = (selected == null ? -1 : selected.getIndex());
+
+			ISetHeight setter = new ISetHeight() {
+				@Override
+				public void set(int at, float y, float h) {
+					IGLLayoutElement row = children.get(at);
+					IRow data = row.getLayoutDataAs(IRow.class, null);
+					float x = getX(combinedAlign, weights, index, data);
+					row.setBounds(x, y, w, h);
+					row.asElement().setVisibility(at == selectedIndex ? EVisibility.PICKABLE : EVisibility.VISIBLE);
 				}
-				row.setBounds(x, y, w, hr - y);
-				y = hr;
-				row.asElement().setVisibility(data == selected ? EVisibility.PICKABLE : EVisibility.VISIBLE);
-			}
-			TableBodyUI.hideUnusedColumns(children, w, h, used);
+			};
+			getRanker(model).layoutRows(setter);
 		} else {
 			// simple
 			getColumnModelParent().layoutRows(model, children, w, h);
 		}
+	}
+
+	private float getX(int combinedAlign, float[] weights, int index, IRow data) {
+		float x = 0;
+		MultiFloat vs = model.getSplittedValue(data);
+		if (index < combinedAlign) {
+			for (int i = index; i < combinedAlign; ++i)
+				x += -vs.values[i] + weights[i] - RenderStyle.COLUMN_SPACE;
+			x += RenderStyle.COLUMN_SPACE;
+		} else {
+			for (int i = combinedAlign; i < index; ++i)
+				x += vs.values[i] - weights[i] + RenderStyle.COLUMN_SPACE;
+			x += RenderStyle.COLUMN_SPACE;
+		}
+		return x;
 	}
 
 	@Override

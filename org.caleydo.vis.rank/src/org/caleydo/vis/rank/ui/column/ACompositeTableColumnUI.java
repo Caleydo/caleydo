@@ -168,9 +168,13 @@ public abstract class ACompositeTableColumnUI<T extends ACompositeRankColumnMode
 	}
 
 	public ITableColumnUI getLastChild() {
-		for (int i = this.size() - 1; i >= 0; --i)
-			if (get(i) instanceof ITableColumnUI)
+		for (int i = this.size() - 1; i >= 0; --i) {
+			GLElement c = get(i);
+			if (!GLElement.areValidBounds(c.getBounds()))
+				continue;
+			if (c instanceof ITableColumnUI)
 				return (ITableColumnUI) get(i);
+		}
 		return null;
 	}
 }
