@@ -105,7 +105,7 @@ import org.jgrapht.graph.GraphPathImpl;
 
 /**
  * Single OpenGL2 pathway view
- * 
+ *
  * @author Marc Streit
  * @author Alexander Lex
  */
@@ -129,6 +129,11 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 
 	private PathwayManager pathwayManager;
 	private PathwayItemManager pathwayItemManager;
+
+	/**
+	 * Determines whether vertex highlighting via selection (click/mouse over) is enabled.
+	 */
+	private boolean highlightVertices = true;
 
 	/**
 	 * The maximal number of paths in the pathway that are looked up. The user specifies from which source to which
@@ -238,7 +243,6 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 		vecScaling = new Vec3f(1, 1, 1);
 		vecTranslation = new Vec3f(0, 0, 0);
 
-		registerPickingListeners();
 		registerMouseListeners();
 		registeKeyListeners();
 
@@ -306,6 +310,7 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 	@Override
 	public void initialize() {
 		super.initialize();
+		registerPickingListeners();
 		gLPathwayAugmentationRenderer = new GLPathwayAugmentationRenderer(viewFrustum, this);
 		if (dataDomain != null)
 			gLPathwayAugmentationRenderer.enableGeneMapping(true);
@@ -368,16 +373,16 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 				}// if (e.isControlDown() && (e.getKeyCode() == 79))
 				isControlKeyDown = e.isControlDown();
 				isShiftKeyDown = e.isShiftDown();
-				
-				if(e.isDownDown()){
+
+				if (e.isDownDown()) {
 					selectedPathID--;
 					selectedPathID--;
 					selectNextPath();
 				}
 
-				if(e.isUpDown())
+				if (e.isUpDown())
 					selectNextPath();
-				
+
 			}
 
 			@Override
@@ -389,6 +394,9 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 	}
 
 	protected void registerPickingListeners() {
+
+		if (!highlightVertices)
+			return;
 
 		addTypePickingListener(new APickingListener() {
 
@@ -619,14 +627,17 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 
 		if (isDisplayListDirty) {
 			calculatePathwayScaling(gl, pathway);
-			rebuildPathwayDisplayList(gl, displayListIndex);
+			rebuildPathwayDisplayList(gl);
+			// gl.glNewList(displayListIndex, GL2.GL_COMPILE);
+			//
+			// gl.glEndList();
+
 			isDisplayListDirty = false;
 		}
 
 		if (pathway != null) {
 			// TODO: also put this in global DL
 			renderPathway(gl, pathway);
-
 		}
 	}
 
@@ -727,7 +738,7 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 			this.bubbleSet.addAllPaths(allPaths);
 			//
 			// this.bubbleSet.addPathSegements(pathSegments);
-			//this.bubbleSet.addPortals(portalVertexReps);
+			// this.bubbleSet.addPortals(portalVertexReps);
 
 			// update texture
 			this.bubbleSet.getBubbleSetGLRenderer().setSize(pathway.getWidth(), pathway.getHeight());
@@ -743,7 +754,7 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 		gl.glPopName();
 	}
 
-	private void rebuildPathwayDisplayList(final GL2 gl, int displayListIndex) {
+	private void rebuildPathwayDisplayList(final GL2 gl) {
 		gLPathwayAugmentationRenderer.buildPathwayDisplayList(gl, pathway);
 	}
 
@@ -1277,11 +1288,11 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 			// TODO: make sure that this is the last vertex of the last path segment
 			if (selectedPath != null && vertexRep == selectedPath.getEndVertex()
 					&& selectedPath.getEdgeList().size() > 0) {
-				 ShowPortalNodesEvent e = new ShowPortalNodesEvent(vertexRep);
-				 e.setSender(this);
-				 e.setEventSpace(pathwayPathEventSpace);
-				 eventPublisher.triggerEvent(e);
-				 //the event will not be sent back to this pathway object, so highlight must be triggered here
+				ShowPortalNodesEvent e = new ShowPortalNodesEvent(vertexRep);
+				e.setSender(this);
+				e.setEventSpace(pathwayPathEventSpace);
+				eventPublisher.triggerEvent(e);
+				// the event will not be sent back to this pathway object, so highlight must be triggered here
 				highlightPortalNodes(vertexRep);
 			}
 		}
@@ -1308,7 +1319,7 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 		// //pathSegments.get(pathSegments.size()-1).setPathway(selectedPath);
 		// //pathSegments.set(pathSeg, element)
 		// }
-		if(selectedPath!=null){
+		if (selectedPath != null) {
 			if (pathSegments.size() > 0)
 				pathSegments.set(pathSegments.size() - 1, new PathwayPath(selectedPath));
 			else
@@ -1328,6 +1339,7 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 		if (pathSegmentsBroadcasted == null)
 			return;
 		pathSegments = pathSegmentsBroadcasted;
+		boolean wasPathSelected = this.selectedPath != null;
 		this.selectedPath = null;
 		for (PathwayPath path : pathSegments) {
 			// TODO: Handle multiple path segments
@@ -1341,8 +1353,10 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 		if (selectedPath != null)
 			allPaths.add(selectedPath);
 
-		isBubbleTextureDirty = true;
-		setDisplayListDirty();
+		if ((wasPathSelected && this.selectedPath == null) || this.selectedPath != null) {
+			isBubbleTextureDirty = true;
+			setDisplayListDirty();
+		}
 	}
 
 	/**
@@ -1355,7 +1369,8 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 
 	@Override
 	public void notifyOfSelectionChange(EventBasedSelectionManager selectionManager) {
-		setDisplayListDirty();
+		if (highlightVertices)
+			setDisplayListDirty();
 	}
 
 	/**
@@ -1448,11 +1463,11 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 
 	/**
 	 * Highlights all nodes equivalent to the specified {@link PathwayVertexRep}.
-	 * 
+	 *
 	 * @param vertexRep
 	 */
 	public void highlightPortalNodes(PathwayVertexRep vertexRep) {
-		
+
 		portalVertexReps = PathwayManager.get().getEquivalentVertexRepsInPathway(vertexRep, pathway);
 
 	}
@@ -1516,6 +1531,21 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 	 */
 	public void setMinWidthPixels(int minWidthPixels) {
 		this.minWidthPixels = minWidthPixels;
+	}
+
+	/**
+	 * @param highlightVertices
+	 *            setter, see {@link highlightVertices}
+	 */
+	public void setHighlightVertices(boolean highlightVertices) {
+		this.highlightVertices = highlightVertices;
+	}
+
+	/**
+	 * @return the highlightVertices, see {@link #highlightVertices}
+	 */
+	public boolean isHighlightVertices() {
+		return highlightVertices;
 	}
 
 }

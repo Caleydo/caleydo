@@ -139,18 +139,18 @@ public class GLPathwayAugmentationRenderer {
 		renderVertices(gl, pathway);
 		gl.glEndList();
 
-		if (hashPathway2EdgesDisplayListId.containsKey(pathway)) {
-			// Replace current display list if a display list exists
-			edgesDisplayListId = hashPathway2EdgesDisplayListId.get(pathway);
-		} else {
-			// Creating edge display list for pathways
-			edgesDisplayListId = gl.glGenLists(1);
-			hashPathway2EdgesDisplayListId.put(pathway, edgesDisplayListId);
-		}
+		// if (hashPathway2EdgesDisplayListId.containsKey(pathway)) {
+		// // Replace current display list if a display list exists
+		// edgesDisplayListId = hashPathway2EdgesDisplayListId.get(pathway);
+		// } else {
+		// // Creating edge display list for pathways
+		// edgesDisplayListId = gl.glGenLists(1);
+		// hashPathway2EdgesDisplayListId.put(pathway, edgesDisplayListId);
+		// }
 
-		gl.glNewList(edgesDisplayListId, GL2.GL_COMPILE);
-		extractEdges(gl, pathway);
-		gl.glEndList();
+		// gl.glNewList(edgesDisplayListId, GL2.GL_COMPILE);
+		// extractEdges(gl, pathway);
+		// gl.glEndList();
 	}
 
 	/**
@@ -1105,10 +1105,10 @@ public class GLPathwayAugmentationRenderer {
 	// }
 
 	public void renderPathway(final GL2 gl, final PathwayGraph pathway, boolean bRenderLabels) {
-		if (enableEdgeRendering || !selectedEdgeRepId.isEmpty()) {
-			int tmpEdgesDisplayListID = hashPathway2EdgesDisplayListId.get(pathway);
-			gl.glCallList(tmpEdgesDisplayListID);
-		}
+		// if (enableEdgeRendering || !selectedEdgeRepId.isEmpty()) {
+		// int tmpEdgesDisplayListID = hashPathway2EdgesDisplayListId.get(pathway);
+		// gl.glCallList(tmpEdgesDisplayListID);
+		// }
 
 		Integer tmpVerticesDisplayListID = hashPathway2VerticesDisplayListId.get(pathway);
 

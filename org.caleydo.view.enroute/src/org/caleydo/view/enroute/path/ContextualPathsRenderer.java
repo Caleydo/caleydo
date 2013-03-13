@@ -47,10 +47,8 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
 import org.caleydo.core.view.listener.RemoveTablePerspectiveEvent;
-import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
@@ -59,7 +57,6 @@ import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.ViewLayoutRenderer;
 import org.caleydo.datadomain.pathway.IPathwayRepresentation;
 import org.caleydo.datadomain.pathway.VertexRepBasedContextMenuItem;
-import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.PathwayPath;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
@@ -69,6 +66,7 @@ import org.caleydo.datadomain.pathway.listener.ShowPortalNodesEvent;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.enroute.event.ShowPathEvent;
 import org.caleydo.view.pathway.GLPathway;
+import org.caleydo.view.pathway.PathwayTextureCreator;
 
 /**
  * Renderer that shows the alternative entrances
@@ -114,6 +112,10 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 		this.eventSpace = eventSpace;
 		this.pathway = pathway;
 		this.tablePerspectives = tablePerspectives;
+
+		PathwayTextureCreator creator = new PathwayTextureCreator();
+		pathwayView = (GLPathway) creator.createRemoteView(view, tablePerspectives, eventSpace);
+
 		layout = new LayoutManager(new ViewFrustum(), view.getPixelGLConverter());
 		layout.setUseDisplayLists(true);
 		Column baseColumn = new Column();
@@ -121,26 +123,27 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 		ElementLayout pathwayTextureLayout = new ElementLayout();
 		pathwayTextureLayout.setPixelSizeY(PATHWAY_TEXTURE_HEIGHT);
 
-		// This should probably be a renderer in the final version.
-		pathwayView = (GLPathway) GeneralManager
-				.get()
-				.getViewManager()
-				.createGLView(GLPathway.class, view.getParentGLCanvas(), view.getParentComposite(),
-						new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1, -1, 1));
-
-		if (tablePerspectives.size() > 0) {
-			TablePerspective tablePerspective = tablePerspectives.get(0);
-			if (!(tablePerspective instanceof PathwayTablePerspective)) {
-				throw new IllegalArgumentException(
-						"The provided table perspective must be of type PathwayTablePerspective.");
-			}
-
-			pathwayView.setRemoteRenderingGLView((IGLRemoteRenderingView) view);
-			pathwayView.setDataDomain(tablePerspective.getDataDomain());
-			pathwayView.setTablePerspective(tablePerspective);
-		}
-		pathwayView.setPathwayPathEventSpace(eventSpace);
-		pathwayView.initialize();
+		// // This should probably be a renderer in the final version.
+		// pathwayView = (GLPathway) GeneralManager
+		// .get()
+		// .getViewManager()
+		// .createGLView(GLPathway.class, view.getParentGLCanvas(), view.getParentComposite(),
+		// new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1, -1, 1));
+		//
+		// if (tablePerspectives.size() > 0) {
+		// TablePerspective tablePerspective = tablePerspectives.get(0);
+		// if (!(tablePerspective instanceof PathwayTablePerspective)) {
+		// throw new IllegalArgumentException(
+		// "The provided table perspective must be of type PathwayTablePerspective.");
+		// }
+		//
+		// pathwayView.setRemoteRenderingGLView((IGLRemoteRenderingView) view);
+		// pathwayView.setDataDomain(tablePerspective.getDataDomain());
+		// pathwayView.setTablePerspective(tablePerspective);
+		// }
+		// pathwayView.setPathwayPathEventSpace(eventSpace);
+		// pathwayView.set
+		// pathwayView.initialize();
 
 		ViewLayoutRenderer viewRenderer = new ViewLayoutRenderer(pathwayView);
 		baseColumn.setBottomUp(false);
