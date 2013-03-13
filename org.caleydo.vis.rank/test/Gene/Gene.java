@@ -55,7 +55,7 @@ public class Gene extends ARankTableDemo {
 	}
 
 	enum TumorType {
-		LUSC_TP, READ_TP, GBM_TP, BLCA_TP;
+		LUSC_TP, READ_TP, GBM_TP, BLCA_TP, UCEC_TP, COAD_TP, OV_TP, LAML_TB, HNSC, LUAD, BRCA, KIRC
 	}
 
 
@@ -133,6 +133,7 @@ public class Gene extends ARankTableDemo {
 			stacked.add(new FloatRankColumnModel(new ValueGetter(type, column), GLRenderers.drawText(type.name() + "_"
 					+ label, VAlign.CENTER), color, bgColor, pValueMapping(), FloatInferrers.MEDIAN));
 		}
+		stacked.addWeight(250 - stacked.getWeight());
 		return stacked;
 	}
 
@@ -143,6 +144,7 @@ public class Gene extends ARankTableDemo {
 			stacked.add(new FloatRankColumnModel(new ValueGetter(type, column), GLRenderers.drawText(type.name() + "_"
 					+ label, VAlign.CENTER), color, bgColor, new PiecewiseMapping(0, Float.NaN), FloatInferrers.MEDIAN));
 		}
+		stacked.addWeight(150 - stacked.getWeight());
 		return stacked;
 	}
 
