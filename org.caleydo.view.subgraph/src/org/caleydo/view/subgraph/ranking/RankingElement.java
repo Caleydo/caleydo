@@ -167,6 +167,7 @@ public class RankingElement extends GLElementContainer {
 		// add columns
 		textColumn = new StringRankColumnModel(GLRenderers.drawText("Pathway", VAlign.CENTER),
 				StringRankColumnModel.DEFAULT);
+		textColumn.setWeight(50);
 		table.add(textColumn);
 		// table.addColumn(new StringRankColumnModel(GLRenderers.drawText("Pathway Type", VAlign.CENTER),
 		// new Function<IRow, String>() {
