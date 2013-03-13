@@ -26,6 +26,7 @@ import org.caleydo.core.gui.toolbar.action.OpenOnlineHelpAction;
 import org.caleydo.core.view.ARcpGLViewPart;
 import org.caleydo.datadomain.pathway.toolbar.ClearPathAction;
 import org.caleydo.datadomain.pathway.toolbar.SelectPathAction;
+import org.caleydo.view.subgraph.toolbar.HighlightAllPortalsAction;
 import org.caleydo.view.subgraph.toolbar.ShowPortalsAction;
 import org.eclipse.swt.widgets.Composite;
 
@@ -72,6 +73,7 @@ public class RcpGLSubGraphView extends ARcpGLViewPart {
 		toolBarManager.add(selectPathAction);
 		toolBarManager.add(new ClearPathAction(subgraph.getPathEventSpace()));
 		toolBarManager.add(new ShowPortalsAction(subgraph.getPathEventSpace()));
+		toolBarManager.add(new HighlightAllPortalsAction(subgraph.getPathEventSpace()));
 
 		toolBarManager.add(new OpenOnlineHelpAction(
 				"http://www.icg.tugraz.at/project/caleydo/help/caleydo-2.0/pathways", false));

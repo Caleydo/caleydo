@@ -6,6 +6,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -59,6 +60,7 @@ import org.caleydo.view.subgraph.MultiLevelSlideInElement.IWindowState;
 import org.caleydo.view.subgraph.SlideInElement.ESlideInElementPosition;
 import org.caleydo.view.subgraph.contextmenu.ShowCommonNodeItem;
 import org.caleydo.view.subgraph.datamapping.GLExperimentalDataMapping;
+import org.caleydo.view.subgraph.event.HighlightAllPortalsEvent;
 import org.caleydo.view.subgraph.event.ShowCommonNodePathwaysEvent;
 import org.caleydo.view.subgraph.event.ShowCommonNodesPathwaysEvent;
 import org.caleydo.view.subgraph.event.ShowNodeInfoEvent;
@@ -106,6 +108,11 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	 * Info for the {@link MultiFormRenderer} of the selected path.
 	 */
 	private MultiFormInfo pathInfo;
+
+	/**
+	 * All portals currently present.
+	 */
+	protected Set<PathwayVertexRep> portals = new HashSet<>();
 
 	/**
 	 * List of infos for all pathways.
@@ -338,6 +345,8 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		lastUsedLevel1Renderer = info.multiFormRenderer;
 		lastUsedRenderer = info.multiFormRenderer;
 
+		addPortalsOfPathway(info);
+
 		pathwayInfos.add(info);
 		wasPathwayAdded = true;
 	}
@@ -391,6 +400,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 					pathwayLayout.removeWindow(window);
 					parent.remove(window);
 					pathwayInfos.remove(window.info);
+					updatePortals();
 				}
 			});
 		}
@@ -763,6 +773,47 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		@ListenTo(restrictExclusiveToEventSpace = true)
 		public void onEnablePathSelection(EnablePathSelectionEvent event) {
 			isPathSelectionMode = event.isPathSelectionMode();
+		}
+
+		@ListenTo(restrictExclusiveToEventSpace = true)
+		public void onHighlightAllPortals(HighlightAllPortalsEvent event) {
+			// TODO: send events
+			if (event.isHighlight()) {
+
+			} else {
+
+			}
+		}
+	}
+
+	protected void updatePortals() {
+		portals.clear();
+		for (PathwayMultiFormInfo info : pathwayInfos) {
+			addPortalsOfPathway(info);
+		}
+	}
+
+	protected void addPortalsOfPathway(PathwayMultiFormInfo info) {
+		for (PathwayVertexRep vertexRep : info.pathway.vertexSet()) {
+			for (PathwayMultiFormInfo i : pathwayInfos) {
+				if (info != i) {
+					if (!portals.contains(vertexRep)) {
+						Set<PathwayVertexRep> vertexReps = PathwayManager.get().getEquivalentVertexRepsInPathway(
+								vertexRep, i.pathway);
+						if (vertexReps.size() > 0) {
+							portals.addAll(vertexReps);
+							portals.add(vertexRep);
+						}
+					}
+				} else {
+					for (PathwayVertexRep v : i.pathway.vertexSet()) {
+						if (v != vertexRep && PathwayManager.get().areVerticesEquivalent(vertexRep, v)) {
+							portals.add(vertexRep);
+							portals.add(v);
+						}
+					}
+				}
+			}
 		}
 	}
 
