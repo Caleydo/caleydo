@@ -44,6 +44,7 @@ import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingListenerComposite;
 import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.data.loader.ResourceLocators;
+import org.caleydo.vis.rank.config.IRankTableUIConfig;
 import org.caleydo.vis.rank.layout.IRowHeightLayout;
 import org.caleydo.vis.rank.layout.IRowHeightLayout.IRowSetter;
 import org.caleydo.vis.rank.model.ACompositeRankColumnModel;
@@ -101,12 +102,14 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 	 * ids for row selection
 	 */
 	private int[] pickingIDs = new int[0];
-	private PickingListenerComposite selectRowListener = new PickingListenerComposite();
+	private final PickingListenerComposite selectRowListener = new PickingListenerComposite();
+	private final IRankTableUIConfig config;
 
-	public TableBodyUI(final RankTableModel table, IRowHeightLayout rowLayout) {
+	public TableBodyUI(final RankTableModel table, IRowHeightLayout rowLayout, IRankTableUIConfig config) {
 		setAnimateByDefault(false);
 		this.table = table;
-		this.add(new OrderColumnUI(null, table.getMyRanker(null), rowLayout));
+		this.config = config;
+		this.add(new OrderColumnUI(null, table.getMyRanker(null), rowLayout, config));
 		this.table.addPropertyChangeListener(RankTableModel.PROP_DATA, listener);
 		this.table.addPropertyChangeListener(RankTableModel.PROP_COLUMNS, listener);
 		this.table.addPropertyChangeListener(RankTableModel.PROP_SELECTED_ROW, listener);
@@ -270,7 +273,7 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 		init(new_);
 		if (new_ instanceof OrderColumn) {
 			OrderColumn c = (OrderColumn) new_;
-			return new OrderColumnUI(c, c.getRanker(), getDefaultrankerUI().getRowLayout());
+			return new OrderColumnUI(c, c.getRanker(), getDefaultrankerUI().getRowLayout(), config);
 		}
 		return ColumnUIs.createBody(new_, true).setData(table.getData(), this);
 	}

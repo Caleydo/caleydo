@@ -75,7 +75,7 @@ public class RankTableUI extends GLElementContainer implements ISelectionCallbac
 		public TableUI(RankTableModel table, IRankTableUIConfig config, IRowHeightLayout... layouts) {
 			setLayout(GLLayouts.flowVertical(0));
 			this.add(new TableHeaderUI(table, config));
-			this.add(new TableBodyUI(table, layouts.length == 0 ? RowHeightLayouts.UNIFORM : layouts[0]));
+			this.add(new TableBodyUI(table, layouts.length == 0 ? RowHeightLayouts.UNIFORM : layouts[0], config));
 		}
 
 		@Override

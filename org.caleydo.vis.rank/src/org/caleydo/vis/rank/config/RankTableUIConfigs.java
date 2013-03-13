@@ -19,6 +19,8 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.config;
 
+import org.caleydo.core.view.opengl.layout2.basic.IScrollBar;
+
 /**
  * @author Samuel Gratzl
  *
@@ -64,6 +66,11 @@ public class RankTableUIConfigs {
 			if (canChangeWeights != null)
 				return canChangeWeights.booleanValue();
 			return wrappee.canChangeWeights();
+		}
+
+		@Override
+		public IScrollBar createScrollBar(boolean horizontal) {
+			return wrappee.createScrollBar(horizontal);
 		}
 
 	}

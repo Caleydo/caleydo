@@ -30,7 +30,7 @@ import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.basic.IScrollBar;
-import org.caleydo.core.view.opengl.layout2.basic.ScrollBar;
+import org.caleydo.vis.rank.config.IRankTableUIConfig;
 import org.caleydo.vis.rank.layout.IRowHeightLayout;
 import org.caleydo.vis.rank.layout.IRowHeightLayout.IRowSetter;
 import org.caleydo.vis.rank.layout.IRowLayoutInstance;
@@ -59,11 +59,11 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 	private boolean isScrollingUpdate;
 	private boolean becauseOfReordering;
 
-	public OrderColumnUI(OrderColumn model, ColumnRanker ranker, IRowHeightLayout rowLayout) {
+	public OrderColumnUI(OrderColumn model, ColumnRanker ranker, IRowHeightLayout rowLayout, IRankTableUIConfig config) {
 		this.ranker = ranker;
 		this.model = model;
 		this.rowLayout = rowLayout;
-		this.scrollBar = new ScrollBar(false);
+		this.scrollBar = config.createScrollBar(false);
 		this.scrollBar.setCallback(this);
 		ranker.addPropertyChangeListener(ColumnRanker.PROP_ORDER, this);
 		ranker.addPropertyChangeListener(ColumnRanker.PROP_INVALID, this);

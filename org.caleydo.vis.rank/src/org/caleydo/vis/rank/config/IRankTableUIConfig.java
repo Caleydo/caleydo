@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.config;
 
+import org.caleydo.core.view.opengl.layout2.basic.IScrollBar;
 
 /**
  * @author Samuel Gratzl
@@ -30,4 +31,6 @@ public interface IRankTableUIConfig {
 	boolean isMoveAble();
 
 	boolean canChangeWeights();
+
+	IScrollBar createScrollBar(boolean horizontal);
 }
