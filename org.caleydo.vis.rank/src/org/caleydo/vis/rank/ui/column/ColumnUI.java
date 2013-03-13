@@ -31,6 +31,8 @@ public class ColumnUI extends AnimatedGLElementContainer implements ITableColumn
 
 	protected static final int FLAG_FROM_ABOVE = 1;
 	protected static final int FLAG_FROM_BELOW = 2;
+	protected static final int FLAG_TO_ABOVE = 3;
+	protected static final int FLAG_TO_BELOW = 4;
 	protected static final int FLAG_NONE = 0;
 
 	protected final ARankColumnModel model;
@@ -62,7 +64,63 @@ public class ColumnUI extends AnimatedGLElementContainer implements ITableColumn
 	}
 
 	@Override
+	protected void updateMoveAnimation(ALayoutAnimation anim, IGLLayoutElement elem, Vec4f before, Vec4f after) {
+		int flag = ((ValueElement) elem.asElement()).getAnimationFlag();
+		switch (flag) {
+		case FLAG_NONE:
+			break;
+		case FLAG_FROM_ABOVE:
+			before = before.copy();
+			before.setY(0);
+			before.setW(0);
+			break;
+		case FLAG_FROM_BELOW:
+			before = before.copy();
+			before.setY(getSize().y());
+			before.setW(0);
+			break;
+		case FLAG_TO_ABOVE:
+			after = after.copy();
+			after.setY(0);
+			after.setW(0);
+			break;
+		case FLAG_TO_BELOW:
+			after = after.copy();
+			after.setY(getSize().y());
+			after.setW(0);
+			break;
+		}
+		super.updateMoveAnimation(anim, elem, before, after);
+	}
+
+	@Override
 	protected ALayoutAnimation createMoveAnimation(IGLLayoutElement elem, Vec4f before, Vec4f after) {
+		int flag = ((ValueElement) elem.asElement()).getAnimationFlag();
+		switch (flag) {
+		case FLAG_NONE:
+			break;
+		case FLAG_FROM_ABOVE:
+			before = before.copy();
+			before.setY(0);
+			before.setW(0);
+			break;
+		case FLAG_FROM_BELOW:
+			before = before.copy();
+			before.setY(getSize().y());
+			before.setW(0);
+			break;
+		case FLAG_TO_ABOVE:
+			after = after.copy();
+			after.setY(0);
+			after.setW(0);
+			break;
+		case FLAG_TO_BELOW:
+			after = after.copy();
+			after.setY(getSize().y());
+			after.setW(0);
+			break;
+		}
+
 		if (getColumnParent().getRanker(model).isInternalReLayout()) {
 			DummyAnimation d = new DummyAnimation(EAnimationType.MOVE, elem);
 			d.init(before, after);
@@ -107,15 +165,16 @@ public class ColumnUI extends AnimatedGLElementContainer implements ITableColumn
 			inPool.set(cached, cached + addItems);
 		} else if ((cached - rows) > 50 && inPool.cardinality() > 20) { // more than enough free again
 			// free the pool and update the mapping information
-			int at = cached-1;
-			for (int toRemove = (inPool.cardinality() - 20); toRemove >= 0; toRemove--) {
-				while(!inPool.get(at)) {
+			int at = cached - 1;
+			final int itemsToRemove = Math.max(0, cached - (cached - rows) - 20);
+			for (int toRemove = itemsToRemove; toRemove > 0; toRemove--) {
+				while (!inPool.get(at)) {
 					GLElement replacement = get(at);
 					int index = replacement.getLayoutDataAs(IRow.class, null).getIndex();
 					rowIndexToGlElement.put(index, at - toRemove - 1); // x places to the left
-					at --;
+					at--;
 				}
-				remove(get(at), Durations.NO);
+				remove(get(at).setVisibility(EVisibility.HIDDEN), Durations.NO);
 				inPool.clear(at);
 				at--;
 			}
@@ -148,11 +207,9 @@ public class ColumnUI extends AnimatedGLElementContainer implements ITableColumn
 					inPool.set(at);
 					// set for the out animation if it isn't reused immediately
 					IGLLayoutElement row = children.get(at);
-					if (h > 0)
-						System.err.println();
 					row.setBounds(x, y, w, h);
 					ValueElement elem = (ValueElement) row.asElement();
-					elem.setAnimationFlag(before.get(rowIndex) ? FLAG_FROM_ABOVE : FLAG_FROM_BELOW);
+					elem.setAnimationFlag(before.get(rowIndex) ? FLAG_TO_ABOVE : FLAG_TO_BELOW);
 					elem.setVisibility(EVisibility.VISIBLE);
 				} else if (h <= 0) { // still not visible
 					before.set(rowIndex, y <= 0);
@@ -160,20 +217,20 @@ public class ColumnUI extends AnimatedGLElementContainer implements ITableColumn
 					if (inPool.isEmpty()) {
 						// FIXME error
 					} else {
-						at = inPool.length() - 1; // last one for better cache behavior
+						at = inPool.nextSetBit(0); // last one for better cache behavior
 						inPool.clear(at);
 						rowIndexToGlElement.put(rowIndex, at);
+						if (rowIndex == 20)
+							System.err.println();
 						IGLLayoutElement row = children.get(at);
 						row.setBounds(x, y, w, h);
 						ValueElement elem = (ValueElement) row.asElement();
-						elem.setLayoutData(table.getDataItem(rowIndex)); // set act data
+						removeAnimationsOf(elem, true);
+						elem.setRow(table.getDataItem(rowIndex)); // set act data
 						elem.setAnimationFlag(before.get(rowIndex) ? FLAG_FROM_ABOVE : FLAG_FROM_BELOW);
 						elem.setVisibility(pickable ? EVisibility.PICKABLE : EVisibility.VISIBLE);
 					}
 				} else { // still visible
-					if (at > children.size()) {
-						System.err.println();
-					}
 					IGLLayoutElement row = children.get(at);
 					row.setBounds(x, y, w, h);
 					ValueElement elem = (ValueElement) row.asElement();

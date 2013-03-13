@@ -29,6 +29,7 @@ import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
  */
 public class DummyAnimation extends ALayoutAnimation {
 	private final EAnimationType type;
+	private Vec4f from;
 	private Vec4f to;
 
 	public DummyAnimation(EAnimationType type, IGLLayoutElement animated) {
@@ -43,7 +44,16 @@ public class DummyAnimation extends ALayoutAnimation {
 
 	@Override
 	protected void firstTime(float w, float h) {
-
+		switch (type) {
+		case IN:
+			break;
+		case MOVE:
+		case OUT:
+			animated.setBounds(from);
+			break;
+		default:
+			break;
+		}
 	}
 
 	@Override
@@ -71,6 +81,7 @@ public class DummyAnimation extends ALayoutAnimation {
 
 	@Override
 	public void init(Vec4f from, Vec4f to) {
+		this.from = from;
 		this.to = to;
 	}
 }

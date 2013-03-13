@@ -38,7 +38,6 @@ public class MoveAnimation extends ALayoutAnimation {
 
 	public MoveAnimation(int startIn, IDuration duration, IGLLayoutElement animated, IMoveTransition animation) {
 		super(startIn, duration, animated);
-		this.from = animated.getBounds();
 		this.animation = animation;
 	}
 
@@ -49,6 +48,7 @@ public class MoveAnimation extends ALayoutAnimation {
 
 	@Override
 	protected void firstTime(float w, float h) {
+		animated.setBounds(from);
 	}
 
 	@Override

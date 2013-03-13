@@ -30,8 +30,25 @@ import org.caleydo.vis.rank.model.IRow;
  */
 public class ValueElement extends PickableGLElement {
 	private int animationFlag = 0;
+	private IRow row;
+
 	public ValueElement() {
 		setVisibility(EVisibility.VISIBLE);
+	}
+
+	/**
+	 * @param row
+	 *            setter, see {@link row}
+	 */
+	public void setRow(IRow row) {
+		this.row = row;
+	}
+
+	@Override
+	public <T> T getLayoutDataAs(Class<T> clazz, T default_) {
+		if (clazz.isInstance(row))
+			return clazz.cast(row);
+		return super.getLayoutDataAs(clazz, default_);
 	}
 
 	/**
@@ -40,7 +57,7 @@ public class ValueElement extends PickableGLElement {
 	 * @return
 	 */
 	protected final IRow getRow() {
-		return getLayoutDataAs(IRow.class, null);
+		return row;
 	}
 
 	/**

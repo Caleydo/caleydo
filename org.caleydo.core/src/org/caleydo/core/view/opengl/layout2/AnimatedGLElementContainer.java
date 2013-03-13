@@ -216,8 +216,6 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 		Vec2f size = getSize();
 
 		if (dirtyAnimation || forceLayout) {
-			List<ALayoutAnimation> tmp = new LinkedList<>(layoutAnimations);
-
 			Collection<GLElement> elems = asSeenIn(0);
 			List<RecordingLayoutElement> l = new ArrayList<>(elems.size());
 			for (GLElement elem : elems) {
@@ -226,11 +224,16 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 			}
 			layout.doLayout(l, size.x(), size.y());
 
+			List<ALayoutAnimation> tmp = new LinkedList<>(layoutAnimations);
+			int i = 0;
 			outer: for (RecordingLayoutElement elem : l) {
+				if (i == 61) {
+					System.err.println();
+				}
 				for (Iterator<ALayoutAnimation> ita = tmp.iterator(); ita.hasNext();) {
 					ALayoutAnimation anim = ita.next();
 					if (anim.getAnimated() == elem.wrappee) { // match
-						anim.init(elem.before, elem.after);
+						updateMoveAnimation(anim, elem.wrappee, elem.before, elem.after);
 						ita.remove();
 						continue outer;
 					}
@@ -239,9 +242,11 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 					ALayoutAnimation anim = createMoveAnimation(elem.wrappee, elem.before, elem.after);
 					layoutAnimations.add(anim);
 				}
+				i++;
 			}
 		}
 	}
+
 
 	private int nextDelta() {
 		long old = startTime;
@@ -250,6 +255,10 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 			old = startTime;
 		int delta = (int) (startTime - old);
 		return delta;
+	}
+
+	protected void updateMoveAnimation(ALayoutAnimation anim, IGLLayoutElement elem, Vec4f before, Vec4f after) {
+		anim.init(before, after);
 	}
 
 	protected ALayoutAnimation createMoveAnimation(IGLLayoutElement elem, Vec4f before, Vec4f after) {
@@ -315,7 +324,7 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 		removeAnimationsOf(child, checkLayoutAnimations);
 	}
 
-	private void removeAnimationsOf(GLElement child, boolean checkLayoutAnimations) {
+	protected final void removeAnimationsOf(GLElement child, boolean checkLayoutAnimations) {
 		removeStyleAnimationsOf(child);
 		if (checkLayoutAnimations) {
 			for (Iterator<ALayoutAnimation> it = layoutAnimations.iterator(); it.hasNext();)
@@ -324,7 +333,7 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 		}
 	}
 
-	protected final void removeStyleAnimationsOf(GLElement child) {
+	private void removeStyleAnimationsOf(GLElement child) {
 		for (Iterator<StyleAnimation> it = styleAnimations.iterator(); it.hasNext();)
 			if (it.next().getAnimatedElement() == child)
 				it.remove();
@@ -368,7 +377,8 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 		}
 		// we want to add this child now but smooth it in, so we are interested in its final position in the future at
 		// the future state
-		this.layoutAnimations.add(createInAnimation(child.layoutElement, startIn, duration, animation));
+		if (duration.getDuration() > 0)
+			this.layoutAnimations.add(createInAnimation(child.layoutElement, startIn, duration, animation));
 		setup(child);
 		dirtyAnimation = true;
 		if (startIn == 0) // TODO
@@ -564,7 +574,7 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 		}
 
 		public boolean hasChanged() {
-			return after != null && !before.equals(after);
+			return after != null && !before.equals(after) && !(!areValidBounds(after) && !areValidBounds(before));
 		}
 
 		@Override
