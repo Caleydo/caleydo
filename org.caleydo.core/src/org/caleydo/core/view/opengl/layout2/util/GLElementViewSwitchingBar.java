@@ -157,6 +157,7 @@ public class GLElementViewSwitchingBar extends GLElementContainer implements IMu
 				g.gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 				g.gl.glEnable(GL.GL_LINE_SMOOTH);
 				g.color(new Color(1, 1, 1, 0.5f)).fillRoundedRect(0, 0, w, h, Math.min(w, h) * 0.25f);
+				g.gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
 			}
 		});
 		int activeRendererID = multiFormRenderer.getActiveRendererID();
