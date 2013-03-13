@@ -29,6 +29,8 @@ import java.util.List;
 
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
+import org.caleydo.core.view.opengl.layout2.basic.ScrollBar;
+import org.caleydo.core.view.opengl.layout2.basic.ScrolledGLElement;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
@@ -119,7 +121,8 @@ public class RankingElement extends GLElementContainer {
 				onRowPick(pick);
 			}
 		});
-		this.add(body);
+		ScrolledGLElement scbody = new ScrolledGLElement(body, new ScrollBar(true), null, 5);
+		this.add(scbody);
 	}
 
 	@Override
