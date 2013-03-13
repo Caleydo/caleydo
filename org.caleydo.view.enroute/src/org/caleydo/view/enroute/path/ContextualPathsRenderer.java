@@ -22,6 +22,7 @@ package org.caleydo.view.enroute.path;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -44,6 +45,8 @@ import org.caleydo.core.event.IListenerOwner;
 import org.caleydo.core.event.view.MinSizeUpdateEvent;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
+import org.caleydo.core.view.listener.RemoveTablePerspectiveEvent;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -89,6 +92,7 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 	protected boolean isPathSelectionMode = false;
 	protected APathwayPathRenderer selectedPathRenderer;
 	private BranchPathEventSpaceListener branchPathEventSpaceListener = new BranchPathEventSpaceListener();
+	private VertexRepComparator comparator = new VertexRepComparator();
 
 	/**
 	 * Context menu items that shall be displayed when right-clicking on a path node.
@@ -109,6 +113,7 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 		this.view = view;
 		this.eventSpace = eventSpace;
 		this.pathway = pathway;
+		this.tablePerspectives = tablePerspectives;
 		layout = new LayoutManager(new ViewFrustum(), view.getPixelGLConverter());
 		layout.setUseDisplayLists(true);
 		Column baseColumn = new Column();
@@ -326,7 +331,7 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 
 		Set<APathwayPathRenderer> renderersToRemove = new HashSet<>(renderers.keySet());
 		renderersToRemove.remove(selectedPathRenderer);
-		// TODO: only remove paths that dont contain vertexreps
+
 		for (PathwayVertexRep vertexRep : vertexReps) {
 			boolean createNewPath = true;
 			for (APathwayPathRenderer renderer : renderers.keySet()) {
@@ -337,10 +342,13 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 				}
 			}
 			if (createNewPath) {
-				List<PathwayVertexRep> segment = PathwayManager.get().determineDirectionalPath(vertexRep, false, 5);
+				// List<PathwayVertexRep> segment = PathwayManager.get().determineDirectionalPath(vertexRep, false, 5);
+				List<PathwayVertexRep> segment = PathwayManager.get().determineDirectionalPath(vertexRep, false, 4,
+						comparator);
 				segment.remove(0);
 				Collections.reverse(segment);
-				segment.addAll(PathwayManager.get().determineDirectionalPath(vertexRep, true, 5));
+				segment.addAll(PathwayManager.get().determineDirectionalPath(vertexRep, true, 4, comparator));
+				// segment.addAll(PathwayManager.get().determineDirectionalPath(vertexRep, true, 5));
 				List<List<PathwayVertexRep>> pathSegments = new ArrayList<>(1);
 				pathSegments.add(segment);
 				addPath(pathSegments);
@@ -353,6 +361,18 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 		// setDisplayListDirty(true);
 		layout.updateLayout();
 		triggerMinSizeUpdate();
+	}
+
+	@ListenTo(restrictExclusiveToEventSpace = true)
+	public void onAddTablePerspectives(AddTablePerspectivesEvent event) {
+		tablePerspectives.addAll(event.getTablePerspectives());
+		// isPathSelectionMode = event.isPathSelectionMode();
+	}
+
+	@ListenTo(restrictExclusiveToEventSpace = true)
+	public void onRemoveTablePerspective(RemoveTablePerspectiveEvent event) {
+		tablePerspectives.remove(event.getTablePerspective());
+		// isPathSelectionMode = event.isPathSelectionMode();
 	}
 
 	@ListenTo(restrictExclusiveToEventSpace = true)
@@ -371,8 +391,8 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 
 		boolean isSelectedPathShown = false;
 		if (selectedPathRenderer != null) {
-			isSelectedPathShown = PathUtil.isPathShown(selectedPathRenderer.pathSegments, selectedPathSegments,
-					pathway);
+			isSelectedPathShown = PathUtil
+					.isPathShown(selectedPathRenderer.pathSegments, selectedPathSegments, pathway);
 			if (isSelectedPathShown)
 				return;
 		}
@@ -518,6 +538,24 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 		}
 		// TODO: use right size of pathway thumbnail texture
 		return Math.max(100, totalWidth);
+	}
+
+	protected class VertexRepComparator implements Comparator<PathwayVertexRep> {
+
+		@Override
+		public int compare(PathwayVertexRep o1, PathwayVertexRep o2) {
+			float sumStdDev1 = 0;
+			float sumStdDev2 = 0;
+			for (TablePerspective tablePerspective : tablePerspectives) {
+				sumStdDev1 += o1.calcAverage(tablePerspective).getStandardDeviation();
+				sumStdDev2 += o2.calcAverage(tablePerspective).getStandardDeviation();
+			}
+			if (sumStdDev1 > sumStdDev2)
+				return 1;
+			if (sumStdDev1 < sumStdDev2)
+				return -1;
+			return 0;
+		}
 	}
 
 }

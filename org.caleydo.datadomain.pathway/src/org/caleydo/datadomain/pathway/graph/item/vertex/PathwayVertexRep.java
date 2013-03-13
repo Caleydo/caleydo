@@ -22,7 +22,15 @@ package org.caleydo.datadomain.pathway.graph.item.vertex;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
+import org.caleydo.core.data.perspective.table.Average;
+import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.table.TablePerspectiveStatistics;
+import org.caleydo.core.data.perspective.variable.Perspective;
+import org.caleydo.core.id.IDCategory;
+import org.caleydo.core.id.IDMappingManager;
+import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.id.object.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
@@ -272,6 +280,48 @@ public class PathwayVertexRep implements Serializable, IUniqueObject {
 	 */
 	public static IDType getIdType() {
 		return idType;
+	}
+
+	/**
+	 * Calculates the {@link Average} of all mapped genes of this vertexRep for the specified table perspective. Hereby
+	 * arithmetic mean and standard deviation are averages of all mappings.
+	 *
+	 * @param tablePerspectives
+	 * @return
+	 */
+	public Average calcAverage(TablePerspective tablePerspective) {
+		List<Integer> davidIDs1 = getDavidIDs();
+		IDMappingManager mappingManager = IDMappingManagerRegistry.get().getIDMappingManager(
+				IDCategory.getIDCategory("GENE"));
+		float sumStandardDeviation = 0;
+		float sumAverage = 0;
+		int numIDs = 0;
+
+		Perspective genePerspective = tablePerspective.getPerspective(IDCategory.getIDCategory("GENE"));
+		Perspective samplePerspective = null;
+		if (tablePerspective.hasDimensionPerspective(genePerspective.getPerspectiveID())) {
+			samplePerspective = tablePerspective.getRecordPerspective();
+		} else {
+			samplePerspective = tablePerspective.getDimensionPerspective();
+		}
+		for (Integer davidID : davidIDs1) {
+			Set<Integer> ids = mappingManager.getIDAsSet(IDType.getIDType("DAVID"), genePerspective.getIdType(),
+					davidID);
+			if (ids != null) {
+				for (Integer id : ids) {
+					Average average = TablePerspectiveStatistics.calculateAverage(samplePerspective.getVirtualArray(),
+							tablePerspective.getDataDomain().getTable(), genePerspective.getIdType(), id);
+					sumStandardDeviation += average.getStandardDeviation();
+					sumAverage += average.getArithmeticMean();
+					numIDs++;
+				}
+			}
+		}
+
+		Average average = new Average();
+		average.setArithmeticMean(sumAverage / numIDs);
+		average.setStandardDeviation(sumStandardDeviation / numIDs);
+		return average;
 	}
 
 }
