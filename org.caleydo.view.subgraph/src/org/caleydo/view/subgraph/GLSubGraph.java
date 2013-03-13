@@ -34,6 +34,7 @@ import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormRenderer;
 import org.caleydo.core.view.opengl.layout2.AGLElementGLView;
 import org.caleydo.core.view.opengl.layout2.AnimatedGLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.core.view.opengl.layout2.GLElement.EVisibility;
 import org.caleydo.core.view.opengl.layout2.GLElementAdapter;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.animation.InOutInitializers;
@@ -53,8 +54,9 @@ import org.caleydo.datadomain.pathway.listener.EnablePathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.PathwayPathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.ShowPortalNodesEvent;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
-import org.caleydo.view.subgraph.GLWindow.ESlideInButtonPosition;
 import org.caleydo.view.subgraph.GLWindow.ICloseWindowListener;
+import org.caleydo.view.subgraph.MultiLevelSlideInElement.IWindowState;
+import org.caleydo.view.subgraph.SlideInElement.ESlideInElementPosition;
 import org.caleydo.view.subgraph.contextmenu.ShowCommonNodeItem;
 import org.caleydo.view.subgraph.datamapping.GLExperimentalDataMapping;
 import org.caleydo.view.subgraph.event.ShowCommonNodePathwaysEvent;
@@ -88,6 +90,8 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 			new GLSizeRestrictiveFlowLayout(true, 10, GLPadding.ZERO));
 
 	private GLWindow activeWindow = null;
+
+	protected GLWindow rankingWindow;
 
 	// private List<IPathwayRepresentation> pathwayRepresentations = new ArrayList<>();
 
@@ -133,6 +137,11 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	 */
 	protected boolean wasPathwayAdded = false;
 
+	/**
+	 * Determines whether the path window is maximized.
+	 */
+	protected boolean isPathWindowMaximized = false;
+
 	private boolean isAltKeyDown = false;
 	private boolean isShiftKeyDown = false;
 
@@ -153,14 +162,16 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		dataMappingWindow.setSize(Float.NaN, 80);
 		dataMappingWindow.setContent(experimentalDataMappingElement);
 		dataMappingWindow.setShowCloseButton(false);
-		dataMappingWindow.setButtonPosition(ESlideInButtonPosition.TOP);
+		SlideInElement slideInElement = new SlideInElement(dataMappingWindow, ESlideInElementPosition.TOP);
+		dataMappingWindow.addSlideInElement(slideInElement);
 
 		column.add(dataMappingWindow);
-		column.add(nodeInfoContainer);
-		GLWindow rankingWindow = new GLWindow("Pathways", this);
-		rankingWindow.setSize(100, Float.NaN);
+		// column.add(nodeInfoContainer);
+		rankingWindow = new GLWindow("Pathways", this);
+		rankingWindow.setSize(150, Float.NaN);
 		rankingWindow.setContent(rankingElement);
-		rankingWindow.setButtonPosition(ESlideInButtonPosition.RIGHT);
+		slideInElement = new SlideInElement(rankingWindow, ESlideInElementPosition.RIGHT);
+		rankingWindow.addSlideInElement(slideInElement);
 		rankingWindow.setShowCloseButton(false);
 		rankingElement.setWindow(rankingWindow);
 		baseContainer.add(rankingWindow);
@@ -184,7 +195,59 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		pathInfo = new MultiFormInfo();
 		createMultiformRenderer(new ArrayList<>(experimentalDataMappingElement.getTablePerspectives()),
 				EnumSet.of(EEmbeddingID.PATH_LEVEL1, EEmbeddingID.PATH_LEVEL2), baseContainer, 0.3f, pathInfo);
-		pathInfo.window.setButtonPosition(ESlideInButtonPosition.LEFT);
+		MultiLevelSlideInElement slideInElement = new MultiLevelSlideInElement(pathInfo.window,
+				ESlideInElementPosition.LEFT);
+		slideInElement.addWindowState(new IWindowState() {
+
+			@Override
+			public void apply() {
+				rankingWindow.setVisibility(EVisibility.VISIBLE);
+				pathwayRow.setVisibility(EVisibility.VISIBLE);
+				rankingWindow.setVisibility(EVisibility.VISIBLE);
+				pathInfo.window.setLayoutData(Float.NaN);
+				pathInfo.window.setSize(1, Float.NaN);
+				pathInfo.window.background.setVisibility(EVisibility.NONE);
+				pathInfo.window.baseContainer.setVisibility(EVisibility.NONE);
+				isPathWindowMaximized = false;
+			}
+		});
+		IWindowState currentWindowState = new IWindowState() {
+
+			@Override
+			public void apply() {
+				if (isPathWindowMaximized) {
+					baseContainer.remove(0);
+				}
+				rankingWindow.setVisibility(EVisibility.VISIBLE);
+				pathwayRow.setVisibility(EVisibility.VISIBLE);
+				rankingWindow.setVisibility(EVisibility.VISIBLE);
+				pathInfo.window.background.setVisibility(EVisibility.PICKABLE);
+				pathInfo.window.baseContainer.setVisibility(EVisibility.VISIBLE);
+				isPathWindowMaximized = false;
+				setPathLevel(pathInfo.getEmbeddingIDFromRendererID(pathInfo.multiFormRenderer.getActiveRendererID()));
+			}
+		};
+		slideInElement.addWindowState(currentWindowState);
+		slideInElement.addWindowState(new IWindowState() {
+
+			@Override
+			public void apply() {
+				rankingWindow.setVisibility(EVisibility.NONE);
+				// Adding an element to get the gap is not so nice...
+				GLElement element = new GLElement();
+				element.setSize(0, Float.NaN);
+				baseContainer.add(0, element);
+				pathwayRow.setVisibility(EVisibility.NONE);
+				pathInfo.window.setLayoutData(Float.NaN);
+				pathInfo.window.setSize(Float.NaN, Float.NaN);
+				pathInfo.window.background.setVisibility(EVisibility.PICKABLE);
+				pathInfo.window.baseContainer.setVisibility(EVisibility.VISIBLE);
+				isPathWindowMaximized = true;
+			}
+		});
+		slideInElement.setCurrentWindowState(currentWindowState);
+
+		pathInfo.window.addSlideInElement(slideInElement);
 		pathInfo.window.setShowCloseButton(false);
 		// This assumes that a path level 2 view exists.
 		int rendererID = pathInfo.embeddingIDToRendererIDs.get(EEmbeddingID.PATH_LEVEL2).get(0);
@@ -528,11 +591,15 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		if (embeddingID == null)
 			return;
 		if (embeddingID == EEmbeddingID.PATH_LEVEL1) {
-			pathInfo.window.setSize(Float.NaN, Float.NaN);
-			pathInfo.window.setLayoutData(0.5f);
+			if (!isPathWindowMaximized) {
+				pathInfo.window.setSize(Float.NaN, Float.NaN);
+				pathInfo.window.setLayoutData(0.5f);
+			}
 		} else if (embeddingID == EEmbeddingID.PATH_LEVEL2) {
-			pathInfo.window.setLayoutData(Float.NaN);
-			pathInfo.window.setSize(150, Float.NaN);
+			if (!isPathWindowMaximized) {
+				pathInfo.window.setLayoutData(Float.NaN);
+				pathInfo.window.setSize(150, Float.NaN);
+			}
 		}
 		isLayoutDirty = true;
 	}

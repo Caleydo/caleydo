@@ -83,8 +83,8 @@ public class RankingElement extends GLElementContainer {
 				if (window.getSize().x() != 200)
 					window.setSize(200, Float.NaN);
 			} else {
-				if (window.getSize().y() != 100)
-					window.setSize(100, Float.NaN);
+				if (window.getSize().y() != 150)
+					window.setSize(150, Float.NaN);
 				setFilter(PathwayFilters.NONE);
 			}
 		}
@@ -145,7 +145,8 @@ public class RankingElement extends GLElementContainer {
 	protected void onRowPick(Pick pick) {
 		int rank = pick.getObjectID();
 		PathwayRow row = (PathwayRow) table.getMyRanker(null).get(rank);
-		System.out.println(row + " " + pick.getPickingMode());
+		// view.createTooltip(new DefaultLabelProvider(row.toString()));
+		// System.out.println(row + " " + pick.getPickingMode());
 	}
 
 	/**
@@ -178,7 +179,7 @@ public class RankingElement extends GLElementContainer {
 		// add columns
 		textColumn = new StringRankColumnModel(GLRenderers.drawText("Pathway", VAlign.CENTER),
 				StringRankColumnModel.DEFAULT);
-		textColumn.setWidth(50);
+		textColumn.setWidth(140);
 		table.add(textColumn);
 		// table.addColumn(new StringRankColumnModel(GLRenderers.drawText("Pathway Type", VAlign.CENTER),
 		// new Function<IRow, String>() {
@@ -210,9 +211,11 @@ public class RankingElement extends GLElementContainer {
 	}
 
 	private FloatRankColumnModel createDefaultFloatRankColumnModel(IPathwayRanking ranking) {
-		return new FloatRankColumnModel(ranking.getRankingFunction(), GLRenderers.drawText(
+		FloatRankColumnModel column = new FloatRankColumnModel(ranking.getRankingFunction(), GLRenderers.drawText(
 				ranking.getRankingCriterion(), VAlign.CENTER), Color.BLUE, Color.LIGHT_GRAY, new PiecewiseMapping(0,
 				Float.NaN), FloatInferrers.MEAN);
+		column.setWidth(50);
+		return column;
 	}
 
 	/**

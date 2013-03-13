@@ -19,21 +19,16 @@
  *******************************************************************************/
 package org.caleydo.view.subgraph;
 
-import gleem.linalg.Vec2f;
-
 import org.caleydo.core.util.base.DefaultLabelProvider;
 import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.view.opengl.layout2.AnimatedGLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
-import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton;
-import org.caleydo.core.view.opengl.layout2.basic.GLButton.EButtonMode;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton.ISelectionCallback;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
 import org.caleydo.core.view.opengl.layout2.layout.GLSizeRestrictiveFlowLayout;
-import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 
 /**
  * @author Christian
@@ -46,10 +41,8 @@ public class GLWindow extends AnimatedGLElementContainer {
 	protected final GLTitleBar titleBar;
 	protected final GLPathwayBackground background;
 	protected final GLElementContainer baseContainer;
-	protected final GLButton slideInButton;
 	protected boolean active = false;
 	protected boolean showCloseButton = true;
-	protected ESlideInButtonPosition buttonPosition = ESlideInButtonPosition.NONE;
 
 	public GLWindow(ILabelProvider titleLabelProvider, GLSubGraph view) {
 		this.view = view;
@@ -59,22 +52,19 @@ public class GLWindow extends AnimatedGLElementContainer {
 		baseContainer = new GLElementContainer(new GLSizeRestrictiveFlowLayout(false, 1, GLPadding.ZERO));
 		baseContainer.add(titleBar);
 
-		slideInButton = new GLButton(EButtonMode.CHECKBOX);
 		// slideInButton.setSize(20, 5);
-		SlideInButtonRenderer buttonRenderer = new SlideInButtonRenderer();
-		slideInButton.setRenderer(buttonRenderer);
-		slideInButton.setPicker(buttonRenderer);
-		slideInButton.setHoverEffect(null);
-		slideInButton.setSelected(true);
-		slideInButton.setCallback(new SlideInButtonCallBack());
 
 		add(background);
 		add(baseContainer);
-		add(slideInButton);
+		// add(slideInButton);
 	}
 
 	public GLWindow(String title, GLSubGraph view) {
 		this(new DefaultLabelProvider(title), view);
+	}
+
+	public void addSlideInElement(SlideInElement element) {
+		add(element);
 	}
 
 	public void setActive(boolean active) {
@@ -111,14 +101,6 @@ public class GLWindow extends AnimatedGLElementContainer {
 	}
 
 	/**
-	 * @param buttonPosition
-	 *            setter, see {@link buttonPosition}
-	 */
-	public void setButtonPosition(ESlideInButtonPosition buttonPosition) {
-		this.buttonPosition = buttonPosition;
-	}
-
-	/**
 	 * @param content
 	 *            setter, see {@link content}
 	 */
@@ -151,64 +133,6 @@ public class GLWindow extends AnimatedGLElementContainer {
 		 * Called when the close button of the window was pressed.
 		 */
 		public void onWindowClosed(GLWindow window);
-	}
-
-	public enum ESlideInButtonPosition {
-		NONE, LEFT, RIGHT, TOP, BOTTOM;
-	}
-
-	protected class SlideInButtonRenderer implements IGLRenderer {
-
-		@Override
-		public void render(GLGraphics g, float w, float h, GLElement parent) {
-			switch (buttonPosition) {
-			case NONE:
-				return;
-			case LEFT:
-				g.color(0.6f, 0.6f, 0.6f, 1f).fillRoundedRect(-10, h / 2.0f - 25, 10, 50, 2);
-				break;
-			case BOTTOM:
-				g.color(0.6f, 0.6f, 0.6f, 1f).fillRoundedRect(w / 2.0f - 25, h, 50, 10, 2);
-				break;
-			case RIGHT:
-				g.color(0.6f, 0.6f, 0.6f, 1f).fillRoundedRect(w, h / 2.0f - 25, 10, 50, 2);
-				break;
-			case TOP:
-				g.color(0.6f, 0.6f, 0.6f, 1f).fillRoundedRect(w / 2.0f - 25, -10, 50, 10, 2);
-				break;
-			default:
-				break;
-			}
-
-		}
-	}
-
-	protected class SlideInButtonCallBack implements ISelectionCallback {
-
-		private Vec2f previousWindowSize;
-
-		@Override
-		public void onSelectionChanged(GLButton button, boolean selected) {
-			if (selected) {
-				if (buttonPosition == ESlideInButtonPosition.LEFT || buttonPosition == ESlideInButtonPosition.RIGHT) {
-					setSize(previousWindowSize.x(), Float.NaN);
-				} else {
-					setSize(Float.NaN, previousWindowSize.y());
-				}
-				background.setVisibility(EVisibility.PICKABLE);
-				baseContainer.setVisibility(EVisibility.VISIBLE);
-
-			} else {
-				previousWindowSize = new Vec2f(getSize());
-				if (buttonPosition == ESlideInButtonPosition.LEFT || buttonPosition == ESlideInButtonPosition.RIGHT) {
-					setSize(1, Float.NaN);
-				} else {
-					setSize(Float.NaN, 1);
-				}
-				background.setVisibility(EVisibility.NONE);
-				baseContainer.setVisibility(EVisibility.NONE);
-			}
-		}
 	}
 
 }
