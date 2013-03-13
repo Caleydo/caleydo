@@ -39,14 +39,16 @@ import com.google.common.collect.Iterables;
 
 /**
  * Utility class to hold a list of event listeners to register and remove them all in an convenient way.
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public class EventListenerManager {
 	private final Set<AEventListener<?>> listeners = new HashSet<>();
 
 	protected final IListenerOwner owner;
+	// cache for classes (cannoical name) that has no relevant methods
+	private final Set<String> nothingFounds = new HashSet<>();
 
 	EventListenerManager(IListenerOwner owner) {
 		this.owner = owner;
@@ -67,11 +69,11 @@ public class EventListenerManager {
 
 	/**
 	 * Filter all methods of the listener object for <code>
-	 * 
+	 *
 	 * @ListenTo void xxx(<? extends AEvent> event); </code>
-	 * 
+	 *
 	 *           and register an event listener for calling this method
-	 * 
+	 *
 	 * @param listener
 	 */
 	public final <T> T register(T listener) {
@@ -80,11 +82,11 @@ public class EventListenerManager {
 
 	/**
 	 * Filter all methods of the listener object for <code>
-	 * 
+	 *
 	 * @ListenTo void xxx(<? extends AEvent> event); </code>
-	 * 
+	 *
 	 *           and register an event listener for calling this method
-	 * 
+	 *
 	 * @param listener
 	 * @param eventSpace
 	 *            if {@link ListenTo#restrictToEventSpace()} or {@link ListenTo#restrictExclusiveToEventSpace()} is used
@@ -93,6 +95,7 @@ public class EventListenerManager {
 	public final <T> T register(T listener, String eventSpace) {
 		return register(listener, eventSpace, Predicates.alwaysTrue());
 	}
+
 
 	/**
 	 * see {@link #register(Object, String)} but with an additional speedup criteria to support early stopping of
@@ -104,6 +107,9 @@ public class EventListenerManager {
 	 */
 	public final <T> T register(T listener, String eventSpace, Predicate<? super Class<?>> scanWhile) {
 		Class<?> clazz = listener.getClass();
+		if (nothingFounds.contains(clazz.getCanonicalName())) // avoid scanning useless objects again
+			return listener;
+		boolean hasOne = false;
 		for (Method m : Iterables.filter(ClassUtils.findAllDeclaredMethods(clazz, scanWhile), matches)) {
 			Class<? extends AEvent> event = m.getParameterTypes()[0].asSubclass(AEvent.class);
 			final ListenTo a = m.getAnnotation(ListenTo.class);
@@ -119,15 +125,19 @@ public class EventListenerManager {
 			}
 
 			register(event, l);
+			hasOne = true;
 		}
+		if (!hasOne)
+			nothingFounds.add(clazz.getCanonicalName());
 		return listener;
 	}
 
 	private static final Predicate<Method> matches = new Predicate<Method>() {
 		@Override
 		public boolean apply(Method m) {
-			return m.isAnnotationPresent(ListenTo.class) && m.getParameterTypes().length == 1
-					&& AEvent.class.isAssignableFrom(m.getParameterTypes()[0]) && m.getReturnType() == void.class;
+			Class<?>[] p = m.getParameterTypes();
+			return m.isAnnotationPresent(ListenTo.class) && m.getReturnType() == void.class && p.length == 1
+					&& AEvent.class.isAssignableFrom(p[0]);
 		}
 	};
 

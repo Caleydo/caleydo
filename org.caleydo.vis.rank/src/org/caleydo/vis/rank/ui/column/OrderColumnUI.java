@@ -29,8 +29,8 @@ import java.beans.PropertyChangeListener;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
-import org.caleydo.core.view.opengl.picking.IPickingListener;
-import org.caleydo.core.view.opengl.picking.Pick;
+import org.caleydo.core.view.opengl.layout2.basic.IScrollBar;
+import org.caleydo.core.view.opengl.layout2.basic.ScrollBar;
 import org.caleydo.vis.rank.layout.IRowHeightLayout;
 import org.caleydo.vis.rank.layout.IRowHeightLayout.IRowSetter;
 import org.caleydo.vis.rank.layout.IRowLayoutInstance;
@@ -45,7 +45,8 @@ import org.caleydo.vis.rank.ui.TableBodyUI;
  * @author Samuel Gratzl
  *
  */
-public class OrderColumnUI extends GLElement implements PropertyChangeListener, ITableColumnUI, IPickingListener {
+public class OrderColumnUI extends GLElement implements PropertyChangeListener, ITableColumnUI,
+		IScrollBar.IScrollBarCallback {
 	private final ColumnRanker ranker;
 	private final OrderColumn model;
 	private int scrollBarPickingId = -1;
@@ -53,16 +54,17 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 	private IRowLayoutInstance rowLayoutInstance;
 
 	private int[] rankDeltas;
-	private boolean scrollBarOver;
-	private float scrollOffsetAcc = 0;
-	private int scrollOffset = 0;
+	private final IScrollBar scrollBar;
+	private int scrollOffset;
 	private boolean isScrollingUpdate;
-	private boolean becauseOfRedordering;
+	private boolean becauseOfReordering;
 
 	public OrderColumnUI(OrderColumn model, ColumnRanker ranker, IRowHeightLayout rowLayout) {
 		this.ranker = ranker;
 		this.model = model;
 		this.rowLayout = rowLayout;
+		this.scrollBar = new ScrollBar(false);
+		this.scrollBar.setCallback(this);
 		ranker.addPropertyChangeListener(ColumnRanker.PROP_ORDER, this);
 		ranker.addPropertyChangeListener(ColumnRanker.PROP_INVALID, this);
 		setLayoutData(model);
@@ -110,18 +112,18 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 		switch (evt.getPropertyName()) {
 		case ColumnRanker.PROP_ORDER:
 			rankDeltas = (int[]) evt.getOldValue();
-			becauseOfRedordering = true;
+			becauseOfReordering = true;
 			updateMeAndMyChildren();
 			break;
 		case ColumnRanker.PROP_INVALID:
-			becauseOfRedordering = true;
+			becauseOfReordering = true;
 			updateMeAndMyChildren();
 		}
 	}
 
 	@Override
 	protected void init(IGLElementContext context) {
-		scrollBarPickingId = context.registerPickingListener(this);
+		scrollBarPickingId = context.registerPickingListener(scrollBar);
 		super.init(context);
 	}
 
@@ -134,13 +136,14 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 	}
 
 	public boolean isInternalReLayout() {
-		if (becauseOfRedordering)
+		if (becauseOfReordering)
 			return false;
 		return isScrollingUpdate;
 	}
 
 	public void layoutingDone() {
-		becauseOfRedordering = false;
+		becauseOfReordering = false;
+		isScrollingUpdate = false;
 	}
 
 	@Override
@@ -154,8 +157,8 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 				isScrollingUpdate);
 		isScrollingUpdate = false;
 		scrollOffset = rowLayoutInstance.getOffset();
-		if (!rowLayoutInstance.needsScrollBar())
-			scrollOffsetAcc = 0;
+		scrollBar.setBounds(rowLayoutInstance.getOffset(), rowLayoutInstance.getNumVisibles(),
+				rowLayoutInstance.getSize());
 		super.layout();
 	}
 
@@ -191,13 +194,10 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 	public boolean renderScrollBar(GLGraphics g, float w, float h, boolean left) {
 		if (!rowLayoutInstance.needsScrollBar())
 			return false;
-		float factor = h / rowLayoutInstance.getSize();
 		g.incZ().incZ();
-		g.color(scrollBarOver ? Color.DARK_GRAY : Color.GRAY).fillRect(
-				(left ? -1 : w - RenderStyle.SCROLLBAR_WIDTH + 1),
-				rowLayoutInstance.getOffset() * factor,
-				RenderStyle.SCROLLBAR_WIDTH,
-				rowLayoutInstance.getNumVisibles() * factor);
+		g.move((left ? -1 : w - RenderStyle.SCROLLBAR_WIDTH + 1), 0);
+		scrollBar.render(g, RenderStyle.SCROLLBAR_WIDTH, h, this);
+		g.move(-(left ? -1 : w - RenderStyle.SCROLLBAR_WIDTH + 1), 0);
 		g.decZ().decZ();
 		return true;
 	}
@@ -207,50 +207,16 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 			return;
 		g.incZ().incZ();
 		g.pushName(scrollBarPickingId);
-		g.fillRect(left ? 0 : w - RenderStyle.SCROLLBAR_WIDTH, 0, RenderStyle.SCROLLBAR_WIDTH, h);
+		g.move((left ? -1 : w - RenderStyle.SCROLLBAR_WIDTH + 1), 0);
+		scrollBar.renderPick(g, RenderStyle.SCROLLBAR_WIDTH, h, this);
+		g.move(-(left ? -1 : w - RenderStyle.SCROLLBAR_WIDTH + 1), 0);
 		g.popName();
 		g.decZ().decZ();
 	}
 
 	@Override
-	public void pick(Pick pick) {
-		if (pick.isAnyDragging() && !pick.isDoDragging())
-			return;
-		switch (pick.getPickingMode()) {
-		case MOUSE_OVER:
-			scrollBarOver = true;
-			repaint();
-			break;
-		case CLICKED:
-			float y = toRelative(pick.getPickedPoint()).y();
-			float factor = getSize().y() / rowLayoutInstance.getSize();
-			int index = (int) (y / factor);
-			if (index >= rowLayoutInstance.getOffset()
-					&& index <= (rowLayoutInstance.getOffset() + rowLayoutInstance.getNumVisibles()))
-				pick.setDoDragging(true);
-			else {
-				setScrollOffset(index - rowLayoutInstance.getNumVisibles() / 2);
-			}
-			repaint();
-			break;
-		case DRAGGED:
-			scrollOffsetAcc += pick.getDy() / getSize().y() * rowLayoutInstance.getSize();
-			int delta = Math.round(scrollOffsetAcc);
-			if (delta == 0)
-				return;
-			scrollOffsetAcc -= delta;
-			setScrollOffset(scrollOffset + delta);
-			break;
-		case MOUSE_RELEASED:
-			repaint();
-			break;
-		case MOUSE_OUT:
-			scrollBarOver = false;
-			repaint();
-			break;
-		default:
-			break;
-		}
+	public void onScrollBarMoved(IScrollBar scrollBar, float offset) {
+		setScrollOffset(Math.round(offset));
 	}
 
 	/**
@@ -384,5 +350,10 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 			g.color(Color.GRAY);
 			g.drawLine(-1, left.y() + left.w() * 0.5f, w, right.y() + right.w() * 0.5f);
 		}
+	}
+
+	@Override
+	public float getTotal(IScrollBar scrollBar) {
+		return getSize().y();
 	}
 }

@@ -243,8 +243,13 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 	}
 
 	@Override
-	public final Vec2f getAbsoluteLocation() {
-		return new Vec2f(0, 0);
+	public Vec2f toAbsolute(Vec2f relative) {
+		return relative;
+	}
+
+	@Override
+	public Vec2f toRelative(Vec2f absolute) {
+		return absolute;
 	}
 
 	@Override

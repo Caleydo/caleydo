@@ -17,59 +17,46 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.view.opengl.layout2;
+package org.caleydo.core.view.opengl.layout2.basic;
 
 import gleem.linalg.Vec2f;
 
+import java.awt.Point;
+
+import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
+import org.caleydo.core.view.opengl.picking.IPickingListener;
+
 /**
- * an element that can be the parent of another element
- *
  * @author Samuel Gratzl
  *
  */
-public interface IGLElementParent {
-	/**
-	 * triggers that the parent should be re layouted
-	 */
-	void relayout();
+public interface IScrollBar extends IGLRenderer, IPickingListener {
+	void renderPick(GLGraphics g, float w, float h, GLElement parent);
 
-	/**
-	 * triggers that the parent hierarchy will be repainted
-	 */
-	void repaint();
+	float setBounds(float offset, float view, float total);
 
-	/**
-	 * triggers that the parents hierarchy will be repainted just the picking
-	 */
-	void repaintPick();
+	void setCallback(IScrollBarCallback callback);
 
-	/**
-	 * notification that the child will be moved to another parent
-	 *
-	 * @param child
-	 * @return whether the child was a already initialized
-	 */
-	boolean moved(GLElement child);
+	public interface IScrollBarCallback {
+		void onScrollBarMoved(IScrollBar scrollBar, float offset);
 
-	/**
-	 * @return the parent of this parent
-	 */
-	IGLElementParent getParent();
+		/**
+		 * @param pickedPoint
+		 * @return
+		 */
+		Vec2f toRelative(Point pickedPoint);
 
-	/**
-	 * converts the relative location in the parent coordinate system to an absolute one
-	 * 
-	 * @param relative
-	 * @return
-	 */
-	Vec2f toAbsolute(Vec2f relative);
+		/**
+		 * @param scrollBar
+		 * @return
+		 */
+		float getTotal(IScrollBar scrollBar);
 
-	/**
-	 * converts the absolute location in relative to the parent coordinate system
-	 * 
-	 * @param absolute
-	 * @return
-	 */
-	Vec2f toRelative(Vec2f absolute);
-
+		/**
+		 *
+		 */
+		void repaint();
+	}
 }

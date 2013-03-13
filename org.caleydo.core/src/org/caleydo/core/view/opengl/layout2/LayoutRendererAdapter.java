@@ -70,8 +70,15 @@ public final class LayoutRendererAdapter extends ALayoutRenderer implements IGLE
 	}
 
 	@Override
-	public Vec2f getAbsoluteLocation() {
-		return location;
+	public Vec2f toAbsolute(Vec2f relative) {
+		relative.add(location);
+		return relative;
+	}
+
+	@Override
+	public Vec2f toRelative(Vec2f absolute) {
+		absolute.sub(location);
+		return absolute;
 	}
 
 	@Override

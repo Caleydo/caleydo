@@ -278,7 +278,7 @@ public class GLElement implements IHasGLLayoutData {
 
 	/**
 	 * determines whether this or a sub element might be pickable
-	 * 
+	 *
 	 * @return
 	 */
 	protected boolean hasPickAbles() {
@@ -466,9 +466,7 @@ public class GLElement implements IHasGLLayoutData {
 		if (parent == null) {
 			return getLocation();
 		} else {
-			Vec2f p = parent.getAbsoluteLocation();
-			p.add(getLocation());
-			return p;
+			return parent.toAbsolute(getLocation());
 		}
 	}
 
@@ -479,8 +477,8 @@ public class GLElement implements IHasGLLayoutData {
 	 * @return
 	 */
 	public final Vec2f toAbsolute(Vec2f relative) {
-		relative.add(getAbsoluteLocation());
-		return relative;
+		relative.add(getLocation());
+		return parent.toAbsolute(relative);
 	}
 
 	/**
@@ -490,7 +488,8 @@ public class GLElement implements IHasGLLayoutData {
 	 * @return
 	 */
 	public final Vec2f toRelative(Vec2f absolute) {
-		absolute.sub(getAbsoluteLocation());
+		absolute = parent.toRelative(absolute);
+		absolute.sub(getLocation());
 		return absolute;
 	}
 

@@ -99,7 +99,7 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 		this.animator = new FPSAnimator(canvas.asGLAutoDrawAble(), 30);
 
 		// ENABLE to print the fps to System.err
-		// animator.setUpdateFPSFrames(30, System.err);
+		animator.setUpdateFPSFrames(30, System.err);
 
 		this.loader = loader;
 		this.canvas.addMouseListener(pickingManager.getListener());
@@ -158,8 +158,15 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 
 
 	@Override
-	public Vec2f getAbsoluteLocation() {
-		return new Vec2f(padding.left, padding.top);
+	public Vec2f toAbsolute(Vec2f relative) {
+		relative.add(new Vec2f(padding.left, padding.top));
+		return relative;
+	}
+
+	@Override
+	public Vec2f toRelative(Vec2f absolute) {
+		absolute.sub(new Vec2f(padding.left, padding.top));
+		return absolute;
 	}
 
 	@Override

@@ -38,6 +38,7 @@ import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.vis.rank.config.IRankTableUIConfig;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
+import org.caleydo.vis.rank.model.mixin.IGrabRemainingHorizontalSpace;
 import org.caleydo.vis.rank.ui.GLPropertyChangeListeners;
 import org.caleydo.vis.rank.ui.RenderStyle;
 import org.caleydo.vis.rank.ui.SeparatorUI;
@@ -182,7 +183,11 @@ public abstract class ACompositeHeaderUI extends GLElementContainer implements I
 			ARankColumnModel model = col.getLayoutDataAs(ARankColumnModel.class, null);
 			float wi = getChildWidth(i, model);
 
-			if ((x + wi) > w) {
+			if (i == (columns.size() - 1) && model instanceof IGrabRemainingHorizontalSpace) {
+				// catch all
+				wi = w - x - RenderStyle.SCROLLBAR_WIDTH;
+				col.setBounds(x, 0, wi, h);
+			} else if ((x + wi + RenderStyle.COLUMN_SPACE) > w) {
 				// hide the rest
 				for (; i < columns.size(); ++i) {
 					columns.get(i).hide();
@@ -193,7 +198,6 @@ public abstract class ACompositeHeaderUI extends GLElementContainer implements I
 				}
 				break;
 			}
-
 			if (col.asElement() instanceof OrderColumnHeaderUI)
 				col.setBounds(x, y + HIST_HEIGHT / 2, wi, hn - HIST_HEIGHT / 2);
 			else if (col.asElement() instanceof IThickHeader)

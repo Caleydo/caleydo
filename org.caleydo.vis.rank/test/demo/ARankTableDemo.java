@@ -24,6 +24,7 @@ import java.awt.Dimension;
 import java.io.IOException;
 
 import org.caleydo.core.view.opengl.canvas.IGLKeyListener;
+import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLSandBox;
 import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
 import org.caleydo.vis.rank.config.RankTableConfigBase;
@@ -31,7 +32,7 @@ import org.caleydo.vis.rank.config.RankTableUIConfigs;
 import org.caleydo.vis.rank.layout.RowHeightLayouts;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.StackedRankColumnModel;
-import org.caleydo.vis.rank.ui.TableUI;
+import org.caleydo.vis.rank.ui.RankTableUI;
 
 import com.google.common.collect.Iterables;
 
@@ -45,7 +46,7 @@ public abstract class ARankTableDemo extends GLSandBox {
 	protected final RankTableModel table;
 
 	public ARankTableDemo(String name) {
-		super(name, new TableUI(), new GLPadding(5),
+		super(name, createRoot(), new GLPadding(5),
 				new Dimension(800, 600));
 		this.table = new RankTableModel(new RankTableConfigBase());
 		try {
@@ -77,11 +78,18 @@ public abstract class ARankTableDemo extends GLSandBox {
 
 	}
 
+	/**
+	 * @return
+	 */
+	private static GLElement createRoot() {
+		return new RankTableUI();
+	}
+
 	protected abstract void createModel() throws IOException, NoSuchFieldException;
 
 	private void createUI() {
 		// visual part
-		TableUI root = (TableUI) getRoot();
+		RankTableUI root = (RankTableUI) getRoot();
 		root.init(table, RankTableUIConfigs.DEFAULT, RowHeightLayouts.FISH_EYE, RowHeightLayouts.UNIFORM);
 	}
 
