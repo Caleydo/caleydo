@@ -29,6 +29,7 @@ import java.util.List;
 
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
+import org.caleydo.core.view.opengl.layout2.basic.IScrollBar;
 import org.caleydo.core.view.opengl.layout2.basic.ScrollBar;
 import org.caleydo.core.view.opengl.layout2.basic.ScrolledGLElement;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
@@ -98,7 +99,7 @@ public class RankingElement extends GLElementContainer {
 		initTable(table);
 
 		setLayout(GLLayouts.flowVertical(0));
-		this.add(new TableHeaderUI(table, new IRankTableUIConfig() {
+		IRankTableUIConfig config = new IRankTableUIConfig() {
 			@Override
 			public boolean isMoveAble() {
 				return false;
@@ -113,15 +114,22 @@ public class RankingElement extends GLElementContainer {
 			public boolean canChangeWeights() {
 				return false;
 			}
-		}));
-		TableBodyUI body = new TableBodyUI(table, RowHeightLayouts.UNIFORM);
+
+			@Override
+			public IScrollBar createScrollBar(boolean horizontal) {
+				// TODO implement a scrollbar that is compatible with the OLD picking manager
+				return new ScrollBar(horizontal);
+			}
+		};
+		this.add(new TableHeaderUI(table, config));
+		TableBodyUI body = new TableBodyUI(table, RowHeightLayouts.UNIFORM, config);
 		body.addOnRowPick(new IPickingListener() {
 			@Override
 			public void pick(Pick pick) {
 				onRowPick(pick);
 			}
 		});
-		ScrolledGLElement scbody = new ScrolledGLElement(body, new ScrollBar(true), null, 5);
+		ScrolledGLElement scbody = new ScrolledGLElement(body, config.createScrollBar(true), null, 5);
 		this.add(scbody);
 	}
 
