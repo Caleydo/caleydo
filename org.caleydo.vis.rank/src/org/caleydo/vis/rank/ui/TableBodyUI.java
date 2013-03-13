@@ -406,7 +406,7 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 			}
 			last = col;
 		}
-		if (last != null && size() > 1) {
+		if (last != null && !(last instanceof OrderColumnUI) && size() > 1) {
 			renderSubArea(g, x, act, last, selected, pick, w - x - RenderStyle.SCROLLBAR_WIDTH);
 		}
 		g.incZ();
