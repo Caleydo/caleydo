@@ -63,7 +63,7 @@ public class ColumnUI extends AnimatedGLElementContainer implements ITableColumn
 
 	@Override
 	protected ALayoutAnimation createMoveAnimation(IGLLayoutElement elem, Vec4f before, Vec4f after) {
-		if (!getColumnParent().getRanker(model).isBecauseOfRedordering()) {
+		if (getColumnParent().getRanker(model).isInternalReLayout()) {
 			DummyAnimation d = new DummyAnimation(EAnimationType.MOVE, elem);
 			d.init(before, after);
 			return d;

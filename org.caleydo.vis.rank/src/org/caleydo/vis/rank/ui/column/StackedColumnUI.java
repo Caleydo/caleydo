@@ -123,7 +123,7 @@ public class StackedColumnUI extends ACompositeTableColumnUI<StackedRankColumnMo
 			// moving around
 			final float[] weights = new float[this.model.size()];
 			for (int i = 0; i < weights.length; ++i)
-				weights[i] = this.model.get(i).getWeight();
+				weights[i] = this.model.getChildWidth(i);
 
 			final RankTableModel table = this.model.getTable();
 			IRow selected = table.getSelectedRow();
@@ -142,6 +142,11 @@ public class StackedColumnUI extends ACompositeTableColumnUI<StackedRankColumnMo
 			// simple
 			getColumnModelParent().layoutRows(model, setter, w, h);
 		}
+	}
+
+	@Override
+	protected float getChildWidth(int i, ARankColumnModel model) {
+		return this.model.getChildWidth(i);
 	}
 
 	@Override

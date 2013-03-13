@@ -39,7 +39,7 @@ public class RankRankColumnModel extends ARankColumnModel implements IGLRenderer
 	public RankRankColumnModel() {
 		super(Color.GRAY, new Color(0.95f, .95f, .95f));
 		setHeaderRenderer(GLRenderers.drawText("Rank", VAlign.CENTER));
-		setWeight(30);
+		setWidth(35);
 	}
 
 	public RankRankColumnModel(RankRankColumnModel copy) {

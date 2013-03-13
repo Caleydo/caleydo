@@ -162,7 +162,7 @@ public class StackedColumnHeaderUI extends ACompositeHeaderUI implements IThickH
 
 	@Override
 	protected float getLeftPadding() {
-		return RenderStyle.COLUMN_SPACE + 3;
+		return RenderStyle.COLUMN_SPACE;
 	}
 
 	@Override
@@ -199,13 +199,13 @@ public class StackedColumnHeaderUI extends ACompositeHeaderUI implements IThickH
 			float[] distributions = model.getDistributions();
 			float yi = HIST_HEIGHT + 7;
 			float hi = LABEL_HEIGHT - 6;
-			float x = COLUMN_SPACE + 2;
+			float x = COLUMN_SPACE;
 			g.lineWidth(RenderStyle.COLOR_STACKED_BORDER_WIDTH);
 			g.color(RenderStyle.COLOR_STACKED_BORDER);
 			g.drawLine(0, HIST_HEIGHT + 4, w, HIST_HEIGHT + 4);
 			g.lineWidth(1);
 			for (int i = 0; i < numColumns; ++i) {
-				float wi = model.get(i).getPreferredWidth() + COLUMN_SPACE;
+				float wi = this.model.getChildWidth(i) + COLUMN_SPACE;
 				// g.drawLine(x, yi, x, yi + hi + 2);
 				g.drawText(String.format(Locale.ENGLISH, "%.2f%%", distributions[i] * 100), x, yi, wi, hi - 4,
 						VAlign.CENTER);
@@ -215,6 +215,11 @@ public class StackedColumnHeaderUI extends ACompositeHeaderUI implements IThickH
 			// g.drawLine(x, yi, x, yi + hi + 2);
 		}
 		super.renderImpl(g, w, h);
+	}
+
+	@Override
+	protected float getChildWidth(int i, ARankColumnModel model) {
+		return this.model.getChildWidth(i);
 	}
 
 	public void setAlignment(int index) {

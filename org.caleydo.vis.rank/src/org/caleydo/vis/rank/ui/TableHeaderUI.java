@@ -74,6 +74,11 @@ public final class TableHeaderUI extends ACompositeHeaderUI {
 	}
 
 	@Override
+	protected float getChildWidth(int i, ARankColumnModel model) {
+		return model.getWidth();
+	}
+
+	@Override
 	public boolean canMoveHere(int index, ARankColumnModel model, boolean clone) {
 		return table.isMoveAble(model, index, clone);
 	}

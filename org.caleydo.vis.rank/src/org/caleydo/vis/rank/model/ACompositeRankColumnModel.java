@@ -65,8 +65,8 @@ public abstract class ACompositeRankColumnModel extends ARankColumnModel impleme
 	public final boolean add(int index, ARankColumnModel model) {
 		if (!canAdd(model))
 			return false;
-		init(model);
 		this.children.add(index, model);
+		init(model);
 		propertySupport.fireIndexedPropertyChange(PROP_CHILDREN, index, null, model);
 		return true;
 	}

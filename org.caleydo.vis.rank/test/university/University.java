@@ -64,7 +64,6 @@ public class University extends ARankTableDemo {
 		table.addData(rows);
 		Map<String, String> metaData = readCountriesCategories();
 		RankRankColumnModel rankRankColumnModel = new RankRankColumnModel();
-		rankRankColumnModel.setWeight(35);
 		table.add(rankRankColumnModel);
 		table.add(new StringRankColumnModel(GLRenderers.drawText("University", VAlign.CENTER),
 				StringRankColumnModel.DEFAULT));
@@ -87,26 +86,30 @@ public class University extends ARankTableDemo {
 				new FloatRankColumnModel(new ReflectionFloatData(field("teaching")), GLRenderers.drawText("Teaching",
 						VAlign.CENTER), Color.decode("#FC9272"), Color.decode("#FEE0D2"),
 						new PiecewiseMapping(0,
-						100), FloatInferrers.MEDIAN).setWeight((float) 30 * 5));
+				100), FloatInferrers.MEDIAN));
 		stacked.add(
 				new FloatRankColumnModel(new ReflectionFloatData(field("research")), GLRenderers.drawText("Research",
 						VAlign.CENTER), Color.decode("#9ECAE1"), Color.decode("#DEEBF7"),
 						new PiecewiseMapping(0,
-						100), FloatInferrers.MEDIAN).setWeight((float) 30 * 5));
+				100), FloatInferrers.MEDIAN));
 		stacked.add(
 				new FloatRankColumnModel(new ReflectionFloatData(field("citations")), GLRenderers.drawText("Citations",
 						VAlign.CENTER), Color.decode("#A1D99B"), Color.decode("#E5F5E0"),
 						new PiecewiseMapping(0,
-						100), FloatInferrers.MEDIAN).setWeight((float) 30 * 5));
+				100), FloatInferrers.MEDIAN));
 		stacked.add(
 				new FloatRankColumnModel(new ReflectionFloatData(field("incomeFromIndustry")), GLRenderers.drawText(
 						"Income From Industry", VAlign.CENTER), Color.decode("#C994C7"), Color.decode("#E7E1EF"),
-						new PiecewiseMapping(0, 100), FloatInferrers.MEDIAN).setWeight(7.5f * 5));
+				new PiecewiseMapping(0, 100), FloatInferrers.MEDIAN));
 		stacked.add(
 				new FloatRankColumnModel(new ReflectionFloatData(field("internationalMix")), GLRenderers.drawText(
 						"International Mix", VAlign.CENTER), Color.decode("#FDBB84"),
  Color.decode("#FEE8C8"),
-						new PiecewiseMapping(0, 100), FloatInferrers.MEDIAN).setWeight(2.5f * 5));
+				new PiecewiseMapping(0, 100), FloatInferrers.MEDIAN));
+
+		// 30,30,30,7.5,2.f
+		stacked.setDistributions(new float[] { 30, 30, 30, 7.5f, 2.5f });
+		stacked.setWidth(300);
 
 		table.add(new FloatRankColumnModel(new ReflectionFloatData(field("overallScore")), GLRenderers.drawText(
 				"Overall Score", VAlign.CENTER), Color.decode("#DFC27D"), Color.decode("#F6E8C3"),

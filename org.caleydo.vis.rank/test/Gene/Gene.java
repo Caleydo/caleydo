@@ -113,7 +113,6 @@ public class Gene extends ARankTableDemo {
 		List<GeneRow> rows = readData();
 		table.addData(rows);
 		RankRankColumnModel rankRankColumnModel = new RankRankColumnModel();
-		rankRankColumnModel.setWeight(35);
 		table.add(rankRankColumnModel);
 		table.add(new StringRankColumnModel(GLRenderers.drawText("Gene", VAlign.CENTER), StringRankColumnModel.DEFAULT));
 
@@ -133,7 +132,7 @@ public class Gene extends ARankTableDemo {
 			stacked.add(new FloatRankColumnModel(new ValueGetter(type, column), GLRenderers.drawText(type.name() + "_"
 					+ label, VAlign.CENTER), color, bgColor, pValueMapping(), FloatInferrers.MEDIAN));
 		}
-		stacked.addWeight(250 - stacked.getWeight());
+		stacked.setWidth(250);
 		return stacked;
 	}
 
@@ -144,7 +143,7 @@ public class Gene extends ARankTableDemo {
 			stacked.add(new FloatRankColumnModel(new ValueGetter(type, column), GLRenderers.drawText(type.name() + "_"
 					+ label, VAlign.CENTER), color, bgColor, new PiecewiseMapping(0, Float.NaN), FloatInferrers.MEDIAN));
 		}
-		stacked.addWeight(150 - stacked.getWeight());
+		stacked.setWidth(150);
 		return stacked;
 	}
 

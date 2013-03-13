@@ -63,9 +63,10 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements IHi
 		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
 			switch(evt.getPropertyName()) {
-			case PROP_WEIGHT:
+			case PROP_WIDTH:
 				cacheMulti.clear();
-				onWeightChanged((float) evt.getNewValue() - (float) evt.getOldValue());
+				onWeightChanged((ARankColumnModel) evt.getSource(), (float) evt.getOldValue(),
+						(float) evt.getNewValue());
 				break;
 			case IFilterColumnMixin.PROP_FILTER:
 			case IMappedColumnMixin.PROP_MAPPING:
@@ -89,17 +90,16 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements IHi
 	public StackedRankColumnModel() {
 		super(Color.GRAY, new Color(0.95f, .95f, .95f));
 		setHeaderRenderer(new TextRenderer("SUM", this));
-		setWeight(0);
+		width = RenderStyle.COLUMN_SPACE;
 	}
 
 	public StackedRankColumnModel(StackedRankColumnModel copy) {
 		super(copy);
 		this.alignment = copy.alignment;
 		this.annotation = copy.annotation;
-		this.compressedWidth = copy.compressedWidth;
 		this.isCompressed = copy.isCompressed;
 		setHeaderRenderer(new TextRenderer("SUM", this));
-		setWeight(0);
+		width = RenderStyle.COLUMN_SPACE;
 		cloneInitChildren();
 	}
 
@@ -108,18 +108,6 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements IHi
 		return new StackedRankColumnModel(this);
 	}
 
-	protected void onWeightChanged(float delta) {
-		addDirectWeight(delta);
-	}
-
-	@Override
-	public float getPreferredWidth() {
-		if (isCollapsed())
-			return COLLAPSED_WIDTH;
-		if (isCompressed)
-			return compressedWidth;
-		return getWeight() + RenderStyle.COLUMN_SPACE * size() + 6;
-	}
 
 	/**
 	 * @return the annotation, see {@link #annotation}
@@ -154,54 +142,60 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements IHi
 	@Override
 	protected void init(ARankColumnModel model) {
 		super.init(model);
-		model.addPropertyChangeListener(PROP_WEIGHT, listener);
+		model.addPropertyChangeListener(PROP_WIDTH, listener);
 		model.addPropertyChangeListener(IFilterColumnMixin.PROP_FILTER, listener);
 		model.addPropertyChangeListener(IMappedColumnMixin.PROP_MAPPING, listener);
-		addDirectWeight(model.getWeight());
+		// addDirectWeight(model.getWeight());
 		cacheMulti.clear();
-	}
-
-	private void addDirectWeight(float delta) {
-		setWeight(getWeight() + delta);
-	}
-
-	@Override
-	public ARankColumnModel addWeight(float delta) {
-		if (isCompressed) {
-			propertySupport.firePropertyChange(PROP_WEIGHT, this.compressedWidth, this.compressedWidth += delta);
-			return this;
-		}
-		// uniformly distribute the weight to my children
-		if (children.isEmpty())
-			addDirectWeight(delta);
-		else {
-			float sum = getWeight();
-			for (ARankColumnModel r : this) {
-				float w = r.getWeight();
-				float f = w / sum;
-				if ((w + f * delta) <= 1) // abort invalid weight
-					return this;
-			}
-			for (ARankColumnModel r : this) {
-				float w = r.getWeight();
-				float f = w / sum;
-				r.addWeight(f * delta);
-			}
-		}
-		return this;
+		super.setWidth(width + model.getWidth() + RenderStyle.COLUMN_SPACE);
+		model.setParentData(model.getWidth());
 	}
 
 	@Override
 	protected void takeDown(ARankColumnModel model) {
 		super.takeDown(model);
-		model.removePropertyChangeListener(PROP_WEIGHT, listener);
+		model.removePropertyChangeListener(PROP_WIDTH, listener);
 		model.removePropertyChangeListener(IFilterColumnMixin.PROP_FILTER, listener);
 		model.removePropertyChangeListener(IMappedColumnMixin.PROP_MAPPING, listener);
-		addDirectWeight(-model.getWeight());
+		// addDirectWeight(-model.getWeight());
 		if (alignment > size() - 2) {
 			setAlignment(alignment - 1);
 		}
+		super.setWidth(width - model.getWidth() - RenderStyle.COLUMN_SPACE);
+		model.setParentData(null);
 		cacheMulti.clear();
+	}
+
+	protected void onWeightChanged(ARankColumnModel child, float oldValue, float newValue) {
+		child.setParentData(newValue);
+		super.setWidth(width + (newValue - oldValue));
+	}
+
+	@Override
+	public ARankColumnModel setWidth(float width) {
+		if (isCompressed) {
+			this.propertySupport.firePropertyChange(PROP_WIDTH, compressedWidth, this.compressedWidth = width);
+			return this;
+		}
+		float shift = (this.size() + 1) * RenderStyle.COLUMN_SPACE;
+		float factor = (width - shift) / (this.width - shift); // new / old
+		for (ARankColumnModel col : this) {
+			float wi = ((float) col.getParentData()) * factor;
+			col.setParentData(wi);
+			col.removePropertyChangeListener(PROP_WIDTH, listener);
+			col.setWidth(wi);
+			col.addPropertyChangeListener(PROP_WIDTH, listener);
+		}
+		return super.setWidth(width);
+	}
+
+	@Override
+	public float getWidth() {
+		if (isCollapsed())
+			return COLLAPSED_WIDTH;
+		if (isCompressed)
+			return compressedWidth;
+		return super.getWidth();
 	}
 
 	@Override
@@ -224,11 +218,11 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements IHi
 		float s = 0;
 		final int size = children.size();
 		MultiFloat f = getSplittedValue(row);
+		float[] ws = this.getDistributions();
 		for (int i = 0; i < size; ++i) {
-			ARankColumnModel col = children.get(i);
-			s += f.values[i] * col.getWeight();
+			s += f.values[i] * ws[i];
 		}
-		return s / getWeight();
+		return s;
 	}
 
 	@Override
@@ -279,14 +273,11 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements IHi
 	 */
 	public float[] getDistributions() {
 		float[] r = new float[this.size()];
-		float sum = 0;
+		float base = width - RenderStyle.COLUMN_SPACE * (size() + 1);
 		int i = 0;
 		for (ARankColumnModel col : this) {
-			sum += col.getWeight();
-			r[i++] = col.getWeight();
+			r[i++] = (float) col.getParentData() / base;
 		}
-		for (i = 0; i < r.length; ++i)
-			r[i] /= sum;
 		return r;
 	}
 
@@ -295,12 +286,16 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements IHi
 		float sum = 0;
 		for (float v : distributions)
 			sum += v;
-		float factor = this.getWeight() / sum;
+		float factor = (width - RenderStyle.COLUMN_SPACE * (size() + 1)) / sum;
 		int i = 0;
 		for (ARankColumnModel col : this) {
 			float w = distributions[i++] * factor;
-			col.setWeight(w);
+			col.setParentData(w);
 		}
+	}
+
+	public float getChildWidth(int i) {
+		return (float) get(i).getParentData();
 	}
 
 	public boolean isAlignAll() {

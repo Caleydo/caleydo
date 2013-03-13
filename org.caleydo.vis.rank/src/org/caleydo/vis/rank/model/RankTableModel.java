@@ -272,13 +272,13 @@ public class RankTableModel implements IRankColumnParent {
 	}
 
 	private void setup(ARankColumnModel col) {
-		col.addPropertyChangeListener(ARankColumnModel.PROP_WEIGHT, resort);
+		col.addPropertyChangeListener(ARankColumnModel.PROP_WIDTH, resort);
 		col.addPropertyChangeListener(IMappedColumnMixin.PROP_MAPPING, refilter);
 		col.addPropertyChangeListener(IFilterColumnMixin.PROP_FILTER, refilter);
 	}
 
 	private void takeDown(ARankColumnModel col) {
-		col.removePropertyChangeListener(ARankColumnModel.PROP_WEIGHT, resort);
+		col.removePropertyChangeListener(ARankColumnModel.PROP_WIDTH, resort);
 		col.removePropertyChangeListener(IMappedColumnMixin.PROP_MAPPING, refilter);
 		col.removePropertyChangeListener(IFilterColumnMixin.PROP_FILTER, refilter);
 	}

@@ -138,12 +138,12 @@ public abstract class ACompositeHeaderUI extends GLElementContainer implements I
 	}
 
 	private void init(ARankColumnModel col) {
-		col.addPropertyChangeListener(ARankColumnModel.PROP_WEIGHT, layoutOnChange);
+		col.addPropertyChangeListener(ARankColumnModel.PROP_WIDTH, layoutOnChange);
 		col.addPropertyChangeListener(ICollapseableColumnMixin.PROP_COLLAPSED, layoutOnChange);
 	}
 
 	private void takeDown(ARankColumnModel col) {
-		col.removePropertyChangeListener(ARankColumnModel.PROP_WEIGHT, layoutOnChange);
+		col.removePropertyChangeListener(ARankColumnModel.PROP_WIDTH, layoutOnChange);
 		col.removePropertyChangeListener(ICollapseableColumnMixin.PROP_COLLAPSED, layoutOnChange);
 	}
 
@@ -180,9 +180,9 @@ public abstract class ACompositeHeaderUI extends GLElementContainer implements I
 		for (int i = 0; i < columns.size(); ++i) {
 			IGLLayoutElement col = columns.get(i);
 			ARankColumnModel model = col.getLayoutDataAs(ARankColumnModel.class, null);
-			float wi = model.getPreferredWidth();
+			float wi = getChildWidth(i, model);
 
-			if ((x + wi + RenderStyle.COLUMN_SPACE) > w) {
+			if ((x + wi) > w) {
 				// hide the rest
 				for (; i < columns.size(); ++i) {
 					columns.get(i).hide();
@@ -208,6 +208,8 @@ public abstract class ACompositeHeaderUI extends GLElementContainer implements I
 			}
 		}
 	}
+
+	protected abstract float getChildWidth(int i, ARankColumnModel model);
 
 	protected float getLeftPadding() {
 		return RenderStyle.COLUMN_SPACE;

@@ -134,12 +134,16 @@ public abstract class ACompositeTableColumnUI<T extends ACompositeRankColumnMode
 	@Override
 	public void doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
 		float x = getLeftPadding();
+		int i = 0;
 		for (IGLLayoutElement col : children.subList(firstColumn, children.size())) {
 			ARankColumnModel model = col.getLayoutDataAs(ARankColumnModel.class, null);
-			col.setBounds(x, 0, model.getPreferredWidth(), h);
-			x += model.getPreferredWidth() + RenderStyle.COLUMN_SPACE;
+			float wi = getChildWidth(i++, model);
+			col.setBounds(x, 0, wi, h);
+			x += wi + RenderStyle.COLUMN_SPACE;
 		}
 	}
+
+	protected abstract float getChildWidth(int i, ARankColumnModel model);
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {

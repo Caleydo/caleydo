@@ -90,7 +90,6 @@ class FishEyeRowHeightLayout implements IRowHeightLayout {
 					offset++;
 					topSum -= rowHeight(selectedRank - offset + 1); // TODO check
 				}
-				System.out.println(topSum + " " + h);
 			}
 		}
 

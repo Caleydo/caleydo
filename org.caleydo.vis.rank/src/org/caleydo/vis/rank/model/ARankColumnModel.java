@@ -38,11 +38,11 @@ import org.caleydo.vis.rank.ui.detail.ValueElement;
  *
  */
 public abstract class ARankColumnModel implements IDragInfo, IRankColumnModel {
-	public static final String PROP_WEIGHT = "weight";
+	public static final String PROP_WIDTH = "width";
 
 	protected final PropertyChangeSupport propertySupport = new PropertyChangeSupport(this);
 
-	private float weight = 100;
+	protected float width = 100;
 
 	private IGLRenderer header = GLRenderers.DUMMY;
 	protected final Color color;
@@ -50,6 +50,7 @@ public abstract class ARankColumnModel implements IDragInfo, IRankColumnModel {
 	private boolean collapsed = false;
 
 	protected IRankColumnParent parent;
+	private Object parentData;
 
 	public ARankColumnModel(Color color, Color bgColor) {
 		this.color = color;
@@ -59,10 +60,11 @@ public abstract class ARankColumnModel implements IDragInfo, IRankColumnModel {
 	public ARankColumnModel(ARankColumnModel copy) {
 		this.color = copy.color;
 		this.bgColor = copy.bgColor;
-		this.weight = copy.weight;
+		this.width = copy.width;
 		this.parent = copy.parent;
 		this.collapsed = copy.collapsed;
 		this.header = copy.header;
+		this.width = copy.width;
 	}
 
 	@Override
@@ -89,21 +91,33 @@ public abstract class ARankColumnModel implements IDragInfo, IRankColumnModel {
 	}
 
 	/**
+	 * @return the parentData, see {@link #parentData}
+	 */
+	public Object getParentData() {
+		return parentData;
+	}
+
+	/**
+	 * @param parentData
+	 *            setter, see {@link parentData}
+	 */
+	public void setParentData(Object parentData) {
+		this.parentData = parentData;
+	}
+
+	/**
 	 * @param weight
 	 *            setter, see {@link weight}
 	 */
-	public ARankColumnModel setWeight(float weight) {
-		propertySupport.firePropertyChange(PROP_WEIGHT, this.weight, this.weight = weight);
+	public ARankColumnModel setWidth(float width) {
+		propertySupport.firePropertyChange(PROP_WIDTH, this.width, this.width = width);
 		return this;
 	}
 
-	public ARankColumnModel addWeight(float delta) {
-		setWeight(weight + delta);
-		return this;
-	}
-
-	public float getWeight() {
-		return weight;
+	public float getWidth() {
+		if (isCollapsed())
+			return ICollapseableColumnMixin.COLLAPSED_WIDTH;
+		return width;
 	}
 
 	public abstract GLElement createSummary(boolean interactive);
@@ -198,7 +212,7 @@ public abstract class ARankColumnModel implements IDragInfo, IRankColumnModel {
 	private static void createNewCombined(ARankColumnModel model, ARankColumnModel with, boolean clone,
 			int combineMode, final RankTableModel table) {
 		ACompositeRankColumnModel new_ = table.getConfig().createNewCombined(combineMode);
-		new_.setWeight(model.getWeight());
+		new_.setWidth(model.getWidth());
 		model.getParent().replace(model, new_);
 		addAll(model, false, table, new_);
 		addAll(with, clone, table, new_);
@@ -233,12 +247,6 @@ public abstract class ARankColumnModel implements IDragInfo, IRankColumnModel {
 
 	public boolean isCollapsed() {
 		return collapsed;
-	}
-
-	public float getPreferredWidth() {
-		if (isCollapsed())
-			return ICollapseableColumnMixin.COLLAPSED_WIDTH;
-		return getWeight();
 	}
 
 	public final boolean isCollapseAble() {

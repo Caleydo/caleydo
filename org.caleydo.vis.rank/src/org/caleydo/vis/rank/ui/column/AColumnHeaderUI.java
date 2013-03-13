@@ -524,7 +524,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 		if (dx == 0)
 			return;
 		// float delta = (dx / getSize().x())*;
-		model.addWeight(dx);
+		model.setWidth(model.getWidth() + dx);
 	}
 
 	/**

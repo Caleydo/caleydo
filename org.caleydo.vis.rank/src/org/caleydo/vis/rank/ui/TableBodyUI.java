@@ -84,7 +84,7 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 			case RankTableModel.PROP_COLUMNS:
 				onColumsChanged((IndexedPropertyChangeEvent) evt);
 				break;
-			case ARankColumnModel.PROP_WEIGHT:
+			case ARankColumnModel.PROP_WIDTH:
 			case ICollapseableColumnMixin.PROP_COLLAPSED:
 				onRankerChanged((ARankColumnModel) evt.getSource());
 				break;
@@ -255,12 +255,12 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 	}
 
 	private void init(ARankColumnModel col) {
-		col.addPropertyChangeListener(ARankColumnModel.PROP_WEIGHT, listener);
+		col.addPropertyChangeListener(ARankColumnModel.PROP_WIDTH, listener);
 		col.addPropertyChangeListener(ICollapseableColumnMixin.PROP_COLLAPSED, listener);
 	}
 
 	private void takeDown(ARankColumnModel col) {
-		col.removePropertyChangeListener(ARankColumnModel.PROP_WEIGHT, listener);
+		col.removePropertyChangeListener(ARankColumnModel.PROP_WIDTH, listener);
 		col.removePropertyChangeListener(ICollapseableColumnMixin.PROP_COLLAPSED, listener);
 	}
 
@@ -296,7 +296,7 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 		for (GLElement col : this) {
 			ARankColumnModel model = col.getLayoutDataAs(ARankColumnModel.class, null);
 			if (model != null) {
-				model.removePropertyChangeListener(ARankColumnModel.PROP_WEIGHT, listener);
+				model.removePropertyChangeListener(ARankColumnModel.PROP_WIDTH, listener);
 				model.addPropertyChangeListener(ACompositeRankColumnModel.PROP_CHILDREN, listener);
 			}
 		}
@@ -336,7 +336,7 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 				col.setBounds(x, 0, 1, h);
 				x += 1;
 			} else {
-				float wi = model.getPreferredWidth();
+				float wi = model.getWidth();
 				if ((x + wi + RenderStyle.COLUMN_SPACE) > w) {
 					col.hide();
 					break;

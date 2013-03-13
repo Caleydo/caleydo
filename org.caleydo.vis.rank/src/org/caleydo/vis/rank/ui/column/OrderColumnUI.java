@@ -133,11 +133,10 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 		super.takeDown();
 	}
 
-	/**
-	 * @return the becauseOfRedordering, see {@link #becauseOfRedordering}
-	 */
-	public boolean isBecauseOfRedordering() {
-		return becauseOfRedordering;
+	public boolean isInternalReLayout() {
+		if (becauseOfRedordering)
+			return false;
+		return isScrollingUpdate;
 	}
 
 	public void layoutingDone() {
@@ -383,8 +382,6 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 			g.decZ();
 		} else {
 			g.color(Color.GRAY);
-			if (!isRightValid && isSelected)
-				System.out.println(right);
 			g.drawLine(-1, left.y() + left.w() * 0.5f, w, right.y() + right.w() * 0.5f);
 		}
 	}
