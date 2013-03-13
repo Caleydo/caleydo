@@ -55,7 +55,7 @@ import org.caleydo.vis.rank.ui.RenderUtils;
  * @author Samuel Gratzl
  *
  */
-public class StackedScoreSummary extends GLElementContainer implements IGLLayout {
+public class MaxScoreSummary extends GLElementContainer implements IGLLayout {
 	private final PropertyChangeListener listener = new PropertyChangeListener() {
 		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
@@ -80,7 +80,7 @@ public class StackedScoreSummary extends GLElementContainer implements IGLLayout
 		}
 	};
 
-	public StackedScoreSummary(IMultiColumnMixin model, boolean interactive) {
+	public MaxScoreSummary(IMultiColumnMixin model, boolean interactive) {
 		this.model = model;
 		setLayout(this);
 		setzDelta(0.5f);

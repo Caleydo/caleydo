@@ -43,8 +43,6 @@ class UniformRowHeightLayout implements IRowHeightLayout {
 		final int numRows = order.length;
 
 		// clamping
-		if (offset < 0)
-			offset = 0;
 		if (visibleRows >= numRows)
 			offset = 0;
 		if (offset >= (numRows - visibleRows))
@@ -57,6 +55,8 @@ class UniformRowHeightLayout implements IRowHeightLayout {
 			if (selectedRank >= (offset + visibleRows))
 				offset = selectedRank - visibleRows - 1;
 		}
+		if (offset < 0)
+			offset = 0;
 
 		float y = 0;
 		int numVisibles = 0;
@@ -99,18 +99,20 @@ class UniformRowHeightLayout implements IRowHeightLayout {
 		}
 
 		@Override
-		public void layout(ISetHeight setter) {
+		public void layout(IRowSetter setter, float x, float w, int selectedIndex) {
 			float y = 0;
+			// first free the elements
 			for (int r = 0; r < offset; ++r)
-				setter.set(order[r], 0, 0);
+				setter.set(order[r], x, 0, w, 0, order[r] == selectedIndex);
+			for (int i = unused.nextSetBit(0); i >= 0; i = unused.nextSetBit(i + 1)) {
+				setter.set(i, x, h, w, 0, i == selectedIndex);
+			}
+			// alloc again
 			for (int r = offset; r < (offset + numVisibles); ++r) {
 				int rowIndex = order[r];
 				float hr = ROW_HEIGHT;
-				setter.set(rowIndex, y, hr);
+				setter.set(rowIndex, x, y, w, hr, rowIndex == selectedIndex);
 				y += hr;
-			}
-			for (int i = unused.nextSetBit(0); i >= 0; i = unused.nextSetBit(i + 1)) {
-				setter.set(i, h, 0);
 			}
 		}
 	}

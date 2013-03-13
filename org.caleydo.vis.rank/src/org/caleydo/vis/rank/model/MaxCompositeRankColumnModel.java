@@ -31,11 +31,12 @@ import org.caleydo.vis.rank.model.mixin.IHideableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 import org.caleydo.vis.rank.ui.GLPropertyChangeListeners;
 import org.caleydo.vis.rank.ui.detail.MultiScoreBarElement;
-import org.caleydo.vis.rank.ui.detail.StackedScoreSummary;
+import org.caleydo.vis.rank.ui.detail.MaxScoreSummary;
+import org.caleydo.vis.rank.ui.detail.ValueElement;
 
 /**
  * @author Samuel Gratzl
- * 
+ *
  */
 public class MaxCompositeRankColumnModel extends AMultiRankColumnModel implements IRankableColumnMixin,
 		IHideableColumnMixin, IExplodeableColumnMixin, ICollapseableColumnMixin {
@@ -59,11 +60,11 @@ public class MaxCompositeRankColumnModel extends AMultiRankColumnModel implement
 
 	@Override
 	public GLElement createSummary(boolean interactive) {
-		return new StackedScoreSummary(this, interactive);
+		return new MaxScoreSummary(this, interactive);
 	}
 
 	@Override
-	public GLElement createValue() {
+	public ValueElement createValue() {
 		return new RepaintingGLElement();
 	}
 

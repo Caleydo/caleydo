@@ -32,12 +32,12 @@ import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
-import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.rank.internal.event.FilterEvent;
 import org.caleydo.vis.rank.model.mixin.IGrabRemainingHorizontalSpace;
 import org.caleydo.vis.rank.model.mixin.IRankColumnModel;
 import org.caleydo.vis.rank.ui.GLPropertyChangeListeners;
+import org.caleydo.vis.rank.ui.detail.ValueElement;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Display;
@@ -92,7 +92,7 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 	}
 
 	@Override
-	public GLElement createValue() {
+	public ValueElement createValue() {
 		return new MyValueElement();
 	}
 
@@ -176,11 +176,7 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 
 	}
 
-	class MyValueElement extends PickableGLElement {
-		public MyValueElement() {
-			setVisibility(EVisibility.VISIBLE);
-		}
-
+	class MyValueElement extends ValueElement {
 		@Override
 		protected void renderImpl(GLGraphics g, float w, float h) {
 			if (h < 5)

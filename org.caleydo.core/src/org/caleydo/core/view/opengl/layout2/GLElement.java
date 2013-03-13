@@ -67,6 +67,10 @@ public class GLElement implements IHasGLLayoutData {
 		 * invisible and uses no space
 		 */
 		NONE;
+
+		public boolean doRender() {
+			return this == VISIBLE || this == PICKABLE;
+		}
 	}
 
 	/**
@@ -231,7 +235,7 @@ public class GLElement implements IHasGLLayoutData {
 	 */
 	public final void renderPick(GLGraphics g) {
 		checkLayout();
-		if (!needToRender()) {
+		if (!needToRender() || !hasPickAbles()) {
 			pickCache.invalidate(context.getDisplayListPool());
 			return;
 		}
@@ -257,21 +261,36 @@ public class GLElement implements IHasGLLayoutData {
 	}
 
 	/**
-	 * checks if the layout is dirty and it is is so perform the layouting
+	 * determines if the need to render this and possible sub elements
+	 *
+	 * @param pickRun
+	 * @return
 	 */
-	public final void checkLayout() {
-		if (dirtyLayout)
-			layout();
-	}
-
-	private boolean needToRender() {
-		if (visibility != EVisibility.VISIBLE && visibility != EVisibility.PICKABLE)
+	private final boolean needToRender() {
+		if (!visibility.doRender())
 			return false;
 		float x = bounds_layout.x;
 		float y = bounds_layout.y;
 		float w = bounds_layout.width;
 		float h = bounds_layout.height;
 		return areValidBounds(x, y, w, h);
+	}
+
+	/**
+	 * determines whether this or a sub element might be pickable
+	 * 
+	 * @return
+	 */
+	protected boolean hasPickAbles() {
+		return visibility == EVisibility.PICKABLE;
+	}
+
+	/**
+	 * checks if the layout is dirty and it is is so perform the layouting
+	 */
+	public void checkLayout() {
+		if (dirtyLayout)
+			layout();
 	}
 
 	public static boolean areValidBounds(float x, float y, float w, float h) {

@@ -17,32 +17,44 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.vis.rank.ui.column;
+package org.caleydo.vis.rank.ui.detail;
 
-import gleem.linalg.Vec4f;
-
-import org.caleydo.core.view.opengl.layout2.GLElement;
-import org.caleydo.vis.rank.model.ARankColumnModel;
+import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 import org.caleydo.vis.rank.model.IRow;
 
 /**
+ * special element for the columns with extra information
+ *
  * @author Samuel Gratzl
  *
  */
-public interface ITableColumnUI {
-	ARankColumnModel getModel();
-
-	GLElement setData(Iterable<IRow> rows, IColumModelLayout parent);
-
-	void update();
-
-	GLElement asGLElement();
-
-	void checkLayout();
+public class ValueElement extends PickableGLElement {
+	private int animationFlag = 0;
+	public ValueElement() {
+		setVisibility(EVisibility.VISIBLE);
+	}
 
 	/**
-	 * @param rowIndex
+	 * returns the row represented by this element of this column
+	 *
 	 * @return
 	 */
-	Vec4f getBounds(int rowIndex);
+	protected final IRow getRow() {
+		return getLayoutDataAs(IRow.class, null);
+	}
+
+	/**
+	 * @return the animationFlag, see {@link #animationFlag}
+	 */
+	public int getAnimationFlag() {
+		return animationFlag;
+	}
+
+	/**
+	 * @param animationFlag
+	 *            setter, see {@link animationFlag}
+	 */
+	public void setAnimationFlag(int animationFlag) {
+		this.animationFlag = animationFlag;
+	}
 }

@@ -161,6 +161,11 @@ public class GLElementAdapter extends GLElement {
 	}
 
 	@Override
+	protected boolean hasPickAbles() {
+		return true;
+	}
+
+	@Override
 	protected void renderPickImpl(GLGraphics g, float w, float h) {
 		// super.renderPickImpl(g, w, h);
 		renderAdapter(g, w, h);

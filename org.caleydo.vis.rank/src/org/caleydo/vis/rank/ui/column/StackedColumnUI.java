@@ -28,9 +28,10 @@ import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
-import org.caleydo.vis.rank.layout.IRowHeightLayout.ISetHeight;
+import org.caleydo.vis.rank.layout.IRowHeightLayout.IRowSetter;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
+import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.StackedRankColumnModel;
 import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.ICompressColumnMixin;
@@ -115,8 +116,7 @@ public class StackedColumnUI extends ACompositeTableColumnUI<StackedRankColumnMo
 	}
 
 	@Override
-	public void layoutRows(ARankColumnModel model, final List<? extends IGLLayoutElement> children, final float w,
-			float h) {
+	public void layoutRows(ARankColumnModel model, final IRowSetter setter, final float w, float h) {
 		final int combinedAlign = this.model.getAlignment();
 		final int index = this.model.indexOf(model);
 		if (combinedAlign >= 0 && index != combinedAlign && index >= 0) {
@@ -125,24 +125,28 @@ public class StackedColumnUI extends ACompositeTableColumnUI<StackedRankColumnMo
 			for (int i = 0; i < weights.length; ++i)
 				weights[i] = this.model.get(i).getWeight();
 
-			IRow selected = this.model.getTable().getSelectedRow();
+			final RankTableModel table = this.model.getTable();
+			IRow selected = table.getSelectedRow();
 			final int selectedIndex = (selected == null ? -1 : selected.getIndex());
 
-			ISetHeight setter = new ISetHeight() {
+			IRowSetter wrappedSetter = new IRowSetter() {
 				@Override
-				public void set(int at, float y, float h) {
-					IGLLayoutElement row = children.get(at);
-					IRow data = row.getLayoutDataAs(IRow.class, null);
-					float x = getX(combinedAlign, weights, index, data);
-					row.setBounds(x, y, w, h);
-					row.asElement().setVisibility(at == selectedIndex ? EVisibility.PICKABLE : EVisibility.VISIBLE);
+				public void set(int rowIndex, float x, float y, float w, float h, boolean pickable) {
+					IRow data = table.getDataItem(rowIndex);
+					x = getX(combinedAlign, weights, index, data);
+					setter.set(rowIndex, x, y, w, h, pickable);
 				}
 			};
-			getRanker(model).layoutRows(setter);
+			getRanker(model).layoutRows(wrappedSetter, 0, w, selectedIndex);
 		} else {
 			// simple
-			getColumnModelParent().layoutRows(model, children, w, h);
+			getColumnModelParent().layoutRows(model, setter, w, h);
 		}
+	}
+
+	@Override
+	public int getNumVisibleRows(ARankColumnModel model) {
+		return getRanker(model).getNumVisibleRows();
 	}
 
 	private float getX(int combinedAlign, float[] weights, int index, IRow data) {
@@ -150,11 +154,11 @@ public class StackedColumnUI extends ACompositeTableColumnUI<StackedRankColumnMo
 		MultiFloat vs = model.getSplittedValue(data);
 		if (index < combinedAlign) {
 			for (int i = index; i < combinedAlign; ++i)
-				x += -vs.values[i] + weights[i] - RenderStyle.COLUMN_SPACE;
+				x += (1 - vs.values[i]) * weights[i] - RenderStyle.COLUMN_SPACE;
 			x += RenderStyle.COLUMN_SPACE;
 		} else {
 			for (int i = combinedAlign; i < index; ++i)
-				x += vs.values[i] - weights[i] + RenderStyle.COLUMN_SPACE;
+				x += (vs.values[i] - 1) * weights[i] + RenderStyle.COLUMN_SPACE;
 			x += RenderStyle.COLUMN_SPACE;
 		}
 		return x;

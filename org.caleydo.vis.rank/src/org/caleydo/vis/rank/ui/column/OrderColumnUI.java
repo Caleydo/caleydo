@@ -32,7 +32,7 @@ import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.vis.rank.layout.IRowHeightLayout;
-import org.caleydo.vis.rank.layout.IRowHeightLayout.ISetHeight;
+import org.caleydo.vis.rank.layout.IRowHeightLayout.IRowSetter;
 import org.caleydo.vis.rank.layout.IRowLayoutInstance;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.ColumnRanker;
@@ -106,11 +106,6 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 	}
 
 	@Override
-	public GLElement get(int index) {
-		return null;
-	}
-
-	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		switch (evt.getPropertyName()) {
 		case ColumnRanker.PROP_ORDER:
@@ -145,8 +140,13 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 		return becauseOfRedordering;
 	}
 
-	public void layoutingDown() {
+	public void layoutingDone() {
 		becauseOfRedordering = false;
+	}
+
+	@Override
+	public Vec4f getBounds(int rowIndex) {
+		return null;
 	}
 
 	@Override
@@ -266,8 +266,12 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 		updateMeAndMyChildren();
 	}
 
-	public void layoutRows(ISetHeight setter) {
-		rowLayoutInstance.layout(setter);
+	public void layoutRows(IRowSetter setter, float x, float w, int selectedIndex) {
+		rowLayoutInstance.layout(setter, x, w, selectedIndex);
+	}
+
+	public int getNumVisibleRows() {
+		return rowLayoutInstance.getNumVisibles();
 	}
 
 	@Override
@@ -293,8 +297,8 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 			int i = -1;
 			for (IRow row : model.getRanker()) {
 				i++;
-				Vec4f left = previous.get(row.getIndex()).getBounds();
-				Vec4f right = self.get(row.getIndex()).getBounds();
+				Vec4f left = previous.getBounds(row.getIndex());
+				Vec4f right = self.getBounds(row.getIndex());
 				if (!areValidBounds(left) && !areValidBounds(right))
 					continue;
 				renderBand(g, left, right, w, selectedRank == i);
@@ -335,8 +339,8 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 		int i = -1;
 		for (IRow row : model.getRanker()) {
 			i++;
-			Vec4f left = previous.get(row.getIndex()).getBounds();
-			Vec4f right = self.get(row.getIndex()).getBounds();
+			Vec4f left = previous.getBounds(row.getIndex());
+			Vec4f right = self.getBounds(row.getIndex());
 			if (!areValidBounds(left) && !areValidBounds(right))
 				continue;
 			g.pushName(body.getRankPickingId(i));

@@ -178,18 +178,26 @@ public class PiecewiseMapping extends ScriptedMappingFunction implements Iterabl
 		if (mapping.containsKey(in))
 			return mapping.get(in);
 
-		SortedMap<Float, Float> before = mapping.headMap(in);
-		if (before.isEmpty()) // outside of the range
-			return Float.NaN;
-		Float start = before.lastKey();
-		Float startTo = before.get(start);
-		SortedMap<Float, Float> after = mapping.tailMap(in);
-		if (after.isEmpty())
-			return Float.NaN;
-		Float end = after.firstKey();
-		Float endTo = after.get(end);
+		Float first = mapping.firstKey();
+		Float last = mapping.lastKey();
 
-		return MappingFunctions.linear(start, end, in, startTo, endTo);
+		if (in < first || in > last)
+			return Float.NaN;
+		if (mapping.size() == 2) {
+			return MappingFunctions.linear(first, last, in, mapping.get(first), mapping.get(last));
+		} else {
+			SortedMap<Float, Float> before = mapping.headMap(in);
+			if (before.isEmpty()) // outside of the range
+				return Float.NaN;
+			Float start = before.lastKey();
+			Float startTo = before.get(start);
+			SortedMap<Float, Float> after = mapping.tailMap(in);
+			if (after.isEmpty())
+				return Float.NaN;
+			Float end = after.firstKey();
+			Float endTo = after.get(end);
+			return MappingFunctions.linear(start, end, in, startTo, endTo);
+		}
 	}
 
 

@@ -256,6 +256,11 @@ public class GLElementContainer extends GLElement implements IGLElementParent, I
 	}
 
 	@Override
+	protected boolean hasPickAbles() {
+		return !children.isEmpty(); // may have pickables
+	}
+
+	@Override
 	public final Iterator<GLElement> iterator() {
 		return Iterators.unmodifiableIterator(children.iterator());
 	}

@@ -31,6 +31,7 @@ import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IRankColumnModel;
+import org.caleydo.vis.rank.ui.detail.ValueElement;
 
 /**
  * @author Samuel Gratzl
@@ -107,7 +108,7 @@ public abstract class ARankColumnModel implements IDragInfo, IRankColumnModel {
 
 	public abstract GLElement createSummary(boolean interactive);
 
-	public abstract GLElement createValue();
+	public abstract ValueElement createValue();
 
 	public final IGLRenderer getHeaderRenderer() {
 		return header;

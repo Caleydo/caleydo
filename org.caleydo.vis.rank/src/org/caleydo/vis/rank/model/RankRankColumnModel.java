@@ -28,6 +28,7 @@ import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IHideableColumnMixin;
+import org.caleydo.vis.rank.ui.detail.ValueElement;
 /**
  * @author Samuel Gratzl
  *
@@ -57,8 +58,8 @@ public class RankRankColumnModel extends ARankColumnModel implements IGLRenderer
 	}
 
 	@Override
-	public GLElement createValue() {
-		return new GLElement(this);
+	public ValueElement createValue() {
+		return (ValueElement) (new ValueElement().setRenderer(this));
 	}
 
 	@Override

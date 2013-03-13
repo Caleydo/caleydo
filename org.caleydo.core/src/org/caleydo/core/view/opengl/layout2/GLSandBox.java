@@ -39,6 +39,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
+import com.google.common.base.Stopwatch;
 import com.jogamp.opengl.util.FPSAnimator;
 
 /**
@@ -98,7 +99,7 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 		this.animator = new FPSAnimator(canvas.asGLAutoDrawAble(), 30);
 
 		// ENABLE to print the fps to System.err
-		// animator.setUpdateFPSFrames(100, System.err);
+		// animator.setUpdateFPSFrames(30, System.err);
 
 		this.loader = loader;
 		this.canvas.addMouseListener(pickingManager.getListener());
@@ -234,6 +235,7 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 	@Override
 	public void display(GLAutoDrawable drawable) {
 
+		Stopwatch w = new Stopwatch().start();
 		eventListeners.processEvents();
 
 		GL2 gl = drawable.getGL().getGL2();

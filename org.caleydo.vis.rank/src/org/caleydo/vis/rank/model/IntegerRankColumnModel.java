@@ -28,12 +28,12 @@ import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.layout2.GLElement;
-import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.rank.internal.event.SizeFilterEvent;
 import org.caleydo.vis.rank.ui.GLPropertyChangeListeners;
+import org.caleydo.vis.rank.ui.detail.ValueElement;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.VerifyEvent;
@@ -87,7 +87,7 @@ public class IntegerRankColumnModel extends ABasicFilterableRankColumnModel {
 	}
 
 	@Override
-	public GLElement createValue() {
+	public ValueElement createValue() {
 		return new MyElement();
 	}
 
@@ -130,7 +130,7 @@ public class IntegerRankColumnModel extends ABasicFilterableRankColumnModel {
 		return data.apply(prow);
 	}
 
-	class MyElement extends GLElementContainer {
+	class MyElement extends ValueElement {
 		@Override
 		protected void renderImpl(GLGraphics g, float w, float h) {
 			if (h < 5)

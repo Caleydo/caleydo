@@ -26,7 +26,6 @@ import javax.media.opengl.GL2;
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
-import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.mixin.IMappedColumnMixin;
@@ -40,7 +39,7 @@ import org.caleydo.vis.rank.ui.IColumnRenderInfo;
  * @author Samuel Gratzl
  *
  */
-public class ScoreBarElement extends PickableGLElement {
+public class ScoreBarElement extends ValueElement {
 	protected final IRankableColumnMixin model;
 
 	public ScoreBarElement(IRankableColumnMixin model) {

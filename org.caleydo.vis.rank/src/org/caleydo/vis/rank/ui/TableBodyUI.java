@@ -44,7 +44,7 @@ import org.caleydo.core.view.opengl.picking.PickingListenerComposite;
 import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.data.loader.ResourceLocators;
 import org.caleydo.vis.rank.layout.IRowHeightLayout;
-import org.caleydo.vis.rank.layout.IRowHeightLayout.ISetHeight;
+import org.caleydo.vis.rank.layout.IRowHeightLayout.IRowSetter;
 import org.caleydo.vis.rank.model.ACompositeRankColumnModel;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.ColumnRanker;
@@ -360,7 +360,7 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 		for (GLElement child : this)
 			child.checkLayout();
 		for (OrderColumnUI child : Iterables.filter(this, OrderColumnUI.class)) {
-			child.layoutingDown();
+			child.layoutingDone();
 		}
 
 		renderBackgroundLines(g, w, false);
@@ -419,7 +419,7 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 			if (col instanceof OrderColumnUI && found) {
 				if (last != null) {
 					if (unwrapCombined && last instanceof ACompositeTableColumnUI<?>)
-						last = getLast((ACompositeTableColumnUI<?>) last);
+						last = ((ACompositeTableColumnUI<?>) last).getLastChild();
 					return last;
 				}
 			}
@@ -427,14 +427,10 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 			last = col;
 		}
 		if (unwrapCombined && last instanceof ACompositeTableColumnUI<?>)
-			last = getLast((ACompositeTableColumnUI<?>) last);
+			last = ((ACompositeTableColumnUI<?>) last).getLastChild();
 		if (last == target)
 			return null;
 		return last;
-	}
-
-	private ITableColumnUI getLast(ACompositeTableColumnUI<?> col) {
-		return col.getLastChild();
 	}
 
 	private void renderSubArea(GLGraphics g, float x, OrderColumnUI act, ITableColumnUI last, IRow selected,
@@ -446,8 +442,12 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 		enlargeRankPickers(act.getRanker().size());
 		int i = -1;
 
+		if (last instanceof ACompositeTableColumnUI<?>) {
+			last = ((ACompositeTableColumnUI<?>) last).getLastChild();
+		}
+
 		for (IRow rankedRow : act.getRanker()) {
-			Vec4f bounds = getRowBounds(last, rankedRow.getIndex());
+			Vec4f bounds = last.getBounds(rankedRow.getIndex());
 			i++;
 			even = !even;
 			if (!GLElement.areValidBounds(bounds))
@@ -473,33 +473,16 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 		}
 	}
 
-	/**
-	 * @param column
-	 * @param rowIndex
-	 * @return
-	 */
-	private Vec4f getRowBounds(ITableColumnUI column, int rowIndex) {
-		if (column instanceof ACompositeTableColumnUI<?>) {
-			column = getLast((ACompositeTableColumnUI<?>) column);
-		}
-		return column.get(rowIndex).getBounds();
+	@Override
+	public void layoutRows(ARankColumnModel model, final IRowSetter setter, final float w, float h) {
+		IRow selected = table.getSelectedRow();
+		final int selectedIndex = (selected == null ? -1 : selected.getIndex());
+		getRanker(model).layoutRows(setter, RenderStyle.COLUMN_SPACE, w - RenderStyle.COLUMN_SPACE, selectedIndex);
 	}
 
 	@Override
-	public void layoutRows(ARankColumnModel model, final List<? extends IGLLayoutElement> children, final float w,
-			float h) {
-		IRow selected = table.getSelectedRow();
-		final int selectedIndex = (selected == null ? -1 : selected.getIndex());
-
-		ISetHeight setter = new ISetHeight() {
-			@Override
-			public void set(int index, float y, float h) {
-				IGLLayoutElement row = children.get(index);
-				row.setBounds(RenderStyle.COLUMN_SPACE, y, w - RenderStyle.COLUMN_SPACE, h);
-				row.asElement().setVisibility(index == selectedIndex ? EVisibility.PICKABLE : EVisibility.VISIBLE);
-			}
-		};
-		getRanker(model).layoutRows(setter);
+	public int getNumVisibleRows(ARankColumnModel model) {
+		return getRanker(model).getNumVisibleRows();
 	}
 
 	@Override

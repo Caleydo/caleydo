@@ -133,18 +133,18 @@ class FishEyeRowHeightLayout implements IRowHeightLayout {
 		}
 
 		@Override
-		public void layout(ISetHeight setter) {
+		public void layout(IRowSetter setter, float x, float w, int selectedIndex) {
 			float y = 0;
 			for (int r = 0; r < offset; ++r)
-				setter.set(order[r], 0, 0);
+				setter.set(order[r], x, 0, w, 0, order[r] == selectedIndex);
+			for (int i = unused.nextSetBit(0); i >= 0; i = unused.nextSetBit(i + 1)) {
+				setter.set(i, x, h, w, 0, i == selectedIndex);
+			}
 			for (int r = offset; r < (offset + numVisibles); ++r) {
 				int rowIndex = order[r];
 				float hr = rowHeight(base - r);
-				setter.set(rowIndex, y, hr);
+				setter.set(rowIndex, x, y, w, hr, rowIndex == selectedIndex);
 				y += hr;
-			}
-			for (int i = unused.nextSetBit(0); i >= 0; i = unused.nextSetBit(i + 1)) {
-				setter.set(i, h, 0);
 			}
 		}
 

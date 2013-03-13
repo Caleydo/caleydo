@@ -7,7 +7,7 @@ public interface IRowHeightLayout {
 
 	String getIcon();
 
-	public interface ISetHeight {
-		void set(int index, float y, float h);
+	public interface IRowSetter {
+		void set(int rowIndex, float x, float y, float w, float h, boolean pickable);
 	}
 }

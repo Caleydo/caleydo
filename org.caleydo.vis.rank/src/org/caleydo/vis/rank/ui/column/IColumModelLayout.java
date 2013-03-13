@@ -19,14 +19,13 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.ui.column;
 
-import java.util.List;
-
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
-import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
+import org.caleydo.vis.rank.layout.IRowHeightLayout.IRowSetter;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 
 public interface IColumModelLayout {
-	void layoutRows(ARankColumnModel model, List<? extends IGLLayoutElement> children, float w, float h);
+	int getNumVisibleRows(ARankColumnModel model);
+	void layoutRows(ARankColumnModel model, IRowSetter setter, float w, float h);
 
 	/**
 	 * @param tableColumnUI

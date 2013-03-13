@@ -20,6 +20,8 @@
 package org.caleydo.vis.rank.ui.column;
 
 
+import gleem.linalg.Vec4f;
+
 import java.beans.IndexedPropertyChangeEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -175,6 +177,11 @@ public abstract class ACompositeTableColumnUI<T extends ACompositeRankColumnMode
 			if (c instanceof ITableColumnUI)
 				return (ITableColumnUI) get(i);
 		}
+		return null;
+	}
+
+	@Override
+	public Vec4f getBounds(int rowIndex) {
 		return null;
 	}
 }

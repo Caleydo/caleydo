@@ -41,11 +41,13 @@ import org.caleydo.vis.rank.model.mixin.ISnapshotableColumnMixin;
 import org.caleydo.vis.rank.ui.RenderStyle;
 import org.caleydo.vis.rank.ui.detail.ScoreBarElement;
 import org.caleydo.vis.rank.ui.detail.ScoreSummary;
+import org.caleydo.vis.rank.ui.detail.ValueElement;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Display;
 
 import com.google.common.collect.Iterables;
+import com.jogamp.common.util.IntObjectHashMap;
 
 /**
  * the stacked column
@@ -62,10 +64,12 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements IHi
 		public void propertyChange(PropertyChangeEvent evt) {
 			switch(evt.getPropertyName()) {
 			case PROP_WEIGHT:
+				cacheMulti.clear();
 				onWeightChanged((float) evt.getNewValue() - (float) evt.getOldValue());
 				break;
 			case IFilterColumnMixin.PROP_FILTER:
 			case IMappedColumnMixin.PROP_MAPPING:
+				cacheMulti.clear();
 				propertySupport.firePropertyChange(evt);
 				break;
 			}
@@ -80,6 +84,7 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements IHi
 	private float compressedWidth = 100;
 
 	private String annotation = "";
+	private IntObjectHashMap cacheMulti = new IntObjectHashMap();
 
 	public StackedRankColumnModel() {
 		super(Color.GRAY, new Color(0.95f, .95f, .95f));
@@ -153,6 +158,7 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements IHi
 		model.addPropertyChangeListener(IFilterColumnMixin.PROP_FILTER, listener);
 		model.addPropertyChangeListener(IMappedColumnMixin.PROP_MAPPING, listener);
 		addDirectWeight(model.getWeight());
+		cacheMulti.clear();
 	}
 
 	private void addDirectWeight(float delta) {
@@ -195,6 +201,7 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements IHi
 		if (alignment > size() - 2) {
 			setAlignment(alignment - 1);
 		}
+		cacheMulti.clear();
 	}
 
 	@Override
@@ -208,7 +215,7 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements IHi
 	}
 
 	@Override
-	public GLElement createValue() {
+	public ValueElement createValue() {
 		return new ScoreBarElement(this);
 	}
 
@@ -216,9 +223,10 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements IHi
 	public float applyPrimitive(IRow row) {
 		float s = 0;
 		final int size = children.size();
+		MultiFloat f = getSplittedValue(row);
 		for (int i = 0; i < size; ++i) {
 			ARankColumnModel col = children.get(i);
-			s += ((IRankableColumnMixin) col).applyPrimitive(row) * col.getWeight();
+			s += f.values[i] * col.getWeight();
 		}
 		return s / getWeight();
 	}
@@ -233,12 +241,15 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements IHi
 
 	@Override
 	public MultiFloat getSplittedValue(IRow row) {
+		if (cacheMulti.containsKey(row.getIndex()))
+			return (MultiFloat) cacheMulti.get(row.getIndex());
 		float[] s = new float[this.size()];
-		int i = 0;
-		for (ARankColumnModel col : this) {
-			s[i++] = ((IRankableColumnMixin) col).applyPrimitive(row) * col.getWeight();
+		for (int i = 0; i < s.length; ++i) {
+			s[i] = ((IRankableColumnMixin) get(i)).applyPrimitive(row);
 		}
-		return new MultiFloat(-1, s);
+		MultiFloat f = new MultiFloat(-1, s);
+		cacheMulti.put(row.getIndex(), f);
+		return f;
 	}
 
 	/**

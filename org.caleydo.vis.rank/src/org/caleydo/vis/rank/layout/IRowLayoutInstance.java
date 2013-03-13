@@ -19,7 +19,7 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.layout;
 
-import org.caleydo.vis.rank.layout.IRowHeightLayout.ISetHeight;
+import org.caleydo.vis.rank.layout.IRowHeightLayout.IRowSetter;
 
 /**
  * @author Samuel Gratzl
@@ -34,5 +34,5 @@ public interface IRowLayoutInstance {
 
 	int getNumVisibles();
 
-	void layout(ISetHeight setter);
+	void layout(IRowSetter setter, float x, float w, int selectedIndex);
 }

@@ -403,9 +403,12 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 	public final void remove(GLElement child, IDuration duration, IOutTransition animation) {
 		int startIn = 0;
 		assert child.getParent() == this;
-		this.layoutAnimations.add(createOutAnimation(child.layoutElement, startIn, duration, animation));
 		if (startIn == 0) // TODO
 			children.remove(child);
+		if (duration.getDuration() <= 0)
+			takeDown(child, true);
+		else
+			this.layoutAnimations.add(createOutAnimation(child.layoutElement, startIn, duration, animation));
 		dirtyAnimation = true;
 		animate();
 	}
@@ -531,6 +534,11 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 		for (GLElement child : activeChildren())
 			child.renderPick(g);
 		g.decZ();
+	}
+
+	@Override
+	protected boolean hasPickAbles() {
+		return !children.isEmpty(); // may have pickables
 	}
 
 	@Override

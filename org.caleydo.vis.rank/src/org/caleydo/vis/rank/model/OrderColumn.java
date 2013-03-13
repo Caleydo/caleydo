@@ -32,6 +32,7 @@ import org.caleydo.vis.rank.internal.ui.MultiLineInputDialog;
 import org.caleydo.vis.rank.model.mixin.IAnnotatedColumnMixin;
 import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IHideableColumnMixin;
+import org.caleydo.vis.rank.ui.detail.ValueElement;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Display;
@@ -70,7 +71,7 @@ public class OrderColumn extends ARankColumnModel implements IAnnotatedColumnMix
 	}
 
 	@Override
-	public GLElement createValue() {
+	public ValueElement createValue() {
 		return null;
 	}
 

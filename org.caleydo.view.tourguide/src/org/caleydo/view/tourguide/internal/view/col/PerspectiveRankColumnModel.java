@@ -20,7 +20,6 @@
 package org.caleydo.view.tourguide.internal.view.col;
 
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
-import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
@@ -28,6 +27,7 @@ import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.tourguide.internal.view.PerspectiveRow;
 import org.caleydo.vis.rank.model.StringRankColumnModel;
+import org.caleydo.vis.rank.ui.detail.ValueElement;
 
 /**
  * @author Samuel Gratzl
@@ -57,11 +57,11 @@ public class PerspectiveRankColumnModel extends StringRankColumnModel {
 	}
 
 	@Override
-	public GLElement createValue() {
+	public ValueElement createValue() {
 		return new MyElement();
 	}
 
-	class MyElement extends GLElement {
+	class MyElement extends ValueElement {
 		private final IPickingListener addto = new IPickingListener() {
 			@Override
 			public void pick(Pick pick) {

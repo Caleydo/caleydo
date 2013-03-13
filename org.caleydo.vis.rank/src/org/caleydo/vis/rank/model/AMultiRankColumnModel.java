@@ -31,6 +31,8 @@ import com.google.common.collect.Iterables;
  *
  */
 public abstract class AMultiRankColumnModel extends ACompositeRankColumnModel implements IMultiColumnMixin {
+	private SimpleHistogram cacheHist = null;
+
 	public AMultiRankColumnModel(Color color, Color bgColor) {
 		super(color, bgColor);
 	}
@@ -46,7 +48,9 @@ public abstract class AMultiRankColumnModel extends ACompositeRankColumnModel im
 
 	@Override
 	public final SimpleHistogram getHist(int bins) {
-		return DataUtils.getHist(bins, getMyRanker().iterator(), this);
+		if (cacheHist != null && cacheHist.size() == bins)
+			return cacheHist;
+		return cacheHist = DataUtils.getHist(bins, getMyRanker().iterator(), this);
 	}
 
 	@Override
@@ -56,6 +60,12 @@ public abstract class AMultiRankColumnModel extends ACompositeRankColumnModel im
 		for (ARankColumnModel child : this)
 			colors[i++] = child.getColor();
 		return colors;
+	}
+
+	@Override
+	public void onRankingInvalid() {
+		cacheHist = null;
+		super.onRankingInvalid();
 	}
 
 	@Override

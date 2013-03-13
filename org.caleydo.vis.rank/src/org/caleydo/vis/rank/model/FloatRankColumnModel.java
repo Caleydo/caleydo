@@ -49,14 +49,15 @@ import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.ISnapshotableColumnMixin;
 import org.caleydo.vis.rank.ui.detail.ScoreBarElement;
 import org.caleydo.vis.rank.ui.detail.ScoreSummary;
+import org.caleydo.vis.rank.ui.detail.ValueElement;
 import org.caleydo.vis.rank.ui.mapping.MappingFunctionUIs;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class FloatRankColumnModel extends ARankColumnModel implements IMappedColumnMixin, IRankableColumnMixin,
-		ICollapseableColumnMixin, IHideableColumnMixin, ISnapshotableColumnMixin {
+public class FloatRankColumnModel extends ARankColumnModel implements IMappedColumnMixin,
+		IRankableColumnMixin, ICollapseableColumnMixin, IHideableColumnMixin, ISnapshotableColumnMixin {
 	private SimpleHistogram cacheHist = null;
 
 	private boolean dirtyDataStats = true;
@@ -119,7 +120,7 @@ public class FloatRankColumnModel extends ARankColumnModel implements IMappedCol
 	}
 
 	@Override
-	public GLElement createValue() {
+	public ValueElement createValue() {
 		return new ScoreBarElement(this);
 	}
 

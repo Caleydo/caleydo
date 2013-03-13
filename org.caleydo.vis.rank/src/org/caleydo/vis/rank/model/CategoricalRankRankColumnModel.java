@@ -48,6 +48,7 @@ import org.caleydo.vis.rank.ui.GLPropertyChangeListeners;
 import org.caleydo.vis.rank.ui.IColumnRenderInfo;
 import org.caleydo.vis.rank.ui.RenderUtils;
 import org.caleydo.vis.rank.ui.detail.CategoricalScoreBarElement;
+import org.caleydo.vis.rank.ui.detail.ValueElement;
 import org.caleydo.vis.rank.ui.mapping.MappingFunctionUIs;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ViewerComparator;
@@ -124,7 +125,7 @@ public class CategoricalRankRankColumnModel<CATEGORY_TYPE> extends ABasicFiltera
 	}
 
 	@Override
-	public GLElement createValue() {
+	public ValueElement createValue() {
 		return new CategoricalScoreBarElement(this);
 	}
 
