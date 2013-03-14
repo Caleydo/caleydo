@@ -889,6 +889,18 @@ public class GLPathwayAugmentationRenderer {
 			break;
 		}
 
+		// if (glPathwayView.isHighlightVertices() && glPathwayView.getPortalHighlightNodes().contains(vertexRep)) {
+		// float width = glPathwayView.getPixelGLConverter().getGLWidthForPixelWidth(vertexRep.getWidth() + 6);
+		// float height = glPathwayView.getPixelGLConverter().getGLHeightForPixelHeight(vertexRep.getHeight() + 6);
+		// gl.glColor4f(1, 0, 1, 1);
+		// gl.glBegin(GL2.GL_QUADS);
+		// gl.glVertex3f(-width / 2.0f, -height / 0.2f, 0.5f);
+		// gl.glVertex3f(width / 2.0f, -height / 0.2f, 0.5f);
+		// gl.glVertex3f(width / 2.0f, height / 0.2f, 0.5f);
+		// gl.glVertex3f(-width / 2.0f, height / 0.2f, 0.5f);
+		// gl.glEnd();
+		// }
+
 		gl.glTranslatef(-canvasXPos, canvasYPos, 0);
 
 		gl.glPopName();

@@ -38,6 +38,7 @@ import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.event.EventListenerManager;
+import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventListenerManagers;
 import org.caleydo.core.event.data.DataDomainUpdateEvent;
 import org.caleydo.core.event.data.SelectionUpdateEvent;
@@ -79,6 +80,7 @@ import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertex;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.listener.EnablePathSelectionEvent;
+import org.caleydo.datadomain.pathway.listener.HighlightPortalsEvent;
 import org.caleydo.datadomain.pathway.listener.LoadPathwayEvent;
 import org.caleydo.datadomain.pathway.listener.PathwayPathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.ShowPortalNodesEvent;
@@ -206,6 +208,11 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 
 	private int minHeightPixels = -1;
 	private int minWidthPixels = -1;
+
+	/**
+	 * The nodes that are currently considered as portals and need to be highlighted.
+	 */
+	private Set<PathwayVertexRep> portalHighlightNodes = new HashSet<>();
 
 	/**
 	 * Event space for events that synchronize a pathway path.
@@ -891,6 +898,7 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 		showPortalNodesEventListener.setEventSpace(pathwayPathEventSpace);
 		listeners.register(ShowPortalNodesEvent.class, showPortalNodesEventListener);
 
+		listeners.register(this, pathwayPathEventSpace);
 	}
 
 	@Override
@@ -1546,6 +1554,30 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 	 */
 	public boolean isHighlightVertices() {
 		return highlightVertices;
+	}
+
+	/**
+	 * @return the portalNodes, see {@link #portalNodes}
+	 */
+	public Set<PathwayVertexRep> getPortalHighlightNodes() {
+		return portalHighlightNodes;
+	}
+
+	@ListenTo(restrictExclusiveToEventSpace = true)
+	public void onHighlightPortalNodes(HighlightPortalsEvent event) {
+		if (pathway == null)
+			return;
+		Set<PathwayVertexRep> allPortals = event.getPortals();
+
+		boolean isPortalsLarger = allPortals.size() > pathway.vertexSet().size();
+		Set<PathwayVertexRep> cloneSet = new HashSet<PathwayVertexRep>(isPortalsLarger ? pathway.vertexSet()
+				: allPortals);
+		cloneSet.retainAll(isPortalsLarger ? allPortals : pathway.vertexSet());
+
+		if (portalHighlightNodes.size() != cloneSet.size() || !portalHighlightNodes.containsAll(cloneSet)) {
+			portalHighlightNodes = cloneSet;
+			setDisplayListDirty();
+		}
 	}
 
 }
