@@ -2,13 +2,11 @@ package org.caleydo.core.view.opengl.layout2;
 
 import gleem.linalg.Vec2f;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.lang.reflect.InvocationTargetException;
 
 import javax.media.opengl.FPSCounter;
-import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCapabilities;
@@ -92,13 +90,12 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 		this.shell.setLayout(new FillLayout());
 		this.loader = ResourceLocators.chain(ResourceLocators.classLoader(root.getClass().getClassLoader()),
 				ResourceLocators.FILE);
-		
+
 		IGLCanvasFactory canvasFactory = new SWTGLCanvasFactory();
-		GLCapabilities caps = new GLCapabilities(GLProfile.get(GLProfile.GL2));
-		caps.setStencilBits(1);
-		caps.setDoubleBuffered(true);
-		caps.setAlphaBits(8);
-		
+
+		GLCapabilities caps = createCapabilities();
+
+
 		this.canvas = canvasFactory.create(caps, shell);
 		// canvas.asComposite().setLayoutData(new GridData(SWT.FILL, SWT.FILL));
 		canvas.asComposite().setSize(dim.width, dim.height);
@@ -130,6 +127,14 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 		this.root = new WindowGLElement(root);
 
 		animator.start();
+	}
+
+	protected GLCapabilities createCapabilities() {
+		GLCapabilities caps = new GLCapabilities(GLProfile.get(GLProfile.GL2));
+		caps.setStencilBits(1);
+		caps.setDoubleBuffered(true);
+		caps.setAlphaBits(8);
+		return caps;
 	}
 
 	/**
@@ -260,15 +265,15 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 		final GLGraphics g = tracingGL ? new GLGraphicsTracing(gl, text, textures, loader, true) : new GLGraphics(gl,
 				text, textures, loader, true);
 
-		// clear screen
+		// I have no idea, why I always need to initialize the context again
 		AGLView.initGLContext(gl);
-		
-		
+
+
 		//gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 		gl.glLoadIdentity();
 		gl.glTranslatef(0.375f, 0.375f, 0);
-		
-		
+
+
 		float paddedWidth = getWidth() - padding.left - padding.right;
 		float paddedHeight = getHeight() - padding.top - padding.bottom;
 		g.move(padding.left, padding.right);
