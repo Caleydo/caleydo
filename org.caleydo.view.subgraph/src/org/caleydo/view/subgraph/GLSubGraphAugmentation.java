@@ -227,7 +227,7 @@ public class GLSubGraphAugmentation extends GLElement {
 	}
 
 	public void addPortalHighlightRenderer(PortalHighlightRenderer renderer) {
-
+		System.out.println("addPortalHighlightRenderer");
 		portalHighlightRenderers.add(renderer);
 		renderers.add(renderer);
 		repaint();

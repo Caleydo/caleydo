@@ -166,6 +166,8 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	 */
 	protected RankingElement rankingElement;
 
+	
+	private PathwayVertexRep currentPortalVertexRep;
 	/**
 	 * Constructor.
 	 *
@@ -758,29 +760,9 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	private class PathEventSpaceHandler {
 
 		@ListenTo(restrictExclusiveToEventSpace = true)
-		public void onShowPortalNodes(ShowPortalNodesEvent event) {
-			portalRects.clear();
-			PathwayVertexRep vertexRep = event.getVertexRep();
-			Rectangle2D nodeRect = null;
-			// find in all open pathways
-			for (PathwayMultiFormInfo info : pathwayInfos) {
-				IPathwayRepresentation pathwayRepresentation = getPathwayRepresentation(info.multiFormRenderer,
-						info.multiFormRenderer.getActiveRendererID());
-				if (pathwayRepresentation != null) {
-					Set<PathwayVertexRep> portalVertexRepsInPathway = PathwayManager.get()
-							.getEquivalentVertexRepsInPathway(vertexRep, pathwayRepresentation.getPathway());
+		public void onShowPortalNodes(ShowPortalNodesEvent event) {			
+		 currentPortalVertexRep = event.getVertexRep();
 
-					for (PathwayVertexRep portalVertexRep : portalVertexRepsInPathway) {
-						Rectangle2D rect = getAbsoluteVertexLocation(pathwayRepresentation, portalVertexRep,
-								info.container);
-						if (rect != null)
-							portalRects.add(rect);
-					}
-					if (nodeRect == null && pathwayRepresentation.getPathway().containsVertex(vertexRep))
-						nodeRect = getAbsoluteVertexLocation(pathwayRepresentation, vertexRep, info.container);
-				}
-			}
-			augmentation.updatePortalRects(nodeRect, portalRects);
 		}
 
 		@ListenTo(restrictExclusiveToEventSpace = true)
@@ -884,6 +866,33 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 				}
 			}
 		}
+		
+		
+		if(currentPortalVertexRep!=null){
+			portalRects.clear();
+			Rectangle2D nodeRect = null;
+			// find in all open pathways
+			for (PathwayMultiFormInfo info : pathwayInfos) {
+				IPathwayRepresentation pathwayRepresentation = getPathwayRepresentation(info.multiFormRenderer,
+						info.multiFormRenderer.getActiveRendererID());
+				if (pathwayRepresentation != null) {
+					Set<PathwayVertexRep> portalVertexRepsInPathway = PathwayManager.get()
+							.getEquivalentVertexRepsInPathway(currentPortalVertexRep, pathwayRepresentation.getPathway());
+	
+					for (PathwayVertexRep portalVertexRep : portalVertexRepsInPathway) {
+						Rectangle2D rect = getAbsoluteVertexLocation(pathwayRepresentation, portalVertexRep,
+								info.container);
+						if (rect != null)
+							portalRects.add(rect);
+					}
+					if (nodeRect == null && pathwayRepresentation.getPathway().containsVertex(currentPortalVertexRep))
+						nodeRect = getAbsoluteVertexLocation(pathwayRepresentation, currentPortalVertexRep, info.container);
+				}
+			}
+		
+			augmentation.updatePortalRects(nodeRect, portalRects);
+		}
+		augmentation.isDirty=true;
 	}
 
 	/*
