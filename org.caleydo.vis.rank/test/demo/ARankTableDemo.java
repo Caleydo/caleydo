@@ -33,6 +33,7 @@ import org.caleydo.vis.rank.layout.RowHeightLayouts;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.StackedRankColumnModel;
 import org.caleydo.vis.rank.ui.RankTableUI;
+import org.eclipse.swt.widgets.Shell;
 
 import com.google.common.collect.Iterables;
 
@@ -45,8 +46,8 @@ public abstract class ARankTableDemo extends GLSandBox {
 
 	protected final RankTableModel table;
 
-	public ARankTableDemo(String name) {
-		super(name, createRoot(), new GLPadding(5),
+	public ARankTableDemo(Shell parentShell, String name) {
+		super(parentShell, name, createRoot(), new GLPadding(5),
 				new Dimension(800, 600));
 		this.table = new RankTableModel(new RankTableConfigBase());
 		try {

@@ -35,6 +35,7 @@ import org.caleydo.vis.rank.model.FloatRankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.RankRankColumnModel;
 import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
+import org.eclipse.swt.widgets.Shell;
 
 /**
  * @author Samuel Gratzl
@@ -45,8 +46,8 @@ public class SameScoreTest extends ARankTableDemo {
 	/**
 	 *
 	 */
-	public SameScoreTest() {
-		super("Same Score");
+	public SameScoreTest(Shell parentShell) {
+		super(parentShell, "Same Score");
 	}
 	@Override
 	protected void createModel() throws IOException, NoSuchFieldException {
@@ -78,6 +79,6 @@ public class SameScoreTest extends ARankTableDemo {
 	}
 
 	public static void main(String[] args) {
-		new SameScoreTest().run();
+		main(args, SameScoreTest.class);
 	}
 }

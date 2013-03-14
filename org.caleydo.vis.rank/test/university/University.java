@@ -41,6 +41,7 @@ import org.caleydo.vis.rank.model.RankRankColumnModel;
 import org.caleydo.vis.rank.model.StackedRankColumnModel;
 import org.caleydo.vis.rank.model.StringRankColumnModel;
 import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
+import org.eclipse.swt.widgets.Shell;
 
 import demo.ARankTableDemo;
 import demo.ReflectionData;
@@ -55,8 +56,8 @@ public class University extends ARankTableDemo {
 	/**
 	 *
 	 */
-	public University() {
-		super("top 100 universties under 50 years");
+	public University(Shell parentShell) {
+		super(parentShell, "top 100 universties under 50 years");
 	}
 	@Override
 	protected void createModel() throws IOException, NoSuchFieldException {
@@ -179,6 +180,6 @@ public class University extends ARankTableDemo {
 	}
 
 	public static void main(String[] args) {
-		new University().run();
+		main(args, University.class);
 	}
 }

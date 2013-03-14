@@ -36,6 +36,7 @@ import org.caleydo.vis.rank.model.CategoricalRankRankColumnModel.CategoryInfo;
 import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.RankRankColumnModel;
 import org.caleydo.vis.rank.model.mapping.BaseCategoricalMappingFunction;
+import org.eclipse.swt.widgets.Shell;
 
 /**
  * @author Samuel Gratzl
@@ -43,8 +44,8 @@ import org.caleydo.vis.rank.model.mapping.BaseCategoricalMappingFunction;
  */
 public class SimpleCategoryScoreTest extends ARankTableDemo {
 
-	public SimpleCategoryScoreTest() {
-		super("Simple Category Score");
+	public SimpleCategoryScoreTest(Shell parentShell) {
+		super(parentShell, "Simple Category Score");
 	}
 	@Override
 	protected void createModel() throws IOException, NoSuchFieldException {
@@ -82,6 +83,6 @@ public class SimpleCategoryScoreTest extends ARankTableDemo {
 	}
 
 	public static void main(String[] args) {
-		new SimpleCategoryScoreTest().run();
+		main(args, SimpleCategoryScoreTest.class);
 	}
 }

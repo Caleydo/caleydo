@@ -144,7 +144,6 @@ public class JarInJarLauncher {
 			else
 				rsrcUrls[i] = new URL(jarInternalUrl + rsrcPath + sep);
 		}
-		System.out.println(Arrays.toString(rsrcUrls));
 		ClassLoader jceClassLoader = new URLClassLoader(rsrcUrls, null);
 		Thread.currentThread().setContextClassLoader(jceClassLoader);
 		Class<?> c = Class.forName(rsrcMainClass, true, jceClassLoader);

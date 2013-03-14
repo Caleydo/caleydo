@@ -220,8 +220,6 @@ public class ColumnUI extends AnimatedGLElementContainer implements ITableColumn
 						at = inPool.nextSetBit(0); // last one for better cache behavior
 						inPool.clear(at);
 						rowIndexToGlElement.put(rowIndex, at);
-						if (rowIndex == 20)
-							System.err.println();
 						IGLLayoutElement row = children.get(at);
 						row.setBounds(x, y, w, h);
 						ValueElement elem = (ValueElement) row.asElement();

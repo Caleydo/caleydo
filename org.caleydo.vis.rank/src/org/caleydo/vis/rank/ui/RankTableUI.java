@@ -19,8 +19,6 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.ui;
 
-import gleem.linalg.Vec2f;
-
 import java.awt.Color;
 
 import org.caleydo.core.view.opengl.layout2.GLElement;
@@ -31,13 +29,11 @@ import org.caleydo.core.view.opengl.layout2.basic.GLButton.ISelectionCallback;
 import org.caleydo.core.view.opengl.layout2.basic.RadioController;
 import org.caleydo.core.view.opengl.layout2.basic.ScrollBar;
 import org.caleydo.core.view.opengl.layout2.basic.ScrolledGLElement;
-import org.caleydo.core.view.opengl.layout2.basic.ScrolledGLElement.IMinSizeAvailable;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.rank.config.IRankTableUIConfig;
 import org.caleydo.vis.rank.internal.ui.ButtonBar;
 import org.caleydo.vis.rank.layout.IRowHeightLayout;
-import org.caleydo.vis.rank.layout.RowHeightLayouts;
 import org.caleydo.vis.rank.model.RankTableModel;
 
 /**
@@ -69,22 +65,6 @@ public class RankTableUI extends GLElementContainer implements ISelectionCallbac
 		this.add(sc);
 		if (config.isInteractive() && !table.getConfig().isDestroyOnHide())
 			this.add(new ColumnPoolUI(table, config));
-	}
-
-	static class TableUI extends GLElementContainer implements IMinSizeAvailable {
-		public TableUI(RankTableModel table, IRankTableUIConfig config, IRowHeightLayout... layouts) {
-			setLayout(GLLayouts.flowVertical(0));
-			this.add(new TableHeaderUI(table, config));
-			this.add(new TableBodyUI(table, layouts.length == 0 ? RowHeightLayouts.UNIFORM : layouts[0], config));
-		}
-
-		@Override
-		public Vec2f getMinSize() {
-			for (GLElement elem : this)
-				if (elem instanceof IMinSizeAvailable)
-					return ((IMinSizeAvailable) elem).getMinSize();
-			throw new IllegalStateException();
-		}
 	}
 
 	private static final IGLRenderer renderer = new  IGLRenderer() {

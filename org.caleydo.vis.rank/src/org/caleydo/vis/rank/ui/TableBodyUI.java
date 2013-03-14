@@ -36,7 +36,6 @@ import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.AnimatedGLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
-import org.caleydo.core.view.opengl.layout2.basic.ScrolledGLElement.IMinSizeAvailable;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
@@ -69,8 +68,7 @@ import com.google.common.collect.Iterables;
  * @author Samuel Gratzl
  *
  */
-public final class TableBodyUI extends AnimatedGLElementContainer implements IGLLayout, IColumModelLayout,
-		IMinSizeAvailable {
+public final class TableBodyUI extends AnimatedGLElementContainer implements IGLLayout, IColumModelLayout {
 	private final static int FIRST_COLUMN = 1;
 	private final RankTableModel table;
 
@@ -116,6 +114,8 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 		for (ARankColumnModel col : table.getColumns()) {
 			this.add(wrap(col));
 		}
+
+		updateMyMinSize();
 		selectRowListener.add(new IPickingListener() {
 			@Override
 			public void pick(Pick pick) {
@@ -257,6 +257,20 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 			takeDown(old);
 			set(FIRST_COLUMN + index, wrap((ARankColumnModel) evt.getNewValue()));
 		}
+
+		updateMyMinSize();
+	}
+
+	private void updateMyMinSize() {
+		float x = RenderStyle.COLUMN_SPACE;
+		for (GLElement col : this) {
+			ARankColumnModel model = col.getLayoutDataAs(ARankColumnModel.class, null);
+			if (model == null)
+				x += 1;
+			else
+				x += model.getWidth() + RenderStyle.COLUMN_SPACE;
+		}
+		setSize(x, Float.NaN);
 	}
 
 	private void init(ARankColumnModel col) {
@@ -325,18 +339,7 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 		}
 	}
 
-	@Override
-	public Vec2f getMinSize() {
-		float x = RenderStyle.COLUMN_SPACE;
-		for (GLElement col : this) {
-			ARankColumnModel model = col.getLayoutDataAs(ARankColumnModel.class, null);
-			if (model == null)
-				x += 1;
-			else
-				x += model.getWidth() + RenderStyle.COLUMN_SPACE;
-		}
-		return new Vec2f(x, Float.POSITIVE_INFINITY);
-	}
+
 	/**
 	 * layout cols
 	 */

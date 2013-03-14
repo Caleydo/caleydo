@@ -38,6 +38,7 @@ import org.caleydo.vis.rank.model.RankRankColumnModel;
 import org.caleydo.vis.rank.model.StackedRankColumnModel;
 import org.caleydo.vis.rank.model.StringRankColumnModel;
 import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
+import org.eclipse.swt.widgets.Shell;
 
 import demo.ARankTableDemo;
 
@@ -50,8 +51,8 @@ public class Gene extends ARankTableDemo {
 	/**
 	 *
 	 */
-	public Gene() {
-		super("mutsig pancan12");
+	public Gene(Shell parentShell) {
+		super(parentShell, "mutsig pancan12");
 	}
 
 	enum TumorType {
@@ -127,6 +128,7 @@ public class Gene extends ARankTableDemo {
 
 	private StackedRankColumnModel createPValue(final int column, final String label, Color color, Color bgColor) {
 		StackedRankColumnModel stacked = new StackedRankColumnModel();
+		stacked.setTitle(label);
 		table.add(stacked);
 		for (TumorType type : TumorType.values()) {
 			stacked.add(new FloatRankColumnModel(new ValueGetter(type, column), GLRenderers.drawText(type.name() + "_"
@@ -138,6 +140,7 @@ public class Gene extends ARankTableDemo {
 
 	private StackedRankColumnModel createUnBound(final int column, final String label, Color color, Color bgColor) {
 		StackedRankColumnModel stacked = new StackedRankColumnModel();
+		stacked.setTitle(label);
 		table.add(stacked);
 		for (TumorType type : TumorType.values()) {
 			stacked.add(new FloatRankColumnModel(new ValueGetter(type, column), GLRenderers.drawText(type.name() + "_"
@@ -206,6 +209,6 @@ public class Gene extends ARankTableDemo {
 	}
 
 	public static void main(String[] args) {
-		new Gene().run();
+		main(args, Gene.class);
 	}
 }

@@ -227,9 +227,6 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 			List<ALayoutAnimation> tmp = new LinkedList<>(layoutAnimations);
 			int i = 0;
 			outer: for (RecordingLayoutElement elem : l) {
-				if (i == 61) {
-					System.err.println();
-				}
 				for (Iterator<ALayoutAnimation> ita = tmp.iterator(); ita.hasNext();) {
 					ALayoutAnimation anim = ita.next();
 					if (anim.getAnimated() == elem.wrappee) { // match
