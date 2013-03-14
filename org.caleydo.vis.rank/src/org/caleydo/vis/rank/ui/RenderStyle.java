@@ -59,7 +59,7 @@ public class RenderStyle {
 	public static final String ICON_ALIGN_CLASSIC = ICON_PREFIX + "align_classic.png";
 	public static final String ICON_ALIGN_STACKED = ICON_PREFIX + "align_stacked.png";
 
-	public static final String ICON_ALIGN_FISH = ICON_PREFIX + "align_fish.png";
+	public static final String ICON_ALIGN_FISH = ICON_PREFIX + "align_fish.jpg";
 	public static final String ICON_ALIGN_UNIFORM = ICON_PREFIX + "align_uniform.png";
 
 	public static final String ICON_FREEZE = ICON_PREFIX + "camera_add.png";
