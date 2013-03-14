@@ -375,9 +375,8 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		lastUsedLevel1Renderer = info.multiFormRenderer;
 		lastUsedRenderer = info.multiFormRenderer;
 
-		addPortalsOfPathway(info);
-
 		pathwayInfos.add(info);
+		addPortalsOfPathway(info);
 		wasPathwayAdded = true;
 	}
 
@@ -578,12 +577,12 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		augmentation.setPath(path);
 
 	}
-	
+
 	public void updateAugmentation(){
 		updatePathLinks();
 		updatePortalHighlights();
 	}
-	
+
 	public void setLayoutDirty()
 	{
 		isLayoutDirty=true;
@@ -594,7 +593,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		boolean updateAugmentation = false;
 		if (isLayoutDirty)
 			updateAugmentation = true;
-		
+
 		super.display(gl);
 		if (wasPathwayAdded) {
 			EnablePathSelectionEvent event = new EnablePathSelectionEvent(isPathSelectionMode);
@@ -604,7 +603,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		}
 		// The augmentation has to be updated after the layout was updated in super; updating on relayout would be too
 		// early, as the layout is not adapted at that time.
-		if (updateAugmentation) {			
+		if (updateAugmentation) {
 			updateAugmentation();
 		}
 		// }
