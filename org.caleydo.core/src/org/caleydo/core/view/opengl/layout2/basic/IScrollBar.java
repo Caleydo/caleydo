@@ -29,33 +29,58 @@ import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 
 /**
+ * describes a scrollbar widget
+ *
  * @author Samuel Gratzl
  *
  */
 public interface IScrollBar extends IGLRenderer, IPickingListener {
+
 	void renderPick(GLGraphics g, float w, float h, GLElement parent);
 
+	/**
+	 * bounds of this scrollbar
+	 *
+	 * @param offset
+	 *            from top
+	 * @param view
+	 *            the view/page currently visible
+	 * @param total
+	 *            in total from 0 to toal
+	 * @return
+	 */
 	float setBounds(float offset, float view, float total);
 
 	void setCallback(IScrollBarCallback callback);
 
 	public interface IScrollBarCallback {
+		/**
+		 * callback for scrollbar changes
+		 * 
+		 * @param scrollBar
+		 * @param offset
+		 *            the new value in the notation of the bounds
+		 */
 		void onScrollBarMoved(IScrollBar scrollBar, float offset);
 
 		/**
+		 * converts the given mouse pickpoint in relative coordinates of the wrapping {@link GLElement}
+		 *
 		 * @param pickedPoint
 		 * @return
 		 */
 		Vec2f toRelative(Point pickedPoint);
 
 		/**
+		 * returns the total height/width that is used to render the scrollbar
+		 *
 		 * @param scrollBar
 		 * @return
 		 */
 		float getTotal(IScrollBar scrollBar);
 
 		/**
-		 *
+		 * triggers that the parent should be repainted
 		 */
 		void repaint();
 	}
