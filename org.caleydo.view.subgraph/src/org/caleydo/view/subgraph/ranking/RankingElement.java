@@ -30,7 +30,7 @@ import java.util.List;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.basic.IScrollBar;
-import org.caleydo.core.view.opengl.layout2.basic.ScrollBar;
+import org.caleydo.core.view.opengl.layout2.basic.ScrollBarCompatibility;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
@@ -88,7 +88,7 @@ public class RankingElement extends GLElementContainer {
 		}
 	};
 
-	public RankingElement(GLSubGraph view) {
+	public RankingElement(final GLSubGraph view) {
 		this.view = view;
 		this.table = new RankTableModel(new RankTableConfigBase());
 		table.addPropertyChangeListener(RankTableModel.PROP_SELECTED_ROW, onSelectRow);
@@ -115,8 +115,7 @@ public class RankingElement extends GLElementContainer {
 
 			@Override
 			public IScrollBar createScrollBar(boolean horizontal) {
-				// TODO implement a scrollbar that is compatible with the OLD picking manager
-				return new ScrollBar(horizontal);
+				return new ScrollBarCompatibility(horizontal, view.getDndController());
 			}
 		};
 

@@ -44,6 +44,7 @@ import org.caleydo.core.view.opengl.layout2.animation.MoveTransitions;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
 import org.caleydo.core.view.opengl.layout2.layout.GLSizeRestrictiveFlowLayout;
+import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.datadomain.pathway.IPathwayRepresentation;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.VertexRepBasedContextMenuItem;
@@ -128,10 +129,6 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	protected GLPathwayGridLayout pathwayLayout = new GLPathwayGridLayout(this, GLPadding.ZERO, 10);
 
 	protected GLExperimentalDataMapping experimentalDataMappingElement = new GLExperimentalDataMapping(this);
-	/**
-	 * The element that shows the ranked pathway list
-	 */
-	protected RankingElement rankingElement = new RankingElement(this);
 
 	/**
 	 * Determines whether path selection mode is currently active.
@@ -152,9 +149,16 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	private boolean isAltKeyDown = false;
 	private boolean isShiftKeyDown = false;
 
+	private final DragAndDropController dndController = new DragAndDropController(this);
+
+	/**
+	 * The element that shows the ranked pathway list
+	 */
+	protected RankingElement rankingElement;
+
 	/**
 	 * Constructor.
-	 *
+	 * 
 	 * @param glCanvas
 	 * @param viewLabel
 	 * @param viewFrustum
@@ -176,6 +180,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		// column.add(nodeInfoContainer);
 		rankingWindow = new GLWindow("Pathways", this);
 		rankingWindow.setSize(150, Float.NaN);
+		rankingElement = new RankingElement(this);
 		rankingWindow.setContent(rankingElement);
 		slideInElement = new SlideInElement(rankingWindow, ESlideInElementPosition.RIGHT);
 		rankingWindow.addSlideInElement(slideInElement);
@@ -264,6 +269,13 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 			setPathLevel(EEmbeddingID.PATH_LEVEL2);
 		}
 		augmentation.init(gl);
+	}
+
+	/**
+	 * @return the dndController, see {@link #dndController}
+	 */
+	public DragAndDropController getDndController() {
+		return dndController;
 	}
 
 	@Override
@@ -566,6 +578,11 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		if (updateAugmentation)
 			updatePathLinks();
 		// }
+
+		// call after all other rendering because it calls the onDrag
+		// methods
+		// which need alpha blending...
+		dndController.handleDragging(gl, glMouseListener);
 
 	}
 
