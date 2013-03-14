@@ -37,7 +37,6 @@ import org.caleydo.data.loader.ResourceLocators;
 import org.caleydo.data.loader.ResourceLocators.IResourceLocator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -87,7 +86,9 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 	public GLSandBox(Shell parentShell, String title, GLElement root, GLPadding padding, Dimension dim) {
 		this.shell = parentShell;
 		this.shell.setText(title);
-		this.shell.setLayout(new FillLayout());
+		this.shell.setLayout(new GridLayout(1, true));
+		this.shell.setSize(dim.width, dim.height);
+
 		this.loader = ResourceLocators.chain(ResourceLocators.classLoader(root.getClass().getClassLoader()),
 				ResourceLocators.FILE);
 
@@ -97,11 +98,10 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 
 
 		this.canvas = canvasFactory.create(caps, shell);
-		// canvas.asComposite().setLayoutData(new GridData(SWT.FILL, SWT.FILL));
-		canvas.asComposite().setSize(dim.width, dim.height);
+		canvas.asComposite().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+
 		this.padding = padding;
 		canvas.addGLEventListener(this);
-		shell.setSize(dim.width, dim.height);
 
 		this.animator = new FPSAnimator(canvas.asGLAutoDrawAble(), 30);
 		animator.setPrintExceptions(true);
