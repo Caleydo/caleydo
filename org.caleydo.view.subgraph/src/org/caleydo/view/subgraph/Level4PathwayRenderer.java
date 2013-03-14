@@ -78,11 +78,18 @@ public class Level4PathwayRenderer extends ALayoutRenderer implements IPathwayRe
 
 	@Override
 	public Rectangle2D getVertexRepBounds(PathwayVertexRep vertexRep) {
+		if (pathway.containsVertex(vertexRep))
+			return new Rectangle2D.Float();
 		return null;
 	}
 
 	@Override
 	public List<Rectangle2D> getVertexRepsBounds(PathwayVertexRep vertexRep) {
+		if (pathway.containsVertex(vertexRep)) {
+			List<Rectangle2D> list = new ArrayList<>(1);
+			list.add(new Rectangle2D.Float());
+			return list;
+		}
 		return null;
 	}
 
