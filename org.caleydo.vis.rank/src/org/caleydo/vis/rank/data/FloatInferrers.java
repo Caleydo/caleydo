@@ -25,8 +25,10 @@ import org.caleydo.core.util.function.FloatStatistics;
 import org.caleydo.core.util.function.IFloatIterator;
 
 /**
+ * factory class for {@link IFloatInferrer}
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
 public class FloatInferrers {
 	public static IFloatInferrer MEAN = new IFloatInferrer() {
@@ -51,6 +53,12 @@ public class FloatInferrers {
 		}
 	};
 
+	/**
+	 * constant value
+	 * 
+	 * @param value
+	 * @return
+	 */
 	public static IFloatInferrer fix(final float value) {
 		return new IFloatInferrer() {
 			@Override

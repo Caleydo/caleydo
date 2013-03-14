@@ -47,6 +47,12 @@ public class ColorTransition implements IStyleAnimation {
 		}
 	}
 
+	/**
+	 * factory class for creating a {@link ColorTransition}
+	 * 
+	 * @param delta
+	 * @return
+	 */
 	public static ColorTransition get(int delta) {
 		if (delta > 0 && delta < ups.length)
 			return ups[delta - 1];
@@ -57,7 +63,7 @@ public class ColorTransition implements IStyleAnimation {
 
 	private final int delta;
 
-	public ColorTransition(int delta) {
+	private ColorTransition(int delta) {
 		this.delta = delta;
 	}
 

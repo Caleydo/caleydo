@@ -45,9 +45,19 @@ public class RankTableUI extends GLElementContainer implements ISelectionCallbac
 	public RankTableUI() {
 	}
 
+	/**
+	 * initializes this visualization with the given data
+	 *
+	 * @param table
+	 *            the model to use
+	 * @param config
+	 *            the ui config to use
+	 * @param layouts
+	 *            one or more {@link IRowHeightLayout} to provide to the user
+	 */
 	public void init(RankTableModel table, IRankTableUIConfig config, IRowHeightLayout... layouts) {
 		setLayout(GLLayouts.flowVertical(0));
-		if (layouts.length > 1) {
+		if (layouts.length > 1) { // more than one row height layout to choose
 			ButtonBar buttons = new ButtonBar();
 			buttons.setzDelta(0.5f);
 			RadioController radio = new RadioController(this);
@@ -68,6 +78,9 @@ public class RankTableUI extends GLElementContainer implements ISelectionCallbac
 	}
 
 	private static final IGLRenderer renderer = new  IGLRenderer() {
+		/**
+		 * renders a {@link IRowHeightLayout} switch
+		 */
 		@Override
 		public void render(GLGraphics g, float w, float h, GLElement parent) {
 			IRowHeightLayout l = parent.getLayoutDataAs(IRowHeightLayout.class, null);
@@ -79,6 +92,9 @@ public class RankTableUI extends GLElementContainer implements ISelectionCallbac
 	};
 
 
+	/**
+	 * change the {@link IRowHeightLayout} to the selected one
+	 */
 	@Override
 	public void onSelectionChanged(GLButton button, boolean selected) {
 		IRowHeightLayout l = button.getLayoutDataAs(IRowHeightLayout.class, null);

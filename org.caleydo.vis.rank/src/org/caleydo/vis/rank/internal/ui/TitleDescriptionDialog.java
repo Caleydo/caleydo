@@ -29,6 +29,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 /**
+ * a swt dialog with a title and description text fields
+ *
  * @author Samuel Gratzl
  *
  */

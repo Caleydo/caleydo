@@ -22,10 +22,10 @@ package org.caleydo.vis.rank.internal.event;
 import org.caleydo.core.event.ADirectedEvent;
 
 /**
- * simple generic event for filtering changes
- *
+ * event for editing annotations
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
 public class AnnotationEditEvent extends ADirectedEvent {
 	private String title;

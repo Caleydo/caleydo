@@ -22,8 +22,9 @@ package org.caleydo.vis.rank.internal.event;
 import org.caleydo.core.event.ADirectedEvent;
 
 /**
- * @author Samuel Gratzl
  *
+ * @author Samuel Gratzl
+ * 
  */
 public class CodeUpdateEvent extends ADirectedEvent {
 	private String code;

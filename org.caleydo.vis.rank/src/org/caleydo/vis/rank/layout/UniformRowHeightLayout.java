@@ -25,8 +25,10 @@ import org.caleydo.vis.rank.model.ColumnRanker;
 import org.caleydo.vis.rank.ui.RenderStyle;
 
 /**
+ * uniform {@link IRowHeightLayout} where every row has the same height
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
 class UniformRowHeightLayout implements IRowHeightLayout {
 	private static final float ROW_HEIGHT = 20;

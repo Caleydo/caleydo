@@ -22,6 +22,8 @@ package org.caleydo.vis.rank.config;
 import org.caleydo.core.view.opengl.layout2.basic.IScrollBar;
 
 /**
+ * Utility methods for creating a different versions of a {@link IRankTableUIConfig}
+ *
  * @author Samuel Gratzl
  *
  */
@@ -33,8 +35,15 @@ public class RankTableUIConfigs {
 		return new WrappedRankTableUIConfig(config, Boolean.FALSE, null, null);
 	}
 
+	/**
+	 * wrapper around another {@link IRankTableUIConfig} with one or more attributes changes
+	 *
+	 * @author Samuel Gratzl
+	 *
+	 */
 	private static class WrappedRankTableUIConfig implements IRankTableUIConfig {
 		private final IRankTableUIConfig wrappee;
+		// null -> use default, else use the value
 		private final Boolean isInteractive;
 		private final Boolean isMoveAble;
 		private final Boolean canChangeWeights;

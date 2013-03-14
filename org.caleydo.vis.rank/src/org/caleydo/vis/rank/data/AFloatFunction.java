@@ -20,8 +20,10 @@
 package org.caleydo.vis.rank.data;
 
 /**
+ * basic implementation of a {@link IFloatFunction}
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
 public abstract class AFloatFunction<F> implements IFloatFunction<F> {
 	@Override

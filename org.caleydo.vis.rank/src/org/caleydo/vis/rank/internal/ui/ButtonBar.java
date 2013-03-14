@@ -28,8 +28,10 @@ import org.caleydo.vis.rank.ui.RenderStyle;
 import com.google.common.collect.Iterables;
 
 /**
+ * simple bar of buttons in a horizontal row
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
 public class ButtonBar extends GLElementContainer {
 	public ButtonBar() {

@@ -22,9 +22,16 @@ package org.caleydo.vis.rank.data;
 import org.caleydo.core.util.function.IFloatIterator;
 
 /**
+ * interface describing a method that combines a list of floats to a single value, e.g. its mean
+ *
  * @author Samuel Gratzl
  *
  */
 public interface IFloatInferrer {
+	/**
+	 * combines the given list with the given size to a new float value
+	 * 
+	 * @return
+	 */
 	float infer(IFloatIterator it, int size);
 }

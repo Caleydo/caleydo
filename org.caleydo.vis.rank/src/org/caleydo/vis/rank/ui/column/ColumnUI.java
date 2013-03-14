@@ -16,7 +16,7 @@ import org.caleydo.core.view.opengl.layout2.animation.Durations;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.vis.rank.internal.ui.anim.ReRankTransition;
-import org.caleydo.vis.rank.layout.IRowHeightLayout.IRowSetter;
+import org.caleydo.vis.rank.layout.IRowLayoutInstance.IRowSetter;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.RankTableModel;

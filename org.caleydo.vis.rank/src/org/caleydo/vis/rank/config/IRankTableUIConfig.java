@@ -20,17 +20,41 @@
 package org.caleydo.vis.rank.config;
 
 import org.caleydo.core.view.opengl.layout2.basic.IScrollBar;
+import org.caleydo.vis.rank.model.RankTableModel;
 
 /**
+ * config interface describing the visual representation of a {@link RankTableModel}
+ *
  * @author Samuel Gratzl
  *
  */
 public interface IRankTableUIConfig {
+	/**
+	 * should the whole visualization be interactive, e.g button to hide, collapse,...
+	 *
+	 * @return
+	 */
 	boolean isInteractive();
 
+	/**
+	 * should the columns be move able
+	 *
+	 * @return
+	 */
 	boolean isMoveAble();
 
+	/**
+	 * is it allowed to change the weights / width of a column
+	 *
+	 * @return
+	 */
 	boolean canChangeWeights();
 
+	/**
+	 * factory method for creating a new {@link IScrollBar} implementation, as this is picking specific
+	 * 
+	 * @param horizontal
+	 * @return
+	 */
 	IScrollBar createScrollBar(boolean horizontal);
 }

@@ -45,7 +45,7 @@ import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.data.loader.ResourceLocators;
 import org.caleydo.vis.rank.config.IRankTableUIConfig;
 import org.caleydo.vis.rank.layout.IRowHeightLayout;
-import org.caleydo.vis.rank.layout.IRowHeightLayout.IRowSetter;
+import org.caleydo.vis.rank.layout.IRowLayoutInstance.IRowSetter;
 import org.caleydo.vis.rank.model.ACompositeRankColumnModel;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.ColumnRanker;

@@ -29,6 +29,11 @@ import org.caleydo.vis.rank.model.StackedRankColumnModel;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 
 /**
+ * basic implementation of {@link IRankTableConfig}
+ *
+ * with all features enabled and combine by default to a {@link MaxCompositeRankColumnModel} and with ALT down to a
+ * {@link StackedRankColumnModel}
+ *
  * @author Samuel Gratzl
  *
  */

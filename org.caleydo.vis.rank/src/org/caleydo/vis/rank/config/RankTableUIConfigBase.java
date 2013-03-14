@@ -23,8 +23,10 @@ import org.caleydo.core.view.opengl.layout2.basic.IScrollBar;
 import org.caleydo.core.view.opengl.layout2.basic.ScrollBar;
 
 /**
+ * basic implementation of a {@link IRankTableUIConfig}
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
 public class RankTableUIConfigBase implements IRankTableUIConfig {
 	private final boolean isInteractive;
