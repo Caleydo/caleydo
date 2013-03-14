@@ -97,7 +97,6 @@ public class GLPathwayGridLayout implements IGLLayout {
 
 	@Override
 	public void doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
-
 		Map<GLPathwayWindow, IGLLayoutElement> windowToElement = new HashMap<>();
 		for (IGLLayoutElement child : children) {
 			windowToElement.put((GLPathwayWindow) child.asElement(), child);
@@ -229,6 +228,7 @@ public class GLPathwayGridLayout implements IGLLayout {
 			currentPositionX += columnWidth + gap;
 		}
 
+		this.view.setLayoutDirty();
 	}
 
 	private void squeezeColumn(PathwayColumn column, List<LayoutSnapshot> snapshots, float freeSpaceVertical) {
