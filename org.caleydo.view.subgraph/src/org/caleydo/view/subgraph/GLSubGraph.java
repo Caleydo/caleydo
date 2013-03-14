@@ -38,9 +38,6 @@ import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElement.EVisibility;
 import org.caleydo.core.view.opengl.layout2.GLElementAdapter;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
-import org.caleydo.core.view.opengl.layout2.animation.InOutInitializers;
-import org.caleydo.core.view.opengl.layout2.animation.InOutTransitions.InOutTransitionBase;
-import org.caleydo.core.view.opengl.layout2.animation.MoveTransitions;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
 import org.caleydo.core.view.opengl.layout2.layout.GLSizeRestrictiveFlowLayout;
@@ -53,15 +50,16 @@ import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.PathwayPath;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.listener.EnablePathSelectionEvent;
+import org.caleydo.datadomain.pathway.listener.HighlightPortalsEvent;
 import org.caleydo.datadomain.pathway.listener.PathwayPathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.ShowPortalNodesEvent;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
+import org.caleydo.view.subgraph.GLSubGraphAugmentation.PortalHighlightRenderer;
 import org.caleydo.view.subgraph.GLWindow.ICloseWindowListener;
 import org.caleydo.view.subgraph.MultiLevelSlideInElement.IWindowState;
 import org.caleydo.view.subgraph.SlideInElement.ESlideInElementPosition;
 import org.caleydo.view.subgraph.contextmenu.ShowCommonNodeItem;
 import org.caleydo.view.subgraph.datamapping.GLExperimentalDataMapping;
-import org.caleydo.view.subgraph.event.HighlightAllPortalsEvent;
 import org.caleydo.view.subgraph.event.ShowCommonNodePathwaysEvent;
 import org.caleydo.view.subgraph.event.ShowCommonNodesPathwaysEvent;
 import org.caleydo.view.subgraph.event.ShowNodeInfoEvent;
@@ -145,6 +143,11 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	 * Determines whether the path window is maximized.
 	 */
 	protected boolean isPathWindowMaximized = false;
+
+	/**
+	 * Determines whether portal highlighting is currently enabled.
+	 */
+	protected boolean isHighlightPortals = false;
 
 	private boolean isAltKeyDown = false;
 	private boolean isShiftKeyDown = false;
@@ -412,7 +415,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 					pathwayLayout.removeWindow(window);
 					parent.remove(window);
 					pathwayInfos.remove(window.info);
-					updatePortals();
+					updateAllPortals();
 				}
 			});
 		}
@@ -485,56 +488,56 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		augmentation.isDirty = true;
 		augmentation.setPxlSize(this.getParentGLCanvas().getWidth(), this.getParentGLCanvas().getHeight());
 
-		augmentation.clearRenderers();
-		PathwayVertexRep start = null;
-		PathwayVertexRep end = null;
+		// augmentation.clearRenderers();
+		// PathwayVertexRep start = null;
+		// PathwayVertexRep end = null;
 		// List<Pair<MultiFormRenderer, GLElement>> rendererList = multiFormRenderers.get(EEmbeddingID.PATHWAY_MULTIFORM
 		// .id());
 		// if (rendererList == null)
 		// return;
 
-		for (PathwayPath path : pathSegments) {
-			if (start == null) {
-				start = path.getPath().getEndVertex();
-			} else {
-				end = path.getPath().getStartVertex();
-				// draw link
-				//
-				PathwayVertexRep referenceVertexRep = start;
-				Rectangle2D referenceRectangle = null;
-				for (PathwayMultiFormInfo info : pathwayInfos) {
-					IPathwayRepresentation pathwayRepresentation = getPathwayRepresentation(info.multiFormRenderer,
-							info.multiFormRenderer.getActiveRendererID());
-					if (pathwayRepresentation != null
-							&& pathwayRepresentation.getPathway() == referenceVertexRep.getPathway()) {
-						referenceRectangle = getAbsoluteVertexLocation(pathwayRepresentation, referenceVertexRep,
-								info.container);
-						break;
-					}
-				}
-				if (referenceRectangle == null)
-					return;
-
-				for (PathwayMultiFormInfo info : pathwayInfos) {
-					IPathwayRepresentation pathwayRepresentation = getPathwayRepresentation(info.multiFormRenderer,
-							info.multiFormRenderer.getActiveRendererID());
-
-					if (pathwayRepresentation != null) {
-
-						// for (PathwayVertexRep vertexRep : vertexReps) {
-						Rectangle2D rect = getAbsoluteVertexLocation(pathwayRepresentation, end, info.container);
-						if (rect != null) {
-							augmentation.addRenderer(new GLSubGraphAugmentation.ConnectionRenderer(referenceRectangle,
-									rect));
-						}
-						// }
-					}
-				}
-				//
-				start = path.getPath().getEndVertex();
-				end = null;
-			}
-		}
+		// for (PathwayPath path : pathSegments) {
+		// if (start == null) {
+		// start = path.getPath().getEndVertex();
+		// } else {
+		// end = path.getPath().getStartVertex();
+		// // draw link
+		// //
+		// PathwayVertexRep referenceVertexRep = start;
+		// Rectangle2D referenceRectangle = null;
+		// for (PathwayMultiFormInfo info : pathwayInfos) {
+		// IPathwayRepresentation pathwayRepresentation = getPathwayRepresentation(info.multiFormRenderer,
+		// info.multiFormRenderer.getActiveRendererID());
+		// if (pathwayRepresentation != null
+		// && pathwayRepresentation.getPathway() == referenceVertexRep.getPathway()) {
+		// referenceRectangle = getAbsoluteVertexLocation(pathwayRepresentation, referenceVertexRep,
+		// info.container);
+		// break;
+		// }
+		// }
+		// if (referenceRectangle == null)
+		// return;
+		//
+		// for (PathwayMultiFormInfo info : pathwayInfos) {
+		// IPathwayRepresentation pathwayRepresentation = getPathwayRepresentation(info.multiFormRenderer,
+		// info.multiFormRenderer.getActiveRendererID());
+		//
+		// if (pathwayRepresentation != null) {
+		//
+		// // for (PathwayVertexRep vertexRep : vertexReps) {
+		// Rectangle2D rect = getAbsoluteVertexLocation(pathwayRepresentation, end, info.container);
+		// if (rect != null) {
+		// // augmentation.addConnectionRenderer(new GLSubGraphAugmentation.ConnectionRenderer(referenceRectangle,
+		// // rect));
+		// }
+		// // }
+		// }
+		// }
+		// //
+		// start = path.getPath().getEndVertex();
+		// end = null;
+		// }
+		// }
 		List<Rectangle2D> path = new ArrayList<>();
 
 		IPathwayRepresentation pathwayRepresentation = null;
@@ -575,8 +578,10 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		}
 		// The augmentation has to be updated after the layout was updated in super; updating on relayout would be too
 		// early, as the layout is not adapted at that time.
-		if (updateAugmentation)
+		if (updateAugmentation) {
 			updatePathLinks();
+			updatePortalHighlights();
+		}
 		// }
 
 		// call after all other rendering because it calls the onDrag
@@ -760,31 +765,34 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 			updatePathLinks();
 		}
 
-		@ListenTo(restrictExclusiveToEventSpace = true)
-		public void onShowNodeInfo(ShowNodeInfoEvent event) {
-			GLNodeInfo nodeInfo = new GLNodeInfo(event.getVertexRep());
-			nodeInfo.setSize(80, 80);
-			nodeInfoContainer.add(nodeInfo, 200, new InOutTransitionBase(InOutInitializers.BOTTOM,
-					MoveTransitions.MOVE_LINEAR));
-			nodeInfoContainer.setSize(Float.NaN, 80);
-			// nodeInfoContainer.relayout();
-		}
+		// @ListenTo(restrictExclusiveToEventSpace = true)
+		// public void onShowNodeInfo(ShowNodeInfoEvent event) {
+		// GLNodeInfo nodeInfo = new GLNodeInfo(event.getVertexRep());
+		// nodeInfo.setSize(80, 80);
+		// nodeInfoContainer.add(nodeInfo, 200, new InOutTransitionBase(InOutInitializers.BOTTOM,
+		// MoveTransitions.MOVE_LINEAR));
+		// nodeInfoContainer.setSize(Float.NaN, 80);
+		// nodeInfoContainer.relayout();
+		// }
 
 		@ListenTo(restrictExclusiveToEventSpace = true)
 		public void onShowPathwaysWithVertex(ShowCommonNodePathwaysEvent event) {
 			rankingElement.setFilter(new PathwayFilters.CommonVertexFilter(event.getVertexRep(), false));
 			rankingElement.setRanking(new PathwayRankings.CommonVerticesRanking(event.getVertexRep().getPathway()));
+			isLayoutDirty = true;
 		}
 
 		@ListenTo(restrictExclusiveToEventSpace = true)
 		public void onMinSizeUpdate(MinSizeUpdateEvent event) {
 			pathwayRow.relayout();
+			isLayoutDirty = true;
 		}
 
 		@ListenTo(restrictExclusiveToEventSpace = true)
 		public void onShowPathwaysWithVertex(ShowCommonNodesPathwaysEvent event) {
 			rankingElement.setFilter(new PathwayFilters.CommonVerticesFilter(event.getPathway(), false));
 			rankingElement.setRanking(new PathwayRankings.CommonVerticesRanking(event.getPathway()));
+			isLayoutDirty = true;
 		}
 
 		@ListenTo(restrictExclusiveToEventSpace = true)
@@ -793,21 +801,19 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		}
 
 		@ListenTo(restrictExclusiveToEventSpace = true)
-		public void onHighlightAllPortals(HighlightAllPortalsEvent event) {
-			// TODO: send events
-			if (event.isHighlight()) {
+		public void onHighlightAllPortals(HighlightPortalsEvent event) {
 
-			} else {
-
-			}
+			isHighlightPortals = !event.getPortals().isEmpty();
+			updatePortalHighlights();
 		}
 	}
 
-	protected void updatePortals() {
+	protected void updateAllPortals() {
 		portals.clear();
 		for (PathwayMultiFormInfo info : pathwayInfos) {
 			addPortalsOfPathway(info);
 		}
+		updatePortalHighlights();
 	}
 
 	protected void addPortalsOfPathway(PathwayMultiFormInfo info) {
@@ -828,6 +834,24 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 							portals.add(vertexRep);
 							portals.add(v);
 						}
+					}
+				}
+			}
+		}
+		updatePortalHighlights();
+	}
+
+	protected void updatePortalHighlights() {
+		augmentation.clearPortalHighlightRenderers();
+		if (isHighlightPortals) {
+			for (PathwayVertexRep vertexRep : portals) {
+				for (PathwayMultiFormInfo info : pathwayInfos) {
+					IPathwayRepresentation pathwayRepresentation = getPathwayRepresentation(info.multiFormRenderer,
+							info.multiFormRenderer.getActiveRendererID());
+					if (pathwayRepresentation != null) {
+						Rectangle2D rect = getAbsoluteVertexLocation(pathwayRepresentation, vertexRep, info.container);
+						if (rect != null)
+							augmentation.addPortalHighlightRenderer(new PortalHighlightRenderer(rect));
 					}
 				}
 			}
@@ -891,5 +915,12 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	public void removeTablePerspective(TablePerspective tablePerspective) {
 		// TODO Auto-generated method stub
 
+	}
+
+	/**
+	 * @return the portals, see {@link #portals}
+	 */
+	public Set<PathwayVertexRep> getPortals() {
+		return portals;
 	}
 }

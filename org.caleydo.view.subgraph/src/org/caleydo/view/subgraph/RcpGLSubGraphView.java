@@ -73,7 +73,7 @@ public class RcpGLSubGraphView extends ARcpGLViewPart {
 		toolBarManager.add(selectPathAction);
 		toolBarManager.add(new ClearPathAction(subgraph.getPathEventSpace()));
 		toolBarManager.add(new ShowPortalsAction(subgraph.getPathEventSpace()));
-		toolBarManager.add(new HighlightAllPortalsAction(subgraph.getPathEventSpace()));
+		toolBarManager.add(new HighlightAllPortalsAction(subgraph));
 
 		toolBarManager.add(new OpenOnlineHelpAction(
 				"http://www.icg.tugraz.at/project/caleydo/help/caleydo-2.0/pathways", false));
