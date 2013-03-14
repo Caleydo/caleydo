@@ -22,8 +22,10 @@ package org.caleydo.core.view.opengl.layout2;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 
 /**
+ * accessor helper for element container outside of this package, use with caution
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
 public class GLElementAccessor {
 	/**

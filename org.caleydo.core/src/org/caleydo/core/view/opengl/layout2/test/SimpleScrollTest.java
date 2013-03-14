@@ -19,8 +19,6 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.layout2.test;
 
-import gleem.linalg.Vec2f;
-
 import java.awt.Color;
 
 import org.caleydo.core.view.opengl.layout2.GLElement;
@@ -29,7 +27,6 @@ import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.GLSandBox;
 import org.caleydo.core.view.opengl.layout2.basic.ScrollBar;
 import org.caleydo.core.view.opengl.layout2.basic.ScrolledGLElement;
-import org.caleydo.core.view.opengl.layout2.basic.ScrolledGLElement.IMinSizeAvailable;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 
 /**
@@ -47,18 +44,15 @@ public class SimpleScrollTest extends GLElementContainer {
 		add(new ScrolledGLElement(g, new ScrollBar(true), new ScrollBar(false), 10));
 	}
 
-	private static class Content extends GLElement implements IMinSizeAvailable {
-
+	private static class Content extends GLElement {
+		public Content() {
+			setSize(500, 500);
+		}
 		@Override
 		protected void renderImpl(GLGraphics g, float w, float h) {
 			g.color(Color.RED).fillRect(0, 0, w, h);
 			g.color(Color.BLUE).fillRect(20, 20, w - 40, h - 40);
 			super.renderImpl(g, w, h);
-		}
-
-		@Override
-		public Vec2f getMinSize() {
-			return new Vec2f(500, 500);
 		}
 
 	}

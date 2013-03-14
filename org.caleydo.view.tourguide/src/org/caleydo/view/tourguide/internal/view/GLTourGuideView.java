@@ -88,8 +88,7 @@ import org.caleydo.vis.rank.model.MaxCompositeRankColumnModel;
 import org.caleydo.vis.rank.model.RankRankColumnModel;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.StackedRankColumnModel;
-import org.caleydo.vis.rank.ui.TableBodyUI;
-import org.caleydo.vis.rank.ui.TableHeaderUI;
+import org.caleydo.vis.rank.ui.TableUI;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 /**
@@ -619,8 +618,7 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 		public TourGuideVis() {
 			setLayout(GLLayouts.flowVertical(0));
 			this.add(new DataDomainQueryUI(queries));
-			this.add(new TableHeaderUI(table, RankTableUIConfigs.DEFAULT));
-			this.add(new TableBodyUI(table, RowHeightLayouts.UNIFORM, RankTableUIConfigs.DEFAULT));
+			this.add(new TableUI(table, RankTableUIConfigs.DEFAULT, RowHeightLayouts.UNIFORM));
 		}
 	}
 }

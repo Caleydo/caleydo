@@ -424,7 +424,7 @@ public class GLElement implements IHasGLLayoutData {
 	 * @return
 	 */
 	public final GLElement setSize(float w, float h) {
-		if (this.bounds_set.width == w && this.bounds_set.height == h)
+		if (Float.compare(this.bounds_set.width, w) == 0 && Float.compare(this.bounds_set.height, h) == 0)
 			return this;
 		this.bounds_set.width = bounds_layout.width = w;
 		this.bounds_set.height = bounds_layout.height = h;
@@ -440,7 +440,7 @@ public class GLElement implements IHasGLLayoutData {
 	 * @return
 	 */
 	public final GLElement setLocation(float x, float y) {
-		if (this.bounds_set.x == x && this.bounds_set.y == y)
+		if (Float.compare(this.bounds_set.x, x) == 0 && Float.compare(this.bounds_set.y, y) == 0)
 			return this;
 		this.bounds_set.x = bounds_layout.x = x;
 		this.bounds_set.y = bounds_layout.y = y;

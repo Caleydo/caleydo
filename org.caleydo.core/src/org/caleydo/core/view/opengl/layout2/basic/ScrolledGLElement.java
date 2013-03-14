@@ -30,11 +30,16 @@ import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.IGLElementParent;
 import org.caleydo.core.view.opengl.layout2.basic.IScrollBar.IScrollBarCallback;
+import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 
 /**
- * @author Samuel Gratzl
+ * wrapper element that enables the use of scrollbars.
  *
+ * by convention the set size of the content will be interpreted as the minimum size
+ * 
+ * @author Samuel Gratzl
+ * 
  */
 public final class ScrolledGLElement extends GLElement implements IGLElementParent, IScrollBarCallback {
 	private final GLElement content;
@@ -90,7 +95,10 @@ public final class ScrolledGLElement extends GLElement implements IGLElementPare
 
 	@Override
 	protected void layout() {
-		Vec2f minSize = getMinSize();
+		IGLLayoutElement layout = GLElementAccessor.asLayoutElement(content);
+		Vec2f minSize = layout.getSetSize();
+		minSize.setX(GLLayouts.defaultValue(minSize.x(), 0));
+		minSize.setY(GLLayouts.defaultValue(minSize.y(), 0));
 		Vec2f size = getSize();
 		Vec2f contentSize = new Vec2f();
 		Vec2f offset = content.getLocation();
@@ -131,7 +139,6 @@ public final class ScrolledGLElement extends GLElement implements IGLElementPare
 			contentSize.setY(size.y());
 			offset.setY(0);
 		}
-		IGLLayoutElement layout = GLElementAccessor.asLayoutElement(content);
 		layout.setLocation(-offset.x(), -offset.y());
 		layout.setSize(contentSize.x(), contentSize.y());
 		super.layout();
@@ -231,19 +238,10 @@ public final class ScrolledGLElement extends GLElement implements IGLElementPare
 		return vertical != null && vertical.needIt;
 	}
 
-	private Vec2f getMinSize() {
-		if (content instanceof IMinSizeAvailable)
-			return ((IMinSizeAvailable) content).getMinSize();
-		return new Vec2f(Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY);
-	}
 
 	@Override
 	public boolean moved(GLElement child) {
 		return false;
-	}
-
-	public interface IMinSizeAvailable {
-		public Vec2f getMinSize();
 	}
 
 	private class ScrollBarImpl {
