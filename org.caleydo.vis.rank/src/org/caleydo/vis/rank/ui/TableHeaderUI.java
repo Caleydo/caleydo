@@ -45,14 +45,14 @@ public final class TableHeaderUI extends ACompositeHeaderUI {
 		this.table = table;
 		this.table.addPropertyChangeListener(RankTableModel.PROP_COLUMNS, childrenChanged);
 		setLayoutData(table);
-		setSize(-1, (HIST_HEIGHT + LABEL_HEIGHT) * 1);
+		setSize(-1, (HIST_HEIGHT + LABEL_HEIGHT * 2) * 1);
 		this.init(table.getColumns());
 	}
 
 	@Override
 	protected void setHasThick(boolean hasThick) {
 		super.setHasThick(hasThick);
-		setSize(-1, (HIST_HEIGHT + LABEL_HEIGHT) * (hasThick ? 2 : 1));
+		setSize(-1, (HIST_HEIGHT + LABEL_HEIGHT) * 1 + (hasThick ? (HIST_HEIGHT + LABEL_HEIGHT * 2) : 0));
 	}
 
 	@Override

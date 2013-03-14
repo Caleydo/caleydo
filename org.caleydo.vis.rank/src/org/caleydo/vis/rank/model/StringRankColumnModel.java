@@ -101,7 +101,7 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				InputDialog d = new InputDialog(null, "Filter column: " + getTooltip(),
+				InputDialog d = new InputDialog(null, "Filter column: " + getTitle(),
 						"Edit Filter (use * as wildcard)", filter, null);
 				if (d.open() == Window.OK) {
 					String v = d.getValue().trim();

@@ -170,7 +170,7 @@ public abstract class ACompositeHeaderUI extends GLElementContainer implements I
 
 		// align the columns normally
 		float x = getLeftPadding();
-		float y = getTopPadding() + (hasThick ? HIST_HEIGHT + LABEL_HEIGHT : 0);
+		float y = getTopPadding() + (hasThick ? (HIST_HEIGHT + LABEL_HEIGHT * 2) : 0);
 		float hn = h - y;
 		if (config.isMoveAble()) {
 			separators = children.subList(numColumns + 1 + firstColumn, children.size());

@@ -192,11 +192,12 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 
 	@Override
 	public String getLabel() {
-		String ann = ((model instanceof IAnnotatedColumnMixin) ? ((IAnnotatedColumnMixin) model).getAnnotation() : null);
+		String ann = ((model instanceof IAnnotatedColumnMixin) ? ((IAnnotatedColumnMixin) model).getDescription()
+				: null);
 		ann = ann == null ? "" : ann.trim();
 		if (ann.trim().isEmpty())
-			return model.getTooltip();
-		return model.getTooltip() + "\n" + ann;
+			return model.getTitle();
+		return model.getTitle() + "\n" + ann;
 	}
 
 	protected void onCollapsedChanged(boolean isCollapsed) {

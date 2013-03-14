@@ -39,7 +39,7 @@ public class StackedSummaryHeaderUI extends AColumnHeaderUI {
 	private PropertyChangeListener onAlignmentChange;
 
 	public StackedSummaryHeaderUI(final StackedRankColumnModel model, IRankTableUIConfig config) {
-		super(model, config, false, true);
+		super(model, config, true, true);
 	}
 
 	@Override

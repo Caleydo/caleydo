@@ -24,31 +24,24 @@ import java.beans.PropertyChangeListener;
 
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
-import org.caleydo.vis.rank.internal.ui.TextRenderer;
-import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
-import org.caleydo.vis.rank.model.mixin.IExplodeableColumnMixin;
-import org.caleydo.vis.rank.model.mixin.IHideableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 import org.caleydo.vis.rank.ui.GLPropertyChangeListeners;
-import org.caleydo.vis.rank.ui.detail.MultiScoreBarElement;
 import org.caleydo.vis.rank.ui.detail.MaxScoreSummary;
+import org.caleydo.vis.rank.ui.detail.MultiScoreBarElement;
 import org.caleydo.vis.rank.ui.detail.ValueElement;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class MaxCompositeRankColumnModel extends AMultiRankColumnModel implements IRankableColumnMixin,
-		IHideableColumnMixin, IExplodeableColumnMixin, ICollapseableColumnMixin {
+public class MaxCompositeRankColumnModel extends AMultiRankColumnModel {
 
 	public MaxCompositeRankColumnModel() {
-		super(Color.GRAY, new Color(0.95f, 0.95f, 0.95f));
-		setHeaderRenderer(new TextRenderer("MAX", this));
+		super(Color.GRAY, new Color(0.95f, 0.95f, 0.95f), "MAX");
 	}
 
 	public MaxCompositeRankColumnModel(MaxCompositeRankColumnModel copy) {
 		super(copy);
-		setHeaderRenderer(new TextRenderer("MAX", this));
 		cloneInitChildren();
 	}
 
@@ -74,10 +67,6 @@ public class MaxCompositeRankColumnModel extends AMultiRankColumnModel implement
 				&& super.canAdd(model);
 	}
 
-	@Override
-	public void explode() {
-		parent.explode(this);
-	}
 
 	@Override
 	public MultiFloat getSplittedValue(IRow row) {

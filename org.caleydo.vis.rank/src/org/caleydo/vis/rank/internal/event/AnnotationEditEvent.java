@@ -17,33 +17,43 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.vis.rank.model.mixin;
+package org.caleydo.vis.rank.internal.event;
 
-import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.core.event.ADirectedEvent;
 
 /**
- * mixin that the column has a annotation
+ * simple generic event for filtering changes
  *
  * @author Samuel Gratzl
  *
  */
-public interface IAnnotatedColumnMixin {
-	String PROP_DESCRIPTION = "description";
-	String PROP_TITLE = "title";
+public class AnnotationEditEvent extends ADirectedEvent {
+	private String title;
+	private String description;
 
-	void editAnnotation(GLElement summary);
-
-	String getDescription();
-
-	String getTitle();
-
-	/**
-	 * @param title
-	 */
-	void setTitle(String title);
+	public AnnotationEditEvent(String title, String description) {
+		super();
+		this.title = title;
+		this.description = description;
+	}
 
 	/**
-	 * @param description
+	 * @return the title, see {@link #title}
 	 */
-	void setDescription(String description);
+	public String getTitle() {
+		return title;
+	}
+
+	/**
+	 * @return the description, see {@link #description}
+	 */
+	public String getDescription() {
+		return description;
+	}
+
+
+	@Override
+	public boolean checkIntegrity() {
+		return true;
+	}
 }

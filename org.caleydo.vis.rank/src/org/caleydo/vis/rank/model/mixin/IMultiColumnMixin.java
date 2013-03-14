@@ -31,7 +31,7 @@ import org.caleydo.vis.rank.model.SimpleHistogram;
  * @author Samuel Gratzl
  *
  */
-public interface IMultiColumnMixin extends IRankableColumnMixin, Iterable<ARankColumnModel> {
+public interface IMultiColumnMixin extends IRankableColumnMixin, Iterable<ARankColumnModel>, IAnnotatedColumnMixin {
 	/**
 	 * the individual values of the children and their representation index
 	 *
@@ -99,4 +99,5 @@ public interface IMultiColumnMixin extends IRankableColumnMixin, Iterable<ARankC
 	 * @return
 	 */
 	ARankColumnModel get(int index);
+
 }

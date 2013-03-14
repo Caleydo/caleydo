@@ -29,6 +29,7 @@ import java.beans.PropertyChangeListener;
 import java.util.Arrays;
 import java.util.List;
 
+import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
@@ -41,6 +42,7 @@ import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.core.view.opengl.layout2.renderer.RoundedRectRenderer;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
+import org.caleydo.vis.rank.internal.event.AnnotationEditEvent;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.RankTableModel;
@@ -186,6 +188,12 @@ public class MaxScoreSummary extends GLElementContainer implements IGLLayout {
 					RoundedRectRenderer.FLAG_FILL | RoundedRectRenderer.FLAG_TOP);
 			super.renderImpl(g, w, h);
 		}
+	}
+
+	@ListenTo(sendToMe = true)
+	private void onSetAnnotation(AnnotationEditEvent event) {
+		model.setTitle(event.getTitle());
+		model.setDescription(event.getDescription());
 	}
 
 }

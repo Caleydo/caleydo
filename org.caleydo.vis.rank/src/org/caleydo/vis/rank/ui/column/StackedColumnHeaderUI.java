@@ -138,7 +138,7 @@ public class StackedColumnHeaderUI extends ACompositeHeaderUI implements IThickH
 			return;
 		}
 
-		summary.setBounds(2, 2, w - 4, HIST_HEIGHT);
+		summary.setBounds(2, 2, w - 4, HIST_HEIGHT + LABEL_HEIGHT);
 
 		super.doLayout(children, w, h);
 
@@ -167,7 +167,7 @@ public class StackedColumnHeaderUI extends ACompositeHeaderUI implements IThickH
 
 	@Override
 	protected float getTopPadding() {
-		return HIST_HEIGHT + LABEL_HEIGHT;
+		return HIST_HEIGHT + LABEL_HEIGHT * 2;
 	}
 
 	@Override
@@ -197,7 +197,7 @@ public class StackedColumnHeaderUI extends ACompositeHeaderUI implements IThickH
 
 			// render the distributions
 			float[] distributions = model.getDistributions();
-			float yi = HIST_HEIGHT + 7;
+			float yi = HIST_HEIGHT + LABEL_HEIGHT + 7;
 			float hi = LABEL_HEIGHT - 6;
 			float x = COLUMN_SPACE;
 			g.lineWidth(RenderStyle.COLOR_STACKED_BORDER_WIDTH);

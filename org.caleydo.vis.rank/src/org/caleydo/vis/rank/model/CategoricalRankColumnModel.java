@@ -117,7 +117,7 @@ public class CategoricalRankColumnModel<CATEGORY_TYPE> extends ABasicFilterableR
 				CheckedTreeSelectionDialog dialog = new CheckedTreeSelectionDialog(new Shell(), label,
 						new ArrayTreeContentProvider());
 				dialog.setTitle("Edit Filter of " + getHeaderRenderer().toString());
-				dialog.setMessage(getTooltip());
+				dialog.setMessage(getTitle());
 				dialog.setInput(data);
 				dialog.setInitialSelections(selection.toArray());
 				dialog.setComparator(new ViewerComparator());

@@ -81,7 +81,7 @@ public class EditDistributionsDialog extends TitleAreaDialog {
 		super.create();
 		getShell().setText("Edit distributions");
 		setTitle("Edit the distributions of");
-		setMessage(model.getTooltip());
+		setMessage(model.getTitle());
 	}
 
 	@Override

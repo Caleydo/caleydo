@@ -129,7 +129,7 @@ public abstract class ARankColumnModel implements IDragInfo, IRankColumnModel {
 	}
 
 	@Override
-	public String getTooltip() {
+	public String getTitle() {
 		return header.toString();
 	}
 

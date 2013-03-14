@@ -22,19 +22,12 @@ package org.caleydo.vis.rank.model;
 import java.awt.Color;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.Objects;
 
 import org.caleydo.core.event.EventListenerManager.ListenTo;
-import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.view.opengl.layout2.GLElement;
-import org.caleydo.vis.rank.internal.event.FilterEvent;
-import org.caleydo.vis.rank.internal.ui.MultiLineInputDialog;
-import org.caleydo.vis.rank.internal.ui.TextRenderer;
-import org.caleydo.vis.rank.model.mixin.IAnnotatedColumnMixin;
-import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
+import org.caleydo.vis.rank.internal.event.AnnotationEditEvent;
 import org.caleydo.vis.rank.model.mixin.ICompressColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IFilterColumnMixin;
-import org.caleydo.vis.rank.model.mixin.IHideableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IMappedColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.ISnapshotableColumnMixin;
@@ -42,9 +35,6 @@ import org.caleydo.vis.rank.ui.RenderStyle;
 import org.caleydo.vis.rank.ui.detail.ScoreBarElement;
 import org.caleydo.vis.rank.ui.detail.ScoreSummary;
 import org.caleydo.vis.rank.ui.detail.ValueElement;
-import org.eclipse.jface.dialogs.InputDialog;
-import org.eclipse.jface.window.Window;
-import org.eclipse.swt.widgets.Display;
 
 import com.google.common.collect.Iterables;
 import com.jogamp.common.util.IntObjectHashMap;
@@ -55,8 +45,8 @@ import com.jogamp.common.util.IntObjectHashMap;
  * @author Samuel Gratzl
  *
  */
-public class StackedRankColumnModel extends AMultiRankColumnModel implements IHideableColumnMixin,
-		IAnnotatedColumnMixin, ISnapshotableColumnMixin, ICompressColumnMixin, ICollapseableColumnMixin {
+public class StackedRankColumnModel extends AMultiRankColumnModel implements ISnapshotableColumnMixin,
+		ICompressColumnMixin {
 	public static final String PROP_ALIGNMENT = "alignment";
 
 	private final PropertyChangeListener listener = new PropertyChangeListener() {
@@ -84,21 +74,18 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements IHi
 	private boolean isCompressed = false;
 	private float compressedWidth = 100;
 
-	private String annotation = "";
 	private IntObjectHashMap cacheMulti = new IntObjectHashMap();
 
 	public StackedRankColumnModel() {
-		super(Color.GRAY, new Color(0.95f, .95f, .95f));
-		setHeaderRenderer(new TextRenderer("SUM", this));
+		super(Color.GRAY, new Color(0.95f, .95f, .95f), "SUM");
 		width = RenderStyle.COLUMN_SPACE;
 	}
 
 	public StackedRankColumnModel(StackedRankColumnModel copy) {
 		super(copy);
 		this.alignment = copy.alignment;
-		this.annotation = copy.annotation;
 		this.isCompressed = copy.isCompressed;
-		setHeaderRenderer(new TextRenderer("SUM", this));
+		setHeaderRenderer(this);
 		width = RenderStyle.COLUMN_SPACE;
 		cloneInitChildren();
 	}
@@ -107,38 +94,6 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements IHi
 	public StackedRankColumnModel clone() {
 		return new StackedRankColumnModel(this);
 	}
-
-
-	/**
-	 * @return the annotation, see {@link #annotation}
-	 */
-	@Override
-	public String getAnnotation() {
-		return annotation;
-	}
-
-	public void setAnnotation(String annotation) {
-		propertySupport.firePropertyChange(PROP_ANNOTATION, this.annotation, this.annotation = annotation);
-	}
-
-	@Override
-	public void editAnnotation(final GLElement summary) {
-		Display.getDefault().asyncExec(new Runnable() {
-			@Override
-			public void run() {
-				InputDialog d = new MultiLineInputDialog(null, "Edit Annotation of: " + getTooltip(),
-						"Edit Annotation",
-						annotation, null);
-				if (d.open() == Window.OK) {
-					String v = d.getValue().trim();
-					if (v.length() == 0)
-						v = null;
-					EventPublisher.publishEvent(new FilterEvent(v).to(summary));
-				}
-			}
-		});
-	}
-
 	@Override
 	protected void init(ARankColumnModel model) {
 		super.init(model);
@@ -314,8 +269,9 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements IHi
 		}
 
 		@ListenTo(sendToMe = true)
-		private void onSetAnnotation(FilterEvent event) {
-			((StackedRankColumnModel) model).setAnnotation(Objects.toString(event.getFilter(), null));
+		private void onSetAnnotation(AnnotationEditEvent event) {
+			((StackedRankColumnModel) model).setTitle(event.getTitle());
+			((StackedRankColumnModel) model).setDescription(event.getDescription());
 		}
 	}
 
@@ -335,5 +291,10 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements IHi
 	@Override
 	public boolean isFlatAdding(ACompositeRankColumnModel model) {
 		return model instanceof StackedRankColumnModel;
+	}
+
+	@Override
+	public void explode() {
+		parent.explode(this);
 	}
 }

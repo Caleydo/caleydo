@@ -452,7 +452,7 @@ public class RankTableModel implements IRankColumnParent {
 	}
 
 	@Override
-	public String getTooltip() {
+	public String getTitle() {
 		return "RankTable";
 	}
 

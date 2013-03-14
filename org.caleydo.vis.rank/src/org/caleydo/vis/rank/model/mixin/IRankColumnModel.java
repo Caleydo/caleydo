@@ -36,5 +36,5 @@ public interface IRankColumnModel {
 
 	IRankColumnModel clone();
 
-	String getTooltip();
+	String getTitle();
 }
