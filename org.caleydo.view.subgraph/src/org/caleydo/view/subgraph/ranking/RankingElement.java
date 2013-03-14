@@ -31,7 +31,6 @@ import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.basic.IScrollBar;
 import org.caleydo.core.view.opengl.layout2.basic.ScrollBar;
-import org.caleydo.core.view.opengl.layout2.basic.ScrolledGLElement;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
@@ -50,8 +49,7 @@ import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.StringRankColumnModel;
 import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
-import org.caleydo.vis.rank.ui.TableBodyUI;
-import org.caleydo.vis.rank.ui.TableHeaderUI;
+import org.caleydo.vis.rank.ui.TableUI;
 
 /**
  * @author Samuel Gratzl
@@ -121,16 +119,15 @@ public class RankingElement extends GLElementContainer {
 				return new ScrollBar(horizontal);
 			}
 		};
-		this.add(new TableHeaderUI(table, config));
-		TableBodyUI body = new TableBodyUI(table, RowHeightLayouts.UNIFORM, config);
-		body.addOnRowPick(new IPickingListener() {
+
+		TableUI tableUI = new TableUI(table, config, RowHeightLayouts.UNIFORM);
+		this.add(tableUI);
+		tableUI.getBody().addOnRowPick(new IPickingListener() {
 			@Override
 			public void pick(Pick pick) {
 				onRowPick(pick);
 			}
 		});
-		ScrolledGLElement scbody = new ScrolledGLElement(body, config.createScrollBar(true), null, 5);
-		this.add(scbody);
 	}
 
 	@Override
