@@ -19,13 +19,10 @@
  *******************************************************************************/
 package org.caleydo.view.subgraph.toolbar;
 
-import java.util.HashSet;
-
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.gui.SimpleAction;
-import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
-import org.caleydo.datadomain.pathway.listener.HighlightPortalsEvent;
 import org.caleydo.view.subgraph.GLSubGraph;
+import org.caleydo.view.subgraph.event.HighlightAllPortalsEvent;
 
 /**
  * Button to highlight all portals currently displayed in the subgraph workspace.
@@ -35,7 +32,7 @@ import org.caleydo.view.subgraph.GLSubGraph;
  */
 public class HighlightAllPortalsAction extends SimpleAction {
 
-	public static final String LABEL = "Highlight All Portal Nodes";
+	public static final String LABEL = "Highlight All Portal Nodes (O)";
 	public static final String ICON = "resources/icons/view/pathway/neighborhood.png";
 
 	private final GLSubGraph view;
@@ -54,15 +51,17 @@ public class HighlightAllPortalsAction extends SimpleAction {
 	public void run() {
 		super.run();
 
-		HighlightPortalsEvent e;
-		if (isChecked()) {
-			e = new HighlightPortalsEvent(view.getPortals());
+		HighlightAllPortalsEvent event = new HighlightAllPortalsEvent(isChecked());
 
-		} else {
-			e = new HighlightPortalsEvent(new HashSet<PathwayVertexRep>());
-		}
-		e.setEventSpace(view.getPathEventSpace());
-		EventPublisher.INSTANCE.triggerEvent(e);
+		// HighlightPortalsEvent e;
+		// if (isChecked()) {
+		// e = new HighlightPortalsEvent(view.getPortals());
+		//
+		// } else {
+		// e = new HighlightPortalsEvent(new HashSet<PathwayVertexRep>());
+		// }
+		event.setEventSpace(view.getPathEventSpace());
+		EventPublisher.INSTANCE.triggerEvent(event);
 	}
 
 }

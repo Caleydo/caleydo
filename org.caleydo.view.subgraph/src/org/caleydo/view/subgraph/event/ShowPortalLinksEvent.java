@@ -17,38 +17,46 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.subgraph.toolbar;
+package org.caleydo.view.subgraph.event;
 
-import org.caleydo.core.event.EventPublisher;
-import org.caleydo.core.gui.SimpleAction;
-import org.caleydo.view.subgraph.event.ShowPortalLinksEvent;
+import org.caleydo.core.event.AEvent;
 
 /**
- * Button for toggling to show portals or not.
+ * Event to trigger the display of connecting links of the current context portal.
  *
  * @author Christian Partl
  *
  */
-public class ShowPortalsAction extends SimpleAction {
-	public static final String LABEL = "Show Node Occurrences across Pathways (P)";
-	public static final String ICON = "resources/icons/view/pathway/gene_mapping.png";
+public class ShowPortalLinksEvent extends AEvent {
 
-	private String eventSpace;
+	private boolean showPortalLinks;
 
 	/**
-	 * Constructor.
+	 *
 	 */
-	public ShowPortalsAction(String eventSpace) {
-		super(LABEL, ICON);
-		setChecked(false);
-		this.eventSpace = eventSpace;
+	public ShowPortalLinksEvent(boolean showPortalLinks) {
+		this.showPortalLinks = showPortalLinks;
 	}
 
 	@Override
-	public void run() {
-		super.run();
-		ShowPortalLinksEvent event = new ShowPortalLinksEvent(isChecked());
-		event.setEventSpace(eventSpace);
-		EventPublisher.INSTANCE.triggerEvent(event);
+	public boolean checkIntegrity() {
+		// TODO Auto-generated method stub
+		return true;
 	}
+
+	/**
+	 * @return the showPortalLinks, see {@link #showPortalLinks}
+	 */
+	public boolean isShowPortalLinks() {
+		return showPortalLinks;
+	}
+
+	/**
+	 * @param showPortalLinks
+	 *            setter, see {@link showPortalLinks}
+	 */
+	public void setShowPortalLinks(boolean showPortalLinks) {
+		this.showPortalLinks = showPortalLinks;
+	}
+
 }

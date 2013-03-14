@@ -19,6 +19,7 @@ import org.caleydo.core.data.datadomain.IDataSupportDefinition;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.view.MinSizeUpdateEvent;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
@@ -50,7 +51,6 @@ import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.PathwayPath;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.listener.EnablePathSelectionEvent;
-import org.caleydo.datadomain.pathway.listener.HighlightPortalsEvent;
 import org.caleydo.datadomain.pathway.listener.PathwayPathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.ShowPortalNodesEvent;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
@@ -60,12 +60,16 @@ import org.caleydo.view.subgraph.MultiLevelSlideInElement.IWindowState;
 import org.caleydo.view.subgraph.SlideInElement.ESlideInElementPosition;
 import org.caleydo.view.subgraph.contextmenu.ShowCommonNodeItem;
 import org.caleydo.view.subgraph.datamapping.GLExperimentalDataMapping;
+import org.caleydo.view.subgraph.event.HighlightAllPortalsEvent;
 import org.caleydo.view.subgraph.event.ShowCommonNodePathwaysEvent;
 import org.caleydo.view.subgraph.event.ShowCommonNodesPathwaysEvent;
 import org.caleydo.view.subgraph.event.ShowNodeInfoEvent;
+import org.caleydo.view.subgraph.event.ShowPortalLinksEvent;
 import org.caleydo.view.subgraph.ranking.PathwayFilters;
 import org.caleydo.view.subgraph.ranking.PathwayRankings;
 import org.caleydo.view.subgraph.ranking.RankingElement;
+import org.caleydo.view.subgraph.toolbar.HighlightAllPortalsAction;
+import org.caleydo.view.subgraph.toolbar.ShowPortalsAction;
 import org.eclipse.swt.widgets.Composite;
 
 public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspectiveBasedView, IGLRemoteRenderingView,
@@ -91,6 +95,9 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 			new GLSizeRestrictiveFlowLayout(true, 10, GLPadding.ZERO));
 
 	private GLWindow activeWindow = null;
+
+	private ShowPortalsAction showPortalsButton;
+	private HighlightAllPortalsAction highlightAllPortalsButton;
 
 	protected GLWindow rankingWindow;
 
@@ -161,7 +168,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param glCanvas
 	 * @param viewLabel
 	 * @param viewFrustum
@@ -293,17 +300,25 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		parentGLCanvas.addKeyListener(new IGLKeyListener() {
 			@Override
 			public void keyPressed(IKeyEvent e) {
-
-				augmentation.showPortals(e.isKeyDown('p'));
-
+				update(e);
 			}
 
 			@Override
 			public void keyReleased(IKeyEvent e) {
-
-				augmentation.showPortals(e.isKeyDown('p'));
-
+				update(e);
 			}
+
+			private void update(IKeyEvent e) {
+				boolean isPPressed = e.isKeyDown('p');
+				augmentation.showPortals(isPPressed);
+				showPortalsButton.setChecked(isPPressed);
+				boolean isOPressed = e.isKeyDown('o');
+				HighlightAllPortalsEvent event = new HighlightAllPortalsEvent(isOPressed);
+				event.setEventSpace(pathEventSpace);
+				EventPublisher.INSTANCE.triggerEvent(event);
+				highlightAllPortalsButton.setChecked(isOPressed);
+			}
+
 		});
 	}
 
@@ -801,10 +816,14 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		}
 
 		@ListenTo(restrictExclusiveToEventSpace = true)
-		public void onHighlightAllPortals(HighlightPortalsEvent event) {
-
-			isHighlightPortals = !event.getPortals().isEmpty();
+		public void onHighlightAllPortals(HighlightAllPortalsEvent event) {
+			isHighlightPortals = event.isHighlight();
 			updatePortalHighlights();
+		}
+
+		@ListenTo(restrictExclusiveToEventSpace = true)
+		public void onShowPortalLinks(ShowPortalLinksEvent event) {
+			augmentation.showPortals(event.isShowPortalLinks());
 		}
 	}
 
@@ -922,5 +941,21 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	 */
 	public Set<PathwayVertexRep> getPortals() {
 		return portals;
+	}
+
+	/**
+	 * @param showPortalsButton
+	 *            setter, see {@link showPortalsButton}
+	 */
+	public void setShowPortalsButton(ShowPortalsAction showPortalsButton) {
+		this.showPortalsButton = showPortalsButton;
+	}
+
+	/**
+	 * @param highlightAllPortalsButton
+	 *            setter, see {@link highlightAllPortalsButton}
+	 */
+	public void setHighlightAllPortalsButton(HighlightAllPortalsAction highlightAllPortalsButton) {
+		this.highlightAllPortalsButton = highlightAllPortalsButton;
 	}
 }

@@ -82,9 +82,9 @@ public class GLSubGraphAugmentation extends GLElement {
 		public void render(GLGraphics g, float w, float h, GLElement parent) {
 
 			g.incZ(1f);
-			g.color(1, 0, 1, 1).lineWidth(2);
+			g.color(new Color(51, 160, 44)).lineWidth(2);
 			g.drawRect((float) location.getX() - 3, (float) location.getY() - 3, (float) location.getWidth() + 6,
-					(float) location.getHeight() + 6);
+					(float) location.getHeight() + 10);
 			g.lineWidth(1);
 			g.incZ(-1f);
 		}
