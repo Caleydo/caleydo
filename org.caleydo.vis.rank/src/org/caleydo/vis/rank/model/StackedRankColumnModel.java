@@ -77,7 +77,11 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 	private IntObjectHashMap cacheMulti = new IntObjectHashMap();
 
 	public StackedRankColumnModel() {
-		super(Color.GRAY, new Color(0.95f, .95f, .95f), "SUM");
+		this(Color.GRAY, new Color(0.95f, .95f, .95f));
+	}
+
+	public StackedRankColumnModel(Color color, Color bgColor) {
+		super(color, bgColor, "SUM");
 		width = RenderStyle.COLUMN_SPACE;
 	}
 
@@ -93,6 +97,11 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 	@Override
 	public StackedRankColumnModel clone() {
 		return new StackedRankColumnModel(this);
+	}
+
+	@Override
+	public boolean canAdd(ARankColumnModel model) {
+		return !(model instanceof StackedRankColumnModel) && super.canAdd(model);
 	}
 	@Override
 	protected void init(ARankColumnModel model) {
@@ -151,11 +160,6 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 		if (isCompressed)
 			return compressedWidth;
 		return super.getWidth();
-	}
-
-	@Override
-	public boolean canAdd(ARankColumnModel model) {
-		return model instanceof IRankableColumnMixin && super.canAdd(model);
 	}
 
 	@Override

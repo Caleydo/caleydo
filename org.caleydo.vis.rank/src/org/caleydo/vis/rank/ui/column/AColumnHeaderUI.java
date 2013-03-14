@@ -49,6 +49,7 @@ import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.layout2.renderer.RoundedRectRenderer;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
+import org.caleydo.vis.rank.config.IRankTableConfig;
 import org.caleydo.vis.rank.config.IRankTableUIConfig;
 import org.caleydo.vis.rank.internal.ui.ButtonBar;
 import org.caleydo.vis.rank.model.ARankColumnModel;
@@ -473,15 +474,16 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 		if (context == null)
 			return;
 		IMouseLayer m = context.getMouseLayer();
+		final IRankTableConfig tableConfig = model.getTable().getConfig();
 		switch (pick.getPickingMode()) {
 		case MOUSE_OVER:
 			if (config.isMoveAble() && !pick.isDoDragging() && m.hasDraggable(ARankColumnModel.class)) {
 				Pair<GLElement, ARankColumnModel> pair = m.getFirstDraggable(ARankColumnModel.class);
-				if (model.isCombineAble(pair.getSecond(), RenderStyle.isCloneDragging(pick))) {
+				int mode = tableConfig.getCombineMode(model, pick);
+				if (model.isCombineAble(pair.getSecond(), RenderStyle.isCloneDragging(pick), mode)) {
 					m.setDropable(ARankColumnModel.class, true);
 					this.armDropColum = true;
-					armDropHint = model.getTable().getConfig()
-							.getCombineStringHint(model, pair.getSecond(), RenderStyle.getCombineMode(pick));
+					armDropHint = tableConfig.getCombineStringHint(model, pair.getSecond(), mode);
 					repaint();
 				}
 			} else if (!pick.isAnyDragging()) {
@@ -507,7 +509,9 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 				m.setDropable(ARankColumnModel.class, false);
 				context.setCursor(-1);
 				if (info != null)
-					model.combine(info.getSecond(), RenderStyle.isCloneDragging(pick), RenderStyle.getCombineMode(pick));
+					model.combine(info.getSecond(), RenderStyle.isCloneDragging(pick),
+							tableConfig
+							.getCombineMode(model, pick));
 			}
 			break;
 		case DOUBLE_CLICKED:

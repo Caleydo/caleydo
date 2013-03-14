@@ -172,8 +172,8 @@ public abstract class ARankColumnModel implements IDragInfo, IRankColumnModel {
 		return parent.getTable();
 	}
 
-	public final boolean isCombineAble(ARankColumnModel with, boolean clone) {
-		return getTable().isCombineAble(this, with, clone);
+	public final boolean isCombineAble(ARankColumnModel with, boolean clone, int combineMode) {
+		return getTable().isCombineAble(this, with, clone, combineMode);
 	}
 
 	public final boolean combine(ARankColumnModel with, boolean clone, int combineMode) {
@@ -212,10 +212,10 @@ public abstract class ARankColumnModel implements IDragInfo, IRankColumnModel {
 	private static void createNewCombined(ARankColumnModel model, ARankColumnModel with, boolean clone,
 			int combineMode, final RankTableModel table) {
 		ACompositeRankColumnModel new_ = table.getConfig().createNewCombined(combineMode);
-		new_.setWidth(model.getWidth());
 		model.getParent().replace(model, new_);
 		addAll(model, false, table, new_);
 		addAll(with, clone, table, new_);
+		new_.setWidth(model.getWidth());
 	}
 
 	private static void addAll(ARankColumnModel with, boolean clone, final RankTableModel table,

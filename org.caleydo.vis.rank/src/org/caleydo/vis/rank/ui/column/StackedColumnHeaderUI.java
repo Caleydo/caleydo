@@ -202,7 +202,7 @@ public class StackedColumnHeaderUI extends ACompositeHeaderUI implements IThickH
 			float x = COLUMN_SPACE;
 			g.lineWidth(RenderStyle.COLOR_STACKED_BORDER_WIDTH);
 			g.color(RenderStyle.COLOR_STACKED_BORDER);
-			g.drawLine(0, HIST_HEIGHT + 4, w, HIST_HEIGHT + 4);
+			g.drawLine(0, HIST_HEIGHT + LABEL_HEIGHT + 4, w, HIST_HEIGHT + LABEL_HEIGHT + 4);
 			g.lineWidth(1);
 			for (int i = 0; i < numColumns; ++i) {
 				float wi = this.model.getChildWidth(i) + COLUMN_SPACE;

@@ -261,14 +261,14 @@ public class RankTableModel implements IRankColumnParent {
 		findCorrespondingRanker(i).checkOrderChanges(from, to);
 	}
 
-	public boolean isCombineAble(ARankColumnModel model, ARankColumnModel with, boolean clone) {
+	public boolean isCombineAble(ARankColumnModel model, ARankColumnModel with, boolean clone, int combineMode) {
 		if (model == with)
 			return false;
 		if (model.getParent() == with || with.getParent() == model) // already children
 			return false;
 		if (!clone && !with.getParent().isHideAble(with)) // b must be hide able
 			return false;
-		return config.isCombineAble(model, with, clone);
+		return config.isCombineAble(model, with, clone, combineMode);
 	}
 
 	private void setup(ARankColumnModel col) {

@@ -120,22 +120,15 @@ public class RenderStyle {
 		return (1 - alpha) * 0.5f;
 	}
 
+	/**
+	 * are we dragging for cloning
+	 * 
+	 * @param pick
+	 * @return
+	 */
 	public static boolean isCloneDragging(Pick pick) {
 		if (pick instanceof AdvancedPick)
 			return ((AdvancedPick) pick).isCtrlDown();
 		return false;
-	}
-
-	/**
-	 * @param pick
-	 * @return
-	 */
-	public static int getCombineMode(Pick pick) {
-		if (!(pick instanceof AdvancedPick))
-			return 0;
-		AdvancedPick apick = (AdvancedPick) pick;
-		if (apick.isAltDown())
-			return 1;
-		return 0;
 	}
 }

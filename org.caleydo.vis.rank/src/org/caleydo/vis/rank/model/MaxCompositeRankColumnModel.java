@@ -37,7 +37,11 @@ import org.caleydo.vis.rank.ui.detail.ValueElement;
 public class MaxCompositeRankColumnModel extends AMultiRankColumnModel {
 
 	public MaxCompositeRankColumnModel() {
-		super(Color.GRAY, new Color(0.95f, 0.95f, 0.95f), "MAX");
+		this(Color.GRAY, new Color(0.95f, .95f, .95f));
+	}
+
+	public MaxCompositeRankColumnModel(Color color, Color bgColor) {
+		super(color, bgColor, "MAX");
 	}
 
 	public MaxCompositeRankColumnModel(MaxCompositeRankColumnModel copy) {
@@ -63,8 +67,7 @@ public class MaxCompositeRankColumnModel extends AMultiRankColumnModel {
 
 	@Override
 	public boolean canAdd(ARankColumnModel model) {
-		return model instanceof IRankableColumnMixin && !(model instanceof ACompositeRankColumnModel)
-				&& super.canAdd(model);
+		return !(model instanceof MaxCompositeRankColumnModel) && super.canAdd(model);
 	}
 
 
@@ -108,14 +111,6 @@ public class MaxCompositeRankColumnModel extends AMultiRankColumnModel {
 		if (repr < 0)
 			return false;
 		return (((IRankableColumnMixin) get(repr)).isValueInferred(row));
-	}
-
-	/**
-	 * @param a
-	 * @return
-	 */
-	public static boolean canBeChild(ARankColumnModel model) {
-		return model instanceof IRankableColumnMixin;
 	}
 
 	@Override

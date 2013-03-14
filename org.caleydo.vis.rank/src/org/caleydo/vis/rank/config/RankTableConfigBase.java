@@ -19,50 +19,82 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.config;
 
+import org.caleydo.core.view.opengl.picking.AdvancedPick;
+import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.vis.rank.model.ACompositeRankColumnModel;
 import org.caleydo.vis.rank.model.ARankColumnModel;
+import org.caleydo.vis.rank.model.IRankColumnParent;
 import org.caleydo.vis.rank.model.MaxCompositeRankColumnModel;
 import org.caleydo.vis.rank.model.StackedRankColumnModel;
+import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 
 /**
  * @author Samuel Gratzl
  *
  */
 public class RankTableConfigBase implements IRankTableConfig {
+	private static final int MAX_MODE = 0;
+	private static final int SUM_MODE = 1;
+
 	@Override
 	public boolean isMoveAble(ARankColumnModel model, boolean clone) {
 		return true;
 	}
 
 	@Override
-	public Class<? extends ACompositeRankColumnModel> getCombineClassFor(int combineMode) {
-		return MaxCompositeRankColumnModel.class;
+	public int getCombineMode(ARankColumnModel model, Pick pick) {
+		int default_ = model instanceof StackedRankColumnModel ? SUM_MODE : MAX_MODE;
+		if (!(pick instanceof AdvancedPick))
+			return default_;
+		AdvancedPick apick = (AdvancedPick) pick;
+		if (apick.isAltDown())
+			return 1 - default_; // opposite one
+		return default_;
 	}
 
 	@Override
 	public ACompositeRankColumnModel createNewCombined(int combineMode) {
-		return new MaxCompositeRankColumnModel();
+		switch (combineMode) {
+		case SUM_MODE:
+			return new StackedRankColumnModel();
+		default:
+			return new MaxCompositeRankColumnModel();
+		}
 	}
 
 	@Override
 	public boolean canBeReusedForCombining(ACompositeRankColumnModel t, int combineMode) {
-		return true;
+		switch (combineMode) {
+		case SUM_MODE:
+			return t instanceof StackedRankColumnModel;
+		default:
+			return t instanceof MaxCompositeRankColumnModel;
+		}
 	}
 
 	@Override
-	public boolean isCombineAble(ARankColumnModel model, ARankColumnModel with, boolean clone) {
+	public boolean isCombineAble(ARankColumnModel model, ARankColumnModel with, boolean clone, int combineMode) {
 		if (model instanceof ACompositeRankColumnModel && ((ACompositeRankColumnModel)model).canAdd(with))
 			return true;
-		if (!MaxCompositeRankColumnModel.canBeChild(model) || !MaxCompositeRankColumnModel.canBeChild(with))
+		if (!(model instanceof IRankableColumnMixin) || !(with instanceof IRankableColumnMixin))
 			return false;
-		return true;
+		IRankColumnParent parent = model.getParent();
+		switch (combineMode) {
+		case SUM_MODE:
+			return parent.getClass() != StackedRankColumnModel.class;
+		default:
+			return parent.getClass() != MaxCompositeRankColumnModel.class;
+		}
 	}
 
 	@Override
 	public String getCombineStringHint(ARankColumnModel model, ARankColumnModel with, int combineMode) {
-		if (model instanceof StackedRankColumnModel)
+		switch (combineMode) {
+		case SUM_MODE:
 			return "SUM";
-		return "MAX";
+		default:
+			return "MAX";
+		}
 	}
 
 	@Override

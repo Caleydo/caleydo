@@ -64,6 +64,11 @@ public abstract class AMultiRankColumnModel extends ACompositeRankColumnModel im
 	}
 
 	@Override
+	public boolean canAdd(ARankColumnModel model) {
+		return model instanceof IRankableColumnMixin && super.canAdd(model);
+	}
+
+	@Override
 	public final Float apply(IRow row) {
 		return applyPrimitive(row);
 	}
@@ -154,7 +159,7 @@ public abstract class AMultiRankColumnModel extends ACompositeRankColumnModel im
 	@Override
 	public String getTitle() {
 		if (title == null || title.isEmpty()) {
-			StringBuilder b = new StringBuilder("SUM (");
+			StringBuilder b = new StringBuilder(prefix).append(" (");
 			for (ARankColumnModel r : this) {
 				b.append(r.getTitle()).append(", ");
 			}

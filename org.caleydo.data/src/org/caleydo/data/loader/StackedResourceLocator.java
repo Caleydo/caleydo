@@ -33,7 +33,7 @@ import org.caleydo.data.loader.ResourceLocators.IResourceLocator;
  *
  */
 public class StackedResourceLocator implements IResourceLocator {
-	private Deque<IResourceLocator> stack = new ArrayDeque<>();
+	private Deque<IResourceLocator> stack = new ArrayDeque<>(3);
 
 	public void push(IResourceLocator elem) {
 		stack.push(elem);

@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.config;
 
+import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.vis.rank.model.ACompositeRankColumnModel;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 
@@ -39,22 +40,23 @@ public interface IRankTableConfig {
 
 	/**
 	 * creates a new combined column caused by dragging two columns onto each other
-	 * 
+	 *
 	 * @param combineMode
-	 * 
+	 *
 	 * @return
 	 */
 	ACompositeRankColumnModel createNewCombined(int combineMode);
 
 	/**
 	 * are these columsn combine able
-	 *
+	 * 
 	 * @param model
 	 * @param with
 	 * @param clone
+	 * @param combineMode
 	 * @return
 	 */
-	boolean isCombineAble(ARankColumnModel model, ARankColumnModel with, boolean clone);
+	boolean isCombineAble(ARankColumnModel model, ARankColumnModel with, boolean clone, int combineMode);
 
 	String getCombineStringHint(ARankColumnModel model, ARankColumnModel with, int combineMode);
 
@@ -76,16 +78,11 @@ public interface IRankTableConfig {
 	boolean isDestroyOnHide();
 
 	/**
-	 * @param combineMode
-	 * @return
-	 */
-	Class<? extends ACompositeRankColumnModel> getCombineClassFor(int combineMode);
-
-	/**
 	 * @param t
 	 * @param combineMode
 	 * @return
 	 */
 	boolean canBeReusedForCombining(ACompositeRankColumnModel t, int combineMode);
 
+	int getCombineMode(ARankColumnModel model, Pick pick);
 }
