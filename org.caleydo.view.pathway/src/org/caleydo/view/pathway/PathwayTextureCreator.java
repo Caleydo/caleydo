@@ -58,8 +58,8 @@ public class PathwayTextureCreator implements IRemoteViewCreator {
 			pathwayView.setTablePerspective(tablePerspective);
 		}
 		pathwayView.setPathwayPathEventSpace(embeddingEventSpace);
-		pathwayView.setMinHeightPixels(100);
-		pathwayView.setMinWidthPixels(100);
+		pathwayView.setMinHeightPixels(150);
+		pathwayView.setMinWidthPixels(150);
 		pathwayView.setHighlightVertices(false);
 		// pathwayView.setRenderTemplate(new BrickHeatMapTemplate(heatMap));
 		pathwayView.initialize();

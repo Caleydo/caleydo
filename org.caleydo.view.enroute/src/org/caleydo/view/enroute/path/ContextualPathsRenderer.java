@@ -77,7 +77,7 @@ import org.caleydo.view.pathway.PathwayTextureCreator;
 public class ContextualPathsRenderer extends ALayoutRenderer implements IPathwayRepresentation, IListenerOwner {
 
 	protected final String BRANCH_PATH_EVENTSPACE = GeneralManager.get().getEventPublisher().createUniqueEventSpace();
-	protected final int PATHWAY_TEXTURE_HEIGHT = 100;
+	// protected final int PATHWAY_TEXTURE_HEIGHT = 100;
 
 	protected LayoutManager layout;
 	protected PathwayGraph pathway;
@@ -121,7 +121,7 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 		Column baseColumn = new Column();
 		pathRow = new Row();
 		ElementLayout pathwayTextureLayout = new ElementLayout();
-		pathwayTextureLayout.setPixelSizeY(PATHWAY_TEXTURE_HEIGHT);
+		pathwayTextureLayout.setPixelSizeY(pathwayView.getMinPixelHeight());
 
 		// // This should probably be a renderer in the final version.
 		// pathwayView = (GLPathway) GeneralManager
@@ -529,8 +529,7 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 				maxMinPixelHeight = minPixelHeight;
 			}
 		}
-		// TODO: use right size of pathway thumbnail texture
-		return PATHWAY_TEXTURE_HEIGHT + maxMinPixelHeight;
+		return pathwayView.getMinPixelHeight() + maxMinPixelHeight;
 	}
 
 	@Override
@@ -539,8 +538,7 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 		for (APathwayPathRenderer renderer : renderers.keySet()) {
 			totalWidth += renderer.getMinWidthPixels();
 		}
-		// TODO: use right size of pathway thumbnail texture
-		return Math.max(100, totalWidth);
+		return Math.max(pathwayView.getMinPixelWidth(), totalWidth);
 	}
 
 	protected class VertexRepComparator implements Comparator<PathwayVertexRep> {

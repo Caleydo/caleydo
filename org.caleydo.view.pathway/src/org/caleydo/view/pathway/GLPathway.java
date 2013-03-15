@@ -262,10 +262,10 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 		return portalVertexReps;
 	}
 
-	private void selectNextPath() {		
+	private void selectNextPath() {
 		if (allPaths == null)
 			return;
-		
+
 		if (allPaths.size() == 1)
 			selectedPathID = 0;
 		else {
@@ -273,9 +273,9 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 
 			if (selectedPathID < 0)
 				selectedPathID = 0;
-			if(selectedPathID > allPaths.size() - 1)
+			if (selectedPathID > allPaths.size() - 1)
 				selectedPathID = allPaths.size() - 1;
-			
+
 			if (allPaths.size() > 0) {
 				selectedPath = allPaths.get(selectedPathID);
 
@@ -973,7 +973,7 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 			return minHeightPixels;
 		if (pathway == null)
 			return 120;
-		return (int) (pathway.getHeight() / 2.0f);
+		return (int) (pathway.getHeight() * 0.65f);
 	}
 
 	@Override
@@ -982,7 +982,7 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 			return minWidthPixels;
 		if (pathway == null)
 			return 120;
-		return (int) (pathway.getWidth() / 2.0f);
+		return (int) (pathway.getWidth() * 0.65f);
 	}
 
 	@Override
@@ -1195,14 +1195,14 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 	private void selectPath(PathwayVertexRep vertexRep, SelectionType selectionType) {
 		if (vertexRep == null)
 			return;
-		boolean triggerPathUpdate=false;
+		boolean triggerPathUpdate = false;
 		if (!isPathStartSelected) {// ////////////////////////////////
 			if (isControlKeyDown) {// shrink previous selected path
 				shrinkSelectedPath(vertexRep);
 				if (selectionType == SelectionType.SELECTION) {// click on
 					previousSelectedPath = selectedPath;
 				}
-				triggerPathUpdate=true;
+				triggerPathUpdate = true;
 			}
 			// //////////////////////////////
 			if (isShiftKeyDown) {// extend previous selected path
@@ -1210,7 +1210,7 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 				if (selectionType == SelectionType.SELECTION) {// click on
 					previousSelectedPath = selectedPath;
 				}
-				triggerPathUpdate=true;
+				triggerPathUpdate = true;
 			}
 			if (!isShiftKeyDown && !isControlKeyDown && vertexRep != null) {
 				// no interaction with the previous selected path
@@ -1232,7 +1232,7 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 					generateSingleNodePath(vertexRep);
 					pathSegments.add(new PathwayPath(selectedPath));
 					isPathStartSelected = true;
-					triggerPathUpdate=true;
+					triggerPathUpdate = true;
 				}
 			}
 		} else {// //////// select end node /////////////////////////
@@ -1254,7 +1254,7 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 						if (allPaths.size() <= selectedPathID)
 							selectedPathID = 0;
 						selectedPath = allPaths.get(selectedPathID);
-						triggerPathUpdate=true;
+						triggerPathUpdate = true;
 					}
 				} else {
 					generateSingleNodePath(vertexRep);
@@ -1270,9 +1270,8 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 				//
 			}
 		}
-		
 
-		if(triggerPathUpdate){
+		if (triggerPathUpdate) {
 			triggerPathUpdate();
 			isBubbleTextureDirty = true;
 		}
@@ -1298,12 +1297,11 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 			metaboliteSelectionManager.triggerSelectionUpdateEvent();
 		}
 
-
 		// Add new vertex to internal selection manager
 		vertexSelectionManager.addToType(selectionType, vertexRep.getID());
 
 		SelectionDelta selectionDelta = vertexSelectionManager.getDelta();
-		
+
 		if (isPathSelectionMode) {
 			selectPath(vertexRep, selectionType);
 
