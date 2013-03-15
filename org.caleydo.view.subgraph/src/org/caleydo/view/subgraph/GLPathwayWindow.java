@@ -104,7 +104,7 @@ public class GLPathwayWindow extends GLWindow {
 	}
 
 	public int getMinWidth() {
-		return Math.max(info.multiFormRenderer.getMinWidthPixels(), 100);
+		return Math.max(info.multiFormRenderer.getMinWidthPixels(), 150);
 	}
 
 	public int getMinHeight() {
