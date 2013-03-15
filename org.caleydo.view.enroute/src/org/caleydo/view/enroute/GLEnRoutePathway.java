@@ -67,11 +67,15 @@ import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.view.enroute.event.FitToViewWidthEvent;
 import org.caleydo.view.enroute.event.PathRendererChangedEvent;
+import org.caleydo.view.enroute.event.ShowContextElementSelectionDialogEvent;
+import org.caleydo.view.enroute.mappeddataview.ChooseContextDataDialog;
 import org.caleydo.view.enroute.mappeddataview.MappedDataRenderer;
 import org.caleydo.view.enroute.path.EnRoutePathRenderer;
 import org.caleydo.view.enroute.path.SelectedPathUpdateStrategy;
 import org.caleydo.view.pathway.GLPathway;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Shell;
 
 /**
  * Main view class for the linearized pathway view.
@@ -712,9 +716,8 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 					&& tPerspective.getRecordPerspective().getCrossDatasetID()
 							.equals(event.getPerspective().getCrossDatasetID())) {
 
-
-				Perspective perspective = tPerspective.getDataDomain().convertForeignPerspective(
-						event.getPerspective());
+				Perspective perspective = tPerspective.getDataDomain()
+						.convertForeignPerspective(event.getPerspective());
 
 				tPerspective.setRecordPerspective(perspective);
 				// TablePerspective newTPerstpective = new TablePerspective(tPerspective.getDataDomain(), perspective,
@@ -807,6 +810,30 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		if (pathRenderer != null)
 			pathRenderer.addVertexRepBasedContextMenuItem(item);
 
+	}
+
+	@ListenTo
+	public void showContextSelectionDialog(final ShowContextElementSelectionDialogEvent event) {
+
+		getParentComposite().getDisplay().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				Shell shell = new Shell();
+				ChooseContextDataDialog dialog = new ChooseContextDataDialog(shell, event.getPerspective());
+				dialog.create();
+				dialog.setBlockOnOpen(true);
+
+				if (dialog.open() == IStatus.OK) {
+
+					// FIXME this might not be thread-safe
+					List<Integer> selectedItems = dialog.getSelectedItems();
+					mappedDataRenderer.setContextRowIDs(selectedItems);
+					updateLayout();
+
+				}
+			}
+
+		});
 	}
 
 }

@@ -49,6 +49,7 @@ import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.view.enroute.EPickingType;
 import org.caleydo.view.enroute.GLEnRoutePathway;
+import org.caleydo.view.enroute.event.ShowContextElementSelectionDialogEvent;
 import org.caleydo.view.enroute.path.PathSizeConfiguration;
 import org.caleydo.view.enroute.path.node.ALinearizableNode;
 import org.caleydo.view.enroute.path.node.ComplexNode;
@@ -95,6 +96,8 @@ public class MappedDataRenderer {
 	private ArrayList<TablePerspective> geneTablePerspectives = new ArrayList<>();
 
 	private ArrayList<TablePerspective> contextualTablePerspectives = new ArrayList<>();
+
+	private List<Integer> contextRowIDs;
 
 	private List<ALinearizableNode> linearizedNodes;
 
@@ -270,8 +273,9 @@ public class MappedDataRenderer {
 				contextualTablePerspectives.size());
 
 		IDType contextRowIDType = null;
-		List<Integer> contextIDs = new ArrayList<Integer>();
-		if (contextualTablePerspectives != null && !contextualTablePerspectives.isEmpty()) {
+
+		if (contextualTablePerspectives != null && !contextualTablePerspectives.isEmpty() && contextRowIDs != null
+				&& !contextRowIDs.isEmpty()) {
 
 			for (int count = 0; count < contextualTablePerspectives.size(); count++) {
 				rowListForContextTablePerspectives.add(new ArrayList<ElementLayout>());
@@ -279,8 +283,7 @@ public class MappedDataRenderer {
 			TablePerspective contextTPerspective = contextualTablePerspectives.get(0);
 			contextRowIDType = contextTPerspective.getDataDomain().getOppositeIDType(sampleIDType);
 			int i = 0;
-			for (Integer rowID : contextTPerspective.getPerspective(contextRowIDType).getVirtualArray()) {
-				contextIDs.add(rowID);
+			for (Integer rowID : contextRowIDs) {
 				if (i % 2 == 0)
 					color = EVEN_BACKGROUND_COLOR;
 				else
@@ -317,9 +320,6 @@ public class MappedDataRenderer {
 
 				captionColumn.append(rowCaption);
 				i++;
-
-				if (i > 3)
-					break;
 
 				PathSizeConfiguration oldConfig = parentView.getPathRenderer().getSizeConfig();
 
@@ -503,7 +503,7 @@ public class MappedDataRenderer {
 				TablePerspective contextTablePerspective = contextualTablePerspectives.get(tablePerspectiveCount);
 
 				prepareData(contextTablePerspective, rowListForContextTablePerspectives.get(tablePerspectiveCount),
-						null, null, contextRowIDType, contextIDs, isHighlightLayout);
+						null, null, contextRowIDType, contextRowIDs, isHighlightLayout);
 			}
 
 			ColumnCaptionLayout topCaptionLayout = new ColumnCaptionLayout(parentView, this);
@@ -754,6 +754,25 @@ public class MappedDataRenderer {
 
 			}
 
+			@Override
+			protected void rightClicked(Pick pick) {
+
+				if (contextualTablePerspectives != null && !contextualTablePerspectives.isEmpty()) {
+					final ATableBasedDataDomain dataDomain = contextualTablePerspectives.get(0).getDataDomain();
+					final IDType contextRowIDType = dataDomain.getOppositeIDType(sampleIDType);
+
+					Perspective rowPerspective = contextualTablePerspectives.get(0).getPerspective(contextRowIDType);
+
+					ShowContextElementSelectionDialogEvent contextEvent = new ShowContextElementSelectionDialogEvent(
+							rowPerspective);
+
+					AContextMenuItem selectCompoundItem = new GenericContextMenuItem("Select compounds to show ",
+							contextEvent);
+					parentView.getContextMenuCreator().addContextMenuItem(selectCompoundItem);
+				}
+
+			}
+
 		}, EPickingType.SAMPLE_GROUP_VIEW_MODE.name());
 	}
 
@@ -823,8 +842,7 @@ public class MappedDataRenderer {
 						List<AEvent> sortEvents = new ArrayList<>();
 						for (TablePerspective tablePerspective : contextualTablePerspectives) {
 							SortByDataEvent sortEvent = new SortByDataEvent(dataDomain.getDataDomainID(),
-									tablePerspective, sampleIDType, pick
-											.getObjectID());
+									tablePerspective, sampleIDType, pick.getObjectID());
 							sortEvent.setSender(this);
 							sortEvents.add(sortEvent);
 						}
@@ -833,6 +851,19 @@ public class MappedDataRenderer {
 								sortEvents);
 
 						parentView.getContextMenuCreator().addContextMenuItem(sortByDimensionItem);
+
+						if (contextualTablePerspectives != null) {
+							Perspective rowPerspective = contextualTablePerspectives.get(0).getPerspective(
+									contextRowIDType);
+
+							ShowContextElementSelectionDialogEvent contextEvent = new ShowContextElementSelectionDialogEvent(
+									rowPerspective);
+
+							AContextMenuItem selectCompoundItem = new GenericContextMenuItem(
+									"Select compounds to show ", contextEvent);
+							parentView.getContextMenuCreator().addContextMenuItem(selectCompoundItem);
+						}
+
 					}
 				}, contextRowIDType.getTypeName());
 
@@ -866,6 +897,14 @@ public class MappedDataRenderer {
 	 */
 	public ArrayList<TablePerspective> getContextualTablePerspectives() {
 		return contextualTablePerspectives;
+	}
+
+	/**
+	 * @param contextRowIDs
+	 *            setter, see {@link contextRowIDs}
+	 */
+	public void setContextRowIDs(List<Integer> contextRowIDs) {
+		this.contextRowIDs = contextRowIDs;
 	}
 
 }
