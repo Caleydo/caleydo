@@ -32,11 +32,17 @@ import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
 public class RemoveTablePerspectiveListener extends
 		AEventListener<IMultiTablePerspectiveBasedView> {
 
+	/**
+	 *
+	 */
+	public RemoveTablePerspectiveListener() {
+	}
+
 	@Override
 	public void handleEvent(AEvent event) {
 		if (event instanceof RemoveTablePerspectiveEvent) {
 			RemoveTablePerspectiveEvent rEvent = (RemoveTablePerspectiveEvent) event;
-			if (rEvent.getReceiver() == handler) {
+			if (rEvent.getReceiver() == null || rEvent.getReceiver() == handler) {
 				handler.removeTablePerspective(rEvent.getTablePerspective());
 			}
 		}
