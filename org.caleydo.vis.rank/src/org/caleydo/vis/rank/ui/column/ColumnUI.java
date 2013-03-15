@@ -17,7 +17,6 @@ import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.vis.rank.internal.ui.anim.ReRankTransition;
 import org.caleydo.vis.rank.layout.IRowLayoutInstance.IRowSetter;
 import org.caleydo.vis.rank.model.ARankColumnModel;
-import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
 import org.caleydo.vis.rank.ui.IColumnRenderInfo;
@@ -153,19 +152,20 @@ public class ColumnUI extends AnimatedGLElementContainer implements ITableColumn
 			inPool.set(cached, cached + addItems);
 		} else if ((cached - rows) > 50 && inPool.cardinality() > 20) { // more than enough free again
 			// free the pool and update the mapping information
-			int at = cached - 1;
-			final int itemsToRemove = Math.max(0, cached - (cached - rows) - 20);
-			for (int toRemove = itemsToRemove; toRemove > 0; toRemove--) {
-				while (!inPool.get(at)) {
-					GLElement replacement = get(at);
-					int index = replacement.getLayoutDataAs(IRow.class, null).getIndex();
-					rowIndexToGlElement.put(index, at - toRemove - 1); // x places to the left
-					at--;
-				}
-				remove(get(at).setVisibility(EVisibility.HIDDEN), 0);
-				inPool.clear(at);
-				at--;
-			}
+			// FIXME
+			// int at = cached - 1;
+			// final int itemsToRemove = Math.max(0, cached - (cached - rows) - 20);
+			// for (int toRemove = itemsToRemove; toRemove > 0; toRemove--) {
+			// while (!inPool.get(at)) {
+			// GLElement replacement = get(at);
+			// int index = replacement.getLayoutDataAs(IRow.class, null).getIndex();
+			// rowIndexToGlElement.put(index, at - toRemove - 1); // x places to the left
+			// at--;
+			// }
+			// remove(get(at).setVisibility(EVisibility.HIDDEN), 0);
+			// inPool.clear(at);
+			// at--;
+			// }
 		}
 		super.layout(deltaTimeMs);
 	}
