@@ -156,7 +156,6 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	 */
 	protected boolean isHighlightPortals = false;
 
-
 	private final DragAndDropController dndController = new DragAndDropController(this);
 
 	/**
@@ -381,7 +380,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		lastUsedRenderer = info.multiFormRenderer;
 
 		pathwayInfos.add(info);
-		// addPortalsOfPathway(info);
+		updatePathwayPortals();
 		wasPathwayAdded = true;
 	}
 
@@ -434,7 +433,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 					pathwayLayout.removeWindow(window);
 					parent.remove(window);
 					pathwayInfos.remove(window.info);
-					// updateAllPortals();
+					updatePathwayPortals();
 				}
 			});
 		}
@@ -910,7 +909,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 					Math.abs(pathwayLayout.getColumnIndex(sourceInfo.window)
 							- pathwayLayout.getColumnIndex(targetInfo.window)));
 			ConnectionRenderer renderer = new ConnectionRenderer(sourceLocation, targetLocation, sourceInfo,
-					targetInfo, stubSize);
+					targetInfo, stubSize, false, false);
 			augmentation.addPortalConnectionRenderer(renderer);
 		}
 	}

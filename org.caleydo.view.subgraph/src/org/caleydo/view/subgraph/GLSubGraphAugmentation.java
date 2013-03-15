@@ -99,17 +99,21 @@ public class GLSubGraphAugmentation extends GLElement {
 		protected final Rectangle2D loc2;
 		protected final PathwayMultiFormInfo info1;
 		protected final PathwayMultiFormInfo info2;
+		protected final boolean isLocation1Window;
+		protected final boolean isLocation2Window;
 		protected final float stubSize;
 
 		private Color portalBSColor = new Color(1.0f, 0.0f, 0.0f);
 
 		public ConnectionRenderer(Rectangle2D loc1, Rectangle2D loc2, PathwayMultiFormInfo info1,
-				PathwayMultiFormInfo info2, float stubSize) {
+				PathwayMultiFormInfo info2, float stubSize, boolean isLocation1Window, boolean isLocation2Window) {
 			this.loc1 = loc1;
 			this.loc2 = loc2;
 			this.info1 = info1;
 			this.info2 = info2;
 			this.stubSize = stubSize;
+			this.isLocation1Window = isLocation1Window;
+			this.isLocation2Window = isLocation2Window;
 		}
 
 		@Override
