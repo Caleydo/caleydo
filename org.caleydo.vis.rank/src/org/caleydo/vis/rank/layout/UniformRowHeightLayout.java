@@ -26,9 +26,9 @@ import org.caleydo.vis.rank.ui.RenderStyle;
 
 /**
  * uniform {@link IRowHeightLayout} where every row has the same height
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 class UniformRowHeightLayout implements IRowHeightLayout {
 	private static final float ROW_HEIGHT = 20;
@@ -55,7 +55,7 @@ class UniformRowHeightLayout implements IRowHeightLayout {
 			if (selectedRank < offset)
 				offset = selectedRank;
 			if (selectedRank >= (offset + visibleRows))
-				offset = selectedRank - visibleRows - 1;
+				offset = selectedRank - visibleRows + 1;
 		}
 		if (offset < 0)
 			offset = 0;

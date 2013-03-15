@@ -95,8 +95,10 @@ public abstract class ARankTableDemo extends GLSandBox {
 	}
 
 	public static float toFloat(String[] l, int i) {
-		String v = l[i];
-		if (v.equalsIgnoreCase("-"))
+		if (i >= l.length)
+			return Float.NaN;
+		String v = l[i].trim();
+		if (v.equalsIgnoreCase("-") || v.isEmpty())
 			return Float.NaN;
 		return Float.parseFloat(v);
 	}

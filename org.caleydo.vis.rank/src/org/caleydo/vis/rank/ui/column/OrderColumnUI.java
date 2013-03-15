@@ -266,6 +266,11 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 	}
 
 	@Override
+	protected boolean hasPickAbles() {
+		return true;
+	}
+
+	@Override
 	protected void renderPickImpl(GLGraphics g, float w, float h) {
 		TableBodyUI body = getTableBodyUI();
 		OrderColumnUI previousRanker = model == null ? null : body.getRanker(model);
