@@ -3,7 +3,7 @@ package org.caleydo.vis.rank.ui.column;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
-import org.caleydo.vis.rank.ui.detail.ColoredValuedElement;
+import org.caleydo.vis.rank.ui.detail.ColoredValueElement;
 
 public class RankColumnUI extends ColumnUI {
 
@@ -23,7 +23,7 @@ public class RankColumnUI extends ColumnUI {
 				int delta = ranker.getRankDelta(row);
 				if (delta == 0)
 					continue;
-				((ColoredValuedElement) elem).setRankDelta(delta);
+				((ColoredValueElement) elem).setRankDelta(delta);
 			}
 		}
 	}

@@ -69,6 +69,9 @@ public class RenderStyle {
 	public static final String ICON_MAPPING_PAR_HOR = ICON_PREFIX + "par_hor.png";
 	public static final String ICON_MAPPING_PAR_VERT = ICON_PREFIX + "par_vert.png";
 	public static final String ICON_MAPPING_RESET = ICON_PREFIX + "arrow_undo.png";
+
+	public static final String ICON_STAR = ICON_PREFIX + "star.png";
+	public static final String ICON_STAR_DISABLED = ICON_PREFIX + "star_disabled.png";
 	/**
 	 * space between columns
 	 */
@@ -122,7 +125,7 @@ public class RenderStyle {
 
 	/**
 	 * are we dragging for cloning
-	 * 
+	 *
 	 * @param pick
 	 * @return
 	 */

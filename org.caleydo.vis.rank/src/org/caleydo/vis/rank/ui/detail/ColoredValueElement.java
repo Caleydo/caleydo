@@ -29,7 +29,7 @@ import org.caleydo.vis.rank.ui.RenderStyle;
  * @author Samuel Gratzl
  *
  */
-public class ColoredValuedElement extends ValueElement {
+public class ColoredValueElement extends ValueElement {
 	private int rankDelta;
 	private int remaining;
 	private int duration;

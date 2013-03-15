@@ -132,10 +132,6 @@ public class ScoreBarElement extends ValueElement {
 		return hi;
 	}
 
-	protected final IColumnRenderInfo getRenderInfo() {
-		return (IColumnRenderInfo) getParent();
-	}
-
 	protected void renderLabel(GLGraphics g, float y, float w, float h, String text, float v) {
 		if (h < 5)
 			return;

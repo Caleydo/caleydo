@@ -58,8 +58,8 @@ import org.caleydo.vis.rank.ui.mapping.MappingFunctionUIs;
  */
 public class FloatRankColumnModel extends ARankColumnModel implements IMappedColumnMixin,
 		IRankableColumnMixin, ICollapseableColumnMixin, IHideableColumnMixin, ISnapshotableColumnMixin {
-	private SimpleHistogram cacheHist = null;
 
+	private SimpleHistogram cacheHist = null;
 	private boolean dirtyDataStats = true;
 	private float missingValue;
 

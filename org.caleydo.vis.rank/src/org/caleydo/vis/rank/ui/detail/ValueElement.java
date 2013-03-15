@@ -21,6 +21,7 @@ package org.caleydo.vis.rank.ui.detail;
 
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 import org.caleydo.vis.rank.model.IRow;
+import org.caleydo.vis.rank.ui.IColumnRenderInfo;
 
 /**
  * special element for the columns with extra information
@@ -49,6 +50,10 @@ public class ValueElement extends PickableGLElement {
 		if (clazz.isInstance(row))
 			return clazz.cast(row);
 		return super.getLayoutDataAs(clazz, default_);
+	}
+
+	protected final IColumnRenderInfo getRenderInfo() {
+		return (IColumnRenderInfo) getParent();
 	}
 
 	/**

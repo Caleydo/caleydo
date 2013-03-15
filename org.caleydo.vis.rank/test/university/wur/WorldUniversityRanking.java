@@ -41,6 +41,7 @@ import org.caleydo.vis.rank.model.OrderColumn;
 import org.caleydo.vis.rank.model.RankRankColumnModel;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.StackedRankColumnModel;
+import org.caleydo.vis.rank.model.StarsRankColumnModel;
 import org.caleydo.vis.rank.model.StringRankColumnModel;
 import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
 import org.eclipse.swt.widgets.Shell;
@@ -86,7 +87,8 @@ public class WorldUniversityRanking extends ARankTableDemo {
 	 * @param table
 	 */
 	private void addYear(RankTableModel table, String title, int year) {
-		// table.add(new StarsRankColumnModel(table, ))
+		table.add(new StarsRankColumnModel(new ValueGetter(year, UniversityYear.COL_QSSTARS), GLRenderers.drawText(
+				"QS Stars", VAlign.CENTER), Color.decode("#FECC5C"), Color.decode("#FFFFB2"), 6));
 
 		final StackedRankColumnModel stacked = new StackedRankColumnModel();
 		stacked.setTitle(title);
