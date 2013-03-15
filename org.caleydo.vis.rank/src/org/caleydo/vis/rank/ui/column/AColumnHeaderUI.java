@@ -26,6 +26,7 @@ import gleem.linalg.Vec2f;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
+import java.util.Objects;
 
 import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.util.collection.Pair;
@@ -488,6 +489,17 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 			} else if (!pick.isAnyDragging()) {
 				this.isHovered = true;
 				this.relayout();
+			}
+			break;
+		case DRAGGED:
+			if (this.armDropColum) {
+				Pair<GLElement, ARankColumnModel> pair = m.getFirstDraggable(ARankColumnModel.class);
+				int mode = tableConfig.getCombineMode(model, pick);
+				String hint = tableConfig.getCombineStringHint(model, pair.getSecond(), mode);
+				if (!Objects.equals(hint, armDropHint)) {
+					this.armDropHint = hint;
+					repaint();
+				}
 			}
 			break;
 		case MOUSE_OUT:
