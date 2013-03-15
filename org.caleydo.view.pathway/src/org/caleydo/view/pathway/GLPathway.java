@@ -203,6 +203,7 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 	 */
 	private boolean isPathSelectionMode = false;
 	private SelectPathAction selectPathAction = null;
+	private boolean showPortals=false;
 
 	private int minHeightPixels = -1;
 	private int minWidthPixels = -1;
@@ -1304,22 +1305,24 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 
 		if (isPathSelectionMode) {
 			selectPath(vertexRep, selectionType);
-
+			SelectionUpdateEvent event = new SelectionUpdateEvent();
+			event.setSender(this);
+			event.setSelectionDelta(selectionDelta);
+			eventPublisher.triggerEvent(event);
+		}
 			// TODO: make sure that this is the last vertex of the last path segment
-			if (selectedPath != null && vertexRep == selectedPath.getEndVertex()
-					&& selectedPath.getEdgeList().size() > 0) {
+			//if (selectedPath != null && vertexRep == selectedPath.getEndVertex()
+			//		&& selectedPath.getEdgeList().size() > 0) {
+		//	if(showPortals){
 				ShowPortalNodesEvent e = new ShowPortalNodesEvent(vertexRep);
 				e.setSender(this);
 				e.setEventSpace(pathwayPathEventSpace);
 				eventPublisher.triggerEvent(e);
 				// the event will not be sent back to this pathway object, so highlight must be triggered here
 				highlightPortalNodes(vertexRep);
-			}
-			SelectionUpdateEvent event = new SelectionUpdateEvent();
-			event.setSender(this);
-			event.setSelectionDelta(selectionDelta);
-			eventPublisher.triggerEvent(event);
-		}
+		//	}
+
+		//}
 	}
 
 	private void triggerPathUpdate() {
