@@ -135,6 +135,10 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 		super.takeDown();
 	}
 
+	public boolean haveRankDeltas() {
+		return becauseOfReordering && rankDeltas != null;
+	}
+
 	public boolean isInternalReLayout() {
 		if (becauseOfReordering)
 			return false;
@@ -144,6 +148,7 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 	public void layoutingDone() {
 		becauseOfReordering = false;
 		isScrollingUpdate = false;
+		rankDeltas = null; // a single run with the rank deltas, not used anymore
 	}
 
 	@Override
@@ -230,10 +235,6 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
-		if (rankDeltas != null) {
-			rankDeltas = null; // a single run with the rank deltas, not used anymore
-		}
-
 		TableBodyUI body = getTableBodyUI();
 
 		OrderColumnUI previousRanker = model == null ? null : body.getRanker(model);

@@ -212,7 +212,7 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 					continue;
 				}
 				if (elem.hasChanged()) { // create a move animation
-					anim = createMoveAnimation(elem.wrappee, elem.before, elem.after);
+					anim = createMoveAnimation(elem.wrappee, elem.before, elem.after, defaultDuration);
 					layoutAnimations.put(elem.wrappee, anim);
 				}
 			}
@@ -245,14 +245,14 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 		anim.init(before, after);
 	}
 
-	protected ALayoutAnimation createMoveAnimation(IGLLayoutElement elem, Vec4f before, Vec4f after) {
+	protected ALayoutAnimation createMoveAnimation(IGLLayoutElement elem, Vec4f before, Vec4f after, int duration) {
 		if (defaultDuration == 0) {
 			DummyAnimation d = new DummyAnimation(EAnimationType.MOVE);
 			d.init(before, after);
 			return d;
 		}
 		final IMoveTransition animation = elem.getLayoutDataAs(IMoveTransition.class, defaultMoveTransition);
-		MoveAnimation anim = new MoveAnimation(defaultDuration, animation);
+		MoveAnimation anim = new MoveAnimation(duration, animation);
 		anim.init(before, after);
 		return anim;
 	}

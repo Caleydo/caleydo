@@ -22,6 +22,7 @@ package org.caleydo.vis.rank.ui.detail;
 import java.awt.Color;
 
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.ui.RenderStyle;
 
 /**
@@ -32,6 +33,13 @@ public class ColoredValuedElement extends ValueElement {
 	private int rankDelta;
 	private int remaining;
 	private int duration;
+
+	@Override
+	public void setRow(IRow row) {
+		super.setRow(row);
+		duration = 0;
+		remaining = 0;
+	}
 	/**
 	 * @param rankDelta
 	 *            setter, see {@link rankDelta}

@@ -17,6 +17,7 @@ import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.vis.rank.internal.ui.anim.ReRankTransition;
 import org.caleydo.vis.rank.layout.IRowLayoutInstance.IRowSetter;
 import org.caleydo.vis.rank.model.ARankColumnModel;
+import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
 import org.caleydo.vis.rank.ui.IColumnRenderInfo;
@@ -92,7 +93,7 @@ public class ColumnUI extends AnimatedGLElementContainer implements ITableColumn
 	}
 
 	@Override
-	protected ALayoutAnimation createMoveAnimation(IGLLayoutElement elem, Vec4f before, Vec4f after) {
+	protected ALayoutAnimation createMoveAnimation(IGLLayoutElement elem, Vec4f before, Vec4f after, int duration) {
 		int flag = ((ValueElement) elem.asElement()).getAnimationFlag();
 		switch (flag) {
 		case FLAG_NONE:
@@ -124,7 +125,7 @@ public class ColumnUI extends AnimatedGLElementContainer implements ITableColumn
 			d.init(before, after);
 			return d;
 		}
-		return super.createMoveAnimation(elem, before, after);
+		return super.createMoveAnimation(elem, before, after, duration);
 	}
 
 	/**
@@ -141,31 +142,39 @@ public class ColumnUI extends AnimatedGLElementContainer implements ITableColumn
 	}
 
 	@Override
-	public final void layout(int deltaTimeMs) {
-		int rows = getColumnParent().getNumVisibleRows(model);
-		int cached = this.size();
+	public void layout(int deltaTimeMs) {
+		final int rows = getColumnParent().getNumVisibleRows(model);
+		final int cached = this.size();
 		if (cached < rows) {
 			int addItems = Math.min(20, rows - cached); // add twenty more at least
 			// enlarge the pool
 			for (int i = 0; i < addItems; ++i)
 				add(createPoolItem(), 0);
 			inPool.set(cached, cached + addItems);
-		} else if ((cached - rows) > 50 && inPool.cardinality() > 20) { // more than enough free again
-			// free the pool and update the mapping information
-			// FIXME
-			// int at = cached - 1;
-			// final int itemsToRemove = Math.max(0, cached - (cached - rows) - 20);
-			// for (int toRemove = itemsToRemove; toRemove > 0; toRemove--) {
-			// while (!inPool.get(at)) {
-			// GLElement replacement = get(at);
-			// int index = replacement.getLayoutDataAs(IRow.class, null).getIndex();
-			// rowIndexToGlElement.put(index, at - toRemove - 1); // x places to the left
-			// at--;
-			// }
-			// remove(get(at).setVisibility(EVisibility.HIDDEN), 0);
-			// inPool.clear(at);
-			// at--;
-			// }
+		} else if ((cached - rows) > 20) { // more than enough free again
+			int firstToCheck = 0;
+			int itemsToRemove = Math.max(0, cached - rows - 20);
+			boolean anyRemoved = false;
+			for (int i = cached - 1; i >= 0; --i) {
+				if (itemsToRemove <= 0) {
+					firstToCheck = i;
+					break;
+				}
+				if (inPool.get(i)) {
+					remove(get(i), 0);
+					inPool.clear(i);
+					anyRemoved = true;
+					itemsToRemove--;
+				}
+			}
+			if (anyRemoved) {
+				for (int i = firstToCheck; i < size(); ++i) {
+					if (inPool.get(i))
+						continue;
+					int row = get(i).getLayoutDataAs(IRow.class, null).getIndex();
+					rowIndexToGlElement.put(row, i);
+				}
+			}
 		}
 		super.layout(deltaTimeMs);
 	}
