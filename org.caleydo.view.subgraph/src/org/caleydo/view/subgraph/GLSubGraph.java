@@ -156,9 +156,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	 */
 	protected boolean isHighlightPortals = false;
 
-	private boolean isAltKeyDown = false;
-	private boolean isShiftKeyDown = false;
-
+	
 	private final DragAndDropController dndController = new DragAndDropController(this);
 
 	/**
