@@ -45,6 +45,7 @@ import org.caleydo.core.event.view.TablePerspectivesChangedEvent;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedMultiTablePerspectiveBasedView;
+import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
 import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
 import org.caleydo.core.view.listener.AddTablePerspectivesListener;
@@ -74,6 +75,7 @@ import org.caleydo.view.enroute.path.EnRoutePathRenderer;
 import org.caleydo.view.enroute.path.SelectedPathUpdateStrategy;
 import org.caleydo.view.pathway.GLPathway;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
@@ -110,6 +112,9 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	 */
 	private ArrayList<TablePerspective> resolvedTablePerspectives = new ArrayList<TablePerspective>();
 
+	/** A contextual perspective which has the same column ID Type but a different row ID Type */
+	private TablePerspective contextualPerspective = null;
+
 	/**
 	 * The {@link IDataDomain}s for which data is displayed in this view.
 	 */
@@ -141,6 +146,14 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	 */
 	private boolean fitToViewWidth = true;
 
+	/** The id type of the rows that are shown in context with the selected path */
+	private IDType primaryRowIDType = IDType.getIDType("DAVID");
+	/** The id type of the columns for ALL datasets */
+	private IDType columnIDType;
+
+	/** The id type for the rows for contextual data */
+	private IDType contextRowIDTYpe;
+
 	private EventBasedSelectionManager geneSelectionManager;
 	private EventBasedSelectionManager metaboliteSelectionManager;
 	private EventBasedSelectionManager sampleSelectionManager;
@@ -171,16 +184,18 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
-		geneSelectionManager = new EventBasedSelectionManager(this, IDType.getIDType("DAVID"));
+		geneSelectionManager = new EventBasedSelectionManager(this, primaryRowIDType);
 		geneSelectionManager.registerEventListeners();
 
 		metaboliteSelectionManager = new EventBasedSelectionManager(this, IDType.getIDType("METABOLITE"));
 		metaboliteSelectionManager.registerEventListeners();
 
 		List<GeneticDataDomain> dataDomains = DataDomainManager.get().getDataDomainsByType(GeneticDataDomain.class);
+
+		// FIXME this is a hack that can be resolved by an "imprint" function when adding the first perspective
 		if (dataDomains.size() != 0) {
-			IDType sampleIDType = dataDomains.get(0).getSampleIDType().getIDCategory().getPrimaryMappingType();
-			sampleSelectionManager = new EventBasedSelectionManager(this, sampleIDType);
+			columnIDType = dataDomains.get(0).getSampleIDType().getIDCategory().getPrimaryMappingType();
+			sampleSelectionManager = new EventBasedSelectionManager(this, columnIDType);
 			sampleSelectionManager.registerEventListeners();
 		}
 
@@ -469,48 +484,45 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		// height);
 	}
 
-	public void addContextualPerspectives(TablePerspective originalContextualTablePerspective) {
+	/**
+	 * Resolves the {@link #contextualPerspective} to sub-perspectives matching the perspectives in
+	 * {@link #resolvedTablePerspectives}
+	 */
+	private void updateContextualPerspectives() {
+		if (contextualPerspective == null) {
+			mappedDataRenderer.setContextualTablePerspectives(null);
+			return;
+		}
 
-		ATableBasedDataDomain contextualDataDomain = originalContextualTablePerspective.getDataDomain();
+		ATableBasedDataDomain contextualDataDomain = contextualPerspective.getDataDomain();
+		// Perspective contextualColumnPerspective = contextualPerspective.getPerspective();
+		Perspective contextualRowPerspective = contextualPerspective.getPerspective(contextRowIDTYpe);
 
 		ArrayList<TablePerspective> contextTablePerspectives = new ArrayList<>();
 		for (TablePerspective resolvedGeneTablePerspective : resolvedTablePerspectives) {
 
-			Perspective dimensionPerspective = null;
-			Perspective recordPerspective = null;
+			Perspective primaryColumnPerspective = resolvedGeneTablePerspective.getPerspective(columnIDType);
 
-			if (((GeneticDataDomain) resolvedGeneTablePerspective.getDataDomain()).isGeneRecord()) {
-				if (contextualDataDomain.getDimensionIDCategory().equals(
-						resolvedGeneTablePerspective.getDataDomain().getDimensionIDCategory())) {
-					dimensionPerspective = contextualDataDomain.convertForeignPerspective(resolvedGeneTablePerspective
-							.getDimensionPerspective());
-					recordPerspective = originalContextualTablePerspective.getRecordPerspective();
+			Perspective contextualColumnPerspective = contextualDataDomain
+					.convertForeignPerspective(primaryColumnPerspective);
 
-				} else if (contextualDataDomain.getRecordIDCategory().equals(
-						resolvedGeneTablePerspective.getDataDomain().getDimensionIDCategory())) {
-					recordPerspective = contextualDataDomain.convertForeignPerspective(resolvedGeneTablePerspective
-							.getDimensionPerspective());
-					dimensionPerspective = originalContextualTablePerspective.getDimensionPerspective();
-				}
+			if (contextualColumnPerspective == null) {
+				Logger.log(new Status(IStatus.ERROR, this.toString(),
+						"Failed to convert the primary to the contex perspective"));
 			} else {
-				if (contextualDataDomain.getDimensionIDCategory().equals(
-						resolvedGeneTablePerspective.getDataDomain().getRecordIDCategory())) {
-					dimensionPerspective = contextualDataDomain.convertForeignPerspective(resolvedGeneTablePerspective
-							.getRecordPerspective());
-					recordPerspective = originalContextualTablePerspective.getRecordPerspective();
+				TablePerspective resolvedContextTablePerspective;
 
-				} else if (contextualDataDomain.getRecordIDCategory().equals(
-						resolvedGeneTablePerspective.getDataDomain().getRecordIDCategory())) {
-					recordPerspective = contextualDataDomain.convertForeignPerspective(resolvedGeneTablePerspective
-							.getRecordPerspective());
-					dimensionPerspective = originalContextualTablePerspective.getDimensionPerspective();
+				if (contextualDataDomain.getDimensionIDType().equals(contextRowIDTYpe)) {
+					resolvedContextTablePerspective = new TablePerspective(contextualDataDomain,
+							contextualColumnPerspective, contextualRowPerspective);
+				} else if (contextualDataDomain.getRecordIDType().equals(contextRowIDTYpe)) {
+					resolvedContextTablePerspective = new TablePerspective(contextualDataDomain,
+							contextualColumnPerspective, contextualRowPerspective);
+				} else {
+					throw new IllegalStateException("Context DD and IDTypes don't match up.");
+
 				}
-			}
-
-			if (dimensionPerspective != null) {
-				TablePerspective contextTablePerspective = new TablePerspective(contextualDataDomain,
-						recordPerspective, dimensionPerspective);
-				contextTablePerspectives.add(contextTablePerspective);
+				contextTablePerspectives.add(resolvedContextTablePerspective);
 			}
 		}
 
@@ -527,16 +539,39 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	@Override
 	public void addTablePerspectives(List<TablePerspective> newTablePerspectives) {
 
+		if (newTablePerspectives == null || newTablePerspectives.isEmpty())
+			return;
+		// check for contextual perspectives and check whether ID Types match first
 		Iterator<TablePerspective> tpIterator = newTablePerspectives.iterator();
 		while (tpIterator.hasNext()) {
+
 			TablePerspective newTablePerspective = tpIterator.next();
-			if (!(newTablePerspective.getDataDomain() instanceof GeneticDataDomain)) {
-				addContextualPerspectives(newTablePerspective);
+			if (!newTablePerspective.getDataDomain().hasIDCategory(columnIDType)) {
+				Logger.log(new Status(IStatus.WARNING, this.toString(),
+						"Can't add perspective since it doesn't match ID types: " + newTablePerspective));
+				tpIterator.remove();
+				continue;
+			}
+			if (!newTablePerspective.getDataDomain().hasIDCategory(primaryRowIDType)) {
+
+				contextRowIDTYpe = newTablePerspective.getDataDomain().getOppositeIDType(columnIDType);
+				if (mappedDataRenderer.getContextRowIDs() == null || mappedDataRenderer.getContextRowIDs().isEmpty()) {
+					// if this is the first time we select the compound
+					ShowContextElementSelectionDialogEvent contextEvent = new ShowContextElementSelectionDialogEvent(
+							newTablePerspective.getPerspective(contextRowIDTYpe));
+					eventPublisher.triggerEvent(contextEvent);
+
+				}
+				// true for contextual perspective
+				contextualPerspective = newTablePerspective;
+
 				tpIterator.remove();
 			}
 		}
 
 		if (newTablePerspectives.isEmpty()) {
+			updateContextualPerspectives();
+			setLayoutDirty();
 			return;
 		}
 
@@ -586,6 +621,8 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 				resolvedTablePerspectives.add(tablePerspective);
 			}
 		}
+		updateContextualPerspectives();
+
 	}
 
 	@Override
@@ -614,6 +651,8 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 	@Override
 	public void removeTablePerspective(TablePerspective tablePerspective) {
+		if (tablePerspective == contextualPerspective)
+			contextualPerspective = null;
 
 		for (TablePerspective t : tablePerspectives) {
 			if (t == tablePerspective) {
@@ -724,7 +763,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 				// tPerspective.getDimensionPerspective());
 				// pIterator.remove();
 				// pIterator.
-				updateLayout();
+				setLayoutDirty();
 			} else if (tPerspective.getDimensionPerspective().getCrossDatasetID() != null
 					&& event.getPerspective().getCrossDatasetID() != null
 					&& tPerspective.getDimensionPerspective().getCrossDatasetID()
@@ -732,7 +771,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 				Perspective newPerspective = tPerspective.getDataDomain().convertForeignPerspective(
 						event.getPerspective());
 				tPerspective.setDimensionPerspective(newPerspective);
-				updateLayout();
+				setLayoutDirty();
 			}
 		}
 
@@ -828,7 +867,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 					// FIXME this might not be thread-safe
 					List<Integer> selectedItems = dialog.getSelectedItems();
 					mappedDataRenderer.setContextRowIDs(selectedItems);
-					updateLayout();
+					setLayoutDirty();
 
 				}
 			}

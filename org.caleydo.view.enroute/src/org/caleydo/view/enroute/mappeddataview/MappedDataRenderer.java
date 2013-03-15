@@ -143,6 +143,9 @@ public class MappedDataRenderer {
 	int selectedBucketGeneID = 0;
 	Perspective selectedBucketExperimentPerspective;
 
+	/** the spacing between the top of the view and the first node if no contextual data is present */
+	private int defaultSpacing = -1;
+
 	/**
 	 * Constructor with parent view as parameter.
 	 */
@@ -224,7 +227,9 @@ public class MappedDataRenderer {
 	 *            setter, see {@link #linearizedNodes}
 	 */
 	public void setLinearizedNodes(List<ALinearizableNode> linearizedNodes) {
-
+		if (defaultSpacing < 0) {
+			defaultSpacing = parentView.getPathRenderer().getSizeConfig().getPathStartSpacing();
+		}
 		relationShipRenderers = new ArrayList<RelationshipRenderer>(linearizedNodes.size());
 		this.linearizedNodes = linearizedNodes;
 		reBuildLayout();
@@ -237,6 +242,8 @@ public class MappedDataRenderer {
 	}
 
 	private void createLayout(LayoutManager layoutManager, boolean isHighlightLayout) {
+
+		float rowSpacingHeight = 5;
 
 		Row baseRow = new Row("baseRow");
 		layoutManager.setBaseElementLayout(baseRow);
@@ -269,14 +276,13 @@ public class MappedDataRenderer {
 		 * A list of lists of element layouts where the outer list contains one nested list for every data container and
 		 * the inner list one element layout for every gene in the linearized pathway
 		 */
-		ArrayList<ArrayList<ElementLayout>> rowListForContextTablePerspectives = new ArrayList<ArrayList<ElementLayout>>(
-				contextualTablePerspectives.size());
-
+		ArrayList<ArrayList<ElementLayout>> rowListForContextTablePerspectives = new ArrayList<ArrayList<ElementLayout>>();
 		IDType contextRowIDType = null;
 
 		if (contextualTablePerspectives != null && !contextualTablePerspectives.isEmpty() && contextRowIDs != null
 				&& !contextRowIDs.isEmpty()) {
 
+			int bottomYSpacing = 10;
 			for (int count = 0; count < contextualTablePerspectives.size(); count++) {
 				rowListForContextTablePerspectives.add(new ArrayList<ElementLayout>());
 			}
@@ -309,7 +315,10 @@ public class MappedDataRenderer {
 						row.append(xSpacing);
 					}
 				}
-				ElementLayout rowCaption = new ElementLayout();
+				ElementLayout rowCaption = new ElementLayout("C RC");
+				// rowCaption.setDebug(true);
+				// rowCaption.setFrameColor(1, 0, 0, 0.8f);
+
 				rowCaption.setAbsoluteSizeY(rowHeight);
 
 				if (isHighlightLayout) {
@@ -321,19 +330,17 @@ public class MappedDataRenderer {
 				captionColumn.append(rowCaption);
 				i++;
 
-				PathSizeConfiguration oldConfig = parentView.getPathRenderer().getSizeConfig();
-
-				PathSizeConfiguration newConfig = new PathSizeConfiguration.Builder(oldConfig).pathStartSpacing(
-						PathSizeConfiguration.DEFAULT.getPathStartSpacing()
-								+ parentView.getPixelGLConverter().getPixelHeightForGLHeight(rowHeight) * 3 + 10)
-						.build();
+				PathSizeConfiguration newConfig = new PathSizeConfiguration.Builder(parentView.getPathRenderer()
+						.getSizeConfig()).pathStartSpacing(
+						parentView.getPixelGLConverter().getPixelHeightForGLHeight(rowHeight) * contextRowIDs.size()
+								+ defaultSpacing + bottomYSpacing).build();
 				parentView.getPathRenderer().setSizeConfig(newConfig);
 				previousNodePosition = 0;
 
 			}
 
 			ElementLayout spacing = new ElementLayout();
-			spacing.setPixelSizeY(10);
+			spacing.setPixelSizeY(bottomYSpacing);
 			dataSetColumn.append(spacing);
 			captionColumn.append(spacing);
 
@@ -387,8 +394,9 @@ public class MappedDataRenderer {
 			deviation = previousLowerHeight - currentUpperHeight;
 
 			if (previousNodePosition > 0 && deviation > 0) {
-				ElementLayout spacing = new ElementLayout();
+				ElementLayout spacing = new ElementLayout("Spacing");
 				spacing.setDebug(true);
+				spacing.setFrameColor(0, 0, 1, 0.8f);
 				spacing.setAbsoluteSizeY(deviation);
 				dataSetColumn.append(spacing);
 				captionColumn.append(spacing);
@@ -800,6 +808,13 @@ public class MappedDataRenderer {
 	 */
 	public void setContextualTablePerspectives(final ArrayList<TablePerspective> contextualTablePerspectives) {
 		this.contextualTablePerspectives = contextualTablePerspectives;
+		if (defaultSpacing > 0) {
+			// parentView.getPathRenderer().setSizeConfig(parentViegetSizeConfig().
+
+			PathSizeConfiguration newConfig = new PathSizeConfiguration.Builder(parentView.getPathRenderer()
+					.getSizeConfig()).pathStartSpacing(defaultSpacing).build();
+			parentView.getPathRenderer().setSizeConfig(newConfig);
+		}
 
 		if (contextualTablePerspectives != null && !contextualTablePerspectives.isEmpty()) {
 			final ATableBasedDataDomain dataDomain = contextualTablePerspectives.get(0).getDataDomain();
@@ -807,67 +822,68 @@ public class MappedDataRenderer {
 
 			if (contextRowSelectionManager == null) {
 				contextRowSelectionManager = new EventBasedSelectionManager(parentView, contextRowIDType);
-
-				parentView.addTypePickingListener(new APickingListener() {
-
-					@Override
-					public void clicked(Pick pick) {
-						contextRowSelectionManager.clearSelection(SelectionType.SELECTION);
-						contextRowSelectionManager.addToType(SelectionType.SELECTION, pick.getObjectID());
-						contextRowSelectionManager.triggerSelectionUpdateEvent();
-						parentView.setDisplayListDirty();
-
-					}
-
-					@Override
-					public void mouseOver(Pick pick) {
-
-						contextRowSelectionManager.addToType(SelectionType.MOUSE_OVER, pick.getObjectID());
-						contextRowSelectionManager.triggerSelectionUpdateEvent();
-						parentView.setDisplayListDirty();
-
-					}
-
-					@Override
-					public void mouseOut(Pick pick) {
-						contextRowSelectionManager.removeFromType(SelectionType.MOUSE_OVER, pick.getObjectID());
-						contextRowSelectionManager.triggerSelectionUpdateEvent();
-
-						parentView.setDisplayListDirty();
-
-					}
-
-					@Override
-					protected void rightClicked(Pick pick) {
-						List<AEvent> sortEvents = new ArrayList<>();
-						for (TablePerspective tablePerspective : contextualTablePerspectives) {
-							SortByDataEvent sortEvent = new SortByDataEvent(dataDomain.getDataDomainID(),
-									tablePerspective, sampleIDType, pick.getObjectID());
-							sortEvent.setSender(this);
-							sortEvents.add(sortEvent);
-						}
-
-						AContextMenuItem sortByDimensionItem = new GenericContextMenuItem("Sort by this axis ",
-								sortEvents);
-
-						parentView.getContextMenuCreator().addContextMenuItem(sortByDimensionItem);
-
-						if (contextualTablePerspectives != null) {
-							Perspective rowPerspective = contextualTablePerspectives.get(0).getPerspective(
-									contextRowIDType);
-
-							ShowContextElementSelectionDialogEvent contextEvent = new ShowContextElementSelectionDialogEvent(
-									rowPerspective);
-
-							AContextMenuItem selectCompoundItem = new GenericContextMenuItem(
-									"Select compounds to show ", contextEvent);
-							parentView.getContextMenuCreator().addContextMenuItem(selectCompoundItem);
-						}
-
-					}
-				}, contextRowIDType.getTypeName());
-
 			}
+			parentView.removeAllTypePickingListeners(contextRowIDType.getTypeName());
+
+			parentView.addTypePickingListener(new APickingListener() {
+
+				@Override
+				public void clicked(Pick pick) {
+					contextRowSelectionManager.clearSelection(SelectionType.SELECTION);
+					contextRowSelectionManager.addToType(SelectionType.SELECTION, pick.getObjectID());
+					contextRowSelectionManager.triggerSelectionUpdateEvent();
+					parentView.setDisplayListDirty();
+
+				}
+
+				@Override
+				public void mouseOver(Pick pick) {
+
+					contextRowSelectionManager.addToType(SelectionType.MOUSE_OVER, pick.getObjectID());
+					contextRowSelectionManager.triggerSelectionUpdateEvent();
+					parentView.setDisplayListDirty();
+
+				}
+
+				@Override
+				public void mouseOut(Pick pick) {
+					contextRowSelectionManager.removeFromType(SelectionType.MOUSE_OVER, pick.getObjectID());
+					contextRowSelectionManager.triggerSelectionUpdateEvent();
+
+					parentView.setDisplayListDirty();
+
+				}
+
+				@Override
+				protected void rightClicked(Pick pick) {
+					List<AEvent> sortEvents = new ArrayList<>();
+					for (TablePerspective tablePerspective : contextualTablePerspectives) {
+						SortByDataEvent sortEvent = new SortByDataEvent(dataDomain.getDataDomainID(), tablePerspective,
+								sampleIDType, pick.getObjectID());
+						sortEvent.setSender(this);
+						sortEvents.add(sortEvent);
+					}
+
+					AContextMenuItem sortByDimensionItem = new GenericContextMenuItem("Sort by this axis ", sortEvents);
+
+					parentView.getContextMenuCreator().addContextMenuItem(sortByDimensionItem);
+
+					if (contextualTablePerspectives != null) {
+						Perspective rowPerspective = contextualTablePerspectives.get(0)
+								.getPerspective(contextRowIDType);
+
+						ShowContextElementSelectionDialogEvent contextEvent = new ShowContextElementSelectionDialogEvent(
+								rowPerspective);
+
+						AContextMenuItem selectCompoundItem = new GenericContextMenuItem("Select compounds to show ",
+								contextEvent);
+						parentView.getContextMenuCreator().addContextMenuItem(selectCompoundItem);
+					}
+
+				}
+			}, contextRowIDType.getTypeName());
+
+			// }
 		}
 
 	}
@@ -905,6 +921,13 @@ public class MappedDataRenderer {
 	 */
 	public void setContextRowIDs(List<Integer> contextRowIDs) {
 		this.contextRowIDs = contextRowIDs;
+	}
+
+	/**
+	 * @return the contextRowIDs, see {@link #contextRowIDs}
+	 */
+	public List<Integer> getContextRowIDs() {
+		return contextRowIDs;
 	}
 
 }
