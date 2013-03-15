@@ -1222,17 +1222,18 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 				if (selectionType == SelectionType.SELECTION) {
 
 					boolean isPortalNode = false;
-					
-					portalVertexReps = PathwayManager.get().getEquivalentVertexRepsInPathway(previousSelectedPath.getEndVertex(), pathway);
-					for (PathwayVertexRep portal : portalVertexReps) {
-						if (vertexRep == portal) {
-							isPortalNode = true;
+					if(previousSelectedPath!=null){
+						portalVertexReps = PathwayManager.get().getEquivalentVertexRepsInPathway(previousSelectedPath.getEndVertex(), pathway);
+						for (PathwayVertexRep portal : portalVertexReps) {
+							if (vertexRep == portal) {
+								isPortalNode = true;
+							}
 						}
 					}
 					if (!isPortalNode) {
 						pathSegments.clear();
 					}
-
+					
 					generateSingleNodePath(vertexRep);
 					pathSegments.add(new PathwayPath(selectedPath));
 					isPathStartSelected = true;
