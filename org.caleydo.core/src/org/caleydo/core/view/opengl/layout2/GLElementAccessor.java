@@ -34,7 +34,6 @@ public class GLElementAccessor {
 	 * @param elem
 	 * @return
 	 */
-	@Deprecated
 	public static IGLLayoutElement asLayoutElement(GLElement elem) {
 		return elem.layoutElement;
 	}

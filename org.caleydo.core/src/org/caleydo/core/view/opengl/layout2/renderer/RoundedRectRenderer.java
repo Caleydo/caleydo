@@ -25,8 +25,10 @@ import javax.media.opengl.GL2;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 
 /**
+ * Utility to render a rounded rect with various options
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
 public class RoundedRectRenderer {
 	public static final int FLAG_FILL = 1<<0;

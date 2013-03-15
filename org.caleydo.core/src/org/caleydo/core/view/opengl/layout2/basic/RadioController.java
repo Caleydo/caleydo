@@ -25,11 +25,11 @@ import java.util.List;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton.EButtonMode;
 
 /**
- * a controller class for a bunch of gl buttons that act as a single radio group, i.e only one can be selected at one
- * time
- *
+ * a controller class for a bunch of {@link GLButton}s that act as a single radio group, i.e only one can be selected at
+ * one time
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
 public class RadioController implements GLButton.ISelectionCallback {
 	private List<GLButton> buttons = new ArrayList<>();

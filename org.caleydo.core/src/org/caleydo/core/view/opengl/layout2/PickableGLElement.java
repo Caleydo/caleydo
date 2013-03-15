@@ -31,6 +31,9 @@ import org.caleydo.core.view.opengl.picking.Pick;
  *
  */
 public class PickableGLElement extends GLElement {
+	/**
+	 * the tooltip of this element
+	 */
 	private String tooltip = null;
 	/**
 	 * the object id to use
@@ -55,6 +58,7 @@ public class PickableGLElement extends GLElement {
 	@Override
 	protected void init(IGLElementContext context) {
 		super.init(context);
+		// create a tooltip listener to render the tooltip of this element
 		this.onPick(context.createTooltip(new ILabelProvider() {
 			@Override
 			public String getProviderName() {
@@ -69,13 +73,15 @@ public class PickableGLElement extends GLElement {
 	}
 
 	/**
-	 * @return
+	 * @return the tooltip of this element
 	 */
 	protected String getTooltip() {
 		return tooltip;
 	}
 
 	/**
+	 * sets the picking object id to use
+	 * 
 	 * @param objectId
 	 *            setter, see {@link objectId}
 	 */

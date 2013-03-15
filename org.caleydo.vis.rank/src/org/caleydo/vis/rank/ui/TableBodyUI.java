@@ -33,9 +33,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
-import org.caleydo.core.view.opengl.layout2.AnimatedGLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.core.view.opengl.layout2.animation.AnimatedGLElementContainer;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
@@ -79,9 +79,6 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
 			switch (evt.getPropertyName()) {
-			case RankTableModel.PROP_DATA:
-				updateData();
-				break;
 			case RankTableModel.PROP_COLUMNS:
 				onColumsChanged((IndexedPropertyChangeEvent) evt);
 				break;
@@ -108,7 +105,6 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 		this.table = table;
 		this.config = config;
 		this.add(new OrderColumnUI(null, table.getMyRanker(null), rowLayout, config));
-		this.table.addPropertyChangeListener(RankTableModel.PROP_DATA, listener);
 		this.table.addPropertyChangeListener(RankTableModel.PROP_COLUMNS, listener);
 		this.table.addPropertyChangeListener(RankTableModel.PROP_SELECTED_ROW, listener);
 		for (ARankColumnModel col : table.getColumns()) {
@@ -187,7 +183,7 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 				started = true;
 			}
 			if (started)
-				r.update();
+				r.relayout();
 		}
 		relayout();
 	}
@@ -289,27 +285,19 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 			OrderColumn c = (OrderColumn) new_;
 			return new OrderColumnUI(c, c.getRanker(), getDefaultrankerUI().getRowLayout(), config);
 		}
-		return ColumnUIs.createBody(new_, true).setData(table.getData(), this);
-	}
-
-	protected void updateData() {
-		Collection<IRow> data = table.getData();
-		for (ITableColumnUI col : Iterables.filter(this, ITableColumnUI.class)) {
-			col.setData(data, this);
-		}
+		return ColumnUIs.createBody(new_, true).asGLElement();
 	}
 
 	protected void update() {
 		relayout();
 		repaint();
 		for (ITableColumnUI g : Iterables.filter(this, ITableColumnUI.class)) {
-			g.update();
+			g.relayout();
 		}
 	}
 
 	@Override
 	protected void takeDown() {
-		this.table.removePropertyChangeListener(RankTableModel.PROP_DATA, listener);
 		this.table.removePropertyChangeListener(RankTableModel.PROP_COLUMNS, listener);
 		this.table.removePropertyChangeListener(RankTableModel.PROP_SELECTED_ROW, listener);
 		for (GLElement col : this) {
@@ -363,29 +351,24 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 					col.setBounds(x, 0, wi, h);
 					break;
 				}
-
-				if ((x + wi + RenderStyle.COLUMN_SPACE) > w) {
-					col.hide();
-					break;
-				}
 				col.setBounds(x, 0, wi, h);
 				x += wi + RenderStyle.COLUMN_SPACE;
 			}
 		}
-		while(it.hasNext())
-			it.next().hide();
+	}
+
+	@Override
+	public void layout(int deltaTimeMs) {
+		super.layout(deltaTimeMs);
+		for (OrderColumnUI child : Iterables.filter(this, OrderColumnUI.class)) {
+			child.layoutingDone();
+		}
 	}
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
 		// push my resource locator to find the icons
 		g.pushResourceLocator(ResourceLocators.classLoader(this.getClass().getClassLoader()));
-
-		for (GLElement child : this)
-			child.checkLayout();
-		for (OrderColumnUI child : Iterables.filter(this, OrderColumnUI.class)) {
-			child.layoutingDone();
-		}
 
 		renderBackgroundLines(g, w, false);
 

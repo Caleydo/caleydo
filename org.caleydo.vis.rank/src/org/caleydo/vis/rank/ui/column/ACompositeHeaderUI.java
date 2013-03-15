@@ -187,16 +187,6 @@ public abstract class ACompositeHeaderUI extends GLElementContainer implements I
 				// catch all
 				wi = w - x - RenderStyle.SCROLLBAR_WIDTH;
 				col.setBounds(x, 0, wi, h);
-			} else if ((x + wi + RenderStyle.COLUMN_SPACE) > w) {
-				// hide the rest
-				for (; i < columns.size(); ++i) {
-					columns.get(i).hide();
-				}
-				if (config.isMoveAble() && separators != null) {
-					for (; i < columns.size(); ++i)
-						separators.get(i).hide();
-				}
-				break;
 			}
 			if (col.asElement() instanceof OrderColumnHeaderUI)
 				col.setBounds(x, y + HIST_HEIGHT / 2, wi, hn - HIST_HEIGHT / 2);

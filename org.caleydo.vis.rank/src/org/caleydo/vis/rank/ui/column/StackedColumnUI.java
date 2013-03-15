@@ -81,7 +81,7 @@ public class StackedColumnUI extends ACompositeTableColumnUI<StackedRankColumnMo
 	@Override
 	protected GLElement wrap(ARankColumnModel model) {
 		ITableColumnUI ui = ColumnUIs.createBody(model, false);
-		return ui.setData(model.getTable().getData(), this);
+		return ui.asGLElement();
 	}
 
 	@Override

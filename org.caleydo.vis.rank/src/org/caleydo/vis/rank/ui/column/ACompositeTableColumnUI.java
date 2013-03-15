@@ -37,7 +37,6 @@ import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.vis.rank.model.ACompositeRankColumnModel;
 import org.caleydo.vis.rank.model.ARankColumnModel;
-import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.ui.RenderStyle;
 
 import com.google.common.collect.Iterables;
@@ -160,17 +159,10 @@ public abstract class ACompositeTableColumnUI<T extends ACompositeRankColumnMode
 	}
 
 	@Override
-	public GLElement setData(Iterable<IRow> data, IColumModelLayout parent) {
-		for (GLElement col : this)
-			((ColumnUI) col).setData(data, this);
-		return this;
-	}
-
-	@Override
-	public void update() {
+	public void relayout() {
 		for (ITableColumnUI g : Iterables.filter(this, ITableColumnUI.class))
-			g.update();
-		relayout();
+			g.relayout();
+		super.relayout();
 	}
 
 	public ITableColumnUI getLastChild() {

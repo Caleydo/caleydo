@@ -28,7 +28,7 @@ import org.caleydo.core.view.opengl.layout2.basic.GLButton;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton.ISelectionCallback;
 import org.caleydo.core.view.opengl.layout2.basic.RadioController;
 import org.caleydo.core.view.opengl.layout2.basic.ScrollBar;
-import org.caleydo.core.view.opengl.layout2.basic.ScrolledGLElement;
+import org.caleydo.core.view.opengl.layout2.basic.ScrollingDecorator;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.rank.config.IRankTableUIConfig;
@@ -71,7 +71,7 @@ public class RankTableUI extends GLElementContainer implements ISelectionCallbac
 			this.add(buttons);
 		}
 		TableUI tableui = new TableUI(table, config, layouts);
-		ScrolledGLElement sc = new ScrolledGLElement(tableui, new ScrollBar(true), null, RenderStyle.SCROLLBAR_WIDTH);
+		ScrollingDecorator sc = new ScrollingDecorator(tableui, new ScrollBar(true), null, RenderStyle.SCROLLBAR_WIDTH);
 		this.add(sc);
 		if (config.isInteractive() && !table.getConfig().isDestroyOnHide())
 			this.add(new ColumnPoolUI(table, config));
@@ -98,7 +98,7 @@ public class RankTableUI extends GLElementContainer implements ISelectionCallbac
 	@Override
 	public void onSelectionChanged(GLButton button, boolean selected) {
 		IRowHeightLayout l = button.getLayoutDataAs(IRowHeightLayout.class, null);
-		ScrolledGLElement scbody = (ScrolledGLElement) get(1);
+		ScrollingDecorator scbody = (ScrollingDecorator) get(1);
 		TableUI table = (TableUI) scbody.getContent();
 		TableBodyUI body = (TableBodyUI) table.get(1);
 		body.setRowLayout(l);

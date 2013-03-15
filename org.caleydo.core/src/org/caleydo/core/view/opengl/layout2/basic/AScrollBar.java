@@ -49,6 +49,10 @@ public abstract class AScrollBar implements IScrollBar {
 		return this.offset;
 	}
 
+	protected final float clamp(float newOffset) {
+		return Math.min(total - view, Math.max(0, newOffset));
+	}
+
 	protected float getOffset(float total) {
 		return offset * total / this.total;
 	}

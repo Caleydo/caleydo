@@ -51,6 +51,10 @@ public abstract class AGLElementGLView extends AGLView implements IGLElementCont
 	 */
 	protected boolean isLayoutDirty = true;
 
+	private final TimeDelta timeDelta = new TimeDelta();
+	private int deltaTimeMs;
+	private boolean layoutingPassDone = false;
+
 	public AGLElementGLView(IGLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum, String viewType,
 			String viewName) {
 		super(glCanvas, parentComposite, viewFrustum, viewType, viewName);
@@ -117,16 +121,27 @@ public abstract class AGLElementGLView extends AGLView implements IGLElementCont
 
 		if (isLayoutDirty) {
 			root.setBounds(0, 0, viewFrustum.getRight(), viewFrustum.getTop());
-			root.layout();
 			isLayoutDirty = false;
 		}
 
-		GLGraphics g = new GLGraphics(gl, this.getTextRenderer(), this.getTextureManager(), locator, true);
+		GLGraphics g = new GLGraphics(gl, this.getTextRenderer(), this.getTextureManager(), locator, true, deltaTimeMs);
 		g.checkError("pre render");
-		if (isPickingRun(gl))
+
+		if (!layoutingPassDone) {
+			deltaTimeMs = timeDelta.getDeltaTimeMs();
+			// first run layouting
+			root.layout(deltaTimeMs);
+			layoutingPassDone = true;
+		}
+
+		if (isPickingRun(gl)) {
+			// one or more pick passes
 			root.renderPick(g);
-		else
+		} else {
+			// a single last render pass
 			root.render(g);
+			layoutingPassDone = false;
+		}
 		g.checkError("post render");
 		g.destroy();
 

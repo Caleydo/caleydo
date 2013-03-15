@@ -23,8 +23,9 @@ import gleem.linalg.Vec2f;
 import gleem.linalg.Vec4f;
 
 import java.awt.Point;
-import java.awt.geom.Rectangle2D;
+import java.util.Objects;
 
+import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.layout2.layout.AGLLayoutElement;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
@@ -81,11 +82,11 @@ public class GLElement implements IHasGLLayoutData {
 	/**
 	 * location and size of this element determined by parent layout
 	 */
-	private final Rectangle2D.Float bounds_layout = new Rectangle2D.Float(0, 0, Float.NaN, Float.NaN);
+	private final Rect bounds_layout = new Rect(0, 0, Float.NaN, Float.NaN);
 	/**
 	 * location and size set by the user
 	 */
-	private final Rectangle2D.Float bounds_set = new Rectangle2D.Float(Float.NaN, Float.NaN, Float.NaN, Float.NaN);
+	private final Rect bounds_set = new Rect(Float.NaN, Float.NaN, Float.NaN, Float.NaN);
 
 	/**
 	 * the current visibility mode, see {@link EVisibility}
@@ -172,10 +173,9 @@ public class GLElement implements IHasGLLayoutData {
 	}
 
 	public final GLElement setLayoutData(Object layoutData) {
-		if (this.layoutData == layoutData)
+		if (Objects.equals(this.layoutData, layoutData))
 			return this;
 		this.layoutData = layoutData;
-		relayout();
 		return this;
 	}
 
@@ -190,15 +190,14 @@ public class GLElement implements IHasGLLayoutData {
 	 * @param g
 	 */
 	public final void render(GLGraphics g) {
-		checkLayout();
 		if (!needToRender()) {
 			cache.invalidate(context.getDisplayListPool());
 			return;
 		}
-		float x = bounds_layout.x;
-		float y = bounds_layout.y;
-		float w = bounds_layout.width;
-		float h = bounds_layout.height;
+		float x = bounds_layout.x();
+		float y = bounds_layout.y();
+		float w = bounds_layout.width();
+		float h = bounds_layout.height();
 
 		g.incZ(zDelta);
 		g.move(x, y);
@@ -234,15 +233,14 @@ public class GLElement implements IHasGLLayoutData {
 	 * @param g
 	 */
 	public final void renderPick(GLGraphics g) {
-		checkLayout();
 		if (!needToRender() || !hasPickAbles()) {
 			pickCache.invalidate(context.getDisplayListPool());
 			return;
 		}
-		float x = bounds_layout.x;
-		float y = bounds_layout.y;
-		float w = bounds_layout.width;
-		float h = bounds_layout.height;
+		float x = bounds_layout.x();
+		float y = bounds_layout.y();
+		float w = bounds_layout.width();
+		float h = bounds_layout.height();
 
 		g.incZ(zDelta);
 		g.move(x, y);
@@ -269,10 +267,10 @@ public class GLElement implements IHasGLLayoutData {
 	private final boolean needToRender() {
 		if (!visibility.doRender())
 			return false;
-		float x = bounds_layout.x;
-		float y = bounds_layout.y;
-		float w = bounds_layout.width;
-		float h = bounds_layout.height;
+		float x = bounds_layout.x();
+		float y = bounds_layout.y();
+		float w = bounds_layout.width();
+		float h = bounds_layout.height();
 		return areValidBounds(x, y, w, h);
 	}
 
@@ -288,9 +286,9 @@ public class GLElement implements IHasGLLayoutData {
 	/**
 	 * checks if the layout is dirty and it is is so perform the layouting
 	 */
-	public void checkLayout() {
+	public void layout(int deltaTimeMs) {
 		if (dirtyLayout)
-			layout();
+			layoutImpl();
 	}
 
 	public static boolean areValidBounds(float x, float y, float w, float h) {
@@ -424,10 +422,12 @@ public class GLElement implements IHasGLLayoutData {
 	 * @return
 	 */
 	public final GLElement setSize(float w, float h) {
-		if (Float.compare(this.bounds_set.width, w) == 0 && Float.compare(this.bounds_set.height, h) == 0)
+		if (Float.compare(this.bounds_set.width(), w) == 0 && Float.compare(this.bounds_set.height(), h) == 0)
 			return this;
-		this.bounds_set.width = bounds_layout.width = w;
-		this.bounds_set.height = bounds_layout.height = h;
+		this.bounds_set.width(w);
+		this.bounds_layout.width(w);
+		this.bounds_set.height(h);
+		this.bounds_layout.height(h);
 		relayoutParent();
 		return this;
 	}
@@ -440,10 +440,12 @@ public class GLElement implements IHasGLLayoutData {
 	 * @return
 	 */
 	public final GLElement setLocation(float x, float y) {
-		if (Float.compare(this.bounds_set.x, x) == 0 && Float.compare(this.bounds_set.y, y) == 0)
+		if (Float.compare(this.bounds_set.x(), x) == 0 && Float.compare(this.bounds_set.y(), y) == 0)
 			return this;
-		this.bounds_set.x = bounds_layout.x = x;
-		this.bounds_set.y = bounds_layout.y = y;
+		this.bounds_set.x(x);
+		this.bounds_layout.x(x);
+		this.bounds_set.y(y);
+		this.bounds_layout.y(y);
 		relayoutParent();
 		return this;
 	}
@@ -454,7 +456,7 @@ public class GLElement implements IHasGLLayoutData {
 	 * @return
 	 */
 	public final Vec2f getLocation() {
-		return new Vec2f(bounds_layout.x, bounds_layout.y);
+		return bounds_layout.xy();
 	}
 
 	/**
@@ -510,7 +512,7 @@ public class GLElement implements IHasGLLayoutData {
 	 * @return
 	 */
 	public final Vec2f getSize() {
-		return new Vec2f(bounds_layout.width, bounds_layout.height);
+		return bounds_layout.size();
 	}
 
 	/**
@@ -519,7 +521,7 @@ public class GLElement implements IHasGLLayoutData {
 	 * @return
 	 */
 	public final Vec4f getBounds() {
-		return new Vec4f(bounds_layout.x, bounds_layout.y, bounds_layout.width, bounds_layout.height);
+		return bounds_layout.bounds();
 	}
 
 	/**
@@ -560,9 +562,10 @@ public class GLElement implements IHasGLLayoutData {
 	 * triggers that me and my parents get repainted
 	 */
 	public void repaint() {
+		int bak = 0;
 		if (context != null)
-			cache.invalidate(context.getDisplayListPool());
-		if (parent != null)
+			bak = cache.invalidate(context.getDisplayListPool());
+		if (parent != null && bak > 0)
 			parent.repaint();
 	}
 
@@ -570,9 +573,10 @@ public class GLElement implements IHasGLLayoutData {
 	 * triggers that me and my parents get repaint the picking representation
 	 */
 	public void repaintPick() {
+		int bak = 0;
 		if (context != null)
-			pickCache.invalidate(context.getDisplayListPool());
-		if (parent != null)
+			bak = pickCache.invalidate(context.getDisplayListPool());
+		if (parent != null && bak > 0)
 			parent.repaintPick();
 	}
 
@@ -633,7 +637,7 @@ public class GLElement implements IHasGLLayoutData {
 	/**
 	 * trigger to layout this element
 	 */
-	protected void layout() {
+	protected void layoutImpl() {
 		dirtyLayout = false;
 		if (context != null) {
 			cache.invalidate(context.getDisplayListPool());
@@ -642,11 +646,11 @@ public class GLElement implements IHasGLLayoutData {
 	}
 
 	private void setLayoutSize(float w, float h) {
-		if (this.bounds_layout.width == w && this.bounds_layout.height == h)
+		if (Float.compare(this.bounds_layout.width(), w) == 0 && Float.compare(this.bounds_layout.height(), h) == 0)
 			return;
-		this.bounds_layout.width = w;
-		this.bounds_layout.height = h;
-		if (bounds_layout.width > 0 && bounds_layout.height > 0)
+		this.bounds_layout.width(w);
+		this.bounds_layout.height(h);
+		if (w > 0 && h > 0)
 			relayout();
 	}
 
@@ -660,10 +664,8 @@ public class GLElement implements IHasGLLayoutData {
 		builder.append(getClass().getSimpleName());
 		builder.append(" [visibility=");
 		builder.append(visibility);
-		builder.append(", xywh_layout=").append(this.bounds_layout.x).append('/').append(this.bounds_layout.y)
-				.append('/').append(this.bounds_layout.width).append('/').append(this.bounds_layout.height);
-		builder.append(", xywh_set=").append(this.bounds_set.x).append('/').append(this.bounds_set.y).append('/')
-				.append(this.bounds_set.width).append('/').append(this.bounds_set.height);
+		builder.append(", xywh_layout=").append(this.bounds_layout);
+		builder.append(", xywh_set=").append(this.bounds_set);
 		builder.append("]");
 		return builder.toString();
 	}
@@ -682,8 +684,7 @@ public class GLElement implements IHasGLLayoutData {
 
 		@Override
 		public void setLocation(float x, float y) {
-			bounds_layout.x = x;
-			bounds_layout.y = y;
+			bounds_layout.xy(x, y);
 		}
 
 		@Override
@@ -708,7 +709,7 @@ public class GLElement implements IHasGLLayoutData {
 
 		@Override
 		public Vec4f getSetBounds() {
-			return new Vec4f(bounds_set.x, bounds_set.y, bounds_set.width, bounds_set.height);
+			return bounds_set.bounds();
 		}
 	}
 }

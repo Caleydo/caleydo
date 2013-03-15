@@ -17,36 +17,34 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.view.opengl.layout2.animation;
+package org.caleydo.core.view.opengl.layout2;
 
+import com.google.common.base.Stopwatch;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class Durations {
-	public interface IDuration {
-		int getDuration();
+public class TimeDelta {
+	private final Stopwatch stopWatch = new Stopwatch();
+
+	public int getDeltaTimeMs() {
+		int deltaTimeMs = 0;
+		if (stopWatch.isRunning()) {
+			deltaTimeMs = (int) stopWatch.elapsedMillis();
+			stopWatch.reset().start();
+		} else {
+			stopWatch.start();
+		}
+		return deltaTimeMs;
 	}
 
-	public static final IDuration NO = fix(0);
-	public static final IDuration DEFAULT = fix(300);
-
-	public static IDuration fix(int durationMillis) {
-		return new DurationBase(durationMillis);
+	public void stop() {
+		if (stopWatch.isRunning())
+			stopWatch.stop().reset();
 	}
 
-	public static class DurationBase implements IDuration {
-		private final int duration;
-
-		public DurationBase(int duration) {
-			this.duration = duration;
-		}
-
-		@Override
-		public int getDuration() {
-			return duration;
-		}
+	public void reset() {
+		stop();
 	}
 }
-

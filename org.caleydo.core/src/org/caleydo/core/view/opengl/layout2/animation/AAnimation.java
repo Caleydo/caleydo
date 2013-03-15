@@ -19,7 +19,6 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.layout2.animation;
 
-import org.caleydo.core.view.opengl.layout2.animation.Durations.IDuration;
 
 /**
  * basic for animation description
@@ -28,16 +27,13 @@ import org.caleydo.core.view.opengl.layout2.animation.Durations.IDuration;
  *
  */
 public abstract class AAnimation implements Comparable<AAnimation> {
-	protected int startIn;
+	protected boolean started;
 	protected int remaining;
-	private final IDuration duration; // TODO
-	protected final int durationValue;
+	protected final int duration;
 
-	public AAnimation(int startIn, IDuration duration) {
+	public AAnimation(int duration) {
 		this.duration = duration;
-		this.durationValue = duration.getDuration();
-		this.startIn = startIn;
-		this.remaining = this.durationValue;
+		this.remaining = this.duration;
 	}
 
 	/**
@@ -48,12 +44,10 @@ public abstract class AAnimation implements Comparable<AAnimation> {
 	}
 
 	/**
-	 * returns when this animations stops
-	 *
-	 * @return
+	 * @return the started, see {@link #started}
 	 */
-	public final int getStopAt() {
-		return startIn + remaining;
+	public boolean isStarted() {
+		return started;
 	}
 
 	/**
@@ -62,30 +56,12 @@ public abstract class AAnimation implements Comparable<AAnimation> {
 	 * @return
 	 */
 	public final int getElapsed() {
-		return durationValue - remaining;
-	}
-
-	/**
-	 * when this animation starts or -1 for active ones
-	 *
-	 * @return
-	 */
-	public final int getStartIn() {
-		return startIn;
-	}
-
-	/**
-	 * does this animation currently runs
-	 *
-	 * @return
-	 */
-	public final boolean isRunning() {
-		return startIn < 0;
+		return duration - remaining;
 	}
 
 	@Override
 	public final int compareTo(AAnimation o) {
-		int r = this.getStopAt() - o.getStopAt();
+		int r = this.getRemaining() - o.getRemaining();
 		if (r != 0)
 			return r;
 		return getType().ordinal() - o.getType().ordinal();
@@ -98,6 +74,6 @@ public abstract class AAnimation implements Comparable<AAnimation> {
 	public abstract EAnimationType getType();
 
 	public enum EAnimationType {
-		IN, OUT, MOVE, STYLE, CUSTOM
+		IN, OUT, MOVE
 	}
 }

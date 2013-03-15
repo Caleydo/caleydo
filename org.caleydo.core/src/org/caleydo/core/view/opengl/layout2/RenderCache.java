@@ -33,16 +33,26 @@ public final class RenderCache {
 	private int numChars;
 	private int numVertices;
 
-	public void invalidate(DisplayListPool pool) {
+	public boolean isActive() {
+		return displayListIndex >= 0;
+	}
+
+	/**
+	 * 
+	 * @param pool
+	 * @return returns the last validCounter
+	 */
+	public int invalidate(DisplayListPool pool) {
+		int bak = validCounter;
 		validCounter = 0;
 		if (displayListIndex >= 0) { // free the display list
 			if (pool.isRecording(displayListIndex)) {
 				// lazy stopping
-				return;
 			} else {
 				freeDisplayList(pool);
 			}
 		}
+		return bak;
 	}
 
 	private void freeDisplayList(DisplayListPool pool) {
@@ -128,7 +138,7 @@ public final class RenderCache {
 		if (displayListIndex >= 0) {
 			g.gl.glEndList();
 			pool.stopRecording();
-			if (validCounter == 0) { // invalidated inbetween
+			if (validCounter == 0) { // invalidated in between
 				freeDisplayList(pool);
 			}
 		}

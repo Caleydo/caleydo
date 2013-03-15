@@ -21,7 +21,6 @@ package org.caleydo.core.view.opengl.layout2.animation;
 
 import gleem.linalg.Vec4f;
 
-import org.caleydo.core.view.opengl.layout2.animation.Durations.IDuration;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 
 /**
@@ -30,16 +29,16 @@ import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
  * @author Samuel Gratzl
  *
  */
-public abstract class ALayoutAnimation extends AElementAnimation {
-	public ALayoutAnimation(int startIn, IDuration duration, IGLLayoutElement animated) {
-		super(startIn, duration, animated);
+public abstract class ALayoutAnimation extends AAnimation {
+	public ALayoutAnimation(int duration) {
+		super(duration);
 	}
 
-	protected abstract void animate(float alpha, float w, float h);
+	protected abstract void animate(IGLLayoutElement animated, float alpha, float w, float h);
 
-	protected abstract void firstTime(float w, float h);
+	protected abstract void firstTime(IGLLayoutElement animated, float w, float h);
 
-	protected abstract void lastTime();
+	protected abstract void lastTime(IGLLayoutElement animated);
 
 	/**
 	 * performs the animation
@@ -48,25 +47,20 @@ public abstract class ALayoutAnimation extends AElementAnimation {
 	 *            between last call in ms
 	 * @return whether this animation ended
 	 */
-	public boolean apply(int delta, float w, float h) {
-		if (startIn >= 0) {
-			startIn -= delta;
-			if (startIn <= 0) {
-				delta = -startIn;
-				startIn = -1;
-				firstTime(w, h);
-			}
-			return false;
+	public boolean apply(IGLLayoutElement animated, int delta, float w, float h) {
+		if (!started) {
+			firstTime(animated, w, h);
+			started = true;
 		}
 		if (delta < 3)
 			return false;
 		remaining -= delta;
 		float alpha = 0;
 		if (remaining <= 0) { // last one
-			lastTime();
+			lastTime(animated);
 		} else {
-			alpha = 1 - (remaining / (float) durationValue);
-			animate(alpha, w, h);
+			alpha = 1 - (remaining / (float) duration);
+			animate(animated, alpha, w, h);
 		}
 		return remaining <= 0;
 	}

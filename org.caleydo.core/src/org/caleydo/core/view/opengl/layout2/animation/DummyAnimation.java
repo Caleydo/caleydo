@@ -19,9 +19,9 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.layout2.animation;
 
-import gleem.linalg.Vec4f;
-
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
+
+import gleem.linalg.Vec4f;
 
 /**
  * @author Samuel Gratzl
@@ -29,35 +29,25 @@ import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
  */
 public class DummyAnimation extends ALayoutAnimation {
 	private final EAnimationType type;
-	private Vec4f from;
 	private Vec4f to;
 
-	public DummyAnimation(EAnimationType type, IGLLayoutElement animated) {
-		super(0, Durations.NO, animated);
+	public DummyAnimation(EAnimationType type) {
+		super(0);
 		this.type = type;
 	}
 
 	@Override
-	protected void animate(float alpha, float w, float h) {
+	protected void animate(IGLLayoutElement animated, float alpha, float w, float h) {
 
 	}
 
 	@Override
-	protected void firstTime(float w, float h) {
-		switch (type) {
-		case IN:
-			break;
-		case MOVE:
-		case OUT:
-			animated.setBounds(from);
-			break;
-		default:
-			break;
-		}
+	protected void firstTime(IGLLayoutElement animated, float w, float h) {
+
 	}
 
 	@Override
-	protected void lastTime() {
+	protected void lastTime(IGLLayoutElement animated) {
 		switch (type) {
 		case IN:
 		case MOVE:
@@ -81,7 +71,6 @@ public class DummyAnimation extends ALayoutAnimation {
 
 	@Override
 	public void init(Vec4f from, Vec4f to) {
-		this.from = from;
 		this.to = to;
 	}
 }

@@ -23,7 +23,6 @@ import gleem.linalg.Vec4f;
 
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.vis.rank.model.ARankColumnModel;
-import org.caleydo.vis.rank.model.IRow;
 
 /**
  * @author Samuel Gratzl
@@ -32,13 +31,9 @@ import org.caleydo.vis.rank.model.IRow;
 public interface ITableColumnUI {
 	ARankColumnModel getModel();
 
-	GLElement setData(Iterable<IRow> rows, IColumModelLayout parent);
-
-	void update();
+	void relayout();
 
 	GLElement asGLElement();
-
-	void checkLayout();
 
 	/**
 	 * @param rowIndex

@@ -152,14 +152,14 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 	}
 
 	@Override
-	protected void layout() {
+	protected void layoutImpl() {
 		rowLayoutInstance = rowLayout.layout(ranker, getSize().y(), ranker.getTable().getDataSize(), scrollOffset,
 				isScrollingUpdate);
 		isScrollingUpdate = false;
 		scrollOffset = rowLayoutInstance.getOffset();
 		scrollBar.setBounds(rowLayoutInstance.getOffset(), rowLayoutInstance.getNumVisibles(),
 				rowLayoutInstance.getSize());
-		super.layout();
+		super.layoutImpl();
 	}
 
 	private void updateMeAndMyChildren() {
@@ -176,18 +176,7 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 		return result;
 	}
 
-	@Override
-	public GLElement setData(Iterable<IRow> rows, IColumModelLayout parent) {
-		return this;
-	}
-
-	@Override
-	public void update() {
-		relayout();
-	}
-
 	public boolean needsScrollBar() {
-		checkLayout();
 		return rowLayoutInstance.needsScrollBar();
 	}
 

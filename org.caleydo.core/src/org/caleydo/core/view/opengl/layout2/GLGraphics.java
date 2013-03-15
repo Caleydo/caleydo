@@ -58,14 +58,24 @@ public class GLGraphics {
 
 	private GLGraphicsStats stats = new GLGraphicsStats();
 
+	private final int deltaTimeMs;
+
 	public GLGraphics(GL2 gl, ITextRenderer text, TextureManager textures, IResourceLocator loader,
-			boolean originInTopLeft) {
+			boolean originInTopLeft, int deltaTimeMs) {
 		this.gl = gl;
 		this.text = text;
+		this.deltaTimeMs = deltaTimeMs;
 		text.setColor(Color.BLACK);
 		this.locator.push(loader);
 		this.textures = textures;
 		this.originInTopLeft = originInTopLeft;
+	}
+
+	/**
+	 * @return the deltaTimeMs, see {@link #deltaTimeMs}
+	 */
+	public int getDeltaTimeMs() {
+		return deltaTimeMs;
 	}
 
 	/**

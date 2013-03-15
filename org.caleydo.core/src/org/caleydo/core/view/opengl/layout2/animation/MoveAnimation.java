@@ -21,7 +21,6 @@ package org.caleydo.core.view.opengl.layout2.animation;
 
 import gleem.linalg.Vec4f;
 
-import org.caleydo.core.view.opengl.layout2.animation.Durations.IDuration;
 import org.caleydo.core.view.opengl.layout2.animation.MoveTransitions.IMoveTransition;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 
@@ -36,23 +35,23 @@ public class MoveAnimation extends ALayoutAnimation {
 	private Vec4f from = null;
 	private Vec4f to = null;
 
-	public MoveAnimation(int startIn, IDuration duration, IGLLayoutElement animated, IMoveTransition animation) {
-		super(startIn, duration, animated);
+	public MoveAnimation(int duration, IMoveTransition animation) {
+		super(duration);
 		this.animation = animation;
 	}
 
 	@Override
-	protected void animate(float alpha, float w, float h) {
+	protected void animate(IGLLayoutElement animated, float alpha, float w, float h) {
 		animated.setBounds(animation.move(from, to, w, h, alpha));
 	}
 
 	@Override
-	protected void firstTime(float w, float h) {
+	protected void firstTime(IGLLayoutElement animated, float w, float h) {
 		animated.setBounds(from);
 	}
 
 	@Override
-	protected void lastTime() {
+	protected void lastTime(IGLLayoutElement animated) {
 		animated.setBounds(to);
 	}
 

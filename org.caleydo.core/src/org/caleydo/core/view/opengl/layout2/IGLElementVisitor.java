@@ -19,6 +19,8 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.layout2;
 
+import org.caleydo.core.view.opengl.layout2.animation.AnimatedGLElementContainer;
+
 /**
  * visitor pattern for {@link GLElement}
  *

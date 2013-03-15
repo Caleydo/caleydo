@@ -55,6 +55,10 @@ public final class LayoutRendererAdapter extends ALayoutRenderer implements IGLE
 	 */
 	private Vec2f location = new Vec2f(0, 0);
 
+	private final TimeDelta timeDelta = new TimeDelta();
+	private int deltaTimeMs;
+	private boolean layoutingPassDone = false;
+
 	public LayoutRendererAdapter(AGLView view, IResourceLocator locator, GLElement root) {
 		this.view = view;
 		this.root = new WindowGLElement(root);
@@ -83,6 +87,7 @@ public final class LayoutRendererAdapter extends ALayoutRenderer implements IGLE
 
 	@Override
 	protected void renderContent(GL2 gl) {
+
 		final PixelGLConverter pixelGLConverter = view.getPixelGLConverter();
 		// size in pixel
 		float w = pixelGLConverter.getPixelWidthForGLWidth(x);
@@ -101,15 +106,26 @@ public final class LayoutRendererAdapter extends ALayoutRenderer implements IGLE
 
 		if (dirty) {
 			root.setBounds(0, 0, w, h);
-			root.layout();
 			dirty = false;
 		}
 
-		GLGraphics g = new GLGraphics(gl, view.getTextRenderer(), view.getTextureManager(), locator, true);
-		if (g.isPickingPass())
+		if (!layoutingPassDone) {
+			deltaTimeMs = timeDelta.getDeltaTimeMs();
+			// first run layouting
+			root.layout(deltaTimeMs);
+			layoutingPassDone = true;
+		}
+
+		GLGraphics g = new GLGraphics(gl, view.getTextRenderer(), view.getTextureManager(), locator, true, deltaTimeMs);
+
+		if (g.isPickingPass()) {
+			// one or more pick passes
 			root.renderPick(g);
-		else
+		} else {
+			// a single last render pass
 			root.render(g);
+			layoutingPassDone = false;
+		}
 
 		g.destroy();
 

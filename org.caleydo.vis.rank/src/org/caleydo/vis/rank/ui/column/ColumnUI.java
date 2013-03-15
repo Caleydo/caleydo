@@ -7,12 +7,11 @@ import java.util.BitSet;
 import java.util.List;
 
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
-import org.caleydo.core.view.opengl.layout2.AnimatedGLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.animation.AAnimation.EAnimationType;
 import org.caleydo.core.view.opengl.layout2.animation.ALayoutAnimation;
+import org.caleydo.core.view.opengl.layout2.animation.AnimatedGLElementContainer;
 import org.caleydo.core.view.opengl.layout2.animation.DummyAnimation;
-import org.caleydo.core.view.opengl.layout2.animation.Durations;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.vis.rank.internal.ui.anim.ReRankTransition;
@@ -52,7 +51,7 @@ public class ColumnUI extends AnimatedGLElementContainer implements ITableColumn
 		this.setLayout(this);
 
 		for (int i = 0; i < INITIAL_POOL_SIZE; ++i) {
-			this.add(createPoolItem());
+			this.add(createPoolItem(), 0);
 		}
 		inPool.set(0, INITIAL_POOL_SIZE);
 	}
@@ -122,7 +121,7 @@ public class ColumnUI extends AnimatedGLElementContainer implements ITableColumn
 		}
 
 		if (getColumnParent().getRanker(model).isInternalReLayout()) {
-			DummyAnimation d = new DummyAnimation(EAnimationType.MOVE, elem);
+			DummyAnimation d = new DummyAnimation(EAnimationType.MOVE);
 			d.init(before, after);
 			return d;
 		}
@@ -143,25 +142,14 @@ public class ColumnUI extends AnimatedGLElementContainer implements ITableColumn
 	}
 
 	@Override
-	public ColumnUI setData(Iterable<IRow> rows, IColumModelLayout parent) {
-		return this;
-	}
-
-
-	@Override
-	public void update() {
-		relayout();
-	}
-
-	@Override
-	public final void checkLayout() {
+	public final void layout(int deltaTimeMs) {
 		int rows = getColumnParent().getNumVisibleRows(model);
 		int cached = this.size();
 		if (cached < rows) {
 			int addItems = Math.min(20, rows - cached); // add twenty more at least
 			// enlarge the pool
 			for (int i = 0; i < addItems; ++i)
-				add(createPoolItem(), Durations.NO);
+				add(createPoolItem(), 0);
 			inPool.set(cached, cached + addItems);
 		} else if ((cached - rows) > 50 && inPool.cardinality() > 20) { // more than enough free again
 			// free the pool and update the mapping information
@@ -174,12 +162,12 @@ public class ColumnUI extends AnimatedGLElementContainer implements ITableColumn
 					rowIndexToGlElement.put(index, at - toRemove - 1); // x places to the left
 					at--;
 				}
-				remove(get(at).setVisibility(EVisibility.HIDDEN), Durations.NO);
+				remove(get(at).setVisibility(EVisibility.HIDDEN), 0);
 				inPool.clear(at);
 				at--;
 			}
 		}
-		super.checkLayout();
+		super.layout(deltaTimeMs);
 	}
 
 	@Override
@@ -223,7 +211,7 @@ public class ColumnUI extends AnimatedGLElementContainer implements ITableColumn
 						IGLLayoutElement row = children.get(at);
 						row.setBounds(x, y, w, h);
 						ValueElement elem = (ValueElement) row.asElement();
-						removeAnimationsOf(elem, true);
+						// layoutAnimations.remove(asLayoutElement(elem));
 						elem.setRow(table.getDataItem(rowIndex)); // set act data
 						elem.setAnimationFlag(before.get(rowIndex) ? FLAG_FROM_ABOVE : FLAG_FROM_BELOW);
 						elem.setVisibility(pickable ? EVisibility.PICKABLE : EVisibility.VISIBLE);

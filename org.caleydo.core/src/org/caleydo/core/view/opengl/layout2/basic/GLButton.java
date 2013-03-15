@@ -182,11 +182,10 @@ public class GLButton extends AGLButton {
 	}
 
 	/**
-	 * mode of this button, the _COMPATIBLE versions are for the old picking manager, where the mouse pressed is the
-	 * trigger, the basic versions react on the mouse released event
-	 *
+	 * mode of this button
+	 * 
 	 * @author Samuel Gratzl
-	 *
+	 * 
 	 */
 	public enum EButtonMode {
 		BUTTON, CHECKBOX

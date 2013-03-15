@@ -39,22 +39,52 @@ import org.caleydo.core.view.opengl.picking.Pick;
  *
  */
 public class GLComboBox<T> extends AGLButton {
+	/**
+	 * items of this combo box
+	 */
 	private final List<T> model;
 
+	/**
+	 * is the drop down currently visible
+	 */
 	private boolean isOpen = false;
 
+	/**
+	 * the current selected index
+	 */
 	private int selected = -1;
+	/**
+	 * currently hovered index
+	 */
 	private int hoveredIndex = -1;
+
+	/**
+	 * helper for transporting the model value to the {@link #valueRenderer}
+	 */
 	private int actRenderIndex = -1;
 
+	/**
+	 * renderer to render a specific model item
+	 *
+	 * the item can be retrieved by {@link GLElement#getLayoutDataAs(Class, Object)}
+	 */
 	private final IGLRenderer valueRenderer;
 
+	/**
+	 * renderer to render the background of the item list
+	 */
+	private final IGLRenderer listRenderer;
+
+	/**
+	 * z delta to use for rendering the drop down list
+	 */
 	private float zDeltaList = 0.25f;
 
 	private ISelectionCallback<? super T> callback = DUMMY_CALLBACK;
 
-	public GLComboBox(List<T> model, IGLRenderer valueRenderer) {
+	public GLComboBox(List<T> model, IGLRenderer valueRenderer, IGLRenderer listRenderer) {
 		this.valueRenderer = valueRenderer;
+		this.listRenderer = listRenderer;
 		setPicker(null);
 		this.model = model;
 	}
@@ -100,6 +130,11 @@ public class GLComboBox<T> extends AGLButton {
 		setSelected(model.indexOf(item));
 	}
 
+	/**
+	 * currently selected item
+	 *
+	 * @return
+	 */
 	public T getSelectedItem() {
 		if (selected < 0)
 			return null;
@@ -108,6 +143,7 @@ public class GLComboBox<T> extends AGLButton {
 
 	@Override
 	public <U> U getLayoutDataAs(Class<U> clazz, U default_) {
+		// do we render currently a item of the model else return the currently selected item
 		T item = actRenderIndex >= 0 ? model.get(actRenderIndex) : getSelectedItem();
 		if (clazz.isInstance(item))
 			return clazz.cast(item);
@@ -120,11 +156,11 @@ public class GLComboBox<T> extends AGLButton {
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
-
-		if (isOpen) {
+		if (isOpen) { // render the drop down
 			g.incZ(zDeltaList);
-			g.color(Color.WHITE).fillRect(0, h, w, h * model.size());
+			listRenderer.render(g, w, h * model.size(), this);
 			g.color(Color.DARK_GRAY).drawLine(0, h, w, h).drawRect(0, 0, w, h * model.size() + h);
+			// render all items
 			for (int i = 0; i < model.size(); ++i) {
 				actRenderIndex = i;
 				g.move(0, h);
@@ -134,11 +170,13 @@ public class GLComboBox<T> extends AGLButton {
 			actRenderIndex = -1;
 			g.incZ(-zDeltaList);
 		} else {
+			// render a small triangle as drop down indicator
 			float hi = h * 0.5f;
 			g.color(Color.LIGHT_GRAY).fillPolygon(new Vec2f(w - hi - 1, (h - hi) * 0.5f),
 					new Vec2f(w - 1, (h - hi) * 0.5f), new Vec2f(w - hi * 0.5f - 1, hi + (h - hi) * 0.5f));
 		}
 		if (selected >= 0 && !isOpen) {
+			// render the currently selected value
 			valueRenderer.render(g, w, h, this);
 		} else {
 			super.renderImpl(g, w, h);
@@ -215,8 +253,10 @@ public class GLComboBox<T> extends AGLButton {
 	}
 
 	/**
+	 * converts the mouse position to the model index, where the mouse is currently over
+	 * 
 	 * @param pickedPoint
-	 * @return
+	 * @return -1 if none else the index
 	 */
 	private int toIndex(Point pickedPoint) {
 		if (!isOpen)
@@ -236,6 +276,9 @@ public class GLComboBox<T> extends AGLButton {
 	}
 
 
+	/**
+	 * default value renderer, which renders the label it's a {@link ILabelProvider} otherwise the toString value
+	 */
 	public static final IGLRenderer DEFAULT = new IGLRenderer() {
 
 		@Override
@@ -249,7 +292,7 @@ public class GLComboBox<T> extends AGLButton {
 	};
 
 	/**
-	 * callback interface for selection changes of a button
+	 * callback interface for selection changes of a checkbox
 	 *
 	 * @author Samuel Gratzl
 	 *

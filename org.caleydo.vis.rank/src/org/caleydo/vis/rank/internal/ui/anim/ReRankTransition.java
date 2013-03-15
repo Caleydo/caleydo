@@ -38,17 +38,20 @@ public class ReRankTransition implements IMoveTransition, IInTransition, IOutTra
 
 	@Override
 	public Vec4f move(Vec4f from, Vec4f to, float w, float h, float alpha) {
-		if (from.w() <= 0)
-			return in(to, w, h, alpha);
-		if (to.w() <= 0)
-			return out(from, w, h, alpha);
+		boolean heightChange = from.w() <= 0 || to.w() <= 0;
 		Vec4f delta = to.minus(from);
 		Vec4f r = new Vec4f();
-		r.setX(from.x() + delta.x() * alpha);
-
-		r.setY(from.y() + delta.y() * alpha);
-		r.setZ(to.z());// from.z() + delta.z() * alpha);
-		r.setW(from.w() + delta.w() * alpha);
+		if (heightChange) {
+			r.setX(to.x());
+			r.setY(from.y() + delta.y() * alpha);
+			r.setZ(to.z());// from.z() + delta.z() * alpha);
+			r.setW(from.w() + delta.w() * alpha);
+		} else {
+			r.setX(from.x() + delta.x() * alpha);
+			r.setY(from.y() + delta.y() * alpha);
+			r.setZ(to.z());// from.z() + delta.z() * alpha);
+			r.setW(from.w() + delta.w() * alpha);
+		}
 		return r;
 		// return MoveTransitions.MOVE_AND_GROW_LINEAR.move(from, to, w, h, alpha);
 	}

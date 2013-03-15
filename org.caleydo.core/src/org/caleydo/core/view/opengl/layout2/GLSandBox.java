@@ -80,6 +80,7 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 
 	protected final QueuedEventListenerManager eventListeners = EventListenerManagers.createQueued();
 
+	private final TimeDelta timeDelta = new TimeDelta();
 	/**
 	 * @param canvas
 	 */
@@ -260,11 +261,13 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 
 	@Override
 	public void display(GLAutoDrawable drawable) {
+		final int deltaTimeMs = timeDelta.getDeltaTimeMs();
 		eventListeners.processEvents();
 
 		GL2 gl = drawable.getGL().getGL2();
-		final GLGraphics g = tracingGL ? new GLGraphicsTracing(gl, text, textures, loader, true) : new GLGraphics(gl,
-				text, textures, loader, true);
+		final GLGraphics g = tracingGL ? new GLGraphicsTracing(gl, text, textures, loader, true, deltaTimeMs)
+				: new GLGraphics(gl,
+				text, textures, loader, true, deltaTimeMs);
 
 		// I have no idea, why I always need to initialize the context again
 		AGLView.initGLContext(gl);
@@ -281,10 +284,14 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 
 		if (dirty) {
 			root.setBounds(0, 0, paddedWidth, paddedHeight);
-			root.layout();
+			root.relayout();
 			dirty = false;
 		}
 
+		// first pass: layout
+		root.layout(deltaTimeMs);
+
+		// second pass: picking
 		Runnable toRender = new Runnable() {
 			@Override
 			public void run() {
@@ -300,6 +307,7 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 		}
 		pickingManager.doPicking(g.gl, toRender);
 
+		// third pass: rendering
 		if (renderPick)
 			root.renderPick(g);
 		else

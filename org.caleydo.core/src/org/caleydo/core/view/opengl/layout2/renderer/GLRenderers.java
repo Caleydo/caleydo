@@ -78,16 +78,6 @@ public final class GLRenderers {
 		return new SimpleRenderer(EWhat.FILL_ROUNDED_RECT, color);
 	}
 
-	public static Runnable asRunnable(final IGLRenderer renderer, final GLGraphics g, final float w, final float h,
-			final GLElement parent) {
-		return new Runnable() {
-			@Override
-			public void run() {
-				renderer.render(g, w, h, parent);
-			}
-		};
-	}
-
 	public static IGLRenderer drawText(final String text) {
 		return drawText(text, VAlign.LEFT);
 	}

@@ -117,7 +117,7 @@ public class MappingFunctionUI extends GLElementContainer implements GLButton.IS
 		ButtonBar buttons = new ButtonBar();
 		buttons.addSpacer();
 		GLComboBox<EStandardMappings> mappings = new GLComboBox<>(Arrays.asList(EStandardMappings.values()),
-				GLComboBox.DEFAULT);
+				GLComboBox.DEFAULT, GLRenderers.fillRect(Color.WHITE));
 		mappings.setRenderer(new IGLRenderer() {
 			@Override
 			public void render(GLGraphics g, float w, float h, GLElement parent) {

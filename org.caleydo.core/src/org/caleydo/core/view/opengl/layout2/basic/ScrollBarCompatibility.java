@@ -87,7 +87,7 @@ public class ScrollBarCompatibility extends AScrollBar implements IDraggable {
 
 		float vd = this.total / callback.getTotal(this);
 		vd *= mouseDelta;
-		callback.onScrollBarMoved(this, offset + vd);
+		callback.onScrollBarMoved(this, clamp(offset + vd));
 
 		prevDraggingMouseX = mouseCoordinateX;
 		prevDraggingMouseY = mouseCoordinateY;

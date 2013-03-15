@@ -45,8 +45,10 @@ import org.caleydo.core.view.opengl.picking.Pick;
 import org.eclipse.swt.SWT;
 
 /**
+ * a specific popup
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
 class PopupElement extends GLElementContainer implements IGLLayout, IGLRenderer, GLButton.ISelectionCallback {
 	private final GLElement content;

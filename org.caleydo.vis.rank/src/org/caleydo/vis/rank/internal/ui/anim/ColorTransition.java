@@ -25,14 +25,13 @@ import java.awt.Color;
 
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
-import org.caleydo.core.view.opengl.layout2.animation.StyleAnimations.IStyleAnimation;
 import org.caleydo.vis.rank.ui.RenderStyle;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class ColorTransition implements IStyleAnimation {
+public class ColorTransition {
 	// fly weights
 	private static final ColorTransition[] ups;
 	private static final ColorTransition[] downs;
@@ -49,7 +48,7 @@ public class ColorTransition implements IStyleAnimation {
 
 	/**
 	 * factory class for creating a {@link ColorTransition}
-	 * 
+	 *
 	 * @param delta
 	 * @return
 	 */
@@ -67,7 +66,6 @@ public class ColorTransition implements IStyleAnimation {
 		this.delta = delta;
 	}
 
-	@Override
 	public void render(GLElement elem, GLGraphics g, float alpha) {
 		float calpha = RenderStyle.computeHighlightAlpha(alpha, delta);
 		Color base = delta < 0 ? Color.GREEN : Color.RED;

@@ -43,6 +43,7 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.IGLView;
+import org.caleydo.core.view.opengl.layout2.animation.AnimatedGLElementContainer;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.SimplePickingManager;
 import org.caleydo.core.view.opengl.util.text.CompositeTextRenderer;
@@ -79,6 +80,8 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 	private CompositeTextRenderer text;
 	private TextureManager textures;
 	private IResourceLocator locator;
+
+	private final TimeDelta timeDelta = new TimeDelta();
 
 	public AGLElementView(IGLCanvas glCanvas, String viewType, String viewName) {
 		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.GL_VIEW), glCanvas.asComposite(),
@@ -118,6 +121,7 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 		if (this.visible == visible)
 			return;
 		this.visible = visible;
+		timeDelta.stop();
 	}
 
 	@Override
@@ -158,10 +162,13 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 		this.root.setParent(this);
 		this.pool = new DisplayListPool();
 		this.root.init(this);
+
+		timeDelta.reset();
 	}
 
 	@Override
 	public void dispose(GLAutoDrawable drawable) {
+		timeDelta.stop();
 		this.canvas.removeGLEventListener(this);
 		this.canvas.removeMouseListener(pickingManager.getListener());
 
@@ -187,13 +194,14 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 		if (!visible)
 			return;
 
+		final int deltaTimeMs = timeDelta.getDeltaTimeMs();
 		GL2 gl = drawable.getGL().getGL2();
 		// clear screen
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 		gl.glLoadIdentity();
 		gl.glTranslatef(0.375f, 0.375f, 0);
 
-		final GLGraphics g = new GLGraphics(gl, text, getTextureManager(), locator, true);
+		final GLGraphics g = new GLGraphics(gl, text, getTextureManager(), locator, true, deltaTimeMs);
 		g.clearError();
 
 		float paddedWidth = getWidth();
@@ -201,10 +209,13 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 
 		if (dirtyLayout) {
 			root.setBounds(0, 0, paddedWidth, paddedHeight);
-			root.layout();
 			dirtyLayout = false;
 		}
 
+		// first pass: layouting
+		root.layout(deltaTimeMs);
+
+		// second pass: picking
 		Point mousePos = pickingManager.getCurrentMousePos();
 		if (mousePos != null) {
 			root.getMouseLayer().setBounds(mousePos.x, mousePos.y, getWidth() - mousePos.x, getHeight() - mousePos.y);
@@ -219,7 +230,9 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 		});
 		g.checkError();
 
+		// third pass: rendering
 		root.render(g);
+
 		g.checkError();
 
 		g.destroy();

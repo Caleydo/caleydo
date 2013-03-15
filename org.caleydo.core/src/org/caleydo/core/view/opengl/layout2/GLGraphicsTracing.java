@@ -30,8 +30,8 @@ public class GLGraphicsTracing extends GLGraphics {
 	 * @param originInTopLeft
 	 */
 	public GLGraphicsTracing(GL2 gl, ITextRenderer text, TextureManager textures, IResourceLocator loader,
-			boolean originInTopLeft) {
-		super(gl, text, textures, loader, originInTopLeft);
+			boolean originInTopLeft, int deltaTimeMs) {
+		super(gl, text, textures, loader, originInTopLeft, deltaTimeMs);
 		debug("########created");
 	}
 

@@ -37,11 +37,11 @@ import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
  * wrapper element that enables the use of scrollbars.
  *
  * by convention the set size of the content will be interpreted as the minimum size
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
-public final class ScrolledGLElement extends GLElement implements IGLElementParent, IScrollBarCallback {
+public final class ScrollingDecorator extends GLElement implements IGLElementParent, IScrollBarCallback {
 	private final GLElement content;
 
 	private final ScrollBarImpl vertical;
@@ -49,7 +49,7 @@ public final class ScrolledGLElement extends GLElement implements IGLElementPare
 
 	private final float scrollBarWidth;
 
-	public ScrolledGLElement(GLElement content, IScrollBar horizontal, IScrollBar vertical, float scrollBarWidth) {
+	public ScrollingDecorator(GLElement content, IScrollBar horizontal, IScrollBar vertical, float scrollBarWidth) {
 		this.content = content;
 		this.scrollBarWidth = scrollBarWidth;
 		GLElementAccessor.setParent(content, this);
@@ -94,7 +94,13 @@ public final class ScrolledGLElement extends GLElement implements IGLElementPare
 	}
 
 	@Override
-	protected void layout() {
+	public void layout(int deltaTimeMs) {
+		super.layout(deltaTimeMs);
+		content.layout(deltaTimeMs);
+	}
+
+	@Override
+	protected void layoutImpl() {
 		IGLLayoutElement layout = GLElementAccessor.asLayoutElement(content);
 		Vec2f minSize = layout.getSetSize();
 		minSize.setX(GLLayouts.defaultValue(minSize.x(), 0));
@@ -141,7 +147,7 @@ public final class ScrolledGLElement extends GLElement implements IGLElementPare
 		}
 		layout.setLocation(-offset.x(), -offset.y());
 		layout.setSize(contentSize.x(), contentSize.y());
-		super.layout();
+		super.layoutImpl();
 	}
 
 	@Override

@@ -30,14 +30,13 @@ import java.util.List;
 import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
-import org.caleydo.core.view.opengl.layout2.AnimatedGLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.IMouseLayer;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
-import org.caleydo.core.view.opengl.layout2.animation.Durations;
+import org.caleydo.core.view.opengl.layout2.animation.AnimatedGLElementContainer;
 import org.caleydo.core.view.opengl.layout2.animation.MoveTransitions;
 import org.caleydo.core.view.opengl.layout2.animation.Transitions;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton;
@@ -115,7 +114,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 			}
 		});
 		if (hasHist) {
-			this.add(model.createSummary(config.isInteractive()).setLayoutData(Durations.NO), 0);
+			this.add(model.createSummary(config.isInteractive()).setLayoutData(0), 0);
 		} else {
 			this.add(new GLElement().setVisibility(EVisibility.HIDDEN));
 		}
@@ -139,7 +138,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 				}
 			});
 			b.setTooltip("Toggle Collapse / Expand of this column");
-			b.setLayoutData(Durations.NO);
+			b.setLayoutData(0);
 			this.add(b, 0);
 
 			this.isCollapsed = !isCollapsed;
@@ -456,13 +455,13 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 				return;
 			this.headerHovered = true;
 			context.setCursor(SWT.CURSOR_HAND);
-			repaint();
+			relayout();
 			break;
 		case MOUSE_OUT:
 			if (this.headerHovered) {
 				this.headerHovered = false;
 				context.setCursor(-1);
-				repaint();
+				relayout();
 			}
 			break;
 		default:

@@ -25,9 +25,9 @@ import org.caleydo.core.view.opengl.picking.Pick;
 
 /**
  * scrollbar implementation for the advanced picking managers
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public class ScrollBar extends AScrollBar {
 
@@ -54,8 +54,7 @@ public class ScrollBar extends AScrollBar {
 			else
 				v *= relative.y();
 			if (v < offset || v > (offset + view)) {
-				v = Math.min(total - view, Math.max(0, v));
-				callback.onScrollBarMoved(this, v);
+				callback.onScrollBarMoved(this, clamp(v));
 			} else
 				pick.setDoDragging(true);
 			callback.repaint();
@@ -68,7 +67,7 @@ public class ScrollBar extends AScrollBar {
 				vd *= pick.getDx();
 			else
 				vd *= pick.getDy();
-			callback.onScrollBarMoved(this, offset + vd);
+			callback.onScrollBarMoved(this, clamp(offset + vd));
 			break;
 		case MOUSE_RELEASED:
 			break;
