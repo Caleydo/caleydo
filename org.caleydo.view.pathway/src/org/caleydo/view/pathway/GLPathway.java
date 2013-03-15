@@ -1192,6 +1192,7 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 		selectedPath = path;
 		selectedPathID = 0;
 	}
+	
 
 	private void selectPath(PathwayVertexRep vertexRep, SelectionType selectionType) {
 		if (vertexRep == null)
@@ -1221,6 +1222,8 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 				if (selectionType == SelectionType.SELECTION) {
 
 					boolean isPortalNode = false;
+					
+					portalVertexReps = PathwayManager.get().getEquivalentVertexRepsInPathway(previousSelectedPath.getEndVertex(), pathway);
 					for (PathwayVertexRep portal : portalVertexReps) {
 						if (vertexRep == portal) {
 							isPortalNode = true;
@@ -1319,7 +1322,9 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 				e.setEventSpace(pathwayPathEventSpace);
 				eventPublisher.triggerEvent(e);
 				// the event will not be sent back to this pathway object, so highlight must be triggered here
-				highlightPortalNodes(vertexRep);
+				//updatePortalVertexReps(vertexRep);
+				portalVertexReps = PathwayManager.get().getEquivalentVertexRepsInPathway(vertexRep, pathway);
+
 		//	}
 
 		//}
@@ -1484,9 +1489,7 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 	 * @param vertexRep
 	 */
 	public void highlightPortalNodes(PathwayVertexRep vertexRep) {
-
 		portalVertexReps = PathwayManager.get().getEquivalentVertexRepsInPathway(vertexRep, pathway);
-
 	}
 
 	@Override
