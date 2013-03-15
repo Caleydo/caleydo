@@ -166,7 +166,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	 */
 	protected RankingElement rankingElement;
 
-	
+
 	private PathwayVertexRep currentPortalVertexRep;
 	/**
 	 * Constructor.
@@ -760,7 +760,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	private class PathEventSpaceHandler {
 
 		@ListenTo(restrictExclusiveToEventSpace = true)
-		public void onShowPortalNodes(ShowPortalNodesEvent event) {			
+		public void onShowPortalNodes(ShowPortalNodesEvent event) {
 		 currentPortalVertexRep = event.getVertexRep();
 
 		}
@@ -866,8 +866,8 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 				}
 			}
 		}
-		
-		
+
+
 		if(currentPortalVertexRep!=null){
 			portalRects.clear();
 			Rectangle2D nodeRect = null;
@@ -878,7 +878,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 				if (pathwayRepresentation != null) {
 					Set<PathwayVertexRep> portalVertexRepsInPathway = PathwayManager.get()
 							.getEquivalentVertexRepsInPathway(currentPortalVertexRep, pathwayRepresentation.getPathway());
-	
+
 					for (PathwayVertexRep portalVertexRep : portalVertexRepsInPathway) {
 						Rectangle2D rect = getAbsoluteVertexLocation(pathwayRepresentation, portalVertexRep,
 								info.container);
@@ -889,7 +889,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 						nodeRect = getAbsoluteVertexLocation(pathwayRepresentation, currentPortalVertexRep, info.container);
 				}
 			}
-		
+
 			augmentation.updatePortalRects(nodeRect, portalRects);
 		}
 		augmentation.isDirty=true;
