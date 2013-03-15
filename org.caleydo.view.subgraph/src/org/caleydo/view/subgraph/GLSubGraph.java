@@ -88,7 +88,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	private AnimatedGLElementContainer baseContainer = new AnimatedGLElementContainer(new GLSizeRestrictiveFlowLayout(
 			true, 10, GLPadding.ZERO));
 	private GLElementContainer root = new GLElementContainer(GLLayouts.LAYERS);
-	private AnimatedGLElementContainer pathwayRow = new AnimatedGLElementContainer();
+	private AnimatedGLElementContainer pathwayRow = new PathwayRowElement(this);
 	// private AnimatedGLElementContainer pathwayRow = new AnimatedGLElementContainer();
 	private GLSubGraphAugmentation augmentation = new GLSubGraphAugmentation();
 	private AnimatedGLElementContainer nodeInfoContainer = new AnimatedGLElementContainer(
@@ -156,7 +156,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	 */
 	protected boolean isHighlightPortals = false;
 
-	
+
 	private final DragAndDropController dndController = new DragAndDropController(this);
 
 	/**
@@ -199,6 +199,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		baseContainer.add(rankingWindow);
 		// pathwayRow.setLayout(new GLMultiFormPathwayLayout(10, GLPadding.ZERO, this, pathwayRow));
 		pathwayRow.setLayout(pathwayLayout);
+
 		// pathwayRow.setDefaultDuration(Durations.fix(600));
 		// pathwayRow
 		// .setDefaultInTransition(new InOutTransitionBase(InOutInitializers.RIGHT, MoveTransitions.MOVE_LINEAR));
