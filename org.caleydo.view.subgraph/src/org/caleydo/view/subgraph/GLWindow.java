@@ -71,12 +71,7 @@ public class GLWindow extends AnimatedGLElementContainer {
 		if (active == this.active)
 			return;
 
-		GLWindow activeWindow = view.getActiveWindow();
-
 		if (active) {
-			if (activeWindow != null && activeWindow != this) {
-				activeWindow.setActive(false);
-			}
 			view.setActiveWindow(this);
 			repaint();
 			if (showCloseButton)

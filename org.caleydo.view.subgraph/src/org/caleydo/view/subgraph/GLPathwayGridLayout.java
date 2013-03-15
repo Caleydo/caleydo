@@ -92,7 +92,14 @@ public class GLPathwayGridLayout implements IGLLayout {
 		if (columnToRemove != null) {
 			columns.remove(columnToRemove);
 		}
+	}
 
+	public int getColumnIndex(GLPathwayWindow window) {
+		for (PathwayColumn column : columns) {
+			if (column.windows.contains(window))
+				return columns.indexOf(column);
+		}
+		return -1;
 	}
 
 	@Override

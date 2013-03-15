@@ -19,6 +19,8 @@
  *******************************************************************************/
 package org.caleydo.view.subgraph;
 
+import gleem.linalg.Vec2f;
+
 import java.awt.Color;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
@@ -30,6 +32,7 @@ import javax.media.opengl.GL2;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
+import org.caleydo.view.subgraph.GLSubGraph.PathwayMultiFormInfo;
 
 import setvis.BubbleSetGLRenderer;
 import setvis.bubbleset.BubbleSet;
@@ -42,7 +45,7 @@ import setvis.bubbleset.BubbleSet;
  */
 public class GLSubGraphAugmentation extends GLElement {
 
-	private List<PortalHighlightRenderer> portalHighlightRenderers = new ArrayList<>();
+	private List<ConnectionRenderer> portalHighlightRenderers = new ArrayList<>();
 	private ArrayList<Rectangle2D> portals = new ArrayList<>();
 	private ArrayList<Rectangle2D> bubbleSetItems = new ArrayList<>();
 	private ArrayList<Line2D> bubbleSetEdges = new ArrayList<>();
@@ -71,52 +74,80 @@ public class GLSubGraphAugmentation extends GLElement {
 
 	public boolean isDirty = false;
 
-	public static class PortalHighlightRenderer implements IGLRenderer {
-		protected final Rectangle2D location;
-
-		public PortalHighlightRenderer(Rectangle2D location) {
-			this.location = location;
-		}
-
-		@Override
-		public void render(GLGraphics g, float w, float h, GLElement parent) {
-
-			g.incZ(1f);
-			g.color(new Color(51, 160, 44)).lineWidth(2);
-			g.drawRect((float) location.getX() - 3, (float) location.getY() - 3, (float) location.getWidth() + 6,
-					(float) location.getHeight() + 10);
-			g.lineWidth(1);
-			g.incZ(-1f);
-		}
-	}
-
-	// public static class ConnectionRenderer implements IGLRenderer {
+	// public static class PortalHighlightRenderer implements IGLRenderer {
+	// protected final Rectangle2D location;
 	//
-	// protected final Rectangle2D loc1;
-	// protected final Rectangle2D loc2;
-	//
-	// private Color portalBSColor = new Color(1.0f, 0.0f, 0.0f);
-	//
-	// public ConnectionRenderer(Rectangle2D loc1, Rectangle2D loc2) {
-	// this.loc1 = loc1;
-	// this.loc2 = loc2;
+	// public PortalHighlightRenderer(Rectangle2D location) {
+	// this.location = location;
 	// }
 	//
 	// @Override
 	// public void render(GLGraphics g, float w, float h, GLElement parent) {
-	// // g.incZ(0.5f);
-	// // g.color(1, 0, 0, 1)
-	// // .lineWidth(2)
-	// // .drawLine((float) loc1.getCenterX(), (float) loc1.getCenterY(), (float) loc2.getCenterX(),
-	// // (float) loc2.getCenterY());
-	// // g.drawRect((float) loc1.getX(), (float) loc1.getY(), (float) loc1.getWidth(), (float) loc1.getHeight());
-	// // g.drawRect((float) loc2.getX(), (float) loc2.getY(), (float) loc2.getWidth(), (float) loc2.getHeight());
-	// // g.lineWidth(1);
-	// // // g.color(0, 1, 0, 1).fillCircle((float) loc1.getX(), (float) loc1.getY(), 50);
-	// // // g.color(0, 1, 0, 1).fillCircle((float) loc2.getX(), (float) loc2.getY(), 50);
-	// // g.incZ(-0.5f);
+	//
+	// g.incZ(1f);
+	// g.color(new Color(51, 160, 44)).lineWidth(2);
+	// g.drawRect((float) location.getX() - 3, (float) location.getY() - 3, (float) location.getWidth() + 6,
+	// (float) location.getHeight() + 10);
+	// g.lineWidth(1);
+	// g.incZ(-1f);
 	// }
 	// }
+
+	public static class ConnectionRenderer implements IGLRenderer {
+
+		protected final Rectangle2D loc1;
+		protected final Rectangle2D loc2;
+		protected final PathwayMultiFormInfo info1;
+		protected final PathwayMultiFormInfo info2;
+		protected final float stubSize;
+
+		private Color portalBSColor = new Color(1.0f, 0.0f, 0.0f);
+
+		public ConnectionRenderer(Rectangle2D loc1, Rectangle2D loc2, PathwayMultiFormInfo info1,
+				PathwayMultiFormInfo info2, float stubSize) {
+			this.loc1 = loc1;
+			this.loc2 = loc2;
+			this.info1 = info1;
+			this.info2 = info2;
+			this.stubSize = stubSize;
+		}
+
+		@Override
+		public void render(GLGraphics g, float w, float h, GLElement parent) {
+			g.incZ(0.5f);
+			// g.gl.glBegin(GL.GL_LINES);
+			// g.color(1, 0, 0, 1);
+			// g.gl.glVertex2f((float) loc1.getCenterX(), (float) loc1.getCenterY());
+			// g.color(1, 0, 0, 0);
+			// g.gl.glVertex2f((float) loc2.getCenterX(), (float) loc2.getCenterY());
+			// g.gl.glEnd();
+			Vec2f direction = new Vec2f((float) loc1.getCenterX() - (float) loc2.getCenterX(),
+					(float) loc1.getCenterY() - (float) loc2.getCenterY());
+			direction.normalize();
+			if (info1.getCurrentEmbeddingID() == EEmbeddingID.PATHWAY_LEVEL1) {
+				Vec2f stub1End = new Vec2f((float) loc1.getCenterX() - 20 * direction.x() * stubSize,
+						(float) loc1.getCenterY() - 20 * direction.y() * stubSize);
+				g.color(1, 0, 0, 1f).lineWidth(2)
+						.drawLine((float) loc1.getCenterX(), (float) loc1.getCenterY(), stub1End.x(), stub1End.y());
+			}
+			if (info2.getCurrentEmbeddingID() == EEmbeddingID.PATHWAY_LEVEL1) {
+				Vec2f stub2End = new Vec2f((float) loc2.getCenterX() + 20 * direction.x() * stubSize,
+						(float) loc2.getCenterY() + 20 * direction.y() * stubSize);
+				g.color(1, 0, 0, 1f).lineWidth(2)
+						.drawLine((float) loc2.getCenterX(), (float) loc2.getCenterY(), stub2End.x(), stub2End.y());
+			}
+			// g.color(1, 0, 0, 1f)
+			// .lineWidth(2)
+			// .drawLine((float) loc1.getCenterX(), (float) loc1.getCenterY(), (float) loc2.getCenterX(),
+			// (float) loc2.getCenterY());
+			g.drawRect((float) loc1.getX(), (float) loc1.getY(), (float) loc1.getWidth(), (float) loc1.getHeight());
+			g.drawRect((float) loc2.getX(), (float) loc2.getY(), (float) loc2.getWidth(), (float) loc2.getHeight());
+			g.lineWidth(1);
+			// // g.color(0, 1, 0, 1).fillCircle((float) loc1.getX(), (float) loc1.getY(), 50);
+			// // g.color(0, 1, 0, 1).fillCircle((float) loc2.getX(), (float) loc2.getY(), 50);
+			g.incZ(-0.5f);
+		}
+	}
 
 	protected List<Rectangle2D> path;
 
@@ -178,11 +209,11 @@ public class GLSubGraphAugmentation extends GLElement {
 
 		this.bubbleSetRenderer.renderPxl(g.gl, pxlWidth, pxlHeight);
 		this.renderPortalLinks(g);
-		g.gl.glTranslatef(0.f, 0.f, -1.0f);
-
 		for (IGLRenderer renderer : renderers) {
 			renderer.render(g, w, h, this);
 		}
+		g.gl.glTranslatef(0.f, 0.f, -1.0f);
+
 	}
 
 	public void showPortals(boolean boolVal) {
@@ -226,14 +257,14 @@ public class GLSubGraphAugmentation extends GLElement {
 		this.portalStartNode = node;
 	}
 
-	public void addPortalHighlightRenderer(PortalHighlightRenderer renderer) {
-		System.out.println("addPortalHighlightRenderer");
+	public void addPortalConnectionRenderer(ConnectionRenderer renderer) {
+		// System.out.println("addPortalHighlightRenderer");
 		portalHighlightRenderers.add(renderer);
 		renderers.add(renderer);
 		repaint();
 	}
 
-	public void clearPortalHighlightRenderers() {
+	public void clearPortalConnectionRenderers() {
 		if (!portalHighlightRenderers.isEmpty()) {
 			renderers.removeAll(portalHighlightRenderers);
 			portalHighlightRenderers.clear();
