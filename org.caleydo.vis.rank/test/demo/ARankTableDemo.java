@@ -100,6 +100,9 @@ public abstract class ARankTableDemo extends GLSandBox {
 		String v = l[i].trim();
 		if (v.equalsIgnoreCase("-") || v.isEmpty())
 			return Float.NaN;
+		int p = v.indexOf('-');
+		if (p > 0)
+			v = v.substring(0, p);
 		return Float.parseFloat(v);
 	}
 }
