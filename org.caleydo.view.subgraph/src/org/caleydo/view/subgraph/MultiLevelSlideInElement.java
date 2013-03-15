@@ -22,9 +22,9 @@ package org.caleydo.view.subgraph;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.caleydo.core.view.opengl.layout2.AnimatedGLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.core.view.opengl.layout2.animation.AnimatedGLElementContainer;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton.ISelectionCallback;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
