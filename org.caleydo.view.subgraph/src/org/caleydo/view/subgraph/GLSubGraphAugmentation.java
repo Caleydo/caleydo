@@ -150,9 +150,19 @@ public class GLSubGraphAugmentation extends GLElement {
 	}
 
 	protected List<Rectangle2D> path;
-
+	private boolean disabled=false;
+	public void disable(){
+		disabled=true;
+	}
+	public void enable(){
+		disabled=false;
+	}
+	
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
+		if(disabled){
+			return;		
+		}
 		if (this.isDirty) {
 			this.isDirty = false;
 			// prepare bubbleSet texture

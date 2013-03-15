@@ -248,6 +248,8 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 				pathInfo.window.baseContainer.setVisibility(EVisibility.VISIBLE);
 				isPathWindowMaximized = false;
 				setPathLevel(pathInfo.getEmbeddingIDFromRendererID(pathInfo.multiFormRenderer.getActiveRendererID()));
+				augmentation.enable();
+				isLayoutDirty=true;
 			}
 		};
 		slideInElement.addWindowState(currentWindowState);
@@ -266,6 +268,8 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 				pathInfo.window.background.setVisibility(EVisibility.PICKABLE);
 				pathInfo.window.baseContainer.setVisibility(EVisibility.VISIBLE);
 				isPathWindowMaximized = true;
+				augmentation.disable();
+				updateAugmentation();
 			}
 		});
 		slideInElement.setCurrentWindowState(currentWindowState);
