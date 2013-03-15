@@ -61,7 +61,9 @@ public class DataMappingState {
 	}
 
 	public void addTablePerspective(ATableBasedDataDomain dd, Perspective recordPerspective) {
-		TablePerspective tablePerspective = new TablePerspective(dd, recordPerspective, dd.getTable()
+
+		Perspective convertedPerspective = dd.convertForeignPerspective(recordPerspective);
+		TablePerspective tablePerspective = new TablePerspective(dd, convertedPerspective, dd.getTable()
 				.getDefaultDimensionPerspective());
 
 		mappedTablePerspectives.add(tablePerspective);
