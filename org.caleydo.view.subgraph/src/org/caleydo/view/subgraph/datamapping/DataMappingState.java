@@ -90,6 +90,13 @@ public class DataMappingState {
 	public void setPerspective(Perspective perspective) {
 		selectedPerspective = perspective;
 
+		for (TablePerspective tablePerspective : mappedTablePerspectives) {
+			AEvent event = new RemoveTablePerspectiveEvent(tablePerspective);
+			event.setEventSpace(eventSpace);
+			event.setSender(this);
+			EventPublisher.publishEvent(event);
+		}
+
 		mappedTablePerspectives.clear();
 		for (ATableBasedDataDomain dd : hashDDToTablePerspective.keySet()) {
 			addTablePerspective(dd, selectedPerspective);
