@@ -241,6 +241,10 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 			child.layout(deltaTimeMs);
 	}
 
+	public final boolean isAnimating() {
+		return !layoutAnimations.isEmpty();
+	}
+
 	protected void updateMoveAnimation(ALayoutAnimation anim, IGLLayoutElement elem, Vec4f before, Vec4f after) {
 		anim.init(before, after);
 	}
