@@ -901,6 +901,14 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	// updatePortalHighlights();
 	// }
 
+	private PathwayMultiFormInfo getInfo(PathwayVertexRep vertexRep) {
+		for (PathwayMultiFormInfo info : pathwayInfos) {
+			if (info.pathway == vertexRep.getPathway())
+				return info;
+		}
+		return null;
+	}
+
 	protected void updatePathwayPortals() {
 		PathwayMultiFormInfo info = null;
 		if (activeWindow instanceof GLPathwayWindow) {
@@ -913,6 +921,29 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		if (info == null)
 			return;
 		augmentation.clearPortalConnectionRenderers();
+		PathwayVertexRep lastNodeOfPrevSegment = null;
+
+		for (PathwayPath segment : pathSegments) {
+			List<PathwayVertexRep> nodes = segment.getNodes();
+			if (!nodes.isEmpty()) {
+				if (lastNodeOfPrevSegment != null) {
+					PathwayMultiFormInfo info1 = getInfo(lastNodeOfPrevSegment);
+					PathwayMultiFormInfo info2 = getInfo(nodes.get(0));
+					Rectangle2D loc1 = getAbsoluteVertexLocation(
+							getPathwayRepresentation(info1.multiFormRenderer,
+									info1.multiFormRenderer.getActiveRendererID()), lastNodeOfPrevSegment,
+							info1.container);
+					Rectangle2D loc2 = getAbsoluteVertexLocation(
+							getPathwayRepresentation(info2.multiFormRenderer,
+									info2.multiFormRenderer.getActiveRendererID()), nodes.get(0), info2.container);
+					augmentation.addPortalLinkRenderer(new LinkRenderer(true, loc1, loc2, info1, info2, 1, false,
+							false, false, true));
+				}
+
+				lastNodeOfPrevSegment = nodes.get(nodes.size() - 1);
+			}
+		}
+
 		if (isShowPortals) {
 			for (PathwayVertexRep vertexRep : info.pathway.vertexSet()) {
 				Pair<Rectangle2D, Boolean> sourcePair = getPortalLocation(vertexRep, info);
@@ -921,11 +952,11 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 						if (info.getCurrentEmbeddingID() != EEmbeddingID.PATHWAY_LEVEL1) {
 							// Only connect lv2 or higher with current lv1
 							if (i.getCurrentEmbeddingID() == EEmbeddingID.PATHWAY_LEVEL1) {
-								addConnectionRenderers(vertexRep, info, i, sourcePair);
+								addLinkRenderers(vertexRep, info, i, sourcePair);
 							}
 						} else {
 							// Connect lv1 with all
-							addConnectionRenderers(vertexRep, info, i, sourcePair);
+							addLinkRenderers(vertexRep, info, i, sourcePair);
 						}
 					} else {
 						// TODO: implement
@@ -935,11 +966,14 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		}
 	}
 
-	private void addConnectionRenderers(PathwayVertexRep vertexRep, PathwayMultiFormInfo sourceInfo,
+	private void addLinkRenderers(PathwayVertexRep vertexRep, PathwayMultiFormInfo sourceInfo,
 			PathwayMultiFormInfo targetInfo, Pair<Rectangle2D, Boolean> sourcePair) {
 		Set<PathwayVertexRep> equivalentVertexReps = PathwayManager.get().getEquivalentVertexRepsInPathway(vertexRep,
 				targetInfo.pathway);
 		for (PathwayVertexRep v : equivalentVertexReps) {
+			if (isPathLink(vertexRep, v))
+				continue;
+
 			Pair<Rectangle2D, Boolean> targetPair = getPortalLocation(v, targetInfo);
 
 			// System.out.println("Add link from: " + vertexRep.getShortName() + " to " + v.getShortName() + "("
@@ -952,9 +986,27 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 					vertexRep == currentPortalVertexRep || v == currentPortalVertexRep, sourcePair.getFirst(),
 					targetPair.getFirst(), sourceInfo, targetInfo, stubSize, sourcePair.getSecond(),
 					targetPair.getSecond(), PathwayManager.get().areVerticesEquivalent(vertexRep,
-							currentContextVertexRep));
+							currentContextVertexRep), false);
 			augmentation.addPortalLinkRenderer(renderer);
 		}
+	}
+
+	protected boolean isPathLink(PathwayVertexRep v1, PathwayVertexRep v2) {
+		PathwayVertexRep lastNodeOfPrevSegment = null;
+		for (PathwayPath segment : pathSegments) {
+			List<PathwayVertexRep> nodes = segment.getNodes();
+			if (!nodes.isEmpty()) {
+				if (lastNodeOfPrevSegment != null) {
+					if ((v1 == lastNodeOfPrevSegment && v2 == nodes.get(0))
+							|| (v2 == lastNodeOfPrevSegment && v1 == nodes.get(0))) {
+						return true;
+					}
+				}
+
+				lastNodeOfPrevSegment = nodes.get(nodes.size() - 1);
+			}
+		}
+		return false;
 	}
 
 	protected Pair<Rectangle2D, Boolean> getPortalLocation(PathwayVertexRep vertexRep, PathwayMultiFormInfo info) {

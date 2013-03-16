@@ -104,12 +104,13 @@ public class GLSubGraphAugmentation extends GLElement {
 		protected final float stubSize;
 		protected final boolean drawLink;
 		protected final boolean isContextLink;
+		protected final boolean isPathLink;
 
 		private Color portalBSColor = new Color(1.0f, 0.0f, 0.0f);
 
 		public LinkRenderer(boolean drawLink, Rectangle2D loc1, Rectangle2D loc2, PathwayMultiFormInfo info1,
 				PathwayMultiFormInfo info2, float stubSize, boolean isLocation1Window, boolean isLocation2Window,
-				boolean isContextLink) {
+				boolean isContextLink, boolean isPathLink) {
 			this.drawLink = drawLink;
 			this.loc1 = loc1;
 			this.loc2 = loc2;
@@ -119,6 +120,7 @@ public class GLSubGraphAugmentation extends GLElement {
 			this.isLocation1Window = isLocation1Window;
 			this.isLocation2Window = isLocation2Window;
 			this.isContextLink = isContextLink;
+			this.isPathLink = isPathLink;
 		}
 
 		@Override
@@ -130,7 +132,9 @@ public class GLSubGraphAugmentation extends GLElement {
 			// g.color(1, 0, 0, 0);
 			// g.gl.glVertex2f((float) loc2.getCenterX(), (float) loc2.getCenterY());
 			// g.gl.glEnd();
-			if (isContextLink) {
+			if (isPathLink) {
+				g.color(0, 1, 0, 1f);
+			} else if (isContextLink) {
 				g.color(1, 0, 1, 1f);
 			} else {
 				g.color(1, 0, 0, 1f);
