@@ -21,7 +21,7 @@ package org.caleydo.view.subgraph.toolbar;
 
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.gui.SimpleAction;
-import org.caleydo.view.subgraph.event.ShowPortalLinksEvent;
+import org.caleydo.view.subgraph.event.ShowPortalsEvent;
 
 /**
  * Button for toggling to show portals or not.
@@ -47,7 +47,7 @@ public class ShowPortalsAction extends SimpleAction {
 	@Override
 	public void run() {
 		super.run();
-		ShowPortalLinksEvent event = new ShowPortalLinksEvent(isChecked());
+		ShowPortalsEvent event = new ShowPortalsEvent(isChecked());
 		event.setEventSpace(eventSpace);
 		EventPublisher.INSTANCE.triggerEvent(event);
 	}

@@ -22,20 +22,20 @@ package org.caleydo.view.subgraph.event;
 import org.caleydo.core.event.AEvent;
 
 /**
- * Event to trigger the display of connecting links of the current context portal.
+ * Event to trigger the display of portals.
  *
  * @author Christian Partl
  *
  */
-public class ShowPortalLinksEvent extends AEvent {
+public class ShowPortalsEvent extends AEvent {
 
-	private boolean showPortalLinks;
+	private boolean showPortals;
 
 	/**
 	 *
 	 */
-	public ShowPortalLinksEvent(boolean showPortalLinks) {
-		this.showPortalLinks = showPortalLinks;
+	public ShowPortalsEvent(boolean showPortalLinks) {
+		this.showPortals = showPortalLinks;
 	}
 
 	@Override
@@ -45,10 +45,10 @@ public class ShowPortalLinksEvent extends AEvent {
 	}
 
 	/**
-	 * @return the showPortalLinks, see {@link #showPortalLinks}
+	 * @return the showPortalLinks, see {@link #showPortals}
 	 */
-	public boolean isShowPortalLinks() {
-		return showPortalLinks;
+	public boolean isShowPortals() {
+		return showPortals;
 	}
 
 	/**
@@ -56,7 +56,7 @@ public class ShowPortalLinksEvent extends AEvent {
 	 *            setter, see {@link showPortalLinks}
 	 */
 	public void setShowPortalLinks(boolean showPortalLinks) {
-		this.showPortalLinks = showPortalLinks;
+		this.showPortals = showPortalLinks;
 	}
 
 }
