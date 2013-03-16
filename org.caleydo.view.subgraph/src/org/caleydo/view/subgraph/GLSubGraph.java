@@ -329,15 +329,16 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 
 			@Override
 			public void keyReleased(IKeyEvent e) {
-				update(e);
+				// update(e);
 			}
 
 			private void update(IKeyEvent e) {
 				boolean isPPressed = e.isKeyDown('p');
 				// augmentation.showPortals(isPPressed);
-				showPortalsButton.setChecked(isPPressed);
+
 				// boolean isOPressed = e.isKeyDown('o');
-				ShowPortalsEvent event = new ShowPortalsEvent(isPPressed);
+				ShowPortalsEvent event = new ShowPortalsEvent(!showPortalsButton.isChecked());
+				showPortalsButton.setChecked(!showPortalsButton.isChecked());
 				event.setEventSpace(pathEventSpace);
 				EventPublisher.INSTANCE.triggerEvent(event);
 				// highlightAllPortalsButton.setChecked(isOPressed);
@@ -1126,7 +1127,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	@Override
 	public void notifyOfSelectionChange(EventBasedSelectionManager selectionManager) {
 		Set<Integer> selectedVertexIDs = selectionManager.getElements(SelectionType.MOUSE_OVER);
-		currentPortalVertexRep = null;
+		// currentPortalVertexRep = null;
 		for (Integer id : selectedVertexIDs) {
 			currentPortalVertexRep = allVertexReps.get(id);
 		}
