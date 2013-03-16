@@ -118,7 +118,9 @@ public class Gene extends ARankTableDemo {
 		table.add(new StringRankColumnModel(GLRenderers.drawText("Gene", VAlign.CENTER), StringRankColumnModel.DEFAULT));
 
 
-		createPValue(TumorTypeRow.COL_p, "p", Color.decode("#DFC27D"), Color.decode("#F6E8C3"));
+		StackedRankColumnModel m = createPValue(TumorTypeRow.COL_p, "p", Color.decode("#DFC27D"),
+				Color.decode("#F6E8C3"));
+		m.setFilter(0.3f, 1.0f);
 		createPValue(TumorTypeRow.COL_q, "q", Color.decode("#DFC27D"), Color.decode("#F6E8C3"));
 		createUnBound(TumorTypeRow.COL_nflank, "nflank", Color.decode("#9ECAE1"), Color.decode("#DEEBF7"));
 		createUnBound(TumorTypeRow.COL_nsil, "nsil", Color.decode("#A1D99B"), Color.decode("#E5F5E0"));
@@ -154,7 +156,7 @@ public class Gene extends ARankTableDemo {
 		PiecewiseMapping p = new PiecewiseMapping(0, 1);
 		p.clear();
 		p.put(0, 1);
-		p.put(0.8f, 0);
+		p.put(1, 0);
 		return p;
 	}
 

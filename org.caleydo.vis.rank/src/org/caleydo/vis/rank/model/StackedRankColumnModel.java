@@ -23,9 +23,7 @@ import java.awt.Color;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.view.opengl.layout2.GLElement;
-import org.caleydo.vis.rank.internal.event.AnnotationEditEvent;
 import org.caleydo.vis.rank.model.mixin.ICompressColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IMappedColumnMixin;
@@ -33,7 +31,7 @@ import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.ISnapshotableColumnMixin;
 import org.caleydo.vis.rank.ui.RenderStyle;
 import org.caleydo.vis.rank.ui.detail.ScoreBarElement;
-import org.caleydo.vis.rank.ui.detail.ScoreSummary;
+import org.caleydo.vis.rank.ui.detail.StackedScoreSummary;
 import org.caleydo.vis.rank.ui.detail.ValueElement;
 
 import com.google.common.collect.Iterables;
@@ -55,12 +53,14 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 			switch(evt.getPropertyName()) {
 			case PROP_WIDTH:
 				cacheMulti.clear();
+				invalidAllFilter();
 				onWeightChanged((ARankColumnModel) evt.getSource(), (float) evt.getOldValue(),
 						(float) evt.getNewValue());
 				break;
 			case IFilterColumnMixin.PROP_FILTER:
 			case IMappedColumnMixin.PROP_MAPPING:
 				cacheMulti.clear();
+				invalidAllFilter();
 				propertySupport.firePropertyChange(evt);
 				break;
 			}
@@ -164,7 +164,7 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 
 	@Override
 	public GLElement createSummary(boolean interactive) {
-		return new MyElement(this, interactive);
+		return new StackedScoreSummary(this, interactive);
 	}
 
 	@Override
@@ -179,7 +179,10 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 		MultiFloat f = getSplittedValue(row);
 		float[] ws = this.getDistributions();
 		for (int i = 0; i < size; ++i) {
-			s += f.values[i] * ws[i];
+			float fi = f.values[i];
+			if (Float.isNaN(fi))
+				return Float.NaN;
+			s += fi * ws[i];
 		}
 		return s;
 	}
@@ -265,18 +268,6 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 		if (isAlignAll() == alignAll)
 			return;
 		this.setAlignment(-alignment - 1);
-	}
-
-	static class MyElement extends ScoreSummary {
-		public MyElement(StackedRankColumnModel model, boolean interactive) {
-			super(model, interactive);
-		}
-
-		@ListenTo(sendToMe = true)
-		private void onSetAnnotation(AnnotationEditEvent event) {
-			((StackedRankColumnModel) model).setTitle(event.getTitle());
-			((StackedRankColumnModel) model).setDescription(event.getDescription());
-		}
 	}
 
 	/**

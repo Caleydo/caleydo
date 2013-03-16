@@ -159,12 +159,12 @@ public class StackedColumnUI extends ACompositeTableColumnUI<StackedRankColumnMo
 		MultiFloat vs = model.getSplittedValue(data);
 		if (index < combinedAlign) {
 			for (int i = index; i < combinedAlign; ++i)
-				x += (1 - vs.values[i]) * weights[i] - RenderStyle.COLUMN_SPACE;
-			x += RenderStyle.COLUMN_SPACE;
+				x += (1 - vs.values[i]) * weights[i];
+			// x += RenderStyle.COLUMN_SPACE;
 		} else {
 			for (int i = combinedAlign; i < index; ++i)
-				x += (vs.values[i] - 1) * weights[i] + RenderStyle.COLUMN_SPACE;
-			x += RenderStyle.COLUMN_SPACE;
+				x += (vs.values[i] - 1) * weights[i];
+			// x -= RenderStyle.COLUMN_SPACE;
 		}
 		return x;
 	}

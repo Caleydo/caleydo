@@ -342,7 +342,7 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 			ARankColumnModel model = col.getLayoutDataAs(ARankColumnModel.class, null);
 			if (model == null) {
 				col.setBounds(x, 0, 1, h);
-				x += 1;
+				x += 0;
 			} else {
 				float wi = model.getWidth();
 				if (!it.hasNext() && model instanceof IGrabRemainingHorizontalSpace) {
@@ -484,7 +484,7 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 	public void layoutRows(ARankColumnModel model, final IRowSetter setter, final float w, float h) {
 		IRow selected = table.getSelectedRow();
 		final int selectedIndex = (selected == null ? -1 : selected.getIndex());
-		getRanker(model).layoutRows(setter, RenderStyle.COLUMN_SPACE, w - RenderStyle.COLUMN_SPACE, selectedIndex);
+		getRanker(model).layoutRows(setter, 0, w, selectedIndex);
 	}
 
 	@Override

@@ -19,20 +19,35 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.model;
 
+import gleem.linalg.Vec2f;
+import gleem.linalg.Vec4f;
+
 import java.awt.Color;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.BitSet;
+import java.util.Collection;
+import java.util.List;
 
 import org.caleydo.core.event.EventPublisher;
+import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.util.function.AFloatList;
+import org.caleydo.core.util.function.IFloatList;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.rank.internal.event.AnnotationEditEvent;
 import org.caleydo.vis.rank.internal.ui.TitleDescriptionDialog;
 import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IExplodeableColumnMixin;
+import org.caleydo.vis.rank.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IHideableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IMultiColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
+import org.caleydo.vis.rank.ui.RenderStyle;
+import org.caleydo.vis.rank.ui.detail.ScoreFilter;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Display;
 
@@ -43,8 +58,25 @@ import com.google.common.collect.Iterables;
  *
  */
 public abstract class AMultiRankColumnModel extends ACompositeRankColumnModel implements IMultiColumnMixin,
-		IExplodeableColumnMixin, IHideableColumnMixin, ICollapseableColumnMixin, IGLRenderer {
+		IExplodeableColumnMixin, IHideableColumnMixin, ICollapseableColumnMixin, IFilterColumnMixin, IGLRenderer {
 	private SimpleHistogram cacheHist = null;
+	private final BitSet mask = new BitSet();
+	private final BitSet maskInvalid = new BitSet();
+	private float filterMin = 0;
+	private float filterMax = 1;
+
+	private final PropertyChangeListener listener = new PropertyChangeListener() {
+		@Override
+		public void propertyChange(PropertyChangeEvent evt) {
+			switch (evt.getPropertyName()) {
+			case RankTableModel.PROP_DATA:
+				@SuppressWarnings("unchecked")
+				Collection<IRow> news = (Collection<IRow>) evt.getNewValue();
+				maskInvalid.set(getTable().getDataSize() - news.size(), getTable().getDataSize());
+				break;
+			}
+		}
+	};
 	private final String prefix;
 	private String title = null;
 	private String description = "";
@@ -61,6 +93,109 @@ public abstract class AMultiRankColumnModel extends ACompositeRankColumnModel im
 		setHeaderRenderer(this);
 		this.title = copy.title;
 		this.description = copy.description;
+		this.mask.or(copy.mask);
+		this.maskInvalid.or(copy.maskInvalid);
+		this.filterMin = copy.filterMin;
+		this.filterMax = copy.filterMax;
+	}
+
+	@Override
+	protected void init(IRankColumnParent table) {
+		super.init(table);
+		RankTableModel t = getTable();
+		t.addPropertyChangeListener(RankTableModel.PROP_DATA, listener);
+		maskInvalid.set(0, t.getDataSize());
+	}
+
+	@Override
+	protected void takeDown() {
+		getTable().removePropertyChangeListener(RankTableModel.PROP_DATA, listener);
+		super.takeDown();
+	}
+
+	protected final void invalidAllFilter() {
+		maskInvalid.set(0, getTable().getDataSize());
+	}
+
+	@Override
+	public final void filter(List<IRow> data, BitSet mask) {
+		if (!isFiltered())
+			return;
+		if (!maskInvalid.isEmpty()) {
+			BitSet todo = (BitSet) maskInvalid.clone();
+			todo.and(mask);
+			updateMask(todo, data, this.mask);
+			maskInvalid.andNot(todo);
+		}
+		mask.and(this.mask);
+	}
+
+	@Override
+	public boolean isFiltered() {
+		return filterMin > 0 || filterMax < 1;
+	}
+
+	/**
+	 * @param filterNotMappedEntries
+	 *            setter, see {@link filterNotMappedEntries}
+	 */
+	public void setFilter(float min, float max) {
+		min = Math.max(0, min);
+		max = Math.min(1, max);
+		if (this.filterMin == min && this.filterMax == max)
+			return;
+		invalidAllFilter();
+		float bak1 = filterMin;
+		float bak2 = filterMax;
+		this.filterMin = min;
+		this.filterMax = max;
+		propertySupport.firePropertyChange(PROP_FILTER, Pair.make(bak1, bak2), Pair.make(min, max));
+	}
+
+	/**
+	 * @return the filterMin, see {@link #filterMin}
+	 */
+	public float getFilterMin() {
+		return filterMin;
+	}
+
+	/**
+	 * @return the filterMax, see {@link #filterMax}
+	 */
+	public float getFilterMax() {
+		return filterMax;
+	}
+
+	@Override
+	public void editFilter(final GLElement summary, IGLElementContext context) {
+		GLElement m = new ScoreFilter(this, asRawData(), summary);
+		m.setzDelta(0.5f);
+		Vec2f location = summary.getAbsoluteLocation();
+		Vec2f size = summary.getSize();
+		context.getPopupLayer().show(m,
+				new Vec4f(location.x(), location.y() + size.y(), 200, RenderStyle.HIST_HEIGHT * 2));
+	}
+
+	private IFloatList asRawData() {
+		final List<IRow> data2 = getTable().getMaskedData();
+		return new AFloatList() {
+			@Override
+			public float getPrimitive(int index) {
+				return applyPrimitive(data2.get(index));
+			}
+
+			@Override
+			public int size() {
+				return data2.size();
+			}
+		};
+	}
+
+	protected void updateMask(BitSet todo, List<IRow> rows, BitSet mask) {
+		for (int i = todo.nextSetBit(0); i >= 0; i = todo.nextSetBit(i + 1)) {
+			float f = applyPrimitive(rows.get(i));
+			mask.set(i, !Float.isNaN(f) && f >= filterMin && f <= filterMax);
+		}
 	}
 
 	@Override

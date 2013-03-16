@@ -22,6 +22,7 @@ package org.caleydo.vis.rank.model;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Collection;
@@ -401,6 +402,27 @@ public class RankTableModel implements IRankColumnParent {
 
 	public List<IRow> getData() {
 		return Collections.unmodifiableList(this.data);
+	}
+
+	public List<IRow> getMaskedData() {
+		if (dataMask == null || dataMask.cardinality() == data.size())
+			return getData();
+		final int[] lookup = new int[dataMask.cardinality()];
+		int j = 0;
+		for (int i = dataMask.nextSetBit(0); i >= 0; i = dataMask.nextSetBit(i + 1)) {
+			lookup[j++] = i;
+		}
+		return new AbstractList<IRow>() {
+			@Override
+			public IRow get(int index) {
+				return lookup == null ? data.get(index) : data.get(lookup[index]);
+			}
+
+			@Override
+			public int size() {
+				return lookup == null ? data.size() : lookup.length;
+			}
+		};
 	}
 
 	public int getDataSize() {

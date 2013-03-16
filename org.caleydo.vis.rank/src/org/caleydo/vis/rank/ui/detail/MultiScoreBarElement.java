@@ -66,10 +66,10 @@ public class MultiScoreBarElement extends ScoreBarElement {
 		final IRow r = getLayoutDataAs(IRow.class, null);
 		IMultiColumnMixin mmodel = (IMultiColumnMixin) model;
 		MultiFloat v = mmodel.getSplittedValue(r);
-		boolean inferred = mmodel.isValueInferred(r);
-		float vr = v.get();
 		if (v.repr < 0)
 			return;
+		boolean inferred = mmodel.isValueInferred(r);
+		float vr = v.get();
 		Color[] colors = mmodel.getColors();
 		renderValue(g, w, h, r, vr, inferred, false, colors[v.repr], colors[v.repr]);
 

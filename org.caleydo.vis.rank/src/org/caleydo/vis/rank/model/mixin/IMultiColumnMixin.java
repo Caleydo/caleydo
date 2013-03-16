@@ -52,7 +52,7 @@ public interface IMultiColumnMixin extends IRankableColumnMixin, Iterable<ARankC
 		}
 
 		public float get() {
-			return repr >= 0 ? values[repr] : 0;
+			return repr >= 0 ? values[repr] : Float.NaN;
 		}
 
 		public int size() {

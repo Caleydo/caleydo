@@ -82,7 +82,7 @@ public class MaxCompositeRankColumnModel extends AMultiRankColumnModel {
 		for (ARankColumnModel col : this) {
 			float v = ((IRankableColumnMixin) col).applyPrimitive(row);
 			vs[i++] = v;
-			if (v > max) {
+			if (!Float.isNaN(v) && v > max) {
 				maxIndex = i - 1;
 				max = v;
 			}
@@ -97,10 +97,12 @@ public class MaxCompositeRankColumnModel extends AMultiRankColumnModel {
 		float max = Float.NEGATIVE_INFINITY;
 		for (ARankColumnModel col : this) {
 			float v = ((IRankableColumnMixin) col).applyPrimitive(row);
+			if (Float.isNaN(v))
+				continue;
 			max = Math.max(max, v);
 		}
-		if (max > 1) {
-			System.err.println();
+		if (max == Float.NEGATIVE_INFINITY) {
+			max = Float.NaN;
 		}
 		return max;
 	}

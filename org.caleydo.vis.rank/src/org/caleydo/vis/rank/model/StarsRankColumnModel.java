@@ -30,7 +30,7 @@ import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.rank.data.AFloatFunction;
 import org.caleydo.vis.rank.data.IFloatFunction;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
-import org.caleydo.vis.rank.ui.detail.ScoreSummary;
+import org.caleydo.vis.rank.ui.detail.StarsSummary;
 import org.caleydo.vis.rank.ui.detail.StarsValueElement;
 import org.caleydo.vis.rank.ui.detail.ValueElement;
 
@@ -112,7 +112,7 @@ public class StarsRankColumnModel extends ABasicFilterableRankColumnModel implem
 
 	@Override
 	public GLElement createSummary(boolean interactive) {
-		return new ScoreSummary(this, interactive);
+		return new StarsSummary(this, interactive);
 	}
 
 	@Override

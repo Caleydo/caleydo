@@ -45,10 +45,10 @@ import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.vis.rank.internal.event.AnnotationEditEvent;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
+import org.caleydo.vis.rank.model.MaxCompositeRankColumnModel;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.SimpleHistogram;
 import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
-import org.caleydo.vis.rank.model.mixin.IMultiColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IMultiColumnMixin.MultiFloat;
 import org.caleydo.vis.rank.ui.RenderStyle;
 import org.caleydo.vis.rank.ui.RenderUtils;
@@ -73,7 +73,7 @@ public class MaxScoreSummary extends GLElementContainer implements IGLLayout {
 		}
 	};
 	private IRow selectedRow = null;
-	private final IMultiColumnMixin model;
+	private final MaxCompositeRankColumnModel model;
 
 	private final IPickingListener pickingListener = new IPickingListener() {
 		@Override
@@ -82,7 +82,7 @@ public class MaxScoreSummary extends GLElementContainer implements IGLLayout {
 		}
 	};
 
-	public MaxScoreSummary(IMultiColumnMixin model, boolean interactive) {
+	public MaxScoreSummary(MaxCompositeRankColumnModel model, boolean interactive) {
 		this.model = model;
 		setLayout(this);
 		setzDelta(0.5f);
@@ -138,7 +138,7 @@ public class MaxScoreSummary extends GLElementContainer implements IGLLayout {
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
-		if ((model instanceof ICollapseableColumnMixin) && ((ICollapseableColumnMixin) model).isCollapsed())
+		if (((ICollapseableColumnMixin) model).isCollapsed())
 			return;
 		// background
 		g.color(model.getBgColor()).fillRect(0, 0, w, h);
@@ -159,6 +159,14 @@ public class MaxScoreSummary extends GLElementContainer implements IGLLayout {
 		for(int i = 0; i < size; ++i)
 			selectedColors[i] = colors[i].darker();
 		RenderUtils.renderStackedHist(g, hists, w, h, selectedBins, colors, selectedColors);
+
+		if (model.getFilterMin() > 0) {
+			g.color(0, 0, 0, 0.25f).fillRect(0, 0, model.getFilterMin() * w, h);
+		}
+		if (model.getFilterMax() < 1) {
+			g.color(0, 0, 0, 0.25f).fillRect(model.getFilterMax() * w, 0, (1 - model.getFilterMax()) * w, h);
+		}
+
 		super.renderImpl(g, w, h);
 	}
 

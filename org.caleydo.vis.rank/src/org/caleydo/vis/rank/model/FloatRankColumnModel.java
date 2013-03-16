@@ -28,8 +28,8 @@ import java.beans.PropertyChangeListener;
 import java.util.BitSet;
 import java.util.List;
 
-import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.io.gui.dataimport.widget.ICallback;
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.util.function.AFloatList;
@@ -38,12 +38,12 @@ import org.caleydo.core.util.function.IFloatList;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
-import org.caleydo.vis.rank.data.AFloatFunction;
 import org.caleydo.vis.rank.data.IFloatFunction;
 import org.caleydo.vis.rank.data.IFloatInferrer;
 import org.caleydo.vis.rank.internal.event.FilterEvent;
 import org.caleydo.vis.rank.model.mapping.IMappingFunction;
 import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
+import org.caleydo.vis.rank.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IMappedColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.ISnapshotableColumnMixin;
@@ -60,7 +60,7 @@ import org.eclipse.swt.widgets.Shell;
  *
  */
 public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implements IMappedColumnMixin,
-		IRankableColumnMixin, ISnapshotableColumnMixin {
+		IRankableColumnMixin, ISnapshotableColumnMixin, IFilterColumnMixin {
 
 	private SimpleHistogram cacheHist = null;
 	private boolean dirtyDataStats = true;
@@ -153,41 +153,18 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 	}
 
 	private IFloatList asRawData() {
-		RankTableModel table = getTable();
-		final List<IRow> data2 = table.getData();
-		BitSet tmp = table.getDataMask();
-		int[] order;
-		if (tmp != null) {
-			order = new int[tmp.cardinality()];
-			int j = 0;
-			for (int i = tmp.nextSetBit(0); i >= 0; i = tmp.nextSetBit(i + 1)) {
-				order[j++] = i;
-			}
-		} else
-			order = null;
-		final int[] lookup = order;
-
+		final List<IRow> data2 = getTable().getMaskedData();
 		return new AFloatList() {
 			@Override
 			public float getPrimitive(int index) {
-				return data.applyPrimitive(lookup == null ? data2.get(index) : data2.get(lookup[index]));
+				return data.applyPrimitive(data2.get(index));
 			}
 
 			@Override
 			public int size() {
-				return lookup == null ? data2.size() : lookup.length;
+				return data2.size();
 			}
 		};
-	}
-
-	protected float map(float value, boolean handleNaNs) {
-		if (Float.isNaN(value))
-			value = computeMissingValue();
-		checkMapping();
-		float r = mapping.apply(value);
-		if (Float.isNaN(r) && handleNaNs)
-			return 0;
-		return r;
 	}
 
 	private float computeMissingValue() {
@@ -214,7 +191,11 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 
 	@Override
 	public float applyPrimitive(IRow row) {
-		return map(data.applyPrimitive(row), true);
+		float value = data.applyPrimitive(row);
+		if (Float.isNaN(value))
+			value = computeMissingValue();
+		checkMapping();
+		return mapping.apply(value);
 	}
 
 	@Override
@@ -234,12 +215,7 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 	public SimpleHistogram getHist(int bins) {
 		if (cacheHist != null && cacheHist.size() == bins)
 			return cacheHist;
-		return cacheHist = DataUtils.getHist(bins, getMyRanker().iterator(), new AFloatFunction<IRow>() {
-			@Override
-			public float applyPrimitive(IRow in) {
-				return map(data.applyPrimitive(in), false);
-			}
-		});
+		return cacheHist = DataUtils.getHist(bins, getMyRanker().iterator(), this);
 	}
 
 	@Override
@@ -275,7 +251,7 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 	@Override
 	protected void updateMask(BitSet todo, List<IRow> rows, BitSet mask) {
 		for (int i = todo.nextSetBit(0); i >= 0; i = todo.nextSetBit(i + 1)) {
-			float f = map(data.applyPrimitive(rows.get(i)), false);
+			float f = applyPrimitive(rows.get(i));
 			mask.set(i, !Float.isNaN(f));
 		}
 	}

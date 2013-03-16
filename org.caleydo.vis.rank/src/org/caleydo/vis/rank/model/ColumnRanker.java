@@ -306,6 +306,10 @@ public class ColumnRanker implements Iterable<IRow> {
 
 		@Override
 		public int compareTo(IntFloat o) {
+			boolean n1 = Float.isNaN(value);
+			boolean n2 = Float.isNaN(o.value);
+			if (n1 != n2)
+				return n1 ? 1 : -1;
 			return -Float.compare(value, o.value);
 		}
 	}
