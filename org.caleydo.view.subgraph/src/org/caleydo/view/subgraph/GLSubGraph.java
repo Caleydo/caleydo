@@ -194,6 +194,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 
 		vertexSelectionManager = new EventBasedSelectionManager(this, IDType.getIDType(EGeneIDTypes.PATHWAY_VERTEX_REP
 				.name()));
+		vertexSelectionManager.registerEventListeners();
 
 		column.add(dataMappingWindow);
 		// column.add(nodeInfoContainer);
@@ -345,6 +346,12 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	public void registerEventListeners() {
 		super.registerEventListeners();
 		eventListeners.register(pathEventSpaceHandler, pathEventSpace);
+	}
+
+	@Override
+	public void unregisterEventListeners() {
+		super.unregisterEventListeners();
+		vertexSelectionManager.unregisterEventListeners();
 	}
 
 	@Override
