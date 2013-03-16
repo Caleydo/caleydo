@@ -122,7 +122,7 @@ public class IntegerRankColumnModel extends ABasicFilterableRankColumnModel {
 	protected void updateMask(BitSet todo, List<IRow> data, BitSet mask) {
 		for (int i = todo.nextSetBit(0); i >= 0; i = todo.nextSetBit(i + 1)) {
 			int value = getValue(data.get(i));
-			mask.set(i++, value >= min && value <= max);
+			mask.set(i, value >= min && value <= max);
 		}
 	}
 

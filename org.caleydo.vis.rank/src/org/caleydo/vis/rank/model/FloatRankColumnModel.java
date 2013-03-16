@@ -28,11 +28,12 @@ import java.beans.PropertyChangeListener;
 import java.util.BitSet;
 import java.util.List;
 
+import org.caleydo.core.event.EventPublisher;
+import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.io.gui.dataimport.widget.ICallback;
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.util.function.AFloatList;
 import org.caleydo.core.util.function.FloatStatistics;
-import org.caleydo.core.util.function.IFloatIterator;
 import org.caleydo.core.util.function.IFloatList;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
@@ -40,10 +41,9 @@ import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.rank.data.AFloatFunction;
 import org.caleydo.vis.rank.data.IFloatFunction;
 import org.caleydo.vis.rank.data.IFloatInferrer;
+import org.caleydo.vis.rank.internal.event.FilterEvent;
 import org.caleydo.vis.rank.model.mapping.IMappingFunction;
 import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
-import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
-import org.caleydo.vis.rank.model.mixin.IHideableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IMappedColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.ISnapshotableColumnMixin;
@@ -51,17 +51,21 @@ import org.caleydo.vis.rank.ui.detail.ScoreBarElement;
 import org.caleydo.vis.rank.ui.detail.ScoreSummary;
 import org.caleydo.vis.rank.ui.detail.ValueElement;
 import org.caleydo.vis.rank.ui.mapping.MappingFunctionUIs;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class FloatRankColumnModel extends ARankColumnModel implements IMappedColumnMixin,
-		IRankableColumnMixin, ICollapseableColumnMixin, IHideableColumnMixin, ISnapshotableColumnMixin {
+public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implements IMappedColumnMixin,
+		IRankableColumnMixin, ISnapshotableColumnMixin {
 
 	private SimpleHistogram cacheHist = null;
 	private boolean dirtyDataStats = true;
 	private float missingValue;
+	private boolean filterNotMappedEntries = false;
 
 	private final IMappingFunction mapping;
 	private final IFloatInferrer missingValueInferer;
@@ -71,6 +75,7 @@ public class FloatRankColumnModel extends ARankColumnModel implements IMappedCol
 		@Override
 		public void on(IMappingFunction data) {
 			cacheHist = null;
+			invalidAllFilter();
 			propertySupport.firePropertyChange(PROP_MAPPING, null, data);
 		}
 	};
@@ -116,7 +121,7 @@ public class FloatRankColumnModel extends ARankColumnModel implements IMappedCol
 
 	@Override
 	public GLElement createSummary(boolean interactive) {
-		return new ScoreSummary(this, interactive);
+		return new MyScoreSummary(this, interactive);
 	}
 
 	@Override
@@ -126,27 +131,11 @@ public class FloatRankColumnModel extends ARankColumnModel implements IMappedCol
 
 	@Override
 	public void editMapping(GLElement summary, IGLElementContext context) {
-		GLElement m = MappingFunctionUIs.create(mapping, asData(), getColor(), getBgColor(), callback);
+		GLElement m = MappingFunctionUIs.create(mapping, asRawData(), getColor(), getBgColor(), callback);
 		m.setzDelta(0.5f);
 		Vec2f location = summary.getAbsoluteLocation();
 		Vec2f size = summary.getSize();
 		context.getPopupLayer().show(m, new Vec4f(location.x(), location.y() + size.y(), 260, 300));
-	}
-
-	private IFloatList asData() {
-		final ColumnRanker ranker = getMyRanker();
-		final int size = ranker.size();
-		return new AFloatList() {
-			@Override
-			public float getPrimitive(int index) {
-				return data.applyPrimitive(ranker.get(index));
-			}
-
-			@Override
-			public int size() {
-				return size;
-			}
-		};
 	}
 
 	@Override
@@ -163,41 +152,31 @@ public class FloatRankColumnModel extends ARankColumnModel implements IMappedCol
 		super.takeDown();
 	}
 
-	private IFloatIterator asRawDataIterator() {
+	private IFloatList asRawData() {
 		RankTableModel table = getTable();
 		final List<IRow> data2 = table.getData();
 		BitSet tmp = table.getDataMask();
-		if (tmp == null) {
-			tmp = new BitSet(data2.size());
-			tmp.set(0, data2.size());
-		}
-		final BitSet filter = tmp;
+		int[] order;
+		if (tmp != null) {
+			order = new int[tmp.cardinality()];
+			int j = 0;
+			for (int i = tmp.nextSetBit(0); i >= 0; i = tmp.nextSetBit(i + 1)) {
+				order[j++] = i;
+			}
+		} else
+			order = null;
+		final int[] lookup = order;
 
-		return new IFloatIterator() {
-			int act = 0;
-
+		return new AFloatList() {
 			@Override
-			public boolean hasNext() {
-				return act >= 0 && filter.nextSetBit(act + 1) >= 0;
+			public float getPrimitive(int index) {
+				return data.applyPrimitive(lookup == null ? data2.get(index) : data2.get(lookup[index]));
 			}
 
 			@Override
-			public Float next() {
-				return nextPrimitive();
+			public int size() {
+				return lookup == null ? data2.size() : lookup.length;
 			}
-
-			@Override
-			public void remove() {
-				throw new UnsupportedOperationException();
-			}
-
-			@Override
-			public float nextPrimitive() {
-				int bak = act;
-				act = filter.nextSetBit(act + 1);
-				return data.applyPrimitive(data2.get(bak));
-			}
-
 		};
 	}
 
@@ -213,16 +192,18 @@ public class FloatRankColumnModel extends ARankColumnModel implements IMappedCol
 
 	private float computeMissingValue() {
 		if (Float.isNaN(missingValue)) {
-			missingValue = missingValueInferer.infer(asRawDataIterator(), getMyRanker().size());
+			IFloatList list = asRawData();
+			missingValue = missingValueInferer.infer(list.iterator(), list.size());
 		}
 		return missingValue;
 	}
 
 	private void checkMapping() {
 		if (dirtyDataStats) {
-			FloatStatistics stats = FloatStatistics.compute(asRawDataIterator());
+			FloatStatistics stats = FloatStatistics.compute(asRawData().iterator());
 			mapping.setActStatistics(stats);
 			dirtyDataStats = false;
+			invalidAllFilter();
 		}
 	}
 
@@ -259,5 +240,56 @@ public class FloatRankColumnModel extends ARankColumnModel implements IMappedCol
 				return map(data.applyPrimitive(in), false);
 			}
 		});
+	}
+
+	@Override
+	public boolean isFiltered() {
+		return filterNotMappedEntries;
+	}
+
+	/**
+	 * @param filterNotMappedEntries
+	 *            setter, see {@link filterNotMappedEntries}
+	 */
+	public void setFilterNotMappedEntries(boolean filterNotMappedEntries) {
+		if (this.filterNotMappedEntries == filterNotMappedEntries)
+			return;
+		if (filterNotMappedEntries) {
+			invalidAllFilter();
+		}
+		propertySupport.firePropertyChange(PROP_FILTER, this.filterNotMappedEntries,
+				this.filterNotMappedEntries = filterNotMappedEntries);
+	}
+
+	@Override
+	public void editFilter(final GLElement summary, IGLElementContext context) {
+		Display.getDefault().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				boolean f = MessageDialog.openQuestion(new Shell(), "Filter Not Mapped Entries?", "Do you want to filter entries that are not mapped?");
+				EventPublisher.publishEvent(new FilterEvent(f).to(summary));
+			}
+		});
+	}
+
+	@Override
+	protected void updateMask(BitSet todo, List<IRow> rows, BitSet mask) {
+		for (int i = todo.nextSetBit(0); i >= 0; i = todo.nextSetBit(i + 1)) {
+			float f = map(data.applyPrimitive(rows.get(i)), false);
+			mask.set(i, !Float.isNaN(f));
+		}
+	}
+
+	static class MyScoreSummary extends ScoreSummary {
+		public MyScoreSummary(IRankableColumnMixin model, boolean interactive) {
+			super(model, interactive);
+		}
+
+		@ListenTo(sendToMe = true)
+		private void onFilterChanged(FilterEvent event) {
+			boolean f = (Boolean) event.getFilter();
+			((FloatRankColumnModel) model).setFilterNotMappedEntries(f);
+		}
+
 	}
 }

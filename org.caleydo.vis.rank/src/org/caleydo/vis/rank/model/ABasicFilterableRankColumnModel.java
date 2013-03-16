@@ -66,7 +66,9 @@ public abstract class ABasicFilterableRankColumnModel extends ARankColumnModel i
 	@Override
 	protected void init(IRankColumnParent table) {
 		super.init(table);
-		getTable().addPropertyChangeListener(RankTableModel.PROP_DATA, listener);
+		RankTableModel t = getTable();
+		t.addPropertyChangeListener(RankTableModel.PROP_DATA, listener);
+		maskInvalid.set(0, t.getDataSize());
 	}
 
 	@Override
