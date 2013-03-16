@@ -1,0 +1,165 @@
+National Merit and Achievement Scholars
+Control	Institution	2009	2009_NationalRank	2009_ControlRank	2008	2008_NationalRank	2008_ControlRank	2007	2007_NationalRank	2007_ControlRank	2006	2006_NationalRank	2006_ControlRank	2005	2005_NationalRank	2005_ControlRank
+Public	Arizona State University	164 	16 	6 	170 	13 	4 	154 	18 	6 	190 	10 	3 	158 	13 	3 
+Public	Auburn University	66 	38 	16 	35 	67 	33 	28 	77 	37 	31 	69 	32 	31 	74 	34 
+Private	Baylor College of Medicine	0 	395 	236 	0 	388 	232 	0 	401 	245 	0 	425 	256 	0 	413 	250 
+Private	Boston University	32 	70 	39 	31 	73 	38 	47 	48 	28 	58 	44 	26 	66 	36 	22 
+Private	Brown University	102 	26 	16 	107 	23 	15 	94 	25 	16 	105 	23 	15 	76 	30 	19 
+Private	California Institute of Technology	43 	53 	31 	47 	52 	30 	36 	61 	33 	30 	70 	38 	45 	56 	34 
+Private	Carnegie Mellon University	29 	74 	42 	33 	71 	36 	32 	64 	35 	27 	77 	43 	24 	88 	50 
+Private	Case Western Reserve University	37 	66 	37 	36 	63 	33 	41 	56 	31 	51 	49 	29 	66 	36 	22 
+Private	Charles R. Drew University of Medicine and Science	0 	395 	236 	0 	388 	232 	0 	401 	245 	0 	425 	256 	0 	413 	250 
+Public	Clemson University	39 	59 	27 	36 	63 	31 	53 	44 	18 	46 	51 	22 	33 	69 	32 
+Public	Colorado State University	9 	155 	68 	7 	168 	74 	17 	105 	49 	13 	127 	58 	9 	148 	63 
+Private	Columbia University	109 	24 	15 	98 	24 	16 	87 	28 	17 	78 	32 	20 	96 	26 	16 
+Private	Cornell University	84 	31 	18 	74 	32 	20 	63 	38 	23 	72 	34 	21 	45 	56 	34 
+Private	Cornell University Weill Medical College	0 	395 	236 	0 	388 	232 	0 	401 	245 	0 	425 	256 	0 	413 	250 
+Private	Dartmouth College	79 	33 	19 	84 	29 	18 	55 	42 	25 	79 	31 	19 	69 	34 	20 
+Private	Drexel University	2 	238 	145 	3 	227 	132 	3 	228 	138 	5 	201 	120 	2 	253 	154 
+Private	Duke University	130 	19 	13 	131 	18 	12 	106 	22 	14 	147 	15 	11 	142 	17 	12 
+Private	Emory University	64 	39 	23 	72 	35 	22 	73 	32 	20 	61 	40 	23 	64 	38 	24 
+Public	Florida International University	0 	395 	160 	0 	388 	157 	1 	284 	108 	0 	425 	170 	1 	292 	115 
+Public	Florida State University	25 	84 	36 	11 	128 	59 	16 	108 	50 	17 	107 	50 	11 	132 	61 
+Public	George Mason University	2 	238 	94 	3 	227 	96 	0 	401 	157 	1 	292 	118 	1 	292 	115 
+Private	George Washington University	19 	102 	54 	12 	125 	68 	11 	131 	75 	13 	127 	70 	33 	69 	38 
+Private	Georgetown University	47 	50 	28 	55 	46 	26 	43 	51 	29 	60 	42 	25 	48 	53 	32 
+Public	Georgia Institute of Technology	119 	22 	8 	121 	22 	8 	117 	21 	8 	117 	22 	8 	106 	23 	8 
+Private	Harvard University	327 	1 	1 	343 	1 	1 	359 	1 	1 	362 	1 	1 	357 	1 	1 
+Public	Indiana University - Bloomington	87 	29 	13 	61 	43 	18 	63 	38 	16 	59 	43 	18 	20 	99 	45 
+Public	Indiana University-Purdue University - Indianapolis	0 	395 	160 	0 	388 	157 	0 	401 	157 	1 	292 	118 	0 	413 	164 
+Public	Iowa State University	42 	54 	23 	55 	46 	21 	45 	49 	21 	50 	50 	21 	57 	43 	18 
+Private	Johns Hopkins University	28 	76 	44 	36 	63 	33 	27 	79 	42 	40 	57 	31 	51 	49 	29 
+Public	Kansas State University	8 	164 	73 	11 	128 	59 	8 	156 	64 	9 	157 	69 	9 	148 	63 
+Public	Louisiana State University - Baton Rouge	42 	54 	23 	37 	61 	30 	43 	51 	23 	45 	53 	24 	43 	59 	24 
+Public	Louisiana State University Health Sciences Center	0 	395 	160 	0 	388 	157 	0 	401 	157 	0 	425 	170 	0 	413 	164 
+Private	Massachusetts Institute of Technology	143 	18 	12 	145 	17 	11 	171 	15 	10 	159 	13 	9 	158 	13 	11 
+Private	Medical College of Wisconsin	0 	395 	236 	0 	388 	232 	0 	401 	245 	0 	425 	256 	0 	413 	250 
+Public	Medical University of South Carolina	0 	395 	160 	0 	388 	157 	0 	401 	157 	0 	425 	170 	0 	413 	164 
+Public	Michigan State University	56 	45 	20 	58 	45 	20 	40 	57 	26 	54 	45 	19 	53 	45 	19 
+Public	Mississippi State University	21 	93 	42 	24 	88 	42 	29 	75 	35 	26 	81 	37 	38 	65 	29 
+Public	Montana State University - Bozeman	8 	164 	73 	14 	116 	54 	7 	164 	67 	4 	211 	86 	7 	172 	73 
+Private	Mount Sinai School of Medicine	0 	395 	236 	0 	388 	232 	0 	401 	245 	0 	425 	256 	0 	413 	250 
+Public	New Jersey Institute of Technology	0 	395 	160 	0 	388 	157 	0 	401 	157 	0 	425 	170 	0 	413 	164 
+Public	New Mexico Institute of Mining and Technology	0 	395 	160 	4 	208 	85 	4 	211 	84 	1 	292 	118 	0 	413 	164 
+Public	New Mexico State University - Las Cruces	1 	276 	111 	3 	227 	96 	1 	284 	108 	3 	231 	95 	0 	413 	164 
+Private	New York University	121 	21 	14 	131 	18 	12 	167 	16 	11 	151 	14 	10 	124 	20 	14 
+Public	North Carolina State University	11 	141 	62 	4 	208 	85 	7 	164 	67 	36 	63 	29 	39 	63 	27 
+Public	North Dakota State University	9 	155 	68 	14 	116 	54 	5 	194 	78 	4 	211 	86 	6 	180 	76 
+Private	Northwestern University	257 	3 	3 	240 	6 	5 	254 	3 	2 	203 	7 	5 	178 	11 	9 
+Public	Ohio State University - Columbus	122 	20 	7 	127 	21 	7 	128 	20 	7 	120 	21 	7 	99 	25 	10 
+Public	Oklahoma State University - Stillwater	13 	125 	54 	20 	100 	47 	26 	82 	39 	21 	95 	43 	17 	108 	51 
+Public	Oregon Health & Science University	0 	395 	160 	0 	388 	157 	0 	401 	157 	0 	425 	170 	0 	413 	164 
+Public	Oregon State University	8 	164 	73 	6 	183 	78 	5 	194 	78 	11 	142 	64 	9 	148 	63 
+Public	Pennsylvania State University - Hershey Medical Ctr	0 	395 	160 	0 	388 	157 	0 	401 	157 	0 	425 	170 	0 	413 	164 
+Public	Pennsylvania State University - University Park	25 	84 	36 	18 	106 	50 	15 	111 	52 	24 	86 	41 	24 	88 	39 
+Private	Princeton University	246 	5 	4 	204 	8 	7 	211 	7 	6 	195 	9 	7 	220 	6 	4 
+Public	Purdue University - West Lafayette	9 	155 	68 	68 	37 	14 	88 	26 	10 	87 	28 	11 	89 	27 	11 
+Private	Rensselaer Polytechnic Institute	21 	93 	52 	20 	100 	54 	21 	97 	54 	15 	117 	64 	17 	108 	58 
+Private	Rice University	183 	13 	9 	177 	12 	9 	167 	16 	11 	145 	16 	12 	172 	12 	10 
+Private	Rockefeller University	0 	395 	236 	0 	388 	232 	0 	401 	245 	0 	425 	256 	0 	413 	250 
+Private	Rush University	0 	395 	236 				0 	401 	245 	0 	425 	256 	0 	413 	250 
+Public	Rutgers the State University of NJ - New Brunswick	21 	93 	42 	19 	103 	48 	26 	82 	39 	16 	111 	52 	18 	104 	49 
+Private	Saint Louis University - St. Louis	7 	182 	105 	6 	183 	106 	13 	118 	63 	6 	181 	107 	10 	139 	77 
+Private	Scripps Research Institute	0 	395 	236 	0 	388 	232 	0 	401 	245 	0 	425 	256 	0 	413 	250 
+Private	Stanford University	177 	15 	10 	192 	9 	8 	198 	9 	8 	188 	11 	8 	245 	5 	3 
+Public	Stony Brook University	6 	188 	78 	6 	183 	78 	3 	228 	91 	19 	102 	46 	9 	148 	63 
+Public	Temple University	1 	276 	111 	4 	208 	85 	0 	401 	157 	0 	425 	170 	1 	292 	115 
+Public	Texas A&M University	192 	12 	4 	165 	14 	5 	180 	13 	4 	139 	19 	6 	137 	18 	6 
+Private	Thomas Jefferson University	0 	395 	236 	0 	388 	232 	0 	401 	245 	0 	425 	256 	0 	413 	250 
+Private	Tufts University	55 	46 	26 	70 	36 	23 	63 	38 	23 	52 	48 	28 	57 	43 	26 
+Private	Tulane University	39 	59 	33 	62 	40 	25 	24 	89 	49 	24 	86 	46 	52 	48 	28 
+Public	Uniformed Services University of the Health Sciences	0 	395 	160 	0 	388 	157 	0 	401 	157 	0 	425 	170 	0 	413 	164 
+Public	University at Albany	1 	276 	111 	0 	388 	157 	0 	401 	157 	0 	425 	170 	0 	413 	164 
+Public	University at Buffalo	1 	276 	111 	4 	208 	85 	1 	284 	108 	2 	252 	102 	0 	413 	164 
+Public	University of Alabama - Birmingham	10 	148 	64 	5 	199 	82 	6 	181 	72 	3 	231 	95 	6 	180 	76 
+Public	University of Alabama - Huntsville	0 	395 	160 	1 	279 	116 	1 	284 	108 	4 	211 	86 	1 	292 	115 
+Public	University of Alaska - Fairbanks	1 	276 	111 	0 	388 	157 	0 	401 	157 	2 	252 	102 	0 	413 	164 
+Public	University of Arizona	81 	32 	14 	62 	40 	16 	71 	34 	14 	96 	25 	9 	106 	23 	8 
+Public	University of Arkansas for Medical Sciences	0 	395 	160 	0 	388 	157 	0 	401 	157 	0 	425 	170 	0 	413 	164 
+Public	University of California - Berkeley	94 	28 	12 	87 	27 	10 	63 	38 	16 	72 	34 	14 	53 	45 	19 
+Public	University of California - Davis	2 	238 	94 	5 	199 	82 	6 	181 	72 	2 	252 	102 	14 	117 	54 
+Public	University of California - Irvine	0 	395 	160 	2 	242 	102 	6 	181 	72 	4 	211 	86 	19 	102 	48 
+Public	University of California - Los Angeles	25 	84 	36 	41 	58 	28 	32 	64 	30 	26 	81 	37 	114 	21 	7 
+Public	University of California - Riverside	0 	395 	160 	1 	279 	116 	0 	401 	157 	2 	252 	102 	0 	413 	164 
+Public	University of California - San Diego	15 	114 	51 	8 	154 	68 	15 	111 	52 	13 	127 	58 	39 	63 	27 
+Public	University of California - San Francisco	0 	395 	160 	0 	388 	157 	0 	401 	157 	0 	425 	170 	0 	413 	164 
+Public	University of California - Santa Barbara	3 	215 	86 	0 	388 	157 	1 	284 	108 	2 	252 	102 	6 	180 	76 
+Public	University of California - Santa Cruz	2 	238 	94 	0 	388 	157 	1 	284 	108 	1 	292 	118 	4 	211 	86 
+Public	University of Central Florida	57 	43 	19 	62 	40 	16 	45 	49 	21 	28 	75 	34 	22 	92 	42 
+Private	University of Chicago	218 	8 	7 	225 	7 	6 	205 	8 	7 	202 	8 	6 	196 	8 	6 
+Public	University of Cincinnati - Cincinnati	26 	82 	35 	38 	60 	29 	27 	79 	38 	34 	66 	30 	18 	104 	49 
+Public	University of Colorado - Boulder	9 	155 	68 	4 	208 	85 	7 	164 	67 	10 	150 	67 	5 	199 	81 
+Public	University of Colorado Health Sciences Center	0 	395 	160 	0 	388 	157 	0 	401 	157 	0 	425 	170 	0 	413 	164 
+Public	University of Connecticut - Health Center	0 	395 	160 	0 	388 	157 	0 	401 	157 	0 	425 	170 	0 	413 	164 
+Public	University of Connecticut - Storrs	5 	194 	81 	4 	208 	85 	3 	228 	91 	2 	252 	102 	1 	292 	115 
+Private	University of Dayton	8 	164 	92 	9 	152 	85 	13 	118 	63 	11 	142 	79 	12 	128 	70 
+Public	University of Delaware	13 	125 	54 	11 	128 	59 	19 	101 	47 	14 	120 	54 	12 	128 	59 
+Public	University of Florida	180 	14 	5 	183 	10 	2 	196 	10 	2 	280 	2 	1 	252 	4 	2 
+Public	University of Georgia	69 	36 	15 	64 	38 	15 	52 	46 	20 	64 	37 	16 	59 	41 	17 
+Public	University of Hawaii - Manoa	0 	395 	160 	0 	388 	157 	0 	401 	157 	1 	292 	118 	1 	292 	115 
+Public	University of Houston - University Park	13 	125 	54 	6 	183 	78 	8 	156 	64 	11 	142 	64 	14 	117 	54 
+Public	University of Idaho	21 	93 	42 	26 	83 	38 	14 	114 	54 	14 	120 	54 	4 	211 	86 
+Public	University of Illinois - Chicago	1 	276 	111 	2 	242 	102 	3 	228 	91 	6 	181 	75 	1 	292 	115 
+Public	University of Illinois - Urbana-Champaign	98 	27 	11 	94 	25 	9 	88 	26 	10 	80 	30 	12 	26 	85 	38 
+Public	University of Iowa	22 	90 	40 	27 	79 	37 	22 	92 	41 	27 	77 	35 	30 	76 	36 
+Public	University of Kansas - Lawrence	50 	48 	21 	46 	53 	23 	36 	61 	29 	53 	47 	20 	71 	33 	14 
+Public	University of Kansas Medical Center	0 	395 	160 	0 	388 	157 	0 	401 	157 	0 	425 	170 	0 	413 	164 
+Public	University of Kentucky	28 	76 	33 	36 	63 	31 	30 	72 	33 	32 	68 	31 	43 	59 	24 
+Public	University of Louisville	23 	88 	39 	17 	110 	51 	22 	92 	41 	19 	102 	46 	20 	99 	45 
+Public	University of Maine - Orono	5 	194 	81 	3 	227 	96 	3 	228 	91 	6 	181 	75 	4 	211 	86 
+Public	University of Maryland - Baltimore	0 	395 	160 	0 	388 	157 	0 	401 	157 	0 	425 	170 	0 	413 	164 
+Public	University of Maryland - Baltimore County	2 	238 	94 	8 	154 	68 	4 	211 	84 	2 	252 	102 	14 	117 	54 
+Public	University of Maryland - College Park	62 	41 	18 	44 	56 	26 	53 	44 	18 	62 	39 	17 	47 	54 	22 
+Public	University of Massachusetts - Amherst	1 	276 	111 	4 	208 	85 	1 	284 	108 	1 	292 	118 	2 	253 	100 
+Public	University of Massachusetts Medical Sch - Worcester	0 	395 	160 	0 	388 	157 	0 	401 	157 	0 	425 	170 	0 	413 	164 
+Public	University of Medicine & Dentistry of New Jersey	0 	395 	160 	0 	388 	157 	0 	401 	157 	0 	425 	170 	0 	413 	164 
+Private	University of Miami	39 	59 	33 	30 	74 	39 	31 	70 	38 	28 	75 	42 	36 	68 	37 
+Public	University of Michigan - Ann Arbor	64 	39 	17 	73 	33 	13 	72 	33 	13 	71 	36 	15 	75 	31 	12 
+Public	University of Minnesota - Twin Cities	113 	23 	9 	82 	30 	12 	100 	23 	9 	75 	33 	13 	61 	39 	15 
+Public	University of Missouri - Columbia	21 	93 	42 	34 	69 	35 	20 	100 	46 	26 	81 	37 	21 	95 	43 
+Public	University of Nebraska - Lincoln	50 	48 	21 	60 	44 	19 	66 	37 	15 	46 	51 	22 	60 	40 	16 
+Public	University of Nebraska Medical Center	0 	395 	160 	0 	388 	157 	0 	401 	157 	0 	425 	170 	0 	413 	164 
+Public	University of Nevada - Las Vegas	2 	238 	94 	0 	388 	157 	1 	284 	108 	1 	292 	118 	0 	413 	164 
+Public	University of Nevada - Reno	9 	155 	68 	0 	388 	157 	4 	211 	84 	1 	292 	118 	0 	413 	164 
+Public	University of New Hampshire - Durham	0 	395 	160 	1 	279 	116 	2 	250 	99 	1 	292 	118 	0 	413 	164 
+Public	University of New Mexico - Albuquerque	2 	238 	94 	4 	208 	85 	1 	284 	108 	0 	425 	170 	2 	253 	100 
+Public	University of North Carolina - Chapel Hill	193 	11 	3 	161 	15 	6 	182 	12 	3 	170 	12 	4 	149 	15 	4 
+Public	University of North Dakota	5 	194 	81 	3 	227 	96 	9 	146 	60 	6 	181 	75 	9 	148 	63 
+Private	University of Notre Dame	57 	43 	25 	54 	48 	27 	50 	47 	27 	61 	40 	23 	49 	52 	31 
+Public	University of Oklahoma - Norman	199 	9 	2 	181 	11 	3 	176 	14 	5 	143 	17 	5 	149 	15 	4 
+Public	University of Oklahoma Health Sciences Center	0 	395 	160 	0 	388 	157 	0 	401 	157 	0 	425 	170 	0 	413 	164 
+Public	University of Oregon	13 	125 	54 	11 	128 	59 	7 	164 	67 	10 	150 	67 	11 	132 	61 
+Private	University of Pennsylvania	148 	17 	11 	129 	20 	14 	145 	19 	13 	125 	20 	14 	133 	19 	13 
+Public	University of Pittsburgh - Pittsburgh	28 	76 	33 	26 	83 	38 	30 	72 	33 	20 	98 	45 	21 	95 	43 
+Public	University of Rhode Island	0 	395 	160 	0 	388 	157 	1 	284 	108 	0 	425 	170 	0 	413 	164 
+Private	University of Rochester	23 	88 	50 	27 	79 	43 	32 	64 	35 	25 	85 	45 	32 	71 	39 
+Public	University of South Carolina - Columbia	40 	58 	26 	52 	50 	22 	39 	59 	27 	27 	77 	35 	44 	58 	23 
+Public	University of South Florida	21 	93 	42 	23 	92 	43 	12 	124 	56 	8 	162 	72 	27 	83 	37 
+Private	University of Southern California	233 	7 	6 	270 	3 	2 	244 	4 	3 	210 	6 	4 	196 	8 	6 
+Public	University of Southern Mississippi	11 	141 	62 	11 	128 	59 	6 	181 	72 	7 	168 	73 	3 	228 	94 
+Public	University of Tennessee - Knoxville	39 	59 	27 	22 	94 	44 	21 	97 	44 	26 	81 	37 	24 	88 	39 
+Public	University of Texas - Austin	249 	4 	1 	295 	2 	1 	291 	2 	1 	259 	4 	2 	264 	3 	1 
+Public	University of Texas Health Science Center - Houston	0 	395 	160 	0 	388 	157 	0 	401 	157 	0 	425 	170 	0 	413 	164 
+Public	University of Texas Health Science Ctr - San Antonio	0 	395 	160 	0 	388 	157 	0 	401 	157 	0 	425 	170 	0 	413 	164 
+Public	University of Texas MD Anderson Cancer Center	0 	395 	160 	0 	388 	157 	0 	401 	157 	0 	425 	170 	0 	413 	164 
+Public	University of Texas Medical Branch - Galveston	0 	395 	160 	0 	388 	157 	0 	401 	157 	0 	425 	170 	0 	413 	164 
+Public	University of Texas SW Medical Center - Dallas	0 	395 	160 	0 	388 	157 	0 	401 	157 	0 	425 	170 	0 	413 	164 
+Public	University of Utah	10 	148 	64 	15 	114 	52 	21 	97 	44 	18 	105 	48 	23 	91 	41 
+Public	University of Vermont	13 	125 	54 	10 	138 	66 	5 	194 	78 	6 	181 	75 	2 	253 	100 
+Public	University of Virginia	39 	59 	27 	35 	67 	33 	42 	54 	24 	38 	61 	28 	41 	61 	26 
+Public	University of Washington - Seattle	37 	66 	30 	45 	55 	25 	42 	54 	24 	44 	54 	25 	38 	65 	29 
+Public	University of Wisconsin - Madison	22 	90 	40 	25 	86 	40 	32 	64 	30 	21 	95 	43 	31 	74 	34 
+Public	US Air Force Academy	0 	395 	160 	0 	388 	157 	0 	401 	157 	0 	425 	170 	0 	413 	164 
+Public	US Naval Postgraduate School	0 	395 	160 	0 	388 	157 	0 	401 	157 	0 	425 	170 	0 	413 	164 
+Public	Utah State University	2 	238 	94 	1 	279 	116 	0 	401 	157 	2 	252 	102 	1 	292 	115 
+Private	Vanderbilt University	197 	10 	8 	155 	16 	10 	184 	11 	9 	140 	18 	13 	183 	10 	8 
+Public	Virginia Commonwealth University	1 	276 	111 	3 	227 	96 	2 	250 	99 	0 	425 	170 	1 	292 	115 
+Public	Virginia Polytechnic Institute and State University	16 	110 	50 	21 	97 	45 	19 	101 	47 	18 	105 	48 	20 	99 	45 
+Private	Wake Forest University	11 	141 	80 	10 	138 	73 	14 	114 	61 	13 	127 	70 	11 	132 	72 
+Public	Washington State University - Pullman	3 	215 	86 	7 	168 	74 	7 	164 	67 	4 	211 	86 	2 	253 	100 
+Private	Washington University in St. Louis	240 	6 	5 	253 	5 	4 	228 	6 	5 	269 	3 	2 	199 	7 	5 
+Public	Wayne State University	15 	114 	51 	2 	242 	102 	1 	284 	108 	1 	292 	118 	4 	211 	86 
+Public	West Virginia University	21 	93 	42 	21 	97 	45 	29 	75 	35 	12 	136 	62 	9 	148 	63 
+Private	Woods Hole Oceanographic Institution	0 	395 	236 	0 	388 	232 	0 	401 	245 	0 	425 	256 	0 	413 	250 
+Private	Yale University	275 	2 	2 	268 	4 	3 	240 	5 	4 	244 	5 	3 	289 	2 	2 
+Private	Yeshiva University	1 	276 	166 	2 	242 	141 	3 	228 	138 	3 	231 	137 	1 	292 	178 
