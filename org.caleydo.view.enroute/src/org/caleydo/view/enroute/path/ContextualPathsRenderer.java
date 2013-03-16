@@ -93,6 +93,7 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 	protected APathwayPathRenderer selectedPathRenderer;
 	private BranchPathEventSpaceListener branchPathEventSpaceListener = new BranchPathEventSpaceListener();
 	private VertexRepComparator comparator = new VertexRepComparator();
+	private List<List<PathwayVertexRep>> selectedPathSegments = new ArrayList<>();
 
 	/**
 	 * Context menu items that shall be displayed when right-clicking on a path node.
@@ -247,7 +248,8 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 	private APathwayPathRenderer addPath(List<List<PathwayVertexRep>> pathSegments) {
 		VerticalPathRenderer renderer = new VerticalPathRenderer(view, tablePerspectives);
 
-		renderer.setUpdateStrategy(new FixedPathUpdateStrategy(renderer, eventSpace, isPathSelectionMode, this));
+		renderer.setUpdateStrategy(new FixedPathUpdateStrategy(renderer, eventSpace, isPathSelectionMode, this,
+				selectedPathSegments));
 		renderer.pathwayPathEventSpace = eventSpace;
 		// renderer.setTablePerspectives(tablePerspectives);
 		renderer.setPathway(pathway);
@@ -396,6 +398,7 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 
 	@ListenTo(restrictExclusiveToEventSpace = true)
 	public void onSelectedPathChanged(PathwayPathSelectionEvent event) {
+		selectedPathSegments = event.getPathSegmentsAsVertexList();
 		if (!isPathFromPathway(event.getPathSegments(), pathway)) {
 			selectedPathRenderer = null;
 			return;

@@ -203,14 +203,14 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 
 			if (expandedBranchSummaryNode != null) {
 				renderBranchSummaryNode(gl, glu, expandedBranchSummaryNode);
-				gl.glColor4f(1, 1, 1, 0.9f);
-
-				gl.glBegin(GL2.GL_QUADS);
-				gl.glVertex3f(0, 0, 0.1f);
-				gl.glVertex3f(x, 0, 0.1f);
-				gl.glVertex3f(x, y, 0.1f);
-				gl.glVertex3f(0, y, 0.1f);
-				gl.glEnd();
+				// gl.glColor4f(1, 1, 1, 0.9f);
+				//
+				// gl.glBegin(GL2.GL_QUADS);
+				// gl.glVertex3f(0, 0, 0.1f);
+				// gl.glVertex3f(x, 0, 0.1f);
+				// gl.glVertex3f(x, y, 0.1f);
+				// gl.glVertex3f(0, y, 0.1f);
+				// gl.glEnd();
 			}
 
 			renderEdges(gl, pathNodes);
