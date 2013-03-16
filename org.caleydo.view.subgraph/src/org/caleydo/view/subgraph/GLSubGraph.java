@@ -26,6 +26,7 @@ import org.caleydo.core.event.view.MinSizeUpdateEvent;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
 import org.caleydo.core.view.ViewManager;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -890,17 +891,17 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		augmentation.clearPortalConnectionRenderers();
 		if (isShowPortals) {
 			for (PathwayVertexRep vertexRep : info.pathway.vertexSet()) {
-				Rectangle2D sourceLocation = getPortalLocation(vertexRep, info);
+				Pair<Rectangle2D, Boolean> sourcePair = getPortalLocation(vertexRep, info);
 				for (PathwayMultiFormInfo i : pathwayInfos) {
 					if (info != i) {
 						if (info.getCurrentEmbeddingID() != EEmbeddingID.PATHWAY_LEVEL1) {
 							// Only connect lv2 or higher with current lv1
 							if (i.getCurrentEmbeddingID() == EEmbeddingID.PATHWAY_LEVEL1) {
-								addConnectionRenderers(vertexRep, info, i, sourceLocation);
+								addConnectionRenderers(vertexRep, info, i, sourcePair);
 							}
 						} else {
 							// Connect lv1 with all
-							addConnectionRenderers(vertexRep, info, i, sourceLocation);
+							addConnectionRenderers(vertexRep, info, i, sourcePair);
 						}
 					} else {
 						// TODO: implement
@@ -911,26 +912,29 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	}
 
 	private void addConnectionRenderers(PathwayVertexRep vertexRep, PathwayMultiFormInfo sourceInfo,
-			PathwayMultiFormInfo targetInfo, Rectangle2D sourceLocation) {
+			PathwayMultiFormInfo targetInfo, Pair<Rectangle2D, Boolean> sourcePair) {
 		Set<PathwayVertexRep> equivalentVertexReps = PathwayManager.get().getEquivalentVertexRepsInPathway(vertexRep,
 				targetInfo.pathway);
 		for (PathwayVertexRep v : equivalentVertexReps) {
-			Rectangle2D targetLocation = getPortalLocation(v, targetInfo);
+			Pair<Rectangle2D, Boolean> targetPair = getPortalLocation(v, targetInfo);
+
 			// System.out.println("Add link from: " + vertexRep.getShortName() + " to " + v.getShortName() + "("
 			// + sourceLocation + " to " + targetLocation + ")");
 			float stubSize = Math.max(
 					1,
 					Math.abs(pathwayLayout.getColumnIndex(sourceInfo.window)
 							- pathwayLayout.getColumnIndex(targetInfo.window)));
-			LinkRenderer renderer = new LinkRenderer(vertexRep == currentPortalVertexRep
-					|| v == currentPortalVertexRep, sourceLocation, targetLocation, sourceInfo, targetInfo, stubSize,
-					false, false);
+			LinkRenderer renderer = new LinkRenderer(
+					vertexRep == currentPortalVertexRep || v == currentPortalVertexRep, sourcePair.getFirst(),
+					targetPair.getFirst(), sourceInfo, targetInfo, stubSize, sourcePair.getSecond(),
+					targetPair.getSecond());
 			augmentation.addPortalLinkRenderer(renderer);
 		}
 	}
 
-	protected Rectangle2D getPortalLocation(PathwayVertexRep vertexRep, PathwayMultiFormInfo info) {
+	protected Pair<Rectangle2D, Boolean> getPortalLocation(PathwayVertexRep vertexRep, PathwayMultiFormInfo info) {
 		Rectangle2D rect = null;
+		boolean isLocationWindow = false;
 		IPathwayRepresentation pathwayRepresentation = getPathwayRepresentation(info.multiFormRenderer,
 				info.multiFormRenderer.getActiveRendererID());
 		if (pathwayRepresentation != null)
@@ -940,8 +944,9 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 				|| info.getCurrentEmbeddingID() == EEmbeddingID.PATHWAY_LEVEL4) {
 			rect = new Rectangle2D.Float(info.window.getAbsoluteLocation().x(), info.window.getAbsoluteLocation().y(),
 					info.window.getSize().x(), 20);
+			isLocationWindow = true;
 		}
-		return rect;
+		return new Pair<Rectangle2D, Boolean>(rect, isLocationWindow);
 	}
 
 	// protected void updatePortalLinks() {

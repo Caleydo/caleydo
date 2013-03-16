@@ -46,14 +46,14 @@ import setvis.bubbleset.BubbleSet;
 public class GLSubGraphAugmentation extends GLElement {
 
 	private List<LinkRenderer> portalRenderers = new ArrayList<>();
-//	private ArrayList<Rectangle2D> portals = new ArrayList<>();
+	// private ArrayList<Rectangle2D> portals = new ArrayList<>();
 	private ArrayList<Rectangle2D> bubbleSetItems = new ArrayList<>();
 	private ArrayList<Line2D> bubbleSetEdges = new ArrayList<>();
 	private Color bubbleSetColor = new Color(0.0f, 1.0f, 0.0f);
 	private Color portalColor = new Color(1.0f, 0.0f, 0.0f);
 
-//	private Rectangle2D portalStartNode;
-//	private boolean isShowPortals = false;
+	// private Rectangle2D portalStartNode;
+	// private boolean isShowPortals = false;
 
 	private List<IGLRenderer> renderers = new ArrayList<>();
 	private BubbleSetGLRenderer bubbleSetRenderer = new BubbleSetGLRenderer();
@@ -131,13 +131,13 @@ public class GLSubGraphAugmentation extends GLElement {
 				Vec2f direction = new Vec2f((float) loc1.getCenterX() - (float) loc2.getCenterX(),
 						(float) loc1.getCenterY() - (float) loc2.getCenterY());
 				direction.normalize();
-				if (info1.getCurrentEmbeddingID() == EEmbeddingID.PATHWAY_LEVEL1) {
+				if (!isLocation1Window) {
 					Vec2f stub1End = new Vec2f((float) loc1.getCenterX() - 20 * direction.x() * stubSize,
 							(float) loc1.getCenterY() - 20 * direction.y() * stubSize);
 					g.color(1, 0, 0, 1f).lineWidth(2)
 							.drawLine((float) loc1.getCenterX(), (float) loc1.getCenterY(), stub1End.x(), stub1End.y());
 				}
-				if (info2.getCurrentEmbeddingID() == EEmbeddingID.PATHWAY_LEVEL1) {
+				if (!isLocation2Window) {
 					Vec2f stub2End = new Vec2f((float) loc2.getCenterX() + 20 * direction.x() * stubSize,
 							(float) loc2.getCenterY() + 20 * direction.y() * stubSize);
 					g.color(1, 0, 0, 1f).lineWidth(2)
@@ -215,14 +215,14 @@ public class GLSubGraphAugmentation extends GLElement {
 			// BubbleSet(routingIterations, marchingIterations,pixelGroup,
 			// edgeR0,edgeR1, nodeR0, nodeR1,
 			// morphBuffer,skip)
-//			if (this.portals != null && isShowPortals) {
-//				for (Rectangle2D rect : this.portals) {
-//					ArrayList<Rectangle2D> items = new ArrayList<>();
-//					items.add(new Rectangle2D.Double(rect.getCenterX(), rect.getCenterY(), rect.getWidth(), rect
-//							.getHeight()));
-//					this.bubbleSetRenderer.addGroup(items, null, portalColor);
-//				}
-//			}
+			// if (this.portals != null && isShowPortals) {
+			// for (Rectangle2D rect : this.portals) {
+			// ArrayList<Rectangle2D> items = new ArrayList<>();
+			// items.add(new Rectangle2D.Double(rect.getCenterX(), rect.getCenterY(), rect.getWidth(), rect
+			// .getHeight()));
+			// this.bubbleSetRenderer.addGroup(items, null, portalColor);
+			// }
+			// }
 			this.bubbleSetRenderer.update(g.gl, null, 0);
 			g.gl.glTranslatef(0.f, 0.f, -1.0f);
 		}
@@ -237,10 +237,10 @@ public class GLSubGraphAugmentation extends GLElement {
 
 	}
 
-//	public void showPortals(boolean boolVal) {
-//		isShowPortals = boolVal;
-//		isDirty = true;
-//	}
+	// public void showPortals(boolean boolVal) {
+	// isShowPortals = boolVal;
+	// isDirty = true;
+	// }
 
 	public void renderPortalLinks(GLGraphics g) {
 		// if (this.portals == null || !isShowPortals)
@@ -273,10 +273,10 @@ public class GLSubGraphAugmentation extends GLElement {
 		this.path = path;
 	}
 
-//	public void updatePortalRects(Rectangle2D node, ArrayList<Rectangle2D> portalList) {
-//		this.portals = portalList;
-//		this.portalStartNode = node;
-//	}
+	// public void updatePortalRects(Rectangle2D node, ArrayList<Rectangle2D> portalList) {
+	// this.portals = portalList;
+	// this.portalStartNode = node;
+	// }
 
 	public void addPortalLinkRenderer(LinkRenderer renderer) {
 		// System.out.println("addPortalHighlightRenderer");
