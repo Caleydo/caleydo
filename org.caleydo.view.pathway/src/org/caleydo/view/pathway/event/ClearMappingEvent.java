@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.caleydo.view.pathway.event;
 
@@ -7,10 +7,10 @@ import org.caleydo.core.event.AEvent;
 import org.caleydo.view.pathway.GLPathway;
 
 /**
- * Event that signals the pathway view to clear the on-node mapping.
- * 
+ * Event that signals the pathway view to hide the on-node mapping.
+ *
  * @author Christian Partl
- * 
+ *
  */
 public class ClearMappingEvent
 	extends AEvent {

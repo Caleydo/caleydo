@@ -40,15 +40,15 @@ import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 
 /**
- * Specialization of {@link TablePerspective} for pathways. Adds a
- * {@link PathwayGraph} to the data container.
+ * Specialization of {@link TablePerspective} for pathways. Adds a {@link PathwayGraph} to the data container.
  *
  * @author Christian Partl
  * @author Alexander Lex
- *
+ * @deprecated - this shouldn't be a table perspective bus something separate
  */
 @XmlType
 @XmlRootElement
+@Deprecated
 public class PathwayTablePerspective extends TablePerspective {
 
 	/** The datadomain giving access to the pathways themselves */
@@ -75,9 +75,8 @@ public class PathwayTablePerspective extends TablePerspective {
 	 * @param dimensionPerspective
 	 * @param pathway
 	 */
-	public PathwayTablePerspective(ATableBasedDataDomain dataDomain,
-			PathwayDataDomain pathwayDataDomain, Perspective recordPerspective,
- Perspective dimensionPerspective, PathwayGraph pathway) {
+	public PathwayTablePerspective(ATableBasedDataDomain dataDomain, PathwayDataDomain pathwayDataDomain,
+			Perspective recordPerspective, Perspective dimensionPerspective, PathwayGraph pathway) {
 		super(dataDomain, recordPerspective, dimensionPerspective);
 		this.pathwayDataDomain = pathwayDataDomain;
 		this.pathway = pathway;
@@ -96,7 +95,7 @@ public class PathwayTablePerspective extends TablePerspective {
 	 * @return the pathway, see {@link #pathway}
 	 */
 	public PathwayGraph getPathway() {
-		if(pathway == null)
+		if (pathway == null)
 			resolvePathway();
 		return pathway;
 	}
@@ -129,9 +128,8 @@ public class PathwayTablePerspective extends TablePerspective {
 			data.setData(indices);
 			recordPerspective.init(data);
 
-			PathwayTablePerspective subTablePerspective = new PathwayTablePerspective(dataDomain,
-					pathwayDataDomain, recordPerspective, dimensionPerspective,
-					getPathway());
+			PathwayTablePerspective subTablePerspective = new PathwayTablePerspective(dataDomain, pathwayDataDomain,
+					recordPerspective, dimensionPerspective, getPathway());
 			subTablePerspective.setRecordGroup(group);
 			recordSubTablePerspectives.add(subTablePerspective);
 		}
@@ -141,7 +139,7 @@ public class PathwayTablePerspective extends TablePerspective {
 
 	private void resolvePathway() {
 		// pathwayDataDomain.get
-		pathway = PathwayManager.get().getPathwayByTitle(pathwayTitle,
-				pathwayDataBaseType);
+		pathway = PathwayManager.get().getPathwayByTitle(pathwayTitle, pathwayDataBaseType);
 	}
+
 }

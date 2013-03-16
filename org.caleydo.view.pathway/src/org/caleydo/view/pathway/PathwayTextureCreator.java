@@ -54,8 +54,7 @@ public class PathwayTextureCreator implements IRemoteViewCreator {
 			}
 
 			pathwayView.setRemoteRenderingGLView((IGLRemoteRenderingView) remoteRenderingView);
-			pathwayView.setDataDomain(tablePerspective.getDataDomain());
-			pathwayView.setTablePerspective(tablePerspective);
+			pathwayView.addTablePerspective(tablePerspective);
 		}
 		pathwayView.setPathwayPathEventSpace(embeddingEventSpace);
 		pathwayView.setMinHeightPixels(150);

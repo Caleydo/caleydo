@@ -26,12 +26,11 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.perspective.table.Average;
-import org.caleydo.core.data.perspective.table.TablePerspectiveStatistics;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.VirtualArray;
-import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
@@ -71,8 +70,6 @@ public class GLPathwayAugmentationRenderer {
 
 	private ArrayList<Integer> selectedEdgeRepId;
 
-	private IDMappingManager idMappingManager;
-
 	private PathwayItemManager pathwayItemManager;
 
 	private String dataTransformation = Table.Transformation.NONE;
@@ -85,7 +82,7 @@ public class GLPathwayAugmentationRenderer {
 	private float stdBarHeight;
 	private float onePxlWidth;
 	private float onePxlHeight;
-	private float stdDevBarHeight_1_third;
+	private float thirdOfstdDevBarHeight;
 
 	/**
 	 * Constructor.
@@ -93,7 +90,6 @@ public class GLPathwayAugmentationRenderer {
 	public GLPathwayAugmentationRenderer(ViewFrustum viewFrustum, GLPathway glPathwayView) {
 
 		this.glPathwayView = glPathwayView;
-		idMappingManager = glPathwayView.getPathwayDataDomain().getGeneIDMappingManager();
 
 		hashPathway2VerticesDisplayListId = new HashMap<PathwayGraph, Integer>();
 		hashPathway2EdgesDisplayListId = new HashMap<PathwayGraph, Integer>();
@@ -157,26 +153,24 @@ public class GLPathwayAugmentationRenderer {
 	 * Creates a sample va based on the state of {@link GLPathway#getSampleMappingMode()}
 	 */
 	private void createSelectedSamplesVA() {
-		if (glPathwayView.getDataDomain() == null) {
+		List<TablePerspective> tablePerspectives = glPathwayView.getTablePerspectives();
+		if (tablePerspectives.isEmpty()) {
 			selectedSamplesVA = null;
 			return;
 		}
+		TablePerspective tablePerspective;
+
+		tablePerspective = tablePerspectives.get(0);
+
 		Set<Integer> selectedSamples = glPathwayView.getSampleSelectionManager().getElements(SelectionType.SELECTION);
 		List<Integer> selectedSamplesArray = new ArrayList<Integer>();
 
 		// Only add selected samples for single pathway
 		switch (glPathwayView.getSampleMappingMode()) {
 		case ALL:
-			if (!glPathwayView.getDataDomain().isGeneRecord()) {
-				if (glPathwayView.getTablePerspective() != null)
-					selectedSamplesVA = glPathwayView.getTablePerspective().getRecordPerspective().getVirtualArray();
-				return;
-			} else {
-				if (glPathwayView.getTablePerspective() != null)
-					selectedSamplesVA = glPathwayView.getTablePerspective().getDimensionPerspective().getVirtualArray();
-				return;
-			}
-
+			selectedSamplesVA = tablePerspective.getPerspective(
+					tablePerspective.getDataDomain().getOppositeIDType(IDType.getIDType("DAVID"))).getVirtualArray();
+			break;
 		case SELECTED:
 			selectedSamplesArray.addAll(selectedSamples);
 			if (selectedSamplesArray.isEmpty()) {
@@ -279,7 +273,7 @@ public class GLPathwayAugmentationRenderer {
 		nodeHeight *= scaleFactor;
 
 		gl.glNewList(upscaledFramedEnzymeNodeDisplayListID, GL2.GL_COMPILE);
-		fillNodeDisplayListFrame(gl, nodeWidth, nodeHeight);
+		renderNode(gl, nodeWidth, nodeHeight);
 		gl.glEndList();
 	}
 
@@ -290,24 +284,22 @@ public class GLPathwayAugmentationRenderer {
 		if (framedMappedEnzymeNodeDisplayListId == -1)
 			framedMappedEnzymeNodeDisplayListId = gl.glGenLists(1);
 
-		float nodeWidth = glPathwayView.getPixelGLConverter().getGLWidthForPixelWidth(
-				PathwayRenderStyle.ENZYME_NODE_PIXEL_WIDTH);
-		float nodeHeight = glPathwayView.getPixelGLConverter().getGLHeightForPixelHeight(
-				PathwayRenderStyle.ENZYME_NODE_PIXEL_HEIGHT);
-
 		PixelGLConverter pixelGLConverter = glPathwayView.getPixelGLConverter();
+
+		float nodeWidth = pixelGLConverter.getGLWidthForPixelWidth(PathwayRenderStyle.ENZYME_NODE_PIXEL_WIDTH);
+		float nodeHeight = pixelGLConverter.getGLHeightForPixelHeight(PathwayRenderStyle.ENZYME_NODE_PIXEL_HEIGHT);
+
 		stdBarHeight = pixelGLConverter.getGLHeightForPixelHeight(PathwayRenderStyle.STD_DEV_BAR_PIXEL_HEIGHT);
 		onePxlWidth = pixelGLConverter.getGLWidthForPixelWidth(1);
 		onePxlHeight = pixelGLConverter.getGLHeightForPixelHeight(1);
-		stdDevBarHeight_1_third = (stdBarHeight / 3f);
+		thirdOfstdDevBarHeight = (stdBarHeight / 3f);
 
 		gl.glNewList(framedEnzymeNodeDisplayListId, GL2.GL_COMPILE);
-		fillNodeDisplayListFrame(gl, nodeWidth + onePxlWidth, nodeHeight);
+		renderNode(gl, nodeWidth + onePxlWidth, nodeHeight);
 		gl.glEndList();
 
 		gl.glNewList(framedMappedEnzymeNodeDisplayListId, GL2.GL_COMPILE);
-		fillNodeDisplayListFrame(gl, nodeWidth + onePxlWidth, nodeHeight + (2f * stdDevBarHeight_1_third)
-				- onePxlHeight);
+		renderNode(gl, nodeWidth + onePxlWidth, nodeHeight + (2f * thirdOfstdDevBarHeight) - onePxlHeight);
 		gl.glEndList();
 	}
 
@@ -337,7 +329,7 @@ public class GLPathwayAugmentationRenderer {
 				PathwayRenderStyle.COMPOUND_NODE_PIXEL_HEIGHT);
 
 		gl.glNewList(framedCompoundNodeDisplayListId, GL2.GL_COMPILE);
-		fillNodeDisplayListFrame(gl, nodeWidth, nodeHeight);
+		renderNode(gl, nodeWidth, nodeHeight);
 		gl.glEndList();
 	}
 
@@ -352,7 +344,7 @@ public class GLPathwayAugmentationRenderer {
 		gl.glEnd();
 	}
 
-	protected void fillNodeDisplayListFrame(final GL2 gl, float nodeWidth, float nodeHeight) {
+	protected void renderNode(final GL2 gl, float nodeWidth, float nodeHeight) {
 		gl.glLineWidth(3);
 
 		gl.glBegin(GL.GL_LINE_LOOP);
@@ -440,7 +432,7 @@ public class GLPathwayAugmentationRenderer {
 			fillNodeDisplayList(gl, nodeWidth, nodeHeight);
 
 			gl.glStencilFunc(GL.GL_ALWAYS, 2, 0xff);
-			fillNodeDisplayListFrame(gl, nodeWidth, nodeHeight);
+			renderNode(gl, nodeWidth, nodeHeight);
 
 			gl.glDisable(GL.GL_STENCIL_TEST);
 			gl.glColorMask(true, true, true, true);
@@ -455,11 +447,11 @@ public class GLPathwayAugmentationRenderer {
 			if (vertexSelectionManager.checkStatus(SelectionType.SELECTION, vertexRep.getID())) {
 				tmpNodeColor = SelectionType.SELECTION.getColor();
 				gl.glColor4fv(tmpNodeColor, 0);
-				fillNodeDisplayListFrame(gl, nodeWidth, nodeHeight);
+				renderNode(gl, nodeWidth, nodeHeight);
 			} else if (vertexSelectionManager.checkStatus(SelectionType.MOUSE_OVER, vertexRep.getID())) {
 				tmpNodeColor = SelectionType.MOUSE_OVER.getColor();
 				gl.glColor4fv(tmpNodeColor, 0);
-				fillNodeDisplayListFrame(gl, nodeWidth, nodeHeight);
+				renderNode(gl, nodeWidth, nodeHeight);
 			}
 
 			break;
@@ -558,11 +550,13 @@ public class GLPathwayAugmentationRenderer {
 			gl.glColorMask(true, true, true, true);
 			gl.glEnable(GL.GL_DEPTH_TEST);
 			gl.glEnable(GL.GL_BLEND);
+
 			if (enableGeneMapping) {
 				Average average = getExpressionAverage(vertexRep);
 				if (average != null)
-					tmpNodeColor = glPathwayView.getDataDomain().getColorMapper()
-							.getColor((float) average.getArithmeticMean());
+					tmpNodeColor = new float[] { 1, 0, 0 };
+				// tmpNodeColor = glPathwayView.getDataDomain().getColorMapper()
+				// .getColor((float) average.getArithmeticMean());
 
 				if (tmpNodeColor != null) {
 
@@ -573,17 +567,12 @@ public class GLPathwayAugmentationRenderer {
 						gl.glEnable(GL.GL_STENCIL_TEST);
 						gl.glDisable(GL.GL_DEPTH_TEST);
 						gl.glDisable(GL.GL_BLEND);
-						// gl.glStencilFunc(GL2.GL_EQUAL, 0, 1);
 						gl.glStencilFunc(GL.GL_GREATER, 2, 0xff);
 						gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_KEEP);
-						// gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 						gl.glCallList(enzymeNodeDisplayListId);
 
 						gl.glEnable(GL.GL_DEPTH_TEST);
 						gl.glDisable(GL.GL_STENCIL_TEST);
-						// gl.glBegin(GL.gl)
-
-						// gl.glEnable(GL.GL_DEPTH_TEST);
 
 						// max std dev is 0.5 -> thus we multiply it with 2
 						Float stdDev = pixelGLConverter
@@ -597,76 +586,24 @@ public class GLPathwayAugmentationRenderer {
 
 						// rendering the std-dev box
 						if (!stdDev.isNaN() && selectedSamplesVA.size() > 1) {
-							// ////////////////////////////// v bars
-							// // // opaque background
-							// gl.glColor4f(1, 1, 1, 1f);
-							// gl.glBegin(GL2.GL_QUADS);
-							// gl.glVertex3f(x, y - .001f, PathwayRenderStyle.Z_OFFSET);
-							// gl.glVertex3f(x + stdBarWidth, y, PathwayRenderStyle.Z_OFFSET);
-							// gl.glVertex3f(x + stdBarWidth, 0, PathwayRenderStyle.Z_OFFSET);
-							// gl.glVertex3f(x, 0, PathwayRenderStyle.Z_OFFSET);
-							// gl.glEnd();
-							//
-							// gl.glColor4fv(PathwayRenderStyle.STD_DEV_COLOR, 0);
-							// gl.glBegin(GL2.GL_QUADS);
-							// gl.glVertex3f(x, y, PathwayRenderStyle.Z_OFFSET + 0.01f);
-							// gl.glVertex3f(x + stdBarWidth, y, PathwayRenderStyle.Z_OFFSET + 0.01f);
-							// gl.glVertex3f(x + stdBarWidth, y + stdDev, PathwayRenderStyle.Z_OFFSET + 0.01f);
-							// gl.glVertex3f(x, y + stdDev, PathwayRenderStyle.Z_OFFSET + 0.01f);
-							// gl.glEnd();
-							//
-							// // frame
-							// gl.glColor4f(0, 0, 0, 1f);
-							// gl.glBegin(GL.GL_LINE_LOOP);
-							// gl.glVertex3f(x, y, PathwayRenderStyle.Z_OFFSET + 0.02f);
-							// gl.glVertex3f(x + stdBarWidth, y, PathwayRenderStyle.Z_OFFSET + 0.02f);
-							// gl.glVertex3f(x + stdBarWidth, 0, PathwayRenderStyle.Z_OFFSET + 0.02f);
-							// gl.glVertex3f(x, 0, PathwayRenderStyle.Z_OFFSET + 0.02f);
-							// gl.glEnd();
-							//
-							// // // // create mask
-							// gl.glEnable(GL.GL_STENCIL_TEST);
-							// gl.glColorMask(false, false, false, false);
-							// gl.glDisable(GL.GL_DEPTH_TEST);
-							// gl.glDisable(GL.GL_BLEND);
-							// gl.glStencilFunc(GL.GL_ALWAYS, 2, 0xff);
-							// gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_REPLACE);
-							// // //
-							// gl.glBegin(GL2.GL_QUADS);
-							// gl.glVertex3f(x, y, PathwayRenderStyle.Z_OFFSET);
-							// gl.glVertex3f(x + stdBarWidth, y, PathwayRenderStyle.Z_OFFSET);
-							// gl.glVertex3f(x + stdBarWidth, 0, PathwayRenderStyle.Z_OFFSET);
-							// gl.glVertex3f(x, 0, PathwayRenderStyle.Z_OFFSET);
-							// gl.glEnd();
-							// gl.glBegin(GL.GL_LINE_LOOP);
-							// gl.glVertex3f(x, y, PathwayRenderStyle.Z_OFFSET + 0.02f);
-							// gl.glVertex3f(x + stdBarWidth, y, PathwayRenderStyle.Z_OFFSET + 0.02f);
-							// gl.glVertex3f(x + stdBarWidth, 0, PathwayRenderStyle.Z_OFFSET + 0.02f);
-							// gl.glVertex3f(x, 0, PathwayRenderStyle.Z_OFFSET + 0.02f);
-							// gl.glEnd();
-							//
-							// gl.glDisable(GL.GL_STENCIL_TEST);
-							// gl.glColorMask(true, true, true, true);
-							// gl.glEnable(GL.GL_DEPTH_TEST);
-							// gl.glEnable(GL.GL_BLEND);
 
 							// ////////////////////////////// h bars
 							gl.glDisable(GL.GL_BLEND);
 							gl.glColor4f(1, 1, 1, 1f);
 							gl.glBegin(GL2.GL_QUADS);
-							gl.glVertex3f(0, y - (2f * stdDevBarHeight_1_third), PathwayRenderStyle.Z_OFFSET);
-							gl.glVertex3f(0, y + stdDevBarHeight_1_third - onePxlHeight, PathwayRenderStyle.Z_OFFSET);
-							gl.glVertex3f(x, y + stdDevBarHeight_1_third - onePxlHeight, PathwayRenderStyle.Z_OFFSET);
-							gl.glVertex3f(x, y - (2f * stdDevBarHeight_1_third), PathwayRenderStyle.Z_OFFSET);
+							gl.glVertex3f(0, y - (2f * thirdOfstdDevBarHeight), PathwayRenderStyle.Z_OFFSET);
+							gl.glVertex3f(0, y + thirdOfstdDevBarHeight - onePxlHeight, PathwayRenderStyle.Z_OFFSET);
+							gl.glVertex3f(x, y + thirdOfstdDevBarHeight - onePxlHeight, PathwayRenderStyle.Z_OFFSET);
+							gl.glVertex3f(x, y - (2f * thirdOfstdDevBarHeight), PathwayRenderStyle.Z_OFFSET);
 							gl.glEnd();
 
 							gl.glColor4fv(PathwayRenderStyle.STD_DEV_COLOR, 0);
 							gl.glBegin(GL2.GL_QUADS);
-							gl.glVertex3f(0, y - (2f * stdDevBarHeight_1_third), PathwayRenderStyle.Z_OFFSET);
-							gl.glVertex3f(0, y + stdDevBarHeight_1_third - onePxlHeight, PathwayRenderStyle.Z_OFFSET);
-							gl.glVertex3f(stdDev, y + stdDevBarHeight_1_third - onePxlHeight,
+							gl.glVertex3f(0, y - (2f * thirdOfstdDevBarHeight), PathwayRenderStyle.Z_OFFSET);
+							gl.glVertex3f(0, y + thirdOfstdDevBarHeight - onePxlHeight, PathwayRenderStyle.Z_OFFSET);
+							gl.glVertex3f(stdDev, y + thirdOfstdDevBarHeight - onePxlHeight,
 									PathwayRenderStyle.Z_OFFSET);
-							gl.glVertex3f(stdDev, y - (2f * stdDevBarHeight_1_third), PathwayRenderStyle.Z_OFFSET);
+							gl.glVertex3f(stdDev, y - (2f * thirdOfstdDevBarHeight), PathwayRenderStyle.Z_OFFSET);
 							gl.glEnd();
 
 							// frame
@@ -677,13 +614,13 @@ public class GLPathwayAugmentationRenderer {
 
 							gl.glDisable(GL.GL_LINE_SMOOTH);
 							gl.glBegin(GL.GL_LINE_LOOP);
-							gl.glVertex3f(0 + onePxlWidth, y - (2f * stdDevBarHeight_1_third),
+							gl.glVertex3f(0 + onePxlWidth, y - (2f * thirdOfstdDevBarHeight),
 									PathwayRenderStyle.Z_OFFSET);
-							gl.glVertex3f(0 + onePxlWidth, y + stdDevBarHeight_1_third - onePxlHeight,
+							gl.glVertex3f(0 + onePxlWidth, y + thirdOfstdDevBarHeight - onePxlHeight,
 									PathwayRenderStyle.Z_OFFSET);
-							gl.glVertex3f(x + onePxlWidth, y + stdDevBarHeight_1_third - onePxlHeight,
+							gl.glVertex3f(x + onePxlWidth, y + thirdOfstdDevBarHeight - onePxlHeight,
 									PathwayRenderStyle.Z_OFFSET);
-							gl.glVertex3f(x + onePxlWidth, y - (2f * stdDevBarHeight_1_third),
+							gl.glVertex3f(x + onePxlWidth, y - (2f * thirdOfstdDevBarHeight),
 									PathwayRenderStyle.Z_OFFSET);
 							gl.glEnd();
 
@@ -696,20 +633,20 @@ public class GLPathwayAugmentationRenderer {
 							gl.glStencilOp(GL.GL_KEEP, GL.GL_REPLACE, GL.GL_REPLACE);
 							// //
 							gl.glBegin(GL2.GL_QUADS);
-							gl.glVertex3f(0, y - (2f * stdDevBarHeight_1_third), PathwayRenderStyle.Z_OFFSET);
-							gl.glVertex3f(0, y + stdDevBarHeight_1_third - onePxlHeight, PathwayRenderStyle.Z_OFFSET);
-							gl.glVertex3f(x, y + stdDevBarHeight_1_third - onePxlHeight, PathwayRenderStyle.Z_OFFSET);
-							gl.glVertex3f(x, y - (2f * stdDevBarHeight_1_third), PathwayRenderStyle.Z_OFFSET);
+							gl.glVertex3f(0, y - (2f * thirdOfstdDevBarHeight), PathwayRenderStyle.Z_OFFSET);
+							gl.glVertex3f(0, y + thirdOfstdDevBarHeight - onePxlHeight, PathwayRenderStyle.Z_OFFSET);
+							gl.glVertex3f(x, y + thirdOfstdDevBarHeight - onePxlHeight, PathwayRenderStyle.Z_OFFSET);
+							gl.glVertex3f(x, y - (2f * thirdOfstdDevBarHeight), PathwayRenderStyle.Z_OFFSET);
 							gl.glEnd();
 							//
 							gl.glBegin(GL.GL_LINE_LOOP);
-							gl.glVertex3f(0 + onePxlWidth, y - (2f * stdDevBarHeight_1_third),
+							gl.glVertex3f(0 + onePxlWidth, y - (2f * thirdOfstdDevBarHeight),
 									PathwayRenderStyle.Z_OFFSET);
-							gl.glVertex3f(0 + onePxlWidth, y + stdDevBarHeight_1_third - onePxlHeight,
+							gl.glVertex3f(0 + onePxlWidth, y + thirdOfstdDevBarHeight - onePxlHeight,
 									PathwayRenderStyle.Z_OFFSET);
-							gl.glVertex3f(x + onePxlWidth, y + stdDevBarHeight_1_third - onePxlHeight,
+							gl.glVertex3f(x + onePxlWidth, y + thirdOfstdDevBarHeight - onePxlHeight,
 									PathwayRenderStyle.Z_OFFSET);
-							gl.glVertex3f(x + onePxlWidth, y - (2f * stdDevBarHeight_1_third),
+							gl.glVertex3f(x + onePxlWidth, y - (2f * thirdOfstdDevBarHeight),
 									PathwayRenderStyle.Z_OFFSET);
 							gl.glEnd();
 							//
@@ -1142,17 +1079,17 @@ public class GLPathwayAugmentationRenderer {
 	 */
 	private Average getExpressionAverage(PathwayVertexRep vertexRep) {
 
-		if (selectedSamplesVA == null || selectedSamplesVA.size() == 0)
-			return null;
-
-		List<Integer> mappedDavidIds = pathwayItemManager.getDavidIDsByPathwayVertexRep(vertexRep);
-
-		Average average = null;
-		for (Integer davidID : mappedDavidIds) {
-			average = TablePerspectiveStatistics.calculateAverage(selectedSamplesVA, glPathwayView.getDataDomain()
-					.getTable(), IDType.getIDType("DAVID"), davidID);
-			return average;
-		}
+		// if (selectedSamplesVA == null || selectedSamplesVA.size() == 0)
+		// return null;
+		//
+		// List<Integer> mappedDavidIds = pathwayItemManager.getDavidIDsByPathwayVertexRep(vertexRep);
+		//
+		// Average average = null;
+		// for (Integer davidID : mappedDavidIds) {
+		// average = TablePerspectiveStatistics.calculateAverage(selectedSamplesVA, glPathwayView.getDataDomain()
+		// .getTable(), IDType.getIDType("DAVID"), davidID);
+		// return average;
+		// }
 
 		return null;
 	}

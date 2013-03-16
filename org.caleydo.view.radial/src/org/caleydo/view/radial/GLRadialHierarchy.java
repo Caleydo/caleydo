@@ -516,7 +516,7 @@ public class GLRadialHierarchy extends ATableBasedView {
 						AContextMenuItem menuItem = new BookmarkMenuItem("Bookmark "
 								+ dataDomain.getRecordLabel(dataDomain.getRecordIDType(),
 										externalID), dataDomain.getRecordIDType(),
-								externalID, dataDomain.getDataDomainID());
+ externalID);
 						contextMenuCreator.addContextMenuItem(menuItem);
 					} else {
 						AContextMenuItem menuItem = new DetailOutsideItem(externalID);

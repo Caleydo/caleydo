@@ -34,7 +34,7 @@ import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
  * Creator for a pathway map that only consists of area nearby the selected path.
  *
  * @author Christian Partl
- * 
+ *
  */
 public class TopologicalPathwayPathCreator implements IRemoteViewCreator {
 
@@ -58,8 +58,7 @@ public class TopologicalPathwayPathCreator implements IRemoteViewCreator {
 			}
 
 			pathwayView.setRemoteRenderingGLView((IGLRemoteRenderingView) remoteRenderingView);
-			pathwayView.setDataDomain(tablePerspective.getDataDomain());
-			pathwayView.setTablePerspective(tablePerspective);
+			pathwayView.addTablePerspective(tablePerspective);
 		}
 		pathwayView.setPathwayPathEventSpace(embeddingEventSpace);
 		// pathwayView.setRenderTemplate(new BrickHeatMapTemplate(heatMap));

@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.caleydo.view.pathway.listener;
 
@@ -10,9 +10,9 @@ import org.caleydo.view.pathway.event.ClearMappingEvent;
 
 /**
  * Listener for {@link ClearMappingEvent}.
- * 
+ *
  * @author Christian Partl
- * 
+ *
  */
 public class ClearMappingListener
 	extends AEventListener<GLPathway> {
@@ -20,7 +20,7 @@ public class ClearMappingListener
 	@Override
 	public void handleEvent(AEvent event) {
 		if (event instanceof ClearMappingEvent) {
-			handler.setTablePerspective(null);
+			handler.setShowDataMapping(false);
 		}
 	}
 

@@ -29,9 +29,7 @@ import java.util.Set;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
-import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.datadomain.IDataSupportDefinition;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
@@ -41,7 +39,6 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.event.EventListenerManager;
 import org.caleydo.core.event.EventListenerManagers;
-import org.caleydo.core.event.data.DataDomainUpdateEvent;
 import org.caleydo.core.event.data.SelectionUpdateEvent;
 import org.caleydo.core.event.view.TablePerspectivesChangedEvent;
 import org.caleydo.core.id.IDType;
@@ -52,7 +49,7 @@ import org.caleydo.core.util.color.mapping.IColorMappingUpdateListener;
 import org.caleydo.core.util.color.mapping.UpdateColorMappingEvent;
 import org.caleydo.core.util.color.mapping.UpdateColorMappingListener;
 import org.caleydo.core.util.logging.Logger;
-import org.caleydo.core.view.ISingleTablePerspectiveBasedView;
+import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
 import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
 import org.caleydo.core.view.listener.AddTablePerspectivesListener;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -68,7 +65,6 @@ import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.datadomain.genetic.EGeneIDTypes;
-import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.genetic.GeneticDataSupportDefinition;
 import org.caleydo.datadomain.pathway.IPathwayRepresentation;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
@@ -114,7 +110,7 @@ import org.jgrapht.graph.GraphPathImpl;
  * @author Alexander Lex
  */
 
-public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedView, IViewCommandHandler,
+public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedView, IViewCommandHandler,
 		IEventBasedSelectionManagerUser, IColorMappingUpdateListener, IPathwayRepresentation {
 
 	public static String VIEW_TYPE = "org.caleydo.view.pathway";
@@ -122,10 +118,6 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 	public static String VIEW_NAME = "Pathway";
 
 	public static final String DEFAULT_PATHWAY_PATH_EVENT_SPACE = "pathwayPath";
-
-	private GeneticDataDomain dataDomain;
-
-	private TablePerspective tablePerspective;
 
 	private PathwayDataDomain pathwayDataDomain;
 
@@ -149,10 +141,12 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 
 	private boolean isPathwayDataDirty = false;
 
-	private GLPathwayAugmentationRenderer gLPathwayAugmentationRenderer;
+	private GLPathwayAugmentationRenderer augmentationRenderer;
 
 	private EventBasedSelectionManager vertexSelectionManager;
 	private EventBasedSelectionManager sampleSelectionManager;
+
+	private List<TablePerspective> tablePerspectives = new ArrayList<>();
 
 	/** The mode determing which samples (all or a selection)s should be mapped */
 	private ESampleMappingMode sampleMappingMode = ESampleMappingMode.ALL;
@@ -236,6 +230,9 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 
 	EventListenerManager listeners = EventListenerManagers.wrap(this);
 
+	private IDType geneIDType;
+	private IDType sampleIDType;
+
 	/**
 	 * Constructor.
 	 */
@@ -250,6 +247,7 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 
 		pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get().getDataDomainByType(
 				"org.caleydo.datadomain.pathway");
+		geneIDType = pathwayDataDomain.getDavidIDType();
 
 		// hashGLcontext2TextureManager = new HashMap<GL, GLPathwayTextureManager>();
 
@@ -329,9 +327,9 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 	public void initialize() {
 		super.initialize();
 		registerPickingListeners();
-		gLPathwayAugmentationRenderer = new GLPathwayAugmentationRenderer(viewFrustum, this);
-		if (dataDomain != null)
-			gLPathwayAugmentationRenderer.enableGeneMapping(true);
+		augmentationRenderer = new GLPathwayAugmentationRenderer(viewFrustum, this);
+
+		augmentationRenderer.enableGeneMapping(true);
 	}
 
 	@Override
@@ -477,7 +475,6 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 						LoadPathwayEvent event = new LoadPathwayEvent();
 						event.setSender(this);
 						event.setPathwayID(pathway.getID());
-						event.setEventSpace(dataDomain.getDataDomainID());
 						GeneralManager.get().getEventPublisher().triggerEvent(event);
 					}
 				} else {
@@ -518,8 +515,7 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 				if (vertexRep.getType() == EPathwayVertexType.map) {
 
 					LoadPathwaysByPathwayItem menuItem = new LoadPathwaysByPathwayItem(PathwayManager.get()
-							.getPathwayByTitle(vertexRep.getName(), EPathwayDatabaseType.KEGG),
-							dataDomain.getDataDomainID());
+							.getPathwayByTitle(vertexRep.getName(), EPathwayDatabaseType.KEGG));
 					contextMenuCreator.addContextMenuItem(menuItem);
 
 				} else if (vertexRep.getType() == EPathwayVertexType.gene) {
@@ -527,7 +523,6 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 						for (PathwayVertex pathwayVertex : vertexRep.getPathwayVertices()) {
 							for (Integer davidID : pathwayItemManager.getDavidIdByPathwayVertex(pathwayVertex)) {
 								GeneMenuItemContainer contexMenuItemContainer = new GeneMenuItemContainer();
-								contexMenuItemContainer.setDataDomain(dataDomain);
 								contexMenuItemContainer.setData(pathwayDataDomain.getDavidIDType(), davidID);
 								contextMenuCreator.addContextMenuItemContainer(contexMenuItemContainer);
 							}
@@ -666,10 +661,6 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 		if (isDisplayListDirty) {
 			calculatePathwayScaling(gl, pathway);
 			rebuildPathwayDisplayList(gl);
-			// gl.glNewList(displayListIndex, GL2.GL_COMPILE);
-			//
-			// gl.glEndList();
-
 			isDisplayListDirty = false;
 		}
 
@@ -687,18 +678,11 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 		selectedPath = null;
 		allPaths = null;
 
-		gLPathwayAugmentationRenderer.init(gl, vertexSelectionManager);
+		augmentationRenderer.init(gl, vertexSelectionManager);
 		vertexSelectionManager.clearSelections();
-
-		if (dataDomain != null) {
-			sampleSelectionManager.clearSelections();
-		}
 
 		// Create new pathway manager for GL2 context
 		pathwayTextureManager = new GLPathwayTextureManager();
-		// if (!hashGLcontext2TextureManager.containsKey(gl)) {
-		// hashGLcontext2TextureManager.put(gl, new GLPathwayTextureManager());
-		// }
 
 		calculatePathwayScaling(gl, pathway);
 		pathwayManager.setPathwayVisibilityState(pathway, true);
@@ -717,7 +701,6 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 			float fPathwayTransparency = 1.0f;
 
 			pathwayTextureManager.renderPathway(gl, this, pathway, fPathwayTransparency, false);
-			// hashGLcontext2TextureManager.get(gl);
 		}
 
 		float pathwayHeight = pixelGLConverter.getGLHeightForPixelHeight(pathway.getHeight());
@@ -729,7 +712,7 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 		gl.glClear(GL.GL_STENCIL_BUFFER_BIT);
 		textureOffset += PathwayRenderStyle.Z_OFFSET;
 		gl.glTranslatef(0, pathwayHeight, textureOffset);
-		gLPathwayAugmentationRenderer.renderPathway(gl, pathway, false);
+		augmentationRenderer.renderPathway(gl, pathway, false);
 		gl.glTranslatef(0, -pathwayHeight, -textureOffset);
 
 		if (enablePathwayTexture) {
@@ -793,7 +776,7 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 	}
 
 	private void rebuildPathwayDisplayList(final GL2 gl) {
-		gLPathwayAugmentationRenderer.buildPathwayDisplayList(gl, pathway);
+		augmentationRenderer.buildPathwayDisplayList(gl, pathway);
 	}
 
 	private void calculatePathwayScaling(final GL2 gl, final PathwayGraph pathway) {
@@ -856,12 +839,12 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 	}
 
 	public void enableGeneMapping(final boolean enableGeneMapping) {
-		gLPathwayAugmentationRenderer.enableGeneMapping(enableGeneMapping);
+		augmentationRenderer.enableGeneMapping(enableGeneMapping);
 		setDisplayListDirty();
 	}
 
 	public void enablePathwayTextures(final boolean bEnablePathwayTexture) {
-		gLPathwayAugmentationRenderer.enableEdgeRendering(!bEnablePathwayTexture);
+		augmentationRenderer.enableEdgeRendering(!bEnablePathwayTexture);
 		setDisplayListDirty();
 
 		this.enablePathwayTexture = bEnablePathwayTexture;
@@ -870,7 +853,7 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 	public void enableNeighborhood(final boolean bEnableNeighborhood) {
 		setDisplayListDirty();
 
-		gLPathwayAugmentationRenderer.enableNeighborhood(bEnableNeighborhood);
+		augmentationRenderer.enableNeighborhood(bEnableNeighborhood);
 	}
 
 	@Override
@@ -987,7 +970,6 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 
 		serializedForm.setPathSelectionMode(isPathSelectionMode);
 		serializedForm.setMappingMode(sampleMappingMode);
-		serializedForm.setDataDomainID(dataDomain != null ? dataDomain.getDataDomainID() : null);
 
 		System.out.println("Serializing Pathway: review me!");
 
@@ -1021,57 +1003,58 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 		return true;
 	}
 
+	// @Override
+	// public void setDataDomain(ATableBasedDataDomain dataDomain) {
+	// if (dataDomain == null) {
+	// if (gLPathwayAugmentationRenderer != null) {
+	// gLPathwayAugmentationRenderer.enableGeneMapping(false);
+	// }
+	// return;
+	// }
+	// if (!(dataDomain instanceof GeneticDataDomain))
+	// throw new IllegalArgumentException("Pathway view can handle only genetic data domain, tried to set: "
+	// + dataDomain);
+	//
+	// this.dataDomain = (GeneticDataDomain) dataDomain;
+	//
+	// if (gLPathwayAugmentationRenderer != null) {
+	// gLPathwayAugmentationRenderer.enableGeneMapping(true);
+	// }
+	// // only make a new sample selection manager if necessary due to
+	// // different id category or because it wasn't initalized so far
+	// if (sampleSelectionManager == null
+	// || !sampleSelectionManager.getIDType().getIDCategory()
+	// .equals(this.dataDomain.getSampleIDType().getIDCategory())) {
+	// sampleSelectionManager = new EventBasedSelectionManager(this,
+	// ((GeneticDataDomain) dataDomain).getSampleIDType());
+	// }
+	// setDisplayListDirty();
+	//
+	// }
+
 	@Override
-	public void setDataDomain(ATableBasedDataDomain dataDomain) {
-		if (dataDomain == null) {
-			if (gLPathwayAugmentationRenderer != null) {
-				gLPathwayAugmentationRenderer.enableGeneMapping(false);
-			}
-			return;
+	public void addTablePerspective(TablePerspective tablePerspective) {
+		if (tablePerspective == null || !tablePerspective.getDataDomain().hasIDCategory(geneIDType)) {
+			throw new IllegalStateException("Perspective null or illegal for this view: " + tablePerspective);
 		}
-		if (!(dataDomain instanceof GeneticDataDomain))
-			throw new IllegalArgumentException("Pathway view can handle only genetic data domain, tried to set: "
-					+ dataDomain);
-
-		this.dataDomain = (GeneticDataDomain) dataDomain;
-
-		if (gLPathwayAugmentationRenderer != null) {
-			gLPathwayAugmentationRenderer.enableGeneMapping(true);
-		}
-		// only make a new sample selection manager if necessary due to
-		// different id category or because it wasn't initalized so far
-		if (sampleSelectionManager == null
-				|| !sampleSelectionManager.getIDType().getIDCategory()
-						.equals(this.dataDomain.getSampleIDType().getIDCategory())) {
-			sampleSelectionManager = new EventBasedSelectionManager(this,
-					((GeneticDataDomain) dataDomain).getSampleIDType());
-		}
-		setDisplayListDirty();
-
-	}
-
-	@Override
-	public void setTablePerspective(TablePerspective tablePerspective) {
-		this.tablePerspective = tablePerspective;
+		tablePerspectives.add(tablePerspective);
 		if (tablePerspective instanceof PathwayTablePerspective)
 			pathway = ((PathwayTablePerspective) tablePerspective).getPathway();
 
-		setDisplayListDirty();
-		if (tablePerspective != null) {
-			DataDomainUpdateEvent event = new DataDomainUpdateEvent(tablePerspective.getDataDomain());
-			eventPublisher.triggerEvent(event);
-		} else {
-			dataDomain = null;
+		if (sampleSelectionManager == null) {
+			sampleIDType = tablePerspective.getDataDomain().getOppositeIDType(geneIDType).getIDCategory()
+					.getPrimaryMappingType();
+			sampleSelectionManager = new EventBasedSelectionManager(this, sampleIDType);
 		}
+
+		setDisplayListDirty();
+
+		// DataDomainUpdateEvent event = new DataDomainUpdateEvent(tablePerspective.getDataDomain());
+		// eventPublisher.triggerEvent(event);
 
 		TablePerspectivesChangedEvent tbEvent = new TablePerspectivesChangedEvent(this);
 		eventPublisher.triggerEvent(tbEvent);
 
-	}
-
-	@Override
-	public GeneticDataDomain getDataDomain() {
-		return dataDomain;
 	}
 
 	/**
@@ -1460,14 +1443,8 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 	// }
 
 	@Override
-	public TablePerspective getTablePerspective() {
-		return tablePerspective;
-	}
-
-	@Override
 	public List<TablePerspective> getTablePerspectives() {
-		ArrayList<TablePerspective> tablePerspectives = new ArrayList<TablePerspective>(1);
-		tablePerspectives.add(tablePerspective);
+
 		return tablePerspectives;
 	}
 
@@ -1490,11 +1467,24 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 	}
 
 	@Override
-	public Set<IDataDomain> getDataDomains() {
-		Set<IDataDomain> dataDomains = new HashSet<IDataDomain>(1);
-		dataDomains.add(dataDomain);
-		return dataDomains;
+	public void addTablePerspectives(List<TablePerspective> newTablePerspectives) {
+		// for (TablePerspective tp : newTablePerspectives)
+		// addTablePerspective(tp);
+
 	}
+
+	@Override
+	public void removeTablePerspective(TablePerspective tablePerspective) {
+		// TODO Auto-generated method stub
+
+	}
+
+	// @Override
+	// public Set<IDataDomain> getDataDomains() {
+	// Set<IDataDomain> dataDomains = new HashSet<IDataDomain>(1);
+	// dataDomains.add(dataDomain);
+	// return dataDomains;
+	// }
 
 	@Override
 	public void updateColorMapping() {
@@ -1643,5 +1633,9 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 	// setDisplayListDirty();
 	// }
 	// }
+
+	public void setShowDataMapping(boolean showDataMapping) {
+		augmentationRenderer.enableGeneMapping(showDataMapping);
+	}
 
 }

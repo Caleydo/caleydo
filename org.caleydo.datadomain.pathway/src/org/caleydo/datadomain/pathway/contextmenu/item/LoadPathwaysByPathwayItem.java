@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,12 +8,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -24,9 +24,8 @@ import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.listener.LoadPathwayEvent;
 
 /**
- * Implementation of ContextMenuItem for loading pathways by pathway IDs.
- * Automatically creates the events.
- * 
+ * Implementation of ContextMenuItem for loading pathways by pathway IDs. Automatically creates the events.
+ *
  * @author Alexander Lex
  * @author Marc Streit
  */
@@ -34,25 +33,19 @@ public class LoadPathwaysByPathwayItem extends AContextMenuItem {
 
 	private int numberOfOccurences = 0;
 
-	private String dataDomainID;
-
 	/**
 	 * Constructor. Creates the events associated with the item.
 	 */
-	public LoadPathwaysByPathwayItem(PathwayGraph pathway, String dataDomainID) {
-		this.dataDomainID = dataDomainID;
+	public LoadPathwaysByPathwayItem(PathwayGraph pathway) {
 		setPathway(pathway);
 	}
 
 	/**
-	 * Constructor. Creates the events associated with the item and the number
-	 * of occurrences.
+	 * Constructor. Creates the events associated with the item and the number of occurrences.
 	 */
-	public LoadPathwaysByPathwayItem(PathwayGraph pathway, String dataDomainID,
-			int numberOfOccurences) {
+	public LoadPathwaysByPathwayItem(PathwayGraph pathway, String dataDomainID, int numberOfOccurences) {
 
 		this.numberOfOccurences = numberOfOccurences;
-		this.dataDomainID = dataDomainID;
 		setPathway(pathway);
 	}
 
@@ -64,15 +57,10 @@ public class LoadPathwaysByPathwayItem extends AContextMenuItem {
 		else
 			setLabel("(" + numberOfOccurences + ") " + pathwayName);
 
-		// if (pathway.getType() == EPathwayDatabaseType.KEGG)
-		// setIconTexture(EIconTextures.CM_KEGG);
-		// else if (pathway.getType() == EPathwayDatabaseType.BIOCARTA)
-		// setIconTexture(EIconTextures.CM_BIOCARTA);
 
 		LoadPathwayEvent loadPathwayEvent = new LoadPathwayEvent();
 		loadPathwayEvent.setSender(this);
 		loadPathwayEvent.setPathwayID(pathway.getID());
-		loadPathwayEvent.setEventSpace(dataDomainID);
 		registerEvent(loadPathwayEvent);
 	}
 }

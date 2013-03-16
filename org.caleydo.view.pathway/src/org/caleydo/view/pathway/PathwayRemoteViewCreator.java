@@ -42,8 +42,7 @@ public class PathwayRemoteViewCreator implements IRemoteViewCreator {
 			}
 
 			pathwayView.setRemoteRenderingGLView((IGLRemoteRenderingView) remoteRenderingView);
-			pathwayView.setDataDomain(tablePerspective.getDataDomain());
-			pathwayView.setTablePerspective(tablePerspective);
+			pathwayView.addTablePerspective(tablePerspective);
 		}
 		pathwayView.setPathwayPathEventSpace(embeddingEventSpace);
 		// pathwayView.setRenderTemplate(new BrickHeatMapTemplate(heatMap));

@@ -1465,8 +1465,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 	private void handleDimensionRightClick(Integer dimensionID) {
 
 		AContextMenuItem menuItem = new BookmarkMenuItem("Bookmark "
-				+ dataDomain.getDimensionLabel(dimensionIDType, dimensionID), dimensionIDType, dimensionID,
-				dataDomain.getDataDomainID());
+				+ dataDomain.getDimensionLabel(dimensionIDType, dimensionID), dimensionIDType, dimensionID);
 		contextMenuCreator.addContextMenuItem(menuItem);
 
 		SortByDataEvent sortEvent = new SortByDataEvent(dataDomain.getDataDomainID(),

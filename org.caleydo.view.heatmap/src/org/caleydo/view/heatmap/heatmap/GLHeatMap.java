@@ -89,7 +89,6 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 
 	boolean bClusterVisualizationExperimentsActive = false;
 
-
 	/** Signals that the heat map is currently active */
 	private boolean isActive = false;
 
@@ -112,9 +111,6 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 	@Override
 	public void init(GL2 gl) {
 		displayListIndex = gl.glGenLists(1);
-
-
-
 
 		textRenderer = new CaleydoTextRenderer(24);
 
@@ -279,8 +275,7 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 				} else {
 					AContextMenuItem menuItem = new BookmarkMenuItem("Bookmark "
 							+ recordIDType.getIDCategory().getHumanReadableIDType() + ": "
-							+ dataDomain.getRecordLabel(recordIDType, pickingID), recordIDType, pickingID,
-							dataDomain.getDataDomainID());
+							+ dataDomain.getRecordLabel(recordIDType, pickingID), recordIDType, pickingID);
 					contextMenuCreator.addContextMenuItem(menuItem);
 				}
 
@@ -317,8 +312,7 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 
 					AContextMenuItem menuItem = new BookmarkMenuItem("Bookmark "
 							+ recordIDType.getIDCategory().getHumanReadableIDType() + ": "
-							+ dataDomain.getDimensionLabel(dimensionIDType, pickingID), dimensionIDType, pickingID,
-							dataDomain.getDataDomainID());
+							+ dataDomain.getDimensionLabel(dimensionIDType, pickingID), dimensionIDType, pickingID);
 					contextMenuCreator.addContextMenuItem(menuItem);
 				}
 
@@ -458,8 +452,7 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 		}
 	}
 
-	private int cursorSelect(
-			VirtualArray virtualArray, SelectionManager selectionManager, boolean isUp) {
+	private int cursorSelect(VirtualArray virtualArray, SelectionManager selectionManager, boolean isUp) {
 
 		java.util.Set<Integer> elements = selectionManager.getElements(SelectionType.MOUSE_OVER);
 		if (elements.size() == 0) {
@@ -487,7 +480,6 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 		}
 		return -1;
 	}
-
 
 	/**
 	 * Returns the y coordinate of the element rendered at recordIndex, or null if the current element is hidden
