@@ -55,14 +55,16 @@ import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.ViewLayoutRenderer;
+import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.datadomain.pathway.IPathwayRepresentation;
 import org.caleydo.datadomain.pathway.VertexRepBasedContextMenuItem;
+import org.caleydo.datadomain.pathway.VertexRepBasedEventFactory;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.PathwayPath;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.listener.EnablePathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.PathwayPathSelectionEvent;
-import org.caleydo.datadomain.pathway.listener.ShowPortalNodesEvent;
+import org.caleydo.datadomain.pathway.listener.ShowNodeContextEvent;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.enroute.event.ShowPathEvent;
 import org.caleydo.view.pathway.GLPathway;
@@ -96,6 +98,11 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 	 * Context menu items that shall be displayed when right-clicking on a path node.
 	 */
 	protected List<VertexRepBasedContextMenuItem> nodeContextMenuItems = new ArrayList<>();
+
+	/**
+	 * Events that shall be triggered when selecting a path node.
+	 */
+	protected List<Pair<VertexRepBasedEventFactory, PickingMode>> nodeEvents = new ArrayList<>();
 
 	private final EventListenerManager listeners = EventListenerManagers.wrap(this);
 
@@ -252,6 +259,10 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 			renderer.addVertexRepBasedContextMenuItem(item);
 		}
 
+		for (Pair<VertexRepBasedEventFactory, PickingMode> eventPair : nodeEvents) {
+			renderer.addVertexRepBasedSelectionEvent(eventPair.getFirst(), eventPair.getSecond());
+		}
+
 		ElementLayout layout = new ElementLayout();
 		layout.setDynamicSizeUnitsX(1);
 		layout.setRenderer(renderer);
@@ -325,7 +336,7 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 	}
 
 	@ListenTo(restrictExclusiveToEventSpace = true)
-	public void onShowPortalNodes(ShowPortalNodesEvent event) {
+	public void onShowPortalNodes(ShowNodeContextEvent event) {
 		Set<PathwayVertexRep> vertexReps = PathwayManager.get().getEquivalentVertexRepsInPathway(event.getVertexRep(),
 				pathway);
 		if (event.getVertexRep().getPathway() == pathway) {
@@ -557,6 +568,15 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 				return -1;
 			return 0;
 		}
+	}
+
+	@Override
+	public void addVertexRepBasedSelectionEvent(VertexRepBasedEventFactory eventFactory, PickingMode pickingMode) {
+		nodeEvents.add(new Pair<VertexRepBasedEventFactory, PickingMode>(eventFactory, pickingMode));
+		for (APathwayPathRenderer renderer : renderers.keySet()) {
+			renderer.addVertexRepBasedSelectionEvent(eventFactory, pickingMode);
+		}
+
 	}
 
 }

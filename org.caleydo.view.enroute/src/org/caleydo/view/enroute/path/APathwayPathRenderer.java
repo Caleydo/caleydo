@@ -46,11 +46,13 @@ import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
+import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.datadomain.genetic.EGeneIDTypes;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.pathway.IPathwayRepresentation;
 import org.caleydo.datadomain.pathway.VertexRepBasedContextMenuItem;
+import org.caleydo.datadomain.pathway.VertexRepBasedEventFactory;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertex;
@@ -175,6 +177,11 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	 * Alpha value that shall be used by nodes for rendering.s
 	 */
 	protected float nodeAlpha = 1f;
+
+	/**
+	 * Events that should be triggered when selecting a node.
+	 */
+	protected Map<PickingMode, List<VertexRepBasedEventFactory>> nodeEvents = new HashMap<>();
 
 	protected int layoutDisplayListIndex = -1;
 	private boolean isLayoutDirty = true;
@@ -925,14 +932,45 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 		}
 
 		@Override
+		protected void clicked(Pick pick) {
+			if (!node.isPickable() || branchNodesToLinearizedNodesMap.keySet().contains(node))
+				return;
+			triggerEvents(pick.getPickingMode());
+		}
+
+		@Override
+		protected void mouseOver(Pick pick) {
+			if (!node.isPickable())
+				return;
+			triggerEvents(pick.getPickingMode());
+		}
+
+		@Override
+		protected void mouseOut(Pick pick) {
+			if (!node.isPickable())
+				return;
+			triggerEvents(pick.getPickingMode());
+		}
+
+		@Override
 		protected void rightClicked(Pick pick) {
 			if (!node.isPickable())
 				return;
+			triggerEvents(pick.getPickingMode());
 			addContextMenuItems(nodeContextMenuItems);
 			if (allowBranchPathExtraction && branchNodesToLinearizedNodesMap.keySet().contains(node)) {
 				ShowPathEvent event = new ShowPathEvent(getBranchPath(node));
 				event.setEventSpace(branchPathExtractionEventSpace);
 				view.getContextMenuCreator().addContextMenuItem(new GenericContextMenuItem("Show Branch Path", event));
+			}
+		}
+
+		private void triggerEvents(PickingMode pickingMode) {
+			List<VertexRepBasedEventFactory> factories = nodeEvents.get(pickingMode);
+			if (factories != null) {
+				for (VertexRepBasedEventFactory factory : factories) {
+					factory.triggerEvent(node.getPrimaryPathwayVertexRep());
+				}
 			}
 		}
 
@@ -943,6 +981,16 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 				view.getContextMenuCreator().addContextMenuItem(item);
 			}
 		}
+	}
+
+	@Override
+	public void addVertexRepBasedSelectionEvent(VertexRepBasedEventFactory eventFactory, PickingMode pickingMode) {
+		List<VertexRepBasedEventFactory> factories = nodeEvents.get(pickingMode);
+		if (factories == null) {
+			factories = new ArrayList<>();
+			nodeEvents.put(pickingMode, factories);
+		}
+		factories.add(eventFactory);
 	}
 
 	/**

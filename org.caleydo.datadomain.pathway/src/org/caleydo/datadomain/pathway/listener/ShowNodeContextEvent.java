@@ -27,12 +27,12 @@ import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
  * @author Christian Partl
  *
  */
-public class ShowPortalNodesEvent extends AVertexRepBasedEvent {
+public class ShowNodeContextEvent extends AVertexRepBasedEvent {
 
-	public ShowPortalNodesEvent() {
+	public ShowNodeContextEvent() {
 	}
 
-	public ShowPortalNodesEvent(PathwayVertexRep vertexRep) {
+	public ShowNodeContextEvent(PathwayVertexRep vertexRep) {
 		super(vertexRep);
 	}
 }

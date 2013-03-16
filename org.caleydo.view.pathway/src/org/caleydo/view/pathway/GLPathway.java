@@ -20,8 +20,10 @@ import gleem.linalg.Vec3f;
 
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.media.opengl.GL;
@@ -64,12 +66,14 @@ import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
+import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.datadomain.genetic.EGeneIDTypes;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.genetic.GeneticDataSupportDefinition;
 import org.caleydo.datadomain.pathway.IPathwayRepresentation;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.VertexRepBasedContextMenuItem;
+import org.caleydo.datadomain.pathway.VertexRepBasedEventFactory;
 import org.caleydo.datadomain.pathway.contextmenu.container.GeneMenuItemContainer;
 import org.caleydo.datadomain.pathway.contextmenu.item.LoadPathwaysByPathwayItem;
 import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
@@ -81,7 +85,7 @@ import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.listener.EnablePathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.LoadPathwayEvent;
 import org.caleydo.datadomain.pathway.listener.PathwayPathSelectionEvent;
-import org.caleydo.datadomain.pathway.listener.ShowPortalNodesEvent;
+import org.caleydo.datadomain.pathway.listener.ShowNodeContextEvent;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
@@ -223,6 +227,12 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 	 * {@link #addVertexRepBasedContextMenuItem(VertexRepBasedContextMenuItem)}.
 	 */
 	List<VertexRepBasedContextMenuItem> addedContextMenuItems = new ArrayList<>();
+
+	/**
+	 * Events that should be triggered when selecting a node. Added via
+	 * {@link #addVertexRepBasedSelectionEvent(VertexRepBasedEventFactory, PickingMode)}.
+	 */
+	protected Map<PickingMode, List<VertexRepBasedEventFactory>> nodeEvents = new HashMap<>();
 
 	EventListenerManager listeners = EventListenerManagers.wrap(this);
 
@@ -416,6 +426,7 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 				}
 
 				handlePathwayElementSelection(SelectionType.MOUSE_OVER, pick.getObjectID());
+				triggerNodeEvents(pick.getPickingMode(), pathwayItemManager.getPathwayVertexRep(pick.getObjectID()));
 			}
 
 			@Override
@@ -428,7 +439,7 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 				event.setSender(this);
 				event.setSelectionDelta(selectionDelta);
 				eventPublisher.triggerEvent(event);
-
+				triggerNodeEvents(pick.getPickingMode(), pathwayItemManager.getPathwayVertexRep(pick.getObjectID()));
 			}
 
 			@Override
@@ -444,6 +455,8 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 					return;
 
 				handlePathwayElementSelection(SelectionType.SELECTION, pick.getObjectID());
+
+				triggerNodeEvents(pick.getPickingMode(), pathwayItemManager.getPathwayVertexRep(pick.getObjectID()));
 			}
 
 			@Override
@@ -489,6 +502,8 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 				// same behavior as for single click except that
 				// pathways are also loaded
 				handlePathwayElementSelection(SelectionType.SELECTION, pick.getObjectID());
+
+				triggerNodeEvents(pick.getPickingMode(), vertexRep);
 			}
 
 			@Override
@@ -523,6 +538,8 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 						contextMenuCreator.addContextMenuItem(item);
 					}
 				}
+
+				triggerNodeEvents(pick.getPickingMode(), vertexRep);
 
 				// handlePathwayElementSelection(SelectionType.SELECTION, pick.getObjectID());
 			}
@@ -910,7 +927,7 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 		showPortalNodesEventListener = new ShowPortalNodesEventListener();
 		showPortalNodesEventListener.setHandler(this);
 		showPortalNodesEventListener.setEventSpace(pathwayPathEventSpace);
-		listeners.register(ShowPortalNodesEvent.class, showPortalNodesEventListener);
+		listeners.register(ShowNodeContextEvent.class, showPortalNodesEventListener);
 
 		listeners.register(this, pathwayPathEventSpace);
 	}
@@ -1582,6 +1599,25 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 	 */
 	public boolean isHighlightVertices() {
 		return highlightVertices;
+	}
+
+	@Override
+	public void addVertexRepBasedSelectionEvent(VertexRepBasedEventFactory eventFactory, PickingMode pickingMode) {
+		List<VertexRepBasedEventFactory> factories = nodeEvents.get(pickingMode);
+		if (factories == null) {
+			factories = new ArrayList<>();
+			nodeEvents.put(pickingMode, factories);
+		}
+		factories.add(eventFactory);
+	}
+
+	private void triggerNodeEvents(PickingMode pickingMode, PathwayVertexRep vertexRep) {
+		List<VertexRepBasedEventFactory> factories = nodeEvents.get(pickingMode);
+		if (factories != null) {
+			for (VertexRepBasedEventFactory factory : factories) {
+				factory.triggerEvent(vertexRep);
+			}
+		}
 	}
 
 	// /**

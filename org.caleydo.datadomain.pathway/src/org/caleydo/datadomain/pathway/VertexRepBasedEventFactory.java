@@ -19,50 +19,60 @@
  *******************************************************************************/
 package org.caleydo.datadomain.pathway;
 
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.util.logging.Logger;
-import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.listener.AVertexRepBasedEvent;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 /**
- * Context menu entry that triggers {@link AVertexRepBasedEvent}s.
+ * Factory for {@link AVertexRepBasedEvent}s.
  *
  * @author Christian Partl
  *
  */
-public class VertexRepBasedContextMenuItem extends AContextMenuItem {
+public class VertexRepBasedEventFactory {
 
-	protected VertexRepBasedEventFactory factory;
+	protected final Class<? extends AVertexRepBasedEvent> eventClass;
+	protected final String eventSpace;
 
-	public VertexRepBasedContextMenuItem(String label, Class<? extends AVertexRepBasedEvent> eventClass) {
-		this(label, eventClass, null);
-	}
-
-	public VertexRepBasedContextMenuItem(String label, Class<? extends AVertexRepBasedEvent> eventClass,
-			String eventSpace) {
-		setLabel(label);
-		factory = new VertexRepBasedEventFactory(eventClass, eventSpace);
+	public VertexRepBasedEventFactory(Class<? extends AVertexRepBasedEvent> eventClass, String eventSpace) {
+		this.eventClass = eventClass;
+		this.eventSpace = eventSpace;
 	}
 
 	/**
-	 * Sets the vertexRep at the event this menu entry was initialized with and registers this event to be triggered
-	 * when selecting this entry.
+	 * Creates the event using the specified vertexRep.
 	 *
 	 * @param vertexRep
+	 * @return The event, null if the event could not be created.
 	 */
-	public void setVertexRep(PathwayVertexRep vertexRep) {
-
+	public AVertexRepBasedEvent create(PathwayVertexRep vertexRep) {
+		AVertexRepBasedEvent event;
 		try {
-			AVertexRepBasedEvent event = factory.create(vertexRep);
-			clearEvents();
-			registerEvent(event);
-		} catch (IllegalArgumentException | SecurityException e) {
+			event = eventClass.newInstance();
+			event.setVertexRep(vertexRep);
+			event.setEventSpace(eventSpace);
+			return event;
+		} catch (InstantiationException | IllegalAccessException e) {
 			Logger.log(new Status(IStatus.WARNING, "VertexRepBasedContextMenuItem",
 					"Could not instatiate VertexRepBasedEvent!"));
 		}
 
+		return null;
+	}
+
+	/**
+	 * Convenience method to trigger the event after creating.
+	 *
+	 * @param vertexRep
+	 */
+	public void triggerEvent(PathwayVertexRep vertexRep) {
+		AVertexRepBasedEvent event = create(vertexRep);
+		if (event != null) {
+			EventPublisher.INSTANCE.triggerEvent(event);
+		}
 	}
 
 }

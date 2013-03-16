@@ -21,11 +21,11 @@ package org.caleydo.view.pathway.listener;
 
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
-import org.caleydo.datadomain.pathway.listener.ShowPortalNodesEvent;
+import org.caleydo.datadomain.pathway.listener.ShowNodeContextEvent;
 import org.caleydo.view.pathway.GLPathway;
 
 /**
- * Listener for {@link ShowPortalNodesEvent}.
+ * Listener for {@link ShowNodeContextEvent}.
  *
  * @author Christian partl
  *
@@ -34,8 +34,8 @@ public class ShowPortalNodesEventListener extends AEventListener<GLPathway> {
 
 	@Override
 	public void handleEvent(AEvent event) {
-		if (event instanceof ShowPortalNodesEvent) {
-			handler.highlightPortalNodes(((ShowPortalNodesEvent) event).getVertexRep());
+		if (event instanceof ShowNodeContextEvent) {
+			handler.highlightPortalNodes(((ShowNodeContextEvent) event).getVertexRep());
 		}
 	}
 

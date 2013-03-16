@@ -22,6 +22,7 @@ package org.caleydo.datadomain.pathway;
 import java.awt.geom.Rectangle2D;
 import java.util.List;
 
+import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 
@@ -75,5 +76,13 @@ public interface IPathwayRepresentation {
 	 * @param item
 	 */
 	public void addVertexRepBasedContextMenuItem(VertexRepBasedContextMenuItem item);
+
+	/**
+	 * Adds a vertex rep based event that should be triggered when picking a vertex rep in the specified mode.
+	 * 
+	 * @param eventFactory
+	 * @param pickingMode
+	 */
+	public void addVertexRepBasedSelectionEvent(VertexRepBasedEventFactory eventFactory, PickingMode pickingMode);
 
 }
