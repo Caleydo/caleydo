@@ -167,7 +167,15 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	 */
 	protected RankingElement rankingElement;
 
+	/**
+	 * The portal that is currently mouse-overed
+	 */
 	private PathwayVertexRep currentPortalVertexRep;
+
+	/**
+	 * The vertex rep that is used for context path determination.
+	 */
+	private PathwayVertexRep currentContextVertexRep;
 
 	private EventBasedSelectionManager vertexSelectionManager;
 
@@ -852,6 +860,12 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 			isShowPortals = event.isShowPortals();
 			updatePathwayPortals();
 		}
+
+		@ListenTo(restrictExclusiveToEventSpace = true)
+		public void onShowNodeContext(ShowNodeContextEvent event) {
+			currentContextVertexRep = event.getVertexRep();
+			updatePathwayPortals();
+		}
 	}
 
 	// protected void updateAllPortals() {
@@ -937,7 +951,8 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 			LinkRenderer renderer = new LinkRenderer(
 					vertexRep == currentPortalVertexRep || v == currentPortalVertexRep, sourcePair.getFirst(),
 					targetPair.getFirst(), sourceInfo, targetInfo, stubSize, sourcePair.getSecond(),
-					targetPair.getSecond());
+					targetPair.getSecond(), PathwayManager.get().areVerticesEquivalent(vertexRep,
+							currentContextVertexRep));
 			augmentation.addPortalLinkRenderer(renderer);
 		}
 	}

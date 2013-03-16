@@ -103,11 +103,13 @@ public class GLSubGraphAugmentation extends GLElement {
 		protected final boolean isLocation2Window;
 		protected final float stubSize;
 		protected final boolean drawLink;
+		protected final boolean isContextLink;
 
 		private Color portalBSColor = new Color(1.0f, 0.0f, 0.0f);
 
 		public LinkRenderer(boolean drawLink, Rectangle2D loc1, Rectangle2D loc2, PathwayMultiFormInfo info1,
-				PathwayMultiFormInfo info2, float stubSize, boolean isLocation1Window, boolean isLocation2Window) {
+				PathwayMultiFormInfo info2, float stubSize, boolean isLocation1Window, boolean isLocation2Window,
+				boolean isContextLink) {
 			this.drawLink = drawLink;
 			this.loc1 = loc1;
 			this.loc2 = loc2;
@@ -116,6 +118,7 @@ public class GLSubGraphAugmentation extends GLElement {
 			this.stubSize = stubSize;
 			this.isLocation1Window = isLocation1Window;
 			this.isLocation2Window = isLocation2Window;
+			this.isContextLink = isContextLink;
 		}
 
 		@Override
@@ -127,6 +130,13 @@ public class GLSubGraphAugmentation extends GLElement {
 			// g.color(1, 0, 0, 0);
 			// g.gl.glVertex2f((float) loc2.getCenterX(), (float) loc2.getCenterY());
 			// g.gl.glEnd();
+			if (isContextLink) {
+				g.color(1, 0, 1, 1f);
+			} else {
+				g.color(1, 0, 0, 1f);
+			}
+			g.lineWidth(2);
+
 			if (!drawLink) {
 				Vec2f direction = new Vec2f((float) loc1.getCenterX() - (float) loc2.getCenterX(),
 						(float) loc1.getCenterY() - (float) loc2.getCenterY());
@@ -134,20 +144,16 @@ public class GLSubGraphAugmentation extends GLElement {
 				if (!isLocation1Window) {
 					Vec2f stub1End = new Vec2f((float) loc1.getCenterX() - 20 * direction.x() * stubSize,
 							(float) loc1.getCenterY() - 20 * direction.y() * stubSize);
-					g.color(1, 0, 0, 1f).lineWidth(2)
-							.drawLine((float) loc1.getCenterX(), (float) loc1.getCenterY(), stub1End.x(), stub1End.y());
+					g.drawLine((float) loc1.getCenterX(), (float) loc1.getCenterY(), stub1End.x(), stub1End.y());
 				}
 				if (!isLocation2Window) {
 					Vec2f stub2End = new Vec2f((float) loc2.getCenterX() + 20 * direction.x() * stubSize,
 							(float) loc2.getCenterY() + 20 * direction.y() * stubSize);
-					g.color(1, 0, 0, 1f).lineWidth(2)
-							.drawLine((float) loc2.getCenterX(), (float) loc2.getCenterY(), stub2End.x(), stub2End.y());
+					g.drawLine((float) loc2.getCenterX(), (float) loc2.getCenterY(), stub2End.x(), stub2End.y());
 				}
 			} else {
-				g.color(1, 0, 0, 1f)
-						.lineWidth(2)
-						.drawLine((float) loc1.getCenterX(), (float) loc1.getCenterY(), (float) loc2.getCenterX(),
-								(float) loc2.getCenterY());
+				g.drawLine((float) loc1.getCenterX(), (float) loc1.getCenterY(), (float) loc2.getCenterX(),
+						(float) loc2.getCenterY());
 			}
 			g.drawRect((float) loc1.getX(), (float) loc1.getY(), (float) loc1.getWidth(), (float) loc1.getHeight());
 			g.drawRect((float) loc2.getX(), (float) loc2.getY(), (float) loc2.getWidth(), (float) loc2.getHeight());
