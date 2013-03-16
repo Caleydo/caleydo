@@ -52,13 +52,14 @@ public class TableBasedDataDomainElement extends ADataMappingElement implements 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
 		super.renderImpl(g, w, h);
+		g.color(dd.getColor().getColorWithSpecificBrighness(0.8f)).fillRect(1, 1, 16, 16);
 		if (isSelected()) {
-			g.fillImage("resources/icons/dataassignment/accept.png", 3, 2, 14, 14);
+			g.fillImage("resources/icons/dataassignment/checkbox_selected.png", 1, 1, 16, 16);
 		} else {
-			g.fillImage("resources/icons/dataassignment/accept_disabled.png", 3, 2, 14, 14);
+			g.fillImage("resources/icons/dataassignment/checkbox_not_selected.png", 1, 1, 16, 16);
 		}
 
-		g.color(dd.getColor()).fillRect(18, 2, 14, 14);
-		g.drawText(dd, 18 + 18, 1, w - 18, 14);
+
+		g.drawText(dd, 19, 1, w - 18, 14);
 	}
 }

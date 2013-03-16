@@ -79,7 +79,7 @@ public class GLExperimentalDataMapping extends AnimatedGLElementContainer implem
 			TableBasedDataDomainElement ddElement = new TableBasedDataDomainElement(dd, dmState);
 			ddElements.add(ddElement);
 
-			if (dd.getLabel().equals("mRNA"))
+			if (dd.getLabel().contains("mRNA"))
 				ddElement.setSelected(true);
 		}
 	}
@@ -96,7 +96,7 @@ public class GLExperimentalDataMapping extends AnimatedGLElementContainer implem
 		// FIXME: from which dataset should we take the stratifications? currently we always take them from mRNA
 		ATableBasedDataDomain mRNAdd = null;
 		for (ATableBasedDataDomain dd : DataDomainManager.get().getDataDomainsByType(ATableBasedDataDomain.class)) {
-			if (dd.getLabel().equals("mRNA")) {
+			if (dd.getLabel().contains("mRNA")) {
 				mRNAdd = dd;
 				break;
 			}
@@ -106,29 +106,35 @@ public class GLExperimentalDataMapping extends AnimatedGLElementContainer implem
 			return;
 
 		RadioController radio = new RadioController(this);
+		Perspective defaultPerspective = null;
 		for (String recordPerspectiveIDs : mRNAdd.getRecordPerspectiveIDs()) {
-			PerspectiveElement perspective = new PerspectiveElement(mRNAdd.getTable().getRecordPerspective(
-					recordPerspectiveIDs), dmState);
+			Perspective recordPerspective = mRNAdd.getTable().getRecordPerspective(recordPerspectiveIDs);
+			if (recordPerspective.getLabel().contains("ignore"))
+				continue;
+			if (recordPerspective.getVirtualArray().getGroupList().size() == 1) {
+				defaultPerspective = recordPerspective;
+			}
+			PerspectiveElement perspective = new PerspectiveElement(recordPerspective, dmState);
 			stratElements.add(perspective);
 			radio.add(perspective);
 		}
 
+		if (defaultPerspective == null) {
+			defaultPerspective = mRNAdd.getTable().getDefaultRecordPerspective();
+		}
 		// Set default data
-		dmState.setPerspective(mRNAdd.getTable().getDefaultRecordPerspective());
+		dmState.setPerspective(defaultPerspective);
 		// dmState.addDataDomain(mRNAdd);
 	}
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
 		super.renderImpl(g, w, h);
-		// TODO: render stuff here that can not be rendered in children
 	}
 
 	@Override
 	protected void renderPickImpl(GLGraphics g, float w, float h) {
 		super.renderPickImpl(g, w, h);
-		// TODO: render stuff here that can not be rendered in children, for picking (this should be simple objects, if
-		// possible)
 	}
 
 	@Override

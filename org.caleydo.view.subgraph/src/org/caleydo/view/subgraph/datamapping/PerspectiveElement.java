@@ -44,9 +44,9 @@ public class PerspectiveElement extends ADataMappingElement {
 	protected void renderImpl(GLGraphics g, float w, float h) {
 		super.renderImpl(g, w, h);
 		if (isSelected()) {
-			g.fillImage("resources/icons/dataassignment/accept.png", 3, 2, 14, 14);
+			g.fillImage("resources/icons/dataassignment/radio_selected.png", 2, 2, 14, 14);
 		} else {
-			g.fillImage("resources/icons/dataassignment/accept_disabled.png", 3, 2, 14, 14);
+			g.fillImage("resources/icons/dataassignment/radio_not_selected.png", 2, 2, 14, 14);
 		}
 
 		// g.color(perspective.getDataDomain().getColor()).fillRect(18, 2, 14, 14);
