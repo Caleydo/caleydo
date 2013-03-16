@@ -579,12 +579,14 @@ public class PathwayManager extends AManager<PathwayGraph> {
 	}
 
 	/**
-	 *
+	 * 
 	 * @param vertexRep1
 	 * @param vertexRep2
-	 * @return True if the vertexReps are the same or equivalent, false otherwise.
+	 * @return True if the vertexReps are the same or equivalent, false otherwise or if one vertexRep is null.
 	 */
 	public boolean areVerticesEquivalent(PathwayVertexRep vertexRep1, PathwayVertexRep vertexRep2) {
+		if (vertexRep1 == null || vertexRep2 == null)
+			return false;
 		return (vertexRep1 == vertexRep2)
 				|| (vertexRep1.getPathwayVertices().size() == vertexRep2.getPathwayVertices().size() && vertexRep1
 						.getPathwayVertices().containsAll(vertexRep2.getPathwayVertices()));

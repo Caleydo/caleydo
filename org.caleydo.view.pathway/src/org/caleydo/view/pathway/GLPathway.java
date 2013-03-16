@@ -1234,9 +1234,12 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 				if (selectionType == SelectionType.SELECTION) {
 
 					boolean isPortalNode = false;
-					if (previousSelectedPath != null) {
+					// if (previousSelectedPath != null) {
+					// portalVertexReps = PathwayManager.get().getEquivalentVertexRepsInPathway(
+					// previousSelectedPath.getEndVertex(), pathway);
+					if (pathSegments != null && pathSegments.size() > 0) {
 						portalVertexReps = PathwayManager.get().getEquivalentVertexRepsInPathway(
-								previousSelectedPath.getEndVertex(), pathway);
+								pathSegments.get(pathSegments.size() - 1).getPath().getEndVertex(), pathway);
 						for (PathwayVertexRep portal : portalVertexReps) {
 							if (vertexRep == portal) {
 								isPortalNode = true;
