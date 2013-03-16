@@ -566,6 +566,9 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 				// handlePathwayElementSelection(SelectionType.SELECTION, -1);
 				handlePathwayTextureSelection(SelectionType.SELECTION);
 
+				if (allPaths == null || allPaths.isEmpty())
+					return;
+
 				int pickX = (int) pick.getPickedPoint().getX();
 				int pickY = (int) pick.getPickedPoint().getY();
 
