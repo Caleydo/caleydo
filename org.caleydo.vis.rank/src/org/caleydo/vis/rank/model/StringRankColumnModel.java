@@ -38,6 +38,7 @@ import org.caleydo.vis.rank.model.mixin.IGrabRemainingHorizontalSpace;
 import org.caleydo.vis.rank.model.mixin.IRankColumnModel;
 import org.caleydo.vis.rank.ui.GLPropertyChangeListeners;
 import org.caleydo.vis.rank.ui.detail.ValueElement;
+import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Display;
@@ -101,13 +102,26 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
+				IInputValidator validator = new IInputValidator() {
+					@Override
+					public String isValid(String newText) {
+						if (newText.length() >= 2)
+							EventPublisher.publishEvent(new FilterEvent(newText).to(summary));
+						if (newText.isEmpty())
+							EventPublisher.publishEvent(new FilterEvent(null).to(summary));
+						return null;
+					}
+				};
+				String bak = filter;
 				InputDialog d = new InputDialog(null, "Filter column: " + getTitle(),
-						"Edit Filter (use * as wildcard)", filter, null);
+						"Edit Filter (use * as wildcard)", filter, validator);
 				if (d.open() == Window.OK) {
 					String v = d.getValue().trim();
 					if (v.length() == 0)
 						v = null;
 					EventPublisher.publishEvent(new FilterEvent(v).to(summary));
+				} else {
+					EventPublisher.publishEvent(new FilterEvent(bak).to(summary));
 				}
 			}
 		});
@@ -128,12 +142,14 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 		String regex = starToRegex(filter);
 		for (int i = todo.nextSetBit(0); i >= 0; i = todo.nextSetBit(i + 1)) {
 			String v = this.data.apply(data.get(i));
-			mask.set(i, Pattern.matches(regex, v));
+			if (v == null)
+				continue;
+			mask.set(i, Pattern.matches(regex, v.toLowerCase()));
 		}
 	}
 
 	public static String starToRegex(String filter) {
-		return "\\Q" + filter.replace("*", "\\E.*\\Q") + "\\E";
+		return "\\Q" + filter.toLowerCase().replace("*", "\\E.*\\Q") + "\\E";
 	}
 
 	private class MyElement extends GLElement {
