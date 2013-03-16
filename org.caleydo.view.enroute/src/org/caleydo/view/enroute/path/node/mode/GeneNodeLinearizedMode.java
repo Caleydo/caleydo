@@ -102,15 +102,19 @@ public class GeneNodeLinearizedMode extends AGeneNodeMode {
 			public void clicked(Pick pick) {
 				if (!node.isPickable())
 					return;
-				EventBasedSelectionManager selectionManager = pathwayPathRenderer.getGeneSelectionManager();
+				// EventBasedSelectionManager selectionManager = pathwayPathRenderer.getGeneSelectionManager();
+				EventBasedSelectionManager vertexSelectionManager = pathwayPathRenderer.getVertexSelectionManager();
 				EventBasedSelectionManager metaboliteSelectionManager = pathwayPathRenderer
 						.getMetaboliteSelectionManager();
 				metaboliteSelectionManager.clearSelection(SelectionType.SELECTION);
-				selectionManager.clearSelection(SelectionType.SELECTION);
-				for (Integer davidId : node.getPrimaryPathwayVertexRep().getDavidIDs()) {
-					selectionManager.addToType(SelectionType.SELECTION, davidId);
-				}
-				selectionManager.triggerSelectionUpdateEvent();
+				// selectionManager.clearSelection(SelectionType.SELECTION);
+				// for (Integer davidId : node.getPrimaryPathwayVertexRep().getDavidIDs()) {
+				// selectionManager.addToType(SelectionType.SELECTION, davidId);
+				// }
+				// selectionManager.triggerSelectionUpdateEvent();
+				vertexSelectionManager.clearSelection(SelectionType.SELECTION);
+				vertexSelectionManager.addToType(SelectionType.SELECTION, node.getPrimaryPathwayVertexRep().getID());
+				vertexSelectionManager.triggerSelectionUpdateEvent();
 
 				node.setSelectionType(SelectionType.SELECTION);
 				// colorRenderer.setColor(SelectionType.MOUSE_OVER.getColor());
@@ -123,15 +127,20 @@ public class GeneNodeLinearizedMode extends AGeneNodeMode {
 			public void mouseOver(Pick pick) {
 				if (!node.isPickable())
 					return;
-				EventBasedSelectionManager selectionManager = pathwayPathRenderer.getGeneSelectionManager();
+				// EventBasedSelectionManager selectionManager = pathwayPathRenderer.getGeneSelectionManager();
 				EventBasedSelectionManager metaboliteSelectionManager = pathwayPathRenderer
 						.getMetaboliteSelectionManager();
 				metaboliteSelectionManager.clearSelection(SelectionType.MOUSE_OVER);
-				selectionManager.clearSelection(SelectionType.MOUSE_OVER);
-				for (Integer davidId : node.getPrimaryPathwayVertexRep().getDavidIDs()) {
-					selectionManager.addToType(SelectionType.MOUSE_OVER, davidId);
-				}
-				selectionManager.triggerSelectionUpdateEvent();
+				// selectionManager.clearSelection(SelectionType.MOUSE_OVER);
+				// for (Integer davidId : node.getPrimaryPathwayVertexRep().getDavidIDs()) {
+				// selectionManager.addToType(SelectionType.MOUSE_OVER, davidId);
+				// }
+				// selectionManager.triggerSelectionUpdateEvent();
+
+				EventBasedSelectionManager vertexSelectionManager = pathwayPathRenderer.getVertexSelectionManager();
+				vertexSelectionManager.clearSelection(SelectionType.MOUSE_OVER);
+				vertexSelectionManager.addToType(SelectionType.MOUSE_OVER, node.getPrimaryPathwayVertexRep().getID());
+				vertexSelectionManager.triggerSelectionUpdateEvent();
 
 				node.setSelectionType(SelectionType.MOUSE_OVER);
 				// colorRenderer.setColor(SelectionType.MOUSE_OVER.getColor());
@@ -143,11 +152,16 @@ public class GeneNodeLinearizedMode extends AGeneNodeMode {
 			public void mouseOut(Pick pick) {
 				if (!node.isPickable())
 					return;
-				EventBasedSelectionManager selectionManager = pathwayPathRenderer.getGeneSelectionManager();
-				for (Integer davidId : node.getPrimaryPathwayVertexRep().getDavidIDs()) {
-					selectionManager.removeFromType(SelectionType.MOUSE_OVER, davidId);
-				}
-				selectionManager.triggerSelectionUpdateEvent();
+				// EventBasedSelectionManager selectionManager = pathwayPathRenderer.getGeneSelectionManager();
+				// for (Integer davidId : node.getPrimaryPathwayVertexRep().getDavidIDs()) {
+				// selectionManager.removeFromType(SelectionType.MOUSE_OVER, davidId);
+				// }
+				// selectionManager.triggerSelectionUpdateEvent();
+
+				EventBasedSelectionManager vertexSelectionManager = pathwayPathRenderer.getVertexSelectionManager();
+				vertexSelectionManager.removeFromType(SelectionType.MOUSE_OVER, node.getPrimaryPathwayVertexRep()
+						.getID());
+				vertexSelectionManager.triggerSelectionUpdateEvent();
 
 				// node.setSelectionType(SelectionType.NORMAL);
 				// colorRenderer.setColor(new float[] { 1, 1, 1, 1 });

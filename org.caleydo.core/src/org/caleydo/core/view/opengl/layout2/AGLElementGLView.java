@@ -244,7 +244,7 @@ public abstract class AGLElementGLView extends AGLView implements IGLElementCont
 	 * final as just the {@link #eventListeners} object should be used
 	 */
 	@Override
-	public final void unregisterEventListeners() {
+	public void unregisterEventListeners() {
 		super.unregisterEventListeners();
 		eventListeners.unregisterAll();
 	}

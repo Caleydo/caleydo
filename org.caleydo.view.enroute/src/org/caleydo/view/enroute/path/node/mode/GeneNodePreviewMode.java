@@ -207,10 +207,8 @@ public class GeneNodePreviewMode extends AGeneNodeMode {
 				while (branchNode.getParentNode() != null) {
 					branchNode = branchNode.getParentNode();
 				}
-				EventBasedSelectionManager selectionManager = pathwayPathRenderer.getGeneSelectionManager();
-				for (Integer davidId : node.getPrimaryPathwayVertexRep().getDavidIDs()) {
-					selectionManager.removeFromType(SelectionType.MOUSE_OVER, davidId);
-				}
+				EventBasedSelectionManager selectionManager = pathwayPathRenderer.getVertexSelectionManager();
+				selectionManager.removeFromType(SelectionType.MOUSE_OVER, node.getPrimaryPathwayVertexRep().getID());
 				selectionManager.triggerSelectionUpdateEvent();
 				pathwayPathRenderer.selectBranch(branchNode);
 
@@ -220,14 +218,12 @@ public class GeneNodePreviewMode extends AGeneNodeMode {
 			public void mouseOver(Pick pick) {
 				if (!node.isPickable())
 					return;
-				EventBasedSelectionManager selectionManager = pathwayPathRenderer.getGeneSelectionManager();
+				EventBasedSelectionManager selectionManager = pathwayPathRenderer.getVertexSelectionManager();
 				EventBasedSelectionManager metaboliteSelectionManager = pathwayPathRenderer
 						.getMetaboliteSelectionManager();
 				metaboliteSelectionManager.clearSelection(SelectionType.MOUSE_OVER);
 				selectionManager.clearSelection(SelectionType.MOUSE_OVER);
-				for (Integer davidId : node.getPrimaryPathwayVertexRep().getDavidIDs()) {
-					selectionManager.addToType(SelectionType.MOUSE_OVER, davidId);
-				}
+				selectionManager.addToType(SelectionType.MOUSE_OVER, node.getPrimaryPathwayVertexRep().getID());
 				selectionManager.triggerSelectionUpdateEvent();
 
 				// pathwayPathRenderer.setHighlightDirty(true);
@@ -237,10 +233,10 @@ public class GeneNodePreviewMode extends AGeneNodeMode {
 			public void mouseOut(Pick pick) {
 				if (!node.isPickable())
 					return;
-				EventBasedSelectionManager selectionManager = pathwayPathRenderer.getGeneSelectionManager();
-				for (Integer davidId : node.getPrimaryPathwayVertexRep().getDavidIDs()) {
-					selectionManager.removeFromType(SelectionType.MOUSE_OVER, davidId);
-				}
+				EventBasedSelectionManager selectionManager = pathwayPathRenderer.getVertexSelectionManager();
+				// for (Integer davidId : node.getPrimaryPathwayVertexRep().getDavidIDs()) {
+				selectionManager.removeFromType(SelectionType.MOUSE_OVER, node.getPrimaryPathwayVertexRep().getID());
+				// }
 				selectionManager.triggerSelectionUpdateEvent();
 
 				// pathwayPathRenderer.setHighlightDirty(true);

@@ -97,12 +97,17 @@ public class CompoundNodeLinearizedMode extends ACompoundNodeMode {
 				if (!node.isPickable())
 					return;
 				EventBasedSelectionManager selectionManager = pathwayPathRenderer.getMetaboliteSelectionManager();
-				EventBasedSelectionManager geneSelectionManager = pathwayPathRenderer.getGeneSelectionManager();
-				geneSelectionManager.clearSelection(SelectionType.SELECTION);
+				EventBasedSelectionManager vertexSelectionManager = pathwayPathRenderer.getVertexSelectionManager();
+				vertexSelectionManager.clearSelection(SelectionType.SELECTION);
 				selectionManager.clearSelection(SelectionType.SELECTION);
 				selectionManager.addToType(SelectionType.SELECTION, node.getPrimaryPathwayVertexRep().getName()
 						.hashCode());
 				selectionManager.triggerSelectionUpdateEvent();
+
+				// EventBasedSelectionManager vertexSelectionManager = pathwayPathRenderer.getGeneSelectionManager();
+				// vertexSelectionManager.clearSelection(SelectionType.SELECTION);
+				// vertexSelectionManager.addToType(SelectionType.SELECTION, node.getPrimaryPathwayVertexRep().getID());
+				// vertexSelectionManager.triggerSelectionUpdateEvent();
 
 				node.setSelectionType(SelectionType.SELECTION);
 				// pathwayPathRenderer.setHighlightDirty(true);
@@ -114,12 +119,18 @@ public class CompoundNodeLinearizedMode extends ACompoundNodeMode {
 				if (!node.isPickable())
 					return;
 				EventBasedSelectionManager selectionManager = pathwayPathRenderer.getMetaboliteSelectionManager();
-				EventBasedSelectionManager geneSelectionManager = pathwayPathRenderer.getGeneSelectionManager();
-				geneSelectionManager.clearSelection(SelectionType.MOUSE_OVER);
+				EventBasedSelectionManager vertexSelectionManager = pathwayPathRenderer.getVertexSelectionManager();
+				vertexSelectionManager.clearSelection(SelectionType.MOUSE_OVER);
 				selectionManager.clearSelection(SelectionType.MOUSE_OVER);
 				selectionManager.addToType(SelectionType.MOUSE_OVER, node.getPrimaryPathwayVertexRep().getName()
 						.hashCode());
 				selectionManager.triggerSelectionUpdateEvent();
+				//
+				// EventBasedSelectionManager vertexSelectionManager = pathwayPathRenderer.getVertexSelectionManager();
+				// vertexSelectionManager.clearSelection(SelectionType.MOUSE_OVER);
+				// vertexSelectionManager.addToType(SelectionType.MOUSE_OVER,
+				// node.getPrimaryPathwayVertexRep().getID());
+				// vertexSelectionManager.triggerSelectionUpdateEvent();
 
 				node.setSelectionType(SelectionType.MOUSE_OVER);
 				// pathwayPathRenderer.setHighlightDirty(true);
@@ -133,6 +144,11 @@ public class CompoundNodeLinearizedMode extends ACompoundNodeMode {
 				selectionManager.removeFromType(SelectionType.MOUSE_OVER, node.getPrimaryPathwayVertexRep().getName()
 						.hashCode());
 				selectionManager.triggerSelectionUpdateEvent();
+
+				// EventBasedSelectionManager vertexSelectionManager = pathwayPathRenderer.getVertexSelectionManager();
+				// vertexSelectionManager.removeFromType(SelectionType.MOUSE_OVER, node.getPrimaryPathwayVertexRep()
+				// .getID());
+				// vertexSelectionManager.triggerSelectionUpdateEvent();
 
 				node.setSelectionType(SelectionType.NORMAL);
 				// circleColor = DEFAULT_CIRCLE_COLOR;

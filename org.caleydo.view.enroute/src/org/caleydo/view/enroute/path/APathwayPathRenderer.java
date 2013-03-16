@@ -47,6 +47,7 @@ import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
+import org.caleydo.datadomain.genetic.EGeneIDTypes;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.pathway.IPathwayRepresentation;
 import org.caleydo.datadomain.pathway.VertexRepBasedContextMenuItem;
@@ -181,6 +182,7 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	protected EventBasedSelectionManager geneSelectionManager;
 	protected EventBasedSelectionManager metaboliteSelectionManager;
 	protected EventBasedSelectionManager sampleSelectionManager;
+	protected EventBasedSelectionManager vertexSelectionManager;
 
 	protected PixelGLConverter pixelGLConverter;
 	protected CaleydoTextRenderer textRenderer;
@@ -191,6 +193,9 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 		this.pixelGLConverter = view.getPixelGLConverter();
 		this.textRenderer = view.getTextRenderer();
 
+		vertexSelectionManager = new EventBasedSelectionManager(this, IDType.getIDType(EGeneIDTypes.PATHWAY_VERTEX_REP
+				.name()));
+		vertexSelectionManager.registerEventListeners();
 		geneSelectionManager = new EventBasedSelectionManager(this, IDType.getIDType("DAVID"));
 		geneSelectionManager.registerEventListeners();
 
@@ -470,6 +475,7 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 		geneSelectionManager.unregisterEventListeners();
 		metaboliteSelectionManager.unregisterEventListeners();
 		sampleSelectionManager.unregisterEventListeners();
+		vertexSelectionManager.unregisterEventListeners();
 		updateStrategy.unregisterEventListeners();
 		super.destroy(gl);
 	}
@@ -556,7 +562,7 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 			setExpandedBranchSummaryNode(null);
 			setPath(newPathSegments);
 			updateStrategy.triggerPathUpdate();
-//			setDisplayListDirty(true);
+			// setDisplayListDirty(true);
 		}
 	}
 
@@ -639,7 +645,7 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 			event.setSender(this);
 			GeneralManager.get().getEventPublisher().triggerEvent(event);
 			updateLayout();
-//			setDisplayListDirty(true);
+			// setDisplayListDirty(true);
 		}
 	}
 
@@ -1001,6 +1007,13 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	 */
 	public boolean isLayoutDirty() {
 		return isLayoutDirty;
+	}
+
+	/**
+	 * @return the vertexSelectionManager, see {@link #vertexSelectionManager}
+	 */
+	public EventBasedSelectionManager getVertexSelectionManager() {
+		return vertexSelectionManager;
 	}
 
 }

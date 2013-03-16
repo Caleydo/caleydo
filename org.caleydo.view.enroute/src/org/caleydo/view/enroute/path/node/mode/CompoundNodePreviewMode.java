@@ -110,8 +110,8 @@ public class CompoundNodePreviewMode extends ACompoundNodeMode {
 					branchNode = branchNode.getParentNode();
 				}
 				EventBasedSelectionManager selectionManager = pathwayPathRenderer.getMetaboliteSelectionManager();
-				EventBasedSelectionManager geneSelectionManager = pathwayPathRenderer.getGeneSelectionManager();
-				geneSelectionManager.clearSelection(SelectionType.MOUSE_OVER);
+				EventBasedSelectionManager vertexSelectionManager = pathwayPathRenderer.getVertexSelectionManager();
+				vertexSelectionManager.clearSelection(SelectionType.MOUSE_OVER);
 				selectionManager.clearSelection(SelectionType.MOUSE_OVER);
 
 				pathwayPathRenderer.selectBranch(branchNode);
