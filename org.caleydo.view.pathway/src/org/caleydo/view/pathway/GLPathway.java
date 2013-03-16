@@ -203,7 +203,7 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 	 */
 	private boolean isPathSelectionMode = false;
 	private SelectPathAction selectPathAction = null;
-	private boolean showPortals=false;
+	private boolean showPortals = false;
 
 	private int minHeightPixels = -1;
 	private int minWidthPixels = -1;
@@ -416,6 +416,19 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 				}
 
 				handlePathwayElementSelection(SelectionType.MOUSE_OVER, pick.getObjectID());
+			}
+
+			@Override
+			protected void mouseOut(Pick pick) {
+				PathwayVertexRep vertexRep = pathwayItemManager.getPathwayVertexRep(pick.getObjectID());
+				vertexSelectionManager.removeFromType(SelectionType.MOUSE_OVER, vertexRep.getID());
+
+				SelectionDelta selectionDelta = vertexSelectionManager.getDelta();
+				SelectionUpdateEvent event = new SelectionUpdateEvent();
+				event.setSender(this);
+				event.setSelectionDelta(selectionDelta);
+				eventPublisher.triggerEvent(event);
+
 			}
 
 			@Override
@@ -1192,7 +1205,6 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 		selectedPath = path;
 		selectedPathID = 0;
 	}
-	
 
 	private void selectPath(PathwayVertexRep vertexRep, SelectionType selectionType) {
 		if (vertexRep == null)
@@ -1222,8 +1234,9 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 				if (selectionType == SelectionType.SELECTION) {
 
 					boolean isPortalNode = false;
-					if(previousSelectedPath!=null){
-						portalVertexReps = PathwayManager.get().getEquivalentVertexRepsInPathway(previousSelectedPath.getEndVertex(), pathway);
+					if (previousSelectedPath != null) {
+						portalVertexReps = PathwayManager.get().getEquivalentVertexRepsInPathway(
+								previousSelectedPath.getEndVertex(), pathway);
 						for (PathwayVertexRep portal : portalVertexReps) {
 							if (vertexRep == portal) {
 								isPortalNode = true;
@@ -1233,7 +1246,7 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 					if (!isPortalNode) {
 						pathSegments.clear();
 					}
-					
+
 					generateSingleNodePath(vertexRep);
 					pathSegments.add(new PathwayPath(selectedPath));
 					isPathStartSelected = true;
@@ -1306,29 +1319,31 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 		vertexSelectionManager.addToType(selectionType, vertexRep.getID());
 
 		SelectionDelta selectionDelta = vertexSelectionManager.getDelta();
+		SelectionUpdateEvent event = new SelectionUpdateEvent();
+		event.setSender(this);
+		event.setSelectionDelta(selectionDelta);
+		eventPublisher.triggerEvent(event);
 
 		if (isPathSelectionMode) {
 			selectPath(vertexRep, selectionType);
-			SelectionUpdateEvent event = new SelectionUpdateEvent();
-			event.setSender(this);
-			event.setSelectionDelta(selectionDelta);
-			eventPublisher.triggerEvent(event);
+
 		}
-			// TODO: make sure that this is the last vertex of the last path segment
-			//if (selectedPath != null && vertexRep == selectedPath.getEndVertex()
-			//		&& selectedPath.getEdgeList().size() > 0) {
-		//	if(showPortals){
-				ShowPortalNodesEvent e = new ShowPortalNodesEvent(vertexRep);
-				e.setSender(this);
-				e.setEventSpace(pathwayPathEventSpace);
-				eventPublisher.triggerEvent(e);
-				// the event will not be sent back to this pathway object, so highlight must be triggered here
-				//updatePortalVertexReps(vertexRep);
-				portalVertexReps = PathwayManager.get().getEquivalentVertexRepsInPathway(vertexRep, pathway);
 
-		//	}
+		// TODO: make sure that this is the last vertex of the last path segment
+		// if (selectedPath != null && vertexRep == selectedPath.getEndVertex()
+		// && selectedPath.getEdgeList().size() > 0) {
+		// if(showPortals){
+		// ShowPortalNodesEvent e = new ShowPortalNodesEvent(vertexRep);
+		// e.setSender(this);
+		// e.setEventSpace(pathwayPathEventSpace);
+		// eventPublisher.triggerEvent(e);
+		// // the event will not be sent back to this pathway object, so highlight must be triggered here
+		// //updatePortalVertexReps(vertexRep);
+		// portalVertexReps = PathwayManager.get().getEquivalentVertexRepsInPathway(vertexRep, pathway);
 
-		//}
+		// }
+
+		// }
 	}
 
 	private void triggerPathUpdate() {
