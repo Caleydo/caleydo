@@ -96,14 +96,15 @@ public class ColumnCaptionRenderer extends ALayoutRenderer implements ILabelProv
 		float[] topBarColor = colorCalculator.getPrimaryColor().getRGB();
 		float[] bottomBarColor = colorCalculator.getSecondaryColor().getRGB();
 
+
 		gl.glPushName(pickingID);
 
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glColor3fv(bottomBarColor, 0);
 		gl.glVertex3f(0, 0, backgroundZ);
-		gl.glColor3f(bottomBarColor[0] * 0.9f, bottomBarColor[1] * 0.9f, bottomBarColor[2] * 0.9f);
+		gl.glColor3fv(bottomBarColor, 0);
 		gl.glVertex3f(x, 0, backgroundZ);
-		gl.glColor3f(topBarColor[0] * 0.9f, topBarColor[1] * 0.9f, topBarColor[2] * 0.9f);
+		gl.glColor3fv(topBarColor, 0);
 		gl.glVertex3f(x, y, backgroundZ);
 		gl.glColor3fv(topBarColor, 0);
 		gl.glVertex3f(0, y, backgroundZ);

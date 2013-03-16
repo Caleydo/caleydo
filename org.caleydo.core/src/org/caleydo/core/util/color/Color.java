@@ -44,6 +44,20 @@ public final class Color implements IColor {
 
 	}
 
+	/**
+	 * RGB Constructor taking ints in the range of 0 - {@link #colorDepth} (255).
+	 *
+	 */
+	public Color(String hexColor) {
+		if (hexColor.length() != 6)
+			throw new IllegalStateException("Illegal string for hex color: " + hexColor);
+
+		Integer r = Integer.parseInt(hexColor.substring(0, 2), 16);
+		Integer g = Integer.parseInt(hexColor.substring(2, 4), 16);
+		Integer b = Integer.parseInt(hexColor.substring(4, 6), 16);
+		setRGBA(r, g, b, 255);
+	}
+
 	public Color(float r, float g, float b, float a) {
 		setRGBA(r, g, b, a);
 	}
@@ -57,12 +71,7 @@ public final class Color implements IColor {
 	 *
 	 */
 	public Color(int r, int g, int b, int a) {
-		intColor = new int[4];
-		intColor[0] = r;
-		intColor[1] = g;
-		intColor[2] = b;
-		intColor[3] = a;
-		setRGBA(r / colorDepth, g / colorDepth, b / colorDepth, a / colorDepth);
+		setRGBA(r, g, b, a);
 	}
 
 	/**
@@ -94,6 +103,15 @@ public final class Color implements IColor {
 			throw new IllegalArgumentException("Invalid length of color array rgba");
 
 		setRGBA(rgba[0], rgba[1], rgba[2], rgba[3]);
+	}
+
+	private void setRGBA(int r, int g, int b, int a) {
+		intColor = new int[4];
+		intColor[0] = r;
+		intColor[1] = g;
+		intColor[2] = b;
+		intColor[3] = a;
+		setRGBA(r / colorDepth, g / colorDepth, b / colorDepth, a / colorDepth);
 	}
 
 	public float[] getRGB() {
