@@ -288,10 +288,7 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 			dirty = false;
 		}
 
-		// first pass: layout
-		root.layout(deltaTimeMs);
-
-		// second pass: picking
+		// 1 pass: picking
 		Runnable toRender = new Runnable() {
 			@Override
 			public void run() {
@@ -307,7 +304,10 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 		}
 		pickingManager.doPicking(g.gl, toRender);
 
-		// third pass: rendering
+		// 2. pass: layout
+		root.layout(deltaTimeMs);
+
+		// 3. pass: rendering
 		if (renderPick)
 			root.renderPick(g);
 		else

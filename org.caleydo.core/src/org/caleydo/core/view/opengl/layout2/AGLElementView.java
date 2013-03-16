@@ -209,13 +209,11 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 
 		if (dirtyLayout) {
 			root.setBounds(0, 0, paddedWidth, paddedHeight);
+			root.relayout();
 			dirtyLayout = false;
 		}
 
-		// first pass: layouting
-		root.layout(deltaTimeMs);
-
-		// second pass: picking
+		// 1. pass: picking
 		Point mousePos = pickingManager.getCurrentMousePos();
 		if (mousePos != null) {
 			root.getMouseLayer().setBounds(mousePos.x, mousePos.y, getWidth() - mousePos.x, getHeight() - mousePos.y);
@@ -230,7 +228,10 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 		});
 		g.checkError();
 
-		// third pass: rendering
+		// 2. pass: layouting
+		root.layout(deltaTimeMs);
+
+		// 3. pass: rendering
 		root.render(g);
 
 		g.checkError();

@@ -91,7 +91,11 @@ public final class GLRenderers {
 
 			@Override
 			public void render(GLGraphics g, float w, float h, GLElement parent) {
-				g.drawText(text, padding.left, padding.top, w - padding.hor(), h - padding.vert(), valign);
+				String t = text;
+				if (text.indexOf('\n') >= 0) {
+					t = text.substring(0, text.indexOf('\n'));
+				}
+				g.drawText(t, padding.left, padding.top, w - padding.hor(), h - padding.vert(), valign);
 			}
 
 			@Override
