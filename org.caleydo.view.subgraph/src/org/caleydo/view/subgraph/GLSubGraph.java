@@ -46,18 +46,20 @@ import org.caleydo.core.view.opengl.layout2.animation.AnimatedGLElementContainer
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
 import org.caleydo.core.view.opengl.layout2.layout.GLSizeRestrictiveFlowLayout;
+import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.datadomain.genetic.EGeneIDTypes;
 import org.caleydo.datadomain.pathway.IPathwayRepresentation;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.VertexRepBasedContextMenuItem;
+import org.caleydo.datadomain.pathway.VertexRepBasedEventFactory;
 import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.PathwayPath;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.listener.EnablePathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.PathwayPathSelectionEvent;
-import org.caleydo.datadomain.pathway.listener.ShowPortalNodesEvent;
+import org.caleydo.datadomain.pathway.listener.ShowNodeContextEvent;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.subgraph.GLSubGraphAugmentation.LinkRenderer;
 import org.caleydo.view.subgraph.GLWindow.ICloseWindowListener;
@@ -67,7 +69,6 @@ import org.caleydo.view.subgraph.contextmenu.ShowCommonNodeItem;
 import org.caleydo.view.subgraph.datamapping.GLExperimentalDataMapping;
 import org.caleydo.view.subgraph.event.ShowCommonNodePathwaysEvent;
 import org.caleydo.view.subgraph.event.ShowCommonNodesPathwaysEvent;
-import org.caleydo.view.subgraph.event.ShowNodeInfoEvent;
 import org.caleydo.view.subgraph.event.ShowPortalsEvent;
 import org.caleydo.view.subgraph.ranking.PathwayFilters;
 import org.caleydo.view.subgraph.ranking.PathwayRankings;
@@ -432,12 +433,14 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 				IPathwayRepresentation pathwayRepresentation = getPathwayRepresentation(renderer, rendererID);
 				if (pathwayRepresentation != null) {
 					pathway = pathwayRepresentation.getPathway();
-					pathwayRepresentation.addVertexRepBasedContextMenuItem(new VertexRepBasedContextMenuItem(
-							"Show Node Info", ShowNodeInfoEvent.class, pathEventSpace));
+					// pathwayRepresentation.addVertexRepBasedContextMenuItem(new VertexRepBasedContextMenuItem(
+					// "Show Node Info", ShowNodeInfoEvent.class, pathEventSpace));
 					pathwayRepresentation.addVertexRepBasedContextMenuItem(new ShowCommonNodeItem(
 							ShowCommonNodePathwaysEvent.class, pathEventSpace));
 					pathwayRepresentation.addVertexRepBasedContextMenuItem(new VertexRepBasedContextMenuItem(
-							"Show Portal Nodes", ShowPortalNodesEvent.class, pathEventSpace));
+							"Show Context", ShowNodeContextEvent.class, pathEventSpace));
+					pathwayRepresentation.addVertexRepBasedSelectionEvent(new VertexRepBasedEventFactory(
+							ShowNodeContextEvent.class, pathEventSpace), PickingMode.CLICKED);
 				}
 			}
 		}
