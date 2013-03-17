@@ -22,13 +22,16 @@ package org.caleydo.view.subgraph;
 import gleem.linalg.Vec2f;
 
 import java.awt.geom.Rectangle2D;
+import java.util.Set;
 
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 import org.caleydo.core.view.opengl.picking.Pick;
+import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.listener.ShowNodeContextEvent;
+import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.subgraph.GLSubGraph.PathwayMultiFormInfo;
 
 /**
@@ -135,25 +138,40 @@ public class LinkRenderer extends PickableGLElement {
 	@Override
 	protected void onClicked(Pick pick) {
 		if (!isPathLink) {
-			promote(info1);
-			promote(info2);
+			boolean promoted1 = promote(info1);
+			boolean promoted2 = promote(info2);
 			view.clearSelectedPortalLinks();
-			view.addSelectedPortalLink(vertexRep1, vertexRep2);
 			view.setCurrentPortalVertexRep(null);
+			if (promoted1) {
+				addSelectedLinks(vertexRep2, info1.pathway);
+			} else if (promoted2) {
+				addSelectedLinks(vertexRep1, info2.pathway);
+			} else {
+				view.addSelectedPortalLink(vertexRep1, vertexRep2);
+			}
 			ShowNodeContextEvent event = new ShowNodeContextEvent(vertexRep1);
 			event.setEventSpace(view.getPathEventSpace());
 			EventPublisher.INSTANCE.triggerEvent(event);
 		}
 	}
 
-	private void promote(PathwayMultiFormInfo info) {
+	private void addSelectedLinks(PathwayVertexRep vertexRep, PathwayGraph pathway) {
+		Set<PathwayVertexRep> vertexReps = PathwayManager.get().getEquivalentVertexRepsInPathway(vertexRep, pathway);
+		for (PathwayVertexRep v : vertexReps) {
+			view.addSelectedPortalLink(vertexRep, v);
+		}
+	}
+
+	private boolean promote(PathwayMultiFormInfo info) {
 		if (info.getCurrentEmbeddingID() == EEmbeddingID.PATHWAY_LEVEL3
 				|| info.getCurrentEmbeddingID() == EEmbeddingID.PATHWAY_LEVEL4) {
 			info.multiFormRenderer.setActive(info.embeddingIDToRendererIDs.get(EEmbeddingID.PATHWAY_LEVEL2).get(0));
 			info.age = GLSubGraph.currentPathwayAge--;
 			view.lastUsedRenderer = info.multiFormRenderer;
+			return true;
 		} else if (info.getCurrentEmbeddingID() == EEmbeddingID.PATHWAY_LEVEL1) {
 			view.lastUsedLevel1Renderer = info.multiFormRenderer;
 		}
+		return false;
 	}
 }
