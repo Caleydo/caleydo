@@ -28,7 +28,7 @@ public class PathwayRenderStyle
 
 	public static final int neighborhoodNodeColorArraysize = 4;
 
-	public static final int ENZYME_NODE_PIXEL_WIDTH = 45;
+	public static final int ENZYME_NODE_PIXEL_WIDTH = 46;
 	public static final int ENZYME_NODE_PIXEL_HEIGHT = 17;
 	public static final int COMPOUND_NODE_PIXEL_WIDTH = 8;
 	public static final int COMPOUND_NODE_PIXEL_HEIGHT = 8;
