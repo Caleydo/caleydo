@@ -63,7 +63,7 @@ public class GLPathwayBackground extends PickableGLElement {
 
 	@Override
 	protected void onMouseOver(Pick pick) {
-		parentWindow.setActive(true);
+		// parentWindow.setActive(true);
 		// GLPathwayBackground currentActiveBackground = view.getCurrentActiveBackground();
 		//
 		// if (currentActiveBackground != null && currentActiveBackground != this) {

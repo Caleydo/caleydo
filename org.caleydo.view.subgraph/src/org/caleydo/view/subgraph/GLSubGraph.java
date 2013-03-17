@@ -2,6 +2,7 @@ package org.caleydo.view.subgraph;
 
 import gleem.linalg.Vec2f;
 
+import java.awt.Point;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -33,6 +34,7 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.IGLKeyListener;
+import org.caleydo.core.view.opengl.canvas.IGLMouseListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.layout.util.multiform.IMultiFormChangeListener;
@@ -182,6 +184,8 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 
 	private List<Pair<PathwayVertexRep, PathwayVertexRep>> selectedPortalLinks = new ArrayList<>();
 
+	private GLWindow dataMappingWindow;
+
 	/**
 	 * Constructor.
 	 *
@@ -195,7 +199,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		GLElementContainer column = new GLElementContainer(new GLSizeRestrictiveFlowLayout(false, 10, GLPadding.ZERO));
 		column.add(baseContainer);
 		nodeInfoContainer.setSize(Float.NaN, 0);
-		final GLWindow dataMappingWindow = new GLWindow("Data Mapping", this);
+		dataMappingWindow = new GLWindow("Data Mapping", this);
 		dataMappingWindow.setSize(Float.NaN, 80);
 		dataMappingWindow.setContent(experimentalDataMappingElement);
 		dataMappingWindow.setShowCloseButton(false);
@@ -228,7 +232,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 
 		root.add(column);
 		root.add(augmentation);
-		registeKeyListeners();
+		registerListeners();
 
 	}
 
@@ -320,8 +324,63 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		return serializedForm;
 	}
 
-	protected void registeKeyListeners() {
+	protected void registerListeners() {
 
+		parentGLCanvas.addMouseListener(new IGLMouseListener() {
+
+			@Override
+			public void mouseWheelMoved(IMouseEvent mouseEvent) {
+			}
+
+			@Override
+			public void mouseReleased(IMouseEvent mouseEvent) {
+			}
+
+			@Override
+			public void mousePressed(IMouseEvent mouseEvent) {
+			}
+
+			@Override
+			public void mouseMoved(IMouseEvent mouseEvent) {
+				Point mousePosition = mouseEvent.getPoint();
+				for (PathwayMultiFormInfo info : pathwayInfos) {
+					if (setWindowActive(mousePosition, info.window))
+						return;
+				}
+				if (setWindowActive(mousePosition, pathInfo.window))
+					return;
+				if (setWindowActive(mousePosition, rankingWindow))
+					return;
+				setWindowActive(mousePosition, dataMappingWindow);
+			}
+
+			private boolean setWindowActive(Point mousePosition, GLWindow window) {
+				Vec2f location = window.getAbsoluteLocation();
+				Vec2f size = window.getSize();
+				if ((mousePosition.x >= location.x() && mousePosition.x <= location.x() + size.x())
+						&& (mousePosition.y >= location.y() && mousePosition.y <= location.y() + size.y())) {
+					window.setActive(true);
+					return true;
+				}
+				return false;
+			}
+
+			@Override
+			public void mouseExited(IMouseEvent mouseEvent) {
+			}
+
+			@Override
+			public void mouseEntered(IMouseEvent mouseEvent) {
+			}
+
+			@Override
+			public void mouseDragged(IMouseEvent mouseEvent) {
+			}
+
+			@Override
+			public void mouseClicked(IMouseEvent mouseEvent) {
+			}
+		});
 		parentGLCanvas.addKeyListener(new IGLKeyListener() {
 			@Override
 			public void keyPressed(IKeyEvent e) {
