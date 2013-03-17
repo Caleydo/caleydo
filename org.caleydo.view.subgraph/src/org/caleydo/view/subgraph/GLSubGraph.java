@@ -169,7 +169,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	/**
 	 * The portal that is currently mouse-overed
 	 */
-	private PathwayVertexRep currentPortalVertexRep;
+	protected PathwayVertexRep currentPortalVertexRep;
 
 	/**
 	 * The vertex rep that is used for context path determination.
@@ -179,6 +179,8 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	private EventBasedSelectionManager vertexSelectionManager;
 
 	private Map<Integer, PathwayVertexRep> allVertexReps = new HashMap<>();
+
+	private List<Pair<PathwayVertexRep, PathwayVertexRep>> selectedPortalLinks = new ArrayList<>();
 
 	/**
 	 * Constructor.
@@ -730,6 +732,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 			this.activeWindow.setActive(false);
 		}
 		this.activeWindow = activeWindow;
+		clearSelectedPortalLinks();
 		updatePathwayPortals();
 
 	}
@@ -965,6 +968,8 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 				}
 			}
 		}
+		// clearSelectedPortalLinks();
+		// System.out.println("update");
 	}
 
 	private void addLinkRenderers(PathwayVertexRep vertexRep, PathwayMultiFormInfo sourceInfo,
@@ -984,11 +989,20 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 					Math.abs(pathwayLayout.getColumnIndex(sourceInfo.window)
 							- pathwayLayout.getColumnIndex(targetInfo.window)));
 			LinkRenderer renderer = new LinkRenderer(this, vertexRep == currentPortalVertexRep
-					|| v == currentPortalVertexRep, sourcePair.getFirst(), targetPair.getFirst(), sourceInfo,
-					targetInfo, stubSize, sourcePair.getSecond(), targetPair.getSecond(), PathwayManager.get()
-							.areVerticesEquivalent(vertexRep, currentContextVertexRep), false, vertexRep, v);
+					|| v == currentPortalVertexRep || isSelectedPortalLink(vertexRep, v), sourcePair.getFirst(),
+					targetPair.getFirst(), sourceInfo, targetInfo, stubSize, sourcePair.getSecond(),
+					targetPair.getSecond(), PathwayManager.get().areVerticesEquivalent(vertexRep,
+							currentContextVertexRep), false, vertexRep, v);
 			augmentation.add(renderer);
 		}
+	}
+
+	protected boolean isSelectedPortalLink(PathwayVertexRep v1, PathwayVertexRep v2) {
+		for (Pair<PathwayVertexRep, PathwayVertexRep> pair : selectedPortalLinks) {
+			if ((pair.getFirst() == v1 && pair.getSecond() == v2) || (pair.getFirst() == v2 && pair.getSecond() == v1))
+				return true;
+		}
+		return false;
 	}
 
 	protected boolean isPathLink(PathwayVertexRep v1, PathwayVertexRep v2) {
@@ -1130,9 +1144,29 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		for (Integer id : selectedVertexIDs) {
 			currentPortalVertexRep = allVertexReps.get(id);
 		}
+		clearSelectedPortalLinks();
 		// updatePortalLinks();
 		isLayoutDirty = true;
 		// updatePathwayPortals();
+	}
+
+	/**
+	 * @return the selectedPortalLinks, see {@link #selectedPortalLinks}
+	 */
+	public List<Pair<PathwayVertexRep, PathwayVertexRep>> getSelectedPortalLinks() {
+		return selectedPortalLinks;
+	}
+
+	public void clearSelectedPortalLinks() {
+		selectedPortalLinks.clear();
+	}
+
+	public void addSelectedPortalLink(PathwayVertexRep vertexRep1, PathwayVertexRep vertexRep2) {
+		selectedPortalLinks.add(new Pair<PathwayVertexRep, PathwayVertexRep>(vertexRep1, vertexRep2));
+	}
+
+	public void setCurrentPortalVertexRep(PathwayVertexRep currentPortalVertexRep) {
+		this.currentPortalVertexRep = currentPortalVertexRep;
 	}
 
 	// /**

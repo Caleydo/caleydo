@@ -134,11 +134,16 @@ public class LinkRenderer extends PickableGLElement {
 
 	@Override
 	protected void onClicked(Pick pick) {
-		promote(info1);
-		promote(info2);
-		ShowNodeContextEvent event = new ShowNodeContextEvent(vertexRep1);
-		event.setEventSpace(view.getPathEventSpace());
-		EventPublisher.INSTANCE.triggerEvent(event);
+		if (!isPathLink) {
+			promote(info1);
+			promote(info2);
+			view.clearSelectedPortalLinks();
+			view.addSelectedPortalLink(vertexRep1, vertexRep2);
+			view.setCurrentPortalVertexRep(null);
+			ShowNodeContextEvent event = new ShowNodeContextEvent(vertexRep1);
+			event.setEventSpace(view.getPathEventSpace());
+			EventPublisher.INSTANCE.triggerEvent(event);
+		}
 	}
 
 	private void promote(PathwayMultiFormInfo info) {
