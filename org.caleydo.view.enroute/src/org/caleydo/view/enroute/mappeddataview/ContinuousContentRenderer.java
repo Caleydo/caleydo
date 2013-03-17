@@ -66,8 +66,8 @@ public class ContinuousContentRenderer extends ContentRenderer {
 	public void init() {
 		if (rowID == null)
 			return;
-		average = TablePerspectiveStatistics.calculateAverage(columnPerspective.getVirtualArray(),
-				dataDomain.getTable(), resolvedRowIDType, resolvedRowID);
+		average = TablePerspectiveStatistics.calculateAverage(columnPerspective.getVirtualArray(), dataDomain,
+				resolvedRowIDType, resolvedRowID);
 
 		registerPickingListener();
 	}

@@ -137,9 +137,6 @@ public class GLPathwayAugmentationRenderer {
 			selectedSamplesVA = null;
 			return;
 		}
-		TablePerspective tablePerspective;
-
-		tablePerspective = tablePerspectives.get(0);
 
 		Set<Integer> selectedSamples = glPathwayView.getSampleSelectionManager().getElements(SelectionType.SELECTION);
 		List<Integer> selectedSamplesArray = new ArrayList<Integer>();
@@ -147,8 +144,7 @@ public class GLPathwayAugmentationRenderer {
 		// Only add selected samples for single pathway
 		switch (glPathwayView.getSampleMappingMode()) {
 		case ALL:
-			selectedSamplesVA = tablePerspective.getPerspective(
-					tablePerspective.getDataDomain().getOppositeIDType(IDType.getIDType("DAVID"))).getVirtualArray();
+			selectedSamplesVA = null;
 			break;
 		case SELECTED:
 			selectedSamplesArray.addAll(selectedSamples);
@@ -172,10 +168,8 @@ public class GLPathwayAugmentationRenderer {
 		if (enzymeNodeDisplayListId == -1)
 			enzymeNodeDisplayListId = gl.glGenLists(1);
 
-		float nodeWidth = pixelGLConverter.getGLWidthForPixelWidth(
-				PathwayRenderStyle.ENZYME_NODE_PIXEL_WIDTH);
-		float nodeHeight = pixelGLConverter.getGLHeightForPixelHeight(
-				PathwayRenderStyle.ENZYME_NODE_PIXEL_HEIGHT);
+		float nodeWidth = pixelGLConverter.getGLWidthForPixelWidth(PathwayRenderStyle.ENZYME_NODE_PIXEL_WIDTH);
+		float nodeHeight = pixelGLConverter.getGLHeightForPixelHeight(PathwayRenderStyle.ENZYME_NODE_PIXEL_HEIGHT);
 
 		gl.glNewList(enzymeNodeDisplayListId, GL2.GL_COMPILE);
 		renderQuad(gl, nodeWidth, nodeHeight);
@@ -187,10 +181,8 @@ public class GLPathwayAugmentationRenderer {
 		if (upscaledFilledEnzymeNodeDisplayListId == -1)
 			upscaledFilledEnzymeNodeDisplayListId = gl.glGenLists(1);
 
-		float nodeWidth = pixelGLConverter.getGLWidthForPixelWidth(
-				PathwayRenderStyle.ENZYME_NODE_PIXEL_WIDTH);
-		float nodeHeight = pixelGLConverter.getGLHeightForPixelHeight(
-				PathwayRenderStyle.ENZYME_NODE_PIXEL_HEIGHT);
+		float nodeWidth = pixelGLConverter.getGLWidthForPixelWidth(PathwayRenderStyle.ENZYME_NODE_PIXEL_WIDTH);
+		float nodeHeight = pixelGLConverter.getGLHeightForPixelHeight(PathwayRenderStyle.ENZYME_NODE_PIXEL_HEIGHT);
 
 		// float scaleFactor = 1.4f;
 		float scaleFactor = 3.f;
@@ -207,10 +199,8 @@ public class GLPathwayAugmentationRenderer {
 		if (upscaledFramedEnzymeNodeDisplayListID == -1)
 			upscaledFramedEnzymeNodeDisplayListID = gl.glGenLists(1);
 
-		float nodeWidth = pixelGLConverter.getGLWidthForPixelWidth(
-				PathwayRenderStyle.ENZYME_NODE_PIXEL_WIDTH);
-		float nodeHeight = pixelGLConverter.getGLHeightForPixelHeight(
-				PathwayRenderStyle.ENZYME_NODE_PIXEL_HEIGHT);
+		float nodeWidth = pixelGLConverter.getGLWidthForPixelWidth(PathwayRenderStyle.ENZYME_NODE_PIXEL_WIDTH);
+		float nodeHeight = pixelGLConverter.getGLHeightForPixelHeight(PathwayRenderStyle.ENZYME_NODE_PIXEL_HEIGHT);
 
 		float scaleFactor = 3.f;
 		nodeWidth *= scaleFactor;
@@ -250,10 +240,8 @@ public class GLPathwayAugmentationRenderer {
 		if (compoundNodeDisplayListId == -1)
 			compoundNodeDisplayListId = gl.glGenLists(1);
 
-		float nodeWidth = pixelGLConverter.getGLWidthForPixelWidth(
-				PathwayRenderStyle.COMPOUND_NODE_PIXEL_WIDTH);
-		float nodeHeight = pixelGLConverter.getGLHeightForPixelHeight(
-				PathwayRenderStyle.COMPOUND_NODE_PIXEL_HEIGHT);
+		float nodeWidth = pixelGLConverter.getGLWidthForPixelWidth(PathwayRenderStyle.COMPOUND_NODE_PIXEL_WIDTH);
+		float nodeHeight = pixelGLConverter.getGLHeightForPixelHeight(PathwayRenderStyle.COMPOUND_NODE_PIXEL_HEIGHT);
 
 		gl.glNewList(compoundNodeDisplayListId, GL2.GL_COMPILE);
 		renderQuad(gl, nodeWidth, nodeHeight);
@@ -265,10 +253,8 @@ public class GLPathwayAugmentationRenderer {
 		if (framedCompoundNodeDisplayListId == -1)
 			framedCompoundNodeDisplayListId = gl.glGenLists(1);
 
-		float nodeWidth = pixelGLConverter.getGLWidthForPixelWidth(
-				PathwayRenderStyle.COMPOUND_NODE_PIXEL_WIDTH);
-		float nodeHeight = pixelGLConverter.getGLHeightForPixelHeight(
-				PathwayRenderStyle.COMPOUND_NODE_PIXEL_HEIGHT);
+		float nodeWidth = pixelGLConverter.getGLWidthForPixelWidth(PathwayRenderStyle.COMPOUND_NODE_PIXEL_WIDTH);
+		float nodeHeight = pixelGLConverter.getGLHeightForPixelHeight(PathwayRenderStyle.COMPOUND_NODE_PIXEL_HEIGHT);
 
 		gl.glNewList(framedCompoundNodeDisplayListId, GL2.GL_COMPILE);
 		renderFrame(gl, nodeWidth, nodeHeight);
@@ -309,7 +295,6 @@ public class GLPathwayAugmentationRenderer {
 		}
 	}
 
-
 	private void renderVertex(final GL2 gl, PathwayVertexRep vertexRep) {
 
 		float[] tmpNodeColor = null;
@@ -320,8 +305,6 @@ public class GLPathwayAugmentationRenderer {
 
 		if (shape.equals(EPathwayVertexShape.poly))
 			renderPolyVertex(gl, vertexRep);
-
-
 
 		float canvasXPos = pixelGLConverter.getGLWidthForPixelWidth(vertexRep.getCenterX());
 		float canvasYPos = pixelGLConverter.getGLHeightForPixelHeight(vertexRep.getCenterY());
@@ -485,6 +468,10 @@ public class GLPathwayAugmentationRenderer {
 		gl.glEnable(GL.GL_DEPTH_TEST);
 		gl.glEnable(GL.GL_BLEND);
 
+		for (TablePerspective tablePerspective : glPathwayView.getTablePerspectives()) {
+
+		}
+
 		if (mappingPerspective != null) {
 			Average average = getExpressionAverage(vertexRep);
 			if (average != null) {
@@ -517,7 +504,7 @@ public class GLPathwayAugmentationRenderer {
 					float y = -pixelGLConverter.getGLHeightForPixelHeight(PathwayRenderStyle.ENZYME_NODE_PIXEL_HEIGHT);
 
 					// rendering the std-dev box
-					if (!stdDev.isNaN() && selectedSamplesVA.size() > 1) {
+					if (!stdDev.isNaN()) {
 
 						// ////////////////////////////// h bars
 						gl.glDisable(GL.GL_BLEND);
@@ -536,8 +523,7 @@ public class GLPathwayAugmentationRenderer {
 						gl.glColor3fv(mappingPerspective.getDataDomain().getColor().getRGB(), 0);
 						gl.glBegin(GL2.GL_QUADS);
 						gl.glVertex3f(0, y - (2f * thirdOfstdDevBarHeight), PathwayRenderStyle.Z_OFFSET);
-						gl.glVertex3f(0, y + thirdOfstdDevBarHeight - onePxlHeight,
-								PathwayRenderStyle.Z_OFFSET);
+						gl.glVertex3f(0, y + thirdOfstdDevBarHeight - onePxlHeight, PathwayRenderStyle.Z_OFFSET);
 						gl.glVertex3f(stdDev, y + thirdOfstdDevBarHeight - onePxlHeight, PathwayRenderStyle.Z_OFFSET);
 						gl.glVertex3f(stdDev, y - (2f * thirdOfstdDevBarHeight), PathwayRenderStyle.Z_OFFSET);
 						gl.glEnd();
@@ -551,8 +537,7 @@ public class GLPathwayAugmentationRenderer {
 						gl.glDisable(GL.GL_LINE_SMOOTH);
 						gl.glBegin(GL.GL_LINE_LOOP);
 						gl.glVertex3f(0, y - (2f * thirdOfstdDevBarHeight), PathwayRenderStyle.Z_OFFSET);
-						gl.glVertex3f(0, y + thirdOfstdDevBarHeight - onePxlHeight,
-								PathwayRenderStyle.Z_OFFSET);
+						gl.glVertex3f(0, y + thirdOfstdDevBarHeight - onePxlHeight, PathwayRenderStyle.Z_OFFSET);
 						gl.glVertex3f(x + onePxlWidth, y + thirdOfstdDevBarHeight - onePxlHeight,
 								PathwayRenderStyle.Z_OFFSET);
 						gl.glVertex3f(x + onePxlWidth, y - (2f * thirdOfstdDevBarHeight), PathwayRenderStyle.Z_OFFSET);
@@ -698,11 +683,9 @@ public class GLPathwayAugmentationRenderer {
 				nodeColor = PathwayRenderStyle.ENZYME_NODE_COLOR;
 				gl.glColor4f(nodeColor[0], nodeColor[1], nodeColor[2], 0.7f);
 				// gl.glCallList(compoundNodeDisplayListId);
-				float boxWidth = pixelGLConverter.getGLWidthForPixelWidth(
-						PathwayRenderStyle.COMPOUND_NODE_PIXEL_WIDTH);
+				float boxWidth = pixelGLConverter.getGLWidthForPixelWidth(PathwayRenderStyle.COMPOUND_NODE_PIXEL_WIDTH);
 				float boxHeight = pixelGLConverter
-						.getGLHeightForPixelHeight(
-						PathwayRenderStyle.COMPOUND_NODE_PIXEL_HEIGHT);
+						.getGLHeightForPixelHeight(PathwayRenderStyle.COMPOUND_NODE_PIXEL_HEIGHT);
 				float y = -pixelGLConverter.getGLHeightForPixelHeight(PathwayRenderStyle.ENZYME_NODE_PIXEL_HEIGHT);
 
 				gl.glDisable(GL.GL_DEPTH_TEST);
@@ -797,21 +780,25 @@ public class GLPathwayAugmentationRenderer {
 	 */
 	private Average getExpressionAverage(PathwayVertexRep vertexRep) {
 
-		if (selectedSamplesVA == null || selectedSamplesVA.size() == 0)
+		if (selectedSamplesVA != null && selectedSamplesVA.size() == 0)
 			return null;
 
 		List<Integer> mappedDavidIds = pathwayItemManager.getDavidIDsByPathwayVertexRep(vertexRep);
 
 		Average average = null;
 		for (Integer davidID : mappedDavidIds) {
-			average = TablePerspectiveStatistics.calculateAverage(selectedSamplesVA, mappingPerspective.getDataDomain()
-					.getTable(), IDType.getIDType("DAVID"), davidID);
+			if (selectedSamplesVA == null) {
+				average = mappingPerspective.getContainerStatistics().getAverage(IDType.getIDType("DAVID"), davidID);
+			} else {
+				average = TablePerspectiveStatistics.calculateAverage(selectedSamplesVA,
+						mappingPerspective.getDataDomain(), IDType.getIDType("DAVID"), davidID);
+			}
 			return average;
+			// TODO: this has no multi-mapping
 		}
 
 		return null;
 	}
-
 
 	/**
 	 * @param mappingPerspective

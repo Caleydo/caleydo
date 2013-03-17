@@ -21,6 +21,8 @@ package org.caleydo.core.data.perspective.table;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Set;
 
 import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.table.Table;
@@ -61,6 +63,8 @@ public class TablePerspectiveStatistics {
 	private FoldChange foldChange;
 
 	private TTest tTest;
+
+	private HashMap<IDType, HashMap<Integer, Average>> mapIDTypeToIDToAverage = new HashMap<>();
 
 	/**
 	 * Optionally it is possible to specify the number of bins for the histogram manually. This should only be done if
@@ -214,6 +218,40 @@ public class TablePerspectiveStatistics {
 		return tTest;
 	}
 
+	public Average getAverage(IDType idType, Integer id) {
+		IDType targetIDtype;
+
+		if (referenceTablePerspective.getRecordPerspective().getIdType().getIDCategory().isOfCategory(idType)) {
+			targetIDtype = referenceTablePerspective.getRecordPerspective().getIdType();
+
+		} else if (referenceTablePerspective.getDimensionPerspective().getIdType().getIDCategory().isOfCategory(idType)) {
+			targetIDtype = referenceTablePerspective.getDimensionPerspective().getIdType();
+		} else {
+			throw new IllegalArgumentException("IDType specified (" + idType + ") invalid for table perspective "
+					+ referenceTablePerspective);
+		}
+
+		Set<Integer> resolvedIDs = IDMappingManagerRegistry.get().getIDMappingManager(idType)
+				.getIDAsSet(idType, targetIDtype, id);
+		if (resolvedIDs == null)
+			return null;
+		for (Integer resolvedID : resolvedIDs) {
+			HashMap<Integer, Average> idToAverage = mapIDTypeToIDToAverage.get(targetIDtype);
+			if (idToAverage == null) {
+				// I assume we're working with approximately 500 values at a time
+				idToAverage = new HashMap<>(500);
+				mapIDTypeToIDToAverage.put(targetIDtype, idToAverage);
+			}
+			Average average = idToAverage.get(resolvedID);
+			if (average == null) {
+				average = calculateAverage(targetIDtype, resolvedID);
+				idToAverage.put(id, average);
+			}
+			return average;
+		}
+		return null;
+	}
+
 	/**
 	 * @return the averageRecords, see {@link #averageRecords}
 	 */
@@ -234,7 +272,7 @@ public class TablePerspectiveStatistics {
 
 		for (Integer recordID : recordVA) {
 
-			Average averageRecord = calculateAverage(dimensionVA, referenceTablePerspective.getDataDomain().getTable(),
+			Average averageRecord = calculateAverage(dimensionVA, referenceTablePerspective.getDataDomain(),
 					referenceTablePerspective.getRecordPerspective().getIdType(), recordID);
 
 			averageRecords.add(averageRecord);
@@ -260,10 +298,15 @@ public class TablePerspectiveStatistics {
 		VirtualArray recordVA = referenceTablePerspective.getRecordPerspective().getVirtualArray();
 
 		for (Integer dimensionID : dimensionVA) {
-			Average averageDimension = calculateAverage(recordVA, referenceTablePerspective.getDataDomain().getTable(),
+			Average averageDimension = calculateAverage(recordVA, referenceTablePerspective.getDataDomain(),
 					referenceTablePerspective.getDimensionPerspective().getIdType(), dimensionID);
 			averageDimensions.add(averageDimension);
 		}
+	}
+
+	private Average calculateAverage(IDType idType, Integer id) {
+		return calculateAverage(referenceTablePerspective.getOppositePerspective(idType).getVirtualArray(),
+				referenceTablePerspective.getDataDomain(), idType, id);
 	}
 
 	/**
@@ -287,7 +330,8 @@ public class TablePerspectiveStatistics {
 	 * @param objectID
 	 * @return
 	 */
-	public static Average calculateAverage(VirtualArray virtualArray, Table table, IDType objectIDType, Integer objectID) {
+	public static Average calculateAverage(VirtualArray virtualArray, ATableBasedDataDomain dataDomain,
+			IDType objectIDType, Integer objectID) {
 		if (objectID == null || virtualArray.size() == 0)
 			return null;
 		Average averageDimension = new Average();
@@ -297,39 +341,41 @@ public class TablePerspectiveStatistics {
 
 		int nrValidValues = 0;
 
-		ATableBasedDataDomain dataDomain = table.getDataDomain();
+		IDType resolvedVAIDType = virtualArray.getIdType();
+		if (!dataDomain.hasIDType(resolvedVAIDType)) {
 
-		IDType virtualArrayIDType = virtualArray.getIdType();
-		IDType resolvedVAIDType = dataDomain.getPrimaryIDType(virtualArrayIDType);
-		IDType resolvedObjectIDType = dataDomain.getPrimaryIDType(objectIDType);
+			IDType virtualArrayIDType = virtualArray.getIdType();
+			resolvedVAIDType = dataDomain.getPrimaryIDType(virtualArrayIDType);
 
-		if (!resolvedVAIDType.equals(virtualArrayIDType)) {
-			PerspectiveInitializationData data = new PerspectiveInitializationData();
-			data.setData(virtualArray);
-			Perspective tempPerspective = new Perspective(dataDomain, virtualArrayIDType);
-			tempPerspective.init(data);
-			virtualArray = dataDomain.convertForeignPerspective(tempPerspective).getVirtualArray();
+			if (!resolvedVAIDType.equals(virtualArrayIDType)) {
+				PerspectiveInitializationData data = new PerspectiveInitializationData();
+				data.setData(virtualArray);
+				Perspective tempPerspective = new Perspective(dataDomain, virtualArrayIDType);
+				tempPerspective.init(data);
+				virtualArray = dataDomain.convertForeignPerspective(tempPerspective).getVirtualArray();
+			}
 		}
-
+		IDType resolvedObjectIDType = objectIDType;
 		Collection<Integer> ids;
-		if (!resolvedObjectIDType.equals(objectIDType)) {
+		if (!dataDomain.hasIDType(resolvedObjectIDType)) {
+			resolvedObjectIDType = dataDomain.getPrimaryIDType(objectIDType);
+
 			ids = IDMappingManagerRegistry.get().getIDMappingManager(objectIDType)
 					.getIDAsSet(objectIDType, resolvedObjectIDType, objectID);
+
+			if (ids == null)
+				return null;
 		} else {
 			ids = new ArrayList<Integer>(1);
 			ids.add(objectID);
 		}
-
-		if (ids == null)
-			return null;
 		// IDMappingManager idMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(virtualArrayIDType);
 
 		for (Integer virtualArrayID : virtualArray) {
 			Float value;
 
 			for (Integer id : ids) {
-				value = table.getDataDomain().getNormalizedValue(resolvedObjectIDType, id, resolvedVAIDType,
-						virtualArrayID);
+				value = dataDomain.getNormalizedValue(resolvedObjectIDType, id, resolvedVAIDType, virtualArrayID);
 
 				if (value != null && !value.isNaN()) {
 					sumOfValues += value;

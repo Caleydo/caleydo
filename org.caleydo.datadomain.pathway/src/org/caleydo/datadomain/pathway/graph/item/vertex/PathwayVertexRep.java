@@ -310,7 +310,7 @@ public class PathwayVertexRep implements Serializable, IUniqueObject {
 			if (ids != null) {
 				for (Integer id : ids) {
 					Average average = TablePerspectiveStatistics.calculateAverage(samplePerspective.getVirtualArray(),
-							tablePerspective.getDataDomain().getTable(), genePerspective.getIdType(), id);
+							tablePerspective.getDataDomain(), genePerspective.getIdType(), id);
 					sumStandardDeviation += average.getStandardDeviation();
 					sumAverage += average.getArithmeticMean();
 					numIDs++;

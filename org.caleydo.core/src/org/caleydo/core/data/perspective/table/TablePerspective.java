@@ -206,7 +206,8 @@ public class TablePerspective implements IDefaultLabelHolder {
 	}
 
 	/**
-	 * Convenience wrapper for {@link #getPerspective(IDType)}
+	 * Convenience wrapper for {@link #getPerspective(IDType)}. Note that idType does only have to be of the same
+	 * category, not of the same type.
 	 *
 	 * @param idType
 	 * @return
@@ -231,6 +232,29 @@ public class TablePerspective implements IDefaultLabelHolder {
 		} else {
 			throw new IllegalStateException("ID Category " + idCategory + " not available for this perspective.");
 		}
+	}
+
+	/**
+	 * Returns the perspective "opposite" of the one associated with this ID Type. This is a convenience wrapper to
+	 * {@link #getOppositePerspective(IDCategory)}. As a consequence only the IDCategory of the provided type matters,
+	 * not the actual type.
+	 *
+	 * @param idType
+	 * @return
+	 */
+	public Perspective getOppositePerspective(IDType idType) {
+		return getOppositePerspective(idType.getIDCategory());
+	}
+
+	/**
+	 * Returns the perspective "opposite" of the one associated with this ID Type.
+	 *
+	 * @param idType
+	 * @return
+	 */
+	public Perspective getOppositePerspective(IDCategory idCategory) {
+		IDType oppositeType = dataDomain.getOppositeIDType(idCategory);
+		return getPerspective(oppositeType);
 	}
 
 	/**

@@ -36,8 +36,8 @@ public class ContinuousContentPreviewRenderer extends AContentPreviewRenderer {
 		colorCalculator.setBaseColor(new Color(MappedDataRenderer.SUMMARY_BAR_COLOR));
 		if (resolvedRowID == null)
 			return;
-		average = TablePerspectiveStatistics.calculateAverage(experimentPerspective.getVirtualArray(),
-				dataDomain.getTable(), resolvedRowIDType, resolvedRowID);
+		average = TablePerspectiveStatistics.calculateAverage(experimentPerspective.getVirtualArray(), dataDomain,
+				resolvedRowIDType, resolvedRowID);
 
 	}
 
