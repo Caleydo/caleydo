@@ -61,7 +61,6 @@ import org.caleydo.datadomain.pathway.listener.EnablePathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.PathwayPathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.ShowNodeContextEvent;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
-import org.caleydo.view.subgraph.GLSubGraphAugmentation.LinkRenderer;
 import org.caleydo.view.subgraph.GLWindow.ICloseWindowListener;
 import org.caleydo.view.subgraph.MultiLevelSlideInElement.IWindowState;
 import org.caleydo.view.subgraph.SlideInElement.ESlideInElementPosition;
@@ -94,7 +93,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	private GLElementContainer root = new GLElementContainer(GLLayouts.LAYERS);
 	private AnimatedGLElementContainer pathwayRow = new PathwayRowElement(this);
 	// private AnimatedGLElementContainer pathwayRow = new AnimatedGLElementContainer();
-	private GLSubGraphAugmentation augmentation = new GLSubGraphAugmentation();
+	private GLSubGraphAugmentation augmentation = new GLSubGraphAugmentation(this);
 	private AnimatedGLElementContainer nodeInfoContainer = new AnimatedGLElementContainer(
 			new GLSizeRestrictiveFlowLayout(true, 10, GLPadding.ZERO));
 
@@ -335,12 +334,13 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 			private void update(IKeyEvent e) {
 				boolean isPPressed = e.isKeyDown('p');
 				// augmentation.showPortals(isPPressed);
-
-				// boolean isOPressed = e.isKeyDown('o');
-				ShowPortalsEvent event = new ShowPortalsEvent(!showPortalsButton.isChecked());
-				showPortalsButton.setChecked(!showPortalsButton.isChecked());
-				event.setEventSpace(pathEventSpace);
-				EventPublisher.INSTANCE.triggerEvent(event);
+				if (isPPressed) {
+					// boolean isOPressed = e.isKeyDown('o');
+					ShowPortalsEvent event = new ShowPortalsEvent(!showPortalsButton.isChecked());
+					showPortalsButton.setChecked(!showPortalsButton.isChecked());
+					event.setEventSpace(pathEventSpace);
+					EventPublisher.INSTANCE.triggerEvent(event);
+				}
 				// highlightAllPortalsButton.setChecked(isOPressed);
 			}
 
@@ -921,7 +921,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		}
 		if (info == null)
 			return;
-		augmentation.clearPortalConnectionRenderers();
+		augmentation.clear();
 		PathwayVertexRep lastNodeOfPrevSegment = null;
 
 		for (PathwayPath segment : pathSegments) {
@@ -937,8 +937,8 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 					Rectangle2D loc2 = getAbsoluteVertexLocation(
 							getPathwayRepresentation(info2.multiFormRenderer,
 									info2.multiFormRenderer.getActiveRendererID()), nodes.get(0), info2.container);
-					augmentation.addPortalLinkRenderer(new LinkRenderer(true, loc1, loc2, info1, info2, 1, false,
-							false, false, true));
+					augmentation.add(new LinkRenderer(this, true, loc1, loc2, info1, info2, 1, false, false, false,
+							true, lastNodeOfPrevSegment, nodes.get(0)));
 				}
 
 				lastNodeOfPrevSegment = nodes.get(nodes.size() - 1);
@@ -983,12 +983,11 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 					1,
 					Math.abs(pathwayLayout.getColumnIndex(sourceInfo.window)
 							- pathwayLayout.getColumnIndex(targetInfo.window)));
-			LinkRenderer renderer = new LinkRenderer(
-					vertexRep == currentPortalVertexRep || v == currentPortalVertexRep, sourcePair.getFirst(),
-					targetPair.getFirst(), sourceInfo, targetInfo, stubSize, sourcePair.getSecond(),
-					targetPair.getSecond(), PathwayManager.get().areVerticesEquivalent(vertexRep,
-							currentContextVertexRep), false);
-			augmentation.addPortalLinkRenderer(renderer);
+			LinkRenderer renderer = new LinkRenderer(this, vertexRep == currentPortalVertexRep
+					|| v == currentPortalVertexRep, sourcePair.getFirst(), targetPair.getFirst(), sourceInfo,
+					targetInfo, stubSize, sourcePair.getSecond(), targetPair.getSecond(), PathwayManager.get()
+							.areVerticesEquivalent(vertexRep, currentContextVertexRep), false, vertexRep, v);
+			augmentation.add(renderer);
 		}
 	}
 
@@ -1132,7 +1131,8 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 			currentPortalVertexRep = allVertexReps.get(id);
 		}
 		// updatePortalLinks();
-		updatePathwayPortals();
+		isLayoutDirty = true;
+		// updatePathwayPortals();
 	}
 
 	// /**

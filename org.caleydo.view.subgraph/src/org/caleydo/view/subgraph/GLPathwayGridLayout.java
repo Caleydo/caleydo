@@ -256,8 +256,8 @@ public class GLPathwayGridLayout implements IGLLayout {
 					maxFreeSpaceColumn = c;
 				}
 			}
-			if (maxFreeSpaceColumn == null)
-				return;
+			// if (maxFreeSpaceColumn == null)
+			// return;
 
 			GLPathwayWindow largestWindowFittingFreeSpace = null;
 			GLPathwayWindow largestWindow = null;
@@ -273,7 +273,7 @@ public class GLPathwayGridLayout implements IGLLayout {
 				}
 			}
 
-			if (largestWindowFittingFreeSpace != null) {
+			if (largestWindowFittingFreeSpace != null && maxFreeSpaceColumn != null) {
 				maxFreeSpaceColumn.windows.add(largestWindowFittingFreeSpace);
 				column.windows.remove(largestWindowFittingFreeSpace);
 				snapshots.add(new LayoutSnapshot(columns));
