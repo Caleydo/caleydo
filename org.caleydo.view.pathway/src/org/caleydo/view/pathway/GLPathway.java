@@ -217,7 +217,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 	 * Context menu items that shall be displayed on right click on a {@link PathwayVertexRep}. Added via
 	 * {@link #addVertexRepBasedContextMenuItem(VertexRepBasedContextMenuItem)}.
 	 */
-	List<VertexRepBasedContextMenuItem> addedContextMenuItems = new ArrayList<>();
+	private List<VertexRepBasedContextMenuItem> addedContextMenuItems = new ArrayList<>();
 
 	/**
 	 * Events that should be triggered when selecting a node. Added via
@@ -225,7 +225,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 	 */
 	protected Map<PickingMode, List<VertexRepBasedEventFactory>> nodeEvents = new HashMap<>();
 
-	EventListenerManager listeners = EventListenerManagers.wrap(this);
+	private EventListenerManager listeners = EventListenerManagers.wrap(this);
 
 	private IDType geneIDType;
 	private IDType sampleIDType;
@@ -474,27 +474,8 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 						event.setPathwayID(pathway.getID());
 						GeneralManager.get().getEventPublisher().triggerEvent(event);
 					}
-				} else {
-
-					// // Load pathways
-					// for (IGraphItem pathwayVertexGraphItem :
-					// tmpVertexGraphItemRep
-					// .getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD))
-					// {
-					//
-					// LoadPathwaysByGeneEvent
-					// loadPathwaysByGeneEvent =
-					// new LoadPathwaysByGeneEvent();
-					// loadPathwaysByGeneEvent.setSender(this);
-					// loadPathwaysByGeneEvent.setGeneID(pathwayVertexGraphItem.getId());
-					// loadPathwaysByGeneEvent.setIdType(EIDType.PATHWAY_VERTEX);
-					// generalManager.getEventPublisher().triggerEvent(loadPathwaysByGeneEvent);
-					//
-					// }
 				}
 
-				// same behavior as for single click except that
-				// pathways are also loaded
 				handlePathwayElementSelection(SelectionType.SELECTION, pick.getObjectID());
 
 				triggerNodeEvents(pick.getPickingMode(), vertexRep);
@@ -844,17 +825,9 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		setDisplayListDirty();
 	}
 
-	public void enablePathwayTextures(final boolean bEnablePathwayTexture) {
-		augmentationRenderer.enableEdgeRendering(!bEnablePathwayTexture);
+	public void enablePathwayTextures(final boolean enablePathwayTexture) {
+		this.enablePathwayTexture = enablePathwayTexture;
 		setDisplayListDirty();
-
-		this.enablePathwayTexture = bEnablePathwayTexture;
-	}
-
-	public void enableNeighborhood(final boolean bEnableNeighborhood) {
-		setDisplayListDirty();
-
-		augmentationRenderer.enableNeighborhood(bEnableNeighborhood);
 	}
 
 	@Override
@@ -903,8 +876,6 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		updateColorMappingListener = new UpdateColorMappingListener();
 		updateColorMappingListener.setHandler(this);
 		eventPublisher.addListener(UpdateColorMappingEvent.class, updateColorMappingListener);
-
-
 
 		showPortalNodesEventListener = new ShowPortalNodesEventListener();
 		showPortalNodesEventListener.setHandler(this);
