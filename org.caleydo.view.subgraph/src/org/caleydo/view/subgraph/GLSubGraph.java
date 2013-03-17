@@ -60,6 +60,7 @@ import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.PathwayPath;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.listener.EnablePathSelectionEvent;
+import org.caleydo.datadomain.pathway.listener.PathwayMappingEvent;
 import org.caleydo.datadomain.pathway.listener.PathwayPathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.ShowNodeContextEvent;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
@@ -240,7 +241,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	public void init(GL2 gl) {
 		super.init(gl);
 		pathInfo = new MultiFormInfo();
-		createMultiformRenderer(new ArrayList<>(experimentalDataMappingElement.getTablePerspectives()),
+		createMultiformRenderer(new ArrayList<>(experimentalDataMappingElement.getDmState().getTablePerspectives()),
 				EnumSet.of(EEmbeddingID.PATH_LEVEL1, EEmbeddingID.PATH_LEVEL2), baseContainer, 0.3f, pathInfo);
 		MultiLevelSlideInElement slideInElement = new MultiLevelSlideInElement(pathInfo.window,
 				ESlideInElementPosition.LEFT);
@@ -435,7 +436,8 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		PathwayDataDomain pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get().getDataDomainByType(
 				PathwayDataDomain.DATA_DOMAIN_TYPE);
 		List<TablePerspective> tablePerspectives = new ArrayList<>(
-				experimentalDataMappingElement.getTablePerspectives());
+experimentalDataMappingElement.getDmState()
+				.getTablePerspectives());
 		TablePerspective tablePerspective = tablePerspectives.get(0);
 		Perspective recordPerspective = tablePerspective.getRecordPerspective();
 		Perspective dimensionPerspective = tablePerspective.getDimensionPerspective();
@@ -469,7 +471,12 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		lastUsedLevel1Renderer = info.multiFormRenderer;
 		lastUsedRenderer = info.multiFormRenderer;
 
+		PathwayMappingEvent event = new PathwayMappingEvent(experimentalDataMappingElement.getDmState()
+				.getPathwayMappedTablePerspective());
+		EventPublisher.trigger(event);
+
 		pathwayInfos.add(info);
+
 		wasPathwayAdded = true;
 	}
 
@@ -1165,7 +1172,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	@Override
 	public List<TablePerspective> getTablePerspectives() {
 		// TODO Auto-generated method stub
-		return experimentalDataMappingElement.getTablePerspectives();
+		return experimentalDataMappingElement.getDmState().getTablePerspectives();
 	}
 
 	@Override

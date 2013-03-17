@@ -40,9 +40,13 @@ import org.caleydo.core.view.listener.RemoveTablePerspectiveEvent;
  */
 public class DataMappingState {
 
+	/** All considered table perspectives */
 	private List<TablePerspective> mappedTablePerspectives = new ArrayList<TablePerspective>();
 
+	/** The selected grouping */
 	private Perspective selectedPerspective;
+
+	private TablePerspective pathwayMappedTablePerspective;
 
 	private HashMap<ATableBasedDataDomain, TablePerspective> hashDDToTablePerspective = new HashMap<ATableBasedDataDomain, TablePerspective>();
 
@@ -114,5 +118,20 @@ public class DataMappingState {
 
 	public TablePerspective getMatchingTablePerspective(ATableBasedDataDomain dd) {
 		return hashDDToTablePerspective.get(dd);
+	}
+
+	/**
+	 * @param pathwayMappedTablePerspective
+	 *            setter, see {@link pathwayMappedTablePerspective}
+	 */
+	public void setPathwayMappedTablePerspective(TablePerspective pathwayMappedTablePerspective) {
+		this.pathwayMappedTablePerspective = pathwayMappedTablePerspective;
+	}
+
+	/**
+	 * @return the pathwayMappedTablePerspective, see {@link #pathwayMappedTablePerspective}
+	 */
+	public TablePerspective getPathwayMappedTablePerspective() {
+		return pathwayMappedTablePerspective;
 	}
 }

@@ -19,8 +19,6 @@
  *******************************************************************************/
 package org.caleydo.view.subgraph.datamapping;
 
-import java.util.List;
-
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.perspective.table.TablePerspective;
@@ -56,14 +54,18 @@ public class GLExperimentalDataMapping extends AnimatedGLElementContainer implem
 	public GLExperimentalDataMapping(GLSubGraph view) {
 		this.view = view;
 
-		setLayout(new GLFlowLayout(false, 2, new GLPadding(2)));
-		setSize(-1, 40);
+		setLayout(new GLFlowLayout(true, 2, new GLPadding(5)));
+		setSize(-1, 50);
 
 		dmState = new DataMappingState(view.getPathEventSpace());
 
-		GLElementContainer ddElements = new GLElementContainer(new GLFlowLayout(true, 10, new GLPadding(5)));
+		GLElementContainer generalMapping = new GLElementContainer(new GLFlowLayout(false, 10, new GLPadding(5)));
 
+		GLElementContainer ddElements = new GLElementContainer(new GLFlowLayout(true, 10, new GLPadding(5)));
 		GLElementContainer stratElements = new GLElementContainer(new GLFlowLayout(true, 10, new GLPadding(5)));
+
+		generalMapping.add(ddElements);
+		generalMapping.add(stratElements);
 
 		pathwayDatasets = new GLElementContainer(new GLFlowLayout(true, 10, new GLPadding(5)));
 
@@ -71,8 +73,7 @@ public class GLExperimentalDataMapping extends AnimatedGLElementContainer implem
 		addDataDomainElements(ddElements);
 		updatePathwayDatasets();
 
-		this.add(ddElements);
-		this.add(stratElements);
+		this.add(generalMapping);
 		this.add(pathwayDatasets);
 
 	}
@@ -102,7 +103,7 @@ public class GLExperimentalDataMapping extends AnimatedGLElementContainer implem
 			protected void renderImpl(GLGraphics g, float w, float h) {
 				g.drawText("Choose Pathway Mapping:", 0, -2, w, h);
 			}
-		}.setSize(100, 15));
+		}.setSize(150, 15));
 
 		RadioController radio = new RadioController(new ISelectionCallback() {
 
@@ -111,21 +112,35 @@ public class GLExperimentalDataMapping extends AnimatedGLElementContainer implem
 				if (selected) {
 					ATableBasedDataDomain dd = button.getLayoutDataAs(ATableBasedDataDomain.class, null);
 					TablePerspective perspective = dmState.getMatchingTablePerspective(dd);
+					dmState.setPathwayMappedTablePerspective(perspective);
 					PathwayMappingEvent event = new PathwayMappingEvent(perspective);
 					EventPublisher.trigger(event);
 				}
 
 			}
 		});
-		PathwayDataSetElement ddElement = new PathwayDataSetElement("No Mapping");
-		pathwayDatasets.add(ddElement);
-		radio.add(ddElement);
+		PathwayDataSetElement noMappingElement = new PathwayDataSetElement("No Mapping");
+
+		pathwayDatasets.add(noMappingElement);
+		radio.add(noMappingElement);
+
+		PathwayDataSetElement pwMappingElement;
+		boolean wasPreviouslySelected = false;
 		for (ATableBasedDataDomain dd : dmState.getDataDomains()) {
 			if (dd instanceof GeneticDataDomain) {
-				ddElement = new PathwayDataSetElement(dd);
-				pathwayDatasets.add(ddElement);
-				radio.add(ddElement);
+				pwMappingElement = new PathwayDataSetElement(dd);
+				pathwayDatasets.add(pwMappingElement);
+				radio.add(pwMappingElement);
+				if (dmState.getPathwayMappedTablePerspective() != null
+						&& dmState.getPathwayMappedTablePerspective().getDataDomain() == dd) {
+					pwMappingElement.setSelected(true);
+					wasPreviouslySelected = true;
+				}
 			}
+		}
+		if (!wasPreviouslySelected) {
+			noMappingElement.setSelected(true);
+			EventPublisher.trigger(new PathwayMappingEvent());
 		}
 	}
 
@@ -187,8 +202,11 @@ public class GLExperimentalDataMapping extends AnimatedGLElementContainer implem
 		dmState.setPerspective(button.getLayoutDataAs(Perspective.class, null));
 	}
 
-	public List<TablePerspective> getTablePerspectives() {
-		return dmState.getTablePerspectives();
+	/**
+	 * @return the dmState, see {@link #dmState}
+	 */
+	public DataMappingState getDmState() {
+		return dmState;
 	}
 
 	public void dataSetChanged() {

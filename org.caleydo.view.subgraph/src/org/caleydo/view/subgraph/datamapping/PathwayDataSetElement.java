@@ -24,10 +24,10 @@ import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton;
 
 /**
- * Element representing a table based data domain element in the data mapping view.
- *
- * @author Marc streit
- *
+ * Radio for selecting which table perspective to map in pathway
+ * 
+ * @author Alexander Lex
+ * 
  */
 public class PathwayDataSetElement extends GLButton {
 
