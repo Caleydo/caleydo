@@ -19,6 +19,8 @@
  *******************************************************************************/
 package Gene;
 
+import static demo.RankTableDemo.toFloat;
+
 import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -28,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
+import org.caleydo.core.view.opengl.layout2.GLSandBox;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.vis.rank.data.AFloatFunction;
 import org.caleydo.vis.rank.data.FloatInferrers;
@@ -35,26 +38,19 @@ import org.caleydo.vis.rank.model.ARow;
 import org.caleydo.vis.rank.model.FloatRankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.RankRankColumnModel;
+import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.StackedRankColumnModel;
 import org.caleydo.vis.rank.model.StringRankColumnModel;
 import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
-import org.eclipse.swt.widgets.Shell;
 
-import demo.ARankTableDemo;
+import demo.RankTableDemo;
+import demo.RankTableDemo.IModelBuilder;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class Gene extends ARankTableDemo {
-
-	/**
-	 *
-	 */
-	public Gene(Shell parentShell) {
-		super(parentShell, "mutsig pancan12");
-	}
-
+public class Gene implements IModelBuilder {
 	enum TumorType {
 		LUSC_TP, READ_TP, GBM_TP, BLCA_TP, UCEC_TP, COAD_TP, OV_TP, LAML_TB, HNSC, LUAD, BRCA, KIRC
 	}
@@ -110,7 +106,7 @@ public class Gene extends ARankTableDemo {
 	}
 
 	@Override
-	protected void createModel() throws IOException, NoSuchFieldException {
+	public void apply(RankTableModel table) throws Exception {
 		List<GeneRow> rows = readData();
 		table.addData(rows);
 		RankRankColumnModel rankRankColumnModel = new RankRankColumnModel();
@@ -118,17 +114,18 @@ public class Gene extends ARankTableDemo {
 		table.add(new StringRankColumnModel(GLRenderers.drawText("Gene", VAlign.CENTER), StringRankColumnModel.DEFAULT));
 
 
-		StackedRankColumnModel m = createPValue(TumorTypeRow.COL_p, "p", Color.decode("#DFC27D"),
+		StackedRankColumnModel m = createPValue(table, TumorTypeRow.COL_p, "p", Color.decode("#DFC27D"),
 				Color.decode("#F6E8C3"));
 		m.setFilter(0.3f, 1.0f);
-		createPValue(TumorTypeRow.COL_q, "q", Color.decode("#DFC27D"), Color.decode("#F6E8C3"));
-		createUnBound(TumorTypeRow.COL_nflank, "nflank", Color.decode("#9ECAE1"), Color.decode("#DEEBF7"));
-		createUnBound(TumorTypeRow.COL_nsil, "nsil", Color.decode("#A1D99B"), Color.decode("#E5F5E0"));
-		createUnBound(TumorTypeRow.COL_nnon, "nnon", Color.decode("#C994C7"), Color.decode("#E7E1EF"));
-		createUnBound(TumorTypeRow.COL_nnull, "nnull", Color.decode("#FDBB84"), Color.decode("#FEE8C8"));
+		createPValue(table, TumorTypeRow.COL_q, "q", Color.decode("#DFC27D"), Color.decode("#F6E8C3"));
+		createUnBound(table, TumorTypeRow.COL_nflank, "nflank", Color.decode("#9ECAE1"), Color.decode("#DEEBF7"));
+		createUnBound(table, TumorTypeRow.COL_nsil, "nsil", Color.decode("#A1D99B"), Color.decode("#E5F5E0"));
+		createUnBound(table, TumorTypeRow.COL_nnon, "nnon", Color.decode("#C994C7"), Color.decode("#E7E1EF"));
+		createUnBound(table, TumorTypeRow.COL_nnull, "nnull", Color.decode("#FDBB84"), Color.decode("#FEE8C8"));
 	}
 
-	private StackedRankColumnModel createPValue(final int column, final String label, Color color, Color bgColor) {
+	private StackedRankColumnModel createPValue(RankTableModel table, final int column, final String label,
+			Color color, Color bgColor) {
 		StackedRankColumnModel stacked = new StackedRankColumnModel();
 		stacked.setTitle(label);
 		table.add(stacked);
@@ -140,7 +137,8 @@ public class Gene extends ARankTableDemo {
 		return stacked;
 	}
 
-	private StackedRankColumnModel createUnBound(final int column, final String label, Color color, Color bgColor) {
+	private StackedRankColumnModel createUnBound(RankTableModel table, final int column, final String label,
+			Color color, Color bgColor) {
 		StackedRankColumnModel stacked = new StackedRankColumnModel();
 		stacked.setTitle(label);
 		table.add(stacked);
@@ -211,6 +209,6 @@ public class Gene extends ARankTableDemo {
 	}
 
 	public static void main(String[] args) {
-		main(args, Gene.class);
+		GLSandBox.main(args, RankTableDemo.class, "mutsig pancan12", new Gene());
 	}
 }
