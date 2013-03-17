@@ -133,25 +133,25 @@ public abstract class APathUpdateStrategy implements IListenerOwner {
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
 	}
 
-	@ListenTo(restrictExclusiveToEventSpace = true)
+	@ListenTo
 	public void onAddTablePerspectives(AddTablePerspectivesEvent event) {
 		renderer.tablePerspectives.addAll(event.getTablePerspectives());
 		renderer.setLayoutDirty(true);
 	}
 
-	@ListenTo(restrictExclusiveToEventSpace = true)
+	@ListenTo
 	public void onRemoveTablePerspectives(RemoveTablePerspectiveEvent event) {
 		renderer.tablePerspectives.remove(event.getTablePerspective());
 		renderer.setLayoutDirty(true);
 	}
 
-	@ListenTo(restrictExclusiveToEventSpace = true)
+	@ListenTo
 	public void onSampleMappingModeChanged(SampleMappingModeEvent event) {
 		renderer.sampleMappingMode = event.getSampleMappingMode();
 		renderer.setLayoutDirty(true);
 	}
 
-	@ListenTo(restrictExclusiveToEventSpace = true)
+	@ListenTo
 	public void onPathwayMappingChanged(PathwayMappingEvent event) {
 		renderer.mappedPerspective = event.getTablePerspective();
 		renderer.setLayoutDirty(true);

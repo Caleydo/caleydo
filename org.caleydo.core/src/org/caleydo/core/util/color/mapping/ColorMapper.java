@@ -198,7 +198,7 @@ public class ColorMapper {
 	 *             if value > 1 || value < 0
 	 */
 	public float[] getColor(float value) {
-		return getColorAsObject(value).getRGB();
+		return getColorAsObject(value).getRGBA();
 	}
 
 	/**

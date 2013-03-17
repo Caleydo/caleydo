@@ -9,7 +9,6 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.Row;
-import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
 import org.caleydo.core.view.opengl.layout.util.LabelRenderer.LabelAlignment;
 import org.caleydo.core.view.opengl.layout.util.Renderers;
 import org.caleydo.core.view.opengl.picking.APickingListener;
@@ -29,7 +28,7 @@ import org.caleydo.view.enroute.path.node.RemoveNodeButtonAttributeRenderer;
  */
 public class GeneNodeLinearizedMode extends AGeneNodeMode {
 
-	protected ColorRenderer colorRenderer;
+	protected MappingRenderer colorRenderer;
 	protected IPickingListener pickingListener;
 
 	/**
@@ -55,7 +54,8 @@ public class GeneNodeLinearizedMode extends AGeneNodeMode {
 
 		Column baseColumn = new Column("baseColumn");
 		Row baseRow = new Row("baseRow");
-		colorRenderer = new ColorRenderer(this);
+
+		colorRenderer = new MappingRenderer(pathwayPathRenderer, node);
 		colorRenderer.setView(view);
 		colorRenderer.setBorderColor(new float[] { 0, 0, 0, 1 });
 		colorRenderer.setDrawBorder(true);

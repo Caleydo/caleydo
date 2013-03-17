@@ -197,9 +197,7 @@ public class ColorRenderer extends APickableLayoutRenderer {
 			useGradient = colorProvider.useGradient();
 			gradientColor = colorProvider.getGradientColor();
 			isHorizontalGradient = colorProvider.isHorizontalGradient();
-
 		}
-
 		pushNames(gl);
 
 		gl.glBegin(GL2.GL_QUADS);
