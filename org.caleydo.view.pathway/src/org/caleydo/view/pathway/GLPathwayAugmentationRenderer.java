@@ -32,6 +32,7 @@ import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.id.IDType;
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
@@ -59,7 +60,7 @@ public class GLPathwayAugmentationRenderer {
 	private int upscaledFilledEnzymeNodeDisplayListId = -1;
 	private int upscaledFramedEnzymeNodeDisplayListID = -1;
 
-	/** The perspective that is beeing mapped */
+	/** The perspective that is being mapped */
 	private TablePerspective mappingPerspective;
 
 	private HashMap<PathwayGraph, Integer> hashPathway2VerticesDisplayListId;
@@ -286,7 +287,6 @@ public class GLPathwayAugmentationRenderer {
 	 * Iterates over all vertices in the pathway and renders the augmentations of the vertex reps
 	 */
 	private void renderVertices(final GL2 gl, PathwayGraph pathway) {
-
 		for (PathwayVertexRep vertexRep : pathway.vertexSet()) {
 			if (vertexRep == null) {
 				continue;
@@ -450,6 +450,7 @@ public class GLPathwayAugmentationRenderer {
 	}
 
 	private void renderGeneNode(GL2 gl, PathwayVertexRep vertexRep) {
+
 		float[] nodeColor;
 
 		gl.glLineWidth(1);
@@ -468,12 +469,12 @@ public class GLPathwayAugmentationRenderer {
 		gl.glEnable(GL.GL_DEPTH_TEST);
 		gl.glEnable(GL.GL_BLEND);
 
-		for (TablePerspective tablePerspective : glPathwayView.getTablePerspectives()) {
+		float width = pixelGLConverter.getGLWidthForPixelWidth(PathwayRenderStyle.ENZYME_NODE_PIXEL_WIDTH);
+		float height = -pixelGLConverter.getGLHeightForPixelHeight(PathwayRenderStyle.ENZYME_NODE_PIXEL_HEIGHT);
 
-		}
 
 		if (mappingPerspective != null) {
-			Average average = getExpressionAverage(vertexRep);
+			Average average = getExpressionAverage(mappingPerspective, vertexRep);
 			if (average != null) {
 				nodeColor = mappingPerspective.getDataDomain().getColorMapper()
 						.getColor((float) average.getArithmeticMean());
@@ -500,9 +501,6 @@ public class GLPathwayAugmentationRenderer {
 					Float stdDev = pixelGLConverter.getGLWidthForPixelWidth(PathwayRenderStyle.ENZYME_NODE_PIXEL_WIDTH)
 							* (float) average.getStandardDeviation() * 2.0f;
 
-					float x = pixelGLConverter.getGLWidthForPixelWidth(PathwayRenderStyle.ENZYME_NODE_PIXEL_WIDTH);
-					float y = -pixelGLConverter.getGLHeightForPixelHeight(PathwayRenderStyle.ENZYME_NODE_PIXEL_HEIGHT);
-
 					// rendering the std-dev box
 					if (!stdDev.isNaN()) {
 
@@ -512,20 +510,22 @@ public class GLPathwayAugmentationRenderer {
 						// background white
 						gl.glColor4f(1, 1, 1, 1f);
 						gl.glBegin(GL2.GL_QUADS);
-						gl.glVertex3f(0, y - (2f * thirdOfstdDevBarHeight), PathwayRenderStyle.Z_OFFSET);
-						gl.glVertex3f(0, y + thirdOfstdDevBarHeight - onePxlHeight, PathwayRenderStyle.Z_OFFSET);
-						gl.glVertex3f(x + onePxlWidth, y + thirdOfstdDevBarHeight - onePxlHeight,
+						gl.glVertex3f(0, height - (2f * thirdOfstdDevBarHeight), PathwayRenderStyle.Z_OFFSET);
+						gl.glVertex3f(0, height + thirdOfstdDevBarHeight - onePxlHeight, PathwayRenderStyle.Z_OFFSET);
+						gl.glVertex3f(width + onePxlWidth, height + thirdOfstdDevBarHeight - onePxlHeight,
 								PathwayRenderStyle.Z_OFFSET);
-						gl.glVertex3f(x + onePxlWidth, y - (2f * thirdOfstdDevBarHeight), PathwayRenderStyle.Z_OFFSET);
+						gl.glVertex3f(width + onePxlWidth, height - (2f * thirdOfstdDevBarHeight),
+								PathwayRenderStyle.Z_OFFSET);
 						gl.glEnd();
 
 						// the actual bar
 						gl.glColor3fv(mappingPerspective.getDataDomain().getColor().getRGB(), 0);
 						gl.glBegin(GL2.GL_QUADS);
-						gl.glVertex3f(0, y - (2f * thirdOfstdDevBarHeight), PathwayRenderStyle.Z_OFFSET);
-						gl.glVertex3f(0, y + thirdOfstdDevBarHeight - onePxlHeight, PathwayRenderStyle.Z_OFFSET);
-						gl.glVertex3f(stdDev, y + thirdOfstdDevBarHeight - onePxlHeight, PathwayRenderStyle.Z_OFFSET);
-						gl.glVertex3f(stdDev, y - (2f * thirdOfstdDevBarHeight), PathwayRenderStyle.Z_OFFSET);
+						gl.glVertex3f(0, height - (2f * thirdOfstdDevBarHeight), PathwayRenderStyle.Z_OFFSET);
+						gl.glVertex3f(0, height + thirdOfstdDevBarHeight - onePxlHeight, PathwayRenderStyle.Z_OFFSET);
+						gl.glVertex3f(stdDev, height + thirdOfstdDevBarHeight - onePxlHeight,
+								PathwayRenderStyle.Z_OFFSET);
+						gl.glVertex3f(stdDev, height - (2f * thirdOfstdDevBarHeight), PathwayRenderStyle.Z_OFFSET);
 						gl.glEnd();
 
 						// frame
@@ -536,11 +536,12 @@ public class GLPathwayAugmentationRenderer {
 
 						gl.glDisable(GL.GL_LINE_SMOOTH);
 						gl.glBegin(GL.GL_LINE_LOOP);
-						gl.glVertex3f(0, y - (2f * thirdOfstdDevBarHeight), PathwayRenderStyle.Z_OFFSET);
-						gl.glVertex3f(0, y + thirdOfstdDevBarHeight - onePxlHeight, PathwayRenderStyle.Z_OFFSET);
-						gl.glVertex3f(x + onePxlWidth, y + thirdOfstdDevBarHeight - onePxlHeight,
+						gl.glVertex3f(0, height - (2f * thirdOfstdDevBarHeight), PathwayRenderStyle.Z_OFFSET);
+						gl.glVertex3f(0, height + thirdOfstdDevBarHeight - onePxlHeight, PathwayRenderStyle.Z_OFFSET);
+						gl.glVertex3f(width + onePxlWidth, height + thirdOfstdDevBarHeight - onePxlHeight,
 								PathwayRenderStyle.Z_OFFSET);
-						gl.glVertex3f(x + onePxlWidth, y - (2f * thirdOfstdDevBarHeight), PathwayRenderStyle.Z_OFFSET);
+						gl.glVertex3f(width + onePxlWidth, height - (2f * thirdOfstdDevBarHeight),
+								PathwayRenderStyle.Z_OFFSET);
 						gl.glEnd();
 
 						// // // create mask
@@ -552,19 +553,21 @@ public class GLPathwayAugmentationRenderer {
 						gl.glStencilOp(GL.GL_KEEP, GL.GL_REPLACE, GL.GL_REPLACE);
 						// //
 						gl.glBegin(GL2.GL_QUADS);
-						gl.glVertex3f(0, y - (2f * thirdOfstdDevBarHeight), PathwayRenderStyle.Z_OFFSET);
-						gl.glVertex3f(0, y + thirdOfstdDevBarHeight - onePxlHeight, PathwayRenderStyle.Z_OFFSET);
-						gl.glVertex3f(x + onePxlWidth, y + thirdOfstdDevBarHeight - onePxlHeight,
+						gl.glVertex3f(0, height - (2f * thirdOfstdDevBarHeight), PathwayRenderStyle.Z_OFFSET);
+						gl.glVertex3f(0, height + thirdOfstdDevBarHeight - onePxlHeight, PathwayRenderStyle.Z_OFFSET);
+						gl.glVertex3f(width + onePxlWidth, height + thirdOfstdDevBarHeight - onePxlHeight,
 								PathwayRenderStyle.Z_OFFSET);
-						gl.glVertex3f(x + onePxlWidth, y - (2f * thirdOfstdDevBarHeight), PathwayRenderStyle.Z_OFFSET);
+						gl.glVertex3f(width + onePxlWidth, height - (2f * thirdOfstdDevBarHeight),
+								PathwayRenderStyle.Z_OFFSET);
 						gl.glEnd();
 						//
 						gl.glBegin(GL.GL_LINE_LOOP);
-						gl.glVertex3f(0, y - (2f * thirdOfstdDevBarHeight), PathwayRenderStyle.Z_OFFSET);
-						gl.glVertex3f(0, y + thirdOfstdDevBarHeight - onePxlHeight, PathwayRenderStyle.Z_OFFSET);
-						gl.glVertex3f(x + onePxlWidth, y + thirdOfstdDevBarHeight - onePxlHeight,
+						gl.glVertex3f(0, height - (2f * thirdOfstdDevBarHeight), PathwayRenderStyle.Z_OFFSET);
+						gl.glVertex3f(0, height + thirdOfstdDevBarHeight - onePxlHeight, PathwayRenderStyle.Z_OFFSET);
+						gl.glVertex3f(width + onePxlWidth, height + thirdOfstdDevBarHeight - onePxlHeight,
 								PathwayRenderStyle.Z_OFFSET);
-						gl.glVertex3f(x + onePxlWidth, y - (2f * thirdOfstdDevBarHeight), PathwayRenderStyle.Z_OFFSET);
+						gl.glVertex3f(width + onePxlWidth, height - (2f * thirdOfstdDevBarHeight),
+								PathwayRenderStyle.Z_OFFSET);
 						gl.glEnd();
 						//
 						gl.glDisable(GL.GL_STENCIL_TEST);
@@ -711,6 +714,7 @@ public class GLPathwayAugmentationRenderer {
 					maskFramedEnzymeNode(gl);
 				}
 			}
+
 		} else {
 			// Handle selection highlighting of element
 			if (vertexSelectionManager.checkStatus(SelectionType.SELECTION, vertexRep.getID())) {
@@ -735,6 +739,41 @@ public class GLPathwayAugmentationRenderer {
 				gl.glCallList(enzymeNodeDisplayListId);
 
 			}
+		}
+
+		Pair<TablePerspective, Average> highestAverage = null;
+		Average average;
+		for (TablePerspective tablePerspective : glPathwayView.getTablePerspectives()) {
+			average = getExpressionAverage(tablePerspective, vertexRep);
+			if (average == null)
+				continue;
+			if (average.getStandardDeviation() > 0.1) {
+				if (highestAverage == null
+						|| average.getStandardDeviation() > highestAverage.getSecond().getStandardDeviation()) {
+					highestAverage = new Pair<>(tablePerspective, average);
+				}
+			}
+		}
+
+		if (highestAverage != null) {
+
+			gl.glColor3fv(highestAverage.getFirst().getDataDomain().getColor().getRGB(), 0);
+			// gl.glColor3f(1, 0, 0);
+			gl.glBegin(GL2.GL_POLYGON);
+			gl.glVertex3f(width, 0, PathwayRenderStyle.Z_OFFSET);
+			gl.glVertex3f(width - 5 * onePxlWidth, 0, PathwayRenderStyle.Z_OFFSET);
+			gl.glVertex3f(width - 4 * onePxlWidth, height + 7, PathwayRenderStyle.Z_OFFSET);
+			gl.glVertex3f(width - 1 * onePxlWidth, height + 7, PathwayRenderStyle.Z_OFFSET);
+			gl.glEnd();
+
+			// gl.glColor3fv(tablePerspective.getDataDomain().getColor().getRGB(), 0);
+			gl.glBegin(GL2.GL_POLYGON);
+			gl.glVertex3f(width, height + 5, PathwayRenderStyle.Z_OFFSET);
+			gl.glVertex3f(width - 5 * onePxlWidth, height + 5, PathwayRenderStyle.Z_OFFSET);
+			gl.glVertex3f(width - 5 * onePxlWidth, height, PathwayRenderStyle.Z_OFFSET);
+			gl.glVertex3f(width, height, PathwayRenderStyle.Z_OFFSET);
+			gl.glEnd();
+
 		}
 
 	}
@@ -778,7 +817,7 @@ public class GLPathwayAugmentationRenderer {
 	 * @param vertexRep
 	 * @return
 	 */
-	private Average getExpressionAverage(PathwayVertexRep vertexRep) {
+	private Average getExpressionAverage(TablePerspective tablePerspective, PathwayVertexRep vertexRep) {
 
 		if (selectedSamplesVA != null && selectedSamplesVA.size() == 0)
 			return null;
@@ -788,10 +827,10 @@ public class GLPathwayAugmentationRenderer {
 		Average average = null;
 		for (Integer davidID : mappedDavidIds) {
 			if (selectedSamplesVA == null) {
-				average = mappingPerspective.getContainerStatistics().getAverage(IDType.getIDType("DAVID"), davidID);
+				average = tablePerspective.getContainerStatistics().getAverage(IDType.getIDType("DAVID"), davidID);
 			} else {
 				average = TablePerspectiveStatistics.calculateAverage(selectedSamplesVA,
-						mappingPerspective.getDataDomain(), IDType.getIDType("DAVID"), davidID);
+						tablePerspective.getDataDomain(), IDType.getIDType("DAVID"), davidID);
 			}
 			return average;
 			// TODO: this has no multi-mapping
