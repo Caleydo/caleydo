@@ -29,44 +29,44 @@ import org.caleydo.core.view.opengl.layout2.basic.GLButton;
  * @author Marc streit
  *
  */
-public class TableBasedDataDomainElement extends ADataMappingElement implements GLButton.ISelectionCallback {
+public class PathwayDataSetElement extends GLButton {
 
-	protected final ATableBasedDataDomain dd;
-	private GLExperimentalDataMapping parent;
+	private ATableBasedDataDomain dd;
+	private String label = null;
 
-	public TableBasedDataDomainElement(ATableBasedDataDomain dd, DataMappingState dmState,
-			GLExperimentalDataMapping parent) {
+	public PathwayDataSetElement(ATableBasedDataDomain dd) {
 
-		super(dmState);
-		setCallback(this);
-
+		setMode(EButtonMode.CHECKBOX);
+		setSize(150, 18);
+		// setCallback(this);
+		setLayoutData(dd);
 		this.dd = dd;
-		this.parent = parent;
 	}
 
-	@Override
-	public void onSelectionChanged(GLButton button, boolean selected) {
+	public PathwayDataSetElement(String label) {
 
-		if (selected)
-			dmState.addDataDomain(dd);
-		else
-			dmState.removeDataDomain(dd);
+		setMode(EButtonMode.CHECKBOX);
+		setSize(150, 18);
 
-		parent.dataSetChanged();
-
+		this.label = label;
 	}
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
 		super.renderImpl(g, w, h);
-		g.color(dd.getColor().getColorWithSpecificBrighness(0.8f)).fillRect(1, 1, 16, 16);
+		// if (dd != null) {
+		// g.color(dd.getColor().getColorWithSpecificBrighness(0.8f)).fillRect(1, 1, 16, 16);
+		// }
 		if (isSelected()) {
-			g.fillImage("resources/icons/dataassignment/checkbox_selected.png", 1, 1, 16, 16);
+			g.fillImage("resources/icons/dataassignment/radio_selected.png", 2, 2, 14, 14);
 		} else {
-			g.fillImage("resources/icons/dataassignment/checkbox_not_selected.png", 1, 1, 16, 16);
+			g.fillImage("resources/icons/dataassignment/radio_not_selected.png", 2, 2, 14, 14);
 		}
+		if (label != null) {
+			g.drawText(label, 19, 1, w - 18, 14);
+		} else {
+			g.drawText(dd, 19, 1, w - 18, 14);
 
-
-		g.drawText(dd, 19, 1, w - 18, 14);
+		}
 	}
 }

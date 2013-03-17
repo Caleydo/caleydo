@@ -22,6 +22,7 @@ package org.caleydo.view.subgraph.datamapping;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
@@ -89,6 +90,7 @@ public class DataMappingState {
 		hashDDToTablePerspective.remove(dd);
 	}
 
+	/** Removes a previous and sets the new perspective on the event space */
 	public void setPerspective(Perspective perspective) {
 		selectedPerspective = perspective;
 
@@ -103,5 +105,14 @@ public class DataMappingState {
 		for (ATableBasedDataDomain dd : hashDDToTablePerspective.keySet()) {
 			addTablePerspective(dd, selectedPerspective);
 		}
+	}
+
+	/** Returns all data domains that are currently mapped */
+	public Set<ATableBasedDataDomain> getDataDomains() {
+		return hashDDToTablePerspective.keySet();
+	}
+
+	public TablePerspective getMatchingTablePerspective(ATableBasedDataDomain dd) {
+		return hashDDToTablePerspective.get(dd);
 	}
 }
