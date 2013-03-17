@@ -17,10 +17,11 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package university.wur;
+package university.top100under50;
 
-import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,34 +29,38 @@ import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLSandBox;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.vis.rank.model.ARow;
+import org.caleydo.vis.rank.model.CategoricalRankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
+import org.caleydo.vis.rank.model.IntegerRankColumnModel;
 import org.caleydo.vis.rank.model.OrderColumn;
 import org.caleydo.vis.rank.model.RankRankColumnModel;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.StringRankColumnModel;
-import org.eclipse.swt.widgets.Shell;
 
-import university.mup.MeasuringUniversityPerformance;
+import university.top100under50.Top100Under50Year.Row;
 
 import com.google.common.base.Function;
 
 import demo.RankTableDemo;
 import demo.RankTableDemo.IModelBuilder;
+import demo.ReflectionData;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class WorldUniversityRanking implements IModelBuilder {
+public class Top100Under50 implements IModelBuilder {
 	@Override
 	public void apply(RankTableModel table) throws Exception {
 		// qsrank schoolname qsstars overall academic employer faculty international internationalstudents citations
 		// arts engineering life natural social
 
-		Map<String, WorldUniversityYear[]> data = WorldUniversityYear.readData(2010, 2011, 2012);
+		Map<String, String> metaData = new HashMap<>();
+		Map<String, Row> data = Top100Under50Year.readData(2012);
 		List<UniversityRow> rows = new ArrayList<>(data.size());
-		for (Map.Entry<String, WorldUniversityYear[]> entry : data.entrySet()) {
+		for (Map.Entry<String, Row> entry : data.entrySet()) {
 			rows.add(new UniversityRow(entry.getKey(), entry.getValue()));
+			metaData.put(entry.getValue().country, entry.getValue().country);
 		}
 		table.addData(rows);
 		data = null;
@@ -64,17 +69,28 @@ public class WorldUniversityRanking implements IModelBuilder {
 		table.add(new StringRankColumnModel(GLRenderers.drawText("School Name", VAlign.CENTER),
 				StringRankColumnModel.DEFAULT));
 
-		// Arrays.asList("wur2010.txt", "wur2011.txt", "wur2012.txt");
-		WorldUniversityYear.addYear(table, "2012", new YearGetter(2));
+		table.add(new CategoricalRankColumnModel<String>(GLRenderers.drawText("Country", VAlign.CENTER),
+				new ReflectionData<String>(field("country"), String.class), metaData));
+
+		table.add(new IntegerRankColumnModel(GLRenderers.drawText("Year Founded", VAlign.CENTER),
+				new ReflectionData<Integer>(field("yearFounded"), Integer.class)));
+		
+		table.add(new StringRankColumnModel(GLRenderers.drawText("Location", VAlign.CENTER),
+				new ReflectionData<String>(field("location"), String.class)));
+
+		Top100Under50Year.addYear(table, "2012", new YearGetter(0));
+
 		table.add(new OrderColumn());
 		table.add(new RankRankColumnModel());
-		WorldUniversityYear.addYear(table, "2011", new YearGetter(1));
-		table.add(new OrderColumn());
-		table.add(new RankRankColumnModel());
-		WorldUniversityYear.addYear(table, "2010", new YearGetter(0));
+		Top100Under50Year.addOverallYear(table, "Overall Score 2012", new YearGetter(0));
+
 	}
 
-	static class YearGetter implements Function<IRow, WorldUniversityYear> {
+	public static Field field(String f) throws NoSuchFieldException {
+		return UniversityRow.class.getDeclaredField(f);
+	}
+
+	static class YearGetter implements Function<IRow, Top100Under50Year> {
 		private final int year;
 
 		public YearGetter(int year) {
@@ -82,7 +98,7 @@ public class WorldUniversityRanking implements IModelBuilder {
 		}
 
 		@Override
-		public WorldUniversityYear apply(IRow in) {
+		public Top100Under50Year apply(IRow in) {
 			UniversityRow r = (UniversityRow) in;
 			return r.years[year];
 		}
@@ -90,16 +106,22 @@ public class WorldUniversityRanking implements IModelBuilder {
 
 	static class UniversityRow extends ARow {
 		public String schoolname;
+		public String country;
+		public String location;
+		public int yearFounded;
 
-		public WorldUniversityYear[] years;
+		public Top100Under50Year[] years;
 
 		/**
 		 * @param school
 		 * @param size
 		 */
-		public UniversityRow(String school, WorldUniversityYear[] years) {
+		public UniversityRow(String school, Row row) {
 			this.schoolname = school;
-			this.years = years;
+			this.years = row.years;
+			this.country = row.country;
+			this.yearFounded = row.yearFounded;
+			this.location = row.location;
 		}
 
 		@Override
@@ -109,7 +131,7 @@ public class WorldUniversityRanking implements IModelBuilder {
 	}
 
 	public static void main(String[] args) {
-		GLSandBox.main(args, RankTableDemo.class, "world university ranking 2012,2011 and 2010",
-				new WorldUniversityRanking());
+		GLSandBox.main(args, RankTableDemo.class, "Top 100 under 50 2012",
+				new Top100Under50());
 	}
 }

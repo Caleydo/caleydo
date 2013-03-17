@@ -95,7 +95,7 @@ public class RankTableDemo extends GLSandBox {
 		if (i >= l.length)
 			return Float.NaN;
 		String v = l[i].trim();
-		if (v.equalsIgnoreCase("-") || v.isEmpty())
+		if (v.equalsIgnoreCase("-") || v.isEmpty() || v.equalsIgnoreCase("–"))
 			return Float.NaN;
 		int p = v.indexOf('-');
 		if (p > 0 && v.charAt(p - 1) != 'e' && v.charAt(p - 1) != 'E')

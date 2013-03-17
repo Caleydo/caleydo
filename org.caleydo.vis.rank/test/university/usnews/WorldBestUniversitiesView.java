@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package university;
+package university.usnews;
 
 import org.caleydo.core.gui.command.AOpenViewHandler;
 
@@ -28,11 +28,11 @@ import demo.RankTableDemo.IModelBuilder;
  * @author Samuel Gratzl
  *
  */
-public class UniversityView extends ARcpRankTableDemoView {
-	private static final String ID = "rankvis.demo.university";
+public class WorldBestUniversitiesView extends ARcpRankTableDemoView {
+	private static final String ID = "rankvis.demo.university.wur";
 	@Override
 	public IModelBuilder createModel() {
-		return new University();
+		return new WorldBestUniversities();
 	}
 
 	@Override

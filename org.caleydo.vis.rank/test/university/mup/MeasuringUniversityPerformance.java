@@ -19,6 +19,7 @@
  *******************************************************************************/
 package university.mup;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +33,7 @@ import org.caleydo.vis.rank.model.OrderColumn;
 import org.caleydo.vis.rank.model.RankRankColumnModel;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.StringRankColumnModel;
+import org.eclipse.swt.widgets.Shell;
 
 import university.mup.MeasuringUniversityPerformanceData.Entry;
 
@@ -111,7 +113,6 @@ public class MeasuringUniversityPerformance implements IModelBuilder {
 	}
 
 	public static void main(String[] args) {
-		GLSandBox.main(args, RankTableDemo.class, "Measuring University Performance 2009,2008,2007,2006,2005",
-				new MeasuringUniversityPerformance());
+		GLSandBox.main(args, RankTableDemo.class, "Measuring University Performance 2009,2008,2007,2006,2005", new MeasuringUniversityPerformance());
 	}
 }

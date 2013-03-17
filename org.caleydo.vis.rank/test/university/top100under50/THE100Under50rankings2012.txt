@@ -1,0 +1,101 @@
+﻿100 Under 50 rank	World University Rankings 2011-2012 position	Institution	Lat;long	Country	Year founded	Teaching	Research	Citations	Income from Industry	International mix	Overall score
+4	86	University of California;Irvine	33.64755;-117.84116	US	1965	42.2	51.5	93.5	45.6	36.3	60.0
+7	110	University of California;Santa Cruz	36.9995;-122.0613	US	1965	31.6	45.4	99.9	29.5	29.8	56.0
+11	167	University of Illinois at Chicago	41.8775;-87.6515	US	1965	59.9	49.1	43.3	38.6	27.2	48.7
+21	201-225	University of Medicine and Dentistry of New Jersey	40.74384;-74.19173	US	1970	62.7	19.8	55.6	34.3	31.0	44.6
+29	251-275	University of Texas at Dallas	32.9878;-96.7475	US	1969	28.2	50.3	44.2	31.1	35.9	40.3
+53	276-300	University of Texas at San Antonio	29.5833;-98.6190	US	1969	17.1	19.5	70.3	25.3	22.6	34.4
+57	301-350	George Mason University	38.83212;-77.30416	US	1972	36.0	23.3	42.6	25.1	23.8	33.0
+63	301-350	University of Maryland;Baltimore County	39.2561;-76.7105	US	1966	22.0	20.6	52.8	29.9	18.6	30.8
+84	–	Florida International University	25.7544;-80.3753	US	1965	28.7	25.3	18.2	31.0	30.2	24.7
+8	121	University of York	36.9906;-122.0584	UK	1963	43.1	50.1	71.6	33.9	72.7	55.7
+9	131	Lancaster University	54.01183;-2.7941	UK	1964	38.2	43.2	75.4	27.5	78.6	53.6
+10	145	University of East Anglia	52.6237;1.2404	UK	1963	32.2	32.7	85.6	28.0	68.5	51.0
+13	157	University of Warwick	52.38286;-1.5644	UK	1965	42.1	49.3	45.0	31.3	85.5	48.1
+20	201-225	University of Essex	CO4 3SQ	UK	1965	38.5	48.6	37.0	28.3	90.1	44.7
+35	251-275	Brunel University	51.5353;-0.4730	UK	1966	22.3	29.0	51.7	30.0	89.9	38.4
+37	251-275	University of Bath	51.3775;-2.3266	UK	1966	31.3	30.4	39.9	38.9	80.6	37.5
+50	301-350	University of Stirling	56.14653;-3.9185	UK	1967	22.2	31.2	42.0	26.6	69.5	34.5
+56	301-350	University of Surrey	GU2 7	UK	1966	40.5	34.1	12.4	46.9	81.5	33.4
+60	301-350	Plymouth University	50.37569;-4.1381	UK	1992	15.7	19.3	58.1	25.8	49.0	32.2
+61	301-350	Keele University	53.00058;-2.2744	UK	1962	22.6	25.8	39.8	28.1	62.6	31.9
+62	301-350	University of Hertfordshire	51.7522;-0.2352	UK	1992	15.9	10.9	55.5	27.1	76.5	31.1
+69	351-400	Loughborough University	LE11 3TU	UK	1966	32.0	31.8	9.2	39.4	66.7	27.9
+71	351-400	University of Strathclyde	55.86144;-4.2420	UK	1964	30.4	24.1	19.3	33.1	63.0	27.7
+72	351-400	Heriot-Watt University	EH14 4AS	UK	1966	27.2	21.8	18.8	41.1	82.6	27.6
+72	351-400	Liverpool John Moores University	53.40320;-2.97105	UK	1992	15.4	12.7	48.4	26.9	52.6	27.6
+80	351-400	University of Kent	51.29726;1.06071	UK	1965	19.4	25.1	19.1	26.5	82.5	25.9
+83	351-400	Aston University	52.48577;-1.88883	UK	1966	19.8	28.2	11.7	26.8	84.5	24.9
+90	–	City University London	EC1V 0HB	UK	1966	23.1	24.1	7.0	27.2	78.8	22.9
+92	–	University of Bradford	53.79174;-1.76664	UK	1966	22.4	21.3	8.4	31.4	80.0	22.4
+32	201-225	Bilkent University	39.8696;32.7488	Turkey	1984	29.9	24.3	60.8	29.4	48.5	38.9
+30	251-275	National Sun Yat-Sen University	22.62538;120.26579	Taiwan	1980	32.4	44.9	48.5	42.1	16.0	40.0
+55	301-350	National Taiwan University of Science and Technology	25.01457;121.54174	Taiwan	1974	31.1	53.6	19.4	42.9	15.6	33.5
+70	351-400	Yuan Ze University	24.9705;121.2634	Taiwan	1989	14.2	14.3	58.3	29.2	12.8	27.8
+89	–	Feng Chia University	24.17919;120.64674	Taiwan	1980	12.7	17.7	41.4	33.5	12.8	23.3
+95	–	National Yang-Ming University	25.1231;121.5133	Taiwan	1975	35.4	22.4	8.7	26.9	14.7	21.7
+2	46	École Polytechnique Fédérale de Lausanne	46.52173;6.5641	Switzerland	1968	55.9	40.9	95.3	46.7	98.9	66.2
+23	201-225	Umeå University	63.82097;20.3037	Sweden	1965	25.2	40.4	59.4	26.3	52.0	42.1
+27	226-250	Swedish University of Agricultural Sciences	59.8164;17.6626	Sweden	1977	36.2	30.2	49.8	100.0	43.5	40.6
+59	301-350	Linköping University	58.3953;15.5776	Sweden	1975	23.8	26.3	42.8	31.8	48.6	32.3
+17	186	Pompeu Fabra University	41.37897;2.17928	Spain	1990	28.1	19.8	87.6	37.6	54.3	45.7
+24	201-225	Autonomous University of Barcelona	41.50000;2.10508	Spain	1968	35.9	30.8	57.9	37.0	45.9	41.7
+49	276-300	Autonomous University of Madrid	40.5128;-3.674	Spain	1968	32.2	23.9	47.5	32.5	39.7	34.9
+74	351-400	Polytechnic University of Valencia	39.48303;-0.34600	Spain	1971	24.4	11.9	45.3	36.6	23.6	27.1
+86	351-400	Polytechnic University of Catalonia	41.38526;2.11516	Spain	1971	27.4	14.7	23.3	44.6	42.0	23.9
+16	169	Nanyang Technological University	1.3469;103.6829	Singapore	1991	40.4	52.3	34.5	44.4	89.8	46.0
+94	–	King Fahd University of Petroleum and Minerals	26.30886;50.14748	Saudi Arabia	1963	31.2	14.7	6.6	57.8	60.9	21.8
+1	53	Pohang University of Science and Technology	36.0100;129.3247	Republic of Korea	1986	65.9	66.8	92.3	100.0	25.0	71.8
+5	94	Korea Advanced Institute of Science and Technology	36.3728;127.3616	Republic of Korea	1971	71.3	61.3	47.1	100.0	29.3	58.6
+64	351-400	National University of Ireland;Maynooth	53.38492;-6.60156	Republic of Ireland	1997	30.3	26.9	22.1	27.1	74.8	30.1
+86	–	Dublin City University	53.38539;-6.25693	Republic of Ireland	1989	20.5	18.3	18.4	42.0	75.7	23.9
+97	–	University of Limerick	52.67369;-8.56707	Republic of Ireland	1972	21.2	22.2	4.8	32.8	67.2	20.3
+66	301-350	Aveiro University	40.6341;-8.6599	Portugal	1973	21.3	22.2	40.9	34.7	48.4	29.8
+85	351-400	New University of Lisbon	38.7353;-9.1598	Portugal	1973	23.0	15.5	28.3	38.3	48.3	24.6
+43	276-300	University of Tromsø	69.67977;18.9749	Norway	1968	30.4	18.8	53.0	32.8	63.5	36.2
+58	301-350	University of Waikato	-37.777;175.318	New Zealand	1964	17.0	19.4	47.8	24.5	87.0	32.4
+77	351-400	Massey University	-40.3855;175.6186	New Zealand	1964	20.3	22.1	24.5	–	77.8	26.4
+19	197	Maastricht University	50.84765;5.6864	Netherlands	1976	33.8	38.8	53.9	–	86.4	44.9
+98	–	National University of Malaysia	2.93089;101.77878	Malaysia	1970	23.2	13.8	14.2	26.1	53.1	20.0
+39	251-275	University of Tsukuba	36.1119;140.1040	Japan	1973	43.9	29.0	41.4	32.0	27.2	37.1
+25	226-250	University of Milan-Bicocca	45.51782;9.21343	Italy	1998	29.9	17.6	78.3	35.6	33.2	41.1
+37	276-300	University of Trento	46.06976;11.12104	Italy	1962	28.6	28.3	51.5	51.0	49.7	37.5
+68	301-350	Sharif University of Technology	35.7039;51.3523	Iran	1966	30.0	37.2	19.3	93.1	12.7	29.2
+3	62	Hong Kong University of Science and Technology	22.3394;114.2629	Hong Kong	1991	51.4	62.6	71.0	59.0	80.1	63.0
+12	151	Chinese University of Hong Kong	22.4223;114.2070	Hong Kong	1963	47.4	56.2	37.8	36.4	69.5	48.5
+18	193	City University of Hong Kong	22.3379;114.1728	Hong Kong	1984	32.5	42.2	57.4	50.1	61.6	45.5
+46	251-275	Hong Kong Polytechnic University	22.3040;114.1787	Hong Kong	1994	31.2	42.8	22.2	72.8	62.5	35.4
+50	276-300	University of Crete	71409 Heraklion	Greece	1973	16.9	18.0	66.7	33.2	42.6	34.5
+14	194	Universität Konstanz	47.6923;9.1864	Germany	1966	36.3	39.6	62.8	49.9	63.7	47.7
+22	201-225	Universität Ulm	48.4256;9.9489	Germany	1967	53.0	26.2	46.7	69.8	50.8	43.3
+26	251-275	Ruhr-Universität Bochum	51.4456;7.2682	Germany	1962	44.2	38.9	36.0	59.7	46.6	40.7
+42	251-275	Universität Bielefeld	52.03948;8.49715	Germany	1969	23.9	22.5	61.6	28.6	45.2	36.5
+6	84	Université Pierre et Marie Curie	48.84677;2.35495	France	1971	61.6	26.3	81.1	26.2	66.7	56.3
+15	169	Université Paris Diderot–Paris 7	48.8304;2.3821	France	1970	28.0	20.0	88.9	–	70.7	46.8
+46	276-300	Université Montpellier 2	43.6347;3.8603	France	1970	30.7	9.6	62.3	24.9	52.9	35.4
+75	351-400	Université Paris 13	48.95590;2.33968	France	1970	16.2	16.0	39.4	24.2	59.9	26.6
+54	301-350	University of Eastern Finland	FI-80101 Joensuu	Finland	1969	29.4	22.8	51.1	30.2	33.5	34.3
+96	–	Mansoura University	31.0537;31.3823	Egypt	1972	12.3	7.5	42.3	24.6	23.7	21.0
+36	251-275	University of Southern Denmark	55.36960;10.4288	Denmark	1998	26.2	17.6	58.0	67.9	73.7	37.8
+67	301-350	Aalborg University	57.01670;9.9788	Denmark	1974	22.8	27.2	27.1	36.4	75.3	29.7
+28	226-250	University of Calgary	51.07856;-114.1333	Canada	1966	38.0	43.0	39.7	39.5	42.7	40.4
+30	226-250	Simon Fraser University	49.27994;-122.92172	Canada	1965	22.0	41.1	53.0	37.6	56.8	40.0
+50	276-300	University of Guelph	43.53050;-80.22618	Canada	1964	26.0	38.0	38.6	48.9	33.3	34.5
+91	–	Concordia University	45.49714;-73.57858	Canada	1974	20.7	19.1	14.2	27.7	76.3	22.6
+44	276-300	State University of Campinas	-22.81745;-47.06822	Brazil	1966	59.6	36.4	15.2	43.2	19.1	35.9
+99	–	São Paulo State University	-23.547846;-46.640906	Brazil	1976	30.0	20.6	8.0	44.4	15.8	19.9
+41	251-275	Johannes Kepler Universität Linz	48.33697;14.3179	Austria	1966	24.1	15.5	62.8	73.4	56.6	36.8
+33	226-250	Macquarie University	-33.7741;151.1132	Australia	1964	25.1	29.9	46.5	42.3	93.0	38.5
+33	251-275	University of Wollongong	-34.4070;150.8798	Australia	1975	26.9	32.2	43.5	40.4	88.7	38.5
+40	276-300	Queensland University of Technology	-27.4768;153.0287	Australia	1989	25.7	37.5	35.5	62.5	76.7	37.0
+45	276-300	University of Newcastle	54.98077;-1.6156	Australia	1965	22.2	36.8	35.8	64.8	76.3	35.8
+48	301-350	Charles Darwin University	-25.2346;130.9829	Australia	1989	21.7	29.0	52.6	31.3	46.7	35.3
+65	351-400	University of South Australia	-34.92347;138.59163	Australia	1991	26.8	25.6	19.4	87.7	81.8	29.9
+75	351-400	Curtin University	-32.00318;115.89239	Australia	1987	19.7	14.8	28.7	31.3	91.4	26.6
+78	351-400	Deakin University	-38.19757;144.29937	Australia	1974	21.7	22.8	26.2	27.9	56.3	26.1
+78	351-400	Flinders University	-35.01738;138.57105	Australia	1966	21.9	26.8	20.3	36.2	59.9	26.1
+81	351-400	Griffith University	QLD 4222	Australia	1971	19.4	21.6	20.3	30.7	79.0	25.1
+81	351-400	La Trobe University	-37.72090;145.04882	Australia	1967	22.9	26.8	13.6	28.9	71.3	25.1
+88	–	University of Technology;Sydney	-33.88318;151.20088	Australia	1988	20.9	16.8	18.7	28.5	77.2	23.4
+93	–	RMIT University	-37.80819;144.96367	Australia	1992	21.4	15.5	12.3	31.6	87.4	22.1
+100	–	Edith Cowan University	-31.75340;115.76982	Australia	1991	15.4	13.9	11.6	26.7	91.8	19.8

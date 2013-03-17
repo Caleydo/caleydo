@@ -48,11 +48,6 @@ import org.eclipse.ui.application.WorkbenchWindowAdvisor;
  */
 public class DemoApplication implements IApplication {
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.eclipse.equinox.app.IApplication#start(org.eclipse.equinox.app.IApplicationContext)
-	 */
 	@Override
 	public Object start(IApplicationContext context) {
 		Display display = PlatformUI.createDisplay();
@@ -67,11 +62,6 @@ public class DemoApplication implements IApplication {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.eclipse.equinox.app.IApplication#stop()
-	 */
 	@Override
 	public void stop() {
 		if (!PlatformUI.isWorkbenchRunning())
@@ -138,11 +128,12 @@ public class DemoApplication implements IApplication {
 		protected void fillMenuBar(IMenuManager menuBar) {
 			super.fillMenuBar(menuBar);
 			MenuManager menu2 = new MenuManager("Demos", "demos");
-			menu2.add(new ShowView("University", "rankvis.demo.university"));
-			menu2.add(new ShowView("Gene", "rankvis.demo.gene"));
-			menu2.add(new ShowView("Academic Ranking Of World Universties View", "rankvis.demo.university.arwu"));
-			menu2.add(new ShowView("Measuring University Performance Data", "rankvis.demo.university.mup"));
+			menu2.add(new ShowView("University Rankings 2012", "rankvis.demo.university.mixed"));
+			menu2.add(new ShowView("Academic Ranking Of World Universties", "rankvis.demo.university.arwu"));
+			menu2.add(new ShowView("Measuring University Performance", "rankvis.demo.university.mup"));
 			menu2.add(new ShowView("World University Ranking", "rankvis.demo.university.wur"));
+			menu2.add(new ShowView("Top 100 under 50 2012", "rankvis.demo.university.top100under50"));
+			menu2.add(new ShowView("Gene", "rankvis.demo.gene"));
 			menuBar.add(menu2);
 		}
 
@@ -183,7 +174,7 @@ public class DemoApplication implements IApplication {
 		@Override
 		public void createInitialLayout(IPageLayout layout) {
 			layout.setEditorAreaVisible(true);
-			layout.addView("rankvis.demo.university", IPageLayout.TOP, IPageLayout.RATIO_MAX,
+			layout.addView("rankvis.demo.university.mixed", IPageLayout.TOP, IPageLayout.RATIO_MAX,
 					IPageLayout.ID_EDITOR_AREA);
 			layout.setFixed(true);
 		}

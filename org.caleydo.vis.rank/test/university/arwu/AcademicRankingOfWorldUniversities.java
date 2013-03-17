@@ -19,6 +19,7 @@
  *******************************************************************************/
 package university.arwu;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +34,7 @@ import org.caleydo.vis.rank.model.OrderColumn;
 import org.caleydo.vis.rank.model.RankRankColumnModel;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.StringRankColumnModel;
+import org.eclipse.swt.widgets.Shell;
 
 import com.google.common.base.Function;
 
@@ -110,7 +112,6 @@ public class AcademicRankingOfWorldUniversities implements IModelBuilder {
 	}
 
 	public static void main(String[] args) {
-		GLSandBox.main(args, RankTableDemo.class, "academic ranking of world universities 2012,2011 and 2010",
-				new AcademicRankingOfWorldUniversities());
+		GLSandBox.main(args, RankTableDemo.class, "academic ranking of world universities 2012,2011 and 2010", new AcademicRankingOfWorldUniversities());
 	}
 }
