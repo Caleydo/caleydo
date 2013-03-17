@@ -581,7 +581,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		resolveSubTablePerspectives(newTablePerspectives);
 
 		// if (!isRenderedRemote())
-		pathRenderer.setTablePerspectives(new ArrayList<>(resolvedTablePerspectives));
+		// pathRenderer.setTablePerspectives(new ArrayList<>(resolvedTablePerspectives));
 		mappedDataRenderer.setGeneTablePerspectives(resolvedTablePerspectives);
 		for (TablePerspective tablePerspective : newTablePerspectives) {
 			dataDomains.add(tablePerspective.getDataDomain());

@@ -38,7 +38,9 @@ import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.PathwayPath;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.listener.EnablePathSelectionEvent;
+import org.caleydo.datadomain.pathway.listener.PathwayMappingEvent;
 import org.caleydo.datadomain.pathway.listener.PathwayPathSelectionEvent;
+import org.caleydo.view.pathway.event.SampleMappingModeEvent;
 import org.jgrapht.GraphPath;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.GraphPathImpl;
@@ -133,13 +135,25 @@ public abstract class APathUpdateStrategy implements IListenerOwner {
 
 	@ListenTo(restrictExclusiveToEventSpace = true)
 	public void onAddTablePerspectives(AddTablePerspectivesEvent event) {
-		// renderer.tablePerspectives.addAll(event.getTablePerspectives());
+		renderer.tablePerspectives.addAll(event.getTablePerspectives());
 		renderer.setLayoutDirty(true);
 	}
 
 	@ListenTo(restrictExclusiveToEventSpace = true)
 	public void onRemoveTablePerspectives(RemoveTablePerspectiveEvent event) {
-		// renderer.tablePerspectives.remove(event.getTablePerspective());
+		renderer.tablePerspectives.remove(event.getTablePerspective());
+		renderer.setLayoutDirty(true);
+	}
+
+	@ListenTo(restrictExclusiveToEventSpace = true)
+	public void onSampleMappingModeChanged(SampleMappingModeEvent event) {
+		renderer.sampleMappingMode = event.getSampleMappingMode();
+		renderer.setLayoutDirty(true);
+	}
+
+	@ListenTo(restrictExclusiveToEventSpace = true)
+	public void onPathwayMappingChanged(PathwayMappingEvent event) {
+		renderer.mappedPerspective = event.getTablePerspective();
 		renderer.setLayoutDirty(true);
 	}
 

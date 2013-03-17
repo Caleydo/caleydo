@@ -73,6 +73,7 @@ import org.caleydo.view.enroute.path.node.mode.CompoundNodeLinearizedMode;
 import org.caleydo.view.enroute.path.node.mode.CompoundNodePreviewMode;
 import org.caleydo.view.enroute.path.node.mode.GeneNodeLinearizedMode;
 import org.caleydo.view.enroute.path.node.mode.GeneNodePreviewMode;
+import org.caleydo.view.pathway.ESampleMappingMode;
 import org.caleydo.view.pathway.GLPathway;
 import org.jgrapht.Graphs;
 import org.jgrapht.graph.DefaultEdge;
@@ -182,6 +183,10 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	 * Events that should be triggered when selecting a node.
 	 */
 	protected Map<PickingMode, List<VertexRepBasedEventFactory>> nodeEvents = new HashMap<>();
+
+	protected TablePerspective mappedPerspective;
+
+	protected ESampleMappingMode sampleMappingMode;
 
 	protected int layoutDisplayListIndex = -1;
 	private boolean isLayoutDirty = true;
@@ -1062,6 +1067,20 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	 */
 	public EventBasedSelectionManager getVertexSelectionManager() {
 		return vertexSelectionManager;
+	}
+
+	/**
+	 * @return the sampleMappingMode, see {@link #sampleMappingMode}
+	 */
+	public ESampleMappingMode getSampleMappingMode() {
+		return sampleMappingMode;
+	}
+
+	/**
+	 * @return the mappedPerspective, see {@link #mappedPerspective}
+	 */
+	public TablePerspective getMappedPerspective() {
+		return mappedPerspective;
 	}
 
 }
