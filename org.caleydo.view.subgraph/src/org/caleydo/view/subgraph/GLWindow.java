@@ -47,7 +47,7 @@ public class GLWindow extends AnimatedGLElementContainer {
 	public GLWindow(ILabelProvider titleLabelProvider, GLSubGraph view) {
 		this.view = view;
 		titleBar = new GLTitleBar(titleLabelProvider);
-		background = new GLPathwayBackground(this);
+		background = new GLPathwayBackground();
 		setLayout(GLLayouts.LAYERS);
 		baseContainer = new GLElementContainer(new GLSizeRestrictiveFlowLayout(false, 1, GLPadding.ZERO));
 		baseContainer.add(titleBar);
@@ -79,7 +79,7 @@ public class GLWindow extends AnimatedGLElementContainer {
 		} else {
 			titleBar.closeButton.setVisibility(EVisibility.NONE);
 		}
-		background.setHovered(active);
+		// background.setHovered(active);
 		this.active = active;
 	}
 

@@ -30,6 +30,7 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
 import org.caleydo.core.view.ViewManager;
+import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
@@ -186,6 +187,8 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	private List<Pair<PathwayVertexRep, PathwayVertexRep>> selectedPortalLinks = new ArrayList<>();
 
 	private GLWindow dataMappingWindow;
+
+	private List<AContextMenuItem> contextMenuItemsToShow = new ArrayList<>();
 
 	/**
 	 * Constructor.
@@ -352,7 +355,8 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 					return;
 				if (setWindowActive(mousePosition, rankingWindow))
 					return;
-				setWindowActive(mousePosition, dataMappingWindow);
+				if (setWindowActive(mousePosition, dataMappingWindow))
+					return;
 			}
 
 			private boolean setWindowActive(Point mousePosition, GLWindow window) {
@@ -380,6 +384,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 
 			@Override
 			public void mouseClicked(IMouseEvent mouseEvent) {
+
 			}
 		});
 		parentGLCanvas.addKeyListener(new IGLKeyListener() {
@@ -699,6 +704,9 @@ experimentalDataMappingElement.getDmState()
 			updateAugmentation = true;
 
 		super.display(gl);
+		for (AContextMenuItem item : contextMenuItemsToShow) {
+			getContextMenuCreator().add(item);
+		}
 		if (wasPathwayAdded) {
 			EnablePathSelectionEvent event = new EnablePathSelectionEvent(isPathSelectionMode);
 			event.setEventSpace(pathEventSpace);
@@ -716,6 +724,7 @@ experimentalDataMappingElement.getDmState()
 		// methods
 		// which need alpha blending...
 		dndController.handleDragging(gl, glMouseListener);
+		contextMenuItemsToShow.clear();
 
 	}
 
@@ -798,8 +807,9 @@ experimentalDataMappingElement.getDmState()
 			this.activeWindow.setActive(false);
 		}
 		this.activeWindow = activeWindow;
-		clearSelectedPortalLinks();
-		updatePathwayPortals();
+		isLayoutDirty = true;
+		// clearSelectedPortalLinks();
+		// updatePathwayPortals();
 
 	}
 
