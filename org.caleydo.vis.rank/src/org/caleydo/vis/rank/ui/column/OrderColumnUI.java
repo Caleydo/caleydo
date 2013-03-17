@@ -26,6 +26,9 @@ import java.awt.Color;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
+
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
@@ -343,8 +346,42 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 			g.decZ();
 		} else {
 			g.color(Color.GRAY);
-			g.drawLine(-1, left.y() + left.w() * 0.5f, w, right.y() + right.w() * 0.5f);
+			if (isLeftValid && isRightValid) {
+				g.drawLine(-1, left.y() + left.w() * 0.5f, w, right.y() + right.w() * 0.5f);
+			} else if (isLeftValid) {
+				arrow(g, 5, left.y(), left.w(), right.y() <= 0);
+			} else if (isRightValid) {
+				arrow(g, w - 10, right.y(), right.w(), left.y() <= 0);
+			}
 		}
+	}
+
+	private static void arrow(GLGraphics g, float x, float y, float h, boolean up) {
+		if (h < 6)
+			return;
+		if (h > 10) {
+			y += (h - 10) * 0.5f;
+			h = 10;
+		}
+		GL2 gl = g.gl;
+		gl.glBegin(GL.GL_LINES);
+		if (h > 6) {
+			gl.glVertex3f(x + 3, y + 1, g.z());
+			gl.glVertex3f(x + 3, y + h - 1, g.z());
+		}
+		if (up) {
+			gl.glVertex3f(x + 1, y + 4, g.z());
+			gl.glVertex3f(x + 3, y + 1, g.z());
+			gl.glVertex3f(x + 5, y + 4, g.z());
+			gl.glVertex3f(x + 3, y + 1, g.z());
+		} else {
+			gl.glVertex3f(x + 1, y + h - 4, g.z());
+			gl.glVertex3f(x + 3, y + h, g.z());
+			gl.glVertex3f(x + 5, y + h - 4, g.z());
+			gl.glVertex3f(x + 3, y + h, g.z());
+		}
+		gl.glEnd();
+		// g.drawLine(-1, left.y() + left.w() * 0.5f, w, right.y() + right.w() * 0.5f);
 	}
 
 	@Override
