@@ -80,17 +80,15 @@ import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertex;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.listener.EnablePathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.LoadPathwayEvent;
+import org.caleydo.datadomain.pathway.listener.PathwayMappingEvent;
 import org.caleydo.datadomain.pathway.listener.PathwayPathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.ShowNodeContextEvent;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.datadomain.pathway.toolbar.SelectPathAction;
-import org.caleydo.view.pathway.event.ClearMappingEvent;
-import org.caleydo.view.pathway.event.EnableGeneMappingEvent;
 import org.caleydo.view.pathway.event.SampleMappingModeEvent;
 import org.caleydo.view.pathway.event.SampleMappingModeListener;
-import org.caleydo.view.pathway.listener.ClearMappingListener;
 import org.caleydo.view.pathway.listener.EnRoutePathEventListener;
 import org.caleydo.view.pathway.listener.EnableGeneMappingListener;
 import org.caleydo.view.pathway.listener.SelectPathModeEventListener;
@@ -171,7 +169,6 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 	private AddTablePerspectivesListener addTablePerspectivesListener;
 	private SampleMappingModeListener sampleMappingModeListener;
 	private UpdateColorMappingListener updateColorMappingListener;
-	private ClearMappingListener clearMappingListener;
 	private ShowPortalNodesEventListener showPortalNodesEventListener;
 
 	private IPickingListener pathwayElementPickingListener;
@@ -329,7 +326,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		registerPickingListeners();
 		augmentationRenderer = new GLPathwayAugmentationRenderer(viewFrustum, this);
 
-		augmentationRenderer.enableGeneMapping(true);
+		augmentationRenderer.setMappingPerspective(null);
 	}
 
 	@Override
@@ -841,8 +838,9 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		}
 	}
 
-	public void enableGeneMapping(final boolean enableGeneMapping) {
-		augmentationRenderer.enableGeneMapping(enableGeneMapping);
+	public void mapTablePerspective(TablePerspective tablePerspective) {
+
+		augmentationRenderer.setMappingPerspective(tablePerspective);
 		setDisplayListDirty();
 	}
 
@@ -882,7 +880,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 
 		enableGeneMappingListener = new EnableGeneMappingListener();
 		enableGeneMappingListener.setHandler(this);
-		eventPublisher.addListener(EnableGeneMappingEvent.class, enableGeneMappingListener);
+		eventPublisher.addListener(PathwayMappingEvent.class, enableGeneMappingListener);
 
 		enRoutePathEventListener = new EnRoutePathEventListener();
 		enRoutePathEventListener.setExclusiveEventSpace(pathwayPathEventSpace);
@@ -906,9 +904,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		updateColorMappingListener.setHandler(this);
 		eventPublisher.addListener(UpdateColorMappingEvent.class, updateColorMappingListener);
 
-		clearMappingListener = new ClearMappingListener();
-		clearMappingListener.setHandler(this);
-		eventPublisher.addListener(ClearMappingEvent.class, clearMappingListener);
+
 
 		showPortalNodesEventListener = new ShowPortalNodesEventListener();
 		showPortalNodesEventListener.setHandler(this);
@@ -925,7 +921,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		listeners.unregisterAll();
 
 		if (enableGeneMappingListener != null) {
-			eventPublisher.removeListener(EnableGeneMappingEvent.class, enableGeneMappingListener);
+			eventPublisher.removeListener(PathwayMappingEvent.class, enableGeneMappingListener);
 			enableGeneMappingListener = null;
 		}
 
@@ -952,11 +948,6 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		if (updateColorMappingListener != null) {
 			eventPublisher.removeListener(updateColorMappingListener);
 			updateColorMappingListener = null;
-		}
-
-		if (clearMappingListener != null) {
-			eventPublisher.removeListener(clearMappingListener);
-			clearMappingListener = null;
 		}
 
 		metaboliteSelectionManager.unregisterEventListeners();
@@ -1640,8 +1631,6 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 	// }
 	// }
 
-	public void setShowDataMapping(boolean showDataMapping) {
-		augmentationRenderer.enableGeneMapping(showDataMapping);
-	}
+
 
 }

@@ -61,6 +61,15 @@ public class EventPublisher {
 	}
 
 	/**
+	 * Shorthand for {@link #triggerEvent(AEvent)}
+	 *
+	 * @param event
+	 */
+	public static void trigger(AEvent event) {
+		INSTANCE.triggerEvent(event);
+	}
+
+	/**
 	 * adds a receiver to the list of event handlers
 	 *
 	 * @param eventClass

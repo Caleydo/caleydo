@@ -1,67 +1,64 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.pathway.event;
+package org.caleydo.datadomain.pathway.listener;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.event.AEvent;
 
 /**
  * Events that signals that gene mapping within pathway views should be enabled.
- * 
+ *
  * @author Alexander Lex
  */
 @XmlRootElement
 @XmlType
-public class EnableGeneMappingEvent extends AEvent {
+public class PathwayMappingEvent extends AEvent {
+
+	private TablePerspective tablePerspective = null;
 
 	/**
-	 * Flag determining whether the mapping of experimental data in the pathways
-	 * should be switched on (true) or off (false). Defaults to true.
+	 * Default Constructor.
 	 */
-	private boolean enableGeneMapping = true;
-
-	/**
-	 * Default Constructor
-	 */
-	public EnableGeneMappingEvent() {
+	public PathwayMappingEvent() {
 	}
 
-	public EnableGeneMappingEvent(boolean enableGeneMapping) {
-		this.enableGeneMapping = enableGeneMapping;
+	public PathwayMappingEvent(TablePerspective tablePerspective) {
+		this.tablePerspective = tablePerspective;
 	}
 
 	/**
-	 * @param enableGeneMapping
-	 *            setter, see {@link #enableGeneMapping}
+	 * @param tablePerspective
+	 *            setter, see {@link tablePerspective}
 	 */
-	public void setEnableGeneMapping(boolean enableGeneMapping) {
-		this.enableGeneMapping = enableGeneMapping;
+	public void setTablePerspective(TablePerspective tablePerspective) {
+		this.tablePerspective = tablePerspective;
 	}
 
 	/**
-	 * @return the enableGeneMapping, see {@link #enableGeneMapping}
+	 * @return the tablePerspective, see {@link #tablePerspective}
 	 */
-	public boolean isEnableGeneMapping() {
-		return enableGeneMapping;
+	public TablePerspective getTablePerspective() {
+		return tablePerspective;
 	}
 
 	@Override

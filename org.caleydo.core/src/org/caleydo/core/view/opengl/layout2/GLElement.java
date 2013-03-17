@@ -623,6 +623,8 @@ public class GLElement implements IHasGLLayoutData {
 	 * take down, after removing a child from its parent
 	 */
 	protected void takeDown() {
+		if (context == null)
+			return;
 		context.takeDown(this);
 		cache.takeDown(context.getDisplayListPool());
 		pickCache.takeDown(context.getDisplayListPool());

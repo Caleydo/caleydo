@@ -26,8 +26,8 @@ import org.caleydo.core.view.ViewManager;
 import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
+import org.caleydo.datadomain.pathway.listener.PathwayMappingEvent;
 import org.caleydo.view.pathway.GLPathway;
-import org.caleydo.view.pathway.event.ClearMappingEvent;
 import org.eclipse.jface.action.ControlContribution;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -105,9 +105,13 @@ public class DatasetSelectionBox
 
 							addTablePerspectivesEvent.addTablePerspective(tablePerspective);
 							GeneralManager.get().getEventPublisher().triggerEvent(addTablePerspectivesEvent);
+							PathwayMappingEvent event = new PathwayMappingEvent(tablePerspective);
+							event.setSender(this);
+							GeneralManager.get().getEventPublisher().triggerEvent(event);
+
 						}
 						else {
-							ClearMappingEvent event = new ClearMappingEvent(pwView);
+							PathwayMappingEvent event = new PathwayMappingEvent();
 							event.setSender(this);
 							GeneralManager.get().getEventPublisher().triggerEvent(event);
 						}
