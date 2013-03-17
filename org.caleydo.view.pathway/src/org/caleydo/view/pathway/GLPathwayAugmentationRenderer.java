@@ -360,7 +360,7 @@ public class GLPathwayAugmentationRenderer {
 			gl.glColorMask(true, true, true, true);
 			gl.glEnable(GL.GL_DEPTH_TEST);
 
-			tmpNodeColor = new float[] { 0.f, 0.f, 0.f, 0.25f };
+			tmpNodeColor = new float[] { 0.f, 0.f, 0.f, 0.0f };
 			gl.glColor4fv(tmpNodeColor, 0);
 			renderQuad(gl, nodeWidth, nodeHeight);
 
@@ -513,27 +513,31 @@ public class GLPathwayAugmentationRenderer {
 					Float stdDev = pixelGLConverter.getGLWidthForPixelWidth(PathwayRenderStyle.ENZYME_NODE_PIXEL_WIDTH)
 							* (float) average.getStandardDeviation() * 2.0f;
 
-					float x = pixelGLConverter.getGLWidthForPixelWidth(PathwayRenderStyle.ENZYME_NODE_PIXEL_WIDTH + 1);
-					float y = -pixelGLConverter
-							.getGLHeightForPixelHeight(PathwayRenderStyle.ENZYME_NODE_PIXEL_HEIGHT - 1);
+					float x = pixelGLConverter.getGLWidthForPixelWidth(PathwayRenderStyle.ENZYME_NODE_PIXEL_WIDTH);
+					float y = -pixelGLConverter.getGLHeightForPixelHeight(PathwayRenderStyle.ENZYME_NODE_PIXEL_HEIGHT);
 
 					// rendering the std-dev box
 					if (!stdDev.isNaN() && selectedSamplesVA.size() > 1) {
 
 						// ////////////////////////////// h bars
 						gl.glDisable(GL.GL_BLEND);
+
+						// background white
 						gl.glColor4f(1, 1, 1, 1f);
 						gl.glBegin(GL2.GL_QUADS);
 						gl.glVertex3f(0, y - (2f * thirdOfstdDevBarHeight), PathwayRenderStyle.Z_OFFSET);
 						gl.glVertex3f(0, y + thirdOfstdDevBarHeight - onePxlHeight, PathwayRenderStyle.Z_OFFSET);
-						gl.glVertex3f(x, y + thirdOfstdDevBarHeight - onePxlHeight, PathwayRenderStyle.Z_OFFSET);
-						gl.glVertex3f(x, y - (2f * thirdOfstdDevBarHeight), PathwayRenderStyle.Z_OFFSET);
+						gl.glVertex3f(x + onePxlWidth, y + thirdOfstdDevBarHeight - onePxlHeight,
+								PathwayRenderStyle.Z_OFFSET);
+						gl.glVertex3f(x + onePxlWidth, y - (2f * thirdOfstdDevBarHeight), PathwayRenderStyle.Z_OFFSET);
 						gl.glEnd();
 
-						gl.glColor4fv(PathwayRenderStyle.STD_DEV_COLOR, 0);
+						// the actual bar
+						gl.glColor3fv(mappingPerspective.getDataDomain().getColor().getRGB(), 0);
 						gl.glBegin(GL2.GL_QUADS);
 						gl.glVertex3f(0, y - (2f * thirdOfstdDevBarHeight), PathwayRenderStyle.Z_OFFSET);
-						gl.glVertex3f(0, y + thirdOfstdDevBarHeight - onePxlHeight, PathwayRenderStyle.Z_OFFSET);
+						gl.glVertex3f(0, y + thirdOfstdDevBarHeight - onePxlHeight,
+								PathwayRenderStyle.Z_OFFSET);
 						gl.glVertex3f(stdDev, y + thirdOfstdDevBarHeight - onePxlHeight, PathwayRenderStyle.Z_OFFSET);
 						gl.glVertex3f(stdDev, y - (2f * thirdOfstdDevBarHeight), PathwayRenderStyle.Z_OFFSET);
 						gl.glEnd();
@@ -546,8 +550,8 @@ public class GLPathwayAugmentationRenderer {
 
 						gl.glDisable(GL.GL_LINE_SMOOTH);
 						gl.glBegin(GL.GL_LINE_LOOP);
-						gl.glVertex3f(0 + onePxlWidth, y - (2f * thirdOfstdDevBarHeight), PathwayRenderStyle.Z_OFFSET);
-						gl.glVertex3f(0 + onePxlWidth, y + thirdOfstdDevBarHeight - onePxlHeight,
+						gl.glVertex3f(0, y - (2f * thirdOfstdDevBarHeight), PathwayRenderStyle.Z_OFFSET);
+						gl.glVertex3f(0, y + thirdOfstdDevBarHeight - onePxlHeight,
 								PathwayRenderStyle.Z_OFFSET);
 						gl.glVertex3f(x + onePxlWidth, y + thirdOfstdDevBarHeight - onePxlHeight,
 								PathwayRenderStyle.Z_OFFSET);
@@ -565,14 +569,14 @@ public class GLPathwayAugmentationRenderer {
 						gl.glBegin(GL2.GL_QUADS);
 						gl.glVertex3f(0, y - (2f * thirdOfstdDevBarHeight), PathwayRenderStyle.Z_OFFSET);
 						gl.glVertex3f(0, y + thirdOfstdDevBarHeight - onePxlHeight, PathwayRenderStyle.Z_OFFSET);
-						gl.glVertex3f(x, y + thirdOfstdDevBarHeight - onePxlHeight, PathwayRenderStyle.Z_OFFSET);
-						gl.glVertex3f(x, y - (2f * thirdOfstdDevBarHeight), PathwayRenderStyle.Z_OFFSET);
+						gl.glVertex3f(x + onePxlWidth, y + thirdOfstdDevBarHeight - onePxlHeight,
+								PathwayRenderStyle.Z_OFFSET);
+						gl.glVertex3f(x + onePxlWidth, y - (2f * thirdOfstdDevBarHeight), PathwayRenderStyle.Z_OFFSET);
 						gl.glEnd();
 						//
 						gl.glBegin(GL.GL_LINE_LOOP);
-						gl.glVertex3f(0 + onePxlWidth, y - (2f * thirdOfstdDevBarHeight), PathwayRenderStyle.Z_OFFSET);
-						gl.glVertex3f(0 + onePxlWidth, y + thirdOfstdDevBarHeight - onePxlHeight,
-								PathwayRenderStyle.Z_OFFSET);
+						gl.glVertex3f(0, y - (2f * thirdOfstdDevBarHeight), PathwayRenderStyle.Z_OFFSET);
+						gl.glVertex3f(0, y + thirdOfstdDevBarHeight - onePxlHeight, PathwayRenderStyle.Z_OFFSET);
 						gl.glVertex3f(x + onePxlWidth, y + thirdOfstdDevBarHeight - onePxlHeight,
 								PathwayRenderStyle.Z_OFFSET);
 						gl.glVertex3f(x + onePxlWidth, y - (2f * thirdOfstdDevBarHeight), PathwayRenderStyle.Z_OFFSET);
