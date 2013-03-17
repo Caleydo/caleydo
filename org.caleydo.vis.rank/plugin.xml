@@ -1,5 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
-   
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            allowMultiple="true"
+            category="org.caleydo.core.views"
+            class="university.wur.WorldUniversityRankingView"
+            id="rankvis.demo.university.wur"
+            name="World University Ranking">
+      </view>
+      <view
+            allowMultiple="true"
+            category="org.caleydo.core.views"
+            class="Gene.GeneView"
+            id="rankvis.demo.gene"
+            name="Gene">
+      </view>
+      <view
+            allowMultiple="true"
+            category="org.caleydo.core.views"
+            class="university.UniversityView"
+            id="rankvis.demo.university"
+            name="University">
+      </view>
+      <view
+            allowMultiple="true"
+            category="org.caleydo.core.views"
+            class="university.arwu.AcademicRankingOfWorldUniverstiesView"
+            id="rankvis.demo.university.arwu"
+            name="Academic Ranking of World Universties">
+      </view>
+      <view
+            allowMultiple="true"
+            category="org.caleydo.core.views"
+            class="university.mup.MeasuringUniversityPerformanceView"
+            id="rankvis.demo.university.mup"
+            name="Measuring University Performance">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            class="demo.DemoApplication$Perspective"
+            id="rankvis.demo.per"
+            name="Demos">
+      </perspective>
+   </extension>
+   <extension
+         id="id2"
+         point="org.eclipse.core.runtime.applications">
+      <application
+            thread="main">
+         <run
+               class="demo.DemoApplication">
+         </run>
+      </application>
+   </extension>
 </plugin>

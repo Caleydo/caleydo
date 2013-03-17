@@ -19,42 +19,34 @@
  *******************************************************************************/
 package university.mup;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
+import org.caleydo.core.view.opengl.layout2.GLSandBox;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.vis.rank.model.ARow;
 import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.OrderColumn;
 import org.caleydo.vis.rank.model.RankRankColumnModel;
+import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.StringRankColumnModel;
-import org.eclipse.swt.widgets.Shell;
 
 import university.mup.MeasuringUniversityPerformanceData.Entry;
 
 import com.google.common.base.Function;
 
-import demo.ARankTableDemo;
+import demo.RankTableDemo;
+import demo.RankTableDemo.IModelBuilder;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class MeasuringUniversityPerformance extends ARankTableDemo {
-
-	/**
-	 *
-	 */
-	public MeasuringUniversityPerformance(Shell parentShell) {
-		super(parentShell, "Measuring University Performance 2009,2008,2007,2006,2005");
-	}
-
+public class MeasuringUniversityPerformance implements IModelBuilder {
 	@Override
-	protected void createModel() throws IOException, NoSuchFieldException {
-
+	public void apply(RankTableModel table) throws Exception {
 		Map<String, MeasuringUniversityPerformanceData> data = MeasuringUniversityPerformanceData.readData(2009,2008,2007,2006,2005);
 		List<UniversityRow> rows = new ArrayList<>(data.size());
 		for (Map.Entry<String, MeasuringUniversityPerformanceData> entry : data.entrySet()) {
@@ -119,6 +111,7 @@ public class MeasuringUniversityPerformance extends ARankTableDemo {
 	}
 
 	public static void main(String[] args) {
-		main(args, MeasuringUniversityPerformance.class);
+		GLSandBox.main(args, RankTableDemo.class, "Measuring University Performance 2009,2008,2007,2006,2005",
+				new MeasuringUniversityPerformance());
 	}
 }

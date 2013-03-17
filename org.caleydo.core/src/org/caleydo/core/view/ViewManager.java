@@ -506,9 +506,7 @@ public class ViewManager extends AManager<IView> {
 	public void registerGLCanvasToAnimator(final IGLCanvas glCanvas) {
 
 		// Lazy creation of animator
-		if (fpsAnimator == null) {
-			startAnimator();
-		}
+		startAnimator();
 
 		if (registeredGLCanvas.contains(glCanvas))
 			return;

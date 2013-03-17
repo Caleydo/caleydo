@@ -19,40 +19,33 @@
  *******************************************************************************/
 package university.arwu;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
+import org.caleydo.core.view.opengl.layout2.GLSandBox;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.vis.rank.model.ARow;
 import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.OrderColumn;
 import org.caleydo.vis.rank.model.RankRankColumnModel;
+import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.StringRankColumnModel;
-import org.eclipse.swt.widgets.Shell;
 
 import com.google.common.base.Function;
 
-import demo.ARankTableDemo;
+import demo.RankTableDemo;
+import demo.RankTableDemo.IModelBuilder;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class AcademicRankingOfWorldUniversities extends ARankTableDemo {
-
-	/**
-	 *
-	 */
-	public AcademicRankingOfWorldUniversities(Shell parentShell) {
-		super(parentShell, "academic ranking of world universities 2012,2011 and 2010");
-	}
-
+public class AcademicRankingOfWorldUniversities implements IModelBuilder {
 	@Override
-	protected void createModel() throws IOException, NoSuchFieldException {
+	public void apply(RankTableModel table) throws Exception {
 		// ranking institution country national total alumini award hici nands pub pcb
 
 		Map<String, Pair<String, AcademicUniversityYear[]>> data = AcademicUniversityYear.readData(2010, 2011, 2012);
@@ -117,6 +110,7 @@ public class AcademicRankingOfWorldUniversities extends ARankTableDemo {
 	}
 
 	public static void main(String[] args) {
-		main(args, AcademicRankingOfWorldUniversities.class);
+		GLSandBox.main(args, RankTableDemo.class, "academic ranking of world universities 2012,2011 and 2010",
+				new AcademicRankingOfWorldUniversities());
 	}
 }

@@ -21,12 +21,12 @@ package demo;
 
 
 import java.awt.Color;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
+import org.caleydo.core.view.opengl.layout2.GLSandBox;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.vis.rank.data.AFloatFunction;
 import org.caleydo.vis.rank.data.FloatInferrers;
@@ -34,23 +34,18 @@ import org.caleydo.vis.rank.model.ARow;
 import org.caleydo.vis.rank.model.FloatRankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.RankRankColumnModel;
+import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
-import org.eclipse.swt.widgets.Shell;
+
+import demo.RankTableDemo.IModelBuilder;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class SameScoreTest extends ARankTableDemo {
-
-	/**
-	 *
-	 */
-	public SameScoreTest(Shell parentShell) {
-		super(parentShell, "Same Score");
-	}
+public class SameScoreTest implements IModelBuilder {
 	@Override
-	protected void createModel() throws IOException, NoSuchFieldException {
+	public void apply(RankTableModel table) throws Exception {
 		table.add(new RankRankColumnModel());
 		table.add(
 				new FloatRankColumnModel(new AFloatFunction<IRow>() {
@@ -79,6 +74,6 @@ public class SameScoreTest extends ARankTableDemo {
 	}
 
 	public static void main(String[] args) {
-		main(args, SameScoreTest.class);
+		GLSandBox.main(args, RankTableDemo.class, "Same Score", new SameScoreTest());
 	}
 }

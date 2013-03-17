@@ -19,39 +19,32 @@
  *******************************************************************************/
 package university.wur;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
+import org.caleydo.core.view.opengl.layout2.GLSandBox;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.vis.rank.model.ARow;
 import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.OrderColumn;
 import org.caleydo.vis.rank.model.RankRankColumnModel;
+import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.StringRankColumnModel;
-import org.eclipse.swt.widgets.Shell;
 
 import com.google.common.base.Function;
 
-import demo.ARankTableDemo;
+import demo.RankTableDemo;
+import demo.RankTableDemo.IModelBuilder;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class WorldUniversityRanking extends ARankTableDemo {
-
-	/**
-	 *
-	 */
-	public WorldUniversityRanking(Shell parentShell) {
-		super(parentShell, "world university ranking 2012,2011 and 2010");
-	}
-
+public class WorldUniversityRanking implements IModelBuilder {
 	@Override
-	protected void createModel() throws IOException, NoSuchFieldException {
+	public void apply(RankTableModel table) throws Exception {
 		// qsrank schoolname qsstars overall academic employer faculty international internationalstudents citations
 		// arts engineering life natural social
 
@@ -112,6 +105,7 @@ public class WorldUniversityRanking extends ARankTableDemo {
 	}
 
 	public static void main(String[] args) {
-		main(args, WorldUniversityRanking.class);
+		GLSandBox.main(args, RankTableDemo.class, "world university ranking 2012,2011 and 2010",
+				new WorldUniversityRanking());
 	}
 }

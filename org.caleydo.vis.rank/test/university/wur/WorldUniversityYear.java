@@ -19,7 +19,7 @@
  *******************************************************************************/
 package university.wur;
 
-import static demo.ARankTableDemo.toFloat;
+import static demo.RankTableDemo.toFloat;
 
 import java.awt.Color;
 import java.io.BufferedReader;

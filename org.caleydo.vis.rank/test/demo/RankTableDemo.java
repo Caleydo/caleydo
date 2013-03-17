@@ -21,7 +21,6 @@ package demo;
 
 
 import java.awt.Dimension;
-import java.io.IOException;
 
 import org.caleydo.core.view.opengl.canvas.IGLKeyListener;
 import org.caleydo.core.view.opengl.layout2.GLElement;
@@ -41,18 +40,18 @@ import com.google.common.collect.Iterables;
  * @author Samuel Gratzl
  *
  */
-public abstract class ARankTableDemo extends GLSandBox {
+public class RankTableDemo extends GLSandBox {
 	private static final char TOGGLE_ALIGN_ALL = 't';
 
 	protected final RankTableModel table;
 
-	public ARankTableDemo(Shell parentShell, String name) {
+	public RankTableDemo(Shell parentShell, String name, IModelBuilder model) {
 		super(parentShell, name, createRoot(), new GLPadding(5),
 				new Dimension(800, 600));
 		this.table = new RankTableModel(new RankTableConfigBase());
 		try {
-			createModel();
-		} catch (NoSuchFieldException | IOException e1) {
+			model.apply(table);
+		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
 		canvas.addKeyListener(new IGLKeyListener() {
@@ -86,8 +85,6 @@ public abstract class ARankTableDemo extends GLSandBox {
 		return new RankTableUI();
 	}
 
-	protected abstract void createModel() throws IOException, NoSuchFieldException;
-
 	private void createUI() {
 		// visual part
 		RankTableUI root = (RankTableUI) getRoot();
@@ -104,5 +101,9 @@ public abstract class ARankTableDemo extends GLSandBox {
 		if (p > 0 && v.charAt(p - 1) != 'e' && v.charAt(p - 1) != 'E')
 			v = v.substring(0, p);
 		return Float.parseFloat(v);
+	}
+
+	public interface IModelBuilder {
+		void apply(RankTableModel table) throws Exception;
 	}
 }

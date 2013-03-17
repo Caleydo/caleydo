@@ -21,7 +21,6 @@ package demo;
 
 
 import java.awt.Color;
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,26 +28,25 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import org.caleydo.core.view.opengl.layout2.GLSandBox;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.vis.rank.model.ARow;
 import org.caleydo.vis.rank.model.CategoricalRankRankColumnModel;
 import org.caleydo.vis.rank.model.CategoricalRankRankColumnModel.CategoryInfo;
 import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.RankRankColumnModel;
+import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.mapping.BaseCategoricalMappingFunction;
-import org.eclipse.swt.widgets.Shell;
+
+import demo.RankTableDemo.IModelBuilder;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class SimpleCategoryScoreTest extends ARankTableDemo {
-
-	public SimpleCategoryScoreTest(Shell parentShell) {
-		super(parentShell, "Simple Category Score");
-	}
+public class SimpleCategoryScoreTest implements IModelBuilder {
 	@Override
-	protected void createModel() throws IOException, NoSuchFieldException {
+	public void apply(RankTableModel table) throws Exception {
 		table.add(new RankRankColumnModel());
 
 		Map<String, CategoryInfo> metaData = new HashMap<>();
@@ -83,6 +81,6 @@ public class SimpleCategoryScoreTest extends ARankTableDemo {
 	}
 
 	public static void main(String[] args) {
-		main(args, SimpleCategoryScoreTest.class);
+		GLSandBox.main(args, RankTableDemo.class, "SimpelCategoryTest", new SimpleCategoryScoreTest());
 	}
 }
