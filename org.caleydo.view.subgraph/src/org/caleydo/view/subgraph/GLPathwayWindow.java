@@ -19,15 +19,19 @@
  *******************************************************************************/
 package org.caleydo.view.subgraph;
 
-import java.util.List;
-import java.util.Map.Entry;
+import javax.media.opengl.GL;
 
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
-import org.caleydo.core.view.opengl.layout2.GLElementAdapter;
-import org.caleydo.core.view.opengl.layout2.util.GLElementViewSwitchingBar;
+import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.core.view.opengl.layout2.basic.GLButton;
+import org.caleydo.core.view.opengl.layout2.basic.GLButton.EButtonMode;
+import org.caleydo.core.view.opengl.layout2.basic.GLButton.ISelectionCallback;
+import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
+import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
-import org.caleydo.view.subgraph.GLSubGraph.MultiFormInfo;
 import org.caleydo.view.subgraph.GLSubGraph.PathwayMultiFormInfo;
 import org.caleydo.view.subgraph.event.ShowCommonNodesPathwaysEvent;
 
@@ -35,97 +39,66 @@ import org.caleydo.view.subgraph.event.ShowCommonNodesPathwaysEvent;
  * @author Christian
  *
  */
-public class GLPathwayWindow extends GLWindow {
+public class GLPathwayWindow extends GLMultiFormWindow {
 
-	protected final MultiFormInfo info;
-	protected final GLElementViewSwitchingBar viewSwitchingBar;
+	protected final GLButton pinButton;
 
-	public GLPathwayWindow(String title, GLSubGraph view, MultiFormInfo info, boolean isScrollable) {
-		super(title, view);
-		this.info = info;
+	public GLPathwayWindow(String title, GLSubGraph view, final PathwayMultiFormInfo info, boolean isScrollable) {
+		super(title, view, info, isScrollable);
+		pinButton = new GLButton(EButtonMode.CHECKBOX);
+		pinButton.setSize(16, 16);
+		pinButton.setTooltip("Pin");
+		pinButton.setRenderer(GLRenderers.fillImage("resources/icons/general/pin.png"));
+		pinButton.setSelectedRenderer(new IGLRenderer() {
+			@Override
+			public void render(GLGraphics g, float w, float h, GLElement parent) {
+				g.fillImage("resources/icons/general/pin.png", 0, 0, w, h);
+				g.gl.glEnable(GL.GL_BLEND);
+				g.gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+				g.gl.glEnable(GL.GL_LINE_SMOOTH);
+				g.color(new Color(1, 1, 1, 0.5f)).fillRoundedRect(0, 0, w, h, Math.min(w, h) * 0.25f);
+				g.gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
+			}
+		});
+		pinButton.setVisibility(EVisibility.NONE);
+		pinButton.setCallback(new ISelectionCallback() {
 
-		GLElementAdapter container = isScrollable ? new ScrollableGLElementAdapter(view, info.multiFormRenderer)
-				: new GLElementAdapter(view, info.multiFormRenderer, true);
-		info.container = container;
-		setContent(container);
-
-		viewSwitchingBar = new GLElementViewSwitchingBar(info.multiFormRenderer);
-		titleBar.add(titleBar.size() - 1, viewSwitchingBar);
-		viewSwitchingBar.setVisibility(EVisibility.NONE);
-		for (Entry<EEmbeddingID, List<Integer>> entry : info.embeddingIDToRendererIDs.entrySet()) {
-			for (Integer rendererID : entry.getValue()) {
-				String toolTip = null;
-				switch (entry.getKey()) {
-				case PATHWAY_LEVEL1:
-					toolTip = "Pathway";
-					break;
-				case PATHWAY_LEVEL2:
-					toolTip = "Pathway Thumbnail with Context Paths";
-					break;
-				case PATHWAY_LEVEL3:
-					toolTip = "Pathway Thumbnail";
-					break;
-				case PATHWAY_LEVEL4:
-					toolTip = "Minimize";
-					break;
-				case PATH_LEVEL1:
-					toolTip = "Selected Path with Detailed Experimental Data";
-					break;
-				case PATH_LEVEL2:
-					toolTip = "Selected Path";
-					break;
-				default:
-					break;
-				}
-				if (toolTip != null) {
-					viewSwitchingBar.setButtonToolTip(toolTip, rendererID);
+			@Override
+			public void onSelectionChanged(GLButton button, boolean selected) {
+				if (selected) {
+					GLPathwayWindow.this.view.addPinnedWindow(GLPathwayWindow.this);
+				} else {
+					GLPathwayWindow.this.view.removePinnedWindow(GLPathwayWindow.this);
 				}
 			}
-		}
+		});
+		titleBar.add(titleBar.size() - 2, pinButton);
 
 		background.onPick(new APickingListener() {
 			@Override
 			protected void rightClicked(Pick pick) {
-				if (GLPathwayWindow.this.info instanceof PathwayMultiFormInfo) {
-					PathwayMultiFormInfo info = (PathwayMultiFormInfo) GLPathwayWindow.this.info;
-					ShowCommonNodesPathwaysEvent event = new ShowCommonNodesPathwaysEvent(info.pathway);
-					event.setEventSpace(GLPathwayWindow.this.view.getPathEventSpace());
-					GLPathwayWindow.this.view.getContextMenuCreator().add(
-							new GenericContextMenuItem("Show Pathways with Common Nodes", event));
-				}
-
+				ShowCommonNodesPathwaysEvent event = new ShowCommonNodesPathwaysEvent(info.pathway);
+				event.setEventSpace(GLPathwayWindow.this.view.getPathEventSpace());
+				GLPathwayWindow.this.view.getContextMenuCreator().add(
+						new GenericContextMenuItem("Show Pathways with Common Nodes", event));
 			}
+
 		});
-		if (info instanceof PathwayMultiFormInfo) {
-			PathwayMultiFormInfo pathwayInfo = (PathwayMultiFormInfo) info;
-			background.setTooltip(pathwayInfo.pathway.getTitle());
-		}
+		background.setTooltip(info.pathway.getTitle());
 
-	}
-
-	public int getMinWidth() {
-		return Math.max(info.multiFormRenderer.getMinWidthPixels(), 150);
-	}
-
-	public int getMinHeight() {
-		return info.multiFormRenderer.getMinHeightPixels() + 20;
-	}
-
-	/**
-	 * @return the info, see {@link #info}
-	 */
-	public MultiFormInfo getInfo() {
-		return info;
 	}
 
 	@Override
 	public void setActive(boolean active) {
 		super.setActive(active);
+
 		if (active) {
-			viewSwitchingBar.setVisibility(EVisibility.VISIBLE);
+			pinButton.setVisibility(EVisibility.PICKABLE);
 		} else {
-			viewSwitchingBar.setVisibility(EVisibility.NONE);
+			pinButton.setVisibility(EVisibility.NONE);
 		}
+		// background.setHovered(active);
+		this.active = active;
 	}
 
 }

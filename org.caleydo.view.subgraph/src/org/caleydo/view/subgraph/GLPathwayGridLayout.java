@@ -293,7 +293,8 @@ public class GLPathwayGridLayout implements IGLLayout {
 	}
 
 	private boolean demote(MultiFormInfo info) {
-		if (info.multiFormRenderer != view.lastUsedRenderer && info.multiFormRenderer != view.lastUsedLevel1Renderer) {
+		if (info.multiFormRenderer != view.lastUsedRenderer && info.multiFormRenderer != view.lastUsedLevel1Renderer
+				&& !view.pinnedWindows.contains(info.window)) {
 			EEmbeddingID level = info.getEmbeddingIDFromRendererID(info.multiFormRenderer.getActiveRendererID());
 			EEmbeddingID levelDown = EEmbeddingID.levelDown(level);
 			if (levelDown != level) {

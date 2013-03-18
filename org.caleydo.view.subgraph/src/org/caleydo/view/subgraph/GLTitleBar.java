@@ -68,6 +68,7 @@ public class GLTitleBar extends GLElementContainer {
 			public void onSelectionChanged(GLButton button, boolean selected) {
 			}
 		});
+
 		add(closeButton);
 	}
 

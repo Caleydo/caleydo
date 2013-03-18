@@ -7,6 +7,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -189,6 +190,8 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	private GLWindow dataMappingWindow;
 
 	private List<AContextMenuItem> contextMenuItemsToShow = new ArrayList<>();
+
+	protected Set<GLPathwayWindow> pinnedWindows = new HashSet<>();
 
 	/**
 	 * Constructor.
@@ -440,8 +443,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 
 		PathwayDataDomain pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get().getDataDomainByType(
 				PathwayDataDomain.DATA_DOMAIN_TYPE);
-		List<TablePerspective> tablePerspectives = new ArrayList<>(
-experimentalDataMappingElement.getDmState()
+		List<TablePerspective> tablePerspectives = new ArrayList<>(experimentalDataMappingElement.getDmState()
 				.getTablePerspectives());
 		TablePerspective tablePerspective = tablePerspectives.get(0);
 		Perspective recordPerspective = tablePerspective.getRecordPerspective();
@@ -465,7 +467,7 @@ experimentalDataMappingElement.getDmState()
 		createMultiformRenderer(pathwayTablePerspectives, EnumSet.of(EEmbeddingID.PATHWAY_LEVEL1,
 				EEmbeddingID.PATHWAY_LEVEL2, EEmbeddingID.PATHWAY_LEVEL3, EEmbeddingID.PATHWAY_LEVEL4), pathwayRow,
 				Float.NaN, info);
-		pathwayLayout.addColumn(info.window);
+		pathwayLayout.addColumn((GLPathwayWindow) info.window);
 		for (PathwayVertexRep vertexRep : pathway.vertexSet()) {
 			allVertexReps.put(vertexRep.getID(), vertexRep);
 		}
@@ -526,17 +528,20 @@ experimentalDataMappingElement.getDmState()
 				}
 			}
 		}
-
-		final GLPathwayWindow window = new GLPathwayWindow(pathway == null ? "" : pathway.getTitle(), this, info,
-				pathway == null);
-		if (pathway != null) {
-			window.onClose(new ICloseWindowListener() {
+		GLMultiFormWindow window = null;
+		if (pathway == null) {
+			window = new GLMultiFormWindow("Selected Path", this, info, true);
+		} else {
+			final GLPathwayWindow pathwayWindow = new GLPathwayWindow(pathway.getTitle(), this,
+					(PathwayMultiFormInfo) info, false);
+			window = pathwayWindow;
+			pathwayWindow.onClose(new ICloseWindowListener() {
 				@Override
 				public void onWindowClosed(GLWindow w) {
-					pathwayLayout.removeWindow(window);
-					parent.remove(window);
-					pathwayInfos.remove(window.info);
-					for (PathwayVertexRep vertexRep : ((PathwayMultiFormInfo) (window.info)).pathway.vertexSet()) {
+					pathwayLayout.removeWindow(pathwayWindow);
+					parent.remove(pathwayWindow);
+					pathwayInfos.remove(pathwayWindow.info);
+					for (PathwayVertexRep vertexRep : ((PathwayMultiFormInfo) (pathwayWindow.info)).pathway.vertexSet()) {
 						allVertexReps.remove(vertexRep.getID());
 					}
 				}
@@ -743,7 +748,7 @@ experimentalDataMappingElement.getDmState()
 			for (PathwayMultiFormInfo info : pathwayInfos) {
 				if (info.multiFormRenderer == multiFormRenderer) {
 					if (info.getEmbeddingIDFromRendererID(rendererID) == EEmbeddingID.PATHWAY_LEVEL1) {
-						pathwayLayout.setLevel1(info.window);
+						pathwayLayout.setLevel1((GLPathwayWindow) info.window);
 						lastUsedLevel1Renderer = info.multiFormRenderer;
 					}
 					info.age = currentPathwayAge--;
@@ -835,7 +840,7 @@ experimentalDataMappingElement.getDmState()
 		 * The element that represents the "window" of the multiform renderer, which includes a title bar. This element
 		 * should be used for resizing.
 		 */
-		protected GLPathwayWindow window;
+		protected GLMultiFormWindow window;
 		/**
 		 * The parent {@link GLElementAdapter} of this container.
 		 */
@@ -1062,8 +1067,8 @@ experimentalDataMappingElement.getDmState()
 			// + sourceLocation + " to " + targetLocation + ")");
 			float stubSize = Math.max(
 					1,
-					Math.abs(pathwayLayout.getColumnIndex(sourceInfo.window)
-							- pathwayLayout.getColumnIndex(targetInfo.window)));
+					Math.abs(pathwayLayout.getColumnIndex((GLPathwayWindow) sourceInfo.window)
+							- pathwayLayout.getColumnIndex((GLPathwayWindow) targetInfo.window)));
 			LinkRenderer renderer = new LinkRenderer(this, vertexRep == currentPortalVertexRep
 					|| v == currentPortalVertexRep || isSelectedPortalLink(vertexRep, v), sourcePair.getFirst(),
 					targetPair.getFirst(), sourceInfo, targetInfo, stubSize, sourcePair.getSecond(),
@@ -1243,6 +1248,21 @@ experimentalDataMappingElement.getDmState()
 
 	public void setCurrentPortalVertexRep(PathwayVertexRep currentPortalVertexRep) {
 		this.currentPortalVertexRep = currentPortalVertexRep;
+	}
+
+	/**
+	 * @return the pinnedWindows, see {@link #pinnedWindows}
+	 */
+	public Set<GLPathwayWindow> getPinnedWindows() {
+		return pinnedWindows;
+	}
+
+	public void addPinnedWindow(GLPathwayWindow window) {
+		pinnedWindows.add(window);
+	}
+
+	public void removePinnedWindow(GLPathwayWindow window) {
+		pinnedWindows.remove(window);
 	}
 
 	// /**

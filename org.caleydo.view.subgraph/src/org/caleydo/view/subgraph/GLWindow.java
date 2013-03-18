@@ -51,6 +51,7 @@ public class GLWindow extends AnimatedGLElementContainer {
 		setLayout(GLLayouts.LAYERS);
 		baseContainer = new GLElementContainer(new GLSizeRestrictiveFlowLayout(false, 1, GLPadding.ZERO));
 		baseContainer.add(titleBar);
+		titleBar.closeButton.setVisibility(EVisibility.NONE);
 
 		// slideInButton.setSize(20, 5);
 
