@@ -352,9 +352,11 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 			@Override
 			public void mouseMoved(IMouseEvent mouseEvent) {
 				Point mousePosition = mouseEvent.getPoint();
-				for (PathwayMultiFormInfo info : pathwayInfos) {
-					if (setWindowActive(mousePosition, info.window))
-						return;
+				if (pathwayRow.getVisibility() != EVisibility.NONE) {
+					for (PathwayMultiFormInfo info : pathwayInfos) {
+						if (setWindowActive(mousePosition, info.window))
+							return;
+					}
 				}
 				if (setWindowActive(mousePosition, pathInfo.window))
 					return;
@@ -1020,6 +1022,8 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 				if (lastNodeOfPrevSegment != null) {
 					PathwayMultiFormInfo info1 = getInfo(lastNodeOfPrevSegment);
 					PathwayMultiFormInfo info2 = getInfo(nodes.get(0));
+					if (pathwayRow.getVisibility() == EVisibility.NONE)
+						continue;
 					Rectangle2D loc1 = getAbsoluteVertexLocation(
 							getPathwayRepresentation(info1.multiFormRenderer,
 									info1.multiFormRenderer.getActiveRendererID()), lastNodeOfPrevSegment,
@@ -1064,7 +1068,8 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		Set<PathwayVertexRep> equivalentVertexReps = PathwayManager.get().getEquivalentVertexRepsInPathway(vertexRep,
 				targetInfo.pathway);
 		for (PathwayVertexRep v : equivalentVertexReps) {
-			if (isPathLink(vertexRep, v))
+
+			if (isPathLink(vertexRep, v) || pathwayRow.getVisibility() == EVisibility.NONE)
 				continue;
 
 			Pair<Rectangle2D, Boolean> targetPair = getPortalLocation(v, targetInfo);
