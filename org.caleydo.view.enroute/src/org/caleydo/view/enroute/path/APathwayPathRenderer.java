@@ -112,7 +112,7 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	/**
 	 * Table perspectives for node previews.
 	 */
-	protected List<TablePerspective> tablePerspectives;
+	protected List<TablePerspective> tablePerspectives = new ArrayList<>();
 
 	/**
 	 * Event space that is used for receiving and sending path events.
@@ -201,7 +201,7 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 
 	public APathwayPathRenderer(AGLView view, List<TablePerspective> tablePerspectives) {
 		this.view = view;
-		this.tablePerspectives = tablePerspectives;
+		addTablePerspectives(tablePerspectives);
 		this.pixelGLConverter = view.getPixelGLConverter();
 		this.textRenderer = view.getTextRenderer();
 
@@ -524,6 +524,18 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	 */
 	public void setTablePerspectives(List<TablePerspective> tablePerspectives) {
 		this.tablePerspectives = tablePerspectives;
+	}
+
+	public void addTablePerspectives(List<TablePerspective> tablePerspectives) {
+		for (TablePerspective tablePerspective : tablePerspectives) {
+			if (!(tablePerspective.getDataDomain() instanceof GeneticDataDomain))
+				continue;
+			if (this.tablePerspectives.contains(tablePerspective))
+				continue;
+
+			this.tablePerspectives.add(tablePerspective);
+		}
+		setLayoutDirty(true);
 	}
 
 	/**

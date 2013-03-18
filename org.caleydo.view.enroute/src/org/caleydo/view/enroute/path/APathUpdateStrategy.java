@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
 import org.caleydo.core.event.EventListenerManager;
@@ -35,7 +34,6 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
 import org.caleydo.core.view.listener.RemoveTablePerspectiveEvent;
-import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.PathwayPath;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
@@ -137,16 +135,9 @@ public abstract class APathUpdateStrategy implements IListenerOwner {
 
 	@ListenTo
 	public void onAddTablePerspectives(AddTablePerspectivesEvent event) {
-		for (TablePerspective tablePerspective : event.getTablePerspectives()) {
-			if (!(tablePerspective.getDataDomain() instanceof GeneticDataDomain))
-				continue;
-			if (renderer.tablePerspectives.contains(tablePerspective))
-				continue;
-
-			renderer.tablePerspectives.add(tablePerspective);
-		}
-		renderer.setLayoutDirty(true);
+		renderer.addTablePerspectives(event.getTablePerspectives());
 	}
+
 
 	@ListenTo
 	public void onRemoveTablePerspectives(RemoveTablePerspectiveEvent event) {
