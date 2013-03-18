@@ -22,6 +22,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -1002,6 +1003,8 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		if (tablePerspective == null || !tablePerspective.getDataDomain().hasIDCategory(geneIDType)) {
 			throw new IllegalStateException("Perspective null or illegal for this view: " + tablePerspective);
 		}
+		if (tablePerspectives.contains(tablePerspective))
+			return;
 		tablePerspectives.add(tablePerspective);
 		if (tablePerspective instanceof PathwayTablePerspective)
 			pathway = ((PathwayTablePerspective) tablePerspective).getPathway();
@@ -1436,14 +1439,18 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 
 	@Override
 	public void addTablePerspectives(List<TablePerspective> newTablePerspectives) {
-		// for (TablePerspective tp : newTablePerspectives)
-		// addTablePerspective(tp);
+		for (TablePerspective tp : newTablePerspectives)
+			addTablePerspective(tp);
 
 	}
 
 	@Override
 	public void removeTablePerspective(TablePerspective tablePerspective) {
-		// TODO Auto-generated method stub
+		Iterator<TablePerspective> i = tablePerspectives.iterator();
+		while (i.hasNext()) {
+			if (i.next().equals(tablePerspective))
+				i.remove();
+		}
 
 	}
 
@@ -1601,7 +1608,5 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 	// setDisplayListDirty();
 	// }
 	// }
-
-
 
 }

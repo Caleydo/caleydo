@@ -43,6 +43,8 @@ public class CopyNumberRowContentRenderer extends ACategoricalRowContentRenderer
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void renderAllBars(GL2 gl, List<SelectionType> geneSelectionTypes) {
+		if (resolvedRowID == null)
+			return;
 		if (x / columnPerspective.getVirtualArray().size() < parentView.getPixelGLConverter()
 				.getGLWidthForPixelWidth(3)) {
 			useShading = false;

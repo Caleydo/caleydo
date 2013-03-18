@@ -22,6 +22,7 @@ import org.caleydo.core.io.DataSetDescription.ECreateDefaultProperties;
 import org.caleydo.core.io.GroupingParseSpecification;
 import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.io.IDTypeParsingRules;
+import org.caleydo.core.io.NumericalProperties;
 import org.caleydo.core.io.ParsingRule;
 import org.caleydo.core.io.ProjectDescription;
 import org.caleydo.data.importer.setupgenerator.DataSetDescriptionSerializer;
@@ -175,6 +176,12 @@ public class CCLEDataXmlGenerator extends DataSetDescriptionSerializer {
 		geneIDSpecification.setIdType("GENE_SYMBOL");
 		copyNumberData.setRowIDSpecification(geneIDSpecification);
 		copyNumberData.setColumnIDSpecification(sampleIDSpecification);
+
+		NumericalProperties numProps = new NumericalProperties();
+		numProps.setMax(2.5f);
+		numProps.setMin(-2.5f);
+		numProps.setDataCenter(0.0);
+		copyNumberData.getDataDescription().setNumericalProperties(numProps);
 
 		// copyNumberData.addColumnGroupingSpecification(sampleGrouping);
 

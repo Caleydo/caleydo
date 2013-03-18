@@ -71,6 +71,7 @@ public class Table {
 	public class Transformation {
 		/** Untransformed data */
 		public static final String NONE = "NONE";
+		public static final String INVERT = "INVERT";
 	}
 
 	/** The data domain holding this table */
