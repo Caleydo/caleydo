@@ -55,7 +55,7 @@ public class GeneNodeLinearizedMode extends AGeneNodeMode {
 		Column baseColumn = new Column("baseColumn");
 		Row baseRow = new Row("baseRow");
 
-		colorRenderer = new MappingRenderer(pathwayPathRenderer, node);
+		colorRenderer = new MappingRenderer(view, pathwayPathRenderer, node);
 		colorRenderer.setView(view);
 		colorRenderer.setBorderColor(new float[] { 0, 0, 0, 1 });
 		colorRenderer.setDrawBorder(true);
