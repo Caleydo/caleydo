@@ -241,7 +241,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 
 		root.add(column);
 		root.add(augmentation);
-		registerListeners();
+
 
 	}
 
@@ -317,6 +317,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 			setPathLevel(EEmbeddingID.PATH_LEVEL2);
 		}
 		augmentation.init(gl);
+		registerListeners();
 	}
 
 	/**
@@ -358,7 +359,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 							return;
 					}
 				}
-				if (setWindowActive(mousePosition, pathInfo.window))
+				if (pathInfo != null && pathInfo.window != null && setWindowActive(mousePosition, pathInfo.window))
 					return;
 				if (setWindowActive(mousePosition, rankingWindow))
 					return;
