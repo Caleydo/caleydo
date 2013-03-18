@@ -1069,7 +1069,6 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 		return vertexSelectionManager;
 	}
 
-
 	/**
 	 * @return the sampleMappingMode, see {@link #sampleMappingMode}
 	 */
@@ -1084,5 +1083,19 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 		return mappedPerspective;
 	}
 
+	/**
+	 * @param mappedPerspective
+	 *            setter, see {@link mappedPerspective}
+	 */
+	public void setMappedPerspective(TablePerspective mappedPerspective) {
+		this.mappedPerspective = mappedPerspective;
+	}
 
+	/**
+	 * @param sampleMappingMode
+	 *            setter, see {@link sampleMappingMode}
+	 */
+	public void setSampleMappingMode(ESampleMappingMode sampleMappingMode) {
+		this.sampleMappingMode = sampleMappingMode;
+	}
 }

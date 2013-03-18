@@ -63,12 +63,15 @@ import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.PathwayPath;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.listener.EnablePathSelectionEvent;
+import org.caleydo.datadomain.pathway.listener.PathwayMappingEvent;
 import org.caleydo.datadomain.pathway.listener.PathwayPathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.ShowNodeContextEvent;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.enroute.event.ShowPathEvent;
+import org.caleydo.view.pathway.ESampleMappingMode;
 import org.caleydo.view.pathway.GLPathway;
 import org.caleydo.view.pathway.PathwayTextureCreator;
+import org.caleydo.view.pathway.event.SampleMappingModeEvent;
 
 /**
  * Renderer that shows the alternative entrances
@@ -94,6 +97,8 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 	private BranchPathEventSpaceListener branchPathEventSpaceListener = new BranchPathEventSpaceListener();
 	private VertexRepComparator comparator = new VertexRepComparator();
 	private List<List<PathwayVertexRep>> selectedPathSegments = new ArrayList<>();
+	private ESampleMappingMode sampleMappingMode;
+	private TablePerspective mappedPerspective;
 
 	/**
 	 * Context menu items that shall be displayed when right-clicking on a path node.
@@ -255,6 +260,8 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 		renderer.setPathway(pathway);
 		renderer.setBranchPathExtractionEventSpace(BRANCH_PATH_EVENTSPACE);
 		renderer.setAllowBranchPathExtraction(true);
+		renderer.setSampleMappingMode(sampleMappingMode);
+		renderer.setMappedPerspective(mappedPerspective);
 
 		renderer.setSizeConfig(PathSizeConfiguration.COMPACT);
 		for (VertexRepBasedContextMenuItem item : nodeContextMenuItems) {
@@ -447,6 +454,16 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 
 		triggerMinSizeUpdate();
 
+	}
+
+	@ListenTo
+	public void onSampleMappingModeChanged(SampleMappingModeEvent event) {
+		sampleMappingMode = event.getSampleMappingMode();
+	}
+
+	@ListenTo
+	public void onPathwayMappingChanged(PathwayMappingEvent event) {
+		mappedPerspective = event.getTablePerspective();
 	}
 
 	@ListenTo

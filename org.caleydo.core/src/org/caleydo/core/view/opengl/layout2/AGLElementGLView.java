@@ -206,7 +206,6 @@ public abstract class AGLElementGLView extends AGLView implements IGLElementCont
 		return id;
 	}
 
-
 	private final void unregisterPickingListener(IPickingListener l) {
 		PickingMetaData data = pickingMetaData.remove(l);
 		if (data == null)
