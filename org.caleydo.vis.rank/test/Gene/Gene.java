@@ -111,7 +111,6 @@ public class Gene implements IModelBuilder {
 		List<GeneRow> rows = readData();
 		table.addData(rows);
 
-
 		for (TumorType type : TumorType.values()) {
 			OrderColumn c = new OrderColumn();
 			c.setTitle(type.toString());

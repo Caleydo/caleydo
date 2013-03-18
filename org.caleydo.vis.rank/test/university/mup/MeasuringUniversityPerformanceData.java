@@ -161,7 +161,7 @@ public class MeasuringUniversityPerformanceData {
 		return totalStudentEnrollmentFall2007;
 	}
 
-	public static void addYear(RankTableModel table, String title, Function<IRow, Entry[]> year) {
+	public static StackedRankColumnModel addYear(RankTableModel table, String title, Function<IRow, Entry[]> year) {
 		StackedRankColumnModel stacked = new StackedRankColumnModel();
 		table.add(stacked);
 		stacked.setTitle(title);
@@ -178,6 +178,8 @@ public class MeasuringUniversityPerformanceData {
 		stacked.add(col(year, COL_TotalResearch, "Total Research", "#DFC27D", "#F6E8C3"));
 
 		stacked.setWidth(400);
+
+		return stacked;
 	}
 
 	private static FloatRankColumnModel col(Function<IRow, Entry[]> year, int col, String text, String color,

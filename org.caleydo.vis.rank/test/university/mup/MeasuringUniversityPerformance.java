@@ -19,7 +19,7 @@
  *******************************************************************************/
 package university.mup;
 
-import java.io.IOException;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -27,13 +27,15 @@ import java.util.Map;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLSandBox;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
+import org.caleydo.vis.rank.data.FloatInferrers;
 import org.caleydo.vis.rank.model.ARow;
+import org.caleydo.vis.rank.model.FloatRankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.OrderColumn;
 import org.caleydo.vis.rank.model.RankRankColumnModel;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.StringRankColumnModel;
-import org.eclipse.swt.widgets.Shell;
+import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
 
 import university.mup.MeasuringUniversityPerformanceData.Entry;
 
@@ -41,6 +43,7 @@ import com.google.common.base.Function;
 
 import demo.RankTableDemo;
 import demo.RankTableDemo.IModelBuilder;
+import demo.ReflectionFloatData;
 
 /**
  * @author Samuel Gratzl
@@ -61,6 +64,7 @@ public class MeasuringUniversityPerformance implements IModelBuilder {
 		table.add(new StringRankColumnModel(GLRenderers.drawText("School Name", VAlign.CENTER),
 				StringRankColumnModel.DEFAULT));
 
+
 		// Arrays.asList("wur2010.txt", "wur2011.txt", "wur2012.txt");
 		// 2009,2008,2007,2006,2005
 		MeasuringUniversityPerformanceData.addYear(table, "2009", new YearGetter(0));
@@ -76,6 +80,10 @@ public class MeasuringUniversityPerformance implements IModelBuilder {
 		table.add(new OrderColumn());
 		table.add(new RankRankColumnModel());
 		MeasuringUniversityPerformanceData.addYear(table, "2005", new YearGetter(4));
+
+		table.add(new FloatRankColumnModel(new ReflectionFloatData(UniversityRow.class.getDeclaredField("enrollment")),
+				GLRenderers.drawText("Enrollment Fall 2007", VAlign.CENTER), Color.LIGHT_GRAY, Color.LIGHT_GRAY
+						.brighter(), new PiecewiseMapping(0, Float.NaN), FloatInferrers.MEDIAN));
 	}
 
 	static class YearGetter implements Function<IRow, Entry[]> {
@@ -94,6 +102,7 @@ public class MeasuringUniversityPerformance implements IModelBuilder {
 
 	static class UniversityRow extends ARow {
 		public String schoolname;
+		public int enrollment;
 
 		public Entry[][] years;
 
@@ -104,6 +113,7 @@ public class MeasuringUniversityPerformance implements IModelBuilder {
 		public UniversityRow(String school, MeasuringUniversityPerformanceData data) {
 			this.schoolname = school;
 			this.years = data.getYearEntries();
+			this.enrollment = data.getTotalStudentEnrollmentFall2007();
 		}
 
 		@Override

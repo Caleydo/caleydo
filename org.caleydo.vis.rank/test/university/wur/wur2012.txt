@@ -2,7 +2,7 @@
 1	Massachusetts Institute of Technology (MIT)	6	100	100	100	99.9	86.4	96.5	99.3	46.27	100	60.89	95.06	64.62
 2	University of Cambridge	5	99.78	100	100	98.3	98.2	96	97	95.21	66.51	82.75	98.5	72.97
 3	Harvard University	5	99.15	100	100	98.6	90	78.4	100	100	46.14	100	100	100
-4	UCL (University College London)	5	98.69	99.6	95.6	98.4	96.3	99.9	94	54.56	33.13	49.02	40.24	42.15
+4	University College London	5	98.69	99.6	95.6	98.4	96.3	99.9	94	54.56	33.13	49.02	40.24	42.15
 5	University of Oxford	5	98.57	100	100	100	98	95.8	89.4	97.66	52.7	78.11	89.84	76.47
 6	Imperial College London	5	98.31	99.8	100	99.8	99.8	99.6	87.3	20.44	64.46	54.16	66.14	25.3
 7	Yale University	5	97.48	100	100	100	92.7	63.9	93.3	79.63	25.13	59.88	55.8	65.42
@@ -15,12 +15,12 @@
 14	Cornell University	5	92.08	99.7	96.4	73.9	74.3	67.4	98.8	47.92	40.59	44.36	51.56	39.64
 15	Stanford University	6	91.68	100	100	72.4	41.9	83.5	100	74.26	80.2	68.4	82.46	76.11
 16	Johns Hopkins University	5	91.18	94.6	60.2	100	56.8	74.7	99.1	27.47	19.66	64.28	26.47	22.3
-17	University of Michigan	6	91.17	99.8	96.1	92	50.6	46.5	87.3	53.08	47.3	35.55	42.47	51.68
+17	University of Michigan - Ann Arbor	6	91.17	99.8	96.1	92	50.6	46.5	87.3	53.08	47.3	35.55	42.47	51.68
 18	McGill University	5	90.43	98.5	95.1	89.6	86	91.3	69.1	44.25	32.48	38.82	38.91	36.36
 19	University of Toronto	5	89.64	99.9	94.3	73.8	96.1	74.8	80.2	55.6	42.42	44.86	49.59	44.8
 20	Duke University	6	89.5	95.1	81.9	99.7	16.4	44.5	96.9	41.02	17.55	40.74	26.68	36.6
 21	University of Edinburgh	6	89.24	99.1	96.8	72.1	89.6	93.8	77.1	53.6	30.3	43.1	40.76	34
-22	University of California. Berkeley (UCB)	6	88.12	100	100	47	86.1	78.8	97.9	85.4	79.29	61.73	93.56	75.11
+22	University of California, Berkeley (UCB)	6	88.12	100	100	47	86.1	78.8	97.9	85.4	79.29	61.73	93.56	75.11
 23	University of Hong Kong	6	87.89	99.3	83.8	94.2	100	99.1	50.5	48.76	34.1	39.86	37.91	46.66
 24	Australian National University	5	87.61	99.7	82.5	79.6	100	96.3	64.3	58.32	31.74	32.76	49.38	51.17
 25	National University of Singapore (NUS)	5	87.24	100	99.4	81.4	100	98.2	51.1	59.44	57.41	56.41	56.01	61.52
@@ -29,10 +29,10 @@
 28	University of Bristol	5	85.36	91	96	74.8	85.8	75.6	77.3	30.5	23.23	29.3	35.97	26.72
 29	Ecole Polytechnique Fédérale de Lausanne	5	85.08	79.1	75.8	95.1	100	100	79.9		43.07	19.39	35.6	10.72
 30	The University of Tokyo	5	84.95	100	97.6	89.3	11.1	25.8	73.1	58.71	62.8	59.31	71.4	53.01
-31	University of California. Los Angeles (UCLA)	5	84.62	100	96	62.3	1.6	34.4	99.5	69.39	48.88	58.58	59.42	57.33
+31	University of California, Los Angeles (UCLA)	5	84.62	100	96	62.3	1.6	34.4	99.5	69.39	48.88	58.58	59.42	57.33
 32	The University of Manchester	5	84.16	98.5	100	63.2	85.2	91.4	62.2	39.92	37.68	35.35	39.54	38.77
 33	The Hong Kong University of Science and Technology	5	83.48	92.5	79.7	83.9	100	98.9	54.7	15.94	41.74	23.63	34.34	35.66
-34	Ecole normale supérieure. Paris	4	83.28	90.8	66.9	92.4	26.2	66.2	81.6	34.23	22.73	19.28	48.64	20.34
+34	Ecole normale supérieure, Paris	4	83.28	90.8	66.9	92.4	26.2	66.2	81.6	34.23	22.73	19.28	48.64	20.34
 35	Kyoto University	5	83.27	99.8	81.1	92.6	15.5	21.9	70	46.62	44.05	43.38	55.9	37.04
 36	The University of Melbourne	5	83.16	99.8	100	46.8	68.9	92.3	74.9	52.61	39.04	46.61	43.26	48.67
 37	Seoul National University	5	82.19	98.8	83.4	90.7	47.8	61	49.6	39.59	38.91	34.33	44.67	38.77

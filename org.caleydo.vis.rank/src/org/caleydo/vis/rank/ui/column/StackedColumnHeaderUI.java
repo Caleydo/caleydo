@@ -229,7 +229,7 @@ public class StackedColumnHeaderUI extends ACompositeHeaderUI implements IThickH
 	@Override
 	protected void renderPickImpl(GLGraphics g, float w, float h) {
 		g.pushName(distributionClickedPickingId);
-		float yi = HIST_HEIGHT + 7;
+		float yi = HIST_HEIGHT + LABEL_HEIGHT + 7;
 		float hi = LABEL_HEIGHT - 6;
 		float x = COLUMN_SPACE + 2;
 		g.fillRect(x, yi, w - x, hi);

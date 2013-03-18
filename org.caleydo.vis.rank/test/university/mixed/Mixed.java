@@ -54,6 +54,11 @@ public class Mixed implements IModelBuilder {
 	@Override
 	public void apply(RankTableModel table) throws Exception {
 		Map<String, String> metaData = new HashMap<>();
+
+		Map<String, String> synonyms = new HashMap<>();
+		synonyms.put("ETH Zurich (Swiss Federal Institute of Technology)",
+				"Swiss Federal Institute of Technology Zurich");
+
 		{
 			Set<String> all = new HashSet<>();
 			//Map<String, Row> top100under50 = Top100Under50Year.readData(2012);

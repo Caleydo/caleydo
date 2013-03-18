@@ -2,7 +2,7 @@
 1	University of Cambridge	5	100	100	100	100	96	95	93	98	73	92	100	90
 2	Harvard University	5	99.18	100	100	97	71	87	100	97	45	100	92	100
 3	Yale University	5	98.68	100	100	100	78	66	98	80	27	63	54	73
-4	UCL (University College London)	6	98.54	99	93	99	94	99	91	58	34	53	35	47
+4	University College London	6	98.54	99	93	99	94	99	91	58	34	53	35	47
 5	Massachusetts Institute of Technology (MIT)	5	98.19	100	100	100	31	98	100	47	100	64	88	65
 6	University of Oxford	5	98.16	100	100	100	96	95	84	100	59	82	91	90
 7	Imperial College London	5	97.78	100	100	100	99	100	81	23	67	58	66	31
@@ -13,7 +13,7 @@
 12	University of Pennsylvania	5	95.97	98	98	99	60	64	96	45	28	41	30	56
 13	Stanford University	5	93.62	100	100	80	19	99	100	70	83	75	76	81
 14	Duke University	5	92.29	95	93	100	17	57	97	42	22	44	28	46
-15	University of Michigan	6	92.2	100	99	92	52	50	87	52	46	41	38	57
+15	University of Michigan - Ann Arbor	6	92.2	100	99	92	52	50	87	52	46	41	38	57
 16	Cornell University	5	90.44	100	95	76	26	67	98	54	46	45	52	50
 17	Johns Hopkins University	5	89.67	96	65	98	17	55	100	33	25	66	30	30
 18	ETH Zurich (Swiss Federal Institute of Technology)	6	89.28	99	89	47	100	98	99	23	62	41	68	27
@@ -26,14 +26,14 @@
 25	Kyoto University	6	85.89	100	88	96	14	24	72	42	50	50	57	37
 26	Northwestern University	5	85.4	90	91	86	12	92	82	28	28	25	29	46
 27	University of Bristol	6	85.22	90	99	79	84	71	71	35	26	27	38	31
-28	University of California. Berkeley (UCB)	5	85.18	100	100	38	92	40	97	85	83	70	88	84
+28	University of California, Berkeley (UCB)	5	85.18	100	100	38	92	40	97	85	83	70	88	84
 29	University of Toronto	5	84.29	100	94	57	79	46	79	59	54	52	57	56
 30	The University of Manchester	5	83.33	98	100	65	85	90	55	38	44	37	35	45
 31	National University of Singapore (NUS)	5	82.78	100	97	64	100	100	44	50	59	54	46	56
 32	Ecole Polytechnique Fédérale de Lausanne	5	82.27	74	71	98	100	100	71		42	17	35	
-33	Ecole normale supérieure. Paris	5	82.09	95	72	97	35	75	51	41	27	27	58	27
+33	Ecole normale supérieure, Paris	5	82.09	95	72	97	35	75	51	41	27	27	58	27
 34	Carnegie Mellon University	5	81.8	89	83	73	37	96	76	26	55	17	24	31
-35	University of California. Los Angeles (UCLA)	5	81.49	100	98	43	4	27	100	71	53	60	57	67
+35	University of California, Los Angeles (UCLA)	5	81.49	100	98	43	4	27	100	71	53	60	57	67
 36	Ecole Polytechnique	4	81.33	75	98	100	70	95	58		39	13	43	16
 37	The University of Sydney	5	81.31	99	93	54	99	94	51	52	37	49	39	44
 38	The University of Melbourne	5	80.64	100	100	40	78	95	63	51	42	53	42	50
