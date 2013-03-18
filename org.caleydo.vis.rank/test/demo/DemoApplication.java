@@ -133,7 +133,7 @@ public class DemoApplication implements IApplication {
 			menu2.add(new ShowView("Measuring University Performance", "rankvis.demo.university.mup"));
 			menu2.add(new ShowView("World University Ranking", "rankvis.demo.university.wur"));
 			menu2.add(new ShowView("Top 100 under 50 2012", "rankvis.demo.university.top100under50"));
-			menu2.add(new ShowView("Gene", "rankvis.demo.gene"));
+			menu2.add(new ShowView("Food Nutrition", "rankvis.demo.food"));
 			menuBar.add(menu2);
 		}
 

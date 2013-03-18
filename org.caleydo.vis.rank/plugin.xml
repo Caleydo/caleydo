@@ -13,13 +13,6 @@
       <view
             allowMultiple="true"
             category="org.caleydo.core.views"
-            class="Gene.GeneView"
-            id="rankvis.demo.gene"
-            name="Gene">
-      </view>
-      <view
-            allowMultiple="true"
-            category="org.caleydo.core.views"
             class="university.arwu.AcademicRankingOfWorldUniverstiesView"
             id="rankvis.demo.university.arwu"
             name="Academic Ranking of World Universties">
@@ -44,6 +37,12 @@
             class="university.top100under50.Top100Under50View"
             id="rankvis.demo.university.top100under50"
             name="Top 100 under 50 2012">
+      </view>
+      <view
+            class="food.FoodView"
+            id="rankvis.demo.food"
+            name="Food Nutrition"
+            restorable="true">
       </view>
    </extension>
    <extension
