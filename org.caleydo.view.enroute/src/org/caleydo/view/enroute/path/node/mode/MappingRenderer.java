@@ -80,8 +80,8 @@ public class MappingRenderer extends ColorRenderer {
 						.getColor((float) average.getArithmeticMean()));
 
 				// gl.glColor3f(1, 0, 0);
-				float yStart = -1;
-				float yEnd = -5;
+				float yStart = -1 * onePxlHeight;
+				float yEnd = -5 * onePxlHeight;
 
 				gl.glColor3f(1, 1, 1);
 				gl.glBegin(GL2.GL_POLYGON);
@@ -107,7 +107,8 @@ public class MappingRenderer extends ColorRenderer {
 				gl.glVertex3f(x, yStart, z);
 				gl.glEnd();
 				gl.glColor3fv(mappedPerspective.getDataDomain().getColor().getRGB(), 0);
-			} else {
+			}
+			else {
 				setColor(new float[] { 1, 1, 1, 1 });
 			}
 		} else {
