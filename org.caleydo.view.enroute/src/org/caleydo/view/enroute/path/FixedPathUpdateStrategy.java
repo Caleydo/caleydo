@@ -87,6 +87,11 @@ public class FixedPathUpdateStrategy extends APathUpdateStrategy {
 		}
 	}
 
+
+    public List<List<PathwayVertexRep>> getSelectedPathSegments(){
+        return selectedPathSegments;       
+    } 
+    
 	@Override
 	public void onEnablePathSelection(EnablePathSelectionEvent event) {
 		isPathSelectionMode = event.isPathSelectionMode();
