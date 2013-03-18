@@ -47,7 +47,7 @@ public class GLWindow extends AnimatedGLElementContainer {
 	public GLWindow(ILabelProvider titleLabelProvider, GLSubGraph view) {
 		this.view = view;
 		titleBar = new GLTitleBar(titleLabelProvider);
-		background = new GLPathwayBackground();
+		background = new GLPathwayBackground(this);
 		setLayout(GLLayouts.LAYERS);
 		baseContainer = new GLElementContainer(new GLSizeRestrictiveFlowLayout(false, 1, GLPadding.ZERO));
 		baseContainer.add(titleBar);

@@ -193,6 +193,8 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 
 	protected Set<GLPathwayWindow> pinnedWindows = new HashSet<>();
 
+	private GLWindow windowToSetActive;
+
 	/**
 	 * Constructor.
 	 *
@@ -367,7 +369,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 				Vec2f size = window.getSize();
 				if ((mousePosition.x >= location.x() && mousePosition.x <= location.x() + size.x())
 						&& (mousePosition.y >= location.y() && mousePosition.y <= location.y() + size.y())) {
-					window.setActive(true);
+					windowToSetActive = window;
 					return true;
 				}
 				return false;
@@ -704,14 +706,18 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 
 	@Override
 	public void display(GL2 gl) {
+		if (windowToSetActive != null) {
+			windowToSetActive.setActive(true);
+			windowToSetActive = null;
+		}
 		boolean updateAugmentation = false;
 		if (isLayoutDirty)
 			updateAugmentation = true;
 
 		super.display(gl);
-		for (AContextMenuItem item : contextMenuItemsToShow) {
-			getContextMenuCreator().add(item);
-		}
+		// for (AContextMenuItem item : contextMenuItemsToShow) {
+		// getContextMenuCreator().add(item);
+		// }
 		if (wasPathwayAdded) {
 			EnablePathSelectionEvent event = new EnablePathSelectionEvent(isPathSelectionMode);
 			event.setEventSpace(pathEventSpace);

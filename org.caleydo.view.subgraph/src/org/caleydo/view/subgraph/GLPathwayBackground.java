@@ -21,6 +21,7 @@ package org.caleydo.view.subgraph;
 
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
+import org.caleydo.core.view.opengl.picking.Pick;
 
 /**
  * Renders a pickable background behind pathway elements.
@@ -31,10 +32,10 @@ import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 public class GLPathwayBackground extends PickableGLElement {
 
 	// protected boolean hovered = false;
-	// protected final GLWindow parentWindow;
+	protected final GLWindow parentWindow;
 
-	public GLPathwayBackground() {
-		// this.parentWindow = parentWindow;
+	public GLPathwayBackground(GLWindow parentWindow) {
+		this.parentWindow = parentWindow;
 	}
 
 	@Override
@@ -60,21 +61,21 @@ public class GLPathwayBackground extends PickableGLElement {
 		g.incZ(0.2f);
 	}
 
-	// @Override
-	// protected void onMouseOver(Pick pick) {
-	// // parentWindow.setActive(true);
-	// // GLPathwayBackground currentActiveBackground = view.getCurrentActiveBackground();
-	// //
-	// // if (currentActiveBackground != null && currentActiveBackground != this) {
-	// // currentActiveBackground.hovered = false;
-	// // // currentActiveBackground.bar.setVisibility(EVisibility.NONE);
-	// // currentActiveBackground.repaint();
-	// // }
-	// // view.setCurrentActiveBackground(this);
-	// // // bar.setVisibility(EVisibility.VISIBLE);
-	// // hovered = true;
-	// // repaint();
-	// }
+	@Override
+	protected void onMouseOver(Pick pick) {
+		// parentWindow.setActive(true);
+		// GLPathwayBackground currentActiveBackground = view.getCurrentActiveBackground();
+		//
+		// if (currentActiveBackground != null && currentActiveBackground != this) {
+		// currentActiveBackground.hovered = false;
+		// // currentActiveBackground.bar.setVisibility(EVisibility.NONE);
+		// currentActiveBackground.repaint();
+		// }
+		// view.setCurrentActiveBackground(this);
+		// // bar.setVisibility(EVisibility.VISIBLE);
+		// hovered = true;
+		// repaint();
+	}
 
 	// /**
 	// * @param hovered
