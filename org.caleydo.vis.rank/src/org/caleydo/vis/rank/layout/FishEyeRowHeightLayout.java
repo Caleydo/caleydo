@@ -93,6 +93,11 @@ class FishEyeRowHeightLayout implements IRowHeightLayout {
 			}
 		}
 
+		if (offset < 0)
+			offset = 0;
+		if (offset > numRows)
+			offset = numRows - 1;
+
 		float y = 0;
 		int numVisibles = 0;
 		BitSet unused = new BitSet(size);

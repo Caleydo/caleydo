@@ -132,6 +132,7 @@ public class MappingFunctionUI extends GLElementContainer implements GLButton.IS
 		buttons.addSpacer();
 		GLButton b = new GLButton();
 		b.setRenderer(GLRenderers.fillImage(RenderStyle.ICON_MAPPING_RESET));
+		b.setTooltip("Reset mapping function, to it's default value");
 		b.setCallback(this);
 		b.setPickingObjectId(-1);
 		b.setSize(RenderStyle.BUTTON_WIDTH, Float.NaN);
@@ -178,6 +179,7 @@ public class MappingFunctionUI extends GLElementContainer implements GLButton.IS
 				g.fillImage(icon, 0,0,w,h);
 			}
 		});
+		b.setTooltip("Switch to the " + mode.getName() + " mode");
 		b.setPickingObjectId(modes.size() - 1);
 		b.setSize(RenderStyle.BUTTON_WIDTH, Float.NaN);
 		((GLElementContainer) this.get(BUTTONS)).add(modes.size() - 1, b);

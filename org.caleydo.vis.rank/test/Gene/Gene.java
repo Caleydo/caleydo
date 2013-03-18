@@ -37,6 +37,7 @@ import org.caleydo.vis.rank.data.FloatInferrers;
 import org.caleydo.vis.rank.model.ARow;
 import org.caleydo.vis.rank.model.FloatRankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
+import org.caleydo.vis.rank.model.OrderColumn;
 import org.caleydo.vis.rank.model.RankRankColumnModel;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.StackedRankColumnModel;
@@ -109,19 +110,52 @@ public class Gene implements IModelBuilder {
 	public void apply(RankTableModel table) throws Exception {
 		List<GeneRow> rows = readData();
 		table.addData(rows);
-		RankRankColumnModel rankRankColumnModel = new RankRankColumnModel();
-		table.add(rankRankColumnModel);
-		table.add(new StringRankColumnModel(GLRenderers.drawText("Gene", VAlign.CENTER), StringRankColumnModel.DEFAULT));
 
 
-		StackedRankColumnModel m = createPValue(table, TumorTypeRow.COL_p, "p", Color.decode("#DFC27D"),
-				Color.decode("#F6E8C3"));
-		m.setFilter(0.3f, 1.0f);
-		createPValue(table, TumorTypeRow.COL_q, "q", Color.decode("#DFC27D"), Color.decode("#F6E8C3"));
-		createUnBound(table, TumorTypeRow.COL_nflank, "nflank", Color.decode("#9ECAE1"), Color.decode("#DEEBF7"));
-		createUnBound(table, TumorTypeRow.COL_nsil, "nsil", Color.decode("#A1D99B"), Color.decode("#E5F5E0"));
-		createUnBound(table, TumorTypeRow.COL_nnon, "nnon", Color.decode("#C994C7"), Color.decode("#E7E1EF"));
-		createUnBound(table, TumorTypeRow.COL_nnull, "nnull", Color.decode("#FDBB84"), Color.decode("#FEE8C8"));
+		for (TumorType type : TumorType.values()) {
+			OrderColumn c = new OrderColumn();
+			c.setTitle(type.toString());
+			table.add(c);
+			table.add(new RankRankColumnModel());
+			table.add(new StringRankColumnModel(GLRenderers.drawText("Gene", VAlign.CENTER),
+					StringRankColumnModel.DEFAULT));
+			FloatRankColumnModel ci = pcol(type, TumorTypeRow.COL_p, "p", Color.decode("#DFC27D"),
+					Color.decode("#F6E8C3"));
+			ci.setFilterNotMappedEntries(true);
+			table.add(ci);
+			ci = pcol(type, TumorTypeRow.COL_q, "q", Color.decode("#DFC27D"), Color.decode("#F6E8C3"));
+			ci.setCollapsed(true);
+			table.add(ci);
+			ci = ucol(type, TumorTypeRow.COL_nflank, "nflank", Color.decode("#9ECAE1"), Color.decode("#DEEBF7"));
+			ci.setCollapsed(true);
+			table.add(ci);
+			ci = ucol(type, TumorTypeRow.COL_nsil, "nsil", Color.decode("#A1D99B"), Color.decode("#E5F5E0"));
+			ci.setCollapsed(true);
+			table.add(ci);
+			ci = ucol(type, TumorTypeRow.COL_nnon, "nnon", Color.decode("#C994C7"), Color.decode("#E7E1EF"));
+			ci.setCollapsed(true);
+			table.add(ci);
+			ci = ucol(type, TumorTypeRow.COL_nnull, "nnull", Color.decode("#FDBB84"), Color.decode("#FEE8C8"));
+			ci.setCollapsed(true);
+			table.add(ci);
+		}
+
+		// createPValue(table, TumorTypeRow.COL_p, "p", Color.decode("#DFC27D"), Color.decode("#F6E8C3"));
+		// createPValue(table, TumorTypeRow.COL_q, "q", Color.decode("#DFC27D"), Color.decode("#F6E8C3"));
+		// createUnBound(table, TumorTypeRow.COL_nflank, "nflank", Color.decode("#9ECAE1"), Color.decode("#DEEBF7"));
+		// createUnBound(table, TumorTypeRow.COL_nsil, "nsil", Color.decode("#A1D99B"), Color.decode("#E5F5E0"));
+		// createUnBound(table, TumorTypeRow.COL_nnon, "nnon", Color.decode("#C994C7"), Color.decode("#E7E1EF"));
+		// createUnBound(table, TumorTypeRow.COL_nnull, "nnull", Color.decode("#FDBB84"), Color.decode("#FEE8C8"));
+	}
+
+	private FloatRankColumnModel pcol(TumorType type, int col, String label, Color color, Color bgColor) {
+		return new FloatRankColumnModel(new ValueGetter(type, col), GLRenderers.drawText(type.name() + "_" + label,
+				VAlign.CENTER), color, bgColor, pValueMapping(), FloatInferrers.MEDIAN);
+	}
+
+	private FloatRankColumnModel ucol(TumorType type, int col, String label, Color color, Color bgColor) {
+		return new FloatRankColumnModel(new ValueGetter(type, col), GLRenderers.drawText(type.name() + "_" + label,
+				VAlign.CENTER), color, bgColor, new PiecewiseMapping(0, Float.NaN), FloatInferrers.MEDIAN);
 	}
 
 	private StackedRankColumnModel createPValue(RankTableModel table, final int column, final String label,
@@ -130,8 +164,7 @@ public class Gene implements IModelBuilder {
 		stacked.setTitle(label);
 		table.add(stacked);
 		for (TumorType type : TumorType.values()) {
-			stacked.add(new FloatRankColumnModel(new ValueGetter(type, column), GLRenderers.drawText(type.name() + "_"
-					+ label, VAlign.CENTER), color, bgColor, pValueMapping(), FloatInferrers.MEDIAN));
+			stacked.add(pcol(type, column, label, color, bgColor));
 		}
 		stacked.setWidth(250);
 		return stacked;
@@ -143,8 +176,7 @@ public class Gene implements IModelBuilder {
 		stacked.setTitle(label);
 		table.add(stacked);
 		for (TumorType type : TumorType.values()) {
-			stacked.add(new FloatRankColumnModel(new ValueGetter(type, column), GLRenderers.drawText(type.name() + "_"
-					+ label, VAlign.CENTER), color, bgColor, new PiecewiseMapping(0, Float.NaN), FloatInferrers.MEDIAN));
+			stacked.add(ucol(type, column, label, color, bgColor));
 		}
 		stacked.setWidth(150);
 		return stacked;
@@ -154,7 +186,7 @@ public class Gene implements IModelBuilder {
 		PiecewiseMapping p = new PiecewiseMapping(0, 1);
 		p.clear();
 		p.put(0, 1);
-		p.put(1, 0);
+		p.put(0.8f, 0);
 		return p;
 	}
 

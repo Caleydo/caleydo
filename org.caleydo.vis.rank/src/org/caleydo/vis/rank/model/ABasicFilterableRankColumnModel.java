@@ -78,7 +78,8 @@ public abstract class ABasicFilterableRankColumnModel extends ARankColumnModel i
 	}
 
 	protected final void invalidAllFilter() {
-		maskInvalid.set(0, getTable().getDataSize());
+		if (parent != null)
+			maskInvalid.set(0, getTable().getDataSize());
 	}
 
 	@Override

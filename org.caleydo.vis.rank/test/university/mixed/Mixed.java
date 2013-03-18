@@ -39,8 +39,6 @@ import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.StringRankColumnModel;
 
 import university.arwu.AcademicUniversityYear;
-import university.top100under50.Top100Under50Year;
-import university.top100under50.Top100Under50Year.Row;
 import university.wur.WorldUniversityYear;
 
 import com.google.common.base.Function;
@@ -64,7 +62,7 @@ public class Mixed implements IModelBuilder {
 			all.addAll(wbu.keySet());
 			Map<String, Pair<String, AcademicUniversityYear[]>> arwu = AcademicUniversityYear.readData(2012);
 			all.addAll(arwu.keySet());
-			
+
 			List<UniversityRow> rows = new ArrayList<>(all.size());
 			for (String university : all) {
 				UniversityRow r = new UniversityRow(university);
@@ -89,7 +87,7 @@ public class Mixed implements IModelBuilder {
 		table.add(new RankRankColumnModel());
 		table.add(new StringRankColumnModel(GLRenderers.drawText("Institution", VAlign.CENTER),
 				StringRankColumnModel.DEFAULT));
-		table.add(new CategoricalRankColumnModel<>(GLRenderers.drawText("Institution", VAlign.CENTER),
+		table.add(new CategoricalRankColumnModel<>(GLRenderers.drawText("Country", VAlign.CENTER),
 				new Function<IRow, String>() {
 					@Override
 					public String apply(IRow in) {

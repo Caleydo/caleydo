@@ -35,6 +35,8 @@ public abstract class AMappingFunctionMode<T extends IMappingFunction> extends G
 		this.model = model;
 	}
 
+	public abstract String getName();
+
 	public abstract void reset();
 
 	public abstract String getIcon();

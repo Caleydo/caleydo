@@ -47,6 +47,11 @@ public class MappingCrossUI<T extends IMappingFunction> extends AMappingFunction
 	}
 
 	@Override
+	public String getName() {
+		return isNormalLeft ? "Function" : "Mirrored Function";
+	}
+
+	@Override
 	public void reset() {
 
 	}

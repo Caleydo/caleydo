@@ -45,6 +45,11 @@ public class MappingParallelUI<T extends IMappingFunction> extends AMappingFunct
 	}
 
 	@Override
+	public String getName() {
+		return isHorizontal ? "Horizontal Bars" : "Vertical Bars";
+	}
+
+	@Override
 	public void reset() {
 
 	}
