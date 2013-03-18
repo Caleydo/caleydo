@@ -95,12 +95,17 @@ public class RankTableDemo extends GLSandBox {
 		if (i >= l.length)
 			return Float.NaN;
 		String v = l[i].trim();
-		if (v.equalsIgnoreCase("-") || v.isEmpty() || v.equalsIgnoreCase("–"))
+		if (v.equalsIgnoreCase("-") || v.isEmpty() || v.equalsIgnoreCase("-"))
 			return Float.NaN;
 		int p = v.indexOf('-');
 		if (p > 0 && v.charAt(p - 1) != 'e' && v.charAt(p - 1) != 'E')
 			v = v.substring(0, p);
-		return Float.parseFloat(v);
+		try {
+			return Float.parseFloat(v);	
+		} catch(NumberFormatException e) {
+			System.err.println("parse error: "+v);
+			return Float.NaN;
+		}
 	}
 
 	public interface IModelBuilder {
