@@ -167,13 +167,13 @@ public class GLSubGraphAugmentation extends GLElementContainer {
 			// this.bubbleSetRenderer.addGroup(items, null, portalColor);
 			// }
 			// }
-			this.bubbleSetRenderer.update(g.gl, null, 0);
+			//this.bubbleSetRenderer.update(g.gl, null, 0);
 			g.gl.glTranslatef(0.f, 0.f, -1.0f);
 		}
 		g.gl.glTranslatef(0.f, 0.f, 1.0f);
 
-		this.bubbleSetRenderer.renderPxl(g.gl, pxlWidth, pxlHeight);
-		this.renderPortalLinks(g);
+		//this.bubbleSetRenderer.renderPxl(g.gl, pxlWidth, pxlHeight);
+		//this.renderPortalLinks(g);
 		// for (IGLRenderer renderer : renderers) {
 		// renderer.render(g, w, h, this);
 		// }
