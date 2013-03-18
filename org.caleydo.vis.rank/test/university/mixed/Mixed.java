@@ -20,6 +20,7 @@
 package university.mixed;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -93,11 +94,11 @@ public class Mixed implements IModelBuilder {
 		table.add(new StringRankColumnModel(GLRenderers.drawText("Institution", VAlign.CENTER),
 				StringRankColumnModel.DEFAULT));
 		table.add(new CategoricalRankColumnModel<>(GLRenderers.drawText("Country", VAlign.CENTER),
-				new Function<IRow, String>() {
+				new Function<IRow, Set<String>>() {
 					@Override
-					public String apply(IRow in) {
+					public Set<String> apply(IRow in) {
 						UniversityRow r = (UniversityRow) in;
-						return r.country;
+						return Collections.singleton(r.country);
 					}
 				}, metaData));
 

@@ -44,6 +44,7 @@ import com.google.common.base.Function;
 import demo.RankTableDemo;
 import demo.RankTableDemo.IModelBuilder;
 import demo.ReflectionData;
+import demo.ReflectionSetData;
 
 /**
  * @author Samuel Gratzl
@@ -70,11 +71,11 @@ public class Top100Under50 implements IModelBuilder {
 				StringRankColumnModel.DEFAULT));
 
 		table.add(new CategoricalRankColumnModel<String>(GLRenderers.drawText("Country", VAlign.CENTER),
-				new ReflectionData<String>(field("country"), String.class), metaData));
+				new ReflectionSetData<String>(field("country"), String.class), metaData));
 
 		table.add(new IntegerRankColumnModel(GLRenderers.drawText("Year Founded", VAlign.CENTER),
 				new ReflectionData<Integer>(field("yearFounded"), Integer.class)));
-		
+
 		table.add(new StringRankColumnModel(GLRenderers.drawText("Location", VAlign.CENTER),
 				new ReflectionData<String>(field("location"), String.class)));
 
