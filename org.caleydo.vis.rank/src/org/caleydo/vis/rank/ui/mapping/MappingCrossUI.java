@@ -66,7 +66,7 @@ public class MappingCrossUI<T extends IMappingFunction> extends AMappingFunction
 		if (isNormalLeft) {
 			rawL = new Vec2f(x + histHeight + GAP, y + h - histHeight);
 			normL = new Vec2f(x, y + GAP + x);
-			canvasL = new Vec2f(histHeight + GAP + x, y + GAP + x);
+			canvasL = new Vec2f(histHeight + GAP + x, y + GAP);
 		} else {
 			rawL = new Vec2f(x, y + h - histHeight);
 			normL = new Vec2f(w - x - histHeight, y + GAP);

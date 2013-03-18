@@ -158,7 +158,9 @@ public class GLComboBox<T> extends AGLButton {
 	protected void renderImpl(GLGraphics g, float w, float h) {
 		if (isOpen) { // render the drop down
 			g.incZ(zDeltaList);
+			g.move(0, h);
 			listRenderer.render(g, w, h * model.size(), this);
+			g.move(0, -h);
 			g.color(Color.DARK_GRAY).drawLine(0, h, w, h).drawRect(0, 0, w, h * model.size() + h);
 			// render all items
 			for (int i = 0; i < model.size(); ++i) {
@@ -254,7 +256,7 @@ public class GLComboBox<T> extends AGLButton {
 
 	/**
 	 * converts the mouse position to the model index, where the mouse is currently over
-	 * 
+	 *
 	 * @param pickedPoint
 	 * @return -1 if none else the index
 	 */
