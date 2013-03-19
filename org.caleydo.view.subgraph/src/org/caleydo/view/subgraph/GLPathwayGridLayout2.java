@@ -118,37 +118,10 @@ public class GLPathwayGridLayout2 implements IGLLayout {
 		optimizeLevel1Space(level1FreeSpaceHorizontal, freeSpaceVertical);
 
 		List<LayoutSnapshot> snapshots = new ArrayList<>();
-		// snapshots.add(new LayoutSnapshot());
 
 		LayoutSnapshot previousSnapshot = null;
-
-		// // Vertical space
-		// List<PathwayColumn> spaceExceedingColumns = getSpaceExceedingColumns(freeSpaceVertical);
-		// if (spaceExceedingColumns.size() > 0) {
-		// for (PathwayColumn column : spaceExceedingColumns) {
-		// squeezeColumn(column, snapshots, freeSpaceVertical);
-		// }
-		// }
-
 		squeezeColumn(null, snapshots, freeSpaceVertical);
 
-		// Collections.reverse(snapshots);
-		//
-		// for (LayoutSnapshot snapshot : snapshots) {
-		// if (previousSnapshot != null) {
-		// if (previousSnapshot.maxColumnHeight < snapshot.maxColumnHeight) {
-		// if (previousSnapshot.maxColumnHeight < snapshot.maxColumnHeight) {
-		// previousSnapshot.apply();
-		// break;
-		// } else if (Float.compare(previousSnapshot.maxColumnHeight, snapshot.maxColumnHeight) == 0) {
-		// snapshot.apply();
-		// }
-		// }
-		// }
-		// previousSnapshot = snapshot;
-		// }
-
-		// snapshots.clear();
 		snapshots.add(new LayoutSnapshot());
 
 		// Horizontal space
@@ -201,6 +174,28 @@ public class GLPathwayGridLayout2 implements IGLLayout {
 		level1FreeSpaceHorizontal = w - padding.hor()
 				- getTotalColumnWidth(getColumnsWithMaxLevel(EEmbeddingID.PATHWAY_LEVEL2));
 		optimizeLevel1Space(level1FreeSpaceHorizontal, freeSpaceVertical);
+		Set<PathwayMultiFormInfo> unpromotableInfos = new HashSet<>(infos.size());
+		while (unpromotableInfos.size() < infos.size()) {
+
+			Collections.sort(infos, new WindowDemotabilityComparator());
+
+			for (PathwayMultiFormInfo info : infos) {
+				LayoutSnapshot snapshotPriorPromotion = new LayoutSnapshot();
+				if (info.getCurrentEmbeddingID() != EEmbeddingID.PATHWAY_LEVEL2 && promote(info, freeSpaceVertical)) {
+					reduceColumns(getColumnsWithMaxLevel(EEmbeddingID.PATHWAY_LEVEL2), freeSpaceVertical, gap);
+					LayoutSnapshot snapshotAfterPromotion = new LayoutSnapshot();
+
+					if ((snapshotAfterPromotion.maxColumnHeight > freeSpaceVertical && snapshotAfterPromotion.maxColumnHeight > snapshotPriorPromotion.maxColumnHeight)
+							|| (snapshotAfterPromotion.minTotalWidth > getFreeHorizontalSpace(w) && snapshotAfterPromotion.minTotalWidth > snapshotPriorPromotion.minTotalWidth)) {
+						snapshotPriorPromotion.apply();
+						unpromotableInfos.add(info);
+					}
+
+				} else {
+					unpromotableInfos.add(info);
+				}
+			}
+		}
 
 		Set<PathwayColumn> level1Columns = new HashSet<>();
 		int minTotalLevel1Size = 0;
@@ -238,6 +233,33 @@ public class GLPathwayGridLayout2 implements IGLLayout {
 
 		this.view.setLayoutDirty();
 
+	}
+
+	private boolean promote(PathwayMultiFormInfo info, float freeSpaceVertical) {
+		if (isPromotable(info)) {
+			EEmbeddingID level = info.getCurrentEmbeddingID();
+			EEmbeddingID levelUp = EEmbeddingID.levelUp(level);
+			int rendererID = info.embeddingIDToRendererIDs.get(levelUp).get(0);
+			info.multiFormRenderer.setActive(rendererID);
+			PathwayColumn columnOfInfo = null;
+			for (PathwayColumn column : columns) {
+				for (GLPathwayWindow window : column.windows) {
+					if (window.info == info) {
+						columnOfInfo = column;
+						break;
+					}
+				}
+				if (columnOfInfo != null)
+					break;
+			}
+			if (columnOfInfo != null && columnOfInfo.getMinHeight() > freeSpaceVertical) {
+				addColumn((GLPathwayWindow) info.window);
+				columnOfInfo.windows.remove(info.window);
+			}
+
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -416,6 +438,11 @@ public class GLPathwayGridLayout2 implements IGLLayout {
 		return false;
 	}
 
+	private boolean isPromotable(MultiFormInfo info) {
+		return info.multiFormRenderer != view.lastUsedRenderer && !view.pinnedWindows.contains(info.window)
+				&& info.getCurrentEmbeddingID() != EEmbeddingID.PATHWAY_LEVEL1;
+	}
+
 	private boolean demote(MultiFormInfo info) {
 		if (isDemotable(info)) {
 			EEmbeddingID level = info.getEmbeddingIDFromRendererID(info.multiFormRenderer.getActiveRendererID());
@@ -478,14 +505,14 @@ public class GLPathwayGridLayout2 implements IGLLayout {
 		return freeSpace >= minWidth;
 	}
 
-	private List<PathwayColumn> getSpaceExceedingColumns(float freeSpace) {
-		List<PathwayColumn> spaceExceedingColumns = new ArrayList<>();
-		for (PathwayColumn column : columns) {
-			if (column.getMinHeight() > freeSpace)
-				spaceExceedingColumns.add(column);
-		}
-		return spaceExceedingColumns;
-	}
+	// private List<PathwayColumn> getSpaceExceedingColumns(float freeSpace) {
+	// List<PathwayColumn> spaceExceedingColumns = new ArrayList<>();
+	// for (PathwayColumn column : columns) {
+	// if (column.getMinHeight() > freeSpace)
+	// spaceExceedingColumns.add(column);
+	// }
+	// return spaceExceedingColumns;
+	// }
 
 	private float getFreeHorizontalSpace(float w) {
 		return w - padding.hor() - (columns.size() - 1) * gap;
@@ -560,7 +587,8 @@ public class GLPathwayGridLayout2 implements IGLLayout {
 			}
 		}
 
-		// minimize aspect ratio difference between available space and minimum required space by columns
+		// Minimize aspect ratio difference between available space and minimum required space by columns
+		// Note: this is not the optimal solution
 		float freeSpaceAspectRatio = freeSpaceHorizontal / freeSpaceVertical;
 
 		float currentColumnsAspectRatio = getTotalColumnAspectRatio(newColumns);
