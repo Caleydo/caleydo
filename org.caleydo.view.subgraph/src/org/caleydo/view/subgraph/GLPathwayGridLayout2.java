@@ -111,11 +111,31 @@ public class GLPathwayGridLayout2 implements IGLLayout {
 			windowToElement.put((GLPathwayWindow) child.asElement(), child);
 		}
 
-		ensureLayoutIntegrity();
+		boolean level1Exists = false;
+		for (PathwayColumn column : columns) {
+			if (column.hasLevel(EEmbeddingID.PATHWAY_LEVEL1)) {
+				level1Exists = true;
+				break;
+			}
+		}
 		float freeSpaceVertical = h - padding.vert();
-		float level1FreeSpaceHorizontal = w - padding.hor()
-				- getTotalColumnWidth(getColumnsWithMaxLevel(EEmbeddingID.PATHWAY_LEVEL2));
-		optimizeLevel1Space(level1FreeSpaceHorizontal, freeSpaceVertical);
+		List<PathwayMultiFormInfo> infos = new ArrayList<>(view.pathwayInfos);
+
+		if (!level1Exists) {
+			Collections.sort(infos, new WindowLevel1PromotabolityComparator());
+			Collections.reverse(infos);
+			for (PathwayMultiFormInfo info : infos) {
+				if (promote(info, freeSpaceVertical, EEmbeddingID.PATHWAY_LEVEL1)) {
+					break;
+				}
+			}
+		}
+
+		ensureLayoutIntegrity();
+
+		// float level1FreeSpaceHorizontal = w - padding.hor()
+		// - getTotalColumnWidth(getColumnsWithMaxLevel(EEmbeddingID.PATHWAY_LEVEL2));
+		// optimizeLevel1Space(level1FreeSpaceHorizontal, freeSpaceVertical);
 
 		List<LayoutSnapshot> snapshots = new ArrayList<>();
 
@@ -132,7 +152,7 @@ public class GLPathwayGridLayout2 implements IGLLayout {
 
 		// if (!mergeColumns(snapshots, w, freeSpaceVertical)) {
 		Set<PathwayMultiFormInfo> undemotableInfos = new HashSet<>();
-		List<PathwayMultiFormInfo> infos = new ArrayList<>(view.pathwayInfos);
+
 		while (undemotableInfos.size() < infos.size() && !isSufficientHorizontalSpace(getFreeHorizontalSpace(w))) {
 
 			Collections.sort(infos, new WindowDemotabilityComparator());
@@ -171,7 +191,7 @@ public class GLPathwayGridLayout2 implements IGLLayout {
 			}
 			previousSnapshot = snapshot;
 		}
-		level1FreeSpaceHorizontal = w - padding.hor()
+		float level1FreeSpaceHorizontal = w - padding.hor()
 				- getTotalColumnWidth(getColumnsWithMaxLevel(EEmbeddingID.PATHWAY_LEVEL2));
 		optimizeLevel1Space(level1FreeSpaceHorizontal, freeSpaceVertical);
 		Set<PathwayMultiFormInfo> unpromotableInfos = new HashSet<>(infos.size());
@@ -235,11 +255,10 @@ public class GLPathwayGridLayout2 implements IGLLayout {
 
 	}
 
-	private boolean promote(PathwayMultiFormInfo info, float freeSpaceVertical) {
+	private boolean promote(PathwayMultiFormInfo info, float freeSpaceVertical, EEmbeddingID level) {
+
 		if (isPromotable(info)) {
-			EEmbeddingID level = info.getCurrentEmbeddingID();
-			EEmbeddingID levelUp = EEmbeddingID.levelUp(level);
-			int rendererID = info.embeddingIDToRendererIDs.get(levelUp).get(0);
+			int rendererID = info.embeddingIDToRendererIDs.get(level).get(0);
 			info.multiFormRenderer.setActive(rendererID);
 			PathwayColumn columnOfInfo = null;
 			for (PathwayColumn column : columns) {
@@ -260,6 +279,12 @@ public class GLPathwayGridLayout2 implements IGLLayout {
 			return true;
 		}
 		return false;
+	}
+
+	private boolean promote(PathwayMultiFormInfo info, float freeSpaceVertical) {
+		EEmbeddingID level = info.getCurrentEmbeddingID();
+		EEmbeddingID levelUp = EEmbeddingID.levelUp(level);
+		return promote(info, freeSpaceVertical, levelUp);
 	}
 
 	/**
@@ -769,8 +794,23 @@ public class GLPathwayGridLayout2 implements IGLLayout {
 		public int compare(PathwayMultiFormInfo o1, PathwayMultiFormInfo o2) {
 			int priority1 = o1.getCurrentEmbeddingID().renderPriority();
 			int priority2 = o2.getCurrentEmbeddingID().renderPriority();
+			// younger ones should be ranked lower
 			if (priority1 == priority2) {
 				return o1.age - o2.age;
+			}
+			return priority1 - priority2;
+		}
+	}
+
+	private static class WindowLevel1PromotabolityComparator implements Comparator<PathwayMultiFormInfo> {
+
+		@Override
+		public int compare(PathwayMultiFormInfo o1, PathwayMultiFormInfo o2) {
+			int priority1 = o1.getCurrentEmbeddingID().renderPriority();
+			int priority2 = o2.getCurrentEmbeddingID().renderPriority();
+			// younger ones should be ranked higher
+			if (priority1 == priority2) {
+				return o2.age - o1.age;
 			}
 			return priority1 - priority2;
 		}
