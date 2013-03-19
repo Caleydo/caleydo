@@ -25,8 +25,10 @@ import gleem.linalg.Vec4f;
 import java.awt.Color;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.text.NumberFormat;
 import java.util.BitSet;
 import java.util.List;
+import java.util.Locale;
 
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventPublisher;
@@ -70,6 +72,8 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 	private final IMappingFunction mapping;
 	private final IFloatInferrer missingValueInferer;
 
+	private final NumberFormat formatter;
+
 	private final IFloatFunction<IRow> data;
 	private final ICallback<IMappingFunction> callback = new ICallback<IMappingFunction>() {
 		@Override
@@ -86,13 +90,18 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 			missingValue = Float.NaN;
 		}
 	};
-
 	public FloatRankColumnModel(IFloatFunction<IRow> data, IGLRenderer header, Color color, Color bgColor,
 			PiecewiseMapping mapping, IFloatInferrer missingValue) {
+		this(data, header, color, bgColor, mapping, missingValue, NumberFormat.getInstance(Locale.ENGLISH));
+	}
+
+	public FloatRankColumnModel(IFloatFunction<IRow> data, IGLRenderer header, Color color, Color bgColor,
+			PiecewiseMapping mapping, IFloatInferrer missingValue, NumberFormat formatter) {
 		super(color, bgColor);
 		this.data = data;
 		this.mapping = mapping;
 		this.missingValueInferer = missingValue;
+		this.formatter = formatter;
 
 		setHeaderRenderer(header);
 	}
@@ -106,6 +115,7 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 		this.missingValue = copy.missingValue;
 		this.dirtyDataStats = copy.dirtyDataStats;
 		this.cacheHist = copy.cacheHist;
+		this.formatter = copy.formatter;
 	}
 
 	@Override
@@ -218,6 +228,8 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 		float r = data.applyPrimitive(row);
 		if (Float.isNaN(r))
 			return "";
+		if (formatter != null)
+			return formatter.format(r);
 		return Formatter.formatNumber(r);
 	}
 

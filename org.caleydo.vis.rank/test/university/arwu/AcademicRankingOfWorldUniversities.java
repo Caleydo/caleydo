@@ -19,6 +19,7 @@
  *******************************************************************************/
 package university.arwu;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -27,13 +28,15 @@ import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLSandBox;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
+import org.caleydo.vis.rank.data.FloatInferrers;
 import org.caleydo.vis.rank.model.ARow;
+import org.caleydo.vis.rank.model.FloatRankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
-import org.caleydo.vis.rank.model.IntegerRankColumnModel;
 import org.caleydo.vis.rank.model.OrderColumn;
 import org.caleydo.vis.rank.model.RankRankColumnModel;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.StringRankColumnModel;
+import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
 
 import university.endowments.EndowmentsYear;
 
@@ -41,7 +44,7 @@ import com.google.common.base.Function;
 
 import demo.RankTableDemo;
 import demo.RankTableDemo.IModelBuilder;
-import demo.ReflectionData;
+import demo.ReflectionFloatData;
 
 /**
  * @author Samuel Gratzl
@@ -74,13 +77,16 @@ public class AcademicRankingOfWorldUniversities implements IModelBuilder {
 		// Arrays.asList("argu2010.txt", "argu2011.txt", "argu2012.txt");
 		table.orderBy(AcademicUniversityYear.addYear(table, "2012", new YearGetter(2)));
 
-		table.add(new IntegerRankColumnModel(GLRenderers.drawText("Endowment 2012", VAlign.CENTER),
-				new ReflectionData<>(UniversityRow.class.getDeclaredField("endowments2012"), Integer.class)));
+		table.add(new FloatRankColumnModel(new ReflectionFloatData(UniversityRow.class.getDeclaredField("endowments2012")),GLRenderers.drawText("Endowment 2012", VAlign.CENTER),
+				Color.LIGHT_GRAY, new Color(0.95f, 0.95f, .95f), new PiecewiseMapping(0, Float.NaN),
+				FloatInferrers.MEAN));
 		table.add(new OrderColumn());
 		table.add(new RankRankColumnModel());
 		AcademicUniversityYear.addYear(table, "2011", new YearGetter(1));
-		table.add(new IntegerRankColumnModel(GLRenderers.drawText("Endowment 2011", VAlign.CENTER),
-				new ReflectionData<>(UniversityRow.class.getDeclaredField("endowments2011"), Integer.class)));
+		table.add(new FloatRankColumnModel(new ReflectionFloatData(UniversityRow.class
+				.getDeclaredField("endowments2011")), GLRenderers.drawText("Endowment 2011", VAlign.CENTER),
+				Color.LIGHT_GRAY, new Color(0.95f, 0.95f, .95f), new PiecewiseMapping(0, Float.NaN),
+				FloatInferrers.MEAN));
 		table.add(new OrderColumn());
 		table.add(new RankRankColumnModel());
 		AcademicUniversityYear.addYear(table, "2010", new YearGetter(0));

@@ -34,6 +34,7 @@ import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.rank.internal.event.SizeFilterEvent;
+import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 import org.caleydo.vis.rank.ui.GLPropertyChangeListeners;
 import org.caleydo.vis.rank.ui.detail.ValueElement;
 import org.eclipse.jface.dialogs.Dialog;
@@ -55,20 +56,24 @@ import com.google.common.base.Function;
  * @author Samuel Gratzl
  *
  */
-public class IntegerRankColumnModel extends ABasicFilterableRankColumnModel {
+public class IntegerRankColumnModel extends ABasicFilterableRankColumnModel implements IRankableColumnMixin {
 	private final Function<IRow, Integer> data;
 
 	private int min = 0;
 	private int max = Integer.MAX_VALUE;
 
+	private final NumberFormat formatter;
+
 	public IntegerRankColumnModel(IGLRenderer header, Function<IRow, Integer> data) {
-		this(header, data, Color.GRAY, new Color(.95f, .95f, .95f));
+		this(header, data, Color.GRAY, new Color(.95f, .95f, .95f), NumberFormat.getInstance(Locale.ENGLISH));
 	}
 
-	public IntegerRankColumnModel(IGLRenderer header, Function<IRow, Integer> data, Color color, Color bgColor) {
+	public IntegerRankColumnModel(IGLRenderer header, Function<IRow, Integer> data, Color color, Color bgColor,
+			NumberFormat formatter) {
 		super(color, bgColor);
 		setHeaderRenderer(header);
 		this.data = data;
+		this.formatter = formatter;
 	}
 
 	public IntegerRankColumnModel(IntegerRankColumnModel copy) {
@@ -76,6 +81,7 @@ public class IntegerRankColumnModel extends ABasicFilterableRankColumnModel {
 		this.data = copy.data;
 		this.min = copy.min;
 		this.max = copy.max;
+		this.formatter = copy.formatter;
 	}
 
 	@Override
@@ -132,6 +138,16 @@ public class IntegerRankColumnModel extends ABasicFilterableRankColumnModel {
 		return data.apply(prow);
 	}
 
+	@Override
+	public int compare(IRow o1, IRow o2) {
+		return getValue(o1) - getValue(o2);
+	}
+
+	@Override
+	public void orderByMe() {
+		parent.orderBy(this);
+	}
+
 	class MyElement extends ValueElement {
 		@Override
 		protected void renderImpl(GLGraphics g, float w, float h) {
@@ -141,7 +157,7 @@ public class IntegerRankColumnModel extends ABasicFilterableRankColumnModel {
 			float hi = Math.min(h, 18);
 			int f = getValue(getLayoutDataAs(IRow.class, null));
 			if (f > 0)
-				g.drawText(NumberFormat.getInstance(Locale.ENGLISH).format(f) + "", 1, 1 + (h - hi) * 0.5f, w - 2,
+				g.drawText(formatter == null ? f + "" : formatter.format(f), 1, 1 + (h - hi) * 0.5f, w - 2,
 						hi - 2);
 		}
 	}

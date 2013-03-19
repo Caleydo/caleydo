@@ -19,6 +19,8 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.ui;
 
+import gleem.linalg.Vec2f;
+
 import java.util.List;
 
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
@@ -31,9 +33,9 @@ import org.caleydo.vis.rank.model.RankTableModel;
 
 /**
  * basic ui widget for a {@link RankTableModel}
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public class TableUI extends GLElementContainer implements IGLLayout {
 	public TableUI(RankTableModel table, IRankTableUIConfig config, IRowHeightLayout... layouts) {
@@ -57,6 +59,11 @@ public class TableUI extends GLElementContainer implements IGLLayout {
 		float hi = header.getSetHeight();
 		header.setBounds(0, 0, w, hi);
 		body.setBounds(0, hi, w, h - hi);
-		setSize(body.getSetWidth(), Float.NaN);
+		Vec2f old = getLayoutDataAs(Vec2f.class, new Vec2f(0, 0));
+		Vec2f new_ = body.getLayoutDataAs(Vec2f.class, new Vec2f(0, 0));
+		if (!old.equals(new_)) {
+			setLayoutData(new_);
+			relayoutParent();
+		}
 	}
 }

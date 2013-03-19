@@ -26,9 +26,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
+import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
@@ -185,7 +187,8 @@ public class MeasuringUniversityPerformanceData {
 	private static FloatRankColumnModel col(Function<IRow, Entry[]> year, int col, String text, String color,
 			String bgColor) {
 		return new FloatRankColumnModel(new ValueGetter(year, col), GLRenderers.drawText(text, VAlign.CENTER),
-				Color.decode(color), Color.decode(bgColor), unbound(), FloatInferrers.MEDIAN);
+				Color.decode(color), Color.decode(bgColor), unbound(), FloatInferrers.MEDIAN,
+				NumberFormat.getIntegerInstance(Locale.ENGLISH));
 	}
 
 	protected static PiecewiseMapping unbound() {

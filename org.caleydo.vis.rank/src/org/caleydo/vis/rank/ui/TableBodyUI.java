@@ -86,6 +86,7 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 			case ARankColumnModel.PROP_WIDTH:
 			case ICollapseableColumnMixin.PROP_COLLAPSED:
 				onRankerChanged((ARankColumnModel) evt.getSource());
+				updateMyMinSize();
 				break;
 			case RankTableModel.PROP_SELECTED_ROW:
 				isSelectedRowChanged = true;
@@ -267,7 +268,12 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 			else
 				x += model.getWidth() + RenderStyle.COLUMN_SPACE;
 		}
-		setSize(x, Float.NaN);
+		Vec2f old = getLayoutDataAs(Vec2f.class, new Vec2f(0, 0));
+		if (old.x() == x)
+			return;
+		old.setX(x);
+		setLayoutData(old);
+		relayoutParent();
 	}
 
 	private void init(ARankColumnModel col) {

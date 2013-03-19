@@ -23,7 +23,6 @@ import static org.caleydo.core.view.opengl.layout2.layout.GLLayouts.defaultValue
 import static org.caleydo.vis.rank.ui.RenderStyle.LABEL_HEIGHT;
 import gleem.linalg.Vec2f;
 
-import java.awt.Color;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
@@ -253,9 +252,10 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 		RoundedRectRenderer.render(g, 0, 0, w, h, RenderStyle.HEADER_ROUNDED_RADIUS, 3, RoundedRectRenderer.FLAG_FILL
 				| RoundedRectRenderer.FLAG_TOP);
 		if (model instanceof IRankableColumnMixin && model.getMyRanker().getOrderBy() == model) {
-			g.color(Color.RED);
-			RoundedRectRenderer.render(g, 0, 0, w, h, RenderStyle.HEADER_ROUNDED_RADIUS, 3,
-					RoundedRectRenderer.FLAG_TOP);
+			g.fillImage(RenderStyle.ICON_STAR, w - 16, -8, 16, 16);
+			// g.color(Color.RED);
+			// RoundedRectRenderer.render(g, 0, 0, w, h, RenderStyle.HEADER_ROUNDED_RADIUS, 3,
+			// RoundedRectRenderer.FLAG_TOP);
 		}
 		if (isCollapsed)
 			return;

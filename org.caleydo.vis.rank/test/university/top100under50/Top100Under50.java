@@ -19,6 +19,7 @@
  *******************************************************************************/
 package university.top100under50;
 
+import java.awt.Color;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -73,7 +74,8 @@ public class Top100Under50 implements IModelBuilder {
 				new ReflectionData<String>(field("country"), String.class), metaData));
 
 		table.add(new IntegerRankColumnModel(GLRenderers.drawText("Year Founded", VAlign.CENTER),
-				new ReflectionData<Integer>(field("yearFounded"), Integer.class)));
+				new ReflectionData<Integer>(field("yearFounded"), Integer.class), Color.GRAY, new Color(.95f, .95f,
+						.95f), null));
 
 		table.add(new StringRankColumnModel(GLRenderers.drawText("Location", VAlign.CENTER),
 				new ReflectionData<String>(field("location"), String.class)));

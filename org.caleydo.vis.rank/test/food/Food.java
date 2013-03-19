@@ -123,8 +123,16 @@ public class Food implements IModelBuilder {
 				"Vitamin D (IU/100 g)", "Vitamin K (phylloquinone) (µg/100 g)", "Saturated fatty acid (g/100 g)",
 				"Monounsaturated fatty acids (g/100 g)", "Polyunsaturated fatty acids (g/100 g)",
 				"Cholesterol (mg/100 g)");
-		for (int i = 0; i < rows1.get(0).data.length; ++i) {
-			table.add(ucol(i, headers.get(i), color, bgColor));
+
+		// selection
+		List<String> selection = Arrays.asList("Food energy (kcal/100 g)", "Cholesterol (mg/100 g)",
+				"Total sugars (g/100 g)", "Water (g/100 g)", "Protein (g/100 g)",
+				"Carbohydrate, by difference (g/100 g)", "Vitamin C (mg/100 g)", "Calcium (mg/100 g)",
+				"Iron (mg/100 g)", "Magnesium (mg/100 g)", "Saturated fatty acid (g/100 g)");
+
+		for (int i = 0; i < selection.size(); ++i) {
+			int j = headers.indexOf(selection.get(i));
+			table.add(ucol(j, headers.get(j), color, bgColor));
 		}
 
 	}

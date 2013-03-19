@@ -38,6 +38,7 @@ import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.rank.internal.event.FilterEvent;
 import org.caleydo.vis.rank.model.mixin.IGrabRemainingHorizontalSpace;
+import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 import org.caleydo.vis.rank.ui.GLPropertyChangeListeners;
 import org.caleydo.vis.rank.ui.IColumnRenderInfo;
 import org.caleydo.vis.rank.ui.detail.ValueElement;
@@ -56,8 +57,9 @@ import com.google.common.base.Function;
  * @author Samuel Gratzl
  *
  */
-public class CategoricalRankColumnModel<CATEGORY_TYPE> extends ABasicFilterableRankColumnModel implements
-		IGrabRemainingHorizontalSpace {
+public class CategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<CATEGORY_TYPE>> extends
+		ABasicFilterableRankColumnModel implements
+		IGrabRemainingHorizontalSpace, IRankableColumnMixin {
 	private final Function<IRow, CATEGORY_TYPE> data;
 	private Set<CATEGORY_TYPE> selection = new HashSet<>();
 	private Map<CATEGORY_TYPE, String> metaData;
@@ -150,6 +152,20 @@ public class CategoricalRankColumnModel<CATEGORY_TYPE> extends ABasicFilterableR
 
 	public CATEGORY_TYPE getCatValue(IRow row) {
 		return data.apply(row);
+	}
+
+	@Override
+	public int compare(IRow o1, IRow o2) {
+		CATEGORY_TYPE t1 = getCatValue(o1);
+		CATEGORY_TYPE t2 = getCatValue(o2);
+		if ((t1 != null) != (t2 != null))
+			return t1 == null ? 1 : -1;
+		return t1 == null ? 0 : t1.compareTo(t2);
+	}
+
+	@Override
+	public void orderByMe() {
+		parent.orderBy(this);
 	}
 
 	@Override
