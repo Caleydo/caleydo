@@ -22,6 +22,7 @@ package org.caleydo.vis.rank.ui;
 import gleem.linalg.Vec2f;
 import gleem.linalg.Vec4f;
 
+import java.awt.Color;
 import java.beans.IndexedPropertyChangeEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -462,7 +463,7 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 			if (pick) {
 				if (selected != rankedRow) { // the selected row is not pickable again
 					g.pushName(pickingIDs[i]);
-					g.fillRect(x, bounds.y(), w, bounds.w());
+					g.color(Color.red).fillRect(x, bounds.y(), w, bounds.w());
 					g.popName();
 				}
 			} else if (rankedRow == selected) {

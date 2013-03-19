@@ -23,15 +23,15 @@ import static demo.RankTableDemo.toFloat;
 
 import java.awt.Color;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Field;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLSandBox;
@@ -39,6 +39,7 @@ import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.vis.rank.data.AFloatFunction;
 import org.caleydo.vis.rank.data.FloatInferrers;
 import org.caleydo.vis.rank.model.ARow;
+import org.caleydo.vis.rank.model.CategoricalRankColumnModel;
 import org.caleydo.vis.rank.model.FloatRankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.RankRankColumnModel;
@@ -48,6 +49,7 @@ import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
 
 import demo.RankTableDemo;
 import demo.RankTableDemo.IModelBuilder;
+import demo.ReflectionData;
 
 /**
  * @author Samuel Gratzl
@@ -57,28 +59,36 @@ public class Food implements IModelBuilder {
 	@Override
 	public void apply(RankTableModel table) throws Exception {
 		List<FoodRow> rows1 = new ArrayList<>();
-		String[] header;
-		Map<String,String> metaData = new HashMap<>();
-		try (BufferedReader r = new BufferedReader(new InputStreamReader(Food.class.getResourceAsStream("ABBREV.csv"),
-				Charset.forName("UTF-8")))) {
+		Map<Integer, String> foodGroups = readFoodGroups();
+
+		try (BufferedReader r = new BufferedReader(new InputStreamReader(
+				Food.class.getResourceAsStream("FOOD_DES.txt"), Charset.forName("UTF-8")))) {
 			String line;
-			header = r.readLine().split("\t"); // skip label
 			while ((line = r.readLine()) != null) {
 				String[] l = line.split("\t");
 				FoodRow row = new FoodRow();
 				// row.rank = Integer.parseInt(l[0]);
 				row.NDB_No = Integer.parseInt(l[0]);
-				row.Shrt_Desc = new LinkedHashSet<>(Arrays.asList((l[1].split(","))));
-				for(String s : row.Shrt_Desc)
-					metaData.put(s,s);
-				row.data = new float[header.length - 2 - 5];
-				for (int i1 = 0; i1 < row.data.length; ++i1) {
-					row.data[i1] = toFloat(l, i1 + 2);
-				}
+				row.group = Integer.parseInt(l[1]);
+				row.description = l[2];
 				rows1.add(row);
 			}
 		}
-		System.out.println(metaData.size());
+
+		try (BufferedReader r = new BufferedReader(new InputStreamReader(Food.class.getResourceAsStream("ABBREV.csv"),
+				Charset.forName("UTF-8")))) {
+			String line;
+			r.readLine(); // skip label
+			for(int i = 0; (line = r.readLine()) != null; ++i) {
+				String[] l = line.split("\t");
+				FoodRow row = rows1.get(i);
+				row.NDB_No = Integer.parseInt(l[0]);
+				row.data = new float[l.length - 2 - 5];
+				for (int i1 = 0; i1 < row.data.length; ++i1) {
+					row.data[i1] = toFloat(l, i1 + 2);
+				}
+			}
+		}
 		table.addData(rows1);
 
 		Color color = Color.decode("#DFC27D");
@@ -92,20 +102,60 @@ public class Food implements IModelBuilder {
 		// return ((FoodRow)in).Shrt_Desc;
 		// }
 		// }, metaData));
-		table.add(new StringRankColumnModel(GLRenderers.drawText("Short Description", VAlign.CENTER),
+		table.add(new StringRankColumnModel(GLRenderers.drawText("Description", VAlign.CENTER),
 				StringRankColumnModel.DEFAULT));
+		table.add(new CategoricalRankColumnModel<Integer>(GLRenderers.drawText("Food Group", VAlign.CENTER),
+				new ReflectionData<Integer>(field("group"), Integer.class), foodGroups));
+
+
+		List<String> headers = Arrays.asList("Water (g/100 g)", "Food energy (kcal/100 g)", "Protein (g/100 g)",
+				"Total lipid (fat)(g/100 g)", "Ash (g/100 g)", "Carbohydrate, by difference (g/100 g)",
+				"Total dietary fiber (g/100 g)", "Total sugars (g/100 g)", "Calcium (mg/100 g)", "Iron (mg/100 g)",
+				"Magnesium (mg/100 g)", "Phosphorus (mg/100 g)", "Potassium (mg/100 g)", "Sodium (mg/100 g)",
+				"Zinc (mg/100 g)", "Copper (mg/100 g)", "Manganese (mg/100 g)", "Selenium (µg/100 g)",
+				"Vitamin C (mg/100 g)", "Thiamin (mg/100 g)", "Riboflavin (mg/100 g)", "Niacin (mg/100 g)",
+				"Pantothenic acid (mg/100 g)", "Vitamin B6 (mg/100 g)", "Folate, total (µg/100 g)",
+				"Folic acid (µg/100 g)", "Food folate (µg/100 g)", "Folate (µg dietary folate equivalents/100 g)",
+				"Choline, total (mg/100 g)", "Vitamin B12 (µg/100 g)", "Vitamin A (IU/100 g)",
+				"Vitamin A (µg retinol activity equivalents/100g)", "Retinol (µg/100 g)", "Alpha-carotene (µg/100 g)",
+				"Beta-carotene (µg/100 g)", "Beta-cryptoxanthin (µg/100 g)", "Lycopene (µg/100 g)",
+				"Lutein+zeazanthin (µg/100 g)", "Vitamin E (alpha-tocopherol) (mg/100 g)", "Vitamin D (µg/100 g)",
+				"Vitamin D (IU/100 g)", "Vitamin K (phylloquinone) (µg/100 g)", "Saturated fatty acid (g/100 g)",
+				"Monounsaturated fatty acids (g/100 g)", "Polyunsaturated fatty acids (g/100 g)",
+				"Cholesterol (mg/100 g)");
 		for (int i = 0; i < rows1.get(0).data.length; ++i) {
-			table.add(ucol(i, header[i + 2], color, bgColor));
+			table.add(ucol(i, headers.get(i), color, bgColor));
 		}
-		// NDB_No Shrt_Desc Water_(g) Energ_Kcal Protein_(g) Lipid_Tot_(g) Ash_(g) Carbohydrt_(g) Fiber_TD_(g)
-		// Sugar_Tot_(g)
-		// Calcium_(mg) Iron_(mg) Magnesium_(mg) Phosphorus_(mg) Potassium_(mg) Sodium_(mg) Zinc_(mg) Copper_(mg)
-		// Manganese_(mg) Selenium_(µg) Vit_C_(mg) Thiamin_(mg) Riboflavin_(mg) Niacin_(mg) Panto_Acid_mg) Vit_B6_(mg)
-		// Folate_Tot_(µg) Folic_Acid_(µg) Food_Folate_(µg) Folate_DFE_(µg) Choline_Tot_ (mg) Vit_B12_(µg) Vit_A_IU
-		// Vit_A_RAE Retinol_(µg) Alpha_Carot_(µg) Beta_Carot_(µg) Beta_Crypt_(µg) Lycopene_(µg) Lut+Zea_ (µg)
-		// Vit_E_(mg)
-		// Vit_D_(µg) Vit_D_(IU) Vit_K_(µg) FA_Sat_(g) FA_Mono_(g) FA_Poly_(g) Cholestrl_(mg) GmWt_1 GmWt_Desc1 GmWt_2
-		// GmWt_Desc2 Refuse_Pct
+
+	}
+
+	/**
+	 * @param string
+	 * @return
+	 * @throws SecurityException
+	 * @throws NoSuchFieldException
+	 */
+	private static Field field(String name) throws NoSuchFieldException, SecurityException {
+		return FoodRow.class.getDeclaredField(name);
+	}
+
+	/**
+	 * @return
+	 * @throws IOException
+	 * @throws NumberFormatException
+	 */
+	private static Map<Integer, String> readFoodGroups() throws NumberFormatException, IOException {
+		Map<Integer, String> result = new HashMap<>();
+		try (BufferedReader r = new BufferedReader(new InputStreamReader(Food.class.getResourceAsStream("FD_GROUP.txt"),
+				Charset.forName("UTF-8")))) {
+			String line;
+			while ((line = r.readLine()) != null) {
+				String[] l = line.split("\t");
+				Integer id = Integer.parseInt(l[0]);
+				result.put(id, l[1]);
+			}
+		}
+		return result;
 	}
 
 	private FloatRankColumnModel ucol(int col, String label, Color color, Color bgColor) {
@@ -124,6 +174,8 @@ public class Food implements IModelBuilder {
 		@Override
 		public float applyPrimitive(IRow in) {
 			FoodRow r = (FoodRow) in;
+			if (r.data.length <= index)
+				return 0;
 			return r.data[index];
 		}
 
@@ -131,17 +183,13 @@ public class Food implements IModelBuilder {
 
 	static class FoodRow extends ARow {
 		public int NDB_No;
-		public Set<String> Shrt_Desc;
+		public int group;
+		public String description;
 		public float[] data;
 
 		@Override
 		public String toString() {
-			StringBuilder b = new StringBuilder();
-			for (String s : Shrt_Desc)
-				b.append(s).append(", ");
-			if (!Shrt_Desc.isEmpty())
-				b.setLength(b.length() - 2);
-			return b.toString();
+			return description;
 		}
 	}
 

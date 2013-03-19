@@ -19,7 +19,6 @@
  *******************************************************************************/
 package university.arwu;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -30,16 +29,19 @@ import org.caleydo.core.view.opengl.layout2.GLSandBox;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.vis.rank.model.ARow;
 import org.caleydo.vis.rank.model.IRow;
+import org.caleydo.vis.rank.model.IntegerRankColumnModel;
 import org.caleydo.vis.rank.model.OrderColumn;
 import org.caleydo.vis.rank.model.RankRankColumnModel;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.StringRankColumnModel;
-import org.eclipse.swt.widgets.Shell;
+
+import university.endowments.EndowmentsYear;
 
 import com.google.common.base.Function;
 
 import demo.RankTableDemo;
 import demo.RankTableDemo.IModelBuilder;
+import demo.ReflectionData;
 
 /**
  * @author Samuel Gratzl
@@ -51,9 +53,15 @@ public class AcademicRankingOfWorldUniversities implements IModelBuilder {
 		// ranking institution country national total alumini award hici nands pub pcb
 
 		Map<String, Pair<String, AcademicUniversityYear[]>> data = AcademicUniversityYear.readData(2010, 2011, 2012);
+		Map<String, int[]> endowments = EndowmentsYear.readData();
 		List<UniversityRow> rows = new ArrayList<>(data.size());
 		for(Map.Entry<String, Pair<String, AcademicUniversityYear[]>> entry : data.entrySet()) {
-			rows.add(new UniversityRow(entry.getKey(), entry.getValue().getFirst(), entry.getValue().getSecond()));
+			UniversityRow r = new UniversityRow(entry.getKey(), entry.getValue().getFirst(), entry.getValue().getSecond());
+			if (endowments.containsKey(entry.getKey())) {
+				r.endowments2011 = endowments.get(entry.getKey())[0];
+				r.endowments2012 = endowments.get(entry.getKey())[1];
+			}
+			rows.add(r);
 		}
 		table.addData(rows);
 		data = null;
@@ -62,11 +70,16 @@ public class AcademicRankingOfWorldUniversities implements IModelBuilder {
 		table.add(new StringRankColumnModel(GLRenderers.drawText("Institution", VAlign.CENTER),
 				StringRankColumnModel.DEFAULT));
 
+
 		// Arrays.asList("argu2010.txt", "argu2011.txt", "argu2012.txt");
 		AcademicUniversityYear.addYear(table, "2012", new YearGetter(2));
+		table.add(new IntegerRankColumnModel(GLRenderers.drawText("Endowment 2012", VAlign.CENTER),
+				new ReflectionData<>(UniversityRow.class.getDeclaredField("endowments2012"), Integer.class)));
 		table.add(new OrderColumn());
 		table.add(new RankRankColumnModel());
 		AcademicUniversityYear.addYear(table, "2011", new YearGetter(1));
+		table.add(new IntegerRankColumnModel(GLRenderers.drawText("Endowment 2011", VAlign.CENTER),
+				new ReflectionData<>(UniversityRow.class.getDeclaredField("endowments2011"), Integer.class)));
 		table.add(new OrderColumn());
 		table.add(new RankRankColumnModel());
 		AcademicUniversityYear.addYear(table, "2010", new YearGetter(0));
@@ -87,9 +100,10 @@ public class AcademicRankingOfWorldUniversities implements IModelBuilder {
 	}
 
 	static class UniversityRow extends ARow {
+		public int endowments2011;
+		public int endowments2012;
 		public final String schoolname;
 		public final String country;
-
 		public AcademicUniversityYear[] years;
 
 		public UniversityRow(String school, String country, AcademicUniversityYear[] years) {

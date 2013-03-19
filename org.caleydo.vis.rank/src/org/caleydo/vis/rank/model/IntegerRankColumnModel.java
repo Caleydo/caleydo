@@ -21,8 +21,10 @@ package org.caleydo.vis.rank.model;
 
 import java.awt.Color;
 import java.beans.PropertyChangeListener;
+import java.text.NumberFormat;
 import java.util.BitSet;
 import java.util.List;
+import java.util.Locale;
 
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventPublisher;
@@ -139,7 +141,8 @@ public class IntegerRankColumnModel extends ABasicFilterableRankColumnModel {
 			float hi = Math.min(h, 18);
 			int f = getValue(getLayoutDataAs(IRow.class, null));
 			if (f > 0)
-				g.drawText(f + "", 1, 1 + (h - hi) * 0.5f, w - 2, hi - 2);
+				g.drawText(NumberFormat.getInstance(Locale.ENGLISH).format(f) + "", 1, 1 + (h - hi) * 0.5f, w - 2,
+						hi - 2);
 		}
 	}
 

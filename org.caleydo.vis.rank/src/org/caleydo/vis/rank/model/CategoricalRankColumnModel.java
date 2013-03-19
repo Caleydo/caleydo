@@ -25,7 +25,6 @@ import java.awt.Color;
 import java.beans.PropertyChangeListener;
 import java.util.BitSet;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -59,16 +58,16 @@ import com.google.common.base.Function;
  */
 public class CategoricalRankColumnModel<CATEGORY_TYPE> extends ABasicFilterableRankColumnModel implements
 		IGrabRemainingHorizontalSpace {
-	private final Function<IRow, Set<CATEGORY_TYPE>> data;
+	private final Function<IRow, CATEGORY_TYPE> data;
 	private Set<CATEGORY_TYPE> selection = new HashSet<>();
 	private Map<CATEGORY_TYPE, String> metaData;
 
-	public CategoricalRankColumnModel(IGLRenderer header, final Function<IRow, Set<CATEGORY_TYPE>> data,
+	public CategoricalRankColumnModel(IGLRenderer header, final Function<IRow, CATEGORY_TYPE> data,
 			Map<CATEGORY_TYPE, String> metaData) {
 		this(header, data, metaData, Color.GRAY, new Color(.95f, .95f, .95f));
 	}
 
-	public CategoricalRankColumnModel(IGLRenderer header, final Function<IRow, Set<CATEGORY_TYPE>> data,
+	public CategoricalRankColumnModel(IGLRenderer header, final Function<IRow, CATEGORY_TYPE> data,
 			Map<CATEGORY_TYPE, String> metaData, Color color, Color bgColor) {
 		super(color, bgColor);
 		setHeaderRenderer(header);
@@ -122,7 +121,6 @@ public class CategoricalRankColumnModel<CATEGORY_TYPE> extends ABasicFilterableR
 				dialog.setInput(data);
 				dialog.setInitialSelections(selection.toArray());
 				dialog.setComparator(new ViewerComparator());
-				dialog.setSize(100, 50);
 
 				if (dialog.open() == Window.OK) {
 					Object[] result = dialog.getResult();
@@ -150,25 +148,15 @@ public class CategoricalRankColumnModel<CATEGORY_TYPE> extends ABasicFilterableR
 		return selection.size() < metaData.size();
 	}
 
-	public Set<CATEGORY_TYPE> getCatValue(IRow row) {
-		Set<CATEGORY_TYPE> r = data.apply(row);
-		if (r == null)
-			return Collections.emptySet();
-		return r;
+	public CATEGORY_TYPE getCatValue(IRow row) {
+		return data.apply(row);
 	}
 
 	@Override
 	protected void updateMask(BitSet todo, List<IRow> data, BitSet mask) {
 		for (int i = todo.nextSetBit(0); i >= 0; i = todo.nextSetBit(i + 1)) {
-			boolean found = false;
-			for (CATEGORY_TYPE v : this.data.apply(data.get(i)))
-				if (selection.contains(v)) {
-					mask.set(i, true);
-					found = true;
-					break;
-				}
-			if (!found)
-				mask.set(i, false);
+			CATEGORY_TYPE v = this.data.apply(data.get(i));
+			mask.set(i, selection.contains(v));
 		}
 	}
 
@@ -178,13 +166,14 @@ public class CategoricalRankColumnModel<CATEGORY_TYPE> extends ABasicFilterableR
 	public Map<CATEGORY_TYPE, Integer> getHist() {
 		Map<CATEGORY_TYPE, Integer> hist = new HashMap<>();
 		for (IRow r : getMyRanker()) {
-			for (CATEGORY_TYPE v : getCatValue(r)) {
-				Integer c = hist.get(v);
-				if (c == null)
-					hist.put(v, 1);
-				else
-					hist.put(v, c + 1);
-			}
+			CATEGORY_TYPE v = getCatValue(r);
+			if (v == null) // TODO nan
+				continue;
+			Integer c = hist.get(v);
+			if (c == null)
+				hist.put(v, 1);
+			else
+				hist.put(v, c + 1);
 		}
 		return hist;
 	}
@@ -249,14 +238,10 @@ public class CategoricalRankColumnModel<CATEGORY_TYPE> extends ABasicFilterableR
 
 		@Override
 		protected String getTooltip() {
-			Set<CATEGORY_TYPE> value = getCatValue(getLayoutDataAs(IRow.class, null));
-			if (value.isEmpty())
+			CATEGORY_TYPE value = getCatValue(getLayoutDataAs(IRow.class, null));
+			if (value == null)
 				return null;
-			StringBuilder b = new StringBuilder();
-			for (CATEGORY_TYPE v : value)
-				b.append(metaData.get(v)).append(", ");
-			b.setLength(b.length() - 2);
-			return b.toString();
+			return metaData.get(value);
 		}
 	}
 

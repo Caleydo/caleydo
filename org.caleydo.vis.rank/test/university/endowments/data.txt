@@ -1,0 +1,833 @@
+1;Harvard University;Mass.;30,435,375;31,728,080;-4.1%
+2;Yale University;Conn.;19,345,000;19,374,000;-0.1%
+3;University of Texas System;Tex.;18,263,850;17,148,649;6.5%
+4;Stanford University;Calif.;17,035,804;16,502,606;3.2%
+5;Princeton University;N.J.;16,954,128;17,109,508;-0.9%
+6;Massachusetts Institute of Technology;Mass.;10,149,564;9,712,628;4.5%
+7;University of Michigan;Mich.;7,691,042;7,834,752;-1.8%
+8;Columbia University;N.Y.;7,654,152;7,789,579;-1.7%
+9;Texas A&M University System and Foundations;Tex.;7,638,555;6,999,517;9.1%
+10;Northwestern University;Ill.;7,118,595;7,182,745;-0.9%
+11;University of Pennsylvania;Pa.;6,754,658;6,582,029;2.6%
+12;University of Chicago;Ill.;6,570,875;6,575,126;-0.1%
+13;University of Notre Dame;Ind.;6,329,866;6,259,598;1.1%
+14;University of California;Calif.;5,962,906;6,342,217;-6.0%
+15;Duke University;N.C.;5,555,196;5,747,377;-3.3%
+16;Emory University;Ga.;5,461,158;5,400,367;1.1%
+17;Washington University in St. Louis;Mo.;5,225,992;5,280,143;-1.0%
+18;Cornell University;N.Y.;4,946,954;5,059,406;-2.2%
+19;University of Virginia;Va.;4,788,852;4,760,515;0.6%
+20;Rice University;Tex.;4,418,595;4,451,452;-0.7%
+21;University of Southern California;Calif.;3,488,933;3,517,173;-0.8%
+22;Dartmouth College;N.H.;3,486,383;3,413,406;2.1%
+23;Vanderbilt University;Tenn.;3,399,293;3,414,514;-0.4%
+24;New York University;N.Y.;2,755,000;2,827,000;-2.5%
+25;Brown University;R.I.;2,624,332;2,653,514;-1.1%
+26;University of Pittsburgh;Pa.;2,618,436;2,527,398;3.6%
+27;Johns Hopkins University;Md.;2,593,316;2,598,467;-0.2%
+28;University of Minnesota and Foundations;Minn.;2,494,050;2,503,305;-0.4%
+29;Ohio State University;Ohio;2,366,033;2,120,714;11.6%
+30;University of North Carolina at Chapel Hill and Foundations;N.C;2,179,177;2,260,970;-3.6%
+31;University of Wisconsin Foundation;Wis.;2,139,910;2,214,651;-3.4%
+32;University of Washington;Wash.;2,111,332;2,154,494;-2.0%
+33;Purdue University;Ind.;1,916,968;2,001,601;-4.2%
+34;University of Richmond;Va.;1,868,083;1,877,193;-0.5%
+35;Williams College;Mass.;1,799,377;1,784,305;0.8%
+36;Pennsylvania State University;Pa.;1,779,958;1,725,138;3.2%
+37;California Institute of Technology;Calif.;1,746,526;1,772,369;-1.5%
+38;Michigan State University and Foundation;Mich.;1,721,100;1,718,101;0.2%
+39;Pomona College;Calif.;1,679,640;1,700,454;-1.2%
+40;University of Illinois and Foundation;Ill.;1,667,397;1,600,603;4.2%
+41;Rockefeller University;N.Y.;1,661,571;1,746,363;-4.9%
+42;Boston College;Mass.;1,645,900;1,726,100;-4.6%
+43;Amherst College;Mass.;1,640,666;1,641,511;-0.1%
+44;Georgia Tech and Foundation;Ga.;1,608,248;1,619,719;-0.7%
+45;Case Western Reserve University;Ohio;1,600,013;1,703,165;-6.1%
+46;University of Rochester;N.Y.;1,581,773;1,622,812;-2.5%
+47;Indiana University and Foundation;Ind.;1,576,615;1,574,815;0.1%
+48;Swarthmore College;Pa.;1,498,775;1,508,483;-0.6%
+49;University of Toronto;Ont.;1,485,927;1,599,134;-7.1%
+50;Wellesley College;Mass.;1,444,613;1,499,872;-3.7%
+51;Smith College;Mass.;1,409,755;1,439,485;-2.1%
+52;Grinnell College;Iowa;1,383,856;1,500,219;-7.8%
+53;Tufts University;Mass.;1,351,166;1,403,883;-3.8%
+54;UCLA Foundation;Calif.;1,331,408;1,486,244;-10.4%
+55;George Washington University;D.C.;1,305,892;1,331,101;-1.9%
+56;University of Florida Foundation;Fla.;1,263,277;1,295,313;-2.5%
+57;Washington and Lee University;Va.;1,261,553;1,218,132;3.6%
+58;University of Nebraska;Neb.;1,215,402;1,241,577;-2.1%
+59;Kansas University Endowment Association;Kan.;1,182,333;1,250,443;-5.4%
+60;Texas Christian University;Tex.;1,180,481;1,193,790;-1.1%
+61;Southern Methodist University;Tex.;1,177,176;1,196,508;-1.6%
+62;University of Oklahoma;Okla.;1,172,463;1,212,023;-3.3%
+63;University of Missouri System;Mo.;1,171,758;1,119,032;4.7%
+64;Georgetown University;D.C.;1,141,752;1,160,291;-1.6%
+65;Boston University;Mass.;1,103,652;1,159,583;-4.8%
+66;University of California Berkeley Foundation;Calif.;1,089,411;1,053,661;3.4%
+67;University of Delaware;Del.;1,087,870;1,138,204;-4.4%
+68;Yeshiva University;N.Y.;1,054,052;1,069,642;-1.5%
+69;Lehigh University;Pa.;1,035,593;1,077,430;-3.9%
+70;University of British Columbia;B.C.;1,029,199;1,149,367;-10.5%
+71;Wake Forest University;N.C.;1,000,133;1,032,452;-3.1%
+72;Carnegie Mellon University;Pa.;987,054;1,017,338;-3.0%
+73;University of Alabama System;Ala.;986,495;995,147;-0.9%
+74;University of Iowa and Foundation;Iowa;981,104;1,044,097;-6.0%
+75;University of Cincinnati;Ohio;976,814;1,004,368;-2.7%
+76;Baylor University;Tex.;964,161;1,003,929;-4.0%
+77;Tulane University;La.;960,972;1,014,985;-5.3%
+78;McGill University;Quebec;957,968;993,107;-3.5%
+79;Berea College;Ky.;942,618;978,735;-3.7%
+80;Syracuse University;N.Y.;940,056;913,662;2.9%
+81;Trinity University;Tex.;908,416;854,895;6.3%
+82;Bowdoin College;Me.;902,364;904,215;-0.2%
+83;University of Kentucky;Ky.;900,158;915,924;-1.7%
+84;Middlebury College;Vt.;879,690;907,668;-3.1%
+85;Texas Tech University System;Tex.;869,006;890,930;-2.5%
+86;Princeton Theological Seminary;N.J.;867,626;914,713;-5.1%
+87;Saint Louis University;Mo.;852,842;880,251;-3.1%
+88;Brookings Institution;D.C.;844,203;275,357;206.6%
+89;University of Tennessee System;Tenn.;826,701;848,329;-2.5%
+90;Berry College;Ga.;813,969;752,544;8.2%
+91;University of Maryland Foundation;Md.;812,871;791,809;2.7%
+92;Vassar College;N.Y.;804,912;814,130;-1.1%
+93;Carnegie Institution of Washington;D.C.;792,882;792,211;0.1%
+94;Baylor College of Medicine;Tex.;789,997;838,481;-5.8%
+95;University of Tulsa;Okla.;784,546;800,925;-2.0%
+96;University of Colorado Foundation;Colo.;771,320;784,580;-1.7%
+97;University of Arkansas Fayetteville;Ark.;770,550;788,668;-2.3%
+98;University of Alberta;Alb.;764,569;815,274;-6.2%
+99;University of Georgia Foundation;Ga.;744,305;745,765;-0.2%
+100;Washington State University;Wash.;737,409;722,717;2.0%
+101;University of Louisville Foundation;Ky.;726,244;772,157;-5.9%
+102;Rutgers, the State University of New Jersey;N.J.;693,515;698,507;-0.7%
+103;Santa Clara University;Calif.;688,118;716,821;-4.0%
+104;Colgate University;N.Y.;687,344;693,436;-0.9%
+105;University of Miami;Fla.;678,694;719,852;-5.7%
+106;University of California San Francisco Foundation;Calif.;675,180;643,107;5.0%
+107;Oklahoma State University and Foundation;Okla.;675,030;681,744;-1.0%
+108;Oberlin College;Ohio;674,587;699,895;-3.6%
+109;Brandeis University;Mass.;674,522;703,666;-4.1%
+110;University of Utah;Utah;670,411;668,683;0.3%
+111;Louisiana State University System;La.;665,764;672,790;-1.0%
+112;University of Houston System and Foundation;Tex.;652,106;662,984;-1.6%
+113;Denison University;Ohio;645,851;654,584;-1.3%
+114;Carleton College;Minn.;645,654;653,465;-1.2%
+115;Bryn Mawr College;Pa.;645,426;671,103;-3.8%
+116;College of William and Mary Foundation;Va.;644,233;624,726;3.1%
+117;Cooper Union for the Advancement of Science and Art;N.Y.;641,324;607,135;5.6%
+118;North Carolina State University and Foundations;N.C.;635,326;617,632;2.9%
+119;Hamilton College;N.Y.;635,235;657,529;-3.4%
+120;Macalester College;Minn.;634,526;654,230;-3.0%
+121;Rochester Institute of Technology;N.Y.;627,786;639,673;-1.9%
+122;Pepperdine University;Calif.;607,953;604,635;0.5%
+123;Iowa State University and Foundation;Iowa;604,897;612,283;-1.2%
+124;Wesleyan University;Conn.;600,529;589,811;1.8%
+125;Colby College;Me.;599,557;611,441;-1.9%
+126;Bucknell University;Pa.;599,216;575,367;4.1%
+127;Loma Linda University;Calif.;597,669;552,452;8.2%
+128;Queen's University;Ont.;595,627;633,784;-6.0%
+129;Virginia Tech Foundation;Va.;594,776;600,648;-1.0%
+130;Principia Corporation;Mo.;593,054;679,232;-12.7%
+131;College of the Holy Cross;Mass.;589,769;607,712;-3.0%
+132;Rensselaer Polytechnic Institute;N.Y.;583,350;621,916;-6.2%
+133;Mount Holyoke College;Mass.;582,623;602,481;-3.3%
+134;Northeastern University;Mass.;566,767;588,400;-3.7%
+135;University of Massachusetts Foundation;Mass.;565,092;529,262;6.8%
+136;University of Arizona and Foundation;Ariz.;563,655;552,351;2.0%
+137;Lafayette College;Pa.;556,918;559,797;-0.5%
+138;Drexel University;Pa.;555,381;525,211;5.7%
+139;Furman University;S.C.;550,266;572,162;-3.8%
+140;Colorado College;Colo.;533,206;541,998;-1.6%
+141;Claremont McKenna College;Calif.;520,583;543,236;-4.2%
+142;University of South Carolina System;S.C.;513,936;494,358;4.0%
+143;Davidson College;N.C.;511,393;509,583;0.4%
+144;University at Buffalo Foundation;N.Y.;511,020;494,791;3.3%
+145;Arizona State University and Foundation;Ariz.;500,667;514,724;-2.7%
+146;American University of Beirut;N.Y.;498,982;415,924;20.0%
+147;McMaster University;Ont.;498,427;521,307;-4.4%
+148;Florida State University Foundation;Fla.;497,709;525,260;-5.2%
+149;University of Calgary;Alb.;491,957;511,495;-3.8%
+150;Fordham University;N.Y.;491,585;457,980;7.3%
+151;University System of New Hampshire and Foundations;N.H.;490,080;362,547;35.2%
+152;American University in Cairo;N.Y.;485,000;480,000;1.0%
+153;DePauw University;Ind.;483,047;500,921;-3.6%
+154;Clemson University and Foundation;S.C.;482,866;473,748;1.9%
+155;University of Oregon Foundation;Ore.;477,599;467,211;2.2%
+156;Medical College of Wisconsin;Wis.;470,510;487,921;-3.6%
+157;University of Mississippi Foundation;Miss.;461,913;469,006;-1.5%
+158;Auburn University and Foundation;Ala.;461,727;471,851;-2.1%
+159;Howard University;D.C.;460,712;473,100;-2.6%
+160;Rush University Medical Center;Ill.;457,217;463,028;-1.3%
+161;Oklahoma State Regents for Higher Education;Okla.;447,484;442,985;1.0%
+162;Reed College;Ore.;439,705;398,583;10.3%
+163;Virginia Commonwealth University;Va.;438,140;349,699;25.3%
+164;Oregon Health and Science University Foundation;Ore.;433,288;455,721;-4.9%
+165;University of South Alabama and Foundation;Ala.;423,761;415,496;2.0%
+166;Trinity College;Conn.;422,513;416,528;1.4%
+167;American University;D.C.;419,500;421,000;-0.4%
+168;West Virginia University Foundation;W.Va.;417,504;392,001;6.5%
+169;Ohio University and Foundation;Ohio;408,987;336,000;21.7%
+170;Loyola University of Chicago;Ill.;408,036;390,394;4.5%
+171;Marquette University;Wis.;407,040;401,208;1.5%
+172;Oregon State University Foundation;Ore.;403,606;411,964;-2.0%
+173;National University;Calif.;402,954;400,663;0.6%
+174;Whitman College;Wash.;400,968;395,840;1.3%
+175;University of Dayton;Ohio;397,794;414,504;-4.0%
+176;Haverford College;Pa.;387,564;402,730;-3.8%
+177;Miami University;Ohio;387,222;403,070;-3.9%
+178;University of Manitoba;Man.;383,672;390,957;-1.9%
+179;University of Denver (Colorado Seminary);Colo.;373,395;345,214;8.2%
+180;University of California San Diego Foundation;Calif.;371,109;378,506;-2.0%
+181;Creighton University;Neb.;368,787;375,221;-1.7%
+182;Villanova University;Pa.;366,106;370,292;-1.1%
+183;Dalhousie University;N.S.;364,597;382,130;-4.6%
+184;Lebanese American University;N.Y.;362,161;366,943;-1.3%
+185;Loyola Marymount University;Calif.;361,096;374,438;-3.6%
+186;University of St. Thomas;Minn.;358,847;371,938;-3.5%
+187;Worcester Polytechnic Institute;Mass.;358,640;374,430;-4.2%
+188;University of Wyoming and Foundation;Wyo.;358,530;353,560;1.4%
+189;St. John's University;N.Y.;350,486;359,494;-2.5%
+190;DePaul University;Ill.;349,234;348,255;0.3%
+191;University of San Diego;Calif.;345,593;326,821;5.7%
+192;Mississippi State University and Foundation;Miss.;343,857;346,676;-0.8%
+193;University of New Mexico and Foundation;N.M.;343,321;349,145;-1.7%
+194;Franklin W. Olin College of Engineering;Mass.;338,212;369,065;-8.4%
+195;Miami Dade College and Foundation;Fla.;336,106;348,686;-3.6%
+196;Rollins College;Fla.;334,745;349,115;-4.1%
+197;University of South Florida Foundation;Fla.;334,132;349,320;-4.3%
+198;St. Olaf College;Minn.;333,460;342,729;-2.7%
+199;Occidental College;Calif.;330,720;342,393;-3.4%
+200;Kansas State University Foundation;Kan.;329,240;337,460;-2.4%
+201;Dickinson College;Pa.;325,684;326,551;-0.3%
+202;University of Vermont;Vt.;325,555;343,050;-5.1%
+203;Wabash College;Ind.;324,996;340,720;-4.6%
+204;Earlham College;Ind.;324,381;328,455;-1.2%
+205;University of the South;Tenn.;318,951;318,710;0.1%
+206;Union College;N.Y.;316,818;321,902;-1.6%
+207;Wheaton College;Ill.;312,802;322,603;-3.0%
+208;University of Connecticut and Foundations;Conn.;311,331;312,329;-0.3%
+209;University of Toledo and Foundation;Ohio;310,914;197,374;57.5%
+210;Clark University;Mass.;309,755;320,453;-3.3%
+211;Spelman College;Ga.;309,139;326,929;-5.4%
+212;Hofstra University;N.Y.;308,640;274,262;12.5%
+213;University of California Irvine Foundation;Calif.;300,220;301,211;-0.3%
+214;Abilene Christian University;Tex.;299,110;299,109;0.0%
+215;Medical College of Virginia Foundation;Va.;298,225;256,462;16.3%
+216;College of the Ozarks;Mo.;298,049;330,524;-9.8%
+217;Rhode Island School of Design;R.I.;297,207;318,678;-6.7%
+218;University of Victoria Foundation;B.C.;291,362;304,940;-4.5%
+219;Franklin and Marshall College;Pa.;285,108;303,321;-6.0%
+220;Skidmore College;N.Y.;283,059;299,365;-5.4%
+221;Temple University;Pa.;277,479;280,731;-1.2%
+222;Virginia Military Institute Foundation;Va.;272,298;300,372;-9.3%
+223;Quinnipiac University;Conn.;272,088;277,466;-1.9%
+224;Rhodes College;Tenn.;271,509;283,372;-4.2%
+225;Catholic University of America;D.C.;265,117;259,528;2.2%
+226;University of Alaska Foundation;Alaska;263,983;257,781;2.4%
+227;Scripps College;Calif.;256,997;266,869;-3.7%
+228;Loyola University New Orleans;La.;253,369;266,205;-4.8%
+229;Simon Fraser University;B.C.;252,744;255,984;-1.3%
+230;Southwestern University;Tex.;250,623;268,983;-6.8%
+231;University of Puget Sound;Wash.;250,468;251,291;-0.3%
+232;Berklee College of Music;Mass.;248,371;245,068;1.3%
+233;Wayne State University;Mich.;247,111;251,309;-1.7%
+234;Fairfield University;Conn.;245,284;254,004;-3.4%
+235;Johnson and Wales University;Fla.;240,317;246,444;-2.5%
+236;Medical University of South Carolina Foundation;S.C.;239,472;230,286;4.0%
+237;Agnes Scott College;Ga.;239,288;257,860;-7.2%
+238;University of Nevada Reno Foundation and Athletic Association;Nev.;238,286;235,404;1.2%
+239;Babson College;Mass.;237,538;241,367;-1.6%
+240;Bradley University;Ill.;236,435;241,941;-2.3%
+241;Hampton University;Va.;232,551;240,014;-3.1%
+242;College of Wooster;Ohio;232,076;247,480;-6.2%
+243;St. Lawrence University;N.Y.;230,276;239,822;-4.0%
+244;Gettysburg College;Pa.;229,115;237,706;-3.6%
+245;Harvey Mudd College;Calif.;225,509;243,125;-7.2%
+246;Colorado State University Foundation;Colo.;225,362;221,231;1.9%
+247;University of Maryland College Park Foundation;Md.;225,053;225,257;-0.1%
+248;Seton Hall University;N.J.;224,532;231,734;-3.1%
+249;Barnard College;N.Y.;216,447;218,478;-0.9%
+250;Bates College;Me.;216,156;231,451;-6.6%
+251;University of Hawaii Foundation;Hawaii;211,970;215,119;-1.5%
+252;Connecticut College;Conn.;211,151;212,622;-0.7%
+253;Utah State University;Utah;209,188;208,986;0.1%
+254;Nevada System of Higher Education;Nev.;208,000;217,000;-4.1%
+255;Youngstown State University Foundation;Ohio;207,000;189,916;9.0%
+256;University of San Francisco;Calif.;206,605;213,177;-3.1%
+257;Centre College of Kentucky;Ky.;206,169;212,957;-3.2%
+258;University of Saskatchewan;Sask.;205,312;215,544;-4.7%
+259;Willamette University;Ore.;205,186;226,567;-9.4%
+260;New School;N.Y.;204,783;216,082;-5.2%
+261;University of California Davis Foundation;Calif.;204,131;201,135;1.5%
+262;Western Michigan University Foundation;Mich.;204,124;198,436;2.9%
+263;Colorado School of Mines Foundation;Colo.;204,083;196,068;4.1%
+264;Citadel;S.C.;203,989;208,456;-2.1%
+265;Ithaca College;N.Y.;202,870;208,913;-2.9%
+266;Carleton University;Ont.;201,785;250,851;-19.6%
+267;University of the Pacific;Calif.;200,467;212,176;-5.5%
+268;Wichita State University Foundation;Kan.;199,316;208,667;-4.5%
+269;University of Memphis;Tenn.;198,362;195,060;1.7%
+270;University of North Carolina at Greensboro;N.C.;198,036;204,577;-3.2%
+271;Lawrence University;Wis.;194,312;214,651;-9.5%
+272;Bentley University;Mass.;192,708;199,966;-3.6%
+273;Mercer University;Ga.;191,665;196,964;-2.7%
+274;Drew University;N.J.;190,616;194,344;-1.9%
+275;Illinois Wesleyan University;Ill.;189,764;185,785;2.1%
+276;University of Idaho Foundation;Idaho;188,511;192,003;-1.8%
+277;Chapman University;Calif.;188,070;190,612;-1.3%
+278;Lewis and Clark College;Ore.;186,616;201,610;-7.4%
+279;Kenyon College;Ohio;184,782;179,923;2.7%
+280;Goucher College;Md.;183,717;188,336;-2.5%
+281;New Mexico State University and Foundation;N.M.;181,134;186,737;-3.0%
+282;Regent University;Va.;181,046;193,921;-6.6%
+283;Philadelphia College of Osteopathic Medicine;Pa.;180,919;162,281;11.5%
+284;Illinois Institute of Technology;Ill.;180,231;194,206;-7.2%
+285;University of Ottawa;Ont.;180,022;187,095;-3.8%
+286;University of New Brunswick;N.B.;178,768;186,786;-4.3%
+287;University of Nevada Las Vegas Foundation;Nev.;177,697;168,560;5.4%
+288;Duquesne University;Pa.;177,211;171,120;3.6%
+289;Ohio Wesleyan University;Ohio;175,871;186,706;-5.8%
+290;Florida Atlantic University Foundation;Fla.;172,231;179,739;-4.2%
+291;Kalamazoo College;Mich.;169,496;155,218;9.2%
+292;Saint Joseph's University;Pa.;168,834;173,115;-2.5%
+293;University of Akron and Foundation;Ohio;168,657;186,530;-9.6%
+294;California Polytechnic State University and Foundation;Calif.;168,372;173,419;-2.9%
+295;Old Dominion University;Va.;168,087;170,176;-1.2%
+296;Washington College;Md.;167,178;173,557;-3.7%
+297;Mills College;Calif.;165,768;183,397;-9.6%
+298;Ball State University Foundation;Ind.;165,450;161,671;2.3%
+299;Columbia Theological Seminary;Ga.;165,132;172,900;-4.5%
+300;Valparaiso University;Ind.;163,530;163,721;-0.1%
+301;Rose-Hulman Institute of Technology;Ind.;163,278;178,196;-8.4%
+302;Hobart and William Smith Colleges;N.Y.;161,338;174,646;-7.6%
+303;John Carroll University;Ohio;159,892;169,294;-5.6%
+304;Simmons College;Mass.;159,647;165,341;-3.4%
+305;Wheaton College;Mass.;159,484;164,948;-3.3%
+306;Claremont Graduate University;Calif.;158,491;167,654;-5.5%
+307;Clarkson University;N.Y.;158,330;165,144;-4.1%
+308;Hendrix College;Ark.;157,993;170,587;-7.4%
+309;University of South Dakota Foundation;S.D.;157,953;155,901;1.3%
+310;Lesley University;Mass.;156,354;163,936;-4.6%
+311;Loyola University;Md.;156,122;165,933;-5.9%
+312;Albion College;Mich.;156,008;162,366;-3.9%
+313;Lycoming College;Pa.;155,222;152,275;1.9%
+314;SUNY Stony Brook Foundation;N.Y.;155,172;139,026;11.6%
+315;Hollins University;Va.;154,465;152,718;1.1%
+316;Gallaudet University;D.C.;153,163;162,610;-5.8%
+317;Drake University;Iowa;151,994;153,128;-0.7%
+318;Inter American University of Puerto Rico;Puerto Rico;151,453;153,531;-1.4%
+319;Wofford College;S.C.;151,173;161,344;-6.3%
+320;Hope College;Mich.;150,928;153,813;-1.9%
+321;Ohio Northern University;Ohio;150,035;143,786;4.3%
+322;Muhlenberg College;Pa.;149,467;150,241;-0.5%
+323;Butler University;Ind.;149,004;157,549;-5.4%
+324;University of Maine Foundation;Maine;148,298;149,060;-0.5%
+325;University of the Sciences in Philadelphia;Pa.;147,781;153,964;-4.0%
+326;Stetson University;Fla.;147,683;143,914;2.6%
+327;Stonehill College;Mass.;146,702;151,226;-3.0%
+328;Allegheny College;Pa.;146,516;153,505;-4.6%
+329;Bryant University;R.I.;141,803;148,715;-4.6%
+330;Saint John's University;Minn.;141,510;144,114;-1.8%
+331;Rowan University Foundation;N.J.;140,542;142,999;-1.7%
+332;University of North Dakota Foundation;N.D.;140,260;122,283;14.7%
+333;Stevens Institute of Technology;N.J.;140,236;144,042;-2.6%
+334;Washburn University Foundation;Kan.;137,477;142,790;-3.7%
+335;San Diego State University;Calif.;136,408;135,191;0.9%
+336;University of North Carolina at Charlotte;N.C.;136,067;140,913;-3.4%
+337;Randolph College;Va.;135,271;149,230;-9.4%
+338;St. Mary's University;Tex.;134,369;146,361;-8.2%
+339;University of Montana Foundation;Mont.;133,008;136,310;-2.4%
+340;Florida International University;Fla.;132,554;135,996;-2.5%
+341;Elon University;N.C.;131,212;120,491;8.9%
+342;California State University Fresno;Calif.;129,448;127,293;1.7%
+343;Asbury Theological Seminary;Ky.;129,445;137,246;-5.7%
+344;Bowling Green State University Foundation;Ohio;129,430;141,788;-8.7%
+345;Hampden-Sydney College;Va.;128,988;131,304;-1.8%
+346;Suffolk University;Mass.;128,935;128,044;0.7%
+347;Hanover College;Ind.;127,858;137,301;-6.9%
+348;Transylvania University;Ky.;127,771;124,764;2.4%
+349;East Carolina University;N.C.;127,681;128,551;-0.7%
+350;Mennonite Education Agency Investment Fund;Ind.;127,417;138,636;-8.1%
+351;Illinois College;Ill.;126,041;124,899;0.9%
+352;University of Scranton;Pa.;125,154;131,881;-5.1%
+353;St. John's College at Annapolis and Santa Fe;N.M.;124,888;129,942;-3.9%
+354;Messiah College;Pa.;123,841;130,236;-4.9%
+355;University of Central Florida Foundation;Fla.;122,609;125,669;-2.4%
+356;Saint Mary's College of California;Calif.;122,591;128,905;-4.9%
+357;Gonzaga University;Wash.;122,378;121,220;1.0%
+358;Pace University;N.Y.;121,762;124,109;-1.9%
+359;Saint Mary's College;Ind.;119,910;127,990;-6.3%
+360;Montana State University Foundation;Mont.;119,821;115,687;3.6%
+361;Susquehanna University;Pa.;119,543;115,854;3.2%
+362;Austin College;Tex.;119,457;124,895;-4.4%
+363;Randolph-Macon College;Va.;118,586;120,319;-1.4%
+364;Texas State University San Marcos;Tex.;118,570;119,711;-1.0%
+365;Luther College;Iowa;118,131;116,745;1.2%
+366;Le Moyne College;N.Y.;117,867;122,975;-4.2%
+367;Medical College of Georgia Foundation;Ga.;117,426;121,259;-3.2%
+368;Xavier University;Ohio;117,353;119,509;-1.8%
+369;Beloit College;Wis.;116,521;115,217;1.1%
+370;Mount Allison University;N.B.;116,450;119,872;-2.9%
+371;University of Mount Union;Ohio;116,402;118,865;-2.1%
+372;Augustana College (Ill.);Ill.;115,912;118,922;-2.5%
+373;St. Louis College of Pharmacy;Mo.;115,572;111,758;3.4%
+374;Buena Vista University;Iowa;114,246;124,746;-8.4%
+375;Baldwin Wallace University;Ohio;113,889;119,746;-4.9%
+376;Roanoke College;Va.;113,871;115,379;-1.3%
+377;California Institute of the Arts;Calif.;113,190;118,898;-4.8%
+378;Sacred Heart University;Conn.;112,728;108,337;4.1%
+379;University of North Texas System;Tex.;112,594;108,663;3.6%
+380;Meharry Medical College;Tenn.;112,455;107,529;4.6%
+381;University of Hartford;Conn.;112,389;114,316;-1.7%
+382;Georgia State University Foundation;Ga.;112,140;113,199;-0.9%
+383;Gustavus Adolphus College;Minn.;111,472;109,372;1.9%
+384;Western Kentucky University and Foundations;Ky.;111,043;114,415;-2.9%
+385;Pitzer College;Calif.;110,203;113,731;-3.1%
+386;Columbia College Chicago;Ill.;109,160;110,722;-1.4%
+387;University of California Santa Barbara;Calif.;109,022;116,022;-6.0%
+388;Lindenwood University;Mo.;108,946;113,332;-3.9%
+389;Florida A&M University Foundation;Fla.;107,743;111,516;-3.4%
+390;Millikin University;Ill.;105,514;106,159;-0.6%
+391;University of Portland;Ore.;105,449;100,179;5.3%
+392;St. Ambrose University;Iowa;105,247;107,281;-1.9%
+393;Ursinus College;Pa.;105,149;109,401;-3.9%
+394;University of Redlands;Calif.;103,849;109,423;-5.1%
+395;Washington and Jefferson College;Pa.;103,817;105,450;-1.5%
+396;Hardin-Simmons University;Tex.;103,262;106,336;-2.9%
+397;Austin Presbyterian Theological Seminary;Tex.;101,659;104,034;-2.3%
+398;Saint Anselm College;N.H.;101,494;100,513;1.0%
+399;Culinary Institute of America;N.Y.;101,105;92,228;9.6%
+400;North Dakota State University Development Foundation;N.D.;100,561;103,043;-2.4%
+401;East Tennessee State University;Tenn.;100,112;96,822;3.4%
+402;Harding University;Ark.;99,123;101,537;-2.4%
+403;Whitworth University;Wash.;98,870;99,247;-0.4%
+404;University of the Incarnate Word;Tex.;98,163;89,219;10.0%
+405;Pratt Institute;N.Y.;97,600;99,014;-1.4%
+406;Alma College;Mich.;96,531;100,964;-4.4%
+407;University of California Riverside Foundation;Calif.;95,234;96,644;-1.5%
+408;Goshen College;Ind.;94,011;99,291;-5.3%
+409;Elmhurst College;Ill.;93,968;96,127;-2.2%
+410;Northern Arizona University Foundation;Ariz.;93,753;91,700;2.2%
+411;University of Rhode Island;R.I.;93,527;93,659;-0.1%
+412;Columbia College;Mo.;93,482;81,616;14.5%
+413;Southern Illinois University Foundation;Ill.;93,347;96,817;-3.6%
+414;Millsaps College;Miss.;91,629;96,107;-4.7%
+415;Moravian College;Pa.;91,586;91,490;0.1%
+416;Wittenberg University;Ohio;90,879;96,083;-5.4%
+417;Doane College;Neb.;90,341;90,405;-0.1%
+418;University of Chattanooga Foundation;Tenn.;90,176;94,602;-4.7%
+419;Cottey College;Mo.;90,051;95,652;-5.9%
+420;North Central College;Ill.;89,942;93,440;-3.7%
+421;Louisville Presbyterian Theological Seminary;Ky.;89,365;88,000;1.6%
+422;McDaniel College;Md.;88,364;88,841;-0.5%
+423;Webster University;Mo.;87,609;84,921;3.2%
+424;Westminster College;Pa.;87,025;90,035;-3.3%
+425;University of the Ozarks;Ark.;86,793;90,917;-4.5%
+426;College of Idaho;Idaho;86,456;91,810;-5.8%
+427;Ouachita Baptist University;Ark.;86,354;89,359;-3.4%
+428;Alfred University;N.Y.;85,945;89,706;-4.2%
+429;Canisius College;N.Y.;85,478;88,527;-3.4%
+430;Sweet Briar College;Va.;84,725;93,811;-9.7%
+431;Weber State University and Foundation;Utah;84,560;85,584;-1.2%
+432;Knox College;Ill.;84,363;84,085;0.3%
+433;Illinois State University Foundation;Ill.;84,318;88,600;-4.8%
+434;Queens University of Charlotte;N.C.;84,049;83,267;0.9%
+435;Coe College;Iowa;84,023;77,851;7.9%
+436;Marshall University Foundation;W.Va.;83,119;83,810;-0.8%
+437;Saint Francis Xavier University;N.S.;82,080;85,919;-4.5%
+438;Central Michigan University;Mich.;81,027;85,267;-5.0%
+439;Franklin College;Ind.;79,997;79,857;0.2%
+440;Emory and Henry College;Va.;79,931;83,421;-4.2%
+441;Presbyterian College;S.C.;79,883;79,726;0.2%
+442;Juniata College;Pa.;79,378;76,871;3.3%
+443;Biola University;Calif.;79,330;74,578;6.4%
+444;Assumption College;Mass.;79,159;81,320;-2.7%
+445;Texas Lutheran University;Tex.;78,957;80,477;-1.9%
+446;Concordia College;Minn.;78,695;84,727;-7.1%
+447;Long Island University;N.Y.;78,325;84,292;-7.1%
+448;Linfield College;Ore.;78,107;81,346;-4.0%
+449;McCormick Theological Seminary;Ill.;77,883;85,137;-8.5%
+450;Monmouth College;Ill.;77,726;73,641;5.5%
+451;Whittier College;Calif.;77,659;77,249;0.5%
+452;Oklahoma City University;Okla.;77,121;79,791;-3.3%
+453;Lamar University and Foundation;Tex.;76,935;69,446;10.8%
+454;Michigan Technological University;Mich.;76,548;78,699;-2.7%
+455;Belmont University;Tenn.;75,978;76,010;0.0%
+456;Wright State University Foundation;Ohio;75,369;77,081;-2.2%
+457;South Dakota State University;S.D.;75,090;72,181;4.0%
+458;University of North Florida Foundation;Fla.;74,889;77,414;-3.3%
+459;Meredith College;N.C.;74,828;79,519;-5.9%
+460;San Jose State University and Tower Foundation;Calif.;74,813;73,100;2.3%
+461;Roosevelt University;Ill.;74,426;78,675;-5.4%
+462;Wentworth Institute of Technology;Mass.;74,417;77,478;-4.0%
+463;New Jersey Institute of Technology;N.J.;74,248;74,978;-1.0%
+464;Lynchburg College;Va.;74,074;78,283;-5.4%
+465;Drury University;Mo.;74,067;77,526;-4.5%
+466;Grand Valley State University;Mich.;73,788;74,106;-0.4%
+467;Northern Kentucky University Foundation;Ky.;73,621;69,115;6.5%
+468;Hamline University;Minn.;73,462;74,041;-0.8%
+469;Pacific Lutheran University;Wash.;73,220;75,369;-2.9%
+470;St. Norbert College;Wis.;72,956;72,286;0.9%
+471;John Brown University;Ark.;72,800;61,894;17.6%
+472;Widener University;Pa.;72,640;78,681;-7.7%
+473;Appalachian State University and Foundation;N.C.;72,183;69,551;3.8%
+474;Niagara University;N.Y.;72,152;77,510;-6.9%
+475;La Salle University;Pa.;71,685;74,227;-3.4%
+476;University of Northern Colorado Foundation;Colo.;71,498;76,493;-6.5%
+477;Lake Forest College;Ill.;71,101;70,653;0.6%
+478;University of Indianapolis;Ind.;70,880;72,857;-2.7%
+479;University of Evansville;Ind.;70,537;74,910;-5.8%
+480;Chatham University;Pa.;70,353;72,894;-3.5%
+481;Boise State University Foundation;Idaho;70,281;72,507;-3.1%
+482;Westmont College;Calif.;70,245;68,278;2.9%
+483;Saint Michael's College;Vt.;69,719;71,232;-2.1%
+484;Oklahoma Christian University;Okla.;69,110;65,058;6.2%
+485;Simpson College;Iowa;69,015;71,397;-3.3%
+486;University of Dubuque;Iowa;68,734;72,364;-5.0%
+487;Indiana Wesleyan University;Ind.;68,126;68,655;-0.8%
+488;Northwood University;Mich.;68,118;69,390;-1.8%
+489;Central College;Iowa;67,648;73,053;-7.4%
+490;Palm Beach Atlantic University;Fla.;67,529;67,320;0.3%
+491;Taylor University;Ind.;67,505;73,119;-7.7%
+492;Sarah Lawrence College;N.Y.;67,438;74,225;-9.1%
+493;Wilson College;Pa.;67,366;71,440;-5.7%
+494;Emporia State University Foundation;Kan.;67,291;67,569;-0.4%
+495;Morehouse School of Medicine;Ga.;66,925;72,916;-8.2%
+496;Franklin University;Ohio;66,791;64,761;3.1%
+497;University of St. Thomas;Tex.;66,346;62,344;6.4%
+498;Guilford College;N.C.;65,932;67,656;-2.5%
+499;University of North Carolina Wilmington;N.C.;65,928;62,826;4.9%
+500;York College of Pennsylvania;Pa.;65,737;68,506;-4.0%
+501;St. Francis College;N.Y.;65,357;67,364;-3.0%
+502;Valencia Community College and Foundation;Fla.;64,981;71,011;-8.5%
+503;Brite Divinity School;Tex.;64,941;72,064;-9.9%
+504;Emmanuel College;Mass.;64,685;64,501;0.3%
+505;Middle Tennessee State University;Tenn.;64,668;64,570;0.2%
+506;Oregon University System;Ore.;64,624;66,278;-2.5%
+507;SUNY Binghamton Foundation;N.Y.;64,577;66,804;-3.3%
+508;Wagner College;N.Y.;64,355;64,443;-0.1%
+509;Converse College;S.C.;64,202;68,518;-6.3%
+510;Maryland Institute College of Art;Md.;64,201;67,059;-4.3%
+511;Mercy College;N.Y.;64,043;31,114;105.8%
+512;Kettering University;Mich.;63,760;66,443;-4.0%
+513;Broward College Foundation;Fla.;63,731;70,439;-9.5%
+514;Cornell College;Iowa;63,667;65,046;-2.1%
+515;California State University Northridge;Calif.;63,640;67,905;-6.3%
+516;Bridgewater College;Va.;62,823;63,735;-1.4%
+517;Ripon College;Wis.;62,251;62,343;-0.1%
+518;McMurry University;Tex.;62,220;62,903;-1.1%
+519;Hood College;Md.;62,064;63,440;-2.2%
+520;University of Southern Mississippi Foundation;Miss.;61,447;63,838;-3.7%
+521;Golden Gate University;Calif.;61,244;59,824;2.4%
+522;Missouri State University Foundation;Mo.;61,166;59,838;2.2%
+523;New York Medical College;N.Y.;61,148;62,836;-2.7%
+524;Marietta College;Ohio;61,018;63,431;-3.8%
+525;Capital University;Ohio;60,643;61,949;-2.1%
+526;Muskingum University;Ohio;59,791;63,644;-6.1%
+527;SUNY Upstate Medical University;N.Y.;59,582;60,137;-0.9%
+528;James Madison University Foundation;Va.;59,578;57,738;3.2%
+529;Tennessee Tech University;Tenn.;58,780;59,449;-1.1%
+530;Hiram College;Ohio;58,736;62,655;-6.3%
+531;Westminster College;Utah;58,682;60,251;-2.6%
+532;Monmouth University;N.J.;58,591;59,928;-2.2%
+533;Warren Wilson College;N.C.;58,018;51,940;11.7%
+534;Hartwick College;N.Y.;57,689;61,162;-5.7%
+535;King's College;Pa.;57,290;55,643;3.0%
+536;Pittsburg State University Foundation;Kan.;57,241;59,333;-3.5%
+537;Manhattan College;N.Y.;56,904;55,846;1.9%
+538;Lipscomb University;Tenn.;56,747;59,577;-4.8%
+539;Moody Bible Institute;Ill.;56,592;52,362;8.1%
+540;Eastern Illinois University Foundation;Ill.;56,454;51,343;10.0%
+541;Nazareth College;N.Y.;55,587;56,715;-2.0%
+542;California State Polytechnic University, Pomona;Calif.;55,580;49,984;11.2%
+543;Florida Southern College;Fla.;55,474;54,581;1.6%
+544;Augustana College;S.D.;54,986;56,671;-3.0%
+545;Oakland University;Mich.;54,968;56,320;-2.4%
+546;Carthage College;Wis.;54,832;51,870;5.7%
+547;Elizabethtown College;Pa.;54,756;56,478;-3.0%
+548;Maryville College;Tenn.;54,222;54,451;-0.4%
+549;University of Arkansas Fort Smith;Ark.;53,576;53,199;0.7%
+550;Eastern Virginia Medical School Foundation;Va.;53,320;46,011;15.9%
+551;California Lutheran University;Calif.;53,110;55,139;-3.7%
+552;St. Edward's University;Tex.;52,972;54,057;-2.0%
+553;Arcadia University;Pa.;52,942;55,477;-4.6%
+554;Iona College;N.Y.;52,861;49,732;6.3%
+555;Shenandoah University;Va.;52,670;53,303;-1.2%
+556;LaGrange College;Ga.;52,469;57,776;-9.2%
+557;Western Carolina University;N.C.;52,455;46,578;12.6%
+558;Albright College;Pa.;52,216;52,617;-0.8%
+559;Saginaw Valley State University Foundation;Mich.;52,210;50,503;3.4%
+560;George Mason University Foundation;Va.;51,846;51,608;0.5%
+561;Pacific University;Ore.;51,255;53,272;-3.8%
+562;San Francisco State University Foundation;Calif.;51,203;48,954;4.6%
+563;Northern Illinois University Foundation;Ill.;51,135;49,890;2.5%
+564;Eastern Michigan University Foundation;Mich.;50,562;47,101;7.3%
+565;Fort Hays State University Foundation;Kan.;50,457;50,624;-0.3%
+566;Rider University;N.J.;50,287;52,520;-4.3%
+567;Montclair State University Foundation;N.J.;50,259;48,729;3.1%
+568;Schreiner University;Tex.;50,083;51,921;-3.5%
+569;College of Central Florida;Fla.;49,719;49,442;0.6%
+570;Seattle Pacific University;Wash.;49,060;49,578;-1.0%
+571;Florida Institute of Technology;Fla.;48,845;49,603;-1.5%
+572;Ana G. Mendez University System;Puerto Rico;48,788;48,952;-0.3%
+573;College of St. Scholastica;Minn.;48,750;48,136;1.3%
+574;St. Bonaventure University;N.Y.;48,655;47,097;3.3%
+575;Eastern Kentucky University Foundation;Ky.;48,650;49,012;-0.7%
+576;University of Northern British Columbia and Foundation;B.C.;48,449;54,757;-11.5%
+577;Lebanon Valley College;Pa.;47,827;49,249;-2.9%
+578;DeSales University;Pa.;47,738;47,091;1.4%
+579;University of West Florida Foundation;Fla.;47,676;55,688;-14.4%
+580;Clark College Foundation;Wash.;47,319;48,250;-1.9%
+581;SUNY Purchase College Foundation;N.Y.;47,155;46,208;2.0%
+582;Indiana University of Pennsylvania;Pa.;47,020;48,807;-3.7%
+583;Nebraska Wesleyan University;Neb.;46,774;47,476;-1.5%
+584;Springfield College;Mass.;46,532;46,119;0.9%
+585;Eckerd College;Fla.;45,268;47,475;-4.6%
+586;Endicott College;Mass.;44,884;38,697;16.0%
+587;Western Washington University Foundation;Wash.;44,734;45,986;-2.7%
+588;Salve Regina University;R.I.;44,393;43,715;1.6%
+589;California State University Long Beach;Calif.;44,084;46,269;-4.7%
+590;Birmingham-Southern College;Ala.;43,636;52,256;-16.5%
+591;Wilkes University;Pa.;43,423;44,829;-3.1%
+592;Keck Graduate Institute of Applied Life Sciences;Calif.;43,308;44,581;-2.9%
+593;Longwood University Foundation;Va.;43,228;42,314;2.2%
+594;Georgian Court University;N.J.;42,954;44,246;-2.9%
+595;Manchester University;Ind.;42,936;42,884;0.1%
+596;Wheelock College;Mass.;42,862;45,420;-5.6%
+597;Indiana State University Foundation;Ind.;42,472;45,966;-7.6%
+598;Mount Saint Mary's University;Md.;42,316;43,729;-3.2%
+599;College of Saint Benedict;Minn.;42,224;43,378;-2.7%
+600;California State University Chico;Calif.;42,174;43,021;-2.0%
+601;New York Chiropractic College;N.Y.;41,861;44,722;-6.4%
+602;Bethune-Cookman University;Fla.;41,818;42,486;-1.6%
+603;Minnesota State University Mankato;Minn.;41,644;39,194;6.3%
+604;Carroll University;Wis.;41,570;41,922;-0.8%
+605;Northwestern College;Ill.;41,318;42,660;-3.1%
+606;Gannon University;Pa.;41,278;40,418;2.1%
+607;Lewis University;Ill.;40,830;39,831;2.5%
+608;Bellarmine University;Ky.;40,393;42,300;-4.5%
+609;Friends University;Kan.;40,294;41,686;-3.3%
+610;Indiana Institute of Technology;Ind.;40,226;41,065;-2.0%
+611;William Peace University;N.C.;40,111;43,563;-7.9%
+612;Portland State University Foundation;Ore.;39,412;40,860;-3.5%
+613;Arkansas State University Foundation;Ark.;39,408;39,479;-0.2%
+614;Ferrum College;Va.;39,339;41,512;-5.2%
+615;Graceland University;Iowa;38,751;41,445;-6.5%
+616;Morningside College;Iowa;38,693;37,636;2.8%
+617;SUNY Oneonta Foundation;N.Y.;38,456;33,003;16.5%
+618;Columbus State University Foundation;Ga.;38,365;38,102;0.7%
+619;Georgia Southern University Foundation;Ga.;38,197;39,918;-4.3%
+620;Houghton College;N.Y.;38,144;39,660;-3.8%
+621;Texas Southern University;Tex.;37,962;36,194;4.9%
+622;Tennessee State University Foundation;Tenn.;37,897;38,130;-0.6%
+623;Western New England University;Mass.;37,786;39,345;-4.0%
+624;Asbury University;Ky.;37,696;38,003;-0.8%
+625;Marywood University;Pa.;37,688;38,461;-2.0%
+626;Hartford Seminary;Conn.;37,453;38,431;-2.5%
+627;Rockhurst University;Mo.;37,417;36,312;3.0%
+628;University of La Verne;Calif.;37,359;36,629;2.0%
+629;Marlboro College;Vt.;37,191;40,748;-8.7%
+630;Radford University Foundation;Va.;37,027;36,047;2.7%
+631;Cleveland Institute of Music;Ohio;36,725;31,038;18.3%
+632;High Point University;N.C.;36,365;37,717;-3.6%
+633;University of Mary Washington;Va.;36,201;36,528;-0.9%
+634;Florida State College at Jacksonville;Fla.;35,810;34,551;3.6%
+635;Kentucky Community and Technical College System;Ky.;35,726;35,329;1.1%
+636;Jacksonville University;Fla.;35,399;30,473;16.2%
+637;Freed-Hardeman University;Tenn.;35,228;34,172;3.1%
+638;University at Albany Foundation;N.Y.;35,190;35,454;-0.7%
+639;Ferris State University and Foundation;Mich.;35,183;36,703;-4.1%
+640;Maryville University of St. Louis;Mo.;35,054;36,068;-2.8%
+641;Sonoma State University Academic Foundation;Calif.;35,018;34,221;2.3%
+642;Fairleigh Dickinson University;N.J.;34,904;31,274;11.6%
+643;University of Charleston;W.Va.;34,700;34,957;-0.7%
+644;California State University Fullerton;Calif.;34,277;32,340;6.0%
+645;Saint Francis University;Pa.;34,159;34,153;0.0%
+646;Virginia State University and Foundation;Va.;33,290;30,701;8.4%
+647;San Francisco Conservatory of Music;Calif.;33,032;33,502;-1.4%
+648;Troy University Foundation;Ala.;32,873;30,640;7.3%
+649;Delaware Valley College;Pa.;32,844;34,146;-3.8%
+650;Shippensburg University Foundation;Pa.;32,069;32,681;-1.9%
+651;College of Saint Rose;N.Y.;31,925;31,664;0.8%
+652;Mary Baldwin College;Va.;31,874;32,163;-0.9%
+653;Harrisburg Area Community College;Pa.;31,769;31,863;-0.3%
+654;McPherson College;Kan.;31,545;33,827;-6.7%
+655;Viterbo University;Wis.;31,527;36,792;-14.3%
+656;Notre Dame of Maryland University;Md.;31,292;32,571;-3.9%
+657;Hampshire College;Mass.;31,103;28,917;7.6%
+658;Northampton County Area Community College Foundation;Pa.;30,296;29,979;1.1%
+659;Heidelberg University;Ohio;30,102;31,469;-4.3%
+660;Brenau University;Ga.;30,044;31,310;-4.0%
+661;Lasell College;Mass.;29,988;29,775;0.7%
+662;Clarke University;Iowa;29,898;30,689;-2.6%
+663;Augsburg College;Minn.;29,778;33,268;-10.5%
+664;Barry University;Fla.;29,714;26,812;10.8%
+665;Rivier University;N.H.;29,280;29,261;0.1%
+666;College of Mount St. Joseph;Ohio;29,090;27,440;6.0%
+667;Fitchburg State University and Foundation;Mass.;29,066;24,314;19.5%
+668;Madonna University;Mich.;28,949;28,983;-0.1%
+669;University of Central Missouri Foundation;Mo.;28,889;27,826;3.8%
+670;Carroll College;Mont.;28,706;23,654;21.4%
+671;Rocky Mountain College;Mont.;28,522;28,365;0.6%
+672;University Foundation at Sacramento State;Calif.;28,317;28,820;-1.7%
+673;National-Louis University;Ill.;28,218;29,343;-3.8%
+674;New College Foundation;Fla.;28,170;29,670;-5.1%
+675;Foundation for Santa Barbara City College;Calif.;28,120;31,077;-9.5%
+676;North Carolina A&T State University;N.C.;28,041;25,178;11.4%
+677;Western Illinois University Foundation;Ill.;28,025;27,876;0.5%
+678;University of North Carolina at Asheville;N.C.;27,723;27,054;2.5%
+679;Montana Tech Foundation;Mont.;27,375;27,994;-2.2%
+680;Jamestown College;N.D.;27,091;28,230;-4.0%
+681;Lawrence Technological University;Mich.;26,973;29,123;-7.4%
+682;Thunderbird School of Global Management;Ariz.;26,972;19,210;40.4%
+683;Graduate Theological Union;Calif.;26,843;28,397;-5.5%
+684;Concordia University St. Paul;Minn.;26,777;25,220;6.2%
+685;Cazenovia College;N.Y.;26,204;27,671;-5.3%
+686;Sinclair Community College Foundation;Ohio;26,193;26,042;0.6%
+687;Winston-Salem State University;N.C.;25,966;25,323;2.5%
+688;Rust College;Miss.;25,755;22,463;14.7%
+689;Robert Morris University;Pa.;25,465;26,185;-2.7%
+690;Misericordia University;Pa.;25,434;24,807;2.5%
+691;SUNY Fredonia College Foundation;N.Y.;24,928;24,027;3.7%
+692;St. Mary's College of Maryland Foundation;Md.;24,550;;
+693;Covenant College;Ga.;24,389;25,392;-4.0%
+694;Ringling College of Art and Design;Fla.;24,166;24,366;-0.8%
+695;Buffalo State College Foundation;N.Y.;24,057;22,732;5.8%
+696;Georgia Southwestern Foundation;Ga.;23,708;24,632;-3.8%
+697;Averett University;Va.;23,559;24,661;-4.5%
+698;Dominican University;Ill.;23,319;24,315;-4.1%
+699;SUNY Cortland Foundation;N.Y.;23,195;21,620;7.3%
+700;Mercyhurst University;Pa.;23,164;24,447;-5.2%
+701;Marymount University;Va.;22,957;23,083;-0.5%
+702;Ohio Dominican University;Ohio;22,784;24,273;-6.1%
+703;Philadelphia University;Pa.;22,564;23,091;-2.3%
+704;Mount Mercy University;Iowa;22,387;20,851;7.4%
+705;Neumann University;Pa.;22,293;21,766;2.4%
+706;Humboldt State University;Calif.;22,270;22,007;1.2%
+707;Central Piedmont Community College Foundation;N.C.;22,119;23,157;-4.5%
+708;Shepherd University;W.Va.;22,078;20,578;7.3%
+709;University of Saint Joseph;Conn.;21,663;21,406;1.2%
+710;West Chester University of Pennsylvania and Foundation;Pa.;21,621;21,010;2.9%
+711;William Mitchell College of Law;Minn.;21,543;21,536;0.0%
+712;Vaughn College of Aeronautics and Technology;N.Y.;21,463;21,343;0.6%
+713;Pacific Union College;Calif.;21,285;23,362;-8.9%
+714;Sage Colleges;N.Y.;20,990;20,972;0.1%
+715;Rhode Island College Foundation;R.I.;20,833;21,013;-0.9%
+716;Eastern Mennonite University;Va.;20,828;21,438;-2.8%
+717;Huntington University;Ind.;20,637;20,569;0.3%
+718;Loras College;Iowa;20,557;20,476;0.4%
+719;Olivet Nazarene University;Ill.;20,311;19,930;1.9%
+720;Trevecca Nazarene University;Tenn.;20,114;19,252;4.5%
+721;Mount Aloysius College;Pa.;20,013;19,449;2.9%
+722;Utica College;N.Y.;20,006;20,197;-0.9%
+723;College of New Rochelle;N.Y.;19,902;21,941;-9.3%
+724;Alverno College;Wis.;19,844;20,911;-5.1%
+725;Northland College;Wis.;19,813;21,353;-7.2%
+726;Cedarville University;Ohio;19,792;20,272;-2.4%
+727;College of New Jersey Foundation;N.J.;19,740;19,143;3.1%
+728;Culver-Stockton College;Mo.;19,657;21,091;-6.8%
+729;Methodist University;N.C.;19,483;18,968;2.7%
+730;College of Saint Elizabeth;N.J.;19,432;20,932;-7.2%
+731;California State University San Bernardino Foundation;Calif.;19,171;19,681;-2.6%
+732;Austin Peay State University and Foundation;Tenn.;18,966;18,654;1.7%
+733;Cedar Crest College;Pa.;18,940;19,793;-4.3%
+734;Thomas M. Cooley Law School;Mich.;18,847;18,479;2.0%
+735;California State University Los Angeles;Calif.;18,559;19,240;-3.5%
+736;American University in Bulgaria;D.C.;18,554;17,387;6.7%
+737;Wisconsin Lutheran College;Wis.;18,553;19,892;-6.7%
+738;SUNY Potsdam College Foundation;N.Y.;18,293;18,553;-1.4%
+739;Roberts Wesleyan College;N.Y.;18,197;16,433;10.7%
+740;Southern California College of Optometry;Calif.;18,123;16,467;10.1%
+741;George Fox University;Ore.;18,038;18,618;-3.1%
+742;St. Thomas University;Fla.;18,005;18,621;-3.3%
+743;Golden Gate Baptist Theological Seminary;Calif.;17,981;14,602;23.1%
+744;California State University Bakersfield Foundation;Calif.;17,961;17,887;0.4%
+745;Colorado Mesa University Foundation;Colo.;17,344;13,817;25.5%
+746;California State University San Marcos;Calif.;17,263;17,921;-3.7%
+747;Walla Walla University;Wash.;17,194;17,660;-2.6%
+748;Peirce College;Pa.;17,090;16,717;2.2%
+749;Spartanburg Methodist College;S.C.;16,969;17,944;-5.4%
+750;Southern New Hampshire University;N.H.;16,760;16,523;1.4%
+751;Foothill De Anza Community College Foundation;Calif.;16,500;13,830;19.3%
+752;Grand View University;Iowa;16,434;15,514;5.9%
+753;Southern Illinois University Edwardsville Foundation;Ill.;16,351;16,375;-0.1%
+754;Kutztown University Foundation;Pa.;16,018;15,076;6.2%
+755;Fayetteville State University;N.C.;15,835;15,081;5.0%
+756;Tri-County Technical College;S.C.;15,639;15,877;-1.5%
+757;Regis College;Mass.;15,353;14,821;3.6%
+758;Pacific Northwest College of Art;Ore.;14,797;14,531;1.8%
+759;Defiance College;Ohio;14,297;14,737;-3.0%
+760;California State University Monterey Bay;Calif.;14,020;13,022;7.7%
+761;SUNY Plattsburgh College Foundation;N.Y.;13,833;14,075;-1.7%
+762;Empire State College Foundation;N.Y.;13,749;14,406;-4.6%
+763;Southern Connecticut State University Foundation;Conn.;13,617;13,691;-0.5%
+764;University of Wisconsin Oshkosh Foundation;Wis.;13,548;13,660;-0.8%
+765;Delta College;Mich.;13,358;13,897;-3.9%
+766;Western Connecticut State University;Conn.;12,764;12,811;-0.4%
+767;Ramapo College of New Jersey;N.J.;12,674;11,832;7.1%
+768;Northern Michigan University;Mich.;12,600;13,370;-5.8%
+769;Clark State Community College;Ohio;12,149;12,301;-1.2%
+770;Oswego College Foundation;N.Y.;12,107;11,514;5.2%
+771;Lakeland College;Wis.;12,095;12,082;0.1%
+772;North Iowa Area Community College;Iowa;12,007;11,508;4.3%
+773;Mount Ida College;Mass.;11,732;11,727;0.0%
+774;Alamo Community College District;Tex.;11,656;11,901;-2.1%
+775;Spalding University;Ky.;11,366;11,517;-1.3%
+776;Kalamazoo Valley Community College Foundation;Mich.;11,237;11,373;-1.2%
+777;Schoolcraft College Foundation;Mich.;11,218;10,659;5.2%
+778;Shawnee State University;Ohio;11,008;11,557;-4.8%
+779;California State University;Calif.;10,933;11,181;-2.2%
+780;Central Oregon Community College Foundation;Ore.;10,815;10,946;-1.2%
+781;Saint Mary-of-the-Woods College;Ind.;10,801;11,049;-2.2%
+782;McLennan Community College Foundation;Tex.;10,760;9,650;11.5%
+783;Trinity Western University;B.C.;10,562;10,996;-3.9%
+784;LeTourneau University;Tex.;10,511;10,029;4.8%
+785;Metropolitan College of New York;N.Y.;10,496;10,059;4.3%
+786;California State University East Bay;Calif.;10,369;10,023;3.5%
+787;Pensacola State College Foundation;Fla.;10,355;10,084;2.7%
+788;Five Colleges;Mass.;10,209;10,617;-3.8%
+789;Florida Memorial University;Fla.;10,183;9,759;4.3%
+790;Chaminade University of Honolulu;Hawaii;10,164;9,305;9.2%
+791;California State University Dominguez Hills Foundation;Calif.;10,159;9,052;12.2%
+792;Dickinson State University Foundation;N.D.;10,001;8,822;13.4%
+793;Keuka College;N.Y.;9,982;8,741;14.2%
+794;Foundation for Florida Gateway College;Fla.;9,588;9,674;-0.9%
+795;California State University Stanislaus Foundation;Calif.;9,232;10,518;-12.2%
+796;California State University Channel Islands;Calif.;9,226;9,890;-6.7%
+797;Olivet College;Mich.;9,207;9,271;-0.7%
+798;University of Southern Nevada;Nev.;9,156;9,766;-6.2%
+799;Spring Arbor University;Mich.;8,963;9,512;-5.8%
+800;Briar Cliff University;Iowa;8,919;9,453;-5.6%
+801;Boston Architectural College;Mass.;8,674;8,688;-0.2%
+802;Holyoke Community College Foundation;Mass.;8,427;8,680;-2.9%
+803;Western University of Health Sciences;Calif.;8,424;8,845;-4.8%
+804;Pacific Lutheran Theological Seminary;Calif.;8,159;8,054;1.3%
+805;Foundation for Reading Area Community College;Pa.;7,867;7,693;2.3%
+806;Dakota State University Foundation;S.D.;7,749;7,686;0.8%
+807;Skagit Valley College Foundation;Wash.;7,621;7,594;0.4%
+808;Denver Seminary;Colo.;7,562;6,967;8.5%
+809;Walsh College;Mich.;7,307;6,023;21.3%
+810;Northeast State Community College;Tenn.;6,885;6,199;11.1%
+811;Keystone College;Pa.;6,741;7,166;-5.9%
+812;Oakton Community College Educational Foundation;Ill.;6,468;7,195;-10.1%
+813;Cornerstone University;Mich.;6,387;;
+814;Pellissippi State Community College Foundation;Tenn.;5,917;5,694;3.9%
+815;Mitchell College;Conn.;5,880;5,918;-0.6%
+816;Capitol College;Md.;5,265;5,200;1.3%
+817;J. Sargeant Reynolds Community College Foundation;Va.;5,233;4,968;5.3%
+818;Metropolitan State University Foundation;Minn.;4,711;4,974;-5.3%
+819;Harford Community College Foundation;Md.;4,686;4,767;-1.7%
+820;Asheville-Buncombe Technical Community College;N.C.;4,529;4,681;-3.2%
+821;College of St. Joseph;Vt.;4,492;4,471;0.5%
+822;La Roche College;Pa.;4,413;4,384;0.7%
+823;Midlands Technical College Foundation;S.C.;4,225;3,934;7.4%
+824;Naval Postgraduate School Foundation;Calif.;4,016;4,143;-3.1%
+825;California Maritime Academy Foundation;Calif.;3,720;3,289;13.1%
+826;Houston Community College Foundation;Tex.;3,663;2,937;24.7%
+827;Elgin Community College Foundation;Ill.;3,400;3,045;11.7%
+828;Hillsborough Community College Foundation;Fla.;3,251;3,163;2.8%
+829;Centenary College;N.J.;2,829;2,911;-2.8%
+830;Texas College;Tex.;2,065;1,830;12.8%
+831;Laboure College;Mass.;1,993;1,967;1.3%
+832;Georgia Perimeter College;Ga.;1,029;854;20.5%
+833;Southern Virginia University;Va.;610;574;6.3%
