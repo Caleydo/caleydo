@@ -36,6 +36,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 
+import com.google.common.collect.Lists;
 import com.jogamp.opengl.util.texture.TextureIO;
 import com.jogamp.opengl.util.texture.spi.awt.IIOTextureProvider;
 import com.jogamp.opengl.util.texture.spi.awt.IIOTextureWriter;
@@ -57,13 +58,14 @@ public abstract class ASWTBasedCanvasFactory implements IGLCanvasFactory {
 	}
 
 	@Override
-	public final void showPopupMenu(IGLCanvas canvas, final Iterable<? extends AContextMenuItem> items) {
+	public final void showPopupMenu(IGLCanvas canvas, Iterable<? extends AContextMenuItem> items) {
+		final Iterable<? extends AContextMenuItem> items2 = Lists.newArrayList(items);
 		final Composite parent = canvas.asComposite();
 		parent.getDisplay().asyncExec(new Runnable() {
 			@Override
 			public void run() {
 				final Menu m = new Menu(parent);
-				for (AContextMenuItem menuItem : items) {
+				for (AContextMenuItem menuItem : items2) {
 					create(m, m, menuItem);
 				}
 				m.setLocation(parent.getDisplay().getCursorLocation());
