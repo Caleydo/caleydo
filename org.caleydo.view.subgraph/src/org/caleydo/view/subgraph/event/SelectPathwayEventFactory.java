@@ -24,20 +24,21 @@ import org.caleydo.datadomain.pathway.AVertexRepBasedEventFactory;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
+import org.caleydo.datadomain.pathway.listener.PathwaySelectionEvent;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 
 /**
- * @author Christian
+ * @author Christian Partl
  *
  */
-public class AddPathwayEventFactory extends AVertexRepBasedEventFactory {
+public class SelectPathwayEventFactory extends AVertexRepBasedEventFactory {
 
 	/**
 	 * @param eventClass
 	 * @param eventSpace
 	 */
-	public AddPathwayEventFactory(String eventSpace) {
+	public SelectPathwayEventFactory(String eventSpace) {
 		super(eventSpace);
 	}
 
@@ -47,7 +48,7 @@ public class AddPathwayEventFactory extends AVertexRepBasedEventFactory {
 			PathwayGraph pathway = PathwayManager.get().getPathwayByTitle(vertexRep.getName(),
 					EPathwayDatabaseType.KEGG);
 			if (pathway != null) {
-				AddPathwayEvent event = new AddPathwayEvent(pathway);
+				PathwaySelectionEvent event = new PathwaySelectionEvent(pathway);
 				event.setEventSpace(eventSpace);
 				return event;
 			}

@@ -155,7 +155,7 @@ public class GLPathwayGridLayout2 implements IGLLayout {
 
 		while (undemotableInfos.size() < infos.size() && !isSufficientHorizontalSpace(getFreeHorizontalSpace(w))) {
 
-			Collections.sort(infos, new WindowDemotabilityComparator());
+			Collections.sort(infos, new WindowDemotabilityComparator(view));
 			Collections.reverse(infos);
 
 			for (PathwayMultiFormInfo info : infos) {
@@ -197,7 +197,7 @@ public class GLPathwayGridLayout2 implements IGLLayout {
 		Set<PathwayMultiFormInfo> unpromotableInfos = new HashSet<>(infos.size());
 		while (unpromotableInfos.size() < infos.size()) {
 
-			Collections.sort(infos, new WindowDemotabilityComparator());
+			Collections.sort(infos, new WindowDemotabilityComparator(view));
 
 			for (PathwayMultiFormInfo info : infos) {
 				LayoutSnapshot snapshotPriorPromotion = new LayoutSnapshot();
@@ -790,8 +790,23 @@ public class GLPathwayGridLayout2 implements IGLLayout {
 
 	private static class WindowDemotabilityComparator implements Comparator<PathwayMultiFormInfo> {
 
+		private GLSubGraph view;
+
+		/**
+		 *
+		 */
+		public WindowDemotabilityComparator(GLSubGraph view) {
+			this.view = view;
+		}
+
 		@Override
 		public int compare(PathwayMultiFormInfo o1, PathwayMultiFormInfo o2) {
+			boolean hasPath1 = view.hasPathPathway(o1.pathway);
+			boolean hasPath2 = view.hasPathPathway(o2.pathway);
+			if (hasPath1 && !hasPath2)
+				return -1;
+			if (hasPath2 && !hasPath1)
+				return 1;
 			int priority1 = o1.getCurrentEmbeddingID().renderPriority();
 			int priority2 = o2.getCurrentEmbeddingID().renderPriority();
 			// younger ones should be ranked lower

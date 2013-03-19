@@ -28,8 +28,8 @@ import javax.media.opengl.GL2;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.datadomain.pathway.IPathwayRepresentation;
+import org.caleydo.datadomain.pathway.IVertexRepBasedEventFactory;
 import org.caleydo.datadomain.pathway.VertexRepBasedContextMenuItem;
-import org.caleydo.datadomain.pathway.VertexRepBasedEventFactory;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 
@@ -100,7 +100,7 @@ public class Level4PathwayRenderer extends ALayoutRenderer implements IPathwayRe
 	}
 
 	@Override
-	public void addVertexRepBasedSelectionEvent(VertexRepBasedEventFactory eventFactory, PickingMode pickingMode) {
+	public void addVertexRepBasedSelectionEvent(IVertexRepBasedEventFactory eventFactory, PickingMode pickingMode) {
 
 	}
 

@@ -21,6 +21,7 @@ package org.caleydo.view.subgraph;
 
 import org.caleydo.core.util.base.DefaultLabelProvider;
 import org.caleydo.core.util.base.ILabelProvider;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.animation.AnimatedGLElementContainer;
@@ -129,6 +130,10 @@ public class GLWindow extends AnimatedGLElementContainer {
 		 * Called when the close button of the window was pressed.
 		 */
 		public void onWindowClosed(GLWindow window);
+	}
+
+	public void setTitleBarColor(Color color) {
+		titleBar.setBarColor(color);
 	}
 
 }

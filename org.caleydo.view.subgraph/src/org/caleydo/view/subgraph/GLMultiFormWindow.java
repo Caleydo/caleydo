@@ -34,6 +34,7 @@ public class GLMultiFormWindow extends GLWindow {
 
 	protected final MultiFormInfo info;
 	protected final GLElementViewSwitchingBar viewSwitchingBar;
+	protected boolean showViewSwitchingBar = true;
 
 	public GLMultiFormWindow(String title, GLSubGraph view, MultiFormInfo info, boolean isScrollable) {
 		super(title, view);
@@ -98,11 +99,26 @@ public class GLMultiFormWindow extends GLWindow {
 	@Override
 	public void setActive(boolean active) {
 		super.setActive(active);
-		if (active) {
+		if (showViewSwitchingBar) {
+			if (active) {
+				viewSwitchingBar.setVisibility(EVisibility.VISIBLE);
+			} else {
+				viewSwitchingBar.setVisibility(EVisibility.NONE);
+			}
+		}
+	}
+
+	/**
+	 * @param showViewSwitchingBar
+	 *            setter, see {@link showViewSwitchingBar}
+	 */
+	public void setShowViewSwitchingBar(boolean showViewSwitchingBar) {
+		this.showViewSwitchingBar = showViewSwitchingBar;
+		if (showViewSwitchingBar) {
 			viewSwitchingBar.setVisibility(EVisibility.VISIBLE);
 		} else {
 			viewSwitchingBar.setVisibility(EVisibility.NONE);
 		}
-	}
 
+	}
 }

@@ -17,42 +17,38 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.subgraph.event;
+package org.caleydo.view.subgraph;
 
-import org.caleydo.core.event.AEvent;
-import org.caleydo.datadomain.pathway.AVertexRepBasedEventFactory;
-import org.caleydo.datadomain.pathway.graph.PathwayGraph;
-import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
-import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
-import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
-import org.caleydo.datadomain.pathway.manager.PathwayManager;
+import java.awt.geom.Rectangle2D;
+
+import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.core.view.opengl.layout2.GLGraphics;
 
 /**
  * @author Christian
  *
  */
-public class AddPathwayEventFactory extends AVertexRepBasedEventFactory {
+public class PortalHighlightRenderer extends GLElement {
+
+	private final Rectangle2D location;
 
 	/**
-	 * @param eventClass
-	 * @param eventSpace
+	 *
 	 */
-	public AddPathwayEventFactory(String eventSpace) {
-		super(eventSpace);
+	public PortalHighlightRenderer(Rectangle2D location) {
+		this.location = location;
 	}
 
 	@Override
-	public AEvent create(PathwayVertexRep vertexRep) {
-		if (vertexRep != null && vertexRep.getType() == EPathwayVertexType.map) {
-			PathwayGraph pathway = PathwayManager.get().getPathwayByTitle(vertexRep.getName(),
-					EPathwayDatabaseType.KEGG);
-			if (pathway != null) {
-				AddPathwayEvent event = new AddPathwayEvent(pathway);
-				event.setEventSpace(eventSpace);
-				return event;
-			}
-		}
-		return null;
+	protected void renderImpl(GLGraphics g, float w, float h) {
+		g.incZ(0.5f);
+		g.color(1, 0, 0, 1)
+				.lineWidth(2)
+				.drawRoundedRect((float) location.getX() + 1, (float) location.getY() + 1,
+						(float) location.getWidth() + 1,
+						(float) location.getHeight() + 1, 8);
+		g.lineWidth(1);
+		g.incZ(-0.5f);
 	}
 
 }

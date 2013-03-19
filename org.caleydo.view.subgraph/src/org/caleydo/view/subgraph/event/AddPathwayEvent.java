@@ -19,9 +19,9 @@
  *******************************************************************************/
 package org.caleydo.view.subgraph.event;
 
-import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
+import org.caleydo.core.event.AEvent;
+import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
-import org.caleydo.datadomain.pathway.listener.AVertexRepBasedEvent;
 import org.caleydo.view.subgraph.GLSubGraph;
 
 /**
@@ -31,11 +31,42 @@ import org.caleydo.view.subgraph.GLSubGraph;
  * @author Christian Partl
  *
  */
-public class AddPathwayEvent extends AVertexRepBasedEvent {
+public class AddPathwayEvent extends AEvent {
+
+	protected PathwayGraph pathway;
+
+	/**
+	 *
+	 */
+	public AddPathwayEvent() {
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 *
+	 */
+	public AddPathwayEvent(PathwayGraph pathway) {
+		this.pathway = pathway;
+	}
 
 	@Override
 	public boolean checkIntegrity() {
-		// TODO Auto-generated method stub
-		return (super.checkIntegrity() && vertexRep.getType() == EPathwayVertexType.map);
+		return pathway != null;
 	}
+
+	/**
+	 * @return the pathway, see {@link #pathway}
+	 */
+	public PathwayGraph getPathway() {
+		return pathway;
+	}
+
+	/**
+	 * @param pathway
+	 *            setter, see {@link pathway}
+	 */
+	public void setPathway(PathwayGraph pathway) {
+		this.pathway = pathway;
+	}
+
 }

@@ -21,6 +21,7 @@ package org.caleydo.view.subgraph;
 
 import org.caleydo.core.util.base.DefaultLabelProvider;
 import org.caleydo.core.util.base.ILabelProvider;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
@@ -39,8 +40,11 @@ import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
  */
 public class GLTitleBar extends GLElementContainer {
 
+	public static final Color DEFAULT_COLOR = new Color(0.6f, 0.6f, 0.6f);
+
 	protected final ILabelProvider labelProvider;
 	protected final GLButton closeButton;
+	protected Color barColor = DEFAULT_COLOR;
 
 	public GLTitleBar(String text) {
 		this(new DefaultLabelProvider(text));
@@ -74,8 +78,17 @@ public class GLTitleBar extends GLElementContainer {
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
-		g.color(0.6f, 0.6f, 0.6f, 1f).fillRoundedRect(0, 0, w, h, 7);
+		g.color(barColor).fillRoundedRect(0, 0, w, h, 7);
 		super.renderImpl(g, w, h);
+	}
+
+	/**
+	 * @param barColor
+	 *            setter, see {@link barColor}
+	 */
+	public void setBarColor(Color barColor) {
+		this.barColor = barColor;
+		repaint();
 	}
 
 }
