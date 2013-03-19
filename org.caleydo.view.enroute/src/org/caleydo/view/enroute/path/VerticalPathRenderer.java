@@ -237,10 +237,13 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
         		bubbleSetRenderer.init(gl);	
         		isBubbleSetInitialized=true;
         	}
-            if(updateStrategy!=null && this.updateStrategy instanceof FixedPathUpdateStrategy){
-            	int i = 0;
+        	int sizeX=Math.round(this.x);
+        	int sizeY= Math.round(this.y);
+            if(updateStrategy!=null && this.updateStrategy instanceof FixedPathUpdateStrategy
+            		&&  sizeX>0 && sizeY>0){
+            	int i = 0;            	
+    			this.bubbleSetRenderer.setSize(sizeX,sizeY);
     			this.bubbleSetRenderer.clearBubbleSet();
-    			this.bubbleSetRenderer.setSize(Math.round(this.x), Math.round(this.y));
     			bubbleSetItems.clear();
     			bubbleSetEdges.clear();
                 for (List<PathwayVertexRep> segment : ((FixedPathUpdateStrategy) this.updateStrategy).getSelectedPathSegments()) {
@@ -249,15 +252,14 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
                     	Rectangle2D nodeRect=getVertexRepBounds(node);
                     	if(nodeRect!=null){
 	                        float posx=(float)nodeRect.getCenterX();
-	                        float posy=-(float)nodeRect.getCenterY()+ this.y;                 
-	                        gl.glColor4f(1,0,0,1);
-	                        gl.glPointSize(5);
-	                        gl.glBegin(GL2.GL_POINTS);
-	                             gl.glVertex3f(posx,posy,5.0f);
-	                        gl.glEnd();
-	                        gl.glPointSize(1);
-
-	         
+	                        float posy=-(float)nodeRect.getCenterY()+ this.y;
+	                        // to debug output center as point 
+							//gl.glColor4f(1,0,0,1);
+							//gl.glPointSize(5);
+							//gl.glBegin(GL2.GL_POINTS);
+							//     gl.glVertex3f(posx,posy,5.0f);
+							//gl.glEnd();
+							//gl.glPointSize(1);	         
 	    					bubbleSetItems.add(new Rectangle2D.Double(posx, posy, nodeRect.getWidth(),nodeRect.getHeight()));
 	    					if (i > 0) {
 	    						bubbleSetEdges.add(new Line2D.Double(posx, posy, prevRect.getCenterX(), prevRect.getCenterY()));
