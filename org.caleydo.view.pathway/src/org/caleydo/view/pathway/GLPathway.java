@@ -740,7 +740,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 
 			this.bubbleSet.addAllPaths(allPaths);
 			//
-			// this.bubbleSet.addPathSegements(pathSegments);
+			this.bubbleSet.addPathSegements(pathSegments);
 			// this.bubbleSet.addPortals(portalVertexReps);
 
 			// update texture
