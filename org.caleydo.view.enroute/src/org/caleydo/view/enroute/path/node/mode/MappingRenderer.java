@@ -65,7 +65,7 @@ public class MappingRenderer extends ColorRenderer {
 	protected void renderContent(GL2 gl) {
 		TablePerspective mappedPerspective = pathRenderer.getMappedPerspective();
 		List<Integer> ids = node.getMappedDavidIDs();
-		if (ids == null)
+		if (ids == null || ids.isEmpty())
 			return;
 
 		float onePxlWidth = view.getPixelGLConverter().getGLWidthForPixelWidth(1);

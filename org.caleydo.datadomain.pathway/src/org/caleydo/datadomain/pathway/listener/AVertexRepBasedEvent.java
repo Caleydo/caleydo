@@ -33,7 +33,7 @@ public abstract class AVertexRepBasedEvent extends AEvent {
 	/**
 	 * Vertex rep that serves as portal.
 	 */
-	private PathwayVertexRep vertexRep;
+	protected PathwayVertexRep vertexRep;
 
 	public AVertexRepBasedEvent() {
 	}

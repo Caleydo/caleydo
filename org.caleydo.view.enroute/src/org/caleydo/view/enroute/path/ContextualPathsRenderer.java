@@ -61,6 +61,7 @@ import org.caleydo.datadomain.pathway.VertexRepBasedContextMenuItem;
 import org.caleydo.datadomain.pathway.VertexRepBasedEventFactory;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.PathwayPath;
+import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.listener.EnablePathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.PathwayMappingEvent;
@@ -345,7 +346,9 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 	}
 
 	@ListenTo(restrictExclusiveToEventSpace = true)
-	public void onShowPortalNodes(ShowNodeContextEvent event) {
+	public void onShowNodeContext(ShowNodeContextEvent event) {
+		if (event.getVertexRep().getType() == EPathwayVertexType.map)
+			return;
 		Set<PathwayVertexRep> vertexReps = PathwayManager.get().getEquivalentVertexRepsInPathway(event.getVertexRep(),
 				pathway);
 		if (event.getVertexRep().getPathway() == pathway) {
