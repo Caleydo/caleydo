@@ -237,6 +237,7 @@ public class RankingElement extends GLElementContainer {
 		} else {
 			table.add(newRankModel);
 		}
+		newRankModel.orderByMe();
 		currentRankColumnModel = newRankModel;
 	}
 
