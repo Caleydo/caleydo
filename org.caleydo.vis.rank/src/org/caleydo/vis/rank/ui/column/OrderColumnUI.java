@@ -170,6 +170,13 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 		super.layoutImpl();
 	}
 
+	/**
+	 * @return the scrollBar, see {@link #scrollBar}
+	 */
+	public IScrollBar getScrollBar() {
+		return scrollBar;
+	}
+
 	private void updateMeAndMyChildren() {
 		getTableBodyUI().updateMyChildren(this);
 	}
@@ -246,6 +253,9 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 
 		// render the bands
 		if (!dontneedToRenderBands(w)) {
+			IScrollBar pScroll = previousRanker.getScrollBar();
+			IScrollBar aScroll = this.getScrollBar();
+
 			ITableColumnUI previous = body.getLastCorrespondingColumn(previousRanker, true);
 			ITableColumnUI self = body.getLastCorrespondingColumn(this, true);
 			if (self == null || self == this || previous == null || previous instanceof OrderColumnUI)
@@ -257,9 +267,26 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 				i++;
 				Vec4f left = previous.getBounds(row.getIndex());
 				Vec4f right = self.getBounds(row.getIndex());
-				if (!areValidBounds(left) && !areValidBounds(right))
+				boolean isLeftValid = areValidBounds(left);
+				boolean isRightValid = areValidBounds(right);
+				if (!isLeftValid && !isRightValid)
 					continue;
-				renderBand(g, left, right, w, selectedRank == i);
+				int delta = 0;
+				if (isLeftValid && !isRightValid) {
+					int pRank = previousRanker.getRanker().getRank(row);
+					if (left.y() <= 0) {
+						delta = (int) pScroll.getOffset() - pRank;
+					} else {
+						delta = pRank - (int) (pScroll.getOffset() - pScroll.getWindow());
+					}
+				} else if (!isLeftValid && isRightValid) {
+					if (left.y() <= 0) {
+						delta = (int) aScroll.getOffset() - i;
+					} else {
+						delta = i - (int) (aScroll.getOffset() - aScroll.getWindow());
+					}
+				}
+				renderBand(g, left, right, w, selectedRank == i, Math.abs(delta));
 			}
 		}
 		previousRanker.renderScrollBar(g, w, h, true); // render left
@@ -307,7 +334,7 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 			if (!areValidBounds(left) && !areValidBounds(right))
 				continue;
 			g.pushName(body.getRankPickingId(i));
-			renderBand(g, left, right, w, false);
+			renderBand(g, left, right, w, false, 0);
 			g.popName();
 		}
 		g.move(hasLeftScrollBar ? -RenderStyle.SCROLLBAR_WIDTH : 0, 0);
@@ -318,7 +345,7 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 		return model == null || model.isCollapsed() || w < 10;
 	}
 
-	private void renderBand(GLGraphics g, Vec4f left, Vec4f right, float w, boolean isSelected) {
+	private void renderBand(GLGraphics g, Vec4f left, Vec4f right, float w, boolean isSelected, int delta) {
 		boolean isLeftValid = areValidBounds(left);
 		boolean isRightValid = areValidBounds(right);
 		if (isSelected) {
@@ -345,15 +372,23 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 			}
 			g.decZ();
 		} else {
-			g.color(Color.GRAY);
 			if (isLeftValid && isRightValid) {
+				g.color(Color.GRAY);
 				g.drawLine(-1, left.y() + left.w() * 0.5f, w, right.y() + right.w() * 0.5f);
 			} else if (isLeftValid) {
+				float v = getAlphaFromDelta(delta);
+				g.color(v, v, v, 1);
 				arrow(g, 5, left.y(), left.w(), right.y() <= 0);
 			} else if (isRightValid) {
+				float v = getAlphaFromDelta(delta);
+				g.color(v, v, v, 1);
 				arrow(g, w - 10, right.y(), right.w(), left.y() <= 0);
 			}
 		}
+	}
+
+	protected float getAlphaFromDelta(int delta) {
+		return Math.max(1 - Math.min(delta / 50.f, .8f), 0.2f);
 	}
 
 	private static void arrow(GLGraphics g, float x, float y, float h, boolean up) {
@@ -385,7 +420,7 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 	}
 
 	@Override
-	public float getTotal(IScrollBar scrollBar) {
+	public float getHeight(IScrollBar scrollBar) {
 		return getSize().y();
 	}
 }

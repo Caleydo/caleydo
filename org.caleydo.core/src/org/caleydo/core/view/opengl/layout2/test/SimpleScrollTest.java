@@ -19,6 +19,8 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.layout2.test;
 
+import gleem.linalg.Vec2f;
+
 import java.awt.Color;
 
 import org.caleydo.core.view.opengl.layout2.GLElement;
@@ -46,7 +48,7 @@ public class SimpleScrollTest extends GLElementContainer {
 
 	private static class Content extends GLElement {
 		public Content() {
-			setSize(500, 500);
+			setLayoutData(new Vec2f(500, 500));
 		}
 		@Override
 		protected void renderImpl(GLGraphics g, float w, float h) {

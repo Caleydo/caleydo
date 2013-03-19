@@ -7,6 +7,7 @@ import java.awt.Point;
 import java.lang.reflect.InvocationTargetException;
 
 import javax.media.opengl.FPSCounter;
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCapabilities;
@@ -269,11 +270,7 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 				: new GLGraphics(gl,
 				text, textures, loader, true, deltaTimeMs);
 
-		// I have no idea, why I always need to initialize the context again
-		AGLView.initGLContext(gl);
-
-
-		//gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
+		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 		gl.glLoadIdentity();
 		gl.glTranslatef(0.375f, 0.375f, 0);
 

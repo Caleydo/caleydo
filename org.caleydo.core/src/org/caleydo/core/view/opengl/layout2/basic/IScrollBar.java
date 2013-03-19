@@ -49,14 +49,20 @@ public interface IScrollBar extends IGLRenderer, IPickingListener {
 	 *            in total from 0 to toal
 	 * @return
 	 */
-	float setBounds(float offset, float view, float total);
+	float setBounds(float offset, float window, float size);
+
+	float getOffset();
+
+	float getWindow();
+
+	float getSize();
 
 	void setCallback(IScrollBarCallback callback);
 
 	public interface IScrollBarCallback {
 		/**
 		 * callback for scrollbar changes
-		 * 
+		 *
 		 * @param scrollBar
 		 * @param offset
 		 *            the new value in the notation of the bounds
@@ -77,7 +83,7 @@ public interface IScrollBar extends IGLRenderer, IPickingListener {
 		 * @param scrollBar
 		 * @return
 		 */
-		float getTotal(IScrollBar scrollBar);
+		float getHeight(IScrollBar scrollBar);
 
 		/**
 		 * triggers that the parent should be repainted

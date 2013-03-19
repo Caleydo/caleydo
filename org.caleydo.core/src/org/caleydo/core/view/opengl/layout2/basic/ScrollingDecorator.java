@@ -30,13 +30,12 @@ import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.IGLElementParent;
 import org.caleydo.core.view.opengl.layout2.basic.IScrollBar.IScrollBarCallback;
-import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 
 /**
  * wrapper element that enables the use of scrollbars.
  *
- * by convention the set size of the content will be interpreted as the minimum size
+ * by convention the min size is part of the layout data
  *
  * @author Samuel Gratzl
  *
@@ -102,9 +101,7 @@ public final class ScrollingDecorator extends GLElement implements IGLElementPar
 	@Override
 	protected void layoutImpl() {
 		IGLLayoutElement layout = GLElementAccessor.asLayoutElement(content);
-		Vec2f minSize = layout.getSetSize();
-		minSize.setX(GLLayouts.defaultValue(minSize.x(), 0));
-		minSize.setY(GLLayouts.defaultValue(minSize.y(), 0));
+		Vec2f minSize = layout.getLayoutDataAs(Vec2f.class, new Vec2f(0, 0));
 		Vec2f size = getSize();
 		Vec2f contentSize = new Vec2f();
 		Vec2f offset = content.getLocation();
@@ -151,7 +148,7 @@ public final class ScrollingDecorator extends GLElement implements IGLElementPar
 	}
 
 	@Override
-	public float getTotal(IScrollBar scrollBar) {
+	public float getHeight(IScrollBar scrollBar) {
 		if (horizontal != null && horizontal.scrollBar == scrollBar)
 			return getSize().x();
 		else

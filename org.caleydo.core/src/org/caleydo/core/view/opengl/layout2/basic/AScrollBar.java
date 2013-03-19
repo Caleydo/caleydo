@@ -28,8 +28,8 @@ public abstract class AScrollBar implements IScrollBar {
 	protected final boolean isHorizontal;
 	protected boolean hovered = false;
 	protected float offset;
-	protected float view;
-	protected float total;
+	protected float window;
+	protected float size;
 	protected IScrollBarCallback callback;
 
 	public AScrollBar(boolean isHorizontal) {
@@ -42,23 +42,38 @@ public abstract class AScrollBar implements IScrollBar {
 	}
 
 	@Override
-	public float setBounds(float offset, float view, float total) {
-		this.offset = Math.min(total - view, Math.max(0, offset));
-		this.view = view;
-		this.total = total;
+	public float setBounds(float offset, float window, float size) {
+		this.offset = Math.min(size - window, Math.max(0, offset));
+		this.window = window;
+		this.size = size;
 		return this.offset;
 	}
 
 	protected final float clamp(float newOffset) {
-		return Math.min(total - view, Math.max(0, newOffset));
+		return Math.min(size - window, Math.max(0, newOffset));
 	}
 
 	protected float getOffset(float total) {
-		return offset * total / this.total;
+		return offset * total / this.size;
+	}
+
+	@Override
+	public float getOffset() {
+		return offset;
+	}
+
+	@Override
+	public float getWindow() {
+		return window;
+	}
+
+	@Override
+	public float getSize() {
+		return size;
 	}
 
 	protected float getSize(float total) {
-		return view * total / this.total;
+		return window * total / this.size;
 	}
 
 	@Override

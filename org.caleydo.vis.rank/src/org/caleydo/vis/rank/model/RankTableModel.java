@@ -257,6 +257,7 @@ public class RankTableModel implements IRankColumnParent {
 		int i = this.columns.indexOf(from);
 		columns.set(i, to);
 		to.init(this);
+		setup(to);
 		propertySupport.fireIndexedPropertyChange(PROP_COLUMNS, i, from, to);
 		from.takeDown();
 		takeDown(from);

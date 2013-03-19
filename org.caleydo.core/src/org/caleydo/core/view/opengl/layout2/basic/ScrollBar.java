@@ -47,13 +47,13 @@ public class ScrollBar extends AScrollBar {
 			break;
 		case CLICKED:
 			Vec2f relative = callback.toRelative(pick.getPickedPoint());
-			float t = callback.getTotal(this);
-			float v = this.total / t;
+			float t = callback.getHeight(this);
+			float v = this.size / t;
 			if (isHorizontal)
 				v *= relative.x();
 			else
 				v *= relative.y();
-			if (v < offset || v > (offset + view)) {
+			if (v < offset || v > (offset + window)) {
 				callback.onScrollBarMoved(this, clamp(v));
 			} else
 				pick.setDoDragging(true);
@@ -62,7 +62,7 @@ public class ScrollBar extends AScrollBar {
 		case DRAGGED:
 			if (!pick.isDoDragging())
 				return;
-			float vd = this.total / callback.getTotal(this);
+			float vd = this.size / callback.getHeight(this);
 			if (isHorizontal)
 				vd *= pick.getDx();
 			else

@@ -225,12 +225,14 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 
 	@Override
 	public String getRawValue(IRow row) {
-		float r = data.applyPrimitive(row);
-		if (Float.isNaN(r))
+		float value = data.applyPrimitive(row);
+		if (Float.isNaN(value))
+			value = computeMissingValue();
+		if (Float.isNaN(value))
 			return "";
 		if (formatter != null)
-			return formatter.format(r);
-		return Formatter.formatNumber(r);
+			return formatter.format(value);
+		return Formatter.formatNumber(value);
 	}
 
 	@Override

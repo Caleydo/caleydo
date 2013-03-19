@@ -36,7 +36,9 @@ import java.util.List;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.animation.AnimatedGLElementContainer;
+import org.caleydo.core.view.opengl.layout2.basic.IScrollBar;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
@@ -54,6 +56,7 @@ import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.OrderColumn;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
+import org.caleydo.vis.rank.model.mixin.ICompressColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IGrabRemainingHorizontalSpace;
 import org.caleydo.vis.rank.ui.column.ACompositeTableColumnUI;
 import org.caleydo.vis.rank.ui.column.ColumnUIs;
@@ -69,7 +72,8 @@ import com.google.common.collect.Iterables;
  * @author Samuel Gratzl
  *
  */
-public final class TableBodyUI extends AnimatedGLElementContainer implements IGLLayout, IColumModelLayout {
+public final class TableBodyUI extends AnimatedGLElementContainer implements IGLLayout, IColumModelLayout,
+		IScrollBar.IScrollBarCallback {
 	private final static int FIRST_COLUMN = 1;
 	private final RankTableModel table;
 
@@ -88,6 +92,9 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 				onRankerChanged((ARankColumnModel) evt.getSource());
 				updateMyMinSize();
 				break;
+			case ICompressColumnMixin.PROP_COMPRESSED:
+				updateMyMinSize();
+				break;
 			case RankTableModel.PROP_SELECTED_ROW:
 				isSelectedRowChanged = true;
 				update();
@@ -101,6 +108,9 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 	private int[] pickingIDs = new int[0];
 	private final PickingListenerComposite selectRowListener = new PickingListenerComposite();
 	private final IRankTableUIConfig config;
+
+	private final IScrollBar scrollBar;
+	private int scrollBarPickingId = -1;
 
 	public TableBodyUI(final RankTableModel table, IRowHeightLayout rowLayout, IRankTableUIConfig config) {
 		setAnimateByDefault(false);
@@ -123,6 +133,14 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 			}
 		});
 		setLayout(this);
+		this.scrollBar = config.createScrollBar(false);
+		this.scrollBar.setCallback(this);
+	}
+
+	@Override
+	protected void init(IGLElementContext context) {
+		super.init(context);
+		scrollBarPickingId = context.registerPickingListener(scrollBar);
 	}
 
 	private OrderColumnUI getDefaultrankerUI() {
@@ -279,11 +297,13 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 	private void init(ARankColumnModel col) {
 		col.addPropertyChangeListener(ARankColumnModel.PROP_WIDTH, listener);
 		col.addPropertyChangeListener(ICollapseableColumnMixin.PROP_COLLAPSED, listener);
+		col.addPropertyChangeListener(ICompressColumnMixin.PROP_COMPRESSED, listener);
 	}
 
 	private void takeDown(ARankColumnModel col) {
 		col.removePropertyChangeListener(ARankColumnModel.PROP_WIDTH, listener);
 		col.removePropertyChangeListener(ICollapseableColumnMixin.PROP_COLLAPSED, listener);
+		col.removePropertyChangeListener(ICompressColumnMixin.PROP_COMPRESSED, listener);
 	}
 
 	private GLElement wrap(ARankColumnModel new_) {
@@ -317,6 +337,10 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 		for (int pickingID : this.pickingIDs)
 			context.unregisterPickingListener(pickingID);
 		this.pickingIDs = new int[0];
+
+		context.unregisterPickingListener(scrollBarPickingId);
+		scrollBarPickingId = -1;
+
 		super.takeDown();
 	}
 
@@ -328,7 +352,7 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 	void enlargeRankPickers(int lastVisibleRank) {
 		if (lastVisibleRank > pickingIDs.length) {
 			int bak = this.pickingIDs.length;
-			this.pickingIDs = Arrays.copyOf(this.pickingIDs, lastVisibleRank);
+			this.pickingIDs = Arrays.copyOf(this.pickingIDs, lastVisibleRank+10);
 			for (int i = bak; i < this.pickingIDs.length; ++i)
 				this.pickingIDs[i] = context.registerPickingListener(selectRowListener, i);
 		}
@@ -367,9 +391,17 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 	@Override
 	public void layout(int deltaTimeMs) {
 		super.layout(deltaTimeMs);
+		float offset = 0;
+		float window = 0;
+		float size = 0;
 		for (OrderColumnUI child : Iterables.filter(this, OrderColumnUI.class)) {
 			child.layoutingDone();
+			IScrollBar sb = child.getScrollBar();
+			offset = sb.getOffset();
+			window = sb.getWindow();
+			size = sb.getSize();
 		}
+		scrollBar.setBounds(offset, window, size);
 	}
 
 	@Override
@@ -381,11 +413,29 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 
 		super.renderImpl(g, w, h);
 
-		getLastRanker().renderScrollBar(g, w, h, false);
+		g.incZ().incZ();
+		g.move((w - RenderStyle.SCROLLBAR_WIDTH + 1), 0);
+		scrollBar.render(g, RenderStyle.SCROLLBAR_WIDTH, h, this);
+		g.move(-(w - RenderStyle.SCROLLBAR_WIDTH + 1), 0);
+		g.decZ().decZ();
 
 		g.popResourceLocator();
 
 		isSelectedRowChanged = false;
+	}
+
+	@Override
+	public void onScrollBarMoved(IScrollBar scrollBar, float offset) {
+		float delta = offset - getLastRanker().getScrollBar().getOffset();
+		for (OrderColumnUI col : Iterables.filter(this, OrderColumnUI.class)) {
+			float o1 = col.getScrollBar().getOffset() + delta;
+			col.onScrollBarMoved(scrollBar, o1);
+		}
+	}
+
+	@Override
+	public float getHeight(IScrollBar scrollBar) {
+		return getSize().y();
 	}
 
 	@Override
@@ -394,7 +444,13 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 
 		super.renderPickImpl(g, w, h);
 
-		getLastRanker().renderPickScrollBar(g, w, h, false);
+		g.incZ().incZ();
+		g.pushName(scrollBarPickingId);
+		g.move((w - RenderStyle.SCROLLBAR_WIDTH + 1), 0);
+		scrollBar.renderPick(g, RenderStyle.SCROLLBAR_WIDTH, h, this);
+		g.move(-(w - RenderStyle.SCROLLBAR_WIDTH + 1), 0);
+		g.popName();
+		g.decZ().decZ();
 	}
 
 	private void renderBackgroundLines(GLGraphics g, float w, boolean pick) {
@@ -453,7 +509,7 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 			return;
 
 		boolean even = false;
-		enlargeRankPickers(act.getRanker().size());
+		enlargeRankPickers((int) (act.getScrollBar().getOffset() + act.getScrollBar().getWindow()));
 		int i = -1;
 
 		if (last instanceof ACompositeTableColumnUI<?>) {
