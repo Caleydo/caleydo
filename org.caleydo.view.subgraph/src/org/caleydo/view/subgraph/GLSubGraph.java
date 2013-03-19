@@ -139,7 +139,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 
 	protected MultiFormRenderer lastUsedLevel1Renderer;
 
-	protected GLPathwayGridLayout pathwayLayout = new GLPathwayGridLayout(this, GLPadding.ZERO, 10);
+	protected GLPathwayGridLayout2 pathwayLayout = new GLPathwayGridLayout2(this, GLPadding.ZERO, 10);
 
 	protected GLExperimentalDataMapping experimentalDataMappingElement = new GLExperimentalDataMapping(this);
 
