@@ -37,6 +37,7 @@ import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
+import org.caleydo.view.subgraph.EEmbeddingID;
 import org.caleydo.view.subgraph.GLSubGraph;
 import org.caleydo.view.subgraph.GLWindow;
 import org.caleydo.vis.rank.config.IRankTableUIConfig;
@@ -153,7 +154,8 @@ public class RankingElement extends GLElementContainer {
 		if (newValue == null)
 			return;
 
-		view.addPathway(newValue.getPathway());
+		if (!view.hasPathway(newValue.getPathway()))
+			view.addPathway(newValue.getPathway(), EEmbeddingID.PATHWAY_LEVEL1);
 	}
 
 	private void applyFilter() {

@@ -65,12 +65,15 @@ import org.caleydo.datadomain.pathway.listener.EnablePathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.PathwayMappingEvent;
 import org.caleydo.datadomain.pathway.listener.PathwayPathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.ShowNodeContextEvent;
+import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.subgraph.GLWindow.ICloseWindowListener;
 import org.caleydo.view.subgraph.MultiLevelSlideInElement.IWindowState;
 import org.caleydo.view.subgraph.SlideInElement.ESlideInElementPosition;
 import org.caleydo.view.subgraph.contextmenu.ShowCommonNodeItem;
 import org.caleydo.view.subgraph.datamapping.GLExperimentalDataMapping;
+import org.caleydo.view.subgraph.event.AddPathwayEvent;
+import org.caleydo.view.subgraph.event.AddPathwayEventFactory;
 import org.caleydo.view.subgraph.event.ShowCommonNodePathwaysEvent;
 import org.caleydo.view.subgraph.event.ShowCommonNodesPathwaysEvent;
 import org.caleydo.view.subgraph.event.ShowPortalsEvent;
@@ -241,7 +244,6 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 
 		root.add(column);
 		root.add(augmentation);
-
 
 	}
 
@@ -444,7 +446,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		gl.glDeleteLists(displayListIndex, 1);
 	}
 
-	public void addPathway(PathwayGraph pathway) {
+	public void addPathway(PathwayGraph pathway, EEmbeddingID level) {
 
 		PathwayDataDomain pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get().getDataDomainByType(
 				PathwayDataDomain.DATA_DOMAIN_TYPE);
@@ -476,11 +478,13 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		for (PathwayVertexRep vertexRep : pathway.vertexSet()) {
 			allVertexReps.put(vertexRep.getID(), vertexRep);
 		}
-		int rendererID = info.embeddingIDToRendererIDs.get(EEmbeddingID.PATHWAY_LEVEL1).get(0);
+		int rendererID = info.embeddingIDToRendererIDs.get(level).get(0);
 		if (info.multiFormRenderer.getActiveRendererID() != rendererID) {
 			info.multiFormRenderer.setActive(rendererID);
 		}
-		lastUsedLevel1Renderer = info.multiFormRenderer;
+		if (level == EEmbeddingID.PATHWAY_LEVEL1) {
+			lastUsedLevel1Renderer = info.multiFormRenderer;
+		}
 		lastUsedRenderer = info.multiFormRenderer;
 
 		PathwayMappingEvent event = new PathwayMappingEvent(experimentalDataMappingElement.getDmState()
@@ -530,6 +534,8 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 							"Show Context", ShowNodeContextEvent.class, pathEventSpace));
 					pathwayRepresentation.addVertexRepBasedSelectionEvent(new VertexRepBasedEventFactory(
 							ShowNodeContextEvent.class, pathEventSpace), PickingMode.CLICKED);
+					pathwayRepresentation.addVertexRepBasedSelectionEvent(new AddPathwayEventFactory(
+							AddPathwayEvent.class, pathEventSpace), PickingMode.DOUBLE_CLICKED);
 				}
 			}
 		}
@@ -960,6 +966,23 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 			currentContextVertexRep = event.getVertexRep();
 			updatePathwayPortals();
 		}
+
+		@ListenTo(restrictExclusiveToEventSpace = true)
+		public void onAddPathway(AddPathwayEvent event) {
+			PathwayGraph pathway = PathwayManager.get().getPathwayByTitle(event.getVertexRep().getName(),
+					EPathwayDatabaseType.KEGG);
+			if (pathway != null && !hasPathway(pathway)) {
+				addPathway(pathway, EEmbeddingID.PATHWAY_LEVEL2);
+			}
+		}
+	}
+
+	public boolean hasPathway(PathwayGraph pathway) {
+		for (PathwayMultiFormInfo info : pathwayInfos) {
+			if (info.pathway == pathway)
+				return true;
+		}
+		return false;
 	}
 
 	// protected void updateAllPortals() {
