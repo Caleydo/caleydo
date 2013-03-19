@@ -67,6 +67,8 @@ public class GLPathwayAugmentationRenderer {
 
 	private SelectionManager vertexSelectionManager;
 
+	// private EventBasedSelectionManager pathwaySelectionManager;
+
 	private PathwayItemManager pathwayItemManager;
 
 	/**
@@ -94,7 +96,7 @@ public class GLPathwayAugmentationRenderer {
 	}
 
 	public void init(final GL2 gl, SelectionManager vertexSelectionManager) {
-
+		// this.pathwaySelectionManager = pathwaySelectionManager;
 		this.vertexSelectionManager = vertexSelectionManager;
 	}
 
@@ -348,12 +350,17 @@ public class GLPathwayAugmentationRenderer {
 			renderQuad(gl, nodeWidth, nodeHeight);
 
 			// Handle selection highlighting of element
-
+			// PathwayGraph pathway = PathwayManager.get().getPathwayByTitle(vertexRep.getName(),
+			// EPathwayDatabaseType.KEGG);
 			if (vertexSelectionManager.checkStatus(SelectionType.SELECTION, vertexRep.getID())) {
+				// || (pathway != null && pathwaySelectionManager
+				// .checkStatus(SelectionType.SELECTION, pathway.getID()))) {
 				tmpNodeColor = SelectionType.SELECTION.getColor();
 				gl.glColor4fv(tmpNodeColor, 0);
 				renderFrame(gl, nodeWidth, nodeHeight);
 			} else if (vertexSelectionManager.checkStatus(SelectionType.MOUSE_OVER, vertexRep.getID())) {
+				// || (pathway != null && pathwaySelectionManager.checkStatus(SelectionType.MOUSE_OVER,
+				// pathway.getID()))) {
 				tmpNodeColor = SelectionType.MOUSE_OVER.getColor();
 				gl.glColor4fv(tmpNodeColor, 0);
 				renderFrame(gl, nodeWidth, nodeHeight);
@@ -471,7 +478,6 @@ public class GLPathwayAugmentationRenderer {
 
 		float width = pixelGLConverter.getGLWidthForPixelWidth(PathwayRenderStyle.ENZYME_NODE_PIXEL_WIDTH);
 		float height = -pixelGLConverter.getGLHeightForPixelHeight(PathwayRenderStyle.ENZYME_NODE_PIXEL_HEIGHT);
-
 
 		if (mappingPerspective != null) {
 			Average average = getExpressionAverage(mappingPerspective, vertexRep);

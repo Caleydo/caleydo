@@ -68,6 +68,7 @@ import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.datadomain.genetic.EGeneIDTypes;
 import org.caleydo.datadomain.genetic.GeneticDataSupportDefinition;
 import org.caleydo.datadomain.pathway.IPathwayRepresentation;
+import org.caleydo.datadomain.pathway.IVertexRepBasedEventFactory;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.VertexRepBasedContextMenuItem;
 import org.caleydo.datadomain.pathway.VertexRepBasedEventFactory;
@@ -155,6 +156,11 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 	 */
 	private EventBasedSelectionManager metaboliteSelectionManager;
 
+	// /**
+	// * Selection manager for pathways. Used for embedded pathway nodes.
+	// */
+	// private EventBasedSelectionManager pathwaySelectionManager;
+
 	/**
 	 * Own texture manager is needed for each GL2 context, because textures cannot be bound to multiple GL2 contexts.
 	 */
@@ -224,7 +230,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 	 * Events that should be triggered when selecting a node. Added via
 	 * {@link #addVertexRepBasedSelectionEvent(VertexRepBasedEventFactory, PickingMode)}.
 	 */
-	protected Map<PickingMode, List<VertexRepBasedEventFactory>> nodeEvents = new HashMap<>();
+	protected Map<PickingMode, List<IVertexRepBasedEventFactory>> nodeEvents = new HashMap<>();
 
 	private EventListenerManager listeners = EventListenerManagers.wrap(this);
 
@@ -246,6 +252,9 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get().getDataDomainByType(
 				"org.caleydo.datadomain.pathway");
 		geneIDType = pathwayDataDomain.getDavidIDType();
+
+		// pathwaySelectionManager = new EventBasedSelectionManager(this, IDType.getIDType("PATHWAY"));
+		// pathwaySelectionManager.registerEventListeners();
 
 		// hashGLcontext2TextureManager = new HashMap<GL, GLPathwayTextureManager>();
 
@@ -359,7 +368,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		parentGLCanvas.addMouseListener(new GLMouseAdapter() {
 			@Override
 			public void mouseWheelMoved(IMouseEvent e) {
-				selectNextPath();
+				// selectNextPath();
 			}
 		});
 	}
@@ -923,6 +932,8 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		}
 
 		metaboliteSelectionManager.unregisterEventListeners();
+		// pathwaySelectionManager.unregisterEventListeners();
+		vertexSelectionManager.unregisterEventListeners();
 
 	}
 
@@ -1295,6 +1306,18 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		event.setSelectionDelta(selectionDelta);
 		eventPublisher.triggerEvent(event);
 
+		// if (vertexRep.getType() == EPathwayVertexType.map) {
+		// PathwayGraph pathway = PathwayManager.get().getPathwayByTitle(vertexRep.getName(),
+		// EPathwayDatabaseType.KEGG);
+		// if (pathway != null) {
+		// pathwaySelectionManager.clearSelections();
+		// if (selectionType == SelectionType.SELECTION || selectionType == SelectionType.MOUSE_OVER) {
+		// pathwaySelectionManager.addToType(selectionType, pathway.getID());
+		// }
+		// pathwaySelectionManager.triggerSelectionUpdateEvent();
+		// }
+		// }
+
 		if (isPathSelectionMode) {
 			selectPath(vertexRep, selectionType);
 
@@ -1567,8 +1590,8 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 	}
 
 	@Override
-	public void addVertexRepBasedSelectionEvent(VertexRepBasedEventFactory eventFactory, PickingMode pickingMode) {
-		List<VertexRepBasedEventFactory> factories = nodeEvents.get(pickingMode);
+	public void addVertexRepBasedSelectionEvent(IVertexRepBasedEventFactory eventFactory, PickingMode pickingMode) {
+		List<IVertexRepBasedEventFactory> factories = nodeEvents.get(pickingMode);
 		if (factories == null) {
 			factories = new ArrayList<>();
 			nodeEvents.put(pickingMode, factories);
@@ -1577,9 +1600,9 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 	}
 
 	private void triggerNodeEvents(PickingMode pickingMode, PathwayVertexRep vertexRep) {
-		List<VertexRepBasedEventFactory> factories = nodeEvents.get(pickingMode);
+		List<IVertexRepBasedEventFactory> factories = nodeEvents.get(pickingMode);
 		if (factories != null) {
-			for (VertexRepBasedEventFactory factory : factories) {
+			for (IVertexRepBasedEventFactory factory : factories) {
 				factory.triggerEvent(vertexRep);
 			}
 		}

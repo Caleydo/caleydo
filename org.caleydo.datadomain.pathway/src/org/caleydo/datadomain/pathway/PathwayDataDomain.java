@@ -142,6 +142,11 @@ public class PathwayDataDomain extends ADataDomain {
 
 		addIDCategory(metaboliteIDCategory);
 
+		// IDCategory pathwayIDCategory = IDCategory.registerCategory("PATHWAY");
+		//
+		// IDType.registerType("PATHWAY", pathwayIDCategory, EDataType.INTEGER);
+		//
+		// addIDCategory(pathwayIDCategory);
 	}
 
 	@Override

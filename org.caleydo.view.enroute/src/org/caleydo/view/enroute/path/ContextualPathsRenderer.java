@@ -57,8 +57,8 @@ import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.ViewLayoutRenderer;
 import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.datadomain.pathway.IPathwayRepresentation;
+import org.caleydo.datadomain.pathway.IVertexRepBasedEventFactory;
 import org.caleydo.datadomain.pathway.VertexRepBasedContextMenuItem;
-import org.caleydo.datadomain.pathway.VertexRepBasedEventFactory;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.PathwayPath;
 import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
@@ -109,7 +109,7 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 	/**
 	 * Events that shall be triggered when selecting a path node.
 	 */
-	protected List<Pair<VertexRepBasedEventFactory, PickingMode>> nodeEvents = new ArrayList<>();
+	protected List<Pair<IVertexRepBasedEventFactory, PickingMode>> nodeEvents = new ArrayList<>();
 
 	private final EventListenerManager listeners = EventListenerManagers.wrap(this);
 
@@ -269,7 +269,7 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 			renderer.addVertexRepBasedContextMenuItem(item);
 		}
 
-		for (Pair<VertexRepBasedEventFactory, PickingMode> eventPair : nodeEvents) {
+		for (Pair<IVertexRepBasedEventFactory, PickingMode> eventPair : nodeEvents) {
 			renderer.addVertexRepBasedSelectionEvent(eventPair.getFirst(), eventPair.getSecond());
 		}
 
@@ -594,8 +594,8 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 	}
 
 	@Override
-	public void addVertexRepBasedSelectionEvent(VertexRepBasedEventFactory eventFactory, PickingMode pickingMode) {
-		nodeEvents.add(new Pair<VertexRepBasedEventFactory, PickingMode>(eventFactory, pickingMode));
+	public void addVertexRepBasedSelectionEvent(IVertexRepBasedEventFactory eventFactory, PickingMode pickingMode) {
+		nodeEvents.add(new Pair<IVertexRepBasedEventFactory, PickingMode>(eventFactory, pickingMode));
 		for (APathwayPathRenderer renderer : renderers.keySet()) {
 			renderer.addVertexRepBasedSelectionEvent(eventFactory, pickingMode);
 		}

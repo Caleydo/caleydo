@@ -19,47 +19,31 @@
  *******************************************************************************/
 package org.caleydo.datadomain.pathway;
 
-import org.caleydo.core.util.logging.Logger;
+import org.caleydo.core.event.AEvent;
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
-import org.caleydo.datadomain.pathway.listener.AVertexRepBasedEvent;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 
 /**
- * Generic Factory for {@link AVertexRepBasedEvent}s.
- *
- * @author Christian Partl
+ * @author Christian
  *
  */
-public class VertexRepBasedEventFactory extends AVertexRepBasedEventFactory {
+public abstract class AVertexRepBasedEventFactory implements IVertexRepBasedEventFactory {
 
-	protected final Class<? extends AVertexRepBasedEvent> eventClass;
-
-	public VertexRepBasedEventFactory(Class<? extends AVertexRepBasedEvent> eventClass, String eventSpace) {
-		super(eventSpace);
-		this.eventClass = eventClass;
-	}
+	protected final String eventSpace;
 
 	/**
-	 * Creates the event using the specified vertexRep.
 	 *
-	 * @param vertexRep
-	 * @return The event, null if the event could not be created.
 	 */
-	@Override
-	public AVertexRepBasedEvent create(PathwayVertexRep vertexRep) {
-		AVertexRepBasedEvent event;
-		try {
-			event = eventClass.newInstance();
-			event.setVertexRep(vertexRep);
-			event.setEventSpace(eventSpace);
-			return event;
-		} catch (InstantiationException | IllegalAccessException e) {
-			Logger.log(new Status(IStatus.WARNING, "VertexRepBasedContextMenuItem",
-					"Could not instatiate VertexRepBasedEvent!"));
-		}
+	public AVertexRepBasedEventFactory(String eventSpace) {
+		this.eventSpace = eventSpace;
+	}
 
-		return null;
+	@Override
+	public void triggerEvent(PathwayVertexRep vertexRep) {
+		AEvent event = create(vertexRep);
+		if (event != null) {
+			EventPublisher.INSTANCE.triggerEvent(event);
+		}
 	}
 
 }

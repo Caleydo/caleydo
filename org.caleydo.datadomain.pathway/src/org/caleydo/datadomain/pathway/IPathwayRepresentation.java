@@ -79,10 +79,10 @@ public interface IPathwayRepresentation {
 
 	/**
 	 * Adds a vertex rep based event that should be triggered when picking a vertex rep in the specified mode.
-	 * 
+	 *
 	 * @param eventFactory
 	 * @param pickingMode
 	 */
-	public void addVertexRepBasedSelectionEvent(VertexRepBasedEventFactory eventFactory, PickingMode pickingMode);
+	public void addVertexRepBasedSelectionEvent(IVertexRepBasedEventFactory eventFactory, PickingMode pickingMode);
 
 }

@@ -51,8 +51,8 @@ import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.datadomain.genetic.EGeneIDTypes;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.pathway.IPathwayRepresentation;
+import org.caleydo.datadomain.pathway.IVertexRepBasedEventFactory;
 import org.caleydo.datadomain.pathway.VertexRepBasedContextMenuItem;
-import org.caleydo.datadomain.pathway.VertexRepBasedEventFactory;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertex;
@@ -182,7 +182,7 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	/**
 	 * Events that should be triggered when selecting a node.
 	 */
-	protected Map<PickingMode, List<VertexRepBasedEventFactory>> nodeEvents = new HashMap<>();
+	protected Map<PickingMode, List<IVertexRepBasedEventFactory>> nodeEvents = new HashMap<>();
 
 	protected TablePerspective mappedPerspective;
 
@@ -983,9 +983,9 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 		}
 
 		private void triggerEvents(PickingMode pickingMode) {
-			List<VertexRepBasedEventFactory> factories = nodeEvents.get(pickingMode);
+			List<IVertexRepBasedEventFactory> factories = nodeEvents.get(pickingMode);
 			if (factories != null) {
-				for (VertexRepBasedEventFactory factory : factories) {
+				for (IVertexRepBasedEventFactory factory : factories) {
 					factory.triggerEvent(node.getPrimaryPathwayVertexRep());
 				}
 			}
@@ -1001,8 +1001,8 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	}
 
 	@Override
-	public void addVertexRepBasedSelectionEvent(VertexRepBasedEventFactory eventFactory, PickingMode pickingMode) {
-		List<VertexRepBasedEventFactory> factories = nodeEvents.get(pickingMode);
+	public void addVertexRepBasedSelectionEvent(IVertexRepBasedEventFactory eventFactory, PickingMode pickingMode) {
+		List<IVertexRepBasedEventFactory> factories = nodeEvents.get(pickingMode);
 		if (factories == null) {
 			factories = new ArrayList<>();
 			nodeEvents.put(pickingMode, factories);
