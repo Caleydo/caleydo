@@ -31,7 +31,7 @@ import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.SimpleHistogram;
 import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
-import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
+import org.caleydo.vis.rank.model.mixin.IFloatRankableColumnMixin;
 import org.caleydo.vis.rank.ui.RenderUtils;
 
 
@@ -55,9 +55,9 @@ public class ScoreSummary extends GLElement {
 		}
 	};
 	private IRow selectedRow = null;
-	protected final IRankableColumnMixin model;
+	protected final IFloatRankableColumnMixin model;
 
-	public ScoreSummary(IRankableColumnMixin model, boolean interactive) {
+	public ScoreSummary(IFloatRankableColumnMixin model, boolean interactive) {
 		this.model = model;
 	}
 

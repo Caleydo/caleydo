@@ -101,13 +101,14 @@ public class Mixed implements IModelBuilder {
 					}
 				}, metaData));
 
-		WorldUniversityYear.addYear(table, "World University Ranking", new Function<IRow, WorldUniversityYear>() {
+		table.orderBy(WorldUniversityYear.addYear(table, "World University Ranking",
+				new Function<IRow, WorldUniversityYear>() {
 					@Override
 			public WorldUniversityYear apply(IRow in) {
 						UniversityRow r = (UniversityRow) in;
 						return r.wbu;
 					}
-				});
+				}));
 
 		table.add(new OrderColumn());
 		table.add(new RankRankColumnModel());

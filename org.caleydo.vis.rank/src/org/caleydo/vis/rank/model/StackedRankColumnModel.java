@@ -26,6 +26,7 @@ import java.beans.PropertyChangeListener;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.vis.rank.model.mixin.ICompressColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IFilterColumnMixin;
+import org.caleydo.vis.rank.model.mixin.IFloatRankableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IMappedColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.ISnapshotableColumnMixin;
@@ -188,8 +189,13 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 	}
 
 	@Override
+	public int compare(IRow o1, IRow o2) {
+		return Float.compare(applyPrimitive(o1), applyPrimitive(o2));
+	}
+
+	@Override
 	public boolean isValueInferred(IRow row) {
-		for (IRankableColumnMixin child : Iterables.filter(this, IRankableColumnMixin.class))
+		for (IFloatRankableColumnMixin child : Iterables.filter(this, IFloatRankableColumnMixin.class))
 			if (child.isValueInferred(row))
 				return true;
 		return false;
@@ -201,7 +207,7 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 			return (MultiFloat) cacheMulti.get(row.getIndex());
 		float[] s = new float[this.size()];
 		for (int i = 0; i < s.length; ++i) {
-			s[i] = ((IRankableColumnMixin) get(i)).applyPrimitive(row);
+			s[i] = ((IFloatRankableColumnMixin) get(i)).applyPrimitive(row);
 		}
 		MultiFloat f = new MultiFloat(-1, s);
 		cacheMulti.put(row.getIndex(), f);
@@ -225,6 +231,15 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 		if (alignment == this.alignment)
 			return;
 		propertySupport.firePropertyChange(PROP_ALIGNMENT, this.alignment, this.alignment = alignment);
+	}
+
+	@Override
+	public void orderBy(IRankableColumnMixin child) {
+		int index = indexOf((ARankColumnModel)child);
+		if (alignment == index)
+			setAlignment(index + 1);
+		else
+			setAlignment(index);
 	}
 
 	/**

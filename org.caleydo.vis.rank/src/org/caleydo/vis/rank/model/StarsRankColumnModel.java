@@ -29,7 +29,7 @@ import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.rank.data.AFloatFunction;
 import org.caleydo.vis.rank.data.IFloatFunction;
-import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
+import org.caleydo.vis.rank.model.mixin.IFloatRankableColumnMixin;
 import org.caleydo.vis.rank.ui.detail.StarsSummary;
 import org.caleydo.vis.rank.ui.detail.StarsValueElement;
 import org.caleydo.vis.rank.ui.detail.ValueElement;
@@ -38,7 +38,7 @@ import org.caleydo.vis.rank.ui.detail.ValueElement;
  * @author Samuel Gratzl
  *
  */
-public class StarsRankColumnModel extends ABasicFilterableRankColumnModel implements IRankableColumnMixin {
+public class StarsRankColumnModel extends ABasicFilterableRankColumnModel implements IFloatRankableColumnMixin {
 	private final int stars;
 	private final IFloatFunction<IRow> data;
 
@@ -97,6 +97,16 @@ public class StarsRankColumnModel extends ABasicFilterableRankColumnModel implem
 		float v = map(data.applyPrimitive(in), true);
 		v /= stars;
 		return FloatFunctions.CLAMP01.apply(v);
+	}
+
+	@Override
+	public int compare(IRow o1, IRow o2) {
+		return Float.compare(applyPrimitive(o1), applyPrimitive(o2));
+	}
+
+	@Override
+	public void orderByMe() {
+		parent.orderBy(this);
 	}
 
 	@Override

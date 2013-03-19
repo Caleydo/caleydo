@@ -108,7 +108,8 @@ public class AcademicUniversityYear {
 	/**
 	 * @param table
 	 */
-	public static void addYear(RankTableModel table, String title, final Function<IRow, AcademicUniversityYear> map) {
+	public static StackedRankColumnModel addYear(RankTableModel table, String title,
+			final Function<IRow, AcademicUniversityYear> map) {
 		final StackedRankColumnModel stacked = new StackedRankColumnModel();
 		stacked.setTitle(title);
 		table.add(stacked);
@@ -137,6 +138,8 @@ public class AcademicUniversityYear {
 
 		stacked.setDistributions(new float[] { 10, 20, 20, 20, 20, 10 });
 		stacked.setWidth(300);
+
+		return stacked;
 	}
 
 	private static FloatRankColumnModel col(Function<IRow, AcademicUniversityYear> year, int col, String text,

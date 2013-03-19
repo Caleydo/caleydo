@@ -20,6 +20,7 @@
 package org.caleydo.vis.rank.model;
 
 import org.caleydo.vis.rank.model.mixin.IRankColumnModel;
+import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 
 
 /**
@@ -28,7 +29,7 @@ import org.caleydo.vis.rank.model.mixin.IRankColumnModel;
  */
 public interface IRankColumnParent extends IRankColumnModel {
 
-	ColumnRanker getMyRanker(ARankColumnModel model);
+	ColumnRanker getMyRanker(IRankColumnModel model);
 	/**
 	 * @param aBasicRankColumnModel
 	 * @return
@@ -78,5 +79,10 @@ public interface IRankColumnParent extends IRankColumnModel {
 	 * @return
 	 */
 	boolean isHidden(ARankColumnModel model);
+
+	/**
+	 * @param aRankColumnModel
+	 */
+	void orderBy(IRankableColumnMixin model);
 
 }

@@ -36,6 +36,7 @@ import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.rank.internal.event.FilterEvent;
 import org.caleydo.vis.rank.model.mixin.IGrabRemainingHorizontalSpace;
 import org.caleydo.vis.rank.model.mixin.IRankColumnModel;
+import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 import org.caleydo.vis.rank.ui.GLPropertyChangeListeners;
 import org.caleydo.vis.rank.ui.detail.ValueElement;
 import org.eclipse.jface.dialogs.IInputValidator;
@@ -51,7 +52,8 @@ import com.google.common.base.Function;
  * @author Samuel Gratzl
  *
  */
-public class StringRankColumnModel extends ABasicFilterableRankColumnModel implements IGrabRemainingHorizontalSpace {
+public class StringRankColumnModel extends ABasicFilterableRankColumnModel implements IGrabRemainingHorizontalSpace,
+		IRankableColumnMixin {
 	public static final Function<IRow, String> DEFAULT = new Function<IRow, String>() {
 		@Override
 		public String apply(IRow row) {
@@ -95,6 +97,16 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 	@Override
 	public ValueElement createValue() {
 		return new MyValueElement();
+	}
+
+	@Override
+	public int compare(IRow o1, IRow o2) {
+		return String.CASE_INSENSITIVE_ORDER.compare(data.apply(o1), data.apply(o2));
+	}
+
+	@Override
+	public void orderByMe() {
+		parent.orderBy(this);
 	}
 
 	@Override

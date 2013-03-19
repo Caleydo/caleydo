@@ -30,6 +30,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.caleydo.vis.rank.model.mixin.IFilterColumnMixin;
+import org.caleydo.vis.rank.model.mixin.IFloatRankableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 
 import com.google.common.collect.Iterators;
@@ -63,6 +64,7 @@ public class ColumnRanker implements Iterable<IRow> {
 	private boolean dirtyOrder = true;
 
 	private IRankableColumnMixin orderBy;
+	private boolean orderByFixed;
 
 	/**
 	 * the table can be null, use {@link #getTable()}
@@ -131,6 +133,7 @@ public class ColumnRanker implements Iterable<IRow> {
 		}
 		if (from == orderBy) {
 			dirtyOrder = true;
+			orderByFixed = false;
 			fireInvalid();
 			return;
 		}
@@ -142,12 +145,29 @@ public class ColumnRanker implements Iterable<IRow> {
 	}
 
 	private IRankableColumnMixin findFirstRankable() {
+		if (orderByFixed && orderBy != null)
+			return orderBy;
 		for (Iterator<ARankColumnModel> it = getMyColumns(); it.hasNext();) {
 			ARankColumnModel col = it.next();
 			if (col instanceof IRankableColumnMixin)
 				return (IRankableColumnMixin) col;
 		}
 		return null;
+	}
+
+	public void orderBy(IRankableColumnMixin column) {
+		this.orderBy = column;
+		this.orderByFixed = column != null;
+		dirtyOrder = true;
+		fireInvalid();
+	}
+
+	/**
+	 * @return the orderBy, see {@link #orderBy}
+	 */
+	public IRankableColumnMixin getOrderBy() {
+		checkOrder();
+		return orderBy;
 	}
 
 	private Iterator<ARankColumnModel> getMyColumns() {
@@ -251,11 +271,12 @@ public class ColumnRanker implements Iterable<IRow> {
 			}
 			order = newOrder;
 			ranks = newRanks;
-		} else {
+		} else if (orderBy instanceof IFloatRankableColumnMixin) {
+			IFloatRankableColumnMixin orderByF = (IFloatRankableColumnMixin) orderBy;
 			List<IntFloat> targetOrderItems = new ArrayList<>(data.size());
 			for (int i = 0; i < data.size(); ++i) {
 				if (filter.get(i)) {
-					targetOrderItems.add(new IntFloat(i, orderBy.applyPrimitive(data.get(i))));
+					targetOrderItems.add(new IntFloat(i, orderByF.applyPrimitive(data.get(i))));
 				}
 			}
 			Collections.sort(targetOrderItems);
@@ -287,6 +308,45 @@ public class ColumnRanker implements Iterable<IRow> {
 				}
 				newRanks.put(ri, i);
 				last = pair.value;
+			}
+			order = newOrder;
+			ranks = newRanks;
+		} else {
+			List<IRow> targetOrderItems = new ArrayList<>(data.size());
+			for (int i = 0; i < data.size(); ++i) {
+				if (filter.get(i)) {
+					targetOrderItems.add(data.get(i));
+				}
+			}
+			Collections.sort(targetOrderItems, orderBy);
+
+			int[] newOrder = new int[targetOrderItems.size()];
+			deltas = new int[newOrder.length];
+			IntIntHashMap newRanks = new IntIntHashMap(newOrder.length);
+			newRanks.setKeyNotFoundValue(-1);
+
+			int offset = 0;
+			IRow last = null;
+			for (int i = 0; i < targetOrderItems.size(); ++i) {
+				IRow pair = targetOrderItems.get(i);
+				final int ri = pair.getIndex();
+				newOrder[i] = pair.getIndex();
+				if (last != null && orderBy.compare(last, pair) == 0) {
+					offset++;
+					exaequoOffsets.put(i, offset);
+				} else {
+					offset = 0;
+				}
+				if (ranks.get(ri) < 0) {// was not visible
+					anyDelta = true;
+					deltas[i] = Integer.MIN_VALUE;
+				} else {
+					int delta = i - ranks.get(ri);
+					deltas[i] = delta;
+					anyDelta = anyDelta || delta != 0;
+				}
+				newRanks.put(ri, i);
+				last = pair;
 			}
 			order = newOrder;
 			ranks = newRanks;

@@ -266,16 +266,6 @@ public class StackedColumnHeaderUI extends ACompositeHeaderUI implements IThickH
 
 	}
 
-	/**
-	 * @param model2
-	 */
-	public void setAlignment(ARankColumnModel child) {
-		int index = model.indexOf(child);
-		if (model.getAlignment() == index)
-			model.setAlignment(index + 1);
-		else
-			model.setAlignment(index);
-	}
 
 	@Override
 	public boolean isCollapsed() {

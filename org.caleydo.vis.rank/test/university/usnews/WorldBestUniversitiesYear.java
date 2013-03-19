@@ -134,7 +134,9 @@ public class WorldBestUniversitiesYear {
 				String line;
 				r.readLine(); // header
 				while ((line = r.readLine()) != null) {
-					String[] l = line.split("\t");
+					if (line.isEmpty())
+						continue;
+					String[] l = line.split(";");
 					String school = l[1];
 
 					WorldBestUniversitiesYear universityYear = new WorldBestUniversitiesYear(l);

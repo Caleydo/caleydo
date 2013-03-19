@@ -24,6 +24,7 @@ import java.beans.PropertyChangeListener;
 
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
+import org.caleydo.vis.rank.model.mixin.IFloatRankableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 import org.caleydo.vis.rank.ui.GLPropertyChangeListeners;
 import org.caleydo.vis.rank.ui.detail.MaxScoreSummary;
@@ -80,7 +81,7 @@ public class MaxCompositeRankColumnModel extends AMultiRankColumnModel {
 		float[] vs = new float[size()];
 		int i = 0;
 		for (ARankColumnModel col : this) {
-			float v = ((IRankableColumnMixin) col).applyPrimitive(row);
+			float v = ((IFloatRankableColumnMixin) col).applyPrimitive(row);
 			vs[i++] = v;
 			if (!Float.isNaN(v) && v > max) {
 				maxIndex = i - 1;
@@ -96,7 +97,7 @@ public class MaxCompositeRankColumnModel extends AMultiRankColumnModel {
 			return 0;
 		float max = Float.NEGATIVE_INFINITY;
 		for (ARankColumnModel col : this) {
-			float v = ((IRankableColumnMixin) col).applyPrimitive(row);
+			float v = ((IFloatRankableColumnMixin) col).applyPrimitive(row);
 			if (Float.isNaN(v))
 				continue;
 			max = Math.max(max, v);
@@ -108,11 +109,16 @@ public class MaxCompositeRankColumnModel extends AMultiRankColumnModel {
 	}
 
 	@Override
+	public int compare(IRow o1, IRow o2) {
+		return Float.compare(applyPrimitive(o1), applyPrimitive(o2));
+	}
+
+	@Override
 	public boolean isValueInferred(IRow row) {
 		int repr = getSplittedValue(row).repr;
 		if (repr < 0)
 			return false;
-		return (((IRankableColumnMixin) get(repr)).isValueInferred(row));
+		return (((IFloatRankableColumnMixin) get(repr)).isValueInferred(row));
 	}
 
 	@Override
@@ -137,5 +143,10 @@ public class MaxCompositeRankColumnModel extends AMultiRankColumnModel {
 			removePropertyChangeListener(PROP_CHILDREN, l);
 			super.takeDown();
 		}
+	}
+
+	@Override
+	public void orderBy(IRankableColumnMixin model) {
+		// nothing to do
 	}
 }

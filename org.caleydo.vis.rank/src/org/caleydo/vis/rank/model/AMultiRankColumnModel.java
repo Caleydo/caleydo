@@ -43,9 +43,10 @@ import org.caleydo.vis.rank.internal.ui.TitleDescriptionDialog;
 import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IExplodeableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IFilterColumnMixin;
+import org.caleydo.vis.rank.model.mixin.IFloatRankableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IHideableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IMultiColumnMixin;
-import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
+import org.caleydo.vis.rank.model.mixin.IRankColumnModel;
 import org.caleydo.vis.rank.ui.RenderStyle;
 import org.caleydo.vis.rank.ui.detail.ScoreFilter;
 import org.eclipse.jface.window.Window;
@@ -200,12 +201,17 @@ public abstract class AMultiRankColumnModel extends ACompositeRankColumnModel im
 
 	@Override
 	public boolean canAdd(ARankColumnModel model) {
-		return model instanceof IRankableColumnMixin && super.canAdd(model);
+		return model instanceof IFloatRankableColumnMixin && super.canAdd(model);
 	}
 
 	@Override
 	public final Float apply(IRow row) {
 		return applyPrimitive(row);
+	}
+
+	@Override
+	public void orderByMe() {
+		parent.orderBy(this);
 	}
 
 	@Override
@@ -239,7 +245,7 @@ public abstract class AMultiRankColumnModel extends ACompositeRankColumnModel im
 	public final boolean[] isValueInferreds(IRow row) {
 		boolean[] r = new boolean[size()];
 		int i = 0;
-		for(IRankableColumnMixin child : Iterables.filter(this, IRankableColumnMixin.class))
+		for(IFloatRankableColumnMixin child : Iterables.filter(this, IFloatRankableColumnMixin.class))
 			r[i++] = child.isValueInferred(row);
 		return r;
 	}
@@ -248,13 +254,13 @@ public abstract class AMultiRankColumnModel extends ACompositeRankColumnModel im
 	public final SimpleHistogram[] getHists(int bins) {
 		SimpleHistogram[] hists = new SimpleHistogram[size()];
 		int i = 0;
-		for (IRankableColumnMixin child : Iterables.filter(this, IRankableColumnMixin.class))
+		for (IFloatRankableColumnMixin child : Iterables.filter(this, IFloatRankableColumnMixin.class))
 			hists[i++] = child.getHist(bins);
 		return hists;
 	}
 
 	@Override
-	public ColumnRanker getMyRanker(ARankColumnModel model) {
+	public ColumnRanker getMyRanker(IRankColumnModel model) {
 		return getMyRanker();
 	}
 

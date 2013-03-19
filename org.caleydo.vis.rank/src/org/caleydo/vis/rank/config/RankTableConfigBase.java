@@ -26,7 +26,7 @@ import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.IRankColumnParent;
 import org.caleydo.vis.rank.model.MaxCompositeRankColumnModel;
 import org.caleydo.vis.rank.model.StackedRankColumnModel;
-import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
+import org.caleydo.vis.rank.model.mixin.IFloatRankableColumnMixin;
 
 /**
  * basic implementation of {@link IRankTableConfig}
@@ -81,7 +81,7 @@ public class RankTableConfigBase implements IRankTableConfig {
 	public boolean isCombineAble(ARankColumnModel model, ARankColumnModel with, boolean clone, int combineMode) {
 		if (model instanceof ACompositeRankColumnModel && ((ACompositeRankColumnModel)model).canAdd(with))
 			return true;
-		if (!(model instanceof IRankableColumnMixin) || !(with instanceof IRankableColumnMixin))
+		if (!(model instanceof IFloatRankableColumnMixin) || !(with instanceof IFloatRankableColumnMixin))
 			return false;
 		IRankColumnParent parent = model.getParent();
 		switch (combineMode) {

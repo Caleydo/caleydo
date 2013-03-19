@@ -72,7 +72,8 @@ public class AcademicRankingOfWorldUniversities implements IModelBuilder {
 
 
 		// Arrays.asList("argu2010.txt", "argu2011.txt", "argu2012.txt");
-		AcademicUniversityYear.addYear(table, "2012", new YearGetter(2));
+		table.orderBy(AcademicUniversityYear.addYear(table, "2012", new YearGetter(2)));
+
 		table.add(new IntegerRankColumnModel(GLRenderers.drawText("Endowment 2012", VAlign.CENTER),
 				new ReflectionData<>(UniversityRow.class.getDeclaredField("endowments2012"), Integer.class)));
 		table.add(new OrderColumn());

@@ -23,6 +23,7 @@ import static org.caleydo.core.view.opengl.layout2.layout.GLLayouts.defaultValue
 import static org.caleydo.vis.rank.ui.RenderStyle.LABEL_HEIGHT;
 import gleem.linalg.Vec2f;
 
+import java.awt.Color;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
@@ -60,6 +61,7 @@ import org.caleydo.vis.rank.model.mixin.IExplodeableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IHideableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IMappedColumnMixin;
+import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.ISnapshotableColumnMixin;
 import org.caleydo.vis.rank.ui.IColumnRenderInfo;
 import org.caleydo.vis.rank.ui.RenderStyle;
@@ -250,6 +252,11 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 		g.color(model.getBgColor());
 		RoundedRectRenderer.render(g, 0, 0, w, h, RenderStyle.HEADER_ROUNDED_RADIUS, 3, RoundedRectRenderer.FLAG_FILL
 				| RoundedRectRenderer.FLAG_TOP);
+		if (model instanceof IRankableColumnMixin && model.getMyRanker().getOrderBy() == model) {
+			g.color(Color.RED);
+			RoundedRectRenderer.render(g, 0, 0, w, h, RenderStyle.HEADER_ROUNDED_RADIUS, 3,
+					RoundedRectRenderer.FLAG_TOP);
+		}
 		if (isCollapsed)
 			return;
 		if (hasTitle) {
@@ -526,10 +533,8 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 			}
 			break;
 		case DOUBLE_CLICKED:
-			if (getParent() instanceof StackedColumnHeaderUI) {
-				StackedColumnHeaderUI p = ((StackedColumnHeaderUI) getParent());
-				p.setAlignment(this.model);
-			}
+			if (model instanceof IRankableColumnMixin)
+				((IRankableColumnMixin) model).orderByMe();
 			break;
 		default:
 			break;

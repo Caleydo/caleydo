@@ -30,7 +30,7 @@ import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.mixin.IMappedColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IRankColumnModel;
-import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
+import org.caleydo.vis.rank.model.mixin.IFloatRankableColumnMixin;
 import org.caleydo.vis.rank.ui.IColumnRenderInfo;
 
 /**
@@ -40,9 +40,9 @@ import org.caleydo.vis.rank.ui.IColumnRenderInfo;
  *
  */
 public class ScoreBarElement extends ValueElement {
-	protected final IRankableColumnMixin model;
+	protected final IFloatRankableColumnMixin model;
 
-	public ScoreBarElement(IRankableColumnMixin model) {
+	public ScoreBarElement(IFloatRankableColumnMixin model) {
 		this.model = model;
 		setVisibility(EVisibility.VISIBLE);
 	}

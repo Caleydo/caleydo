@@ -19,10 +19,9 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.model.mixin;
 
-import java.awt.Color;
-import java.util.Comparator;
-
+import org.caleydo.vis.rank.data.IFloatFunction;
 import org.caleydo.vis.rank.model.IRow;
+import org.caleydo.vis.rank.model.SimpleHistogram;
 
 
 /**
@@ -31,10 +30,17 @@ import org.caleydo.vis.rank.model.IRow;
  * @author Samuel Gratzl
  *
  */
-public interface IRankableColumnMixin extends IRankColumnModel, Comparator<IRow> {
-	Color getBgColor();
+public interface IFloatRankableColumnMixin extends IRankableColumnMixin, IFloatFunction<IRow> {
 
-	Color getColor();
+	boolean isValueInferred(IRow row);
 
-	void orderByMe();
+	/**
+	 * returns a summary of the current filtered data as a simple histogram
+	 *
+	 * @param bins
+	 * @return
+	 */
+	SimpleHistogram getHist(int bins);
+
+
 }

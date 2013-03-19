@@ -44,8 +44,8 @@ import org.caleydo.vis.rank.internal.event.FilterEvent;
 import org.caleydo.vis.rank.model.mapping.IMappingFunction;
 import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
 import org.caleydo.vis.rank.model.mixin.IFilterColumnMixin;
+import org.caleydo.vis.rank.model.mixin.IFloatRankableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IMappedColumnMixin;
-import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.ISnapshotableColumnMixin;
 import org.caleydo.vis.rank.ui.detail.ScoreBarElement;
 import org.caleydo.vis.rank.ui.detail.ScoreSummary;
@@ -60,7 +60,7 @@ import org.eclipse.swt.widgets.Shell;
  *
  */
 public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implements IMappedColumnMixin,
-		IRankableColumnMixin, ISnapshotableColumnMixin, IFilterColumnMixin {
+		IFloatRankableColumnMixin, ISnapshotableColumnMixin, IFilterColumnMixin {
 
 	private SimpleHistogram cacheHist = null;
 	private boolean dirtyDataStats = true;
@@ -199,6 +199,16 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 	}
 
 	@Override
+	public int compare(IRow o1, IRow o2) {
+		return Float.compare(applyPrimitive(o1), applyPrimitive(o2));
+	}
+
+	@Override
+	public void orderByMe() {
+		parent.orderBy(this);
+	}
+
+	@Override
 	public boolean isValueInferred(IRow row) {
 		return Float.isNaN(data.applyPrimitive(row));
 	}
@@ -257,7 +267,7 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 	}
 
 	static class MyScoreSummary extends ScoreSummary {
-		public MyScoreSummary(IRankableColumnMixin model, boolean interactive) {
+		public MyScoreSummary(IFloatRankableColumnMixin model, boolean interactive) {
 			super(model, interactive);
 		}
 

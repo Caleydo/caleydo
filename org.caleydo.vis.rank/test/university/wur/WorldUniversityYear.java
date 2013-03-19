@@ -123,9 +123,11 @@ public class WorldUniversityYear {
 		return 0;
 	}
 
-	public static void addYear(RankTableModel table, String title, Function<IRow, WorldUniversityYear> year) {
-		table.add(new StarsRankColumnModel(new ValueGetter(year, COL_QSSTARS), GLRenderers.drawText(
-				"QS Stars", VAlign.CENTER), Color.decode("#FECC5C"), Color.decode("#FFFFB2"), 6));
+	public static StarsRankColumnModel addYear(RankTableModel table, String title,
+			Function<IRow, WorldUniversityYear> year) {
+		StarsRankColumnModel s = new StarsRankColumnModel(new ValueGetter(year, COL_QSSTARS), GLRenderers.drawText(
+				"QS Stars", VAlign.CENTER), Color.decode("#FECC5C"), Color.decode("#FFFFB2"), 6);
+		table.add(s);
 
 		final StackedRankColumnModel stacked = new StackedRankColumnModel();
 		stacked.setTitle(title);
@@ -145,6 +147,7 @@ public class WorldUniversityYear {
 
 		stacked.setDistributions(new float[] { 40, 10, 20, 20, 5, 5 });
 		stacked.setWidth(300);
+		return s;
 	}
 
 	private static FloatRankColumnModel col(Function<IRow, WorldUniversityYear> year, int col, String text,

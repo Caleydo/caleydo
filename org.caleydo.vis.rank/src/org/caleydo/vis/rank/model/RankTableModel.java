@@ -36,6 +36,7 @@ import org.caleydo.vis.rank.config.IRankTableConfig;
 import org.caleydo.vis.rank.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IMappedColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IRankColumnModel;
+import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 
 import com.google.common.collect.Iterables;
 
@@ -457,7 +458,7 @@ public class RankTableModel implements IRankColumnParent {
 	}
 
 	@Override
-	public ColumnRanker getMyRanker(ARankColumnModel model) {
+	public ColumnRanker getMyRanker(IRankColumnModel model) {
 		return findCorrespondingRanker(model);
 	}
 
@@ -524,6 +525,11 @@ public class RankTableModel implements IRankColumnParent {
 
 	public IRow getDataItem(int index) {
 		return data.get(index);
+	}
+
+	@Override
+	public void orderBy(IRankableColumnMixin model) {
+		getMyRanker(model).orderBy(model);
 	}
 
 	/**

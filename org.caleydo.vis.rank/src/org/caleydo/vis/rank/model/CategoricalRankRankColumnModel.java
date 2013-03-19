@@ -42,8 +42,8 @@ import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.rank.internal.event.FilterEvent;
 import org.caleydo.vis.rank.model.CategoricalRankColumnModel.ArrayTreeContentProvider;
 import org.caleydo.vis.rank.model.mapping.ICategoricalMappingFunction;
+import org.caleydo.vis.rank.model.mixin.IFloatRankableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IMappedColumnMixin;
-import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 import org.caleydo.vis.rank.ui.GLPropertyChangeListeners;
 import org.caleydo.vis.rank.ui.IColumnRenderInfo;
 import org.caleydo.vis.rank.ui.RenderUtils;
@@ -67,7 +67,7 @@ import com.google.common.base.Function;
  *
  */
 public class CategoricalRankRankColumnModel<CATEGORY_TYPE> extends ABasicFilterableRankColumnModel implements
-		IMappedColumnMixin, IRankableColumnMixin {
+		IMappedColumnMixin, IFloatRankableColumnMixin {
 	private static final int MAX_CATEGORY_COLORS = 8;
 
 	private final Function<IRow, CATEGORY_TYPE> data;
@@ -203,6 +203,16 @@ public class CategoricalRankRankColumnModel<CATEGORY_TYPE> extends ABasicFiltera
 	@Override
 	public Float apply(IRow in) {
 		return applyPrimitive(in);
+	}
+
+	@Override
+	public int compare(IRow o1, IRow o2) {
+		return Float.compare(applyPrimitive(o1), applyPrimitive(o2));
+	}
+
+	@Override
+	public void orderByMe() {
+		parent.orderBy(this);
 	}
 
 	@Override
