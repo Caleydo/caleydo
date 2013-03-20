@@ -72,6 +72,7 @@ public class RenderStyle {
 
 	public static final String ICON_STAR = ICON_PREFIX + "star.png";
 	public static final String ICON_STAR_DISABLED = ICON_PREFIX + "star_disabled.png";
+	public static final String ICON_FIND = ICON_PREFIX + "find.png";
 	/**
 	 * space between columns
 	 */

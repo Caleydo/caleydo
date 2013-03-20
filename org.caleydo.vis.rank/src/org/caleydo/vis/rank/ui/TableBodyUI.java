@@ -350,7 +350,7 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 	}
 
 	void enlargeRankPickers(int lastVisibleRank) {
-		if (lastVisibleRank > pickingIDs.length) {
+		if (lastVisibleRank >= pickingIDs.length) {
 			int bak = this.pickingIDs.length;
 			this.pickingIDs = Arrays.copyOf(this.pickingIDs, lastVisibleRank+10);
 			for (int i = bak; i < this.pickingIDs.length; ++i)

@@ -61,6 +61,7 @@ import org.caleydo.vis.rank.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IHideableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IMappedColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
+import org.caleydo.vis.rank.model.mixin.ISearchableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.ISnapshotableColumnMixin;
 import org.caleydo.vis.rank.ui.IColumnRenderInfo;
 import org.caleydo.vis.rank.ui.RenderStyle;
@@ -305,6 +306,19 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 				}
 			};
 			model.addPropertyChangeListener(IFilterColumnMixin.PROP_FILTER, filterChangedListener);
+			buttons.addButton(b);
+		}
+		if (model instanceof ISearchableColumnMixin) {
+			final ISearchableColumnMixin m = (ISearchableColumnMixin) model;
+			GLButton b = new GLButton();
+			b.setRenderer(GLRenderers.fillImage(RenderStyle.ICON_FIND));
+			b.setTooltip("Search for an item");
+			b.setCallback(new ISelectionCallback() {
+				@Override
+				public void onSelectionChanged(GLButton button, boolean selected) {
+					m.openSearchDialog(get(HIST), context);
+				}
+			});
 			buttons.addButton(b);
 		}
 		if (model instanceof IMappedColumnMixin) {

@@ -34,9 +34,11 @@ import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.rank.internal.event.FilterEvent;
+import org.caleydo.vis.rank.internal.event.SearchEvent;
 import org.caleydo.vis.rank.model.mixin.IGrabRemainingHorizontalSpace;
 import org.caleydo.vis.rank.model.mixin.IRankColumnModel;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
+import org.caleydo.vis.rank.model.mixin.ISearchableColumnMixin;
 import org.caleydo.vis.rank.ui.GLPropertyChangeListeners;
 import org.caleydo.vis.rank.ui.detail.ValueElement;
 import org.eclipse.jface.dialogs.IInputValidator;
@@ -53,7 +55,7 @@ import com.google.common.base.Function;
  *
  */
 public class StringRankColumnModel extends ABasicFilterableRankColumnModel implements IGrabRemainingHorizontalSpace,
-		IRankableColumnMixin {
+		IRankableColumnMixin, ISearchableColumnMixin {
 	public static final Function<IRow, String> DEFAULT = new Function<IRow, String>() {
 		@Override
 		public String apply(IRow row) {
@@ -139,6 +141,54 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 		});
 	}
 
+	@Override
+	public void openSearchDialog(final GLElement summary, IGLElementContext context) {
+		Display.getDefault().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				IInputValidator validator = new IInputValidator() {
+					@Override
+					public String isValid(String newText) {
+						if (newText.length() >= 2)
+							EventPublisher.publishEvent(new SearchEvent(newText).to(summary));
+						if (newText.isEmpty())
+							EventPublisher.publishEvent(new SearchEvent(null).to(summary));
+						return null;
+					}
+				};
+				String bak = filter;
+				InputDialog d = new InputDialog(null, "Search within column: " + getTitle(),
+						"Search String (use * as wildcard)", filter, validator);
+				if (d.open() == Window.OK) {
+					String v = d.getValue().trim();
+					if (v.length() == 0)
+						v = null;
+					EventPublisher.publishEvent(new SearchEvent(v).to(summary));
+				} else {
+					EventPublisher.publishEvent(new SearchEvent(bak).to(summary));
+				}
+			}
+		});
+	}
+
+	/**
+	 * @param search
+	 */
+	public void onSearch(String search) {
+		if (search == null || search.trim().isEmpty())
+			return;
+		String regex = starToRegex(search);
+		for (IRow row : getMyRanker()) {
+			String v = this.data.apply(row);
+			if (v == null)
+				continue;
+			if (Pattern.matches(regex, v.toLowerCase())) {
+				getTable().setSelectedRow(row);
+				break;
+			}
+		}
+	}
+
 	public void setFilter(String filter) {
 		invalidAllFilter();
 		propertySupport.firePropertyChange(PROP_FILTER, this.filter, this.filter = filter);
@@ -200,6 +250,11 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 		@ListenTo(sendToMe = true)
 		private void onSetFilter(FilterEvent event) {
 			setFilter((String) event.getFilter());
+		}
+
+		@ListenTo(sendToMe = true)
+		private void onSetSearch(SearchEvent event) {
+			onSearch((String) event.getSearch());
 		}
 
 	}
