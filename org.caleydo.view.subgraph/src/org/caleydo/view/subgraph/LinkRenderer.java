@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.event.EventPublisher;
@@ -67,11 +68,13 @@ public class LinkRenderer extends PickableGLElement {
 	protected final PathwayVertexRep vertexRep1;
 	protected final PathwayVertexRep vertexRep2;
 	protected final GLSubGraph view;
+	private ConnectionBandRenderer bandRenderer=null;
+
 
 	public LinkRenderer(GLSubGraph view, boolean drawLink, Rectangle2D loc1, Rectangle2D loc2,
 			PathwayMultiFormInfo info1, PathwayMultiFormInfo info2, float stubSize, boolean isLocation1Window,
 			boolean isLocation2Window, boolean isContextLink, boolean isPathLink, PathwayVertexRep vertexRep1,
-			PathwayVertexRep vertexRep2) {
+			PathwayVertexRep vertexRep2, ConnectionBandRenderer newBandRenderer) {
 		this.drawLink = drawLink;
 		this.loc1 = loc1;
 		this.loc2 = loc2;
@@ -86,7 +89,7 @@ public class LinkRenderer extends PickableGLElement {
 		this.vertexRep2 = vertexRep2;
 		this.view = view;
 		
-		bandRenderer = new ConnectionBandRenderer();
+		bandRenderer = newBandRenderer;
 	}
 
 	@Override
@@ -152,7 +155,7 @@ public class LinkRenderer extends PickableGLElement {
 	}
 
 	
-	private ConnectionBandRenderer bandRenderer;
+
 	
 	private Vec2f rotateVec2(Vec2f vec, float angle)
 	{
@@ -213,7 +216,6 @@ public class LinkRenderer extends PickableGLElement {
 
 
         gl.glTranslatef(0f, 0f, 4f);
-        bandRenderer.init(gl);
         
 //        float[] bandColor = new float[] { 0.4f, 0.4f, 0.4f, 1 };
 //		float[] rightTopPos = new float[] { p3x, p3y };
@@ -243,7 +245,12 @@ public class LinkRenderer extends PickableGLElement {
 		bandConnectionPoints.add(new Pair<Point2D, Point2D>(p20, p21));
 		bandConnectionPoints.add(new Pair<Point2D, Point2D>(p30, p31));
 
+		gl.glEnable(GL.GL_STENCIL_TEST);
+		gl.glStencilFunc(GL.GL_GREATER, 1, 0xff);
+		gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_KEEP);
 		bandRenderer.renderComplexBand(gl, bandConnectionPoints, false,bColor.getRGB(), 0.5f);		
+		gl.glDisable(GL.GL_STENCIL_TEST);
+		
 		gl.glTranslatef(0f, 0f, -4f);
 		
 //        //Debug

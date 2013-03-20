@@ -52,6 +52,7 @@ import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
 import org.caleydo.core.view.opengl.layout2.layout.GLSizeRestrictiveFlowLayout;
 import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
+import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.datadomain.genetic.EGeneIDTypes;
 import org.caleydo.datadomain.pathway.IPathwayRepresentation;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
@@ -202,6 +203,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 
 	private GLWindow windowToSetActive;
 
+	private ConnectionBandRenderer connectionBandRenderer=null;
 	/**
 	 * Constructor.
 	 *
@@ -252,8 +254,9 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		// PathwayDataDomain pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get().getDataDomainByType(
 		// "org.caleydo.datadomain.pathway");
 
-		// pathwaySelectionManager = new EventBasedSelectionManager(this, IDType.getIDType("PATHWAY"));
-		// pathwaySelectionManager.registerEventListeners();
+		// pathwaySelectionManager = new EventBasedSelectionManager(t
+
+		connectionBandRenderer =new ConnectionBandRenderer();
 
 	}
 
@@ -348,6 +351,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 			setPathLevel(EEmbeddingID.PATH_LEVEL2);
 		}
 		augmentation.init(gl);
+		connectionBandRenderer.init(gl);
 		registerListeners();
 	}
 
@@ -1074,7 +1078,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 							getPathwayRepresentation(info2.multiFormRenderer,
 									info2.multiFormRenderer.getActiveRendererID()), nodes.get(0), info2.container);
 					augmentation.add(new LinkRenderer(this, true, loc1, loc2, info1, info2, 1, false, false, false,
-							true, lastNodeOfPrevSegment, nodes.get(0)));
+							true, lastNodeOfPrevSegment, nodes.get(0),connectionBandRenderer));
 				}
 
 				lastNodeOfPrevSegment = nodes.get(nodes.size() - 1);
@@ -1140,7 +1144,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 					|| v == currentPortalVertexRep || isSelectedPortalLink(vertexRep, v), sourcePair.getFirst(),
 					targetPair.getFirst(), sourceInfo, targetInfo, stubSize, sourcePair.getSecond(),
 					targetPair.getSecond(), PathwayManager.get().areVerticesEquivalent(vertexRep,
-							currentContextVertexRep), false, vertexRep, v);
+							currentContextVertexRep), false, vertexRep, v,connectionBandRenderer);
 			augmentation.add(renderer);
 		}
 	}
