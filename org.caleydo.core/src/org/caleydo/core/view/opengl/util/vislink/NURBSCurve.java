@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,12 +8,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -22,6 +22,7 @@ package org.caleydo.core.view.opengl.util.vislink;
 import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.caleydo.core.view.opengl.renderstyle.ConnectionLineRenderStyle;
 
@@ -66,7 +67,7 @@ public class NURBSCurve {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param sourcePoint
 	 *            defines the first vertex of the spline (control point 1).
 	 * @param bundlingPoint
@@ -109,7 +110,7 @@ public class NURBSCurve {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param controlPoints
 	 *            a set of control points of which the spline is generated.
 	 * @param numberOfSegments
@@ -173,37 +174,20 @@ public class NURBSCurve {
 	 * curve doesn't go through the starting and end point, that's why we need the straight lines.
 	 */
 	protected void buildCurve(int numberOfSplineSegments) {
-		ArrayList<Vec3f> spline = evaluateCurve(numberOfSplineSegments);
-		ArrayList<Vec3f> curvePoints = new ArrayList<Vec3f>();
-
-		Vec3f srcPoint = controlPoints.get(0);
-		Vec3f dstPoint = spline.get(0);
-		int numberOfSegments = (int) (calculateEuclideanDistance(srcPoint, dstPoint) / SEGMENT_LENGTH);
-		if (numberOfSegments < 1)
-			numberOfSegments = 1;
-		StraightLine startToFirstCurvePoint = new StraightLine(srcPoint, dstPoint, numberOfSegments);
-		srcPoint = spline.get(spline.size() - 1);
-		dstPoint = controlPoints.get(controlPoints.size() - 1);
-		numberOfSegments = (int) (calculateEuclideanDistance(srcPoint, dstPoint) / SEGMENT_LENGTH);
-		StraightLine lastCurvePointToEnd = new StraightLine(srcPoint, dstPoint, numberOfSegments);
-		for (Vec3f currentPoint : startToFirstCurvePoint.getLinePoints())
-			curvePoints.add(currentPoint);
-		for (Vec3f currentPoint : spline)
-			curvePoints.add(currentPoint);
-		for (Vec3f currentPoint : lastCurvePointToEnd.getLinePoints())
-			curvePoints.add(currentPoint);
-		this.curvePoints = curvePoints;
+		ArrayList<Vec3f> spline = new ArrayList<>(numberOfSplineSegments + 2);
+		spline.add(controlPoints.get(0));
+		evaluateCurve(spline, numberOfSplineSegments);
+		spline.add(controlPoints.get(controlPoints.size() - 1));
+		this.curvePoints = spline;
 	}
 
 	/**
 	 * Evaluates the spline and calculates the curve points. After this function has been called, curvePoints
 	 * stores the points of the curve. The points can be obtained by the method getCurvePoints().
 	 */
-	protected ArrayList<Vec3f> evaluateCurve(int numberOfSegments) {
+	private void evaluateCurve(List<Vec3f> points, int numberOfSegments) {
 
 		int numberOfPoints = (numberOfSegments - 1);
-
-		ArrayList<Vec3f> splinePoints = new ArrayList<Vec3f>(numberOfPoints);
 
 		for (int step = 0; step <= numberOfPoints; step++) {
 			Vec3f point = new Vec3f();
@@ -214,18 +198,17 @@ public class NURBSCurve {
 					this.u = this.u_max;
 				point = point.addScaled(this.coxDeBoor(k, this.d), this.controlPoints.get(k));
 			}
-			splinePoints.add(point);
+			points.add(point);
 			// this.curvePoints.add(point);
 			// System.out.println("added point " + this.curvePoints[step].x() + ", " +
 			// this.curvePoints[step].y() + ", " + this.curvePoints[step].z());
 		}
 		// System.out.println("----------------");
-		return splinePoints;
 	}
 
 	/**
 	 * The Cox-deBoor recursive formula is used as blending function.
-	 * 
+	 *
 	 * @param k
 	 *            defines the control variable representing the current control point.
 	 * @param u
@@ -258,7 +241,7 @@ public class NURBSCurve {
 	 * Division for the blending function (coxDeBoor). Needed because it is possible to choose the elements of
 	 * the knot vector so that some denominators in the Cox-deBoor calculations evaluate to 0. These terms are
 	 * by definition evaluated to 0.
-	 * 
+	 *
 	 * @param dividend
 	 *            the dividend
 	 * @param divisor
@@ -294,40 +277,19 @@ public class NURBSCurve {
 
 	/**
 	 * Returns the given curve point at index i
-	 * 
+	 *
 	 * @param i
 	 *            index of the curve point that should be returned
 	 * @return a single curve point at index i
 	 * @throws IndexOutOfBoundsException
 	 */
 	public Vec3f getCurvePoint(int i) throws IndexOutOfBoundsException {
-		try {
-			return this.curvePoints.get(i);
-		}
-		catch (IndexOutOfBoundsException ioob) {
-			throw ioob;
-		}
-	}
-
-	/**
-	 * Calculates the euclidean distance between two points
-	 * 
-	 * @param srcPoint
-	 *            The source point
-	 * @param dstPoint
-	 *            The destination point
-	 * @return The euclidean distance
-	 */
-	protected float calculateEuclideanDistance(Vec3f srcPoint, Vec3f dstPoint) {
-		float distance = 0.0f;
-
-		distance = dstPoint.minus(srcPoint).length();
-		return distance;
+		return this.curvePoints.get(i);
 	}
 
 	/**
 	 * Generates the knots vector needed for the spline calculation
-	 * 
+	 *
 	 * @param numberOfControlPoints
 	 *            The number of given control points
 	 * @param degree
