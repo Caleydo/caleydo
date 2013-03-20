@@ -182,7 +182,8 @@ public class RankingElement extends GLElementContainer {
 	private void initTable(RankTableModel table) {
 		// add columns
 		textColumn = new StringRankColumnModel(GLRenderers.drawText("Pathway", VAlign.CENTER),
-				StringRankColumnModel.DEFAULT);
+				StringRankColumnModel.DEFAULT, Color.GRAY, new Color(.95f, .95f, .95f),
+				StringRankColumnModel.FilterStrategy.SUBSTRING);
 		textColumn.setWidth(140);
 		table.add(textColumn);
 		// table.addColumn(new StringRankColumnModel(GLRenderers.drawText("Pathway Type", VAlign.CENTER),
