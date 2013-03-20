@@ -29,6 +29,7 @@ import java.util.List;
 
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
+import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.basic.IScrollBar;
 import org.caleydo.core.view.opengl.layout2.basic.ScrollBarCompatibility;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
@@ -117,6 +118,11 @@ public class RankingElement extends GLElementContainer {
 			@Override
 			public IScrollBar createScrollBar(boolean horizontal) {
 				return new ScrollBarCompatibility(horizontal, view.getDndController());
+			}
+
+			@Override
+			public void renderIsOrderByGlyph(GLGraphics g, float w, float h) {
+				// no highlight
 			}
 		};
 
