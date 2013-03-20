@@ -33,7 +33,6 @@ import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.util.button.ButtonRenderer;
 import org.caleydo.core.view.opengl.util.connectionline.ClosedArrowRenderer;
 import org.caleydo.core.view.opengl.util.connectionline.ConnectionLineRenderer;
 import org.caleydo.core.view.opengl.util.connectionline.LineEndArrowRenderer;
@@ -44,6 +43,7 @@ import org.caleydo.view.enroute.path.node.BranchSummaryNode;
 
 import setvis.BubbleSetGLRenderer;
 import setvis.bubbleset.BubbleSet;
+
 /**
  * Renders a vertical path of nodes with constant spacings. No branches are rendered.
  *
@@ -62,7 +62,8 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 	private ArrayList<Rectangle2D> bubbleSetItems = new ArrayList<>();
 	private ArrayList<Line2D> bubbleSetEdges = new ArrayList<>();
 	private Color bubbleSetColor = new Color(1.0f, 0.0f, 0.0f);
-	private boolean isBubbleSetInitialized=false;
+	private boolean isBubbleSetInitialized = false;
+
 	/**
 	 * @param view
 	 * @param tablePerspectives
@@ -70,7 +71,6 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 	public VerticalPathRenderer(AGLView view, List<TablePerspective> tablePerspectives) {
 		super(view, tablePerspectives);
 	}
-
 
 	/**
 	 * @param node
@@ -199,92 +199,92 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 		// gl.glBlendFunc(GL2.GL_ONE, GL2.GL_CONSTANT_COLOR);
 		gl.glEnable(GL.GL_LINE_SMOOTH);
 		GLU glu = null;
-		//if (isLayoutDirty()) {
+		// if (isLayoutDirty()) {
 
-			gl.glNewList(layoutDisplayListIndex, GL2.GL_COMPILE);
+		gl.glNewList(layoutDisplayListIndex, GL2.GL_COMPILE);
 
-			glu = new GLU();
-			// gl.glPushMatrix();
-			// gl.glTranslatef(0, 0, 0.2f);
+		glu = new GLU();
+		// gl.glPushMatrix();
+		// gl.glTranslatef(0, 0, 0.2f);
 
-			renderPathwayBorders(gl);
+		renderPathwayBorders(gl);
 
-			for (ALinearizableNode node : pathNodes) {
-				node.render(gl, glu);
-				renderBranchNodes(gl, glu, node);
-			}
-
-			if (expandedBranchSummaryNode != null) {
-				renderBranchSummaryNode(gl, glu, expandedBranchSummaryNode);
-				// gl.glColor4f(1, 1, 1, 0.9f);
-				//
-				// gl.glBegin(GL2.GL_QUADS);
-				// gl.glVertex3f(0, 0, 0.1f);
-				// gl.glVertex3f(x, 0, 0.1f);
-				// gl.glVertex3f(x, y, 0.1f);
-				// gl.glVertex3f(0, y, 0.1f);
-				// gl.glEnd();
-			}
-
-			renderEdges(gl, pathNodes);
-			// gl.glPopMatrix();
-			gl.glEndList();
-			//
-			//
-			setLayoutDirty(false);
-        	if(!isBubbleSetInitialized){
-        		System.out.println("init Bubblesets="+isBubbleSetInitialized);	                		
-        		bubbleSetRenderer.init(gl);	
-        		isBubbleSetInitialized=true;
-        	}
-        	int sizeX=Math.round(this.x);
-        	int sizeY= Math.round(this.y);
-            if(updateStrategy!=null && this.updateStrategy instanceof FixedPathUpdateStrategy
-            		&&  sizeX>0 && sizeY>0){
-            	int i = 0;            	
-    			this.bubbleSetRenderer.setSize(sizeX,sizeY);
-    			this.bubbleSetRenderer.clearBubbleSet();
-    			bubbleSetItems.clear();
-    			bubbleSetEdges.clear();
-                for (List<PathwayVertexRep> segment : ((FixedPathUpdateStrategy) this.updateStrategy).getSelectedPathSegments()) {
-    				Rectangle2D prevRect = new Rectangle2D.Double(0f, 0f, 0f, 0f);              	
-                    for(PathwayVertexRep node : segment){
-                    	Rectangle2D nodeRect=getVertexRepBounds(node);
-                    	if(nodeRect!=null){
-	                        float posx=(float)nodeRect.getCenterX();
-	                        float posy=-(float)nodeRect.getCenterY()+ this.y;
-	                        // to debug output center as point 
-							//gl.glColor4f(1,0,0,1);
-							//gl.glPointSize(5);
-							//gl.glBegin(GL2.GL_POINTS);
-							//     gl.glVertex3f(posx,posy,5.0f);
-							//gl.glEnd();
-							//gl.glPointSize(1);	         
-	    					bubbleSetItems.add(new Rectangle2D.Double(posx, posy, nodeRect.getWidth(),nodeRect.getHeight()));
-	    					if (i > 0) {
-	    						bubbleSetEdges.add(new Line2D.Double(posx, posy, prevRect.getCenterX(), prevRect.getCenterY()));
-	    					}
-	    					prevRect.setRect(posx, posy, nodeRect.getWidth(), nodeRect.getHeight());
-	    					i++;
-                    	}//if
-                    } //for(PathwayVertexRep node : segment){              
-                }//for (List<PathwayVertexRep> segment
-    			this.bubbleSetRenderer.addGroup(bubbleSetItems, bubbleSetEdges, bubbleSetColor);
-    			((BubbleSet) this.bubbleSetRenderer.setOutline).useVirtualEdges(false);    	
-    			//((BubbleSet) this.bubbleSetRenderer.setOutline).setParameter(100, 20, 3, 10.0, 7.0, 0.5, 2.5, 15.0, 5);
-    			// ((BubbleSet)this.bubbleSetRenderer.setOutline).setParameter(1, 1,1,1.0,1.0,.5,1.5, 1.0, 1);
-    			// setOutline = new BubbleSet(100, 20, 3, 10.0, 7.0, 0.5, 2.5, 15.0, 8);
-    			// BubbleSet(routingIterations, marchingIterations,pixelGroup,
-    			// edgeR0,edgeR1, nodeR0, nodeR1,
-    			// morphBuffer,skip)   			
-    			this.bubbleSetRenderer.update(gl, null, 0);
-    			this.bubbleSetRenderer.renderPxl(gl, this.x, this.y);
-
-            //} //if (isLayoutDirty()) {
-
+		for (ALinearizableNode node : pathNodes) {
+			node.render(gl, glu);
+			renderBranchNodes(gl, glu, node);
 		}
 
+		if (expandedBranchSummaryNode != null) {
+			renderBranchSummaryNode(gl, glu, expandedBranchSummaryNode);
+			// gl.glColor4f(1, 1, 1, 0.9f);
+			//
+			// gl.glBegin(GL2.GL_QUADS);
+			// gl.glVertex3f(0, 0, 0.1f);
+			// gl.glVertex3f(x, 0, 0.1f);
+			// gl.glVertex3f(x, y, 0.1f);
+			// gl.glVertex3f(0, y, 0.1f);
+			// gl.glEnd();
+		}
 
+		renderEdges(gl, pathNodes);
+		// gl.glPopMatrix();
+		gl.glEndList();
+		//
+		//
+		setLayoutDirty(false);
+		if (!isBubbleSetInitialized) {
+			System.out.println("init Bubblesets=" + isBubbleSetInitialized);
+			bubbleSetRenderer.init(gl);
+			isBubbleSetInitialized = true;
+		}
+		int sizeX = Math.round(this.x);
+		int sizeY = Math.round(this.y);
+		if (updateStrategy != null && this.updateStrategy instanceof FixedPathUpdateStrategy && sizeX > 0 && sizeY > 0) {
+			int i = 0;
+			this.bubbleSetRenderer.setSize(sizeX, sizeY);
+			this.bubbleSetRenderer.clearBubbleSet();
+			bubbleSetItems.clear();
+			bubbleSetEdges.clear();
+			for (List<PathwayVertexRep> segment : ((FixedPathUpdateStrategy) this.updateStrategy)
+					.getSelectedPathSegments()) {
+				Rectangle2D prevRect = new Rectangle2D.Double(0f, 0f, 0f, 0f);
+				for (PathwayVertexRep node : segment) {
+					Rectangle2D nodeRect = getVertexRepBounds(node);
+					if (nodeRect != null) {
+						float posx = (float) nodeRect.getCenterX();
+						float posy = -(float) nodeRect.getCenterY() + this.y;
+						// to debug output center as point
+						// gl.glColor4f(1,0,0,1);
+						// gl.glPointSize(5);
+						// gl.glBegin(GL2.GL_POINTS);
+						// gl.glVertex3f(posx,posy,5.0f);
+						// gl.glEnd();
+						// gl.glPointSize(1);
+						bubbleSetItems
+								.add(new Rectangle2D.Double(posx, posy, nodeRect.getWidth(), nodeRect.getHeight()));
+						if (i > 0) {
+							bubbleSetEdges.add(new Line2D.Double(posx, posy, prevRect.getCenterX(), prevRect
+									.getCenterY()));
+						}
+						prevRect.setRect(posx, posy, nodeRect.getWidth(), nodeRect.getHeight());
+						i++;
+					}// if
+				} // for(PathwayVertexRep node : segment){
+			}// for (List<PathwayVertexRep> segment
+			this.bubbleSetRenderer.addGroup(bubbleSetItems, bubbleSetEdges, bubbleSetColor);
+			((BubbleSet) this.bubbleSetRenderer.setOutline).useVirtualEdges(false);
+			// ((BubbleSet) this.bubbleSetRenderer.setOutline).setParameter(100, 20, 3, 10.0, 7.0, 0.5, 2.5, 15.0, 5);
+			// ((BubbleSet)this.bubbleSetRenderer.setOutline).setParameter(1, 1,1,1.0,1.0,.5,1.5, 1.0, 1);
+			// setOutline = new BubbleSet(100, 20, 3, 10.0, 7.0, 0.5, 2.5, 15.0, 8);
+			// BubbleSet(routingIterations, marchingIterations,pixelGroup,
+			// edgeR0,edgeR1, nodeR0, nodeR1,
+			// morphBuffer,skip)
+			this.bubbleSetRenderer.update(gl, null, 0);
+			this.bubbleSetRenderer.renderPxl(gl, this.x, this.y);
+
+			// } //if (isLayoutDirty()) {
+
+		}
 
 		// Rendering highlights without a display list is actually less expensive
 		if (glu == null)
@@ -393,15 +393,15 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 				gl.glVertex3f(x, nodePositionY + halfBorderWidth, 0);
 				gl.glVertex3f(0, nodePositionY + halfBorderWidth, 0);
 				gl.glEnd();
-
-				gl.glColor3f(0.5f, 0.5f, 0.5f);
+				gl.glDisable(GL.GL_BLEND);
+				gl.glColor3f(0.6f, 0.6f, 0.6f);
 				gl.glBegin(GL.GL_LINES);
 				gl.glVertex3f(x, nodePositionY + halfBorderWidth, 0);
 				gl.glVertex3f(0, nodePositionY + halfBorderWidth, 0);
 				gl.glVertex3f(x, nodePositionY - halfBorderWidth, 0);
 				gl.glVertex3f(0, nodePositionY - halfBorderWidth, 0);
 				gl.glEnd();
-
+				gl.glEnable(GL.GL_BLEND);
 				renderPathwayTitle(gl, segmentIndex, topPathwayTitleLimit, nodePositionY);
 				// gl.glPopMatrix();
 
