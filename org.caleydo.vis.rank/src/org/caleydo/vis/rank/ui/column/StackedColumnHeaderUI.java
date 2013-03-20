@@ -247,8 +247,9 @@ public class StackedColumnHeaderUI extends ACompositeHeaderUI implements IThickH
 	}
 
 	@ListenTo(sendToMe = true)
-	private void onDistributinChanged(DistributionChangedEvent event) {
+	private void onDistributionChanged(DistributionChangedEvent event) {
 		model.setDistributions(event.getDistributions());
+		relayout();
 	}
 
 	@Override
