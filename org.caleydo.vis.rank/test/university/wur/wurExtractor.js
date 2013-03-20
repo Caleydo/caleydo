@@ -42,5 +42,5 @@ csv += "natural;"+natural+"\n";
 csv += "social;"+social+"\n";
 
 $("pre").remove();
-$("<pre/>").appendTo("body");
+$("<pre/>").prependTo("body");
 $("pre:first").text(csv).css("font-size","8px");

@@ -1,0 +1,619 @@
+qsrank	schoolname	qsstars	overall	academic	employer	faculty	international	internationalstudents	citations	arts	engineering	life	natural	social
+1	Harvard University	5	100.00	100	100	96.3	87	81.3	100	100	59.6	100	96.1	100
+2	Yale University	5	99.80	100	99.6	100	89	70.6	97.5	86.2	40.7	76.4	72.1	80.5
+3	University of Cambridge	5	99.50	100	100	99.4	97.6	95.4	88.5	89.1	76.2	87.1	98.3	81.8
+4	University of Oxford	5	98.90	100	100	99.7	95.9	96.4	85.2	91.3	61.6	81.4	92.3	80.8
+5	California Institute of Technology (Caltech)	5	98.60	99.6	73.6	97.6	100	92.6	100	22.7	81.6	59.5	90.7	37
+6	Imperial College London	5	98.40	99	99.9	99.9	97.8	99.9	83.1	22.9	70.9	65.4	74.3	36.2
+7	UCL (University College London)	6	98.10	95.8	99.3	99.7	95.9	99.8	89	53.6	32.8	52.6	38.9	48.8
+8	University of Chicago	5	98.00	99.9	98.9	97.8	78.4	83.1	91.2	79.3	34.5	48.4	75.2	79.2
+9	Massachusetts Institute of Technology (MIT)	5	96.70	100	99.9	90.3	33.4	93.9	100	60.5	100	75.7	100	76.1
+10	Columbia University	5	96.30	99.8	98.6	98	29.4	89.1	93.6	81.7	39.5	56.3	62.5	75.2
+11	University of Pennsylvania	5	96.10	96.6	98.4	87.7	83.3	78.8	98.9	49.4	35	44.8	45.9	58.4
+12	Princeton University	5	95.70	100	97.6	75.4	90.9	81.9	100	81.8	61.5	54.4	91.1	76.8
+13	Duke University	6	94.40	97	98.4	99.9	30	65.6	93.8	58.4	30.7	55.7	39.8	53.2
+13	Johns Hopkins University	5	94.40	99.1	77.6	100	29.9	68.3	99.7	57.1	38.5	84.7	48	45.1
+15	Cornell University	5	94.30	99.9	99.2	89.6	27.9	75.7	95.5	67.2	56.4	57.6	76.8	64.6
+16	Australian National University	5	92.00	99.8	92.6	82	99	90.7	74	74	49.9	46.9	66.1	71.4
+17	Stanford University	5	91.20	100	99.8	67.4	26	87.1	100	80.3	85.3	80.3	88	82.6
+18	University of Michigan	6	91.00	99.2	98.8	85.4	59.2	51.3	83.6	61.5	49.2	49.6	54.8	60.9
+19	The University of Tokyo	6	90.00	99.9	94	98.4	27	40.4	77.6	54.1	67.4	60.5	77.2	59.9
+20	McGill University	5	89.70	99.9	96.9	99.4	62.2	94.7	51.2	70.8	60.1	68	63.1	71.4
+21	Carnegie Mellon University	6	89.60	95.4	97.4	82.3	49.6	96.6	79.1	31.7	71.6	33.7	39.6	47.2
+22	King's College London (KCL)	6	89.50	92.6	98.1	89.2	90.9	85.1	69.6	50.1	29	48.7	36.2	42.4
+23	University of Edinburgh	5	89.30	95.5	98.8	82.4	91.1	81.7	69.9	54.8	40.2	48.9	39.2	41
+24	ETH Zurich (Swiss Federal Institute of Technology)	6	89.10	95.2	81.8	55.9	99.8	94.4	99.4	23.4	63.1	34.7	73.7	27
+25	Kyoto University	5	87.40	99.3	87.4	79.6	29.8	25.5	90.9	50.4	56.8	53.1	74.4	44.8
+26	University of Hong Kong	6	87.10	93.6	90.3	85.8	99.9	91.9	59.4	45.7	37.3	45	36.7	47.5
+27	Brown University	5	85.20	91.5	83.4	63.6	55.5	58.2	99.2	54.3	33.1	38.2	36.3	39.5
+28	Ecole normale supérieure, Paris	5	84.80	93.2	71.9	68.4	29.2	68.6	99	51.3	32.4	26.2	68.5	31.1
+29	The University of Manchester	5	84.40	90.6	99.8	81.9	91.2	83.7	55.7	40.7	44.8	36.8	35.8	39.3
+30	National University of Singapore (NUS)	5	84.30	99.6	98.1	38.6	99.7	99.5	75	53.1	64.5	58.7	55.5	61.9
+30	University of California, Los Angeles (UCLA)	5	84.30	100	97.8	48.2	22.7	36.2	99.9	77.3	61.4	65.4	72	71.5
+32	University of Bristol	5	84.10	83	99.2	81.7	84.8	74.1	73.9	35.3	28.9	40.4	38.8	27.7
+33	Northwestern University	5	83.30	87.9	96.8	77.8	30.2	60.7	82.3	32.1	34.6	33.8	35.5	50.6
+34	University of British Columbia	5	83.00	99.9	92.5	68.7	33.1	61.2	67.2	61.9	56.8	61.8	67.8	72
+34	Ecole Polytechnique	5	83.00	80.3	95.8	100	62.2	93.2	58.1		52.6	16.1	59.6	23.1
+36	University of California, Berkeley (UCB)	5	82.90	100	99.8	23.7	88.2	36	100	93.1	93.9	83.7	99.5	91.6
+37	The University of Sydney	5	82.40	98.7	97.1	54.6	97.1	93	54.4	62.6	48	51.9	48.1	51.4
+38	The University of Melbourne	4	82.30	99.5	99.8	59.1	53.9	95.7	56.3	62.8	54.4	52.3	58.7	61.7
+39	The Hong Kong University of Science and Technology	5	81.40	85.8	90.1	59.8	100	96.9	71.9		56.4	34.7	43.2	38.6
+40	New York University (NYU)	4	81.30	95.5	95.7	83.1	27.6	56.2	54	64.2	19.5	37.9	44.4	58.2
+41	University of Toronto	5	81.10	100	93.7	17.9	80.2	45.7	99.9	74.3	66	64.1	79.2	71
+42	The Chinese University of Hong Kong	4	81.00	85.4	83.8	79.9	97.8	85.5	57.1	31.8	36	34.9	36.4	39.3
+43	The University of Queensland	4	80.70	94.7	96.6	48.8	99.5	77.8	63.3	40.4	40	48.9	43.4	45.7
+44	Osaka University	4	80.10	89.9	69.4	93.1	24.8	28.2	70.2	27.1	42.3	47.5	49.5	28
+45	The University of New South Wales	4	79.80	97.1	99.1	34.8	83	90.5	68	44.7	54.7	38.2	50.2	50.9
+46	Boston University	4	79.10	91.4	85.3	66.3	26.4	59.3	73.1	45.2	31.8	43.2	37.2	43.5
+47	Monash University	5	78.70	97.9	99.2	52.4	99	99.4	36.9	52.5	44.3	50.4	44.4	57.6
+48	University of Copenhagen	5	78.50	87.5	59.1	100	67.2	68.7	44.7	42.4	17.3	36.1	40.7	48.8
+49	Trinity College Dublin	4	78.20	89.8	96	68.4	99	76.1	41.9	52.8	28.5	30.1	41.8	40.7
+50	Peking University	5	78.10	99.6	97	83.9	26.8	36.4	34.2	56.4	49.2	56.9	73	57.8
+50	Seoul National University	3	78.10	96.5	65.4	87.4	22.9	36.7	53.5	38.1	46	44.9	55.5	47.9
+50	Ecole Polytechnique Fédérale de Lausanne	3	78.10	62.8	70.9	93.1	100	99.9	77.3		45.2		40.6	
+53	University of Amsterdam	4	78.00	87.8	76.5	80	72.9	31.9	61.1	50.7	24.3	32.1	34.4	44.7
+54	Dartmouth College	2	77.80	64.3	93	88.3	28	57.3	95.2	31.6	16.7	29.1	20.3	31.4
+55	University of Wisconsin-Madison	2	77.70	93.1	79.1	48	30.6	35.6	89.2	42.5	36.9	40.3	43.9	45.4
+56	Tsinghua University	2	77.00	97	89.7	94.3	22.6	23.5	31.3	36	63.4	37.1	57.1	44.1
+57	Ruprecht-Karls-Universität Heidelberg	2	76.90	86.8	58.5	81	54.1	81.1	58.1	45.4	17.9	40	48.3	31.4
+58	University of California, San Diego (UCSD)	4	76.30	98.4	57.6	34.6	19.8	29.1	100	35	50.3	69.4	55.6	45.9
+59	University of Washington		75.80	83.5	53.8	62.1	24.8	36.1	98.8	25	34.3	43.1	39	31.1
+60	Washington University in St. Louis		75.70	64.1	55.4	99.7	23.9	54	94.5	20.8		51.4	19.7	21.5
+61	Tokyo Institute of Technology		75.30	77.3	76.2	70.3	25.2	44.7	87.2	19.6	57	19.1	43.5	
+62	Emory University		75.00	61.8	66.8	95.6	42.6	47.3	91.4	29.9		37.9	21.6	20
+63	Uppsala University		74.90	90.6	59.7	42.5	69.7	40.5	84.9	45.6	26.8	45.6	42.1	36.9
+64	Leiden University		74.80	87.1	61.1	34.9	73.8	40.9	97.1	51	16.9	33.6	41.5	40.8
+65	The University of Auckland		74.50	95	94.4	35.8	94	99.1	42.4	49.7	40.8	43.9	36.8	49.7
+66	London School of Economics and Political Science (LSE)		74.20	88.4	100	59.3	99.8	100	26.2	52.9		16.8	21.2	82.1
+67	Utrecht University		74.00	88.5	66	62.1	45	24.4	71.9	40.9	24.4	35.3	52.4	35.7
+68	University of Geneva		73.90	69.2	35.9	57.5	97	99.6	97.9	33.9	16.9	27.4	32.6	28
+69	The University of Warwick		73.80	82.9	99.7	59.8	91.7	96.5	38	38.4	25.4	20.8	39	47.2
+70	University of Texas at Austin		73.30	94.7	95.4	26	60.1	43.1	69.1	46.3	52	29.5	54.9	36.1
+71	University of Illinois at Urbana-Champaign		73.20	93.8	67.1	42.5	37.1	51.2	71.9	32.8	58.4	28	53.4	40.7
+72	Katholieke Universiteit Leuven		73.10	91.7	83.4	33.9	51.6	51.3	72.3	47.8	40.8	31.8	38	43.7
+73	University of Glasgow		73.00	71.5	78.1	67.1	94.7	59.5	68.8	27.2	26.7	33.6	30.5	25.4
+74	University of Alberta		72.90	90.8	48	56.2	92.3	63.5	55.2	35.5	44.6	41.9	44.9	31.1
+75	University of Birmingham		72.30	73.2	93.5	56.5	81.5	71.6	65.4	29.3	32.7	29.7	25.8	29.7
+76	The University of Sheffield		72.20	69.2	96.6	67.7	80.9	71.8	59.9	28.2	29.6	28.9	24.8	27.3
+77	Nanyang Technological University (NTU)		72.10	87	87.2	46.9	99.8	99.3	37.8	24.1	55.2	32.3	35.9	35.9
+78	Technische Universität München		71.80	72.8	59.2	85.8	53.9	77.2	56.9		48.7	22.8	49.5	
+78	Delft University of Technology		71.80	77.7	87.2	66.2	80.4	65.6	49	23.3	60.4		41	19
+78	Rice University		71.80	62.1	54.8	75.7	42.3	73	94.7	18.3	30.8	20.8	33.4	21.5
+81	University of York		71.50	62	93.2	76.7	95.4	83.6	57.1	31.8	18.9	24.6	24.4	24.9
+81	Aarhus University		71.50	76.3	37.6	72	66.8	58.2	74.3	33.8	20.3	26.8	38.1	35.1
+83	The University of Western Australia		71.30	71.7	87.7	51.7	91.7	82.9	65.4	30.3	27.2	32	28.5	25.9
+83	University of St Andrews		71.30	38.8		20.8	22.4	20.7	58.6	95	62.3		91.7	98.5
+83	Georgia Institute of Technology		71.30	78.4	82.9	22.1	38.6	78.4	98.7		68.9	16.8	43.1	18.5
+86	The University of Nottingham		71.00	71.6	98.4	63.6	90.1	88.9	46	30.3	27.9	31.1	25.8	28.7
+87	University of Minnesota		70.20	78.7	53.8	38.1	71.6	33.2	94.3	30.6	27.9	31.8	31.4	38.1
+88	Lund University		70.00	82.4	68.1	44.7	68.2	52.4	68.2	34.4	29.2	27.7	40.9	37.4
+89	University of California, Davis		69.90	83.8	45.9	41.7	28	26.4	95.6	26.1	31.4	51.4	37.9	26.8
+90	Case Western Reserve University		69.80	59.6	42	94.5	21.4	51.2	88	17.3	26.8	33	22.1	20.9
+91	University of Helsinki		69.60	87.6	42.7	54.5	51.4	21.2	70.9	44.4	27.6	33.9	41	38.8
+91	Université de Montréal		69.60	88.5	36.1	35.8	83.2	73.7	69.7	42.3	33.9	36	38.3	38.5
+93	Hebrew University of Jerusalem		69.50	88.7	25.4	34.8	70.2	32.7	88.8	48.1	21.3	36.7	41.2	42.3
+93	Ludwig-Maximilians-Universität München		69.50	84	44.5	68.5	51.2	69.5	50.7	42.1	21.5	31.2	45.8	33.6
+95	KAIST - Korea Advanced Institute of Science & Technology		69.30	75.6	52.6	60.5	48	36	79.4		50.5	26.3	47.4	17.7
+96	University of Virginia		69.20	66.4	93	61.2	23.5	37.6	82.2	32.2	22.1	26.8	20.7	31.3
+97	University of Pittsburgh		69.10	62.1	40.2	94.8	41.5	34.2	79.4	35.7	22	26.9		22.6
+98	University of California, Santa Barbara (UCSB)		68.80	88.1	49.9	20.8	39.1	22.3	98.5	26	39.8	32.2	61.9	27.5
+99	Purdue University		68.60	85.4	81.6	33.9	60.1	57.2	60.2	22.8	50.9	34.5	41.7	28.3
+99	University of Southampton		68.60	62.6	90.3	61.2	87.1	82.6	61.2	21.4	32.8	21.3	28.8	21.4
+101	Vanderbilt University		68.50	53.4	83.7	100	57.4	44.8	60.3			37.7		23.9
+102	University of Southern California		68.40	64.5	72.9	48.7	71	88	80.2	29.2	33.9	21.4	20	25
+102	University of North Carolina, Chapel Hill		68.40	73.7	86.7	61.2	22	21.4	71.4	29.2	21.9	35	30.9	31.2
+104	University of Leeds		68.30	71.9	97.7	57	71	63.6	50.2	37.6	28.2	24	27.2	27.3
+105	Pennsylvania State University		68.20	78.1	78.9	38.8	35	36.2	81	20.6	34.9	22	43.2	37.7
+106	The University of Adelaide		68.10	71.5	89	38.6	87	94.6	61.1	27.9	25.1	26	32.9	31.5
+106	University of Zurich		68.10	76.1	37.8	20.9	99.3	68.4	98.7	32.6	22	31.9	35.6	31.6
+108	University College Dublin		68.00	71.6	91.3	66.5	94.9	82.1	32.6	38.6	21.9	22.5	23.2	37.5
+109	Technion - Israel Institute of Technology		67.90	83.6	58.3	47.6	18.1	18	78.8	19.7	54.1	25.7	55.5	18
+110	Georgetown University		67.60	68.7	94.2	64.8	25.9	52.4	61.5	41.4		24.5		42.9
+111	Maastricht University		67.40	50.7	71.6	80	61.4	99.7	71.5			25.2		42.2
+112	Tohoku University		67.20	62.8	48.6	97.9	37.9	31.4	62.9		32.7	22	41.5	
+113	Fudan University		67.10	89.2	91.3	49.4	30.9	31.7	38.8	35.4	33.2	39	42.3	41.7
+114	Tel Aviv University		66.70	85.4	46.6	24.4	16.9	19.3	98.2	37.1	29.1	28	43.1	40.9
+115	University of Vienna		66.60	88.6	67	10.1	63.9	85	67.2	47.1	21.1	36	44.2	41
+116	Université Catholique de Louvain (UCL)		66.40	85.2	62.5	18.5	49	72.5	73.9	42.1	31.3	25.8	32.2	46.2
+117	Queen's University		66.20	77.2	81.5	45.1	78.5	33.9	55	31.4	26.7	28.5	28.8	40.9
+117	McMaster University		66.20	85.5	42.1	25.8	27.2	31.8	90.9	31.2	34.9	38.1	39.2	35.1
+119	University of Rochester		66.10	53.3	32.7	100	62.9	70.5	66.7	18.2	19.1	21.8	23.4	26.2
+120	Nagoya University		65.90	62	57.8	83.5	26	32.3	70.9		29.6	21.3	35.8	22
+121	Ohio State University		65.80	73.4	80.1	39.5	58.5	41.4	69.8	18.8	30.7	25	36.9	36.1
+122	Durham University		65.40	59.5	98.6	50	83.5	62.2	64.8	30.4		19.8	25.9	27.9
+122	University of Maryland, College Park		65.40	68.4	55.8	54.5	48.4	39.1	78.2	17.5	34.6	23.5	36.5	24.9
+124	National Taiwan University (NTU)		65.30	87.2	73.1	39.5	31.3	24.9	54.4	27.3	42.3	31.8	45.1	37.6
+124	University of Otago		65.30	72.6	74.9	35.9	100	88.4	53.2	36.8		34.2	26.3	34.3
+126	Erasmus University Rotterdam		65.20	58.1	97.5	45.8	56.6	49.9	81.2	24.6		29.7		41.7
+127	Stony Brook University		65.10	71.2	35.4	47	62.7	81	74.9	35.1	22.2	21.6	41.2	22.7
+128	Eindhoven University of Technology		64.80	56.8	54.7	99.9	98.3	42	40.6		42.3		29.7	
+129	University of Waterloo		64.60	86.3	69.2	18.4	59.8	53.9	61.7	20.5	53.9	26.4	48.9	31.4
+130	University of Sussex		64.10	60.2	53.6	51.2	92.2	79	71.8	31.9	18.7	19.1	19.1	32.4
+131	University of Basel		63.90	61.5	32	98.4	84.3	80.1	33.8	35.1		29.2	23.4	21.9
+132	University of California, Irvine		63.80	79.6	29.6	30.2	23.7	28.9	94.2	36.4	28.9	34.9	32.9	28.9
+133	Cardiff University		63.40	61.3	89	66.4	71.2	77.4	39.1	27	21.2	30.8		26.8
+133	University of Liverpool		63.40	54	81.3	69.2	80.4	66.6	55.2	24.8	21.4	23.4	22.8	
+133	Technical University of Denmark		63.40		35.8		25.3		45	42.3	62.9		90.3	56.3
+136	University of Ghent		63.10	68.4	46.7	84.2	40.3	42.8	42.8	30.8	27	26.8	29.6	22.9
+137	Texas A&M University		62.60	76.6	74.4	23.4	33.8	39.9	73.3	17.3	41.8	31.8	39	25
+137	Freie Universität Berlin		62.60	84.6	22.3	24.3	46.5	68	72.3	55.2	18.9	22.4	39.2	40.1
+139	Humboldt-Universität zu Berlin		62.50	79.2	43.2	64.1	41.9	56.3	36.4	44.9	17.1	27.1	36.2	35.7
+139	Humboldt-Universität zu Berlin		62.50	44.9	17.1	27.1	36.2	35.7	79.2	43.2	36.4		41.9	56.3
+140	Ecole Normale Supérieure de Lyon		62.40	41.1	57.3	100	47.1	55.6	68.4		18.5		30.9	
+141	University of Science and Technology of China		62.30	75.8	66.6	55.5	19.1	13	55.8		42.3	31.4	45.5	
+142	Wageningen University		62.00	40.5	35.4	89.7	41.5	97	79.7		16.6	22.6	24.4	
+143	Nanjing University		61.90	76	67.9	65.7	53.7	17.5	32.8	27.1	29.3	31.8	37.7	27.4
+144	Shanghai Jiao Tong University		61.80	75	82.6	69.3	34	20.2	27.5	18.8	43.8	31.9	30.9	25.7
+144	University of Groningen		61.80	63.3	49.2	66.7	60.7	33.7	60.2	33.6		23.6	26.5	28.2
+146	University of Arizona		61.50	68.6	54.7	41.8	24.2	29.8	80.6	33.1	22.5	21.3	32.3	28.2
+147	City University of Hong Kong		61.20	68.3	58.1	43.8	99.6	42.9	53.8	26.8	33.7	20.2	23.9	32.3
+147	Universität Freiburg		61.20	39.2		27.9	25.2	22.9	63.6	30.2	42.3		26	66.7
+149	Université Pierre et Marie Curie (UPMC)		61.00	66.1	17.2	88.7	24.2	90	39.8		28	29.3	60	
+150	Universidad Nacional Autónoma de México (UNAM)		60.90	80.6	85.8	59.4	42.1	15.4	19.6	33.9	31.4	34.9	36.2	28.3
+151	Rutgers, The State University of New Jersey, New Brunswick		60.70	78.7	42.3	46.8	51.7	28.8	51	47.4	25.9	19.2	37	30.4
+152	University of Bath		60.40	49.3	97.9	46.3	92	93.2	55	18	19.7	20	22.6	21.2
+153	University of Aberdeen		60.30	43.8	71.4	77.5	91	79.8	50.9			24.1		18.8
+154	Indian Institute of Technology Delhi (IITD)		60.10	64.4	83.6	68.6	16.2	13.7	46.6		47.7	22.6	34.4	17.8
+155	Vrije Universiteit Amsterdam		59.80	64.1	50.1	83.7	37.4	30.6	38.2	27.1	21	27.4	23.3	29.9
+155	Eberhard Karls Universität Tübingen		59.80	61.1	29.8	70.6	54.8	50.9	57.7	38.7		31	21.9	20.9
+157	Tufts University		59.60	40	63.6	62.2	37.3	49.4	95.3	19.6		23.8		18.9
+158	Kyushu University		59.50	59	43.8	74	19.6	31.4	64	25.1	24.3	22.2	31.8	
+159	The University of Western Ontario		59.40	66.9	60.5	25.9	62.7	30.8	76.8	26.4	22.9	22.9	21.2	40.6
+160	Queen Mary, University of London (QMUL)		59.10	54.9	65.7	76.5	96.3	91.7	22.5	21.2	19.6	25.3	23.6	21.9
+161	University of Lausanne		59.00	47.7	51.3	40.5	84.7	81.6	85.1	18.8	17.3	17.4	19.8	25.2
+162	Newcastle University		58.70	39.8	88	68.2	81.9	79.2	54.5		18.1	20.1		
+162	Chalmers University of Technology		58.70	63.5	47.9	40.3	42.3	59.8	69.8		41.3		40.2	19
+164	Simon Fraser University		58.50	75.6	56.8	19.3	93.2	48.2	51.4	29.8	30.1	24.1	28.6	40
+165	University of Florida		58.40	65.2	55.7	37	33.1	34.1	73.4	29.9	26.6	18.5	34	21.7
+166	Georg-August-Universität Göttingen		58.30	69.2	25.2	65.3	39.4	52.1	45.5	34.5	17.8	27.2	42.1	
+166	Chulalongkorn University		58.30	78.7	76.6	58.7	22.9	14.4	21.1	31	34	29	28.1	37.8
+168	University of Notre Dame		58.10	55.7	83.3	43.8	26.3	34.7	71.8	36.6	19	15.6		23.7
+169	Universität Frankfurt am Main		58.00	54	50.8	65.6	29.5	80	56.9	30.6		18.3	23.1	26.6
+170	University of Calgary		57.90	70	51.6	40.7	23.7	29.3	62.9	22.2	33.5	28	30.2	26.4
+170	Lancaster University		57.90	52.4	76.7	59.9	89.9	80	37.4	29.6		16.4		34.4
+170	Indiana University Bloomington		57.90	69.7	69.5	27.4	49	45.1	57.6	44.2		30.2	25	27
+173	KTH, Royal Institute of Technology		57.80	59.2	58.4	46.8	70	98.2	45.7		41.5		37.7	
+174	Indian Institute of Technology Bombay (IITB)		57.60	74.3	75.7	43.5	23	13.2	42.5		49.9	22.5	40.2	20
+174	Rensselaer Polytechnic Institute		57.60	52.2	45.6	34.3	62.1	48.3	92.2	17.4	38.7		24	
+174	Hokkaido University		57.60	54.2	51.6	73.8	19.7	23.5	62.6		21.3	26.3	30.4	
+177	University of Leicester		57.50	37.1	58.7	63.4	77.1	94.7	71.1	20.3				20.3
+177	University of Oslo		57.50	67	40.9	56.7	45.6	59.6	43.4	30.8	22.8	21.4	27.4	31.9
+179	University of Cape Town		57.40	61.2	66	15.1	85.9	81.8	68.1	25.8	18.5	24.8	26.5	27.6
+180	Waseda University		57.30	79.4	88.5	35.6	43.4	30.3	22.7	42.5	29.3	23.8	29.7	36.4
+180	University of Colorado at Boulder		57.30		26.8	24.6	30.4	19.8	55.9	24.3	89.6		36.9	20.3
+182	Macquarie University		57.10	65.1	86.8	17.6	87.5	99.7	41	41		21	22.4	30.2
+183	Lomonosov Moscow State University		56.90	80.4	71.5	39.4	16.8	25.2	31.2	26.3	32	26.5	56.6	22.8
+183	Université Libre de Bruxelles (ULB)		56.90	63.1	62.4	18.8	49.9	96.2	65.4	27.1	20.7	17.8	35	26.1
+185	Brandeis University		56.80	54.1	33.5	47.2	28.1	73.6	79.6	27.9		30.1	24	18.7
+186	University of Barcelona		56.40	77.2	52.4	19.3	23.7	38.2	60.1	34.6	27.9	29.4	38.4	26
+186	University of Canterbury		56.40	62.1	85.9	23.5	98.7	93	37.1	25.5	29		28.8	28.9
+188	Pohang University of Science And Technology (POSTECH)		56.10	37	34.2	66.6	51.6	18.5	98.8		27.8		28.7	
+188	Technische Universität Berlin		56.10	62.4	50.3	46	71	85.2	39.2		39.3	18.2	37.1	
+190	Universität Stuttgart		55.90	52.4	58.1	77.2	46.4	89	28.1		38	16	28.3	
+191	University of Massachusetts, Amherst		55.80	65.2	53.8	27.7	52.6	25.8	68.1	24.3	32.1	26.1	23.9	24.3
+192	University of Bologna		55.40	81.1	69.3	20.5	25.7	28.3	39.8	43.8	28.4	26.1	32	35.8
+192	University of Bern		55.40	40	28.4	59.3	93.1	44.5	82.5	20.3		15.5		18.7
+194	University of Reading		55.30	44.4	75.5	55.5	80	76.5	48.9	23	17.5		21.4	
+195	University of Antwerp		55.10	43.3	37.2	98.5	56	59.2	36.5	25.1				20.8
+196	Universidade de São Paulo - USP		55.00	77.2	60.8	38.3	33.7	19.1	32.1	30.6	31.9	28.2	38	27.4
+197	Universidad de Buenos Aires		54.80	65.6	91.1	55.9	30.7	34.4	18.7	28.7	21.3	23.9	30.5	27.1
+197	Dalhousie University		54.80	59	26.2	42.8	60.6	40	68.6	18.7	17	31.3	25.7	26.4
+199	Kobe University		54.50	57.4	60.5	71.3	24.1	29.9	36.4		26	23.2	25	29
+200	National and Kapodistrian University of Athens		54.30	40.2	46.7	66.8		91.9	71.5	24.7	18.3			19
+200	University of Twente		54.30	52.1	47.9	56.8	68	49.6	50.8		30	15.5	26.5	22.7
+202	Queen's University of Belfast		54.20	42.4	83	58.2	96.7	47.3	44.1	20.2	17.4		20.6	
+203	Michigan State University		54.10	57.8	65.8	33.8	58.9	47	55.5		22.1	20.7	32.9	29.3
+203	Yonsei University		54.10	57.9	44.7	82.5	23.6	24.3	31.8	20.4	21.3	20	26	29.3
+205	Sapienza University of Rome		53.80	85.5	50.5	12.9	18.3	24.1	42.8	43.9	29.9	21.7	52.4	30.7
+206	University of the Pacific		53.70	27.7	33	21		24.1	60.2	92.3	21.8		99.7	100
+206	RMIT University		53.70	60.2	92.3	24.1	99.7	100	21.8	27.7	33	21		24.1
+207	University of Wollongong		53.60	48.4	84.8	43.1	97.6	95.6	31.3	23.6	24.3	15.9		20.6
+207	KIT, Karlsruher Institut für Technologie		53.60	48.3	48	74.2	51	81.4	33.8		37		28.3	
+207	Sciences Po Paris		53.60	36.3	74.8	95.8	55	99.8	17.4					31.6
+207	Université de Strasbourg		53.60	53.9	49.7	28.7	43.5	82.8	68.7			32.6	29.1	
+211	Aalto University		53.50	49.2	42.3	84.2	62	41.2	31.5		33		27.4	18.6
+212	Queensland University of Technology		53.40	67.4	86.5	25.9	57.8	61.5	27	24	32.3	28.5	24.9	25.4
+213	University of Dundee		53.30	38.6	37.4	65.6	82.6	62	62.7			29		
+214	Keio University		53.00	63.1	83.8	40.8	31.2	20.3	36.9	24.7	25.5	23.5	22.1	30.9
+214	Vrije Universiteit Brussel (VUB)		53.00	45.9	49.7	87.6	19.9	46.3	38	19.9	19.7	17.9	19.2	18.6
+216	University of Tsukuba		52.80	47.8	44.6	77.4	24.1	35.1	47.8		21.7	16.4	30.8	18
+216	Rheinisch-Westfälische Technische Hochschule Aachen		52.80	46.4	56.5	78	51.9	71	28.2		37.1		30.1	
+218	Wake Forest University		52.50	20.2	69	99.6	17.4	22.9	71.6					
+219	North Carolina State University		52.20	45.8	56.7	32.8	25.4	34.1	87.3		22.3	19.2	25.2	
+219	University of Iowa		52.20	45.7	37.2	46.4	44	25.7	81.2	20.4		26		20.7
+221	Radboud University Nijmegen		52.10	37.7	11.5	77.2	75	34.3	68.8	17.9		20.9		18.2
+222	University of Ottawa		52.00	62	30.2	16.8	88.3	29.1	68.5	22.7	27.3	17.2	26.8	30.6
+223	University of Surrey		51.80	35.3	77	55.4	91.6	93.8	42.3		20.6		19	
+224	Saint-Petersburg State University		51.70	61.1	55.2	75	16.5	12.6	20.2	24.3	22.3	18.6	39.4	18.4
+224	The Hong Kong Polytechnic University		51.70	50	51	23.2	99.9	81.1	58.6	18.1	29.7	16		21.3
+226	University College Cork		51.50	44.4	79.6	51.8	91.7	58	33.7	23.7	19			
+227	University of Bergen		51.20	51.8	32	31.2	79.1	50.9	66.7	28.2		16.7	18.9	28.5
+227	Victoria University of Wellington		51.20	33.9			20.2	33.2	57.8	75.1	27.3		99.8	91.8
+229	Zhejiang University		50.90	62.8	27.1	63.4	24.7	19.8	35.1	21.1	32.1	27.4	25.9	19.6
+230	Loughborough University		50.80	42.6	88.4	46.3	85.8	80.9	30.8		23.6	21.4		20.4
+230	Universiti Malaya (UM)		50.80	64.1	70.2	37.6	62.7	46.1	20.1	24.5	23.1	26.8	25.6	28.7
+232	Curtin University		50.70	50.5	83.8	29.7	100	100	24.9		22.3	18.8	22	24.9
+233	Tulane University		50.60	29.1	67.9	82.9	15.9	35.2	59.2			16.1		
+234	University of Technology, Sydney		50.50	52	93.5	23.3	99.1	94.7	24.2	23.5	29.8	16.9		22.3
+235	University of California, Santa Cruz		50.40	56.8	12.8	17.5	27.1	17.2	97.5	27.8	17.7	24.7	25.6	19.3
+236	Korea University		50.30	62.7	41.1	49.2	28.7	46	31.6	26.3	21.6	24.3	24.1	29.7
+237	University of Miami		49.80	24.9	32.2	78.2	77.2	44.5	68.9					
+237	University of Exeter		49.80	39	82	42.7	84.3	68.2	43.5	26.4		15.8		
+239	Stockholm University		49.70	61.8	38.5	22.3	90.4	23.9	48.8	31.9		22.8	24.6	31
+239	Université Paris-Sorbonne (Paris IV)		49.70	76.3	63.7	14.8	21.7	82.6	17.6	55	18.3	16.4	27.4	37
+241	Pontificia Universidad Católica de Chile		49.40	53.3	85.7	46	25.7	42.4	29	21.7	23.1	20.2	22.1	21.6
+242	La Trobe University		49.20	55.1	63.4	23.5	91.1	85.1	30.7	35.9		19.8	19.1	25.4
+242	Indian Institute of Technology Kanpur (IITK)		49.20	47.3	61.8	46.7	17	12.9	60.8		37.1		24.3	
+244	University of Victoria		49.10	49.5	43	21.1	69.9	64.5	64.8	21.9			21.8	26.8
+244	Vienna University of Technology		49.10	48.8	48.2	44.7	69.5	82.6	35.2		35.9		33.4	
+246	University of Utah		49.00				20.9		32.6	23.7	66.6		57.9	31.1
+246	University of Turku		49.00	49.4	33.9	55.5	46.1	17	52.5	20.9		23.4	19.2	22.4
+246	George Washington University		49.00	46.6	68.3	43.9	17.6	36.7	54.3	26.7		17.2		21.5
+249	Universidade Estadual de Campinas		48.90	60	31.8	36	40.2	16.2	52.8	17.2	30.6	19.8	33.6	19.7
+250	Universiti Kebangsaan Malaysia (UKM)		48.80	56.8	43.8	61.3	67.4	25.2	18.3	19.5	17.7	25.2	25.3	27.3
+251	Mahidol University		48.50	44.7	58.2	82.6	29.1	18.9	23.7			28.4	20.6	
+252	York University		48.40	66.6	70.4	21.8	52.3	28.5	25.9	39	17.3		21.5	41.6
+253	SOAS - School of Oriental and African Studies, University of London		48.20	40.9	64	53.1	99.3	100	18.6	42.1				30.4
+254	Universidad Autónoma de Madrid		48.00	17.9	16.5		34	23.7	52.6	49.4	71.8		31.2	27.6
+254	Ateneo de Manila University		48.00	64.1	87.7	31.1	29.5	25.1	17.6	37.3			34.2	26.8
+256	Universität Innsbruck		47.80	45.9	21.6	15.2	72.1	97.4	73.3	18.7			28.3	18.6
+256	Universitat Autónoma de Barcelona		47.80	64.5	35.2	26.2	30.1	25.4	46.8	25.5	21.6	15.7	31.8	34.8
+258	University of Gothenburg		47.70	49.4	34.7	57.4	15.9	37.5	46.1	25.3			22.6	25
+258	University of Essex		47.70	42	32	51.9	97.9	99.2	31.6	18.8		15.5		30
+260	Arizona State University		47.60	59.1	46.2	20.9	30	34.4	54.2	19.3	25.8	21.2	25.9	27
+261	Charles University		47.50	57.4	28.9	49	29.9	68.1	29	27.7	16.9	16.7	34.9	20
+262	University of California, Riverside		47.40	49.3	20.3	20.9	28.2	28.1	88	23.2		20.7	23.3	18.6
+262	University of Hawaii at Mañoa		47.40	42.1	6.1	69	34.1	27.3	59.7	31.5				20.9
+264	Rheinische Friedrich-Wilhelms-Universität Bonn		47.30	47.5	25.5	38.7	39.3	64.9	58.3	19.2			34.5	23.9
+264	Ben Gurion University of The Negev		47.30	52.7	22	10.7	22.5	15.7	94.5	17.4	21.5	23.6	23	22
+266	Université Paris-Sud 11		47.10	44.5	13.5	52.3	32.1	77.5	54.6				44.6	
+267	Hiroshima University		47.00	44.4	33.8	67.1	20.7	23.8	45.4		20.6		23.4	18.4
+268	Laval University		46.90	53.2	34.4	17.9	57.8	49.5	60.6	30.4	20.4		20.6	25.7
+268	University of Cincinnati		46.90	40.4	34.2	47.7	22.1	31.2	70.3	18		21.9		
+270	University of Strathclyde		46.80	37	86	42.7	87.7	52.7	33.7		19.3			20.5
+271	University of Liege		46.40	35.9	37.3	17.3	28.5	81	91.4	18				
+271	Technische Universität Dresden		46.40	39.6	35	76.5	38.7	49.3	31.3		21.8	18.2	18.9	
+273	Flinders University		46.30	27.9	47.7	94.6	25	83	24.7			16.1		
+274	University of Delhi		46.10	72.9	72.2	4.9	17.8	15.1	30.1	29.2	24.3	30.6	25.8	36.5
+274	Universität Hamburg		46.10	54.5	28.6	49	32.1	60.2	29.7	20.2	19.3	20.4	31.3	19.7
+276	Julius-Maximilians-Universität Würzburg		45.90	38.2	21.8	51.5	43.5	39	64.9	21.5		21.1		
+276	Virginia Polytechnic Institute (Virginia Tech)		45.90	45.6	59.9	40.3	48.2	35.3	41.6		40.4			
+276	Universität Ulm		45.90	15.8	25	99.9	39.2	50.7	57.5					
+276	University of the Philippines		45.90	36.6		16.7	29.9	28.2	63	86.7	21.6		23.7	13.7
+280	Stockholm School of Economics		45.80	26.1	91.2	30	79.9	92	53					40.1
+281	National Tsing Hua University		45.70	49.4	41.6	30.4	31.7	21	60.2		30.5		30.9	
+282	Université Joseph Fourier - Grenoble 1		45.60	46.6	38	42.7	30	59.5	45.5		26.7	18.7	32.5	
+283	Massey University		45.50	45.1	54.3	35.3	95.4	70	28.1			18.1	21.9	24.7
+284	Karl-Franzens-Universität Graz		45.40	50.2	34.3	20.5	44.2	43.5	61.6	22.6	19.4	17.1	24.3	19.7
+284	Technische Universität Darmstadt		45.40	36.2	39.6	69.7	38.4	84.6	28.9		29.9		23.4	
+286	University of Newcastle		45.20	42.1	70.3	27.8	68.9	69	39.3		20.6	19.2		22.5
+287	University of Indonesia		44.80	54.4	62.2	54	17.3	13	17.4	25.7	21.4	20.5		29.1
+288	Université Paris 1 Panthéon-Sorbonne		44.60	61.3	51.4	21.9	29.7	87	18.5	40		15.8		36.1
+289	Iowa State University		44.50	38.3	20.5	27.4	72.1	38.3	75.7		23.7	19.8	20.1	17.7
+290	Université Montpellier 2, Sciences et Techniques du Languedoc		44.40	28.7	28.4	67.8	22.7	71.3	53.9			18.9	23.1	
+291	University of Tasmania		44.10	36.4	56	38.5	71.5	90.3	35.4	24.1				18.2
+291	Politecnico di Milano		44.10	17.5	39.5	16.4	25.3		53.8	79.6	30.5		22.6	33.7
+293	Ecole Normale Supérieure Lettres et Sciences Humaines		43.80	30.8	26.8	98.6	40.4	51.2	17.4	32.4				18.1
+294	École des Ponts ParisTech		43.70	24.2	61	92.8	33.9	26.3	26.9		21.2			
+295	University of Southern Denmark		43.60	27.1	23.1	67.8	57.6	61.3	49.6	17.7				
+296	Brunel University		43.40	31.9	76.1	35.4	92.6	82.8	30.8					
+296	University of Padua		43.40	54.5	31.6	12.3	16.6	12.6	67.6	25.6	17.6	20.9	28.7	18.1
+298	Chiba University		43.10	36.2	40.3	39.2	25.7	25.1	66.1			24		
+299	Umeà¥ University		43.00	30.3	21.1	50.8	81.6	48	55.8			20.9		
+300	Florida State University		42.90	54.5	39.6	25.4	39.3	19.8	40.6	25.2		24.9	25.2	20.1
+300	Jagiellonian University		42.90	48.7	40.7	56.9	19.6	24.3	23.8	31.2			28.4	
+302	Dublin City University		42.60	29.5	71.5	47.4	74.6	81.6	26.9					
+303	Indian Institute of Technology Madras (IITM)		42.50	45.6	58.2	50.6			36.5		36		27.8	
+303	University of South Australia		42.50	45.1	85.3	19	27.2	99	24.4	26.7				21.7
+303	Universität Düsseldorf		42.50	27.8	21.1	47.1	23.3	73.8	69.8			19.8		
+306	University Complutense Madrid		42.20	67	51.4		31.9	24	32.5	37.4	18.7	19.9	29.3	29
+307	University of Manitoba		42.10	43.2	27.5	38.9	56.4	44.3	41.4	17.4		19.3	22.4	
+308	University of Tennessee		42.00	28	50.1	50.9	27.9	22.7	60.7					
+309	University of East Anglia (UEA)		41.90	23.5	33.7	55.9	74.6	80.8	45.8	21.5				
+309	Universidad Austral - Argentina		41.90	31.6	75.5	68.2	26.7	40.7	18.4		16.5			
+311	Royal Holloway University of London		41.70	27.3	29.7	46.6	92.9	98.5	39.6	24.8				
+312	Universität  Leipzig		41.60	49.5	22.3	13.3	30.8	39.6	62	26.4		17.6	26.1	
+313	Universiti Sains Malaysia (USM)		41.50	52.6	47.9	34.2	37.4	36.9	20.8		19.7	27.3	22.4	21.4
+313	University of Eastern Finland		41.50	16.3	6.1	82.6	31.5	19.3	71.6					
+315	Bandung Institute of Technology (ITB)		41.40	57.4	55.4	34	16.2	14	18.1		33.5	20.2	30.8	
+316	Aston University		41.30	29.1	78.2	17.4	85.3	71.7	47.8					
+316	Universitas Gadjah Mada		41.30	62.2	50.6	24.5	22.1	17	17.7	25.2	19.9	29.1	24.2	26.6
+318	Universität Köln		41.20	44.2	35.6	19.9	43.9	65.4	48	25.9				23.4
+319	University of The Witwatersrand		41.10	40.1	53.5	35.3	69.2	37.4	31.8	21.9				20.5
+320	Universität Erlangen-Nürnberg		41.00				19.1		27.9	21.1	60.9		64.2	45.3
+320	University of Tromso		41.00	19.8	17.3	99.3	48.6	33	32.2					
+320	City University of New York		41.00	57	40.9	31	23.4	36.9	19.5	38.5		20.6	23.4	21
+320	Universidad de Chile		41.00	47.2	56.5	32.8	33	24.1	30.5	19.7	23.3		21.2	18.5
+320	Universiti Putra Malaysia (UPM)		41.00	46.9	51	45.9	23	42	18.8	19		20.1	23.8	18.2
+325	Griffith University		40.90	35	69.5	20.3	95.3	90.2	28.5					22
+325	University of St Gallen (HSG)		40.90	29.2	89.5	24.5	99.9	98.4	22.3					29.8
+325	Universität Konstanz		40.90	40.5	21.1	27.8	50	41.4	57.6	28.2				18.8
+328	Universität Bielefeld		40.80	22.7		15.8	24.8	27.8	49	13	56.1		40.6	40.7
+328	Norwegian University of Science And Technology		40.80	38.3	39.8	26.2	82	34.8	47.3		27.6		19.1	
+328	Tecnológico de Monterrey (ITESM)		40.80	42.2	96.6	37.4	22.8	23.2	17.5		26.5			20.7
+328	Dublin Institute of Technology		40.80	21.5	64.8	91.3	25.4	32.4	18.3		18.5			
+332	Johannes Gutenberg Universität Mainz		40.70	24.2	21.5	26.6	29.2	67.2	89				25.5	
+333	University of Pisa		40.60	56.8	24.4	11.4	16.3	18.1	52.4	24.9	24.7	17.9	34.9	
+334	Universidade Federal do Rio de Janeiro		40.30	57.4	38	24.9	29.5	12.6	27.7	17.6	30.5	21.6	25.4	21.1
+334	Université du Québec		40.30	56.8	34.6	12.4	57.9	48.1	26.8	20.8	19.9	26.8	22.9	24.7
+336	University of Tampere		40.00	44.1	28.6	46.5	31.5	21.2	33.4	22.3	18.5			22.7
+337	University of New Mexico		39.70	32.8	13	59.6	31	21	49.3					
+338	King Fahd University of Petroleum & Minerals		39.50	20.3	30	79.3	100	48.4	21					
+338	Drexel University		39.50	28.6	38	53.4	40	37.9	43.8		17.1			
+340	Colorado State University		39.40	36.8	30.2	25.3	33.9	12.6	66.7				24.7	
+341	National Yang Ming University		39.30	11.3	22.7	99.4	23.8	21.8	47.1					
+342	Universitat Pompeu Fabra		39.20	37.6	17.8	41.6	95.3	31.3	34.2	20.3				36.6
+342	University of Warsaw		39.20	51.2	67.1	19.1	22	15.3	27	28.2			30	17.7
+344	Hanyang University		39.10	35.6	31.7	68.7	24.9	19.2	24.2					
+345	Howard University		38.90	17.9	60.5	91.8	15.9	18.8	23.5					
+346	Carleton University		38.80	44.3	25.9	22.9	42.9	73.6	35.8	21.9	17.8			25.6
+347	Swansea University		38.70	24.8	51.2	45.8	76.6	66.5	32					
+347	Universität Bayreuth		38.70	26.8	13.5	71.1	44.1	38.1	36.8				18.9	
+349	Ruhr-Universität Bochum		38.60	35.6	31.6	28.7	46.3	55.5	47.3		16.9		19	
+349	University of Florence		38.60	25.8			29.6	26.3	54.7	17.5	42.5		20.4	24.5
+349	University of Kansas		38.60	32.8	33.7	46.6	33.8	26.7	44.1			19.2		
+349	Universität Mannheim		38.60	22	43.9	8	23.8	51	96					27.1
+349	Tokyo Metropolitan University		38.60	26.1	44.4	44.7	24.1	19.4	58.6					
+354	National Cheng Kung University		38.50	34	44.8	47.2	25.3	21.6	38.9		21.2			
+354	University of Alabama		38.50	35	33.9	49.3	23.8	24.6	39.7			17.6	19.2	
+356	Universiti Teknologi Malaysia (UTM)		38.40	32.1	68.4	43.6	55.6	54.1	17.9		16.6	18.1		
+357	Concordia University		38.20	48.5	32.7	26.3	28.8	51.1	26.8	22.9	24.4			24.8
+357	Universität des Saarlandes		38.20	24.3	6.1	37.7	68.7	64.2	63.9					
+359	University of Connecticut		38.10	32	26.1	26.6	27.7	30.5	68					
+359	Showa University		38.10	10.9	46.6	100	21.4	14.2	32.1					
+361	The University of Georgia		38.00	35.6	34.3	32.5	16.9	23.4	54.9			15.5		
+362	Université Paris Diderot - Paris 7		37.80	40.2	18.8	28.1	33.7	74.9	39.4	22.2			27	
+362	Nagasaki University		37.80	24.2	21.1	75.5	27	20.5	38.2					
+362	Yokohama City University		37.80	16.8	13.6	73.6	21.6	18.9	60.7					
+365	Washington State University		37.60	29.1	32.9	52.1	47.9	27.1	38.3		16.5	16.9		
+366	University of Delaware		37.50	34.7	16.9	29.9	20.2	25.7	63.9		17.5			
+366	Yeshiva University		37.50						21.3	25.9	18.7		27.6	17.9
+368	National University of Ireland, Galway		37.40	35.7	55.8	26.8	72	70	21.1			17		
+368	Philipps-Universität Marburg		37.40	19.6	16.9	63.5	42.5	50.7	48.1					
+370	Loyola University Chicago		37.20	42.1	26.9	41.5	19.1	19.5	32.9	26.7		18.1		22.4
+370	Sungkyunkwan University		37.20	21.4	25.8	78.9	27.8	53.8	26.8					
+372	University of Oulu		37.10	27.9	17.5	66.4	20.3	18	40.5		20.2			
+373	University of Oregon		36.90	37.9	26.1	30.6	38.1	30.9	43.5			24.6		
+374	Bilkent University		36.80	39.1	6.1	49.1	84.9	14.9	24.2	18.1	20.3		19.4	
+375	Universität Bremen		36.70	40	23.2	20.5	42.6	68.7	39.3		17.9			21.1
+376	Istanbul Technical University		36.60	37.3	31.8	50.6	46.1	12.6	22.8		28.8		21.9	
+376	National University of Sciences And Technology (NUST) Islamabad		36.60	30	39.1	72.3	20.7	16.9	17.5			15.7		
+378	Heriot-Watt University		36.50	31.2	37.7	9.1	26.7	13.5	77.9		17.4	18.7	22	
+378	Kumamoto University		36.50	15.8	20.3	93.5	19.1	17.5	33.7					
+378	University of Waikato		36.50	30.7	42.4	30	87.2	66.5	27	20				21.4
+378	Hitotsubashi University		36.50	34	70.2	38.3	30.4	44.4	18.1	22.9				32.9
+382	University of Oklahoma		36.40	27.6	31	32.9	39.2	26.1	57.7					
+382	College of William & Mary		36.40						22.4	57.4	37.7		26.8	23.3
+382	Université Lille 1, Sciences et Technologie		36.40	27	30.1	44.8	32.9	88.7	33.5		19.5			
+382	Universität Jena		36.40	27.3	20.3	56.7	25.4	27.6	43.1					
+386	Tianjin University		36.30	41.2	41.1	37	21.5	19.9	27.1		20.6	23.6		
+387	University of Coimbra		36.20	50.2	16	28.2	24.3	20.8	29	28.8	19.5	16.4	19.9	18.4
+387	Universidad ORT Uruguay		36.20	13.8	43.2	96.9	34.9	16.8	17.8					
+389	University of Missouri, Columbia		36.00	23.3	27.5	67.4	43.6	25.9	30.7					
+390	Yokohama National University		35.90	30.2	50.3	44.1	31.2	34.4	29.1					
+391	University of South Carolina		35.80	25.6	57.6	37.7	30.8	22.1	43.9					
+391	University of Jyväskylä		35.80	34.6	6.1	58	44.4	20.2	28.5				20	
+391	University of Bradford		35.80	23.5	43.4	29.4	80.2	96	32.7			16.1		
+394	Goldsmiths, University of London		35.70	34.9	24.8	28.8	79	87.6	21.7	32.4				18.9
+394	University of Limerick		35.70	21.3	64.9	46.1	87.3	32.6	23.1					
+396	Gunma University		35.60	13.6	12.9	99.9	25.7	20.3	28.9					
+396	Deakin University		35.60	27.6	61.9	22.9	68.2	85.3	26.4					19.7
+398	University of Naples - Federico Ii		35.50	36.4	20.6	8	19.9	14.5	73.8	17.8				
+398	Westfälische Wilhelms-Universität Münster		35.50	31.4	16	42.1	42.2	36.4	40.7	18.2				18
+400	Bangor University		35.40	25.7	20.8	41	68.3	50.9	40.2			17.3		
+400	Kasetsart University		35.40	32	55.2	51	36.1	13.4	18			16.7		
+401	Technische Universität Braunschweig		31.90						22.2	21.8	30.1		42.4	52.2
+401	Cairo University		30.40	46	38	8.6	16.8	15	20.7	21	20.8	16.4		18.8
+401	Aristotle University of Thessaloniki		33.00	38.4	31.8	9.3		99.1	34.4	23.5	20.3			
+401	Chiang Mai University		32.50	39	34.4	31	33.7	14	20.8	18.4			19.7	
+401	Louisiana State University		30.10			15.9			26	26.4	42.9		28.3	27.7
+401	Xi'an Jiaotong University		34.10	34.9	30.6	47	26.3	16.7	23.9		25.2	15.9		
+401	Technische Universität Dortmund		30.70	29.8	13.5	19	52.9	61.4	36		17.1			
+401	Eötvös Loránd University		33.40	35.4	33.3	31.2	31.3	24	30.4	22.7			27.5	
+401	Czech Technical University In Prague		31.10		20.4				23.3	56.8	19.3		20.6	46.4
+401	Aberystwyth University		33.80	28	28.4	32	63.4	56.8	32.8	21.3				
+401	National Taiwan University of Science And Technology (formerly National Taiwan Institute of Technology)		32.70	29.8	51.7	35.5	24.8	20	27.5		22.2	16.3		
+401	University of Tehran		34.10	43.6	31	35.4	17.5	17.2	19.8		25.9		23.4	
+401	Universidad de Los Andes Colombia		31.90		17.7				33	56	25.6		34.1	13.5
+401	University of Calcutta		33.60	23.8	21.3	18.7	26.6	24.8	56.9	43.6	21.2			
+401	Universidade Catolica Portuguesa, Lisboa		29.60						21.8	21.3	18.4		24.9	29.6
+401	University of Ljubljana		34.70		16.9				36.4	21.5	22.1		23.6	17.8
+401	Temple University		33.40	34.6	20.1	41.4	23.7	23.6	30.5			18.8		23.4
+401	Chonbuk National University		29.70						20.3	9.7	29.7		26.3	21.9
+401	Virginia Commonwealth University		32.80	23.7	28	48.2	20	26.4	39.2					
+401	James Cook University		30.10	16.8	37.8	30.8		75.4	44.9					
+401	Murdoch University		29.50	19.6	40.3	31.2	22.6	57.4	33.5					
+401	Tomsk State University		34.50	19.5	17.9	95.3	16	12.9	18					
+401	Tongji University		33.50		22.8	20.4			40.2	20.6	21		18.7	18.1
+401	Université Paul Sabatier Toulouse III		34.40		18.3		22.4		30.6	18.1	42.5		45.3	74.9
+401	University of Trieste		34.80	39.6	17.9	19.2	16.1	35.7	49.5	19.1			26.3	
+401	Universidad Torcuato Di Tella		31.00	21.2	73	18.2	81.2	50.4	21.2					
+401	Università   Bocconi		33.60	25.6	96.2	26	32.7	46.2	19.3					37.5
+401	Tokai University		29.80		20.5				33.2	30.6	25.9		24.6	15.1
+401	Universidad de Belgrano		35.00	20.2	40.2	65.4	23.2	87.6	17.4					
+401	University of Crete		30.00	31.3	17.2	23.8	17.6	16.1	42.9		16.9			
+401	Brigham Young University		30.70	30.3	53.7	20.9	15.9	26	30.9			17.4		
+401	Université Claude Bernard Lyon 1		33.70	30.2	17.2	25.8	25.2	54.7	49.9				19.4	
+401	National Technical University of Athens		31.20		28.8				27.8	37.7	41.1		16.7	12.6
+401	University of Trento		31.20	32.8	37.8	13.4	26.4	29.4	40.7		18.9		23.5	17.7
+401	Universitat de Valencia		32.80	23			20.5		37.3	19.8	46.6		18.8	29.7
+401	Boston College		35.30	27.6				22.6	34.9	32.1	37.5		33.4	27
+401	Pontificia Universidad Católica del Perú		30.50	20.1	51.9	57	15.9	16.8	17.7	18.1				
+401	Thammasat University		34.70	36.3	55.9	42.7	18.1	14.1	18.4	21.1				23.8
+401	Warsaw University of Technology		35.00	31.4	71.3	44.1	16.6	14.3	20.9		26			
+401	De La Salle University		33.80	26.2	84.1	42.3	17	24.9	17.9	19				
+401	Sabanci University		29.40	27	17.5	38.9	50.9	14.3	25.4					
+401	The Open University		31.70	42.4	29	17.7	52	12.7	21.6	30.4				26.2
+401	Osaka City University		35.00	22	22.9	33.6	27.8	19.6	69.8					
+401	Indian Institute of Technology Roorkee (IITR)		34.50	28	52.9	48	20	15.5	29.4		22.1			
+401	Okayama University		32.40	15.8	8.8	47.1	20.2	21.5	64.8					
+401	Novosibirsk State University		33.60	38.4	28.9	41.1	24.4	26.5	19.2		18.7		27.9	
+401	Istanbul University		33.40	17.9				18.4	36.3	25	19.8		16.8	21
+401	Universidade Nova de Lisboa		34.90	35.9	11.3	44.2	34.4	44.1	29.1	20.2				
+401	University of Vermont		32.70						11.3	13.5	55.9		26.1	17
+401	Illinois Institute of Technology		35.30		20.5				22.4	15.6	34.8		59.2	99.9
+401	Università  degli Studi di Pavia		34.40	19	19.2				35.4	17.2	59.9		16.9	25.7
+401	American University of Beirut (AUB)		33.50	21.7	28	58.6		83.8	26.6					
+401	HEC Paris		35.20	21.4	96.4	14.2	92.9	94.3	20					29.6
+401	Universidade Estadual Paulista Júlio de Mesquita Filho		29.60	29.9	16.8	43.9	19.8	13.8	24.2			15.6		
+401	University of Houston		31.70	28.3	29	16.8	38.9	40.9	46.8			15.5		
+401	University of Hull		29.10						16.1	18.1	37.6		71.9	63
+401	Université Paris Dauphine		33.10	31.5	51.8	19.1	33.9	93.9	21.6					21.3
+401	Northeastern University		29.60	23.3	40.2	26.6	21.1	44.7	35					
+401	Niigata University		29.10	15.5	17.4	42.6	24	16.7	49.4					
+401	Université de Lorraine		30.30	21.7	21.5	44.6	29.4	54.7	28.4					
+401	University of Kentucky		34.70						23	6.1	77.1		27.2	26
+401	University of Kent		32.90	17.6	40.2	35.6	89.3	78.8	27.6					
+401	Christian-Albrechts-Universität zu Kiel		33.90	18.5	15.5	46.5	42.2	39.5	53.8					
+401	Kyung Hee University		30.10						23.5	21.7	22.3		27.1	52.6
+401	University of Lahore		32.90	33.4	29.5	51.5	19.1	22.8	17.3					
+401	Università  Cattolica del Sacro Cuore		30.00	21	19.8	61.3	18.1	19.7	24.1	18.5				
+401	University of Kwazulu-Natal		32.00						23.9	21.5	19		41.8	31
+401	National Central University		32.00	32.1	21.6	32.8	22.9	16.8	38.5				20.2	
+401	University of Navarra		34.90			18.6			25.3	42.3	30.2		30.3	64.8
+401	Kanazawa University		32.50	17	17.1	51.9	25.6	18.2	53.4					
+401	Lehigh University		33.70						13.6	36.4	43.7		87.3	41.1
+401	National Sun Yat-sen University		30.30					19.5	27.2	21	46.1		36.2	18.5
+401	Syracuse University		31.60	17.7					26.4	24.3	36.5		23.7	49.1
+401	National Chiao Tung University		31.30		21.4				22.3	37.9	46.9		20.7	20.9
+401	United Arab Emirates University		33.10						15.7	27.2	22.1		100	75
+401	Université Paris Descartes		35.00	32.7	20.1	21.7	41.8	74.9	44.7			15.9		
+401	University of Salamanca		29.50	23.1					29.2	16.6	31.7		32	57.4
+401	Koc University		30.00	15.9	38	40.6	86.2	14.9	29.7					
+401	University of Santo Tomas		29.30	29.1	77.7	20.5	16.1	16.4	17.5	24.6				
+401	Università¡ degli Studi di Roma - Tor Vergata		30.30	30.1	32.5	13.5	20.4	23.2	47.1				24.7	
+401	Justus-Liebig-Universität Gießen		33.20	20.2	13.5	31.9	40.3	38	63.5					
+401	Linköping University		33.70		28.3				31.2	25.5	39.5		15.9	32.4
+401	Gifu University		34.70						20.6	12.9	36.7		19.3	25
+401	Shandong University		32.10			18.6	20.6		37.9	33.5	47.1		36.1	
+401	University of Siena		31.40	28.6	23.7	14.4	19.6	23.6	59.3					19.8
+401	ESCP Europe		32.20	16.6	83.6	15.4	96.9	100	17.8					19.2
+401	Ewha Womans University		32.00	26	32.2	47.4	24.2	34	26.2					
+401	Johannes Kepler University Linz		33.00		17.8		25.8		34.3	29.2	31.4		62.7	39.1
+401	Universität Duisburg-Essen		29.60	18.8	17.2	43.1	42.2	57.8	30.1					
+401	Southeast University		30.70			22.1			32.4	24.1	23.6		20.7	15.5
+401	Smith College		32.60						17.3	70.7	25.4		24.6	31.7
+401	Swinburne University of Technology		31.00						19.9	29.8	34.2		82.1	99.8
+401	Pontificia Universidade Católica do Rio de Janeiro - PUC - Rio		33.40		20.9			19.1	36.9	39.6	20.6		30.9	19.8
+401	Georgia State University		30.80	29.3	31.4	22.7	49.8	29.8	33.5					
+401	Martin-Luther-Universität Halle-Wittenberg		30.70	18.5	6.1	53.1	42.3	38.2	36.9					
+401	Leibniz Universität Hannover		32.10	30.5	17.3	11	25.7	74.4	50.9			16.6		
+401	Université de Rennes 1		30.90	27.8	15.3	37.1	31.1	49.6	30.3					
+401	Universität Regensburg		35.20	26	6.1	32.8	42.8	37.5	64.2					
+401	University of Pune		31.10	45.7	46.4	4.2	16.5	13.3	25.6	17.3	23.1	16.9	22.3	
+501	University of Engineering & Technology (UET) Lahore		23.20	17.3	22.3	34.7	17.9	43.3	17.5					
+501	Paris Lodron University of Salzburg		3.70	7.6	6.1									
+501	Alpen-Adria-Universität Klagenfurt		20.50	7.6	6.1	31.2	62.3	66	18.4					
+501	University of Karachi		16.70				18.9		33.4	29.2				
+501	Clemson University		23.10	11.4	6.1	40.2	16.3	27.3	35.9					
+501	Baylor University		23.80	15.9	16.2	31.4	19.5	20.5	34.9			17.2		
+501	Fordham University		25.30	29.2	13.5	22.6	33.2	21.9	22.1	22.8				
+501	Clark University		26.60	14.2	13.5	30	27.6	74.8	39.2					
+501	University of Milano		26.40			17.2			34	25.2	18.3		27.4	20.9
+501	Universidad Iberoamericana (UIA)		25.90	23.1	73	13.9	30.8	16.9	17.9					
+501	Worcester Polytechnic Institute		27.00	12.1	32.9	38.1		60.8	37.9					
+501	Sharif University of Technology		26.30	29.6	24.4	18.1	15.9	13.2	31.9		25.3			
+501	University of Nebraska		28.20	13	21.5	38.1	42.1	29.2	45.1					
+501	Stevens Institute of Technology		23.80	8.7	6.1	30.6	18.3	89.4	38.1					
+501	Binghamton University SUNY		18.90	7.9	7.6	22.1	34	54.7	28.3					
+501	Hacettepe University		8.30	16.9	13.6									
+501	Università  Ca' Foscari Venezia		20.00	17.1	33.5	11.2	22.1	19.3	25					
+501	Vilnius University		23.00	16	31.6	35.7	17.4	13.7	20.9					
+501	Southern Methodist University		21.80	9.4	6.1	48.1		38.9	26.9					
+501	Marquette University		22.10	12.2	6.1	42.5	23.7	22	26.4					
+501	Université de Cergy-Pontoise		25.30						11.4	6.1	19.5		47	69.2
+501	National University of Ireland Maynooth		28.50	15	66.5	23	81.1	44.7	21.4					
+501	Missouri University of Science and Technology		22.20	7.6	6.1	44.7		46.6	34					
+501	Inha University		22.30						11.5	26.5	28		25.5	26
+501	University at Albany SUNY		21.50						7.6	6.1	48.1		31.3	27.5
+501	University of Porto		26.00	21.1	17.9	32.6	21.7	35.2	28.9					
+501	University of Tulsa		25.90	12	17.9	49.9	21.7	58.3	23.5					
+501	University of Brawijaya		14.00						16.5	11.3	17.5			
+501	University at Buffalo SUNY		28.70	7.6	6.1	37.4	30.8	61.8	61.4					
+501	Bogor Agricultural University		24.20						19.8	23.9	17.7		20.3	14
+501	Masaryk University		17.60	9.8	11.2	17.7	24.9	50.2	24.1					
+501	Université Nancy 2		17.50						12.1	13.5	17.8		33.6	55.8
+501	Université Stendhal Grenoble 3		20.50	14.1	21.6	19.5	33.8	61.9	17.5					
+501	Universidad Iberoamericana (UIA)		25.90						23.1	73	17.9		30.8	16.9
+501	Indian Institute of Technology Guwahati (IITG)		16.70	29.3	45.7						25.5			
+501	Université Pierre Mendès France - Grenoble 2		20.20	16.6	22	16.2	37	43	18.4					
+501	University of Granada		27.80	30.3	13	9.3	44.1	41.3	37.9	17.4				
+501	Fundação Getulio Vargas		15.80					21	26.2	49.8				
+501	Fu Jen Catholic University		22.90	20.5	16.8	13.8	96.3	13.3	21.2					
+501	University of Genoa		28.90	27.4	11.3	17.5	19.3	12.6	55.1					
+501	Indian Institute of Technology Kharagpur (IITKGP)		23.00	43.1	52						34.5		25.2	
+501	Jilin University		24.60	27.8	20.3	13.8	20.8	16.5	31.5					
+501	Université Lille 2 Droit et Santé		22.10	17.6	25.2	16.8	25.6	42.9	26					
+501	Universidad de Zaragoza		24.90	28.3	11.3	19.3	20.4	16.4	30.9	17.1				
+501	Lodz University		13.30	22.1	34.8			13.5		17.2				
+501	Kyungpook National University		24.30						19.3	27.2	31.2		22.2	17.7
+501	Khon Kaen University		26.40	24.5	33.2	35.7	21	14.5	18.9					
+501	Kagoshima University		25.70						14.2	13	34.1		18.5	18.8
+501	Kazan Federal University		26.60						20.5	27.9	20.3		17.7	14.9
+501	Fundação Dom Cabral		7.00	12	20.1									
+501	Doshisha University		23.50						19.6	45.7	19.1		25.4	14.8
+501	Athens University of Economy And Business		26.50	19.8	57.3	23.8	27.4	40	20.3					
+501	Brno University of Technology		27.70						27.1	49	18.5		24.3	36.6
+501	University of Bucharest		25.00	26	46.4	15	20.5	17.8	22.2					
+501	University of Arkansas		27.00	22.8	20.5	28.7	26	25.4	34.6					
+501	Aoyama Gakuin University		20.80						17.2	30.5	20.5		25.7	14.7
+501	Universidad Adolfo Ibà¡ñez		21.40	16.6	46.8	18.9	27.6	19.1	17.5					
+501	Airlangga University		28.20	24.7	24.1	50.9	17	14.1	17.4					
+501	American University		25.00	20.8	6.1	40.8	22.1	37.3	21.9					17.9
+501	Université de Caen Basse-Normandie		24.80	16.9	17.5	37.5	33.7	44.9	21.5					
+501	Catania University		21.40	18.5	20.1	12.9	19.9	25.6	33.4					
+501	University of Denver		23.60	11.7	13	47.9	21.7	28.7	24.9					
+501	University of Dhaka		26.00		16.4	15.9			37.3	20.6	18.9		17.4	12.9
+501	Diponegoro University		22.00	24	17.1	26.1	17.4	13	17.4					
+501	Cukurova University		18.10	14.5	6.1	28.3	18.3	12.8	20.2					
+501	University of Colombo		18.90	22.1	16.9	11.2	17.1	12.9	21					
+501	Chonnam National University		22.20						21.7	17	27		18.3	15.7
+501	Chungnam National University		23.30	19	17.1	12.8	29	22.2	41.7					
+501	Université Lumière Lyon 2		22.80	17.3					18.5	17.9	17.7		67	73
+501	Université Charles-de-Gaulle Lille 3		20.20						19.4	21.3	18		42.3	26.4
+501	University of South Florida		27.00	18.7	15.4	25.1	18.6	22	51.7					
+501	Saitama University		22.30	15.6	6.1	24.6	23.5	25.4	38					
+501	Universidade de Santiago de Compostela		26.60	19.2					21.9	12.8	50.7		31.8	32.7
+501	Ritsumeikan University		25.30						28.1	37.4	20.5		37.2	21.2
+501	Pusan National University		28.00		19.8		21.8		32.6	20.4	35		16.5	17.8
+501	Pepperdine University		18.60						8.8	6.1	18.8			21.5
+501	University of Pretoria		28.80						31.1	38	23.9		30.5	32.5
+501	Prince of Songkla University		28.00	27	42.4	33.5	22.3	13.1	19					
+501	Universidad de Santiago de Chile - USACH		20.60	38.4	47.5					19.6	17.9	19.5		
+501	Universidad de Sevilla		25.00	29.5	13	15.8	31.9	19.7	28					
+501	University of Turin		28.60	31.5	11.3	19.2	22.4	12.6	42.9	21.8				
+501	Politecnico di Torino		28.50		29.1				27.9	42.7	33.7		20	27
+501	Universidad Politecnica de Valencia		26.50		19.9				22.9	39.8	25.5		32	32.5
+501	Université Toulouse II, Le Mirail		21.40	19	21	13.5	33.7	63.2	18.1	23.7				
+501	Université Toulouse 1, Capitole		28.90					36.4	35.5	26.8	18.4		18.5	87.9
+501	Sogang University		28.30	21.9	60.4	25.9	35	17.4	25.2					
+501	University of Szeged		26.00						21.8	29.4	26.2		21.2	25.5
+501	Tilburg University		26.20	7.6	6.1	81.6		27.2	21.5					
+501	University of Patras		27.30	21.3	31.4	26	45.8	25.7	31.2		19.8			
+501	Perugia University		27.50	24.4	13.5	18.2	20	12.6	52.6					
+501	Université Paris Ouest Nanterre La Défense		15.10	32.8	16					28.1				24.2
+501	National Chengchi University		25.70	21	36.1	32.4	28.1	30.3	18.4					19
+501	University of Modena		25.50	15.2	6.1	25.6	18.8	29.1	53.4					
+501	University of Murcia		19.90	18.9	6.1	17.1	21.7	18.2	29.4					
+501	Université Montpellier 1		23.30						23.8	13.5	23.9		33.7	44.1
+501	Université Paul-Valéry Montpellier 3		17.50	15.4	13.5	18.8	33.8	12.6	17.5	21.9				
+501	University of Mumbai		26.70		21.9	21.2	23.3	22.2	51.2	56.2				
+501	National Chung Hsing University		21.00	12.9	30.4	23.1	17.9	14.9	30.5					
+501	National Taiwan Normal University		24.40						19.4	12.9	22.4		23.9	16.7
+501	University of the Pacific		20.80						8.6	6.1	21	56.3		15.7
+501	Université Panthéon-Assas (Paris 2)		13.70						23.5	40.1				
+501	Mie University		26.30	12.4	12.9	42	25.7	17.9	44.5					
+501	Université Jean Moulin Lyon 3		22.50	19.4	13	9.5	83.7	66.8	17.4	18.4				
+501	Ochanomizu University		26.60	16.3	24.9	42.2	18.8	28.6	30.6					
+9999	City University London		0.00											
+9999	Gwangju Institute of Science and Technology (GIST)		0.00	16.6	17.1		31.1	50.6	98.8					
+9999	Quaid-i-azam University		0.00						23.9	8.5	23.8		22.6	13.6
+9999	WHU Otto Beisheim School of Management - Koblenz		0.00	9.8	53.5	70	98.7	65.1	18.2					
+9999	Cranfield University		0.00	34	68.8	99.9	78.8	100	33		23.4			20.6
+9999	EBS Business School		0.00	19.8	64.5			12.6						
+9999	King Saud University		0.00											
+9999	ESSEC Business School, Paris		0.00	17	88.3	11	82.1	63						29.1
+9999	ESADE Business School		0.00	20.4	93.8	41.9								28.3
+9999	ESCP EUROPE - Torino, Parigi, Londra, Berlino, Madrid		0.00											
+9999	Jawaharlal Nehru University		0.00	72.4	38.3	63.4	17.6	50.3	24.8	28.1	21.8	29.4	30.4	35.7
+9999	Karolinska Institute		0.00	54.8	36.7	100	46.9	29.9	65.3			54	19.1	17.8

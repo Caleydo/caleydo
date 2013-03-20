@@ -48,7 +48,7 @@ public class WorldUniversityRanking implements IModelBuilder {
 		// qsrank schoolname qsstars overall academic employer faculty international internationalstudents citations
 		// arts engineering life natural social
 
-		Map<String, WorldUniversityYear[]> data = WorldUniversityYear.readData(2010, 2011, 2012);
+		Map<String, WorldUniversityYear[]> data = WorldUniversityYear.readData(2012, 2011, 2010, 2009, 2008, 2007);
 		List<UniversityRow> rows = new ArrayList<>(data.size());
 		for (Map.Entry<String, WorldUniversityYear[]> entry : data.entrySet()) {
 			rows.add(new UniversityRow(entry.getKey(), entry.getValue()));
@@ -61,13 +61,22 @@ public class WorldUniversityRanking implements IModelBuilder {
 				StringRankColumnModel.DEFAULT));
 
 		// Arrays.asList("wur2010.txt", "wur2011.txt", "wur2012.txt");
-		WorldUniversityYear.addYear(table, "2012", new YearGetter(2)).orderByMe();
+		WorldUniversityYear.addYear(table, "2012", new YearGetter(0), true).orderByMe();
 		table.add(new OrderColumn());
 		table.add(new RankRankColumnModel());
-		WorldUniversityYear.addYear(table, "2011", new YearGetter(1));
+		WorldUniversityYear.addYear(table, "2011", new YearGetter(1), false);
 		table.add(new OrderColumn());
 		table.add(new RankRankColumnModel());
-		WorldUniversityYear.addYear(table, "2010", new YearGetter(0));
+		WorldUniversityYear.addYear(table, "2010", new YearGetter(2), false);
+		table.add(new OrderColumn());
+		table.add(new RankRankColumnModel());
+		WorldUniversityYear.addYear(table, "2009", new YearGetter(3), false).setCompressed(true);
+		table.add(new OrderColumn());
+		table.add(new RankRankColumnModel());
+		WorldUniversityYear.addYear(table, "2008", new YearGetter(4), false).setCompressed(true);
+		table.add(new OrderColumn());
+		table.add(new RankRankColumnModel());
+		WorldUniversityYear.addYear(table, "2007", new YearGetter(5), false).setCompressed(true);
 	}
 
 	static class YearGetter implements Function<IRow, WorldUniversityYear> {

@@ -108,7 +108,7 @@ public class Mixed implements IModelBuilder {
 						UniversityRow r = (UniversityRow) in;
 						return r.wbu;
 					}
-				}));
+				}, false));
 
 		table.add(new OrderColumn());
 		table.add(new RankRankColumnModel());
