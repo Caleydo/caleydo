@@ -45,6 +45,7 @@ public class GLTitleBar extends GLElementContainer {
 	protected final ILabelProvider labelProvider;
 	protected final GLButton closeButton;
 	protected Color barColor = DEFAULT_COLOR;
+	protected boolean isHighlight = false;
 
 	public GLTitleBar(String text) {
 		this(new DefaultLabelProvider(text));
@@ -78,7 +79,8 @@ public class GLTitleBar extends GLElementContainer {
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
-		g.color(barColor).fillRoundedRect(0, 0, w, h, 7);
+		Color color = isHighlight ? new Color(barColor.r + 0.15f, barColor.g + 0.15f, barColor.b + 0.15f) : barColor;
+		g.color(color).fillRoundedRect(0, 0, w, h, 7);
 		super.renderImpl(g, w, h);
 	}
 
@@ -88,6 +90,15 @@ public class GLTitleBar extends GLElementContainer {
 	 */
 	public void setBarColor(Color barColor) {
 		this.barColor = barColor;
+		repaint();
+	}
+
+	/**
+	 * @param highlight
+	 *            setter, see {@link highlight}
+	 */
+	public void setHighlight(boolean highlight) {
+		this.isHighlight = highlight;
 		repaint();
 	}
 

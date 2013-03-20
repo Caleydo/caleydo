@@ -42,6 +42,7 @@ public class GLWindow extends AnimatedGLElementContainer {
 	protected final GLTitleBar titleBar;
 	protected final GLPathwayBackground background;
 	protected final GLElementContainer baseContainer;
+	// protected final GLElementContainer contentContainer;
 	protected boolean active = false;
 	protected boolean showCloseButton = true;
 
@@ -53,7 +54,8 @@ public class GLWindow extends AnimatedGLElementContainer {
 		baseContainer = new GLElementContainer(new GLSizeRestrictiveFlowLayout(false, 1, GLPadding.ZERO));
 		baseContainer.add(titleBar);
 		titleBar.closeButton.setVisibility(EVisibility.NONE);
-
+		// contentContainer = new GLElementContainer(new GLSizeRestrictiveFlowLayout(true, 0, new GLPadding(3)));
+		// baseContainer.add(contentContainer);
 		// slideInButton.setSize(20, 5);
 
 		add(background);
@@ -78,8 +80,10 @@ public class GLWindow extends AnimatedGLElementContainer {
 			repaint();
 			if (showCloseButton)
 				titleBar.closeButton.setVisibility(EVisibility.PICKABLE);
+			titleBar.setHighlight(true);
 		} else {
 			titleBar.closeButton.setVisibility(EVisibility.NONE);
+			titleBar.setHighlight(false);
 		}
 		// background.setHovered(active);
 		this.active = active;
@@ -91,10 +95,11 @@ public class GLWindow extends AnimatedGLElementContainer {
 	 */
 	public void setShowCloseButton(boolean showCloseButton) {
 		this.showCloseButton = showCloseButton;
-		if (showCloseButton)
+		if (showCloseButton) {
 			titleBar.closeButton.setVisibility(EVisibility.PICKABLE);
-		else
+		} else {
 			titleBar.closeButton.setVisibility(EVisibility.NONE);
+		}
 	}
 
 	/**
@@ -134,6 +139,10 @@ public class GLWindow extends AnimatedGLElementContainer {
 
 	public void setTitleBarColor(Color color) {
 		titleBar.setBarColor(color);
+	}
+
+	public void setBackgroundColor(Color color) {
+		background.setColor(color);
 	}
 
 }

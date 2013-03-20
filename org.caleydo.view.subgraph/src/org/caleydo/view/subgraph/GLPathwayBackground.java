@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.view.subgraph;
 
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -31,8 +32,10 @@ import org.caleydo.core.view.opengl.picking.Pick;
  */
 public class GLPathwayBackground extends PickableGLElement {
 
+	public static final Color DEFAULT_COLOR = new Color(0.95f, 0.95f, 0.95f, 1f);
 	// protected boolean hovered = false;
 	protected final GLWindow parentWindow;
+	protected Color color = DEFAULT_COLOR;
 
 	public GLPathwayBackground(GLWindow parentWindow) {
 		this.parentWindow = parentWindow;
@@ -47,7 +50,7 @@ public class GLPathwayBackground extends PickableGLElement {
 		// } else {
 		//
 		// }
-		g.color(0.95f, 0.95f, 0.95f, 1f);
+		g.color(color);
 		g.incZ(-0.2f);
 		g.fillRoundedRect(0, 0, w, h, 7);
 		g.incZ(0.2f);
@@ -75,6 +78,15 @@ public class GLPathwayBackground extends PickableGLElement {
 		// // bar.setVisibility(EVisibility.VISIBLE);
 		// hovered = true;
 		// repaint();
+	}
+
+	/**
+	 * @param color
+	 *            setter, see {@link color}
+	 */
+	public void setColor(Color color) {
+		this.color = color;
+		repaint();
 	}
 
 	// /**

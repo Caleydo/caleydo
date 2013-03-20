@@ -203,7 +203,8 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 
 	private GLWindow windowToSetActive;
 
-	private ConnectionBandRenderer connectionBandRenderer=null;
+	private ConnectionBandRenderer connectionBandRenderer = null;
+
 	/**
 	 * Constructor.
 	 *
@@ -1018,6 +1019,13 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 				addPathway(pathway, EEmbeddingID.PATHWAY_LEVEL2);
 			}
 		}
+
+		// @ListenTo(restrictExclusiveToEventSpace = true)
+		// public void onPathwayTextureSelection(PathwayTextureSelectionEvent event) {
+		// for (IPathwayTextureSelectionListener listener : textureSelectionListeners) {
+		// listener.onPathwayTextureSelected(event.getPathway());
+		// }
+		// }
 	}
 
 	public boolean hasPathway(PathwayGraph pathway) {
@@ -1057,9 +1065,15 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 
 			}
 		}
+
+		for (PathwayMultiFormInfo i : pathwayInfos) {
+			i.window.setTitleBarColor(GLTitleBar.DEFAULT_COLOR);
+		}
+
 		if (info == null)
 			return;
 		augmentation.clear();
+		// textureSelectionListeners.clear();
 		PathwayVertexRep lastNodeOfPrevSegment = null;
 
 		for (PathwayPath segment : pathSegments) {
@@ -1086,6 +1100,8 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		}
 
 		if (isShowPortals) {
+			Set<GLPathwayWindow> windowsToHighlight = new HashSet<>();
+
 			for (PathwayVertexRep vertexRep : info.pathway.vertexSet()) {
 				if (info.getCurrentEmbeddingID() == EEmbeddingID.PATHWAY_LEVEL1
 						&& vertexRep.getType() == EPathwayVertexType.map) {
@@ -1095,36 +1111,80 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 				Pair<Rectangle2D, Boolean> sourcePair = getPortalLocation(vertexRep, info);
 				for (PathwayMultiFormInfo i : pathwayInfos) {
 					if (info != i) {
+						boolean wasLinkAdded = false;
 						if (info.getCurrentEmbeddingID() != EEmbeddingID.PATHWAY_LEVEL1) {
 							// Only connect lv2 or higher with current lv1
 							if (i.getCurrentEmbeddingID() == EEmbeddingID.PATHWAY_LEVEL1) {
-								addLinkRenderers(vertexRep, info, i, sourcePair);
+								wasLinkAdded = addLinkRenderers(vertexRep, info, i, sourcePair);
 							}
 						} else {
 							// Connect lv1 with all
-							addLinkRenderers(vertexRep, info, i, sourcePair);
+							wasLinkAdded = addLinkRenderers(vertexRep, info, i, sourcePair);
+						}
+						boolean highlightAdded = highlightPathwayNodePortals(info, i);
+						wasLinkAdded = wasLinkAdded || highlightAdded;
+						if (wasLinkAdded) {
+							windowsToHighlight.add((GLPathwayWindow) i.window);
 						}
 					} else {
 						// TODO: implement
 					}
+
+				}
+			}
+
+			for (PathwayMultiFormInfo i : pathwayInfos) {
+				if (windowsToHighlight.contains(i.window)) {
+					i.window.setTitleBarColor(PortalRenderStyle.DEFAULT_PORTAL_COLOR);
+				} else {
+					i.window.setTitleBarColor(GLTitleBar.DEFAULT_COLOR);
 				}
 			}
 		}
+
 		// clearSelectedPortalLinks();
 		// System.out.println("update");
 	}
 
-	private void addPortalHighlightRenderer(PathwayVertexRep vertexRep, PathwayMultiFormInfo info) {
-		PathwayGraph pathway = PathwayManager.get().getPathwayByTitle(vertexRep.getName(), EPathwayDatabaseType.KEGG);
-		if (pathway != null && hasPathway(pathway)) {
-			PortalHighlightRenderer renderer = new PortalHighlightRenderer(getPortalLocation(vertexRep, info)
-					.getFirst());
-			augmentation.add(renderer);
+	private boolean highlightPathwayNodePortals(PathwayMultiFormInfo sourceInfo, PathwayMultiFormInfo targetInfo) {
+		boolean wasHighlighted = false;
+		if (targetInfo.getCurrentEmbeddingID() == EEmbeddingID.PATHWAY_LEVEL1) {
+			for (PathwayVertexRep vertexRep : targetInfo.pathway.vertexSet()) {
+				if (vertexRep.getType() == EPathwayVertexType.map) {
+					PathwayGraph pathway = PathwayManager.get().getPathwayByTitle(vertexRep.getName(),
+							EPathwayDatabaseType.KEGG);
+					if (pathway == sourceInfo.pathway) {
+						PortalHighlightRenderer renderer = new PortalHighlightRenderer(getPortalLocation(vertexRep,
+								targetInfo).getFirst(), (GLPathwayWindow) sourceInfo.window);
+						// textureSelectionListeners.add(renderer);
+						augmentation.add(renderer);
+						wasHighlighted = true;
+					}
+				}
+			}
 		}
+		return wasHighlighted;
 	}
 
-	private void addLinkRenderers(PathwayVertexRep vertexRep, PathwayMultiFormInfo sourceInfo,
+	private boolean addPortalHighlightRenderer(PathwayVertexRep vertexRep, PathwayMultiFormInfo info) {
+		PathwayGraph pathway = PathwayManager.get().getPathwayByTitle(vertexRep.getName(), EPathwayDatabaseType.KEGG);
+		boolean wasHighlighted = false;
+		if (pathway != null) {
+			PathwayMultiFormInfo windowInfo = getPathwayMultiFormInfo(pathway);
+			if (windowInfo != null) {
+				PortalHighlightRenderer renderer = new PortalHighlightRenderer(getPortalLocation(vertexRep, info)
+						.getFirst(), (GLPathwayWindow) windowInfo.window);
+				// textureSelectionListeners.add(renderer);
+				augmentation.add(renderer);
+				wasHighlighted = true;
+			}
+		}
+		return wasHighlighted;
+	}
+
+	private boolean addLinkRenderers(PathwayVertexRep vertexRep, PathwayMultiFormInfo sourceInfo,
 			PathwayMultiFormInfo targetInfo, Pair<Rectangle2D, Boolean> sourcePair) {
+		boolean wasLinkAdded = false;
 		Set<PathwayVertexRep> equivalentVertexReps = PathwayManager.get().getEquivalentVertexRepsInPathway(vertexRep,
 				targetInfo.pathway);
 		for (PathwayVertexRep v : equivalentVertexReps) {
@@ -1146,7 +1206,9 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 					targetPair.getSecond(), PathwayManager.get().areVerticesEquivalent(vertexRep,
 							currentContextVertexRep), false, vertexRep, v,connectionBandRenderer);
 			augmentation.add(renderer);
+			wasLinkAdded = true;
 		}
+		return wasLinkAdded;
 	}
 
 	protected boolean isSelectedPortalLink(PathwayVertexRep v1, PathwayVertexRep v2) {
@@ -1316,5 +1378,9 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		}
 		return false;
 	}
+
+	// public void addPathwayTextureSelectionListener(IPathwayTextureSelectionListener listener) {
+	// textureSelectionListeners.add(listener);
+	// }
 
 }
