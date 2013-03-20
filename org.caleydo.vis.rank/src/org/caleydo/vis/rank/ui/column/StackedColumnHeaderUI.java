@@ -68,6 +68,7 @@ public class StackedColumnHeaderUI extends ACompositeHeaderUI implements IThickH
 		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
 			switch (evt.getPropertyName()) {
+			case StackedRankColumnModel.PROP_DISTRIBUTIONS:
 			case StackedRankColumnModel.PROP_ALIGNMENT:
 				relayout();
 				break;
@@ -93,6 +94,7 @@ public class StackedColumnHeaderUI extends ACompositeHeaderUI implements IThickH
 		this.add(0, new StackedSummaryHeaderUI(model, config));
 		model.addPropertyChangeListener(ACompositeRankColumnModel.PROP_CHILDREN, childrenChanged);
 		model.addPropertyChangeListener(StackedRankColumnModel.PROP_ALIGNMENT, listener);
+		model.addPropertyChangeListener(StackedRankColumnModel.PROP_DISTRIBUTIONS, listener);
 		model.addPropertyChangeListener(ICompressColumnMixin.PROP_COMPRESSED, listener);
 		model.addPropertyChangeListener(ICollapseableColumnMixin.PROP_COLLAPSED, listener);
 		init(model);
@@ -121,6 +123,7 @@ public class StackedColumnHeaderUI extends ACompositeHeaderUI implements IThickH
 		context.unregisterPickingListener(distributionClickedPickingId);
 		model.removePropertyChangeListener(StackedRankColumnModel.PROP_ALIGNMENT, listener);
 		model.removePropertyChangeListener(ACompositeRankColumnModel.PROP_CHILDREN, childrenChanged);
+		model.removePropertyChangeListener(StackedRankColumnModel.PROP_DISTRIBUTIONS, childrenChanged);
 		model.removePropertyChangeListener(ICompressColumnMixin.PROP_COMPRESSED, listener);
 		model.removePropertyChangeListener(ICollapseableColumnMixin.PROP_COLLAPSED, listener);
 		super.takeDown();

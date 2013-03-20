@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.config;
 
+import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.basic.IScrollBar;
 import org.caleydo.vis.rank.model.RankTableModel;
 
@@ -52,9 +53,18 @@ public interface IRankTableUIConfig {
 
 	/**
 	 * factory method for creating a new {@link IScrollBar} implementation, as this is picking specific
-	 * 
+	 *
 	 * @param horizontal
 	 * @return
 	 */
 	IScrollBar createScrollBar(boolean horizontal);
+
+	/**
+	 * renderes the glyph to indicate that this column is the current ranking criteria
+	 * 
+	 * @param g
+	 * @param w
+	 * @param h
+	 */
+	void renderIsOrderByGlyph(GLGraphics g, float w, float h);
 }

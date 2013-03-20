@@ -47,6 +47,7 @@ import com.jogamp.common.util.IntObjectHashMap;
 public class StackedRankColumnModel extends AMultiRankColumnModel implements ISnapshotableColumnMixin,
 		ICompressColumnMixin {
 	public static final String PROP_ALIGNMENT = "alignment";
+	public static final String PROP_DISTRIBUTIONS = "distributions";
 
 	private final PropertyChangeListener listener = new PropertyChangeListener() {
 		@Override
@@ -269,6 +270,7 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 			float w = distributions[i++] * factor;
 			col.setParentData(w);
 		}
+		propertySupport.firePropertyChange(PROP_DISTRIBUTIONS, null, distributions);
 	}
 
 	public float getChildWidth(int i) {

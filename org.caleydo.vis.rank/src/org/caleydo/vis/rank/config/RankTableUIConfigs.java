@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.config;
 
+import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.basic.IScrollBar;
 
 /**
@@ -80,6 +81,11 @@ public class RankTableUIConfigs {
 		@Override
 		public IScrollBar createScrollBar(boolean horizontal) {
 			return wrappee.createScrollBar(horizontal);
+		}
+
+		@Override
+		public void renderIsOrderByGlyph(GLGraphics g, float w, float h) {
+			wrappee.renderIsOrderByGlyph(g, w, h);
 		}
 
 	}

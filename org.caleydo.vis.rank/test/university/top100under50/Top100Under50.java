@@ -80,7 +80,7 @@ public class Top100Under50 implements IModelBuilder {
 		table.add(new StringRankColumnModel(GLRenderers.drawText("Location", VAlign.CENTER),
 				new ReflectionData<String>(field("location"), String.class)));
 
-		Top100Under50Year.addYear(table, "2012", new YearGetter(0));
+		Top100Under50Year.addYear(table, "2012", new YearGetter(0)).orderByMe();
 
 		table.add(new OrderColumn());
 		table.add(new RankRankColumnModel());

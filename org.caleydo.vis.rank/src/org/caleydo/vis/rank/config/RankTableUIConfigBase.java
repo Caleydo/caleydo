@@ -19,14 +19,16 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.config;
 
+import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.basic.IScrollBar;
 import org.caleydo.core.view.opengl.layout2.basic.ScrollBar;
+import org.caleydo.vis.rank.ui.RenderStyle;
 
 /**
  * basic implementation of a {@link IRankTableUIConfig}
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public class RankTableUIConfigBase implements IRankTableUIConfig {
 	private final boolean isInteractive;
@@ -57,6 +59,11 @@ public class RankTableUIConfigBase implements IRankTableUIConfig {
 	@Override
 	public IScrollBar createScrollBar(boolean horizontal) {
 		return new ScrollBar(horizontal);
+	}
+
+	@Override
+	public void renderIsOrderByGlyph(GLGraphics g, float w, float h) {
+		g.fillImage(RenderStyle.ICON_STAR, w - 16, -8, 16, 16);
 	}
 
 }

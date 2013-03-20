@@ -48,6 +48,7 @@ public class StackedColumnUI extends ACompositeTableColumnUI<StackedRankColumnMo
 		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
 			switch (evt.getPropertyName()) {
+			case StackedRankColumnModel.PROP_DISTRIBUTIONS:
 			case StackedRankColumnModel.PROP_ALIGNMENT:
 				onAlignmentChanged();
 				break;
@@ -62,6 +63,7 @@ public class StackedColumnUI extends ACompositeTableColumnUI<StackedRankColumnMo
 	public StackedColumnUI(StackedRankColumnModel model) {
 		super(model, 1);
 		model.addPropertyChangeListener(StackedRankColumnModel.PROP_ALIGNMENT, listener);
+		model.addPropertyChangeListener(StackedRankColumnModel.PROP_DISTRIBUTIONS, listener);
 		model.addPropertyChangeListener(ICompressColumnMixin.PROP_COMPRESSED, listener);
 		model.addPropertyChangeListener(ICollapseableColumnMixin.PROP_COLLAPSED, listener);
 		this.add(0, wrap(model));
@@ -87,6 +89,7 @@ public class StackedColumnUI extends ACompositeTableColumnUI<StackedRankColumnMo
 	@Override
 	protected void takeDown() {
 		model.removePropertyChangeListener(StackedRankColumnModel.PROP_ALIGNMENT, listener);
+		model.removePropertyChangeListener(StackedRankColumnModel.PROP_DISTRIBUTIONS, listener);
 		model.removePropertyChangeListener(ICompressColumnMixin.PROP_COMPRESSED, listener);
 		model.removePropertyChangeListener(ICollapseableColumnMixin.PROP_COLLAPSED, listener);
 		super.takeDown();

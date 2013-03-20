@@ -19,7 +19,6 @@
  *******************************************************************************/
 package university.wur;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -33,9 +32,6 @@ import org.caleydo.vis.rank.model.OrderColumn;
 import org.caleydo.vis.rank.model.RankRankColumnModel;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.StringRankColumnModel;
-import org.eclipse.swt.widgets.Shell;
-
-import university.mup.MeasuringUniversityPerformance;
 
 import com.google.common.base.Function;
 
@@ -65,7 +61,7 @@ public class WorldUniversityRanking implements IModelBuilder {
 				StringRankColumnModel.DEFAULT));
 
 		// Arrays.asList("wur2010.txt", "wur2011.txt", "wur2012.txt");
-		WorldUniversityYear.addYear(table, "2012", new YearGetter(2));
+		WorldUniversityYear.addYear(table, "2012", new YearGetter(2)).orderByMe();
 		table.add(new OrderColumn());
 		table.add(new RankRankColumnModel());
 		WorldUniversityYear.addYear(table, "2011", new YearGetter(1));

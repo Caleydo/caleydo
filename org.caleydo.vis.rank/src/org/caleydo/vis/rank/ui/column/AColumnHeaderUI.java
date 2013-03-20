@@ -253,10 +253,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 		RoundedRectRenderer.render(g, 0, 0, w, h, RenderStyle.HEADER_ROUNDED_RADIUS, 3, RoundedRectRenderer.FLAG_FILL
 				| RoundedRectRenderer.FLAG_TOP);
 		if (model instanceof IRankableColumnMixin && model.getMyRanker().getOrderBy() == model) {
-			g.fillImage(RenderStyle.ICON_STAR, w - 16, -8, 16, 16);
-			// g.color(Color.RED);
-			// RoundedRectRenderer.render(g, 0, 0, w, h, RenderStyle.HEADER_ROUNDED_RADIUS, 3,
-			// RoundedRectRenderer.FLAG_TOP);
+			config.renderIsOrderByGlyph(g, w, h);
 		}
 		if (isCollapsed)
 			return;

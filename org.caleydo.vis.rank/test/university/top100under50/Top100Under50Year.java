@@ -41,8 +41,6 @@ import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
 
 import com.google.common.base.Function;
 
-import demo.ReflectionFloatData;
-
 /**
  * @author Samuel Gratzl
  *
@@ -101,7 +99,8 @@ public class Top100Under50Year {
 	/**
 	 * @param table
 	 */
-	public static void addYear(RankTableModel table, String title, final Function<IRow, Top100Under50Year> map) {
+	public static StackedRankColumnModel addYear(RankTableModel table, String title,
+			final Function<IRow, Top100Under50Year> map) {
 		final StackedRankColumnModel stacked = new StackedRankColumnModel();
 		stacked.setTitle(title);
 		table.add(stacked);
@@ -118,6 +117,8 @@ public class Top100Under50Year {
 
 		stacked.setDistributions(new float[] { 30, 30, 30, 7.5f, 2.5f });
 		stacked.setWidth(300);
+
+		return stacked;
 	}
 
 	public static void addOverallYear(RankTableModel table, String title, Function<IRow, Top100Under50Year> map) {
