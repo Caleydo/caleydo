@@ -56,6 +56,52 @@ import com.google.common.base.Function;
  */
 public class StringRankColumnModel extends ABasicFilterableRankColumnModel implements IGrabRemainingHorizontalSpace,
 		IRankableColumnMixin, ISearchableColumnMixin {
+	/**
+	 * different strategies for filter modi
+	 *
+	 * @author Samuel Gratzl
+	 *
+	 */
+	public enum FilterStrategy {
+		STAR_WILDCARD, SUBSTRING, REGEX;
+
+		public String getHint() {
+			switch(this) {
+			case SUBSTRING:
+				return "(containing)";
+			case STAR_WILDCARD:
+				return "(use * as wildcard)";
+			case REGEX:
+				return "(a valid regular expression)";
+			}
+			throw new IllegalStateException();
+		}
+
+		public String prepare(String filter) {
+			switch (this) {
+			case SUBSTRING:
+				return filter.toLowerCase();
+			case STAR_WILDCARD:
+				return "\\Q" + filter.toLowerCase().replace("*", "\\E.*\\Q") + "\\E";
+			case REGEX:
+				return filter;
+			}
+			throw new IllegalStateException();
+		}
+
+		public boolean apply(String prepared, String v) {
+			switch (this) {
+			case SUBSTRING:
+				return v.toLowerCase().contains(prepared);
+			case STAR_WILDCARD:
+				return Pattern.matches(prepared, v.toLowerCase());
+			case REGEX:
+				return Pattern.matches(prepared, v);
+			}
+			throw new IllegalStateException();
+		}
+	}
+
 	public static final Function<IRow, String> DEFAULT = new Function<IRow, String>() {
 		@Override
 		public String apply(IRow row) {
@@ -68,15 +114,22 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 
 	private final Function<IRow, String> data;
 	private String filter;
+	private final FilterStrategy filterStrategy;
 
 	public StringRankColumnModel(IGLRenderer header, final Function<IRow, String> data) {
 		this(header, data, Color.GRAY, new Color(.95f, .95f, .95f));
 	}
 
 	public StringRankColumnModel(IGLRenderer header, final Function<IRow, String> data, Color color, Color bgColor) {
+		this(header, data, color, bgColor, FilterStrategy.STAR_WILDCARD);
+	}
+
+	public StringRankColumnModel(IGLRenderer header, final Function<IRow, String> data, Color color, Color bgColor,
+			FilterStrategy filterStrategy) {
 		super(color, bgColor);
 		setHeaderRenderer(header);
 		this.data = data;
+		this.filterStrategy = filterStrategy;
 	}
 
 	public StringRankColumnModel(StringRankColumnModel copy) {
@@ -84,6 +137,7 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 		setHeaderRenderer(getHeaderRenderer());
 		this.data = copy.data;
 		this.filter = copy.filter;
+		this.filterStrategy = copy.filterStrategy;
 	}
 
 	@Override
@@ -128,7 +182,8 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 				};
 				String bak = filter;
 				InputDialog d = new InputDialog(null, "Filter column: " + getTitle(),
-						"Edit Filter (use * as wildcard)", filter, validator);
+	 "Edit Filter "
+						+ filterStrategy.getHint(), filter, validator);
 				if (d.open() == Window.OK) {
 					String v = d.getValue().trim();
 					if (v.length() == 0)
@@ -158,7 +213,8 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 				};
 				String bak = filter;
 				InputDialog d = new InputDialog(null, "Search within column: " + getTitle(),
-						"Search String (use * as wildcard)", filter, validator);
+ "Search String "
+						+ filterStrategy.getHint(), filter, validator);
 				if (d.open() == Window.OK) {
 					String v = d.getValue().trim();
 					if (v.length() == 0)
@@ -177,12 +233,12 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 	public void onSearch(String search) {
 		if (search == null || search.trim().isEmpty())
 			return;
-		String regex = starToRegex(search);
+		String prepared = filterStrategy.prepare(search);
 		for (IRow row : getMyRanker()) {
 			String v = this.data.apply(row);
 			if (v == null)
 				continue;
-			if (Pattern.matches(regex, v.toLowerCase())) {
+			if (filterStrategy.apply(prepared, v)) {
 				getTable().setSelectedRow(row);
 				break;
 			}
@@ -201,12 +257,12 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 
 	@Override
 	protected void updateMask(BitSet todo, List<IRow> data, BitSet mask) {
-		String regex = starToRegex(filter);
+		String prepared = filterStrategy.prepare(filter);
 		for (int i = todo.nextSetBit(0); i >= 0; i = todo.nextSetBit(i + 1)) {
 			String v = this.data.apply(data.get(i));
 			if (v == null)
 				continue;
-			mask.set(i, Pattern.matches(regex, v.toLowerCase()));
+			mask.set(i, filterStrategy.apply(prepared, v));
 		}
 	}
 

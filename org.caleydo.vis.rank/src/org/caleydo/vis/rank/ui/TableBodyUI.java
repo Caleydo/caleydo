@@ -509,7 +509,7 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 			return;
 
 		boolean even = false;
-		enlargeRankPickers((int) (act.getScrollBar().getOffset() + act.getScrollBar().getWindow()));
+		enlargeRankPickers(act.getRanker().size());
 		int i = -1;
 
 		if (last instanceof ACompositeTableColumnUI<?>) {
