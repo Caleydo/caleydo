@@ -565,7 +565,7 @@ public class GLElement implements IHasGLLayoutData {
 		int bak = 0;
 		if (context != null)
 			bak = cache.invalidate(context.getDisplayListPool());
-		if (parent != null && bak > 0)
+		if (parent != null /* && bak > 0 */)
 			parent.repaint();
 	}
 
@@ -576,7 +576,7 @@ public class GLElement implements IHasGLLayoutData {
 		int bak = 0;
 		if (context != null)
 			bak = pickCache.invalidate(context.getDisplayListPool());
-		if (parent != null && bak > 0)
+		if (parent != null /* && bak > 0 */)
 			parent.repaintPick();
 	}
 
