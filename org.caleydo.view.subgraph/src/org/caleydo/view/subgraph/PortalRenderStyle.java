@@ -29,7 +29,7 @@ public final class PortalRenderStyle {
 
 	public static final Color DEFAULT_PORTAL_COLOR = new Color("078600");
 	public static final Color CONTEXT_PORTAL_COLOR = new Color("D2006B");
-	public static final Color PATH_LINK_COLOR = new Color(0, 1, 0, 1);
+	public static final Color PATH_LINK_COLOR = new Color(0f, 1f, 0f, 1f);
 
 	private PortalRenderStyle() {
 	}
