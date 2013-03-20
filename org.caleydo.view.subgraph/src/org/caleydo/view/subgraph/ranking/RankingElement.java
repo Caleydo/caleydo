@@ -217,8 +217,8 @@ public class RankingElement extends GLElementContainer {
 
 	private FloatRankColumnModel createDefaultFloatRankColumnModel(IPathwayRanking ranking) {
 		FloatRankColumnModel column = new FloatRankColumnModel(ranking.getRankingFunction(), GLRenderers.drawText(
-				ranking.getRankingCriterion(), VAlign.CENTER), Color.BLUE, Color.LIGHT_GRAY, new PiecewiseMapping(0,
-				Float.NaN), FloatInferrers.MEAN);
+				ranking.getRankingCriterion(), VAlign.CENTER), Color.GRAY, Color.LIGHT_GRAY,
+				new PiecewiseMapping(0, Float.NaN), FloatInferrers.MEAN);
 		column.setWidth(50);
 		return column;
 	}
