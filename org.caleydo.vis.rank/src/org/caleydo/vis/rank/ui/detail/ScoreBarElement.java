@@ -28,9 +28,9 @@ import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.rank.model.IRow;
+import org.caleydo.vis.rank.model.mixin.IFloatRankableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IMappedColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IRankColumnModel;
-import org.caleydo.vis.rank.model.mixin.IFloatRankableColumnMixin;
 import org.caleydo.vis.rank.ui.IColumnRenderInfo;
 
 /**
@@ -122,9 +122,17 @@ public class ScoreBarElement extends ValueElement {
 	}
 
 	protected static String getText(final IRow r, IRankColumnModel model, float v, boolean inferred) {
-		String text = (model instanceof IMappedColumnMixin) ? ((IMappedColumnMixin) model).getRawValue(r) : Formatter
-				.formatNumber(v);
-		return text + (inferred ? "*" : "");
+		String text;
+		if (model instanceof IMappedColumnMixin) {
+			text = ((IMappedColumnMixin) model).getRawValue(r);
+			text += (inferred ? "*" : "");
+			text += " (" + Formatter.formatNumber(v);
+			text += (inferred ? "*)" : ")");
+		} else {
+			text = Formatter.formatNumber(v);
+			text += (inferred ? "*" : "");
+		}
+		return text;
 	}
 
 	static float getTextHeight(float h) {

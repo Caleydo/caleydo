@@ -23,10 +23,8 @@ import static org.caleydo.core.view.opengl.layout2.animation.Transitions.LINEAR;
 import static org.caleydo.core.view.opengl.layout2.animation.Transitions.NO;
 import static org.caleydo.vis.rank.ui.RenderStyle.binsForWidth;
 
-import java.awt.Color;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.Arrays;
 import java.util.List;
 
 import org.caleydo.core.event.EventListenerManager.ListenTo;
@@ -48,8 +46,6 @@ import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.MaxCompositeRankColumnModel;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.SimpleHistogram;
-import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
-import org.caleydo.vis.rank.model.mixin.IMultiColumnMixin.MultiFloat;
 import org.caleydo.vis.rank.ui.RenderStyle;
 import org.caleydo.vis.rank.ui.RenderUtils;
 
@@ -138,35 +134,35 @@ public class MaxScoreSummary extends GLElementContainer implements IGLLayout {
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
-		if (((ICollapseableColumnMixin) model).isCollapsed())
-			return;
-		// background
-		g.color(model.getBgColor()).fillRect(0, 0, w, h);
-		// hist
-		int size = model.size();
-		// create a stacked histogram of all values
-		SimpleHistogram[] hists = model.getHists(binsForWidth(w));
-		Color[] colors = model.getColors();
-		Color[] selectedColors = new Color[size];
-		int[] selectedBins = new int[size];
-		if (selectedRow == null) {
-			Arrays.fill(selectedBins,-1);
-		} else {
-			MultiFloat vs = model.getSplittedValue(selectedRow);
-			for(int i = 0; i < size; ++i)
-				selectedBins[i] = hists[i].getBinOf(vs.values[i]);
-		}
-		for(int i = 0; i < size; ++i)
-			selectedColors[i] = colors[i].darker();
-		RenderUtils.renderStackedHist(g, hists, w, h, selectedBins, colors, selectedColors);
-
-		if (model.getFilterMin() > 0) {
-			g.color(0, 0, 0, 0.25f).fillRect(0, 0, model.getFilterMin() * w, h);
-		}
-		if (model.getFilterMax() < 1) {
-			g.color(0, 0, 0, 0.25f).fillRect(model.getFilterMax() * w, 0, (1 - model.getFilterMax()) * w, h);
-		}
-
+		SimpleHistogram hist = model.getHist(binsForWidth(w));
+		int selectedBin = selectedRow == null ? -1 : hist.getBinOf(model.applyPrimitive(selectedRow));
+		RenderUtils.renderHist(g, hist, w, h, selectedBin, model.getColor(), model.getColor().darker());
+		// // background
+		// g.color(model.getBgColor()).fillRect(0, 0, w, h);
+		// // hist
+		// int size = model.size();
+		// // create a stacked histogram of all values
+		// SimpleHistogram[] hists = model.getHists(binsForWidth(w));
+		// Color[] colors = model.getColors();
+		// Color[] selectedColors = new Color[size];
+		// int[] selectedBins = new int[size];
+		// if (selectedRow == null) {
+		// Arrays.fill(selectedBins,-1);
+		// } else {
+		// MultiFloat vs = model.getSplittedValue(selectedRow);
+		// for(int i = 0; i < size; ++i)
+		// selectedBins[i] = hists[i].getBinOf(vs.values[i]);
+		// }
+		// for(int i = 0; i < size; ++i)
+		// selectedColors[i] = colors[i].darker();
+		// RenderUtils.renderStackedHist(g, hists, w, h, selectedBins, colors, selectedColors);
+		//
+		// if (model.getFilterMin() > 0) {
+		// g.color(0, 0, 0, 0.25f).fillRect(0, 0, model.getFilterMin() * w, h);
+		// }
+		// if (model.getFilterMax() < 1) {
+		// g.color(0, 0, 0, 0.25f).fillRect(model.getFilterMax() * w, 0, (1 - model.getFilterMax()) * w, h);
+		// }
 		super.renderImpl(g, w, h);
 	}
 
