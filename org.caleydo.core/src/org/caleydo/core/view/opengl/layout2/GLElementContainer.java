@@ -264,7 +264,7 @@ public class GLElementContainer extends GLElement implements IGLElementParent, I
 
 	@Override
 	protected boolean hasPickAbles() {
-		return !children.isEmpty(); // may have pickables
+		return super.hasPickAbles() || !children.isEmpty(); // may have pickables
 	}
 
 	@Override

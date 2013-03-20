@@ -239,11 +239,11 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 	@Override
 	protected void renderPickImpl(GLGraphics g, float w, float h) {
 		if (config.isMoveAble()) {
-			g.incZ();
+			g.incZ().incZ();
 			g.pushName(dragPickingId);
 			g.fillRect(0, 0, w, h);
 			g.popName();
-			g.decZ();
+			g.decZ().decZ();
 		}
 		super.renderPickImpl(g, w, h);
 	}

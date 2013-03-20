@@ -106,6 +106,13 @@ public abstract class AMultiRankColumnModel extends ACompositeRankColumnModel im
 		RankTableModel t = getTable();
 		t.addPropertyChangeListener(RankTableModel.PROP_DATA, listener);
 		maskInvalid.set(0, t.getDataSize());
+		cacheHist = null;
+	}
+
+	@Override
+	protected void takeDown(ARankColumnModel model) {
+		cacheHist = null;
+		super.takeDown(model);
 	}
 
 	@Override
