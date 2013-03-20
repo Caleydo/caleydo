@@ -257,7 +257,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 
 		// pathwaySelectionManager = new EventBasedSelectionManager(t
 
-		connectionBandRenderer =new ConnectionBandRenderer();
+		connectionBandRenderer = new ConnectionBandRenderer();
 
 	}
 
@@ -1092,7 +1092,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 							getPathwayRepresentation(info2.multiFormRenderer,
 									info2.multiFormRenderer.getActiveRendererID()), nodes.get(0), info2.container);
 					augmentation.add(new LinkRenderer(this, true, loc1, loc2, info1, info2, 1, false, false, false,
-							true, lastNodeOfPrevSegment, nodes.get(0),connectionBandRenderer));
+							true, lastNodeOfPrevSegment, nodes.get(0), connectionBandRenderer));
 				}
 
 				lastNodeOfPrevSegment = nodes.get(nodes.size() - 1);
@@ -1112,15 +1112,15 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 				for (PathwayMultiFormInfo i : pathwayInfos) {
 					if (info != i) {
 						boolean wasLinkAdded = false;
-						if (info.getCurrentEmbeddingID() != EEmbeddingID.PATHWAY_LEVEL1) {
-							// Only connect lv2 or higher with current lv1
-							if (i.getCurrentEmbeddingID() == EEmbeddingID.PATHWAY_LEVEL1) {
-								wasLinkAdded = addLinkRenderers(vertexRep, info, i, sourcePair);
-							}
-						} else {
-							// Connect lv1 with all
-							wasLinkAdded = addLinkRenderers(vertexRep, info, i, sourcePair);
-						}
+						// if (info.getCurrentEmbeddingID() != EEmbeddingID.PATHWAY_LEVEL1) {
+						// // Only connect lv2 or higher with current lv1
+						// if (i.getCurrentEmbeddingID() == EEmbeddingID.PATHWAY_LEVEL1) {
+						// wasLinkAdded = addLinkRenderers(vertexRep, info, i, sourcePair);
+						// }
+						// } else {
+						// Connect lv1 with all
+						wasLinkAdded = addLinkRenderers(vertexRep, info, i, sourcePair);
+						// }
 						boolean highlightAdded = highlightPathwayNodePortals(info, i);
 						wasLinkAdded = wasLinkAdded || highlightAdded;
 						if (wasLinkAdded) {
@@ -1204,7 +1204,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 					|| v == currentPortalVertexRep || isSelectedPortalLink(vertexRep, v), sourcePair.getFirst(),
 					targetPair.getFirst(), sourceInfo, targetInfo, stubSize, sourcePair.getSecond(),
 					targetPair.getSecond(), PathwayManager.get().areVerticesEquivalent(vertexRep,
-							currentContextVertexRep), false, vertexRep, v,connectionBandRenderer);
+							currentContextVertexRep), false, vertexRep, v, connectionBandRenderer);
 			augmentation.add(renderer);
 			wasLinkAdded = true;
 		}
