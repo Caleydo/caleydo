@@ -31,7 +31,7 @@ import org.caleydo.view.enroute.path.node.BranchSummaryNode;
 public class PathSizeConfiguration {
 
 	public static final PathSizeConfiguration DEFAULT = new Builder().rectangleNodeWidth(70).rectangleNodeHeight(20)
-			.circleNodeRadius(10).minNodeSpacing(50).nodeTextHeight(16).pathStartSpacing(30).pathEndSpacing(14)
+			.circleNodeRadius(10).minNodeSpacing(50).nodeTextHeight(16).pathStartSpacing(30).pathEndSpacing(16)
 			.rowHeight(60).branchNodeToPathNodeVerticalSpacing(20).collapsedBranchAreaWidth(100)
 			.expandedBranchAreaWidth(100).pathAreaWidth(150).branchNodeLeftSideSpacing(8).pathwayTextHeight(16)
 			.pathwayTitleAreaWidth(20).dataPreviewRowHeight(30).branchSummaryNodeWidthCollapsed(90)
@@ -40,7 +40,7 @@ public class PathSizeConfiguration {
 			.edgeTextHeight(13).branchNodesShowDataPreview(true).build();
 
 	public static final PathSizeConfiguration COMPACT = new Builder().rectangleNodeWidth(40).rectangleNodeHeight(14)
-			.circleNodeRadius(7).minNodeSpacing(40).nodeTextHeight(12).pathStartSpacing(30).pathEndSpacing(14)
+			.circleNodeRadius(7).minNodeSpacing(40).nodeTextHeight(12).pathStartSpacing(30).pathEndSpacing(20)
 			.rowHeight(40).branchNodeToPathNodeVerticalSpacing(10).collapsedBranchAreaWidth(40)
 			.expandedBranchAreaWidth(65).pathAreaWidth(50).branchNodeLeftSideSpacing(6).pathwayTextHeight(12)
 			.pathwayTitleAreaWidth(14).dataPreviewRowHeight(20).branchSummaryNodeWidthCollapsed(25)

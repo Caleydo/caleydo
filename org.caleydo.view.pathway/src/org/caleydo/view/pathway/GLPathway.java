@@ -610,6 +610,14 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 					}
 				}
 			}
+
+			// @Override
+			// protected void mouseOver(Pick pick) {
+			// PathwayTextureSelectionEvent event = new PathwayTextureSelectionEvent(pathway);
+			// event.setEventSpace(pathwayPathEventSpace);
+			// EventPublisher.INSTANCE.triggerEvent(event);
+			// }
+
 		}, EPickingType.PATHWAY_TEXTURE_SELECTION.name());
 	}
 

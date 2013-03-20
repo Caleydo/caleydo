@@ -463,13 +463,54 @@ public class PickingManager {
 
 						// Check if the views have the common gl canvas, i.e. if
 						// they are rendered remote in the same SWT view frame.
-						// We also do not want to receive a MOUSE_OUT in a
-						// parent view when a picking event occurs in a child
-						// view.
-						if (currentView != null && currentView.getParentGLCanvas() == parentCanvas
-								&& !isParentViewOfView(pickedViewID, viewID)) {
-							// System.out.println("Mouseout view: "
-							// + currentView.getCustomLabel());
+
+						// if (currentView != null && currentView.getParentGLCanvas() == parentCanvas
+						// && !isParentViewOfView(pickedViewID, viewID)) {
+						// // System.out.println("Mouseout view: "
+						// // + currentView.getCustomLabel());
+						//
+						// ViewSpecificHitListContainer previousHitContainer =
+						// hashViewIDToPreviousViewSpecificHitListContainer
+						// .get(viewID);
+						//
+						// if (previousHitContainer != null) {
+						//
+						// for (String pickingType : previousHitContainer.getPickingTypes()) {
+						// for (Pick previousPick : previousHitContainer.getPicksForPickingType(pickingType)) {
+						//
+						// // Do not add a MOUSE_OUT to the same
+						// // object, which was rendered by a
+						// // different view (multiple glPushName
+						// // calls with same Picking Type and ID,
+						// // but different view ID).
+						// if (!pickingType.equals(pickAssociatedValues.getSecond())
+						// && previousPick.getObjectID() != getPickedObjectIDFromPickingID(
+						// pickedViewID, pickAssociatedValues.getSecond(), pickingID)) {
+						//
+						// ViewSpecificHitListContainer hitContainer = hashViewIDToViewSpecificHitListContainer
+						// .get(viewID);
+						// if (hitContainer == null) {
+						// hitContainer = new ViewSpecificHitListContainer();
+						// hashViewIDToViewSpecificHitListContainer.put(viewID, hitContainer);
+						// }
+						// // if (hitContainer.getPickingTypes().size() <= 0) {
+						// Pick pick = new Pick(previousPick.getObjectID(), PickingMode.MOUSE_OUT,
+						// tmpPickPoint, glMouseListener.getPickedPointDragStart(),
+						// fMinimumZValue);
+						// hitContainer.addPicksForPickingType(pickingType, pick, true);
+						//
+						// processedViews.add(viewID);
+						// // }
+						// }
+						// }
+						// }
+						// }
+						// hashViewIDToPreviousViewSpecificHitListContainer.put(viewID,
+						// new ViewSpecificHitListContainer());
+						// }
+
+						if (currentView != null && currentView.getParentGLCanvas() == parentCanvas) {
+							// System.out.println("Mouseout view: " + currentView.getLabel());
 
 							ViewSpecificHitListContainer previousHitContainer = hashViewIDToPreviousViewSpecificHitListContainer
 									.get(viewID);
@@ -484,9 +525,12 @@ public class PickingManager {
 										// different view (multiple glPushName
 										// calls with same Picking Type and ID,
 										// but different view ID).
-										if (!pickingType.equals(pickAssociatedValues.getSecond())
-												&& previousPick.getObjectID() != getPickedObjectIDFromPickingID(
-														pickedViewID, pickAssociatedValues.getSecond(), pickingID)) {
+										// FIXME: THIS IS PROBABLY ONE OF THE WORST HACKS EVER! FIX BY USING NEW
+										// PICKINGMANGER
+										if (!(glView.getViewType().equals("org.caleydo.view.stratomex"))
+												|| (!pickingType.equals(pickAssociatedValues.getSecond()) && previousPick
+														.getObjectID() != getPickedObjectIDFromPickingID(pickedViewID,
+														pickAssociatedValues.getSecond(), pickingID))) {
 
 											ViewSpecificHitListContainer hitContainer = hashViewIDToViewSpecificHitListContainer
 													.get(viewID);
@@ -495,12 +539,12 @@ public class PickingManager {
 												hashViewIDToViewSpecificHitListContainer.put(viewID, hitContainer);
 											}
 											// if (hitContainer.getPickingTypes().size() <= 0) {
-												Pick pick = new Pick(previousPick.getObjectID(), PickingMode.MOUSE_OUT,
-														tmpPickPoint, glMouseListener.getPickedPointDragStart(),
-														fMinimumZValue);
-												hitContainer.addPicksForPickingType(pickingType, pick, true);
+											Pick pick = new Pick(previousPick.getObjectID(), PickingMode.MOUSE_OUT,
+													tmpPickPoint, glMouseListener.getPickedPointDragStart(),
+													fMinimumZValue);
+											hitContainer.addPicksForPickingType(pickingType, pick, true);
 
-												processedViews.add(viewID);
+											processedViews.add(viewID);
 											// }
 										}
 									}
@@ -509,6 +553,7 @@ public class PickingManager {
 							hashViewIDToPreviousViewSpecificHitListContainer.put(viewID,
 									new ViewSpecificHitListContainer());
 						}
+
 					}
 				}
 			}
