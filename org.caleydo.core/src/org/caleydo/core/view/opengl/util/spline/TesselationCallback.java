@@ -29,8 +29,8 @@ import javax.media.opengl.glu.GLUtessellatorCallback;
  */
 public class TesselationCallback
 	implements GLUtessellatorCallback {
-	private GL2 gl;
-	private GLU glu;
+	protected  GL2 gl;
+	protected GLU glu;
 
 	public TesselationCallback(GL2 gl, GLU glu) {
 		this.gl = gl;

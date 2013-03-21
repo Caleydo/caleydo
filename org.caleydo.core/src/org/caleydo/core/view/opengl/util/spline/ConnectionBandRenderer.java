@@ -51,10 +51,10 @@ public class ConnectionBandRenderer {
 	/** The factor the opacity of the outline should be increased compared to the solid band */
 	public final static int OPACITY_INCREASE_FACTOR_OUTLINE = 2;
 
-	private GLU glu;
+	protected GLU glu;
 	// private int displayListID;
 
-	private GLUtessellator tobj;
+	protected GLUtessellator tobj;
 
 	public void init(GL2 gl) {
 		TesselationCallback tessCallback = new TesselationCallback(gl, new GLU());
