@@ -57,6 +57,10 @@ class ColorTessellationCallBack extends TesselationCallback {//GLUtessellatorCal
 
 public class ColoredConnectionBandRenderer extends ConnectionBandRenderer {
 
+	protected float red=0.0f;
+	protected float green=0.0f;
+	protected float blue=0.0f;
+	protected float alpha=0.0f;	
 	@Override
 	public void init(GL2 gl) {
 		ColorTessellationCallBack tessCallback = new ColorTessellationCallBack(gl, new GLU());
@@ -75,18 +79,21 @@ public class ColoredConnectionBandRenderer extends ConnectionBandRenderer {
 
 	public void render(GL2 gl, List<Vec3f> points, boolean fade) {
 		double inputPoints[][] = new double[points.size()][7];
-		float t=0f;
+		float t=alpha;
 		for (int pointIndex = 0; pointIndex < points.size(); pointIndex++) {
-			if(fade)
+			if(fade){
 				t=((float)pointIndex/ ((float)points.size()/2f));
-			if(t>1f)t=2f-t;
+				if(t>alpha){t=alpha-t%alpha;				
+				}
+				t=1f-t;
+			}
 			inputPoints[pointIndex][0] = points.get(pointIndex).x();
 			inputPoints[pointIndex][1] = points.get(pointIndex).y();
 			inputPoints[pointIndex][2] = points.get(pointIndex).z();			
-			inputPoints[pointIndex][3] = 1f-t;
-			inputPoints[pointIndex][4] = 0;
-			inputPoints[pointIndex][5] = 0;
-			inputPoints[pointIndex][6] = 1f-t;
+			inputPoints[pointIndex][3] = red;
+			inputPoints[pointIndex][4] = green;
+			inputPoints[pointIndex][5] = blue;
+			inputPoints[pointIndex][6] = t;
 		}
 		gl.glShadeModel(GLLightingFunc.GL_SMOOTH);
 		GLU.gluTessProperty(tobj, //
@@ -117,11 +124,15 @@ public class ColoredConnectionBandRenderer extends ConnectionBandRenderer {
 		if (anchorPoints == null || anchorPoints.size() < 2)
 			return;
 
+		red=color[0];
+		green=color[1];
+		blue=color[2];
+		alpha=color[3];
 		// gl.glPushName(pickingManager.getPickingID(viewID,
 		// EPickingType.COMPARE_RIBBON_SELECTION, bandID));
 
 		// float yCorrection = 0;
-		float z = 0f;
+		float z = 6f;
 		ArrayList<Vec3f> inputPoints = new ArrayList<Vec3f>();
 		for (Pair<Point2D, Point2D> anchorPair : anchorPoints) {
 			Vec3f vec = new Vec3f((float) anchorPair.getFirst().getX(),
@@ -156,12 +167,13 @@ public class ColoredConnectionBandRenderer extends ConnectionBandRenderer {
 		else
 			gl.glColor4f(color[0], color[1], color[2], opacity * 2);
 
-//		gl.glBegin(GL.GL_LINE_STRIP);
-//		for (int i = 0; i < outputPoints.size(); i++) {
-//			gl.glVertex3f(outputPoints.get(i).x(), outputPoints.get(i).y(), outputPoints
-//					.get(i).z());
-//		}
-//		gl.glEnd();
+		gl.glBegin(GL.GL_LINE_STRIP);
+		gl.glColor4f(0f, 0f, 0f, 1f);
+		for (int i = 0; i < outputPoints.size(); i++) {
+			gl.glVertex3f(outputPoints.get(i).x(), outputPoints.get(i).y(), outputPoints
+					.get(i).z());
+		}
+		gl.glEnd();
 
 		inputPoints = new ArrayList<Vec3f>();
 		for (Pair<Point2D, Point2D> anchorPair : anchorPoints) {
@@ -194,12 +206,13 @@ public class ColoredConnectionBandRenderer extends ConnectionBandRenderer {
 		}
 
 		// Band border
-//		// gl.glLineWidth(1);
-//		gl.glBegin(GL.GL_LINE_STRIP);
-//		for (int i = 0; i < points.size(); i++) {
-//			gl.glVertex3f(points.get(i).x(), points.get(i).y(), points.get(i).z());
-//		}
-//		gl.glEnd();
+		gl.glColor4f(0f, 0f, 0f, 1f);
+		gl.glLineWidth(1);
+		gl.glBegin(GL.GL_LINE_STRIP);
+		for (int i = 0; i < points.size(); i++) {
+			gl.glVertex3f(points.get(i).x(), points.get(i).y(), points.get(i).z());
+		}
+		gl.glEnd();
 
 //		if (highlight)
 //			gl.glColor4f(color[0], color[1], color[2], opacity);// 0.5f);

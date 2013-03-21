@@ -52,7 +52,6 @@ import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
 import org.caleydo.core.view.opengl.layout2.layout.GLSizeRestrictiveFlowLayout;
 import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
-import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.datadomain.genetic.EGeneIDTypes;
 import org.caleydo.datadomain.pathway.IPathwayRepresentation;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
@@ -203,7 +202,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 
 	private GLWindow windowToSetActive;
 
-	private ConnectionBandRenderer connectionBandRenderer = null;
+	private ColoredConnectionBandRenderer connectionBandRenderer = null;
 
 	/**
 	 * Constructor.
@@ -257,7 +256,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 
 		// pathwaySelectionManager = new EventBasedSelectionManager(t
 
-		connectionBandRenderer = new ConnectionBandRenderer();
+		connectionBandRenderer = new ColoredConnectionBandRenderer();
 
 	}
 
