@@ -31,7 +31,7 @@ import org.caleydo.view.subgraph.event.ShowPortalsEvent;
  */
 public class ShowPortalsAction extends SimpleAction {
 	public static final String LABEL = "Show Node Occurrences across Pathways (P)";
-	public static final String ICON = "resources/icons/view/pathway/gene_mapping.png";
+	public static final String ICON = "resources/icons/view/pathway/show_portals3.png";
 
 	private String eventSpace;
 
