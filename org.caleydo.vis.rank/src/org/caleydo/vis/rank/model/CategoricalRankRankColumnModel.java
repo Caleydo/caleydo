@@ -343,7 +343,7 @@ public class CategoricalRankRankColumnModel<CATEGORY_TYPE> extends ABasicFiltera
 
 	@Override
 	public void editMapping(GLElement summary, IGLElementContext context) {
-		GLElement m = MappingFunctionUIs.create(mapping, getHist(), metaData, bgColor, callback);
+		GLElement m = MappingFunctionUIs.create(mapping, getHist(), metaData, color, bgColor, callback);
 		m.setzDelta(0.5f);
 		Vec2f location = summary.getAbsoluteLocation();
 		Vec2f size = summary.getSize();

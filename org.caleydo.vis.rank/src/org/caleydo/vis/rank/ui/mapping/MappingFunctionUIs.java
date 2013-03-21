@@ -54,10 +54,11 @@ public class MappingFunctionUIs {
 	}
 
 	public static <T> GLElement create(ICategoricalMappingFunction<T> model, Map<T, Integer> data,
-			Map<T, CategoryInfo> metaData, Color bgColor, ICallback<? super ICategoricalMappingFunction<?>> callback) {
+			Map<T, CategoryInfo> metaData, Color color, Color bgColor,
+			ICallback<? super ICategoricalMappingFunction<?>> callback) {
 		if (model instanceof BaseCategoricalMappingFunction)
 			return new BaseCategoricalMappingFunctionUI<T>((BaseCategoricalMappingFunction<T>) model, data, metaData,
-					bgColor, callback);
+					color, bgColor, callback);
 		return null;
 	}
 }
