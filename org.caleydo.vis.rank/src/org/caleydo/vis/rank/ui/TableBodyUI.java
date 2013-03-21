@@ -37,8 +37,11 @@ import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
+import org.caleydo.core.view.opengl.layout2.IGLElementParent;
 import org.caleydo.core.view.opengl.layout2.animation.AnimatedGLElementContainer;
 import org.caleydo.core.view.opengl.layout2.basic.IScrollBar;
+import org.caleydo.core.view.opengl.layout2.basic.ScrollingDecorator;
+import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
@@ -111,6 +114,7 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 
 	private final IScrollBar scrollBar;
 	private int scrollBarPickingId = -1;
+	private boolean needsScrollBar;
 
 	public TableBodyUI(final RankTableModel table, IRowHeightLayout rowLayout, IRankTableUIConfig config) {
 		setAnimateByDefault(false);
@@ -128,7 +132,7 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 			@Override
 			public void pick(Pick pick) {
 				if (pick.getPickingMode() == PickingMode.CLICKED) {
-					setSelectedRank(pick.getPickedPoint().x, pick.getObjectID());
+					setSelectedRank(toRelative(pick.getPickedPoint()).x(), pick.getObjectID());
 				}
 			}
 		});
@@ -147,16 +151,16 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 		return (OrderColumnUI) get(0);
 	}
 
-	protected void setSelectedRank(int x, int objectID) {
-		IRow row = getRanker(x).getRanker().get(objectID);
+	protected void setSelectedRank(float f, int objectID) {
+		IRow row = getRanker(f).getRanker().get(objectID);
 		table.setSelectedRow(row);
 	}
 
-	private OrderColumnUI getRanker(int mouseX) {
+	private OrderColumnUI getRanker(float f) {
 		OrderColumnUI r = getDefaultrankerUI();
 		for (OrderColumnUI other : Iterables.filter(this, OrderColumnUI.class)) {
 			Vec2f loc = other.getLocation();
-			if (loc.x() > mouseX) // last one is the correct one
+			if (loc.x() > f) // last one is the correct one
 				break;
 			r = other;
 		}
@@ -278,6 +282,16 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 	}
 
 	private void updateMyMinSize() {
+		float x = computeNeededWidth();
+		Vec2f old = getLayoutDataAs(Vec2f.class, new Vec2f(0, 0));
+		if (old.x() == x)
+			return;
+		old.setX(x);
+		setLayoutData(old);
+		relayoutParent();
+	}
+
+	protected float computeNeededWidth() {
 		float x = RenderStyle.COLUMN_SPACE;
 		for (GLElement col : this) {
 			ARankColumnModel model = col.getLayoutDataAs(ARankColumnModel.class, null);
@@ -286,12 +300,7 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 			else
 				x += model.getWidth() + RenderStyle.COLUMN_SPACE;
 		}
-		Vec2f old = getLayoutDataAs(Vec2f.class, new Vec2f(0, 0));
-		if (old.x() == x)
-			return;
-		old.setX(x);
-		setLayoutData(old);
-		relayoutParent();
+		return x + RenderStyle.SCROLLBAR_WIDTH;
 	}
 
 	private void init(ARankColumnModel col) {
@@ -394,13 +403,16 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 		float offset = 0;
 		float window = 0;
 		float size = 0;
+		boolean needed = false;
 		for (OrderColumnUI child : Iterables.filter(this, OrderColumnUI.class)) {
 			child.layoutingDone();
 			IScrollBar sb = child.getScrollBar();
 			offset = sb.getOffset();
 			window = sb.getWindow();
 			size = sb.getSize();
+			needed = child.needsScrollBar();
 		}
+		this.needsScrollBar = needed;
 		scrollBar.setBounds(offset, window, size);
 	}
 
@@ -413,15 +425,29 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 
 		super.renderImpl(g, w, h);
 
-		g.incZ().incZ();
-		g.move((w - RenderStyle.SCROLLBAR_WIDTH + 1), 0);
-		scrollBar.render(g, RenderStyle.SCROLLBAR_WIDTH, h, this);
-		g.move(-(w - RenderStyle.SCROLLBAR_WIDTH + 1), 0);
-		g.decZ().decZ();
+		if (needsScrollBar) {
+			g.incZ(1);
+			Rect clippingArea = findClippingArea(w, h);
+			float offset = clippingArea.x() + clippingArea.width() - RenderStyle.SCROLLBAR_WIDTH + 1;
+			g.move(offset, 0);
+			scrollBar.render(g, RenderStyle.SCROLLBAR_WIDTH, h, this);
+			g.move(-offset, 0);
+			g.incZ(-1);
+		}
 
 		g.popResourceLocator();
 
 		isSelectedRowChanged = false;
+	}
+
+	private Rect findClippingArea(float w, float h) {
+		IGLElementParent act = getParent();
+		while (act != null && !(act instanceof ScrollingDecorator)) {
+			act = act.getParent();
+		}
+		if (act == null)
+			return new Rect(0, 0, w, h);
+		return ((ScrollingDecorator) act).getClipingArea();
 	}
 
 	@Override
@@ -444,13 +470,17 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 
 		super.renderPickImpl(g, w, h);
 
-		g.incZ().incZ();
-		g.pushName(scrollBarPickingId);
-		g.move((w - RenderStyle.SCROLLBAR_WIDTH + 1), 0);
-		scrollBar.renderPick(g, RenderStyle.SCROLLBAR_WIDTH, h, this);
-		g.move(-(w - RenderStyle.SCROLLBAR_WIDTH + 1), 0);
-		g.popName();
-		g.decZ().decZ();
+		if (needsScrollBar) {
+			g.incZ(1);
+			g.pushName(scrollBarPickingId);
+			Rect clippingArea = findClippingArea(w, h);
+			float offset = clippingArea.x() + clippingArea.width() - RenderStyle.SCROLLBAR_WIDTH + 1;
+			g.move(offset, 0);
+			scrollBar.renderPick(g, RenderStyle.SCROLLBAR_WIDTH, h, this);
+			g.move(-offset, 0);
+			g.popName();
+			g.incZ(-1);
+		}
 	}
 
 	private void renderBackgroundLines(GLGraphics g, float w, boolean pick) {
@@ -525,7 +555,7 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 			if (pick) {
 				if (selected != rankedRow) { // the selected row is not pickable again
 					g.pushName(pickingIDs[i]);
-					g.color(Color.red).fillRect(x, bounds.y(), w, bounds.w());
+					g.color(Color.LIGHT_GRAY).fillRect(x, bounds.y(), w, bounds.w());
 					g.popName();
 				}
 			} else if (rankedRow == selected) {

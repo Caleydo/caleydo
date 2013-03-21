@@ -56,9 +56,16 @@ public class GLGraphics {
 
 	private GLU glu = null; // lazy
 
+	/**
+	 * simple statistics
+	 */
 	private GLGraphicsStats stats = new GLGraphicsStats();
 
+	/**
+	 * delta time of the current pass
+	 */
 	private final int deltaTimeMs;
+
 
 	public GLGraphics(GL2 gl, ITextRenderer text, TextureManager textures, IResourceLocator loader,
 			boolean originInTopLeft, int deltaTimeMs) {

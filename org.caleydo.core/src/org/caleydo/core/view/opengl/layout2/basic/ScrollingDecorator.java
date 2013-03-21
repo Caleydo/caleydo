@@ -30,6 +30,7 @@ import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.IGLElementParent;
 import org.caleydo.core.view.opengl.layout2.basic.IScrollBar.IScrollBarCallback;
+import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 
 /**
@@ -230,7 +231,21 @@ public final class ScrollingDecorator extends GLElement implements IGLElementPar
 		if (doVer || doHor) {
 			gl.glPopAttrib();
 		}
+	}
 
+	/**
+	 * @return the applied clipping area
+	 */
+	public Rect getClipingArea() {
+		Vec2f loc = content.getLocation();
+		Vec2f size = getSize();
+
+		Rect r = new Rect();
+		r.x(-loc.x());
+		r.y(-loc.y());
+		r.width(needVer() ? size.x() - scrollBarWidth : size.x());
+		r.height(needHor() ? size.y() - scrollBarWidth : size.y());
+		return r;
 	}
 
 	protected boolean needHor() {

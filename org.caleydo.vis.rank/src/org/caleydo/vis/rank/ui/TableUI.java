@@ -62,7 +62,7 @@ public class TableUI extends GLElementContainer implements IGLLayout {
 		Vec2f old = getLayoutDataAs(Vec2f.class, new Vec2f(0, 0));
 		Vec2f new_ = body.getLayoutDataAs(Vec2f.class, new Vec2f(0, 0));
 		if (!old.equals(new_)) {
-			setLayoutData(new_);
+			setLayoutData(new_.copy());
 			relayoutParent();
 		}
 	}
