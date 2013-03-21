@@ -100,6 +100,7 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 	private List<List<PathwayVertexRep>> selectedPathSegments = new ArrayList<>();
 	private ESampleMappingMode sampleMappingMode;
 	private TablePerspective mappedPerspective;
+	protected final boolean showThumbnail;
 
 	/**
 	 * Context menu items that shall be displayed when right-clicking on a path node.
@@ -121,60 +122,46 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 	private BlockingQueue<Pair<AEventListener<? extends IListenerOwner>, AEvent>> queue = new LinkedBlockingQueue<Pair<AEventListener<? extends IListenerOwner>, AEvent>>();
 
 	public ContextualPathsRenderer(AGLView view, String eventSpace, PathwayGraph pathway,
-			List<TablePerspective> tablePerspectives) {
+			List<TablePerspective> tablePerspectives, boolean showThumbnail) {
+		this.showThumbnail = showThumbnail;
 		this.view = view;
 		this.eventSpace = eventSpace;
 		this.pathway = pathway;
 		this.tablePerspectives = tablePerspectives;
-
-		PathwayTextureCreator creator = new PathwayTextureCreator();
-		pathwayView = (GLPathway) creator.createRemoteView(view, tablePerspectives, eventSpace);
-
 		layout = new LayoutManager(new ViewFrustum(), view.getPixelGLConverter());
 		layout.setUseDisplayLists(true);
 		Column baseColumn = new Column();
 		pathRow = new Row();
-		ElementLayout pathwayTextureLayout = new ElementLayout();
-		pathwayTextureLayout.setPixelSizeY(pathwayView.getMinPixelHeight());
-
-		// // This should probably be a renderer in the final version.
-		// pathwayView = (GLPathway) GeneralManager
-		// .get()
-		// .getViewManager()
-		// .createGLView(GLPathway.class, view.getParentGLCanvas(), view.getParentComposite(),
-		// new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1, -1, 1));
-		//
-		// if (tablePerspectives.size() > 0) {
-		// TablePerspective tablePerspective = tablePerspectives.get(0);
-		// if (!(tablePerspective instanceof PathwayTablePerspective)) {
-		// throw new IllegalArgumentException(
-		// "The provided table perspective must be of type PathwayTablePerspective.");
-		// }
-		//
-		// pathwayView.setRemoteRenderingGLView((IGLRemoteRenderingView) view);
-		// pathwayView.setDataDomain(tablePerspective.getDataDomain());
-		// pathwayView.setTablePerspective(tablePerspective);
-		// }
-		// pathwayView.setPathwayPathEventSpace(eventSpace);
-		// pathwayView.set
-		// pathwayView.initialize();
-
-		ViewLayoutRenderer viewRenderer = new ViewLayoutRenderer(pathwayView);
 		baseColumn.setBottomUp(false);
-		baseColumn.add(pathwayTextureLayout);
+
+		if (showThumbnail) {
+			PathwayTextureCreator creator = new PathwayTextureCreator();
+			pathwayView = (GLPathway) creator.createRemoteView(view, tablePerspectives, eventSpace);
+
+			ElementLayout pathwayTextureLayout = new ElementLayout();
+			pathwayTextureLayout.setPixelSizeY(pathwayView.getMinPixelHeight());
+
+			ViewLayoutRenderer viewRenderer = new ViewLayoutRenderer(pathwayView);
+			baseColumn.add(pathwayTextureLayout);
+			pathwayTextureLayout.setRenderer(viewRenderer);
+		}
 		baseColumn.add(pathRow);
-		pathwayTextureLayout.setRenderer(viewRenderer);
 		layout.setBaseElementLayout(baseColumn);
 
 	}
 
 	@Override
 	protected void renderContent(GL2 gl) {
-		if (!pathwayViewInitialized) {
+		if (!pathwayViewInitialized && showThumbnail) {
 			pathwayView.initRemote(gl, view, view.getGLMouseListener());
 			pathwayViewInitialized = true;
 		}
 		layout.render(gl);
+
+		// gl.glBegin(GL.GL_LINES);
+		// gl.glVertex3f(0, 0, 0);
+		// gl.glVertex3f(x, y, 0);
+		// gl.glEnd();
 	}
 
 	@Override
@@ -563,7 +550,7 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 				maxMinPixelHeight = minPixelHeight;
 			}
 		}
-		return pathwayView.getMinPixelHeight() + maxMinPixelHeight;
+		return (showThumbnail ? (pathwayView.getMinPixelHeight()) : 1) + maxMinPixelHeight + 1;
 	}
 
 	@Override
@@ -572,7 +559,9 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 		for (APathwayPathRenderer renderer : renderers.keySet()) {
 			totalWidth += renderer.getMinWidthPixels();
 		}
-		return Math.max(pathwayView.getMinPixelWidth(), totalWidth);
+		// 2 * (65 + 50)
+		return Math.max(Math.max(showThumbnail ? (pathwayView.getMinPixelWidth()) : 2 * (65 + 50), 2 * (65 + 50)),
+				totalWidth);
 	}
 
 	protected class VertexRepComparator implements Comparator<PathwayVertexRep> {

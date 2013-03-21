@@ -28,14 +28,17 @@ import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
 
 /**
- * @author Christian
+ * Creator for {@link ContextualPathsRenderer}.
+ *
+ * @author Christian Partl
  *
  */
-public class ContextualPathsCreator implements IRemoteRendererCreator {
+public class ThumbnailedContextualPathsCreator implements IRemoteRendererCreator {
 
 	@Override
 	public ALayoutRenderer createRemoteView(AGLView remoteRenderingView, List<TablePerspective> tablePerspectives,
 			String embeddingEventSpace) {
+
 		if (tablePerspectives.size() > 0) {
 			TablePerspective tablePerspective = tablePerspectives.get(0);
 			if (!(tablePerspective instanceof PathwayTablePerspective)) {
@@ -43,7 +46,7 @@ public class ContextualPathsCreator implements IRemoteRendererCreator {
 						"The provided table perspective must be of type PathwayTablePerspective.");
 			}
 			ContextualPathsRenderer renderer = new ContextualPathsRenderer(remoteRenderingView, embeddingEventSpace,
-					((PathwayTablePerspective) tablePerspective).getPathway(), tablePerspectives, false);
+					((PathwayTablePerspective) tablePerspective).getPathway(), tablePerspectives, true);
 			renderer.init();
 
 			return renderer;
