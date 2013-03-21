@@ -31,11 +31,11 @@ public class MutationStatusRowContentRenderer extends ACategoricalRowContentRend
 	public void init() {
 		if (rowID == null)
 			return;
-
 		VirtualArray dimensionVirtualArray = new VirtualArray(resolvedRowIDType);
-		dimensionVirtualArray.append(rowID);
+		dimensionVirtualArray.append(resolvedRowID);
 		histogram = TablePerspectiveStatistics.calculateHistogram(dataDomain.getTable(),
 				columnPerspective.getVirtualArray(), dimensionVirtualArray, 2);
+
 
 		registerPickingListener();
 
@@ -50,8 +50,8 @@ public class MutationStatusRowContentRenderer extends ACategoricalRowContentRend
 		for (Integer columnID : columnPerspective.getVirtualArray()) {
 
 			float value;
-			if (rowID != null) {
-				value = dataDomain.getNormalizedValue(resolvedRowIDType, rowID, resolvedColumnIDType, columnID);
+			if (resolvedRowID != null) {
+				value = dataDomain.getNormalizedValue(resolvedRowIDType, resolvedRowID, resolvedColumnIDType, columnID);
 
 				List<SelectionType> experimentSelectionTypes = parent.sampleSelectionManager.getSelectionTypes(
 						columnIDType, columnID);

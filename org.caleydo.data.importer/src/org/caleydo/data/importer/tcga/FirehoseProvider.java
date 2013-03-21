@@ -325,4 +325,11 @@ public final class FirehoseProvider {
 		return null;
 	}
 
+	public static void main(String[] args) {
+		File file = new File(
+				"/home/alexsb/Dropbox/Caleydo/data/ccle/CCLE_hybrid_capture1650_hg19_NoCommonSNPs_CDS_2012.05.07.maf");
+		file = parseMAF(file);
+
+	}
+
 }

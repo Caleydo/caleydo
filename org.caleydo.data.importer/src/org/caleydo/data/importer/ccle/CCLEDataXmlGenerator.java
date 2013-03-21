@@ -44,6 +44,8 @@ public class CCLEDataXmlGenerator extends DataSetDescriptionSerializer {
 
 	public static final String COPY_NUMBER = DROPBOX_CCLE_FOLDER + "CCLE_copynumber_byGene_2012-09-29.txt";
 
+	public static final String MUTATION = DROPBOX_CCLE_FOLDER + "CCLE_mutation.txt";
+
 	public static final String COMPOUND_CELL_DATA = DROPBOX_CCLE_FOLDER
 			+ "CCLE_NP24.2009_Drug_data_2012.02.20_changed_delimiter.csv";
 	// public static final String CLINICAL = DROPBOX_CCLE_FOLDER + "clinical/clinical_patient_public_GBM.txt";
@@ -88,7 +90,7 @@ public class CCLEDataXmlGenerator extends DataSetDescriptionSerializer {
 		projectDescription = new ProjectDescription();
 
 		projectDescription.add(setUpMRNAData());
-		// projectDescription.add(setUpMutationData());
+		projectDescription.add(setUpMutationData());
 		projectDescription.add(setUpCopyNumberData());
 
 		projectDescription.add(setUpCompoundCellData());
@@ -120,27 +122,36 @@ public class CCLEDataXmlGenerator extends DataSetDescriptionSerializer {
 		mrnaData.setColumnIDSpecification(sampleIDSpecification);
 		mrnaData.setColumnOfRowIds(1);
 
-		// mrnaData.addColumnGroupingSpecification(sampleGrouping);
-
-		// DataProcessingDescription dataProcessingDescription = new DataProcessingDescription();
-		// ClusterConfiguration clusterConfiguration = new ClusterConfiguration();
-		// clusterConfiguration.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
-		// KMeansClusterConfiguration kMeansAlgo = new KMeansClusterConfiguration();
-		// kMeansAlgo.setNumberOfClusters(5);
-		// clusterConfiguration.setClusterAlgorithmConfiguration(kMeansAlgo);
-		// dataProcessingDescription.addRowClusterConfiguration(clusterConfiguration);
-		//
-		// clusterConfiguration = new ClusterConfiguration();
-		// clusterConfiguration.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
-		// kMeansAlgo = new KMeansClusterConfiguration();
-		// kMeansAlgo.setNumberOfClusters(5);
-		// clusterConfiguration.setClusterAlgorithmConfiguration(kMeansAlgo);
-
-		// dataProcessingDescription.addColumnClusterConfiguration(clusterConfiguration);
-		//
-		// mrnaData.setDataProcessingDescription(dataProcessingDescription);
-
 		return mrnaData;
+	}
+
+	private DataSetDescription setUpMutationData() {
+		DataSetDescription mutationData = new DataSetDescription(ECreateDefaultProperties.NUMERICAL);
+		mutationData.setDataSetName("mutation status");
+
+		mutationData.setDataSourcePath(MUTATION);
+		mutationData.setNumberOfHeaderLines(1);
+
+		ParsingRule parsingRule = new ParsingRule();
+		parsingRule.setFromColumn(1);
+		parsingRule.setParseUntilEnd(true);
+		parsingRule.setColumnDescripton(new ColumnDescription());
+		mutationData.addParsingRule(parsingRule);
+		mutationData.setTransposeMatrix(true);
+
+		// mrnaData.getDataDescription().getNumericalProperties().setDataCenter(0d);
+
+		IDSpecification geneIDSpecification = new IDSpecification();
+		geneIDSpecification.setIDTypeGene(true);
+		geneIDSpecification.setIdType("GENE_SYMBOL");
+		mutationData.setRowIDSpecification(geneIDSpecification);
+		mutationData.setRowOfColumnIDs(0);
+		mutationData.setColumnIDSpecification(sampleIDSpecification);
+		mutationData.setColumnOfRowIds(0);
+
+
+
+		return mutationData;
 	}
 
 	private DataSetDescription setUpCopyNumberData() {

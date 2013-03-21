@@ -662,24 +662,23 @@ public class MappedDataRenderer {
 						resolvedRowIDType, resolvedRowID, dataDomain, columnPerspective, parentView, this, group,
 						isHighlightLayout));
 			} else if (dataDomain.getLabel().toLowerCase().contains("mutation")) {
-				tablePerspectiveLayout.setRenderer(new MutationStatusMatrixRowContentRenderer(rowIDType, rowID,
+				// tablePerspectiveLayout.setRenderer(new MutationStatusMatrixRowContentRenderer(rowIDType, rowID,
+				// resolvedRowIDType, resolvedRowID, dataDomain, columnPerspective, parentView, this, group,
+				// isHighlightLayout));
+				//
+				// tablePerspectiveLayout.setDynamicSizeUnitsX((int)
+				// Math.ceil(columnPerspective.getVirtualArray().size()
+				// * 2.0f / MutationStatusMatrixRowContentRenderer.NUM_ROWS));
+				// if (topCaptionLayout != null && bottomCaptionLayout != null) {
+				// bottomCaptionLayout.setDynamicSizeUnitsX((int) Math.ceil(columnPerspective.getVirtualArray().size()
+				// * 2.0f / MutationStatusMatrixRowContentRenderer.NUM_ROWS));
+				// topCaptionLayout.setDynamicSizeUnitsX((int) Math.ceil(columnPerspective.getVirtualArray().size()
+				// * 2.0f / MutationStatusMatrixRowContentRenderer.NUM_ROWS));
+				// }
+
+				tablePerspectiveLayout.setRenderer(new MutationStatusRowContentRenderer(rowIDType, rowID,
 						resolvedRowIDType, resolvedRowID, dataDomain, columnPerspective, parentView, this, group,
 						isHighlightLayout));
-
-				tablePerspectiveLayout.setDynamicSizeUnitsX((int) Math.ceil(columnPerspective.getVirtualArray().size()
-						* 2.0f / MutationStatusMatrixRowContentRenderer.NUM_ROWS));
-				if (topCaptionLayout != null && bottomCaptionLayout != null) {
-					bottomCaptionLayout.setDynamicSizeUnitsX((int) Math.ceil(columnPerspective.getVirtualArray().size()
-							* 2.0f / MutationStatusMatrixRowContentRenderer.NUM_ROWS));
-					topCaptionLayout.setDynamicSizeUnitsX((int) Math.ceil(columnPerspective.getVirtualArray().size()
-							* 2.0f / MutationStatusMatrixRowContentRenderer.NUM_ROWS));
-				}
-
-				// tablePerspectiveLayout
-				// .setRenderer(new MutationStatusRowContentRenderer(
-				// rowID, rowID, dataDomain, tablePerspective,
-				// columnPerspective, parentView, this, group,
-				// isHighlightLayout));
 			} else {
 				tablePerspectiveLayout.setRenderer(new ContinuousContentRenderer(rowIDType, rowID, resolvedRowIDType,
 						resolvedRowID, dataDomain, columnPerspective, parentView, this, group, isHighlightLayout));
