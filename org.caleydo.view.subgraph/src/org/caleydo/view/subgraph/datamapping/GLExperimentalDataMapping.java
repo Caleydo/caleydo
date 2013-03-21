@@ -167,23 +167,32 @@ public class GLExperimentalDataMapping extends AnimatedGLElementContainer implem
 
 		RadioController radio = new RadioController(this);
 		Perspective defaultPerspective = null;
+		PerspectiveElement defaultElement = null;
 		for (String recordPerspectiveIDs : mRNAdd.getRecordPerspectiveIDs()) {
 			Perspective recordPerspective = mRNAdd.getTable().getRecordPerspective(recordPerspectiveIDs);
 			if (recordPerspective.getLabel().contains("ignore"))
 				continue;
-			if (recordPerspective.getVirtualArray().getGroupList().size() == 1) {
-				defaultPerspective = recordPerspective;
-			}
+
 			PerspectiveElement perspective = new PerspectiveElement(recordPerspective, dmState);
 			stratElements.add(perspective);
 			radio.add(perspective);
+
+			if (recordPerspective.getVirtualArray().getGroupList().size() == 1) {
+				defaultPerspective = recordPerspective;
+				defaultElement = perspective;
+			}
+
 		}
 
 		if (defaultPerspective == null) {
 			defaultPerspective = mRNAdd.getTable().getDefaultRecordPerspective();
+			// todo find default element
 		}
 		// Set default data
 		dmState.setPerspective(defaultPerspective);
+		if (defaultElement != null) {
+			defaultElement.setSelected(true);
+		}
 		// dmState.addDataDomain(mRNAdd);
 	}
 
