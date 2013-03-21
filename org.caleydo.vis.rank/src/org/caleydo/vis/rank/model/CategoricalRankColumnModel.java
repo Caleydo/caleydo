@@ -92,6 +92,18 @@ public class CategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<CATEGOR
 		return new CategoricalRankColumnModel<>(this);
 	}
 
+	public Map<CATEGORY_TYPE, String> getMetaData() {
+		return metaData;
+	}
+
+	@Override
+	public String getValue(IRow row) {
+		CATEGORY_TYPE value = getCatValue(row);
+		if (value == null)
+			return "";
+		return metaData.get(value);
+	}
+
 	@Override
 	public GLElement createSummary(boolean interactive) {
 		return new MyElement(interactive);
@@ -253,7 +265,7 @@ public class CategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<CATEGOR
 		}
 
 		@Override
-		protected String getTooltip() {
+		public String getTooltip() {
 			CATEGORY_TYPE value = getCatValue(getLayoutDataAs(IRow.class, null));
 			if (value == null)
 				return null;

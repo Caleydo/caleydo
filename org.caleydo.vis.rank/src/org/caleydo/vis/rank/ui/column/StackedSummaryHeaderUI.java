@@ -21,13 +21,18 @@ package org.caleydo.vis.rank.ui.column;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.List;
 
-import org.caleydo.core.view.opengl.layout2.GLElementContainer;
+import org.caleydo.core.event.ADirectedEvent;
+import org.caleydo.core.event.EventListenerManager.ListenTo;
+import org.caleydo.core.view.contextmenu.AContextMenuItem;
+import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
+import org.caleydo.core.view.contextmenu.item.SeparatorMenuItem;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton.EButtonMode;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton.ISelectionCallback;
-import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.vis.rank.config.IRankTableUIConfig;
+import org.caleydo.vis.rank.internal.ui.ButtonBar;
 import org.caleydo.vis.rank.model.StackedRankColumnModel;
 import org.caleydo.vis.rank.ui.RenderStyle;
 
@@ -49,17 +54,14 @@ public class StackedSummaryHeaderUI extends AColumnHeaderUI {
 	}
 
 	@Override
-	protected GLElementContainer createButtons() {
-		GLElementContainer buttons = super.createButtons();
+	protected ButtonBar createButtons() {
+		ButtonBar buttons = super.createButtons();
 
 		{
 			final StackedRankColumnModel m = (StackedRankColumnModel) model;
 			final GLButton b = new GLButton(EButtonMode.CHECKBOX);
 			b.setSize(RenderStyle.BUTTON_WIDTH, -1);
-			b.setRenderer(GLRenderers.fillImage(RenderStyle.ICON_ALIGN_CLASSIC));
-			b.setSelectedRenderer(GLRenderers.fillImage(RenderStyle.ICON_ALIGN_STACKED));
 			b.setSelected(m.isAlignAll());
-			b.setTooltip("Toggle classic multi-col score bar table and stacked one");
 			final ISelectionCallback callback = new ISelectionCallback() {
 				@Override
 				public void onSelectionChanged(GLButton button, boolean selected) {
@@ -76,8 +78,33 @@ public class StackedSummaryHeaderUI extends AColumnHeaderUI {
 				}
 			};
 			m.addPropertyChangeListener(StackedRankColumnModel.PROP_ALIGNMENT, onAlignmentChange);
-			buttons.add(0,b);
+			buttons.addButton(0, b, "Toggle classic multi-col score bar table and stacked one",
+					RenderStyle.ICON_ALIGN_CLASSIC, RenderStyle.ICON_ALIGN_STACKED);
 		}
 		return buttons;
 	}
+
+	@Override
+	protected void showContextMenu(List<AContextMenuItem> items) {
+		items.add(SeparatorMenuItem.INSTANCE);
+		GenericContextMenuItem editDistributions = new GenericContextMenuItem("Edit Distributions",
+				new OpenEditDistributionsEvent().to(this));
+		items.add(editDistributions);
+		super.showContextMenu(items);
+	}
+
+	@ListenTo(sendToMe = true)
+	private void onEditDistributions(OpenEditDistributionsEvent event) {
+		EditDistributionsDialog.show((StackedRankColumnModel) this.model, getParent());
+	}
+
+	public static class OpenEditDistributionsEvent extends ADirectedEvent {
+
+		@Override
+		public boolean checkIntegrity() {
+			return true;
+		}
+
+	}
 }
+

@@ -91,6 +91,13 @@ public class GLButton extends AGLButton {
 	}
 
 	/**
+	 * @return the selectedRenderer, see {@link #selectedRenderer}
+	 */
+	public IGLRenderer getSelectedRenderer() {
+		return selectedRenderer;
+	}
+
+	/**
 	 * @param selected
 	 *            setter, see {@link selected}
 	 */
@@ -183,9 +190,9 @@ public class GLButton extends AGLButton {
 
 	/**
 	 * mode of this button
-	 * 
+	 *
 	 * @author Samuel Gratzl
-	 * 
+	 *
 	 */
 	public enum EButtonMode {
 		BUTTON, CHECKBOX

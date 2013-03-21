@@ -33,6 +33,8 @@ import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.vis.rank.data.AFloatFunction;
 import org.caleydo.vis.rank.data.FloatInferrers;
+import org.caleydo.vis.rank.data.IFloatInferrer;
+import org.caleydo.vis.rank.data.IFloatSetterFunction;
 import org.caleydo.vis.rank.model.FloatRankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.RankTableModel;
@@ -54,13 +56,13 @@ public class Top100Under50Year {
 	public static final int COL_internationalMix = 5;
 	public static final int COL_overall = 6;
 
-	private final float ranking;
-	private final float teaching;
-	private final float research;
-	private final float citations;
-	private final float incomeFromIndustry;
-	private final float internationalMix;
-	private final float overall;
+	private float ranking;
+	private float teaching;
+	private float research;
+	private float citations;
+	private float incomeFromIndustry;
+	private float internationalMix;
+	private float overall;
 
 	// 100 Under 50 rank World University Rankings 2011-2012 position Institution Lat, long Country Year founded
 	// Teaching Research Citations Income from Industry International mix Overall score
@@ -96,11 +98,37 @@ public class Top100Under50Year {
 		return 0;
 	}
 
+	public void set(int index, float value) {
+		switch (index) {
+		case COL_ranking:
+			ranking = value;
+			break;
+		case COL_citations:
+			citations = value;
+			break;
+		case COL_incomeFromIndustry:
+			incomeFromIndustry = value;
+			break;
+		case COL_internationalMix:
+			internationalMix = value;
+			break;
+		case COL_overall:
+			overall = value;
+			break;
+		case COL_research:
+			research = value;
+			break;
+		case COL_teaching:
+			teaching = value;
+			break;
+		}
+	}
+
 	/**
 	 * @param table
 	 */
 	public static StackedRankColumnModel addYear(RankTableModel table, String title,
-			final Function<IRow, Top100Under50Year> map) {
+			final Function<IRow, Top100Under50Year> map, IFloatInferrer inf) {
 		final StackedRankColumnModel stacked = new StackedRankColumnModel();
 		stacked.setTitle(title);
 		table.add(stacked);
@@ -109,11 +137,11 @@ public class Top100Under50Year {
 		// Teaching: the learning environment (30 per cent)
 		// International outlook: people and research (7.5 per cent)
 		// Industry income: innovation (2.5 per cent).
-		stacked.add(col(map, COL_research, "Research", "#FC9272", "#FEE0D2"));
-		stacked.add(col(map, COL_citations, "Citations", "#9ECAE1", "#DEEBF7"));
-		stacked.add(col(map, COL_teaching, "Teaching", "#A1D99B", "#E5F5E0"));
-		stacked.add(col(map, COL_internationalMix, "International outlook", "#C994C7", "#E7E1EF"));
-		stacked.add(col(map, COL_incomeFromIndustry, "Industry income", "#FDBB84", "#FEE8C8"));
+		stacked.add(col(map, COL_research, "Research", "#FC9272", "#FEE0D2", inf));
+		stacked.add(col(map, COL_citations, "Citations", "#9ECAE1", "#DEEBF7", inf));
+		stacked.add(col(map, COL_teaching, "Teaching", "#A1D99B", "#E5F5E0", inf));
+		stacked.add(col(map, COL_internationalMix, "International outlook", "#C994C7", "#E7E1EF", inf));
+		stacked.add(col(map, COL_incomeFromIndustry, "Industry income", "#FDBB84", "#FEE8C8", inf));
 
 		stacked.setDistributions(new float[] { 30, 30, 30, 7.5f, 2.5f });
 		stacked.setWidth(300);
@@ -122,13 +150,14 @@ public class Top100Under50Year {
 	}
 
 	public static void addOverallYear(RankTableModel table, String title, Function<IRow, Top100Under50Year> map) {
-		table.add(col(map, COL_overall, title, "#DFC27D", "#F6E8C3"));
+		table.add(col(map, COL_overall, title, "#DFC27D", "#F6E8C3", FloatInferrers.MEDIAN));
 	}
 
 	private static FloatRankColumnModel col(Function<IRow, Top100Under50Year> year, int col, String text,
-			String color, String bgColor) {
+ String color,
+			String bgColor, IFloatInferrer inf) {
 		return new FloatRankColumnModel(new ValueGetter(year, col), GLRenderers.drawText(text, VAlign.CENTER),
-				Color.decode(color), Color.decode(bgColor), percentage(), FloatInferrers.MEDIAN);
+				Color.decode(color), Color.decode(bgColor), percentage(), inf);
 	}
 
 	protected static PiecewiseMapping percentage() {
@@ -165,7 +194,7 @@ public class Top100Under50Year {
 		return data;
 	}
 
-	static class ValueGetter extends AFloatFunction<IRow> {
+	static class ValueGetter extends AFloatFunction<IRow> implements IFloatSetterFunction<IRow> {
 		private final int subindex;
 		private final Function<IRow, Top100Under50Year> year;
 
@@ -180,6 +209,14 @@ public class Top100Under50Year {
 			if (y == null)
 				return Float.NaN;
 			return y.get(subindex);
+		}
+
+		@Override
+		public void set(IRow in, float value) {
+			Top100Under50Year y = year.apply(in);
+			if (y == null)
+				return;
+			y.set(subindex, value);
 		}
 	}
 

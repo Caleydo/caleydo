@@ -19,12 +19,16 @@
  *******************************************************************************/
 package org.caleydo.core.view.contextmenu;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.manager.GeneralManager;
+import org.eclipse.swt.graphics.Device;
+import org.eclipse.swt.graphics.Image;
 
 /**
  * Abstract base class for items in the context menu. A item must be supplied with a string to display its function in
@@ -49,6 +53,11 @@ public abstract class AContextMenuItem {
 	 * state of an advanced context menu type
 	 */
 	private boolean state;
+
+	/**
+	 * an optional input stream to a image, which should be shown
+	 */
+	private InputStream imageInputStream;
 
 	public void setLabel(String label) {
 		this.label = label;
@@ -131,5 +140,24 @@ public abstract class AContextMenuItem {
 
 	public enum EContextMenuType {
 		NORMAL, RADIO, CHECK
+	}
+
+	/**
+	 * @param imageInputStream
+	 *            setter, see {@link imageInputStream}
+	 */
+	public void setImageInputStream(InputStream imageInputStream) {
+		this.imageInputStream = imageInputStream;
+	}
+
+	public Image getImage(Device device) {
+		if (imageInputStream == null)
+			return null;
+		try (InputStream in = imageInputStream) {
+			return new Image(device, in);
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 }

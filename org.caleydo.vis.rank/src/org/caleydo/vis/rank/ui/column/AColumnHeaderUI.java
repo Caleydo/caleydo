@@ -30,9 +30,9 @@ import java.util.Objects;
 
 import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
-import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.IMouseLayer;
@@ -49,6 +49,8 @@ import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.layout2.renderer.RoundedRectRenderer;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
+import org.caleydo.data.loader.ResourceLocators;
+import org.caleydo.data.loader.ResourceLocators.IResourceLocator;
 import org.caleydo.vis.rank.config.IRankTableConfig;
 import org.caleydo.vis.rank.config.IRankTableUIConfig;
 import org.caleydo.vis.rank.internal.ui.ButtonBar;
@@ -66,6 +68,8 @@ import org.caleydo.vis.rank.model.mixin.ISnapshotableColumnMixin;
 import org.caleydo.vis.rank.ui.IColumnRenderInfo;
 import org.caleydo.vis.rank.ui.RenderStyle;
 import org.eclipse.swt.SWT;
+
+import com.google.common.collect.Iterables;
 
 /**
  * @author Samuel Gratzl
@@ -209,16 +213,28 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 		this.isCollapsed = isCollapsed;
 		if (!config.isInteractive())
 			return;
+		final GLElement buttons = this.get(BUTTONS);
+		GLButton collapseButton = findCollapseButton((ButtonBar) buttons);
+		if (collapseButton != null)
+			collapseButton.setSelected(isCollapsed);
 		if (isCollapsed) {
 			this.get(DRAG_WEIGHT).setVisibility(EVisibility.HIDDEN);
-			this.get(BUTTONS).setVisibility(EVisibility.HIDDEN);
+			buttons.setVisibility(EVisibility.HIDDEN);
 			this.get(UNCOLLAPSE).setVisibility(EVisibility.PICKABLE);
 		} else {
 			this.get(DRAG_WEIGHT).setVisibility(config.canChangeWeights() ? EVisibility.PICKABLE : EVisibility.HIDDEN);
-			this.get(BUTTONS).setVisibility(EVisibility.VISIBLE);
+			buttons.setVisibility(EVisibility.VISIBLE);
 			this.get(UNCOLLAPSE).setVisibility(EVisibility.HIDDEN);
 		}
 		repaintAll();
+	}
+
+	private GLButton findCollapseButton(ButtonBar buttons) {
+		for (GLButton b : Iterables.filter(buttons, GLButton.class)) {
+			if (b.getTooltip().startsWith("Toggle Collapse"))
+				return b;
+		}
+		return null;
 	}
 
 	@Override
@@ -276,17 +292,14 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 
 
 
-	protected GLElementContainer createButtons() {
+	protected ButtonBar createButtons() {
 		ButtonBar buttons = new ButtonBar();
 		buttons.setzDelta(.5f);
 
 		if (model instanceof IFilterColumnMixin) {
 			final IFilterColumnMixin m = (IFilterColumnMixin) model;
 			final GLButton b = new GLButton();
-			b.setRenderer(GLRenderers.fillImage(RenderStyle.ICON_FILTER_DISABLED));
-			b.setSelectedRenderer(GLRenderers.fillImage(RenderStyle.ICON_FILTER));
 			b.setSelected(m.isFiltered());
-			b.setTooltip("Edit the filter of this column");
 			final ISelectionCallback callback = new ISelectionCallback() {
 				@Override
 				public void onSelectionChanged(GLButton button, boolean selected) {
@@ -303,65 +316,57 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 				}
 			};
 			model.addPropertyChangeListener(IFilterColumnMixin.PROP_FILTER, filterChangedListener);
-			buttons.addButton(b);
+			buttons.addButton(b, "Edit the filter of this column", RenderStyle.ICON_FILTER_DISABLED,
+					RenderStyle.ICON_FILTER);
 		}
 		if (model instanceof ISearchableColumnMixin) {
 			final ISearchableColumnMixin m = (ISearchableColumnMixin) model;
 			GLButton b = new GLButton();
-			b.setRenderer(GLRenderers.fillImage(RenderStyle.ICON_FIND));
-			b.setTooltip("Search for an item");
 			b.setCallback(new ISelectionCallback() {
 				@Override
 				public void onSelectionChanged(GLButton button, boolean selected) {
 					m.openSearchDialog(get(HIST), context);
 				}
 			});
-			buttons.addButton(b);
+			buttons.addButton(b, "Search for an item", RenderStyle.ICON_FIND, RenderStyle.ICON_FIND);
 		}
 		if (model instanceof IMappedColumnMixin) {
 			final IMappedColumnMixin m = (IMappedColumnMixin) model;
 			GLButton b = new GLButton();
-			b.setRenderer(GLRenderers.fillImage(RenderStyle.ICON_MAPPING));
-			b.setTooltip("Edit the mapping of this column");
 			b.setCallback(new ISelectionCallback() {
 				@Override
 				public void onSelectionChanged(GLButton button, boolean selected) {
 					m.editMapping(get(HIST), context);
 				}
 			});
-			buttons.addButton(b);
+			buttons.addButton(b, "Edit the mapping of this column", RenderStyle.ICON_MAPPING, RenderStyle.ICON_MAPPING);
 		}
 		if (model instanceof IExplodeableColumnMixin) {
 			final IExplodeableColumnMixin m = (IExplodeableColumnMixin) model;
 			GLButton b = new GLButton();
-			b.setRenderer(GLRenderers.fillImage(RenderStyle.ICON_EXPLODE));
-			b.setTooltip("Split this combined column in individual ones");
 			b.setCallback(new ISelectionCallback() {
 				@Override
 				public void onSelectionChanged(GLButton button, boolean selected) {
 					m.explode();
 				}
 			});
-			buttons.addButton(b);
+			buttons.addButton(b, "Split this combined column in individual ones", RenderStyle.ICON_EXPLODE,
+					RenderStyle.ICON_EXPLODE);
 		}
 		if (model instanceof IAnnotatedColumnMixin) {
 			final IAnnotatedColumnMixin m = (IAnnotatedColumnMixin) model;
 			GLButton b = new GLButton();
-			b.setRenderer(GLRenderers.fillImage(RenderStyle.ICON_EDIT_ANNOTATION));
-			b.setTooltip("Edit label");
 			b.setCallback(new ISelectionCallback() {
 				@Override
 				public void onSelectionChanged(GLButton button, boolean selected) {
 					m.editAnnotation(get(HIST));
 				}
 			});
-			buttons.addButton(b);
+			buttons.addButton(b, "Edit label", RenderStyle.ICON_EDIT_ANNOTATION, RenderStyle.ICON_EDIT_ANNOTATION);
 		}
 		if (model instanceof ISnapshotableColumnMixin) {
 			final ISnapshotableColumnMixin m = (ISnapshotableColumnMixin) model;
 			final GLButton b = new GLButton();
-			b.setRenderer(GLRenderers.fillImage(RenderStyle.ICON_FREEZE));
-			b.setTooltip("Take a snapshot of the current state");
 			final ISelectionCallback callback = new ISelectionCallback() {
 				@Override
 				public void onSelectionChanged(GLButton button, boolean selected) {
@@ -369,31 +374,30 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 				}
 			};
 			b.setCallback(callback);
-			buttons.addButton(b);
+			buttons.addButton(b, "Take a snapshot of the current state", RenderStyle.ICON_FREEZE,
+					RenderStyle.ICON_FREEZE);
 		}
 		buttons.addSpacer();
 
 		if (model instanceof ICollapseableColumnMixin) {
 			final ICollapseableColumnMixin m = (ICollapseableColumnMixin) model;
 			if (m.isCollapseAble()) {
-				GLButton b = new GLButton();
-				b.setRenderer(GLRenderers.fillImage(RenderStyle.ICON_UNCOLLAPSE));
+				GLButton b = new GLButton(EButtonMode.CHECKBOX);
+				b.setSelected(m.isCollapsed());
 				b.setCallback(new ISelectionCallback() {
 					@Override
 					public void onSelectionChanged(GLButton button, boolean selected) {
-						m.setCollapsed(true);
+						m.setCollapsed(selected);
 					}
 				});
-				b.setTooltip("Toggle Collapse / Expand of this column");
-				buttons.addButton(b);
+				buttons.addButton(b, "Toggle Collapse / Expand of this column", RenderStyle.ICON_UNCOLLAPSE,
+						RenderStyle.ICON_COLLAPSE);
 			}
 		}
 		if (model instanceof ICompressColumnMixin) {
 			final ICompressColumnMixin m = (ICompressColumnMixin) model;
 
 			GLButton b = new GLButton(EButtonMode.CHECKBOX);
-			b.setRenderer(GLRenderers.fillImage(RenderStyle.ICON_COMPRESS));
-			b.setSelectedRenderer(GLRenderers.fillImage(RenderStyle.ICON_UNCOMPRESS));
 			b.setSelected(m.isCompressed());
 			b.setCallback(new ISelectionCallback() {
 				@Override
@@ -401,14 +405,12 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 					m.setCompressed(selected);
 				}
 			});
-			b.setTooltip("Toggle Compress / Unpack of this column");
-			buttons.addButton(b);
+			buttons.addButton(b, "Toggle Compress / Unpack of this column", RenderStyle.ICON_COMPRESS,
+					RenderStyle.ICON_UNCOMPRESS);
 		}
 		if (model instanceof IHideableColumnMixin) {
 			final IHideableColumnMixin m = (IHideableColumnMixin) model;
 			GLButton b = new GLButton();
-			b.setRenderer(GLRenderers.fillImage(RenderStyle.ICON_HIDE));
-			b.setTooltip("Removes this column");
 			b.setCallback(new ISelectionCallback() {
 				@Override
 				public void onSelectionChanged(GLButton button, boolean selected) {
@@ -416,7 +418,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 						m.hide();
 				}
 			});
-			buttons.addButton(b);
+			buttons.addButton(b, "Removes this column", RenderStyle.ICON_HIDE, RenderStyle.ICON_HIDE);
 		}
 		return buttons;
 	}
@@ -548,9 +550,24 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 			if (model instanceof IRankableColumnMixin)
 				((IRankableColumnMixin) model).orderByMe();
 			break;
+		case RIGHT_CLICKED:
+			showContextMenu();
+			break;
 		default:
 			break;
 		}
+	}
+
+	private void showContextMenu() {
+		ButtonBar bb = (ButtonBar) get(BUTTONS);
+		IResourceLocator l = ResourceLocators.chain(ResourceLocators.classLoader(this.getClass().getClassLoader()),
+				ResourceLocators.DATA_CLASSLOADER, ResourceLocators.FILE);
+		List<AContextMenuItem> items = bb.asContextMenu(l);
+		showContextMenu(items);
+	}
+
+	protected void showContextMenu(List<AContextMenuItem> items) {
+		context.showContextMenu(items);
 	}
 
 	protected void onChangeWeight(int dx) {

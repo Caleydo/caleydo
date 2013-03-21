@@ -34,6 +34,7 @@ import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.vis.rank.data.AFloatFunction;
 import org.caleydo.vis.rank.data.FloatInferrers;
+import org.caleydo.vis.rank.data.IFloatSetterFunction;
 import org.caleydo.vis.rank.model.FloatRankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.RankTableModel;
@@ -59,15 +60,15 @@ public class AcademicUniversityYear {
 	public static final int COL_pub = 7;
 	public static final int COL_pcb = 8;
 
-	private final float ranking;
-	private final float national;
-	private final float total;
-	private final float alumini;
-	private final float award;
-	private final float hici;
-	private final float nands;
-	private final float pub;
-	private final float pcb;
+	private float ranking;
+	private float national;
+	private float total;
+	private float alumini;
+	private float award;
+	private float hici;
+	private float nands;
+	private float pub;
+	private float pcb;
 
 	public AcademicUniversityYear(String[] l) {
 		ranking = toFloat(l, 0);
@@ -101,6 +102,30 @@ public class AcademicUniversityYear {
 			return pub;
 		case COL_total:
 			return total;
+		}
+		return 0;
+	}
+
+	public float set(int index, float value) {
+		switch (index) {
+		case COL_ranking:
+			return ranking = value;
+		case COL_alumini:
+			return alumini = value;
+		case COL_award:
+			return award = value;
+		case COL_hici:
+			return hici = value;
+		case COL_nands:
+			return nands = value;
+		case COL_national:
+			return national = value;
+		case COL_pcb:
+			return pcb = value;
+		case COL_pub:
+			return pub = value;
+		case COL_total:
+			return total = value;
 		}
 		return 0;
 	}
@@ -178,7 +203,7 @@ public class AcademicUniversityYear {
 		return data;
 	}
 
-	static class ValueGetter extends AFloatFunction<IRow> {
+	static class ValueGetter extends AFloatFunction<IRow> implements IFloatSetterFunction<IRow> {
 		private final int subindex;
 		private final Function<IRow, AcademicUniversityYear> year;
 
@@ -193,6 +218,14 @@ public class AcademicUniversityYear {
 			if (y == null)
 				return Float.NaN;
 			return y.get(subindex);
+		}
+
+		@Override
+		public void set(IRow in, float value) {
+			AcademicUniversityYear y = year.apply(in);
+			if (y == null)
+				return;
+			y.set(subindex, value);
 		}
 	}
 }

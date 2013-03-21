@@ -33,6 +33,9 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import org.caleydo.core.event.EventListenerManager.ListenTo;
+import org.caleydo.core.view.contextmenu.AContextMenuItem;
+import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
@@ -47,9 +50,11 @@ import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingListenerComposite;
-import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.data.loader.ResourceLocators;
 import org.caleydo.vis.rank.config.IRankTableUIConfig;
+import org.caleydo.vis.rank.internal.event.SetValueEvent;
+import org.caleydo.vis.rank.internal.event.TriggerEditValuesEvent;
+import org.caleydo.vis.rank.internal.ui.EditValuesDialog;
 import org.caleydo.vis.rank.layout.IRowHeightLayout;
 import org.caleydo.vis.rank.layout.IRowLayoutInstance.IRowSetter;
 import org.caleydo.vis.rank.model.ACompositeRankColumnModel;
@@ -61,11 +66,14 @@ import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.ICompressColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IGrabRemainingHorizontalSpace;
+import org.caleydo.vis.rank.model.mixin.ISetableColumnMixin;
 import org.caleydo.vis.rank.ui.column.ACompositeTableColumnUI;
 import org.caleydo.vis.rank.ui.column.ColumnUIs;
 import org.caleydo.vis.rank.ui.column.IColumModelLayout;
 import org.caleydo.vis.rank.ui.column.ITableColumnUI;
 import org.caleydo.vis.rank.ui.column.OrderColumnUI;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 
 import com.google.common.collect.Iterables;
 
@@ -116,6 +124,13 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 	private int scrollBarPickingId = -1;
 	private boolean needsScrollBar;
 
+	private final IPickingListener selectedRowListener = new IPickingListener() {
+		@Override
+		public void pick(Pick pick) {
+			onSelectedRowPick(pick);
+		}
+	};
+
 	public TableBodyUI(final RankTableModel table, IRowHeightLayout rowLayout, IRankTableUIConfig config) {
 		setAnimateByDefault(false);
 		this.table = table;
@@ -131,14 +146,79 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 		selectRowListener.add(new IPickingListener() {
 			@Override
 			public void pick(Pick pick) {
-				if (pick.getPickingMode() == PickingMode.CLICKED) {
-					setSelectedRank(toRelative(pick.getPickedPoint()).x(), pick.getObjectID());
+				switch (pick.getPickingMode()) {
+				case CLICKED:
+					table.setSelectedRow(toRow(pick));
+					break;
+				default:
+					break;
 				}
+			}
+
+			protected IRow toRow(Pick pick) {
+				OrderColumnUI col = getRankerUI(pick);
+				return col.getRanker().get(pick.getObjectID());
+			}
+
+			protected OrderColumnUI getRankerUI(Pick pick) {
+				return getRanker(toRelative(pick.getPickedPoint()).x());
 			}
 		});
 		setLayout(this);
 		this.scrollBar = config.createScrollBar(false);
 		this.scrollBar.setCallback(this);
+	}
+
+	protected void editRow(final OrderColumnUI col, final IRow row) {
+		final Iterator<ARankColumnModel> columns = table.getColumnsOf(col.getRanker());
+		Display.getDefault().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				new EditValuesDialog(new Shell(), row, columns, TableBodyUI.this).open();
+			}
+		});
+	}
+
+	/**
+	 * returns the listener that handles the selected row
+	 *
+	 * @return the selectedRowListener, see {@link #selectedRowListener}
+	 */
+	public IPickingListener getSelectedRowListener() {
+		return selectedRowListener;
+	}
+
+	/**
+	 * @param pick
+	 */
+	protected void onSelectedRowPick(Pick pick) {
+		switch (pick.getPickingMode()) {
+		case DOUBLE_CLICKED:
+			OrderColumnUI col = getRanker(toRelative(pick.getPickedPoint()).x());
+			editRow(col, table.getSelectedRow());
+			break;
+		case RIGHT_CLICKED:
+			List<AContextMenuItem> items = new ArrayList<>(1);
+			OrderColumnUI col2 = getRanker(toRelative(pick.getPickedPoint()).x());
+			items.add(new GenericContextMenuItem("Edit Values", new TriggerEditValuesEvent(col2).to(this)));
+			context.showContextMenu(items);
+			break;
+		default:
+			break;
+		}
+	}
+
+	@ListenTo(sendToMe = true)
+	private void onOpenEditDialog(TriggerEditValuesEvent event) {
+		editRow(event.getRanker(), table.getSelectedRow());
+	}
+
+	@ListenTo(sendToMe = true)
+	private void onEditValueEvent(SetValueEvent event) {
+		ISetableColumnMixin col = event.getCol();
+		String v = event.getValue();
+		col.set(event.getRow(), v);
+		repaintAll();
 	}
 
 	@Override
@@ -149,11 +229,6 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 
 	private OrderColumnUI getDefaultrankerUI() {
 		return (OrderColumnUI) get(0);
-	}
-
-	protected void setSelectedRank(float f, int objectID) {
-		IRow row = getRanker(f).getRanker().get(objectID);
-		table.setSelectedRow(row);
 	}
 
 	private OrderColumnUI getRanker(float f) {

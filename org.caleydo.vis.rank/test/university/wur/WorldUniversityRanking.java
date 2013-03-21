@@ -70,7 +70,7 @@ public class WorldUniversityRanking implements IModelBuilder {
 		WorldUniversityYear.addYear(table, "2010", new YearGetter(2), false);
 		table.add(new OrderColumn());
 		table.add(new RankRankColumnModel());
-		WorldUniversityYear.addYear(table, "2009", new YearGetter(3), false).setCompressed(true);
+		WorldUniversityYear.addYear(table, "2009", new YearGetter(3), false);
 		table.add(new OrderColumn());
 		table.add(new RankRankColumnModel());
 		WorldUniversityYear.addYear(table, "2008", new YearGetter(4), false).setCompressed(true);

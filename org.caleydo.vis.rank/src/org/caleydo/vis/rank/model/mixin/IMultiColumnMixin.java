@@ -20,6 +20,7 @@
 package org.caleydo.vis.rank.model.mixin;
 
 import java.awt.Color;
+import java.util.Arrays;
 
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
@@ -65,6 +66,18 @@ public interface IMultiColumnMixin extends IFloatRankableColumnMixin, Iterable<A
 		public int getRepr() {
 			return repr;
 		}
+
+		@Override
+		public String toString() {
+			StringBuilder builder = new StringBuilder();
+			builder.append("MultiFloat(");
+			builder.append(Arrays.toString(values));
+			builder.append(",");
+			builder.append(repr);
+			builder.append(")");
+			return builder.toString();
+		}
+
 	}
 
 	boolean[] isValueInferreds(IRow row);

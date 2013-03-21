@@ -123,6 +123,11 @@ public class OrderColumn extends ARankColumnModel implements IAnnotatedColumnMix
 	}
 
 	@Override
+	public String getValue(IRow row) {
+		return null;
+	}
+
+	@Override
 	public void editAnnotation(final GLElement summary) {
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override

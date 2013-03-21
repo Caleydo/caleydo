@@ -56,9 +56,9 @@ public class MeasuringUniversityPerformanceData {
 	// 2005_ControlRank
 
 	public static class Entry {
-		public final float value;
-		public final int nationalRank;
-		public final int controlRank;
+		public float value;
+		public int nationalRank;
+		public int controlRank;
 
 		public Entry(String[] l, int offset) {
 			value = toFloat(l, offset++);

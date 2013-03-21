@@ -56,7 +56,7 @@ public class ScoreBarElement extends ValueElement {
 	}
 
 	@Override
-	protected String getTooltip() {
+	public String getTooltip() {
 		final IRow r = getLayoutDataAs(IRow.class, null); // current row
 		float v = model.applyPrimitive(r);
 		if (Float.isNaN(v) || v < 0)

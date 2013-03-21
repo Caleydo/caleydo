@@ -31,6 +31,7 @@ import java.util.List;
 
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.util.function.AFloatList;
 import org.caleydo.core.util.function.IFloatList;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
@@ -214,6 +215,11 @@ public abstract class AMultiRankColumnModel extends ACompositeRankColumnModel im
 	@Override
 	public final Float apply(IRow row) {
 		return applyPrimitive(row);
+	}
+
+	@Override
+	public String getValue(IRow row) {
+		return Formatter.formatNumber(applyPrimitive(row));
 	}
 
 	@Override

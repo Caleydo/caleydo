@@ -64,12 +64,21 @@ public class RankRankColumnModel extends ARankColumnModel implements IGLRenderer
 	}
 
 	@Override
-	public void render(GLGraphics g, float w, float h, GLElement parent) {
+	public String getValue(IRow row) {
 		ColumnRanker ranker = getMyRanker();
-		if (h < 5 || w < 15 || !ranker.hasDefinedRank())
+		if (!ranker.hasDefinedRank())
+			return "";
+		return String.format("%2d.", ranker.getVisualRank(row));
+	}
+
+	@Override
+	public void render(GLGraphics g, float w, float h, GLElement parent) {
+		if (h < 5 || w < 15)
 			return;
 		float hi = Math.min(h, 12);
-		String value = String.format("%2d.", ranker.getVisualRank(parent.getLayoutDataAs(IRow.class, null)));
+		String value = getValue(parent.getLayoutDataAs(IRow.class, null));
+		if (value.length() == 0)
+			return;
 		g.drawText(value, 1, (h - hi) * 0.5f, w - 10, hi, VAlign.RIGHT);
 	}
 }

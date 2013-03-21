@@ -8,6 +8,8 @@ import java.util.List;
 
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.core.view.opengl.layout2.IGLElementContext;
+import org.caleydo.core.view.opengl.layout2.IGLElementParent;
 import org.caleydo.core.view.opengl.layout2.animation.AAnimation.EAnimationType;
 import org.caleydo.core.view.opengl.layout2.animation.ALayoutAnimation;
 import org.caleydo.core.view.opengl.layout2.animation.AnimatedGLElementContainer;
@@ -21,6 +23,7 @@ import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
 import org.caleydo.vis.rank.ui.IColumnRenderInfo;
+import org.caleydo.vis.rank.ui.TableBodyUI;
 import org.caleydo.vis.rank.ui.detail.ValueElement;
 
 import com.jogamp.common.util.IntIntHashMap;
@@ -49,16 +52,29 @@ public class ColumnUI extends AnimatedGLElementContainer implements ITableColumn
 		this.setDefaultMoveTransition(ReRankTransition.INSTANCE);
 		this.setDefaultOutTransition(ReRankTransition.INSTANCE);
 		this.setLayout(this);
+	}
 
+	@Override
+	protected void init(IGLElementContext context) {
+		super.init(context);
+		TableBodyUI body = findTableBodyUI();
 		for (int i = 0; i < INITIAL_POOL_SIZE; ++i) {
-			this.add(createPoolItem(), 0);
+			this.add(createPoolItem(body), 0);
 		}
 		inPool.set(0, INITIAL_POOL_SIZE);
 	}
 
-	private ValueElement createPoolItem() {
+	private TableBodyUI findTableBodyUI() {
+		IGLElementParent act = getParent();
+		while (act != null && !(act instanceof TableBodyUI))
+			act = act.getParent();
+		return (TableBodyUI) act;
+	}
+
+	private ValueElement createPoolItem(TableBodyUI body) {
 		ValueElement v = model.createValue();
 		v.setVisibility(EVisibility.HIDDEN);
+		v.onPick(body.getSelectedRowListener());
 		return v;
 	}
 
@@ -147,9 +163,10 @@ public class ColumnUI extends AnimatedGLElementContainer implements ITableColumn
 		final int cached = this.size();
 		if (cached < rows) {
 			int addItems = Math.min(20, rows - cached); // add twenty more at least
+			TableBodyUI body = findTableBodyUI();
 			// enlarge the pool
 			for (int i = 0; i < addItems; ++i)
-				add(createPoolItem(), 0);
+				add(createPoolItem(body), 0);
 			inPool.set(cached, cached + addItems);
 		} else if ((cached - rows) > 20) { // more than enough free again
 			int firstToCheck = 0;

@@ -38,6 +38,7 @@ import org.caleydo.core.view.opengl.layout2.GLSandBox;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.vis.rank.data.AFloatFunction;
 import org.caleydo.vis.rank.data.FloatInferrers;
+import org.caleydo.vis.rank.data.IFloatSetterFunction;
 import org.caleydo.vis.rank.model.ARow;
 import org.caleydo.vis.rank.model.CategoricalRankColumnModel;
 import org.caleydo.vis.rank.model.FloatRankColumnModel;
@@ -172,7 +173,7 @@ public class Food implements IModelBuilder {
 				bgColor, new PiecewiseMapping(0, Float.NaN), FloatInferrers.fix(0));
 	}
 
-	static class ValueGetter extends AFloatFunction<IRow> {
+	static class ValueGetter extends AFloatFunction<IRow> implements IFloatSetterFunction<IRow> {
 		private final int index;
 
 		public ValueGetter(int column) {
@@ -185,6 +186,14 @@ public class Food implements IModelBuilder {
 			if (r.data.length <= index)
 				return 0;
 			return r.data[index];
+		}
+
+		@Override
+		public void set(IRow in, float value) {
+			FoodRow r = (FoodRow) in;
+			if (r.data.length <= index)
+				return;
+			r.data[index] = value;
 		}
 
 	}

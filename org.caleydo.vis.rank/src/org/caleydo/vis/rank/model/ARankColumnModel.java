@@ -120,6 +120,8 @@ public abstract class ARankColumnModel implements IDragInfo, IRankColumnModel {
 		return width;
 	}
 
+	public abstract String getValue(IRow row);
+
 	public abstract GLElement createSummary(boolean interactive);
 
 	public abstract ValueElement createValue();

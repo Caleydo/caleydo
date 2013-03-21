@@ -40,7 +40,7 @@ public class MultiScoreBarElement extends ScoreBarElement {
 	}
 
 	@Override
-	protected String getTooltip() {
+	public String getTooltip() {
 		final IRow r = getLayoutDataAs(IRow.class, null); // current row
 		IMultiColumnMixin mmodel = (IMultiColumnMixin) model;
 		MultiFloat v = mmodel.getSplittedValue(r);

@@ -120,6 +120,14 @@ public class CategoricalRankRankColumnModel<CATEGORY_TYPE> extends ABasicFiltera
 	}
 
 	@Override
+	public String getValue(IRow row) {
+		CATEGORY_TYPE value = getCatValue(row);
+		if (value == null)
+			return "";
+		return metaData.get(value).getLabel();
+	}
+
+	@Override
 	public GLElement createSummary(boolean interactive) {
 		return new MyElement(interactive);
 	}

@@ -129,18 +129,23 @@ public class IntegerRankColumnModel extends ABasicFilterableRankColumnModel impl
 	@Override
 	protected void updateMask(BitSet todo, List<IRow> data, BitSet mask) {
 		for (int i = todo.nextSetBit(0); i >= 0; i = todo.nextSetBit(i + 1)) {
-			int value = getValue(data.get(i));
+			int value = getInt(data.get(i));
 			mask.set(i, value >= min && value <= max);
 		}
 	}
 
-	private int getValue(IRow prow) {
+	public int getInt(IRow prow) {
 		return data.apply(prow);
 	}
 
 	@Override
+	public String getValue(IRow row) {
+		return "" + getInt(row);
+	}
+
+	@Override
 	public int compare(IRow o1, IRow o2) {
-		return getValue(o1) - getValue(o2);
+		return getInt(o1) - getInt(o2);
 	}
 
 	@Override
@@ -155,7 +160,7 @@ public class IntegerRankColumnModel extends ABasicFilterableRankColumnModel impl
 				return;
 			super.renderImpl(g, w, h);
 			float hi = Math.min(h, 18);
-			int f = getValue(getLayoutDataAs(IRow.class, null));
+			int f = getInt(getLayoutDataAs(IRow.class, null));
 			if (f > 0)
 				g.drawText(formatter == null ? f + "" : formatter.format(f), 1, 1 + (h - hi) * 0.5f, w - 2,
 						hi - 2);

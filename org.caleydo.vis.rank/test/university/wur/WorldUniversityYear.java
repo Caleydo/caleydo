@@ -33,6 +33,7 @@ import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.vis.rank.data.AFloatFunction;
 import org.caleydo.vis.rank.data.FloatInferrers;
+import org.caleydo.vis.rank.data.IFloatSetterFunction;
 import org.caleydo.vis.rank.model.FloatRankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.RankTableModel;
@@ -61,19 +62,19 @@ public class WorldUniversityYear {
 	public static final int COL_natural = 11;
 	public static final int COL_social = 12;
 
-	private final float qsstars;
-	private final float overall;
-	private final float academic;
-	private final float employer;
-	private final float faculty;
-	private final float international;
-	private final float internationalstudents;
-	private final float citations;
-	private final float arts;
-	private final float engineering;
-	private final float life;
-	private final float natural;
-	private final float social;
+	private float qsstars;
+	private float overall;
+	private float academic;
+	private float employer;
+	private float faculty;
+	private float international;
+	private float internationalstudents;
+	private float citations;
+	private float arts;
+	private float engineering;
+	private float life;
+	private float natural;
+	private float social;
 
 	public WorldUniversityYear(String[] l) {
 		qsstars = toFloat(l, 2);
@@ -120,7 +121,51 @@ public class WorldUniversityYear {
 		case COL_social:
 			return social;
 		}
-		return 0;
+		return Float.NaN;
+	}
+
+	public void set(int index, float value) {
+		switch (index) {
+		case COL_academic:
+			academic = value;
+			break;
+		case COL_arts:
+			arts = value;
+			break;
+		case COL_citations:
+			citations = value;
+			break;
+		case COL_employer:
+			employer = value;
+			break;
+		case COL_engineering:
+			engineering = value;
+			break;
+		case COL_faculty:
+			faculty = value;
+			break;
+		case COL_international:
+			international = value;
+			break;
+		case COL_internationalstudents:
+			internationalstudents = value;
+			break;
+		case COL_life:
+			life = value;
+			break;
+		case COL_natural:
+			natural = value;
+			break;
+		case COL_overall:
+			overall = value;
+			break;
+		case COL_QSSTARS:
+			qsstars = value;
+			break;
+		case COL_social:
+			social = value;
+			break;
+		}
 	}
 
 	public static StackedRankColumnModel addYear(RankTableModel table, String title,
@@ -137,7 +182,7 @@ public class WorldUniversityYear {
 		// * International student ratio (5%)
 		stacked.add(col(year, COL_academic, "Academic reputation", "#FC9272", "#FEE0D2"));
 		stacked.add(col(year, COL_employer, "Employer reputation", "#9ECAE1", "#DEEBF7"));
-		stacked.add(col(year, COL_faculty, " Faculty/student ratio", "#A1D99B", "#E5F5E0"));
+		stacked.add(col(year, COL_faculty, "Faculty/student ratio", "#A1D99B", "#E5F5E0"));
 		stacked.add(col(year, COL_citations, "Citations per faculty", "#C994C7", "#E7E1EF"));
 		stacked.add(col(year, COL_international, "International faculty ratio", "#FDBB84", "#FEE8C8"));
 		stacked.add(col(year, COL_internationalstudents, "International student ratio", "#DFC27D", "#F6E8C3"));
@@ -188,7 +233,7 @@ public class WorldUniversityYear {
 		return data;
 	}
 
-	static class ValueGetter extends AFloatFunction<IRow> {
+	static class ValueGetter extends AFloatFunction<IRow> implements IFloatSetterFunction<IRow> {
 		private final Function<IRow, WorldUniversityYear> year;
 		private final int subindex;
 
@@ -203,6 +248,14 @@ public class WorldUniversityYear {
 			if (y == null)
 				return Float.NaN;
 			return y.get(subindex);
+		}
+
+		@Override
+		public void set(IRow in, float value) {
+			WorldUniversityYear y = year.apply(in);
+			if (y == null)
+				return;
+			y.set(subindex, value);
 		}
 	}
 }

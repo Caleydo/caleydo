@@ -20,27 +20,34 @@
 package org.caleydo.vis.rank.model;
 
 import java.awt.Color;
-import java.util.BitSet;
-import java.util.List;
 
+import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.util.function.FloatFunctions;
 import org.caleydo.core.view.opengl.layout2.GLElement;
-import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.rank.data.AFloatFunction;
 import org.caleydo.vis.rank.data.IFloatFunction;
+import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IFloatRankableColumnMixin;
+import org.caleydo.vis.rank.model.mixin.IHideableColumnMixin;
+import org.caleydo.vis.rank.model.mixin.IMappedColumnMixin;
+import org.caleydo.vis.rank.model.mixin.ISetableColumnMixin;
 import org.caleydo.vis.rank.ui.detail.StarsSummary;
 import org.caleydo.vis.rank.ui.detail.StarsValueElement;
 import org.caleydo.vis.rank.ui.detail.ValueElement;
+
+import com.jogamp.common.util.IntObjectHashMap;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class StarsRankColumnModel extends ABasicFilterableRankColumnModel implements IFloatRankableColumnMixin {
+public class StarsRankColumnModel extends ARankColumnModel implements IFloatRankableColumnMixin, IHideableColumnMixin,
+		ICollapseableColumnMixin,
+		ISetableColumnMixin {
 	private final int stars;
 	private final IFloatFunction<IRow> data;
+	private final IntObjectHashMap valueOverrides = new IntObjectHashMap(3);
 
 	private SimpleHistogram cacheHist = null;
 
@@ -56,6 +63,7 @@ public class StarsRankColumnModel extends ABasicFilterableRankColumnModel implem
 		this.stars = copy.stars;
 		this.data = copy.data;
 		this.cacheHist = copy.cacheHist;
+		this.valueOverrides.putAll(copy.valueOverrides);
 		setHeaderRenderer(copy.getHeaderRenderer());
 	}
 
@@ -89,12 +97,51 @@ public class StarsRankColumnModel extends ABasicFilterableRankColumnModel implem
 	}
 
 	public float getRaw(IRow in) {
+		if (valueOverrides.containsKey(in.getIndex())) {
+			return (Float) valueOverrides.get(in.getIndex());
+		}
 		return data.applyPrimitive(in);
 	}
 
 	@Override
+	public boolean isOverriden(IRow row) {
+		return valueOverrides.containsKey(row.getIndex());
+	}
+
+	@Override
+	public String getOriginalValue(IRow row) {
+		return format(data.applyPrimitive(row));
+	}
+
+	@Override
+	public void set(IRow row, String value) {
+		if (value == null) {
+			valueOverrides.remove(row.getIndex());
+		} else if (value.length() == 0) {
+			valueOverrides.put(row.getIndex(), Float.NaN);
+		} else {
+			try {
+				valueOverrides.put(row.getIndex(), Float.parseFloat(value));
+			} catch (NumberFormatException e) {
+				e.printStackTrace();
+			}
+		}
+		cacheHist = null;
+		propertySupport.firePropertyChange(IMappedColumnMixin.PROP_MAPPING, null, data);
+	}
+
+	@Override
+	public String getValue(IRow row) {
+		return format(getRaw(row));
+	}
+
+	private String format(float raw) {
+		return Formatter.formatNumber(raw);
+	}
+
+	@Override
 	public float applyPrimitive(IRow in) {
-		float v = map(data.applyPrimitive(in), true);
+		float v = map(getRaw(in), true);
 		v /= stars;
 		return FloatFunctions.CLAMP01.apply(v);
 	}
@@ -109,16 +156,6 @@ public class StarsRankColumnModel extends ABasicFilterableRankColumnModel implem
 		parent.orderBy(this);
 	}
 
-	@Override
-	public boolean isFiltered() {
-		return false;
-	}
-
-	@Override
-	protected void updateMask(BitSet todo, List<IRow> data, BitSet mask) {
-		// TODO Auto-generated method stub
-
-	}
 
 	@Override
 	public GLElement createSummary(boolean interactive) {
@@ -130,14 +167,10 @@ public class StarsRankColumnModel extends ABasicFilterableRankColumnModel implem
 		return new StarsValueElement(this);
 	}
 
-	@Override
-	public void editFilter(GLElement summary, IGLElementContext context) {
-		// TODO Auto-generated method stub
-	}
 
 	@Override
 	public boolean isValueInferred(IRow row) {
-		float v = data.applyPrimitive(row);
+		float v = getRaw(row);
 		return Float.isNaN(v);
 	}
 
@@ -148,7 +181,7 @@ public class StarsRankColumnModel extends ABasicFilterableRankColumnModel implem
 		return cacheHist = DataUtils.getHist(bins, getMyRanker().iterator(), new AFloatFunction<IRow>() {
 			@Override
 			public float applyPrimitive(IRow in) {
-				return map(data.applyPrimitive(in), false);
+				return map(getRaw(in), false);
 			}
 		});
 	}

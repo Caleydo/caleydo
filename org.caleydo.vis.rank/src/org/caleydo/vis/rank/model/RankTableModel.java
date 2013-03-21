@@ -497,7 +497,7 @@ public class RankTableModel implements IRankColumnParent {
 		}
 	}
 
-	Iterator<ARankColumnModel> getColumnsOf(ColumnRanker ranker) {
+	public Iterator<ARankColumnModel> getColumnsOf(ColumnRanker ranker) {
 		int start = getStartIndex(ranker);
 		if (start >= columns.size())
 			return Collections.emptyIterator();

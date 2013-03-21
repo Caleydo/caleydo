@@ -30,8 +30,9 @@ import org.caleydo.core.view.opengl.canvas.internal.IGLCanvasFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MenuEvent;
 import org.eclipse.swt.events.MenuListener;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
@@ -112,17 +113,14 @@ public abstract class ASWTBasedCanvasFactory implements IGLCanvasFactory {
 			MenuItem menuItem = new MenuItem(parent, convertType(item.getType()));
 			menuItem.setSelection(item.isState());
 			menuItem.setText(item.getLabel());
-			menuItem.addSelectionListener(new SelectionListener() {
-
+			Image image = item.getImage(parent.getDisplay());
+			if (image != null) {
+				menuItem.setImage(image);
+			}
+			menuItem.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
 					item.triggerEvent();
-				}
-
-				@Override
-				public void widgetDefaultSelected(SelectionEvent e) {
-					// TODO Auto-generated method stub
-
 				}
 			});
 		}

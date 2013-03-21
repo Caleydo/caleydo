@@ -161,6 +161,11 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 	}
 
 	@Override
+	public String getValue(IRow row) {
+		return data.apply(row);
+	}
+
+	@Override
 	public void orderByMe() {
 		parent.orderBy(this);
 	}
@@ -328,7 +333,7 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 		}
 
 		@Override
-		protected String getTooltip() {
+		public String getTooltip() {
 			return data.apply(getLayoutDataAs(IRow.class, null));
 		}
 	}

@@ -27,8 +27,10 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.NumberFormat;
 import java.util.BitSet;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventPublisher;
@@ -48,6 +50,7 @@ import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
 import org.caleydo.vis.rank.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IFloatRankableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IMappedColumnMixin;
+import org.caleydo.vis.rank.model.mixin.ISetableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.ISnapshotableColumnMixin;
 import org.caleydo.vis.rank.ui.detail.ScoreBarElement;
 import org.caleydo.vis.rank.ui.detail.ScoreSummary;
@@ -62,11 +65,11 @@ import org.eclipse.swt.widgets.Shell;
  *
  */
 public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implements IMappedColumnMixin,
-		IFloatRankableColumnMixin, ISnapshotableColumnMixin, IFilterColumnMixin {
+		IFloatRankableColumnMixin, ISetableColumnMixin, ISnapshotableColumnMixin, IFilterColumnMixin {
 
 	private SimpleHistogram cacheHist = null;
 	private boolean dirtyDataStats = true;
-	private float missingValue;
+	private float missingValue = Float.NaN;
 	private boolean filterNotMappedEntries = false;
 
 	private final IMappingFunction mapping;
@@ -75,6 +78,7 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 	private final NumberFormat formatter;
 
 	private final IFloatFunction<IRow> data;
+	private final Map<IRow, Float> valueOverrides = new HashMap<>(3);
 	private final ICallback<IMappingFunction> callback = new ICallback<IMappingFunction>() {
 		@Override
 		public void on(IMappingFunction data) {
@@ -102,7 +106,6 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 		this.mapping = mapping;
 		this.missingValueInferer = missingValue;
 		this.formatter = formatter;
-
 		setHeaderRenderer(header);
 	}
 
@@ -116,6 +119,7 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 		this.dirtyDataStats = copy.dirtyDataStats;
 		this.cacheHist = copy.cacheHist;
 		this.formatter = copy.formatter;
+		this.valueOverrides.putAll(copy.valueOverrides);
 	}
 
 	@Override
@@ -167,7 +171,7 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 		return new AFloatList() {
 			@Override
 			public float getPrimitive(int index) {
-				return data.applyPrimitive(data2.get(index));
+				return getRaw(data2.get(index));
 			}
 
 			@Override
@@ -201,11 +205,52 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 
 	@Override
 	public float applyPrimitive(IRow row) {
-		float value = data.applyPrimitive(row);
+		float value = getRaw(row);
 		if (Float.isNaN(value))
 			value = computeMissingValue();
 		checkMapping();
 		return mapping.apply(value);
+	}
+
+	protected float getRaw(IRow row) {
+		if (valueOverrides.containsKey(row))
+			return valueOverrides.get(row);
+		return data.applyPrimitive(row);
+	}
+
+	@Override
+	public boolean isOverriden(IRow row) {
+		return valueOverrides.containsKey(row);
+	}
+
+	@Override
+	public String getOriginalValue(IRow row) {
+		return format(data.applyPrimitive(row));
+	}
+
+	@Override
+	public void set(IRow row, String value) {
+		if (value == null) {
+			valueOverrides.remove(row);
+		} else if (value.length() == 0) {
+			valueOverrides.put(row, Float.NaN);
+		} else {
+			try {
+				valueOverrides.put(row, Float.parseFloat(value));
+			} catch (NumberFormatException e) {
+				e.printStackTrace();
+			}
+		}
+		cacheHist = null;
+		invalidAllFilter();
+		dirtyDataStats = true;
+		missingValue = Float.NaN;
+		propertySupport.firePropertyChange(PROP_MAPPING, null, data);
+	}
+
+	@Override
+	public String getValue(IRow row) {
+		return getRawValue(row);
 	}
 
 	@Override
@@ -220,12 +265,10 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 
 	@Override
 	public boolean isValueInferred(IRow row) {
-		return Float.isNaN(data.applyPrimitive(row));
+		return Float.isNaN(getRaw(row));
 	}
 
-	@Override
-	public String getRawValue(IRow row) {
-		float value = data.applyPrimitive(row);
+	private String format(float value) {
 		if (Float.isNaN(value))
 			value = computeMissingValue();
 		if (Float.isNaN(value))
@@ -233,6 +276,11 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 		if (formatter != null)
 			return formatter.format(value);
 		return Formatter.formatNumber(value);
+	}
+
+	@Override
+	public String getRawValue(IRow row) {
+		return format(getRaw(row));
 	}
 
 	@Override

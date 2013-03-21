@@ -75,7 +75,7 @@ public class PickableGLElement extends GLElement {
 	/**
 	 * @return the tooltip of this element
 	 */
-	protected String getTooltip() {
+	public String getTooltip() {
 		return tooltip;
 	}
 
@@ -119,6 +119,7 @@ public class PickableGLElement extends GLElement {
 			tooltip = null;
 		this.tooltip = tooltip;
 	}
+
 
 	protected void onPicked(Pick pick) {
 		switch (pick.getPickingMode()) {
