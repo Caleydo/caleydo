@@ -58,12 +58,12 @@ public class Level4PathwayRenderer extends ALayoutRenderer implements IPathwayRe
 
 	@Override
 	public int getMinHeightPixels() {
-		return 0;
+		return 5;
 	}
 
 	@Override
 	public int getMinWidthPixels() {
-		return 0;
+		return 5;
 	}
 
 	@Override

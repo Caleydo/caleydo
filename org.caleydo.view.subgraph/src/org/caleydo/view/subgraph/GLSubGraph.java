@@ -1244,8 +1244,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		if (pathwayRepresentation != null)
 			rect = getAbsoluteVertexLocation(pathwayRepresentation, vertexRep, info.container);
 
-		if (rect == null || info.getCurrentEmbeddingID() == EEmbeddingID.PATHWAY_LEVEL3
-				|| info.getCurrentEmbeddingID() == EEmbeddingID.PATHWAY_LEVEL4) {
+		if (rect == null || info.getCurrentEmbeddingID() == EEmbeddingID.PATHWAY_LEVEL4) {
 			rect = new Rectangle2D.Float(info.window.getAbsoluteLocation().x(), info.window.getAbsoluteLocation().y(),
 					info.window.getSize().x(), 20);
 			isLocationWindow = true;
