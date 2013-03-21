@@ -48,7 +48,7 @@ public final class ClassUtils {
 
 	/**
 	 * see {@link #findAllDeclaredMethods(Class)} but with a predicate when to stop going upwards the hiearchy
-	 * 
+	 *
 	 * @param clazz
 	 * @param stopAt
 	 * @return
@@ -77,7 +77,7 @@ public final class ClassUtils {
 		public boolean hasNext() {
 			if (methods == null && clazz == null)
 				return false;
-			if (methods == null || !methods.hasNext()) {
+			while (methods == null || !methods.hasNext()) {
 				if (clazz == null || (scanWhile != null && !scanWhile.apply(clazz)))
 					return false;
 				methods = Arrays.asList(clazz.getDeclaredMethods()).iterator();

@@ -32,6 +32,7 @@ import org.caleydo.core.view.opengl.layout2.basic.GLButton;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton.EButtonMode;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton.ISelectionCallback;
 import org.caleydo.vis.rank.config.IRankTableUIConfig;
+import org.caleydo.vis.rank.internal.event.OrderByMeEvent;
 import org.caleydo.vis.rank.internal.ui.ButtonBar;
 import org.caleydo.vis.rank.model.StackedRankColumnModel;
 import org.caleydo.vis.rank.ui.RenderStyle;
@@ -90,7 +91,8 @@ public class StackedSummaryHeaderUI extends AColumnHeaderUI {
 		GenericContextMenuItem editDistributions = new GenericContextMenuItem("Edit Distributions",
 				new OpenEditDistributionsEvent().to(this));
 		items.add(editDistributions);
-		super.showContextMenu(items);
+		items.add(0, new GenericContextMenuItem("Order by this attribute", new OrderByMeEvent().to(this)));
+		context.showContextMenu(items);
 	}
 
 	@ListenTo(sendToMe = true)

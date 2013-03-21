@@ -28,9 +28,11 @@ import java.beans.PropertyChangeListener;
 import java.util.List;
 import java.util.Objects;
 
+import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
+import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
@@ -53,6 +55,7 @@ import org.caleydo.data.loader.ResourceLocators;
 import org.caleydo.data.loader.ResourceLocators.IResourceLocator;
 import org.caleydo.vis.rank.config.IRankTableConfig;
 import org.caleydo.vis.rank.config.IRankTableUIConfig;
+import org.caleydo.vis.rank.internal.event.OrderByMeEvent;
 import org.caleydo.vis.rank.internal.ui.ButtonBar;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.mixin.IAnnotatedColumnMixin;
@@ -567,7 +570,21 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 	}
 
 	protected void showContextMenu(List<AContextMenuItem> items) {
+		if (model instanceof IRankableColumnMixin) {
+			String label;
+			if (getParent() instanceof StackedColumnHeaderUI) {
+				label = "Align by this attribute";
+			} else {
+				label = "Order by this attribute";
+			}
+			items.add(0, new GenericContextMenuItem(label, new OrderByMeEvent().to(this)));
+		}
 		context.showContextMenu(items);
+	}
+
+	@ListenTo(sendToMe = true)
+	private void onOrderByMe(OrderByMeEvent event) {
+		((IRankableColumnMixin) model).orderByMe();
 	}
 
 	protected void onChangeWeight(int dx) {
