@@ -95,7 +95,7 @@ public class MappedDataRenderer {
 	 */
 	private ArrayList<TablePerspective> geneTablePerspectives = new ArrayList<>();
 
-	private ArrayList<TablePerspective> contextualTablePerspectives = new ArrayList<>();
+	ArrayList<TablePerspective> contextualTablePerspectives = new ArrayList<>();
 
 	private List<Integer> contextRowIDs;
 
@@ -717,6 +717,23 @@ public class MappedDataRenderer {
 				parentView.setDisplayListDirty();
 
 			}
+
+			@Override
+			protected void rightClicked(Pick pick) {
+				List<AEvent> sortEvents = new ArrayList<>();
+				for (TablePerspective tablePerspective : geneTablePerspectives) {
+					SortByDataEvent sortEvent = new SortByDataEvent(tablePerspective.getDataDomain().getDataDomainID(),
+							tablePerspective, sampleIDType, IDType.getIDType("DAVID"), pick.getObjectID());
+					sortEvent.setSender(this);
+					sortEvents.add(sortEvent);
+				}
+
+				AContextMenuItem sortByDimensionItem = new GenericContextMenuItem("Sort by this row ", sortEvents);
+
+				parentView.getContextMenuCreator().addContextMenuItem(sortByDimensionItem);
+
+			}
+
 		}, rowSelectionManager.getIDType().getTypeName());
 
 		parentView.addTypePickingListener(new APickingListener() {
@@ -858,12 +875,12 @@ public class MappedDataRenderer {
 					List<AEvent> sortEvents = new ArrayList<>();
 					for (TablePerspective tablePerspective : contextualTablePerspectives) {
 						SortByDataEvent sortEvent = new SortByDataEvent(dataDomain.getDataDomainID(), tablePerspective,
-								sampleIDType, pick.getObjectID());
+								sampleIDType, contextRowIDType, pick.getObjectID());
 						sortEvent.setSender(this);
 						sortEvents.add(sortEvent);
 					}
 
-					AContextMenuItem sortByDimensionItem = new GenericContextMenuItem("Sort by this axis ", sortEvents);
+					AContextMenuItem sortByDimensionItem = new GenericContextMenuItem("Sort by this row ", sortEvents);
 
 					parentView.getContextMenuCreator().addContextMenuItem(sortByDimensionItem);
 

@@ -24,7 +24,10 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.base.ILabelProvider;
+import org.caleydo.core.view.contextmenu.AContextMenuItem;
+import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
@@ -35,6 +38,8 @@ import org.caleydo.core.view.opengl.util.button.Button;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.view.enroute.EPickingType;
 import org.caleydo.view.enroute.SelectionColorCalculator;
+import org.caleydo.view.enroute.event.SelectGroupSelectionDialogEvent;
+import org.caleydo.view.enroute.event.ShowContextElementSelectionDialogEvent;
 
 /**
  * @author Alexander Lex
@@ -158,6 +163,35 @@ public class ColumnCaptionRenderer extends ALayoutRenderer implements ILabelProv
 				parent.sampleGroupSelectionManager.triggerSelectionUpdateEvent();
 				parentView.setDisplayListDirty();
 
+			}
+
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see
+			 * org.caleydo.core.view.opengl.picking.APickingListener#rightClicked(org.caleydo.core.view.opengl.picking
+			 * .Pick)
+			 */
+			@Override
+			protected void rightClicked(Pick pick) {
+				final ATableBasedDataDomain dataDomain = parent.contextualTablePerspectives.get(0).getDataDomain();
+				final IDType contextRowIDType = dataDomain.getOppositeIDType(parent.sampleIDType);
+
+				Perspective rowPerspective = parent.contextualTablePerspectives.get(0).getPerspective(contextRowIDType);
+
+				ShowContextElementSelectionDialogEvent contextEvent = new ShowContextElementSelectionDialogEvent(
+						rowPerspective);
+
+				AContextMenuItem selectCompoundItem = new GenericContextMenuItem("Select compounds to show ",
+						contextEvent);
+				parentView.getContextMenuCreator().addContextMenuItem(selectCompoundItem);
+
+				SelectGroupSelectionDialogEvent selectGroup = new SelectGroupSelectionDialogEvent(
+						rowPerspective);
+
+				AContextMenuItem selectGroupItem = new GenericContextMenuItem("Select sample groups to show",
+						contextEvent);
+				parentView.getContextMenuCreator().addContextMenuItem(selectGroupItem);
 			}
 		};
 

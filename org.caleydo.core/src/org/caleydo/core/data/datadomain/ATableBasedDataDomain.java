@@ -945,6 +945,14 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 		}
 
 		Perspective perspective = null;
+		IDType pIDType = event.getPerspectiveIDType();
+		IDType sortByIDType = getOppositeIDType(pIDType);
+
+		Set<Integer> sortByIDs = IDMappingManagerRegistry.get().getIDMappingManager(event.getSortByIDType())
+				.getIDAsSet(event.getSortByIDType(), sortByIDType, event.getSortByID());
+		if (sortByIDs == null || sortByIDs.size() < 1)
+			return;
+		Integer sortByID = sortByIDs.iterator().next();
 
 		assert (tPerspective != null) : "no tPerspective for " + event.getTablePerspectiveKey();
 
@@ -953,14 +961,12 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 		if (tPerspective == null)
 			return;
 
-		IDType pIDType = event.getPerspectiveIDType();
 		perspective = tPerspective.getPerspective(pIDType);
 		virtualArray = perspective.getVirtualArray();
 
 		valueColumn = new ArrayList<>(virtualArray.size());
 		for (Integer index : virtualArray) {
-			valueColumn.add(getNormalizedValue(getPrimaryIDType(pIDType), index, getOppositeIDType(pIDType),
-					event.getId()));
+			valueColumn.add(getNormalizedValue(getPrimaryIDType(pIDType), index, sortByIDType, sortByID));
 		}
 
 		perspective.sort(valueColumn);

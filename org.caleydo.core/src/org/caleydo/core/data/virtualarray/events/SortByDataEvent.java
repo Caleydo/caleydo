@@ -37,8 +37,10 @@ public class SortByDataEvent extends AEvent {
 
 	/** The id of the perspective to be sorted */
 	private IDType perspectiveIDType;
+
+	private IDType otherIDType;
 	/** The id of the row/column out of the "other" perspective that is used for determining the sorting */
-	private Integer id;
+	private Integer sortByID;
 
 	/**
 	 *
@@ -46,18 +48,22 @@ public class SortByDataEvent extends AEvent {
 	public SortByDataEvent() {
 	}
 
-	public SortByDataEvent(String dataDomainID, TablePerspective tablePerspective, IDType perspectiveIDType, Integer id) {
+	public SortByDataEvent(String dataDomainID, TablePerspective tablePerspective, IDType perspectiveIDType,
+			IDType otherIDType, Integer id) {
 		this.dataDomainID = dataDomainID;
 		this.tablePerspective = tablePerspective;
 		this.perspectiveIDType = perspectiveIDType;
-		this.id = id;
+		this.otherIDType = otherIDType;
+		this.sortByID = id;
 	}
 
-	public SortByDataEvent(String dataDomainID, String tablePerspectiveKey, IDType perspectiveIDType, Integer id) {
+	public SortByDataEvent(String dataDomainID, String tablePerspectiveKey, IDType perspectiveIDType,
+			IDType otherIDType, Integer id) {
 		this.dataDomainID = dataDomainID;
 		this.tablePerspectiveKey = tablePerspectiveKey;
 		this.perspectiveIDType = perspectiveIDType;
-		this.id = id;
+		this.otherIDType = otherIDType;
+		this.sortByID = id;
 	}
 
 	/**
@@ -99,6 +105,21 @@ public class SortByDataEvent extends AEvent {
 	}
 
 	/**
+	 * @param otherIDType
+	 *            setter, see {@link otherIDType}
+	 */
+	public void setOtherIDType(IDType otherIDType) {
+		this.otherIDType = otherIDType;
+	}
+
+	/**
+	 * @return the otherIDType, see {@link #otherIDType}
+	 */
+	public IDType getSortByIDType() {
+		return otherIDType;
+	}
+
+	/**
 	 * @return the tablePerspective, see {@link #tablePerspective}
 	 */
 	public TablePerspective getTablePerspective() {
@@ -121,23 +142,23 @@ public class SortByDataEvent extends AEvent {
 	}
 
 	/**
-	 * @param id
-	 *            setter, see {@link id}
+	 * @param sortByID
+	 *            setter, see {@link sortByID}
 	 */
-	public void setId(Integer id) {
-		this.id = id;
+	public void setSortByID(Integer sortByID) {
+		this.sortByID = sortByID;
 	}
 
 	/**
-	 * @return the id, see {@link #id}
+	 * @return the sortByID, see {@link #sortByID}
 	 */
-	public Integer getId() {
-		return id;
+	public Integer getSortByID() {
+		return sortByID;
 	}
 
 	@Override
 	public boolean checkIntegrity() {
-		if (id != null && (tablePerspectiveKey != null || tablePerspective != null) && dataDomainID != null
+		if (sortByID != null && (tablePerspectiveKey != null || tablePerspective != null) && dataDomainID != null
 				&& perspectiveIDType != null)
 			return true;
 
