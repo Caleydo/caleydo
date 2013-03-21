@@ -100,7 +100,7 @@ public class CCLEDataXmlGenerator extends DataSetDescriptionSerializer {
 
 	private DataSetDescription setUpMRNAData() {
 		DataSetDescription mrnaData = new DataSetDescription(ECreateDefaultProperties.NUMERICAL);
-		mrnaData.setDataSetName("mRNA");
+		mrnaData.setDataSetName("mRNA Expression");
 
 		mrnaData.setDataSourcePath(MRNA);
 		mrnaData.setNumberOfHeaderLines(3);
@@ -127,7 +127,7 @@ public class CCLEDataXmlGenerator extends DataSetDescriptionSerializer {
 
 	private DataSetDescription setUpMutationData() {
 		DataSetDescription mutationData = new DataSetDescription(ECreateDefaultProperties.NUMERICAL);
-		mutationData.setDataSetName("mutation status");
+		mutationData.setDataSetName("Mutation Status");
 
 		mutationData.setDataSourcePath(MUTATION);
 		mutationData.setNumberOfHeaderLines(1);
@@ -156,7 +156,7 @@ public class CCLEDataXmlGenerator extends DataSetDescriptionSerializer {
 
 	private DataSetDescription setUpCopyNumberData() {
 		DataSetDescription copyNumberData = new DataSetDescription(ECreateDefaultProperties.NUMERICAL);
-		copyNumberData.setDataSetName("Copy number");
+		copyNumberData.setDataSetName("Copy Number Variation");
 
 		copyNumberData.setDataSourcePath(COPY_NUMBER);
 		copyNumberData.setNumberOfHeaderLines(1);
@@ -203,7 +203,7 @@ public class CCLEDataXmlGenerator extends DataSetDescriptionSerializer {
 
 		DataSetDescription compoundCellData = new DataSetDescription(ECreateDefaultProperties.NUMERICAL);
 		compoundCellData.setDelimiter(";");
-		compoundCellData.setDataSetName("compound/cell effect");
+		compoundCellData.setDataSetName("Compound - Cell Effect");
 		compoundCellData.setLinearSource(true);
 
 		compoundCellData.setDataSourcePath(COMPOUND_CELL_DATA);
