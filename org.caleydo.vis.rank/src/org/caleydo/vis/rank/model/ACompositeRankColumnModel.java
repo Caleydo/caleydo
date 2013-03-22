@@ -146,6 +146,13 @@ public abstract class ACompositeRankColumnModel extends ARankColumnModel impleme
 	}
 
 	@Override
+	public void onRankingInvalid() {
+		for (ARankColumnModel child : this)
+			child.onRankingInvalid();
+		super.onRankingInvalid();
+	}
+
+	@Override
 	public final boolean hide(ARankColumnModel model) {
 		this.remove(model);
 		getTable().addToPool(model);

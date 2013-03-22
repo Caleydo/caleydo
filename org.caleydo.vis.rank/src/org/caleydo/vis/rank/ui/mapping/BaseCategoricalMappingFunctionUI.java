@@ -46,7 +46,6 @@ import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.vis.rank.model.CategoricalRankRankColumnModel.CategoryInfo;
-import org.caleydo.vis.rank.model.DataUtils;
 import org.caleydo.vis.rank.model.SimpleHistogram;
 import org.caleydo.vis.rank.model.mapping.BaseCategoricalMappingFunction;
 import org.caleydo.vis.rank.model.mapping.ICategoricalMappingFunction;
@@ -65,6 +64,7 @@ public class BaseCategoricalMappingFunctionUI<T> extends GLElementContainer impl
 	private final BaseCategoricalMappingFunction<T> model;
 	private final int[] hist;
 	private final int histMax;
+	private final int histSum;
 	private final List<T> order;
 	private final Map<T, CategoryInfo> metaData;
 	private final Color backgroundColor;
@@ -84,16 +84,20 @@ public class BaseCategoricalMappingFunctionUI<T> extends GLElementContainer impl
 
 		this.hist = new int[order.size()];
 		Arrays.fill(hist, 0);
+		int sum = 0;
 		int max = 0;
 		int i = 0;
 		for (T o : order) {
 			Integer c = data.get(o);
-			if (c != null)
+			if (c != null) {
 				hist[i] = c.intValue();
+				sum++;
+			}
 			max = Math.max(hist[i], max);
 			i++;
 		}
 		histMax = max;
+		histSum = sum;
 
 		setLayout(this);
 
@@ -103,7 +107,13 @@ public class BaseCategoricalMappingFunctionUI<T> extends GLElementContainer impl
 	}
 
 	protected SimpleHistogram computeHist(float w) {
-		return DataUtils.getHist(binsForWidth(w), order.iterator(), model);
+		int bins = binsForWidth(w, histSum);
+		SimpleHistogram hist = new SimpleHistogram(bins);
+		for(int i = 0; i < this.hist.length; ++i) {
+			float v = model.applyPrimitive(order.get(i));
+			hist.add(v);
+		}
+		return hist;
 	}
 
 	public void onRemovePoint(Point point) {

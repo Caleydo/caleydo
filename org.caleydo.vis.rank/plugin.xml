@@ -63,4 +63,12 @@
          </run>
       </application>
    </extension>
+   <extension
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="org.caleydo.vis.rank.product1"
+            description="Caleydo LineUp Demos"
+            name="Caleydo LineUp Demos">
+      </product>
+   </extension>
 </plugin>

@@ -75,13 +75,13 @@ public class CategoricalRankRankColumnModel<CATEGORY_TYPE> extends ABasicFiltera
 	private final Map<CATEGORY_TYPE, CategoryInfo> metaData;
 	private final ICategoricalMappingFunction<CATEGORY_TYPE> mapping;
 
-	private SimpleHistogram cacheHist = null;
+	private final HistCache cacheHist = new HistCache();
 	private Map<CATEGORY_TYPE, Integer> cacheValueHist = null;
 
 	private final ICallback<Object> callback = new ICallback<Object>() {
 		@Override
 		public void on(Object data) {
-			cacheHist = null;
+			cacheHist.invalidate();
 			cacheValueHist = null;
 			invalidAllFilter();
 			propertySupport.firePropertyChange(PROP_MAPPING, null, data);
@@ -115,7 +115,7 @@ public class CategoricalRankRankColumnModel<CATEGORY_TYPE> extends ABasicFiltera
 
 	@Override
 	public void onRankingInvalid() {
-		cacheHist = null;
+		cacheHist.invalidate();
 		cacheValueHist = null;
 	}
 
@@ -224,10 +224,8 @@ public class CategoricalRankRankColumnModel<CATEGORY_TYPE> extends ABasicFiltera
 	}
 
 	@Override
-	public SimpleHistogram getHist(int bins) {
-		if (cacheHist != null && cacheHist.size() == bins)
-			return cacheHist;
-		return cacheHist = DataUtils.getHist(bins, getMyRanker().iterator(), this);
+	public SimpleHistogram getHist(float width) {
+		return cacheHist.get(width, getMyRanker(), this);
 	}
 
 	public Map<CATEGORY_TYPE, Integer> getHist() {

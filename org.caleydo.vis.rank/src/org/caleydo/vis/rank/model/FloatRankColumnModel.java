@@ -33,8 +33,8 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.caleydo.core.event.EventListenerManager.ListenTo;
-import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.io.gui.dataimport.widget.ICallback;
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.util.function.AFloatList;
 import org.caleydo.core.util.function.FloatStatistics;
@@ -45,6 +45,7 @@ import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.rank.data.IFloatFunction;
 import org.caleydo.vis.rank.data.IFloatInferrer;
 import org.caleydo.vis.rank.internal.event.FilterEvent;
+import org.caleydo.vis.rank.internal.ui.FloatFilterDialog;
 import org.caleydo.vis.rank.model.mapping.IMappingFunction;
 import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
 import org.caleydo.vis.rank.model.mixin.IFilterColumnMixin;
@@ -56,7 +57,6 @@ import org.caleydo.vis.rank.ui.detail.ScoreBarElement;
 import org.caleydo.vis.rank.ui.detail.ScoreSummary;
 import org.caleydo.vis.rank.ui.detail.ValueElement;
 import org.caleydo.vis.rank.ui.mapping.MappingFunctionUIs;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
@@ -66,11 +66,6 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implements IMappedColumnMixin,
 		IFloatRankableColumnMixin, ISetableColumnMixin, ISnapshotableColumnMixin, IFilterColumnMixin {
-
-	private SimpleHistogram cacheHist = null;
-	private boolean dirtyDataStats = true;
-	private float missingValue = Float.NaN;
-	private boolean filterNotMappedEntries = false;
 
 	private final IMappingFunction mapping;
 	private final IFloatInferrer missingValueInferer;
@@ -82,7 +77,7 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 	private final ICallback<IMappingFunction> callback = new ICallback<IMappingFunction>() {
 		@Override
 		public void on(IMappingFunction data) {
-			cacheHist = null;
+			cacheHist.invalidate();
 			invalidAllFilter();
 			propertySupport.firePropertyChange(PROP_MAPPING, null, data);
 		}
@@ -94,6 +89,13 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 			missingValue = Float.NaN;
 		}
 	};
+
+	private final HistCache cacheHist = new HistCache();
+	private boolean dirtyDataStats = true;
+	private float missingValue = Float.NaN;
+	private boolean filterNotMappedEntries = true;
+	private boolean filterMissingEntries = false;
+
 	public FloatRankColumnModel(IFloatFunction<IRow> data, IGLRenderer header, Color color, Color bgColor,
 			PiecewiseMapping mapping, IFloatInferrer missingValue) {
 		this(data, header, color, bgColor, mapping, missingValue, NumberFormat.getInstance(Locale.ENGLISH));
@@ -117,9 +119,10 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 		setHeaderRenderer(copy.getHeaderRenderer());
 		this.missingValue = copy.missingValue;
 		this.dirtyDataStats = copy.dirtyDataStats;
-		this.cacheHist = copy.cacheHist;
 		this.formatter = copy.formatter;
 		this.valueOverrides.putAll(copy.valueOverrides);
+		this.filterMissingEntries = copy.filterMissingEntries;
+		this.filterNotMappedEntries = copy.filterNotMappedEntries;
 	}
 
 	@Override
@@ -129,7 +132,8 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 
 	@Override
 	public void onRankingInvalid() {
-		cacheHist = null;
+		System.out.println("ranking invalid: " + getTitle());
+		cacheHist.invalidate();
 		super.onRankingInvalid();
 	}
 
@@ -241,7 +245,7 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 				e.printStackTrace();
 			}
 		}
-		cacheHist = null;
+		cacheHist.invalidate();
 		invalidAllFilter();
 		dirtyDataStats = true;
 		missingValue = Float.NaN;
@@ -284,29 +288,30 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 	}
 
 	@Override
-	public SimpleHistogram getHist(int bins) {
-		if (cacheHist != null && cacheHist.size() == bins)
-			return cacheHist;
-		return cacheHist = DataUtils.getHist(bins, getMyRanker().iterator(), this);
+	public SimpleHistogram getHist(float width) {
+		return cacheHist.get(width, getMyRanker(), this);
 	}
 
 	@Override
 	public boolean isFiltered() {
-		return filterNotMappedEntries;
+		return filterNotMappedEntries || filterMissingEntries;
 	}
 
 	/**
 	 * @param filterNotMappedEntries
 	 *            setter, see {@link filterNotMappedEntries}
 	 */
-	public void setFilterNotMappedEntries(boolean filterNotMappedEntries) {
-		if (this.filterNotMappedEntries == filterNotMappedEntries)
+	public void setFilter(boolean filterNotMappedEntries, boolean filterMissingEntries) {
+		if (this.filterNotMappedEntries == filterNotMappedEntries && this.filterMissingEntries == filterMissingEntries)
 			return;
-		if (filterNotMappedEntries) {
-			invalidAllFilter();
-		}
-		propertySupport.firePropertyChange(PROP_FILTER, this.filterNotMappedEntries,
-				this.filterNotMappedEntries = filterNotMappedEntries);
+		boolean bak = this.filterNotMappedEntries;
+		boolean bak2 = this.filterMissingEntries;
+		this.filterMissingEntries = filterMissingEntries;
+		this.filterNotMappedEntries = filterNotMappedEntries;
+		invalidAllFilter();
+		cacheHist.invalidate();
+		propertySupport.firePropertyChange(PROP_FILTER, Pair.make(bak, bak2),
+				Pair.make(filterNotMappedEntries, filterMissingEntries));
 	}
 
 	@Override
@@ -314,8 +319,8 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				boolean f = MessageDialog.openQuestion(new Shell(), "Filter Not Mapped Entries?", "Do you want to filter entries that are not mapped?");
-				EventPublisher.publishEvent(new FilterEvent(f).to(summary));
+				new FloatFilterDialog(new Shell(), getTitle(), summary, filterNotMappedEntries, filterMissingEntries)
+						.open();
 			}
 		});
 	}
@@ -323,7 +328,20 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 	@Override
 	protected void updateMask(BitSet todo, List<IRow> rows, BitSet mask) {
 		for (int i = todo.nextSetBit(0); i >= 0; i = todo.nextSetBit(i + 1)) {
-			float f = applyPrimitive(rows.get(i));
+			float v = getRaw(rows.get(i));
+			if (filterMissingEntries && Float.isNaN(v)) {
+				mask.set(i, false);
+				continue;
+			}
+			if (!filterNotMappedEntries) {
+				mask.set(i, true);
+				continue;
+			}
+
+			if (Float.isNaN(v))
+				v = computeMissingValue();
+			checkMapping();
+			float f = mapping.apply(v);
 			mask.set(i, !Float.isNaN(f));
 		}
 	}
@@ -335,8 +353,9 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 
 		@ListenTo(sendToMe = true)
 		private void onFilterChanged(FilterEvent event) {
-			boolean f = (Boolean) event.getFilter();
-			((FloatRankColumnModel) model).setFilterNotMappedEntries(f);
+			@SuppressWarnings("unchecked")
+			Pair<Boolean, Boolean> f = (Pair<Boolean, Boolean>) event.getFilter();
+			((FloatRankColumnModel) model).setFilter(f.getFirst(), f.getSecond());
 		}
 
 	}

@@ -30,15 +30,31 @@ import com.google.common.primitives.Ints;
  *
  */
 public class SimpleHistogram implements Iterable<Integer> {
+	/**
+	 * the hist
+	 */
 	private final int[] bins;
+	/**
+	 * number of nans
+	 */
 	private int nans = 0;
+	/**
+	 * the largest bin value
+	 */
 	private int largestValue;
+	/**
+	 * the total number of items
+	 */
+	private int count;
 
 	public SimpleHistogram(int bins) {
 		this.bins = new int[bins];
 		largestValue = 0;
 	}
 
+	/**
+	 * @return the number of bins
+	 */
 	public int size() {
 		return bins.length;
 	}
@@ -71,8 +87,16 @@ public class SimpleHistogram implements Iterable<Integer> {
 		if (bin >= bins.length)
 			bin = bins.length - 1;
 		bins[bin]++;
+		count++;
 		if (bins[bin] > largestValue)
 			largestValue = bins[bin];
+	}
+
+	/**
+	 * @return the count, see {@link #count}
+	 */
+	public int getCount(boolean includeNaN) {
+		return count + (includeNaN ? nans : 0);
 	}
 
 	/**
@@ -86,7 +110,7 @@ public class SimpleHistogram implements Iterable<Integer> {
 
 	/**
 	 * returns the largest value of this histogram
-	 * 
+	 *
 	 * @param includeNaN
 	 *            should also be NaN values be considered
 	 * @return

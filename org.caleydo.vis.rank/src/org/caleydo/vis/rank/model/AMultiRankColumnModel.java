@@ -48,7 +48,6 @@ import org.caleydo.vis.rank.model.mixin.IFloatRankableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IHideableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IMultiColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IRankColumnModel;
-import org.caleydo.vis.rank.ui.RenderStyle;
 import org.caleydo.vis.rank.ui.detail.ScoreFilter;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Display;
@@ -61,11 +60,11 @@ import com.google.common.collect.Iterables;
  */
 public abstract class AMultiRankColumnModel extends ACompositeRankColumnModel implements IMultiColumnMixin,
 		IExplodeableColumnMixin, IHideableColumnMixin, ICollapseableColumnMixin, IFilterColumnMixin, IGLRenderer {
-	private SimpleHistogram cacheHist = null;
 	private final BitSet mask = new BitSet();
 	private final BitSet maskInvalid = new BitSet();
 	private float filterMin = 0;
 	private float filterMax = 1;
+	private final HistCache cacheHist = new HistCache();
 
 	private final PropertyChangeListener listener = new PropertyChangeListener() {
 		@Override
@@ -107,12 +106,12 @@ public abstract class AMultiRankColumnModel extends ACompositeRankColumnModel im
 		RankTableModel t = getTable();
 		t.addPropertyChangeListener(RankTableModel.PROP_DATA, listener);
 		maskInvalid.set(0, t.getDataSize());
-		cacheHist = null;
+		cacheHist.invalidate();
 	}
 
 	@Override
 	protected void takeDown(ARankColumnModel model) {
-		cacheHist = null;
+		cacheHist.invalidate();
 		super.takeDown(model);
 	}
 
@@ -177,12 +176,16 @@ public abstract class AMultiRankColumnModel extends ACompositeRankColumnModel im
 
 	@Override
 	public void editFilter(final GLElement summary, IGLElementContext context) {
-		GLElement m = new ScoreFilter(this, asRawData(), summary);
+		// FIXME
+		GLElement m = createEditFilterPopup(asRawData(), summary);
 		m.setzDelta(0.5f);
 		Vec2f location = summary.getAbsoluteLocation();
 		Vec2f size = summary.getSize();
-		context.getPopupLayer().show(m,
-				new Vec4f(location.x(), location.y() + size.y(), 200, RenderStyle.HIST_HEIGHT * 2));
+		context.getPopupLayer().show(m, new Vec4f(location.x(), location.y() + size.y(), 200, m.getSize().y()));
+	}
+
+	protected GLElement createEditFilterPopup(IFloatList data, GLElement summary) {
+		return new ScoreFilter(this, data, summary);
 	}
 
 	private IFloatList asRawData() {
@@ -200,11 +203,15 @@ public abstract class AMultiRankColumnModel extends ACompositeRankColumnModel im
 		};
 	}
 
-	protected void updateMask(BitSet todo, List<IRow> rows, BitSet mask) {
+	private void updateMask(BitSet todo, List<IRow> rows, BitSet mask) {
 		for (int i = todo.nextSetBit(0); i >= 0; i = todo.nextSetBit(i + 1)) {
-			float f = applyPrimitive(rows.get(i));
-			mask.set(i, !Float.isNaN(f) && f >= filterMin && f <= filterMax);
+			mask.set(i, filterEntry(rows.get(i)));
 		}
+	}
+
+	protected boolean filterEntry(IRow row) {
+		float f = applyPrimitive(row);
+		return !Float.isNaN(f) && f >= filterMin && f <= filterMax;
 	}
 
 	@Override
@@ -233,10 +240,8 @@ public abstract class AMultiRankColumnModel extends ACompositeRankColumnModel im
 	}
 
 	@Override
-	public final SimpleHistogram getHist(int bins) {
-		if (cacheHist != null && cacheHist.size() == bins)
-			return cacheHist;
-		return cacheHist = DataUtils.getHist(bins, getMyRanker().iterator(), this);
+	public final SimpleHistogram getHist(float width) {
+		return cacheHist.get(width, getMyRanker(), this);
 	}
 
 	@Override
@@ -250,7 +255,7 @@ public abstract class AMultiRankColumnModel extends ACompositeRankColumnModel im
 
 	@Override
 	public void onRankingInvalid() {
-		cacheHist = null;
+		cacheHist.invalidate();
 		super.onRankingInvalid();
 	}
 
@@ -261,15 +266,6 @@ public abstract class AMultiRankColumnModel extends ACompositeRankColumnModel im
 		for(IFloatRankableColumnMixin child : Iterables.filter(this, IFloatRankableColumnMixin.class))
 			r[i++] = child.isValueInferred(row);
 		return r;
-	}
-
-	@Override
-	public final SimpleHistogram[] getHists(int bins) {
-		SimpleHistogram[] hists = new SimpleHistogram[size()];
-		int i = 0;
-		for (IFloatRankableColumnMixin child : Iterables.filter(this, IFloatRankableColumnMixin.class))
-			hists[i++] = child.getHist(bins);
-		return hists;
 	}
 
 	@Override

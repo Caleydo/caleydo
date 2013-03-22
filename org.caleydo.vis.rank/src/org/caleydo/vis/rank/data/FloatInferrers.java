@@ -26,9 +26,9 @@ import org.caleydo.core.util.function.IFloatIterator;
 
 /**
  * factory class for {@link IFloatInferrer}
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public class FloatInferrers {
 	public static IFloatInferrer MEAN = new IFloatInferrer() {
@@ -42,20 +42,25 @@ public class FloatInferrers {
 		@Override
 		public float infer(IFloatIterator it, int size) {
 			float[] tmp = new float[size];
-			for (int i = 0; it.hasNext(); ++i) {
-				tmp[i] = it.nextPrimitive();
+			int i = 0;
+			while (it.hasNext()) {
+				float v = it.nextPrimitive();
+				if (Float.isNaN(v))
+					continue;
+				tmp[i++] = v;
 			}
+			tmp = Arrays.copyOf(tmp, i);
 			Arrays.sort(tmp);
-			if (size % 2 == 0)
-				return 0.5f*(tmp[size/2]+tmp[size/2+1]);
+			if (tmp.length % 2 == 0)
+				return 0.5f * (tmp[tmp.length / 2] + tmp[tmp.length / 2 + 1]);
 			else
-				return tmp[size / 2 + 1];
+				return tmp[tmp.length / 2 + 1];
 		}
 	};
 
 	/**
 	 * constant value
-	 * 
+	 *
 	 * @param value
 	 * @return
 	 */

@@ -29,6 +29,8 @@ import java.nio.charset.Charset;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.caleydo.core.util.color.StephenFewColorPalette;
+import org.caleydo.core.util.color.StephenFewColorPalette.EBrightness;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.vis.rank.data.AFloatFunction;
@@ -180,12 +182,14 @@ public class WorldUniversityYear {
 		// * Citations per faculty (20%)
 		// * International faculty ratio (5%)
 		// * International student ratio (5%)
-		stacked.add(col(year, COL_academic, "Academic reputation", "#FC9272", "#FEE0D2"));
-		stacked.add(col(year, COL_employer, "Employer reputation", "#9ECAE1", "#DEEBF7"));
-		stacked.add(col(year, COL_faculty, "Faculty/student ratio", "#A1D99B", "#E5F5E0"));
-		stacked.add(col(year, COL_citations, "Citations per faculty", "#C994C7", "#E7E1EF"));
-		stacked.add(col(year, COL_international, "International faculty ratio", "#FDBB84", "#FEE8C8"));
-		stacked.add(col(year, COL_internationalstudents, "International student ratio", "#DFC27D", "#F6E8C3"));
+		Color[] light = StephenFewColorPalette.get(EBrightness.LIGHT);
+		Color[] dark = StephenFewColorPalette.get(EBrightness.MEDIUM);
+		stacked.add(col(year, COL_academic, "Academic reputation", dark[1], light[1]));
+		stacked.add(col(year, COL_employer, "Employer reputation", dark[2], light[2]));
+		stacked.add(col(year, COL_faculty, "Faculty/student ratio", dark[3], light[3]));
+		stacked.add(col(year, COL_citations, "Citations per faculty", dark[4], light[4]));
+		stacked.add(col(year, COL_international, "International faculty ratio", dark[5], light[5]));
+		stacked.add(col(year, COL_internationalstudents, "International student ratio", dark[6], light[6]));
 
 		stacked.setDistributions(new float[] { 40, 10, 20, 20, 5, 5 });
 		stacked.setWidth(300);
@@ -201,9 +205,10 @@ public class WorldUniversityYear {
 
 
 	private static FloatRankColumnModel col(Function<IRow, WorldUniversityYear> year, int col, String text,
-			String color, String bgColor) {
+			Color color, Color bgColor) {
 		return new FloatRankColumnModel(new ValueGetter(year, col), GLRenderers.drawText(text, VAlign.CENTER),
-				Color.decode(color), Color.decode(bgColor), percentage(), FloatInferrers.MEDIAN);
+ color,
+				bgColor, percentage(), FloatInferrers.MEDIAN);
 	}
 
 	protected static PiecewiseMapping percentage() {

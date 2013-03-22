@@ -33,6 +33,7 @@ import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.vis.rank.model.AMultiRankColumnModel;
 import org.caleydo.vis.rank.model.DataUtils;
 import org.caleydo.vis.rank.model.SimpleHistogram;
+import org.caleydo.vis.rank.ui.RenderStyle;
 import org.caleydo.vis.rank.ui.RenderUtils;
 
 /**
@@ -58,6 +59,7 @@ public class ScoreFilter extends PickableGLElement implements IPickingListener {
 		this.data = data;
 		this.summary = summary;
 
+		setSize(Float.NaN, RenderStyle.HIST_HEIGHT * 1.5f);
 	}
 
 	@Override
@@ -135,7 +137,7 @@ public class ScoreFilter extends PickableGLElement implements IPickingListener {
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
 		g.color(model.getBgColor()).fillRect(0, 0, w, h);
-		int bins = binsForWidth(w);
+		int bins = binsForWidth(w, data.size());
 		if (cache == null || cache.size() != bins)
 			cache = DataUtils.getHist(bins, data);
 		RenderUtils.renderHist(g, cache, w, h, -1, model.getColor(), model.getColor().darker());

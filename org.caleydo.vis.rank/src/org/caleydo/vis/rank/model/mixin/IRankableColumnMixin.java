@@ -22,6 +22,7 @@ package org.caleydo.vis.rank.model.mixin;
 import java.awt.Color;
 import java.util.Comparator;
 
+import org.caleydo.vis.rank.model.ColumnRanker;
 import org.caleydo.vis.rank.model.IRow;
 
 
@@ -37,4 +38,6 @@ public interface IRankableColumnMixin extends IRankColumnModel, Comparator<IRow>
 	Color getColor();
 
 	void orderByMe();
+
+	ColumnRanker getMyRanker();
 }

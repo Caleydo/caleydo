@@ -24,7 +24,6 @@ import java.util.Arrays;
 
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
-import org.caleydo.vis.rank.model.SimpleHistogram;
 
 /**
  * contract that the columns is composite of multiple other ones
@@ -88,15 +87,6 @@ public interface IMultiColumnMixin extends IFloatRankableColumnMixin, Iterable<A
 	 * @return
 	 */
 	Color[] getColors();
-
-	/**
-	 * collection of hists of its children
-	 *
-	 * @param bins
-	 * @return
-	 */
-	SimpleHistogram[] getHists(int bins);
-
 
 	/**
 	 * number of children

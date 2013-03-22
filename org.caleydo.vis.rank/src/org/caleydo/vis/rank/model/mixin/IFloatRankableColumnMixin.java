@@ -36,11 +36,12 @@ public interface IFloatRankableColumnMixin extends IRankableColumnMixin, IFloatF
 
 	/**
 	 * returns a summary of the current filtered data as a simple histogram
-	 *
-	 * @param bins
+	 * 
+	 * @param width
+	 *            the target with in pixels
 	 * @return
 	 */
-	SimpleHistogram getHist(int bins);
+	SimpleHistogram getHist(float width);
 
 
 }

@@ -49,7 +49,7 @@ public class StarsRankColumnModel extends ARankColumnModel implements IFloatRank
 	private final IFloatFunction<IRow> data;
 	private final IntObjectHashMap valueOverrides = new IntObjectHashMap(3);
 
-	private SimpleHistogram cacheHist = null;
+	private final HistCache cacheHist = new HistCache();
 
 	public StarsRankColumnModel(IFloatFunction<IRow> data, IGLRenderer header, Color color, Color bgColor, int stars) {
 		super(color, bgColor);
@@ -62,7 +62,6 @@ public class StarsRankColumnModel extends ARankColumnModel implements IFloatRank
 		super(copy);
 		this.stars = copy.stars;
 		this.data = copy.data;
-		this.cacheHist = copy.cacheHist;
 		this.valueOverrides.putAll(copy.valueOverrides);
 		setHeaderRenderer(copy.getHeaderRenderer());
 	}
@@ -81,7 +80,7 @@ public class StarsRankColumnModel extends ARankColumnModel implements IFloatRank
 
 	@Override
 	public void onRankingInvalid() {
-		cacheHist = null;
+		cacheHist.invalidate();
 		super.onRankingInvalid();
 	}
 
@@ -126,7 +125,7 @@ public class StarsRankColumnModel extends ARankColumnModel implements IFloatRank
 				e.printStackTrace();
 			}
 		}
-		cacheHist = null;
+		cacheHist.invalidate();
 		propertySupport.firePropertyChange(IMappedColumnMixin.PROP_MAPPING, null, data);
 	}
 
@@ -175,10 +174,8 @@ public class StarsRankColumnModel extends ARankColumnModel implements IFloatRank
 	}
 
 	@Override
-	public SimpleHistogram getHist(int bins) {
-		if (cacheHist != null && cacheHist.size() == bins)
-			return cacheHist;
-		return cacheHist = DataUtils.getHist(bins, getMyRanker().iterator(), new AFloatFunction<IRow>() {
+	public SimpleHistogram getHist(float width) {
+		return cacheHist.get(width, getMyRanker(), new AFloatFunction<IRow>() {
 			@Override
 			public float applyPrimitive(IRow in) {
 				return map(getRaw(in), false);

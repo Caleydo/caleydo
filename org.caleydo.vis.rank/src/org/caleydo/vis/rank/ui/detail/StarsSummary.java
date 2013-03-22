@@ -19,8 +19,6 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.ui.detail;
 
-import static org.caleydo.vis.rank.ui.RenderStyle.binsForWidth;
-
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -79,7 +77,7 @@ public class StarsSummary extends GLElement {
 	protected void renderImpl(GLGraphics g, float w, float h) {
 		if (model.isCollapsed() || w < 5)
 			return;
-		SimpleHistogram hist = model.getHist(binsForWidth(w));
+		SimpleHistogram hist = model.getHist(w);
 		int selectedBin = selectedRow == null ? -1 : hist.getBinOf(model.applyPrimitive(selectedRow));
 		RenderUtils.renderHist(g, hist, w, h, selectedBin, model.getColor(), model.getColor().darker());
 	}

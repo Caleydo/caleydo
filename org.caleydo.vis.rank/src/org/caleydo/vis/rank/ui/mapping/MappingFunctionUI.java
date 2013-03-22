@@ -261,7 +261,7 @@ public class MappingFunctionUI extends GLElementContainer implements GLButton.IS
 	}
 
 	protected SimpleHistogram computeHist(float w) {
-		return DataUtils.getHist(binsForWidth(w), raw.map(model));
+		return DataUtils.getHist(binsForWidth(w, raw.size()), raw.map(model));
 	}
 
 	protected void renderMapping(GLGraphics g, float w, float h, boolean cross, boolean isNormalLeftTop) {
@@ -329,7 +329,8 @@ public class MappingFunctionUI extends GLElementContainer implements GLButton.IS
 				maxM = normalizeRaw(m[0]);
 			}
 
-			SimpleHistogram hist = DataUtils.getHist(binsForWidth((vertical ? h : w) - LABEL_HEIGHT), data);
+			SimpleHistogram hist = DataUtils
+					.getHist(binsForWidth((vertical ? h : w) - LABEL_HEIGHT, data.size()), data);
 			render(g, vertical, model.getActMin(), model.getActMax(), w, h, minM, maxM, hist,
 					getLayoutDataAs(Boolean.class, Boolean.FALSE));
 		}

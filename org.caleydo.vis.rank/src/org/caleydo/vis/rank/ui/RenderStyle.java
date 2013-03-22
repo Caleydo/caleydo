@@ -35,10 +35,40 @@ public class RenderStyle {
 	 * returns the to use bins for a histogram of the given width
 	 *
 	 * @param w
-	 * @return
+	 *            the target pixel width
+	 * @return either the number of desired bins or -1 to trigger that the second version
+	 *         {@link #binsForWidth(float, int)} will be evaluated (which needs more time)
 	 */
 	public static int binsForWidth(float w) {
-		return Math.round(w * 0.25f);
+		if (w < 20)
+			return Math.round(w / 5);
+		return -1;
+
+	}
+
+	/**
+	 * returns the to use bins for a histogram of the given width
+	 *
+	 * @param w
+	 *            the target pixel width
+	 * @param dataSize
+	 *            the number of items
+	 * @return
+	 */
+	public static int binsForWidth(float w, int dataSize) {
+		if (w < 20)
+			return Math.round(w / 5);
+		else {
+			int optimal = Math.round((float) Math.sqrt(dataSize));
+			while (optimal * 5 > w) { // not enough space for optimal
+				optimal /= 2;
+			}
+			if (optimal <= 0) {
+				optimal = Math.round(w / 5);
+			}
+			return optimal;
+		}
+
 	}
 
 	private static final String ICON_PREFIX = "resources/icons/";

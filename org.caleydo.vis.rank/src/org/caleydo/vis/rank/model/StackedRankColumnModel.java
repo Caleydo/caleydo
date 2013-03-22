@@ -23,6 +23,8 @@ import java.awt.Color;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import org.caleydo.core.util.function.FloatFunctions;
+import org.caleydo.core.util.function.IFloatList;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.vis.rank.model.mixin.ICompressColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IFilterColumnMixin;
@@ -32,6 +34,7 @@ import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.ISnapshotableColumnMixin;
 import org.caleydo.vis.rank.ui.RenderStyle;
 import org.caleydo.vis.rank.ui.detail.ScoreBarElement;
+import org.caleydo.vis.rank.ui.detail.ScoreFilter2;
 import org.caleydo.vis.rank.ui.detail.StackedScoreSummary;
 import org.caleydo.vis.rank.ui.detail.ValueElement;
 
@@ -76,6 +79,10 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 	private boolean isCompressed = false;
 	private float compressedWidth = 100;
 
+	/**
+	 * if more than x percent of the the score is created by inferred values, filter it out
+	 */
+	private float filterInferredPercentage = 1.f;
 	private IntObjectHashMap cacheMulti = new IntObjectHashMap();
 
 	public StackedRankColumnModel() {
@@ -91,6 +98,7 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 		super(copy);
 		this.alignment = copy.alignment;
 		this.isCompressed = copy.isCompressed;
+		this.filterInferredPercentage = copy.filterInferredPercentage;
 		setHeaderRenderer(this);
 		width = RenderStyle.COLUMN_SPACE;
 		cloneInitChildren();
@@ -285,6 +293,59 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 		if (isAlignAll() == alignAll)
 			return;
 		this.setAlignment(-alignment - 1);
+	}
+
+	@Override
+	protected GLElement createEditFilterPopup(IFloatList data, GLElement summary) {
+		return new ScoreFilter2(this, data, summary);
+	}
+	/**
+	 * @return the filterInferredPercentage, see {@link #filterInferredPercentage}
+	 */
+	public float getFilterInferredPercentage() {
+		return filterInferredPercentage;
+	}
+
+	/**
+	 * @param filterInferredPercentage
+	 *            setter, see {@link filterInferredPercentage}
+	 */
+	public void setFilterInferredPercentage(float filterInferredPercentage) {
+		filterInferredPercentage = FloatFunctions.CLAMP01.apply(filterInferredPercentage);
+		if (this.filterInferredPercentage == filterInferredPercentage)
+			return;
+		invalidAllFilter();
+		propertySupport.firePropertyChange(PROP_FILTER, this.filterInferredPercentage,
+				this.filterInferredPercentage = filterInferredPercentage);
+	}
+
+	@Override
+	public boolean isFiltered() {
+		return super.isFiltered() || filterInferredPercentage < 1;
+	}
+
+	@Override
+	protected boolean filterEntry(IRow row) {
+		if (filterInferredPercentage >= 1)
+			return super.filterEntry(row);
+		if (!super.filterEntry(row))
+			return false;
+		boolean[] inferreds = isValueInferreds(row);
+		boolean any = false;
+		for (int i = 0; i < inferreds.length; ++i) {
+			if (inferreds[i]) {
+				any = true;
+			}
+		}
+		if (!any)
+			return true;
+		float[] ws = getDistributions();
+		float inferPercentage = 0;
+		for (int i = 0; i < inferreds.length; ++i) {
+			if (inferreds[i])
+				inferPercentage += ws[i];
+		}
+		return inferPercentage < filterInferredPercentage;
 	}
 
 	/**
