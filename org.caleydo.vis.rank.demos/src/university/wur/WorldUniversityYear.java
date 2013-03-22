@@ -182,8 +182,8 @@ public class WorldUniversityYear {
 		// * Citations per faculty (20%)
 		// * International faculty ratio (5%)
 		// * International student ratio (5%)
-		Color[] light = StephenFewColorPalette.get(EBrightness.LIGHT);
-		Color[] dark = StephenFewColorPalette.get(EBrightness.MEDIUM);
+		Color[] light = StephenFewColorPalette.getAsAWT(EBrightness.LIGHT);
+		Color[] dark = StephenFewColorPalette.getAsAWT(EBrightness.MEDIUM);
 		stacked.add(col(year, COL_academic, "Academic reputation", dark[1], light[1]));
 		stacked.add(col(year, COL_employer, "Employer reputation", dark[2], light[2]));
 		stacked.add(col(year, COL_faculty, "Faculty/student ratio", dark[3], light[3]));

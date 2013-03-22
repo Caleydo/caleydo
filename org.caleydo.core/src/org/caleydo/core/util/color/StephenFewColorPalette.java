@@ -19,6 +19,8 @@
  *******************************************************************************/
 package org.caleydo.core.util.color;
 
+import java.awt.Color;
+
 /**
  * a color palette based on the Stephen Few
  *
@@ -40,12 +42,15 @@ public final class StephenFewColorPalette {
 		LIGHT, MEDIUM, DARK_AND_BRIGHT
 	}
 
-	private static final IColor[] light;
-	private static final IColor[] medium;
-	private static final IColor[] dark_and_bright;
+	private static final Color[] light;
+	private static final Color[] medium;
+	private static final Color[] dark_and_bright;
+	private static final IColor[] light_c;
+	private static final IColor[] medium_c;
+	private static final IColor[] dark_and_bright_c;
 
 	static {
-		light = new IColor[9];
+		light = new Color[9];
 		light[0] = new Color(140, 140, 140);
 		light[1] = new Color(136, 189, 230);
 		light[2] = new Color(251, 178, 88);
@@ -56,7 +61,9 @@ public final class StephenFewColorPalette {
 		light[7] = new Color(237, 221, 70);
 		light[8] = new Color(240, 126, 110);
 
-		medium = new IColor[9];
+		light_c = convert(light);
+
+		medium = new Color[9];
 		medium[0] = new Color(77, 77, 77);
 		medium[1] = new Color(93, 165, 218);
 		medium[2] = new Color(250, 164, 58);
@@ -67,7 +74,9 @@ public final class StephenFewColorPalette {
 		medium[7] = new Color(222, 207, 63);
 		medium[8] = new Color(241, 88, 84);
 
-		dark_and_bright = new IColor[9];
+		medium_c = convert(medium);
+
+		dark_and_bright = new Color[9];
 		dark_and_bright[0] = new Color(0, 0, 0);
 		dark_and_bright[1] = new Color(38, 93, 171);
 		dark_and_bright[2] = new Color(223, 92, 36);
@@ -77,10 +86,59 @@ public final class StephenFewColorPalette {
 		dark_and_bright[6] = new Color(123, 58, 150);
 		dark_and_bright[7] = new Color(199, 180, 46);
 		dark_and_bright[8] = new Color(203, 32, 39);
+
+		dark_and_bright_c = convert(dark_and_bright);
+	}
+
+	private static IColor[] convert(Color[] in) {
+		IColor[] r = new IColor[in.length];
+		for (int i = 0; i < r.length; ++i)
+			r[i] = Colors.of(in[i]);
+
+		return r;
 	}
 
 	public static int size() {
 		return light.length;
+	}
+
+	/**
+	 * returns a color of with a specific brightness at a specific position
+	 *
+	 * @param index
+	 * @param brightness
+	 * @return
+	 */
+	public static IColor get(int index, EBrightness brightness) {
+		if (index < 0 || index >= size())
+			throw new IllegalArgumentException("invalid index: " + index);
+		switch (brightness) {
+		case DARK_AND_BRIGHT:
+			return dark_and_bright_c[index];
+		case LIGHT:
+			return light_c[index];
+		case MEDIUM:
+			return medium_c[index];
+		}
+		throw new IllegalStateException();
+	}
+
+	/**
+	 * returns all colors of the given brightness
+	 * 
+	 * @param brightness
+	 * @return
+	 */
+	public static IColor[] get(EBrightness brightness) {
+		switch (brightness) {
+		case DARK_AND_BRIGHT:
+			return dark_and_bright_c;
+		case LIGHT:
+			return light_c;
+		case MEDIUM:
+			return medium_c;
+		}
+		throw new IllegalStateException();
 	}
 
 	/**
@@ -90,7 +148,7 @@ public final class StephenFewColorPalette {
 	 * @param brightness
 	 * @return
 	 */
-	public static IColor get(int index, EBrightness brightness) {
+	public static Color getAsAWT(int index, EBrightness brightness) {
 		if (index < 0 || index >= size())
 			throw new IllegalArgumentException("invalid index: " + index);
 		switch (brightness) {
@@ -110,7 +168,7 @@ public final class StephenFewColorPalette {
 	 * @param brightness
 	 * @return
 	 */
-	public static IColor[] get(EBrightness brightness) {
+	public static Color[] getAsAWT(EBrightness brightness) {
 		switch (brightness) {
 		case DARK_AND_BRIGHT:
 			return dark_and_bright;
