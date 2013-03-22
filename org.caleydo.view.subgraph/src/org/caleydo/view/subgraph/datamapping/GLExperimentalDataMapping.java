@@ -115,6 +115,8 @@ public class GLExperimentalDataMapping extends AnimatedGLElementContainer implem
 					dmState.setPathwayMappedTablePerspective(perspective);
 					PathwayMappingEvent event = new PathwayMappingEvent(perspective);
 					EventPublisher.trigger(event);
+
+
 				}
 
 			}

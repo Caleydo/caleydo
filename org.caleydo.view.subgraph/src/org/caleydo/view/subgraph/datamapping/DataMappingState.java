@@ -27,6 +27,7 @@ import java.util.Set;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
+import org.caleydo.core.data.virtualarray.events.ClearGroupSelectionEvent;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
@@ -70,6 +71,7 @@ public class DataMappingState {
 		Perspective convertedPerspective = dd.convertForeignPerspective(recordPerspective);
 		TablePerspective tablePerspective = new TablePerspective(dd, convertedPerspective, dd.getTable()
 				.getDefaultDimensionPerspective());
+		tablePerspective.setLabel(dd.getLabel() + " - " + recordPerspective.getLabel());
 
 		mappedTablePerspectives.add(tablePerspective);
 		hashDDToTablePerspective.put(dd, tablePerspective);
@@ -97,6 +99,9 @@ public class DataMappingState {
 	/** Removes a previous and sets the new perspective on the event space */
 	public void setPerspective(Perspective perspective) {
 		selectedPerspective = perspective;
+
+		ClearGroupSelectionEvent clearEvent = new ClearGroupSelectionEvent();
+		EventPublisher.trigger(clearEvent);
 
 		for (TablePerspective tablePerspective : mappedTablePerspectives) {
 			AEvent event = new RemoveTablePerspectiveEvent(tablePerspective);
