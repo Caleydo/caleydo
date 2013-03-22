@@ -783,7 +783,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		// which need alpha blending...
 		dndController.handleDragging(gl, glMouseListener);
 		contextMenuItemsToShow.clear();
-		wasContextChanged = false;
+		// wasContextChanged = false;
 	}
 
 	@Override
@@ -1395,5 +1395,13 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 
 	public boolean wasContextChanged() {
 		return wasContextChanged;
+	}
+
+	/**
+	 * @param wasContextChanged
+	 *            setter, see {@link wasContextChanged}
+	 */
+	public void setWasContextChanged(boolean wasContextChanged) {
+		this.wasContextChanged = wasContextChanged;
 	}
 }

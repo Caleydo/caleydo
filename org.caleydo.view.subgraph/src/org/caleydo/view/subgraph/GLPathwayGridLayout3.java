@@ -235,7 +235,7 @@ public class GLPathwayGridLayout3 implements IGLLayout {
 				LayoutSnapshot snapshotPriorPromotion = new LayoutSnapshot();
 				if (info.getCurrentEmbeddingID() != EEmbeddingID.PATHWAY_LEVEL2 && promote(info, freeSpaceVertical)) {
 					LayoutSnapshot snapshotAfterPromotion = new LayoutSnapshot();
-					if ((snapshotAfterPromotion.maxColumnHeight > freeSpaceVertical && snapshotAfterPromotion.maxColumnHeight > snapshotPriorPromotion.maxColumnHeight)
+					if ((snapshotAfterPromotion.maxL2ColumnHeight > freeSpaceVertical && snapshotAfterPromotion.maxL2ColumnHeight > snapshotPriorPromotion.maxL2ColumnHeight)
 							|| (snapshotAfterPromotion.minTotalWidth > getFreeHorizontalSpace(w) && snapshotAfterPromotion.minTotalWidth > snapshotPriorPromotion.minTotalWidth)) {
 						snapshotPriorPromotion.apply();
 						unpromotableInfos.add(info);
@@ -282,6 +282,7 @@ public class GLPathwayGridLayout3 implements IGLLayout {
 		}
 
 		this.view.setLayoutDirty();
+		view.setWasContextChanged(false);
 	}
 
 	private List<PathwayMultiFormInfo> getInfosWithLevel(EEmbeddingID level) {
@@ -536,7 +537,7 @@ public class GLPathwayGridLayout3 implements IGLLayout {
 		protected List<PathwayColumn> cols = new ArrayList<>();
 		protected Map<GLPathwayWindow, Integer> windowToRendererID = new HashMap<>();
 		protected float minTotalWidth = 0;
-		protected float maxColumnHeight = 0;
+		protected float maxL2ColumnHeight = 0;
 
 		public LayoutSnapshot() {
 			for (PathwayColumn column : columns) {
@@ -547,8 +548,8 @@ public class GLPathwayGridLayout3 implements IGLLayout {
 				}
 				cols.add(newColumn);
 				minTotalWidth += column.getMinWidth();
-				if (newColumn.getMinHeight() > maxColumnHeight) {
-					maxColumnHeight = newColumn.getMinHeight();
+				if (newColumn.getMinHeight() > maxL2ColumnHeight && !newColumn.hasLevel(EEmbeddingID.PATHWAY_LEVEL1)) {
+					maxL2ColumnHeight = newColumn.getMinHeight();
 				}
 			}
 		}
