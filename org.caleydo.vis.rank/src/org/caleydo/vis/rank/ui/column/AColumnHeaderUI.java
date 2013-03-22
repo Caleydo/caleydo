@@ -427,6 +427,8 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 	}
 
 
+	private int inc = 0;
+
 	@Override
 	public void doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
 
@@ -442,7 +444,27 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 				IGLLayoutElement buttons = children.get(BUTTONS);
 				float minWidth = (buttons.asElement() instanceof ButtonBar) ? ((ButtonBar) buttons.asElement())
 						.getMinWidth() : 0;
-				float yb = isHovered ? (h - 2 - RenderStyle.BUTTON_WIDTH) : h;
+
+				// HACK for testing different button positions
+				float yb = 0;
+				switch ((inc++ / 2) % 5) {
+				case 0: // at the bottom
+					yb = isHovered ? (h - 2 - RenderStyle.BUTTON_WIDTH) : h;
+					break;
+				case 1: // at the top
+					yb = 0;
+					break;
+				case 2: // under the label
+					yb = LABEL_HEIGHT;
+					break;
+				case 3: // above the label
+					yb = isHovered ? -RenderStyle.BUTTON_WIDTH : 0;
+					break;
+				case 4: // below the histogram
+					yb = isHovered ? h : h;
+					break;
+				}
+
 				float hb = isHovered ? RenderStyle.BUTTON_WIDTH : 0;
 				if ((w - 4) < minWidth) {
 					float missing = minWidth - (w - 4);
