@@ -1,23 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
-
-   <extension
-         id="application"
-         point="org.eclipse.core.runtime.applications">
-      <application>
-         <run
-               class="org.caleydo.vis.rank.demos.Application">
-         </run>
-      </application>
+	<extension
+         point="org.eclipse.ui.views">
+      <view
+            allowMultiple="true"
+            category="org.caleydo.core.views"
+            class="university.wur.WorldUniversityRankingView"
+            id="rankvis.demo.university.wur"
+            name="World University Ranking">
+      </view>
+      <view
+            allowMultiple="true"
+            category="org.caleydo.core.views"
+            class="university.arwu.AcademicRankingOfWorldUniverstiesView"
+            id="rankvis.demo.university.arwu"
+            name="Academic Ranking of World Universties">
+      </view>
+      <view
+            allowMultiple="true"
+            category="org.caleydo.core.views"
+            class="university.mup.MeasuringUniversityPerformanceView"
+            id="rankvis.demo.university.mup"
+            name="Measuring University Performance">
+      </view>
+      <view
+            allowMultiple="true"
+            category="org.caleydo.core.views"
+            class="university.mixed.MixedView"
+            id="rankvis.demo.university.mixed"
+            name="University Rankings 2012">
+      </view>
+      <view
+            allowMultiple="true"
+            category="org.caleydo.core.views"
+            class="university.top100under50.Top100Under50View"
+            id="rankvis.demo.university.top100under50"
+            name="Top 100 under 50 2012">
+      </view>
+      <view
+            class="food.FoodView"
+            id="rankvis.demo.food"
+            name="Food Nutrition"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.perspectives">
       <perspective
-            name="RCP Perspective"
-            class="org.caleydo.vis.rank.demos.Perspective"
-            id="org.caleydo.vis.rank.demos.perspective">
+            class="demo.DemoApplication$Perspective"
+            id="rankvis.demo.per"
+            name="Demos">
       </perspective>
    </extension>
-
+   <extension
+         id="id2"
+         point="org.eclipse.core.runtime.applications">
+      <application
+            thread="main">
+         <run
+               class="demo.DemoApplication">
+         </run>
+      </application>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="org.caleydo.vis.rank.product1"
+            description="Caleydo LineUp Demos"
+            name="Caleydo LineUp Demos">
+      </product>
+   </extension>
 </plugin>

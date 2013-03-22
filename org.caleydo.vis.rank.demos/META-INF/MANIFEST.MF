@@ -1,10 +1,11 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Demos
+Bundle-Name: LineUp Demos
 Bundle-SymbolicName: org.caleydo.vis.rank.demos; singleton:=true
-Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: org.caleydo.vis.rank.demos.Activator
+Bundle-Version: 2.2
 Require-Bundle: org.eclipse.ui,
- org.eclipse.core.runtime
+ org.eclipse.core.runtime,
+ org.caleydo.vis.rank;bundle-version="2.2.0",
+ org.caleydo.core;bundle-version="2.2.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
