@@ -807,6 +807,12 @@ public class GLPathwayGridLayout2 implements IGLLayout {
 				return -1;
 			if (hasPath2 && !hasPath1)
 				return 1;
+			boolean hasContext1 = view.hasPathwayCurrentContext(o1.pathway);
+			boolean hasContext2 = view.hasPathwayCurrentContext(o1.pathway);
+			if (hasContext1 && !hasContext2)
+				return -1;
+			if (hasContext2 && !hasContext1)
+				return 1;
 			int priority1 = o1.getCurrentEmbeddingID().renderPriority();
 			int priority2 = o2.getCurrentEmbeddingID().renderPriority();
 			// younger ones should be ranked lower

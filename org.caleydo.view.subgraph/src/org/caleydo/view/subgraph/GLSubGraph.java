@@ -1008,6 +1008,15 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		@ListenTo(restrictExclusiveToEventSpace = true)
 		public void onShowNodeContext(ShowNodeContextEvent event) {
 			currentContextVertexRep = event.getVertexRep();
+			// Try to promote views that have context
+			for (PathwayMultiFormInfo info : pathwayInfos) {
+				if (hasPathwayCurrentContext(info.pathway)
+						&& info.getCurrentEmbeddingID() != EEmbeddingID.PATHWAY_LEVEL1) {
+					info.multiFormRenderer.setActive(info.embeddingIDToRendererIDs.get(EEmbeddingID.PATHWAY_LEVEL2)
+							.get(0));
+					info.age = currentPathwayAge--;
+				}
+			}
 			updatePathwayPortals();
 		}
 
@@ -1375,6 +1384,13 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 				return true;
 		}
 		return false;
+	}
+
+	public boolean hasPathwayCurrentContext(PathwayGraph pathway) {
+		if (currentContextVertexRep == null)
+			return false;
+		Set<PathwayVertexRep> vertexReps = PathwayManager.get().getEquivalentVertexReps(currentContextVertexRep);
+		return !vertexReps.isEmpty() || pathway.vertexSet().contains(currentContextVertexRep);
 	}
 
 	// public void addPathwayTextureSelectionListener(IPathwayTextureSelectionListener listener) {
