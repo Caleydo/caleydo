@@ -132,7 +132,6 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 
 	@Override
 	public void onRankingInvalid() {
-		System.out.println("ranking invalid: " + getTitle());
 		cacheHist.invalidate();
 		super.onRankingInvalid();
 	}

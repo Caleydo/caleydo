@@ -132,7 +132,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 			this.add(new DragElement().setLayoutData(MoveTransitions.GROW_LINEAR), 0);
 			this.add(
 					createButtons().setLayoutData(
-							new MoveTransitions.MoveTransitionBase(Transitions.NO, Transitions.NO, Transitions.NO,
+							new MoveTransitions.MoveTransitionBase(Transitions.NO, Transitions.LINEAR, Transitions.NO,
 									Transitions.LINEAR)), 0);
 
 			this.isCollapsed = (model instanceof ICollapseableColumnMixin) ? ((ICollapseableColumnMixin) model)
@@ -278,7 +278,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 			return;
 		if (hasTitle) {
 			g.move(2, 2);
-			model.getHeaderRenderer().render(g, w - 4, LABEL_HEIGHT - 6, this);
+			model.getHeaderRenderer().render(g, w - 6, LABEL_HEIGHT - 6, this);
 			g.move(-2, -2);
 		}
 		if (headerHovered) {
@@ -438,14 +438,18 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 			weight.setBounds(w, hasTitle ? LABEL_HEIGHT : 0, (isHovered && config.canChangeWeights()) ? 8 : 0, h
 					- (hasTitle ? LABEL_HEIGHT : 0));
 
-			IGLLayoutElement buttons = children.get(BUTTONS);
-			float minWidth = (buttons.asElement() instanceof ButtonBar) ? ((ButtonBar) buttons.asElement())
-					.getMinWidth() : 0;
-			if ((w - 4) < minWidth) {
-				float missing = minWidth - (w - 4);
-				buttons.setBounds(-missing * 0.5f, 2, minWidth, isHovered ? RenderStyle.BUTTON_WIDTH : 0);
-			} else {
-				buttons.setBounds(2, 2, w - 4, isHovered ? RenderStyle.BUTTON_WIDTH : 0);
+			{
+				IGLLayoutElement buttons = children.get(BUTTONS);
+				float minWidth = (buttons.asElement() instanceof ButtonBar) ? ((ButtonBar) buttons.asElement())
+						.getMinWidth() : 0;
+				float yb = isHovered ? (h - 2 - RenderStyle.BUTTON_WIDTH) : h;
+				float hb = isHovered ? RenderStyle.BUTTON_WIDTH : 0;
+				if ((w - 4) < minWidth) {
+					float missing = minWidth - (w - 4);
+					buttons.setBounds(-missing * 0.5f, yb, minWidth, hb);
+				} else {
+					buttons.setBounds(2, yb, w - 4, hb);
+				}
 			}
 
 			IGLLayoutElement uncollapse = children.get(UNCOLLAPSE);

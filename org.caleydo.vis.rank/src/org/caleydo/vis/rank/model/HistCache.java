@@ -23,8 +23,6 @@ import static org.caleydo.vis.rank.ui.RenderStyle.binsForWidth;
 
 import org.caleydo.vis.rank.data.IFloatFunction;
 
-import com.google.common.base.Stopwatch;
-
 /**
  * wrapper for a {@link SimpleHistogram} with caching strategies
  *
@@ -47,7 +45,7 @@ public class HistCache {
 	 * @return its histogram
 	 */
 	public SimpleHistogram get(float width, Iterable<IRow> it, IFloatFunction<IRow> map) {
-		Stopwatch w = new Stopwatch();
+		// Stopwatch w = new Stopwatch();
 		int bins;
 		if (hist != null) {
 			if (Math.abs(computedWidth - width) < 3) // should get the same histogram
@@ -57,9 +55,9 @@ public class HistCache {
 				computedWidth = width; // this width works too
 				return hist;
 			}
-			w.start();
+			// w.start();
 			bins = binsForWidth(width, countValidEntries(it, map));
-			w.stop();
+			// w.stop();
 			if (bins == hist.size()) {// correct number of bins
 				computedWidth = width; // this width works too
 				return hist;
@@ -70,20 +68,20 @@ public class HistCache {
 			if (bins <= 0) // fast and
 				bins = binsForWidth(width, countValidEntries(it, map));
 		}
-		System.out.println("compute hist " + w);
-		w.start();
+		// System.out.println("compute hist " + w);
+		// w.start();
 		assert bins > 0;
 		hist = new SimpleHistogram(bins);
 		computedWidth = width;
 		for (IRow row : it) {
 			hist.add(map.applyPrimitive(row));
 		}
-		System.out.println(w);
+		// System.out.println(w);
 		return hist;
 	}
 
 	private int countValidEntries(Iterable<IRow> it, IFloatFunction<IRow> map) {
-		Stopwatch w = new Stopwatch().start();
+		// Stopwatch w = new Stopwatch().start();
 		int valid = 0;
 		int invalid = 0;
 		for (IRow row : it) {
@@ -93,7 +91,7 @@ public class HistCache {
 			else
 				invalid++;
 		}
-		System.out.println("valid: " + valid + " and " + invalid + " " + w);
+		// System.out.println("valid: " + valid + " and " + invalid + " " + w);
 		return valid;
 	}
 
