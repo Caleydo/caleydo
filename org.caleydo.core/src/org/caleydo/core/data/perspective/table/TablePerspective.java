@@ -433,7 +433,8 @@ public class TablePerspective implements IDefaultLabelHolder {
 	 * {@link Perspective} contains the elements of the group. The {@link Perspective} is the same as for this
 	 * container.
 	 *
-	 * @return a new list of new {@link TablePerspective}s or null if no group list is set.
+	 * @return a new list of new {@link TablePerspective}s or null if no group list is set or only one group is in the
+	 *         group list.
 	 */
 	public List<TablePerspective> getRecordSubTablePerspectives() {
 
@@ -468,6 +469,11 @@ public class TablePerspective implements IDefaultLabelHolder {
 
 		}
 
+		if (recordVA.getGroupList().size() == 1) {
+			recordSubTablePerspectives.get(0).setLabel(label);
+
+		}
+
 		return recordSubTablePerspectives;
 	}
 
@@ -476,7 +482,8 @@ public class TablePerspective implements IDefaultLabelHolder {
 	 * {@link Perspective} contains the elements of the group. The {@link Perspective} is the same as for this
 	 * container.
 	 *
-	 * @return a new list of new {@link TablePerspective}s or null if no group list is set.
+	 * @return a new list of new {@link TablePerspective}s or null if no group list is set or only one group is in the
+	 *         group list.
 	 */
 	public List<TablePerspective> getDimensionSubTablePerspectives() {
 
@@ -507,6 +514,11 @@ public class TablePerspective implements IDefaultLabelHolder {
 			subTablePerspective.setLabel(group.getLabel(), group.isLabelDefault());
 			subTablePerspective.parentTablePerspective = this;
 			dimensionSubTablePerspectives.add(subTablePerspective);
+
+		}
+
+		if (dimensionVA.getGroupList().size() == 1) {
+			dimensionSubTablePerspectives.get(0).setLabel(label);
 
 		}
 

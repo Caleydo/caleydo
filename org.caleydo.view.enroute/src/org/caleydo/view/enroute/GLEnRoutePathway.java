@@ -35,6 +35,7 @@ import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
 import org.caleydo.core.data.selection.IEventBasedSelectionManagerUser;
+import org.caleydo.core.data.virtualarray.events.ClearGroupSelectionEvent;
 import org.caleydo.core.data.virtualarray.events.PerspectiveUpdatedEvent;
 import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.event.EventListenerManager;
@@ -71,7 +72,9 @@ import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.view.enroute.event.FitToViewWidthEvent;
 import org.caleydo.view.enroute.event.PathRendererChangedEvent;
 import org.caleydo.view.enroute.event.ShowContextElementSelectionDialogEvent;
+import org.caleydo.view.enroute.event.ShowGroupSelectionDialogEvent;
 import org.caleydo.view.enroute.mappeddataview.ChooseContextDataDialog;
+import org.caleydo.view.enroute.mappeddataview.ChooseGroupsDialog;
 import org.caleydo.view.enroute.mappeddataview.MappedDataRenderer;
 import org.caleydo.view.enroute.path.EnRoutePathRenderer;
 import org.caleydo.view.enroute.path.SelectedPathUpdateStrategy;
@@ -91,6 +94,8 @@ import org.eclipse.swt.widgets.Shell;
 public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveBasedView,
 		IEventBasedSelectionManagerUser, IPathwayRepresentation {
 
+	/** The labels of the groups to show. If null, all groups are shown. */
+	private Set<String> restrictedGroups = null;
 	public static String VIEW_TYPE = "org.caleydo.view.enroute";
 	public static String VIEW_NAME = "enRoute";
 
@@ -578,8 +583,8 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		}
 
 		tablePerspectives.addAll(newTablePerspectives);
-		resolveSubTablePerspectives(newTablePerspectives);
 
+		resolveSubTablePerspectives(newTablePerspectives);
 		// if (!isRenderedRemote())
 		// pathRenderer.setTablePerspectives(new ArrayList<>(resolvedTablePerspectives));
 		mappedDataRenderer.setGeneTablePerspectives(resolvedTablePerspectives);
@@ -617,7 +622,15 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 			}
 
 			if (newlyResovedTablePerspectives != null) {
-				resolvedTablePerspectives.addAll(newlyResovedTablePerspectives);
+				if (restrictedGroups == null) {
+					resolvedTablePerspectives.addAll(newlyResovedTablePerspectives);
+				} else {
+					for (TablePerspective resolvedPerspective : newlyResovedTablePerspectives) {
+						if (restrictedGroups.contains(resolvedPerspective.getLabel())) {
+							resolvedTablePerspectives.add(resolvedPerspective);
+						}
+					}
+				}
 
 			} else {
 				resolvedTablePerspectives.add(tablePerspective);
@@ -877,10 +890,54 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		});
 	}
 
+	@ListenTo
+	public void showGroupSelectionDialog(final ShowGroupSelectionDialogEvent event) {
+
+		getParentComposite().getDisplay().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				Shell shell = new Shell();
+				ChooseGroupsDialog dialog = new ChooseGroupsDialog(shell, event.getPerspective());
+				dialog.create();
+				dialog.setBlockOnOpen(true);
+
+				if (dialog.open() == IStatus.OK) {
+
+					// FIXME this might not be thread-safe
+					Set<String> selectedItems = dialog.getSelectedItems();
+					if (selectedItems != null && selectedItems.isEmpty()) {
+						restrictedGroups = null;
+					} else {
+						restrictedGroups = selectedItems;
+					}
+					resolvedTablePerspectives.clear();
+					resolveSubTablePerspectives(tablePerspectives);
+
+					mappedDataRenderer.setGeneTablePerspectives(resolvedTablePerspectives);
+					// mappedDataRenderer.setContextRowIDs(selectedItems);
+
+					setLayoutDirty();
+
+				}
+			}
+
+		});
+	}
+
 	@Override
 	public void addVertexRepBasedSelectionEvent(IVertexRepBasedEventFactory eventFactory, PickingMode pickingMode) {
 		if (pathRenderer != null)
 			pathRenderer.addVertexRepBasedSelectionEvent(eventFactory, pickingMode);
+	}
+
+	@ListenTo
+	public void clearGroupSelection(ClearGroupSelectionEvent event) {
+		restrictedGroups = null;
+		resolvedTablePerspectives.clear();
+		resolveSubTablePerspectives(tablePerspectives);
+		mappedDataRenderer.setGeneTablePerspectives(resolvedTablePerspectives);
+		setLayoutDirty();
+
 	}
 
 }

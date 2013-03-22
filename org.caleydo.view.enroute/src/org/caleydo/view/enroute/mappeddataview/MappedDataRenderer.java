@@ -86,14 +86,14 @@ public class MappedDataRenderer {
 
 	public static final int SPACING_PIXEL_WIDTH = 1;
 
-	private GLEnRoutePathway parentView;
+	GLEnRoutePathway parentView;
 
 	private ArrayList<RelationshipRenderer> relationShipRenderers;
 
 	/**
 	 * Table perspectives rendered.
 	 */
-	private ArrayList<TablePerspective> geneTablePerspectives = new ArrayList<>();
+	ArrayList<TablePerspective> geneTablePerspectives = new ArrayList<>();
 
 	ArrayList<TablePerspective> contextualTablePerspectives = new ArrayList<>();
 

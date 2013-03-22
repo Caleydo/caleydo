@@ -26,14 +26,14 @@ import org.caleydo.core.event.AEvent;
  * @author Alexander Lex
  *
  */
-public class SelectGroupSelectionDialogEvent extends AEvent {
+public class ShowGroupSelectionDialogEvent extends AEvent {
 
 	Perspective perspective;
 
 	/**
 	 *
 	 */
-	public SelectGroupSelectionDialogEvent(Perspective perspective) {
+	public ShowGroupSelectionDialogEvent(Perspective perspective) {
 		this.perspective = perspective;
 	}
 
