@@ -373,6 +373,9 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 
 		// setDisplayListDirty(true);
 		layout.updateLayout();
+		// for (APathwayPathRenderer renderer : renderers.keySet()) {
+		// renderer.updateLayout();
+		// }
 		triggerMinSizeUpdate();
 	}
 
