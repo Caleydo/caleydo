@@ -22,6 +22,7 @@ package demo;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.jface.action.ContributionItem;
+import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.swt.SWT;
@@ -109,14 +110,24 @@ public class DemoApplication implements IApplication {
 		    IWorkbenchWindowConfigurer configurer = getWindowConfigurer();
 			configurer.setInitialSize(new Point(800, 600));
 		    configurer.setShowStatusLine(false);
-			configurer.setTitle("RankVis demos");
+			configurer.setTitle("Caleydo LineUp - Demos");
 			configurer.setShowPerspectiveBar(false);
-			configurer.setShowMenuBar(true);
+			configurer.setShowMenuBar(false);
 			configurer.setShowFastViewBars(false);
 			configurer.setShowCoolBar(false);
-
 		}
 
+		@Override
+		public void postWindowOpen() {
+
+			IMenuManager menuManager = getWindowConfigurer().getActionBarConfigurer().getMenuManager();
+			for (IContributionItem item : menuManager.getItems()) {
+
+				if (item.getId().contains("org.caleydo")) {
+					menuManager.remove(item);
+				}
+			}
+		}
 	}
 
 	public static class ApplicationActionBarAdvisor extends ActionBarAdvisor {
