@@ -33,11 +33,9 @@ import javax.media.opengl.GL2;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.color.Color;
-import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 import org.caleydo.core.view.opengl.picking.Pick;
-import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.listener.ShowNodeContextEvent;
@@ -141,7 +139,7 @@ public class LinkRenderer extends PickableGLElement {
 			g.drawLine((float) loc1.getCenterX(), (float) loc1.getCenterY(), (float) loc2.getCenterX(),
 					(float) loc2.getCenterY());
 		}
-		
+
 		g.lineWidth(1);
 //		g.gl.glEnable(GL2.GL_BLEND);
 //		g.gl.glEnable(GL2.GL_LINE_SMOOTH);
@@ -176,19 +174,19 @@ public class LinkRenderer extends PickableGLElement {
 		//drawStubAsFreeFormRound(gl, xS,yS, xE, yE, startWidth, endWidth);
 	}
 
-	
+
 	private void  drawStubRBorder(GL2 gl, float xS, float yS, float xE, float yE, float startWidth, float endWidth)
 	{
-		
+
 		// START POINTS
 		//float glxS = xS;//xlConverter.getGLWidthForPixelWidth(Math.round(xS));
 		//float glyS = yS;//pxlConverter.getGLHeightForPixelHeight(Math.round(yS));
-		
+
 //		float glxS = (float)loc1.getX()+(float)loc1.getWidth();;//xlConverter.getGLWidthForPixelWidth(Math.round(xS));
 //		float glyS = (float)loc1.getY()+((float)loc1.getHeight())/2.0f;//pxlConverter.getGLHeightForPixelHeight(Math.round(yS));
 
 
-		
+
 		float glxS = (float)loc1.getX()+(float)loc1.getWidth();
 		float glyS = (float)loc1.getY()+((float)loc1.getHeight()/2.0f);
 
@@ -205,34 +203,34 @@ public class LinkRenderer extends PickableGLElement {
 //		float glEndOffsetX = pxlConverter.getGLWidthForPixelWidth(Math.round(normalVec.get(0) * endWidth));
 //		float glEndOffsetY = pxlConverter.getGLHeightForPixelHeight(Math.round(normalVec.get(1) * endWidth));
 		//
-//		float p1x = glxS - (glStartOffsetX);//		
+//		float p1x = glxS - (glStartOffsetX);//
 //		float p1y = glyS - (glStartOffsetY);//
 //		float p2x = glxS + (glStartOffsetX);//
 //		float p2y = glyS + (glStartOffsetY);//
-//		float p2x = (float)loc1.getX()+(float)loc1.getWidth();//		
+//		float p2x = (float)loc1.getX()+(float)loc1.getWidth();//
 //		float p2y = (float)loc1.getY();//
 //		float p1x = (float)loc1.getX()+(float)loc1.getWidth();//
-//		float p1y = (float)loc1.getY()+((float)loc1.getHeight());//		
-//		float p1x = glxS - (glStartOffsetX);//		
+//		float p1y = (float)loc1.getY()+((float)loc1.getHeight());//
+//		float p1x = glxS - (glStartOffsetX);//
 //		float p1y = glyS - (glStartOffsetY);//
 //		float p2x = glxS + (glStartOffsetX);//
 //		float p2y = glyS + (glStartOffsetY);//
-		float p1x = (float)loc1.getX()+(float)loc1.getWidth();//		
+		float p1x = (float)loc1.getX()+(float)loc1.getWidth();//
 		float p1y = (float)loc1.getY();//
 		float p2x = (float)loc1.getX()+(float)loc1.getWidth();//
 		float p2y = (float)loc1.getY()+((float)loc1.getHeight());//
 		// END POINTS
 		float glxE = glxS + (dirNorm.get(0) * (length));//pxlConverter.getGLWidthForPixelWidth(Math.round(xE));
 		float glyE = glyS + (dirNorm.get(1) * (length));//pxlConverter.getGLHeightForPixelHeight(Math.round(yE));
-		
+
 		float p3x = glxS+ (dirNorm.get(0) * (length))- (glOffsetX /1.0f);//
 		float p3y = glyS+ (dirNorm.get(1) * (length))- (glOffsetY /1.0f);//
 		float p4x = glxS+ (dirNorm.get(0) * (length))+ (glOffsetX /1.0f);//
 		float p4y = glyS+ (dirNorm.get(1) * (length))+ (glOffsetY /1.0f);//
-		
+
 		// MID POINTS
 		float p5x = glxS + (dirNorm.get(0) * (length/ 3.0f))- (glOffsetX /1.0f);//
-		float p5y = glyS + (dirNorm.get(1) * (length / 3.0f))- (glOffsetY /1.0f);//		
+		float p5y = glyS + (dirNorm.get(1) * (length / 3.0f))- (glOffsetY /1.0f);//
 		float p6x = glxS + (dirNorm.get(0) * (length / 3.0f))+ (glOffsetX /1.0f);//
 		float p6y = glyS + (dirNorm.get(1) * (length / 3.0f))+ (glOffsetY /1.0f);//
 		//
@@ -273,25 +271,25 @@ public class LinkRenderer extends PickableGLElement {
 
 		gl.glEnable(GL.GL_STENCIL_TEST);
 		gl.glDisable(GL.GL_DEPTH_TEST);
-		gl.glColorMask(false, false, false, false);		
+		gl.glColorMask(false, false, false, false);
 		gl.glStencilFunc(GL.GL_ALWAYS, 2, 0xff);
 		gl.glStencilOp(GL.GL_REPLACE, GL.GL_REPLACE, GL.GL_REPLACE);
-		//generate stencil mask			
+		//generate stencil mask
 		double rx=loc1.getX();
 		double ry=loc1.getY();
 		double rz=5.0;
 		double rw=loc1.getWidth();
-		double rh=loc1.getHeight();		
+		double rh=loc1.getHeight();
 		gl.glBegin(GL2.GL_POLYGON );
 			gl.glVertex3d(rx, ry, rz);
 			gl.glVertex3d(rx + rw, ry, rz);
 			gl.glVertex3d(rx + rw, ry + rh, rz);
 			gl.glVertex3d(rx, ry + rh, rz);
 		gl.glEnd();
-		
+
 		//render stub
 		Color bColor = new Color(0.4f, 0.4f, 0.4f, 1f);
-		gl.glColorMask(true, true, true, true);		
+		gl.glColorMask(true, true, true, true);
 		gl.glStencilFunc(GL.GL_GREATER, 1, 0xff);
 		gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_KEEP);
 		bandRenderer.renderComplexBand(gl, bandConnectionPoints, false, bColor.getRGBA(), 0.5f,true);
@@ -302,18 +300,18 @@ public class LinkRenderer extends PickableGLElement {
 			 gl.glVertex3f( glxS, glyS, 10.0f);
 			 gl.glVertex3f( glxE, glyE, 10.0f);
 		 gl.glEnd();
-		gl.glEnable(GL.GL_DEPTH_TEST);	
+		gl.glEnable(GL.GL_DEPTH_TEST);
 		gl.glDisable(GL.GL_STENCIL_TEST);
 //		//DEBUG
 
 
-		
+
 		gl.glPointSize(3);
 		 gl.glBegin(GL2.GL_POINTS);
 			 gl.glColor4f(1f, 0f, 0f, 1.0f);
 			 gl.glVertex3f( p1x, p1y, 5.0f);
 			 gl.glVertex3f( p2x, p2y, 5.0f);
-			 
+
 			 gl.glColor4f(0f, 1f, 0f, 1.0f);
 			 gl.glVertex3f( p3x, p3y, 5.0f);
 			 gl.glVertex3f( p4x, p4y, 5.0f);
@@ -322,38 +320,38 @@ public class LinkRenderer extends PickableGLElement {
 			 gl.glVertex3f( p5x, p5y, 5.0f);
 			 gl.glVertex3f( p6x, p6y, 5.0f);
 
-			 
+
 			 gl.glColor4f(1f, 0f, 1f, 1.0f);
 			 gl.glVertex3f( p7x, p7y, 5.0f);
 			 gl.glVertex3f( p8x, p8y, 5.0f);
-			 
+
 			 gl.glColor4f(0f, 1f, 1f, 1.0f);
 			 gl.glVertex3f( glxS, glyS, 5.0f);
 			 gl.glVertex3f( glxE, glyE, 5.0f);
-			 
+
 		 gl.glEnd();
 		 gl.glPointSize(1);
-		 
+
 		//clean up
-		
-			
+
+
 		gl.glTranslatef(0f, 0f, -4f);
 	}
 
-	
-	
+
+
 //	private void  drawStubRBorder(GL2 gl, float xS, float yS, float xE, float yE, float startWidth, float endWidth)
 //	{
-//		
+//
 //		// START POINTS
 //		//float glxS = xS;//xlConverter.getGLWidthForPixelWidth(Math.round(xS));
 //		//float glyS = yS;//pxlConverter.getGLHeightForPixelHeight(Math.round(yS));
-//		
+//
 ////		float glxS = (float)loc1.getX()+(float)loc1.getWidth();;//xlConverter.getGLWidthForPixelWidth(Math.round(xS));
 ////		float glyS = (float)loc1.getY()+((float)loc1.getHeight())/2.0f;//pxlConverter.getGLHeightForPixelHeight(Math.round(yS));
 //
 //
-//		
+//
 //		float glxS = (float)loc1.getX()+(float)loc1.getWidth();
 //		float glyS = (float)loc1.getY()+((float)loc1.getHeight()/2.0f);
 //
@@ -369,19 +367,19 @@ public class LinkRenderer extends PickableGLElement {
 ////		float glEndOffsetX = pxlConverter.getGLWidthForPixelWidth(Math.round(normalVec.get(0) * endWidth));
 ////		float glEndOffsetY = pxlConverter.getGLHeightForPixelHeight(Math.round(normalVec.get(1) * endWidth));
 //		//
-////		float p1x = glxS - (glStartOffsetX);//		
+////		float p1x = glxS - (glStartOffsetX);//
 ////		float p1y = glyS - (glStartOffsetY);//
 ////		float p2x = glxS + (glStartOffsetX);//
 ////		float p2y = glyS + (glStartOffsetY);//
-////		float p2x = (float)loc1.getX()+(float)loc1.getWidth();//		
+////		float p2x = (float)loc1.getX()+(float)loc1.getWidth();//
 ////		float p2y = (float)loc1.getY();//
 ////		float p1x = (float)loc1.getX()+(float)loc1.getWidth();//
-////		float p1y = (float)loc1.getY()+((float)loc1.getHeight());//		
-////		float p1x = glxS - (glStartOffsetX);//		
+////		float p1y = (float)loc1.getY()+((float)loc1.getHeight());//
+////		float p1x = glxS - (glStartOffsetX);//
 ////		float p1y = glyS - (glStartOffsetY);//
 ////		float p2x = glxS + (glStartOffsetX);//
 ////		float p2y = glyS + (glStartOffsetY);//
-//		float p1x = (float)loc1.getX()+(float)loc1.getWidth();//		
+//		float p1x = (float)loc1.getX()+(float)loc1.getWidth();//
 //		float p1y = (float)loc1.getY();//
 //		float p2x = (float)loc1.getX()+(float)loc1.getWidth();//
 //		float p2y = (float)loc1.getY()+((float)loc1.getHeight());//
@@ -395,7 +393,7 @@ public class LinkRenderer extends PickableGLElement {
 //		// MID POINTS
 //		float p5x = p1x + (dirNorm.get(0) * (length/ 3.0f));// - (glStartOffsetX / 1.f);//
 //		float p5y = p1y + (dirNorm.get(1) * (length / 3.0f));// - (glStartOffsetY / 1.f);//
-//		
+//
 //		float p6x = p2x + (dirNorm.get(0) * (length / 3.0f));// + (glStartOffsetX / 1f);//
 //		float p6y = p2y + (dirNorm.get(1) * (length / 3.0f));// + (glStartOffsetY / 1f);//
 //		//
@@ -436,25 +434,25 @@ public class LinkRenderer extends PickableGLElement {
 //
 //		gl.glEnable(GL.GL_STENCIL_TEST);
 //		gl.glDisable(GL.GL_DEPTH_TEST);
-//		gl.glColorMask(false, false, false, false);		
+//		gl.glColorMask(false, false, false, false);
 //		gl.glStencilFunc(GL.GL_ALWAYS, 2, 0xff);
 //		gl.glStencilOp(GL.GL_REPLACE, GL.GL_REPLACE, GL.GL_REPLACE);
-//		//generate stencil mask			
+//		//generate stencil mask
 //		double rx=loc1.getX();
 //		double ry=loc1.getY();
 //		double rz=5.0;
 //		double rw=loc1.getWidth();
-//		double rh=loc1.getHeight();		
+//		double rh=loc1.getHeight();
 //		gl.glBegin(GL2.GL_POLYGON );
 //			gl.glVertex3d(rx, ry, rz);
 //			gl.glVertex3d(rx + rw, ry, rz);
 //			gl.glVertex3d(rx + rw, ry + rh, rz);
 //			gl.glVertex3d(rx, ry + rh, rz);
 //		gl.glEnd();
-//		
+//
 //		//render stub
 //		Color bColor = new Color(0.4f, 0.4f, 0.4f, 1f);
-//		gl.glColorMask(true, true, true, true);		
+//		gl.glColorMask(true, true, true, true);
 //		gl.glStencilFunc(GL.GL_GREATER, 1, 0xff);
 //		gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_KEEP);
 //		bandRenderer.renderComplexBand(gl, bandConnectionPoints, false, bColor.getRGBA(), 0.5f,true);
@@ -466,13 +464,13 @@ public class LinkRenderer extends PickableGLElement {
 //		 gl.glVertex3f( glxE, glyE, 4.0f);
 //		 gl.glEnd();
 //
-//		
+//
 //		gl.glPointSize(3);
 //		 gl.glBegin(GL2.GL_POINTS);
 //			 gl.glColor4f(1f, 0f, 0f, 1.0f);
 //			 gl.glVertex3f( p1x, p1y, 5.0f);
 //			 gl.glVertex3f( p2x, p2y, 5.0f);
-//			 
+//
 //			 gl.glColor4f(0f, 1f, 0f, 1.0f);
 //			 gl.glVertex3f( p3x, p3y, 5.0f);
 //			 gl.glVertex3f( p4x, p4y, 5.0f);
@@ -481,32 +479,32 @@ public class LinkRenderer extends PickableGLElement {
 //			 gl.glVertex3f( p5x, p5y, 5.0f);
 //			 gl.glVertex3f( p6x, p6y, 5.0f);
 //
-//			 
+//
 //			 gl.glColor4f(1f, 0f, 1f, 1.0f);
 //			 gl.glVertex3f( p7x, p7y, 5.0f);
 //			 gl.glVertex3f( p8x, p8y, 5.0f);
 //
 //		 gl.glEnd();
 //		 gl.glPointSize(1);
-//		 
+//
 //		//clean up
 //		gl.glDisable(GL.GL_STENCIL_TEST);
-//		gl.glEnable(GL.GL_DEPTH_TEST);		
+//		gl.glEnable(GL.GL_DEPTH_TEST);
 //		gl.glTranslatef(0f, 0f, -4f);
 //	}
 
 	private void  drawStubFromCenter(GL2 gl, float xS, float yS, float xE, float yE, float startWidth, float endWidth)
 	{
-		
+
 		// START POINTS
 		float glxS = xS;//xlConverter.getGLWidthForPixelWidth(Math.round(xS));
 		float glyS = yS;//pxlConverter.getGLHeightForPixelHeight(Math.round(yS));
-		
+
 //		float glxS = (float)loc1.getX()+(float)loc1.getWidth();;//xlConverter.getGLWidthForPixelWidth(Math.round(xS));
 //		float glyS = (float)loc1.getY()+((float)loc1.getHeight())/2.0f;//pxlConverter.getGLHeightForPixelHeight(Math.round(yS));
 
 
-		
+
 //		float glxS = (float)loc1.getX()+(float)loc1.getWidth();
 //		float glyS = (float)loc1.getY()+((float)loc1.getHeight()/2.0f);
 
@@ -522,19 +520,19 @@ public class LinkRenderer extends PickableGLElement {
 //		float glEndOffsetX = pxlConverter.getGLWidthForPixelWidth(Math.round(normalVec.get(0) * endWidth));
 //		float glEndOffsetY = pxlConverter.getGLHeightForPixelHeight(Math.round(normalVec.get(1) * endWidth));
 		//
-//		float p1x = glxS - (glStartOffsetX);//		
+//		float p1x = glxS - (glStartOffsetX);//
 //		float p1y = glyS - (glStartOffsetY);//
 //		float p2x = glxS + (glStartOffsetX);//
 //		float p2y = glyS + (glStartOffsetY);//
-//		float p2x = (float)loc1.getX()+(float)loc1.getWidth();//		
+//		float p2x = (float)loc1.getX()+(float)loc1.getWidth();//
 //		float p2y = (float)loc1.getY();//
 //		float p1x = (float)loc1.getX()+(float)loc1.getWidth();//
-//		float p1y = (float)loc1.getY()+((float)loc1.getHeight());//		
-		float p1x = glxS - (glStartOffsetX);//		
+//		float p1y = (float)loc1.getY()+((float)loc1.getHeight());//
+		float p1x = glxS - (glStartOffsetX);//
 		float p1y = glyS - (glStartOffsetY);//
 		float p2x = glxS + (glStartOffsetX);//
 		float p2y = glyS + (glStartOffsetY);//
-//		float p1x = (float)loc1.getX()+(float)loc1.getWidth();//		
+//		float p1x = (float)loc1.getX()+(float)loc1.getWidth();//
 //		float p1y = (float)loc1.getY();//
 //		float p2x = (float)loc1.getX()+(float)loc1.getWidth();//
 //		float p2y = (float)loc1.getY()+((float)loc1.getHeight());//
@@ -548,7 +546,7 @@ public class LinkRenderer extends PickableGLElement {
 		// MID POINTS
 		float p5x = glxS + (dirNorm.get(0) * (length / 3.0f)) - (glStartOffsetX / 1.f);//
 		float p5y = glyS + (dirNorm.get(1) * (length / 3.0f)) - (glStartOffsetY / 1.f);//
-		
+
 		float p6x = glxS + (dirNorm.get(0) * (length / 3.0f)) + (glStartOffsetX / 1f);//
 		float p6y = glyS + (dirNorm.get(1) * (length / 3.0f)) + (glStartOffsetY / 1f);//
 		//
@@ -589,25 +587,25 @@ public class LinkRenderer extends PickableGLElement {
 
 		gl.glEnable(GL.GL_STENCIL_TEST);
 		gl.glDisable(GL.GL_DEPTH_TEST);
-		gl.glColorMask(false, false, false, false);		
+		gl.glColorMask(false, false, false, false);
 		gl.glStencilFunc(GL.GL_ALWAYS, 2, 0xff);
 		gl.glStencilOp(GL.GL_REPLACE, GL.GL_REPLACE, GL.GL_REPLACE);
-		//generate stencil mask			
+		//generate stencil mask
 		double rx=loc1.getX();
 		double ry=loc1.getY();
 		double rz=5.0;
 		double rw=loc1.getWidth();
-		double rh=loc1.getHeight();		
+		double rh=loc1.getHeight();
 		gl.glBegin(GL2.GL_POLYGON );
 			gl.glVertex3d(rx, ry, rz);
 			gl.glVertex3d(rx + rw, ry, rz);
 			gl.glVertex3d(rx + rw, ry + rh, rz);
 			gl.glVertex3d(rx, ry + rh, rz);
 		gl.glEnd();
-		
+
 		//render stub
 		Color bColor = new Color(0.4f, 0.4f, 0.4f, 0.4f);
-		gl.glColorMask(true, true, true, true);		
+		gl.glColorMask(true, true, true, true);
 		gl.glStencilFunc(GL.GL_GREATER, 1, 0xff);
 		gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_KEEP);
 		bandRenderer.renderComplexBand(gl, bandConnectionPoints, false, bColor.getRGBA(), 0.5f,false);
@@ -618,13 +616,13 @@ public class LinkRenderer extends PickableGLElement {
 		 gl.glVertex3f( glxE, glyE, 4.0f);
 		 gl.glEnd();
 
-		
+
 //		gl.glPointSize(5);
 //		 gl.glBegin(GL2.GL_POINTS);
 //			 gl.glColor4f(1f, 0f, 0f, 1.0f);
 //			 gl.glVertex3f( p1x, p1y, 5.0f);
 //			 gl.glVertex3f( p2x, p2y, 5.0f);
-//			 
+//
 //			 gl.glColor4f(0f, 1f, 0f, 1.0f);
 //			 gl.glVertex3f( p3x, p3y, 5.0f);
 //			 gl.glVertex3f( p4x, p4y, 5.0f);
@@ -633,20 +631,20 @@ public class LinkRenderer extends PickableGLElement {
 //			 gl.glVertex3f( p5x, p5y, 5.0f);
 //			 gl.glVertex3f( p6x, p6y, 5.0f);
 //
-//			 
+//
 //			 gl.glColor4f(1f, 0f, 1f, 1.0f);
 //			 gl.glVertex3f( p7x, p7y, 5.0f);
 //			 gl.glVertex3f( p8x, p8y, 5.0f);
 //
 //		 gl.glEnd();
 //		 gl.glPointSize(5);
-		 
+
 		//clean up
 		gl.glDisable(GL.GL_STENCIL_TEST);
-		gl.glEnable(GL.GL_DEPTH_TEST);		
+		gl.glEnable(GL.GL_DEPTH_TEST);
 		gl.glTranslatef(0f, 0f, -4f);
 	}
-	
+
 	//////////////
 
 	@Override
@@ -685,7 +683,7 @@ public class LinkRenderer extends PickableGLElement {
 		if (info.getCurrentEmbeddingID() == EEmbeddingID.PATHWAY_LEVEL3
 				|| info.getCurrentEmbeddingID() == EEmbeddingID.PATHWAY_LEVEL4) {
 			info.multiFormRenderer.setActive(info.embeddingIDToRendererIDs.get(EEmbeddingID.PATHWAY_LEVEL2).get(0));
-			info.age = GLSubGraph.currentPathwayAge--;
+			// info.age = GLSubGraph.currentPathwayAge--;
 			view.lastUsedRenderer = info.multiFormRenderer;
 			return true;
 		} else if (info.getCurrentEmbeddingID() == EEmbeddingID.PATHWAY_LEVEL1) {

@@ -128,6 +128,8 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	 */
 	private MultiFormInfo pathInfo;
 
+	private boolean wasContextChanged = false;
+
 	// /**
 	// * All portals currently present.
 	// */
@@ -144,7 +146,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 
 	protected MultiFormRenderer lastUsedLevel1Renderer;
 
-	protected GLPathwayGridLayout2 pathwayLayout = new GLPathwayGridLayout2(this, GLPadding.ZERO, 10);
+	protected GLPathwayGridLayout3 pathwayLayout = new GLPathwayGridLayout3(this, GLPadding.ZERO, 10);
 
 	protected GLExperimentalDataMapping experimentalDataMappingElement = new GLExperimentalDataMapping(this);
 
@@ -781,28 +783,21 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		// which need alpha blending...
 		dndController.handleDragging(gl, glMouseListener);
 		contextMenuItemsToShow.clear();
-
+		wasContextChanged = false;
 	}
 
 	@Override
 	public void activeRendererChanged(MultiFormRenderer multiFormRenderer, int rendererID, int previousRendererID,
 			boolean wasTriggeredByUser) {
 
-		// if (pathInfo != null && pathInfo.isInitialized()) {
-		//
-		// if (multiFormRenderer == pathInfo.multiFormRenderer) {
-		// EEmbeddingID embeddingID = pathInfo.getEmbeddingIDFromRendererID(rendererID);
-		// setPathLevel(embeddingID);
-		// }
-		// }
 		if (wasTriggeredByUser && rendererID != previousRendererID) {
 			for (PathwayMultiFormInfo info : pathwayInfos) {
 				if (info.multiFormRenderer == multiFormRenderer) {
 					if (info.getEmbeddingIDFromRendererID(rendererID) == EEmbeddingID.PATHWAY_LEVEL1) {
 						pathwayLayout.setLevel1((GLPathwayWindow) info.window);
 						lastUsedLevel1Renderer = info.multiFormRenderer;
+						info.age = currentPathwayAge--;
 					}
-					info.age = currentPathwayAge--;
 					lastUsedRenderer = info.multiFormRenderer;
 					break;
 				}
@@ -1014,9 +1009,10 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 						&& info.getCurrentEmbeddingID() != EEmbeddingID.PATHWAY_LEVEL1) {
 					info.multiFormRenderer.setActive(info.embeddingIDToRendererIDs.get(EEmbeddingID.PATHWAY_LEVEL2)
 							.get(0));
-					info.age = currentPathwayAge--;
+					// info.age = currentPathwayAge--;
 				}
 			}
+			wasContextChanged = true;
 			updatePathwayPortals();
 		}
 
@@ -1397,4 +1393,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	// textureSelectionListeners.add(listener);
 	// }
 
+	public boolean wasContextChanged() {
+		return wasContextChanged;
+	}
 }

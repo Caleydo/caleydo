@@ -101,4 +101,10 @@ public class GLPathwayWindow extends GLMultiFormWindow {
 		this.active = active;
 	}
 
+	@Override
+	public String toString() {
+
+		return ((PathwayMultiFormInfo) info).pathway.getTitle();
+	}
+
 }
