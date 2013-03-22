@@ -261,12 +261,12 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 		}
 
 		ElementLayout layout = new ElementLayout();
-		layout.setDynamicSizeUnitsX(1);
 		layout.setRenderer(renderer);
 		pathRow.add(layout);
 
 		renderer.init();
 		renderer.setPath(pathSegments);
+		layout.setDynamicSizeUnitsX(renderer.getMinWidthPixels());
 		renderers.put(renderer, layout);
 		return renderer;
 	}
