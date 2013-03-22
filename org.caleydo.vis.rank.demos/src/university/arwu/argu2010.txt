@@ -1,4 +1,4 @@
-ranking	institution	country	national	total	alumini	award	hici	nands	pub	pcb
+﻿ranking	institution	country	national	total	alumini	award	hici	nands	pub	pcb
 1	Harvard University	United States	1	100.0	100.0	100.0	100.0	100.0	100.0	69.2
 2	University of California, Berkeley (UCB)	United States	2	72.4	67.6	79.3	69.0	70.9	70.6	54.2
 3	Stanford University	United States	3	72.1	40.2	78.4	87.6	68.4	69.7	50.1
@@ -15,7 +15,7 @@ ranking	institution	country	national	total	alumini	award	hici	nands	pub	pcb
 14	University of California, San Diego	United States	12	50.0	15.1	35.8	60.2	54.6	65.1	37.9
 15	University of Pennsylvania	United States	13	49.0	32.9	34.3	57.1	46.9	68.6	28.5
 16	University of Washington	United States	14	48.7	24.4	31.7	53.9	51.6	72.5	28.1
-17	University of Wisconsin - Madison	United States	15	46.4	36.5	35.4	51.9	40.2	66.1	25.7
+17	University of Wisconsin-Madison	United States	15	46.4	36.5	35.4	51.9	40.2	66.1	25.7
 18	Johns Hopkins University	United States	16	46.0	43.6	32.1	42.0	49.4	64.0	27.2
 18	University of California, San Francisco	United States	17	46.0	0.0	40.1	53.4	51.8	60.7	33.6
 20	The University of Tokyo	Japan	1	45.9	33.3	14.1	42.0	52.0	80.4	34.5
@@ -29,7 +29,7 @@ ranking	institution	country	national	total	alumini	award	hici	nands	pub	pcb
 28	University of Minnesota, Twin Cities	United States	20	40.6	30.6	16.2	50.4	36.1	66.6	23.9
 29	Northwestern University	United States	21	38.4	18.5	18.9	48.3	35.9	59.7	28.4
 30	Washington University in St. Louis	United States	22	38.1	21.3	25.9	38.8	41.0	54.8	26.7
-31	New York University	United States	23	37.8	32.4	24.4	40.7	36.2	54.4	22.4
+31	New York University (NYU)	United States	23	37.8	32.4	24.4	40.7	36.2	54.4	22.4
 32	University of California, Santa Barbara	United States	24	37.1	16.0	35.1	42.0	33.3	42.6	37.3
 32	University of Colorado at Boulder	United States	24	37.1	14.1	30.7	38.8	41.7	44.7	33.5
 34	Rockefeller University	United States	26	36.7	19.2	58.4	28.8	42.3	21.0	35.6
@@ -54,22 +54,22 @@ ranking	institution	country	national	total	alumini	award	hici	nands	pub	pcb
 53	Vanderbilt University	United States	36	31.0	17.7	29.5	31.4	20.2	50.8	19.1
 54	Rutgers, The State University of New Jersey - New Brunswick	United States	37	30.9	13.1	19.9	40.1	27.9	43.7	23.2
 54	University of Edinburgh	United Kingdom	6	30.9	19.2	16.6	26.0	34.2	51.3	23.9
-56	Technical University Munich	Germany	2	30.7	39.2	23.5	24.9	19.5	46.5	29.2
+56	Technische Universität München	Germany	2	30.7	39.2	23.5	24.9	19.5	46.5	29.2
 56	University of Pittsburgh	United States	38	30.7	21.3	0.0	42.0	23.4	63.1	19.0
 58	Carnegie Mellon University	United States	39	30.2	32.9	32.7	30.5	15.2	34.2	34.3
-59	The Australian National University	Australia	1	29.6	15.1	12.6	36.0	27.8	43.8	31.1
+59	Australian National University	Australia	1	29.6	15.1	12.6	36.0	27.8	43.8	31.1
 59	The Ohio State University - Columbus	United States	40	29.6	15.1	0.0	41.7	22.8	62.0	19.1
 61	McGill University	Canada	3	29.5	31.1	0.0	32.2	22.9	59.6	25.3
 62	The University of Melbourne	Australia	2	29.3	19.9	14.1	22.8	18.7	63.1	27.0
 63	King's College London (KCL)	United Kingdom	7	29.1	14.1	23.0	31.4	16.7	50.7	25.0
-63	University of Heidelberg	Germany	3	29.1	16.9	27.0	17.6	23.0	50.6	28.6
+63	Ruprecht-Karls-Universität Heidelberg	Germany	3	29.1	16.9	27.0	17.6	23.0	50.6	28.6
 65	Brown University	United States	41	29.0	16.0	13.6	31.4	29.6	41.9	32.1
 66	University of Bristol	United Kingdom	8	28.9	9.2	17.8	28.8	29.1	47.3	25.1
 66	Uppsala University	Sweden	2	28.9	22.0	32.1	14.4	19.9	49.5	26.6
 68	University of Florida	United States	42	28.8	19.2	0.0	36.7	20.6	63.9	17.5
 69	Purdue University - West Lafayette	United States	43	28.6	16.0	16.6	29.7	22.4	51.8	20.6
 70	Leiden University	Netherlands	2	28.4	21.3	15.4	27.9	19.9	47.8	32.4
-71	Ecole Normale Superieure - Paris	France	3	28.3	50.8	24.4	12.5	18.7	27.9	56.7
+71	Ecole normale supérieure, Paris	France	3	28.3	50.8	24.4	12.5	18.7	27.9	56.7
 72	The Hebrew University of Jerusalem	Israel	1	28.1	31.5	19.9	24.9	20.8	41.6	26.5
 72	University of Helsinki	Finland	1	28.1	16.0	17.8	22.8	20.6	52.7	28.2
 74	Moscow State University	Russia	1	27.9	46.8	34.1	0.0	9.6	52.4	31.2
@@ -90,7 +90,7 @@ ranking	institution	country	national	total	alumini	award	hici	nands	pub	pcb
 88	The University of Sheffield	United Kingdom	10	25.2	19.9	14.1	21.0	21.3	44.3	22.6
 90	Ghent University	Belgium	1	25.1	7.5	15.4	17.6	15.1	54.4	30.4
 90	Indiana University Bloomington	United States	50	25.1	11.9	22.7	24.9	18.5	39.9	19.6
-92	University of Sydney	Australia	3	25.0	16.9	0.0	20.4	18.4	61.4	25.1
+92	The University of Sydney	Australia	3	25.0	16.9	0.0	20.4	18.4	61.4	25.1
 93	University of Bonn	Germany	4	24.9	16.9	19.9	14.4	23.3	42.5	24.3
 93	University of Goettingen	Germany	4	24.9	32.9	19.9	14.4	17.2	40.7	24.3
 95	Texas A&M University - College Station	United States	51	24.8	0.0	0.0	34.5	21.0	54.0	21.0
@@ -111,7 +111,7 @@ ranking	institution	country	national	total	alumini	award	hici	nands	pub	pcb
 101-150	North Carolina State University - Raleigh	United States	55-69		0.0	0.0	27.9	15.9	42.9	19.2
 101-150	Oregon State University	United States	55-69		13.1	0.0	26.9	24.7	36.5	23.8
 101-150	Seoul National University	South Korea	1		0.0	0.0	7.2	13.1	66.5	20.3
-101-150	�cole polytechnique f�d�rale de Lausanne (EPFL)	Switzerland	4-5		0.0	0.0	23.9	20.1	40.4	34.0
+101-150	Ecole Polytechnique Fédérale de Lausanne	Switzerland	4-5		0.0	0.0	23.9	20.1	40.4	34.0
 101-150	Technion-Israel Institute of Technology	Israel	2-4		16.0	23.0	16.1	14.0	36.9	21.7
 101-150	Tel Aviv University	Israel	2-4		0.0	0.0	23.9	15.9	50.9	25.5
 101-150	The University of Georgia	United States	55-69		0.0	0.0	26.9	19.8	44.2	18.5
@@ -169,7 +169,7 @@ ranking	institution	country	national	total	alumini	award	hici	nands	pub	pcb
 151-200	Radboud University Nijmegen	Netherlands	7-9		0.0	0.0	10.2	19.4	48.5	29.9
 151-200	State University of New York at Stony Brook	United States	70-89		0.0	0.0	19.0	22.8	37.9	18.2
 151-200	Technical University of Denmark	Denmark	3		7.5	12.6	17.6	13.9	36.5	19.7
-151-200	Chinese University of Hong Kong	Hong Kong, China	1		0.0	14.1	14.4	6.1	43.1	21.5
+151-200	The Chinese University of Hong Kong	Hong Kong, China	1		0.0	14.1	14.4	6.1	43.1	21.5
 151-200	University of Alabama at Birmingham	United States	70-89		0.0	0.0	16.1	18.5	42.4	15.3
 151-200	University of Calgary	Canada	7-8		0.0	0.0	10.2	17.0	46.2	17.2
 151-200	University of Connecticut - Storrs	United States	70-89		13.1	0.0	16.1	13.5	37.0	17.0
@@ -188,7 +188,7 @@ ranking	institution	country	national	total	alumini	award	hici	nands	pub	pcb
 151-200	University of Mainz	Germany	11-14		0.0	8.1	17.6	19.6	38.1	20.6
 151-200	University of Maryland, Baltimore	United States	70-89		0.0	0.0	22.8	16.5	38.6	17.8
 151-200	University of Nebraska - Lincoln	United States	70-89		19.9	0.0	16.1	14.8	33.4	15.9
-151-200	University of New South Wales	Australia	6-7		0.0	0.0	19.0	11.3	52.2	20.9
+151-200	The University of New South Wales	Australia	6-7		0.0	0.0	19.0	11.3	52.2	20.9
 151-200	University of Padua	Italy	4		0.0	0.0	12.5	18.8	48.8	18.7
 151-200	University of Paris Descartes (Paris 5)	France	6-7		13.7	11.9	10.2	16.5	41.1	15.3
 151-200	University of Southampton	United Kingdom	15-19		0.0	0.0	19.0	17.9	42.6	18.2
@@ -329,11 +329,11 @@ ranking	institution	country	national	total	alumini	award	hici	nands	pub	pcb
 301-400	Medical University of Innsbruck	Austria	4-6		0.0	0.0	12.5	5.7	24.6	22.9
 301-400	Medical University of South Carolina	United States	112-137		0.0	0.0	14.4	7.3	30.0	19.5
 301-400	Nagasaki University	Japan	11-17		13.1	0.0	10.2	4.1	24.4	17.0
-301-400	Nanyang Technological University	Singapore	2		0.0	0.0	0.0	6.5	46.5	20.5
+301-400	Nanyang Technological University (NTU)	Singapore	2		0.0	0.0	0.0	6.5	46.5	20.5
 301-400	National Chiao Tung University	Taiwan, China	3-4		0.0	0.0	7.2	6.4	38.3	20.7
 301-400	National Tsing Hua University	Taiwan, China	3-4		14.1	0.0	0.0	8.9	35.4	21.2
 301-400	Okayama University	Japan	11-17		0.0	0.0	7.2	12.0	33.4	17.8
-301-400	Pohang University of Science and Technology	South Korea	5-7		0.0	0.0	7.2	9.8	29.3	28.8
+301-400	Pohang University of Science And Technology (POSTECH)	South Korea	5-7		0.0	0.0	7.2	9.8	29.3	28.8
 301-400	Polytechnic University of Valencia	Spain	5-7		0.0	0.0	7.2	11.5	31.4	15.4
 301-400	Saint Louis University	United States	112-137		0.0	12.6	10.2	4.7	24.4	12.4
 301-400	Saint Petersburg State University	Russia	2		26.1	0.0	0.0	4.8	29.6	15.4
