@@ -493,9 +493,6 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
-		// push my resource locator to find the icons
-		g.pushResourceLocator(ResourceLocators.classLoader(this.getClass().getClassLoader()));
-
 		renderBackgroundLines(g, w, false);
 
 		super.renderImpl(g, w, h);
@@ -509,8 +506,6 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 			g.move(-offset, 0);
 			g.incZ(-1);
 		}
-
-		g.popResourceLocator();
 
 		isSelectedRowChanged = false;
 	}

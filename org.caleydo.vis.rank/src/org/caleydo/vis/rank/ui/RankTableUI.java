@@ -31,6 +31,7 @@ import org.caleydo.core.view.opengl.layout2.basic.ScrollBar;
 import org.caleydo.core.view.opengl.layout2.basic.ScrollingDecorator;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
+import org.caleydo.data.loader.ResourceLocators;
 import org.caleydo.vis.rank.config.IRankTableUIConfig;
 import org.caleydo.vis.rank.internal.ui.ButtonBar;
 import org.caleydo.vis.rank.layout.IRowHeightLayout;
@@ -102,5 +103,15 @@ public class RankTableUI extends GLElementContainer implements ISelectionCallbac
 		TableUI table = (TableUI) scbody.getContent();
 		TableBodyUI body = (TableBodyUI) table.get(1);
 		body.setRowLayout(l);
+	}
+
+	@Override
+	protected void renderImpl(GLGraphics g, float w, float h) {
+		// push my resource locator to find the icons
+		g.pushResourceLocator(ResourceLocators.classLoader(this.getClass().getClassLoader()));
+
+		super.renderImpl(g, w, h);
+
+		g.popResourceLocator();
 	}
 }

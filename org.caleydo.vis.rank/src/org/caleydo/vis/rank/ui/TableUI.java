@@ -24,8 +24,10 @@ import gleem.linalg.Vec2f;
 import java.util.List;
 
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
+import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
+import org.caleydo.data.loader.ResourceLocators;
 import org.caleydo.vis.rank.config.IRankTableUIConfig;
 import org.caleydo.vis.rank.layout.IRowHeightLayout;
 import org.caleydo.vis.rank.layout.RowHeightLayouts;
@@ -65,5 +67,15 @@ public class TableUI extends GLElementContainer implements IGLLayout {
 			setLayoutData(new_.copy());
 			relayoutParent();
 		}
+	}
+
+	@Override
+	protected void renderImpl(GLGraphics g, float w, float h) {
+		// push my resource locator to find the icons
+		g.pushResourceLocator(ResourceLocators.classLoader(this.getClass().getClassLoader()));
+
+		super.renderImpl(g, w, h);
+
+		g.popResourceLocator();
 	}
 }

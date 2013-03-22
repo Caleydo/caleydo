@@ -23,8 +23,6 @@ import static org.caleydo.vis.rank.ui.RenderStyle.HIST_HEIGHT;
 import static org.caleydo.vis.rank.ui.RenderStyle.LABEL_HEIGHT;
 
 import org.caleydo.core.view.opengl.layout2.GLElement;
-import org.caleydo.core.view.opengl.layout2.GLGraphics;
-import org.caleydo.data.loader.ResourceLocators;
 import org.caleydo.vis.rank.config.IRankTableUIConfig;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.RankTableModel;
@@ -64,13 +62,6 @@ public final class TableHeaderUI extends ACompositeHeaderUI {
 	protected void takeDown() {
 		this.table.removePropertyChangeListener(RankTableModel.PROP_COLUMNS, childrenChanged);
 		super.takeDown();
-	}
-
-	@Override
-	protected void renderImpl(GLGraphics g, float w, float h) {
-		g.pushResourceLocator(ResourceLocators.classLoader(this.getClass().getClassLoader()));
-		super.renderImpl(g, w, h);
-		g.popResourceLocator();
 	}
 
 	@Override

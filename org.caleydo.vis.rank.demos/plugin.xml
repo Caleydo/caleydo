@@ -54,7 +54,8 @@
       </perspective>
    </extension>
    <extension
-         id="id2"
+         id="application"
+         name="LineUp Demos"
          point="org.eclipse.core.runtime.applications">
       <application
             thread="main">
@@ -64,11 +65,29 @@
       </application>
    </extension>
    <extension
+         id="product"
+         name="LineUp Demos"
          point="org.eclipse.core.runtime.products">
       <product
-            application="org.caleydo.vis.rank.product1"
-            description="Caleydo LineUp Demos"
-            name="Caleydo LineUp Demos">
+            application="org.caleydo.vis.rank.demos.application"
+            description="LineUp Demos"
+            name="LineUp Demos">
+         <property
+               name="appName"
+               value="LineUp Demos">
+         </property>
+         <property
+               name="aboutImage"
+               value="platform:/plugin/org.caleydo.core/resources/wizard/wizard.png">
+         </property>
+         <property
+               name="aboutText"
+               value="Caleydo - Visualization for Molecular Biology&#x0A;http:// www.caleydo.org&#x0A;&#x0A;Copyright 2005 - 2012  by &#x0A;Graz University of Technology - http://www.icg.tugraz.at&#x0A;Marc Streit - http://marc.streit.com&#x0A;Alexander Lex - http://alexander-lex.com&#x0A;Christian Partl - http://icg.tugraz.at/Members/partl&#x0A;Johannes Kepler University Linz - http://www.jku.at/cg/&#x0A;&#x0A;Caleydo is open-source software licenced under the GPL V3">
+         </property>
+         <property
+               name="windowImages"
+               value="platform:/plugin/org.caleydo.core/resources/icons/caleydo_16.png,platform:/plugin/org.caleydo.core/resources/icons/caleydo_32.png,platform:/plugin/org.caleydo.core/resources/icons/caleydo_48.png,platform:/plugin/org.caleydo.core/resources/icons/caleydo_64.png,platform:/plugin/org.caleydo.core/resources/icons/caleydo_128.png">
+         </property>
       </product>
    </extension>
 </plugin>
