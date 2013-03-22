@@ -971,7 +971,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 			return minHeightPixels;
 		if (pathway == null)
 			return 120;
-		return (int) (pathway.getHeight() * 0.65f);
+		return (int) (pathway.getHeight() * 0.8f);
 	}
 
 	@Override
@@ -980,7 +980,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 			return minWidthPixels;
 		if (pathway == null)
 			return 120;
-		return (int) (pathway.getWidth() * 0.65f);
+		return (int) (pathway.getWidth() * 0.8f);
 	}
 
 	@Override
