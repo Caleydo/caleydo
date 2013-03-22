@@ -53,5 +53,16 @@ public class StackedResourceLocator implements IResourceLocator {
 		}
 		return null;
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder b = new StringBuilder("STACK:\n");
+		for (Iterator<IResourceLocator> it = stack.descendingIterator(); it.hasNext();) {
+			IResourceLocator elem = it.next();
+			b.append('\t').append(elem).append("\n");
+		}
+		b.setLength(b.length() - 1);
+		return b.toString();
+	}
 }
 

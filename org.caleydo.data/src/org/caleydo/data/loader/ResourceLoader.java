@@ -59,6 +59,7 @@ public class ResourceLoader implements ITextureLoader {
 	}
 
 	private IllegalStateException cantFind(String res, IOException e) {
+		System.err.println(locator);
 		if (e != null)
 			return new IllegalStateException("Cannot load resource: " + res, e);
 		else
