@@ -150,6 +150,9 @@ public class TablePerspectiveStatistics {
 	public static Histogram calculateHistogram(Table table, VirtualArray va1, VirtualArray va2,
 			int numberOfBucketsForHistogram) {
 
+		if (va1 == null || va2 == null)
+			throw new IllegalArgumentException("One of the vas was null " + va1 + ", " + va2);
+
 		VirtualArray recordVA, dimensionVA;
 
 		if (va1.getIdType().equals(table.getDataDomain().getRecordIDType())
