@@ -598,6 +598,10 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 					for (PathwayVertexRep vertexRep : ((PathwayMultiFormInfo) (pathwayWindow.info)).pathway.vertexSet()) {
 						allVertexReps.remove(vertexRep.getID());
 					}
+					if (activeWindow == pathwayWindow) {
+						activeWindow = null;
+						portalFocusWindow = null;
+					}
 				}
 			});
 		}
@@ -670,56 +674,6 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		augmentation.isDirty = true;
 		augmentation.setPxlSize(this.getParentGLCanvas().getWidth(), this.getParentGLCanvas().getHeight());
 
-		// augmentation.clearRenderers();
-		// PathwayVertexRep start = null;
-		// PathwayVertexRep end = null;
-		// List<Pair<MultiFormRenderer, GLElement>> rendererList = multiFormRenderers.get(EEmbeddingID.PATHWAY_MULTIFORM
-		// .id());
-		// if (rendererList == null)
-		// return;
-
-		// for (PathwayPath path : pathSegments) {
-		// if (start == null) {
-		// start = path.getPath().getEndVertex();
-		// } else {
-		// end = path.getPath().getStartVertex();
-		// // draw link
-		// //
-		// PathwayVertexRep referenceVertexRep = start;
-		// Rectangle2D referenceRectangle = null;
-		// for (PathwayMultiFormInfo info : pathwayInfos) {
-		// IPathwayRepresentation pathwayRepresentation = getPathwayRepresentation(info.multiFormRenderer,
-		// info.multiFormRenderer.getActiveRendererID());
-		// if (pathwayRepresentation != null
-		// && pathwayRepresentation.getPathway() == referenceVertexRep.getPathway()) {
-		// referenceRectangle = getAbsoluteVertexLocation(pathwayRepresentation, referenceVertexRep,
-		// info.container);
-		// break;
-		// }
-		// }
-		// if (referenceRectangle == null)
-		// return;
-		//
-		// for (PathwayMultiFormInfo info : pathwayInfos) {
-		// IPathwayRepresentation pathwayRepresentation = getPathwayRepresentation(info.multiFormRenderer,
-		// info.multiFormRenderer.getActiveRendererID());
-		//
-		// if (pathwayRepresentation != null) {
-		//
-		// // for (PathwayVertexRep vertexRep : vertexReps) {
-		// Rectangle2D rect = getAbsoluteVertexLocation(pathwayRepresentation, end, info.container);
-		// if (rect != null) {
-		// // augmentation.addConnectionRenderer(new GLSubGraphAugmentation.ConnectionRenderer(referenceRectangle,
-		// // rect));
-		// }
-		// // }
-		// }
-		// }
-		// //
-		// start = path.getPath().getEndVertex();
-		// end = null;
-		// }
-		// }
 		List<Rectangle2D> path = new ArrayList<>();
 
 		IPathwayRepresentation pathwayRepresentation = null;
@@ -1111,40 +1065,31 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 			}
 		}
 
-		if (isShowPortals) {
-			Set<GLPathwayWindow> windowsToHighlight = new HashSet<>();
+		Set<GLPathwayWindow> windowsToHighlight = new HashSet<>();
 
-			for (PathwayVertexRep vertexRep : info.pathway.vertexSet()) {
-				if (info.getCurrentEmbeddingID() == EEmbeddingID.PATHWAY_LEVEL1
-						&& vertexRep.getType() == EPathwayVertexType.map) {
-					addPortalHighlightRenderer(vertexRep, info);
-					continue;
-				}
-				Pair<Rectangle2D, Boolean> sourcePair = getPortalLocation(vertexRep, info);
-				for (PathwayMultiFormInfo i : pathwayInfos) {
-					if (info != i) {
-						boolean wasLinkAdded = false;
-						// if (info.getCurrentEmbeddingID() != EEmbeddingID.PATHWAY_LEVEL1) {
-						// // Only connect lv2 or higher with current lv1
-						// if (i.getCurrentEmbeddingID() == EEmbeddingID.PATHWAY_LEVEL1) {
-						// wasLinkAdded = addLinkRenderers(vertexRep, info, i, sourcePair);
-						// }
-						// } else {
-						// Connect lv1 with all
-						wasLinkAdded = addLinkRenderers(vertexRep, info, i, sourcePair);
-						// }
-						boolean highlightAdded = highlightPathwayNodePortals(info, i);
-						wasLinkAdded = wasLinkAdded || highlightAdded;
-						if (wasLinkAdded) {
-							windowsToHighlight.add((GLPathwayWindow) i.window);
-						}
-					} else {
-						// TODO: implement
-					}
-
-				}
+		for (PathwayVertexRep vertexRep : info.pathway.vertexSet()) {
+			if (info.getCurrentEmbeddingID() == EEmbeddingID.PATHWAY_LEVEL1
+					&& vertexRep.getType() == EPathwayVertexType.map) {
+				addPortalHighlightRenderer(vertexRep, info);
+				continue;
 			}
+			Pair<Rectangle2D, Boolean> sourcePair = getPortalLocation(vertexRep, info);
+			for (PathwayMultiFormInfo i : pathwayInfos) {
+				if (info != i) {
+					boolean wasLinkAdded = false;
+					wasLinkAdded = addLinkRenderers(vertexRep, info, i, sourcePair);
+					boolean highlightAdded = highlightPathwayNodePortals(info, i);
+					wasLinkAdded = wasLinkAdded || highlightAdded;
+					if (wasLinkAdded) {
+						windowsToHighlight.add((GLPathwayWindow) i.window);
+					}
+				} else {
+					// TODO: implement
+				}
 
+			}
+		}
+		if (isShowPortals) {
 			for (PathwayMultiFormInfo i : pathwayInfos) {
 				if (windowsToHighlight.contains(i.window)) {
 					i.window.setTitleBarColor(PortalRenderStyle.DEFAULT_PORTAL_COLOR);
@@ -1196,6 +1141,9 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 
 	private boolean addLinkRenderers(PathwayVertexRep vertexRep, PathwayMultiFormInfo sourceInfo,
 			PathwayMultiFormInfo targetInfo, Pair<Rectangle2D, Boolean> sourcePair) {
+		boolean isContextPortal = PathwayManager.get().areVerticesEquivalent(vertexRep, currentContextVertexRep);
+		if (!isShowPortals && !isContextPortal)
+			return false;
 		boolean wasLinkAdded = false;
 		Set<PathwayVertexRep> equivalentVertexReps = PathwayManager.get().getEquivalentVertexRepsInPathway(vertexRep,
 				targetInfo.pathway);
@@ -1215,8 +1163,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 			LinkRenderer renderer = new LinkRenderer(this, vertexRep == currentPortalVertexRep
 					|| v == currentPortalVertexRep || isSelectedPortalLink(vertexRep, v), sourcePair.getFirst(),
 					targetPair.getFirst(), sourceInfo, targetInfo, stubSize, sourcePair.getSecond(),
-					targetPair.getSecond(), PathwayManager.get().areVerticesEquivalent(vertexRep,
-							currentContextVertexRep), false, vertexRep, v, connectionBandRenderer);
+					targetPair.getSecond(), isContextPortal, false, vertexRep, v, connectionBandRenderer);
 			augmentation.add(renderer);
 			wasLinkAdded = true;
 		}
