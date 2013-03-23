@@ -953,6 +953,13 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		@ListenTo(restrictExclusiveToEventSpace = true)
 		public void onPathSelection(PathwayPathSelectionEvent event) {
 			pathSegments = event.getPathSegments();
+			if (pathSegments.size() > 0) {
+				PathwayPath segment = pathSegments.get(pathSegments.size() - 1);
+				PathwayMultiFormInfo info = getPathwayMultiFormInfo(segment.getPathway());
+				if (info != null) {
+					lastUsedRenderer = info.multiFormRenderer;
+				}
+			}
 			updatePathLinks();
 		}
 
@@ -1010,7 +1017,8 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 			// Try to promote views that have context
 			for (PathwayMultiFormInfo info : pathwayInfos) {
 				if (hasPathwayCurrentContext(info.pathway)
-						&& info.getCurrentEmbeddingID() != EEmbeddingID.PATHWAY_LEVEL1) {
+						&& info.getCurrentEmbeddingID() != EEmbeddingID.PATHWAY_LEVEL1
+						&& info.multiFormRenderer != lastUsedRenderer) {
 					info.multiFormRenderer.setActive(info.embeddingIDToRendererIDs.get(EEmbeddingID.PATHWAY_LEVEL2)
 							.get(0));
 					// info.age = currentPathwayAge--;

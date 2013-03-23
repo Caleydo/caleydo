@@ -233,7 +233,8 @@ public class GLPathwayGridLayout3 implements IGLLayout {
 
 			for (PathwayMultiFormInfo info : level2Infos) {
 				LayoutSnapshot snapshotPriorPromotion = new LayoutSnapshot();
-				if (info.getCurrentEmbeddingID() != EEmbeddingID.PATHWAY_LEVEL2 && promote(info, freeSpaceVertical)) {
+				if (info.getCurrentEmbeddingID() != EEmbeddingID.PATHWAY_LEVEL2
+						&& info.multiFormRenderer != view.lastUsedRenderer && promote(info, freeSpaceVertical)) {
 					LayoutSnapshot snapshotAfterPromotion = new LayoutSnapshot();
 					if ((snapshotAfterPromotion.maxL2ColumnHeight > freeSpaceVertical && snapshotAfterPromotion.maxL2ColumnHeight > snapshotPriorPromotion.maxL2ColumnHeight)
 							|| (snapshotAfterPromotion.minTotalWidth > getFreeHorizontalSpace(w) && snapshotAfterPromotion.minTotalWidth > snapshotPriorPromotion.minTotalWidth)) {
