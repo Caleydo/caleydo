@@ -265,6 +265,17 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 
 	}
 
+	protected HashSet<PathwayMultiFormInfo> windowStubs = new HashSet<PathwayMultiFormInfo>();
+	public boolean containsWindowStub(PathwayMultiFormInfo info){
+		if(!windowStubs.contains(info)){
+			windowStubs.add(info);
+			return false;
+		}
+			
+		return true;		
+	}
+
+	
 	@Override
 	public void init(GL2 gl) {
 		super.init(gl);
@@ -671,6 +682,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	}
 
 	protected void updatePathLinks() {
+		windowStubs.clear();
 		augmentation.isDirty = true;
 		augmentation.setPxlSize(this.getParentGLCanvas().getWidth(), this.getParentGLCanvas().getHeight());
 
@@ -701,6 +713,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	}
 
 	public void updateAugmentation() {
+		windowStubs.clear();
 		updatePathLinks();
 		// updatePortalLinks();
 		updatePathwayPortals();
@@ -712,6 +725,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 
 	@Override
 	public void display(GL2 gl) {
+		windowStubs.clear();
 		if (windowToSetActive != null) {
 			windowToSetActive.setActive(true);
 			windowToSetActive = null;
@@ -1023,7 +1037,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		return null;
 	}
 
-	protected void updatePathwayPortals() {
+	protected void updatePathwayPortals() {		
 		PathwayMultiFormInfo info = null;
 		if (portalFocusWindow != null) {
 			if (portalFocusWindow.info instanceof PathwayMultiFormInfo) {
@@ -1039,6 +1053,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		if (info == null)
 			return;
 		augmentation.clear();
+		windowStubs.clear();
 		// textureSelectionListeners.clear();
 		PathwayVertexRep lastNodeOfPrevSegment = null;
 
@@ -1147,6 +1162,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		boolean wasLinkAdded = false;
 		Set<PathwayVertexRep> equivalentVertexReps = PathwayManager.get().getEquivalentVertexRepsInPathway(vertexRep,
 				targetInfo.pathway);
+		windowStubs.clear();
 		for (PathwayVertexRep v : equivalentVertexReps) {
 
 			if (isPathLink(vertexRep, v) || pathwayRow.getVisibility() == EVisibility.NONE)
