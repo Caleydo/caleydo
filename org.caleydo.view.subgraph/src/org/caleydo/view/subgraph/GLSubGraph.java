@@ -108,6 +108,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 			new GLSizeRestrictiveFlowLayout(true, 10, GLPadding.ZERO));
 
 	private GLWindow activeWindow = null;
+	private GLPathwayWindow portalFocusWindow = null;
 
 	private ShowPortalsAction showPortalsButton;
 	// private HighlightAllPortalsAction highlightAllPortalsButton;
@@ -861,13 +862,9 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		if (activeWindow != null && this.activeWindow != null && activeWindow != this.activeWindow) {
 			this.activeWindow.setActive(false);
 		}
-		// if (activeWindow instanceof GLPathwayWindow) {
-		// GLPathwayWindow window = (GLPathwayWindow) activeWindow;
-		// pathwaySelectionManager.clearSelection(SelectionType.MOUSE_OVER);
-		// pathwaySelectionManager.addToType(SelectionType.MOUSE_OVER,
-		// ((PathwayMultiFormInfo) window.info).pathway.getID());
-		// pathwaySelectionManager.triggerSelectionUpdateEvent();
-		// }
+		if (activeWindow instanceof GLPathwayWindow) {
+			portalFocusWindow = (GLPathwayWindow) activeWindow;
+		}
 
 		this.activeWindow = activeWindow;
 		isLayoutDirty = true;
@@ -1074,10 +1071,9 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 
 	protected void updatePathwayPortals() {
 		PathwayMultiFormInfo info = null;
-		if (activeWindow instanceof GLPathwayWindow) {
-			GLPathwayWindow w = (GLPathwayWindow) activeWindow;
-			if (w.info instanceof PathwayMultiFormInfo) {
-				info = (PathwayMultiFormInfo) w.info;
+		if (portalFocusWindow != null) {
+			if (portalFocusWindow.info instanceof PathwayMultiFormInfo) {
+				info = (PathwayMultiFormInfo) portalFocusWindow.info;
 
 			}
 		}
