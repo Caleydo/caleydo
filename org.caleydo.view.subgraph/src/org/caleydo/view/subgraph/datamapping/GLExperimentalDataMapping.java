@@ -64,10 +64,11 @@ public class GLExperimentalDataMapping extends AnimatedGLElementContainer implem
 		GLElementContainer ddElements = new GLElementContainer(new GLFlowLayout(true, 10, new GLPadding(5)));
 		GLElementContainer stratElements = new GLElementContainer(new GLFlowLayout(true, 10, new GLPadding(5)));
 
+		generalMapping.setLayoutData(0.5f);
 		generalMapping.add(ddElements);
 		generalMapping.add(stratElements);
 
-		pathwayDatasets = new GLElementContainer(new GLFlowLayout(true, 10, new GLPadding(5)));
+		pathwayDatasets = new GLElementContainer(new GLFlowLayout(true, 10, new GLPadding(10)));
 
 		addPerspectiveElements(stratElements);
 		addDataDomainElements(ddElements);
@@ -101,7 +102,7 @@ public class GLExperimentalDataMapping extends AnimatedGLElementContainer implem
 		pathwayDatasets.add(new GLElement() {
 			@Override
 			protected void renderImpl(GLGraphics g, float w, float h) {
-				g.drawText("Choose Pathway Mapping:", 0, -2, w, h);
+				g.drawText("Pathway Mapping:", 0, -2, w, h);
 			}
 		}.setSize(150, 15));
 

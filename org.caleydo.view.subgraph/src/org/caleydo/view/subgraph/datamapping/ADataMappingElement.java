@@ -36,6 +36,6 @@ public abstract class ADataMappingElement extends GLButton {
 		this.dmState = dmState;
 
 		setMode(EButtonMode.CHECKBOX);
-		setSize(150, 18);
+		setSize(170, 18);
 	}
 }

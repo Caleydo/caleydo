@@ -25,9 +25,9 @@ import org.caleydo.core.view.opengl.layout2.basic.GLButton;
 
 /**
  * Radio for selecting which table perspective to map in pathway
- * 
+ *
  * @author Alexander Lex
- * 
+ *
  */
 public class PathwayDataSetElement extends GLButton {
 
@@ -37,7 +37,7 @@ public class PathwayDataSetElement extends GLButton {
 	public PathwayDataSetElement(ATableBasedDataDomain dd) {
 
 		setMode(EButtonMode.CHECKBOX);
-		setSize(150, 18);
+		setSize(170, 18);
 		// setCallback(this);
 		setLayoutData(dd);
 		this.dd = dd;
