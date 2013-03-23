@@ -199,39 +199,41 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 		// gl.glBlendFunc(GL2.GL_ONE, GL2.GL_CONSTANT_COLOR);
 		gl.glEnable(GL.GL_LINE_SMOOTH);
 		GLU glu = null;
-		// if (isLayoutDirty()) {
+		if (isLayoutDirty()) {
 
-		gl.glNewList(layoutDisplayListIndex, GL2.GL_COMPILE);
+			gl.glNewList(layoutDisplayListIndex, GL2.GL_COMPILE);
 
-		glu = new GLU();
-		// gl.glPushMatrix();
-		// gl.glTranslatef(0, 0, 0.2f);
+			glu = new GLU();
+			// gl.glPushMatrix();
+			// gl.glTranslatef(0, 0, 0.2f);
 
-		renderPathwayBorders(gl);
+			renderPathwayBorders(gl);
 
-		for (ALinearizableNode node : pathNodes) {
-			node.render(gl, glu);
-			renderBranchNodes(gl, glu, node);
-		}
+			for (ALinearizableNode node : pathNodes) {
+				node.render(gl, glu);
+				renderBranchNodes(gl, glu, node);
+			}
 
-		if (expandedBranchSummaryNode != null) {
-			renderBranchSummaryNode(gl, glu, expandedBranchSummaryNode);
-			// gl.glColor4f(1, 1, 1, 0.9f);
+			if (expandedBranchSummaryNode != null) {
+				renderBranchSummaryNode(gl, glu, expandedBranchSummaryNode);
+				// gl.glColor4f(1, 1, 1, 0.9f);
+				//
+				// gl.glBegin(GL2.GL_QUADS);
+				// gl.glVertex3f(0, 0, 0.1f);
+				// gl.glVertex3f(x, 0, 0.1f);
+				// gl.glVertex3f(x, y, 0.1f);
+				// gl.glVertex3f(0, y, 0.1f);
+				// gl.glEnd();
+			}
+
+			renderEdges(gl, pathNodes);
+			// gl.glPopMatrix();
+			gl.glEndList();
+
 			//
-			// gl.glBegin(GL2.GL_QUADS);
-			// gl.glVertex3f(0, 0, 0.1f);
-			// gl.glVertex3f(x, 0, 0.1f);
-			// gl.glVertex3f(x, y, 0.1f);
-			// gl.glVertex3f(0, y, 0.1f);
-			// gl.glEnd();
+			//
+			setLayoutDirty(false);
 		}
-
-		renderEdges(gl, pathNodes);
-		// gl.glPopMatrix();
-		gl.glEndList();
-		//
-		//
-		setLayoutDirty(false);
 		if (!isBubbleSetInitialized) {
 			System.out.println("init Bubblesets=" + isBubbleSetInitialized);
 			bubbleSetRenderer.init(gl);
