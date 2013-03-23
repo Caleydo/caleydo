@@ -615,7 +615,7 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 	@Override
 	public void destroy(GL2 gl) {
 		super.destroy(gl);
-		layoutManager.destroy(gl);
+		layout.destroy(gl);
 		view.getParentGLCanvas().removeKeyListener(keyListener);
 	}
 
