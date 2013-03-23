@@ -103,6 +103,7 @@ public class FixedPathUpdateStrategy extends APathUpdateStrategy {
 
 	@Override
 	public void triggerPathUpdate() {
+		contextualPathsRenderer.contextPathsChanged();
 		MinSizeUpdateEvent event = new MinSizeUpdateEvent(renderer, renderer.minHeightPixels, renderer.minWidthPixels);
 		event.setEventSpace(pathwayPathEventSpace);
 		EventPublisher.INSTANCE.triggerEvent(event);

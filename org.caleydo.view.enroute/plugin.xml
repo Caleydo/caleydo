@@ -127,7 +127,7 @@
                viewID="org.caleydo.view.subgraph">
             <Embedding
                   embeddingID="org.caleydo.view.subgraph.pathway.multiform.level3"
-                  icon="resources/icons/pathway_lv2_2.png"
+                  icon="resources/icons/pathway_lv3.png"
                   isDefaultView="false"
                   visInfo="org.caleydo.core.view.opengl.layout.util.multiform.DefaultVisInfo">
                <RendererCreator

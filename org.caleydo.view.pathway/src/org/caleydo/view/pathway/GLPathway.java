@@ -210,6 +210,9 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 	private int minHeightPixels = -1;
 	private int minWidthPixels = -1;
 
+	private List<List<PathwayVertexRep>> contextPaths = new ArrayList<>();
+	private boolean areContextPathsDirty = false;
+
 	// /**
 	// * The nodes that are currently considered as portals and need to be highlighted.
 	// */
@@ -667,6 +670,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 			// TODO: also put this in global DL
 			renderPathway(gl, pathway);
 		}
+		areContextPathsDirty = false;
 	}
 
 	protected void initPathwayData(final GL2 gl) {
@@ -1614,6 +1618,16 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 				factory.triggerEvent(vertexRep);
 			}
 		}
+	}
+
+	/**
+	 * @param contextPaths
+	 *            setter, see {@link contextPaths}
+	 */
+	public void setContextPaths(List<List<PathwayVertexRep>> contextPaths) {
+		this.contextPaths = contextPaths;
+		areContextPathsDirty = true;
+		setDisplayListDirty();
 	}
 
 	// /**

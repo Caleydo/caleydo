@@ -1110,4 +1110,11 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	public void setSampleMappingMode(ESampleMappingMode sampleMappingMode) {
 		this.sampleMappingMode = sampleMappingMode;
 	}
+
+	/**
+	 * @return the pathSegments, see {@link #pathSegments}
+	 */
+	public List<List<PathwayVertexRep>> getPathSegments() {
+		return pathSegments;
+	}
 }

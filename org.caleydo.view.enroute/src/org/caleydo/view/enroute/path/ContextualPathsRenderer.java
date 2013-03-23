@@ -375,6 +375,7 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 			removePath(renderer);
 		}
 
+		contextPathsChanged();
 		// setDisplayListDirty(true);
 		layout.updateLayout();
 		// for (APathwayPathRenderer renderer : renderers.keySet()) {
@@ -624,6 +625,19 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 	 */
 	public boolean isControlKeyPressed() {
 		return isControlKeyPressed;
+	}
+
+	public void contextPathsChanged() {
+		List<List<PathwayVertexRep>> contextPaths = new ArrayList<>();
+		if (pathwayView != null) {
+			for (APathwayPathRenderer renderer : renderers.keySet()) {
+				List<PathwayVertexRep> flattenedPath = PathUtil.flattenSegments(renderer.getPathSegments());
+				if (flattenedPath != null && !flattenedPath.isEmpty()) {
+					contextPaths.add(flattenedPath);
+				}
+			}
+			pathwayView.setContextPaths(contextPaths);
+		}
 	}
 
 }
