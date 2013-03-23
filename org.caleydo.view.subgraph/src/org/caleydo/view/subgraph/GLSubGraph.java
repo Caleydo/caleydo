@@ -56,7 +56,6 @@ import org.caleydo.datadomain.genetic.EGeneIDTypes;
 import org.caleydo.datadomain.pathway.IPathwayRepresentation;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.VertexRepBasedContextMenuItem;
-import org.caleydo.datadomain.pathway.VertexRepBasedEventFactory;
 import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.PathwayPath;
@@ -78,6 +77,7 @@ import org.caleydo.view.subgraph.event.AddPathwayEventFactory;
 import org.caleydo.view.subgraph.event.SelectPathwayEventFactory;
 import org.caleydo.view.subgraph.event.ShowCommonNodePathwaysEvent;
 import org.caleydo.view.subgraph.event.ShowCommonNodesPathwaysEvent;
+import org.caleydo.view.subgraph.event.ShowNodeContextEventFactory;
 import org.caleydo.view.subgraph.event.ShowPortalsEvent;
 import org.caleydo.view.subgraph.ranking.PathwayFilters;
 import org.caleydo.view.subgraph.ranking.PathwayRankings;
@@ -205,6 +205,8 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	private GLWindow windowToSetActive;
 
 	private ColoredConnectionBandRenderer connectionBandRenderer = null;
+
+	private boolean isControlKeyPressed = false;
 
 	/**
 	 * Constructor.
@@ -436,10 +438,12 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 			@Override
 			public void keyPressed(IKeyEvent e) {
 				update(e);
+				isControlKeyPressed = e.isControlDown();
 			}
 
 			@Override
 			public void keyReleased(IKeyEvent e) {
+				isControlKeyPressed = e.isControlDown();
 				// update(e);
 			}
 
@@ -568,8 +572,8 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 							ShowCommonNodePathwaysEvent.class, pathEventSpace));
 					pathwayRepresentation.addVertexRepBasedContextMenuItem(new VertexRepBasedContextMenuItem(
 							"Show Context", ShowNodeContextEvent.class, pathEventSpace));
-					pathwayRepresentation.addVertexRepBasedSelectionEvent(new VertexRepBasedEventFactory(
-							ShowNodeContextEvent.class, pathEventSpace), PickingMode.CLICKED);
+					pathwayRepresentation.addVertexRepBasedSelectionEvent(new ShowNodeContextEventFactory(
+							pathEventSpace, this), PickingMode.CLICKED);
 					pathwayRepresentation.addVertexRepBasedSelectionEvent(new AddPathwayEventFactory(pathEventSpace),
 							PickingMode.DOUBLE_CLICKED);
 					pathwayRepresentation.addVertexRepBasedSelectionEvent(
@@ -1403,5 +1407,12 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	 */
 	public void setWasContextChanged(boolean wasContextChanged) {
 		this.wasContextChanged = wasContextChanged;
+	}
+
+	/**
+	 * @return the isControlKeyPressed, see {@link #isControlKeyPressed}
+	 */
+	public boolean isControlKeyPressed() {
+		return isControlKeyPressed;
 	}
 }
