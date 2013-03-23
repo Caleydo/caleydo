@@ -49,6 +49,7 @@ import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
 import org.caleydo.core.view.listener.RemoveTablePerspectiveEvent;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.core.view.opengl.canvas.IGLKeyListener;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
@@ -102,6 +103,8 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 	private TablePerspective mappedPerspective;
 	protected final boolean showThumbnail;
 
+	private boolean isControlKeyPressed = false;
+
 	/**
 	 * Context menu items that shall be displayed when right-clicking on a path node.
 	 */
@@ -115,6 +118,7 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 	private final EventListenerManager listeners = EventListenerManagers.wrap(this);
 
 	private boolean pathwayViewInitialized = false;
+	private KeyListener keyListener = new KeyListener();
 
 	/**
 	 * The queue which holds the events
@@ -147,7 +151,7 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 		}
 		baseColumn.add(pathRow);
 		layout.setBaseElementLayout(baseColumn);
-
+		view.getParentGLCanvas().addKeyListener(keyListener);
 	}
 
 	@Override
@@ -592,6 +596,34 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 			renderer.addVertexRepBasedSelectionEvent(eventFactory, pickingMode);
 		}
 
+	}
+
+	private class KeyListener implements IGLKeyListener {
+
+		@Override
+		public void keyPressed(IKeyEvent e) {
+			isControlKeyPressed = e.isControlDown();
+		}
+
+		@Override
+		public void keyReleased(IKeyEvent e) {
+			isControlKeyPressed = e.isControlDown();
+		}
+
+	}
+
+	@Override
+	public void destroy(GL2 gl) {
+		super.destroy(gl);
+		layoutManager.destroy(gl);
+		view.getParentGLCanvas().removeKeyListener(keyListener);
+	}
+
+	/**
+	 * @return the isControlKeyPressed, see {@link #isControlKeyPressed}
+	 */
+	public boolean isControlKeyPressed() {
+		return isControlKeyPressed;
 	}
 
 }

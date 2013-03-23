@@ -87,11 +87,10 @@ public class FixedPathUpdateStrategy extends APathUpdateStrategy {
 		}
 	}
 
+	public List<List<PathwayVertexRep>> getSelectedPathSegments() {
+		return selectedPathSegments;
+	}
 
-    public List<List<PathwayVertexRep>> getSelectedPathSegments(){
-        return selectedPathSegments;       
-    } 
-    
 	@Override
 	public void onEnablePathSelection(EnablePathSelectionEvent event) {
 		isPathSelectionMode = event.isPathSelectionMode();
@@ -126,6 +125,8 @@ public class FixedPathUpdateStrategy extends APathUpdateStrategy {
 
 		@Override
 		protected void clicked(Pick pick) {
+			if (contextualPathsRenderer.isControlKeyPressed())
+				return;
 
 			if (isPathSelectionMode) {
 				isSelectedPathContinuation = false;
@@ -159,6 +160,9 @@ public class FixedPathUpdateStrategy extends APathUpdateStrategy {
 
 		@Override
 		protected void mouseOver(Pick pick) {
+			if (contextualPathsRenderer.isControlKeyPressed())
+				return;
+
 			if (isPathSelectionMode && !createNewPathSelection
 					&& renderer.pathNodes.indexOf(node) > renderer.pathNodes.indexOf(selectedPathStartNode)) {
 				Pair<Integer, Integer> fromIndexPair = renderer.determinePathSegmentAndIndexOfPathNode(

@@ -1085,7 +1085,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 			event.setSelectionDelta(selectionDelta);
 			eventPublisher.triggerEvent(event);
 
-			if (isControlKeyDown || this.isShiftKeyDown) {
+			if (/* isControlKeyDown || */this.isShiftKeyDown) {
 				previousSelectedPath = selectedPath;
 			}
 		}
@@ -1194,17 +1194,17 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 	}
 
 	private void selectPath(PathwayVertexRep vertexRep, SelectionType selectionType) {
-		if (vertexRep == null)
+		if (vertexRep == null || isControlKeyDown)
 			return;
 		boolean triggerPathUpdate = false;
 		if (!isPathStartSelected) {// ////////////////////////////////
-			if (isControlKeyDown) {// shrink previous selected path
-				shrinkSelectedPath(vertexRep);
-				if (selectionType == SelectionType.SELECTION) {// click on
-					previousSelectedPath = selectedPath;
-				}
-				triggerPathUpdate = true;
-			}
+			// if (isControlKeyDown) {// shrink previous selected path
+			// shrinkSelectedPath(vertexRep);
+			// if (selectionType == SelectionType.SELECTION) {// click on
+			// previousSelectedPath = selectedPath;
+			// }
+			// triggerPathUpdate = true;
+			// }
 			// //////////////////////////////
 			if (isShiftKeyDown) {// extend previous selected path
 				extendSelectedPath(vertexRep);
@@ -1213,7 +1213,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 				}
 				triggerPathUpdate = true;
 			}
-			if (!isShiftKeyDown && !isControlKeyDown && vertexRep != null) {
+			if (!isShiftKeyDown && /* !isControlKeyDown && */vertexRep != null) {
 				// no interaction with the previous selected path
 				// select vertexRep as startPoint and switch to
 				// end_point_selection_mode
@@ -1287,9 +1287,16 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 
 	public void handlePathwayElementSelection(SelectionType selectionType, int externalID) {
 		setDisplayListDirty();
-		if (vertexSelectionManager.getElements(SelectionType.SELECTION).size() == 1) {
-			pathStartVertexRep = pathwayItemManager.getPathwayVertexRep((Integer) vertexSelectionManager.getElements(
-					SelectionType.SELECTION).toArray()[0]);
+		PathwayVertexRep vertexRep = pathwayItemManager.getPathwayVertexRep(externalID);
+
+		if (isPathSelectionMode && !isControlKeyDown) {
+
+			if (selectionType == SelectionType.SELECTION) {
+				pathStartVertexRep = vertexRep;
+				// pathwayItemManager.getPathwayVertexRep((Integer) vertexSelectionManager
+				// .getElements(SelectionType.SELECTION).toArray()[0]);
+			}
+			selectPath(vertexRep, selectionType);
 		}
 
 		vertexSelectionManager.clearSelection(selectionType);
@@ -1297,8 +1304,6 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 			metaboliteSelectionManager.clearSelection(selectionType);
 			metaboliteSelectionManager.triggerSelectionUpdateEvent();
 		}
-
-		PathwayVertexRep vertexRep = pathwayItemManager.getPathwayVertexRep(externalID);
 
 		if (vertexRep.getType() == EPathwayVertexType.compound) {
 			metaboliteSelectionManager.addToType(selectionType, vertexRep.getName().hashCode());
@@ -1325,11 +1330,6 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		// pathwaySelectionManager.triggerSelectionUpdateEvent();
 		// }
 		// }
-
-		if (isPathSelectionMode) {
-			selectPath(vertexRep, selectionType);
-
-		}
 
 		// TODO: make sure that this is the last vertex of the last path segment
 		// if (selectedPath != null && vertexRep == selectedPath.getEndVertex()
