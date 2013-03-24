@@ -238,6 +238,27 @@ public class WorldUniversityYear {
 		return data;
 	}
 
+	/**
+	 * @return
+	 * @throws IOException
+	 */
+	public static Map<String, String> readCountries() throws IOException {
+		Map<String, String> result = new LinkedHashMap<>();
+
+		try (BufferedReader r = new BufferedReader(new InputStreamReader(
+				WorldUniversityYear.class.getResourceAsStream("countries.txt"), Charset.forName("UTF-8")))) {
+			String line;
+			while ((line = r.readLine()) != null) {
+				String[] l = line.split(";");
+				String school = l[0];
+				String country = l[1];
+
+				result.put(school, country);
+			}
+		}
+		return result;
+	}
+
 	static class ValueGetter extends AFloatFunction<IRow> implements IFloatSetterFunction<IRow> {
 		private final Function<IRow, WorldUniversityYear> year;
 		private final int subindex;
