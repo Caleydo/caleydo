@@ -56,10 +56,10 @@ public class GLMultiFormWindow extends GLWindow {
 					toolTip = "Pathway";
 					break;
 				case PATHWAY_LEVEL2:
-					toolTip = "Pathway Thumbnail with Context Paths";
+					toolTip = "Context Paths with Pathway Thumbnail";
 					break;
 				case PATHWAY_LEVEL3:
-					toolTip = "Pathway Thumbnail";
+					toolTip = "ContextPaths";
 					break;
 				case PATHWAY_LEVEL4:
 					toolTip = "Minimize";
