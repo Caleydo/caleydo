@@ -25,18 +25,18 @@ import org.caleydo.core.event.ADirectedEvent;
  * @author Samuel Gratzl
  *
  */
-public class DistributionChangedEvent extends ADirectedEvent {
-	private final float[] distributions;
+public class WeightsChangedEvent extends ADirectedEvent {
+	private final float[] weights;
 
-	public DistributionChangedEvent(float[] distributions) {
-		this.distributions = distributions;
+	public WeightsChangedEvent(float[] weights) {
+		this.weights = weights;
 	}
 
 	/**
-	 * @return the distributions, see {@link #distributions}
+	 * @return the weights, see {@link #weights}
 	 */
-	public float[] getDistributions() {
-		return distributions;
+	public float[] getWeights() {
+		return weights;
 	}
 
 	@Override

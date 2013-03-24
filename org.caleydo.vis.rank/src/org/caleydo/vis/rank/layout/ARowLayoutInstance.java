@@ -4,10 +4,12 @@ package org.caleydo.vis.rank.layout;
 public abstract class ARowLayoutInstance implements IRowLayoutInstance {
 	protected final int offset;
 	protected final int numVisibles;
+	protected final int selectedIndex;
 
-	public ARowLayoutInstance(int offset, int numVisibles) {
+	public ARowLayoutInstance(int offset, int numVisibles, int selectedIndex) {
 		this.offset = offset;
 		this.numVisibles = numVisibles;
+		this.selectedIndex = selectedIndex;
 	}
 
 	@Override

@@ -19,6 +19,8 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.ui.detail;
 
+import java.awt.Color;
+
 import org.caleydo.core.util.function.IFloatList;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
@@ -64,6 +66,7 @@ public class ScoreFilter2 extends GLElementContainer implements ISelectionCallba
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
 		g.color(model.getBgColor()).fillRect(0, 0, w, h);
+		g.color(Color.BLACK).drawRect(9, 43, w - 18, RenderStyle.HIST_HEIGHT * 1.5f + 3);
 		super.renderImpl(g, w, h);
 	}
 }

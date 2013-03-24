@@ -48,7 +48,7 @@ public class StackedColumnUI extends ACompositeTableColumnUI<StackedRankColumnMo
 		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
 			switch (evt.getPropertyName()) {
-			case StackedRankColumnModel.PROP_DISTRIBUTIONS:
+			case StackedRankColumnModel.PROP_WEIGHTS:
 			case StackedRankColumnModel.PROP_ALIGNMENT:
 				onAlignmentChanged();
 				break;
@@ -63,7 +63,7 @@ public class StackedColumnUI extends ACompositeTableColumnUI<StackedRankColumnMo
 	public StackedColumnUI(StackedRankColumnModel model) {
 		super(model, 1);
 		model.addPropertyChangeListener(StackedRankColumnModel.PROP_ALIGNMENT, listener);
-		model.addPropertyChangeListener(StackedRankColumnModel.PROP_DISTRIBUTIONS, listener);
+		model.addPropertyChangeListener(StackedRankColumnModel.PROP_WEIGHTS, listener);
 		model.addPropertyChangeListener(ICompressColumnMixin.PROP_COMPRESSED, listener);
 		model.addPropertyChangeListener(ICollapseableColumnMixin.PROP_COLLAPSED, listener);
 		this.add(0, wrap(model));
@@ -89,7 +89,7 @@ public class StackedColumnUI extends ACompositeTableColumnUI<StackedRankColumnMo
 	@Override
 	protected void takeDown() {
 		model.removePropertyChangeListener(StackedRankColumnModel.PROP_ALIGNMENT, listener);
-		model.removePropertyChangeListener(StackedRankColumnModel.PROP_DISTRIBUTIONS, listener);
+		model.removePropertyChangeListener(StackedRankColumnModel.PROP_WEIGHTS, listener);
 		model.removePropertyChangeListener(ICompressColumnMixin.PROP_COMPRESSED, listener);
 		model.removePropertyChangeListener(ICollapseableColumnMixin.PROP_COLLAPSED, listener);
 		super.takeDown();
@@ -130,7 +130,6 @@ public class StackedColumnUI extends ACompositeTableColumnUI<StackedRankColumnMo
 
 			final RankTableModel table = this.model.getTable();
 			IRow selected = table.getSelectedRow();
-			final int selectedIndex = (selected == null ? -1 : selected.getIndex());
 
 			IRowSetter wrappedSetter = new IRowSetter() {
 				@Override
@@ -140,7 +139,7 @@ public class StackedColumnUI extends ACompositeTableColumnUI<StackedRankColumnMo
 					setter.set(rowIndex, x, y, w, h, pickable);
 				}
 			};
-			getRanker(model).layoutRows(wrappedSetter, 0, w, selectedIndex);
+			getRanker(model).layoutRows(wrappedSetter, 0, w);
 		} else {
 			// simple
 			getColumnModelParent().layoutRows(model, setter, w, h);

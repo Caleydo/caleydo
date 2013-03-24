@@ -88,19 +88,19 @@ public class StackedSummaryHeaderUI extends AColumnHeaderUI {
 	@Override
 	protected void showContextMenu(List<AContextMenuItem> items) {
 		items.add(SeparatorMenuItem.INSTANCE);
-		GenericContextMenuItem editDistributions = new GenericContextMenuItem("Edit Weights",
-				new OpenEditDistributionsEvent().to(this));
-		items.add(editDistributions);
+		GenericContextMenuItem editWeights = new GenericContextMenuItem("Edit Weights",
+				new OpenEditWeightsEvent().to(this));
+		items.add(editWeights);
 		items.add(0, new GenericContextMenuItem("Order by this attribute", new OrderByMeEvent().to(this)));
 		context.showContextMenu(items);
 	}
 
 	@ListenTo(sendToMe = true)
-	private void onEditDistributions(OpenEditDistributionsEvent event) {
-		EditDistributionsDialog.show((StackedRankColumnModel) this.model, getParent());
+	private void onEditWeights(OpenEditWeightsEvent event) {
+		EditWeightsDialog.show((StackedRankColumnModel) this.model, getParent());
 	}
 
-	public static class OpenEditDistributionsEvent extends ADirectedEvent {
+	public static class OpenEditWeightsEvent extends ADirectedEvent {
 
 		@Override
 		public boolean checkIntegrity() {

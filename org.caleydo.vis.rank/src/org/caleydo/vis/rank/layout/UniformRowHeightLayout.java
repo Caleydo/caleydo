@@ -37,8 +37,10 @@ class UniformRowHeightLayout implements IRowHeightLayout {
 	}
 
 	@Override
-	public IRowLayoutInstance layout(ColumnRanker ranker, float h, int size, int offset, boolean forceOffset) {
+	public IRowLayoutInstance layout(ColumnRanker ranker, float h, int size, int offset, boolean forceOffset,
+			IRowLayoutInstance previous) {
 		final int selectedRank = ranker.getSelectedRank();
+		final int selectedIndex = selectedRank < 0 ? -1 : ranker.get(selectedRank).getIndex();
 
 		final int visibleRows = (int) Math.round(Math.floor((h - 5) / ROW_HEIGHT));
 		int[] order = ranker.getOrder();
@@ -75,7 +77,7 @@ class UniformRowHeightLayout implements IRowHeightLayout {
 			if ((y + hr + 5) >= h)
 				break;
 		}
-		return new UniformRowLayoutInstance(order, offset, numVisibles, unused, h);
+		return new UniformRowLayoutInstance(order, offset, numVisibles, unused, h, selectedIndex);
 	}
 
 	@Override
@@ -88,8 +90,9 @@ class UniformRowHeightLayout implements IRowHeightLayout {
 		private final BitSet unused;
 		private final float h;
 
-		public UniformRowLayoutInstance(int[] order, int offset, int numVisibles, BitSet unused, float h) {
-			super(offset, numVisibles);
+		public UniformRowLayoutInstance(int[] order, int offset, int numVisibles, BitSet unused, float h,
+				int selectedIndex) {
+			super(offset, numVisibles, selectedIndex);
 			this.order = order;
 			this.unused = unused;
 			this.h = h;
@@ -101,7 +104,7 @@ class UniformRowHeightLayout implements IRowHeightLayout {
 		}
 
 		@Override
-		public void layout(IRowSetter setter, float x, float w, int selectedIndex) {
+		public void layout(IRowSetter setter, float x, float w) {
 			float y = 0;
 			// first free the elements
 			for (int r = 0; r < offset; ++r)

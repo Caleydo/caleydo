@@ -111,7 +111,7 @@ public class WorldBestUniversitiesYear {
 		stacked.add(col(year, COL_international, "International faculty ratio", "#FDBB84", "#FEE8C8"));
 		stacked.add(col(year, COL_internationalstudents, "International student ratio", "#DFC27D", "#F6E8C3"));
 
-		stacked.setDistributions(new float[] { 40, 10, 20, 20, 5, 5 });
+		stacked.setWeights(new float[] { 40, 10, 20, 20, 5, 5 });
 		stacked.setWidth(300);
 	}
 

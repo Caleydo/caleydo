@@ -426,9 +426,6 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 		return buttons;
 	}
 
-
-	private int inc = 0;
-
 	@Override
 	public void doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
 

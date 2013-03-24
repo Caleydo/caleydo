@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Locale;
 
 import org.caleydo.core.event.EventPublisher;
-import org.caleydo.vis.rank.internal.event.DistributionChangedEvent;
+import org.caleydo.vis.rank.internal.event.WeightsChangedEvent;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.StackedRankColumnModel;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
@@ -42,13 +42,13 @@ import org.eclipse.swt.widgets.Text;
  * @author Samuel Gratzl
  *
  */
-public class EditDistributionsDialog extends TitleAreaDialog {
+public class EditWeightsDialog extends TitleAreaDialog {
 	private StackedRankColumnModel model;
 	private Object receiver;
 
 	private List<Text> texts = new ArrayList<>();
 
-	public EditDistributionsDialog(Shell parentShell, StackedRankColumnModel model, Object receiver) {
+	public EditWeightsDialog(Shell parentShell, StackedRankColumnModel model, Object receiver) {
 		super(parentShell);
 		this.model = model;
 		this.receiver = receiver;
@@ -62,7 +62,7 @@ public class EditDistributionsDialog extends TitleAreaDialog {
 		p.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		p.setLayout(new GridLayout(2, false));
 
-		float[] dists = model.getDistributions();
+		float[] dists = model.getWeights();
 		for (int i = 0; i < dists.length; ++i) {
 			ARankColumnModel r = model.get(i);
 			Label l = new Label(p, SWT.NONE);
@@ -88,11 +88,11 @@ public class EditDistributionsDialog extends TitleAreaDialog {
 	protected void okPressed() {
 		if (!validate())
 			return;
-		float[] distributions = new float[model.size()];
+		float[] weights = new float[model.size()];
 		for (int i = 0; i < texts.size(); ++i) {
-			distributions[i] = Float.parseFloat(texts.get(i).getText()) * 0.01f;
+			weights[i] = Float.parseFloat(texts.get(i).getText()) * 0.01f;
 		}
-		EventPublisher.publishEvent(new DistributionChangedEvent(distributions).to(receiver));
+		EventPublisher.publishEvent(new WeightsChangedEvent(weights).to(receiver));
 		super.okPressed();
 	}
 
@@ -119,7 +119,7 @@ public class EditDistributionsDialog extends TitleAreaDialog {
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				new EditDistributionsDialog(new Shell(), model, receiver).open();
+				new EditWeightsDialog(new Shell(), model, receiver).open();
 			}
 		});
 	}

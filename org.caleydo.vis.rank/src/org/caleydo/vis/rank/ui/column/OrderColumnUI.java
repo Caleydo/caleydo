@@ -41,6 +41,7 @@ import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.ColumnRanker;
 import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.OrderColumn;
+import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.ui.RenderStyle;
 import org.caleydo.vis.rank.ui.TableBodyUI;
 
@@ -61,6 +62,7 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 	private int scrollOffset;
 	private boolean isScrollingUpdate;
 	private boolean becauseOfReordering;
+	private boolean becauseOfSelectedRow;
 
 	public OrderColumnUI(OrderColumn model, ColumnRanker ranker, IRowHeightLayout rowLayout, IRankTableUIConfig config) {
 		this.ranker = ranker;
@@ -70,6 +72,7 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 		this.scrollBar.setCallback(this);
 		ranker.addPropertyChangeListener(ColumnRanker.PROP_ORDER, this);
 		ranker.addPropertyChangeListener(ColumnRanker.PROP_INVALID, this);
+		ranker.getTable().addPropertyChangeListener(RankTableModel.PROP_SELECTED_ROW, this);
 		setLayoutData(model);
 	}
 
@@ -121,6 +124,10 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 		case ColumnRanker.PROP_INVALID:
 			becauseOfReordering = true;
 			updateMeAndMyChildren();
+			break;
+		case RankTableModel.PROP_SELECTED_ROW:
+			becauseOfSelectedRow = true;
+			break;
 		}
 	}
 
@@ -135,6 +142,7 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 		context.unregisterPickingListener(scrollBarPickingId);
 		ranker.removePropertyChangeListener(ColumnRanker.PROP_ORDER, this);
 		ranker.removePropertyChangeListener(ColumnRanker.PROP_INVALID, this);
+		ranker.getTable().addPropertyChangeListener(RankTableModel.PROP_SELECTED_ROW, this);
 		super.takeDown();
 	}
 
@@ -161,8 +169,11 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 
 	@Override
 	protected void layoutImpl() {
+		if (!becauseOfSelectedRow)
+			rowLayoutInstance = null;
+		becauseOfSelectedRow = false;
 		rowLayoutInstance = rowLayout.layout(ranker, getSize().y(), ranker.getTable().getDataSize(), scrollOffset,
-				isScrollingUpdate);
+				isScrollingUpdate, rowLayoutInstance);
 		isScrollingUpdate = false;
 		scrollOffset = rowLayoutInstance.getOffset();
 		scrollBar.setBounds(rowLayoutInstance.getOffset(), rowLayoutInstance.getNumVisibles(),
@@ -235,8 +246,8 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 		updateMeAndMyChildren();
 	}
 
-	public void layoutRows(IRowSetter setter, float x, float w, int selectedIndex) {
-		rowLayoutInstance.layout(setter, x, w, selectedIndex);
+	public void layoutRows(IRowSetter setter, float x, float w) {
+		rowLayoutInstance.layout(setter, x, w);
 	}
 
 	public int getNumVisibleRows() {

@@ -50,7 +50,7 @@ import com.jogamp.common.util.IntObjectHashMap;
 public class StackedRankColumnModel extends AMultiRankColumnModel implements ISnapshotableColumnMixin,
 		ICompressColumnMixin {
 	public static final String PROP_ALIGNMENT = "alignment";
-	public static final String PROP_DISTRIBUTIONS = "distributions";
+	public static final String PROP_WEIGHTS = "weights";
 
 	private final PropertyChangeListener listener = new PropertyChangeListener() {
 		@Override
@@ -187,7 +187,7 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 		float s = 0;
 		final int size = children.size();
 		MultiFloat f = getSplittedValue(row);
-		float[] ws = this.getDistributions();
+		float[] ws = this.getWeights();
 		for (int i = 0; i < size; ++i) {
 			float fi = f.values[i];
 			if (Float.isNaN(fi))
@@ -252,12 +252,11 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 	}
 
 	/**
-	 * returns the distributions how much a individual column contributes to the overall scores, i.e. the normalized
-	 * weights
-	 *
+	 * returns the weights how much a individual column contributes to the overall scores, i.e. the normalized weights
+	 * 
 	 * @return
 	 */
-	public float[] getDistributions() {
+	public float[] getWeights() {
 		float[] r = new float[this.size()];
 		float base = width - RenderStyle.COLUMN_SPACE * (size() + 1);
 		int i = 0;
@@ -267,18 +266,18 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 		return r;
 	}
 
-	public void setDistributions(float[] distributions) {
-		assert this.size() == distributions.length;
+	public void setWeights(float[] weights) {
+		assert this.size() == weights.length;
 		float sum = 0;
-		for (float v : distributions)
+		for (float v : weights)
 			sum += v;
 		float factor = (width - RenderStyle.COLUMN_SPACE * (size() + 1)) / sum;
 		int i = 0;
 		for (ARankColumnModel col : this) {
-			float w = distributions[i++] * factor;
+			float w = weights[i++] * factor;
 			col.setParentData(w);
 		}
-		propertySupport.firePropertyChange(PROP_DISTRIBUTIONS, null, distributions);
+		propertySupport.firePropertyChange(PROP_WEIGHTS, null, weights);
 	}
 
 	public float getChildWidth(int i) {
@@ -339,7 +338,7 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 		}
 		if (!any)
 			return true;
-		float[] ws = getDistributions();
+		float[] ws = getWeights();
 		float inferPercentage = 0;
 		for (int i = 0; i < inferreds.length; ++i) {
 			if (inferreds[i])

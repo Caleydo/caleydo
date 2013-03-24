@@ -161,7 +161,7 @@ public class AcademicUniversityYear {
 		stacked.add(col(map, COL_pcb, "Per Capita Performance\nPer capita academic performance of an institution",
 				"#DFC27D", "#F6E8C3"));
 
-		stacked.setDistributions(new float[] { 10, 20, 20, 20, 20, 10 });
+		stacked.setWeights(new float[] { 10, 20, 20, 20, 20, 10 });
 		stacked.setWidth(300);
 
 		return stacked;

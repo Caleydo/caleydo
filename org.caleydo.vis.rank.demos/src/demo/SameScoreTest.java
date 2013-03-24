@@ -33,7 +33,6 @@ import org.caleydo.vis.rank.data.FloatInferrers;
 import org.caleydo.vis.rank.model.ARow;
 import org.caleydo.vis.rank.model.FloatRankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
-import org.caleydo.vis.rank.model.RankRankColumnModel;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
 
@@ -46,16 +45,14 @@ import demo.RankTableDemo.IModelBuilder;
 public class SameScoreTest implements IModelBuilder {
 	@Override
 	public void apply(RankTableModel table) throws Exception {
-		table.add(new RankRankColumnModel());
-		table.add(
-				new FloatRankColumnModel(new AFloatFunction<IRow>() {
-					@Override
-					public float applyPrimitive(IRow in) {
-						return ((SimpleRow)in).value;
-					}
-				}, GLRenderers.drawText("Float", VAlign.CENTER), Color
-						.decode("#ffb380"), Color.decode("#ffe6d5"), new PiecewiseMapping(0, Float.NaN),
-						FloatInferrers.MEAN));
+		// table.add(new RankRankColumnModel());
+		table.add(new FloatRankColumnModel(new AFloatFunction<IRow>() {
+			@Override
+			public float applyPrimitive(IRow in) {
+				return ((SimpleRow) in).value;
+			}
+		}, GLRenderers.drawText("Float", VAlign.CENTER), Color.decode("#ffb380"), Color.decode("#ffe6d5"),
+				new PiecewiseMapping(0, Float.NaN), FloatInferrers.MEAN));
 
 		Random r = new Random(200);
 		List<IRow> rows = new ArrayList<>(100);

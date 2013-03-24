@@ -41,9 +41,12 @@ public interface IRowHeightLayout {
 	 *            the offset determined by scrolling
 	 * @param forceOffset
 	 *            whether a shift in the offset is force, i.e. by scrolling
+	 * @param previous
+	 *            the previous instance
 	 * @return a concrete instance of a {@link IRowLayoutInstance} that performs the actual layouting of rows
 	 */
-	IRowLayoutInstance layout(ColumnRanker ranker, float h, int size, int offset, boolean forceOffset);
+	IRowLayoutInstance layout(ColumnRanker ranker, float h, int size, int offset, boolean forceOffset,
+			IRowLayoutInstance previous);
 
 	/**
 	 * @return a representative path to an icon of this layout

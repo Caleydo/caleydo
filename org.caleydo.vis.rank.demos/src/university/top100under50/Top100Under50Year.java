@@ -143,7 +143,7 @@ public class Top100Under50Year {
 		stacked.add(col(map, COL_internationalMix, "International outlook", "#C994C7", "#E7E1EF", inf));
 		stacked.add(col(map, COL_incomeFromIndustry, "Industry income", "#FDBB84", "#FEE8C8", inf));
 
-		stacked.setDistributions(new float[] { 30, 30, 30, 7.5f, 2.5f });
+		stacked.setWeights(new float[] { 30, 30, 30, 7.5f, 2.5f });
 		stacked.setWidth(300);
 
 		return stacked;

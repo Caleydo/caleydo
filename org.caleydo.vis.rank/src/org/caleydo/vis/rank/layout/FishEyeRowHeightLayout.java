@@ -66,8 +66,10 @@ class FishEyeRowHeightLayout implements IRowHeightLayout {
 	}
 
 	@Override
-	public IRowLayoutInstance layout(ColumnRanker ranker, float h, int size, int offset, boolean forceOffset) {
+	public IRowLayoutInstance layout(ColumnRanker ranker, float h, int size, int offset, boolean forceOffset,
+			IRowLayoutInstance previous) {
 		int selectedRank = ranker.getSelectedRank();
+		final int selectedIndex = selectedRank < 0 ? -1 : ranker.get(selectedRank).getIndex();
 		if (selectedRank < 0)
 			selectedRank = 0;
 
@@ -114,7 +116,7 @@ class FishEyeRowHeightLayout implements IRowHeightLayout {
 				break;
 		}
 
-		return new FishEyeImpl(order, offset, numVisibles, selectedRank, unused, h);
+		return new FishEyeImpl(order, offset, numVisibles, selectedRank, unused, h, selectedIndex);
 	}
 
 	class FishEyeImpl extends ARowLayoutInstance {
@@ -123,8 +125,8 @@ class FishEyeRowHeightLayout implements IRowHeightLayout {
 		private final float h;
 		private final int base;
 
-		public FishEyeImpl(int[] order, int offset, int numVisibles, int base, BitSet unused, float h) {
-			super(offset, numVisibles);
+		public FishEyeImpl(int[] order, int offset, int numVisibles, int base, BitSet unused, float h, int selectedIndex) {
+			super(offset, numVisibles, selectedIndex);
 			this.order = order;
 			this.unused = unused;
 			this.h = h;
@@ -137,7 +139,7 @@ class FishEyeRowHeightLayout implements IRowHeightLayout {
 		}
 
 		@Override
-		public void layout(IRowSetter setter, float x, float w, int selectedIndex) {
+		public void layout(IRowSetter setter, float x, float w) {
 			float y = 0;
 			for (int r = 0; r < offset; ++r)
 				setter.set(order[r], x, 0, w, 0, false);

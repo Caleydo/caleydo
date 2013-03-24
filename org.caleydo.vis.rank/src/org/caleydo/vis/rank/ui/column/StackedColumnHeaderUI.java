@@ -44,7 +44,7 @@ import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.vis.rank.config.IRankTableUIConfig;
-import org.caleydo.vis.rank.internal.event.DistributionChangedEvent;
+import org.caleydo.vis.rank.internal.event.WeightsChangedEvent;
 import org.caleydo.vis.rank.model.ACompositeRankColumnModel;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.StackedRankColumnModel;
@@ -68,7 +68,7 @@ public class StackedColumnHeaderUI extends ACompositeHeaderUI implements IThickH
 		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
 			switch (evt.getPropertyName()) {
-			case StackedRankColumnModel.PROP_DISTRIBUTIONS:
+			case StackedRankColumnModel.PROP_WEIGHTS:
 			case StackedRankColumnModel.PROP_ALIGNMENT:
 				relayout();
 				break;
@@ -79,13 +79,13 @@ public class StackedColumnHeaderUI extends ACompositeHeaderUI implements IThickH
 		}
 	};
 
-	private final IPickingListener onDistributionClicked = new IPickingListener() {
+	private final IPickingListener onWeightsClicked = new IPickingListener() {
 		@Override
 		public void pick(Pick pick) {
-			onDistributionsClicked(pick);
+			onWeightsClicked(pick);
 		}
 	};
-	private int distributionClickedPickingId = -1;
+	private int weightsClickedPickingId = -1;
 
 	public StackedColumnHeaderUI(StackedRankColumnModel model, IRankTableUIConfig config) {
 		super(config, 1);
@@ -94,7 +94,7 @@ public class StackedColumnHeaderUI extends ACompositeHeaderUI implements IThickH
 		this.add(0, new StackedSummaryHeaderUI(model, config));
 		model.addPropertyChangeListener(ACompositeRankColumnModel.PROP_CHILDREN, childrenChanged);
 		model.addPropertyChangeListener(StackedRankColumnModel.PROP_ALIGNMENT, listener);
-		model.addPropertyChangeListener(StackedRankColumnModel.PROP_DISTRIBUTIONS, listener);
+		model.addPropertyChangeListener(StackedRankColumnModel.PROP_WEIGHTS, listener);
 		model.addPropertyChangeListener(ICompressColumnMixin.PROP_COMPRESSED, listener);
 		model.addPropertyChangeListener(ICollapseableColumnMixin.PROP_COLLAPSED, listener);
 		init(model);
@@ -114,16 +114,16 @@ public class StackedColumnHeaderUI extends ACompositeHeaderUI implements IThickH
 
 	@Override
 	protected void init(IGLElementContext context) {
-		distributionClickedPickingId = context.registerPickingListener(onDistributionClicked);
+		weightsClickedPickingId = context.registerPickingListener(onWeightsClicked);
 		super.init(context);
 	}
 
 	@Override
 	protected void takeDown() {
-		context.unregisterPickingListener(distributionClickedPickingId);
+		context.unregisterPickingListener(weightsClickedPickingId);
 		model.removePropertyChangeListener(StackedRankColumnModel.PROP_ALIGNMENT, listener);
 		model.removePropertyChangeListener(ACompositeRankColumnModel.PROP_CHILDREN, childrenChanged);
-		model.removePropertyChangeListener(StackedRankColumnModel.PROP_DISTRIBUTIONS, childrenChanged);
+		model.removePropertyChangeListener(StackedRankColumnModel.PROP_WEIGHTS, childrenChanged);
 		model.removePropertyChangeListener(ICompressColumnMixin.PROP_COMPRESSED, listener);
 		model.removePropertyChangeListener(ICollapseableColumnMixin.PROP_COLLAPSED, listener);
 		super.takeDown();
@@ -199,7 +199,7 @@ public class StackedColumnHeaderUI extends ACompositeHeaderUI implements IThickH
 			g.incZ().incZ();
 
 			// render the distributions
-			float[] distributions = model.getDistributions();
+			float[] weights = model.getWeights();
 			float yi = HIST_HEIGHT + LABEL_HEIGHT + 7;
 			float hi = LABEL_HEIGHT - 6;
 			float x = COLUMN_SPACE;
@@ -210,7 +210,7 @@ public class StackedColumnHeaderUI extends ACompositeHeaderUI implements IThickH
 			for (int i = 0; i < numColumns; ++i) {
 				float wi = this.model.getChildWidth(i) + COLUMN_SPACE;
 				// g.drawLine(x, yi, x, yi + hi + 2);
-				g.drawText(String.format(Locale.ENGLISH, "%.2f%%", distributions[i] * 100), x, yi, wi, hi - 4,
+				g.drawText(String.format(Locale.ENGLISH, "%.2f%%", weights[i] * 100), x, yi, wi, hi - 4,
 						VAlign.CENTER);
 				// g.drawLine(x, yi + hi, x + wi, yi + hi);
 				x += wi;
@@ -231,7 +231,7 @@ public class StackedColumnHeaderUI extends ACompositeHeaderUI implements IThickH
 
 	@Override
 	protected void renderPickImpl(GLGraphics g, float w, float h) {
-		g.pushName(distributionClickedPickingId);
+		g.pushName(weightsClickedPickingId);
 		float yi = HIST_HEIGHT + LABEL_HEIGHT + 7;
 		float hi = LABEL_HEIGHT - 6;
 		float x = COLUMN_SPACE + 2;
@@ -243,15 +243,15 @@ public class StackedColumnHeaderUI extends ACompositeHeaderUI implements IThickH
 	/**
 	 * @param pick
 	 */
-	protected void onDistributionsClicked(Pick pick) {
+	protected void onWeightsClicked(Pick pick) {
 		if (pick.isAnyDragging() || pick.getPickingMode() != PickingMode.DOUBLE_CLICKED)
 			return;
-		EditDistributionsDialog.show(this.model, this);
+		EditWeightsDialog.show(this.model, this);
 	}
 
 	@ListenTo(sendToMe = true)
-	private void onDistributionChanged(DistributionChangedEvent event) {
-		model.setDistributions(event.getDistributions());
+	private void onWeightsChanged(WeightsChangedEvent event) {
+		model.setWeights(event.getWeights());
 		relayout();
 	}
 

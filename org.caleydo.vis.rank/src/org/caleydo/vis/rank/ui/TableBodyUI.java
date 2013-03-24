@@ -50,7 +50,6 @@ import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingListenerComposite;
-import org.caleydo.data.loader.ResourceLocators;
 import org.caleydo.vis.rank.config.IRankTableUIConfig;
 import org.caleydo.vis.rank.internal.event.SetValueEvent;
 import org.caleydo.vis.rank.internal.event.TriggerEditValuesEvent;
@@ -646,8 +645,7 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 	@Override
 	public void layoutRows(ARankColumnModel model, final IRowSetter setter, final float w, float h) {
 		IRow selected = table.getSelectedRow();
-		final int selectedIndex = (selected == null ? -1 : selected.getIndex());
-		getRanker(model).layoutRows(setter, 0, w, selectedIndex);
+		getRanker(model).layoutRows(setter, 0, w);
 	}
 
 	@Override

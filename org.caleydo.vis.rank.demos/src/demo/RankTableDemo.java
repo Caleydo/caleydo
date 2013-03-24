@@ -101,7 +101,7 @@ public class RankTableDemo extends GLSandBox {
 		if (p > 0 && v.charAt(p - 1) != 'e' && v.charAt(p - 1) != 'E')
 			v = v.substring(0, p);
 		try {
-			return Float.parseFloat(v);	
+			return Float.parseFloat(v);
 		} catch(NumberFormatException e) {
 			System.err.println("parse error: "+v);
 			return Float.NaN;

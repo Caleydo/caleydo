@@ -55,10 +55,8 @@ public interface IRowLayoutInstance {
 	 *            the x offset to use
 	 * @param w
 	 *            the width of the column to use
-	 * @param selectedIndex
-	 *            the data index of the item that was selected by the user
 	 */
-	void layout(IRowSetter setter, float x, float w, int selectedIndex);
+	void layout(IRowSetter setter, float x, float w);
 
 	/**
 	 * generic callback interface for setting the bounds of a value item
@@ -69,7 +67,7 @@ public interface IRowLayoutInstance {
 	public interface IRowSetter {
 		/**
 		 * triggers to set the value of the given row index item with the specified bounds
-		 * 
+		 *
 		 * @param rowIndex
 		 * @param x
 		 * @param y

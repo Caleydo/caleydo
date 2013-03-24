@@ -191,7 +191,7 @@ public class WorldUniversityYear {
 		stacked.add(col(year, COL_international, "International faculty ratio", dark[5], light[5]));
 		stacked.add(col(year, COL_internationalstudents, "International student ratio", dark[6], light[6]));
 
-		stacked.setDistributions(new float[] { 40, 10, 20, 20, 5, 5 });
+		stacked.setWeights(new float[] { 40, 10, 20, 20, 5, 5 });
 		stacked.setWidth(300);
 
 		if (addStars) {
