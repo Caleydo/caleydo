@@ -58,25 +58,27 @@ public class WorldUniversityRanking implements IModelBuilder {
 
 		table.add(new RankRankColumnModel());
 		table.add(new StringRankColumnModel(GLRenderers.drawText("School Name", VAlign.CENTER),
-				StringRankColumnModel.DEFAULT));
+				StringRankColumnModel.DEFAULT).setWidth(300));
+
+		int rankColWidth = 37;
 
 		// Arrays.asList("wur2010.txt", "wur2011.txt", "wur2012.txt");
 		WorldUniversityYear.addYear(table, "2012", new YearGetter(0), true).orderByMe();
 		table.add(new OrderColumn());
-		table.add(new RankRankColumnModel());
-		WorldUniversityYear.addYear(table, "2011", new YearGetter(1), false);
+		table.add(new RankRankColumnModel().setWidth(rankColWidth));
+		WorldUniversityYear.addYear(table, "2011", new YearGetter(1), false).setCompressed(true);
 		table.add(new OrderColumn());
-		table.add(new RankRankColumnModel());
-		WorldUniversityYear.addYear(table, "2010", new YearGetter(2), false);
+		table.add(new RankRankColumnModel().setWidth(rankColWidth));
+		WorldUniversityYear.addYear(table, "2010", new YearGetter(2), false).setCompressed(true);
 		table.add(new OrderColumn());
-		table.add(new RankRankColumnModel());
-		WorldUniversityYear.addYear(table, "2009", new YearGetter(3), false);
+		table.add(new RankRankColumnModel().setWidth(rankColWidth));
+		WorldUniversityYear.addYear(table, "2009", new YearGetter(3), false).setCollapsed(true);
 		table.add(new OrderColumn());
-		table.add(new RankRankColumnModel());
-		WorldUniversityYear.addYear(table, "2008", new YearGetter(4), false).setCompressed(true);
+		table.add(new RankRankColumnModel().setWidth(rankColWidth));
+		WorldUniversityYear.addYear(table, "2008", new YearGetter(4), false).setCollapsed(true);
 		table.add(new OrderColumn());
-		table.add(new RankRankColumnModel());
-		WorldUniversityYear.addYear(table, "2007", new YearGetter(5), false).setCompressed(true);
+		table.add(new RankRankColumnModel().setWidth(rankColWidth));
+		WorldUniversityYear.addYear(table, "2007", new YearGetter(5), false).setCollapsed(true);
 	}
 
 	static class YearGetter implements Function<IRow, WorldUniversityYear> {
