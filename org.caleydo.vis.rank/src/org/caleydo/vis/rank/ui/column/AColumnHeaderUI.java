@@ -447,23 +447,23 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 
 				// HACK for testing different button positions
 				float yb = 0;
-				switch ((inc++ / 2) % 5) {
-				case 0: // at the bottom
-					yb = isHovered ? (h - 2 - RenderStyle.BUTTON_WIDTH) : h;
-					break;
-				case 1: // at the top
-					yb = 0;
-					break;
-				case 2: // under the label
-					yb = LABEL_HEIGHT;
-					break;
-				case 3: // above the label
+				// switch ((inc++ / 2) % 5) {
+				// case 0: // at the bottom
+				// yb = isHovered ? (h - 2 - RenderStyle.BUTTON_WIDTH) : h;
+				// break;
+				// case 1: // at the top
+				// yb = 0;
+				// break;
+				// case 2: // under the label
+				// yb = LABEL_HEIGHT;
+				// break;
+				// case 3: // above the label
 					yb = isHovered ? -RenderStyle.BUTTON_WIDTH : 0;
-					break;
-				case 4: // below the histogram
-					yb = isHovered ? h : h;
-					break;
-				}
+				// break;
+				// case 4: // below the histogram
+				// yb = isHovered ? h : h;
+				// break;
+				// }
 
 				float hb = isHovered ? RenderStyle.BUTTON_WIDTH : 0;
 				if ((w - 4) < minWidth) {

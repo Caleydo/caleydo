@@ -79,8 +79,8 @@ public class EditDistributionsDialog extends TitleAreaDialog {
 	@Override
 	public void create() {
 		super.create();
-		getShell().setText("Edit distributions");
-		setTitle("Edit the distributions of");
+		getShell().setText("Edit attribute weights");
+		setTitle("Edit the attribute weight of");
 		setMessage(model.getTitle());
 	}
 

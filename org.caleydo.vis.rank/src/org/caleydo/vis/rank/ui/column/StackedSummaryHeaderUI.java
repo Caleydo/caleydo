@@ -88,7 +88,7 @@ public class StackedSummaryHeaderUI extends AColumnHeaderUI {
 	@Override
 	protected void showContextMenu(List<AContextMenuItem> items) {
 		items.add(SeparatorMenuItem.INSTANCE);
-		GenericContextMenuItem editDistributions = new GenericContextMenuItem("Edit Distributions",
+		GenericContextMenuItem editDistributions = new GenericContextMenuItem("Edit Weights",
 				new OpenEditDistributionsEvent().to(this));
 		items.add(editDistributions);
 		items.add(0, new GenericContextMenuItem("Order by this attribute", new OrderByMeEvent().to(this)));
