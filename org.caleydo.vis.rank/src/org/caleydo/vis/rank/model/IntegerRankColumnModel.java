@@ -34,6 +34,7 @@ import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.rank.internal.event.SizeFilterEvent;
+import org.caleydo.vis.rank.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 import org.caleydo.vis.rank.ui.GLPropertyChangeListeners;
 import org.caleydo.vis.rank.ui.detail.ValueElement;
@@ -56,7 +57,8 @@ import com.google.common.base.Function;
  * @author Samuel Gratzl
  *
  */
-public class IntegerRankColumnModel extends ABasicFilterableRankColumnModel implements IRankableColumnMixin {
+public class IntegerRankColumnModel extends ABasicFilterableRankColumnModel implements IRankableColumnMixin,
+		IFilterColumnMixin {
 	private final Function<IRow, Integer> data;
 
 	private int min = 0;

@@ -261,6 +261,10 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 		OrderColumnUI previousRanker = model == null ? null : body.getRanker(model);
 		if (previousRanker == null)
 			return;
+		boolean hasLeftScrollBar = previousRanker.needsScrollBar();
+		float x1 = -1 + (hasLeftScrollBar ? RenderStyle.SCROLLBAR_WIDTH : 0);
+		boolean hasRightScrollBar = this.needsScrollBar();
+		float x2 = w + 1 - (hasRightScrollBar ? RenderStyle.SCROLLBAR_WIDTH : 0);
 
 		// render the bands
 		if (!dontneedToRenderBands(w)) {
@@ -297,9 +301,10 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 						delta = i - (int) (aScroll.getOffset() - aScroll.getWindow());
 					}
 				}
-				renderBand(g, left, right, w, selectedRank == i, Math.abs(delta));
+				renderBand(g, left, right, x1, x2, selectedRank == i, Math.abs(delta));
 			}
 		}
+
 		previousRanker.renderScrollBar(g, w, h, true); // render left
 		this.renderScrollBar(g, w, h, false); // render right
 
@@ -325,7 +330,9 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 			return;
 
 		boolean hasLeftScrollBar = previousRanker.needsScrollBar();
-		boolean hasRightScrollBar = needsScrollBar();
+		float x1 = -1 + (hasLeftScrollBar ? RenderStyle.SCROLLBAR_WIDTH : 0);
+		boolean hasRightScrollBar = this.needsScrollBar();
+		float x2 = w + 1 - (hasRightScrollBar ? RenderStyle.SCROLLBAR_WIDTH : 0);
 
 		ITableColumnUI previous = body.getLastCorrespondingColumn(previousRanker, true);
 		ITableColumnUI self = body.getLastCorrespondingColumn(this, true);
@@ -345,7 +352,7 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 			if (!areValidBounds(left) && !areValidBounds(right))
 				continue;
 			g.pushName(body.getRankPickingId(i));
-			renderBand(g, left, right, w, false, 0);
+			renderBand(g, left, right, x1, x2, false, 0);
 			g.popName();
 		}
 		g.move(hasLeftScrollBar ? -RenderStyle.SCROLLBAR_WIDTH : 0, 0);
@@ -356,44 +363,44 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 		return model == null || model.isCollapsed() || w < 10;
 	}
 
-	private void renderBand(GLGraphics g, Vec4f left, Vec4f right, float w, boolean isSelected, int delta) {
+	private void renderBand(GLGraphics g, Vec4f left, Vec4f right, float x1, float x2, boolean isSelected, int delta) {
 		boolean isLeftValid = areValidBounds(left);
 		boolean isRightValid = areValidBounds(right);
 		if (isSelected) {
 			g.incZ();
 			if (isLeftValid && isRightValid) {
 				g.color(RenderStyle.COLOR_SELECTED_ROW);
-				g.fillPolygon(new Vec2f(-1, left.y()), new Vec2f(w, right.y()), new Vec2f(w, right.y() + right.w()),
-						new Vec2f(-1, left.y() + left.w()));
+				g.fillPolygon(new Vec2f(x1, left.y()), new Vec2f(x2, right.y()), new Vec2f(x2, right.y() + right.w()),
+						new Vec2f(x1, left.y() + left.w()));
 				g.color(RenderStyle.COLOR_SELECTED_BORDER);
-				g.drawLine(0, left.y(), w, right.y());
-				g.drawLine(0, left.y() + left.w(), w, right.y() + right.w());
+				g.drawLine(x1, left.y(), x2, right.y());
+				g.drawLine(x1, left.y() + left.w(), x2, right.y() + right.w());
 			} else if (isLeftValid) {
 				g.color(RenderStyle.COLOR_SELECTED_ROW);
-				g.fillPolygon(new Vec2f(-1, left.y()), new Vec2f(w, right.y()), new Vec2f(-1, left.y() + left.w()));
+				g.fillPolygon(new Vec2f(x1, left.y()), new Vec2f(x2, right.y()), new Vec2f(x1, left.y() + left.w()));
 				g.color(RenderStyle.COLOR_SELECTED_BORDER);
-				g.drawLine(0, left.y(), w, right.y());
-				g.drawLine(0, left.y() + left.w(), w, right.y());
+				g.drawLine(x1, left.y(), x2, right.y());
+				g.drawLine(x1, left.y() + left.w(), x2, right.y());
 			} else if (isRightValid) {
 				g.color(RenderStyle.COLOR_SELECTED_ROW);
-				g.fillPolygon(new Vec2f(-1, left.y()), new Vec2f(w, right.y()), new Vec2f(w, right.y() + right.w()));
+				g.fillPolygon(new Vec2f(x1, left.y()), new Vec2f(x2, right.y()), new Vec2f(x2, right.y() + right.w()));
 				g.color(RenderStyle.COLOR_SELECTED_BORDER);
-				g.drawLine(0, left.y(), w, right.y());
-				g.drawLine(0, left.y(), w, right.y() + right.w());
+				g.drawLine(x1, left.y(), x2, right.y());
+				g.drawLine(x1, left.y(), x2, right.y() + right.w());
 			}
 			g.decZ();
 		} else {
 			if (isLeftValid && isRightValid) {
 				g.color(Color.GRAY);
-				g.drawLine(-1, left.y() + left.w() * 0.5f, w, right.y() + right.w() * 0.5f);
+				g.drawLine(x1, left.y() + left.w() * 0.5f, x2, right.y() + right.w() * 0.5f);
 			} else if (isLeftValid) {
 				float v = getAlphaFromDelta(delta);
 				g.color(v, v, v, 1);
-				arrow(g, 5, left.y(), left.w(), right.y() <= 0);
+				arrow(g, x1, left.y(), left.w(), right.y() <= 0);
 			} else if (isRightValid) {
 				float v = getAlphaFromDelta(delta);
 				g.color(v, v, v, 1);
-				arrow(g, w - 10, right.y(), right.w(), left.y() <= 0);
+				arrow(g, x2 - 7, right.y(), right.w(), left.y() <= 0);
 			}
 		}
 	}

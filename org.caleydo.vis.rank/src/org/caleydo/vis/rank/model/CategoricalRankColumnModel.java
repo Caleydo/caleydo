@@ -37,6 +37,7 @@ import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.rank.internal.event.FilterEvent;
+import org.caleydo.vis.rank.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IGrabRemainingHorizontalSpace;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 import org.caleydo.vis.rank.ui.GLPropertyChangeListeners;
@@ -59,7 +60,8 @@ import com.google.common.base.Function;
  */
 public class CategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<CATEGORY_TYPE>> extends
 		ABasicFilterableRankColumnModel implements
-		IGrabRemainingHorizontalSpace, IRankableColumnMixin {
+ IFilterColumnMixin, IGrabRemainingHorizontalSpace,
+		IRankableColumnMixin {
 	private final Function<IRow, CATEGORY_TYPE> data;
 	private Set<CATEGORY_TYPE> selection = new HashSet<>();
 	private Map<CATEGORY_TYPE, String> metaData;

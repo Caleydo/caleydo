@@ -27,15 +27,14 @@ import java.util.Collection;
 import java.util.List;
 
 import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
-import org.caleydo.vis.rank.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IHideableColumnMixin;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public abstract class ABasicFilterableRankColumnModel extends ARankColumnModel implements IFilterColumnMixin,
-		IHideableColumnMixin, ICollapseableColumnMixin {
+public abstract class ABasicFilterableRankColumnModel extends ARankColumnModel implements IHideableColumnMixin,
+		ICollapseableColumnMixin {
 
 	private final BitSet mask = new BitSet();
 	private final BitSet maskInvalid = new BitSet();
@@ -82,7 +81,8 @@ public abstract class ABasicFilterableRankColumnModel extends ARankColumnModel i
 			maskInvalid.set(0, getTable().getDataSize());
 	}
 
-	@Override
+	public abstract boolean isFiltered();
+
 	public final void filter(List<IRow> data, BitSet mask) {
 		if (!isFiltered())
 			return;

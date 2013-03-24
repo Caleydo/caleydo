@@ -35,6 +35,7 @@ import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.rank.internal.event.FilterEvent;
 import org.caleydo.vis.rank.internal.event.SearchEvent;
+import org.caleydo.vis.rank.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IGrabRemainingHorizontalSpace;
 import org.caleydo.vis.rank.model.mixin.IRankColumnModel;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
@@ -55,7 +56,7 @@ import com.google.common.base.Function;
  *
  */
 public class StringRankColumnModel extends ABasicFilterableRankColumnModel implements IGrabRemainingHorizontalSpace,
-		IRankableColumnMixin, ISearchableColumnMixin {
+		IFilterColumnMixin, IRankableColumnMixin, ISearchableColumnMixin {
 	/**
 	 * different strategies for filter modi
 	 *
@@ -121,7 +122,7 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 	}
 
 	public StringRankColumnModel(IGLRenderer header, final Function<IRow, String> data, Color color, Color bgColor) {
-		this(header, data, color, bgColor, FilterStrategy.STAR_WILDCARD);
+		this(header, data, color, bgColor, FilterStrategy.SUBSTRING);
 	}
 
 	public StringRankColumnModel(IGLRenderer header, final Function<IRow, String> data, Color color, Color bgColor,

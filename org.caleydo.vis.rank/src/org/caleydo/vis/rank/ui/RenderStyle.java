@@ -77,7 +77,7 @@ public class RenderStyle {
 	public static final String ICON_ARROW = ICON_PREFIX + "arrow.png";
 	public static final String ICON_FILTER_DISABLED = ICON_PREFIX + "filter_disabled.png";
 	public static final String ICON_FILTER = ICON_PREFIX + "filter.png";
-	public static final String ICON_MAPPING = ICON_PREFIX + "pencil_ruler.png";
+	public static final String ICON_MAPPING = ICON_PREFIX + "filter.png";
 	public static final String ICON_EXPLODE = ICON_PREFIX + "dynamite.png";
 	public static final String ICON_EDIT_ANNOTATION = ICON_PREFIX + "note_edit.png";
 	public static final String ICON_COLLAPSE = ICON_PREFIX + "bullet_toggle_plus.png";

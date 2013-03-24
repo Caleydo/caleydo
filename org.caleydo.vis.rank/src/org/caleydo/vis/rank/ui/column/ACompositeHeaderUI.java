@@ -105,7 +105,7 @@ public abstract class ACompositeHeaderUI extends GLElementContainer implements I
 		int index = evt.getIndex();
 		if (evt.getOldValue() instanceof Integer) { // moved
 			int movedFrom = (Integer) evt.getOldValue();
-			add(index + firstColumn, get(movedFrom));
+			add(index + firstColumn, get(movedFrom + firstColumn));
 		} else if (evt.getOldValue() == null) { // new
 			Collection<GLElement> news = null;
 			if (evt.getNewValue() instanceof ARankColumnModel) {

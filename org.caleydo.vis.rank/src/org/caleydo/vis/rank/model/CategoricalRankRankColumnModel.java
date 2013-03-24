@@ -42,6 +42,7 @@ import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.rank.internal.event.FilterEvent;
 import org.caleydo.vis.rank.model.CategoricalRankColumnModel.ArrayTreeContentProvider;
 import org.caleydo.vis.rank.model.mapping.ICategoricalMappingFunction;
+import org.caleydo.vis.rank.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IFloatRankableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IMappedColumnMixin;
 import org.caleydo.vis.rank.ui.GLPropertyChangeListeners;
@@ -67,7 +68,7 @@ import com.google.common.base.Function;
  *
  */
 public class CategoricalRankRankColumnModel<CATEGORY_TYPE> extends ABasicFilterableRankColumnModel implements
-		IMappedColumnMixin, IFloatRankableColumnMixin {
+		IFilterColumnMixin, IMappedColumnMixin, IFloatRankableColumnMixin {
 	private static final int MAX_CATEGORY_COLORS = 8;
 
 	private final Function<IRow, CATEGORY_TYPE> data;

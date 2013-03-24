@@ -82,7 +82,7 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 	/**
 	 * if more than x percent of the the score is created by inferred values, filter it out
 	 */
-	private float filterInferredPercentage = 1.f;
+	private float filterInferredPercentage = 0.99f;
 	private IntObjectHashMap cacheMulti = new IntObjectHashMap();
 
 	public StackedRankColumnModel() {
@@ -138,6 +138,12 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 		super.setWidth(width - model.getWidth() - RenderStyle.COLUMN_SPACE);
 		model.setParentData(null);
 		cacheMulti.clear();
+	}
+
+	@Override
+	protected void moved(int from, int to) {
+		cacheMulti.clear();
+		super.moved(from, to);
 	}
 
 	protected void onWeightChanged(ARankColumnModel child, float oldValue, float newValue) {
@@ -253,7 +259,7 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 
 	/**
 	 * returns the weights how much a individual column contributes to the overall scores, i.e. the normalized weights
-	 * 
+	 *
 	 * @return
 	 */
 	public float[] getWeights() {

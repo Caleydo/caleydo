@@ -97,12 +97,17 @@ public abstract class ACompositeRankColumnModel extends ARankColumnModel impleme
 			children.add(to, model);
 			children.remove(from < to ? from : from + 1);
 			propertySupport.fireIndexedPropertyChange(PROP_CHILDREN, to, from, model);
+			moved(from, to);
 		} else if (clone) {
 			add(to, model.clone());
 		} else {
 			model.getParent().remove(model);
 			add(to, model);
 		}
+	}
+
+	protected void moved(int from, int to) {
+
 	}
 
 	@Override
