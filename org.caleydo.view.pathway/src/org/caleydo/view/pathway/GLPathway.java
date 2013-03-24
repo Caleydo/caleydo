@@ -465,8 +465,8 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 					return;
 
 				handlePathwayElementSelection(SelectionType.SELECTION, pick.getObjectID());
-
 				triggerNodeEvents(pick.getPickingMode(), pathwayItemManager.getPathwayVertexRep(pick.getObjectID()));
+				//triggerNodeEvents(PickingMode.MOUSE_OVER, pathwayItemManager.getPathwayVertexRep(pick.getObjectID()));
 			}
 
 			@Override
@@ -1318,7 +1318,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 
 		if (isPathSelectionMode && !isControlKeyDown) {
 
-			if (selectionType == SelectionType.SELECTION) {
+			if (!isPathStartSelected && selectionType == SelectionType.SELECTION) {
 				pathStartVertexRep = vertexRep;
 				// pathwayItemManager.getPathwayVertexRep((Integer) vertexSelectionManager
 				// .getElements(SelectionType.SELECTION).toArray()[0]);
