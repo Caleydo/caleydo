@@ -26,6 +26,8 @@ import java.util.List;
 
 import javax.swing.JComponent;
 
+import org.caleydo.core.data.selection.SelectionType;
+
 import setvis.SetOutline;
 import setvis.bubbleset.BubbleSet;
 import setvis.ch.ConvexHull;
@@ -752,7 +754,8 @@ public class CanvasComponent extends JComponent implements Canvas {
     	selectionID=id;
     }
     
-    private Color selectionColor=new Color(0f,1f,0f); 
+    private Color selectionColor=new Color(SelectionType.SELECTION.getColor()[0],SelectionType.SELECTION.getColor()[1],SelectionType.SELECTION.getColor()[2]); 
+
     
     public void setSelectionColor(float[] newSelectionColor){
     	selectionColor=new Color(newSelectionColor[0],newSelectionColor[1],newSelectionColor[2]);
