@@ -24,11 +24,10 @@ import gleem.linalg.Vec2f;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GL2ES1;
 
+import org.caleydo.core.view.opengl.layout2.AGLElementDecorator;
 import org.caleydo.core.view.opengl.layout2.GLElement;
-import org.caleydo.core.view.opengl.layout2.GLElementAccessor;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
-import org.caleydo.core.view.opengl.layout2.IGLElementParent;
 import org.caleydo.core.view.opengl.layout2.basic.IScrollBar.IScrollBarCallback;
 import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
@@ -41,18 +40,15 @@ import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
  * @author Samuel Gratzl
  *
  */
-public final class ScrollingDecorator extends GLElement implements IGLElementParent, IScrollBarCallback {
-	private final GLElement content;
-
+public final class ScrollingDecorator extends AGLElementDecorator implements IScrollBarCallback {
 	private final ScrollBarImpl vertical;
 	private final ScrollBarImpl horizontal;
 
 	private final float scrollBarWidth;
 
 	public ScrollingDecorator(GLElement content, IScrollBar horizontal, IScrollBar vertical, float scrollBarWidth) {
-		this.content = content;
+		super(content);
 		this.scrollBarWidth = scrollBarWidth;
-		GLElementAccessor.setParent(content, this);
 		this.horizontal = horizontal != null ? new ScrollBarImpl(horizontal) : null;
 		if (horizontal != null)
 			horizontal.setCallback(this);
@@ -61,17 +57,9 @@ public final class ScrollingDecorator extends GLElement implements IGLElementPar
 			vertical.setCallback(this);
 	}
 
-	/**
-	 * @return the content, see {@link #content}
-	 */
-	public GLElement getContent() {
-		return content;
-	}
-
 	@Override
 	protected void init(IGLElementContext context) {
 		super.init(context);
-		GLElementAccessor.init(content, context);
 		if (horizontal != null)
 			horizontal.pickingId = context.registerPickingListener(horizontal.scrollBar);
 		if (vertical != null)
@@ -80,7 +68,6 @@ public final class ScrollingDecorator extends GLElement implements IGLElementPar
 
 	@Override
 	protected void takeDown() {
-		GLElementAccessor.takeDown(content);
 		if (horizontal != null)
 			context.unregisterPickingListener(horizontal.pickingId);
 		if (vertical != null)
@@ -89,19 +76,7 @@ public final class ScrollingDecorator extends GLElement implements IGLElementPar
 	}
 
 	@Override
-	protected boolean hasPickAbles() {
-		return true;
-	}
-
-	@Override
-	public void layout(int deltaTimeMs) {
-		super.layout(deltaTimeMs);
-		content.layout(deltaTimeMs);
-	}
-
-	@Override
-	protected void layoutImpl() {
-		IGLLayoutElement layout = GLElementAccessor.asLayoutElement(content);
+	protected void layoutContent(IGLLayoutElement layout) {
 		Vec2f minSize = layout.getLayoutDataAs(Vec2f.class, new Vec2f(0, 0));
 		Vec2f size = getSize();
 		Vec2f contentSize = new Vec2f();
@@ -145,8 +120,8 @@ public final class ScrollingDecorator extends GLElement implements IGLElementPar
 		}
 		layout.setLocation(-offset.x(), -offset.y());
 		layout.setSize(contentSize.x(), contentSize.y());
-		super.layoutImpl();
 	}
+
 
 	@Override
 	public float getHeight(IScrollBar scrollBar) {

@@ -33,4 +33,6 @@ public interface IGLElementVisitor<P, R> {
 	R visit(GLElementContainer elem, P para);
 
 	R visit(AnimatedGLElementContainer elem, P para);
+
+	R visit(AGLElementDecorator elem, P para);
 }
