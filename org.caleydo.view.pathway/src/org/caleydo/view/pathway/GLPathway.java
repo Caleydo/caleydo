@@ -197,6 +197,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 	private boolean isPathStartSelected = false;
 	private int selectedPathID;
 	private PathwayBubbleSet bubbleSet = new PathwayBubbleSet();
+	private PathwayBubbleSet contextPathBubbleSet = new PathwayBubbleSet();
 	private boolean isControlKeyDown = false;
 	private boolean isShiftKeyDown = false;
 
@@ -359,6 +360,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		displayListIndex = gl.glGenLists(1);
 
 		bubbleSet.getBubbleSetGLRenderer().init(gl);
+		contextPathBubbleSet.getBubbleSetGLRenderer().init(gl);
 		// Check if pathway exists or if it's already loaded
 		if (pathway == null || !pathwayManager.hasItem(pathway.getID()))
 			return;
@@ -737,8 +739,10 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 			gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_KEEP);
 			textureOffset -= 2f * PathwayRenderStyle.Z_OFFSET;
 			gl.glTranslatef(0.0f, 0.0f, textureOffset);
+			
+			overlayContextBubbleSets(gl);
 			overlayBubbleSets(gl);
-
+			
 			gl.glEnable(GL.GL_DEPTH_TEST);
 			gl.glDisable(GL.GL_STENCIL_TEST);
 		}
@@ -750,6 +754,25 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		gl.glPopMatrix();
 	}
 
+	private void overlayContextBubbleSets(GL2 gl){
+		if(contextPaths.size()<1)return;
+		if(areContextPathsDirty){
+			this.contextPathBubbleSet.clear();
+			this.contextPathBubbleSet.getBubbleSetGLRenderer().setSize(pathway.getWidth(), pathway.getHeight());						
+			this.contextPathBubbleSet.setPathwayGraph(pathway);
+			
+			this.contextPathBubbleSet.addContextPathSegements(contextPaths);
+			
+			this.contextPathBubbleSet.getBubbleSetGLRenderer().update(gl, null, selectedPathID);
+			areContextPathsDirty = false;
+		}
+		
+		this.contextPathBubbleSet.getBubbleSetGLRenderer().render(gl,
+				pixelGLConverter.getGLWidthForPixelWidth(pathway.getWidth()),
+				pixelGLConverter.getGLHeightForPixelHeight(pathway.getHeight()),
+				1.0f);
+	}
+	
 	private void overlayBubbleSets(GL2 gl) {
 		if (allPaths == null)
 			return;

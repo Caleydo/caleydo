@@ -829,7 +829,7 @@ public class CanvasComponent extends JComponent implements Canvas {
         }
 
         //render selected set
-     	if(isVisibleList.get(selectionID))
+     	if(selectionID >= 0 && isVisibleList.get(selectionID))
      	{
         	//final Color c = colorList.get(selectionID);
      		final Color c = selectionColor;
@@ -863,7 +863,7 @@ public class CanvasComponent extends JComponent implements Canvas {
             }
         }
      	else{
-     		System.out.println("isVisibleList.get(selectionID) = false");
+     		//System.out.println("isVisibleList.get(selectionID) = false");
      	}
 //        hue = 0f;
 //        pos = 0;

@@ -106,6 +106,31 @@ public class PathwayBubbleSet
 		}
 	}
 	
+	public void addContextPathSegements(List<List<PathwayVertexRep>> contextPaths)
+	{
+		Color contextPathColor=new Color(0.0f,0.0f,1.0f); 
+		for (List<PathwayVertexRep> pathSegment : contextPaths) 
+		{
+			int i=0;
+			Rectangle2D prevRect = new Rectangle2D.Double(0f, 0f, 0f, 0f);
+			ArrayList<Rectangle2D> items= new ArrayList<>();
+			ArrayList<Line2D> edges= new ArrayList<>();
+			for (PathwayVertexRep node : pathSegment) {				
+				double bbItemW = node.getWidth();
+				double bbItemH = node.getHeight();
+				double posX = node.getLowerLeftCornerX();
+				double posY = node.getLowerLeftCornerY();
+				items.add(new Rectangle2D.Double(posX, posY, bbItemW, bbItemH));
+				if (i > 0) {
+					edges.add(new Line2D.Double(posX, posY, prevRect.getCenterX(), prevRect.getCenterY()));
+				}
+				prevRect.setRect(posX, posY, bbItemW, bbItemH);
+				i++;
+			}			
+			renderer.addGroup(items, edges, contextPathColor);
+		}
+	}
+	
 	public void addPathSegements(List<PathwayPath> pathSegments){
 		if (pathSegments.size() <= 0) return; 	
 		float[] selColor=SelectionType.SELECTION.getColor();

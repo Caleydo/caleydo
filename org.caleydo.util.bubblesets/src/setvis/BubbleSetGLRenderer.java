@@ -112,7 +112,7 @@ public class BubbleSetGLRenderer {
 			bubblesetCanvas.addGroup(new Color(c.r,c.g,c.b), outlineThickness, true);
 		}
 					
-		addToGroup(items, edges, numberOfGroups);
+		addToGroup(items, edges, groupID);
 		//
 		
 		return numberOfGroups;
@@ -123,6 +123,8 @@ public class BubbleSetGLRenderer {
 		if(selectionColor!=null && selectionID>=0 && selectionID <= numberOfGroups){
 			bubblesetCanvas.setSelection(selectionID); // the selected set will
 			bubblesetCanvas.setSelectionColor(selectionColor);
+		}else{
+			bubblesetCanvas.setSelection(-1); // the selected set will
 		}
  
 		Graphics2D g2d = texRenderer.createGraphics();
@@ -134,6 +136,33 @@ public class BubbleSetGLRenderer {
 	
 	public void setSize(int width, int height){
 		texRenderer.setSize(width,height);
+	}
+	
+	public void renderPxl(GL2 gl, float pxlWidth, float pxlHeight, float opacity)
+	{
+		texRenderer.setColor(1.0f, 1.0f, 1.0f, opacity);
+		bubbleSetsTexture = texRenderer.getTexture();
+		
+		gl.glEnable(GL2.GL_BLEND);
+		gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
+		
+		bubbleSetsTexture.enable(gl);
+		bubbleSetsTexture.bind(gl);
+		gl.glBegin(GL2.GL_QUADS);
+			gl.glTexCoord2f(0, 0);
+			gl.glVertex3f(0.0f, 0.0f, 0.0f);
+			
+			gl.glTexCoord2f(1, 0);
+			gl.glVertex3f(pxlWidth, 0.0f, 0.0f);
+			
+			gl.glTexCoord2f(1, 1);
+			gl.glVertex3f(pxlWidth, pxlHeight, 0.0f);
+			
+			gl.glTexCoord2f(0, 1);
+			gl.glVertex3f(0.0f, pxlHeight, 0.0f);
+		gl.glEnd();
+		bubbleSetsTexture.disable(gl);
+		//gl.glDisable(GL2.GL_BLEND);
 	}
 	
 	public void renderPxl(GL2 gl, float pxlWidth, float pxlHeight)
@@ -159,9 +188,33 @@ public class BubbleSetGLRenderer {
 			gl.glTexCoord2f(0, 1);
 			gl.glVertex3f(0.0f, pxlHeight, 0.0f);
 		gl.glEnd();
-		bubbleSetsTexture.disable(gl);		
+		bubbleSetsTexture.disable(gl);
+		//gl.glDisable(GL2.GL_BLEND);
 	}
 	
+	public void render(GL2 gl, float glWidth, float glHeight, float opacity)
+	{		
+		texRenderer.setColor(1.0f, 1.0f, 1.0f,  opacity);
+		bubbleSetsTexture = texRenderer.getTexture();
+		
+		gl.glEnable(GL2.GL_BLEND);
+		gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
+		
+		bubbleSetsTexture.enable(gl);
+		bubbleSetsTexture.bind(gl);
+		gl.glBegin(GL2.GL_QUADS);
+			gl.glTexCoord2f(0, 1);
+			gl.glVertex3f(0.0f, 0.0f, 0.0f);
+			gl.glTexCoord2f(1, 1);
+			gl.glVertex3f(glWidth, 0.0f, 0.0f);
+			gl.glTexCoord2f(1, 0);
+			gl.glVertex3f(glWidth, glHeight, 0.0f);
+			gl.glTexCoord2f(0, 0);
+			gl.glVertex3f(0.0f, glHeight, 0.0f);
+		gl.glEnd();
+		bubbleSetsTexture.disable(gl);	
+		//gl.glDisable(GL2.GL_BLEND);
+	}
 	public void render(GL2 gl, float glWidth, float glHeight)
 	{		
 		texRenderer.setColor(1.0f, 1.0f, 1.0f, 0.75f);
@@ -182,7 +235,8 @@ public class BubbleSetGLRenderer {
 			gl.glTexCoord2f(0, 0);
 			gl.glVertex3f(0.0f, glHeight, 0.0f);
 		gl.glEnd();
-		bubbleSetsTexture.disable(gl);		
+		bubbleSetsTexture.disable(gl);	
+		//gl.glDisable(GL2.GL_BLEND);
 	}
 	
 	public int[] getPxl(int posX, int posY)

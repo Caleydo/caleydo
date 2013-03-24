@@ -32,6 +32,7 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.util.connectionline.ClosedArrowRenderer;
 import org.caleydo.core.view.opengl.util.connectionline.ConnectionLineRenderer;
@@ -61,7 +62,7 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 	private BubbleSetGLRenderer bubbleSetRenderer = new BubbleSetGLRenderer();
 	private ArrayList<Rectangle2D> bubbleSetItems = new ArrayList<>();
 	private ArrayList<Line2D> bubbleSetEdges = new ArrayList<>();
-	private Color bubbleSetColor = new Color(1.0f, 0.0f, 0.0f);
+	private Color bubbleSetColor = new Color(SelectionType.SELECTION.getColor()[0],SelectionType.SELECTION.getColor()[1],SelectionType.SELECTION.getColor()[2]);
 	private boolean isBubbleSetInitialized = false;
 
 	/**
@@ -199,6 +200,11 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 		// gl.glBlendFunc(GL2.GL_ONE, GL2.GL_CONSTANT_COLOR);
 		gl.glEnable(GL.GL_LINE_SMOOTH);
 		GLU glu = null;
+		if (!isBubbleSetInitialized) {
+			System.out.println("init Bubblesets=" + isBubbleSetInitialized);
+			bubbleSetRenderer.init(gl);
+			isBubbleSetInitialized = true;
+		}
 		if (isLayoutDirty()) {
 
 			gl.glNewList(layoutDisplayListIndex, GL2.GL_COMPILE);
@@ -230,18 +236,40 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 			// gl.glPopMatrix();
 			gl.glEndList();
 
+			
 			//
 			//
 			setLayoutDirty(false);
 		}
-		if (!isBubbleSetInitialized) {
-			System.out.println("init Bubblesets=" + isBubbleSetInitialized);
-			bubbleSetRenderer.init(gl);
-			isBubbleSetInitialized = true;
+		updateBubbleSets(gl);
+		this.bubbleSetRenderer.update(gl, null, 0);
+		this.bubbleSetRenderer.renderPxl(gl, this.x, this.y);
+//
+		
+
+		// Rendering highlights without a display list is actually less expensive
+		if (glu == null)
+			glu = new GLU();
+		for (ALinearizableNode node : pathNodes) {
+			node.renderHighlight(gl, glu);
 		}
+		if (expandedBranchSummaryNode != null) {
+			for (ALinearizableNode node : expandedBranchSummaryNode.getBranchNodes()) {
+				node.renderHighlight(gl, glu);
+			}
+		}
+
+		gl.glCallList(layoutDisplayListIndex);
+	}
+
+	
+	public void updateBubbleSets(GL2 gl){
+		
+
 		int sizeX = Math.round(this.x);
 		int sizeY = Math.round(this.y);
-		if (updateStrategy != null && this.updateStrategy instanceof FixedPathUpdateStrategy && sizeX > 0 && sizeY > 0) {
+		if (updateStrategy != null && this.updateStrategy instanceof FixedPathUpdateStrategy && sizeX > 0 && sizeY > 0) 
+		{
 			int i = 0;
 			this.bubbleSetRenderer.setSize(sizeX, sizeY);
 			this.bubbleSetRenderer.clearBubbleSet();
@@ -281,28 +309,14 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 			// BubbleSet(routingIterations, marchingIterations,pixelGroup,
 			// edgeR0,edgeR1, nodeR0, nodeR1,
 			// morphBuffer,skip)
-			this.bubbleSetRenderer.update(gl, null, 0);
-			this.bubbleSetRenderer.renderPxl(gl, this.x, this.y);
+			//this.bubbleSetRenderer.update(gl, null, 0);
+			//this.bubbleSetRenderer.renderPxl(gl, this.x, this.y);
+//
+//			// } //if (isLayoutDirty()) {
 
-			// } //if (isLayoutDirty()) {
-
-		}
-
-		// Rendering highlights without a display list is actually less expensive
-		if (glu == null)
-			glu = new GLU();
-		for (ALinearizableNode node : pathNodes) {
-			node.renderHighlight(gl, glu);
-		}
-		if (expandedBranchSummaryNode != null) {
-			for (ALinearizableNode node : expandedBranchSummaryNode.getBranchNodes()) {
-				node.renderHighlight(gl, glu);
-			}
-		}
-
-		gl.glCallList(layoutDisplayListIndex);
+		}//if (updateStrategy != null && this.updateStrategy instanceof FixedPathUpdateStrategy && sizeX > 0 && sizeY > 0) 
 	}
-
+	
 	/**
 	 * Renders the branch nodes for a specified linearized node. The position of this node has to be set beforehand.
 	 *
