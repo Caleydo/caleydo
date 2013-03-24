@@ -8,7 +8,14 @@
             category="org.caleydo.core.views"
             class="university.wur.WorldUniversityRankingView"
             id="rankvis.demo.university.wur"
-            name="World University Ranking">
+            name="World University Ranking History">
+      </view>
+      <view
+            allowMultiple="true"
+            category="org.caleydo.core.views"
+            class="university.wur.WorldUniversityRanking2012View"
+            id="rankvis.demo.university.wur2012"
+            name="World University Ranking 2012">
       </view>
       <view
             allowMultiple="true"

@@ -192,7 +192,7 @@ public class WorldUniversityYear {
 		stacked.add(col(year, COL_internationalstudents, "International student ratio", dark[6], light[6]));
 
 		stacked.setWeights(new float[] { 40, 10, 20, 20, 5, 5 });
-		stacked.setWidth(300);
+		stacked.setWidth(380);
 
 		if (addStars) {
 			StarsRankColumnModel s = new StarsRankColumnModel(new ValueGetter(year, COL_QSSTARS), GLRenderers.drawText(
