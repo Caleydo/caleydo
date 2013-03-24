@@ -49,6 +49,7 @@ import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.layout2.renderer.RoundedRectRenderer;
+import org.caleydo.core.view.opengl.picking.AdvancedPick;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.data.loader.ResourceLocators;
@@ -105,6 +106,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 	private int dragPickingId = -1;
 
 	private boolean hasTitle;
+	public boolean isWeightDragging;
 
 
 	public AColumnHeaderUI(final ARankColumnModel model, IRankTableUIConfig config, boolean hasTitle, boolean hasHist) {
@@ -297,6 +299,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 
 	protected ButtonBar createButtons() {
 		ButtonBar buttons = new ButtonBar();
+		// buttons.setRenderer(GLRenderers.drawRoundedRect(Color.BLACK));
 		buttons.setzDelta(.5f);
 
 		if (model instanceof IFilterColumnMixin) {
@@ -443,6 +446,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 						.getMinWidth() : 0;
 
 				// HACK for testing different button positions
+				boolean showButtonBar = isHovered && !isWeightDragging;
 				float yb = 0;
 				// switch ((inc++ / 2) % 5) {
 				// case 0: // at the bottom
@@ -455,14 +459,14 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 				// yb = LABEL_HEIGHT;
 				// break;
 				// case 3: // above the label
-					yb = isHovered ? -RenderStyle.BUTTON_WIDTH : 0;
+				yb = showButtonBar ? -RenderStyle.BUTTON_WIDTH : 0;
 				// break;
 				// case 4: // below the histogram
 				// yb = isHovered ? h : h;
 				// break;
 				// }
 
-				float hb = isHovered ? RenderStyle.BUTTON_WIDTH : 0;
+				float hb = showButtonBar ? RenderStyle.BUTTON_WIDTH : 0;
 				if ((w - 4) < minWidth) {
 					float missing = minWidth - (w - 4);
 					buttons.setBounds(-missing * 0.5f, yb, minWidth, hb);
@@ -610,7 +614,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 		((IRankableColumnMixin) model).orderByMe();
 	}
 
-	protected void onChangeWeight(int dx) {
+	protected void onChangeWeight(int dx, boolean takeFromRight) {
 		if (dx == 0)
 			return;
 		// float delta = (dx / getSize().x())*;
@@ -684,13 +688,25 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 			if (pick.isAnyDragging())
 				return;
 			pick.setDoDragging(true);
+			isWeightDragging = true;
+			relayoutParent();
 		}
 
 		@Override
 		protected void onDragged(Pick pick) {
 			if (pick.isDoDragging())
-				onChangeWeight(pick.getDx());
+				onChangeWeight(pick.getDx(),
+						(pick instanceof AdvancedPick ? ((AdvancedPick) pick).isCtrlDown() : false));
 		}
+
+		@Override
+		protected void onMouseReleased(Pick pick) {
+			if (!pick.isDoDragging())
+				return;
+			isWeightDragging = false;
+			relayoutParent();
+		}
+
 
 		@Override
 		protected void renderPickImpl(GLGraphics g, float w, float h) {
