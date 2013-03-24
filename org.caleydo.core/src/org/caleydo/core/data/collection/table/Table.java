@@ -174,6 +174,9 @@ public class Table {
 	 * @return
 	 */
 	public Float getNormalizedValue(Integer dimensionID, Integer recordID) {
+		if (dimensionID == null || recordID == null) {
+			throw new IllegalArgumentException("Dimension or record was null " + dimensionID + ", " + recordID);
+		}
 		try {
 			if (isColumnDimension) {
 				return columns.get(dimensionID).getNormalizedValue(defaultDataTransformation, recordID);

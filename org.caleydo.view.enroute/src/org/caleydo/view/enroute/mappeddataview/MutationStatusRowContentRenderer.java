@@ -29,7 +29,7 @@ public class MutationStatusRowContentRenderer extends ACategoricalRowContentRend
 
 	@Override
 	public void init() {
-		if (rowID == null)
+		if (resolvedRowID == null)
 			return;
 		VirtualArray dimensionVirtualArray = new VirtualArray(resolvedRowIDType);
 		dimensionVirtualArray.append(resolvedRowID);
