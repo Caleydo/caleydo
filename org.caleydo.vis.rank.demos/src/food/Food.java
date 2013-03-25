@@ -23,8 +23,10 @@ import static demo.RankTableDemo.toFloat;
 
 import java.awt.Color;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.lang.reflect.Field;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -57,40 +59,32 @@ import demo.ReflectionData;
  *
  */
 public class Food implements IModelBuilder {
+	private static final List<String> headers = Arrays.asList("Water (g/100 g)", "Food energy (kcal/100 g)",
+			"Protein (g/100 g)", "Total lipid (fat)(g/100 g)", "Ash (g/100 g)",
+			"Carbohydrate, by difference (g/100 g)", "Total dietary fiber (g/100 g)", "Total sugars (g/100 g)",
+			"Calcium (mg/100 g)", "Iron (mg/100 g)", "Magnesium (mg/100 g)", "Phosphorus (mg/100 g)",
+			"Potassium (mg/100 g)", "Sodium (mg/100 g)", "Zinc (mg/100 g)", "Copper (mg/100 g)",
+			"Manganese (mg/100 g)", "Selenium (µg/100 g)", "Vitamin C (mg/100 g)", "Thiamin (mg/100 g)",
+			"Riboflavin (mg/100 g)", "Niacin (mg/100 g)", "Pantothenic acid (mg/100 g)", "Vitamin B6 (mg/100 g)",
+			"Folate, total (µg/100 g)", "Folic acid (µg/100 g)", "Food folate (µg/100 g)",
+			"Folate (µg dietary folate equivalents/100 g)", "Choline, total (mg/100 g)", "Vitamin B12 (µg/100 g)",
+			"Vitamin A (IU/100 g)", "Vitamin A (µg retinol activity equivalents/100g)", "Retinol (µg/100 g)",
+			"Alpha-carotene (µg/100 g)", "Beta-carotene (µg/100 g)", "Beta-cryptoxanthin (µg/100 g)",
+			"Lycopene (µg/100 g)", "Lutein+zeazanthin (µg/100 g)", "Vitamin E (alpha-tocopherol) (mg/100 g)",
+			"Vitamin D (µg/100 g)", "Vitamin D (IU/100 g)", "Vitamin K (phylloquinone) (µg/100 g)",
+			"Saturated fatty acid (g/100 g)", "Monounsaturated fatty acids (g/100 g)",
+			"Polyunsaturated fatty acids (g/100 g)", "Cholesterol (mg/100 g)");
+
+	private static final List<String> selection = Arrays.asList("Food energy (kcal/100 g)", "Cholesterol (mg/100 g)",
+			"Total sugars (g/100 g)", "Water (g/100 g)", "Protein (g/100 g)", "Carbohydrate, by difference (g/100 g)",
+			"Vitamin C (mg/100 g)", "Calcium (mg/100 g)", "Iron (mg/100 g)", "Magnesium (mg/100 g)",
+			"Saturated fatty acid (g/100 g)", "Sodium (mg/100 g)", "Total dietary fiber (g/100 g)");
+
 	@Override
 	public void apply(RankTableModel table) throws Exception {
-		List<FoodRow> rows1 = new ArrayList<>();
-		Map<Integer, String> foodGroups = readFoodGroups();
-
-		try (BufferedReader r = new BufferedReader(new InputStreamReader(
-				Food.class.getResourceAsStream("FOOD_DES.txt"), Charset.forName("UTF-8")))) {
-			String line;
-			while ((line = r.readLine()) != null) {
-				String[] l = line.split("\t");
-				FoodRow row = new FoodRow();
-				// row.rank = Integer.parseInt(l[0]);
-				row.NDB_No = Integer.parseInt(l[0]);
-				row.group = Integer.parseInt(l[1]);
-				row.description = l[2];
-				rows1.add(row);
-			}
-		}
-
-		try (BufferedReader r = new BufferedReader(new InputStreamReader(Food.class.getResourceAsStream("ABBREV.csv"),
-				Charset.forName("UTF-8")))) {
-			String line;
-			r.readLine(); // skip label
-			for(int i = 0; (line = r.readLine()) != null; ++i) {
-				String[] l = line.split("\t");
-				FoodRow row = rows1.get(i);
-				row.NDB_No = Integer.parseInt(l[0]);
-				row.data = new float[l.length - 2 - 5];
-				for (int i1 = 0; i1 < row.data.length; ++i1) {
-					row.data[i1] = toFloat(l, i1 + 2);
-				}
-			}
-		}
-		table.addData(rows1);
+		List<FoodRow> rows = new ArrayList<>();
+		Map<Integer, String> foodGroups = readData(rows);
+		table.addData(rows);
 
 		Color color = Color.decode("#DFC27D");
 		Color bgColor = Color.decode("#F6E8C3");
@@ -108,34 +102,76 @@ public class Food implements IModelBuilder {
 		table.add(new CategoricalRankColumnModel<Integer>(GLRenderers.drawText("Food Group", VAlign.CENTER),
 				new ReflectionData<Integer>(field("group"), Integer.class), foodGroups));
 
-
-		List<String> headers = Arrays.asList("Water (g/100 g)", "Food energy (kcal/100 g)", "Protein (g/100 g)",
-				"Total lipid (fat)(g/100 g)", "Ash (g/100 g)", "Carbohydrate, by difference (g/100 g)",
-				"Total dietary fiber (g/100 g)", "Total sugars (g/100 g)", "Calcium (mg/100 g)", "Iron (mg/100 g)",
-				"Magnesium (mg/100 g)", "Phosphorus (mg/100 g)", "Potassium (mg/100 g)", "Sodium (mg/100 g)",
-				"Zinc (mg/100 g)", "Copper (mg/100 g)", "Manganese (mg/100 g)", "Selenium (µg/100 g)",
-				"Vitamin C (mg/100 g)", "Thiamin (mg/100 g)", "Riboflavin (mg/100 g)", "Niacin (mg/100 g)",
-				"Pantothenic acid (mg/100 g)", "Vitamin B6 (mg/100 g)", "Folate, total (µg/100 g)",
-				"Folic acid (µg/100 g)", "Food folate (µg/100 g)", "Folate (µg dietary folate equivalents/100 g)",
-				"Choline, total (mg/100 g)", "Vitamin B12 (µg/100 g)", "Vitamin A (IU/100 g)",
-				"Vitamin A (µg retinol activity equivalents/100g)", "Retinol (µg/100 g)", "Alpha-carotene (µg/100 g)",
-				"Beta-carotene (µg/100 g)", "Beta-cryptoxanthin (µg/100 g)", "Lycopene (µg/100 g)",
-				"Lutein+zeazanthin (µg/100 g)", "Vitamin E (alpha-tocopherol) (mg/100 g)", "Vitamin D (µg/100 g)",
-				"Vitamin D (IU/100 g)", "Vitamin K (phylloquinone) (µg/100 g)", "Saturated fatty acid (g/100 g)",
-				"Monounsaturated fatty acids (g/100 g)", "Polyunsaturated fatty acids (g/100 g)",
-				"Cholesterol (mg/100 g)");
-
-		// selection
-		List<String> selection = Arrays.asList("Food energy (kcal/100 g)", "Cholesterol (mg/100 g)",
-				"Total sugars (g/100 g)", "Water (g/100 g)", "Protein (g/100 g)",
-				"Carbohydrate, by difference (g/100 g)", "Vitamin C (mg/100 g)", "Calcium (mg/100 g)",
-				"Iron (mg/100 g)", "Magnesium (mg/100 g)", "Saturated fatty acid (g/100 g)");
-
 		for (int i = 0; i < selection.size(); ++i) {
 			int j = headers.indexOf(selection.get(i));
 			table.add(ucol(j, headers.get(j), color, bgColor));
 		}
 
+	}
+
+	protected static Map<Integer, String> readData(List<FoodRow> rows) throws IOException {
+		Map<Integer, String> foodGroups = readFoodGroups();
+
+		try (BufferedReader r = new BufferedReader(new InputStreamReader(
+				Food.class.getResourceAsStream("FOOD_DES.txt"), Charset.forName("UTF-8")))) {
+			String line;
+			while ((line = r.readLine()) != null) {
+				String[] l = line.split("\t");
+				FoodRow row = new FoodRow();
+				// row.rank = Integer.parseInt(l[0]);
+				row.NDB_No = Integer.parseInt(l[0]);
+				row.group = Integer.parseInt(l[1]);
+				row.description = l[2];
+				rows.add(row);
+			}
+		}
+
+		try (BufferedReader r = new BufferedReader(new InputStreamReader(Food.class.getResourceAsStream("ABBREV.csv"),
+				Charset.forName("UTF-8")))) {
+			String line;
+			r.readLine(); // skip label
+			for(int i = 0; (line = r.readLine()) != null; ++i) {
+				String[] l = line.split("\t");
+				FoodRow row = rows.get(i);
+				row.NDB_No = Integer.parseInt(l[0]);
+				row.data = new float[l.length - 2 - 5];
+				for (int i1 = 0; i1 < row.data.length; ++i1) {
+					row.data[i1] = toFloat(l, i1 + 2);
+				}
+			}
+		}
+		return foodGroups;
+	}
+
+	public static void dump() throws IOException {
+		List<FoodRow> rows = new ArrayList<>();
+		Map<Integer, String> foodGroups = readData(rows);
+
+		final char SEP = '\t';
+		try (PrintWriter w = new PrintWriter(new File("food_summary.csv"), "UTF-8")) {
+			w.append("Description").append(SEP).append("Food Group");
+
+			for (int i = 0; i < selection.size(); ++i) {
+				w.append(SEP).append(selection.get(i));
+			}
+			w.println();
+
+			for (FoodRow row : rows) {
+				w.append(row.description).append(SEP).append(foodGroups.get(row.group));
+
+				for (int i = 0; i < selection.size(); ++i) {
+					int j = headers.indexOf(selection.get(i));
+					w.append(SEP).append(row.data.length <= j ? "" : toString(row.data[j]));
+				}
+				w.println();
+			}
+		}
+	}
+
+	private static CharSequence toString(float f) {
+		if (Float.isNaN(f))
+			return "";
+		return Float.toString(f);
 	}
 
 	/**
@@ -211,6 +247,7 @@ public class Food implements IModelBuilder {
 	}
 
 	public static void main(String[] args) {
+		// dump();
 		GLSandBox.main(args, RankTableDemo.class, "Food Nutrition", new Food());
 	}
 }
