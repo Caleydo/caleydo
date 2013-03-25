@@ -185,7 +185,7 @@ public class DemoApplication implements IApplication {
 
 		@Override
 		public void createInitialLayout(IPageLayout layout) {
-			layout.setEditorAreaVisible(true);
+			layout.setEditorAreaVisible(false);
 			layout.addView("rankvis.demo.university.mixed", IPageLayout.TOP, IPageLayout.RATIO_MAX,
 					IPageLayout.ID_EDITOR_AREA);
 			layout.setFixed(true);
