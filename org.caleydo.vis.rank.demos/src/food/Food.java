@@ -67,9 +67,9 @@ public class Food implements IModelBuilder {
 			"Thiamin (mg)", "Riboflavin (mg)", "Niacin (mg)", "Pantothenic acid (mg)", "Vitamin B6 (mg)",
 			"Folate, total (µg)", "Folic acid (µg)", "Food folate (µg)", "Folate (µg dietary folate equivalents)",
 			"Choline, total (mg)", "Vitamin B12 (µg)", "Vitamin A (IU)", "Vitamin A (µg retinol activity equivalents)",
-			"Retinol (µg)", "Alpha-carotene (µg)",
-			"Beta-carotene (µg)", "Beta-cryptoxanthin (µg)", "Lycopene (µg)", "Lutein+zeazanthin (µg)",
-			"Vitamin E (alpha-tocopherol) (mg)", "Vitamin D (µg)", "Vitamin D (IU)", "Vitamin K (phylloquinone) (µg)",
+			"Retinol (µg)", "Alpha-carotene (µg)", "Beta-carotene (µg)", "Beta-cryptoxanthin (µg)", "Lycopene (µg)",
+			"Lutein+zeazanthin (µg)", "Vitamin E (alpha-tocopherol) (mg)", "Vitamin D (µg)", "Vitamin D (IU)",
+			"Vitamin K (phylloquinone) (µg)",
 			"Saturated fatty acid (g)", "Monounsaturated fatty acids (g)", "Polyunsaturated fatty acids (g)",
 			"Cholesterol (mg)");
 
@@ -174,8 +174,12 @@ public class Food implements IModelBuilder {
 					row.data[i1] = toFloat(l, i1 + 2);
 				}
 				row.GmWt_1 = toFloat(l, l.length - 5);
+				if (Float.isNaN(row.GmWt_1))
+					row.GmWt_1 = 100;
 				row.GmWt_Desc1 = l[l.length - 4];
 				row.GmWt_2 = toFloat(l, l.length - 3);
+				if (Float.isNaN(row.GmWt_2))
+					row.GmWt_2 = 100;
 				row.GmWt_Desc2 = l[l.length - 2];
 			}
 		}
@@ -189,6 +193,7 @@ public class Food implements IModelBuilder {
 		final char SEP = '\t';
 		try (PrintWriter w = new PrintWriter(new File("food_summary.csv"), "UTF-8")) {
 			w.append("Description").append(SEP).append("Food Group");
+			w.append(SEP).append("Household Weight");
 
 			for (int i = 0; i < selection.size(); ++i) {
 				w.append(SEP).append(selection.get(i));
@@ -199,15 +204,17 @@ public class Food implements IModelBuilder {
 			w.println();
 
 			for (FoodRow row : rows) {
+				float f = row.GmWt_1 / 100;
 				w.append(row.description).append(SEP).append(foodGroups.get(row.group));
+				w.append(SEP).append(row.GmWt_Desc1);
 
 				for (int i = 0; i < selection.size(); ++i) {
 					int j = headers.indexOf(selection.get(i));
-					w.append(SEP).append(row.data.length <= j ? "" : toString(row.data[j]));
+					w.append(SEP).append(j >= row.data.length ? "" : toString(f * row.data[j]));
 				}
 				for (int i = 0; i < pool.size(); ++i) {
 					int j = headers.indexOf(pool.get(i));
-					w.append(SEP).append(row.data.length <= j ? "" : toString(row.data[j]));
+					w.append(SEP).append(j>=row.data.length ? "" : toString(f * row.data[j]));
 				}
 				w.println();
 			}
@@ -328,8 +335,8 @@ public class Food implements IModelBuilder {
 		}
 	}
 
-	public static void main(String[] args) {
-		// dump();
+	public static void main(String[] args) throws IOException {
+		dump();
 		GLSandBox.main(args, RankTableDemo.class, "Food Nutrition", new Food());
 	}
 }
