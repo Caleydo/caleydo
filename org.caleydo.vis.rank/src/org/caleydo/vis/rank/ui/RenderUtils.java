@@ -38,11 +38,13 @@ public class RenderUtils {
 		w -= 2;
 		float factor = (h - 2) / hist.getLargestValue(false);
 		float delta = w / hist.size();
-		float lineWidth = delta;
-
-		g.gl.glPushAttrib(GL2.GL_LINE_BIT);
-		g.lineWidth(lineWidth);
 		g.save();
+		g.gl.glPushAttrib(GL2.GL_LINE_BIT);
+
+		final float lineWidth = Math.min(delta - 1, 25);
+		final float lineWidthHalf = lineWidth * 0.5f;
+		if (lineWidth < 10)
+			g.lineWidth(lineWidth);
 		float x = 1 + delta / 2;
 		g.move(0, h - 1).color(color);
 		for (int i = 0; i < hist.size(); ++i) {
@@ -52,15 +54,19 @@ public class RenderUtils {
 			float v = -hist.get(i) * factor;
 
 			if (v <= -1) {
-				g.drawLine(x, 0, x, v);
+				if (lineWidth < 10)
+					g.drawLine(x, 0, x, v);
+				else
+					g.fillRect(x - lineWidthHalf, 0, lineWidth, v);
 			}
 			if (selectedBin == i) {
 				g.color(color);
 			}
 			x += delta;
 		}
-		g.restore();
 		g.gl.glPopAttrib();
+
+		g.restore();
 	}
 
 	public static <CATEGORY_TYPE> void renderHist(GLGraphics g, Map<CATEGORY_TYPE, Integer> hist, float w, float h,

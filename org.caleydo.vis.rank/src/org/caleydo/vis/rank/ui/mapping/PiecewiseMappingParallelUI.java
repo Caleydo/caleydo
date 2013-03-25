@@ -103,6 +103,17 @@ public class PiecewiseMappingParallelUI extends MappingParallelUI<PiecewiseMappi
 	}
 
 	@Override
+	protected void renderImpl(GLGraphics g, float w, float h) {
+		for (PointLinePoint p : Iterables.filter(this, PointLinePoint.class)) {
+			if (p.hovered) {
+				drawHint(g, w, h, p.from, p.to);
+			}
+		}
+		super.renderImpl(g, w, h);
+
+	}
+
+	@Override
 	public void pick(Pick pick) {
 		if (!model.isDefinedMapping() || pick.isAnyDragging())
 			return;

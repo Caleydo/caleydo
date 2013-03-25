@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
@@ -379,20 +378,56 @@ public class MappingFunctionUI extends GLElementContainer implements GLButton.IS
 	}
 
 	public static void main(String[] args) {
-		PiecewiseMapping model = new PiecewiseMapping(0, Float.NaN);
-		float[] arr = new float[100];
-		Random r = new Random(100);
+		PiecewiseMapping model = new PiecewiseMapping(0, 100);
+		// linear
+		// filtering
+		// model.clear();
+		// model.put(20, 0);
+		// model.put(60, 1);
+
+		// complex
+		// model.clear();
+		// model.put(0, 1);
+		// model.put(50, .2f);
+		// model.put(100, 1);
+
+		String values = "100 100 100 95.6 100 100 100 96 88.5 51.3 100 96.2 94 96.4 100 60.2 96.1 95.1 " + //
+				"94.3 81.9 96.8 100 83.8 82.5 99.4 83.8 88.6 96 75.8 97.6 96 100 79.7 66.9 81.1 " + //
+				"100 83.4 68.6 93.5 72.4 95.9 68.8 85.3 96.6 77.8 83.3 84.5 97.6 81 69.6 71.5 " + //
+				"95.1 91 70.7 42.8 66.7 63.2 100 47.4 71.9 96.5 74.6 51.7 77 74.5 75.3 75 81 " + //
+				"100 35.7 82.2 96.2 69.8 23.7 47.2 66 80.5 43.2 70.9 70.3 51.5 70.1 78.2 22 " + //
+				"48.4 64.2 44.6 76.9 48.6 47.7 84.8 96.8 69.2 78.9 83.2 42.8 37.4 26.3 82.2 " + //
+				"38 83.3 69.5 72.3 41.8 66.9 21.6 69.5 46.6 43.2 69.5 38.1 65.3 67.3 37.9 26.8 " + //
+				"71.6 39.5 27.2 27.3 26.3 31.2 40.4 70.7 66.6 82.3 73.8 55.8 67.3 27.7 37.1 68.6 " + //
+				"36.3 60.2 45.5 12.5 39.8 57.4 64.7 76.2 25 76.5 63.5 64.4 40.6 29.1 67 38.8 47.6 " + //
+				"29.5 86.7 24.3 35.4 9.9 65.3 25.8 54.4 61.4 38.2 39.2 46.1 27 49.7 63.8 7.1 62.3 " + //
+				"73 35.8 39.4 40.9 59.5 48.8 44.2 66.1 67.3 69.8 30.1 49.3 77.5 53.7 33.3 23.6 " + //
+				"65.9 67.9 20.5 26.4 32.1 40.4 25.5 59 62 71.5 27 34.9 56.4 75.9 32.5 22.6 78.8 " + //
+				"20.9 75.1 66.3 45.5 22.3 23.9 27.6 47.7 52.4 36.9 24.9 54.1 48.9 79.4 74.8 40.7 " + //
+				"34.4 42.9 60.7 77.7 18.3 24.1 63.4 45.5 61.3 30.4 66.1 62.1 82.7 44.9 50.5 81.9 " + //
+				"18 21.5 71.2 66.8 26.7 63 23 30.7 23.6 4.1 71.8 24.7 83 39.3 77.2 52.9 24.2 31.2 " + //
+				"59.3 27.3 28.1 26.7 53.2 21.9 22.3 37.8 65.1 48.3 22.6 26.6 19.8 75 73.4 24.2 " + //
+				"28.2 30.8 39.5 21.6 60.1 27.3 36.1 64.4 52.7 66.2 24.1 6.6 50.6 29.7 21.7 65.6 " + //
+				"34.1 1 69.3 25.4 36.6 43.8 39.4 29.8 27.7 40.4 17.1 49.9 26.5 43.6 25.3 18.4 30.3 " + //
+				"28.9 3.9 51.3 26.5 12.9 5.8 58.8 27.7 74.9 36.4 21.5 23.1 73 8.2 27.4 20.3 18 " + //
+				"27.5 28.4 19.9 16.7 27.5 23.5 62.9 18.6 29.7 54.5 47.3 39.1 26.1 47.6 13.4 22.9 " + //
+				"19.8 56.3 23 40.2 27.4 34.6 36.6 29.2 24.8 44.1 88.6 65.5 22.9 28.9 63.2 42.3 21.9 " + //
+				"42.7 43.6 70.3 22.7 28 27.4 29.7 35.3 29.3 40.6 23.4 30.6 36.8 20.3 32.3 39.8 17.7 " + //
+				"23.8 22.6 16.9 18.1 36.9 26.8 17.1 8.6 3.1 15 43.5 55.4 9.4 21.4 28.9 23.9 19.8 " + //
+				"31.1 19.6 20.4 32.9 49.4 85.8 43.4 27.2 22.6 31.5 39.4 13.6 52.4 36.1 69.3 43.4 " + //
+				"54.8 41.3 50.3 40.6 51.9 39.7 37.5 37.4 42.7 61.6 39.5 43.2 49.9 41.9 49 45 61.9 45.4";
+		String[] vs = values.split(" ");
+		float[] arr = new float[vs.length];
 		for (int i = 0; i < arr.length; ++i)
-			arr[i] = r.nextFloat();
+			arr[i] = Float.parseFloat(vs[i]);
 		IFloatList data = new ArrayFloatList(arr);
 		FloatStatistics s = data.computeStats();
 		model.setActStatistics(s);
-		final MappingFunctionUI root = new MappingFunctionUI(model, data, Color.GRAY, Color.LIGHT_GRAY, null);
-		root.addMode(new PiecewiseMappingCrossUI(model, true));
+		final MappingFunctionUI root = new MappingFunctionUI(model, data, Color.decode("#9ECAE1"),
+				Color.decode("#DEEBF7"), null);
 		root.addMode(new PiecewiseMappingParallelUI(model, true));
-		root.addMode(new PiecewiseMappingCrossUI(model, false));
-		root.addMode(new PiecewiseMappingParallelUI(model, false));
+		root.addMode(new PiecewiseMappingCrossUI(model, true));
 
-		GLSandBox.main(args, root, new GLPadding(10), new Dimension(260, 260));
+		GLSandBox.main(args, root, new GLPadding(0), new Dimension(300, 350));
 	}
 }

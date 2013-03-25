@@ -84,7 +84,7 @@ public enum EStandardMappings{
 		case Z_SCORE:
 			return "Z-Score";
 		case LINEAR_LOG:
-			return "Linear Log";
+			return "Log";
 		}
 		throw new IllegalStateException();
 	}
