@@ -34,7 +34,6 @@ import org.caleydo.vis.rank.model.ARow;
 import org.caleydo.vis.rank.model.CategoricalRankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.IntegerRankColumnModel;
-import org.caleydo.vis.rank.model.OrderColumn;
 import org.caleydo.vis.rank.model.RankRankColumnModel;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.StringRankColumnModel;
@@ -83,9 +82,9 @@ public class Top100Under50 implements IModelBuilder {
 
 		Top100Under50Year.addYear(table, "2012", new YearGetter(0), FloatInferrers.MEDIAN).orderByMe();
 
-		table.add(new OrderColumn());
-		table.add(new RankRankColumnModel());
-		Top100Under50Year.addOverallYear(table, "Overall Score 2012", new YearGetter(0));
+		// table.add(new OrderColumn());
+		// table.add(new RankRankColumnModel());
+		// Top100Under50Year.addOverallYear(table, "Overall Score 2012", new YearGetter(0));
 
 	}
 

@@ -26,8 +26,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
@@ -169,11 +172,8 @@ public class WorldUniversityYear {
 	}
 
 	public static StackedRankColumnModel addYear(RankTableModel table, String title,
-			Function<IRow, WorldUniversityYear> year, boolean addStars) {
+			Function<IRow, WorldUniversityYear> year, boolean addStars, boolean asIs) {
 
-		final StackedRankColumnModel stacked = new StackedRankColumnModel();
-		stacked.setTitle(title);
-		table.add(stacked);
 		// * Academic reputation (40%)
 		// * Employer reputation (10%)
 		// * Faculty/student ratio (20%)
@@ -182,28 +182,40 @@ public class WorldUniversityYear {
 		// * International student ratio (5%)
 		// Color[] light = StephenFewColorPalette.getAsAWT(EBrightness.LIGHT);
 		// Color[] dark = StephenFewColorPalette.getAsAWT(EBrightness.MEDIUM);
-		stacked.add(col(year, COL_academic, "Academic reputation", "#FC9272", "#FEE0D2"));
-		stacked.add(col(year, COL_employer, "Employer reputation", "#9ECAE1", "#DEEBF7"));
-		stacked.add(col(year, COL_faculty, "Faculty/student ratio", "#A1D99B", "#E5F5E0"));
-		stacked.add(col(year, COL_citations, "Citations per faculty", "#C994C7", "#E7E1EF"));
-		stacked.add(col(year, COL_international, "International faculty ratio", "#FDBB84", "#FEE8C8"));
-		stacked.add(col(year, COL_internationalstudents, "International student ratio", "#DFC27D", "#F6E8C3"));
 		// stacked.add(col(year, COL_academic, "Academic reputation", dark[1], light[1]));
 		// stacked.add(col(year, COL_employer, "Employer reputation", dark[2], light[2]));
 		// stacked.add(col(year, COL_faculty, "Faculty/student ratio", dark[3], light[3]));
 		// stacked.add(col(year, COL_citations, "Citations per faculty", dark[4], light[4]));
 		// stacked.add(col(year, COL_international, "International faculty ratio", dark[5], light[5]));
 		// stacked.add(col(year, COL_internationalstudents, "International student ratio", dark[6], light[6]));
+		List<FloatRankColumnModel> cols = new ArrayList<>();
+		cols.add(col(year, COL_academic, "Academic reputation", "#FC9272", "#FEE0D2"));
+		cols.add(col(year, COL_employer, "Employer reputation", "#9ECAE1", "#DEEBF7"));
+		cols.add(col(year, COL_faculty, "Faculty/student ratio", "#A1D99B", "#E5F5E0"));
+		cols.add(col(year, COL_citations, "Citations per faculty", "#C994C7", "#E7E1EF"));
+		cols.add(col(year, COL_international, "International faculty ratio", "#FDBB84", "#FEE8C8"));
+		cols.add(col(year, COL_internationalstudents, "International student ratio", "#DFC27D", "#F6E8C3"));
 
-		stacked.setWeights(new float[] { 40, 10, 20, 20, 5, 5 });
-		stacked.setWidth(380);
+		final StackedRankColumnModel stacked;
+		if (asIs) {
+			stacked = null;
+			for (FloatRankColumnModel col : cols)
+				table.add(col);
+		} else {
+			stacked = new StackedRankColumnModel();
+			stacked.setTitle(title);
+			table.add(stacked);
+			for (FloatRankColumnModel col : cols)
+				stacked.add(col);
 
+			stacked.setWeights(new float[] { 40, 10, 20, 20, 5, 5 });
+			stacked.setWidth(380);
+		}
 		if (addStars) {
 			StarsRankColumnModel s = new StarsRankColumnModel(new ValueGetter(year, COL_QSSTARS), GLRenderers.drawText(
 					"QS Stars", VAlign.CENTER), Color.decode("#FECC5C"), Color.decode("#FFFFB2"), 6);
 			table.add(s);
 		}
-
 		return stacked;
 	}
 
@@ -251,11 +263,12 @@ public class WorldUniversityYear {
 	 * @throws IOException
 	 */
 	public static Map<String, String> readCountries() throws IOException {
-		Map<String, String> result = new LinkedHashMap<>();
+		Map<String, String> result = new TreeMap<>();
 
 		try (BufferedReader r = new BufferedReader(new InputStreamReader(
 				WorldUniversityYear.class.getResourceAsStream("countries.txt"), Charset.forName("UTF-8")))) {
 			String line;
+			r.readLine();
 			while ((line = r.readLine()) != null) {
 				String[] l = line.split(";");
 				String school = l[0].trim();

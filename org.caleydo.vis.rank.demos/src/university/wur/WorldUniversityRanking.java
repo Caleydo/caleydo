@@ -73,22 +73,22 @@ public class WorldUniversityRanking implements IModelBuilder {
 		int rankColWidth = 37;
 
 		// Arrays.asList("wur2010.txt", "wur2011.txt", "wur2012.txt");
-		WorldUniversityYear.addYear(table, "2012", new YearGetter(0), true).orderByMe();
+		WorldUniversityYear.addYear(table, "2012", new YearGetter(0), false, false).orderByMe();
 		table.add(new OrderColumn());
 		table.add(new RankRankColumnModel().setWidth(rankColWidth));
-		WorldUniversityYear.addYear(table, "2011", new YearGetter(1), false).setCompressed(true);
+		WorldUniversityYear.addYear(table, "2011", new YearGetter(1), false, false).setCompressed(true);
 		table.add(new OrderColumn());
 		table.add(new RankRankColumnModel().setWidth(rankColWidth));
-		WorldUniversityYear.addYear(table, "2010", new YearGetter(2), false).setCompressed(true);
+		WorldUniversityYear.addYear(table, "2010", new YearGetter(2), false, false).setCompressed(true);
 		table.add(new OrderColumn());
 		table.add(new RankRankColumnModel().setWidth(rankColWidth));
-		WorldUniversityYear.addYear(table, "2009", new YearGetter(3), false).setCollapsed(true);
+		WorldUniversityYear.addYear(table, "2009", new YearGetter(3), false, false).setCollapsed(true);
 		table.add(new OrderColumn());
 		table.add(new RankRankColumnModel().setWidth(rankColWidth));
-		WorldUniversityYear.addYear(table, "2008", new YearGetter(4), false).setCollapsed(true);
+		WorldUniversityYear.addYear(table, "2008", new YearGetter(4), false, false).setCollapsed(true);
 		table.add(new OrderColumn());
 		table.add(new RankRankColumnModel().setWidth(rankColWidth));
-		WorldUniversityYear.addYear(table, "2007", new YearGetter(5), false).setCollapsed(true);
+		WorldUniversityYear.addYear(table, "2007", new YearGetter(5), false, false).setCollapsed(true);
 	}
 
 	public static void dump() throws IOException {

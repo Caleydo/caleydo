@@ -19,20 +19,9 @@
  *******************************************************************************/
 package university.wur;
 
-import static university.wur.WorldUniversityYear.COL_QSSTARS;
-import static university.wur.WorldUniversityYear.COL_academic;
-import static university.wur.WorldUniversityYear.COL_citations;
-import static university.wur.WorldUniversityYear.COL_employer;
-import static university.wur.WorldUniversityYear.COL_faculty;
-import static university.wur.WorldUniversityYear.COL_international;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.TreeMap;
 
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
@@ -55,13 +44,13 @@ import demo.ReflectionData;
  * @author Samuel Gratzl
  *
  */
-public class WorldUniversityRanking2012 implements IModelBuilder {
+public class WorldUniversityRankingEvaluation1 implements IModelBuilder {
 	@Override
 	public void apply(RankTableModel table) throws Exception {
 		Map<String, String> countries = WorldUniversityYear.readCountries();
 
 		Map<String, WorldUniversityYear[]> data = WorldUniversityYear.readData(2012);
-		countries.keySet().retainAll(data.keySet());
+		// countries.keySet().retainAll(data.keySet());
 
 		Map<String, String> countryMetaData = new TreeMap<>();
 		List<UniversityRow> rows = new ArrayList<>(data.size());
@@ -88,48 +77,7 @@ public class WorldUniversityRanking2012 implements IModelBuilder {
 				countryMetaData);
 		table.add(cat);
 
-		WorldUniversityYear.addYear(table, "World University Ranking", new YearGetter(0), true, false).orderByMe();
-	}
-
-	public static void dump() throws IOException {
-		Map<String, String> countries = WorldUniversityYear.readCountries();
-
-		Map<String, WorldUniversityYear[]> data = WorldUniversityYear.readData(2012);
-		countries.keySet().retainAll(data.keySet());
-		final char SEP = '\t';
-		try (PrintWriter w = new PrintWriter(new File("wur2012_summary.csv"), "UTF-8")) {
-			w.append("School name").append(SEP).append("Country");
-
-			w.append(SEP).append("Academic reputation");
-			w.append(SEP).append("Employer reputation");
-			w.append(SEP).append("Faculty/student ratio");
-			w.append(SEP).append("Citations per faculty");
-			w.append(SEP).append("International faculty ratio");
-			w.append(SEP).append("International student ratio");
-			w.append(SEP).append("QS Stars");
-			w.println();
-
-			for (Map.Entry<String, WorldUniversityYear[]> entry : data.entrySet()) {
-				w.append(entry.getKey()).append(SEP).append(Objects.toString(countries.get(entry.getKey()), ""));
-
-				for (WorldUniversityYear y : entry.getValue()) {
-					w.append(SEP).append(toString(y.get(COL_academic)));
-					w.append(SEP).append(toString(y.get(COL_employer)));
-					w.append(SEP).append(toString(y.get(COL_faculty)));
-					w.append(SEP).append(toString(y.get(COL_citations)));
-					w.append(SEP).append(toString(y.get(COL_academic)));
-					w.append(SEP).append(toString(y.get(COL_international)));
-					w.append(SEP).append(toString(y.get(COL_QSSTARS)));
-				}
-				w.println();
-			}
-		}
-	}
-
-	private static CharSequence toString(float f) {
-		if (Float.isNaN(f))
-			return "";
-		return Float.toString(f);
+		WorldUniversityYear.addYear(table, "World University Ranking", new YearGetter(0), false, true);
 	}
 
 	static class YearGetter implements Function<IRow, WorldUniversityYear> {
@@ -152,12 +100,6 @@ public class WorldUniversityRanking2012 implements IModelBuilder {
 
 		public WorldUniversityYear[] years;
 
-
-		/**
-		 * @param school
-		 * @param country
-		 * @param size
-		 */
 		public UniversityRow(String school, WorldUniversityYear[] years, String country) {
 			this.schoolname = school;
 			this.years = years;
@@ -179,7 +121,7 @@ public class WorldUniversityRanking2012 implements IModelBuilder {
 
 	public static void main(String[] args) {
 		// dump();
-		GLSandBox.main(args, RankTableDemo.class, "world university ranking 2012,2011 and 2010",
-				new WorldUniversityRanking2012());
+		GLSandBox.main(args, RankTableDemo.class, "WUR Eval 2012",
+				new WorldUniversityRankingEvaluation1());
 	}
 }

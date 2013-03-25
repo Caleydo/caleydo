@@ -148,6 +148,12 @@ public class DemoApplication implements IApplication {
 			menu2.add(new ShowView("Top 100 under 50 2012", "rankvis.demo.university.top100under50"));
 			menu2.add(new ShowView("Food Nutrition", "rankvis.demo.food"));
 			menuBar.add(menu2);
+
+			menu2 = new MenuManager("Evaluation", "eval");
+			menu2.add(new ShowView("World University Ranking 2012", "rankvis.eval.university.wur2012"));
+			menu2.add(new ShowView("World University Rankings", "rankvis.demo.university.wur"));
+			menu2.add(new ShowView("Food Nutrition", "rankvis.demo.food"));
+			menuBar.add(menu2);
 		}
 
 	}
@@ -187,7 +193,7 @@ public class DemoApplication implements IApplication {
 		@Override
 		public void createInitialLayout(IPageLayout layout) {
 			layout.setEditorAreaVisible(false);
-			layout.addView("rankvis.demo.university.mixed", IPageLayout.TOP, IPageLayout.RATIO_MAX,
+			layout.addView("rankvis.demo.university.top100under50", IPageLayout.TOP, IPageLayout.RATIO_MAX,
 					IPageLayout.ID_EDITOR_AREA);
 			layout.setFixed(true);
 		}
