@@ -164,14 +164,18 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 	@Override
 	protected void init(IRankColumnParent parent) {
 		super.init(parent);
-		getTable().addPropertyChangeListener(RankTableModel.PROP_DATA, dataListener);
-		getTable().addPropertyChangeListener(RankTableModel.PROP_DATA_MASK, dataListener);
+		final RankTableModel table = getTable();
+		table.addPropertyChangeListener(RankTableModel.PROP_DATA, dataListener);
+		table.addPropertyChangeListener(RankTableModel.PROP_DATA_MASK, dataListener);
+		table.addPropertyChangeListener(RankTableModel.PROP_FILTER_INVALID, dataListener);
 	}
 
 	@Override
 	protected void takeDown() {
-		getTable().addPropertyChangeListener(RankTableModel.PROP_DATA, dataListener);
-		getTable().addPropertyChangeListener(RankTableModel.PROP_DATA_MASK, dataListener);
+		final RankTableModel table = getTable();
+		table.removePropertyChangeListener(RankTableModel.PROP_DATA, dataListener);
+		table.removePropertyChangeListener(RankTableModel.PROP_DATA_MASK, dataListener);
+		table.removePropertyChangeListener(RankTableModel.PROP_FILTER_INVALID, dataListener);
 		super.takeDown();
 	}
 

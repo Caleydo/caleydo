@@ -52,6 +52,7 @@ public class RankTableModel implements IRankColumnParent {
 	public static final String PROP_POOL = "pool";
 	public static final String PROP_DATA = "data";
 	public static final String PROP_DATA_MASK = "datamask";
+	public static final String PROP_FILTER_INVALID = "invalidFilter";
 
 	private final PropertyChangeSupport propertySupport = new PropertyChangeSupport(this);
 
@@ -73,7 +74,7 @@ public class RankTableModel implements IRankColumnParent {
 	private final PropertyChangeListener refilter = new PropertyChangeListener() {
 		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
-			findCorrespondingRanker((IRankColumnModel) evt.getSource()).dirtyFilter();
+			defaultFilter.dirtyFilter();
 		}
 	};
 
@@ -98,12 +99,14 @@ public class RankTableModel implements IRankColumnParent {
 	 */
 	private final ColumnRanker defaultRanker;
 
+	private final ColumnFilter defaultFilter;
 	/**
 	 *
 	 */
 	public RankTableModel(IRankTableConfig config) {
 		this.config = config;
 		this.defaultRanker = new ColumnRanker(this);
+		this.defaultFilter = new ColumnFilter(this);
 	}
 
 	public RankTableModel(RankTableModel copy) {
@@ -112,6 +115,7 @@ public class RankTableModel implements IRankColumnParent {
 		this.dataMask = copy.dataMask;
 		this.data.addAll(copy.data);
 		this.defaultRanker = copy.defaultRanker.clone(this);
+		this.defaultFilter = copy.defaultFilter.clone(this);
 		for(ARankColumnModel c : copy.pool)
 			this.pool.add(c.clone());
 		for(ARankColumnModel c : copy.columns)
@@ -136,6 +140,8 @@ public class RankTableModel implements IRankColumnParent {
 		this.dataMask = null;
 		this.data.clear();
 		this.selectedRow = null;
+		this.defaultFilter.reset();
+		this.defaultRanker.reset();
 	}
 
 	/**
@@ -151,8 +157,20 @@ public class RankTableModel implements IRankColumnParent {
 			r.setIndex(s++);
 		this.data.addAll(rows);
 		propertySupport.fireIndexedPropertyChange(PROP_DATA, s, null, rows);
+		defaultFilter.dirtyFilter();
+	}
+
+	/**
+	 *
+	 */
+	void fireFilterInvalid() {
+		for (ARankColumnModel col : columns)
+			col.onRankingInvalid();
+		for (ARankColumnModel m : this.pool)
+			m.onRankingInvalid();
+		propertySupport.firePropertyChange(PROP_FILTER_INVALID, false, true);
 		for (ColumnRanker order : findAllColumnRankers()) {
-			order.dirtyFilter();
+			order.fireInvalidEvent();
 		}
 	}
 
@@ -198,8 +216,7 @@ public class RankTableModel implements IRankColumnParent {
 		}
 		propertySupport.firePropertyChange(PROP_DATA_MASK, dataMask, this.dataMask = (BitSet) dataMask.clone());
 		if (change) {
-			for (ColumnRanker r : findAllColumnRankers())
-				r.dirtyFilter();
+			defaultFilter.dirtyFilter();
 		}
 	}
 
@@ -369,7 +386,8 @@ public class RankTableModel implements IRankColumnParent {
 			propertySupport.fireIndexedPropertyChange(PROP_COLUMNS, index + 1, null,
 					children.subList(1, children.size()));
 		}
-		findCorrespondingRanker(index).checkOrderChanges(model, children.get(0));
+		if (!defaultFilter.checkFilterChanges(model, children.get(0)))
+			findCorrespondingRanker(index).checkOrderChanges(model, children.get(0));
 	}
 
 	/**
@@ -430,6 +448,8 @@ public class RankTableModel implements IRankColumnParent {
 	public int getDataSize() {
 		return this.data.size();
 	}
+
+
 
 	private ColumnRanker findCorrespondingRanker(IRankColumnModel model) {
 		if (model == null)
@@ -544,5 +564,21 @@ public class RankTableModel implements IRankColumnParent {
 		if (model != null)
 			add(model.clone());
 	}
+
+	/**
+	 * @return the defaultFilter, see {@link #defaultFilter}
+	 */
+	public ColumnFilter getDefaultFilter() {
+		return defaultFilter;
+	}
+
+	public void dirtyAllOrders() {
+		for (ColumnRanker ranker : findAllColumnRankers()) {
+			ranker.dirtyOrder();
+			ranker.order();
+		}
+
+	}
+
 }
 

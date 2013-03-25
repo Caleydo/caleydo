@@ -238,6 +238,8 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 	 * @param newOffset
 	 */
 	private void setScrollOffset(int newOffset) {
+		if (rowLayoutInstance == null)
+			return;
 		newOffset = Math.max(0, Math.min(rowLayoutInstance.getSize() - rowLayoutInstance.getNumVisibles(), newOffset));
 		if (scrollOffset == newOffset)
 			return;
