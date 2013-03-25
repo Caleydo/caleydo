@@ -121,7 +121,7 @@ public class RankingElement extends GLElementContainer {
 			}
 
 			@Override
-			public void renderIsOrderByGlyph(GLGraphics g, float w, float h) {
+			public void renderIsOrderByGlyph(GLGraphics g, float w, float h, boolean orderByIt) {
 				// no highlight
 			}
 
