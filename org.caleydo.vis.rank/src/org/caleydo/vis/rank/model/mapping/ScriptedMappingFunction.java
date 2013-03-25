@@ -34,6 +34,10 @@ import javax.script.ScriptException;
  *
  */
 public class ScriptedMappingFunction extends AMappingFunction {
+	/**
+	 *
+	 */
+	private static final String DEFAULT_CODE = "return linear(value_min, value_max, value, 0, 1)";
 	private final static String prefix;
 	private final static String postfix;
 
@@ -64,7 +68,7 @@ public class ScriptedMappingFunction extends AMappingFunction {
 		super(fromMin, fromMax);
 		this.engine = createEngine();
 		this.script = null;
-		this.code = "return linear(value_min, value_max, value, 0, 1)";
+		this.code = DEFAULT_CODE;
 	}
 
 	public static ScriptEngine createEngine() {
@@ -83,8 +87,13 @@ public class ScriptedMappingFunction extends AMappingFunction {
 
 	@Override
 	public void reset() {
-		this.code = "return linear(value_min, value_max, value, 0, 1)";
+		this.code = DEFAULT_CODE;
 		this.script = null;
+	}
+
+	@Override
+	public boolean isComplexMapping() {
+		return !DEFAULT_CODE.equals(code);
 	}
 
 	private CompiledScript compileScript() {

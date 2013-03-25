@@ -60,6 +60,17 @@ public class PiecewiseMapping extends ScriptedMappingFunction implements Iterabl
 	}
 
 	@Override
+	public boolean isComplexMapping() {
+		if (isDefinedMapping) {
+			if (size() > 2)
+				return false;
+			// FIXME
+			return true;
+		} else
+			return super.isComplexMapping();
+	}
+
+	@Override
 	public void fromJavaScript(String code) {
 		this.isDefinedMapping = updateFromCode(code);
 		super.fromJavaScript(code);

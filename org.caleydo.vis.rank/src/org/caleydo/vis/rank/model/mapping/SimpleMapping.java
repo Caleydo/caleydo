@@ -83,4 +83,9 @@ public class SimpleMapping extends AMappingFunction implements Cloneable {
 		return new SimpleMapping(this);
 	}
 
+	@Override
+	public boolean isComplexMapping() {
+		return false;
+	}
+
 }

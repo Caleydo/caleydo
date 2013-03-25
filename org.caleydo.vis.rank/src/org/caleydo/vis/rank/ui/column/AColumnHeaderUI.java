@@ -58,6 +58,7 @@ import org.caleydo.vis.rank.config.IRankTableUIConfig;
 import org.caleydo.vis.rank.internal.event.OrderByMeEvent;
 import org.caleydo.vis.rank.internal.ui.ButtonBar;
 import org.caleydo.vis.rank.model.ARankColumnModel;
+import org.caleydo.vis.rank.model.FloatRankColumnModel;
 import org.caleydo.vis.rank.model.IRankColumnParent;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.mixin.IAnnotatedColumnMixin;
@@ -325,7 +326,8 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 		// buttons.setRenderer(GLRenderers.drawRoundedRect(Color.BLACK));
 		buttons.setzDelta(.5f);
 
-		if (model instanceof IFilterColumnMixin) {
+		// FIXME hack
+		if (model instanceof IFilterColumnMixin && !(model instanceof FloatRankColumnModel)) {
 			final IFilterColumnMixin m = (IFilterColumnMixin) model;
 			final GLButton b = new GLButton();
 			b.setSelected(m.isFiltered());

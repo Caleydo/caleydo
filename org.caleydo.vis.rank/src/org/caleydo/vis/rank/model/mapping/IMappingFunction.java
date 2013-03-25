@@ -60,4 +60,6 @@ public interface IMappingFunction extends IFloatFunction {
 	float getMinTo();
 
 	void setActStatistics(FloatStatistics stats);
+
+	boolean isComplexMapping();
 }

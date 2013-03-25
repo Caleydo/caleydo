@@ -65,7 +65,7 @@ import org.eclipse.swt.widgets.Shell;
  *
  */
 public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implements IMappedColumnMixin,
-		IFloatRankableColumnMixin, ISetableColumnMixin, ISnapshotableColumnMixin {
+		IFloatRankableColumnMixin, ISetableColumnMixin, ISnapshotableColumnMixin, IFilterColumnMixin {
 
 	private final IMappingFunction mapping;
 	private final IFloatInferrer missingValueInferer;
@@ -93,6 +93,7 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 	private final HistCache cacheHist = new HistCache();
 	private boolean dirtyDataStats = true;
 	private float missingValue = Float.NaN;
+
 	private boolean filterNotMappedEntries = true;
 	private boolean filterMissingEntries = false;
 
@@ -313,6 +314,7 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 				Pair.make(filterNotMappedEntries, filterMissingEntries));
 	}
 
+	@Override
 	public void editFilter(final GLElement summary, IGLElementContext context) {
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
