@@ -265,16 +265,20 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 
 	}
 
-	protected HashSet<PathwayMultiFormInfo> windowStubs = new HashSet<PathwayMultiFormInfo>();
-	public boolean containsWindowStub(PathwayMultiFormInfo info){
-		if(!windowStubs.contains(info)){
-			windowStubs.add(info);
+	protected HashSet<Pair<PathwayMultiFormInfo,PathwayMultiFormInfo>> windowStubs = new HashSet<Pair<PathwayMultiFormInfo,PathwayMultiFormInfo>>();	
+
+	protected void clearWindowStubSets(){
+		windowStubs.clear();
+	}
+	
+	public boolean containsWindowsStub(Pair<PathwayMultiFormInfo,PathwayMultiFormInfo> windowPair){		
+		if(!windowStubs.contains(windowPair)){
+			windowStubs.add(windowPair);
 			return false;
-		}
-			
+		}			
 		return true;		
 	}
-
+	
 	
 	@Override
 	public void init(GL2 gl) {
@@ -682,7 +686,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	}
 
 	protected void updatePathLinks() {
-		windowStubs.clear();
+		clearWindowStubSets();
 		augmentation.isDirty = true;
 		augmentation.setPxlSize(this.getParentGLCanvas().getWidth(), this.getParentGLCanvas().getHeight());
 
@@ -691,6 +695,10 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		IPathwayRepresentation pathwayRepresentation = null;
 		PathwayMultiFormInfo pwInfo = null;
 		for (PathwayPath segment : pathSegments) {
+			if(segment==null){
+				System.out.println("updatePathLinks() ..  PathwayPath segment : pathSegments .. segment==null");
+				break;
+			}
 			for (PathwayMultiFormInfo info : pathwayInfos) {
 				pathwayRepresentation = getPathwayRepresentation(info.multiFormRenderer,
 						info.multiFormRenderer.getActiveRendererID());
@@ -713,7 +721,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	}
 
 	public void updateAugmentation() {
-		windowStubs.clear();
+		clearWindowStubSets();
 		updatePathLinks();
 		// updatePortalLinks();
 		updatePathwayPortals();
@@ -725,7 +733,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 
 	@Override
 	public void display(GL2 gl) {
-		windowStubs.clear();
+		clearWindowStubSets();
 		if (windowToSetActive != null) {
 			windowToSetActive.setActive(true);
 			windowToSetActive = null;
@@ -1053,7 +1061,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		if (info == null)
 			return;
 		augmentation.clear();
-		windowStubs.clear();
+		clearWindowStubSets();
 		// textureSelectionListeners.clear();
 		PathwayVertexRep lastNodeOfPrevSegment = null;
 
@@ -1162,7 +1170,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		boolean wasLinkAdded = false;
 		Set<PathwayVertexRep> equivalentVertexReps = PathwayManager.get().getEquivalentVertexRepsInPathway(vertexRep,
 				targetInfo.pathway);
-		windowStubs.clear();
+		clearWindowStubSets();
 		for (PathwayVertexRep v : equivalentVertexReps) {
 
 			if (isPathLink(vertexRep, v) || pathwayRow.getVisibility() == EVisibility.NONE)
