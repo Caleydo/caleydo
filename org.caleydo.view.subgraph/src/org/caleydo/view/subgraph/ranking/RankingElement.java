@@ -124,6 +124,11 @@ public class RankingElement extends GLElementContainer {
 			public void renderIsOrderByGlyph(GLGraphics g, float w, float h) {
 				// no highlight
 			}
+
+			@Override
+			public boolean isShowColumnPool() {
+				return false;
+			}
 		};
 
 		TableUI tableUI = new TableUI(table, config, RowHeightLayouts.UNIFORM);
