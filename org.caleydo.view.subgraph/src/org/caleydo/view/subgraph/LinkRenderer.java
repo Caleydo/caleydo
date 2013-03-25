@@ -220,7 +220,7 @@ public class LinkRenderer extends PickableGLElement {
 			renderStubLeftSide(gl,  loc1, loc2, isLocation1Window, info1, info2);
 		}
 		//// clean up
-		//gl.glDisable(GL2.GL_POLYGON_SMOOTH);
+		gl.glDisable(GL2.GL_POLYGON_SMOOTH);
 	}
 		
 	protected void renderStubRightSide(GL2 gl, Rectangle2D loc, Rectangle2D locTarget, boolean isWindow, PathwayMultiFormInfo info, PathwayMultiFormInfo infoTarget){		
