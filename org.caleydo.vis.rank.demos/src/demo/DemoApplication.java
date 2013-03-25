@@ -109,6 +109,7 @@ public class DemoApplication implements IApplication {
 		public void preWindowOpen() {
 		    IWorkbenchWindowConfigurer configurer = getWindowConfigurer();
 			configurer.setInitialSize(new Point(800, 600));
+			configurer.getWindow().getShell().setMaximized(true);
 		    configurer.setShowStatusLine(false);
 			configurer.setTitle("Caleydo LineUp - Demos");
 			configurer.setShowPerspectiveBar(false);

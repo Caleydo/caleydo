@@ -65,14 +65,14 @@ public class Food implements IModelBuilder {
 			"Carbohydrate, by difference (g/100 g)", "Total dietary fiber (g/100 g)", "Total sugars (g/100 g)",
 			"Calcium (mg/100 g)", "Iron (mg/100 g)", "Magnesium (mg/100 g)", "Phosphorus (mg/100 g)",
 			"Potassium (mg/100 g)", "Sodium (mg/100 g)", "Zinc (mg/100 g)", "Copper (mg/100 g)",
-			"Manganese (mg/100 g)", "Selenium (µg/100 g)", "Vitamin C (mg/100 g)", "Thiamin (mg/100 g)",
+			"Manganese (mg/100 g)", "Selenium (ï¿½g/100 g)", "Vitamin C (mg/100 g)", "Thiamin (mg/100 g)",
 			"Riboflavin (mg/100 g)", "Niacin (mg/100 g)", "Pantothenic acid (mg/100 g)", "Vitamin B6 (mg/100 g)",
-			"Folate, total (µg/100 g)", "Folic acid (µg/100 g)", "Food folate (µg/100 g)",
-			"Folate (µg dietary folate equivalents/100 g)", "Choline, total (mg/100 g)", "Vitamin B12 (µg/100 g)",
-			"Vitamin A (IU/100 g)", "Vitamin A (µg retinol activity equivalents/100g)", "Retinol (µg/100 g)",
-			"Alpha-carotene (µg/100 g)", "Beta-carotene (µg/100 g)", "Beta-cryptoxanthin (µg/100 g)",
-			"Lycopene (µg/100 g)", "Lutein+zeazanthin (µg/100 g)", "Vitamin E (alpha-tocopherol) (mg/100 g)",
-			"Vitamin D (µg/100 g)", "Vitamin D (IU/100 g)", "Vitamin K (phylloquinone) (µg/100 g)",
+			"Folate, total (ï¿½g/100 g)", "Folic acid (ï¿½g/100 g)", "Food folate (ï¿½g/100 g)",
+			"Folate (ï¿½g dietary folate equivalents/100 g)", "Choline, total (mg/100 g)", "Vitamin B12 (ï¿½g/100 g)",
+			"Vitamin A (IU/100 g)", "Vitamin A (ï¿½g retinol activity equivalents/100g)", "Retinol (ï¿½g/100 g)",
+			"Alpha-carotene (ï¿½g/100 g)", "Beta-carotene (ï¿½g/100 g)", "Beta-cryptoxanthin (ï¿½g/100 g)",
+			"Lycopene (ï¿½g/100 g)", "Lutein+zeazanthin (ï¿½g/100 g)", "Vitamin E (alpha-tocopherol) (mg/100 g)",
+			"Vitamin D (ï¿½g/100 g)", "Vitamin D (IU/100 g)", "Vitamin K (phylloquinone) (ï¿½g/100 g)",
 			"Saturated fatty acid (g/100 g)", "Monounsaturated fatty acids (g/100 g)",
 			"Polyunsaturated fatty acids (g/100 g)", "Cholesterol (mg/100 g)");
 
@@ -120,9 +120,9 @@ public class Food implements IModelBuilder {
 		// }
 		// }, metaData));
 		table.add(new StringRankColumnModel(GLRenderers.drawText("Description", VAlign.CENTER),
-				StringRankColumnModel.DEFAULT));
+				StringRankColumnModel.DEFAULT).setWidth(400));
 		table.add(new CategoricalRankColumnModel<Integer>(GLRenderers.drawText("Food Group", VAlign.CENTER),
-				new ReflectionData<Integer>(field("group"), Integer.class), foodGroups));
+				new ReflectionData<Integer>(field("group"), Integer.class), foodGroups).setWidth(200));
 
 
 		for (int i = 0; i < selection.size(); ++i) {
