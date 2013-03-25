@@ -101,7 +101,7 @@ Clark University;United States
 Clemson University;United States
 Cleveland State University;United States
 Colegio de México;Mexico
-College of William &amp; Mary;United States
+College of William & Mary;United States
 Colorado State University;United States
 Columbia University;United States
 Concordia University;Canada
@@ -246,18 +246,18 @@ Jilin University;China
 Johannes Gutenberg Universität Mainz;Germany
 Johannes Kepler University Linz;Austria
 Johns Hopkins University;United States
-Jordan University of Science &amp; Technology;Jordan
+Jordan University of Science & Technology;Jordan
 Josai University ;Japan
 Julius-Maximilians-Universität Würzburg;Germany
 Justus-Liebig-Universität Gießen;Germany
 Kagoshima University;Japan
-KAIST - Korea Advanced Institute of Science &amp; Technology;South Korea
+KAIST - Korea Advanced Institute of Science & Technology;South Korea
 Kanazawa University;Japan
 Kansai Gaidai University;Japan
 Karl-Franzens-Universität Graz;Austria
 Karolinska Institute;Sweden
 Kasetsart University;Thailand
-Katholieke Universiteit Leuven ;Belgium
+Katholieke Universiteit Leuven;Belgium
 Kazakh-British Technical University;Kazakhstan
 Kazakh National Pedagogical University Abai;Kazakhstan
 Kazakh national technical university ;Kazakhstan
@@ -266,14 +266,14 @@ Keio University;Japan
 Khazar University;Azerbaijan
 Khon Kaen University;Thailand
 King Abdul Aziz University (KAU);Saudi Arabia
-King Abdullah University of Science &amp; Technology;Saudi Arabia
-King Fahd University of Petroleum &amp; Minerals;Saudi Arabia
+King Abdullah University of Science & Technology;Saudi Arabia
+King Fahd University of Petroleum & Minerals;Saudi Arabia
 King Faisal University;Saudi Arabia
 King Khalid University;Saudi Arabia
 King Mongkut&#039;s Institute of Technology Ladkrabang;Thailand
 King Mongkut&#039;s University of Technology Thonburi ;Thailand
 King Saud University;Saudi Arabia
-King&#039;s College London (KCL);United Kingdom
+King's College London (KCL);United Kingdom
 Kingston University, London;United Kingdom
 KIT, Karlsruher Institut für Technologie;Germany
 Kobe University;Japan
@@ -298,9 +298,9 @@ Linköping University;Sweden
 L.N. Gumilyov Eurasian National University ;Kazakhstan
 Lodz University;Poland
 Lomonosov Moscow State University ;Russia
-London School of Business &amp; Finance;United Kingdom
+London School of Business & Finance;United Kingdom
 London School of Economics and Political Science (LSE);United Kingdom
-London School of Hygiene &amp; Tropical Medicine;United Kingdom
+London School of Hygiene & Tropical Medicine;United Kingdom
 Loughborough University;United Kingdom
 Louisiana State University;United States
 Loyola University Chicago;United States
@@ -361,7 +361,7 @@ Newcastle University;United Kingdom
 N.I. Lobachevsky State University of Nizhni Novgorod;Russia
 Niigata University;Japan
 North Carolina State University;United States
-North Carolina A &amp; T State University;United States
+North Carolina A & T State University;United States
 Northeastern University;United States
 Northwestern University;United States
 Norwegian University of Science And Technology;Norway
@@ -371,7 +371,7 @@ Ohio State University;United States
 Okayama University;Japan
 The Open University;United Kingdom
 Orebro University;Sweden
-Oregon Health &amp; Science University (OHSU);United States
+Oregon Health & Science University (OHSU);United States
 Oregon State University;United States
 Osaka City University;Japan
 Osaka University;Japan
@@ -487,7 +487,7 @@ Tecnológico de Monterrey (ITESM);Mexico
 Tel Aviv University;Israel
 TELECOM ParisTech;France
 Temple University;United States
-Texas A&amp;M University;United States
+Texas A&M University;United States
 Thammasat University;Thailand
 Tianjin University;China
 Tilburg University;Netherlands
@@ -508,7 +508,7 @@ Tsinghua University;China
 Tufts University;United States
 Tulane University;United States
 Turku University of Applied Sciences;Finland
-University College London;United Kingdom
+UCL (University College London);United Kingdom
 Umeà¥ University;Sweden
 Umm Al-Qura University ;Saudi Arabia
 United Arab Emirates University;United Arab Emirates
@@ -628,8 +628,8 @@ Université de Caen Basse-Normandie;France
 Université de Cergy-Pontoise;France
 Université de Fribourg;Switzerland
 Université de la Méditerranée, Aix-Marseille II;France
-Université de Lorraine ;France
-Université de Montréal ;Canada
+Université de Lorraine;France
+Université de Montréal;Canada
 Université de Poitiers;France
 Université de Provence, Aix-Marseille I;France
 Université de Rennes 1;France
@@ -739,7 +739,7 @@ University of East Anglia (UEA);United Kingdom
 University of Eastern Finland;Finland
 University of Edinburgh;United Kingdom
 University of Electronic Science and Technology of China;China
-University of Engineering &amp; Technology (UET) Lahore;Pakistan
+University of Engineering & Technology (UET) Lahore;Pakistan
 University of Essex;United Kingdom
 University of Exeter;United Kingdom
 University of Florence;Italy
@@ -928,7 +928,7 @@ Wroclaw University of Technology;Poland
 WU (Vienna University of Economics and Business);Austria
 Wuhan University;China
 Xiamen University;China
-Xi&#039;an Jiaotong University;China
+Xi'an Jiaotong University;China
 Yale University;United States
 Yarmouk University;Jordan
 Yeshiva University;United States

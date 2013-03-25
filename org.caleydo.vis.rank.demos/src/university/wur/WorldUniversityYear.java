@@ -225,7 +225,7 @@ public class WorldUniversityYear {
 				r.readLine(); // header
 				while ((line = r.readLine()) != null) {
 					String[] l = line.split("\t");
-					String school = l[1];
+					String school = l[1].trim();
 
 					WorldUniversityYear universityYear = new WorldUniversityYear(l);
 					if (!data.containsKey(school)) {
@@ -250,8 +250,8 @@ public class WorldUniversityYear {
 			String line;
 			while ((line = r.readLine()) != null) {
 				String[] l = line.split(";");
-				String school = l[0];
-				String country = l[1];
+				String school = l[0].trim();
+				String country = l[1].trim();
 
 				result.put(school, country);
 			}
