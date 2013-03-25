@@ -88,7 +88,7 @@ public class RankTableDemo extends GLSandBox {
 	private void createUI() {
 		// visual part
 		RankTableUI root = (RankTableUI) getRoot();
-		root.init(table, RankTableUIConfigs.DEFAULT, RowHeightLayouts.FISH_EYE, RowHeightLayouts.UNIFORM);
+		root.init(table, RankTableUIConfigs.DEFAULT, RowHeightLayouts.UNIFORM, RowHeightLayouts.FISH_EYE);
 	}
 
 	public static float toFloat(String[] l, int i) {
