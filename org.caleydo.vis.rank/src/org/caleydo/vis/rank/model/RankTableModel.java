@@ -164,13 +164,15 @@ public class RankTableModel implements IRankColumnParent {
 	 *
 	 */
 	void fireFilterInvalid() {
-		for (ARankColumnModel col : columns)
+		for (ARankColumnModel col : columns) {
 			col.onRankingInvalid();
+		}
 		for (ARankColumnModel m : this.pool)
 			m.onRankingInvalid();
 		propertySupport.firePropertyChange(PROP_FILTER_INVALID, false, true);
 		for (ColumnRanker order : findAllColumnRankers()) {
-			order.fireInvalidEvent();
+			order.dirtyOrder();
+			order.getOrder();
 		}
 	}
 
@@ -430,6 +432,26 @@ public class RankTableModel implements IRankColumnParent {
 		final int[] lookup = new int[dataMask.cardinality()];
 		int j = 0;
 		for (int i = dataMask.nextSetBit(0); i >= 0; i = dataMask.nextSetBit(i + 1)) {
+			lookup[j++] = i;
+		}
+		return new AbstractList<IRow>() {
+			@Override
+			public IRow get(int index) {
+				return lookup == null ? data.get(index) : data.get(lookup[index]);
+			}
+
+			@Override
+			public int size() {
+				return lookup == null ? data.size() : lookup.length;
+			}
+		};
+	}
+
+	public List<IRow> getFilteredData() {
+		BitSet b = defaultFilter.getFilter();
+		final int[] lookup = new int[b.cardinality()];
+		int j = 0;
+		for (int i = b.nextSetBit(0); i >= 0; i = b.nextSetBit(i + 1)) {
 			lookup[j++] = i;
 		}
 		return new AbstractList<IRow>() {

@@ -180,7 +180,7 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 	}
 
 	private IFloatList asRawData() {
-		final List<IRow> data2 = getTable().getMaskedData();
+		final List<IRow> data2 = getTable().getFilteredData();
 		return new AFloatList() {
 			@Override
 			public float getPrimitive(int index) {

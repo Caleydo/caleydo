@@ -335,8 +335,8 @@ public class Food implements IModelBuilder {
 		}
 	}
 
-	public static void main(String[] args) throws IOException {
-		dump();
+	public static void main(String[] args) {
+		// dump();
 		GLSandBox.main(args, RankTableDemo.class, "Food Nutrition", new Food());
 	}
 }
