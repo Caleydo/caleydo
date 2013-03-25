@@ -121,7 +121,8 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 		model.addPropertyChangeListener(IMappedColumnMixin.PROP_MAPPING, listener);
 		// addDirectWeight(model.getWeight());
 		cacheMulti.clear();
-		super.setWidth(width + model.getWidth() + RenderStyle.COLUMN_SPACE);
+		float oldWidth = size() == 1 ? 0 : width;
+		super.setWidth(oldWidth + model.getWidth() + RenderStyle.COLUMN_SPACE);
 		model.setParentData(model.getWidth());
 	}
 

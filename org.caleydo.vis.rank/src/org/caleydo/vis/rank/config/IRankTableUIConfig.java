@@ -61,10 +61,15 @@ public interface IRankTableUIConfig {
 
 	/**
 	 * renderes the glyph to indicate that this column is the current ranking criteria
-	 * 
+	 *
 	 * @param g
 	 * @param w
 	 * @param h
 	 */
 	void renderIsOrderByGlyph(GLGraphics g, float w, float h);
+
+	/**
+	 * @return
+	 */
+	boolean isShowColumnPool();
 }

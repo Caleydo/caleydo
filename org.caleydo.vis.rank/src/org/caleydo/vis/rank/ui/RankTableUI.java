@@ -21,6 +21,8 @@ package org.caleydo.vis.rank.ui;
 
 import java.awt.Color;
 
+import org.caleydo.core.view.opengl.canvas.GLMouseAdapter;
+import org.caleydo.core.view.opengl.canvas.IGLMouseListener;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
@@ -36,6 +38,7 @@ import org.caleydo.vis.rank.config.IRankTableUIConfig;
 import org.caleydo.vis.rank.internal.ui.ButtonBar;
 import org.caleydo.vis.rank.layout.IRowHeightLayout;
 import org.caleydo.vis.rank.model.RankTableModel;
+import org.caleydo.vis.rank.model.StackedRankColumnModel;
 
 /**
  * @author Samuel Gratzl
@@ -43,7 +46,21 @@ import org.caleydo.vis.rank.model.RankTableModel;
  */
 public class RankTableUI extends GLElementContainer implements ISelectionCallback {
 
+	private IGLMouseListener mouseListener = new GLMouseAdapter() {
+		@Override
+		public void mouseWheelMoved(IMouseEvent e) {
+			onWheelMoved(e.getWheelRotation());
+		}
+	};
+
 	public RankTableUI() {
+	}
+
+	/**
+	 * @return the mouseListener, see {@link #mouseListener}
+	 */
+	public IGLMouseListener getMouseListener() {
+		return mouseListener;
 	}
 
 	/**
@@ -56,11 +73,12 @@ public class RankTableUI extends GLElementContainer implements ISelectionCallbac
 	 * @param layouts
 	 *            one or more {@link IRowHeightLayout} to provide to the user
 	 */
-	public void init(RankTableModel table, IRankTableUIConfig config, IRowHeightLayout... layouts) {
+	public void init(final RankTableModel table, IRankTableUIConfig config, IRowHeightLayout... layouts) {
 		setLayout(GLLayouts.flowVertical(0));
+		ButtonBar buttons = new ButtonBar();
+		buttons.setzDelta(0.5f);
+
 		if (layouts.length > 1) { // more than one row height layout to choose
-			ButtonBar buttons = new ButtonBar();
-			buttons.setzDelta(0.5f);
 			RadioController radio = new RadioController(this);
 			for(int i = 0; i < layouts.length; ++i) {
 				GLButton b = new GLButton();
@@ -69,12 +87,35 @@ public class RankTableUI extends GLElementContainer implements ISelectionCallbac
 				radio.add(b);
 				buttons.addButton(b);
 			}
-			this.add(buttons);
 		}
+		buttons.addSpacer();
+		GLButton b = new GLButton();
+		b.setCallback(new ISelectionCallback() {
+			@Override
+			public void onSelectionChanged(GLButton button, boolean selected) {
+				StackedRankColumnModel m = new StackedRankColumnModel();
+				m.setWidth(100);
+				table.add(m);
+			}
+		});
+		buttons.addButton(b, "Create an empty Stacked Combined Column", RenderStyle.ICON_ADD_STACKED,
+				RenderStyle.ICON_ADD_STACKED);
+		b = new GLButton();
+		b.setCallback(new ISelectionCallback() {
+			@Override
+			public void onSelectionChanged(GLButton button, boolean selected) {
+				table.addSnapshot(null);
+			}
+		});
+		buttons.addButton(b, "Create a new Separator Column", RenderStyle.ICON_ADD_SEPARATOR,
+				RenderStyle.ICON_ADD_SEPARATOR);
+
+		this.add(buttons);
+
 		TableUI tableui = new TableUI(table, config, layouts);
 		ScrollingDecorator sc = new ScrollingDecorator(tableui, new ScrollBar(true), null, RenderStyle.SCROLLBAR_WIDTH);
 		this.add(sc);
-		if (config.isInteractive() && !table.getConfig().isDestroyOnHide())
+		if (config.isInteractive() && config.isShowColumnPool())
 			this.add(new ColumnPoolUI(table, config));
 	}
 
@@ -99,10 +140,15 @@ public class RankTableUI extends GLElementContainer implements ISelectionCallbac
 	@Override
 	public void onSelectionChanged(GLButton button, boolean selected) {
 		IRowHeightLayout l = button.getLayoutDataAs(IRowHeightLayout.class, null);
+		TableBodyUI body = findBody();
+		body.setRowLayout(l);
+	}
+
+	protected TableBodyUI findBody() {
 		ScrollingDecorator scbody = (ScrollingDecorator) get(1);
 		TableUI table = (TableUI) scbody.getContent();
 		TableBodyUI body = (TableBodyUI) table.get(1);
-		body.setRowLayout(l);
+		return body;
 	}
 
 	@Override
@@ -113,5 +159,15 @@ public class RankTableUI extends GLElementContainer implements ISelectionCallbac
 		super.renderImpl(g, w, h);
 
 		g.popResourceLocator();
+	}
+
+	/**
+	 * @param wheelRotation
+	 */
+	protected void onWheelMoved(int wheelRotation) {
+		if (wheelRotation == 0)
+			return;
+		TableBodyUI body = findBody();
+		body.scroll(-wheelRotation);
 	}
 }

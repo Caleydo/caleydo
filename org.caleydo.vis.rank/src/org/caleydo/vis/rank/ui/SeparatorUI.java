@@ -60,9 +60,12 @@ public class SeparatorUI extends PickableGLElement {
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
-		if (armed) {
-			renderHint(g, w, h);
-		}
+		g.color(1, 1, 1, armed ? 1 : 0.5f);
+		float v = RenderStyle.HEADER_ROUNDED_RADIUS;
+		g.fillPolygon(new Vec2f(-v, 0), new Vec2f(+v + w, 0), new Vec2f(w, v), new Vec2f(0, v));
+		// if (armed) {
+		// renderHint(g, w, h);
+		// }
 	}
 
 	protected void renderHint(GLGraphics g, float w, float h) {

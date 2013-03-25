@@ -103,6 +103,9 @@ public class RenderStyle {
 	public static final String ICON_STAR = ICON_PREFIX + "star.png";
 	public static final String ICON_STAR_DISABLED = ICON_PREFIX + "star_disabled.png";
 	public static final String ICON_FIND = ICON_PREFIX + "find.png";
+
+	public static final String ICON_ADD_SEPARATOR = ICON_PREFIX + "table_relationship.png";
+	public static final String ICON_ADD_STACKED = ICON_PREFIX + "table_add.png";
 	/**
 	 * space between columns
 	 */
@@ -126,7 +129,7 @@ public class RenderStyle {
 	public static final float BUTTON_WIDTH = 16;
 	public static final Color COLOR_STACKED_BORDER = new Color(0.85f, .85f, .85f);
 	public static final float COLOR_STACKED_BORDER_WIDTH = 1;
-	public static final float HEADER_ROUNDED_RADIUS = 5;
+	public static final float HEADER_ROUNDED_RADIUS = 9;
 	public static final float SCROLLBAR_WIDTH = 5;
 
 

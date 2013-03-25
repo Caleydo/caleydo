@@ -117,6 +117,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 
 		setLayout(this);
 		setLayoutData(model);
+		setPicker(null);
 		if (config.isInteractive())
 			this.setVisibility(EVisibility.PICKABLE);
 		this.onPick(new IPickingListener() {
@@ -262,7 +263,9 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 		if (config.isMoveAble()) {
 			g.incZ().incZ();
 			g.pushName(dragPickingId);
-			g.fillRect(0, 0, w, h);
+			RoundedRectRenderer.render(g, 0, 0, w, h, RenderStyle.HEADER_ROUNDED_RADIUS, 0,
+					RoundedRectRenderer.FLAG_FILL | RoundedRectRenderer.FLAG_TOP);
+			// g.fillRect(0, 0, w, h);
 			g.popName();
 			g.decZ().decZ();
 		}
@@ -271,8 +274,9 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 
 	protected void renderBackground(GLGraphics g, float w, float h) {
 		g.color(model.getBgColor());
-		RoundedRectRenderer.render(g, 0, 0, w, h, RenderStyle.HEADER_ROUNDED_RADIUS, 3, RoundedRectRenderer.FLAG_FILL
-				| RoundedRectRenderer.FLAG_TOP);
+		g.fillRect(0, 0, w, h);
+		// RoundedRectRenderer.render(g, 0, 0, w, h, RenderStyle.HEADER_ROUNDED_RADIUS, 0, RoundedRectRenderer.FLAG_FILL
+		// | RoundedRectRenderer.FLAG_TOP);
 		if (model instanceof IRankableColumnMixin && model.getMyRanker().getOrderBy() == model) {
 			config.renderIsOrderByGlyph(g, w, h);
 		}

@@ -23,6 +23,7 @@ import static org.caleydo.vis.rank.ui.RenderStyle.HIST_HEIGHT;
 import static org.caleydo.vis.rank.ui.RenderStyle.LABEL_HEIGHT;
 
 import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.vis.rank.config.IRankTableUIConfig;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.RankTableModel;
@@ -50,7 +51,7 @@ public final class TableHeaderUI extends ACompositeHeaderUI {
 	@Override
 	protected void setHasThick(boolean hasThick) {
 		super.setHasThick(hasThick);
-		setSize(-1, (HIST_HEIGHT + LABEL_HEIGHT) * 1 + (hasThick ? (HIST_HEIGHT + LABEL_HEIGHT * 2) : 0));
+		setSize(-1, (HIST_HEIGHT + LABEL_HEIGHT) * 1 + (hasThick ? THICK_HEIGHT : 0));
 	}
 
 	@Override
@@ -78,6 +79,14 @@ public final class TableHeaderUI extends ACompositeHeaderUI {
 	public void moveHere(int index, ARankColumnModel model, boolean clone) {
 		assert canMoveHere(index, model, clone);
 		this.table.move(model, index, clone);
+	}
+
+	@Override
+	protected void renderImpl(GLGraphics g, float w, float h) {
+		g.color(RenderStyle.COLOR_BACKGROUND_EVEN);
+		g.fillRect(0, h - RenderStyle.HIST_HEIGHT, w, RenderStyle.HIST_HEIGHT);
+
+		super.renderImpl(g, w, h);
 	}
 }
 

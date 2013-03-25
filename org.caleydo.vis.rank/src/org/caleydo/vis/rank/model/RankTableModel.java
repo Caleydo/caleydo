@@ -323,7 +323,7 @@ public class RankTableModel implements IRankColumnParent {
 	@Override
 	public boolean hide(ARankColumnModel model) {
 		remove(model);
-		if (!config.isDestroyOnHide())
+		if (!config.isDestroyOnHide(model))
 			addToPool(model);
 		return true;
 	}
@@ -541,7 +541,8 @@ public class RankTableModel implements IRankColumnParent {
 	public void addSnapshot(ARankColumnModel model) {
 		add(new OrderColumn());
 		add(new RankRankColumnModel());
-		add(model.clone());
+		if (model != null)
+			add(model.clone());
 	}
 }
 

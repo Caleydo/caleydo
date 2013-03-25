@@ -156,7 +156,7 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 			}
 
 			@Override
-			public boolean isDestroyOnHide() {
+			public boolean isDestroyOnHide(ARankColumnModel model) {
 				return true;
 			}
 		});

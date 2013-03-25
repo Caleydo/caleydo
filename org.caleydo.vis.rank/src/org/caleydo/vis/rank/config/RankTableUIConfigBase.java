@@ -66,4 +66,9 @@ public class RankTableUIConfigBase implements IRankTableUIConfig {
 		g.fillImage(RenderStyle.ICON_STAR, w - 16, -8, 16, 16);
 	}
 
+	@Override
+	public boolean isShowColumnPool() {
+		return true;
+	}
+
 }

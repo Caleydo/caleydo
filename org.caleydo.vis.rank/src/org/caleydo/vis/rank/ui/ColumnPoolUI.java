@@ -26,6 +26,7 @@ import java.awt.Color;
 import java.beans.IndexedPropertyChangeEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.List;
 import java.util.Objects;
 
 import org.caleydo.core.util.collection.Pair;
@@ -34,8 +35,8 @@ import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
-import org.caleydo.core.view.opengl.layout2.layout.GLFlowLayout;
-import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
+import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
+import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.vis.rank.config.IRankTableUIConfig;
@@ -51,7 +52,7 @@ import org.caleydo.vis.rank.ui.column.ColumnHeaderUI;
  * @author Samuel Gratzl
  *
  */
-public class ColumnPoolUI extends GLElementContainer {
+public class ColumnPoolUI extends GLElementContainer implements IGLLayout {
 	private final RankTableModel table;
 
 	private final PropertyChangeListener listener = new PropertyChangeListener() {
@@ -82,19 +83,34 @@ public class ColumnPoolUI extends GLElementContainer {
 		this.table = table;
 		this.config = RankTableUIConfigs.nonInteractive(config);
 		table.addPropertyChangeListener(RankTableModel.PROP_POOL, listener);
-		setLayout(new GLFlowLayout(true, 5, new GLPadding(5)));
+		setLayout(this);
 		setSize(-1, LABEL_HEIGHT + HIST_HEIGHT);
+		this.add(new PaperBasket(table).setSize(LABEL_HEIGHT + HIST_HEIGHT - 10, -1));
+
 		for (ARankColumnModel hidden : table.getPool()) {
 			add(wrap(hidden));
 		}
-		this.add(new GLElement()); // spacer
-		this.add(new PaperBasket(table).setSize(LABEL_HEIGHT + HIST_HEIGHT - 10, -1));
 	}
 
 	@Override
 	protected void init(IGLElementContext context) {
 		super.init(context);
 		dropPickingId = context.registerPickingListener(dropListener);
+	}
+
+	@Override
+	public void doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
+		IGLLayoutElement paperBasket = children.get(0);
+		paperBasket.setBounds(w - paperBasket.getSetWidth() - 5, 5, paperBasket.getSetWidth(), h - 10);
+
+		children = children.subList(1, children.size());
+		float x = 5;
+		w -= paperBasket.getSetWidth();
+		float wi = Math.min(100, (w - children.size() * 5 - 5) / children.size());
+		for (IGLLayoutElement child : children) {
+			child.setBounds(x, 5, wi, h - 10);
+			x += wi + 5;
+		}
 	}
 
 	protected void onDropPick(Pick pick) {
@@ -134,7 +150,7 @@ public class ColumnPoolUI extends GLElementContainer {
 	}
 
 	private GLElement wrap(ARankColumnModel hidden) {
-		return new ColumnHeaderUI(hidden, config).setSize(100, -1);
+		return new ColumnHeaderUI(hidden, config);
 	}
 
 	@Override
@@ -163,7 +179,7 @@ public class ColumnPoolUI extends GLElementContainer {
 	protected void onColumsChanged(IndexedPropertyChangeEvent evt) {
 		if (evt.getOldValue() == null) { // new
 			ARankColumnModel new_ = (ARankColumnModel) evt.getNewValue();
-			this.add(size() - 2, wrap(new_)); // at the back
+			this.add(wrap(new_)); // at the back
 		} else if (evt.getNewValue() == null) { // remove
 			for (GLElement g : this) {
 				if (Objects.equals(g.getLayoutDataAs(ARankColumnModel.class, null), evt.getOldValue())) {

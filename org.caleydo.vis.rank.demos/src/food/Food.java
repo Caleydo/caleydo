@@ -35,6 +35,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLSandBox;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
@@ -75,19 +76,40 @@ public class Food implements IModelBuilder {
 			"Saturated fatty acid (g/100 g)", "Monounsaturated fatty acids (g/100 g)",
 			"Polyunsaturated fatty acids (g/100 g)", "Cholesterol (mg/100 g)");
 
-	private static final List<String> selection = Arrays.asList("Food energy (kcal/100 g)", "Cholesterol (mg/100 g)",
-			"Total sugars (g/100 g)", "Water (g/100 g)", "Protein (g/100 g)", "Carbohydrate, by difference (g/100 g)",
-			"Vitamin C (mg/100 g)", "Calcium (mg/100 g)", "Iron (mg/100 g)", "Magnesium (mg/100 g)",
-			"Saturated fatty acid (g/100 g)", "Sodium (mg/100 g)", "Total dietary fiber (g/100 g)");
+	private static final List<Pair<Color, Color>> colors = Arrays.asList(colors("#FC9272", "#FEE0D2"),
+			colors("#9ECAE1", "#DEEBF7"), colors("#A1D99B", "#E5F5E0"), colors("#C994C7", "#E7E1EF"),
+			colors("#FDBB84", "#FEE8C8"), colors("#DFC27D", "#F6E8C3"));
+
+	private static final List<String> selection = Arrays.asList("Food energy (kcal/100 g)",/**/
+			"Total lipid (fat)(g/100 g)",/**/
+			"Saturated fatty acid (g/100 g)",/**/
+			"Cholesterol (mg/100 g)",/**/
+			"Sodium (mg/100 g)",/**/
+			"Carbohydrate, by difference (g/100 g)",/**/
+			"Total dietary fiber (g/100 g)", "Total sugars (g/100 g)",/**/
+			"Protein (g/100 g)", /**/
+			"Vitamin A (IU/100 g)", "Vitamin C (mg/100 g)", "Calcium (mg/100 g)", "Iron (mg/100 g)");
+
+	private static final int[] selectionColors = { 0,/**/
+	0, /**/
+	1, /**/
+	2, /**/
+	5, /**/
+	3, /**/
+	4, 4,/**/
+	0,/**/
+	5, 5, 5, 5 };
+
+	private static final List<String> pool = Arrays.asList(/**/
+	"Magnesium (mg/100 g)", "Phosphorus (mg/100 g)",/**/
+			"Monounsaturated fatty acids (g/100 g)", "Polyunsaturated fatty acids (g/100 g)");
+	private static final int[] poolColors = { 5, 5, 1, 1 };
 
 	@Override
 	public void apply(RankTableModel table) throws Exception {
 		List<FoodRow> rows = new ArrayList<>();
 		Map<Integer, String> foodGroups = readData(rows);
 		table.addData(rows);
-
-		Color color = Color.decode("#DFC27D");
-		Color bgColor = Color.decode("#F6E8C3");
 
 		table.add(new RankRankColumnModel());
 		// table.add(new CategoricalRankColumnModel<String>(GLRenderers.drawText("Short Description", VAlign.CENTER),
@@ -102,11 +124,23 @@ public class Food implements IModelBuilder {
 		table.add(new CategoricalRankColumnModel<Integer>(GLRenderers.drawText("Food Group", VAlign.CENTER),
 				new ReflectionData<Integer>(field("group"), Integer.class), foodGroups));
 
+
 		for (int i = 0; i < selection.size(); ++i) {
 			int j = headers.indexOf(selection.get(i));
-			table.add(ucol(j, headers.get(j), color, bgColor));
+			table.add(ucol(j, headers.get(j), selectionColors[i]));
 		}
 
+		for (int i = 0; i < pool.size(); ++i) {
+			int j = headers.indexOf(pool.get(i));
+			FloatRankColumnModel c = ucol(j, headers.get(j), poolColors[i]);
+			table.add(c);
+			c.hide();
+		}
+
+	}
+
+	private static Pair<Color, Color> colors(String c1, String c2) {
+		return Pair.make(Color.decode(c1), Color.decode(c2));
 	}
 
 	protected static Map<Integer, String> readData(List<FoodRow> rows) throws IOException {
@@ -154,6 +188,9 @@ public class Food implements IModelBuilder {
 			for (int i = 0; i < selection.size(); ++i) {
 				w.append(SEP).append(selection.get(i));
 			}
+			for (int i = 0; i < pool.size(); ++i) {
+				w.append(SEP).append(pool.get(i));
+			}
 			w.println();
 
 			for (FoodRow row : rows) {
@@ -161,6 +198,10 @@ public class Food implements IModelBuilder {
 
 				for (int i = 0; i < selection.size(); ++i) {
 					int j = headers.indexOf(selection.get(i));
+					w.append(SEP).append(row.data.length <= j ? "" : toString(row.data[j]));
+				}
+				for (int i = 0; i < pool.size(); ++i) {
+					int j = headers.indexOf(pool.get(i));
 					w.append(SEP).append(row.data.length <= j ? "" : toString(row.data[j]));
 				}
 				w.println();
@@ -203,10 +244,13 @@ public class Food implements IModelBuilder {
 		return result;
 	}
 
-	private FloatRankColumnModel ucol(int col, String label, Color color, Color bgColor) {
-		return new FloatRankColumnModel(new ValueGetter(col), GLRenderers.drawText(label,
- VAlign.CENTER), color,
-				bgColor, new PiecewiseMapping(0, Float.NaN), FloatInferrers.fix(0));
+	private FloatRankColumnModel ucol(int col, String label, int colorIndex) {
+		Pair<Color, Color> pair = colors.get(colorIndex);
+		FloatRankColumnModel f = new FloatRankColumnModel(new ValueGetter(col), GLRenderers.drawText(label,
+				VAlign.CENTER), pair.getFirst(), pair.getSecond(), new PiecewiseMapping(0, Float.NaN),
+				FloatInferrers.fix(0));
+		f.setWidth(75);
+		return f;
 	}
 
 	static class ValueGetter extends AFloatFunction<IRow> implements IFloatSetterFunction<IRow> {

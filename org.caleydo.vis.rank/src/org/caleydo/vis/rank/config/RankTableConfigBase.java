@@ -25,6 +25,7 @@ import org.caleydo.vis.rank.model.ACompositeRankColumnModel;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.IRankColumnParent;
 import org.caleydo.vis.rank.model.MaxCompositeRankColumnModel;
+import org.caleydo.vis.rank.model.OrderColumn;
 import org.caleydo.vis.rank.model.StackedRankColumnModel;
 import org.caleydo.vis.rank.model.mixin.IFloatRankableColumnMixin;
 
@@ -113,8 +114,8 @@ public class RankTableConfigBase implements IRankTableConfig {
 	}
 
 	@Override
-	public boolean isDestroyOnHide() {
-		return false;
+	public boolean isDestroyOnHide(ARankColumnModel model) {
+		return model instanceof OrderColumn;
 	}
 
 }

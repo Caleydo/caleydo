@@ -88,6 +88,7 @@ public class RankTableDemo extends GLSandBox {
 	private void createUI() {
 		// visual part
 		RankTableUI root = (RankTableUI) getRoot();
+		this.canvas.addMouseListener(root.getMouseListener());
 		root.init(table, RankTableUIConfigs.DEFAULT, RowHeightLayouts.UNIFORM, RowHeightLayouts.FISH_EYE);
 	}
 

@@ -119,6 +119,9 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 	private final PickingListenerComposite selectRowListener = new PickingListenerComposite();
 	private final IRankTableUIConfig config;
 
+	/**
+	 * overall scrollbar
+	 */
 	private final IScrollBar scrollBar;
 	private int scrollBarPickingId = -1;
 	private boolean needsScrollBar;
@@ -528,6 +531,15 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 		}
 	}
 
+	/**
+	 * manually scrolling
+	 * 
+	 * @param rowDelta
+	 */
+	public void scroll(int rowDelta) {
+		onScrollBarMoved(scrollBar, scrollBar.getOffset() + rowDelta);
+	}
+
 	@Override
 	public float getHeight(IScrollBar scrollBar) {
 		return getSize().y();
@@ -614,6 +626,8 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 		if (last instanceof ACompositeTableColumnUI<?>) {
 			last = ((ACompositeTableColumnUI<?>) last).getLastChild();
 		}
+		if (last == null)
+			return;
 
 		for (IRow rankedRow : act.getRanker()) {
 			Vec4f bounds = last.getBounds(rankedRow.getIndex());

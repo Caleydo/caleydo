@@ -26,9 +26,9 @@ import org.caleydo.vis.rank.model.RankTableModel;
 
 /**
  * config interface for describing the behavior of a {@link RankTableModel}
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public interface IRankTableConfig {
 
@@ -88,7 +88,7 @@ public interface IRankTableConfig {
 	/**
 	 * @return whether a column should be removed instead of hided
 	 */
-	boolean isDestroyOnHide();
+	boolean isDestroyOnHide(ARankColumnModel model);
 
 	/**
 	 * checks whether the given {@link ACompositeRankColumnModel} can be reused for creating a new combiner with the

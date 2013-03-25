@@ -51,6 +51,7 @@ import com.google.common.collect.Iterables;
  *
  */
 public abstract class ACompositeHeaderUI extends GLElementContainer implements IGLLayout, IMoveHereChecker {
+	protected static final float THICK_HEIGHT = (HIST_HEIGHT + LABEL_HEIGHT * 2);
 	protected int numColumns = 0;
 
 	private final PropertyChangeListener layoutOnChange = GLPropertyChangeListeners.relayoutOnEvent(this);
@@ -62,7 +63,7 @@ public abstract class ACompositeHeaderUI extends GLElementContainer implements I
 	};
 
 	protected final IRankTableUIConfig config;
-	private boolean hasThick;
+	protected boolean hasThick;
 
 	private final int firstColumn;
 
@@ -170,7 +171,7 @@ public abstract class ACompositeHeaderUI extends GLElementContainer implements I
 
 		// align the columns normally
 		float x = getLeftPadding();
-		float y = getTopPadding() + (hasThick ? (HIST_HEIGHT + LABEL_HEIGHT * 2) : 0);
+		float y = getTopPadding() + (hasThick ? THICK_HEIGHT : 0);
 		float hn = h - y;
 		if (config.isMoveAble()) {
 			separators = children.subList(numColumns + 1 + firstColumn, children.size());

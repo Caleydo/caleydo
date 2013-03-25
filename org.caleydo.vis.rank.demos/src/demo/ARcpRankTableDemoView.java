@@ -107,6 +107,7 @@ public abstract class ARcpRankTableDemoView extends ARcpGLViewPart {
 		@Override
 		protected GLElement createRoot() {
 			RankTableUI root = new RankTableUI();
+			this.canvas.addMouseListener(root.getMouseListener());
 			root.init(table, RankTableUIConfigs.DEFAULT, RowHeightLayouts.UNIFORM, RowHeightLayouts.FISH_EYE);
 			return root;
 		}

@@ -88,6 +88,11 @@ public class RankTableUIConfigs {
 			wrappee.renderIsOrderByGlyph(g, w, h);
 		}
 
+		@Override
+		public boolean isShowColumnPool() {
+			return wrappee.isShowColumnPool();
+		}
+
 	}
 
 }
