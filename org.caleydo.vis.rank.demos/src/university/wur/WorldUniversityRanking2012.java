@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.TreeMap;
 
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLSandBox;
@@ -48,6 +49,7 @@ import com.google.common.base.Function;
 
 import demo.RankTableDemo;
 import demo.RankTableDemo.IModelBuilder;
+import demo.ReflectionData;
 
 /**
  * @author Samuel Gratzl
@@ -61,8 +63,12 @@ public class WorldUniversityRanking2012 implements IModelBuilder {
 		Map<String, WorldUniversityYear[]> data = WorldUniversityYear.readData(2012);
 		countries.keySet().retainAll(data.keySet());
 
+		Map<String, String> countryMetaData = new TreeMap<>();
 		List<UniversityRow> rows = new ArrayList<>(data.size());
 		for (Map.Entry<String, WorldUniversityYear[]> entry : data.entrySet()) {
+			String c = countries.get(entry.getKey());
+			if (c != null)
+				countryMetaData.put(c, c);
 			rows.add(new UniversityRow(entry.getKey(), entry.getValue(), countries.get(entry.getKey())));
 		}
 		table.addData(rows);
@@ -77,7 +83,9 @@ public class WorldUniversityRanking2012 implements IModelBuilder {
 		table.add(label);
 
 		CategoricalRankColumnModel<String> cat = new CategoricalRankColumnModel<String>(GLRenderers.drawText(
-				"School Name", VAlign.CENTER), StringRankColumnModel.DEFAULT, countries);
+"Country",
+				VAlign.CENTER), new ReflectionData<>(UniversityRow.class.getDeclaredField("country"), String.class),
+				countryMetaData);
 		table.add(cat);
 
 		WorldUniversityYear.addYear(table, "World University Ranking", new YearGetter(0), true).orderByMe();
