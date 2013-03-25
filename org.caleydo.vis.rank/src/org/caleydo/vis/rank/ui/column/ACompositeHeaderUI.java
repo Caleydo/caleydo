@@ -198,7 +198,11 @@ public abstract class ACompositeHeaderUI extends GLElementContainer implements I
 			x += wi + COLUMN_SPACE;
 			if (config.isMoveAble() && separators != null) {
 				IGLLayoutElement sep = separators.get(i);
-				sep.setBounds(x - COLUMN_SPACE, y, COLUMN_SPACE, hn);
+				wi = COLUMN_SPACE;
+				if (i == (columns.size() - 1)) {
+					wi = w - x + COLUMN_SPACE;
+				}
+				sep.setBounds(x - COLUMN_SPACE, y, wi, hn);
 				((SeparatorUI) sep.asElement()).setIndex(i + 1);
 			}
 		}

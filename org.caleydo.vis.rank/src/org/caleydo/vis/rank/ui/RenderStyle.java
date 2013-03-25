@@ -125,12 +125,16 @@ public class RenderStyle {
 	public static final Color COLOR_BACKGROUND_EVEN = new Color(240, 240, 240);
 	public static final Color COLOR_BAND = new Color(0.90f, 0.90f, 0.90f);
 	public static final Color COLOR_ALIGN_MARKER = Color.DARK_GRAY;
+	public static final Color ORDER_BY_COLOR = Color.BLACK;
 
 	public static final float BUTTON_WIDTH = 16;
 	public static final Color COLOR_STACKED_BORDER = new Color(0.85f, .85f, .85f);
 	public static final float COLOR_STACKED_BORDER_WIDTH = 1;
-	public static final float HEADER_ROUNDED_RADIUS = 9;
+	public static final float HEADER_ROUNDED_RADIUS_X = 9;
+	public static final float HEADER_ROUNDED_RADIUS_Y = 14;
 	public static final float SCROLLBAR_WIDTH = 5;
+	public static final float SEPARATOR_PICK_WIDTH = 11;
+	public static final int STACKED_COLUMN_PADDING = 5;
 
 
 	/**

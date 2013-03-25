@@ -19,7 +19,6 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.ui.column;
 
-import static org.caleydo.core.view.opengl.layout2.renderer.RoundedRectRenderer.renderRoundedCorner;
 import static org.caleydo.vis.rank.ui.RenderStyle.COLUMN_SPACE;
 import static org.caleydo.vis.rank.ui.RenderStyle.HIST_HEIGHT;
 import static org.caleydo.vis.rank.ui.RenderStyle.LABEL_HEIGHT;
@@ -29,7 +28,6 @@ import java.beans.PropertyChangeListener;
 import java.util.List;
 import java.util.Locale;
 
-import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.event.EventListenerManager.ListenTo;
@@ -39,7 +37,6 @@ import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDragInfo;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
-import org.caleydo.core.view.opengl.layout2.renderer.RoundedRectRenderer;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingMode;
@@ -165,7 +162,7 @@ public class StackedColumnHeaderUI extends ACompositeHeaderUI implements IThickH
 
 	@Override
 	protected float getLeftPadding() {
-		return RenderStyle.COLUMN_SPACE;
+		return +RenderStyle.STACKED_COLUMN_PADDING;
 	}
 
 	@Override
@@ -173,51 +170,70 @@ public class StackedColumnHeaderUI extends ACompositeHeaderUI implements IThickH
 		return HIST_HEIGHT + LABEL_HEIGHT * 2;
 	}
 
+	/**
+	 * @return the model, see {@link #model}
+	 */
+	public StackedRankColumnModel getModel() {
+		return model;
+	}
+
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
 		if (!model.isCompressed()) {
 			g.decZ().decZ();
 			g.color(model.getBgColor());
-			RoundedRectRenderer.render(g, 0, 0, w, h, RenderStyle.HEADER_ROUNDED_RADIUS, 3,
-					RoundedRectRenderer.FLAG_FILL | RoundedRectRenderer.FLAG_TOP);
+			g.fillRect(0, 0, w, h);
+			// RoundedRectRenderer.render(g, 0, 0, w, h, RenderStyle.HEADER_ROUNDED_RADIUS, 3,
+			// RoundedRectRenderer.FLAG_FILL | RoundedRectRenderer.FLAG_TOP);
 
 			g.lineWidth(RenderStyle.COLOR_STACKED_BORDER_WIDTH);
 			g.color(RenderStyle.COLOR_STACKED_BORDER);
 			GL2 gl = g.gl;
 			float z = g.z();
-			gl.glBegin(GL.GL_LINE_STRIP);
-			{
-				gl.glVertex3f(0, h, z);
-				renderRoundedCorner(g, 0, 0, RenderStyle.HEADER_ROUNDED_RADIUS, 3,
-						RoundedRectRenderer.FLAG_TOP_LEFT);
-				renderRoundedCorner(g, w - RenderStyle.HEADER_ROUNDED_RADIUS, 0, RenderStyle.HEADER_ROUNDED_RADIUS, 3,
-						RoundedRectRenderer.FLAG_TOP_RIGHT);
-				gl.glVertex3f(w, h, z);
-			}
-			gl.glEnd();
+			// gl.glBegin(GL.GL_LINE_STRIP);
+			// {
+			// gl.glVertex3f(0, h, z);
+			// renderRoundedCorner(g, 0, 0, RenderStyle.HEADER_ROUNDED_RADIUS, 0, RoundedRectRenderer.FLAG_TOP_LEFT);
+			// renderRoundedCorner(g, w - RenderStyle.HEADER_ROUNDED_RADIUS, 0, RenderStyle.HEADER_ROUNDED_RADIUS, 0,
+			// RoundedRectRenderer.FLAG_TOP_RIGHT);
+			// gl.glVertex3f(w, h, z);
+			// }
+			// gl.glEnd();
+			g.drawRect(0, 0, w, h);
 			g.lineWidth(1);
 			g.incZ().incZ();
 
-			// render the distributions
-			float[] weights = model.getWeights();
-			float yi = HIST_HEIGHT + LABEL_HEIGHT + 7;
-			float hi = LABEL_HEIGHT - 6;
-			float x = COLUMN_SPACE;
-			g.lineWidth(RenderStyle.COLOR_STACKED_BORDER_WIDTH);
-			g.color(RenderStyle.COLOR_STACKED_BORDER);
-			g.drawLine(0, HIST_HEIGHT + LABEL_HEIGHT + 4, w, HIST_HEIGHT + LABEL_HEIGHT + 4);
-			g.lineWidth(1);
-			for (int i = 0; i < numColumns; ++i) {
-				float wi = this.model.getChildWidth(i) + COLUMN_SPACE;
-				// g.drawLine(x, yi, x, yi + hi + 2);
-				g.drawText(String.format(Locale.ENGLISH, "%.2f%%", weights[i] * 100), x, yi, wi, hi - 4,
-						VAlign.CENTER);
-				// g.drawLine(x, yi + hi, x + wi, yi + hi);
-				x += wi;
-			}
 			// g.drawLine(x, yi, x, yi + hi + 2);
 		}
 		super.renderImpl(g, w, h);
+
+		if (!model.isCompressed()) {
+			g.incZ();
+			config.renderIsOrderByGlyph(g, w, h, model.getMyRanker().getOrderBy() == model);
+			renderWeights(g, w);
+			g.decZ();
+		}
+	}
+
+
+	protected void renderWeights(GLGraphics g, float w) {
+		// render the distributions
+		float[] weights = model.getWeights();
+		float yi = HIST_HEIGHT + LABEL_HEIGHT + 7;
+		float hi = LABEL_HEIGHT - 6;
+		float x = COLUMN_SPACE;
+		g.lineWidth(RenderStyle.COLOR_STACKED_BORDER_WIDTH);
+		g.color(RenderStyle.COLOR_STACKED_BORDER);
+		g.drawLine(0, HIST_HEIGHT + LABEL_HEIGHT + 4, w, HIST_HEIGHT + LABEL_HEIGHT + 4);
+		g.lineWidth(1);
+		for (int i = 0; i < numColumns; ++i) {
+			float wi = this.model.getChildWidth(i) + COLUMN_SPACE;
+			// g.drawLine(x, yi, x, yi + hi + 2);
+			g.drawText(String.format(Locale.ENGLISH, "%.2f%%", weights[i] * 100), x, yi, wi, hi - 4,
+					VAlign.CENTER);
+			// g.drawLine(x, yi + hi, x + wi, yi + hi);
+			x += wi;
+		}
 	}
 
 	@Override

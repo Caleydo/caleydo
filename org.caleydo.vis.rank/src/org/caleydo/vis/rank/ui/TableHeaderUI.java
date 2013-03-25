@@ -83,8 +83,10 @@ public final class TableHeaderUI extends ACompositeHeaderUI {
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
+		g.incZ(-0.5f);
 		g.color(RenderStyle.COLOR_BACKGROUND_EVEN);
 		g.fillRect(0, h - RenderStyle.HIST_HEIGHT, w, RenderStyle.HIST_HEIGHT);
+		g.incZ(0.5f);
 
 		super.renderImpl(g, w, h);
 	}

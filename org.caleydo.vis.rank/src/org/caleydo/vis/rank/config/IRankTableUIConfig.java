@@ -65,8 +65,9 @@ public interface IRankTableUIConfig {
 	 * @param g
 	 * @param w
 	 * @param h
+	 * @param orderByIt TODO
 	 */
-	void renderIsOrderByGlyph(GLGraphics g, float w, float h);
+	void renderIsOrderByGlyph(GLGraphics g, float w, float h, boolean orderByIt);
 
 	/**
 	 * @return

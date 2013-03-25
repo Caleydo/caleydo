@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.model.mixin;
 
+import org.caleydo.vis.rank.model.IRankColumnParent;
 import org.caleydo.vis.rank.model.RankTableModel;
 
 /**
@@ -32,7 +33,7 @@ public interface IRankColumnModel {
 	 */
 	RankTableModel getTable();
 
-	IRankColumnModel getParent();
+	IRankColumnParent getParent();
 
 	IRankColumnModel clone();
 

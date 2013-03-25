@@ -48,7 +48,6 @@ import org.caleydo.core.view.opengl.layout2.basic.GLButton.ISelectionCallback;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
-import org.caleydo.core.view.opengl.layout2.renderer.RoundedRectRenderer;
 import org.caleydo.core.view.opengl.picking.AdvancedPick;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -59,6 +58,8 @@ import org.caleydo.vis.rank.config.IRankTableUIConfig;
 import org.caleydo.vis.rank.internal.event.OrderByMeEvent;
 import org.caleydo.vis.rank.internal.ui.ButtonBar;
 import org.caleydo.vis.rank.model.ARankColumnModel;
+import org.caleydo.vis.rank.model.IRankColumnParent;
+import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.mixin.IAnnotatedColumnMixin;
 import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.ICompressColumnMixin;
@@ -71,6 +72,7 @@ import org.caleydo.vis.rank.model.mixin.ISearchableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.ISnapshotableColumnMixin;
 import org.caleydo.vis.rank.ui.IColumnRenderInfo;
 import org.caleydo.vis.rank.ui.RenderStyle;
+import org.caleydo.vis.rank.ui.column.StackedColumnHeaderUI.AlignmentDragInfo;
 import org.eclipse.swt.SWT;
 
 import com.google.common.collect.Iterables;
@@ -263,13 +265,27 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 		if (config.isMoveAble()) {
 			g.incZ().incZ();
 			g.pushName(dragPickingId);
-			RoundedRectRenderer.render(g, 0, 0, w, h, RenderStyle.HEADER_ROUNDED_RADIUS, 0,
-					RoundedRectRenderer.FLAG_FILL | RoundedRectRenderer.FLAG_TOP);
-			// g.fillRect(0, 0, w, h);
+			// RoundedRectRenderer.render(g, 0, 0, w, h, RenderStyle.HEADER_ROUNDED_RADIUS, 0,
+			// RoundedRectRenderer.FLAG_FILL | RoundedRectRenderer.FLAG_TOP);
+			if (isDraggingAColumn()) {
+				float wi = RenderStyle.SEPARATOR_PICK_WIDTH - RenderStyle.COLUMN_SPACE;
+				g.fillRect(wi * 0.5f, 0, w - wi, h);
+			} else
+				g.fillRect(0, 0, w, h);
 			g.popName();
 			g.decZ().decZ();
 		}
 		super.renderPickImpl(g, w, h);
+	}
+
+	private boolean isDraggingAColumn() {
+		IMouseLayer m = context.getMouseLayer();
+		if (m.hasDraggable(ARankColumnModel.class))
+			return true;
+		if (getParent() instanceof StackedColumnHeaderUI) {
+			return m.hasDraggable(AlignmentDragInfo.class);
+		}
+		return false;
 	}
 
 	protected void renderBackground(GLGraphics g, float w, float h) {
@@ -277,9 +293,8 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 		g.fillRect(0, 0, w, h);
 		// RoundedRectRenderer.render(g, 0, 0, w, h, RenderStyle.HEADER_ROUNDED_RADIUS, 0, RoundedRectRenderer.FLAG_FILL
 		// | RoundedRectRenderer.FLAG_TOP);
-		if (model instanceof IRankableColumnMixin && model.getMyRanker().getOrderBy() == model) {
-			config.renderIsOrderByGlyph(g, w, h);
-		}
+		renderOrderGlyph(g, w, h);
+
 		if (isCollapsed)
 			return;
 		if (hasTitle) {
@@ -288,8 +303,9 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 			g.move(-2, -2);
 		}
 		if (headerHovered) {
-			RoundedRectRenderer.render(g, 0, 0, w, h, RenderStyle.HEADER_ROUNDED_RADIUS, 3,
-					RoundedRectRenderer.FLAG_TOP);
+			g.drawRect(0, 0, w, h);
+			// RoundedRectRenderer.render(g, 0, 0, w, h, RenderStyle.HEADER_ROUNDED_RADIUS, 3,
+			// RoundedRectRenderer.FLAG_TOP);
 		}
 		if (this.armDropColum) {
 			g.incZ(0.6f);
@@ -299,7 +315,10 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 		}
 	}
 
-
+	protected void renderOrderGlyph(GLGraphics g, float w, float h) {
+		boolean o = model instanceof IRankableColumnMixin && model.getMyRanker().getOrderBy() == model;
+		config.renderIsOrderByGlyph(g, w, h, o);
+	}
 
 	protected ButtonBar createButtons() {
 		ButtonBar buttons = new ButtonBar();
@@ -602,20 +621,30 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 
 	protected void showContextMenu(List<AContextMenuItem> items) {
 		if (model instanceof IRankableColumnMixin) {
-			String label;
 			if (getParent() instanceof StackedColumnHeaderUI) {
-				label = "Align by this attribute";
+				items.add(0, new GenericContextMenuItem("Align by this attribute", new OrderByMeEvent().to(this)));
+				items.add(1, new GenericContextMenuItem("Order by this attribute", new OrderByMeEvent(true).to(this)));
 			} else {
-				label = "Order by this attribute";
+				items.add(0, new GenericContextMenuItem("Order by this attribute", new OrderByMeEvent().to(this)));
 			}
-			items.add(0, new GenericContextMenuItem(label, new OrderByMeEvent().to(this)));
+
 		}
 		context.showContextMenu(items);
 	}
 
 	@ListenTo(sendToMe = true)
 	private void onOrderByMe(OrderByMeEvent event) {
-		((IRankableColumnMixin) model).orderByMe();
+		if (event.isCloneAndAddNext()) {
+			assert getParent() instanceof StackedColumnHeaderUI;
+			IRankColumnParent parent = model.getParent();
+			RankTableModel table = parent.getTable();
+			int index = table.getColumns().indexOf(parent);
+			ARankColumnModel clone = model.clone();
+			table.add(index + 1, clone);
+			((IRankableColumnMixin) clone).orderByMe();
+		} else {
+			((IRankableColumnMixin) model).orderByMe();
+		}
 	}
 
 	protected void onChangeWeight(int dx, boolean takeFromRight) {

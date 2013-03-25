@@ -471,7 +471,7 @@ public class RankTableModel implements IRankColumnParent {
 	}
 
 	@Override
-	public IRankColumnModel getParent() {
+	public IRankColumnParent getParent() {
 		return null;
 	}
 

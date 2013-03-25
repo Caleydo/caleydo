@@ -19,6 +19,10 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.ui;
 
+import gleem.linalg.Vec2f;
+
+import java.awt.Color;
+
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
@@ -65,9 +69,44 @@ public class StackedSeparatorUI extends SeparatorUI {
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
 		if (this.isAlignment) {
-			renderTriangle(g, w);
+			float rx = RenderStyle.HEADER_ROUNDED_RADIUS_X;
+			float ry = RenderStyle.HEADER_ROUNDED_RADIUS_Y;
+			g.color(Color.WHITE); // getStacked().getModel().getBgColor());
+			if (index > 0) //left there
+				g.fillPolygon(new Vec2f(w - rx, 0), new Vec2f(w, 0), new Vec2f(w, ry));
+			if (index < getStacked().getModel().size()) // right there
+				g.fillPolygon(new Vec2f(0, 0), new Vec2f(rx, 0), new Vec2f(0, ry));
+			// renderTriangle(g, w);
 		}
 		super.renderImpl(g, w, h);
+	}
+
+	@Override
+	protected void renderPickImpl(GLGraphics g, float w, float h) {
+		super.renderPickImpl(g, w, h);
+		if (this.isAlignment) {
+			float rx = RenderStyle.HEADER_ROUNDED_RADIUS_X;
+			float ry = RenderStyle.HEADER_ROUNDED_RADIUS_Y;
+			g.color(Color.ORANGE); // getStacked().getModel().getBgColor());
+			g.incZ().incZ();
+			if (index > 0) // left there
+				g.fillPolygon(new Vec2f(w - rx, 0), new Vec2f(w, 0), new Vec2f(w, ry));
+			if (index < getStacked().getModel().size()) // right there
+				g.fillPolygon(new Vec2f(0, 0), new Vec2f(rx, 0), new Vec2f(0, ry));
+			g.decZ().decZ();
+		}
+	}
+
+	@Override
+	protected void renderHint(GLGraphics g, float w, float h) {
+		g.color(Color.GRAY);
+		float tw = 5;
+		g.fillRect(-(tw - w) * 0.5f, 0, tw, h);
+	}
+
+	@Override
+	protected boolean isDraggingAColumn() {
+		return super.isDraggingAColumn() || context.getMouseLayer().hasDraggable(AlignmentDragInfo.class);
 	}
 
 	@Override

@@ -26,6 +26,23 @@ import org.caleydo.core.event.ADirectedEvent;
  *
  */
 public class OrderByMeEvent extends ADirectedEvent {
+	private boolean cloneAndAddNext;
+
+	public OrderByMeEvent() {
+		this(false);
+	}
+
+	public OrderByMeEvent(boolean cloneAndAddNext) {
+		this.cloneAndAddNext = cloneAndAddNext;
+	}
+
+	/**
+	 * @return the cloneAndAddNext, see {@link #cloneAndAddNext}
+	 */
+	public boolean isCloneAndAddNext() {
+		return cloneAndAddNext;
+	}
+
 	@Override
 	public boolean checkIntegrity() {
 		return true;

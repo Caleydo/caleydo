@@ -91,7 +91,7 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 
 	public StackedRankColumnModel(Color color, Color bgColor) {
 		super(color, bgColor, "SUM");
-		width = RenderStyle.COLUMN_SPACE;
+		width = +RenderStyle.STACKED_COLUMN_PADDING * 2;
 	}
 
 	public StackedRankColumnModel(StackedRankColumnModel copy) {
@@ -100,7 +100,7 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 		this.isCompressed = copy.isCompressed;
 		this.filterInferredPercentage = copy.filterInferredPercentage;
 		setHeaderRenderer(this);
-		width = RenderStyle.COLUMN_SPACE;
+		width = RenderStyle.STACKED_COLUMN_PADDING * 2;
 		cloneInitChildren();
 	}
 
@@ -121,7 +121,7 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 		model.addPropertyChangeListener(IMappedColumnMixin.PROP_MAPPING, listener);
 		// addDirectWeight(model.getWeight());
 		cacheMulti.clear();
-		float oldWidth = size() == 1 ? 0 : width;
+		float oldWidth = size() == 1 ? getSpaces() : width;
 		super.setWidth(oldWidth + model.getWidth() + RenderStyle.COLUMN_SPACE);
 		model.setParentData(model.getWidth());
 	}
@@ -158,7 +158,7 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 			this.propertySupport.firePropertyChange(PROP_WIDTH, compressedWidth, this.compressedWidth = width);
 			return this;
 		}
-		float shift = (this.size() + 1) * RenderStyle.COLUMN_SPACE;
+		float shift = getSpaces();
 		float factor = (width - shift) / (this.width - shift); // new / old
 		for (ARankColumnModel col : this) {
 			float wi = ((float) col.getParentData()) * factor;
@@ -265,7 +265,7 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 	 */
 	public float[] getWeights() {
 		float[] r = new float[this.size()];
-		float base = width - RenderStyle.COLUMN_SPACE * (size() + 1);
+		float base = width - getSpaces();
 		int i = 0;
 		for (ARankColumnModel col : this) {
 			r[i++] = (float) col.getParentData() / base;
@@ -273,12 +273,19 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 		return r;
 	}
 
+	/**
+	 * @return
+	 */
+	private float getSpaces() {
+		return RenderStyle.STACKED_COLUMN_PADDING * 2 + RenderStyle.COLUMN_SPACE * (size() - 1);
+	}
+
 	public void setWeights(float[] weights) {
 		assert this.size() == weights.length;
 		float sum = 0;
 		for (float v : weights)
 			sum += v;
-		float factor = (width - RenderStyle.COLUMN_SPACE * (size() + 1)) / sum;
+		float factor = (width - getSpaces()) / sum;
 		int i = 0;
 		for (ARankColumnModel col : this) {
 			float w = weights[i++] * factor;

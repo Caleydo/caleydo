@@ -84,8 +84,8 @@ public class RankTableUIConfigs {
 		}
 
 		@Override
-		public void renderIsOrderByGlyph(GLGraphics g, float w, float h) {
-			wrappee.renderIsOrderByGlyph(g, w, h);
+		public void renderIsOrderByGlyph(GLGraphics g, float w, float h, boolean orderByIt) {
+			wrappee.renderIsOrderByGlyph(g, w, h, orderByIt);
 		}
 
 		@Override

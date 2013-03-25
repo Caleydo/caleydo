@@ -147,6 +147,11 @@ public class StackedColumnUI extends ACompositeTableColumnUI<StackedRankColumnMo
 	}
 
 	@Override
+	protected float getLeftPadding() {
+		return RenderStyle.STACKED_COLUMN_PADDING;
+	}
+
+	@Override
 	protected float getChildWidth(int i, ARankColumnModel model) {
 		return this.model.getChildWidth(i);
 	}

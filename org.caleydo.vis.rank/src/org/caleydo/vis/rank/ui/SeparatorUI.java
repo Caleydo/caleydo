@@ -19,7 +19,7 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.ui;
 
-import gleem.linalg.Vec2f;
+import java.awt.Color;
 
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.layout2.GLElement;
@@ -60,31 +60,45 @@ public class SeparatorUI extends PickableGLElement {
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
-		g.color(1, 1, 1, armed ? 1 : 0.5f);
-		float v = RenderStyle.HEADER_ROUNDED_RADIUS;
-		g.fillPolygon(new Vec2f(-v, 0), new Vec2f(+v + w, 0), new Vec2f(w, v), new Vec2f(0, v));
-		// if (armed) {
-		// renderHint(g, w, h);
-		// }
+		if (armed) {
+			renderHint(g, w, h);
+		}
 	}
 
 	protected void renderHint(GLGraphics g, float w, float h) {
-		renderTriangle(g, w);
-		g.fillRect(0, 0, w, h);
-	}
-
-	protected void renderTriangle(GLGraphics g, float w) {
-		g.color(RenderStyle.COLOR_ALIGN_MARKER);
-		g.drawPath(true, new Vec2f(0, 3), new Vec2f(-5, -10), new Vec2f(w + 5, -10), new Vec2f(w, 3));
-		g.fillPolygon(new Vec2f(0, 3), new Vec2f(-5, -10), new Vec2f(w + 5, -10),
-				new Vec2f(w, 3));
+		g.color(Color.BLACK);
+		if (w > RenderStyle.SEPARATOR_PICK_WIDTH * 0.5f) {
+			g.fillRect(0, 0, 5, h);
+		} else {
+			float tw = 5;
+			g.fillRect(-2, 0, tw, h);
+		}
+		// renderTriangle(g, w);
+		// g.fillRect(0, 0, w, h);
 	}
 
 	@Override
 	protected void renderPickImpl(GLGraphics g, float w, float h) {
-		super.renderPickImpl(g, w, h);
-		if (getVisibility() == EVisibility.PICKABLE)
-			renderTriangle(g, w);
+		if (getVisibility() != EVisibility.PICKABLE)
+			return;
+		if (!isDraggingAColumn()) {
+			return;
+		}
+		if (w > RenderStyle.SEPARATOR_PICK_WIDTH * 0.5f) {
+			g.color(Color.ORANGE);
+			g.fillRect(0, 0, w, h);
+			g.color(Color.BLACK);
+		} else {
+			float tw = RenderStyle.SEPARATOR_PICK_WIDTH;
+			g.color(Color.ORANGE);
+			g.fillRect(-(tw - w) * 0.5f, 0, tw, h);
+			g.color(Color.BLACK);
+		}
+	}
+
+	protected boolean isDraggingAColumn() {
+		IMouseLayer m = context.getMouseLayer();
+		return m.hasDraggable(ARankColumnModel.class);
 	}
 
 	@Override

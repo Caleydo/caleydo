@@ -19,6 +19,8 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.config;
 
+import gleem.linalg.Vec2f;
+
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.basic.IScrollBar;
 import org.caleydo.core.view.opengl.layout2.basic.ScrollBar;
@@ -62,8 +64,19 @@ public class RankTableUIConfigBase implements IRankTableUIConfig {
 	}
 
 	@Override
-	public void renderIsOrderByGlyph(GLGraphics g, float w, float h) {
-		g.fillImage(RenderStyle.ICON_STAR, w - 16, -8, 16, 16);
+	public void renderIsOrderByGlyph(GLGraphics g, float w, float h, boolean orderByIt) {
+		float rx = RenderStyle.HEADER_ROUNDED_RADIUS_X;
+		float ry = RenderStyle.HEADER_ROUNDED_RADIUS_Y;
+		if (orderByIt) {
+			g.color(RenderStyle.ORDER_BY_COLOR);
+			g.drawLine(rx, 0, 0, ry);
+			g.drawLine(w - rx, 0, w - 0.5f, ry);
+		} else {
+			g.color(1, 1, 1, 0.25f);
+		}
+		g.fillPolygon(new Vec2f(0, 0), new Vec2f(rx, 0), new Vec2f(0, ry));
+		g.fillPolygon(new Vec2f(w - rx, 0), new Vec2f(w, 0), new Vec2f(w, ry));
+		// g.fillImage(RenderStyle.ICON_STAR, w - 16, -8, 16, 16);
 	}
 
 	@Override

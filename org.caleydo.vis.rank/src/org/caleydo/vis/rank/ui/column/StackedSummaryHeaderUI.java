@@ -28,6 +28,7 @@ import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
 import org.caleydo.core.view.contextmenu.item.SeparatorMenuItem;
+import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton.EButtonMode;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton.ISelectionCallback;
@@ -52,6 +53,11 @@ public class StackedSummaryHeaderUI extends AColumnHeaderUI {
 	protected void takeDown() {
 		super.takeDown();
 		model.removePropertyChangeListener(StackedRankColumnModel.PROP_ALIGNMENT, onAlignmentChange);
+	}
+
+	@Override
+	protected void renderOrderGlyph(GLGraphics g, float w, float h) {
+		// nothing here
 	}
 
 	@Override

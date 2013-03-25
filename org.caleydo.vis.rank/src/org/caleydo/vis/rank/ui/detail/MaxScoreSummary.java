@@ -36,7 +36,6 @@ import org.caleydo.core.view.opengl.layout2.animation.MoveTransitions.IMoveTrans
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
-import org.caleydo.core.view.opengl.layout2.renderer.RoundedRectRenderer;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.vis.rank.internal.event.AnnotationEditEvent;
@@ -45,7 +44,6 @@ import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.MaxCompositeRankColumnModel;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.SimpleHistogram;
-import org.caleydo.vis.rank.ui.RenderStyle;
 import org.caleydo.vis.rank.ui.RenderUtils;
 
 /**
@@ -187,8 +185,9 @@ public class MaxScoreSummary extends GLElementContainer implements IGLLayout {
 		@Override
 		protected void renderImpl(GLGraphics g, float w, float h) {
 			g.color(model.getBgColor());
-			RoundedRectRenderer.render(g, 0, 0, w, h, RenderStyle.HEADER_ROUNDED_RADIUS, 3,
-					RoundedRectRenderer.FLAG_FILL | RoundedRectRenderer.FLAG_TOP);
+			g.fillRect(0, 0, w, h);
+			// RoundedRectRenderer.render(g, 0, 0, w, h, RenderStyle.HEADER_ROUNDED_RADIUS, 3,
+			// RoundedRectRenderer.FLAG_FILL | RoundedRectRenderer.FLAG_TOP);
 			super.renderImpl(g, w, h);
 		}
 	}
