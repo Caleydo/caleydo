@@ -132,6 +132,11 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 	}
 
 	@Override
+	public boolean isComplexMapping() {
+		return mapping.isComplexMapping();
+	}
+
+	@Override
 	public void onRankingInvalid() {
 		cacheHist.invalidate();
 		super.onRankingInvalid();

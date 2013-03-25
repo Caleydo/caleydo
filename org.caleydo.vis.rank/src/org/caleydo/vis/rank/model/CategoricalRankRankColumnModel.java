@@ -115,6 +115,11 @@ public class CategoricalRankRankColumnModel<CATEGORY_TYPE> extends ABasicFiltera
 	}
 
 	@Override
+	public boolean isComplexMapping() {
+		return mapping.isComplexMapping();
+	}
+
+	@Override
 	public void onRankingInvalid() {
 		cacheHist.invalidate();
 		cacheValueHist = null;

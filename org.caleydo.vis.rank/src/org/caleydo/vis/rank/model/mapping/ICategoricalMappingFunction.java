@@ -30,4 +30,9 @@ public interface ICategoricalMappingFunction<T> extends IFloatFunction<T> {
 	ICategoricalMappingFunction<T> clone();
 
 	void reset();
+
+	/**
+	 * @return
+	 */
+	boolean isComplexMapping();
 }

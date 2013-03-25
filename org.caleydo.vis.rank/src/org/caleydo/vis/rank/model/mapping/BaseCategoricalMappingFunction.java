@@ -51,6 +51,11 @@ public class BaseCategoricalMappingFunction<T> extends AFloatFunction<T> impleme
 	}
 
 	@Override
+	public boolean isComplexMapping() {
+		return false;
+	}
+
+	@Override
 	public float applyPrimitive(T in) {
 		if (in == null)
 			return missingValue;

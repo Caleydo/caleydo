@@ -62,10 +62,19 @@ public class PiecewiseMapping extends ScriptedMappingFunction implements Iterabl
 	@Override
 	public boolean isComplexMapping() {
 		if (isDefinedMapping) {
-			if (size() > 2)
+			switch (size()) {
+			case 0:
 				return false;
-			// FIXME
-			return true;
+			case 1: // TODO
+				return false;
+			case 2:
+				float k1 = mapping.firstKey();
+				float k2 = mapping.lastKey();
+				// linear combination or inverse
+				return mapping.get(k1) > mapping.get(k2);
+			default:
+				return true;
+			}
 		} else
 			return super.isComplexMapping();
 	}

@@ -71,7 +71,7 @@ public class StackedSeparatorUI extends SeparatorUI {
 		if (this.isAlignment) {
 			float rx = RenderStyle.HEADER_ROUNDED_RADIUS_X;
 			float ry = RenderStyle.HEADER_ROUNDED_RADIUS_Y;
-			g.color(Color.WHITE); // getStacked().getModel().getBgColor());
+			g.color(Color.BLACK); // getStacked().getModel().getBgColor());
 			if (index > 0) //left there
 				g.fillPolygon(new Vec2f(w - rx, 0), new Vec2f(w, 0), new Vec2f(w, ry));
 			if (index < getStacked().getModel().size()) // right there

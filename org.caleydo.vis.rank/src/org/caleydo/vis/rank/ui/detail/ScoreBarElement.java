@@ -21,6 +21,7 @@ package org.caleydo.vis.rank.ui.detail;
 
 import java.awt.Color;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.util.format.Formatter;
@@ -32,6 +33,9 @@ import org.caleydo.vis.rank.model.mixin.IFloatRankableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IMappedColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IRankColumnModel;
 import org.caleydo.vis.rank.ui.IColumnRenderInfo;
+import org.caleydo.vis.rank.ui.RenderStyle;
+
+import com.jogamp.opengl.util.texture.Texture;
 
 /**
  * a simple {@link IGLRenderer} for rendering a score bar
@@ -86,7 +90,11 @@ public class ScoreBarElement extends ValueElement {
 			}
 		} else {
 			// score bar
-			g.color(color).fillRect(0, 1, w * v, h - 2);
+			g.color(color);
+			if (useHatching(model)) {
+				renderHatchedValue(g, 0, 1, w * v, h - 2);
+			} else
+				g.fillRect(0, 1, w * v, h - 2);
 			if (inferred) {
 				g.gl.glLineStipple(1, (short) 0xAAAA);
 				g.gl.glEnable(GL2.GL_LINE_STIPPLE);
@@ -98,6 +106,38 @@ public class ScoreBarElement extends ValueElement {
 				renderText(g, w, h, r, v, inferred);
 			}
 		}
+	}
+
+	private void renderHatchedValue(GLGraphics g, float x, float y, float w, float h) {
+		Texture tex;
+		GL2 gl = g.gl;
+		float z = g.z();
+
+		tex = g.getTexture(RenderStyle.ICON_COMPLEX_MAPPING);
+		tex.setTexParameteri(gl, GL.GL_TEXTURE_WRAP_S, GL.GL_REPEAT);
+
+		tex.enable(gl);
+		tex.bind(gl);
+
+		float widthPerRepeat = 16;
+		float repeated = w / widthPerRepeat;
+
+		gl.glBegin(GL2.GL_QUADS);
+		gl.glTexCoord2f(0, 0);
+		gl.glVertex3f(0, 0, z);
+		gl.glTexCoord2f(repeated, 0);
+		gl.glVertex3f(w, 0, z);
+		gl.glTexCoord2f(repeated, 1);
+		gl.glVertex3f(w, h, z);
+		gl.glTexCoord2f(0, 1);
+		gl.glVertex3f(0, h, z);
+		gl.glEnd();
+
+		tex.disable(gl);
+	}
+
+	private boolean useHatching(IFloatRankableColumnMixin model) {
+		return (model instanceof IMappedColumnMixin) && ((IMappedColumnMixin) model).isComplexMapping();
 	}
 
 	protected void renderText(GLGraphics g, float w, float h, final IRow r, float v, boolean inferred) {

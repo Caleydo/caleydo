@@ -47,4 +47,10 @@ public interface IMappedColumnMixin extends IRankColumnModel {
 	 * @return
 	 */
 	String getRawValue(IRow row);
+
+	/**
+	 * @return whether an different style should be used for renderign the values to indicate that the mapping is
+	 *         complex
+	 */
+	boolean isComplexMapping();
 }
