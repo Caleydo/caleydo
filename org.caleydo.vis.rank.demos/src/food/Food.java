@@ -61,16 +61,18 @@ import demo.ReflectionData;
  */
 public class Food implements IModelBuilder {
 	private static final List<String> headers = Arrays.asList("Water (g)", "Food energy (kcal)", "Protein (g)",
-			"Total lipid (fat)(g)", "Ash (g)", "Carbohydrate, by difference (g)", "Total dietary fiber (g)",
-			"Total sugars (g)", "Calcium (mg)", "Iron (mg)", "Magnesium (mg)", "Phosphorus (mg)", "Potassium (mg)",
-			"Sodium (mg)", "Zinc (mg)", "Copper (mg)", "Manganese (mg)", "Selenium (µg)", "Vitamin C (mg)",
+			"lipid (fat)(g)", "Ash (g)", "Carbohydrate (g)", "dietary fiber (g)", "sugars (g)",
+			"Calcium (mg)", "Iron (mg)", "Magnesium (mg)", "Phosphorus (mg)", "Potassium (mg)", "Sodium (mg)",
+ "Zinc (mg)",
+			"Copper (mg)", "Manganese (mg)", "Selenium (µg)", "Vitamin C (mg)",
 			"Thiamin (mg)", "Riboflavin (mg)", "Niacin (mg)", "Pantothenic acid (mg)", "Vitamin B6 (mg)",
-			"Folate, total (µg)", "Folic acid (µg)", "Food folate (µg)", "Folate (µg dietary folate equivalents)",
-			"Choline, total (mg)", "Vitamin B12 (µg)", "Vitamin A (IU)", "Vitamin A (µg retinol activity equivalents)",
-			"Retinol (µg)", "Alpha-carotene (µg)", "Beta-carotene (µg)", "Beta-cryptoxanthin (µg)", "Lycopene (µg)",
-			"Lutein+zeazanthin (µg)", "Vitamin E (alpha-tocopherol) (mg)", "Vitamin D (µg)", "Vitamin D (IU)",
-			"Vitamin K (phylloquinone) (µg)",
-			"Saturated fatty acid (g)", "Monounsaturated fatty acids (g)", "Polyunsaturated fatty acids (g)",
+ "Folate, total (µg)", "Folic acid (µg)",
+			"Food folate (µg)", "Folate (µg dietary folate equivalents)", "Choline, total (mg)", "Vitamin B12 (µg)",
+			"Vitamin A (IU)", "Vitamin A (µg retinol activity equivalents)", "Retinol (µg)", "Alpha-carotene (µg)",
+			"Beta-carotene (µg)", "Beta-cryptoxanthin (µg)", "Lycopene (µg)", "Lutein+zeazanthin (µg)",
+			"Vitamin E (alpha-tocopherol) (mg)", "Vitamin D (µg)", "Vitamin D (IU)", "Vitamin K (phylloquinone) (µg)",
+			"Saturated fat (g)", "Monounsaturated fatty acids (g)",
+			"Polyunsaturated fatty acids (g)",
 			"Cholesterol (mg)");
 
 	private static final List<Pair<Color, Color>> colors = Arrays.asList(colors("#FC9272", "#FEE0D2"),
@@ -78,12 +80,12 @@ public class Food implements IModelBuilder {
 			colors("#FDBB84", "#FEE8C8"), colors("#DFC27D", "#F6E8C3"));
 
 	private static final List<String> selection = Arrays.asList("Food energy (kcal)",/**/
-			"Total lipid (fat)(g)",/**/
-			"Saturated fatty acid (g)",/**/
+			"lipid (fat)(g)",/**/
+			"Saturated fat (g)",/**/
 			"Cholesterol (mg)",/**/
 			"Sodium (mg)",/**/
-			"Carbohydrate, by difference (g)",/**/
-			"Total dietary fiber (g)", "Total sugars (g)",/**/
+			"Carbohydrate (g)",/**/
+			"dietary fiber (g)", "sugars (g)",/**/
 			"Protein (g)", /**/
 			"Vitamin A (IU)", "Vitamin C (mg)", "Calcium (mg)", "Iron (mg)");
 
