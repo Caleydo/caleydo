@@ -126,6 +126,9 @@ public class GLPathwayGridLayout3 implements IGLLayout {
 					- getTotalColumnWidth(getColumnsWithMaxLevel(EEmbeddingID.PATHWAY_LEVEL2));
 			optimizeLevel1Space(level1FreeSpaceHorizontal, freeSpaceVertical);
 
+			List<PathwayColumn> level1Columns = getColumnsWithLevel(EEmbeddingID.PATHWAY_LEVEL1);
+			squeezeColumns(level1Columns, freeSpaceVertical);
+
 			List<PathwayMultiFormInfo> level1Infos = getInfosWithLevel(EEmbeddingID.PATHWAY_LEVEL1);
 			Set<PathwayMultiFormInfo> undemotableInfos = new HashSet<>();
 
