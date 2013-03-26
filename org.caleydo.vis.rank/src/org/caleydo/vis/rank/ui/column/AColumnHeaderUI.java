@@ -263,7 +263,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 
 	@Override
 	protected void renderPickImpl(GLGraphics g, float w, float h) {
-		if (config.isMoveAble()) {
+		if (config.isMoveAble() || config.isInteractive()) {
 			g.incZ().incZ();
 			g.pushName(dragPickingId);
 			// RoundedRectRenderer.render(g, 0, 0, w, h, RenderStyle.HEADER_ROUNDED_RADIUS, 0,
@@ -473,23 +473,23 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 				// HACK for testing different button positions
 				boolean showButtonBar = isHovered && !isWeightDragging;
 				float yb = 0;
-				// switch ((inc++ / 2) % 5) {
-				// case 0: // at the bottom
-				// yb = isHovered ? (h - 2 - RenderStyle.BUTTON_WIDTH) : h;
-				// break;
-				// case 1: // at the top
-				// yb = 0;
-				// break;
-				// case 2: // under the label
-				// yb = LABEL_HEIGHT;
-				// break;
-				// case 3: // above the label
-				yb = showButtonBar ? -RenderStyle.BUTTON_WIDTH : 0;
-				// break;
-				// case 4: // below the histogram
-				// yb = isHovered ? h : h;
-				// break;
-				// }
+				switch (config.getButtonBarPosition()) {
+				case AT_THE_BOTTOM:
+					yb = isHovered ? (h - 2 - RenderStyle.BUTTON_WIDTH) : h;
+					break;
+				case OVER_LABEL: // at the top
+					yb = 0;
+					break;
+				case UNDER_LABEL: // under the label
+					yb = LABEL_HEIGHT;
+					break;
+				case ABOVE_LABEL: // above the label
+					yb = showButtonBar ? -RenderStyle.BUTTON_WIDTH : 0;
+					break;
+				case BELOW_HIST: // below the histogram
+					yb = isHovered ? h : h;
+					break;
+				}
 
 				float hb = showButtonBar ? RenderStyle.BUTTON_WIDTH : 0;
 				if ((w - 4) < minWidth) {

@@ -84,4 +84,9 @@ public class RankTableUIConfigBase implements IRankTableUIConfig {
 		return true;
 	}
 
+	@Override
+	public EButtonBarPositionMode getButtonBarPosition() {
+		return EButtonBarPositionMode.ABOVE_LABEL;
+	}
+
 }

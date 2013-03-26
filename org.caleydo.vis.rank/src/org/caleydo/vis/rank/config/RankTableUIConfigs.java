@@ -93,6 +93,10 @@ public class RankTableUIConfigs {
 			return wrappee.isShowColumnPool();
 		}
 
+		@Override
+		public EButtonBarPositionMode getButtonBarPosition() {
+			return wrappee.getButtonBarPosition();
+		}
 	}
 
 }

@@ -73,4 +73,10 @@ public interface IRankTableUIConfig {
 	 * @return
 	 */
 	boolean isShowColumnPool();
+
+	public enum EButtonBarPositionMode {
+		AT_THE_BOTTOM, OVER_LABEL, UNDER_LABEL, ABOVE_LABEL, BELOW_HIST
+	}
+
+	public EButtonBarPositionMode getButtonBarPosition();
 }
