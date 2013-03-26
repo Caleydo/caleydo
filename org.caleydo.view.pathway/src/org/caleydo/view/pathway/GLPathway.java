@@ -194,7 +194,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 	 * All paths which are available between two user selected nodes.
 	 */
 	private List<GraphPath<PathwayVertexRep, DefaultEdge>> allPaths = null;
-	private List<Pair< List<GraphPath<PathwayVertexRep, DefaultEdge>>, Integer>> allPathsList 
+	private List<Pair< List<GraphPath<PathwayVertexRep, DefaultEdge>>, Integer>> allPathsList
 			    = new ArrayList<Pair< List<GraphPath<PathwayVertexRep, DefaultEdge>>, Integer>>();
 	private boolean isBubbleTextureDirty;
 	private boolean isPathStartSelected = false;
@@ -294,7 +294,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		List<GraphPath<PathwayVertexRep, DefaultEdge>> paths=this.allPathsList.get(this.allPathsList.size()-1).getFirst();
 		if (paths.size() > 1){
 			System.out.println("allPaths.size() > 1");
-			
+
 			if(inc)
 				selectedPathID++;
 			else
@@ -756,10 +756,10 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 			gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_KEEP);
 			textureOffset -= 2f * PathwayRenderStyle.Z_OFFSET;
 			gl.glTranslatef(0.0f, 0.0f, textureOffset);
-			
+
 			overlayContextBubbleSets(gl);
 			overlayBubbleSets(gl);
-			
+
 			gl.glEnable(GL.GL_DEPTH_TEST);
 			gl.glDisable(GL.GL_STENCIL_TEST);
 		}
@@ -775,21 +775,21 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		if(contextPaths.size()<1)return;
 		if(areContextPathsDirty){
 			this.contextPathBubbleSet.clear();
-			this.contextPathBubbleSet.getBubbleSetGLRenderer().setSize(pathway.getWidth(), pathway.getHeight());						
+			this.contextPathBubbleSet.getBubbleSetGLRenderer().setSize(pathway.getWidth(), pathway.getHeight());
 			this.contextPathBubbleSet.setPathwayGraph(pathway);
-			
+
 			this.contextPathBubbleSet.addContextPathSegements(contextPaths);
-			
+
 			this.contextPathBubbleSet.getBubbleSetGLRenderer().update(gl, null, selectedPathID);
 			areContextPathsDirty = false;
 		}
-		
+
 		this.contextPathBubbleSet.getBubbleSetGLRenderer().render(gl,
 				pixelGLConverter.getGLWidthForPixelWidth(pathway.getWidth()),
 				pixelGLConverter.getGLHeightForPixelHeight(pathway.getHeight()),
 				1.0f);
 	}
-	
+
 	private void overlayBubbleSets(GL2 gl) {
 //		if (allPaths == null)
 //			return;
@@ -804,8 +804,8 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 			if(selectedPathID>=0)
 				allPathsList.get(allPathsList.size()-1).setSecond(this.selectedPathID);
 			else
-				allPathsList.get(allPathsList.size()-1).setSecond(0);		
-				
+				allPathsList.get(allPathsList.size()-1).setSecond(0);
+
 			for(Pair< List<GraphPath<PathwayVertexRep, DefaultEdge>>, Integer> pathsPair: allPathsList){
 				//this.bubbleSet.addAllPaths(paths);
 				List<GraphPath<PathwayVertexRep, DefaultEdge>> paths=pathsPair.getFirst();
@@ -1190,7 +1190,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 					pathway, startVertex, endVertex, edgeListNew, 0);
 			//
 			if (allPaths == null){
-				allPaths = new ArrayList<GraphPath<PathwayVertexRep, DefaultEdge>>();				
+				allPaths = new ArrayList<GraphPath<PathwayVertexRep, DefaultEdge>>();
 			}
 			else
 				allPaths.clear();
