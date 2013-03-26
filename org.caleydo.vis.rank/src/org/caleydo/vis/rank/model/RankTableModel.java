@@ -379,8 +379,10 @@ public class RankTableModel implements IRankColumnParent {
 	public void explode(ACompositeRankColumnModel model) {
 		int index = this.columns.indexOf(model);
 		List<ARankColumnModel> children = model.getChildren();
-		for (ARankColumnModel child : children)
+		for (ARankColumnModel child : children) {
 			child.init(this);
+			child.setWidth(100); // reset width
+		}
 		this.columns.set(index, children.get(0));
 		propertySupport.fireIndexedPropertyChange(PROP_COLUMNS, index, model, children.get(0));
 		if (children.size() > 1) {

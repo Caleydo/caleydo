@@ -113,6 +113,7 @@ public class ColumnRanker implements Iterable<IRow> {
 		if (from != null && from == orderBy) {
 			dirtyOrder = true;
 			orderByFixed = false;
+			orderBy = null;
 			fireInvalid();
 			return;
 		}

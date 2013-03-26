@@ -68,7 +68,7 @@ public class Top100Under50 implements IModelBuilder {
 
 		table.add(new RankRankColumnModel());
 		table.add(new StringRankColumnModel(GLRenderers.drawText("School Name", VAlign.CENTER),
-				StringRankColumnModel.DEFAULT));
+				StringRankColumnModel.DEFAULT).setWidth(200));
 
 		table.add(new CategoricalRankColumnModel<String>(GLRenderers.drawText("Country", VAlign.CENTER),
 				new ReflectionData<String>(field("country"), String.class), metaData));
@@ -80,7 +80,7 @@ public class Top100Under50 implements IModelBuilder {
 		table.add(new StringRankColumnModel(GLRenderers.drawText("Location", VAlign.CENTER),
 				new ReflectionData<String>(field("location"), String.class)));
 
-		Top100Under50Year.addYear(table, "2012", new YearGetter(0), FloatInferrers.MEDIAN).orderByMe();
+		Top100Under50Year.addYear(table, "2012", new YearGetter(0), FloatInferrers.MEDIAN);
 
 		// table.add(new OrderColumn());
 		// table.add(new RankRankColumnModel());

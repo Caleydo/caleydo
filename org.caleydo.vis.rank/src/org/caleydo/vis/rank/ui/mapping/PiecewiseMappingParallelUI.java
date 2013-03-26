@@ -392,9 +392,9 @@ public class PiecewiseMappingParallelUI extends MappingParallelUI<PiecewiseMappi
 		Vec2f r = toRelative(pickedPoint);
 		float v = isHorizontal ? r.y() : r.x();
 		float max = isHorizontal ? getSize().y() : getSize().x();
-		if (v < max * 0.25f)
+		if (v < max * 0.15f)
 			return isHorizontal ? EDragMode.TO : EDragMode.FROM;
-		if (v > max * 0.75f)
+		if (v > max * 0.85f)
 			return !isHorizontal ? EDragMode.TO : EDragMode.FROM;
 		return EDragMode.BOTH;
 	}
