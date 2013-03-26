@@ -74,7 +74,7 @@ public class RankTableModel implements IRankColumnParent {
 	private final PropertyChangeListener refilter = new PropertyChangeListener() {
 		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
-			defaultFilter.dirtyFilter();
+			findCorrespondingRanker((IRankColumnModel) evt.getSource()).dirtyFilter();
 		}
 	};
 
@@ -141,7 +141,7 @@ public class RankTableModel implements IRankColumnParent {
 		this.data.clear();
 		this.selectedRow = null;
 		this.defaultFilter.reset();
-		this.defaultRanker.reset();
+		// this.defaultRanker.reset();
 	}
 
 	/**
@@ -157,7 +157,10 @@ public class RankTableModel implements IRankColumnParent {
 			r.setIndex(s++);
 		this.data.addAll(rows);
 		propertySupport.fireIndexedPropertyChange(PROP_DATA, s, null, rows);
-		defaultFilter.dirtyFilter();
+		for (ColumnRanker order : findAllColumnRankers()) {
+			order.dirtyFilter();
+		}
+		//defaultFilter.dirtyFilter();
 	}
 
 	/**
@@ -218,7 +221,8 @@ public class RankTableModel implements IRankColumnParent {
 		}
 		propertySupport.firePropertyChange(PROP_DATA_MASK, dataMask, this.dataMask = (BitSet) dataMask.clone());
 		if (change) {
-			defaultFilter.dirtyFilter();
+			for (ColumnRanker r : findAllColumnRankers())
+				r.dirtyFilter();
 		}
 	}
 
@@ -390,8 +394,9 @@ public class RankTableModel implements IRankColumnParent {
 			propertySupport.fireIndexedPropertyChange(PROP_COLUMNS, index + 1, null,
 					children.subList(1, children.size()));
 		}
-		if (!defaultFilter.checkFilterChanges(model, children.get(0)))
-			findCorrespondingRanker(index).checkOrderChanges(model, children.get(0));
+		//if (!defaultFilter.checkFilterChanges(model, children.get(0)))
+		//findCorrespondingRanker(index).checkOrderChanges(model, children.get(0));
+		findCorrespondingRanker(index).checkOrderChanges(model, children.get(0));
 	}
 
 	/**
@@ -450,7 +455,8 @@ public class RankTableModel implements IRankColumnParent {
 	}
 
 	public List<IRow> getFilteredData() {
-		BitSet b = defaultFilter.getFilter();
+		return getMaskedData();
+		/*BitSet b = defaultFilter.getFilter();
 		final int[] lookup = new int[b.cardinality()];
 		int j = 0;
 		for (int i = b.nextSetBit(0); i >= 0; i = b.nextSetBit(i + 1)) {
@@ -467,6 +473,7 @@ public class RankTableModel implements IRankColumnParent {
 				return lookup == null ? data.size() : lookup.length;
 			}
 		};
+*/
 	}
 
 	public int getDataSize() {
