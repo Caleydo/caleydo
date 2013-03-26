@@ -200,10 +200,11 @@ public abstract class ARankColumnModel implements IDragInfo, IRankColumnModel {
 			if (isWithComposite) {
 				ACompositeRankColumnModel w = (ACompositeRankColumnModel) with;
 				if (!clone && table.getConfig().canBeReusedForCombining(w, combineMode)) {
+					w.getParent().remove(w);
 					model.getParent().replace(model, w);
 					w.add(0, model);
-				}
-				createNewCombined(model, with, clone, combineMode, table);
+				} else
+					createNewCombined(model, with, clone, combineMode, table);
 			} else {
 				createNewCombined(model, with, clone, combineMode, table);
 			}
@@ -225,8 +226,6 @@ public abstract class ARankColumnModel implements IDragInfo, IRankColumnModel {
 		boolean isWithComposite = with instanceof ACompositeRankColumnModel;
 
 		if (isWithComposite && model.isFlatAdding((ACompositeRankColumnModel) with)) {
-			if (with.getParent() != null)
-				with.getParent().remove(with);
 			ACompositeRankColumnModel w = (ACompositeRankColumnModel) with;
 			Collection<ARankColumnModel> tmp = new ArrayList<>(w.getChildren());
 			if (clone) {
@@ -238,6 +237,8 @@ public abstract class ARankColumnModel implements IDragInfo, IRankColumnModel {
 					model.add(wi);
 				}
 			}
+			if (with.getParent() != null)
+				with.getParent().remove(with);
 		} else if (clone)
 			model.add(with.clone());
 		else {
