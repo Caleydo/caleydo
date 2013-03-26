@@ -29,6 +29,10 @@ import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.StackedRankColumnModel;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.VerifyEvent;
+import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -42,11 +46,13 @@ import org.eclipse.swt.widgets.Text;
  * @author Samuel Gratzl
  *
  */
-public class EditWeightsDialog extends TitleAreaDialog {
+public class EditWeightsDialog extends TitleAreaDialog implements VerifyListener, ModifyListener {
 	private StackedRankColumnModel model;
 	private Object receiver;
 
 	private List<Text> texts = new ArrayList<>();
+
+	private Text sum;
 
 	public EditWeightsDialog(Shell parentShell, StackedRankColumnModel model, Object receiver) {
 		super(parentShell);
@@ -68,12 +74,47 @@ public class EditWeightsDialog extends TitleAreaDialog {
 			Label l = new Label(p, SWT.NONE);
 			l.setText(r.getHeaderRenderer().toString());
 			Text t = new Text(p, SWT.BORDER);
-			t.setText(String.format(Locale.ENGLISH, "%.2f", dists[i] * 100));
+			t.setText(toString(dists[i] * 100));
+			t.addModifyListener(this);
 			t.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 			texts.add(t);
 		}
+
+		Label l = new Label(p, SWT.NONE);
+		l.setText("Total");
+		l.setForeground(parent.getDisplay().getSystemColor(SWT.COLOR_DARK_GRAY));
+		this.sum = new Text(p, SWT.BORDER | SWT.READ_ONLY);
+		this.sum.setText(toString(100));
+		this.sum.setForeground(parent.getDisplay().getSystemColor(SWT.COLOR_DARK_GRAY));
+		this.sum.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 		// FIXME
 		return parent;
+	}
+
+	@Override
+	public void modifyText(ModifyEvent e) {
+		if (validate()) {
+			float sum = 0;
+			float[] vs = getValues();
+			for (float v : vs)
+				sum += v;
+			this.sum.setText(toString(sum * 100));
+		}
+	}
+
+	@Override
+	public void verifyText(VerifyEvent e) {
+		// if (validate(e)) {
+		// float sum = 0;
+		// float[] vs = getValues(e);
+		// for (float v : vs)
+		// sum += v;
+		// this.sum.setText(toString(sum * 100));
+		// }
+	}
+
+	protected String toString(float f) {
+		return String.format(Locale.ENGLISH, "%.2f", f);
 	}
 
 	@Override
@@ -88,24 +129,36 @@ public class EditWeightsDialog extends TitleAreaDialog {
 	protected void okPressed() {
 		if (!validate())
 			return;
-		float[] weights = new float[model.size()];
-		for (int i = 0; i < texts.size(); ++i) {
-			weights[i] = Float.parseFloat(texts.get(i).getText()) * 0.01f;
-		}
+		float[] weights = getValues();
 		EventPublisher.publishEvent(new WeightsChangedEvent(weights).to(receiver));
 		super.okPressed();
 	}
 
+	protected float[] getValues() {
+		float[] weights = new float[model.size()];
+		for (int i = 0; i < texts.size(); ++i) {
+			String s = texts.get(i).getText();
+			weights[i] = Float.parseFloat(s) * 0.01f;
+		}
+		return weights;
+	}
+
 	/**
+	 * @param e2
 	 * @return
 	 */
 	private boolean validate() {
 		StringBuilder b = new StringBuilder();
 		for (int i = 0; i < texts.size(); ++i) {
-			try {
-				Float.parseFloat(texts.get(i).getText());
-			} catch (NumberFormatException e) {
-				b.append("can't parse: " + texts.get(i).getText()).append('\n');
+			String s = texts.get(i).getText();
+			if (s.isEmpty()) {
+				b.append("missing value").append('\n');
+			} else {
+				try {
+					Float.parseFloat(s);
+				} catch (NumberFormatException e) {
+					b.append("can't parse: " + s).append('\n');
+				}
 			}
 		}
 		if (b.length() > 0)
