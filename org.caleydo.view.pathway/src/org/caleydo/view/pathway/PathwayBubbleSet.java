@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.util.color.ColorManager;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.PathwayPath;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
@@ -57,6 +58,96 @@ public class PathwayBubbleSet
 		}
 	}
 
+	public void addAllPaths(List<GraphPath<PathwayVertexRep, DefaultEdge>> allPaths, int selectionID){	
+		List<org.caleydo.core.util.color.Color> colorTable = (ColorManager.get()).getColorList("qualitativeColors");
+		int id=0;
+		int colorID=0;
+		GraphPath<PathwayVertexRep, DefaultEdge> selPath=null;
+		float [] selColor=SelectionType.SELECTION.getColor();
+		
+		//add selection first
+		for (GraphPath<PathwayVertexRep, DefaultEdge> path : allPaths) {
+			if (path == null)
+				break;
+			if(selectionID==id){											
+				addColoredPath(path,new Color(selColor[0],selColor[1],selColor[2]));
+				addColoredPath(path,new Color(selColor[0],selColor[1],selColor[2]));
+				//addColoredPath(path,new Color(selColor[0],selColor[1],selColor[2]));
+				break;
+			}
+			id++;
+		}		
+		id=0;
+		for (GraphPath<PathwayVertexRep, DefaultEdge> path : allPaths) {
+			
+			if (id < colorTable.size() - 2)		{
+				// avoid the last two colors because they are close to orange
+				// which is the selection color
+				colorID = id;
+			}
+			else
+				colorID = colorTable.size() - 1;
+			if (path == null)
+				break;
+			
+			if(selectionID!=id){								
+				org.caleydo.core.util.color.Color c = colorTable.get(colorID);
+				addColoredPath(path,new Color(c.r,c.g,c.b));				
+			}
+			id++;
+		}		
+	}
+	
+	public void addColoredPath(GraphPath<PathwayVertexRep, DefaultEdge> path, Color colorValue)
+	{
+		// single node path = no edge exist 
+		if (path.getEndVertex() == path.getStartVertex()) { 
+			PathwayVertexRep sourceVertexRep = path.getEndVertex();
+			double bbItemW = sourceVertexRep.getWidth();
+			double bbItemH = sourceVertexRep.getHeight();
+			double posX = sourceVertexRep.getLowerLeftCornerX();//getLowerLeftCornerX();
+			double posY = sourceVertexRep.getLowerLeftCornerY();//.getLowerLeftCornerY();
+			ArrayList<Rectangle2D> items= new ArrayList<>();
+			items.add(new Rectangle2D.Double(posX, posY, bbItemW, bbItemH));
+			renderer.addGroup(items, null , colorValue);
+		}
+		// add path by adding each of its nodes 
+		else {
+			if(pathway==null)return;
+			ArrayList<Rectangle2D> items= new ArrayList<>();
+			ArrayList<Line2D> edges= new ArrayList<>();
+			for (DefaultEdge edge : path.getEdgeList()) {
+				PathwayVertexRep sourceVertexRep = pathway.getEdgeSource(edge);
+				PathwayVertexRep targetVertexRep = pathway.getEdgeTarget(edge);
+
+//				double bbItemW = sourceVertexRep.getWidth();
+//				double bbItemH = sourceVertexRep.getHeight();
+//				double posX = sourceVertexRep.getCenterX();
+//				double posY = sourceVertexRep.getCenterY();
+//				double tX = targetVertexRep.getCenterX();
+//				double tY = targetVertexRep.getCenterY();				
+				double bbItemW = sourceVertexRep.getWidth();
+				double bbItemH = sourceVertexRep.getHeight();
+				double posX = sourceVertexRep.getLowerLeftCornerX();
+				double posY = sourceVertexRep.getLowerLeftCornerY();
+				double tX = targetVertexRep.getLowerLeftCornerX();
+				double tY = targetVertexRep.getLowerLeftCornerY();
+
+				items.add(new Rectangle2D.Double(posX, posY, bbItemW, bbItemH));
+				edges.add(new Line2D.Double(posX, posY, tX, tY));
+			}
+			DefaultEdge lastEdge = path.getEdgeList().get(path.getEdgeList().size() - 1);
+			if (lastEdge != null) {
+				PathwayVertexRep targetVertexRep = pathway.getEdgeTarget(lastEdge);
+				items.add(new Rectangle2D.Double(
+						targetVertexRep.getLowerLeftCornerX(), targetVertexRep.getLowerLeftCornerY(),
+						targetVertexRep.getWidth(), targetVertexRep.getHeight()));
+			}			
+			renderer.addGroup(items, edges , colorValue);
+		}
+	}
+	
+	
 	public void addPath(GraphPath<PathwayVertexRep, DefaultEdge> path)
 	{
 		// single node path = no edge exist 

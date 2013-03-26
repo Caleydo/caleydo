@@ -45,6 +45,7 @@ import org.caleydo.core.event.view.TablePerspectivesChangedEvent;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.color.ColorManager;
 import org.caleydo.core.util.color.mapping.IColorMappingUpdateListener;
 import org.caleydo.core.util.color.mapping.UpdateColorMappingEvent;
@@ -193,6 +194,8 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 	 * All paths which are available between two user selected nodes.
 	 */
 	private List<GraphPath<PathwayVertexRep, DefaultEdge>> allPaths = null;
+	private List<Pair< List<GraphPath<PathwayVertexRep, DefaultEdge>>, Integer>> allPathsList 
+			    = new ArrayList<Pair< List<GraphPath<PathwayVertexRep, DefaultEdge>>, Integer>>();
 	private boolean isBubbleTextureDirty;
 	private boolean isPathStartSelected = false;
 	private int selectedPathID;
@@ -282,23 +285,29 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		return portalVertexReps;
 	}
 
-	private void selectNextPath() {
-		if (allPaths == null)
+	private void selectNextPath(boolean inc) {
+		System.out.println("selectNextPath()");
+//		if (this.allPathsList == null)
+//			return;
+		if(this.allPathsList.size()<1)
 			return;
-
-		if (allPaths.size() == 1)
-			selectedPathID = 0;
-		else {
-			selectedPathID++;
+		List<GraphPath<PathwayVertexRep, DefaultEdge>> paths=this.allPathsList.get(this.allPathsList.size()-1).getFirst();
+		if (paths.size() > 1){
+			System.out.println("allPaths.size() > 1");
+			
+			if(inc)
+				selectedPathID++;
+			else
+				selectedPathID--;
 
 			if (selectedPathID < 0)
 				selectedPathID = 0;
-			if (selectedPathID > allPaths.size() - 1)
-				selectedPathID = allPaths.size() - 1;
+			if (selectedPathID > paths.size() - 1)
+				selectedPathID = paths.size() - 1;
 
 			if (allPaths.size() > 0) {
-				selectedPath = allPaths.get(selectedPathID);
-
+				selectedPath = paths.get(selectedPathID);
+//System.out.println("selectedPathID"+selectedPathID);
 				if (selectedPath.getEdgeList().size() > 0 && !isShiftKeyDown) {
 					PathwayVertexRep startPrevVertex = selectedPath.getStartVertex();
 					PathwayVertexRep endPrevVertex = selectedPath.getEndVertex();
@@ -308,6 +317,11 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 				}
 			}
 		}
+		else {
+			selectedPathID = 0;
+		}
+
+		System.out.println("selectedPathID="+selectedPathID);
 		isBubbleTextureDirty = true;
 		setDisplayListDirty();
 		triggerPathUpdate();
@@ -403,13 +417,16 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 				isShiftKeyDown = e.isShiftDown();
 
 				if (e.isDownDown()) {
-					selectedPathID--;
-					selectedPathID--;
-					selectNextPath();
+					System.out.println("isDownDown");
+					//selectedPathID--;
+					selectNextPath(false);
 				}
 
-				if (e.isUpDown())
-					selectNextPath();
+				if (e.isUpDown()){
+					System.out.println("isUpDown");
+					//selectedPathID++;
+					selectNextPath(true);
+				}
 
 			}
 
@@ -774,22 +791,34 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 	}
 	
 	private void overlayBubbleSets(GL2 gl) {
-		if (allPaths == null)
-			return;
+//		if (allPaths == null)
+//			return;
 
+		if(allPathsList.size()<1)
+			return;
 		if (isBubbleTextureDirty) {
 			// //allPaths
 			this.bubbleSet.clear();
 			this.bubbleSet.setPathwayGraph(pathway);
 
-			this.bubbleSet.addAllPaths(allPaths);
+			if(selectedPathID>=0)
+				allPathsList.get(allPathsList.size()-1).setSecond(this.selectedPathID);
+			else
+				allPathsList.get(allPathsList.size()-1).setSecond(0);		
+				
+			for(Pair< List<GraphPath<PathwayVertexRep, DefaultEdge>>, Integer> pathsPair: allPathsList){
+				//this.bubbleSet.addAllPaths(paths);
+				List<GraphPath<PathwayVertexRep, DefaultEdge>> paths=pathsPair.getFirst();
+				this.bubbleSet.addAllPaths(paths,pathsPair.getSecond());
+			}
 			//
-			this.bubbleSet.addPathSegements(pathSegments);
+			//this.bubbleSet.addPathSegements(pathSegments);
 			// this.bubbleSet.addPortals(portalVertexReps);
 
 			// update texture
 			this.bubbleSet.getBubbleSetGLRenderer().setSize(pathway.getWidth(), pathway.getHeight());
-			this.bubbleSet.getBubbleSetGLRenderer().update(gl, SelectionType.SELECTION.getColor(), selectedPathID);
+			//this.bubbleSet.getBubbleSetGLRenderer().update(gl, SelectionType.SELECTION.getColor(), selectedPathID);
+			this.bubbleSet.getBubbleSetGLRenderer().update(gl, null, 0);
 			isBubbleTextureDirty = false;
 		}
 
@@ -1160,8 +1189,9 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 			GraphPath<PathwayVertexRep, DefaultEdge> tmpSelectedPath = new GraphPathImpl<PathwayVertexRep, DefaultEdge>(
 					pathway, startVertex, endVertex, edgeListNew, 0);
 			//
-			if (allPaths == null)
-				allPaths = new ArrayList<GraphPath<PathwayVertexRep, DefaultEdge>>();
+			if (allPaths == null){
+				allPaths = new ArrayList<GraphPath<PathwayVertexRep, DefaultEdge>>();				
+			}
 			else
 				allPaths.clear();
 			allPaths.add(tmpSelectedPath);
@@ -1211,11 +1241,13 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 	private void generateSingleNodePath(PathwayVertexRep vertexRep) {
 		GraphPath<PathwayVertexRep, DefaultEdge> path = new GraphPathImpl<PathwayVertexRep, DefaultEdge>(pathway,
 				vertexRep, vertexRep, new ArrayList<DefaultEdge>(), 0);
-		if (allPaths == null)
+		if (allPaths == null){
 			allPaths = new ArrayList<GraphPath<PathwayVertexRep, DefaultEdge>>();
+		}
 		else
 			allPaths.clear();
 		allPaths.add(path);
+		allPathsList.add(new Pair< List<GraphPath<PathwayVertexRep, DefaultEdge>>, Integer>(allPaths, 0));
 		selectedPath = path;
 		selectedPathID = 0;
 	}
@@ -1262,6 +1294,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 					}
 					if (!isPortalNode) {
 						pathSegments.clear();
+						allPathsList.clear();
 					}
 
 					generateSingleNodePath(vertexRep);
@@ -1286,6 +1319,8 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 					// if at least one path exist update the selected path
 					if (allPathsTmp != null && allPathsTmp.size() > 0) {
 						allPaths = allPathsTmp;
+						//allPathsList.set(allPathsList.size()-1,new Pair<List<GraphPath<PathwayVertexRep, DefaultEdge>>, Integer>(allPaths,0);
+						allPathsList.get(allPathsList.size()-1).setFirst(allPaths);
 						if (allPaths.size() <= selectedPathID)
 							selectedPathID = 0;
 						selectedPath = allPaths.get(selectedPathID);
