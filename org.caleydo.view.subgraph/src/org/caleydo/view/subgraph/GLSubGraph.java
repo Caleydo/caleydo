@@ -70,12 +70,10 @@ import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.subgraph.GLWindow.ICloseWindowListener;
 import org.caleydo.view.subgraph.MultiLevelSlideInElement.IWindowState;
 import org.caleydo.view.subgraph.SlideInElement.ESlideInElementPosition;
-import org.caleydo.view.subgraph.contextmenu.ShowCommonNodeItem;
 import org.caleydo.view.subgraph.datamapping.GLExperimentalDataMapping;
 import org.caleydo.view.subgraph.event.AddPathwayEvent;
 import org.caleydo.view.subgraph.event.AddPathwayEventFactory;
 import org.caleydo.view.subgraph.event.SelectPathwayEventFactory;
-import org.caleydo.view.subgraph.event.ShowCommonNodePathwaysEvent;
 import org.caleydo.view.subgraph.event.ShowCommonNodesPathwaysEvent;
 import org.caleydo.view.subgraph.event.ShowNodeContextEventFactory;
 import org.caleydo.view.subgraph.event.ShowPortalsEvent;
@@ -266,29 +264,29 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	}
 
 	protected HashSet<Pair<PathwayMultiFormInfo,PathwayMultiFormInfo>> windowStubs = new HashSet<Pair<PathwayMultiFormInfo,PathwayMultiFormInfo>>();
-	protected HashSet<Pair<PathwayMultiFormInfo,PathwayMultiFormInfo>> windowStubsRightSide = new HashSet<Pair<PathwayMultiFormInfo,PathwayMultiFormInfo>>();	
+	protected HashSet<Pair<PathwayMultiFormInfo,PathwayMultiFormInfo>> windowStubsRightSide = new HashSet<Pair<PathwayMultiFormInfo,PathwayMultiFormInfo>>();
 
 	protected void clearWindowStubSets(){
 		windowStubs.clear();
 		windowStubsRightSide.clear();
 	}
-	
-	public boolean containsWindowsStub(Pair<PathwayMultiFormInfo,PathwayMultiFormInfo> windowPair){		
+
+	public boolean containsWindowsStub(Pair<PathwayMultiFormInfo,PathwayMultiFormInfo> windowPair){
 		if(!windowStubs.contains(windowPair)){
 			windowStubs.add(windowPair);
 			return false;
-		}			
+		}
 		return true;
 	}
-	public boolean containsWindowsStubRightSide(Pair<PathwayMultiFormInfo,PathwayMultiFormInfo> windowPair){		
+	public boolean containsWindowsStubRightSide(Pair<PathwayMultiFormInfo,PathwayMultiFormInfo> windowPair){
 		if(!windowStubsRightSide.contains(windowPair)){
 			windowStubsRightSide.add(windowPair);
 			return false;
-		}			
+		}
 		return true;
 	}
-	
-	
+
+
 	@Override
 	public void init(GL2 gl) {
 		super.init(gl);
@@ -593,8 +591,8 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 					pathway = pathwayRepresentation.getPathway();
 					// pathwayRepresentation.addVertexRepBasedContextMenuItem(new VertexRepBasedContextMenuItem(
 					// "Show Node Info", ShowNodeInfoEvent.class, pathEventSpace));
-					pathwayRepresentation.addVertexRepBasedContextMenuItem(new ShowCommonNodeItem(
-							ShowCommonNodePathwaysEvent.class, pathEventSpace));
+					// pathwayRepresentation.addVertexRepBasedContextMenuItem(new ShowCommonNodeItem(
+					// ShowCommonNodePathwaysEvent.class, pathEventSpace));
 					pathwayRepresentation.addVertexRepBasedContextMenuItem(new VertexRepBasedContextMenuItem(
 							"Show Context", ShowNodeContextEvent.class, pathEventSpace));
 					pathwayRepresentation.addVertexRepBasedSelectionEvent(new ShowNodeContextEventFactory(
@@ -955,12 +953,12 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		// nodeInfoContainer.relayout();
 		// }
 
-		@ListenTo(restrictExclusiveToEventSpace = true)
-		public void onShowPathwaysWithVertex(ShowCommonNodePathwaysEvent event) {
-			rankingElement.setFilter(new PathwayFilters.CommonVertexFilter(event.getVertexRep(), false));
-			rankingElement.setRanking(new PathwayRankings.CommonVerticesRanking(event.getVertexRep().getPathway()));
-			isLayoutDirty = true;
-		}
+		// @ListenTo(restrictExclusiveToEventSpace = true)
+		// public void onShowPathwaysWithVertex(ShowCommonNodePathwaysEvent event) {
+		// rankingElement.setFilter(new PathwayFilters.CommonVertexFilter(event.getVertexRep(), false));
+		// rankingElement.setRanking(new PathwayRankings.CommonVerticesRanking(event.getVertexRep().getPathway()));
+		// isLayoutDirty = true;
+		// }
 
 		@ListenTo(restrictExclusiveToEventSpace = true)
 		public void onMinSizeUpdate(MinSizeUpdateEvent event) {
@@ -1006,6 +1004,8 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 					// info.age = currentPathwayAge--;
 				}
 			}
+			rankingElement.setFilter(new PathwayFilters.CommonVertexFilter(currentContextVertexRep, false));
+			rankingElement.setRanking(new PathwayRankings.CommonVerticesRanking(currentContextVertexRep.getPathway()));
 			wasContextChanged = true;
 			updatePathwayPortals();
 		}
@@ -1054,7 +1054,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		return null;
 	}
 
-	protected void updatePathwayPortals() {		
+	protected void updatePathwayPortals() {
 		PathwayMultiFormInfo info = null;
 		if (portalFocusWindow != null) {
 			if (portalFocusWindow.info instanceof PathwayMultiFormInfo) {
@@ -1063,9 +1063,9 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 			}
 		}
 
-		for (PathwayMultiFormInfo i : pathwayInfos) {
-			i.window.setTitleBarColor(GLTitleBar.DEFAULT_COLOR);
-		}
+		// for (PathwayMultiFormInfo i : pathwayInfos) {
+		// i.window.setTitleBarColor(GLTitleBar.DEFAULT_COLOR);
+		// }
 
 		if (info == null)
 			return;
@@ -1096,8 +1096,13 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 				lastNodeOfPrevSegment = nodes.get(nodes.size() - 1);
 			}
 		}
+		for (PathwayMultiFormInfo i : pathwayInfos) {
+			if (i.getCurrentEmbeddingID() == EEmbeddingID.PATHWAY_LEVEL1) {
+				highlightPathwayNodePortals(i);
+			}
+		}
 
-		Set<GLPathwayWindow> windowsToHighlight = new HashSet<>();
+		// Set<GLPathwayWindow> windowsToHighlight = new HashSet<>();
 
 		for (PathwayVertexRep vertexRep : info.pathway.vertexSet()) {
 			if (info.getCurrentEmbeddingID() == EEmbeddingID.PATHWAY_LEVEL1
@@ -1108,51 +1113,67 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 			Pair<Rectangle2D, Boolean> sourcePair = getPortalLocation(vertexRep, info);
 			for (PathwayMultiFormInfo i : pathwayInfos) {
 				if (info != i) {
-					boolean wasLinkAdded = false;
-					wasLinkAdded = addLinkRenderers(vertexRep, info, i, sourcePair);
-					boolean highlightAdded = highlightPathwayNodePortals(info, i);
-					wasLinkAdded = wasLinkAdded || highlightAdded;
-					if (wasLinkAdded) {
-						windowsToHighlight.add((GLPathwayWindow) i.window);
-					}
+					// boolean wasLinkAdded = false;
+					addLinkRenderers(vertexRep, info, i, sourcePair);
+					// boolean highlightAdded = highlightPathwayNodePortals(info, i);
+					// wasLinkAdded = wasLinkAdded || highlightAdded;
+					// if (wasLinkAdded) {
+					// windowsToHighlight.add((GLPathwayWindow) i.window);
+					// }
 				} else {
 					// TODO: implement
 				}
 
 			}
 		}
-		if (isShowPortals) {
-			for (PathwayMultiFormInfo i : pathwayInfos) {
-				if (windowsToHighlight.contains(i.window)) {
-					i.window.setTitleBarColor(PortalRenderStyle.DEFAULT_PORTAL_COLOR);
-				} else {
-					i.window.setTitleBarColor(GLTitleBar.DEFAULT_COLOR);
-				}
-			}
-		}
+		// if (isShowPortals) {
+		// for (PathwayMultiFormInfo i : pathwayInfos) {
+		// if (windowsToHighlight.contains(i.window)) {
+		// i.window.setTitleBarColor(PortalRenderStyle.DEFAULT_PORTAL_COLOR);
+		// } else {
+		// i.window.setTitleBarColor(GLTitleBar.DEFAULT_COLOR);
+		// }
+		// }
+		// }
 
 		// clearSelectedPortalLinks();
 		// System.out.println("update");
 	}
 
-	private boolean highlightPathwayNodePortals(PathwayMultiFormInfo sourceInfo, PathwayMultiFormInfo targetInfo) {
-		boolean wasHighlighted = false;
-		if (targetInfo.getCurrentEmbeddingID() == EEmbeddingID.PATHWAY_LEVEL1) {
-			for (PathwayVertexRep vertexRep : targetInfo.pathway.vertexSet()) {
+	private void highlightPathwayNodePortals(PathwayMultiFormInfo info) {
+		if (info.getCurrentEmbeddingID() == EEmbeddingID.PATHWAY_LEVEL1) {
+			for (PathwayVertexRep vertexRep : info.pathway.vertexSet()) {
 				if (vertexRep.getType() == EPathwayVertexType.map) {
 					PathwayGraph pathway = PathwayManager.get().getPathwayByTitle(vertexRep.getName(),
 							EPathwayDatabaseType.KEGG);
-					if (pathway == sourceInfo.pathway) {
+					PathwayMultiFormInfo target = getPathwayMultiFormInfo(pathway);
+					if (target != null) {
 						PortalHighlightRenderer renderer = new PortalHighlightRenderer(getPortalLocation(vertexRep,
-								targetInfo).getFirst(), (GLPathwayWindow) sourceInfo.window);
+								info).getFirst(), (GLPathwayWindow) target.window);
 						// textureSelectionListeners.add(renderer);
 						augmentation.add(renderer);
-						wasHighlighted = true;
 					}
 				}
 			}
 		}
-		return wasHighlighted;
+
+		// boolean wasHighlighted = false;
+		// if (targetInfo.getCurrentEmbeddingID() == EEmbeddingID.PATHWAY_LEVEL1) {
+		// for (PathwayVertexRep vertexRep : targetInfo.pathway.vertexSet()) {
+		// if (vertexRep.getType() == EPathwayVertexType.map) {
+		// PathwayGraph pathway = PathwayManager.get().getPathwayByTitle(vertexRep.getName(),
+		// EPathwayDatabaseType.KEGG);
+		// if (pathway == sourceInfo.pathway) {
+		// PortalHighlightRenderer renderer = new PortalHighlightRenderer(getPortalLocation(vertexRep,
+		// targetInfo).getFirst(), (GLPathwayWindow) sourceInfo.window);
+		// // textureSelectionListeners.add(renderer);
+		// augmentation.add(renderer);
+		// wasHighlighted = true;
+		// }
+		// }
+		// }
+		// }
+		// return wasHighlighted;
 	}
 
 	private boolean addPortalHighlightRenderer(PathwayVertexRep vertexRep, PathwayMultiFormInfo info) {

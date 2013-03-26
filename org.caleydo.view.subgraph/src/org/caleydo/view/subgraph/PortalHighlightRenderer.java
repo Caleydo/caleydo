@@ -46,10 +46,11 @@ public class PortalHighlightRenderer extends PickableGLElement {
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
 		g.incZ(0.5f);
-		g.color(PortalRenderStyle.DEFAULT_PORTAL_COLOR)
+		g.color(PortalRenderStyle.CONTEXT_PORTAL_COLOR)
 				.lineWidth(2)
 				.drawRoundedRect((float) location.getX() + 1, (float) location.getY() + 1,
-						(float) location.getWidth() + 1, (float) location.getHeight() + 1, 8);
+						(float) location.getWidth() + 1, (float) location.getHeight() + 1,
+						(float) location.getHeight() / 5.0f);
 		g.lineWidth(1);
 		g.incZ(-0.5f);
 	}
@@ -65,8 +66,10 @@ public class PortalHighlightRenderer extends PickableGLElement {
 
 	@Override
 	protected void onMouseOver(Pick pick) {
-		window.setBackgroundColor(new Color("b6f2b3"));
-		window.titleBar.setHighlight(true);
+		// b6f2b3#
+		window.setTitleBarColor(new Color("d7a8c0"));
+		window.setBackgroundColor(new Color("ffe5f3"));
+		// window.titleBar.setHighlight(true);
 		// System.out.println("highight over");
 	}
 
@@ -75,6 +78,7 @@ public class PortalHighlightRenderer extends PickableGLElement {
 	protected void onMouseOut(Pick pick) {
 		// window.setBackgroundColor(new Color(1, 0, 1, 1f));
 		// System.out.println("highight out");
+		window.setTitleBarColor(GLTitleBar.DEFAULT_COLOR);
 		window.setBackgroundColor(GLPathwayBackground.DEFAULT_COLOR);
 		window.titleBar.setHighlight(false);
 	}
