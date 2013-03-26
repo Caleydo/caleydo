@@ -558,7 +558,7 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 				maxMinPixelHeight = minPixelHeight;
 			}
 		}
-		return (showThumbnail ? (pathwayView.getMinPixelHeight()) : 1) + maxMinPixelHeight + 1;
+		return (showThumbnail ? (pathwayView.getMinPixelHeight()) : 1) + maxMinPixelHeight + 5;
 	}
 
 	@Override
