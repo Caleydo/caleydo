@@ -265,15 +265,24 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 
 	}
 
-	protected HashSet<Pair<PathwayMultiFormInfo,PathwayMultiFormInfo>> windowStubs = new HashSet<Pair<PathwayMultiFormInfo,PathwayMultiFormInfo>>();	
+	protected HashSet<Pair<PathwayMultiFormInfo,PathwayMultiFormInfo>> windowStubs = new HashSet<Pair<PathwayMultiFormInfo,PathwayMultiFormInfo>>();
+	protected HashSet<Pair<PathwayMultiFormInfo,PathwayMultiFormInfo>> windowStubsRightSide = new HashSet<Pair<PathwayMultiFormInfo,PathwayMultiFormInfo>>();	
 
 	protected void clearWindowStubSets(){
 		windowStubs.clear();
+		windowStubsRightSide.clear();
 	}
 	
 	public boolean containsWindowsStub(Pair<PathwayMultiFormInfo,PathwayMultiFormInfo> windowPair){		
 		if(!windowStubs.contains(windowPair)){
 			windowStubs.add(windowPair);
+			return false;
+		}			
+		return true;
+	}
+	public boolean containsWindowsStubRightSide(Pair<PathwayMultiFormInfo,PathwayMultiFormInfo> windowPair){		
+		if(!windowStubsRightSide.contains(windowPair)){
+			windowStubsRightSide.add(windowPair);
 			return false;
 		}			
 		return true;

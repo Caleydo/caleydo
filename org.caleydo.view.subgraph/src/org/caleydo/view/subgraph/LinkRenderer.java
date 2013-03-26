@@ -212,17 +212,144 @@ public class LinkRenderer extends PickableGLElement {
 		////
 		if(fade)fadeToOpacity=0.0f;
 		else fadeToOpacity=linkOpacity;
-		if(loc1.getX()<loc2.getX()){
+//		if(loc1.getX()<loc2.getX()){
+//			renderStubRightSide(gl, loc1, loc2, isLocation1Window, info1, info2);
+// 			renderStubLeftSide(gl,  loc2, loc1, isLocation2Window, info2, info1);
+//		}else{
+//			renderStubRightSide(gl, loc2, loc1, isLocation2Window, info2, info1);
+//			renderStubLeftSide(gl,  loc1, loc2, isLocation1Window, info1, info2);
+//		}
+		if(loc1.getX()<loc2.getX() && loc1.getX()+loc1.getWidth()<loc2.getX()+loc2.getWidth()){
 			renderStubRightSide(gl, loc1, loc2, isLocation1Window, info1, info2);
 			renderStubLeftSide(gl,  loc2, loc1, isLocation2Window, info2, info1);
-		}else{
-			renderStubRightSide(gl, loc2, loc1, isLocation2Window, info2, info1);
-			renderStubLeftSide(gl,  loc1, loc2, isLocation1Window, info1, info2);
 		}
+		else{ 
+			if(loc2.getX()<loc1.getX() && loc2.getX()+loc2.getWidth()<loc1.getX()+loc1.getWidth()){
+				renderStubRightSide(gl, loc2, loc1, isLocation2Window, info2, info1);
+				renderStubLeftSide(gl,  loc1, loc2, isLocation1Window, info1, info2);
+			}else{//loc2 within bounds of loc1 || //loc1 within bounds of loc2 -> dock link on the same side 
+////	//			if(loc1.getX()<loc2.getX() && loc1.getX()+loc1.getWidth() > loc2.getX()+loc2.getWidth()){ //loc2 within bounds of loc1
+					if((Math.abs(loc1.getX()-loc2.getX()))>Math.abs(loc1.getX()+loc1.getWidth()-loc2.getX()+loc2.getWidth())){
+						//use right stub on the left side 
+						renderStubLeft2LeftSide(gl,  loc2, loc1, isLocation2Window, info2, info1,true);
+						renderStubLeft2LeftSide(gl,  loc1, loc2, isLocation1Window, info1, info2,false);
+					}else{
+//						//use left stub on the right side
+						renderStubRight2RightSide(gl,  loc2, loc1, isLocation2Window, info2, info1,true);
+						renderStubRight2RightSide(gl,  loc1, loc2, isLocation1Window, info1, info2,false);
+//				    	gl.glBegin(GL2.GL_LINES);
+//				       		gl.glColor4f(0f, 0f, 1f, 1f);	
+//				       		gl.glVertex3f((float)loc1.getX(),(float)loc1.getY(),z); 	    	
+//					    	gl.glVertex3f((float)loc2.getX(),(float)loc2.getY(),z);		   		    
+//				    	gl.glEnd();	
+					}
+////				}else{//loc1 within bounds of loc2
+////					
+////				}
+			}
+		}
+
 		//// clean up
 		gl.glDisable(GL2.GL_POLYGON_SMOOTH);
 	}
+
+	
+	protected void renderStubRight2RightSide(GL2 gl, Rectangle2D loc, Rectangle2D locTarget, boolean isWindow, PathwayMultiFormInfo info, PathwayMultiFormInfo infoTarget, boolean start){		
+		xS = (float)loc.getX()+(float)loc.getWidth();
+		yS = (float)loc.getY()+(float)loc.getHeight()/2.0f;
+		xE = (float)locTarget.getX()+(float)locTarget.getWidth();
+		yE = (float)locTarget.getY()+(float)locTarget.getHeight()/2.0f;
+		//
+//		float red=0.0f;//bandColor[0]		
+//		float green=0.0f;//bandColor[1]
+//		float blue=1.0f;//bandColor[2]
+		float red=bandColor[0];
+		float green=bandColor[1];
+		float blue=bandColor[2]	;		
+		boolean renderStub=true;
+		 float stubConnectionPointS_X=0.0f;	
+		 float stubConnectionPointS_Y=0.0f;
+		 float stubConnectionPointE_X=0.0f;
+		 float stubConnectionPointE_Y=0.0f;
+		if(isWindow){
+			Pair<PathwayMultiFormInfo,PathwayMultiFormInfo> windowPair = new Pair<PathwayMultiFormInfo, PathwayMultiFormInfo>(info, infoTarget);
+			if(this.view.containsWindowsStub(windowPair))
+				renderStub=false;	
+//			 gl.glColor4f(1, 1, 0, 1);
+//			 gl.glBegin(GL.GL_LINES);
+//				 gl.glVertex3f((float) loc1.getCenterX(), (float) loc1.getCenterY(),z);
+//				 gl.glVertex3f((float) loc2.getCenterX(), (float) loc2.getCenterY(),z);
+//			 gl.glEnd();
+//			
+			float windowCenterX=(infoTarget.window.getAbsoluteLocation().get(0)+(infoTarget.window.getSize().get(0)/2.0f));
+			float windowCenterY=(infoTarget.window.getAbsoluteLocation().get(1)+(infoTarget.window.getSize().get(1)/2.0f));
+			Vec2f dirToWindowCenter = new Vec2f(windowCenterX -xS ,
+					 							windowCenterY -yS);
+			dirToWindowCenter.normalize();
+			Vec2f normalVecCenterVec = rotateVec2(dirToWindowCenter, (float) Math.PI / 2f);
+			float glBandWidthOffsetX_CenterVec = normalVecCenterVec.get(0) * bandWidth/2.0f;//Math.abs(p2x-p1x)/2.0f; //pxlConverter.getGLWidthForPixelWidth(Math.round(normalVec.get(0) * Math.abs(p2x-p1x)  ));
+			float glBandWidthOffsetY_CenterVec= normalVecCenterVec.get(1) * bandWidth/2.0f;//Math.abs(p2y-p1y)/2.0f;//pxlConverter.getGLHeightForPixelHeight(Math.round(normalVec.get(1) * Math.abs(p2y-p1y)  ));
+
+			
+				stubConnectionPointS_X= xS + (dirToWindowCenter.get(0) * (stubLength))-glBandWidthOffsetX_CenterVec;//;
+				stubConnectionPointS_Y= yS + (dirToWindowCenter.get(1) * (stubLength))-glBandWidthOffsetY_CenterVec;//;
+				stubConnectionPointE_X= xS + (dirToWindowCenter.get(0) * (stubLength))+glBandWidthOffsetX_CenterVec;//;
+				stubConnectionPointE_Y= yS + (dirToWindowCenter.get(1) * (stubLength))+glBandWidthOffsetY_CenterVec;//;
+	
+		}else{
+			//			
+			Vec2f dirNorm  = new Vec2f(xE - xS, yE - yS);
+			dirNorm.normalize();
+			Vec2f normalVec = rotateVec2(dirNorm, (float) Math.PI / 2f);
+			float glBandWidthOffsetX = normalVec.get(0) * bandWidth/2.0f;//Math.abs(p2x-p1x)/2.0f; //pxlConverter.getGLWidthForPixelWidth(Math.round(normalVec.get(0) * Math.abs(p2x-p1x)  ));
+			float glBandWidthOffsetY = normalVec.get(1) * bandWidth/2.0f;//Math.abs(p2y-p1y)/2.0f;//pxlConverter.getGLHeightForPixelHeight(Math.round(normalVec.get(1) * Math.abs(p2y-p1y)  ));
+
+			stubConnectionPointS_X= xS + (dirNorm.get(0) * (stubLength))-glBandWidthOffsetX;//;
+			stubConnectionPointS_Y= yS + (dirNorm.get(1) * (stubLength))-glBandWidthOffsetY;//;
+			stubConnectionPointE_X= xS + (dirNorm.get(0) * (stubLength))+glBandWidthOffsetX;//;
+			stubConnectionPointE_Y= yS + (dirNorm.get(1) * (stubLength))+glBandWidthOffsetY;//;	
+		}
+		float p00X=xS;
+		float p00Y=yS-(float)loc.getHeight()/2.0f;
+		float p01X=xS;
+		float p01Y=yS+(float)loc.getHeight()/2.0f;
 		
+		if(fadeToOpacity<linkOpacity && !renderStub)return;		
+	
+    	gl.glBegin(GL2.GL_LINES);
+       		gl.glColor4f(red, green, blue, this.outlineOpacity);	
+       		gl.glVertex3f(p00X,p00Y,z); 	
+	    	gl.glColor4f(red, green, blue,fadeToOpacity);				    	
+	    	gl.glVertex3f(stubConnectionPointS_X, stubConnectionPointS_Y,z);		   
+    		    	
+	    	gl.glColor4f(red, green, blue, this.outlineOpacity);			    			    		
+	    	gl.glVertex3f(p01X,p01Y,z);
+	    	gl.glColor4f(red, green, blue,fadeToOpacity);
+	    	gl.glVertex3f(stubConnectionPointE_X, stubConnectionPointE_Y,z);	    		    
+    	gl.glEnd();			
+        gl.glBegin(GL2.GL_QUADS);
+        	gl.glColor4f(red, green, blue,linkOpacity);
+    		gl.glVertex3f(p00X,p00Y,z);
+    		gl.glVertex3f(p01X,p01Y,z);
+    		gl.glColor4f(red, green, blue,fadeToOpacity);
+    		gl.glVertex3f(stubConnectionPointE_X, stubConnectionPointE_Y,z);
+    		gl.glVertex3f(stubConnectionPointS_X, stubConnectionPointS_Y,z);
+    	gl.glEnd();
+    	
+		if(start){
+			stubConnectionPoint1_X=stubConnectionPointS_X;	
+			stubConnectionPoint1_Y=stubConnectionPointS_Y;
+			stubConnectionPoint2_X=stubConnectionPointE_X;
+			stubConnectionPoint2_Y=stubConnectionPointE_Y;
+		}else{
+			stubConnectionPoint3_X=stubConnectionPointS_X;	
+			stubConnectionPoint3_Y=stubConnectionPointS_Y;
+			stubConnectionPoint4_X=stubConnectionPointE_X;
+			stubConnectionPoint4_Y=stubConnectionPointE_Y;
+		}
+	}
+	
+	
 	protected void renderStubRightSide(GL2 gl, Rectangle2D loc, Rectangle2D locTarget, boolean isWindow, PathwayMultiFormInfo info, PathwayMultiFormInfo infoTarget){		
 		xS = (float)loc.getX()+(float)loc.getWidth();
 		yS = (float)loc.getY()+(float)loc.getHeight()/2.0f;
@@ -238,7 +365,7 @@ public class LinkRenderer extends PickableGLElement {
 		boolean renderStub=true;
 		if(isWindow){
 			Pair<PathwayMultiFormInfo,PathwayMultiFormInfo> windowPair = new Pair<PathwayMultiFormInfo, PathwayMultiFormInfo>(info, infoTarget);
-			if(this.view.containsWindowsStub(windowPair))
+			if(this.view.containsWindowsStubRightSide(windowPair))
 				renderStub=false;	
 //			 gl.glColor4f(1, 1, 0, 1);
 //			 gl.glBegin(GL.GL_LINES);
@@ -259,6 +386,14 @@ public class LinkRenderer extends PickableGLElement {
 			stubConnectionPoint1_Y= yS + (dirToWindowCenter.get(1) * (stubLength))-glBandWidthOffsetY_CenterVec;//;
 			stubConnectionPoint2_X= xS + (dirToWindowCenter.get(0) * (stubLength))+glBandWidthOffsetX_CenterVec;//;
 			stubConnectionPoint2_Y= yS + (dirToWindowCenter.get(1) * (stubLength))+glBandWidthOffsetY_CenterVec;//;
+			
+			
+//	    	gl.glBegin(GL2.GL_LINES);
+//	       		gl.glColor4f(0f, 0f, 1f, 1f);	
+//	       		gl.glVertex3f(xS,yS,z); 	    	
+//		    	gl.glVertex3f(windowCenterX,windowCenterY ,z);		   		    
+//	    	gl.glEnd();	
+    	
 		}else{
 			//			
 			Vec2f dirNorm  = new Vec2f(xE - xS, yE - yS);
@@ -301,6 +436,110 @@ public class LinkRenderer extends PickableGLElement {
 
 	}
 	
+	protected void renderStubLeft2LeftSide(GL2 gl, Rectangle2D loc, Rectangle2D locTarget, boolean isWindow, PathwayMultiFormInfo info, PathwayMultiFormInfo infoTarget, boolean start){		
+		xS = (float)loc.getX();
+		yS = (float)loc.getY()+(float)loc.getHeight()/2.0f;
+		xE = (float)locTarget.getX();
+		yE = (float)locTarget.getY()+(float)locTarget.getHeight()/2.0f;
+		//
+//		float red=0.0f;//bandColor[0]		
+//		float green=0.0f;//bandColor[1]
+//		float blue=1.0f;//bandColor[2]
+		float red=bandColor[0];
+		float green=bandColor[1];
+		float blue=bandColor[2]	;
+		
+		 float stubConnectionPointS_X=0.0f;	
+		 float stubConnectionPointS_Y=0.0f;
+		 float stubConnectionPointE_X=0.0f;
+		 float stubConnectionPointE_Y=0.0f;
+		
+		boolean renderStub=true;
+		if(isWindow){
+			Pair<PathwayMultiFormInfo,PathwayMultiFormInfo> windowPair = new Pair<PathwayMultiFormInfo, PathwayMultiFormInfo>(info, infoTarget);
+			if(this.view.containsWindowsStubRightSide(windowPair))
+				renderStub=false;	
+//			 gl.glColor4f(1, 1, 0, 1);
+//			 gl.glBegin(GL.GL_LINES);
+//				 gl.glVertex3f((float) loc1.getCenterX(), (float) loc1.getCenterY(),z);
+//				 gl.glVertex3f((float) loc2.getCenterX(), (float) loc2.getCenterY(),z);
+//			 gl.glEnd();
+//			
+			float windowCenterX=(infoTarget.window.getAbsoluteLocation().get(0)+(infoTarget.window.getSize().get(0)/2.0f));
+			float windowCenterY=(infoTarget.window.getAbsoluteLocation().get(1)+(infoTarget.window.getSize().get(1)/2.0f));
+			Vec2f dirToWindowCenter = new Vec2f(windowCenterX -xS ,
+					 							windowCenterY -yS);
+			dirToWindowCenter.normalize();
+			Vec2f normalVecCenterVec = rotateVec2(dirToWindowCenter, (float) Math.PI / 2f);
+			float glBandWidthOffsetX_CenterVec = normalVecCenterVec.get(0) * bandWidth/2.0f;//Math.abs(p2x-p1x)/2.0f; //pxlConverter.getGLWidthForPixelWidth(Math.round(normalVec.get(0) * Math.abs(p2x-p1x)  ));
+			float glBandWidthOffsetY_CenterVec= normalVecCenterVec.get(1) * bandWidth/2.0f;//Math.abs(p2y-p1y)/2.0f;//pxlConverter.getGLHeightForPixelHeight(Math.round(normalVec.get(1) * Math.abs(p2y-p1y)  ));
+
+			stubConnectionPointS_X= xS + (dirToWindowCenter.get(0) * (stubLength))-glBandWidthOffsetX_CenterVec;//;
+			stubConnectionPointS_Y= yS + (dirToWindowCenter.get(1) * (stubLength))-glBandWidthOffsetY_CenterVec;//;
+			stubConnectionPointE_X= xS + (dirToWindowCenter.get(0) * (stubLength))+glBandWidthOffsetX_CenterVec;//;
+			stubConnectionPointE_Y= yS + (dirToWindowCenter.get(1) * (stubLength))+glBandWidthOffsetY_CenterVec;//;
+			
+			
+	    	gl.glBegin(GL2.GL_LINES);
+	       		gl.glColor4f(0f, 1f, 0f, 1f);	
+	       		gl.glVertex3f(xS,yS,z); 	    	
+		    	gl.glVertex3f(windowCenterX,windowCenterY ,z);		   		    
+	    	gl.glEnd();	
+    	
+		}else{
+			//			
+			Vec2f dirNorm  = new Vec2f(xE - xS, yE - yS);
+			dirNorm.normalize();
+			Vec2f normalVec = rotateVec2(dirNorm, (float) Math.PI / 2f);
+			float glBandWidthOffsetX = normalVec.get(0) * bandWidth/2.0f;//Math.abs(p2x-p1x)/2.0f; //pxlConverter.getGLWidthForPixelWidth(Math.round(normalVec.get(0) * Math.abs(p2x-p1x)  ));
+			float glBandWidthOffsetY = normalVec.get(1) * bandWidth/2.0f;//Math.abs(p2y-p1y)/2.0f;//pxlConverter.getGLHeightForPixelHeight(Math.round(normalVec.get(1) * Math.abs(p2y-p1y)  ));
+
+			stubConnectionPointS_X= xS + (dirNorm.get(0) * (stubLength))-glBandWidthOffsetX;//;
+			stubConnectionPointS_Y= yS + (dirNorm.get(1) * (stubLength))-glBandWidthOffsetY;//;
+			stubConnectionPointE_X= xS + (dirNorm.get(0) * (stubLength))+glBandWidthOffsetX;//;
+			stubConnectionPointE_Y= yS + (dirNorm.get(1) * (stubLength))+glBandWidthOffsetY;//;	
+		}
+		float p00X=xS;
+		float p00Y=yS-(float)loc.getHeight()/2.0f;
+		float p01X=xS;
+		float p01Y=yS+(float)loc.getHeight()/2.0f;
+		
+		if(fadeToOpacity<linkOpacity && !renderStub)return;		
+	
+    	gl.glBegin(GL2.GL_LINES);
+       		gl.glColor4f(red, green, blue, this.outlineOpacity);	
+       		gl.glVertex3f(p00X,p00Y,z); 	
+	    	gl.glColor4f(red, green, blue,fadeToOpacity);				    	
+	    	gl.glVertex3f(stubConnectionPointS_X, stubConnectionPointS_Y,z);		   
+    		    	
+	    	gl.glColor4f(red, green, blue, this.outlineOpacity);			    			    		
+	    	gl.glVertex3f(p01X,p01Y,z);
+	    	gl.glColor4f(red, green, blue,fadeToOpacity);
+	    	gl.glVertex3f(stubConnectionPointE_X, stubConnectionPointE_Y,z);	    		    
+    	gl.glEnd();			
+        gl.glBegin(GL2.GL_QUADS);
+        	gl.glColor4f(red, green, blue,linkOpacity);
+    		gl.glVertex3f(p00X,p00Y,z);
+    		gl.glVertex3f(p01X,p01Y,z);
+    		gl.glColor4f(red, green, blue,fadeToOpacity);
+    		gl.glVertex3f(stubConnectionPointE_X, stubConnectionPointE_Y,z);
+    		gl.glVertex3f(stubConnectionPointS_X, stubConnectionPointS_Y,z);
+    	gl.glEnd();
+    	
+		if(start){
+			stubConnectionPoint1_X=stubConnectionPointS_X;	
+			stubConnectionPoint1_Y=stubConnectionPointS_Y;
+			stubConnectionPoint2_X=stubConnectionPointE_X;
+			stubConnectionPoint2_Y=stubConnectionPointE_Y;
+		}else{
+			stubConnectionPoint3_X=stubConnectionPointS_X;	
+			stubConnectionPoint3_Y=stubConnectionPointS_Y;
+			stubConnectionPoint4_X=stubConnectionPointE_X;
+			stubConnectionPoint4_Y=stubConnectionPointE_Y;
+		}
+
+	}
+	
 	protected void renderStubLeftSide(GL2 gl, Rectangle2D loc, Rectangle2D locTarget, boolean isWindow, PathwayMultiFormInfo info, PathwayMultiFormInfo infoTarget){
 		xS = (float)locTarget.getX()+(float)locTarget.getWidth();
 		yS = (float)locTarget.getY()+(float)locTarget.getHeight()/2.0f;
@@ -310,18 +549,32 @@ public class LinkRenderer extends PickableGLElement {
 		if(isWindow){
 			Pair<PathwayMultiFormInfo,PathwayMultiFormInfo> windowPair = new Pair<PathwayMultiFormInfo, PathwayMultiFormInfo>(info, infoTarget);
 			if(this.view.containsWindowsStub(windowPair))
-				renderStub=false;		
-			Vec2f dirToWindowCenter = new Vec2f(xE - (infoTarget.window.getAbsoluteLocation().get(0)+(infoTarget.window.getSize().get(0)/2.0f)) ,
-					 							yE + (infoTarget.window.getAbsoluteLocation().get(1)-(infoTarget.window.getSize().get(1)/2.0f)) );
+				renderStub=false;
+			float windowCenterX=(infoTarget.window.getAbsoluteLocation().get(0)+(infoTarget.window.getSize().get(0)/2.0f));
+			float windowCenterY=(infoTarget.window.getAbsoluteLocation().get(1)+(infoTarget.window.getSize().get(1)/2.0f)) ;
+			Vec2f dirToWindowCenter = null;
+
+			dirToWindowCenter = new Vec2f(windowCenterX - xE,
+						 					  windowCenterY - yE);
+
 			dirToWindowCenter.normalize();
 			Vec2f normalVecCenterVec = rotateVec2(dirToWindowCenter, (float) Math.PI / 2f);
 			float glBandWidthOffsetX_CenterVec = normalVecCenterVec.get(0) * bandWidth/2.0f;//Math.abs(p2x-p1x)/2.0f; //pxlConverter.getGLWidthForPixelWidth(Math.round(normalVec.get(0) * Math.abs(p2x-p1x)  ));
 			float glBandWidthOffsetY_CenterVec= normalVecCenterVec.get(1) * bandWidth/2.0f;//Math.abs(p2y-p1y)/2.0f;//pxlConverter.getGLHeightForPixelHeight(Math.round(normalVec.get(1) * Math.abs(p2y-p1y)  ));
 
-			stubConnectionPoint3_X= xE - (dirToWindowCenter.get(0) * (stubLength))-glBandWidthOffsetX_CenterVec;//;
-			stubConnectionPoint3_Y= yE - (dirToWindowCenter.get(1) * (stubLength))-glBandWidthOffsetY_CenterVec;//;
-			stubConnectionPoint4_X= xE - (dirToWindowCenter.get(0) * (stubLength))+glBandWidthOffsetX_CenterVec;//;
-			stubConnectionPoint4_Y= yE - (dirToWindowCenter.get(1) * (stubLength))+glBandWidthOffsetY_CenterVec;//;
+			//stubConnectionPoint3_X= xE - (dirToWindowCenter.get(0) * (stubLength));//-glBandWidthOffsetX_CenterVec;//;
+			stubConnectionPoint3_X= xE + (dirToWindowCenter.get(0) * (stubLength))-glBandWidthOffsetX_CenterVec;//;
+			stubConnectionPoint3_Y= yE + (dirToWindowCenter.get(1) * (stubLength))-glBandWidthOffsetY_CenterVec;//;
+			//stubConnectionPoint4_X= xE - (dirToWindowCenter.get(0) * (stubLength));//+glBandWidthOffsetX_CenterVec;//;
+			stubConnectionPoint4_X= xE + (dirToWindowCenter.get(0) * (stubLength))+glBandWidthOffsetX_CenterVec;//;
+			stubConnectionPoint4_Y= yE + (dirToWindowCenter.get(1) * (stubLength))+glBandWidthOffsetY_CenterVec;//;
+			
+//	    	gl.glBegin(GL2.GL_LINES);
+//	       		gl.glColor4f(1f, 0f, 0f, 1f);	
+//	       		gl.glVertex3f(xE,yE,z); 	    	
+//		    	gl.glVertex3f(windowCenterX,windowCenterY ,z);		   		    
+//	    	gl.glEnd();	
+			
 		}else{
 			Vec2f dirNorm  = new Vec2f(xE - xS, yE - yS);
 			dirNorm.normalize();
