@@ -276,7 +276,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 			windowStubs.add(windowPair);
 			return false;
 		}			
-		return true;		
+		return true;
 	}
 	
 	

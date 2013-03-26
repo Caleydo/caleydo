@@ -307,7 +307,7 @@ public class LinkRenderer extends PickableGLElement {
 		xE = (float)loc.getX();
 		yE = (float)loc.getY()+(float)loc.getHeight()/2.0f;
 		boolean renderStub=true;
-		if(isWindow){			
+		if(isWindow){
 			Pair<PathwayMultiFormInfo,PathwayMultiFormInfo> windowPair = new Pair<PathwayMultiFormInfo, PathwayMultiFormInfo>(info, infoTarget);
 			if(this.view.containsWindowsStub(windowPair))
 				renderStub=false;		
