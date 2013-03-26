@@ -291,13 +291,18 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 				int delta = 0;
 				if (isLeftValid && !isRightValid) {
 					int pRank = previousRanker.getRanker().getRank(row);
-					if (left.y() <= 0) {
+					if (pRank < 0) {
+						delta = Integer.MAX_VALUE;
+					} else if (left.y() <= 0) {
 						delta = (int) pScroll.getOffset() - pRank;
 					} else {
 						delta = pRank - (int) (pScroll.getOffset() - pScroll.getWindow());
 					}
 				} else if (!isLeftValid && isRightValid) {
-					if (left.y() <= 0) {
+					int pRank = previousRanker.getRanker().getRank(row);
+					if (pRank < 0) {
+						delta = Integer.MAX_VALUE;
+					} else if (left.y() <= 0) {
 						delta = (int) aScroll.getOffset() - i;
 					} else {
 						delta = i - (int) (aScroll.getOffset() - aScroll.getWindow());
@@ -377,13 +382,13 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 				g.color(RenderStyle.COLOR_SELECTED_BORDER);
 				g.drawLine(x1, left.y(), x2, right.y());
 				g.drawLine(x1, left.y() + left.w(), x2, right.y() + right.w());
-			} else if (isLeftValid) {
+			} else if (isLeftValid && delta != Integer.MAX_VALUE) {
 				g.color(RenderStyle.COLOR_SELECTED_ROW);
 				g.fillPolygon(new Vec2f(x1, left.y()), new Vec2f(x2, right.y()), new Vec2f(x1, left.y() + left.w()));
 				g.color(RenderStyle.COLOR_SELECTED_BORDER);
 				g.drawLine(x1, left.y(), x2, right.y());
 				g.drawLine(x1, left.y() + left.w(), x2, right.y());
-			} else if (isRightValid) {
+			} else if (isRightValid && delta != Integer.MAX_VALUE) {
 				g.color(RenderStyle.COLOR_SELECTED_ROW);
 				g.fillPolygon(new Vec2f(x1, left.y()), new Vec2f(x2, right.y()), new Vec2f(x2, right.y() + right.w()));
 				g.color(RenderStyle.COLOR_SELECTED_BORDER);
@@ -391,7 +396,7 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 				g.drawLine(x1, left.y(), x2, right.y() + right.w());
 			}
 			g.decZ();
-		} else {
+		} else if (delta != Integer.MAX_VALUE) {
 			if (isLeftValid && isRightValid) {
 				g.color(Color.GRAY);
 				g.drawLine(x1, left.y() + left.w() * 0.5f, x2, right.y() + right.w() * 0.5f);
