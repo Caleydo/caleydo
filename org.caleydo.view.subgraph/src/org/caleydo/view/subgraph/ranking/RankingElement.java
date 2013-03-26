@@ -133,6 +133,11 @@ public class RankingElement extends GLElementContainer {
 			public boolean isShowColumnPool() {
 				return false;
 			}
+
+			@Override
+			public EButtonBarPositionMode getButtonBarPosition() {
+				return EButtonBarPositionMode.OVER_LABEL;
+			}
 		};
 
 		TableUI tableUI = new TableUI(table, config, RowHeightLayouts.UNIFORM);
