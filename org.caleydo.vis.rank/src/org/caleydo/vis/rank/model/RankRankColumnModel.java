@@ -36,11 +36,14 @@ import org.caleydo.vis.rank.ui.detail.ValueElement;
  */
 public class RankRankColumnModel extends ARankColumnModel implements IGLRenderer, ICollapseableColumnMixin,
 		IHideableColumnMixin {
+	public static final String PROP_SHOW_RANK_DELTA = "showRankDelta";
+
+	private boolean showRankDelta = false;
 
 	public RankRankColumnModel() {
 		super(Color.GRAY, new Color(0.95f, .95f, .95f));
 		setHeaderRenderer(GLRenderers.drawText("Rank", VAlign.CENTER));
-		setWidth(35);
+		setWidth(40);
 	}
 
 	public RankRankColumnModel(RankRankColumnModel copy) {
@@ -63,12 +66,38 @@ public class RankRankColumnModel extends ARankColumnModel implements IGLRenderer
 		return (ValueElement) (new ColoredValueElement().setRenderer(this));
 	}
 
+	/**
+	 * @param showRankDelta
+	 *            setter, see {@link showRankDelta}
+	 */
+	public void setShowRankDelta(boolean showRankDelta) {
+		this.showRankDelta = showRankDelta;
+	}
+
+	/**
+	 * @return the showRankDelta, see {@link #showRankDelta}
+	 */
+	public boolean isShowRankDelta() {
+		return showRankDelta;
+	}
+
 	@Override
 	public String getValue(IRow row) {
 		ColumnRanker ranker = getMyRanker();
 		if (!ranker.hasDefinedRank())
 			return "";
-		return String.format("%2d.", ranker.getVisualRank(row));
+		int rank = ranker.getVisualRank(row);
+		if (showRankDelta) {
+			ColumnRanker previous = getTable().getPreviousRanker(ranker);
+			if (previous != null) {
+				int prank = previous.getVisualRank(row);
+				int delta = rank - prank;
+				if (prank >= 0 && delta != 0) {
+					return String.format("(%+d) %2d.", delta, rank);
+				}
+			}
+		}
+		return String.format("%2d.", rank);
 	}
 
 	@Override

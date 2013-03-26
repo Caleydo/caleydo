@@ -490,6 +490,21 @@ public class RankTableModel implements IRankColumnParent {
 		return findCorrespondingRanker(columns.indexOf(model));
 	}
 
+	public ColumnRanker getPreviousRanker(ColumnRanker ranker) {
+		if (ranker == defaultRanker)
+			return null;
+		ColumnRanker previous = defaultRanker;
+		for (ARankColumnModel col : columns) {
+			if (col instanceof OrderColumn) {
+				ColumnRanker r = ((OrderColumn) col).getRanker();
+				if (r == ranker)
+					return previous;
+				previous = r;
+			}
+		}
+		return previous;
+	}
+
 	private ColumnRanker findCorrespondingRanker(int index) {
 		if (index <= 0)
 			return defaultRanker;

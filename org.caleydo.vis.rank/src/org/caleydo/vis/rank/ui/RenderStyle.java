@@ -89,6 +89,9 @@ public class RenderStyle {
 	public static final String ICON_ALIGN_CLASSIC = ICON_PREFIX + "align_classic.png";
 	public static final String ICON_ALIGN_STACKED = ICON_PREFIX + "align_stacked.png";
 
+	public static final String ICON_SHOW_RANK_DELTA = ICON_PREFIX + "chart_down_color.png";
+	public static final String ICON_HIDE_RANK_DELTA = ICON_PREFIX + "chart_down_color_disabled.png";
+
 	public static final String ICON_ALIGN_FISH = ICON_PREFIX + "align_fish.jpg";
 	public static final String ICON_ALIGN_UNIFORM = ICON_PREFIX + "align_uniform.png";
 

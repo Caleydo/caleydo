@@ -60,6 +60,7 @@ import org.caleydo.vis.rank.internal.ui.ButtonBar;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.FloatRankColumnModel;
 import org.caleydo.vis.rank.model.IRankColumnParent;
+import org.caleydo.vis.rank.model.RankRankColumnModel;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.mixin.IAnnotatedColumnMixin;
 import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
@@ -349,6 +350,18 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 			model.addPropertyChangeListener(IFilterColumnMixin.PROP_FILTER, filterChangedListener);
 			buttons.addButton(b, "Edit the filter of this column", RenderStyle.ICON_FILTER_DISABLED,
 					RenderStyle.ICON_FILTER);
+		}
+		if (model instanceof RankRankColumnModel) {
+			final RankRankColumnModel m = (RankRankColumnModel) model;
+			GLButton b = new GLButton(GLButton.EButtonMode.CHECKBOX);
+			b.setSelected(m.isShowRankDelta());
+			b.setCallback(new ISelectionCallback() {
+				@Override
+				public void onSelectionChanged(GLButton button, boolean selected) {
+					m.setShowRankDelta(selected);
+				}
+			});
+			buttons.addButton(b, "Show Rank Delta", RenderStyle.ICON_SHOW_RANK_DELTA, RenderStyle.ICON_HIDE_RANK_DELTA);
 		}
 		if (model instanceof ISearchableColumnMixin) {
 			final ISearchableColumnMixin m = (ISearchableColumnMixin) model;
