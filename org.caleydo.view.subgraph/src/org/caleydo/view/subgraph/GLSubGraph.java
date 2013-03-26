@@ -47,6 +47,8 @@ import org.caleydo.core.view.opengl.layout2.GLElement.EVisibility;
 import org.caleydo.core.view.opengl.layout2.GLElementAdapter;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.animation.AnimatedGLElementContainer;
+import org.caleydo.core.view.opengl.layout2.basic.GLButton;
+import org.caleydo.core.view.opengl.layout2.basic.GLButton.ISelectionCallback;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
 import org.caleydo.core.view.opengl.layout2.layout.GLSizeRestrictiveFlowLayout;
@@ -238,6 +240,27 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		rankingElement = new RankingElement(this);
 		rankingWindow.setContent(rankingElement);
 		slideInElement = new SlideInElement(rankingWindow, ESlideInElementPosition.RIGHT);
+		slideInElement.setCallBack(new ISelectionCallback() {
+
+			@Override
+			public void onSelectionChanged(GLButton button, boolean selected) {
+				if (selected) {
+					if (rankingElement.getNumTableColumns() > 1) {
+						rankingWindow.setSize(200, Float.NaN);
+					} else {
+						rankingWindow.setSize(150, Float.NaN);
+					}
+					rankingWindow.background.setVisibility(EVisibility.PICKABLE);
+					rankingWindow.baseContainer.setVisibility(EVisibility.VISIBLE);
+
+				} else {
+					rankingWindow.setSize(1, Float.NaN);
+					rankingWindow.background.setVisibility(EVisibility.NONE);
+					rankingWindow.baseContainer.setVisibility(EVisibility.NONE);
+				}
+
+			}
+		});
 		rankingWindow.addSlideInElement(slideInElement);
 		rankingWindow.setShowCloseButton(false);
 		rankingElement.setWindow(rankingWindow);
@@ -263,29 +286,29 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 
 	}
 
-	protected HashSet<Pair<PathwayMultiFormInfo,PathwayMultiFormInfo>> windowStubs = new HashSet<Pair<PathwayMultiFormInfo,PathwayMultiFormInfo>>();
-	protected HashSet<Pair<PathwayMultiFormInfo,PathwayMultiFormInfo>> windowStubsRightSide = new HashSet<Pair<PathwayMultiFormInfo,PathwayMultiFormInfo>>();
+	protected HashSet<Pair<PathwayMultiFormInfo, PathwayMultiFormInfo>> windowStubs = new HashSet<Pair<PathwayMultiFormInfo, PathwayMultiFormInfo>>();
+	protected HashSet<Pair<PathwayMultiFormInfo, PathwayMultiFormInfo>> windowStubsRightSide = new HashSet<Pair<PathwayMultiFormInfo, PathwayMultiFormInfo>>();
 
-	protected void clearWindowStubSets(){
+	protected void clearWindowStubSets() {
 		windowStubs.clear();
 		windowStubsRightSide.clear();
 	}
 
-	public boolean containsWindowsStub(Pair<PathwayMultiFormInfo,PathwayMultiFormInfo> windowPair){
-		if(!windowStubs.contains(windowPair)){
+	public boolean containsWindowsStub(Pair<PathwayMultiFormInfo, PathwayMultiFormInfo> windowPair) {
+		if (!windowStubs.contains(windowPair)) {
 			windowStubs.add(windowPair);
 			return false;
 		}
 		return true;
 	}
-	public boolean containsWindowsStubRightSide(Pair<PathwayMultiFormInfo,PathwayMultiFormInfo> windowPair){
-		if(!windowStubsRightSide.contains(windowPair)){
+
+	public boolean containsWindowsStubRightSide(Pair<PathwayMultiFormInfo, PathwayMultiFormInfo> windowPair) {
+		if (!windowStubsRightSide.contains(windowPair)) {
 			windowStubsRightSide.add(windowPair);
 			return false;
 		}
 		return true;
 	}
-
 
 	@Override
 	public void init(GL2 gl) {
@@ -702,7 +725,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		IPathwayRepresentation pathwayRepresentation = null;
 		PathwayMultiFormInfo pwInfo = null;
 		for (PathwayPath segment : pathSegments) {
-			if(segment==null){
+			if (segment == null) {
 				System.out.println("updatePathLinks() ..  PathwayPath segment : pathSegments .. segment==null");
 				break;
 			}

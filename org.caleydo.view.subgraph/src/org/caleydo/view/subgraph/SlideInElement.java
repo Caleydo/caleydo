@@ -68,6 +68,10 @@ public class SlideInElement extends AnimatedGLElementContainer {
 		add(slideInButton);
 	}
 
+	public void setCallBack(ISelectionCallback callback) {
+		slideInButton.setCallback(callback);
+	}
+
 	public enum ESlideInElementPosition {
 		NONE, LEFT, RIGHT, TOP, BOTTOM;
 	}

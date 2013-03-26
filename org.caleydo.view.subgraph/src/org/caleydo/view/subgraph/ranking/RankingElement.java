@@ -77,7 +77,7 @@ public class RankingElement extends GLElementContainer {
 
 		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
-			if (window == null)
+			if (window == null || window.getSize().x() < 2)
 				return;
 			if (table.getColumns().size() > 1) {
 				if (window.getSize().x() != 200)
@@ -89,6 +89,10 @@ public class RankingElement extends GLElementContainer {
 			}
 		}
 	};
+
+	public int getNumTableColumns() {
+		return table.getColumns().size();
+	}
 
 	public RankingElement(final GLSubGraph view) {
 		this.view = view;
@@ -222,8 +226,8 @@ public class RankingElement extends GLElementContainer {
 
 	private FloatRankColumnModel createDefaultFloatRankColumnModel(IPathwayRanking ranking) {
 		FloatRankColumnModel column = new FloatRankColumnModel(ranking.getRankingFunction(), GLRenderers.drawText(
-				ranking.getRankingCriterion(), VAlign.CENTER), Color.GRAY, Color.LIGHT_GRAY,
-				new PiecewiseMapping(0, Float.NaN), FloatInferrers.MEAN);
+				ranking.getRankingCriterion(), VAlign.CENTER), Color.GRAY, Color.LIGHT_GRAY, new PiecewiseMapping(0,
+				Float.NaN), FloatInferrers.MEAN);
 		column.setWidth(50);
 		return column;
 	}
