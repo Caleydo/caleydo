@@ -121,7 +121,7 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 		model.addPropertyChangeListener(IMappedColumnMixin.PROP_MAPPING, listener);
 		// addDirectWeight(model.getWeight());
 		cacheMulti.clear();
-		float oldWidth = size() == 1 ? getSpaces() : width;
+		float oldWidth = size() == 1 ? (getSpaces() - RenderStyle.COLUMN_SPACE) : width;
 		super.setWidth(oldWidth + model.getWidth() + RenderStyle.COLUMN_SPACE);
 		model.setParentData(model.getWidth());
 	}
@@ -277,7 +277,7 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 	 * @return
 	 */
 	private float getSpaces() {
-		return RenderStyle.STACKED_COLUMN_PADDING * 2 + RenderStyle.COLUMN_SPACE * (size() - 1);
+		return RenderStyle.STACKED_COLUMN_PADDING * 2 + RenderStyle.COLUMN_SPACE * size();
 	}
 
 	public void setWeights(float[] weights) {

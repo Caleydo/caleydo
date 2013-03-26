@@ -123,11 +123,19 @@ public class ColumnRanker implements Iterable<IRow> {
 	public void checkOrderChanges(ARankColumnModel from, ARankColumnModel to) {
 		if (from instanceof IFilterColumnMixin && ((IFilterColumnMixin) from).isFiltered()) { // filter elements
 			dirtyFilter = true;
+			if (orderBy == from) {
+				orderBy = null;
+				orderByFixed = false;
+			}
 			fireInvalid();
 			return;
 		}
 		if (to instanceof IFilterColumnMixin && ((IFilterColumnMixin) to).isFiltered()) { // filter elements
 			dirtyFilter = true;
+			if (orderBy == from) {
+				orderBy = null;
+				orderByFixed = false;
+			}
 			fireInvalid();
 			return;
 		}
