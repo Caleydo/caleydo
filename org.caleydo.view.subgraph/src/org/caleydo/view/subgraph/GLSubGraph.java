@@ -47,6 +47,7 @@ import org.caleydo.core.view.opengl.layout2.GLElement.EVisibility;
 import org.caleydo.core.view.opengl.layout2.GLElementAdapter;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.animation.AnimatedGLElementContainer;
+import org.caleydo.core.view.opengl.layout2.animation.MoveTransitions;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton.ISelectionCallback;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
@@ -219,10 +220,14 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	public GLSubGraph(IGLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
 
 		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
-		GLElementContainer column = new GLElementContainer(new GLSizeRestrictiveFlowLayout(false, 10, GLPadding.ZERO));
+		AnimatedGLElementContainer column = new AnimatedGLElementContainer(new GLSizeRestrictiveFlowLayout(false, 10,
+				GLPadding.ZERO));
 		column.add(baseContainer);
 		nodeInfoContainer.setSize(Float.NaN, 0);
 		dataMappingWindow = new GLWindow("Data Mapping", this);
+		// dataMappingWindow.setDefaultInTransition(new InOutTransitions.InOutTransitionBase(InOutInitializers.TOP,
+		// MoveTransitions.MOVE_LINEAR));
+		dataMappingWindow.setDefaultMoveTransition(MoveTransitions.GROW_LINEAR);
 		dataMappingWindow.setSize(Float.NaN, 80);
 		dataMappingWindow.setContent(experimentalDataMappingElement);
 		dataMappingWindow.setShowCloseButton(false);
@@ -318,6 +323,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 				EnumSet.of(EEmbeddingID.PATH_LEVEL1, EEmbeddingID.PATH_LEVEL2), baseContainer, 0.3f, pathInfo);
 		MultiLevelSlideInElement slideInElement = new MultiLevelSlideInElement(pathInfo.window,
 				ESlideInElementPosition.LEFT);
+		pathInfo.window.setDefaultMoveTransition(MoveTransitions.GROW_LINEAR);
 		slideInElement.addWindowState(new IWindowState() {
 
 			@Override
@@ -1103,7 +1109,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 				if (lastNodeOfPrevSegment != null) {
 					PathwayMultiFormInfo info1 = getInfo(lastNodeOfPrevSegment);
 					PathwayMultiFormInfo info2 = getInfo(nodes.get(0));
-					if (pathwayRow.getVisibility() == EVisibility.NONE)
+					if (pathwayRow.getVisibility() == EVisibility.NONE || info1 == null || info2 == null)
 						continue;
 					Rectangle2D loc1 = getAbsoluteVertexLocation(
 							getPathwayRepresentation(info1.multiFormRenderer,
