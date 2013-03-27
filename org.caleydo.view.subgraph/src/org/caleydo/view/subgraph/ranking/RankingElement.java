@@ -51,6 +51,7 @@ import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.StringRankColumnModel;
 import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
+import org.caleydo.vis.rank.ui.RenderStyle;
 import org.caleydo.vis.rank.ui.TableUI;
 
 /**
@@ -138,6 +139,12 @@ public class RankingElement extends GLElementContainer {
 			public EButtonBarPositionMode getButtonBarPosition() {
 				return EButtonBarPositionMode.OVER_LABEL;
 			}
+
+			@Override
+			public void renderRowBackground(GLGraphics g, float x, float y, float w, float h, boolean even, IRow row,
+					IRow selected) {
+				renderRowBackgroundImpl(g, x, y, w, h, even, row, selected);
+			}
 		};
 
 		TableUI tableUI = new TableUI(table, config, RowHeightLayouts.UNIFORM);
@@ -148,6 +155,22 @@ public class RankingElement extends GLElementContainer {
 				onRowPick(pick);
 			}
 		});
+	}
+
+	protected void renderRowBackgroundImpl(GLGraphics g, float x, float y, float w, float h, boolean even, IRow row,
+			IRow selected) {
+		if (row == selected) {
+			g.color(RenderStyle.COLOR_SELECTED_ROW);
+			g.incZ();
+			g.fillRect(x, y, w, h);
+			g.color(RenderStyle.COLOR_SELECTED_BORDER);
+			g.drawLine(x, y, x + w, y);
+			g.drawLine(x, y + h, x + w, y + h);
+			g.decZ();
+		} else if (!even) {
+			g.color(RenderStyle.COLOR_BACKGROUND_EVEN);
+			g.fillRect(x, y, w, h);
+		}
 	}
 
 	@Override
@@ -164,6 +187,20 @@ public class RankingElement extends GLElementContainer {
 		PathwayRow row = (PathwayRow) table.getMyRanker(null).get(rank);
 		// view.createTooltip(new DefaultLabelProvider(row.toString()));
 		// System.out.println(row + " " + pick.getPickingMode());
+	}
+
+	@Override
+	protected void renderImpl(GLGraphics g, float w, float h) {
+		if (w < 10)
+			return;
+		super.renderImpl(g, w, h);
+	}
+
+	@Override
+	protected void renderPickImpl(GLGraphics g, float w, float h) {
+		if (w < 10)
+			return;
+		super.renderPickImpl(g, w, h);
 	}
 
 	/**
