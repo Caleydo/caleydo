@@ -21,6 +21,7 @@ package org.caleydo.vis.rank.config;
 
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.basic.IScrollBar;
+import org.caleydo.vis.rank.model.IRow;
 
 /**
  * Utility methods for creating a different versions of a {@link IRankTableUIConfig}
@@ -96,6 +97,12 @@ public class RankTableUIConfigs {
 		@Override
 		public EButtonBarPositionMode getButtonBarPosition() {
 			return wrappee.getButtonBarPosition();
+		}
+
+		@Override
+		public void renderRowBackground(GLGraphics g, float x, float y, float w, float h, boolean even, IRow row,
+				IRow selected) {
+			wrappee.renderRowBackground(g, x, y, w, h, even, row, selected);
 		}
 	}
 

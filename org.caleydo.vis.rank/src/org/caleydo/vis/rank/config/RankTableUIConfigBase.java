@@ -24,6 +24,7 @@ import gleem.linalg.Vec2f;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.basic.IScrollBar;
 import org.caleydo.core.view.opengl.layout2.basic.ScrollBar;
+import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.ui.RenderStyle;
 
 /**
@@ -89,4 +90,20 @@ public class RankTableUIConfigBase implements IRankTableUIConfig {
 		return EButtonBarPositionMode.ABOVE_LABEL;
 	}
 
+	@Override
+	public void renderRowBackground(GLGraphics g, float x, float y, float w, float h, boolean even, IRow row,
+			IRow selected) {
+		if (row == selected) {
+				g.color(RenderStyle.COLOR_SELECTED_ROW);
+				g.incZ();
+				g.fillRect(x, y, w, h);
+				g.color(RenderStyle.COLOR_SELECTED_BORDER);
+				g.drawLine(x, y, x + w, y);
+				g.drawLine(x, y+h, x + w, y+h);
+				g.decZ();
+		} else if (!even) {
+			g.color(RenderStyle.COLOR_BACKGROUND_EVEN);
+			g.fillRect(x, y, w, h);
+		}
+	}
 }

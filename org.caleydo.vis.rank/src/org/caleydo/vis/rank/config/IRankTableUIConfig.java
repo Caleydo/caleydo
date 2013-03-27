@@ -21,6 +21,7 @@ package org.caleydo.vis.rank.config;
 
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.basic.IScrollBar;
+import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.RankTableModel;
 
 /**
@@ -79,4 +80,6 @@ public interface IRankTableUIConfig {
 	}
 
 	public EButtonBarPositionMode getButtonBarPosition();
+
+	void renderRowBackground(GLGraphics g, float x, float y, float w, float h, boolean even, IRow row, IRow selected);
 }

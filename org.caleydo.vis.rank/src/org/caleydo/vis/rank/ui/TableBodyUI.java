@@ -533,7 +533,7 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 
 	/**
 	 * manually scrolling
-	 * 
+	 *
 	 * @param rowDelta
 	 */
 	public void scroll(int rowDelta) {
@@ -641,24 +641,14 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 					g.color(Color.LIGHT_GRAY).fillRect(x, bounds.y(), w, bounds.w());
 					g.popName();
 				}
-			} else if (rankedRow == selected) {
-				g.color(RenderStyle.COLOR_SELECTED_ROW);
-				g.incZ();
-				g.fillRect(x, bounds.y(), w, bounds.w());
-				g.color(RenderStyle.COLOR_SELECTED_BORDER);
-				g.drawLine(x, bounds.y(), x + w, bounds.y());
-				g.drawLine(x, bounds.y() + bounds.w(), x + w, bounds.y() + bounds.w());
-				g.decZ();
-			} else if (!even) {
-				g.color(RenderStyle.COLOR_BACKGROUND_EVEN);
-				g.fillRect(x, bounds.y(), w, bounds.w());
 			}
+			config.renderRowBackground(g, x, bounds.y(), w, bounds.w(), even, rankedRow, selected);
 		}
 	}
 
 	@Override
 	public void layoutRows(ARankColumnModel model, final IRowSetter setter, final float w, float h) {
-		IRow selected = table.getSelectedRow();
+		// IRow selected = table.getSelectedRow();
 		getRanker(model).layoutRows(setter, 0, w);
 	}
 
