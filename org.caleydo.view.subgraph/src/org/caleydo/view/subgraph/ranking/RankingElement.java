@@ -161,7 +161,7 @@ public class RankingElement extends GLElementContainer {
 			IRow selected) {
 		PathwayRow pathwayRow = (PathwayRow) row;
 
-		if (row == selected || view.hasPathway(pathwayRow.getPathway())) {
+		if (view.hasPathway(pathwayRow.getPathway())) {
 			g.color(RenderStyle.COLOR_SELECTED_ROW);
 			g.incZ();
 			g.fillRect(x, y, w, h);
@@ -216,6 +216,8 @@ public class RankingElement extends GLElementContainer {
 
 		if (!view.hasPathway(newValue.getPathway()))
 			view.addPathway(newValue.getPathway(), EEmbeddingID.PATHWAY_LEVEL1);
+
+		table.setSelectedRow(null);
 	}
 
 	private void applyFilter() {
