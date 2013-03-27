@@ -980,6 +980,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 					lastUsedRenderer = info.multiFormRenderer;
 				}
 			}
+			updatePathwayPortals();
 			updatePathLinks();
 		}
 
