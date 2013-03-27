@@ -408,6 +408,21 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 		super.relayout();// super not direct to signal we want to relayout but no force
 	}
 
+	/**
+	 * calls this method to set the size of a child in a managed way, as if you set the size of an element the recording
+	 * can't restore the old value
+	 * 
+	 * @param child
+	 * @param w
+	 * @param h
+	 */
+	public final void resizeChild(GLElement child, float w, float h) {
+		final IMoveTransition animation = child.getLayoutDataAs(IMoveTransition.class, defaultMoveTransition);
+		ManualMoveAnimation anim = new ManualMoveAnimation(defaultDuration, animation, child.getBounds());
+		child.setSize(w, h);
+		layoutAnimations.put(GLElementAccessor.asLayoutElement(child), anim);
+	}
+
 	public final int size() {
 		return children.size();
 	}
@@ -491,7 +506,10 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 		}
 
 		public boolean hasChanged() {
-			return after != null && !before.equals(after) && !(!areValidBounds(after) && !areValidBounds(before));
+			if (after == null || before.equals(after))
+				return false;
+
+			return !(!areValidBounds(after) && !areValidBounds(before));
 		}
 
 		@Override
