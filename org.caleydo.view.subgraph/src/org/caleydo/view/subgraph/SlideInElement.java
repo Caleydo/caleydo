@@ -22,6 +22,7 @@ package org.caleydo.view.subgraph;
 import gleem.linalg.Vec2f;
 
 import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.animation.AnimatedGLElementContainer;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton;
@@ -36,7 +37,7 @@ import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
  * @author Christian Partl
  *
  */
-public class SlideInElement extends AnimatedGLElementContainer {
+public class SlideInElement extends GLElementContainer {
 
 	protected GLWindow window;
 	protected ESlideInElementPosition elementPosition;
@@ -137,24 +138,26 @@ public class SlideInElement extends AnimatedGLElementContainer {
 
 		@Override
 		public void onSelectionChanged(GLButton button, boolean selected) {
+			AnimatedGLElementContainer anim = (AnimatedGLElementContainer) window.getParent();
+			// use the parent container of the window to set the size otherwise it can't be tracked
 			if (selected) {
 				if (elementPosition == ESlideInElementPosition.LEFT || elementPosition == ESlideInElementPosition.RIGHT) {
-					window.setSize(previousWindowSize.x(), Float.NaN);
+					anim.resizeChild(window, previousWindowSize.x(), Float.NaN);
 				} else {
-					window.setSize(Float.NaN, previousWindowSize.y());
+					anim.resizeChild(window, Float.NaN, previousWindowSize.y());
 				}
-				window.background.setVisibility(EVisibility.PICKABLE);
-				window.baseContainer.setVisibility(EVisibility.VISIBLE);
+				// window.background.setVisibility(EVisibility.PICKABLE);
+				// window.baseContainer.setVisibility(EVisibility.VISIBLE);
 
 			} else {
 				previousWindowSize = new Vec2f(getSize());
 				if (elementPosition == ESlideInElementPosition.LEFT || elementPosition == ESlideInElementPosition.RIGHT) {
-					window.setSize(1, Float.NaN);
+					anim.resizeChild(window, 1, Float.NaN);
 				} else {
-					window.setSize(Float.NaN, 1);
+					anim.resizeChild(window, Float.NaN, 1);
 				}
-				window.background.setVisibility(EVisibility.NONE);
-				window.baseContainer.setVisibility(EVisibility.NONE);
+				// window.background.setVisibility(EVisibility.VISIBLE);
+				// window.baseContainer.setVisibility(EVisibility.VISIBLE);
 			}
 		}
 	}

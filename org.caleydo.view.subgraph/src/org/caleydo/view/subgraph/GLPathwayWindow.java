@@ -21,10 +21,12 @@ package org.caleydo.view.subgraph;
 
 import javax.media.opengl.GL;
 
+import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton.EButtonMode;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton.ISelectionCallback;
@@ -74,7 +76,7 @@ public class GLPathwayWindow extends GLMultiFormWindow {
 		});
 		titleBar.add(titleBar.size() - 2, pinButton);
 
-		background.onPick(new APickingListener() {
+		backgroundPicker.add(new APickingListener() {
 			@Override
 			protected void rightClicked(Pick pick) {
 				ShowCommonNodesPathwaysEvent event = new ShowCommonNodesPathwaysEvent(info.pathway);
@@ -84,8 +86,23 @@ public class GLPathwayWindow extends GLMultiFormWindow {
 			}
 
 		});
-		background.setTooltip(info.pathway.getTitle());
+	}
 
+
+	@Override
+	protected void init(IGLElementContext context) {
+		super.init(context);
+		backgroundPicker.add(context.createTooltip(new ILabelProvider() {
+			@Override
+			public String getProviderName() {
+				return null;
+			}
+
+			@Override
+			public String getLabel() {
+				return ((PathwayMultiFormInfo) info).pathway.getTitle();
+			}
+		}));
 	}
 
 	@Override

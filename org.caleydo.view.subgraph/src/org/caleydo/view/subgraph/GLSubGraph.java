@@ -47,7 +47,6 @@ import org.caleydo.core.view.opengl.layout2.GLElement.EVisibility;
 import org.caleydo.core.view.opengl.layout2.GLElementAdapter;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.animation.AnimatedGLElementContainer;
-import org.caleydo.core.view.opengl.layout2.animation.MoveTransitions;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton.ISelectionCallback;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
@@ -225,10 +224,10 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 				GLPadding.ZERO));
 		column.add(baseContainer);
 		nodeInfoContainer.setSize(Float.NaN, 0);
-		dataMappingWindow = new GLWindow("Data Mapping", this);
+		dataMappingWindow = new SideWindow("Data Mapping", this, SideWindow.SLIDE_BOTTOM_OUT);
 		// dataMappingWindow.setDefaultInTransition(new InOutTransitions.InOutTransitionBase(InOutInitializers.TOP,
 		// MoveTransitions.MOVE_LINEAR));
-		dataMappingWindow.setDefaultMoveTransition(MoveTransitions.GROW_LINEAR);
+		// dataMappingWindow.setDefaultMoveTransition(MoveTransitions.GROW_LINEAR);
 		dataMappingWindow.setSize(Float.NaN, 80);
 		dataMappingWindow.setContent(experimentalDataMappingElement);
 		dataMappingWindow.setShowCloseButton(false);
@@ -241,7 +240,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 
 		column.add(dataMappingWindow);
 		// column.add(nodeInfoContainer);
-		rankingWindow = new GLWindow("Pathways", this);
+		rankingWindow = new SideWindow("Pathways", this, SideWindow.SLIDE_LEFT_OUT);
 		rankingWindow.setSize(150, Float.NaN);
 		rankingElement = new RankingElement(this);
 		rankingWindow.setContent(rankingElement);
@@ -250,19 +249,15 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 
 			@Override
 			public void onSelectionChanged(GLButton button, boolean selected) {
+				AnimatedGLElementContainer anim = (AnimatedGLElementContainer) rankingWindow.getParent();
 				if (selected) {
 					if (rankingElement.getNumTableColumns() > 1) {
-						rankingWindow.setSize(200, Float.NaN);
+						anim.resizeChild(rankingWindow, 200, Float.NaN);
 					} else {
-						rankingWindow.setSize(150, Float.NaN);
+						anim.resizeChild(rankingWindow, 150, Float.NaN);
 					}
-					rankingWindow.background.setVisibility(EVisibility.PICKABLE);
-					rankingWindow.baseContainer.setVisibility(EVisibility.VISIBLE);
-
 				} else {
-					rankingWindow.setSize(1, Float.NaN);
-					rankingWindow.background.setVisibility(EVisibility.NONE);
-					rankingWindow.baseContainer.setVisibility(EVisibility.NONE);
+					anim.resizeChild(rankingWindow, 1, Float.NaN);
 				}
 
 			}
@@ -324,18 +319,17 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 				EnumSet.of(EEmbeddingID.PATH_LEVEL1, EEmbeddingID.PATH_LEVEL2), baseContainer, 0.3f, pathInfo);
 		MultiLevelSlideInElement slideInElement = new MultiLevelSlideInElement(pathInfo.window,
 				ESlideInElementPosition.LEFT);
-		pathInfo.window.setDefaultMoveTransition(MoveTransitions.GROW_LINEAR);
+		// pathInfo.window.setDefaultMoveTransition(MoveTransitions.GROW_LINEAR);
 		slideInElement.addWindowState(new IWindowState() {
 
 			@Override
 			public void apply() {
-				rankingWindow.setVisibility(EVisibility.VISIBLE);
-				pathwayRow.setVisibility(EVisibility.VISIBLE);
-				rankingWindow.setVisibility(EVisibility.VISIBLE);
+				rankingWindow.setVisibility(EVisibility.PICKABLE);
+				pathwayRow.setVisibility(EVisibility.PICKABLE);
+				rankingWindow.setVisibility(EVisibility.PICKABLE);
 				pathInfo.window.setLayoutData(Float.NaN);
-				pathInfo.window.setSize(1, Float.NaN);
-				pathInfo.window.background.setVisibility(EVisibility.NONE);
-				pathInfo.window.baseContainer.setVisibility(EVisibility.NONE);
+				AnimatedGLElementContainer anim = ((AnimatedGLElementContainer) pathInfo.window.getParent());
+				anim.resizeChild(pathInfo.window, 1, Float.NaN);
 				isPathWindowMaximized = false;
 			}
 		});
@@ -346,11 +340,9 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 				if (isPathWindowMaximized) {
 					baseContainer.remove(0);
 				}
-				rankingWindow.setVisibility(EVisibility.VISIBLE);
-				pathwayRow.setVisibility(EVisibility.VISIBLE);
-				rankingWindow.setVisibility(EVisibility.VISIBLE);
-				pathInfo.window.background.setVisibility(EVisibility.PICKABLE);
-				pathInfo.window.baseContainer.setVisibility(EVisibility.VISIBLE);
+				rankingWindow.setVisibility(EVisibility.PICKABLE);
+				pathwayRow.setVisibility(EVisibility.PICKABLE);
+				rankingWindow.setVisibility(EVisibility.PICKABLE);
 				isPathWindowMaximized = false;
 				setPathLevel(EEmbeddingID.PATH_LEVEL2);
 				augmentation.enable();
@@ -365,11 +357,11 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 				if (isPathWindowMaximized) {
 					baseContainer.remove(0);
 				}
-				rankingWindow.setVisibility(EVisibility.VISIBLE);
-				pathwayRow.setVisibility(EVisibility.VISIBLE);
-				rankingWindow.setVisibility(EVisibility.VISIBLE);
-				pathInfo.window.background.setVisibility(EVisibility.PICKABLE);
-				pathInfo.window.baseContainer.setVisibility(EVisibility.VISIBLE);
+				rankingWindow.setVisibility(EVisibility.PICKABLE);
+				pathwayRow.setVisibility(EVisibility.PICKABLE);
+				rankingWindow.setVisibility(EVisibility.PICKABLE);
+				// pathInfo.window.background.setVisibility(EVisibility.PICKABLE);
+				// pathInfo.window.baseContainer.setVisibility(EVisibility.VISIBLE);
 				isPathWindowMaximized = false;
 				setPathLevel(EEmbeddingID.PATH_LEVEL1);
 				augmentation.enable();
@@ -387,9 +379,10 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 				baseContainer.add(0, element);
 				pathwayRow.setVisibility(EVisibility.NONE);
 				pathInfo.window.setLayoutData(Float.NaN);
-				pathInfo.window.setSize(Float.NaN, Float.NaN);
-				pathInfo.window.background.setVisibility(EVisibility.PICKABLE);
-				pathInfo.window.baseContainer.setVisibility(EVisibility.VISIBLE);
+				AnimatedGLElementContainer anim = ((AnimatedGLElementContainer) pathInfo.window.getParent());
+				anim.resizeChild(pathInfo.window, Float.NaN, Float.NaN);
+				// pathInfo.window.background.setVisibility(EVisibility.PICKABLE);
+				// pathInfo.window.baseContainer.setVisibility(EVisibility.VISIBLE);
 				isPathWindowMaximized = true;
 				augmentation.disable();
 				updateAugmentation();

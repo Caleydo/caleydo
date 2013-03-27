@@ -24,47 +24,98 @@ import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
-import org.caleydo.core.view.opengl.layout2.animation.AnimatedGLElementContainer;
+import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton.ISelectionCallback;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
 import org.caleydo.core.view.opengl.layout2.layout.GLSizeRestrictiveFlowLayout;
+import org.caleydo.core.view.opengl.picking.PickingListenerComposite;
+
+import com.google.common.collect.Iterables;
 
 /**
  * @author Christian
  *
  */
-public class GLWindow extends AnimatedGLElementContainer {
+public class GLWindow extends GLElementContainer {
+	public static final Color DEFAULT_COLOR = new Color(0.95f, 0.95f, 0.95f, 1f);
+	protected Color bgColor = DEFAULT_COLOR;
 
 	private GLElement content;
 	protected final GLSubGraph view;
 	protected final GLTitleBar titleBar;
-	protected final GLPathwayBackground background;
-	protected final GLElementContainer baseContainer;
-	// protected final GLElementContainer contentContainer;
+	protected final GLElementContainer contentContainer;
 	protected boolean active = false;
 	protected boolean showCloseButton = true;
 
+	private int backgroundPickingId = -1;
+	protected final PickingListenerComposite backgroundPicker = new PickingListenerComposite(2);
+
 	public GLWindow(ILabelProvider titleLabelProvider, GLSubGraph view) {
+		super(GLLayouts.LAYERS);
 		this.view = view;
+		contentContainer = new GLElementContainer(new GLSizeRestrictiveFlowLayout(false, 1, GLPadding.ZERO));
 		titleBar = new GLTitleBar(titleLabelProvider);
-		background = new GLPathwayBackground(this);
-		setLayout(GLLayouts.LAYERS);
-		baseContainer = new GLElementContainer(new GLSizeRestrictiveFlowLayout(false, 1, GLPadding.ZERO));
-		baseContainer.add(titleBar);
+		contentContainer.add(titleBar);
 		titleBar.closeButton.setVisibility(EVisibility.NONE);
-		// contentContainer = new GLElementContainer(new GLSizeRestrictiveFlowLayout(true, 0, new GLPadding(3)));
 		// baseContainer.add(contentContainer);
 		// slideInButton.setSize(20, 5);
-
-		add(background);
-		add(baseContainer);
 		// add(slideInButton);
+		this.add(contentContainer);
+		setPicker(null);
 	}
 
 	public GLWindow(String title, GLSubGraph view) {
 		this(new DefaultLabelProvider(title), view);
+	}
+
+	@Override
+	protected void init(IGLElementContext context) {
+		backgroundPickingId = context.registerPickingListener(backgroundPicker);
+		super.init(context);
+	}
+
+	@Override
+	protected void takeDown() {
+		context.unregisterPickingListener(backgroundPickingId);
+		super.takeDown();
+	}
+
+	@Override
+	protected void renderImpl(GLGraphics g, float w, float h) {
+		g.color(bgColor);
+		g.incZ(-0.2f);
+		g.fillRoundedRect(0, 0, w, h, 7);
+		g.incZ(0.2f);
+
+		if (w <= 1 || h <= 1) { // just render the SlideInElements
+			g.incZ();
+			for (SlideInElement child : Iterables.filter(this, SlideInElement.class))
+				child.render(g);
+			g.decZ();
+		} else
+			// render normally
+			super.renderImpl(g, w, h);
+	}
+
+	@Override
+	protected void renderPickImpl(GLGraphics g, float w, float h) {
+		if (w <= 1 || h <= 1) { // just render the SlideInElements
+			g.incZ();
+			for (SlideInElement child : Iterables.filter(this, SlideInElement.class))
+				child.renderPick(g);
+			g.decZ();
+		} else {
+			g.incZ(-0.2f);
+			g.pushName(backgroundPickingId);
+			g.fillRect(0, 0, w, h); // render a background rect
+			g.popName();
+			g.incZ(0.2f);
+			// render normally
+			super.renderPickImpl(g, w, h);
+		}
 	}
 
 	public void addSlideInElement(SlideInElement element) {
@@ -108,8 +159,8 @@ public class GLWindow extends AnimatedGLElementContainer {
 	 */
 	public void setContent(GLElement content) {
 		if (this.content != null)
-			baseContainer.remove(this.content);
-		baseContainer.add(content);
+			contentContainer.remove(this.content);
+		contentContainer.add(content);
 		this.content = content;
 	}
 
@@ -142,7 +193,8 @@ public class GLWindow extends AnimatedGLElementContainer {
 	}
 
 	public void setBackgroundColor(Color color) {
-		background.setColor(color);
+		this.bgColor = color;
+		repaint();
 	}
 
 }
