@@ -210,7 +210,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 
 	private boolean isControlKeyPressed = false;
 
-	public boolean showSrcWindowLinks=true;
+	public boolean showSrcWindowLinks=false;
 	/**
 	 * Constructor.
 	 *
