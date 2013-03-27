@@ -91,7 +91,7 @@ public class RankRankColumnModel extends ARankColumnModel implements IGLRenderer
 			ColumnRanker previous = getTable().getPreviousRanker(ranker);
 			if (previous != null) {
 				int prank = previous.getVisualRank(row);
-				int delta = rank - prank;
+				int delta = prank - rank; // upwards = positive
 				if (prank >= 0 && delta != 0) {
 					return String.format("(%+d) %2d.", delta, rank);
 				}
