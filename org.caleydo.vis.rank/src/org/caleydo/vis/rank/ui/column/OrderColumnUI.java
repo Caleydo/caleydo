@@ -288,27 +288,26 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 				boolean isRightValid = areValidBounds(right);
 				if (!isLeftValid && !isRightValid)
 					continue;
+				int pRank = previousRanker.getRanker().getRank(row);
 				int delta = 0;
-				if (isLeftValid && !isRightValid) {
-					int pRank = previousRanker.getRanker().getRank(row);
-					if (pRank < 0) {
-						delta = Integer.MAX_VALUE;
-					} else if (left.y() <= 0) {
-						delta = (int) pScroll.getOffset() - pRank;
-					} else {
-						delta = pRank - (int) (pScroll.getOffset() - pScroll.getWindow());
-					}
-				} else if (!isLeftValid && isRightValid) {
-					int pRank = previousRanker.getRanker().getRank(row);
-					if (pRank < 0) {
-						delta = Integer.MAX_VALUE;
-					} else if (left.y() <= 0) {
-						delta = (int) aScroll.getOffset() - i;
-					} else {
-						delta = i - (int) (aScroll.getOffset() - aScroll.getWindow());
-					}
-				}
-				renderBand(g, left, right, x1, x2, selectedRank == i, Math.abs(delta));
+				if (pRank < 0)
+					delta = Integer.MAX_VALUE;
+				else
+					delta = i - pRank;
+				// if (isLeftValid && !isRightValid) {
+				// } else if (left.y() <= 0) {
+				// delta = (int) pScroll.getOffset() - pRank;
+				// } else {
+				// delta = pRank - (int) (pScroll.getOffset() - pScroll.getWindow());
+				// }
+				// } else if (!isLeftValid && isRightValid) {
+				// } else if (left.y() <= 0) {
+				// delta = (int) aScroll.getOffset() - i;
+				// } else {
+				// delta = i - (int) (aScroll.getOffset() - aScroll.getWindow());
+				// }
+				// }
+				renderBand(g, left, right, x1, x2, selectedRank == i, delta);
 			}
 		}
 
@@ -375,45 +374,52 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 		boolean isRightValid = areValidBounds(right);
 		if (isSelected) {
 			g.incZ();
+			// g.color(deltaToColor(delta, RenderStyle.COLOR_SELECTED_ROW));
+			g.color(RenderStyle.COLOR_SELECTED_ROW);
 			if (isLeftValid && isRightValid) {
-				g.color(RenderStyle.COLOR_SELECTED_ROW);
 				g.fillPolygon(new Vec2f(x1, left.y()), new Vec2f(x2, right.y()), new Vec2f(x2, right.y() + right.w()),
 						new Vec2f(x1, left.y() + left.w()));
-				g.color(RenderStyle.COLOR_SELECTED_BORDER);
+				g.color(deltaToColor(delta, RenderStyle.COLOR_SELECTED_BORDER));
 				g.drawLine(x1, left.y(), x2, right.y());
 				g.drawLine(x1, left.y() + left.w(), x2, right.y() + right.w());
 			} else if (isLeftValid && delta != Integer.MAX_VALUE) {
-				g.color(RenderStyle.COLOR_SELECTED_ROW);
 				g.fillPolygon(new Vec2f(x1, left.y()), new Vec2f(x2, right.y()), new Vec2f(x1, left.y() + left.w()));
-				g.color(RenderStyle.COLOR_SELECTED_BORDER);
+				g.color(deltaToColor(delta, RenderStyle.COLOR_SELECTED_BORDER));
 				g.drawLine(x1, left.y(), x2, right.y());
 				g.drawLine(x1, left.y() + left.w(), x2, right.y());
 			} else if (isRightValid && delta != Integer.MAX_VALUE) {
-				g.color(RenderStyle.COLOR_SELECTED_ROW);
 				g.fillPolygon(new Vec2f(x1, left.y()), new Vec2f(x2, right.y()), new Vec2f(x2, right.y() + right.w()));
-				g.color(RenderStyle.COLOR_SELECTED_BORDER);
+				g.color(deltaToColor(delta, RenderStyle.COLOR_SELECTED_BORDER));
 				g.drawLine(x1, left.y(), x2, right.y());
 				g.drawLine(x1, left.y(), x2, right.y() + right.w());
 			}
 			g.decZ();
 		} else if (delta != Integer.MAX_VALUE) {
 			if (isLeftValid && isRightValid) {
-				g.color(Color.GRAY);
+				g.color(deltaToColor(delta, Color.GRAY));
 				g.drawLine(x1, left.y() + left.w() * 0.5f, x2, right.y() + right.w() * 0.5f);
 			} else if (isLeftValid) {
 				float v = getAlphaFromDelta(delta);
-				g.color(v, v, v, 1);
+				Color c = deltaToColor(delta, Color.BLACK);
+				g.color(c.getRed(), c.getGreen(), c.getBlue(), 1 - v);
 				arrow(g, x1, left.y(), left.w(), right.y() <= 0);
 			} else if (isRightValid) {
 				float v = getAlphaFromDelta(delta);
-				g.color(v, v, v, 1);
+				Color c = deltaToColor(delta, Color.BLACK);
+				g.color(c.getRed(), c.getGreen(), c.getBlue(), 1 - v);
 				arrow(g, x2 - 7, right.y(), right.w(), left.y() <= 0);
 			}
 		}
 	}
 
+	private Color deltaToColor(int delta, Color gray) {
+		if (delta == 0)
+			return gray;
+		return delta < 0 ? Color.GREEN : Color.RED;
+	}
+
 	protected float getAlphaFromDelta(int delta) {
-		return Math.max(1 - Math.min(delta / 50.f, .8f), 0.2f);
+		return Math.max(1 - Math.min(Math.abs(delta) / 50.f, .8f), 0.2f);
 	}
 
 	private static void arrow(GLGraphics g, float x, float y, float h, boolean up) {
