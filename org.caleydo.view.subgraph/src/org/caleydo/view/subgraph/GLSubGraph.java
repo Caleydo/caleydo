@@ -210,6 +210,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 
 	private boolean isControlKeyPressed = false;
 
+	public boolean showSrcWindowLinks=true;
 	/**
 	 * Constructor.
 	 *
@@ -510,8 +511,13 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 					EventPublisher.INSTANCE.triggerEvent(event);
 				}
 				// highlightAllPortalsButton.setChecked(isOPressed);
+				boolean iswPressed = e.isKeyDown('w');
+				// augmentation.showPortals(isPPressed);
+				if (iswPressed) {
+					if(showSrcWindowLinks) showSrcWindowLinks=false;
+					else showSrcWindowLinks=true;
+				}
 			}
-
 		});
 	}
 

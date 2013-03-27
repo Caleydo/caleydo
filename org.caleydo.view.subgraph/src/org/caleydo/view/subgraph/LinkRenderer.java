@@ -149,6 +149,7 @@ public class LinkRenderer extends PickableGLElement {
 		
 		if(this.isLocation1Window && this.isLocation2Window)
 			return;
+
 		
 		g.incZ(2.5f);
 //		 g.color(1, 1, 0, 1);
@@ -167,8 +168,7 @@ public class LinkRenderer extends PickableGLElement {
 			//bandColor = PortalRenderStyle.DEFAULT_PORTAL_COLOR.getRGB(); //c.getRGBA();
 			//g.color(PortalRenderStyle.DEFAULT_PORTAL_COLOR);
 		}
-		//
-
+		//		
 		//
 		if (drawLink){			
 			renderStubs(g.gl, false);
@@ -242,7 +242,7 @@ public class LinkRenderer extends PickableGLElement {
 //			renderStubRightSide(gl, loc2, loc1, isLocation2Window, info2, info1);
 //			renderStubLeftSide(gl,  loc1, loc2, isLocation1Window, info1, info2);
 //		}
-		float angleThreshold=0.7f;
+		float angleThreshold=0.8f;
 		////////////////////////////////////
 		int whichConnector=1;
 		boolean isLocationAWithinBoundsofB=false;
@@ -266,8 +266,14 @@ public class LinkRenderer extends PickableGLElement {
 				}
 			}
 		}
-		
+		boolean renderSrcStub=true;
+		if(isLocation1Window && !view.showSrcWindowLinks && !drawLink){
+			renderSrcStub=false;
+		}
 
+		float tmpR=bandColor[0];
+		float tmpG=bandColor[1];
+		float tmpB=bandColor[2];
 		float angle=0.0f;
 		switch(whichConnector){
 			default:
@@ -275,12 +281,19 @@ public class LinkRenderer extends PickableGLElement {
 				angle = getAngle(	(float) loc1.getX()+(float) loc1.getWidth(), (float) loc1.getY()+(float) loc1.getHeight()/2.0f, 
 										(float) loc2.getX(), (float) loc2.getY()+(float) loc2.getHeight()/2.0f);
 						if(angle<angleThreshold && angle > -angleThreshold) {
-//							bandColor[0]=.0f;		
-//							bandColor[1]=1.0f;
-//							bandColor[2]=.0f;
 							isAngleTooSmall=true;
 						}						
-				renderStubLeftSide(gl,  loc1, loc2, isLocation1Window, info1, info2,true);				
+				if(renderSrcStub){					
+					renderStubLeftSide(gl,  loc1, loc2, isLocation1Window, info1, info2,true);
+				}else{
+//					bandColor[0]=.0f;		
+//					bandColor[1]=1.0f;
+//					bandColor[2]=.0f;
+//					renderStubLeftSide(gl,  loc1, loc2, isLocation1Window, info1, info2,true);
+//					bandColor[0]=tmpR;		
+//					bandColor[1]=tmpG;
+//					bandColor[2]=tmpB;
+				}
 				renderStubRightSide(gl, loc2, loc1, isLocation2Window, info2, info1,false);			
 				break;
 			case 2://Right/Left
@@ -292,7 +305,17 @@ public class LinkRenderer extends PickableGLElement {
 //							bandColor[2]=.0f;
 							isAngleTooSmall=true;
 						}
-				renderStubRightSide(gl, loc1, loc2, isLocation1Window, info1, info2,true);
+				if(renderSrcStub){
+							renderStubRightSide(gl, loc1, loc2, isLocation1Window, info1, info2,true);
+				}else{
+//					bandColor[0]=.0f;		
+//					bandColor[1]=1.0f;
+//					bandColor[2]=.0f;
+//					renderStubRightSide(gl, loc1, loc2, isLocation1Window, info1, info2,true);
+//					bandColor[0]=tmpR;		
+//					bandColor[1]=tmpG;
+//					bandColor[2]=tmpB;
+				}
 				renderStubLeftSide(gl,  loc2, loc1, isLocation2Window, info2, info1,false);
 				break;
 			case 3://Right/Right
@@ -304,7 +327,17 @@ public class LinkRenderer extends PickableGLElement {
 //							bandColor[2]=.0f;
 							isAngleTooSmall=true;
 						}
-				renderStubRight2RightSide(gl,  loc2, loc1, isLocation2Window, info2, info1,true);
+				if(renderSrcStub){
+					renderStubRight2RightSide(gl,  loc2, loc1, isLocation2Window, info2, info1,true);
+				}else{
+//					bandColor[0]=.0f;		
+//					bandColor[1]=1.0f;
+//					bandColor[2]=.0f;
+//					renderStubRight2RightSide(gl,  loc2, loc1, isLocation2Window, info2, info1,true);
+//					bandColor[0]=tmpR;		
+//					bandColor[1]=tmpG;
+//					bandColor[2]=tmpB;
+				}
 				renderStubRight2RightSide(gl,  loc1, loc2, isLocation1Window, info1, info2,false);
 				break;
 			case 4://Left/Left
@@ -316,7 +349,17 @@ public class LinkRenderer extends PickableGLElement {
 //					bandColor[2]=.0f;
 					isAngleTooSmall=true;
 				}
-				renderStubLeft2LeftSide(gl,  loc2, loc1, isLocation2Window, info2, info1,true);
+				if(renderSrcStub){				
+					renderStubLeft2LeftSide(gl,  loc2, loc1, isLocation2Window, info2, info1,true);
+				}else{
+//					bandColor[0]=.0f;		
+//					bandColor[1]=1.0f;
+//					bandColor[2]=.0f;
+//					renderStubLeft2LeftSide(gl,  loc2, loc1, isLocation2Window, info2, info1,true);
+//					bandColor[0]=tmpR;		
+//					bandColor[1]=tmpG;
+//					bandColor[2]=tmpB;
+				}
 				renderStubLeft2LeftSide(gl,  loc1, loc2, isLocation1Window, info1, info2,false);
 				break;		
 		}
