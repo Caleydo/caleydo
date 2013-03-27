@@ -25,6 +25,7 @@ import java.util.Set;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
+import org.caleydo.view.subgraph.GLSubGraph;
 
 /**
  * Common pathway filters.
@@ -44,6 +45,7 @@ public final class PathwayFilters {
 			return true;
 		}
 	};
+
 
 	/**
 	 * Selects only pathways that contain a specified {@link PathwayVertexRep}.
@@ -96,6 +98,20 @@ public final class PathwayFilters {
 			if (this.pathway == pathway && !selectSourcePathway)
 				return false;
 			return PathwayManager.get().getNumEquivalentVertexReps(this.pathway, pathway) > 0;
+		}
+	}
+
+	public static class NoPresentPathwaysFilter implements IPathwayFilter {
+
+		private GLSubGraph view;
+
+		public NoPresentPathwaysFilter(GLSubGraph view) {
+			this.view = view;
+		}
+
+		@Override
+		public boolean showPathway(PathwayGraph pathway) {
+			return !view.hasPathway(pathway);
 		}
 	}
 }

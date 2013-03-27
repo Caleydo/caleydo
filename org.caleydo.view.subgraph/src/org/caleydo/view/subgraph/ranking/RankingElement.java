@@ -159,7 +159,9 @@ public class RankingElement extends GLElementContainer {
 
 	protected void renderRowBackgroundImpl(GLGraphics g, float x, float y, float w, float h, boolean even, IRow row,
 			IRow selected) {
-		if (row == selected) {
+		PathwayRow pathwayRow = (PathwayRow) row;
+
+		if (row == selected || view.hasPathway(pathwayRow.getPathway())) {
 			g.color(RenderStyle.COLOR_SELECTED_ROW);
 			g.incZ();
 			g.fillRect(x, y, w, h);
@@ -171,6 +173,7 @@ public class RankingElement extends GLElementContainer {
 			g.color(RenderStyle.COLOR_BACKGROUND_EVEN);
 			g.fillRect(x, y, w, h);
 		}
+
 	}
 
 	@Override
