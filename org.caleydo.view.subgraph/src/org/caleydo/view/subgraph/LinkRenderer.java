@@ -826,7 +826,7 @@ public class LinkRenderer extends PickableGLElement {
 ////////////////////////////////          Right2Right
 /////////////////////////////////////////	
 	protected void renderStubRight2RightSide(GL2 gl, Rectangle2D loc, Rectangle2D locTarget, boolean isWindow, PathwayMultiFormInfo info, PathwayMultiFormInfo infoTarget, boolean start){
-		if(this.isAngleTooSmall){
+		if(this.isAngleTooSmall || isWindow){
 			renderRightOffsetStub(gl, loc, locTarget, isWindow, info, infoTarget, start);
 			return;
 		}
@@ -1038,10 +1038,11 @@ public class LinkRenderer extends PickableGLElement {
         if(isWindow){
         	float zn=0f;
 	        gl.glBegin(GL2.GL_QUADS);
-	        	gl.glColor4f(red, green, blue,0.35f);
+	        	gl.glColor4f(red, green, blue,linkOpacity);
 	        	//gl.glColor4f(1f, 0f,0f,1f);
 	    		gl.glVertex3f(p00X,p00Y,zn);
 	    		gl.glVertex3f(p01X,p01Y,zn);	    
+	           	gl.glColor4f(red, green, blue,0.0f);
 	    		gl.glVertex3f(p01X-(float)loc.getHeight()/1.0f, p01Y,zn);
 		    	gl.glVertex3f(p00X-(float)loc.getHeight()/1.0f, p00Y,zn);
 	    	gl.glEnd();
@@ -1062,7 +1063,7 @@ public class LinkRenderer extends PickableGLElement {
 /////////////////////////////// Left2Right
 /////////////////////////////////////////		
 	protected void renderStubLeft2LeftSide(GL2 gl, Rectangle2D loc, Rectangle2D locTarget, boolean isWindow, PathwayMultiFormInfo info, PathwayMultiFormInfo infoTarget, boolean start){
-		if(this.isAngleTooSmall){
+		if(this.isAngleTooSmall || isWindow){
 			renderLeftOffsetStub(gl, loc, locTarget, isWindow, info, infoTarget, start);
 			return;
 		}
@@ -1272,13 +1273,13 @@ public class LinkRenderer extends PickableGLElement {
 	        if(isWindow){
 	        	float zn=0f;
 		        gl.glBegin(GL2.GL_QUADS);
-	        	gl.glColor4f(red, green, blue,0.4f);
+	        	gl.glColor4f(red, green, blue,linkOpacity);
 	        	//gl.glColor4f(1f, 0f,0f,1f);
 	    		gl.glVertex3f(p10X,p10Y,zn);
 	    		gl.glVertex3f(p11X,p11Y,zn);			    
-
-	    		gl.glVertex3f(p11X+(float)loc.getHeight()/1.0f, p11Y,zn);
-		    	gl.glVertex3f(p10X+(float)loc.getHeight()/1.0f, p10Y,zn);
+	    		gl.glColor4f(red, green, blue,0.0f);
+	    		gl.glVertex3f(p11X+(float)loc.getHeight()*1.5f, p11Y,zn);
+		    	gl.glVertex3f(p10X+(float)loc.getHeight()*1.5f, p10Y,zn);
 	        gl.glEnd();
 	        }
 	}
