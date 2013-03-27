@@ -279,9 +279,8 @@ public class LinkRenderer extends PickableGLElement {
 //							bandColor[1]=1.0f;
 //							bandColor[2]=.0f;
 							isAngleTooSmall=true;
-						}
-				
-				renderStubLeftSide(gl,  loc1, loc2, isLocation1Window, info1, info2,true);
+						}						
+				renderStubLeftSide(gl,  loc1, loc2, isLocation1Window, info1, info2,true);				
 				renderStubRightSide(gl, loc2, loc1, isLocation2Window, info2, info1,false);			
 				break;
 			case 2://Right/Left
@@ -1094,15 +1093,16 @@ public class LinkRenderer extends PickableGLElement {
 		xS = (float)locTarget.getX()+(float)locTarget.getWidth();
 		yS = (float)locTarget.getY()+(float)locTarget.getHeight()/2.0f;
 		
+		xE = (float)loc.getX();;
 		yE = (float)loc.getY()+(float)loc.getHeight()/2.0f;
 		
-//		float red=1.0f;//bandColor[0]
+//		float red=0.0f;//bandColor[0]
 //		float green=0.0f;//bandColor[1]
-//		float blue=0.0f;//bandColor[2]	
+//		float blue=1.0f;//bandColor[2]	
 		float red=bandColor[0];
 		float green=bandColor[1];
 		float blue=bandColor[2]	;	
-		
+
 		boolean renderStub=true;
 		if(isWindow && !this.drawLink){
 			Pair<PathwayMultiFormInfo,PathwayMultiFormInfo> windowPair = new Pair<PathwayMultiFormInfo, PathwayMultiFormInfo>(info, infoTarget);
@@ -1157,7 +1157,7 @@ public class LinkRenderer extends PickableGLElement {
 			stubConnectionPoint4_Y= yE - (dirNorm.get(1) * (stubLength))+glBandWidthOffsetY;//;
 		}
 		
-		float stubConnectorWidth=(((float)loc1.getHeight()*2.0f < (float)loc2.getHeight()) ? (float)loc1.getHeight() : (float)loc2.getHeight());
+		float stubConnectorWidth=(float)loc.getHeight(); //(((float)loc1.getHeight()*2.0f < (float)loc2.getHeight()) ? (float)loc1.getHeight() : (float)loc2.getHeight());
 		float p10X=xE;
 		float p10Y=yE- stubConnectorWidth/2.0f;
 		float p11X=xE;
