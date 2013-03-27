@@ -290,6 +290,7 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 		for (ARankColumnModel col : this) {
 			float w = weights[i++] * factor;
 			col.setParentData(w);
+			col.setWidthImpl(w);
 		}
 		propertySupport.firePropertyChange(PROP_WEIGHTS, null, weights);
 	}

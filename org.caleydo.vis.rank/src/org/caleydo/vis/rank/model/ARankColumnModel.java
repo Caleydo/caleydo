@@ -114,6 +114,10 @@ public abstract class ARankColumnModel implements IDragInfo, IRankColumnModel {
 		return this;
 	}
 
+	public void setWidthImpl(float with) {
+		this.width = with;
+	}
+
 	public float getWidth() {
 		if (isCollapsed())
 			return ICollapseableColumnMixin.COLLAPSED_WIDTH;
