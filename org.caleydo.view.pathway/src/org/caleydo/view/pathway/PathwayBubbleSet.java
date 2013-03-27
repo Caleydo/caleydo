@@ -70,8 +70,8 @@ public class PathwayBubbleSet
 			if (path == null)
 				break;
 			if(selectionID==id){											
-				addColoredPath(path,new Color(selColor[0],selColor[1],selColor[2]));
-				addColoredPath(path,new Color(selColor[0],selColor[1],selColor[2]));
+				//addColoredPath(path,new Color(selColor[0],selColor[1],selColor[2]));
+				//addColoredPath(path,new Color(selColor[0],selColor[1],selColor[2]));
 				//addColoredPath(path,new Color(selColor[0],selColor[1],selColor[2]));
 				break;
 			}
@@ -197,15 +197,17 @@ public class PathwayBubbleSet
 		}
 	}
 	
-	public void addContextPathSegements(List<List<PathwayVertexRep>> contextPaths)
-	{
+	public void addContextPathSegements(List<List<PathwayVertexRep>> contextPaths){
 		Color contextPathColor=new Color(0.0f,0.0f,1.0f); 
+		ArrayList<Rectangle2D> items= new ArrayList<>();
+		ArrayList<Line2D> edges= new ArrayList<>();
+		int i=0;
 		for (List<PathwayVertexRep> pathSegment : contextPaths) 
 		{
-			int i=0;
+			i=0;
 			Rectangle2D prevRect = new Rectangle2D.Double(0f, 0f, 0f, 0f);
-			ArrayList<Rectangle2D> items= new ArrayList<>();
-			ArrayList<Line2D> edges= new ArrayList<>();
+			edges.clear();
+			items.clear();
 			for (PathwayVertexRep node : pathSegment) {				
 				double bbItemW = node.getWidth();
 				double bbItemH = node.getHeight();

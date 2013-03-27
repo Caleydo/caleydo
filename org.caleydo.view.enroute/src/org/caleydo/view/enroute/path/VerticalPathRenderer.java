@@ -201,7 +201,7 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 		gl.glEnable(GL.GL_LINE_SMOOTH);
 		GLU glu = null;
 		if (!isBubbleSetInitialized) {
-			System.out.println("init Bubblesets=" + isBubbleSetInitialized);
+			//System.out.println("init Bubblesets=" + isBubbleSetInitialized);
 			bubbleSetRenderer.init(gl);
 			isBubbleSetInitialized = true;
 		}
@@ -264,8 +264,6 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 
 	
 	public void updateBubbleSets(GL2 gl){
-		
-
 		int sizeX = Math.round(this.x);
 		int sizeY = Math.round(this.y);
 		if (updateStrategy != null && this.updateStrategy instanceof FixedPathUpdateStrategy && sizeX > 0 && sizeY > 0) 
@@ -273,35 +271,36 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 			int i = 0;
 			this.bubbleSetRenderer.setSize(sizeX, sizeY);
 			this.bubbleSetRenderer.clearBubbleSet();
-			bubbleSetItems.clear();
-			bubbleSetEdges.clear();
-			for (List<PathwayVertexRep> segment : ((FixedPathUpdateStrategy) this.updateStrategy)
-					.getSelectedPathSegments()) {
+
+			for (List<PathwayVertexRep> segment : ((FixedPathUpdateStrategy) this.updateStrategy).getSelectedPathSegments()) 
+			{
 				Rectangle2D prevRect = new Rectangle2D.Double(0f, 0f, 0f, 0f);
-				for (PathwayVertexRep node : segment) {
+				bubbleSetItems.clear();
+				bubbleSetEdges.clear();
+				i = 0;
+				for (PathwayVertexRep node : segment){
 					Rectangle2D nodeRect = getVertexRepBounds(node);
 					if (nodeRect != null) {
 						float posx = (float) nodeRect.getCenterX();
 						float posy = -(float) nodeRect.getCenterY() + this.y;
 						// to debug output center as point
-						// gl.glColor4f(1,0,0,1);
-						// gl.glPointSize(5);
-						// gl.glBegin(GL2.GL_POINTS);
-						// gl.glVertex3f(posx,posy,5.0f);
-						// gl.glEnd();
-						// gl.glPointSize(1);
-						bubbleSetItems
-								.add(new Rectangle2D.Double(posx, posy, nodeRect.getWidth(), nodeRect.getHeight()));
+//						 gl.glColor4f(1,0,0,1);
+//						 gl.glPointSize(5);
+//						 gl.glBegin(GL2.GL_POINTS);
+//						 gl.glVertex3f(posx,posy,5.0f);
+//						 gl.glEnd();
+//						 gl.glPointSize(1);
+						bubbleSetItems.add(new Rectangle2D.Double(posx, posy, nodeRect.getWidth(), nodeRect.getHeight()));
 						if (i > 0) {
-							bubbleSetEdges.add(new Line2D.Double(posx, posy, prevRect.getCenterX(), prevRect
-									.getCenterY()));
+							bubbleSetEdges.add(new Line2D.Double(posx, posy, prevRect.getCenterX(), prevRect.getCenterY()));
 						}
 						prevRect.setRect(posx, posy, nodeRect.getWidth(), nodeRect.getHeight());
 						i++;
 					}// if
 				} // for(PathwayVertexRep node : segment){
+				this.bubbleSetRenderer.addGroup(bubbleSetItems, bubbleSetEdges, bubbleSetColor);
 			}// for (List<PathwayVertexRep> segment
-			this.bubbleSetRenderer.addGroup(bubbleSetItems, bubbleSetEdges, bubbleSetColor);
+			
 			((BubbleSet) this.bubbleSetRenderer.setOutline).useVirtualEdges(false);
 			// ((BubbleSet) this.bubbleSetRenderer.setOutline).setParameter(100, 20, 3, 10.0, 7.0, 0.5, 2.5, 15.0, 5);
 			// ((BubbleSet)this.bubbleSetRenderer.setOutline).setParameter(1, 1,1,1.0,1.0,.5,1.5, 1.0, 1);
