@@ -30,6 +30,7 @@ import java.util.Set;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
+
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataSupportDefinition;
 import org.caleydo.core.data.perspective.table.TablePerspective;
@@ -103,6 +104,8 @@ import org.jgrapht.GraphPath;
 import org.jgrapht.alg.KShortestPaths;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.GraphPathImpl;
+
+import setvis.bubbleset.BubbleSet;
 
 /**
  * Single OpenGL2 pathway view
@@ -757,9 +760,10 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 			textureOffset -= 2f * PathwayRenderStyle.Z_OFFSET;
 			gl.glTranslatef(0.0f, 0.0f, textureOffset);
 
-			overlayContextBubbleSets(gl);
-			overlayBubbleSets(gl);
 
+			overlayBubbleSets(gl);
+			overlayContextBubbleSets(gl);
+			
 			gl.glEnable(GL.GL_DEPTH_TEST);
 			gl.glDisable(GL.GL_STENCIL_TEST);
 		}
@@ -773,16 +777,19 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 
 	private void overlayContextBubbleSets(GL2 gl){
 		if(contextPaths.size()<1)return;
-		if(areContextPathsDirty){
+		//if(areContextPathsDirty){
 			this.contextPathBubbleSet.clear();
 			this.contextPathBubbleSet.getBubbleSetGLRenderer().setSize(pathway.getWidth(), pathway.getHeight());
 			this.contextPathBubbleSet.setPathwayGraph(pathway);
 
 			this.contextPathBubbleSet.addContextPathSegements(contextPaths);
 
+			//((BubbleSet)(contextPathBubbleSet.getBubbleSetGLRenderer().setOutline)).setParameter(100, 20, 3, 10.0, 7.0, 0.5, 2.5, 15.0, 5);
+			// BubbleSet(routingIterations, marchingIterations,pixelGroup,edgeR0,edgeR1, nodeR0, nodeR1,  morphBuffer,skip)
+			((BubbleSet)(contextPathBubbleSet.getBubbleSetGLRenderer().setOutline)).setParameter(10, 10, 3, 10.0, 20.0, 20.5, 5.5, 5.0, 5);
 			this.contextPathBubbleSet.getBubbleSetGLRenderer().update(gl, null, selectedPathID);
 			areContextPathsDirty = false;
-		}
+		//}
 
 		this.contextPathBubbleSet.getBubbleSetGLRenderer().render(gl,
 				pixelGLConverter.getGLWidthForPixelWidth(pathway.getWidth()),
