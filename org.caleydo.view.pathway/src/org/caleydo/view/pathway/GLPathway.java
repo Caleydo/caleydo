@@ -821,6 +821,9 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 //				allPathsList.get(allPathsList.size()-1).setSecond(0);
 			//if(allPathsList.size()>0)
 			//{
+			if(pathSegments.size()==0){
+				allPathsList.clear();
+			}
 				for(Pair< List<GraphPath<PathwayVertexRep, DefaultEdge>>, Integer> pathsPair: allPathsList){
 					//this.bubbleSet.addAllPaths(paths);
 					List<GraphPath<PathwayVertexRep, DefaultEdge>> paths=pathsPair.getFirst();
