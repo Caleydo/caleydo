@@ -79,7 +79,7 @@ public class PathwayBubbleSet
 		}		
 		id=0;
 		for (GraphPath<PathwayVertexRep, DefaultEdge> path : allPaths) {
-			
+
 			if (id < colorTable.size() - 2)		{
 				// avoid the last two colors because they are close to orange
 				// which is the selection color
@@ -92,7 +92,7 @@ public class PathwayBubbleSet
 			
 			if(selectionID!=id){								
 				org.caleydo.core.util.color.Color c = colorTable.get(colorID);
-				addColoredPath(path,new Color(c.r,c.g,c.b));				
+				addColoredPath(path,new Color(c.r/1.0f,c.g/1.0f,c.b/1.0f));				
 			}
 			id++;
 		}		
@@ -235,28 +235,37 @@ public class PathwayBubbleSet
 			{
 				ArrayList<Rectangle2D> items= new ArrayList<>();
 				ArrayList<Line2D> edges= new ArrayList<>();
-				for (DefaultEdge edge : pathSegment.getPath().getEdgeList()) {
-					PathwayVertexRep sourceVertexRep = pathway.getEdgeSource(edge);
-					PathwayVertexRep targetVertexRep = pathway.getEdgeTarget(edge);
-					double bbItemW = sourceVertexRep.getWidth();
-					double bbItemH = sourceVertexRep.getHeight();
-					double posX = sourceVertexRep.getLowerLeftCornerX();
-					double posY = sourceVertexRep.getLowerLeftCornerY();
-					double tX = targetVertexRep.getLowerLeftCornerX();
-					double tY = targetVertexRep.getLowerLeftCornerY();
-
-					items.add(new Rectangle2D.Double(posX, posY, bbItemW, bbItemH));
-					edges.add(new Line2D.Double(posX, posY, tX, tY));
-				}					
-				// add last item
-				if (pathSegment.getPath().getEdgeList().size() > 0) {
-					DefaultEdge lastEdge = pathSegment.getPath().getEdgeList()
-							.get(pathSegment.getPath().getEdgeList().size() - 1);
-					if (lastEdge != null) {
-						PathwayVertexRep targetVertexRep = pathway.getEdgeTarget(lastEdge);
-						items.add(new Rectangle2D.Double(
-								targetVertexRep.getLowerLeftCornerX(), targetVertexRep.getLowerLeftCornerY(),
-								targetVertexRep.getWidth(), targetVertexRep.getHeight()));
+				 if(pathSegment.getPath().getEdgeList().size()<1){
+					 PathwayVertexRep sourceVertexRep = pathSegment.getPath().getStartVertex();
+						double bbItemW = sourceVertexRep.getWidth();
+						double bbItemH = sourceVertexRep.getHeight();
+						double posX = sourceVertexRep.getLowerLeftCornerX();
+						double posY = sourceVertexRep.getLowerLeftCornerY();
+						items.add(new Rectangle2D.Double(posX, posY, bbItemW, bbItemH));
+				 }else{
+					for (DefaultEdge edge : pathSegment.getPath().getEdgeList()) {
+						PathwayVertexRep sourceVertexRep = pathway.getEdgeSource(edge);
+						PathwayVertexRep targetVertexRep = pathway.getEdgeTarget(edge);
+						double bbItemW = sourceVertexRep.getWidth();
+						double bbItemH = sourceVertexRep.getHeight();
+						double posX = sourceVertexRep.getLowerLeftCornerX();
+						double posY = sourceVertexRep.getLowerLeftCornerY();
+						double tX = targetVertexRep.getLowerLeftCornerX();
+						double tY = targetVertexRep.getLowerLeftCornerY();
+	
+						items.add(new Rectangle2D.Double(posX, posY, bbItemW, bbItemH));
+						edges.add(new Line2D.Double(posX, posY, tX, tY));
+					}					
+					// add last item
+					if (pathSegment.getPath().getEdgeList().size() > 0) {
+						DefaultEdge lastEdge = pathSegment.getPath().getEdgeList()
+								.get(pathSegment.getPath().getEdgeList().size() - 1);
+						if (lastEdge != null) {
+							PathwayVertexRep targetVertexRep = pathway.getEdgeTarget(lastEdge);
+							items.add(new Rectangle2D.Double(
+									targetVertexRep.getLowerLeftCornerX(), targetVertexRep.getLowerLeftCornerY(),
+									targetVertexRep.getWidth(), targetVertexRep.getHeight()));
+						}
 					}
 				}
 				renderer.addGroup(items, edges, pathSegColor);

@@ -203,6 +203,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 	private boolean isPathStartSelected = false;
 	private int selectedPathID;
 	private PathwayBubbleSet bubbleSet = new PathwayBubbleSet();
+	private PathwayBubbleSet alternativeBubbleSet = new PathwayBubbleSet();
 	private PathwayBubbleSet contextPathBubbleSet = new PathwayBubbleSet();
 	private boolean isControlKeyDown = false;
 	private boolean isShiftKeyDown = false;
@@ -325,6 +326,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		}
 
 		//System.out.println("selectedPathID="+selectedPathID);
+		this.allPathsList.get(this.allPathsList.size()-1).setSecond(selectedPathID);
 		isBubbleTextureDirty = true;
 		setDisplayListDirty();
 		triggerPathUpdate();
@@ -378,6 +380,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 
 		bubbleSet.getBubbleSetGLRenderer().init(gl);
 		contextPathBubbleSet.getBubbleSetGLRenderer().init(gl);
+		alternativeBubbleSet.getBubbleSetGLRenderer().init(gl);
 		// Check if pathway exists or if it's already loaded
 		if (pathway == null || !pathwayManager.hasItem(pathway.getID()))
 			return;
@@ -622,7 +625,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 					cComponents = c.getRGB();
 					if (red > (int) (cComponents[0] * 255f) - threshold
 							&& red < (int) (cComponents[0] * 255f) + threshold) {
-						System.out.println("DENIS_DEBUG:: found usedColor id=" + i);
+						//System.out.println("DENIS_DEBUG:: found usedColor id=" + i);
 						// select
 						selectedPathID = i;
 						if (selectedPathID > allPaths.size() - 1)
@@ -801,42 +804,65 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 
 	private void overlayBubbleSets(GL2 gl) {
 //		if (allPaths == null)
-//			return;
+//			return;overlayBubbleSets
+		
 
-		if(allPathsList.size()<1)
-			return;
 		if (isBubbleTextureDirty) {
 			// //allPaths
+			//System.out.println("overlayBubbleSets");
 			this.bubbleSet.clear();
+			this.alternativeBubbleSet.clear();
 			this.bubbleSet.setPathwayGraph(pathway);
-
-			if(selectedPathID>=0)
-				allPathsList.get(allPathsList.size()-1).setSecond(this.selectedPathID);
-			else
-				allPathsList.get(allPathsList.size()-1).setSecond(0);
-
-			for(Pair< List<GraphPath<PathwayVertexRep, DefaultEdge>>, Integer> pathsPair: allPathsList){
-				//this.bubbleSet.addAllPaths(paths);
-				List<GraphPath<PathwayVertexRep, DefaultEdge>> paths=pathsPair.getFirst();
-				this.bubbleSet.addAllPaths(paths,pathsPair.getSecond());
-			}
+			this.alternativeBubbleSet.setPathwayGraph(pathway);
+			
+//			if(selectedPathID>=0)
+//				allPathsList.get(allPathsList.size()-1).setSecond(this.selectedPathID);
+//			else
+//				allPathsList.get(allPathsList.size()-1).setSecond(0);
+			//if(allPathsList.size()>0)
+			//{
+				for(Pair< List<GraphPath<PathwayVertexRep, DefaultEdge>>, Integer> pathsPair: allPathsList){
+					//this.bubbleSet.addAllPaths(paths);
+					List<GraphPath<PathwayVertexRep, DefaultEdge>> paths=pathsPair.getFirst();
+					this.alternativeBubbleSet.addAllPaths(paths,pathsPair.getSecond());
+				}
+			//}
 			//
+			//System.out.println("overlayBubbleSets pathSegments.size"+pathSegments.size());
 			this.bubbleSet.addPathSegements(pathSegments);
+			this.bubbleSet.addPathSegements(pathSegments);
+			
+			
 			// this.bubbleSet.addPortals(portalVertexReps);
 
 			// update texture
 			this.bubbleSet.getBubbleSetGLRenderer().setSize(pathway.getWidth(), pathway.getHeight());
-			//this.bubbleSet.getBubbleSetGLRenderer().update(gl, SelectionType.SELECTION.getColor(), selectedPathID);
 			this.bubbleSet.getBubbleSetGLRenderer().update(gl, null, 0);
+
+				alternativeBubbleSet.getBubbleSetGLRenderer().setSize(pathway.getWidth(), pathway.getHeight());
+				//this.bubbleSet.getBubbleSetGLRenderer().update(gl, SelectionType.SELECTION.getColor(), selectedPathID);
+				alternativeBubbleSet.getBubbleSetGLRenderer().update(gl, null, 0);
+
+
+			
+			
 			isBubbleTextureDirty = false;
 		}
 
 		gl.glPushName(generalManager.getViewManager().getPickingManager()
 				.getPickingID(uniqueID, EPickingType.PATHWAY_TEXTURE_SELECTION.name(), 0));
+
+
+			this.alternativeBubbleSet.getBubbleSetGLRenderer().render(gl,
+					pixelGLConverter.getGLWidthForPixelWidth(pathway.getWidth()),
+					pixelGLConverter.getGLHeightForPixelHeight(pathway.getHeight()),0.25f);
+
 		this.bubbleSet.getBubbleSetGLRenderer().render(gl,
 				pixelGLConverter.getGLWidthForPixelWidth(pathway.getWidth()),
 				pixelGLConverter.getGLHeightForPixelHeight(pathway.getHeight()));
+		
 		gl.glPopName();
+		
 	}
 
 	private void rebuildPathwayDisplayList(final GL2 gl) {
@@ -1248,6 +1274,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 	}
 
 	private void generateSingleNodePath(PathwayVertexRep vertexRep) {
+		//System.out.println("generateSingleNodePath");
 		GraphPath<PathwayVertexRep, DefaultEdge> path = new GraphPathImpl<PathwayVertexRep, DefaultEdge>(pathway,
 				vertexRep, vertexRep, new ArrayList<DefaultEdge>(), 0);
 		if (allPaths == null){
@@ -1448,8 +1475,11 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 	 */
 	public void setSelectedPathSegments(List<PathwayPath> pathSegmentsBroadcasted) {
 		//System.out.println("pathSegmentsBroadcasted");
-		if (pathSegmentsBroadcasted == null)
+		if (pathSegmentsBroadcasted == null){
+			//System.out.println("(pathSegmentsBroadcasted == null");
 			return;		
+		}
+		//System.out.println("(pathSegmentsBroadcasted.size()="+pathSegmentsBroadcasted.size());
 		pathSegments = pathSegmentsBroadcasted;
 		boolean wasPathSelected = this.selectedPath != null;
 		this.selectedPath = null;
