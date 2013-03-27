@@ -1125,20 +1125,22 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 				lastNodeOfPrevSegment = nodes.get(nodes.size() - 1);
 			}
 		}
-		for (PathwayMultiFormInfo i : pathwayInfos) {
-			if (i.getCurrentEmbeddingID() == EEmbeddingID.PATHWAY_LEVEL1) {
-				highlightPathwayNodePortals(i);
+		if (pathwayRow.getVisibility() != EVisibility.NONE) {
+			for (PathwayMultiFormInfo i : pathwayInfos) {
+				if (i.getCurrentEmbeddingID() == EEmbeddingID.PATHWAY_LEVEL1) {
+					highlightPathwayNodePortals(i);
+				}
 			}
 		}
 
 		// Set<GLPathwayWindow> windowsToHighlight = new HashSet<>();
 
 		for (PathwayVertexRep vertexRep : info.pathway.vertexSet()) {
-			if (info.getCurrentEmbeddingID() == EEmbeddingID.PATHWAY_LEVEL1
-					&& vertexRep.getType() == EPathwayVertexType.map) {
-				addPortalHighlightRenderer(vertexRep, info);
-				continue;
-			}
+			// if (info.getCurrentEmbeddingID() == EEmbeddingID.PATHWAY_LEVEL1
+			// && vertexRep.getType() == EPathwayVertexType.map) {
+			// // addPortalHighlightRenderer(vertexRep, info);
+			// continue;
+			// }
 			Pair<Rectangle2D, Boolean> sourcePair = getPortalLocation(vertexRep, info);
 			for (PathwayMultiFormInfo i : pathwayInfos) {
 				if (info != i) {
