@@ -1046,13 +1046,18 @@ public class LinkRenderer extends PickableGLElement {
 	    		gl.glVertex3f(p01X-(float)loc.getHeight()/1.0f, p01Y,zn);
 		    	gl.glVertex3f(p00X-(float)loc.getHeight()/1.0f, p00Y,zn);
 	    	gl.glEnd();
-//		    gl.glBegin(GL2.GL_LINES);
-//		   		gl.glColor4f(red, green, blue, this.outlineOpacity);	
-//	    		gl.glVertex3f(p00X,p00Y,z);
-//	    		gl.glVertex3f(p01X,p01Y,z);	    
-//	    		gl.glVertex3f(p01X-(float)loc.getHeight()/2.0f, p01Y,-10f);
-//		    	gl.glVertex3f(p00X-(float)loc.getHeight()/2.0f, p00Y,-10f);    		    
-//		    	gl.glEnd();	
+	    	//wzn=3f;
+		    gl.glBegin(GL2.GL_LINES);
+		   		gl.glColor4f(red, green, blue, this.outlineOpacity);
+		   		//gl.glColor4f(1f, 0f,0f,1f);
+		   		gl.glVertex3f(p01X,p01Y,zn);
+		   		gl.glColor4f(red, green, blue, 0.0f);
+		   		gl.glVertex3f(p01X-(float)loc.getHeight()/1.0f, p01Y,zn);
+		   		gl.glColor4f(red, green, blue, this.outlineOpacity);			   		
+		   		gl.glVertex3f(p00X,p00Y,zn);
+		   		gl.glColor4f(red, green, blue, 0.0f);	
+		    	gl.glVertex3f(p00X-(float)loc.getHeight()/1.0f, p00Y,zn);    
+		    gl.glEnd();	
         }
         //gl.glEnable(GL2.GL_BLEND);
 
@@ -1281,6 +1286,19 @@ public class LinkRenderer extends PickableGLElement {
 	    		gl.glVertex3f(p11X+(float)loc.getHeight()*1.5f, p11Y,zn);
 		    	gl.glVertex3f(p10X+(float)loc.getHeight()*1.5f, p10Y,zn);
 	        gl.glEnd();
+	    	zn=3f;
+		    gl.glBegin(GL2.GL_LINES);
+		   		gl.glColor4f(red, green, blue, this.outlineOpacity);
+		   		//gl.glColor4f(1f, 0f,0f,1f);
+		   		
+		   		gl.glVertex3f(p11X,p11Y,zn);		
+		   		gl.glColor4f(red, green, blue, 0.0f);
+		   		gl.glVertex3f(p11X+(float)loc.getHeight()*1.5f, p11Y,zn);
+		   		gl.glColor4f(red, green, blue, this.outlineOpacity);			   		
+		   		gl.glVertex3f(p10X,p10Y,zn);
+		   		gl.glColor4f(red, green, blue, 0.0f);	
+		   		gl.glVertex3f(p10X+(float)loc.getHeight()*1.5f, p10Y,zn);
+		    gl.glEnd();	
 	        }
 	}
 ///////
