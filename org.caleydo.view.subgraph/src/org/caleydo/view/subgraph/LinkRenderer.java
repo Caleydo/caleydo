@@ -801,7 +801,12 @@ public class LinkRenderer extends PickableGLElement {
 		 float stubConnectionPointS_Y=0.0f;
 		 float stubConnectionPointE_X=0.0f;
 		 float stubConnectionPointE_Y=0.0f;
-		if(isWindow && !this.drawLink){
+			float p00X=xS;
+			float p00Y=yS-(float)loc.getHeight()/2.0f;
+			float p01X=xS;
+			float p01Y=yS+(float)loc.getHeight()/2.0f;
+			
+		if(isWindow){
 			Pair<PathwayMultiFormInfo,PathwayMultiFormInfo> windowPair = new Pair<PathwayMultiFormInfo, PathwayMultiFormInfo>(info, infoTarget);
 			if(this.view.containsWindowsStub(windowPair))
 				renderStub=false;	
@@ -816,16 +821,29 @@ public class LinkRenderer extends PickableGLElement {
 			Vec2f dirToWindowCenter = new Vec2f(windowCenterX -xS ,
 					 							windowCenterY -yS);
 			dirToWindowCenter.normalize();
+			
+			 if(this.drawLink){
+					Vec2f dirNorm  = new Vec2f(xE - xS, yE - yS);
+					dirNorm.normalize();
+					dirToWindowCenter=dirNorm;
+			 }
+			
 			Vec2f normalVecCenterVec = rotateVec2(dirToWindowCenter, (float) Math.PI / 2f);
 			float glBandWidthOffsetX_CenterVec = normalVecCenterVec.get(0) * bandWidth/2.0f;//Math.abs(p2x-p1x)/2.0f; //pxlConverter.getGLWidthForPixelWidth(Math.round(normalVec.get(0) * Math.abs(p2x-p1x)  ));
 			float glBandWidthOffsetY_CenterVec= normalVecCenterVec.get(1) * bandWidth/2.0f;//Math.abs(p2y-p1y)/2.0f;//pxlConverter.getGLHeightForPixelHeight(Math.round(normalVec.get(1) * Math.abs(p2y-p1y)  ));
 
 			
 				stubConnectionPointE_X= xS + (dirToWindowCenter.get(0) * (stubLength))-glBandWidthOffsetX_CenterVec;//;
-				stubConnectionPointE_Y= yS + (dirToWindowCenter.get(1) * (stubLength))+glBandWidthOffsetY_CenterVec;//;
+				stubConnectionPointE_Y= yS + (dirToWindowCenter.get(1) * (stubLength))-glBandWidthOffsetY_CenterVec;//;
 				stubConnectionPointS_X= xS + (dirToWindowCenter.get(0) * (stubLength))+glBandWidthOffsetX_CenterVec;//;
-				stubConnectionPointS_Y= yS + (dirToWindowCenter.get(1) * (stubLength))-glBandWidthOffsetY_CenterVec;//;
-	
+				stubConnectionPointS_Y= yS + (dirToWindowCenter.get(1) * (stubLength))+glBandWidthOffsetY_CenterVec;//;
+				
+//				float tmp=p00X;//
+//				p00X=p01X;//
+//				p01X=tmp;//=yS-(float)loc.getHeight()/2.0f;
+//				tmp=p00Y;//=xS;
+//				p00Y=p01Y;//=yS+(float)loc.getHeight()/2.0f;
+//				p01Y=tmp;
 		}else{
 			//			
 			Vec2f dirNorm  = new Vec2f(xE - xS, yE - yS);
@@ -839,11 +857,7 @@ public class LinkRenderer extends PickableGLElement {
 			stubConnectionPointE_X= xS + (dirNorm.get(0) * (stubLength))+glBandWidthOffsetX;//;
 			stubConnectionPointE_Y= yS + (dirNorm.get(1) * (stubLength))+glBandWidthOffsetY;//;	
 		}
-		float p00X=xS;
-		float p00Y=yS-(float)loc.getHeight()/2.0f;
-		float p01X=xS;
-		float p01Y=yS+(float)loc.getHeight()/2.0f;
-		
+
 		if(fadeToOpacity<linkOpacity && !renderStub)return;		
 	
     	gl.glBegin(GL2.GL_LINES);
@@ -866,12 +880,17 @@ public class LinkRenderer extends PickableGLElement {
     		gl.glVertex3f(stubConnectionPointS_X, stubConnectionPointS_Y,z);
     	gl.glEnd();
     	
+//		bandColor[0]=0f;
+//		bandColor[1]=1f;
+//		bandColor[2]=0f;	
+    	
 		if(start){
 			stubConnectionPoint1_X=stubConnectionPointS_X;	
 			stubConnectionPoint1_Y=stubConnectionPointS_Y;
 			stubConnectionPoint2_X=stubConnectionPointE_X;
 			stubConnectionPoint2_Y=stubConnectionPointE_Y;
 		}else{
+
 			stubConnectionPoint3_X=stubConnectionPointS_X;	
 			stubConnectionPoint3_Y=stubConnectionPointS_Y;
 			stubConnectionPoint4_X=stubConnectionPointE_X;

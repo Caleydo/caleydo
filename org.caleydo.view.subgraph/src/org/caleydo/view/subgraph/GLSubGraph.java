@@ -722,38 +722,37 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	}
 
 	protected void updatePathLinks() {
-		clearWindowStubSets();
-		augmentation.isDirty = true;
-		augmentation.setPxlSize(this.getParentGLCanvas().getWidth(), this.getParentGLCanvas().getHeight());
-
-		List<Rectangle2D> path = new ArrayList<>();
-
-		IPathwayRepresentation pathwayRepresentation = null;
-		PathwayMultiFormInfo pwInfo = null;
-		for (PathwayPath segment : pathSegments) {
-			if (segment == null) {
-				System.out.println("updatePathLinks() ..  PathwayPath segment : pathSegments .. segment==null");
-				break;
-			}
-			for (PathwayMultiFormInfo info : pathwayInfos) {
-				pathwayRepresentation = getPathwayRepresentation(info.multiFormRenderer,
-						info.multiFormRenderer.getActiveRendererID());
-				if (pathwayRepresentation != null && (segment.getPathway() == pathwayRepresentation.getPathway())) {
-					pwInfo = info;
-					break;
-				}
-			}
-			if (pathwayRepresentation != null && pwInfo != null) {
-				for (PathwayVertexRep v : segment.getNodes()) {
-					Rectangle2D rect = getAbsoluteVertexLocation(pathwayRepresentation, v, pwInfo.container);
-					if (rect != null)
-						path.add(rect);
-				}
-			}
-		}
-
-		augmentation.setPath(path);
-
+//		clearWindowStubSets();
+//		augmentation.isDirty = true;
+//		augmentation.setPxlSize(this.getParentGLCanvas().getWidth(), this.getParentGLCanvas().getHeight());
+//
+//		List<Rectangle2D> path = new ArrayList<>();
+//
+//		IPathwayRepresentation pathwayRepresentation = null;
+//		PathwayMultiFormInfo pwInfo = null;
+//		for (PathwayPath segment : pathSegments) {
+//			if (segment == null) {
+//				System.out.println("updatePathLinks() ..  PathwayPath segment : pathSegments .. segment==null");
+//				break;
+//			}
+//			for (PathwayMultiFormInfo info : pathwayInfos) {
+//				pathwayRepresentation = getPathwayRepresentation(info.multiFormRenderer,
+//						info.multiFormRenderer.getActiveRendererID());
+//				if (pathwayRepresentation != null && (segment.getPathway() == pathwayRepresentation.getPathway())) {
+//					pwInfo = info;
+//					break;
+//				}
+//			}
+//			if (pathwayRepresentation != null && pwInfo != null) {
+//				for (PathwayVertexRep v : segment.getNodes()) {
+//					Rectangle2D rect = getAbsoluteVertexLocation(pathwayRepresentation, v, pwInfo.container);
+//					if (rect != null)
+//						path.add(rect);
+//				}
+//			}
+//		}
+//
+//		augmentation.setPath(path);
 	}
 
 	public void updateAugmentation() {
