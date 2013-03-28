@@ -243,7 +243,7 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 		}
 		updateBubbleSets(gl);
 		this.bubbleSetRenderer.update(gl, null, 0);
-		this.bubbleSetRenderer.renderPxl(gl, this.x, this.y,1.0f);
+		this.bubbleSetRenderer.renderPxl(gl, this.x, this.y);
 //
 		
 

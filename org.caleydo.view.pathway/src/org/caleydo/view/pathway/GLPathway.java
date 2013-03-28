@@ -799,7 +799,6 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 			this.contextPathBubbleSet.getBubbleSetGLRenderer().update(gl, null, selectedPathID);
 			areContextPathsDirty = false;
 		}
-
 		
 		this.contextPathBubbleSet.getBubbleSetGLRenderer().render(gl,
 				pixelGLConverter.getGLWidthForPixelWidth(pathway.getWidth()),
@@ -881,7 +880,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		if(this.highlightVertices){
 			this.bubbleSet.getBubbleSetGLRenderer().render(gl,
 					pixelGLConverter.getGLWidthForPixelWidth(pathway.getWidth()),
-					pixelGLConverter.getGLHeightForPixelHeight(pathway.getHeight()),1.0f);
+					pixelGLConverter.getGLHeightForPixelHeight(pathway.getHeight()));
 		}else{
 
 			this.bubbleSet.getBubbleSetGLRenderer().render(gl,
