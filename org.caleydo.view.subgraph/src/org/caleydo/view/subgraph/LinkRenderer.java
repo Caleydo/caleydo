@@ -233,6 +233,8 @@ public class LinkRenderer extends PickableGLElement {
 		gl.glHint(GL2.GL_POLYGON_SMOOTH_HINT, GL2.GL_NICEST);
 		gl.glBlendFunc (GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);	
 		////
+		if(this.isPathLink)
+			linkOpacity=0.5f;
 		if(fade)fadeToOpacity=0.0f;
 		else fadeToOpacity=linkOpacity;
 //		if(loc1.getX()<loc2.getX()){
