@@ -35,6 +35,7 @@ import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.rank.internal.event.FilterEvent;
 import org.caleydo.vis.rank.internal.event.SearchEvent;
+import org.caleydo.vis.rank.internal.ui.StringFilterDalog;
 import org.caleydo.vis.rank.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IGrabRemainingHorizontalSpace;
 import org.caleydo.vis.rank.model.mixin.IRankColumnModel;
@@ -46,6 +47,7 @@ import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 
 import com.google.common.base.Function;
 
@@ -176,28 +178,8 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				IInputValidator validator = new IInputValidator() {
-					@Override
-					public String isValid(String newText) {
-						if (newText.length() >= 2)
-							EventPublisher.publishEvent(new FilterEvent(newText).to(summary));
-						if (newText.isEmpty())
-							EventPublisher.publishEvent(new FilterEvent(null).to(summary));
-						return null;
-					}
-				};
-				String bak = filter;
-				InputDialog d = new InputDialog(null, "Filter column: " + getTitle(),
-	 "Edit Filter "
-						+ filterStrategy.getHint(), filter, validator);
-				if (d.open() == Window.OK) {
-					String v = d.getValue().trim();
-					if (v.length() == 0)
-						v = null;
-					EventPublisher.publishEvent(new FilterEvent(v).to(summary));
-				} else {
-					EventPublisher.publishEvent(new FilterEvent(bak).to(summary));
-				}
+				new StringFilterDalog(new Shell(), getTitle(), filterStrategy.getHint(), summary, filter,
+						isGlobalFilter).open();
 			}
 		});
 	}
@@ -251,9 +233,18 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 		}
 	}
 
-	public void setFilter(String filter) {
+	public void setFilter(String filter, boolean isFilterGlobally) {
+		if (filter != null && filter.trim().length() == 0)
+			filter = null;
+		if (Objects.equals(filter, this.filter) && this.isGlobalFilter == isFilterGlobally)
+			return;
 		invalidAllFilter();
-		propertySupport.firePropertyChange(PROP_FILTER, this.filter, this.filter = filter);
+		if (Objects.equals(filter, this.filter)) {
+			setGlobalFilter(isFilterGlobally);
+		} else {
+			this.isGlobalFilter = isFilterGlobally;
+			propertySupport.firePropertyChange(PROP_FILTER, this.filter, this.filter = filter);
+		}
 	}
 
 	@Override
@@ -311,7 +302,7 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 
 		@ListenTo(sendToMe = true)
 		private void onSetFilter(FilterEvent event) {
-			setFilter((String) event.getFilter());
+			setFilter((String) event.getFilter(), event.isFilterGlobally());
 		}
 
 		@ListenTo(sendToMe = true)

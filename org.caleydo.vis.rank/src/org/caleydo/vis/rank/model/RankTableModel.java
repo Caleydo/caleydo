@@ -23,10 +23,12 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.AbstractList;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Deque;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -74,7 +76,7 @@ public class RankTableModel implements IRankColumnParent {
 	private final PropertyChangeListener refilter = new PropertyChangeListener() {
 		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
-			findCorrespondingRanker((IRankColumnModel) evt.getSource()).dirtyFilter();
+			refilter((IFilterColumnMixin) evt.getSource());
 		}
 	};
 
@@ -108,6 +110,7 @@ public class RankTableModel implements IRankColumnParent {
 		this.defaultRanker = new ColumnRanker(this);
 		this.defaultFilter = new ColumnFilter(this);
 	}
+
 
 	public RankTableModel(RankTableModel copy) {
 		this.config = copy.config;
@@ -476,6 +479,12 @@ public class RankTableModel implements IRankColumnParent {
 */
 	}
 
+	protected void refilter(IFilterColumnMixin source) {
+		for (ColumnRanker r : findAllColumnRankers())
+			r.dirtyFilter();
+		// findCorrespondingRanker((IRankColumnModel) evt.getSource()).dirtyFilter();// TODO Auto-generated method stub
+	}
+
 	public int getDataSize() {
 		return this.data.size();
 	}
@@ -578,6 +587,45 @@ public class RankTableModel implements IRankColumnParent {
 		return r.iterator();
 	}
 
+	public Iterator<IFilterColumnMixin> findAllMyFilteredColumns(ColumnRanker ranker) {
+		int start = getStartIndex(ranker);
+		List<IFilterColumnMixin> r = new ArrayList<>();
+
+		int i = -1;
+		boolean ended = false;
+		for (ARankColumnModel col : columns) {
+			i++;
+			boolean within = (i >= start && !ended);
+			if (col instanceof IFilterColumnMixin) {
+				IFilterColumnMixin f = (IFilterColumnMixin)col;
+				if (f.isGlobalFilter() || within)
+					r.add(f);
+			}
+			if (col instanceof ACompositeRankColumnModel) {
+				findAllFlatFilteredColumns((ACompositeRankColumnModel) col, within, r);
+			}
+			if (col instanceof OrderColumn && within) {
+				ended = true;
+			}
+		}
+
+		return r.iterator();
+	}
+
+	private void findAllFlatFilteredColumns(ACompositeRankColumnModel composite, boolean within,
+			List<IFilterColumnMixin> r) {
+		for (ARankColumnModel col : composite) {
+			if (col instanceof IFilterColumnMixin) {
+				IFilterColumnMixin f = (IFilterColumnMixin) col;
+				if (f.isGlobalFilter() || within)
+					r.add(f);
+			}
+			if (col instanceof ACompositeRankColumnModel) {
+				findAllFlatFilteredColumns((ACompositeRankColumnModel) col, within, r);
+			}
+		}
+	}
+
 	private int getStartIndex(ColumnRanker ranker) {
 		int start = 0;
 		if (ranker != defaultRanker) { // find the start
@@ -622,6 +670,37 @@ public class RankTableModel implements IRankColumnParent {
 		for (ColumnRanker ranker : findAllColumnRankers()) {
 			ranker.dirtyOrder();
 			ranker.order();
+		}
+
+	}
+
+	static class FlatIterator implements Iterator<ARankColumnModel> {
+		private Deque<Iterator<ARankColumnModel>> stack = new ArrayDeque<>(3);
+
+		public FlatIterator(Iterator<ARankColumnModel> it) {
+			this.stack.push(it);
+		}
+
+		@Override
+		public boolean hasNext() {
+			while (!stack.isEmpty() && !stack.peekLast().hasNext())
+				stack.pollLast();
+			return !stack.isEmpty();
+		}
+
+		@Override
+		public ARankColumnModel next() {
+			ARankColumnModel m = stack.peekLast().next();
+			if (m instanceof ACompositeRankColumnModel) {
+				ACompositeRankColumnModel c = (ACompositeRankColumnModel) m;
+				stack.push(c.iterator());
+			}
+			return m;
+		}
+
+		@Override
+		public void remove() {
+			throw new UnsupportedOperationException();
 		}
 
 	}

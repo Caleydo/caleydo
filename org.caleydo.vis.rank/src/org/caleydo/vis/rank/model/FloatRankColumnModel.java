@@ -34,7 +34,6 @@ import java.util.Map;
 
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.io.gui.dataimport.widget.ICallback;
-import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.util.function.AFloatList;
 import org.caleydo.core.util.function.FloatStatistics;
@@ -46,6 +45,7 @@ import org.caleydo.vis.rank.data.IFloatFunction;
 import org.caleydo.vis.rank.data.IFloatInferrer;
 import org.caleydo.vis.rank.internal.event.FilterEvent;
 import org.caleydo.vis.rank.internal.ui.FloatFilterDialog;
+import org.caleydo.vis.rank.internal.ui.FloatFilterDialog.FilterChecked;
 import org.caleydo.vis.rank.model.mapping.IMappingFunction;
 import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
 import org.caleydo.vis.rank.model.mixin.IFilterColumnMixin;
@@ -65,7 +65,7 @@ import org.eclipse.swt.widgets.Shell;
  *
  */
 public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implements IMappedColumnMixin,
-		IFloatRankableColumnMixin, ISetableColumnMixin, ISnapshotableColumnMixin, IFilterColumnMixin {
+		IFloatRankableColumnMixin, ISetableColumnMixin, ISnapshotableColumnMixin {
 
 	private final IMappingFunction mapping;
 	private final IFloatInferrer missingValueInferer;
@@ -310,17 +310,19 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 	 * @param filterNotMappedEntries
 	 *            setter, see {@link filterNotMappedEntries}
 	 */
-	public void setFilter(boolean filterNotMappedEntries, boolean filterMissingEntries) {
-		if (this.filterNotMappedEntries == filterNotMappedEntries && this.filterMissingEntries == filterMissingEntries)
+	public void setFilter(FloatFilterDialog.FilterChecked checked) {
+		if (this.filterNotMappedEntries == checked.isFilterNotMapped()
+				&& this.filterMissingEntries == checked.isFilterMissing()
+				&& this.isGlobalFilter == checked.isGlobalFiltering())
 			return;
-		boolean bak = this.filterNotMappedEntries;
-		boolean bak2 = this.filterMissingEntries;
-		this.filterMissingEntries = filterMissingEntries;
-		this.filterNotMappedEntries = filterNotMappedEntries;
+		FilterChecked bak = new FilterChecked(filterNotMappedEntries, filterMissingEntries, isGlobalFilter);
+
+		this.filterMissingEntries = checked.isFilterMissing();
+		this.filterNotMappedEntries = checked.isFilterNotMapped();
+		this.isGlobalFilter = checked.isGlobalFiltering();
 		invalidAllFilter();
 		cacheHist.invalidate();
-		propertySupport.firePropertyChange(IFilterColumnMixin.PROP_FILTER, Pair.make(bak, bak2),
-				Pair.make(filterNotMappedEntries, filterMissingEntries));
+		propertySupport.firePropertyChange(IFilterColumnMixin.PROP_FILTER, bak, checked);
 	}
 
 	@Override
@@ -328,7 +330,8 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				new FloatFilterDialog(new Shell(), getTitle(), summary, filterNotMappedEntries, filterMissingEntries)
+				new FloatFilterDialog(new Shell(), getTitle(), summary, filterNotMappedEntries, filterMissingEntries,
+						isGlobalFilter())
 						.open();
 			}
 		});
@@ -362,9 +365,8 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 
 		@ListenTo(sendToMe = true)
 		private void onFilterChanged(FilterEvent event) {
-			@SuppressWarnings("unchecked")
-			Pair<Boolean, Boolean> f = (Pair<Boolean, Boolean>) event.getFilter();
-			((FloatRankColumnModel) model).setFilter(f.getFirst(), f.getSecond());
+			FilterChecked f = (FilterChecked) event.getFilter();
+			((FloatRankColumnModel) model).setFilter(f);
 		}
 
 	}

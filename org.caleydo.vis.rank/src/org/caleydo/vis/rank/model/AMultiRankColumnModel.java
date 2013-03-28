@@ -64,6 +64,7 @@ public abstract class AMultiRankColumnModel extends ACompositeRankColumnModel im
 	private final BitSet maskInvalid = new BitSet();
 	private float filterMin = 0;
 	private float filterMax = 1;
+	private boolean isGlobalFilter = false;
 	private final HistCache cacheHist = new HistCache();
 
 	private final PropertyChangeListener listener = new PropertyChangeListener() {
@@ -98,6 +99,7 @@ public abstract class AMultiRankColumnModel extends ACompositeRankColumnModel im
 		this.maskInvalid.or(copy.maskInvalid);
 		this.filterMin = copy.filterMin;
 		this.filterMax = copy.filterMax;
+		this.isGlobalFilter = copy.isGlobalFilter;
 	}
 
 	@Override
@@ -119,6 +121,25 @@ public abstract class AMultiRankColumnModel extends ACompositeRankColumnModel im
 	protected void takeDown() {
 		getTable().removePropertyChangeListener(RankTableModel.PROP_DATA, listener);
 		super.takeDown();
+	}
+
+	/**
+	 * @return the isGlobalFilter, see {@link #isGlobalFilter}
+	 */
+	@Override
+	public boolean isGlobalFilter() {
+		return isGlobalFilter;
+	}
+
+	/**
+	 * @param isGlobalFilter
+	 *            setter, see {@link isGlobalFilter}
+	 */
+	public void setGlobalFilter(boolean isGlobalFilter) {
+		if (this.isGlobalFilter == isGlobalFilter)
+			return;
+		this.propertySupport.firePropertyChange(IFilterColumnMixin.PROP_FILTER, this.isGlobalFilter,
+				this.isGlobalFilter = isGlobalFilter);
 	}
 
 	protected final void invalidAllFilter() {

@@ -37,6 +37,8 @@ public interface IFilterColumnMixin extends IRankColumnModel {
 
 	boolean isFiltered();
 
+	boolean isGlobalFilter();
+
 	/**
 	 * performs filtering on the given data and updates the given mask
 	 *

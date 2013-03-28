@@ -21,11 +21,9 @@ package org.caleydo.vis.rank.model;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Collections;
-import java.util.Deque;
 import java.util.Iterator;
 import java.util.List;
 
@@ -33,7 +31,6 @@ import org.caleydo.vis.rank.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IFloatRankableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 
-import com.google.common.collect.Iterators;
 import com.jogamp.common.util.IntIntHashMap;
 
 /**
@@ -184,12 +181,9 @@ public class ColumnRanker implements Iterable<IRow> {
 		return getTable().getColumnsOf(this);
 	}
 
-	private Iterator<ARankColumnModel> getMyFlatColumns() {
-		return new FlatIterator(getMyColumns());
-	}
 
 	private Iterator<IFilterColumnMixin> findAllFiltered() {
-		return Iterators.filter(getMyFlatColumns(), IFilterColumnMixin.class);
+		return getTable().findAllMyFilteredColumns(this);
 	}
 
 	public int size() {
@@ -383,8 +377,8 @@ public class ColumnRanker implements Iterable<IRow> {
 			if (n1 != n2)
 				return n1 ? 1 : -1;
 			int c = -Float.compare(value, o.value);
-			if (c == 0)
-				return Integer.compare(id, o.id);
+			// if (c == 0)
+			// return Integer.compare(id, o.id);
 			return c;
 		}
 	}
@@ -528,34 +522,4 @@ public class ColumnRanker implements Iterable<IRow> {
 		return "defaultOne";
 	}
 
-	static class FlatIterator implements Iterator<ARankColumnModel> {
-		private Deque<Iterator<ARankColumnModel>> stack = new ArrayDeque<>(3);
-
-		public FlatIterator(Iterator<ARankColumnModel> it) {
-			this.stack.push(it);
-		}
-
-		@Override
-		public boolean hasNext() {
-			while (!stack.isEmpty() && !stack.peekLast().hasNext())
-				stack.pollLast();
-			return !stack.isEmpty();
-		}
-
-		@Override
-		public ARankColumnModel next() {
-			ARankColumnModel m = stack.peekLast().next();
-			if (m instanceof ACompositeRankColumnModel) {
-				ACompositeRankColumnModel c = (ACompositeRankColumnModel) m;
-				stack.push(c.iterator());
-			}
-			return m;
-		}
-
-		@Override
-		public void remove() {
-			throw new UnsupportedOperationException();
-		}
-
-	}
 }

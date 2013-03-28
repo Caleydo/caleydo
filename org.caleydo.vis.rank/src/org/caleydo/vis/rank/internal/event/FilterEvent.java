@@ -23,12 +23,13 @@ import org.caleydo.core.event.ADirectedEvent;
 
 /**
  * simple generic event for filtering changes
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public class FilterEvent extends ADirectedEvent {
 	private Object filter;
+	private boolean filterGlobally;
 
 	/**
 	 * @param filter
@@ -36,6 +37,19 @@ public class FilterEvent extends ADirectedEvent {
 	public FilterEvent(Object filter) {
 		super();
 		this.filter = filter;
+	}
+
+	public FilterEvent(Object filter, boolean filterGlobally) {
+		super();
+		this.filter = filter;
+		this.filterGlobally = filterGlobally;
+	}
+
+	/**
+	 * @return the filterGlobally, see {@link #filterGlobally}
+	 */
+	public boolean isFilterGlobally() {
+		return filterGlobally;
 	}
 
 	/**

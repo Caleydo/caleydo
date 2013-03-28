@@ -27,6 +27,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
+import org.caleydo.vis.rank.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IHideableColumnMixin;
 
 /**
@@ -34,10 +35,11 @@ import org.caleydo.vis.rank.model.mixin.IHideableColumnMixin;
  *
  */
 public abstract class ABasicFilterableRankColumnModel extends ARankColumnModel implements IHideableColumnMixin,
-		ICollapseableColumnMixin {
+		ICollapseableColumnMixin, IFilterColumnMixin {
 
 	private final BitSet mask = new BitSet();
 	private final BitSet maskInvalid = new BitSet();
+	protected boolean isGlobalFilter = false;
 
 	private final PropertyChangeListener listener = new PropertyChangeListener() {
 		@Override
@@ -60,6 +62,7 @@ public abstract class ABasicFilterableRankColumnModel extends ARankColumnModel i
 		super(copy);
 		this.mask.or(copy.mask);
 		this.maskInvalid.or(copy.maskInvalid);
+		this.isGlobalFilter = copy.isGlobalFilter;
 	}
 
 	@Override
@@ -76,13 +79,35 @@ public abstract class ABasicFilterableRankColumnModel extends ARankColumnModel i
 		super.takeDown();
 	}
 
+	/**
+	 * @return the isGlobalFilter, see {@link #isGlobalFilter}
+	 */
+	@Override
+	public boolean isGlobalFilter() {
+		return isGlobalFilter;
+	}
+
+	/**
+	 * @param isGlobalFilter
+	 *            setter, see {@link isGlobalFilter}
+	 */
+	public void setGlobalFilter(boolean isGlobalFilter) {
+		if (this.isGlobalFilter == isGlobalFilter)
+			return;
+		this.propertySupport.firePropertyChange(IFilterColumnMixin.PROP_FILTER, this.isGlobalFilter,
+				this.isGlobalFilter = isGlobalFilter);
+
+	}
+
 	protected final void invalidAllFilter() {
 		if (parent != null)
 			maskInvalid.set(0, getTable().getDataSize());
 	}
 
+	@Override
 	public abstract boolean isFiltered();
 
+	@Override
 	public final void filter(List<IRow> data, BitSet mask) {
 		if (!isFiltered())
 			return;

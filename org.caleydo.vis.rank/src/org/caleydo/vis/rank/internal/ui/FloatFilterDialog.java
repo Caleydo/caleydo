@@ -21,7 +21,6 @@ package org.caleydo.vis.rank.internal.ui;
 
 
 import org.caleydo.core.event.EventPublisher;
-import org.caleydo.core.util.collection.Pair;
 import org.caleydo.vis.rank.internal.event.FilterEvent;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
@@ -30,6 +29,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
 /**
@@ -43,19 +43,23 @@ public class FloatFilterDialog extends Dialog {
 
 	private Button filterNotMappedUI;
 	private Button filterMissingUI;
+	private Button filterGloballyUI;
 
 	private final String title;
 
 	private final boolean filterMissing;
 	private final boolean filterNotMapped;
+	private final boolean filterGlobally;
+
 
 	public FloatFilterDialog(Shell parentShell, String title, Object receiver, boolean filterNotMapped,
-			boolean filterMissing) {
+			boolean filterMissing, boolean filterGlobally) {
 		super(parentShell);
 		this.title = title;
 		this.receiver = receiver;
 		this.filterMissing = filterMissing;
 		this.filterNotMapped = filterNotMapped;
+		this.filterGlobally = filterGlobally;
 	}
 
 	@Override
@@ -78,16 +82,57 @@ public class FloatFilterDialog extends Dialog {
 		filterMissingUI.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, true));
 		filterMissingUI.setSelection(filterMissing);
 
+		Label separator = new Label(res, SWT.SEPARATOR | SWT.HORIZONTAL);
+		separator.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		filterGloballyUI = new Button(res, SWT.CHECK);
+		filterGloballyUI.setText("Apply Filter Globally?");
+		filterGloballyUI.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, true));
+		filterGloballyUI.setSelection(filterGlobally);
+
 		SelectionAdapter adapter = new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				EventPublisher.publishEvent(new FilterEvent(Pair.make(filterNotMappedUI.getSelection(),
-						filterMissingUI.getSelection())).to(receiver));
+				EventPublisher.publishEvent(new FilterEvent(new FilterChecked(filterNotMappedUI.getSelection(),
+						filterMissingUI.getSelection(), filterGloballyUI.getSelection())).to(receiver));
 			}
 		};
 		filterNotMappedUI.addSelectionListener(adapter);
 		filterMissingUI.addSelectionListener(adapter);
+		filterGloballyUI.addSelectionListener(adapter);
 		return res;
+	}
+
+	public static class FilterChecked {
+		private boolean filterNotMapped;
+		private boolean filterMissing;
+		private boolean globalFiltering;
+
+		public FilterChecked(boolean filterNotMapped, boolean filterMissing, boolean globalFiltering) {
+			this.filterNotMapped = filterNotMapped;
+			this.filterMissing = filterMissing;
+			this.globalFiltering = globalFiltering;
+		}
+
+		/**
+		 * @return the filterMissing, see {@link #filterMissing}
+		 */
+		public boolean isFilterMissing() {
+			return filterMissing;
+		}
+
+		/**
+		 * @return the filterNotMapped, see {@link #filterNotMapped}
+		 */
+		public boolean isFilterNotMapped() {
+			return filterNotMapped;
+		}
+
+		/**
+		 * @return the globalFiltering, see {@link #globalFiltering}
+		 */
+		public boolean isGlobalFiltering() {
+			return globalFiltering;
+		}
 	}
 }
 
