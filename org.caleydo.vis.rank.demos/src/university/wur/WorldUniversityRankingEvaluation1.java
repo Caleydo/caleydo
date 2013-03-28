@@ -68,7 +68,7 @@ public class WorldUniversityRankingEvaluation1 implements IModelBuilder {
 		table.add(rank);
 		StringRankColumnModel label = new StringRankColumnModel(GLRenderers.drawText("School Name", VAlign.CENTER),
 				StringRankColumnModel.DEFAULT);
-		label.setWidth(200);
+		label.setWidth(240);
 		table.add(label);
 
 		CategoricalRankColumnModel<String> cat = new CategoricalRankColumnModel<String>(GLRenderers.drawText(

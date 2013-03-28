@@ -32,11 +32,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.TreeMap;
 
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLSandBox;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.vis.rank.model.ARow;
+import org.caleydo.vis.rank.model.CategoricalRankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.OrderColumn;
 import org.caleydo.vis.rank.model.RankRankColumnModel;
@@ -47,6 +49,7 @@ import com.google.common.base.Function;
 
 import demo.RankTableDemo;
 import demo.RankTableDemo.IModelBuilder;
+import demo.ReflectionData;
 
 /**
  * @author Samuel Gratzl
@@ -58,10 +61,19 @@ public class WorldUniversityRanking implements IModelBuilder {
 		// qsrank schoolname qsstars overall academic employer faculty international internationalstudents citations
 		// arts engineering life natural social
 
+		Map<String, String> countries = WorldUniversityYear.readCountries();
+
+
 		Map<String, WorldUniversityYear[]> data = WorldUniversityYear.readData(2012, 2011, 2010, 2009, 2008, 2007);
+		countries.keySet().retainAll(data.keySet());
+
+		Map<String, String> countryMetaData = new TreeMap<>();
 		List<UniversityRow> rows = new ArrayList<>(data.size());
 		for (Map.Entry<String, WorldUniversityYear[]> entry : data.entrySet()) {
-			rows.add(new UniversityRow(entry.getKey(), entry.getValue()));
+			String c = countries.get(entry.getKey());
+			if (c != null)
+				countryMetaData.put(c, c);
+			rows.add(new UniversityRow(entry.getKey(), entry.getValue(), countries.get(entry.getKey())));
 		}
 		table.addData(rows);
 		data = null;
@@ -70,7 +82,12 @@ public class WorldUniversityRanking implements IModelBuilder {
 		table.add(new StringRankColumnModel(GLRenderers.drawText("School Name", VAlign.CENTER),
 				StringRankColumnModel.DEFAULT).setWidth(300));
 
-		int rankColWidth = 37;
+		CategoricalRankColumnModel<String> cat = new CategoricalRankColumnModel<String>(GLRenderers.drawText("Country",
+				VAlign.CENTER), new ReflectionData<>(UniversityRow.class.getDeclaredField("country"), String.class),
+				countryMetaData);
+		table.add(cat);
+
+		int rankColWidth = 40;
 
 		// Arrays.asList("wur2010.txt", "wur2011.txt", "wur2012.txt");
 		WorldUniversityYear.addYear(table, "2012", new YearGetter(0), false, false).orderByMe();
@@ -149,16 +166,26 @@ public class WorldUniversityRanking implements IModelBuilder {
 
 	static class UniversityRow extends ARow {
 		public String schoolname;
+		private String country;
 
 		public WorldUniversityYear[] years;
 
 		/**
 		 * @param school
+		 * @param country
 		 * @param size
 		 */
-		public UniversityRow(String school, WorldUniversityYear[] years) {
+		public UniversityRow(String school, WorldUniversityYear[] years, String country) {
 			this.schoolname = school;
 			this.years = years;
+			this.country = country;
+		}
+
+		/**
+		 * @return the country, see {@link #country}
+		 */
+		public String getCountry() {
+			return country;
 		}
 
 		@Override
