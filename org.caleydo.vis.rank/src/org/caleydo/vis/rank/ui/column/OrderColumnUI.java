@@ -379,34 +379,40 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 			if (isLeftValid && isRightValid) {
 				g.fillPolygon(new Vec2f(x1, left.y()), new Vec2f(x2, right.y()), new Vec2f(x2, right.y() + right.w()),
 						new Vec2f(x1, left.y() + left.w()));
-				g.color(deltaToColor(delta, RenderStyle.COLOR_SELECTED_BORDER));
+				// g.color(deltaToColor(delta, RenderStyle.COLOR_SELECTED_BORDER));
+				g.color(RenderStyle.COLOR_SELECTED_BORDER);
 				g.drawLine(x1, left.y(), x2, right.y());
 				g.drawLine(x1, left.y() + left.w(), x2, right.y() + right.w());
 			} else if (isLeftValid && delta != Integer.MAX_VALUE) {
 				g.fillPolygon(new Vec2f(x1, left.y()), new Vec2f(x2, right.y()), new Vec2f(x1, left.y() + left.w()));
-				g.color(deltaToColor(delta, RenderStyle.COLOR_SELECTED_BORDER));
+				// g.color(deltaToColor(delta, RenderStyle.COLOR_SELECTED_BORDER));
+				g.color(RenderStyle.COLOR_SELECTED_BORDER);
 				g.drawLine(x1, left.y(), x2, right.y());
 				g.drawLine(x1, left.y() + left.w(), x2, right.y());
 			} else if (isRightValid && delta != Integer.MAX_VALUE) {
 				g.fillPolygon(new Vec2f(x1, left.y()), new Vec2f(x2, right.y()), new Vec2f(x2, right.y() + right.w()));
-				g.color(deltaToColor(delta, RenderStyle.COLOR_SELECTED_BORDER));
+				// g.color(deltaToColor(delta, RenderStyle.COLOR_SELECTED_BORDER));
+				g.color(RenderStyle.COLOR_SELECTED_BORDER);
 				g.drawLine(x1, left.y(), x2, right.y());
 				g.drawLine(x1, left.y(), x2, right.y() + right.w());
 			}
 			g.decZ();
 		} else if (delta != Integer.MAX_VALUE) {
 			if (isLeftValid && isRightValid) {
-				g.color(deltaToColor(delta, Color.GRAY));
+				// g.color(deltaToColor(delta, Color.GRAY));
+				g.color(Color.GRAY);
 				g.drawLine(x1, left.y() + left.w() * 0.5f, x2, right.y() + right.w() * 0.5f);
 			} else if (isLeftValid) {
 				float v = getAlphaFromDelta(delta);
-				Color c = deltaToColor(delta, Color.BLACK);
-				g.color(c.getRed(), c.getGreen(), c.getBlue(), 1 - v);
+				// Color c = deltaToColor(delta, Color.BLACK);
+				// g.color(c.getRed(), c.getGreen(), c.getBlue(), 1 - v);
+				g.color(v, v, v, 1);
 				arrow(g, x1, left.y(), left.w(), right.y() <= 0);
 			} else if (isRightValid) {
 				float v = getAlphaFromDelta(delta);
-				Color c = deltaToColor(delta, Color.BLACK);
-				g.color(c.getRed(), c.getGreen(), c.getBlue(), 1 - v);
+				// Color c = deltaToColor(delta, Color.BLACK);
+				// g.color(c.getRed(), c.getGreen(), c.getBlue(), 1 - v);
+				g.color(v, v, v, 1);
 				arrow(g, x2 - 7, right.y(), right.w(), left.y() <= 0);
 			}
 		}

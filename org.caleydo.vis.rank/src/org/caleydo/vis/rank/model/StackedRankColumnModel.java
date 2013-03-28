@@ -110,10 +110,6 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 	}
 
 	@Override
-	public boolean canAdd(ARankColumnModel model) {
-		return !(model instanceof StackedRankColumnModel) && super.canAdd(model);
-	}
-	@Override
 	protected void init(ARankColumnModel model) {
 		super.init(model);
 		model.addPropertyChangeListener(PROP_WIDTH, listener);
@@ -150,6 +146,20 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 	protected void onWeightChanged(ARankColumnModel child, float oldValue, float newValue) {
 		child.setParentData(newValue);
 		super.setWidth(width + (newValue - oldValue));
+	}
+
+	private boolean isRecursive(ARankColumnModel model) {
+		return false; // (model instanceof MaxCompositeRankColumnModel);
+	}
+
+	@Override
+	public boolean canAdd(ARankColumnModel model) {
+		return !isRecursive(model) && super.canAdd(model);
+	}
+
+	@Override
+	public boolean isFlatAdding(ACompositeRankColumnModel model) {
+		return isRecursive(model);
 	}
 
 	@Override
@@ -375,10 +385,6 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 		this.propertySupport.firePropertyChange(PROP_COMPRESSED, this.isCompressed, this.isCompressed = compressed);
 	}
 
-	@Override
-	public boolean isFlatAdding(ACompositeRankColumnModel model) {
-		return model instanceof StackedRankColumnModel;
-	}
 
 	@Override
 	public void explode() {

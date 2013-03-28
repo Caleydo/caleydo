@@ -57,7 +57,10 @@ public class StackedSummaryHeaderUI extends AColumnHeaderUI {
 
 	@Override
 	protected void renderOrderGlyph(GLGraphics g, float w, float h) {
-		// nothing here
+		StackedRankColumnModel stacked = (StackedRankColumnModel)model;
+		if (model.isCollapsed() || stacked.isCompressed())
+			super.renderOrderGlyph(g, w, h);
+		//else handled by my parent
 	}
 
 	@Override

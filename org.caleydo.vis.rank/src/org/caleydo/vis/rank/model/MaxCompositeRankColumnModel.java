@@ -66,11 +66,19 @@ public class MaxCompositeRankColumnModel extends AMultiRankColumnModel {
 		return new RepaintingGLElement();
 	}
 
-	@Override
-	public boolean canAdd(ARankColumnModel model) {
-		return !(model instanceof MaxCompositeRankColumnModel) && super.canAdd(model);
+	private boolean isRecursive(ARankColumnModel model) {
+		return false; // (model instanceof MaxCompositeRankColumnModel);
 	}
 
+	@Override
+	public boolean canAdd(ARankColumnModel model) {
+		return !isRecursive(model) && super.canAdd(model);
+	}
+
+	@Override
+	public boolean isFlatAdding(ACompositeRankColumnModel model) {
+		return isRecursive(model);
+	}
 
 	@Override
 	public MultiFloat getSplittedValue(IRow row) {
@@ -119,11 +127,6 @@ public class MaxCompositeRankColumnModel extends AMultiRankColumnModel {
 		if (repr < 0)
 			return false;
 		return (((IFloatRankableColumnMixin) get(repr)).isValueInferred(row));
-	}
-
-	@Override
-	public boolean isFlatAdding(ACompositeRankColumnModel model) {
-		return model instanceof MaxCompositeRankColumnModel;
 	}
 
 	private class RepaintingGLElement extends MultiScoreBarElement {
