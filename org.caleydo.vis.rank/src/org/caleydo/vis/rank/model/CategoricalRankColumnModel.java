@@ -19,8 +19,6 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.model;
 
-import static org.caleydo.core.event.EventPublisher.publishEvent;
-
 import java.awt.Color;
 import java.beans.PropertyChangeListener;
 import java.util.BitSet;
@@ -37,22 +35,18 @@ import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.rank.internal.event.FilterEvent;
+import org.caleydo.vis.rank.internal.ui.CatFilterDalog;
 import org.caleydo.vis.rank.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IGrabRemainingHorizontalSpace;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 import org.caleydo.vis.rank.ui.GLPropertyChangeListeners;
 import org.caleydo.vis.rank.ui.IColumnRenderInfo;
 import org.caleydo.vis.rank.ui.detail.ValueElement;
-import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.ColumnLabelProvider;
-import org.eclipse.jface.viewers.ITreeContentProvider;
-import org.eclipse.jface.viewers.ViewerComparator;
-import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.dialogs.CheckedTreeSelectionDialog;
 
 import com.google.common.base.Function;
+import com.google.common.collect.Sets;
 
 /**
  * @author Samuel Gratzl
@@ -121,42 +115,23 @@ public class CategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<CATEGOR
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				final Set<CATEGORY_TYPE> data = metaData.keySet();
-				org.eclipse.jface.viewers.ILabelProvider label = new ColumnLabelProvider() {
-					@Override
-					public String getText(Object element) {
-						@SuppressWarnings("unchecked")
-						CATEGORY_TYPE k = (CATEGORY_TYPE) element;
-						return metaData.get(k);
-					}
-				};
-				CheckedTreeSelectionDialog dialog = new CheckedTreeSelectionDialog(new Shell(), label,
-						new ArrayTreeContentProvider());
-				dialog.setTitle("Edit Filter of " + getHeaderRenderer().toString());
-				dialog.setMessage(getTitle());
-				dialog.setInput(data);
-				dialog.setInitialSelections(selection.toArray());
-				dialog.setComparator(new ViewerComparator());
-
-				if (dialog.open() == Window.OK) {
-					Object[] result = dialog.getResult();
-
-					Set<Object> r = new HashSet<>();
-					for (int i = 0; i < result.length; i++) {
-						r.add(result[i]);
-					}
-					publishEvent(new FilterEvent(r).to(summary));
-				}
+				new CatFilterDalog<CATEGORY_TYPE>(new Shell(), getTitle(), summary, metaData, selection, isGlobalFilter)
+						.open();
 			}
 		});
 	}
 
-	protected void setFilter(Collection<CATEGORY_TYPE> filter) {
+	protected void setFilter(Collection<CATEGORY_TYPE> filter, boolean isGlobalFilter) {
 		invalidAllFilter();
 		Set<CATEGORY_TYPE> bak = new HashSet<>(this.selection);
 		this.selection.clear();
 		this.selection.addAll(filter);
-		propertySupport.firePropertyChange(PROP_FILTER, bak, this.selection);
+		if (Sets.difference(bak, this.selection).isEmpty()) {
+			setGlobalFilter(isGlobalFilter);
+		} else {
+			this.isGlobalFilter = isGlobalFilter;
+			propertySupport.firePropertyChange(PROP_FILTER, bak, this.selection);
+		}
 	}
 
 	@Override
@@ -244,7 +219,7 @@ public class CategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<CATEGOR
 		@SuppressWarnings("unchecked")
 		@ListenTo(sendToMe = true)
 		private void onSetFilter(FilterEvent event) {
-			setFilter((Collection<CATEGORY_TYPE>) event.getFilter());
+			setFilter((Collection<CATEGORY_TYPE>) event.getFilter(), event.isFilterGlobally());
 		}
 	}
 
@@ -275,22 +250,5 @@ public class CategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<CATEGOR
 		}
 	}
 
-	static class ArrayTreeContentProvider extends ArrayContentProvider implements ITreeContentProvider {
 
-		@Override
-		public Object[] getChildren(Object parentElement) {
-			return null;
-		}
-
-		@Override
-		public Object getParent(Object element) {
-			return null;
-		}
-
-		@Override
-		public boolean hasChildren(Object element) {
-			return false;
-		}
-
-	}
 }

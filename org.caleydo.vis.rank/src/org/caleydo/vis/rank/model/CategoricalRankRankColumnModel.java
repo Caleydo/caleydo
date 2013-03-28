@@ -19,7 +19,6 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.model;
 
-import static org.caleydo.core.event.EventPublisher.publishEvent;
 import gleem.linalg.Vec2f;
 import gleem.linalg.Vec4f;
 
@@ -40,7 +39,7 @@ import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.rank.internal.event.FilterEvent;
-import org.caleydo.vis.rank.model.CategoricalRankColumnModel.ArrayTreeContentProvider;
+import org.caleydo.vis.rank.internal.ui.CatFilterDalog;
 import org.caleydo.vis.rank.model.mapping.ICategoricalMappingFunction;
 import org.caleydo.vis.rank.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IFloatRankableColumnMixin;
@@ -51,14 +50,11 @@ import org.caleydo.vis.rank.ui.RenderUtils;
 import org.caleydo.vis.rank.ui.detail.CategoricalScoreBarElement;
 import org.caleydo.vis.rank.ui.detail.ValueElement;
 import org.caleydo.vis.rank.ui.mapping.MappingFunctionUIs;
-import org.eclipse.jface.viewers.ColumnLabelProvider;
-import org.eclipse.jface.viewers.ViewerComparator;
-import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.dialogs.CheckedTreeSelectionDialog;
 
 import com.google.common.base.Function;
+import com.google.common.collect.Sets;
 
 /**
  * a special categorical column with at most {@link #MAX_CATEGORY_COLORS} colors which supports that this column is part
@@ -148,56 +144,23 @@ public class CategoricalRankRankColumnModel<CATEGORY_TYPE> extends ABasicFiltera
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				final Shell shell = new Shell();
-				final Set<CATEGORY_TYPE> data = metaData.keySet();
-				org.eclipse.jface.viewers.ILabelProvider label = new ColumnLabelProvider() {
-					@Override
-					public String getText(Object element) {
-						@SuppressWarnings("unchecked")
-						CATEGORY_TYPE k = (CATEGORY_TYPE) element;
-						return metaData.get(k).getLabel();
-					}
-
-					@Override
-					public org.eclipse.swt.graphics.Color getBackground(Object element) {
-						@SuppressWarnings("unchecked")
-						CATEGORY_TYPE k = (CATEGORY_TYPE) element;
-						return toSWT(metaData.get(k).getColor());
-					}
-
-					protected org.eclipse.swt.graphics.Color toSWT(Color color) {
-						return new org.eclipse.swt.graphics.Color(shell.getDisplay(), color.getRed(), color
-								.getGreen(), color.getBlue());
-					}
-
-				};
-				CheckedTreeSelectionDialog dialog = new CheckedTreeSelectionDialog(shell, label,
-						new ArrayTreeContentProvider());
-				dialog.setTitle("Edit Filter of " + getHeaderRenderer().toString());
-				dialog.setMessage(getTitle());
-				dialog.setInput(data);
-				dialog.setInitialSelections(selection.toArray());
-				dialog.setComparator(new ViewerComparator());
-
-				if (dialog.open() == Window.OK) {
-					Object[] result = dialog.getResult();
-
-					Set<Object> r = new HashSet<>();
-					for (int i = 0; i < result.length; i++) {
-						r.add(result[i]);
-					}
-					publishEvent(new FilterEvent(r).to(summary));
-				}
+				new CatFilterDalog<CATEGORY_TYPE>(new Shell(), getTitle(), summary, metaData, selection, isGlobalFilter)
+						.open();
 			}
 		});
 	}
 
-	protected void setFilter(Collection<CATEGORY_TYPE> filter) {
+	protected void setFilter(Collection<CATEGORY_TYPE> filter, boolean isGlobalFilter) {
 		invalidAllFilter();
 		Set<CATEGORY_TYPE> bak = new HashSet<>(this.selection);
 		this.selection.clear();
 		this.selection.addAll(filter);
-		propertySupport.firePropertyChange(PROP_FILTER, bak, this.selection);
+		if (Sets.difference(bak, this.selection).isEmpty()) {
+			setGlobalFilter(isGlobalFilter);
+		} else {
+			this.isGlobalFilter = isGlobalFilter;
+			propertySupport.firePropertyChange(PROP_FILTER, bak, this.selection);
+		}
 	}
 
 	@Override
@@ -323,7 +286,7 @@ public class CategoricalRankRankColumnModel<CATEGORY_TYPE> extends ABasicFiltera
 		@SuppressWarnings("unchecked")
 		@ListenTo(sendToMe = true)
 		private void onSetFilter(FilterEvent event) {
-			setFilter((Collection<CATEGORY_TYPE>) event.getFilter());
+			setFilter((Collection<CATEGORY_TYPE>) event.getFilter(), event.isFilterGlobally());
 		}
 
 	}
@@ -349,6 +312,11 @@ public class CategoricalRankRankColumnModel<CATEGORY_TYPE> extends ABasicFiltera
 		 * @return the label, see {@link #label}
 		 */
 		public String getLabel() {
+			return label;
+		}
+
+		@Override
+		public String toString() {
 			return label;
 		}
 	}
