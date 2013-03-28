@@ -831,15 +831,14 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	private void setPathLevel(EEmbeddingID embeddingID) {
 		if (embeddingID == null)
 			return;
+		AnimatedGLElementContainer anim = (AnimatedGLElementContainer) pathInfo.window.getParent();
 		if (embeddingID == EEmbeddingID.PATH_LEVEL1) {
-
-			pathInfo.window.setSize(Float.NaN, Float.NaN);
+			anim.resizeChild(pathInfo.window, Float.NaN, Float.NaN);
 			pathInfo.window.setLayoutData(0.5f);
-
 		} else if (embeddingID == EEmbeddingID.PATH_LEVEL2) {
 			pathInfo.window.setLayoutData(Float.NaN);
 			pathInfo.window.setSize(150, Float.NaN);
-
+			anim.resizeChild(pathInfo.window, 150, Float.NaN);
 		}
 		pathInfo.multiFormRenderer.setActive(pathInfo.embeddingIDToRendererIDs.get(embeddingID).get(0));
 		isLayoutDirty = true;
