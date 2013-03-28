@@ -23,7 +23,9 @@
 package org.caleydo.view.enroute.path.node;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
@@ -133,14 +135,14 @@ public abstract class ALinearizableNode extends ANode implements ILabelProvider 
 	 * @param pathwayVertexRep
 	 */
 	public void addPathwayVertexRep(PathwayVertexRep pathwayVertexRep) {
-		PathwayVertexRep primaryVertexRep = getPrimaryPathwayVertexRep();
-		if (primaryVertexRep != null) {
-			if (primaryVertexRep.getDavidIDs().size() != pathwayVertexRep.getDavidIDs().size()
-					|| !primaryVertexRep.getDavidIDs().containsAll(pathwayVertexRep.getDavidIDs())) {
-				throw new IllegalArgumentException("Tried to add a vertex rep to node " + this
-						+ " that is not equivalent to existing ones.");
-			}
-		}
+		// PathwayVertexRep primaryVertexRep = getPrimaryPathwayVertexRep();
+		// if (primaryVertexRep != null) {
+		// if (primaryVertexRep.getDavidIDs().size() != pathwayVertexRep.getDavidIDs().size()
+		// || !primaryVertexRep.getDavidIDs().containsAll(pathwayVertexRep.getDavidIDs())) {
+		// throw new IllegalArgumentException("Tried to add a vertex rep to node " + this
+		// + " that is not equivalent to existing ones.");
+		// }
+		// }
 		vertexReps.add(pathwayVertexRep);
 	}
 
@@ -187,7 +189,12 @@ public abstract class ALinearizableNode extends ANode implements ILabelProvider 
 	public List<Integer> getMappedDavidIDs() {
 
 		// The DavidIDs must be the same for all vertex reps
-		return new ArrayList<>(getPrimaryPathwayVertexRep().getDavidIDs());
+		Set<Integer> uniqueIDs = new LinkedHashSet<>();
+		for (PathwayVertexRep vertexRep : vertexReps) {
+			uniqueIDs.addAll(vertexRep.getDavidIDs());
+		}
+
+		return new ArrayList<>(uniqueIDs);
 	}
 
 	public void update() {

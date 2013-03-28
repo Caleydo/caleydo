@@ -550,8 +550,8 @@ public class PathwayManager extends AManager<PathwayGraph> {
 	}
 
 	/**
-	 * Gets all {@link PathwayVertexRep}s that are equivalent to the specified one. Equivalence is defined as that the
-	 * vertexReps refer to the same set of {@link PathwayVertex} objects. The returned vertexReps are from the specified
+	 * Gets all {@link PathwayVertexRep}s that are equivalent to the specified one. Equivalence is defined as that they
+	 * at least share one {@link PathwayVertex} object. The returned vertexReps are from the specified
 	 * {@link PathwayGraph} or can be from multiple different <code>PathwayGraph</code>s if null is specified. The
 	 * specified vertexRep is not part of the returned set.
 	 *
@@ -567,10 +567,11 @@ public class PathwayManager extends AManager<PathwayGraph> {
 			List<PathwayVertexRep> vertexReps = vertex.getPathwayVertexReps();
 			for (PathwayVertexRep vr : vertexReps) {
 				if (vr != vertexRep && (pathway == null || vr.getPathway() == pathway)) {
-					List<PathwayVertex> currentVertices = vr.getPathwayVertices();
-					if (currentVertices.size() == vertices.size() && currentVertices.containsAll(vertices)) {
-						equivalentVertexReps.add(vr);
-					}
+					equivalentVertexReps.add(vr);
+					// List<PathwayVertex> currentVertices = vr.getPathwayVertices();
+					// if (currentVertices.size() == vertices.size() && currentVertices.containsAll(vertices)) {
+					// equivalentVertexReps.add(vr);
+					// }
 				}
 			}
 		}
@@ -579,7 +580,7 @@ public class PathwayManager extends AManager<PathwayGraph> {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param vertexRep1
 	 * @param vertexRep2
 	 * @return True if the vertexReps are the same or equivalent, false otherwise or if one vertexRep is null.
@@ -587,9 +588,19 @@ public class PathwayManager extends AManager<PathwayGraph> {
 	public boolean areVerticesEquivalent(PathwayVertexRep vertexRep1, PathwayVertexRep vertexRep2) {
 		if (vertexRep1 == null || vertexRep2 == null)
 			return false;
-		return (vertexRep1 == vertexRep2)
-				|| (vertexRep1.getPathwayVertices().size() == vertexRep2.getPathwayVertices().size() && vertexRep1
-						.getPathwayVertices().containsAll(vertexRep2.getPathwayVertices()));
+		List<PathwayVertex> vertices = vertexRep1.getPathwayVertices();
+		for (PathwayVertex v : vertices) {
+			for (PathwayVertexRep vr : v.getPathwayVertexReps()) {
+				if (vr == vertexRep2) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+		// return (vertexRep1 == vertexRep2)
+		// || (vertexRep1.getPathwayVertices().size() == vertexRep2.getPathwayVertices().size() && vertexRep1
+		// .getPathwayVertices().containsAll(vertexRep2.getPathwayVertices()));
 	}
 
 	/**

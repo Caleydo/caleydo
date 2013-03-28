@@ -51,7 +51,7 @@ public abstract class AGeneNodeMode extends ALayoutBasedNodeMode implements ICol
 	protected boolean determineHighlightColor() {
 		boolean highlight = false;
 		EventBasedSelectionManager selectionManager = pathwayPathRenderer.getGeneSelectionManager();
-		for (Integer davidId : node.getPrimaryPathwayVertexRep().getDavidIDs()) {
+		for (Integer davidId : node.getMappedDavidIDs()) {
 			List<SelectionType> selectionTypes = selectionManager.getSelectionTypes(davidId);
 			if (selectionTypes.contains(SelectionType.SELECTION)) {
 				highlightColor = SelectionType.SELECTION.getColor();
