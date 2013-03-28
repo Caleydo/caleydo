@@ -851,7 +851,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 			if(this.highlightVertices){
 				((BubbleSet)(bubbleSet.getBubbleSetGLRenderer().setOutline)).setParameter(100, 20, 3, 10.0, 7.0, 0.5, 2.5, 15.0, 8);
 			}else{
-				this.bubbleSet.addPathSegements(pathSegments);
+				//this.bubbleSet.addPathSegements(pathSegments);
 				((BubbleSet)(bubbleSet.getBubbleSetGLRenderer().setOutline)).setParameter(10, 10, 3, 10.0, 20.0, 20.5, 15.5, 5.0, 5);
 			}
 			
@@ -861,9 +861,9 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 			this.bubbleSet.getBubbleSetGLRenderer().setSize(pathway.getWidth(), pathway.getHeight());
 			this.bubbleSet.getBubbleSetGLRenderer().update(gl, null, 0);
 
-				alternativeBubbleSet.getBubbleSetGLRenderer().setSize(pathway.getWidth(), pathway.getHeight());
-				//this.bubbleSet.getBubbleSetGLRenderer().update(gl, SelectionType.SELECTION.getColor(), selectedPathID);
-				alternativeBubbleSet.getBubbleSetGLRenderer().update(gl, null, 0);
+			alternativeBubbleSet.getBubbleSetGLRenderer().setSize(pathway.getWidth(), pathway.getHeight());
+			//this.bubbleSet.getBubbleSetGLRenderer().update(gl, SelectionType.SELECTION.getColor(), selectedPathID);
+			alternativeBubbleSet.getBubbleSetGLRenderer().update(gl, null, 0);
 	
 			
 			isBubbleTextureDirty = false;
@@ -886,7 +886,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 
 			this.bubbleSet.getBubbleSetGLRenderer().render(gl,
 					pixelGLConverter.getGLWidthForPixelWidth(pathway.getWidth()),
-					pixelGLConverter.getGLHeightForPixelHeight(pathway.getHeight()));
+					pixelGLConverter.getGLHeightForPixelHeight(pathway.getHeight()),1.0f);
 		}
 		
 		gl.glPopName();

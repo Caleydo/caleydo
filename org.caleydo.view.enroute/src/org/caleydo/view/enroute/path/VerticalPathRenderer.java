@@ -243,7 +243,7 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 		}
 		updateBubbleSets(gl);
 		this.bubbleSetRenderer.update(gl, null, 0);
-		this.bubbleSetRenderer.renderPxl(gl, this.x, this.y);
+		this.bubbleSetRenderer.renderPxl(gl, this.x, this.y,1.0f);
 //
 		
 
@@ -298,6 +298,7 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 						i++;
 					}// if
 				} // for(PathwayVertexRep node : segment){
+				this.bubbleSetRenderer.addGroup(bubbleSetItems, bubbleSetEdges, bubbleSetColor);
 				this.bubbleSetRenderer.addGroup(bubbleSetItems, bubbleSetEdges, bubbleSetColor);
 			}// for (List<PathwayVertexRep> segment
 			
