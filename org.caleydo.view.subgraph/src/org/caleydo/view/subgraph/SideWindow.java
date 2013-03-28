@@ -26,9 +26,9 @@ import org.caleydo.core.view.opengl.layout2.animation.MoveTransitions.IMoveTrans
 
 /**
  * a special GLWindow that uses a special kind of animations that moves out of the view instead of changing the size
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public class SideWindow extends GLWindow {
 	public static final IMoveTransition SLIDE_LEFT_OUT = new IMoveTransition() {
@@ -46,10 +46,10 @@ public class SideWindow extends GLWindow {
 				return r;
 			} else if (isSlideIn) {
 				Vec4f r = new Vec4f();
-				r.setX(from.x() - (from.z() - to.z()) * alpha); // keep the size and move it out
-				r.setY(to.y()); // final y
-				r.setZ(from.z()); // original width
-				r.setW(to.w()); // final height
+				r.setX(from.x() + (from.z() - to.z()) * (1 - alpha)); // keep the size and move it out
+				r.setY(to.y()); // target y
+				r.setZ(to.z()); // target width with is the real with
+				r.setW(to.w()); // target height
 				return r;
 			} else
 				return MoveTransitions.MOVE_AND_GROW_LINEAR.move(from, to, w, h, alpha);

@@ -139,15 +139,12 @@ public class SlideInElement extends GLElementContainer {
 		@Override
 		public void onSelectionChanged(GLButton button, boolean selected) {
 			AnimatedGLElementContainer anim = (AnimatedGLElementContainer) window.getParent();
-			// use the parent container of the window to set the size otherwise it can't be tracked
 			if (selected) {
 				if (elementPosition == ESlideInElementPosition.LEFT || elementPosition == ESlideInElementPosition.RIGHT) {
 					anim.resizeChild(window, previousWindowSize.x(), Float.NaN);
 				} else {
 					anim.resizeChild(window, Float.NaN, previousWindowSize.y());
 				}
-				// window.background.setVisibility(EVisibility.PICKABLE);
-				// window.baseContainer.setVisibility(EVisibility.VISIBLE);
 
 			} else {
 				previousWindowSize = new Vec2f(getSize());
@@ -156,8 +153,6 @@ public class SlideInElement extends GLElementContainer {
 				} else {
 					anim.resizeChild(window, Float.NaN, 1);
 				}
-				// window.background.setVisibility(EVisibility.VISIBLE);
-				// window.baseContainer.setVisibility(EVisibility.VISIBLE);
 			}
 		}
 	}

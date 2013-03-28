@@ -79,7 +79,7 @@ public class PortalHighlightRenderer extends PickableGLElement {
 		// window.setBackgroundColor(new Color(1, 0, 1, 1f));
 		// System.out.println("highight out");
 		window.setTitleBarColor(GLTitleBar.DEFAULT_COLOR);
-		window.setBackgroundColor(GLWindow.DEFAULT_COLOR);
+		window.setBackgroundColor(GLPathwayBackground.DEFAULT_COLOR);
 		window.titleBar.setHighlight(false);
 	}
 

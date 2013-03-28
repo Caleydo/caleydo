@@ -25,13 +25,11 @@ import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
-import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton.ISelectionCallback;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
 import org.caleydo.core.view.opengl.layout2.layout.GLSizeRestrictiveFlowLayout;
-import org.caleydo.core.view.opengl.picking.PickingListenerComposite;
 
 import com.google.common.collect.Iterables;
 
@@ -40,31 +38,30 @@ import com.google.common.collect.Iterables;
  *
  */
 public class GLWindow extends GLElementContainer {
-	public static final Color DEFAULT_COLOR = new Color(0.95f, 0.95f, 0.95f, 1f);
-	protected Color bgColor = DEFAULT_COLOR;
 
 	private GLElement content;
 	protected final GLSubGraph view;
 	protected final GLTitleBar titleBar;
-	protected final GLElementContainer contentContainer;
+	protected final GLPathwayBackground background;
+	protected final GLElementContainer baseContainer;
 	protected boolean active = false;
 	protected boolean showCloseButton = true;
 
-	private int backgroundPickingId = -1;
-	protected final PickingListenerComposite backgroundPicker = new PickingListenerComposite(2);
-
 	public GLWindow(ILabelProvider titleLabelProvider, GLSubGraph view) {
-		super(GLLayouts.LAYERS);
 		this.view = view;
-		contentContainer = new GLElementContainer(new GLSizeRestrictiveFlowLayout(false, 1, GLPadding.ZERO));
 		titleBar = new GLTitleBar(titleLabelProvider);
-		contentContainer.add(titleBar);
+		background = new GLPathwayBackground(this);
+		setLayout(GLLayouts.LAYERS);
+		baseContainer = new GLElementContainer(new GLSizeRestrictiveFlowLayout(false, 1, GLPadding.ZERO));
+		baseContainer.add(titleBar);
 		titleBar.closeButton.setVisibility(EVisibility.NONE);
+		// contentContainer = new GLElementContainer(new GLSizeRestrictiveFlowLayout(true, 0, new GLPadding(3)));
 		// baseContainer.add(contentContainer);
 		// slideInButton.setSize(20, 5);
+
+		add(background);
+		add(baseContainer);
 		// add(slideInButton);
-		this.add(contentContainer);
-		setPicker(null);
 	}
 
 	public GLWindow(String title, GLSubGraph view) {
@@ -72,24 +69,7 @@ public class GLWindow extends GLElementContainer {
 	}
 
 	@Override
-	protected void init(IGLElementContext context) {
-		backgroundPickingId = context.registerPickingListener(backgroundPicker);
-		super.init(context);
-	}
-
-	@Override
-	protected void takeDown() {
-		context.unregisterPickingListener(backgroundPickingId);
-		super.takeDown();
-	}
-
-	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
-		g.color(bgColor);
-		g.incZ(-0.2f);
-		g.fillRoundedRect(0, 0, w, h, 7);
-		g.incZ(0.2f);
-
 		if (w <= 1 || h <= 1) { // just render the SlideInElements
 			g.incZ();
 			for (SlideInElement child : Iterables.filter(this, SlideInElement.class))
@@ -108,11 +88,6 @@ public class GLWindow extends GLElementContainer {
 				child.renderPick(g);
 			g.decZ();
 		} else {
-			g.incZ(-0.2f);
-			g.pushName(backgroundPickingId);
-			g.fillRect(0, 0, w, h); // render a background rect
-			g.popName();
-			g.incZ(0.2f);
 			// render normally
 			super.renderPickImpl(g, w, h);
 		}
@@ -159,8 +134,8 @@ public class GLWindow extends GLElementContainer {
 	 */
 	public void setContent(GLElement content) {
 		if (this.content != null)
-			contentContainer.remove(this.content);
-		contentContainer.add(content);
+			baseContainer.remove(this.content);
+		baseContainer.add(content);
 		this.content = content;
 	}
 
@@ -193,8 +168,7 @@ public class GLWindow extends GLElementContainer {
 	}
 
 	public void setBackgroundColor(Color color) {
-		this.bgColor = color;
-		repaint();
+		background.setColor(color);
 	}
 
 }
