@@ -61,7 +61,7 @@ import demo.ReflectionData;
  */
 public class Food implements IModelBuilder {
 	private static final List<String> headers = Arrays.asList("Water (g)", "Food energy (kcal)", "Protein (g)",
-			"lipid (fat)(g)", "Ash (g)", "Carbohydrate (g)", "dietary fiber (g)", "sugars (g)",
+			"Lipid (fat)(g)", "Ash (g)", "Carbohydrate (g)", "Dietary fiber (g)", "Sugars (g)",
 			"Calcium (mg)", "Iron (mg)", "Magnesium (mg)", "Phosphorus (mg)", "Potassium (mg)", "Sodium (mg)",
  "Zinc (mg)",
 			"Copper (mg)", "Manganese (mg)", "Selenium (µg)", "Vitamin C (mg)",
