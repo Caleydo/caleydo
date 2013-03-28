@@ -286,7 +286,7 @@ public class RankingElement extends GLElementContainer {
 	public void setFilter(IPathwayFilter filter) {
 		this.filter = filter;
 		if (textColumn.isFiltered())
-			textColumn.setFilter(null);
+			textColumn.setFilter(null, false);
 		applyFilter();
 	}
 
