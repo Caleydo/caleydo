@@ -13,6 +13,13 @@
       <view
             allowMultiple="true"
             category="org.caleydo.core.views"
+            class="nasatxl.NASATxlResultsView"
+            id="rankvis.demo.nasatxl"
+            name="NASA Task Load Index User Study Results">
+      </view>
+      <view
+            allowMultiple="true"
+            category="org.caleydo.core.views"
             class="university.wur.WorldUniversityRanking2012View"
             id="rankvis.demo.university.wur2012"
             name="World University Ranking 2012">
