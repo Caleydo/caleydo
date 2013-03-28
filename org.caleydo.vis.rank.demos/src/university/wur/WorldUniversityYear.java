@@ -219,6 +219,23 @@ public class WorldUniversityYear {
 		return stacked;
 	}
 
+	public static void addSpecialYear(RankTableModel table, Function<IRow, WorldUniversityYear> year) {
+
+		FloatRankColumnModel c;
+		c = col(year, COL_arts, "Arts & Humanities", "#FFD92F", "#FFFFCC");
+		table.add(c);
+		c.hide();
+		c = col(year, COL_engineering, "Engineering & Technology", "#8DA0CB", "#ECE2F0");
+		table.add(c);
+		c.hide();
+		c = col(year, COL_life, "Life Sciences & Medicine", "#E78AC3", "#FDE0DD");
+		table.add(c);
+		c.hide();
+		c = col(year, COL_natural, "Natural Sciences", "#A6D854", "#F7FCB9");
+		table.add(c);
+		c.hide();
+	}
+
 	private static FloatRankColumnModel col(Function<IRow, WorldUniversityYear> year, int col, String text,
 			String color, String bgColor) {
 		return col(year, col, text, Color.decode(color), Color.decode(bgColor));

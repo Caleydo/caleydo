@@ -91,6 +91,9 @@ public class WorldUniversityRanking implements IModelBuilder {
 
 		// Arrays.asList("wur2010.txt", "wur2011.txt", "wur2012.txt");
 		WorldUniversityYear.addYear(table, "2012", new YearGetter(0), false, false).orderByMe();
+
+		WorldUniversityYear.addSpecialYear(table, new YearGetter(0));
+
 		table.add(new OrderColumn());
 		table.add(new RankRankColumnModel().setWidth(rankColWidth));
 		WorldUniversityYear.addYear(table, "2011", new YearGetter(1), false, false).setCompressed(true);
