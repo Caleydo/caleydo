@@ -83,6 +83,13 @@ public class GLPathwayAugmentationRenderer {
 
 	private PixelGLConverter pixelGLConverter;
 
+	
+	boolean isVisible=true;
+	public void setVisible(boolean visible){
+		this.isVisible=visible;
+	}
+	
+	
 	/**
 	 * Constructor.
 	 */
@@ -444,8 +451,53 @@ public class GLPathwayAugmentationRenderer {
 		case gene:
 		case enzyme:
 		case other:
-			renderGeneNode(gl, vertexRep);
+			if(isVisible)
+					renderGeneNode(gl, vertexRep);
+			else{//mask only
+				gl.glEnable(GL.GL_STENCIL_TEST);
+				gl.glColorMask(false, false, false, false);
+				gl.glDisable(GL.GL_DEPTH_TEST);
+				gl.glDisable(GL.GL_BLEND);
+				gl.glStencilFunc(GL.GL_GREATER, 1, 0xff);
+				gl.glStencilOp(GL.GL_KEEP, GL.GL_REPLACE, GL.GL_REPLACE);
+				//
+				gl.glCallList(enzymeNodeDisplayListId);
 
+				gl.glDisable(GL.GL_STENCIL_TEST);
+				gl.glColorMask(true, true, true, true);
+				gl.glEnable(GL.GL_DEPTH_TEST);
+				gl.glEnable(GL.GL_BLEND);
+				
+				
+				// Handle selection highlighting of element
+				float[] nodeColor;
+
+				if (vertexSelectionManager.checkStatus(SelectionType.SELECTION, vertexRep.getID())) {
+					nodeColor = SelectionType.SELECTION.getColor();
+					maskFramedEnzymeNode(gl);
+				} else if (vertexSelectionManager.checkStatus(SelectionType.MOUSE_OVER, vertexRep.getID())) {
+					nodeColor = SelectionType.MOUSE_OVER.getColor();
+					maskFramedEnzymeNode(gl);
+				} else if (vertexSelectionManager.checkStatus(SelectionType.NORMAL, vertexRep.getID())) {
+					nodeColor = PathwayRenderStyle.ENZYME_NODE_COLOR;
+				} else {
+					nodeColor = new float[] { 0, 0, 0, 0 };
+				}
+
+				gl.glColor4fv(nodeColor, 0);
+				gl.glCallList(framedEnzymeNodeDisplayListId);
+
+				if (!vertexSelectionManager.checkStatus(SelectionType.DESELECTED, vertexRep.getID())) {
+
+					// Transparent node for picking
+					gl.glColor4f(0, 0, 0, 0);
+					gl.glCallList(enzymeNodeDisplayListId);
+
+				}
+				
+			}
+
+			
 			break;
 		default:
 			break;

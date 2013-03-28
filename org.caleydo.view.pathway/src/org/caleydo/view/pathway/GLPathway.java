@@ -740,6 +740,8 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		gl.glClear(GL.GL_STENCIL_BUFFER_BIT);
 		textureOffset += PathwayRenderStyle.Z_OFFSET;
 		gl.glTranslatef(0, pathwayHeight, textureOffset);
+		if(!this.highlightVertices)
+			augmentationRenderer.setVisible(false);
 		augmentationRenderer.renderPathway(gl, pathway, false);
 		gl.glTranslatef(0, -pathwayHeight, -textureOffset);
 
@@ -763,9 +765,9 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 			textureOffset -= 2f * PathwayRenderStyle.Z_OFFSET;
 			gl.glTranslatef(0.0f, 0.0f, textureOffset);
 
-
-			overlayBubbleSets(gl);
+		
 			overlayContextBubbleSets(gl);
+			overlayBubbleSets(gl);
 			
 			gl.glEnable(GL.GL_DEPTH_TEST);
 			gl.glDisable(GL.GL_STENCIL_TEST);
@@ -792,10 +794,13 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 			// BubbleSet(routingIterations, marchingIterations,pixelGroup,edgeR0,edgeR1, nodeR0, nodeR1,  morphBuffer,skip)
 			((BubbleSet)(contextPathBubbleSet.getBubbleSetGLRenderer().setOutline)).setParameter(10, 10, 3, 10.0, 20.0, 20.5, 5.5, 5.0, 5);
 			((BubbleSet)(contextPathBubbleSet.getBubbleSetGLRenderer().setOutline)).useVirtualEdges(false);
+
+				
 			this.contextPathBubbleSet.getBubbleSetGLRenderer().update(gl, null, selectedPathID);
 			areContextPathsDirty = false;
 		}
 
+		
 		this.contextPathBubbleSet.getBubbleSetGLRenderer().render(gl,
 				pixelGLConverter.getGLWidthForPixelWidth(pathway.getWidth()),
 				pixelGLConverter.getGLHeightForPixelHeight(pathway.getHeight()),
@@ -821,6 +826,8 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 //				allPathsList.get(allPathsList.size()-1).setSecond(0);
 			//if(allPathsList.size()>0)
 			//{
+
+			
 			if(pathSegments.size()==0){
 				allPathsList.clear();
 			}
@@ -835,6 +842,12 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 			this.bubbleSet.addPathSegements(pathSegments);
 			this.bubbleSet.addPathSegements(pathSegments);
 			
+			if(this.highlightVertices){
+				((BubbleSet)(bubbleSet.getBubbleSetGLRenderer().setOutline)).setParameter(100, 20, 3, 10.0, 7.0, 0.5, 2.5, 15.0, 8);
+			}else{
+				this.bubbleSet.addPathSegements(pathSegments);
+				((BubbleSet)(bubbleSet.getBubbleSetGLRenderer().setOutline)).setParameter(10, 10, 3, 10.0, 20.0, 20.5, 15.5, 5.0, 5);
+			}
 			
 			// this.bubbleSet.addPortals(portalVertexReps);
 
@@ -845,9 +858,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 				alternativeBubbleSet.getBubbleSetGLRenderer().setSize(pathway.getWidth(), pathway.getHeight());
 				//this.bubbleSet.getBubbleSetGLRenderer().update(gl, SelectionType.SELECTION.getColor(), selectedPathID);
 				alternativeBubbleSet.getBubbleSetGLRenderer().update(gl, null, 0);
-
-
-			
+	
 			
 			isBubbleTextureDirty = false;
 		}
@@ -858,11 +869,19 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 
 			this.alternativeBubbleSet.getBubbleSetGLRenderer().render(gl,
 					pixelGLConverter.getGLWidthForPixelWidth(pathway.getWidth()),
+
 					pixelGLConverter.getGLHeightForPixelHeight(pathway.getHeight()),0.25f);
 
-		this.bubbleSet.getBubbleSetGLRenderer().render(gl,
-				pixelGLConverter.getGLWidthForPixelWidth(pathway.getWidth()),
-				pixelGLConverter.getGLHeightForPixelHeight(pathway.getHeight()));
+		if(this.highlightVertices){
+			this.bubbleSet.getBubbleSetGLRenderer().render(gl,
+					pixelGLConverter.getGLWidthForPixelWidth(pathway.getWidth()),
+					pixelGLConverter.getGLHeightForPixelHeight(pathway.getHeight()),1.0f);
+		}else{
+
+			this.bubbleSet.getBubbleSetGLRenderer().render(gl,
+					pixelGLConverter.getGLWidthForPixelWidth(pathway.getWidth()),
+					pixelGLConverter.getGLHeightForPixelHeight(pathway.getHeight()));
+		}
 		
 		gl.glPopName();
 		
