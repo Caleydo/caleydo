@@ -72,7 +72,7 @@ public class EditWeightsDialog extends TitleAreaDialog implements VerifyListener
 		for (int i = 0; i < dists.length; ++i) {
 			ARankColumnModel r = model.get(i);
 			Label l = new Label(p, SWT.NONE);
-			l.setText(r.getHeaderRenderer().toString());
+			l.setText(clean(r.getTitle()));
 			Text t = new Text(p, SWT.BORDER);
 			t.setText(toString(dists[i] * 100));
 			t.addModifyListener(this);
@@ -89,6 +89,14 @@ public class EditWeightsDialog extends TitleAreaDialog implements VerifyListener
 		this.sum.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 		// FIXME
 		return parent;
+	}
+
+	private String clean(String title) {
+		String t = title;
+		if (title.indexOf('\n') >= 0) {
+			t = title.substring(0, title.indexOf('\n'));
+		}
+		return t;
 	}
 
 	@Override

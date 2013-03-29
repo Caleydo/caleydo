@@ -39,7 +39,6 @@ import org.caleydo.vis.rank.data.FloatInferrers;
 import org.caleydo.vis.rank.model.ARow;
 import org.caleydo.vis.rank.model.CategoricalRankColumnModel;
 import org.caleydo.vis.rank.model.FloatRankColumnModel;
-import org.caleydo.vis.rank.model.RankRankColumnModel;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
 
@@ -62,16 +61,17 @@ public class NASATxlResults implements IModelBuilder {
 		Map<Integer, String> taskMetaData = new LinkedHashMap<>();
 		for (int i = 1; i <= 13; ++i)
 			taskMetaData.put(i, String.format("Task %d", i));
-		Map<Integer, String> subjectData = new LinkedHashMap<>();
-		for (int i = 1; i <= 8; ++i)
-			subjectData.put(i, String.format("Subject %c", (char) ('A' + i - 1)));
-		table.add(new RankRankColumnModel());
 
 		table.add(new CategoricalRankColumnModel<Integer>(GLRenderers.drawText("Task", VAlign.CENTER),
 				new ReflectionData<>(field("task"), Integer.class), taskMetaData));
-		table.add(new CategoricalRankColumnModel<Integer>(GLRenderers.drawText("Subject", VAlign.CENTER),
-				new ReflectionData<>(field("subject"), Integer.class), subjectData));
 
+		ReflectionFloatData data = new ReflectionFloatData(field("time"));
+		FloatRankColumnModel f = new FloatRankColumnModel(data, GLRenderers.drawText("Exceution Time (s)",
+				VAlign.CENTER),
+				Color.decode("#FFD92F"), Color.decode("#FFFFCC"), new PiecewiseMapping(0, Float.NaN),
+				FloatInferrers.MEDIAN);
+		f.setWidth(150);
+		table.add(f);
 
 		table.add(col("mental_demand","Mental Demand\nHow much mental and perceptual activity was required? Was the task easy or demanding, simple or complex?","#FC9272","#FEE0D2"));
 		table.add(col(
@@ -100,21 +100,21 @@ public class NASATxlResults implements IModelBuilder {
 	protected static List<NASATxlTest> readData() throws IOException {
 		List<NASATxlTest> rows = new ArrayList<>();
 		try (BufferedReader r = new BufferedReader(new InputStreamReader(
-				NASATxlResults.class.getResourceAsStream("stresstests.txt"), Charset.forName("UTF-8")))) {
+				NASATxlResults.class.getResourceAsStream("nasaresult.csv"), Charset.forName("UTF-8")))) {
 			String line;
 			r.readLine();
 			while ((line = r.readLine()) != null) {
 				String[] l = line.split("\t");
 				NASATxlTest row = new NASATxlTest();
 				// row.rank = Integer.parseInt(l[0]);
-				row.subject = Integer.parseInt(l[0]);
-				row.task = Integer.parseInt(l[1]);
-				row.mental_demand = toFloat(l, 2);
-				row.physical_demand = toFloat(l, 3);
-				row.temporal_demand = toFloat(l, 4);
-				row.performance = toFloat(l, 5);
-				row.effort = toFloat(l, 6);
-				row.frustration = toFloat(l, 7);
+				row.task = Integer.parseInt(l[0]);
+				row.time = toFloat(l, 2);
+				row.mental_demand = toFloat(l, 3);
+				row.physical_demand = toFloat(l, 4);
+				row.temporal_demand = toFloat(l, 5);
+				row.performance = toFloat(l, 6);
+				row.effort = toFloat(l, 7);
+				row.frustration = toFloat(l, 8);
 				rows.add(row);
 			}
 		}
@@ -136,15 +136,12 @@ public class NASATxlResults implements IModelBuilder {
 
 	protected PiecewiseMapping mapping() {
 		PiecewiseMapping m = new PiecewiseMapping(0, 100);
-		m.put(0, 1);
-		m.put(100, 0);
 		return m;
 	}
 
 
 
 	static class NASATxlTest extends ARow {
-		public int subject;
 		public int task;
 		public float mental_demand;
 		public float physical_demand;
@@ -152,10 +149,11 @@ public class NASATxlResults implements IModelBuilder {
 		public float performance;
 		public float effort;
 		public float frustration;
+		public float time;
 
 		@Override
 		public String toString() {
-			return "Task " + task + " of subject " + subject;
+			return "Task " + task;
 		}
 	}
 
