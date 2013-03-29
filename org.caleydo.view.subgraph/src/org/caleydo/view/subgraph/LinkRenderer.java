@@ -1038,7 +1038,7 @@ public class LinkRenderer extends PickableGLElement {
     	gl.glEnd();
     	//gl.glDisable(GL2.GL_BLEND);
         if(isWindow){
-        	float zn=0f;
+        	float zn=0.35f;
 	        gl.glBegin(GL2.GL_QUADS);
 	        	gl.glColor4f(red, green, blue,linkOpacity);
 	        	//gl.glColor4f(1f, 0f,0f,1f);
@@ -1048,17 +1048,17 @@ public class LinkRenderer extends PickableGLElement {
 	    		gl.glVertex3f(p01X-(float)loc.getHeight()/1.0f, p01Y,zn);
 		    	gl.glVertex3f(p00X-(float)loc.getHeight()/1.0f, p00Y,zn);
 	    	gl.glEnd();
-	    	//wzn=3f;
+	    	zn=2f;
 		    gl.glBegin(GL2.GL_LINES);
 		   		gl.glColor4f(red, green, blue, this.outlineOpacity);
 		   		//gl.glColor4f(1f, 0f,0f,1f);
 		   		gl.glVertex3f(p01X,p01Y,zn);
 		   		gl.glColor4f(red, green, blue, 0.0f);
-		   		gl.glVertex3f(p01X-(float)loc.getHeight()/1.0f, p01Y,zn);
+		   		gl.glVertex3f(p01X-(float)loc.getHeight()*.5f, p01Y,zn);
 		   		gl.glColor4f(red, green, blue, this.outlineOpacity);			   		
 		   		gl.glVertex3f(p00X,p00Y,zn);
 		   		gl.glColor4f(red, green, blue, 0.0f);	
-		    	gl.glVertex3f(p00X-(float)loc.getHeight()/1.0f, p00Y,zn);    
+		    	gl.glVertex3f(p00X-(float)loc.getHeight()*.5f, p00Y,zn);    
 		    gl.glEnd();	
         }
         //gl.glEnable(GL2.GL_BLEND);
@@ -1278,7 +1278,7 @@ public class LinkRenderer extends PickableGLElement {
 	    		gl.glVertex3f(stubConnectionPoint3_X, stubConnectionPoint3_Y,z);    		
 	        gl.glEnd();
 	        if(isWindow){
-	        	float zn=0f;
+	        	float zn=0.35f;
 		        gl.glBegin(GL2.GL_QUADS);
 	        	gl.glColor4f(red, green, blue,linkOpacity);
 	        	//gl.glColor4f(1f, 0f,0f,1f);
@@ -1288,18 +1288,18 @@ public class LinkRenderer extends PickableGLElement {
 	    		gl.glVertex3f(p11X+(float)loc.getHeight()*1.5f, p11Y,zn);
 		    	gl.glVertex3f(p10X+(float)loc.getHeight()*1.5f, p10Y,zn);
 	        gl.glEnd();
-	    	zn=3f;
+	    	zn=2f;
 		    gl.glBegin(GL2.GL_LINES);
 		   		gl.glColor4f(red, green, blue, this.outlineOpacity);
 		   		//gl.glColor4f(1f, 0f,0f,1f);
 		   		
 		   		gl.glVertex3f(p11X,p11Y,zn);		
 		   		gl.glColor4f(red, green, blue, 0.0f);
-		   		gl.glVertex3f(p11X+(float)loc.getHeight()*1.5f, p11Y,zn);
+		   		gl.glVertex3f(p11X+(float)loc.getHeight()*.5f, p11Y,zn);
 		   		gl.glColor4f(red, green, blue, this.outlineOpacity);			   		
 		   		gl.glVertex3f(p10X,p10Y,zn);
 		   		gl.glColor4f(red, green, blue, 0.0f);	
-		   		gl.glVertex3f(p10X+(float)loc.getHeight()*1.5f, p10Y,zn);
+		   		gl.glVertex3f(p10X+(float)loc.getHeight()*.5f, p10Y,zn);
 		    gl.glEnd();	
 	        }
 	}
