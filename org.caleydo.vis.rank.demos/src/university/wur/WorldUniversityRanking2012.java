@@ -89,6 +89,8 @@ public class WorldUniversityRanking2012 implements IModelBuilder {
 		table.add(cat);
 
 		WorldUniversityYear.addYear(table, "World University Ranking", new YearGetter(0), true, false).orderByMe();
+
+		WorldUniversityYear.addSpecialYear(table, new YearGetter(0));
 	}
 
 	public static void dump() throws IOException {
