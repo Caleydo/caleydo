@@ -29,6 +29,8 @@ import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.StackedRankColumnModel;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.VerifyEvent;
@@ -69,11 +71,29 @@ public class EditWeightsDialog extends TitleAreaDialog implements VerifyListener
 		p.setLayout(new GridLayout(2, false));
 
 		float[] dists = model.getWeights();
+
+		FocusListener focusListener = new FocusListener() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				Text t = (Text) e.widget;
+				t.selectAll();
+			}
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				Text t = (Text) e.widget;
+				if (t.getSelectionCount() > 0) {
+					t.clearSelection();
+				}
+			}
+		};
+
 		for (int i = 0; i < dists.length; ++i) {
 			ARankColumnModel r = model.get(i);
 			Label l = new Label(p, SWT.NONE);
 			l.setText(clean(r.getTitle()));
 			Text t = new Text(p, SWT.BORDER);
+			t.addFocusListener(focusListener);
 			t.setText(toString(dists[i] * 100));
 			t.addModifyListener(this);
 			t.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
