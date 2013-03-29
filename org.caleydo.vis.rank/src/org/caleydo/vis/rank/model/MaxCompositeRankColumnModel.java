@@ -20,11 +20,14 @@
 package org.caleydo.vis.rank.model;
 
 import java.awt.Color;
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
+import org.caleydo.vis.rank.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IFloatRankableColumnMixin;
+import org.caleydo.vis.rank.model.mixin.IMappedColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 import org.caleydo.vis.rank.ui.GLPropertyChangeListeners;
 import org.caleydo.vis.rank.ui.detail.MaxScoreSummary;
@@ -36,6 +39,19 @@ import org.caleydo.vis.rank.ui.detail.ValueElement;
  *
  */
 public class MaxCompositeRankColumnModel extends AMultiRankColumnModel {
+
+	private final PropertyChangeListener listener = new PropertyChangeListener() {
+		@Override
+		public void propertyChange(PropertyChangeEvent evt) {
+			switch (evt.getPropertyName()) {
+			case IFilterColumnMixin.PROP_FILTER:
+			case IMappedColumnMixin.PROP_MAPPING:
+				invalidAllFilter();
+				propertySupport.firePropertyChange(evt);
+				break;
+			}
+		}
+	};
 
 	public MaxCompositeRankColumnModel() {
 		this(Color.GRAY, new Color(0.95f, .95f, .95f));
@@ -55,6 +71,19 @@ public class MaxCompositeRankColumnModel extends AMultiRankColumnModel {
 		return new MaxCompositeRankColumnModel(this);
 	}
 
+	@Override
+	protected void init(ARankColumnModel model) {
+		super.init(model);
+		model.addPropertyChangeListener(IFilterColumnMixin.PROP_FILTER, listener);
+		model.addPropertyChangeListener(IMappedColumnMixin.PROP_MAPPING, listener);
+	}
+
+	@Override
+	protected void takeDown(ARankColumnModel model) {
+		super.takeDown(model);
+		model.removePropertyChangeListener(IFilterColumnMixin.PROP_FILTER, listener);
+		model.removePropertyChangeListener(IMappedColumnMixin.PROP_MAPPING, listener);
+	}
 
 	@Override
 	public GLElement createSummary(boolean interactive) {

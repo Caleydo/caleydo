@@ -23,6 +23,7 @@ import static org.caleydo.core.view.opengl.layout2.layout.GLLayouts.defaultValue
 import static org.caleydo.vis.rank.ui.RenderStyle.LABEL_HEIGHT;
 import gleem.linalg.Vec2f;
 
+import java.awt.Color;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
@@ -110,7 +111,9 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 	private int dragPickingId = -1;
 
 	private boolean hasTitle;
-	public boolean isWeightDragging;
+	private boolean isWeightDragging;
+
+	private boolean wasColumnDragging = false;
 
 
 	public AColumnHeaderUI(final ARankColumnModel model, IRankTableUIConfig config, boolean hasTitle, boolean hasHist) {
@@ -263,6 +266,17 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 	}
 
 	@Override
+	public void layout(int deltaTimeMs) {
+		super.layout(deltaTimeMs);
+
+		boolean r = isDraggingAColumn();
+		if (r != wasColumnDragging) {
+			repaintPick();
+			wasColumnDragging = r;
+		}
+	}
+
+	@Override
 	protected void renderPickImpl(GLGraphics g, float w, float h) {
 		if (config.isMoveAble() || config.isInteractive()) {
 			g.incZ().incZ();
@@ -271,7 +285,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 			// RoundedRectRenderer.FLAG_FILL | RoundedRectRenderer.FLAG_TOP);
 			if (isDraggingAColumn()) {
 				float wi = RenderStyle.SEPARATOR_PICK_WIDTH - RenderStyle.COLUMN_SPACE;
-				g.fillRect(wi * 0.5f, 0, w - wi, h);
+				g.color(Color.blue).fillRect(wi * 0.5f, 0, w - wi, h).color(Color.black);
 			} else
 				g.fillRect(0, 0, w, h);
 			g.popName();
