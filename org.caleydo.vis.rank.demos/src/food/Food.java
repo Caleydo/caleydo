@@ -77,7 +77,8 @@ public class Food implements IModelBuilder {
 
 	private static final List<Pair<Color, Color>> colors = Arrays.asList(colors("#FC9272", "#FEE0D2"),
 			colors("#9ECAE1", "#DEEBF7"), colors("#A1D99B", "#E5F5E0"), colors("#C994C7", "#E7E1EF"),
-			colors("#FDBB84", "#FEE8C8"), colors("#DFC27D", "#F6E8C3"));
+			colors("#FDBB84", "#FEE8C8"), colors("#DFC27D", "#F6E8C3"), colors("#FFD92F", "#FFFFCC"),
+			colors("#8DA0CB", "#ECE2F0"), colors("#E78AC3", "#FDE0DD"), colors("#A6D854", "#F7FCB9"));
 
 	private static final List<String> selection = Arrays.asList("Food energy (kcal)",/**/
 			"Lipid (fat)(g)",/**/
@@ -94,8 +95,8 @@ public class Food implements IModelBuilder {
 	1, /**/
 	2, /**/
 	5, /**/
-	3, /**/
-	4, 4,/**/
+	7, /**/
+	3, 4,/**/
 	0,/**/
 	5, 5, 5, 5 };
 
