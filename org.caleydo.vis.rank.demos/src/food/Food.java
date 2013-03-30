@@ -80,12 +80,12 @@ public class Food implements IModelBuilder {
 			colors("#FDBB84", "#FEE8C8"), colors("#DFC27D", "#F6E8C3"));
 
 	private static final List<String> selection = Arrays.asList("Food energy (kcal)",/**/
-			"lipid (fat)(g)",/**/
+			"Lipid (fat)(g)",/**/
 			"Saturated fat (g)",/**/
 			"Cholesterol (mg)",/**/
 			"Sodium (mg)",/**/
 			"Carbohydrate (g)",/**/
-			"dietary fiber (g)", "sugars (g)",/**/
+			"Dietary fiber (g)", "Sugars (g)",/**/
 			"Protein (g)", /**/
 			"Vitamin A (IU)", "Vitamin C (mg)", "Calcium (mg)", "Iron (mg)");
 
