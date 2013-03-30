@@ -124,7 +124,7 @@ public class DemoApplication implements IApplication {
 			IMenuManager menuManager = getWindowConfigurer().getActionBarConfigurer().getMenuManager();
 			for (IContributionItem item : menuManager.getItems()) {
 
-				if (item.getId().contains("org.caleydo")) {
+				if (item.getId().contains("org.caleydo") && !item.getId().contains("org.caleydo.menu.window")) {
 					menuManager.remove(item);
 				}
 			}
@@ -140,9 +140,9 @@ public class DemoApplication implements IApplication {
 		protected void fillMenuBar(IMenuManager menuBar) {
 			super.fillMenuBar(menuBar);
 			MenuManager menu2 = new MenuManager("Demos", "demos");
-			menu2.add(new ShowView("University Rankings 2012", "rankvis.demo.university.mixed"));
-			menu2.add(new ShowView("Academic Ranking Of World Universties", "rankvis.demo.university.arwu"));
-			menu2.add(new ShowView("Measuring University Performance", "rankvis.demo.university.mup"));
+			// menu2.add(new ShowView("University Rankings 2012", "rankvis.demo.university.mixed"));
+			// menu2.add(new ShowView("Academic Ranking Of World Universties", "rankvis.demo.university.arwu"));
+			// menu2.add(new ShowView("Measuring University Performance", "rankvis.demo.university.mup"));
 			menu2.add(new ShowView("World University Ranking 2012", "rankvis.demo.university.wur2012"));
 			menu2.add(new ShowView("World University Rankings", "rankvis.demo.university.wur"));
 			menu2.add(new ShowView("Top 100 under 50 2012", "rankvis.demo.university.top100under50"));

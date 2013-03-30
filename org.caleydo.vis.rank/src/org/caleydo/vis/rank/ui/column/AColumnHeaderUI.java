@@ -713,7 +713,8 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 	class DraggedScoreHeaderItem extends GLElement {
 		@Override
 		protected void renderImpl(GLGraphics g, float w, float h) {
-			renderBackground(g, w, h);
+			if (AColumnHeaderUI.this.getParent() != null)
+				renderBackground(g, w, h);
 			if (get(HIST).getParent() != null)
 				get(HIST).render(g);
 		}

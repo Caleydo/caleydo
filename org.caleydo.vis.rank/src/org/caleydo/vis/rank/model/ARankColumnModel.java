@@ -183,6 +183,8 @@ public abstract class ARankColumnModel implements IDragInfo, IRankColumnModel {
 	}
 
 	public final boolean combine(ARankColumnModel with, boolean clone, int combineMode) {
+		if (!isCombineAble(with, clone, combineMode))
+			return false;
 		return combine(this, with, clone, combineMode);
 	}
 
