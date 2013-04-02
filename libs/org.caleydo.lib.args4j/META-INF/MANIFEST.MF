@@ -2,8 +2,8 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Args4j
 Bundle-SymbolicName: org.caleydo.lib.args4j
-Bundle-Version: 2.0.16
-Bundle-ClassPath: args4j-2.0.16.jar
+Bundle-Version: 2.0.23
+Bundle-ClassPath: args4j-2.0.23.jar
 Export-Package: org.kohsuke.args4j,
  org.kohsuke.args4j.spi
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
