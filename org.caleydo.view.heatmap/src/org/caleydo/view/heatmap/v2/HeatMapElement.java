@@ -203,7 +203,6 @@ public class HeatMapElement extends ATablePerspectiveGLElement {
 		final VirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
 		final ATableBasedDataDomain dataDomain = tablePerspective.getDataDomain();
 
-		float y = 0;
 		final float fieldWidth = recordSpacing.getFieldWidth();
 
 		for (int i = 0; i < recordVA.size(); ++i) {
@@ -211,9 +210,8 @@ public class HeatMapElement extends ATablePerspectiveGLElement {
 			if (isHidden(recordID)) {
 				continue;
 			}
+			float y = recordSpacing.getYPosition(i);
 			float fieldHeight = recordSpacing.getFieldHeight(recordID);
-
-			y += fieldHeight;
 
 			float x = 0;
 			for (Integer dimensionID : dimensionVA) {
@@ -352,38 +350,6 @@ public class HeatMapElement extends ATablePerspectiveGLElement {
 		EventPublisher.trigger(event);
 		relayout();
 	}
-
-	// FIXME
-	// switch (pickingType) {
-	//
-	// case HEAT_MAP_HIDE_HIDDEN_ELEMENTS:
-	// if (pickingMode == PickingMode.CLICKED)
-	// if (hideElements)
-	// hideElements = false;
-	// else
-	// hideElements = true;
-	//
-	// HideHeatMapElementsEvent event = new HideHeatMapElementsEvent(hideElements);
-	// event.setSender(this);
-	// event.setEventSpace(dataDomain.getDataDomainID());
-	// eventPublisher.triggerEvent(event);
-	//
-	// setDisplayListDirty();
-	//
-	// break;
-	// case HEAT_MAP_SHOW_CAPTIONS:
-	//
-	// if (pickingMode == PickingMode.CLICKED)
-	// if (showCaptions)
-	// showCaptions = false;
-	// else {
-	// showCaptions = true;
-	// }
-	//
-	// detailedRenderingTemplate.setStaticLayouts();
-	// setDisplayListDirty();
-	// break;
-
 
 	public void upDownSelect(boolean isUp) {
 		VirtualArray virtualArray = tablePerspective.getRecordPerspective().getVirtualArray();
