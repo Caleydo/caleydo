@@ -33,6 +33,8 @@ import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 
+import com.google.common.base.Preconditions;
+
 /**
  * @author Samuel Gratzl
  *
@@ -43,6 +45,7 @@ public abstract class ATablePerspectiveGLElement extends GLElement {
 	protected final SelectionManager dimensionSelectionManager;
 
 	public ATablePerspectiveGLElement(TablePerspective tablePerspective) {
+		Preconditions.checkNotNull(tablePerspective, "have a valid tablePerspective");
 		this.tablePerspective = tablePerspective;
 		this.recordSelectionManager = tablePerspective.getDataDomain().cloneRecordSelectionManager();
 		this.dimensionSelectionManager = tablePerspective.getDataDomain().cloneDimensionSelectionManager();

@@ -13,6 +13,7 @@ import javax.media.opengl.glu.GLU;
 import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.util.color.IColor;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
+import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.layout2.renderer.RoundedRectRenderer;
 import org.caleydo.core.view.opengl.util.GLPrimitives;
 import org.caleydo.core.view.opengl.util.text.ITextRenderer;
@@ -296,6 +297,13 @@ public class GLGraphics {
 	 */
 	public GLGraphics fillRect(float x, float y, float w, float h) {
 		return renderRect(true, x, y, w, h);
+	}
+
+	/**
+	 * renders a filled rect
+	 */
+	public GLGraphics fillRect(Rect bounds) {
+		return fillRect(bounds.x(), bounds.y(), bounds.width(), bounds.height());
 	}
 
 	public GLGraphics renderRect(boolean fill, float x, float y, float w, float h) {

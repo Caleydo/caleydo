@@ -36,12 +36,12 @@ import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.data.SelectionUpdateEvent;
 import org.caleydo.core.id.IDType;
-import org.caleydo.core.util.color.mapping.ColorMapper;
 import org.caleydo.core.util.color.mapping.UpdateColorMappingEvent;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.contextmenu.item.BookmarkMenuItem;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
+import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.layout2.table.ATablePerspectiveGLElement;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -52,51 +52,65 @@ import org.caleydo.view.heatmap.v2.spacing.IRecordSpacingLayout;
 import org.caleydo.view.heatmap.v2.spacing.IRecordSpacingStrategy;
 import org.caleydo.view.heatmap.v2.spacing.UniformRecordSpacingCalculator;
 
+import com.google.common.base.Preconditions;
 import com.jogamp.common.util.IntIntHashMap;
 
 public class HeatMapElement extends ATablePerspectiveGLElement {
 	/** hide elements with the state {@link #SELECTION_HIDDEN} if this is true */
 	private boolean hideElements = true;
 
+	private final IntIntHashMap recordPickingIds = new IntIntHashMap();
 	private final IPickingListener recordPickingListener = new IPickingListener() {
 		@Override
 		public void pick(Pick pick) {
 			onRecordPick(pick.getObjectID(), pick);
 		}
 	};
+	private final SelectionRenderer recordSelectionRenderer;
+
+	private final IntIntHashMap dimensionPickingIds = new IntIntHashMap();
 	private final IPickingListener dimensionPickingListener = new IPickingListener() {
 		@Override
 		public void pick(Pick pick) {
 			onDimensionPick(pick.getObjectID(), pick);
 		}
 	};
+	private final SelectionRenderer dimensionSelectionRenderer;
 
 	// helper as we have record and dimension need a central point when both is done
 	private List<AContextMenuItem> toShow = new ArrayList<>(2);
-
-	private final IntIntHashMap recordPickingIds = new IntIntHashMap();
-	private final IntIntHashMap dimensionPickingIds = new IntIntHashMap();
-
-	private final SelectionRenderer dimensionSelectionRenderer;
-	private final SelectionRenderer recordSelectionRenderer;
 
 	// TODO parameterize
 	private final IRecordSpacingStrategy recordSpacingStrategy = new UniformRecordSpacingCalculator();
 	private IRecordSpacingLayout recordSpacing;
 
+	/**
+	 * strategy to render a single field in the heat map
+	 */
+	private final IBlockRenderer blockRenderer;
+
 	public HeatMapElement(TablePerspective tablePerspective) {
+		this(tablePerspective, BasicBlockRenderer.INSTANCE);
+	}
+
+	public HeatMapElement(TablePerspective tablePerspective, IBlockRenderer blockRenderer) {
 		super(tablePerspective);
+		Preconditions.checkNotNull(blockRenderer, "need a valid renderer");
+
+		this.blockRenderer = blockRenderer;
 
 		this.dimensionSelectionRenderer = new SelectionRenderer(tablePerspective, dimensionSelectionManager, true,
 				dimensionPickingIds);
 		this.recordSelectionRenderer = new SelectionRenderer(tablePerspective, recordSelectionManager, false,
 				recordPickingIds);
+
+		setPicker(null);
+		setVisibility(EVisibility.PICKABLE);
 	}
 
 	@Override
 	protected void init(IGLElementContext context) {
 		super.init(context);
-
 		ensureEnoughPickingIds();
 	}
 
@@ -106,6 +120,13 @@ public class HeatMapElement extends ATablePerspectiveGLElement {
 				dimensionPickingListener);
 	}
 
+	/**
+	 * ensoures that we have registered picking is for our records and dimensions
+	 *
+	 * @param perspective
+	 * @param map
+	 * @param listener
+	 */
 	private void ensureEnoughPickingIds(Perspective perspective, IntIntHashMap map, IPickingListener listener) {
 		if (map.size() == 0) {
 			// just add
@@ -135,8 +156,10 @@ public class HeatMapElement extends ATablePerspectiveGLElement {
 		ensureEnoughPickingIds();
 	}
 
+
 	@Override
 	protected void takeDown() {
+		// free ids again
 		for (IntIntHashMap.Entry entry : recordPickingIds) {
 			context.unregisterPickingListener(entry.value);
 		}
@@ -164,8 +187,8 @@ public class HeatMapElement extends ATablePerspectiveGLElement {
 	@Override
 	protected void layoutImpl() {
 		Vec2f size = getSize();
-		this.recordSpacing = recordSpacingStrategy
-.apply(tablePerspective, recordSelectionManager, isHideElements(),
+		// compute the layout
+		this.recordSpacing = recordSpacingStrategy.apply(tablePerspective, recordSelectionManager, isHideElements(),
 				size.x(), size.y(), 0 /* FIXME */);
 	}
 
@@ -174,13 +197,14 @@ public class HeatMapElement extends ATablePerspectiveGLElement {
 		render(g, w, h, false);
 	}
 
-	private void render(GLGraphics g, float w, float h, boolean doPicking) {
-		final ColorMapper colorMapper = tablePerspective.getDataDomain().getColorMapper();
-		float y = 0;
-		final float fieldWidth = recordSpacing.getFieldWidth();
 
+	private void render(GLGraphics g, float w, float h, boolean doPicking) {
 		final VirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
 		final VirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
+		final ATableBasedDataDomain dataDomain = tablePerspective.getDataDomain();
+
+		float y = 0;
+		final float fieldWidth = recordSpacing.getFieldWidth();
 
 		for (int i = 0; i < recordVA.size(); ++i) {
 			Integer recordID = recordVA.get(i);
@@ -200,7 +224,9 @@ public class HeatMapElement extends ATablePerspectiveGLElement {
 					g.popName();
 					g.popName();
 				} else {
-					renderElement(g, dimensionID, recordID, x, y, fieldWidth, fieldHeight, colorMapper);
+					boolean deSelected = isDeselected(recordID);
+					blockRenderer.render(g, recordID, dimensionID, dataDomain, new Rect(x, y, fieldWidth, fieldHeight),
+							deSelected);
 				}
 				x += fieldWidth;
 			}
@@ -218,23 +244,7 @@ public class HeatMapElement extends ATablePerspectiveGLElement {
 		render(g, w, h, true);
 	}
 
-	@Override
-	protected boolean hasPickAbles() {
-		return true;
-	}
-
-	private void renderElement(GLGraphics g, final int dimensionID, final int recordID, final float x, final float y,
-			final float w, final float h, ColorMapper colorMapper) {
-		float value = tablePerspective.getDataDomain().getTable().getNormalizedValue(dimensionID, recordID);
-
-		float[] color = colorMapper.getColor(value);
-		float opacity = isDeselected(recordID) ? 0.3f : 1.0f;
-
-		g.color(color[0], color[1], color[2], opacity);
-		g.fillRect(x, y, w, h);
-	}
-
-	protected boolean isHidden(Integer recordID) {
+	private boolean isHidden(Integer recordID) {
 		return isHideElements() && recordSelectionManager.checkStatus(GLHeatMap.SELECTION_HIDDEN, recordID);
 	}
 
@@ -245,7 +255,8 @@ public class HeatMapElement extends ATablePerspectiveGLElement {
 	@Override
 	public void layout(int deltaTimeMs) {
 		super.layout(deltaTimeMs);
-		if (!toShow.isEmpty()) {
+
+		if (!toShow.isEmpty()) { // show the context menu
 			context.showContextMenu(toShow);
 			toShow.clear();
 		}
