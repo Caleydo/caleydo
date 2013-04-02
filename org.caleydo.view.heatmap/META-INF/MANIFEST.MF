@@ -10,7 +10,8 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: org.caleydo.view.heatmap,
  org.caleydo.view.heatmap.command.handler,
  org.caleydo.view.heatmap.heatmap,
- org.caleydo.view.heatmap.heatmap.template
+ org.caleydo.view.heatmap.heatmap.template,
+ org.caleydo.view.heatmap.v2
 Bundle-Vendor: www.caleydo.org
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.caleydo.view.heatmap.Activator

@@ -20,13 +20,16 @@
 package org.caleydo.view.histogram;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataSupportDefinitions;
+import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.datadomain.IDataSupportDefinition;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.manager.GeneralManager;
@@ -169,6 +172,16 @@ public class RcpGLHistogramView
 	}
 
 	@Override
+	public Set<IDataDomain> getDataDomains() {
+		return Collections.singleton((IDataDomain) getDataDomain());
+	}
+
+	@Override
+	public boolean isDataView() {
+		return false;
+	}
+
+	@Override
 	public List<TablePerspective> getTablePerspectives() {
 		return ((ISingleTablePerspectiveBasedView) view).getTablePerspectives();
 	}
@@ -207,6 +220,16 @@ public class RcpGLHistogramView
 	@Override
 	public IDataSupportDefinition getDataSupportDefinition() {
 		return DataSupportDefinitions.all;
+	}
+
+	@Override
+	public int getInstanceNumber() {
+		return 0;
+	}
+
+	@Override
+	public void setInstanceNumber(int instanceNumber) {
+
 	}
 
 }

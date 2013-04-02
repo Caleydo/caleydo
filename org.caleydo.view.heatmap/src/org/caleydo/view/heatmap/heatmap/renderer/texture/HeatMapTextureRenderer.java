@@ -184,7 +184,7 @@ public class HeatMapTextureRenderer extends AHeatMapRenderer {
 
 				TextureData texData = new TextureData(GLProfile.getDefault(), GL.GL_RGBA /* internalFormat */,
 						textureWidth /* height */, numberSamples.get(textureCounter) /* width */, 0 /* border */,
-						GL.GL_RGBA /* pixelFormat */, GL.GL_FLOAT /* pixelType */, true /* mipmap */,
+						GL.GL_RGBA /* pixelFormat */, GL.GL_FLOAT /* pixelType */, false /* mipmap */,
 						false /* dataIsCompressed */, false /* mustFlipVertically */, floatBuffer[textureCounter], null);
 
 				tempTexture = TextureIO.newTexture(0);

@@ -19,6 +19,9 @@
  *******************************************************************************/
 package org.caleydo.core.view;
 
+import java.util.Set;
+
+import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.base.IDefaultLabelHolder;
 import org.caleydo.core.util.base.IUniqueObject;
@@ -58,4 +61,28 @@ public interface IView
 	 * @return
 	 */
 	public String getViewType();
+
+	/**
+	 * @return the instanceNumber, see {@link #instanceNumber}
+	 */
+	public int getInstanceNumber();
+
+	/**
+	 * @param instanceNumber
+	 *            setter, see {@link #instanceNumber}
+	 */
+	public void setInstanceNumber(int instanceNumber);
+
+	/**
+	 * Determines whether the view displays concrete data of a data set or not.
+	 *
+	 * @return
+	 */
+	public boolean isDataView();
+
+	/**
+	 * @return A Copy of the datadomain set of this view.
+	 */
+	public Set<IDataDomain> getDataDomains();
+
 }

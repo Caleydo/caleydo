@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -34,6 +33,7 @@ import java.util.Set;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.view.NewViewEvent;
 import org.caleydo.core.event.view.ViewClosedEvent;
 import org.caleydo.core.manager.AManager;
@@ -67,6 +67,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.osgi.framework.Bundle;
 
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
 import com.jogamp.opengl.util.FPSAnimator;
 
@@ -78,7 +79,7 @@ import com.jogamp.opengl.util.FPSAnimator;
  */
 public class ViewManager extends AManager<IView> {
 
-	private final Map<Integer, AGLView> hashGLViewID2GLView = new HashMap<>();
+	private final Map<Integer, IView> hashGLViewID2View = new HashMap<>();
 
 	private final Map<CaleydoRCPViewPart, IView> hashRCP2View = new HashMap<>();
 
@@ -146,14 +147,17 @@ public class ViewManager extends AManager<IView> {
 		if (hashItems.containsKey(iItemId))
 			return true;
 
-		if (hashGLViewID2GLView.containsKey(iItemId))
+		if (hashGLViewID2View.containsKey(iItemId))
 			return true;
 
 		return false;
 	}
 
 	public AGLView getGLView(int iItemID) {
-		return hashGLViewID2GLView.get(iItemID);
+		IView view = hashGLViewID2View.get(iItemID);
+		if (view instanceof AGLView)
+			return (AGLView) view;
+		return null;
 	}
 
 	public boolean unregisterGLCanvas(final IGLCanvas glCanvas) {
@@ -176,25 +180,24 @@ public class ViewManager extends AManager<IView> {
 	/**
 	 * Registers the specified {@link AGLView}.
 	 *
-	 * @param glView
+	 * @param vuew
 	 * @param assignInstanceNumber
 	 *            If true, a number that is unique among all instances of the class of the specified view is assigned to
 	 *            the view. Otherwise -1 is assigned.
 	 */
-	public void registerGLView(AGLView glView, boolean assignInstanceNumber) {
-
+	public void registerView(IView view, boolean assignInstanceNumber) {
 		int instanceNumber = 0;
 
 		if (assignInstanceNumber) {
-			Class<? extends AView> viewClass = glView.getClass();
+			Class<? extends IView> viewClass = view.getClass();
 
 			// Extract instance numbers from views of the same class that have a
 			// unique instance number
 			List<Integer> existingInstanceNumbers = new ArrayList<Integer>();
-			for (AGLView view : hashGLViewID2GLView.values()) {
-				if (view.getClass().equals(viewClass)) {
-					if (view.getInstanceNumber() != -1) {
-						existingInstanceNumbers.add(view.getInstanceNumber());
+			for (IView eview : hashGLViewID2View.values()) {
+				if (eview.getClass().equals(viewClass)) {
+					if (eview.getInstanceNumber() != -1) {
+						existingInstanceNumbers.add(eview.getInstanceNumber());
 					}
 				}
 			}
@@ -207,17 +210,16 @@ public class ViewManager extends AManager<IView> {
 				}
 			}
 
-			glView.setInstanceNumber(instanceNumber);
+			view.setInstanceNumber(instanceNumber);
 		} else {
-			glView.setInstanceNumber(-1);
+			view.setInstanceNumber(-1);
 		}
 
-		hashGLViewID2GLView.put(glView.getID(), glView);
-		Logger.log(new Status(IStatus.INFO, this.toString(), "Registering view: " + glView));
-		NewViewEvent event = new NewViewEvent(glView);
+		hashGLViewID2View.put(view.getID(), view);
+		Logger.log(new Status(IStatus.INFO, this.toString(), "Registering view: " + view));
+		NewViewEvent event = new NewViewEvent(view);
 		event.setSender(this);
-		generalManager.getEventPublisher().triggerEvent(event);
-
+		EventPublisher.trigger(event);
 	}
 
 	/**
@@ -307,8 +309,6 @@ public class ViewManager extends AManager<IView> {
 			parentGLCanvas.removeGLEventListener(view);
 		}
 
-		hashGLViewID2GLView.remove(view.getID());
-
 		AGLView parentView = (AGLView) view.getRemoteRenderingGLView();
 
 		// Remove this view from the parent's remote rendering list
@@ -337,9 +337,19 @@ public class ViewManager extends AManager<IView> {
 		}
 
 		hashRemoteRenderingView2RemoteRenderedViews.remove(view);
+
+		destroyView(view);
+	}
+
+	public void destroyView(IView view) {
+		if (view == null)
+			return;
+
+		hashGLViewID2View.remove(view.getID());
+
 		ViewClosedEvent event = new ViewClosedEvent(view);
 		event.setSender(this);
-		generalManager.getEventPublisher().triggerEvent(event);
+		EventPublisher.trigger(event);
 	}
 
 	public void registerGLEventListenerByGLCanvas(final IGLCanvas glCanvas, final AGLView glView) {
@@ -393,7 +403,7 @@ public class ViewManager extends AManager<IView> {
 	 */
 	public void cleanup() {
 
-		hashGLViewID2GLView.clear();
+		hashGLViewID2View.clear();
 		hashItems.clear();
 	}
 
@@ -470,11 +480,15 @@ public class ViewManager extends AManager<IView> {
 	//
 	// ViewClosedEvent event = new ViewClosedEvent(glView);
 	// event.setSender(this);
-	// generalManager.getEventPublisher().triggerEvent(event);
+	// EventPublisher.trigger(event);
 	// }
 
-	public Collection<AGLView> getAllGLViews() {
-		return hashGLViewID2GLView.values();
+	public Iterable<AGLView> getAllGLViews() {
+		return Iterables.filter(hashGLViewID2View.values(), AGLView.class);
+	}
+
+	public Iterable<IView> getAllViews() {
+		return hashGLViewID2View.values();
 	}
 
 	public PickingManager getPickingManager() {

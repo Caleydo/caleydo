@@ -199,7 +199,7 @@ public class AdjustedRandScoreFactory implements IScoreFactory {
 			} else { // score single
 				s = AdjustedRandScoreFactory.this.create(null, strat);
 			}
-			EventPublisher.publishEvent(new AddScoreColumnEvent(s).to(receiver));
+			EventPublisher.trigger(new AddScoreColumnEvent(s).to(receiver));
 		}
 	}
 }

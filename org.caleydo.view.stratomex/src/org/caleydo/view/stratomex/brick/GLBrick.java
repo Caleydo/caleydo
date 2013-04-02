@@ -295,7 +295,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 	public void initialize() {
 		super.initialize();
 		tablePerspectiveSelectionManager = new SelectionManager(TablePerspective.DATA_CONTAINER_IDTYPE);
-		recordGroupSelectionManager = dataDomain.getRecordGroupSelectionManager().clone();
+		recordGroupSelectionManager = dataDomain.cloneRecordGroupSelectionManager().clone();
 
 		if (brickLayoutConfiguration == null) {
 			brickLayoutConfiguration = new DefaultBrickLayoutTemplate(this, brickColumn, stratomex);

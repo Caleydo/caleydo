@@ -165,8 +165,8 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	private EventBasedSelectionManager metaboliteSelectionManager;
 	private EventBasedSelectionManager sampleSelectionManager;
 
-	private AddTablePerspectivesListener addTablePerspectivesListener;
-	private RemoveTablePerspectiveListener removeTablePerspectiveListener;
+	private AddTablePerspectivesListener<GLEnRoutePathway> addTablePerspectivesListener;
+	private RemoveTablePerspectiveListener<GLEnRoutePathway> removeTablePerspectiveListener;
 
 	private final EventListenerManager listeners = EventListenerManagers.wrap(this);
 
@@ -450,12 +450,12 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 		listeners.register(this);
 
-		addTablePerspectivesListener = new AddTablePerspectivesListener();
+		addTablePerspectivesListener = new AddTablePerspectivesListener<>();
 		addTablePerspectivesListener.setHandler(this);
 		addTablePerspectivesListener.setEventSpace(pathwayPathEventSpace);
 		eventPublisher.addListener(AddTablePerspectivesEvent.class, addTablePerspectivesListener);
 
-		removeTablePerspectiveListener = new RemoveTablePerspectiveListener();
+		removeTablePerspectiveListener = new RemoveTablePerspectiveListener<>();
 		removeTablePerspectiveListener.setHandler(this);
 		removeTablePerspectiveListener.setEventSpace(pathwayPathEventSpace);
 		eventPublisher.addListener(RemoveTablePerspectiveEvent.class, removeTablePerspectiveListener);

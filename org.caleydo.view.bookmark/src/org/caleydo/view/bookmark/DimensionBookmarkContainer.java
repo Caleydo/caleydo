@@ -35,7 +35,7 @@ class DimensionBookmarkContainer extends ABookmarkContainer {
 				.getDataDomain().getDimensionIDCategory().getPrimaryMappingType());
 		bookmarkItems = new UniqueList<ABookmark>();
 
-		selectionManager = manager.getDataDomain().getDimensionSelectionManager();
+		selectionManager = manager.getDataDomain().cloneDimensionSelectionManager();
 
 	}
 

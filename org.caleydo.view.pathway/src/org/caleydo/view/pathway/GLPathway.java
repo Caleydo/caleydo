@@ -30,7 +30,6 @@ import java.util.Set;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
-
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataSupportDefinition;
 import org.caleydo.core.data.perspective.table.TablePerspective;
@@ -177,7 +176,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 	private EnableGeneMappingListener enableGeneMappingListener;
 	private EnRoutePathEventListener enRoutePathEventListener;
 	private SelectPathModeEventListener selectPathModeEventListener;
-	private AddTablePerspectivesListener addTablePerspectivesListener;
+	private AddTablePerspectivesListener<GLPathway> addTablePerspectivesListener;
 	private SampleMappingModeListener sampleMappingModeListener;
 	private UpdateColorMappingListener updateColorMappingListener;
 	private ShowPortalNodesEventListener showPortalNodesEventListener;
@@ -765,10 +764,10 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 			textureOffset -= 2f * PathwayRenderStyle.Z_OFFSET;
 			gl.glTranslatef(0.0f, 0.0f, textureOffset);
 
-		
+
 			overlayContextBubbleSets(gl);
 			overlayBubbleSets(gl);
-			
+
 			gl.glEnable(GL.GL_DEPTH_TEST);
 			gl.glDisable(GL.GL_STENCIL_TEST);
 		}
@@ -795,11 +794,11 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 			((BubbleSet)(contextPathBubbleSet.getBubbleSetGLRenderer().setOutline)).setParameter(10, 10, 3, 10.0, 20.0, 20.5, 5.5, 5.0, 5);
 			((BubbleSet)(contextPathBubbleSet.getBubbleSetGLRenderer().setOutline)).useVirtualEdges(false);
 
-				
+
 			this.contextPathBubbleSet.getBubbleSetGLRenderer().update(gl, null, selectedPathID);
 			areContextPathsDirty = false;
 		}
-		
+
 		this.contextPathBubbleSet.getBubbleSetGLRenderer().render(gl,
 				pixelGLConverter.getGLWidthForPixelWidth(pathway.getWidth()),
 				pixelGLConverter.getGLHeightForPixelHeight(pathway.getHeight()),
@@ -809,7 +808,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 	private void overlayBubbleSets(GL2 gl) {
 //		if (allPaths == null)
 //			return;overlayBubbleSets
-		
+
 
 		if (isBubbleTextureDirty) {
 			// //allPaths
@@ -818,7 +817,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 			this.alternativeBubbleSet.clear();
 			this.bubbleSet.setPathwayGraph(pathway);
 			this.alternativeBubbleSet.setPathwayGraph(pathway);
-			
+
 //			if(selectedPathID>=0)
 //				allPathsList.get(allPathsList.size()-1).setSecond(this.selectedPathID);
 //			else
@@ -829,7 +828,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 			boolean renderAlternatives=false;
 			for (PathwayPath pathSegment : pathSegments) {
 				if (pathSegment.getPathway() == pathway) {
-					renderAlternatives=true;		
+					renderAlternatives=true;
 					continue;
 				}
 			}
@@ -846,14 +845,14 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 			//System.out.println("overlayBubbleSets pathSegments.size"+pathSegments.size());
 			this.bubbleSet.addPathSegements(pathSegments);
 			this.bubbleSet.addPathSegements(pathSegments);
-			
+
 			if(this.highlightVertices){
 				((BubbleSet)(bubbleSet.getBubbleSetGLRenderer().setOutline)).setParameter(100, 20, 3, 10.0, 7.0, 0.5, 2.5, 15.0, 8);
 			}else{
 				//this.bubbleSet.addPathSegements(pathSegments);
 				((BubbleSet)(bubbleSet.getBubbleSetGLRenderer().setOutline)).setParameter(10, 10, 3, 10.0, 20.0, 20.5, 15.5, 5.0, 5);
 			}
-			
+
 			// this.bubbleSet.addPortals(portalVertexReps);
 
 			// update texture
@@ -863,8 +862,8 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 			alternativeBubbleSet.getBubbleSetGLRenderer().setSize(pathway.getWidth(), pathway.getHeight());
 			//this.bubbleSet.getBubbleSetGLRenderer().update(gl, SelectionType.SELECTION.getColor(), selectedPathID);
 			alternativeBubbleSet.getBubbleSetGLRenderer().update(gl, null, 0);
-	
-			
+
+
 			isBubbleTextureDirty = false;
 		}
 
@@ -887,9 +886,9 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 					pixelGLConverter.getGLWidthForPixelWidth(pathway.getWidth()),
 					pixelGLConverter.getGLHeightForPixelHeight(pathway.getHeight()),1.0f);
 		}
-		
+
 		gl.glPopName();
-		
+
 	}
 
 	private void rebuildPathwayDisplayList(final GL2 gl) {
@@ -1001,7 +1000,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		selectPathModeEventListener.setHandler(this);
 		eventPublisher.addListener(EnablePathSelectionEvent.class, selectPathModeEventListener);
 
-		addTablePerspectivesListener = new AddTablePerspectivesListener();
+		addTablePerspectivesListener = new AddTablePerspectivesListener<>();
 		addTablePerspectivesListener.setHandler(this);
 		eventPublisher.addListener(AddTablePerspectivesEvent.class, addTablePerspectivesListener);
 
@@ -1504,7 +1503,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		//System.out.println("pathSegmentsBroadcasted");
 		if (pathSegmentsBroadcasted == null){
 			//System.out.println("(pathSegmentsBroadcasted == null");
-			return;		
+			return;
 		}
 		//System.out.println("(pathSegmentsBroadcasted.size()="+pathSegmentsBroadcasted.size());
 		pathSegments = pathSegmentsBroadcasted;

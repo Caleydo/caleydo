@@ -600,7 +600,7 @@ public class StratomexAdapter {
 		if (event == null)
 			return;
 		event.setSender(this);
-		EventPublisher.publishEvent(event);
+		EventPublisher.trigger(event);
 	}
 
 	private void triggerDelayedEvent(AEvent event) {

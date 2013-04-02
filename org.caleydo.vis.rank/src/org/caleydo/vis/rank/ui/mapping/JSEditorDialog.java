@@ -19,7 +19,7 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.ui.mapping;
 
-import static org.caleydo.core.event.EventPublisher.publishEvent;
+import static org.caleydo.core.event.EventPublisher.trigger;
 
 import java.io.StringWriter;
 import java.util.Objects;
@@ -180,14 +180,14 @@ public class JSEditorDialog extends TitleAreaDialog {
 	private void applyPressed() {
 		if (!verifyCode())
 			return;
-		publishEvent(new CodeUpdateEvent(codeUI.getText()).to(receiver));
+		trigger(new CodeUpdateEvent(codeUI.getText()).to(receiver));
 	}
 
 	@Override
 	protected void okPressed() {
 		if (!verifyCode())
 			return;
-		publishEvent(new CodeUpdateEvent(codeUI.getText()).to(receiver));
+		trigger(new CodeUpdateEvent(codeUI.getText()).to(receiver));
 		super.okPressed();
 	}
 

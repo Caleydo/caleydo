@@ -27,11 +27,31 @@ import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
  *
  */
 public abstract class AGLElementDecorator extends GLElement implements IGLElementParent {
-	protected final GLElement content;
+	protected GLElement content;
+
+	public AGLElementDecorator() {
+	}
 
 	public AGLElementDecorator(GLElement content) {
+		setContent(content);
+	}
+
+	/**
+	 * @param content
+	 *            setter, see {@link content}
+	 */
+	public void setContent(GLElement content) {
+		if (this.content == content)
+			return;
+		if (this.content != null) {
+			this.content.setParent(null);
+			if (context != null)
+				content.takeDown();
+		}
 		this.content = content;
-		content.setParent(this);
+		this.content.setParent(this);
+		if (context != null)
+			this.content.init(context);
 	}
 
 	/**
@@ -44,12 +64,14 @@ public abstract class AGLElementDecorator extends GLElement implements IGLElemen
 	@Override
 	protected void init(IGLElementContext context) {
 		super.init(context);
-		content.init(context);
+		if (content != null)
+			content.init(context);
 	}
 
 	@Override
 	protected void takeDown() {
-		content.takeDown();
+		if (content != null)
+			content.takeDown();
 		super.takeDown();
 	}
 
@@ -61,12 +83,14 @@ public abstract class AGLElementDecorator extends GLElement implements IGLElemen
 	@Override
 	public void layout(int deltaTimeMs) {
 		super.layout(deltaTimeMs);
-		content.layout(deltaTimeMs);
+		if (content != null)
+			content.layout(deltaTimeMs);
 	}
 
 	@Override
 	protected void layoutImpl() {
-		layoutContent(content.layoutElement);
+		if (content != null)
+			layoutContent(content.layoutElement);
 		super.layoutImpl();
 	}
 

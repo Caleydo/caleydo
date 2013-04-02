@@ -120,7 +120,7 @@ public class ClusterTreeMapNode extends ATreeMapNode {
 		// TODO check how to handle when node is not leave
 		if (referenzData.bUseExpressionValues && data.getLeafID() >= 0) {
 			SelectionManager dimensionSelectionManager = referenzData.dataDomain
-					.getDimensionSelectionManager();
+					.cloneDimensionSelectionManager();
 			Set<Integer> dimensionIDs = dimensionSelectionManager.getElements(SelectionType.SELECTION);
 			if (dimensionIDs != null && dimensionIDs.size() > 0) {
 				float expressionValue = 0;

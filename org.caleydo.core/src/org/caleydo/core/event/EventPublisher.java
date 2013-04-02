@@ -174,8 +174,4 @@ public class EventPublisher {
 				receiver.queueEvent(event);
 		}
 	}
-
-	public static void publishEvent(AEvent event) {
-		INSTANCE.triggerEvent(event);
-	}
 }

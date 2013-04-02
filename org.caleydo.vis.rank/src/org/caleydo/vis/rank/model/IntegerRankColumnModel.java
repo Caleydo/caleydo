@@ -268,7 +268,7 @@ public class IntegerRankColumnModel extends ABasicFilterableRankColumnModel impl
 			Integer minV = t.length() > 0 ? new Integer(t) : null;
 			t = maxUI.getText().trim();
 			Integer maxV = t.length() > 0 ? new Integer(t) : null;
-			EventPublisher.publishEvent(new SizeFilterEvent(minV, maxV).to(receiver));
+			EventPublisher.trigger(new SizeFilterEvent(minV, maxV).to(receiver));
 			super.okPressed();
 		}
 	}

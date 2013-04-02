@@ -17,31 +17,16 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.dvi.contextmenu;
+package org.caleydo.view.heatmap.v2.spacing;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.event.EventPublisher;
-import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
-import org.caleydo.core.view.contextmenu.AContextMenuItem;
-import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
+import org.caleydo.core.data.selection.SelectionManager;
 
 /**
- * Item to add a {@link TablePerspective} to a
- * {@link IMultiTablePerspectiveBasedView}.
- *
- * @author Christian Partl
+ * @author Samuel Gratzl
  *
  */
-public class AddTablePerspectiveToViewItem extends AContextMenuItem {
-
-	public AddTablePerspectiveToViewItem(TablePerspective tablePerspective,
-			IMultiTablePerspectiveBasedView view) {
-		setLabel(view.getLabel());
-
-		AddTablePerspectivesEvent event = new AddTablePerspectivesEvent(tablePerspective);
-		event.setReceiver(view);
-		event.setSender(this);
-		EventPublisher.trigger(event);
-	}
-
+public interface IRecordSpacingStrategy {
+	IRecordSpacingLayout apply(TablePerspective tablePerspective, SelectionManager recordManager, boolean hideHidden,
+			float width, float height, int minSelectedFieldHeight);
 }

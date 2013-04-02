@@ -92,8 +92,8 @@ public class FloatFilterDialog extends Dialog {
 		SelectionAdapter adapter = new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				EventPublisher.publishEvent(new FilterEvent(new FilterChecked(filterNotMappedUI.getSelection(),
-						filterMissingUI.getSelection(), filterGloballyUI.getSelection())).to(receiver));
+				EventPublisher.trigger(new FilterEvent(new FilterChecked(filterNotMappedUI.getSelection(),
+				filterMissingUI.getSelection(), filterGloballyUI.getSelection())).to(receiver));
 			}
 		};
 		filterNotMappedUI.addSelectionListener(adapter);

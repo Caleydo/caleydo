@@ -57,7 +57,7 @@ public class ComputeForScoreJob extends AComputeJob {
 	@Override
 	public IStatus run(IProgressMonitor monitor) {
 		IStatus result = runImpl(monitor, data, mask);
-		EventPublisher.publishEvent(new ScoreQueryReadyEvent(scores).to(receiver));
+		EventPublisher.trigger(new ScoreQueryReadyEvent(scores).to(receiver));
 		return result;
 	}
 }

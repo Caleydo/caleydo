@@ -351,7 +351,7 @@ public abstract class AMultiRankColumnModel extends ACompositeRankColumnModel im
 				if (d.open() == Window.OK) {
 					String t = d.getTitle().trim();
 					String desc = d.getDescription().trim();
-					EventPublisher.publishEvent(new AnnotationEditEvent(t, desc).to(summary));
+					EventPublisher.trigger(new AnnotationEditEvent(t, desc).to(summary));
 				}
 			}
 		});

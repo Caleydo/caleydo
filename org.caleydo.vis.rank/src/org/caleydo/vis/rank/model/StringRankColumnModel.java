@@ -193,9 +193,9 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 					@Override
 					public String isValid(String newText) {
 						if (newText.length() >= 2)
-							EventPublisher.publishEvent(new SearchEvent(newText).to(summary));
+							EventPublisher.trigger(new SearchEvent(newText).to(summary));
 						if (newText.isEmpty())
-							EventPublisher.publishEvent(new SearchEvent(null).to(summary));
+							EventPublisher.trigger(new SearchEvent(null).to(summary));
 						return null;
 					}
 				};
@@ -207,9 +207,9 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 					String v = d.getValue().trim();
 					if (v.length() == 0)
 						v = null;
-					EventPublisher.publishEvent(new SearchEvent(v).to(summary));
+					EventPublisher.trigger(new SearchEvent(v).to(summary));
 				} else {
-					EventPublisher.publishEvent(new SearchEvent(bak).to(summary));
+					EventPublisher.trigger(new SearchEvent(bak).to(summary));
 				}
 			}
 		});

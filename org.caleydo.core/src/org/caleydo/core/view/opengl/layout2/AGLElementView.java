@@ -93,6 +93,8 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 	}
 
 	protected final GLElement getRoot() {
+		if (root == null)
+			return null;
 		return root.getRoot();
 	}
 
@@ -145,6 +147,13 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 
 	protected abstract GLElement createRoot();
 
+
+	@Override
+	public void initialize() {
+		super.initialize();
+		GeneralManager.get().getViewManager().registerView(this, true);
+	}
+
 	@Override
 	public void init(GLAutoDrawable drawable) {
 		GL2 gl = drawable.getGL().getGL2();
@@ -177,6 +186,8 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 		this.pool.deleteAll(gl);
 
 		this.eventListeners.unregisterAll();
+
+		ViewManager.get().destroyView(this);
 	}
 
 	private final float getWidth() {

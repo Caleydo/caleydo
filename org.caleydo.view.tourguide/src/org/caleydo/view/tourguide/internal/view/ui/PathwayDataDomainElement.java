@@ -40,7 +40,7 @@ public class PathwayDataDomainElement extends ADataDomainElement {
 						String v = d.getValue().trim();
 						if (v.length() == 0)
 							v = "";
-						EventPublisher.publishEvent(new EditDataDomainFilterEvent(v).to(PathwayDataDomainElement.this));
+						EventPublisher.trigger(new EditDataDomainFilterEvent(v).to(PathwayDataDomainElement.this));
 					}
 				}
 			});

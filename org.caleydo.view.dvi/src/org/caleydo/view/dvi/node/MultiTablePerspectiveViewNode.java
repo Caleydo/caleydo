@@ -33,8 +33,8 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
 import org.caleydo.core.view.ITablePerspectiveBasedView;
+import org.caleydo.core.view.IView;
 import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
-import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
@@ -53,9 +53,8 @@ public class MultiTablePerspectiveViewNode extends ViewNode implements IDropArea
 
 	public MultiTablePerspectiveViewNode(AGraphLayout graphLayout,
 			GLDataViewIntegrator view, DragAndDropController dragAndDropController,
-			Integer id, AGLView representedView) {
+ Integer id, IView representedView) {
 		super(graphLayout, view, dragAndDropController, id, representedView);
-
 	}
 
 

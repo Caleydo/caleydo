@@ -137,6 +137,7 @@ public abstract class AView extends AUniqueObject implements IView {
 	 *
 	 * @return
 	 */
+	@Override
 	public boolean isDataView() {
 		return false;
 	}
@@ -216,6 +217,7 @@ public abstract class AView extends AUniqueObject implements IView {
 	/**
 	 * @return the instanceNumber, see {@link #instanceNumber}
 	 */
+	@Override
 	public int getInstanceNumber() {
 		return instanceNumber;
 	}
@@ -224,6 +226,7 @@ public abstract class AView extends AUniqueObject implements IView {
 	 * @param instanceNumber
 	 *            setter, see {@link #instanceNumber}
 	 */
+	@Override
 	public void setInstanceNumber(int instanceNumber) {
 		this.instanceNumber = instanceNumber;
 	}

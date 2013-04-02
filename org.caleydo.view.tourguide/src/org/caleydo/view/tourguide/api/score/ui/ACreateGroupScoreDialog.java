@@ -199,6 +199,6 @@ public abstract class ACreateGroupScoreDialog extends TitleAreaDialog {
 		} else { // score single
 			s = createScore(label, strat, group);
 		}
-		EventPublisher.publishEvent(new AddScoreColumnEvent(s).to(receiver));
+		EventPublisher.trigger(new AddScoreColumnEvent(s).to(receiver));
 	}
 }

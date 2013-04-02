@@ -18,10 +18,12 @@ package org.caleydo.view.template;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.datadomain.IDataSupportDefinition;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
@@ -293,6 +295,30 @@ public class TemplateRenderer extends ALayoutRenderer implements ISingleTablePer
 	public int getID() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public int getInstanceNumber() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void setInstanceNumber(int instanceNumber) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public boolean isDataView() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public Set<IDataDomain> getDataDomains() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

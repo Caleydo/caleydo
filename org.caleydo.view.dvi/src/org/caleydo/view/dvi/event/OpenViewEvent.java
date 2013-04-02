@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,25 +8,25 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.view.dvi.event;
 
 import org.caleydo.core.event.AEvent;
-import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.core.view.IView;
 
 public class OpenViewEvent extends AEvent {
 
-	private AGLView view;
+	private IView view;
 
-	public OpenViewEvent(AGLView view) {
+	public OpenViewEvent(IView view) {
 		this.view = view;
 	}
 
@@ -35,11 +35,11 @@ public class OpenViewEvent extends AEvent {
 		return (view != null);
 	}
 
-	public void setView(AGLView view) {
+	public void setView(IView view) {
 		this.view = view;
 	}
 
-	public AGLView getView() {
+	public IView getView() {
 		return view;
 	}
 

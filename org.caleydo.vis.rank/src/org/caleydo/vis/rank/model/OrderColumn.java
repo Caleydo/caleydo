@@ -137,7 +137,7 @@ public class OrderColumn extends ARankColumnModel implements IAnnotatedColumnMix
 				if (d.open() == Window.OK) {
 					String t = d.getTitle().trim();
 					String desc =d.getDescription().trim();
-					EventPublisher.publishEvent(new AnnotationEditEvent(t,desc).to(summary));
+					EventPublisher.trigger(new AnnotationEditEvent(t,desc).to(summary));
 				}
 			}
 		});

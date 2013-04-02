@@ -139,7 +139,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	private SelectionCommandListener selectionCommandListener;
 	private ConnectionsModeListener trendHighlightModeListener;
 	private SplitBrickListener splitBrickListener;
-	private RemoveTablePerspectiveListener removeTablePerspectiveListener;
+	private RemoveTablePerspectiveListener<GLStratomex> removeTablePerspectiveListener;
 	private ReplaceTablePerspectiveListener replaceTablePerspectiveListener;
 	private final EventListenerManager listeners = EventListenerManagers.wrap(this);
 
@@ -964,7 +964,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		splitBrickListener.setHandler(this);
 		eventPublisher.addListener(SplitBrickEvent.class, splitBrickListener);
 
-		removeTablePerspectiveListener = new RemoveTablePerspectiveListener();
+		removeTablePerspectiveListener = new RemoveTablePerspectiveListener<>();
 		removeTablePerspectiveListener.setHandler(this);
 		eventPublisher.addListener(RemoveTablePerspectiveEvent.class, removeTablePerspectiveListener);
 

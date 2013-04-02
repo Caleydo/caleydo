@@ -20,7 +20,7 @@
 package org.caleydo.core.view.listener;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.event.AEvent;
+import org.caleydo.core.event.ADirectedEvent;
 import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
 
 /**
@@ -29,15 +29,10 @@ import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
  * @author Alexander Lex
  *
  */
-public class RemoveTablePerspectiveEvent extends AEvent {
+public class RemoveTablePerspectiveEvent extends ADirectedEvent {
 
 	/** The ID of the table perspective to be removed */
 	private TablePerspective tablePerspective;
-
-	/**
-	 * The view that is intended to remove the specified table perspective
-	 */
-	private IMultiTablePerspectiveBasedView receiver;
 
 	public RemoveTablePerspectiveEvent() {
 	}
@@ -48,7 +43,7 @@ public class RemoveTablePerspectiveEvent extends AEvent {
 
 	public RemoveTablePerspectiveEvent(TablePerspective tablePerspective, IMultiTablePerspectiveBasedView receiver) {
 		this.tablePerspective = tablePerspective;
-		this.receiver = receiver;
+		to(receiver);
 	}
 
 	/**
@@ -68,23 +63,15 @@ public class RemoveTablePerspectiveEvent extends AEvent {
 
 	@Override
 	public boolean checkIntegrity() {
-
 		return tablePerspective != null;
-	}
-
-	/**
-	 * @param receiver
-	 *            setter, see {@link #receiver}
-	 */
-	public void setReceiver(IMultiTablePerspectiveBasedView receiver) {
-		this.receiver = receiver;
 	}
 
 	/**
 	 * @return the receiver, see {@link #receiver}
 	 */
+	@Override
 	public IMultiTablePerspectiveBasedView getReceiver() {
-		return receiver;
+		return (IMultiTablePerspectiveBasedView) super.getReceiver();
 	}
 
 }

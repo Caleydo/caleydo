@@ -84,6 +84,8 @@ public abstract class APickingManager<T extends APickingEntry> {
 	}
 
 	protected final T get(int pickingId) {
+		if (pickingId < 0)
+			return null;
 		if (pickingId >= mapping.size())
 			return null;
 		return mapping.get(pickingId);

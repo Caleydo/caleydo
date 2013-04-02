@@ -63,7 +63,9 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.base.IDefaultLabelHolder;
 import org.caleydo.core.util.base.ILabelHolder;
 import org.caleydo.core.util.logging.Logger;
+import org.caleydo.core.view.AView;
 import org.caleydo.core.view.CaleydoRCPViewPart;
+import org.caleydo.core.view.IView;
 import org.caleydo.core.view.RCPViewInitializationData;
 import org.caleydo.core.view.RCPViewManager;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -203,10 +205,7 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 		for (IDataDomain dataDomain : dataDomainGraph.getDataDomains()) {
 			addDataDomain(dataDomain);
 		}
-
-		Collection<AGLView> views = GeneralManager.get().getViewManager().getAllGLViews();
-
-		for (AGLView view : views) {
+		for (IView view : GeneralManager.get().getViewManager().getAllViews()) {
 			addView(view);
 		}
 
@@ -533,14 +532,14 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 		}
 	}
 
-	public void addView(AGLView view) {
+	public void addView(IView view) {
 
 		for (ViewNode node : viewNodes) {
 			if (node != null && node.getRepresentedView() == view)
 				return;
 		}
 
-		if (!view.isRenderedRemote() && view.isDataView()) {
+		if (!(view instanceof AGLView && ((AGLView) view).isRenderedRemote()) && view.isDataView()) {
 
 			ViewNode node = nodeCreator.createViewNode(graphLayout, this, dragAndDropController, lastNodeID++, view);
 			dataGraph.addNode(node);
@@ -568,7 +567,7 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 		}
 	}
 
-	public void removeView(AGLView view) {
+	public void removeView(IView view) {
 
 		ViewNode viewNode = null;
 		for (ViewNode node : viewNodes) {
@@ -605,9 +604,9 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 		setDisplayListDirty();
 	}
 
-	public void updateView(AGLView view) {
+	public void updateView(AView view) {
 
-		if (view.isRenderedRemote())
+		if (view instanceof AGLView && ((AGLView) view).isRenderedRemote())
 			return;
 
 		ViewNode viewNode = null;
@@ -888,7 +887,7 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 		});
 	}
 
-	public void openView(final AGLView view) {
+	public void openView(final IView view) {
 		final CaleydoRCPViewPart viewPart = GeneralManager.get().getViewManager().getViewPartFromView(view);
 
 		parentComposite.getDisplay().asyncExec(new Runnable() {

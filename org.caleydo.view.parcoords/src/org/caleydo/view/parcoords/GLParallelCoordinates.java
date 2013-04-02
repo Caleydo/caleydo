@@ -1800,7 +1800,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 		angularBrushingListener.setHandler(this);
 		listeners.register(AngularBrushingEvent.class, angularBrushingListener);
 
-		AddTablePerspectivesListener addTablePerspectivesListener = new AddTablePerspectivesListener();
+		AddTablePerspectivesListener<GLParallelCoordinates> addTablePerspectivesListener = new AddTablePerspectivesListener<>();
 		addTablePerspectivesListener.setHandler(this);
 		listeners.register(AddTablePerspectivesEvent.class, addTablePerspectivesListener);
 

@@ -133,7 +133,7 @@ public class CatFilterDalog<CATEGORY_TYPE> extends Dialog {
 		for (int i = 0; i < result.length; i++) {
 			r.add(result[i]);
 		}
-		EventPublisher.publishEvent(new FilterEvent(r, filterGloballyUI.getSelection()).to(receiver));
+		EventPublisher.trigger(new FilterEvent(r, filterGloballyUI.getSelection()).to(receiver));
 	}
 
 	/**
@@ -227,7 +227,7 @@ public class CatFilterDalog<CATEGORY_TYPE> extends Dialog {
 	@Override
 	protected void cancelPressed() {
 		// original values
-		EventPublisher.publishEvent(new FilterEvent(selection, filterGlobally).to(receiver));
+		EventPublisher.trigger(new FilterEvent(selection, filterGlobally).to(receiver));
 		super.cancelPressed();
 	}
 

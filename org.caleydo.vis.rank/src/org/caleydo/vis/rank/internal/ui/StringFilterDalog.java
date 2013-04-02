@@ -92,9 +92,9 @@ public class StringFilterDalog extends Dialog {
 			public void modifyText(ModifyEvent e) {
 				String newText = text.getText();
 				if (newText.length() >= 2)
-					EventPublisher.publishEvent(new FilterEvent(newText, filterGloballyUI.getSelection()).to(receiver));
+					EventPublisher.trigger(new FilterEvent(newText, filterGloballyUI.getSelection()).to(receiver));
 				if (newText.isEmpty())
-					EventPublisher.publishEvent(new FilterEvent(null, filterGloballyUI.getSelection()).to(receiver));
+					EventPublisher.trigger(new FilterEvent(null, filterGloballyUI.getSelection()).to(receiver));
 			}
 		});
 		text.selectAll();
@@ -107,8 +107,8 @@ public class StringFilterDalog extends Dialog {
 		SelectionAdapter adapter = new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				EventPublisher.publishEvent(new FilterEvent(text.getText(), filterGloballyUI.getSelection())
-						.to(receiver));
+				EventPublisher.trigger(new FilterEvent(text.getText(), filterGloballyUI.getSelection())
+				.to(receiver));
 			}
 		};
 		filterGloballyUI.addSelectionListener(adapter);
@@ -120,14 +120,14 @@ public class StringFilterDalog extends Dialog {
 	@Override
 	protected void okPressed() {
 		// real values
-		EventPublisher.publishEvent(new FilterEvent(text.getText(), filterGloballyUI.getSelection()).to(receiver));
+		EventPublisher.trigger(new FilterEvent(text.getText(), filterGloballyUI.getSelection()).to(receiver));
 		super.okPressed();
 	}
 
 	@Override
 	protected void cancelPressed() {
 		// original values
-		EventPublisher.publishEvent(new FilterEvent(filter, filterGlobally).to(receiver));
+		EventPublisher.trigger(new FilterEvent(filter, filterGlobally).to(receiver));
 		super.cancelPressed();
 	}
 }

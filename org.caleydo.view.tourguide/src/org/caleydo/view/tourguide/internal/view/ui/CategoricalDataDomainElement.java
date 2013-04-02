@@ -109,7 +109,7 @@ public class CategoricalDataDomainElement extends ADataDomainElement {
 			for (Object score : categoriesUI.getCheckedElements()) {
 				r.add(score);
 			}
-			EventPublisher.publishEvent(new EditDataDomainFilterEvent(r).to(CategoricalDataDomainElement.this));
+			EventPublisher.trigger(new EditDataDomainFilterEvent(r).to(CategoricalDataDomainElement.this));
 			super.okPressed();
 		}
 	}

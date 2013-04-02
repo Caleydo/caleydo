@@ -155,8 +155,8 @@ public abstract class ATableBasedView extends AGLView implements ISingleTablePer
 	@Override
 	public void initialize() {
 		super.initialize();
-		recordSelectionManager = this.dataDomain.getRecordSelectionManager();
-		dimensionSelectionManager = this.dataDomain.getDimensionSelectionManager();
+		recordSelectionManager = this.dataDomain.cloneRecordSelectionManager();
+		dimensionSelectionManager = this.dataDomain.cloneDimensionSelectionManager();
 
 		recordIDType = dataDomain.getRecordIDType();
 		dimensionIDType = dataDomain.getDimensionIDType();

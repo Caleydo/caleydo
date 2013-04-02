@@ -250,7 +250,7 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	@Override
 	public void initialize() {
 		ViewManager viewManager = GeneralManager.get().getViewManager();
-		viewManager.registerGLView(this, !isRenderedRemote());
+		viewManager.registerView(this, !isRenderedRemote());
 		setLabel(this.getDefaultLabel(), true);
 		registerEventListeners();
 

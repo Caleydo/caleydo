@@ -66,7 +66,7 @@ public class ComputeAllOfJob extends AComputeJob {
 		System.out.println("done in " + w);
 
 		IStatus result = runImpl(monitor, data, mask);
-		EventPublisher.publishEvent(new ScoreQueryReadyEvent(creating ? query : null).to(receiver));
+		EventPublisher.trigger(new ScoreQueryReadyEvent(creating ? query : null).to(receiver));
 		return result;
 	}
 

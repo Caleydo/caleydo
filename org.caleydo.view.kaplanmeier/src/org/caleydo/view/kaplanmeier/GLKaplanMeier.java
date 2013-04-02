@@ -121,7 +121,7 @@ public class GLKaplanMeier extends ATableBasedView {
 	@Override
 	public void initialize() {
 		super.initialize();
-		recordGroupSelectionManager = dataDomain.getRecordGroupSelectionManager().clone();
+		recordGroupSelectionManager = dataDomain.cloneRecordGroupSelectionManager().clone();
 	}
 
 	@Override

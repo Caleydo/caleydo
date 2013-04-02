@@ -28,7 +28,7 @@ import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
 import org.caleydo.core.view.ISingleTablePerspectiveBasedView;
 import org.caleydo.core.view.ITablePerspectiveBasedView;
-import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.core.view.IView;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.view.dvi.GLDataViewIntegrator;
@@ -84,7 +84,7 @@ public class NodeCreator {
 	}
 
 	public ViewNode createViewNode(AGraphLayout graphLayout, GLDataViewIntegrator view,
-			DragAndDropController dragAndDropController, int id, AGLView representedView) {
+			DragAndDropController dragAndDropController, int id, IView representedView) {
 
 		Class<? extends ViewNode> nodeClass = viewNodeClasses.get(representedView
 				.getClass());
@@ -102,7 +102,7 @@ public class NodeCreator {
 			try {
 				ViewNode node = nodeClass.getConstructor(AGraphLayout.class,
 						view.getClass(), dragAndDropController.getClass(), Integer.class,
-						AGLView.class).newInstance(graphLayout, view,
+ IView.class).newInstance(graphLayout, view,
 						dragAndDropController, id, representedView);
 				node.init();
 

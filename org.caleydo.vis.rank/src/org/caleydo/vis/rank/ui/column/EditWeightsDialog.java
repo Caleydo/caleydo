@@ -158,7 +158,7 @@ public class EditWeightsDialog extends TitleAreaDialog implements VerifyListener
 		if (!validate())
 			return;
 		float[] weights = getValues();
-		EventPublisher.publishEvent(new WeightsChangedEvent(weights).to(receiver));
+		EventPublisher.trigger(new WeightsChangedEvent(weights).to(receiver));
 		super.okPressed();
 	}
 

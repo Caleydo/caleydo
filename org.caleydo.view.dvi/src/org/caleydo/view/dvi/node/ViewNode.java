@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -32,8 +32,8 @@ import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.ITablePerspectiveBasedView;
+import org.caleydo.core.view.IView;
 import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
-import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.Row;
@@ -66,12 +66,12 @@ public class ViewNode
 	implements IDropArea {
 
 	// private TablePerspectiveListRenderer overviewTablePerspectiveRenderer;
-	protected AGLView representedView;
+	protected IView representedView;
 	protected Set<IDataDomain> dataDomains = new HashSet<IDataDomain>();
 	protected String iconPath;
 
 	public ViewNode(AGraphLayout graphLayout, GLDataViewIntegrator view, DragAndDropController dragAndDropController,
-			Integer id, AGLView representedView) {
+			Integer id, IView representedView) {
 		super(graphLayout, view, dragAndDropController, id);
 
 		this.representedView = representedView;
@@ -233,7 +233,7 @@ public class ViewNode
 		return dataDomains;
 	}
 
-	public AGLView getRepresentedView() {
+	public IView getRepresentedView() {
 		return representedView;
 	}
 

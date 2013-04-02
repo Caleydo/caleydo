@@ -30,7 +30,7 @@ public abstract class ADirectedEvent extends AEvent {
 
 	/**
 	 * chaining supporting receiver setter
-	 * 
+	 *
 	 * @param receiver
 	 * @return
 	 */
@@ -47,5 +47,12 @@ public abstract class ADirectedEvent extends AEvent {
 	 */
 	public boolean sentTo(Object obj) {
 		return receiver == obj;
+	}
+
+	/**
+	 * @return the receiver, see {@link #receiver}
+	 */
+	public Object getReceiver() {
+		return receiver;
 	}
 }

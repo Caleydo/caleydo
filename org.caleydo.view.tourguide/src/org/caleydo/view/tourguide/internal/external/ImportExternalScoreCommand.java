@@ -49,8 +49,8 @@ public final class ImportExternalScoreCommand implements Runnable {
 		for (ISerializeableScore score : scores) {
 			last = scoreManager.addPersistentScoreIfAbsent(score);
 		}
-		if (last != null) // add the last newly created one to the list
-			EventPublisher.publishEvent(new AddScoreColumnEvent(last).to(receiver));
+		if (last != null)
+			EventPublisher.trigger(new AddScoreColumnEvent(last).to(receiver));
 	}
 
 	private Collection<ISerializeableScore> importExternalIDScore() {

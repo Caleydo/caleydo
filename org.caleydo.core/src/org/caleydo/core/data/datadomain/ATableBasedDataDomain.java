@@ -415,7 +415,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 	 *
 	 * @return a clone of the record selection manager
 	 */
-	public SelectionManager getRecordSelectionManager() {
+	public SelectionManager cloneRecordSelectionManager() {
 		return recordSelectionManager.clone();
 	}
 
@@ -424,7 +424,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 	 *
 	 * @return a clone of the dimension selection manager
 	 */
-	public SelectionManager getDimensionSelectionManager() {
+	public SelectionManager cloneDimensionSelectionManager() {
 		return dimensionSelectionManager.clone();
 	}
 
@@ -434,7 +434,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 	 *
 	 * @return a clone of the dimension selection manager
 	 */
-	public SelectionManager getRecordGroupSelectionManager() {
+	public SelectionManager cloneRecordGroupSelectionManager() {
 		return recordGroupSelectionManager.clone();
 	}
 

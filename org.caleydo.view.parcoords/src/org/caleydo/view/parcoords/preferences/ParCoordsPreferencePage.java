@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,18 +8,16 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.view.parcoords.preferences;
-
-import java.util.Collection;
 
 import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.manager.GeneralManager;
@@ -34,7 +32,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 
 /**
  * Preference page for heat map specific settings
- * 
+ *
  * @author Alexander Lex
  * @deprecated STILL IN USE????
  */
@@ -94,9 +92,7 @@ public class ParCoordsPreferencePage extends FieldEditorPreferencePage implement
 	public boolean performOk() {
 		boolean bReturn = super.performOk();
 
-		Collection<AGLView> eventListeners = GeneralManager.get().getViewManager()
-				.getAllGLViews();
-		for (AGLView glView : eventListeners) {
+		for (AGLView glView : GeneralManager.get().getViewManager().getAllGLViews()) {
 			if (glView.getViewType().equals("org.caleydo.view.parcoords")) {
 				GLParallelCoordinates parCoords = (GLParallelCoordinates) glView;
 				// if(!heatMap.isRenderedRemote())

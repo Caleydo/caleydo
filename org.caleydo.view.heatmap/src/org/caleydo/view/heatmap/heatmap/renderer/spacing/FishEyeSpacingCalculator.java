@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,12 +8,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -27,12 +27,12 @@ import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 public class FishEyeSpacingCalculator extends ASpacingCalculator {
 
 	private float finalSize = 0;
-	float level1Size = 0;
-	int spread = 3;
+	private float level1Size = 0;
+	private int spread = 3;
 
-	public FishEyeSpacingCalculator(GLHeatMap heatMap, float y, float contentElements,
+	public FishEyeSpacingCalculator(GLHeatMap heatMap, float height, int numElements,
 			int minSelectedFieldHeight) {
-		super(heatMap, y, contentElements);
+		super(heatMap, height, numElements);
 		setMinSelectedFieldHeight(minSelectedFieldHeight);
 	}
 
@@ -40,10 +40,10 @@ public class FishEyeSpacingCalculator extends ASpacingCalculator {
 	public void calculateFieldHeights() {
 		float glMinSelectedFieldHeight = heatMap.getPixelGLConverter()
 				.getGLHeightForPixelHeight(minSelectedFieldHeight);
-		spread = (int) (y / (glMinSelectedFieldHeight * 3));
+		spread = (int) (height / (glMinSelectedFieldHeight * 3));
 
 		Set<Integer> zoomedElements = heatMap.getZoomedElements();
-		float baseSize = (y - (zoomedElements.size() * glMinSelectedFieldHeight));
+		float baseSize = (height - (zoomedElements.size() * glMinSelectedFieldHeight));
 
 		VirtualArray recordVA = heatMap.getTablePerspective().getRecordPerspective()
 				.getVirtualArray();
@@ -59,7 +59,7 @@ public class FishEyeSpacingCalculator extends ASpacingCalculator {
 			for (int limitCount = 1; limitCount <= spread; limitCount++) {
 				if (indexOfZoomedElement - limitCount < 0)
 					elementsForThisSelection--;
-				if (indexOfZoomedElement + limitCount >= recordElements)
+				if (indexOfZoomedElement + limitCount >= numElements)
 					elementsForThisSelection--;
 			}
 
@@ -77,7 +77,7 @@ public class FishEyeSpacingCalculator extends ASpacingCalculator {
 
 		}
 
-		float nrRemainingElements = recordElements - zoomedElements.size()
+		float nrRemainingElements = numElements - zoomedElements.size()
 				- level1Elements;
 
 		finalSize = (2 * baseSize - level1Elements * glMinSelectedFieldHeight)
@@ -100,7 +100,7 @@ public class FishEyeSpacingCalculator extends ASpacingCalculator {
 					if ((selectedContentIndex - count >= 0 && recordID == recordVA
 							.get(selectedContentIndex - count)))
 						return level1Size;
-					else if (selectedContentIndex < recordElements - count
+					else if (selectedContentIndex < numElements - count
 							&& recordID == recordVA.get(selectedContentIndex + count))
 						return level1Size;
 				}
