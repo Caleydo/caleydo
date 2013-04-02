@@ -204,7 +204,8 @@ public class GLElement implements IHasGLLayoutData {
 		if (!cache.render(context.getDisplayListPool(), g.gl)) {
 			cache.begin(context.getDisplayListPool(), g, w, h);
 			renderImpl(g, w, h);
-			cache.end(context.getDisplayListPool(), g);
+			if (context != null) // race condition
+				cache.end(context.getDisplayListPool(), g);
 //		} else {
 //			// cache visualization
 //			g.color(1, 0, 1, 0.1f).incZ(1).fillRect(0, 0, w, h).incZ(-1);
