@@ -79,7 +79,7 @@ public class DataMappingState {
 		AddTablePerspectivesEvent event = new AddTablePerspectivesEvent(tablePerspective);
 		event.setEventSpace(eventSpace);
 		event.setSender(this);
-		EventPublisher.publishEvent(event);
+		EventPublisher.trigger(event);
 	}
 
 	public void removeDataDomain(ATableBasedDataDomain dd) {
@@ -90,7 +90,7 @@ public class DataMappingState {
 		AEvent event = new RemoveTablePerspectiveEvent(hashDDToTablePerspective.get(dd));
 		event.setEventSpace(eventSpace);
 		event.setSender(this);
-		EventPublisher.publishEvent(event);
+		EventPublisher.trigger(event);
 
 		mappedTablePerspectives.remove(hashDDToTablePerspective.get(dd));
 		hashDDToTablePerspective.remove(dd);
@@ -107,7 +107,7 @@ public class DataMappingState {
 			AEvent event = new RemoveTablePerspectiveEvent(tablePerspective);
 			event.setEventSpace(eventSpace);
 			event.setSender(this);
-			EventPublisher.publishEvent(event);
+			EventPublisher.trigger(event);
 		}
 
 		mappedTablePerspectives.clear();
