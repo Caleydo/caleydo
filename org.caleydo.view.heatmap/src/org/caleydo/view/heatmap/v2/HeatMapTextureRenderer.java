@@ -117,15 +117,14 @@ public class HeatMapTextureRenderer {
 			texture = entry.getFirst();
 			if ((exactMatch && texture.getHeight() != height) || (texture.getHeight() < height)) {
 				// ok we can't use that texture -> move backwards and create a new one
-				texture = newTexture(gl);
+				Texture texture1 = TextureIO.newTexture(GL.GL_TEXTURE_2D);
+				texture = texture1;
 				textures.add(actTexture, Pair.make(texture, height));
 			} else { // can be reused
 				textures.set(actTexture, Pair.make(texture, height));
-				texture.enable(gl);
-				texture.bind(gl);
 			}
 		} else {
-			texture = newTexture(gl);
+			texture = TextureIO.newTexture(GL.GL_TEXTURE_2D);
 			textures.add(Pair.make(texture, height));
 		}
 
@@ -133,18 +132,6 @@ public class HeatMapTextureRenderer {
 		texture.updateImage(gl, texData);
 		gl.glFlush();
 		texData.destroy();
-		texture.disable(gl);
-	}
-
-	protected Texture newTexture(GL gl) {
-		Texture texture = TextureIO.newTexture(0);
-		texture.enable(gl);
-		texture.bind(gl);
-		texture.setTexParameteri(gl, GL.GL_TEXTURE_WRAP_S, GL2.GL_CLAMP);
-		texture.setTexParameteri(gl, GL.GL_TEXTURE_WRAP_T, GL2.GL_CLAMP);
-		texture.setTexParameteri(gl, GL.GL_TEXTURE_MAG_FILTER, GL.GL_NEAREST);
-		texture.setTexParameteri(gl, GL.GL_TEXTURE_MIN_FILTER, GL.GL_NEAREST);
-		return texture;
 	}
 
 	protected TextureData asTextureData(FloatBuffer buffer, int width, int height) {
@@ -169,6 +156,12 @@ public class HeatMapTextureRenderer {
 		float elementHeight = h / numberOfRecords;
 
 		g.color(1f, 1f, 0f, 1f);
+
+		g.gl.glEnable(GL.GL_TEXTURE_2D);
+		g.gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_S, GL2.GL_CLAMP);
+		g.gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_T, GL2.GL_CLAMP);
+		g.gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_NEAREST);
+		g.gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_NEAREST);
 
 		for (Pair<Texture, Integer> entry : textures) {
 			Texture tex = entry.getFirst();
