@@ -20,28 +20,25 @@
 package org.caleydo.view.heatmap.v2;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.view.opengl.layout2.GLGraphics;
-import org.caleydo.core.view.opengl.layout2.geom.Rect;
+import org.caleydo.core.util.color.Color;
 
 /**
- * hook in interface for rendering a single block within the heat map
- *
  * @author Samuel Gratzl
  *
  */
-public interface IBlockRenderer {
-	/**
-	 * renders a entry in the heat map at the specified bounds
-	 * 
-	 * @param g
-	 * @param recordID
-	 * @param dimensionID
-	 * @param dataDomain
-	 * @param bounds
-	 *            the bounds of this block
-	 * @param deSelected
-	 *            was this block deselected
-	 */
-	void render(GLGraphics g, int recordID, int dimensionID, ATableBasedDataDomain dataDomain, Rect bounds,
-			boolean deSelected);
+public class BasicBlockColorer implements IBlockColorer {
+	public static final BasicBlockColorer INSTANCE = new BasicBlockColorer();
+
+	private BasicBlockColorer() {
+
+	}
+
+	@Override
+	public Color apply(int recordID, int dimensionID, ATableBasedDataDomain dataDomain, boolean deSelected) {
+		float value = dataDomain.getTable().getNormalizedValue(dimensionID, recordID);
+		float[] color = dataDomain.getColorMapper().getColor(value);
+		float opacity = deSelected ? 0.3f : 1.0f;
+
+		return new Color(color[0], color[1], color[2], opacity);
+	}
 }

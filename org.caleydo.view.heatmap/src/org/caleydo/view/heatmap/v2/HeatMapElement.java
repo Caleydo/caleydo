@@ -36,12 +36,13 @@ import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.data.SelectionUpdateEvent;
 import org.caleydo.core.id.IDType;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.color.mapping.UpdateColorMappingEvent;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.contextmenu.item.BookmarkMenuItem;
+import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
-import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.layout2.table.ATablePerspectiveGLElement;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -87,37 +88,52 @@ public class HeatMapElement extends ATablePerspectiveGLElement {
 	/**
 	 * strategy to render a single field in the heat map
 	 */
-	private final IBlockRenderer blockRenderer;
+	private final IBlockColorer blockColorer;
+
+	private final HeatMapTextureRenderer textureRenderer;
 
 	public HeatMapElement(TablePerspective tablePerspective) {
-		this(tablePerspective, BasicBlockRenderer.INSTANCE);
+		this(tablePerspective, BasicBlockColorer.INSTANCE, EDetailLevel.HIGH);
 	}
 
-	public HeatMapElement(TablePerspective tablePerspective, IBlockRenderer blockRenderer) {
+	public HeatMapElement(TablePerspective tablePerspective, IBlockColorer blockColorer, EDetailLevel detailLevel) {
 		super(tablePerspective);
-		Preconditions.checkNotNull(blockRenderer, "need a valid renderer");
+		Preconditions.checkNotNull(blockColorer, "need a valid renderer");
 
-		this.blockRenderer = blockRenderer;
+		this.blockColorer = blockColorer;
 
 		this.dimensionSelectionRenderer = new SelectionRenderer(tablePerspective, dimensionSelectionManager, true,
 				dimensionPickingIds);
 		this.recordSelectionRenderer = new SelectionRenderer(tablePerspective, recordSelectionManager, false,
 				recordPickingIds);
 
-		setPicker(null);
-		setVisibility(EVisibility.PICKABLE);
+		setPicker(null); // no overall picking
+
+		switch (detailLevel) {
+		case HIGH:
+			setVisibility(EVisibility.PICKABLE); //pickable + no textures
+			textureRenderer = null;
+			break;
+		default:
+			setVisibility(EVisibility.VISIBLE); // not pickable + textures
+			textureRenderer = new HeatMapTextureRenderer(tablePerspective, blockColorer);
+			break;
+		}
 	}
 
 	@Override
 	protected void init(IGLElementContext context) {
 		super.init(context);
-		ensureEnoughPickingIds();
+		onTablePerspectiveChanged();
 	}
 
 	private void ensureEnoughPickingIds() {
-		ensureEnoughPickingIds(tablePerspective.getRecordPerspective(), recordPickingIds, recordPickingListener);
-		ensureEnoughPickingIds(tablePerspective.getDimensionPerspective(), dimensionPickingIds,
+		if (getVisibility() == EVisibility.PICKABLE && context != null) {
+			// we are pickable
+			ensureEnoughPickingIds(tablePerspective.getRecordPerspective(), recordPickingIds, recordPickingListener);
+			ensureEnoughPickingIds(tablePerspective.getDimensionPerspective(), dimensionPickingIds,
 				dimensionPickingListener);
+		}
 	}
 
 	/**
@@ -128,13 +144,11 @@ public class HeatMapElement extends ATablePerspectiveGLElement {
 	 * @param listener
 	 */
 	private void ensureEnoughPickingIds(Perspective perspective, IntIntHashMap map, IPickingListener listener) {
-		if (map.size() == 0) {
-			// just add
+		if (map.size() == 0) { // just add
 			for (Integer recordID : perspective.getVirtualArray()) {
 				map.put(recordID, context.registerPickingListener(listener, recordID));
 			}
-		} else {
-			// track changed and update picking ids
+		} else {// track changed and update picking ids
 			IntIntHashMap bak = new IntIntHashMap();
 			bak.putAll(map);
 			for (Integer recordID : perspective.getVirtualArray()) {
@@ -151,9 +165,17 @@ public class HeatMapElement extends ATablePerspectiveGLElement {
 	}
 
 	@Override
+	protected void onVisibilityChanged(EVisibility old, EVisibility new_) {
+		ensureEnoughPickingIds();
+	}
+
+	@Override
 	protected void onTablePerspectiveChanged() {
 		super.onTablePerspectiveChanged();
 		ensureEnoughPickingIds();
+		if (textureRenderer != null) {
+			textureRenderer.init(context);
+		}
 	}
 
 
@@ -166,6 +188,8 @@ public class HeatMapElement extends ATablePerspectiveGLElement {
 		for (IntIntHashMap.Entry entry : dimensionPickingIds) {
 			context.unregisterPickingListener(entry.value);
 		}
+		if (textureRenderer != null)
+			textureRenderer.takeDown();
 		super.takeDown();
 	}
 
@@ -194,7 +218,10 @@ public class HeatMapElement extends ATablePerspectiveGLElement {
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
-		render(g, w, h, false);
+		if (textureRenderer != null)
+			textureRenderer.render(g, w, h);
+		else
+			render(g, w, h, false);
 	}
 
 
@@ -223,8 +250,8 @@ public class HeatMapElement extends ATablePerspectiveGLElement {
 					g.popName();
 				} else {
 					boolean deSelected = isDeselected(recordID);
-					blockRenderer.render(g, recordID, dimensionID, dataDomain, new Rect(x, y, fieldWidth, fieldHeight),
-							deSelected);
+					Color color = blockColorer.apply(recordID, dimensionID, dataDomain, deSelected);
+					g.color(color).fillRect(x, y, fieldWidth, fieldHeight);
 				}
 				x += fieldWidth;
 			}

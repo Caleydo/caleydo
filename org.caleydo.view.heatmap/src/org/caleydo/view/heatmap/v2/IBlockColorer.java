@@ -20,27 +20,23 @@
 package org.caleydo.view.heatmap.v2;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.view.opengl.layout2.GLGraphics;
-import org.caleydo.core.view.opengl.layout2.geom.Rect;
+import org.caleydo.core.util.color.Color;
 
 /**
+ * hook in interface for specifying the color of an item in the heatmap
+ *
  * @author Samuel Gratzl
  *
  */
-public class BasicBlockRenderer implements IBlockRenderer {
-	public static final BasicBlockRenderer INSTANCE = new BasicBlockRenderer();
-
-	private BasicBlockRenderer() {
-
-	}
-	@Override
-	public void render(GLGraphics g, int recordID, int dimensionID, ATableBasedDataDomain dataDomain, Rect bounds, boolean deSelected) {
-		float value = dataDomain.getTable().getNormalizedValue(dimensionID, recordID);
-		float[] color = dataDomain.getColorMapper().getColor(value);
-		float opacity = deSelected ? 0.3f : 1.0f;
-
-		g.color(color[0], color[1], color[2], opacity);
-		g.fillRect(bounds);
-	}
-
+public interface IBlockColorer {
+	/**
+	 * computes the heatmap color to used for the given element
+	 * 
+	 * @param recordID
+	 * @param dimensionID
+	 * @param dataDomain
+	 * @param deSelected
+	 * @return
+	 */
+	Color apply(int recordID, int dimensionID, ATableBasedDataDomain dataDomain, boolean deSelected);
 }
