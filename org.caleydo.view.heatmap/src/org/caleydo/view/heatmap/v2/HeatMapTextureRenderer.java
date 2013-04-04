@@ -115,14 +115,7 @@ public class HeatMapTextureRenderer {
 		if (textures.size() > actTexture) { //try to reuse it
 			Pair<Texture, Integer> entry = textures.get(actTexture);
 			texture = entry.getFirst();
-			if ((exactMatch && texture.getHeight() != height) || (texture.getHeight() < height)) {
-				// ok we can't use that texture -> move backwards and create a new one
-				Texture texture1 = TextureIO.newTexture(GL.GL_TEXTURE_2D);
-				texture = texture1;
-				textures.add(actTexture, Pair.make(texture, height));
-			} else { // can be reused
-				textures.set(actTexture, Pair.make(texture, height));
-			}
+			textures.set(actTexture, Pair.make(texture, height));
 		} else {
 			texture = TextureIO.newTexture(GL.GL_TEXTURE_2D);
 			textures.add(Pair.make(texture, height));

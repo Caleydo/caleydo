@@ -383,9 +383,14 @@ public class GLElement implements IHasGLLayoutData {
 				pickingID = context.registerPickingListener(pickingListener, getPickingObjectId());
 			}
 		}
+		onVisibilityChanged(old, new_);
 
 		repaint();
 		return this;
+	}
+
+	protected void onVisibilityChanged(EVisibility old, EVisibility new_) {
+		// hook
 	}
 
 	/**

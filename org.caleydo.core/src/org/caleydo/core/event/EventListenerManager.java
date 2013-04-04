@@ -24,6 +24,7 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashSet;
@@ -109,13 +110,24 @@ public class EventListenerManager {
 		Class<?> clazz = listener.getClass();
 		if (nothingFounds.contains(clazz.getCanonicalName())) // avoid scanning useless objects again
 			return listener;
+		boolean hasOne = scan(listener, listener, eventSpace, scanWhile);
+
+		if (!hasOne)
+			nothingFounds.add(clazz.getCanonicalName());
+
+		return listener;
+	}
+
+	protected boolean scan(Object root, Object listener, String eventSpace, Predicate<? super Class<?>> scanWhile) {
+		final Class<?> clazz = listener.getClass();
 		boolean hasOne = false;
-		for (Method m : Iterables.filter(ClassUtils.findAllDeclaredMethods(clazz, scanWhile), matches)) {
+		// scan all methods
+		for (Method m : Iterables.filter(ClassUtils.findAllDeclaredMethods(clazz, scanWhile), listenToMethod)) {
 			Class<? extends AEvent> event = m.getParameterTypes()[0].asSubclass(AEvent.class);
 			final ListenTo a = m.getAnnotation(ListenTo.class);
 			boolean toMe = a.sendToMe() && ADirectedEvent.class.isAssignableFrom(event);
 
-			final AnnotationBasedEventListener l = new AnnotationBasedEventListener(owner, listener, m, toMe);
+			final AnnotationBasedEventListener l = new AnnotationBasedEventListener(owner, root, listener, m, toMe);
 
 			if (eventSpace != null && (a.restrictExclusiveToEventSpace() || a.restrictToEventSpace())) {
 				if (a.restrictExclusiveToEventSpace())
@@ -127,17 +139,37 @@ public class EventListenerManager {
 			register(event, l);
 			hasOne = true;
 		}
-		if (!hasOne)
-			nothingFounds.add(clazz.getCanonicalName());
-		return listener;
+		// scan all fields for deep scans
+		for (Field f : Iterables.filter(ClassUtils.findAllDeclaredFields(clazz, scanWhile), deepScanField)) {
+			f.setAccessible(true);
+			Object field;
+			try {
+				field = f.get(listener);
+			} catch (IllegalArgumentException | IllegalAccessException e) {
+				e.printStackTrace();
+				System.err.println(e);
+				continue;
+			}
+			if (field == null)
+				continue;
+			boolean hasFieldOne = scan(root, field, eventSpace, scanWhile);
+			hasOne = hasOne || hasFieldOne;
+		}
+		return hasOne;
 	}
 
-	private static final Predicate<Method> matches = new Predicate<Method>() {
+	private static final Predicate<Method> listenToMethod = new Predicate<Method>() {
 		@Override
 		public boolean apply(Method m) {
 			Class<?>[] p = m.getParameterTypes();
 			return m.isAnnotationPresent(ListenTo.class) && m.getReturnType() == void.class && p.length == 1
 					&& AEvent.class.isAssignableFrom(p[0]);
+		}
+	};
+	private static final Predicate<Field> deepScanField = new Predicate<Field>() {
+		@Override
+		public boolean apply(Field m) {
+			return m.isAnnotationPresent(DeepScan.class);
 		}
 	};
 
@@ -159,12 +191,15 @@ public class EventListenerManager {
 	public final void unregister(Object listener) {
 		for (Iterator<AEventListener<?>> it = listeners.iterator(); it.hasNext();) {
 			AEventListener<?> e = it.next();
-			if (e instanceof AnnotationBasedEventListener && ((AnnotationBasedEventListener) e).listener == listener) {
-				EventPublisher.INSTANCE.removeListener(e);
-				it.remove();
+			if (e instanceof AnnotationBasedEventListener) {
+				AnnotationBasedEventListener a = (AnnotationBasedEventListener) e;
+				// the root or part of the root
+				if (a.root == listener || a.listener == listener) {
+					EventPublisher.INSTANCE.removeListener(e);
+					it.remove();
+				}
 			}
 		}
-		listeners.clear();
 	}
 
 	/**
@@ -189,15 +224,30 @@ public class EventListenerManager {
 		boolean restrictExclusiveToEventSpace() default false;
 	}
 
+	/**
+	 * Marker annotation the annotated field should also be scanned for event listeners
+	 *
+	 * @author Samuel Gratzl
+	 *
+	 */
+	@Documented
+	@Retention(RetentionPolicy.RUNTIME)
+	@Target(ElementType.FIELD)
+	public @interface DeepScan {
+
+	}
+
 	private static class AnnotationBasedEventListener extends AEventListener<IListenerOwner> {
 
 		private final Method method;
+		private final Object root;
 		private final Object listener;
 		private final boolean checkSendToListener;
 
-		public AnnotationBasedEventListener(IListenerOwner handler, Object listener, Method method,
+		public AnnotationBasedEventListener(IListenerOwner handler, Object root, Object listener, Method method,
 				boolean checkSendToHandler) {
 			this.method = method;
+			this.root = root;
 			this.listener = listener;
 			this.checkSendToListener = checkSendToHandler;
 			this.setHandler(handler);
