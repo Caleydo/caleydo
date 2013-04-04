@@ -139,7 +139,7 @@ public final class FirehoseProvider {
 	}
 
 	public File findClinicalDataFile() {
-		return extractDataRunFile(getFileName(".clin.merged.picked.txt"), "Clinical_Pick_Tier1", LEVEL);
+		return extractDataRunFile(".clin.merged.picked.txt", "Clinical_Pick_Tier1", LEVEL);
 	}
 
 	public Pair<File, Integer> findMutationFile() {
