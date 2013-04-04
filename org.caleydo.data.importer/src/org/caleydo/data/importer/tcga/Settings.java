@@ -34,6 +34,7 @@ public class Settings {
 
 	private static final String BASE_URL = "http://gdac.broadinstitute.org/runs/";
 	private static final String FILE_PATTERN = "gdac.broadinstitute.org_{2}.{3}.Level_{4}.{0,date,yyyyMMdd}00.0.0.tar.gz";
+	private static final String DATAFILE_PATTERN = "gdac.broadinstitute.org_{1}.{3}.Level_{4}.{0,date,yyyyMMdd}00.0.0.tar.gz";
 	private static final String DATA_PATTERN = BASE_URL + "stddata__{0,date,yyyy_MM_dd}/data/{1}/{0,date,yyyyMMdd}/{3}";
 	private static final String ANALYSIS_PATTERN = BASE_URL
 			+ "analyses__{0,date,yyyy_MM_dd}/data/{1}/{0,date,yyyyMMdd}/{3}";
@@ -70,15 +71,18 @@ public class Settings {
 	// 2 .. tumor
 	// 3 .. piplelineName
 	// 4 .. level
-	@Option(name = "-fp", aliases = { "--filePattern" }, usage = "the pattern used to create a archive file name, where {0} .. run (date) {1} .. tumor, {2} .. tumor sample, {3} .. pipelineName, {4} .. level, default \""
-			+ FILE_PATTERN + "\"")
-	private String filePattern = FILE_PATTERN;
 	@Option(name = "-ap", aliases = { "--analysisPattern" }, usage = "the pattern used to locate analysis run archives, where {0} .. run (date) {1} .. tumor, {2} .. tumor sample, {3} .. file name, default \""
 			+ ANALYSIS_PATTERN + "\"")
 	private String analysisPattern = ANALYSIS_PATTERN;
+	@Option(name = "-fp", aliases = { "--filePattern" }, usage = "the pattern used to create a archive file name, where {0} .. run (date) {1} .. tumor, {2} .. tumor sample, {3} .. pipelineName, {4} .. level, default \""
+			+ FILE_PATTERN + "\"")
+	private String filePattern = FILE_PATTERN;
 	@Option(name = "-dp", aliases = { "--dataPattern" }, usage = "the pattern used to locate data run archives, where {0} .. run (date) {1} .. tumor, {2} .. tumor sample, {3} .. file name, default \""
 			+ DATA_PATTERN + "\"")
 	private String dataPattern = DATA_PATTERN;
+	@Option(name = "-dfp", aliases = { "--dataFilePattern" }, usage = "the pattern used to create a archive file name, where {0} .. run (date) {1} .. tumor, {2} .. tumor sample, {3} .. pipelineName, {4} .. level, default \""
+			+ DATAFILE_PATTERN + "\"")
+	private String dataFilePattern = DATAFILE_PATTERN;
 
 	@Option(name = "-rp", aliases = { "--reportPattern" }, usage = "the pattern used to locate run reports, where {0} .. run (date), {1} .. tumor, {2} .. tumor sample, default \""
 			+ REPORT_PATTERN + "\"")
@@ -234,7 +238,7 @@ public class Settings {
 
 	public URL getDataURL(Date run, TumorType tumor, String tumorSample, String pipelineName, int level)
 			throws MalformedURLException {
-		String file = MessageFormat.format(filePattern, run, tumor, tumorSample, pipelineName, level);
+		String file = MessageFormat.format(dataFilePattern, run, tumor, tumorSample, pipelineName, level);
 		String url = MessageFormat.format(dataPattern, run, tumor, tumorSample, file);
 		return new URL(url);
 	}
