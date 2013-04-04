@@ -69,6 +69,8 @@ public final class FirehoseProvider {
 	 * @return
 	 */
 	private static String guessTumorSample(String tumor, Calendar cal) {
+		if (cal.get(Calendar.YEAR) >= 2013 && tumor.equalsIgnoreCase("SKCM"))
+			return tumor + "-TM";
 		if (cal.get(Calendar.YEAR) >= 2013)
 			return tumor + "-TP";
 		return tumor;
