@@ -37,12 +37,12 @@ import com.google.common.base.Preconditions;
 
 /**
  * a mixin container class for handling table perspective their updates and their selection in a single class
- * 
+ *
  * important: annotate the field of this element with the {@link DeepScan} annotation to ensure that the listener will
  * be created
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public final class TablePerspectiveSelectionMixin {
 	private final TablePerspective tablePerspective;
@@ -71,6 +71,8 @@ public final class TablePerspectiveSelectionMixin {
 
 	@ListenTo
 	private void onSelectionUpdate(SelectionUpdateEvent event) {
+		if (event.getSender() == this) // ignore event sent by myself
+			return;
 		SelectionDelta selectionDelta = event.getSelectionDelta();
 		ATableBasedDataDomain dataDomain = getDataDomain();
 		IDType recordIDType = dataDomain.getRecordIDType();
@@ -92,6 +94,8 @@ public final class TablePerspectiveSelectionMixin {
 
 	@ListenTo
 	private void onSelectionCommand(SelectionCommandEvent event) {
+		if (event.getSender() == this) // ignore event sent by myself
+			return;
 		IDCategory idCategory = event.getIdCategory();
 		ATableBasedDataDomain dataDomain = getDataDomain();
 		if (idCategory == dataDomain.getRecordIDCategory()) {
