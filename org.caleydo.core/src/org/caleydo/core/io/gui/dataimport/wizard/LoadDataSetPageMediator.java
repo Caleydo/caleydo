@@ -698,10 +698,10 @@ public class LoadDataSetPageMediator {
 
 		IDSpecification rowIDSpecification = new IDSpecification();
 		IDType rowIDType = IDType.getIDType(page.rowIDCombo.getItem(page.rowIDCombo.getSelectionIndex()));
-		rowIDSpecification.setIdType(rowIDType.toString());
+		rowIDSpecification.setIdType(rowIDType.getTypeName());
 		if (rowIDType.getIDCategory().getCategoryName().equals("GENE"))
 			rowIDSpecification.setIDTypeGene(true);
-		rowIDSpecification.setIdCategory(rowIDType.getIDCategory().toString());
+		rowIDSpecification.setIdCategory(rowIDType.getIDCategory().getCategoryName());
 		if (rowIDTypeParsingRules != null) {
 			rowIDSpecification.setIdTypeParsingRules(rowIDTypeParsingRules);
 		} else if (rowIDType.getTypeName().equalsIgnoreCase("REFSEQ_MRNA")) {
@@ -715,10 +715,10 @@ public class LoadDataSetPageMediator {
 		IDSpecification columnIDSpecification = new IDSpecification();
 		IDType columnIDType = IDType.getIDType(page.columnIDCombo.getItem(page.columnIDCombo.getSelectionIndex()));
 		// columnIDTypes.get(page.columnIDCombo.getSelectionIndex());
-		columnIDSpecification.setIdType(columnIDType.toString());
+		columnIDSpecification.setIdType(columnIDType.getTypeName());
 		if (columnIDType.getIDCategory().getCategoryName().equals("GENE"))
 			columnIDSpecification.setIDTypeGene(true);
-		columnIDSpecification.setIdCategory(columnIDType.getIDCategory().toString());
+		columnIDSpecification.setIdCategory(columnIDType.getIDCategory().getCategoryName());
 		if (columnIDTypeParsingRules != null) {
 			columnIDSpecification.setIdTypeParsingRules(columnIDTypeParsingRules);
 		}
