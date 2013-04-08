@@ -36,14 +36,23 @@ import org.caleydo.core.view.opengl.layout2.GLGraphics;
 
 /**
  * a simple band
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public class Band implements ITesselatedPolygon {
 	private final Collection<Vec3f> curveTop;
 	private final Collection<Vec3f> curveBottom;
+	/**
+	 * flag indicating, whether only the band borders or the whole contour should be drawn upon
+	 * {@link #draw(GLGraphics)}
+	 */
 	private boolean drawBandBordersOnly = true;
+	/**
+	 * flag indicating, whether the band borders should be drawn upon {@link #fill(GLGraphics, TesselationRenderer)} or
+	 * not
+	 */
+	private boolean drawBandBordersOnFill = true;
 
 	public Band(Collection<Vec3f> curveTop, Collection<Vec3f> curveBottom) {
 		this.curveTop = curveTop;
@@ -64,41 +73,49 @@ public class Band implements ITesselatedPolygon {
 	 * @param drawBandBordersOnly
 	 *            setter, see {@link drawBandBordersOnly}
 	 */
-	public void setDrawBandBordersOnly(boolean drawBandBordersOnly) {
+	public Band setDrawBandBordersOnly(boolean drawBandBordersOnly) {
 		this.drawBandBordersOnly = drawBandBordersOnly;
+		return this;
+	}
+
+	/**
+	 * @return the drawBandBordersOnFill, see {@link #drawBandBordersOnFill}
+	 */
+	public boolean isDrawBandBordersOnFill() {
+		return drawBandBordersOnFill;
+	}
+
+	/**
+	 * @param drawBandBordersOnFill
+	 *            setter, see {@link drawBandBordersOnFill}
+	 */
+	public Band setDrawBandBordersOnFill(boolean drawBandBordersOnFill) {
+		this.drawBandBordersOnFill = drawBandBordersOnFill;
+		return this;
 	}
 
 	@Override
 	public void draw(GLGraphics g) {
 		GL2 gl = g.gl;
 		if (drawBandBordersOnly) {
-			gl.glBegin(GL.GL_LINE_STRIP);
-			for (Vec3f v : curveTop) {
-				gl.glVertex3f(v.x(), v.y(), v.z());
-			}
-			gl.glEnd();
-			gl.glBegin(GL.GL_LINE_STRIP);
-			for (Vec3f v : curveBottom) {
-				gl.glVertex3f(v.x(), v.y(), v.z());
-			}
-			gl.glEnd();
+			drawBorders(gl);
 		} else {
-			gl.glBegin(GL.GL_LINE_LOOP);
-			for (Vec3f v : curveTop) {
-				gl.glVertex3f(v.x(), v.y(), v.z());
-			}
-			for (Vec3f v : curveBottom) {
-				gl.glVertex3f(v.x(), v.y(), v.z());
-			}
-			gl.glEnd();
+			drawContour(gl);
 		}
 	}
 
-	@Override
-	public void fill(GLGraphics g, TesselationRenderer renderer) {
-		GL2 gl = g.gl;
+	protected void drawContour(GL2 gl) {
+		gl.glBegin(GL.GL_LINE_LOOP);
+		for (Vec3f v : curveTop) {
+			gl.glVertex3f(v.x(), v.y(), v.z());
+		}
+		for (Vec3f v : curveBottom) {
+			gl.glVertex3f(v.x(), v.y(), v.z());
+		}
+		gl.glEnd();
+	}
 
-		// draw the outlines for smooth bands
+	protected void drawBorders(GL2 gl) {
 		gl.glBegin(GL.GL_LINE_STRIP);
 		for (Vec3f v : curveTop) {
 			gl.glVertex3f(v.x(), v.y(), v.z());
@@ -109,6 +126,13 @@ public class Band implements ITesselatedPolygon {
 			gl.glVertex3f(v.x(), v.y(), v.z());
 		}
 		gl.glEnd();
+	}
+
+	@Override
+	public void fill(GLGraphics g, TesselationRenderer renderer) {
+		if (drawBandBordersOnFill) {
+			draw(g);
+		}
 
 		GLUtessellator tesselator = renderer.begin(g.gl);
 
