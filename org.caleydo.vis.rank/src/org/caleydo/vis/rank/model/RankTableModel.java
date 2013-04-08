@@ -290,6 +290,11 @@ public class RankTableModel implements IRankColumnParent {
 		findCorrespondingRanker(i).checkOrderChanges(from, to);
 	}
 
+	@Override
+	public int indexOf(ARankColumnModel model) {
+		return this.columns.indexOf(model);
+	}
+
 	public boolean isCombineAble(ARankColumnModel model, ARankColumnModel with, boolean clone, int combineMode) {
 		if (model == with)
 			return false;

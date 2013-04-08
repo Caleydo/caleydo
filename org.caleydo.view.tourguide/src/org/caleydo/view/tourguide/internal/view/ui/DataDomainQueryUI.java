@@ -15,17 +15,39 @@ import com.google.common.collect.Iterables;
 public class DataDomainQueryUI extends GLElementContainer {
 
 	public DataDomainQueryUI(Iterable<ADataDomainQuery> queries) {
-		super(new GLFlowLayout(true, 5, new GLPadding(5)));
+		super(new GLFlowLayout(false, 5, new GLPadding(5)));
+
+		float total = 10;
 		for (EDataDomainQueryMode mode : EDataDomainQueryMode.values()) {
-			GLElementContainer c = new GLElementContainer(GLLayouts.flowVertical(2));
-			for (ADataDomainQuery q : queries) {
-				if (mode.isCompatible(q.getDataDomain()))
-					c.add(createFor(q));
+			if (mode.getNumCategories() > 1) {
+				GLElementContainer c =	new GLElementContainer(GLLayouts.flowHorizontal(2));
+				GLElementContainer[] cs = new GLElementContainer[mode.getNumCategories()];
+				for(int i = 0; i < cs.length; ++i)
+					cs[i] = new GLElementContainer(GLLayouts.flowVertical(2));
+				for (ADataDomainQuery q : queries) {
+					if (mode.isCompatible(q.getDataDomain()))
+						cs[mode.getCategory(q.getDataDomain())].add(createFor(q));
+				}
+
+				for (int i = 0; i < cs.length; ++i) {
+					cs[i].setSize(-1, cs[i].size() * 20);
+					c.add(cs[i]);
+				}
+				c.pack(false, true);
+				this.add(c);
+				total += c.getSize().y();
+			} else {
+				GLElementContainer c = new GLElementContainer(GLLayouts.flowVertical(2));
+				for (ADataDomainQuery q : queries) {
+					if (mode.isCompatible(q.getDataDomain()))
+						c.add(createFor(q));
+				}
+				c.setSize(-1, c.size() * 20);
+				this.add(c);
+				total += c.getSize().y();
 			}
-			c.setSize(-1, c.size() * 20);
-			this.add(c);
 		}
-		pack(false, true);
+		setSize(-1, total);
 	}
 
 	private ADataDomainElement createFor(ADataDomainQuery q) {

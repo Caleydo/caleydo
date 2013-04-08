@@ -53,6 +53,8 @@ public interface IRankColumnParent extends IRankColumnModel {
 	 */
 	void explode(ACompositeRankColumnModel model);
 
+	int indexOf(ARankColumnModel model);
+
 	/**
 	 * @param with
 	 */

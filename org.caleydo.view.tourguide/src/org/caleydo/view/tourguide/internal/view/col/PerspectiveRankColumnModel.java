@@ -82,7 +82,7 @@ public class PerspectiveRankColumnModel extends StringRankColumnModel {
 			if (h < 5 || w < 20)
 				return;
 			float x = hint + 2;
-			float hi = Math.min(h, 18);
+			float hi = Math.min(h, 16);
 			g.drawText(r.getLabel(), x, 1 + (h - hi) * 0.5f, w - 2 - x, hi - 2);
 		}
 

@@ -29,7 +29,6 @@ import org.caleydo.view.tourguide.spi.score.IScore;
 import org.caleydo.view.tourguide.spi.score.IStratificationScore;
 import org.caleydo.vis.rank.data.FloatInferrers;
 import org.caleydo.vis.rank.model.FloatRankColumnModel;
-import org.caleydo.vis.rank.ui.IColumnRenderInfo;
 
 /**
  * @author Samuel Gratzl
@@ -83,7 +82,7 @@ public class ScoreRankColumnModel extends FloatRankColumnModel implements IGLRen
 			g.color(strat.getDataDomain().getColor()).fillRect(1, 1, 10, 10);
 			x += 12;
 		}
-		if (((IColumnRenderInfo) parent.getParent()).isCollapsed())
+		if (this.isCollapsed())
 			return;
 		g.drawText(this.score, x, 1, w - x, 12);
 	}

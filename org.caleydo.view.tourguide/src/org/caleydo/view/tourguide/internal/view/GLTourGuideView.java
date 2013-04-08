@@ -42,6 +42,7 @@ import org.caleydo.core.event.data.ReplaceTablePerspectiveEvent;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
 import org.caleydo.core.view.listener.RemoveTablePerspectiveEvent;
+import org.caleydo.core.view.opengl.canvas.GLMouseAdapter;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.IGLKeyListener;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
@@ -50,6 +51,8 @@ import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IPopupLayer;
+import org.caleydo.core.view.opengl.layout2.basic.ScrollBar;
+import org.caleydo.core.view.opengl.layout2.basic.ScrollingDecorator;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
@@ -88,14 +91,21 @@ import org.caleydo.vis.rank.model.MaxCompositeRankColumnModel;
 import org.caleydo.vis.rank.model.RankRankColumnModel;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.StackedRankColumnModel;
+import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
+import org.caleydo.vis.rank.ui.RenderStyle;
+import org.caleydo.vis.rank.ui.TableBodyUI;
 import org.caleydo.vis.rank.ui.TableUI;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+
+import com.google.common.collect.Iterables;
 /**
  * @author Samuel Gratzl
  *
  */
 public class GLTourGuideView extends AGLElementView implements IGLKeyListener, IAddToStratomex {
+	private static final char TOGGLE_ALIGN_ALL = 't';
+
 	public static final String VIEW_TYPE = "org.caleydo.view.tool.tourguide";
 	public static final String VIEW_NAME = "Tour Guide";
 
@@ -121,7 +131,6 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 			}
 		}
 	};
-	private final StackedRankColumnModel stacked;
 
 	private EDataDomainQueryMode mode = EDataDomainQueryMode.TABLE_BASED;
 
@@ -166,11 +175,38 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 				onSelectRow((PerspectiveRow) evt.getOldValue(), (PerspectiveRow) evt.getNewValue());
 			}
 		});
-		this.table.add(new RankRankColumnModel());
-		this.table.add(new PerspectiveRankColumnModel(this));
-		this.stacked = new StackedRankColumnModel();
-		this.table.add(stacked);
-		this.table.add(new SizeRankColumnModel());
+		this.table.add(new RankRankColumnModel().setWidth(30));
+		this.table.add(new PerspectiveRankColumnModel(this).setWidth(200));
+		this.table.add(new SizeRankColumnModel().setWidth(75));
+
+		canvas.addKeyListener(new IGLKeyListener() {
+			@Override
+			public void keyPressed(IKeyEvent e) {
+				if (e.isKey(ESpecialKey.DOWN))
+					table.selectNextRow();
+				else if (e.isKey(ESpecialKey.UP))
+					table.selectPreviousRow();
+				else if (e.isControlDown() && (e.isKey(TOGGLE_ALIGN_ALL))) {
+					// short cut for align all
+					for (StackedRankColumnModel stacked : Iterables.filter(table.getColumns(),
+							StackedRankColumnModel.class)) {
+						stacked.setAlignAll(!stacked.isAlignAll());
+					}
+				}
+			}
+
+			@Override
+			public void keyReleased(IKeyEvent e) {
+
+			}
+		});
+
+		canvas.addMouseListener(new GLMouseAdapter() {
+			@Override
+			public void mouseWheelMoved(IMouseEvent e) {
+				onWheelMoved(e.getWheelRotation());
+			}
+		});
 
 		for (EDataDomainQueryMode mode : EDataDomainQueryMode.values()) {
 			for (IDataDomain dd : mode.getAllDataDomains()) {
@@ -264,8 +300,7 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 	}
 
 	private void scheduleAllOf(Collection<IScore> toCompute) {
-		ComputeForScoreJob job = new ComputeForScoreJob(toCompute, table.getData(),
- table.getDefaultFilter()
+		ComputeForScoreJob job = new ComputeForScoreJob(toCompute, table.getData(), table.getDefaultFilter()
 				.getFilter(), this);
 		if (job.hasThingsToDo()) {
 			getPopupLayer().show(waiting, null, 0);
@@ -300,12 +335,16 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 		for (IScore s : scores) {
 			if (s instanceof MultiScore) {
 				ACompositeRankColumnModel combined = table.getConfig().createNewCombined(0);
-				stacked.add(combined);
+				table.add(2, combined);
 				for (IScore s2 : ((MultiScore) s)) {
 					combined.add(new ScoreRankColumnModel(s2));
 				}
+				if (combined instanceof IRankableColumnMixin)
+					((IRankableColumnMixin) combined).orderByMe();
 			} else {
-				stacked.add(new ScoreRankColumnModel(s));
+				ScoreRankColumnModel ss = new ScoreRankColumnModel(s);
+				table.add(2, ss);
+				ss.orderByMe();
 			}
 		}
 	}
@@ -617,10 +656,35 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 
 	private class TourGuideVis extends GLElementContainer {
 		public TourGuideVis() {
-			setLayout(GLLayouts.flowVertical(0));
+			setLayout(GLLayouts.flowVertical(10));
 			this.add(new DataDomainQueryUI(queries));
-			this.add(new TableUI(table, RankTableUIConfigs.DEFAULT, RowHeightLayouts.UNIFORM));
+			TableUI tableui = new TableUI(table, RankTableUIConfigs.DEFAULT, RowHeightLayouts.UNIFORM);
+			ScrollingDecorator sc = new ScrollingDecorator(tableui, new ScrollBar(true), null,
+					RenderStyle.SCROLLBAR_WIDTH);
+			this.add(sc);
 		}
+	}
+
+	/**
+	 * @param wheelRotation
+	 */
+	protected void onWheelMoved(int wheelRotation) {
+		if (wheelRotation == 0)
+			return;
+		TableBodyUI body = findBody();
+		if (body != null)
+			body.scroll(-wheelRotation);
+	}
+
+	/**
+	 * @return
+	 */
+	private TableBodyUI findBody() {
+		GLElement root = getRoot();
+		if (root == null)
+			return null;
+		TourGuideVis r = (TourGuideVis) root;
+		return ((TableUI) ((ScrollingDecorator) r.get(1)).getContent()).getBody();
 	}
 }
 

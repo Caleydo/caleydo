@@ -71,6 +71,7 @@ public abstract class ACompositeRankColumnModel extends ARankColumnModel impleme
 		return true;
 	}
 
+	@Override
 	public int indexOf(ARankColumnModel model) {
 		return children.indexOf(model);
 	}

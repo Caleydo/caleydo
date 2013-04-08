@@ -365,7 +365,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 			buttons.addButton(b, "Edit the filter of this column", RenderStyle.ICON_FILTER_DISABLED,
 					RenderStyle.ICON_FILTER);
 		}
-		if (model instanceof RankRankColumnModel) {
+		if (model instanceof RankRankColumnModel && !isFirst(model)) {
 			final RankRankColumnModel m = (RankRankColumnModel) model;
 			GLButton b = new GLButton(GLButton.EButtonMode.CHECKBOX);
 			b.setSelected(m.isShowRankDelta());
@@ -479,6 +479,14 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 			buttons.addButton(b, "Removes this column", RenderStyle.ICON_HIDE, RenderStyle.ICON_HIDE);
 		}
 		return buttons;
+	}
+
+	/**
+	 * @param model2
+	 * @return
+	 */
+	private static boolean isFirst(ARankColumnModel m) {
+		return m.getParent().indexOf(m) == 0;
 	}
 
 	@Override

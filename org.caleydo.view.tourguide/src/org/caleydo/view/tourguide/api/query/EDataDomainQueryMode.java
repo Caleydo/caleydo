@@ -28,6 +28,7 @@ import java.util.List;
 import org.caleydo.core.data.datadomain.ADataDomain;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
+import org.caleydo.core.data.datadomain.DataDomainOracle;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.view.tourguide.spi.score.IScore;
@@ -84,5 +85,30 @@ public enum EDataDomainQueryMode {
 				return s.supports(EDataDomainQueryMode.this);
 			}
 		};
+	}
+
+	/**
+	 * datadomains can be categorized in multiple categories
+	 * 
+	 * @return
+	 */
+	public int getNumCategories() {
+		switch (this) {
+		case TABLE_BASED:
+			return 2;
+		default:
+			return 1;
+		}
+	}
+
+	public int getCategory(IDataDomain dataDomain) {
+		switch (this) {
+		case TABLE_BASED:
+			if (DataDomainOracle.isCategoricalDataDomain(dataDomain))
+				return 1;
+			return 0;
+		default:
+			return 0;
+		}
 	}
 }
