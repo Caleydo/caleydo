@@ -54,12 +54,33 @@ public class Band implements ITesselatedPolygon {
 	 */
 	private boolean drawBandBordersOnFill = true;
 
+	/**
+	 * flag, whether the current {@link GLGraphics} z value should be considered or not
+	 */
+	private boolean moveByCurrentZ = true;
+
 	public Band(Collection<Vec3f> curveTop, Collection<Vec3f> curveBottom) {
 		this.curveTop = curveTop;
 		// create a reversed ordered version for simpler handling
 		List<Vec3f> bottom = new ArrayList<>(curveBottom);
 		Collections.reverse(bottom);
 		this.curveBottom = bottom;
+	}
+
+	/**
+	 * @return the moveByCurrentZ, see {@link #moveByCurrentZ}
+	 */
+	public boolean isMoveByCurrentZ() {
+		return moveByCurrentZ;
+	}
+
+	/**
+	 * @param moveByCurrentZ
+	 *            setter, see {@link moveByCurrentZ}
+	 */
+	public Band setMoveByCurrentZ(boolean moveByCurrentZ) {
+		this.moveByCurrentZ = moveByCurrentZ;
+		return this;
 	}
 
 	/**
@@ -97,11 +118,15 @@ public class Band implements ITesselatedPolygon {
 	@Override
 	public void draw(GLGraphics g) {
 		GL2 gl = g.gl;
+		if (moveByCurrentZ)
+			gl.glTranslatef(0, 0, g.z());
 		if (drawBandBordersOnly) {
 			drawBorders(gl);
 		} else {
 			drawContour(gl);
 		}
+		if (moveByCurrentZ)
+			gl.glTranslatef(0, 0, -g.z());
 	}
 
 	protected void drawContour(GL2 gl) {
@@ -134,6 +159,9 @@ public class Band implements ITesselatedPolygon {
 			draw(g);
 		}
 
+		if (moveByCurrentZ)
+			g.gl.glTranslatef(0, 0, g.z());
+
 		GLUtessellator tesselator = renderer.begin(g.gl);
 
 		GLU.gluTessBeginPolygon(tesselator, null);
@@ -151,6 +179,9 @@ public class Band implements ITesselatedPolygon {
 		}
 		GLU.gluTessEndPolygon(tesselator);
 		renderer.end();
+
+		if (moveByCurrentZ)
+			g.gl.glTranslatef(0, 0, -g.z());
 	}
 
 	@Override
