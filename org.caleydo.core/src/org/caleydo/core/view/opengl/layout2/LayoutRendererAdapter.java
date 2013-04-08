@@ -16,7 +16,6 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
-import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.data.loader.ResourceLocators.IResourceLocator;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -37,13 +36,10 @@ public final class LayoutRendererAdapter extends ALayoutRenderer implements IGLE
 	private final Map<IPickingListener, PickingMetaData> pickingMetaData = new HashMap<>();
 	private int pickingNameCounter = 0;
 
-	private final DisplayListPool pool = new DisplayListPool();
-
 	private final EventListenerManager eventListeners;
 
 	private final AGLView view;
 	private final WindowGLElement root;
-	private final IResourceLocator locator;
 
 	/**
 	 * do we need to perform a layout
@@ -55,15 +51,14 @@ public final class LayoutRendererAdapter extends ALayoutRenderer implements IGLE
 	 */
 	private Vec2f location = new Vec2f(0, 0);
 
-	private final TimeDelta timeDelta = new TimeDelta();
-	private int deltaTimeMs;
-	private boolean layoutingPassDone = false;
+	private final GLContextLocal local;
 
 	public LayoutRendererAdapter(AGLView view, IResourceLocator locator, GLElement root) {
 		this.view = view;
 		this.root = new WindowGLElement(root);
 		this.eventListeners = EventListenerManagers.wrap(view);
-		this.locator = locator;
+
+		this.local = new GLContextLocal(view.getTextRenderer(), view.getTextureManager(), locator);
 		this.root.init(this);
 
 	}
@@ -109,25 +104,25 @@ public final class LayoutRendererAdapter extends ALayoutRenderer implements IGLE
 			dirty = false;
 		}
 
-		if (!layoutingPassDone) {
-			deltaTimeMs = timeDelta.getDeltaTimeMs();
-			// first run layouting
-			root.layout(deltaTimeMs);
-			layoutingPassDone = true;
+		final boolean isPickingRun = GLGraphics.isPickingPass(gl);
+		int deltaTimeMs = 0;
+		if (!isPickingRun) {
+			deltaTimeMs = local.getDeltaTimeMs();
 		}
 
-		GLGraphics g = new GLGraphics(gl, view.getTextRenderer(), view.getTextureManager(), locator, true, deltaTimeMs);
+		GLGraphics g = new GLGraphics(gl, local, true, deltaTimeMs);
+		g.checkError("pre render");
 
-		if (g.isPickingPass()) {
-			// one or more pick passes
+		if (isPickingRun) {
+			// 1. pick passes
 			root.renderPick(g);
 		} else {
-			// a single last render pass
+			// 2. pass layouting
+			root.layout(deltaTimeMs);
+			// 3. pass render pass
 			root.render(g);
-			layoutingPassDone = false;
 		}
-
-		g.destroy();
+		g.checkError("post render");
 
 		gl.glPopMatrix();
 	}
@@ -140,7 +135,7 @@ public final class LayoutRendererAdapter extends ALayoutRenderer implements IGLE
 	@Override
 	public void destroy(GL2 gl) {
 		this.root.takeDown();
-		pool.deleteAll(gl);
+		local.destroy(gl);
 		super.destroy(gl);
 	}
 
@@ -200,10 +195,6 @@ public final class LayoutRendererAdapter extends ALayoutRenderer implements IGLE
 		}
 	}
 
-	@Override
-	public TextureManager getTextureManager() {
-		return view.getTextureManager();
-	}
 
 	@Override
 	public void setCursor(final int swtCursorConst) {
@@ -231,7 +222,7 @@ public final class LayoutRendererAdapter extends ALayoutRenderer implements IGLE
 
 	@Override
 	public final DisplayListPool getDisplayListPool() {
-		return pool;
+		return local.getPool();
 	}
 
 	@Override

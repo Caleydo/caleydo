@@ -22,7 +22,6 @@ package org.caleydo.core.view.opengl.layout2;
 import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
-import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.eclipse.swt.SWT;
 
 /**
@@ -55,13 +54,6 @@ public interface IGLElementContext {
 	 * @param pickingID
 	 */
 	void unregisterPickingListener(int pickingId);
-
-	/**
-	 * returns the {@link TextureManager} of this context
-	 *
-	 * @return
-	 */
-	TextureManager getTextureManager();
 
 	/**
 	 * returns the {@link DisplayListPool} of this context

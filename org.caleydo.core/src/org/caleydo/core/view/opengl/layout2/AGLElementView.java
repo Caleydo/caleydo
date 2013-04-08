@@ -47,6 +47,7 @@ import org.caleydo.core.view.opengl.layout2.animation.AnimatedGLElementContainer
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.SimplePickingManager;
 import org.caleydo.core.view.opengl.util.text.CompositeTextRenderer;
+import org.caleydo.core.view.opengl.util.text.ITextRenderer;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.data.loader.ResourceLocators;
@@ -73,15 +74,10 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 	private final ViewFrustum viewFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 100, 100, 0, -20, 20);
 
 	private WindowGLElement root;
-	private DisplayListPool pool;
 	private boolean dirtyLayout = true;
 
 	private boolean visible = true;
-	private CompositeTextRenderer text;
-	private TextureManager textures;
-	private IResourceLocator locator;
-
-	private final TimeDelta timeDelta = new TimeDelta();
+	private GLContextLocal local;
 
 	public AGLElementView(IGLCanvas glCanvas, String viewType, String viewName) {
 		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.GL_VIEW), glCanvas.asComposite(),
@@ -123,7 +119,8 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 		if (this.visible == visible)
 			return;
 		this.visible = visible;
-		timeDelta.stop();
+		if (local != null)
+			local.getTimeDelta().stop();
 	}
 
 	@Override
@@ -157,9 +154,11 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 	@Override
 	public void init(GLAutoDrawable drawable) {
 		GL2 gl = drawable.getGL().getGL2();
-		text = new CompositeTextRenderer(8, 16, 24, 40);
-		locator = createResourceLocator();
-		textures = createTextureManager(locator);
+		ITextRenderer text = new CompositeTextRenderer(8, 16, 24, 40);
+		IResourceLocator locator = createResourceLocator();
+		TextureManager textures = createTextureManager(locator);
+
+		local = new GLContextLocal(text, textures, locator);
 
 		AGLView.initGLContext(gl);
 
@@ -169,21 +168,19 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 
 		this.root = new WindowGLElement(createRoot());
 		this.root.setParent(this);
-		this.pool = new DisplayListPool();
 		this.root.init(this);
 
-		timeDelta.reset();
+		local.getTimeDelta().reset();
 	}
 
 	@Override
 	public void dispose(GLAutoDrawable drawable) {
-		timeDelta.stop();
 		this.canvas.removeGLEventListener(this);
 		this.canvas.removeMouseListener(pickingManager.getListener());
 
 		this.root.takeDown();
 		GL2 gl = drawable.getGL().getGL2();
-		this.pool.deleteAll(gl);
+		local.destroy(gl);
 
 		this.eventListeners.unregisterAll();
 
@@ -205,14 +202,14 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 		if (!visible)
 			return;
 
-		final int deltaTimeMs = timeDelta.getDeltaTimeMs();
+		final int deltaTimeMs = local.getDeltaTimeMs();
 		GL2 gl = drawable.getGL().getGL2();
 		// clear screen
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 		gl.glLoadIdentity();
 		gl.glTranslatef(0.375f, 0.375f, 0);
 
-		final GLGraphics g = new GLGraphics(gl, text, getTextureManager(), locator, true, deltaTimeMs);
+		final GLGraphics g = new GLGraphics(gl, local, true, deltaTimeMs);
 		g.clearError();
 
 		float paddedWidth = getWidth();
@@ -246,8 +243,6 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 		root.render(g);
 
 		g.checkError();
-
-		g.destroy();
 	}
 
 
@@ -275,11 +270,6 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 	@Override
 	public Vec2f toRelative(Vec2f absolute) {
 		return absolute;
-	}
-
-	@Override
-	public final TextureManager getTextureManager() {
-		return this.textures;
 	}
 
 	@Override
@@ -321,7 +311,7 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 
 	@Override
 	public final DisplayListPool getDisplayListPool() {
-		return pool;
+		return local.getPool();
 	}
 
 	@Override

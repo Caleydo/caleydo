@@ -60,28 +60,23 @@ import com.jogamp.opengl.util.FPSAnimator;
  */
 public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementContext {
 	private final FPSAnimator animator;
-	private TextureManager textures;
-	private ITextRenderer text;
 	private final WindowGLElement root;
-	private boolean dirty = true;
 
-	protected boolean tracingGL = false;
 	private final ViewFrustum viewFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 100, 100, 0, -20, 20);
-
-	private final DisplayListPool pool = new DisplayListPool();
 
 	private final SimplePickingManager pickingManager = new SimplePickingManager();
 
 	protected final Shell shell;
 	protected final IGLCanvas canvas;
-	private final IResourceLocator loader;
 	protected boolean renderPick;
 
 	private GLPadding padding = GLPadding.ZERO;
 
 	protected final QueuedEventListenerManager eventListeners = EventListenerManagers.createQueued();
 
-	private final TimeDelta timeDelta = new TimeDelta();
+	private GLContextLocal local;
+
+	private boolean dirty = true;
 	/**
 	 * @param canvas
 	 */
@@ -90,9 +85,6 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 		this.shell.setText(title);
 		this.shell.setLayout(new GridLayout(1, true));
 		this.shell.setSize(dim.width, dim.height);
-
-		this.loader = ResourceLocators.chain(ResourceLocators.classLoader(root.getClass().getClassLoader()),
-				ResourceLocators.FILE);
 
 		IGLCanvasFactory canvasFactory = new SWTGLCanvasFactory();
 
@@ -190,11 +182,6 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 	}
 
 	@Override
-	public TextureManager getTextureManager() {
-		return textures;
-	}
-
-	@Override
 	public void init(GLElement element) {
 		eventListeners.register(element, null, AGLElementView.isNotBaseClass);
 	}
@@ -232,8 +219,13 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 
 		AGLView.initGLContext(gl);
 
-		text = new CompositeTextRenderer(8, 16, 24, 40);
-		textures = new TextureManager(new ResourceLoader(loader));
+		ITextRenderer text = new CompositeTextRenderer(8, 16, 24, 40);
+		IResourceLocator loader = ResourceLocators.chain(
+				ResourceLocators.classLoader(root.getClass().getClassLoader()), ResourceLocators.FILE);
+		TextureManager textures = new TextureManager(new ResourceLoader(loader));
+
+
+		this.local = new GLContextLocal(text, textures, loader);
 
 		gl.glLoadIdentity();
 		this.root.setParent(this);
@@ -242,14 +234,14 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 
 	@Override
 	public DisplayListPool getDisplayListPool() {
-		return pool;
+		return local.getPool();
 	}
 
 	@Override
 	public void dispose(GLAutoDrawable drawable) {
 		root.takeDown();
 		GL2 gl = drawable.getGL().getGL2();
-		pool.deleteAll(gl);
+		local.destroy(gl);
 	}
 
 	private float getWidth() {
@@ -262,13 +254,11 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 
 	@Override
 	public void display(GLAutoDrawable drawable) {
-		final int deltaTimeMs = timeDelta.getDeltaTimeMs();
+		final int deltaTimeMs = local.getDeltaTimeMs();
 		eventListeners.processEvents();
 
 		GL2 gl = drawable.getGL().getGL2();
-		final GLGraphics g = tracingGL ? new GLGraphicsTracing(gl, text, textures, loader, true, deltaTimeMs)
-				: new GLGraphics(gl,
-				text, textures, loader, true, deltaTimeMs);
+		final GLGraphics g = new GLGraphics(gl, local, true, deltaTimeMs);
 
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 		gl.glLoadIdentity();
@@ -311,7 +301,6 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 			root.render(g);
 
 		g.move(-padding.left, -padding.right);
-		g.destroy();
 	}
 
 	@Override

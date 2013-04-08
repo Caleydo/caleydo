@@ -22,6 +22,7 @@ package org.caleydo.core.view.opengl.util.vislink;
 import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.caleydo.core.view.opengl.renderstyle.ConnectionLineRenderStyle;
@@ -34,7 +35,7 @@ import org.caleydo.core.view.opengl.renderstyle.ConnectionLineRenderStyle;
 
 public class NURBSCurve {
 
-	protected ArrayList<Vec3f> controlPoints;
+	protected List<Vec3f> controlPoints;
 
 	protected ArrayList<Vec3f> curvePoints;
 
@@ -80,32 +81,7 @@ public class NURBSCurve {
 	 *            many segments.
 	 */
 	public NURBSCurve(Vec3f sourcePoint, Vec3f bundlingPoint, Vec3f destPoint, int numberOfSegments) {
-
-		ArrayList<Vec3f> controlPoints = new ArrayList<Vec3f>();
-		controlPoints.add(sourcePoint);
-		controlPoints.add(bundlingPoint);
-		controlPoints.add(destPoint);
-		this.controlPoints = controlPoints;
-
-		this.n = 2; // 3 control points
-		this.d = 3;
-		// this.numberOfSegments = numberOfSegments;
-
-		// float[] knots = { 0.0f, 0.0f, 1.0f, 2.0f, 3.0f, 3.0f };
-		float[] knots = generateKnotsVector(n + 1, d);
-		this.knots = knots;
-
-		this.u_min = (this.knots[this.d - 1]);
-		this.u_max = (this.knots[this.n + 1]);
-		this.u = 0.0f;
-		this.step_length = (this.knots[this.n + 1] - this.knots[this.d - 1]) / (numberOfSegments);
-
-		buildCurve(numberOfSegments);
-		// ArrayList<Vec3f> curvePoints = new ArrayList<Vec3f>(numberOfSegments+1);
-		// curvePoints.add(sourcePoint);
-		// this.curvePoints = curvePoints;
-		// this.evaluateCurve(numberOfSegments);
-		// this.curvePoints.add(destPoint);
+		this(Arrays.asList(sourcePoint, bundlingPoint, destPoint), numberOfSegments);
 	}
 
 	/**
@@ -118,8 +94,7 @@ public class NURBSCurve {
 	 *            numberOfSegments. There is no guarantee, so you must use getNumberOfSegments() to know how
 	 *            many segments.
 	 */
-	public NURBSCurve(ArrayList<Vec3f> controlPoints, int numberOfSegments) {
-
+	public NURBSCurve(List<Vec3f> controlPoints, int numberOfSegments) {
 		this.controlPoints = controlPoints;
 
 		this.n = controlPoints.size() - 1;
@@ -143,31 +118,13 @@ public class NURBSCurve {
 		// this.curvePoints.add(controlPoints.get(controlPoints.size() - 1));
 	}
 
-	// public NURBSCurve(ArrayList<Vec3f> controlPoints, int numberOfSegments) {
-	//
-	// this.controlPoints = controlPoints;
-	//
-	// this.n = controlPoints.size() - 1;
-	// this.d = 3;
-	// this.numberOfSegments = numberOfSegments;
-	//
-	// float[] knots = {0.0f, 0.0f, 1.0f, 2.0f, 3.0f, 3.0f};
-	// this.knots = knots;
-	//
-	// this.u_min = (float) (this.knots[this.d-1]);
-	// this.u_max = (float) (this.knots[this.n+1]);
-	// this.u = 0.0f;
-	// this.step_length = (float) (this.knots[this.n+1] - this.knots[this.d-1]) / (float)
-	// (this.numberOfSegments);
-	//
-	//
-	// // ArrayList<Vec3f> curvePoints = new ArrayList<Vec3f>(numberOfSegments+1);
-	// ArrayList<Vec3f> curvePoints = new ArrayList<Vec3f>();
-	// curvePoints.add(controlPoints.get(0));
-	// this.curvePoints = curvePoints;
-	// this.evaluateCurve();
-	// this.curvePoints.add(controlPoints.get(controlPoints.size() - 1));
-	// }
+	public static List<Vec3f> spline3(List<Vec3f> controlPoints, int numberOfSegments) {
+		return new NURBSCurve(controlPoints, numberOfSegments).getCurvePoints();
+	}
+
+	public static List<Vec3f> spline3(Vec3f source, Vec3f bundling, Vec3f dest, int numberOfSegments) {
+		return new NURBSCurve(source, bundling, dest, numberOfSegments).getCurvePoints();
+	}
 
 	/**
 	 * The curve is composed of the evaluated NURBS spline and 2 straight lines at the end. In general, NURBS
@@ -207,6 +164,13 @@ public class NURBSCurve {
 	}
 
 	/**
+	 * Returns an array with the curvePoints.
+	 */
+	public ArrayList<Vec3f> getCurvePoints() {
+		return curvePoints;
+	}
+
+	/**
 	 * The Cox-deBoor recursive formula is used as blending function.
 	 *
 	 * @param k
@@ -215,7 +179,7 @@ public class NURBSCurve {
 	 *            the B-Spline curve equation parameter.
 	 * @return the result of the Cox-de Boor recursive formula.
 	 */
-	protected float coxDeBoor(int k, int d) {
+	private float coxDeBoor(int k, int d) {
 		int k_max = this.n;
 		float result = 0.0f;
 
@@ -227,11 +191,9 @@ public class NURBSCurve {
 			else
 				return 0.0f;
 
-		float factor1 =
-			this.blendingDivision((this.u - this.knots[k]), (this.knots[k + d - 1] - this.knots[k]));
+		float factor1 = blendingDivision((this.u - this.knots[k]), (this.knots[k + d - 1] - this.knots[k]));
 		result = factor1 * this.coxDeBoor(k, (d - 1));
-		float factor2 =
-			this.blendingDivision((this.knots[k + d] - this.u), (this.knots[k + d] - this.knots[k + 1]));
+		float factor2 = blendingDivision((this.knots[k + d] - this.u), (this.knots[k + d] - this.knots[k + 1]));
 		result += factor2 * this.coxDeBoor((k + 1), (d - 1));
 
 		return result;
@@ -248,43 +210,10 @@ public class NURBSCurve {
 	 *            the divisor
 	 * @return the result of the calculation (0 if the divisor == 0)
 	 */
-	float blendingDivision(float dividend, float divisor) {
+	private static float blendingDivision(float dividend, float divisor) {
 		if (divisor == 0.0f)
 			return 0.0f;
 		return (dividend / divisor);
-	}
-
-	/**
-	 * Returns an array with the curvePoints.
-	 */
-	public ArrayList<Vec3f> getCurvePoints() {
-		return curvePoints;
-	}
-
-	/**
-	 * Returns the number of curve points.
-	 */
-	public int getNumberOfCurvePoints() {
-		return curvePoints.size();
-	}
-
-	/**
-	 * Returns the number of segments
-	 */
-	public int getNumberOfSegments() {
-		return curvePoints.size() - 1;
-	}
-
-	/**
-	 * Returns the given curve point at index i
-	 *
-	 * @param i
-	 *            index of the curve point that should be returned
-	 * @return a single curve point at index i
-	 * @throws IndexOutOfBoundsException
-	 */
-	public Vec3f getCurvePoint(int i) throws IndexOutOfBoundsException {
-		return this.curvePoints.get(i);
 	}
 
 	/**
@@ -296,7 +225,7 @@ public class NURBSCurve {
 	 *            The degree of the spline
 	 * @return The knots vector with (numberOfControlPoints + degree + 1) elements
 	 */
-	protected float[] generateKnotsVector(int numberOfControlPoints, int degree) {
+	private static float[] generateKnotsVector(int numberOfControlPoints, int degree) {
 
 		int n = numberOfControlPoints + degree + 1;
 

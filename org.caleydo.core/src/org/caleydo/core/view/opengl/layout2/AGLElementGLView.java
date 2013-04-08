@@ -43,15 +43,13 @@ public abstract class AGLElementGLView extends AGLView implements IGLElementCont
 	protected final EventListenerManager eventListeners = EventListenerManagers.wrap(this);
 
 	private WindowGLElement root;
-	private DisplayListPool pool;
-	private IResourceLocator locator;
+	private GLContextLocal local;
 
 	/**
 	 * do we need to perform a layout
 	 */
 	protected boolean isLayoutDirty = true;
 
-	private final TimeDelta timeDelta = new TimeDelta();
 
 	public AGLElementGLView(IGLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum, String viewType,
 			String viewName) {
@@ -74,9 +72,10 @@ public abstract class AGLElementGLView extends AGLView implements IGLElementCont
 
 	@Override
 	public void init(GL2 gl) {
+		IResourceLocator locator = createLocator();
+		this.local = new GLContextLocal(this.getTextRenderer(), this.getTextureManager(), locator);
+
 		this.root = new WindowGLElement(createRoot());
-		this.locator = createLocator();
-		this.pool = new DisplayListPool();
 
 		this.root.setParent(this);
 		this.root.init(this);
@@ -123,15 +122,15 @@ public abstract class AGLElementGLView extends AGLView implements IGLElementCont
 			isLayoutDirty = false;
 		}
 
-		final boolean isPickingRun = isPickingRun(gl);
+		final boolean isPickingRun = GLGraphics.isPickingPass(gl);
 		int deltaTimeMs = 0;
 		if (!isPickingRun) {
-			deltaTimeMs = timeDelta.getDeltaTimeMs();
+			deltaTimeMs = local.getDeltaTimeMs();
 		}
-		GLGraphics g = new GLGraphics(gl, this.getTextRenderer(), this.getTextureManager(), locator, true, deltaTimeMs);
+		GLGraphics g = new GLGraphics(gl, local, true, deltaTimeMs);
 		g.checkError("pre render");
 
-		if (isPickingRun(gl)) {
+		if (isPickingRun) {
 			// 1. pick passes
 			root.renderPick(g);
 		} else {
@@ -141,7 +140,6 @@ public abstract class AGLElementGLView extends AGLView implements IGLElementCont
 			root.render(g);
 		}
 		g.checkError("post render");
-		g.destroy();
 
 		checkForHits(gl);
 		processEvents();
@@ -156,18 +154,6 @@ public abstract class AGLElementGLView extends AGLView implements IGLElementCont
 		viewFrustum.setTop(height); // still wrong but with the right dimensions, see #display(GL2 gl)
 		viewFrustum.setBottom(0);
 		relayout();
-	}
-
-	/**
-	 * are we rendering or do picking
-	 *
-	 * @param gl
-	 * @return
-	 */
-	private static boolean isPickingRun(GL2 gl) {
-		int[] r = new int[1];
-		gl.glGetIntegerv(GL2.GL_RENDER_MODE, r, 0);
-		return r[0] == GL2.GL_SELECT;
 	}
 
 	@Override
@@ -189,7 +175,7 @@ public abstract class AGLElementGLView extends AGLView implements IGLElementCont
 	@Override
 	protected void destroyViewSpecificContent(GL2 gl) {
 		this.root.takeDown();
-		this.pool.deleteAll(gl);
+		local.destroy(gl);
 	}
 
 	@Override
@@ -279,7 +265,7 @@ public abstract class AGLElementGLView extends AGLView implements IGLElementCont
 
 	@Override
 	public final DisplayListPool getDisplayListPool() {
-		return pool;
+		return local.getPool();
 	}
 
 	@Override

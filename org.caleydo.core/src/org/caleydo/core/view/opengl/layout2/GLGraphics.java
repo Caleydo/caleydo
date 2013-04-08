@@ -16,8 +16,8 @@ import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.layout2.renderer.RoundedRectRenderer;
 import org.caleydo.core.view.opengl.util.GLPrimitives;
+import org.caleydo.core.view.opengl.util.spline.ITesselatedPolygon;
 import org.caleydo.core.view.opengl.util.text.ITextRenderer;
-import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.data.loader.ResourceLocators.IResourceLocator;
 import org.caleydo.data.loader.StackedResourceLocator;
@@ -39,8 +39,6 @@ public class GLGraphics {
 
 	public final ITextRenderer text;
 
-	public final TextureManager textures;
-
 	/**
 	 * indicator whether the origin is in the top left or in the bottom left corner
 	 */
@@ -55,8 +53,6 @@ public class GLGraphics {
 	 */
 	private final StackedResourceLocator locator = new StackedResourceLocator();
 
-	private GLU glu = null; // lazy
-
 	/**
 	 * simple statistics
 	 */
@@ -67,15 +63,19 @@ public class GLGraphics {
 	 */
 	private final int deltaTimeMs;
 
+	/**
+	 * gl context locals for once per context
+	 */
+	private final GLContextLocal local;
 
-	public GLGraphics(GL2 gl, ITextRenderer text, TextureManager textures, IResourceLocator loader,
-			boolean originInTopLeft, int deltaTimeMs) {
+
+	public GLGraphics(GL2 gl, GLContextLocal local, boolean originInTopLeft, int deltaTimeMs) {
 		this.gl = gl;
-		this.text = text;
+		this.local = local;
+		this.text = local.getText();
 		this.deltaTimeMs = deltaTimeMs;
 		text.setColor(Color.BLACK);
-		this.locator.push(loader);
-		this.textures = textures;
+		this.locator.push(local.getLoader());
 		this.originInTopLeft = originInTopLeft;
 	}
 
@@ -91,13 +91,6 @@ public class GLGraphics {
 	 */
 	GLGraphicsStats getStats() {
 		return stats;
-	}
-
-	/**
-	 * @return the text, see {@link #text}
-	 */
-	public ITextRenderer getText() {
-		return text;
 	}
 
 	/**
@@ -175,6 +168,10 @@ public class GLGraphics {
 	 * @return
 	 */
 	public boolean isPickingPass() {
+		return isPickingPass(gl);
+	}
+
+	public static boolean isPickingPass(GL2 gl) {
 		int[] r = new int[1];
 		gl.glGetIntegerv(GL2.GL_RENDER_MODE, r, 0);
 		return r[0] == GL2.GL_SELECT;
@@ -343,7 +340,7 @@ public class GLGraphics {
 	}
 
 	public Texture getTexture(String texture) {
-		return textures.get(texture, new ResourceLoader(locator));
+		return local.getTextures().get(texture, new ResourceLoader(locator));
 	}
 
 	/**
@@ -370,10 +367,12 @@ public class GLGraphics {
 				color.getBlue(), color.getAlpha());
 
 		if (originInTopLeft)
-			textures.renderTexture(gl, texture, upperLeftCorner, upperRightCorner, lowerRightCorner, lowerLeftCorner,
+			local.getTextures().renderTexture(gl, texture, upperLeftCorner, upperRightCorner, lowerRightCorner,
+					lowerLeftCorner,
 					tmp.r, tmp.g, tmp.b, tmp.a);
 		else
-			textures.renderTexture(gl, texture, lowerLeftCorner, lowerRightCorner, upperRightCorner, upperLeftCorner,
+			local.getTextures().renderTexture(gl, texture, lowerLeftCorner, lowerRightCorner, upperRightCorner,
+					upperLeftCorner,
 					tmp.r, tmp.g, tmp.b, tmp.a);
 		return this;
 	}
@@ -386,11 +385,14 @@ public class GLGraphics {
 		return render(GL2.GL_POLYGON, points);
 	}
 
+	public GLGraphics fillPolygon(ITesselatedPolygon polygon) {
+		stats.incPath(polygon.size());
+		polygon.fill(this, local.getTesselationRenderer());
+		return this;
+	}
+
 	public GLU glu() {
-		if (this.glu != null)
-			return this.glu;
-		this.glu = new GLU();
-		return this.glu;
+		return local.getGlu();
 	}
 
 	public GLGraphics fillCircle(float x, float y, float radius) {
@@ -536,6 +538,12 @@ public class GLGraphics {
 		return render(closed ? GL.GL_LINE_LOOP : GL.GL_LINE_STRIP, Arrays.asList(points));
 	}
 
+	public GLGraphics drawPath(ITesselatedPolygon polygon) {
+		stats.incPath(polygon.size());
+		polygon.draw(this);
+		return this;
+	}
+
 	private GLGraphics render(int mode, Iterable<Vec2f> points) {
 		int count = 0;
 		gl.glBegin(mode);
@@ -642,15 +650,5 @@ public class GLGraphics {
 
 	public interface IRenderProcedure {
 		public void render(GLGraphics g);
-	}
-
-	/**
-	 *
-	 */
-	void destroy() {
-		if (this.glu != null) {
-			this.glu.destroy();
-			this.glu = null;
-		}
 	}
 }
