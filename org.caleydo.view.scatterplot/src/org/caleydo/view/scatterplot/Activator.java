@@ -22,36 +22,44 @@ package org.caleydo.view.scatterplot;
 import java.util.ArrayList;
 
 import org.caleydo.core.data.datadomain.DataDomainManager;
-import org.eclipse.core.runtime.Plugin;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
 /**
  * The activator class controls the plug-in life cycle
  */
-public class Activator extends Plugin {
+public class Activator extends AbstractUIPlugin {
+
+	// The plug-in ID
+	public static final String PLUGIN_ID = "org.caleydo.view.scatterplot"; //$NON-NLS-1$
 
 	// The shared instance
 	private static Activator plugin;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.core.runtime.Plugins#start(org.osgi.framework.BundleContext)
+	/**
+	 * The constructor
 	 */
-	@Override
-	public void start(BundleContext context) throws Exception {
-		super.start(context);
-		plugin = this;
-
-		registerDataDomains();
+	public Activator() {
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
+	 *
+	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
+	 */
+	@Override
+	public void start(BundleContext context) throws Exception {
+		super.start(context);
+
+		registerDataDomains();
+
+		plugin = this;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
 	 */
 	@Override
 	public void stop(BundleContext context) throws Exception {
@@ -61,7 +69,7 @@ public class Activator extends Plugin {
 
 	/**
 	 * Returns the shared instance
-	 * 
+	 *
 	 * @return the shared instance
 	 */
 	public static Activator getDefault() {
@@ -70,15 +78,12 @@ public class Activator extends Plugin {
 
 	private void registerDataDomains() {
 		ArrayList<String> dataDomainTypes = new ArrayList<String>();
-
-		// TODO: ADD THE POSSIBLE DATA DOMAINS FOR THIS VIEW
-		// For example:
 		dataDomainTypes.add("org.caleydo.datadomain.genetic");
+		dataDomainTypes.add("org.caleydo.datadomain.generic");
 
-		DataDomainManager
-				.get()
-				.getAssociationManager()
-				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
-						GLScatterplot.VIEW_TYPE);
+		DataDomainManager.get().getAssociationManager()
+				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes, GLScatterplot.VIEW_TYPE);
 	}
+
+	
 }
