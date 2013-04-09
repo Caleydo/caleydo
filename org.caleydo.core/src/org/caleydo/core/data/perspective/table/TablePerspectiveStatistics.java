@@ -79,6 +79,18 @@ public class TablePerspectiveStatistics {
 
 	/** Same as {@link #averageRecords} for dimensions */
 	private ArrayList<Average> averageDimensions;
+	
+	
+	/**
+	 * A list of statistics computed over the data records using all the dimensions 
+	 */
+	private StatContainer statsRecordsFull;
+	
+	
+	/**
+	 * A list of statistics computed over the data dimensions using all the records
+	 */
+	private StatContainer statsDimensionsFull;
 
 	public TablePerspectiveStatistics(TablePerspective referenceTablePerspective) {
 		this.referenceTablePerspective = referenceTablePerspective;
@@ -393,4 +405,48 @@ public class TablePerspectiveStatistics {
 
 		return averageDimension;
 	}
+	
+	public static StatContainer computeStats(boolean isFull)
+	{
+		StatContainer resultStatContainer = new StatContainer();
+		return resultStatContainer;
+	}
+
+	/**
+	 * @return the statsRecordsFull
+	 */
+	public StatContainer getStatsRecordsFull() {
+		if (statsRecordsFull == null)
+		{
+			statsRecordsFull = StatisticsUtils.computeFullStatContainer();
+		}
+		return statsRecordsFull;
+	}
+
+	/**
+	 * @param statsRecordsFull the statsRecordsFull to set
+	 */
+	public void setStatsRecordsFull(StatContainer statsRecordsFull) {
+		this.statsRecordsFull = statsRecordsFull;
+	}
+
+	/**
+	 * @return the statsDimensionsFull
+	 */
+	public StatContainer getStatsDimensionsFull() {
+		if (statsDimensionsFull == null)
+		{
+			statsDimensionsFull = StatisticsUtils.computeFullStatContainer();
+		}
+		return statsDimensionsFull;
+	}
+
+	/**
+	 * @param statsDimensionsFull the statsDimensionsFull to set
+	 */
+	public void setStatsDimensionsFull(StatContainer statsDimensionsFull) {
+		this.statsDimensionsFull = statsDimensionsFull;
+	}
+	
+	
 }
