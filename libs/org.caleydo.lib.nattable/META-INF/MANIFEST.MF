@@ -140,5 +140,5 @@ Export-Package: org.eclipse.nebula.widgets.nattable,
 Require-Bundle: org.apache.commons.lang;bundle-version="2.6.0",
  org.apache.commons.logging;bundle-version="1.0.4",
  org.eclipse.swt;bundle-version="3.100.1",
- org.eclipse.jface;bundle-version="3.8.102",
+ org.eclipse.jface;bundle-version="3.8.101",
  org.eclipse.e4.core.commands;bundle-version="0.10.1"
