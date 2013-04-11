@@ -23,12 +23,13 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
 import org.caleydo.core.view.ARcpGLViewPart;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.eclipse.swt.widgets.Composite;
 
 /**
  * TODO: DOCUMENT ME!
  *
- * @author <INSERT_YOUR_NAME>
+ * @author CagatayTurkay
  */
 public class RcpGLScatterplotView extends ARcpGLViewPart {
 
@@ -51,6 +52,7 @@ public class RcpGLScatterplotView extends ARcpGLViewPart {
 
 		view = new GLScatterplot(glCanvas, parentComposite, serializedView.getViewFrustum());
 		initializeView();
+		minSizeComposite.setView((AGLView) view);
 		createPartControlGL();
 	}
 

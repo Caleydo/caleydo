@@ -20,10 +20,12 @@
 package org.caleydo.view.scatterplot;
 
 /**
- * @author Alexander Lex
+ * @author Cagatay Turkay
  * 
  */
 public enum EPickingType {
-	TEMPLATE
+	MOUSE_DOWN,
+	MOUSE_DRAG,
+	MOUSE_RELEASE
 
 }

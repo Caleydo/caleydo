@@ -84,15 +84,15 @@ public class ScatterplotRenderer extends ALayoutRenderer implements ISingleTable
 	public ScatterplotRenderer(AGLView view, Row baseRow) {
 		this.view = view;
 		this.baseRow = baseRow;
-		el1 = ElementLayouts.createButton(view, new Button(EPickingType.TEMPLATE.name(), 1, EIconTextures.ARROW_UP));
-		baseRow.add(el1);
-
-		spacing = ElementLayouts.createXSpacer(100);
-		baseRow.add(spacing);
-
-		el2 = ElementLayouts.createButton(view, new Button("TATA", 1, EIconTextures.BROWSER_HOME_IMAGE));
-
-		baseRow.add(el2);
+//		el1 = ElementLayouts.createButton(view, new Button(EPickingType.TEMPLATE.name(), 1, EIconTextures.ARROW_UP));
+//		baseRow.add(el1);
+//
+//		spacing = ElementLayouts.createXSpacer(100);
+//		baseRow.add(spacing);
+//
+//		el2 = ElementLayouts.createButton(view, new Button("TATA", 1, EIconTextures.BROWSER_HOME_IMAGE));
+//
+//		baseRow.add(el2);
 
 		initialize();
 	}
@@ -103,7 +103,7 @@ public class ScatterplotRenderer extends ALayoutRenderer implements ISingleTable
 		// An id you use to identify which object to render
 		int objectID = 1;
 		// this is how you get the picking id
-		int pickingID = view.getPickingManager().getPickingID(view.getID(), EPickingType.TEMPLATE.name(), objectID);
+		//int pickingID = view.getPickingManager().getPickingID(view.getID(), EPickingType.TEMPLATE.name(), objectID);
 
 		// here you push the id to OpenGL's picking system
 		// gl.glPushName(pickingID);
@@ -136,47 +136,47 @@ public class ScatterplotRenderer extends ALayoutRenderer implements ISingleTable
 	@Override
 	public void initialize() {
 		// this is how you handle picking
-		view.addTypePickingListener(new APickingListener() {
-			@Override
-			public void clicked(Pick pick) {
-				layoutManager.recordPreTransitionState();
-				baseRow.clear();
-				baseRow.add(el2);
-				baseRow.add(spacing);
-				el1.setPixelSizeX(40);
-				el1.setPixelSizeY(40);
-				baseRow.add(el1);
-				layoutManager.updateLayout();
-				layoutManager.recordPostTranslationState();
-
-				System.out.println("Registered pick");
-			}
-		}, EPickingType.TEMPLATE.name());
-
-		view.addTypePickingListener(new APickingListener() {
-			@Override
-			public void clicked(Pick pick) {
-				layoutManager.recordPreTransitionState();
-				baseRow.clear();
-
-				el3 = ElementLayouts.createButton(view, new Button("TATA", 1, EIconTextures.BROWSER_REFRESH_IMAGE));
-				el3.setPixelSizeX(50);
-				el3.setPixelSizeY(50);
-
-				el1.setPixelSizeX(16);
-				el1.setPixelSizeY(16);
-				baseRow.add(el1);
-				baseRow.add(spacing);
-				baseRow.add(el2);
-				baseRow.add(spacing);
-				baseRow.add(el3);
-
-				layoutManager.updateLayout();
-				layoutManager.recordPostTranslationState();
-
-				System.out.println("Registered pick");
-			}
-		}, "TATA");
+//		view.addTypePickingListener(new APickingListener() {
+//			@Override
+//			public void clicked(Pick pick) {
+//				layoutManager.recordPreTransitionState();
+//				baseRow.clear();
+//				baseRow.add(el2);
+//				baseRow.add(spacing);
+//				el1.setPixelSizeX(40);
+//				el1.setPixelSizeY(40);
+//				baseRow.add(el1);
+//				layoutManager.updateLayout();
+//				layoutManager.recordPostTranslationState();
+//
+//				System.out.println("Registered pick");
+//			}
+//		}, EPickingType.TEMPLATE.name());
+//
+//		view.addTypePickingListener(new APickingListener() {
+//			@Override
+//			public void clicked(Pick pick) {
+//				layoutManager.recordPreTransitionState();
+//				baseRow.clear();
+//
+//				el3 = ElementLayouts.createButton(view, new Button("TATA", 1, EIconTextures.BROWSER_REFRESH_IMAGE));
+//				el3.setPixelSizeX(50);
+//				el3.setPixelSizeY(50);
+//
+//				el1.setPixelSizeX(16);
+//				el1.setPixelSizeY(16);
+//				baseRow.add(el1);
+//				baseRow.add(spacing);
+//				baseRow.add(el2);
+//				baseRow.add(spacing);
+//				baseRow.add(el3);
+//
+//				layoutManager.updateLayout();
+//				layoutManager.recordPostTranslationState();
+//
+//				System.out.println("Registered pick");
+//			}
+//		}, "TATA");
 
 	}
 

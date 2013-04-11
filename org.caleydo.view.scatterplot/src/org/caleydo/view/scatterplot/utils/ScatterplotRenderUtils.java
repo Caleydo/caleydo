@@ -28,6 +28,8 @@ public class ScatterplotRenderUtils {
 	private static float yScale;
 	private static float sideSpacing;
 	
+	private static float xRange;
+	private static float yRange;
 	
 	
 	public static void render(GL2 gl, GLScatterplot view)
@@ -54,13 +56,13 @@ public class ScatterplotRenderUtils {
 		yMin =  Collections.min(view.getDataColumns().get(1));
 		float yMax =  Collections.max(view.getDataColumns().get(1));
 		
-		float xRange = xMax - xMin;
-		float yRange = yMax - yMin;
+		xRange = xMax - xMin;
+		yRange = yMax - yMin;
 		
 		sideSpacing = view.getPixelGLConverter().getGLWidthForPixelWidth(ScatterplotRenderStyle.SIDE_SPACING);
 		
-		xScale = (width - (2.0f * sideSpacing)) / xRange;
-		yScale = (height - (2.0f * sideSpacing)) / yRange;
+		xScale = (width - (2.0f * sideSpacing));
+		yScale = (height - (2.0f * sideSpacing));
 	}
 	
 	private static void renderHighDetail(GL2 gl, GLScatterplot view)
@@ -86,7 +88,7 @@ public class ScatterplotRenderUtils {
 			int recordID = view.getTablePerspective().getRecordPerspective().getVirtualArray().get(i);
 			if(!view.getSelectionManager().checkStatus(SelectionType.DESELECTED, recordID))
 			{
-		        gl.glVertex3f(view.getDataColumns().get(0).get(i) * xScale + sideSpacing, view.getDataColumns().get(1).get(i) * yScale + sideSpacing , 0);   
+		        gl.glVertex3f((view.getDataColumns().get(0).get(i) - xMin) / xRange * xScale + sideSpacing, (view.getDataColumns().get(1).get(i) - yMin) / yRange * yScale + sideSpacing , 0);   
 			}			
 		}
 		gl.glEnd();
@@ -101,7 +103,7 @@ public class ScatterplotRenderUtils {
 			int recordID = view.getTablePerspective().getRecordPerspective().getVirtualArray().get(i);
 			if(!view.getSelectionManager().checkStatus(SelectionType.DESELECTED, recordID))
 			{
-		        gl.glVertex3f(view.getDataColumns().get(0).get(i) * xScale + sideSpacing, view.getDataColumns().get(1).get(i) * yScale + sideSpacing , 0);		        
+				gl.glVertex3f((view.getDataColumns().get(0).get(i) - xMin) / xRange * xScale + sideSpacing, (view.getDataColumns().get(1).get(i) - yMin) / yRange * yScale + sideSpacing , 0);		        
 			}			
 		}
 		gl.glEnd();
@@ -114,7 +116,7 @@ public class ScatterplotRenderUtils {
 			int recordID = view.getTablePerspective().getRecordPerspective().getVirtualArray().get(i);
 			if(!view.getSelectionManager().checkStatus(SelectionType.DESELECTED, recordID))
 			{
-		        gl.glVertex3f(view.getDataColumns().get(0).get(i) * xScale + sideSpacing, view.getDataColumns().get(1).get(i) * yScale + sideSpacing , 0);		        
+				gl.glVertex3f((view.getDataColumns().get(0).get(i) - xMin) / xRange * xScale + sideSpacing, (view.getDataColumns().get(1).get(i) - yMin) / yRange * yScale + sideSpacing , 0);		        
 			}			
 		}
 		gl.glEnd();		
