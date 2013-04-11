@@ -108,7 +108,7 @@ public class GLSlider extends PickableGLElement {
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
-		float x = computeX(w);
+		float x = mapValue(w);
 		if (hovered || dragged)
 			g.color(Color.GRAY);
 		else
@@ -118,16 +118,24 @@ public class GLSlider extends PickableGLElement {
 		g.color(Color.BLACK).drawRect(0, 0, w, h);
 	}
 
-	private float computeX(float w) {
+	private float mapValue(float w) {
 		w -= BAR_WIDTH;
 		float range = max - min;
 		float factor = w / range;
 		return value * factor;
 	}
 
+	private float unmapValue(float x) {
+		float w = getSize().x();
+		w -= BAR_WIDTH;
+		float range = max - min;
+		float factor = w / range;
+		return Math.max(min, Math.min(max, x / factor));
+	}
+
 	@Override
 	protected void renderPickImpl(GLGraphics g, float w, float h) {
-		float x = computeX(w);
+		float x = mapValue(w);
 		g.fillRect(x, 0, Math.min(5, w - x), h);
 	}
 
@@ -161,9 +169,8 @@ public class GLSlider extends PickableGLElement {
 	protected void onDragged(Pick pick) {
 		if (!pick.isDoDragging())
 			return;
-		float dv = pick.getDx() / (getSize().x() - BAR_WIDTH);
-		setValue(value + dv);
-		repaint();
+		setValue(unmapValue(mapValue(getSize().x()) + pick.getDx()));
+		repaintAll();
 	}
 
 	@Override

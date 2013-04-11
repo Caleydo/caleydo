@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.layout2.basic;
 
+import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.core.view.opengl.picking.AdvancedPick;
@@ -214,4 +215,51 @@ public class GLButton extends AGLButton {
 
 		}
 	};
+
+	/**
+	 * creates an {@link IconLabelRenderer} with a checkbox icon
+	 *
+	 * @param label
+	 * @return
+	 */
+	public static IconLabelRenderer createCheckRenderer(String label) {
+		return new IconLabelRenderer(label, "checkbox");
+	}
+
+	/**
+	 * creates an {@link IconLabelRenderer} with a radio icon
+	 *
+	 * @param label
+	 * @return
+	 */
+	public static IconLabelRenderer createRadioRenderer(String label) {
+		return new IconLabelRenderer(label, "radio");
+	}
+
+	public static class IconLabelRenderer implements IGLRenderer {
+		private final String label;
+		private final String prefix;
+
+		private IconLabelRenderer(String label, String prefix) {
+			this.label = label;
+			this.prefix = prefix;
+		}
+
+		/**
+		 * @return the label, see {@link #label}
+		 */
+		public String getLabel() {
+			return label;
+		}
+
+		@Override
+		public void render(GLGraphics g, float w, float h, GLElement parent) {
+			boolean s = ((GLButton) parent).isSelected();
+
+			String icon = String.format("resources/icons/general/%s_%sselected.png", prefix, (s ? "" : "not_"));
+			g.fillImage(icon, 1, 1, h - 2, h - 2);
+			if (label != null && label.length() > 0)
+				g.drawText(label, h, 0, w - h, 13);
+		}
+	}
 }
