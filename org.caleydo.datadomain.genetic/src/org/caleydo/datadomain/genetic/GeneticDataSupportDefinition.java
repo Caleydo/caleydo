@@ -1,7 +1,7 @@
 package org.caleydo.datadomain.genetic;
 
+import org.caleydo.core.data.datadomain.ADataSupportDefinition;
 import org.caleydo.core.data.datadomain.IDataDomain;
-import org.caleydo.core.data.datadomain.IDataSupportDefinition;
 
 /**
  * Defines the {@link DataDomain}s supported by {@link GLEnRoutePathway}.
@@ -9,8 +9,7 @@ import org.caleydo.core.data.datadomain.IDataSupportDefinition;
  * @author Christian Partl
  *
  */
-public class GeneticDataSupportDefinition
-	implements IDataSupportDefinition {
+public class GeneticDataSupportDefinition extends ADataSupportDefinition {
 
 	public GeneticDataSupportDefinition() {
 	}

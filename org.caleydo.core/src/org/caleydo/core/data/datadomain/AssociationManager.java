@@ -45,10 +45,13 @@ public class AssociationManager {
 
 
 	public AssociationManager() {
-		for (IConfigurationElement elem : RegistryFactory.getRegistry().getConfigurationElementsFor(EXTENSION_POINT)) {
-			String viewID = elem.getAttribute("view");
-			for (IConfigurationElement child : elem.getChildren("dataDomain")) {
-				registerDatadomainTypeViewTypeAssociation(child.getAttribute("type"), viewID);
+		if (RegistryFactory.getRegistry() != null) {
+			for (IConfigurationElement elem : RegistryFactory.getRegistry()
+					.getConfigurationElementsFor(EXTENSION_POINT)) {
+				String viewID = elem.getAttribute("view");
+				for (IConfigurationElement child : elem.getChildren("dataDomain")) {
+					registerDatadomainTypeViewTypeAssociation(child.getAttribute("type"), viewID);
+				}
 			}
 		}
 	}

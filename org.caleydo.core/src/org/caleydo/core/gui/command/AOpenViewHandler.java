@@ -23,6 +23,7 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
+import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.handlers.HandlerUtil;
 
@@ -40,11 +41,27 @@ public abstract class AOpenViewHandler extends AbstractHandler implements IHandl
 	@Override
 	public final Object execute(ExecutionEvent event) throws ExecutionException {
 		try {
-			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().showView(view);
+			IWorkbenchPage activePage = HandlerUtil.getActiveWorkbenchWindow(event).getActivePage();
+			int secondary = getNextSecondaryId();
+			if (secondary >= 0) { // multipe ones
+				activePage.showView(view, Integer.toString(secondary), IWorkbenchPage.VIEW_ACTIVATE);
+			} else { // single one
+				activePage.showView(view);
+			}
+
 		} catch (PartInitException e) {
 			e.printStackTrace();
 		}
 
 		return null;
+	}
+
+	/**
+	 * override and return a secondary id to use for each newly created view to support multiple view instances
+	 * 
+	 * @return
+	 */
+	protected int getNextSecondaryId() {
+		return -1;
 	}
 }
