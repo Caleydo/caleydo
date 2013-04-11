@@ -26,9 +26,9 @@ import java.util.ArrayList;
  */
 public class StatisticsUtils {
 	
-	public enum StatisticsType {MEAN, MEDIAN, STAND_DEV, IQR, SKEWNESS, KURTOSIS};
 	
-	public static ArrayList<Double> computeStatistics(StatisticsType statToCompute)
+	
+	public static ArrayList<Double> computeStatistics(EStatisticsType statToCompute)
 	{
 		ArrayList<Double> result = new ArrayList<Double>();
 		
