@@ -22,30 +22,22 @@ package org.caleydo.view.table;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
-import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.serialize.ASerializedSingleTablePerspectiveBasedView;
-import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.CaleydoRCPViewPart;
-import org.caleydo.view.table.menu.SelectDataRepresentationAction;
 import org.eclipse.nebula.widgets.nattable.NatTable;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- * TODO: DOCUMENT ME!
+ * a simple eclipse view for presenting the raw values of a table using a {@link NatTable}
  *
  * @author <INSERT_YOUR_NAME>
  */
-public class RcpGLTableView extends CaleydoRCPViewPart {
-	public static final String VIEW_TYPE = "org.caleydo.view.table";
-	private DataProvider data;
-	private NatTable table;
+public class RcpTableView extends CaleydoRCPViewPart {
 
 	/**
 	 * Constructor.
 	 */
-	public RcpGLTableView() {
+	public RcpTableView() {
 		super();
 		try {
 			viewContext = JAXBContext.newInstance(SerializedTableView.class);
@@ -56,32 +48,26 @@ public class RcpGLTableView extends CaleydoRCPViewPart {
 
 	@Override
 	public void createPartControl(Composite parent) {
-		// super.createPartControl(parent);
+		super.createPartControl(parent);
 
-		ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) GeneralManager.getDataDomainManagerInstance()
-				.getDataDomainByID(((ASerializedSingleTablePerspectiveBasedView) serializedView).getDataDomainID());
+		view = new TableView(parentComposite);
 
-		TablePerspective tablePerspective = dataDomain
-				.getTablePerspective(((ASerializedSingleTablePerspectiveBasedView) serializedView)
-						.getTablePerspectiveKey());
-
-		Pair<NatTable, DataProvider> pair = NatTableBuilder.create(parent, tablePerspective);
-		this.table = pair.getFirst();
-		this.data = pair.getSecond();
+		initializeView();
+		GeneralManager.get().getViewManager().registerRCPView(this, view);
+		addToolBarContent();
 	}
 
-	/**
-	 * @param raw
-	 */
-	public void setDataRepresentation(boolean raw) {
-		this.data.setReturnRaw(raw);
-		table.refresh();
+	@Override
+	public void dispose() {
+		super.dispose();
+		((TableView) view).dispose();
+		GeneralManager.get().getViewManager().unregisterRCPView(this, view);
+		view = null;
 	}
 
 	@Override
 	public void addToolBarContent() {
-		toolBarManager.add(new SelectDataRepresentationAction(this, true));
-		toolBarManager.add(new SelectDataRepresentationAction(this, false));
+		toolBarManager.add(new TableSettingsAction((TableView) view));
 		super.addToolBarContent();
 	}
 
@@ -90,5 +76,4 @@ public class RcpGLTableView extends CaleydoRCPViewPart {
 		serializedView = new SerializedTableView();
 		determineDataConfiguration(serializedView);
 	}
-
 }

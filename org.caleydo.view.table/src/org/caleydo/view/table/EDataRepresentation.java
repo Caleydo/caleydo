@@ -17,32 +17,38 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.table.menu;
-
-import org.caleydo.view.table.RcpGLTableView;
-import org.eclipse.jface.action.Action;
+package org.caleydo.view.table;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class SelectDataRepresentationAction extends Action {
-	private final boolean raw;
-	private final RcpGLTableView view;
+public enum EDataRepresentation {
+	RAW, NORMALIZED;
 
-	public SelectDataRepresentationAction(RcpGLTableView view, boolean raw) {
-		super(raw ? "Raw Values" : "Normalized Values");
-		if (raw)
-			setToolTipText("Show the raw values of the table");
-		else
-			setToolTipText("Show the normalized values of the table");
-		this.raw = raw;
-		this.view = view;
+	/**
+	 * @return
+	 */
+	public String getLabel() {
+		switch (this) {
+		case RAW:
+			return "Raw Values";
+		case NORMALIZED:
+			return "Normalized Values";
+		}
+		throw new IllegalStateException();
 	}
 
-	@Override
-	public void run() {
-		view.setDataRepresentation(raw);
+	/**
+	 * @return
+	 */
+	public String getTooltip() {
+		switch (this) {
+		case RAW:
+			return "Show the raw values of the table";
+		case NORMALIZED:
+			return "Show the normalized values of the table";
+		}
+		throw new IllegalStateException();
 	}
-
 }

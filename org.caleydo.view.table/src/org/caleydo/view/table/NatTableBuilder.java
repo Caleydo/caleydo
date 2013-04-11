@@ -19,6 +19,8 @@
  *******************************************************************************/
 package org.caleydo.view.table;
 
+import java.text.NumberFormat;
+import java.util.Locale;
 import java.util.Set;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
@@ -29,9 +31,16 @@ import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IIDTypeMapper;
-import org.caleydo.core.util.collection.Pair;
 import org.eclipse.nebula.widgets.nattable.NatTable;
+import org.eclipse.nebula.widgets.nattable.config.CellConfigAttributes;
+import org.eclipse.nebula.widgets.nattable.config.DefaultNatTableStyleConfiguration;
+import org.eclipse.nebula.widgets.nattable.config.IConfigRegistry;
+import org.eclipse.nebula.widgets.nattable.config.IConfiguration;
 import org.eclipse.nebula.widgets.nattable.data.IDataProvider;
+import org.eclipse.nebula.widgets.nattable.data.convert.DisplayConverter;
+import org.eclipse.nebula.widgets.nattable.data.convert.IDisplayConverter;
+import org.eclipse.nebula.widgets.nattable.freeze.CompositeFreezeLayer;
+import org.eclipse.nebula.widgets.nattable.freeze.FreezeLayer;
 import org.eclipse.nebula.widgets.nattable.grid.data.DefaultCornerDataProvider;
 import org.eclipse.nebula.widgets.nattable.grid.layer.ColumnHeaderLayer;
 import org.eclipse.nebula.widgets.nattable.grid.layer.CornerLayer;
@@ -42,6 +51,7 @@ import org.eclipse.nebula.widgets.nattable.group.ColumnGroupHeaderLayer;
 import org.eclipse.nebula.widgets.nattable.group.ColumnGroupModel;
 import org.eclipse.nebula.widgets.nattable.group.RowGroupExpandCollapseLayer;
 import org.eclipse.nebula.widgets.nattable.group.RowGroupHeaderLayer;
+import org.eclipse.nebula.widgets.nattable.group.model.RowGroup;
 import org.eclipse.nebula.widgets.nattable.group.model.RowGroupModel;
 import org.eclipse.nebula.widgets.nattable.hideshow.ColumnHideShowLayer;
 import org.eclipse.nebula.widgets.nattable.hideshow.RowHideShowLayer;
@@ -50,11 +60,14 @@ import org.eclipse.nebula.widgets.nattable.layer.ILayer;
 import org.eclipse.nebula.widgets.nattable.layer.IUniqueIndexLayer;
 import org.eclipse.nebula.widgets.nattable.reorder.ColumnReorderLayer;
 import org.eclipse.nebula.widgets.nattable.selection.SelectionLayer;
+import org.eclipse.nebula.widgets.nattable.selection.config.DefaultSelectionStyleConfiguration;
+import org.eclipse.nebula.widgets.nattable.style.HorizontalAlignmentEnum;
+import org.eclipse.nebula.widgets.nattable.ui.binding.UiBindingRegistry;
 import org.eclipse.nebula.widgets.nattable.viewport.ViewportLayer;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- * TODO
+ * builder pattern for creating a {@link NatTable} for a given {@link TablePerspective}
  *
  * @author Marc Streit
  *
@@ -68,16 +81,17 @@ public class NatTableBuilder {
 		this.tablePerspective = tablePerspective;
 	}
 
-	public static Pair<NatTable, DataProvider> create(Composite parent, TablePerspective tablePerspective) {
+	public static NatTableSettings create(Composite parent, TablePerspective tablePerspective) {
 		return new NatTableBuilder(parent, tablePerspective).build();
 	}
 
-	public Pair<NatTable, DataProvider> build() {
+	public NatTableSettings build() {
 
 		final GroupList dimensionGroups = tablePerspective.getDimensionPerspective().getVirtualArray().getGroupList();
 		final boolean hasDimensionGroups = dimensionGroups != null && dimensionGroups.size() > 1;
-		final GroupList recordGroups = tablePerspective.getRecordPerspective().getVirtualArray().getGroupList();
-		final boolean hasRecordGroups = false; // recordGroups != null && recordGroups.size() > 1;
+		final VirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
+		final GroupList recordGroups = recordVA.getGroupList();
+		final boolean hasRecordGroups = recordGroups != null && recordGroups.size() > 1;
 
 		IUniqueIndexLayer bodyLayer;
 
@@ -94,22 +108,23 @@ public class NatTableBuilder {
 
 		bodyLayer = new RowHideShowLayer(bodyLayer);
 
-		RowGroupModel rowGroupModel = null;
-		if (hasRecordGroups) {
-			rowGroupModel = new RowGroupModel();
-			// FIXME
-			// rowGroupModel.setDataProvider(bodyDataProvider);
-			bodyLayer = new RowGroupExpandCollapseLayer(bodyLayer, rowGroupModel);
+		RowGroupModel<Integer> rowGroupModel = null;
+		if (hasRecordGroups && recordGroups != null) {
+			rowGroupModel = new RowGroupModel<Integer>();
+			rowGroupModel.setDataProvider(data);
+			bodyLayer = new RowGroupExpandCollapseLayer<>(bodyLayer, rowGroupModel);
 		}
 
 		SelectionLayer selectionLayer = new SelectionLayer(bodyLayer);
-		ViewportLayer viewportLayer = new ViewportLayer(selectionLayer);
+		ViewportLayer viewportLayerBase = new ViewportLayer(selectionLayer);
+		final FreezeLayer freezeLayer = new FreezeLayer(selectionLayer);
+		ILayer viewportLayer = new CompositeFreezeLayer(freezeLayer, viewportLayerBase, selectionLayer);
 
 		IDataProvider colHeaderDataProvider = new TablePerspectiveHeaderDataProvider(tablePerspective, true);
 		DataLayer columnHeaderDataLayer = new DataLayer(colHeaderDataProvider);
 		ILayer columnHeaderLayer = new ColumnHeaderLayer(columnHeaderDataLayer, viewportLayer, selectionLayer);
 
-		if (hasDimensionGroups) {
+		if (hasDimensionGroups && dimensionGroups != null) {
 			ColumnGroupHeaderLayer columnGroupHeaderLayer = new ColumnGroupHeaderLayer(columnHeaderLayer,
 					selectionLayer, columnGroupModel);
 			columnHeaderLayer = columnGroupHeaderLayer;
@@ -129,19 +144,24 @@ public class NatTableBuilder {
 		rowHeaderDataLayer.setDefaultColumnWidth(100);
 		ILayer rowHeaderLayer = new RowHeaderLayer(rowHeaderDataLayer, viewportLayer, selectionLayer);
 
-		if (hasRecordGroups) {
-			RowGroupHeaderLayer rowGroupHeaderLayer = new RowGroupHeaderLayer(rowHeaderLayer, selectionLayer,
+		if (hasRecordGroups && recordGroups != null && rowGroupModel != null) {
+			RowGroupHeaderLayer<Integer> rowGroupHeaderLayer = new RowGroupHeaderLayer<>(rowHeaderLayer,
+					selectionLayer,
 					rowGroupModel);
 			rowGroupHeaderLayer.setColumnWidth(15);
 			rowHeaderLayer = rowGroupHeaderLayer;
-			// FIXME
 			// Create a group of rows for the model.
 			for (Group group : recordGroups) {
-				// RowGroup rowGroup = new RowGroup(rowGroupModel, group.getLabel(), false);
-				// rowGroup.add
-				// rowGroup.addMemberRow(bodyDataProvider.getRowObject(1));
-				// rowGroup.addStaticMemberRow(bodyDataProvider.getRowObject(2));
-				// rowGroupModel.addRowGroup(rowGroup);
+				RowGroup<Integer> rowGroup = new RowGroup<>(rowGroupModel, group.getLabel(), false);
+				for (Integer id : recordVA
+						.getIDsOfGroup(group.getGroupIndex())) {
+					rowGroup.addMemberRow(id);
+				}
+				int rep = (group.getRepresentativeElementIndex() >= 0) ? group.getRepresentativeElementIndex() : group
+						.getStartIndex();
+				Integer id = recordVA.get(rep);
+				rowGroup.addStaticMemberRow(id);
+				rowGroupModel.addRowGroup(rowGroup);
 			}
 		}
 
@@ -151,7 +171,11 @@ public class NatTableBuilder {
 
 		GridLayer gridLayer = new GridLayer(viewportLayer, columnHeaderLayer, rowHeaderLayer, cornerLayer);
 
-		NatTable natTable = new NatTable(parent, gridLayer, true);
+		final NatTable natTable = new NatTable(parent, gridLayer, false);
+		CustomDisplayConverter converter = new CustomDisplayConverter();
+		configureStyle(natTable, converter);
+
+		// natTable.getConfigRegistry().registerConfigAttribute(configAttribute, attributeValue)
 		// natTable.addConfiguration(new DefaultNatTableStyleConfiguration());
 		// natTable.addConfiguration(new HeaderMenuConfiguration(natTable) {
 		// @Override
@@ -159,31 +183,6 @@ public class NatTableBuilder {
 		// return super.createColumnHeaderMenu(natTable).withColumnChooserMenuItem();
 		// }
 		// });
-
-		// FIXME
-		// ISelectionProvider selectionProvider = new RowSelectionProvider(gridLayer.getBodyLayer().getSelectionLayer(),
-		// bodyDataProvider, false); // Provides rows where any cell in the row is selected
-		//
-		// selectionProvider.addSelectionChangedListener(new ISelectionChangedListener() {
-		//
-		// public void selectionChanged(SelectionChangedEvent event) {
-		// System.out.println("Selection changed:");
-		//
-		// IStructuredSelection selection = (IStructuredSelection) event.getSelection();
-		// @SuppressWarnings("rawtypes")
-		// Iterator it = selection.iterator();
-		// while (it.hasNext()) {
-		// System.out.println("  " + it.next());
-		// }
-		// }
-		//
-		// });
-		//
-		// // Programmatically select a few rows
-		// selectionProvider.setSelection(new StructuredSelection(new Person[] { homer, smithers, nelson }));
-		//
-		// // I changed my mind. Select a few other rows
-		// selectionProvider.setSelection(new StructuredSelection(new Person[] { bart, frink }));
 
 		// Column chooser
 		// DisplayColumnChooserCommandHandler columnChooserCommandHandler = new DisplayColumnChooserCommandHandler(
@@ -194,8 +193,35 @@ public class NatTableBuilder {
 
 		natTable.configure();
 
+		return new NatTableSettings(natTable, data, selectionLayer, converter);
+	}
 
-		return Pair.make(natTable, data);
+	protected void configureStyle(NatTable natTable, final IDisplayConverter converter) {
+		DefaultNatTableStyleConfiguration natTableConfiguration = new DefaultNatTableStyleConfiguration();
+		natTableConfiguration.hAlign = HorizontalAlignmentEnum.RIGHT;
+		natTable.addConfiguration(natTableConfiguration);
+
+		DefaultSelectionStyleConfiguration selectionStyle = new DefaultSelectionStyleConfiguration();
+		selectionStyle.selectionFont = natTableConfiguration.font;
+		natTable.addConfiguration(selectionStyle);
+
+		natTable.addConfiguration(new IConfiguration() {
+			@Override
+			public void configureUiBindings(UiBindingRegistry uiBindingRegistry) {
+
+			}
+
+			@Override
+			public void configureRegistry(IConfigRegistry configRegistry) {
+				configRegistry.registerConfigAttribute(CellConfigAttributes.DISPLAY_CONVERTER,
+ converter);
+			}
+
+			@Override
+			public void configureLayer(ILayer layer) {
+
+			}
+		});
 	}
 
 	static class TablePerspectiveHeaderDataProvider implements IDataProvider {
@@ -238,6 +264,44 @@ public class NatTableBuilder {
 			throw new UnsupportedOperationException();
 		}
 
+	}
+
+	public static class CustomDisplayConverter extends DisplayConverter {
+		private final NumberFormat formatter = NumberFormat.getNumberInstance(Locale.ENGLISH);
+		@Override
+		public Object canonicalToDisplayValue(Object sourceValue) {
+			if (sourceValue == null)
+				return "";
+			if (sourceValue instanceof Float) {
+				return formatter.format(sourceValue);
+			}
+			return sourceValue.toString();
+		}
+
+		@Override
+		public Object displayToCanonicalValue(Object destinationValue) {
+			if (destinationValue == null || destinationValue.toString().length() == 0) {
+				return null;
+			} else {
+				return destinationValue.toString();
+			}
+		}
+	}
+
+	public static class NatTableSettings {
+		public final NatTable natTable;
+		public final DataProvider dataProvider;
+		public final SelectionLayer selectionLayer;
+		public final CustomDisplayConverter converter;
+
+		public NatTableSettings(NatTable natTable, DataProvider dataProvider, SelectionLayer selectionLayer,
+				CustomDisplayConverter converter) {
+			super();
+			this.natTable = natTable;
+			this.dataProvider = dataProvider;
+			this.selectionLayer = selectionLayer;
+			this.converter = converter;
+		}
 	}
 }
 

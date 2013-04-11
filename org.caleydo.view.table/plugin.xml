@@ -6,7 +6,7 @@
       <view
             allowMultiple="true"
             category="org.caleydo.core.views"
-            class="org.caleydo.view.table.RcpGLTableView"
+            class="org.caleydo.view.table.RcpTableView"
             icon="resources/icons/icon.png"
             id="org.caleydo.view.table"
             name="Table">

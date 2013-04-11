@@ -20,10 +20,10 @@
 package org.caleydo.view.table;
 
 import org.caleydo.core.data.collection.table.Table;
-import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.eclipse.nebula.widgets.nattable.data.IDataProvider;
+import org.eclipse.nebula.widgets.nattable.data.IRowDataProvider;
 
 /**
  * {@link IDataProvider} for accessing the data of a {@link TablePerspective}
@@ -31,20 +31,28 @@ import org.eclipse.nebula.widgets.nattable.data.IDataProvider;
  * @author Marc Streit
  *
  */
-public class DataProvider implements IDataProvider {
+public class DataProvider implements IRowDataProvider<Integer> {
 	private final TablePerspective tablePerspective;
-	private boolean isReturnRaw = true;
+	private EDataRepresentation mode = EDataRepresentation.RAW;
 
 	public DataProvider(TablePerspective tablePerspective) {
 		this.tablePerspective = tablePerspective;
 	}
 
 	/**
-	 * @param isReturnRaw
-	 *            setter, see {@link isReturnRaw}
+	 * @param mode
 	 */
-	public void setReturnRaw(boolean isReturnRaw) {
-		this.isReturnRaw = isReturnRaw;
+	public void setDataRepresentation(EDataRepresentation mode) {
+		if (this.mode == mode)
+			return;
+		this.mode = mode;
+	}
+
+	/**
+	 * @return the mode, see {@link #mode}
+	 */
+	public EDataRepresentation getDataRepresentation() {
+		return mode;
 	}
 
 	@Override
@@ -62,10 +70,13 @@ public class DataProvider implements IDataProvider {
 		Integer dimensionID = dimensionVA.get(columnIndex);
 
 		Table table = tablePerspective.getDataDomain().getTable();
-		if (isReturnRaw)
+		switch (mode) {
+		case RAW:
 			return table.getRaw(dimensionID, recordID);
-		else
+		case NORMALIZED:
 			return table.getNormalizedValue(dimensionID, recordID);
+		}
+		return null;
 	}
 
 	@Override
@@ -78,12 +89,17 @@ public class DataProvider implements IDataProvider {
 		// not editing support
 	}
 
-	public String[] getColumnLabels() {
-		String[] columnLabels = new String[tablePerspective.getNrDimensions()];
-		ATableBasedDataDomain dataDomain = tablePerspective.getDataDomain();
-		VirtualArray arr = tablePerspective.getDimensionPerspective().getVirtualArray();
-		for (int i = 0; i < columnLabels.length; i++)
-			columnLabels[i] = dataDomain.getDimensionLabel(arr.get(i));
-		return columnLabels;
+	@Override
+	public Integer getRowObject(int rowIndex) {
+		return tablePerspective.getRecordPerspective().getVirtualArray().get(rowIndex);
+	}
+
+	public Integer getColumnObject(int columnIndex) {
+		return tablePerspective.getDimensionPerspective().getVirtualArray().get(columnIndex);
+	}
+
+	@Override
+	public int indexOfRowObject(Integer rowObject) {
+		return tablePerspective.getRecordPerspective().getVirtualArray().indexOf(rowObject);
 	}
 }

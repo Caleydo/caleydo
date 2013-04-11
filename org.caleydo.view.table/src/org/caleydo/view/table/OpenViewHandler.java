@@ -19,30 +19,20 @@
  *******************************************************************************/
 package org.caleydo.view.table;
 
-import org.eclipse.core.commands.AbstractHandler;
-import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.commands.IHandler;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.handlers.HandlerUtil;
+import org.caleydo.core.gui.command.AOpenViewHandler;
 
-public class OpenViewHandler extends AbstractHandler implements IHandler {
-
+public class OpenViewHandler extends AOpenViewHandler {
 	/**
 	 * Counter variable for determination of the secondary view ID. Needed for multiple instances of the same view type.
 	 */
 	private static int SECONDARY_ID = 0;
 
-	@Override
-	public Object execute(ExecutionEvent event) throws ExecutionException {
-		try {
-			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage()
-					.showView(RcpGLTableView.VIEW_TYPE, Integer.toString(SECONDARY_ID++), IWorkbenchPage.VIEW_ACTIVATE);
-		} catch (PartInitException e) {
-			e.printStackTrace();
-		}
+	public OpenViewHandler() {
+		super(TableView.VIEW_TYPE);
+	}
 
-		return null;
+	@Override
+	protected int getNextSecondaryId() {
+		return SECONDARY_ID++;
 	}
 }

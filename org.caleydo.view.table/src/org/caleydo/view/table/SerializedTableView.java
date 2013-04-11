@@ -23,6 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.serialize.ASerializedSingleTablePerspectiveBasedView;
+import org.caleydo.core.view.ISingleTablePerspectiveBasedView;
 
 /**
  * Serialized <INSERT VIEW NAME> view.
@@ -39,8 +40,12 @@ public class SerializedTableView extends ASerializedSingleTablePerspectiveBasedV
 	public SerializedTableView() {
 	}
 
+	public SerializedTableView(ISingleTablePerspectiveBasedView view) {
+		super(view);
+	}
+
 	@Override
 	public String getViewType() {
-		return RcpGLTableView.VIEW_TYPE;
+		return TableView.VIEW_TYPE;
 	}
 }

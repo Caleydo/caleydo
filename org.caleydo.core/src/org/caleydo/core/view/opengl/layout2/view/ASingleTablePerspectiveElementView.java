@@ -5,10 +5,12 @@ import gleem.linalg.Vec2f;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import javax.media.opengl.GLAutoDrawable;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventPublisher;
@@ -70,6 +72,13 @@ public abstract class ASingleTablePerspectiveElementView extends AGLElementView 
 		if (tablePerspective != null)
 			return tablePerspective.getDataDomain();
 		return null;
+	}
+
+	@Override
+	public Set<IDataDomain> getDataDomains() {
+		if (tablePerspective != null)
+			return Collections.singleton((IDataDomain) tablePerspective.getDataDomain());
+		return Collections.emptySet();
 	}
 
 	@Override
