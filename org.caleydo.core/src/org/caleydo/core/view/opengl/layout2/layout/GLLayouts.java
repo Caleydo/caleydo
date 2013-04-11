@@ -69,9 +69,19 @@ public class GLLayouts {
 	 * @return
 	 */
 	public static float defaultValue(float v, float d) {
-		if (v < 0 || Float.isNaN(v))
+		if (isDefault(v))
 			return d;
 		return v;
+	}
+
+	/**
+	 * checks whether the given value is a default layout value
+	 * 
+	 * @param v
+	 * @return
+	 */
+	public static boolean isDefault(float v) {
+		return v < 0 || Float.isNaN(v);
 	}
 
 	/**

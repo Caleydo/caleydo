@@ -19,7 +19,7 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.layout2.internal;
 
-import static org.caleydo.core.view.opengl.layout2.layout.GLLayouts.defaultValue;
+import static org.caleydo.core.view.opengl.layout2.layout.GLLayouts.isDefault;
 import gleem.linalg.Vec4f;
 
 import java.util.List;
@@ -48,8 +48,29 @@ public final class PopupLayer extends GLElementContainer implements IPopupLayer,
 	@Override
 	public void doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
 		for (IGLLayoutElement child : children) {
-			child.setBounds(defaultValue(child.getSetX(), 0), defaultValue(child.getSetY(), 0),
-					defaultValue(child.getSetWidth(), w), defaultValue(child.getSetHeight(), h));
+			float x = child.getSetX();
+			float y = child.getSetY();
+			float wc = child.getSetWidth();
+			float hc = child.getSetHeight();
+			if (isDefault(child.getSetX()) && isDefault(child.getSetWidth())) {
+				x = 0;
+				wc = w;
+			} else if (isDefault(child.getSetX())) {
+				x = w - wc;
+			} else if (isDefault(child.getSetWidth())) {
+				wc = w - wc;
+			}
+
+			if (isDefault(child.getSetY()) && isDefault(child.getSetHeight())) {
+				y = 0;
+				hc = h;
+			} else if (isDefault(child.getSetY())) {
+				y = h - hc;
+			} else if (isDefault(child.getSetHeight())) {
+				hc = h - hc;
+			}
+
+			child.setBounds(x, y, wc, hc);
 		}
 	}
 
