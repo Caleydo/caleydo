@@ -19,7 +19,8 @@
  *******************************************************************************/
 package org.caleydo.view.table;
 
-import java.text.NumberFormat;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 import java.util.Set;
 
@@ -267,9 +268,22 @@ public class NatTableBuilder {
 	}
 
 	public static class CustomDisplayConverter extends DisplayConverter {
-		private final NumberFormat formatter = NumberFormat.getNumberInstance(Locale.ENGLISH);
+		private final DecimalFormat formatter = new DecimalFormat("0.000",
+				DecimalFormatSymbols.getInstance(Locale.ENGLISH));
+
+		public CustomDisplayConverter() {
+			formatter.setMinimumFractionDigits(3);
+		}
+
+		public void changeMinFractionDigits(int delta) {
+			int value = Math.max(0, formatter.getMinimumFractionDigits() + delta);
+			formatter.setMinimumFractionDigits(value);
+			formatter.setMaximumFractionDigits(value);
+		}
+
 		@Override
 		public Object canonicalToDisplayValue(Object sourceValue) {
+
 			if (sourceValue == null)
 				return "";
 			if (sourceValue instanceof Float) {

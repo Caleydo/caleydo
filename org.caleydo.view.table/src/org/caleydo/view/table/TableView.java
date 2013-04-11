@@ -19,9 +19,13 @@
  *******************************************************************************/
 package org.caleydo.view.table;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.serialize.ASerializedView;
@@ -32,13 +36,17 @@ import org.eclipse.nebula.widgets.nattable.NatTable;
 import org.eclipse.nebula.widgets.nattable.coordinate.Range;
 import org.eclipse.nebula.widgets.nattable.layer.ILayerListener;
 import org.eclipse.nebula.widgets.nattable.layer.event.ILayerEvent;
+import org.eclipse.nebula.widgets.nattable.selection.ISelectionModel;
 import org.eclipse.nebula.widgets.nattable.selection.SelectionLayer;
 import org.eclipse.nebula.widgets.nattable.selection.event.CellSelectionEvent;
 import org.eclipse.nebula.widgets.nattable.selection.event.ColumnSelectionEvent;
 import org.eclipse.nebula.widgets.nattable.selection.event.RowSelectionEvent;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+
+import com.google.common.primitives.Ints;
 
 /**
  * @author Samuel Gratzl
@@ -59,8 +67,51 @@ public class TableView extends ASingleTablePerspectiveSWTView implements ILayerL
 
 	@Override
 	public void onSelectionUpdate(SelectionManager manager) {
-		Set<Integer> records = selection.getRecordSelectionManager().getElements(SelectionType.SELECTION);
-		Set<Integer> dimensions = selection.getDimensionSelectionManager().getElements(SelectionType.SELECTION);
+		if (selectionLayer == null)
+			return;
+
+		Collection<Integer> records = toIndices(tablePerspective.getRecordPerspective(),  selection.getRecordSelectionManager().getElements(SelectionType.SELECTION));
+		Collection<Integer> dimensions = toIndices(tablePerspective.getDimensionPerspective(),  selection.getDimensionSelectionManager().getElements(SelectionType.SELECTION));
+
+		ISelectionModel model = selectionLayer.getSelectionModel();
+		selectionLayer.removeLayerListener(this); // remove me to avoid that I get my updates
+		model.clearSelection();
+
+		if (records.isEmpty() && dimensions.isEmpty()) {
+			// nothing to be done
+		} else if (records.isEmpty()) { // just dimensions, select columns
+			for (Integer id : dimensions) {
+				model.addSelection(new Rectangle(id, 0, 1, Integer.MAX_VALUE));
+			}
+		} else if (dimensions.isEmpty()) { // just records, select rows
+			for (Integer id : records) {
+				model.addSelection(new Rectangle(0, id, Integer.MAX_VALUE, 1));
+			}
+		} else { // both select cells
+			// select all cells in the cross product
+			for (Integer row : records) {
+				for (Integer dim : dimensions) {
+					model.addSelection(dim, row);
+				}
+			}
+		}
+		selectionLayer.addLayerListener(this);
+	}
+
+	/**
+	 * @param dimensionPerspective
+	 * @param dimensions
+	 * @return
+	 */
+	private static Collection<Integer> toIndices(Perspective per, Set<Integer> ids) {
+		Collection<Integer> indices = new ArrayList<>(ids.size());
+		for (Integer id : ids) {
+			int index = per.getVirtualArray().indexOf(id);
+			if (index < 0)
+				continue;
+			indices.add(index);
+		}
+		return indices;
 	}
 
 	@Override
@@ -72,23 +123,38 @@ public class TableView extends ASingleTablePerspectiveSWTView implements ILayerL
 	// Default selection behavior selects cells by default.
 	@Override
 	public void handleLayerEvent(ILayerEvent event) {
-		if (event instanceof CellSelectionEvent) {
-			CellSelectionEvent cellEvent = (CellSelectionEvent) event;
-			int rowIndex = table.getRowIndexByPosition(cellEvent.getRowPosition());
-			int colIndex = table.getColumnIndexByPosition(cellEvent.getColumnPosition());
-
-		} else if (event instanceof RowSelectionEvent) {
-			RowSelectionEvent rowEvent = (RowSelectionEvent) event;
-			for (Range range : rowEvent.getRowPositionRanges()) {
-			}
-			// rowDataProvider.getRowObject(natTable.getRowIndexByPosition(selectedRowPosition));
-		} else if (event instanceof ColumnSelectionEvent) {
-			ColumnSelectionEvent columnEvent = (ColumnSelectionEvent) event;
-			for (Range range : columnEvent.getColumnPositionRanges()) {
-
+		if (event instanceof CellSelectionEvent || event instanceof RowSelectionEvent
+				|| event instanceof ColumnSelectionEvent) {
+			ISelectionModel model = selectionLayer.getSelectionModel();
+			Collection<Integer> columns = Ints.asList(model.getSelectedColumnPositions());
+			Collection<Integer> rows = new TreeSet<>();
+			for (Range r : model.getSelectedRowPositions())
+				rows.addAll(r.getMembers());
+			int columnCount = table.getColumnCount();
+			int rowCount = table.getRowCount();
+			boolean allColumnsSelected = columns.size() == columnCount;
+			boolean allRowsSelected = rows.size() == rowCount;
+			if (allColumnsSelected == allRowsSelected) { // select all or mixed
+				select(selection.getDimensionSelectionManager(), columns, false);
+				select(selection.getRecordSelectionManager(), rows, true);
+			} else if (allColumnsSelected) { // selected rows
+				select(selection.getRecordSelectionManager(), rows, true);
+			} else if (allRowsSelected) { // just columns
+				select(selection.getDimensionSelectionManager(), columns, false);
 			}
 		}
 	}
+
+	private void select(SelectionManager manager, Collection<Integer> positions, boolean row) {
+		manager.clearSelection(SelectionType.SELECTION);
+		for (Integer pos : positions) {
+			int index = row ? table.getRowIndexByPosition(pos) : table.getColumnIndexByPosition(pos);
+			int id = row ? data.getRowObject(index) : data.getColumnObject(index);
+			manager.addToType(SelectionType.SELECTION, id);
+		}
+		selection.fireSelectionDelta(manager.getIDType());
+	}
+
 	/**
 	 * @param raw
 	 */
@@ -109,7 +175,7 @@ public class TableView extends ASingleTablePerspectiveSWTView implements ILayerL
 	protected void onSetTablePerspective() {
 		super.onSetTablePerspective();
 		if (table != null) { // cleanup old
-			table.removeLayerListener(this);
+			selectionLayer.removeLayerListener(this);
 			this.table.dispose();
 			this.table = null;
 			this.data = null;
@@ -125,7 +191,9 @@ public class TableView extends ASingleTablePerspectiveSWTView implements ILayerL
 			this.selectionLayer = settings.selectionLayer;
 			this.converter = settings.converter;
 
-			table.addLayerListener(this);
+			onSelectionUpdate(null); // apply current selection
+
+			selectionLayer.addLayerListener(this);
 		}
 	}
 
@@ -144,5 +212,12 @@ public class TableView extends ASingleTablePerspectiveSWTView implements ILayerL
 	@Override
 	public String toString() {
 		return "Table";
+	}
+
+	public void changeFormattingPrecision(int delta) {
+		if (converter == null)
+			return;
+		converter.changeMinFractionDigits(delta);
+		table.refresh();
 	}
 }

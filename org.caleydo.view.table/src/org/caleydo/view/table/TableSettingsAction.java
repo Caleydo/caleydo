@@ -23,8 +23,10 @@ import org.caleydo.core.gui.SimpleAction;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IMenuCreator;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 
 /**
  * switch between
@@ -63,12 +65,19 @@ public class TableSettingsAction extends SimpleAction implements IMenuCreator {
 
 		// add different Data Representations
 		EDataRepresentation current = view.getDataRepresentation();
-		int i = 0;
+		int i = 1;
 		for (EDataRepresentation mode : EDataRepresentation.values()) {
 			Action action = new SelectAction(view, mode);
 			action.setChecked(mode == current);
-			addActionToMenu(menu, action, i++ + 1);
+			addActionToMenu(menu, action, i++);
 		}
+
+		@SuppressWarnings("unused")
+		MenuItem sep = new MenuItem(menu, SWT.SEPARATOR);
+
+		addActionToMenu(menu, new ChangePrecisionAction(view, true), i++);
+		addActionToMenu(menu, new ChangePrecisionAction(view, false), i++);
+
 		return menu;
 	}
 
@@ -100,6 +109,23 @@ public class TableSettingsAction extends SimpleAction implements IMenuCreator {
 		@Override
 		public void run() {
 			view.setDataRepresentation(mode);
+		}
+
+	}
+
+	private static class ChangePrecisionAction extends Action {
+		private final boolean increase;
+		private final TableView view;
+
+		public ChangePrecisionAction(TableView view, boolean increase) {
+			super(increase ? "Increase Precision" : "Decrease Precision");
+			this.increase = increase;
+			this.view = view;
+		}
+
+		@Override
+		public void run() {
+			view.changeFormattingPrecision(increase ? +1 : -1);
 		}
 
 	}
