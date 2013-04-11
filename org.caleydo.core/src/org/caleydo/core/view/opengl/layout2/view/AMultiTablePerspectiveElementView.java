@@ -19,20 +19,21 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.layout2.view;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
 import javax.media.opengl.GLAutoDrawable;
 
-import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.view.TablePerspectivesChangedEvent;
-import org.caleydo.core.view.ISingleTablePerspectiveBasedView;
+import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
 import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
 import org.caleydo.core.view.listener.RemoveTablePerspectiveEvent;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
@@ -45,11 +46,13 @@ import org.caleydo.core.view.opengl.layout2.GLElement;
  * @author Samuel Gratzl
  * 
  */
-public abstract class ASingleTablePerspectiveElementView extends AGLElementView implements
-		ISingleTablePerspectiveBasedView {
-	protected TablePerspective tablePerspective;
+public abstract class AMultiTablePerspectiveElementView extends AGLElementView implements
+		IMultiTablePerspectiveBasedView {
+	private static final List<TablePerspective> NONE = Collections.emptyList();
 
-	public ASingleTablePerspectiveElementView(IGLCanvas glCanvas, String viewType, String viewName) {
+	protected final List<TablePerspective> tablePerspectives = new ArrayList<>();
+
+	public AMultiTablePerspectiveElementView(IGLCanvas glCanvas, String viewType, String viewName) {
 		super(glCanvas, viewType, viewName);
 	}
 
@@ -57,10 +60,12 @@ public abstract class ASingleTablePerspectiveElementView extends AGLElementView 
 	public void init(GLAutoDrawable drawable) {
 		super.init(drawable);
 
-		applyTablePerspective(getRootDecorator(), tablePerspective);
+		applyTablePerspectives(getRootDecorator(), tablePerspectives, tablePerspectives, NONE);
 	}
 
-	protected abstract void applyTablePerspective(AGLElementDecorator root, TablePerspective tablePerspective);
+	protected abstract void applyTablePerspectives(AGLElementDecorator root, List<TablePerspective> all,
+			List<TablePerspective> added,
+			List<TablePerspective> removed);
 
 	@Override
 	protected final AGLElementDecorator createRoot() {
@@ -84,42 +89,49 @@ public abstract class ASingleTablePerspectiveElementView extends AGLElementView 
 	}
 
 	@Override
-	public final void setDataDomain(ATableBasedDataDomain dataDomain) {
-		// unused
+	public final Set<IDataDomain> getDataDomains() {
+		Set<IDataDomain> dd = new HashSet<>();
+		for (TablePerspective p : tablePerspectives)
+			dd.add(p.getDataDomain());
+		return dd;
 	}
 
 	@Override
-	public final ATableBasedDataDomain getDataDomain() {
-		if (tablePerspective != null)
-			return tablePerspective.getDataDomain();
-		return null;
+	public final void addTablePerspective(TablePerspective newTablePerspective) {
+		addTablePerspectives(Collections.singletonList(newTablePerspective));
 	}
 
 	@Override
-	public Set<IDataDomain> getDataDomains() {
-		if (tablePerspective != null)
-			return Collections.singleton((IDataDomain) tablePerspective.getDataDomain());
-		return Collections.emptySet();
+	public final void addTablePerspectives(List<TablePerspective> newTablePerspectives) {
+		this.tablePerspectives.addAll(newTablePerspectives);
+		updateTablePerspectives(newTablePerspectives, NONE);
 	}
 
 	@Override
-	public final void setTablePerspective(TablePerspective tablePerspective) {
-		this.tablePerspective = tablePerspective;
+	public final void removeTablePerspective(TablePerspective tablePerspective) {
+		boolean changed = false;
+		for (Iterator<TablePerspective> it = tablePerspectives.iterator(); it.hasNext();) {
+			if (it.next().equals(tablePerspective)) {
+				it.remove();
+				changed = true;
+			}
+		}
+
+		if (changed)
+			updateTablePerspectives(NONE, Collections.singletonList(tablePerspective));
+	}
+
+	private void updateTablePerspectives(List<TablePerspective> added, List<TablePerspective> removed) {
 		fireTablePerspectiveChanged();
 		AGLElementDecorator root = getRootDecorator();
 		if (root != null) {
-			applyTablePerspective(root, tablePerspective);
+			applyTablePerspectives(root, tablePerspectives, added, removed);
 		}
 	}
 
 	@Override
-	public final TablePerspective getTablePerspective() {
-		return tablePerspective;
-	}
-
-	@Override
 	public final List<TablePerspective> getTablePerspectives() {
-		return Collections.singletonList(getTablePerspective());
+		return Collections.unmodifiableList(tablePerspectives);
 	}
 
 	private void fireTablePerspectiveChanged() {
@@ -128,19 +140,18 @@ public abstract class ASingleTablePerspectiveElementView extends AGLElementView 
 
 	@ListenTo
 	private void onAddTablePerspective(AddTablePerspectivesEvent event) {
-		Collection<TablePerspective> validTablePerspectives = getDataSupportDefinition().filter(
+		List<TablePerspective> validTablePerspectives = getDataSupportDefinition().filter(
 				event.getTablePerspectives());
-		if (validTablePerspectives.isEmpty() || validTablePerspectives.size() > 1) {
+		if (validTablePerspectives.isEmpty()) {
 			// Make clear for (e.g. for DVI) that no perspectives have been added.
 			fireTablePerspectiveChanged();
 		} else {
-			setTablePerspective(validTablePerspectives.iterator().next());
+			addTablePerspectives(validTablePerspectives);
 		}
 	}
 
 	@ListenTo(sendToMe = true)
 	private void onRemoveTablePerspective(RemoveTablePerspectiveEvent event) {
-		if (tablePerspective == event.getTablePerspective())
-			setTablePerspective(null);
+		removeTablePerspective(event.getTablePerspective());
 	}
 }

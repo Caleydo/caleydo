@@ -54,6 +54,7 @@ public abstract class AGLElementDecorator extends GLElement implements IGLElemen
 			if (context != null)
 				this.content.init(context);
 		}
+		relayout();
 	}
 
 	/**
