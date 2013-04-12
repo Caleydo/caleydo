@@ -22,7 +22,17 @@ package org.caleydo.view.scatterplot;
 import org.caleydo.core.gui.command.AOpenViewHandler;
 
 public class OpenViewHandler extends AOpenViewHandler {
+	/**
+	 * Counter variable for determination of the secondary view ID. Needed for multiple instances of the same view type.
+	 */
+	private static int SECONDARY_ID = 0;
+
 	public OpenViewHandler() {
 		super(GLScatterplot.VIEW_TYPE);
+	}
+
+	@Override
+	protected int getNextSecondaryId() {
+		return SECONDARY_ID++;
 	}
 }

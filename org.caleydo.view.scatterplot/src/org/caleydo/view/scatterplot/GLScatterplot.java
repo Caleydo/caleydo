@@ -28,6 +28,7 @@ import org.caleydo.core.data.collection.table.NumericalTable;
 import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
+import org.caleydo.core.data.datadomain.DataSupportDefinitions;
 import org.caleydo.core.data.datadomain.IDataSupportDefinition;
 import org.caleydo.core.data.perspective.table.StatContainer;
 import org.caleydo.core.data.perspective.table.TablePerspective;
@@ -38,8 +39,11 @@ import org.caleydo.core.data.selection.events.ISelectionHandler;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.events.IDimensionVAUpdateHandler;
 import org.caleydo.core.data.virtualarray.events.IRecordVAUpdateHandler;
+import org.caleydo.core.event.AEvent;
+import org.caleydo.core.event.AEventListener;
 import org.caleydo.core.event.EventListenerManager;
 import org.caleydo.core.event.EventListenerManagers;
+import org.caleydo.core.event.IListenerOwner;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.serialize.ASerializedView;
@@ -56,6 +60,8 @@ import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.layout.Row;
+import org.caleydo.core.view.opengl.layout2.AGLElementDecorator;
+import org.caleydo.core.view.opengl.layout2.view.ASingleTablePerspectiveElementView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -91,269 +97,22 @@ import org.eclipse.swt.widgets.Shell;
  *
  * @author Marc Streit
  * @author Alexander Lex
+ * @author Cagatay Turkay
  */
 
-public class GLScatterplot extends AGLView implements ISingleTablePerspectiveBasedView, 
-IEventBasedSelectionManagerUser  {
+public class GLScatterplot extends ASingleTablePerspectiveElementView {
 
 	public static String VIEW_TYPE = "org.caleydo.view.scatterplot";
-
 	public static String VIEW_NAME = "Scatterplot";
-
-	//private LayoutManager layoutManager;
-
-	//private Row rendererLayout = new Row("Templaterenderer base layout");
-
-	//private ScatterplotRenderer templateRenderer = new ScatterplotRenderer(this, rendererLayout);
-
-	//private ScatterplotRenderStyle renderStyle;
 	
-	//private TablePerspective tablePerspective;
-	//private ATableBasedDataDomain dataDomain;
+	ScatterplotElement rootElement;
 	
 	
-	private ArrayList<ArrayList<Float>> dataColumns; 
-	
-	private TablePerspective tablePerspective;
-	
-	private ATableBasedDataDomain dataDomain;
-	
-	EventBasedSelectionManager selectionManager;
-	
-	private DataSelectionConfiguration dataSelectionConf;
-	
-		
-	private final EventListenerManager listeners = EventListenerManagers.wrap(this);
-	
-	/**
-	 * Flag to check whether data for the view is loaded
-	 * Data is loaded after proper selections are made in the initial {@link DataSelectionDialogue}
-	 */
-	private boolean areDataColumnsSet = false;
-	
-	
-
-	/**
-	 * Constructor.
-	 *
-	 * @param glCanvas
-	 * @param viewLabel
-	 * @param viewFrustum
-	 */
-	public GLScatterplot(IGLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
-
-		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
-		
-		dataColumns = new ArrayList<>();
-		
-		//TODO: Update according to whether the view is a dimension or item visualizations
-		// All these will go after the data selection dialogue
-		
-		List<GeneticDataDomain> dataDomains = DataDomainManager.get().getDataDomainsByType(GeneticDataDomain.class);
-		
-		
-		selectionManager = new EventBasedSelectionManager(this, dataDomains.get(0).getSampleIDType());
-		selectionManager.registerEventListeners();
-		
-		
+	public GLScatterplot(IGLCanvas glCanvas) {
+		super(glCanvas, VIEW_TYPE, VIEW_NAME);
 	}
 
-	/**
-	 * @return the dataColumns
-	 */
-	public ArrayList<ArrayList<Float>> getDataColumns() {
-		return dataColumns;
-	}
-
-	/**
-	 * @param dataColumns the dataColumns to set
-	 */
-	public void setDataColumns(ArrayList<ArrayList<Float>> dataColumns) {
-		this.dataColumns = dataColumns;
-	}
 	
-	/**
-	 * @return the selectionManager
-	 */
-	public EventBasedSelectionManager getSelectionManager() {
-		return selectionManager;
-	}
-
-	/**
-	 * @param selectionManager the selectionManager to set
-	 */
-	public void setSelectionManager(EventBasedSelectionManager selectionManager) {
-		this.selectionManager = selectionManager;
-	}
-
-	@Override
-	public void init(GL2 gl) {
-		displayListIndex = gl.glGenLists(1);
-		//renderStyle = new ScatterplotRenderStyle(viewFrustum);
-
-		//layoutManager = new LayoutManager(viewFrustum, pixelGLConverter);
-		//rendererLayout.addForeGroundRenderer(templateRenderer);
-		//layoutManager.setBaseElementLayout(rendererLayout);
-
-		//layoutManager.updateLayout();
-		detailLevel = EDetailLevel.HIGH;
-		
-		ShowDataSelectionDialogEvent dataSelectionEvent = new ShowDataSelectionDialogEvent(tablePerspective);
-		eventPublisher.triggerEvent(dataSelectionEvent);
-		
-		//this.prepareData();
-		//Get the statistics here depending on the type!
-		
-		//Just fill in random data for now
-		
-		
-	}
-	
-	@Override
-	public void initData() {
-		super.initData();
-	}
-	
-
-	@Override
-	public void initLocal(GL2 gl) {
-		init(gl);
-	}
-
-	@Override
-	public void initRemote(final GL2 gl, final AGLView glParentView, final GLMouseListener glMouseListener) {
-
-		// Register keyboard listener to GL2 canvas
-		glParentView.getParentComposite().getDisplay().asyncExec(new Runnable() {
-			@Override
-			public void run() {
-				glParentView.getParentComposite().addKeyListener(glKeyListener);
-			}
-		});
-
-		this.glMouseListener = glMouseListener;
-
-		init(gl);
-	}
-	
-	/**
-	 * Initializes the data columns
-	 */
-	public void prepareData(DataSelectionConfiguration dataSelectionConf)
-	{
-		if (tablePerspective != null & dataSelectionConf != null) {
-			if (tablePerspective.getDataDomain().getTable() instanceof NumericalTable) {
-				//StatContainer statisticsContext = tablePerspective.getContainerStatistics().getHistogram();
-				//statisticsFocus = 
-				
-				this.dataSelectionConf = dataSelectionConf;
-				
-				Table table = dataDomain.getTable();
-				
-				
-				ArrayList<Float> col1 = new ArrayList<Float>();
-				ArrayList<Float> col2 = new ArrayList<Float>();
-				
-				// Use the actual data in the visualizations
-				if (dataSelectionConf.getDataResourceType() == EDataGenerationType.RAW_DATA)
-				{
-					// It is an items space visualization, visual entities are records (rows, items)
-					// Get the data along the selected columns "dataSelectionConf.getAxisIDs()"
-					if (dataSelectionConf.getVisSpaceType() == EVisualizationSpaceType.ITEMS_SPACE)
-					{
-						VirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
-						for (Integer recordID : recordVA) {
-							col1.add( (float) table.getNormalizedValue(dataSelectionConf.getAxisIDs().get(0), recordID));
-							col2.add( (float) table.getNormalizedValue(dataSelectionConf.getAxisIDs().get(1), recordID));
-						}
-					}
-					// It is a dimension space visualization, visual entities are dimensions (columns)
-					// Get the data along the selected records (rows, items) "dataSelectionConf.getAxisIDs()"
-					else if (dataSelectionConf.getVisSpaceType() == EVisualizationSpaceType.DIMENSIONS_SPACE)
-					{
-						VirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
-						for (Integer dimensionID : dimensionVA) {
-							col1.add( (float) table.getNormalizedValue(dimensionID, dataSelectionConf.getAxisIDs().get(0)));
-							col2.add( (float) table.getNormalizedValue(dimensionID, dataSelectionConf.getAxisIDs().get(1)));
-						}
-					}
-				}
-				else if (dataSelectionConf.getDataResourceType() == EDataGenerationType.DERIVED_DATA)
-				{
-					//TODO: Perform statistics computations here
-				}
-				
-				dataColumns.add(col1);
-				dataColumns.add(col2);
-				this.areDataColumnsSet = true;
-			}
-
-		}
-	}
-
-	@Override
-	public void displayLocal(GL2 gl) {
-		pickingManager.handlePicking(this, gl);
-		display(gl);
-		if (busyState != EBusyState.OFF) {
-			renderBusyMode(gl);
-		}
-
-	}
-
-	@Override
-	public void displayRemote(GL2 gl) {
-		display(gl);
-	}
-
-	@Override
-	public void display(GL2 gl) {
-		
-		
-		//checkForHits(gl);
-		//layoutManager.render(gl);
-		
-		processEvents();
-
-		if (tablePerspective == null)
-			return;
-		
-		if (!areDataColumnsSet)
-			return;	
-
-		if (isDisplayListDirty) {
-			buildDisplayList(gl, displayListIndex);
-			isDisplayListDirty = false;
-		}
-
-		gl.glCallList(displayListIndex);
-		// numSentClearSelectionEvents = 0;
-
-		if (!lazyMode)
-			checkForHits(gl);
-		
-		
-	}
-	
-	private void buildDisplayList(final GL2 gl, int displayListIndex) {
-
-		if (hasFrustumChanged) {
-			hasFrustumChanged = false;
-		}
-		gl.glNewList(displayListIndex, GL2.GL_COMPILE);
-
-		/*if (tablePerspective.getNrRecords() == 0 || tablePerspective.getNrDimensions() == 0) {
-			renderSymbol(gl, EIconTextures.HEAT_MAP_SYMBOL.getFileName(), 2);
-		} else {
-			layoutManager.render(gl);
-			
-		}*/
-		
-		ScatterplotRenderUtils.render(gl, this);
-		//this.renderHistogram(gl);
-		gl.glEndList();
-	}
-
 	@Override
 	public ASerializedView getSerializableRepresentation() {
 		SerializedScatterplotView serializedForm = new SerializedScatterplotView();
@@ -365,88 +124,28 @@ IEventBasedSelectionManagerUser  {
 	public String toString() {
 		return "TODO: ADD INFO THAT APPEARS IN THE LOG";
 	}
-
-	@Override
-	public void registerEventListeners() {
-		super.registerEventListeners();
-		
-		//templateRenderer.registerEventListeners();
-		addTypePickingListener(new APickingListener() {
-
-			@Override
-			public void clicked(Pick pick) {
-				//bUpdateColorPointPosition = true;
-				//bIsFirstTimeUpdateColor = true;
-				//iColorMappingPointMoved = pick.getObjectID();
-				System.out.println("Clickeeddd!!!!!");
-				setDisplayListDirty();
-			}
-
-		}, EPickingType.MOUSE_DOWN.name());
-		
-		listeners.register(this);
-
-	}
-		
-	@Override
-	public void unregisterEventListeners() {
-		super.unregisterEventListeners();
-		
-		listeners.unregisterAll();
-		selectionManager.unregisterEventListeners();
-		
-
-	}
-
-	@Override
-	protected void destroyViewSpecificContent(GL2 gl) {
-		// TODO Auto-generated method stub
-
-	}
+	
+	
 
 	@Override
 	public IDataSupportDefinition getDataSupportDefinition() {
-		// TODO Auto-generated method stub
-		return null;
+		return DataSupportDefinitions.tableBased;
 	}
 
 	@Override
-	public void setDataDomain(ATableBasedDataDomain dataDomain) {
-		this.dataDomain = dataDomain;
-		isDisplayListDirty = true;
+	protected void applyTablePerspective(AGLElementDecorator root, TablePerspective tablePerspective) {
+		if (tablePerspective == null)
+			root.setContent(null);
+		else
+		{
+			rootElement = new ScatterplotElement(tablePerspective);
+			root.setContent(rootElement);
+		}
+			
 		
+		ShowDataSelectionDialogEvent dataSelectionEvent = new ShowDataSelectionDialogEvent(tablePerspective);
+		eventPublisher.triggerEvent(dataSelectionEvent);
 	}
-
-	@Override
-	public ATableBasedDataDomain getDataDomain() {
-		return dataDomain;
-	}
-
-	@Override
-	public void setTablePerspective(TablePerspective tablePerspective) {
-		this.tablePerspective = tablePerspective;
-		isDisplayListDirty = true;
-		
-	}
-
-	@Override
-	public TablePerspective getTablePerspective() {
-		return tablePerspective;
-	}
-
-	@Override
-	public List<TablePerspective> getTablePerspectives() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void notifyOfSelectionChange(
-			EventBasedSelectionManager selectionManager) {
-		// TODO Auto-generated method stub
-		
-	}
-	
 	
 	// View specific event handlers 
 	
@@ -462,29 +161,11 @@ IEventBasedSelectionManagerUser  {
 				dialog.setBlockOnOpen(true);
 
 				if (dialog.open() == IStatus.OK) {
-					prepareData(dialog.getDataSelectionConf());
-					setDisplayListDirty();
+					rootElement.prepareData(dialog.getDataSelectionConf());
 
 				}
 			}
 
 		});
 	}
-
-	/**
-	 * @return the dataSelectionConf
-	 */
-	public DataSelectionConfiguration getDataSelectionConf() {
-		return dataSelectionConf;
-	}
-
-	/**
-	 * @param dataSelectionConf the dataSelectionConf to set
-	 */
-	public void setDataSelectionConf(DataSelectionConfiguration dataSelectionConf) {
-		this.dataSelectionConf = dataSelectionConf;
-	}
-	
-	
-
 }

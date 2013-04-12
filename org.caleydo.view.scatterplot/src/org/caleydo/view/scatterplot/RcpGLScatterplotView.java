@@ -19,11 +19,7 @@
  *******************************************************************************/
 package org.caleydo.view.scatterplot;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-
 import org.caleydo.core.view.ARcpGLViewPart;
-import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -37,22 +33,15 @@ public class RcpGLScatterplotView extends ARcpGLViewPart {
 	 * Constructor.
 	 */
 	public RcpGLScatterplotView() {
-		super();
-
-		try {
-			viewContext = JAXBContext.newInstance(SerializedScatterplotView.class);
-		} catch (JAXBException ex) {
-			throw new RuntimeException("Could not create JAXBContext", ex);
-		}
+		super(SerializedScatterplotView.class);
 	}
 
 	@Override
-	public void createPartControl(Composite parent) {
+	public void createPartControl(Composite parent) {		
 		super.createPartControl(parent);
 
-		view = new GLScatterplot(glCanvas, parentComposite, serializedView.getViewFrustum());
+		view = new GLScatterplot(glCanvas);
 		initializeView();
-		minSizeComposite.setView((AGLView) view);
 		createPartControlGL();
 	}
 
