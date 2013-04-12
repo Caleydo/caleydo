@@ -4,11 +4,11 @@
 package org.caleydo.core.data.datadomain;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
 
 import com.google.common.base.Predicate;
-
 
 /**
  * Specifies whether {@link IDataDomain}s are
@@ -19,7 +19,7 @@ import com.google.common.base.Predicate;
  *
  */
 public interface IDataSupportDefinition extends Predicate<IDataDomain> {
-	public Collection<TablePerspective> filter(Collection<TablePerspective> tablePerspectives);
+	public List<TablePerspective> filter(Collection<TablePerspective> tablePerspectives);
 
 	public Predicate<TablePerspective> asTablePerspectivePredicate();
 }

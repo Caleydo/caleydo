@@ -3,7 +3,9 @@
  */
 package org.caleydo.core.data.datadomain;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
 
@@ -23,8 +25,8 @@ import com.google.common.collect.Collections2;
 public abstract class ADataSupportDefinition implements IDataSupportDefinition {
 
 	@Override
-	public Collection<TablePerspective> filter(Collection<TablePerspective> tablePerspectives) {
-		return Collections2.filter(tablePerspectives, asTablePerspectivePredicate());
+	public List<TablePerspective> filter(Collection<TablePerspective> tablePerspectives) {
+		return new ArrayList<>(Collections2.filter(tablePerspectives, asTablePerspectivePredicate()));
 	}
 
 	@Override
