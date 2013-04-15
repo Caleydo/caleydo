@@ -24,7 +24,6 @@ import org.caleydo.core.view.ARcpGLViewPart;
 import org.caleydo.core.view.CaleydoRCPViewPart;
 import org.caleydo.core.view.IDataDomainBasedView;
 import org.caleydo.core.view.IView;
-import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.IGLView;
 import org.eclipse.ui.IPartListener2;
 import org.eclipse.ui.IViewPart;
