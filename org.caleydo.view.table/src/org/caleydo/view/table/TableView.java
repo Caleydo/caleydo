@@ -130,8 +130,8 @@ public class TableView extends ASingleTablePerspectiveSWTView implements ILayerL
 			Collection<Integer> rows = new TreeSet<>();
 			for (Range r : model.getSelectedRowPositions())
 				rows.addAll(r.getMembers());
-			int columnCount = table.getColumnCount();
-			int rowCount = table.getRowCount();
+			int columnCount = data.getColumnCount();
+			int rowCount = data.getRowCount();
 			boolean allColumnsSelected = columns.size() == columnCount;
 			boolean allRowsSelected = rows.size() == rowCount;
 			if (allColumnsSelected == allRowsSelected) { // select all or mixed
@@ -149,6 +149,8 @@ public class TableView extends ASingleTablePerspectiveSWTView implements ILayerL
 		manager.clearSelection(SelectionType.SELECTION);
 		for (Integer pos : positions) {
 			int index = row ? table.getRowIndexByPosition(pos) : table.getColumnIndexByPosition(pos);
+			if (index < 0)
+				continue;
 			int id = row ? data.getRowObject(index) : data.getColumnObject(index);
 			manager.addToType(SelectionType.SELECTION, id);
 		}
