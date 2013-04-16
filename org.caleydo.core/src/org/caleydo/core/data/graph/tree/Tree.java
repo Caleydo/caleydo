@@ -244,12 +244,11 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 	 */
 	public ArrayList<NodeType> getChildren(NodeType parentNode) {
 		Set<DefaultEdge> setEdges = null;
-		try {
-			setEdges = graph.outgoingEdgesOf(parentNode);
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		setEdges = graph.outgoingEdgesOf(parentNode);
+
+		if (setEdges == null)
+			return null;
 		ArrayList<NodeType> alNodes = new ArrayList<NodeType>();
 		for (DefaultEdge tempEdge : setEdges) {
 			alNodes.add(graph.getEdgeTarget(tempEdge));
