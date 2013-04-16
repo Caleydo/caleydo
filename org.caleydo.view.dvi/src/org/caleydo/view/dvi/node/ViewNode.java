@@ -19,7 +19,6 @@
  *******************************************************************************/
 package org.caleydo.view.dvi.node;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -31,6 +30,7 @@ import javax.media.opengl.GL2;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.ITablePerspectiveBasedView;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
@@ -57,13 +57,13 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.FrameworkUtil;
 
-public class ViewNode
-	extends ADefaultTemplateNode
-	implements IDropArea {
+public class ViewNode extends ADefaultTemplateNode implements IDropArea {
 
 	// private TablePerspectiveListRenderer overviewTablePerspectiveRenderer;
 	protected IView representedView;
@@ -146,14 +146,16 @@ public class ViewNode
 			iconPath = null;
 		}
 		if (iconPath != null) {
-			Bundle viewPlugin = FrameworkUtil.getBundle(representedView.getClass());
-
-			URL iconURL = viewPlugin.getEntry(iconPath);
 			try {
+				Bundle viewPlugin = FrameworkUtil.getBundle(representedView.getClass());
+
+				URL iconURL = viewPlugin.getEntry(iconPath);
+
 				iconPath = FileLocator.toFileURL(iconURL).getPath();
-			}
-			catch (IOException e) {
-				new IllegalStateException("Cannot load view icon texture");
+			} catch (Exception e) {
+				Logger.log(new Status(IStatus.ERROR, this.toString(), "Cannot load view icon texture" + e.getMessage()));
+				throw new IllegalStateException("Cannot load view icon texture" + e.getMessage());
+
 			}
 		}
 	}
@@ -301,8 +303,7 @@ public class ViewNode
 
 			if (tablePerspective instanceof PathwayTablePerspective) {
 				dataDomains.add(((PathwayTablePerspective) tablePerspective).getPathwayDataDomain());
-			}
-			else {
+			} else {
 				dataDomains.add(tablePerspective.getDataDomain());
 			}
 			view.updateGraphEdgesOfViewNode(this);
@@ -316,9 +317,9 @@ public class ViewNode
 
 	/*
 	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.view.opengl.util.draganddrop.IDropArea#handleDragOver
-	 * (javax.media.opengl.GL2, java.util.Set, float, float)
+	 *
+	 * @see org.caleydo.core.view.opengl.util.draganddrop.IDropArea#handleDragOver (javax.media.opengl.GL2,
+	 * java.util.Set, float, float)
 	 */
 	@Override
 	public void handleDragOver(GL2 gl, Set<IDraggable> draggables, float mouseCoordinateX, float mouseCoordinateY) {
@@ -328,8 +329,8 @@ public class ViewNode
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.caleydo.core.view.opengl.util.draganddrop.IDropArea#
-	 * handleDropAreaReplaced()
+	 *
+	 * @see org.caleydo.core.view.opengl.util.draganddrop.IDropArea# handleDropAreaReplaced()
 	 */
 	@Override
 	public void handleDropAreaReplaced() {

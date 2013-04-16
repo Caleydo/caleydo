@@ -21,21 +21,12 @@
                id="org.caleydo.menu.view"
                label="View">
             <menu
-                  id="org.caleydo.menu.view.experimental"
-                  label="Experimental">
+                  id="org.caleydo.menu.view.visualization"
+                  label="Visualizations">
                <command
                      commandId="org.caleydo.view.subgraph.command.opensubgraph"
                      icon="resources/icons/icon.png"
                      style="push">
-                  <visibleWhen
-                        checkEnabled="false">
-                     <with
-                           variable="org.caleydo.core.isReleaseState">
-                        <equals
-                              value="releaseVersion">
-                        </equals>
-                     </with>
-                  </visibleWhen>                     
                </command>
             </menu>
          </menu>
@@ -53,7 +44,7 @@
          point="org.caleydo.view.ViewCategory">
       <ViewCategory
             isDataView="true"
-            isReleaseView="false"
+            isReleaseView="true"
             viewID="org.caleydo.view.subgraph">
       </ViewCategory>
    </extension>
