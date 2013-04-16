@@ -20,7 +20,7 @@ Team
 
 Caleydo is an academic project currently developed by members of
 
- * Institute for Computer Graphics and Vision at Graz University of Technology, Austria
- * Institute for Computer Graphics at Johannes Kepler University Linz, Austria
- * School of Engineering and Applied Sciences, Harvard University, Cambridge, USA
- * Harvard Medical School, Boston, USA
+ * The [Institute for Computer Graphics and Vision](http://www.icg.tugraz.at/) at Graz University of Technology, Austria
+ * The [Institute of Computer Graphics](http://www.jku.at/cg/) at Johannes Kepler University Linz, Austria
+ * The [Pfister Lab](http://gvi.seas.harvard.edu/pfister) at the School of Engineering and Applied Sciences, Harvard University, Cambridge, USA
+ * The [Park Lab](http://compbio.med.harvard.edu/) at Harvard Medical School, Boston, USA
