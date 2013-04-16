@@ -1,9 +1,9 @@
 Caleydo - Visualization for Molecular Biology
 =============================================
 
-Caleydo is a visualization framework for molecular biology data. It is targeted at analyzing multiple heterogeneous but related tabluar datasets (e.g.,  mRNA expression, copy number status and clinical variables), stratifications or clusters in these datasets and their relationships to biological pathways.  
+Caleydo is a visualization framework for molecular biology data. It is targeted at analyzing multiple heterogeneous but related tabular datasets (e.g.,  mRNA expression, copy number status and clinical variables), stratifications or clusters in these datasets and their relationships to biological pathways.  
 
-For user documentation and installation based on binaries please refer to the [caleydo website](http://caleydo.org). This guide assumes that you want to install Caleydo from source. 
+For user documentation and installation based on binaries please refer to the [Caleydo Website](http://caleydo.org). This guide assumes that you want to install Caleydo from source. 
 
 Installation
 ============
@@ -24,3 +24,4 @@ Caleydo is an academic project currently developed by members of
  * The [Institute of Computer Graphics](http://www.jku.at/cg/) at Johannes Kepler University Linz, Austria
  * The [Pfister Lab](http://gvi.seas.harvard.edu/pfister) at the School of Engineering and Applied Sciences, Harvard University, Cambridge, USA
  * The [Park Lab](http://compbio.med.harvard.edu/) at Harvard Medical School, Boston, USA
+
