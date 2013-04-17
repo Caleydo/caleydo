@@ -19,7 +19,6 @@
  *******************************************************************************/
 package org.caleydo.core.view;
 
-import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.util.ArrayList;
@@ -771,7 +770,8 @@ public class ViewManager extends AManager<IView> {
 			URL iconURL = viewPlugin.getEntry(iconPath);
 			try {
 				iconPath = FileLocator.toFileURL(iconURL).getPath();
-			} catch (IOException e) {
+			} catch (Exception e) {
+				Logger.log(new Status(IStatus.ERROR, this.toString(), "Failed to get plugin's view icon.", e));
 				return null;
 			}
 			return iconPath;
