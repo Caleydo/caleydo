@@ -75,7 +75,7 @@ public class ViewNode extends ADefaultTemplateNode implements IDropArea {
 		super(graphLayout, view, dragAndDropController, id);
 
 		this.representedView = representedView;
-		dataDomains = representedView.getDataDomains();
+		dataDomains = new HashSet<>(representedView.getDataDomains()); // local copy
 
 		setRepresentedViewInfo();
 		// setupLayout();
@@ -303,7 +303,8 @@ public class ViewNode extends ADefaultTemplateNode implements IDropArea {
 
 			if (tablePerspective instanceof PathwayTablePerspective) {
 				dataDomains.add(((PathwayTablePerspective) tablePerspective).getPathwayDataDomain());
-			} else {
+			}
+			else {
 				dataDomains.add(tablePerspective.getDataDomain());
 			}
 			view.updateGraphEdgesOfViewNode(this);
@@ -317,9 +318,9 @@ public class ViewNode extends ADefaultTemplateNode implements IDropArea {
 
 	/*
 	 * (non-Javadoc)
-	 *
-	 * @see org.caleydo.core.view.opengl.util.draganddrop.IDropArea#handleDragOver (javax.media.opengl.GL2,
-	 * java.util.Set, float, float)
+	 * @see
+	 * org.caleydo.core.view.opengl.util.draganddrop.IDropArea#handleDragOver
+	 * (javax.media.opengl.GL2, java.util.Set, float, float)
 	 */
 	@Override
 	public void handleDragOver(GL2 gl, Set<IDraggable> draggables, float mouseCoordinateX, float mouseCoordinateY) {
@@ -329,8 +330,8 @@ public class ViewNode extends ADefaultTemplateNode implements IDropArea {
 
 	/*
 	 * (non-Javadoc)
-	 *
-	 * @see org.caleydo.core.view.opengl.util.draganddrop.IDropArea# handleDropAreaReplaced()
+	 * @see org.caleydo.core.view.opengl.util.draganddrop.IDropArea#
+	 * handleDropAreaReplaced()
 	 */
 	@Override
 	public void handleDropAreaReplaced() {
@@ -339,3 +340,4 @@ public class ViewNode extends ADefaultTemplateNode implements IDropArea {
 	}
 
 }
+

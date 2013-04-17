@@ -24,6 +24,8 @@ import javax.xml.bind.JAXBException;
 
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.CaleydoRCPViewPart;
+import org.caleydo.view.table.action.SelectionOnlyAction;
+import org.caleydo.view.table.action.TableSettingsAction;
 import org.eclipse.nebula.widgets.nattable.NatTable;
 import org.eclipse.swt.widgets.Composite;
 
@@ -50,7 +52,7 @@ public class RcpTableView extends CaleydoRCPViewPart {
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
 
-		view = new TableView(parentComposite);
+		view = new TableView(parentComposite, this);
 
 		initializeView();
 		GeneralManager.get().getViewManager().registerRCPView(this, view);
@@ -67,6 +69,7 @@ public class RcpTableView extends CaleydoRCPViewPart {
 
 	@Override
 	public void addToolBarContent() {
+		toolBarManager.add(new SelectionOnlyAction((TableView) view));
 		toolBarManager.add(new TableSettingsAction((TableView) view));
 		super.addToolBarContent();
 	}
