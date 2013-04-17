@@ -102,4 +102,8 @@ public class DataProvider implements IRowDataProvider<Integer> {
 	public int indexOfRowObject(Integer rowObject) {
 		return tablePerspective.getRecordPerspective().getVirtualArray().indexOf(rowObject);
 	}
+
+	public int indexOfColumnObject(Integer columnObject) {
+		return tablePerspective.getDimensionPerspective().getVirtualArray().indexOf(columnObject);
+	}
 }
