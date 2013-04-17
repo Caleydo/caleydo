@@ -55,7 +55,10 @@ public class DataSelectionDialogue extends TitleAreaDialog {
 	public DataSelectionDialogue(Shell parentShell, TablePerspective tablePerspective) {
 		super(parentShell);
 		this.tablePerspective = tablePerspective;
-		//this.contextIDType = perspective.getIdType();
+	}
+	
+	public DataSelectionDialogue(Shell parentShell) {
+		super(parentShell);
 	}
 
 	@Override
@@ -76,29 +79,6 @@ public class DataSelectionDialogue extends TitleAreaDialog {
 		GridLayout layout = new GridLayout(1, true);
 
 		parent.setLayout(layout);
-
-//		data = new GridData();
-//		data.grabExcessHorizontalSpace = true;
-//		data.horizontalAlignment = GridData.FILL;
-//		Label descriptionLabel = new Label(parent, SWT.NONE);
-//		descriptionLabel.setText("Select compound to show.");
-//		descriptionLabel.setLayoutData(data);
-//
-//		data = new GridData();
-//		data.grabExcessHorizontalSpace = true;
-//		data.grabExcessVerticalSpace = true;
-//		data.horizontalAlignment = GridData.FILL;
-//		data.verticalAlignment = GridData.VERTICAL_ALIGN_BEGINNING;
-//		candidateCompoundsTable = new Table(parent, SWT.CHECK | SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
-//
-//		candidateCompoundsTable.setHeaderVisible(true);
-//		TableColumn column1 = new TableColumn(candidateCompoundsTable, SWT.CHECK);
-//		column1.setText("Data vector");
-//
-//		candidateCompoundsTable.setLayoutData(data);
-//		candidateCompoundsTable.setSortColumn(column1);
-//		candidateCompoundsTable.setSortDirection(SWT.UP);
-//		candidateCompoundsTable.setEnabled(true);
 		
 		Label descriptionLabel1 = new Label(parent, SWT.NONE);
 		descriptionLabel1.setText("Choose visualization type");
@@ -261,6 +241,7 @@ public class DataSelectionDialogue extends TitleAreaDialog {
 	protected void okPressed() {
 
 		
+		
 		dataSelectionConf = new DataSelectionConfiguration();
 		
 		// Set the selected Axis IDs to pass to the view
@@ -294,6 +275,21 @@ public class DataSelectionDialogue extends TitleAreaDialog {
 	 */
 	public DataSelectionConfiguration getDataSelectionConf() {
 		return dataSelectionConf;
+	}
+	
+
+	/**
+	 * @return the tablePerspective
+	 */
+	public TablePerspective getTablePerspective() {
+		return tablePerspective;
+	}
+
+	/**
+	 * @param tablePerspective the tablePerspective to set
+	 */
+	public void setTablePerspective(TablePerspective tablePerspective) {
+		this.tablePerspective = tablePerspective;
 	}
 
 }

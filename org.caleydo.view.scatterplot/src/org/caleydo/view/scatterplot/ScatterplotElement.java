@@ -3,6 +3,9 @@
  */
 package org.caleydo.view.scatterplot;
 
+import gleem.linalg.Vec2f;
+
+import java.awt.Point;
 import java.util.ArrayList;
 
 import javax.media.opengl.GL2;
@@ -19,13 +22,17 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.core.view.opengl.layout2.GLElement.EVisibility;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.picking.IPickingListener;
+import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.scatterplot.dialogues.DataSelectionConfiguration;
 import org.caleydo.view.scatterplot.dialogues.DataSelectionDialogue;
 import org.caleydo.view.scatterplot.event.ShowDataSelectionDialogEvent;
 import org.caleydo.view.scatterplot.utils.EDataGenerationType;
 import org.caleydo.view.scatterplot.utils.EVisualizationSpaceType;
 import org.caleydo.view.scatterplot.utils.ScatterplotRenderUtils;
+import org.caleydo.view.scatterplot.utils.SelectionRectangle;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.swt.widgets.Shell;
 
@@ -43,19 +50,35 @@ public class ScatterplotElement extends GLElement implements TablePerspectiveSel
 	
 	private DataSelectionConfiguration dataSelectionConf;
 	
+	private int pickingId = -1;
+	
+	private SelectionRectangle selectionRect;
+	
+	private Point firstClickPoint;
+	
+	private ScatterplotRenderUtils renderUtil;
+	
+		
 	/**
 	 * Flag to check whether data for the view is loaded
 	 * Data is loaded after proper selections are made in the initial {@link DataSelectionDialogue}
 	 */
-	private boolean areDataColumnsSet = false;
+	private boolean dataColumnsSet = false;
 	
+	
+
 	private ArrayList<ArrayList<Float>> dataColumns;
+	
+	private IPickingListener canvasPickingListener;
 
 	public ScatterplotElement(TablePerspective tablePerspective) {
 		this.tablePerspective = tablePerspective;
 		this.selection = new TablePerspectiveSelectionMixin(tablePerspective, this);
 		
 		dataColumns = new ArrayList<>();
+		
+		setVisibility(EVisibility.PICKABLE);
+		
 	}
 
 	@Override
@@ -70,20 +93,30 @@ public class ScatterplotElement extends GLElement implements TablePerspectiveSel
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
-		g.pushResourceLocator(Activator.getResourceLocator());
-		//super.renderImpl(g, w, h);
-		if (!areDataColumnsSet)
+		if (!dataColumnsSet)
 			return;	
 		
-		ScatterplotRenderUtils.render(g.gl, this, w, h);
+		g.pushResourceLocator(Activator.getResourceLocator());
+		//super.renderImpl(g, w, h);
+		
+		
+		renderUtil.render(g.gl, this, w, h);
+		
+		renderUtil.renderSelectionRectangle(g.gl, selectionRect, w, h);
 		
 		g.popResourceLocator();
 	}
 
 	@Override
 	protected void renderPickImpl(GLGraphics g, float w, float h) {
+		if (!dataColumnsSet)
+			return;	
+		
 		g.pushResourceLocator(Activator.getResourceLocator());
-		super.renderPickImpl(g, w, h);
+		//super.renderPickImpl(g, w, h);
+		g.pushName(pickingId);
+		renderUtil.render(g.gl, this, w, h);	
+		g.popName();
 		g.popResourceLocator();
 	}
 	
@@ -136,12 +169,74 @@ public class ScatterplotElement extends GLElement implements TablePerspectiveSel
 				
 				dataColumns.add(col1);
 				dataColumns.add(col2);
-				this.areDataColumnsSet = true;
+				this.dataColumnsSet = true;
+				renderUtil = new ScatterplotRenderUtils();
+				renderUtil.PerformDataLoadedOperations(this);
+				
+				// Set the active selection manager, either 
+				//activeSelectionManager = selection.getRecordSelectionManager();
+				//if (dataSelectionConf.getVisSpaceType() == EVisualizationSpaceType.ITEMS_SPACE)
+				//{
+				//	activeSelectionManager = selection.getDimensionSelectionManager();
+				//}
 			}
 
 		}
+		
+		initListeners();
 	}
 
+	public void initListeners()
+	{
+		canvasPickingListener = new IPickingListener() {
+			@Override
+			public void pick(Pick pick) {
+				//onRecordPick(pick.getObjectID(), pick);
+				handleMouseEvents(pick);
+			}
+		};
+		
+		pickingId = context.registerPickingListener(canvasPickingListener);
+	}
+	
+	public void handleMouseEvents(Pick pick)
+	{
+		switch (pick.getPickingMode()) {
+		case CLICKED:
+			//System.out.println("clicked:  " + pick.getPickedPoint());
+			firstClickPoint = pick.getPickedPoint();
+			
+			break;
+		case DRAGGED:
+			//Enlarge the selection rectangle here
+			selectionRect = new SelectionRectangle();
+			selectionRect.setLeft(firstClickPoint.x);
+			selectionRect.setRight(pick.getPickedPoint().x);
+			selectionRect.setTop(firstClickPoint.y);
+			selectionRect.setBottom(pick.getPickedPoint().y);
+			
+			//selectionRect.ComputeScreenToDataMapping(renderUtil, dataColumns, getSize().x(), getSize().y());			
+			//renderUtil.performBrushing(this, selectionRect);
+			break;
+		case MOUSE_RELEASED:
+			//A single click to remove the selection
+			if (Math.abs(pick.getPickedPoint().x - firstClickPoint.x) < 1 | Math.abs(pick.getPickedPoint().y - firstClickPoint.y) < 1)
+			{
+				selectionRect = null;
+				renderUtil.clearSelection(this);
+			}
+			else
+			{
+				selectionRect.ComputeScreenToDataMapping(renderUtil, dataColumns, getSize().x(), getSize().y());
+				renderUtil.performBrushing(this, selectionRect);
+			}
+			break;	
+		
+		}
+	}
+	
+	
+	
 	/**
 	 * @return the dataSelectionConf
 	 */
@@ -177,6 +272,13 @@ public class ScatterplotElement extends GLElement implements TablePerspectiveSel
 		return selection;
 	}
 	
+	public boolean isDataColumnsSet() {
+		return dataColumnsSet;
+	}
+
+	public void setAreDataColumnsSet(boolean dataColumnsSet) {
+		this.dataColumnsSet = dataColumnsSet;
+	}
 	
 	
 

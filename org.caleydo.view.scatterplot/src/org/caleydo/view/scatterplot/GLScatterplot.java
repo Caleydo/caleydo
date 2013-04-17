@@ -75,6 +75,7 @@ import org.caleydo.view.scatterplot.utils.EDataGenerationType;
 import org.caleydo.view.scatterplot.utils.EVisualizationSpaceType;
 import org.caleydo.view.scatterplot.utils.ScatterplotRenderUtils;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
@@ -151,18 +152,18 @@ public class GLScatterplot extends ASingleTablePerspectiveElementView {
 	
 	@ListenTo
 	public void showDataSelectionDialog(final ShowDataSelectionDialogEvent event) {
-
+		if (rootElement.isDataColumnsSet())
+			return;
 		getParentComposite().getDisplay().asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				Shell shell = new Shell();
+				Shell shell = new Shell(SWT.APPLICATION_MODAL);
 				DataSelectionDialogue dialog = new DataSelectionDialogue(shell, event.getTablePerspective());
 				dialog.create();
 				dialog.setBlockOnOpen(true);
 
 				if (dialog.open() == IStatus.OK) {
-					rootElement.prepareData(dialog.getDataSelectionConf());
-
+					rootElement.prepareData(dialog.getDataSelectionConf());					
 				}
 			}
 
