@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
+   <extension-point id="org.caleydo.view.search.SearchResultActionFactory" name="SearchResultActionFactory" schema="schema/org.caleydo.view.search.SearchResultActionFactory.exsd"/>
    <extension
          point="org.eclipse.ui.views">
       <view
             allowMultiple="false"
             category="org.caleydo.core.views"
-            class="org.caleydo.view.search.RcpSearchView"
+            class="org.caleydo.view.search.internal.RcpSearchView"
             icon="resources/icons/search.png"
             id="org.caleydo.view.search"
             name="Search">
@@ -30,7 +31,7 @@
    <extension
          point="org.eclipse.ui.commands">
       <command
-            defaultHandler="org.caleydo.view.search.OpenSearchHandler"
+            defaultHandler="org.caleydo.view.search.internal.OpenSearchHandler"
             id="org.caleydo.view.search.command.opensearch"
             name="Search">
       </command>
@@ -43,5 +44,11 @@
                type="org.caleydo.datadomain.genetic">
          </dataDomain>
       </association>
+   </extension>
+   <extension
+         point="org.caleydo.view.search.SearchResultActionFactory">
+      <factory
+            class="org.caleydo.view.search.internal.actions.CreateCategoricalPerspectiveActionFactory">
+      </factory>
    </extension>
 </plugin>

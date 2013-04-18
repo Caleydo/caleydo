@@ -48,6 +48,19 @@ public final class DataDomainOracle {
 			perspectiveCreator.createAllTablePerspectives(dataDomain);
 	}
 
+	public synchronized static void createRowCategoricalPerspective(ATableBasedDataDomain dataDomain, Integer id,
+			boolean isPrivate) {
+		if (!isCategoricalDataDomain(dataDomain))
+			return;
+		IDType rowIDType;
+		if (dataDomain.isColumnDimension()) {
+			rowIDType = dataDomain.getRecordIDType();
+		} else {
+			rowIDType = dataDomain.getDimensionIDType();
+		}
+		perspectiveCreator.createTablePerspeciveByRowID(dataDomain, id, rowIDType, isPrivate);
+	}
+
 	public static boolean isClinical(IDataDomain dataDomain) {
 		return dataDomain.getLabel().toLowerCase().equals("clinical");
 	}

@@ -17,25 +17,12 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.search;
+package org.caleydo.view.search.internal;
 
-import org.caleydo.core.gui.SimpleAction;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
+import org.caleydo.core.gui.command.AOpenViewHandler;
 
-public class OpenSearchViewAction extends SimpleAction {
-
-	public OpenSearchViewAction() {
-		super("Search", "resources/icons/general/search.png", Activator.getResourceLoader());
-	}
-
-	@Override
-	public void run() {
-		try {
-			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-					.showView(RcpSearchView.VIEW_TYPE);
-		} catch (PartInitException e) {
-			e.printStackTrace();
-		}
+public class OpenSearchHandler extends AOpenViewHandler {
+	public OpenSearchHandler() {
+		super(RcpSearchView.VIEW_TYPE);
 	}
 }

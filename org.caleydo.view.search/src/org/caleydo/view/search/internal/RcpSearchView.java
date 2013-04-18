@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.search;
+package org.caleydo.view.search.internal;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -39,12 +39,18 @@ import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.id.IIDTypeMapper;
+import org.caleydo.core.util.ExtensionUtils;
 import org.caleydo.core.util.base.ILabelHolder;
 import org.caleydo.core.view.CaleydoRCPViewPart;
-import org.caleydo.datadomain.genetic.GeneticDataDomain;
+import org.caleydo.view.search.api.ISearchResultActionFactory;
+import org.eclipse.jface.action.IMenuListener;
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.fieldassist.ControlDecoration;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
@@ -68,10 +74,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
@@ -86,6 +89,11 @@ import com.google.common.collect.Sets;
  * @author Marc Streit and Samuel Gratzl
  */
 public final class RcpSearchView extends CaleydoRCPViewPart {
+	/**
+	 *
+	 */
+	private static final String EXTENSION_POINT = "org.caleydo.view.search.SearchResultActionFactory";
+
 	public static final String VIEW_TYPE = "org.caleydo.view.search";
 
 	private Composite root;
@@ -119,6 +127,9 @@ public final class RcpSearchView extends CaleydoRCPViewPart {
 			return String.CASE_INSENSITIVE_ORDER.compare(o1.getLabel(), o2.getLabel());
 		}
 	};
+
+	private final Collection<ISearchResultActionFactory> actionFactories = ExtensionUtils.findImplementation(
+			EXTENSION_POINT, "class", ISearchResultActionFactory.class);
 
 	@Override
 	public void createPartControl(Composite parent) {
@@ -154,7 +165,6 @@ public final class RcpSearchView extends CaleydoRCPViewPart {
 				e.display.asyncExec(new Runnable() {
 					@Override
 					public void run() {
-						System.out.println("gained");
 						searchText.selectAll();
 					}
 				});
@@ -381,7 +391,7 @@ public final class RcpSearchView extends CaleydoRCPViewPart {
 		group.setLayout(new GridLayout(1, true));
 		group.setText(category.getCategoryName());
 
-		TableViewer viewer = new TableViewer(group, SWT.BORDER | SWT.FULL_SELECTION | SWT.VIRTUAL);
+		final TableViewer viewer = new TableViewer(group, SWT.FULL_SELECTION | SWT.BORDER | SWT.VIRTUAL);
 		viewer.getTable().setLinesVisible(true);
 		viewer.getTable().setHeaderVisible(true);
 		viewer.getTable().setLayoutData(new GridData(GridData.FILL_BOTH));
@@ -445,7 +455,41 @@ public final class RcpSearchView extends CaleydoRCPViewPart {
 			});
 		}
 
+		createContextMenu(viewer, perspectives);
+
 		return group;
+	}
+
+	private void createContextMenu(final TableViewer viewer, final List<Perspective> perspectives) {
+		final MenuManager mgr = new MenuManager();
+		mgr.setRemoveAllWhenShown(true);
+		mgr.addMenuListener(new IMenuListener() {
+			@Override
+			public void menuAboutToShow(IMenuManager manager) {
+				IStructuredSelection selection = (IStructuredSelection) viewer.getSelection();
+				if (!selection.isEmpty()) {
+					ResultRow row = (ResultRow) selection.getFirstElement();
+					// create a custom context menu for the row
+					createContextMenuActions(mgr, row, perspectives);
+				}
+			}
+		});
+
+		viewer.getTable().setMenu(mgr.createContextMenu(viewer.getTable()));
+	}
+
+
+	protected void createContextMenuActions(MenuManager mgr, ResultRow row, List<Perspective> perspectives) {
+		boolean any = false;
+		for (ISearchResultActionFactory factory : actionFactories) {
+			any = factory.createPerspectiveActions(mgr, row, perspectives) || any;
+		}
+		if (any) // add a separator if we added any
+			mgr.add(new Separator());
+
+		for (ISearchResultActionFactory factory : actionFactories) {
+			factory.createIDTypeActions(mgr, row);
+		}
 	}
 
 
@@ -540,162 +584,6 @@ public final class RcpSearchView extends CaleydoRCPViewPart {
 		}
 		Collections.sort(dataDomainPerspectives, byLabel);
 		return dataDomainPerspectives;
-	}
-
-	private void addGeneContextMenu() {
-
-		// final Menu menu = new Menu(resultTable.getShell(), SWT.POP_UP);
-		// resultTable.setMenu(menu);
-		//
-		// menu.addListener(SWT.Show, new Listener() {
-		// @Override
-		// public void handleEvent(Event event) {
-		// MenuItem[] menuItems = menu.getItems();
-		// for (int i = 0; i < menuItems.length; i++) {
-		// menuItems[i].dispose();
-		// }
-		//
-		// for (final TableItem tableItem : resultTable.getSelection()) {
-		//
-		// // for (int dataDomainCount = 0; dataDomainCount < geneticDataDomains.size(); dataDomainCount++) {
-		// // // Do not create context menu for genes that have to
-		// // // expression value
-		// //
-		// // if (tableItem.getText(dataDomainCount).equalsIgnoreCase("FOUND")) {
-		// // createContextMenuItemsForDataDomain(menu, tableItem,
-		// // geneticDataDomains.get(dataDomainCount));
-		// // } else {
-		// // MenuItem openInBrowserMenuItem = new MenuItem(menu, SWT.PUSH);
-		// // openInBrowserMenuItem.setText("Not loaded");
-		// // }
-		// // if (dataDomainCount + 1 < geneticDataDomains.size())
-		// // new MenuItem(menu, SWT.SEPARATOR);
-		// //
-		// // }
-		// }
-		// }
-		//
-		// });
-	}
-
-	private void createContextMenuItemsForDataDomain(Menu menu, final TableItem tableItem,
-			final GeneticDataDomain dataDomain) {
-
-		//
-		// MenuItem openInBrowserMenuItem = new MenuItem(menu, SWT.PUSH);
-		// openInBrowserMenuItem.setText("Open in browser");
-		// openInBrowserMenuItem.setImage(generalManager.getResourceLoader().getImage(
-		// geneTable.getDisplay(), "resources/icons/view/browser/browser.png"));
-		// openInBrowserMenuItem.addSelectionListener(new SelectionAdapter() {
-		// @Override
-		// public void widgetSelected(SelectionEvent e) {
-		//
-		// searchViewMediator.selectGeneSystemWide((Integer)
-		// tableItem.getData());
-		//
-		// // Switch to browser view
-		// try {
-		// PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-		// .showView("org.caleydo.view.browser");
-		// } catch (PartInitException e1) {
-		// e1.printStackTrace();
-		// }
-		// };
-		// });
-		//
-		// MenuItem loadPathwayInBucketMenuItem = new MenuItem(menu, SWT.PUSH);
-		// loadPathwayInBucketMenuItem.setText("Load containing pathways in Bucket");
-		// loadPathwayInBucketMenuItem.setImage(generalManager.getResourceLoader().getImage(
-		// geneTable.getDisplay(), "resources/icons/view/remote/remote.png"));
-		//
-		// loadPathwayInBucketMenuItem.addSelectionListener(new
-		// SelectionAdapter() {
-		// @Override
-		// public void widgetSelected(SelectionEvent e) {
-		//
-		// searchViewMediator.loadPathwayByGene((Integer) tableItem.getData());
-		// };
-		// });
-		//
-		// MenuItem loadGeneInHeatMapMenuItem = new MenuItem(menu, SWT.PUSH);
-		// loadGeneInHeatMapMenuItem.setText("Show gene in heat map");
-		// loadGeneInHeatMapMenuItem.setImage(generalManager.getResourceLoader().getImage(
-		// geneTable.getDisplay(),
-		// "resources/icons/view/tablebased/heatmap/heatmap.png"));
-		//
-		// loadGeneInHeatMapMenuItem.addSelectionListener(new SelectionAdapter()
-		// {
-		// @Override
-		// public void widgetSelected(SelectionEvent e) {
-		//
-		// searchViewMediator.selectGeneSystemWide((Integer)
-		// tableItem.getData());
-		//
-		// // Switch to browser view
-		// try {
-		// PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-		// .showView("org.caleydo.view.heatmap.hierarchical");
-		// } catch (PartInitException e1) {
-		// e1.printStackTrace();
-		// }
-		// };
-		// });
-		//
-		// MenuItem loadGeneInParallelCoordinatesMenuItem = new MenuItem(menu,
-		// SWT.PUSH);
-		// loadGeneInParallelCoordinatesMenuItem
-		// .setText("Show gene in parallel coordinates");
-		// loadGeneInParallelCoordinatesMenuItem.setImage(generalManager.getResourceLoader()
-		// .getImage(geneTable.getDisplay(),
-		// "resources/icons/view/tablebased/parcoords/parcoords.png"));
-		//
-		// loadGeneInParallelCoordinatesMenuItem
-		// .addSelectionListener(new SelectionAdapter() {
-		// @Override
-		// public void widgetSelected(SelectionEvent e) {
-		//
-		// searchViewMediator.selectGeneSystemWide((Integer) tableItem
-		// .getData());
-		//
-		// // Switch to browser view
-		// try {
-		// PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-		// .getActivePage()
-		// .showView("org.caleydo.view.parcoords");
-		// } catch (PartInitException e1) {
-		// e1.printStackTrace();
-		// }
-		// };
-		// });
-		//
-		MenuItem makeCategoryOfGene = new MenuItem(menu, SWT.PUSH);
-		makeCategoryOfGene.setText("Create categorization of " + dataDomain.getLabel());
-		// loadGeneInHeatMapMenuItem.setImage(generalManager
-		// .getResourceLoader()
-		// .getImage(geneTable.getDisplay(),dat
-		// "resources/icons/view/tablebased/heatmap/heatmap.png"));
-
-		// makeCategoryOfGene.addSelectionListener(new SelectionAdapter() {
-		// @Override
-		// public void widgetSelected(SelectionEvent e) {
-		//
-		// new CategoricalTablePerspectiveCreator().createTablePerspeciveByRowID(dataDomain,
-		// (Integer) tableItem.getData(), davidIDType, false);
-		//
-		// DataDomainUpdateEvent event = new DataDomainUpdateEvent(dataDomain);
-		// event.setSender(this);
-		// GeneralManager.get().getEventPublisher().triggerEvent(event);
-		//
-		// // Switch to DVI view
-		// try {
-		// PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-		// .showView("org.caleydo.view.dvi");
-		// } catch (PartInitException e1) {
-		// e1.printStackTrace();
-		// }
-		// }
-		// });
-
 	}
 
 	@Override

@@ -17,43 +17,25 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.search;
+package org.caleydo.view.search.internal;
 
-import org.caleydo.data.loader.ResourceLoader;
-import org.caleydo.data.loader.ResourceLocators;
-import org.eclipse.core.runtime.Plugin;
-import org.osgi.framework.BundleContext;
+import org.caleydo.core.gui.SimpleAction;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 
-/**
- * The activator class controls the plug-in life cycle
- */
-public class Activator extends Plugin {
-	// The shared instance
-	private static Activator plugin;
+public class OpenSearchViewAction extends SimpleAction {
 
-	@Override
-	public void start(BundleContext context) throws Exception {
-		super.start(context);
-		plugin = this;
+	public OpenSearchViewAction() {
+		super("Search", "resources/icons/general/search.png", Activator.getResourceLoader());
 	}
 
 	@Override
-	public void stop(BundleContext context) throws Exception {
-		plugin = null;
-		super.stop(context);
-	}
-
-
-	public static Activator getDefault() {
-		return plugin;
-	}
-
-	/**
-	 * @return
-	 */
-	public static ResourceLoader getResourceLoader() {
-		return new ResourceLoader(ResourceLocators.chain(
-				ResourceLocators.classLoader(Activator.class.getClassLoader()), ResourceLocators.DATA_CLASSLOADER,
-				ResourceLocators.FILE));
+	public void run() {
+		try {
+			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+					.showView(RcpSearchView.VIEW_TYPE);
+		} catch (PartInitException e) {
+			e.printStackTrace();
+		}
 	}
 }

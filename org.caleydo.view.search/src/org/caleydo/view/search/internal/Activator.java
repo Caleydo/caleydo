@@ -17,12 +17,43 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.search;
+package org.caleydo.view.search.internal;
 
-import org.caleydo.core.gui.command.AOpenViewHandler;
+import org.caleydo.data.loader.ResourceLoader;
+import org.caleydo.data.loader.ResourceLocators;
+import org.eclipse.core.runtime.Plugin;
+import org.osgi.framework.BundleContext;
 
-public class OpenSearchHandler extends AOpenViewHandler {
-	public OpenSearchHandler() {
-		super(RcpSearchView.VIEW_TYPE);
+/**
+ * The activator class controls the plug-in life cycle
+ */
+public class Activator extends Plugin {
+	// The shared instance
+	private static Activator plugin;
+
+	@Override
+	public void start(BundleContext context) throws Exception {
+		super.start(context);
+		plugin = this;
+	}
+
+	@Override
+	public void stop(BundleContext context) throws Exception {
+		plugin = null;
+		super.stop(context);
+	}
+
+
+	public static Activator getDefault() {
+		return plugin;
+	}
+
+	/**
+	 * @return
+	 */
+	public static ResourceLoader getResourceLoader() {
+		return new ResourceLoader(ResourceLocators.chain(
+				ResourceLocators.classLoader(Activator.class.getClassLoader()), ResourceLocators.DATA_CLASSLOADER,
+				ResourceLocators.FILE));
 	}
 }
