@@ -31,13 +31,22 @@ import org.eclipse.nebula.widgets.nattable.data.IDataProvider;
 
 /**
  * a special header {@link IDataProvider} using the human readable id types
- * 
+ *
  * @author Samuel Gratzl
  *
  */
 public class TablePerspectiveHeaderDataProvider implements IDataProvider {
+	/**
+	 * underlying {@link VirtualArray}
+	 */
 	private final VirtualArray va;
+	/**
+	 * used for the columns = isDimension or rows = records
+	 */
 	private final boolean isDimension;
+	/**
+	 * mapper from id to human readable values
+	 */
 	private final IIDTypeMapper<Integer, String> mapper;
 
 	public TablePerspectiveHeaderDataProvider(TablePerspective tablePerspective, boolean isDimension) {

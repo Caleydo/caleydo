@@ -54,6 +54,8 @@ public class Activator extends Plugin {
 	}
 
 	/**
+	 * returns the {@link ResourceLoader} specific for this plugin
+	 * 
 	 * @return
 	 */
 	public static ResourceLoader getResourceLoader() {

@@ -94,12 +94,32 @@ public class TableView extends ASingleTablePerspectiveSWTView implements ILayerL
 	public static final String VIEW_NAME = "Table";
 
 	private final CaleydoRCPViewPart view;
+	/**
+	 * whether everything except the current selection should be hidden
+	 */
 	private boolean selectionOnly;
 
+	/**
+	 * raw data
+	 */
 	private DataProvider data;
+
+	/**
+	 * the main {@link NatTable}
+	 */
 	private NatTable table;
+	/**
+	 * the selection layer to manipulate selections
+	 */
 	private SelectionLayer selectionLayer;
+	/**
+	 * the converter used to display data
+	 */
 	private CustomDisplayConverter converter;
+
+	/**
+	 * column and row hidder for realizing the selection only feature
+	 */
 	private ColumnHideShowLayer columnHidder;
 	private RowHideShowLayer rowHidder;
 
@@ -120,7 +140,7 @@ public class TableView extends ASingleTablePerspectiveSWTView implements ILayerL
 		selectionLayer.removeLayerListener(this); // remove me to avoid that I get my updates
 		model.clearSelection();
 
-		if (records.isEmpty() && dimensions.isEmpty()) {
+		if (records.isEmpty() && dimensions.isEmpty()) { // nothing to be done
 			return;
 		}
 		if (records.isEmpty()) { // just dimensions, select columns
@@ -139,13 +159,15 @@ public class TableView extends ASingleTablePerspectiveSWTView implements ILayerL
 				}
 			}
 		}
-		if (selectionOnly)
+		if (selectionOnly) // update selection only
 			showJustSelection();
 	}
 
 	/**
-	 * @param dimensionPerspective
-	 * @param dimensions
+	 * converts the given sets of ids within the given perspective into indices
+	 *
+	 * @param per
+	 * @param ids
 	 * @return
 	 */
 	private static Collection<Integer> toIndices(Perspective per, Set<Integer> ids) {
@@ -170,15 +192,20 @@ public class TableView extends ASingleTablePerspectiveSWTView implements ILayerL
 	public void handleLayerEvent(ILayerEvent event) {
 		if (event instanceof CellSelectionEvent || event instanceof RowSelectionEvent
 				|| event instanceof ColumnSelectionEvent) {
-			ISelectionModel model = selectionLayer.getSelectionModel();
+			// find out whats selected
+			final ISelectionModel model = selectionLayer.getSelectionModel();
+
 			Collection<Integer> columns = Ints.asList(model.getSelectedColumnPositions());
 			Collection<Integer> rows = new TreeSet<>();
 			for (Range r : model.getSelectedRowPositions())
 				rows.addAll(r.getMembers());
+
 			int columnCount = data.getColumnCount();
 			int rowCount = data.getRowCount();
+
 			boolean allColumnsSelected = columns.size() == columnCount;
 			boolean allRowsSelected = rows.size() == rowCount;
+
 			if (allColumnsSelected == allRowsSelected) { // select all or mixed
 				select(selection.getDimensionSelectionManager(), columns, false);
 				select(selection.getRecordSelectionManager(), rows, true);
@@ -190,6 +217,16 @@ public class TableView extends ASingleTablePerspectiveSWTView implements ILayerL
 		}
 	}
 
+	/**
+	 * selects the given row/column positions using the given {@link SelectionManager}
+	 *
+	 * @param manager
+	 *            the corresponding selectin manager
+	 * @param positions
+	 *            the row/column positions to select
+	 * @param row
+	 *            rows or columns
+	 */
 	private void select(SelectionManager manager, Collection<Integer> positions, boolean row) {
 		manager.clearSelection(SelectionType.SELECTION);
 		for (Integer pos : positions) {
@@ -203,6 +240,8 @@ public class TableView extends ASingleTablePerspectiveSWTView implements ILayerL
 	}
 
 	/**
+	 * sets the {@link EDataRepresentation} used, i.e. which values should be shown
+	 *
 	 * @param raw
 	 */
 	public void setDataRepresentation(EDataRepresentation mode) {
@@ -234,9 +273,9 @@ public class TableView extends ASingleTablePerspectiveSWTView implements ILayerL
 			build();
 			onSelectionUpdate(null); // apply current selection
 
-			selectionLayer.addLayerListener(this);
+			selectionLayer.addLayerListener(this); // listen for selections
 
-			view.setPartName(tablePerspective.getLabel());
+			view.setPartName(tablePerspective.getLabel()); // update view name
 		}
 	}
 
@@ -272,7 +311,7 @@ public class TableView extends ASingleTablePerspectiveSWTView implements ILayerL
 
 		this.selectionLayer = new SelectionLayer(bodyLayer);
 		ViewportLayer viewportLayerBase = new ViewportLayer(selectionLayer);
-		final FreezeLayer freezeLayer = new FreezeLayer(selectionLayer);
+		final FreezeLayer freezeLayer = new FreezeLayer(selectionLayer); // freeze feature
 		ILayer viewportLayer = new CompositeFreezeLayer(freezeLayer, viewportLayerBase, selectionLayer);
 
 		IDataProvider colHeaderDataProvider = new TablePerspectiveHeaderDataProvider(tablePerspective, true);
@@ -280,6 +319,7 @@ public class TableView extends ASingleTablePerspectiveSWTView implements ILayerL
 		ILayer columnHeaderLayer = new ColumnHeaderLayer(columnHeaderDataLayer, viewportLayer, selectionLayer);
 
 		if (hasDimensionGroups && dimensionGroups != null) {
+			// create groups for each group in the perspective
 			ColumnGroupHeaderLayer columnGroupHeaderLayer = new ColumnGroupHeaderLayer(columnHeaderLayer,
 					selectionLayer, columnGroupModel);
 			columnHeaderLayer = columnGroupHeaderLayer;
@@ -300,6 +340,7 @@ public class TableView extends ASingleTablePerspectiveSWTView implements ILayerL
 		ILayer rowHeaderLayer = new RowHeaderLayer(rowHeaderDataLayer, viewportLayer, selectionLayer);
 
 		if (hasRecordGroups && recordGroups != null && rowGroupModel != null) {
+			// create groups for each group in the perspective
 			RowGroupHeaderLayer<Integer> rowGroupHeaderLayer = new RowGroupHeaderLayer<>(rowHeaderLayer,
 					selectionLayer, rowGroupModel);
 			rowGroupHeaderLayer.setColumnWidth(15);
@@ -313,7 +354,7 @@ public class TableView extends ASingleTablePerspectiveSWTView implements ILayerL
 				int rep = (group.getRepresentativeElementIndex() >= 0) ? group.getRepresentativeElementIndex() : group
 						.getStartIndex();
 				Integer id = recordVA.get(rep);
-				rowGroup.addStaticMemberRow(id);
+				rowGroup.addStaticMemberRow(id); // the element that should be shown if the group is collapsed
 				rowGroupModel.addRowGroup(rowGroup);
 			}
 		}
@@ -351,7 +392,7 @@ public class TableView extends ASingleTablePerspectiveSWTView implements ILayerL
 
 	protected static void configureStyle(NatTable natTable, final IDisplayConverter converter) {
 		DefaultNatTableStyleConfiguration natTableConfiguration = new DefaultNatTableStyleConfiguration();
-		natTableConfiguration.hAlign = HorizontalAlignmentEnum.RIGHT;
+		natTableConfiguration.hAlign = HorizontalAlignmentEnum.RIGHT; // most of the time numbers
 		natTable.addConfiguration(natTableConfiguration);
 
 		DefaultSelectionStyleConfiguration selectionStyle = new DefaultSelectionStyleConfiguration();
@@ -366,6 +407,7 @@ public class TableView extends ASingleTablePerspectiveSWTView implements ILayerL
 
 			@Override
 			public void configureRegistry(IConfigRegistry configRegistry) {
+				// custom display converter
 				configRegistry.registerConfigAttribute(CellConfigAttributes.DISPLAY_CONVERTER, converter);
 			}
 
@@ -393,6 +435,12 @@ public class TableView extends ASingleTablePerspectiveSWTView implements ILayerL
 		return "Table";
 	}
 
+	/**
+	 * change the formatting precision of numbers, see {@link CustomDisplayConverter#changeMinFractionDigits(int)}
+	 *
+	 * @param delta
+	 *            more/less precision
+	 */
 	public void changeFormattingPrecision(int delta) {
 		if (converter == null)
 			return;
@@ -401,6 +449,8 @@ public class TableView extends ASingleTablePerspectiveSWTView implements ILayerL
 	}
 
 	/**
+	 * sets the selection only mode of this table, i.e. just the selected rows/columns are visible
+	 *
 	 * @param checked
 	 */
 	public void setSelectionOnly(boolean checked) {
@@ -415,7 +465,9 @@ public class TableView extends ASingleTablePerspectiveSWTView implements ILayerL
 	}
 
 	private void showJustSelection() {
-		rowHidder.showAllRows();
+		rowHidder.showAllRows(); // show all by default
+
+		// find out, which rows should be visible
 		Collection<Integer> toKeep = new ArrayList<>();
 		for(Integer id : selection.getRecordSelectionManager().getElements(SelectionType.SELECTION)) {
 			int index = data.indexOfRowObject(id);
@@ -426,7 +478,8 @@ public class TableView extends ASingleTablePerspectiveSWTView implements ILayerL
 				continue;
 			toKeep.add(position);
 		}
-		if (!toKeep.isEmpty()) {
+		if (!toKeep.isEmpty()) { // at least one visible otherwise show all
+			// all - visible = those to hide
 			Set<Integer> all = new HashSet<>(Ranges.closed(rowHidder.getRowPositionByIndex(0),
 					rowHidder.getRowPositionByIndex(data.getRowCount() - 1)).asSet(DiscreteDomains.integers()));
 			all.removeAll(toKeep);
