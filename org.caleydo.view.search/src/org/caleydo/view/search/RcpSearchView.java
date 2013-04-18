@@ -20,7 +20,6 @@
 package org.caleydo.view.search;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -40,6 +39,7 @@ import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.id.IIDTypeMapper;
+import org.caleydo.core.util.base.ILabelHolder;
 import org.caleydo.core.view.CaleydoRCPViewPart;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.eclipse.jface.fieldassist.ControlDecoration;
@@ -67,9 +67,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
-import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
@@ -85,7 +85,7 @@ import com.google.common.collect.Sets;
  *
  * @author Marc Streit and Samuel Gratzl
  */
-public class RcpSearchView extends CaleydoRCPViewPart {
+public final class RcpSearchView extends CaleydoRCPViewPart {
 	public static final String VIEW_TYPE = "org.caleydo.view.search";
 
 	private Composite root;
@@ -112,6 +112,13 @@ public class RcpSearchView extends CaleydoRCPViewPart {
 	 * marker decoration for nothing found
 	 */
 	private ControlDecoration nothingFound;
+
+	private static final Comparator<ILabelHolder> byLabel = new Comparator<ILabelHolder>() {
+		@Override
+		public int compare(ILabelHolder o1, ILabelHolder o2) {
+			return String.CASE_INSENSITIVE_ORDER.compare(o1.getLabel(), o2.getLabel());
+		}
+	};
 
 	@Override
 	public void createPartControl(Composite parent) {
@@ -144,7 +151,13 @@ public class RcpSearchView extends CaleydoRCPViewPart {
 		searchText.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
-				searchText.selectAll();
+				e.display.asyncExec(new Runnable() {
+					@Override
+					public void run() {
+						System.out.println("gained");
+						searchText.selectAll();
+					}
+				});
 			}
 		});
 
@@ -198,51 +211,95 @@ public class RcpSearchView extends CaleydoRCPViewPart {
 
 	private void createFilterGroup(Composite composite) {
 		Group group = new Group(composite, SWT.SHADOW_ETCHED_IN);
-		group.setLayout(new RowLayout());
+		group.setLayout(new RowLayout(SWT.VERTICAL));
 		group.setText("Search filter");
 
-		Collection<IDCategory> categories = IDCategory.getAllRegisteredIDCategories();
-		for (IDCategory cat : categories) {
-			for (IDType type : cat.getIdTypes()) {
-				if (type.isInternalType())
-					continue;
-				Button b = new Button(group, SWT.CHECK);
-				b.setText(type.getTypeName());
-				b.setData(type);
-				b.setSelection(true); // by default search all
-				this.searchWithinIDType.add(b);
+		// split in multiple idtypes and single ones
+		List<Collection<IDType>> multiple = new ArrayList<>();
+		List<IDType> single = new ArrayList<>();
+
+		for (IDCategory cat : IDCategory.getAllRegisteredIDCategories()) {
+			List<IDType> publics = cat.getPublicIdTypes();
+			if (publics.isEmpty()) continue;
+			if (publics.size() == 1)
+				single.add(publics.get(0));
+			else
+				multiple.add(publics);
+		}
+		// the more the better for multiple
+		Collections.sort(multiple, new Comparator<Collection<IDType>>() {
+			@Override
+			public int compare(Collection<IDType> o1, Collection<IDType> o2) {
+				int r = o2.size() - o1.size();
+				if (r == 0) {
+					// same size use the name
+					return String.CASE_INSENSITIVE_ORDER.compare(
+							o1.iterator().next().getIDCategory().getCategoryName(), o2.iterator().next()
+									.getIDCategory().getCategoryName());
+				}
+				return r;
+			}
+		});
+		for (Collection<IDType> types : multiple) {
+			Composite row = new Composite(group, SWT.NONE);
+			row.setLayout(new RowLayout());
+
+			// create a select all/none category button
+			final IDCategory cat = types.iterator().next().getIDCategory();
+			final Button b = new Button(row, SWT.CHECK);
+			b.setText(cat.getCategoryName());
+			b.setSelection(true); // by default search all
+			//a button for selecting all/none of a category
+			b.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					boolean selected = b.getSelection();
+					for(Button btype : searchWithinIDType) {
+						if (((IDType)btype.getData()).getIDCategory() == cat)
+							btype.setSelection(selected);
+					}
+					super.widgetSelected(e);
+				}
+			});
+			Label l = new Label(row, SWT.NONE);
+			l.setText(": ");
+
+			for (IDType type : types) {
+				this.searchWithinIDType.add(createCheckIDType(row, type));
+			}
+		}
+
+		Collections.sort(single, new Comparator<IDType>() {
+			@Override
+			public int compare(IDType o1, IDType o2) {
+				return String.CASE_INSENSITIVE_ORDER.compare(
+							o1.getTypeName(),o2.getTypeName());
+			}
+		});
+		{
+			Composite row = new Composite(group, SWT.NONE);
+			row.setLayout(new RowLayout());
+			for (IDType type : single) {
+				this.searchWithinIDType.add(createCheckIDType(row, type));
 			}
 		}
 		group.pack();
 	}
 
+	private Button createCheckIDType(Composite group, IDType type) {
+		Button b = new Button(group, SWT.CHECK);
+		b.setText(type.getTypeName());
+		b.setData(type);
+		b.setSelection(true); // by default search all
+		return b;
+	}
+
 	private void search(String query) {
-		final Pattern pattern = Pattern.compile(query, Pattern.CASE_INSENSITIVE);
-		Predicate<Object> searchQuery = new Predicate<Object>() {
-			@Override
-			public boolean apply(Object in) {
-				return in != null && pattern.matcher(in.toString()).matches();
-			}
-		};
-		com.google.common.collect.Table<IDCategory, IDType, Set<?>> result = HashBasedTable.create();
-		for (Button b : searchWithinIDType) {
-			if (!b.getSelection())
-				continue;
-			IDType idType = (IDType) b.getData();
-
-			IDMappingManager mappingManager = IDMappingManagerRegistry.get()
-					.getIDMappingManager(idType.getIDCategory());
-
-			Set<?> ids = mappingManager.getAllMappedIDs(idType);
-			ids = new HashSet<>(Sets.filter(ids, searchQuery));
-			if (ids.isEmpty())
-				continue;
-			result.put(idType.getIDCategory(), idType, ids);
-		}
-
-		//one table per category
+		// delete old results
 		for (Control c : results.getChildren())
 			c.dispose();
+
+		com.google.common.collect.Table<IDCategory, IDType, Set<?>> result = searchImpl(query);
 
 		if (result.isEmpty()) {
 			nothingFound.show();
@@ -258,16 +315,66 @@ public class RcpSearchView extends CaleydoRCPViewPart {
 					return o1.getValue().size() - o2.getValue().size();
 				}
 			});
+
+			// create table per category
 			for (Map.Entry<IDCategory, Map<IDType, Set<?>>> entry : entries) {
 				createResultTable(results, entry.getKey(), entry.getValue());
 			}
 		}
+
+		// update layouts
 		results.layout();
 		resultsScrolled.setMinSize(results.computeSize(SWT.DEFAULT, SWT.DEFAULT));
-
-		System.out.println(result);
 	}
 
+	/**
+	 * implements the search logic
+	 *
+	 * @param query
+	 * @return a table containing all matching id types and their matching ids
+	 */
+	private com.google.common.collect.Table<IDCategory, IDType, Set<?>> searchImpl(String query) {
+		// compile to regex and create a predicate out of it
+		final Pattern pattern = Pattern.compile(query, Pattern.CASE_INSENSITIVE);
+		Predicate<Object> searchQuery = new Predicate<Object>() {
+			@Override
+			public boolean apply(Object in) {
+				return in != null && pattern.matcher(in.toString()).matches();
+			}
+		};
+
+		com.google.common.collect.Table<IDCategory, IDType, Set<?>> result = HashBasedTable.create();
+
+		for (Button b : searchWithinIDType) {
+			if (!b.getSelection()) // not selected skip
+				continue;
+
+			IDType idType = (IDType) b.getData();
+
+			// find all ids and check the predicate
+			IDMappingManager mappingManager = IDMappingManagerRegistry.get()
+					.getIDMappingManager(idType.getIDCategory());
+
+			Set<?> ids = mappingManager.getAllMappedIDs(idType);
+			ids = new HashSet<>(Sets.filter(ids, searchQuery));
+			if (ids.isEmpty())
+				continue;
+			result.put(idType.getIDCategory(), idType, ids);
+		}
+		return result;
+	}
+
+	/**
+	 * creates out of search result a swt table
+	 *
+	 * @param composite
+	 *            parent
+	 * @param category
+	 *            the theme of the table
+	 * @param foundIdTypes
+	 *            all idtypes and ids of this category
+	 * @return the root element created
+	 */
 	private Group createResultTable(Composite composite, IDCategory category, final Map<IDType, Set<?>> foundIdTypes) {
 		Group group = new Group(results, SWT.SHADOW_ETCHED_IN);
 		group.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
@@ -280,12 +387,15 @@ public class RcpSearchView extends CaleydoRCPViewPart {
 		viewer.getTable().setLayoutData(new GridData(GridData.FILL_BOTH));
 		viewer.setContentProvider(ArrayContentProvider.getInstance());
 
+		// get a list of relevant datadomains i.e. perspectives
 		List<Perspective> perspectives = findRelevantPerspectives(category);
+
+		// convert the abstract data to result rows
 		List<ResultRow> rows = createResultRows(category, foundIdTypes, perspectives);
 
 		viewer.setInput(rows);
 
-		// prepare the data such that everything will be unified to their primary IDs
+		// add columns for every perspective
 		final Color ddColor = Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_BACKGROUND);
 		for (final Perspective perspective : perspectives) {
 			TableViewerColumn col = createTableColumn(viewer, perspective.getDataDomain().getLabel());
@@ -304,6 +414,7 @@ public class RcpSearchView extends CaleydoRCPViewPart {
 				}
 			});
 		}
+
 		// lets order the IDTypes according to their name
 		List<IDType> types = new ArrayList<>(category.getPublicIdTypes());
 		Collections.sort(types, new Comparator<IDType>() { // by name
@@ -313,6 +424,7 @@ public class RcpSearchView extends CaleydoRCPViewPart {
 			}
 		});
 
+		// add columns for every public type
 		for (final IDType type : types) {
 			TableViewerColumn col = createTableColumn(viewer, type.getTypeName());
 
@@ -337,9 +449,21 @@ public class RcpSearchView extends CaleydoRCPViewPart {
 	}
 
 
+	/**
+	 * converts the abstract search results into a list of {@link ResultRow}s
+	 *
+	 * @param category
+	 * @param foundIdTypes
+	 *            search hits
+	 * @param perspectives
+	 *            the relevant perspectives for preparing its data
+	 * @return
+	 */
 	private List<ResultRow> createResultRows(IDCategory category, Map<IDType, Set<?>> foundIdTypes,
 			List<Perspective> perspectives) {
+
 		Map<Object, ResultRow> result = new TreeMap<>();
+
 		final IDType primary = category.getPrimaryMappingType();
 		final IDMappingManager idMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(category);
 
@@ -347,6 +471,7 @@ public class RcpSearchView extends CaleydoRCPViewPart {
 		for (Map.Entry<IDType, Set<?>> entry : foundIdTypes.entrySet()) {
 			IDType idType = entry.getKey();
 			IIDTypeMapper<Object, Object> mapper = idMappingManager.getIDTypeMapper(idType, primary);
+
 			for (Object id : entry.getValue()) {
 				Set<Object> pids = mapper.apply(id);
 				for (Object pid : pids) {
@@ -369,11 +494,11 @@ public class RcpSearchView extends CaleydoRCPViewPart {
 		return data;
 	}
 
-	protected void addMissing(final IDType primary, final IDMappingManager idMappingManager, List<ResultRow> data,
+	private void addMissing(final IDType primary, final IDMappingManager idMappingManager, List<ResultRow> data,
 			IDType idType) {
 		IIDTypeMapper<Object, Object> mapper = null;
 		for (ResultRow row : data) {
-			if (row.has(idType))
+			if (row.has(idType)) // already there
 				continue;
 			if (mapper == null) {// lazy for better performance
 				mapper = idMappingManager.getIDTypeMapper(primary, idType);
@@ -385,7 +510,7 @@ public class RcpSearchView extends CaleydoRCPViewPart {
 		}
 	}
 
-	protected TableViewerColumn createTableColumn(TableViewer viewer, String name) {
+	private TableViewerColumn createTableColumn(TableViewer viewer, String name) {
 		TableViewerColumn col = new TableViewerColumn(viewer, SWT.NONE);
 		TableColumn coll = col.getColumn();
 		coll.setText(name);
@@ -395,7 +520,13 @@ public class RcpSearchView extends CaleydoRCPViewPart {
 		return col;
 	}
 
-	protected List<Perspective> findRelevantPerspectives(IDCategory category) {
+	/**
+	 * find the relevant perspectives that have an {@link IDType} of the given {@link IDCategory}
+	 *
+	 * @param category
+	 * @return
+	 */
+	private List<Perspective> findRelevantPerspectives(IDCategory category) {
 		List<ATableBasedDataDomain> dataDomains = new ArrayList<>(DataDomainManager.get().getDataDomainsByType(
 				ATableBasedDataDomain.class));
 
@@ -407,13 +538,7 @@ public class RcpSearchView extends CaleydoRCPViewPart {
 			if (dd.getDimensionIDCategory() == category)
 				dataDomainPerspectives.add(dd.getTable().getDefaultDimensionPerspective());
 		}
-		Collections.sort(dataDomainPerspectives, new Comparator<Perspective>() { // by name
-					@Override
-					public int compare(Perspective o1, Perspective o2) {
-						return String.CASE_INSENSITIVE_ORDER.compare(o1.getDataDomain().getLabel(), o2.getDataDomain()
-								.getLabel());
-					}
-				});
+		Collections.sort(dataDomainPerspectives, byLabel);
 		return dataDomainPerspectives;
 	}
 
@@ -571,40 +696,6 @@ public class RcpSearchView extends CaleydoRCPViewPart {
 		// }
 		// });
 
-	}
-
-	@SuppressWarnings(value = { "unchecked" })
-	public static void sortTable(Table table, int iColumnIndex) {
-		if (table == null || table.getColumnCount() <= 1)
-			return;
-		if (iColumnIndex < 0 || iColumnIndex >= table.getColumnCount())
-			throw new IllegalArgumentException("The specified column does not exits. ");
-
-		final int colIndex = iColumnIndex;
-		Comparator comparator = new Comparator() {
-			@Override
-			public int compare(Object o1, Object o2) {
-				return ((TableItem) o1).getText(colIndex).compareTo(((TableItem) o2).getText(colIndex));
-			}
-
-			@Override
-			public boolean equals(Object obj) {
-				return false;
-			}
-		};
-
-		TableItem[] tableItems = table.getItems();
-		Arrays.sort(tableItems, comparator);
-
-		for (int i = 0; i < tableItems.length; i++) {
-			TableItem item = new TableItem(table, SWT.NULL);
-			for (int j = 0; j < table.getColumnCount(); j++) {
-				item.setText(j, tableItems[i].getText(j));
-				item.setImage(j, tableItems[i].getImage(j));
-				item.setData(tableItems[i].getData());
-			}
-			tableItems[i].dispose();
-		}
 	}
 
 	@Override

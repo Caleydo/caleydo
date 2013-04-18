@@ -17,10 +17,9 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.search.command.handler;
+package org.caleydo.view.search;
 
 import org.caleydo.core.gui.command.AOpenViewHandler;
-import org.caleydo.view.search.RcpSearchView;
 
 public class OpenSearchHandler extends AOpenViewHandler {
 	public OpenSearchHandler() {

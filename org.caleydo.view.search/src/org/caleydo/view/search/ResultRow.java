@@ -34,9 +34,17 @@ import org.caleydo.core.id.IDType;
  */
 public final class ResultRow {
 
+	/**
+	 * the id of the primary {@link IDType}
+	 */
 	private final Object pid;
+
 	private final IDType primary;
+
 	private final Map<IDType, Object> values = new HashMap<>();
+	/**
+	 * marker that the query matches the given {@link IDType}
+	 */
 	private final Set<IDType> found = new HashSet<>();
 
 	public ResultRow(IDType primary, Object pid) {

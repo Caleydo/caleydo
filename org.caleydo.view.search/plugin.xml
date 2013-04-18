@@ -30,7 +30,7 @@
    <extension
          point="org.eclipse.ui.commands">
       <command
-            defaultHandler="org.caleydo.view.search.command.handler.OpenSearchHandler"
+            defaultHandler="org.caleydo.view.search.OpenSearchHandler"
             id="org.caleydo.view.search.command.opensearch"
             name="Search">
       </command>
