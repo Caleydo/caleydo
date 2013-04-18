@@ -22,21 +22,33 @@ package org.caleydo.view.search;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.regex.Pattern;
 
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.datadomain.DataDomainManager;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
+import org.caleydo.core.id.IIDTypeMapper;
 import org.caleydo.core.view.CaleydoRCPViewPart;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.eclipse.jface.fieldassist.ControlDecoration;
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.KeyAdapter;
@@ -45,16 +57,20 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.ISharedImages;
@@ -65,39 +81,57 @@ import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Sets;
 
 /**
- * Search view contains gene and pathway search.
+ * Search view for any id in the system
  *
  * @author Marc Streit and Samuel Gratzl
  */
 public class RcpSearchView extends CaleydoRCPViewPart {
 	public static final String VIEW_TYPE = "org.caleydo.view.search";
 
-	private Composite composite;
+	private Composite root;
 
+	/**
+	 * text select for the query
+	 */
 	private Text searchText;
+	/**
+	 * set of checkbox buttons for different id typess
+	 */
 	private final List<Button> searchWithinIDType = new ArrayList<>();
+	/**
+	 * container for all the results
+	 */
+	private Composite results;
 
-	private Group resultsGroup;
+	/**
+	 * {@link #results} {@link ScrolledComposite}
+	 */
+	private ScrolledComposite resultsScrolled;
 
-	private TableViewer resultTable;
-
+	/**
+	 * marker decoration for nothing found
+	 */
+	private ControlDecoration nothingFound;
 
 	@Override
 	public void createPartControl(Composite parent) {
-		composite = new Composite(parent, SWT.NONE);
-		composite.setLayout(new GridLayout(1, false));
+		this.root = new Composite(parent, SWT.NONE);
+		root.setLayout(new GridLayout(1, false));
 
-		createSearchGroup(composite);
-		createFilterGroup(composite);
+		createSearchGroup(root);
+		createFilterGroup(root);
 
-		resultsGroup = new Group(composite, SWT.NULL);
-		// resultsGroup.setText("Search results");
-		resultsGroup.setLayout(new GridLayout(1, false));
-		resultsGroup.setLayoutData(new GridData(GridData.FILL_BOTH));
-		// addGeneContextMenu();
-		// addResultsContent(resultsGroup);
+		this.resultsScrolled = new ScrolledComposite(root, SWT.H_SCROLL | SWT.V_SCROLL);
+		resultsScrolled.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		resultsScrolled.setExpandVertical(true);
+		resultsScrolled.setExpandHorizontal(true);
 
-		composite.layout();
+		results = new Composite(resultsScrolled, SWT.NONE);
+		results.setLayout(new GridLayout(1, false));
+
+		resultsScrolled.setContent(results);
+
+		root.layout();
 	}
 
 	private void createSearchGroup(Composite composite) {
@@ -122,10 +156,17 @@ public class RcpSearchView extends CaleydoRCPViewPart {
 		dec.setImage(PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_DEC_FIELD_WARNING));
 		dec.setShowOnlyOnFocus(true);
 		dec.hide();
+
+		this.nothingFound = new ControlDecoration(searchText, SWT.TOP | SWT.LEFT);
+		nothingFound.setImage(PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_DEC_FIELD_ERROR));
+		nothingFound.setShowOnlyOnFocus(false);
+		nothingFound.setDescriptionText("No Entries were found matching your query");
+		nothingFound.hide();
+
 		searchText.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
-				if (searchText.getText().length() > 3) {
+				if (searchText.getText().length() >= 3) {
 					dec.hide();
 					searchButton.setEnabled(true);
 				} else {
@@ -199,176 +240,181 @@ public class RcpSearchView extends CaleydoRCPViewPart {
 			result.put(idType.getIDCategory(), idType, ids);
 		}
 
+		//one table per category
+		for (Control c : results.getChildren())
+			c.dispose();
+
+		if (result.isEmpty()) {
+			nothingFound.show();
+			nothingFound.showHoverText("No Entries were found matching your query");
+			return;
+		} else {
+			nothingFound.hide();
+			// order by number of hits
+			List<Map.Entry<IDCategory, Map<IDType, Set<?>>>> entries = new ArrayList<>(result.rowMap().entrySet());
+			Collections.sort(entries, new Comparator<Map.Entry<IDCategory, Map<IDType, Set<?>>>>() {
+				@Override
+				public int compare(Entry<IDCategory, Map<IDType, Set<?>>> o1, Entry<IDCategory, Map<IDType, Set<?>>> o2) {
+					return o1.getValue().size() - o2.getValue().size();
+				}
+			});
+			for (Map.Entry<IDCategory, Map<IDType, Set<?>>> entry : entries) {
+				createResultTable(results, entry.getKey(), entry.getValue());
+			}
+		}
+		results.layout();
+		resultsScrolled.setMinSize(results.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+
 		System.out.println(result);
 	}
 
-	private void addResultsContent(Composite composite) {
-		// if (true) {
-		//
-		// geneResultsLabel = new Label(composite, SWT.NULL);
-		// geneResultsLabel.setText("Gene results:");
-		//
-		// resultTable = new Table(composite, SWT.BORDER | SWT.FULL_SELECTION | SWT.VIRTUAL);
-		// resultTable.setLinesVisible(true);
-		// resultTable.setHeaderVisible(true);
-		// resultTable.setLayoutData(new GridData(GridData.FILL_BOTH));
-		// addGeneContextMenu();
-		//
-		// String[] titles = new String[5 + geneticDataDomains.size()];
-		// int count = 0;
-		// for (GeneticDataDomain geneticDataDomain : geneticDataDomains) {
-		// titles[count] = geneticDataDomain.getLabel();
-		// count++;
-		// }
-		// titles[count++] = "RefSeq ID";
-		// titles[count++] = "David ID";
-		// titles[count++] = "Entrez Gene ID";
-		// titles[count++] = "Gene Symbol";
-		// titles[count++] = "Gene Name";
-		//
-		// for (int i = 0; i < titles.length; i++) {
-		// TableColumn column = new TableColumn(resultTable, SWT.NONE);
-		// column.setText(titles[i]);
-		// }
-		// }
-		// if ((useGeneSymbol.getSelection() || useGeneDavidID.getSelection() || useGeneEntrezGeneID.getSelection()
-		// || useGeneName.getSelection() || useGeneRefSeqID.getSelection())) {
-		//
-		// horizontalSeparator = new Label(composite, SWT.SEPARATOR | SWT.HORIZONTAL);
-		// GridData data = new GridData(GridData.FILL_HORIZONTAL);
-		// data.heightHint = 20;
-		// horizontalSeparator.setLayoutData(data);
-		// }
+	private Group createResultTable(Composite composite, IDCategory category, final Map<IDType, Set<?>> foundIdTypes) {
+		Group group = new Group(results, SWT.SHADOW_ETCHED_IN);
+		group.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+		group.setLayout(new GridLayout(1, true));
+		group.setText(category.getCategoryName());
 
-		// composite.pack();
-		composite.layout();
+		TableViewer viewer = new TableViewer(group, SWT.BORDER | SWT.FULL_SELECTION | SWT.VIRTUAL);
+		viewer.getTable().setLinesVisible(true);
+		viewer.getTable().setHeaderVisible(true);
+		viewer.getTable().setLayoutData(new GridData(GridData.FILL_BOTH));
+		viewer.setContentProvider(ArrayContentProvider.getInstance());
+
+		List<Perspective> perspectives = findRelevantPerspectives(category);
+		List<ResultRow> rows = createResultRows(category, foundIdTypes, perspectives);
+
+		viewer.setInput(rows);
+
+		// prepare the data such that everything will be unified to their primary IDs
+		final Color ddColor = Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_BACKGROUND);
+		for (final Perspective perspective : perspectives) {
+			TableViewerColumn col = createTableColumn(viewer, perspective.getDataDomain().getLabel());
+			col.getColumn().setAlignment(SWT.CENTER);
+			col.setLabelProvider(new ColumnLabelProvider() {
+				@Override
+				public String getText(Object element) {
+					ResultRow row = (ResultRow) element;
+					Object id = row.get(perspective.getIdType());
+					return id == null ? "Not Found" : "Found";
+				}
+
+				@Override
+				public Color getBackground(Object element) {
+					return ddColor;
+				}
+			});
+		}
+		// lets order the IDTypes according to their name
+		List<IDType> types = new ArrayList<>(category.getPublicIdTypes());
+		Collections.sort(types, new Comparator<IDType>() { // by name
+			@Override
+			public int compare(IDType o1, IDType o2) {
+				return String.CASE_INSENSITIVE_ORDER.compare(o1.getTypeName(), o2.getTypeName());
+			}
+		});
+
+		for (final IDType type : types) {
+			TableViewerColumn col = createTableColumn(viewer, type.getTypeName());
+
+			col.setLabelProvider(new ColumnLabelProvider() {
+				@Override
+				public String getText(Object element) {
+					ResultRow row = (ResultRow) element;
+					Object id = row.get(type);
+					return id == null ? "<Not Mapped>" : id.toString();
+				}
+
+				@Override
+				public Color getBackground(Object element) {
+					ResultRow row = (ResultRow) element;
+					boolean found = row.wasFound(type);
+					return found ? Display.getCurrent().getSystemColor(SWT.COLOR_GRAY) : null;
+				}
+			});
+		}
+
+		return group;
 	}
 
-	private void searchForGene(final String searchQuery) {
 
-		// Flush old pathway results
-		// for (TableItem item : resultTable.getItems())
-		// item.dispose();
-		//
-		// Pattern pattern = Pattern.compile(searchQuery, Pattern.CASE_INSENSITIVE);
-		// Matcher regexMatcher;
-		// ArrayList<Integer> davidGeneResults = new ArrayList<Integer>();
-		//
-		// if (useGeneSymbol.getSelection()) {
-		// for (Object sGeneSymbol : geneIDMappingManager.getMap(MappingType.getType(geneSymbolIDType, davidIDType))
-		// .keySet()) {
-		// regexMatcher = pattern.matcher((String) sGeneSymbol);
-		// if (regexMatcher.find())
-		// davidGeneResults.add((Integer) geneIDMappingManager.getID(geneSymbolIDType, davidIDType,
-		// sGeneSymbol));
-		// }
-		// }
-		//
-		// if (useGeneEntrezGeneID.getSelection()) {
-		// for (Object entrezGeneID : geneIDMappingManager.getMap(MappingType.getType(entrez, davidIDType)).keySet()) {
-		// regexMatcher = pattern.matcher(entrezGeneID.toString());
-		// if (regexMatcher.find())
-		// davidGeneResults.add((Integer) geneIDMappingManager.getID(entrez, davidIDType, entrezGeneID));
-		// }
-		// }
-		//
-		// if (useGeneRefSeqID.getSelection()) {
-		// for (Object refSeqMrna : geneIDMappingManager.getMap(MappingType.getType(refseqMrnaIDTYpe, davidIDType))
-		// .keySet()) {
-		// regexMatcher = pattern.matcher((String) refSeqMrna);
-		// if (regexMatcher.find())
-		// davidGeneResults.addAll((Collection<? extends Integer>) geneIDMappingManager.getID(
-		// refseqMrnaIDTYpe, davidIDType, refSeqMrna));
-		// }
-		// }
-		//
-		// if (useGeneName.getSelection()) {
-		// for (Object geneName : geneIDMappingManager.getMap(MappingType.getType(geneNameIDType, davidIDType))
-		// .keySet()) {
-		// regexMatcher = pattern.matcher((String) geneName);
-		// if (regexMatcher.find())
-		// davidGeneResults.add((Integer) geneIDMappingManager.getID(geneNameIDType, davidIDType, geneName));
-		// }
-		// }
-		//
-		// // Fill results in table
-		// for (Integer davidID : davidGeneResults) {
-		// String sRefSeqIDs = "";
-		//
-		// try {
-		// for (Object refSeqID : geneIDMappingManager.<Integer, Set<Object>> getID(davidIDType, refseqMrnaIDTYpe,
-		// davidID)) {
-		// sRefSeqIDs += refSeqID + " ";
-		// }
-		// } catch (NullPointerException npe) {
-		// sRefSeqIDs = "<No Mapping>";
-		// }
-		//
-		// String entrezGeneID = "";
-		// Integer iEntrezGeneID = geneIDMappingManager.getID(davidIDType, entrez, davidID);
-		// if (iEntrezGeneID == null)
-		// entrezGeneID = "<No Mapping>";
-		// else
-		// entrezGeneID = iEntrezGeneID.toString();
-		//
-		// String geneSymbol = geneIDMappingManager.getID(davidIDType, geneSymbolIDType, davidID);
-		// if (geneSymbol == null)
-		// geneSymbol = "<Unknown>";
-		//
-		// String geneName = geneIDMappingManager.getID(davidIDType, geneNameIDType, davidID);
-		// if (geneName == null)
-		// geneName = "<Unknown>";
-		//
-		// ArrayList<String> foundInDataSet = new ArrayList<String>(geneticDataDomains.size());
-		//
-		// for (GeneticDataDomain geneticDataDomain : geneticDataDomains) {
-		// Set<Integer> expressionIndices = geneIDMappingManager.getIDAsSet(davidIDType,
-		// geneticDataDomain.getGeneIDType(), davidID);
-		// if (expressionIndices != null && expressionIndices.size() > 0) {
-		// foundInDataSet.add("Found");
-		// } else
-		// foundInDataSet.add("Not found");
-		// }
-		//
-		// // Determine whether the gene has a valid expression value in the
-		// // current data set
-		//
-		// // h.getExpressionIndicesFromDavid(iDavidID);
-		//
-		// TableItem item = new TableItem(resultTable, SWT.NULL);
-		// for (int dataDomainCount = 0; dataDomainCount < geneticDataDomains.size(); dataDomainCount++) {
-		// item.setText(dataDomainCount, foundInDataSet.get(dataDomainCount));
-		// }
-		// int nrDataDomains = geneticDataDomains.size();
-		// item.setText(nrDataDomains, sRefSeqIDs);
-		// item.setText(nrDataDomains + 1, Integer.toString(davidID));
-		// item.setText(nrDataDomains + 2, entrezGeneID);
-		// item.setText(nrDataDomains + 3, geneSymbol);
-		// item.setText(nrDataDomains + 4, geneName);
-		//
-		// item.setData(davidID);
-		// }
+	private List<ResultRow> createResultRows(IDCategory category, Map<IDType, Set<?>> foundIdTypes,
+			List<Perspective> perspectives) {
+		Map<Object, ResultRow> result = new TreeMap<>();
+		final IDType primary = category.getPrimaryMappingType();
+		final IDMappingManager idMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(category);
 
-		// Sort gene table using the info whether expression data is available
-		// or not.
-		// sortTable(resultTable, 0);
-		//
-		// // Highlight content if it matches the search query
-		// for (int iIndex = 0; iIndex < resultTable.getColumnCount(); iIndex++) {
-		// for (TableItem item : resultTable.getItems()) {
-		// regexMatcher = pattern.matcher(item.getText(iIndex));
-		// if (regexMatcher.find()) {
-		// item.setBackground(iIndex, Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
-		// }
-		// }
-		// }
-		//
-		// for (TableColumn column : resultTable.getColumns())
-		// column.pack();
-		//
-		// resultTable.getColumn(2).setWidth(100);
-		// geneTable.getColumn(4).setWidth(200);
-		// geneTable.getColumn(1).setWidth(300);
+		// first convert every found Id type to its primary value
+		for (Map.Entry<IDType, Set<?>> entry : foundIdTypes.entrySet()) {
+			IDType idType = entry.getKey();
+			IIDTypeMapper<Object, Object> mapper = idMappingManager.getIDTypeMapper(idType, primary);
+			for (Object id : entry.getValue()) {
+				Set<Object> pids = mapper.apply(id);
+				for (Object pid : pids) {
+					if (!result.containsKey(pid))
+						result.put(pid, new ResultRow(primary, pid));
+					result.get(pid).set(idType, id, true);
+				}
+			}
+		}
+
+		List<ResultRow> data = new ArrayList<>(result.values());
+
+		//fill out all missing values
+		for(IDType idType : category.getPublicIdTypes()) {
+			addMissing(primary, idMappingManager, data, idType);
+		}
+		for (Perspective per : perspectives) {
+			addMissing(primary, idMappingManager, data, per.getIdType());
+		}
+		return data;
+	}
+
+	protected void addMissing(final IDType primary, final IDMappingManager idMappingManager, List<ResultRow> data,
+			IDType idType) {
+		IIDTypeMapper<Object, Object> mapper = null;
+		for (ResultRow row : data) {
+			if (row.has(idType))
+				continue;
+			if (mapper == null) {// lazy for better performance
+				mapper = idMappingManager.getIDTypeMapper(primary, idType);
+				if (mapper == null) // nothing to map
+					return;
+			}
+			Set<Object> ids = mapper.apply(row.getPrimaryId());
+			row.set(idType, ids);
+		}
+	}
+
+	protected TableViewerColumn createTableColumn(TableViewer viewer, String name) {
+		TableViewerColumn col = new TableViewerColumn(viewer, SWT.NONE);
+		TableColumn coll = col.getColumn();
+		coll.setText(name);
+		coll.setMoveable(true);
+		coll.setResizable(true);
+		coll.setWidth(100);
+		return col;
+	}
+
+	protected List<Perspective> findRelevantPerspectives(IDCategory category) {
+		List<ATableBasedDataDomain> dataDomains = new ArrayList<>(DataDomainManager.get().getDataDomainsByType(
+				ATableBasedDataDomain.class));
+
+		List<Perspective> dataDomainPerspectives = new ArrayList<>(dataDomains.size());
+		for (ATableBasedDataDomain dd : dataDomains) {
+			if (dd.getRecordIDCategory() == category)
+				dataDomainPerspectives.add(dd.getTable().getDefaultRecordPerspective());
+
+			if (dd.getDimensionIDCategory() == category)
+				dataDomainPerspectives.add(dd.getTable().getDefaultDimensionPerspective());
+		}
+		Collections.sort(dataDomainPerspectives, new Comparator<Perspective>() { // by name
+					@Override
+					public int compare(Perspective o1, Perspective o2) {
+						return String.CASE_INSENSITIVE_ORDER.compare(o1.getDataDomain().getLabel(), o2.getDataDomain()
+								.getLabel());
+					}
+				});
+		return dataDomainPerspectives;
 	}
 
 	private void addGeneContextMenu() {
