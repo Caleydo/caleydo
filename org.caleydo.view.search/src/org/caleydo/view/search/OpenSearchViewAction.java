@@ -25,20 +25,12 @@ import org.eclipse.ui.PlatformUI;
 
 public class OpenSearchViewAction extends SimpleAction {
 
-	public static final String LABEL = "Search";
-	public static final String ICON = "resources/icons/general/search.png";
-
-	/**
-	 * Constructor.
-	 */
 	public OpenSearchViewAction() {
-		super(LABEL, ICON);
+		super("Search", "resources/icons/general/search.png", Activator.getResourceLoader());
 	}
 
 	@Override
 	public void run() {
-		super.run();
-
 		try {
 			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
 					.showView(RcpSearchView.VIEW_TYPE);
