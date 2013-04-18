@@ -19,7 +19,9 @@
  *******************************************************************************/
 package org.caleydo.view.scatterplot;
 
+import org.caleydo.core.gui.toolbar.action.OpenOnlineHelpAction;
 import org.caleydo.core.view.ARcpGLViewPart;
+import org.caleydo.view.scatterplot.toolbar.DataSelectionBarGUI;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -43,6 +45,7 @@ public class RcpGLScatterplotView extends ARcpGLViewPart {
 		view = new GLScatterplot(glCanvas);
 		initializeView();
 		createPartControlGL();
+		
 	}
 
 	@Override
@@ -54,6 +57,19 @@ public class RcpGLScatterplotView extends ARcpGLViewPart {
 	@Override
 	public String getViewGUIID() {
 		return GLScatterplot.VIEW_TYPE;
+	}
+	
+	@Override
+	public void addToolBarContent() {
+
+		// ((GLScatterplot) this.getView()).getRootElement().getTablePerspective()
+		DataSelectionBarGUI toolBarToAdd = new DataSelectionBarGUI((GLScatterplot) this.getView()); 		
+		//((GLScatterplot) this.getView()).setToolbar(toolBarToAdd);
+		toolBarManager.add(toolBarToAdd);
+		//toolBarManager.add(new OpenOnlineHelpAction(
+		//		"http://www.icg.tugraz.at/project/caleydo/help/caleydo-2.0/stratomex", true));
+
+		toolBarManager.update(true);
 	}
 
 }

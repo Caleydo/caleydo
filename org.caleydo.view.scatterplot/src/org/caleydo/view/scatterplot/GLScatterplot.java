@@ -69,8 +69,9 @@ import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.view.scatterplot.dialogues.DataSelectionConfiguration;
 import org.caleydo.view.scatterplot.dialogues.DataSelectionDialogue;
-import org.caleydo.view.scatterplot.event.ShowDataSelectionDialogEvent;
+import org.caleydo.view.scatterplot.event.ScatterplotDataSelectionEvent;
 import org.caleydo.view.scatterplot.renderstyle.ScatterplotRenderStyle;
+import org.caleydo.view.scatterplot.toolbar.DataSelectionBarGUI;
 import org.caleydo.view.scatterplot.utils.EDataGenerationType;
 import org.caleydo.view.scatterplot.utils.EVisualizationSpaceType;
 import org.caleydo.view.scatterplot.utils.ScatterplotRenderUtils;
@@ -107,8 +108,23 @@ public class GLScatterplot extends ASingleTablePerspectiveElementView {
 	public static String VIEW_NAME = "Scatterplot";
 	
 	ScatterplotElement rootElement;
+	DataSelectionBarGUI toolbar;
 	
-	
+	public DataSelectionBarGUI getToolbar() {
+		return toolbar;
+	}
+
+
+	public void setToolbar(DataSelectionBarGUI toolbar) {
+		this.toolbar = toolbar;
+	}
+
+
+	public ScatterplotElement getRootElement() {
+		return rootElement;
+	}
+
+
 	public GLScatterplot(IGLCanvas glCanvas) {
 		super(glCanvas, VIEW_TYPE, VIEW_NAME);
 	}
@@ -141,32 +157,21 @@ public class GLScatterplot extends ASingleTablePerspectiveElementView {
 		{
 			rootElement = new ScatterplotElement(tablePerspective);
 			root.setContent(rootElement);
-		}
-			
-		
-		ShowDataSelectionDialogEvent dataSelectionEvent = new ShowDataSelectionDialogEvent(tablePerspective);
-		eventPublisher.triggerEvent(dataSelectionEvent);
+		}		
 	}
 	
 	// View specific event handlers 
 	
 	@ListenTo
-	public void showDataSelectionDialog(final ShowDataSelectionDialogEvent event) {
-		if (rootElement.isDataColumnsSet())
+	public void scatterplotDataSelectionListener(ScatterplotDataSelectionEvent event) {
+		// When multiple instances of the view is open, this is to ensure 
+		// that the data selection signal only propagates into the updated view
+		if (event.getOwnerViewID() != this.getID())
+		{
+			//System.out.println("Event from another view, return!");
 			return;
-		getParentComposite().getDisplay().asyncExec(new Runnable() {
-			@Override
-			public void run() {
-				Shell shell = new Shell(SWT.APPLICATION_MODAL);
-				DataSelectionDialogue dialog = new DataSelectionDialogue(shell, event.getTablePerspective());
-				dialog.create();
-				dialog.setBlockOnOpen(true);
-
-				if (dialog.open() == IStatus.OK) {
-					rootElement.prepareData(dialog.getDataSelectionConf());					
-				}
-			}
-
-		});
+		}
+		rootElement.prepareData(event.getDataSelectionConfiguration());
+		
 	}
 }

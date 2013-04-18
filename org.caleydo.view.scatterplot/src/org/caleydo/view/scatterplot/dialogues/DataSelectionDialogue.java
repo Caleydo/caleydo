@@ -65,8 +65,6 @@ public class DataSelectionDialogue extends TitleAreaDialog {
 	public void create() {
 		super.create();
 		setTitle("Select Data for Scatterplot");
-		
-		
 	}
 
 	@Override

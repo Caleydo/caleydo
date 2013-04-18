@@ -28,7 +28,7 @@ import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.scatterplot.dialogues.DataSelectionConfiguration;
 import org.caleydo.view.scatterplot.dialogues.DataSelectionDialogue;
-import org.caleydo.view.scatterplot.event.ShowDataSelectionDialogEvent;
+import org.caleydo.view.scatterplot.event.ScatterplotDataSelectionEvent;
 import org.caleydo.view.scatterplot.utils.EDataGenerationType;
 import org.caleydo.view.scatterplot.utils.EVisualizationSpaceType;
 import org.caleydo.view.scatterplot.utils.ScatterplotRenderUtils;
@@ -44,6 +44,8 @@ public class ScatterplotElement extends GLElement implements TablePerspectiveSel
 {
 
 	private final TablePerspective tablePerspective;
+
+	
 
 	@DeepScan
 	private final TablePerspectiveSelectionMixin selection;
@@ -65,6 +67,11 @@ public class ScatterplotElement extends GLElement implements TablePerspectiveSel
 	 */
 	private boolean dataColumnsSet = false;
 	
+	/**
+	 * A flag to ensure that no rendering takes place
+	 * when the data is being updated due to a change of data domain (triggered by toolbar)
+	 */
+	private boolean readyForRender = false;
 	
 
 	private ArrayList<ArrayList<Float>> dataColumns;
@@ -78,6 +85,8 @@ public class ScatterplotElement extends GLElement implements TablePerspectiveSel
 		dataColumns = new ArrayList<>();
 		
 		setVisibility(EVisibility.PICKABLE);
+		
+		
 		
 	}
 
@@ -93,7 +102,7 @@ public class ScatterplotElement extends GLElement implements TablePerspectiveSel
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
-		if (!dataColumnsSet)
+		if (!dataColumnsSet | !readyForRender)
 			return;	
 		
 		g.pushResourceLocator(Activator.getResourceLocator());
@@ -109,7 +118,7 @@ public class ScatterplotElement extends GLElement implements TablePerspectiveSel
 
 	@Override
 	protected void renderPickImpl(GLGraphics g, float w, float h) {
-		if (!dataColumnsSet)
+		if (!dataColumnsSet | !readyForRender)
 			return;	
 		
 		g.pushResourceLocator(Activator.getResourceLocator());
@@ -125,6 +134,10 @@ public class ScatterplotElement extends GLElement implements TablePerspectiveSel
 	 */
 	public void prepareData(DataSelectionConfiguration dataSelectionConf)
 	{
+		this.readyForRender = false;
+		System.out.println("Prepare Data called");
+		dataColumns.clear();
+		
 		if (tablePerspective != null & dataSelectionConf != null) {
 			if (tablePerspective.getDataDomain().getTable() instanceof NumericalTable) {
 				//StatContainer statisticsContext = tablePerspective.getContainerStatistics().getHistogram();
@@ -169,9 +182,25 @@ public class ScatterplotElement extends GLElement implements TablePerspectiveSel
 				
 				dataColumns.add(col1);
 				dataColumns.add(col2);
-				this.dataColumnsSet = true;
+				
 				renderUtil = new ScatterplotRenderUtils();
 				renderUtil.PerformDataLoadedOperations(this);
+				
+				// First time the dataset is loaded
+				// also init listeners here
+				if (!this.dataColumnsSet)
+				{
+					this.dataColumnsSet = true;
+					initListeners();
+				}
+				else
+				{
+					
+				}
+				
+				this.readyForRender = true;
+				
+				
 				
 				// Set the active selection manager, either 
 				//activeSelectionManager = selection.getRecordSelectionManager();
@@ -183,7 +212,7 @@ public class ScatterplotElement extends GLElement implements TablePerspectiveSel
 
 		}
 		
-		initListeners();
+		
 	}
 
 	public void initListeners()
@@ -278,6 +307,10 @@ public class ScatterplotElement extends GLElement implements TablePerspectiveSel
 
 	public void setAreDataColumnsSet(boolean dataColumnsSet) {
 		this.dataColumnsSet = dataColumnsSet;
+	}
+	
+	public TablePerspective getTablePerspective() {
+		return tablePerspective;
 	}
 	
 	

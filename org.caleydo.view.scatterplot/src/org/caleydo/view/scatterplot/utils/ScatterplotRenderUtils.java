@@ -20,6 +20,8 @@ import org.caleydo.view.scatterplot.renderstyle.ScatterplotRenderStyle;
 
 public class ScatterplotRenderUtils {
 	
+	
+
 	/**
 	 * minimum value for the x-Axis
 	 */
@@ -53,6 +55,10 @@ public class ScatterplotRenderUtils {
 	
 	
 	private ArrayList<Integer> idList;
+	
+	public ScatterplotRenderUtils() {
+		super();
+	}
 	
 	public void render(GL2 gl, ScatterplotElement scatterplotElement, float width, float height)
 	{		
