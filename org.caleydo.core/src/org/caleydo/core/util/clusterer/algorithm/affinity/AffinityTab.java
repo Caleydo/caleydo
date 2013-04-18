@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -36,7 +36,7 @@ import org.eclipse.swt.widgets.Text;
 
 /**
  * @author alexsb
- * 
+ *
  */
 public class AffinityTab extends AClusterTab {
 
@@ -45,7 +45,7 @@ public class AffinityTab extends AClusterTab {
 	private Text clusterFactorText = null;
 
 	/**
-	 * 
+	 *
 	 */
 	public AffinityTab(TabFolder tabFolder) {
 		super(tabFolder);
@@ -68,61 +68,16 @@ public class AffinityTab extends AClusterTab {
 			}
 		};
 
-		// ModifyListener listenerFloatExperiments = new ModifyListener() {
-		// @Override
-		// public void modifyText(ModifyEvent e) {
-		// valueChangedFloat((Text) e.widget, false);
-		// }
-		// };
-
-		final Label lblClusterFactor = new Label(composite, SWT.SHADOW_ETCHED_IN);
+		final Label lblClusterFactor = new Label(composite, SWT.NONE);
 		lblClusterFactor.setText("Factor for clustering (Range 1-10)");
-		lblClusterFactor.setLayoutData(new GridData(GridData.END, GridData.CENTER, false,
-				false));
+		lblClusterFactor.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
 
-		clusterFactorText = new Text(composite, SWT.SHADOW_ETCHED_IN);
+		clusterFactorText = new Text(composite, SWT.BORDER);
 		clusterFactorText.addModifyListener(listenerFloatGenes);
 		clusterFactorText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		clusterFactorText.setText("1.0");
 		clusterFactorText
 				.setToolTipText("Float value. Range: 1 up to 10. The bigger the value the less clusters will be formed");
-
-		// final Label lblClusterFactorExperiments = new Label(composite,
-		// SWT.SHADOW_ETCHED_IN);
-		// lblClusterFactorExperiments.setText("Factor for clustering experiments");
-		// lblClusterFactorExperiments.setLayoutData(new GridData(GridData.END,
-		// GridData.CENTER,
-		// false, false));
-
-		// clusterFactorExperiments = new Text(composite, SWT.SHADOW_ETCHED_IN);
-		// clusterFactorExperiments.addModifyListener(listenerFloatExperiments);
-		// clusterFactorExperiments.setLayoutData(new
-		// GridData(GridData.FILL_HORIZONTAL));
-		// clusterFactorExperiments.setText("1.0");
-		// clusterFactorExperiments
-		// .setToolTipText("Float value. Range: 1 up to 10. The bigger the value the less clusters will be formed");
-		// clusterFactorExperiments.setEnabled(false);
-
-		// clusterTypeCombo.addSelectionListener(new SelectionAdapter() {
-		// @Override
-		// public void widgetSelected(SelectionEvent e) {
-		// clusterType = clusterTypeCombo.getText();
-		// if (clusterType.equals(typeOptions[0])) {
-		// clusterFactorText.setEnabled(true);
-		// clusterFactorExperiments.setEnabled(false);
-		// }
-		// else if (clusterType.equals(typeOptions[1])) {
-		// clusterFactorText.setEnabled(false);
-		// clusterFactorExperiments.setEnabled(true);
-		// }
-		// else {
-		// clusterFactorText.setEnabled(true);
-		// clusterFactorExperiments.setEnabled(true);
-		// }
-		//
-		// }
-		// });
-
 	}
 
 	private void valueChangedFloat(Text text) {
