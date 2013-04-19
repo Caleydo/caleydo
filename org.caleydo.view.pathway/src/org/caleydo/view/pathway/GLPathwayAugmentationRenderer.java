@@ -37,7 +37,6 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
-import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexShape;
 import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
@@ -83,13 +82,12 @@ public class GLPathwayAugmentationRenderer {
 
 	private PixelGLConverter pixelGLConverter;
 
-	
-	boolean isVisible=true;
-	public void setVisible(boolean visible){
-		this.isVisible=visible;
+	boolean isVisible = true;
+
+	public void setVisible(boolean visible) {
+		this.isVisible = visible;
 	}
-	
-	
+
 	/**
 	 * Constructor.
 	 */
@@ -310,11 +308,6 @@ public class GLPathwayAugmentationRenderer {
 		gl.glPushName(glPathwayView.getPickingManager().getPickingID(glPathwayView.getID(),
 				EPickingType.PATHWAY_ELEMENT_SELECTION.name(), vertexRep.getID()));
 
-		EPathwayVertexShape shape = vertexRep.getShapeType();
-
-		if (shape.equals(EPathwayVertexShape.poly))
-			renderPolyVertex(gl, vertexRep);
-
 		float canvasXPos = pixelGLConverter.getGLWidthForPixelWidth(vertexRep.getCenterX());
 		float canvasYPos = pixelGLConverter.getGLHeightForPixelHeight(vertexRep.getCenterY());
 
@@ -451,9 +444,9 @@ public class GLPathwayAugmentationRenderer {
 		case gene:
 		case enzyme:
 		case other:
-			if(isVisible)
-					renderGeneNode(gl, vertexRep);
-			else{//mask only
+			if (isVisible)
+				renderGeneNode(gl, vertexRep);
+			else {// mask only
 				gl.glEnable(GL.GL_STENCIL_TEST);
 				gl.glColorMask(false, false, false, false);
 				gl.glDisable(GL.GL_DEPTH_TEST);
@@ -467,8 +460,7 @@ public class GLPathwayAugmentationRenderer {
 				gl.glColorMask(true, true, true, true);
 				gl.glEnable(GL.GL_DEPTH_TEST);
 				gl.glEnable(GL.GL_BLEND);
-				
-				
+
 				// Handle selection highlighting of element
 				float[] nodeColor;
 
@@ -494,10 +486,9 @@ public class GLPathwayAugmentationRenderer {
 					gl.glCallList(enzymeNodeDisplayListId);
 
 				}
-				
+
 			}
 
-			
 			break;
 		default:
 			break;
@@ -851,10 +842,6 @@ public class GLPathwayAugmentationRenderer {
 		gl.glColorMask(true, true, true, true);
 		gl.glEnable(GL.GL_DEPTH_TEST);
 		gl.glEnable(GL.GL_BLEND);
-	}
-
-	private void renderPolyVertex(GL2 gl, PathwayVertexRep vertexRep) {
-
 	}
 
 	public void renderPathway(final GL2 gl, final PathwayGraph pathway, boolean bRenderLabels) {

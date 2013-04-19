@@ -67,19 +67,6 @@ public class GLPathwayTextureManager {
 
 		pathwayTexture = PathwayManager.get().getPathwayResourceLoader(type).getTexture(pathwayTexturePath);
 
-		// if (type == EPathwayDatabaseType.BIOCARTA) {
-		// pathwayTexture = PathwayManager.get().getPathwayResourceLoader(EPathwayDatabaseType.BIOCARTA)
-		// .getTexture(pathwayTexturePath);
-		// }
-		// else if (type == EPathwayDatabaseType.KEGG) {
-		// pathwayTexture = PathwayManager.get().getPathwayResourceLoader(EPathwayDatabaseType.KEGG)
-		// .getTexture(pathwayTexturePath);
-		//
-		// }
-		// else {
-		// throw new IllegalStateException("Unknown pathway database " + type);
-		// }
-
 		hashPathwayToTexture.put(pathway, pathwayTexture);
 
 		return pathwayTexture;
@@ -95,8 +82,7 @@ public class GLPathwayTextureManager {
 
 		if (bHighlight) {
 			gl.glColor4f(1f, 0.85f, 0.85f, fTextureTransparency);
-		}
-		else {
+		} else {
 			gl.glColor4f(1f, 1f, 1f, fTextureTransparency);
 		}
 
@@ -124,8 +110,7 @@ public class GLPathwayTextureManager {
 		if (bHighlight) {
 			gl.glColor4f(1, 0, 0, 1);
 			gl.glLineWidth(3);
-		}
-		else {
+		} else {
 			gl.glColor4f(0.5f, 0.5f, 0.5f, 1.0f);
 			gl.glLineWidth(1);
 		}
@@ -140,8 +125,7 @@ public class GLPathwayTextureManager {
 	}
 
 	/**
-	 * Method supports lazy loading of pathway textures if they are not present
-	 * at that time.
+	 * Method supports lazy loading of pathway textures if they are not present at that time.
 	 *
 	 * @param PathwayGraph
 	 * @return Pathway texture

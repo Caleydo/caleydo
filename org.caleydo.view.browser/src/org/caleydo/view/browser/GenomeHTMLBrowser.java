@@ -68,8 +68,7 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements ISelectionHandler 
 	 */
 	public GenomeHTMLBrowser(Composite parentComposite) {
 
-		super(GeneralManager.get().getIDCreator()
-				.createID(ManagedObjectType.VIEW_SWT_BROWSER_GENOME), parentComposite);
+		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.VIEW_SWT_BROWSER_GENOME), parentComposite);
 
 		geneIDCategory = IDCategory.getIDCategory(EGeneIDTypes.GENE.name());
 		registerEventListeners();
@@ -81,8 +80,7 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements ISelectionHandler 
 
 		super.draw();
 
-		final Combo comboQueryDatabaseType = new Combo(subContributionComposite,
-				SWT.READ_ONLY);
+		final Combo comboQueryDatabaseType = new Combo(subContributionComposite, SWT.READ_ONLY);
 		comboQueryIDType = new Combo(subContributionComposite, SWT.READ_ONLY);
 
 		String storedDatabase = generalManager.getPreferenceStore().getString(
@@ -112,10 +110,6 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements ISelectionHandler 
 			if (browserQueryType == BrowserQueryType.KEGG_HomoSapiens)
 				comboQueryDatabaseType.select(4);
 
-			comboQueryDatabaseType.add(BrowserQueryType.BioCarta_HomoSapiens.getTitle());
-			if (browserQueryType == BrowserQueryType.BioCarta_HomoSapiens)
-				comboQueryDatabaseType.select(5);
-
 		} else if (organism == Organism.MUS_MUSCULUS) {
 			// comboQueryDatabaseType.add(BrowserQueryType.Ensembl_MusMusculus.getTitle());
 			// if (browserQueryType == BrowserQueryType.Ensembl_MusMusculus)
@@ -124,18 +118,13 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements ISelectionHandler 
 			comboQueryDatabaseType.add(BrowserQueryType.KEGG_MusMusculus.getTitle());
 			if (browserQueryType == BrowserQueryType.KEGG_MusMusculus)
 				comboQueryDatabaseType.select(4);
-
-			comboQueryDatabaseType.add(BrowserQueryType.BioCarta_MusMusculus.getTitle());
-			if (browserQueryType == BrowserQueryType.BioCarta_MusMusculus)
-				comboQueryDatabaseType.select(5);
 		}
 
 		comboQueryDatabaseType.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				String sQueryTypeTitle = comboQueryDatabaseType
-						.getItem(comboQueryDatabaseType.getSelectionIndex());
+				String sQueryTypeTitle = comboQueryDatabaseType.getItem(comboQueryDatabaseType.getSelectionIndex());
 
 				for (BrowserQueryType eBrowserQueryType : BrowserQueryType.values()) {
 					if (eBrowserQueryType.getTitle().equals(sQueryTypeTitle)) {
@@ -168,8 +157,8 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements ISelectionHandler 
 					if (selectionDeltaItem.getSelectionType() == SelectionType.SELECTION
 							&& !selectionDeltaItem.isRemove()) {
 
-						IDType targetIDType = IDType.getIDType(comboQueryIDType
-								.getItem(comboQueryIDType.getSelectionIndex()));
+						IDType targetIDType = IDType.getIDType(comboQueryIDType.getItem(comboQueryIDType
+								.getSelectionIndex()));
 
 						sourceIDType = selectionDelta.getIDType();
 						sourceID = selectionDeltaItem.getID();
@@ -186,11 +175,8 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements ISelectionHandler 
 
 	public void changeQueryType(BrowserQueryType eBrowserQueryType) {
 		this.browserQueryType = eBrowserQueryType;
-		GeneralManager
-				.get()
-				.getPreferenceStore()
-				.setValue(PreferenceConstants.BROWSER_QUERY_DATABASE,
-						eBrowserQueryType.name());
+		GeneralManager.get().getPreferenceStore()
+				.setValue(PreferenceConstants.BROWSER_QUERY_DATABASE, eBrowserQueryType.name());
 
 		comboQueryIDType.removeAll();
 		for (String idType : browserQueryType.getQueryIDTypes()) {
@@ -205,8 +191,7 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements ISelectionHandler 
 		if (!sourceIDType.getIDCategory().equals(geneIDCategory))
 			return;
 
-		Set<Object> queryIDs = IDMappingManagerRegistry.get()
-				.getIDMappingManager(targetIDType)
+		Set<Object> queryIDs = IDMappingManagerRegistry.get().getIDMappingManager(targetIDType)
 				.getIDAsSet(sourceIDType, targetIDType, sourceID);
 
 		String sURL = "";
@@ -217,8 +202,7 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements ISelectionHandler 
 		} else {
 			// FIXME: only first found ID is taken - multi mappings are ignored!
 			// How should we handle this?
-			sURL = browserQueryType.getBrowserQueryStringPrefix()
-					+ queryIDs.toArray()[0].toString();
+			sURL = browserQueryType.getBrowserQueryStringPrefix() + queryIDs.toArray()[0].toString();
 			browser.setUrl(sURL);
 		}
 

@@ -45,15 +45,6 @@ public class PathwayListGenerator {
 	public final static String INPUT_IMAGE_PATH_KEGG_MUS_MUSCULUS = "data/images/mmu/";
 	public final static String OUTPUT_FILE_NAME_KEGG_MUS_MUSCULUS = "data/pathway_list_KEGG_mus_musculus.txt";
 
-	// public final static String INPUT_FOLDER_PATH_BIOCARTA =
-	// "cgap.nci.nih.gov/Pathways/BioCarta/";
-	// public final static String INPUT_IMAGE_PATH_BIOCARTA =
-	// "cgap.nci.nih.gov/BIOCARTA/Pathways/";
-	// public final static String OUTPUT_FILE_NAME_BIOCARTA_HOMO_SAPIENS =
-	// "pathway_list_BIOCARTA_homo_sapiens.txt";
-	// public final static String OUTPUT_FILE_NAME_BIOCARTA_MUS_MUSCULUS =
-	// "pathway_list_BIOCARTA_mus_musculus.txt";
-
 	private PrintWriter outputWriter;
 
 	public void run(String sInputFolderPath, String sInputImagePath,
@@ -102,34 +93,7 @@ public class PathwayListGenerator {
 								tmpFile.toString().lastIndexOf(sPathDelimiter) + 1,
 								tmpFile.toString().length() - 4) + ".png";
 			}
-			// find out image path of biocarta pathway - necessary because xml
-			// path != image path
-			else {
-				BufferedReader brFile = new BufferedReader(new FileReader(
-						tmpFile.toString()));
 
-				String sLine = "";
-				try {
-					while ((sLine = brFile.readLine()) != null) {
-						if (sLine.contains("http://cgap.nci.nih.gov/BIOCARTA/Pathways/")) {
-							sImagePath = sLine
-									.substring(
-											sLine.indexOf("http://cgap.nci.nih.gov/BIOCARTA/Pathways/") + 42,
-											sLine.indexOf(
-													".gif",
-													sLine.indexOf("http://cgap.nci.nih.gov/BIOCARTA/Pathways/")) + 4);
-
-							sImagePath = sInputImagePath + sImagePath;
-
-							break;
-						}
-					}
-				} catch (IOException e) {
-					throw new IllegalStateException("Cannot open pathway list file at "
-							+ tmpFile.toString());
-				}
-
-			}
 			ImageIcon img = new ImageIcon(sImagePath);
 			int iWidth = img.getIconWidth();
 			int iHeight = img.getIconHeight();
@@ -157,12 +121,7 @@ public class PathwayListGenerator {
 			pathwayListLoader.run(INPUT_FOLDER_PATH_KEGG_MUS_MUSCULUS,
 					INPUT_IMAGE_PATH_KEGG_MUS_MUSCULUS,
 					OUTPUT_FILE_NAME_KEGG_MUS_MUSCULUS);
-			// pathwayListLoader.run(INPUT_FOLDER_PATH_BIOCARTA,
-			// INPUT_IMAGE_PATH_BIOCARTA,
-			// OUTPUT_FILE_NAME_BIOCARTA_HOMO_SAPIENS);
-			// pathwayListLoader.run(INPUT_FOLDER_PATH_BIOCARTA,
-			// INPUT_IMAGE_PATH_BIOCARTA,
-			// OUTPUT_FILE_NAME_BIOCARTA_MUS_MUSCULUS);
+
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}

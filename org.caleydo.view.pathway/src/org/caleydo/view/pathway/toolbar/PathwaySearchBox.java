@@ -144,8 +144,6 @@ public class PathwaySearchBox extends ControlContribution {
 
 		if (entity.contains(EPathwayDatabaseType.KEGG.getName())) {
 			ePathwayDatabaseType = EPathwayDatabaseType.KEGG;
-		} else if (entity.contains(EPathwayDatabaseType.BIOCARTA.getName())) {
-			ePathwayDatabaseType = EPathwayDatabaseType.BIOCARTA;
 		} else if (entity.contains(EPathwayDatabaseType.WIKIPATHWAYS.getName())) {
 			ePathwayDatabaseType = EPathwayDatabaseType.WIKIPATHWAYS;
 		} else
@@ -161,7 +159,6 @@ public class PathwaySearchBox extends ControlContribution {
 		LoadPathwayEvent event = new LoadPathwayEvent();
 		event.setSender(this);
 		event.setPathwayID(pathway.getID());
-
 
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
 

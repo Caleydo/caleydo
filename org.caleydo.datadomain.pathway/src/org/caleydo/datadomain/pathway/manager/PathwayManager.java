@@ -74,7 +74,6 @@ public class PathwayManager extends AManager<PathwayGraph> {
 	private PathwayParserManager xmlParserManager;
 
 	public IPathwayResourceLoader keggPathwayResourceLoader;
-	public IPathwayResourceLoader biocartaPathwayResourceLoader;
 	public IPathwayResourceLoader wikipathwaysResourceLoader;
 
 	private Map<PathwayGraph, Boolean> hashPathwayToVisibilityState;
@@ -129,9 +128,6 @@ public class PathwayManager extends AManager<PathwayGraph> {
 
 		KgmlSaxHandler kgmlParser = new KgmlSaxHandler();
 		xmlParserManager.registerAndInitSaxHandler(kgmlParser);
-		// BioCartaPathwayImageMapSaxHandler biocartaPathwayParser = new
-		// BioCartaPathwayImageMapSaxHandler();
-		// xmlParserManager.registerAndInitSaxHandler(biocartaPathwayParser);
 	}
 
 	public PathwayDatabase createPathwayDatabase(final EPathwayDatabaseType type, final String XMLPath,
@@ -276,13 +272,6 @@ public class PathwayManager extends AManager<PathwayGraph> {
 
 				keggPathwayResourceLoader = (IPathwayResourceLoader) ce[0].createExecutableExtension("class");
 
-			} else if (type == EPathwayDatabaseType.BIOCARTA) {
-
-				IExtensionPoint ep = reg.getExtensionPoint("org.caleydo.data.pathway.PathwayResourceLoader");
-				IExtension ext = ep.getExtension("org.caleydo.data.pathway.biocarta.BioCartaPathwayResourceLoader");
-				IConfigurationElement[] ce = ext.getConfigurationElements();
-
-				biocartaPathwayResourceLoader = (IPathwayResourceLoader) ce[0].createExecutableExtension("class");
 			} else if (type == EPathwayDatabaseType.WIKIPATHWAYS) {
 
 				IExtensionPoint ep = reg.getExtensionPoint("org.caleydo.data.pathway.PathwayResourceLoader");
@@ -303,8 +292,6 @@ public class PathwayManager extends AManager<PathwayGraph> {
 
 		if (type == EPathwayDatabaseType.KEGG) {
 			return keggPathwayResourceLoader;
-		} else if (type == EPathwayDatabaseType.BIOCARTA) {
-			return biocartaPathwayResourceLoader;
 		} else if (type == EPathwayDatabaseType.WIKIPATHWAYS) {
 			return wikipathwaysResourceLoader;
 		}
@@ -345,17 +332,6 @@ public class PathwayManager extends AManager<PathwayGraph> {
 			}
 
 			generalManager.getSWTGUIManager().setProgressBarTextFromExternalThread("Loading KEGG Pathways...");
-		} else if (pathwayDatabase.getType() == EPathwayDatabaseType.BIOCARTA) {
-
-			if (organism == Organism.HOMO_SAPIENS) {
-				fileName = "data/pathway_list_BIOCARTA_homo_sapiens.txt";
-			} else if (organism == Organism.MUS_MUSCULUS) {
-				fileName = "data/pathway_list_BIOCARTA_mus_musculus.txt";
-			} else {
-				throw new IllegalStateException("Cannot load pathways from organism " + organism);
-			}
-
-			generalManager.getSWTGUIManager().setProgressBarTextFromExternalThread("Loading BioCarta Pathways...");
 		}
 
 		pathwayResourceLoader = PathwayManager.get().getPathwayResourceLoader(pathwayDatabase.getType());
@@ -365,8 +341,7 @@ public class PathwayManager extends AManager<PathwayGraph> {
 
 		try {
 
-			if (pathwayDatabase.getType() == EPathwayDatabaseType.KEGG
-					|| pathwayDatabase.getType() == EPathwayDatabaseType.BIOCARTA)
+			if (pathwayDatabase.getType() == EPathwayDatabaseType.KEGG)
 				file = pathwayResourceLoader.getResource(fileName);
 			else
 				file = GeneralManager.get().getResourceLoader().getResource(fileName);
