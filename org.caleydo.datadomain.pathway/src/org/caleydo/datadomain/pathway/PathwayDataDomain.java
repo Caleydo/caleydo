@@ -61,7 +61,7 @@ import org.eclipse.core.runtime.Status;
 import com.google.common.collect.Lists;
 
 /**
- * The data domain for pathways triggers the loading of the pathways from KEGG and BioCarta.
+ * The data domain for pathways triggers the loading of the pathways from KEGG.
  *
  * @author Marc Streit
  * @author Alexander Lex
@@ -151,14 +151,6 @@ public class PathwayDataDomain extends ADataDomain {
 
 	@Override
 	public void run() {
-
-		// Do not loa
-		// PathwayDatabase pathwayDatabase =
-		// PathwayManager.get().createPathwayDatabase(
-		// EPathwayDatabaseType.BIOCARTA, "data/html/", "data/images/",
-		// "data/html");
-		//
-		// PathwayManager.get().loadPathwaysByType(pathwayDatabase);
 
 		PathwayManager pathwayManager = PathwayManager.get();
 

@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import org.caleydo.core.data.collection.EDataType;
@@ -660,23 +661,27 @@ public class IDMappingManager {
 	 * @return
 	 */
 	public synchronized <K, V> IIDTypeMapper<K, V> getIDTypeMapper(IDType source, IDType destination) {
-		if (source.equals(destination)) {
+		if (source.equals(destination)) { // both are the same so an identity mapping
+			// but for getting all the possible values, lets use the primary value
 			return new IdentityIDTypeMapper<K, V>(source);
 		}
 
 		// first resolve path
-		List<MappingType> path;
+		List<MappingType> path = findPath(source, destination);
+		if (path == null)
+			return null;
+
+		return new IDTypeMapper<>(path, source, destination);
+	}
+
+	protected List<MappingType> findPath(IDType source, IDType destination) {
 		try {
-			path = DijkstraShortestPath.findPathBetween(mappingGraph, source, destination);
+			return DijkstraShortestPath.findPathBetween(mappingGraph, source, destination);
 		} catch (IllegalArgumentException e) {
 			Logger.log(new Status(IStatus.INFO, toString(), "No mapping found between " + source + " and "
 					+ destination));
 			return null;
 		}
-		if (path == null)
-			return null;
-
-		return new IDTypeMapper<>(path, source, destination);
 	}
 
 	public class IDTypeMapper<K, V> implements IIDTypeMapper<K, V> {
@@ -719,7 +724,9 @@ public class IDMappingManager {
 
 				if (keys == null) { // first edge or a single id
 					if (edge.isMultiMap()) {
-						keys = (Set<Object>) ((MultiHashMap<?, ?>) (currentMap)).getAll(currentID);
+						@SuppressWarnings("unchecked")
+						Set<Object> tmp = (Set<Object>) ((MultiHashMap<?, ?>) (currentMap)).getAll(currentID);
+						keys = tmp;
 						if ((keys == null) || (keys.isEmpty()))
 							return null;
 					} else {
@@ -730,6 +737,7 @@ public class IDMappingManager {
 				} else {
 					for (Object key : keys) {
 						if (edge.isMultiMap()) {
+							@SuppressWarnings("unchecked")
 							Set<Object> temp = (Set<Object>) ((MultiHashMap<?, ?>) (currentMap)).getAll(key);
 							if (temp != null)
 								values.addAll(temp);
@@ -752,11 +760,6 @@ public class IDMappingManager {
 			return Collections.singleton((V) currentID);
 		}
 
-		/*
-		 * (non-Javadoc)
-		 *
-		 * @see org.caleydo.core.id.IIDTypeMapper#apply(java.util.Set)
-		 */
 		@Override
 		public Set<V> apply(Iterable<K> sourceIds) {
 			Set<Object> ping = Sets.<Object> newHashSet(sourceIds); // current
@@ -796,12 +799,7 @@ public class IDMappingManager {
 
 		@Override
 		public int hashCode() {
-			final int prime = 31;
-			int result = 1;
-			result = prime * result + getOuterType().hashCode();
-			result = prime * result + ((source == null) ? 0 : source.hashCode());
-			result = prime * result + ((target == null) ? 0 : target.hashCode());
-			return result;
+			return Objects.hash(getOuterType(), source, target);
 		}
 
 		@Override
@@ -816,17 +814,7 @@ public class IDMappingManager {
 			IDTypeMapper other = (IDTypeMapper) obj;
 			if (!getOuterType().equals(other.getOuterType()))
 				return false;
-			if (source == null) {
-				if (other.source != null)
-					return false;
-			} else if (!source.equals(other.source))
-				return false;
-			if (target == null) {
-				if (other.target != null)
-					return false;
-			} else if (!target.equals(other.target))
-				return false;
-			return true;
+			return Objects.equals(source, other.source) && Objects.equals(target, other.target);
 		}
 
 		private IDMappingManager getOuterType() {
@@ -864,18 +852,25 @@ public class IDMappingManager {
 	}
 
 	/**
-	 * Returns all id types registered in this ID Mapping Manager. Consider using {@link IDCategory#getIdTypes()} for a
-	 * list of all registered {@link IDType}s of a category instead.
+	 * returns for the given {@link IDType} all ids that are the starting point of any mapping, i.e. the ids of the
+	 * outgoing edges of the mapping graph
 	 *
-	 * @return
+	 * @param idType
+	 * @return an unmodifiable set of ids
 	 */
-	public synchronized HashSet<IDType> getIDTypes() {
-		HashSet<IDType> idTypes = new HashSet<IDType>();
-		for (MappingType mappingType : hashMappingType2Map.keySet()) {
-			idTypes.add(mappingType.getFromIDType());
-			idTypes.add(mappingType.getToIDType());
+	public Set<?> getAllMappedIDs(IDType idType) {
+		if (!mappingGraph.containsVertex(idType))
+			return Collections.emptySet();
+		Set<MappingType> edges = mappingGraph.outgoingEdgesOf(idType);
+
+		Set<Object> ids = new HashSet<>();
+		for (MappingType edge : edges) {
+			Map<?, ?> currentMap = hashMappingType2Map.get(edge);
+			if (currentMap != null) {
+				ids.addAll(currentMap.keySet());
+			}
 		}
-		return idTypes;
+		return Collections.unmodifiableSet(ids);
 	}
 
 	@Override

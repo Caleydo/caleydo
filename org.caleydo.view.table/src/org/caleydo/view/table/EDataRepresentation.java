@@ -20,8 +20,12 @@
 package org.caleydo.view.table;
 
 /**
- * @author Samuel Gratzl
+ * different modi, which values should be shown
  *
+ * TODO: add the log and log10 mode, but they aren't accessible at the moment
+ *
+ * @author Samuel Gratzl
+ * 
  */
 public enum EDataRepresentation {
 	RAW, NORMALIZED;

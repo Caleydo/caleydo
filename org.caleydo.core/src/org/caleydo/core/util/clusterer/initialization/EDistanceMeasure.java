@@ -32,7 +32,7 @@ public enum EDistanceMeasure {
 	MANHATTAN_DISTANCE("Manhattan Distance"),
 	CHEBYSHEV_DISTANCE("Chebyshev Distance");
 
-	private String name;
+	private final String name;
 
 	/**
 	 *

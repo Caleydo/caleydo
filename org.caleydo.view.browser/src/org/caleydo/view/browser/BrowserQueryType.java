@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,12 +8,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -22,12 +22,10 @@ package org.caleydo.view.browser;
 import java.util.ArrayList;
 
 /**
- * This type is passed to browser to know how to handle the incoming string.
- * Example: For an search on PubMed just an element ID is sent to the browser.
- * Because of the EBrowserQueryType the browser knows that the ID must be
- * attached to the PubMed search string which is stored as member of the type
- * (sQueryStringPrefix).
- * 
+ * This type is passed to browser to know how to handle the incoming string. Example: For an search on PubMed just an
+ * element ID is sent to the browser. Because of the EBrowserQueryType the browser knows that the ID must be attached to
+ * the PubMed search string which is stored as member of the type (sQueryStringPrefix).
+ *
  * @author Marc Streit
  */
 @SuppressWarnings("serial")
@@ -64,14 +62,11 @@ public enum BrowserQueryType {
 					add("ENTREZ_GENE_ID");
 					add("GENE_SYMBOL");
 				}
-			}), GeneCards(
-			"GeneCards",
-			"http://www.genecards.org/cgi-bin/carddisp.pl?gene=",
-			new ArrayList<String>() {
-				{
-					add("GENE_SYMBOL");
-				}
-			}),
+			}), GeneCards("GeneCards", "http://www.genecards.org/cgi-bin/carddisp.pl?gene=", new ArrayList<String>() {
+		{
+			add("GENE_SYMBOL");
+		}
+	});
 	// Ensembl_HomoSapiens(
 	// "Ensembl (homo sapiens)",
 	// "http://www.ensembl.org/Homo_sapiens/Search/Results?species=Homo_sapiens;idx=;q=",
@@ -89,22 +84,6 @@ public enum BrowserQueryType {
 	// add("REFSEQ_MRNA");
 	// }
 	// }),
-	BioCarta_HomoSapiens(
-			"BioCarta (homo sapiens)",
-			"http://cgap.nci.nih.gov/Genes/GeneInfo?ORG=Hs&BCID=",
-			new ArrayList<String>() {
-				{
-					add("BIOCARTA_GENE_ID");
-				}
-			}), BioCarta_MusMusculus(
-			"BioCarta (mus musculus)",
-			"http://cgap.nci.nih.gov/Genes/GeneInfo?ORG=Mm&BCID=",
-			new ArrayList<String>() {
-				{
-					add("BIOCARTA_GENE_ID");
-					add("GENE_SYMBOL");
-				}
-			});
 
 	private String sTitle;
 
@@ -115,8 +94,7 @@ public enum BrowserQueryType {
 	/**
 	 * Constructor.
 	 */
-	BrowserQueryType(String sTitle, String sQueryStringPrefix,
-			ArrayList<String> queryIDTypes) {
+	BrowserQueryType(String sTitle, String sQueryStringPrefix, ArrayList<String> queryIDTypes) {
 		this.queryPrefix = sQueryStringPrefix;
 		this.queryIDTypes = queryIDTypes;
 		this.sTitle = sTitle;

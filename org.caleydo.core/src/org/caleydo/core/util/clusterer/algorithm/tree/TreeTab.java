@@ -67,20 +67,6 @@ public class TreeTab extends AClusterTab {
 				treeClusterAlgo = treeClustererCombo.getText();
 			}
 		});
-
-		// final Combo distMeasureCombo = new Combo(distanceMeasureGroup,
-		// SWT.DROP_DOWN);
-		// distMeasureCombo.setItems(distanceMeasureOptions);
-		// distMeasureCombo.setEnabled(true);
-		// distMeasureCombo.select(0);
-		// distmeasure = distanceMeasureOptions[0];
-		// distMeasureCombo.addSelectionListener(new SelectionAdapter() {
-		// @Override
-		// public void widgetSelected(SelectionEvent e) {
-		// distmeasure = distMeasureCombo.getText();
-		// }
-		// });
-
 	}
 
 	@Override

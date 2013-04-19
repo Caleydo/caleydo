@@ -31,8 +31,8 @@ import org.eclipse.swt.widgets.Composite;
 
 /**
  * a simple eclipse view for presenting the raw values of a table using a {@link NatTable}
- *
- * @author <INSERT_YOUR_NAME>
+ * 
+ * @author Samuel Gratzl and Marc Streit
  */
 public class RcpTableView extends CaleydoRCPViewPart {
 
