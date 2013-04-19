@@ -19,34 +19,28 @@
  *******************************************************************************/
 package org.caleydo.core.util.clusterer.algorithm.kmeans;
 
-import java.io.IOException;
-import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Arrays;
+import java.util.BitSet;
 import java.util.List;
-import java.util.Map;
+import java.util.Random;
 
 import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
-import org.caleydo.core.util.clusterer.ClusterHelper;
-import org.caleydo.core.util.clusterer.algorithm.AClusterer;
+import org.caleydo.core.util.clusterer.algorithm.ALinearClusterer;
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
-import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
-
-import weka.clusterers.ClusterEvaluation;
-import weka.clusterers.SimpleKMeans;
-import weka.core.DistanceFunction;
-import weka.core.EuclideanDistance;
-import weka.core.Instances;
-import weka.core.ManhattanDistance;
+import org.caleydo.core.util.logging.Logger;
 
 /**
- * KMeans clusterer using Weka
+ * KMeans clusterer similar to WEKA ones
  *
- * @author Bernhard Schlegl
+ * @author Samuel Gratzl
+ *
  */
-public class KMeansClusterer extends AClusterer {
+public class KMeansClusterer extends ALinearClusterer {
+	private static final int MAX_ITERATIONS = 1000;
 
-	private final SimpleKMeans clusterer = new SimpleKMeans();
+	private static final Logger log = Logger.create(KMeansClusterer.class);
+
 	private final int numberOfCluster;
 
 	public KMeansClusterer(ClusterConfiguration config, int progressMultiplier, int progressOffset) {
@@ -58,185 +52,225 @@ public class KMeansClusterer extends AClusterer {
 
 	@Override
 	protected PerspectiveInitializationData cluster() {
-		// Arraylist holding clustered indicess
-		List<Integer> indices = new ArrayList<>();
-		// Arraylist holding # of elements per cluster
-		List<Integer> clusterSizes = new ArrayList<>();
-		// Arraylist holding indices of examples (cluster centers)
-		List<Integer> sampleElements = new ArrayList<>();
+		if (progressAndCancel(1, false))
+			return canceled();
 
+		final int nrDimensions = oppositeVA.size();
 
-		// SimpleKMeans only supports Euclidean and Manhattan at that time
-		// if (clusterState.getDistanceMeasure() ==
-		// EDistanceMeasure.CHEBYSHEV_DISTANCE)
-		// distanceMeasure = new ChebyshevDistance();
-		DistanceFunction distanceMeasure = convert(config.getDistanceMeasure());
+		final int[] assignments = new int[va.size()];
+		Arrays.fill(assignments, -1);
 
-		try {
-			clusterer.setNumClusters(numberOfCluster);
-			clusterer.setMaxIterations(1000);
-			if (distanceMeasure != null)
-				clusterer.setDistanceFunction(distanceMeasure);
-		} catch (Exception e) {
-			return error(e);
-		}
+		float[] vector = new float[nrDimensions];
 
-		StringBuilder buffer = new StringBuilder();
+		final List<Cluster> clusters = createClusters(nrSamples);
 
-		buffer.append("@relation test\n\n");
+		int iteration = 0;
+		boolean converged = false;
 
-		int percentage = 1;
+		if (progressAndCancel(10, false))
+			return canceled();
 
-		rename("Determine Similarities for " + getPerspectiveLabel() + " clustering");
+		// progress scale
+		final float scale = (80.f - 10.f) / MAX_ITERATIONS;
 
-		int iNrElements = va.size();
+		for (; !converged && iteration < MAX_ITERATIONS; ++iteration) {
+			converged = true;
 
-		if (numberOfCluster >= iNrElements)
-			return null;
+			for(Cluster c : clusters) {
+				c.prepareRound();
+			}
 
-		for (int nr = 0; nr < oppositeVA.size(); nr++) {
-			buffer.append("@attribute Attr" + nr + " real\n");
-		}
+			for(int i = 0; i < assignments.length; ++i) {
+				Integer vid = va.get(i);
+				vector = fillVector(vector,vid);
+				int best = -1;
+				// find best matching cluster
+				float distance = Float.POSITIVE_INFINITY;
+				for (Cluster cluster : clusters) {
+					float dc = cluster.distance(vid, vector);
+					if (dc < distance) {
+						best = cluster.index;
+						distance = dc;
+					}
+				}
+				// update cluster assignment
+				if (assignments[i] != best) {
+					converged = false;
+					assignments[i] = best;
+				}
 
-		buffer.append("@data\n");
+			}
 
-		int icnt = 0;
-		for (Integer vaID : va) {
-			if (isClusteringCanceled)
+			for(Cluster c : clusters)
+				c.prepareMoving();
+
+			// update cluster positions
+			for(int i = 0; i < assignments.length; ++i) {
+				int best = assignments[i];
+				Integer vid = va.get(i);
+				vector = fillVector(vector,vid);
+				clusters.get(best).add(vector);
+			}
+
+			if (progressAndCancel(10 + Math.round(scale * iteration), false))
 				return canceled();
-
-			int tempPercentage = (int) ((float) icnt / va.size() * 100);
-			if (percentage == tempPercentage) {
-				progress(percentage, false);
-				percentage++;
-			}
-
-			for (Integer oppositeID : oppositeVA) {
-				buffer.append(getNormalizedValue(vaID, oppositeID) + ", ");
-			}
-			buffer.append("\n");
-			icnt++;
-
-			eventListeners.processEvents();
-		}
-		progressScaled(25);
-
-		rename("KMeans clustering of " + getPerspectiveLabel() + " in progress");
-
-		Instances data = null;
-
-		// System.out.println(buffer.toString());
-
-		try {
-			data = new Instances(new StringReader(buffer.toString()));
-		} catch (IOException e) {
-			return error(e);
 		}
 
-		progress(10, false);
 
-		try {
-			// train the clusterer
-			clusterer.buildClusterer(data);
-		} catch (Exception e) {
-			return error(e);
-		}
+		// final stop moving
+		for (Cluster c : clusters)
+			c.stopMoving();
 
-		eventListeners.processEvents();
-		if (isClusteringCanceled) {
+		if (progressAndCancel(80, false))
 			return canceled();
+
+		// normalize the cluster indices and assignments and compute the representative indices
+		List<Integer> clusterSamples = transformClusters(assignments, clusters);
+
+		return postProcess(assignments, clusterSamples);
+	}
+
+
+
+	/**
+	 * transforms the clusters and assignments such that they have the format for the {@link #postProcess(int[], List)}
+	 *
+	 * @param assignments
+	 * @param clusters
+	 * @return the sample id represents of the clusters
+	 */
+	private List<Integer> transformClusters(final int[] assignments, List<Cluster> clusters) {
+
+		int[] lookup = new int[numberOfCluster];
+		int c = 0; // number of real clusters
+		List<Integer> clusterSamples = new ArrayList<>();
+		for (Cluster cluster : clusters) {
+			if (cluster.isEmpty())
+				continue;
+			c++;
+			lookup[cluster.index] = cluster.sampleId;
+			clusterSamples.add(cluster.sampleId);
 		}
-		progress(45, false);
-
-		ClusterEvaluation eval = new ClusterEvaluation();
-		eval.setClusterer(clusterer); // the cluster to evaluate
-		try {
-			eval.evaluateClusterer(data);
-		} catch (Exception e) {
-			return error(e);
+		// we had empty ones
+		if (c < numberOfCluster) {
+			log.warn((numberOfCluster - c) + " empty clusters");
 		}
-		eventListeners.processEvents();
-		if (isClusteringCanceled) {
-			return canceled();
-		}
-		progress(60, false);
-
-		double[] ClusterAssignments = eval.getClusterAssignments();
-
-		for (int i = 0; i < numberOfCluster; i++) {
-			clusterSizes.add(0);
-		}
-
-		// System.out.println(eval.getNumClusters());
-		// System.out.println(data.numAttributes());
-		// System.out.println(data.numInstances());
-
-		for (int cluster = 0; cluster < numberOfCluster; cluster++) {
-			for (int i = 0; i < data.numInstances(); i++) {
-				if (ClusterAssignments[i] == cluster) {
-					sampleElements.add(i);
-					break;
-				}
-			}
-		}
-		eventListeners.processEvents();
-		if (isClusteringCanceled) {
-			return canceled();
-		}
-		progress(80, false);
-
-		Map<Integer, Integer> hashExamples = new HashMap<Integer, Integer>();
-
-		int cnt = 0;
-		for (int example : sampleElements) {
-			hashExamples.put(example, cnt);
-			cnt++;
-		}
-
-		// Sort cluster depending on their color values
-		// TODO find a better solution for sorting
-		ClusterHelper.sortClusters(table, config.getSourceRecordPerspective().getVirtualArray(), config
-				.getSourceDimensionPerspective().getVirtualArray(), sampleElements, config.getClusterTarget());
-
-		for (int cluster : sampleElements) {
-			for (int i = 0; i < data.numInstances(); i++) {
-				if (ClusterAssignments[i] == hashExamples.get(cluster)) {
-					indices.add(va.get(i));
-					clusterSizes.set(hashExamples.get(cluster), clusterSizes.get(hashExamples.get(cluster)) + 1);
-				}
-			}
-		}
-
-		PerspectiveInitializationData tempResult = new PerspectiveInitializationData();
-		tempResult.setData(indices, clusterSizes, sampleElements);
-
-		progressScaled(50);
-
-		return tempResult;
+		// map assignment data
+		for (int i = 0; i < assignments.length; ++i)
+			assignments[i] = lookup[assignments[i]];
+		return clusterSamples;
 	}
 
 	/**
-	 * @param distanceMeasure
+	 * initial random create of clusters and cluster centers
+	 *
+	 * @param nrSamples
 	 * @return
 	 */
-	private static DistanceFunction convert(EDistanceMeasure measure) {
-		switch (measure) {
-		case MANHATTAN_DISTANCE:
-			return new ManhattanDistance();
-		case EUCLIDEAN_DISTANCE:
-			return new EuclideanDistance();
-		default:
-			throw new IllegalStateException("Unsupported Distance Measure for K-Means: " + measure);
+	private List<Cluster> createClusters(final int nrSamples) {
+		List<Cluster> clusters = new ArrayList<>(numberOfCluster);
+		//init cluster by random selection
+		Random r = new Random();
+		BitSet used = new BitSet();
+		for(int i = 0; i < numberOfCluster; ++i) {
+			int p;
+			do {
+				p = r.nextInt(nrSamples);
+			} while (used.get(p));
+			used.set(p);
+			clusters.add(new Cluster(i,fillVector(null, va.get(p))));
 		}
+		return clusters;
 	}
 
-	protected PerspectiveInitializationData error(Exception e1) {
-		progress(100, true);
-		return null;
+	private class Cluster {
+		private final int index;
+		private final float[] vector; // it's current centroid
+		private int numSamples;
+
+		// representative id
+		private int sampleId = -1;
+		private float sampleDistance = Float.POSITIVE_INFINITY;
+
+		public Cluster(int index, float[] vector) {
+			this.index = index;
+			this.vector = vector;
+			this.numSamples = 1; // the starting point at least
+		}
+
+		public void add(float[] sample) {
+			numSamples++;
+			for (int i = 0; i < vector.length; ++i)
+				vector[i] += sample[i];
+		}
+
+		public boolean isEmpty() {
+			return numSamples == 0;
+		}
+
+		public void prepareRound() {
+			stopMoving();
+			sampleId = -1;
+			sampleDistance = Float.POSITIVE_INFINITY;
+		}
+
+		public void prepareMoving() {
+			Arrays.fill(vector, 0);
+			numSamples = 0;
+		}
+
+		public void stopMoving() {
+			if (isEmpty())
+				return;
+			float invSamples = 1.f / numSamples;
+			for (int i = 0; i < vector.length; ++i)
+				vector[i] *= invSamples;
+		}
+
+		public float distance(Integer id, float[] sample) {
+			if (isEmpty())
+				return Float.POSITIVE_INFINITY;
+			float dc = KMeansClusterer.this.distance(sample, vector);
+
+			// update representative index
+			if (dc < sampleDistance) {
+				sampleDistance = dc;
+				sampleId = id;
+			}
+			return dc;
+		}
+
+		@Override
+		public String toString() {
+			StringBuilder builder = new StringBuilder();
+			builder.append("Cluster [index=");
+			builder.append(index);
+			builder.append(", numSamples=");
+			builder.append(numSamples);
+			builder.append(", sampleId=");
+			builder.append(sampleId);
+			builder.append(", sampleDistance=");
+			builder.append(sampleDistance);
+			builder.append("]");
+			return builder.toString();
+		}
+
 	}
 
-	protected PerspectiveInitializationData canceled() {
-		progress(100, true);
-		return null;
+	/**
+	 * fills the given vector with the data for the given id
+	 *
+	 * @param values
+	 * @param vaID
+	 * @return
+	 */
+	private float[] fillVector(float[] values, Integer vaID) {
+		if (values == null)
+			values = new float[oppositeVA.size()];
+		int i = 0;
+		for (Integer oppositeVaID : oppositeVA) {
+			values[i++] = getNormalizedValue(vaID, oppositeVaID);
+		}
+		return values;
 	}
 }

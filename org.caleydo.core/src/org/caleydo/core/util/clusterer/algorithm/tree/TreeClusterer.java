@@ -22,13 +22,15 @@ package org.caleydo.core.util.clusterer.algorithm.tree;
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
+import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.event.data.ClusterProgressEvent;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.util.clusterer.ClusterHelper;
 import org.caleydo.core.util.clusterer.algorithm.AClusterer;
-import org.caleydo.core.util.clusterer.distancemeasures.IDistanceMeasure;
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.EClustererTarget;
+import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
+import org.caleydo.core.util.function.ArrayFloatList;
+import org.caleydo.core.util.function.FloatStatistics;
 
 /**
  * Tree clusterer
@@ -81,7 +83,7 @@ public class TreeClusterer extends AClusterer {
 	 * @return in case of error a negative value will be returned.
 	 */
 	private int determineSimilarities() {
-		IDistanceMeasure distanceMeasure = config.getDistanceMeasure().create();
+		EDistanceMeasure distanceMeasure = config.getDistanceMeasure();
 
 		int icnt1 = 0, icnt2 = 0, isto = 0;
 		int iPercentage = 1;
@@ -119,8 +121,8 @@ public class TreeClusterer extends AClusterer {
 						isto++;
 					}
 
-					similarities[va.indexOf(vaID)][va.indexOf(vaID2)] = distanceMeasure
-							.getMeasure(dArInstance1, dArInstance2);
+					similarities[va.indexOf(vaID)][va.indexOf(vaID2)] = distanceMeasure.apply(dArInstance1,
+							dArInstance2);
 				}
 				icnt2++;
 			}
@@ -375,8 +377,7 @@ public class TreeClusterer extends AClusterer {
 		tree.setRootNode(node);
 		treeStructureToTree(node, result, result.length - 1);
 
-		ClusterHelper.calculateClusterAveragesRecursive(tree, node, config.getClusterTarget(), table, config
-				.getSourceDimensionPerspective().getVirtualArray(), config
+		calculateClusterAveragesRecursive(node, config.getSourceDimensionPerspective().getVirtualArray(), config
 				.getSourceRecordPerspective().getVirtualArray());
 
 		progressScaled(50);
@@ -384,6 +385,56 @@ public class TreeClusterer extends AClusterer {
 		PerspectiveInitializationData tempResult = new PerspectiveInitializationData();
 		tempResult.setData(tree);
 		return tempResult;
+	}
+
+	private float[] calculateClusterAveragesRecursive(ClusterNode node, VirtualArray dimensionVA, VirtualArray recordVA) {
+		float[] values;
+		if (tree.hasChildren(node)) {
+			int numberOfChildren = tree.getChildren(node).size();
+			int numberOfElements = va.size();
+			float[][] tempValues;
+
+			tempValues = new float[numberOfChildren][numberOfElements];
+
+			int cnt = 0;
+
+			for (ClusterNode currentNode : tree.getChildren(node)) {
+				tempValues[cnt] = calculateClusterAveragesRecursive(currentNode, dimensionVA, recordVA);
+				cnt++;
+			}
+
+			values = new float[numberOfElements];
+
+			for (int i = 0; i < numberOfElements; i++) {
+				float means = 0;
+
+				for (int nodes = 0; nodes < numberOfChildren; nodes++) {
+					means += tempValues[nodes][i];
+				}
+				values[i] = means / numberOfChildren;
+			}
+		}
+		// no children --> leaf node
+		else {
+			values = new float[va.size()];
+			int isto = 0;
+			for (Integer oppositeID : oppositeVA) {
+				values[isto] = getNormalizedValue(node.getLeafID(), oppositeID);
+				isto++;
+			}
+		}
+		FloatStatistics stats = new ArrayFloatList(values).computeStats();
+
+		float averageExpressionvalue = stats.getMean();
+		float deviation = stats.getSd();
+
+		node.setAverageExpressionValue(averageExpressionvalue);
+		// Setting an float array for the representative element in each node causes a very big xml-file when
+		// exporting the tree
+		// node.setRepresentativeElement(fArExpressionValues);
+		node.setStandardDeviation(deviation);
+
+		return values;
 	}
 
 	/**
