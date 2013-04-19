@@ -43,4 +43,6 @@ public enum EPathwayVertexShape {
 	 * The shape is a round rectangle, which is used in KEGG to represent a linked pathway.
 	 */
 	roundrectangle,
+
+	line
 }
