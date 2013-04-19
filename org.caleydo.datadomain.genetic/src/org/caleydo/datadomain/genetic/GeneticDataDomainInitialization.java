@@ -51,8 +51,6 @@ public class GeneticDataDomainInitialization implements IDataDomainInitializatio
 		IDType geneSymbol = IDType.registerType(EGeneIDTypes.GENE_SYMBOL.name(), geneIDCategory,
 				EGeneIDTypes.GENE_SYMBOL.getDataType());
 		geneIDCategory.setHumanReadableIDType(geneSymbol);
-		IDType.registerType(EGeneIDTypes.BIOCARTA_GENE_ID.name(), geneIDCategory,
-				EGeneIDTypes.BIOCARTA_GENE_ID.getDataType());
 		IDType.registerType(EGeneIDTypes.REFSEQ_MRNA.name(), geneIDCategory, EGeneIDTypes.REFSEQ_MRNA.getDataType());
 		IDType.registerType(EGeneIDTypes.ENSEMBL_GENE_ID.name(), geneIDCategory,
 				EGeneIDTypes.ENSEMBL_GENE_ID.getDataType());
@@ -91,11 +89,6 @@ public class GeneticDataDomainInitialization implements IDataDomainInitializatio
 					IDType.getIDType("REFSEQ_MRNA"), ";", geneIDCategory, true, true, true,
 					IDType.getIDType("ENSEMBL_GENE_ID"), IDType.getIDType("DAVID"));
 		}
-
-		IDMappingParser.loadMapping("data/genome/mapping/" + GeneralManager.get().getBasicInfo().getOrganism()
-				+ "_BIOCARTA_GENE_ID_2_REFSEQ_MRNA.txt", 0, -1, IDType.getIDType("BIOCARTA_GENE_ID"),
-				IDType.getIDType("REFSEQ_MRNA"), ";", geneIDCategory, true, true, true,
-				IDType.getIDType("BIOCARTA_GENE_ID"), IDType.getIDType("DAVID"));
 
 		// ==== SAMPLES ======
 

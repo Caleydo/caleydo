@@ -113,7 +113,7 @@ public class PathwayVertexRep implements Serializable, IUniqueObject {
 		id = GeneralManager.get().getIDCreator().createID(ManagedObjectType.PATHWAY_VERTEX_REP);
 
 		if (shapeType == null || shapeType.isEmpty())
-			shape = EPathwayVertexShape.rect;
+			shape = EPathwayVertexShape.rectangle;
 		else
 			shape = EPathwayVertexShape.valueOf(shapeType);
 
