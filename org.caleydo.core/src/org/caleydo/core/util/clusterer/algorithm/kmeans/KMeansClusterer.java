@@ -30,6 +30,8 @@ import org.caleydo.core.util.clusterer.algorithm.ALinearClusterer;
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.logging.Logger;
 
+import com.jogamp.common.util.IntObjectHashMap;
+
 /**
  * KMeans clusterer similar to WEKA ones
  *
@@ -43,11 +45,19 @@ public class KMeansClusterer extends ALinearClusterer {
 
 	private final int numberOfCluster;
 
+	private final IntObjectHashMap cache;
+
 	public KMeansClusterer(ClusterConfiguration config, int progressMultiplier, int progressOffset) {
 		super(config, progressMultiplier, progressOffset);
 		KMeansClusterConfiguration kMeansClusterConfiguration = (KMeansClusterConfiguration) config
 				.getClusterAlgorithmConfiguration();
 		this.numberOfCluster = kMeansClusterConfiguration.getNumberOfClusters();
+
+		if (kMeansClusterConfiguration.isCacheVectors())
+			cache = new IntObjectHashMap();
+		else
+			cache = null;
+
 	}
 
 	@Override
@@ -64,6 +74,14 @@ public class KMeansClusterer extends ALinearClusterer {
 
 		final List<Cluster> clusters = createClusters(nrSamples);
 
+		if (cache != null) {
+			// build cache
+			for (int i = 0; i < assignments.length; ++i) {
+				Integer vid = va.get(i);
+				cache.put(vid, fillVector(null, vid));
+			}
+		}
+
 		int iteration = 0;
 		boolean converged = false;
 
@@ -71,6 +89,7 @@ public class KMeansClusterer extends ALinearClusterer {
 			return canceled();
 
 		// progress scale
+		int lastP = 10;
 		final float scale = (80.f - 10.f) / MAX_ITERATIONS;
 
 		for (; !converged && iteration < MAX_ITERATIONS; ++iteration) {
@@ -82,7 +101,7 @@ public class KMeansClusterer extends ALinearClusterer {
 
 			for(int i = 0; i < assignments.length; ++i) {
 				Integer vid = va.get(i);
-				vector = fillVector(vector,vid);
+				vector = cache != null ? (float[]) cache.get(vid) : fillVector(vector, vid);
 				int best = -1;
 				// find best matching cluster
 				float distance = Float.POSITIVE_INFINITY;
@@ -108,12 +127,18 @@ public class KMeansClusterer extends ALinearClusterer {
 			for(int i = 0; i < assignments.length; ++i) {
 				int best = assignments[i];
 				Integer vid = va.get(i);
-				vector = fillVector(vector,vid);
+				vector = cache != null ? (float[]) cache.get(vid) : fillVector(vector, vid);
 				clusters.get(best).add(vector);
 			}
 
-			if (progressAndCancel(10 + Math.round(scale * iteration), false))
+			eventListeners.processEvents();
+			if (isClusteringCanceled) {
 				return canceled();
+			}
+			int p = 10 + Math.round(scale * iteration);
+			if (p > lastP)
+				progress(p, false);
+			lastP = p;
 		}
 
 
@@ -175,7 +200,7 @@ public class KMeansClusterer extends ALinearClusterer {
 		for(int i = 0; i < numberOfCluster; ++i) {
 			int p;
 			do {
-				p = r.nextInt(nrSamples);
+				p = r.nextInt(nrSamples - 1);
 			} while (used.get(p));
 			used.set(p);
 			clusters.add(new Cluster(i,fillVector(null, va.get(p))));

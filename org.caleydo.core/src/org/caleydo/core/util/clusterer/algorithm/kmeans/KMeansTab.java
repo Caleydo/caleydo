@@ -27,6 +27,7 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.MessageBox;
@@ -42,6 +43,7 @@ import org.eclipse.swt.widgets.Text;
 public class KMeansTab extends AClusterTab {
 
 	private int nrClustersRecords = 5;
+	private Button cacheVectors;
 
 	public KMeansTab(TabFolder tabFolder) {
 		super(tabFolder);
@@ -88,12 +90,17 @@ public class KMeansTab extends AClusterTab {
 		});
 		clusterNumberText.setText("5");
 		clusterNumberText.setToolTipText("Positive integer value. Range: 1 up to the number of samples in data set");
+
+		cacheVectors = new Button(composite, SWT.CHECK);
+		cacheVectors.setText("Cache Data Items? (faster but needs more memory)");
+		cacheVectors.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 	}
 
 	@Override
 	public AClusterAlgorithmConfiguration getClusterConfiguration() {
 		KMeansClusterConfiguration clusterConfiguration = new KMeansClusterConfiguration();
 		clusterConfiguration.setNumberOfClusters(nrClustersRecords);
+		clusterConfiguration.setCacheVectors(cacheVectors.getSelection());
 		return clusterConfiguration;
 	}
 
