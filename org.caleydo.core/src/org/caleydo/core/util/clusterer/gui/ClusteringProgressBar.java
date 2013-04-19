@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,20 +8,20 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.core.util.clusterer.gui;
 
-import org.caleydo.core.event.AEvent;
-import org.caleydo.core.event.AEventListener;
-import org.caleydo.core.event.IListenerOwner;
+import org.caleydo.core.event.EventListenerManager;
+import org.caleydo.core.event.EventListenerManager.ListenTo;
+import org.caleydo.core.event.EventListenerManagers;
 import org.caleydo.core.event.data.ClusterProgressEvent;
 import org.caleydo.core.event.data.ClustererCanceledEvent;
 import org.caleydo.core.event.data.RenameProgressBarEvent;
@@ -38,76 +38,77 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.PlatformUI;
 
 /**
  * Progress bar visualizing the progress during a cluster process.
- * 
+ *
  * @author
  */
-public class ClusteringProgressBar
-	implements IListenerOwner {
+public class ClusteringProgressBar implements Runnable {
 
-	private ProgressBar pbOverall;
-	private ProgressBar pbClusterer;
-	private String algorithmName;
-	private ClusterProgressListener clusterProgressListener;
-
+	private final String algorithmName;
 
 	private Shell shell;
-	private Label lbProgressBarClusterer;
+
+	private Label label;
+	private ProgressBar overall;
+	private ProgressBar clusterer;
+
+	private final EventListenerManager eventManager = EventListenerManagers.createSWTDirect();
+
 
 	public ClusteringProgressBar(String algorithmName) {
 		this.algorithmName = algorithmName;
 	}
 
+	@Override
 	public void run() {
 		buildProgressBar();
-		registerEventListeners();
+
+		eventManager.register(this);
 	}
 
 	/**
 	 * Sets the label of the second progress bar
-	 * 
-	 * @param stProgressBarLable
+	 *
+	 * @param label
 	 */
-	public void setProgressBarLabel(String stProgressBarLable) {
-		if (lbProgressBarClusterer.isDisposed())
+	public void setProgressBarLabel(String label) {
+		if (this.label == null || this.label.isDisposed())
 			return;
-		lbProgressBarClusterer.setText(stProgressBarLable);
+		this.label.setText(label);
 	}
 
 	/**
 	 * Sets the progress bar. Depending on forSimilaritiesBar the overall or the second progress bar will be
 	 * updated.
-	 * 
+	 *
 	 * @param forSimilaritiesBar
 	 *            If true overall progress bar will be updated. If false second progress bar
 	 * @param progress
 	 */
 	public void setProgress(boolean forSimilaritiesBar, int progress) {
 
-		if (pbOverall.isDisposed())
+		if (overall == null || overall.isDisposed())
 			return;
 
 		if (forSimilaritiesBar) {
 			if (progress >= 99)
 				close();
 			else
-				pbOverall.setSelection(progress);
+				overall.setSelection(progress);
 		}
 		else {
 
-			pbClusterer.setSelection(progress);
+			clusterer.setSelection(progress);
 		}
 	}
 
 	private void buildProgressBar() {
-
 		shell = new Shell();
 		shell.setText(algorithmName);
 		shell.setImage(GeneralManager.get().getResourceLoader()
-			.getImage(shell.getDisplay(), "resources/icons/view/tablebased/clustering.png"));
+				.getImage(shell.getDisplay(), "resources/icons/view/tablebased/clustering.png"));
 
 		// Center shell on screen
 		Monitor primary = shell.getDisplay().getPrimaryMonitor();
@@ -120,29 +121,30 @@ public class ClusteringProgressBar
 		Composite composite = new Composite(shell, SWT.NONE);
 		composite.setLayout(new GridLayout(1, false));
 
-		Label label = new Label(composite, SWT.NULL);
-		label.setText("Overall progress");
+		Label progressLabel = new Label(composite, SWT.NULL);
+		progressLabel.setText("Overall progress");
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.widthHint = 310;
-		label.setLayoutData(gridData);
+		progressLabel.setLayoutData(gridData);
 
-		pbOverall = new ProgressBar(composite, SWT.SMOOTH);
-		pbOverall.setMinimum(0);
-		pbOverall.setMaximum(100);
-		pbOverall.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		overall = new ProgressBar(composite, SWT.SMOOTH);
+		overall.setMinimum(0);
+		overall.setMaximum(100);
+		overall.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		lbProgressBarClusterer = new Label(composite, SWT.NULL);
-		lbProgressBarClusterer.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		this.label = new Label(composite, SWT.NULL);
+		this.label.setText("");
+		this.label.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 //		if (algorithmType == EClustererAlgo.COBWEB_CLUSTERER
 //			|| algorithmType == EClustererAlgo.KMEANS_CLUSTERER)
 //			pbClusterer = new ProgressBar(composite, SWT.SMOOTH | SWT.INDETERMINATE);
 //		else
-			pbClusterer = new ProgressBar(composite, SWT.SMOOTH);
+		clusterer = new ProgressBar(composite, SWT.SMOOTH);
 
-		pbClusterer.setMinimum(0);
-		pbClusterer.setMaximum(100);
-		pbClusterer.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		clusterer.setMinimum(0);
+		clusterer.setMaximum(100);
+		clusterer.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		Button cancelButton = new Button(composite, SWT.PUSH);
 		cancelButton.setText("Abort");
@@ -162,37 +164,18 @@ public class ClusteringProgressBar
 	}
 
 	private void close() {
-		unregisterEventListeners();
+		eventManager.unregisterAll();
 		if (!shell.isDisposed())
 			shell.close();
 	}
 
-	@Override
-	public void queueEvent(final AEventListener<? extends IListenerOwner> listener, final AEvent event) {
-		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
-			@Override
-			public void run() {
-				listener.handleEvent(event);
-			}
-		});
+	@ListenTo
+	private void onProgressEvent(ClusterProgressEvent event) {
+		setProgress(event.isForSimilaritiesBar(), event.getPercentCompleted());
 	}
 
-	@Override
-	public void registerEventListeners() {
-		clusterProgressListener = new ClusterProgressListener();
-		clusterProgressListener.setHandler(this);
-		GeneralManager.get().getEventPublisher()
-			.addListener(ClusterProgressEvent.class, clusterProgressListener);
-		GeneralManager.get().getEventPublisher()
-			.addListener(RenameProgressBarEvent.class, clusterProgressListener);
+	@ListenTo
+	private void onRenameEvent(RenameProgressBarEvent event) {
+		setProgressBarLabel(event.getProgressbarTitle());
 	}
-
-	@Override
-	public void unregisterEventListeners() {
-		if (clusterProgressListener != null) {
-			GeneralManager.get().getEventPublisher().removeListener(clusterProgressListener);
-			clusterProgressListener = null;
-		}
-	}
-
 }

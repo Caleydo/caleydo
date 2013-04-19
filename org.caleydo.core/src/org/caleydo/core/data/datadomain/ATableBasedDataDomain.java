@@ -73,10 +73,9 @@ import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.id.IIDTypeMapper;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.util.clusterer.ClusterManager;
 import org.caleydo.core.util.clusterer.ClusterResult;
+import org.caleydo.core.util.clusterer.Clusterers;
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
-import org.caleydo.core.util.clusterer.initialization.EClustererTarget;
 import org.caleydo.core.util.color.mapping.ColorMapper;
 
 /**
@@ -508,52 +507,46 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 	 *            ID of the set to cluster
 	 * @param clusterState
 	 */
-	public ClusterResult startClustering(ClusterConfiguration clusterState) {
+	public ClusterResult startClustering(ClusterConfiguration config) {
 		// FIXME this should be re-designed so that the clustering is a separate
-		// thread and communicates via
-		// events
-
-		ClusterManager clusterManager = new ClusterManager(this);
-		ClusterResult result = clusterManager.cluster(clusterState);
+		// thread and communicates via events
+		ClusterResult result = Clusterers.cluster(config);
 
 		// check if clustering failed. If so, we just ignore it.
 		if (result == null)
 			return null;
 
-		if (clusterState.getClusterTarget() == EClustererTarget.DIMENSION_CLUSTERING) {
+		boolean registerLater = false;
+
+		switch (config.getClusterTarget()) {
+		case DIMENSION_CLUSTERING:
 			PerspectiveInitializationData dimensionResult = result.getDimensionResult();
 			Perspective targetDimensionPerspective;
-			boolean registerLater = false;
-			if (clusterState.isModifyExistingPerspective()) {
-				targetDimensionPerspective = clusterState.getSourceDimensionPerspective();
+			if (config.isModifyExistingPerspective()) {
+				targetDimensionPerspective = config.getSourceDimensionPerspective();
 			} else {
-				targetDimensionPerspective = clusterState.getOptionalTargetDimensionPerspective();
+				targetDimensionPerspective = config.getOptionalTargetDimensionPerspective();
 				if (targetDimensionPerspective == null) {
 					registerLater = true;
 					targetDimensionPerspective = new Perspective(this, dimensionIDType);
-
 				}
 			}
 			targetDimensionPerspective.init(dimensionResult);
-			targetDimensionPerspective.setLabel(clusterState.getClusterAlgorithmConfiguration()
-					.getClusterAlgorithmName()
-					+ " "
+			targetDimensionPerspective.setLabel(config.getClusterAlgorithmConfiguration().getLabel() + " "
 					+ targetDimensionPerspective.getVirtualArray().getGroupList().size(), false);
 			if (registerLater) {
 				table.registerDimensionPerspective(targetDimensionPerspective);
 			}
-			eventPublisher.triggerEvent(new DimensionVAUpdateEvent(dataDomainID, targetDimensionPerspective
+			EventPublisher.trigger(new DimensionVAUpdateEvent(dataDomainID, targetDimensionPerspective
 					.getPerspectiveID(), this));
-		}
-
-		if (clusterState.getClusterTarget() == EClustererTarget.RECORD_CLUSTERING) {
+			break;
+		case RECORD_CLUSTERING:
 			PerspectiveInitializationData recordResult = result.getRecordResult();
 			Perspective targetRecordPerspective;
-			boolean registerLater = false;
-			if (clusterState.isModifyExistingPerspective()) {
-				targetRecordPerspective = clusterState.getSourceRecordPerspective();
+			if (config.isModifyExistingPerspective()) {
+				targetRecordPerspective = config.getSourceRecordPerspective();
 			} else {
-				targetRecordPerspective = clusterState.getOptionalTargetRecordPerspective();
+				targetRecordPerspective = config.getOptionalTargetRecordPerspective();
 				if (targetRecordPerspective == null) {
 					registerLater = true;
 					targetRecordPerspective = new Perspective(this, recordIDType);
@@ -561,16 +554,16 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 				}
 			}
 			targetRecordPerspective.init(recordResult);
-			targetRecordPerspective.setLabel(clusterState.getClusterAlgorithmConfiguration().getClusterAlgorithmName()
+			targetRecordPerspective.setLabel(config.getClusterAlgorithmConfiguration().getLabel()
 					+ " " + targetRecordPerspective.getVirtualArray().getGroupList().size(), false);
 			if (registerLater) {
 				table.registerRecordPerspective(targetRecordPerspective);
 			}
-			eventPublisher.triggerEvent(new RecordVAUpdateEvent(dataDomainID, targetRecordPerspective
+			EventPublisher.trigger(new RecordVAUpdateEvent(dataDomainID, targetRecordPerspective
 					.getPerspectiveID(), this));
 		}
 
-		eventPublisher.triggerEvent(new DataDomainUpdateEvent(this));
+		EventPublisher.trigger(new DataDomainUpdateEvent(this));
 		return result;
 	}
 

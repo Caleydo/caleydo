@@ -1,30 +1,17 @@
 package org.caleydo.core.util.clusterer.algorithm.affinity;
 
 import java.util.ArrayList;
+import java.util.List;
 
-import org.caleydo.core.data.collection.table.Table;
-import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
-import org.caleydo.core.data.virtualarray.VirtualArray;
-import org.caleydo.core.event.data.ClusterProgressEvent;
-import org.caleydo.core.event.data.RenameProgressBarEvent;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.clusterer.ClusterHelper;
-import org.caleydo.core.util.clusterer.IClusterer;
 import org.caleydo.core.util.clusterer.algorithm.AClusterer;
-import org.caleydo.core.util.clusterer.distancemeasures.ChebyshevDistance;
-import org.caleydo.core.util.clusterer.distancemeasures.EuclideanDistance;
 import org.caleydo.core.util.clusterer.distancemeasures.IDistanceMeasure;
-import org.caleydo.core.util.clusterer.distancemeasures.ManhattanDistance;
-import org.caleydo.core.util.clusterer.distancemeasures.PearsonCorrelation;
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
-import org.caleydo.core.util.clusterer.initialization.EClustererTarget;
-import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
 import org.caleydo.core.util.logging.Logger;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 
-//
+import com.google.common.base.Stopwatch;
+
 /**
  * Affinity propagation clusterer. See <a
  * href="http://www.psi.toronto.edu/affinitypropagation/"> affinity
@@ -32,64 +19,48 @@ import org.eclipse.core.runtime.Status;
  *
  * @author Bernhard Schlegl
  */
-public class AffinityClusterer extends AClusterer implements IClusterer {
+public class AffinityClusterer extends AClusterer {
+	private static final Logger log = Logger.create(AffinityClusterer.class);
+
+	/**
+	 * Factor influences cluster result. The higher the factor the less clusters will be formed.
+	 */
+	private final float clusterFactor;
 
 	/**
 	 * array of similarities
 	 */
-	private float[] s = null;
+	private final float[] s;
 	/**
 	 * array with indexes
 	 */
-	private int[] i = null;
+	private final int[] i;
 	/**
 	 * array with indexes
 	 */
-	private int[] k = null;
+	private final int[] k;
 
-	private float dLambda = 0.5f;
+	private final int nrSamples;
 
-	private int iNrClusters = 0;
+	private final int nrSimilarities;
 
-	private int maxIterations = 400;
+	private final float lambda = 0.5f;
+	private final int maxIterations = 400;
+	private final int convIterations = 30;
 
-	private int iConvIterations = 30;
 
-	/**
-	 * Factor influences cluster result. The higher the factor the less clusters
-	 * will be formed.
-	 */
-	private float fClusterFactor = 1.0f;
+	public AffinityClusterer(ClusterConfiguration config, int progressMultiplier, int progressOffset) {
+		super(config, progressMultiplier, progressOffset);
 
-	private int iNrSamples = 0;
+		AffinityClusterConfiguration c = (AffinityClusterConfiguration) config.getClusterAlgorithmConfiguration();
+		this.clusterFactor = c.getClusterFactor();
 
-	private int iNrSimilarities = 0;
+		this.nrSamples = va.size();
+		this.nrSimilarities = nrSamples * nrSamples;
 
-	private ATableBasedDataDomain dataDomain;
-
-	public AffinityClusterer() {
-
-	}
-
-	@Override
-	public void setClusterState(ClusterConfiguration clusterState) {
-		super.setClusterState(clusterState);
-
-		try {
-			if (clusterState.getClusterTarget() == EClustererTarget.RECORD_CLUSTERING)
-				this.iNrSamples = clusterState.getSourceRecordPerspective()
-						.getVirtualArray().size();
-			else if (clusterState.getClusterTarget() == EClustererTarget.DIMENSION_CLUSTERING)
-				this.iNrSamples = clusterState.getSourceDimensionPerspective()
-						.getVirtualArray().size();
-
-			this.iNrSimilarities = iNrSamples * iNrSamples;
-			this.s = new float[this.iNrSimilarities];
-			this.i = new int[this.iNrSimilarities];
-			this.k = new int[this.iNrSimilarities];
-		} catch (OutOfMemoryError e) {
-			throw new OutOfMemoryError();
-		}
+		this.s = new float[this.nrSimilarities];
+		this.i = new int[this.nrSimilarities];
+		this.k = new int[this.nrSimilarities];
 	}
 
 	/**
@@ -99,210 +70,89 @@ public class AffinityClusterer extends AClusterer implements IClusterer {
 	 * @param clusterState
 	 * @return in case of error a negative value will be returned.
 	 */
-	private int determineSimilarities(Table table, ClusterConfiguration clusterState) {
+	private int determineSimilarities() {
+		final IDistanceMeasure distanceMeasure = config.getDistanceMeasure().create();
+		rename("Determine Similarities for " + getPerspectiveLabel() + " clustering");
 
-		VirtualArray recordVA = clusterState.getSourceRecordPerspective()
-				.getVirtualArray();
-		VirtualArray dimensionVA = clusterState.getSourceDimensionPerspective()
-				.getVirtualArray();
+		int counter = 1;
 
-		IDistanceMeasure distanceMeasure;
+		float[] dArInstance1 = new float[va.size()];
+		float[] dArInstance2 = new float[va.size()];
 
-		if (clusterState.getDistanceMeasure() == EDistanceMeasure.MANHATTAN_DISTANCE)
-			distanceMeasure = new ManhattanDistance();
-		else if (clusterState.getDistanceMeasure() == EDistanceMeasure.CHEBYSHEV_DISTANCE)
-			distanceMeasure = new ChebyshevDistance();
-		else if (clusterState.getDistanceMeasure() == EDistanceMeasure.PEARSON_CORRELATION)
-			distanceMeasure = new PearsonCorrelation();
-		else
-			distanceMeasure = new EuclideanDistance();
+		int icnt1 = 0, icnt2 = 0, isto = 0;
+		int count = 0;
 
-		int iPercentage = 1;
+		for (Integer oppositeID : oppositeVA) {
+			if (isClusteringCanceled) {
+				progress(100, true);
+				return -2;
+			}
 
-		if (clusterState.getClusterTarget() == EClustererTarget.RECORD_CLUSTERING) {
+			int tempPercentage = (int) ((float) icnt1 / oppositeVA.size() * 100);
 
-			GeneralManager
-					.get()
-					.getEventPublisher()
-					.triggerEvent(
-							new RenameProgressBarEvent(
-									"Determine Similarities for gene clustering"));
+			if (counter == tempPercentage) {
+				progress(counter, false);
+				counter++;
+			}
 
-			float[] dArInstance1 = new float[dimensionVA.size()];
-			float[] dArInstance2 = new float[dimensionVA.size()];
+			isto = 0;
+			for (Integer vaID : va) {
+				dArInstance1[isto] = getNormalizedValue(vaID, oppositeID);
+				isto++;
+			}
 
-			int icnt1 = 0, icnt2 = 0, isto = 0;
-			int count = 0;
-
-			for (Integer recordIndex1 : recordVA) {
-
-				if (isClusteringCanceled == false) {
-					int tempPercentage = (int) ((float) icnt1 / recordVA.size() * 100);
-
-					if (iPercentage == tempPercentage) {
-						GeneralManager
-								.get()
-								.getEventPublisher()
-								.triggerEvent(
-										new ClusterProgressEvent(iPercentage, false));
-						iPercentage++;
-					}
-
-					isto = 0;
-					for (Integer iDimensionIndex1 : dimensionVA) {
-						dArInstance1[isto] = table.getNormalizedValue(iDimensionIndex1,
-								recordIndex1);
-						isto++;
-					}
-
-					icnt2 = 0;
-					for (Integer recordIndex2 : recordVA) {
-
-						isto = 0;
-						for (Integer iDimensionIndex2 : dimensionVA) {
-							dArInstance2[isto] = table.getNormalizedValue(iDimensionIndex2,
-									recordIndex2);
-							isto++;
-						}
-
-						if (icnt1 != icnt2) {
-							s[count] = -distanceMeasure.getMeasure(dArInstance1,
-									dArInstance2);
-							i[count] = recordVA.indexOf(recordIndex1);
-							k[count] = recordVA.indexOf(recordIndex2);
-							count++;
-						}
-						icnt2++;
-					}
-					icnt1++;
-					processEvents();
-				} else {
-					GeneralManager.get().getEventPublisher()
-							.triggerEvent(new ClusterProgressEvent(100, true));
-					return -2;
+			icnt2 = 0;
+			for (Integer oppositeID2 : oppositeVA) {
+				isto = 0;
+				for (Integer vaID2 : va) {
+					dArInstance2[isto] = getNormalizedValue(vaID2, oppositeID2);
+					isto++;
 				}
-			}
 
-			// determine median of the similarity values
-			float median = ClusterHelper.median(s);
-
-			int cnt = 0;
-			for (Integer recordIndex : recordVA) {
-				s[count] = median * fClusterFactor;
-				i[count] = recordVA.indexOf(recordIndex);
-				k[count] = recordVA.indexOf(recordIndex);
-				count++;
-				cnt++;
-			}
-		} else {
-
-			GeneralManager
-					.get()
-					.getEventPublisher()
-					.triggerEvent(
-							new RenameProgressBarEvent(
-									"Determine Similarities for experiment clustering"));
-
-			float[] dArInstance1 = new float[recordVA.size()];
-			float[] dArInstance2 = new float[recordVA.size()];
-
-			int isto1 = 0, isto2 = 0, icnt = 0;
-			int count = 0;
-
-			for (Integer iDimensionIndex1 : dimensionVA) {
-
-				if (isClusteringCanceled == false) {
-					int tempPercentage = (int) ((float) isto1 / dimensionVA.size() * 100);
-
-					if (iPercentage == tempPercentage) {
-						GeneralManager
-								.get()
-								.getEventPublisher()
-								.triggerEvent(
-										new ClusterProgressEvent(iPercentage, false));
-						iPercentage++;
-					}
-
-					icnt = 0;
-					for (Integer recordIndex1 : recordVA) {
-						dArInstance1[icnt] = table.getNormalizedValue(iDimensionIndex1,
-								recordIndex1);
-						icnt++;
-					}
-
-					isto2 = 0;
-					for (Integer iDimensionIndex2 : dimensionVA) {
-
-						icnt = 0;
-						for (Integer recordIndex2 : recordVA) {
-							dArInstance2[icnt] = table.getNormalizedValue(iDimensionIndex2,
-									recordIndex2);
-							icnt++;
-						}
-
-						if (isto1 != isto2) {
-							s[count] = -distanceMeasure.getMeasure(dArInstance1,
-									dArInstance2);
-							i[count] = dimensionVA.indexOf(iDimensionIndex1);
-							k[count] = dimensionVA.indexOf(iDimensionIndex2);
-							count++;
-						}
-						isto2++;
-					}
-					isto1++;
-					processEvents();
-				} else {
-					GeneralManager.get().getEventPublisher()
-							.triggerEvent(new ClusterProgressEvent(100, true));
-					return -2;
+				if (icnt1 != icnt2) {
+					s[count] = -distanceMeasure.getMeasure(dArInstance1, dArInstance2);
+					i[count] = oppositeVA.indexOf(oppositeID);
+					k[count] = oppositeVA.indexOf(oppositeID2);
+					count++;
 				}
+				icnt2++;
 			}
-
-			// determine median of the similarity values
-			float median = ClusterHelper.median(s);
-
-			int sto = 0;
-			for (Integer iDimensionIndex : dimensionVA) {
-				s[count] = median * fClusterFactor;
-				i[count] = dimensionVA.indexOf(iDimensionIndex);
-				k[count] = dimensionVA.indexOf(iDimensionIndex);
-				count++;
-				sto++;
-			}
+			icnt1++;
+			eventListeners.processEvents();
 		}
-		GeneralManager
-				.get()
-				.getEventPublisher()
-				.triggerEvent(
-						new ClusterProgressEvent(25 * iProgressBarMultiplier
-								+ iProgressBarOffsetValue, true));
+
+		// determine median of the similarity values
+		float median = ClusterHelper.median(s);
+
+		for (Integer recordIndex : oppositeVA) {
+			s[count] = median * clusterFactor;
+			i[count] = oppositeVA.indexOf(recordIndex);
+			k[count] = oppositeVA.indexOf(recordIndex);
+			count++;
+		}
+
+		progressScaled(25);
 		return 0;
 	}
 
-	private PerspectiveInitializationData affinityPropagation(
-			EClustererTarget eClustererType) {
-		// Arraylist holding clustered indexes
-		ArrayList<Integer> indices = new ArrayList<Integer>();
-		// Arraylist holding indices of examples (cluster centers)
-		ArrayList<Integer> alExamples = new ArrayList<Integer>();
-		// Arraylist holding number of elements per cluster
-		ArrayList<Integer> clusterSizes = new ArrayList<Integer>();
+	private PerspectiveInitializationData affinityPropagation() {
+		Stopwatch w = new Stopwatch().start();
 
-		// long original = System.currentTimeMillis();
+		int nrClusters = 0;
 
-		int iNrIterations = 0, decit = iConvIterations;
-		boolean bIterate = true;
-		boolean bConverged = false;
-		float[] mx1 = new float[iNrSamples];
-		float[] mx2 = new float[iNrSamples];
-		float[] srp = new float[iNrSamples];
-		float[] decsum = new float[iNrSamples];
-		int[] idx = new int[iNrSamples];
-		int[][] dec = new int[iConvIterations][iNrSamples];
+		int iNrIterations = 0, decit = convIterations;
+		boolean doIterate = true;
+		boolean isConverged = false;
+		float[] mx1 = new float[nrSamples];
+		float[] mx2 = new float[nrSamples];
+		float[] srp = new float[nrSamples];
+		float[] decsum = new float[nrSamples];
+		int[] idx = new int[nrSamples];
+		int[][] dec = new int[convIterations][nrSamples];
 		float tmp = 0;
 		int j = 0;
-		float[] dArResposibilities = new float[iNrSimilarities];
-		float[] dArAvailabilities = new float[iNrSimilarities];
+		float[] dArResposibilities = new float[nrSimilarities];
+		float[] dArAvailabilities = new float[nrSimilarities];
 
 		// add noise to similarities
 		// for (int m = 0; m < s.length; m++) {
@@ -312,37 +162,23 @@ public class AffinityClusterer extends AClusterer implements IClusterer {
 
 		int iPercentage = 1;
 
-		if (eClustererType == EClustererTarget.RECORD_CLUSTERING)
-			GeneralManager
-					.get()
-					.getEventPublisher()
-					.triggerEvent(
-							new RenameProgressBarEvent(
-									"Affinity propagation of genes in progress"));
-		else
-			GeneralManager
-					.get()
-					.getEventPublisher()
-					.triggerEvent(
-							new RenameProgressBarEvent(
-									"Affinity propagation of experiments in progress"));
+		rename("Affinitiy propagpation of " + getPerspectiveLabel() + " in progress");
 
-		while (bIterate) {
+		while (doIterate) {
 			iNrIterations++;
 
 			int tempPercentage = (int) ((float) iNrIterations / maxIterations * 100);
 			if (iPercentage == tempPercentage) {
-				GeneralManager.get().getEventPublisher()
-						.triggerEvent(new ClusterProgressEvent(iPercentage, false));
+				progress(iPercentage, false);
 				iPercentage++;
 			}
 
 			// Compute responsibilities
-			for (j = 0; j < iNrSamples; j++) {
+			for (j = 0; j < nrSamples; j++) {
 				mx1[j] = -Float.MAX_VALUE;
 				mx2[j] = -Float.MAX_VALUE;
 			}
-			for (j = 0; j < iNrSimilarities; j++) {
+			for (j = 0; j < nrSimilarities; j++) {
 				tmp = dArAvailabilities[j] + s[j];
 				if (tmp > mx1[i[j]]) {
 					mx2[i[j]] = mx1[i[j]];
@@ -351,174 +187,174 @@ public class AffinityClusterer extends AClusterer implements IClusterer {
 					mx2[i[j]] = tmp;
 				}
 			}
-			for (j = 0; j < iNrSimilarities; j++) {
+			for (j = 0; j < nrSimilarities; j++) {
 				tmp = dArAvailabilities[j] + s[j];
 				if (tmp == mx1[i[j]]) {
-					dArResposibilities[j] = dLambda * dArResposibilities[j]
-							+ (1 - dLambda) * (s[j] - mx2[i[j]]);
+					dArResposibilities[j] = lambda * dArResposibilities[j] + (1 - lambda) * (s[j] - mx2[i[j]]);
 				} else {
-					dArResposibilities[j] = dLambda * dArResposibilities[j]
-							+ (1 - dLambda) * (s[j] - mx1[i[j]]);
+					dArResposibilities[j] = lambda * dArResposibilities[j] + (1 - lambda) * (s[j] - mx1[i[j]]);
 				}
 			}
 
 			// Compute availabilities
-			for (j = 0; j < iNrSimilarities - iNrSamples; j++)
+			for (j = 0; j < nrSimilarities - nrSamples; j++)
 				if (dArResposibilities[j] > 0.0) {
 					srp[k[j]] = srp[k[j]] + dArResposibilities[j];
 				}
-			for (j = iNrSimilarities - iNrSamples; j < iNrSimilarities; j++) {
+			for (j = nrSimilarities - nrSamples; j < nrSimilarities; j++) {
 				srp[k[j]] = srp[k[j]] + dArResposibilities[j];
 			}
-			for (j = 0; j < iNrSimilarities - iNrSamples; j++) {
+			for (j = 0; j < nrSimilarities - nrSamples; j++) {
 				if (dArResposibilities[j] > 0.0) {
 					tmp = srp[k[j]] - dArResposibilities[j];
 				} else {
 					tmp = srp[k[j]];
 				}
 				if (tmp < 0.0) {
-					dArAvailabilities[j] = dLambda * dArAvailabilities[j] + (1 - dLambda)
+					dArAvailabilities[j] = lambda * dArAvailabilities[j] + (1 - lambda)
 							* tmp;
 				} else {
-					dArAvailabilities[j] = dLambda * dArAvailabilities[j];
+					dArAvailabilities[j] = lambda * dArAvailabilities[j];
 				}
 			}
-			for (j = iNrSimilarities - iNrSamples; j < iNrSimilarities; j++) {
-				dArAvailabilities[j] = dLambda * dArAvailabilities[j] + (1 - dLambda)
+			for (j = nrSimilarities - nrSamples; j < nrSimilarities; j++) {
+				dArAvailabilities[j] = lambda * dArAvailabilities[j] + (1 - lambda)
 						* (srp[k[j]] - dArResposibilities[j]);
 			}
 
 			// Identify exemplars and check to see if finished
 			decit++;
-			if (decit >= iConvIterations) {
+			if (decit >= convIterations) {
 				decit = 0;
 			}
-			for (j = 0; j < iNrSamples; j++) {
+			for (j = 0; j < nrSamples; j++) {
 				decsum[j] = decsum[j] - dec[decit][j];
 			}
-			for (j = 0; j < iNrSamples; j++)
-				if (dArAvailabilities[iNrSimilarities - iNrSamples + j]
-						+ dArResposibilities[iNrSimilarities - iNrSamples + j] > 0.0) {
+			for (j = 0; j < nrSamples; j++)
+				if (dArAvailabilities[nrSimilarities - nrSamples + j]
+						+ dArResposibilities[nrSimilarities - nrSamples + j] > 0.0) {
 					dec[decit][j] = 1;
 				} else {
 					dec[decit][j] = 0;
 				}
-			iNrClusters = 0;
-			for (j = 0; j < iNrSamples; j++) {
-				iNrClusters = iNrClusters + dec[decit][j];
+			nrClusters = 0;
+			for (j = 0; j < nrSamples; j++) {
+				nrClusters = nrClusters + dec[decit][j];
 			}
-			for (j = 0; j < iNrSamples; j++) {
+			for (j = 0; j < nrSamples; j++) {
 				decsum[j] = decsum[j] + dec[decit][j];
 			}
-			if ((iNrIterations >= iConvIterations) || (iNrIterations >= maxIterations)) {
+			if ((iNrIterations >= convIterations) || (iNrIterations >= maxIterations)) {
 				// Check convergence
-				bConverged = true;
-				for (j = 0; j < iNrSamples; j++)
-					if ((decsum[j] != 0) && (decsum[j] != iConvIterations)) {
-						bConverged = false;
+				isConverged = true;
+				for (j = 0; j < nrSamples; j++)
+					if ((decsum[j] != 0) && (decsum[j] != convIterations)) {
+						isConverged = false;
 					}
 				// Check to see if done
-				if ((bConverged && (iNrClusters > 0)) || (iNrIterations == maxIterations)) {
-					bIterate = false;
+				if ((isConverged && (nrClusters > 0)) || (iNrIterations == maxIterations)) {
+					doIterate = false;
 				}
 			}
-			processEvents();
+			eventListeners.processEvents();
 			if (isClusteringCanceled) {
-				Logger.log(new Status(IStatus.INFO, toString(),
-						"Affinity propagation clustering was canceled!"));
-				GeneralManager.get().getEventPublisher()
-						.triggerEvent(new ClusterProgressEvent(100, true));
+				log.info("Affinity propagation clustering was canceled!");
+				progress(100, true);
 				return null;
 			}
 		}
 
+		// Arraylist holding indices of examples (cluster centers)
+		List<Integer> alExamples = new ArrayList<Integer>();
+
 		// If clusters were identified, find the assignments
-		if (iNrClusters > 0) {
-			for (j = 0; j < iNrSimilarities; j++)
+		if (nrClusters > 0) {
+			for (j = 0; j < nrSimilarities; j++)
 				if (dec[decit][k[j]] == 1) {
 					dArAvailabilities[j] = 0.0f;
 				} else {
 					dArAvailabilities[j] = -Float.MAX_VALUE;
 				}
-			for (j = 0; j < iNrSamples; j++) {
+			for (j = 0; j < nrSamples; j++) {
 				mx1[j] = -Float.MAX_VALUE;
 			}
-			for (j = 0; j < iNrSimilarities; j++) {
+			for (j = 0; j < nrSimilarities; j++) {
 				tmp = dArAvailabilities[j] + s[j];
 				if (tmp > mx1[i[j]]) {
 					mx1[i[j]] = tmp;
 					idx[i[j]] = k[j];
 				}
 			}
-			for (j = 0; j < iNrSamples; j++)
+			for (j = 0; j < nrSamples; j++)
 				if (dec[decit][j] == 1) {
 					idx[j] = j;
 				}
-			for (j = 0; j < iNrSamples; j++) {
+			for (j = 0; j < nrSamples; j++) {
 				srp[j] = 0.0f;
 			}
-			for (j = 0; j < iNrSimilarities; j++)
+			for (j = 0; j < nrSimilarities; j++)
 				if (idx[i[j]] == idx[k[j]]) {
 					srp[k[j]] = srp[k[j]] + s[j];
 				}
-			for (j = 0; j < iNrSamples; j++) {
+			for (j = 0; j < nrSamples; j++) {
 				mx1[j] = -Float.MAX_VALUE;
 			}
-			for (j = 0; j < iNrSamples; j++)
+			for (j = 0; j < nrSamples; j++)
 				if (srp[j] > mx1[idx[j]]) {
 					mx1[idx[j]] = srp[j];
 				}
-			for (j = 0; j < iNrSamples; j++)
+			for (j = 0; j < nrSamples; j++)
 				if (srp[j] == mx1[idx[j]]) {
 					dec[decit][j] = 1;
 				} else {
 					dec[decit][j] = 0;
 				}
-			for (j = 0; j < iNrSimilarities; j++)
+			for (j = 0; j < nrSimilarities; j++)
 				if (dec[decit][k[j]] == 1) {
 					dArAvailabilities[j] = 0.0f;
 				} else {
 					dArAvailabilities[j] = -Float.MAX_VALUE;
 				}
-			for (j = 0; j < iNrSamples; j++) {
+			for (j = 0; j < nrSamples; j++) {
 				mx1[j] = -Float.MAX_VALUE;
 			}
-			for (j = 0; j < iNrSimilarities; j++) {
+			for (j = 0; j < nrSimilarities; j++) {
 				tmp = dArAvailabilities[j] + s[j];
 				if (tmp > mx1[i[j]]) {
 					mx1[i[j]] = tmp;
 					idx[i[j]] = k[j];
 				}
 			}
-			for (j = 0; j < iNrSamples; j++)
+			for (j = 0; j < nrSamples; j++)
 				if (dec[decit][j] == 1) {
 					idx[j] = j;
 					alExamples.add(j);
 				}
-			// long end = System.currentTimeMillis();
-			// long duration = end-original;
-			// System.out.println("runtime: " + duration + "ms");
-			// System.out.println("Cluster factor: " + fClusterFactor);
-			// System.out.println("Number of identified clusters: " +
-			// iNrClusters);
-			// System.out.println("Number of iterations: " + iNrIterations);
+
+			StringBuilder b = new StringBuilder();
+			b.append("runtime: ").append(w).append('\n');
+			b.append("Cluster factor: ").append(clusterFactor).append('\n');
+			b.append("Number of identified clusters: ").append(nrClusters).append('\n');
+			b.append("Number of iterations: ").append(iNrIterations);
+			log.debug(b.toString());
 		} else {
-			GeneralManager.get().getEventPublisher()
-					.triggerEvent(new ClusterProgressEvent(100, true));
-			Logger.log(new Status(IStatus.ERROR, toString(),
-					"Affinity clustering could not identify any clusters."));
+			progress(100, true);
+			log.error("Affinity clustering could not identify any clusters.");
 			return null;
 
 		}
-		if (bConverged == false) {
-			GeneralManager.get().getEventPublisher()
-					.triggerEvent(new ClusterProgressEvent(100, true));
-			Logger.log(new Status(IStatus.ERROR, toString(),
-					"Affinity propagation did not converge!"));
+		if (isConverged == false) {
+			progress(100, true);
+			log.error("Affinity propagation did not converge!");
 			return null;
 		}
 
-		ArrayList<Integer> sampleElements = new ArrayList<Integer>();
+		List<Integer> sampleElements = new ArrayList<Integer>();
+
+		// Arraylist holding clustered indexes
+		List<Integer> indices = new ArrayList<Integer>();
+		// Arraylist holding number of elements per cluster
+		List<Integer> clusterSizes = new ArrayList<Integer>(alExamples.size());
 
 		for (int i = 0; i < alExamples.size(); i++) {
 			clusterSizes.add(0);
@@ -526,33 +362,16 @@ public class AffinityClusterer extends AClusterer implements IClusterer {
 
 		// Sort cluster depending on their color values
 		// TODO find a better solution for sorting
-		ClusterHelper.sortClusters(dataDomain.getTable(), recordVA, dimensionVA,
-				alExamples, eClustererType);
+		ClusterHelper.sortClusters(table, config.getSourceRecordPerspective().getVirtualArray(), config
+				.getSourceDimensionPerspective().getVirtualArray(), alExamples, config.getClusterTarget());
 
-		indices = getAl(alExamples, clusterSizes, sampleElements, idx, eClustererType);
+		indices = getAl(alExamples, clusterSizes, sampleElements, idx);
 
-		GeneralManager
-				.get()
-				.getEventPublisher()
-				.triggerEvent(
-						new ClusterProgressEvent(50 * iProgressBarMultiplier
-								+ iProgressBarOffsetValue, true));
+		progressScaled(50);
 
 		PerspectiveInitializationData tempResult = new PerspectiveInitializationData();
-
 		tempResult.setData(indices, clusterSizes, sampleElements);
 		return tempResult;
-
-		// IVirtualArray virtualArray = null;
-		// if (eClustererType == EClustererType.GENE_CLUSTERING)
-		// virtualArray = new
-		// VirtualArray(table.getVA(iVAIdContent).getVAType(), table.depth(),
-		// indexes);
-		// else if (eClustererType == EClustererType.EXPERIMENTS_CLUSTERING)
-		// virtualArray = new
-		// VirtualArray(table.getVA(iVAIdDimension).getVAType(), table.size(),
-		// indexes);
-
 	}
 
 	/**
@@ -560,10 +379,10 @@ public class AffinityClusterer extends AClusterer implements IClusterer {
 	 * clustering. Additionally the indexes of the examples (cluster
 	 * representatives) will be determined.
 	 *
-	 * @param alExamples
+	 * @param examples
 	 *            array list containing the indexes of the examples (cluster
 	 *            representatives) determined by the cluster algorithm
-	 * @param alClusterSizes
+	 * @param clusterSizes
 	 *            array list which will be filled with the sizes of each cluster
 	 * @param idxExamples
 	 *            array list containing indexes of examples in the VA
@@ -573,82 +392,36 @@ public class AffinityClusterer extends AClusterer implements IClusterer {
 	 *            the cluster type
 	 * @return An array list with indexes in the VA
 	 */
-	private ArrayList<Integer> getAl(ArrayList<Integer> alExamples,
-			ArrayList<Integer> alClusterSizes, ArrayList<Integer> idxExamples, int[] idx,
-			EClustererTarget eClustererType) {
-
-		ArrayList<Integer> indices = new ArrayList<Integer>();
-
+	private List<Integer> getAl(List<Integer> examples, List<Integer> clusterSizes,
+			List<Integer> idxExamples, int[] idx) {
+		List<Integer> indices = new ArrayList<Integer>();
 		int counter = 0;
-		int idxCnt = 0;
 
-		ArrayList<Integer> alIndexListContent = recordVA.getIDs();
-		ArrayList<Integer> alIndexListDimension = dimensionVA.getIDs();
-
-		if (eClustererType == EClustererTarget.RECORD_CLUSTERING) {
-			for (Integer example : alExamples) {
-				for (int index = 0; index < alIndexListContent.size(); index++) {
-					if (idx[index] == example) {
-						indices.add(alIndexListContent.get(index));
-						alClusterSizes.set(counter, alClusterSizes.get(counter) + 1);
-					}
-					if (example == index) {
-						idxExamples.add(recordVA.get(example));
-						idxCnt = 0;
-					}
-					idxCnt++;
+		for (Integer example : examples) {
+			for (int i = 0; i < va.size(); i++) {
+				if (idx[i] == example) {
+					indices.add(va.get(i));
+					clusterSizes.set(counter, clusterSizes.get(counter) + 1);
 				}
-				counter++;
-			}
-		} else {
-			for (Integer example : alExamples) {
-				for (int index = 0; index < alIndexListDimension.size(); index++) {
-					if (idx[index] == example) {
-						indices.add(alIndexListDimension.get(index));
-						alClusterSizes.set(counter, alClusterSizes.get(counter) + 1);
-					}
-					if (example == index) {
-						idxExamples.add(dimensionVA.get(example));
-						idxCnt = 0;
-					}
-					idxCnt++;
+				if (example == i) {
+					idxExamples.add(va.get(example));
 				}
-				counter++;
 			}
+			counter++;
 		}
-
 		return indices;
 	}
 
 	@Override
-	public PerspectiveInitializationData getSortedVA(ATableBasedDataDomain dataDomain,
-			ClusterConfiguration clusterConfiguration, int iProgressBarOffsetValue,
-			int iProgressBarMultiplier) {
+	protected PerspectiveInitializationData cluster() {
+		int r = determineSimilarities();
 
-		AffinityClusterConfiguration affinityClusterConfiguration = (AffinityClusterConfiguration) clusterConfiguration
-				.getClusterAlgorithmConfiguration();
-
-		this.dataDomain = dataDomain;
-
-		fClusterFactor = affinityClusterConfiguration.getClusterFactor();
-
-		this.iProgressBarMultiplier = iProgressBarMultiplier;
-		this.iProgressBarOffsetValue = iProgressBarOffsetValue;
-
-		int iReturnValue = 0;
-
-		iReturnValue = determineSimilarities(dataDomain.getTable(), clusterConfiguration);
-
-		if (iReturnValue < 0) {
-			GeneralManager.get().getEventPublisher()
-					.triggerEvent(new ClusterProgressEvent(100, true));
-			Logger.log(new Status(IStatus.ERROR, toString(),
-					"Could not determine similarities."));
+		if (r < 0) {
+			progress(100, true);
+			log.error("Could not determine similarities.");
 			return null;
 		}
-
-		return affinityPropagation(clusterConfiguration.getClusterTarget());
-
+		return affinityPropagation();
 	}
 
 }

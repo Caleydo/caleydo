@@ -17,37 +17,31 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.util.clusterer.initialization;
+package org.caleydo.core.util.clusterer.algorithm.tree;
 
-import org.caleydo.core.util.base.ILabelProvider;
+import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
+import org.caleydo.core.util.clusterer.IClustererFactory;
+import org.caleydo.core.util.clusterer.gui.AClusterTab;
+import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
+import org.caleydo.core.util.execution.SafeCallable;
+import org.eclipse.swt.widgets.TabFolder;
 
 /**
- * @author alexsb
+ * @author Samuel Gratzl
  *
  */
-public class AClusterAlgorithmConfiguration implements ILabelProvider {
+public class TreeClustererFactory implements IClustererFactory {
 
-	/**
-	 * The name of the clustering algorithm, must be overridden in implementing
-	 * classes
-	 */
-	private final String label;
-
-	/**
-	 *
-	 */
-	public AClusterAlgorithmConfiguration(String clusterAlgorithmName) {
-		this.label = clusterAlgorithmName;
+	@Override
+	public AClusterTab createClusterTab(TabFolder tabFolder) {
+		return new TreeTab(tabFolder);
 	}
 
 	@Override
-	public String getLabel() {
-		return label;
+	public SafeCallable<PerspectiveInitializationData> create(ClusterConfiguration config, int progressBarMultiplier,
+			int progressBarOffset) {
+		if (!(config.getClusterAlgorithmConfiguration() instanceof TreeClusterConfiguration))
+			return null;
+		return new TreeClusterer(config, progressBarMultiplier, progressBarOffset);
 	}
-
-	@Override
-	public String getProviderName() {
-		return null;
-	}
-
 }

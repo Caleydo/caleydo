@@ -18,34 +18,24 @@ package org.caleydo.core.util.clusterer.algorithm.nominal;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
-import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.util.clusterer.algorithm.AClusterer;
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 
 public class AlphabeticalPartitioner extends AClusterer {
 
-	/**
-	 *
-	 */
-	public AlphabeticalPartitioner() {
+	public AlphabeticalPartitioner(ClusterConfiguration config, int progressMultiplier, int progressOffset) {
+		super(config, progressMultiplier, progressOffset);
 
 	}
 
 	@Override
-	public PerspectiveInitializationData getSortedVA(ATableBasedDataDomain dataDomain,
-			ClusterConfiguration clusterState, int iProgressBarOffsetValue, int iProgressBarMultiplier) {
-		VirtualArray recordVA = clusterState.getSourceRecordPerspective().getVirtualArray();
-		// NominalDimension<String> dimension =
-		// (NominalDimension<String>)
-		// table.get(clusterState.getSourceDimensionPerspective().getVirtualArray().get(0));
-
-		HashMap<String, ArrayList<Integer>> letterBins = new HashMap<String, ArrayList<Integer>>(40);
-
-		ArrayList<String> letters = new ArrayList<String>(27);
-
+	protected PerspectiveInitializationData cluster() {
+		Map<String, List<Integer>> letterBins = new HashMap<>(40);
+		final List<String> letters = new ArrayList<>(27);
 		for (char letter = 'a'; letter < 'z'; letter++) {
 			String stringLetter = Character.toString(letter);
 
@@ -55,9 +45,9 @@ public class AlphabeticalPartitioner extends AClusterer {
 		String unknown = "UNKNOWN";
 		letterBins.put(unknown, new ArrayList<Integer>());
 
-		for (Integer recordID : recordVA) {
-			String value = dataDomain.getTable().getRawAsString(
-					clusterState.getSourceDimensionPerspective().getVirtualArray().get(0), recordID);
+		int firstDim = config.getSourceDimensionPerspective().getVirtualArray().get(0);
+		for (Integer recordID : config.getSourceRecordPerspective().getVirtualArray()) {
+			String value = table.getRawAsString(firstDim, recordID);
 			String firstLetter = value.substring(0, 1);
 			firstLetter = firstLetter.toLowerCase();
 			if (letterBins.containsKey(firstLetter))
@@ -67,12 +57,13 @@ public class AlphabeticalPartitioner extends AClusterer {
 			}
 		}
 
-		ArrayList<Integer> indices = new ArrayList<Integer>();
-		ArrayList<Integer> clusterSizes = new ArrayList<Integer>();
-		ArrayList<Integer> sampleElements = new ArrayList<Integer>();
+		List<Integer> indices = new ArrayList<Integer>();
+		List<Integer> clusterSizes = new ArrayList<Integer>();
+		List<Integer> sampleElements = new ArrayList<Integer>();
+
 		for (String letter : letters) {
-			ArrayList<Integer> recordIDs = letterBins.get(letter);
-			if (recordIDs.size() == 0)
+			List<Integer> recordIDs = letterBins.get(letter);
+			if (recordIDs.isEmpty())
 				continue;
 
 			indices.addAll(recordIDs);
@@ -85,6 +76,5 @@ public class AlphabeticalPartitioner extends AClusterer {
 		PerspectiveInitializationData result = new PerspectiveInitializationData();
 		result.setData(indices, clusterSizes, sampleElements);
 		return result;
-
 	}
 }
