@@ -12,6 +12,8 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.table.NumericalTable;
 import org.caleydo.core.data.collection.table.Table;
+import org.caleydo.core.data.perspective.table.EStatisticsType;
+import org.caleydo.core.data.perspective.table.StatisticsUtils;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.TablePerspectiveSelectionMixin;
@@ -178,6 +180,9 @@ public class ScatterplotElement extends GLElement implements TablePerspectiveSel
 				else if (dataSelectionConf.getDataResourceType() == EDataGenerationType.DERIVED_DATA)
 				{
 					//TODO: Perform statistics computations here
+					
+					col1 = StatisticsUtils.computeStatistics(dataSelectionConf.getVisSpaceType().ordinal(), tablePerspective, EStatisticsType.valueOf(dataSelectionConf.getAxisLabels().get(0)), null);
+					col2 = StatisticsUtils.computeStatistics(dataSelectionConf.getVisSpaceType().ordinal(), tablePerspective, EStatisticsType.valueOf(dataSelectionConf.getAxisLabels().get(1)), null);
 				}
 				
 				dataColumns.add(col1);
