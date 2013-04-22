@@ -65,6 +65,8 @@ public class KMeansClusterer extends ALinearClusterer {
 		if (progressAndCancel(1, false))
 			return canceled();
 
+		// FIXME missing values replace by mean
+
 		final int nrDimensions = oppositeVA.size();
 
 		final int[] assignments = new int[va.size()];
@@ -101,7 +103,7 @@ public class KMeansClusterer extends ALinearClusterer {
 
 			for(int i = 0; i < assignments.length; ++i) {
 				Integer vid = va.get(i);
-				vector = cache != null ? (float[]) cache.get(vid) : fillVector(vector, vid);
+				vector = getValue(vector, vid);
 				int best = -1;
 				// find best matching cluster
 				float distance = Float.POSITIVE_INFINITY;
@@ -127,7 +129,7 @@ public class KMeansClusterer extends ALinearClusterer {
 			for(int i = 0; i < assignments.length; ++i) {
 				int best = assignments[i];
 				Integer vid = va.get(i);
-				vector = cache != null ? (float[]) cache.get(vid) : fillVector(vector, vid);
+				vector = getValue(vector, vid);
 				clusters.get(best).add(vector);
 			}
 
@@ -153,6 +155,10 @@ public class KMeansClusterer extends ALinearClusterer {
 		List<Integer> clusterSamples = transformClusters(assignments, clusters);
 
 		return postProcess(assignments, clusterSamples);
+	}
+
+	protected float[] getValue(float[] vector, Integer vid) {
+		return cache != null ? (float[]) cache.get(vid) : fillVector(vector, vid);
 	}
 
 
