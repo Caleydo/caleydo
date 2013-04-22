@@ -43,10 +43,13 @@ public class ComputeAllOfJob extends AComputeJob {
 
 	private final ADataDomainQuery query;
 
-	public ComputeAllOfJob(ADataDomainQuery q, Collection<IScore> scores, Object receiver) {
+	private final boolean hasAnyGroupScore;
+
+	public ComputeAllOfJob(ADataDomainQuery q, Collection<IScore> scores, Object receiver, boolean hasAnyGroupScore) {
 		super(scores, receiver);
 		this.query = q;
 		this.receiver = receiver;
+		this.hasAnyGroupScore = hasAnyGroupScore;
 	}
 
 	@Override
@@ -62,7 +65,7 @@ public class ComputeAllOfJob extends AComputeJob {
 		log.info("compute the data for datadomain: " + query.getDataDomain().getLabel());
 		boolean creating = !query.isInitialized();
 		List<PerspectiveRow> data = query.getOrCreate();
-		BitSet mask = query.getMask();
+		BitSet mask = query.getMask(!hasAnyGroupScore);
 		System.out.println("done in " + w);
 
 		IStatus result = runImpl(monitor, data, mask);

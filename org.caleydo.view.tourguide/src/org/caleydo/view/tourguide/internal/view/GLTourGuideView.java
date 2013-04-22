@@ -80,6 +80,7 @@ import org.caleydo.view.tourguide.internal.view.model.PathwayDataDomainQuery;
 import org.caleydo.view.tourguide.internal.view.model.TableDataDomainQuery;
 import org.caleydo.view.tourguide.internal.view.ui.DataDomainQueryUI;
 import org.caleydo.view.tourguide.spi.IScoreFactory;
+import org.caleydo.view.tourguide.spi.score.IGroupScore;
 import org.caleydo.view.tourguide.spi.score.IRegisteredScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
 import org.caleydo.vis.rank.config.RankTableConfigBase;
@@ -127,7 +128,7 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 				onActiveChanged((ADataDomainQuery) evt.getSource(), (boolean) evt.getNewValue());
 				break;
 			case ADataDomainQuery.PROP_MASK:
-				updateMask();
+				updateMask(false);
 			}
 		}
 	};
@@ -149,6 +150,11 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 			g.drawText("No active StratomeX", 10, h * 0.5f - 12, w - 20, 24, VAlign.CENTER);
 		}
 	});
+
+	/**
+	 * marker for the data mode
+	 */
+	private boolean hasAnyGroupScore;
 
 	public GLTourGuideView(IGLCanvas glCanvas) {
 		super(glCanvas, VIEW_TYPE, VIEW_NAME);
@@ -173,6 +179,15 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
 				onSelectRow((PerspectiveRow) evt.getOldValue(), (PerspectiveRow) evt.getNewValue());
+			}
+		});
+
+		this.table.addPropertyChangeListener(RankTableModel.PROP_COLUMNS, new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				if (evt.getNewValue() == null) { // removed
+					updateMask(false);
+				}
 			}
 		});
 		this.table.add(new RankRankColumnModel().setWidth(30));
@@ -265,7 +280,7 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 				queries.remove(query);
 				getDataDomainQueryUI().remove(query);
 				if (query.isActive())
-					updateMask();
+					updateMask(false);
 				break;
 			}
 		}
@@ -279,7 +294,7 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 			if (active) {
 				scheduleAllOf(q);
 			} else
-				updateMask();
+				updateMask(false);
 			return;
 		} else
 			scheduleAllOf(q);
@@ -290,16 +305,18 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 	 */
 	private void scheduleAllOf(final ADataDomainQuery q) {
 		Collection<IScore> scores = new ArrayList<>(getVisibleScores(null));
-		ComputeAllOfJob job = new ComputeAllOfJob(q, scores, this);
+		ComputeAllOfJob job = new ComputeAllOfJob(q, scores, this, hasAnyGroupScore);
 		if (job.hasThingsToDo()) {
 			getPopupLayer().show(waiting, null, 0);
 			job.schedule();
 		} else {
-			updateMask();
+			updateMask(false);
 		}
 	}
 
 	private void scheduleAllOf(Collection<IScore> toCompute) {
+		if (!hasAnyGroupScore && hasAnyGroupScoreScore(toCompute))
+			updateMask(true);
 		ComputeForScoreJob job = new ComputeForScoreJob(toCompute, table.getData(), table.getDefaultFilter()
 				.getFilter(), this);
 		if (job.hasThingsToDo()) {
@@ -325,9 +342,9 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 			List<?> m = table.getData();
 			// use sublists to save memory
 			q.init(offset, new CustomSubList<PerspectiveRow>((List<PerspectiveRow>) m, offset, m.size() - offset));
-			updateMask();
+			updateMask(false);
 		} else {
-			updateMask();
+			updateMask(false);
 		}
 	}
 
@@ -347,10 +364,12 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 				ss.orderByMe();
 			}
 		}
+		updateMask(false);
 	}
 
-	private void updateMask() {
+	private void updateMask(boolean forceGroupScore) {
 		this.mask.clear();
+		this.hasAnyGroupScore = forceGroupScore || hasAnyGroupScore();
 		for (ADataDomainQuery q : this.queries) {
 			if (!q.isInitialized())
 				continue;
@@ -359,10 +378,38 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 			if (!q.isActive())
 				this.mask.set(offset, offset + size, false);
 			else {
-				this.mask.or(q.getMask());
+				this.mask.or(q.getMask(!hasAnyGroupScore));
 			}
 		}
 		table.setDataMask(this.mask);
+	}
+
+	/**
+	 * @return
+	 */
+	private boolean hasAnyGroupScore() {
+		return hasAnyGroupScore(table.getColumns());
+	}
+
+	private static boolean hasAnyGroupScore(Iterable<ARankColumnModel> columns) {
+		for (ARankColumnModel col : columns) {
+			if (col instanceof ACompositeRankColumnModel) {
+				if (hasAnyGroupScore((ACompositeRankColumnModel) col))
+					return true;
+			} else if (col instanceof ScoreRankColumnModel) {
+				if (((ScoreRankColumnModel) col).getScore() instanceof IGroupScore)
+					return true;
+			}
+		}
+		return false;
+	}
+
+	private static boolean hasAnyGroupScoreScore(Iterable<IScore> scores) {
+		for (IScore s : Scores.flatten(scores)) {
+			if (s instanceof IGroupScore)
+				return true;
+		}
+		return false;
 	}
 
 	private TourGuideVis getVis() {
