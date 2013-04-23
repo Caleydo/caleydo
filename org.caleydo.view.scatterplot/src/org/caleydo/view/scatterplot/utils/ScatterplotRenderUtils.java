@@ -300,5 +300,32 @@ public class ScatterplotRenderUtils {
 		scatterplotElement.getSelection().fireSelectionDelta(selectionManager.getIDType());
 	}
 	
+	public boolean pickedSelectionRectangle(Point clickedPoint, SelectionRectangle rectangle)
+	{
+		boolean result = false;
+		
+		if (rectangle == null)
+			return false;
+		
+		float yScreenMin = Math.min(rectangle.getTop(), rectangle.getBottom());
+		float yScreenMax = Math.max(rectangle.getTop(), rectangle.getBottom());
+		
+		float xScreenMin = Math.min(rectangle.getLeft(), rectangle.getRight());
+		float xScreenMax = Math.max(rectangle.getLeft(), rectangle.getRight());
+		
+		if(rectangle.getLeft() == -1)
+		{
+			return false;
+		}
+		
+		if(clickedPoint.x >= xScreenMin & clickedPoint.x <= xScreenMax &
+				clickedPoint.y >= yScreenMin & clickedPoint.y <= yScreenMax)
+		{
+			result = true;
+		}
+		
+		return result;
+	}
+	
 
 }
