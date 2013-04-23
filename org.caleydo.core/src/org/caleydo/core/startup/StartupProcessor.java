@@ -71,7 +71,7 @@ public class StartupProcessor {
 		return startupProcessor;
 	}
 
-	public void initStartupProcudure(Map<String, Object> applicationArguments) {
+	public int initStartupProcudure(Map<String, Object> applicationArguments) {
 
 		// Load project if provided via webstart system property
 		setProjectLocationFromSystemProperty();
@@ -90,12 +90,12 @@ public class StartupProcessor {
 
 			if (projectWizardDialog.open() == Window.CANCEL) {
 				shutdown();
-				return;
+				return PlatformUI.RETURN_UNSTARTABLE;
 			}
 		}
 
 		startupProcedure.initPreWorkbenchOpen();
-		initRCPWorkbench();
+		return initRCPWorkbench();
 	}
 
 	private void handleProgramArguments(Map<String, Object> applicationArguments) {
@@ -223,12 +223,12 @@ public class StartupProcessor {
 		// ColorMappingManager.get().initiFromPreferenceStore(ColorMappingType.GENE_EXPRESSION);
 	}
 
-	private void initRCPWorkbench() {
+	private int initRCPWorkbench() {
 
 		try {
 			display = PlatformUI.createDisplay();
 			applicationWorkbenchAdvisor = new ApplicationWorkbenchAdvisor();
-			PlatformUI.createAndRunWorkbench(display, applicationWorkbenchAdvisor);
+			return PlatformUI.createAndRunWorkbench(display, applicationWorkbenchAdvisor);
 		} finally {
 			shutdown();
 		}

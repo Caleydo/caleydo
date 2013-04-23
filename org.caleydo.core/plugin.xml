@@ -141,6 +141,11 @@
             id="org.caleydo.view.generaltoolbar.command.opengeneraltoolbar"
             name="Tool Bar">
       </command>
+      <command
+            defaultHandler="org.caleydo.core.startup.RestartCommand"
+            id="org.caleydo.core.startup.restart"
+            name="Restart">
+      </command>
       		
    </extension>
    <extension
@@ -184,6 +189,11 @@
                   name="org.caleydo.core.separator2"
                   visible="true">
             </separator>
+            <command
+                  commandId="org.caleydo.core.startup.restart"
+                  label="Restart"
+                  style="push">
+            </command>
             <command
                   commandId="org.caleydo.core.startup.exit"
                   label="Exit"
