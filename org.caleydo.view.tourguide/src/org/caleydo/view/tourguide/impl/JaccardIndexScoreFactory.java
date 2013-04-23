@@ -116,12 +116,12 @@ public class JaccardIndexScoreFactory implements IScoreFactory {
 		}
 
 		@Override
-		protected IRegisteredScore createScore(String label, TablePerspective strat, Group g) {
+		protected IRegisteredScore createScore(String label, Perspective per, Group g) {
 			boolean m = mututalExclusiveUI.getSelection();
 			if (m)
-				return createJaccardME(label, strat.getRecordPerspective(), g);
+				return createJaccardME(label, per, g);
 			else
-				return createJaccard(label, strat.getRecordPerspective(), g);
+				return createJaccard(label, per, g);
 		}
 	}
 }

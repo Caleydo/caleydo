@@ -27,6 +27,7 @@ import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.picking.Pick;
+import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.internal.event.CreateScoreEvent;
 import org.caleydo.view.tourguide.spi.IScoreFactory;
 
@@ -39,15 +40,17 @@ public class ScoreFactoryPoolElem extends APoolElem {
 	private final String label;
 	private final IScoreFactory factory;
 	private final Object receiver;
-	/**
-	 * @param key
-	 * @param value
-	 */
+
 	public ScoreFactoryPoolElem(String label, IScoreFactory factory, Object receiver) {
 		this.label = label;
 		this.factory = factory;
 		this.receiver = receiver;
 		setTooltip("Create a new " + label + " score");
+		setMode(EDataDomainQueryMode.TABLE_BASED); // default
+	}
+
+	public void setMode(EDataDomainQueryMode mode) {
+		setVisibility(factory.supports(mode) ? EVisibility.PICKABLE : EVisibility.VISIBLE);
 	}
 
 	@Override
@@ -63,8 +66,14 @@ public class ScoreFactoryPoolElem extends APoolElem {
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
+		if (getVisibility() == EVisibility.VISIBLE) {
+			g.textColor(Color.GRAY);
+		}
 		g.drawText(label, 2, 3, w - 2, h - 9, VAlign.CENTER);
-		g.color(armed ? Color.BLACK : Color.GRAY);
+		if (getVisibility() == EVisibility.VISIBLE) {
+			g.textColor(Color.BLACK);
+		}
+		g.color(armed ? Color.BLACK : Color.DARK_GRAY);
 		g.gl.glLineStipple(4, (short) 0xAAAA);
 		g.gl.glEnable(GL2.GL_LINE_STIPPLE);
 		g.drawRoundedRect(0, 0, w, h, 5);

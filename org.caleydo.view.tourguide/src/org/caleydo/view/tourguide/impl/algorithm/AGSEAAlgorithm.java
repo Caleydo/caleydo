@@ -3,26 +3,27 @@ package org.caleydo.view.tourguide.impl.algorithm;
 import java.util.List;
 import java.util.Set;
 
-import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.id.IDType;
 import org.caleydo.view.tourguide.spi.algorithm.IStratificationAlgorithm;
 
 public abstract class AGSEAAlgorithm implements IStratificationAlgorithm {
-	protected final TablePerspective stratification;
+	protected final Perspective perspective;
 	protected final Group group;
 
-	public AGSEAAlgorithm(TablePerspective stratification, Group group) {
-		this.stratification = stratification;
+	public AGSEAAlgorithm(Perspective perspective, Group group) {
+		this.perspective = perspective;
 		this.group = group;
 	}
 
 	/**
-	 * @return the stratification, see {@link #stratification}
+	 * @return the perspective, see {@link #perspective}
 	 */
-	public final TablePerspective getStratification() {
-		return stratification;
+	public Perspective getPerspective() {
+		return perspective;
 	}
 
 	/**
@@ -36,7 +37,8 @@ public abstract class AGSEAAlgorithm implements IStratificationAlgorithm {
 
 	@Override
 	public final IDType getTargetType(Perspective a, Perspective b) {
-		return stratification.getDimensionPerspective().getIdType();
+		IDataDomain dataDomain = perspective.getDataDomain();
+		return ((ATableBasedDataDomain) dataDomain).getDimensionIDType();
 	}
 
 	public final float compute(Set<Integer> geneSet) {

@@ -112,9 +112,8 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 	public static final String VIEW_NAME = "Tour Guide";
 
 	private static final int DATADOMAIN_QUERY = 0;
-	private static final int TABLE_HEADER = 1;
-	private static final int TABLE_BODY = 2;
-	private static final int POOL = 3;
+	private static final int TABLE = 1;
+	private static final int POOL = 2;
 
 	private StratomexAdapter stratomex = new StratomexAdapter();
 	private final RankTableModel table;
@@ -501,12 +500,19 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 			}
 		}
 		getDataDomainQueryUI().updateSelections();
+
+		getPoolUI().updateMode(mode);
+
 		this.mode = mode;
 
 	}
 
 	private DataDomainQueryUI getDataDomainQueryUI() {
 		return (DataDomainQueryUI) getVis().get(DATADOMAIN_QUERY);
+	}
+
+	private ScorePoolUI getPoolUI() {
+		return (ScorePoolUI) getVis().get(POOL);
 	}
 
 	/**

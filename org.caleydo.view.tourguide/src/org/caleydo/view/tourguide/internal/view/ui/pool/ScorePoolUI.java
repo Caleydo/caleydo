@@ -38,6 +38,7 @@ import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
+import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.internal.score.ScoreFactories;
 import org.caleydo.view.tourguide.internal.view.GLTourGuideView;
 import org.caleydo.view.tourguide.spi.IScoreFactory;
@@ -46,6 +47,8 @@ import org.caleydo.vis.rank.config.RankTableUIConfigs;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.mixin.IHideableColumnMixin;
+
+import com.google.common.collect.Iterables;
 
 /**
  * simple visualization of the pool of hidden columns
@@ -204,5 +207,10 @@ public class ScorePoolUI extends GLElementContainer implements IGLLayout {
 				}
 			}
 		}
+	}
+
+	public void updateMode(EDataDomainQueryMode mode) {
+		for (ScoreFactoryPoolElem elem : Iterables.filter(this, ScoreFactoryPoolElem.class))
+			elem.setMode(mode);
 	}
 }

@@ -24,7 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.datadomain.DataDomainOracle;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
@@ -118,7 +119,7 @@ public abstract class ACreateGroupScoreDialog extends TitleAreaDialog {
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
 				IStructuredSelection selection = (IStructuredSelection) event.getSelection();
-				TablePerspective dataDomain = (TablePerspective) selection.getFirstElement();
+				Perspective dataDomain = (Perspective) selection.getFirstElement();
 				updateGroups(dataDomain);
 			}
 		});
@@ -143,20 +144,27 @@ public abstract class ACreateGroupScoreDialog extends TitleAreaDialog {
 			this.stratificationUI.setInput(null);
 			this.stratificationUI.getCombo().setEnabled(false);
 		} else {
-			// receiver.getQuery().getQuery().getPerspectives(dataDomain)
-			// FIXME
-			List<TablePerspective> data = new ArrayList<TablePerspective>();
+			ATableBasedDataDomain d = dataDomain;
+			DataDomainOracle.initDataDomain(d);
+			List<Perspective> data = new ArrayList<>(); // just stratifications
+
+			for (String id : d.getTable().getRecordPerspectiveIDs()) {
+				Perspective p = d.getTable().getRecordPerspective(id);
+				if (p.isDefault())
+					continue;
+				data.add(p);
+			}
 			this.stratificationUI.setInput(data);
 			this.stratificationUI.getCombo().setEnabled(true);
 		}
 	}
 
-	protected void updateGroups(TablePerspective perspective) {
+	protected void updateGroups(Perspective perspective) {
 		if (perspective == null) {
 			this.groupUI.setInput(null);
 			this.groupUI.getCombo().setEnabled(false);
 		} else {
-			List<Group> data = Lists.newArrayList(perspective.getRecordPerspective().getVirtualArray().getGroupList());
+			List<Group> data = Lists.newArrayList(perspective.getVirtualArray().getGroupList());
 			data.add(0, ALL_GROUP);
 			this.groupUI.setInput(data);
 			this.groupUI.getCombo().setEnabled(true);
@@ -180,24 +188,24 @@ public abstract class ACreateGroupScoreDialog extends TitleAreaDialog {
 		return valid;
 	}
 
-	protected abstract IRegisteredScore createScore(String label, TablePerspective strat, Group g);
+	protected abstract IRegisteredScore createScore(String label, Perspective strat, Group g);
 
 	private void save() {
 		String label = labelUI.getText();
-		TablePerspective strat = (TablePerspective) ((IStructuredSelection) stratificationUI.getSelection())
+		Perspective per = (Perspective) ((IStructuredSelection) stratificationUI.getSelection())
 				.getFirstElement();
 		Group group = groupUI.getSelection() == null ? null : (Group) ((IStructuredSelection) groupUI.getSelection())
 				.getFirstElement();
 		IScore s;
 		if (group == null || group == ALL_GROUP) { // score all
-			MultiScore composite = new MultiScore(label == null ? strat.getLabel() : label, Color.GRAY, new Color(
+			MultiScore composite = new MultiScore(label == null ? per.getLabel() : label, Color.GRAY, new Color(
 					0.95f, .95f, .95f));
-			for (Group g : strat.getRecordPerspective().getVirtualArray().getGroupList()) {
-				composite.add(createScore(null, strat, g));
+			for (Group g : per.getVirtualArray().getGroupList()) {
+				composite.add(createScore(null, per, g));
 			}
 			s = composite;
 		} else { // score single
-			s = createScore(label, strat, group);
+			s = createScore(label, per, group);
 		}
 		EventPublisher.trigger(new AddScoreColumnEvent(s).to(receiver));
 	}

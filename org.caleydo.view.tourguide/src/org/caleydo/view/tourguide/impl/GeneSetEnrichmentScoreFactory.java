@@ -25,6 +25,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.view.tourguide.api.compute.ComputeScoreFilters;
@@ -55,11 +56,11 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 	private final static Color color = Color.decode("#80ffb3");
 	private final static Color bgColor = Color.decode("#e3f4d7");
 
-	private IRegisteredScore createGSEA(String label, TablePerspective reference, Group group) {
+	private IRegisteredScore createGSEA(String label, Perspective reference, Group group) {
 		return new GeneSetScore(label, new GSEAAlgorithm(reference, group, 1.0f), false);
 	}
 
-	private IRegisteredScore createPGSEA(String label, TablePerspective reference, Group group) {
+	private IRegisteredScore createPGSEA(String label, Perspective reference, Group group) {
 		return new GeneSetScore(label, new PGSEAAlgorithm(reference, group), false);
 	}
 
@@ -76,14 +77,14 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 		Collection<ScoreEntry> col = new ArrayList<>();
 
 		{
-			GSEAAlgorithm algorithm = new GSEAAlgorithm(strat, group, 1.0f);
+			GSEAAlgorithm algorithm = new GSEAAlgorithm(strat.getRecordPerspective(), group, 1.0f);
 			IScore gsea = new GeneSetScore(strat.getRecordPerspective().getLabel(), algorithm, false);
 			IScore pValue = new GeneSetScore(gsea.getLabel() + " (P-V)", algorithm.asPValue(), true);
 			col.add(new ScoreEntry("Gene Set Enrichment Analysis of Group", gsea, pValue));
 		}
 
 		{
-			PGSEAAlgorithm algorithm = new PGSEAAlgorithm(strat, group);
+			PGSEAAlgorithm algorithm = new PGSEAAlgorithm(strat.getRecordPerspective(), group);
 			IScore gsea = new GeneSetScore(strat.getRecordPerspective().getLabel(), algorithm, false);
 			IScore pValue = new GeneSetScore(gsea.getLabel() + " (P-V)", algorithm.asPValue(), true);
 			col.add(new ScoreEntry("Parametric Gene Set Enrichment Analysis of Group", gsea, pValue));
@@ -122,7 +123,7 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 		}
 
 		@Override
-		protected IRegisteredScore createScore(String label, TablePerspective strat, Group g) {
+		protected IRegisteredScore createScore(String label, Perspective strat, Group g) {
 			if (parametricUI.getSelection()) {
 				return createPGSEA(label, strat, g);
 			} else
@@ -157,11 +158,11 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 		}
 	}
 
-	public static Pair<TablePerspective, Group> resolve(IStratificationAlgorithm algorithm) {
+	public static Pair<Perspective, Group> resolve(IStratificationAlgorithm algorithm) {
 		if (algorithm instanceof GSEAAlgorithmPValue)
 			algorithm = ((GSEAAlgorithmPValue) algorithm).getUnderlying();
 		if (algorithm instanceof AGSEAAlgorithm)
-			return Pair.make(((AGSEAAlgorithm) algorithm).getStratification(), ((AGSEAAlgorithm) algorithm).getGroup());
+			return Pair.make(((AGSEAAlgorithm) algorithm).getPerspective(), ((AGSEAAlgorithm) algorithm).getGroup());
 		return null;
 	}
 }
