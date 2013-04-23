@@ -57,11 +57,16 @@ public abstract class ADataDomainQuery {
 		this.mode = mode;
 	}
 
-	public void cloneFrom(ADataDomainQuery clone) {
+	public void cloneFrom(ADataDomainQuery clone, List<PerspectiveRow> allData) {
 		this.mask = clone.mask != null ? (BitSet) clone.mask.clone() : null;
 		this.active = clone.active;
+		this.offset = clone.offset;
+		this.countStratificationOnly = clone.countStratificationOnly;
+		this.active = clone.active;
+		this.maskStratification = clone.maskStratification;
 		if (clone.data != null) {
-			// TODO
+			int size = clone.data.size();
+			this.data = new CustomSubList<PerspectiveRow>(allData, offset, size);
 		}
 	}
 
@@ -212,7 +217,10 @@ public abstract class ADataDomainQuery {
 	 *
 	 */
 	public void onDataDomainUpdated() {
-		// TODO Auto-generated method stub
+		if (!isInitialized()) // not yet used
+			return;
+		// we need to adapt stuff of our perspective rows -> mask exceptions
+		// black list for removed stuff + white list for added staff
 		// FIXME
 	}
 }

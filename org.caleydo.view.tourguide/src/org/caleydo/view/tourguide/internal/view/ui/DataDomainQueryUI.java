@@ -105,6 +105,7 @@ public class DataDomainQueryUI extends GLElementContainer {
 	 * @param query
 	 */
 	public void add(ADataDomainQuery query) {
+		// FIXME
 		GLElementContainer c = (GLElementContainer) get(query.getMode().ordinal());
 		c.add(createFor(query));
 		c.setSize(-1, c.size() * 20);
@@ -116,6 +117,7 @@ public class DataDomainQueryUI extends GLElementContainer {
 	 * @param query
 	 */
 	public void remove(ADataDomainQuery query) {
+		// FIXME
 		GLElementContainer c = (GLElementContainer) get(query.getMode().ordinal());
 		for (ADataDomainElement d : Iterables.filter(c, ADataDomainElement.class)) {
 			if (d.getModel() == query) {

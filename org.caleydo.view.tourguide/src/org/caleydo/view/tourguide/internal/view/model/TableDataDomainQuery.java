@@ -56,8 +56,8 @@ public class TableDataDomainQuery extends ADataDomainQuery {
 	}
 
 	@Override
-	public void cloneFrom(ADataDomainQuery clone) {
-		super.cloneFrom(clone);
+	public void cloneFrom(ADataDomainQuery clone, List<PerspectiveRow> allData) {
+		super.cloneFrom(clone, allData);
 		this.matches = ((TableDataDomainQuery) clone).matches;
 		this.dimensionSelection = ((TableDataDomainQuery) clone).dimensionSelection;
 	}

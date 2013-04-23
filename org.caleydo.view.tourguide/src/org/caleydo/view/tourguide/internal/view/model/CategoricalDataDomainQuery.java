@@ -56,8 +56,8 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 	}
 
 	@Override
-	public void cloneFrom(ADataDomainQuery clone) {
-		super.cloneFrom(clone);
+	public void cloneFrom(ADataDomainQuery clone, List<PerspectiveRow> allData) {
+		super.cloneFrom(clone, allData);
 		this.selected.clear();
 		this.selected.addAll(((CategoricalDataDomainQuery) clone).selected);
 	}
