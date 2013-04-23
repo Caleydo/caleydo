@@ -33,6 +33,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.osgi.service.datalocation.Location;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IFolderLayout;
@@ -70,7 +71,7 @@ public class StartupProcessor {
 		return startupProcessor;
 	}
 
-	public void initStartupProcudure(Map<String, Object> applicationArguments) {
+	public int initStartupProcudure(Map<String, Object> applicationArguments) {
 
 		// Load project if provided via webstart system property
 		setProjectLocationFromSystemProperty();
@@ -82,18 +83,19 @@ public class StartupProcessor {
 
 
 		if (startupProcedure == null) {
-			Shell shell = new Shell();
+			Shell shell = new Shell(SWT.ON_TOP);
 			WizardDialog projectWizardDialog = new WizardDialog(shell,
 					new CaleydoProjectWizard(shell));
 
+
 			if (projectWizardDialog.open() == Window.CANCEL) {
 				shutdown();
-				return;
+				return PlatformUI.RETURN_UNSTARTABLE;
 			}
 		}
 
 		startupProcedure.initPreWorkbenchOpen();
-		initRCPWorkbench();
+		return initRCPWorkbench();
 	}
 
 	private void handleProgramArguments(Map<String, Object> applicationArguments) {
@@ -221,12 +223,12 @@ public class StartupProcessor {
 		// ColorMappingManager.get().initiFromPreferenceStore(ColorMappingType.GENE_EXPRESSION);
 	}
 
-	private void initRCPWorkbench() {
+	private int initRCPWorkbench() {
 
 		try {
 			display = PlatformUI.createDisplay();
 			applicationWorkbenchAdvisor = new ApplicationWorkbenchAdvisor();
-			PlatformUI.createAndRunWorkbench(display, applicationWorkbenchAdvisor);
+			return PlatformUI.createAndRunWorkbench(display, applicationWorkbenchAdvisor);
 		} finally {
 			shutdown();
 		}

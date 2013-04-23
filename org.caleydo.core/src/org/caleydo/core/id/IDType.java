@@ -274,7 +274,7 @@ public class IDType {
 			} else if (getDataType().equals(EDataType.INTEGER)) {
 				if (idMappingManager.doesElementExist(this, currentID)) {
 					numMatchedIDs++;
-				} else if (getTypeName().equals("REFSEQ_MRNA")) {
+				} else if (getTypeName().equals("REFSEQ_MRNA")) { // FIXME hack
 					if (currentID.contains(".")) {
 						if (idMappingManager.doesElementExist(this, currentID.substring(0, currentID.indexOf(".")))) {
 							numMatchedIDs++;

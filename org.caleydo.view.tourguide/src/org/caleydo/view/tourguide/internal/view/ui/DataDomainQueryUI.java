@@ -1,6 +1,11 @@
 package org.caleydo.view.tourguide.internal.view.ui;
 
+import org.caleydo.core.view.opengl.layout2.AGLElementDecorator;
+import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
+import org.caleydo.core.view.opengl.layout2.GLElementSelector;
+import org.caleydo.core.view.opengl.layout2.IGLElementVisitor;
+import org.caleydo.core.view.opengl.layout2.animation.AnimatedGLElementContainer;
 import org.caleydo.core.view.opengl.layout2.layout.GLFlowLayout;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
@@ -59,17 +64,48 @@ public class DataDomainQueryUI extends GLElementContainer {
 	}
 
 	public void updateSelections() {
-		for (GLElementContainer elem : Iterables.filter(this, GLElementContainer.class)) {
-			for (ADataDomainElement c : Iterables.filter(elem, ADataDomainElement.class)) {
-				c.updateSelection();
+		this.accept(new IGLElementVisitor<Void, Void>() {
+
+			@Override
+			public Void visit(GLElement elem, Void para) {
+				if (elem instanceof ADataDomainElement) {
+					((ADataDomainElement) elem).updateSelection();
+				}
+				return null;
 			}
-		}
+
+			@Override
+			public Void visit(GLElementContainer elem, Void para) {
+				for (GLElement child : elem)
+					child.accept(this, para);
+				return null;
+			}
+
+			@Override
+			public Void visit(AnimatedGLElementContainer elem, Void para) {
+				return null;
+			}
+
+			@Override
+			public Void visit(AGLElementDecorator elem, Void para) {
+				return elem.getContent().accept(this, para);
+			}
+
+			@Override
+			public Void visit(GLElementSelector elem, Void para) {
+				for (GLElement child : elem)
+					child.accept(this, para);
+				return null;
+			}
+
+		}, null);
 	}
 
 	/**
 	 * @param query
 	 */
 	public void add(ADataDomainQuery query) {
+		// FIXME
 		GLElementContainer c = (GLElementContainer) get(query.getMode().ordinal());
 		c.add(createFor(query));
 		c.setSize(-1, c.size() * 20);
@@ -81,6 +117,7 @@ public class DataDomainQueryUI extends GLElementContainer {
 	 * @param query
 	 */
 	public void remove(ADataDomainQuery query) {
+		// FIXME
 		GLElementContainer c = (GLElementContainer) get(query.getMode().ordinal());
 		for (ADataDomainElement d : Iterables.filter(c, ADataDomainElement.class)) {
 			if (d.getModel() == query) {

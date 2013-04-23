@@ -214,7 +214,7 @@ public class ColumnPoolUI extends GLElementContainer implements IGLLayout {
 		@Override
 		protected void onMouseOut(Pick pick) {
 			if (armed) {
-				context.getMouseLayer().setDropable(IHideableColumnMixin.class, true);
+				context.getMouseLayer().setDropable(IHideableColumnMixin.class, false);
 				armed = false;
 				repaint();
 			}

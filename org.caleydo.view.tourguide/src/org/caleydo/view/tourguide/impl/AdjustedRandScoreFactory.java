@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.datadomain.DataDomainOracle;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
@@ -158,9 +159,17 @@ public class AdjustedRandScoreFactory implements IScoreFactory {
 				this.stratificationUI.setInput(null);
 				this.stratificationUI.getCombo().setEnabled(false);
 			} else {
-				// receiver.getQuery().getQuery().getJustStratifications(dataDomain)
-				// FIXME
-				List<Perspective> data = new ArrayList<Perspective>();
+				ATableBasedDataDomain d = dataDomain;
+				DataDomainOracle.initDataDomain(d);
+				List<Perspective> data = new ArrayList<>(); // just stratifications
+
+				for (String id : d.getTable().getRecordPerspectiveIDs()) {
+					Perspective p = d.getTable().getRecordPerspective(id);
+					if (p.isDefault())
+						continue;
+					data.add(p);
+				}
+
 				this.stratificationUI.setInput(data);
 				this.stratificationUI.getCombo().setEnabled(true);
 			}

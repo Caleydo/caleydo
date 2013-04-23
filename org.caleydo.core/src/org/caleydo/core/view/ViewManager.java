@@ -58,6 +58,7 @@ import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -721,27 +722,20 @@ public class ViewManager extends AManager<IView> {
 	public Set<String> getRemotePlugInViewIDs(String parentID, String embeddingID) {
 		Set<String> viewIDs = new HashSet<>();
 
-		IExtensionRegistry registry = Platform.getExtensionRegistry();
-		IExtensionPoint point = registry.getExtensionPoint("org.caleydo.view.EmbeddedView");
-		IExtension[] extensions = point.getExtensions();
-
-		for (IExtension extension : extensions) {
-			IConfigurationElement[] embeddingInfos = extension.getConfigurationElements();
-			for (IConfigurationElement embeddingInfo : embeddingInfos) {
-				IConfigurationElement[] parentViews = embeddingInfo.getChildren("ParentView");
-				for (IConfigurationElement parent : parentViews) {
-					if (parent.getAttribute("viewID").equals(parentID)) {
-						IConfigurationElement[] embeddings = parent.getChildren("Embedding");
-						for (IConfigurationElement embedding : embeddings) {
-							if (embedding.getAttribute("embeddingID").equals(embeddingID)) {
-								viewIDs.add(embeddingInfo.getAttribute("viewID"));
-							}
+		for (IConfigurationElement embeddingInfo : RegistryFactory.getRegistry().getConfigurationElementsFor(
+				"org.caleydo.view.EmbeddedView")) {
+			IConfigurationElement[] parentViews = embeddingInfo.getChildren("ParentView");
+			for (IConfigurationElement parent : parentViews) {
+				if (parent.getAttribute("viewID").equals(parentID)) {
+					IConfigurationElement[] embeddings = parent.getChildren("Embedding");
+					for (IConfigurationElement embedding : embeddings) {
+						if (embedding.getAttribute("embeddingID").equals(embeddingID)) {
+							viewIDs.add(embeddingInfo.getAttribute("viewID"));
 						}
 					}
 				}
 			}
 		}
-
 		return viewIDs;
 	}
 

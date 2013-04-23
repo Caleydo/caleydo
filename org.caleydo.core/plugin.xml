@@ -13,6 +13,7 @@
    <extension-point id="org.caleydo.datadomain.DataDomainActions" name="DataDomainActions" schema="schema/org.caleydo.datadomain.DataDomainActions.exsd"/>
    <extension-point id="org.caleydo.core.data.datadomain.ViewDataDomainAssociation" name="ViewDataDomainAssociation" schema="schema/org.caleydo.core.data.datadomain.ViewDataDomainAssociation.exsd"/>
    <extension-point id="org.caleydo.view.ViewEmbeddingProvider" name="ViewEmbeddingProvider" schema="schema/org.caleydo.view.ViewEmbeddingProvider.exsd"/>
+   <extension-point id="org.caleydo.core.util.Clusterer" name="Clusterer" schema="schema/org.caleydo.core.util.Clusterer.exsd"/>
 	
    <extension
          id="application"
@@ -140,6 +141,11 @@
             id="org.caleydo.view.generaltoolbar.command.opengeneraltoolbar"
             name="Tool Bar">
       </command>
+      <command
+            defaultHandler="org.caleydo.core.startup.RestartCommand"
+            id="org.caleydo.core.startup.restart"
+            name="Restart">
+      </command>
       		
    </extension>
    <extension
@@ -183,6 +189,11 @@
                   name="org.caleydo.core.separator2"
                   visible="true">
             </separator>
+            <command
+                  commandId="org.caleydo.core.startup.restart"
+                  label="Restart"
+                  style="push">
+            </command>
             <command
                   commandId="org.caleydo.core.startup.exit"
                   label="Exit"
@@ -321,5 +332,17 @@
          <factory
                class="org.caleydo.core.data.datadomain.RemoveDataDomainActionFactory">
          </factory>
+      </extension>
+      <extension
+            point="org.caleydo.core.util.Clusterer">
+         <clusterer
+               class="org.caleydo.core.util.clusterer.algorithm.kmeans.KMeansClustererFactory">
+         </clusterer>
+         <clusterer
+               class="org.caleydo.core.util.clusterer.algorithm.affinity.AffinityClustererFactory">
+         </clusterer>
+         <clusterer
+               class="org.caleydo.core.util.clusterer.algorithm.tree.TreeClustererFactory">
+         </clusterer>
       </extension>
 </plugin>

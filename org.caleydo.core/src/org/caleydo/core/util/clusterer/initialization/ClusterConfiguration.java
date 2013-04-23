@@ -20,6 +20,7 @@
 package org.caleydo.core.util.clusterer.initialization;
 
 import javax.xml.bind.annotation.XmlSeeAlso;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.perspective.variable.Perspective;
@@ -147,6 +148,17 @@ public class ClusterConfiguration {
 	 */
 	public Perspective getSourceDimensionPerspective() {
 		return sourceDimensionPerspective;
+	}
+
+	@XmlTransient
+	public Perspective getSourcePerspective() {
+		switch (clusterTarget) {
+		case DIMENSION_CLUSTERING:
+			return getSourceDimensionPerspective();
+		case RECORD_CLUSTERING:
+			return getSourceRecordPerspective();
+		}
+		return null;
 	}
 
 	/**

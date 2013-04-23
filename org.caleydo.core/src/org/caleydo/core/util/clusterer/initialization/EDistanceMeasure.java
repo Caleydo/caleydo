@@ -27,18 +27,17 @@ import org.caleydo.core.util.clusterer.distancemeasures.PearsonCorrelation;
 
 public enum EDistanceMeasure {
 
-	EUCLIDEAN_DISTANCE("Euclidean Distance"),
-	PEARSON_CORRELATION("Pearson Corrleation"),
-	MANHATTAN_DISTANCE("Manhattan Distance"),
-	CHEBYSHEV_DISTANCE("Chebyshev Distance");
+	EUCLIDEAN_DISTANCE("Euclidean Distance", new EuclideanDistance()),
+	PEARSON_CORRELATION("Pearson Corrleation",new PearsonCorrelation()),
+	MANHATTAN_DISTANCE("Manhattan Distance",new ManhattanDistance()),
+	CHEBYSHEV_DISTANCE("Chebyshev Distance", new ChebyshevDistance());
 
-	private String name;
+	private final String name;
+	private final IDistanceMeasure impl;
 
-	/**
-	 *
-	 */
-	private EDistanceMeasure(String name) {
+	private EDistanceMeasure(String name, IDistanceMeasure impl) {
 		this.name = name;
+		this.impl = impl;
 	}
 
 	public static EDistanceMeasure getTypeForName(String name) {
@@ -59,18 +58,8 @@ public enum EDistanceMeasure {
 		return names;
 	}
 
-	public IDistanceMeasure create() {
-		switch (this) {
-		case CHEBYSHEV_DISTANCE:
-			return new ChebyshevDistance();
-		case EUCLIDEAN_DISTANCE:
-			return new EuclideanDistance();
-		case MANHATTAN_DISTANCE:
-			return new ManhattanDistance();
-		case PEARSON_CORRELATION:
-			return new PearsonCorrelation();
-		}
-		throw new IllegalStateException("unknown distance measure: " + this);
+	public float apply(float[] vector1, float[] vector2) {
+		return impl.getMeasure(vector1, vector2);
 	}
 
 	/**

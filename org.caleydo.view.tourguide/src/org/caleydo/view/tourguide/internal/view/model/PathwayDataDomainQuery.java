@@ -21,12 +21,14 @@ package org.caleydo.view.tourguide.internal.view.model;
 
 import static org.caleydo.vis.rank.model.StringRankColumnModel.starToRegex;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.internal.view.PerspectiveRow;
@@ -50,13 +52,13 @@ public class PathwayDataDomainQuery extends ADataDomainQuery {
 	}
 
 	@Override
-	public void cloneFrom(ADataDomainQuery clone) {
-		super.cloneFrom(clone);
+	public void cloneFrom(ADataDomainQuery clone, List<PerspectiveRow> allData) {
+		super.cloneFrom(clone, allData);
 		this.matches = ((PathwayDataDomainQuery) clone).matches;
 	}
 
 	@Override
-	public boolean include(Perspective perspective, Group group) {
+	protected boolean include(Perspective perspective, Group group) {
 		assert perspective.getDataDomain() == dataDomain;
 		if (matches == null)
 			return true;
@@ -64,13 +66,13 @@ public class PathwayDataDomainQuery extends ADataDomainQuery {
 	}
 
 	@Override
-	public List<PerspectiveRow> getAll() {
+	protected Pair<List<PerspectiveRow>, List<PerspectiveRow>> getAll() {
 		PathwayDataDomain p = (PathwayDataDomain) dataDomain;
 		List<PerspectiveRow> r = Lists.newArrayList();
 		for (Perspective per : p.getPathwayRecordPerspectives()) {
 			r.add(new PerspectiveRow(per, null));
 		}
-		return r;
+		return Pair.make(r, Collections.<PerspectiveRow> emptyList());
 	}
 
 	public void setMatches(String matches) {

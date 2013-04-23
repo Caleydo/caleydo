@@ -21,6 +21,7 @@ public abstract class ADataDomainElement extends GLButton implements GLButton.IS
 		setLayoutData(model);
 		setMode(EButtonMode.CHECKBOX);
 		setSize(-1, 18);
+		setSelected(model.isActive());
 		setCallback(this);
 	}
 

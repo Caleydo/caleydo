@@ -57,23 +57,6 @@
       </entry>
    </extension>
    <extension
-         point="org.eclipse.ui.perspectiveExtensions">
-      <perspectiveExtension
-            targetID="org.caleydo.core.gui.perspective">
-         <view
-               closeable="true"
-               id="org.caleydo.view.tool.tourguide"
-               minimized="false"
-               moveable="true"
-               ratio=".75"
-               relationship="right"
-               relative="main"
-               standalone="false"
-               visible="false">
-         </view>
-      </perspectiveExtension>
-   </extension>
-   <extension
          point="org.caleydo.serialize.addon">
       <addon
             class="org.caleydo.view.tourguide.internal.serialize.TourGuideSerializationAddon">

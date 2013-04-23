@@ -19,97 +19,179 @@
  *******************************************************************************/
 package org.caleydo.core.util.clusterer.algorithm;
 
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.Arrays;
+import java.util.List;
 
+import org.caleydo.core.data.collection.table.Table;
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.perspective.variable.Perspective;
+import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
 import org.caleydo.core.data.virtualarray.VirtualArray;
-import org.caleydo.core.event.AEvent;
-import org.caleydo.core.event.AEventListener;
-import org.caleydo.core.event.IListenerOwner;
+import org.caleydo.core.event.EventListenerManager.ListenTo;
+import org.caleydo.core.event.EventListenerManagers;
+import org.caleydo.core.event.EventListenerManagers.QueuedEventListenerManager;
+import org.caleydo.core.event.EventPublisher;
+import org.caleydo.core.event.data.ClusterProgressEvent;
 import org.caleydo.core.event.data.ClustererCanceledEvent;
-import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.util.clusterer.ClustererCanceledListener;
-import org.caleydo.core.util.clusterer.IClusterer;
+import org.caleydo.core.event.data.RenameProgressBarEvent;
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
-import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
+import org.caleydo.core.util.execution.SafeCallable;
+
+import com.jogamp.common.util.IntIntHashMap;
 
 /**
  * Abstract base class for clusterers that handles external events
  *
  * @author Alexander Lex
  */
-public abstract class AClusterer
-	implements IClusterer {
+public abstract class AClusterer implements SafeCallable<PerspectiveInitializationData> {
 
-	private BlockingQueue<Pair<AEventListener<? extends IListenerOwner>, AEvent>> queue;
-	private ClustererCanceledListener clustererCanceledListener;
+	protected final QueuedEventListenerManager eventListeners = EventListenerManagers.createQueued();
 
-	protected boolean isClusteringCanceled = false;
+	protected volatile boolean isClusteringCanceled = false;
 
 	// variables needed for correct visualization of cluster progress bar
-	protected int iProgressBarMultiplier;
-	protected int iProgressBarOffsetValue;
+	private final int progressMultiplier;
+	private final int progressOffset;
 
-	protected VirtualArray recordVA;
-	protected VirtualArray dimensionVA;
+	protected final Table table;
+	protected final VirtualArray va;
+	protected final VirtualArray oppositeVA;
 
-	protected ClusterConfiguration clusterState;
+	protected final ClusterConfiguration config;
 
-	public AClusterer() {
-		queue = new LinkedBlockingQueue<Pair<AEventListener<? extends IListenerOwner>, AEvent>>();
+	private final EDistanceMeasure distance;
 
+	public AClusterer(ClusterConfiguration config, int progressMultiplier, int progressOffset) {
+		this.config = config;
+		Perspective p;
+		Perspective opposite;
+		switch (config.getClusterTarget()) {
+		case RECORD_CLUSTERING:
+			p = config.getSourceRecordPerspective();
+			opposite = config.getSourceRecordPerspective();
+			break;
+		case DIMENSION_CLUSTERING:
+			p = config.getSourceDimensionPerspective();
+			opposite = config.getSourceRecordPerspective();
+			break;
+		default:
+			throw new IllegalStateException();
+		}
+		this.va = p.getVirtualArray();
+		this.oppositeVA = opposite.getVirtualArray();
+		this.table = ((ATableBasedDataDomain) p.getDataDomain()).getTable();
+
+		this.progressMultiplier = progressMultiplier;
+		this.progressOffset = progressOffset;
+		this.distance = config.getDistanceMeasure();
 	}
 
-	public void setClusterState(ClusterConfiguration clusterState) {
-		this.clusterState = clusterState;
-		this.recordVA = clusterState.getSourceRecordPerspective().getVirtualArray();
-		this.dimensionVA = clusterState.getSourceDimensionPerspective().getVirtualArray();
+	protected final float distance(float[] a, float[] b) {
+		return this.distance.apply(a, b);
+	}
+
+	protected final String getPerspectiveLabel() {
+		return config.getSourcePerspective().getIdType().getTypeName();
+	}
+
+	protected final Float getNormalizedValue(Integer vaID, Integer oppositeVaID) {
+		switch (config.getClusterTarget()) {
+		case DIMENSION_CLUSTERING:
+			return table.getNormalizedValue(vaID, oppositeVaID);
+		case RECORD_CLUSTERING:
+			return table.getNormalizedValue(oppositeVaID, vaID);
+		}
+		return null;
 	}
 
 	/**
-	 * Call this when the object is ready for the garbage collector
+	 * Function sorts clusters depending on their average value
+	 *
+	 * @return an lookup clustersample -&gt; clusterIndex
 	 */
-	public void destroy() {
-		unregisterEventListeners();
+	protected final IntIntHashMap sortClusters(List<Integer> clusterSamples) {
+		SortHelper[] list = new SortHelper[clusterSamples.size()];
+		int index = 0;
+		for (Integer vaId : clusterSamples) {
+			SortHelper s = new SortHelper();
+			s.index = index++;
+			for (Integer opId : oppositeVA) {
+				float temp = getNormalizedValue(vaId, opId);
+				if (!Float.isNaN(temp))
+					s.value += temp;
+			}
+			list[s.index] = s;
+		}
+		Arrays.sort(list);
+
+		IntIntHashMap lookup = new IntIntHashMap(clusterSamples.size());
+		for (int i = 0; i < list.length; ++i) {
+			lookup.put(clusterSamples.get(list[i].index), i);
+		}
+		return lookup;
+	}
+
+	private static class SortHelper implements Comparable<SortHelper> {
+		private int index;
+		private float value;
+
+		@Override
+		public int compareTo(SortHelper o) {
+			return Float.compare(value, o.value);
+		}
 	}
 
 	@Override
-	public void cancel() {
+	public final PerspectiveInitializationData call() {
+		eventListeners.register(this);
+		try {
+			return cluster();
+		} finally {
+			progress(100, true);
+			eventListeners.unregisterAll();
+		}
+	}
+
+	protected abstract PerspectiveInitializationData cluster();
+
+	@ListenTo(sendToMe = true)
+	private void onCancel(ClustererCanceledEvent event) {
 		isClusteringCanceled = true;
 	}
 
-	@Override
-	public void registerEventListeners() {
-		clustererCanceledListener = new ClustererCanceledListener();
-		clustererCanceledListener.setHandler(this);
-		GeneralManager.get().getEventPublisher()
-			.addListener(ClustererCanceledEvent.class, clustererCanceledListener);
-
+	protected final PerspectiveInitializationData error(Exception e1) {
+		progress(100, true);
+		return null;
 	}
 
-	@Override
-	public void unregisterEventListeners() {
+	protected final PerspectiveInitializationData canceled() {
+		progress(100, true);
+		return null;
+	}
 
-		if (clustererCanceledListener != null) {
-			GeneralManager.get().getEventPublisher().removeListener(clustererCanceledListener);
-			clustererCanceledListener = null;
+	protected final void progressScaled(int factor) {
+		progress(factor * progressMultiplier + progressOffset, true);
+	}
+
+	protected final boolean progressAndCancel(int percentCompleted, boolean forSimilaritiesBar) {
+		eventListeners.processEvents();
+		if (isClusteringCanceled) {
+			return true;
 		}
+		progress(percentCompleted, forSimilaritiesBar);
+		return false;
 	}
 
-	/**
-	 * This method should be called every display cycle when it is save to change the state of the object. It
-	 * processes all the previously submitted events.
-	 */
-	public final void processEvents() {
-		Pair<AEventListener<? extends IListenerOwner>, AEvent> pair;
-		while (queue.peek() != null) {
-			pair = queue.poll();
-			pair.getFirst().handleEvent(pair.getSecond());
-		}
+	protected static void progress(int percentCompleted) {
+		progress(percentCompleted, true);
+	}
+	protected static void progress(int percentCompleted, boolean forSimilaritiesBar) {
+		EventPublisher.trigger(new ClusterProgressEvent(percentCompleted, forSimilaritiesBar));
 	}
 
-	@Override
-	public void queueEvent(AEventListener<? extends IListenerOwner> listener, AEvent event) {
-		queue.add(new Pair<AEventListener<? extends IListenerOwner>, AEvent>(listener, event));
+	protected static void rename(String text) {
+		EventPublisher.trigger(new RenameProgressBarEvent(text));
 	}
 }

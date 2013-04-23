@@ -223,17 +223,18 @@ public class PathwayDataConfigurer extends ABrickConfigurer {
 				PathwayTablePerspective brickData = (PathwayTablePerspective) brick.getTablePerspective();
 				if (brickData.getPathway() != null) {
 					EPathwayDatabaseType dataBaseType = brickData.getPathway().getType();
-					EIconTextures texture;
+					EIconTextures texture = null;
 					if (dataBaseType == EPathwayDatabaseType.KEGG) {
 						texture = EIconTextures.CM_KEGG;
-					} else {
-						texture = EIconTextures.CM_BIOCARTA;
 					}
-					ALayoutRenderer compactPathwayRenderer = new CompactPathwayRenderer(brick, brick
-							.getTablePerspective().getLabel(), EPickingType.BRICK.name(), brick.getID(),
-							brick.getTextureManager(), texture);
-					compactRendererID = multiFormRenderer.addLayoutRenderer(compactPathwayRenderer, null, visInfo,
-							false);
+
+					if (texture != null) {
+						ALayoutRenderer compactPathwayRenderer = new CompactPathwayRenderer(brick, brick
+								.getTablePerspective().getLabel(), EPickingType.BRICK.name(), brick.getID(),
+								brick.getTextureManager(), texture);
+						compactRendererID = multiFormRenderer.addLayoutRenderer(compactPathwayRenderer, null, visInfo,
+								false);
+					}
 				}
 			}
 		}

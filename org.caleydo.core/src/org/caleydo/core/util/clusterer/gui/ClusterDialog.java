@@ -27,13 +27,12 @@ import org.caleydo.core.data.configuration.DataConfiguration;
 import org.caleydo.core.data.configuration.DataConfigurationChooser;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.data.StartClusteringEvent;
 import org.caleydo.core.gui.util.AHelpButtonDialog;
 import org.caleydo.core.io.gui.IDataOKListener;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.util.clusterer.algorithm.affinity.AffinityTab;
-import org.caleydo.core.util.clusterer.algorithm.kmeans.KMeansTab;
-import org.caleydo.core.util.clusterer.algorithm.tree.TreeTab;
+import org.caleydo.core.util.clusterer.Clusterers;
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.EClustererTarget;
 import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
@@ -261,9 +260,7 @@ public class ClusterDialog extends AHelpButtonDialog implements IDataOKListener 
 			}
 		});
 
-		new KMeansTab(tabFolder);
-		new AffinityTab(tabFolder);
-		new TreeTab(tabFolder);
+		Clusterers.createClusterTabs(tabFolder);
 
 		Group modifyPerspectiveGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
 		modifyPerspectiveGroup.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false,
@@ -317,36 +314,23 @@ public class ClusterDialog extends AHelpButtonDialog implements IDataOKListener 
 		TabItem tabItem = tabFolder.getItems()[selectionIndex];
 		AClusterTab clusterTab = (AClusterTab) tabItem.getData();
 
-		clusterConfiguration.setClusterAlgorithmConfiguration(clusterTab
-				.getClusterConfiguration());
+		clusterConfiguration.setClusterAlgorithmConfiguration(clusterTab.getClusterConfiguration());
 
 		if (clusterTypeCombo.getText().equals(typeOptions[0]))
 			clusterConfiguration.setClusterTarget(EClustererTarget.RECORD_CLUSTERING);
 		else if (clusterTypeCombo.getText().equals(typeOptions[1]))
 			clusterConfiguration.setClusterTarget(EClustererTarget.DIMENSION_CLUSTERING);
 		else {
-			throw new IllegalStateException("Unkonwn Cluster Target: "
-					+ clusterTypeCombo.getText());
+			throw new IllegalStateException("Unkonwn Cluster Target: " + clusterTypeCombo.getText());
 		}
 
-		clusterConfiguration.setDistanceMeasure(EDistanceMeasure
-				.getTypeForName(distanceMeasureCombo.getText()));
+		clusterConfiguration.setDistanceMeasure(EDistanceMeasure.getTypeForName(distanceMeasureCombo.getText()));
 
-		clusterConfiguration
-				.setModifyExistingPerspective(!modifyExistingPerspectiveButton
-						.getSelection());
+		clusterConfiguration.setModifyExistingPerspective(!modifyExistingPerspectiveButton.getSelection());
 
-		// clusterConfiguration.setSourceRecordPerspective(recordPerspective);
-		// clusterConfiguration.setSourceDimensionPerspective(dimensionPerspective);
-		//
-		// clusterConfiguration.setOptionalTargetRecordPerspective(parent
-		// .getTargetRecordPerspective());
-		// clusterConfiguration.setOptionalTargetDimensionPerspective(parent
-		// .getTargetDimensionPerspective());
 
-		ClusteringProgressBar progressBar = new ClusteringProgressBar(
-				clusterConfiguration.getClusterAlgorithmConfiguration()
-						.getClusterAlgorithmName());
+		ClusteringProgressBar progressBar = new ClusteringProgressBar(clusterConfiguration
+				.getClusterAlgorithmConfiguration().getLabel());
 		progressBar.run();
 
 		if (clusterConfiguration == null)
@@ -357,7 +341,7 @@ public class ClusterDialog extends AHelpButtonDialog implements IDataOKListener 
 
 		event = new StartClusteringEvent(clusterConfiguration);
 		event.setEventSpace(dataDomain.getDataDomainID());
-		GeneralManager.get().getEventPublisher().triggerEvent(event);
+		EventPublisher.trigger(event);
 
 		super.okPressed();
 	}
@@ -369,17 +353,6 @@ public class ClusterDialog extends AHelpButtonDialog implements IDataOKListener 
 		clusterConfiguration = null;
 
 		super.cancelPressed();
-	}
-
-	/**
-	 * Returns the ClusterState as determined by the Cluster Dialog, or null if
-	 * the dialog was canceled.
-	 *
-	 * @return
-	 */
-	public ClusterConfiguration getClusterConfiguration() {
-		return clusterConfiguration;
-
 	}
 
 	@Override
@@ -404,15 +377,9 @@ public class ClusterDialog extends AHelpButtonDialog implements IDataOKListener 
 		clusterTypeCombo.setEnabled(true);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.caleydo.core.gui.util.AHelpButtonDialog#helpPressed()
-	 */
 	@Override
 	protected void helpPressed() {
-		LinkHandler
-				.openLink("http://www.icg.tugraz.at/project/caleydo/help/manipulating-data#clustering");
+		LinkHandler.openLink("http://www.icg.tugraz.at/project/caleydo/help/manipulating-data#clustering");
 	}
 
 }

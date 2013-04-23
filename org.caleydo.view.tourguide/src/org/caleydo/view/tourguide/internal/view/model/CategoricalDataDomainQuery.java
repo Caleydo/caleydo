@@ -33,6 +33,7 @@ import org.caleydo.core.data.datadomain.DataDomainOracle;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.internal.view.PerspectiveRow;
 
@@ -55,8 +56,8 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 	}
 
 	@Override
-	public void cloneFrom(ADataDomainQuery clone) {
-		super.cloneFrom(clone);
+	public void cloneFrom(ADataDomainQuery clone, List<PerspectiveRow> allData) {
+		super.cloneFrom(clone, allData);
 		this.selected.clear();
 		this.selected.addAll(((CategoricalDataDomainQuery) clone).selected);
 	}
@@ -71,7 +72,7 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 	}
 
 	@Override
-	public boolean include(Perspective perspective, Group group) {
+	protected boolean include(Perspective perspective, Group group) {
 		assert perspective.getDataDomain() == dataDomain;
 		if (group == null)
 			return true;
@@ -83,19 +84,23 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 	}
 
 	@Override
-	public List<PerspectiveRow> getAll() {
+	protected Pair<List<PerspectiveRow>, List<PerspectiveRow>> getAll() {
 		ATableBasedDataDomain d = (ATableBasedDataDomain) dataDomain;
 		DataDomainOracle.initDataDomain(d);
-		List<PerspectiveRow> r = new ArrayList<>();
+
+		List<PerspectiveRow> r = new ArrayList<>(); // just stratifications
+		List<PerspectiveRow> rg = new ArrayList<>(); // groups
+
 		for (TablePerspective per : d.getAllTablePerspectives()) {
 			Perspective p = per.getRecordPerspective();
+			r.add(new PerspectiveRow(p, null, per));
 			for (Group g : p.getVirtualArray().getGroupList()) {
-				r.add(new PerspectiveRow(p, g, per));
+				rg.add(new PerspectiveRow(p, g, per));
 			}
 		}
-		return r;
-	}
 
+		return Pair.make(r, rg);
+	}
 
 	public void setSelection(Set<CategoryProperty<?>> selected) {
 		if (Objects.equals(selected, this.selected))

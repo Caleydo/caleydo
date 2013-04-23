@@ -75,7 +75,7 @@ public class ViewNode
 		super(graphLayout, view, dragAndDropController, id);
 
 		this.representedView = representedView;
-		dataDomains = representedView.getDataDomains();
+		dataDomains = new HashSet<>(representedView.getDataDomains()); //local copy
 
 		setRepresentedViewInfo();
 		// setupLayout();

@@ -44,9 +44,9 @@ import org.caleydo.vis.rank.model.ARow;
  *
  */
 public final class PerspectiveRow extends ARow implements ILabelProvider, Cloneable {
-	private final TablePerspective perspective;
-	private final Perspective stratification;
-	private final Group group;
+	private TablePerspective perspective;
+	private Perspective stratification;
+	private Group group;
 
 	public PerspectiveRow(Perspective stratification, TablePerspective perspective) {
 		this(stratification, null, perspective);
@@ -54,8 +54,14 @@ public final class PerspectiveRow extends ARow implements ILabelProvider, Clonea
 
 	public PerspectiveRow(Perspective stratification, Group group, TablePerspective perspective) {
 		this.stratification = stratification;
-		this.perspective = perspective;
 		this.group = group;
+		this.perspective = perspective;
+	}
+
+	public void destroy() {
+		this.stratification = null;
+		this.group = null;
+		this.perspective = null;
 	}
 
 	@Override
@@ -77,6 +83,14 @@ public final class PerspectiveRow extends ARow implements ILabelProvider, Clonea
 
 	public Perspective getStratification() {
 		return stratification;
+	}
+
+	/**
+	 * @param perspective
+	 *            setter, see {@link perspective}
+	 */
+	public void setPerspective(TablePerspective perspective) {
+		this.perspective = perspective;
 	}
 
 	public TablePerspective getPerspective() {

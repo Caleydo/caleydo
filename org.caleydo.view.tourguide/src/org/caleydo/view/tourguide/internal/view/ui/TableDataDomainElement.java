@@ -5,6 +5,7 @@ import java.util.Collection;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventPublisher;
+import org.caleydo.core.event.data.DataDomainUpdateEvent;
 import org.caleydo.core.view.contextmenu.AContextMenuItem.EContextMenuType;
 import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
@@ -66,6 +67,13 @@ public class TableDataDomainElement extends ADataDomainElement {
 		} else {
 			setFilter(e.getPayload().toString());
 		}
+	}
+
+	@ListenTo
+	private void onDataDomainUpdate(DataDomainUpdateEvent event) {
+		if (event.getDataDomain() != this.model.getDataDomain())
+			return;
+		this.model.onDataDomainUpdated();
 	}
 
 	private void setFilter(String filter) {

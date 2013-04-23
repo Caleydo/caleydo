@@ -17,26 +17,30 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.util.clusterer.gui;
+package org.caleydo.view.search.internal;
 
-import org.caleydo.core.event.AEvent;
-import org.caleydo.core.event.AEventListener;
-import org.caleydo.core.event.data.ClusterProgressEvent;
-import org.caleydo.core.event.data.RenameProgressBarEvent;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
-public class ClusterProgressListener
-	extends AEventListener<ClusteringProgressBar> {
+import org.caleydo.core.serialize.ASerializedView;
+
+/**
+ * Serialized gene search view.
+ * 
+ * @author Marc Streit
+ */
+@XmlRootElement
+@XmlType
+public class SerializedSearchView extends ASerializedView {
+
+	/**
+	 * Default constructor with default initialization
+	 */
+	public SerializedSearchView() {
+	}
 
 	@Override
-	public void handleEvent(AEvent event) {
-		if (event instanceof ClusterProgressEvent) {
-			ClusterProgressEvent clusterProgressEvent = (ClusterProgressEvent) event;
-			handler.setProgress(clusterProgressEvent.isForSimilaritiesBar(),
-				clusterProgressEvent.getPercentCompleted());
-		}
-		if (event instanceof RenameProgressBarEvent) {
-			RenameProgressBarEvent renameProgressBarEvent = (RenameProgressBarEvent) event;
-			handler.setProgressBarLabel(renameProgressBarEvent.getProgressbarTitle());
-		}
+	public String getViewType() {
+		return RcpSearchView.VIEW_TYPE;
 	}
 }

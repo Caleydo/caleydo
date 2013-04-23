@@ -17,9 +17,12 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.table;
+package org.caleydo.view.table.action;
 
 import org.caleydo.core.gui.SimpleAction;
+import org.caleydo.view.table.Activator;
+import org.caleydo.view.table.EDataRepresentation;
+import org.caleydo.view.table.TableView;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IMenuCreator;
@@ -29,7 +32,8 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 
 /**
- * switch between
+ * different settings regarding the presentation of the table
+ *
  * @author Samuel Gratzl
  *
  */
@@ -95,6 +99,12 @@ public class TableSettingsAction extends SimpleAction implements IMenuCreator {
 		item.fill(parent, -1);
 	}
 
+	/**
+	 * select a specific {@link EDataRepresentation}
+	 *
+	 * @author Samuel Gratzl
+	 *
+	 */
 	private static class SelectAction extends Action {
 		private final EDataRepresentation mode;
 		private final TableView view;
@@ -113,6 +123,12 @@ public class TableSettingsAction extends SimpleAction implements IMenuCreator {
 
 	}
 
+	/**
+	 * change number precision
+	 * 
+	 * @author Samuel Gratzl
+	 * 
+	 */
 	private static class ChangePrecisionAction extends Action {
 		private final boolean increase;
 		private final TableView view;

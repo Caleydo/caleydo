@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
+   <extension-point id="org.caleydo.view.search.SearchResultActionFactory" name="SearchResultActionFactory" schema="schema/org.caleydo.view.search.SearchResultActionFactory.exsd"/>
    <extension
          point="org.eclipse.ui.views">
       <view
             allowMultiple="false"
             category="org.caleydo.core.views"
-            class="org.caleydo.view.search.RcpSearchView"
+            class="org.caleydo.view.search.internal.RcpSearchView"
             icon="resources/icons/search.png"
             id="org.caleydo.view.search"
             name="Search">
@@ -30,22 +31,24 @@
    <extension
          point="org.eclipse.ui.commands">
       <command
-            defaultHandler="org.caleydo.view.search.command.handler.OpenSearchHandler"
+            defaultHandler="org.caleydo.view.search.internal.OpenSearchHandler"
             id="org.caleydo.view.search.command.opensearch"
             name="Search">
       </command>
    </extension>
    <extension
-         point="org.eclipse.ui.perspectiveExtensions">
-      <perspectiveExtension
-            targetID="org.caleydo.core.gui.perspective">
-         <view
-               id="org.caleydo.view.search"
-               minimized="false"
-               relationship="stack"
-               relative="main"
-               visible="false">
-         </view>
-      </perspectiveExtension>
+         point="org.caleydo.core.data.datadomain.ViewDataDomainAssociation">
+      <association
+            view="org.caleydo.view.search">
+         <dataDomain
+               type="org.caleydo.datadomain.genetic">
+         </dataDomain>
+      </association>
+   </extension>
+   <extension
+         point="org.caleydo.view.search.SearchResultActionFactory">
+      <factory
+            class="org.caleydo.view.search.internal.actions.CreateCategoricalPerspectiveActionFactory">
+      </factory>
    </extension>
 </plugin>

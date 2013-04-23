@@ -19,7 +19,7 @@
  *******************************************************************************/
 package org.caleydo.core.util.clusterer.distancemeasures;
 
-import org.caleydo.core.util.clusterer.ClusterHelper;
+
 
 /**
  * Pearson correlation measure, implements {@link IDistanceMeasure}.
@@ -42,8 +42,8 @@ public class PearsonCorrelation
 			return 0;
 		}
 
-		float mean_x = ClusterHelper.arithmeticMean(vector1);
-		float mean_y = ClusterHelper.arithmeticMean(vector2);
+		float mean_x = mean(vector1);
+		float mean_y = mean(vector2);
 
 		for (int i = 0; i < vector1.length; i++) {
 
@@ -64,5 +64,22 @@ public class PearsonCorrelation
 		correlation = cov_x_y / (pop_sd_x * pop_sd_y);
 
 		return 1 - correlation; // convert to similarity measure
+	}
+
+	private static float mean(float[] values) {
+		int n = 0;
+		float sum = 0;
+		boolean any = false;
+		for (float v : values) {
+			if (Float.isNaN(v)) {
+				continue;
+			}
+			n++;
+			sum += v;
+			any = true;
+		}
+		if (!any)
+			return 0;
+		return sum / n;
 	}
 }

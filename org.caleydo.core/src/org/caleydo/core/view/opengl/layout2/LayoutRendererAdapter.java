@@ -53,10 +53,13 @@ public final class LayoutRendererAdapter extends ALayoutRenderer implements IGLE
 
 	private final GLContextLocal local;
 
-	public LayoutRendererAdapter(AGLView view, IResourceLocator locator, GLElement root) {
+	private final String eventSpace;
+
+	public LayoutRendererAdapter(AGLView view, IResourceLocator locator, GLElement root, String eventSpace) {
 		this.view = view;
 		this.root = new WindowGLElement(root);
 		this.eventListeners = EventListenerManagers.wrap(view);
+		this.eventSpace = eventSpace;
 
 		this.local = new GLContextLocal(view.getTextRenderer(), view.getTextureManager(), locator);
 		this.root.init(this);
@@ -211,7 +214,7 @@ public final class LayoutRendererAdapter extends ALayoutRenderer implements IGLE
 	@Override
 	public void init(GLElement element) {
 		// scan object for event listeners but only the subclasses
-		eventListeners.register(element, null, AGLElementView.isNotBaseClass);
+		eventListeners.register(element, eventSpace, AGLElementView.isNotBaseClass);
 	}
 
 	@Override

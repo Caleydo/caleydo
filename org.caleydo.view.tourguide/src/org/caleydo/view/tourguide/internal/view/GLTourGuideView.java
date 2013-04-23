@@ -79,7 +79,9 @@ import org.caleydo.view.tourguide.internal.view.model.CustomSubList;
 import org.caleydo.view.tourguide.internal.view.model.PathwayDataDomainQuery;
 import org.caleydo.view.tourguide.internal.view.model.TableDataDomainQuery;
 import org.caleydo.view.tourguide.internal.view.ui.DataDomainQueryUI;
+import org.caleydo.view.tourguide.internal.view.ui.pool.ScorePoolUI;
 import org.caleydo.view.tourguide.spi.IScoreFactory;
+import org.caleydo.view.tourguide.spi.score.IGroupScore;
 import org.caleydo.view.tourguide.spi.score.IRegisteredScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
 import org.caleydo.vis.rank.config.RankTableConfigBase;
@@ -110,10 +112,10 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 	public static final String VIEW_NAME = "Tour Guide";
 
 	private static final int DATADOMAIN_QUERY = 0;
-	private static final int TABLE_HEADER = 1;
-	private static final int TABLE_BODY = 2;
+	private static final int TABLE = 1;
+	private static final int POOL = 2;
 
-	private StratomexAdapter stratomex = new StratomexAdapter();
+	private final StratomexAdapter stratomex = new StratomexAdapter();
 	private final RankTableModel table;
 
 	private final BitSet mask = new BitSet();
@@ -127,7 +129,7 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 				onActiveChanged((ADataDomainQuery) evt.getSource(), (boolean) evt.getNewValue());
 				break;
 			case ADataDomainQuery.PROP_MASK:
-				updateMask();
+				updateMask(false);
 			}
 		}
 	};
@@ -150,6 +152,11 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 		}
 	});
 
+	/**
+	 * marker for the data mode
+	 */
+	private boolean hasAnyGroupScore;
+
 	public GLTourGuideView(IGLCanvas glCanvas) {
 		super(glCanvas, VIEW_TYPE, VIEW_NAME);
 
@@ -166,8 +173,8 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 
 			@Override
 			public boolean isDestroyOnHide(ARankColumnModel model) {
-				return true;
-			}
+				return false;
+		}
 		});
 		this.table.addPropertyChangeListener(RankTableModel.PROP_SELECTED_ROW, new PropertyChangeListener() {
 			@Override
@@ -178,6 +185,8 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 		this.table.add(new RankRankColumnModel().setWidth(30));
 		this.table.add(new PerspectiveRankColumnModel(this).setWidth(200));
 		this.table.add(new SizeRankColumnModel().setWidth(75));
+
+		addAllExternalScore(this.table);
 
 		canvas.addKeyListener(new IGLKeyListener() {
 			@Override
@@ -218,21 +227,46 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 		}
 	}
 
+	/**
+	 * @param table2
+	 */
+	private static void addAllExternalScore(RankTableModel table) {
+		for (IScore score : Scores.get().getPersistentScores()) {
+			ScoreRankColumnModel model = new ScoreRankColumnModel(score);
+			table.add(model);
+			model.hide();
+		}
+	}
+
 	public void cloneFrom(GLTourGuideView view) {
-		// FIXME
-		int initialized = 0;
-		// clone data
+		// clone table and pool
+		this.table.reset();
+		for (ARankColumnModel model : view.table.getColumns()) {
+			ARankColumnModel clone = model.clone();
+			this.table.add(clone);
+		}
+		for (ARankColumnModel model : view.table.getPool()) {
+			model = model.clone();
+			this.table.add(model);
+			model.hide();
+		}
+
+		this.table.addData(view.table.getData()); // add all data
+		this.table.setSelectedRow(view.table.getSelectedRow());
+		this.table.setDataMask((BitSet)view.table.getDataMask().clone());
+		List<?> tmp = this.table.getData();
+		@SuppressWarnings("unchecked")
+		List<PerspectiveRow> data = (List<PerspectiveRow>) tmp;
+
 		for (int i = 0; i < queries.size(); ++i) {
 			ADataDomainQuery q = queries.get(i);
 			ADataDomainQuery clone = view.queries.get(i);
-			q.cloneFrom(clone);
-
-			if (clone.isInitialized()) {
-				// TODO
-			}
+			q.cloneFrom(clone, data);
 		}
-		// clone columns
-		// for(ARankColumnModel model : )
+		this.hasAnyGroupScore = view.hasAnyGroupScore;
+		this.mode = view.mode;
+		this.mask.clear();
+		this.mask.or(view.mask);
 	}
 
 	private static ADataDomainQuery createFor(EDataDomainQueryMode mode, IDataDomain dd) {
@@ -265,7 +299,7 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 				queries.remove(query);
 				getDataDomainQueryUI().remove(query);
 				if (query.isActive())
-					updateMask();
+					updateMask(false);
 				break;
 			}
 		}
@@ -279,7 +313,7 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 			if (active) {
 				scheduleAllOf(q);
 			} else
-				updateMask();
+				updateMask(false);
 			return;
 		} else
 			scheduleAllOf(q);
@@ -290,16 +324,18 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 	 */
 	private void scheduleAllOf(final ADataDomainQuery q) {
 		Collection<IScore> scores = new ArrayList<>(getVisibleScores(null));
-		ComputeAllOfJob job = new ComputeAllOfJob(q, scores, this);
+		ComputeAllOfJob job = new ComputeAllOfJob(q, scores, this, hasAnyGroupScore);
 		if (job.hasThingsToDo()) {
 			getPopupLayer().show(waiting, null, 0);
 			job.schedule();
 		} else {
-			updateMask();
+			updateMask(false);
 		}
 	}
 
 	private void scheduleAllOf(Collection<IScore> toCompute) {
+		if (!hasAnyGroupScore && hasAnyGroupScoreScore(toCompute))
+			updateMask(true);
 		ComputeForScoreJob job = new ComputeForScoreJob(toCompute, table.getData(), table.getDefaultFilter()
 				.getFilter(), this);
 		if (job.hasThingsToDo()) {
@@ -325,9 +361,9 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 			List<?> m = table.getData();
 			// use sublists to save memory
 			q.init(offset, new CustomSubList<PerspectiveRow>((List<PerspectiveRow>) m, offset, m.size() - offset));
-			updateMask();
+			updateMask(false);
 		} else {
-			updateMask();
+			updateMask(false);
 		}
 	}
 
@@ -347,10 +383,12 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 				ss.orderByMe();
 			}
 		}
+		updateMask(false);
 	}
 
-	private void updateMask() {
+	private void updateMask(boolean forceGroupScore) {
 		this.mask.clear();
+		this.hasAnyGroupScore = forceGroupScore || hasAnyGroupScore();
 		for (ADataDomainQuery q : this.queries) {
 			if (!q.isInitialized())
 				continue;
@@ -359,10 +397,38 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 			if (!q.isActive())
 				this.mask.set(offset, offset + size, false);
 			else {
-				this.mask.or(q.getMask());
+				this.mask.or(q.getMask(!hasAnyGroupScore));
 			}
 		}
 		table.setDataMask(this.mask);
+	}
+
+	/**
+	 * @return
+	 */
+	private boolean hasAnyGroupScore() {
+		return hasAnyGroupScore(table.getColumns());
+	}
+
+	private static boolean hasAnyGroupScore(Iterable<ARankColumnModel> columns) {
+		for (ARankColumnModel col : columns) {
+			if (col instanceof ACompositeRankColumnModel) {
+				if (hasAnyGroupScore((ACompositeRankColumnModel) col))
+					return true;
+			} else if (col instanceof ScoreRankColumnModel) {
+				if (((ScoreRankColumnModel) col).getScore() instanceof IGroupScore)
+					return true;
+			}
+		}
+		return false;
+	}
+
+	private static boolean hasAnyGroupScoreScore(Iterable<IScore> scores) {
+		for (IScore s : Scores.flatten(scores)) {
+			if (s instanceof IGroupScore)
+				return true;
+		}
+		return false;
 	}
 
 	private TourGuideVis getVis() {
@@ -374,6 +440,26 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 		super.init(drawable);
 		eventListeners.register(stratomex);
 		this.canvas.addKeyListener(this);
+
+		final PropertyChangeListener columnListener = new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				switch (evt.getPropertyName()) {
+				case RankTableModel.PROP_COLUMNS:
+					if (evt.getNewValue() == null || evt.getOldValue() == null) { // removed or added
+						updateMask(false);
+					}
+					break;
+				case RankTableModel.PROP_POOL:
+					updateMask(false);
+					break;
+				}
+
+			}
+		};
+		this.table.addPropertyChangeListener(RankTableModel.PROP_COLUMNS, columnListener);
+		this.table.addPropertyChangeListener(RankTableModel.PROP_POOL, columnListener);
+
 		this.noStratomexVisible = stratomex.hasOne();
 		updateStratomexState();
 	}
@@ -439,12 +525,19 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 			}
 		}
 		getDataDomainQueryUI().updateSelections();
+
+		getPoolUI().updateMode(mode);
+
 		this.mode = mode;
 
 	}
 
 	private DataDomainQueryUI getDataDomainQueryUI() {
 		return (DataDomainQueryUI) getVis().get(DATADOMAIN_QUERY);
+	}
+
+	private ScorePoolUI getPoolUI() {
+		return (ScorePoolUI) getVis().get(POOL);
 	}
 
 	/**
@@ -662,6 +755,7 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 			ScrollingDecorator sc = new ScrollingDecorator(tableui, new ScrollBar(true), null,
 					RenderStyle.SCROLLBAR_WIDTH);
 			this.add(sc);
+			this.add(new ScorePoolUI(table, RankTableUIConfigs.DEFAULT, GLTourGuideView.this));
 		}
 	}
 
@@ -684,7 +778,7 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 		if (root == null)
 			return null;
 		TourGuideVis r = (TourGuideVis) root;
-		return ((TableUI) ((ScrollingDecorator) r.get(1)).getContent()).getBody();
+		return ((TableUI) ((ScrollingDecorator) r.get(TABLE)).getContent()).getBody();
 	}
 }
 

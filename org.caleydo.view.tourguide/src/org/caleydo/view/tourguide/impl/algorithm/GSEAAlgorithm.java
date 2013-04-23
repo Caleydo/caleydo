@@ -9,7 +9,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.caleydo.core.data.collection.table.Table;
-import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.collection.Pair;
 
@@ -25,8 +26,8 @@ public class GSEAAlgorithm extends AGSEAAlgorithm {
 	private final List<Map<Integer, Float>> permutations = Lists.newArrayListWithExpectedSize(NPERM);
 
 
-	public GSEAAlgorithm(TablePerspective stratification, Group group, float p) {
-		super(stratification, group);
+	public GSEAAlgorithm(Perspective perspective, Group group, float p) {
+		super(perspective, group);
 		this.p = p;
 
 	}
@@ -35,12 +36,12 @@ public class GSEAAlgorithm extends AGSEAAlgorithm {
 	protected void init() {
 		if (!correlation.isEmpty())
 			return;
-		final List<Integer> inA = stratification.getRecordPerspective().getVirtualArray()
+		final List<Integer> inA = perspective.getVirtualArray()
 				.getIDsOfGroup(group.getGroupIndex());
 		this.correlation.putAll(rankedSet(inA));
 
 		int sampleSize = inA.size();
-		List<Integer> base = new ArrayList<>(stratification.getRecordPerspective().getVirtualArray().getIDs());
+		List<Integer> base = new ArrayList<>(perspective.getVirtualArray().getIDs());
 
 		// Randomly assign the original phenotype labels to samples,reorder genes, and re-compute ES(S)
 		for (int i = 0; i < NPERM; ++i) {
@@ -56,10 +57,11 @@ public class GSEAAlgorithm extends AGSEAAlgorithm {
 		Stopwatch w = new Stopwatch().start();
 		inA = new HashSet<>(inA);
 
-		Table table = stratification.getDataDomain().getTable();
+		ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) perspective.getDataDomain();
+		Table table = dataDomain.getTable();
 
-		List<Integer> rows = stratification.getRecordPerspective().getVirtualArray().getIDs();
-		List<Integer> cols = stratification.getDimensionPerspective().getVirtualArray().getIDs();
+		List<Integer> rows = perspective.getVirtualArray().getIDs();
+		List<Integer> cols = table.getDefaultDimensionPerspective().getVirtualArray().getIDs();
 
 		List<Pair<Integer, Float>> g = new ArrayList<>(cols.size());
 		// List<Float> avalues = new ArrayList<>(inA.size());

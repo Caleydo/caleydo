@@ -27,6 +27,7 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.MessageBox;
@@ -42,10 +43,8 @@ import org.eclipse.swt.widgets.Text;
 public class KMeansTab extends AClusterTab {
 
 	private int nrClustersRecords = 5;
+	private Button cacheVectors;
 
-	/**
-	 *
-	 */
 	public KMeansTab(TabFolder tabFolder) {
 		super(tabFolder);
 		createTab();
@@ -56,49 +55,18 @@ public class KMeansTab extends AClusterTab {
 		clusterTab.setData(this);
 		clusterTab.setText("KMeans");
 
-		// ModifyListener listenerIntGenes = new ModifyListener() {
-		// @Override
-		// public void modifyText(ModifyEvent e) {
-		// valueChangedInt((Text) e.widget, true);
-		// }
-		// };
-		// ModifyListener listenerIntExperiments = new ModifyListener() {
-		// @Override
-		// public void modifyText(ModifyEvent e) {
-		// valueChangedInt((Text) e.widget, false);
-		// }
-		// };
-
-		// Group distanceMeasureGroup = new Group(composite,
-		// SWT.SHADOW_ETCHED_IN);
-		// distanceMeasureGroup.setText("Distance measure:");
-		// distanceMeasureGroup.setLayout(new GridLayout(1, false));
-		//
-		// final Combo distMeasureCombo = new Combo(distanceMeasureGroup,
-		// SWT.DROP_DOWN);
-		// distMeasureCombo.setItems(sArDistOptionsWeka);
-		// distMeasureCombo.setEnabled(true);
-		// distMeasureCombo.select(0);
-		// distmeasure = sArDistOptionsWeka[0];
-		// distMeasureCombo.addSelectionListener(new SelectionAdapter() {
-		// @Override
-		// public void widgetSelected(SelectionEvent e) {
-		// distmeasure = distMeasureCombo.getText();
-		// }
-		// });
-
 		Composite composite = new Composite(tabFolder, SWT.NONE);
 		clusterTab.setControl(composite);
 		composite.setLayout(new GridLayout(1, false));
 
-		final Label clusterNumberLabel = new Label(composite, SWT.SHADOW_ETCHED_IN);
+		final Label clusterNumberLabel = new Label(composite, SWT.NONE);
 		clusterNumberLabel.setText("Number clusters for clustering genes");
-		clusterNumberLabel.setLayoutData(new GridData(GridData.END, GridData.CENTER,
-				false, false));
+		clusterNumberLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
 
-		final Text clusterNumberText = new Text(composite, SWT.SHADOW_ETCHED_IN);
+		final Text clusterNumberText = new Text(composite, SWT.BORDER);
+		clusterNumberText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
 		clusterNumberText.addModifyListener(new ModifyListener() {
-
 			@Override
 			public void modifyText(ModifyEvent event) {
 				try {
@@ -107,8 +75,7 @@ public class KMeansTab extends AClusterTab {
 						nrClustersRecords = temp;
 
 					} else {
-						throw new NumberFormatException(
-								"Only positive values > 0 allowed");
+						throw new NumberFormatException("Only positive values > 0 allowed");
 					}
 				} catch (NumberFormatException e) {
 					Shell shell = new Shell();
@@ -121,76 +88,19 @@ public class KMeansTab extends AClusterTab {
 
 			}
 		});
-		clusterNumberText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		clusterNumberText.setText("5");
-		clusterNumberText
-				.setToolTipText("Positive integer value. Range: 1 up to the number of samples in data set");
+		clusterNumberText.setToolTipText("Positive integer value. Range: 1 up to the number of samples in data set");
 
-		// final Label lblClusterCntExperiments = new Label(composite,
-		// SWT.SHADOW_ETCHED_IN);
-		// lblClusterCntExperiments.setText("Number clusters for clustering experiments");
-		// lblClusterCntExperiments.setLayoutData(new GridData(GridData.END,
-		// GridData.CENTER, false, false));
-		//
-		// final Text clusterCntExperiments = new Text(composite,
-		// SWT.SHADOW_ETCHED_IN);
-		// clusterCntExperiments.addModifyListener(listenerIntExperiments);
-		// clusterCntExperiments.setLayoutData(new
-		// GridData(GridData.FILL_HORIZONTAL));
-		// clusterCntExperiments.setText("5");
-		// clusterCntExperiments
-		// .setToolTipText("Positive integer value. Range: 1 up to the number of samples in data set");
-		// clusterCntExperiments.setEnabled(false);
-
-		// clusterTypeCombo.addSelectionListener(new SelectionAdapter() {
-		// @Override
-		// public void widgetSelected(SelectionEvent e) {
-		// clusterType = clusterTypeCombo.getText();
-		// if (clusterType.equals(typeOptions[0])) {
-		// clusterNumberText.setEnabled(true);
-		// clusterCntExperiments.setEnabled(false);
-		// } else if (clusterType.equals(typeOptions[1])) {
-		// clusterNumberText.setEnabled(false);
-		// clusterCntExperiments.setEnabled(true);
-		// } else {
-		// clusterNumberText.setEnabled(true);
-		// clusterCntExperiments.setEnabled(true);
-		// }
-		// }
-		// });
-
+		cacheVectors = new Button(composite, SWT.CHECK);
+		cacheVectors.setText("Cache Data Items? (faster but needs more memory)");
+		cacheVectors.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 	}
-
-	// private void valueChangedInt(Text text {
-	// if (!text.isFocusControl())
-	// return;
-	//
-	// int temp = 0;
-	//
-	// try {
-	// temp = Integer.parseInt(text.getText());
-	// if (temp > 0) {
-	// if (bGeneFactor == true)
-	// nrClustersRecords = temp;
-	// else
-	// nrClustersDimensions = temp;
-	// } else {
-	// Shell shell = new Shell();
-	// MessageBox messageBox = new MessageBox(shell, SWT.OK);
-	// messageBox.setText("Start Clustering");
-	// messageBox.setMessage("Number of clusters must be positive");
-	// messageBox.open();
-	// }
-	// } catch (NumberFormatException e) {
-	// System.out.println("Invalid input");
-	// }
-	//
-	// }
 
 	@Override
 	public AClusterAlgorithmConfiguration getClusterConfiguration() {
 		KMeansClusterConfiguration clusterConfiguration = new KMeansClusterConfiguration();
 		clusterConfiguration.setNumberOfClusters(nrClustersRecords);
+		clusterConfiguration.setCacheVectors(cacheVectors.getSelection());
 		return clusterConfiguration;
 	}
 
