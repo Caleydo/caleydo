@@ -79,6 +79,7 @@ import org.caleydo.view.tourguide.internal.view.model.CustomSubList;
 import org.caleydo.view.tourguide.internal.view.model.PathwayDataDomainQuery;
 import org.caleydo.view.tourguide.internal.view.model.TableDataDomainQuery;
 import org.caleydo.view.tourguide.internal.view.ui.DataDomainQueryUI;
+import org.caleydo.view.tourguide.internal.view.ui.pool.ScorePoolUI;
 import org.caleydo.view.tourguide.spi.IScoreFactory;
 import org.caleydo.view.tourguide.spi.score.IGroupScore;
 import org.caleydo.view.tourguide.spi.score.IRegisteredScore;
@@ -113,6 +114,7 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 	private static final int DATADOMAIN_QUERY = 0;
 	private static final int TABLE_HEADER = 1;
 	private static final int TABLE_BODY = 2;
+	private static final int POOL = 3;
 
 	private StratomexAdapter stratomex = new StratomexAdapter();
 	private final RankTableModel table;
@@ -172,8 +174,8 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 
 			@Override
 			public boolean isDestroyOnHide(ARankColumnModel model) {
-				return true;
-			}
+				return false;
+		}
 		});
 		this.table.addPropertyChangeListener(RankTableModel.PROP_SELECTED_ROW, new PropertyChangeListener() {
 			@Override
@@ -193,6 +195,8 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 		this.table.add(new RankRankColumnModel().setWidth(30));
 		this.table.add(new PerspectiveRankColumnModel(this).setWidth(200));
 		this.table.add(new SizeRankColumnModel().setWidth(75));
+
+		addAllExternalScore(this.table);
 
 		canvas.addKeyListener(new IGLKeyListener() {
 			@Override
@@ -230,6 +234,17 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 				q.addPropertyChangeListener(ADataDomainQuery.PROP_MASK, listener);
 				queries.add(q);
 			}
+		}
+	}
+
+	/**
+	 * @param table2
+	 */
+	private static void addAllExternalScore(RankTableModel table) {
+		for (IScore score : Scores.get().getPersistentScores()) {
+			ScoreRankColumnModel model = new ScoreRankColumnModel(score);
+			table.add(model);
+			model.hide();
 		}
 	}
 
@@ -709,6 +724,7 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 			ScrollingDecorator sc = new ScrollingDecorator(tableui, new ScrollBar(true), null,
 					RenderStyle.SCROLLBAR_WIDTH);
 			this.add(sc);
+			this.add(new ScorePoolUI(table, RankTableUIConfigs.DEFAULT, GLTourGuideView.this));
 		}
 	}
 
