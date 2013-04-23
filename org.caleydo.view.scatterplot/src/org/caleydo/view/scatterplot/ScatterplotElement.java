@@ -62,6 +62,8 @@ public class ScatterplotElement extends GLElement implements TablePerspectiveSel
 	
 	private ScatterplotRenderUtils renderUtil;
 	
+	private boolean rectanglePicked = false;
+	
 		
 	/**
 	 * Flag to check whether data for the view is loaded
@@ -239,25 +241,37 @@ public class ScatterplotElement extends GLElement implements TablePerspectiveSel
 		case CLICKED:
 			//System.out.println("clicked:  " + pick.getPickedPoint());
 			firstClickPoint = pick.getPickedPoint();
-			
+			rectanglePicked = renderUtil.pickedSelectionRectangle(firstClickPoint, selectionRect);
 			break;
 		case DRAGGED:
 			//Enlarge the selection rectangle here
-			selectionRect = new SelectionRectangle();
-			selectionRect.setLeft(firstClickPoint.x);
-			selectionRect.setRight(pick.getPickedPoint().x);
-			selectionRect.setTop(firstClickPoint.y);
-			selectionRect.setBottom(pick.getPickedPoint().y);
+			if(!rectanglePicked)
+			{
+				selectionRect = new SelectionRectangle();
+				selectionRect.setLeft(firstClickPoint.x);
+				selectionRect.setRight(pick.getPickedPoint().x);
+				selectionRect.setTop(firstClickPoint.y);
+				selectionRect.setBottom(pick.getPickedPoint().y);
+			}
+			else
+			{
+				selectionRect.moveRectangle(pick.getDx(), pick.getDy());
+			}
+			
 			
 			//selectionRect.ComputeScreenToDataMapping(renderUtil, dataColumns, getSize().x(), getSize().y());			
 			//renderUtil.performBrushing(this, selectionRect);
 			break;
 		case MOUSE_RELEASED:
 			//A single click to remove the selection
+			
 			if (Math.abs(pick.getPickedPoint().x - firstClickPoint.x) < 1 | Math.abs(pick.getPickedPoint().y - firstClickPoint.y) < 1)
 			{
-				selectionRect = null;
-				renderUtil.clearSelection(this);
+				if (!rectanglePicked)
+				{
+					selectionRect = null;
+					renderUtil.clearSelection(this);
+				}
 			}
 			else
 			{

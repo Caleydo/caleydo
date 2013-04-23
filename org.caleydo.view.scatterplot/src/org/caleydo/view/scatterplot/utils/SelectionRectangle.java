@@ -53,10 +53,10 @@ public class SelectionRectangle {
 	}
 	
 	public SelectionRectangle() {
-		this.xMin = 0;
-		this.xMax = 0;
-		this.yMin = 0;
-		this.yMax = 0;
+		this.xMin = -1;
+		this.xMax = -1;
+		this.yMin = -1;
+		this.yMax = -1;
 	}
 	
 	
@@ -76,6 +76,14 @@ public class SelectionRectangle {
 		Point2D.Float maxData = renderUtil.findScreenToDataMapping(new Point2D.Float(xScreenMax, yScreenMax), dataColumns, width, height);
 		this.xMax = maxData.x;
 		this.yMax = maxData.y;
+	}
+	
+	public void moveRectangle(float dx, float dy)
+	{
+		this.left += dx;
+		this.right += dx;
+		this.top += dy;
+		this.bottom += dy;
 	}
 	
 	/**
