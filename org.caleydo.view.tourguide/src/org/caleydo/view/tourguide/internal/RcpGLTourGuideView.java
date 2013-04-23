@@ -86,7 +86,7 @@ public class RcpGLTourGuideView extends ARcpGLViewPart {
 					.getActivePage();
 			if (cloneData) {
 				RcpGLTourGuideView clone = (RcpGLTourGuideView) activePage.showView(getViewGUIID(), ""
-						+ ++SECONDARY_IDs, IWorkbenchPage.VIEW_ACTIVATE);
+						+ ++SECONDARY_IDs, IWorkbenchPage.VIEW_CREATE);
 				clone.getView().cloneFrom(this.getView());
 				activePage.showView(getViewGUIID(), "" + SECONDARY_IDs, IWorkbenchPage.VIEW_VISIBLE);
 			} else {
