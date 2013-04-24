@@ -53,6 +53,7 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Display;
 
 import com.google.common.collect.Iterables;
+import com.google.common.primitives.Floats;
 
 /**
  * @author Samuel Gratzl
@@ -220,6 +221,11 @@ public abstract class AMultiRankColumnModel extends ACompositeRankColumnModel im
 			@Override
 			public int size() {
 				return data2.size();
+			}
+
+			@Override
+			public float[] toPrimitiveArray() {
+				return Floats.toArray(this);
 			}
 		};
 	}

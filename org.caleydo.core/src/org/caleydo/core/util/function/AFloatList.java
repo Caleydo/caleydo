@@ -75,11 +75,6 @@ public abstract class AFloatList extends AbstractList<Float> implements IFloatLi
 	}
 
 	@Override
-	public final FloatStatistics computeStats() {
-		return FloatStatistics.compute(this.iterator());
-	}
-
-	@Override
 	public IFloatIterator iterator() {
 		return new IFloatIterator() {
 			int cursor = 0;

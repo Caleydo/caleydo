@@ -24,98 +24,130 @@ package org.caleydo.core.util.function;
  *
  */
 public class FloatStatistics {
-	private final float min, max, sum, sqrsum;
-	private final int n, nans;
+	private float min = Float.NaN, max = Float.NaN, sum = 0, mean = 0, var = 0;
+	private float moment2, moment3, moment4;
+	private int n = 0, nans = 0;
 
-	public FloatStatistics(float min, float max, float sum, float sqrsum, int n, int nans) {
-		this.min = min;
-		this.max = max;
-		this.sum = sum;
-		this.sqrsum = sqrsum;
-		this.n = n;
-		this.nans = nans;
+	public FloatStatistics() {
 	}
 
-	public float getMean() {
-		return sum / n;
+	public final float getMean() {
+		return mean;
 	}
 
-	public float getVar() {
-		return (n * sqrsum - (sum * sum)) / (n * (n - 1));
+	public final float getVar() {
+		return n > 1 ? var / (n-1) : 0;
 	}
 
-	public float getSd() {
+	public final float getSd() {
 		return (float) Math.sqrt(getVar());
 	}
 
 	/**
 	 * @return the min, see {@link #min}
 	 */
-	public float getMin() {
+	public final float getMin() {
 		return min;
 	}
 
 	/**
 	 * @return the max, see {@link #max}
 	 */
-	public float getMax() {
+	public final float getMax() {
 		return max;
 	}
 
 	/**
 	 * @return the sum, see {@link #sum}
 	 */
-	public float getSum() {
+	public final float getSum() {
 		return sum;
 	}
 
-	/**
-	 * @return the sqrsum, see {@link #sqrsum}
-	 */
-	public float getSqrSum() {
-		return sqrsum;
+	public final float getKurtosis() {
+		if (n == 0)
+			return 0;
+		return (n * moment4) / (moment2 * moment2) - 3;
+	}
+
+	public final float getSkewness() {
+		if (n == 0)
+			return 0;
+		return (float) (Math.sqrt(n) * moment3 / (Math.pow(moment2, 3.f / 2.f)));
 	}
 
 	/**
 	 * @return the n, see {@link #n}
 	 */
-	public int getN() {
+	public final int getN() {
 		return n;
 	}
 
 	/**
 	 * @return the nans, see {@link #nans}
 	 */
-	public int getNaNs() {
+	public final int getNaNs() {
 		return nans;
 	}
 
-	public static FloatStatistics compute(IFloatIterator it) {
-		float min = Float.POSITIVE_INFINITY;
-		float max = Float.NEGATIVE_INFINITY;
-		int n = 0;
-		int nans = 0;
-		float sum = 0;
-		float sqrsum = 0;
-		boolean any = false;
-		while (it.hasNext()) {
-			float v = it.nextPrimitive();
-			if (Float.isNaN(v)) {
-				nans++;
-				continue;
-			}
-			n++;
-			sum += v;
-			sqrsum += v * v;
-			if (v < min)
-				min = v;
-			if (max < v)
-				max = v;
-			any = true;
+	protected FloatStatistics add(float x) {
+		if (Float.isNaN(x)) {
+			nans++;
+			return this;
 		}
-		if (!any)
-			return new FloatStatistics(Float.NaN, Float.NaN, 0, 0, 0, 0);
-		return new FloatStatistics(min, max, sum, sqrsum, n, nans);
+
+		n++;
+		sum += x;
+		if (x < min || Float.isNaN(min))
+			min = x;
+		if (max < x || Float.isNaN(max))
+			max = x;
+		// http://www.johndcook.com/standard_deviation.html
+		// See Knuth TAOCP vol 2, 3rd edition, page 232
+		// http://en.wikipedia.org/wiki/Algorithms_for_calculating_variance#Higher-order_statistics
+
+		if (n == 1) {
+			mean = x;
+			var = 0;
+			moment2 = moment3 = moment4 = 0;
+		} else {
+			float mean_m1 = mean;
+			mean = mean_m1 + (x - mean_m1) / n;
+			var = var + (x - mean_m1) * (x - mean);
+
+			float delta = x - mean_m1;
+			float delta_n = delta / n;
+			float delta_n2 = delta_n * delta_n;
+			float term1 = delta * delta_n * (n - 1);
+			moment4 += term1 * delta_n2 * (n * n - 3 * n + 3) + 6 * delta_n2 * moment2 - 4 * delta_n * moment3;
+			moment3 += term1 * delta_n * (n - 2) - 3 * delta_n * moment2;
+			moment2 += term1;
+		}
+		return this;
+	}
+
+	protected FloatStatistics add(IFloatIterator it) {
+		while (it.hasNext())
+			add(it.nextPrimitive());
+		return this;
+	}
+
+	protected FloatStatistics add(float[] xs) {
+		for (int i = 0; i < xs.length; ++i)
+			add(xs[i]);
+		return this;
+	}
+
+	public static FloatStatistics of(IFloatIterator it) {
+		return new FloatStatistics().add(it);
+	}
+
+	public static FloatStatistics of(float[] arr) {
+		return new FloatStatistics().add(arr);
+	}
+
+	public static FloatStatistics of(IFloatList list) {
+		return new FloatStatistics().add(list.iterator());
 	}
 
 	@Override

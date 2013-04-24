@@ -34,7 +34,7 @@ public class FloatInferrers {
 	public static IFloatInferrer MEAN = new IFloatInferrer() {
 		@Override
 		public float infer(IFloatIterator it, int size) {
-			return FloatStatistics.compute(it).getMean();
+			return FloatStatistics.of(it).getMean();
 		}
 	};
 

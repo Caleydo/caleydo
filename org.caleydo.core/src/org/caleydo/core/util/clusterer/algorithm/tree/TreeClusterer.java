@@ -29,7 +29,6 @@ import org.caleydo.core.util.clusterer.algorithm.AClusterer;
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.EClustererTarget;
 import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
-import org.caleydo.core.util.function.ArrayFloatList;
 import org.caleydo.core.util.function.FloatStatistics;
 
 /**
@@ -423,7 +422,7 @@ public class TreeClusterer extends AClusterer {
 				isto++;
 			}
 		}
-		FloatStatistics stats = new ArrayFloatList(values).computeStats();
+		FloatStatistics stats = FloatStatistics.of(values);
 
 		float averageExpressionvalue = stats.getMean();
 		float deviation = stats.getSd();
