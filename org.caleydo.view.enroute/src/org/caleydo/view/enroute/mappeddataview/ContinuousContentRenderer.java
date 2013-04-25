@@ -190,6 +190,8 @@ public class ContinuousContentRenderer extends ContentRenderer {
 	public void renderAverageBar(GL2 gl, List<SelectionType> geneSelectionTypes) {
 		// topBarColor = MappedDataRenderer.SUMMARY_BAR_COLOR;
 		// bottomBarColor = topBarColor;
+		if (average == null)
+			return;
 
 		colorCalculator.setBaseColor(new Color(MappedDataRenderer.SUMMARY_BAR_COLOR));
 
