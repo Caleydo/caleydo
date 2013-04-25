@@ -219,9 +219,8 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 
 		AGLView.initGLContext(gl);
 
-		ITextRenderer text = new CompositeTextRenderer(8, 16, 24, 40);
-		IResourceLocator loader = ResourceLocators.chain(
-				ResourceLocators.classLoader(root.getClass().getClassLoader()), ResourceLocators.FILE);
+		ITextRenderer text = createTextRenderer();
+		IResourceLocator loader = createResourceLocator();
 		TextureManager textures = new TextureManager(new ResourceLoader(loader));
 
 
@@ -230,6 +229,15 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 		gl.glLoadIdentity();
 		this.root.setParent(this);
 		this.root.init(this);
+	}
+
+	protected IResourceLocator createResourceLocator() {
+		return ResourceLocators.chain(
+				ResourceLocators.classLoader(root.getClass().getClassLoader()), ResourceLocators.FILE);
+	}
+
+	protected ITextRenderer createTextRenderer() {
+		return new CompositeTextRenderer(8, 16, 24, 40);
 	}
 
 	@Override
