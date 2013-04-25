@@ -78,6 +78,8 @@ public abstract class ACategoricalRowContentRenderer extends ContentRenderer {
 
 	@SuppressWarnings("unchecked")
 	public void renderAverageBar(GL2 gl, List<SelectionType> selectionTypes) {
+		if (histogram == null)
+			return;
 		int bucketCount = 0;
 		float barWidth = y / histogram.size();
 		float maxBarWidth = parentView.getPixelGLConverter().getGLHeightForPixelHeight(MAX_HISTOGRAM_BAR_WIDTH_PIXELS);
