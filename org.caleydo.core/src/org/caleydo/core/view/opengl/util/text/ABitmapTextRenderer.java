@@ -37,7 +37,6 @@ import java.util.TreeMap;
 import java.util.concurrent.ExecutionException;
 
 import org.caleydo.core.util.collection.Pair;
-import org.caleydo.core.view.opengl.layout2.geom.Rect;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
@@ -58,6 +57,7 @@ public abstract class ABitmapTextRenderer {
 	private final Dimension graphicsSize;
 	private final FontRenderContext frc;
 	private final Vec2f pos;
+	private boolean scaleByBaseLine = true;
 
 	private final Cache<String, GlyphVector> cache = CacheBuilder.newBuilder().maximumSize(200)
 			.build(new CacheLoader<String, GlyphVector>() {
@@ -154,12 +154,12 @@ public abstract class ABitmapTextRenderer {
 		for(int i = 0; i < csq.length(); ++i) {
 			char c = csq.charAt(i);
 			Rectangle gbounds = glyphVector.getGlyphPixelBounds(i, frc, pos.x(), pos.y());
-
-			Rect r = new Rect(gbounds.x, gbounds.y, gbounds.width, gbounds.height);
-			CharacterInfo info = new CharacterInfo(r);
+			// Rectangle2D gbounds = (Rectangle2D) glyphVector.getGlyphVisualBounds(i).getBounds2D().clone();
+			// gbounds.add(pos.x(), pos.y());
+			CharacterInfo info = new CharacterInfo(gbounds);
 			chars.put(c, info);
 		}
-		pos.setX(pos.x() + bounds.width);
+		pos.setX(pos.x() + bounds.width + 4); // some space for line spacing
 		markDirty(bounds);
 	}
 
@@ -171,31 +171,42 @@ public abstract class ABitmapTextRenderer {
 			map.put(TextAttribute.KERNING, TextAttribute.KERNING_ON);
 		} else {
 			map.remove(TextAttribute.KERNING);
-			map.put(TextAttribute.TRACKING, 0.5);
+			map.remove(TextAttribute.LIGATURES);
+			map.put(TextAttribute.TRACKING, 0.3f);
 		}
 		return base.deriveFont(map);
 	}
 
 	protected final static class CharacterInfo {
-		private final Rect bounds;
+		private final Rectangle2D bounds;
 
-		public CharacterInfo(Rect bounds) {
+		public CharacterInfo(Rectangle2D bounds) {
 			this.bounds = bounds;
 		}
 
 		/**
 		 * @return the bounds, see {@link #bounds}
 		 */
-		public Rect getBounds() {
+		public Rectangle2D getBounds() {
 			return bounds;
 		}
+
+		@Override
+		public String toString() {
+			StringBuilder builder = new StringBuilder();
+			builder.append("CharacterInfo [bounds=");
+			builder.append(bounds);
+			builder.append("]");
+			return builder.toString();
+		}
+
 	}
 
 	public final float getTextWidth(String text, float height) {
 		GlyphVector glyphVector = get(text);
 		if (glyphVector == null)
 			return 0;
-		return (float) glyphVector.getVisualBounds().getWidth() * scale(height);
+		return (float) (glyphVector.getVisualBounds().getWidth() * scale(height));
 	}
 
 
@@ -209,7 +220,7 @@ public abstract class ABitmapTextRenderer {
 		return glyphVector;
 	}
 
-	protected final float scale(float height) {
-		return height / (float) maxBounds.getHeight();
+	protected final double scale(float height) {
+		return height / (scaleByBaseLine ? baseLine : maxBounds.getHeight());
 	}
 }

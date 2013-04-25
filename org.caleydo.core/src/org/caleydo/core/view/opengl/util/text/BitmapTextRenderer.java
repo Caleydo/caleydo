@@ -26,7 +26,7 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.font.GlyphVector;
-import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
@@ -37,7 +37,6 @@ import org.caleydo.core.util.color.Colors;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.GLSandBox;
-import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
 import org.eclipse.swt.widgets.Shell;
 
@@ -51,6 +50,8 @@ import com.jogamp.opengl.util.texture.Texture;
 public final class BitmapTextRenderer extends ABitmapTextRenderer implements ITextRenderer {
 	private TextureRenderer texture;
 	private float[] color = Colors.BLACK.getRGBA();
+
+	private static final int PADDING = 2;
 
 	public BitmapTextRenderer(Font base) {
 		super(base);
@@ -109,9 +110,11 @@ public final class BitmapTextRenderer extends ABitmapTextRenderer implements ITe
 		tex.bind(gl);
 		gl.glPushMatrix();
 		gl.glTranslatef(x, y, z);
-		float s = scale(h);
+		double s = scale(h);
 		w /= s; // to the other space
-		gl.glScalef(s, s, 1);
+		gl.glScaled(s, s, s);
+
+		gl.glTranslatef(0, baseLine, 0);
 
 		GLGraphics.checkError(gl);
 
@@ -119,35 +122,34 @@ public final class BitmapTextRenderer extends ABitmapTextRenderer implements ITe
 
 		gl.glColor4fv(color, 0); // set our color
 
+		final int p = PADDING;
+
 		for (int i = 0; i < text.length(); ++i) {
 			char c = text.charAt(i);
 			if (filterChar(c))
 				continue;
 			final CharacterInfo info = chars.get(c);
 
-			Rect bounds = info.getBounds();
-			Rect texCoords = toTextureCoordinates(bounds);
+			Rectangle2D bounds = info.getBounds();
+			Rectangle2D texCoords = toTextureCoordinates(bounds);
 
-			Point2D pos = glyphVector.getGlyphPosition(i);
+			Rectangle2D target = glyphVector.getGlyphVisualBounds(i).getBounds2D();
 
-			if ((pos.getX() + bounds.width() >= w)) { // within bounds
+			if ((target.getMaxX() >= w)) { // within bounds
 				break;
 			}
 
-			float xo = (float) pos.getX();
-			float yo = (float) pos.getY();
+			gl.glTexCoord2d(texCoords.getX(), texCoords.getY());
+			gl.glVertex2d(target.getX() - p, target.getY() - p);
 
-			gl.glTexCoord2f(texCoords.x(), texCoords.y());
-			gl.glVertex2f(xo, yo);
+			gl.glTexCoord2d(texCoords.getMaxX(), texCoords.getY());
+			gl.glVertex2d(target.getMaxX() + p, target.getY() - p);
 
-			gl.glTexCoord2f(texCoords.x2(), texCoords.y());
-			gl.glVertex2f(xo + bounds.width(), yo);
+			gl.glTexCoord2d(texCoords.getMaxX(), texCoords.getMaxY());
+			gl.glVertex2d(target.getMaxX() + p, target.getMaxY() + p);
 
-			gl.glTexCoord2f(texCoords.x2(), texCoords.y2());
-			gl.glVertex2f(xo + bounds.width(), yo + bounds.height());
-
-			gl.glTexCoord2f(texCoords.x(), texCoords.y2());
-			gl.glVertex2f(xo, yo + bounds.height());
+			gl.glTexCoord2d(texCoords.getX(), texCoords.getMaxY());
+			gl.glVertex2d(target.getX() - p, target.getMaxY() + p);
 		}
 		gl.glEnd();
 
@@ -165,10 +167,12 @@ public final class BitmapTextRenderer extends ABitmapTextRenderer implements ITe
 	 * @param bounds
 	 * @return
 	 */
-	private Rect toTextureCoordinates(Rect bounds) {
-		float iw = 1.f / texture.getWidth();
-		float ih = 1.f / texture.getHeight();
-		return new Rect(bounds.x() * iw, bounds.y() * ih, bounds.width() * iw, bounds.height() * ih);
+	private Rectangle2D toTextureCoordinates(Rectangle2D bounds) {
+		double iw = 1. / texture.getWidth();
+		double ih = 1. / texture.getHeight();
+		int p = PADDING;
+		return new Rectangle2D.Double((bounds.getX() - p) * iw, (bounds.getY() - p) * ih, (bounds.getWidth() + p * 2)
+				* iw, (bounds.getHeight() + p * 2) * ih);
 	}
 
 	public static void main(String[] args) {
@@ -181,15 +185,15 @@ public final class BitmapTextRenderer extends ABitmapTextRenderer implements ITe
 			super(parentShell, "text test", new GLElement() {
 				@Override
 				protected void renderImpl(GLGraphics g, float w, float h) {
-					g.color(Color.RED).fillRect(0, 0, 200, 200);
-					g.drawText("This is a test", 10, 10, 100, 40);
+					g.color(Color.RED).fillRect(10, 10, 500, 18);
+					g.drawText("This is a test", 10, 10, 500, 18);
 				}
 			}, GLPadding.ZERO, new Dimension(500, 500));
 		}
 
 		@Override
 		protected ITextRenderer createTextRenderer() {
-			return new BitmapTextRenderer(new Font("Arial", Font.PLAIN, 40));
+			return new BitmapTextRenderer(new Font("Arial", Font.PLAIN, 10));
 		}
 	}
 
