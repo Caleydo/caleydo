@@ -48,7 +48,7 @@ import com.jogamp.opengl.util.texture.Texture;
  * @author Samuel Gratzl
  *
  */
-public final class BitmapTextRenderer extends ABitmapTextRenderer {
+public final class BitmapTextRenderer extends ABitmapTextRenderer implements ITextRenderer {
 	private TextureRenderer texture;
 	private float[] color = Colors.BLACK.getRGBA();
 
@@ -69,6 +69,7 @@ public final class BitmapTextRenderer extends ABitmapTextRenderer {
 		gl.glGetIntegerv(GL.GL_MAX_TEXTURE_SIZE, result, 0);
 		int maxTexSize = result[0];
 
+		// TODO
 		System.out.printf("w%d h%d baseline %d nonPpowerof %s max tex size: %d\n", w, h, baseline, nonPowerOf2,
 				maxTexSize);
 
@@ -110,11 +111,13 @@ public final class BitmapTextRenderer extends ABitmapTextRenderer {
 		gl.glTranslatef(x, y, z);
 		float s = scale(h);
 		w /= s; // to the other space
-		gl.glScalef(s, s, s);
+		gl.glScalef(s, s, 1);
 
-		gl.glColor4fv(color, 0); // set our color
+		GLGraphics.checkError(gl);
 
 		gl.glBegin(GL2.GL_QUADS);
+
+		gl.glColor4fv(color, 0); // set our color
 
 		for (int i = 0; i < text.length(); ++i) {
 			char c = text.charAt(i);
@@ -126,33 +129,36 @@ public final class BitmapTextRenderer extends ABitmapTextRenderer {
 			Rect texCoords = toTextureCoordinates(bounds);
 
 			Point2D pos = glyphVector.getGlyphPosition(i);
-			System.out.println(c + " " + pos + " " + bounds.width());
 
 			if ((pos.getX() + bounds.width() >= w)) { // within bounds
 				break;
 			}
 
-			gl.glTranslated(pos.getX(), pos.getY(), 0);
-
-			gl.glTexCoord2f(texCoords.x2(), texCoords.y2());
-			gl.glVertex2f(0, 0);
-
-			gl.glTexCoord2f(texCoords.x(), texCoords.y2());
-			gl.glVertex2f(bounds.width(), 0);
+			float xo = (float) pos.getX();
+			float yo = (float) pos.getY();
 
 			gl.glTexCoord2f(texCoords.x(), texCoords.y());
-			gl.glVertex2f(bounds.width(), bounds.height());
+			gl.glVertex2f(xo, yo);
 
 			gl.glTexCoord2f(texCoords.x2(), texCoords.y());
-			gl.glVertex2f(0, bounds.height());
+			gl.glVertex2f(xo + bounds.width(), yo);
 
-			gl.glTranslated(-pos.getX(), -pos.getY(), 0);
+			gl.glTexCoord2f(texCoords.x2(), texCoords.y2());
+			gl.glVertex2f(xo + bounds.width(), yo + bounds.height());
+
+			gl.glTexCoord2f(texCoords.x(), texCoords.y2());
+			gl.glVertex2f(xo, yo + bounds.height());
 		}
 		gl.glEnd();
 
 		gl.glPopMatrix();
 
 		tex.disable(gl);
+	}
+
+	@Override
+	public boolean isOriginTopLeft() {
+		return true;
 	}
 
 	/**
@@ -176,14 +182,14 @@ public final class BitmapTextRenderer extends ABitmapTextRenderer {
 				@Override
 				protected void renderImpl(GLGraphics g, float w, float h) {
 					g.color(Color.RED).fillRect(0, 0, 200, 200);
-					g.drawText("ABC", 10, 10, 100, 40);
+					g.drawText("This is a test", 10, 10, 100, 40);
 				}
 			}, GLPadding.ZERO, new Dimension(500, 500));
 		}
 
 		@Override
 		protected ITextRenderer createTextRenderer() {
-			return new BitmapTextRenderer(new Font("Arial", Font.PLAIN, 12));
+			return new BitmapTextRenderer(new Font("Arial", Font.PLAIN, 40));
 		}
 	}
 

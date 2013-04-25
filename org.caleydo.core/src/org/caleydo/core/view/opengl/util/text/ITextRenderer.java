@@ -66,4 +66,6 @@ public interface ITextRenderer {
 	 *            height of the bounding box
 	 */
 	public void renderTextInBounds(GL2 gl, String text, float x, float y, float z, float w, float h);
+
+	public boolean isOriginTopLeft();
 }

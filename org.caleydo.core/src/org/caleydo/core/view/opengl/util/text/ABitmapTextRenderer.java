@@ -47,7 +47,7 @@ import com.google.common.cache.CacheLoader;
  * @author Samuel Gratzl
  *
  */
-public abstract class ABitmapTextRenderer implements ITextRenderer {
+public abstract class ABitmapTextRenderer {
 
 	private final Font renderFont;
 	private final Font layoutFont;
@@ -191,7 +191,6 @@ public abstract class ABitmapTextRenderer implements ITextRenderer {
 		}
 	}
 
-	@Override
 	public final float getTextWidth(String text, float height) {
 		GlyphVector glyphVector = get(text);
 		if (glyphVector == null)

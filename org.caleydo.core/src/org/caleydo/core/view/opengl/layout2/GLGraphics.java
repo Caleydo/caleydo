@@ -436,7 +436,7 @@ public class GLGraphics {
 		if (text == null)
 			return this;
 		stats.incText(text.length());
-		if (originInTopLeft) {
+		if (originInTopLeft && !this.text.isOriginTopLeft()) {
 			gl.glPushMatrix();
 			gl.glTranslatef(0, y + h, 0);
 			y = 0;
@@ -455,7 +455,7 @@ public class GLGraphics {
 		}
 		this.text.renderTextInBounds(gl, text, x, y, z + 0.25f, w, h);
 
-		if (originInTopLeft)
+		if (originInTopLeft && !this.text.isOriginTopLeft())
 			gl.glPopMatrix();
 		return this;
 	}
