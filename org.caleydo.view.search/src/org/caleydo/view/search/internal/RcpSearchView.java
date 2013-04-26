@@ -46,6 +46,7 @@ import org.caleydo.core.id.IDType;
 import org.caleydo.core.id.IIDTypeMapper;
 import org.caleydo.core.util.ExtensionUtils;
 import org.caleydo.core.util.base.ILabelHolder;
+import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.CaleydoRCPViewPart;
 import org.caleydo.view.search.api.ISearchResultActionFactory;
 import org.eclipse.jface.action.IMenuListener;
@@ -99,6 +100,8 @@ public final class RcpSearchView extends CaleydoRCPViewPart {
 	private static final String EXTENSION_POINT = "org.caleydo.view.search.SearchResultActionFactory";
 
 	public static final String VIEW_TYPE = "org.caleydo.view.search";
+
+	private final static Logger log = Logger.create(RcpSearchView.class);
 
 	private Composite root;
 
@@ -189,6 +192,7 @@ public final class RcpSearchView extends CaleydoRCPViewPart {
 		final ControlDecoration dec = new ControlDecoration(searchText, SWT.TOP | SWT.LEFT);
 		dec.setImage(PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_DEC_FIELD_WARNING));
 		dec.setShowOnlyOnFocus(true);
+		dec.setDescriptionText("You have to enter at least 3 characters");
 		dec.hide();
 
 		this.nothingFound = new ControlDecoration(searchText, SWT.TOP | SWT.LEFT);
@@ -205,6 +209,7 @@ public final class RcpSearchView extends CaleydoRCPViewPart {
 					searchButton.setEnabled(true);
 				} else {
 					dec.show();
+					dec.showHoverText("You have to enter at least 3 characters");
 					searchButton.setEnabled(false);
 				}
 			}
@@ -470,7 +475,8 @@ public final class RcpSearchView extends CaleydoRCPViewPart {
 		viewer.setInput(rows);
 
 		// add columns for every perspective
-		final Color ddColor = Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_BACKGROUND);
+		final Color ddColor = new Color(Display.getCurrent(), 240, 240, 240);
+
 		for (final Perspective perspective : perspectives) {
 			TableViewerColumn col = createTableColumn(viewer, perspective.getDataDomain().getLabel());
 			col.getColumn().setAlignment(SWT.CENTER);
@@ -582,6 +588,10 @@ public final class RcpSearchView extends CaleydoRCPViewPart {
 
 			for (Object id : entry.getValue()) {
 				Set<Object> pids = mapper.apply(id);
+				if (pids == null) {
+					log.warn("can't map " + id + " of " + idType + " to its primary it type: " + primary);
+					continue;
+				}
 				for (Object pid : pids) {
 					if (!result.containsKey(pid))
 						result.put(pid, new ResultRow(primary, pid));
