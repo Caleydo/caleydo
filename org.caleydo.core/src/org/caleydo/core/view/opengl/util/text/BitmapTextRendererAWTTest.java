@@ -20,16 +20,21 @@ package org.caleydo.core.view.opengl.util.text;
  *******************************************************************************/
 
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
 
 import org.caleydo.core.util.collection.Pair;
 
 public class BitmapTextRendererAWTTest extends Frame {
+	private BufferedImage image;
+
 	/**
 	 *
 	 */
@@ -37,16 +42,13 @@ public class BitmapTextRendererAWTTest extends Frame {
 		super();
 		setSize(1024, 1024);
 		setVisible(true);
-	}
-	@Override
-	public void paint(Graphics ga) {
-		super.paint(ga);
-		final Graphics2D g = (Graphics2D) ga;
 
-		g.clearRect(0, 0, g.getClipBounds().width, g.getClipBounds().height);
-		g.translate(100, 100);
-
-		ABitmapTextRenderer t = new ABitmapTextRenderer(new Font("Arial", Font.PLAIN, 20)) {
+		image = new BufferedImage(640, 640, BufferedImage.TYPE_INT_RGB);
+		final Graphics2D g = image.createGraphics();
+		g.setBackground(Color.BLACK);
+		g.setColor(Color.WHITE);
+		g.clearRect(0, 0, image.getWidth(), image.getHeight());
+		ABitmapTextRenderer t = new ABitmapTextRenderer(new Font("Arial", Font.PLAIN, 50)) {
 
 			@Override
 			protected void markDirty(Rectangle bounds) {
@@ -55,9 +57,27 @@ public class BitmapTextRendererAWTTest extends Frame {
 
 			@Override
 			protected Pair<Graphics2D, Dimension> createGraphics(Rectangle maxBounds) {
-				return Pair.make(g, new Dimension(g.getClipBounds().width, g.getClipBounds().height));
+
+				return Pair.make(g, new Dimension(image.getWidth(), image.getHeight()));
 			}
 		};
+		g.dispose();
+
+	}
+
+	@Override
+	public void paint(Graphics ga) {
+		super.paint(ga);
+
+		final Graphics2D g = (Graphics2D) ga;
+
+		// Finally, scale the image by a factor of 10 and display it
+		// in the window. This will allow us to see the anti-aliased pixels
+		g.drawImage(image, AffineTransform.getScaleInstance(10, 10), this);
+
+		// Draw the image one more time at its original size, for comparison
+		g.drawImage(image, 0, 0, this);
+
 	}
 
 	public static void main(String[] args) {

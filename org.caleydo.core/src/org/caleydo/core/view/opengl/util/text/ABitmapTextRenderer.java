@@ -41,8 +41,11 @@ import org.caleydo.core.util.collection.Pair;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
+import com.jogamp.opengl.util.awt.TextRenderer;
 
 /**
+ * a text renderer similar to {@link TextRenderer} but on a by glph basis
+ *
  * @author Samuel Gratzl
  *
  */
@@ -50,15 +53,30 @@ public abstract class ABitmapTextRenderer {
 
 	private final Font renderFont;
 	private final Font layoutFont;
+	/**
+	 * maximal bounds of a glyph
+	 */
 	private final Rectangle2D maxBounds;
 
 	protected final float baseLine;
+
 	private final Graphics2D graphics;
 	private final Dimension graphicsSize;
 	private final FontRenderContext frc;
+
+	/**
+	 * current position within the texture glyph cache
+	 */
 	private final Vec2f pos;
+
+	/**
+	 * whether scaling should be based on the {@link #baseLine} or on the {@link #maxBounds} height
+	 */
 	private boolean scaleByBaseLine = true;
 
+	/**
+	 * cache of layouted text
+	 */
 	private final Cache<String, GlyphVector> cache = CacheBuilder.newBuilder().maximumSize(200)
 			.build(new CacheLoader<String, GlyphVector>() {
 				@Override
@@ -67,6 +85,9 @@ public abstract class ABitmapTextRenderer {
 				}
 			});
 
+	/**
+	 * information where a char is within the texture
+	 */
 	protected final Map<Character, CharacterInfo> chars = new TreeMap<>();
 
 	public ABitmapTextRenderer(Font base) {
@@ -78,20 +99,27 @@ public abstract class ABitmapTextRenderer {
 		this.graphics = p.getFirst();
 		this.graphicsSize = p.getSecond();
 		this.frc = this.graphics.getFontRenderContext();
-		this.graphics.setFont(renderFont);
-		this.graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		this.graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		// this.graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		this.graphics.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+		this.graphics.setFont(renderFont);
 
 		maxBounds = this.renderFont.getMaxCharBounds(frc); // real values
 		this.baseLine = -(float) maxBounds.getY();
 
 		pos = new Vec2f(0, baseLine);
 
-		upload('!', '~');
+		upload('!', '~'); // upload a bunch of characters
 	}
 
 	protected abstract Pair<Graphics2D, Dimension> createGraphics(Rectangle maxBounds);
 
+	/**
+	 * uploads all chars between the two given one to the texture
+	 *
+	 * @param from
+	 * @param to
+	 */
 	public final void upload(char from, char to) {
 		StringBuilder b = new StringBuilder();
 		for (char c = from; c <= to; ++c) {
@@ -102,14 +130,31 @@ public abstract class ABitmapTextRenderer {
 		uploadImpl(b);
 	}
 
+	/**
+	 * do we need to render this char
+	 *
+	 * @param c
+	 * @return
+	 */
 	protected final boolean filterChar(char c) {
 		return !renderFont.canDisplay(c) || Character.isWhitespace(c);
 	}
 
+	/**
+	 * whether this char is {@link #filterChar(char)} or already in the cache
+	 *
+	 * @param c
+	 * @return
+	 */
 	protected final boolean isCached(char c) {
 		return filterChar(c) || chars.containsKey(c);
 	}
 
+	/**
+	 * uploads all chars in the given {@link CharSequence} if they aren't alredy in it
+	 *
+	 * @param text
+	 */
 	public final void upload(CharSequence text) {
 		StringBuilder b = new StringBuilder(text.length());
 		for (int i = 0; i < text.length(); ++i) {
@@ -118,53 +163,92 @@ public abstract class ABitmapTextRenderer {
 				continue;
 			b.append(c);
 		}
-		if (b.length() > 0)
-			uploadImpl(b);
+		uploadImpl(b);
 	}
 
 
+	/**
+	 * does the actual uploading
+	 *
+	 * @param csq
+	 */
 	private void uploadImpl(CharSequence csq) {
+		if (csq.length() <= 0)
+			return;
 		int act = 0;
 		do {
-			int max = maxFreeChars();
+			int max = maxFreeChars(); // guess the minimal batch size which can be used
 			if (max == 0) { //next line
 				pos.set(0.0f, pos.y() + (float) maxBounds.getHeight());
 				max = maxFreeChars();
 			}
-			CharSequence subSequence = csq.subSequence(act, Math.min(csq.length(), act + max));
-			render(subSequence);
-			act += subSequence.length();
+			// render this batch
+			act += render(csq.subSequence(act, Math.min(csq.length(), act + max)));
 		} while (act < csq.length());
 
 	}
 
+	/**
+	 * returns the number of chars that can be at least renderes within the remaining line
+	 *
+	 * @return
+	 */
 	private int maxFreeChars() {
 		return (int) Math.round(Math.floor(graphicsSize.getWidth() - pos.x()) / maxBounds.getWidth());
 	}
 
 	/**
+	 * renders a given {@link CharSequence} to the texture
+	 *
 	 * @param subSequence
 	 */
-	private void render(CharSequence csq) {
+	private int render(CharSequence csq) {
 		GlyphVector glyphVector = renderFont.createGlyphVector(frc, csq.toString());
 
 		Rectangle bounds = glyphVector.getVisualBounds().getBounds();
 		bounds.y += baseLine;
+		// draw it
 		graphics.drawGlyphVector(glyphVector, pos.x(), pos.y());
-		for(int i = 0; i < csq.length(); ++i) {
-			char c = csq.charAt(i);
-			Rectangle gbounds = glyphVector.getGlyphPixelBounds(i, frc, pos.x(), pos.y());
-			// Rectangle2D gbounds = (Rectangle2D) glyphVector.getGlyphVisualBounds(i).getBounds2D().clone();
-			// gbounds.add(pos.x(), pos.y());
-			CharacterInfo info = new CharacterInfo(gbounds);
-			chars.put(c, info);
+
+
+		float next = (pos.x() + bounds.width + (float) maxBounds.getWidth() * 0.25f);
+		int rendered;
+		if (next > graphicsSize.width) {
+			// not all could be rendered
+			// TODO
+			rendered = 0;
+		} else {
+			rendered = csq.length();
+			// collect data
+			for (int i = 0; i < csq.length(); ++i) {
+				char c = csq.charAt(i);
+				Rectangle gbounds = glyphVector.getGlyphPixelBounds(i, frc, pos.x(), pos.y());
+				// Rectangle2D gbounds = (Rectangle2D) glyphVector.getGlyphVisualBounds(i).getBounds2D().clone();
+				// gbounds.add(pos.x(), pos.y());
+				CharacterInfo info = new CharacterInfo(gbounds);
+				this.chars.put(c, info);
+			}
 		}
-		pos.setX(pos.x() + bounds.width + 4); // some space for line spacing
+
+		pos.setX(next); // some space for line spacing
 		markDirty(bounds);
+		return rendered;
 	}
 
+	/**
+	 * hook for marking regions of a texture dirty
+	 *
+	 * @param bounds
+	 */
 	protected abstract void markDirty(Rectangle bounds);
 
+	/**
+	 * enable/disable some advanced font features
+	 *
+	 * @param base
+	 * @param enable
+	 * @return the derived font
+	 */
 	private static Font advancedFeatures(Font base, boolean enable) {
 		HashMap<TextAttribute, Object> map = new HashMap<>(base.getAttributes());
 		if (enable) {
@@ -220,6 +304,12 @@ public abstract class ABitmapTextRenderer {
 		return glyphVector;
 	}
 
+	/**
+	 * scaling factor to use for rendering
+	 *
+	 * @param height
+	 * @return
+	 */
 	protected final double scale(float height) {
 		return height / (scaleByBaseLine ? baseLine : maxBounds.getHeight());
 	}

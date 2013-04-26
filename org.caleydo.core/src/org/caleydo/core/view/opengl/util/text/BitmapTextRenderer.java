@@ -44,14 +44,23 @@ import com.jogamp.opengl.util.awt.TextureRenderer;
 import com.jogamp.opengl.util.texture.Texture;
 
 /**
+ * a {@link ITextRenderer} based on a glyph texture cache
+ *
  * @author Samuel Gratzl
  *
  */
 public final class BitmapTextRenderer extends ABitmapTextRenderer implements ITextRenderer {
+	/**
+	 * padding around every glyph for rendering to avoid precision problems
+	 */
+	private static final int PADDING = 2;
+
 	private TextureRenderer texture;
+	/**
+	 * the text color to use
+	 */
 	private float[] color = Colors.BLACK.getRGBA();
 
-	private static final int PADDING = 2;
 
 	public BitmapTextRenderer(Font base) {
 		super(base);
@@ -70,12 +79,12 @@ public final class BitmapTextRenderer extends ABitmapTextRenderer implements ITe
 		gl.glGetIntegerv(GL.GL_MAX_TEXTURE_SIZE, result, 0);
 		int maxTexSize = result[0];
 
-		// TODO
+		// TODO define a good size
 		System.out.printf("w%d h%d baseline %d nonPpowerof %s max tex size: %d\n", w, h, baseline, nonPowerOf2,
 				maxTexSize);
 
 		Dimension size = new Dimension(1024, 1024);
-		texture = TextureRenderer.createAlphaOnlyRenderer(size.width, size.height);
+		texture = TextureRenderer.createAlphaOnlyRenderer(size.width, size.height, true);
 		Graphics2D g = texture.createGraphics();
 		g.setBackground(Color.BLACK);
 		g.setColor(Color.WHITE);
@@ -105,6 +114,8 @@ public final class BitmapTextRenderer extends ABitmapTextRenderer implements ITe
 
 		upload(text);
 
+		gl.glPushAttrib(GL2.GL_TEXTURE_BIT | GL.GL_COLOR_BUFFER_BIT);
+		gl.glEnable(GL.GL_BLEND);
 		Texture tex = texture.getTexture();
 		tex.enable(gl);
 		tex.bind(gl);
@@ -115,8 +126,6 @@ public final class BitmapTextRenderer extends ABitmapTextRenderer implements ITe
 		gl.glScaled(s, s, s);
 
 		gl.glTranslatef(0, baseLine, 0);
-
-		GLGraphics.checkError(gl);
 
 		gl.glBegin(GL2.GL_QUADS);
 
@@ -155,7 +164,7 @@ public final class BitmapTextRenderer extends ABitmapTextRenderer implements ITe
 
 		gl.glPopMatrix();
 
-		tex.disable(gl);
+		gl.glPopAttrib();
 	}
 
 	@Override
@@ -193,7 +202,7 @@ public final class BitmapTextRenderer extends ABitmapTextRenderer implements ITe
 
 		@Override
 		protected ITextRenderer createTextRenderer() {
-			return new BitmapTextRenderer(new Font("Arial", Font.PLAIN, 10));
+			return new BitmapTextRenderer(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
 		}
 	}
 
