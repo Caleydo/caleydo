@@ -222,10 +222,11 @@ public abstract class ABitmapTextRenderer {
 			// collect data
 			for (int i = 0; i < csq.length(); ++i) {
 				char c = csq.charAt(i);
-				Rectangle gbounds = glyphVector.getGlyphPixelBounds(i, frc, pos.x(), pos.y());
-				// Rectangle2D gbounds = (Rectangle2D) glyphVector.getGlyphVisualBounds(i).getBounds2D().clone();
-				// gbounds.add(pos.x(), pos.y());
-				CharacterInfo info = new CharacterInfo(gbounds);
+				// Rectangle gbounds = glyphVector.getGlyphPixelBounds(i, frc, pos.x(), pos.y());
+				Rectangle2D gbounds2 = (Rectangle2D) glyphVector.getGlyphVisualBounds(i).getBounds2D().clone();
+				gbounds2.setRect(gbounds2.getX() + pos.x(), gbounds2.getY() + pos.y(), gbounds2.getWidth(),
+						gbounds2.getHeight());
+				CharacterInfo info = new CharacterInfo(gbounds2);
 				this.chars.put(c, info);
 			}
 		}

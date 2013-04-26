@@ -121,6 +121,12 @@ public final class BitmapTextRenderer extends ABitmapTextRenderer implements ITe
 		tex.bind(gl);
 		gl.glPushMatrix();
 		gl.glTranslatef(x, y, z);
+
+		gl.glColor4fv(color, 0); // set our color
+
+		// TODO idea is now to avoid rasterization effects, that as we are in a pixel space
+		// to align all quads to pixel borders
+
 		double s = scale(h);
 		w /= s; // to the other space
 		gl.glScaled(s, s, s);
@@ -129,7 +135,6 @@ public final class BitmapTextRenderer extends ABitmapTextRenderer implements ITe
 
 		gl.glBegin(GL2.GL_QUADS);
 
-		gl.glColor4fv(color, 0); // set our color
 
 		final int p = PADDING;
 
@@ -162,8 +167,8 @@ public final class BitmapTextRenderer extends ABitmapTextRenderer implements ITe
 		}
 		gl.glEnd();
 
-		gl.glPopMatrix();
 
+		gl.glPopMatrix();
 		gl.glPopAttrib();
 	}
 
@@ -195,7 +200,7 @@ public final class BitmapTextRenderer extends ABitmapTextRenderer implements ITe
 				@Override
 				protected void renderImpl(GLGraphics g, float w, float h) {
 					g.color(Color.RED).fillRect(10, 10, 500, 18);
-					g.drawText("This is a test", 10, 10, 500, 18);
+					g.drawText("This is a test VAV", 10, 10, 500, 12);
 				}
 			}, GLPadding.ZERO, new Dimension(500, 500));
 		}
