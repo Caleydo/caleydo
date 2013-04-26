@@ -113,7 +113,7 @@ public class ChooseGroupsDialog extends TitleAreaDialog {
 			// .getID(contextIDType, contextIDType.getIDCategory().getHumanReadableIDType(), id);
 
 			TableItem item = new TableItem(candidateCompoundsTable, SWT.NONE);
-			item.setText(0, label);
+			item.setText(0, label + " " + group.getSize());
 
 			item.setData(label);
 
