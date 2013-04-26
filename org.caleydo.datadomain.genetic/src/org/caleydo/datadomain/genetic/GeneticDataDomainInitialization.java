@@ -56,11 +56,12 @@ public class GeneticDataDomainInitialization implements IDataDomainInitializatio
 				EGeneIDTypes.ENSEMBL_GENE_ID.getDataType());
 		IDType.registerType(EGeneIDTypes.ENTREZ_GENE_ID.name(), geneIDCategory,
 				EGeneIDTypes.ENTREZ_GENE_ID.getDataType());
-		IDType.registerType(EGeneIDTypes.PATHWAY.name(), geneIDCategory, EGeneIDTypes.PATHWAY.getDataType());
+		IDType.registerType(EGeneIDTypes.PATHWAY.name(), geneIDCategory, EGeneIDTypes.PATHWAY.getDataType())
+				.setInternalType(true);
 		IDType.registerType(EGeneIDTypes.PATHWAY_VERTEX.name(), geneIDCategory,
-				EGeneIDTypes.PATHWAY_VERTEX.getDataType());
+				EGeneIDTypes.PATHWAY_VERTEX.getDataType()).setInternalType(true);
 		IDType.registerType(EGeneIDTypes.PATHWAY_VERTEX_REP.name(), geneIDCategory,
-				EGeneIDTypes.PATHWAY_VERTEX_REP.getDataType());
+				EGeneIDTypes.PATHWAY_VERTEX_REP.getDataType()).setInternalType(true);
 
 		geneIDCategory.setPrimaryMappingType(david);
 		geneIDCategory.setHumanReadableIDType(geneSymbol);

@@ -58,8 +58,6 @@ public class PathwayGraph extends DirectedMultigraph<PathwayVertexRep, DefaultEd
 	public PathwayGraph(final EPathwayDatabaseType type, final String name,
 			final String title, final String imageLink, final String link) {
 
-		// super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.PATHWAY));
-
 		super(DefaultEdge.class);
 
 		id = GeneralManager.get().getIDCreator().createID(ManagedObjectType.PATHWAY);
