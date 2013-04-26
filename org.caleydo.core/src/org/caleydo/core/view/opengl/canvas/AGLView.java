@@ -66,7 +66,6 @@ import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.FPSCounter;
-import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
@@ -132,11 +131,6 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	protected PixelGLConverter pixelGLConverter = null;
 
 	protected EDetailLevel detailLevel = EDetailLevel.HIGH;
-
-	/**
-	 * The remote level element in which the view is placed. This variable is only set when the view is rendered remote.
-	 */
-	protected RemoteLevelElement remoteLevelElement;
 
 	protected IGLRemoteRenderingView glRemoteRenderingView;
 
@@ -887,15 +881,6 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 
 	public final IViewCamera getViewCamera() {
 		return viewCamera;
-	}
-
-
-	public void setRemoteLevelElement(RemoteLevelElement element) {
-		this.remoteLevelElement = element;
-	}
-
-	public RemoteLevelElement getRemoteLevelElement() {
-		return remoteLevelElement;
 	}
 
 	public final boolean isRenderedRemote() {

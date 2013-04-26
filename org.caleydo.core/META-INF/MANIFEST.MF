@@ -363,7 +363,6 @@ Export-Package:
    javax.media.opengl,
    org.caleydo.core.util.base",
  org.caleydo.core.view.opengl.util.draganddrop;uses:="org.caleydo.core.view.opengl.mouse,org.caleydo.core.view.opengl.canvas,javax.media.opengl",
- org.caleydo.core.view.opengl.util.hierarchy,
  org.caleydo.core.view.opengl.util.spline;
   uses:="javax.media.opengl.glu,
    org.caleydo.core.view.opengl.canvas,
