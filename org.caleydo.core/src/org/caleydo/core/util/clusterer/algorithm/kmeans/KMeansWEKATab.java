@@ -51,7 +51,7 @@ public class KMeansWEKATab extends AClusterTab {
 	private void createTab() {
 		clusterTab = new TabItem(tabFolder, SWT.NONE);
 		clusterTab.setData(this);
-		clusterTab.setText("KMeans");
+		clusterTab.setText("KMeans (WEKA)");
 
 		Composite composite = new Composite(tabFolder, SWT.NONE);
 		clusterTab.setControl(composite);
