@@ -30,18 +30,18 @@ import org.eclipse.swt.widgets.TabFolder;
  * @author Samuel Gratzl
  *
  */
-public class KMeansClustererFactory implements IClustererFactory {
+public class KMeansWEKAClustererFactory implements IClustererFactory {
 
 	@Override
 	public AClusterTab createClusterTab(TabFolder tabFolder) {
-		return new KMeansTab(tabFolder);
+		return new KMeansWEKATab(tabFolder);
 	}
 
 	@Override
 	public SafeCallable<PerspectiveInitializationData> create(ClusterConfiguration config, int progressBarMultiplier,
 			int progressBarOffset) {
-		if (!(config.getClusterAlgorithmConfiguration() instanceof KMeansClusterConfiguration2))
+		if (!(config.getClusterAlgorithmConfiguration() instanceof KMeansClusterConfiguration))
 			return null;
-		return new KMeansClusterer(config, progressBarMultiplier, progressBarOffset);
+		return new KMeansWEKAClustererer(config, progressBarMultiplier, progressBarOffset);
 	}
 }

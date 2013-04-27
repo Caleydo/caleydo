@@ -25,11 +25,15 @@ import org.caleydo.core.util.clusterer.initialization.AClusterAlgorithmConfigura
  * @author Alexander Lex
  *
  */
-public class KMeansClusterConfiguration extends AClusterAlgorithmConfiguration {
+public class KMeansClusterConfiguration2 extends AClusterAlgorithmConfiguration {
 
 	private int numberOfClusters = -1;
+	/**
+	 * cache item vectors, faster but needs more memory
+	 */
+	private boolean cacheVectors = false;
 
-	public KMeansClusterConfiguration() {
+	public KMeansClusterConfiguration2() {
 		super("K-Means");
 	}
 
@@ -46,5 +50,25 @@ public class KMeansClusterConfiguration extends AClusterAlgorithmConfiguration {
 	 */
 	public int getNumberOfClusters() {
 		return numberOfClusters;
+	}
+
+	/**
+	 * @return the cacheVectors, see {@link #cacheVectors}
+	 */
+	public boolean isCacheVectors() {
+		return cacheVectors;
+	}
+
+	/**
+	 * @param cacheVectors
+	 *            setter, see {@link cacheVectors}
+	 */
+	public void setCacheVectors(boolean cacheVectors) {
+		this.cacheVectors = cacheVectors;
+	}
+
+	@Override
+	public String toString() {
+		return "KMeans " + numberOfClusters + " Clusters";
 	}
 }
