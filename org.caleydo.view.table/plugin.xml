@@ -20,8 +20,8 @@
                id="org.caleydo.menu.view"
                label="View">
             <menu
-                  id="org.caleydo.menu.view.visualizations"
-                  label="Visualizations">
+                  id="org.caleydo.menu.view.tool"
+                  label="Tools">
                <command
                      commandId="org.caleydo.view.table.command.opentable"
                      icon="resources/icons/icon.png"
