@@ -32,7 +32,6 @@ import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.id.IDType;
-import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
@@ -275,8 +274,8 @@ public class GLPathwayAugmentationRenderer {
 		gl.glNormal3f(0.0f, 0.0f, 1.0f);
 		gl.glVertex3f(0, 0, PathwayRenderStyle.Z_OFFSET);
 		gl.glVertex3f(nodeWidth, 0, PathwayRenderStyle.Z_OFFSET);
-		gl.glVertex3f(nodeWidth, -nodeHeight, PathwayRenderStyle.Z_OFFSET);
-		gl.glVertex3f(0, -nodeHeight, PathwayRenderStyle.Z_OFFSET);
+		gl.glVertex3f(nodeWidth, nodeHeight, PathwayRenderStyle.Z_OFFSET);
+		gl.glVertex3f(0, nodeHeight, PathwayRenderStyle.Z_OFFSET);
 		gl.glEnd();
 	}
 
@@ -285,8 +284,8 @@ public class GLPathwayAugmentationRenderer {
 		gl.glBegin(GL.GL_LINE_LOOP);
 		gl.glVertex3f(0, 0, PathwayRenderStyle.Z_OFFSET + 0.03f);
 		gl.glVertex3f(nodeWidth, 0, PathwayRenderStyle.Z_OFFSET + 0.03f);
-		gl.glVertex3f(nodeWidth, -nodeHeight, PathwayRenderStyle.Z_OFFSET + 0.03f);
-		gl.glVertex3f(0, -nodeHeight, PathwayRenderStyle.Z_OFFSET + 0.03f);
+		gl.glVertex3f(nodeWidth, nodeHeight, PathwayRenderStyle.Z_OFFSET + 0.03f);
+		gl.glVertex3f(0, nodeHeight, PathwayRenderStyle.Z_OFFSET + 0.03f);
 		gl.glEnd();
 	}
 
@@ -310,6 +309,8 @@ public class GLPathwayAugmentationRenderer {
 
 		float canvasXPos = pixelGLConverter.getGLWidthForPixelWidth(vertexRep.getCenterX());
 		float canvasYPos = pixelGLConverter.getGLHeightForPixelHeight(vertexRep.getCenterY());
+		float vertexHeight = pixelGLConverter.getGLHeightForPixelHeight(vertexRep.getHeight());
+		canvasYPos += vertexHeight;
 
 		gl.glTranslatef(canvasXPos, -canvasYPos, 0);
 
@@ -447,6 +448,9 @@ public class GLPathwayAugmentationRenderer {
 			if (isVisible)
 				renderGeneNode(gl, vertexRep);
 			else {// mask only
+				float width = pixelGLConverter.getGLWidthForPixelWidth(vertexRep.getWidth());
+				float height = pixelGLConverter.getGLHeightForPixelHeight(vertexRep.getHeight());
+
 				gl.glEnable(GL.GL_STENCIL_TEST);
 				gl.glColorMask(false, false, false, false);
 				gl.glDisable(GL.GL_DEPTH_TEST);
@@ -466,10 +470,10 @@ public class GLPathwayAugmentationRenderer {
 
 				if (vertexSelectionManager.checkStatus(SelectionType.SELECTION, vertexRep.getID())) {
 					nodeColor = SelectionType.SELECTION.getColor();
-					maskFramedEnzymeNode(gl);
+					maskFramedEnzymeNode(gl, width, height);
 				} else if (vertexSelectionManager.checkStatus(SelectionType.MOUSE_OVER, vertexRep.getID())) {
 					nodeColor = SelectionType.MOUSE_OVER.getColor();
-					maskFramedEnzymeNode(gl);
+					maskFramedEnzymeNode(gl, width, height);
 				} else if (vertexSelectionManager.checkStatus(SelectionType.NORMAL, vertexRep.getID())) {
 					nodeColor = PathwayRenderStyle.ENZYME_NODE_COLOR;
 				} else {
@@ -503,6 +507,9 @@ public class GLPathwayAugmentationRenderer {
 
 		float[] nodeColor;
 
+		float width = pixelGLConverter.getGLWidthForPixelWidth(vertexRep.getWidth());
+		float height = pixelGLConverter.getGLHeightForPixelHeight(vertexRep.getHeight());
+
 		gl.glLineWidth(1);
 		// // create mask
 		gl.glEnable(GL.GL_STENCIL_TEST);
@@ -512,15 +519,13 @@ public class GLPathwayAugmentationRenderer {
 		gl.glStencilFunc(GL.GL_GREATER, 1, 0xff);
 		gl.glStencilOp(GL.GL_KEEP, GL.GL_REPLACE, GL.GL_REPLACE);
 		//
-		gl.glCallList(enzymeNodeDisplayListId);
+		// gl.glCallList(enzymeNodeDisplayListId);
+		renderQuad(gl, width, height);
 
 		gl.glDisable(GL.GL_STENCIL_TEST);
 		gl.glColorMask(true, true, true, true);
 		gl.glEnable(GL.GL_DEPTH_TEST);
 		gl.glEnable(GL.GL_BLEND);
-
-		float width = pixelGLConverter.getGLWidthForPixelWidth(PathwayRenderStyle.ENZYME_NODE_PIXEL_WIDTH);
-		float height = -pixelGLConverter.getGLHeightForPixelHeight(PathwayRenderStyle.ENZYME_NODE_PIXEL_HEIGHT);
 
 		if (mappingPerspective != null) {
 			Average average = getExpressionAverage(mappingPerspective, vertexRep);
@@ -532,7 +537,7 @@ public class GLPathwayAugmentationRenderer {
 			}
 			if (average != null && nodeColor != null) {
 
-				gl.glColor4f(nodeColor[0], nodeColor[1], nodeColor[2], 0.8f);
+
 
 				if (glPathwayView.getDetailLevel() == EDetailLevel.HIGH) {
 
@@ -541,8 +546,11 @@ public class GLPathwayAugmentationRenderer {
 					gl.glDisable(GL.GL_BLEND);
 					gl.glStencilFunc(GL.GL_GREATER, 2, 0xff);
 					gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_KEEP);
-					gl.glCallList(enzymeNodeDisplayListId);
-
+					// gl.glCallList(enzymeNodeDisplayListId);
+					gl.glColor4f(nodeColor[0], nodeColor[1], nodeColor[2], 0.8f);
+					// gl.glTranslatef(0, 0, 0.5f);
+					renderQuad(gl, width, height);
+					// gl.glTranslatef(0, 0, -0.5f);
 					gl.glEnable(GL.GL_DEPTH_TEST);
 					gl.glDisable(GL.GL_STENCIL_TEST);
 
@@ -553,84 +561,18 @@ public class GLPathwayAugmentationRenderer {
 					// rendering the std-dev box
 					if (!stdDev.isNaN()) {
 
-						// ////////////////////////////// h bars
-						gl.glDisable(GL.GL_BLEND);
-
-						// background white
-						gl.glColor4f(1, 1, 1, 1f);
-						gl.glBegin(GL2.GL_QUADS);
-						gl.glVertex3f(0, height - (2f * thirdOfstdDevBarHeight), PathwayRenderStyle.Z_OFFSET);
-						gl.glVertex3f(0, height + thirdOfstdDevBarHeight - onePxlHeight, PathwayRenderStyle.Z_OFFSET);
-						gl.glVertex3f(width + onePxlWidth, height + thirdOfstdDevBarHeight - onePxlHeight,
-								PathwayRenderStyle.Z_OFFSET);
-						gl.glVertex3f(width + onePxlWidth, height - (2f * thirdOfstdDevBarHeight),
-								PathwayRenderStyle.Z_OFFSET);
-						gl.glEnd();
-
-						// the actual bar
-						gl.glColor3fv(mappingPerspective.getDataDomain().getColor().getRGB(), 0);
-						gl.glBegin(GL2.GL_QUADS);
-						gl.glVertex3f(0, height - (2f * thirdOfstdDevBarHeight), PathwayRenderStyle.Z_OFFSET);
-						gl.glVertex3f(0, height + thirdOfstdDevBarHeight - onePxlHeight, PathwayRenderStyle.Z_OFFSET);
-						gl.glVertex3f(stdDev, height + thirdOfstdDevBarHeight - onePxlHeight,
-								PathwayRenderStyle.Z_OFFSET);
-						gl.glVertex3f(stdDev, height - (2f * thirdOfstdDevBarHeight), PathwayRenderStyle.Z_OFFSET);
-						gl.glEnd();
-
-						// frame
-						gl.glDisable(GL.GL_DEPTH_TEST);
-						gl.glColor4f(0, 0, 0, 1f);
-						gl.glLineWidth(1.f);
-						// gl.glEnable(GL.GL_LINE_SMOOTH);
-
-						gl.glDisable(GL.GL_LINE_SMOOTH);
-						gl.glBegin(GL.GL_LINE_LOOP);
-						gl.glVertex3f(0, height - (2f * thirdOfstdDevBarHeight), PathwayRenderStyle.Z_OFFSET);
-						gl.glVertex3f(0, height + thirdOfstdDevBarHeight - onePxlHeight, PathwayRenderStyle.Z_OFFSET);
-						gl.glVertex3f(width + onePxlWidth, height + thirdOfstdDevBarHeight - onePxlHeight,
-								PathwayRenderStyle.Z_OFFSET);
-						gl.glVertex3f(width + onePxlWidth, height - (2f * thirdOfstdDevBarHeight),
-								PathwayRenderStyle.Z_OFFSET);
-						gl.glEnd();
-
-						// // // create mask
-						gl.glEnable(GL.GL_STENCIL_TEST);
-						gl.glColorMask(false, false, false, false);
-						gl.glDisable(GL.GL_DEPTH_TEST);
-						gl.glDisable(GL.GL_BLEND);
-						gl.glStencilFunc(GL.GL_GREATER, 2, 0xff);
-						gl.glStencilOp(GL.GL_KEEP, GL.GL_REPLACE, GL.GL_REPLACE);
-						// //
-						gl.glBegin(GL2.GL_QUADS);
-						gl.glVertex3f(0, height - (2f * thirdOfstdDevBarHeight), PathwayRenderStyle.Z_OFFSET);
-						gl.glVertex3f(0, height + thirdOfstdDevBarHeight - onePxlHeight, PathwayRenderStyle.Z_OFFSET);
-						gl.glVertex3f(width + onePxlWidth, height + thirdOfstdDevBarHeight - onePxlHeight,
-								PathwayRenderStyle.Z_OFFSET);
-						gl.glVertex3f(width + onePxlWidth, height - (2f * thirdOfstdDevBarHeight),
-								PathwayRenderStyle.Z_OFFSET);
-						gl.glEnd();
-						//
-						gl.glBegin(GL.GL_LINE_LOOP);
-						gl.glVertex3f(0, height - (2f * thirdOfstdDevBarHeight), PathwayRenderStyle.Z_OFFSET);
-						gl.glVertex3f(0, height + thirdOfstdDevBarHeight - onePxlHeight, PathwayRenderStyle.Z_OFFSET);
-						gl.glVertex3f(width + onePxlWidth, height + thirdOfstdDevBarHeight - onePxlHeight,
-								PathwayRenderStyle.Z_OFFSET);
-						gl.glVertex3f(width + onePxlWidth, height - (2f * thirdOfstdDevBarHeight),
-								PathwayRenderStyle.Z_OFFSET);
-						gl.glEnd();
-						//
-						gl.glDisable(GL.GL_STENCIL_TEST);
-						gl.glColorMask(true, true, true, true);
-						gl.glEnable(GL.GL_DEPTH_TEST);
-						gl.glEnable(GL.GL_BLEND);
+						renderStdDevBar(gl, width, height, stdDev);
 
 					}
 
 					// Handle selection highlighting of element
+					gl.glPushMatrix();
+					gl.glTranslatef(0, -(2f * thirdOfstdDevBarHeight - onePxlHeight), 0);
 					if (vertexSelectionManager.checkStatus(SelectionType.SELECTION, vertexRep.getID())) {
 						nodeColor = SelectionType.SELECTION.getColor();
 						gl.glColor4fv(nodeColor, 0);
-						gl.glCallList(framedMappedEnzymeNodeDisplayListId);
+						renderFrame(gl, width + onePxlWidth, height + (2f * thirdOfstdDevBarHeight) - onePxlHeight);
+						// gl.glCallList(framedMappedEnzymeNodeDisplayListId);
 						// maskFramedEnzymeNode(gl);
 						// // // create mask
 						gl.glEnable(GL.GL_STENCIL_TEST);
@@ -639,7 +581,8 @@ public class GLPathwayAugmentationRenderer {
 						gl.glDisable(GL.GL_BLEND);
 						gl.glStencilFunc(GL.GL_GREATER, 2, 0xff);
 						gl.glStencilOp(GL.GL_KEEP, GL.GL_REPLACE, GL.GL_REPLACE);
-						gl.glCallList(framedMappedEnzymeNodeDisplayListId);
+						renderFrame(gl, width + onePxlWidth, height + (2f * thirdOfstdDevBarHeight) - onePxlHeight);
+						// gl.glCallList(framedMappedEnzymeNodeDisplayListId);
 						gl.glDisable(GL.GL_STENCIL_TEST);
 						gl.glColorMask(true, true, true, true);
 						gl.glEnable(GL.GL_DEPTH_TEST);
@@ -647,7 +590,8 @@ public class GLPathwayAugmentationRenderer {
 					} else if (vertexSelectionManager.checkStatus(SelectionType.MOUSE_OVER, vertexRep.getID())) {
 						nodeColor = SelectionType.MOUSE_OVER.getColor();
 						gl.glColor4fv(nodeColor, 0);
-						gl.glCallList(framedMappedEnzymeNodeDisplayListId);
+						renderFrame(gl, width + onePxlWidth, height + (2f * thirdOfstdDevBarHeight) - onePxlHeight);
+						// gl.glCallList(framedMappedEnzymeNodeDisplayListId);
 						// maskFramedEnzymeNode(gl);
 						// // // create mask
 						gl.glEnable(GL.GL_STENCIL_TEST);
@@ -656,12 +600,14 @@ public class GLPathwayAugmentationRenderer {
 						gl.glDisable(GL.GL_BLEND);
 						gl.glStencilFunc(GL.GL_GREATER, 2, 0xff);
 						gl.glStencilOp(GL.GL_KEEP, GL.GL_REPLACE, GL.GL_REPLACE);
-						gl.glCallList(framedMappedEnzymeNodeDisplayListId);
+						renderFrame(gl, width + onePxlWidth, height + (2f * thirdOfstdDevBarHeight) - onePxlHeight);
+						// gl.glCallList(framedMappedEnzymeNodeDisplayListId);
 						gl.glDisable(GL.GL_STENCIL_TEST);
 						gl.glColorMask(true, true, true, true);
 						gl.glEnable(GL.GL_DEPTH_TEST);
 						gl.glEnable(GL.GL_BLEND);
 					}
+					gl.glPopMatrix();
 
 				} else {
 					// Upscaled version of pathway node needed for e.g.
@@ -730,7 +676,8 @@ public class GLPathwayAugmentationRenderer {
 
 				// transparent node for picking
 				gl.glColor4f(0, 0, 0, 0);
-				gl.glCallList(enzymeNodeDisplayListId);
+				renderQuad(gl, width, height);
+				// gl.glCallList(enzymeNodeDisplayListId);
 
 				nodeColor = PathwayRenderStyle.ENZYME_NODE_COLOR;
 				gl.glColor4f(nodeColor[0], nodeColor[1], nodeColor[2], 0.7f);
@@ -738,15 +685,15 @@ public class GLPathwayAugmentationRenderer {
 				float boxWidth = pixelGLConverter.getGLWidthForPixelWidth(PathwayRenderStyle.COMPOUND_NODE_PIXEL_WIDTH);
 				float boxHeight = pixelGLConverter
 						.getGLHeightForPixelHeight(PathwayRenderStyle.COMPOUND_NODE_PIXEL_HEIGHT);
-				float y = -pixelGLConverter.getGLHeightForPixelHeight(PathwayRenderStyle.ENZYME_NODE_PIXEL_HEIGHT);
+				float y = height;
 
 				gl.glDisable(GL.GL_DEPTH_TEST);
 				gl.glBegin(GL2.GL_QUADS);
 				gl.glNormal3f(0.0f, 0.0f, 1.0f);
-				gl.glVertex3f(0, y + boxHeight, PathwayRenderStyle.Z_OFFSET);
-				gl.glVertex3f(boxWidth, y + boxHeight, PathwayRenderStyle.Z_OFFSET);
-				gl.glVertex3f(boxWidth, y, PathwayRenderStyle.Z_OFFSET);
-				gl.glVertex3f(0, y, PathwayRenderStyle.Z_OFFSET);
+				gl.glVertex3f(0, boxHeight, PathwayRenderStyle.Z_OFFSET);
+				gl.glVertex3f(boxWidth, boxHeight, PathwayRenderStyle.Z_OFFSET);
+				gl.glVertex3f(boxWidth, 0, PathwayRenderStyle.Z_OFFSET);
+				gl.glVertex3f(0, 0, PathwayRenderStyle.Z_OFFSET);
 				gl.glEnd();
 				gl.glEnable(GL.GL_DEPTH_TEST);
 				//
@@ -754,13 +701,15 @@ public class GLPathwayAugmentationRenderer {
 				if (vertexSelectionManager.checkStatus(SelectionType.SELECTION, vertexRep.getID())) {
 					nodeColor = SelectionType.SELECTION.getColor();
 					gl.glColor4fv(nodeColor, 0);
-					gl.glCallList(framedEnzymeNodeDisplayListId);
-					maskFramedEnzymeNode(gl);
+					renderFrame(gl, width + onePxlWidth, height + thirdOfstdDevBarHeight);
+					// gl.glCallList(framedEnzymeNodeDisplayListId);
+					maskFramedEnzymeNode(gl, width, height);
 				} else if (vertexSelectionManager.checkStatus(SelectionType.MOUSE_OVER, vertexRep.getID())) {
 					nodeColor = SelectionType.MOUSE_OVER.getColor();
 					gl.glColor4fv(nodeColor, 0);
-					gl.glCallList(framedEnzymeNodeDisplayListId);
-					maskFramedEnzymeNode(gl);
+					renderFrame(gl, width + onePxlWidth, height + thirdOfstdDevBarHeight);
+					// gl.glCallList(framedEnzymeNodeDisplayListId);
+					maskFramedEnzymeNode(gl, width, height);
 				}
 			}
 
@@ -768,10 +717,10 @@ public class GLPathwayAugmentationRenderer {
 			// Handle selection highlighting of element
 			if (vertexSelectionManager.checkStatus(SelectionType.SELECTION, vertexRep.getID())) {
 				nodeColor = SelectionType.SELECTION.getColor();
-				maskFramedEnzymeNode(gl);
+				maskFramedEnzymeNode(gl, width, height);
 			} else if (vertexSelectionManager.checkStatus(SelectionType.MOUSE_OVER, vertexRep.getID())) {
 				nodeColor = SelectionType.MOUSE_OVER.getColor();
-				maskFramedEnzymeNode(gl);
+				maskFramedEnzymeNode(gl, width, height);
 			} else if (vertexSelectionManager.checkStatus(SelectionType.NORMAL, vertexRep.getID())) {
 				nodeColor = PathwayRenderStyle.ENZYME_NODE_COLOR;
 			} else {
@@ -779,55 +728,124 @@ public class GLPathwayAugmentationRenderer {
 			}
 
 			gl.glColor4fv(nodeColor, 0);
+			renderFrame(gl, width + onePxlWidth, height + thirdOfstdDevBarHeight);
 			gl.glCallList(framedEnzymeNodeDisplayListId);
 
 			if (!vertexSelectionManager.checkStatus(SelectionType.DESELECTED, vertexRep.getID())) {
 
 				// Transparent node for picking
 				gl.glColor4f(0, 0, 0, 0);
-				gl.glCallList(enzymeNodeDisplayListId);
+				renderQuad(gl, width, height);
+				// gl.glCallList(enzymeNodeDisplayListId);
 
 			}
 		}
 
-		Pair<TablePerspective, Average> highestAverage = null;
-		Average average;
-		for (TablePerspective tablePerspective : glPathwayView.getTablePerspectives()) {
-			average = getExpressionAverage(tablePerspective, vertexRep);
-			if (average == null)
-				continue;
-			if (average.getStandardDeviation() > 0.1) {
-				if (highestAverage == null
-						|| average.getStandardDeviation() > highestAverage.getSecond().getStandardDeviation()) {
-					highestAverage = new Pair<>(tablePerspective, average);
-				}
-			}
-		}
-
-		if (highestAverage != null) {
-
-			gl.glColor3fv(highestAverage.getFirst().getDataDomain().getColor().getRGB(), 0);
-			// gl.glColor3f(1, 0, 0);
-			gl.glBegin(GL2.GL_POLYGON);
-			gl.glVertex3f(width, 0, PathwayRenderStyle.Z_OFFSET);
-			gl.glVertex3f(width - 5 * onePxlWidth, 0, PathwayRenderStyle.Z_OFFSET);
-			gl.glVertex3f(width - 4 * onePxlWidth, height + 7, PathwayRenderStyle.Z_OFFSET);
-			gl.glVertex3f(width - 1 * onePxlWidth, height + 7, PathwayRenderStyle.Z_OFFSET);
-			gl.glEnd();
-
-			// gl.glColor3fv(tablePerspective.getDataDomain().getColor().getRGB(), 0);
-			gl.glBegin(GL2.GL_POLYGON);
-			gl.glVertex3f(width, height + 5, PathwayRenderStyle.Z_OFFSET);
-			gl.glVertex3f(width - 5 * onePxlWidth, height + 5, PathwayRenderStyle.Z_OFFSET);
-			gl.glVertex3f(width - 5 * onePxlWidth, height, PathwayRenderStyle.Z_OFFSET);
-			gl.glVertex3f(width, height, PathwayRenderStyle.Z_OFFSET);
-			gl.glEnd();
-
-		}
+		// Pair<TablePerspective, Average> highestAverage = null;
+		// Average average;
+		// for (TablePerspective tablePerspective : glPathwayView.getTablePerspectives()) {
+		// average = getExpressionAverage(tablePerspective, vertexRep);
+		// if (average == null)
+		// continue;
+		// if (average.getStandardDeviation() > 0.1) {
+		// if (highestAverage == null
+		// || average.getStandardDeviation() > highestAverage.getSecond().getStandardDeviation()) {
+		// highestAverage = new Pair<>(tablePerspective, average);
+		// }
+		// }
+		// }
+		//
+		// if (highestAverage != null) {
+		//
+		// gl.glColor3fv(highestAverage.getFirst().getDataDomain().getColor().getRGB(), 0);
+		// // gl.glColor3f(1, 0, 0);
+		// gl.glBegin(GL2.GL_POLYGON);
+		// gl.glVertex3f(width, 0, PathwayRenderStyle.Z_OFFSET);
+		// gl.glVertex3f(width - 5 * onePxlWidth, 0, PathwayRenderStyle.Z_OFFSET);
+		// gl.glVertex3f(width - 4 * onePxlWidth, height + 7, PathwayRenderStyle.Z_OFFSET);
+		// gl.glVertex3f(width - 1 * onePxlWidth, height + 7, PathwayRenderStyle.Z_OFFSET);
+		// gl.glEnd();
+		//
+		// // gl.glColor3fv(tablePerspective.getDataDomain().getColor().getRGB(), 0);
+		// gl.glBegin(GL2.GL_POLYGON);
+		// gl.glVertex3f(width, height + 5, PathwayRenderStyle.Z_OFFSET);
+		// gl.glVertex3f(width - 5 * onePxlWidth, height + 5, PathwayRenderStyle.Z_OFFSET);
+		// gl.glVertex3f(width - 5 * onePxlWidth, height, PathwayRenderStyle.Z_OFFSET);
+		// gl.glVertex3f(width, height, PathwayRenderStyle.Z_OFFSET);
+		// gl.glEnd();
+		//
+		// }
 
 	}
 
-	private void maskFramedEnzymeNode(final GL2 gl) {
+	private void renderStdDevBar(final GL2 gl, float nodeWidth, float nodeHeight, float stdDev) {
+		// ////////////////////////////// h bars
+		gl.glDisable(GL.GL_BLEND);
+
+		float bottom = -(2f * thirdOfstdDevBarHeight);
+		float top = thirdOfstdDevBarHeight - onePxlHeight;
+		// background white
+		gl.glColor4f(1, 1, 1, 1f);
+		gl.glBegin(GL2.GL_QUADS);
+		gl.glVertex3f(0, bottom, PathwayRenderStyle.Z_OFFSET);
+		gl.glVertex3f(0, top, PathwayRenderStyle.Z_OFFSET);
+		gl.glVertex3f(nodeWidth + onePxlWidth, top, PathwayRenderStyle.Z_OFFSET);
+		gl.glVertex3f(nodeWidth + onePxlWidth, bottom, PathwayRenderStyle.Z_OFFSET);
+		gl.glEnd();
+
+		// the actual bar
+		// gl.glColor3fv(mappingPerspective.getDataDomain().getColor().getRGB(), 0);
+		gl.glColor3f(49f / 255f, 163f / 255, 84f / 255);
+		gl.glBegin(GL2.GL_QUADS);
+		gl.glVertex3f(0, bottom, PathwayRenderStyle.Z_OFFSET);
+		gl.glVertex3f(0, top, PathwayRenderStyle.Z_OFFSET);
+		gl.glVertex3f(stdDev, top, PathwayRenderStyle.Z_OFFSET);
+		gl.glVertex3f(stdDev, bottom, PathwayRenderStyle.Z_OFFSET);
+		gl.glEnd();
+
+		// frame
+		gl.glDisable(GL.GL_DEPTH_TEST);
+		gl.glColor4f(0, 0, 0, 1f);
+		gl.glLineWidth(1.f);
+		// gl.glEnable(GL.GL_LINE_SMOOTH);
+
+		gl.glDisable(GL.GL_LINE_SMOOTH);
+		gl.glBegin(GL.GL_LINE_LOOP);
+		gl.glVertex3f(0, bottom, PathwayRenderStyle.Z_OFFSET);
+		gl.glVertex3f(0, top, PathwayRenderStyle.Z_OFFSET);
+		gl.glVertex3f(nodeWidth + onePxlWidth, top, PathwayRenderStyle.Z_OFFSET);
+		gl.glVertex3f(nodeWidth + onePxlWidth, bottom, PathwayRenderStyle.Z_OFFSET);
+		gl.glEnd();
+
+		// // // create mask
+		gl.glEnable(GL.GL_STENCIL_TEST);
+		gl.glColorMask(false, false, false, false);
+		gl.glDisable(GL.GL_DEPTH_TEST);
+		gl.glDisable(GL.GL_BLEND);
+		gl.glStencilFunc(GL.GL_GREATER, 2, 0xff);
+		gl.glStencilOp(GL.GL_KEEP, GL.GL_REPLACE, GL.GL_REPLACE);
+		// //
+		gl.glBegin(GL2.GL_QUADS);
+		gl.glVertex3f(0, bottom, PathwayRenderStyle.Z_OFFSET);
+		gl.glVertex3f(0, top, PathwayRenderStyle.Z_OFFSET);
+		gl.glVertex3f(nodeWidth + onePxlWidth, top, PathwayRenderStyle.Z_OFFSET);
+		gl.glVertex3f(nodeWidth + onePxlWidth, bottom, PathwayRenderStyle.Z_OFFSET);
+		gl.glEnd();
+		//
+		gl.glBegin(GL.GL_LINE_LOOP);
+		gl.glVertex3f(0, bottom, PathwayRenderStyle.Z_OFFSET);
+		gl.glVertex3f(0, top, PathwayRenderStyle.Z_OFFSET);
+		gl.glVertex3f(nodeWidth + onePxlWidth, top, PathwayRenderStyle.Z_OFFSET);
+		gl.glVertex3f(nodeWidth + onePxlWidth, bottom, PathwayRenderStyle.Z_OFFSET);
+		gl.glEnd();
+		//
+		gl.glDisable(GL.GL_STENCIL_TEST);
+		gl.glColorMask(true, true, true, true);
+		gl.glEnable(GL.GL_DEPTH_TEST);
+		gl.glEnable(GL.GL_BLEND);
+	}
+
+	private void maskFramedEnzymeNode(final GL2 gl, float width, float height) {
 		gl.glEnable(GL.GL_STENCIL_TEST);
 		gl.glColorMask(false, false, false, false);
 		gl.glDisable(GL.GL_DEPTH_TEST);
@@ -836,7 +854,8 @@ public class GLPathwayAugmentationRenderer {
 		gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_REPLACE);
 		gl.glStencilFunc(GL.GL_ALWAYS, 2, 0xff);
 
-		gl.glCallList(framedEnzymeNodeDisplayListId);
+		renderFrame(gl, width + onePxlWidth, height);
+		// gl.glCallList(framedEnzymeNodeDisplayListId);
 
 		gl.glDisable(GL.GL_STENCIL_TEST);
 		gl.glColorMask(true, true, true, true);

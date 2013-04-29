@@ -20,11 +20,11 @@
 package org.caleydo.view.enroute.mappeddataview;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.id.IDType;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -46,18 +46,18 @@ import org.eclipse.swt.widgets.TableItem;
  */
 public class ChooseGroupsDialog extends TitleAreaDialog {
 
-	private Perspective perspective;
-	private IDType contextIDType;
+	private List<Perspective> perspectives;
+	// private IDType contextIDType;
 	private Set<String> selectedItems = new HashSet<>();
 
 	private Composite parent;
 
 	private Table candidateCompoundsTable;
 
-	public ChooseGroupsDialog(Shell parentShell, Perspective perspective) {
+	public ChooseGroupsDialog(Shell parentShell, List<Perspective> perspectives) {
 		super(parentShell);
-		this.perspective = perspective;
-		this.contextIDType = perspective.getIdType();
+		this.perspectives = perspectives;
+		// this.contextIDType = perspective.getIdType();
 	}
 
 	@Override
@@ -107,16 +107,23 @@ public class ChooseGroupsDialog extends TitleAreaDialog {
 
 	private void setTableContent() {
 
-		for (Group group : perspective.getVirtualArray().getGroupList()) {
-			String label = group.getLabel();
-			// IDMappingManagerRegistry.get().getIDMappingManager(contextIDType)
-			// .getID(contextIDType, contextIDType.getIDCategory().getHumanReadableIDType(), id);
+		for (Perspective perspective : perspectives) {
+			for (Group group : perspective.getVirtualArray().getGroupList()) {
+				String label = null;
+				if (perspective.getVirtualArray().getGroupList().size() <= 1) {
+					label = perspective.getLabel();
+				} else {
+					label = group.getLabel();
+				}
+				// IDMappingManagerRegistry.get().getIDMappingManager(contextIDType)
+				// .getID(contextIDType, contextIDType.getIDCategory().getHumanReadableIDType(), id);
 
-			TableItem item = new TableItem(candidateCompoundsTable, SWT.NONE);
-			item.setText(0, label);
+				TableItem item = new TableItem(candidateCompoundsTable, SWT.NONE);
+				item.setText(0, label + " " + group.getSize());
 
-			item.setData(label);
+				item.setData(label);
 
+			}
 		}
 
 		for (TableColumn column : candidateCompoundsTable.getColumns()) {

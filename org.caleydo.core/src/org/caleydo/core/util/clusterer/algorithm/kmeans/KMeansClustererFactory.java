@@ -40,7 +40,7 @@ public class KMeansClustererFactory implements IClustererFactory {
 	@Override
 	public SafeCallable<PerspectiveInitializationData> create(ClusterConfiguration config, int progressBarMultiplier,
 			int progressBarOffset) {
-		if (!(config.getClusterAlgorithmConfiguration() instanceof KMeansClusterConfiguration))
+		if (!(config.getClusterAlgorithmConfiguration() instanceof KMeansClusterConfiguration2))
 			return null;
 		return new KMeansClusterer(config, progressBarMultiplier, progressBarOffset);
 	}

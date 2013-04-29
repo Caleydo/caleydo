@@ -50,6 +50,13 @@ public final class Rect implements Cloneable {
 	}
 
 	/**
+	 * @return the x, see {@link #x}
+	 */
+	public float x2() {
+		return x + width;
+	}
+
+	/**
 	 * @param x
 	 *            setter, see {@link x}
 	 */
@@ -63,6 +70,13 @@ public final class Rect implements Cloneable {
 	 */
 	public float y() {
 		return y;
+	}
+
+	/**
+	 * @return the y, see {@link #y}
+	 */
+	public float y2() {
+		return y + height;
 	}
 
 	/**

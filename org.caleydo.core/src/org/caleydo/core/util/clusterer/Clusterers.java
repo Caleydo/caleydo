@@ -67,8 +67,6 @@ public final class Clusterers {
 		log.info("Started clustering with clusterConfiguration: " + config);
 		Stopwatch w = new Stopwatch().start();
 		try {
-			ClusterResult clusterResult = null;
-
 			SafeCallable<PerspectiveInitializationData> clusterer = createClusterer(config);
 			if (clusterer == null) {
 				log.error("unknown cluster configuration: " + config);
@@ -86,7 +84,7 @@ public final class Clusterers {
 				result.setRecordResult(data);
 				break;
 			}
-			return clusterResult;
+			return result;
 		} catch (final Exception e) {
 			log.error("Clustering failed", e);
 

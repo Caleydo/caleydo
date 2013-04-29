@@ -233,10 +233,10 @@ public class StratomexAdapter {
 	 * @param scores
 	 * @return
 	 */
-	private static Pair<TablePerspective, Group> findReferencingGSEATablePerspective(Collection<IScore> scores) {
+	private static Pair<Perspective, Group> findReferencingGSEATablePerspective(Collection<IScore> scores) {
 		for (IScore s : (scores == null ? Collections.<IScore> emptyList() : scores)) {
 			if (s instanceof IComputedStratificationScore) {
-				Pair<TablePerspective, Group> p = GeneSetEnrichmentScoreFactory
+				Pair<Perspective, Group> p = GeneSetEnrichmentScoreFactory
 						.resolve(((IComputedStratificationScore) s).getAlgorithm());
 				if (p != null) {
 					return p;
@@ -260,7 +260,7 @@ public class StratomexAdapter {
 	private void updatePathwayPreview(PerspectiveRow old, PerspectiveRow new_, Collection<IScore> visibleColumns) {
 		PathwayGraph pathway = new_ == null ? null : ((PathwayRecordPerspective) new_.getStratification()).getPathway();
 
-		Pair<TablePerspective, Group> undderlyingPair = findReferencingGSEATablePerspective(visibleColumns);
+		Pair<Perspective, Group> undderlyingPair = findReferencingGSEATablePerspective(visibleColumns);
 		// no good column found remove old and return
 		if (undderlyingPair == null) {
 			if (old != null) {
@@ -269,7 +269,7 @@ public class StratomexAdapter {
 			return;
 		}
 
-		TablePerspective underlying = undderlyingPair.getFirst();
+		Perspective underlying = undderlyingPair.getFirst();
 		Group underlyingGroup = undderlyingPair.getSecond();
 
 		// handle stratification changes
@@ -305,19 +305,21 @@ public class StratomexAdapter {
 	 * @param pathway
 	 * @return
 	 */
-	private TablePerspective asPerspective(TablePerspective underlying, PathwayGraph pathway) {
+	private TablePerspective asPerspective(Perspective record, PathwayGraph pathway) {
 		PathwayDataDomain pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get().getDataDomainByType(
 				PathwayDataDomain.DATA_DOMAIN_TYPE);
 
+		ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) record.getDataDomain();
+		Perspective dimension = dataDomain.getTable().getDefaultDimensionPerspective();
 		for (PathwayTablePerspective p : pathwayDataDomain.getTablePerspectives()) {
-			if (p.getPathway().equals(pathway) && p.getRecordPerspective().equals(underlying.getRecordPerspective())
-					&& p.getDimensionPerspective().equals(underlying.getDimensionPerspective()))
+			if (p.getPathway().equals(pathway) && p.getRecordPerspective().equals(record)
+					&& p.getDimensionPerspective().equals(dimension))
 				return p;
 		}
 		// not found create new one
-
-		PathwayTablePerspective pathwayDimensionGroup = new PathwayTablePerspective(underlying.getDataDomain(),
-				pathwayDataDomain, underlying.getRecordPerspective(), underlying.getDimensionPerspective(), pathway);
+		PathwayTablePerspective pathwayDimensionGroup = new PathwayTablePerspective(dataDomain,
+ pathwayDataDomain,
+				record, dimension, pathway);
 
 		pathwayDimensionGroup.setPrivate(true);
 		pathwayDataDomain.addTablePerspective(pathwayDimensionGroup);
@@ -472,7 +474,7 @@ public class StratomexAdapter {
 	}
 
 	private void addToStratomexGeneSet(PerspectiveRow elem, Collection<IScore> visibleColumns) {
-		Pair<TablePerspective, Group> undderlyingPair = findReferencingGSEATablePerspective(visibleColumns);
+		Pair<Perspective, Group> undderlyingPair = findReferencingGSEATablePerspective(visibleColumns);
 		if (undderlyingPair == null)
 			return; // can't add no reference given
 

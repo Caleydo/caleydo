@@ -22,21 +22,12 @@
                id="org.caleydo.menu.view"
                label="View">
             <menu
-                  id="org.caleydo.menu.view.experimental"
-                  label="Experimental">
+                  id="org.caleydo.menu.view.tool"
+                  label="Tools">
                <command
                      commandId="org.caleydo.view.tourguide.command.open"
                      icon="resources/icons/icon.png"
                      style="push">
-                  <visibleWhen
-                        checkEnabled="false">
-                     <with
-                           variable="org.caleydo.core.isReleaseState">
-                        <equals
-                              value="releaseVersion">
-                        </equals>
-                     </with>
-                  </visibleWhen>
                </command>
             </menu>
          </menu>

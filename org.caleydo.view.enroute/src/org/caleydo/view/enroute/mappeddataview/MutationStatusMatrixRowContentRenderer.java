@@ -18,6 +18,7 @@ package org.caleydo.view.enroute.mappeddataview;
 
 import java.util.List;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
@@ -77,7 +78,8 @@ public class MutationStatusMatrixRowContentRenderer extends ACategoricalRowConte
 		if (matrixColumnWidth < parentView.getPixelGLConverter().getGLWidthForPixelWidth(3)) {
 			useShading = false;
 		}
-
+		gl.glEnable(GL.GL_BLEND);
+		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 		while (vaIndex < columnPerspective.getVirtualArray().size()) {
 			for (int rowIndex = 0; (rowIndex < NUM_ROWS) && (vaIndex < columnPerspective.getVirtualArray().size()); rowIndex++) {
 				Integer columnID = columnPerspective.getVirtualArray().get(vaIndex);

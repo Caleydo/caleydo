@@ -51,11 +51,16 @@ public final class TransformedFloatListView extends AFloatList implements IFloat
 
 	@Override
 	public IFloatList toList() {
+		return new ArrayFloatList(toPrimitiveArray());
+	}
+
+	@Override
+	public float[] toPrimitiveArray() {
 		int s = size();
 		float[] data = new float[s];
 		for (int i = 0; i < s; ++i)
 			data[i] = getPrimitive(i);
-		return new ArrayFloatList(data);
+		return data;
 	}
 }
 

@@ -42,13 +42,17 @@ public class Application implements IApplication {
 			Logger.log(new Status(IStatus.INFO, this.toString(), "Starting Caleydo"));
 			GeneralManager.get().getPreferenceStore();
 
-			StartupProcessor.get().initStartupProcudure(context.getArguments());
+			int returnCode = StartupProcessor.get().initStartupProcudure(context.getArguments());
+			if (returnCode == PlatformUI.RETURN_RESTART) {
+				return IApplication.EXIT_RESTART;
+			}
+			return IApplication.EXIT_OK;
+			
 		} catch (Exception e) {
 			Logger.log(new Status(IStatus.ERROR, this.toString(),
 					"Caught exception, crashing.", e));
 			throw e;
 		}
-		return IApplication.EXIT_OK;
 	}
 
 	@Override

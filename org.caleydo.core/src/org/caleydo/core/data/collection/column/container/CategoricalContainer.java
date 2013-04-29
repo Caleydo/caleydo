@@ -95,7 +95,7 @@ public class CategoricalContainer<CATEGORY_TYPE extends Comparable<CATEGORY_TYPE
 	public CategoricalContainer(int size, EDataType dataType, CATEGORY_TYPE unknownCategoryType) {
 		container = new short[size];
 		this.unknownCategoryType = unknownCategoryType;
-		add(unknownCategoryType);
+		initCategory(unknownCategoryType);
 	}
 
 	/**

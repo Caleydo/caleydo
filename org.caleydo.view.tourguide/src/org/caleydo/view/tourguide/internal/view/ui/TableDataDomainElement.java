@@ -5,6 +5,7 @@ import java.util.Collection;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventPublisher;
+import org.caleydo.core.event.data.DataDomainUpdateEvent;
 import org.caleydo.core.view.contextmenu.AContextMenuItem.EContextMenuType;
 import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
@@ -30,8 +31,7 @@ public class TableDataDomainElement extends ADataDomainElement {
 
 	@Override
 	protected void createContextMenu(ContextMenuCreator creator) {
-		creator.addContextMenuItem(new GenericContextMenuItem("Edit Filter", new EditDataDomainFilterEvent().to(this)));
-		creator.addSeparator();
+		super.createContextMenu(creator);
 		Collection<Perspective> dims = getModel().getDimensionPerspectives();
 		if (!dims.isEmpty()) {
 			Perspective dim = getModel().getDimensionSelection();
@@ -47,8 +47,9 @@ public class TableDataDomainElement extends ADataDomainElement {
 	}
 
 	@ListenTo(sendToMe = true)
-	private void onEditDataDomainFilter(final EditDataDomainFilterEvent e) {
-		if (e.isStartEditing()) {
+	@Override
+	protected void onFilterEdit(boolean isStartEditing, Object payload) {
+		if (isStartEditing) {
 			Display.getDefault().asyncExec(new Runnable() {
 				@Override
 				public void run() {
@@ -64,8 +65,15 @@ public class TableDataDomainElement extends ADataDomainElement {
 				}
 			});
 		} else {
-			setFilter(e.getPayload().toString());
+			setFilter(payload.toString());
 		}
+	}
+
+	@ListenTo
+	private void onDataDomainUpdate(DataDomainUpdateEvent event) {
+		if (event.getDataDomain() != this.model.getDataDomain())
+			return;
+		this.model.onDataDomainUpdated();
 	}
 
 	private void setFilter(String filter) {

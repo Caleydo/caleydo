@@ -20,17 +20,15 @@
 package org.caleydo.view.tourguide.internal.score;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.ExtensionUtils;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
-import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
-import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.internal.event.AddScoreColumnEvent;
-import org.caleydo.view.tourguide.internal.event.CreateScoreEvent;
 import org.caleydo.view.tourguide.spi.IScoreFactory;
 import org.caleydo.view.tourguide.spi.IScoreFactory.ScoreEntry;
 
@@ -49,11 +47,8 @@ public class ScoreFactories {
 		factories = ExtensionUtils.findImplementation(EXTENSION_ID, "name", "class", IScoreFactory.class);
 	}
 
-	public static void addCreateItems(ContextMenuCreator creator, Object receiver, EDataDomainQueryMode mode) {
-		for (Map.Entry<String, IScoreFactory> entry : factories.entrySet()) {
-			if (entry.getValue().supports(mode))
-				creator.add("Create " + entry.getKey(), new CreateScoreEvent(entry.getKey()).to(receiver));
-		}
+	public static Map<String, IScoreFactory> getFactories() {
+		return Collections.unmodifiableMap(factories);
 	}
 
 	public static Iterable<AContextMenuItem> createGroupEntries(TablePerspective strat, Group group, Object receiver) {

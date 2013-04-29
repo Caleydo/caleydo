@@ -53,6 +53,7 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Display;
 
 import com.google.common.collect.Iterables;
+import com.google.common.primitives.Floats;
 
 /**
  * @author Samuel Gratzl
@@ -221,6 +222,11 @@ public abstract class AMultiRankColumnModel extends ACompositeRankColumnModel im
 			public int size() {
 				return data2.size();
 			}
+
+			@Override
+			public float[] toPrimitiveArray() {
+				return Floats.toArray(this);
+			}
 		};
 	}
 
@@ -346,8 +352,8 @@ public abstract class AMultiRankColumnModel extends ACompositeRankColumnModel im
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				TitleDescriptionDialog d = new TitleDescriptionDialog(null, "Edit Annotation of: " + getTitle(),
-						"Edit Annotation", title, description);
+				String tori = getTitle();
+				TitleDescriptionDialog d = new TitleDescriptionDialog(null, "Edit Label of: " + tori, tori, description);
 				if (d.open() == Window.OK) {
 					String t = d.getTitle().trim();
 					String desc = d.getDescription().trim();

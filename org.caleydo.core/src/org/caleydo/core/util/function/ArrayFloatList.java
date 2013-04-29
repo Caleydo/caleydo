@@ -19,11 +19,13 @@
  *******************************************************************************/
 package org.caleydo.core.util.function;
 
+import java.util.Arrays;
+
 /**
  * a {@link IFloatList} based on an array
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public class ArrayFloatList extends AFloatList {
 	private final float[] data;
@@ -42,4 +44,8 @@ public class ArrayFloatList extends AFloatList {
 		return data.length;
 	}
 
+	@Override
+	public float[] toPrimitiveArray() {
+		return Arrays.copyOf(data, data.length);
+	}
 }

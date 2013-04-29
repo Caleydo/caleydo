@@ -104,6 +104,11 @@ public class RankTableUIConfigs {
 				IRow selected) {
 			wrappee.renderRowBackground(g, x, y, w, h, even, row, selected);
 		}
+
+		@Override
+		public boolean canEditValues() {
+			return wrappee.canEditValues();
+		}
 	}
 
 }

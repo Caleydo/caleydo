@@ -19,7 +19,6 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.internal;
 
-import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.color.Colors;
 import org.caleydo.core.util.color.IColor;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -30,10 +29,6 @@ public class TourGuideRenderStyle extends GeneralRenderStyle {
 	public TourGuideRenderStyle(ViewFrustum viewFrustum) {
 		super(viewFrustum);
 	}
-
-
-	public static final IColor SELECTED_COLOR = Colors.YELLOW;
-	public static final IColor DEFAULT_SCORE_COLOR = new Color(0, 0, 0, 0.2f);
 
 	private static final String ICON_PREFIX = "resources/icons/view/tourguide/";
 

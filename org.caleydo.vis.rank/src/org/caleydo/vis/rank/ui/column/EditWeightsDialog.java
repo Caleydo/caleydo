@@ -45,8 +45,9 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 /**
- * @author Samuel Gratzl
  *
+ * @author Samuel Gratzl
+ * 
  */
 public class EditWeightsDialog extends TitleAreaDialog implements VerifyListener, ModifyListener {
 	private StackedRankColumnModel model;

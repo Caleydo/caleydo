@@ -38,15 +38,45 @@ import org.caleydo.view.tourguide.spi.score.IGroupScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
 import org.caleydo.view.tourguide.spi.score.IStratificationScore;
 import org.caleydo.vis.rank.model.ARow;
+import org.caleydo.vis.rank.model.IRow;
+
+import com.google.common.base.Function;
 
 /**
  * @author Samuel Gratzl
  *
  */
 public final class PerspectiveRow extends ARow implements ILabelProvider, Cloneable {
-	private final TablePerspective perspective;
-	private final Perspective stratification;
-	private final Group group;
+	public static final Function<IRow, String> TO_DATADOMAIN = new Function<IRow, String>() {
+		@Override
+		public String apply(IRow in) {
+			if (in == null || !(in instanceof PerspectiveRow))
+				return null;
+			return ((PerspectiveRow) in).getDataDomain().getLabel();
+		}
+	};
+	public static final Function<IRow, String> TO_STRATIFICATION = new Function<IRow, String>() {
+		@Override
+		public String apply(IRow in) {
+			if (in == null || !(in instanceof PerspectiveRow))
+				return null;
+			Perspective g = ((PerspectiveRow) in).getStratification();
+			return g == null ? null : g.getLabel();
+		}
+	};
+	public static final Function<IRow, String> TO_GROUP = new Function<IRow, String>() {
+		@Override
+		public String apply(IRow in) {
+			if (in == null || !(in instanceof PerspectiveRow))
+				return null;
+			Group g = ((PerspectiveRow) in).getGroup();
+			return g == null ? null : g.getLabel();
+		}
+	};
+
+	private TablePerspective perspective;
+	private Perspective stratification;
+	private Group group;
 
 	public PerspectiveRow(Perspective stratification, TablePerspective perspective) {
 		this(stratification, null, perspective);
@@ -54,8 +84,14 @@ public final class PerspectiveRow extends ARow implements ILabelProvider, Clonea
 
 	public PerspectiveRow(Perspective stratification, Group group, TablePerspective perspective) {
 		this.stratification = stratification;
-		this.perspective = perspective;
 		this.group = group;
+		this.perspective = perspective;
+	}
+
+	public void destroy() {
+		this.stratification = null;
+		this.group = null;
+		this.perspective = null;
 	}
 
 	@Override
@@ -77,6 +113,14 @@ public final class PerspectiveRow extends ARow implements ILabelProvider, Clonea
 
 	public Perspective getStratification() {
 		return stratification;
+	}
+
+	/**
+	 * @param perspective
+	 *            setter, see {@link perspective}
+	 */
+	public void setPerspective(TablePerspective perspective) {
+		this.perspective = perspective;
 	}
 
 	public TablePerspective getPerspective() {

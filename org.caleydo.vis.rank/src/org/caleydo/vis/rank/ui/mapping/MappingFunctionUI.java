@@ -450,7 +450,7 @@ public class MappingFunctionUI extends GLElementContainer implements GLButton.IS
 
 
 		IFloatList data = new ArrayFloatList(arr);
-		FloatStatistics s = data.computeStats();
+		FloatStatistics s = FloatStatistics.of(data.iterator());
 		model.setActStatistics(s);
 		final MappingFunctionUI root = new MappingFunctionUI(model, data, Color.decode("#9ECAE1"),
 				Color.decode("#DEEBF7"), null);

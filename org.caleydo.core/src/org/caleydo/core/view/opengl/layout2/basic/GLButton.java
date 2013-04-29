@@ -236,6 +236,10 @@ public class GLButton extends AGLButton {
 		return new IconLabelRenderer(label, "radio");
 	}
 
+	protected static String getStandardIcon(String mode, boolean selected) {
+		return String.format("resources/icons/general/%s_%sselected.png", mode, (selected ? "" : "not_"));
+	}
+
 	public static class IconLabelRenderer implements IGLRenderer {
 		private final String label;
 		private final String prefix;
@@ -256,7 +260,7 @@ public class GLButton extends AGLButton {
 		public void render(GLGraphics g, float w, float h, GLElement parent) {
 			boolean s = ((GLButton) parent).isSelected();
 
-			String icon = String.format("resources/icons/general/%s_%sselected.png", prefix, (s ? "" : "not_"));
+			String icon = getStandardIcon(prefix, s);
 			g.fillImage(icon, 1, 1, h - 2, h - 2);
 			if (label != null && label.length() > 0)
 				g.drawText(label, h, 0, w - h, 13);

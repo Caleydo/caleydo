@@ -34,6 +34,11 @@ import java.util.regex.Pattern;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.perspective.variable.Perspective;
+import org.caleydo.core.data.selection.SelectionManager;
+import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.data.selection.delta.SelectionDelta;
+import org.caleydo.core.event.EventPublisher;
+import org.caleydo.core.event.data.SelectionUpdateEvent;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
@@ -41,6 +46,7 @@ import org.caleydo.core.id.IDType;
 import org.caleydo.core.id.IIDTypeMapper;
 import org.caleydo.core.util.ExtensionUtils;
 import org.caleydo.core.util.base.ILabelHolder;
+import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.CaleydoRCPViewPart;
 import org.caleydo.view.search.api.ISearchResultActionFactory;
 import org.eclipse.jface.action.IMenuListener;
@@ -50,7 +56,9 @@ import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.fieldassist.ControlDecoration;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
@@ -89,12 +97,11 @@ import com.google.common.collect.Sets;
  * @author Marc Streit and Samuel Gratzl
  */
 public final class RcpSearchView extends CaleydoRCPViewPart {
-	/**
-	 *
-	 */
 	private static final String EXTENSION_POINT = "org.caleydo.view.search.SearchResultActionFactory";
 
 	public static final String VIEW_TYPE = "org.caleydo.view.search";
+
+	private final static Logger log = Logger.create(RcpSearchView.class);
 
 	private Composite root;
 
@@ -102,6 +109,10 @@ public final class RcpSearchView extends CaleydoRCPViewPart {
 	 * text select for the query
 	 */
 	private Text searchText;
+
+	private Button regexSearch;
+
+	private Button caseSensitive;
 	/**
 	 * set of checkbox buttons for different id typess
 	 */
@@ -154,10 +165,13 @@ public final class RcpSearchView extends CaleydoRCPViewPart {
 
 	private void createSearchGroup(Composite composite) {
 		Group group = new Group(composite, SWT.SHADOW_ETCHED_IN);
-		group.setLayout(new RowLayout());
+		group.setLayout(new RowLayout(SWT.VERTICAL));
 		group.setText("Search query");
 
-		searchText = new Text(group, SWT.BORDER | SWT.SINGLE);
+		Composite row = new Composite(group, SWT.NONE);
+		row.setLayout(new RowLayout());
+
+		searchText = new Text(row, SWT.BORDER | SWT.SINGLE);
 		searchText.setLayoutData(new RowData(550, 20));
 		searchText.addFocusListener(new FocusAdapter() {
 			@Override
@@ -171,13 +185,14 @@ public final class RcpSearchView extends CaleydoRCPViewPart {
 			}
 		});
 
-		final Button searchButton = new Button(group, SWT.PUSH);
+		final Button searchButton = new Button(row, SWT.PUSH);
 		searchButton.setText("Search");
 		searchButton.setEnabled(false);
 
 		final ControlDecoration dec = new ControlDecoration(searchText, SWT.TOP | SWT.LEFT);
 		dec.setImage(PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_DEC_FIELD_WARNING));
 		dec.setShowOnlyOnFocus(true);
+		dec.setDescriptionText("You have to enter at least 3 characters");
 		dec.hide();
 
 		this.nothingFound = new ControlDecoration(searchText, SWT.TOP | SWT.LEFT);
@@ -194,6 +209,7 @@ public final class RcpSearchView extends CaleydoRCPViewPart {
 					searchButton.setEnabled(true);
 				} else {
 					dec.show();
+					dec.showHoverText("You have to enter at least 3 characters");
 					searchButton.setEnabled(false);
 				}
 			}
@@ -202,7 +218,7 @@ public final class RcpSearchView extends CaleydoRCPViewPart {
 		searchButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				search(searchText.getText());
+				search(searchText.getText(), caseSensitive.getSelection(), regexSearch.getSelection());
 			}
 		});
 		searchText.addKeyListener(new KeyAdapter() {
@@ -211,12 +227,23 @@ public final class RcpSearchView extends CaleydoRCPViewPart {
 				switch (event.keyCode) {
 				case SWT.CR: {
 					if (searchButton.isEnabled())
-						search(searchText.getText());
+						search(searchText.getText(), caseSensitive.getSelection(), regexSearch.getSelection());
 					break;
 				}
 				}
 			}
 		});
+
+
+		row = new Composite(group, SWT.NONE);
+		row.setLayout(new RowLayout());
+
+		caseSensitive = new Button(row, SWT.CHECK);
+		caseSensitive.setText("Case sensitive");
+
+		regexSearch = new Button(row, SWT.CHECK);
+		regexSearch.setText("Regular Expression");
+
 	}
 
 	private void createFilterGroup(Composite composite) {
@@ -304,12 +331,19 @@ public final class RcpSearchView extends CaleydoRCPViewPart {
 		return b;
 	}
 
-	private void search(String query) {
+	/**
+	 * search implementation of the given query
+	 *
+	 * @param query
+	 * @param caseSensitive
+	 * @param regexSearch
+	 */
+	private void search(String query, boolean caseSensitive, boolean regexSearch) {
 		// delete old results
-		for (Control c : results.getChildren())
-			c.dispose();
+		deleteOldSearchResult(true);
 
-		com.google.common.collect.Table<IDCategory, IDType, Set<?>> result = searchImpl(query);
+		com.google.common.collect.Table<IDCategory, IDType, Set<?>> result = searchImpl(toPattern(query, caseSensitive,
+				regexSearch));
 
 		if (result.isEmpty()) {
 			nothingFound.show();
@@ -337,15 +371,46 @@ public final class RcpSearchView extends CaleydoRCPViewPart {
 		resultsScrolled.setMinSize(results.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 	}
 
+	protected void deleteOldSearchResult(boolean dispose) {
+		for (Control c : results.getChildren()) {
+			SelectionTriggerListener lisener = (SelectionTriggerListener) c.getData();
+			if (lisener != null)
+				lisener.cleanUp();
+			if (dispose)
+				c.dispose();
+		}
+	}
+
+	/**
+	 * converts the query with the given flags into a pattern
+	 *
+	 * @return
+	 */
+	private static Pattern toPattern(String query, boolean caseSensitive, boolean regexSearch) {
+		if (!regexSearch)
+			query = starToRegex(query);
+		return Pattern.compile(query, caseSensitive ? 0 : Pattern.CASE_INSENSITIVE);
+	}
+
+	/**
+	 * replaces the * wildcard notation to a regex
+	 *
+	 * @param query
+	 * @return
+	 */
+	private static String starToRegex(String query) {
+		return "\\Q" + query.replace("*", "\\E.*\\Q") + "\\E";
+	}
+
 	/**
 	 * implements the search logic
 	 *
 	 * @param query
+	 * @param regexSearch
+	 * @param caseSensitive
 	 * @return a table containing all matching id types and their matching ids
 	 */
-	private com.google.common.collect.Table<IDCategory, IDType, Set<?>> searchImpl(String query) {
-		// compile to regex and create a predicate out of it
-		final Pattern pattern = Pattern.compile(query, Pattern.CASE_INSENSITIVE);
+	private com.google.common.collect.Table<IDCategory, IDType, Set<?>> searchImpl(final Pattern pattern) {
 		Predicate<Object> searchQuery = new Predicate<Object>() {
 			@Override
 			public boolean apply(Object in) {
@@ -397,6 +462,10 @@ public final class RcpSearchView extends CaleydoRCPViewPart {
 		viewer.getTable().setLayoutData(new GridData(GridData.FILL_BOTH));
 		viewer.setContentProvider(ArrayContentProvider.getInstance());
 
+		SelectionTriggerListener listener = new SelectionTriggerListener(category);
+		group.setData(listener);
+		viewer.addSelectionChangedListener(listener);
+
 		// get a list of relevant datadomains i.e. perspectives
 		List<Perspective> perspectives = findRelevantPerspectives(category);
 
@@ -406,7 +475,8 @@ public final class RcpSearchView extends CaleydoRCPViewPart {
 		viewer.setInput(rows);
 
 		// add columns for every perspective
-		final Color ddColor = Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_BACKGROUND);
+		final Color ddColor = new Color(Display.getCurrent(), 240, 240, 240);
+
 		for (final Perspective perspective : perspectives) {
 			TableViewerColumn col = createTableColumn(viewer, perspective.getDataDomain().getLabel());
 			col.getColumn().setAlignment(SWT.CENTER);
@@ -518,6 +588,10 @@ public final class RcpSearchView extends CaleydoRCPViewPart {
 
 			for (Object id : entry.getValue()) {
 				Set<Object> pids = mapper.apply(id);
+				if (pids == null) {
+					log.warn("can't map " + id + " of " + idType + " to its primary it type: " + primary);
+					continue;
+				}
 				for (Object pid : pids) {
 					if (!result.containsKey(pid))
 						result.put(pid, new ResultRow(primary, pid));
@@ -590,5 +664,49 @@ public final class RcpSearchView extends CaleydoRCPViewPart {
 	public void createDefaultSerializedView() {
 		serializedView = new SerializedSearchView();
 		determineDataConfiguration(serializedView);
+	}
+
+	private static class SelectionTriggerListener implements ISelectionChangedListener {
+		private final SelectionManager selectionManager;
+
+		public SelectionTriggerListener(IDCategory category) {
+			this.selectionManager = new SelectionManager(category.getPrimaryMappingType());
+		}
+
+		public void cleanUp() {
+			selectionManager.clearSelection(SelectionType.SELECTION);
+			trigger(selectionManager.getDelta());
+			selectionManager.unregisterEventListeners();
+		}
+
+		@Override
+		protected void finalize() throws Throwable {
+			selectionManager.unregisterEventListeners();
+			super.finalize();
+		}
+
+		@Override
+		public void selectionChanged(SelectionChangedEvent event) {
+			IStructuredSelection selection = (IStructuredSelection) event.getSelection();
+			selectionManager.clearSelection(SelectionType.SELECTION);
+			if (!selection.isEmpty()) {
+				for (Object obj : selection.toList()) {
+					ResultRow r = (ResultRow) obj;
+					selectionManager.addToType(SelectionType.SELECTION, (Integer) r.getPrimaryId());
+				}
+			}
+			trigger(selectionManager.getDelta());
+		}
+
+		/**
+		 * @param delta
+		 */
+		private void trigger(SelectionDelta delta) {
+			SelectionUpdateEvent event = new SelectionUpdateEvent();
+			event.setSender(this);
+			event.setSelectionDelta(delta);
+			EventPublisher.trigger(event);
+		}
+
 	}
 }

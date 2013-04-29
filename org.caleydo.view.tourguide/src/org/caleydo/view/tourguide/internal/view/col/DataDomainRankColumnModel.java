@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.internal.view.col;
 
+import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
@@ -33,22 +34,22 @@ import org.caleydo.vis.rank.ui.detail.ValueElement;
  * @author Samuel Gratzl
  *
  */
-public class PerspectiveRankColumnModel extends StringRankColumnModel {
+public class DataDomainRankColumnModel extends StringRankColumnModel {
 	private final IAddToStratomex stratomex;
 
-	public PerspectiveRankColumnModel(IAddToStratomex stratomex) {
-		super(GLRenderers.drawText("Match", VAlign.CENTER), StringRankColumnModel.DEFAULT);
+	public DataDomainRankColumnModel(IAddToStratomex stratomex) {
+		super(GLRenderers.drawText("Data Domain", VAlign.CENTER), PerspectiveRow.TO_DATADOMAIN);
 		this.stratomex = stratomex;
 	}
 
-	public PerspectiveRankColumnModel(PerspectiveRankColumnModel copy) {
+	public DataDomainRankColumnModel(DataDomainRankColumnModel copy) {
 		super(copy);
 		this.stratomex = copy.stratomex;
 	}
 
 	@Override
-	public PerspectiveRankColumnModel clone() {
-		return new PerspectiveRankColumnModel(this);
+	public DataDomainRankColumnModel clone() {
+		return new DataDomainRankColumnModel(this);
 	}
 
 	@Override
@@ -75,7 +76,8 @@ public class PerspectiveRankColumnModel extends StringRankColumnModel {
 			if (hint <= 0)
 				return;
 			PerspectiveRow r = this.getLayoutDataAs(PerspectiveRow.class, null);
-			g.color(r.getDataDomain().getColor()).fillRect(1, (h - hint) * 0.5f, hint, hint);
+			IDataDomain dataDomain = r.getDataDomain();
+			g.color(dataDomain.getColor()).fillRect(1, (h - hint) * 0.5f, hint, hint);
 			if (stratomex.canAdd2Stratomex(r)) {
 				g.fillImage("resources/icons/view/tourguide/add.png", 1, (h - hint) * 0.5f, hint, hint);
 			}
@@ -83,7 +85,7 @@ public class PerspectiveRankColumnModel extends StringRankColumnModel {
 				return;
 			float x = hint + 2;
 			float hi = Math.min(h, 16);
-			g.drawText(r.getLabel(), x, 1 + (h - hi) * 0.5f, w - 2 - x, hi - 2);
+			g.drawText(dataDomain, x, 1 + (h - hi) * 0.5f, w - 2 - x, hi - 2);
 		}
 
 		protected void onAddToPick(Pick pick) {

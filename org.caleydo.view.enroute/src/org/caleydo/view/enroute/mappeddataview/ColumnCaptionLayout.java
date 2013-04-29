@@ -66,7 +66,7 @@ public class ColumnCaptionLayout extends Column {
 		caption.setRenderer(renderer);
 
 
-		button.setVisible(false);
+		// button.setVisible(false);
 		ButtonRenderer buttonRender = new ButtonRenderer.Builder(parentView, button).build();
 		ElementLayout spacing = new ElementLayout();
 		spacing.setPixelSizeY(2);

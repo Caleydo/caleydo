@@ -28,6 +28,7 @@ import java.util.Objects;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.internal.view.PerspectiveRow;
 
@@ -45,6 +46,8 @@ public abstract class ADataDomainQuery {
 	protected final EDataDomainQueryMode mode;
 
 	private int offset;
+	private int countStratificationOnly;
+	private boolean maskStratification = true;
 	private BitSet mask = null;
 	private List<PerspectiveRow> data;
 	private boolean active = false;
@@ -54,18 +57,27 @@ public abstract class ADataDomainQuery {
 		this.mode = mode;
 	}
 
-	public void cloneFrom(ADataDomainQuery clone) {
+	public void cloneFrom(ADataDomainQuery clone, List<PerspectiveRow> allData) {
 		this.mask = clone.mask != null ? (BitSet) clone.mask.clone() : null;
 		this.active = clone.active;
+		this.offset = clone.offset;
+		this.countStratificationOnly = clone.countStratificationOnly;
+		this.active = clone.active;
+		this.maskStratification = clone.maskStratification;
 		if (clone.data != null) {
-			// TODO
+			int size = clone.data.size();
+			this.data = new CustomSubList<PerspectiveRow>(allData, offset, size);
 		}
 	}
 
 	public abstract boolean hasFilter();
 	protected abstract boolean include(Perspective perspective, Group group);
 
-	public abstract List<PerspectiveRow> getAll();
+	/**
+	 *
+	 * @return pair with a list of the stratifications rows and one with the stratification, groups
+	 */
+	protected abstract Pair<List<PerspectiveRow>, List<PerspectiveRow>> getAll();
 
 	/**
 	 * @return the dataDomain, see {@link #dataDomain}
@@ -77,21 +89,21 @@ public abstract class ADataDomainQuery {
 	/**
 	 * @return the mode, see {@link #mode}
 	 */
-	public EDataDomainQueryMode getMode() {
+	public final EDataDomainQueryMode getMode() {
 		return mode;
 	}
 
-	public boolean isInitialized() {
+	public final boolean isInitialized() {
 		return data != null;
 	}
 
-	public void setActive(boolean active) {
+	public final void setActive(boolean active) {
 		if (this.active == active)
 			return;
 		propertySupport.firePropertyChange(PROP_ACTIVE, this.active, this.active = active);
 	}
 
-	public void setJustActive(boolean active) {
+	public final void setJustActive(boolean active) {
 		if (this.active == active)
 			return;
 		this.active = active;
@@ -104,7 +116,7 @@ public abstract class ADataDomainQuery {
 		return active;
 	}
 
-	public void init(int offset, List<PerspectiveRow> data) {
+	public final synchronized void init(int offset, List<PerspectiveRow> data) {
 		this.data = data;
 		if (this.offset != offset && this.mask != null) {
 			this.offset = offset;
@@ -116,56 +128,70 @@ public abstract class ADataDomainQuery {
 	/**
 	 * @return the data, see {@link #data}
 	 */
-	public List<PerspectiveRow> getData() {
+	public final List<PerspectiveRow> getData() {
 		return data;
 	}
 
-	public List<PerspectiveRow> getOrCreate() {
+	public final synchronized List<PerspectiveRow> getOrCreate() {
 		if (isInitialized())
 			return getData();
-		data = getAll();
+		Pair<List<PerspectiveRow>, List<PerspectiveRow>> result = getAll();
+		this.countStratificationOnly = result.getFirst().size();
+		this.data = result.getFirst();
+		this.data.addAll(result.getSecond());
 		return data;
 	}
 
 	/**
 	 * @return the offset, see {@link #offset}
 	 */
-	public int getOffset() {
+	public final int getOffset() {
 		return offset;
 	}
 
-	public int getSize() {
+	public final int getSize() {
 		return data == null ? 0 : data.size();
 	}
 
-	protected void updateFilter() {
+	protected final void updateFilter() {
 		this.mask = null;
 		if (!this.active)
 			return;
 		assert this.data != null;
-		BitSet m = computeMask();
+		BitSet m = computeMask(maskStratification);
 		refilter(m);
 	}
 
-	private BitSet computeMask() {
-		BitSet m = new BitSet(offset + data.size());
-		int i = 0;
-		for (PerspectiveRow r : data) {
-			m.set(offset + i++, include(r.getStratification(), r.getGroup()));
+	private BitSet computeMask(boolean justStratification) {
+		this.maskStratification = justStratification;
+		if (justStratification) {
+			BitSet m = new BitSet(offset + countStratificationOnly);
+			for (int i = 0; i < countStratificationOnly; ++i) {
+				PerspectiveRow r = data.get(i);
+				m.set(offset + i, include(r.getStratification(), null));
+			}
+			return m;
+		} else {
+			BitSet m = new BitSet(offset + data.size());
+			for (int i = countStratificationOnly; i < data.size(); ++i) {
+				PerspectiveRow r = data.get(i);
+				m.set(offset + i, include(r.getStratification(), r.getGroup()));
+			}
+			return m;
 		}
-		return m;
+
 	}
 
 	/**
 	 * @return the mask, see {@link #mask}
 	 */
-	public BitSet getMask() {
-		if (mask == null)
-			mask = computeMask();
+	public final BitSet getMask(boolean justStratification) {
+		if (mask == null || maskStratification != justStratification)
+			mask = computeMask(justStratification);
 		return mask;
 	}
 
-	protected void refilter(BitSet mask) {
+	protected final void refilter(BitSet mask) {
 		if (Objects.equals(mask, this.mask))
 			return;
 		propertySupport.firePropertyChange(PROP_MASK, this.mask, this.mask = mask);
@@ -185,5 +211,16 @@ public abstract class ADataDomainQuery {
 
 	public final void removePropertyChangeListener(String propertyName, PropertyChangeListener listener) {
 		propertySupport.removePropertyChangeListener(propertyName, listener);
+	}
+
+	/**
+	 *
+	 */
+	public void onDataDomainUpdated() {
+		if (!isInitialized()) // not yet used
+			return;
+		// we need to adapt stuff of our perspective rows -> mask exceptions
+		// black list for removed stuff + white list for added staff
+		// FIXME
 	}
 }

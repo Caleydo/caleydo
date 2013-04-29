@@ -47,9 +47,4 @@ public class KMeansClusterConfiguration extends AClusterAlgorithmConfiguration {
 	public int getNumberOfClusters() {
 		return numberOfClusters;
 	}
-
-	@Override
-	public String toString() {
-		return "KMeans " + numberOfClusters + " Clusters";
-	}
 }

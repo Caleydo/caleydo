@@ -145,6 +145,12 @@ public class RankingElement extends GLElementContainer {
 					IRow selected) {
 				renderRowBackgroundImpl(g, x, y, w, h, even, row, selected);
 			}
+
+			@Override
+			public boolean canEditValues() {
+				// TODO Auto-generated method stub
+				return false;
+			}
 		};
 
 		TableUI tableUI = new TableUI(table, config, RowHeightLayouts.UNIFORM);

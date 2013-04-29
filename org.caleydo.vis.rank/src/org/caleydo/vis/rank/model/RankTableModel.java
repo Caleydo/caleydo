@@ -195,6 +195,7 @@ public class RankTableModel implements IRankColumnParent {
 	}
 
 	public void selectNextRow() {
+		System.out.println("select next");
 		if (selectedRow == null)
 			setSelectedRow(defaultRanker.selectFirst());
 		else
@@ -664,6 +665,27 @@ public class RankTableModel implements IRankColumnParent {
 		add(new RankRankColumnModel());
 		if (model != null)
 			add(model.clone());
+	}
+
+	/**
+	 * whether the table contains any snapshots
+	 *
+	 * @return
+	 */
+	public boolean hasSnapshots() {
+		return getFirstSnapshot() < columns.size();
+	}
+
+	/**
+	 * returns the first index of an order columns
+	 *
+	 * @return
+	 */
+	public int getFirstSnapshot() {
+		for (int i = 0; i < columns.size(); ++i)
+			if (columns.get(i) instanceof OrderColumn)
+				return i;
+		return columns.size();
 	}
 
 	/**

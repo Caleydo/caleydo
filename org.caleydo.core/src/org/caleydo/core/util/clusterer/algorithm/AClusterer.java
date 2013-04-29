@@ -19,6 +19,9 @@
  *******************************************************************************/
 package org.caleydo.core.util.clusterer.algorithm;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.variable.Perspective;
@@ -32,7 +35,10 @@ import org.caleydo.core.event.data.ClusterProgressEvent;
 import org.caleydo.core.event.data.ClustererCanceledEvent;
 import org.caleydo.core.event.data.RenameProgressBarEvent;
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
+import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
 import org.caleydo.core.util.execution.SafeCallable;
+
+import com.jogamp.common.util.IntIntHashMap;
 
 /**
  * Abstract base class for clusterers that handles external events
@@ -55,6 +61,7 @@ public abstract class AClusterer implements SafeCallable<PerspectiveInitializati
 
 	protected final ClusterConfiguration config;
 
+	private final EDistanceMeasure distance;
 
 	public AClusterer(ClusterConfiguration config, int progressMultiplier, int progressOffset) {
 		this.config = config;
@@ -78,6 +85,11 @@ public abstract class AClusterer implements SafeCallable<PerspectiveInitializati
 
 		this.progressMultiplier = progressMultiplier;
 		this.progressOffset = progressOffset;
+		this.distance = config.getDistanceMeasure();
+	}
+
+	protected final float distance(float[] a, float[] b) {
+		return this.distance.apply(a, b);
 	}
 
 	protected final String getPerspectiveLabel() {
@@ -92,6 +104,43 @@ public abstract class AClusterer implements SafeCallable<PerspectiveInitializati
 			return table.getNormalizedValue(oppositeVaID, vaID);
 		}
 		return null;
+	}
+
+	/**
+	 * Function sorts clusters depending on their average value
+	 *
+	 * @return an lookup clustersample -&gt; clusterIndex
+	 */
+	protected final IntIntHashMap sortClusters(List<Integer> clusterSamples) {
+		SortHelper[] list = new SortHelper[clusterSamples.size()];
+		int index = 0;
+		for (Integer vaId : clusterSamples) {
+			SortHelper s = new SortHelper();
+			s.index = index++;
+			for (Integer opId : oppositeVA) {
+				float temp = getNormalizedValue(vaId, opId);
+				if (!Float.isNaN(temp))
+					s.value += temp;
+			}
+			list[s.index] = s;
+		}
+		Arrays.sort(list);
+
+		IntIntHashMap lookup = new IntIntHashMap(clusterSamples.size());
+		for (int i = 0; i < list.length; ++i) {
+			lookup.put(clusterSamples.get(list[i].index), i);
+		}
+		return lookup;
+	}
+
+	private static class SortHelper implements Comparable<SortHelper> {
+		private int index;
+		private float value;
+
+		@Override
+		public int compareTo(SortHelper o) {
+			return Float.compare(value, o.value);
+		}
 	}
 
 	@Override
@@ -112,8 +161,27 @@ public abstract class AClusterer implements SafeCallable<PerspectiveInitializati
 		isClusteringCanceled = true;
 	}
 
+	protected final PerspectiveInitializationData error(Exception e1) {
+		progress(100, true);
+		return null;
+	}
+
+	protected final PerspectiveInitializationData canceled() {
+		progress(100, true);
+		return null;
+	}
+
 	protected final void progressScaled(int factor) {
 		progress(factor * progressMultiplier + progressOffset, true);
+	}
+
+	protected final boolean progressAndCancel(int percentCompleted, boolean forSimilaritiesBar) {
+		eventListeners.processEvents();
+		if (isClusteringCanceled) {
+			return true;
+		}
+		progress(percentCompleted, forSimilaritiesBar);
+		return false;
 	}
 
 	protected static void progress(int percentCompleted) {

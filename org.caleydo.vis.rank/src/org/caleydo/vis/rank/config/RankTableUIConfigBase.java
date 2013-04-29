@@ -106,4 +106,9 @@ public class RankTableUIConfigBase implements IRankTableUIConfig {
 			g.fillRect(x, y, w, h);
 		}
 	}
+
+	@Override
+	public boolean canEditValues() {
+		return true;
+	}
 }

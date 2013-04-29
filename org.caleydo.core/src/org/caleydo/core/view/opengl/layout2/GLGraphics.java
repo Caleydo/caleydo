@@ -436,26 +436,25 @@ public class GLGraphics {
 		if (text == null)
 			return this;
 		stats.incText(text.length());
-		if (originInTopLeft) {
+		if (originInTopLeft && !this.text.isOriginTopLeft()) {
 			gl.glPushMatrix();
 			gl.glTranslatef(0, y + h, 0);
 			y = 0;
 			gl.glScalef(1, -1, 1);
 		}
-		float textWidth = Math.min(this.text.getTextWidth(text, h), w);
 		switch (valign) {
 		case CENTER:
-			x += w * 0.5f - textWidth * 0.5f;
+			x += w * 0.5f - Math.min(this.text.getTextWidth(text, h), w) * 0.5f;
 			break;
 		case RIGHT:
-			x += w - textWidth;
+			x += w - Math.min(this.text.getTextWidth(text, h), w);
 			break;
 		default:
 			break;
 		}
 		this.text.renderTextInBounds(gl, text, x, y, z + 0.25f, w, h);
 
-		if (originInTopLeft)
+		if (originInTopLeft && !this.text.isOriginTopLeft())
 			gl.glPopMatrix();
 		return this;
 	}

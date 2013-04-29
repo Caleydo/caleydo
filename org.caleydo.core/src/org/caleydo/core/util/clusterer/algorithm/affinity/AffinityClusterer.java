@@ -5,9 +5,9 @@ import java.util.List;
 
 import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
 import org.caleydo.core.util.clusterer.ClusterHelper;
-import org.caleydo.core.util.clusterer.algorithm.AClusterer;
-import org.caleydo.core.util.clusterer.distancemeasures.IDistanceMeasure;
+import org.caleydo.core.util.clusterer.algorithm.ALinearClusterer;
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
+import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
 import org.caleydo.core.util.logging.Logger;
 
 import com.google.common.base.Stopwatch;
@@ -19,7 +19,7 @@ import com.google.common.base.Stopwatch;
  *
  * @author Bernhard Schlegl
  */
-public class AffinityClusterer extends AClusterer {
+public class AffinityClusterer extends ALinearClusterer {
 	private static final Logger log = Logger.create(AffinityClusterer.class);
 
 	/**
@@ -71,7 +71,7 @@ public class AffinityClusterer extends AClusterer {
 	 * @return in case of error a negative value will be returned.
 	 */
 	private int determineSimilarities() {
-		final IDistanceMeasure distanceMeasure = config.getDistanceMeasure().create();
+		final EDistanceMeasure distanceMeasure = config.getDistanceMeasure();
 		rename("Determine Similarities for " + getPerspectiveLabel() + " clustering");
 
 		int counter = 1;
@@ -110,7 +110,7 @@ public class AffinityClusterer extends AClusterer {
 				}
 
 				if (icnt1 != icnt2) {
-					s[count] = -distanceMeasure.getMeasure(dArInstance1, dArInstance2);
+					s[count] = -distanceMeasure.apply(dArInstance1, dArInstance2);
 					i[count] = oppositeVA.indexOf(oppositeID);
 					k[count] = oppositeVA.indexOf(oppositeID2);
 					count++;
@@ -349,68 +349,9 @@ public class AffinityClusterer extends AClusterer {
 			return null;
 		}
 
-		List<Integer> sampleElements = new ArrayList<Integer>();
-
-		// Arraylist holding clustered indexes
-		List<Integer> indices = new ArrayList<Integer>();
-		// Arraylist holding number of elements per cluster
-		List<Integer> clusterSizes = new ArrayList<Integer>(alExamples.size());
-
-		for (int i = 0; i < alExamples.size(); i++) {
-			clusterSizes.add(0);
-		}
-
-		// Sort cluster depending on their color values
-		// TODO find a better solution for sorting
-		ClusterHelper.sortClusters(table, config.getSourceRecordPerspective().getVirtualArray(), config
-				.getSourceDimensionPerspective().getVirtualArray(), alExamples, config.getClusterTarget());
-
-		indices = getAl(alExamples, clusterSizes, sampleElements, idx);
-
-		progressScaled(50);
-
-		PerspectiveInitializationData tempResult = new PerspectiveInitializationData();
-		tempResult.setData(indices, clusterSizes, sampleElements);
-		return tempResult;
+		return postProcess(idx, alExamples);
 	}
 
-	/**
-	 * Function returns an array list with ordered indexes out of the VA after
-	 * clustering. Additionally the indexes of the examples (cluster
-	 * representatives) will be determined.
-	 *
-	 * @param examples
-	 *            array list containing the indexes of the examples (cluster
-	 *            representatives) determined by the cluster algorithm
-	 * @param clusterSizes
-	 *            array list which will be filled with the sizes of each cluster
-	 * @param idxExamples
-	 *            array list containing indexes of examples in the VA
-	 * @param idx
-	 *            cluster result determined by affinity propagation
-	 * @param eClustererType
-	 *            the cluster type
-	 * @return An array list with indexes in the VA
-	 */
-	private List<Integer> getAl(List<Integer> examples, List<Integer> clusterSizes,
-			List<Integer> idxExamples, int[] idx) {
-		List<Integer> indices = new ArrayList<Integer>();
-		int counter = 0;
-
-		for (Integer example : examples) {
-			for (int i = 0; i < va.size(); i++) {
-				if (idx[i] == example) {
-					indices.add(va.get(i));
-					clusterSizes.set(counter, clusterSizes.get(counter) + 1);
-				}
-				if (example == i) {
-					idxExamples.add(va.get(example));
-				}
-			}
-			counter++;
-		}
-		return indices;
-	}
 
 	@Override
 	protected PerspectiveInitializationData cluster() {

@@ -7,7 +7,8 @@ import java.util.Set;
 
 import org.apache.commons.math.distribution.TDistributionImpl;
 import org.caleydo.core.data.collection.table.Table;
-import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.statistics.Statistics;
 
@@ -29,8 +30,8 @@ public class PGSEAAlgorithm extends AGSEAAlgorithm {
 	private float foldChangesSD;
 
 
-	public PGSEAAlgorithm(TablePerspective stratification, Group group) {
-		super(stratification, group);
+	public PGSEAAlgorithm(Perspective perspective, Group group) {
+		super(perspective, group);
 	}
 
 	@Override
@@ -38,12 +39,13 @@ public class PGSEAAlgorithm extends AGSEAAlgorithm {
 		if (!foldChanges.isEmpty())
 			return;
 
-		final Set<Integer> inA = new HashSet<>(stratification.getRecordPerspective().getVirtualArray()
+		final Set<Integer> inA = new HashSet<>(perspective.getVirtualArray()
 				.getIDsOfGroup(group.getGroupIndex()));
-		Table table = stratification.getDataDomain().getTable();
+		ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) perspective.getDataDomain();
+		Table table = dataDomain.getTable();
 
-		List<Integer> rows = stratification.getRecordPerspective().getVirtualArray().getIDs();
-		List<Integer> cols = stratification.getDimensionPerspective().getVirtualArray().getIDs();
+		List<Integer> rows = perspective.getVirtualArray().getIDs();
+		List<Integer> cols = table.getDefaultDimensionPerspective().getVirtualArray().getIDs();
 
 		Stopwatch w = new Stopwatch().start();
 
