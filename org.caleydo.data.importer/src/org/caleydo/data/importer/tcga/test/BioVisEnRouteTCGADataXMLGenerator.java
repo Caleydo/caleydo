@@ -53,11 +53,11 @@ public class BioVisEnRouteTCGADataXMLGenerator extends DataSetDescriptionSeriali
 	public static final String DROPBOX_GBM_FOLDER = System.getProperty("user.home")
 			+ System.getProperty("file.separator") + "Dropbox/Caleydo/data/tcga/20110728/gbm/";
 
-	public static final String MRNA = DROPBOX_BIOVIS_FOLDER + "sampled/mrna.csv";
+	public static final String MRNA = DROPBOX_BIOVIS_FOLDER + "gbm_mrna_sampled.txt";
 
 	public static final String MRNA_GROUPING = DROPBOX_GBM_FOLDER + "mrna_cnmf/cnmf.membership.txt";
 
-	public static final String COPY_NUMBER = DROPBOX_BIOVIS_FOLDER + "sampled/copy.csv";
+	public static final String COPY_NUMBER = DROPBOX_BIOVIS_FOLDER + "gbm_copy_number.csv";
 
 	public static final String GROUND_TRUTH_GROUPING = DROPBOX_GBM_FOLDER + "ground_truth/2011_exp_assignments.txt";
 
@@ -98,8 +98,8 @@ public class BioVisEnRouteTCGADataXMLGenerator extends DataSetDescriptionSeriali
 		mrnaData.setDataSetName("mRNA");
 
 		mrnaData.setDataSourcePath(MRNA);
-		mrnaData.setNumberOfHeaderLines(3);
-		mrnaData.setRowOfColumnIDs(2);
+		mrnaData.setNumberOfHeaderLines(2);
+		mrnaData.setRowOfColumnIDs(0);
 
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(1);
