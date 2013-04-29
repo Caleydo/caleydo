@@ -19,6 +19,8 @@
  *******************************************************************************/
 package org.caleydo.view.enroute.event;
 
+import java.util.List;
+
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.event.AEvent;
 
@@ -28,33 +30,33 @@ import org.caleydo.core.event.AEvent;
  */
 public class ShowGroupSelectionDialogEvent extends AEvent {
 
-	Perspective perspective;
+	List<Perspective> perspectives;
 
 	/**
 	 *
 	 */
-	public ShowGroupSelectionDialogEvent(Perspective perspective) {
-		this.perspective = perspective;
+	public ShowGroupSelectionDialogEvent(List<Perspective> perspectives) {
+		this.perspectives = perspectives;
 	}
 
 	/**
 	 * @return the perspective, see {@link #perspective}
 	 */
-	public Perspective getPerspective() {
-		return perspective;
+	public List<Perspective> getPerspectives() {
+		return perspectives;
 	}
 
 	/**
 	 * @param perspective
 	 *            setter, see {@link perspective}
 	 */
-	public void setPerspective(Perspective perspective) {
-		this.perspective = perspective;
+	public void setPerspective(List<Perspective> perspectives) {
+		this.perspectives = perspectives;
 	}
 
 	@Override
 	public boolean checkIntegrity() {
-		if (perspective != null)
+		if (perspectives != null)
 			return true;
 
 		return false;
