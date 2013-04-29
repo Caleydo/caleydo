@@ -144,7 +144,9 @@ public class CategoricalRankRankColumnModel<CATEGORY_TYPE> extends ABasicFiltera
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				new CatFilterDalog<CATEGORY_TYPE>(new Shell(), getTitle(), summary, metaData, selection, isGlobalFilter)
+				boolean hasSnapshots = getTable().hasSnapshots();
+				new CatFilterDalog<CATEGORY_TYPE>(new Shell(), getTitle(), summary, metaData, selection,
+						isGlobalFilter, hasSnapshots)
 						.open();
 			}
 		});
