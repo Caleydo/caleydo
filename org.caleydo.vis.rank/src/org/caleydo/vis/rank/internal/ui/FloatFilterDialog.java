@@ -22,7 +22,6 @@ package org.caleydo.vis.rank.internal.ui;
 
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.vis.rank.internal.event.FilterEvent;
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -38,28 +37,20 @@ import org.eclipse.swt.widgets.Shell;
  * @author Samuel Gratzl
  *
  */
-public class FloatFilterDialog extends Dialog {
-	private final Object receiver;
+public class FloatFilterDialog extends AFilterDalog {
 
 	private Button filterNotMappedUI;
 	private Button filterMissingUI;
-	private Button filterGloballyUI;
-
-	private final String title;
 
 	private final boolean filterMissing;
 	private final boolean filterNotMapped;
-	private final boolean filterGlobally;
 
 
 	public FloatFilterDialog(Shell parentShell, String title, Object receiver, boolean filterNotMapped,
-			boolean filterMissing, boolean filterGlobally) {
-		super(parentShell);
-		this.title = title;
-		this.receiver = receiver;
+			boolean filterMissing, boolean filterGlobally, boolean hasSnapshots) {
+		super(parentShell, title, receiver, filterGlobally, hasSnapshots);
 		this.filterMissing = filterMissing;
 		this.filterNotMapped = filterNotMapped;
-		this.filterGlobally = filterGlobally;
 	}
 
 	@Override
@@ -69,37 +60,34 @@ public class FloatFilterDialog extends Dialog {
 	}
 
 	@Override
-	protected Composite createDialogArea(Composite parent) {
-		Composite res = (Composite) super.createDialogArea(parent);
-		// Composite p = new Composite(res, SWT.NONE)
-		filterNotMappedUI = new Button(res, SWT.CHECK);
+	protected void createSpecificFilterUI(Composite composite) {
+		filterNotMappedUI = new Button(composite, SWT.CHECK);
 		filterNotMappedUI.setText("Filter Not Mapped Entries?");
 		filterNotMappedUI.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, true));
 		filterNotMappedUI.setSelection(filterNotMapped);
 
-		filterMissingUI = new Button(res, SWT.CHECK);
+		filterMissingUI = new Button(composite, SWT.CHECK);
 		filterMissingUI.setText("Filter Missing Value Entries?");
 		filterMissingUI.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, true));
 		filterMissingUI.setSelection(filterMissing);
 
-		Label separator = new Label(res, SWT.SEPARATOR | SWT.HORIZONTAL);
+		Label separator = new Label(composite, SWT.SEPARATOR | SWT.HORIZONTAL);
 		separator.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		filterGloballyUI = new Button(res, SWT.CHECK);
-		filterGloballyUI.setText("Apply Filter Globally?");
-		filterGloballyUI.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, true));
-		filterGloballyUI.setSelection(filterGlobally);
 
 		SelectionAdapter adapter = new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				EventPublisher.trigger(new FilterEvent(new FilterChecked(filterNotMappedUI.getSelection(),
-				filterMissingUI.getSelection(), filterGloballyUI.getSelection())).to(receiver));
+				triggerEvent();
 			}
 		};
 		filterNotMappedUI.addSelectionListener(adapter);
 		filterMissingUI.addSelectionListener(adapter);
-		filterGloballyUI.addSelectionListener(adapter);
-		return res;
+	}
+
+	@Override
+	protected void triggerEvent() {
+		EventPublisher.trigger(new FilterEvent(new FilterChecked(filterNotMappedUI.getSelection(), filterMissingUI
+				.getSelection(), filterGloballyUI.getSelection())).to(receiver));
 	}
 
 	public static class FilterChecked {

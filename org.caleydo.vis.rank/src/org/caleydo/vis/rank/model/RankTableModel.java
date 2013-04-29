@@ -667,6 +667,27 @@ public class RankTableModel implements IRankColumnParent {
 	}
 
 	/**
+	 * whether the table contains any snapshots
+	 *
+	 * @return
+	 */
+	public boolean hasSnapshots() {
+		return getFirstSnapshot() < columns.size();
+	}
+
+	/**
+	 * returns the first index of an order columns
+	 *
+	 * @return
+	 */
+	public int getFirstSnapshot() {
+		for (int i = 0; i < columns.size(); ++i)
+			if (columns.get(i) instanceof OrderColumn)
+				return i;
+		return columns.size();
+	}
+
+	/**
 	 * @return the defaultFilter, see {@link #defaultFilter}
 	 */
 	public ColumnFilter getDefaultFilter() {

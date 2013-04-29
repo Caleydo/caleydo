@@ -115,7 +115,8 @@ public class CategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<CATEGOR
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				new CatFilterDalog<CATEGORY_TYPE>(new Shell(), getTitle(), summary, metaData, selection, isGlobalFilter)
+				new CatFilterDalog<CATEGORY_TYPE>(new Shell(), getTitle(), summary, metaData, selection,
+						isGlobalFilter, getTable().hasSnapshots())
 						.open();
 			}
 		});

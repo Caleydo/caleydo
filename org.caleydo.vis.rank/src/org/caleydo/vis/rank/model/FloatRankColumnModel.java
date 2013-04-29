@@ -338,7 +338,7 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 			@Override
 			public void run() {
 				new FloatFilterDialog(new Shell(), getTitle(), summary, filterNotMappedEntries, filterMissingEntries,
-						isGlobalFilter())
+						isGlobalFilter(), getTable().hasSnapshots())
 						.open();
 			}
 		});
