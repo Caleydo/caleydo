@@ -336,6 +336,9 @@
       <extension
             point="org.caleydo.core.util.Clusterer">
          <clusterer
+               class="org.caleydo.core.util.clusterer.algorithm.kmeans.KMeansWEKAClustererFactory">
+         </clusterer>
+         <clusterer
                class="org.caleydo.core.util.clusterer.algorithm.kmeans.KMeansClustererFactory">
          </clusterer>
          <clusterer

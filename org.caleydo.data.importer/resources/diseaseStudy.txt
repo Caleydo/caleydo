@@ -22,7 +22,6 @@ DLBC	Lymphoid Neoplasm Diffuse Large B-cell Lymphoma
 MESO	Mesothelioma
 MISC	Miscellaneous
 OV	Ovarian serous cystadenocarcinoma
-PAAD	Pancreatic adenocarcinoma
 PCPG	Pheochromocytoma and Paraganglioma
 PRAD	Prostate adenocarcinoma
 READ	Rectum adenocarcinoma

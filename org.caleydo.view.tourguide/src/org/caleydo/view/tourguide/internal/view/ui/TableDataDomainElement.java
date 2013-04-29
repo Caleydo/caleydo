@@ -31,8 +31,7 @@ public class TableDataDomainElement extends ADataDomainElement {
 
 	@Override
 	protected void createContextMenu(ContextMenuCreator creator) {
-		creator.addContextMenuItem(new GenericContextMenuItem("Edit Filter", new EditDataDomainFilterEvent().to(this)));
-		creator.addSeparator();
+		super.createContextMenu(creator);
 		Collection<Perspective> dims = getModel().getDimensionPerspectives();
 		if (!dims.isEmpty()) {
 			Perspective dim = getModel().getDimensionSelection();
@@ -48,8 +47,9 @@ public class TableDataDomainElement extends ADataDomainElement {
 	}
 
 	@ListenTo(sendToMe = true)
-	private void onEditDataDomainFilter(final EditDataDomainFilterEvent e) {
-		if (e.isStartEditing()) {
+	@Override
+	protected void onFilterEdit(boolean isStartEditing, Object payload) {
+		if (isStartEditing) {
 			Display.getDefault().asyncExec(new Runnable() {
 				@Override
 				public void run() {
@@ -65,7 +65,7 @@ public class TableDataDomainElement extends ADataDomainElement {
 				}
 			});
 		} else {
-			setFilter(e.getPayload().toString());
+			setFilter(payload.toString());
 		}
 	}
 

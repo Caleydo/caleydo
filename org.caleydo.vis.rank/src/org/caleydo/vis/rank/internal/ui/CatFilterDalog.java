@@ -30,7 +30,6 @@ import java.util.Set;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.vis.rank.internal.event.FilterEvent;
 import org.caleydo.vis.rank.model.CategoricalRankRankColumnModel.CategoryInfo;
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CheckboxTreeViewer;
@@ -57,41 +56,21 @@ import org.eclipse.ui.internal.WorkbenchMessages;
  * @author Samuel Gratzl
  *
  */
-public class CatFilterDalog<CATEGORY_TYPE> extends Dialog {
-	private final Object receiver;
-
-	private final String title;
+public class CatFilterDalog<CATEGORY_TYPE> extends AFilterDalog {
 	private final Map<CATEGORY_TYPE, ?> metaData;
 	private final Set<CATEGORY_TYPE> selection;
-	private final boolean filterGlobally;
-
-	private Button filterGloballyUI;
 
 	private CheckboxTreeViewer fViewer;
 
-
-	public CatFilterDalog(Shell parentShell, String title, Object receiver,
- Map<CATEGORY_TYPE, ?> metaData,
-			Set<CATEGORY_TYPE> selection,
-			boolean filterGlobally) {
-		super(parentShell);
-		this.title = title;
-		this.receiver = receiver;
-		this.filterGlobally = filterGlobally;
+	public CatFilterDalog(Shell parentShell, String title, Object receiver, Map<CATEGORY_TYPE, ?> metaData,
+			Set<CATEGORY_TYPE> selection, boolean filterGlobally, boolean hasSnapshots) {
+		super(parentShell, title, receiver, filterGlobally, hasSnapshots);
 		this.metaData = metaData;
 		this.selection = new LinkedHashSet<>(selection);
 	}
 
 	@Override
-	public void create() {
-		super.create();
-		getShell().setText("Filter column: " + title);
-	}
-
-	@Override
-	protected Composite createDialogArea(Composite parent) {
-		// create composite
-		Composite composite = (Composite) super.createDialogArea(parent);
+	protected void createSpecificFilterUI(Composite composite) {
 		// create message
 		Label label = new Label(composite, SWT.WRAP);
 		label.setText("Selection Items to include:");
@@ -99,7 +78,7 @@ public class CatFilterDalog<CATEGORY_TYPE> extends Dialog {
 				| GridData.VERTICAL_ALIGN_CENTER);
 		data.widthHint = convertHorizontalDLUsToPixels(IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH);
 		label.setLayoutData(data);
-		label.setFont(parent.getFont());
+		label.setFont(composite.getFont());
 
 		CheckboxTreeViewer treeViewer = createTreeViewer(composite);
 		treeViewer.setCheckedElements(selection.toArray());
@@ -109,24 +88,10 @@ public class CatFilterDalog<CATEGORY_TYPE> extends Dialog {
 		data.heightHint = convertHeightInCharsToPixels(18);
 		Tree treeWidget = treeViewer.getTree();
 		treeWidget.setLayoutData(data);
-		treeWidget.setFont(parent.getFont());
-
-		filterGloballyUI = new Button(composite, SWT.CHECK);
-		filterGloballyUI.setText("Apply Filter Globally?");
-		filterGloballyUI.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
-		filterGloballyUI.setSelection(filterGlobally);
-		SelectionAdapter adapter = new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				triggerEvent();
-			}
-		};
-		filterGloballyUI.addSelectionListener(adapter);
-
-		applyDialogFont(composite);
-		return composite;
+		treeWidget.setFont(composite.getFont());
 	}
 
+	@Override
 	protected void triggerEvent() {
 		Object[] result = fViewer.getCheckedElements();
 		Set<Object> r = new HashSet<>();

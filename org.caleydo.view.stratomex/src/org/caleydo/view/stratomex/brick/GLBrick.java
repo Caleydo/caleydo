@@ -852,6 +852,13 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 				// Differentiate between cases where user selects header brick
 				// or a brick
 				ContextMenuCreator contextMenuCreator = stratomex.getContextMenuCreator();
+
+				contextMenuCreator.addContextMenuItem(new RenameBrickItem(getID()));
+				contextMenuCreator.addContextMenuItem(new RemoveColumnItem(stratomex, getBrickColumn()
+						.getTablePerspective()));
+				contextMenuCreator.addContextMenuItem(new ExportBrickDataItem(GLBrick.this, false));
+				contextMenuCreator.addContextMenuItem(new ExportBrickDataItem(GLBrick.this, true));
+
 				if (brickColumn.getTablePerspective() == tablePerspective) {
 					// header brick
 					if (dataDomain instanceof GeneticDataDomain && !dataDomain.isColumnDimension()) {
@@ -873,13 +880,6 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 					// FIXME: if added, this line causes the context menu on the bricks to not appear
 					// selectElementsByGroup();
 				}
-
-				contextMenuCreator.addContextMenuItem(new RenameBrickItem(getID()));
-
-				contextMenuCreator.addContextMenuItem(new RemoveColumnItem(stratomex, getBrickColumn()
-						.getTablePerspective()));
-				contextMenuCreator.addContextMenuItem(new ExportBrickDataItem(GLBrick.this, false));
-				contextMenuCreator.addContextMenuItem(new ExportBrickDataItem(GLBrick.this, true));
 			}
 
 		};

@@ -4,9 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.caleydo.core.data.collection.column.container.CategoryProperty;
-import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventPublisher;
-import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.view.tourguide.internal.event.EditDataDomainFilterEvent;
 import org.caleydo.view.tourguide.internal.view.model.CategoricalDataDomainQuery;
 import org.eclipse.jface.dialogs.Dialog;
@@ -33,15 +31,8 @@ public class CategoricalDataDomainElement extends ADataDomainElement {
 	}
 
 	@Override
-	protected void createContextMenu(ContextMenuCreator creator) {
-		creator.add("Edit Filter", new EditDataDomainFilterEvent().to(this));
-		creator.addSeparator();
-	}
-
-	@SuppressWarnings("unchecked")
-	@ListenTo(sendToMe = true)
-	private void onEditDataDomainFilter(final EditDataDomainFilterEvent e) {
-		if (e.isStartEditing()) {
+	protected void onFilterEdit(boolean isStartEditing, Object payload) {
+		if (isStartEditing) {
 			 Display.getDefault().asyncExec(new Runnable() {
 				 @Override
 				 public void run() {
@@ -49,7 +40,7 @@ public class CategoricalDataDomainElement extends ADataDomainElement {
 				 }
 			 });
 		} else {
-			this.setSelection((Set<CategoryProperty<?>>) e.getPayload());
+			this.setSelection((Set<CategoryProperty<?>>) payload);
 		}
 	}
 
