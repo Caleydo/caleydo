@@ -599,6 +599,9 @@ public class MappedDataRenderer {
 			group = tablePerspective.getPerspective(columnIDType).getVirtualArray().getGroupList().get(0);
 			group.setLabel(tablePerspective.getLabel(), tablePerspective.isLabelDefault());
 		}
+		if (tablePerspective.getPerspective(columnIDType).getVirtualArray().getGroupList().size() <= 1) {
+			group.setLabel(tablePerspective.getLabel(), tablePerspective.isLabelDefault());
+		}
 
 		if (isHighlightLayout && topCaptionLayout != null && bottomCaptionLayout != null) {
 			topCaptionLayout.init(group, columnPerspective, dataDomain);

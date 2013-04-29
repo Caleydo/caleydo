@@ -100,110 +100,108 @@ public final class EdgeRenderUtil {
 		linePoints.add(sourceConnectionPoint);
 		linePoints.add(targetConnectionPoint);
 
-		if (edge instanceof PathwayReactionEdgeRep) {
+		if (edge instanceof PathwayRelationEdgeRep) {
+			PathwayRelationEdgeRep relationEdgeRep = (PathwayRelationEdgeRep) edge;
+
+			ArrayList<EPathwayRelationEdgeSubType> subtypes = relationEdgeRep.getRelationSubTypes();
+			float spacing = pixelGLConverter.getGLHeightForPixelHeight(3);
+
+			for (EPathwayRelationEdgeSubType subtype : subtypes) {
+				switch (subtype) {
+				case compound:
+					// TODO:
+					break;
+				case hidden_compound:
+					// TODO:
+					break;
+				case activation:
+					connectionRenderer.addAttributeRenderer(createDefaultLineEndArrowRenderer(pixelGLConverter,
+							sizeConfig));
+					break;
+				case inhibition:
+					connectionRenderer.addAttributeRenderer(createDefaultLineEndStaticLineRenderer(
+							isVerticalConnection, pixelGLConverter, sizeConfig));
+					if (isVerticalConnection) {
+						targetConnectionPoint.setY(targetConnectionPoint.y() + ((isNode1Target) ? -spacing : spacing));
+					} else {
+						targetConnectionPoint.setX(targetConnectionPoint.x() + ((isNode1Target) ? spacing : -spacing));
+					}
+					break;
+				case expression:
+					connectionRenderer.addAttributeRenderer(createDefaultLineEndArrowRenderer(pixelGLConverter,
+							sizeConfig));
+					if (vertexRep1.getType() == EPathwayVertexType.gene
+							&& vertexRep1.getType() == EPathwayVertexType.gene) {
+						connectionRenderer.addAttributeRenderer(createDefaultLabelOnLineRenderer("e", pixelGLConverter,
+								textRenderer, sizeConfig));
+					}
+					break;
+				case repression:
+					connectionRenderer.addAttributeRenderer(createDefaultLineEndArrowRenderer(pixelGLConverter,
+							sizeConfig));
+					connectionRenderer.addAttributeRenderer(createDefaultLineEndStaticLineRenderer(
+							isVerticalConnection, pixelGLConverter, sizeConfig));
+					targetConnectionPoint.setY(targetConnectionPoint.y() + ((isNode1Target) ? -spacing : spacing));
+					break;
+				case indirect_effect:
+					connectionRenderer.addAttributeRenderer(createDefaultLineEndArrowRenderer(pixelGLConverter,
+							sizeConfig));
+					connectionRenderer.setLineStippled(true);
+					break;
+				case state_change:
+					connectionRenderer.setLineStippled(true);
+					break;
+				case binding_association:
+					// Nothing to do
+					break;
+				case dissociation:
+					connectionRenderer.addAttributeRenderer(createDefaultOrthogonalLineCrossingRenderer(
+							pixelGLConverter, sizeConfig));
+					break;
+				case missing_interaction:
+					connectionRenderer.addAttributeRenderer(createDefaultLineCrossingRenderer(pixelGLConverter,
+							sizeConfig));
+					break;
+				case phosphorylation:
+					connectionRenderer.addAttributeRenderer(createDefaultLabelAboveLineRenderer(
+							EPathwayRelationEdgeSubType.phosphorylation.getSymbol(), pixelGLConverter, textRenderer,
+							sizeConfig));
+					break;
+				case dephosphorylation:
+					connectionRenderer.addAttributeRenderer(createDefaultLabelAboveLineRenderer(
+							EPathwayRelationEdgeSubType.dephosphorylation.getSymbol(), pixelGLConverter, textRenderer,
+							sizeConfig));
+					break;
+				case glycosylation:
+					connectionRenderer.addAttributeRenderer(createDefaultLabelAboveLineRenderer(
+							EPathwayRelationEdgeSubType.glycosylation.getSymbol(), pixelGLConverter, textRenderer,
+							sizeConfig));
+					break;
+				case ubiquitination:
+					connectionRenderer.addAttributeRenderer(createDefaultLabelAboveLineRenderer(
+							EPathwayRelationEdgeSubType.ubiquitination.getSymbol(), pixelGLConverter, textRenderer,
+							sizeConfig));
+					break;
+				case methylation:
+					connectionRenderer.addAttributeRenderer(createDefaultLabelAboveLineRenderer(
+							EPathwayRelationEdgeSubType.methylation.getSymbol(), pixelGLConverter, textRenderer,
+							sizeConfig));
+					break;
+				}
+			}
+		} else {
 			// TODO: This is just a default edge. Is this right?
-			PathwayReactionEdgeRep reactionEdge = (PathwayReactionEdgeRep) edge;
+
 
 			LineEndArrowRenderer lineEndArrowRenderer = createDefaultLineEndArrowRenderer(pixelGLConverter, sizeConfig);
 
 			connectionRenderer.addAttributeRenderer(lineEndArrowRenderer);
 
-			if (reactionEdge.getType() == EPathwayReactionEdgeType.reversible) {
-				lineEndArrowRenderer = createDefaultLineEndArrowRenderer(pixelGLConverter, sizeConfig);
-				connectionRenderer.addAttributeRenderer(lineEndArrowRenderer);
-			}
-
-		} else {
-			if (edge instanceof PathwayRelationEdgeRep) {
-				PathwayRelationEdgeRep relationEdgeRep = (PathwayRelationEdgeRep) edge;
-
-				ArrayList<EPathwayRelationEdgeSubType> subtypes = relationEdgeRep.getRelationSubTypes();
-				float spacing = pixelGLConverter.getGLHeightForPixelHeight(3);
-
-				for (EPathwayRelationEdgeSubType subtype : subtypes) {
-					switch (subtype) {
-					case compound:
-						// TODO:
-						break;
-					case hidden_compound:
-						// TODO:
-						break;
-					case activation:
-						connectionRenderer.addAttributeRenderer(createDefaultLineEndArrowRenderer(pixelGLConverter,
-								sizeConfig));
-						break;
-					case inhibition:
-						connectionRenderer.addAttributeRenderer(createDefaultLineEndStaticLineRenderer(
-								isVerticalConnection, pixelGLConverter, sizeConfig));
-						if (isVerticalConnection) {
-							targetConnectionPoint.setY(targetConnectionPoint.y()
-									+ ((isNode1Target) ? -spacing : spacing));
-						} else {
-							targetConnectionPoint.setX(targetConnectionPoint.x()
-									+ ((isNode1Target) ? spacing : -spacing));
-						}
-						break;
-					case expression:
-						connectionRenderer.addAttributeRenderer(createDefaultLineEndArrowRenderer(pixelGLConverter,
-								sizeConfig));
-						if (vertexRep1.getType() == EPathwayVertexType.gene
-								&& vertexRep1.getType() == EPathwayVertexType.gene) {
-							connectionRenderer.addAttributeRenderer(createDefaultLabelOnLineRenderer("e",
-									pixelGLConverter, textRenderer, sizeConfig));
-						}
-						break;
-					case repression:
-						connectionRenderer.addAttributeRenderer(createDefaultLineEndArrowRenderer(pixelGLConverter,
-								sizeConfig));
-						connectionRenderer.addAttributeRenderer(createDefaultLineEndStaticLineRenderer(
-								isVerticalConnection, pixelGLConverter, sizeConfig));
-						targetConnectionPoint.setY(targetConnectionPoint.y() + ((isNode1Target) ? -spacing : spacing));
-						break;
-					case indirect_effect:
-						connectionRenderer.addAttributeRenderer(createDefaultLineEndArrowRenderer(pixelGLConverter,
-								sizeConfig));
-						connectionRenderer.setLineStippled(true);
-						break;
-					case state_change:
-						connectionRenderer.setLineStippled(true);
-						break;
-					case binding_association:
-						// Nothing to do
-						break;
-					case dissociation:
-						connectionRenderer.addAttributeRenderer(createDefaultOrthogonalLineCrossingRenderer(
-								pixelGLConverter, sizeConfig));
-						break;
-					case missing_interaction:
-						connectionRenderer.addAttributeRenderer(createDefaultLineCrossingRenderer(pixelGLConverter,
-								sizeConfig));
-						break;
-					case phosphorylation:
-						connectionRenderer.addAttributeRenderer(createDefaultLabelAboveLineRenderer(
-								EPathwayRelationEdgeSubType.phosphorylation.getSymbol(), pixelGLConverter,
-								textRenderer, sizeConfig));
-						break;
-					case dephosphorylation:
-						connectionRenderer.addAttributeRenderer(createDefaultLabelAboveLineRenderer(
-								EPathwayRelationEdgeSubType.dephosphorylation.getSymbol(), pixelGLConverter,
-								textRenderer, sizeConfig));
-						break;
-					case glycosylation:
-						connectionRenderer.addAttributeRenderer(createDefaultLabelAboveLineRenderer(
-								EPathwayRelationEdgeSubType.glycosylation.getSymbol(), pixelGLConverter, textRenderer,
-								sizeConfig));
-						break;
-					case ubiquitination:
-						connectionRenderer.addAttributeRenderer(createDefaultLabelAboveLineRenderer(
-								EPathwayRelationEdgeSubType.ubiquitination.getSymbol(), pixelGLConverter, textRenderer,
-								sizeConfig));
-						break;
-					case methylation:
-						connectionRenderer.addAttributeRenderer(createDefaultLabelAboveLineRenderer(
-								EPathwayRelationEdgeSubType.methylation.getSymbol(), pixelGLConverter, textRenderer,
-								sizeConfig));
-						break;
-					}
+			if (edge instanceof PathwayReactionEdgeRep) {
+				PathwayReactionEdgeRep reactionEdge = (PathwayReactionEdgeRep) edge;
+				if (reactionEdge.getType() == EPathwayReactionEdgeType.reversible) {
+					lineEndArrowRenderer = createDefaultLineEndArrowRenderer(pixelGLConverter, sizeConfig);
+					connectionRenderer.addAttributeRenderer(lineEndArrowRenderer);
 				}
 			}
 		}
