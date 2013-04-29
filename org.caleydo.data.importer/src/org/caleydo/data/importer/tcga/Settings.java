@@ -109,7 +109,7 @@ public class Settings {
 		if (this.flatOutput)
 			return ensureExistingDir(outputPath);
 		else
-			return ensureExistingDir(new File(outputPath, "jnlp"));
+			return ensureExistingDir(new File(outputPath, "jnlp" + GeneralManager.VERSION));
 	}
 
 	public String getJNLPURL(String fileName) {
@@ -127,7 +127,7 @@ public class Settings {
 		if (this.flatOutput)
 			return ensureExistingDir(outputPath);
 		else
-			return ensureExistingDir(new File(new File(outputPath, "data"), subDir));
+			return ensureExistingDir(new File(new File(outputPath, "data" + GeneralManager.VERSION), subDir));
 	}
 
 	public String getTemporaryDirectory() {
