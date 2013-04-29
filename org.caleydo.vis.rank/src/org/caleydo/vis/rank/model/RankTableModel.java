@@ -195,6 +195,7 @@ public class RankTableModel implements IRankColumnParent {
 	}
 
 	public void selectNextRow() {
+		System.out.println("select next");
 		if (selectedRow == null)
 			setSelectedRow(defaultRanker.selectFirst());
 		else

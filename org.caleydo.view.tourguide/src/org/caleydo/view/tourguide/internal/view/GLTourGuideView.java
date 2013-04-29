@@ -188,28 +188,6 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 
 		addAllExternalScore(this.table);
 
-		canvas.addKeyListener(new IGLKeyListener() {
-			@Override
-			public void keyPressed(IKeyEvent e) {
-				if (e.isKey(ESpecialKey.DOWN))
-					table.selectNextRow();
-				else if (e.isKey(ESpecialKey.UP))
-					table.selectPreviousRow();
-				else if (e.isControlDown() && (e.isKey(TOGGLE_ALIGN_ALL))) {
-					// short cut for align all
-					for (StackedRankColumnModel stacked : Iterables.filter(table.getColumns(),
-							StackedRankColumnModel.class)) {
-						stacked.setAlignAll(!stacked.isAlignAll());
-					}
-				}
-			}
-
-			@Override
-			public void keyReleased(IKeyEvent e) {
-
-			}
-		});
-
 		canvas.addMouseListener(new GLMouseAdapter() {
 			@Override
 			public void mouseWheelMoved(IMouseEvent e) {
@@ -594,6 +572,12 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 			table.selectNextRow();
 		else if (e.isKey(ESpecialKey.UP))
 			table.selectPreviousRow();
+		else if (e.isControlDown() && (e.isKey(TOGGLE_ALIGN_ALL))) {
+			// short cut for align all
+			for (StackedRankColumnModel stacked : Iterables.filter(table.getColumns(), StackedRankColumnModel.class)) {
+				stacked.setAlignAll(!stacked.isAlignAll());
+			}
+		}
 	}
 
 	@Override
