@@ -85,7 +85,7 @@ import org.caleydo.view.tourguide.spi.score.IGroupScore;
 import org.caleydo.view.tourguide.spi.score.IRegisteredScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
 import org.caleydo.vis.rank.config.RankTableConfigBase;
-import org.caleydo.vis.rank.config.RankTableUIConfigs;
+import org.caleydo.vis.rank.config.RankTableUIConfigBase;
 import org.caleydo.vis.rank.layout.RowHeightLayouts;
 import org.caleydo.vis.rank.model.ACompositeRankColumnModel;
 import org.caleydo.vis.rank.model.ARankColumnModel;
@@ -731,15 +731,26 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 		stratomex.replaceBricks(event.getOldPerspective(), event.getNewPerspective());
 	}
 
+	private static class RankTableUIConfig extends RankTableUIConfigBase {
+		public RankTableUIConfig() {
+			super(true, true, true);
+		}
+
+		@Override
+		public boolean canEditValues() {
+			return false;
+		}
+	}
+
 	private class TourGuideVis extends GLElementContainer {
 		public TourGuideVis() {
 			setLayout(GLLayouts.flowVertical(10));
 			this.add(new DataDomainQueryUI(queries));
-			TableUI tableui = new TableUI(table, RankTableUIConfigs.DEFAULT, RowHeightLayouts.UNIFORM);
+			TableUI tableui = new TableUI(table, new RankTableUIConfig(), RowHeightLayouts.UNIFORM);
 			ScrollingDecorator sc = new ScrollingDecorator(tableui, new ScrollBar(true), null,
 					RenderStyle.SCROLLBAR_WIDTH);
 			this.add(sc);
-			this.add(new ScorePoolUI(table, RankTableUIConfigs.DEFAULT, GLTourGuideView.this));
+			this.add(new ScorePoolUI(table, new RankTableUIConfig(), GLTourGuideView.this));
 		}
 	}
 

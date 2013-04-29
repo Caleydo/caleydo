@@ -82,4 +82,6 @@ public interface IRankTableUIConfig {
 	public EButtonBarPositionMode getButtonBarPosition();
 
 	void renderRowBackground(GLGraphics g, float x, float y, float w, float h, boolean even, IRow row, IRow selected);
+
+	boolean canEditValues();
 }
