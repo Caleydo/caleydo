@@ -179,7 +179,7 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 			@Override
 			public void run() {
 				new StringFilterDalog(new Shell(), getTitle(), filterStrategy.getHint(), summary, filter,
-						isGlobalFilter).open();
+						isGlobalFilter, getTable().hasSnapshots()).open();
 			}
 		});
 	}

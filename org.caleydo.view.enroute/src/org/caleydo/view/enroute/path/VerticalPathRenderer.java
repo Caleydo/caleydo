@@ -236,7 +236,7 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 			// gl.glPopMatrix();
 			gl.glEndList();
 
-			
+
 			//
 			//
 			setLayoutDirty(false);
@@ -245,7 +245,7 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 		this.bubbleSetRenderer.update(gl, null, 0);
 		this.bubbleSetRenderer.renderPxl(gl, this.x, this.y);
 //
-		
+
 
 		// Rendering highlights without a display list is actually less expensive
 		if (glu == null)
@@ -262,17 +262,17 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 		gl.glCallList(layoutDisplayListIndex);
 	}
 
-	
+
 	public void updateBubbleSets(GL2 gl){
 		int sizeX = Math.round(this.x);
 		int sizeY = Math.round(this.y);
-		if (updateStrategy != null && this.updateStrategy instanceof FixedPathUpdateStrategy && sizeX > 0 && sizeY > 0) 
+		if (updateStrategy != null && this.updateStrategy instanceof FixedPathUpdateStrategy && sizeX > 0 && sizeY > 0)
 		{
 			int i = 0;
 			this.bubbleSetRenderer.setSize(sizeX, sizeY);
 			this.bubbleSetRenderer.clearBubbleSet();
 
-			for (List<PathwayVertexRep> segment : ((FixedPathUpdateStrategy) this.updateStrategy).getSelectedPathSegments()) 
+			for (List<PathwayVertexRep> segment : ((FixedPathUpdateStrategy) this.updateStrategy).getSelectedPathSegments())
 			{
 				Rectangle2D prevRect = new Rectangle2D.Double(0f, 0f, 0f, 0f);
 				bubbleSetItems.clear();
@@ -301,7 +301,7 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 				this.bubbleSetRenderer.addGroup(bubbleSetItems, bubbleSetEdges, bubbleSetColor);
 				this.bubbleSetRenderer.addGroup(bubbleSetItems, bubbleSetEdges, bubbleSetColor);
 			}// for (List<PathwayVertexRep> segment
-			
+
 			((BubbleSet) this.bubbleSetRenderer.setOutline).useVirtualEdges(false);
 			// ((BubbleSet) this.bubbleSetRenderer.setOutline).setParameter(100, 20, 3, 10.0, 7.0, 0.5, 2.5, 15.0, 5);
 			// ((BubbleSet)this.bubbleSetRenderer.setOutline).setParameter(1, 1,1,1.0,1.0,.5,1.5, 1.0, 1);
@@ -314,9 +314,9 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 //
 //			// } //if (isLayoutDirty()) {
 
-		}//if (updateStrategy != null && this.updateStrategy instanceof FixedPathUpdateStrategy && sizeX > 0 && sizeY > 0) 
+		}//if (updateStrategy != null && this.updateStrategy instanceof FixedPathUpdateStrategy && sizeX > 0 && sizeY > 0)
 	}
-	
+
 	/**
 	 * Renders the branch nodes for a specified linearized node. The position of this node has to be set beforehand.
 	 *

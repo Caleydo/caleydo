@@ -897,7 +897,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 			@Override
 			public void run() {
 				Shell shell = new Shell();
-				ChooseGroupsDialog dialog = new ChooseGroupsDialog(shell, event.getPerspective());
+				ChooseGroupsDialog dialog = new ChooseGroupsDialog(shell, event.getPerspectives());
 				dialog.create();
 				dialog.setBlockOnOpen(true);
 

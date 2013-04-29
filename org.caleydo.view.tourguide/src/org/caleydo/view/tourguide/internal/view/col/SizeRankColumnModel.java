@@ -49,4 +49,10 @@ public class SizeRankColumnModel extends IntegerRankColumnModel {
 	public SizeRankColumnModel clone() {
 		return new SizeRankColumnModel(this);
 	}
+
+	@Override
+	public int compare(IRow o1, IRow o2) {
+		return -super.compare(o1, o2);
+	}
+
 }

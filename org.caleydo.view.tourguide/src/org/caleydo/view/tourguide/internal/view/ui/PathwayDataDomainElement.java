@@ -1,9 +1,6 @@
 package org.caleydo.view.tourguide.internal.view.ui;
 
-import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventPublisher;
-import org.caleydo.core.view.contextmenu.ContextMenuCreator;
-import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
 import org.caleydo.view.tourguide.internal.event.EditDataDomainFilterEvent;
 import org.caleydo.view.tourguide.internal.view.model.PathwayDataDomainQuery;
 import org.eclipse.jface.dialogs.InputDialog;
@@ -21,16 +18,9 @@ public class PathwayDataDomainElement extends ADataDomainElement {
 		return (PathwayDataDomainQuery) super.getModel();
 	}
 
-
 	@Override
-	protected void createContextMenu(ContextMenuCreator creator) {
-		creator.addContextMenuItem(new GenericContextMenuItem("Edit Filter", new EditDataDomainFilterEvent().to(this)));
-		creator.addSeparator();
-	}
-
-	@ListenTo(sendToMe = true)
-	private void onEditDataDomainFilter(final EditDataDomainFilterEvent e) {
-		if (e.isStartEditing()) {
+	protected void onFilterEdit(boolean isStartEditing, Object payload) {
+		if (isStartEditing) {
 			Display.getDefault().asyncExec(new Runnable() {
 				@Override
 				public void run() {
@@ -45,7 +35,7 @@ public class PathwayDataDomainElement extends ADataDomainElement {
 				}
 			});
 		} else {
-			setFilter(e.getPayload().toString());
+			setFilter(payload.toString());
 		}
 	}
 
