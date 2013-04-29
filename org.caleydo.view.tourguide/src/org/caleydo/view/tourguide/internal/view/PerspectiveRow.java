@@ -38,12 +38,42 @@ import org.caleydo.view.tourguide.spi.score.IGroupScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
 import org.caleydo.view.tourguide.spi.score.IStratificationScore;
 import org.caleydo.vis.rank.model.ARow;
+import org.caleydo.vis.rank.model.IRow;
+
+import com.google.common.base.Function;
 
 /**
  * @author Samuel Gratzl
  *
  */
 public final class PerspectiveRow extends ARow implements ILabelProvider, Cloneable {
+	public static final Function<IRow, String> TO_DATADOMAIN = new Function<IRow, String>() {
+		@Override
+		public String apply(IRow in) {
+			if (in == null || !(in instanceof PerspectiveRow))
+				return null;
+			return ((PerspectiveRow) in).getDataDomain().getLabel();
+		}
+	};
+	public static final Function<IRow, String> TO_STRATIFICATION = new Function<IRow, String>() {
+		@Override
+		public String apply(IRow in) {
+			if (in == null || !(in instanceof PerspectiveRow))
+				return null;
+			Perspective g = ((PerspectiveRow) in).getStratification();
+			return g == null ? null : g.getLabel();
+		}
+	};
+	public static final Function<IRow, String> TO_GROUP = new Function<IRow, String>() {
+		@Override
+		public String apply(IRow in) {
+			if (in == null || !(in instanceof PerspectiveRow))
+				return null;
+			Group g = ((PerspectiveRow) in).getGroup();
+			return g == null ? null : g.getLabel();
+		}
+	};
+
 	private TablePerspective perspective;
 	private Perspective stratification;
 	private Group group;

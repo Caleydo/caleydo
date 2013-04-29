@@ -33,11 +33,11 @@ public interface ICollapseableColumnMixin extends IRankColumnModel {
 
 	/**
 	 * is the column currently collapse able
-	 * 
+	 *
 	 * @return
 	 */
 	boolean isCollapseAble();
 
-	void setCollapsed(boolean collapsed);
+	IRankColumnModel setCollapsed(boolean collapsed);
 
 }

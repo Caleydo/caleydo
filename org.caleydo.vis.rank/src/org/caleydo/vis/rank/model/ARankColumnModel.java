@@ -262,13 +262,14 @@ public abstract class ARankColumnModel implements IDragInfo, IRankColumnModel {
 		return parent.isCollapseAble(this);
 	}
 
-	public void setCollapsed(boolean collapsed) {
+	public ARankColumnModel setCollapsed(boolean collapsed) {
 		if (this.collapsed == collapsed)
-			return;
+			return this;
 		if (collapsed && parent != null && !parent.isCollapseAble(this))
-			return;
+			return this;
 		propertySupport.firePropertyChange(ICollapseableColumnMixin.PROP_COLLAPSED, this.collapsed,
 				this.collapsed = collapsed);
+		return this;
 	}
 
 	public boolean hide() {

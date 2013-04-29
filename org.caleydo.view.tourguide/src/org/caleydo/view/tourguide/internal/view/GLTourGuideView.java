@@ -54,6 +54,7 @@ import org.caleydo.core.view.opengl.layout2.IPopupLayer;
 import org.caleydo.core.view.opengl.layout2.basic.ScrollBar;
 import org.caleydo.core.view.opengl.layout2.basic.ScrollingDecorator;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
+import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.view.stratomex.GLStratomex;
@@ -69,8 +70,8 @@ import org.caleydo.view.tourguide.internal.event.ScoreQueryReadyEvent;
 import org.caleydo.view.tourguide.internal.external.ImportExternalScoreCommand;
 import org.caleydo.view.tourguide.internal.score.ScoreFactories;
 import org.caleydo.view.tourguide.internal.score.Scores;
+import org.caleydo.view.tourguide.internal.view.col.DataDomainRankColumnModel;
 import org.caleydo.view.tourguide.internal.view.col.IAddToStratomex;
-import org.caleydo.view.tourguide.internal.view.col.PerspectiveRankColumnModel;
 import org.caleydo.view.tourguide.internal.view.col.ScoreRankColumnModel;
 import org.caleydo.view.tourguide.internal.view.col.SizeRankColumnModel;
 import org.caleydo.view.tourguide.internal.view.model.ADataDomainQuery;
@@ -93,6 +94,7 @@ import org.caleydo.vis.rank.model.MaxCompositeRankColumnModel;
 import org.caleydo.vis.rank.model.RankRankColumnModel;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.StackedRankColumnModel;
+import org.caleydo.vis.rank.model.StringRankColumnModel;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 import org.caleydo.vis.rank.ui.RenderStyle;
 import org.caleydo.vis.rank.ui.TableBodyUI;
@@ -183,7 +185,11 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 			}
 		});
 		this.table.add(new RankRankColumnModel().setWidth(30));
-		this.table.add(new PerspectiveRankColumnModel(this).setWidth(200));
+		table.add(new DataDomainRankColumnModel(this).setWidth(80).setCollapsed(true));
+		this.table.add(new StringRankColumnModel(GLRenderers.drawText("Stratification"),
+				PerspectiveRow.TO_STRATIFICATION).setWidth(150));
+		this.table.add(new StringRankColumnModel(GLRenderers.drawText("Group"), PerspectiveRow.TO_GROUP).setWidth(50)
+				.setCollapsed(true));
 		this.table.add(new SizeRankColumnModel().setWidth(75));
 
 		addAllExternalScore(this.table);
@@ -347,9 +353,10 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 
 	private void addColumns(Collection<IScore> scores) {
 		for (IScore s : scores) {
+			int lastLabel = findLastLabelColumn();
 			if (s instanceof MultiScore) {
 				ACompositeRankColumnModel combined = table.getConfig().createNewCombined(0);
-				table.add(2, combined);
+				table.add(lastLabel + 1, combined);
 				for (IScore s2 : ((MultiScore) s)) {
 					combined.add(new ScoreRankColumnModel(s2));
 				}
@@ -357,11 +364,24 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 					((IRankableColumnMixin) combined).orderByMe();
 			} else {
 				ScoreRankColumnModel ss = new ScoreRankColumnModel(s);
-				table.add(2, ss);
+				table.add(lastLabel + 1, ss);
 				ss.orderByMe();
 			}
 		}
 		updateMask(false);
+	}
+
+	/**
+	 * @return
+	 */
+	private int findLastLabelColumn() {
+		List<ARankColumnModel> cols = table.getColumns();
+		int l = 0;
+		for (int i = 0; i < cols.size(); ++i) {
+			if (cols.get(i) instanceof StringRankColumnModel)
+				l = i;
+		}
+		return l;
 	}
 
 	private void updateMask(boolean forceGroupScore) {
