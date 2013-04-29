@@ -16,6 +16,9 @@
  *******************************************************************************/
 package org.caleydo.data.importer.tcga.test;
 
+import org.caleydo.core.data.collection.EDataType;
+import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
+import org.caleydo.core.data.collection.column.container.CategoricalClassDescription.ECategoryType;
 import org.caleydo.core.io.ColumnDescription;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.DataSetDescription.ECreateDefaultProperties;
@@ -23,6 +26,8 @@ import org.caleydo.core.io.GroupingParseSpecification;
 import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.io.ParsingRule;
+import org.caleydo.core.util.color.Color;
+import org.caleydo.core.util.color.Colors;
 import org.caleydo.data.importer.setupgenerator.DataSetDescriptionSerializer;
 import org.caleydo.datadomain.genetic.TCGADefinitions;
 
@@ -48,13 +53,15 @@ public class BioVisEnRouteTCGADataXMLGenerator extends DataSetDescriptionSeriali
 	public static final String DROPBOX_GBM_FOLDER = System.getProperty("user.home")
 			+ System.getProperty("file.separator") + "Dropbox/Caleydo/data/tcga/20110728/gbm/";
 
-	public static final String MRNA = DROPBOX_BIOVIS_FOLDER + "sampled/GBM.medianexp.txt";
+	public static final String MRNA = DROPBOX_BIOVIS_FOLDER + "sampled/mrna.csv";
 
 	public static final String MRNA_GROUPING = DROPBOX_GBM_FOLDER + "mrna_cnmf/cnmf.membership.txt";
 
-	public static final String COPY_NUMBER = DROPBOX_BIOVIS_FOLDER + "sampled/all_thresholded_by_genes.txt";
+	public static final String COPY_NUMBER = DROPBOX_BIOVIS_FOLDER + "sampled/copy.csv";
 
 	public static final String GROUND_TRUTH_GROUPING = DROPBOX_GBM_FOLDER + "ground_truth/2011_exp_assignments.txt";
+
+	public static final String MUTATION = DROPBOX_GBM_FOLDER + "mutation/gbm_mutation.csv";
 
 	public static final String OUTPUT_FILE_PATH = System.getProperty("user.home")
 			+ System.getProperty("file.separator") + "caleydo_data.xml";
@@ -82,7 +89,7 @@ public class BioVisEnRouteTCGADataXMLGenerator extends DataSetDescriptionSeriali
 
 		projectDescription.add(setUpMRNAData());
 		projectDescription.add(setUpCopyNumberData());
-		// dataSetDescriptionCollection.add(setUpMutationData());
+		projectDescription.add(setUpMutationData());
 
 	}
 
@@ -91,8 +98,8 @@ public class BioVisEnRouteTCGADataXMLGenerator extends DataSetDescriptionSeriali
 		mrnaData.setDataSetName("mRNA");
 
 		mrnaData.setDataSourcePath(MRNA);
-		mrnaData.setNumberOfHeaderLines(2);
-		mrnaData.setRowOfColumnIDs(0);
+		mrnaData.setNumberOfHeaderLines(3);
+		mrnaData.setRowOfColumnIDs(2);
 
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(1);
@@ -121,12 +128,55 @@ public class BioVisEnRouteTCGADataXMLGenerator extends DataSetDescriptionSeriali
 		return mrnaData;
 	}
 
+	// private DataSetDescription setUpCopyNumberData() {
+	// DataSetDescription copyNumberData = new DataSetDescription(ECreateDefaultProperties.CATEGORICAL);
+	// copyNumberData.setDataSetName("Copy number");
+	//
+	// copyNumberData.setDataSourcePath(COPY_NUMBER);
+	// copyNumberData.setNumberOfHeaderLines(1);
+	//
+	// ParsingRule parsingRule = new ParsingRule();
+	// parsingRule.setFromColumn(3);
+	// parsingRule.setParseUntilEnd(true);
+	// parsingRule.setColumnDescripton(new ColumnDescription());
+	// copyNumberData.addParsingRule(parsingRule);
+	// copyNumberData.setTransposeMatrix(true);
+	//
+	// IDSpecification geneIDSpecification = new IDSpecification();
+	// geneIDSpecification.setIDTypeGene(true);
+	// geneIDSpecification.setIdType("GENE_SYMBOL");
+	// copyNumberData.setRowIDSpecification(geneIDSpecification);
+	// copyNumberData.setColumnIDSpecification(sampleIDSpecification);
+	//
+	// GroupingParseSpecification groundTruthGrouping = new GroupingParseSpecification();
+	// groundTruthGrouping.setDataSourcePath(GROUND_TRUTH_GROUPING);
+	// groundTruthGrouping.addColum(2);
+	// groundTruthGrouping.setRowIDSpecification(sampleIDSpecification);
+	// copyNumberData.addColumnGroupingSpecification(groundTruthGrouping);
+	//
+	// return copyNumberData;
+	//
+	// // copyNumberData.setColorScheme(EDefaultColorSchemes.RED_YELLOW_BLUE_DIVERGING
+	// // .name());
+	// }
+
 	private DataSetDescription setUpCopyNumberData() {
 		DataSetDescription copyNumberData = new DataSetDescription(ECreateDefaultProperties.CATEGORICAL);
 		copyNumberData.setDataSetName("Copy number");
 
 		copyNumberData.setDataSourcePath(COPY_NUMBER);
 		copyNumberData.setNumberOfHeaderLines(1);
+
+		@SuppressWarnings("unchecked")
+		CategoricalClassDescription<Integer> categoricalClassDescription = (CategoricalClassDescription<Integer>) copyNumberData
+				.getDataDescription().getCategoricalClassDescription();
+		categoricalClassDescription.setCategoryType(ECategoryType.ORDINAL);
+		categoricalClassDescription.setRawDataType(EDataType.INTEGER);
+		categoricalClassDescription.addCategoryProperty(-2, "Homozygous deletion", new Color("0571b0"));
+		categoricalClassDescription.addCategoryProperty(-1, "Heterozygous deletion", new Color("5f99ba"));
+		categoricalClassDescription.addCategoryProperty(0, "NORMAL", Colors.NEUTRAL_GREY);
+		categoricalClassDescription.addCategoryProperty(1, "Low level amplification", new Color("c95d6e"));
+		categoricalClassDescription.addCategoryProperty(2, "High level amplification", new Color("c4001f"));
 
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(3);
@@ -141,40 +191,39 @@ public class BioVisEnRouteTCGADataXMLGenerator extends DataSetDescriptionSeriali
 		copyNumberData.setRowIDSpecification(geneIDSpecification);
 		copyNumberData.setColumnIDSpecification(sampleIDSpecification);
 
-		GroupingParseSpecification groundTruthGrouping = new GroupingParseSpecification();
-		groundTruthGrouping.setDataSourcePath(GROUND_TRUTH_GROUPING);
-		groundTruthGrouping.addColum(2);
-		groundTruthGrouping.setRowIDSpecification(sampleIDSpecification);
-		copyNumberData.addColumnGroupingSpecification(groundTruthGrouping);
-
 		return copyNumberData;
 
 		// copyNumberData.setColorScheme(EDefaultColorSchemes.RED_YELLOW_BLUE_DIVERGING
 		// .name());
 	}
 
-	// private DataSetDescription setUpMutationData() {
-	// DataSetDescription mutationDataMetaInfo = new DataSetDescription();
-	// mutationDataMetaInfo.setDataSetName("Mutation Status");
-	// mutationDataMetaInfo.setDataSourcePath(MUTATION);
-	//
-	// mutationDataMetaInfo.setNumberOfHeaderLines(1);
-	//
-	// ParsingRule parsingRule = new ParsingRule();
-	// parsingRule.setFromColumn(1);
-	// parsingRule.setParseUntilEnd(true);
-	// parsingRule.setColumnDescripton(new ColumnDescription("REAL_NUMBER",
-	// ColumnDescription.NOMINAL));
-	// mutationDataMetaInfo.addParsingRule(parsingRule);
-	// mutationDataMetaInfo.setTransposeMatrix(true);
-	//
-	// IDSpecification geneIDSpecification = new IDSpecification();
-	// geneIDSpecification.setIDTypeGene(true);
-	// geneIDSpecification.setIdType("GENE_SYMBOL");
-	// mutationDataMetaInfo.setRowIDSpecification(geneIDSpecification);
-	// mutationDataMetaInfo.setColumnIDSpecification(sampleIDSpecification);
-	//
-	// return mutationDataMetaInfo;
-	// }
+	private DataSetDescription setUpMutationData() {
+		DataSetDescription mutationDataDescription = new DataSetDescription(ECreateDefaultProperties.CATEGORICAL);
+		mutationDataDescription.setDataSetName("Mutation Status");
+		mutationDataDescription.setDataSourcePath(MUTATION);
+
+		@SuppressWarnings("unchecked")
+		CategoricalClassDescription<Integer> categoricalClassDescription = (CategoricalClassDescription<Integer>) mutationDataDescription
+				.getDataDescription().getCategoricalClassDescription();
+		categoricalClassDescription.addCategoryProperty(0, "Not Mutated", Colors.NEUTRAL_GREY);
+		categoricalClassDescription.addCategoryProperty(1, "Mutated", Colors.RED);
+
+		mutationDataDescription.setNumberOfHeaderLines(1);
+
+		ParsingRule parsingRule = new ParsingRule();
+		parsingRule.setFromColumn(1);
+		parsingRule.setParseUntilEnd(true);
+		parsingRule.setColumnDescripton(new ColumnDescription());
+		mutationDataDescription.addParsingRule(parsingRule);
+		mutationDataDescription.setTransposeMatrix(true);
+
+		IDSpecification geneIDSpecification = new IDSpecification();
+		geneIDSpecification.setIDTypeGene(true);
+		geneIDSpecification.setIdType("GENE_SYMBOL");
+		mutationDataDescription.setRowIDSpecification(geneIDSpecification);
+		mutationDataDescription.setColumnIDSpecification(sampleIDSpecification);
+
+		return mutationDataDescription;
+	}
 
 }

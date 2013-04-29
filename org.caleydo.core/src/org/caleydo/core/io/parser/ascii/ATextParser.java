@@ -185,4 +185,9 @@ public abstract class ATextParser {
 		}
 		return sourceID;
 	}
+
+	@Override
+	public String toString() {
+		return "Parser for " + filePath;
+	}
 }
