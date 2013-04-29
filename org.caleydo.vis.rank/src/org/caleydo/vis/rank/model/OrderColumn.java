@@ -132,8 +132,8 @@ public class OrderColumn extends ARankColumnModel implements IAnnotatedColumnMix
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				TitleDescriptionDialog d = new TitleDescriptionDialog(null, "Edit Annotation of: " + getTitle(),
-						"Edit Annotation", title, description);
+				String tori = getTitle();
+				TitleDescriptionDialog d = new TitleDescriptionDialog(null, "Edit Label of: " + tori, tori, description);
 				if (d.open() == Window.OK) {
 					String t = d.getTitle().trim();
 					String desc =d.getDescription().trim();
