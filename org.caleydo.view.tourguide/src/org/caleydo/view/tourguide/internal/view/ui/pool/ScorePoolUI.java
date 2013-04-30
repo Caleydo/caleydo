@@ -20,6 +20,7 @@
 package org.caleydo.view.tourguide.internal.view.ui.pool;
 
 import static org.caleydo.vis.rank.ui.RenderStyle.LABEL_HEIGHT;
+import gleem.linalg.Vec2f;
 
 import java.awt.Color;
 import java.beans.IndexedPropertyChangeEvent;
@@ -88,7 +89,7 @@ public class ScorePoolUI extends GLElementContainer implements IGLLayout {
 		this.config = RankTableUIConfigs.nonInteractive(config);
 		table.addPropertyChangeListener(RankTableModel.PROP_POOL, listener);
 		setLayout(this);
-		setSize(-1, (LABEL_HEIGHT + 8) * 3);
+		setLayoutData(new Vec2f(110, (LABEL_HEIGHT + 8) * 3));
 
 		this.add(new PaperBasket(table));
 
@@ -125,15 +126,24 @@ public class ScorePoolUI extends GLElementContainer implements IGLLayout {
 		float y = 5;
 		w -= 5;
 		h -= 5;
-		for (IGLLayoutElement child : children) {
-			if ((x + 100) > w) {
-				x = 5;
-				y += LABEL_HEIGHT + 5;
+		if (w > 120) {
+			for (IGLLayoutElement child : children) {
+				if ((x + 100) > w) {
+					x = 5;
+					y += LABEL_HEIGHT + 5;
+				}
+				child.setBounds(x, y, 100, LABEL_HEIGHT);
+				x += 100 + 5;
 			}
-			child.setBounds(x, y, 100, LABEL_HEIGHT);
-			x += 100 + 5;
+			paperBasket.setBounds(w - 40, h - 16, 40, 16);
+		} else {
+			// linear
+			for (IGLLayoutElement child : children) {
+				child.setBounds(x, y, 100, LABEL_HEIGHT);
+				y += LABEL_HEIGHT + 2;
+			}
+			paperBasket.setBounds(x, h - 16, w - x, 16);
 		}
-		paperBasket.setBounds(w - 40, h - LABEL_HEIGHT, 40, LABEL_HEIGHT);
 
 	}
 
