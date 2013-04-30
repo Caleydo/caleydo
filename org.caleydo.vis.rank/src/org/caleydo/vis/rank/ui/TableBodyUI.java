@@ -196,13 +196,17 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 	protected void onSelectedRowPick(Pick pick) {
 		switch (pick.getPickingMode()) {
 		case DOUBLE_CLICKED:
-			OrderColumnUI col = getRanker(toRelative(pick.getPickedPoint()).x());
-			editRow(col, table.getSelectedRow());
+			if (config.canEditValues()) {
+				OrderColumnUI col = getRanker(toRelative(pick.getPickedPoint()).x());
+				editRow(col, table.getSelectedRow());
+			}
 			break;
 		case RIGHT_CLICKED:
 			List<AContextMenuItem> items = new ArrayList<>(1);
-			OrderColumnUI col2 = getRanker(toRelative(pick.getPickedPoint()).x());
-			items.add(new GenericContextMenuItem("Edit Values", new TriggerEditValuesEvent(col2).to(this)));
+			if (config.canEditValues()) {
+				OrderColumnUI col2 = getRanker(toRelative(pick.getPickedPoint()).x());
+				items.add(new GenericContextMenuItem("Edit Values", new TriggerEditValuesEvent(col2).to(this)));
+			}
 			context.showContextMenu(items);
 			break;
 		default:

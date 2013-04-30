@@ -129,26 +129,26 @@ public class MappingRenderer extends ColorRenderer {
 			}
 		}
 
-		if (highestAverage != null) {
-
-			gl.glColor3fv(highestAverage.getFirst().getDataDomain().getColor().getRGB(), 0);
-			// gl.glColor3f(1, 0, 0);
-			gl.glBegin(GL2.GL_POLYGON);
-			gl.glVertex3f(x + 4 * onePxlWidth, 3 * onePxlHeight, z);
-			gl.glVertex3f(x + 8 * onePxlWidth, 3 * onePxlHeight, z);
-			gl.glVertex3f(x + 10 * onePxlWidth, y + 2 * onePxlHeight, z);
-			gl.glVertex3f(x + 2 * onePxlWidth, y + 2 * onePxlHeight, z);
-			gl.glEnd();
-
-			// // gl.glColor3fv(tablePerspective.getDataDomain().getColor().getRGB(), 0);
-			gl.glBegin(GL2.GL_POLYGON);
-			gl.glVertex3f(x + 3 * onePxlWidth, 1 * onePxlHeight, z);
-			gl.glVertex3f(x + 9 * onePxlWidth, 1 * onePxlHeight, z);
-			gl.glVertex3f(x + 9 * onePxlWidth, -3 * onePxlHeight, z);
-			gl.glVertex3f(x + 3 * onePxlWidth, -3 * onePxlHeight, z);
-			gl.glEnd();
-
-		}
+		// if (highestAverage != null) {
+		//
+		// gl.glColor3fv(highestAverage.getFirst().getDataDomain().getColor().getRGB(), 0);
+		// // gl.glColor3f(1, 0, 0);
+		// gl.glBegin(GL2.GL_POLYGON);
+		// gl.glVertex3f(x + 4 * onePxlWidth, 3 * onePxlHeight, z);
+		// gl.glVertex3f(x + 8 * onePxlWidth, 3 * onePxlHeight, z);
+		// gl.glVertex3f(x + 10 * onePxlWidth, y + 2 * onePxlHeight, z);
+		// gl.glVertex3f(x + 2 * onePxlWidth, y + 2 * onePxlHeight, z);
+		// gl.glEnd();
+		//
+		// // // gl.glColor3fv(tablePerspective.getDataDomain().getColor().getRGB(), 0);
+		// gl.glBegin(GL2.GL_POLYGON);
+		// gl.glVertex3f(x + 3 * onePxlWidth, 1 * onePxlHeight, z);
+		// gl.glVertex3f(x + 9 * onePxlWidth, 1 * onePxlHeight, z);
+		// gl.glVertex3f(x + 9 * onePxlWidth, -3 * onePxlHeight, z);
+		// gl.glVertex3f(x + 3 * onePxlWidth, -3 * onePxlHeight, z);
+		// gl.glEnd();
+		//
+		// }
 
 		super.renderContent(gl);
 

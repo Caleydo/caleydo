@@ -34,7 +34,9 @@ import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
+import org.caleydo.view.tourguide.internal.view.GroupPerspectiveRow;
 import org.caleydo.view.tourguide.internal.view.PerspectiveRow;
+import org.caleydo.view.tourguide.internal.view.StratificationPerspectiveRow;
 
 /**
  * @author Samuel Gratzl
@@ -86,9 +88,9 @@ public class TableDataDomainQuery extends ADataDomainQuery {
 
 			TablePerspective per = asTablePerspective(dimensionPerspectiveID, p);
 
-			r.add(new PerspectiveRow(p, null, per));
+			r.add(new StratificationPerspectiveRow(p, null, per));
 			for (Group g : p.getVirtualArray().getGroupList()) {
-				rg.add(new PerspectiveRow(p, g, per));
+				rg.add(new GroupPerspectiveRow(p, g, per));
 			}
 		}
 		return Pair.make(r, rg);

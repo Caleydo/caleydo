@@ -66,6 +66,11 @@ public class ColumnPoolElem extends APoolElem {
 	}
 
 	@Override
+	protected void onDoubleClicked(Pick pick) {
+		// TODO: add back to tour guide
+	}
+
+	@Override
 	protected void onMouseReleased(Pick pick) {
 		if (pick.isDoDragging())
 			onDropColumn(pick);

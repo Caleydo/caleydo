@@ -22,15 +22,11 @@ package org.caleydo.vis.rank.internal.ui;
 
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.vis.rank.internal.event.FilterEvent;
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
@@ -42,39 +38,23 @@ import org.eclipse.swt.widgets.Text;
  * @author Samuel Gratzl
  *
  */
-public class StringFilterDalog extends Dialog {
-	private final Object receiver;
-
-	private final String title;
+public class StringFilterDalog extends AFilterDalog {
 	private final String filter;
-	private final boolean filterGlobally;
 
 	private Text text;
-	private Button filterGloballyUI;
 
 	private String hint;
 
 
 	public StringFilterDalog(Shell parentShell, String title, String hint, Object receiver, String filter,
-			boolean filterGlobally) {
-		super(parentShell);
-		this.title = title;
+			boolean filterGlobally, boolean hasSnapshots) {
+		super(parentShell, title, receiver, filterGlobally, hasSnapshots);
 		this.hint = hint;
-		this.receiver = receiver;
 		this.filter = filter;
-		this.filterGlobally = filterGlobally;
 	}
 
 	@Override
-	public void create() {
-		super.create();
-		getShell().setText("Filter column: " + title);
-	}
-
-	@Override
-	protected Composite createDialogArea(Composite parent) {
-		// create composite
-		Composite composite = (Composite) super.createDialogArea(parent);
+	protected void createSpecificFilterUI(Composite composite) {
 		// create message
 		Label label = new Label(composite, SWT.WRAP);
 		label.setText("Edit the filter: " + hint);
@@ -82,7 +62,7 @@ public class StringFilterDalog extends Dialog {
 				| GridData.VERTICAL_ALIGN_CENTER);
 		data.widthHint = convertHorizontalDLUsToPixels(IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH);
 		label.setLayoutData(data);
-		label.setFont(parent.getFont());
+		label.setFont(composite.getFont());
 
 		text = new Text(composite, SWT.BORDER);
 		text.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
@@ -99,22 +79,11 @@ public class StringFilterDalog extends Dialog {
 		});
 		text.selectAll();
 		text.setFocus();
+	}
 
-		filterGloballyUI = new Button(composite, SWT.CHECK);
-		filterGloballyUI.setText("Apply Filter Globally?");
-		filterGloballyUI.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
-		filterGloballyUI.setSelection(filterGlobally);
-		SelectionAdapter adapter = new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				EventPublisher.trigger(new FilterEvent(text.getText(), filterGloballyUI.getSelection())
-				.to(receiver));
-			}
-		};
-		filterGloballyUI.addSelectionListener(adapter);
-
-		applyDialogFont(composite);
-		return composite;
+	@Override
+	protected void triggerEvent() {
+		EventPublisher.trigger(new FilterEvent(text.getText(), filterGloballyUI.getSelection()).to(receiver));
 	}
 
 	@Override

@@ -17,27 +17,27 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.vis.rank.model.mixin;
+package org.caleydo.view.tourguide.internal.view;
+
+import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
+import org.caleydo.core.data.virtualarray.group.Group;
 
 /**
- * contract that the column can be collapsed
- *
  * @author Samuel Gratzl
  *
  */
-public interface ICollapseableColumnMixin extends IRankColumnModel {
-	int COLLAPSED_WIDTH = 16;
-	String PROP_COLLAPSED = "collapsed";
+public final class CategoricalPerspectiveRow extends PerspectiveRow {
+	public CategoricalPerspectiveRow(Perspective stratification, Group group, TablePerspective perspective) {
+		super(stratification, group, perspective);
+	}
 
-	boolean isCollapsed();
+	public CategoricalPerspectiveRow(Perspective stratification, TablePerspective perspective) {
+		super(stratification, perspective);
+	}
 
-	/**
-	 * is the column currently collapse able
-	 *
-	 * @return
-	 */
-	boolean isCollapseAble();
-
-	IRankColumnModel setCollapsed(boolean collapsed);
-
+	@Override
+	public CategoricalPerspectiveRow clone() {
+		return (CategoricalPerspectiveRow) super.clone();
+	}
 }

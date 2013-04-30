@@ -52,13 +52,14 @@ public class XMLToProjectBuilder {
 			ATableBasedDataDomain dataDomain = DataLoader.loadData(dataSetDescription);
 			if (dataDomain != null)
 				dataDomains.add(dataDomain);
+			else
+				throw new RuntimeException("Failed to load datadomain " + dataSetDescription);
 		}
 
 		try {
 			ProjectManager.save(projectFileOutputPath, true, dataDomains).run(new NullProgressMonitor());
 		} catch (InvocationTargetException | InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new RuntimeException("Can't save project", e);
 		}
 
 		return dataDomains;

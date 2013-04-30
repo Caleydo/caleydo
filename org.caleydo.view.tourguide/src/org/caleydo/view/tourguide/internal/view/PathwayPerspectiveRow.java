@@ -17,27 +17,21 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.vis.rank.model.mixin;
+package org.caleydo.view.tourguide.internal.view;
+
+import org.caleydo.core.data.perspective.variable.Perspective;
 
 /**
- * contract that the column can be collapsed
- *
  * @author Samuel Gratzl
  *
  */
-public interface ICollapseableColumnMixin extends IRankColumnModel {
-	int COLLAPSED_WIDTH = 16;
-	String PROP_COLLAPSED = "collapsed";
+public final class PathwayPerspectiveRow extends PerspectiveRow {
+	public PathwayPerspectiveRow(Perspective stratification) {
+		super(stratification, null);
+	}
 
-	boolean isCollapsed();
-
-	/**
-	 * is the column currently collapse able
-	 *
-	 * @return
-	 */
-	boolean isCollapseAble();
-
-	IRankColumnModel setCollapsed(boolean collapsed);
-
+	@Override
+	public PathwayPerspectiveRow clone() {
+		return (PathwayPerspectiveRow) super.clone();
+	}
 }

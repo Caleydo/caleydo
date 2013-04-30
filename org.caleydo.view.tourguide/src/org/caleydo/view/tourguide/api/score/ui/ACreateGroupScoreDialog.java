@@ -34,8 +34,8 @@ import org.caleydo.view.tourguide.api.util.ui.CaleydoLabelProvider;
 import org.caleydo.view.tourguide.internal.event.AddScoreColumnEvent;
 import org.caleydo.view.tourguide.spi.score.IRegisteredScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
+import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -56,7 +56,7 @@ import com.google.common.collect.Lists;
  * @author Samuel Gratzl
  *
  */
-public abstract class ACreateGroupScoreDialog extends TitleAreaDialog {
+public abstract class ACreateGroupScoreDialog extends Dialog {
 
 	private static final Group ALL_GROUP = new Group();
 
@@ -79,7 +79,7 @@ public abstract class ACreateGroupScoreDialog extends TitleAreaDialog {
 	@Override
 	public void create() {
 		super.create();
-		this.setTitle("Create a new " + getLabel());
+		getShell().setText("Create a new " + getLabel());
 		this.setBlockOnOpen(false);
 	}
 

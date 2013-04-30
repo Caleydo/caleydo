@@ -31,6 +31,7 @@ import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
+import org.caleydo.view.tourguide.internal.view.PathwayPerspectiveRow;
 import org.caleydo.view.tourguide.internal.view.PerspectiveRow;
 
 import com.google.common.collect.Lists;
@@ -70,7 +71,7 @@ public class PathwayDataDomainQuery extends ADataDomainQuery {
 		PathwayDataDomain p = (PathwayDataDomain) dataDomain;
 		List<PerspectiveRow> r = Lists.newArrayList();
 		for (Perspective per : p.getPathwayRecordPerspectives()) {
-			r.add(new PerspectiveRow(per, null));
+			r.add(new PathwayPerspectiveRow(per));
 		}
 		return Pair.make(r, Collections.<PerspectiveRow> emptyList());
 	}

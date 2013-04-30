@@ -301,7 +301,7 @@ public class TabularDataParser extends ATextParser {
 			// id mapping
 			String id = splitLine[columnOfRowIDs];
 			id = convertID(id, parsingRules);
-			rowIDMappingManager.addMapping(mappingType, id, lineCounter - startParsingAtLine);
+			rowIDMappingManager.addMapping(mappingType, id, lineCounter);
 
 			for (int count = 0; count < parsingPattern.size(); count++) {
 
@@ -366,7 +366,7 @@ public class TabularDataParser extends ATextParser {
 				} catch (IndexOutOfBoundsException ioobe) {
 					// TODO this may be a little lenient - we should be stricter.
 					Logger.log(new Status(IStatus.ERROR, this.toString(), "Index out of bounds at line: " + lineCounter
-							+ " for column " + count));
+							+ " for column " + count, ioobe));
 				}
 
 			}
@@ -377,7 +377,12 @@ public class TabularDataParser extends ATextParser {
 		}
 
 		if (parsingErrorOccured) {
-			Logger.log(new Status(IStatus.ERROR, GeneralManager.PLUGIN_ID, numberParsingErrorMessage));
+			Logger.log(new Status(IStatus.ERROR, this.toString(), numberParsingErrorMessage));
 		}
+	}
+
+	@Override
+	public String toString() {
+		return "TabularDataParser: " + dataSetDescription.getDataSetName();
 	}
 }

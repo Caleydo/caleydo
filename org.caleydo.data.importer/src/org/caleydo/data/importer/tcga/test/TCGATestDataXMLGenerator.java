@@ -65,8 +65,7 @@ public class TCGATestDataXMLGenerator extends DataSetDescriptionSerializer {
 
 	public static final String CLINICAL = DROPBOX_GBM_FOLDER + "clinical/clinical_patient_public_GBM.txt";
 
-	public static final String MUTATION = DROPBOX_GBM_FOLDER
-			+ "mutation/mut_patient_centric_table_public_transposed_01.txt";
+	public static final String MUTATION = DROPBOX_GBM_FOLDER + "mutation/gbm_mutation.csv";
 
 	private IDSpecification sampleIDSpecification;
 
@@ -253,12 +252,6 @@ public class TCGATestDataXMLGenerator extends DataSetDescriptionSerializer {
 				Colors.RED.getColorWithSpecificBrighness(0.5f));
 		categoricalClassDescription.addCategoryProperty(2, "High level amplification", Colors.RED);
 
-		// groupLabels.add("Homozygous deletion");
-		// groupLabels.add("Heterozygous deletion");
-		// groupLabels.add("Normal");
-		// groupLabels.add("Low level amplification");
-		// groupLabels.add("High level amplification")
-
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(3);
 		parsingRule.setParseUntilEnd(true);
@@ -315,32 +308,32 @@ public class TCGATestDataXMLGenerator extends DataSetDescriptionSerializer {
 	}
 
 	private DataSetDescription setUpMutationData() {
-		DataSetDescription mutationDataMetaInfo = new DataSetDescription(ECreateDefaultProperties.CATEGORICAL);
-		mutationDataMetaInfo.setDataSetName("Mutation Status");
-		mutationDataMetaInfo.setDataSourcePath(MUTATION);
+		DataSetDescription mutationDataDescription = new DataSetDescription(ECreateDefaultProperties.CATEGORICAL);
+		mutationDataDescription.setDataSetName("Mutation Status");
+		mutationDataDescription.setDataSourcePath(MUTATION);
 
 		@SuppressWarnings("unchecked")
-		CategoricalClassDescription<Integer> categoricalClassDescription = (CategoricalClassDescription<Integer>) mutationDataMetaInfo
+		CategoricalClassDescription<Integer> categoricalClassDescription = (CategoricalClassDescription<Integer>) mutationDataDescription
 				.getDataDescription().getCategoricalClassDescription();
 		categoricalClassDescription.addCategoryProperty(0, "Not Mutated", Colors.NEUTRAL_GREY);
 		categoricalClassDescription.addCategoryProperty(1, "Mutated", Colors.RED);
 
-		mutationDataMetaInfo.setNumberOfHeaderLines(1);
+		mutationDataDescription.setNumberOfHeaderLines(1);
 
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(1);
 		parsingRule.setParseUntilEnd(true);
 		parsingRule.setColumnDescripton(new ColumnDescription());
-		mutationDataMetaInfo.addParsingRule(parsingRule);
-		mutationDataMetaInfo.setTransposeMatrix(true);
+		mutationDataDescription.addParsingRule(parsingRule);
+		mutationDataDescription.setTransposeMatrix(true);
 
 		IDSpecification geneIDSpecification = new IDSpecification();
 		geneIDSpecification.setIDTypeGene(true);
 		geneIDSpecification.setIdType("GENE_SYMBOL");
-		mutationDataMetaInfo.setRowIDSpecification(geneIDSpecification);
-		mutationDataMetaInfo.setColumnIDSpecification(sampleIDSpecification);
+		mutationDataDescription.setRowIDSpecification(geneIDSpecification);
+		mutationDataDescription.setColumnIDSpecification(sampleIDSpecification);
 
-		return mutationDataMetaInfo;
+		return mutationDataDescription;
 	}
 
 }

@@ -32,7 +32,7 @@ import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.OrderColumn;
 import org.caleydo.vis.rank.model.RankRankColumnModel;
 import org.caleydo.vis.rank.model.mixin.ISetableColumnMixin;
-import org.eclipse.jface.dialogs.TitleAreaDialog;
+import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -52,7 +52,7 @@ import org.eclipse.swt.widgets.Text;
  * @author Samuel Gratzl
  *
  */
-public class EditValuesDialog extends TitleAreaDialog {
+public class EditValuesDialog extends Dialog {
 	private final List<ARankColumnModel> columns;
 	private final Object receiver;
 	private final IRow row;
@@ -83,8 +83,6 @@ public class EditValuesDialog extends TitleAreaDialog {
 	@Override
 	public void create() {
 		super.create();
-		setTitle("Edit Values of row: " + row);
-		setMessage("Edit the values of row: " + row);
 		getShell().setText("Edit Values of row: " + row);
 	}
 

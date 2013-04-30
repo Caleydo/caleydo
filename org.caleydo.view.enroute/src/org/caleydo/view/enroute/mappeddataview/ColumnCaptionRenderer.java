@@ -16,11 +16,13 @@
  *******************************************************************************/
 package org.caleydo.view.enroute.mappeddataview;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.group.Group;
@@ -57,8 +59,6 @@ public class ColumnCaptionRenderer extends ALayoutRenderer implements ILabelProv
 	private int pickingID;
 	private AGLView parentView;
 	private SelectionColorCalculator colorCalculator;
-
-
 
 	public ColumnCaptionRenderer(AGLView parentView, MappedDataRenderer parent, Group group,
 			Perspective samplePerspective, ATableBasedDataDomain dataDomain, Button button) {
@@ -98,7 +98,6 @@ public class ColumnCaptionRenderer extends ALayoutRenderer implements ILabelProv
 		colorCalculator.calculateColors(selectionTypes);
 		float[] topBarColor = colorCalculator.getPrimaryColor().getRGB();
 		float[] bottomBarColor = colorCalculator.getSecondaryColor().getRGB();
-
 
 		gl.glPushName(pickingID);
 
@@ -185,11 +184,16 @@ public class ColumnCaptionRenderer extends ALayoutRenderer implements ILabelProv
 				// contextEvent);
 				// parentView.getContextMenuCreator().addContextMenuItem(selectCompoundItem);
 
-				Perspective columnPerspective = parent.parentView.getTablePerspectives().get(0)
-						.getPerspective(parent.sampleIDType);
+				List<Perspective> perspectives = new ArrayList<>();
 
-				ShowGroupSelectionDialogEvent selectGroupEvent = new ShowGroupSelectionDialogEvent(
-						columnPerspective);
+				for (TablePerspective perspective : parent.parentView.getTablePerspectives()) {
+					perspectives.add(perspective.getPerspective(parent.sampleIDType));
+				}
+				// Perspective columnPerspective = parent.parentView.getTablePerspectives()
+				// .get(parent.parentView.getTablePerspectives().size() - 1)
+				// .getPerspective(parent.sampleIDType);
+
+				ShowGroupSelectionDialogEvent selectGroupEvent = new ShowGroupSelectionDialogEvent(perspectives);
 
 				AContextMenuItem selectGroupItem = new GenericContextMenuItem("Select sample groups to show",
 						selectGroupEvent);
@@ -213,7 +217,7 @@ public class ColumnCaptionRenderer extends ALayoutRenderer implements ILabelProv
 		};
 
 		parentView.addIDPickingListener(groupPickingListener, EPickingType.SAMPLE_GROUP.name(), group.getID());
-		parentView.addIDPickingListener(timedMouseOutListener, EPickingType.SAMPLE_GROUP.name(), group.getID());
+		// parentView.addIDPickingListener(timedMouseOutListener, EPickingType.SAMPLE_GROUP.name(), group.getID());
 		parentView.addIDPickingTooltipListener(this, EPickingType.SAMPLE_GROUP.name(), group.getID());
 
 	}

@@ -20,7 +20,7 @@
 package org.caleydo.vis.rank.internal.ui;
 
 
-import org.eclipse.jface.dialogs.TitleAreaDialog;
+import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -34,19 +34,17 @@ import org.eclipse.swt.widgets.Text;
  * @author Samuel Gratzl
  *
  */
-public class TitleDescriptionDialog extends TitleAreaDialog {
+public class TitleDescriptionDialog extends Dialog {
 	private final String dialogTitle;
-	private final String dialogMessage;
 	private String title;
 	private String description;
 	private Text titleUI;
 	private Text descUI;
 
-	public TitleDescriptionDialog(Shell parentShell, String dialogTitle, String dialogMessage,
-			String initialTitleValue, String initialDescriptionValue) {
+	public TitleDescriptionDialog(Shell parentShell, String dialogTitle, String initialTitleValue,
+			String initialDescriptionValue) {
 		super(parentShell);
 		this.dialogTitle = dialogTitle;
-		this.dialogMessage = dialogMessage;
 		this.title = initialTitleValue;
 		this.description = initialDescriptionValue;
 	}
@@ -54,8 +52,6 @@ public class TitleDescriptionDialog extends TitleAreaDialog {
 	@Override
 	public void create() {
 		super.create();
-		setTitle(dialogTitle);
-		setMessage(dialogMessage);
 		getShell().setText(dialogTitle);
 	}
 
