@@ -340,7 +340,8 @@ public abstract class AMultiRankColumnModel extends ACompositeRankColumnModel im
 			for (ARankColumnModel r : this) {
 				b.append(r.getTitle()).append(", ");
 			}
-			b.setLength(b.length() - 2);
+			if (size() > 0)
+				b.setLength(b.length() - 2);
 			b.append(")");
 			return b.toString();
 		}

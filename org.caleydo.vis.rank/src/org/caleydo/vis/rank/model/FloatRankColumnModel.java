@@ -332,6 +332,10 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 		propertySupport.firePropertyChange(IFilterColumnMixin.PROP_FILTER, bak, checked);
 	}
 
+	public void setFilter(boolean filterNotMappedEntries, boolean filterMissingEntries, boolean isGlobalFilter) {
+		setFilter(new FilterChecked(filterNotMappedEntries, filterMissingEntries, isGlobalFilter));
+	}
+
 	@Override
 	public void editFilter(final GLElement summary, IGLElementContext context) {
 		Display.getDefault().asyncExec(new Runnable() {

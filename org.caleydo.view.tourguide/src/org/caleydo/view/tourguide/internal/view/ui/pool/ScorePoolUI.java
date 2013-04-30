@@ -92,6 +92,7 @@ public class ScorePoolUI extends GLElementContainer implements IGLLayout {
 
 		this.add(new PaperBasket(table));
 
+		this.add(new SerialFactoryPoolElem(table));
 		for(Map.Entry<String,IScoreFactory> factory : ScoreFactories.getFactories().entrySet()) {
 			this.add(new ScoreFactoryPoolElem(factory.getKey(), factory.getValue(), view));
 		}

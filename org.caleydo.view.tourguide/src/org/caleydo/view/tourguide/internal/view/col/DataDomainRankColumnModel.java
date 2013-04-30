@@ -26,6 +26,7 @@ import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
+import org.caleydo.view.tourguide.internal.TourGuideRenderStyle;
 import org.caleydo.view.tourguide.internal.view.PerspectiveRow;
 import org.caleydo.vis.rank.model.StringRankColumnModel;
 import org.caleydo.vis.rank.ui.detail.ValueElement;
@@ -79,7 +80,7 @@ public class DataDomainRankColumnModel extends StringRankColumnModel {
 			IDataDomain dataDomain = r.getDataDomain();
 			g.color(dataDomain.getColor()).fillRect(1, (h - hint) * 0.5f, hint, hint);
 			if (stratomex.canAdd2Stratomex(r)) {
-				g.fillImage("resources/icons/view/tourguide/add.png", 1, (h - hint) * 0.5f, hint, hint);
+				g.fillImage(TourGuideRenderStyle.ICON_ADD, 1, (h - hint) * 0.5f, hint, hint);
 			}
 			if (h < 5 || w < 20)
 				return;

@@ -1,5 +1,8 @@
 package org.caleydo.view.tourguide.internal.view.ui;
 
+import static org.caleydo.view.tourguide.internal.TourGuideRenderStyle.ICON_FILTER;
+import static org.caleydo.view.tourguide.internal.TourGuideRenderStyle.ICON_FILTER_DISABLED;
+
 import java.util.Collection;
 
 import org.caleydo.core.data.datadomain.DataDomainActions;
@@ -127,8 +130,7 @@ public abstract class ADataDomainElement extends GLButton implements GLButton.IS
 		g.fillImage(getStandardIcon("checkbox", isSelected()), 0, 0, 18, 18);
 		float tw = Math.min(g.text.getTextWidth(model.getDataDomain().getLabel(), 14), w - 18 - 18);
 		g.drawText(model.getDataDomain(), 18, 1, w - 18 - 18, 14);
-		g.fillImage(String.format("resources/icons/view/tourguide/filter%s.png", hasFilter ? "" : "_disabled"),
-				18 + tw + 2, 2, 12, 12);
+		g.fillImage(hasFilter ? ICON_FILTER : ICON_FILTER_DISABLED, 18 + tw + 2, 2, 12, 12);
 	}
 
 	@Override
