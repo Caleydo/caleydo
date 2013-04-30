@@ -86,7 +86,7 @@ public class ComputeScoreJob extends AScoreJob {
 		// all metrics
 		for (IComputedGroupScore metric : this.groupMetrics) {
 			IGroupAlgorithm algorithm = metric.getAlgorithm();
-			IDType target = algorithm.getTargetType(as, as);
+			IDType target = algorithm.getTargetType(as.getVirtualArray(), as.getVirtualArray());
 			for (Group ag : this.data.get(as)) {
 				if (Thread.interrupted() || monitor.isCanceled())
 					return Status.CANCEL_STATUS;
@@ -105,7 +105,7 @@ public class ComputeScoreJob extends AScoreJob {
 			final IDType sType = rs.getIdType();
 
 			IGroupAlgorithm algorithm = score.getAlgorithm();
-			IDType target = algorithm.getTargetType(as, rs);
+			IDType target = algorithm.getTargetType(as.getVirtualArray(), rs.getVirtualArray());
 			for (Group ag : this.data.get(as)) {
 				if (Thread.interrupted() || monitor.isCanceled())
 					return Status.CANCEL_STATUS;

@@ -6,6 +6,7 @@ import java.util.Set;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.variable.Perspective;
+import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.id.IDType;
 import org.caleydo.view.tourguide.spi.algorithm.IStratificationAlgorithm;
@@ -36,7 +37,7 @@ public abstract class AGSEAAlgorithm implements IStratificationAlgorithm {
 	protected abstract void init();
 
 	@Override
-	public final IDType getTargetType(Perspective a, Perspective b) {
+	public final IDType getTargetType(VirtualArray a, VirtualArray b) {
 		IDataDomain dataDomain = perspective.getDataDomain();
 		return ((ATableBasedDataDomain) dataDomain).getDimensionIDType();
 	}
@@ -77,7 +78,7 @@ public abstract class AGSEAAlgorithm implements IStratificationAlgorithm {
 		}
 
 		@Override
-		public IDType getTargetType(Perspective a, Perspective b) {
+		public IDType getTargetType(VirtualArray a, VirtualArray b) {
 			return underlying.getTargetType(a, b);
 		}
 

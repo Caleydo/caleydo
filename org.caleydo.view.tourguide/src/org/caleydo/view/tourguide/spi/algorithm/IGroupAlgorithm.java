@@ -21,7 +21,7 @@ package org.caleydo.view.tourguide.spi.algorithm;
 
 import java.util.Set;
 
-import org.caleydo.core.data.perspective.variable.Perspective;
+import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.id.IDType;
 
 /**
@@ -29,7 +29,7 @@ import org.caleydo.core.id.IDType;
  *
  */
 public interface IGroupAlgorithm {
-	IDType getTargetType(Perspective a, Perspective b);
+	IDType getTargetType(VirtualArray a, VirtualArray b);
 
 	/**
 	 * computes the score between the two sets identified by a set of integer noted in the same id type

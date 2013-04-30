@@ -123,7 +123,7 @@ public abstract class AScoreJob {
 			Collection<IComputedReferenceStratificationScore> stratScores) {
 		for (IComputedStratificationScore score : stratMetrics) {
 			IStratificationAlgorithm algorithm = score.getAlgorithm();
-			IDType target = algorithm.getTargetType(as, as);
+			IDType target = algorithm.getTargetType(as.getVirtualArray(), as.getVirtualArray());
 			if (score.contains(as) || !score.getFilter().doCompute(as, null, as, null)) {
 				continue;
 			}
@@ -140,7 +140,7 @@ public abstract class AScoreJob {
 		for (IComputedReferenceStratificationScore score : stratScores) {
 			IStratificationAlgorithm algorithm = score.getAlgorithm();
 			final Perspective rs = score.getStratification();
-			IDType target = algorithm.getTargetType(as, rs);
+			IDType target = algorithm.getTargetType(as.getVirtualArray(), rs.getVirtualArray());
 			if (score.contains(as) || !score.getFilter().doCompute(as, null, rs, null)) {
 				continue;
 			}

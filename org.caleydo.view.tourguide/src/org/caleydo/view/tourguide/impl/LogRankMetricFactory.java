@@ -31,7 +31,7 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainOracle;
 import org.caleydo.core.data.datadomain.DataDomainOracle.ClinicalVariable;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.perspective.variable.Perspective;
+import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.id.IDType;
@@ -97,7 +97,7 @@ public class LogRankMetricFactory implements IScoreFactory {
 				final IGroupAlgorithm underlying = LogRank.get(clinicalVariable, clinical);
 
 				@Override
-				public IDType getTargetType(Perspective a, Perspective b) {
+				public IDType getTargetType(VirtualArray a, VirtualArray b) {
 					return underlying.getTargetType(a, b);
 				}
 
