@@ -79,8 +79,9 @@ public class ScoreRankColumnModel extends FloatRankColumnModel implements IGLRen
 	@Override
 	public void render(GLGraphics g, float w, float h, GLElement parent) {
 		Perspective strat = resolveStratification(score);
-		if (this.isCollapsed() && headerMode == EHeaderMode.STRAT || headerMode == EHeaderMode.STRAT_GROUP) {
-			g.color(strat.getDataDomain().getColor()).fillRect((w - 10) * 0.5f, (h - 10) * 0.5f, 10, 10);
+		if (this.isCollapsed()) {
+			if (headerMode == EHeaderMode.STRAT || headerMode == EHeaderMode.STRAT_GROUP)
+				g.color(strat.getDataDomain().getColor()).fillRect((w - 10) * 0.5f, (h - 10) * 0.5f, 10, 10);
 		} else {
 			g.drawText(this.score.getLabel(), 1, 1, w - 1, 12, VAlign.CENTER);
 		}

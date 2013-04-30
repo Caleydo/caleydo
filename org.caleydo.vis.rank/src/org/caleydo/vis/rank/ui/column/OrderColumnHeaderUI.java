@@ -26,7 +26,7 @@ import org.caleydo.vis.rank.model.ARankColumnModel;
  * @author Samuel Gratzl
  *
  */
-public class OrderColumnHeaderUI extends AColumnHeaderUI implements IThickHeader {
+public class OrderColumnHeaderUI extends AColumnHeaderUI {
 	public OrderColumnHeaderUI(ARankColumnModel model, IRankTableUIConfig config) {
 		super(model, config, true, true);
 	}
