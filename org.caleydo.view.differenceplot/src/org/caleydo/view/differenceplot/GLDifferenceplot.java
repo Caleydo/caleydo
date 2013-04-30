@@ -155,7 +155,7 @@ public class GLDifferenceplot extends ASingleTablePerspectiveElementView {
 			root.setContent(null);
 		else
 		{
-			rootElement = new DifferenceplotElement(tablePerspective);
+			rootElement = new DifferenceplotElement(tablePerspective, null);
 			root.setContent(rootElement);
 		}		
 	}

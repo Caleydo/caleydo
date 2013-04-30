@@ -48,6 +48,8 @@ public class StatisticsUtils {
 		
 		Table table = tablePerspective.getDataDomain().getTable();
 		
+		// It is an item space visualization
+		// The statistics are computed over the columns
 		if(computationType == 0)
 		{
 			for (Integer recordID : recordVA) {
@@ -70,7 +72,8 @@ public class StatisticsUtils {
 				result.add(computeStatisticForDataColumn(statToCompute, tempDataColumn));
 			}
 		}
-		
+		// It is a dimension space visualization
+		// The statistics are computed over the rows
 		else if(computationType == 1)
 		{
 			for (Integer dimensionID : dimensionVA) {

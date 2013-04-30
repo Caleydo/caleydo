@@ -52,6 +52,9 @@ public class DifferenceplotRenderUtils {
 	private float xRange;
 	private float yRange;
 	
+	private float POINT_SIZE_MULTIPLIER = 0.4f;
+	private float POINT_BORDER_SIZE_MULTIPLIER = 0.45f;
+	
 	
 	private ArrayList<Integer> idList;
 	
@@ -211,10 +214,20 @@ public class DifferenceplotRenderUtils {
 		return dataPoint;
 	}
 	
+	private float computePointSizeAdaptively(float width, float height, int pointCount, float pointMultiplier)
+	{		
+		float minSize = Math.min(width, height);
+		float result = 1.0f * pointMultiplier * ((float) Math.pow(minSize, 0.5)) ;
+		return result;
+	}
+	
 	private void renderHighDetail(GL2 gl, DifferenceplotElement differenceplotElement, float width, float height)
 	{
 		// Now set the selection manager depending on whether the view shows items or dimensions
 		SelectionManager selectionManager = differenceplotElement.getSelection().getRecordSelectionManager();
+		float pointSize = computePointSizeAdaptively(width, height, differenceplotElement.getDataColumns().get(0).size(), POINT_SIZE_MULTIPLIER);
+		float pointBorderSize = computePointSizeAdaptively(width, height, differenceplotElement.getDataColumns().get(0).size(), POINT_BORDER_SIZE_MULTIPLIER);
+		
 		if (differenceplotElement.getDataSelectionConf().getVisSpaceType() == EVisualizationSpaceType.DIMENSIONS_SPACE)
 		{
 			selectionManager = differenceplotElement.getSelection().getDimensionSelectionManager();
@@ -240,7 +253,7 @@ public class DifferenceplotRenderUtils {
 		
 		renderAxes(gl, width, height);
 		
-		gl.glPointSize(22);
+		gl.glPointSize(pointBorderSize);
         gl.glEnable(GL2.GL_POINT_SMOOTH);
         
         // First render the context s.t. the highlighted are placed before the selected
@@ -258,7 +271,7 @@ public class DifferenceplotRenderUtils {
 		
 		// Now render the selected items with their outline
 		
-		gl.glPointSize(22);
+		gl.glPointSize(pointBorderSize);
 		gl.glColor3f( 0,  0, 0);
 		gl.glBegin(GL2.GL_POINTS);
 		for (int i = 0 ; i < differenceplotElement.getDataColumns().get(0).size() ; i++)
@@ -273,7 +286,7 @@ public class DifferenceplotRenderUtils {
 		gl.glEnd();
 		
 		gl.glColor3f( (float) (253/255.0), (float) (122/255.0), (float) (55/255.0));
-        gl.glPointSize(20);
+        gl.glPointSize(pointSize);
 		gl.glBegin(GL2.GL_POINTS);
 		for (int i = 0 ; i < differenceplotElement.getDataColumns().get(0).size() ; i++)
 		{

@@ -77,18 +77,31 @@ public class DifferenceplotElement extends GLElement implements TablePerspective
 	 */
 	private boolean readyForRender = false;
 	
+	/**
+	 * A flag to indicate if this view is rendering remote
+	 * This could be updated when render details for GL_ELEMENT is updated
+	 */
+	private boolean renderRemote = false;
+	
 
 	private ArrayList<ArrayList<Float>> dataColumns;
 	
 	private IPickingListener canvasPickingListener;
 
-	public DifferenceplotElement(TablePerspective tablePerspective) {
+	public DifferenceplotElement(TablePerspective tablePerspective, DataSelectionConfiguration dataSelectionConfiguration) {
 		this.tablePerspective = tablePerspective;
 		this.selection = new TablePerspectiveSelectionMixin(tablePerspective, this);
 		
 		dataColumns = new ArrayList<>();
 		
 		setVisibility(EVisibility.PICKABLE);
+		
+		if (dataSelectionConfiguration != null)
+		{
+			renderRemote = true;
+			this.prepareData(dataSelectionConfiguration);
+			
+		}
 		
 		
 		
@@ -123,7 +136,7 @@ public class DifferenceplotElement extends GLElement implements TablePerspective
 
 	@Override
 	protected void renderPickImpl(GLGraphics g, float w, float h) {
-		if (!dataColumnsSet | !readyForRender)
+		if (!dataColumnsSet | !readyForRender| renderRemote)
 			return;	
 		
 		g.pushResourceLocator(Activator.getResourceLocator());
@@ -161,16 +174,47 @@ public class DifferenceplotElement extends GLElement implements TablePerspective
 				
 				renderUtil = new DifferenceplotRenderUtils();
 				
+				/**
+				 * Here depending on whether the view is rendered remotely, 
+				 * the difference view data construction is computed differently.
+				 */
 				
+				/** In the case of remote rendering, the difference view
+				 *  shows the difference between the brick vs. the rest
+				 */
+				
+				if (renderRemote)
+				{
+					// Use the defaultTablePerspective to compute statistics for the whole set (e.g., all the samples)
+					TablePerspective defaultTablePerspective = tablePerspective.getDataDomain().getDefaultTablePerspective();
+					
+					col1_v1 = StatisticsUtils.computeStatistics(dataSelectionConf.getVisSpaceType().ordinal(), defaultTablePerspective, EStatisticsType.valueOf(dataSelectionConf.getAxisLabels().get(0)), null);
+					col2_v1 = StatisticsUtils.computeStatistics(dataSelectionConf.getVisSpaceType().ordinal(), defaultTablePerspective, EStatisticsType.valueOf(dataSelectionConf.getAxisLabels().get(1)), null);
+					// Use the tablePerspective to compute the statistics only for the brick (e.g., for the samples within the brick)
+					col1_v2 = StatisticsUtils.computeStatistics(dataSelectionConf.getVisSpaceType().ordinal(), tablePerspective, EStatisticsType.valueOf(dataSelectionConf.getAxisLabels().get(0)), null);
+					col2_v2 = StatisticsUtils.computeStatistics(dataSelectionConf.getVisSpaceType().ordinal(), tablePerspective, EStatisticsType.valueOf(dataSelectionConf.getAxisLabels().get(1)), null);
+				}
+				/**
+				 * In the case of normal rendering. The statistics are computed for only 
+				 * the selected records/dimensions. 
+				 */
+				else
+				{
+					ArrayList<Integer> selectedIDs = renderUtil.buildSelectedIDList(this);
+					
+					col1_v1 = StatisticsUtils.computeStatistics(dataSelectionConf.getVisSpaceType().ordinal(), tablePerspective, EStatisticsType.valueOf(dataSelectionConf.getAxisLabels().get(0)), null);
+					col2_v1 = StatisticsUtils.computeStatistics(dataSelectionConf.getVisSpaceType().ordinal(), tablePerspective, EStatisticsType.valueOf(dataSelectionConf.getAxisLabels().get(1)), null);
+					
+					col1_v2 = StatisticsUtils.computeStatistics(dataSelectionConf.getVisSpaceType().ordinal(), tablePerspective, EStatisticsType.valueOf(dataSelectionConf.getAxisLabels().get(0)), selectedIDs);
+					col2_v2 = StatisticsUtils.computeStatistics(dataSelectionConf.getVisSpaceType().ordinal(), tablePerspective, EStatisticsType.valueOf(dataSelectionConf.getAxisLabels().get(1)), selectedIDs);				
+				}
 			
-				ArrayList<Integer> selectedIDs = renderUtil.buildSelectedIDList(this);
 				
-				col1_v1 = StatisticsUtils.computeStatistics(dataSelectionConf.getVisSpaceType().ordinal(), tablePerspective, EStatisticsType.valueOf(dataSelectionConf.getAxisLabels().get(0)), null);
-				col2_v1 = StatisticsUtils.computeStatistics(dataSelectionConf.getVisSpaceType().ordinal(), tablePerspective, EStatisticsType.valueOf(dataSelectionConf.getAxisLabels().get(1)), null);
 				
-				col1_v2 = StatisticsUtils.computeStatistics(dataSelectionConf.getVisSpaceType().ordinal(), tablePerspective, EStatisticsType.valueOf(dataSelectionConf.getAxisLabels().get(0)), selectedIDs);
-				col2_v2 = StatisticsUtils.computeStatistics(dataSelectionConf.getVisSpaceType().ordinal(), tablePerspective, EStatisticsType.valueOf(dataSelectionConf.getAxisLabels().get(1)), selectedIDs);
-			
+
+				
+				
+				
 				for (int i = 0; i < col1_v1.size(); i++)
 				{
 					float diffVal = col1_v2.get(i) - col1_v1.get(i);
@@ -191,7 +235,10 @@ public class DifferenceplotElement extends GLElement implements TablePerspective
 				if (!this.dataColumnsSet)
 				{
 					this.dataColumnsSet = true;
-					initListeners();
+					if(!renderRemote)
+					{
+						initListeners();
+					}
 				}
 				else
 				{
@@ -317,6 +364,14 @@ public class DifferenceplotElement extends GLElement implements TablePerspective
 	
 	public TablePerspective getTablePerspective() {
 		return tablePerspective;
+	}
+
+	public boolean isRenderRemote() {
+		return renderRemote;
+	}
+
+	public void setRenderRemote(boolean renderRemote) {
+		this.renderRemote = renderRemote;
 	}
 	
 	

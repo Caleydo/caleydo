@@ -60,4 +60,43 @@
          </dataDomain>
       </association>
    </extension>
+   <extension
+         point="org.caleydo.view.EmbeddedView">
+      <EmbeddingInfo
+            viewID="org.caleydo.view.differenceplot">
+         <ParentView
+               viewID="org.caleydo.view.stratomex">
+            <Embedding
+                  embeddingID="org.caleydo.view.stratomex.numerical.segment.brick"
+                  icon="resources/icons/icon.png"
+                  isDefaultView="false"
+                  visInfo="org.caleydo.view.differenceplot.DifferencePlotVisInfo">
+               <RendererCreator
+                     class="org.caleydo.view.differenceplot.DifferencePlotGLElementCreator">
+               </RendererCreator>
+            </Embedding>
+            <Embedding
+                  embeddingID="org.caleydo.view.stratomex.categorical.segment.brick"
+                  icon="resources/icons/icon.png"
+                  isDefaultView="false"
+                  visInfo="org.caleydo.view.differenceplot.DifferencePlotVisInfo">
+               <RendererCreator
+                     class="org.caleydo.view.differenceplot.DifferencePlotGLElementCreator">
+               </RendererCreator>
+            </Embedding>">
+         </ParentView>
+         <ParentView
+               viewID="org.caleydo.view.bicluster.cluster">
+            <Embedding
+                  embeddingID="org.caleydo.view.bicluster.cluster"
+                  icon="resources/icons/icon.png"
+                  isDefaultView="false"
+                  visInfo="org.caleydo.view.differenceplot.DifferencePlotVisInfo">
+               <RendererCreator
+                     class="org.caleydo.view.differenceplot.DifferencePlotGLElementCreator">
+               </RendererCreator>
+            </Embedding>
+         </ParentView>
+      </EmbeddingInfo>
+   </extension>
 </plugin>
