@@ -2,7 +2,6 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension-point id="org.caleydo.tourguide.scorefactory" name="ScoreFactory" schema="schema/org.caleydo.tourguide.scorefactory.exsd"/>
-   <extension-point id="org.caleydo.tourguide.metricfactory" name="Metric Factory" schema="schema/org.caleydo.tourguide.metricfactory.exsd"/>
    <extension
          point="org.eclipse.ui.views">
       <view
@@ -67,9 +66,6 @@
             class="org.caleydo.view.tourguide.impl.GeneSetEnrichmentScoreFactory"
             name="Gene Set Enrichment Analysis">
       </factory>
-   </extension>
-   <extension
-         point="org.caleydo.tourguide.metricfactory">
       <factory
             class="org.caleydo.view.tourguide.impl.LogRankMetricFactory"
             name="Log Rank Score">

@@ -82,7 +82,7 @@ import org.caleydo.view.tourguide.internal.view.model.TableDataDomainQuery;
 import org.caleydo.view.tourguide.internal.view.ui.DataDomainQueryUI;
 import org.caleydo.view.tourguide.internal.view.ui.pool.ScorePoolUI;
 import org.caleydo.view.tourguide.spi.IScoreFactory;
-import org.caleydo.view.tourguide.spi.score.IGroupScore;
+import org.caleydo.view.tourguide.spi.compute.IComputedGroupScore;
 import org.caleydo.view.tourguide.spi.score.IRegisteredScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
 import org.caleydo.vis.rank.config.RankTableConfigBase;
@@ -431,7 +431,7 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 				if (hasAnyGroupScore((ACompositeRankColumnModel) col))
 					return true;
 			} else if (col instanceof ScoreRankColumnModel) {
-				if (((ScoreRankColumnModel) col).getScore() instanceof IGroupScore)
+				if (((ScoreRankColumnModel) col).getScore() instanceof IComputedGroupScore)
 					return true;
 			}
 		}
@@ -440,7 +440,7 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 
 	private static boolean hasAnyGroupScoreScore(Iterable<IScore> scores) {
 		for (IScore s : Scores.flatten(scores)) {
-			if (s instanceof IGroupScore)
+			if (s instanceof IComputedGroupScore)
 				return true;
 		}
 		return false;
