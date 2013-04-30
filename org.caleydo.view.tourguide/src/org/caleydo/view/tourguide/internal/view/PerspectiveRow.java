@@ -46,7 +46,7 @@ import com.google.common.base.Function;
  * @author Samuel Gratzl
  *
  */
-public final class PerspectiveRow extends ARow implements ILabelProvider, Cloneable {
+public class PerspectiveRow extends ARow implements ILabelProvider, Cloneable {
 	public static final Function<IRow, String> TO_DATADOMAIN = new Function<IRow, String>() {
 		@Override
 		public String apply(IRow in) {

@@ -186,8 +186,11 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 		});
 		this.table.add(new RankRankColumnModel().setWidth(30));
 		table.add(new DataDomainRankColumnModel(this).setWidth(80).setCollapsed(true));
-		this.table.add(new StringRankColumnModel(GLRenderers.drawText("Stratification"),
-				PerspectiveRow.TO_STRATIFICATION).setWidth(150));
+		final StringRankColumnModel base = new StringRankColumnModel(GLRenderers.drawText("Stratification"),
+				PerspectiveRow.TO_STRATIFICATION);
+		this.table.add(base);
+		base.setWidth(150);
+		base.orderByMe();
 		this.table.add(new StringRankColumnModel(GLRenderers.drawText("Group"), PerspectiveRow.TO_GROUP).setWidth(50)
 				.setCollapsed(true));
 		this.table.add(new SizeRankColumnModel().setWidth(75));
