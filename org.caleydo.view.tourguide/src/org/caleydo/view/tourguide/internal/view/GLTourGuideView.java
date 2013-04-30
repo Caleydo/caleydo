@@ -90,6 +90,7 @@ import org.caleydo.vis.rank.config.RankTableUIConfigBase;
 import org.caleydo.vis.rank.layout.RowHeightLayouts;
 import org.caleydo.vis.rank.model.ACompositeRankColumnModel;
 import org.caleydo.vis.rank.model.ARankColumnModel;
+import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.MaxCompositeRankColumnModel;
 import org.caleydo.vis.rank.model.RankRankColumnModel;
 import org.caleydo.vis.rank.model.RankTableModel;
@@ -102,6 +103,7 @@ import org.caleydo.vis.rank.ui.TableUI;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
+import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
 /**
  * @author Samuel Gratzl
@@ -193,7 +195,19 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 		base.orderByMe();
 		this.table.add(new StringRankColumnModel(GLRenderers.drawText("Group"), PerspectiveRow.TO_GROUP).setWidth(50)
 				.setCollapsed(true));
-		this.table.add(new SizeRankColumnModel().setWidth(75));
+		this.table.add(new SizeRankColumnModel("#Elements", new Function<IRow, Integer>() {
+			@Override
+			public Integer apply(IRow in) {
+				return ((PerspectiveRow) in).size();
+			}
+		}).setWidth(75));
+
+		this.table.add(new SizeRankColumnModel("#Clusters", new Function<IRow, Integer>() {
+			@Override
+			public Integer apply(IRow in) {
+				return ((PerspectiveRow) in).getStratification().getVirtualArray().getGroupList().size();
+			}
+		}).setWidth(75).setCollapsed(true));
 
 		addAllExternalScore(this.table);
 

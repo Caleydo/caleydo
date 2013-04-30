@@ -52,7 +52,8 @@ public class PerspectiveRow extends ARow implements ILabelProvider, Cloneable {
 		public String apply(IRow in) {
 			if (in == null || !(in instanceof PerspectiveRow))
 				return null;
-			return ((PerspectiveRow) in).getDataDomain().getLabel();
+			PerspectiveRow r = ((PerspectiveRow) in);
+			return r.getDataDomain().getLabel() + " " + r.getLabel();
 		}
 	};
 	public static final Function<IRow, String> TO_STRATIFICATION = new Function<IRow, String>() {
