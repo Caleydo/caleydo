@@ -77,18 +77,31 @@ public class ScatterplotElement extends GLElement implements TablePerspectiveSel
 	 */
 	private boolean readyForRender = false;
 	
+	/**
+	 * A flag to indicate if this view is rendering remote
+	 * This could be updated when render details for GL_ELEMENT is updated
+	 */
+	private boolean renderRemote = false;
+	
 
 	private ArrayList<ArrayList<Float>> dataColumns;
 	
 	private IPickingListener canvasPickingListener;
 
-	public ScatterplotElement(TablePerspective tablePerspective) {
+	public ScatterplotElement(TablePerspective tablePerspective, DataSelectionConfiguration dataSelectionConfiguration) {
 		this.tablePerspective = tablePerspective;
 		this.selection = new TablePerspectiveSelectionMixin(tablePerspective, this);
 		
 		dataColumns = new ArrayList<>();
 		
 		setVisibility(EVisibility.PICKABLE);
+		
+		if (dataSelectionConfiguration != null)
+		{
+			renderRemote = true;
+			this.prepareData(dataSelectionConfiguration);
+			
+		}
 		
 		
 		
@@ -122,7 +135,7 @@ public class ScatterplotElement extends GLElement implements TablePerspectiveSel
 
 	@Override
 	protected void renderPickImpl(GLGraphics g, float w, float h) {
-		if (!dataColumnsSet | !readyForRender)
+		if (!dataColumnsSet | !readyForRender | renderRemote)
 			return;	
 		
 		g.pushResourceLocator(Activator.getResourceLocator());
@@ -198,7 +211,11 @@ public class ScatterplotElement extends GLElement implements TablePerspectiveSel
 				if (!this.dataColumnsSet)
 				{
 					this.dataColumnsSet = true;
-					initListeners();
+					if(!renderRemote)
+					{
+						initListeners();
+					}
+					
 				}
 				else
 				{
@@ -330,6 +347,14 @@ public class ScatterplotElement extends GLElement implements TablePerspectiveSel
 	
 	public TablePerspective getTablePerspective() {
 		return tablePerspective;
+	}
+
+	public boolean isRenderRemote() {
+		return renderRemote;
+	}
+
+	public void setRenderRemote(boolean renderRemote) {
+		this.renderRemote = renderRemote;
 	}
 	
 	

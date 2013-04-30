@@ -155,7 +155,7 @@ public class GLScatterplot extends ASingleTablePerspectiveElementView {
 			root.setContent(null);
 		else
 		{
-			rootElement = new ScatterplotElement(tablePerspective);
+			rootElement = new ScatterplotElement(tablePerspective, null);
 			root.setContent(rootElement);
 		}		
 	}

@@ -24,6 +24,7 @@ import java.util.List;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.view.ARemoteGLElementCreator;
 import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.view.scatterplot.utils.ScatterplotDataUtils;
 
 /**
  * @author Samuel Gratzl
@@ -34,7 +35,12 @@ public class ScatterPlotGLElementCreator extends ARemoteGLElementCreator {
 	protected GLElement create(List<TablePerspective> tablePerspectives) {
 		if (tablePerspectives.isEmpty())
 			return null;
-		return new ScatterplotElement(tablePerspectives.get(0));
+		else
+		{
+			GLElement element = new ScatterplotElement(tablePerspectives.get(0), ScatterplotDataUtils.buildDefaultDataSelection());
+			return element;
+		}
+		
 	}
 
 }
