@@ -36,6 +36,7 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataSupportDefinitions;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.data.NewDataDomainEvent;
 import org.caleydo.core.event.data.RemoveDataDomainEvent;
 import org.caleydo.core.event.data.ReplaceTablePerspectiveEvent;
@@ -53,7 +54,6 @@ import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IPopupLayer;
 import org.caleydo.core.view.opengl.layout2.basic.ScrollBar;
 import org.caleydo.core.view.opengl.layout2.basic.ScrollingDecorator;
-import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
@@ -100,6 +100,7 @@ import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 import org.caleydo.vis.rank.ui.RenderStyle;
 import org.caleydo.vis.rank.ui.TableBodyUI;
 import org.caleydo.vis.rank.ui.TableUI;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
@@ -539,6 +540,7 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 				q.setJustActive(false);
 			}
 		}
+
 		getDataDomainQueryUI().updateSelections();
 
 		getPoolUI().updateMode(mode);
@@ -697,8 +699,14 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 
 	@ListenTo(sendToMe = true)
 	private void onAddColumn(AddScoreColumnEvent event) {
+		if (event.getScores().isEmpty())
+			return;
+
 		Collection<IScore> toCompute = new ArrayList<>();
 		Scores scores = Scores.get();
+
+		if (!checkScoreMode(event))
+			return;
 		for (IScore s : event.getScores()) {
 			if (!s.supports(this.mode))
 				continue;
@@ -719,6 +727,68 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 		scheduleAllOf(toCompute);
 	}
 
+
+	/**
+	 * @param event
+	 * @return
+	 */
+	private boolean checkScoreMode(final AddScoreColumnEvent event) {
+		int supportCount = 0;
+		for (IScore s : event.getScores())
+			if (s.supports(this.mode))
+				supportCount++;
+
+		if (supportCount == 0) {
+			if (event.isSwitchModeIfNeeded()) {
+				// TODO switch mode
+				IScore sample = event.getScores().iterator().next();
+				EDataDomainQueryMode target = null;
+				for (EDataDomainQueryMode modi : EDataDomainQueryMode.values())
+					if (sample.supports(modi)) {
+						target = modi;
+						break;
+					}
+				if (target == null) {
+					// ERROR supports nothing
+					return false;
+				}
+				for (ADataDomainQuery q : this.queries) {
+					if (q.getMode() == target) {
+						q.setActive(true);
+						break;
+					}
+				}
+				return true;
+			} else {
+				final StringBuilder b = new StringBuilder();
+				for(IScore s : event.getScores()) {
+					b.append('\n').append(s.getLabel());
+				}
+				//none support the current mode, ask the user what to do
+				Display.getDefault().asyncExec(new Runnable() {
+					@Override
+					public void run() {
+						boolean r = MessageDialog.openQuestion(parentComposite.getShell(), "Score Mode warning",
+								"The new score requires a different data domain category. Do you want to switch and select the first matching one?");
+						if (r) {
+							EventPublisher.trigger(new AddScoreColumnEvent(event.getScores(), true)
+									.to(GLTourGuideView.this));
+						}
+					}
+				});
+				return false;
+			}
+		} else if (supportCount < event.getScores().size()) {
+			Display.getDefault().asyncExec(new Runnable() {
+				@Override
+				public void run() {
+					MessageDialog.openWarning(parentComposite.getShell(), "Invalid score mode", "Some of the scores can't be added as the are using the wrong mode");
+				}
+			});
+		}
+		return true;
+
+	}
 
 	@ListenTo(sendToMe = true)
 	private void onCreateScore(final CreateScoreEvent event) {
@@ -777,11 +847,16 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 		public boolean canEditValues() {
 			return false;
 		}
+
+		@Override
+		public EButtonBarPositionMode getButtonBarPosition() {
+			return EButtonBarPositionMode.OVER_LABEL;
+		}
 	}
 
 	private class TourGuideVis extends GLElementContainer {
 		public TourGuideVis() {
-			setLayout(GLLayouts.flowVertical(10));
+			setLayout(new ReactiveFlowLayout(10));
 			this.add(new DataDomainQueryUI(queries));
 			TableUI tableui = new TableUI(table, new RankTableUIConfig(), RowHeightLayouts.UNIFORM);
 			ScrollingDecorator sc = new ScrollingDecorator(tableui, new ScrollBar(true), null,

@@ -71,4 +71,17 @@
             name="Log Rank Score">
       </factory>
    </extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="org.caleydo.core.gui.perspective">
+         <view
+               id="org.caleydo.view.tool.tourguide"
+               minimized="false"
+               relationship="stack"
+               relative="bottom"
+               visible="false">
+         </view>
+      </perspectiveExtension>
+   </extension>
 </plugin>

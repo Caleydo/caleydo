@@ -187,6 +187,11 @@ public class GLElementContainer extends GLElement implements IGLElementParent, I
 		return children.isEmpty();
 	}
 
+	/**
+	 * sorts the children according to the given comparator
+	 * 
+	 * @param comparator
+	 */
 	public final void sortBy(Comparator<GLElement> comparator) {
 		Collections.sort(children, comparator);
 		relayout();
