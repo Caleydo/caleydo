@@ -15,6 +15,12 @@ import org.caleydo.view.differenceplot.dialogues.DataSelectionConfiguration;
  */
 public class DifferenceplotDataUtils {
 	
+	/**
+	 * Finds the selected item IDs for a selection rectangle on the view
+	 * @param dataColumns
+	 * @param rect
+	 * @return
+	 */
 	public static ArrayList<Integer> findSelectedElements(ArrayList<ArrayList<Float>> dataColumns, SelectionRectangle rect)
 	{
 		ArrayList<Integer> result = new ArrayList<>();
@@ -43,7 +49,7 @@ public class DifferenceplotDataUtils {
 		switch (configurationOption) {
 		case 0:
 			// View will show derived data
-			// It will display median vs. IQR as default
+			// It will display median vs. standard deviation as default
 			// It will be a dimension visualization
 			
 			
@@ -59,7 +65,7 @@ public class DifferenceplotDataUtils {
 			ArrayList<String> axisLabels = new ArrayList<>();
 			 
 			axisLabels.add( EStatisticsType.MEDIAN.name() );
-			axisLabels.add( EStatisticsType.IQR.name() );
+			axisLabels.add( EStatisticsType.STAND_DEV.name() );
 			
 			dataSelectionConf.setAxisLabels(axisLabels);
 			

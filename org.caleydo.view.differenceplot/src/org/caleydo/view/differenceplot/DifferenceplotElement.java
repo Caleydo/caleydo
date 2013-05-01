@@ -86,6 +86,12 @@ public class DifferenceplotElement extends GLElement implements TablePerspective
 
 	private ArrayList<ArrayList<Float>> dataColumns;
 	
+	/**
+	 * An arraylist to hold if the differences between two samples are significant
+	 * Currently only populated in remote rendering mode
+	 */
+	ArrayList<Boolean> significanceDiffFlags;
+	
 	private IPickingListener canvasPickingListener;
 
 	public DifferenceplotElement(TablePerspective tablePerspective, DataSelectionConfiguration dataSelectionConfiguration) {
@@ -93,6 +99,7 @@ public class DifferenceplotElement extends GLElement implements TablePerspective
 		this.selection = new TablePerspectiveSelectionMixin(tablePerspective, this);
 		
 		dataColumns = new ArrayList<>();
+		significanceDiffFlags = null;
 		
 		setVisibility(EVisibility.PICKABLE);
 		
@@ -172,6 +179,8 @@ public class DifferenceplotElement extends GLElement implements TablePerspective
 				ArrayList<Float> col1_v2 = new ArrayList<Float>();
 				ArrayList<Float> col2_v2 = new ArrayList<Float>();
 				
+				
+				
 				renderUtil = new DifferenceplotRenderUtils();
 				
 				/**
@@ -193,6 +202,12 @@ public class DifferenceplotElement extends GLElement implements TablePerspective
 					// Use the tablePerspective to compute the statistics only for the brick (e.g., for the samples within the brick)
 					col1_v2 = StatisticsUtils.computeStatistics(dataSelectionConf.getVisSpaceType().ordinal(), tablePerspective, EStatisticsType.valueOf(dataSelectionConf.getAxisLabels().get(0)), null);
 					col2_v2 = StatisticsUtils.computeStatistics(dataSelectionConf.getVisSpaceType().ordinal(), tablePerspective, EStatisticsType.valueOf(dataSelectionConf.getAxisLabels().get(1)), null);
+					
+					int sampleSize1 = StatisticsUtils.computeSampleSize(dataSelectionConf.getVisSpaceType().ordinal(), defaultTablePerspective, false);
+					int sampleSize2 = StatisticsUtils.computeSampleSize(dataSelectionConf.getVisSpaceType().ordinal(), tablePerspective, false);
+					
+					significanceDiffFlags = StatisticsUtils.computeSignificance(false, col1_v1, col1_v2, col2_v1, col2_v2, sampleSize1, sampleSize2);
+					
 				}
 				/**
 				 * In the case of normal rendering. The statistics are computed for only 
@@ -372,6 +387,14 @@ public class DifferenceplotElement extends GLElement implements TablePerspective
 
 	public void setRenderRemote(boolean renderRemote) {
 		this.renderRemote = renderRemote;
+	}
+
+	public ArrayList<Boolean> getSignificanceDiffFlags() {
+		return significanceDiffFlags;
+	}
+
+	public void setSignificanceDiffFlags(ArrayList<Boolean> significanceDiffFlags) {
+		this.significanceDiffFlags = significanceDiffFlags;
 	}
 	
 	

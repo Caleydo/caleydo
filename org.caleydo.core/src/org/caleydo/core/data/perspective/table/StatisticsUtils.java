@@ -22,6 +22,7 @@ import java.util.Collections;
 
 import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.virtualarray.VirtualArray;
+import org.caleydo.core.util.statistics.TDistributionLookup;
 import org.caleydo.core.view.*;
 
 /**
@@ -49,7 +50,7 @@ public class StatisticsUtils {
 		Table table = tablePerspective.getDataDomain().getTable();
 		
 		// It is an item space visualization
-		// The statistics are computed over the columns
+		// The statistics are computed over the rows
 		if(computationType == 0)
 		{
 			for (Integer recordID : recordVA) {
@@ -73,7 +74,7 @@ public class StatisticsUtils {
 			}
 		}
 		// It is a dimension space visualization
-		// The statistics are computed over the rows
+		// The statistics are computed over the columns
 		else if(computationType == 1)
 		{
 			for (Integer dimensionID : dimensionVA) {
@@ -282,6 +283,160 @@ public class StatisticsUtils {
 	{
 		StatContainer fullStatContainer = new StatContainer();
 		return fullStatContainer;
+	}
+	
+	/**
+	 * Helper function for two-sample Welch's test
+	 * @param s1, variance for the first sample set
+	 * @param s2, variance for the second sample set
+	 * @param n1, number of items in set 1
+	 * @param n2, number of items in set 2
+	 * @return
+	 */
+	public static Integer computeDegreesOfFreedomForWelch(float s1, float s2, float n1, float n2)
+	{
+		Integer df = 0;
+		
+		float frac1 = (float) Math.pow((s1 / n1), 2) / (n1 - 1);
+		float frac2 = (float) Math.pow((s2 / n2), 2) / (n2 - 1);
+		
+		df = (int) (((float) Math.pow((s1 / n1 + s2 / n2), 2)) / (frac1 + frac2));
+		
+		return df;
+	}
+	
+	/**
+	 * Computes the variance estimator for two sampled welch test
+	 * @param s1, variance for the first sample set
+	 * @param s2, variance for the second sample set
+	 * @param n1, number of items in set 1
+	 * @param n2, number of items in set 2
+	 * @return
+	 */
+	public static float computeVarianceEstimatorTwoSampleForWelch(float s1, float s2, float n1, float n2)
+	{
+		return (float) Math.sqrt(s1 / n1 + s2 / n2);
+	}
+	
+	/**
+	 * Computes the degrees of freedom for the samples and looks up
+	 * the t-value for the df 
+	 * 
+	 * @param singleSided
+	 * @param s1
+	 * @param s2
+	 * @param n1
+	 * @param n2
+	 * @return
+	 */
+	public static float computeCriticalTValue(boolean singleSided, float s1, float s2, float n1, float n2)
+	{
+		int df = computeDegreesOfFreedomForWelch(s1, s2, n1, n2);
+		return TDistributionLookup.returnCriticalTValue(singleSided, df);
+	}
+	
+	
+	
+	/**
+	 * Returns the minimum difference between two samples s.t.
+	 * 
+	 * 
+	 * @param s1, variance for the first sample set
+	 * @param s2, variance for the second sample set
+	 * @param n1, number of items in set 1
+	 * @param n2, number of items in set 2
+	 * @return
+	 */
+	public static float computeCriticalMeanDifference(float s1, float s2, int n1, int n2)
+	{
+		float criticalT = computeCriticalTValue(false, s1, s2, n1, n2);
+		float sampleVariance = computeVarianceEstimatorTwoSampleForWelch(s1, s2, n1, n2);
+		return criticalT * sampleVariance;
+	}
+	
+	/**
+	 * 
+	 * @param m1, mean of subset 1
+	 * @param m2, mean of subset 2
+	 * @param s1, variance for the first sample set
+	 * @param s2, variance for the second sample set
+	 * @param n1, number of items in set 1
+	 * @param n2, number of items in set 2
+	 * @return
+	 */
+	public static float computeTValue(float m1, float m2, float s1, float s2, int n1, int n2)
+	{
+		float sampleVariance = computeVarianceEstimatorTwoSampleForWelch(s1, s2, n1, n2);
+		return (m1 - m2) / sampleVariance;
+	}
+	
+	public static ArrayList<Float> computeTValues(ArrayList<Float> mean1, ArrayList<Float> mean2, ArrayList<Float> var1, ArrayList<Float> var2, int size1, int size2)
+	{
+		ArrayList<Float> tValues = new ArrayList<Float>();
+		
+		for(int i = 0; i < mean1.size(); i++)
+		{
+			tValues.add(computeTValue(mean1.get(i), mean2.get(i), var1.get(i), var2.get(i), size1, size2));
+		}
+		
+		return tValues;
+	}
+	
+	public static ArrayList<Float> computeCriticalTValues(boolean singleSided, ArrayList<Float> mean1, ArrayList<Float> mean2, ArrayList<Float> var1, ArrayList<Float> var2, int size1, int size2)
+	{
+		ArrayList<Float> tValues = new ArrayList<Float>();
+		
+		for(int i = 0; i < mean1.size(); i++)
+		{
+			tValues.add(computeCriticalTValue(singleSided, var1.get(i), var2.get(i), size1, size2));
+		}
+		
+		return tValues;
+	}
+	
+	
+	public static ArrayList<Boolean> computeSignificance(boolean singleSided, ArrayList<Float> mean1, ArrayList<Float> mean2, ArrayList<Float> var1, ArrayList<Float> var2, int size1, int size2)
+	{
+		// First compute the t statistic values
+		ArrayList<Float> tValues = computeTValues(mean1, mean2, var1, var2, size1, size2);
+		// then compute the critical t statistic values
+		ArrayList<Float> criticalTValues = computeCriticalTValues(singleSided, mean1, mean2, var1, var2, size1, size2);
+		
+		// now compare for significance test
+		ArrayList<Boolean> significanceFlags = new ArrayList<Boolean>();
+		
+		for(int i = 0; i < tValues.size(); i++)
+		{
+			if(Math.abs(tValues.get(i)) >= criticalTValues.get(i))
+			{
+				significanceFlags.add(true);
+			}
+			else
+			{
+				significanceFlags.add(false);
+			}
+		}
+		
+		return significanceFlags;
+	}
+	
+	public static Integer computeSampleSize(int computationType, TablePerspective tablePerspective, boolean considerSelections )
+	{
+		VirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
+		VirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
+		
+		//TODO: consider selections needs to be included for later use
+		
+		// It is an item space visualization
+		// The statistics are computed over the rows
+		if(computationType == 0)
+		{
+			return dimensionVA.size();
+		}
+		else
+		{
+			return recordVA.size();
+		}
 	}
 
 }
