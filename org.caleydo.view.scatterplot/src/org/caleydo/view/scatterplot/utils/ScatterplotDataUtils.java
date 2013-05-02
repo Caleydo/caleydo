@@ -70,7 +70,7 @@ public class ScatterplotDataUtils {
 			dataSelectionConf.setAxisLabels(axisLabels);
 			
 			// Set the selected vis domain
-			dataSelectionConf.setVisSpaceType(EVisualizationSpaceType.DIMENSIONS_SPACE);
+			dataSelectionConf.setVisSpaceType(EVisualizationSpaceType.ITEMS_SPACE);
 			
 			// Set the selected data generation domain, e.g., raw or derived
 			dataSelectionConf.setDataResourceType(EDataGenerationType.DERIVED_DATA);		

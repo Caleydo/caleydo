@@ -25,6 +25,8 @@ import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.util.statistics.TDistributionLookup;
 import org.caleydo.core.view.*;
 
+import DistLib.DistLib_h;
+
 /**
  * A utility class that contains static functions to compute several statistics
  * @author cturkay
@@ -395,7 +397,7 @@ public class StatisticsUtils {
 	}
 	
 	
-	public static ArrayList<Boolean> computeSignificance(boolean singleSided, ArrayList<Float> mean1, ArrayList<Float> mean2, ArrayList<Float> var1, ArrayList<Float> var2, int size1, int size2)
+	public static ArrayList<Boolean> computeSignificanceOnTwoSampleTtest(boolean singleSided, ArrayList<Float> mean1, ArrayList<Float> mean2, ArrayList<Float> var1, ArrayList<Float> var2, int size1, int size2)
 	{
 		// First compute the t statistic values
 		ArrayList<Float> tValues = computeTValues(mean1, mean2, var1, var2, size1, size2);
@@ -437,6 +439,74 @@ public class StatisticsUtils {
 		{
 			return recordVA.size();
 		}
+	}
+	
+	public static float computeFstatForVarianceTest(float s1, float s2, int size1, int size2)
+	{
+		float fStatistic = s1 / s2;
+		float pValue = (float) DistLib.f.cumulative(fStatistic, size1 - 1, size2 - 1);
+		
+		return pValue;
+	}
+	
+	public static float computeCriticalFstatForVarianceTest(int size1, int size2)
+	{
+		//float fStatistic = (float) weka.core.Statistics.FProbability(0.05f, size1 - 1, size2 - 1);
+		
+		//float fStatisticTest7 = (float) weka.core.Statistics. FProbability(0.95f, 10, 18);
+		
+		float fStatistic = (float) DistLib.f.cumulative(0.95f, size1 - 1, size2 - 1);
+		//float fStatisticTest4 = (float) DistLib.f.cumulative(0.05f, 18, 10);
+		
+		//float fStatisticTest2 = (float) DistLib.f.density(0.95f, 18, 10);
+		//float fStatisticTest5 = (float) DistLib.f.density(0.05f, 18, 10);
+		
+		//float fStatisticTest3 = (float) DistLib.f.quantile(0.9f,  size1 - 1, size2 - 1);
+		
+		
+		
+		
+		//float fStatisticTest6 = (float) DistLib.f.quantile(0.05f, 18, 10);
+		
+		return fStatistic;
+	}
+	
+	public static ArrayList<Float> computeFValues(ArrayList<Float> var1, ArrayList<Float> var2, int size1, int size2)
+	{
+		ArrayList<Float> fValues = new ArrayList<Float>();
+		
+		for(int i = 0; i < var1.size(); i++)
+		{
+			fValues.add(computeFstatForVarianceTest(var1.get(i), var2.get(i), size1, size2));
+		}
+		
+		return fValues;
+	}
+	
+	public static ArrayList<Boolean> computeSignificanceOnTwoSampleVarianceFTest( ArrayList<Float> var1, ArrayList<Float> var2, int size1, int size2)
+	{
+		// First compute the t statistic values
+		ArrayList<Float> fValues1 = computeFValues(var1, var2, size1, size2);
+		ArrayList<Float> fValues2 = computeFValues(var2, var1, size2, size1);
+		// then compute the critical t statistic values
+		float criticalFValue = computeCriticalFstatForVarianceTest(size1, size2);
+		
+		// now compare for significance test
+		ArrayList<Boolean> significanceFlags = new ArrayList<Boolean>();
+		
+		for(int i = 0; i < fValues1.size(); i++)
+		{
+			if(fValues1.get(i) < 0.001 | fValues2.get(i) < 0.001)
+			{
+				significanceFlags.add(false);
+			}
+			else
+			{
+				significanceFlags.add(false);
+			}
+		}
+		
+		return significanceFlags;
 	}
 
 }

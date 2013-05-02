@@ -79,7 +79,7 @@ public class DifferenceplotRenderUtils {
 		
 		if(differenceplotElement.isRenderRemote())
 		{
-			renderLowDetail(gl, differenceplotElement, width, height, differenceplotElement.getSignificanceDiffFlags());
+			renderLowDetail(gl, differenceplotElement, width, height, differenceplotElement.getSignificanceDiffFlagMean(), differenceplotElement.getSignificanceDiffFlagVariance());
 		}
 		else
 		{
@@ -307,7 +307,7 @@ public class DifferenceplotRenderUtils {
 		gl.glEnd();		
 	}
 	
-	private void renderLowDetail(GL2 gl, DifferenceplotElement differenceplotElement, float width, float height, ArrayList<Boolean> significanceDiffFlags)
+	private void renderLowDetail(GL2 gl, DifferenceplotElement differenceplotElement, float width, float height, ArrayList<Boolean> significanceDiffFlags1, ArrayList<Boolean> significanceDiffFlags2)
 	{
 		// Now set the selection manager depending on whether the view shows items or dimensions
 		SelectionManager selectionManager = differenceplotElement.getSelection().getRecordSelectionManager();
@@ -366,7 +366,7 @@ public class DifferenceplotRenderUtils {
 			//if(!view.getSelectionManager().checkStatus(SelectionType.DESELECTED, recordID))
 			if(selectionManager.checkStatus(SelectionType.SELECTION, idList.get(i)) | !anyItemSelected)			
 			{
-				if(significanceDiffFlags.get(i))
+				if(significanceDiffFlags1.get(i)| significanceDiffFlags2.get(i))
 				{
 					gl.glVertex3f((differenceplotElement.getDataColumns().get(0).get(i) - xMin) / xRange * xScale + sideSpacing, height - ((differenceplotElement.getDataColumns().get(1).get(i) - yMin) / yRange * yScale + sideSpacing) , 0);		        
 				}	
@@ -383,7 +383,7 @@ public class DifferenceplotRenderUtils {
 			if(selectionManager.checkStatus(SelectionType.SELECTION, idList.get(i)) | !anyItemSelected)			
 			{
 				gl.glBegin(GL2.GL_POINTS);
-				if(significanceDiffFlags.get(i))
+				if(significanceDiffFlags1.get(i)| significanceDiffFlags2.get(i))
 				{
 					gl.glColor4f( (float) (253/255.0), (float) (122/255.0), (float) (55/255.0), (float) (255/255.0));
 				}

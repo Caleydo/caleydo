@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: DistLib
+Bundle-SymbolicName: org.caleydo.lib.DistLib
+Bundle-Version: 1.0.0
+Bundle-ClassPath: DistLib.jar
+Export-Package: DistLib;version="1.0.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7

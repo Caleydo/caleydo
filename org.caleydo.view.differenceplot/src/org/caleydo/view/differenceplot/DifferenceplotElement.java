@@ -87,10 +87,16 @@ public class DifferenceplotElement extends GLElement implements TablePerspective
 	private ArrayList<ArrayList<Float>> dataColumns;
 	
 	/**
-	 * An arraylist to hold if the differences between two samples are significant
+	 * An arraylist to hold if the differences in mean (median) between two samples are significant
 	 * Currently only populated in remote rendering mode
 	 */
-	ArrayList<Boolean> significanceDiffFlags;
+	ArrayList<Boolean> significanceDiffFlagMean;
+	
+	/**
+	 * An arraylist to hold if the differences in variance between two samples are significant
+	 * Currently only populated in remote rendering mode
+	 */
+	ArrayList<Boolean> significanceDiffFlagVariance;
 	
 	private IPickingListener canvasPickingListener;
 
@@ -99,7 +105,8 @@ public class DifferenceplotElement extends GLElement implements TablePerspective
 		this.selection = new TablePerspectiveSelectionMixin(tablePerspective, this);
 		
 		dataColumns = new ArrayList<>();
-		significanceDiffFlags = null;
+		significanceDiffFlagMean = null;
+		significanceDiffFlagVariance = null;
 		
 		setVisibility(EVisibility.PICKABLE);
 		
@@ -196,6 +203,7 @@ public class DifferenceplotElement extends GLElement implements TablePerspective
 				{
 					// Use the defaultTablePerspective to compute statistics for the whole set (e.g., all the samples)
 					TablePerspective defaultTablePerspective = tablePerspective.getDataDomain().getDefaultTablePerspective();
+					//tablePerspective.getParentTablePerspective()
 					
 					col1_v1 = StatisticsUtils.computeStatistics(dataSelectionConf.getVisSpaceType().ordinal(), defaultTablePerspective, EStatisticsType.valueOf(dataSelectionConf.getAxisLabels().get(0)), null);
 					col2_v1 = StatisticsUtils.computeStatistics(dataSelectionConf.getVisSpaceType().ordinal(), defaultTablePerspective, EStatisticsType.valueOf(dataSelectionConf.getAxisLabels().get(1)), null);
@@ -206,8 +214,8 @@ public class DifferenceplotElement extends GLElement implements TablePerspective
 					int sampleSize1 = StatisticsUtils.computeSampleSize(dataSelectionConf.getVisSpaceType().ordinal(), defaultTablePerspective, false);
 					int sampleSize2 = StatisticsUtils.computeSampleSize(dataSelectionConf.getVisSpaceType().ordinal(), tablePerspective, false);
 					
-					significanceDiffFlags = StatisticsUtils.computeSignificance(false, col1_v1, col1_v2, col2_v1, col2_v2, sampleSize1, sampleSize2);
-					
+					significanceDiffFlagMean = StatisticsUtils.computeSignificanceOnTwoSampleTtest(false, col1_v1, col1_v2, col2_v1, col2_v2, sampleSize1, sampleSize2);
+					significanceDiffFlagVariance = StatisticsUtils.computeSignificanceOnTwoSampleVarianceFTest(col2_v1, col2_v2, sampleSize1, sampleSize2);
 				}
 				/**
 				 * In the case of normal rendering. The statistics are computed for only 
@@ -216,6 +224,8 @@ public class DifferenceplotElement extends GLElement implements TablePerspective
 				else
 				{
 					ArrayList<Integer> selectedIDs = renderUtil.buildSelectedIDList(this);
+					
+					TablePerspective defaultTablePerspective = tablePerspective.getDataDomain().getDefaultTablePerspective();
 					
 					col1_v1 = StatisticsUtils.computeStatistics(dataSelectionConf.getVisSpaceType().ordinal(), tablePerspective, EStatisticsType.valueOf(dataSelectionConf.getAxisLabels().get(0)), null);
 					col2_v1 = StatisticsUtils.computeStatistics(dataSelectionConf.getVisSpaceType().ordinal(), tablePerspective, EStatisticsType.valueOf(dataSelectionConf.getAxisLabels().get(1)), null);
@@ -389,12 +399,21 @@ public class DifferenceplotElement extends GLElement implements TablePerspective
 		this.renderRemote = renderRemote;
 	}
 
-	public ArrayList<Boolean> getSignificanceDiffFlags() {
-		return significanceDiffFlags;
+	public ArrayList<Boolean> getSignificanceDiffFlagMean() {
+		return significanceDiffFlagMean;
 	}
 
-	public void setSignificanceDiffFlags(ArrayList<Boolean> significanceDiffFlags) {
-		this.significanceDiffFlags = significanceDiffFlags;
+	public void setSignificanceDiffFlagMean(ArrayList<Boolean> significanceDiffFlagMean) {
+		this.significanceDiffFlagMean = significanceDiffFlagMean;
+	}
+
+	public ArrayList<Boolean> getSignificanceDiffFlagVariance() {
+		return significanceDiffFlagVariance;
+	}
+
+	public void setSignificanceDiffFlagVariance(
+			ArrayList<Boolean> significanceDiffFlagVariance) {
+		this.significanceDiffFlagVariance = significanceDiffFlagVariance;
 	}
 	
 	
