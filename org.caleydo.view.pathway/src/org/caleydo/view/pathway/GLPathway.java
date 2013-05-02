@@ -147,6 +147,8 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 
 	private boolean isPathwayDataDirty = false;
 
+	private boolean isDynamicDetail = false;
+
 	private GLPathwayAugmentationRenderer augmentationRenderer;
 
 	private EventBasedSelectionManager vertexSelectionManager;
@@ -455,7 +457,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 			@Override
 			public void mouseOver(Pick pick) {
 
-				if (detailLevel == EDetailLevel.VERY_LOW) {
+				if (detailLevel == EDetailLevel.VERY_LOW || !highlightVertices) {
 					return;
 				}
 
@@ -479,7 +481,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 			@Override
 			public void clicked(Pick pick) {
 
-				if (detailLevel == EDetailLevel.VERY_LOW) {
+				if (detailLevel == EDetailLevel.VERY_LOW || !highlightVertices) {
 					return;
 				}
 
@@ -497,7 +499,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 			@Override
 			public void doubleClicked(Pick pick) {
 
-				if (detailLevel == EDetailLevel.VERY_LOW) {
+				if (detailLevel == EDetailLevel.VERY_LOW || !highlightVertices) {
 					return;
 				}
 
@@ -524,7 +526,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 			@Override
 			public void rightClicked(Pick pick) {
 
-				if (detailLevel == EDetailLevel.VERY_LOW) {
+				if (detailLevel == EDetailLevel.VERY_LOW || !highlightVertices) {
 					return;
 				}
 
@@ -680,11 +682,18 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 	public void displayRemote(final GL2 gl) {
 		processEvents();
 		display(gl);
-
 	}
 
 	@Override
 	public void display(final GL2 gl) {
+		if (isDynamicDetail) {
+			setHighlightVertices(true);
+			if (viewFrustum.getHeight() <= pixelGLConverter.getGLHeightForPixelHeight(120)
+					|| viewFrustum.getWidth() <= pixelGLConverter.getGLWidthForPixelWidth(120)) {
+				setHighlightVertices(false);
+			}
+		}
+
 		checkForHits(gl);
 
 		if (isDisplayListDirty) {
@@ -698,6 +707,9 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 			renderPathway(gl, pathway);
 		}
 		areContextPathsDirty = false;
+		// There is obviously some blending issue, when pathways are involved, therefore do this...
+		gl.glEnable(GL.GL_BLEND);
+		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 	}
 
 	protected void initPathwayData(final GL2 gl) {
@@ -814,11 +826,11 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 					.getPickingID(uniqueID, EPickingType.PATHWAY_TEXTURE_SELECTION.name(), 0));
 			// //////////////////////////START 2/2 HIER NEU CHRISITIAN
 			// enable shader
-			gl.glUseProgram(shaderProgramTextOverlay);
-			int pathwayTex = gl.glGetUniformLocation(shaderProgramTextOverlay, "pathwayTex");
-			gl.glUniform1i(pathwayTex, 0);
+			// gl.glUseProgram(shaderProgramTextOverlay);
+			// int pathwayTex = gl.glGetUniformLocation(shaderProgramTextOverlay, "pathwayTex");
+			// gl.glUniform1i(pathwayTex, 0);
 			pathwayTextureManager.renderPathway(gl, this, pathway, fPathwayTransparency, false);
-			gl.glUseProgram(0);
+			// gl.glUseProgram(0);
 			// disable shader
 			// //////////////////////////END 2/2 HIER NEU CHRISITIAN
 			// pathwayTextureManager.renderPathway(gl, this, pathway, fPathwayTransparency, false);
@@ -1817,6 +1829,14 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		this.contextPaths = contextPaths;
 		areContextPathsDirty = true;
 		setDisplayListDirty();
+	}
+
+	/**
+	 * @param isDynamicDetail
+	 *            setter, see {@link isDynamicDetail}
+	 */
+	public void setDynamicDetail(boolean isDynamicDetail) {
+		this.isDynamicDetail = isDynamicDetail;
 	}
 
 	// /**
