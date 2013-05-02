@@ -90,12 +90,12 @@ public class LogRank implements IGroupAlgorithm {
 		int survived = 0;
 		List<Float> r = new ArrayList<>();
 		for (Integer row : a) {
-			Float v = clinical.getTable().getRaw(col, row);
-			if (v == null || v.isNaN()) {
+			Number v = clinical.getTable().getRaw(col, row);
+			if (v == null || Float.isNaN(v.floatValue())) {
 				survived++;
 				continue;
 			}
-			r.add(v);
+			r.add(v.floatValue());
 		}
 		Collections.sort(r);
 		return Pair.make(r, survived);

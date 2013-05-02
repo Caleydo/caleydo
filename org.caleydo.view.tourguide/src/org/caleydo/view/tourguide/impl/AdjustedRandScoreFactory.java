@@ -42,7 +42,6 @@ import org.caleydo.view.tourguide.spi.score.IScore;
 import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -99,7 +98,7 @@ public class AdjustedRandScoreFactory implements IScoreFactory {
 		return new CreateAdjustedRandScoreDialog(shell, receiver);
 	}
 
-	class CreateAdjustedRandScoreDialog extends TitleAreaDialog {
+	class CreateAdjustedRandScoreDialog extends Dialog {
 
 		private final Object receiver;
 
@@ -115,7 +114,7 @@ public class AdjustedRandScoreFactory implements IScoreFactory {
 		@Override
 		public void create() {
 			super.create();
-			this.setTitle("Create a new Adjusted Rand Index Score");
+			this.getShell().setText("Create a new Adjusted Rand Index Score");
 			this.setBlockOnOpen(false);
 		}
 

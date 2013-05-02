@@ -20,29 +20,47 @@
 package org.caleydo.view.tourguide.impl;
 
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainOracle;
 import org.caleydo.core.data.datadomain.DataDomainOracle.ClinicalVariable;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
+import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.base.DefaultLabelProvider;
-import org.caleydo.core.view.contextmenu.ContextMenuCreator;
-import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
-import org.caleydo.core.view.contextmenu.GroupContextMenuItem;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.score.DefaultComputedGroupScore;
+import org.caleydo.view.tourguide.api.util.ui.CaleydoLabelProvider;
 import org.caleydo.view.tourguide.impl.algorithm.LogRank;
 import org.caleydo.view.tourguide.internal.event.AddScoreColumnEvent;
-import org.caleydo.view.tourguide.spi.IMetricFactory;
+import org.caleydo.view.tourguide.spi.IScoreFactory;
 import org.caleydo.view.tourguide.spi.algorithm.IGroupAlgorithm;
 import org.caleydo.view.tourguide.spi.score.IDecoratedScore;
 import org.caleydo.view.tourguide.spi.score.IRegisteredScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
 import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
+import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
 
 import com.google.common.collect.Sets;
 
@@ -50,25 +68,20 @@ import com.google.common.collect.Sets;
  * @author Samuel Gratzl
  *
  */
-public class LogRankMetricFactory implements IMetricFactory {
+public class LogRankMetricFactory implements IScoreFactory {
 	@Override
-	public void addCreateMetricItems(ContextMenuCreator creator, Set<IScore> visible, Object receiver) {
-		GroupContextMenuItem logRanks = new GroupContextMenuItem("Create LogRank of");
-		boolean hasOne = false;
-		ATableBasedDataDomain dataDomain = DataDomainOracle.getClinicalDataDomain();
-		for (ClinicalVariable var : DataDomainOracle.getClinicalVariables()) {
-			if (var.getDataClass() != EDataClass.NATURAL_NUMBER)
-				continue;
-			LogRankMetric score = new LogRankMetric(var.getLabel(), var.getDimId(), dataDomain);
-			if (visible.contains(score))
-				continue;
-			hasOne = true;
-			IScore logRankPValue = new LogRankPValue(score.getLabel() + " (P-V)", score);
-			logRanks.add(new GenericContextMenuItem(score.getLabel(), new AddScoreColumnEvent(score, logRankPValue)
-					.to(receiver)));
-		}
-		if (hasOne)
-			creator.addContextMenuItem(logRanks);
+	public Iterable<ScoreEntry> createGroupEntries(TablePerspective strat, Group group) {
+		return Collections.emptyList();
+	}
+
+	@Override
+	public Iterable<ScoreEntry> createStratEntries(TablePerspective strat) {
+		return Collections.emptyList();
+	}
+
+	@Override
+	public Dialog createCreateDialog(Shell shell, Object receiver) {
+		return new CreateLogRankScoreDialog(shell, receiver);
 	}
 
 	@Override
@@ -105,15 +118,6 @@ public class LogRankMetricFactory implements IMetricFactory {
 				}
 			}, null, wrap(clinical.getColor()), darker(clinical.getColor()));
 			this.clinicalVariable = clinicalVariable;
-		}
-
-		private static Color wrap(org.caleydo.core.util.color.Color color) {
-			return new Color(color.r, color.g, color.b, color.a);
-		}
-
-		private static Color darker(org.caleydo.core.util.color.Color color) {
-			Color c = new Color(color.r * 0.8f, color.g * 0.8f, color.b * 0.8f, color.a);
-			return c;
 		}
 
 		public Integer getClinicalVariable() {
@@ -211,5 +215,90 @@ public class LogRankMetricFactory implements IMetricFactory {
 			return true;
 		}
 	}
+
+	class CreateLogRankScoreDialog extends Dialog {
+
+		private final Object receiver;
+
+		private Text labelUI;
+		private ComboViewer clinicialVariablesUI;
+
+		public CreateLogRankScoreDialog(Shell shell, Object receiver) {
+			super(shell);
+			this.receiver = receiver;
+		}
+
+		@Override
+		public void create() {
+			super.create();
+			this.getShell().setText("Add a log rank metric");
+			this.setBlockOnOpen(false);
+		}
+
+		@Override
+		protected Control createDialogArea(Composite parent) {
+			Composite c = new Composite((Composite) super.createDialogArea(parent), SWT.NONE);
+			c.setLayout(new GridLayout(2, false));
+			c.setLayoutData(new GridData(GridData.FILL_BOTH));
+
+			new Label(c, SWT.NONE).setText("Name: ");
+			this.labelUI = new Text(c, SWT.BORDER);
+			this.labelUI.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
+
+			new Label(c, SWT.NONE).setText("Clinical Variable: ");
+			this.clinicialVariablesUI = new ComboViewer(c, SWT.DROP_DOWN | SWT.BORDER | SWT.READ_ONLY);
+			this.clinicialVariablesUI.setContentProvider(ArrayContentProvider.getInstance());
+			this.clinicialVariablesUI.setLabelProvider(new CaleydoLabelProvider());
+			this.clinicialVariablesUI.getCombo().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
+
+			List<ClinicalVariable> vars = new ArrayList<>(DataDomainOracle.getClinicalVariables());
+			for(Iterator<ClinicalVariable> it = vars.iterator(); it.hasNext(); ) {
+				if (it.next().getDataClass() != EDataClass.NATURAL_NUMBER)
+					it.remove();
+			}
+			this.clinicialVariablesUI.setInput(vars);
+
+			return c;
+		}
+
+		@Override
+		protected void okPressed() {
+			if (!validate())
+				return;
+			save();
+			super.okPressed();
+		}
+
+		private boolean validate() {
+			if (clinicialVariablesUI.getSelection() == null)
+				MessageDialog.openError(getParentShell(), "A clinicial variable is required",
+						"A clinicial variable is required");
+			return true;
+		}
+
+		private void save() {
+			String label = labelUI.getText();
+			ClinicalVariable var = (ClinicalVariable) ((IStructuredSelection) clinicialVariablesUI.getSelection()).getFirstElement();
+			if (label == null || label.trim().isEmpty())
+				label = var.getLabel();
+
+			ATableBasedDataDomain dataDomain = DataDomainOracle.getClinicalDataDomain();
+
+			LogRankMetric metric = new LogRankMetric(label, var.getDimId(), dataDomain);
+			LogRankPValue pvalue = new LogRankPValue(label + " (P-V)", metric);
+
+			EventPublisher.trigger(new AddScoreColumnEvent(metric, pvalue).to(receiver));
+		}
+	}
+
+	private static Color wrap(org.caleydo.core.util.color.Color color) {
+		return new Color(color.r, color.g, color.b, color.a);
+	}
+
+	private static Color darker(org.caleydo.core.util.color.Color color) {
+		Color c = new Color(color.r * 0.8f, color.g * 0.8f, color.b * 0.8f, color.a);
+		return c;
+	}
+
 }
 
