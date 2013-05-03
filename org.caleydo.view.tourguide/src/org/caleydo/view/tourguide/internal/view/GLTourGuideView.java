@@ -66,6 +66,8 @@ import org.caleydo.view.tourguide.internal.compute.ComputeForScoreJob;
 import org.caleydo.view.tourguide.internal.event.AddScoreColumnEvent;
 import org.caleydo.view.tourguide.internal.event.CreateScoreEvent;
 import org.caleydo.view.tourguide.internal.event.ImportExternalScoreEvent;
+import org.caleydo.view.tourguide.internal.event.JobDiedEvent;
+import org.caleydo.view.tourguide.internal.event.JobStateProgressEvent;
 import org.caleydo.view.tourguide.internal.event.ScoreQueryReadyEvent;
 import org.caleydo.view.tourguide.internal.external.ImportExternalScoreCommand;
 import org.caleydo.view.tourguide.internal.model.ADataDomainQuery;
@@ -100,6 +102,10 @@ import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 import org.caleydo.vis.rank.ui.RenderStyle;
 import org.caleydo.vis.rank.ui.TableBodyUI;
 import org.caleydo.vis.rank.ui.TableUI;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.jobs.IJobChangeEvent;
+import org.eclipse.core.runtime.jobs.IJobChangeListener;
+import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -141,13 +147,7 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 
 	private EDataDomainQueryMode mode = EDataDomainQueryMode.TABLE_BASED;
 
-	private final GLElement waiting = new GLElement(new IGLRenderer() {
-		@Override
-		public void render(GLGraphics g, float w, float h, GLElement parent) {
-			// g.color(1, 1, 1, 0.3f).fillRect(0, 0, w, h);
-			g.fillImage("resources/loading/loading_circle.png", (w - 250) * 0.5f, (h - 250) * 0.5f, 250, 250);
-		}
-	});
+	private final WaitingElement waiting = new WaitingElement();
 	private boolean noStratomexVisible = false;
 	private final GLElement noStratomex = new GLElement(new IGLRenderer() {
 		@Override
@@ -156,6 +156,18 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 			g.drawText("No active StratomeX", 10, h * 0.5f - 12, w - 20, 24, VAlign.CENTER);
 		}
 	});
+
+	private final IJobChangeListener jobListener = new JobChangeAdapter() {
+		@Override
+		public void done(IJobChangeEvent event) {
+			onJobDone(event.getResult());
+		}
+
+		@Override
+		public void running(IJobChangeEvent event) {
+			onJobStarted();
+		}
+	};
 
 	public GLTourGuideView(IGLCanvas glCanvas) {
 		super(glCanvas, VIEW_TYPE, VIEW_NAME);
@@ -320,6 +332,8 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 		Collection<IScore> scores = new ArrayList<>(getVisibleScores(null));
 		ComputeAllOfJob job = new ComputeAllOfJob(q, scores, this);
 		if (job.hasThingsToDo()) {
+			waiting.reset();
+			job.addJobChangeListener(jobListener);
 			getPopupLayer().show(waiting, null, 0);
 			job.schedule();
 		} else {
@@ -331,6 +345,8 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 		ComputeForScoreJob job = new ComputeForScoreJob(toCompute, table.getData(), table.getDefaultFilter()
 				.getFilter(), this);
 		if (job.hasThingsToDo()) {
+			waiting.reset();
+			job.addJobChangeListener(jobListener);
 			getPopupLayer().show(waiting, null, 0);
 			job.schedule();
 		} else {
@@ -338,6 +354,35 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 		}
 	}
 
+	@ListenTo(sendToMe = true)
+	private void onProgressEvent(JobStateProgressEvent event) {
+		if (event.isErrornous())
+			waiting.error(event.getText());
+		else
+			waiting.progress(event.getCompleted(), event.getText());
+	}
+
+	/**
+	 * @param status
+	 */
+	protected void onJobDone(IStatus status) {
+		EventPublisher.trigger(new JobStateProgressEvent(status.getMessage(), 1.0f, !status.isOK()).to(this));
+		if (status.getSeverity() == IStatus.ERROR) {
+			EventPublisher.trigger(new JobDiedEvent().to(this));
+		}
+	}
+
+	/**
+	 *
+	 */
+	protected void onJobStarted() {
+	}
+
+	@ListenTo(sendToMe = true)
+	private void onJobDied(JobDiedEvent event) {
+		// job died continue as was nothing
+		getPopupLayer().hide(waiting);
+	}
 
 	@SuppressWarnings("unchecked")
 	@ListenTo(sendToMe = true)
@@ -691,7 +736,6 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 
 		if (supportCount == 0) {
 			if (event.isSwitchModeIfNeeded()) {
-				// TODO switch mode
 				IScore sample = event.getScores().iterator().next();
 				EDataDomainQueryMode target = null;
 				for (EDataDomainQueryMode modi : EDataDomainQueryMode.values())
@@ -705,10 +749,12 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 				}
 				for (ADataDomainQuery q : this.queries) {
 					if (q.getMode() == target) {
-						q.setActive(true);
+						q.setJustActive(true);
 						break;
 					}
 				}
+				changeMode(target);
+				updateMask();
 				return true;
 			} else {
 				final StringBuilder b = new StringBuilder();

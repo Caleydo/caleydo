@@ -60,11 +60,12 @@ public class ComputeAllOfJob extends AComputeJob {
 	protected IStatus run(IProgressMonitor monitor) {
 		Stopwatch w = new Stopwatch().start();
 		log.info("compute the data for datadomain: " + query.getDataDomain().getLabel());
+		progress(0.0f, "Preparing Data");
 		boolean creating = !query.isInitialized();
 		List<AScoreRow> data = query.getOrCreate();
 		BitSet mask = query.getMask();
 		System.out.println("done in " + w);
-
+		progress(0.0f, "Computing Scores");
 		IStatus result = runImpl(monitor, data, mask);
 		EventPublisher.trigger(new ScoreQueryReadyEvent(creating ? query : null).to(receiver));
 		return result;

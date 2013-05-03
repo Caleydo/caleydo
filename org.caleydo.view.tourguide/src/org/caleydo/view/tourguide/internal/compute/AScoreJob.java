@@ -8,9 +8,11 @@ import java.util.List;
 import java.util.Set;
 
 import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.id.IIDTypeMapper;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.view.tourguide.internal.event.JobStateProgressEvent;
 import org.caleydo.view.tourguide.spi.algorithm.IComputeElement;
 import org.caleydo.view.tourguide.spi.algorithm.IStratificationAlgorithm;
 import org.caleydo.view.tourguide.spi.compute.IComputedReferenceStratificationScore;
@@ -32,6 +34,33 @@ public abstract class AScoreJob {
 	private final CachedIDTypeMapper mapper = new CachedIDTypeMapper();
 	private final Table<IComputeElement, Pair<IDType, IDType>, Set<Integer>> stratCache = HashBasedTable.create();
 	private final Table<Group, Pair<IDType, IDType>, Set<Integer>> groupCache = HashBasedTable.create();
+
+	private final Object receiver;
+	private float lastCompleted = 0;
+	public AScoreJob(Object receiver) {
+		this.receiver = receiver;
+	}
+
+	protected static int fireEvery(long took) {
+		final int minimalDelta = 200; // [ms]
+		if (took <= 0)
+			return 20;
+		final int fireEvery = minimalDelta / (int) took;
+		return fireEvery;
+	}
+
+
+	protected final void progress(float completed, String text) {
+		if ((completed - lastCompleted) >= 0.01) {
+			EventPublisher.trigger(new JobStateProgressEvent(text, completed, false).to(receiver).from(this));
+			lastCompleted = completed;
+		}
+
+	}
+
+	protected final void error(String text) {
+		EventPublisher.trigger(new JobStateProgressEvent(text, 1.0f, true).to(receiver).from(this));
+	}
 
 	public abstract IStatus run(IProgressMonitor monitor);
 
