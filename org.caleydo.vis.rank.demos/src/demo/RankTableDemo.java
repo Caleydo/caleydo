@@ -31,7 +31,7 @@ import org.caleydo.vis.rank.layout.RowHeightLayouts;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.ui.RankTableKeyListener;
 import org.caleydo.vis.rank.ui.RankTableUI;
-import org.caleydo.vis.rank.ui.RankTableUIKeyListener;
+import org.caleydo.vis.rank.ui.RankTableUIMouseKeyListener;
 import org.eclipse.swt.widgets.Shell;
 
 /**
@@ -53,7 +53,6 @@ public class RankTableDemo extends GLSandBox {
 		}
 		canvas.addKeyListener(new RankTableKeyListener(table));
 		createUI();
-		canvas.addKeyListener(new RankTableUIKeyListener(((RankTableUI) getRoot()).findBody()));
 
 	}
 
@@ -67,8 +66,11 @@ public class RankTableDemo extends GLSandBox {
 	private void createUI() {
 		// visual part
 		RankTableUI root = (RankTableUI) getRoot();
-		this.canvas.addMouseListener(root.getMouseListener());
 		root.init(table, RankTableUIConfigs.DEFAULT, RowHeightLayouts.UNIFORM, RowHeightLayouts.FISH_EYE);
+
+		RankTableUIMouseKeyListener l = new RankTableUIMouseKeyListener(root.findBody());
+		this.canvas.addMouseListener(l);
+		canvas.addKeyListener(l);
 	}
 
 	public static float toFloat(String[] l, int i) {

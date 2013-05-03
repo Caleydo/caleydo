@@ -43,9 +43,7 @@ import org.caleydo.core.event.data.ReplaceTablePerspectiveEvent;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
 import org.caleydo.core.view.listener.RemoveTablePerspectiveEvent;
-import org.caleydo.core.view.opengl.canvas.GLMouseAdapter;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
-import org.caleydo.core.view.opengl.canvas.IGLKeyListener;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.AGLElementView;
 import org.caleydo.core.view.opengl.layout2.GLElement;
@@ -99,6 +97,8 @@ import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.StackedRankColumnModel;
 import org.caleydo.vis.rank.model.StringRankColumnModel;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
+import org.caleydo.vis.rank.ui.RankTableKeyListener;
+import org.caleydo.vis.rank.ui.RankTableUIMouseKeyListener;
 import org.caleydo.vis.rank.ui.RenderStyle;
 import org.caleydo.vis.rank.ui.TableBodyUI;
 import org.caleydo.vis.rank.ui.TableUI;
@@ -110,15 +110,12 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 import com.google.common.base.Function;
-import com.google.common.collect.Iterables;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class GLTourGuideView extends AGLElementView implements IGLKeyListener, IAddToStratomex {
-	private static final char TOGGLE_ALIGN_ALL = 't';
-
+public class GLTourGuideView extends AGLElementView implements IAddToStratomex {
 	public static final String VIEW_TYPE = "org.caleydo.view.tool.tourguide";
 	public static final String VIEW_NAME = "Tour Guide";
 
@@ -168,6 +165,8 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 			onJobStarted();
 		}
 	};
+	private final RankTableKeyListener tableKeyListener;
+	private RankTableUIMouseKeyListener tableUIListener = null; // lazy
 
 	public GLTourGuideView(IGLCanvas glCanvas, EDataDomainQueryMode mode) {
 		super(glCanvas, VIEW_TYPE, VIEW_NAME);
@@ -203,19 +202,14 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 
 		addAllExternalScore(this.table);
 
-		canvas.addMouseListener(new GLMouseAdapter() {
-			@Override
-			public void mouseWheelMoved(IMouseEvent e) {
-				onWheelMoved(e.getWheelRotation());
-			}
-		});
-
 		for (IDataDomain dd : mode.getAllDataDomains()) {
 			final ADataDomainQuery q = createFor(mode, dd);
 			q.addPropertyChangeListener(ADataDomainQuery.PROP_ACTIVE, listener);
 			q.addPropertyChangeListener(ADataDomainQuery.PROP_MASK, listener);
 			queries.add(q);
 		}
+
+		this.tableKeyListener = new RankTableKeyListener(table);
 	}
 
 	/**
@@ -418,7 +412,10 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 	public void init(GLAutoDrawable drawable) {
 		super.init(drawable);
 		eventListeners.register(stratomex);
-		this.canvas.addKeyListener(this);
+		this.canvas.addKeyListener(tableKeyListener);
+		this.tableUIListener = new RankTableUIMouseKeyListener(getTableBodyUI());
+		this.canvas.addKeyListener(this.tableUIListener);
+		this.canvas.addMouseListener(this.tableUIListener);
 
 		this.noStratomexVisible = stratomex.hasOne();
 		updateStratomexState();
@@ -439,7 +436,9 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 	@Override
 	public void dispose(GLAutoDrawable drawable) {
 		this.stratomex.cleanUp();
-		canvas.removeKeyListener(this);
+		canvas.removeKeyListener(tableKeyListener);
+		canvas.removeKeyListener(tableUIListener);
+		canvas.removeMouseListener(tableUIListener);
 		super.dispose(drawable);
 	}
 
@@ -512,36 +511,6 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 				it.remove();
 		}
 		return r;
-	}
-
-	@Override
-	public void keyPressed(IKeyEvent e) {
-		if (e.isKey(ESpecialKey.DOWN))
-			table.selectNextRow();
-		else if (e.isKey(ESpecialKey.UP))
-			table.selectPreviousRow();
-		else if (e.isControlDown() && (e.isKey(TOGGLE_ALIGN_ALL))) {
-			// short cut for align all
-			for (StackedRankColumnModel stacked : Iterables.filter(table.getColumns(), StackedRankColumnModel.class)) {
-				stacked.setAlignAll(!stacked.isAlignAll());
-			}
-		}
-	}
-
-	/**
-	 * @param wheelRotation
-	 */
-	protected void onWheelMoved(int wheelRotation) {
-		if (wheelRotation == 0)
-			return;
-		TableBodyUI body = getTableBodyUI();
-		if (body != null)
-			body.scroll(-wheelRotation);
-	}
-
-	@Override
-	public void keyReleased(IKeyEvent e) {
-
 	}
 
 	public void attachToStratomex() {

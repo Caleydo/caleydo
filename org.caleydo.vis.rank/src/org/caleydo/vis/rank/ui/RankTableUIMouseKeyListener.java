@@ -19,17 +19,17 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.ui;
 
+import org.caleydo.core.view.opengl.canvas.GLMouseAdapter;
 import org.caleydo.core.view.opengl.canvas.IGLKeyListener;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class RankTableUIKeyListener implements IGLKeyListener {
+public class RankTableUIMouseKeyListener extends GLMouseAdapter implements IGLKeyListener {
 	private final TableBodyUI body;
 
-	public RankTableUIKeyListener(TableBodyUI body) {
-		super();
+	public RankTableUIMouseKeyListener(TableBodyUI body) {
 		this.body = body;
 	}
 
@@ -49,5 +49,12 @@ public class RankTableUIKeyListener implements IGLKeyListener {
 	@Override
 	public void keyReleased(IKeyEvent e) {
 
+	}
+
+	@Override
+	public void mouseWheelMoved(IMouseEvent e) {
+		if (e.getWheelRotation() == 0)
+			return;
+		body.scroll(-e.getWheelRotation());
 	}
 }

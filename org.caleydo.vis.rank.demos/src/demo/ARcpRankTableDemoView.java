@@ -32,7 +32,7 @@ import org.caleydo.vis.rank.layout.RowHeightLayouts;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.ui.RankTableKeyListener;
 import org.caleydo.vis.rank.ui.RankTableUI;
-import org.caleydo.vis.rank.ui.RankTableUIKeyListener;
+import org.caleydo.vis.rank.ui.RankTableUIMouseKeyListener;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -83,9 +83,11 @@ public abstract class ARcpRankTableDemoView extends ARcpGLViewPart {
 		@Override
 		protected GLElement createRoot() {
 			RankTableUI root = new RankTableUI();
-			this.canvas.addMouseListener(root.getMouseListener());
 			root.init(table, RankTableUIConfigs.DEFAULT, RowHeightLayouts.UNIFORM, RowHeightLayouts.FISH_EYE);
-			canvas.addKeyListener(new RankTableUIKeyListener(root.findBody()));
+
+			RankTableUIMouseKeyListener l = new RankTableUIMouseKeyListener(root.findBody());
+			this.canvas.addMouseListener(l);
+			canvas.addKeyListener(l);
 			return root;
 		}
 	}
