@@ -98,23 +98,23 @@ final class AWTKeyAdapter implements KeyListener {
 
 		@Override
 		public boolean isKeyDown(char c) {
-			//ToDo ToDo Fix Me and check key state 
+			// ToDo ToDo Fix Me and check key state
 			return event.getKeyCode() == Character.toLowerCase(c) || event.getKeyCode() == Character.toUpperCase(c);
 		}
 
-		
+
 		@Override
 		public boolean isUpDown() {
 			//ToDo ToDo Fix Me and check key state
 			return event.getKeyCode() == KeyEvent.VK_UP;
 		}
-		
+
 		@Override
 		public boolean isDownDown() {
 			//ToDo ToDo Fix Me and check key state
 			return event.getKeyCode() == KeyEvent.VK_DOWN;
 		}
-		
+
 		@Override
 		public boolean isKey(ESpecialKey c) {
 			switch (c) {
@@ -132,6 +132,14 @@ final class AWTKeyAdapter implements KeyListener {
 				return event.getKeyCode() == KeyEvent.VK_RIGHT;
 			case ALT:
 				return event.getKeyCode() == KeyEvent.VK_ALT;
+			case HOME:
+				return event.getKeyCode() == KeyEvent.VK_HOME;
+			case END:
+				return event.getKeyCode() == KeyEvent.VK_END;
+			case PAGE_UP:
+				return event.getKeyCode() == KeyEvent.VK_PAGE_UP;
+			case PAGE_DOWN:
+				return event.getKeyCode() == KeyEvent.VK_PAGE_DOWN;
 			}
 			throw new IllegalStateException("unknown special key:" + c);
 		}
@@ -165,14 +173,14 @@ final class AWTKeyAdapter implements KeyListener {
 		public boolean isShiftDown() {
 			return event.isShiftDown();
 		}
-		
+
 		@Override
 		public boolean isAltDown() {
 			return event.isAltDown();
 		}
 
 
-		
+
 	}
 
 }
