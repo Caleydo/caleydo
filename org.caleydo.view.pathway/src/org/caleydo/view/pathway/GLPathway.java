@@ -42,6 +42,7 @@ import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.event.EventListenerManager;
+import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventListenerManagers;
 import org.caleydo.core.event.data.SelectionUpdateEvent;
 import org.caleydo.core.event.view.TablePerspectivesChangedEvent;
@@ -1031,9 +1032,11 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		}
 	}
 
-	public void mapTablePerspective(TablePerspective tablePerspective) {
-
-		augmentationRenderer.setMappingPerspective(tablePerspective);
+	@ListenTo
+	public void onMapTablePerspective(PathwayMappingEvent event) {
+		if (event.getReceiver() != this)
+			return;
+		augmentationRenderer.setMappingPerspective(event.getTablePerspective());
 		setDisplayListDirty();
 	}
 
@@ -1063,9 +1066,9 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 	public void registerEventListeners() {
 		super.registerEventListeners();
 
-		enableGeneMappingListener = new EnableGeneMappingListener();
-		enableGeneMappingListener.setHandler(this);
-		eventPublisher.addListener(PathwayMappingEvent.class, enableGeneMappingListener);
+		// enableGeneMappingListener = new EnableGeneMappingListener();
+		// enableGeneMappingListener.setHandler(this);
+		// eventPublisher.addListener(PathwayMappingEvent.class, enableGeneMappingListener);
 
 		enRoutePathEventListener = new EnRoutePathEventListener();
 		enRoutePathEventListener.setExclusiveEventSpace(pathwayPathEventSpace);
@@ -1094,7 +1097,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		showPortalNodesEventListener.setEventSpace(pathwayPathEventSpace);
 		listeners.register(ShowNodeContextEvent.class, showPortalNodesEventListener);
 
-		listeners.register(this, pathwayPathEventSpace);
+		listeners.register(this);
 	}
 
 	@Override

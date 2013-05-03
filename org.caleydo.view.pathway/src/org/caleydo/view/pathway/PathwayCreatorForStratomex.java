@@ -29,6 +29,7 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
+import org.caleydo.datadomain.pathway.listener.PathwayMappingEvent;
 
 /**
  * @author Christian
@@ -45,9 +46,9 @@ public class PathwayCreatorForStratomex implements IRemoteViewCreator {
 				.createGLView(GLPathway.class, remoteRenderingView.getParentGLCanvas(),
 						remoteRenderingView.getParentComposite(),
 						new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1, -1, 1));
-
+		TablePerspective tablePerspective = null;
 		if (tablePerspectives.size() > 0) {
-			TablePerspective tablePerspective = tablePerspectives.get(0);
+			tablePerspective = tablePerspectives.get(0);
 			if (!(tablePerspective instanceof PathwayTablePerspective)) {
 				throw new IllegalArgumentException(
 						"The provided table perspective must be of type PathwayTablePerspective.");
@@ -62,9 +63,10 @@ public class PathwayCreatorForStratomex implements IRemoteViewCreator {
 		pathwayView.setDynamicDetail(true);
 		// pathwayView.setRenderTemplate(new BrickHeatMapTemplate(heatMap));
 		pathwayView.initialize();
-
+		PathwayMappingEvent event = new PathwayMappingEvent(tablePerspective);
+		event.to(pathwayView);
+		pathwayView.onMapTablePerspective(event);
 		return pathwayView;
 	}
-
 
 }
