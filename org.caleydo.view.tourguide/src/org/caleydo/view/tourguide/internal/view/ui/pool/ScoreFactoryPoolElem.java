@@ -44,7 +44,7 @@ public class ScoreFactoryPoolElem extends APoolElem {
 		this.factory = factory;
 		this.receiver = receiver;
 		setTooltip("Double-Click to create a new " + label + " score");
-		setMode(EDataDomainQueryMode.TABLE_BASED); // default
+		setMode(EDataDomainQueryMode.STRATIFICATIONS); // default
 	}
 
 	public void setMode(EDataDomainQueryMode mode) {

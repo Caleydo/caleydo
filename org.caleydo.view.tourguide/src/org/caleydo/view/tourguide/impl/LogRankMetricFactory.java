@@ -85,7 +85,7 @@ public class LogRankMetricFactory implements IScoreFactory {
 
 	@Override
 	public boolean supports(EDataDomainQueryMode mode) {
-		return mode == EDataDomainQueryMode.TABLE_BASED;
+		return mode == EDataDomainQueryMode.STRATIFICATIONS;
 	}
 
 	public static class LogRankMetric extends DefaultComputedGroupScore {
@@ -167,7 +167,7 @@ public class LogRankMetricFactory implements IScoreFactory {
 
 		@Override
 		public boolean supports(EDataDomainQueryMode mode) {
-			return mode == EDataDomainQueryMode.TABLE_BASED;
+			return mode == EDataDomainQueryMode.STRATIFICATIONS;
 		}
 
 		@Override

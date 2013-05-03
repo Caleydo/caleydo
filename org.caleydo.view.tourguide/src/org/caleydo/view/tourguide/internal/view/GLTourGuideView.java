@@ -106,12 +106,12 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.IJobChangeListener;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
+
 /**
  * @author Samuel Gratzl
  *
@@ -145,7 +145,7 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 		}
 	};
 
-	private EDataDomainQueryMode mode = EDataDomainQueryMode.TABLE_BASED;
+	private final EDataDomainQueryMode mode;
 
 	private final WaitingElement waiting = new WaitingElement();
 	private boolean noStratomexVisible = false;
@@ -169,25 +169,11 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 		}
 	};
 
-	public GLTourGuideView(IGLCanvas glCanvas) {
+	public GLTourGuideView(IGLCanvas glCanvas, EDataDomainQueryMode mode) {
 		super(glCanvas, VIEW_TYPE, VIEW_NAME);
 
-		this.table = new RankTableModel(new RankTableConfigBase() {
-			@Override
-			public boolean isMoveAble(ARankColumnModel model, boolean clone) {
-				if (model instanceof ScoreRankColumnModel) {
-					IScore s = ((ScoreRankColumnModel) model).getScore();
-					if (!s.supports(mode))
-						return false;
-				}
-				return super.isMoveAble(model, clone);
-			}
-
-			@Override
-			public boolean isDestroyOnHide(ARankColumnModel model) {
-				return false;
-		}
-		});
+		this.mode = mode;
+		this.table = new RankTableModel(new RankTableConfigBase());
 		this.table.addPropertyChangeListener(RankTableModel.PROP_SELECTED_ROW, new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
@@ -224,76 +210,50 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 			}
 		});
 
-		for (EDataDomainQueryMode mode : EDataDomainQueryMode.values()) {
-			for (IDataDomain dd : mode.getAllDataDomains()) {
-				final ADataDomainQuery q = createFor(mode, dd);
-				q.addPropertyChangeListener(ADataDomainQuery.PROP_ACTIVE, listener);
-				q.addPropertyChangeListener(ADataDomainQuery.PROP_MASK, listener);
-				queries.add(q);
-			}
+		for (IDataDomain dd : mode.getAllDataDomains()) {
+			final ADataDomainQuery q = createFor(mode, dd);
+			q.addPropertyChangeListener(ADataDomainQuery.PROP_ACTIVE, listener);
+			q.addPropertyChangeListener(ADataDomainQuery.PROP_MASK, listener);
+			queries.add(q);
 		}
+	}
+
+	/**
+	 * @return the mode, see {@link #mode}
+	 */
+	public EDataDomainQueryMode getMode() {
+		return mode;
 	}
 
 	/**
 	 * @param table2
 	 */
-	private static void addAllExternalScore(RankTableModel table) {
+	private void addAllExternalScore(RankTableModel table) {
 		for (IScore score : Scores.get().getPersistentScores()) {
+			if (!score.supports(mode))
+				continue;
 			ScoreRankColumnModel model = new ScoreRankColumnModel(score);
 			table.add(model);
 			model.hide();
 		}
 	}
 
-	public void cloneFrom(GLTourGuideView view) {
-		// clone table and pool
-		this.table.reset();
-		for (ARankColumnModel model : view.table.getColumns()) {
-			ARankColumnModel clone = model.clone();
-			this.table.add(clone);
-		}
-		for (ARankColumnModel model : view.table.getPool()) {
-			model = model.clone();
-			this.table.add(model);
-			model.hide();
-		}
-
-		this.table.addData(view.table.getData()); // add all data
-		this.table.setSelectedRow(view.table.getSelectedRow());
-		this.table.setDataMask((BitSet)view.table.getDataMask().clone());
-		List<?> tmp = this.table.getData();
-		@SuppressWarnings("unchecked")
-		List<AScoreRow> data = (List<AScoreRow>) tmp;
-
-		for (int i = 0; i < queries.size(); ++i) {
-			ADataDomainQuery q = queries.get(i);
-			ADataDomainQuery clone = view.queries.get(i);
-			q.cloneFrom(clone, data);
-		}
-		this.mode = view.mode;
-		this.mask.clear();
-		this.mask.or(view.mask);
-	}
-
 	private static ADataDomainQuery createFor(EDataDomainQueryMode mode, IDataDomain dd) {
 		if (DataSupportDefinitions.categoricalTables.apply(dd))
-			return new CategoricalDataDomainQuery(mode, (ATableBasedDataDomain) dd);
+			return new CategoricalDataDomainQuery((ATableBasedDataDomain) dd);
 		if (dd instanceof PathwayDataDomain)
-			return new PathwayDataDomainQuery(mode, (PathwayDataDomain) dd);
-		return new StratificationDataDomainQuery(mode, (ATableBasedDataDomain) dd);
+			return new PathwayDataDomainQuery((PathwayDataDomain) dd);
+		return new StratificationDataDomainQuery((ATableBasedDataDomain) dd);
 	}
 
 	@ListenTo
 	private void onAddDataDomain(final NewDataDomainEvent event) {
 		IDataDomain dd = event.getDataDomain();
 
-		for (EDataDomainQueryMode mode : EDataDomainQueryMode.values()) {
-			if (mode.isCompatible(dd)) {
-				ADataDomainQuery query = createFor(mode, dd);
-				queries.add(query);
-				getDataDomainQueryUI().add(query);
-				break;
-			}
+		if (mode.isCompatible(dd)) {
+			ADataDomainQuery query = createFor(mode, dd);
+			queries.add(query);
+			getDataDomainQueryUI().add(query);
 		}
 	}
 
@@ -312,9 +272,6 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 	}
 
 	protected void onActiveChanged(ADataDomainQuery q, boolean active) {
-		if (q.getMode() != mode) {
-			changeMode(q.getMode());
-		}
 		if (q.isInitialized()) {
 			if (active) {
 				scheduleAllOf(q);
@@ -332,7 +289,7 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 		Collection<IScore> scores = new ArrayList<>(getVisibleScores(null));
 		ComputeAllOfJob job = new ComputeAllOfJob(q, scores, this);
 		if (job.hasThingsToDo()) {
-			waiting.reset();
+			waiting.resetJob(job);
 			job.addJobChangeListener(jobListener);
 			getPopupLayer().show(waiting, null, 0);
 			job.schedule();
@@ -345,7 +302,7 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 		ComputeForScoreJob job = new ComputeForScoreJob(toCompute, table.getData(), table.getDefaultFilter()
 				.getFilter(), this);
 		if (job.hasThingsToDo()) {
-			waiting.reset();
+			waiting.resetJob(job);
 			job.addJobChangeListener(jobListener);
 			getPopupLayer().show(waiting, null, 0);
 			job.schedule();
@@ -453,7 +410,6 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 		table.setDataMask(this.mask);
 	}
 
-
 	private TourGuideVis getVis() {
 		return (TourGuideVis) getRoot();
 	}
@@ -514,63 +470,21 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 		return null;
 	}
 
-	/**
-	 * @param mode2
-	 */
-	private void changeMode(EDataDomainQueryMode mode) {
-		// check visible columns if they support the new mode
-		for (ARankColumnModel model : new ArrayList<>(table.getColumns())) {
-			if (needToHide(model,mode))
-				table.hide(model);
-			else if (model instanceof StackedRankColumnModel) {
-				StackedRankColumnModel s = (StackedRankColumnModel)model;
-				for (ARankColumnModel model2 : new ArrayList<>(s.getChildren())) {
-					if (needToHide(model2, mode))
-						s.hide(model2);
-				}
-			}
-		}
-		for (ADataDomainQuery q : this.queries) {
-			if (q.isActive() && q.getMode() != mode) {
-				q.setJustActive(false);
-			}
-		}
-
-		getDataDomainQueryUI().updateSelections();
-
-		getPoolUI().updateMode(mode);
-
-		this.mode = mode;
-
-	}
-
 	private DataDomainQueryUI getDataDomainQueryUI() {
 		return (DataDomainQueryUI) getVis().get(DATADOMAIN_QUERY);
 	}
 
-	private ScorePoolUI getPoolUI() {
-		return (ScorePoolUI) getVis().get(POOL);
-	}
-
 	/**
-	 * @param model
-	 * @param mode2
 	 * @return
 	 */
-	private static boolean needToHide(ARankColumnModel model, EDataDomainQueryMode mode) {
-		if ((model instanceof ScoreRankColumnModel) && !((ScoreRankColumnModel) model).getScore().supports(mode)) {
-			return true;
-		} else if (model instanceof MaxCompositeRankColumnModel) {
-			MaxCompositeRankColumnModel max = (MaxCompositeRankColumnModel) model;
-			for (ARankColumnModel model2 : max) {
-				if ((model2 instanceof ScoreRankColumnModel)
-						&& !((ScoreRankColumnModel) model2).getScore().supports(mode)) {
-					return true;
-				}
-			}
-		}
-		return false;
+	private TableBodyUI getTableBodyUI() {
+		GLElement root = getRoot();
+		if (root == null)
+			return null;
+		TourGuideVis r = (TourGuideVis) root;
+		return ((TableUI) ((ScrollingDecorator) r.get(TABLE)).getContent()).getBody();
 	}
+
 	/**
 	 * @return
 	 */
@@ -612,6 +526,17 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 				stacked.setAlignAll(!stacked.isAlignAll());
 			}
 		}
+	}
+
+	/**
+	 * @param wheelRotation
+	 */
+	protected void onWheelMoved(int wheelRotation) {
+		if (wheelRotation == 0)
+			return;
+		TableBodyUI body = getTableBodyUI();
+		if (body != null)
+			body.scroll(-wheelRotation);
 	}
 
 	@Override
@@ -663,34 +588,11 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 		// this.scoreQueryUI.updateAddToStratomexState();
 	}
 
-	// protected void onAddColumn() {
-	// List<IScore> scores = new ArrayList<>(Scores.get().getScores());
-	// Collections.sort(scores, new LabelComparator());
-	// final Set<IScore> visible = getVisibleColumns();
-	//
-	// EDataDomainQueryMode mode = this.query.getQuery().getMode();
-	//
-	// ContextMenuCreator creator = view.getContextMenuCreator();
-	// ScoreFactories.addCreateItems(creator, this, mode);
-	// creator.addSeparator();
-	// MetricFactories.addCreateItems(creator, visible, this, mode);
-	// creator.addSeparator();
-	//
-	// for (IScore s : scores) {
-	// if (visible.contains(s) || !s.supports(mode))
-	// continue;
-	// creator.addContextMenuItem(new GenericContextMenuItem("Add " + s.getAbbreviation() + " " + s.getLabel(),
-	// new AddScoreColumnEvent(s).to(this)));
-	// }
-	// }
-
 	/**
 	 * @param oldValue
 	 */
 	protected void destroy(ARankColumnModel model) {
-		if (model instanceof ScoreRankColumnModel) {
-			Scores.get().remove(((ScoreRankColumnModel) model).getScore());
-		}
+		// nothing to do
 	}
 
 	@ListenTo(sendToMe = true)
@@ -699,21 +601,18 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 			return;
 
 		Collection<IScore> toCompute = new ArrayList<>();
-		Scores scores = Scores.get();
 
-		if (!checkScoreMode(event))
-			return;
 		for (IScore s : event.getScores()) {
 			if (!s.supports(this.mode))
 				continue;
 			if (s instanceof IRegisteredScore)
-				s = scores.addIfAbsent((IRegisteredScore) s);
+				((IRegisteredScore) s).onRegistered();
 			if (s instanceof MultiScore) {
 				MultiScore sm = (MultiScore) s;
 				MultiScore tmp = new MultiScore(sm.getLabel(), sm.getColor(), sm.getBGColor());
 				for (IScore s2 : ((MultiScore) s)) {
 					if (s2 instanceof IRegisteredScore)
-						s2 = scores.addIfAbsent((IRegisteredScore) s2);
+						((IRegisteredScore) s2).onRegistered();
 					tmp.add(s2);
 				}
 				toCompute.add(tmp);
@@ -721,70 +620,6 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 				toCompute.add(s);
 		}
 		scheduleAllOf(toCompute);
-	}
-
-
-	/**
-	 * @param event
-	 * @return
-	 */
-	private boolean checkScoreMode(final AddScoreColumnEvent event) {
-		int supportCount = 0;
-		for (IScore s : event.getScores())
-			if (s.supports(this.mode))
-				supportCount++;
-
-		if (supportCount == 0) {
-			if (event.isSwitchModeIfNeeded()) {
-				IScore sample = event.getScores().iterator().next();
-				EDataDomainQueryMode target = null;
-				for (EDataDomainQueryMode modi : EDataDomainQueryMode.values())
-					if (sample.supports(modi)) {
-						target = modi;
-						break;
-					}
-				if (target == null) {
-					// ERROR supports nothing
-					return false;
-				}
-				for (ADataDomainQuery q : this.queries) {
-					if (q.getMode() == target) {
-						q.setJustActive(true);
-						break;
-					}
-				}
-				changeMode(target);
-				updateMask();
-				return true;
-			} else {
-				final StringBuilder b = new StringBuilder();
-				for(IScore s : event.getScores()) {
-					b.append('\n').append(s.getLabel());
-				}
-				//none support the current mode, ask the user what to do
-				Display.getDefault().asyncExec(new Runnable() {
-					@Override
-					public void run() {
-						boolean r = MessageDialog.openQuestion(parentComposite.getShell(), "Score Mode warning",
-								"The new score requires a different data domain category. Do you want to switch and select the first matching one?");
-						if (r) {
-							EventPublisher.trigger(new AddScoreColumnEvent(event.getScores(), true)
-									.to(GLTourGuideView.this));
-						}
-					}
-				});
-				return false;
-			}
-		} else if (supportCount < event.getScores().size()) {
-			Display.getDefault().asyncExec(new Runnable() {
-				@Override
-				public void run() {
-					MessageDialog.openWarning(parentComposite.getShell(), "Invalid score mode", "Some of the scores can't be added as the are using the wrong mode");
-				}
-			});
-		}
-		return true;
-
 	}
 
 	@ListenTo(sendToMe = true)
@@ -797,18 +632,6 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 			}
 		});
 	}
-
-	// protected void onModeChanged(EDataDomainQueryMode mode) {
-	// //remove all not valid orders
-	// for (IScore s : Lists.newArrayList(orderBy.keySet()))
-	// if (!s.supports(mode))
-	// sortBy(s, ESorting.NONE);
-	//
-	// //remove all not valid scores
-	// for(IScore s : Lists.newArrayList(selection))
-	// if (!s.supports(mode))
-	// removeSelection(s);
-	//
 
 	@ListenTo
 	private void onImportExternalScore(ImportExternalScoreEvent event) {
@@ -849,12 +672,29 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 		public EButtonBarPositionMode getButtonBarPosition() {
 			return EButtonBarPositionMode.OVER_LABEL;
 		}
+
+		@Override
+		public void renderRowBackground(GLGraphics g, float x, float y, float w, float h, boolean even, IRow row,
+				IRow selected) {
+			if (row == selected) {
+				g.color(RenderStyle.COLOR_SELECTED_ROW);
+				g.incZ();
+				g.fillRect(x, y, w, h);
+				g.color(RenderStyle.COLOR_SELECTED_BORDER);
+				g.drawLine(x, y, x + w, y);
+				g.drawLine(x, y + h, x + w, y + h);
+				g.decZ();
+			} else if (!even) {
+				g.color(RenderStyle.COLOR_BACKGROUND_EVEN);
+				g.fillRect(x, y, w, h);
+			}
+		}
 	}
 
 	private class TourGuideVis extends GLElementContainer {
 		public TourGuideVis() {
 			setLayout(new ReactiveFlowLayout(10));
-			this.add(new DataDomainQueryUI(queries));
+			this.add(new DataDomainQueryUI(queries, mode));
 			TableUI tableui = new TableUI(table, new RankTableUIConfig(), RowHeightLayouts.UNIFORM);
 			ScrollingDecorator sc = new ScrollingDecorator(tableui, new ScrollBar(true), null,
 					RenderStyle.SCROLLBAR_WIDTH);
@@ -862,27 +702,4 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 			this.add(new ScorePoolUI(table, new RankTableUIConfig(), GLTourGuideView.this));
 		}
 	}
-
-	/**
-	 * @param wheelRotation
-	 */
-	protected void onWheelMoved(int wheelRotation) {
-		if (wheelRotation == 0)
-			return;
-		TableBodyUI body = findBody();
-		if (body != null)
-			body.scroll(-wheelRotation);
-	}
-
-	/**
-	 * @return
-	 */
-	private TableBodyUI findBody() {
-		GLElement root = getRoot();
-		if (root == null)
-			return null;
-		TourGuideVis r = (TourGuideVis) root;
-		return ((TableUI) ((ScrollingDecorator) r.get(TABLE)).getContent()).getBody();
-	}
 }
-

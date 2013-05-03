@@ -19,22 +19,17 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.internal.score;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Deque;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.WeakHashMap;
 
 import org.caleydo.view.tourguide.api.score.ISerializeableScore;
 import org.caleydo.view.tourguide.api.score.MultiScore;
 import org.caleydo.view.tourguide.spi.score.IDecoratedScore;
-import org.caleydo.view.tourguide.spi.score.IRegisteredScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
 
-import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 
 /**
@@ -48,8 +43,6 @@ public final class Scores {
 		return instance;
 	}
 
-	// use a weak list for caching but also removing if we no longer need it
-	private final Set<IScore> scores = Collections.newSetFromMap(new WeakHashMap<IScore, Boolean>());
 	// not weak for externals
 	private final Set<ISerializeableScore> persistentScores = new HashSet<>();
 
@@ -65,55 +58,12 @@ public final class Scores {
 	 */
 	public synchronized ISerializeableScore addPersistentScoreIfAbsent(ISerializeableScore score) {
 		this.persistentScores.add(score);
-		return addIfAbsent(score);
+		return score;
 	}
 
 	public Iterable<ISerializeableScore> getPersistentScores() {
 		return persistentScores;
 	}
-
-	/**
-	 * adds a new temporary score, if it does not already exists
-	 *
-	 * @param score
-	 * @return the new added one or the existing one
-	 */
-	@SuppressWarnings("unchecked")
-	public synchronized <T extends IRegisteredScore> T addIfAbsent(T score) {
-		if (this.scores.add(score)) {
-			score.onRegistered();
-			return score;
-		} else {
-			for (IScore s : scores) {
-				if (s.equals(score))
-					return (T) s;
-			}
-			return null;
-		}
-	}
-
-	/**
-	 * function that should be applied to a {@link ICompositeScore} for registing its children
-	 */
-	public final Function<IScore, IScore> registerScores = new Function<IScore, IScore>() {
-		@Override
-		public IScore apply(IScore in) {
-			if (in instanceof IRegisteredScore)
-				return addIfAbsent((IRegisteredScore) in);
-			return in;
-		}
-	};
-
-	public synchronized void remove(IScore score) {
-		scores.remove(score);
-		if (score instanceof ISerializeableScore)
-			persistentScores.remove(score);
-	}
-
-	public synchronized Collection<IScore> getScores() {
-		return new ArrayList<>(scores);
-	}
-
 	/**
 	 * flatten the given scores, {@link ICompositeScore} and {@link IDecoratedScore} will be flattened
 	 *

@@ -27,7 +27,6 @@ import java.util.regex.Pattern;
 
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.data.PathwayRecordPerspective;
-import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 
 import com.google.common.collect.Lists;
 
@@ -38,19 +37,13 @@ import com.google.common.collect.Lists;
 public class PathwayDataDomainQuery extends ADataDomainQuery {
 	private String matches = null;
 
-	public PathwayDataDomainQuery(EDataDomainQueryMode mode, PathwayDataDomain dataDomain) {
-		super(mode, dataDomain);
+	public PathwayDataDomainQuery(PathwayDataDomain dataDomain) {
+		super(dataDomain);
 	}
 
 	@Override
 	public PathwayDataDomain getDataDomain() {
 		return (PathwayDataDomain) super.getDataDomain();
-	}
-
-	@Override
-	public void cloneFrom(ADataDomainQuery clone, List<AScoreRow> allData) {
-		super.cloneFrom(clone, allData);
-		this.matches = ((PathwayDataDomainQuery) clone).matches;
 	}
 
 	@Override

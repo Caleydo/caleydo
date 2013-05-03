@@ -31,7 +31,6 @@ import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
-import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 
 /**
  * @author Samuel Gratzl
@@ -43,20 +42,13 @@ public class StratificationDataDomainQuery extends ADataDomainQuery {
 	private String matches = null;
 	private Perspective dimensionSelection = null;
 
-	public StratificationDataDomainQuery(EDataDomainQueryMode mode, ATableBasedDataDomain dataDomain) {
-		super(mode, dataDomain);
+	public StratificationDataDomainQuery(ATableBasedDataDomain dataDomain) {
+		super(dataDomain);
 	}
 
 	@Override
 	public ATableBasedDataDomain getDataDomain() {
 		return (ATableBasedDataDomain) super.getDataDomain();
-	}
-
-	@Override
-	public void cloneFrom(ADataDomainQuery clone, List<AScoreRow> allData) {
-		super.cloneFrom(clone, allData);
-		this.matches = ((StratificationDataDomainQuery) clone).matches;
-		this.dimensionSelection = ((StratificationDataDomainQuery) clone).dimensionSelection;
 	}
 
 	@Override

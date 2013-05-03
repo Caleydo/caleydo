@@ -43,7 +43,6 @@ import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.id.IIDTypeMapper;
-import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 
 import com.google.common.collect.Lists;
 
@@ -56,8 +55,8 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 	private final IDType categoryIDType;
 	private final VirtualArray categories;
 
-	public CategoricalDataDomainQuery(EDataDomainQueryMode mode, ATableBasedDataDomain dataDomain) {
-		super(mode, dataDomain);
+	public CategoricalDataDomainQuery(ATableBasedDataDomain dataDomain) {
+		super(dataDomain);
 		assert (DataDomainOracle.isCategoricalDataDomain(dataDomain));
 		this.selected.addAll(getCategories());
 
@@ -84,13 +83,6 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 
 	public int getGroupSize() {
 		return selected.size();
-	}
-
-	@Override
-	public void cloneFrom(ADataDomainQuery clone, List<AScoreRow> allData) {
-		super.cloneFrom(clone, allData);
-		this.selected.clear();
-		this.selected.addAll(((CategoricalDataDomainQuery) clone).selected);
 	}
 
 	@SuppressWarnings("unchecked")

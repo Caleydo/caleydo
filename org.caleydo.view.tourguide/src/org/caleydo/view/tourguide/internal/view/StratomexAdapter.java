@@ -221,10 +221,10 @@ public class StratomexAdapter {
 			return;
 
 		switch (mode) {
-		case GENE_SET:
+		case PATHWAYS:
 			updatePathwayPreview(old, (PathwayPerspectiveRow) new_, visibleColumns);
 			break;
-		case TABLE_BASED:
+		case STRATIFICATIONS:
 			updateTableBased((ITablePerspectiveScoreRow) old, (ITablePerspectiveScoreRow) new_, visibleColumns,
 					sortedBy);
 			break;
@@ -462,10 +462,10 @@ public class StratomexAdapter {
 		if (!hasOne())
 			return;
 		switch (mode) {
-		case GENE_SET:
+		case PATHWAYS:
 			addToStratomexGeneSet((PathwayPerspectiveRow) elem, visibleColumns);
 			break;
-		case TABLE_BASED:
+		case STRATIFICATIONS:
 			TablePerspective strat = ((ITablePerspectiveScoreRow) elem).asTablePerspective();
 			// TODO
 			if (strat == null)

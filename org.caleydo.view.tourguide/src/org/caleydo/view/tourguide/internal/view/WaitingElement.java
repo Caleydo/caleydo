@@ -28,9 +28,12 @@ import javax.media.opengl.GL2ES1;
 import javax.media.opengl.fixedfunc.GLPointerFunc;
 
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
-import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.GLSandBox;
+import org.caleydo.core.view.opengl.layout2.basic.AGLButton;
+import org.caleydo.core.view.opengl.picking.AdvancedPick;
+import org.caleydo.core.view.opengl.picking.Pick;
+import org.eclipse.core.runtime.jobs.Job;
 
 import com.jogamp.common.nio.Buffers;
 
@@ -40,7 +43,7 @@ import com.jogamp.common.nio.Buffers;
  * @author Samuel Gratzl
  *
  */
-public class WaitingElement extends GLElement {
+public class WaitingElement extends AGLButton {
     private static final FloatBuffer vertices;
     private static final FloatBuffer colors;
 
@@ -70,6 +73,7 @@ public class WaitingElement extends GLElement {
 	private float acc = 0;
 	private float completed = 0.f;
 	private String text = "";
+	private Job current = null;
 
     @Override
     protected void renderImpl(GLGraphics g, float w, float h) {
@@ -109,12 +113,31 @@ public class WaitingElement extends GLElement {
 		if (completed < 0)
 			g.textColor(Color.BLACK);
 
+		float wi = g.text.getTextWidth("Cancel", 12);
+		g.drawText("Cancel", 0, h * 0.5f + r + 10, w, 12, VAlign.CENTER);
+		if (hovered)
+			g.withMove((w - wi - 10) * 0.5f, h * 0.5f + r + 10, hoverEffect, wi + 10, 16, this);
+		if (armed)
+			g.withMove((w - wi - 10) * 0.5f, h * 0.5f + r + 10, armedEffect, wi + 10, 16, this);
+
 		repaint(); // for the animation
     }
 
-	public void reset() {
+	@Override
+	protected void renderPickImpl(GLGraphics g, float w, float h) {
+		final float r = Math.min(w, h) / 4;
+		float wi = g.text.getTextWidth("Cancel", 12);
+		g.fillRect((w - wi) * 0.5f, h * 0.5f + r + 10, wi, 12);
+	}
+
+	/**
+	 * @param job
+	 */
+	public void resetJob(Job job) {
 		completed = 0;
 		text = "";
+		this.current = job;
+		setVisibility(job != null ? EVisibility.PICKABLE : EVisibility.VISIBLE);
 	}
 
     private float computeAngle(int deltaTimeMs) {
@@ -135,8 +158,46 @@ public class WaitingElement extends GLElement {
 		repaint();
 	}
 
+	@Override
+	protected void onMouseOver(Pick pick) {
+		if (pick.isAnyDragging())
+			return;
+		hovered = true;
+		repaint();
+	}
+
+	@Override
+	protected void onMouseOut(Pick pick) {
+		if (!hovered)
+			return;
+		hovered = false;
+		repaint();
+	}
+
+	@Override
+	protected void onClicked(Pick pick) {
+		if (pick.isAnyDragging())
+			return;
+		armed = true;
+		if (!(pick instanceof AdvancedPick)) {
+			current.cancel();
+			armed = false;
+		}
+		repaint();
+	}
+
+	@Override
+	protected void onMouseReleased(Pick pick) {
+		if (!armed)
+			return;
+		armed = false;
+		current.cancel();
+		repaint();
+	}
+
 	public static void main(String[] args) {
 		GLSandBox.main(args, new WaitingElement());
 	}
+
 }
 

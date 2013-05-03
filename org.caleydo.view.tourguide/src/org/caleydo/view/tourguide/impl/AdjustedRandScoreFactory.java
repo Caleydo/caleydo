@@ -90,7 +90,7 @@ public class AdjustedRandScoreFactory implements IScoreFactory {
 
 	@Override
 	public boolean supports(EDataDomainQueryMode mode) {
-		return mode == EDataDomainQueryMode.TABLE_BASED;
+		return mode == EDataDomainQueryMode.STRATIFICATIONS;
 	}
 
 	@Override
@@ -133,7 +133,7 @@ public class AdjustedRandScoreFactory implements IScoreFactory {
 			this.dataDomainUI.setContentProvider(ArrayContentProvider.getInstance());
 			this.dataDomainUI.setLabelProvider(new CaleydoLabelProvider());
 			this.dataDomainUI.getCombo().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
-			this.dataDomainUI.setInput(EDataDomainQueryMode.TABLE_BASED.getAllDataDomains());
+			this.dataDomainUI.setInput(EDataDomainQueryMode.STRATIFICATIONS.getAllDataDomains());
 			this.dataDomainUI.addSelectionChangedListener(new ISelectionChangedListener() {
 				@Override
 				public void selectionChanged(SelectionChangedEvent event) {

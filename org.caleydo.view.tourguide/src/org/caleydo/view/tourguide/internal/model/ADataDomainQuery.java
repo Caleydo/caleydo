@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.Objects;
 
 import org.caleydo.core.data.datadomain.IDataDomain;
-import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 
 import com.google.common.base.Predicate;
 
@@ -41,27 +40,14 @@ public abstract class ADataDomainQuery implements Predicate<AScoreRow> {
 	protected final PropertyChangeSupport propertySupport = new PropertyChangeSupport(this);
 
 	protected final IDataDomain dataDomain;
-	protected final EDataDomainQueryMode mode;
 
 	private int offset;
 	private BitSet mask = null;
 	private List<AScoreRow> data;
 	private boolean active = false;
 
-	public ADataDomainQuery(EDataDomainQueryMode mode, IDataDomain dataDomain) {
+	public ADataDomainQuery(IDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
-		this.mode = mode;
-	}
-
-	public void cloneFrom(ADataDomainQuery clone, List<AScoreRow> allData) {
-		this.mask = clone.mask != null ? (BitSet) clone.mask.clone() : null;
-		this.active = clone.active;
-		this.offset = clone.offset;
-		this.active = clone.active;
-		if (clone.data != null) {
-			int size = clone.data.size();
-			this.data = new CustomSubList<AScoreRow>(allData, offset, size);
-		}
 	}
 
 	public abstract boolean hasFilter();
@@ -77,13 +63,6 @@ public abstract class ADataDomainQuery implements Predicate<AScoreRow> {
 	 */
 	public IDataDomain getDataDomain() {
 		return dataDomain;
-	}
-
-	/**
-	 * @return the mode, see {@link #mode}
-	 */
-	public final EDataDomainQueryMode getMode() {
-		return mode;
 	}
 
 	public final boolean isInitialized() {
