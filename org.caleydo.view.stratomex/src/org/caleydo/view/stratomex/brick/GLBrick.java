@@ -1121,6 +1121,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 					for (PathwayTablePerspective pathwayTablePerspective : pathwayTablePerspectives) {
 
 						AddGroupsToStratomexEvent event = new AddGroupsToStratomexEvent(pathwayTablePerspective);
+						event.setSourceColumn(getBrickColumn());
 						event.setDataConfigurer(new PathwayDataConfigurer());
 						event.setSender(this);
 						event.setReceiver(stratomex);
@@ -1164,6 +1165,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 						sortingStrategy.setHashConvertedRecordPerspectiveToOrginalRecordPerspective(dialog
 								.getHashConvertedRecordPerspectiveToOrginalRecordPerspective());
 						dataConfigurer.setSortingStrategy(sortingStrategy);
+						event.setSourceColumn(getBrickColumn());
 						event.setDataConfigurer(dataConfigurer);
 						event.setSender(this);
 						event.setReceiver(stratomex);
@@ -1204,6 +1206,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 					PathwayDimensionGroupData pathwayDimensionGroupData = dialog.getPathwayDimensionGroupData();
 
 					AddGroupsToStratomexEvent event = new AddGroupsToStratomexEvent(pathwayDimensionGroupData);
+					event.setSourceColumn(getBrickColumn());
 					event.setSender(stratomex);
 					eventPublisher.triggerEvent(event);
 				}
