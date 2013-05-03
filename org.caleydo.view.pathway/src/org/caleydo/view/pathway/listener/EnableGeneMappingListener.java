@@ -28,7 +28,7 @@ public class EnableGeneMappingListener extends APathwayListener {
 	public void handleEvent(AEvent event) {
 		if (event instanceof PathwayMappingEvent) {
 			PathwayMappingEvent pEvent = (PathwayMappingEvent) event;
-			handler.mapTablePerspective(pEvent.getTablePerspective());
+			// handler.mapTablePerspective(pEvent.getTablePerspective());
 		}
 	}
 
