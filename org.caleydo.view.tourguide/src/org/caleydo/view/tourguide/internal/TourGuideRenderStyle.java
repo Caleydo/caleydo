@@ -40,4 +40,5 @@ public class TourGuideRenderStyle extends GeneralRenderStyle {
 	public static final String ICON_FILTER_DISABLED = ICON_PREFIX + "filter_disabled.png";
 	public static final String ICON_ADD = ICON_PREFIX + "add.png";
 	public static final String ICON_ADD_COLOR = ICON_PREFIX + "add_color.png";
+	public static final String ICON_BASKET = ICON_PREFIX + "basket.png";
 }
