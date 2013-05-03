@@ -55,6 +55,8 @@ public class DifferenceplotRenderUtils {
 	private float POINT_SIZE_MULTIPLIER = 0.4f;
 	private float POINT_BORDER_SIZE_MULTIPLIER = 0.45f;
 	
+	private float zDepth = 10.0f;
+	
 	
 	private ArrayList<Integer> idList;
 	
@@ -248,14 +250,15 @@ public class DifferenceplotRenderUtils {
 			anyItemSelected = true;
 		}
 		
+		
 		gl.glColor4f( (float) (200/255.0), (float) (200/255.0), (float) (200/255.0), 0.2f);
 		
 		gl.glBegin(GL2.GL_QUADS);
 		
-		gl.glVertex2f(0, 0);
-        gl.glVertex2f(width, 0);
-        gl.glVertex2f(width, height);
-        gl.glVertex2f(0, height);
+		gl.glVertex3f(0, 0, zDepth);
+        gl.glVertex3f(width, 0, zDepth);
+        gl.glVertex3f(width, height, zDepth);
+        gl.glVertex3f(0, height, zDepth);
 		
 		gl.glEnd();
 		
@@ -272,7 +275,7 @@ public class DifferenceplotRenderUtils {
 			//int recordID = scatterplotElement.getSelection().getTablePerspective().getRecordPerspective().getVirtualArray().get(i);
 			if(!selectionManager.checkStatus(SelectionType.SELECTION, idList.get(i)))
 			{
-		        gl.glVertex3f((differenceplotElement.getDataColumns().get(0).get(i) - xMin) / xRange * xScale + sideSpacing, height - ((differenceplotElement.getDataColumns().get(1).get(i) - yMin) / yRange * yScale + sideSpacing ), 0);   
+		        gl.glVertex3f((differenceplotElement.getDataColumns().get(0).get(i) - xMin) / xRange * xScale + sideSpacing, height - ((differenceplotElement.getDataColumns().get(1).get(i) - yMin) / yRange * yScale + sideSpacing ), zDepth + 1);   
 			}			
 		}
 		gl.glEnd();
@@ -288,7 +291,7 @@ public class DifferenceplotRenderUtils {
 			//if(!view.getSelectionManager().checkStatus(SelectionType.DESELECTED, recordID))
 			if(selectionManager.checkStatus(SelectionType.SELECTION, idList.get(i)) | !anyItemSelected)			
 			{
-				gl.glVertex3f((differenceplotElement.getDataColumns().get(0).get(i) - xMin) / xRange * xScale + sideSpacing, height - ((differenceplotElement.getDataColumns().get(1).get(i) - yMin) / yRange * yScale + sideSpacing) , 0);		        
+				gl.glVertex3f((differenceplotElement.getDataColumns().get(0).get(i) - xMin) / xRange * xScale + sideSpacing, height - ((differenceplotElement.getDataColumns().get(1).get(i) - yMin) / yRange * yScale + sideSpacing), zDepth + 1);		        
 			}			
 		}
 		gl.glEnd();
@@ -301,7 +304,7 @@ public class DifferenceplotRenderUtils {
 			//int recordID = scatterplotElement.getSelection().getTablePerspective().getRecordPerspective().getVirtualArray().get(i);
 			if(selectionManager.checkStatus(SelectionType.SELECTION, idList.get(i)) | !anyItemSelected)			
 			{
-				gl.glVertex3f((differenceplotElement.getDataColumns().get(0).get(i) - xMin) / xRange * xScale + sideSpacing, height - ((differenceplotElement.getDataColumns().get(1).get(i) - yMin) / yRange * yScale + sideSpacing), 0);		        
+				gl.glVertex3f((differenceplotElement.getDataColumns().get(0).get(i) - xMin) / xRange * xScale + sideSpacing, height - ((differenceplotElement.getDataColumns().get(1).get(i) - yMin) / yRange * yScale + sideSpacing), zDepth + 2);		        
 			}			
 		}
 		gl.glEnd();		
@@ -326,14 +329,15 @@ public class DifferenceplotRenderUtils {
 			anyItemSelected = true;
 		}
 		
+		
 		gl.glColor4f( (float) (200/255.0), (float) (200/255.0), (float) (200/255.0), 0.2f);
 		
 		gl.glBegin(GL2.GL_QUADS);
 		
-		gl.glVertex2f(0, 0);
-        gl.glVertex2f(width, 0);
-        gl.glVertex2f(width, height);
-        gl.glVertex2f(0, height);
+		gl.glVertex3f(0, 0, zDepth);
+        gl.glVertex3f(width, 0, zDepth);
+        gl.glVertex3f(width, height, zDepth);
+        gl.glVertex3f(0, height, zDepth);
 		
 		gl.glEnd();
 		
@@ -350,7 +354,7 @@ public class DifferenceplotRenderUtils {
 //			//int recordID = scatterplotElement.getSelection().getTablePerspective().getRecordPerspective().getVirtualArray().get(i);
 //			if(!selectionManager.checkStatus(SelectionType.SELECTION, idList.get(i)))
 //			{
-//		        gl.glVertex3f((differenceplotElement.getDataColumns().get(0).get(i) - xMin) / xRange * xScale + sideSpacing, height - ((differenceplotElement.getDataColumns().get(1).get(i) - yMin) / yRange * yScale + sideSpacing ), 0);   
+//		        gl.glVertex3f((differenceplotElement.getDataColumns().get(0).get(i) - xMin) / xRange * xScale + sideSpacing, height - ((differenceplotElement.getDataColumns().get(1).get(i) - yMin) / yRange * yScale + sideSpacing ), zDepth);   
 //			}			
 //		}
 //		gl.glEnd();
@@ -368,7 +372,7 @@ public class DifferenceplotRenderUtils {
 			{
 				if(significanceDiffFlags1.get(i)| significanceDiffFlags2.get(i))
 				{
-					gl.glVertex3f((differenceplotElement.getDataColumns().get(0).get(i) - xMin) / xRange * xScale + sideSpacing, height - ((differenceplotElement.getDataColumns().get(1).get(i) - yMin) / yRange * yScale + sideSpacing) , 0);		        
+					gl.glVertex3f((differenceplotElement.getDataColumns().get(0).get(i) - xMin) / xRange * xScale + sideSpacing, height - ((differenceplotElement.getDataColumns().get(1).get(i) - yMin) / yRange * yScale + sideSpacing) , zDepth + 2);		        
 				}	
 			}	
 		}
@@ -392,7 +396,7 @@ public class DifferenceplotRenderUtils {
 					//gl.glColor4f( (float) (253/255.0), (float) (122/255.0), (float) (55/255.0), (float) (100/255.0));
 					gl.glColor4f( (float) (200/255.0), (float) (200/255.0), (float) (200/255.0), 0.2f);
 				}
-				gl.glVertex3f((differenceplotElement.getDataColumns().get(0).get(i) - xMin) / xRange * xScale + sideSpacing, height - ((differenceplotElement.getDataColumns().get(1).get(i) - yMin) / yRange * yScale + sideSpacing), 0);
+				gl.glVertex3f((differenceplotElement.getDataColumns().get(0).get(i) - xMin) / xRange * xScale + sideSpacing, height - ((differenceplotElement.getDataColumns().get(1).get(i) - yMin) / yRange * yScale + sideSpacing), zDepth + 2);
 				gl.glEnd();		
 			}			
 		}
@@ -414,15 +418,18 @@ public class DifferenceplotRenderUtils {
         
         float xPnt = (0 - xMin) / xRange * xScale + sideSpacing;
         
-        gl.glVertex2f(xPnt, 0);
-        gl.glVertex2f(xPnt, height);
+        gl.glVertex3f(xPnt, 0, zDepth + 1);
+        gl.glVertex3f(xPnt, height, zDepth + 1);
         
         float yPnt = height - ((0 - yMin) / yRange * yScale + sideSpacing);
         
-        gl.glVertex2f(0, yPnt);
-        gl.glVertex2f(width, yPnt);
+        gl.glVertex3f(0, yPnt, zDepth);
+        gl.glVertex3f(width, yPnt, zDepth + 1);
 
         gl.glEnd();
+        
+        gl.glDisable(GL2.GL_LINE_STIPPLE);
+        
 	}
 	
 	
@@ -434,21 +441,23 @@ public class DifferenceplotRenderUtils {
 		}
 		
 		gl.glEnable(gl.GL_LINE_STIPPLE);
-        gl.glPolygonMode(gl.GL_FRONT_AND_BACK, gl.GL_LINE);
+        gl.glPolygonMode(GL2.GL_FRONT_AND_BACK, gl.GL_LINE);
         gl.glLineStipple(2, (short) 0x1C47);
         
         gl.glColor3f( (float) 0, (float) 0, (float) 0);
         
 		gl.glBegin(GL2.GL_QUADS);
 		
-		gl.glVertex2f(rect.getLeft(), rect.getTop());
-        gl.glVertex2f(rect.getRight(), rect.getTop());
-        gl.glVertex2f(rect.getRight(), rect.getBottom());
-        gl.glVertex2f(rect.getLeft(), rect.getBottom());
+		gl.glVertex3f(rect.getLeft(), rect.getTop(), zDepth +  3);
+        gl.glVertex3f(rect.getRight(), rect.getTop(), zDepth + 3);
+        gl.glVertex3f(rect.getRight(), rect.getBottom(), zDepth + 3);
+        gl.glVertex3f(rect.getLeft(), rect.getBottom(), zDepth + 3);
 		
 		gl.glEnd();
 		
-		gl.glPolygonMode(gl.GL_FRONT_AND_BACK, gl.GL_FILL);
+		gl.glPolygonMode(GL2.GL_FRONT_AND_BACK, GL2.GL_FILL);
+		
+		gl.glDisable(GL2.GL_LINE_STIPPLE);
 	}
 	
 	public void performBrushing(DifferenceplotElement scatterplotElement, SelectionRectangle rect)

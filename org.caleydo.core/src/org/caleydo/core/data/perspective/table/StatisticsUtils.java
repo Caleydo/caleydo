@@ -39,15 +39,35 @@ public class StatisticsUtils {
 	 * 
 	 * @param computationType, if 0, the stats are computed over rows. If 1, the stats are computed over columns
 	 * @param tablePerspective
+	 * @param referenceTablePerspective, this provides the true ID mappings when difference view is used between different table perspectives
+	 *                                   currently only used in rendering difference as a brick
 	 * @param statToCompute
 	 * @param selectedIDs, if provided the stats is computed only for the selected rows/columns
 	 * @return
 	 */
-	public static ArrayList<Float> computeStatistics(int computationType, TablePerspective tablePerspective, EStatisticsType statToCompute, ArrayList<Integer> selectedIDs)
+	public static ArrayList<Float> computeStatistics(int computationType, TablePerspective tablePerspective, TablePerspective referenceTablePerspective, EStatisticsType statToCompute, ArrayList<Integer> selectedIDs)
 	{
 		ArrayList<Float> result = new ArrayList<Float>();
 		VirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
 		VirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
+		
+		/**
+		 * Currently this is only true when rendering in a brick
+		 */
+		boolean useReferenceTableIDs = false;
+		
+		if (referenceTablePerspective != null)
+		{
+			useReferenceTableIDs = true;
+			if(computationType == 0)
+			{
+				recordVA = referenceTablePerspective.getRecordPerspective().getVirtualArray();
+			}
+			else
+			{
+				dimensionVA = referenceTablePerspective.getDimensionPerspective().getVirtualArray();
+			}
+		}
 		
 		Table table = tablePerspective.getDataDomain().getTable();
 		

@@ -24,7 +24,9 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.GLElement.EVisibility;
+import org.caleydo.core.view.opengl.layout2.WindowGLElement;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -110,15 +112,26 @@ public class DifferenceplotElement extends GLElement implements TablePerspective
 		
 		setVisibility(EVisibility.PICKABLE);
 		
+		this.dataSelectionConf = dataSelectionConfiguration;
+		
 		if (dataSelectionConfiguration != null)
 		{
 			renderRemote = true;
-			this.prepareData(dataSelectionConfiguration);
-			
 		}
 		
 		
 		
+	}
+	
+	/**
+	 * setup method, when adding a child to a parent
+	 * @param context
+	 */
+	@Override
+	protected void init(IGLElementContext context) 
+	{
+		super.init(context);
+		this.prepareData(this.dataSelectionConf);
 	}
 
 	@Override
@@ -150,7 +163,7 @@ public class DifferenceplotElement extends GLElement implements TablePerspective
 
 	@Override
 	protected void renderPickImpl(GLGraphics g, float w, float h) {
-		if (!dataColumnsSet | !readyForRender| renderRemote)
+		if (!dataColumnsSet | !readyForRender)
 			return;	
 		
 		g.pushResourceLocator(Activator.getResourceLocator());
@@ -175,16 +188,16 @@ public class DifferenceplotElement extends GLElement implements TablePerspective
 				//StatContainer statisticsContext = tablePerspective.getContainerStatistics().getHistogram();
 				//statisticsFocus = 
 				
-				this.dataSelectionConf = dataSelectionConf;
 				
+				this.dataSelectionConf = dataSelectionConf;
 				Table table = selection.getDataDomain().getTable();
 				
 				
-				ArrayList<Float> col1_v1 = new ArrayList<Float>();
-				ArrayList<Float> col2_v1 = new ArrayList<Float>();
+				ArrayList<Float> stat1_UseAll = new ArrayList<Float>();
+				ArrayList<Float> stat2_UseAll = new ArrayList<Float>();
 				
-				ArrayList<Float> col1_v2 = new ArrayList<Float>();
-				ArrayList<Float> col2_v2 = new ArrayList<Float>();
+				ArrayList<Float> stat1_UseSelected = new ArrayList<Float>();
+				ArrayList<Float> stat2_UseSelected = new ArrayList<Float>();
 				
 				
 				
@@ -202,20 +215,22 @@ public class DifferenceplotElement extends GLElement implements TablePerspective
 				if (renderRemote)
 				{
 					// Use the defaultTablePerspective to compute statistics for the whole set (e.g., all the samples)
-					TablePerspective defaultTablePerspective = tablePerspective.getDataDomain().getDefaultTablePerspective();
+					TablePerspective defaultTablePerspective = tablePerspective.getParentTablePerspective();
+					TablePerspective defaultTablePerspective2 = tablePerspective.getDataDomain().getDefaultTablePerspective();
 					//tablePerspective.getParentTablePerspective()
 					
-					col1_v1 = StatisticsUtils.computeStatistics(dataSelectionConf.getVisSpaceType().ordinal(), defaultTablePerspective, EStatisticsType.valueOf(dataSelectionConf.getAxisLabels().get(0)), null);
-					col2_v1 = StatisticsUtils.computeStatistics(dataSelectionConf.getVisSpaceType().ordinal(), defaultTablePerspective, EStatisticsType.valueOf(dataSelectionConf.getAxisLabels().get(1)), null);
+					stat1_UseAll = StatisticsUtils.computeStatistics(dataSelectionConf.getVisSpaceType().ordinal(), defaultTablePerspective, null, EStatisticsType.valueOf(dataSelectionConf.getAxisLabels().get(0)), null);
+					stat2_UseAll = StatisticsUtils.computeStatistics(dataSelectionConf.getVisSpaceType().ordinal(), defaultTablePerspective, null, EStatisticsType.valueOf(dataSelectionConf.getAxisLabels().get(1)), null);
 					// Use the tablePerspective to compute the statistics only for the brick (e.g., for the samples within the brick)
-					col1_v2 = StatisticsUtils.computeStatistics(dataSelectionConf.getVisSpaceType().ordinal(), tablePerspective, EStatisticsType.valueOf(dataSelectionConf.getAxisLabels().get(0)), null);
-					col2_v2 = StatisticsUtils.computeStatistics(dataSelectionConf.getVisSpaceType().ordinal(), tablePerspective, EStatisticsType.valueOf(dataSelectionConf.getAxisLabels().get(1)), null);
+					// Pass the defaultTablePerspective as reference here, this is to ensure that gene IDs computed for all and the brick are exactly the same
+					stat1_UseSelected = StatisticsUtils.computeStatistics(dataSelectionConf.getVisSpaceType().ordinal(), tablePerspective, defaultTablePerspective, EStatisticsType.valueOf(dataSelectionConf.getAxisLabels().get(0)), null);
+					stat2_UseSelected = StatisticsUtils.computeStatistics(dataSelectionConf.getVisSpaceType().ordinal(), tablePerspective, defaultTablePerspective, EStatisticsType.valueOf(dataSelectionConf.getAxisLabels().get(1)), null);
 					
 					int sampleSize1 = StatisticsUtils.computeSampleSize(dataSelectionConf.getVisSpaceType().ordinal(), defaultTablePerspective, false);
 					int sampleSize2 = StatisticsUtils.computeSampleSize(dataSelectionConf.getVisSpaceType().ordinal(), tablePerspective, false);
 					
-					significanceDiffFlagMean = StatisticsUtils.computeSignificanceOnTwoSampleTtest(false, col1_v1, col1_v2, col2_v1, col2_v2, sampleSize1, sampleSize2);
-					significanceDiffFlagVariance = StatisticsUtils.computeSignificanceOnTwoSampleVarianceFTest(col2_v1, col2_v2, sampleSize1, sampleSize2);
+					significanceDiffFlagMean = StatisticsUtils.computeSignificanceOnTwoSampleTtest(false, stat1_UseAll, stat1_UseSelected, stat2_UseAll, stat2_UseSelected, sampleSize1, sampleSize2);
+					significanceDiffFlagVariance = StatisticsUtils.computeSignificanceOnTwoSampleVarianceFTest(stat2_UseAll, stat2_UseSelected, sampleSize1, sampleSize2);
 				}
 				/**
 				 * In the case of normal rendering. The statistics are computed for only 
@@ -226,12 +241,13 @@ public class DifferenceplotElement extends GLElement implements TablePerspective
 					ArrayList<Integer> selectedIDs = renderUtil.buildSelectedIDList(this);
 					
 					TablePerspective defaultTablePerspective = tablePerspective.getDataDomain().getDefaultTablePerspective();
+					TablePerspective defaultTablePerspective2 = tablePerspective.getParentTablePerspective();
 					
-					col1_v1 = StatisticsUtils.computeStatistics(dataSelectionConf.getVisSpaceType().ordinal(), tablePerspective, EStatisticsType.valueOf(dataSelectionConf.getAxisLabels().get(0)), null);
-					col2_v1 = StatisticsUtils.computeStatistics(dataSelectionConf.getVisSpaceType().ordinal(), tablePerspective, EStatisticsType.valueOf(dataSelectionConf.getAxisLabels().get(1)), null);
+					stat1_UseAll = StatisticsUtils.computeStatistics(dataSelectionConf.getVisSpaceType().ordinal(), tablePerspective, null, EStatisticsType.valueOf(dataSelectionConf.getAxisLabels().get(0)), null);
+					stat2_UseAll = StatisticsUtils.computeStatistics(dataSelectionConf.getVisSpaceType().ordinal(), tablePerspective, null, EStatisticsType.valueOf(dataSelectionConf.getAxisLabels().get(1)), null);
 					
-					col1_v2 = StatisticsUtils.computeStatistics(dataSelectionConf.getVisSpaceType().ordinal(), tablePerspective, EStatisticsType.valueOf(dataSelectionConf.getAxisLabels().get(0)), selectedIDs);
-					col2_v2 = StatisticsUtils.computeStatistics(dataSelectionConf.getVisSpaceType().ordinal(), tablePerspective, EStatisticsType.valueOf(dataSelectionConf.getAxisLabels().get(1)), selectedIDs);				
+					stat1_UseSelected = StatisticsUtils.computeStatistics(dataSelectionConf.getVisSpaceType().ordinal(), tablePerspective, null, EStatisticsType.valueOf(dataSelectionConf.getAxisLabels().get(0)), selectedIDs);
+					stat2_UseSelected = StatisticsUtils.computeStatistics(dataSelectionConf.getVisSpaceType().ordinal(), tablePerspective, null, EStatisticsType.valueOf(dataSelectionConf.getAxisLabels().get(1)), selectedIDs);				
 				}
 			
 				
@@ -240,17 +256,17 @@ public class DifferenceplotElement extends GLElement implements TablePerspective
 				
 				
 				
-				for (int i = 0; i < col1_v1.size(); i++)
+				for (int i = 0; i < stat1_UseAll.size(); i++)
 				{
-					float diffVal = col1_v2.get(i) - col1_v1.get(i);
-					col1_v2.set(i, diffVal);
+					float diffVal = stat1_UseSelected.get(i) - stat1_UseAll.get(i);
+					stat1_UseSelected.set(i, diffVal);
 					
-					diffVal = col2_v2.get(i) - col2_v1.get(i);
-					col2_v2.set(i, diffVal);
+					diffVal = stat2_UseSelected.get(i) - stat2_UseAll.get(i);
+					stat2_UseSelected.set(i, diffVal);
 				}
 				
-				dataColumns.add(col1_v2);
-				dataColumns.add(col2_v2);
+				dataColumns.add(stat1_UseSelected);
+				dataColumns.add(stat2_UseSelected);
 				
 				
 				renderUtil.PerformDataLoadedOperations(this);
@@ -260,10 +276,11 @@ public class DifferenceplotElement extends GLElement implements TablePerspective
 				if (!this.dataColumnsSet)
 				{
 					this.dataColumnsSet = true;
-					if(!renderRemote)
-					{
-						initListeners();
-					}
+//					if(!renderRemote)
+//					{
+//						initListeners();
+//					}
+					initListeners();
 				}
 				else
 				{
@@ -283,27 +300,51 @@ public class DifferenceplotElement extends GLElement implements TablePerspective
 
 	public void initListeners()
 	{
-		canvasPickingListener = new IPickingListener() {
-			@Override
-			public void pick(Pick pick) {
-				//onRecordPick(pick.getObjectID(), pick);
-				handleMouseEvents(pick);
-			}
-		};
+		if (renderRemote)
+		{
+			canvasPickingListener = new IPickingListener() {
+				@Override
+				public void pick(Pick pick) {
+					//onRecordPick(pick.getObjectID(), pick);
+					handleMouseEventsRemoteMode(pick);
+				}
+			};
+		}
+		else
+		{
+			canvasPickingListener = new IPickingListener() {
+				@Override
+				public void pick(Pick pick) {
+					//onRecordPick(pick.getObjectID(), pick);
+					handleMouseEvents(pick);
+				}
+			};
+		}
+		
 		
 		pickingId = context.registerPickingListener(canvasPickingListener);
 	}
 	
 	public void handleMouseEvents(Pick pick)
 	{
+		//System.out.println("!!!!! relased:  " + pick.getPickingMode());
 		switch (pick.getPickingMode()) {
 		case CLICKED:
-			//System.out.println("clicked:  " + pick.getPickedPoint());
+			//System.out.println("!!!!! clicked:  " + pick.getPickedPoint());
 			firstClickPoint = pick.getPickedPoint();
+			
+			
 			rectanglePicked = renderUtil.pickedSelectionRectangle(firstClickPoint, selectionRect);
 			break;
 		case DRAGGED:
 			//Enlarge the selection rectangle here
+			
+			//System.out.println("!!!!! dragged:  " + pick.getPickedPoint());
+			if(firstClickPoint == null)
+			{
+				//System.out.println("!!!!! dragged:  " + this.toRelative(pick.getPickedPoint()));
+				firstClickPoint = pick.getPickedPoint();
+			}
 			if(!rectanglePicked)
 			{
 				selectionRect = new SelectionRectangle();
@@ -323,7 +364,79 @@ public class DifferenceplotElement extends GLElement implements TablePerspective
 			break;
 		case MOUSE_RELEASED:
 			//A single click to remove the selection
+			System.out.println("!!!!! relased:  " + pick.getPickedPoint());
+			if (Math.abs(pick.getPickedPoint().x - firstClickPoint.x) < 1 | Math.abs(pick.getPickedPoint().y - firstClickPoint.y) < 1)
+			{
+				if (!rectanglePicked)
+				{
+					selectionRect = null;
+					renderUtil.clearSelection(this);
+				}
+			}
+			else
+			{
+				selectionRect.ComputeScreenToDataMapping(renderUtil, dataColumns, getSize().x(), getSize().y());
+				renderUtil.performBrushing(this, selectionRect);
+			}
+			break;	
+		
+		}
+	}
+	
+	public void handleMouseEventsRemoteMode(Pick pick)
+	{
+		System.out.println("!!!!! relased:  " + pick.getPickingMode());
+		switch (pick.getPickingMode()) {
+		case CLICKED:
+			System.out.println("!!!!! clicked:  " + pick.getPickedPoint());
+			if(firstClickPoint == null)
+			{
+				firstClickPoint = pick.getPickedPoint();
+				return;
+			}
+			if (Math.abs(pick.getPickedPoint().x - firstClickPoint.x) < 1 | Math.abs(pick.getPickedPoint().y - firstClickPoint.y) < 1)
+			{
+				if (!rectanglePicked)
+				{
+					selectionRect = null;
+					renderUtil.clearSelection(this);
+				}
+			}
+			else
+			{
+				selectionRect.ComputeScreenToDataMapping(renderUtil, dataColumns, getSize().x(), getSize().y());
+				renderUtil.performBrushing(this, selectionRect);
+			}
+			break;
+		case DRAGGED:
+			//Enlarge the selection rectangle here
 			
+			System.out.println("!!!!! dragged:  " + pick.getPickedPoint());
+			if(firstClickPoint == null)
+			{
+				//System.out.println("!!!!! dragged:  " + this.toRelative(pick.getPickedPoint()));
+				firstClickPoint = pick.getPickedPoint();
+			}
+			if(!rectanglePicked)
+			{
+				selectionRect = new SelectionRectangle();
+				selectionRect.setLeft(firstClickPoint.x);
+				selectionRect.setRight(pick.getPickedPoint().x);
+				selectionRect.setTop(firstClickPoint.y);
+				selectionRect.setBottom(pick.getPickedPoint().y);
+			}
+			else
+			{
+				selectionRect.moveRectangle(pick.getDx(), pick.getDy());
+			}
+			
+			
+			//selectionRect.ComputeScreenToDataMapping(renderUtil, dataColumns, getSize().x(), getSize().y());			
+			//renderUtil.performBrushing(this, selectionRect);
+			break;
+		case MOUSE_RELEASED:
+			//A single click to remove the selection
+			System.out.println("!!!!! relased:  " + pick.getPickedPoint());
 			if (Math.abs(pick.getPickedPoint().x - firstClickPoint.x) < 1 | Math.abs(pick.getPickedPoint().y - firstClickPoint.y) < 1)
 			{
 				if (!rectanglePicked)

@@ -196,8 +196,8 @@ public class ScatterplotElement extends GLElement implements TablePerspectiveSel
 				{
 					//TODO: Perform statistics computations here
 					
-					col1 = StatisticsUtils.computeStatistics(dataSelectionConf.getVisSpaceType().ordinal(), tablePerspective, EStatisticsType.valueOf(dataSelectionConf.getAxisLabels().get(0)), null);
-					col2 = StatisticsUtils.computeStatistics(dataSelectionConf.getVisSpaceType().ordinal(), tablePerspective, EStatisticsType.valueOf(dataSelectionConf.getAxisLabels().get(1)), null);
+					col1 = StatisticsUtils.computeStatistics(dataSelectionConf.getVisSpaceType().ordinal(), tablePerspective, null, EStatisticsType.valueOf(dataSelectionConf.getAxisLabels().get(0)), null);
+					col2 = StatisticsUtils.computeStatistics(dataSelectionConf.getVisSpaceType().ordinal(), tablePerspective, null, EStatisticsType.valueOf(dataSelectionConf.getAxisLabels().get(1)), null);
 				}
 				
 				dataColumns.add(col1);
