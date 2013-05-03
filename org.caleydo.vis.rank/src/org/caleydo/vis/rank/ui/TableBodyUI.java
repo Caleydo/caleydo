@@ -544,6 +544,14 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 		onScrollBarMoved(scrollBar, scrollBar.getOffset() + rowDelta);
 	}
 
+	public void scrollFirst() {
+		onScrollBarMoved(scrollBar, 0);
+	}
+
+	public void scrollLast() {
+		onScrollBarMoved(scrollBar, scrollBar.getSize() - scrollBar.getWindow());
+	}
+
 	@Override
 	public float getHeight(IScrollBar scrollBar) {
 		return getSize().y();

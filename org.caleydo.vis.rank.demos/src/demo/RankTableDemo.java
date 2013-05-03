@@ -22,7 +22,6 @@ package demo;
 
 import java.awt.Dimension;
 
-import org.caleydo.core.view.opengl.canvas.IGLKeyListener;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLSandBox;
 import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
@@ -30,18 +29,16 @@ import org.caleydo.vis.rank.config.RankTableConfigBase;
 import org.caleydo.vis.rank.config.RankTableUIConfigs;
 import org.caleydo.vis.rank.layout.RowHeightLayouts;
 import org.caleydo.vis.rank.model.RankTableModel;
-import org.caleydo.vis.rank.model.StackedRankColumnModel;
+import org.caleydo.vis.rank.ui.RankTableKeyListener;
 import org.caleydo.vis.rank.ui.RankTableUI;
+import org.caleydo.vis.rank.ui.RankTableUIKeyListener;
 import org.eclipse.swt.widgets.Shell;
-
-import com.google.common.collect.Iterables;
 
 /**
  * @author Samuel Gratzl
  *
  */
 public class RankTableDemo extends GLSandBox {
-	private static final char TOGGLE_ALIGN_ALL = 't';
 
 	protected final RankTableModel table;
 
@@ -54,27 +51,9 @@ public class RankTableDemo extends GLSandBox {
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
-		canvas.addKeyListener(new IGLKeyListener() {
-			@Override
-			public void keyPressed(IKeyEvent e) {
-				if (e.isKey(ESpecialKey.DOWN))
-					table.selectNextRow();
-				else if (e.isKey(ESpecialKey.UP))
-					table.selectPreviousRow();
-				else if (e.isControlDown() && (e.isKey(TOGGLE_ALIGN_ALL))) {
-					// short cut for align all
-					for(StackedRankColumnModel stacked : Iterables.filter(table.getColumns(), StackedRankColumnModel.class)) {
-						stacked.setAlignAll(!stacked.isAlignAll());
-					}
-				}
-			}
-
-			@Override
-			public void keyReleased(IKeyEvent e) {
-
-			}
-		});
+		canvas.addKeyListener(new RankTableKeyListener(table));
 		createUI();
+		canvas.addKeyListener(new RankTableUIKeyListener(((RankTableUI) getRoot()).findBody()));
 
 	}
 

@@ -144,7 +144,7 @@ public class RankTableUI extends GLElementContainer implements ISelectionCallbac
 		body.setRowLayout(l);
 	}
 
-	protected TableBodyUI findBody() {
+	public TableBodyUI findBody() {
 		ScrollingDecorator scbody = (ScrollingDecorator) get(1);
 		TableUI table = (TableUI) scbody.getContent();
 		TableBodyUI body = (TableBodyUI) table.get(1);
