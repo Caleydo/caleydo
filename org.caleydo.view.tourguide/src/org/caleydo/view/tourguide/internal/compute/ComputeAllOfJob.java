@@ -26,8 +26,8 @@ import java.util.List;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.view.tourguide.internal.event.ScoreQueryReadyEvent;
-import org.caleydo.view.tourguide.internal.view.PerspectiveRow;
-import org.caleydo.view.tourguide.internal.view.model.ADataDomainQuery;
+import org.caleydo.view.tourguide.internal.model.ADataDomainQuery;
+import org.caleydo.view.tourguide.internal.model.AScoreRow;
 import org.caleydo.view.tourguide.spi.score.IScore;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -43,13 +43,10 @@ public class ComputeAllOfJob extends AComputeJob {
 
 	private final ADataDomainQuery query;
 
-	private final boolean hasAnyGroupScore;
-
-	public ComputeAllOfJob(ADataDomainQuery q, Collection<IScore> scores, Object receiver, boolean hasAnyGroupScore) {
+	public ComputeAllOfJob(ADataDomainQuery q, Collection<IScore> scores, Object receiver) {
 		super(scores, receiver);
 		this.query = q;
 		this.receiver = receiver;
-		this.hasAnyGroupScore = hasAnyGroupScore;
 	}
 
 	@Override
@@ -64,8 +61,8 @@ public class ComputeAllOfJob extends AComputeJob {
 		Stopwatch w = new Stopwatch().start();
 		log.info("compute the data for datadomain: " + query.getDataDomain().getLabel());
 		boolean creating = !query.isInitialized();
-		List<PerspectiveRow> data = query.getOrCreate();
-		BitSet mask = query.getMask(!hasAnyGroupScore);
+		List<AScoreRow> data = query.getOrCreate();
+		BitSet mask = query.getMask();
 		System.out.println("done in " + w);
 
 		IStatus result = runImpl(monitor, data, mask);

@@ -68,21 +68,21 @@ import org.caleydo.view.tourguide.internal.event.CreateScoreEvent;
 import org.caleydo.view.tourguide.internal.event.ImportExternalScoreEvent;
 import org.caleydo.view.tourguide.internal.event.ScoreQueryReadyEvent;
 import org.caleydo.view.tourguide.internal.external.ImportExternalScoreCommand;
+import org.caleydo.view.tourguide.internal.model.ADataDomainQuery;
+import org.caleydo.view.tourguide.internal.model.AScoreRow;
+import org.caleydo.view.tourguide.internal.model.CategoricalDataDomainQuery;
+import org.caleydo.view.tourguide.internal.model.CustomSubList;
+import org.caleydo.view.tourguide.internal.model.PathwayDataDomainQuery;
+import org.caleydo.view.tourguide.internal.model.StratificationDataDomainQuery;
 import org.caleydo.view.tourguide.internal.score.ScoreFactories;
 import org.caleydo.view.tourguide.internal.score.Scores;
 import org.caleydo.view.tourguide.internal.view.col.DataDomainRankColumnModel;
 import org.caleydo.view.tourguide.internal.view.col.IAddToStratomex;
 import org.caleydo.view.tourguide.internal.view.col.ScoreRankColumnModel;
 import org.caleydo.view.tourguide.internal.view.col.SizeRankColumnModel;
-import org.caleydo.view.tourguide.internal.view.model.ADataDomainQuery;
-import org.caleydo.view.tourguide.internal.view.model.CategoricalDataDomainQuery;
-import org.caleydo.view.tourguide.internal.view.model.CustomSubList;
-import org.caleydo.view.tourguide.internal.view.model.PathwayDataDomainQuery;
-import org.caleydo.view.tourguide.internal.view.model.TableDataDomainQuery;
 import org.caleydo.view.tourguide.internal.view.ui.DataDomainQueryUI;
 import org.caleydo.view.tourguide.internal.view.ui.pool.ScorePoolUI;
 import org.caleydo.view.tourguide.spi.IScoreFactory;
-import org.caleydo.view.tourguide.spi.compute.IComputedGroupScore;
 import org.caleydo.view.tourguide.spi.score.IRegisteredScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
 import org.caleydo.vis.rank.config.RankTableConfigBase;
@@ -134,7 +134,7 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 				onActiveChanged((ADataDomainQuery) evt.getSource(), (boolean) evt.getNewValue());
 				break;
 			case ADataDomainQuery.PROP_MASK:
-				updateMask(false);
+				updateMask();
 			}
 		}
 	};
@@ -156,11 +156,6 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 			g.drawText("No active StratomeX", 10, h * 0.5f - 12, w - 20, 24, VAlign.CENTER);
 		}
 	});
-
-	/**
-	 * marker for the data mode
-	 */
-	private boolean hasAnyGroupScore;
 
 	public GLTourGuideView(IGLCanvas glCanvas) {
 		super(glCanvas, VIEW_TYPE, VIEW_NAME);
@@ -184,29 +179,27 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 		this.table.addPropertyChangeListener(RankTableModel.PROP_SELECTED_ROW, new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
-				onSelectRow((PerspectiveRow) evt.getOldValue(), (PerspectiveRow) evt.getNewValue());
+				onSelectRow((AScoreRow) evt.getOldValue(), (AScoreRow) evt.getNewValue());
 			}
 		});
 		this.table.add(new RankRankColumnModel().setWidth(30));
 		table.add(new DataDomainRankColumnModel(this).setWidth(80).setCollapsed(true));
 		final StringRankColumnModel base = new StringRankColumnModel(GLRenderers.drawText("Stratification"),
-				PerspectiveRow.TO_STRATIFICATION);
+				StringRankColumnModel.DEFAULT);
 		this.table.add(base);
 		base.setWidth(150);
 		base.orderByMe();
-		this.table.add(new StringRankColumnModel(GLRenderers.drawText("Group"), PerspectiveRow.TO_GROUP).setWidth(50)
-				.setCollapsed(true));
 		this.table.add(new SizeRankColumnModel("#Elements", new Function<IRow, Integer>() {
 			@Override
 			public Integer apply(IRow in) {
-				return ((PerspectiveRow) in).size();
+				return ((AScoreRow) in).size();
 			}
 		}).setWidth(75));
 
 		this.table.add(new SizeRankColumnModel("#Clusters", new Function<IRow, Integer>() {
 			@Override
 			public Integer apply(IRow in) {
-				return ((PerspectiveRow) in).getStratification().getVirtualArray().getGroupList().size();
+				return ((AScoreRow) in).getGroupSize();
 			}
 		}).setWidth(75).setCollapsed(true));
 
@@ -258,14 +251,13 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 		this.table.setDataMask((BitSet)view.table.getDataMask().clone());
 		List<?> tmp = this.table.getData();
 		@SuppressWarnings("unchecked")
-		List<PerspectiveRow> data = (List<PerspectiveRow>) tmp;
+		List<AScoreRow> data = (List<AScoreRow>) tmp;
 
 		for (int i = 0; i < queries.size(); ++i) {
 			ADataDomainQuery q = queries.get(i);
 			ADataDomainQuery clone = view.queries.get(i);
 			q.cloneFrom(clone, data);
 		}
-		this.hasAnyGroupScore = view.hasAnyGroupScore;
 		this.mode = view.mode;
 		this.mask.clear();
 		this.mask.or(view.mask);
@@ -276,7 +268,7 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 			return new CategoricalDataDomainQuery(mode, (ATableBasedDataDomain) dd);
 		if (dd instanceof PathwayDataDomain)
 			return new PathwayDataDomainQuery(mode, (PathwayDataDomain) dd);
-		return new TableDataDomainQuery(mode, (ATableBasedDataDomain) dd);
+		return new StratificationDataDomainQuery(mode, (ATableBasedDataDomain) dd);
 	}
 
 	@ListenTo
@@ -301,7 +293,7 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 				queries.remove(query);
 				getDataDomainQueryUI().remove(query);
 				if (query.isActive())
-					updateMask(false);
+					updateMask();
 				break;
 			}
 		}
@@ -315,7 +307,7 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 			if (active) {
 				scheduleAllOf(q);
 			} else
-				updateMask(false);
+				updateMask();
 			return;
 		} else
 			scheduleAllOf(q);
@@ -326,18 +318,16 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 	 */
 	private void scheduleAllOf(final ADataDomainQuery q) {
 		Collection<IScore> scores = new ArrayList<>(getVisibleScores(null));
-		ComputeAllOfJob job = new ComputeAllOfJob(q, scores, this, hasAnyGroupScore);
+		ComputeAllOfJob job = new ComputeAllOfJob(q, scores, this);
 		if (job.hasThingsToDo()) {
 			getPopupLayer().show(waiting, null, 0);
 			job.schedule();
 		} else {
-			updateMask(false);
+			updateMask();
 		}
 	}
 
 	private void scheduleAllOf(Collection<IScore> toCompute) {
-		if (!hasAnyGroupScore && hasAnyGroupScoreScore(toCompute))
-			updateMask(true);
 		ComputeForScoreJob job = new ComputeForScoreJob(toCompute, table.getData(), table.getDefaultFilter()
 				.getFilter(), this);
 		if (job.hasThingsToDo()) {
@@ -362,10 +352,10 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 			table.addData(q.getData());
 			List<?> m = table.getData();
 			// use sublists to save memory
-			q.init(offset, new CustomSubList<PerspectiveRow>((List<PerspectiveRow>) m, offset, m.size() - offset));
-			updateMask(false);
+			q.init(offset, new CustomSubList<AScoreRow>((List<AScoreRow>) m, offset, m.size() - offset));
+			updateMask();
 		} else {
-			updateMask(false);
+			updateMask();
 		}
 	}
 
@@ -386,7 +376,7 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 				ss.orderByMe();
 			}
 		}
-		updateMask(false);
+		updateMask();
 	}
 
 	/**
@@ -402,9 +392,8 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 		return l;
 	}
 
-	private void updateMask(boolean forceGroupScore) {
+	private void updateMask() {
 		this.mask.clear();
-		this.hasAnyGroupScore = forceGroupScore || hasAnyGroupScore();
 		for (ADataDomainQuery q : this.queries) {
 			if (!q.isInitialized())
 				continue;
@@ -413,39 +402,12 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 			if (!q.isActive())
 				this.mask.set(offset, offset + size, false);
 			else {
-				this.mask.or(q.getMask(!hasAnyGroupScore));
+				this.mask.or(q.getMask());
 			}
 		}
 		table.setDataMask(this.mask);
 	}
 
-	/**
-	 * @return
-	 */
-	private boolean hasAnyGroupScore() {
-		return hasAnyGroupScore(table.getColumns());
-	}
-
-	private static boolean hasAnyGroupScore(Iterable<ARankColumnModel> columns) {
-		for (ARankColumnModel col : columns) {
-			if (col instanceof ACompositeRankColumnModel) {
-				if (hasAnyGroupScore((ACompositeRankColumnModel) col))
-					return true;
-			} else if (col instanceof ScoreRankColumnModel) {
-				if (((ScoreRankColumnModel) col).getScore() instanceof IComputedGroupScore)
-					return true;
-			}
-		}
-		return false;
-	}
-
-	private static boolean hasAnyGroupScoreScore(Iterable<IScore> scores) {
-		for (IScore s : Scores.flatten(scores)) {
-			if (s instanceof IComputedGroupScore)
-				return true;
-		}
-		return false;
-	}
 
 	private TourGuideVis getVis() {
 		return (TourGuideVis) getRoot();
@@ -456,25 +418,6 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 		super.init(drawable);
 		eventListeners.register(stratomex);
 		this.canvas.addKeyListener(this);
-
-		final PropertyChangeListener columnListener = new PropertyChangeListener() {
-			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
-				switch (evt.getPropertyName()) {
-				case RankTableModel.PROP_COLUMNS:
-					if (evt.getNewValue() == null || evt.getOldValue() == null) { // removed or added
-						updateMask(false);
-					}
-					break;
-				case RankTableModel.PROP_POOL:
-					updateMask(false);
-					break;
-				}
-
-			}
-		};
-		this.table.addPropertyChangeListener(RankTableModel.PROP_COLUMNS, columnListener);
-		this.table.addPropertyChangeListener(RankTableModel.PROP_POOL, columnListener);
 
 		this.noStratomexVisible = stratomex.hasOne();
 		updateStratomexState();
@@ -515,8 +458,15 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 		return new SerializedTourGuideView();
 	}
 
-	protected void onSelectRow(PerspectiveRow old, PerspectiveRow new_) {
-		stratomex.updatePreview(old, new_, getVisibleScores(new_), mode);
+	protected void onSelectRow(AScoreRow old, AScoreRow new_) {
+		stratomex.updatePreview(old, new_, getVisibleScores(new_), mode, getSortedByScore());
+	}
+
+	private IScore getSortedByScore() {
+		IRankableColumnMixin orderBy = table.getMyRanker(null).getOrderBy();
+		if (orderBy instanceof ScoreRankColumnModel)
+			return ((ScoreRankColumnModel) orderBy).getScore();
+		return null;
 	}
 
 	/**
@@ -579,7 +529,7 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 	/**
 	 * @return
 	 */
-	private Collection<IScore> getVisibleScores(PerspectiveRow row) {
+	private Collection<IScore> getVisibleScores(AScoreRow row) {
 		Collection<IScore> r = new ArrayList<>();
 		Deque<ARankColumnModel> cols = new LinkedList<>(table.getColumns());
 		while (!cols.isEmpty()) {
@@ -642,14 +592,16 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 	}
 
 	@Override
-	public void add2Stratomex(PerspectiveRow r) {
+	public void add2Stratomex(AScoreRow r) {
 		stratomex.addToStratomex(r, getVisibleScores(r), mode);
 	}
 
 	@Override
-	public boolean canAdd2Stratomex(PerspectiveRow r) {
-		return r.getPerspective() != null
-				&& (!stratomex.contains(r.getPerspective()) || stratomex.isTemporaryPreviewed(r.getPerspective()));
+	public boolean canAdd2Stratomex(AScoreRow r) {
+		// FIXME
+		return true;
+		// return r.getPerspective() != null
+		// && (!stratomex.contains(r.getPerspective()) || stratomex.isTemporaryPreviewed(r.getPerspective()));
 	}
 
 	@ListenTo
@@ -658,9 +610,8 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 			return;
 		stratomex.removeBrick(event.getTablePerspective().getID());
 
-		PerspectiveRow selected = (PerspectiveRow) table.getSelectedRow();
-		if (selected != null && selected.getPerspective() != null
-				&& selected.getPerspective() == event.getTablePerspective()) {
+		AScoreRow selected = (AScoreRow) table.getSelectedRow();
+		if (selected != null && selected.is(event.getTablePerspective())) {
 			this.table.setSelectedRow(null);
 		}
 

@@ -25,10 +25,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.view.tourguide.internal.model.AScoreRow;
 import org.caleydo.view.tourguide.internal.score.Scores;
-import org.caleydo.view.tourguide.internal.view.PerspectiveRow;
+import org.caleydo.view.tourguide.spi.algorithm.IComputeElement;
 import org.caleydo.view.tourguide.spi.compute.IComputedGroupScore;
 import org.caleydo.view.tourguide.spi.compute.IComputedStratificationScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
@@ -63,21 +63,22 @@ public abstract class AComputeJob extends Job {
 		return !stratScores.isEmpty() || !groupScores.isEmpty();
 	}
 
-	protected IStatus runImpl(IProgressMonitor monitor, List<PerspectiveRow> data, BitSet mask) {
+	protected IStatus runImpl(IProgressMonitor monitor, List<AScoreRow> data, BitSet mask) {
 		IStatus result;
 		if (!stratScores.isEmpty() && groupScores.isEmpty()) {
-			Set<Perspective> stratifications = new HashSet<>();
+			Set<IComputeElement> stratifications = new HashSet<>();
 			// just stratifications
 			for(int i = mask.nextSetBit(0); i >= 0; i = mask.nextSetBit(i+1))
-				stratifications.add(data.get(i).getStratification());
+				stratifications.add(data.get(i));
 			AScoreJob job = new ComputeStratificationJob(stratifications, stratScores);
 			result = job.run(monitor);
 		} else if (!groupScores.isEmpty()) {
-			Multimap<Perspective, Group> d = HashMultimap.create();
+			Multimap<IComputeElement, Group> d = HashMultimap.create();
 			// both or just groups
 			for (int i = mask.nextSetBit(0); i >= 0; i = mask.nextSetBit(i + 1)) {
-				PerspectiveRow r = data.get(i);
-				d.put(r.getStratification(), r.getGroup());
+				AScoreRow r = data.get(i);
+				for(Group g : r.getGroups())
+					d.put(r, g);
 			}
 			AScoreJob job = new ComputeScoreJob(d, stratScores, groupScores);
 			result = job.run(monitor);

@@ -22,10 +22,10 @@ import java.util.List;
 import java.util.Set;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.statistics.Statistics;
+import org.caleydo.view.tourguide.spi.algorithm.IComputeElement;
 import org.caleydo.view.tourguide.spi.algorithm.IGroupAlgorithm;
 
 /**
@@ -56,7 +56,7 @@ public class LogRank implements IGroupAlgorithm {
 	}
 
 	@Override
-	public IDType getTargetType(VirtualArray a, VirtualArray b) {
+	public IDType getTargetType(IComputeElement a, IComputeElement b) {
 		return clinical.getRecordIDType();
 	}
 

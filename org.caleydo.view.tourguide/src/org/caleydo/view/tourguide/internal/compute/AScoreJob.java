@@ -7,13 +7,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.caleydo.core.data.perspective.variable.Perspective;
-import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.id.IIDTypeMapper;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.view.tourguide.spi.algorithm.IComputeElement;
 import org.caleydo.view.tourguide.spi.algorithm.IStratificationAlgorithm;
 import org.caleydo.view.tourguide.spi.compute.IComputedReferenceStratificationScore;
 import org.caleydo.view.tourguide.spi.compute.IComputedStratificationScore;
@@ -32,33 +30,32 @@ import com.google.common.collect.Table;
 
 public abstract class AScoreJob {
 	private final CachedIDTypeMapper mapper = new CachedIDTypeMapper();
-	private final Table<Perspective, Pair<IDType, IDType>, Set<Integer>> stratCache = HashBasedTable.create();
+	private final Table<IComputeElement, Pair<IDType, IDType>, Set<Integer>> stratCache = HashBasedTable.create();
 	private final Table<Group, Pair<IDType, IDType>, Set<Integer>> groupCache = HashBasedTable.create();
 
 	public abstract IStatus run(IProgressMonitor monitor);
 
-	protected final void clear(Perspective strat) {
-		stratCache.row(strat).clear();
+	protected final void clear(IComputeElement va) {
+		stratCache.row(va).clear();
 	}
 
 	protected final void clear(Group g) {
 		groupCache.row(g).clear();
 	}
 
-	protected final Set<Integer> get(Perspective strat, Group group, IDType target, IDType occurIn) {
+	protected final Set<Integer> get(IComputeElement va, Group group, IDType target, IDType occurIn) {
 		Pair<IDType, IDType> check = Pair.make(target, occurIn);
 		if (groupCache.contains(group, check))
 			return groupCache.get(group, check);
 
-		IDType source = strat.getIdType();
+		IDType source = va.getIdType();
 
 		IIDTypeMapper<Integer, Integer> mapper = this.mapper.get(source, target);
 		Set<Integer> r = null;
 		if (mapper == null)
 			r = Collections.emptySet();
 		else {
-			VirtualArray va = strat.getVirtualArray();
-			r = mapper.apply(va.getIDsOfGroup(group.getGroupIndex()));
+			r = mapper.apply(va.of(group));
 			if (!target.equals(occurIn) && !source.equals(occurIn)) { // check against third party
 				Predicate<Integer> in = this.mapper.in(target, occurIn);
 				// filter the wrong out
@@ -71,27 +68,26 @@ public abstract class AScoreJob {
 		return r;
 	}
 
-	protected final List<Set<Integer>> getAll(Perspective strat, IDType target, IDType occurIn) {
-		GroupList groups = strat.getVirtualArray().getGroupList();
+	protected final List<Set<Integer>> getAll(IComputeElement va, IDType target, IDType occurIn) {
+		Collection<Group> groups = va.getGroups();
 		List<Set<Integer>> r = new ArrayList<>(groups.size());
 		for(Group g : groups)
-			r.add(get(strat, g, target, occurIn));
+			r.add(get(va, g, target, occurIn));
 		return r;
 	}
 
-	protected final Set<Integer> get(Perspective strat, IDType target, IDType occurIn) {
+	protected final Set<Integer> get(IComputeElement va, IDType target, IDType occurIn) {
 		Pair<IDType, IDType> check = Pair.make(target, occurIn);
-		if (stratCache.contains(strat, check))
-			return stratCache.get(strat, check);
+		if (stratCache.contains(va, check))
+			return stratCache.get(va, check);
 
-		IDType source = strat.getIdType();
+		IDType source = va.getIdType();
 
 		IIDTypeMapper<Integer, Integer> mapper = this.mapper.get(source, target);
 		Set<Integer> r = null;
 		if (mapper == null)
 			r = Collections.emptySet();
 		else {
-			VirtualArray va = strat.getVirtualArray();
 			r = mapper.apply(va);
 			if (!target.equals(occurIn) && !source.equals(occurIn)) { // check against third party
 				Predicate<Integer> in = this.mapper.in(target, occurIn);
@@ -101,7 +97,7 @@ public abstract class AScoreJob {
 						it.remove();
 			}
 		}
-		stratCache.put(strat, check, r);
+		stratCache.put(va, check, r);
 		return r;
 	}
 
@@ -118,40 +114,40 @@ public abstract class AScoreJob {
 		return Pair.make(as, bs);
 	}
 
-	protected final IStatus computeStratificationScores(IProgressMonitor monitor, Perspective as,
+	protected final IStatus computeStratificationScores(IProgressMonitor monitor, IComputeElement va,
 			Collection<IComputedStratificationScore> stratMetrics,
 			Collection<IComputedReferenceStratificationScore> stratScores) {
 		for (IComputedStratificationScore score : stratMetrics) {
 			IStratificationAlgorithm algorithm = score.getAlgorithm();
-			IDType target = algorithm.getTargetType(as.getVirtualArray(), as.getVirtualArray());
-			if (score.contains(as) || !score.getFilter().doCompute(as, null, as, null)) {
+			IDType target = algorithm.getTargetType(va, va);
+			if (score.contains(va) || !score.getFilter().doCompute(va, null, va, null)) {
 				continue;
 			}
-			List<Set<Integer>> compute = getAll(as, target, target);
+			List<Set<Integer>> compute = getAll(va, target, target);
 
 			if (Thread.interrupted() || monitor.isCanceled())
 				return Status.CANCEL_STATUS;
 
 			float v = algorithm.compute(compute, compute);
-			score.put(as, v);
+			score.put(va, v);
 		}
 
 		// all stratification scores
 		for (IComputedReferenceStratificationScore score : stratScores) {
 			IStratificationAlgorithm algorithm = score.getAlgorithm();
-			final Perspective rs = score.getStratification();
-			IDType target = algorithm.getTargetType(as.getVirtualArray(), rs.getVirtualArray());
-			if (score.contains(as) || !score.getFilter().doCompute(as, null, rs, null)) {
+			final IComputeElement rs = score.asComputeElement();
+			IDType target = algorithm.getTargetType(va, rs);
+			if (score.contains(va) || !score.getFilter().doCompute(va, null, rs, null)) {
 				continue;
 			}
-			List<Set<Integer>> compute = getAll(as, target, target);
+			List<Set<Integer>> compute = getAll(va, target, target);
 			List<Set<Integer>> reference = getAll(rs, target, target);
 
 			if (Thread.interrupted() || monitor.isCanceled())
 				return Status.CANCEL_STATUS;
 
 			float v = algorithm.compute(compute, reference);
-			score.put(as, v);
+			score.put(va, v);
 		}
 		return null;
 	}

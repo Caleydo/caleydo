@@ -17,21 +17,37 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.internal.view;
+package org.caleydo.view.tourguide.internal.model;
 
-import org.caleydo.core.data.perspective.variable.Perspective;
+import java.util.AbstractList;
+import java.util.List;
 
 /**
+ * sub list variant, not checking any concurrent modifications
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
-public final class PathwayPerspectiveRow extends PerspectiveRow {
-	public PathwayPerspectiveRow(Perspective stratification) {
-		super(stratification, null);
+public class CustomSubList<T> extends AbstractList<T> {
+	private final int offset;
+	private final List<T> backend;
+	private final int size;
+
+	public CustomSubList(List<T> backend, int offset, int size) {
+		super();
+		this.backend = backend;
+		this.offset = offset;
+		this.size = size;
 	}
 
 	@Override
-	public PathwayPerspectiveRow clone() {
-		return (PathwayPerspectiveRow) super.clone();
+	public T get(int index) {
+		return backend.get(offset + index);
 	}
+
+	@Override
+	public int size() {
+		return size;
+	}
+
 }
