@@ -31,21 +31,21 @@ import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
 import org.caleydo.core.view.contextmenu.GroupContextMenuItem;
 import org.caleydo.view.tourguide.internal.event.EditDataDomainFilterEvent;
 import org.caleydo.view.tourguide.internal.event.SelectDimensionSelectionEvent;
-import org.caleydo.view.tourguide.internal.view.model.TableDataDomainQuery;
+import org.caleydo.view.tourguide.internal.model.StratificationDataDomainQuery;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Display;
 
 public class TableDataDomainElement extends ADataDomainElement {
 
-	public TableDataDomainElement(TableDataDomainQuery model) {
+	public TableDataDomainElement(StratificationDataDomainQuery model) {
 		super(model);
 		setHasFilter(true);
 	}
 
 	@Override
-	public TableDataDomainQuery getModel() {
-		return (TableDataDomainQuery) super.getModel();
+	public StratificationDataDomainQuery getModel() {
+		return (StratificationDataDomainQuery) super.getModel();
 	}
 
 	@Override

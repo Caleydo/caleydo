@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.internal.view;
+package org.caleydo.view.tourguide.internal.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -25,15 +25,14 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.view.tourguide.internal.compute.CachedIDTypeMapper;
+import org.caleydo.view.tourguide.spi.algorithm.IComputeElement;
 import org.caleydo.view.tourguide.spi.score.IGroupScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
 import org.caleydo.view.tourguide.spi.score.IStratificationScore;
@@ -46,100 +45,23 @@ import com.google.common.base.Function;
  * @author Samuel Gratzl
  *
  */
-public class PerspectiveRow extends ARow implements ILabelProvider, Cloneable {
+public abstract class AScoreRow extends ARow implements ILabelProvider, Cloneable, IComputeElement {
 	public static final Function<IRow, String> TO_DATADOMAIN = new Function<IRow, String>() {
 		@Override
 		public String apply(IRow in) {
-			if (in == null || !(in instanceof PerspectiveRow))
+			if (in == null || !(in instanceof AScoreRow))
 				return null;
-			PerspectiveRow r = ((PerspectiveRow) in);
+			AScoreRow r = ((AScoreRow) in);
 			return r.getDataDomain().getLabel() + " " + r.getLabel();
 		}
 	};
-	public static final Function<IRow, String> TO_STRATIFICATION = new Function<IRow, String>() {
-		@Override
-		public String apply(IRow in) {
-			if (in == null || !(in instanceof PerspectiveRow))
-				return null;
-			Perspective g = ((PerspectiveRow) in).getStratification();
-			return g == null ? null : g.getLabel();
-		}
-	};
-	public static final Function<IRow, String> TO_GROUP = new Function<IRow, String>() {
-		@Override
-		public String apply(IRow in) {
-			if (in == null || !(in instanceof PerspectiveRow))
-				return null;
-			Group g = ((PerspectiveRow) in).getGroup();
-			return g == null ? null : g.getLabel();
-		}
-	};
-
-	private TablePerspective perspective;
-	private Perspective stratification;
-	private Group group;
-
-	public PerspectiveRow(Perspective stratification, TablePerspective perspective) {
-		this(stratification, null, perspective);
-	}
-
-	public PerspectiveRow(Perspective stratification, Group group, TablePerspective perspective) {
-		this.stratification = stratification;
-		this.group = group;
-		this.perspective = perspective;
-	}
-
-	public void destroy() {
-		this.stratification = null;
-		this.group = null;
-		this.perspective = null;
-	}
 
 	@Override
-	public String getLabel() {
-		String label = stratification.getLabel();
-		if (group != null)
-			label += ": " + group.getLabel();
-		return label;
+	public final String getProviderName() {
+		return null;
 	}
 
-	@Override
-	public String getProviderName() {
-		return stratification.getProviderName();
-	}
-
-	public IDataDomain getDataDomain() {
-		return stratification.getDataDomain();
-	}
-
-	public Perspective getStratification() {
-		return stratification;
-	}
-
-	/**
-	 * @param perspective
-	 *            setter, see {@link perspective}
-	 */
-	public void setPerspective(TablePerspective perspective) {
-		this.perspective = perspective;
-	}
-
-	public TablePerspective getPerspective() {
-		return perspective;
-	}
-
-	private VirtualArray getVirtualArray() {
-		return stratification.getVirtualArray();
-	}
-
-	private IDType getIdType() {
-		return stratification.getIdType();
-	}
-
-
-	public Group getGroup() {
-		return group;
-	}
+	public abstract boolean is(TablePerspective tablePerspective);
 
 	/**
 	 * returns the list of row ids that intersects all the relevant visible columns based on this stratifaction and
@@ -149,7 +71,7 @@ public class PerspectiveRow extends ARow implements ILabelProvider, Cloneable {
 	 *            containing the ids and the type in which the ids are
 	 * @return
 	 */
-	public Pair<Collection<Integer>, IDType> getIntersection(Collection<IScore> visibleColumns) {
+	public final Pair<Collection<Integer>, IDType> getIntersection(Collection<IScore> visibleColumns, Group group) {
 
 		// select nearest score
 		Collection<IStratificationScore> relevant = filterRelevantColumns(visibleColumns);
@@ -168,13 +90,12 @@ public class PerspectiveRow extends ARow implements ILabelProvider, Cloneable {
 		// compute the intersection of all
 		IDType source = getIdType();
 
-		VirtualArray va = getVirtualArray();
-		Collection<Integer> ids = (group == null) ? va.getIDs() : va.getIDsOfGroup(group.getGroupIndex());
+		Collection<Integer> ids = of(group);
 
 		if (!relevant.isEmpty()) {
 			Collection<Integer> intersection = new ArrayList<>(mapper.get(source, target).apply(ids));
 			for (IStratificationScore score : relevant) {
-				va = score.getStratification().getVirtualArray();
+				VirtualArray va = score.getStratification().getVirtualArray();
 				Group g = (score instanceof IGroupScore) ? ((IGroupScore) score).getGroup() : null;
 				ids = (g == null) ? va.getIDs() : va.getIDsOfGroup(g.getGroupIndex());
 				Set<Integer> mapped = mapper.get(score.getStratification().getIdType(), target).apply(ids);
@@ -189,7 +110,7 @@ public class PerspectiveRow extends ARow implements ILabelProvider, Cloneable {
 	}
 
 
-	private Set<IStratificationScore> filterRelevantColumns(Collection<IScore> columns) {
+	private final Set<IStratificationScore> filterRelevantColumns(Collection<IScore> columns) {
 		Set<IStratificationScore> relevant = new HashSet<>();
 		for (IScore score : columns) {
 			if (score instanceof IStratificationScore)
@@ -198,23 +119,13 @@ public class PerspectiveRow extends ARow implements ILabelProvider, Cloneable {
 		return relevant;
 	}
 
-	/**
-	 * @return
-	 */
-	public int size() {
-		if (getGroup() != null)
-			return getGroup().getSize();
-		if (getVirtualArray() != null)
-			return getVirtualArray().size();
-		return 0;
-	}
-
 	@Override
-	public PerspectiveRow clone() {
+	public AScoreRow clone() {
 		try {
-			return (PerspectiveRow) super.clone();
+			return (AScoreRow) super.clone();
 		} catch (CloneNotSupportedException e) {
 			throw new IllegalStateException(e);
 		}
 	}
+
 }

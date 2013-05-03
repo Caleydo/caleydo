@@ -23,11 +23,10 @@ import java.awt.Color;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.caleydo.core.data.perspective.variable.Perspective;
+import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.base.DefaultLabelProvider;
-import org.caleydo.view.tourguide.internal.view.PerspectiveRow;
+import org.caleydo.view.tourguide.spi.algorithm.IComputeElement;
 import org.caleydo.view.tourguide.spi.score.IScore;
-import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
 
 /**
@@ -45,25 +44,19 @@ public abstract class AComputedStratificationScore extends DefaultLabelProvider 
 		this.bgColor = bgColor;
 	}
 
-	public boolean contains(Perspective elem) {
+	public boolean contains(IComputeElement elem) {
 		// have in cache or the same
-		return scores.containsKey(elem.getPerspectiveID());
+		return scores.containsKey(elem.getPersistentID());
 	}
 
-	public final void put(Perspective elem, float value) {
-		scores.put(elem.getPerspectiveID(), value);
+	public final void put(IComputeElement elem, float value) {
+		scores.put(elem.getPersistentID(), value);
 	}
 
 	@Override
-	public final float applyPrimitive(IRow elem) {
-		Perspective p = ((PerspectiveRow) elem).getStratification();
-		Float f = scores.get(p.getPerspectiveID());
+	public final float apply(IComputeElement elem, Group g) {
+		Float f = scores.get(elem.getPersistentID());
 		return f == null ? Float.NaN : f.floatValue();
-	}
-
-	@Override
-	public final Float apply(IRow elem) {
-		return applyPrimitive(elem);
 	}
 
 	@Override

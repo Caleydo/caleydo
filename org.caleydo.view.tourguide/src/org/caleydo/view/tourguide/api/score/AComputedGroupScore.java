@@ -23,12 +23,10 @@ import java.awt.Color;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.base.DefaultLabelProvider;
-import org.caleydo.view.tourguide.internal.view.PerspectiveRow;
+import org.caleydo.view.tourguide.spi.algorithm.IComputeElement;
 import org.caleydo.view.tourguide.spi.score.IScore;
-import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
 
 /**
@@ -46,9 +44,9 @@ public abstract class AComputedGroupScore extends DefaultLabelProvider implement
 		this.bgColor = bgColor;
 	}
 
-	public boolean contains(Perspective perspective, Group elem) {
+	public boolean contains(IComputeElement perspective, Group g) {
 		// have the value or it the same stratification
-		return scores.containsKey(elem.getID());
+		return scores.containsKey(g.getID());
 	}
 
 	public final void put(Group elem, float value) {
@@ -56,17 +54,11 @@ public abstract class AComputedGroupScore extends DefaultLabelProvider implement
 	}
 
 	@Override
-	public final float applyPrimitive(IRow elem) {
-		PerspectiveRow pelem = (PerspectiveRow) elem;
-		if (pelem.getGroup() == null)
+	public float apply(IComputeElement elem, Group g) {
+		if (g == null)
 			return Float.NaN;
-		Float f = scores.get(pelem.getGroup().getID());
+		Float f = scores.get(g.getID());
 		return f == null ? Float.NaN : f.floatValue();
-	}
-
-	@Override
-	public final Float apply(IRow elem) {
-		return applyPrimitive(elem);
 	}
 
 	@Override

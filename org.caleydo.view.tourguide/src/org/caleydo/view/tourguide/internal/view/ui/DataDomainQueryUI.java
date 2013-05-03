@@ -29,10 +29,10 @@ import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
-import org.caleydo.view.tourguide.internal.view.model.ADataDomainQuery;
-import org.caleydo.view.tourguide.internal.view.model.CategoricalDataDomainQuery;
-import org.caleydo.view.tourguide.internal.view.model.PathwayDataDomainQuery;
-import org.caleydo.view.tourguide.internal.view.model.TableDataDomainQuery;
+import org.caleydo.view.tourguide.internal.model.ADataDomainQuery;
+import org.caleydo.view.tourguide.internal.model.CategoricalDataDomainQuery;
+import org.caleydo.view.tourguide.internal.model.PathwayDataDomainQuery;
+import org.caleydo.view.tourguide.internal.model.StratificationDataDomainQuery;
 
 import com.google.common.collect.Iterables;
 
@@ -205,7 +205,7 @@ public class DataDomainQueryUI extends GLElementContainer implements IGLLayout, 
 			return new CategoricalDataDomainElement((CategoricalDataDomainQuery) q);
 		if (q instanceof PathwayDataDomainQuery)
 			return new PathwayDataDomainElement((PathwayDataDomainQuery) q);
-		return new TableDataDomainElement((TableDataDomainQuery) q);
+		return new TableDataDomainElement((StratificationDataDomainQuery) q);
 	}
 
 	public void updateSelections() {

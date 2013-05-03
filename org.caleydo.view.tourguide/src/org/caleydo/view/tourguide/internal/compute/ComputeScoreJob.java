@@ -3,11 +3,11 @@ package org.caleydo.view.tourguide.internal.compute;
 import java.util.Collection;
 import java.util.Set;
 
-import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.logging.Logger;
+import org.caleydo.view.tourguide.spi.algorithm.IComputeElement;
 import org.caleydo.view.tourguide.spi.algorithm.IGroupAlgorithm;
 import org.caleydo.view.tourguide.spi.compute.IComputedGroupScore;
 import org.caleydo.view.tourguide.spi.compute.IComputedReferenceGroupScore;
@@ -23,7 +23,7 @@ import com.google.common.collect.Multimap;
 public class ComputeScoreJob extends AScoreJob {
 	private static final Logger log = Logger.create(ComputeScoreJob.class);
 
-	private final Multimap<Perspective, Group> data;
+	private final Multimap<IComputeElement, Group> data;
 
 	private final Collection<IComputedStratificationScore> stratMetrics;
 	private final Collection<IComputedReferenceStratificationScore> stratScores;
@@ -32,7 +32,7 @@ public class ComputeScoreJob extends AScoreJob {
 	private final Collection<IComputedReferenceGroupScore> groupScores;
 
 
-	public ComputeScoreJob(Multimap<Perspective, Group> data,
+	public ComputeScoreJob(Multimap<IComputeElement, Group> data,
 			Collection<IComputedStratificationScore> stratScores, Collection<IComputedGroupScore> groupScores) {
 		Pair<Collection<IComputedStratificationScore>, Collection<IComputedReferenceStratificationScore>> strats = partition(
 				stratScores, IComputedReferenceStratificationScore.class);
@@ -59,7 +59,7 @@ public class ComputeScoreJob extends AScoreJob {
 		Stopwatch w = new Stopwatch().start();
 
 		int c = 0;
-		for (Perspective as : this.data.keySet()) {
+		for (IComputeElement as : this.data.keySet()) {
 			if (Thread.interrupted() || monitor.isCanceled())
 				return Status.OK_STATUS;
 
@@ -81,7 +81,7 @@ public class ComputeScoreJob extends AScoreJob {
 		return Status.OK_STATUS;
 	}
 
-	private IStatus computeGroupScores(IProgressMonitor monitor, Perspective as) {
+	private IStatus computeGroupScores(IProgressMonitor monitor, IComputeElement as) {
 		final IDType aType = as.getIdType();
 		// all metrics
 		for (IComputedGroupScore metric : this.groupMetrics) {
@@ -101,7 +101,7 @@ public class ComputeScoreJob extends AScoreJob {
 
 		// all scores
 		for (IComputedReferenceGroupScore score : this.groupScores) {
-			final Perspective rs = score.getStratification();
+			final IComputeElement rs = score.asComputeElement();
 			final IDType sType = rs.getIdType();
 
 			IGroupAlgorithm algorithm = score.getAlgorithm();

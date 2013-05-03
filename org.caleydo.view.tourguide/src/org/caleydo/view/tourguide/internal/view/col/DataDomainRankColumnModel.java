@@ -27,7 +27,7 @@ import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.tourguide.internal.TourGuideRenderStyle;
-import org.caleydo.view.tourguide.internal.view.PerspectiveRow;
+import org.caleydo.view.tourguide.internal.model.AScoreRow;
 import org.caleydo.vis.rank.model.StringRankColumnModel;
 import org.caleydo.vis.rank.ui.detail.ValueElement;
 
@@ -39,7 +39,7 @@ public class DataDomainRankColumnModel extends StringRankColumnModel {
 	private final IAddToStratomex stratomex;
 
 	public DataDomainRankColumnModel(IAddToStratomex stratomex) {
-		super(GLRenderers.drawText("Data Domain", VAlign.CENTER), PerspectiveRow.TO_DATADOMAIN);
+		super(GLRenderers.drawText("Data Domain", VAlign.CENTER), AScoreRow.TO_DATADOMAIN);
 		this.stratomex = stratomex;
 	}
 
@@ -76,7 +76,7 @@ public class DataDomainRankColumnModel extends StringRankColumnModel {
 			float hint = Math.min(h - 2, 12);
 			if (hint <= 0)
 				return;
-			PerspectiveRow r = this.getLayoutDataAs(PerspectiveRow.class, null);
+			AScoreRow r = this.getLayoutDataAs(AScoreRow.class, null);
 			IDataDomain dataDomain = r.getDataDomain();
 			g.color(dataDomain.getColor()).fillRect(1, (h - hint) * 0.5f, hint, hint);
 			if (stratomex.canAdd2Stratomex(r)) {
@@ -94,7 +94,7 @@ public class DataDomainRankColumnModel extends StringRankColumnModel {
 				return;
 			switch(pick.getPickingMode()) {
 			case MOUSE_RELEASED:
-				PerspectiveRow r = this.getLayoutDataAs(PerspectiveRow.class, null);
+				AScoreRow r = this.getLayoutDataAs(AScoreRow.class, null);
 				if (stratomex.canAdd2Stratomex(r)) {
 					stratomex.add2Stratomex(r);
 				}

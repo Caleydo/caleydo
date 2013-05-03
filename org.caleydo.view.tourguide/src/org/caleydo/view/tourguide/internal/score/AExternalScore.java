@@ -25,7 +25,6 @@ import org.caleydo.core.util.base.DefaultLabelProvider;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.score.ISerializeableScore;
 import org.caleydo.view.tourguide.internal.external.AExternalScoreParseSpecification;
-import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
 
 /**
@@ -74,11 +73,6 @@ public abstract class AExternalScore extends DefaultLabelProvider implements ISe
 	@Override
 	public String getProviderName() {
 		return "External";
-	}
-
-	@Override
-	public Float apply(IRow elem) {
-		return applyPrimitive(elem);
 	}
 
 	@Override

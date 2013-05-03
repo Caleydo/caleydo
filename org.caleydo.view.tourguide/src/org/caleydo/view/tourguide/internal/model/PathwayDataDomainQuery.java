@@ -17,22 +17,17 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.internal.view.model;
+package org.caleydo.view.tourguide.internal.model;
 
 import static org.caleydo.vis.rank.model.StringRankColumnModel.starToRegex;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
-import org.caleydo.core.data.perspective.variable.Perspective;
-import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.util.collection.Pair;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
+import org.caleydo.datadomain.pathway.data.PathwayRecordPerspective;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
-import org.caleydo.view.tourguide.internal.view.PathwayPerspectiveRow;
-import org.caleydo.view.tourguide.internal.view.PerspectiveRow;
 
 import com.google.common.collect.Lists;
 
@@ -53,27 +48,27 @@ public class PathwayDataDomainQuery extends ADataDomainQuery {
 	}
 
 	@Override
-	public void cloneFrom(ADataDomainQuery clone, List<PerspectiveRow> allData) {
+	public void cloneFrom(ADataDomainQuery clone, List<AScoreRow> allData) {
 		super.cloneFrom(clone, allData);
 		this.matches = ((PathwayDataDomainQuery) clone).matches;
 	}
 
 	@Override
-	protected boolean include(Perspective perspective, Group group) {
-		assert perspective.getDataDomain() == dataDomain;
+	public boolean apply(AScoreRow row) {
 		if (matches == null)
 			return true;
-		return Pattern.matches(starToRegex(matches), perspective.getLabel());
+		assert row.getDataDomain() == dataDomain;
+		return Pattern.matches(starToRegex(matches), row.getLabel());
 	}
 
 	@Override
-	protected Pair<List<PerspectiveRow>, List<PerspectiveRow>> getAll() {
+	protected List<AScoreRow> getAll() {
 		PathwayDataDomain p = (PathwayDataDomain) dataDomain;
-		List<PerspectiveRow> r = Lists.newArrayList();
-		for (Perspective per : p.getPathwayRecordPerspectives()) {
+		List<AScoreRow> r = Lists.newArrayList();
+		for (PathwayRecordPerspective per : p.getPathwayRecordPerspectives()) {
 			r.add(new PathwayPerspectiveRow(per));
 		}
-		return Pair.make(r, Collections.<PerspectiveRow> emptyList());
+		return r;
 	}
 
 	public void setMatches(String matches) {

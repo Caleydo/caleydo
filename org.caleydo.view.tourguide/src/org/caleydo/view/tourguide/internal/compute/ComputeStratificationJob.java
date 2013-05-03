@@ -2,10 +2,10 @@ package org.caleydo.view.tourguide.internal.compute;
 
 import java.util.Collection;
 
-import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.logging.Logger;
+import org.caleydo.view.tourguide.spi.algorithm.IComputeElement;
 import org.caleydo.view.tourguide.spi.compute.IComputedReferenceStratificationScore;
 import org.caleydo.view.tourguide.spi.compute.IComputedStratificationScore;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -17,12 +17,12 @@ import com.google.common.base.Stopwatch;
 public class ComputeStratificationJob extends AScoreJob {
 	private static final Logger log = Logger.create(ComputeStratificationJob.class);
 
-	private final Collection<Perspective> data;
+	private final Collection<IComputeElement> data;
 
 	private final Collection<IComputedStratificationScore> stratMetrics;
 	private final Collection<IComputedReferenceStratificationScore> stratScores;
 
-	public ComputeStratificationJob(Collection<Perspective> data,
+	public ComputeStratificationJob(Collection<IComputeElement> data,
 			Collection<IComputedStratificationScore> scores) {
 		this.data = data;
 		Pair<Collection<IComputedStratificationScore>, Collection<IComputedReferenceStratificationScore>> strats = partition(
@@ -42,7 +42,7 @@ public class ComputeStratificationJob extends AScoreJob {
 				data.size(), stratScores.size(), stratMetrics.size());
 		Stopwatch w = new Stopwatch().start();
 
-		for (Perspective a : this.data) {
+		for (IComputeElement a : this.data) {
 			if (Thread.interrupted() || monitor.isCanceled())
 				return Status.CANCEL_STATUS;
 
@@ -50,7 +50,7 @@ public class ComputeStratificationJob extends AScoreJob {
 				return Status.CANCEL_STATUS;
 
 			// cleanup cache
-			for (Group g : a.getVirtualArray().getGroupList()) {
+			for (Group g : a.getGroups()) {
 				clear(g);
 			}
 			clear(a);
