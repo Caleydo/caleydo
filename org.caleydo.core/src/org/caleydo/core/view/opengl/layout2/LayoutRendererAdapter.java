@@ -9,6 +9,7 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.event.EventListenerManager;
 import org.caleydo.core.event.EventListenerManagers;
+import org.caleydo.core.event.EventListenerManagers.QueuedEventListenerManager;
 import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.view.ViewManager;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
@@ -36,7 +37,7 @@ public final class LayoutRendererAdapter extends ALayoutRenderer implements IGLE
 	private final Map<IPickingListener, PickingMetaData> pickingMetaData = new HashMap<>();
 	private int pickingNameCounter = 0;
 
-	private final EventListenerManager eventListeners;
+	private final QueuedEventListenerManager eventListeners;
 
 	private final AGLView view;
 	private final WindowGLElement root;
@@ -58,7 +59,7 @@ public final class LayoutRendererAdapter extends ALayoutRenderer implements IGLE
 	public LayoutRendererAdapter(AGLView view, IResourceLocator locator, GLElement root, String eventSpace) {
 		this.view = view;
 		this.root = new WindowGLElement(root);
-		this.eventListeners = EventListenerManagers.wrap(view);
+		this.eventListeners = EventListenerManagers.createQueued();
 		this.eventSpace = eventSpace;
 
 		this.local = new GLContextLocal(view.getTextRenderer(), view.getTextureManager(), locator);
@@ -81,6 +82,12 @@ public final class LayoutRendererAdapter extends ALayoutRenderer implements IGLE
 	public Vec2f toRelative(Vec2f absolute) {
 		absolute.sub(location);
 		return absolute;
+	}
+
+	@Override
+	protected void prepare() {
+		eventListeners.processEvents();
+		super.prepare();
 	}
 
 	@Override
