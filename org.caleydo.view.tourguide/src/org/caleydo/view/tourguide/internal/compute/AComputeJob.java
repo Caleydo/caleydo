@@ -26,6 +26,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.event.EventPublisher;
+import org.caleydo.view.tourguide.internal.event.JobStateProgressEvent;
 import org.caleydo.view.tourguide.internal.model.AScoreRow;
 import org.caleydo.view.tourguide.internal.score.Scores;
 import org.caleydo.view.tourguide.spi.algorithm.IComputeElement;
@@ -59,6 +61,14 @@ public abstract class AComputeJob extends Job {
 		this.receiver = receiver;
 	}
 
+	protected final void progress(float completed, String text) {
+		EventPublisher.trigger(new JobStateProgressEvent(text, completed, false).to(receiver).from(this));
+	}
+
+	protected final void error(String text) {
+		EventPublisher.trigger(new JobStateProgressEvent(text, 1.0f, true).to(receiver).from(this));
+	}
+
 	public boolean hasThingsToDo() {
 		return !stratScores.isEmpty() || !groupScores.isEmpty();
 	}
@@ -70,7 +80,7 @@ public abstract class AComputeJob extends Job {
 			// just stratifications
 			for(int i = mask.nextSetBit(0); i >= 0; i = mask.nextSetBit(i+1))
 				stratifications.add(data.get(i));
-			AScoreJob job = new ComputeStratificationJob(stratifications, stratScores);
+			AScoreJob job = new ComputeStratificationJob(stratifications, stratScores, receiver);
 			result = job.run(monitor);
 		} else if (!groupScores.isEmpty()) {
 			Multimap<IComputeElement, Group> d = HashMultimap.create();
@@ -80,9 +90,10 @@ public abstract class AComputeJob extends Job {
 				for(Group g : r.getGroups())
 					d.put(r, g);
 			}
-			AScoreJob job = new ComputeScoreJob(d, stratScores, groupScores);
+			AScoreJob job = new ComputeScoreJob(d, stratScores, groupScores, receiver);
 			result = job.run(monitor);
 		} else {
+			progress(1, "Done");
 			monitor.done();
 			result = Status.OK_STATUS;
 		}

@@ -29,8 +29,10 @@ import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.id.IDType;
 
 /**
+ * a {@link AScoreRow} based on a {@link VirtualArray}
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
 public abstract class AVirtualArrayScoreRow extends AScoreRow {
 
@@ -41,6 +43,7 @@ public abstract class AVirtualArrayScoreRow extends AScoreRow {
 		GroupList base = getVirtualArray().getGroupList();
 		if (!isFiltered())
 			return base.getGroups();
+		// filter the groups
 		Collection<Group> r = new ArrayList<>(base.size());
 		for (Group g : base) {
 			if (filter(g))

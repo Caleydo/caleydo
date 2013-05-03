@@ -1,6 +1,7 @@
 package org.caleydo.view.tourguide.internal.compute;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.Set;
 
 import org.caleydo.core.data.virtualarray.group.Group;
@@ -31,9 +32,9 @@ public class ComputeScoreJob extends AScoreJob {
 	private final Collection<IComputedGroupScore> groupMetrics;
 	private final Collection<IComputedReferenceGroupScore> groupScores;
 
-
-	public ComputeScoreJob(Multimap<IComputeElement, Group> data,
-			Collection<IComputedStratificationScore> stratScores, Collection<IComputedGroupScore> groupScores) {
+	public ComputeScoreJob(Multimap<IComputeElement, Group> data, Collection<IComputedStratificationScore> stratScores,
+			Collection<IComputedGroupScore> groupScores, Object receiver) {
+		super(receiver);
 		Pair<Collection<IComputedStratificationScore>, Collection<IComputedReferenceStratificationScore>> strats = partition(
 				stratScores, IComputedReferenceStratificationScore.class);
 		this.stratMetrics = strats.getFirst();
@@ -52,33 +53,60 @@ public class ComputeScoreJob extends AScoreJob {
 				|| (groupMetrics.isEmpty() && groupScores.isEmpty() && stratScores.isEmpty() && stratMetrics.isEmpty()))
 			return Status.OK_STATUS;
 
-		monitor.beginTask("Compute Tour Guide Scores", data.keySet().size());
+		final int total =data.keySet().size();
+		monitor.beginTask("Compute Tour Guide Scores", total);
 		log.info(
 				"computing group similarity of %d against %d group scores, %d group metrics, %d stratification scores and %d stratification metrics",
 				data.size(), groupScores.size(), groupMetrics.size(), stratScores.size(), stratMetrics.size());
 		Stopwatch w = new Stopwatch().start();
 
+		Iterator<IComputeElement> it = this.data.keySet().iterator();
 		int c = 0;
-		for (IComputeElement as : this.data.keySet()) {
-			if (Thread.interrupted() || monitor.isCanceled())
-				return Status.OK_STATUS;
-
-			if (computeStratificationScores(monitor, as, stratMetrics, stratScores) != null)
+		// first time the one run to compute the progress frequency interval
+		{
+			IComputeElement as = it.next();
+			if (!run(monitor, as))
 				return Status.CANCEL_STATUS;
+			monitor.worked(c++);
+		}
+		final int fireEvery = fireEvery(w.elapsedMillis());
 
-			if (computeGroupScores(monitor, as) != null)
-				return Status.CANCEL_STATUS;
+		int f = fireEvery - 1;
 
-			// cleanup cache
-			for (Group targetGroup : data.get(as)) {
-				clear(targetGroup);
+		while (it.hasNext()) {
+			IComputeElement as = it.next();
+			if (f == 0) {
+				progress(c / (float) total, "Computing " + as.getLabel());
+				f = fireEvery;
 			}
-			clear(as);
+			f--;
+
+			if (!run(monitor, as))
+				return Status.CANCEL_STATUS;
+
 			monitor.worked(c++);
 		}
 		System.out.println("done in " + w);
 		monitor.done();
 		return Status.OK_STATUS;
+	}
+
+	private boolean run(IProgressMonitor monitor, IComputeElement as) {
+		if (Thread.interrupted() || monitor.isCanceled())
+			return false;
+
+		if (computeStratificationScores(monitor, as, stratMetrics, stratScores) != null)
+			return false;
+
+		if (computeGroupScores(monitor, as) != null)
+			return false;
+
+		// cleanup cache
+		for (Group targetGroup : data.get(as)) {
+			clear(targetGroup);
+		}
+		clear(as);
+		return true;
 	}
 
 	private IStatus computeGroupScores(IProgressMonitor monitor, IComputeElement as) {
