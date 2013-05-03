@@ -395,7 +395,7 @@ public class MappedDataRenderer {
 
 			if (previousNodePosition > 0 && deviation > 0) {
 				ElementLayout spacing = new ElementLayout("Spacing");
-				spacing.setDebug(true);
+				// spacing.setDebug(true);
 				spacing.setFrameColor(0, 0, 1, 0.8f);
 				spacing.setAbsoluteSizeY(deviation);
 				dataSetColumn.append(spacing);

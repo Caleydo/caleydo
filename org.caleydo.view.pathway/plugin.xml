@@ -71,7 +71,7 @@
                   isDefaultView="true"
                   visInfo="org.caleydo.view.pathway.PathwayVisInfo">
                <ViewCreator
-                     class="org.caleydo.view.pathway.PathwayRemoteViewCreator">
+                     class="org.caleydo.view.pathway.PathwayCreatorForStratomex">
                </ViewCreator>
             </Embedding>
          </ParentView>
@@ -83,7 +83,7 @@
                   isDefaultView="true"
                   visInfo="org.caleydo.view.pathway.PathwayVisInfo">
                <ViewCreator
-                     class="org.caleydo.view.pathway.PathwayRemoteViewCreator">
+                     class="org.caleydo.view.pathway.PathwayCreatorForStratomex">
                </ViewCreator>
             </Embedding>
          </ParentView>
