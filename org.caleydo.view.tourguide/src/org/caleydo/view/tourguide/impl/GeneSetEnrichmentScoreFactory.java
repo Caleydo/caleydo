@@ -94,7 +94,7 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 
 	@Override
 	public boolean supports(EDataDomainQueryMode mode) {
-		return mode == EDataDomainQueryMode.GENE_SET;
+		return mode == EDataDomainQueryMode.PATHWAYS;
 	}
 
 	@Override
@@ -141,7 +141,7 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 
 		@Override
 		public boolean supports(EDataDomainQueryMode mode) {
-			return mode == EDataDomainQueryMode.GENE_SET;
+			return mode == EDataDomainQueryMode.PATHWAYS;
 		}
 
 		@Override

@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.internal.view.model;
+package org.caleydo.view.tourguide.internal.model;
 
 import static org.caleydo.vis.rank.model.StringRankColumnModel.starToRegex;
 
@@ -31,25 +31,19 @@ import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
-import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.util.collection.Pair;
-import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
-import org.caleydo.view.tourguide.internal.view.GroupPerspectiveRow;
-import org.caleydo.view.tourguide.internal.view.PerspectiveRow;
-import org.caleydo.view.tourguide.internal.view.StratificationPerspectiveRow;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class TableDataDomainQuery extends ADataDomainQuery {
+public class StratificationDataDomainQuery extends ADataDomainQuery {
 	public static final String PROP_DIMENSION_SELECTION = "dimensionSelection";
 
 	private String matches = null;
 	private Perspective dimensionSelection = null;
 
-	public TableDataDomainQuery(EDataDomainQueryMode mode, ATableBasedDataDomain dataDomain) {
-		super(mode, dataDomain);
+	public StratificationDataDomainQuery(ATableBasedDataDomain dataDomain) {
+		super(dataDomain);
 	}
 
 	@Override
@@ -58,42 +52,26 @@ public class TableDataDomainQuery extends ADataDomainQuery {
 	}
 
 	@Override
-	public void cloneFrom(ADataDomainQuery clone, List<PerspectiveRow> allData) {
-		super.cloneFrom(clone, allData);
-		this.matches = ((TableDataDomainQuery) clone).matches;
-		this.dimensionSelection = ((TableDataDomainQuery) clone).dimensionSelection;
-	}
-
-	@Override
-	protected boolean include(Perspective perspective, Group group) {
-		assert perspective.getDataDomain() == dataDomain;
+	public boolean apply(AScoreRow row) {
+		assert row.getDataDomain() == dataDomain;
 		if (matches == null)
 			return true;
-		return Pattern.matches(starToRegex(matches), perspective.getLabel());
+		return Pattern.matches(starToRegex(matches), row.getLabel());
 	}
 
 	@Override
-	protected Pair<List<PerspectiveRow>, List<PerspectiveRow>> getAll() {
+	protected List<AScoreRow> getAll() {
 		ATableBasedDataDomain d = (ATableBasedDataDomain) dataDomain;
 
-		final String dimensionPerspectiveID = getDimensionPerspectiveID();
-
-		List<PerspectiveRow> r = new ArrayList<>();
-		List<PerspectiveRow> rg = new ArrayList<>();
+		List<AScoreRow> r = new ArrayList<>();
 
 		for (String rowPerspectiveID : d.getRecordPerspectiveIDs()) {
 			Perspective p = d.getTable().getRecordPerspective(rowPerspectiveID);
 			if (p.isDefault() || p.isPrivate())
 				continue;
-
-			TablePerspective per = asTablePerspective(dimensionPerspectiveID, p);
-
-			r.add(new StratificationPerspectiveRow(p, null, per));
-			for (Group g : p.getVirtualArray().getGroupList()) {
-				rg.add(new GroupPerspectiveRow(p, g, per));
-			}
+			r.add(new StratificationPerspectiveRow(p, this));
 		}
-		return Pair.make(r, rg);
+		return r;
 	}
 
 	private String getDimensionPerspectiveID() {
@@ -110,8 +88,10 @@ public class TableDataDomainQuery extends ADataDomainQuery {
 	 * @param p
 	 * @return
 	 */
-	private TablePerspective asTablePerspective(String dimensionPerspectiveID, Perspective p) {
+	public TablePerspective asTablePerspective(Perspective p) {
 		ATableBasedDataDomain d = getDataDomain();
+
+		String dimensionPerspectiveID = getDimensionPerspectiveID();
 
 		boolean existsAlready = d.hasTablePerspective(p.getPerspectiveID(), dimensionPerspectiveID);
 
@@ -172,16 +152,5 @@ public class TableDataDomainQuery extends ADataDomainQuery {
 		if (Objects.equals(dimensionSelection, d))
 			return;
 		propertySupport.firePropertyChange(PROP_DIMENSION_SELECTION, dimensionSelection, dimensionSelection = d);
-		updatePerspectiveRows();
-	}
-
-	private void updatePerspectiveRows() {
-		if (!this.isInitialized())
-			return;
-		final String dimensionPerspectiveID = getDimensionPerspectiveID();
-		for (PerspectiveRow row : this.getData()) {
-			row.setPerspective(asTablePerspective(dimensionPerspectiveID, row.getStratification()));
-		}
-		// TODO update Stratomex Data
 	}
 }

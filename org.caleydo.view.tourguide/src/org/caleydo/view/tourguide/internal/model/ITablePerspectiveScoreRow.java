@@ -17,21 +17,32 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.internal.view;
+package org.caleydo.view.tourguide.internal.model;
 
-import org.caleydo.core.data.perspective.variable.Perspective;
+import java.util.Collection;
+
+import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.id.IDType;
+import org.caleydo.core.util.collection.Pair;
+import org.caleydo.view.tourguide.spi.score.IScore;
+import org.caleydo.vis.rank.model.IRow;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public final class PathwayPerspectiveRow extends PerspectiveRow {
-	public PathwayPerspectiveRow(Perspective stratification) {
-		super(stratification, null);
-	}
+public interface ITablePerspectiveScoreRow extends IRow {
+	TablePerspective asTablePerspective();
 
-	@Override
-	public PathwayPerspectiveRow clone() {
-		return (PathwayPerspectiveRow) super.clone();
-	}
+	IDataDomain getDataDomain();
+
+	Pair<Collection<Integer>, IDType> getIntersection(Collection<IScore> visibleColumns, Group group);
+
+	/**
+	 * @return
+	 */
+	IDType getIdType();
+
 }

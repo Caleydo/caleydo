@@ -31,7 +31,6 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainOracle;
 import org.caleydo.core.data.datadomain.DataDomainOracle.ClinicalVariable;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.id.IDType;
@@ -42,11 +41,11 @@ import org.caleydo.view.tourguide.api.util.ui.CaleydoLabelProvider;
 import org.caleydo.view.tourguide.impl.algorithm.LogRank;
 import org.caleydo.view.tourguide.internal.event.AddScoreColumnEvent;
 import org.caleydo.view.tourguide.spi.IScoreFactory;
+import org.caleydo.view.tourguide.spi.algorithm.IComputeElement;
 import org.caleydo.view.tourguide.spi.algorithm.IGroupAlgorithm;
 import org.caleydo.view.tourguide.spi.score.IDecoratedScore;
 import org.caleydo.view.tourguide.spi.score.IRegisteredScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
-import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -86,7 +85,7 @@ public class LogRankMetricFactory implements IScoreFactory {
 
 	@Override
 	public boolean supports(EDataDomainQueryMode mode) {
-		return mode == EDataDomainQueryMode.TABLE_BASED;
+		return mode == EDataDomainQueryMode.STRATIFICATIONS;
 	}
 
 	public static class LogRankMetric extends DefaultComputedGroupScore {
@@ -97,7 +96,7 @@ public class LogRankMetricFactory implements IScoreFactory {
 				final IGroupAlgorithm underlying = LogRank.get(clinicalVariable, clinical);
 
 				@Override
-				public IDType getTargetType(Perspective a, Perspective b) {
+				public IDType getTargetType(IComputeElement a, IComputeElement b) {
 					return underlying.getTargetType(a, b);
 				}
 
@@ -168,7 +167,7 @@ public class LogRankMetricFactory implements IScoreFactory {
 
 		@Override
 		public boolean supports(EDataDomainQueryMode mode) {
-			return mode == EDataDomainQueryMode.TABLE_BASED;
+			return mode == EDataDomainQueryMode.STRATIFICATIONS;
 		}
 
 		@Override
@@ -177,13 +176,8 @@ public class LogRankMetricFactory implements IScoreFactory {
 		}
 
 		@Override
-		public float applyPrimitive(IRow elem) {
-			return LogRank.getPValue(logRankScore.applyPrimitive(elem));
-		}
-
-		@Override
-		public Float apply(IRow elem) {
-			return applyPrimitive(elem);
+		public final float apply(IComputeElement elem, Group g) {
+			return LogRank.getPValue(logRankScore.apply(elem, g));
 		}
 
 		public Integer getClinicalVariable() {

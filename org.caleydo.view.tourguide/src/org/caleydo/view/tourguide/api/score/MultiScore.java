@@ -24,10 +24,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.base.DefaultLabelProvider;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
+import org.caleydo.view.tourguide.spi.algorithm.IComputeElement;
 import org.caleydo.view.tourguide.spi.score.IScore;
-import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
 
 import com.google.common.collect.Iterators;
@@ -87,12 +88,7 @@ public class MultiScore extends DefaultLabelProvider implements IScore, Iterable
 	}
 
 	@Override
-	public Float apply(IRow row) {
-		return applyPrimitive(row);
-	}
-
-	@Override
-	public float applyPrimitive(IRow row) {
+	public final float apply(IComputeElement elem, Group g) {
 		return Float.NaN;
 	}
 

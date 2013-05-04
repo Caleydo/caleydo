@@ -247,7 +247,6 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 
 		tablePerspectives = new ArrayList<TablePerspective>();
 
-
 		registerPickingListeners();
 	}
 
@@ -1014,8 +1013,6 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		listeners.unregisterAll();
 	}
 
-
-
 	@Override
 	public void handleRedrawView() {
 		// TODO Auto-generated method stub
@@ -1028,7 +1025,6 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		updateConnectionLinesBetweenColumns();
 	}
 
-
 	@Override
 	public List<AGLView> getRemoteRenderedViews() {
 		return new ArrayList<AGLView>(brickColumnManager.getBrickColumns());
@@ -1039,12 +1035,12 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 
 		List<TablePerspective> tablePerspectiveWrapper = new ArrayList<TablePerspective>();
 		tablePerspectiveWrapper.add(tablePerspective);
-		addTablePerspectives(tablePerspectiveWrapper, null);
+		addTablePerspectives(tablePerspectiveWrapper, null, null);
 	}
 
 	@Override
 	public void addTablePerspectives(List<TablePerspective> newTablePerspectives) {
-		addTablePerspectives(newTablePerspectives, null);
+		addTablePerspectives(newTablePerspectives, null, null);
 	}
 
 	/**
@@ -1061,7 +1057,8 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	 *            The brick configurer can be specified externally (e.g., pathways, kaplan meier). If null, the
 	 *            {@link NumericalDataConfigurer} will be used.
 	 */
-	public void addTablePerspectives(List<TablePerspective> newTablePerspectives, IBrickConfigurer brickConfigurer) {
+	public void addTablePerspectives(List<TablePerspective> newTablePerspectives, IBrickConfigurer brickConfigurer,
+			BrickColumn sourceColumn) {
 
 		if (newTablePerspectives == null || newTablePerspectives.size() == 0) {
 			Logger.log(new Status(IStatus.WARNING, this.toString(),
@@ -1124,7 +1121,9 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 				brickColumn.setStratomex(this);
 				brickColumn.initialize();
 
-				brickColumns.add(brickColumnManager.getRightColumnStartIndex(), brickColumn);
+				int columnIndex = sourceColumn == null ? brickColumnManager.getRightColumnStartIndex() : brickColumns
+						.indexOf(sourceColumn) + 1;
+				brickColumns.add(columnIndex, brickColumn);
 				tablePerspectives.add(tablePerspective);
 
 				uninitializedSubViews.add(brickColumn);
@@ -1444,8 +1443,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		return hashRowPerspectivesToConnectionBandID;
 	}
 
-	public void selectElementsByConnectionBandID(Perspective recordPerspective1,
-			Perspective recordPerspective2) {
+	public void selectElementsByConnectionBandID(Perspective recordPerspective1, Perspective recordPerspective2) {
 
 		BrickConnection connectionBand = null;
 		HashMap<Perspective, BrickConnection> tmp = hashRowPerspectivesToConnectionBandID.get(recordPerspective1);
@@ -1490,7 +1488,6 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 
 		updateConnectionLinesBetweenColumns();
 	}
-
 
 	/**
 	 * Splits a brick into two portions: those values that are in the band identified through the connection band id and

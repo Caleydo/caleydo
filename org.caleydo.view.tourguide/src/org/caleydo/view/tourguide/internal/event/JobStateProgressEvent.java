@@ -17,27 +17,47 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.internal.view;
+package org.caleydo.view.tourguide.internal.event;
 
-import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.perspective.variable.Perspective;
-import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.event.ADirectedEvent;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public final class StratificationPerspectiveRow extends PerspectiveRow {
-	public StratificationPerspectiveRow(Perspective stratification, Group group, TablePerspective perspective) {
-		super(stratification, group, perspective);
+public class JobStateProgressEvent extends ADirectedEvent {
+	private final String text;
+	private final float completed;
+	private final boolean errornous;
+
+	public JobStateProgressEvent(String text, float completed, boolean errornous) {
+		this.text = text;
+		this.completed = completed;
+		this.errornous = errornous;
 	}
 
-	public StratificationPerspectiveRow(Perspective stratification, TablePerspective perspective) {
-		super(stratification, perspective);
+	/**
+	 * @return the completed, see {@link #completed}
+	 */
+	public float getCompleted() {
+		return completed;
+	}
+
+	public boolean isErrornous() {
+		return errornous;
+	}
+
+	/**
+	 * @return the text, see {@link #text}
+	 */
+	public String getText() {
+		return text;
 	}
 
 	@Override
-	public StratificationPerspectiveRow clone() {
-		return (StratificationPerspectiveRow) super.clone();
+	public boolean checkIntegrity() {
+		// TODO Auto-generated method stub
+		return true;
 	}
+
 }

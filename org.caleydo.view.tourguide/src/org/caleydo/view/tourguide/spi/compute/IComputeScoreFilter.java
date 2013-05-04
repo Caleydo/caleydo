@@ -19,8 +19,8 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.spi.compute;
 
-import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.view.tourguide.spi.algorithm.IComputeElement;
 
 /**
  * defines whether for a given combinatin of stratification and group the score should be computed or not
@@ -29,5 +29,5 @@ import org.caleydo.core.data.virtualarray.group.Group;
  *
  */
 public interface IComputeScoreFilter {
-	public boolean doCompute(Perspective a, Group ag, Perspective b, Group bg);
+	public boolean doCompute(IComputeElement a, Group ag, IComputeElement b, Group bg);
 }

@@ -22,10 +22,10 @@ package org.caleydo.view.tourguide.internal.view.ui.pool;
 import java.awt.Color;
 
 import org.caleydo.core.util.collection.Pair;
-import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.picking.Pick;
+import org.caleydo.view.tourguide.internal.TourGuideRenderStyle;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.mixin.IHideableColumnMixin;
@@ -86,7 +86,7 @@ public class PaperBasket extends APoolElem {
 	protected void renderImpl(GLGraphics g, float w, float h) {
 		g.color(armed ? Color.DARK_GRAY : getBackgroundColor());
 		g.fillRoundedRect(0, 0, w, h, 5);
-		g.drawText("X", 2, 0, w - 2, h - 4, VAlign.CENTER);
+		g.fillImage(TourGuideRenderStyle.ICON_BASKET, (w - 12) * .5f, (h - 12) * .5f, 12, 12);
 		g.color(Color.GRAY);
 		g.drawRoundedRect(0, 0, w, h, 5);
 	}

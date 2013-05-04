@@ -32,7 +32,7 @@ import com.google.common.base.Function;
  */
 public class SizeRankColumnModel extends IntegerRankColumnModel {
 	public SizeRankColumnModel(String label, Function<IRow, Integer> data) {
-		super(GLRenderers.drawText("Group Size", VAlign.CENTER), data);
+		super(GLRenderers.drawText(label, VAlign.CENTER), data);
 	}
 
 	public SizeRankColumnModel(SizeRankColumnModel copy) {

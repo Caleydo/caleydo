@@ -22,7 +22,6 @@ package org.caleydo.view.tourguide.spi.algorithm;
 import java.util.List;
 import java.util.Set;
 
-import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.id.IDType;
 
 /**
@@ -31,7 +30,7 @@ import org.caleydo.core.id.IDType;
  */
 public interface IStratificationAlgorithm {
 
-	IDType getTargetType(Perspective a, Perspective b);
+	IDType getTargetType(IComputeElement a, IComputeElement b);
 
 	/**
 	 * computes the score between the two stratifications identified by their collection of group sets

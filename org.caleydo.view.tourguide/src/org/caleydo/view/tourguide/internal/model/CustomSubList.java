@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.internal.view.model;
+package org.caleydo.view.tourguide.internal.model;
 
 import java.util.AbstractList;
 import java.util.List;

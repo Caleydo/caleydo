@@ -17,27 +17,41 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.internal.view;
+package org.caleydo.view.tourguide.spi.algorithm;
 
-import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.perspective.variable.Perspective;
+import java.util.Collection;
+
+import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.id.IDType;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public final class GroupPerspectiveRow extends PerspectiveRow {
-	public GroupPerspectiveRow(Perspective stratification, Group group, TablePerspective perspective) {
-		super(stratification, group, perspective);
-	}
+public interface IComputeElement extends Iterable<Integer> {
+	String getPersistentID();
 
-	public GroupPerspectiveRow(Perspective stratification, TablePerspective perspective) {
-		super(stratification, perspective);
-	}
+	IDType getIdType();
 
-	@Override
-	public GroupPerspectiveRow clone() {
-		return (GroupPerspectiveRow) super.clone();
-	}
+	Collection<Group> getGroups();
+
+	int getGroupSize();
+
+	/**
+	 * @param group
+	 *            may be null for all
+	 * @return
+	 */
+	Collection<Integer> of(Group group);
+
+	/**
+	 * @return
+	 */
+	IDataDomain getDataDomain();
+
+	String getLabel();
+
+	int size();
+
 }

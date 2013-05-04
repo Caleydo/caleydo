@@ -4,21 +4,21 @@ import java.util.Objects;
 
 import org.caleydo.core.data.datadomain.DataDomainOracle;
 import org.caleydo.core.data.datadomain.IDataDomain;
-import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.view.tourguide.spi.algorithm.IComputeElement;
 import org.caleydo.view.tourguide.spi.compute.IComputeScoreFilter;
 
 public final class ComputeScoreFilters {
 	public static IComputeScoreFilter ALL = new IComputeScoreFilter() {
 		@Override
-		public boolean doCompute(Perspective a, Group ag, Perspective b, Group bg) {
+		public boolean doCompute(IComputeElement a, Group ag, IComputeElement b, Group bg) {
 			return true;
 		}
 	};
 
 	public static IComputeScoreFilter SELF = new IComputeScoreFilter() {
 		@Override
-		public boolean doCompute(Perspective a, Group ag, Perspective b, Group bg) {
+		public boolean doCompute(IComputeElement a, Group ag, IComputeElement b, Group bg) {
 			if (!Objects.equals(ag, bg)) // not the same group
 				return true;
 			if (ag == null && !Objects.equals(a, b)) // no groups and not the same stratification
@@ -39,7 +39,7 @@ public final class ComputeScoreFilters {
 	 */
 	public static IComputeScoreFilter MUTUAL_EXCLUSIVE = new IComputeScoreFilter() {
 		@Override
-		public boolean doCompute(Perspective a, Group ag, Perspective b, Group bg) {
+		public boolean doCompute(IComputeElement a, Group ag, IComputeElement b, Group bg) {
 			if (ag == null || !Objects.equals(ag.getGroupIndex(), bg.getGroupIndex()))
 				return true;
 			IDataDomain dataDomain = b.getDataDomain();
@@ -57,7 +57,7 @@ public final class ComputeScoreFilters {
 			return elems[0];
 		return new IComputeScoreFilter() {
 			@Override
-			public boolean doCompute(Perspective a, Group ag, Perspective b, Group bg) {
+			public boolean doCompute(IComputeElement a, Group ag, IComputeElement b, Group bg) {
 				for (IComputeScoreFilter elem : elems)
 					if (!elem.doCompute(a, ag, b, bg))
 						return false;
@@ -71,7 +71,7 @@ public final class ComputeScoreFilters {
 			return elems[0];
 		return new IComputeScoreFilter() {
 			@Override
-			public boolean doCompute(Perspective a, Group ag, Perspective b, Group bg) {
+			public boolean doCompute(IComputeElement a, Group ag, IComputeElement b, Group bg) {
 				for (IComputeScoreFilter elem : elems)
 					if (elem.doCompute(a, ag, b, bg))
 						return true;
