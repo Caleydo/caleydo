@@ -1,4 +1,4 @@
-package org.caleydo.core.view.opengl.layout2;
+package org.caleydo.core.view.opengl.layout2.basic;
 
 import gleem.linalg.Vec2f;
 
@@ -6,6 +6,13 @@ import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.core.view.opengl.layout2.GLElementAccessor;
+import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.core.view.opengl.layout2.IGLElementContext;
+import org.caleydo.core.view.opengl.layout2.IGLElementParent;
+import org.caleydo.core.view.opengl.layout2.IGLElementVisitor;
 
 import com.google.common.collect.Iterators;
 
@@ -35,7 +42,7 @@ public abstract class GLElementSelector extends GLElement implements IGLElementP
 		super.layoutImpl();
 		Vec2f size = getSize();
 		for (GLElement elem : this) {
-			elem.layoutElement.setBounds(0, 0, size.x(), size.y());
+			GLElementAccessor.asLayoutElement(elem).setBounds(0, 0, size.x(), size.y());
 		}
 	}
 
@@ -59,7 +66,7 @@ public abstract class GLElementSelector extends GLElement implements IGLElementP
 	@Override
 	protected void takeDown() {
 		for (GLElement elem : this)
-			elem.takeDown();
+			GLElementAccessor.takeDown(elem);
 		super.takeDown();
 	}
 
@@ -67,20 +74,20 @@ public abstract class GLElementSelector extends GLElement implements IGLElementP
 	protected void init(IGLElementContext context) {
 		super.init(context);
 		for (GLElement child : this)
-			child.init(context);
+			GLElementAccessor.init(child, context);
 	}
 
 	private void setup(GLElement child) {
-		child.setParent(this);
+		GLElementAccessor.setParent(child, this);
 		if (context != null)
-			child.init(context);
+			GLElementAccessor.init(child, context);
 	}
 
 	public final void clear() {
 		int size = this.size();
 		for (Iterator<GLElement> it = children.iterator(); it.hasNext();) {
 			GLElement e = it.next();
-			e.takeDown();
+			GLElementAccessor.takeDown(e);
 			it.remove();
 		}
 		if (size > 0) // had deleted something
@@ -115,7 +122,7 @@ public abstract class GLElementSelector extends GLElement implements IGLElementP
 
 	public final boolean remove(GLElement child) {
 		if (children.remove(child)) {
-			child.takeDown();
+			GLElementAccessor.takeDown(child);
 			relayout();
 			return true;
 		}
@@ -145,7 +152,7 @@ public abstract class GLElementSelector extends GLElement implements IGLElementP
 
 	public final GLElement set(int index, GLElement element) {
 		GLElement old = children.get(index);
-		old.takeDown();
+		GLElementAccessor.takeDown(old);
 		setup(element);
 		children.set(index, element);
 		relayout();
