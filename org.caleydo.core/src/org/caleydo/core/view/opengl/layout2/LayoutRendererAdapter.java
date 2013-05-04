@@ -7,7 +7,6 @@ import java.util.Map;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.event.EventListenerManager;
 import org.caleydo.core.event.EventListenerManagers;
 import org.caleydo.core.event.EventListenerManagers.QueuedEventListenerManager;
 import org.caleydo.core.util.base.ILabelProvider;
@@ -63,8 +62,9 @@ public final class LayoutRendererAdapter extends ALayoutRenderer implements IGLE
 		this.eventSpace = eventSpace;
 
 		this.local = new GLContextLocal(view.getTextRenderer(), view.getTextureManager(), locator);
-		this.root.init(this);
 
+		this.root.setParent(this);
+		this.root.init(this);
 	}
 
 	@Override
