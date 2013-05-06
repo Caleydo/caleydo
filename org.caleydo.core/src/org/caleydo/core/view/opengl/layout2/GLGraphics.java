@@ -14,6 +14,7 @@ import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.util.color.IColor;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.geom.Rect;
+import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.core.view.opengl.layout2.renderer.RoundedRectRenderer;
 import org.caleydo.core.view.opengl.util.GLPrimitives;
 import org.caleydo.core.view.opengl.util.spline.ITesselatedPolygon;
@@ -282,9 +283,9 @@ public class GLGraphics {
 	 *            the thing to run within the pushed name environment
 	 * @return
 	 */
-	public GLGraphics withName(int id, IRenderProcedure toRun) {
+	public GLGraphics withName(int id, IGLRenderer renderer, float w, float h, GLElement parent) {
 		pushName(id);
-		toRun.render(this);
+		renderer.render(this, w, h, parent);
 		popName();
 		return this;
 	}
@@ -436,26 +437,25 @@ public class GLGraphics {
 		if (text == null)
 			return this;
 		stats.incText(text.length());
-		if (originInTopLeft) {
+		if (originInTopLeft && !this.text.isOriginTopLeft()) {
 			gl.glPushMatrix();
 			gl.glTranslatef(0, y + h, 0);
 			y = 0;
 			gl.glScalef(1, -1, 1);
 		}
-		float textWidth = Math.min(this.text.getTextWidth(text, h), w);
 		switch (valign) {
 		case CENTER:
-			x += w * 0.5f - textWidth * 0.5f;
+			x += w * 0.5f - Math.min(this.text.getTextWidth(text, h), w) * 0.5f;
 			break;
 		case RIGHT:
-			x += w - textWidth;
+			x += w - Math.min(this.text.getTextWidth(text, h), w);
 			break;
 		default:
 			break;
 		}
 		this.text.renderTextInBounds(gl, text, x, y, z + 0.25f, w, h);
 
-		if (originInTopLeft)
+		if (originInTopLeft && !this.text.isOriginTopLeft())
 			gl.glPopMatrix();
 		return this;
 	}
@@ -615,9 +615,9 @@ public class GLGraphics {
 	 *
 	 * @return
 	 */
-	public GLGraphics withMove(float x, float y, IRenderProcedure toRun) {
+	public GLGraphics withMove(float x, float y, IGLRenderer renderer, float w, float h, GLElement parent) {
 		move(x, y);
-		toRun.render(this);
+		renderer.render(this, w, h, parent);
 		move(-x, -y);
 		return this;
 	}
@@ -641,14 +641,10 @@ public class GLGraphics {
 	/**
 	 * runs the given procedure, in a save-restore environment
 	 */
-	public GLGraphics withSaveRestore(IRenderProcedure toRun) {
+	public GLGraphics withSaveRestore(IGLRenderer renderer, float w, float h, GLElement parent) {
 		save();
-		toRun.render(this);
+		renderer.render(this, w, h, parent);
 		restore();
 		return this;
-	}
-
-	public interface IRenderProcedure {
-		public void render(GLGraphics g);
 	}
 }

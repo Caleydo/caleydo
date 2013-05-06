@@ -21,8 +21,6 @@ package org.caleydo.vis.rank.ui;
 
 import java.awt.Color;
 
-import org.caleydo.core.view.opengl.canvas.GLMouseAdapter;
-import org.caleydo.core.view.opengl.canvas.IGLMouseListener;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
@@ -46,21 +44,7 @@ import org.caleydo.vis.rank.model.StackedRankColumnModel;
  */
 public class RankTableUI extends GLElementContainer implements ISelectionCallback {
 
-	private IGLMouseListener mouseListener = new GLMouseAdapter() {
-		@Override
-		public void mouseWheelMoved(IMouseEvent e) {
-			onWheelMoved(e.getWheelRotation());
-		}
-	};
-
 	public RankTableUI() {
-	}
-
-	/**
-	 * @return the mouseListener, see {@link #mouseListener}
-	 */
-	public IGLMouseListener getMouseListener() {
-		return mouseListener;
 	}
 
 	/**
@@ -144,7 +128,7 @@ public class RankTableUI extends GLElementContainer implements ISelectionCallbac
 		body.setRowLayout(l);
 	}
 
-	protected TableBodyUI findBody() {
+	public TableBodyUI findBody() {
 		ScrollingDecorator scbody = (ScrollingDecorator) get(1);
 		TableUI table = (TableUI) scbody.getContent();
 		TableBodyUI body = (TableBodyUI) table.get(1);

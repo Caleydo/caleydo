@@ -90,7 +90,18 @@ function loadRuns( callback ) {
 
 
 function loadRun( url, callback ) {
-	$.getJSON( url, callback );
+	$.getJSON( url, function(data) {
+		if (data) {
+			//filter out PAAD
+			var arr = data.details
+			for ( var i = 0; i < arr.length; ++i ) {
+				if ( arr[i].tumorAbbreviation === "PAAD" ) {
+					arr.splice(i, 1);
+				}
+			}
+		}
+		callback(data);
+	});
 }
 
 

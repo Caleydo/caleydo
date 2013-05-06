@@ -83,7 +83,9 @@ public class StartupProcessor {
 
 
 		if (startupProcedure == null) {
-			Shell shell = new Shell(SWT.ON_TOP);
+			Shell shell = new Shell(SWT.NONE);
+			Shell[] shells = Display.getCurrent().getShells();
+
 			WizardDialog projectWizardDialog = new WizardDialog(shell,
 					new CaleydoProjectWizard(shell));
 

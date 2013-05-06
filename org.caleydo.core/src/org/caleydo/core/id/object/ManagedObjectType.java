@@ -31,7 +31,6 @@ public enum ManagedObjectType {
 
 	VIEW_SWT_BROWSER_GENERAL(26),
 	VIEW_SWT_BROWSER_GENOME(23),
-	VIEW_SWT_TABULAR_DATA_VIEWER(99),
 
 	GL_VIEW(29),
 
@@ -39,21 +38,18 @@ public enum ManagedObjectType {
 	PATHWAY_VERTEX(60),
 	PATHWAY_VERTEX_REP(61),
 
-	REMOTE_LEVEL_ELEMENT(66),
-
 	DIMENSION_GROUP_SPACER(70);
 
-
-	private int iIdPrefix;
+	private int idPrefix;
 
 	/**
 	 * Constructor.
 	 */
 	private ManagedObjectType(final int iIdPrefix) {
-		this.iIdPrefix = iIdPrefix;
+		this.idPrefix = iIdPrefix;
 	}
 
 	public int getIdPrefix() {
-		return iIdPrefix;
+		return idPrefix;
 	}
 }

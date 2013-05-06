@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="Caleydo" uid="org.caleydo" id="org.caleydo.core.product" application="org.caleydo.core.application" version="2.2" useFeatures="true" includeLaunchers="true">
+<product name="Caleydo" uid="org.caleydo" id="org.caleydo.core.product" application="org.caleydo.core.application" version="3.0" useFeatures="true" includeLaunchers="true">
 
    <aboutInfo>
       <image path="resources/wizard/wizard.png"/>
@@ -42,7 +42,6 @@ Caleydo is open-source software licenced under the GPL V3
          <bmp/>
       </win>
    </launcher>
-
 
    <vm>
    </vm>
@@ -786,7 +785,7 @@ Public License instead of this License.  But first, please read
    </plugins>
 
    <features>
-      <feature id="org.caleydo.rcp.feature" version="2.2"/>
+      <feature id="org.caleydo.rcp.feature" version="3.0"/>
    </features>
 
    <configurations>

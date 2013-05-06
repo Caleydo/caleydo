@@ -26,8 +26,6 @@ import java.util.Map.Entry;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import org.caleydo.core.util.function.FloatStatistics;
-
 import com.google.common.collect.Iterators;
 
 /**
@@ -315,15 +313,15 @@ public class PiecewiseMapping extends ScriptedMappingFunction implements Iterabl
 		test(0.1f, t.apply(-0.1f));
 		test(Float.NaN, t.apply(1.1f));
 
-		PiecewiseMapping p = new PiecewiseMapping(Float.NaN, Float.NaN);
-		p.setActStatistics(new FloatStatistics(-1, 1, 0, 0, 0, 0));
-		System.out.println(p.toJavaScript());
-		p = new PiecewiseMapping(0, Float.NaN);
-		p.setActStatistics(new FloatStatistics(0, 100, 0, 0, 0, 0));
-		System.out.println(p.toJavaScript());
-		p = new PiecewiseMapping(Float.NaN, 1);
-		p.setActStatistics(new FloatStatistics(-10, 10, 0, 0, 0, 0));
-		System.out.println(p.toJavaScript());
+		// PiecewiseMapping p = new PiecewiseMapping(Float.NaN, Float.NaN);
+		// p.setActStatistics(new FloatStatistics(-1, 1, 0, 0, 0, 0));
+		// System.out.println(p.toJavaScript());
+		// p = new PiecewiseMapping(0, Float.NaN);
+		// p.setActStatistics(new FloatStatistics(0, 100, 0, 0, 0, 0));
+		// System.out.println(p.toJavaScript());
+		// p = new PiecewiseMapping(Float.NaN, 1);
+		// p.setActStatistics(new FloatStatistics(-10, 10, 0, 0, 0, 0));
+		// System.out.println(p.toJavaScript());
 	}
 
 	private static void test(float expected, float actual) {

@@ -25,8 +25,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.caleydo.core.view.opengl.renderstyle.ConnectionLineRenderStyle;
-
 /**
  * @author Oliver Pimas
  * @version 0.1 (2009-07-20) NURBSCurve implements a simple NURBS (Non-uniform rational B-Spline) curve
@@ -52,19 +50,6 @@ public class NURBSCurve {
 	protected float u_max;
 	protected float u;
 	protected float step_length;
-
-	protected static final float SEGMENT_LENGTH = ConnectionLineRenderStyle.CONNECTION_LINE_SEGMENT_LENGTH; // FIXME:
-
-	// This
-	// is
-	// not
-	// nice,
-	// NURBSCurve
-	// should
-	// work
-	// without
-	// this
-	// context
 
 	/**
 	 * Constructor.

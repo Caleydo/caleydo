@@ -22,7 +22,7 @@ package org.caleydo.view.tourguide.internal.event;
 import java.util.Collection;
 
 import org.caleydo.core.event.ADirectedEvent;
-import org.caleydo.view.tourguide.internal.view.model.ADataDomainQuery;
+import org.caleydo.view.tourguide.internal.model.ADataDomainQuery;
 import org.caleydo.view.tourguide.spi.score.IScore;
 
 /**

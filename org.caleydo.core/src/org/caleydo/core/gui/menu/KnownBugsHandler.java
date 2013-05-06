@@ -22,7 +22,7 @@ package org.caleydo.core.gui.menu;
 
 public class KnownBugsHandler extends ABrowserContentsHandler {
 
-	private final static String URL_KNOWN_BUGS = "https://trac.icg.tugraz.at/projects/org.caleydo/report/1";
+	private final static String URL_KNOWN_BUGS = "https://github.com/Caleydo/caleydo-dev/issues";
 
 	public KnownBugsHandler() {
 		super(URL_KNOWN_BUGS);

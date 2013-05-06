@@ -68,7 +68,7 @@ public class BrickContextMenuFactory implements IContextMenuBrickFactory {
 				IWorkbenchWindow win = wb.getActiveWorkbenchWindow();
 				IWorkbenchPage page = win.getActivePage();
 				for (IViewReference r : page.getViewReferences()) {
-					if (!r.getId().equals(GLTourGuideView.VIEW_TYPE))
+					if (!r.getId().startsWith(GLTourGuideView.VIEW_TYPE))
 						continue;
 					IWorkbenchPart p = r.getPart(false);
 					if (p == null || !page.isPartVisible(p))

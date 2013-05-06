@@ -22,7 +22,7 @@ package org.caleydo.core.gui.menu;
 
 public class ReportBugHandler extends ABrowserContentsHandler {
 
-	private final static String URL_REPORT_BUG = "https://trac.icg.tugraz.at/projects/org.caleydo/newticket";
+	private final static String URL_REPORT_BUG = "https://github.com/Caleydo/caleydo-dev/issues/new";
 
 	public ReportBugHandler() {
 		super(URL_REPORT_BUG);

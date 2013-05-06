@@ -21,9 +21,11 @@ package org.caleydo.view.tourguide.internal.view.col;
 
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
+import org.caleydo.view.tourguide.internal.model.MaxGroupCombiner;
 import org.caleydo.view.tourguide.spi.score.IGroupScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
 import org.caleydo.view.tourguide.spi.score.IStratificationScore;
@@ -43,7 +45,8 @@ public class ScoreRankColumnModel extends FloatRankColumnModel implements IGLRen
 	}
 
 	public ScoreRankColumnModel(IScore score) {
-		super(score, null, score.getColor(), score.getBGColor(), score.createMapping(), FloatInferrers.fix(0));
+		super(new MaxGroupCombiner(score), null, score.getColor(), score.getBGColor(), score.createMapping(),
+				FloatInferrers.fix(Float.NaN));
 		this.score = score;
 		this.headerMode = EHeaderMode.LABEL;
 		if (score instanceof IGroupScore) {// have a group and a common stratification
@@ -54,6 +57,7 @@ public class ScoreRankColumnModel extends FloatRankColumnModel implements IGLRen
 				this.headerMode = EHeaderMode.STRAT;
 		}
 		setHeaderRenderer(this);
+		setFilter(true, true, false);
 	}
 
 	public ScoreRankColumnModel(ScoreRankColumnModel copy) {
@@ -77,14 +81,12 @@ public class ScoreRankColumnModel extends FloatRankColumnModel implements IGLRen
 	@Override
 	public void render(GLGraphics g, float w, float h, GLElement parent) {
 		Perspective strat = resolveStratification(score);
-		float x = 0;
-		if (headerMode == EHeaderMode.STRAT || headerMode == EHeaderMode.STRAT_GROUP) {
-			g.color(strat.getDataDomain().getColor()).fillRect(1, 1, 10, 10);
-			x += 12;
+		if (this.isCollapsed()) {
+			if (headerMode == EHeaderMode.STRAT || headerMode == EHeaderMode.STRAT_GROUP)
+				g.color(strat.getDataDomain().getColor()).fillRect((w - 10) * 0.5f, (h - 10) * 0.5f, 10, 10);
+		} else {
+			g.drawText(this.score.getLabel(), 1, 1, w - 1, 12, VAlign.CENTER);
 		}
-		if (this.isCollapsed())
-			return;
-		g.drawText(this.score, x, 1, w - x, 12);
 	}
 
 	private static Perspective resolveStratification(IScore score) {

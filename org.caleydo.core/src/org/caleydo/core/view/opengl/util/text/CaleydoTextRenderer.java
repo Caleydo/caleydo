@@ -62,6 +62,10 @@ public class CaleydoTextRenderer extends TextRenderer implements ITextRenderer {
 		referenceBounds = super.getBounds(REFERENCE_TEXT);
 	}
 
+	@Override
+	public boolean isOriginTopLeft() {
+		return false;
+	}
 
 	/**
 	 * Convenience method to render text with a specified minimum size without

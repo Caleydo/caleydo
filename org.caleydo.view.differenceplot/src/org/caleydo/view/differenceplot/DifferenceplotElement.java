@@ -61,10 +61,13 @@ public class DifferenceplotElement extends GLElement implements TablePerspective
 	private SelectionRectangle selectionRect;
 	
 	private Point firstClickPoint;
+	private Point lastClickPoint;
 	
 	private DifferenceplotRenderUtils renderUtil;
 	
 	private boolean rectanglePicked = false;
+	
+	private boolean drawingSelection = false;
 	
 		
 	/**
@@ -136,7 +139,11 @@ public class DifferenceplotElement extends GLElement implements TablePerspective
 
 	@Override
 	public void onSelectionUpdate(SelectionManager manager) {
-		this.prepareData(this.dataSelectionConf);
+		if(!this.renderRemote)
+		{
+			this.prepareData(this.dataSelectionConf);
+		}
+		
 		repaintAll();
 	}
 
@@ -180,7 +187,7 @@ public class DifferenceplotElement extends GLElement implements TablePerspective
 	public void prepareData(DataSelectionConfiguration dataSelectionConf)
 	{
 		this.readyForRender = false;
-		System.out.println("Prepare Data called");
+		//System.out.println("Prepare Data called");
 		dataColumns.clear();
 		
 		if (tablePerspective != null & dataSelectionConf != null) {
@@ -385,72 +392,51 @@ public class DifferenceplotElement extends GLElement implements TablePerspective
 	
 	public void handleMouseEventsRemoteMode(Pick pick)
 	{
-		System.out.println("!!!!! relased:  " + pick.getPickingMode());
+		Point pickedPoint = new Point((int) this.toRelative(pick.getPickedPoint()).x(), (int) this.toRelative(pick.getPickedPoint()).y());
+				
 		switch (pick.getPickingMode()) {
 		case CLICKED:
-			System.out.println("!!!!! clicked:  " + pick.getPickedPoint());
+			//System.out.println("!!!!! clicked first picked point:  " + firstClickPoint);
+			//firstClickPoint = pickedPoint;
+			
+			
 			if(firstClickPoint == null)
 			{
-				firstClickPoint = pick.getPickedPoint();
+				firstClickPoint = pickedPoint;
+				lastClickPoint = pickedPoint;
 				return;
 			}
-			if (Math.abs(pick.getPickedPoint().x - firstClickPoint.x) < 1 | Math.abs(pick.getPickedPoint().y - firstClickPoint.y) < 1)
+			
+			if (Math.abs(lastClickPoint.x - pickedPoint.x) > 3 | Math.abs(lastClickPoint.y - pickedPoint.y) > 3)
 			{
-				if (!rectanglePicked)
-				{
 					selectionRect = null;
 					renderUtil.clearSelection(this);
-				}
+					firstClickPoint = null;
+					lastClickPoint = null;
 			}
-			else
-			{
-				selectionRect.ComputeScreenToDataMapping(renderUtil, dataColumns, getSize().x(), getSize().y());
-				renderUtil.performBrushing(this, selectionRect);
-			}
+
 			break;
 		case DRAGGED:
 			//Enlarge the selection rectangle here
 			
-			System.out.println("!!!!! dragged:  " + pick.getPickedPoint());
+			//System.out.println("!!!!! dragged:  " + pick.getPickedPoint());
 			if(firstClickPoint == null)
 			{
-				//System.out.println("!!!!! dragged:  " + this.toRelative(pick.getPickedPoint()));
-				firstClickPoint = pick.getPickedPoint();
-			}
-			if(!rectanglePicked)
-			{
-				selectionRect = new SelectionRectangle();
-				selectionRect.setLeft(firstClickPoint.x);
-				selectionRect.setRight(pick.getPickedPoint().x);
-				selectionRect.setTop(firstClickPoint.y);
-				selectionRect.setBottom(pick.getPickedPoint().y);
-			}
-			else
-			{
-				selectionRect.moveRectangle(pick.getDx(), pick.getDy());
+				System.out.println("******* dragged manual setting:  " + this.toRelative(pick.getPickedPoint()));
+				firstClickPoint = pickedPoint;
 			}
 			
-			
-			//selectionRect.ComputeScreenToDataMapping(renderUtil, dataColumns, getSize().x(), getSize().y());			
-			//renderUtil.performBrushing(this, selectionRect);
+			drawingSelection = true;
+			lastClickPoint = pickedPoint;
+			selectionRect = new SelectionRectangle();
+			selectionRect.setLeft(firstClickPoint.x);
+			selectionRect.setRight(pickedPoint.x);
+			selectionRect.setTop(firstClickPoint.y);
+			selectionRect.setBottom(pickedPoint.y);
+			selectionRect.ComputeScreenToDataMapping(renderUtil, dataColumns, getSize().x(), getSize().y());
+			renderUtil.performBrushing(this, selectionRect);
 			break;
-		case MOUSE_RELEASED:
-			//A single click to remove the selection
-			System.out.println("!!!!! relased:  " + pick.getPickedPoint());
-			if (Math.abs(pick.getPickedPoint().x - firstClickPoint.x) < 1 | Math.abs(pick.getPickedPoint().y - firstClickPoint.y) < 1)
-			{
-				if (!rectanglePicked)
-				{
-					selectionRect = null;
-					renderUtil.clearSelection(this);
-				}
-			}
-			else
-			{
-				selectionRect.ComputeScreenToDataMapping(renderUtil, dataColumns, getSize().x(), getSize().y());
-				renderUtil.performBrushing(this, selectionRect);
-			}
-			break;	
+		
 		
 		}
 	}

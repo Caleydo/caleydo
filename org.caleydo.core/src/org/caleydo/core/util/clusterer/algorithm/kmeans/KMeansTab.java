@@ -98,7 +98,7 @@ public class KMeansTab extends AClusterTab {
 
 	@Override
 	public AClusterAlgorithmConfiguration getClusterConfiguration() {
-		KMeansClusterConfiguration clusterConfiguration = new KMeansClusterConfiguration();
+		KMeansClusterConfiguration2 clusterConfiguration = new KMeansClusterConfiguration2();
 		clusterConfiguration.setNumberOfClusters(nrClustersRecords);
 		clusterConfiguration.setCacheVectors(cacheVectors.getSelection());
 		return clusterConfiguration;

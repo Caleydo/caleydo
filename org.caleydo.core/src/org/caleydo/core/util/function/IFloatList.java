@@ -48,13 +48,8 @@ public interface IFloatList extends List<Float> {
 
 	float reduce(float start, IFloatReduction r);
 
-	/**
-	 * simple statistics 0...min 1...max,2..mean,3..count,4..sum,5..sqrsum more may follow
-	 *
-	 * @return
-	 */
-	FloatStatistics computeStats();
-
 	@Override
 	IFloatIterator iterator();
+
+	float[] toPrimitiveArray();
 }

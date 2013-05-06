@@ -29,6 +29,7 @@ import org.caleydo.core.data.perspective.table.CategoricalTablePerspectiveCreato
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.id.IIDTypeMapper;
+import org.caleydo.core.util.base.ILabelProvider;
 
 /**
  * helper class for encapsulating magic meta data information about a data domain
@@ -96,13 +97,12 @@ public final class DataDomainOracle {
 		return result;
 	}
 
-	public static class ClinicalVariable {
+	public static class ClinicalVariable implements ILabelProvider {
 		private final String label;
 		private final int dimId;
 		private final EDataClass dataClass;
 
 		public ClinicalVariable(String label, int dimId, EDataClass dataClass) {
-			super();
 			this.label = label;
 			this.dimId = dimId;
 			this.dataClass = dataClass;
@@ -111,8 +111,14 @@ public final class DataDomainOracle {
 		/**
 		 * @return the label, see {@link #label}
 		 */
+		@Override
 		public String getLabel() {
 			return label;
+		}
+
+		@Override
+		public String getProviderName() {
+			return null;
 		}
 
 		/**

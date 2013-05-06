@@ -60,6 +60,8 @@ import org.caleydo.vis.rank.ui.mapping.MappingFunctionUIs;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
+import com.google.common.primitives.Floats;
+
 /**
  * @author Samuel Gratzl
  *
@@ -191,6 +193,11 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 			public int size() {
 				return data2.size();
 			}
+
+			@Override
+			public float[] toPrimitiveArray() {
+				return Floats.toArray(this);
+			}
 		};
 	}
 
@@ -204,7 +211,7 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 
 	private void checkMapping() {
 		if (dirtyDataStats) {
-			FloatStatistics stats = FloatStatistics.compute(asRawData().iterator());
+			FloatStatistics stats = FloatStatistics.of(asRawData().iterator());
 			mapping.setActStatistics(stats);
 			dirtyDataStats = false;
 			invalidAllFilter();
@@ -325,13 +332,17 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 		propertySupport.firePropertyChange(IFilterColumnMixin.PROP_FILTER, bak, checked);
 	}
 
+	public void setFilter(boolean filterNotMappedEntries, boolean filterMissingEntries, boolean isGlobalFilter) {
+		setFilter(new FilterChecked(filterNotMappedEntries, filterMissingEntries, isGlobalFilter));
+	}
+
 	@Override
 	public void editFilter(final GLElement summary, IGLElementContext context) {
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
 				new FloatFilterDialog(new Shell(), getTitle(), summary, filterNotMappedEntries, filterMissingEntries,
-						isGlobalFilter())
+						isGlobalFilter(), getTable().hasSnapshots())
 						.open();
 			}
 		});

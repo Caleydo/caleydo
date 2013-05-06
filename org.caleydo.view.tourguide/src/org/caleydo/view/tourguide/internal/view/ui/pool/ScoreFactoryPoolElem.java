@@ -21,13 +21,11 @@ package org.caleydo.view.tourguide.internal.view.ui.pool;
 
 import java.awt.Color;
 
-import javax.media.opengl.GL2;
-
 import org.caleydo.core.event.EventPublisher;
-import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
+import org.caleydo.view.tourguide.internal.TourGuideRenderStyle;
 import org.caleydo.view.tourguide.internal.event.CreateScoreEvent;
 import org.caleydo.view.tourguide.spi.IScoreFactory;
 
@@ -45,8 +43,8 @@ public class ScoreFactoryPoolElem extends APoolElem {
 		this.label = label;
 		this.factory = factory;
 		this.receiver = receiver;
-		setTooltip("Create a new " + label + " score");
-		setMode(EDataDomainQueryMode.TABLE_BASED); // default
+		setTooltip("Double-Click to create a new " + label + " score");
+		setMode(EDataDomainQueryMode.STRATIFICATIONS); // default
 	}
 
 	public void setMode(EDataDomainQueryMode mode) {
@@ -66,18 +64,20 @@ public class ScoreFactoryPoolElem extends APoolElem {
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
-		if (getVisibility() == EVisibility.VISIBLE) {
+		final boolean isDisabled = getVisibility() == EVisibility.VISIBLE;
+		float x = 0;
+		if (isDisabled) {
 			g.textColor(Color.GRAY);
+		} else {
+			x = 10;
+			g.fillImage(TourGuideRenderStyle.ICON_ADD_COLOR, 1, (h - 10) * 0.5f, 10, 10);
 		}
-		g.drawText(label, 2, 3, w - 2, h - 9, VAlign.CENTER);
-		if (getVisibility() == EVisibility.VISIBLE) {
+		g.drawText(label, x + 2, 3, w - 2 - x, h - 9);
+		if (isDisabled) {
 			g.textColor(Color.BLACK);
 		}
 		g.color(armed ? Color.BLACK : Color.DARK_GRAY);
-		g.gl.glLineStipple(4, (short) 0xAAAA);
-		g.gl.glEnable(GL2.GL_LINE_STIPPLE);
 		g.drawRoundedRect(0, 0, w, h, 5);
-		g.gl.glDisable(GL2.GL_LINE_STIPPLE);
 	}
 
 }

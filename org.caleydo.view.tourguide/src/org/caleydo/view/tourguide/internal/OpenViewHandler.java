@@ -19,11 +19,35 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.internal;
 
-import org.caleydo.core.gui.command.AOpenViewHandler;
+import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.internal.view.GLTourGuideView;
+import org.eclipse.core.commands.AbstractHandler;
+import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.handlers.HandlerUtil;
 
-public class OpenViewHandler extends AOpenViewHandler {
-	public OpenViewHandler() {
-		super(GLTourGuideView.VIEW_TYPE);
+public class OpenViewHandler extends AbstractHandler {
+
+	@Override
+	public final Object execute(ExecutionEvent event) throws ExecutionException {
+		showTourGuide(event);
+		return null;
+	}
+
+	private void showTourGuide(ExecutionEvent event) {
+		for (EDataDomainQueryMode mode : EDataDomainQueryMode.values())
+			showTourGuide(event, mode);
+	}
+
+	private void showTourGuide(ExecutionEvent event, EDataDomainQueryMode mode) {
+		try {
+			IWorkbenchPage activePage = HandlerUtil.getActiveWorkbenchWindow(event).getActivePage();
+			RcpGLTourGuideView v = (RcpGLTourGuideView) activePage.showView(GLTourGuideView.VIEW_TYPE, mode.name(),
+						IWorkbenchPage.VIEW_ACTIVATE);
+		} catch (PartInitException e) {
+			e.printStackTrace();
+		}
 	}
 }

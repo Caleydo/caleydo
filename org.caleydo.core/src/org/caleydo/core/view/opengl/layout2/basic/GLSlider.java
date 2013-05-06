@@ -23,8 +23,12 @@ import java.awt.Color;
 import java.util.Locale;
 
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
+import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.core.view.opengl.layout2.GLSandBox;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
+import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.picking.Pick;
 
 /**
@@ -57,6 +61,16 @@ public class GLSlider extends PickableGLElement {
 	private boolean hovered = false;
 	private boolean dragged = false;
 
+	/**
+	 * horizontal or vertical rendering
+	 */
+	private boolean isHorizontal = true;
+
+	/**
+	 * show the value or not
+	 */
+	private boolean isShowText = true;
+
 	public GLSlider() {
 
 	}
@@ -65,6 +79,38 @@ public class GLSlider extends PickableGLElement {
 		this.min = min;
 		this.max = max;
 		this.value = value;
+	}
+
+	/**
+	 * @return the isHorizontal, see {@link #isHorizontal}
+	 */
+	public boolean isHorizontal() {
+		return isHorizontal;
+	}
+
+	/**
+	 * @param isHorizontal
+	 *            setter, see {@link isHorizontal}
+	 */
+	public GLSlider setHorizontal(boolean isHorizontal) {
+		this.isHorizontal = isHorizontal;
+		return this;
+	}
+
+	/**
+	 * @return the isShowText, see {@link #isShowText}
+	 */
+	public boolean isShowText() {
+		return isShowText;
+	}
+
+	/**
+	 * @param isShowText
+	 *            setter, see {@link isShowText}
+	 */
+	public GLSlider setShowText(boolean isShowText) {
+		this.isShowText = isShowText;
+		return this;
 	}
 
 	/**
@@ -108,35 +154,51 @@ public class GLSlider extends PickableGLElement {
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
-		float x = mapValue(w);
 		if (hovered || dragged)
 			g.color(Color.GRAY);
 		else
 			g.color(Color.LIGHT_GRAY);
-		g.fillRect(x, 0, Math.min(BAR_WIDTH, w - x), h);
-		g.drawText(String.format(Locale.ENGLISH, "%.2f", value), 2, 2, w - 4, h - 8, VAlign.CENTER);
+		if (isHorizontal) {
+			float x = mapValue(w);
+			g.fillRect(x, 0, Math.min(BAR_WIDTH, w - x), h);
+			if (isShowText)
+				g.drawText(String.format(Locale.ENGLISH, "%.2f", value), 2, 2, w - 4, h - 8, VAlign.CENTER);
+		} else {
+			float y = mapValue(h);
+			g.fillRect(0, y, w, Math.min(BAR_WIDTH, h - y));
+			if (isShowText) {
+				g.save().gl.glRotatef(90, 0, 0, 1);
+				g.drawText(String.format(Locale.ENGLISH, "%.2f", value), 2, 2 - w, h - 4, w - 8, VAlign.CENTER);
+				g.restore();
+			}
+		}
 		g.color(Color.BLACK).drawRect(0, 0, w, h);
 	}
 
-	private float mapValue(float w) {
-		w -= BAR_WIDTH;
+	private float mapValue(float total) {
+		total -= BAR_WIDTH;
 		float range = max - min;
-		float factor = w / range;
+		float factor = total / range;
 		return value * factor;
 	}
 
-	private float unmapValue(float x) {
-		float w = getSize().x();
-		w -= BAR_WIDTH;
+	private float unmapValue(float v) {
+		float total = isHorizontal ? getSize().x() : getSize().y();
+		total -= BAR_WIDTH;
 		float range = max - min;
-		float factor = w / range;
-		return Math.max(min, Math.min(max, x / factor));
+		float factor = total / range;
+		return Math.max(min, Math.min(max, v / factor));
 	}
 
 	@Override
 	protected void renderPickImpl(GLGraphics g, float w, float h) {
-		float x = mapValue(w);
-		g.fillRect(x, 0, Math.min(5, w - x), h);
+		if (isHorizontal) {
+			float x = mapValue(w);
+			g.fillRect(x, 0, Math.min(BAR_WIDTH, w - x), h);
+		} else {
+			float y = mapValue(h);
+			g.fillRect(0, y, w, Math.min(BAR_WIDTH, h - y));
+		}
 	}
 
 	@Override
@@ -169,7 +231,13 @@ public class GLSlider extends PickableGLElement {
 	protected void onDragged(Pick pick) {
 		if (!pick.isDoDragging())
 			return;
-		setValue(unmapValue(mapValue(getSize().x()) + pick.getDx()));
+		float v;
+		if (isHorizontal) {
+			v = mapValue(getSize().x()) + pick.getDx();
+		} else {
+			v = mapValue(getSize().y()) + pick.getDy();
+		}
+		setValue(unmapValue(v));
 		repaintAll();
 	}
 
@@ -195,4 +263,12 @@ public class GLSlider extends PickableGLElement {
 
 		}
 	};
+
+	public static void main(String[] args) {
+		GLElementContainer c = new GLElementContainer(GLLayouts.flowHorizontal(2));
+		c.add(new GLElement());
+		c.add(new GLSlider(0, 1, 0.2f).setHorizontal(false).setSize(32, -1));
+		c.add(new GLElement());
+		GLSandBox.main(args, c);
+	}
 }

@@ -186,7 +186,14 @@ public class ScatterplotRenderUtils {
 		 * This enables the screen to be pickable
 		 * One TODO is to update this to be an own GL_ELEMENT 
 		 */
-		gl.glColor4f( (float) (200/255.0), (float) (200/255.0), (float) (200/255.0), 0.2f);
+		if (scatterplotElement.getDataSelectionConf().getVisSpaceType() == EVisualizationSpaceType.ITEMS_SPACE)
+		{
+			gl.glColor4f( (float) (252.0/255.0), (float) (254.0/255.0), (float) (187.0/255.0), 1.0f);			
+		}
+		else
+		{
+			gl.glColor4f( (float) (218.0/255.0), (float) (231.0/255.0), (float) (253.0/255.0), 1.0f);
+		}
 		
 		gl.glBegin(GL2.GL_QUADS);
 		
@@ -279,7 +286,14 @@ public class ScatterplotRenderUtils {
 		 * This enables the screen to be pickable
 		 * One TODO is to update this to be an own GL_ELEMENT 
 		 */
-		gl.glColor4f( (float) (200/255.0), (float) (200/255.0), (float) (200/255.0), 0.2f);
+		if (scatterplotElement.getDataSelectionConf().getVisSpaceType() == EVisualizationSpaceType.ITEMS_SPACE)
+		{
+			gl.glColor4f( (float) (252.0/255.0), (float) (254.0/255.0), (float) (187.0/255.0), 1.0f);			
+		}
+		else
+		{
+			gl.glColor4f( (float) (218.0/255.0), (float) (231.0/255.0), (float) (253.0/255.0), 1.0f);
+		}
 		
 		gl.glBegin(GL2.GL_QUADS);
 		

@@ -21,7 +21,6 @@ package org.caleydo.view.tourguide.internal.view.col;
 
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
-import org.caleydo.view.tourguide.internal.view.PerspectiveRow;
 import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.IntegerRankColumnModel;
 
@@ -32,13 +31,8 @@ import com.google.common.base.Function;
  *
  */
 public class SizeRankColumnModel extends IntegerRankColumnModel {
-	public SizeRankColumnModel() {
-		super(GLRenderers.drawText("Group Size", VAlign.CENTER), new Function<IRow, Integer>() {
-			@Override
-			public Integer apply(IRow in) {
-				return ((PerspectiveRow) in).size();
-			}
-		});
+	public SizeRankColumnModel(String label, Function<IRow, Integer> data) {
+		super(GLRenderers.drawText(label, VAlign.CENTER), data);
 	}
 
 	public SizeRankColumnModel(SizeRankColumnModel copy) {
@@ -49,4 +43,10 @@ public class SizeRankColumnModel extends IntegerRankColumnModel {
 	public SizeRankColumnModel clone() {
 		return new SizeRankColumnModel(this);
 	}
+
+	@Override
+	public int compare(IRow o1, IRow o2) {
+		return -super.compare(o1, o2);
+	}
+
 }

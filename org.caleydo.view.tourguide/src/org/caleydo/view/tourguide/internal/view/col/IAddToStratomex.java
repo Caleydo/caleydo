@@ -19,14 +19,14 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.internal.view.col;
 
-import org.caleydo.view.tourguide.internal.view.PerspectiveRow;
+import org.caleydo.view.tourguide.internal.model.AScoreRow;
 
 /**
  * @author Samuel Gratzl
  *
  */
 public interface IAddToStratomex {
-	boolean canAdd2Stratomex(PerspectiveRow r);
+	boolean canAdd2Stratomex(AScoreRow r);
 
-	void add2Stratomex(PerspectiveRow r);
+	void add2Stratomex(AScoreRow r);
 }

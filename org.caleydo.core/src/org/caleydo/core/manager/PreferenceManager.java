@@ -95,16 +95,6 @@ public class PreferenceManager {
 		catch (IOException e) {
 			initCaleydoFolder();
 		}
-
-		// System.setProperty("network.proxy_host", "proxy.kages.at");
-		// System.setProperty("network.proxy_port", "8080");
-
-		if (preferenceStore.getBoolean(PreferenceConstants.USE_PROXY)) {
-			System.setProperty("network.proxy_host",
-				preferenceStore.getString(PreferenceConstants.PROXY_SERVER));
-			System.setProperty("network.proxy_port",
-				preferenceStore.getString(PreferenceConstants.PROXY_PORT));
-		}
 	}
 
 	private void initializeDefaultPreferences() {
@@ -127,7 +117,6 @@ public class PreferenceManager {
 		store.setDefault(PreferenceConstants.VERSION, GeneralManager.VERSION);
 		store.setDefault(PreferenceConstants.LAST_CHOSEN_ORGANISM, Organism.HOMO_SAPIENS.name());
 		store.setDefault(PreferenceConstants.LAST_CHOSEN_PROJECT_MODE, "SAMPLE_PROJECT");
-		store.setDefault(PreferenceConstants.USE_PROXY, false);
 		store.setDefault(PreferenceConstants.BROWSER_QUERY_DATABASE, "GeneCards");
 
 		// visual links

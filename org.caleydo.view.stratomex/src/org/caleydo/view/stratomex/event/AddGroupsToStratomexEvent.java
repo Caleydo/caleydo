@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -26,11 +26,12 @@ import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
 import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
 import org.caleydo.view.stratomex.brick.configurer.NumericalDataConfigurer;
+import org.caleydo.view.stratomex.column.BrickColumn;
 
 /**
  * <p>
- * The {@link AddGroupsToStratomexEvent} is an event that signals to add one or
- * several {@link TablePerspective}s as DimensionGroups to {@link GLStratomex}.
+ * The {@link AddGroupsToStratomexEvent} is an event that signals to add one or several {@link TablePerspective}s as
+ * DimensionGroups to {@link GLStratomex}.
  * </p>
  * <p>
  * There are two ways to specify a group to be added:
@@ -39,18 +40,21 @@ import org.caleydo.view.stratomex.brick.configurer.NumericalDataConfigurer;
  * <li>by specifying exactly one {@link TablePerspective}</li>
  * </ol>
  * </p>
- * 
+ *
  * @author Alexander Lex
- * 
+ *
  */
 public class AddGroupsToStratomexEvent extends AddTablePerspectivesEvent {
 
 	/**
-	 * Optional member for determining a specialized data configurer that will
-	 * be used in stratomex. If not specified, stratomex will use the
-	 * {@link NumericalDataConfigurer}.
+	 * Optional member for determining a specialized data configurer that will be used in stratomex. If not specified,
+	 * stratomex will use the {@link NumericalDataConfigurer}.
 	 */
 	private IBrickConfigurer dataConfigurer;
+	/**
+	 * The column that was used to create the table perspective for the new column to be added.
+	 */
+	private BrickColumn sourceColumn;
 
 	public AddGroupsToStratomexEvent() {
 	}
@@ -63,9 +67,8 @@ public class AddGroupsToStratomexEvent extends AddTablePerspectivesEvent {
 	}
 
 	/**
-	 * Add a list of data containers, creating multiple dimension groups at the
-	 * same time
-	 * 
+	 * Add a list of data containers, creating multiple dimension groups at the same time
+	 *
 	 * @param tablePerspectives
 	 */
 	public AddGroupsToStratomexEvent(List<TablePerspective> tablePerspectives) {
@@ -85,5 +88,20 @@ public class AddGroupsToStratomexEvent extends AddTablePerspectivesEvent {
 	 */
 	public IBrickConfigurer getDataConfigurer() {
 		return dataConfigurer;
+	}
+
+	/**
+	 * @param sourceColumn
+	 *            setter, see {@link sourceColumn}
+	 */
+	public void setSourceColumn(BrickColumn sourceColumn) {
+		this.sourceColumn = sourceColumn;
+	}
+
+	/**
+	 * @return the sourceColumn, see {@link #sourceColumn}
+	 */
+	public BrickColumn getSourceColumn() {
+		return sourceColumn;
 	}
 }

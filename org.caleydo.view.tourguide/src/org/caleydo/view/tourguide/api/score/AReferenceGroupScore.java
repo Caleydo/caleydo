@@ -25,6 +25,8 @@ import java.util.Objects;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.color.Colors;
+import org.caleydo.view.tourguide.api.compute.ComputeElement;
+import org.caleydo.view.tourguide.spi.algorithm.IComputeElement;
 import org.caleydo.view.tourguide.spi.score.IGroupScore;
 
 /**
@@ -45,7 +47,7 @@ public abstract class AReferenceGroupScore extends AComputedGroupScore implement
 	}
 
 	@Override
-	public boolean contains(Perspective perspective, Group elem) {
+	public boolean contains(IComputeElement perspective, Group elem) {
 		if (super.contains(perspective, elem))
 			return true;
 		if (Objects.equals(perspective, stratification))
@@ -64,6 +66,11 @@ public abstract class AReferenceGroupScore extends AComputedGroupScore implement
 	@Override
 	public Perspective getStratification() {
 		return stratification;
+	}
+
+	@Override
+	public IComputeElement asComputeElement() {
+		return new ComputeElement(stratification);
 	}
 
 	/**

@@ -98,10 +98,11 @@ public final class TablePerspectiveSelectionMixin {
 			return;
 		IDCategory idCategory = event.getIdCategory();
 		ATableBasedDataDomain dataDomain = getDataDomain();
-		if (idCategory == dataDomain.getRecordIDCategory()) {
+		if (idCategory == dataDomain.getRecordIDCategory() || idCategory == null) { // me or all
 			recordSelectionManager.executeSelectionCommand(event.getSelectionCommand());
 			callback.onSelectionUpdate(recordSelectionManager);
-		} else if (idCategory == dataDomain.getDimensionIDCategory()) {
+		}
+		if (idCategory == dataDomain.getDimensionIDCategory() || idCategory == null) { // me or all
 			dimensionSelectionManager.executeSelectionCommand(event.getSelectionCommand());
 			callback.onSelectionUpdate(dimensionSelectionManager);
 		}

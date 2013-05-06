@@ -42,7 +42,6 @@ import org.caleydo.view.tourguide.spi.score.IScore;
 import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -91,7 +90,7 @@ public class AdjustedRandScoreFactory implements IScoreFactory {
 
 	@Override
 	public boolean supports(EDataDomainQueryMode mode) {
-		return mode == EDataDomainQueryMode.TABLE_BASED;
+		return mode == EDataDomainQueryMode.STRATIFICATIONS;
 	}
 
 	@Override
@@ -99,7 +98,7 @@ public class AdjustedRandScoreFactory implements IScoreFactory {
 		return new CreateAdjustedRandScoreDialog(shell, receiver);
 	}
 
-	class CreateAdjustedRandScoreDialog extends TitleAreaDialog {
+	class CreateAdjustedRandScoreDialog extends Dialog {
 
 		private final Object receiver;
 
@@ -115,7 +114,7 @@ public class AdjustedRandScoreFactory implements IScoreFactory {
 		@Override
 		public void create() {
 			super.create();
-			this.setTitle("Create a new Adjusted Rand Index Score");
+			this.getShell().setText("Create a new Adjusted Rand Index Score");
 			this.setBlockOnOpen(false);
 		}
 
@@ -134,7 +133,7 @@ public class AdjustedRandScoreFactory implements IScoreFactory {
 			this.dataDomainUI.setContentProvider(ArrayContentProvider.getInstance());
 			this.dataDomainUI.setLabelProvider(new CaleydoLabelProvider());
 			this.dataDomainUI.getCombo().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
-			this.dataDomainUI.setInput(EDataDomainQueryMode.TABLE_BASED.getAllDataDomains());
+			this.dataDomainUI.setInput(EDataDomainQueryMode.STRATIFICATIONS.getAllDataDomains());
 			this.dataDomainUI.addSelectionChangedListener(new ISelectionChangedListener() {
 				@Override
 				public void selectionChanged(SelectionChangedEvent event) {

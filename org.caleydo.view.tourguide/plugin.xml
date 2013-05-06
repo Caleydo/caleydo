@@ -2,7 +2,6 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension-point id="org.caleydo.tourguide.scorefactory" name="ScoreFactory" schema="schema/org.caleydo.tourguide.scorefactory.exsd"/>
-   <extension-point id="org.caleydo.tourguide.metricfactory" name="Metric Factory" schema="schema/org.caleydo.tourguide.metricfactory.exsd"/>
    <extension
          point="org.eclipse.ui.views">
       <view
@@ -22,21 +21,12 @@
                id="org.caleydo.menu.view"
                label="View">
             <menu
-                  id="org.caleydo.menu.view.experimental"
-                  label="Experimental">
+                  id="org.caleydo.menu.view.tool"
+                  label="Tools">
                <command
                      commandId="org.caleydo.view.tourguide.command.open"
                      icon="resources/icons/icon.png"
                      style="push">
-                  <visibleWhen
-                        checkEnabled="false">
-                     <with
-                           variable="org.caleydo.core.isReleaseState">
-                        <equals
-                              value="releaseVersion">
-                        </equals>
-                     </with>
-                  </visibleWhen>
                </command>
             </menu>
          </menu>
@@ -76,12 +66,22 @@
             class="org.caleydo.view.tourguide.impl.GeneSetEnrichmentScoreFactory"
             name="Gene Set Enrichment Analysis">
       </factory>
-   </extension>
-   <extension
-         point="org.caleydo.tourguide.metricfactory">
       <factory
             class="org.caleydo.view.tourguide.impl.LogRankMetricFactory"
             name="Log Rank Score">
       </factory>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="org.caleydo.core.gui.perspective">
+         <view
+               id="org.caleydo.view.tool.tourguide"
+               minimized="false"
+               relationship="stack"
+               relative="bottom"
+               visible="false">
+         </view>
+      </perspectiveExtension>
    </extension>
 </plugin>

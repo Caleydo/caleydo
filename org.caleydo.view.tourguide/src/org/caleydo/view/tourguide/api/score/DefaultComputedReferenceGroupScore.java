@@ -48,7 +48,7 @@ public class DefaultComputedReferenceGroupScore extends AReferenceGroupScore imp
 
 	@Override
 	public boolean supports(EDataDomainQueryMode mode) {
-		return mode == EDataDomainQueryMode.TABLE_BASED;
+		return mode == EDataDomainQueryMode.STRATIFICATIONS;
 	}
 
 	@Override

@@ -22,10 +22,10 @@ import java.util.List;
 import java.util.Set;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.statistics.Statistics;
+import org.caleydo.view.tourguide.spi.algorithm.IComputeElement;
 import org.caleydo.view.tourguide.spi.algorithm.IGroupAlgorithm;
 
 /**
@@ -56,7 +56,7 @@ public class LogRank implements IGroupAlgorithm {
 	}
 
 	@Override
-	public IDType getTargetType(Perspective a, Perspective b) {
+	public IDType getTargetType(IComputeElement a, IComputeElement b) {
 		return clinical.getRecordIDType();
 	}
 
@@ -90,12 +90,12 @@ public class LogRank implements IGroupAlgorithm {
 		int survived = 0;
 		List<Float> r = new ArrayList<>();
 		for (Integer row : a) {
-			Float v = clinical.getTable().getRaw(col, row);
-			if (v == null || v.isNaN()) {
+			Number v = clinical.getTable().getRaw(col, row);
+			if (v == null || Float.isNaN(v.floatValue())) {
 				survived++;
 				continue;
 			}
-			r.add(v);
+			r.add(v.floatValue());
 		}
 		Collections.sort(r);
 		return Pair.make(r, survived);

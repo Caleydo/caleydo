@@ -26,11 +26,10 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.view.tourguide.api.score.ISerializeableScore;
 import org.caleydo.view.tourguide.internal.external.GroupLabelParseSpecification;
-import org.caleydo.view.tourguide.internal.view.PerspectiveRow;
-import org.caleydo.vis.rank.model.IRow;
+import org.caleydo.view.tourguide.spi.algorithm.IComputeElement;
 
 import com.google.common.base.Objects;
 
@@ -55,20 +54,14 @@ public final class ExternalGroupLabelScore extends AExternalScore implements ISe
 		this.perspectiveKey = spec.getPerspectiveKey();
 		this.scores.putAll(scores);
 	}
-	
+
 	@Override
-	public float applyPrimitive(IRow eleme) {
-		PerspectiveRow elem = (PerspectiveRow) eleme;
-		if (elem.getGroup() == null)
+	public final float apply(IComputeElement elem, Group g) {
+		if (g == null)
 			return Float.NaN;
-
-		TablePerspective strat = elem.getPerspective();
-
-		if (!perspectiveKey.equals(strat.getDimensionPerspective().getPerspectiveID())
-				&& !perspectiveKey.equals(strat.getRecordPerspective().getPerspectiveID()))
+		if (!perspectiveKey.equals(elem.getPersistentID()))
 			return Float.NaN;
-
-		Float v = this.scores.get(elem.getGroup().getLabel());
+		Float v = this.scores.get(g.getLabel());
 		if (v == null)
 			return Float.NaN;
 		return v.floatValue();

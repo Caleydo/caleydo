@@ -40,9 +40,9 @@ import org.caleydo.core.util.color.mapping.UpdateColorMappingEvent;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.contextmenu.item.BookmarkMenuItem;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
-import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
+import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
@@ -55,7 +55,8 @@ import org.caleydo.view.heatmap.v2.spacing.UniformRecordSpacingCalculator;
 import com.google.common.base.Preconditions;
 import com.jogamp.common.util.IntIntHashMap;
 
-public class HeatMapElement extends GLElement implements TablePerspectiveSelectionMixin.ITablePerspectiveMixinCallback {
+public class HeatMapElement extends PickableGLElement implements
+		TablePerspectiveSelectionMixin.ITablePerspectiveMixinCallback {
 	/** hide elements with the state {@link #SELECTION_HIDDEN} if this is true */
 	private boolean hideElements = true;
 
@@ -253,12 +254,13 @@ public class HeatMapElement extends GLElement implements TablePerspectiveSelecti
 			float fieldHeight = recordSpacing.getFieldHeight(recordID);
 
 			float x = 0;
+			if (doPicking)
+				g.pushName(recordPickingIds.get(recordID));
+
 			for (Integer dimensionID : dimensionVA) {
 				if (doPicking) {
 					g.pushName(dimensionPickingIds.get(dimensionID));
-					g.pushName(recordPickingIds.get(recordID));
 					g.fillRect(x, y, fieldWidth, fieldHeight);
-					g.popName();
 					g.popName();
 				} else {
 					boolean deSelected = isDeselected(recordID);
@@ -267,6 +269,8 @@ public class HeatMapElement extends GLElement implements TablePerspectiveSelecti
 				}
 				x += fieldWidth;
 			}
+			if (doPicking)
+				g.popName();
 		}
 
 		g.incZ();
@@ -278,7 +282,17 @@ public class HeatMapElement extends GLElement implements TablePerspectiveSelecti
 	@Override
 	protected void renderPickImpl(GLGraphics g, float w, float h) {
 		// ensureEnoughPickingIds();
+		super.renderPickImpl(g, w, h);
+		g.incZ();
 		render(g, w, h, true);
+		g.decZ();
+	}
+
+	@Override
+	protected void onMouseOut(Pick pick) {
+		// clear all hovered elements
+		createSelection(mixin.getDimensionSelectionManager(), SelectionType.MOUSE_OVER, -1);
+		createSelection(mixin.getRecordSelectionManager(), SelectionType.MOUSE_OVER, -1);
 	}
 
 	private boolean isHidden(Integer recordID) {
@@ -381,7 +395,8 @@ public class HeatMapElement extends GLElement implements TablePerspectiveSelecti
 
 		// TODO: Integrate multi spotting support again
 
-		manager.addToType(selectionType, recordID);
+		if (recordID >= 0)
+			manager.addToType(selectionType, recordID);
 
 		mixin.fireSelectionDelta(manager.getIDType());
 		relayout();

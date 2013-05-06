@@ -102,6 +102,10 @@ public class CompositeTextRenderer implements ITextRenderer {
 		return this.pool.get(select);
 	}
 
+	@Override
+	public boolean isOriginTopLeft() {
+		return false;
+	}
 
 
 }

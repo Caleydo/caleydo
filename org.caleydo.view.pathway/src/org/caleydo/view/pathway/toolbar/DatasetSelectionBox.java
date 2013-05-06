@@ -22,9 +22,7 @@ import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.view.ViewManager;
 import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
-import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.pathway.listener.PathwayMappingEvent;
 import org.caleydo.view.pathway.GLPathway;
@@ -42,8 +40,7 @@ import org.eclipse.swt.widgets.Control;
  *
  * @author Alexander Lex
  */
-public class DatasetSelectionBox
- extends ControlContribution {
+public class DatasetSelectionBox extends ControlContribution {
 
 	public static final int TOOLBAR_WIDTH = 300;
 
@@ -51,13 +48,16 @@ public class DatasetSelectionBox
 
 	private IDataDomain mappingDataDomain;
 
+	private final GLPathway pathwayView;
+
 	/**
 	 * constructor as requested by ControlContribution
 	 *
 	 */
-	public DatasetSelectionBox(IDataDomain mappingDataDomain) {
+	public DatasetSelectionBox(IDataDomain mappingDataDomain, GLPathway pathwayView) {
 		super("Select Data");
 		this.mappingDataDomain = mappingDataDomain;
+		this.pathwayView = pathwayView;
 	}
 
 	@Override
@@ -91,34 +91,34 @@ public class DatasetSelectionBox
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				for (AGLView view : ViewManager.get().getAllGLViews()) {
-					if (view instanceof GLPathway) {
-						GLPathway pwView = (GLPathway) view;
-						AddTablePerspectivesEvent addTablePerspectivesEvent = new AddTablePerspectivesEvent();
-						addTablePerspectivesEvent.setReceiver(pwView);
-						TablePerspective tablePerspective = null;
-						if (dataSetChooser.getSelectionIndex() != 0) {
-							GeneticDataDomain dataDomain = candidateDataDomains.get(dataSetChooser.getSelectionIndex() - 1);
-							addTablePerspectivesEvent.setEventSpace(dataDomain.getDataDomainID());
-							tablePerspective = dataDomain.getDefaultTablePerspective();
-							tablePerspective.setPrivate(false);
+				// for (AGLView view : ViewManager.get().getAllGLViews()) {
+				// if (view instanceof GLPathway) {
+				// GLPathway pwView = (GLPathway) view;
+				AddTablePerspectivesEvent addTablePerspectivesEvent = new AddTablePerspectivesEvent();
+				addTablePerspectivesEvent.setReceiver(pathwayView);
+				TablePerspective tablePerspective = null;
+				if (dataSetChooser.getSelectionIndex() != 0) {
+					GeneticDataDomain dataDomain = candidateDataDomains.get(dataSetChooser.getSelectionIndex() - 1);
+					addTablePerspectivesEvent.setEventSpace(dataDomain.getDataDomainID());
+					tablePerspective = dataDomain.getDefaultTablePerspective();
+					tablePerspective.setPrivate(false);
 
-							addTablePerspectivesEvent.addTablePerspective(tablePerspective);
-							GeneralManager.get().getEventPublisher().triggerEvent(addTablePerspectivesEvent);
-							PathwayMappingEvent event = new PathwayMappingEvent(tablePerspective);
-							event.setSender(this);
-							GeneralManager.get().getEventPublisher().triggerEvent(event);
+					addTablePerspectivesEvent.addTablePerspective(tablePerspective);
+					GeneralManager.get().getEventPublisher().triggerEvent(addTablePerspectivesEvent);
+					PathwayMappingEvent event = new PathwayMappingEvent(tablePerspective);
+					event.setSender(this);
+					event.to(pathwayView);
+					GeneralManager.get().getEventPublisher().triggerEvent(event);
 
-						}
-						else {
-							PathwayMappingEvent event = new PathwayMappingEvent();
-							event.setSender(this);
-							GeneralManager.get().getEventPublisher().triggerEvent(event);
-						}
-
-					}
+				} else {
+					PathwayMappingEvent event = new PathwayMappingEvent();
+					event.setSender(this);
+					GeneralManager.get().getEventPublisher().triggerEvent(event);
 				}
+
 			}
+			// }
+			// }
 		});
 
 		return dataSetChooser;

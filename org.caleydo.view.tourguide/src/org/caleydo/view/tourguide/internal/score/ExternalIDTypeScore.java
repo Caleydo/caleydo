@@ -22,7 +22,6 @@ package org.caleydo.view.tourguide.internal.score;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
@@ -33,9 +32,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.perspective.variable.Perspective;
-import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
@@ -45,8 +41,7 @@ import org.caleydo.core.util.logging.Logger;
 import org.caleydo.view.tourguide.api.score.ECombinedOperator;
 import org.caleydo.view.tourguide.internal.external.ScoreParseSpecification;
 import org.caleydo.view.tourguide.internal.serialize.IDTypeAdapter;
-import org.caleydo.view.tourguide.internal.view.PerspectiveRow;
-import org.caleydo.vis.rank.model.IRow;
+import org.caleydo.view.tourguide.spi.algorithm.IComputeElement;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
@@ -102,42 +97,17 @@ public final class ExternalIDTypeScore extends AExternalScore {
 	}
 
 	@Override
-	public float applyPrimitive(IRow eleme) {
-		PerspectiveRow elem = (PerspectiveRow) eleme;
-		TablePerspective strat = elem.getPerspective();
-		Iterator<Integer> it;
-		IDType target;
-
-		final Perspective recordPerspective = strat.getRecordPerspective();
-		final Perspective dimensionPerspective = strat.getDimensionPerspective();
-
-
-		if (isCompatible(dimensionPerspective.getIdType())) {
-			target = dimensionPerspective.getIdType();
-			VirtualArray va = dimensionPerspective.getVirtualArray();
-			//if we have a group and the group reduces my virtual array use it
-			if (isMyGroup(elem.getGroup(), dimensionPerspective))
-				it = va.getIDsOfGroup(elem.getGroup().getGroupIndex()).iterator();
-			else
-				it = va.iterator();
-		} else if (isCompatible(recordPerspective.getIdType())) {
-			target = recordPerspective.getIdType();
-			VirtualArray va = recordPerspective.getVirtualArray();
-			// if we have a group and the group reduces my virtual array use it
-			if (isMyGroup(elem.getGroup(), recordPerspective))
-				it = va.getIDsOfGroup(elem.getGroup().getGroupIndex()).iterator();
-			else
-				it = va.iterator();
-		} else {
-			// can't map to either dimension
+	public float apply(IComputeElement elem, Group g) {
+		if (!isCompatible(elem.getIdType())) {
+			// can't map
 			return Float.NaN;
 		}
+		final IDType target = elem.getIdType();
 
 		Collection<Float> scores = new ArrayList<>();
-
 		try {
-			while (it.hasNext()) {
-				Optional<Integer> my = mapping.get(Pair.make(target, it.next()));
+			for (Integer id : elem.of(g)) {
+				Optional<Integer> my = mapping.get(Pair.make(target, id));
 				if (!my.isPresent())
 					continue;
 				Float s = this.scores.get(my.get());
@@ -153,21 +123,6 @@ public final class ExternalIDTypeScore extends AExternalScore {
 		if (scores.size() == 1)
 			return scores.iterator().next().floatValue();
 		return operator.combine(Floats.toArray(scores));
-	}
-
-	/**
-	 * @param group
-	 * @param dimensionPerspective
-	 * @return
-	 */
-	private static boolean isMyGroup(Group group, Perspective perspective) {
-		if (group == null)
-			return false;
-		for (Group g : perspective.getVirtualArray().getGroupList())
-			if (g.equals(group))
-				return true;
-		return false;
-		// return group.getPerspectiveID().equals(perspective.getPerspectiveID());
 	}
 
 	@Override
