@@ -19,14 +19,11 @@
  *******************************************************************************/
 package org.caleydo.core.gui.menu;
 
-import org.caleydo.core.event.view.browser.ChangeURLEvent;
-import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.util.system.BrowserUtils;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.handlers.HandlerUtil;
 
 public abstract class ABrowserContentsHandler extends AbstractHandler implements IHandler {
 	private final String url;
@@ -37,16 +34,8 @@ public abstract class ABrowserContentsHandler extends AbstractHandler implements
 
 	@Override
 	public final Object execute(ExecutionEvent event) throws ExecutionException {
-		try {
-			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().showView("org.caleydo.view.browser");
-		} catch (PartInitException e) {
-			e.printStackTrace();
-		}
 
-		ChangeURLEvent changeURLEvent = new ChangeURLEvent();
-		changeURLEvent.setSender(this);
-		changeURLEvent.setUrl(url);
-		GeneralManager.get().getEventPublisher().triggerEvent(changeURLEvent);
+		BrowserUtils.openURL(url);
 
 		return null;
 	}

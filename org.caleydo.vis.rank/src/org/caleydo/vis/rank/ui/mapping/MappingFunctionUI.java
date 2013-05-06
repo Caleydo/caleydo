@@ -128,7 +128,7 @@ public class MappingFunctionUI extends GLElementContainer implements GLButton.IS
 		buttons.addSpacer();
 		GLButton b = new GLButton();
 		b.setRenderer(GLRenderers.fillImage(RenderStyle.ICON_MAPPING_RESET));
-		b.setTooltip("Reset mapping function, to it's default value");
+		b.setTooltip("Reset mapping function, to its default value");
 		b.setCallback(this);
 		b.setPickingObjectId(-1);
 		b.setSize(RenderStyle.BUTTON_WIDTH, Float.NaN);

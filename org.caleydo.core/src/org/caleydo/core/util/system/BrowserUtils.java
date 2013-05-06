@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,48 +8,36 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.event.view.browser;
+package org.caleydo.core.util.system;
 
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
+import java.net.MalformedURLException;
+import java.net.URL;
 
-import org.caleydo.core.event.AEvent;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 
 /**
  * Events that signals browser-views to load a new URL.
- * 
+ *
  * @author Marc Streit
  */
-@XmlRootElement
-@XmlType
-public class ChangeURLEvent
-	extends AEvent {
+public class BrowserUtils {
 
-	/** the new URL to load by the browser */
-	String url;
+	public static void openURL(String url) {
 
-	public String getUrl() {
-		return url;
+		try {
+			PlatformUI.getWorkbench().getBrowserSupport().getExternalBrowser().openURL(new URL(url));
+		} catch (PartInitException | MalformedURLException e) {
+			e.printStackTrace();
+		}
 	}
-
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
-	@Override
-	public boolean checkIntegrity() {
-		if (url == null)
-			throw new NullPointerException("url was null");
-		return true;
-	}
-
 }

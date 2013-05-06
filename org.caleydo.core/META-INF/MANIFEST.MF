@@ -116,7 +116,6 @@ Export-Package:
    org.caleydo.core.id,
    org.caleydo.core.data.selection.delta,
    org.caleydo.core.data.selection",
- org.caleydo.core.event.view.browser;uses:="org.caleydo.core.event",
  org.caleydo.core.event.view.keyboard;uses:="org.caleydo.core.event,org.eclipse.swt.events",
  org.caleydo.core.gui;uses:="org.caleydo.core.manager,org.eclipse.core.commands,org.eclipse.swt.widgets",
  org.caleydo.core.gui.command,

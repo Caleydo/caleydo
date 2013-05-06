@@ -73,10 +73,6 @@ public class PreferenceConstants {
 	public static final String VISUAL_LINKS_FOR_MOUSE_OVER = "visualLinksForMouseOver";
 	public static final String VISUAL_LINKS_FOR_SELECTIONS = "visualLinksForSelections";
 
-	public static final String USE_PROXY = "useProxy";
-	public static final String PROXY_SERVER = "proxyServer";
-	public static final String PROXY_PORT = "proxyPort";
-
 	public static final String DATA_FILTER_LEVEL = "dataFilterLevel";
 
 	public static final String PERFORMANCE_LEVEL = "performanceLevel";
