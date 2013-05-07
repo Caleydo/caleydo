@@ -35,6 +35,7 @@ import org.caleydo.core.data.collection.table.TableUtils;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
+import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
 import org.caleydo.core.data.selection.IEventBasedSelectionManagerUser;
 import org.caleydo.core.data.selection.SelectionManager;
@@ -377,7 +378,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	}
 
-	private void selectElementsByGroup() {
+	private void selectElementsByGroup(boolean select) {
 
 		// Select all elements in group with special type
 
@@ -396,8 +397,11 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 		VirtualArray va = tablePerspective.getRecordPerspective().getVirtualArray();
 
 		for (Integer recordID : va) {
-			recordSelectionManager.addToType(selectedByGroupSelectionType, va.getIdType(), recordID);// va.getIdType(),
-																										// recordID);
+			if (select) {
+				recordSelectionManager.addToType(selectedByGroupSelectionType, va.getIdType(), recordID);// va.getIdType(),
+			} else {
+				recordSelectionManager.removeFromType(selectedByGroupSelectionType, va.getIdType(), recordID);
+			} // recordID);
 		}
 
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
@@ -817,11 +821,18 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 					tablePerspectiveSelectionManager.clearSelection(currentSelectionType);
 					// System.out.println("clear");
 				}
-
-				tablePerspectiveSelectionManager.addToType(currentSelectionType, tablePerspective.getID());
+				boolean select = true;
+				if (tablePerspectiveSelectionManager.checkStatus(tablePerspectiveSelectionManager.getSelectionType(),
+						tablePerspective.getID())) {
+					tablePerspectiveSelectionManager.removeFromType(currentSelectionType, tablePerspective.getID());
+					brickLayoutConfiguration.setSelected(false);
+					select = false;
+				} else {
+					tablePerspectiveSelectionManager.addToType(currentSelectionType, tablePerspective.getID());
+					brickLayoutConfiguration.setSelected(true);
+				}
 				tablePerspectiveSelectionManager.triggerSelectionUpdateEvent();
 
-				brickLayoutConfiguration.setSelected(true);
 				layoutManager.updateLayout();
 
 				// SelectionUpdateEvent event = new SelectionUpdateEvent();
@@ -836,8 +847,14 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 					if (!stratomex.getKeyListener().isCtrlDown())
 						recordGroupSelectionManager.clearSelection(currentRecordGroupSelectionType);
 
-					recordGroupSelectionManager.addToType(currentRecordGroupSelectionType, tablePerspective
-							.getRecordGroup().getID());
+					if (recordGroupSelectionManager.checkStatus(recordGroupSelectionManager.getSelectionType(),
+							tablePerspective.getRecordGroup().getID())) {
+						recordGroupSelectionManager.removeFromType(currentRecordGroupSelectionType, tablePerspective
+								.getRecordGroup().getID());
+					} else {
+						recordGroupSelectionManager.addToType(currentRecordGroupSelectionType, tablePerspective
+								.getRecordGroup().getID());
+					}
 					recordGroupSelectionManager.triggerSelectionUpdateEvent();
 
 					// event = new SelectionUpdateEvent();
@@ -848,7 +865,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 					// GeneralManager.get().getEventPublisher().triggerEvent(event);
 				}
 
-				selectElementsByGroup();
+				selectElementsByGroup(select);
 
 				if (!isHeaderBrick && !(brickLayoutConfiguration instanceof DetailBrickLayoutTemplate)) {
 					Point point = pick.getPickedPoint();
@@ -872,6 +889,17 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 				contextMenuCreator.addContextMenuItem(new RenameBrickItem(getID()));
 				contextMenuCreator.addContextMenuItem(new RemoveColumnItem(stratomex, getBrickColumn()
 						.getTablePerspective()));
+				// Set<Integer> tablePerspectiveIDs = tablePerspectiveSelectionManager
+				// .getElements(tablePerspectiveSelectionManager.getSelectionType());
+				// only consider tableperspective of currently selected bricks of the same column
+				// Set<TablePerspective> tablePerspectives = new LinkedHashSet<>();
+				// for (GLBrick brick : brickColumn.getBricks()) {
+				// for (Integer id : tablePerspectiveIDs) {
+				// if(brick.getTablePerspective().getID() == id || brick == GLBrick.this) {
+				// tablePerspectives.add(brick.getTablePerspective());
+				// }
+				// }
+				// }
 				contextMenuCreator.addContextMenuItem(new ExportBrickDataItem(GLBrick.this, false));
 				contextMenuCreator.addContextMenuItem(new ExportBrickDataItem(GLBrick.this, true));
 
@@ -1368,8 +1396,16 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 					if (exportIdentifiersOnly) {
 						Perspective dimensionPerspective = new Perspective();
 						dimensionPerspective.setVirtualArray(new VirtualArray(dataDomain.getDimensionIDType()));
-						TableUtils.export(dataDomain, fileName, tablePerspective.getRecordPerspective(),
-								dimensionPerspective, null, null, false);
+						Perspective recordPerspective = new Perspective(dataDomain, dataDomain.getRecordIDType());
+						PerspectiveInitializationData recordPerspectiveInitData = new PerspectiveInitializationData();
+						List<Integer> allIDs = new ArrayList<>(tablePerspective.getRecordPerspective()
+								.getVirtualArray().getIDs());
+						recordPerspectiveInitData.setData(allIDs);
+						recordPerspective.init(recordPerspectiveInitData);
+						TableUtils.export(dataDomain, fileName, recordPerspective, dimensionPerspective, null, null,
+								false);
+						// TableUtils.export(dataDomain, fileName, tablePerspective.getRecordPerspective(),
+						// dimensionPerspective, null, null, false);
 					} else {
 						TableUtils.export(dataDomain, fileName, tablePerspective.getRecordPerspective(),
 								tablePerspective.getDimensionPerspective(), null, null, false);

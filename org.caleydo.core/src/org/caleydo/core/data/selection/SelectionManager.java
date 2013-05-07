@@ -311,6 +311,40 @@ public class SelectionManager implements IListenerOwner, Cloneable {
 	}
 
 	/**
+	 * Same as {@link #removeFromType(SelectionType, int)} with an additional parameter sourceIDType that is used for
+	 * conversion of IDs if necessary
+	 * 
+	 * @param targetType
+	 * @param sourceIDType
+	 * @param elementID
+	 */
+	public synchronized void removeFromType(SelectionType targetType, IDType sourceIDType, int id) {
+		if (sourceIDType.equals(idType)) {
+			removeFromType(targetType, id);
+		} else {
+			Set<Integer> convertedIDs = idMappingManager.getIDAsSet(sourceIDType, idType, id);
+			if (convertedIDs != null)
+				removeFromType(targetType, convertedIDs);
+		}
+	}
+
+	/**
+	 * Same as {@link #removeFromType(SelectionType, int)} but for a list
+	 * 
+	 * @param targetType
+	 *            the selection type the element should be added to
+	 * @param idCollection
+	 *            collection of element ids
+	 * @throws IllegalArgumentException
+	 *             if the element is not in the selection manager
+	 */
+	public synchronized void removeFromType(SelectionType targetType, Collection<Integer> idCollection) {
+		for (int value : idCollection) {
+			removeFromType(targetType, value);
+		}
+	}
+
+	/**
 	 * Same as {@link #addToType(SelectionType, IDType, int)} but for a collection of ids)
 	 *
 	 * @param targetType
