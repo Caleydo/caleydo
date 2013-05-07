@@ -35,6 +35,8 @@ import org.caleydo.core.data.collection.table.TableUtils;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
+import org.caleydo.core.data.selection.EventBasedSelectionManager;
+import org.caleydo.core.data.selection.IEventBasedSelectionManagerUser;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
@@ -125,7 +127,7 @@ import org.eclipse.ui.PlatformUI;
  *
  */
 public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, ILayoutedElement, IDraggable,
-		IMultiFormChangeListener {
+		IMultiFormChangeListener, IEventBasedSelectionManagerUser {
 
 	public static String VIEW_TYPE = "org.caleydo.view.brick";
 	public static String VIEW_NAME = "Brick";
@@ -246,8 +248,8 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	private BrickColumn brickColumn;
 
-	private SelectionManager tablePerspectiveSelectionManager;
-	private SelectionManager recordGroupSelectionManager;
+	private EventBasedSelectionManager tablePerspectiveSelectionManager;
+	private EventBasedSelectionManager recordGroupSelectionManager;
 
 	private boolean isInOverviewMode = false;
 	private float previousXCoordinate = Float.NaN;
@@ -294,8 +296,11 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 	@Override
 	public void initialize() {
 		super.initialize();
-		tablePerspectiveSelectionManager = new SelectionManager(TablePerspective.DATA_CONTAINER_IDTYPE);
-		recordGroupSelectionManager = dataDomain.cloneRecordGroupSelectionManager().clone();
+		tablePerspectiveSelectionManager = new EventBasedSelectionManager(this, TablePerspective.DATA_CONTAINER_IDTYPE);
+		tablePerspectiveSelectionManager.registerEventListeners();
+		recordGroupSelectionManager = new EventBasedSelectionManager(this, dataDomain.getRecordGroupIDType());
+		recordGroupSelectionManager.registerEventListeners();
+		// dataDomain.cloneRecordGroupSelectionManager().clone();
 
 		if (brickLayoutConfiguration == null) {
 			brickLayoutConfiguration = new DefaultBrickLayoutTemplate(this, brickColumn, stratomex);
@@ -774,6 +779,8 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 			renameListener = null;
 		}
 
+		tablePerspectiveSelectionManager.unregisterEventListeners();
+		recordGroupSelectionManager.unregisterEventListeners();
 		// if (brickLayout.getViewRenderer() instanceof IMouseWheelHandler) {
 		// visBricks
 		// .unregisterRemoteViewMouseWheelListener((IMouseWheelHandler)
@@ -806,30 +813,39 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 			public void clicked(Pick pick) {
 
 				SelectionType currentSelectionType = tablePerspectiveSelectionManager.getSelectionType();
-				tablePerspectiveSelectionManager.clearSelection(currentSelectionType);
+				if (!stratomex.getKeyListener().isCtrlDown()) {
+					tablePerspectiveSelectionManager.clearSelection(currentSelectionType);
+					// System.out.println("clear");
+				}
 
 				tablePerspectiveSelectionManager.addToType(currentSelectionType, tablePerspective.getID());
+				tablePerspectiveSelectionManager.triggerSelectionUpdateEvent();
 
-				SelectionUpdateEvent event = new SelectionUpdateEvent();
-				event.setEventSpace(getDataDomain().getDataDomainID());
-				event.setSender(this);
-				SelectionDelta delta = tablePerspectiveSelectionManager.getDelta();
-				event.setSelectionDelta(delta);
-				GeneralManager.get().getEventPublisher().triggerEvent(event);
+				brickLayoutConfiguration.setSelected(true);
+				layoutManager.updateLayout();
+
+				// SelectionUpdateEvent event = new SelectionUpdateEvent();
+				// event.setEventSpace(getDataDomain().getDataDomainID());
+				// event.setSender(this);
+				// SelectionDelta delta = tablePerspectiveSelectionManager.getDelta();
+				// event.setSelectionDelta(delta);
+				// GeneralManager.get().getEventPublisher().triggerEvent(event);
 
 				if (tablePerspective.getRecordGroup() != null) {
 					SelectionType currentRecordGroupSelectionType = recordGroupSelectionManager.getSelectionType();
-					recordGroupSelectionManager.clearSelection(currentRecordGroupSelectionType);
+					if (!stratomex.getKeyListener().isCtrlDown())
+						recordGroupSelectionManager.clearSelection(currentRecordGroupSelectionType);
 
 					recordGroupSelectionManager.addToType(currentRecordGroupSelectionType, tablePerspective
 							.getRecordGroup().getID());
+					recordGroupSelectionManager.triggerSelectionUpdateEvent();
 
-					event = new SelectionUpdateEvent();
-					event.setEventSpace(getDataDomain().getDataDomainID());
-					event.setSender(this);
-					delta = recordGroupSelectionManager.getDelta();
-					event.setSelectionDelta(delta);
-					GeneralManager.get().getEventPublisher().triggerEvent(event);
+					// event = new SelectionUpdateEvent();
+					// event.setEventSpace(getDataDomain().getDataDomainID());
+					// event.setSender(this);
+					// delta = recordGroupSelectionManager.getDelta();
+					// event.setSelectionDelta(delta);
+					// GeneralManager.get().getEventPublisher().triggerEvent(event);
 				}
 
 				selectElementsByGroup();
@@ -958,23 +974,25 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	@Override
 	public void handleSelectionUpdate(SelectionDelta selectionDelta) {
-		if (selectionDelta.getIDType() == tablePerspectiveSelectionManager.getIDType()) {
-			tablePerspectiveSelectionManager.setDelta(selectionDelta);
-
-			if (tablePerspectiveSelectionManager.checkStatus(tablePerspectiveSelectionManager.getSelectionType(),
-					tablePerspective.getID())) {
-				// brickLayout.setShowHandles(true);
-				brickLayoutConfiguration.setSelected(true);
-				stratomex.updateConnectionLinesBetweenColumns();
-			} else {
-				brickLayoutConfiguration.setSelected(false);
-				// brickLayout.setShowHandles(false);
-			}
-			// }
-			layoutManager.updateLayout();
-		} else if (selectionDelta.getIDType() == recordGroupSelectionManager.getIDType()) {
-			recordGroupSelectionManager.setDelta(selectionDelta);
-		}
+		// if (selectionDelta.getIDType() == tablePerspectiveSelectionManager.getIDType()) {
+		// tablePerspectiveSelectionManager.setDelta(selectionDelta);
+		// // System.out.println(selectionDelta);
+		// if (tablePerspectiveSelectionManager.checkStatus(tablePerspectiveSelectionManager.getSelectionType(),
+		// tablePerspective.getID())) {
+		// // brickLayout.setShowHandles(true);
+		// // System.out.println("SELECTED " + getLabel());
+		// brickLayoutConfiguration.setSelected(true);
+		// stratomex.updateConnectionLinesBetweenColumns();
+		// } else {
+		// // System.out.println("DESELECTED " + getLabel());
+		// brickLayoutConfiguration.setSelected(false);
+		// // brickLayout.setShowHandles(false);
+		// }
+		// // }
+		// layoutManager.updateLayout();
+		// } else if (selectionDelta.getIDType() == recordGroupSelectionManager.getIDType()) {
+		// recordGroupSelectionManager.setDelta(selectionDelta);
+		// }
 	}
 
 	/**
@@ -1482,5 +1500,29 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 	 */
 	public int getActiveRendererID() {
 		return multiFormRenderer.getActiveRendererID();
+	}
+
+	@Override
+	public void notifyOfSelectionChange(EventBasedSelectionManager selectionManager) {
+		if (selectionManager == tablePerspectiveSelectionManager) {
+			// tablePerspectiveSelectionManager.setDelta(selectionDelta);
+			// System.out.println(selectionDelta);
+
+			// if (tablePerspectiveSelectionManager.checkStatus(tablePerspectiveSelectionManager.getSelectionType(),
+			// tablePerspective.getID())) {
+			if (tablePerspectiveSelectionManager.getElements(tablePerspectiveSelectionManager.getSelectionType())
+					.contains(tablePerspective.getID())) {
+				// brickLayout.setShowHandles(true);
+				// System.out.println("SELECTED " + getLabel());
+				brickLayoutConfiguration.setSelected(true);
+				stratomex.updateConnectionLinesBetweenColumns();
+			} else {
+				// System.out.println("DESELECTED " + getLabel());
+				brickLayoutConfiguration.setSelected(false);
+				// brickLayout.setShowHandles(false);
+			}
+			// }
+			layoutManager.updateLayout();
+		}
 	}
 }

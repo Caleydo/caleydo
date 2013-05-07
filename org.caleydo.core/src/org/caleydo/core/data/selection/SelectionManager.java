@@ -341,7 +341,7 @@ public class SelectionManager implements IListenerOwner, Cloneable {
 
 		if (hashSelectionTypes.get(selectionType).containsKey(elementID)) {
 			hashSelectionTypes.get(selectionType).remove(elementID);
-			if (!deltaBlackList.containsKey(selectionType))
+			if (!deltaBlackList.containsKey(selectionType) && bIsDeltaWritingEnabled)
 				selectionDelta.removeSelection(elementID, selectionType);
 		}
 	}
