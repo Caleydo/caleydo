@@ -24,6 +24,7 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.GLElement.EVisibility;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
@@ -58,7 +59,9 @@ public class ScatterplotElement extends GLElement implements TablePerspectiveSel
 	
 	private SelectionRectangle selectionRect;
 	
-	private Point firstClickPoint;
+	private Point firstClickPoint;	
+
+	private Point lastClickPoint;
 	
 	private ScatterplotRenderUtils renderUtil;
 	
@@ -96,15 +99,28 @@ public class ScatterplotElement extends GLElement implements TablePerspectiveSel
 		
 		setVisibility(EVisibility.PICKABLE);
 		
+		this.dataSelectionConf = dataSelectionConfiguration;
+		
 		if (dataSelectionConfiguration != null)
 		{
 			renderRemote = true;
-			this.prepareData(dataSelectionConfiguration);
+			//this.prepareData(dataSelectionConfiguration);
 			
 		}
 		
 		
 		
+	}
+	
+	/**
+	 * setup method, when adding a child to a parent
+	 * @param context
+	 */
+	@Override
+	protected void init(IGLElementContext context) 
+	{
+		super.init(context);
+		this.prepareData(this.dataSelectionConf);
 	}
 
 	@Override
@@ -135,7 +151,7 @@ public class ScatterplotElement extends GLElement implements TablePerspectiveSel
 
 	@Override
 	protected void renderPickImpl(GLGraphics g, float w, float h) {
-		if (!dataColumnsSet | !readyForRender | renderRemote)
+		if (!dataColumnsSet | !readyForRender)
 			return;	
 		
 		g.pushResourceLocator(Activator.getResourceLocator());
@@ -211,10 +227,7 @@ public class ScatterplotElement extends GLElement implements TablePerspectiveSel
 				if (!this.dataColumnsSet)
 				{
 					this.dataColumnsSet = true;
-					if(!renderRemote)
-					{
-						initListeners();
-					}
+					initListeners();
 					
 				}
 				else
@@ -241,13 +254,26 @@ public class ScatterplotElement extends GLElement implements TablePerspectiveSel
 
 	public void initListeners()
 	{
-		canvasPickingListener = new IPickingListener() {
-			@Override
-			public void pick(Pick pick) {
-				//onRecordPick(pick.getObjectID(), pick);
-				handleMouseEvents(pick);
-			}
-		};
+		if (renderRemote)
+		{
+			canvasPickingListener = new IPickingListener() {
+				@Override
+				public void pick(Pick pick) {
+					//onRecordPick(pick.getObjectID(), pick);
+					handleMouseEventsRemoteMode(pick);
+				}
+			};
+		}
+		else
+		{
+			canvasPickingListener = new IPickingListener() {
+				@Override
+				public void pick(Pick pick) {
+					//onRecordPick(pick.getObjectID(), pick);
+					handleMouseEvents(pick);
+				}
+			};
+		}
 		
 		pickingId = context.registerPickingListener(canvasPickingListener);
 	}
@@ -296,6 +322,56 @@ public class ScatterplotElement extends GLElement implements TablePerspectiveSel
 				renderUtil.performBrushing(this, selectionRect);
 			}
 			break;	
+		
+		}
+	}
+	
+	public void handleMouseEventsRemoteMode(Pick pick)
+	{
+		Point pickedPoint = new Point((int) this.toRelative(pick.getPickedPoint()).x(), (int) this.toRelative(pick.getPickedPoint()).y());
+				
+		switch (pick.getPickingMode()) {
+		case CLICKED:
+			//System.out.println("!!!!! clicked first picked point:  " + firstClickPoint);
+			//firstClickPoint = pickedPoint;
+			
+			
+			if(firstClickPoint == null)
+			{
+				firstClickPoint = pickedPoint;
+				lastClickPoint = pickedPoint;
+				return;
+			}
+			
+			if (Math.abs(lastClickPoint.x - pickedPoint.x) > 3 | Math.abs(lastClickPoint.y - pickedPoint.y) > 3)
+			{
+					selectionRect = null;
+					renderUtil.clearSelection(this);
+					firstClickPoint = null;
+					lastClickPoint = null;
+			}
+
+			break;
+		case DRAGGED:
+			//Enlarge the selection rectangle here
+			
+			//System.out.println("!!!!! dragged:  " + pick.getPickedPoint());
+			if(firstClickPoint == null)
+			{
+				//System.out.println("******* dragged manual setting:  " + this.toRelative(pick.getPickedPoint()));
+				firstClickPoint = pickedPoint;
+			}
+			
+			lastClickPoint = pickedPoint;
+			selectionRect = new SelectionRectangle();
+			selectionRect.setLeft(firstClickPoint.x);
+			selectionRect.setRight(pickedPoint.x);
+			selectionRect.setTop(firstClickPoint.y);
+			selectionRect.setBottom(pickedPoint.y);
+			selectionRect.ComputeScreenToDataMapping(renderUtil, dataColumns, getSize().x(), getSize().y());
+			renderUtil.performBrushing(this, selectionRect);
+			break;
+		
 		
 		}
 	}

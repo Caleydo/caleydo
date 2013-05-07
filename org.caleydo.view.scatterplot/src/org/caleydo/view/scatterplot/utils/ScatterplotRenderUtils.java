@@ -56,6 +56,8 @@ public class ScatterplotRenderUtils {
 	private float POINT_SIZE_MULTIPLIER = 0.4f;
 	private float POINT_BORDER_SIZE_MULTIPLIER = 0.45f;
 	
+	private float zDepth = 10.0f;
+	
 	
 	private ArrayList<Integer> idList;
 	
@@ -197,10 +199,10 @@ public class ScatterplotRenderUtils {
 		
 		gl.glBegin(GL2.GL_QUADS);
 		
-		gl.glVertex2f(0, 0);
-        gl.glVertex2f(width, 0);
-        gl.glVertex2f(width, height);
-        gl.glVertex2f(0, height);
+		gl.glVertex3f(0, 0, zDepth);
+        gl.glVertex3f(width, 0, zDepth);
+        gl.glVertex3f(width, height, zDepth);
+        gl.glVertex3f(0, height, zDepth);
 		
 		gl.glEnd();
 		
@@ -222,7 +224,7 @@ public class ScatterplotRenderUtils {
 		{
 			if(!selectionManager.checkStatus(SelectionType.SELECTION, idList.get(i)))
 			{
-		        gl.glVertex3f((scatterplotElement.getDataColumns().get(0).get(i) - xMin) / xRange * xScale + sideSpacing, height - ((scatterplotElement.getDataColumns().get(1).get(i) - yMin) / yRange * yScale + sideSpacing ), 0);   
+		        gl.glVertex3f((scatterplotElement.getDataColumns().get(0).get(i) - xMin) / xRange * xScale + sideSpacing, height - ((scatterplotElement.getDataColumns().get(1).get(i) - yMin) / yRange * yScale + sideSpacing ), zDepth + 1);   
 			}			
 		}
 		gl.glEnd();
@@ -236,7 +238,7 @@ public class ScatterplotRenderUtils {
 		{
 			if(selectionManager.checkStatus(SelectionType.SELECTION, idList.get(i)) | !anyItemSelected)			
 			{
-				gl.glVertex3f((scatterplotElement.getDataColumns().get(0).get(i) - xMin) / xRange * xScale + sideSpacing, height - ((scatterplotElement.getDataColumns().get(1).get(i) - yMin) / yRange * yScale + sideSpacing) , 0);		        
+				gl.glVertex3f((scatterplotElement.getDataColumns().get(0).get(i) - xMin) / xRange * xScale + sideSpacing, height - ((scatterplotElement.getDataColumns().get(1).get(i) - yMin) / yRange * yScale + sideSpacing), zDepth + 1);		        
 			}			
 		}
 		gl.glEnd();
@@ -248,7 +250,7 @@ public class ScatterplotRenderUtils {
 		{
 			if(selectionManager.checkStatus(SelectionType.SELECTION, idList.get(i)) | !anyItemSelected)			
 			{
-				gl.glVertex3f((scatterplotElement.getDataColumns().get(0).get(i) - xMin) / xRange * xScale + sideSpacing, height - ((scatterplotElement.getDataColumns().get(1).get(i) - yMin) / yRange * yScale + sideSpacing), 0);		        
+				gl.glVertex3f((scatterplotElement.getDataColumns().get(0).get(i) - xMin) / xRange * xScale + sideSpacing, height - ((scatterplotElement.getDataColumns().get(1).get(i) - yMin) / yRange * yScale + sideSpacing), zDepth + 1);		        
 			}			
 		}
 		gl.glEnd();		
@@ -297,10 +299,10 @@ public class ScatterplotRenderUtils {
 		
 		gl.glBegin(GL2.GL_QUADS);
 		
-		gl.glVertex2f(0, 0);
-        gl.glVertex2f(width, 0);
-        gl.glVertex2f(width, height);
-        gl.glVertex2f(0, height);
+		gl.glVertex3f(0, 0, zDepth);
+        gl.glVertex3f(width, 0, zDepth);
+        gl.glVertex3f(width, height, zDepth);
+        gl.glVertex3f(0, height, zDepth);
 		
 		gl.glEnd();
 		
@@ -322,7 +324,7 @@ public class ScatterplotRenderUtils {
 		{
 			if(!selectionManager.checkStatus(SelectionType.SELECTION, idList.get(i)))
 			{
-		        gl.glVertex3f((scatterplotElement.getDataColumns().get(0).get(i) - xMin) / xRange * xScale + sideSpacing, height - ((scatterplotElement.getDataColumns().get(1).get(i) - yMin) / yRange * yScale + sideSpacing ), 0);   
+		        gl.glVertex3f((scatterplotElement.getDataColumns().get(0).get(i) - xMin) / xRange * xScale + sideSpacing, height - ((scatterplotElement.getDataColumns().get(1).get(i) - yMin) / yRange * yScale + sideSpacing ) , zDepth + 2);   
 			}			
 		}
 		gl.glEnd();
@@ -336,7 +338,7 @@ public class ScatterplotRenderUtils {
 		{
 			if(selectionManager.checkStatus(SelectionType.SELECTION, idList.get(i)) | !anyItemSelected)			
 			{
-				gl.glVertex3f((scatterplotElement.getDataColumns().get(0).get(i) - xMin) / xRange * xScale + sideSpacing, height - ((scatterplotElement.getDataColumns().get(1).get(i) - yMin) / yRange * yScale + sideSpacing) , 0);		        
+				gl.glVertex3f((scatterplotElement.getDataColumns().get(0).get(i) - xMin) / xRange * xScale + sideSpacing, height - ((scatterplotElement.getDataColumns().get(1).get(i) - yMin) / yRange * yScale + sideSpacing) , zDepth + 2);		        
 			}			
 		}
 		gl.glEnd();
@@ -348,7 +350,7 @@ public class ScatterplotRenderUtils {
 		{
 			if(selectionManager.checkStatus(SelectionType.SELECTION, idList.get(i)) | !anyItemSelected)			
 			{
-				gl.glVertex3f((scatterplotElement.getDataColumns().get(0).get(i) - xMin) / xRange * xScale + sideSpacing, height - ((scatterplotElement.getDataColumns().get(1).get(i) - yMin) / yRange * yScale + sideSpacing), 0);		        
+				gl.glVertex3f((scatterplotElement.getDataColumns().get(0).get(i) - xMin) / xRange * xScale + sideSpacing, height - ((scatterplotElement.getDataColumns().get(1).get(i) - yMin) / yRange * yScale + sideSpacing) , zDepth + 2);		        
 			}			
 		}
 		gl.glEnd();		
@@ -367,11 +369,11 @@ public class ScatterplotRenderUtils {
         gl.glLineStipple(8, (short) 0xAAAA);
         gl.glBegin(GL2.GL_LINES);
         
-        gl.glVertex2f(sideSpacing, 0);
-        gl.glVertex2f(sideSpacing, height);
+        gl.glVertex3f(sideSpacing, 0, zDepth + 1);
+        gl.glVertex3f(sideSpacing, height, zDepth + 1);
         
-        gl.glVertex2f(0, height - sideSpacing);
-        gl.glVertex2f(width, height - sideSpacing);
+        gl.glVertex3f(0, height - sideSpacing, zDepth + 1);
+        gl.glVertex3f(width, height - sideSpacing, zDepth + 1);
 
         gl.glEnd();
 	}
@@ -392,10 +394,10 @@ public class ScatterplotRenderUtils {
         
 		gl.glBegin(GL2.GL_QUADS);
 		
-		gl.glVertex2f(rect.getLeft(), rect.getTop());
-        gl.glVertex2f(rect.getRight(), rect.getTop());
-        gl.glVertex2f(rect.getRight(), rect.getBottom());
-        gl.glVertex2f(rect.getLeft(), rect.getBottom());
+		gl.glVertex3f(rect.getLeft(), rect.getTop(), zDepth + 1);
+        gl.glVertex3f(rect.getRight(), rect.getTop(), zDepth + 1);
+        gl.glVertex3f(rect.getRight(), rect.getBottom(), zDepth + 1);
+        gl.glVertex3f(rect.getLeft(), rect.getBottom(), zDepth + 1);
 		
 		gl.glEnd();
 		

@@ -67,7 +67,6 @@ public class DifferenceplotElement extends GLElement implements TablePerspective
 	
 	private boolean rectanglePicked = false;
 	
-	private boolean drawingSelection = false;
 	
 		
 	/**
@@ -422,11 +421,10 @@ public class DifferenceplotElement extends GLElement implements TablePerspective
 			//System.out.println("!!!!! dragged:  " + pick.getPickedPoint());
 			if(firstClickPoint == null)
 			{
-				System.out.println("******* dragged manual setting:  " + this.toRelative(pick.getPickedPoint()));
+				//System.out.println("******* dragged manual setting:  " + this.toRelative(pick.getPickedPoint()));
 				firstClickPoint = pickedPoint;
 			}
 			
-			drawingSelection = true;
 			lastClickPoint = pickedPoint;
 			selectionRect = new SelectionRectangle();
 			selectionRect.setLeft(firstClickPoint.x);
