@@ -15,6 +15,8 @@ Caleydo uses Java, OpenGL and the Eclipse Rich Client Platform (RCP). Things you
  * Java SDK >= 1.7
 
 To install Caleydo use EGit within Eclipse and clone the repository. Each directory in the caleydo-dev folder corresponds to an Eclipse project. [Here](http://www.vogella.com/articles/EGit/article.html) is a good tutorial on how to import Eclipse projects from git.  
+
+If you want to use ssh (instead of https) for communicating with github out of eclipse follow [these](http://wiki.eclipse.org/EGit/User_Guide#Eclipse_SSH_Configuration) instructions.
  
 Team
 ====
