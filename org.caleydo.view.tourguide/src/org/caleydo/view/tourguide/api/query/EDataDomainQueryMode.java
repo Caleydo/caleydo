@@ -42,19 +42,19 @@ import com.google.common.base.Predicate;
  *
  */
 public enum EDataDomainQueryMode {
-	STRATIFICATIONS, PATHWAYS, CATEGORICAL;
+	STRATIFICATIONS, PATHWAYS, NUMERICAL;
 
 	/**
 	 * @return
 	 */
 	public String getLabel() {
 		switch (this) {
-		case PATHWAYS:
-			return "Pathways";
 		case STRATIFICATIONS:
 			return "Stratifications";
-		case CATEGORICAL:
-			return "Categorical";
+		case PATHWAYS:
+			return "Pathways";
+		case NUMERICAL:
+			return "Numerical";
 		}
 		throw new IllegalArgumentException("unknown me");
 	}
@@ -65,7 +65,7 @@ public enum EDataDomainQueryMode {
 			return dataDomain instanceof PathwayDataDomain;
 		case STRATIFICATIONS:
 			return dataDomain instanceof ATableBasedDataDomain;
-		case CATEGORICAL:
+		case NUMERICAL:
 			return DataDomainOracle.isCategoricalDataDomain(dataDomain);
 		}
 		throw new IllegalArgumentException("unknown me");
@@ -85,7 +85,7 @@ public enum EDataDomainQueryMode {
 			return dataDomains;
 		case PATHWAYS:
 			return DataDomainManager.get().getDataDomainsByType(PathwayDataDomain.class);
-		case CATEGORICAL:
+		case NUMERICAL:
 			List<ATableBasedDataDomain> catDataDomains = new ArrayList<>(DataDomainManager.get().getDataDomainsByType(
 					ATableBasedDataDomain.class));
 

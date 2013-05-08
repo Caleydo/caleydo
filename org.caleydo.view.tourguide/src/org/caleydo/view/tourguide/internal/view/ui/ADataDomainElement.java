@@ -128,9 +128,13 @@ public abstract class ADataDomainElement extends GLButton implements GLButton.IS
 		super.renderImpl(g, w, h);
 		g.color(model.getDataDomain().getColor()).fillRect(2, 2, 14, 14);
 		g.fillImage(getStandardIcon("checkbox", isSelected()), 0, 0, 18, 18);
-		float tw = Math.min(g.text.getTextWidth(model.getDataDomain().getLabel(), 14), w - 18 - 18);
-		g.drawText(model.getDataDomain(), 18, 1, w - 18 - 18, 14);
+		float tw = Math.min(g.text.getTextWidth(getLabel(), 14), w - 18 - 18);
+		g.drawText(getLabel(), 18, 1, w - 18 - 18, 14);
 		g.fillImage(hasFilter ? ICON_FILTER : ICON_FILTER_DISABLED, 18 + tw + 2, 2, 12, 12);
+	}
+
+	protected String getLabel() {
+		return model.getDataDomain().getLabel();
 	}
 
 	@Override
@@ -138,7 +142,7 @@ public abstract class ADataDomainElement extends GLButton implements GLButton.IS
 		super.renderPickImpl(g, w, h);
 
 		g.incZ();
-		float tw = Math.min(g.text.getTextWidth(model.getDataDomain().getLabel(), 14), w - 18 - 18);
+		float tw = Math.min(g.text.getTextWidth(getLabel(), 14), w - 18 - 18);
 		g.pushName(filterPickingId);
 		g.fillRect(18 + tw + 2, 2, 12, 12);
 		g.popName();

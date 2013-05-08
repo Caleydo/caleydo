@@ -163,8 +163,7 @@ public class IntegerRankColumnModel extends ABasicFilterableRankColumnModel impl
 			super.renderImpl(g, w, h);
 			float hi = Math.min(h, 16);
 			int f = getInt(getLayoutDataAs(IRow.class, null));
-			if (f > 0)
-				g.drawText(formatter == null ? f + "" : formatter.format(f), 1, 1 + (h - hi) * 0.5f, w - 2,
+			g.drawText(formatter == null ? f + "" : formatter.format(f), 1, 1 + (h - hi) * 0.5f, w - 2,
 						hi - 2);
 		}
 	}

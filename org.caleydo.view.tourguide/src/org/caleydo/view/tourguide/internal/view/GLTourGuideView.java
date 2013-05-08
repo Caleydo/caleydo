@@ -32,8 +32,6 @@ import java.util.Objects;
 
 import javax.media.opengl.GLAutoDrawable;
 
-import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.datadomain.DataSupportDefinitions;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventPublisher;
@@ -52,9 +50,7 @@ import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IPopupLayer;
 import org.caleydo.core.view.opengl.layout2.basic.ScrollBar;
 import org.caleydo.core.view.opengl.layout2.basic.ScrollingDecorator;
-import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
-import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.score.MultiScore;
@@ -70,16 +66,13 @@ import org.caleydo.view.tourguide.internal.event.ScoreQueryReadyEvent;
 import org.caleydo.view.tourguide.internal.external.ImportExternalScoreCommand;
 import org.caleydo.view.tourguide.internal.model.ADataDomainQuery;
 import org.caleydo.view.tourguide.internal.model.AScoreRow;
-import org.caleydo.view.tourguide.internal.model.CategoricalDataDomainQuery;
 import org.caleydo.view.tourguide.internal.model.CustomSubList;
-import org.caleydo.view.tourguide.internal.model.PathwayDataDomainQuery;
-import org.caleydo.view.tourguide.internal.model.StratificationDataDomainQuery;
 import org.caleydo.view.tourguide.internal.score.ScoreFactories;
 import org.caleydo.view.tourguide.internal.score.Scores;
-import org.caleydo.view.tourguide.internal.view.col.DataDomainRankColumnModel;
 import org.caleydo.view.tourguide.internal.view.col.IAddToStratomex;
 import org.caleydo.view.tourguide.internal.view.col.ScoreRankColumnModel;
-import org.caleydo.view.tourguide.internal.view.col.SizeRankColumnModel;
+import org.caleydo.view.tourguide.internal.view.specific.DataDomainModeSpecifics;
+import org.caleydo.view.tourguide.internal.view.specific.IDataDomainQueryModeSpecfics;
 import org.caleydo.view.tourguide.internal.view.ui.DataDomainQueryUI;
 import org.caleydo.view.tourguide.internal.view.ui.pool.ScorePoolUI;
 import org.caleydo.view.tourguide.spi.IScoreFactory;
@@ -108,8 +101,6 @@ import org.eclipse.core.runtime.jobs.IJobChangeListener;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-
-import com.google.common.base.Function;
 
 /**
  * @author Samuel Gratzl
@@ -143,6 +134,7 @@ public class GLTourGuideView extends AGLElementView implements IAddToStratomex {
 	};
 
 	private final EDataDomainQueryMode mode;
+	private final IDataDomainQueryModeSpecfics modeSpecifics;
 
 	private final WaitingElement waiting = new WaitingElement();
 	private boolean noStratomexVisible = false;
@@ -172,6 +164,7 @@ public class GLTourGuideView extends AGLElementView implements IAddToStratomex {
 		super(glCanvas, VIEW_TYPE, VIEW_NAME);
 
 		this.mode = mode;
+		this.modeSpecifics = DataDomainModeSpecifics.of(mode);
 		this.table = new RankTableModel(new RankTableConfigBase());
 		this.table.addPropertyChangeListener(RankTableModel.PROP_SELECTED_ROW, new PropertyChangeListener() {
 			@Override
@@ -180,30 +173,11 @@ public class GLTourGuideView extends AGLElementView implements IAddToStratomex {
 			}
 		});
 		this.table.add(new RankRankColumnModel().setWidth(30));
-		table.add(new DataDomainRankColumnModel(this).setWidth(80).setCollapsed(true));
-		final StringRankColumnModel base = new StringRankColumnModel(GLRenderers.drawText("Stratification"),
-				StringRankColumnModel.DEFAULT);
-		this.table.add(base);
-		base.setWidth(150);
-		base.orderByMe();
-		this.table.add(new SizeRankColumnModel("#Elements", new Function<IRow, Integer>() {
-			@Override
-			public Integer apply(IRow in) {
-				return ((AScoreRow) in).size();
-			}
-		}).setWidth(75));
-
-		this.table.add(new SizeRankColumnModel("#Clusters", new Function<IRow, Integer>() {
-			@Override
-			public Integer apply(IRow in) {
-				return ((AScoreRow) in).getGroupSize();
-			}
-		}).setWidth(75).setCollapsed(true));
+		modeSpecifics.addDefaultColumns(this.table, this);
 
 		addAllExternalScore(this.table);
 
-		for (IDataDomain dd : mode.getAllDataDomains()) {
-			final ADataDomainQuery q = createFor(mode, dd);
+		for (ADataDomainQuery q : modeSpecifics.createDataDomainQueries()) {
 			q.addPropertyChangeListener(ADataDomainQuery.PROP_ACTIVE, listener);
 			q.addPropertyChangeListener(ADataDomainQuery.PROP_MASK, listener);
 			queries.add(q);
@@ -232,22 +206,15 @@ public class GLTourGuideView extends AGLElementView implements IAddToStratomex {
 		}
 	}
 
-	private static ADataDomainQuery createFor(EDataDomainQueryMode mode, IDataDomain dd) {
-		if (DataSupportDefinitions.categoricalTables.apply(dd))
-			return new CategoricalDataDomainQuery((ATableBasedDataDomain) dd);
-		if (dd instanceof PathwayDataDomain)
-			return new PathwayDataDomainQuery((PathwayDataDomain) dd);
-		return new StratificationDataDomainQuery((ATableBasedDataDomain) dd);
-	}
-
 	@ListenTo
 	private void onAddDataDomain(final NewDataDomainEvent event) {
 		IDataDomain dd = event.getDataDomain();
 
 		if (mode.isCompatible(dd)) {
-			ADataDomainQuery query = createFor(mode, dd);
-			queries.add(query);
-			getDataDomainQueryUI().add(query);
+			for (ADataDomainQuery query : modeSpecifics.createDataDomainQuery(dd)) {
+				queries.add(query);
+				getDataDomainQueryUI().add(query);
+			}
 		}
 	}
 

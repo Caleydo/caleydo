@@ -39,6 +39,8 @@ public class OpenViewHandler extends AbstractHandler {
 	private void showTourGuide(ExecutionEvent event) {
 		for (EDataDomainQueryMode mode : EDataDomainQueryMode.values())
 			showTourGuide(event, mode);
+		// show the first one again for having it the context
+		showTourGuide(event, EDataDomainQueryMode.STRATIFICATIONS);
 	}
 
 	private void showTourGuide(ExecutionEvent event, EDataDomainQueryMode mode) {
