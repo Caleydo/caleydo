@@ -33,17 +33,21 @@ import org.caleydo.view.tourguide.internal.model.ADataDomainQuery;
 import org.caleydo.view.tourguide.internal.model.CategoricalDataDomainQuery;
 import org.caleydo.view.tourguide.internal.model.PathwayDataDomainQuery;
 import org.caleydo.view.tourguide.internal.model.StratificationDataDomainQuery;
+import org.caleydo.view.tourguide.internal.view.specific.IDataDomainQueryModeSpecfics;
 
 import com.google.common.collect.Iterables;
 
 public class DataDomainQueryUI extends GLElementContainer implements IGLLayout, Comparator<GLElement> {
 
 	private final EDataDomainQueryMode mode;
+	private IDataDomainQueryModeSpecfics specifics;
 
-	public DataDomainQueryUI(Iterable<ADataDomainQuery> queries, EDataDomainQueryMode mode) {
+	public DataDomainQueryUI(Iterable<ADataDomainQuery> queries, EDataDomainQueryMode mode,
+			IDataDomainQueryModeSpecfics specifics) {
 		super();
 		setLayout(this);
 		this.mode = mode;
+		this.specifics = specifics;
 
 		for (ADataDomainQuery q : queries) {
 			add(createFor(q));
@@ -63,7 +67,7 @@ public class DataDomainQueryUI extends GLElementContainer implements IGLLayout, 
 		int actCat = 0;
 		float actMaxY = y;
 		for (ADataDomainElement child : Iterables.filter(this, ADataDomainElement.class)) {
-			int cat = mode.getCategory(child.getModel().getDataDomain());
+			int cat = specifics.getCategory(child.getModel().getDataDomain());
 			if (actCat != cat) {
 				actCat = cat;
 				if (y > actMaxY)
@@ -80,7 +84,7 @@ public class DataDomainQueryUI extends GLElementContainer implements IGLLayout, 
 		ADataDomainQuery a1 = o1.getLayoutDataAs(ADataDomainQuery.class, null);
 		ADataDomainQuery a2 = o2.getLayoutDataAs(ADataDomainQuery.class, null);
 
-		return mode.getCategory(a1.getDataDomain()) - mode.getCategory(a2.getDataDomain());
+		return specifics.getCategory(a1.getDataDomain()) - specifics.getCategory(a2.getDataDomain());
 	}
 
 	@Override
@@ -91,7 +95,7 @@ public class DataDomainQueryUI extends GLElementContainer implements IGLLayout, 
 
 			int actCat = 0;
 			for (IGLLayoutElement child : children) {
-				int cat = mode.getCategory(child.getLayoutDataAs(ADataDomainQuery.class, null).getDataDomain());
+				int cat = specifics.getCategory(child.getLayoutDataAs(ADataDomainQuery.class, null).getDataDomain());
 				if (actCat != cat) {
 					y += 2;
 					actCat = cat;
@@ -108,15 +112,15 @@ public class DataDomainQueryUI extends GLElementContainer implements IGLLayout, 
 			int actCat = 0;
 			float actMaxY = y;
 			for (IGLLayoutElement child : children) {
-				int cat = mode.getCategory(child.getLayoutDataAs(ADataDomainQuery.class, null).getDataDomain());
+				int cat = specifics.getCategory(child.getLayoutDataAs(ADataDomainQuery.class, null).getDataDomain());
 				if (actCat != cat) {
-					x += w * (1.f / mode.getNumCategories());
+					x += w * (1.f / specifics.getNumCategories());
 					actCat = cat;
 					if (y > actMaxY)
 						actMaxY = y;
 					y = 2;
 				}
-				child.setBounds(x, y, w * 1.f / mode.getNumCategories() - 2, 18);
+				child.setBounds(x, y, w * 1.f / specifics.getNumCategories() - 2, 18);
 				y += 20;
 			}
 		}

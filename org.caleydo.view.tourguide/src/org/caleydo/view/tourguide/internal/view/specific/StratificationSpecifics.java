@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.datadomain.DataDomainOracle;
 import org.caleydo.core.data.datadomain.DataSupportDefinitions;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
@@ -88,5 +89,22 @@ public class StratificationSpecifics implements IDataDomainQueryModeSpecfics {
 		if (DataSupportDefinitions.categoricalTables.apply(dd))
 			return new CategoricalDataDomainQuery((ATableBasedDataDomain) dd);
 		return new StratificationDataDomainQuery((ATableBasedDataDomain) dd);
+	}
+
+	/**
+	 * datadomains can be categorized in multiple categories
+	 * 
+	 * @return
+	 */
+	@Override
+	public int getNumCategories() {
+		return 2;
+	}
+
+	@Override
+	public int getCategory(IDataDomain dataDomain) {
+		if (DataDomainOracle.isCategoricalDataDomain(dataDomain))
+			return 1;
+		return 0;
 	}
 }

@@ -25,7 +25,7 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 
-import org.caleydo.core.util.base.ILabelProvider;
+import org.caleydo.core.util.base.ILabeled;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.IGLFocusListener;
 import org.caleydo.core.view.opengl.canvas.IGLKeyListener;
@@ -106,7 +106,7 @@ final class SWTGLCanvas implements IGLCanvas {
 	}
 
 	@Override
-	public IPickingListener createTooltip(ILabelProvider label) {
+	public IPickingListener createTooltip(ILabeled label) {
 		return new SWTTooltipManager(canvas, label);
 	}
 

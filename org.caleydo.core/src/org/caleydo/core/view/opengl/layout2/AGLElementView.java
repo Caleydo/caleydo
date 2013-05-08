@@ -34,7 +34,7 @@ import org.caleydo.core.event.EventListenerManagers.QueuedEventListenerManager;
 import org.caleydo.core.id.object.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.util.base.ILabelProvider;
+import org.caleydo.core.util.base.ILabeled;
 import org.caleydo.core.view.AView;
 import org.caleydo.core.view.ViewManager;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
@@ -100,7 +100,7 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 	}
 
 	@Override
-	public final IPickingListener createTooltip(ILabelProvider label) {
+	public final IPickingListener createTooltip(ILabeled label) {
 		return canvas.createTooltip(label);
 	}
 

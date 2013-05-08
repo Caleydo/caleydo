@@ -28,7 +28,7 @@ import java.util.regex.Pattern;
 
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventPublisher;
-import org.caleydo.core.util.base.ILabelProvider;
+import org.caleydo.core.util.base.ILabeled;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
@@ -108,8 +108,8 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 	public static final Function<IRow, String> DEFAULT = new Function<IRow, String>() {
 		@Override
 		public String apply(IRow row) {
-			if (row instanceof ILabelProvider) {
-				return ((ILabelProvider) row).getLabel();
+			if (row instanceof ILabeled) {
+				return ((ILabeled) row).getLabel();
 			}
 			return Objects.toString(row);
 		}

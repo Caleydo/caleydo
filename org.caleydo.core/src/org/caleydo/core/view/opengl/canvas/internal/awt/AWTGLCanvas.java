@@ -28,7 +28,7 @@ import javax.media.opengl.GLEventListener;
 import javax.media.opengl.awt.GLCanvas;
 import javax.swing.SwingUtilities;
 
-import org.caleydo.core.util.base.ILabelProvider;
+import org.caleydo.core.util.base.ILabeled;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.IGLFocusListener;
 import org.caleydo.core.view.opengl.canvas.IGLKeyListener;
@@ -64,7 +64,7 @@ final class AWTGLCanvas implements IGLCanvas {
 	 * )
 	 */
 	@Override
-	public IPickingListener createTooltip(ILabelProvider label) {
+	public IPickingListener createTooltip(ILabeled label) {
 		return new ToolTipPickingListener(label);
 	}
 

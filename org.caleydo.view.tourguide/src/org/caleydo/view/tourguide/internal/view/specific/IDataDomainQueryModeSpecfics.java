@@ -47,5 +47,16 @@ public interface IDataDomainQueryModeSpecfics {
 	 */
 	Iterable<? extends ADataDomainQuery> createDataDomainQuery(IDataDomain dd);
 
+	/**
+	 * @return
+	 */
+	int getNumCategories();
+
+	/**
+	 * @param dataDomain
+	 * @return
+	 */
+	int getCategory(IDataDomain dataDomain);
+
 }
 

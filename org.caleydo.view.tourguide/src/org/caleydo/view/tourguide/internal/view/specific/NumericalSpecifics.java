@@ -82,4 +82,19 @@ public class NumericalSpecifics implements IDataDomainQueryModeSpecfics {
 			return new CategoricalDataDomainQuery((ATableBasedDataDomain) dd);
 		return new StratificationDataDomainQuery((ATableBasedDataDomain) dd);
 	}
+
+	/**
+	 * datadomains can be categorized in multiple categories
+	 * 
+	 * @return
+	 */
+	@Override
+	public int getNumCategories() {
+		return 1;
+	}
+
+	@Override
+	public int getCategory(IDataDomain dataDomain) {
+		return 0;
+	}
 }

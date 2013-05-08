@@ -29,10 +29,13 @@ package org.caleydo.core.util.base;
  * @author Christian
  * 
  */
-public interface ILabelProvider extends ILabeled {
+public interface ILabeled {
+
 	/**
-	 * @return A human-readable name of the concrete label provider.
+	 * Callback method that provides a label.
+	 * 
+	 * @return
 	 */
-	public String getProviderName();
+	public String getLabel();
 
 }

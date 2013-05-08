@@ -10,7 +10,7 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
-import org.caleydo.core.util.base.ILabelProvider;
+import org.caleydo.core.util.base.ILabeled;
 import org.caleydo.core.util.color.IColor;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.geom.Rect;
@@ -463,7 +463,7 @@ public class GLGraphics {
 	/**
 	 * see {@link #drawText(String, float, float, float, float)}
 	 */
-	public GLGraphics drawText(ILabelProvider text, float x, float y, float w, float h) {
+	public GLGraphics drawText(ILabeled text, float x, float y, float w, float h) {
 		if (text == null)
 			return this;
 		return drawText(text.getLabel(), x, y, w, h);

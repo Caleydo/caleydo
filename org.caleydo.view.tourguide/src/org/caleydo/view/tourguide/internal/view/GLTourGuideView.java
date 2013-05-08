@@ -630,7 +630,7 @@ public class GLTourGuideView extends AGLElementView implements IAddToStratomex {
 	private class TourGuideVis extends GLElementContainer {
 		public TourGuideVis() {
 			setLayout(new ReactiveFlowLayout(10));
-			this.add(new DataDomainQueryUI(queries, mode));
+			this.add(new DataDomainQueryUI(queries, mode, modeSpecifics));
 			TableUI tableui = new TableUI(table, new RankTableUIConfig(), RowHeightLayouts.UNIFORM);
 			ScrollingDecorator sc = new ScrollingDecorator(tableui, new ScrollBar(true), null,
 					RenderStyle.SCROLLBAR_WIDTH);

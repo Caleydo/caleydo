@@ -22,7 +22,7 @@ package org.caleydo.view.tourguide.spi.score;
 import java.awt.Color;
 
 import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.util.base.ILabelProvider;
+import org.caleydo.core.util.base.ILabeled;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.spi.algorithm.IComputeElement;
 import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
@@ -33,7 +33,7 @@ import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
  * @author Samuel Gratzl
  *
  */
-public interface IScore extends ILabelProvider {
+public interface IScore extends ILabeled {
 	/**
 	 * determines whether the current score support the given {@link EDataDomainQueryMode} mode
 	 *

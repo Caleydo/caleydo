@@ -107,4 +107,19 @@ public class PathwaySpecifics implements IDataDomainQueryModeSpecfics {
 		else
 			return Collections.emptyList();
 	}
+
+	/**
+	 * datadomains can be categorized in multiple categories
+	 * 
+	 * @return
+	 */
+	@Override
+	public int getNumCategories() {
+		return 1;
+	}
+
+	@Override
+	public int getCategory(IDataDomain dataDomain) {
+		return 0;
+	}
 }
