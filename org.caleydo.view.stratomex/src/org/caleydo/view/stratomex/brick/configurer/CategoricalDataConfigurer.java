@@ -31,7 +31,6 @@ import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.util.multiform.IEmbeddedVisualizationInfo;
 import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormRenderer;
-import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.stratomex.EEmbeddingID;
 import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.stratomex.brick.GLBrick;
@@ -71,7 +70,7 @@ public class CategoricalDataConfigurer extends ATableBasedDataConfigurer {
 		layoutTemplate.setFooterBarElements(footerBarElements);
 
 		layoutTemplate.showFooterBar(false);
-		layoutTemplate.showToolBar(false);
+		layoutTemplate.showToolBar(true);
 
 	}
 
@@ -155,8 +154,8 @@ public class CategoricalDataConfigurer extends ATableBasedDataConfigurer {
 			brick.associateIDs(globalRendererID++, localRendererID);
 		}
 
-		ALayoutRenderer overviewHeatMapRenderer = new OverviewHeatMapRenderer(brick.getTablePerspective(), brick
-				.getDataDomain().getTable(), true);
+		// ALayoutRenderer overviewHeatMapRenderer = new OverviewHeatMapRenderer(brick.getTablePerspective(), brick
+		// .getDataDomain().getTable(), true);
 
 		ALayoutRenderer compactOverviewHeatMapRenderer = new OverviewHeatMapRenderer(brick.getTablePerspective(), brick
 				.getDataDomain().getTable(), false);
@@ -174,8 +173,8 @@ public class CategoricalDataConfigurer extends ATableBasedDataConfigurer {
 			}
 		};
 
-		localRendererID = multiFormRenderer.addLayoutRenderer(overviewHeatMapRenderer,
-				EIconTextures.HEAT_MAP_ICON.getFileName(), visInfo, false);
+		// localRendererID = multiFormRenderer.addLayoutRenderer(overviewHeatMapRenderer,
+		// EIconTextures.HEAT_MAP_ICON.getFileName(), visInfo, false);
 		brick.associateIDs(globalRendererID++, localRendererID);
 
 		int compactRendererID = multiFormRenderer.addLayoutRenderer(compactOverviewHeatMapRenderer, null, visInfo,
