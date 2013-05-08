@@ -17,6 +17,8 @@ Caleydo uses Java, OpenGL and the Eclipse Rich Client Platform (RCP). Things you
 To install Caleydo use EGit within Eclipse and clone the repository. Each directory in the caleydo-dev folder corresponds to an Eclipse project. [Here](http://www.vogella.com/articles/EGit/article.html) is a good tutorial on how to import Eclipse projects from git.  
 
 If you want to use ssh (instead of https) for communicating with github out of eclipse follow [these](http://wiki.eclipse.org/EGit/User_Guide#Eclipse_SSH_Configuration) instructions.
+You will have to generate a new RSA key and save it to you ~/.ssh folder. This will result in a file ida_rsa and ida_rsa.pub turning up in your ssh folder.
+Save your public rsa key with your eclipse account folder.
  
 Team
 ====
