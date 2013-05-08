@@ -17,45 +17,37 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.serialize;
+package org.caleydo.core.startup;
 
-import java.util.Collection;
-
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
-
-import org.caleydo.core.data.datadomain.IDataDomain;
+import org.eclipse.jface.wizard.WizardPage;
+import org.eclipse.swt.widgets.Composite;
 
 /**
+ * an addon either for the overall caleydo wizard or for handling command line arguments
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
-public interface ISerializationAddon {
-	public Collection<? extends Class<?>> getJAXBContextClasses();
+public interface IStartupAddon {
 
 	/**
-	 * @param dirName
-	 * @param unmarshaller
+	 * @return true if no wizard is needed and the {@link IStartupProcedure} is already configured
 	 */
-	public void deserialize(String dirName, Unmarshaller unmarshaller);
-	/**
-	 * @param dirName
-	 * @param unmarshaller
-	 * @param serializationData
-	 */
-	public void deserialize(String dirName, Unmarshaller unmarshaller, SerializationData data);
+	boolean init();
 
 	/**
-	 * @param toSave
-	 * @param marshaller
-	 * @param dirName
+	 * creates an optional tab item composite for the startup wizard
+	 * 
+	 * @param parent
+	 * @param page
+	 * @return
 	 */
-	public void serialize(Collection<? extends IDataDomain> toSave, Marshaller marshaller, String dirName);
+	Composite create(Composite parent, WizardPage page);
 
 	/**
-	 * @param serializationDataList
+	 * creates the startup procedure that will load the configured data
+	 * 
+	 * @return
 	 */
-	public void load(SerializationData data);
-
-
+	IStartupProcedure create();
 }

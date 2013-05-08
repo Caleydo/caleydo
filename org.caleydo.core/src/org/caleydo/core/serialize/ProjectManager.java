@@ -51,7 +51,6 @@ import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.id.IDTypeInitializer;
 import org.caleydo.core.io.DataSetDescription;
-import org.caleydo.core.manager.BasicInformation;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.system.FileOperations;
@@ -125,9 +124,6 @@ public final class ProjectManager {
 	/** File name of file where list of plugins are to be stored */
 	private static final String PLUG_IN_LIST_FILE = "plugins.xml";
 
-	/** file name of the datadomain-file in project-folders */
-	private static final String BASIC_INFORMATION_FILE = "basic_information.xml";
-
 	/**
 	 * full path to directory to temporarily store the projects file before zipping
 	 */
@@ -188,11 +184,11 @@ public final class ProjectManager {
 
 		Unmarshaller unmarshaller = serializationManager.getProjectContext().createUnmarshaller();
 
-		GeneralManager.get().setBasicInfo(
-				(BasicInformation) unmarshaller.unmarshal(GeneralManager.get().getResourceLoader()
-						.getResource(dirName + ProjectManager.BASIC_INFORMATION_FILE)));
-
 		DataDomainList dataDomainList;
+
+		for (ISerializationAddon addon : serializationManager.getAddons()) {
+			addon.deserialize(dirName, unmarshaller);
+		}
 
 		dataDomainList = (DataDomainList) unmarshaller.unmarshal(GeneralManager.get().getResourceLoader()
 				.getResource(dirName + ProjectManager.DATA_DOMAIN_FILE));
@@ -513,10 +509,6 @@ public final class ProjectManager {
 			}
 			monitor.worked(w++);
 		}
-
-		monitor.subTask("Persisting General Information");
-		String fileName = dirName + BASIC_INFORMATION_FILE;
-		marshaller.marshal(GeneralManager.get().getBasicInfo(), new File(fileName));
 
 		DataDomainList dataDomainList = new DataDomainList();
 		dataDomainList.setDataDomains(dataDomains);

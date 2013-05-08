@@ -25,12 +25,12 @@ import java.util.Date;
 
 import org.caleydo.core.gui.SimpleAction;
 import org.caleydo.core.serialize.ProjectManager;
-import org.caleydo.core.startup.ApplicationWorkbenchWindowAdvisor;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PlatformUI;
 
 public class SaveProjectAction extends SimpleAction {
 
@@ -69,7 +69,8 @@ public class SaveProjectAction extends SimpleAction {
 			e.printStackTrace();
 		}
 
-		ApplicationWorkbenchWindowAdvisor.setWindowTitle("Caleydo - "
+		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell()
+				.setText("Caleydo - "
 				+ fileName.substring(fileName.lastIndexOf("/") + 1));
 	}
 }

@@ -17,11 +17,11 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.internal.serialize;
+package org.caleydo.datadomain.genetic.internal;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -31,64 +31,52 @@ import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.serialize.ISerializationAddon;
 import org.caleydo.core.serialize.SerializationData;
 import org.caleydo.core.util.logging.Logger;
-import org.caleydo.view.tourguide.api.score.ISerializeableScore;
-import org.caleydo.view.tourguide.internal.score.ExternalIDTypeScore;
-import org.caleydo.view.tourguide.internal.score.Scores;
+import org.caleydo.datadomain.genetic.Activator;
+import org.caleydo.datadomain.genetic.GeneticMetaData;
 
-import com.google.common.collect.Iterables;
+public class BasicInformationSerializationAddon implements ISerializationAddon {
+	private static final Logger log = Logger.create(BasicInformationSerializationAddon.class);
 
-/**
- * @author Samuel Gratzl
- *
- */
-public class TourGuideSerializationAddon implements ISerializationAddon {
-	private static final String ADDON_KEY = "tourguide";
-	private static final String PERSISTENT_SCORES_XML = "persistent_scores.xml";
-	private static final Logger log = Logger.create(TourGuideSerializationAddon.class);
+	/** file name of the datadomain-file in project-folders */
+	private static final String BASIC_INFORMATION_FILE = "basic_information.xml";
 
 	@Override
-	public Collection<Class<?>> getJAXBContextClasses() {
-		return Arrays.asList(ExternalIDTypeScore.class, PersistentScores.class);
+	public Collection<Class<BasicInformation>> getJAXBContextClasses() {
+		return Collections.singleton(BasicInformation.class);
 	}
+
 
 	@Override
 	public void deserialize(String dirName, Unmarshaller unmarshaller) {
-
-	}
-	@Override
-	public void deserialize(String dirName, Unmarshaller unmarshaller, SerializationData data) {
-		File f = new File(dirName, PERSISTENT_SCORES_XML);
-		if (!f.exists())
-			return;
+		BasicInformation infos;
 		try {
-			PersistentScores scores = (PersistentScores) unmarshaller.unmarshal(f);
-			data.setAddonData(ADDON_KEY, scores);
+			infos = (BasicInformation) unmarshaller.unmarshal(new File(dirName, BASIC_INFORMATION_FILE));
+			if (infos != null)
+				Activator.setOrganism(infos.getOrganism());
 		} catch (JAXBException e) {
-			log.error("can't deserialize", e);
+			log.error("can't deserialize basic information", e);
 		}
 	}
 
 	@Override
 	public void serialize(Collection<? extends IDataDomain> toSave, Marshaller marshaller, String dirName) {
-		Iterable<ISerializeableScore> toPersist = Scores.get().getPersistentScores();
-		if (Iterables.isEmpty(toPersist))
-			return;
-		File f = new File(dirName, PERSISTENT_SCORES_XML);
-		PersistentScores scores = new PersistentScores(toPersist);
+		BasicInformation infos = new BasicInformation();
+		infos.setOrganism(GeneticMetaData.getOrganism());
 		try {
-			marshaller.marshal(scores, f);
+			marshaller.marshal(infos, new File(dirName, BASIC_INFORMATION_FILE));
 		} catch (JAXBException e) {
-			log.error("can't serialize", e);
+			log.error("can't store organism", e);
 		}
 	}
 
 	@Override
 	public void load(SerializationData data) {
-		PersistentScores scores = (PersistentScores) data.getAddonData(ADDON_KEY);
-		if (scores == null)
-			return;
-		for (ISerializeableScore s : scores)
-			Scores.get().addPersistentScoreIfAbsent(s);
 	}
+
+	@Override
+	public void deserialize(String dirName, Unmarshaller unmarshaller, SerializationData data) {
+
+	}
+
 
 }

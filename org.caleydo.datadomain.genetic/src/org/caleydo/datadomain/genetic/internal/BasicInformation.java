@@ -17,38 +17,27 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.startup;
+package org.caleydo.datadomain.genetic.internal;
 
-import org.caleydo.core.view.RCPViewManager;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
-/**
- * Abstract startup procedure. Handling of view initialization and application
- * init data.
- * 
- * @author Marc Streit
- */
-public abstract class AStartupProcedure {
+import org.caleydo.datadomain.genetic.Organism;
 
-	public void init() {
+@XmlRootElement
+@XmlType
+@Deprecated
+// move to genetic data domain
+public class BasicInformation {
+
+	private Organism organism = Organism.HOMO_SAPIENS;
+
+	public void setOrganism(Organism organism) {
+		this.organism = organism;
 	}
 
-	/**
-	 * Initialization stuff that has to be done before the workbench opens
-	 * (e.g., copying the workbench data from a serialized project).
-	 */
-	public void initPreWorkbenchOpen() {
+	public Organism getOrganism() {
 
-	}
-
-	/**
-	 * Initialization stuff that has to be done after the workbech opened (e.g.,
-	 * making a specific view activate)
-	 **/
-	public abstract void postWorkbenchOpen();
-
-	public void execute() {
-
-		// Create RCP view manager
-		RCPViewManager.get();
+		return organism;
 	}
 }

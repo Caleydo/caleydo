@@ -158,6 +158,7 @@ Export-Package:
    org.caleydo.core.io,
    org.eclipse.jface.dialogs",
  org.caleydo.core.io.gui.dataimport.widget,
+ org.caleydo.core.io.gui.dataimport.wizard,
  org.caleydo.core.io.parser.ascii;
   uses:="org.caleydo.core.data.datadomain,
    org.caleydo.core.gui,
@@ -181,7 +182,7 @@ Export-Package:
    org.caleydo.core.data.datadomain,
    org.caleydo.core.view,
    javax.xml.bind",
- org.caleydo.core.specialized,
+ org.caleydo.core.startup,
  org.caleydo.core.util,
  org.caleydo.core.util.base,
  org.caleydo.core.util.clusterer;

@@ -22,7 +22,7 @@ package org.caleydo.core.io.gui;
 import org.caleydo.core.gui.SimpleAction;
 import org.caleydo.core.gui.util.HelpButtonWizardDialog;
 import org.caleydo.core.io.gui.dataimport.wizard.DataImportWizard;
-import org.caleydo.core.startup.StartupProcessor;
+import org.eclipse.swt.widgets.Display;
 
 public class ImportDataAction extends SimpleAction {
 
@@ -44,7 +44,6 @@ public class ImportDataAction extends SimpleAction {
 
 		DataImportWizard dataImportWizard = new DataImportWizard();
 
-		new HelpButtonWizardDialog(StartupProcessor.get().getDisplay().getActiveShell(),
-				dataImportWizard).open();
+		new HelpButtonWizardDialog(Display.getDefault().getActiveShell(), dataImportWizard).open();
 	}
 }

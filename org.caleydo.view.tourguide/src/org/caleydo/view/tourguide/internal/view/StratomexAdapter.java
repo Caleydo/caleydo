@@ -476,6 +476,10 @@ public class StratomexAdapter {
 			} else if (!contains(strat)) { // add it not existing
 				createBrickColumn(strat, null);
 			}
+			break;
+		case CATEGORICAL:
+			// TODO
+			break;
 		}
 	}
 

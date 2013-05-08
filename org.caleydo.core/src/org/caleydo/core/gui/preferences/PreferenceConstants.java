@@ -1,25 +1,24 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.core.gui.preferences;
 
-import org.caleydo.core.startup.gui.ChooseProjectTypePage.EProjectLoadType;
 
 /**
  * Constant definitions for plug-in preferences
@@ -63,15 +62,6 @@ public class PreferenceConstants {
 	// Parallel Coordinates
 	public static final String PC_NUM_RANDOM_SAMPLING_POINT = "pcNumRandomSamplinPoints";
 	public static final String PC_LIMIT_REMOTE_TO_CONTEXT = "pcLimitRemoteToContext";
-
-	// Visual Links
-	public static final String VISUAL_LINKS_STYLE = "visualLinksStyle";
-	public static final String VISUAL_LINKS_ANIMATION = "visualLinksAnimation";
-	public static final String VISUAL_LINKS_WIDTH = "visualLinksWidth";
-	public static final String VISUAL_LINKS_COLOR = "visualLinksColor";
-	public static final String VISUAL_LINKS_ANIMATED_HALO = "visualLinksAnimatedHalo";
-	public static final String VISUAL_LINKS_FOR_MOUSE_OVER = "visualLinksForMouseOver";
-	public static final String VISUAL_LINKS_FOR_SELECTIONS = "visualLinksForSelections";
 
 	public static final String DATA_FILTER_LEVEL = "dataFilterLevel";
 

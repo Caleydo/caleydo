@@ -17,45 +17,24 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.serialize;
+package org.caleydo.datadomain.genetic;
 
-import java.util.Collection;
+import org.caleydo.datadomain.genetic.internal.BasicInformation;
 
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
-
-import org.caleydo.core.data.datadomain.IDataDomain;
 
 /**
+ * the new {@link BasicInformation} holder
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
-public interface ISerializationAddon {
-	public Collection<? extends Class<?>> getJAXBContextClasses();
+public class GeneticMetaData {
+	static Organism organism = Organism.HOMO_SAPIENS;
 
 	/**
-	 * @param dirName
-	 * @param unmarshaller
+	 * @return the organism, see {@link #organism}
 	 */
-	public void deserialize(String dirName, Unmarshaller unmarshaller);
-	/**
-	 * @param dirName
-	 * @param unmarshaller
-	 * @param serializationData
-	 */
-	public void deserialize(String dirName, Unmarshaller unmarshaller, SerializationData data);
-
-	/**
-	 * @param toSave
-	 * @param marshaller
-	 * @param dirName
-	 */
-	public void serialize(Collection<? extends IDataDomain> toSave, Marshaller marshaller, String dirName);
-
-	/**
-	 * @param serializationDataList
-	 */
-	public void load(SerializationData data);
-
-
+	public static Organism getOrganism() {
+		return organism;
+	}
 }
