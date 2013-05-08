@@ -21,6 +21,7 @@ package org.caleydo.view.stratomex;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -49,6 +50,7 @@ import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.events.RecordVAUpdateEvent;
 import org.caleydo.core.data.virtualarray.similarity.RelationAnalyzer;
 import org.caleydo.core.event.EventListenerManager;
+import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventListenerManagers;
 import org.caleydo.core.event.data.RelationsUpdatedEvent;
 import org.caleydo.core.event.data.RemoveDataDomainEvent;
@@ -97,6 +99,7 @@ import org.caleydo.view.stratomex.event.AddGroupsToStratomexEvent;
 import org.caleydo.view.stratomex.event.AddKaplanMaiertoStratomexEvent;
 import org.caleydo.view.stratomex.event.ConnectionsModeEvent;
 import org.caleydo.view.stratomex.event.HighlightBrickEvent;
+import org.caleydo.view.stratomex.event.MergeBricksEvent;
 import org.caleydo.view.stratomex.event.ReplaceKaplanMaierPerspectiveEvent;
 import org.caleydo.view.stratomex.event.SelectElementsEvent;
 import org.caleydo.view.stratomex.event.SplitBrickEvent;
@@ -975,6 +978,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		listeners.register(HighlightBrickEvent.class, new HighlightBrickEventListener(this));
 		listeners.register(SelectElementsEvent.class, new SelectElementsListener().setHandler(this));
 		listeners.register(RemoveDataDomainEvent.class, new DataDomainEventListener().setHandler(this));
+		listeners.register(this);
 	}
 
 	@Override
@@ -1599,6 +1603,76 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 
 		eventPublisher.triggerEvent(event);
 
+	}
+
+	@ListenTo
+	public void onMergeBricks(MergeBricksEvent event) {
+
+		List<GLBrick> bricksToMerge = event.getBricks();
+		if (bricksToMerge.size() <= 1)
+			return;
+		Collections.reverse(bricksToMerge);
+
+		BrickColumn brickColumn = bricksToMerge.get(0).getBrickColumn();
+		Perspective sourcePerspective = brickColumn.getTablePerspective().getRecordPerspective();
+		VirtualArray sourceVA = sourcePerspective.getVirtualArray();
+		List<GLBrick> bricks = brickColumn.getSegmentBricks();
+		Collections.reverse(bricks);
+
+		List<Integer> mergedBrickIDs = new ArrayList<>();
+
+		// add ids of all bricks
+		for (GLBrick brick : bricksToMerge) {
+			mergedBrickIDs.addAll(brick.getTablePerspective().getRecordPerspective().getVirtualArray().getIDs());
+		}
+
+		List<Integer> newIDs = new ArrayList<Integer>(sourceVA.size());
+		List<Integer> groupSizes = new ArrayList<Integer>(bricks.size() - bricksToMerge.size() + 1);
+		List<String> groupNames = new ArrayList<String>(bricks.size() - bricksToMerge.size() + 1);
+		List<Integer> sampleElements = new ArrayList<Integer>(bricks.size() - bricksToMerge.size() + 1);
+		boolean mergedBrickAdded = false;
+
+		int sizeCounter = 0;
+		for (GLBrick brick : bricks) {
+			if (bricksToMerge.contains(brick)) {
+				if (mergedBrickAdded)
+					continue;
+				newIDs.addAll(mergedBrickIDs);
+				groupSizes.add(mergedBrickIDs.size());
+				sampleElements.add(sizeCounter);
+				sizeCounter += mergedBrickIDs.size();
+				StringBuilder label = new StringBuilder("Merge of ");
+				for (int i = 0; i < bricksToMerge.size(); i++) {
+					GLBrick b = bricksToMerge.get(i);
+					label.append(sourceVA.getGroupList().get(b.getTablePerspective().getRecordGroup().getGroupIndex())
+							.getLabel());
+					if (i < bricksToMerge.size() - 1)
+						label.append(", ");
+				}
+				groupNames.add(label.toString());
+				mergedBrickAdded = true;
+			} else {
+				List<Integer> brickIDs = brick.getTablePerspective().getRecordPerspective().getVirtualArray().getIDs();
+				newIDs.addAll(brickIDs);
+				groupSizes.add(brickIDs.size());
+				sampleElements.add(sizeCounter);
+				sizeCounter += brickIDs.size();
+				groupNames.add(sourceVA.getGroupList()
+						.get(brick.getTablePerspective().getRecordGroup().getGroupIndex()).getLabel());
+			}
+		}
+
+		PerspectiveInitializationData data = new PerspectiveInitializationData();
+
+		data.setData(newIDs, groupSizes, sampleElements, groupNames);
+		// FIXME the rest should probably not be done here but in the data
+		// domain.
+		sourcePerspective.init(data);
+
+		RecordVAUpdateEvent e = new RecordVAUpdateEvent();
+		e.setPerspectiveID(sourcePerspective.getPerspectiveID());
+
+		eventPublisher.triggerEvent(e);
 	}
 
 	public int getNextConnectionBandID() {

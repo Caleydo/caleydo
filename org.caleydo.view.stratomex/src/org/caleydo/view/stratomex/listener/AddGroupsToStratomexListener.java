@@ -80,7 +80,7 @@ public class AddGroupsToStratomexListener extends AEventListener<GLStratomex> {
 			// dependent sorting
 			dataConfigurer = new ClinicalDataConfigurer();
 			ExternallyProvidedSortingStrategy sortingStrategy = new ExternallyProvidedSortingStrategy();
-			sortingStrategy.setExternalBricks(brickColumn.getBricks());
+			sortingStrategy.setExternalBricks(brickColumn.getSegmentBricks());
 			HashMap<Perspective, Perspective> m = Maps.newHashMap();
 			m.put(kaplan.getRecordPerspective(), underlying.getRecordPerspective());
 			sortingStrategy.setHashConvertedRecordPerspectiveToOrginalRecordPerspective(m);

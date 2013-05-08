@@ -27,6 +27,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
@@ -35,7 +36,6 @@ import org.caleydo.core.data.collection.table.TableUtils;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
-import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
 import org.caleydo.core.data.selection.IEventBasedSelectionManagerUser;
 import org.caleydo.core.data.selection.SelectionManager;
@@ -50,6 +50,7 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.contextmenu.ContextMenuCreator;
+import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
@@ -99,6 +100,7 @@ import org.caleydo.view.stratomex.dialog.CreatePathwayComparisonGroupDialog;
 import org.caleydo.view.stratomex.dialog.CreatePathwaySmallMultiplesGroupDialog;
 import org.caleydo.view.stratomex.event.AddGroupsToStratomexEvent;
 import org.caleydo.view.stratomex.event.ExportBrickDataEvent;
+import org.caleydo.view.stratomex.event.MergeBricksEvent;
 import org.caleydo.view.stratomex.event.OpenCreateKaplanMeierSmallMultiplesGroupDialogEvent;
 import org.caleydo.view.stratomex.event.OpenCreatePathwayGroupDialogEvent;
 import org.caleydo.view.stratomex.event.OpenCreatePathwaySmallMultiplesGroupDialogEvent;
@@ -889,17 +891,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 				contextMenuCreator.addContextMenuItem(new RenameBrickItem(getID()));
 				contextMenuCreator.addContextMenuItem(new RemoveColumnItem(stratomex, getBrickColumn()
 						.getTablePerspective()));
-				// Set<Integer> tablePerspectiveIDs = tablePerspectiveSelectionManager
-				// .getElements(tablePerspectiveSelectionManager.getSelectionType());
-				// only consider tableperspective of currently selected bricks of the same column
-				// Set<TablePerspective> tablePerspectives = new LinkedHashSet<>();
-				// for (GLBrick brick : brickColumn.getBricks()) {
-				// for (Integer id : tablePerspectiveIDs) {
-				// if(brick.getTablePerspective().getID() == id || brick == GLBrick.this) {
-				// tablePerspectives.add(brick.getTablePerspective());
-				// }
-				// }
-				// }
+
 				contextMenuCreator.addContextMenuItem(new ExportBrickDataItem(GLBrick.this, false));
 				contextMenuCreator.addContextMenuItem(new ExportBrickDataItem(GLBrick.this, true));
 
@@ -920,6 +912,24 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 					for (IContextMenuBrickFactory factory : contextMenuFactories)
 						for (AContextMenuItem item : factory.createGroupEntries(brickColumn, tablePerspective))
 							contextMenuCreator.addContextMenuItem(item);
+
+					Set<Integer> tablePerspectiveIDs = tablePerspectiveSelectionManager
+							.getElements(tablePerspectiveSelectionManager.getSelectionType());
+					// only consider tableperspective of currently selected bricks of the same column
+					List<GLBrick> bricks = new ArrayList<>();
+					for (GLBrick brick : brickColumn.getSegmentBricks()) {
+						for (Integer id : tablePerspectiveIDs) {
+							if ((brick.getTablePerspective().getID() == id || brick == GLBrick.this)
+									&& !brick.isHeaderBrick() && !(bricks.contains(brick))) {
+								bricks.add(brick);
+							}
+						}
+					}
+					if (bricks.size() > 1) {
+						MergeBricksEvent event = new MergeBricksEvent(bricks);
+						event.to(stratomex);
+						contextMenuCreator.add(new GenericContextMenuItem("Merge selected bricks", event));
+					}
 
 					// FIXME: if added, this line causes the context menu on the bricks to not appear
 					// selectElementsByGroup();
@@ -1207,7 +1217,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 						ClinicalDataConfigurer dataConfigurer = new ClinicalDataConfigurer();
 						ExternallyProvidedSortingStrategy sortingStrategy = new ExternallyProvidedSortingStrategy();
-						sortingStrategy.setExternalBricks(brickColumn.getBricks());
+						sortingStrategy.setExternalBricks(brickColumn.getSegmentBricks());
 						sortingStrategy.setHashConvertedRecordPerspectiveToOrginalRecordPerspective(dialog
 								.getHashConvertedRecordPerspectiveToOrginalRecordPerspective());
 						dataConfigurer.setSortingStrategy(sortingStrategy);
@@ -1396,16 +1406,17 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 					if (exportIdentifiersOnly) {
 						Perspective dimensionPerspective = new Perspective();
 						dimensionPerspective.setVirtualArray(new VirtualArray(dataDomain.getDimensionIDType()));
-						Perspective recordPerspective = new Perspective(dataDomain, dataDomain.getRecordIDType());
-						PerspectiveInitializationData recordPerspectiveInitData = new PerspectiveInitializationData();
-						List<Integer> allIDs = new ArrayList<>(tablePerspective.getRecordPerspective()
-								.getVirtualArray().getIDs());
-						recordPerspectiveInitData.setData(allIDs);
-						recordPerspective.init(recordPerspectiveInitData);
-						TableUtils.export(dataDomain, fileName, recordPerspective, dimensionPerspective, null, null,
-								false);
-						// TableUtils.export(dataDomain, fileName, tablePerspective.getRecordPerspective(),
-						// dimensionPerspective, null, null, false);
+						// Perspective recordPerspective = new Perspective(dataDomain, dataDomain.getRecordIDType());
+						// PerspectiveInitializationData recordPerspectiveInitData = new
+						// PerspectiveInitializationData();
+						// List<Integer> allIDs = new ArrayList<>(tablePerspective.getRecordPerspective()
+						// .getVirtualArray().getIDs());
+						// recordPerspectiveInitData.setData(allIDs);
+						// recordPerspective.init(recordPerspectiveInitData);
+						// TableUtils.export(dataDomain, fileName, recordPerspective, dimensionPerspective, null, null,
+						// false);
+						TableUtils.export(dataDomain, fileName, tablePerspective.getRecordPerspective(),
+								dimensionPerspective, null, null, false);
 					} else {
 						TableUtils.export(dataDomain, fileName, tablePerspective.getRecordPerspective(),
 								tablePerspective.getDimensionPerspective(), null, null, false);
