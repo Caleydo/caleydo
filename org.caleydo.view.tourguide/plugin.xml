@@ -84,4 +84,10 @@
          </view>
       </perspectiveExtension>
    </extension>
+   <extension
+         point="org.caleydo.view.stratomex.AddWizardElementFactory">
+      <factory
+            class="org.caleydo.view.tourguide.internal.stratomex.AddWizardElementFactory">
+      </factory>
+   </extension>
 </plugin>

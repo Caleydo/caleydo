@@ -52,7 +52,6 @@ import org.caleydo.view.stratomex.EPickingType;
 import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.stratomex.brick.GLBrick;
 import org.caleydo.view.stratomex.brick.ui.RectangleCoordinates;
-import org.caleydo.view.stratomex.tourguide.TourguideUtils;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
@@ -435,8 +434,8 @@ public class BrickColumnSpacingRenderer
 						leftCenterBrickBottom, 0 }, false, 0, GLStratomex.ARCH_COLOR,
 						GLStratomex.ARCH_COLOR[3], true);
 				// render add button
-				TourguideUtils.renderAddButton(gl, xStart, leftCenterBrickTop, x, leftCenterBrickBottom - leftCenterBrickTop,
-						stratomex, ID);
+				stratomex.getTourguide().renderAddButton(gl, xStart, leftCenterBrickTop, x,
+						leftCenterBrickBottom - leftCenterBrickTop, ID);
 
 			}
 
@@ -476,8 +475,9 @@ public class BrickColumnSpacingRenderer
 								rightCenterBrickBottom, 0 }, false, 0, GLStratomex.ARCH_COLOR,
 						GLStratomex.ARCH_COLOR[3], true);
 				// render add button
-				TourguideUtils.renderAddButton(gl, x, rightCenterBrickTop, xEnd - x, rightCenterBrickBottom
-						- rightCenterBrickTop, stratomex, ID);
+				stratomex.getTourguide().renderAddButton(gl, x, rightCenterBrickTop, xEnd - x,
+						rightCenterBrickBottom
+						- rightCenterBrickTop, ID);
 
 			}
 
@@ -500,8 +500,8 @@ public class BrickColumnSpacingRenderer
 				GLStratomex.ARCH_COLOR, true);
 
 		// render add button
-		TourguideUtils.renderAddButton(gl, 0, (leftCenterBrickTop + rightCenterBrickTop) * 0.5f, x, (leftCenterBrickBottom
-				- leftCenterBrickTop + rightCenterBrickBottom - rightCenterBrickTop) * 0.5f, stratomex, ID);
+		stratomex.getTourguide().renderAddButton(gl, 0, (leftCenterBrickTop + rightCenterBrickTop) * 0.5f, x,
+				(leftCenterBrickBottom - leftCenterBrickTop + rightCenterBrickBottom - rightCenterBrickTop) * 0.5f, ID);
 
 	}
 

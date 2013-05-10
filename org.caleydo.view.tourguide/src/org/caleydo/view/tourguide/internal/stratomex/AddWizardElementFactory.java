@@ -17,39 +17,20 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.stratomex.tourguide;
+package org.caleydo.view.tourguide.internal.stratomex;
 
-import javax.media.opengl.GL2;
-
-import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
+import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.view.stratomex.tourguide.IAddWizardElementFactory;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class ConfirmCancelLayoutRenderer extends ALayoutRenderer {
-	private final AGLView view;
-	private final int id;
-	private final TourguideAdapter tourguide;
-
-	public ConfirmCancelLayoutRenderer(AGLView view, int id, TourguideAdapter tourguide) {
-		this.view = view;
-		this.id = id;
-		this.tourguide = tourguide;
-	}
+public class AddWizardElementFactory implements IAddWizardElementFactory {
 
 	@Override
-	protected void renderContent(GL2 gl) {
-		float hi = view.getPixelGLConverter().getGLHeightForPixelHeight(34);
-		float wi = view.getPixelGLConverter().getGLWidthForPixelWidth(32);
-		tourguide.renderConfirmButton(gl, x * 1.05f, y * 0.8f, wi, hi, id);
-		tourguide.renderCancelButton(gl, x * 1.05f, y * 0.8f + hi, wi, hi, id);
-	}
-
-	@Override
-	protected boolean permitsWrappingDisplayLists() {
-		return true;
+	public GLElement create() {
+		return new AddWizardElement(100);
 	}
 
 }

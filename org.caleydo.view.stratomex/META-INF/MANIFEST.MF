@@ -18,7 +18,8 @@ Export-Package: org.caleydo.view.stratomex,
  org.caleydo.view.stratomex.brick.sorting,
  org.caleydo.view.stratomex.column,
  org.caleydo.view.stratomex.event,
- org.caleydo.view.stratomex.toolbar
+ org.caleydo.view.stratomex.toolbar,
+ org.caleydo.view.stratomex.tourguide
 Bundle-Vendor: www.caleydo.org
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.caleydo.view.stratomex.Activator
