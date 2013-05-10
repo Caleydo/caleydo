@@ -52,6 +52,7 @@ import org.caleydo.view.stratomex.EPickingType;
 import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.stratomex.brick.GLBrick;
 import org.caleydo.view.stratomex.brick.ui.RectangleCoordinates;
+import org.caleydo.view.stratomex.tourguide.Utils;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
@@ -322,6 +323,8 @@ public class BrickColumnSpacingRenderer
 		renderDimensionGroupConnections(gl);
 		renderDragAndDropMarker(gl);
 
+
+
 		// FIXME Stratomex 2.0 testing
 		// if (leftDimGroup != null && rightDimGroup != null) {
 		// float score =
@@ -431,6 +434,10 @@ public class BrickColumnSpacingRenderer
 						0 }, new float[] { 0, leftCenterBrickTop, 0 }, new float[] { 0,
 						leftCenterBrickBottom, 0 }, false, 0, GLStratomex.ARCH_COLOR,
 						GLStratomex.ARCH_COLOR[3], true);
+				// render add button
+				Utils.renderAddButton(gl, xStart, leftCenterBrickTop, x, leftCenterBrickBottom - leftCenterBrickTop,
+						stratomex, ID);
+
 			}
 
 		}
@@ -468,6 +475,10 @@ public class BrickColumnSpacingRenderer
 								rightCenterBrickTop, 0 }, new float[] { xEnd,
 								rightCenterBrickBottom, 0 }, false, 0, GLStratomex.ARCH_COLOR,
 						GLStratomex.ARCH_COLOR[3], true);
+				// render add button
+				Utils.renderAddButton(gl, x, rightCenterBrickTop, xEnd - x, rightCenterBrickBottom
+						- rightCenterBrickTop, stratomex, ID);
+
 			}
 
 		}
@@ -487,7 +498,14 @@ public class BrickColumnSpacingRenderer
 						rightCenterBrickTop, 0 },
 				new float[] { x, rightCenterBrickBottom, 0 }, false, curveOffset, 0,
 				GLStratomex.ARCH_COLOR, true);
+
+		// render add button
+		Utils.renderAddButton(gl, 0, (leftCenterBrickTop + rightCenterBrickTop) * 0.5f, x, (leftCenterBrickBottom
+				- leftCenterBrickTop + rightCenterBrickBottom - rightCenterBrickTop) * 0.5f, stratomex, ID);
+
 	}
+
+
 
 	private void renderDimensionGroupConnections(GL2 gl) {
 

@@ -75,9 +75,9 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class BrickColumn extends ATableBasedView implements ILayoutSizeCollisionHandler, ILayoutedElement, IDraggable,
 		IGLRemoteRenderingView {
-	public static String VIEW_TYPE = "org.caleydo.view.dimensiongroup";
+	public static final String VIEW_TYPE = "org.caleydo.view.dimensiongroup";
 
-	public static String VIEW_NAME = "Brick Column";
+	public static final String VIEW_NAME = "Brick Column";
 
 	public final static int PIXEL_PER_DIMENSION = 30;
 	public final static int MIN_BRICK_WIDTH_PIXEL = 170;

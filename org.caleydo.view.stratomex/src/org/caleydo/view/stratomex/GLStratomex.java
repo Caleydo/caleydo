@@ -86,6 +86,8 @@ import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
+import org.caleydo.core.view.opengl.util.texture.TextureManager;
+import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
 import org.caleydo.view.stratomex.brick.GLBrick;
 import org.caleydo.view.stratomex.brick.configurer.CategoricalDataConfigurer;
@@ -249,6 +251,8 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		relationAnalyzer = new RelationAnalyzer();
 
 		tablePerspectives = new ArrayList<TablePerspective>();
+
+		textureManager = new TextureManager(new ResourceLoader(Activator.getResourceLocator()));
 
 		registerPickingListeners();
 	}
@@ -1606,7 +1610,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	}
 
 	@ListenTo
-	public void onMergeBricks(MergeBricksEvent event) {
+	private void onMergeBricks(MergeBricksEvent event) {
 
 		List<GLBrick> bricksToMerge = event.getBricks();
 		if (bricksToMerge.size() <= 1)
