@@ -17,20 +17,50 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.internal.stratomex;
+package org.caleydo.view.tourguide.api.state;
 
+import java.util.List;
+
+import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.io.gui.dataimport.widget.ICallback;
 import org.caleydo.core.view.opengl.layout2.GLElement;
-import org.caleydo.view.stratomex.tourguide.IAddWizardElementFactory;
+import org.caleydo.core.view.opengl.layout2.basic.GLButton;
+import org.caleydo.core.view.opengl.layout2.basic.GLButton.ISelectionCallback;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class AddWizardElementFactory implements IAddWizardElementFactory {
 
-	@Override
-	public GLElement create() {
-		return new AddWizardElement();
+public class ButtonTransition implements ITransition {
+	private final IState target;
+	private final String label;
+
+	public ButtonTransition(IState target, String label) {
+		this.target = target;
+		this.label = label;
 	}
 
+	@Override
+	public IState getTarget() {
+		return target;
+	}
+
+	@Override
+	public boolean apply(List<TablePerspective> existing) {
+		return true;
+	}
+
+	@Override
+	public GLElement create(final ICallback<ITransition> onApply) {
+		GLButton b = new GLButton();
+		b.setCallback(new ISelectionCallback() {
+			@Override
+			public void onSelectionChanged(GLButton button, boolean selected) {
+				onApply.on(ButtonTransition.this);
+			}
+		});
+		b.setRenderer(new MultiLineTextRenderer(label));
+		return b;
+	}
 }

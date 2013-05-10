@@ -21,121 +21,134 @@ package org.caleydo.view.tourguide.internal.stratomex;
 
 import java.awt.Color;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import org.caleydo.core.view.opengl.layout.Column.VAlign;
+import org.caleydo.core.io.gui.dataimport.widget.ICallback;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
-import org.caleydo.core.view.opengl.layout2.basic.GLButton;
-import org.caleydo.core.view.opengl.layout2.basic.GLButton.ISelectionCallback;
+import org.caleydo.core.view.opengl.layout2.GLSandBox;
 import org.caleydo.core.view.opengl.layout2.basic.GLElementSelector;
 import org.caleydo.core.view.opengl.layout2.layout.GLFlowLayout;
 import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
+import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
+import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
+import org.caleydo.view.tourguide.api.state.ButtonTransition;
+import org.caleydo.view.tourguide.api.state.IState;
+import org.caleydo.view.tourguide.api.state.ITransition;
+import org.caleydo.view.tourguide.api.state.MultiLineTextRenderer;
+import org.caleydo.view.tourguide.api.state.OpenTourGuideState;
+import org.caleydo.view.tourguide.api.state.SimpleState;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class AddWizardElement extends GLElementSelector implements ISelectionCallback {
-	private static int LINE_HEIGHT = 15;
-	private int state = 0;
+public class AddWizardElement extends GLElementSelector implements ICallback<ITransition> {
+	private final IGLLayout stateLayout;
 
-	public AddWizardElement(float archHeight) {
-		int act = 1;
-		GLFlowLayout layout = new GLFlowLayout(false, 10, new GLPadding(2, 10, 2, 10));
-		GLElementContainer start = new GLElementContainer(layout);
-		this.add(start);
-		start.add(createState(archHeight, ""));
+	private IState current;
+	private Map<IState, Integer> stateMap = new HashMap<>();
 
+	public AddWizardElement() {
+		this.stateLayout = new GLFlowLayout(false, 10, new GLPadding(2, 10, 2, 10));
+		this.current = createStateMachine();
+		this.current.onEnter();
+		this.add(convert(current));
+		stateMap.put(current, 0);
+	}
+
+	private GLElement convert(final IState state) {
+		GLElementContainer container = new GLElementContainer(stateLayout);
+		container.add(new GLElement(multiLine(state.getLabel().split("\n"))).setSize(-1, 100));
+		for (ITransition t : state.getTransitions()) {
+			container.add(t.create(this));
+		}
+		container.setLayoutData(state);
+		return container;
+	}
+
+	private IState createStateMachine() {
+		SimpleState start = new SimpleState("");
 		{
-			start.add(createTransition(act++, "Add", "Stratification"));
-			GLElementContainer stratification = new GLElementContainer(layout);
-			this.add(stratification);
-			stratification.add(createState(archHeight, "Add", "Stratification"));
+			SimpleState stratification = new SimpleState("Add\nStratification");
+			start.addTransition(new ButtonTransition(stratification, "Add\nStratification"));
 
-			int browseId;
-			stratification.add(createTransition(browseId = act++, "Browse List"));
-			{
-				GLElementContainer browse = new GLElementContainer(layout);
-				this.add(browse);
-				browse.add(createState(archHeight, "Add", "Stratification"));
-				browse.add(createFinal("Select", "a stratification in", "the Tour Guide", "to preview.", "",
-						"Then confirm", "or cancel your", "selection."));
-			}
-			stratification.add(createTransition(act++, "Find similar to displayed stratification"));
-			{
-				GLElementContainer adjustedRand = new GLElementContainer(layout);
-				this.add(adjustedRand);
-				adjustedRand.add(createState(archHeight, "Add", "Stratification"));
-				adjustedRand
-						.add(createAction(
-								browseId,
-								"Select query stratification by clicking on the header brick of one of the displayed columns\nChange query by cvlicking on other header brick at any time"));
-			}
-			stratification.add(createTransition(act++, "Find large overlap with displayed clusters"));
-			{
-				GLElementContainer adjustedRand = new GLElementContainer(layout);
-				this.add(adjustedRand);
-				adjustedRand.add(createState(archHeight, "Add", "Stratification"));
-				adjustedRand
-						.add(createAction(
-								browseId,
-								"Select query stratification by clicking on a brick in one of the displayed columns\nChange query by cvlicking on other brick at any time"));
-			}
+			IState browse = new OpenTourGuideState(EDataDomainQueryMode.STRATIFICATIONS,
+					"Select\na stratification in\nthe Tour Guide\nto preview.\n\nThen confirm\nor cancel your\nselection.");
+			stratification.addTransition(new ButtonTransition(browse, "Browse List"));
+
+			// IState adjustedRand = new SelectStratificationState()
+			// stratification.addTransition(new ButtonTransition(target, label))
+			//
+			// stratification.add(createTransition(act++, "Find similar to displayed stratification"));
+			// {
+			// GLElementContainer adjustedRand = new GLElementContainer(layout);
+			// this.add(adjustedRand);
+			// adjustedRand.add(createState("Add", "Stratification"));
+			// adjustedRand
+			// .add(createAction(
+			// browseId,
+			// "Select query stratification by clicking on the header brick of one of the displayed columns\nChange query by cvlicking on other header brick at any time"));
+			// }
+			// stratification.add(createTransition(act++, "Find large overlap with displayed clusters"));
+			// {
+			// GLElementContainer adjustedRand = new GLElementContainer(layout);
+			// this.add(adjustedRand);
+			// adjustedRand.add(createState("Add", "Stratification"));
+			// adjustedRand
+			// .add(createAction(
+			// browseId,
+			// "Select query stratification by clicking on a brick in one of the displayed columns\nChange query by cvlicking on other brick at any time"));
+			// }
 
 		}
 
 		{
-			start.add(createTransition(act++, "Add", "Pathway"));
-			GLElementContainer pathway = new GLElementContainer(layout);
-			this.add(pathway);
-			pathway.add(createState(archHeight, "Add", "Pathway"));
-			pathway.add(createTransition(act++, "Browse List and stratify with displayed stratification"));
-			{
-				GLElementContainer list = new GLElementContainer(layout);
-				this.add(list);
-				list.add(createState(archHeight, "Add", "Pathway"));
-				list.add(createAction(act++, "Select a pathway in the Tour Guide."));
+			SimpleState pathway = new SimpleState("Add\nPathway");
+			start.addTransition(new ButtonTransition(pathway, "Add\nPathway"));
 
-				{
-					GLElementContainer s = new GLElementContainer(layout);
-					this.add(s);
-					s.add(createState(archHeight, "Add", "Pathway"));
-					// dynamic preview
-					s.add(createFinal("Change pathway in Tour Guide at any time\nSelect stratification by clicking on the header brick of one of the displayed columns"));
-				}
-				list.add(createTransition(act++, "Find with GSEA based on displayed stratification"));
-				list.add(createTransition(act++, "Find with GSEA based on strat. not displayed"));
+			IState browse = new OpenTourGuideState(EDataDomainQueryMode.PATHWAYS,
+					"Select\na stratification in\nthe Tour Guide\nto preview.\n\nThen confirm\nor cancel your\nselection.");
+			pathway.addTransition(new ButtonTransition(browse, "Browse List"));
 
-			}
+			// start.add(createTransition(act++, "Add", "Pathway"));
+			// GLElementContainer pathway = new GLElementContainer(layout);
+			// this.add(pathway);
+			// pathway.add(createState("Add", "Pathway"));
+			// pathway.add(createTransition(act++, "Browse List and stratify with displayed stratification"));
+			// {
+			// GLElementContainer list = new GLElementContainer(layout);
+			// this.add(list);
+			// list.add(createState("Add", "Pathway"));
+			// list.add(createAction(act++, "Select a pathway in the Tour Guide."));
+			//
+			// {
+			// GLElementContainer s = new GLElementContainer(layout);
+			// this.add(s);
+			// s.add(createState("Add", "Pathway"));
+			// // dynamic preview
+			// s.add(createFinal("Change pathway in Tour Guide at any time\nSelect stratification by clicking on the header brick of one of the displayed columns"));
+			// }
+			// list.add(createTransition(act++, "Find with GSEA based on displayed stratification"));
+			// list.add(createTransition(act++, "Find with GSEA based on strat. not displayed"));
+			//
+			// }
 		}
 
 		{
-			start.add(createTransition(act++, "Add", "Numerical Data"));
-			GLElementContainer numericalData = new GLElementContainer(layout);
-			this.add(numericalData);
-			numericalData.add(createState(archHeight, "Add", "Numerical Data"));
-			numericalData.add(createFinal("Select", "a numerical data in", "the Tour Guide", "to preview.", "",
-					"Then confirm", "or cancel your", "selection."));
+			SimpleState numerical = new SimpleState("Add\nNumerical Data");
+			start.addTransition(new ButtonTransition(numerical, "Add\nNumerical Data"));
+
+			IState browse = new OpenTourGuideState(EDataDomainQueryMode.NUMERICAL,
+					"Select\na numerical data in\nthe Tour Guide\nto preview.\n\nThen confirm\nor cancel your\nselection.");
+			numerical.addTransition(new ButtonTransition(browse, "Browse List"));
 		}
-	}
 
-	private GLElement createState(float height, String... lines) {
-		return new GLElement(multiLine(lines)).setSize(-1, height);
-	}
-
-	private GLElement createAction(int objectId, String... lines) {
-		return new ActionElement().setCallback(this).setPickingObjectId(objectId).setRenderer(multiLine(lines));
-	}
-
-	private GLElement createTransition(int objectId, String... lines) {
-		return new GLButton().setCallback(this).setPickingObjectId(objectId).setRenderer(multiLine(lines));
-	}
-
-	private GLElement createFinal(String... lines) {
-		return new GLElement(multiLine(lines));
+		return start;
 	}
 
 	/**
@@ -144,24 +157,28 @@ public class AddWizardElement extends GLElementSelector implements ISelectionCal
 	 */
 	private IGLRenderer multiLine(String[] lines) {
 		final List<String> l = Arrays.asList(lines);
-		return new IGLRenderer() {
-			@Override
-			public void render(GLGraphics g, float w, float h, GLElement parent) {
-				g.drawText(l, 0, (h - LINE_HEIGHT*l.size()) * 0.5f, w, LINE_HEIGHT*l.size() ,0,VAlign.CENTER);
-			}
-		};
+		return new MultiLineTextRenderer(l);
 	}
 
 	@Override
 	protected int select(float w, float h) {
-		return state;
+		return stateMap.get(current);
 	}
 
 	@Override
-	public void onSelectionChanged(GLButton button, boolean selected) {
-		state = button.getPickingObjectId();
-		relayout();
+	public void on(ITransition data) {
+		IState target = data.getTarget();
+		this.current.onLeave();
+		this.current = target;
+		this.current.onEnter();
+		if (!stateMap.containsKey(target)) {
+			this.add(convert(current));
+			stateMap.put(current, size() - 1);
+		} else {
+			relayout();
+		}
 	}
+
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
@@ -170,10 +187,8 @@ public class AddWizardElement extends GLElementSelector implements ISelectionCal
 		super.renderImpl(g, w, h);
 	}
 
-	static class ActionElement extends GLButton {
-		public ActionElement() {
-			setVisibility(EVisibility.VISIBLE); // just manually trigger
-		}
+	public static void main(String[] args) {
+		GLSandBox.main(args, new AddWizardElement());
 	}
 }
 

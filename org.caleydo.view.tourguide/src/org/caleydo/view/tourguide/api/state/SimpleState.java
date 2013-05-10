@@ -17,20 +17,50 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.internal.stratomex;
+package org.caleydo.view.tourguide.api.state;
 
-import org.caleydo.core.view.opengl.layout2.GLElement;
-import org.caleydo.view.stratomex.tourguide.IAddWizardElementFactory;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class AddWizardElementFactory implements IAddWizardElementFactory {
+public class SimpleState implements IState {
+	private final Collection<ITransition> transitions = new ArrayList<>();
+	private final String label;
+
+	public SimpleState(String label) {
+		this.label = label;
+	}
+
+	/**
+	 * @return the label, see {@link #label}
+	 */
+	@Override
+	public String getLabel() {
+		return label;
+	}
 
 	@Override
-	public GLElement create() {
-		return new AddWizardElement();
+	public void onEnter() {
+
+	}
+
+	public SimpleState addTransition(ITransition transition) {
+		this.transitions.add(transition);
+		return this;
+	}
+
+	@Override
+	public Collection<ITransition> getTransitions() {
+		return Collections.unmodifiableCollection(transitions);
+	}
+
+	@Override
+	public void onLeave() {
+
 	}
 
 }

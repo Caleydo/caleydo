@@ -17,38 +17,22 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.spi;
+package org.caleydo.view.tourguide.api.state;
 
-import java.util.Set;
+import java.util.List;
 
-import org.caleydo.core.view.contextmenu.ContextMenuCreator;
-import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
-import org.caleydo.view.tourguide.internal.event.AddScoreColumnEvent;
-import org.caleydo.view.tourguide.spi.score.IScore;
+import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.io.gui.dataimport.widget.ICallback;
+import org.caleydo.core.view.opengl.layout2.GLElement;
+
+import com.google.common.base.Predicate;
 
 /**
- * a factory of a metric score, which have a defined number of possibilities and no "real" parameter
- *
  * @author Samuel Gratzl
  *
  */
-public interface IMetricFactory {
-	/**
-	 * add the adder context menu entries for the provided metrics
-	 * 
-	 * @param creator
-	 * @param visible
-	 *            the currently visible columns, i.e. to avoid duplicates
-	 * @param receiver
-	 *            the receiver to use for the {@link AddScoreColumnEvent} events
-	 */
-	void addCreateMetricItems(ContextMenuCreator creator, Set<IScore> visible, Object receiver);
+public interface ITransition extends Predicate<List<TablePerspective>> {
+	IState getTarget();
 
-	/**
-	 * determines whether the given {@link EDataDomainQueryMode} mode is supported
-	 *
-	 * @param mode
-	 * @return
-	 */
-	boolean supports(EDataDomainQueryMode mode);
+	GLElement create(ICallback<ITransition> onApply);
 }

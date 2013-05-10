@@ -17,20 +17,54 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.internal.stratomex;
+package org.caleydo.view.tourguide.api.state;
 
-import org.caleydo.core.view.opengl.layout2.GLElement;
-import org.caleydo.view.stratomex.tourguide.IAddWizardElementFactory;
+import java.util.Collection;
+import java.util.Collections;
+
+import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
+import org.caleydo.view.tourguide.internal.OpenViewHandler;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.PlatformUI;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class AddWizardElementFactory implements IAddWizardElementFactory {
+public class OpenTourGuideState implements IState {
+	private final EDataDomainQueryMode mode;
+	private final String label;
 
-	@Override
-	public GLElement create() {
-		return new AddWizardElement();
+	public OpenTourGuideState(EDataDomainQueryMode mode, String label) {
+		this.mode = mode;
+		this.label = label;
 	}
 
+	/**
+	 * @return the label, see {@link #label}
+	 */
+	@Override
+	public String getLabel() {
+		return label;
+	}
+
+	@Override
+	public Collection<ITransition> getTransitions() {
+		return Collections.emptyList();
+	}
+
+	@Override
+	public void onEnter() {
+		Display.getDefault().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				OpenViewHandler.showTourGuide(PlatformUI.getWorkbench().getActiveWorkbenchWindow(), mode);
+			}
+		});
+	}
+
+	@Override
+	public void onLeave() {
+
+	}
 }

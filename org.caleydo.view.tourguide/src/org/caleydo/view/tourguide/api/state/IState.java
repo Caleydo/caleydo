@@ -17,20 +17,20 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.internal.stratomex;
+package org.caleydo.view.tourguide.api.state;
 
-import org.caleydo.core.view.opengl.layout2.GLElement;
-import org.caleydo.view.stratomex.tourguide.IAddWizardElementFactory;
+import java.util.Collection;
+
+import org.caleydo.core.util.base.ILabeled;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class AddWizardElementFactory implements IAddWizardElementFactory {
+public interface IState extends ILabeled {
+	void onEnter();
 
-	@Override
-	public GLElement create() {
-		return new AddWizardElement();
-	}
+	Collection<ITransition> getTransitions();
 
+	void onLeave();
 }
