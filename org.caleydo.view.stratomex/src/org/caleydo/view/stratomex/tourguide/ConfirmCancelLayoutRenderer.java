@@ -19,16 +19,34 @@
  *******************************************************************************/
 package org.caleydo.view.stratomex.tourguide;
 
-import org.caleydo.core.event.ADirectedEvent;
+import javax.media.opengl.GL2;
+
+import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class AddNewColumnEvent extends ADirectedEvent {
+public class ConfirmCancelLayoutRenderer extends ALayoutRenderer {
+	private final AGLView view;
+	private final int id;
+
+	public ConfirmCancelLayoutRenderer(AGLView view, int id) {
+		this.view = view;
+		this.id = id;
+	}
 
 	@Override
-	public boolean checkIntegrity() {
+	protected void renderContent(GL2 gl) {
+		float hi = view.getPixelGLConverter().getGLHeightForPixelHeight(34);
+		float wi = view.getPixelGLConverter().getGLWidthForPixelWidth(32);
+		TourguideUtils.renderConfirmButton(gl, x * 1.05f, y * 0.8f, wi, hi, view, id);
+		TourguideUtils.renderCancelButton(gl, x * 1.05f, y * 0.8f + hi, wi, hi, view, id);
+	}
+
+	@Override
+	protected boolean permitsWrappingDisplayLists() {
 		return true;
 	}
 
