@@ -49,16 +49,19 @@ import org.caleydo.view.tourguide.api.state.SimpleState;
  */
 public class AddWizardElement extends GLElementSelector implements ICallback<ITransition> {
 	private final IGLLayout stateLayout;
+	private final Object receiver;
 
 	private IState current;
-	private Map<IState, Integer> stateMap = new HashMap<>();
+	private final Map<IState, Integer> stateMap = new HashMap<>();
 
-	public AddWizardElement() {
-		this.stateLayout = new GLFlowLayout(false, 10, new GLPadding(2, 10, 2, 10));
+
+	public AddWizardElement(Object receiver) {
+		this.stateLayout = new GLFlowLayout(false, 20, new GLPadding(2, 10, 2, 10));
 		this.current = createStateMachine();
 		this.current.onEnter();
 		this.add(convert(current));
 		stateMap.put(current, 0);
+		this.receiver = receiver;
 	}
 
 	private GLElement convert(final IState state) {
@@ -188,7 +191,7 @@ public class AddWizardElement extends GLElementSelector implements ICallback<ITr
 	}
 
 	public static void main(String[] args) {
-		GLSandBox.main(args, new AddWizardElement());
+		GLSandBox.main(args, new AddWizardElement(null));
 	}
 }
 

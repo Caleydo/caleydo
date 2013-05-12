@@ -48,7 +48,6 @@ import org.caleydo.core.event.data.ReplaceTablePerspectiveEvent;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.ITablePerspectiveBasedView;
-import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
 import org.caleydo.core.view.listener.RemoveTablePerspectiveEvent;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
@@ -61,6 +60,7 @@ import org.caleydo.view.stratomex.event.AddKaplanMaiertoStratomexEvent;
 import org.caleydo.view.stratomex.event.HighlightBrickEvent;
 import org.caleydo.view.stratomex.event.ReplaceKaplanMaierPerspectiveEvent;
 import org.caleydo.view.stratomex.event.SelectElementsEvent;
+import org.caleydo.view.stratomex.tourguide.event.UpdatePreviewEvent;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.impl.GeneSetEnrichmentScoreFactory;
 import org.caleydo.view.tourguide.impl.GeneSetEnrichmentScoreFactory.GeneSetScore;
@@ -502,8 +502,8 @@ public class StratomexAdapter {
 			event.setReceiver(receiver);
 			triggerEvent(event);
 		} else {
-			AddTablePerspectivesEvent event = new AddTablePerspectivesEvent(strat);
-			event.setReceiver(receiver);
+			UpdatePreviewEvent event = new UpdatePreviewEvent(strat, null);
+			event.to(receiver.getTourguide());
 			triggerEvent(event);
 		}
 	}

@@ -17,14 +17,42 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.stratomex.tourguide;
+package org.caleydo.view.stratomex.tourguide.event;
 
-import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.event.ADirectedEvent;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public interface IAddWizardElementFactory {
-	GLElement create(Object receiver);
+public class UpdatePreviewEvent extends ADirectedEvent {
+	private final TablePerspective tablePerspective;
+	private final Group group;
+
+	public UpdatePreviewEvent(TablePerspective tablePerspective, Group group) {
+		super();
+		this.tablePerspective = tablePerspective;
+		this.group = group;
+	}
+
+	/**
+	 * @return the tablePerspective, see {@link #tablePerspective}
+	 */
+	public TablePerspective getTablePerspective() {
+		return tablePerspective;
+	}
+
+	/**
+	 * @return the group, see {@link #group}
+	 */
+	public Group getGroup() {
+		return group;
+	}
+
+	@Override
+	public boolean checkIntegrity() {
+		return tablePerspective != null;
+	}
 }

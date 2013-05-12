@@ -29,8 +29,8 @@ import org.caleydo.view.stratomex.tourguide.IAddWizardElementFactory;
 public class AddWizardElementFactory implements IAddWizardElementFactory {
 
 	@Override
-	public GLElement create() {
-		return new AddWizardElement();
+	public GLElement create(Object receiver) {
+		return new AddWizardElement(receiver);
 	}
 
 }

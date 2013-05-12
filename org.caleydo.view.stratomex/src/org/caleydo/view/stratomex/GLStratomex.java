@@ -64,6 +64,7 @@ import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
 import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
@@ -1093,11 +1094,19 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	 */
 	public void addTablePerspectives(List<TablePerspective> newTablePerspectives, IBrickConfigurer brickConfigurer,
 			BrickColumn sourceColumn) {
+		addTablePerspectives(newTablePerspectives, brickConfigurer, sourceColumn, true);
+	}
+
+	public List<Pair<Integer, BrickColumn>> addTablePerspectives(List<TablePerspective> newTablePerspectives,
+			IBrickConfigurer brickConfigurer,
+			BrickColumn sourceColumn, boolean addRight) {
+
+		List<Pair<Integer, BrickColumn>> added = new ArrayList<>();
 
 		if (newTablePerspectives == null || newTablePerspectives.size() == 0) {
 			Logger.log(new Status(IStatus.WARNING, this.toString(),
 					"newTablePerspectives in addTablePerspectives was null or empty"));
-			return;
+			return added;
 		}
 
 		// if this is the first data container set, we imprint StratomeX
@@ -1107,6 +1116,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		}
 
 		ArrayList<BrickColumn> brickColumns = brickColumnManager.getBrickColumns();
+
 
 		for (TablePerspective tablePerspective : newTablePerspectives) {
 			if (tablePerspective == null) {
@@ -1134,9 +1144,15 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 
 			if (!columnExists) {
 				BrickColumn brickColumn = createBrickColumn(brickConfigurer, tablePerspective);
+				int columnIndex;
+				if (sourceColumn == null)
+					columnIndex = addRight ? brickColumnManager.getRightColumnStartIndex() : brickColumnManager
+							.getCenterColumnStartIndex();
+				else
+					columnIndex = brickColumns.indexOf(sourceColumn) + 1;
 
-				int columnIndex = sourceColumn == null ? brickColumnManager.getRightColumnStartIndex() : brickColumns
-						.indexOf(sourceColumn) + 1;
+				added.add(Pair.make(columnIndex, brickColumn));
+
 				brickColumns.add(columnIndex, brickColumn);
 				tablePerspectives.add(tablePerspective);
 
@@ -1154,6 +1170,8 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		TablePerspectivesChangedEvent event = new TablePerspectivesChangedEvent(this);
 		event.setSender(this);
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
+
+		return added;
 	}
 
 	/**
