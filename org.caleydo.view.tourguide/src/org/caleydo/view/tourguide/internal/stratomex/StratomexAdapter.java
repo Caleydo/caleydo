@@ -43,6 +43,7 @@ import org.caleydo.core.data.selection.SelectionTypeEvent;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.AEvent;
+import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.data.ReplaceTablePerspectiveEvent;
 import org.caleydo.core.id.IDType;
@@ -60,6 +61,7 @@ import org.caleydo.view.stratomex.event.AddKaplanMaiertoStratomexEvent;
 import org.caleydo.view.stratomex.event.HighlightBrickEvent;
 import org.caleydo.view.stratomex.event.ReplaceKaplanMaierPerspectiveEvent;
 import org.caleydo.view.stratomex.event.SelectElementsEvent;
+import org.caleydo.view.stratomex.tourguide.event.ConfirmedCancelNewColumnEvent;
 import org.caleydo.view.stratomex.tourguide.event.UpdatePreviewEvent;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.impl.GeneSetEnrichmentScoreFactory;
@@ -128,6 +130,14 @@ public class StratomexAdapter {
 			clearHighlightRows(bak.getRecordPerspective().getIdType(), bak.getDataDomain());
 		}
 		this.brickColumns.clear();
+	}
+
+	@ListenTo
+	private void on(ConfirmedCancelNewColumnEvent event) {
+		// remove all temporary stuff
+		this.currentPreview = null;
+		this.currentPreviewGroup = null;
+		this.currentDependentPreviews.clear();
 	}
 
 	/**

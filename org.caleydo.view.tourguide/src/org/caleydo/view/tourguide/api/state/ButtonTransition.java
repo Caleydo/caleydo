@@ -42,13 +42,13 @@ public class ButtonTransition implements ITransition {
 	}
 
 	@Override
-	public IState getTarget() {
-		return target;
+	public boolean apply(List<TablePerspective> existing) {
+		return true;
 	}
 
 	@Override
-	public boolean apply(List<TablePerspective> existing) {
-		return true;
+	public void onSourceEnter(ICallback<IState> onApply) {
+
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public class ButtonTransition implements ITransition {
 		b.setCallback(new ISelectionCallback() {
 			@Override
 			public void onSelectionChanged(GLButton button, boolean selected) {
-				onApply.on(ButtonTransition.this.getTarget());
+				onApply.on(ButtonTransition.this.target);
 			}
 		});
 		b.setRenderer(new MultiLineTextRenderer(label));

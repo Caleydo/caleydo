@@ -45,12 +45,15 @@ public class OpenViewHandler extends AbstractHandler {
 		showTourGuide(window, EDataDomainQueryMode.STRATIFICATIONS);
 	}
 
-	public static void showTourGuide(IWorkbenchWindow window, EDataDomainQueryMode mode) {
+	public static RcpGLTourGuideView showTourGuide(IWorkbenchWindow window, EDataDomainQueryMode mode) {
 		try {
 			IWorkbenchPage activePage = window.getActivePage();
-			activePage.showView(GLTourGuideView.VIEW_TYPE, mode.name(), IWorkbenchPage.VIEW_ACTIVATE);
+			RcpGLTourGuideView view = (RcpGLTourGuideView) activePage.showView(GLTourGuideView.VIEW_TYPE, mode.name(),
+					IWorkbenchPage.VIEW_ACTIVATE);
+			return view;
 		} catch (PartInitException e) {
 			e.printStackTrace();
 		}
+		return null;
 	}
 }

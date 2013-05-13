@@ -19,18 +19,12 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.api.state;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-
-import org.caleydo.core.io.gui.dataimport.widget.ICallback;
 
 /**
  * @author Samuel Gratzl
  *
  */
 public class SimpleState implements IState {
-	private final Collection<ITransition> transitions = new ArrayList<>();
 	private final String label;
 
 	public SimpleState(String label) {
@@ -46,18 +40,8 @@ public class SimpleState implements IState {
 	}
 
 	@Override
-	public void onEnter(final ICallback<IState> onAutomaticSwitch) {
+	public void onEnter() {
 
-	}
-
-	public SimpleState addTransition(ITransition transition) {
-		this.transitions.add(transition);
-		return this;
-	}
-
-	@Override
-	public Collection<ITransition> getTransitions() {
-		return Collections.unmodifiableCollection(transitions);
 	}
 
 	@Override

@@ -17,46 +17,19 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.api.state;
+package org.caleydo.view.stratomex.tourguide.event;
 
-import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
-import org.caleydo.view.tourguide.internal.OpenViewHandler;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.PlatformUI;
+import org.caleydo.core.event.ADirectedEvent;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class OpenTourGuideState implements IState {
-	private final EDataDomainQueryMode mode;
-	private final String label;
-
-	public OpenTourGuideState(EDataDomainQueryMode mode, String label) {
-		this.mode = mode;
-		this.label = label;
-	}
-
-	/**
-	 * @return the label, see {@link #label}
-	 */
-	@Override
-	public String getLabel() {
-		return label;
-	}
+public class ConfirmedCancelNewColumnEvent extends ADirectedEvent {
 
 	@Override
-	public void onEnter() {
-		Display.getDefault().asyncExec(new Runnable() {
-			@Override
-			public void run() {
-				OpenViewHandler.showTourGuide(PlatformUI.getWorkbench().getActiveWorkbenchWindow(), mode);
-			}
-		});
+	public boolean checkIntegrity() {
+		return true;
 	}
 
-	@Override
-	public void onLeave() {
-
-	}
 }

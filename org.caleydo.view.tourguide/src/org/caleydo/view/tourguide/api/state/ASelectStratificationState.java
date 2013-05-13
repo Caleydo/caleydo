@@ -19,13 +19,9 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.api.state;
 
-import java.util.Collection;
-import java.util.Collections;
-
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventPublisher;
-import org.caleydo.core.io.gui.dataimport.widget.ICallback;
 import org.caleydo.view.stratomex.tourguide.event.SelectStratificationEvent;
 import org.caleydo.view.stratomex.tourguide.event.SelectStratificationReplyEvent;
 
@@ -35,37 +31,32 @@ import com.google.common.base.Predicate;
  * @author Samuel Gratzl
  *
  */
-public abstract class ASelectStratificationState implements IState, Predicate<TablePerspective> {
-	private final String label;
-	private final Object receiver;
-	private final IState target;
-	private ICallback<IState> onAutomaticSwitch;
+public abstract class ASelectStratificationState extends ASelectTransition {
+	private Object receiver;
 
-	public ASelectStratificationState(String label, IState target, Object receiver) {
-		this.label = label;
+	public ASelectStratificationState(IState target, Object receiver) {
+		super(target);
 		this.receiver = receiver;
-		this.target = target;
 	}
 
-	/**
-	 * @return the label, see {@link #label}
-	 */
-	@Override
-	public String getLabel() {
-		return label;
-	}
 
 	@Override
-	public void onEnter(final ICallback<IState> onAutomaticSwitch) {
-		EventPublisher.trigger(new SelectStratificationEvent(this).to(receiver).from(this));
-		this.onAutomaticSwitch = onAutomaticSwitch;
+	public void onEnterImpl() {
+		EventPublisher.trigger(new SelectStratificationEvent(new Predicate<TablePerspective>() {
+			@Override
+			public boolean apply(TablePerspective in) {
+				return applyStratificationFilter(in);
+			}
+		}).to(receiver).from(this));
 	}
+
+	protected abstract boolean applyStratificationFilter(TablePerspective tablePerspective);
 
 	@ListenTo(sendToMe = true)
 	private void onEvent(SelectStratificationReplyEvent event) {
 		handleSelection(event.getTablePerspective());
 
-		this.onAutomaticSwitch.on(target);
+		switchToTarget();
 	}
 
 	/**
@@ -73,14 +64,4 @@ public abstract class ASelectStratificationState implements IState, Predicate<Ta
 	 * @param group
 	 */
 	protected abstract void handleSelection(TablePerspective tablePerspective);
-
-	@Override
-	public Collection<ITransition> getTransitions() {
-		return Collections.emptyList();
-	}
-
-	@Override
-	public void onLeave() {
-
-	}
 }

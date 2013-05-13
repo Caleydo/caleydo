@@ -19,44 +19,32 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.api.state;
 
+import java.util.Collection;
+import java.util.Set;
+
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
-import org.caleydo.view.tourguide.internal.OpenViewHandler;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.PlatformUI;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class OpenTourGuideState implements IState {
-	private final EDataDomainQueryMode mode;
-	private final String label;
+public interface IStateMachine {
+	String ADD_PATHWAY = EDataDomainQueryMode.PATHWAYS.name();
+	String ADD_NUMERICAL = EDataDomainQueryMode.NUMERICAL.name();
+	String ADD_STRATIFICATIONS = EDataDomainQueryMode.STRATIFICATIONS.name();
+	String BROWSE_PATHWAY = EDataDomainQueryMode.PATHWAYS.name() + "_browse";
+	String BROWSE_NUMERICAL = EDataDomainQueryMode.NUMERICAL.name() + "_browse";
+	String BROWSE_STRATIFICATIONS = EDataDomainQueryMode.STRATIFICATIONS.name() + "_browse";
 
-	public OpenTourGuideState(EDataDomainQueryMode mode, String label) {
-		this.mode = mode;
-		this.label = label;
-	}
+	IState addState(String id, IState state);
 
-	/**
-	 * @return the label, see {@link #label}
-	 */
-	@Override
-	public String getLabel() {
-		return label;
-	}
+	void addTransition(IState source, ITransition transition);
 
-	@Override
-	public void onEnter() {
-		Display.getDefault().asyncExec(new Runnable() {
-			@Override
-			public void run() {
-				OpenViewHandler.showTourGuide(PlatformUI.getWorkbench().getActiveWorkbenchWindow(), mode);
-			}
-		});
-	}
+	IState get(String id);
 
-	@Override
-	public void onLeave() {
+	Set<String> getStates();
 
-	}
+	IState getCurrent();
+
+	Collection<ITransition> getTransitions(IState state);
 }

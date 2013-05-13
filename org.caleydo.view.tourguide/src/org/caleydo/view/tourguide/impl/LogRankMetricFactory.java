@@ -37,6 +37,7 @@ import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.base.DefaultLabelProvider;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.score.DefaultComputedGroupScore;
+import org.caleydo.view.tourguide.api.state.IStateMachine;
 import org.caleydo.view.tourguide.api.util.ui.CaleydoLabelProvider;
 import org.caleydo.view.tourguide.impl.algorithm.LogRank;
 import org.caleydo.view.tourguide.internal.event.AddScoreColumnEvent;
@@ -68,6 +69,12 @@ import com.google.common.collect.Sets;
  *
  */
 public class LogRankMetricFactory implements IScoreFactory {
+	@Override
+	public void fillStateMachine(IStateMachine stateMachine, Object eventReceiver) {
+		// TODO Auto-generated method stub
+
+	}
+
 	@Override
 	public Iterable<ScoreEntry> createGroupEntries(TablePerspective strat, Group group) {
 		return Collections.emptyList();

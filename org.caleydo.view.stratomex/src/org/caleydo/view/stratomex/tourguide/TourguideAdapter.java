@@ -34,6 +34,7 @@ import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.util.ExtensionUtils;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.color.Colors;
+import org.caleydo.core.util.color.IColor;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.ElementLayouts;
@@ -49,6 +50,7 @@ import org.caleydo.view.stratomex.brick.GLBrick;
 import org.caleydo.view.stratomex.column.BrickColumn;
 import org.caleydo.view.stratomex.column.BrickColumnGlowRenderer;
 import org.caleydo.view.stratomex.column.BrickColumnManager;
+import org.caleydo.view.stratomex.tourguide.event.ConfirmedCancelNewColumnEvent;
 import org.caleydo.view.stratomex.tourguide.event.SelectGroupEvent;
 import org.caleydo.view.stratomex.tourguide.event.SelectGroupReplyEvent;
 import org.caleydo.view.stratomex.tourguide.event.SelectStratificationEvent;
@@ -73,6 +75,10 @@ public class TourguideAdapter {
 	private static final String CANCEL_PICKING_TYPE = "templateAbort";
 
 	private final GLStratomex stratomex;
+
+	/**
+	 * factory of the wizard
+	 */
 	private final IAddWizardElementFactory factory = ExtensionUtils.findFirstImplementation(EXTENSION_POINT, "class",
 			IAddWizardElementFactory.class);
 
@@ -80,6 +86,9 @@ public class TourguideAdapter {
 	private ElementLayout templateColumn;
 	private BrickColumn preview;
 
+	/**
+	 * the current selection and related information
+	 */
 	private ESelectionMode selectionMode = null;
 	private GLBrick selectionCurrent = null;
 	private Object selectionReceiver = null;
@@ -172,9 +181,12 @@ public class TourguideAdapter {
 	}
 
 	/**
+	 * if we pick an brick
+	 *
 	 * @param pick
 	 */
 	protected void onBrickPick(Pick pick) {
+		// don't need to select
 		if (pick.getPickingMode() != PickingMode.CLICKED || selectionMode == null)
 			return;
 		GLBrick brick = findBick(pick.getObjectID());
@@ -183,14 +195,16 @@ public class TourguideAdapter {
 		boolean isHeader = brick.isHeaderBrick();
 		if (isHeader != (selectionMode == ESelectionMode.STRATIFICATION))
 			return;
-		// select brick
-		for (BrickColumnGlowRenderer glow : Iterables.filter(brick.getLayout().getBackgroundRenderer(),
-				BrickColumnGlowRenderer.class)) {
-			glow.setColor(Colors.YELLOW.getRGBA());
+
+		if (this.selectionCurrent != null) {
+			changeHighlight(this.selectionCurrent, Colors.GREEN);
 		}
+		changeHighlight(brick, Colors.YELLOW);
+		this.selectionCurrent = brick;
 
 		stratomex.setDisplayListDirty();
 
+		// fire selection
 		TablePerspective tablePerspective = brick.getBrickColumn().getTablePerspective();
 		if (selectionMode == ESelectionMode.GROUP) {
 			Group group = brick.getTablePerspective().getRecordGroup();
@@ -199,6 +213,14 @@ public class TourguideAdapter {
 			EventPublisher.trigger(new SelectStratificationReplyEvent(tablePerspective).to(selectionReceiver)
 					.from(this));
 
+		}
+	}
+
+	private void changeHighlight(GLBrick brick, IColor color) {
+		// select brick by changing highlight
+		for (BrickColumnGlowRenderer glow : Iterables.filter(brick.getLayout().getBackgroundRenderer(),
+				BrickColumnGlowRenderer.class)) {
+			glow.setColor(color.getRGBA());
 		}
 	}
 
@@ -215,11 +237,6 @@ public class TourguideAdapter {
 		repaint();
 	}
 
-	private void repaint() {
-		stratomex.updateLayout();
-		stratomex.setDisplayListDirty();
-	}
-
 	@ListenTo(sendToMe = true)
 	private void onSelectBrickRequest(SelectGroupEvent event) {
 		this.selectionMode = ESelectionMode.GROUP;
@@ -234,6 +251,11 @@ public class TourguideAdapter {
 			}
 		}
 		repaint();
+	}
+
+	private void repaint() {
+		stratomex.updateLayout();
+		stratomex.setDisplayListDirty();
 	}
 
 	/**
@@ -286,7 +308,7 @@ public class TourguideAdapter {
 			// right of
 			BrickColumnManager brickColumnManager = stratomex.getBrickColumnManager();
 			BrickColumn col = brickColumnManager.getBrickColumnSpacers().get(event.getObjectId()).getLeftDimGroup();
-			index = col == null ? 0 : brickColumnManager.getBrickColumns().indexOf(col);
+			index = col == null ? -1 : brickColumnManager.getBrickColumns().indexOf(col);
 		}
 
 		templateIndex = index;
@@ -299,18 +321,16 @@ public class TourguideAdapter {
 	private void onConfirmCancelColumn(ConfirmCancelNewColumnEvent event) {
 		boolean confirm = event.isConfirm();
 
-		if (templateColumn == null && preview == null)
+		if (templateColumn == null && preview == null) // nothing todo
 			return;
 
 		// reset
 		reset();
 
-		if (preview == null && confirm)
-			return;
-
 		if (confirm) {
 			// remove the preview buttons
-			preview.getLayout().clearBackgroundRenderers();
+			if (preview != null)
+				preview.getLayout().clearBackgroundRenderers();
 		} else {
 			destroyTemplate();
 			if (preview != null)
@@ -318,6 +338,7 @@ public class TourguideAdapter {
 		}
 		preview = null;
 		stratomex.relayout();
+		EventPublisher.trigger(new ConfirmedCancelNewColumnEvent().from(this));
 	}
 
 	/**
@@ -327,6 +348,7 @@ public class TourguideAdapter {
 		selectionMode = null;
 		selectionReceiver = null;
 		selectionCurrent = null;
+		// clear highlights
 		for (BrickColumn col : stratomex.getBrickColumnManager().getBrickColumns()) {
 			col.getHeaderBrick().getLayout().clearBackgroundRenderers();
 			for (GLBrick brick : col.getSegmentBricks()) {
@@ -356,7 +378,8 @@ public class TourguideAdapter {
 			BrickColumnManager bcm = stratomex.getBrickColumnManager();
 			BrickColumn left = index < 0 ? null : bcm.getBrickColumns().get(bcm.getCenterColumnStartIndex() + index);
 			added = stratomex.addTablePerspectives(
-					Collections.singletonList(event.getTablePerspective()), null, left, true);
+Collections.singletonList(event.getTablePerspective()), null, left,
+					false);
 		} else {
 			added = stratomex.addTablePerspectives(Collections.singletonList(event.getTablePerspective()), null,
 					preview, true);

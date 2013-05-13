@@ -31,7 +31,6 @@ import org.caleydo.view.tourguide.spi.score.IScore;
  */
 public class AddScoreColumnEvent extends ADirectedEvent {
 	private Collection<IScore> scores;
-	private boolean switchModeIfNeeded = false;
 
 	public AddScoreColumnEvent() {
 
@@ -41,20 +40,8 @@ public class AddScoreColumnEvent extends ADirectedEvent {
 		this.scores = scores;
 	}
 
-	public AddScoreColumnEvent(Collection<IScore> scores, boolean switchModeIfNeeded) {
-		this.scores = scores;
-		this.switchModeIfNeeded = switchModeIfNeeded;
-	}
-
 	public AddScoreColumnEvent(IScore... scores) {
 		this(Arrays.asList(scores));
-	}
-
-	/**
-	 * @return the switchModeIfNeeded, see {@link #switchModeIfNeeded}
-	 */
-	public boolean isSwitchModeIfNeeded() {
-		return switchModeIfNeeded;
 	}
 
 	public Collection<IScore> getScores() {

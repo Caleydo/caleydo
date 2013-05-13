@@ -32,6 +32,7 @@ import com.google.common.base.Predicate;
  *
  */
 public interface ITransition extends Predicate<List<TablePerspective>> {
-	IState getTarget();
+	void onSourceEnter(ICallback<IState> onApply);
+
 	GLElement create(ICallback<IState> onApply);
 }

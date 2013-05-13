@@ -19,8 +19,14 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.api.state;
 
+import org.caleydo.core.event.EventPublisher;
+import org.caleydo.core.io.gui.dataimport.widget.ICallback;
+import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.internal.OpenViewHandler;
+import org.caleydo.view.tourguide.internal.RcpGLTourGuideView;
+import org.caleydo.view.tourguide.internal.event.AddScoreColumnEvent;
+import org.caleydo.view.tourguide.spi.score.IScore;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 
@@ -28,35 +34,44 @@ import org.eclipse.ui.PlatformUI;
  * @author Samuel Gratzl
  *
  */
-public class OpenTourGuideState implements IState {
-	private final EDataDomainQueryMode mode;
-	private final String label;
+public abstract class ASelectTransition implements ITransition {
+	private final IState target;
+	private ICallback<IState> onAutomaticSwitch;
 
-	public OpenTourGuideState(EDataDomainQueryMode mode, String label) {
-		this.mode = mode;
-		this.label = label;
-	}
-
-	/**
-	 * @return the label, see {@link #label}
-	 */
-	@Override
-	public String getLabel() {
-		return label;
+	public ASelectTransition(IState target) {
+		this.target = target;
 	}
 
 	@Override
-	public void onEnter() {
+	public final void onSourceEnter(ICallback<IState> onAutomaticSwitch) {
+		this.onAutomaticSwitch = onAutomaticSwitch;
+		this.onEnterImpl();
+	}
+
+	protected abstract void onEnterImpl();
+
+	protected final void switchToTarget() {
+		if (this.onAutomaticSwitch != null) {
+			onAutomaticSwitch.on(target);
+			onAutomaticSwitch = null;
+		}
+	}
+
+	@Override
+	public final GLElement create(ICallback<IState> onApply) {
+		return null;
+	}
+
+	protected final static void addScoreToTourGuide(final EDataDomainQueryMode mode, final IScore... scores) {
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				OpenViewHandler.showTourGuide(PlatformUI.getWorkbench().getActiveWorkbenchWindow(), mode);
+				RcpGLTourGuideView tourGuide = OpenViewHandler.showTourGuide(PlatformUI.getWorkbench()
+						.getActiveWorkbenchWindow(), mode);
+				Object receiver = tourGuide.getView();
+				EventPublisher.trigger(new AddScoreColumnEvent(scores).to(receiver).from(this));
 			}
 		});
 	}
 
-	@Override
-	public void onLeave() {
-
-	}
 }

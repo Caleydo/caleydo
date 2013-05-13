@@ -33,6 +33,12 @@ import org.caleydo.core.event.EventPublisher;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.score.DefaultComputedReferenceStratificationScore;
 import org.caleydo.view.tourguide.api.score.MultiScore;
+import org.caleydo.view.tourguide.api.state.ASelectStratificationState;
+import org.caleydo.view.tourguide.api.state.ButtonTransition;
+import org.caleydo.view.tourguide.api.state.IState;
+import org.caleydo.view.tourguide.api.state.IStateMachine;
+import org.caleydo.view.tourguide.api.state.ITransition;
+import org.caleydo.view.tourguide.api.state.SimpleState;
 import org.caleydo.view.tourguide.api.util.ui.CaleydoLabelProvider;
 import org.caleydo.view.tourguide.impl.algorithm.AdjustedRandIndex;
 import org.caleydo.view.tourguide.internal.event.AddScoreColumnEvent;
@@ -64,6 +70,7 @@ public class AdjustedRandScoreFactory implements IScoreFactory {
 	private final static Color color = Color.decode("#5fd3bc");
 	private final static Color bgColor = Color.decode("#d5fff6");
 
+
 	private IRegisteredScore create(String label, Perspective reference) {
 		return new DefaultComputedReferenceStratificationScore(label, reference, AdjustedRandIndex.get(), null, color, bgColor) {
 			@Override
@@ -75,6 +82,36 @@ public class AdjustedRandScoreFactory implements IScoreFactory {
 				return m;
 			}
 		};
+	}
+
+	@Override
+	public void fillStateMachine(IStateMachine stateMachine, Object eventReceiver) {
+		IState source = stateMachine.get(IStateMachine.ADD_STRATIFICATIONS);
+		IState intermediate = new SimpleState(
+				"Select query stratification by clicking on the header brick of one of the displayed columns\nChange query by cvlicking on other header brick at any time");
+		stateMachine.addState("AdjustedRand", intermediate);
+		stateMachine.addTransition(source, new ButtonTransition(intermediate,
+				"Find similar to displayed stratification"));
+
+		IState target = stateMachine.get(IStateMachine.BROWSE_STRATIFICATIONS);
+		ITransition transition = new ASelectStratificationState(target, eventReceiver) {
+			@Override
+			protected void handleSelection(TablePerspective tablePerspective) {
+				addScoreToTourGuide(EDataDomainQueryMode.STRATIFICATIONS,
+						AdjustedRandScoreFactory.this.create(null, tablePerspective.getRecordPerspective()));
+			}
+
+			@Override
+			public boolean apply(List<TablePerspective> tablePerspectives) {
+				return true;
+			}
+
+			@Override
+			protected boolean applyStratificationFilter(TablePerspective tablePerspective) {
+				return true;
+			}
+		};
+		stateMachine.addTransition(intermediate, transition);
 	}
 
 	@Override

@@ -27,8 +27,10 @@ import java.lang.annotation.Target;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
@@ -37,6 +39,7 @@ import org.caleydo.core.util.ClassUtils;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Multimap;
 
 /**
  * Utility class to hold a list of event listeners to register and remove them all in an convenient way.
@@ -152,10 +155,42 @@ public class EventListenerManager {
 			}
 			if (field == null)
 				continue;
-			boolean hasFieldOne = scan(root, field, eventSpace, scanWhile);
+
+			if (field instanceof Collection<?>) {
+				@SuppressWarnings("unchecked")
+				Collection<Object> r = (Collection<Object>) field;
+				boolean hasFieldOne = scanAll(root, r, eventSpace, scanWhile);
+				hasOne = hasOne || hasFieldOne;
+			} else if (field instanceof Map<?, ?>) {
+				@SuppressWarnings("unchecked")
+				Map<?, Object> r = (Map<?, Object>) field;
+				boolean hasFieldOne = scanAll(root, r.values(), eventSpace, scanWhile);
+				hasOne = hasOne || hasFieldOne;
+			} else if (field instanceof Multimap<?, ?>) {
+				@SuppressWarnings("unchecked")
+				Multimap<?, Object> r = (Multimap<?, Object>) field;
+				boolean hasFieldOne = scanAll(root, r.values(), eventSpace, scanWhile);
+				hasOne = hasOne || hasFieldOne;
+			} else { // primitive
+				boolean hasFieldOne = scan(root, field, eventSpace, scanWhile);
+				hasOne = hasOne || hasFieldOne;
+			}
+
+		}
+		return hasOne;
+	}
+
+	private boolean scanAll(Object root, Iterable<Object> listeners, String eventSpace,
+			Predicate<? super Class<?>> scanWhile) {
+		if (listeners == null)
+			return false;
+		boolean hasOne = false;
+		for (Object elem : listeners) {
+			boolean hasFieldOne = scan(root, elem, eventSpace, scanWhile);
 			hasOne = hasOne || hasFieldOne;
 		}
 		return hasOne;
+
 	}
 
 	private static final Predicate<Method> listenToMethod = new Predicate<Method>() {
