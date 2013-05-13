@@ -111,6 +111,12 @@ public class PreviewTable {
 		return previewTable.getSelectedColumns();
 	}
 
+	public String getValue(int rowIndex, int columnIndex) {
+		if (previewTable == null)
+			return null;
+		return previewTable.getValue(rowIndex, columnIndex);
+	}
+
 
 	/**
 	 * @param selectedColumns

@@ -60,6 +60,7 @@ public class RowConfigWidget {
 	private final Combo rowIDCombo;
 	private final Label categoryIDLabel;
 	private final Button defineParsingButton;
+	private final IProvider<String> idSampleProvider;
 
 	/**
 	 * Parsing rules defined for the row id.
@@ -67,7 +68,8 @@ public class RowConfigWidget {
 	private IDTypeParsingRules idTypeParsingRules;
 
 	public RowConfigWidget(Composite parent, final IntegerCallback onNumHeaderRowsChanged,
-			final IntegerCallback onColumnOfRowIDChanged) {
+			final IntegerCallback onColumnOfRowIDChanged, final IProvider<String> idSampleProvider) {
+		this.idSampleProvider = idSampleProvider;
 		this.group = new Group(parent, SWT.SHADOW_ETCHED_IN);
 		group.setText("Row Configuration");
 		group.setLayout(new GridLayout(1, false));
@@ -141,6 +143,14 @@ public class RowConfigWidget {
 		});
 	}
 
+	public int getColumnOfRowID() {
+		return columnOfRowIDSpinner.getSelection();
+	}
+
+	public int getNumHeaderRows() {
+		return numHeaderRowsSpinner.getSelection();
+	}
+
 	protected void onDefineParsing() {
 
 		IDType idType = getIDType();
@@ -149,7 +159,8 @@ public class RowConfigWidget {
 			templateIdTypeParsingRules = idType.getIdTypeParsingRules();
 		}
 
-		DefineIDParsingDialog dialog = new DefineIDParsingDialog(new Shell(), templateIdTypeParsingRules);
+		DefineIDParsingDialog dialog = new DefineIDParsingDialog(new Shell(), templateIdTypeParsingRules,
+				idSampleProvider.get());
 		int status = dialog.open();
 
 		if (status == Window.OK) {

@@ -127,6 +127,13 @@ public class PreviewTableWidget {
 		tableInfoComposite.pack(true);
 	}
 
+	public String getValue(int rowIndex, int columnIndex) {
+		if (rowIndex >= previewTable.getItemCount())
+			return null;
+		TableItem item = previewTable.getItem(rowIndex);
+		return item.getText(columnIndex);
+	}
+
 	/**
 	 * Creates the {@link #previewTable} according to the {@link #dataMatrix}.
 	 */
@@ -330,7 +337,7 @@ public class PreviewTableWidget {
 
 	/**
 	 * returns the current selected column indices + optional a -1 as wildcard for all unseen
-	 * 
+	 *
 	 * @return
 	 */
 	public Collection<Integer> getSelectedColumns() {

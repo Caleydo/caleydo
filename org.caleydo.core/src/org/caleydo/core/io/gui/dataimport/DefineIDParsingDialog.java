@@ -20,6 +20,7 @@
 package org.caleydo.core.io.gui.dataimport;
 
 import org.caleydo.core.io.IDTypeParsingRules;
+import org.caleydo.core.io.gui.dataimport.widget.ICallback;
 import org.caleydo.core.io.gui.dataimport.widget.IDParsingRulesWidget;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -53,6 +54,11 @@ public class DefineIDParsingDialog extends Dialog {
 	private IDTypeParsingRules templateIdTypeParsingRules;
 
 	/**
+	 * ID that is used as sample to preview effects of regular expressions.
+	 */
+	private String idSample;
+
+	/**
 	 * @param parentShell
 	 */
 	public DefineIDParsingDialog(Shell parentShell) {
@@ -64,10 +70,13 @@ public class DefineIDParsingDialog extends Dialog {
 	 * @param templateIdTypeParsingRules
 	 *            Parsing rules that are used as template to fill the widgets. This object will not be modified within
 	 *            this dialog and differs from the object obtained from {@link #getIdTypeParsingRules()}.
+	 * @param idSample
+	 *            ID that is used as sample to preview effects of regular expressions.
 	 */
-	public DefineIDParsingDialog(Shell parentShell, IDTypeParsingRules templateIdTypeParsingRules) {
+	public DefineIDParsingDialog(Shell parentShell, IDTypeParsingRules templateIdTypeParsingRules, String idSample) {
 		super(parentShell);
 		this.templateIdTypeParsingRules = templateIdTypeParsingRules;
+		this.idSample = idSample;
 	}
 
 	@Override
@@ -82,7 +91,18 @@ public class DefineIDParsingDialog extends Dialog {
 		Composite parentComposite = new Composite(parent, SWT.NONE);
 		parentComposite.setLayout(new GridLayout(2, false));
 
-		idParsingRulesWidget = new IDParsingRulesWidget(parentComposite, templateIdTypeParsingRules, false);
+		idParsingRulesWidget = new IDParsingRulesWidget(parentComposite, templateIdTypeParsingRules, false, idSample,
+				new ICallback<Boolean>() {
+
+					@Override
+					public void on(Boolean data) {
+						if (!data) {
+							DefineIDParsingDialog.this.getButton(OK).setEnabled(false);
+						} else {
+							DefineIDParsingDialog.this.getButton(OK).setEnabled(true);
+						}
+					}
+				});
 
 		return parent;
 	}
