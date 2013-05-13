@@ -22,6 +22,7 @@ package org.caleydo.view.tourguide.api.state;
 import java.util.Collection;
 import java.util.Collections;
 
+import org.caleydo.core.io.gui.dataimport.widget.ICallback;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.internal.OpenViewHandler;
 import org.eclipse.swt.widgets.Display;
@@ -54,7 +55,7 @@ public class OpenTourGuideState implements IState {
 	}
 
 	@Override
-	public void onEnter() {
+	public void onEnter(final ICallback<IState> onAutomaticSwitch) {
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {

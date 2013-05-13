@@ -21,6 +21,7 @@ package org.caleydo.view.tourguide.api.state;
 
 import java.util.Collection;
 
+import org.caleydo.core.io.gui.dataimport.widget.ICallback;
 import org.caleydo.core.util.base.ILabeled;
 
 /**
@@ -28,7 +29,7 @@ import org.caleydo.core.util.base.ILabeled;
  *
  */
 public interface IState extends ILabeled {
-	void onEnter();
+	void onEnter(final ICallback<IState> onAutomaticSwitch);
 
 	Collection<ITransition> getTransitions();
 

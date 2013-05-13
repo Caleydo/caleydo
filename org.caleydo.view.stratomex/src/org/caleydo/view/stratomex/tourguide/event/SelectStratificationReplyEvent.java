@@ -19,38 +19,27 @@
  *******************************************************************************/
 package org.caleydo.view.stratomex.tourguide.event;
 
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.event.ADirectedEvent;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class ConfirmCancelNewColumnEvent extends ADirectedEvent {
+public class SelectStratificationReplyEvent extends ADirectedEvent {
+	private final TablePerspective tablePerspective;
 
-	private final boolean isConfirm;
-	private final int objectID;
-
-	/**
-	 * @param b
-	 * @param objectID
-	 */
-	public ConfirmCancelNewColumnEvent(boolean confirm, int objectID) {
-		this.isConfirm = confirm;
-		this.objectID = objectID;
+	public SelectStratificationReplyEvent(TablePerspective tablePerspective) {
+		this.tablePerspective = tablePerspective;
 	}
 
-	/**
-	 * @return the isConfirm, see {@link #isConfirm}
-	 */
-	public boolean isConfirm() {
-		return isConfirm;
-	}
+
 
 	/**
-	 * @return the objectID, see {@link #objectID}
+	 * @return the tablePerspective, see {@link #tablePerspective}
 	 */
-	public int getObjectID() {
-		return objectID;
+	public TablePerspective getTablePerspective() {
+		return tablePerspective;
 	}
 
 	@Override
@@ -59,4 +48,3 @@ public class ConfirmCancelNewColumnEvent extends ADirectedEvent {
 	}
 
 }
-

@@ -25,7 +25,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.io.gui.dataimport.widget.ICallback;
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
@@ -36,6 +39,8 @@ import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
+import org.caleydo.view.tourguide.api.state.ASelectGroupState;
+import org.caleydo.view.tourguide.api.state.ASelectStratificationState;
 import org.caleydo.view.tourguide.api.state.ButtonTransition;
 import org.caleydo.view.tourguide.api.state.IState;
 import org.caleydo.view.tourguide.api.state.ITransition;
@@ -47,7 +52,7 @@ import org.caleydo.view.tourguide.api.state.SimpleState;
  * @author Samuel Gratzl
  *
  */
-public class AddWizardElement extends GLElementSelector implements ICallback<ITransition> {
+public class AddWizardElement extends GLElementSelector implements ICallback<IState> {
 	private final IGLLayout stateLayout;
 	private final Object receiver;
 
@@ -57,11 +62,12 @@ public class AddWizardElement extends GLElementSelector implements ICallback<ITr
 
 	public AddWizardElement(Object receiver) {
 		this.stateLayout = new GLFlowLayout(false, 20, new GLPadding(2, 10, 2, 10));
+		this.receiver = receiver;
+
 		this.current = createStateMachine();
-		this.current.onEnter();
+		this.current.onEnter(this);
 		this.add(convert(current));
 		stateMap.put(current, 0);
-		this.receiver = receiver;
 	}
 
 	private GLElement convert(final IState state) {
@@ -84,30 +90,37 @@ public class AddWizardElement extends GLElementSelector implements ICallback<ITr
 					"Select\na stratification in\nthe Tour Guide\nto preview.\n\nThen confirm\nor cancel your\nselection.");
 			stratification.addTransition(new ButtonTransition(browse, "Browse List"));
 
-			// IState adjustedRand = new SelectStratificationState()
-			// stratification.addTransition(new ButtonTransition(target, label))
-			//
-			// stratification.add(createTransition(act++, "Find similar to displayed stratification"));
-			// {
-			// GLElementContainer adjustedRand = new GLElementContainer(layout);
-			// this.add(adjustedRand);
-			// adjustedRand.add(createState("Add", "Stratification"));
-			// adjustedRand
-			// .add(createAction(
-			// browseId,
-			// "Select query stratification by clicking on the header brick of one of the displayed columns\nChange query by cvlicking on other header brick at any time"));
-			// }
-			// stratification.add(createTransition(act++, "Find large overlap with displayed clusters"));
-			// {
-			// GLElementContainer adjustedRand = new GLElementContainer(layout);
-			// this.add(adjustedRand);
-			// adjustedRand.add(createState("Add", "Stratification"));
-			// adjustedRand
-			// .add(createAction(
-			// browseId,
-			// "Select query stratification by clicking on a brick in one of the displayed columns\nChange query by cvlicking on other brick at any time"));
-			// }
+			IState selectStratification = new ASelectStratificationState(
+					"Select query stratification by clicking on the header brick of one of the displayed columns\nChange query by cvlicking on other header brick at any time",
+					browse, receiver) {
+				@Override
+				protected void handleSelection(TablePerspective tablePerspective) {
+					//TODO
+				}
 
+				@Override
+				public boolean apply(TablePerspective tablePerspective) {
+					return true;
+				}
+			};
+			stratification.addTransition(new ButtonTransition(selectStratification,
+					"Find similar to displayed stratification"));
+
+			IState selectGroup = new ASelectGroupState(
+					"Select query stratification by clicking on a brick in one of the displayed columns\nChange query by cvlicking on other brick at any time",
+					browse, receiver) {
+				@Override
+				protected void handleSelection(TablePerspective tablePerspective, Group group) {
+					// TODO
+				}
+
+				@Override
+				public boolean apply(Pair<TablePerspective, Group> selection) {
+					return true;
+				}
+			};
+			stratification
+					.addTransition(new ButtonTransition(selectGroup, "Find large overlap with displayed clusters"));
 		}
 
 		{
@@ -169,11 +182,10 @@ public class AddWizardElement extends GLElementSelector implements ICallback<ITr
 	}
 
 	@Override
-	public void on(ITransition data) {
-		IState target = data.getTarget();
+	public void on(IState target) {
 		this.current.onLeave();
 		this.current = target;
-		this.current.onEnter();
+		this.current.onEnter(this);
 		if (!stateMap.containsKey(target)) {
 			this.add(convert(current));
 			stateMap.put(current, size() - 1);

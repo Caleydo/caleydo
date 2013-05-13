@@ -17,35 +17,12 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.stratomex.tourguide.event;
-
-import org.caleydo.core.event.ADirectedEvent;
+package org.caleydo.view.stratomex.tourguide.internal;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class AddNewColumnEvent extends ADirectedEvent {
-
-	private int objectId;
-
-	/**
-	 * @param objectID
-	 */
-	public AddNewColumnEvent(int objectID) {
-		this.objectId = objectID;
-	}
-
-	/**
-	 * @return the objectId, see {@link #objectId}
-	 */
-	public int getObjectId() {
-		return objectId;
-	}
-
-	@Override
-	public boolean checkIntegrity() {
-		return true;
-	}
-
+public enum ESelectionMode {
+	STRATIFICATION, GROUP
 }

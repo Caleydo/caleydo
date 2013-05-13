@@ -17,38 +17,36 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.stratomex.tourguide;
+package org.caleydo.view.stratomex.tourguide.event;
 
-import javax.media.opengl.GL2;
+import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.event.ADirectedEvent;
+import org.caleydo.core.util.collection.Pair;
 
-import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
+import com.google.common.base.Predicate;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class ConfirmCancelLayoutRenderer extends ALayoutRenderer {
-	private final AGLView view;
-	private final int id;
-	private final TourguideAdapter tourguide;
+public class SelectGroupEvent extends ADirectedEvent {
+	private final Predicate<Pair<TablePerspective, Group>> filter;
 
-	public ConfirmCancelLayoutRenderer(AGLView view, int id, TourguideAdapter tourguide) {
-		this.view = view;
-		this.id = id;
-		this.tourguide = tourguide;
+	public SelectGroupEvent(Predicate<Pair<TablePerspective, Group>> filter) {
+		this.filter = filter;
 	}
 
-	@Override
-	protected void renderContent(GL2 gl) {
-		float hi = view.getPixelGLConverter().getGLHeightForPixelHeight(34);
-		float wi = view.getPixelGLConverter().getGLWidthForPixelWidth(32);
-		tourguide.renderConfirmButton(gl, x * 1.05f, y * 0.8f, wi, hi, id);
-		tourguide.renderCancelButton(gl, x * 1.05f, y * 0.8f + hi, wi, hi, id);
+	/**
+	 * @return the filter, see {@link #filter}
+	 */
+	public Predicate<Pair<TablePerspective, Group>> getFilter() {
+		return filter;
 	}
 
+
 	@Override
-	protected boolean permitsWrappingDisplayLists() {
+	public boolean checkIntegrity() {
 		return true;
 	}
 

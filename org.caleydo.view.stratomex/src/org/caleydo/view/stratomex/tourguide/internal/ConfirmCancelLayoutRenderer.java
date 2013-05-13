@@ -17,50 +17,40 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.api.state;
+package org.caleydo.view.stratomex.tourguide.internal;
 
-import java.util.List;
+import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.io.gui.dataimport.widget.ICallback;
-import org.caleydo.core.view.opengl.layout2.GLElement;
-import org.caleydo.core.view.opengl.layout2.basic.GLButton;
-import org.caleydo.core.view.opengl.layout2.basic.GLButton.ISelectionCallback;
+import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
+import org.caleydo.view.stratomex.tourguide.TourguideAdapter;
 
 /**
  * @author Samuel Gratzl
  *
  */
+public class ConfirmCancelLayoutRenderer extends ALayoutRenderer {
+	private final AGLView view;
+	private final int id;
+	private final TourguideAdapter tourguide;
 
-public class ButtonTransition implements ITransition {
-	private final IState target;
-	private final String label;
-
-	public ButtonTransition(IState target, String label) {
-		this.target = target;
-		this.label = label;
+	public ConfirmCancelLayoutRenderer(AGLView view, int id, TourguideAdapter tourguide) {
+		this.view = view;
+		this.id = id;
+		this.tourguide = tourguide;
 	}
 
 	@Override
-	public IState getTarget() {
-		return target;
+	protected void renderContent(GL2 gl) {
+		float hi = view.getPixelGLConverter().getGLHeightForPixelHeight(34);
+		float wi = view.getPixelGLConverter().getGLWidthForPixelWidth(32);
+		tourguide.renderConfirmButton(gl, x * 1.05f, y * 0.8f, wi, hi, id);
+		tourguide.renderCancelButton(gl, x * 1.05f, y * 0.8f + hi, wi, hi, id);
 	}
 
 	@Override
-	public boolean apply(List<TablePerspective> existing) {
+	protected boolean permitsWrappingDisplayLists() {
 		return true;
 	}
 
-	@Override
-	public GLElement create(final ICallback<IState> onApply) {
-		GLButton b = new GLButton();
-		b.setCallback(new ISelectionCallback() {
-			@Override
-			public void onSelectionChanged(GLButton button, boolean selected) {
-				onApply.on(ButtonTransition.this.getTarget());
-			}
-		});
-		b.setRenderer(new MultiLineTextRenderer(label));
-		return b;
-	}
 }

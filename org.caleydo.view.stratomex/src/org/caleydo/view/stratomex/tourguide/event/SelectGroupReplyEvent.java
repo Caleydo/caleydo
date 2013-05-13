@@ -17,50 +17,42 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.api.state;
-
-import java.util.List;
+package org.caleydo.view.stratomex.tourguide.event;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.io.gui.dataimport.widget.ICallback;
-import org.caleydo.core.view.opengl.layout2.GLElement;
-import org.caleydo.core.view.opengl.layout2.basic.GLButton;
-import org.caleydo.core.view.opengl.layout2.basic.GLButton.ISelectionCallback;
+import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.event.ADirectedEvent;
 
 /**
  * @author Samuel Gratzl
  *
  */
+public class SelectGroupReplyEvent extends ADirectedEvent {
+	private final TablePerspective tablePerspective;
+	private final Group group;
 
-public class ButtonTransition implements ITransition {
-	private final IState target;
-	private final String label;
+	public SelectGroupReplyEvent(TablePerspective tablePerspective, Group group) {
+		this.tablePerspective = tablePerspective;
+		this.group = group;
+	}
 
-	public ButtonTransition(IState target, String label) {
-		this.target = target;
-		this.label = label;
+	/**
+	 * @return the tablePerspective, see {@link #tablePerspective}
+	 */
+	public TablePerspective getTablePerspective() {
+		return tablePerspective;
+	}
+
+	/**
+	 * @return the group, see {@link #group}
+	 */
+	public Group getGroup() {
+		return group;
 	}
 
 	@Override
-	public IState getTarget() {
-		return target;
-	}
-
-	@Override
-	public boolean apply(List<TablePerspective> existing) {
+	public boolean checkIntegrity() {
 		return true;
 	}
 
-	@Override
-	public GLElement create(final ICallback<IState> onApply) {
-		GLButton b = new GLButton();
-		b.setCallback(new ISelectionCallback() {
-			@Override
-			public void onSelectionChanged(GLButton button, boolean selected) {
-				onApply.on(ButtonTransition.this.getTarget());
-			}
-		});
-		b.setRenderer(new MultiLineTextRenderer(label));
-		return b;
-	}
 }

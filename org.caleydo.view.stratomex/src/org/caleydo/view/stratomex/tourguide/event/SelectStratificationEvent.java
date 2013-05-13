@@ -17,50 +17,35 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.api.state;
-
-import java.util.List;
+package org.caleydo.view.stratomex.tourguide.event;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.io.gui.dataimport.widget.ICallback;
-import org.caleydo.core.view.opengl.layout2.GLElement;
-import org.caleydo.core.view.opengl.layout2.basic.GLButton;
-import org.caleydo.core.view.opengl.layout2.basic.GLButton.ISelectionCallback;
+import org.caleydo.core.event.ADirectedEvent;
+
+import com.google.common.base.Predicate;
 
 /**
  * @author Samuel Gratzl
  *
  */
+public class SelectStratificationEvent extends ADirectedEvent {
+	private final Predicate<TablePerspective> filter;
 
-public class ButtonTransition implements ITransition {
-	private final IState target;
-	private final String label;
-
-	public ButtonTransition(IState target, String label) {
-		this.target = target;
-		this.label = label;
+	public SelectStratificationEvent(Predicate<TablePerspective> filter) {
+		this.filter = filter;
 	}
 
-	@Override
-	public IState getTarget() {
-		return target;
+	/**
+	 * @return the filter, see {@link #filter}
+	 */
+	public Predicate<TablePerspective> getFilter() {
+		return filter;
 	}
 
+
 	@Override
-	public boolean apply(List<TablePerspective> existing) {
+	public boolean checkIntegrity() {
 		return true;
 	}
 
-	@Override
-	public GLElement create(final ICallback<IState> onApply) {
-		GLButton b = new GLButton();
-		b.setCallback(new ISelectionCallback() {
-			@Override
-			public void onSelectionChanged(GLButton button, boolean selected) {
-				onApply.on(ButtonTransition.this.getTarget());
-			}
-		});
-		b.setRenderer(new MultiLineTextRenderer(label));
-		return b;
-	}
 }

@@ -22,31 +22,44 @@ package org.caleydo.view.stratomex.tourguide;
 import gleem.linalg.Vec3f;
 
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLContext;
 
+import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.util.ExtensionUtils;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.util.color.Colors;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.ElementLayouts;
+import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.LayoutRendererAdapter;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.view.stratomex.Activator;
+import org.caleydo.view.stratomex.EPickingType;
 import org.caleydo.view.stratomex.GLStratomex;
+import org.caleydo.view.stratomex.brick.GLBrick;
 import org.caleydo.view.stratomex.column.BrickColumn;
+import org.caleydo.view.stratomex.column.BrickColumnGlowRenderer;
 import org.caleydo.view.stratomex.column.BrickColumnManager;
-import org.caleydo.view.stratomex.tourguide.event.AddNewColumnEvent;
-import org.caleydo.view.stratomex.tourguide.event.ConfirmCancelNewColumnEvent;
+import org.caleydo.view.stratomex.tourguide.event.SelectGroupEvent;
+import org.caleydo.view.stratomex.tourguide.event.SelectGroupReplyEvent;
+import org.caleydo.view.stratomex.tourguide.event.SelectStratificationEvent;
+import org.caleydo.view.stratomex.tourguide.event.SelectStratificationReplyEvent;
 import org.caleydo.view.stratomex.tourguide.event.UpdatePreviewEvent;
+import org.caleydo.view.stratomex.tourguide.internal.ConfirmCancelLayoutRenderer;
+import org.caleydo.view.stratomex.tourguide.internal.ESelectionMode;
+import org.caleydo.view.stratomex.tourguide.internal.event.AddNewColumnEvent;
+import org.caleydo.view.stratomex.tourguide.internal.event.ConfirmCancelNewColumnEvent;
+
+import com.google.common.collect.Iterables;
 
 /**
  * @author Samuel Gratzl
@@ -67,12 +80,16 @@ public class TourguideAdapter {
 	private ElementLayout templateColumn;
 	private BrickColumn preview;
 
+	private ESelectionMode selectionMode = null;
+	private GLBrick selectionCurrent = null;
+	private Object selectionReceiver = null;
+
 	public TourguideAdapter(GLStratomex stratomex) {
 		this.stratomex = stratomex;
 	}
 
 	public void renderAddButton(GL2 gl, float x, float y, float w, float h, int id) {
-		if (factory == null || templateColumn != null) // not more than one at the sam etime
+		if (factory == null || templateColumn != null || preview != null) // not more than one at the sam etime
 			return;
 		renderButton(gl, x, y, w, h, stratomex, ADD_PICKING_TYPE, id, "resources/icons/stratomex/template/add.png");
 	}
@@ -89,23 +106,27 @@ public class TourguideAdapter {
 
 	private static void renderButton(GL2 gl, float x, float y, float w, float h, AGLView view, String pickingType,
 			int id, String texture) {
+		GLGraphics.checkError(gl);
 		id = view.getPickingManager().getPickingID(view.getID(), pickingType, id + 1);
 		// stratomex.addIDPickingTooltipListener("Add another column", pickingType, pickedObjectID)
 		gl.glPushName(id);
 
-		float wi = view.getPixelGLConverter().getGLWidthForPixelWidth(32);
-		float hi = view.getPixelGLConverter().getGLHeightForPixelHeight(32);
-		float xi = x + w * 0.5f - wi * 0.5f;
-		float yi = y + h * 0.5f - hi * 0.5f;
-		Vec3f lowerLeftCorner = new Vec3f(xi, yi, 5.5f);
-		Vec3f lowerRightCorner = new Vec3f(xi + wi, yi, 5.5f);
-		Vec3f upperRightCorner = new Vec3f(xi + wi, yi + hi, 5.5f);
-		Vec3f upperLeftCorner = new Vec3f(xi, yi + hi, 5.5f);
+		final float wi = view.getPixelGLConverter().getGLWidthForPixelWidth(32);
+		final float hi = view.getPixelGLConverter().getGLHeightForPixelHeight(32);
+		final float xi = x + w * 0.5f - wi * 0.5f;
+		final float yi = y + h * 0.5f - hi * 0.5f;
+		final float z = 1.5f;
+
+		Vec3f lowerLeftCorner = new Vec3f(xi, yi, z);
+		Vec3f lowerRightCorner = new Vec3f(xi + wi, yi, z);
+		Vec3f upperRightCorner = new Vec3f(xi + wi, yi + hi, z);
+		Vec3f upperLeftCorner = new Vec3f(xi, yi + hi, z);
 
 		view.getTextureManager().renderTexture(gl, texture, lowerLeftCorner, lowerRightCorner, upperRightCorner,
 				upperLeftCorner, 1, 1, 1, 1);
 
 		gl.glPopName();
+		GLGraphics.checkError(gl);
 	}
 
 	/**
@@ -141,6 +162,102 @@ public class TourguideAdapter {
 							.from(this));
 			}
 		}, CANCEL_PICKING_TYPE);
+
+		stratomex.addTypePickingListener(new IPickingListener() {
+			@Override
+			public void pick(Pick pick) {
+				onBrickPick(pick);
+			}
+		}, EPickingType.BRICK.name());
+	}
+
+	/**
+	 * @param pick
+	 */
+	protected void onBrickPick(Pick pick) {
+		if (pick.getPickingMode() != PickingMode.CLICKED || selectionMode == null)
+			return;
+		GLBrick brick = findBick(pick.getObjectID());
+		if (brick == null)
+			return;
+		boolean isHeader = brick.isHeaderBrick();
+		if (isHeader != (selectionMode == ESelectionMode.STRATIFICATION))
+			return;
+		// select brick
+		for (BrickColumnGlowRenderer glow : Iterables.filter(brick.getLayout().getBackgroundRenderer(),
+				BrickColumnGlowRenderer.class)) {
+			glow.setColor(Colors.YELLOW.getRGBA());
+		}
+
+		stratomex.setDisplayListDirty();
+
+		TablePerspective tablePerspective = brick.getBrickColumn().getTablePerspective();
+		if (selectionMode == ESelectionMode.GROUP) {
+			Group group = brick.getTablePerspective().getRecordGroup();
+			EventPublisher.trigger(new SelectGroupReplyEvent(tablePerspective, group).to(selectionReceiver).from(this));
+		} else {
+			EventPublisher.trigger(new SelectStratificationReplyEvent(tablePerspective).to(selectionReceiver)
+					.from(this));
+
+		}
+	}
+
+	@ListenTo(sendToMe = true)
+	private void onSelectBrickRequest(SelectStratificationEvent event) {
+		this.selectionMode = ESelectionMode.STRATIFICATION;
+		selectionReceiver = event.getSender();
+
+		// highlight all possibles
+		for (BrickColumn col : stratomex.getBrickColumnManager().getBrickColumns()) {
+			if (event.getFilter().apply(col.getTablePerspective()))
+				addHighlight(col.getHeaderBrick());
+		}
+		repaint();
+	}
+
+	private void repaint() {
+		stratomex.updateLayout();
+		stratomex.setDisplayListDirty();
+	}
+
+	@ListenTo(sendToMe = true)
+	private void onSelectBrickRequest(SelectGroupEvent event) {
+		this.selectionMode = ESelectionMode.GROUP;
+		selectionReceiver = event.getSender();
+
+		// highlight all possibles
+		for (BrickColumn col : stratomex.getBrickColumnManager().getBrickColumns()) {
+			TablePerspective tablePerspective = col.getTablePerspective();
+			for (GLBrick brick : col.getSegmentBricks()) {
+				if (event.getFilter().apply(Pair.make(tablePerspective, brick.getTablePerspective().getRecordGroup())))
+					addHighlight(brick);
+			}
+		}
+		repaint();
+	}
+
+	/**
+	 * @param headerBrick
+	 */
+	private void addHighlight(GLBrick brick) {
+		brick.getLayout().addBackgroundRenderer(
+				new BrickColumnGlowRenderer(Colors.GREEN.getRGBA(), brick.getBrickColumn(), false));
+	}
+
+	/**
+	 * @param brickId
+	 * @return
+	 */
+	private GLBrick findBick(int brickId) {
+		for (BrickColumn col : stratomex.getBrickColumnManager().getBrickColumns()) {
+			if (col.getHeaderBrick().getID() == brickId)
+				return col.getHeaderBrick();
+			for (GLBrick brick : col.getSegmentBricks()) {
+				if (brick.getID() == brickId)
+					return brick;
+			}
+		}
+		return null;
 	}
 
 	/**
@@ -157,6 +274,8 @@ public class TourguideAdapter {
 
 	@ListenTo(sendToMe = true)
 	private void onAddEmptyColumn(AddNewColumnEvent event) {
+		if (preview != null || templateColumn != null)
+			return;
 		// BrickColumn brick = createBrickColumn(new TemplateDataConfigurer(), null);
 		//
 		int index;
@@ -182,18 +301,16 @@ public class TourguideAdapter {
 
 		if (templateColumn == null && preview == null)
 			return;
+
+		// reset
+		reset();
+
 		if (preview == null && confirm)
 			return;
 
 		if (confirm) {
 			// remove the preview buttons
-			List<ALayoutRenderer> backgrounds = preview.getLayout().getBackgroundRenderer();
-			for (Iterator<ALayoutRenderer> it = backgrounds.iterator(); it.hasNext();) {
-				ALayoutRenderer next = it.next();
-				if (next instanceof ConfirmCancelLayoutRenderer)
-					it.remove();
-			}
-			// TODO remove all highlights
+			preview.getLayout().clearBackgroundRenderers();
 		} else {
 			destroyTemplate();
 			if (preview != null)
@@ -201,6 +318,21 @@ public class TourguideAdapter {
 		}
 		preview = null;
 		stratomex.relayout();
+	}
+
+	/**
+	 *
+	 */
+	private void reset() {
+		selectionMode = null;
+		selectionReceiver = null;
+		selectionCurrent = null;
+		for (BrickColumn col : stratomex.getBrickColumnManager().getBrickColumns()) {
+			col.getHeaderBrick().getLayout().clearBackgroundRenderers();
+			for (GLBrick brick : col.getSegmentBricks()) {
+				brick.getLayout().clearBackgroundRenderers();
+			}
+		}
 	}
 
 	/**

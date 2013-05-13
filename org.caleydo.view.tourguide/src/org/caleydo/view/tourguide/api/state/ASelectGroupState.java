@@ -19,22 +19,34 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.api.state;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
+import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.event.EventListenerManager.ListenTo;
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.io.gui.dataimport.widget.ICallback;
+import org.caleydo.core.util.collection.Pair;
+import org.caleydo.view.stratomex.tourguide.event.SelectGroupEvent;
+import org.caleydo.view.stratomex.tourguide.event.SelectGroupReplyEvent;
+
+import com.google.common.base.Predicate;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class SimpleState implements IState {
-	private final Collection<ITransition> transitions = new ArrayList<>();
+public abstract class ASelectGroupState implements IState, Predicate<Pair<TablePerspective, Group>> {
 	private final String label;
+	private final Object receiver;
+	private final IState target;
+	private ICallback<IState> onAutomaticSwitch;
 
-	public SimpleState(String label) {
+	public ASelectGroupState(String label, IState target, Object receiver) {
 		this.label = label;
+		this.receiver = receiver;
+		this.target = target;
 	}
 
 	/**
@@ -47,22 +59,30 @@ public class SimpleState implements IState {
 
 	@Override
 	public void onEnter(final ICallback<IState> onAutomaticSwitch) {
-
+		EventPublisher.trigger(new SelectGroupEvent(this).to(receiver).from(this));
+		this.onAutomaticSwitch = onAutomaticSwitch;
 	}
 
-	public SimpleState addTransition(ITransition transition) {
-		this.transitions.add(transition);
-		return this;
+	@ListenTo(sendToMe = true)
+	private void onEvent(SelectGroupReplyEvent event) {
+		handleSelection(event.getTablePerspective(), event.getGroup());
+
+		this.onAutomaticSwitch.on(target);
 	}
+
+	/**
+	 * @param tablePerspective
+	 * @param group
+	 */
+	protected abstract void handleSelection(TablePerspective tablePerspective, Group group);
 
 	@Override
 	public Collection<ITransition> getTransitions() {
-		return Collections.unmodifiableCollection(transitions);
+		return Collections.emptyList();
 	}
 
 	@Override
 	public void onLeave() {
 
 	}
-
 }
