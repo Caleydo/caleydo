@@ -40,6 +40,7 @@ import org.caleydo.core.util.color.mapping.UpdateColorMappingEvent;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.contextmenu.item.BookmarkMenuItem;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
@@ -57,6 +58,13 @@ import com.jogamp.common.util.IntIntHashMap;
 
 public class HeatMapElement extends PickableGLElement implements
 		TablePerspectiveSelectionMixin.ITablePerspectiveMixinCallback {
+	/**
+	 *
+	 */
+	private static final int MAX_TEXT_HEIGHT = 12;
+
+	private final static int TEXT_WIDTH = 80; // [px]
+
 	/** hide elements with the state {@link #SELECTION_HIDDEN} if this is true */
 	private boolean hideElements = true;
 
@@ -94,6 +102,12 @@ public class HeatMapElement extends PickableGLElement implements
 	private final IBlockColorer blockColorer;
 
 	private final HeatMapTextureRenderer textureRenderer;
+
+	/**
+	 * whether the labels of the
+	 */
+	private boolean showDimensionLabels = false;
+	private boolean showRecordLabels = false;
 
 	public HeatMapElement(TablePerspective tablePerspective) {
 		this(tablePerspective, BasicBlockColorer.INSTANCE, EDetailLevel.HIGH);
@@ -175,6 +189,42 @@ public class HeatMapElement extends PickableGLElement implements
 		ensureEnoughPickingIds();
 	}
 
+	/**
+	 * @param showDimensionLabels
+	 *            setter, see {@link showDimensionLabels}
+	 */
+	public void setShowDimensionLabels(boolean showDimensionLabels) {
+		if (this.showDimensionLabels == showDimensionLabels)
+			return;
+		this.showDimensionLabels = showDimensionLabels;
+		relayout();
+	}
+
+	/**
+	 * @param showRecordLabels
+	 *            setter, see {@link showRecordLabels}
+	 */
+	public void setShowRecordLabels(boolean showRecordLabels) {
+		if (this.showRecordLabels == showRecordLabels)
+			return;
+		this.showRecordLabels = showRecordLabels;
+		relayout();
+	}
+
+	/**
+	 * @return the showDimensionLabels, see {@link #showDimensionLabels}
+	 */
+	public boolean isShowDimensionLabels() {
+		return showDimensionLabels;
+	}
+
+	/**
+	 * @return the showRecordLabels, see {@link #showRecordLabels}
+	 */
+	public boolean isShowRecordLabels() {
+		return showRecordLabels;
+	}
+
 	@Override
 	public void onVAUpdate(TablePerspective tablePerspective) {
 		ensureEnoughPickingIds();
@@ -204,24 +254,15 @@ public class HeatMapElement extends PickableGLElement implements
 		super.takeDown();
 	}
 
-	// @Override
-	// public void setDetailLevel(EDetailLevel detailLevel) {
-	// if (detailLevel.equals(this.detailLevel))
-	// return;
-	// super.setDetailLevel(detailLevel);
-	// if (tablePerspective.getNrDimensions() > 1
-	// && (detailLevel == EDetailLevel.HIGH || detailLevel == EDetailLevel.MEDIUM)) {
-	// layoutManager.setStaticLayoutConfiguration(detailedRenderingTemplate);
-	// detailedRenderingTemplate.setStaticLayouts();
-	// } else {
-	// layoutManager.setStaticLayoutConfiguration(textureTemplate);
-	// }
-	//
-	// }
-
 	@Override
 	protected void layoutImpl() {
-		Vec2f size = getSize();
+		Vec2f size = getSize().copy();
+		if (showRecordLabels) {
+			size.setX(size.x() - TEXT_WIDTH);
+		}
+		if (showDimensionLabels) {
+			size.setY(size.y() - TEXT_WIDTH);
+		}
 		// compute the layout
 		this.recordSpacing = recordSpacingStrategy.apply(mixin.getTablePerspective(),
 				mixin.getRecordSelectionManager(), isHideElements(),
@@ -230,10 +271,60 @@ public class HeatMapElement extends PickableGLElement implements
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
+		g.save();
+		if (showRecordLabels) {
+			w -= TEXT_WIDTH;
+			g.move(TEXT_WIDTH, 0);
+		}
+		if (showDimensionLabels) {
+			h -= TEXT_WIDTH;
+			g.move(0, TEXT_WIDTH);
+		}
+
+		if (showRecordLabels) {
+			final TablePerspective tablePerspective = mixin.getTablePerspective();
+			final VirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
+			final ATableBasedDataDomain dataDomain = tablePerspective.getDataDomain();
+
+			for (int i = 0; i < recordVA.size(); ++i) {
+				Integer recordID = recordVA.get(i);
+				if (isHidden(recordID)) {
+					continue;
+				}
+				float y = recordSpacing.getYPosition(i);
+				float fieldHeight = recordSpacing.getFieldHeight(recordID);
+				float textHeight = Math.min(fieldHeight, MAX_TEXT_HEIGHT);
+
+				g.drawText(dataDomain.getRecordLabel(recordID), 2 - TEXT_WIDTH, y + (fieldHeight - textHeight) * 0.5f,
+						TEXT_WIDTH - 2, textHeight, VAlign.RIGHT);
+			}
+		}
+
+		if (showDimensionLabels) {
+			final TablePerspective tablePerspective = mixin.getTablePerspective();
+			final VirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
+			final ATableBasedDataDomain dataDomain = tablePerspective.getDataDomain();
+			final float fieldWidth = recordSpacing.getFieldWidth();
+			final float textWidth = Math.min(fieldWidth, MAX_TEXT_HEIGHT);
+
+			g.save();
+			g.gl.glRotatef(-90, 0, 0, 1);
+			float x = 0;
+			for (int i = 0; i < dimensionVA.size(); ++i) {
+				Integer dimensionID = dimensionVA.get(i);
+
+				g.drawText(dataDomain.getDimensionLabel(dimensionID), 2, x + (fieldWidth - textWidth) * 0.5f,
+						TEXT_WIDTH - 2, textWidth, VAlign.LEFT);
+				x += fieldWidth;
+			}
+			g.restore();
+		}
+
 		if (textureRenderer != null)
 			textureRenderer.render(g, w, h);
 		else
 			render(g, w, h, false);
+		g.restore();
 	}
 
 
@@ -283,9 +374,21 @@ public class HeatMapElement extends PickableGLElement implements
 	protected void renderPickImpl(GLGraphics g, float w, float h) {
 		// ensureEnoughPickingIds();
 		super.renderPickImpl(g, w, h);
+		g.save();
+		if (showRecordLabels) {
+			w -= TEXT_WIDTH;
+			g.move(TEXT_WIDTH, 0);
+		}
+		if (showDimensionLabels) {
+			h -= TEXT_WIDTH;
+			g.move(0, TEXT_WIDTH);
+		}
+
 		g.incZ();
 		render(g, w, h, true);
 		g.decZ();
+
+		g.restore();
 	}
 
 	@Override
