@@ -23,7 +23,6 @@ import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.io.gui.dataimport.widget.ICallback;
 import org.caleydo.core.io.gui.dataimport.widget.IDParsingRulesWidget;
 import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -110,17 +109,17 @@ public class DefineIDParsingDialog extends Dialog {
 	@Override
 	protected void okPressed() {
 
-		if (idParsingRulesWidget.getReplacingExpression() == null
-				&& idParsingRulesWidget.getSubStringExpression() == null) {
-			MessageDialog.openError(new Shell(), "Incomplete Parsing Definition",
-					"At least one expression (replacing or substring) must be specified.");
-			return;
-		}
+		// if (idParsingRulesWidget.getReplacingExpression() == null
+		// && idParsingRulesWidget.getSubStringExpression() == null) {
+		// MessageDialog.openError(new Shell(), "Incomplete Parsing Definition",
+		// "At least one expression (replacing or substring) must be specified.");
+		// return;
+		// }
 
-		idTypeParsingRules = new IDTypeParsingRules();
-		idTypeParsingRules.setReplacementExpression(idParsingRulesWidget.getReplacementString(),
-				idParsingRulesWidget.getReplacingExpression());
-		idTypeParsingRules.setSubStringExpression(idParsingRulesWidget.getSubStringExpression());
+		idTypeParsingRules = idParsingRulesWidget.getIDTypeParsingRules();
+		// idTypeParsingRules.setReplacementExpression(idParsingRulesWidget.getReplacementString(),
+		// idParsingRulesWidget.getReplacingExpression());
+		// idTypeParsingRules.setSubStringExpression(idParsingRulesWidget.getSubStringExpression());
 		idTypeParsingRules.setDefault(false);
 
 		super.okPressed();

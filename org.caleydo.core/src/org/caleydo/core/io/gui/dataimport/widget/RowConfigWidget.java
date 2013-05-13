@@ -283,7 +283,7 @@ public class RowConfigWidget {
 		IDSpecification rowIDSpecification = new IDSpecification();
 		IDType rowIDType = this.getIDType();
 
-		rowIDSpecification.setIdType(rowIDType.toString());
+		rowIDSpecification.setIdType(rowIDType.getTypeName());
 		if (rowIDType.getIDCategory().getCategoryName().equals("GENE"))
 			rowIDSpecification.setIDTypeGene(true);
 		rowIDSpecification.setIdCategory(rowIDType.getIDCategory().toString());

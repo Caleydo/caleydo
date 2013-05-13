@@ -73,6 +73,11 @@ public class IDParsingRulesWidget {
 	 */
 	protected Button useRegExButton;
 
+	/**
+	 * Button to specify whether the ids shall be transformed to upper case.
+	 */
+	protected Button toUpperCaseButton;
+
 	protected Label replacementRegExLabel;
 	protected Label replacementStringLabel;
 	protected Label substringRegExLabel;
@@ -131,6 +136,15 @@ public class IDParsingRulesWidget {
 
 			}
 		};
+
+		toUpperCaseButton = new Button(regExGroup, SWT.CHECK);
+		toUpperCaseButton.setText("To upper case");
+		toUpperCaseButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				updatePreview();
+			}
+		});
 
 		replacementExplanationLabel = new Label(regExGroup, SWT.WRAP);
 		replacementExplanationLabel
@@ -195,10 +209,6 @@ public class IDParsingRulesWidget {
 		fillWidgets(templateIdTypeParsingRules);
 	}
 
-	public boolean isValidRegEx() {
-		return errorImage.isVisible();
-	}
-
 	/**
 	 * Fills all widgets according to the specified {@link IDTypeParsingRules}.
 	 *
@@ -226,13 +236,8 @@ public class IDParsingRulesWidget {
 	private void updatePreview() {
 		if (idSample == null)
 			return;
-		IDTypeParsingRules idTypeParsingRules = new IDTypeParsingRules();
-		idTypeParsingRules.setReplacementExpression(replacementStringTextField.getText(),
-				replacementRegExTextField.getText());
-		idTypeParsingRules.setSubStringExpression(getSubStringExpression());
-
 		try {
-			String idPreview = ATextParser.convertID(idSample, idTypeParsingRules);
+			String idPreview = ATextParser.convertID(idSample, getIDTypeParsingRules());
 			previewLabel.setText("Preview: " + idSample + "->" + idPreview);
 			if (errorImage.isVisible()) {
 				errorImage.setVisible(false);
@@ -250,6 +255,18 @@ public class IDParsingRulesWidget {
 	}
 
 	/**
+	 * Creates parsing rules specified by the gui elements of this widget.
+	 */
+	public IDTypeParsingRules getIDTypeParsingRules() {
+		IDTypeParsingRules idTypeParsingRules = new IDTypeParsingRules();
+		idTypeParsingRules.setToUpperCase(toUpperCaseButton.getSelection());
+		idTypeParsingRules.setReplacementExpression(replacementStringTextField.getText(),
+				replacementRegExTextField.getText());
+		idTypeParsingRules.setSubStringExpression(getSubStringExpression());
+		return idTypeParsingRules;
+	}
+
+	/**
 	 * Enables or disables all widgets.
 	 *
 	 * @param enabled
@@ -264,6 +281,7 @@ public class IDParsingRulesWidget {
 		substringExplanationLabel.setEnabled(enabled);
 		replacementExplanationLabel.setEnabled(enabled);
 		previewLabel.setEnabled(enabled);
+		toUpperCaseButton.setEnabled(enabled);
 	}
 
 	/**
@@ -273,24 +291,24 @@ public class IDParsingRulesWidget {
 		return useRegExButton.getSelection();
 	}
 
-	/**
-	 * @return The replacing expression entered by the user. Null will be returned in case of an empty string.
-	 */
-	public String getReplacingExpression() {
-		return replacementRegExTextField.getText().equals("") ? null : replacementRegExTextField.getText();
-	}
-
-	/**
-	 * @return The replacement string entered by the user.
-	 */
-	public String getReplacementString() {
-		return replacementStringTextField.getText();
-	}
+	// /**
+	// * @return The replacing expression entered by the user. Null will be returned in case of an empty string.
+	// */
+	// private String getReplacingExpression() {
+	// return replacementRegExTextField.getText().equals("") ? null : replacementRegExTextField.getText();
+	// }
+	//
+	// /**
+	// * @return The replacement string entered by the user.
+	// */
+	// private String getReplacementString() {
+	// return replacementStringTextField.getText();
+	// }
 
 	/**
 	 * @return The substring expression entered by te user. Null will be returned in case of an empty string.
 	 */
-	public String getSubStringExpression() {
+	private String getSubStringExpression() {
 		return substringRegExTextField.getText().equals("") ? null : substringRegExTextField.getText();
 	}
 
