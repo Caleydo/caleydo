@@ -7,6 +7,7 @@ import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.io.IDTypeParsingRules;
+import org.caleydo.core.io.gui.dataimport.widget.ICallback;
 import org.caleydo.core.io.gui.dataimport.widget.IDParsingRulesWidget;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
@@ -77,7 +78,10 @@ public class CreateIDTypeDialog extends Dialog {
 	// protected Label replacementRegExLabel;
 	// protected Label replacementStringLabel;
 	// protected Label substringRegExLabel;
-
+	/**
+	 * ID that is used as sample to preview effects of regular expressions.
+	 */
+	private String idSample;
 	/**
 	 * Mediator of this dialog.
 	 */
@@ -85,20 +89,26 @@ public class CreateIDTypeDialog extends Dialog {
 
 	/**
 	 * @param parentShell
+	 * @param idSample
+	 *            ID that is used as sample to preview effects of regular expressions.
 	 */
-	public CreateIDTypeDialog(Shell parentShell) {
+	public CreateIDTypeDialog(Shell parentShell, String idSample) {
 		super(parentShell);
 		mediator = new CreateIDTypeDialogMediator(this);
+		this.idSample = idSample;
 	}
 
 	/**
 	 * @param parentShell
 	 * @param idCategory
 	 *            {@link IDCategory} the created {@link IDType} will be restricted to.
+	 * @param idSample
+	 *            ID that is used as sample to preview effects of regular expressions.
 	 */
-	public CreateIDTypeDialog(Shell parentShell, IDCategory idCategory) {
+	public CreateIDTypeDialog(Shell parentShell, IDCategory idCategory, String idSample) {
 		super(parentShell);
 		mediator = new CreateIDTypeDialogMediator(this, idCategory);
+		this.idSample = idSample;
 	}
 
 	@Override
@@ -137,7 +147,18 @@ public class CreateIDTypeDialog extends Dialog {
 		typeNameTextField = new Text(parentComposite, SWT.BORDER);
 		typeNameTextField.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
-		idParsingRulesWidget = new IDParsingRulesWidget(parentComposite, null, true);
+		idParsingRulesWidget = new IDParsingRulesWidget(parentComposite, null, true, idSample,
+				new ICallback<Boolean>() {
+
+					@Override
+					public void on(Boolean data) {
+						if (!data) {
+							CreateIDTypeDialog.this.getButton(OK).setEnabled(false);
+						} else {
+							CreateIDTypeDialog.this.getButton(OK).setEnabled(true);
+						}
+					}
+				});
 
 		mediator.guiCreated();
 

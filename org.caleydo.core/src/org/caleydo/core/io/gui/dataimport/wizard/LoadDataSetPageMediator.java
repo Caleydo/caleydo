@@ -202,14 +202,24 @@ public class LoadDataSetPageMediator {
 			createDataPreviewTableFromFile();
 	}
 
+	private String getRowIDSample() {
+		return page.previewTable.getValue(page.numHeaderRowsSpinner.getSelection() + 1,
+				page.columnOfRowIDSpinner.getSelection());
+	}
+
+	private String getColumnIDSample() {
+		return page.previewTable.getValue(page.rowOfColumnIDSpinner.getSelection(),
+				page.columnOfRowIDSpinner.getSelection() + 1);
+	}
+
 	public void onDefineRowIDParsing() {
 		IDType idType = getRowIDType();
 		IDTypeParsingRules templateIdTypeParsingRules = rowIDTypeParsingRules;
 		if (idType != null && templateIdTypeParsingRules == null) {
 			templateIdTypeParsingRules = idType.getIdTypeParsingRules();
 		}
-
-		DefineIDParsingDialog dialog = new DefineIDParsingDialog(new Shell(), templateIdTypeParsingRules);
+		DefineIDParsingDialog dialog = new DefineIDParsingDialog(new Shell(), templateIdTypeParsingRules,
+				getRowIDSample());
 		int status = dialog.open();
 
 		if (status == Window.OK) {
@@ -223,8 +233,8 @@ public class LoadDataSetPageMediator {
 		if (idType != null && templateIdTypeParsingRules == null) {
 			templateIdTypeParsingRules = idType.getIdTypeParsingRules();
 		}
-
-		DefineIDParsingDialog dialog = new DefineIDParsingDialog(new Shell(), templateIdTypeParsingRules);
+		DefineIDParsingDialog dialog = new DefineIDParsingDialog(new Shell(), templateIdTypeParsingRules,
+				getColumnIDSample());
 		int status = dialog.open();
 
 		if (status == Window.OK) {
@@ -372,7 +382,8 @@ public class LoadDataSetPageMediator {
 	}
 
 	private void createIDCategory(boolean isColumnCategory) {
-		CreateIDTypeDialog dialog = new CreateIDTypeDialog(new Shell());
+		CreateIDTypeDialog dialog = new CreateIDTypeDialog(new Shell(), isColumnCategory ? getColumnIDSample()
+				: getRowIDSample());
 		int status = dialog.open();
 
 		if (status == Window.OK) {
@@ -419,8 +430,9 @@ public class LoadDataSetPageMediator {
 	}
 
 	private void createIDType(boolean isColumnIDType) {
+
 		CreateIDTypeDialog dialog = new CreateIDTypeDialog(new Shell(), isColumnIDType ? columnIDCategory
-				: rowIDCategory);
+				: rowIDCategory, isColumnIDType ? getColumnIDSample() : getRowIDSample());
 		int status = dialog.open();
 
 		if (status == Window.OK) {
