@@ -48,6 +48,7 @@ import org.caleydo.view.tourguide.spi.score.IDecoratedScore;
 import org.caleydo.view.tourguide.spi.score.IRegisteredScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
 import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -103,6 +104,11 @@ public class LogRankMetricFactory implements IScoreFactory {
 				final IGroupAlgorithm underlying = LogRank.get(clinicalVariable, clinical);
 
 				@Override
+				public void init(IProgressMonitor monitor) {
+					underlying.init(monitor);
+				}
+
+				@Override
 				public IDType getTargetType(IComputeElement a, IComputeElement b) {
 					return underlying.getTargetType(a, b);
 				}
@@ -118,9 +124,9 @@ public class LogRankMetricFactory implements IScoreFactory {
 				}
 
 				@Override
-				public float compute(Set<Integer> a, Set<Integer> b) {
+				public float compute(Set<Integer> a, Set<Integer> b, IProgressMonitor monitor) {
 					// me versus the rest
-					return underlying.compute(a, Sets.difference(b, a));
+					return underlying.compute(a, Sets.difference(b, a), monitor);
 				}
 			}, null, wrap(clinical.getColor()), darker(clinical.getColor()));
 			this.clinicalVariable = clinicalVariable;

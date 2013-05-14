@@ -114,6 +114,9 @@ public class ComputeScoreJob extends AScoreJob {
 		// all metrics
 		for (IComputedGroupScore metric : this.groupMetrics) {
 			IGroupAlgorithm algorithm = metric.getAlgorithm();
+			algorithm.init(monitor);
+			if (Thread.interrupted() || monitor.isCanceled())
+				return Status.CANCEL_STATUS;
 			IDType target = algorithm.getTargetType(as, as);
 			for (Group ag : this.data.get(as)) {
 				if (Thread.interrupted() || monitor.isCanceled())
@@ -122,7 +125,12 @@ public class ComputeScoreJob extends AScoreJob {
 					continue;
 				Set<Integer> reference = get(as, target, target);
 				Set<Integer> tocompute = get(as, ag, target, target);
-				float v = algorithm.compute(tocompute, reference);
+
+				if (Thread.interrupted() || monitor.isCanceled())
+					return Status.CANCEL_STATUS;
+				float v = algorithm.compute(tocompute, reference, monitor);
+				if (Thread.interrupted() || monitor.isCanceled())
+					return Status.CANCEL_STATUS;
 				metric.put(ag, v);
 			}
 		}
@@ -133,6 +141,10 @@ public class ComputeScoreJob extends AScoreJob {
 			final IDType sType = rs.getIdType();
 
 			IGroupAlgorithm algorithm = score.getAlgorithm();
+			algorithm.init(monitor);
+			if (Thread.interrupted() || monitor.isCanceled())
+				return Status.CANCEL_STATUS;
+
 			IDType target = algorithm.getTargetType(as, rs);
 			for (Group ag : this.data.get(as)) {
 				if (Thread.interrupted() || monitor.isCanceled())
@@ -141,7 +153,12 @@ public class ComputeScoreJob extends AScoreJob {
 					continue;
 				Set<Integer> tocompute = get(as, ag, target, sType);
 				Set<Integer> reference = get(rs, score.getGroup(), target, aType);
-				float v = algorithm.compute(tocompute, reference);
+
+				if (Thread.interrupted() || monitor.isCanceled())
+					return Status.CANCEL_STATUS;
+				float v = algorithm.compute(tocompute, reference, monitor);
+				if (Thread.interrupted() || monitor.isCanceled())
+					return Status.CANCEL_STATUS;
 				score.put(ag, v);
 			}
 		}

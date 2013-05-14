@@ -13,6 +13,7 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.collection.Pair;
+import org.eclipse.core.runtime.IProgressMonitor;
 
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.Lists;
@@ -32,12 +33,15 @@ public class GSEAAlgorithm extends AGSEAAlgorithm {
 
 	}
 
+
 	@Override
-	protected void init() {
+	public void init(IProgressMonitor monitor) {
 		if (!correlation.isEmpty())
 			return;
 		final List<Integer> inA = perspective.getVirtualArray()
 				.getIDsOfGroup(group.getGroupIndex());
+		if (monitor.isCanceled())
+			return;
 		this.correlation.putAll(rankedSet(inA));
 
 		int sampleSize = inA.size();
@@ -45,6 +49,12 @@ public class GSEAAlgorithm extends AGSEAAlgorithm {
 
 		// Randomly assign the original phenotype labels to samples,reorder genes, and re-compute ES(S)
 		for (int i = 0; i < NPERM; ++i) {
+			if (monitor.isCanceled()) {
+				// undo initialization
+				correlation.clear();
+				permutations.clear();
+				return;
+			}
 			// shuffle randomly the ids
 			Collections.shuffle(base);
 			// select the first sampleSize elements as new class labels
@@ -105,15 +115,18 @@ public class GSEAAlgorithm extends AGSEAAlgorithm {
 	}
 
 	@Override
-	protected float computeImpl(Set<Integer> geneSet) {
+	protected float computeImpl(Set<Integer> geneSet, IProgressMonitor monitor) {
 		float es = (float) enrichmentScore(correlation, geneSet);
 		return es;
 	}
 
 	@Override
-	protected float computePValueImpl(Set<Integer> geneSet) {
+	protected float computePValueImpl(Set<Integer> geneSet, IProgressMonitor monitor) {
 		float es = (float) enrichmentScore(correlation, geneSet);
 		if (Float.isNaN(es))
+			return Float.NaN;
+
+		if (monitor.isCanceled())
 			return Float.NaN;
 
 		// Randomly assign the original phenotype labels to samples,reorder genes, and re-compute ES(S)
@@ -155,6 +168,9 @@ public class GSEAAlgorithm extends AGSEAAlgorithm {
 				if (phi <= es)
 					phiSum += phi;
 			}
+
+			if (monitor.isCanceled())
+				return Float.NaN;
 		}
 		float pValue = phiSum / phiCount;
 

@@ -148,6 +148,10 @@ public abstract class AScoreJob {
 			Collection<IComputedReferenceStratificationScore> stratScores) {
 		for (IComputedStratificationScore score : stratMetrics) {
 			IStratificationAlgorithm algorithm = score.getAlgorithm();
+			algorithm.init(monitor);
+			if (Thread.interrupted() || monitor.isCanceled())
+				return Status.CANCEL_STATUS;
+
 			IDType target = algorithm.getTargetType(va, va);
 			if (score.contains(va) || !score.getFilter().doCompute(va, null, va, null)) {
 				continue;
@@ -156,14 +160,20 @@ public abstract class AScoreJob {
 
 			if (Thread.interrupted() || monitor.isCanceled())
 				return Status.CANCEL_STATUS;
+			float v = algorithm.compute(compute, compute, monitor);
+			if (Thread.interrupted() || monitor.isCanceled())
+				return Status.CANCEL_STATUS;
 
-			float v = algorithm.compute(compute, compute);
 			score.put(va, v);
 		}
 
 		// all stratification scores
 		for (IComputedReferenceStratificationScore score : stratScores) {
 			IStratificationAlgorithm algorithm = score.getAlgorithm();
+			algorithm.init(monitor);
+			if (Thread.interrupted() || monitor.isCanceled())
+				return Status.CANCEL_STATUS;
+
 			final IComputeElement rs = score.asComputeElement();
 			IDType target = algorithm.getTargetType(va, rs);
 			if (score.contains(va) || !score.getFilter().doCompute(va, null, rs, null)) {
@@ -175,7 +185,10 @@ public abstract class AScoreJob {
 			if (Thread.interrupted() || monitor.isCanceled())
 				return Status.CANCEL_STATUS;
 
-			float v = algorithm.compute(compute, reference);
+			float v = algorithm.compute(compute, reference, monitor);
+			if (Thread.interrupted() || monitor.isCanceled())
+				return Status.CANCEL_STATUS;
+
 			score.put(va, v);
 		}
 		return null;

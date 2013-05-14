@@ -22,12 +22,15 @@ package org.caleydo.view.tourguide.spi.algorithm;
 import java.util.Set;
 
 import org.caleydo.core.id.IDType;
+import org.eclipse.core.runtime.IProgressMonitor;
 
 /**
  * @author Samuel Gratzl
  *
  */
 public interface IGroupAlgorithm {
+	void init(IProgressMonitor monitor);
+
 	IDType getTargetType(IComputeElement a, IComputeElement b);
 
 	/**
@@ -37,7 +40,7 @@ public interface IGroupAlgorithm {
 	 * @param b
 	 * @return
 	 */
-	float compute(Set<Integer> a, Set<Integer> b);
+	float compute(Set<Integer> a, Set<Integer> b, IProgressMonitor monitor);
 
 	/**
 	 * returns the abbreviation of this algorithm
