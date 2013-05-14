@@ -9,6 +9,10 @@ import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.nebula.widgets.nattable.NatTable;
+import org.eclipse.nebula.widgets.nattable.config.AbstractRegistryConfiguration;
+import org.eclipse.nebula.widgets.nattable.config.CellConfigAttributes;
+import org.eclipse.nebula.widgets.nattable.config.DefaultNatTableStyleConfiguration;
+import org.eclipse.nebula.widgets.nattable.config.IConfigRegistry;
 import org.eclipse.nebula.widgets.nattable.data.IDataProvider;
 import org.eclipse.nebula.widgets.nattable.grid.data.DefaultCornerDataProvider;
 import org.eclipse.nebula.widgets.nattable.grid.layer.ColumnHeaderLayer;
@@ -16,7 +20,13 @@ import org.eclipse.nebula.widgets.nattable.grid.layer.CornerLayer;
 import org.eclipse.nebula.widgets.nattable.grid.layer.GridLayer;
 import org.eclipse.nebula.widgets.nattable.grid.layer.RowHeaderLayer;
 import org.eclipse.nebula.widgets.nattable.layer.DataLayer;
+import org.eclipse.nebula.widgets.nattable.layer.LabelStack;
+import org.eclipse.nebula.widgets.nattable.layer.cell.IConfigLabelAccumulator;
 import org.eclipse.nebula.widgets.nattable.selection.SelectionLayer;
+import org.eclipse.nebula.widgets.nattable.style.CellStyleAttributes;
+import org.eclipse.nebula.widgets.nattable.style.DisplayMode;
+import org.eclipse.nebula.widgets.nattable.style.Style;
+import org.eclipse.nebula.widgets.nattable.util.GUIHelper;
 import org.eclipse.nebula.widgets.nattable.viewport.ViewportLayer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableEditor;
@@ -51,6 +61,8 @@ public class PreviewTableWidget {
 	 */
 	public static final int MAX_PREVIEW_TABLE_COLUMNS = 10;
 
+	private static final String ID_CELL = "ID_CELL";
+
 	// not static to release it early
 	private final Color colorNormalRow = Display.getCurrent().getSystemColor(SWT.COLOR_WHITE);
 	private final Color colorId = Display.getCurrent().getSystemColor(SWT.COLOR_GREEN);
@@ -83,6 +95,10 @@ public class PreviewTableWidget {
 	 * called.
 	 */
 	private int oldIDColumnIndex = -1;
+
+	int numberOfHeaderRows = -1;
+	int idRowIndex = -1;
+	int idColumnIndex = -1;
 
 	/**
 	 * Table that displays a preview of the data of the file specified by {@link #inputFileName}.
@@ -235,11 +251,86 @@ public class PreviewTableWidget {
 		CornerLayer cornerLayer = new CornerLayer(new DataLayer(cornerDataProvider), rowHeaderLayer, columnHeaderLayer);
 
 		GridLayer gridLayer = new GridLayer(bodyLayer, columnHeaderLayer, rowHeaderLayer, cornerLayer);
-		table = new NatTable(parent, gridLayer);
+		table = new NatTable(parent, gridLayer, false);
 		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1);
 		gridData.heightHint = 300;
 		gridData.widthHint = 800;
 		table.setLayoutData(gridData);
+
+		IConfigLabelAccumulator cellLabelAccumulator = new IConfigLabelAccumulator() {
+			@Override
+			public void accumulateConfigLabels(LabelStack configLabels, int columnPosition, int rowPosition) {
+				if (columnPosition == idColumnIndex || rowPosition == idRowIndex) {
+					configLabels.addLabel(ID_CELL);
+				}
+				if (rowPosition < numberOfHeaderRows) {
+					configLabels.addLabel("header");
+				}
+			}
+		};
+
+		bodyLayer.setConfigLabelAccumulator(cellLabelAccumulator);
+		table.addConfiguration(new DefaultNatTableStyleConfiguration());
+		table.addConfiguration(new AbstractRegistryConfiguration() {
+			@Override
+			public void configureRegistry(IConfigRegistry configRegistry) {
+				Style cellStyle = new Style();
+				cellStyle.setAttributeValue(CellStyleAttributes.BACKGROUND_COLOR, GUIHelper.COLOR_GREEN);
+				configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_STYLE, cellStyle, DisplayMode.NORMAL,
+						ID_CELL);
+
+				cellStyle = new Style();
+				cellStyle.setAttributeValue(CellStyleAttributes.BACKGROUND_COLOR, GUIHelper.COLOR_DARK_GRAY);
+				configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_STYLE, cellStyle, DisplayMode.NORMAL,
+						"header");
+			}
+		});
+		table.configure();
+
+		// ===================================================================
+		//
+		// List<Person> myList = new ArrayList<Person>();
+		// for (int i = 0; i < 100; i++) {
+		// myList.add(new Person(i, "Joe" + i, new Date()));
+		// }
+		//
+		// String[] propertyNames = { "id", "name", "birthDate" };
+		//
+		// IColumnPropertyAccessor<Person> columnPropertyAccessor = new ReflectiveColumnPropertyAccessor<Person>(
+		// propertyNames);
+		// ListDataProvider<Person> listDataProvider = new ListDataProvider<Person>(myList, columnPropertyAccessor);
+		// DefaultGridLayer gridLayer = new DefaultGridLayer(listDataProvider, new DummyColumnHeaderDataProvider(
+		// listDataProvider));
+		// final DefaultBodyLayerStack bodyLayer = gridLayer.getBodyLayer();
+		//
+		// // Custom label "FOO" for cell at column, row index (1, 5)
+		// IConfigLabelAccumulator cellLabelAccumulator = new IConfigLabelAccumulator() {
+		// @Override
+		// public void accumulateConfigLabels(LabelStack configLabels, int columnPosition, int rowPosition) {
+		// int columnIndex = bodyLayer.getColumnIndexByPosition(columnPosition);
+		// int rowIndex = bodyLayer.getRowIndexByPosition(rowPosition);
+		// if (columnIndex == 1 && rowIndex == 5) {
+		// configLabels.addLabel(FOO_LABEL);
+		// }
+		// }
+		// };
+		// bodyLayer.setConfigLabelAccumulator(cellLabelAccumulator);
+		//
+		// NatTable natTable = new NatTable(parent, gridLayer, false);
+		//
+		// natTable.addConfiguration(new DefaultNatTableStyleConfiguration());
+		// // Custom style for label "FOO"
+		// natTable.addConfiguration(new AbstractRegistryConfiguration() {
+		// @Override
+		// public void configureRegistry(IConfigRegistry configRegistry) {
+		// Style cellStyle = new Style();
+		// cellStyle.setAttributeValue(CellStyleAttributes.BACKGROUND_COLOR, GUIHelper.COLOR_GREEN);
+		// configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_STYLE, cellStyle, DisplayMode.NORMAL,
+		// FOO_LABEL);
+		// }
+		// });
+		// natTable.configure();
+
 	}
 
 	public String getValue(int rowIndex, int columnIndex) {
@@ -341,9 +432,15 @@ public class PreviewTableWidget {
 			setTableColumnForeground(idColumnIndex + 1, colorBlack);
 		}
 
+		this.idRowIndex = idRowIndex;
+		this.idColumnIndex = idColumnIndex;
+		this.numberOfHeaderRows = numberOfHeaderRows;
 		oldIDRowIndex = idRowIndex;
 		oldIDColumnIndex = idColumnIndex;
 		oldNumberOfHeaderRows = numberOfHeaderRows;
+
+		table.refresh();
+		table.configure();
 	}
 
 	private void setTableRowBackground(int rowIndex, Color color) {
