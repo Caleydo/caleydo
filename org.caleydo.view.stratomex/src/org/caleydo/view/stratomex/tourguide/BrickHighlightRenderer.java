@@ -17,75 +17,21 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.stratomex.column;
+package org.caleydo.view.stratomex.tourguide;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
-import org.caleydo.view.stratomex.brick.GLBrick;
 
-public class BrickGlowRenderer
-	extends ColorRenderer
-{
+public class BrickHighlightRenderer extends ColorRenderer {
 
-	private GLBrick brick;
-	private boolean renderWhenInOverviewMode;
-
-	public BrickGlowRenderer(float[] color, GLBrick dimensionGroup,
-			boolean renderWhenDimensionGroupIsCollapsed)
-	{
+	public BrickHighlightRenderer(float[] color) {
 		super(color);
-		this.brick = dimensionGroup;
-		this.renderWhenInOverviewMode = renderWhenDimensionGroupIsCollapsed;
 	}
 
 	@Override
-	public void renderContent(GL2 gl)
-	{
-		if (brick.isInOverviewMode() != renderWhenInOverviewMode)
-			return;
-
-		if (renderWhenInOverviewMode)
-		{
-			PixelGLConverter pixelGLConverter = brick.getPixelGLConverter();
-			float overlapX = pixelGLConverter.getGLWidthForPixelWidth(10);
-			float overlapY = pixelGLConverter.getGLWidthForPixelWidth(10);
-
-			gl.glBegin(GL2.GL_QUADS);
-			gl.glColor4f(color[0], color[1], color[2], 1);
-			gl.glVertex3f(0, y, 0);
-			gl.glVertex3f(x, y, 0);
-			gl.glColor4f(color[0], color[1], color[2], 0);
-			gl.glVertex3f(x + overlapX, y + overlapY, 0);
-			gl.glVertex3f(-overlapX, y + overlapY, 0);
-
-			gl.glColor4f(color[0], color[1], color[2], 1);
-			gl.glVertex3f(0, 0, 0);
-			gl.glVertex3f(0, y, 0);
-			gl.glColor4f(color[0], color[1], color[2], 0);
-			gl.glVertex3f(-overlapX, y + overlapY, 0);
-			gl.glVertex3f(-overlapX, -overlapY, 0);
-
-			gl.glColor4f(color[0], color[1], color[2], 1);
-			gl.glVertex3f(0, 0, 0);
-			gl.glVertex3f(x, 0, 0);
-			gl.glColor4f(color[0], color[1], color[2], 0);
-			gl.glVertex3f(x + overlapX, -overlapY, 0);
-			gl.glVertex3f(-overlapX, -overlapY, 0);
-
-			gl.glColor4f(color[0], color[1], color[2], 1);
-			gl.glVertex3f(x, 0, 0);
-			gl.glVertex3f(x, y, 0);
-			gl.glColor4f(color[0], color[1], color[2], 0);
-			gl.glVertex3f(x + overlapX, y + overlapY, 0);
-			gl.glVertex3f(x + overlapX, -overlapY, 0);
-
-			gl.glEnd();
-		}
-		else
-		{
-			gl.glBegin(GL2.GL_QUADS);
+	public void renderContent(GL2 gl) {
+		gl.glBegin(GL2.GL_QUADS);
 			gl.glColor4f(color[0], color[1], color[2], 0);
 			gl.glVertex3f(-x / 3.0f, 0, 0);
 			gl.glColor4f(color[0], color[1], color[2], 1);
@@ -107,9 +53,7 @@ public class BrickGlowRenderer
 			gl.glColor4f(color[0], color[1], color[2], 1);
 			gl.glVertex3f(2.0f * x / 3.0f, y, 0);
 
-			gl.glEnd();
-		}
-
+		gl.glEnd();
 	}
 
 	@Override

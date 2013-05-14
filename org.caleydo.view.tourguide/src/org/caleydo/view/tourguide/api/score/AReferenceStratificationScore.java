@@ -43,7 +43,7 @@ public abstract class AReferenceStratificationScore extends AComputedStratificat
 
 	@Override
 	public boolean contains(IComputeElement elem) {
-		return super.contains(elem) || elem.equals(getStratification());
+		return super.contains(elem) || elem.getPersistentID().equals(getStratification().getPerspectiveID());
 	}
 
 	@Override

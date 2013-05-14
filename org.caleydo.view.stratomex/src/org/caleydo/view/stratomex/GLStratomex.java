@@ -102,19 +102,13 @@ import org.caleydo.view.stratomex.column.BrickColumnSpacingRenderer;
 import org.caleydo.view.stratomex.event.AddGroupsToStratomexEvent;
 import org.caleydo.view.stratomex.event.AddKaplanMaiertoStratomexEvent;
 import org.caleydo.view.stratomex.event.ConnectionsModeEvent;
-import org.caleydo.view.stratomex.event.HighlightBrickEvent;
 import org.caleydo.view.stratomex.event.MergeBricksEvent;
 import org.caleydo.view.stratomex.event.ReplaceKaplanMaierPerspectiveEvent;
 import org.caleydo.view.stratomex.event.SelectElementsEvent;
 import org.caleydo.view.stratomex.event.SplitBrickEvent;
 import org.caleydo.view.stratomex.listener.AddGroupsToStratomexListener;
-import org.caleydo.view.stratomex.listener.ConnectionsModeListener;
-import org.caleydo.view.stratomex.listener.DataDomainEventListener;
 import org.caleydo.view.stratomex.listener.GLStratomexKeyListener;
-import org.caleydo.view.stratomex.listener.HighlightBrickEventListener;
 import org.caleydo.view.stratomex.listener.ReplaceTablePerspectiveListener;
-import org.caleydo.view.stratomex.listener.SelectElementsListener;
-import org.caleydo.view.stratomex.listener.SplitBrickListener;
 import org.caleydo.view.stratomex.tourguide.TourguideAdapter;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -145,8 +139,6 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 
 	private AddGroupsToStratomexListener addGroupsToStratomexListener;
 	private SelectionCommandListener selectionCommandListener;
-	private ConnectionsModeListener trendHighlightModeListener;
-	private SplitBrickListener splitBrickListener;
 	private RemoveTablePerspectiveListener<GLStratomex> removeTablePerspectiveListener;
 	private ReplaceTablePerspectiveListener replaceTablePerspectiveListener;
 	private final EventListenerManager listeners = EventListenerManagers.wrap(this);
@@ -988,14 +980,6 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		eventPublisher.addListener(AddTablePerspectivesEvent.class, addGroupsToStratomexListener);
 		eventPublisher.addListener(AddKaplanMaiertoStratomexEvent.class, addGroupsToStratomexListener);
 
-		trendHighlightModeListener = new ConnectionsModeListener();
-		trendHighlightModeListener.setHandler(this);
-		eventPublisher.addListener(ConnectionsModeEvent.class, trendHighlightModeListener);
-
-		splitBrickListener = new SplitBrickListener();
-		splitBrickListener.setHandler(this);
-		eventPublisher.addListener(SplitBrickEvent.class, splitBrickListener);
-
 		removeTablePerspectiveListener = new RemoveTablePerspectiveListener<>();
 		removeTablePerspectiveListener.setHandler(this);
 		eventPublisher.addListener(RemoveTablePerspectiveEvent.class, removeTablePerspectiveListener);
@@ -1005,9 +989,6 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		eventPublisher.addListener(ReplaceTablePerspectiveEvent.class, replaceTablePerspectiveListener);
 		eventPublisher.addListener(ReplaceKaplanMaierPerspectiveEvent.class, replaceTablePerspectiveListener);
 
-		listeners.register(HighlightBrickEvent.class, new HighlightBrickEventListener(this));
-		listeners.register(SelectElementsEvent.class, new SelectElementsListener().setHandler(this));
-		listeners.register(RemoveDataDomainEvent.class, new DataDomainEventListener().setHandler(this));
 		listeners.register(this);
 	}
 
@@ -1023,16 +1004,6 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		if (selectionCommandListener != null) {
 			eventPublisher.removeListener(selectionCommandListener);
 			selectionCommandListener = null;
-		}
-
-		if (trendHighlightModeListener != null) {
-			eventPublisher.removeListener(trendHighlightModeListener);
-			trendHighlightModeListener = null;
-		}
-
-		if (splitBrickListener != null) {
-			eventPublisher.removeListener(splitBrickListener);
-			splitBrickListener = null;
 		}
 
 		if (removeTablePerspectiveListener != null) {
@@ -1241,7 +1212,9 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
 	}
 
-	public void removeDataDomain(String dataDomainID) {
+	@ListenTo
+	private void removeDataDomain(RemoveDataDomainEvent event) {
+		String dataDomainID = event.getEventSpace();
 		List<TablePerspective> tmp = new ArrayList<>(getTablePerspectives());
 		for (TablePerspective p : tmp) {
 			if (dataDomainID.equals(p.getDataDomain().getDataDomainID()))
@@ -1471,11 +1444,11 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		return (GLStratomexKeyListener) glKeyListener;
 	}
 
-	public void handleTrendHighlightMode(boolean connectionsOn, boolean connectionsHighlightDynamic, float focusFactor) {
-
-		this.connectionsOn = connectionsOn;
-		this.connectionsHighlightDynamic = connectionsHighlightDynamic;
-		this.connectionsFocusFactor = focusFactor;
+	@ListenTo
+	private void onHandleTrendHighlightMode(ConnectionsModeEvent event) {
+		this.connectionsOn = event.isConnectionsOn();
+		this.connectionsHighlightDynamic = event.isConnectionsHighlightDynamic();
+		this.connectionsFocusFactor = event.getFocusFactor();
 
 		updateConnectionLinesBetweenColumns();
 	}
@@ -1533,6 +1506,11 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 				recordSelectionManager.getSelectionType());
 	}
 
+	@ListenTo(sendToMe = true)
+	private void onSelectElements(SelectElementsEvent event) {
+		selectElements(event.getIds(), event.getIdType(), event.getEventSpace(), event.getSelectionType());
+	}
+
 	public void selectElements(Iterable<Integer> ids, IDType idType, String dataDomainID, SelectionType selectionType) {
 		if (recordSelectionManager == null)
 			return;
@@ -1558,6 +1536,10 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		updateConnectionLinesBetweenColumns();
 	}
 
+	@ListenTo
+	private void onSplitBrick(SplitBrickEvent event) {
+		splitBrick(event.getConnectionBandID(), event.isSplitLeftBrick());
+	}
 	/**
 	 * Splits a brick into two portions: those values that are in the band identified through the connection band id and
 	 * the others.

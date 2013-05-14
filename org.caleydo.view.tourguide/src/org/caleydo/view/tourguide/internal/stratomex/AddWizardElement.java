@@ -72,13 +72,17 @@ public class AddWizardElement extends GLElementSelector implements ICallback<ISt
 
 	private GLElement convert(final IState state) {
 		GLElementContainer container = new GLElementContainer(stateLayout);
-		container.add(new GLElement(new MultiLineTextRenderer(state.getLabel())).setSize(-1, 100));
+		final GLElement header = new GLElement(new MultiLineTextRenderer(state.getLabel())).setSize(-1, 100);
+		container.add(header);
 		for (ITransition t : stateMachine.getTransitions(state)) {
 			if (!(t instanceof IUserTransition))
 				continue;
 			GLElement elem = convert((IUserTransition) t);
 			if (elem != null)
 				container.add(elem);
+		}
+		if (container.size() == 1) {
+			header.setSize(-1, -1); // center if no elements are there
 		}
 		container.setLayoutData(state);
 		return container;

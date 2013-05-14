@@ -48,8 +48,8 @@ import org.caleydo.view.stratomex.EPickingType;
 import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.stratomex.brick.GLBrick;
 import org.caleydo.view.stratomex.column.BrickColumn;
-import org.caleydo.view.stratomex.column.BrickColumnGlowRenderer;
 import org.caleydo.view.stratomex.column.BrickColumnManager;
+import org.caleydo.view.stratomex.event.HighlightBrickEvent;
 import org.caleydo.view.stratomex.tourguide.event.ConfirmedCancelNewColumnEvent;
 import org.caleydo.view.stratomex.tourguide.event.SelectGroupEvent;
 import org.caleydo.view.stratomex.tourguide.event.SelectGroupReplyEvent;
@@ -116,6 +116,7 @@ public class TourguideAdapter {
 	private static void renderButton(GL2 gl, float x, float y, float w, float h, AGLView view, String pickingType,
 			int id, String texture) {
 		GLGraphics.checkError(gl);
+
 		id = view.getPickingManager().getPickingID(view.getID(), pickingType, id + 1);
 		// stratomex.addIDPickingTooltipListener("Add another column", pickingType, pickedObjectID)
 		gl.glPushName(id);
@@ -222,8 +223,8 @@ public class TourguideAdapter {
 
 	private void changeHighlight(GLBrick brick, IColor color) {
 		// select brick by changing highlight
-		for (BrickColumnGlowRenderer glow : Iterables.filter(brick.getLayout().getBackgroundRenderer(),
-				BrickColumnGlowRenderer.class)) {
+		for (BrickHighlightRenderer glow : Iterables.filter(brick.getLayout().getBackgroundRenderer(),
+				BrickHighlightRenderer.class)) {
 			glow.setColor(color.getRGBA());
 		}
 	}
@@ -257,6 +258,37 @@ public class TourguideAdapter {
 		repaint();
 	}
 
+	@ListenTo(sendToMe = true)
+	private void onHighlight(HighlightBrickEvent event) {
+		BrickColumnManager manager = stratomex.getBrickColumnManager();
+		BrickColumn brickColumn = manager.getBrickColumn(event.getStratification());
+		if (brickColumn == null)
+			return;
+
+		ElementLayout layout = null;
+		if (event.getGroup() == null) {
+			layout = brickColumn.getLayout();
+		} else {
+			Group g = event.getGroup();
+			for (GLBrick brick : brickColumn.getSegmentBricks()) {
+				if (g.equals(brick.getTablePerspective().getRecordGroup())) {
+					layout = brick.getLayout();
+					break;
+				}
+			}
+		}
+		if (layout == null)
+			return;
+
+		if (!event.isHighlight()) {
+			layout.clearBackgroundRenderers();
+		} else {
+			layout.addBackgroundRenderer(new BrickHighlightRenderer(event.getColor().getRGBA()));
+		}
+		if (layout.getLayoutManager() != null)
+			layout.updateSubLayout();
+	}
+
 	private void repaint() {
 		stratomex.updateLayout();
 		stratomex.setDisplayListDirty();
@@ -266,8 +298,7 @@ public class TourguideAdapter {
 	 * @param headerBrick
 	 */
 	private void addHighlight(GLBrick brick) {
-		brick.getLayout().addBackgroundRenderer(
-				new BrickColumnGlowRenderer(Colors.GREEN.getRGBA(), brick.getBrickColumn(), false));
+		brick.getLayout().addBackgroundRenderer(new BrickHighlightRenderer(Colors.GREEN.getRGBA()));
 	}
 
 	/**
@@ -334,7 +365,7 @@ public class TourguideAdapter {
 		if (confirm) {
 			// remove the preview buttons
 			if (preview != null)
-				preview.getLayout().clearBackgroundRenderers();
+				preview.getLayout().clearForegroundRenderers();
 		} else {
 			destroyTemplate();
 			if (preview != null)
@@ -391,7 +422,7 @@ Collections.singletonList(event.getTablePerspective()), null, left,
 		}
 
 		preview = added.get(0).getSecond();
-		preview.getLayout().addBackgroundRenderer(new ConfirmCancelLayoutRenderer(stratomex, templateIndex, this));
+		preview.getLayout().addForeGroundRenderer(new ConfirmCancelLayoutRenderer(stratomex, templateIndex, this));
 
 	}
 
@@ -411,7 +442,7 @@ Collections.singletonList(event.getTablePerspective()), null, left,
 
 	/**
 	 * whether a template column exists or not
-	 * 
+	 *
 	 * @return
 	 */
 	public boolean isEmpty() {
