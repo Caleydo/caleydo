@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.view.stratomex.tourguide;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
@@ -31,29 +32,21 @@ public class BrickHighlightRenderer extends ColorRenderer {
 
 	@Override
 	public void renderContent(GL2 gl) {
-		gl.glBegin(GL2.GL_QUADS);
-			gl.glColor4f(color[0], color[1], color[2], 0);
-			gl.glVertex3f(-x / 3.0f, 0, 0);
-			gl.glColor4f(color[0], color[1], color[2], 1);
-			gl.glVertex3f(x / 3.0f, 0, 0);
-			gl.glVertex3f(x / 3.0f, y, 0);
-			gl.glColor4f(color[0], color[1], color[2], 0);
-			gl.glVertex3f(-x / 3.0f, y, 0);
-
-			gl.glColor4f(color[0], color[1], color[2], 1);
-			gl.glVertex3f(x / 3.0f, 0, 0);
-			gl.glVertex3f(2.0f * x / 3.0f, 0, 0);
-			gl.glVertex3f(2.0f * x / 3.0f, y, 0);
-			gl.glVertex3f(x / 3.0f, y, 0);
-
-			gl.glVertex3f(2.0f * x / 3.0f, 0, 0);
-			gl.glColor4f(color[0], color[1], color[2], 0);
-			gl.glVertex3f(x + x / 3.0f, 0, 0);
-			gl.glVertex3f(x + x / 3.0f, y, 0);
-			gl.glColor4f(color[0], color[1], color[2], 1);
-			gl.glVertex3f(2.0f * x / 3.0f, y, 0);
-
+		float xoffset = x * 0.04f;
+		float yoffset = y * 0.04f;
+		gl.glColor4f(color[0], color[1], color[2], 0.75f);
+		gl.glPushAttrib(GL2.GL_LINE_BIT);
+		gl.glLineWidth(3);
+		gl.glEnable(GL.GL_LINE_SMOOTH);
+		gl.glBegin(GL.GL_LINE_LOOP);
+		{
+			gl.glVertex3f(-xoffset, -yoffset, 0);
+			gl.glVertex3f(x + xoffset, -yoffset, 0);
+			gl.glVertex3f(x + xoffset, y + yoffset, 0);
+			gl.glVertex3f(-xoffset, y + yoffset, 0);
+		}
 		gl.glEnd();
+		gl.glPopAttrib();
 	}
 
 	@Override
