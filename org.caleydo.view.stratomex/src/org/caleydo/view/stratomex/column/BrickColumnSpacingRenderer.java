@@ -350,10 +350,10 @@ public class BrickColumnSpacingRenderer
 		gl.glPushName(pickingID);
 		gl.glColor4f(1f, 1f, 1f, 0);
 		gl.glBegin(GL2.GL_POLYGON);
-		gl.glVertex3f(0, 0, -0.2f);
-		gl.glVertex3f(x, 0, -0.2f);
-		gl.glVertex3f(x, y, -0.2f);
-		gl.glVertex3f(0, y, -0.2f);
+		gl.glVertex3f(0, 0, 0.f);
+		gl.glVertex3f(x, 0, 0.f);
+		gl.glVertex3f(x, y, 0.f);
+		gl.glVertex3f(0, y, 0.f);
 		gl.glEnd();
 		gl.glPopName();
 	}

@@ -439,6 +439,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 		gl.glPushName(getPickingManager().getPickingID(getID(), EPickingType.BRICK.name(), getID()));
 		gl.glColor4f(1.0f, 0.0f, 0.0f, 0.5f);
 		gl.glTranslatef(0, 0, 0.1f);
+
 		gl.glBegin(GL2.GL_QUADS);
 
 		float zpos = 0f;
@@ -448,6 +449,8 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 		gl.glVertex3f(wrappingLayout.getSizeScaledX(), wrappingLayout.getSizeScaledY(), zpos);
 		gl.glVertex3f(0, wrappingLayout.getSizeScaledY(), zpos);
 		gl.glEnd();
+
+
 		gl.glPopName();
 		gl.glPopName();
 
@@ -457,6 +460,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 		gl.glCallList(baseDisplayListIndex);
 
+		gl.glTranslatef(0, 0, -0.1f);
 	}
 
 	@Override
