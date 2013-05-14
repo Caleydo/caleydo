@@ -135,6 +135,9 @@ public class StratomexAdapter {
 	@ListenTo
 	private void on(ConfirmedCancelNewColumnEvent event) {
 		// remove all temporary stuff
+		if (currentPreview != null) {
+			clearHighlightRows(currentPreview.getRecordPerspective().getIdType(), currentPreview.getDataDomain());
+		}
 		this.currentPreview = null;
 		this.currentPreviewGroup = null;
 		this.currentDependentPreviews.clear();
