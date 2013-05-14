@@ -172,12 +172,14 @@ public class TourguideAdapter {
 			}
 		}, CANCEL_PICKING_TYPE);
 
-		stratomex.addTypePickingListener(new IPickingListener() {
+		IPickingListener brickPicker = new IPickingListener() {
 			@Override
 			public void pick(Pick pick) {
 				onBrickPick(pick);
 			}
-		}, EPickingType.BRICK.name());
+		};
+		stratomex.addTypePickingListener(brickPicker, EPickingType.BRICK.name());
+		stratomex.addTypePickingListener(brickPicker, EPickingType.BRICK_TITLE.name());
 	}
 
 	/**
@@ -194,6 +196,8 @@ public class TourguideAdapter {
 			return;
 		boolean isHeader = brick.isHeaderBrick();
 		if (isHeader != (selectionMode == ESelectionMode.STRATIFICATION))
+			return;
+		if (this.selectionCurrent == brick)
 			return;
 
 		if (this.selectionCurrent != null) {
@@ -401,7 +405,7 @@ Collections.singletonList(event.getTablePerspective()), null, left,
 			columns.add(0,templateColumn);
 		else {
 			int index = templateIndex - stratomex.getBrickColumnManager().getCenterColumnStartIndex();
-			columns.add(index, templateColumn);
+			columns.add(index + 1, templateColumn);
 		}
 	}
 
