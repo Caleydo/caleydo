@@ -250,7 +250,7 @@ public class StratomexAdapter {
 
 	private void clearHighlightRows(IDType idType, IDataDomain dataDomain) {
 		AEvent event = new SelectElementsEvent(Collections.<Integer> emptyList(), idType, this.previewSelectionType)
-				.to(receiver.getTourguide());
+				.to(receiver);
 		event.setEventSpace(dataDomain.getDataDomainID());
 		triggerEvent(event);
 	}
@@ -258,7 +258,7 @@ public class StratomexAdapter {
 	private void hightlightRows(ITablePerspectiveScoreRow new_, Collection<IScore> visibleColumns, Group new_g) {
 		Pair<Collection<Integer>, IDType> intersection = new_.getIntersection(visibleColumns, new_g);
 		AEvent event = new SelectElementsEvent(intersection.getFirst(), intersection.getSecond(),
-				this.previewSelectionType).to(receiver.getTourguide());
+				this.previewSelectionType).to(receiver);
 		event.setEventSpace(new_.getDataDomain().getDataDomainID());
 		triggerEvent(event);
 	}
