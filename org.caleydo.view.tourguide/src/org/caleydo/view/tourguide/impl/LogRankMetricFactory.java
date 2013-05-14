@@ -70,7 +70,7 @@ import com.google.common.collect.Sets;
  */
 public class LogRankMetricFactory implements IScoreFactory {
 	@Override
-	public void fillStateMachine(IStateMachine stateMachine, Object eventReceiver) {
+	public void fillStateMachine(IStateMachine stateMachine, Object eventReceiver, List<TablePerspective> existing) {
 		// TODO Auto-generated method stub
 
 	}

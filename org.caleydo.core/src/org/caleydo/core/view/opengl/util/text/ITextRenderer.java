@@ -47,6 +47,13 @@ public interface ITextRenderer {
 	 */
 	public void setColor(float r, float g, float b, float a);
 
+	/**
+	 * returns the size of the given text using the given height
+	 * 
+	 * @param text
+	 * @param height
+	 * @return
+	 */
 	public float getTextWidth(String text, float height);
 
 	/**
@@ -67,5 +74,10 @@ public interface ITextRenderer {
 	 */
 	public void renderTextInBounds(GL2 gl, String text, float x, float y, float z, float w, float h);
 
+	/**
+	 * describes the rendering information of this teture renderer
+	 * 
+	 * @return
+	 */
 	public boolean isOriginTopLeft();
 }

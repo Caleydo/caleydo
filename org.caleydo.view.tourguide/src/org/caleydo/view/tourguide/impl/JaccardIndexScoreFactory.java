@@ -34,7 +34,7 @@ import org.caleydo.view.tourguide.api.score.DefaultComputedReferenceGroupScore;
 import org.caleydo.view.tourguide.api.score.MultiScore;
 import org.caleydo.view.tourguide.api.score.ui.ACreateGroupScoreDialog;
 import org.caleydo.view.tourguide.api.state.ASelectGroupState;
-import org.caleydo.view.tourguide.api.state.ButtonTransition;
+import org.caleydo.view.tourguide.api.state.UserTransition;
 import org.caleydo.view.tourguide.api.state.IState;
 import org.caleydo.view.tourguide.api.state.IStateMachine;
 import org.caleydo.view.tourguide.api.state.ITransition;
@@ -68,11 +68,14 @@ public class JaccardIndexScoreFactory implements IScoreFactory {
 	}
 
 	@Override
-	public void fillStateMachine(IStateMachine stateMachine, Object eventReceiver) {
+	public void fillStateMachine(IStateMachine stateMachine, Object eventReceiver, List<TablePerspective> existing) {
+		if (existing.isEmpty()) // nothing to compare
+			return;
+
 		IState source = stateMachine.get(IStateMachine.ADD_STRATIFICATIONS);
 		IState intermediate = new SimpleState(
 				"Select query group by clicking on a brick in one of the displayed columns\nChange query by cvlicking on other brick at any time");
-		stateMachine.addTransition(source, new ButtonTransition(intermediate,
+		stateMachine.addTransition(source, new UserTransition(intermediate,
 				"Find large overlap with displayed clusters"));
 
 		IState target = stateMachine.get(IStateMachine.BROWSE_STRATIFICATIONS);
@@ -85,12 +88,7 @@ public class JaccardIndexScoreFactory implements IScoreFactory {
 			}
 
 			@Override
-			public boolean apply(List<TablePerspective> tablePerspectives) {
-				return true;
-			}
-
-			@Override
-			protected boolean applyGroupFilter(Pair<TablePerspective, Group> pair) {
+			public boolean apply(Pair<TablePerspective, Group> pair) {
 				return true;
 			}
 		};

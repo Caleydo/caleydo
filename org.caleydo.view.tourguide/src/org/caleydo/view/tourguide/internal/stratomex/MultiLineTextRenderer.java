@@ -1,4 +1,4 @@
-package org.caleydo.view.tourguide.api.state;
+package org.caleydo.view.tourguide.internal.stratomex;
 
 import java.util.Arrays;
 import java.util.List;

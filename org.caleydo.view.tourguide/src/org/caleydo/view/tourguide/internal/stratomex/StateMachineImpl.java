@@ -6,12 +6,12 @@ import java.util.Set;
 
 import org.caleydo.core.event.EventListenerManager.DeepScan;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
-import org.caleydo.view.tourguide.api.state.ButtonTransition;
 import org.caleydo.view.tourguide.api.state.IState;
 import org.caleydo.view.tourguide.api.state.IStateMachine;
 import org.caleydo.view.tourguide.api.state.ITransition;
 import org.caleydo.view.tourguide.api.state.OpenTourGuideState;
 import org.caleydo.view.tourguide.api.state.SimpleState;
+import org.caleydo.view.tourguide.api.state.UserTransition;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.BiMap;
@@ -38,20 +38,20 @@ class StateMachineImpl implements IStateMachine {
 	private void createDefaultStateMachine() {
 		this.current = addState("root", new SimpleState(""));
 		IState addStratification = addState(ADD_STRATIFICATIONS, new SimpleState("Add Stratification"));
-		addTransition(current, new ButtonTransition(addStratification, "Add Stratification"));
+		addTransition(current, new UserTransition(addStratification, "Add Stratification"));
 		IState browseStratification = addState(BROWSE_STRATIFICATIONS, new OpenTourGuideState(
 				EDataDomainQueryMode.STRATIFICATIONS,
 				"Select\na stratification in\nthe Tour Guide\nto preview.\n\nThen confirm\nor cancel your\nselection."));
-		addTransition(addStratification, new ButtonTransition(browseStratification, "Browse List"));
+		addTransition(addStratification, new UserTransition(browseStratification, "Browse List"));
 
 		IState addPathway = addState(ADD_PATHWAY, new SimpleState("Add Pathway"));
-		addTransition(current, new ButtonTransition(addPathway, "Add Pathway"));
+		addTransition(current, new UserTransition(addPathway, "Add Pathway"));
 		addState(BROWSE_PATHWAY, new OpenTourGuideState(EDataDomainQueryMode.PATHWAYS,
 				"Select\na pathway in\nthe Tour Guide\nto preview.\n\nThen confirm\nor cancel your\nselection."));
 		// addTransition(addPathway, new ButtonTransition(browsePathway, "Browse List"));
 
-		IState addNumerical = addState(ADD_NUMERICAL, new SimpleState("Add Numerical Data"));
-		addTransition(current, new ButtonTransition(addNumerical, "Add Numerical Data"));
+		IState addNumerical = addState(ADD_NUMERICAL, new SimpleState("Add\nNumerical Data"));
+		addTransition(current, new UserTransition(addNumerical, "Add\nNumerical Data"));
 		addState(BROWSE_NUMERICAL, new OpenTourGuideState(EDataDomainQueryMode.NUMERICAL,
 				"Select\na stratification in\nthe Tour Guide\nto preview.\n\nThen confirm\nor cancel your\nselection."));
 		// addTransition(addStratification, new ButtonTransition(browseStratification, "Browse List"));
@@ -77,6 +77,8 @@ class StateMachineImpl implements IStateMachine {
 
 	@Override
 	public void addTransition(IState source, ITransition transition) {
+		if (!states.inverse().containsKey(source)) // add if not already part of
+			addState(source.getLabel(), source);
 		transitions.put(source, transition);
 	}
 

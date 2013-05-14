@@ -21,7 +21,6 @@ package org.caleydo.view.tourguide.api.state;
 
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.io.gui.dataimport.widget.ICallback;
-import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.internal.OpenViewHandler;
 import org.caleydo.view.tourguide.internal.RcpGLTourGuideView;
@@ -55,11 +54,6 @@ public abstract class ASelectTransition implements ITransition {
 			onAutomaticSwitch.on(target);
 			onAutomaticSwitch = null;
 		}
-	}
-
-	@Override
-	public final GLElement create(ICallback<IState> onApply) {
-		return null;
 	}
 
 	protected final static void addScoreToTourGuide(final EDataDomainQueryMode mode, final IScore... scores) {

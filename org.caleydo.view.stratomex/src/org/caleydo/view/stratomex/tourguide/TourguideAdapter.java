@@ -289,7 +289,7 @@ public class TourguideAdapter {
 	private ElementLayout createTemplateElement(int index) {
 		assert factory != null;
 		ElementLayout l = ElementLayouts.wrap(new LayoutRendererAdapter(stratomex, Activator.getResourceLocator(),
-				factory.create(this), null), 120);
+				factory.create(this, stratomex.getTablePerspectives()), null), 120);
 		l.addBackgroundRenderer(new ConfirmCancelLayoutRenderer(stratomex, index, this));
 		return l;
 	}
@@ -393,15 +393,26 @@ Collections.singletonList(event.getTablePerspective()), null, left,
 
 	/**
 	 * @param columns
-	 * @param i
 	 */
-	public void add(List<Object> columns, int index) {
-		if (templateIndex == index && templateColumn != null)
-			columns.add(templateColumn);
+	public void addTemplateColumns(List<Object> columns) {
+		if (templateColumn == null)
+			return;
+		if (templateIndex < 0)
+			columns.add(0,templateColumn);
+		else {
+			int index = templateIndex - stratomex.getBrickColumnManager().getCenterColumnStartIndex();
+			columns.add(index, templateColumn);
+		}
 	}
 
+	/**
+	 * whether a template column exists or not
+	 * 
+	 * @return
+	 */
 	public boolean isEmpty() {
 		return templateColumn == null;
 	}
+
 
 }

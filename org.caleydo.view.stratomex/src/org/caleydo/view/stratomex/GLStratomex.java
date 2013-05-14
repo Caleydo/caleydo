@@ -349,15 +349,14 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 
 
 		List<Object> columns = new ArrayList<>();
-		tourguide.add(columns, -1);
 		for (int columnIndex = brickColumnManager.getCenterColumnStartIndex(); columnIndex < brickColumnManager
 				.getRightColumnStartIndex(); columnIndex++) {
 			BrickColumn column = brickColumnManager.getBrickColumns().get(columnIndex);
 			column.setCollapsed(false);
 			column.setArchHeight(ARCH_PIXEL_HEIGHT);
 			columns.add(column);
-			tourguide.add(columns, columnIndex);
 		}
+		tourguide.addTemplateColumns(columns);
 
 		mainRow.append(centerRowLayout);
 

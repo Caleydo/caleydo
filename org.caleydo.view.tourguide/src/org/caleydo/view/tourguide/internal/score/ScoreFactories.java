@@ -21,6 +21,7 @@ package org.caleydo.view.tourguide.internal.score;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
@@ -76,9 +77,10 @@ public class ScoreFactories {
 		return factories.get(score);
 	}
 
-	public static void fillStateMachine(IStateMachine stateMachine, Object eventReceiver) {
+	public static void fillStateMachine(IStateMachine stateMachine, Object eventReceiver,
+			List<TablePerspective> existing) {
 		for (IScoreFactory f : factories.values()) {
-			f.fillStateMachine(stateMachine, eventReceiver);
+			f.fillStateMachine(stateMachine, eventReceiver, existing);
 		}
 	}
 }

@@ -17,23 +17,17 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.internal.stratomex;
+package org.caleydo.view.tourguide.api.state;
 
-import java.util.List;
-
-import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.view.opengl.layout2.GLElement;
-import org.caleydo.view.stratomex.tourguide.IAddWizardElementFactory;
+import org.caleydo.core.io.gui.dataimport.widget.ICallback;
 
 /**
+ * special transition that can be trigger from the outside if it is the only one
+ *
  * @author Samuel Gratzl
  *
  */
-public class AddWizardElementFactory implements IAddWizardElementFactory {
+public interface IDefaultTransition extends ITransition {
 
-	@Override
-	public GLElement create(Object receiver, List<TablePerspective> existing) {
-		return new AddWizardElement(receiver, existing);
-	}
-
+	void apply(ICallback<IState> onApply);
 }

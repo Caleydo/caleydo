@@ -31,7 +31,7 @@ import com.google.common.base.Predicate;
  * @author Samuel Gratzl
  *
  */
-public abstract class ASelectStratificationState extends ASelectTransition {
+public abstract class ASelectStratificationState extends ASelectTransition implements Predicate<TablePerspective> {
 	private Object receiver;
 
 	public ASelectStratificationState(IState target, Object receiver) {
@@ -39,18 +39,10 @@ public abstract class ASelectStratificationState extends ASelectTransition {
 		this.receiver = receiver;
 	}
 
-
 	@Override
 	public void onEnterImpl() {
-		EventPublisher.trigger(new SelectStratificationEvent(new Predicate<TablePerspective>() {
-			@Override
-			public boolean apply(TablePerspective in) {
-				return applyStratificationFilter(in);
-			}
-		}).to(receiver).from(this));
+		EventPublisher.trigger(new SelectStratificationEvent(this).to(receiver).from(this));
 	}
-
-	protected abstract boolean applyStratificationFilter(TablePerspective tablePerspective);
 
 	@ListenTo(sendToMe = true)
 	private void onEvent(SelectStratificationReplyEvent event) {

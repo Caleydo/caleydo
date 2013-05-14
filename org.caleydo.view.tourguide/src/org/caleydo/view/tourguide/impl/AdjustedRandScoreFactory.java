@@ -34,7 +34,7 @@ import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.score.DefaultComputedReferenceStratificationScore;
 import org.caleydo.view.tourguide.api.score.MultiScore;
 import org.caleydo.view.tourguide.api.state.ASelectStratificationState;
-import org.caleydo.view.tourguide.api.state.ButtonTransition;
+import org.caleydo.view.tourguide.api.state.UserTransition;
 import org.caleydo.view.tourguide.api.state.IState;
 import org.caleydo.view.tourguide.api.state.IStateMachine;
 import org.caleydo.view.tourguide.api.state.ITransition;
@@ -85,12 +85,15 @@ public class AdjustedRandScoreFactory implements IScoreFactory {
 	}
 
 	@Override
-	public void fillStateMachine(IStateMachine stateMachine, Object eventReceiver) {
+	public void fillStateMachine(IStateMachine stateMachine, Object eventReceiver, List<TablePerspective> existing) {
+		if (existing.isEmpty()) // nothing to compare
+			return;
+
 		IState source = stateMachine.get(IStateMachine.ADD_STRATIFICATIONS);
 		IState intermediate = new SimpleState(
 				"Select query stratification by clicking on the header brick of one of the displayed columns\nChange query by cvlicking on other header brick at any time");
 		stateMachine.addState("AdjustedRand", intermediate);
-		stateMachine.addTransition(source, new ButtonTransition(intermediate,
+		stateMachine.addTransition(source, new UserTransition(intermediate,
 				"Find similar to displayed stratification"));
 
 		IState target = stateMachine.get(IStateMachine.BROWSE_STRATIFICATIONS);
@@ -102,12 +105,7 @@ public class AdjustedRandScoreFactory implements IScoreFactory {
 			}
 
 			@Override
-			public boolean apply(List<TablePerspective> tablePerspectives) {
-				return true;
-			}
-
-			@Override
-			protected boolean applyStratificationFilter(TablePerspective tablePerspective) {
+			public boolean apply(TablePerspective tablePerspective) {
 				return true;
 			}
 		};

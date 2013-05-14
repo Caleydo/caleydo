@@ -30,10 +30,12 @@ import org.caleydo.view.stratomex.tourguide.event.SelectGroupReplyEvent;
 import com.google.common.base.Predicate;
 
 /**
+ * basic state for triggering to select a group in Stratomex
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
-public abstract class ASelectGroupState extends ASelectTransition {
+public abstract class ASelectGroupState extends ASelectTransition implements Predicate<Pair<TablePerspective, Group>> {
 	private Object receiver;
 
 	public ASelectGroupState(IState target, Object receiver) {
@@ -43,15 +45,8 @@ public abstract class ASelectGroupState extends ASelectTransition {
 
 	@Override
 	protected void onEnterImpl() {
-		EventPublisher.trigger(new SelectGroupEvent(new Predicate<Pair<TablePerspective, Group>>() {
-			@Override
-			public boolean apply(Pair<TablePerspective, Group> pair) {
-				return applyGroupFilter(pair);
-			}
-		}).to(receiver).from(this));
+		EventPublisher.trigger(new SelectGroupEvent(this).to(receiver).from(this));
 	}
-
-	protected abstract boolean applyGroupFilter(Pair<TablePerspective, Group> pair);
 
 	@ListenTo(sendToMe = true)
 	private void onEvent(SelectGroupReplyEvent event) {

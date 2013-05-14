@@ -19,48 +19,16 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.api.state;
 
-import java.util.List;
-
-import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.io.gui.dataimport.widget.ICallback;
-import org.caleydo.core.view.opengl.layout2.GLElement;
-import org.caleydo.core.view.opengl.layout2.basic.GLButton;
-import org.caleydo.core.view.opengl.layout2.basic.GLButton.ISelectionCallback;
 
 /**
+ * marker interface that the transition can be triggered by the user
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
+public interface IUserTransition {
+	String getLabel();
 
-public class ButtonTransition implements ITransition {
-	private final IState target;
-	private final String label;
-
-	public ButtonTransition(IState target, String label) {
-		this.target = target;
-		this.label = label;
-	}
-
-	@Override
-	public boolean apply(List<TablePerspective> existing) {
-		return true;
-	}
-
-	@Override
-	public void onSourceEnter(ICallback<IState> onApply) {
-
-	}
-
-	@Override
-	public GLElement create(final ICallback<IState> onApply) {
-		GLButton b = new GLButton();
-		b.setCallback(new ISelectionCallback() {
-			@Override
-			public void onSelectionChanged(GLButton button, boolean selected) {
-				onApply.on(ButtonTransition.this.target);
-			}
-		});
-		b.setRenderer(new MultiLineTextRenderer(label));
-		return b;
-	}
+	void apply(ICallback<IState> onApply);
 }

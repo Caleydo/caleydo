@@ -23,6 +23,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
@@ -66,7 +67,7 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 	}
 
 	@Override
-	public void fillStateMachine(IStateMachine stateMachine, Object eventReceiver) {
+	public void fillStateMachine(IStateMachine stateMachine, Object eventReceiver, List<TablePerspective> existing) {
 		// TODO Auto-generated method stub
 
 	}

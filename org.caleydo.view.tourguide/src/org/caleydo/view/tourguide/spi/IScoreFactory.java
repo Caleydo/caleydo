@@ -22,6 +22,7 @@ package org.caleydo.view.tourguide.spi;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
@@ -39,7 +40,7 @@ import org.eclipse.swt.widgets.Shell;
  *
  */
 public interface IScoreFactory {
-	void fillStateMachine(IStateMachine stateMachine, Object eventReceiver);
+	void fillStateMachine(IStateMachine stateMachine, Object eventReceiver, List<TablePerspective> existing);
 
 	/**
 	 * creates a dialog for creating a new score of this type

@@ -17,23 +17,39 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.internal.stratomex;
+package org.caleydo.view.tourguide.api.state;
 
-import java.util.List;
-
-import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.view.opengl.layout2.GLElement;
-import org.caleydo.view.stratomex.tourguide.IAddWizardElementFactory;
+import org.caleydo.core.io.gui.dataimport.widget.ICallback;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class AddWizardElementFactory implements IAddWizardElementFactory {
 
-	@Override
-	public GLElement create(Object receiver, List<TablePerspective> existing) {
-		return new AddWizardElement(receiver, existing);
+public class UserTransition implements IDefaultTransition, IUserTransition {
+	private final IState target;
+	private final String label;
+
+	public UserTransition(IState target, String label) {
+		this.target = target;
+		this.label = label;
 	}
 
+	@Override
+	public void onSourceEnter(ICallback<IState> onApply) {
+
+	}
+
+	@Override
+	public void apply(ICallback<IState> onApply) {
+		onApply.on(target);
+	}
+
+	/**
+	 * @return the label, see {@link #label}
+	 */
+	@Override
+	public String getLabel() {
+		return label;
+	}
 }

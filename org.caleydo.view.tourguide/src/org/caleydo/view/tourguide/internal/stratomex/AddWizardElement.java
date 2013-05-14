@@ -20,25 +20,27 @@
 package org.caleydo.view.tourguide.internal.stratomex;
 
 import java.awt.Color;
-import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.event.EventListenerManager.DeepScan;
 import org.caleydo.core.io.gui.dataimport.widget.ICallback;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
-import org.caleydo.core.view.opengl.layout2.GLSandBox;
+import org.caleydo.core.view.opengl.layout2.basic.GLButton;
+import org.caleydo.core.view.opengl.layout2.basic.GLButton.ISelectionCallback;
 import org.caleydo.core.view.opengl.layout2.basic.GLElementSelector;
 import org.caleydo.core.view.opengl.layout2.layout.GLFlowLayout;
 import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
-import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
+import org.caleydo.view.tourguide.api.state.IDefaultTransition;
 import org.caleydo.view.tourguide.api.state.IState;
 import org.caleydo.view.tourguide.api.state.ITransition;
-import org.caleydo.view.tourguide.api.state.MultiLineTextRenderer;
+import org.caleydo.view.tourguide.api.state.IUserTransition;
 import org.caleydo.view.tourguide.internal.score.ScoreFactories;
 
 /**
@@ -53,26 +55,28 @@ public class AddWizardElement extends GLElementSelector implements ICallback<ISt
 	private StateMachineImpl stateMachine;
 
 
-	public AddWizardElement(Object receiver) {
+	public AddWizardElement(Object receiver, List<TablePerspective> existing) {
 		this.stateLayout = new GLFlowLayout(false, 20, new GLPadding(2, 10, 2, 10));
 
-		this.stateMachine = createStateMachine(receiver);
+		this.stateMachine = createStateMachine(receiver, existing);
 		this.stateMachine.getCurrent().onEnter();
 		this.add(convert(this.stateMachine.getCurrent()));
 		stateMap.put(this.stateMachine.getCurrent(), 0);
 	}
 
-	private StateMachineImpl createStateMachine(Object receiver) {
+	private StateMachineImpl createStateMachine(Object receiver, List<TablePerspective> existing) {
 		StateMachineImpl state = new StateMachineImpl();
-		ScoreFactories.fillStateMachine(state, receiver);
+		ScoreFactories.fillStateMachine(state, receiver, existing);
 		return state;
 	}
 
 	private GLElement convert(final IState state) {
 		GLElementContainer container = new GLElementContainer(stateLayout);
-		container.add(new GLElement(multiLine(state.getLabel().split("\n"))).setSize(-1, 100));
+		container.add(new GLElement(new MultiLineTextRenderer(state.getLabel())).setSize(-1, 100));
 		for (ITransition t : stateMachine.getTransitions(state)) {
-			GLElement elem = t.create(this);
+			if (!(t instanceof IUserTransition))
+				continue;
+			GLElement elem = convert((IUserTransition) t);
 			if (elem != null)
 				container.add(elem);
 		}
@@ -81,12 +85,19 @@ public class AddWizardElement extends GLElementSelector implements ICallback<ISt
 	}
 
 	/**
-	 * @param lines
+	 * @param t
 	 * @return
 	 */
-	private IGLRenderer multiLine(String[] lines) {
-		final List<String> l = Arrays.asList(lines);
-		return new MultiLineTextRenderer(l);
+	private GLElement convert(final IUserTransition t) {
+		GLButton b = new GLButton();
+		b.setCallback(new ISelectionCallback() {
+			@Override
+			public void onSelectionChanged(GLButton button, boolean selected) {
+				t.apply(AddWizardElement.this);
+			}
+		});
+		b.setRenderer(new MultiLineTextRenderer(t.getLabel()));
+		return b;
 	}
 
 	@Override
@@ -97,9 +108,16 @@ public class AddWizardElement extends GLElementSelector implements ICallback<ISt
 	@Override
 	public void on(IState target) {
 		stateMachine.move(target);
-		for(ITransition t : stateMachine.getTransitions(target)) {
+		Collection<ITransition> transitions = stateMachine.getTransitions(target);
+		for (ITransition t : transitions) {
 			t.onSourceEnter(this);
 		}
+		// automatically switch default single transitions
+		if (transitions.size() == 1 && transitions.iterator().next() instanceof IDefaultTransition) {
+			((IDefaultTransition) transitions.iterator().next()).apply(this);
+			return;
+		}
+
 		if (!stateMap.containsKey(target)) {
 			this.add(convert(target));
 			stateMap.put(target, size() - 1);
@@ -114,12 +132,6 @@ public class AddWizardElement extends GLElementSelector implements ICallback<ISt
 		g.color(0.95f).fillRect(0, 0, w, h);
 		g.color(Color.DARK_GRAY).drawRect(0, 0, w, h);
 		super.renderImpl(g, w, h);
-	}
-
-
-
-	public static void main(String[] args) {
-		GLSandBox.main(args, new AddWizardElement(null));
 	}
 }
 
