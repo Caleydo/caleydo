@@ -20,7 +20,6 @@
 package org.caleydo.view.stratomex.tourguide.event;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.ADirectedEvent;
 
 /**
@@ -29,12 +28,9 @@ import org.caleydo.core.event.ADirectedEvent;
  */
 public class UpdatePreviewEvent extends ADirectedEvent {
 	private final TablePerspective tablePerspective;
-	private final Group group;
 
-	public UpdatePreviewEvent(TablePerspective tablePerspective, Group group) {
-		super();
+	public UpdatePreviewEvent(TablePerspective tablePerspective) {
 		this.tablePerspective = tablePerspective;
-		this.group = group;
 	}
 
 	/**
@@ -44,12 +40,6 @@ public class UpdatePreviewEvent extends ADirectedEvent {
 		return tablePerspective;
 	}
 
-	/**
-	 * @return the group, see {@link #group}
-	 */
-	public Group getGroup() {
-		return group;
-	}
 
 	@Override
 	public boolean checkIntegrity() {

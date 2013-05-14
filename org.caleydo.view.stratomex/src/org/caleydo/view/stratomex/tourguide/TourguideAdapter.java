@@ -74,6 +74,7 @@ public class TourguideAdapter {
 	private static final String CONFIRM_PICKING_TYPE = "templateConfirm";
 	private static final String CANCEL_PICKING_TYPE = "templateAbort";
 
+
 	private final GLStratomex stratomex;
 
 	/**
@@ -404,21 +405,23 @@ public class TourguideAdapter {
 
 	@ListenTo(sendToMe = true)
 	private void onUpdatePreview(UpdatePreviewEvent event) {
-		if (templateColumn == null)
-			return;
 		//convert the template column to a brick column
 		List<Pair<Integer, BrickColumn>> added;
-		if (preview == null) {
+		if (templateColumn != null) {
 			int index = destroyTemplate();
 			BrickColumnManager bcm = stratomex.getBrickColumnManager();
 			BrickColumn left = index < 0 ? null : bcm.getBrickColumns().get(bcm.getCenterColumnStartIndex() + index);
 			added = stratomex.addTablePerspectives(
 Collections.singletonList(event.getTablePerspective()), null, left,
 					false);
-		} else {
+		} else if (preview != null) {
 			added = stratomex.addTablePerspectives(Collections.singletonList(event.getTablePerspective()), null,
 					preview, true);
 			stratomex.removeTablePerspective(preview.getTablePerspective());
+		} else {
+			// create a preview on the fly
+			added = stratomex.addTablePerspectives(Collections.singletonList(event.getTablePerspective()), null,
+					preview, true);
 		}
 
 		preview = added.get(0).getSecond();

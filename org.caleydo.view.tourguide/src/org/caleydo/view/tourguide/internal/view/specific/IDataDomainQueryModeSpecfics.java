@@ -21,7 +21,6 @@ package org.caleydo.view.tourguide.internal.view.specific;
 
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.view.tourguide.internal.model.ADataDomainQuery;
-import org.caleydo.view.tourguide.internal.view.col.IAddToStratomex;
 import org.caleydo.vis.rank.model.RankTableModel;
 
 /**
@@ -39,7 +38,7 @@ public interface IDataDomainQueryModeSpecfics {
 	 * @param table
 	 * @param glTourGuideView
 	 */
-	void addDefaultColumns(RankTableModel table, IAddToStratomex add2Stratomex);
+	void addDefaultColumns(RankTableModel table);
 
 	/**
 	 * @param dd

@@ -34,7 +34,6 @@ import org.caleydo.view.tourguide.internal.model.ADataDomainQuery;
 import org.caleydo.view.tourguide.internal.model.AScoreRow;
 import org.caleydo.view.tourguide.internal.model.PathwayDataDomainQuery;
 import org.caleydo.view.tourguide.internal.model.PathwayPerspectiveRow;
-import org.caleydo.view.tourguide.internal.view.col.IAddToStratomex;
 import org.caleydo.view.tourguide.internal.view.col.SizeRankColumnModel;
 import org.caleydo.vis.rank.model.CategoricalRankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
@@ -60,7 +59,7 @@ public class PathwaySpecifics implements IDataDomainQueryModeSpecfics {
 	}
 
 	@Override
-	public void addDefaultColumns(RankTableModel table, IAddToStratomex add2Stratomex) {
+	public void addDefaultColumns(RankTableModel table) {
 		final StringRankColumnModel base = new StringRankColumnModel(GLRenderers.drawText("Pathway"),
 				StringRankColumnModel.DEFAULT);
 		table.add(base);
