@@ -41,19 +41,19 @@ class StateMachineImpl implements IStateMachine {
 		addTransition(current, new UserTransition(addStratification, "Add Stratification"));
 		IState browseStratification = addState(BROWSE_STRATIFICATIONS, new OpenTourGuideState(
 				EDataDomainQueryMode.STRATIFICATIONS,
-				"Select\na stratification in\nthe Tour Guide\nto preview.\n\nThen confirm\nor cancel your\nselection."));
+				"Select a stratification in the Tour Guide to preview.\nThen confirm or cancel your selection."));
 		addTransition(addStratification, new UserTransition(browseStratification, "Browse List"));
 
 		IState addPathway = addState(ADD_PATHWAY, new SimpleState("Add Pathway"));
 		addTransition(current, new UserTransition(addPathway, "Add Pathway"));
 		addState(BROWSE_PATHWAY, new OpenTourGuideState(EDataDomainQueryMode.PATHWAYS,
-				"Select\na pathway in\nthe Tour Guide\nto preview.\n\nThen confirm\nor cancel your\nselection."));
+				"Select a pathway in the Tour Guide to preview.\n Then confirm or cancel your selection."));
 		// addTransition(addPathway, new ButtonTransition(browsePathway, "Browse List"));
 
-		IState addNumerical = addState(ADD_NUMERICAL, new SimpleState("Add\nNumerical Data"));
-		addTransition(current, new UserTransition(addNumerical, "Add\nNumerical Data"));
+		IState addNumerical = addState(ADD_NUMERICAL, new SimpleState("Add Numerical Data"));
+		addTransition(current, new UserTransition(addNumerical, "Add Numerical Data"));
 		addState(BROWSE_NUMERICAL, new OpenTourGuideState(EDataDomainQueryMode.NUMERICAL,
-				"Select\na stratification in\nthe Tour Guide\nto preview.\n\nThen confirm\nor cancel your\nselection."));
+				"Selecta stratification in the Tour Guide\nto preview.\n\nThen confirm or cancel your selection."));
 		// addTransition(addStratification, new ButtonTransition(browseStratification, "Browse List"));
 
 	}

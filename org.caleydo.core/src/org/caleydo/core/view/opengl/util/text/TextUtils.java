@@ -46,6 +46,8 @@ public class TextUtils {
 			int prev = 0;
 			int to = line.indexOf(' ', from + 1);
 			while (to > 0) {
+				if (to > line.length())
+					System.err.println();
 				lineWidth = renderer.getTextWidth(line.substring(from, to), lineHeight);
 				if (lineWidth > width && prev > 0) {
 					// can't add the word to the line, so newline before the word
@@ -55,6 +57,8 @@ public class TextUtils {
 				}
 				prev = to;
 				to = line.indexOf(' ', prev + 1);
+				if (to < 0 && prev < line.length())
+					to = line.length();
 			}
 			r.add(line.substring(from)); // add rest and stop
 		}
