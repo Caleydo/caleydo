@@ -145,17 +145,17 @@ public class CreateIDTypeDialogMediator {
 		}
 
 		if (dialog.idParsingRulesWidget.isEnabled()) {
-			if (dialog.idParsingRulesWidget.getReplacingExpression() == null
-					&& dialog.idParsingRulesWidget.getSubStringExpression() == null) {
-				MessageDialog.openError(new Shell(), "Incomplete Parsing Definition",
-						"At least one expression (replacing or substring) must be specified.");
-				return false;
-			}
+			// if (dialog.idParsingRulesWidget.getReplacingExpression() == null
+			// && dialog.idParsingRulesWidget.getSubStringExpression() == null) {
+			// MessageDialog.openError(new Shell(), "Incomplete Parsing Definition",
+			// "At least one expression (replacing or substring) must be specified.");
+			// return false;
+			// }
 
-			idTypeParsingRules = new IDTypeParsingRules();
-			idTypeParsingRules.setReplacementExpression(dialog.idParsingRulesWidget.getReplacementString(),
-					dialog.idParsingRulesWidget.getReplacingExpression());
-			idTypeParsingRules.setSubStringExpression(dialog.idParsingRulesWidget.getSubStringExpression());
+			idTypeParsingRules = dialog.idParsingRulesWidget.getIDTypeParsingRules();
+			// idTypeParsingRules.setReplacementExpression(dialog.idParsingRulesWidget.getReplacementString(),
+			// dialog.idParsingRulesWidget.getReplacingExpression());
+			// idTypeParsingRules.setSubStringExpression(dialog.idParsingRulesWidget.getSubStringExpression());
 			idTypeParsingRules.setDefault(true);
 		}
 

@@ -5,12 +5,15 @@ import gleem.linalg.Vec3f;
 
 import java.awt.Color;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.ListIterator;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
-import org.caleydo.core.util.base.ILabelProvider;
+import org.caleydo.core.util.base.ILabeled;
 import org.caleydo.core.util.color.IColor;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.geom.Rect;
@@ -434,26 +437,42 @@ public class GLGraphics {
 	 * see {@link #drawText(String, float, float, float, float)} with a dedicated horizontal alignment
 	 */
 	public GLGraphics drawText(String text, float x, float y, float w, float h, VAlign valign) {
-		if (text == null)
+		if (text == null || text.trim().isEmpty())
 			return this;
-		stats.incText(text.length());
+		if (text.indexOf('\n') < 0)
+			return drawText(Collections.singletonList(text), x, y, w, h, 0, valign);
+		else {
+			return drawText(Arrays.asList(text.split("\n")), x, y, w, h, 0, valign);
+		}
+	}
+
+	public GLGraphics drawText(List<String> lines, float x, float y, float w, float h, float lineSpace,
+			VAlign valign) {
+		if (lines == null || lines.isEmpty())
+			return this;
 		if (originInTopLeft && !this.text.isOriginTopLeft()) {
 			gl.glPushMatrix();
 			gl.glTranslatef(0, y + h, 0);
 			y = 0;
 			gl.glScalef(1, -1, 1);
 		}
-		switch (valign) {
-		case CENTER:
-			x += w * 0.5f - Math.min(this.text.getTextWidth(text, h), w) * 0.5f;
-			break;
-		case RIGHT:
-			x += w - Math.min(this.text.getTextWidth(text, h), w);
-			break;
-		default:
-			break;
+		float hi = (h - lineSpace * lines.size() - 1) / lines.size();
+		for (ListIterator<String> it = lines.listIterator(lines.size()); it.hasPrevious();) {
+			String text = it.previous();
+			float xi = x;
+			switch (valign) {
+			case CENTER:
+				xi += w * 0.5f - Math.min(this.text.getTextWidth(text, hi), w) * 0.5f;
+				break;
+			case RIGHT:
+				xi += w - Math.min(this.text.getTextWidth(text, hi), w);
+				break;
+			default:
+				break;
+			}
+			this.text.renderTextInBounds(gl, text, xi, y, z + 0.25f, w, hi);
+			y += lineSpace + hi;
 		}
-		this.text.renderTextInBounds(gl, text, x, y, z + 0.25f, w, h);
 
 		if (originInTopLeft && !this.text.isOriginTopLeft())
 			gl.glPopMatrix();
@@ -463,7 +482,7 @@ public class GLGraphics {
 	/**
 	 * see {@link #drawText(String, float, float, float, float)}
 	 */
-	public GLGraphics drawText(ILabelProvider text, float x, float y, float w, float h) {
+	public GLGraphics drawText(ILabeled text, float x, float y, float w, float h) {
 		if (text == null)
 			return this;
 		return drawText(text.getLabel(), x, y, w, h);

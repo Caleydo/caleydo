@@ -54,7 +54,7 @@ public class HighlightBrickEventListener extends AEventListener<GLStratomex> {
 			layout = brickColumn.getLayout();
 		} else {
 			Group g = event.getGroup();
-			for (GLBrick brick : brickColumn.getBricks()) {
+			for (GLBrick brick : brickColumn.getSegmentBricks()) {
 				if (g.equals(brick.getTablePerspective().getRecordGroup())) {
 					layout = brick.getLayout();
 					break;

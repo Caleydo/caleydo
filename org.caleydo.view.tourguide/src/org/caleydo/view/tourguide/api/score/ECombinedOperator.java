@@ -21,7 +21,7 @@ package org.caleydo.view.tourguide.api.score;
 
 import java.util.Arrays;
 
-import org.caleydo.core.util.base.ILabelProvider;
+import org.caleydo.core.util.base.ILabeled;
 
 import com.google.common.base.Function;
 
@@ -29,7 +29,7 @@ import com.google.common.base.Function;
  * @author Samuel Gratzl
  *
  */
-public enum ECombinedOperator implements Function<float[], Float>, ILabelProvider {
+public enum ECombinedOperator implements Function<float[], Float>, ILabeled {
 	MAX, MIN, MEAN, MEDIAN, GEOMETRIC_MEAN;
 
 	@Override
@@ -68,11 +68,6 @@ public enum ECombinedOperator implements Function<float[], Float>, ILabelProvide
 			return "Minium";
 		}
 		throw new IllegalStateException("unknown operator: " + this);
-	}
-
-	@Override
-	public String getProviderName() {
-		return "ECombinedOperator";
 	}
 
 	public float combine(float[] data) {

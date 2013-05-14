@@ -32,6 +32,7 @@ import org.caleydo.view.tourguide.api.compute.ComputeScoreFilters;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.score.DefaultComputedStratificationScore;
 import org.caleydo.view.tourguide.api.score.ui.ACreateGroupScoreDialog;
+import org.caleydo.view.tourguide.api.state.IStateMachine;
 import org.caleydo.view.tourguide.impl.algorithm.AGSEAAlgorithm;
 import org.caleydo.view.tourguide.impl.algorithm.AGSEAAlgorithm.GSEAAlgorithmPValue;
 import org.caleydo.view.tourguide.impl.algorithm.GSEAAlgorithm;
@@ -62,6 +63,12 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 
 	private IRegisteredScore createPGSEA(String label, Perspective reference, Group group) {
 		return new GeneSetScore(label, new PGSEAAlgorithm(reference, group), false);
+	}
+
+	@Override
+	public void fillStateMachine(IStateMachine stateMachine, Object eventReceiver) {
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override

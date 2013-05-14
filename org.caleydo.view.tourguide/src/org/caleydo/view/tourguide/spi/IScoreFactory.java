@@ -26,6 +26,7 @@ import java.util.Iterator;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
+import org.caleydo.view.tourguide.api.state.IStateMachine;
 import org.caleydo.view.tourguide.internal.event.AddScoreColumnEvent;
 import org.caleydo.view.tourguide.spi.score.IScore;
 import org.eclipse.jface.dialogs.Dialog;
@@ -38,6 +39,8 @@ import org.eclipse.swt.widgets.Shell;
  *
  */
 public interface IScoreFactory {
+	void fillStateMachine(IStateMachine stateMachine, Object eventReceiver);
+
 	/**
 	 * creates a dialog for creating a new score of this type
 	 *

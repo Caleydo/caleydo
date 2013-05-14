@@ -20,25 +20,26 @@
 package org.caleydo.core.view.opengl.canvas.internal.swt;
 
 import java.util.Deque;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 
-import org.caleydo.core.util.base.ILabelProvider;
+import org.caleydo.core.util.base.ILabeled;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.IGLFocusListener;
 import org.caleydo.core.view.opengl.canvas.IGLKeyListener;
 import org.caleydo.core.view.opengl.canvas.IGLMouseListener;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 
+import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.Table;
 import com.jogamp.opengl.swt.GLCanvas;
 
 /**
@@ -48,7 +49,7 @@ import com.jogamp.opengl.swt.GLCanvas;
 final class SWTGLCanvas implements IGLCanvas {
 	private final GLCanvas canvas;
 
-	private final Map<Object, Object> listenerMapping = new ConcurrentHashMap<>();
+	private final Table<Integer, Object, Object> listenerMapping = HashBasedTable.create();
 	private final Deque<GLEventListener> glEventListeners = new ConcurrentLinkedDeque<>();
 
 	SWTGLCanvas(GLCanvas canvas) {
@@ -105,7 +106,7 @@ final class SWTGLCanvas implements IGLCanvas {
 	}
 
 	@Override
-	public IPickingListener createTooltip(ILabelProvider label) {
+	public IPickingListener createTooltip(ILabeled label) {
 		return new SWTTooltipManager(canvas, label);
 	}
 
@@ -156,7 +157,7 @@ final class SWTGLCanvas implements IGLCanvas {
 				if (canvas.isDisposed())
 					return;
 				SWTMouseAdapter a = new SWTMouseAdapter(listener);
-				listenerMapping.put(listener, a);
+				listenerMapping.put(SWT.MouseMove, listener, a);
 				canvas.addMouseListener(a);
 				canvas.addMouseMoveListener(a);
 				canvas.addMouseWheelListener(a);
@@ -172,7 +173,7 @@ final class SWTGLCanvas implements IGLCanvas {
 		getDisplay().syncExec(new Runnable() {
 			@Override
 			public void run() {
-				SWTMouseAdapter a = (SWTMouseAdapter) listenerMapping.remove(listener);
+				SWTMouseAdapter a = (SWTMouseAdapter) listenerMapping.remove(SWT.MouseMove, listener);
 				if (a == null)
 					return;
 				if (canvas.isDisposed())
@@ -194,7 +195,7 @@ final class SWTGLCanvas implements IGLCanvas {
 			@Override
 			public void run() {
 				SWTFocusAdapter a = new SWTFocusAdapter(listener);
-				listenerMapping.put(listener, a);
+				listenerMapping.put(SWT.FocusIn, listener, a);
 				canvas.addFocusListener(a);
 			}
 		});
@@ -207,7 +208,7 @@ final class SWTGLCanvas implements IGLCanvas {
 		getDisplay().syncExec(new Runnable() {
 			@Override
 			public void run() {
-				SWTFocusAdapter a = (SWTFocusAdapter) listenerMapping.remove(listener);
+				SWTFocusAdapter a = (SWTFocusAdapter) listenerMapping.remove(SWT.FocusIn, listener);
 				if (a == null)
 					return;
 				if (canvas.isDisposed())
@@ -245,7 +246,7 @@ final class SWTGLCanvas implements IGLCanvas {
 				if (canvas.isDisposed())
 					return;
 				SWTKeyAdapter a = new SWTKeyAdapter(listener);
-				listenerMapping.put(listener, a);
+				listenerMapping.put(SWT.KeyDown, listener, a);
 				canvas.addKeyListener(a);
 			}
 		});
@@ -258,7 +259,7 @@ final class SWTGLCanvas implements IGLCanvas {
 		getDisplay().syncExec(new Runnable() {
 			@Override
 			public void run() {
-				SWTKeyAdapter a = (SWTKeyAdapter) listenerMapping.remove(listener);
+				SWTKeyAdapter a = (SWTKeyAdapter) listenerMapping.remove(SWT.KeyDown, listener);
 				if (a == null)
 					return;
 				if (canvas.isDisposed())

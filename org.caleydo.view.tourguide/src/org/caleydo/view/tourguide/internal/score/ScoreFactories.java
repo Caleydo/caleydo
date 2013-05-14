@@ -28,6 +28,7 @@ import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.ExtensionUtils;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
+import org.caleydo.view.tourguide.api.state.IStateMachine;
 import org.caleydo.view.tourguide.internal.event.AddScoreColumnEvent;
 import org.caleydo.view.tourguide.spi.IScoreFactory;
 import org.caleydo.view.tourguide.spi.IScoreFactory.ScoreEntry;
@@ -73,5 +74,11 @@ public class ScoreFactories {
 
 	public static IScoreFactory get(String score) {
 		return factories.get(score);
+	}
+
+	public static void fillStateMachine(IStateMachine stateMachine, Object eventReceiver) {
+		for (IScoreFactory f : factories.values()) {
+			f.fillStateMachine(stateMachine, eventReceiver);
+		}
 	}
 }

@@ -31,9 +31,6 @@ import org.caleydo.core.data.datadomain.DataDomainOracle;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.util.base.DefaultLabelProvider;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
-import org.caleydo.view.tourguide.spi.score.IScore;
-
-import com.google.common.base.Predicate;
 
 /**
  * the mode in which the data domain query is see {@link DataDomainQuery}
@@ -42,19 +39,19 @@ import com.google.common.base.Predicate;
  *
  */
 public enum EDataDomainQueryMode {
-	STRATIFICATIONS, PATHWAYS, CATEGORICAL;
+	STRATIFICATIONS, PATHWAYS, NUMERICAL;
 
 	/**
 	 * @return
 	 */
 	public String getLabel() {
 		switch (this) {
-		case PATHWAYS:
-			return "Pathways";
 		case STRATIFICATIONS:
 			return "Stratifications";
-		case CATEGORICAL:
-			return "Categorical";
+		case PATHWAYS:
+			return "Pathways";
+		case NUMERICAL:
+			return "Numerical";
 		}
 		throw new IllegalArgumentException("unknown me");
 	}
@@ -65,7 +62,7 @@ public enum EDataDomainQueryMode {
 			return dataDomain instanceof PathwayDataDomain;
 		case STRATIFICATIONS:
 			return dataDomain instanceof ATableBasedDataDomain;
-		case CATEGORICAL:
+		case NUMERICAL:
 			return DataDomainOracle.isCategoricalDataDomain(dataDomain);
 		}
 		throw new IllegalArgumentException("unknown me");
@@ -85,7 +82,7 @@ public enum EDataDomainQueryMode {
 			return dataDomains;
 		case PATHWAYS:
 			return DataDomainManager.get().getDataDomainsByType(PathwayDataDomain.class);
-		case CATEGORICAL:
+		case NUMERICAL:
 			List<ATableBasedDataDomain> catDataDomains = new ArrayList<>(DataDomainManager.get().getDataDomainsByType(
 					ATableBasedDataDomain.class));
 
@@ -98,39 +95,5 @@ public enum EDataDomainQueryMode {
 			return catDataDomains;
 		}
 		throw new IllegalArgumentException("unknown me");
-	}
-
-	public Predicate<IScore> isSupportedBy() {
-		return new Predicate<IScore>() {
-			@Override
-			public boolean apply(IScore s) {
-				return s.supports(EDataDomainQueryMode.this);
-			}
-		};
-	}
-
-	/**
-	 * datadomains can be categorized in multiple categories
-	 *
-	 * @return
-	 */
-	public int getNumCategories() {
-		switch (this) {
-		case STRATIFICATIONS:
-			return 2;
-		default:
-			return 1;
-		}
-	}
-
-	public int getCategory(IDataDomain dataDomain) {
-		switch (this) {
-		case STRATIFICATIONS:
-			if (DataDomainOracle.isCategoricalDataDomain(dataDomain))
-				return 1;
-			return 0;
-		default:
-			return 0;
-		}
 	}
 }

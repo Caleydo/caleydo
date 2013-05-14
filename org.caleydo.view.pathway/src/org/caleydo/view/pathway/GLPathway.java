@@ -280,7 +280,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		vecTranslation = new Vec3f(0, 0, 0);
 
 		registerMouseListeners();
-		registeKeyListeners();
+		registerKeyListeners();
 
 		// ///////////////////////////////////////////////////
 		// / bubble sets
@@ -406,7 +406,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		this.selectPathAction = aSelectPathAction;
 	}
 
-	protected void registeKeyListeners() {
+	protected void registerKeyListeners() {
 
 		parentGLCanvas.addKeyListener(new IGLKeyListener() {
 			@Override

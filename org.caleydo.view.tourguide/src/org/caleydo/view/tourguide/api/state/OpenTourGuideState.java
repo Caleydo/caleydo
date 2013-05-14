@@ -17,28 +17,46 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.api.util;
+package org.caleydo.view.tourguide.api.state;
 
-import java.util.Comparator;
-
-import org.caleydo.core.util.base.ILabelProvider;
+import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
+import org.caleydo.view.tourguide.internal.OpenViewHandler;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.PlatformUI;
 
 /**
- * comparator based on labels
- *
  * @author Samuel Gratzl
  *
  */
-public class LabelComparator implements Comparator<ILabelProvider> {
+public class OpenTourGuideState implements IState {
+	private final EDataDomainQueryMode mode;
+	private final String label;
+
+	public OpenTourGuideState(EDataDomainQueryMode mode, String label) {
+		this.mode = mode;
+		this.label = label;
+	}
+
+	/**
+	 * @return the label, see {@link #label}
+	 */
 	@Override
-	public int compare(ILabelProvider o1, ILabelProvider o2) {
-		if (o1 == o2)
-			return 0;
-		if (o1 == null)
-			return -1;
-		if (o2 == null)
-			return +1;
-		return String.CASE_INSENSITIVE_ORDER.compare(o1.getLabel(), o2.getLabel());
+	public String getLabel() {
+		return label;
+	}
+
+	@Override
+	public void onEnter() {
+		Display.getDefault().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				OpenViewHandler.showTourGuide(PlatformUI.getWorkbench().getActiveWorkbenchWindow(), mode);
+			}
+		});
+	}
+
+	@Override
+	public void onLeave() {
+
 	}
 }
-

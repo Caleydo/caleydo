@@ -322,6 +322,8 @@ public class BrickColumnSpacingRenderer
 		renderDimensionGroupConnections(gl);
 		renderDragAndDropMarker(gl);
 
+
+
 		// FIXME Stratomex 2.0 testing
 		// if (leftDimGroup != null && rightDimGroup != null) {
 		// float score =
@@ -431,6 +433,10 @@ public class BrickColumnSpacingRenderer
 						0 }, new float[] { 0, leftCenterBrickTop, 0 }, new float[] { 0,
 						leftCenterBrickBottom, 0 }, false, 0, GLStratomex.ARCH_COLOR,
 						GLStratomex.ARCH_COLOR[3], true);
+				// render add button
+				stratomex.getTourguide().renderAddButton(gl, xStart, leftCenterBrickTop, x,
+						leftCenterBrickBottom - leftCenterBrickTop, ID);
+
 			}
 
 		}
@@ -468,6 +474,11 @@ public class BrickColumnSpacingRenderer
 								rightCenterBrickTop, 0 }, new float[] { xEnd,
 								rightCenterBrickBottom, 0 }, false, 0, GLStratomex.ARCH_COLOR,
 						GLStratomex.ARCH_COLOR[3], true);
+				// render add button
+				stratomex.getTourguide().renderAddButton(gl, x, rightCenterBrickTop, xEnd - x,
+						rightCenterBrickBottom
+						- rightCenterBrickTop, ID);
+
 			}
 
 		}
@@ -487,7 +498,14 @@ public class BrickColumnSpacingRenderer
 						rightCenterBrickTop, 0 },
 				new float[] { x, rightCenterBrickBottom, 0 }, false, curveOffset, 0,
 				GLStratomex.ARCH_COLOR, true);
+
+		// render add button
+		stratomex.getTourguide().renderAddButton(gl, 0, (leftCenterBrickTop + rightCenterBrickTop) * 0.5f, x,
+				(leftCenterBrickBottom - leftCenterBrickTop + rightCenterBrickBottom - rightCenterBrickTop) * 0.5f, ID);
+
 	}
+
+
 
 	private void renderDimensionGroupConnections(GL2 gl) {
 

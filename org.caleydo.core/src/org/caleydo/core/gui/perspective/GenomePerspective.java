@@ -58,7 +58,7 @@ public class GenomePerspective
 		//rightLayout.addPlaceholder("org.caleydo.view.bookmark");
 		//rightLayout.addPlaceholder("org.caleydo.view.grouper");
 
-		IPlaceholderFolderLayout bottomLayout = layout.createPlaceholderFolder("bottom", IPageLayout.BOTTOM, 0.8f,
+		IPlaceholderFolderLayout bottomLayout = layout.createPlaceholderFolder("bottom", IPageLayout.BOTTOM, 0.75f,
 				"main");
 		// bottomLayout.addPlaceholder("org.caleydo.view.filter");
 		// bottomLayout.addPlaceholder("org.caleydo.view.filterpipeline");

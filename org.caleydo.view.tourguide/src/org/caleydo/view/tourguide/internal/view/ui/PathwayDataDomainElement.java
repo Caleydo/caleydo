@@ -58,6 +58,11 @@ public class PathwayDataDomainElement extends ADataDomainElement {
 		}
 	}
 
+	@Override
+	protected String getLabel() {
+		return getModel().getType().getName();
+	}
+
 	private void setFilter(String filter) {
 		getModel().setMatches(filter);
 		setHasFilter(model.hasFilter());

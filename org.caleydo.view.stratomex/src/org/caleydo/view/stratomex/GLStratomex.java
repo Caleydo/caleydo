@@ -21,6 +21,7 @@ package org.caleydo.view.stratomex;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -49,6 +50,8 @@ import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.events.RecordVAUpdateEvent;
 import org.caleydo.core.data.virtualarray.similarity.RelationAnalyzer;
 import org.caleydo.core.event.EventListenerManager;
+import org.caleydo.core.event.EventListenerManager.DeepScan;
+import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventListenerManagers;
 import org.caleydo.core.event.data.RelationsUpdatedEvent;
 import org.caleydo.core.event.data.RemoveDataDomainEvent;
@@ -61,6 +64,7 @@ import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
 import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
@@ -84,6 +88,8 @@ import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
+import org.caleydo.core.view.opengl.util.texture.TextureManager;
+import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
 import org.caleydo.view.stratomex.brick.GLBrick;
 import org.caleydo.view.stratomex.brick.configurer.CategoricalDataConfigurer;
@@ -97,6 +103,7 @@ import org.caleydo.view.stratomex.event.AddGroupsToStratomexEvent;
 import org.caleydo.view.stratomex.event.AddKaplanMaiertoStratomexEvent;
 import org.caleydo.view.stratomex.event.ConnectionsModeEvent;
 import org.caleydo.view.stratomex.event.HighlightBrickEvent;
+import org.caleydo.view.stratomex.event.MergeBricksEvent;
 import org.caleydo.view.stratomex.event.ReplaceKaplanMaierPerspectiveEvent;
 import org.caleydo.view.stratomex.event.SelectElementsEvent;
 import org.caleydo.view.stratomex.event.SplitBrickEvent;
@@ -108,6 +115,7 @@ import org.caleydo.view.stratomex.listener.HighlightBrickEventListener;
 import org.caleydo.view.stratomex.listener.ReplaceTablePerspectiveListener;
 import org.caleydo.view.stratomex.listener.SelectElementsListener;
 import org.caleydo.view.stratomex.listener.SplitBrickListener;
+import org.caleydo.view.stratomex.tourguide.TourguideAdapter;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
@@ -122,8 +130,8 @@ import org.eclipse.swt.widgets.Composite;
 public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedView, IGLRemoteRenderingView,
 		IViewCommandHandler, IEventBasedSelectionManagerUser {
 
-	public static String VIEW_TYPE = "org.caleydo.view.stratomex";
-	public static String VIEW_NAME = "StratomeX";
+	public static final String VIEW_TYPE = "org.caleydo.view.stratomex";
+	public static final String VIEW_NAME = "StratomeX";
 
 	private final static int ARCH_PIXEL_HEIGHT = 100;
 	private final static int ARCH_PIXEL_WIDTH = 80;
@@ -227,6 +235,9 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 
 	private List<TablePerspective> tablePerspectives;
 
+	@DeepScan
+	private TourguideAdapter tourguide;
+
 	/**
 	 * Constructor.
 	 *
@@ -247,7 +258,19 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 
 		tablePerspectives = new ArrayList<TablePerspective>();
 
+		textureManager = new TextureManager(new ResourceLoader(Activator.getResourceLocator()));
+
+		tourguide = new TourguideAdapter(this);
+
 		registerPickingListeners();
+
+	}
+
+	/**
+	 * @return the tourguide, see {@link #tourguide}
+	 */
+	public TourguideAdapter getTourguide() {
+		return tourguide;
 	}
 
 	@Override
@@ -305,7 +328,6 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	 * Init the layout for the center region, showing the horizontal bar of the arch plus all sub-bricks above and below
 	 */
 	private void initCenterLayout() {
-
 		archSideWidth = viewFrustum.getWidth() * ARCH_STAND_WIDTH_PERCENT;
 
 		if (isRightDetailShown || isLeftDetailShown) {
@@ -319,70 +341,76 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 
 		archTopY = archBottomY + archHeight;
 
-		int numberOfFocusColumns = brickColumnManager.getRightColumnStartIndex()
-				- brickColumnManager.getCenterColumnStartIndex();
-
 		centerRowLayout = new Row("centerRowLayout");
 
 		centerRowLayout.setPriorityRendereing(true);
 		centerRowLayout.setFrameColor(0, 0, 1, 1);
 
-		leftBrickColumnSpacing = new ElementLayout("firstCenterDimGrSpacing");
 
-		BrickColumnSpacingRenderer columnSpacingRenderer = null;
 
-		// Handle special case where center contains no groups
-		if (numberOfFocusColumns < 1) {
-			columnSpacingRenderer = new BrickColumnSpacingRenderer(null, connectionRenderer, null, null, this);
-		} else {
-			columnSpacingRenderer = new BrickColumnSpacingRenderer(null, connectionRenderer, null, brickColumnManager
-					.getBrickColumns().get(brickColumnManager.getCenterColumnStartIndex()), this);
-		}
-
-		leftBrickColumnSpacing.setRenderer(columnSpacingRenderer);
-		// dimensionGroupSpacingRenderer.setLineLength(archHeight);
-
-		if (numberOfFocusColumns > 1)
-			leftBrickColumnSpacing.setPixelSizeX(BRICK_COLUMN_SIDE_SPACING);
-		else
-			leftBrickColumnSpacing.setGrabX(true);
-
-		centerRowLayout.append(leftBrickColumnSpacing);
-
+		List<Object> columns = new ArrayList<>();
+		tourguide.add(columns, -1);
 		for (int columnIndex = brickColumnManager.getCenterColumnStartIndex(); columnIndex < brickColumnManager
 				.getRightColumnStartIndex(); columnIndex++) {
-
-			ElementLayout dynamicColumnSpacing;
-
 			BrickColumn column = brickColumnManager.getBrickColumns().get(columnIndex);
 			column.setCollapsed(false);
 			column.setArchHeight(ARCH_PIXEL_HEIGHT);
-			centerRowLayout.append(column.getLayout());
-
-			if (columnIndex != brickColumnManager.getRightColumnStartIndex() - 1) {
-				dynamicColumnSpacing = new ElementLayout("dynamicDimGrSpacing");
-				columnSpacingRenderer = new BrickColumnSpacingRenderer(relationAnalyzer, connectionRenderer, column,
-						brickColumnManager.getBrickColumns().get(columnIndex + 1), this);
-				dynamicColumnSpacing.setGrabX(true);
-				dynamicColumnSpacing.setRenderer(columnSpacingRenderer);
-				centerRowLayout.append(dynamicColumnSpacing);
-
-			} else {
-				rightBrickColumnSpacing = new ElementLayout("lastDimGrSpacing");
-				columnSpacingRenderer = new BrickColumnSpacingRenderer(null, connectionRenderer, column, null, this);
-
-				if (numberOfFocusColumns > 1)
-					rightBrickColumnSpacing.setPixelSizeX(BRICK_COLUMN_SIDE_SPACING);
-				else
-					rightBrickColumnSpacing.setGrabX(true);
-
-				rightBrickColumnSpacing.setRenderer(columnSpacingRenderer);
-				centerRowLayout.append(rightBrickColumnSpacing);
-			}
-
+			columns.add(column);
+			tourguide.add(columns, columnIndex);
 		}
 
 		mainRow.append(centerRowLayout);
+
+		// Handle special case where center contains no groups
+		if (columns.isEmpty()) {
+			leftBrickColumnSpacing = new ElementLayout("firstCenterDimGrSpacing");
+			leftBrickColumnSpacing.setRenderer(new BrickColumnSpacingRenderer(null, connectionRenderer, null, null,
+					this));
+			leftBrickColumnSpacing.setGrabX(true);
+			centerRowLayout.append(leftBrickColumnSpacing);
+			return;
+		}
+
+		leftBrickColumnSpacing = new ElementLayout("firstCenterDimGrSpacing");
+		leftBrickColumnSpacing.setRenderer(new BrickColumnSpacingRenderer(null, connectionRenderer, null,
+				asBrickColumn(columns.get(0)), this));
+		if (columns.size() > 1)
+			leftBrickColumnSpacing.setPixelSizeX(BRICK_COLUMN_SIDE_SPACING);
+		else
+			leftBrickColumnSpacing.setGrabX(true);
+		centerRowLayout.append(leftBrickColumnSpacing);
+
+		BrickColumn last = null;
+		for (int i = 0; i < columns.size(); ++i) {
+			Object elem = columns.get(i);
+			BrickColumn column = asBrickColumn(elem);
+			if (i > 0) { // not the last one
+				ElementLayout dynamicColumnSpacing = new ElementLayout("dynamicDimGrSpacing");
+				dynamicColumnSpacing.setGrabX(true);
+				dynamicColumnSpacing.setRenderer(new BrickColumnSpacingRenderer(relationAnalyzer, connectionRenderer,
+						last, column, this));
+				centerRowLayout.append(dynamicColumnSpacing);
+			}
+
+			if (elem instanceof BrickColumn) {
+				centerRowLayout.add(((BrickColumn) elem).getLayout());
+			} else if (elem instanceof ElementLayout) {
+				centerRowLayout.add((ElementLayout) elem);
+			}
+			last = column;
+		}
+
+		rightBrickColumnSpacing = new ElementLayout("lastDimGrSpacing");
+		rightBrickColumnSpacing.setRenderer(new BrickColumnSpacingRenderer(null, connectionRenderer, last, null, this));
+		if (columns.size() > 1)
+			rightBrickColumnSpacing.setPixelSizeX(BRICK_COLUMN_SIDE_SPACING);
+		else
+			rightBrickColumnSpacing.setGrabX(true);
+		centerRowLayout.append(rightBrickColumnSpacing);
+	}
+
+	private static BrickColumn asBrickColumn(Object obj) {
+		return obj instanceof BrickColumn ? ((BrickColumn) obj) : null;
 	}
 
 	/**
@@ -474,8 +502,9 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 
 		display(gl);
 
-		if (!lazyMode)
+		if (!lazyMode) {
 			checkForHits(gl);
+		}
 	}
 
 	@Override
@@ -486,9 +515,12 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	@Override
 	public void display(GL2 gl) {
 
-		if (tablePerspectives == null || tablePerspectives.isEmpty()) {
+		if ((tablePerspectives == null || tablePerspectives.isEmpty()) && tourguide.isEmpty()) {
 			if (isDisplayListDirty) {
 				gl.glNewList(displayListIndex, GL2.GL_COMPILE);
+
+				tourguide.renderAddButton(gl, 0, getArchTopY(), getViewFrustum().getWidth(), getArchBottomY()
+						- getArchTopY(), 0);
 				renderEmptyViewText(gl, new String[] { "Please use the Data-View Integrator to assign ",
 						"one or multiple dataset(s) to StratomeX.",
 						"Refer to http://help.caleydo.org for more information." });
@@ -931,6 +963,8 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 				movedBrickColumn = pick.getObjectID();
 			}
 		}, EPickingType.MOVE_HORIZONTALLY_HANDLE.name());
+
+		tourguide.registerPickingListeners();
 	}
 
 	@Override
@@ -975,6 +1009,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		listeners.register(HighlightBrickEvent.class, new HighlightBrickEventListener(this));
 		listeners.register(SelectElementsEvent.class, new SelectElementsListener().setHandler(this));
 		listeners.register(RemoveDataDomainEvent.class, new DataDomainEventListener().setHandler(this));
+		listeners.register(this);
 	}
 
 	@Override
@@ -1059,11 +1094,19 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	 */
 	public void addTablePerspectives(List<TablePerspective> newTablePerspectives, IBrickConfigurer brickConfigurer,
 			BrickColumn sourceColumn) {
+		addTablePerspectives(newTablePerspectives, brickConfigurer, sourceColumn, true);
+	}
+
+	public List<Pair<Integer, BrickColumn>> addTablePerspectives(List<TablePerspective> newTablePerspectives,
+			IBrickConfigurer brickConfigurer,
+			BrickColumn sourceColumn, boolean addRight) {
+
+		List<Pair<Integer, BrickColumn>> added = new ArrayList<>();
 
 		if (newTablePerspectives == null || newTablePerspectives.size() == 0) {
 			Logger.log(new Status(IStatus.WARNING, this.toString(),
 					"newTablePerspectives in addTablePerspectives was null or empty"));
-			return;
+			return added;
 		}
 
 		// if this is the first data container set, we imprint StratomeX
@@ -1073,6 +1116,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		}
 
 		ArrayList<BrickColumn> brickColumns = brickColumnManager.getBrickColumns();
+
 
 		for (TablePerspective tablePerspective : newTablePerspectives) {
 			if (tablePerspective == null) {
@@ -1099,34 +1143,19 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 			}
 
 			if (!columnExists) {
-				BrickColumn brickColumn = (BrickColumn) GeneralManager
-						.get()
-						.getViewManager()
-						.createGLView(BrickColumn.class, getParentGLCanvas(), parentComposite,
-								new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1, -1, 1));
+				BrickColumn brickColumn = createBrickColumn(brickConfigurer, tablePerspective);
+				int columnIndex;
+				if (sourceColumn == null)
+					columnIndex = addRight ? brickColumnManager.getRightColumnStartIndex() : brickColumnManager
+							.getCenterColumnStartIndex();
+				else
+					columnIndex = brickColumns.indexOf(sourceColumn) + 1;
 
-				/**
-				 * If no brick configurer was specified in the {@link AddGroupsToVisBricksEvent}, then the numerical
-				 * configurer is created by default
-				 **/
-				if (brickConfigurer == null) {
-					brickConfigurer = createDefaultBrickConfigurer(tablePerspective);
-				}
+				added.add(Pair.make(columnIndex, brickColumn));
 
-				brickColumn.setDetailLevel(this.getDetailLevel());
-				brickColumn.setBrickConfigurer(brickConfigurer);
-				brickColumn.setDataDomain(tablePerspective.getDataDomain());
-				brickColumn.setTablePerspective(tablePerspective);
-				brickColumn.setRemoteRenderingGLView(this);
-				brickColumn.setStratomex(this);
-				brickColumn.initialize();
-
-				int columnIndex = sourceColumn == null ? brickColumnManager.getRightColumnStartIndex() : brickColumns
-						.indexOf(sourceColumn) + 1;
 				brickColumns.add(columnIndex, brickColumn);
 				tablePerspectives.add(tablePerspective);
 
-				uninitializedSubViews.add(brickColumn);
 				// if (tablePerspective instanceof PathwayTablePerspective) {
 				// dataDomains.add(((PathwayTablePerspective) tablePerspective)
 				// .getPathwayDataDomain());
@@ -1141,6 +1170,40 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		TablePerspectivesChangedEvent event = new TablePerspectivesChangedEvent(this);
 		event.setSender(this);
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
+
+		return added;
+	}
+
+	/**
+	 * @param tablePerspective
+	 * @param brickConfigurer
+	 * @return
+	 */
+	private BrickColumn createBrickColumn(IBrickConfigurer brickConfigurer, TablePerspective tablePerspective) {
+		BrickColumn brickColumn = (BrickColumn) GeneralManager
+				.get()
+				.getViewManager()
+				.createGLView(BrickColumn.class, getParentGLCanvas(), parentComposite,
+						new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1, -1, 1));
+
+		/**
+		 * If no brick configurer was specified in the {@link AddGroupsToVisBricksEvent}, then the numerical configurer
+		 * is created by default
+		 **/
+		if (brickConfigurer == null) {
+			brickConfigurer = createDefaultBrickConfigurer(tablePerspective);
+		}
+
+		brickColumn.setDetailLevel(this.getDetailLevel());
+		brickColumn.setBrickConfigurer(brickConfigurer);
+		brickColumn.setDataDomain(tablePerspective != null ? tablePerspective.getDataDomain() : null);
+		brickColumn.setTablePerspective(tablePerspective);
+		brickColumn.setRemoteRenderingGLView(this);
+		brickColumn.setStratomex(this);
+		brickColumn.initialize();
+		uninitializedSubViews.add(brickColumn);
+
+		return brickColumn;
 	}
 
 	public IBrickConfigurer createDefaultBrickConfigurer(TablePerspective tablePerspective) {
@@ -1378,6 +1441,11 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		}
 	}
 
+	public void relayout() {
+		initLayouts();
+		setDisplayListDirty();
+	}
+
 	/**
 	 * Set whether the last resize of any sub-brick was to the left(true) or to the right. Important for determining,
 	 * which brick to kick next.
@@ -1469,7 +1537,9 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	public void selectElements(Iterable<Integer> ids, IDType idType, String dataDomainID, SelectionType selectionType) {
 		if (recordSelectionManager == null)
 			return;
-		recordSelectionManager.clearSelection(selectionType);
+
+		if (!getKeyListener().isCtrlDown())
+			recordSelectionManager.clearSelection(selectionType);
 
 		for (Integer recordID : ids) {
 			recordSelectionManager.addToType(selectionType, idType, recordID);
@@ -1599,6 +1669,76 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 
 	}
 
+	@ListenTo
+	private void onMergeBricks(MergeBricksEvent event) {
+
+		List<GLBrick> bricksToMerge = event.getBricks();
+		if (bricksToMerge.size() <= 1)
+			return;
+		Collections.reverse(bricksToMerge);
+
+		BrickColumn brickColumn = bricksToMerge.get(0).getBrickColumn();
+		Perspective sourcePerspective = brickColumn.getTablePerspective().getRecordPerspective();
+		VirtualArray sourceVA = sourcePerspective.getVirtualArray();
+		List<GLBrick> bricks = brickColumn.getSegmentBricks();
+		Collections.reverse(bricks);
+
+		List<Integer> mergedBrickIDs = new ArrayList<>();
+
+		// add ids of all bricks
+		for (GLBrick brick : bricksToMerge) {
+			mergedBrickIDs.addAll(brick.getTablePerspective().getRecordPerspective().getVirtualArray().getIDs());
+		}
+
+		List<Integer> newIDs = new ArrayList<Integer>(sourceVA.size());
+		List<Integer> groupSizes = new ArrayList<Integer>(bricks.size() - bricksToMerge.size() + 1);
+		List<String> groupNames = new ArrayList<String>(bricks.size() - bricksToMerge.size() + 1);
+		List<Integer> sampleElements = new ArrayList<Integer>(bricks.size() - bricksToMerge.size() + 1);
+		boolean mergedBrickAdded = false;
+
+		int sizeCounter = 0;
+		for (GLBrick brick : bricks) {
+			if (bricksToMerge.contains(brick)) {
+				if (mergedBrickAdded)
+					continue;
+				newIDs.addAll(mergedBrickIDs);
+				groupSizes.add(mergedBrickIDs.size());
+				sampleElements.add(sizeCounter);
+				sizeCounter += mergedBrickIDs.size();
+				StringBuilder label = new StringBuilder("Merge of ");
+				for (int i = 0; i < bricksToMerge.size(); i++) {
+					GLBrick b = bricksToMerge.get(i);
+					label.append(sourceVA.getGroupList().get(b.getTablePerspective().getRecordGroup().getGroupIndex())
+							.getLabel());
+					if (i < bricksToMerge.size() - 1)
+						label.append(", ");
+				}
+				groupNames.add(label.toString());
+				mergedBrickAdded = true;
+			} else {
+				List<Integer> brickIDs = brick.getTablePerspective().getRecordPerspective().getVirtualArray().getIDs();
+				newIDs.addAll(brickIDs);
+				groupSizes.add(brickIDs.size());
+				sampleElements.add(sizeCounter);
+				sizeCounter += brickIDs.size();
+				groupNames.add(sourceVA.getGroupList()
+						.get(brick.getTablePerspective().getRecordGroup().getGroupIndex()).getLabel());
+			}
+		}
+
+		PerspectiveInitializationData data = new PerspectiveInitializationData();
+
+		data.setData(newIDs, groupSizes, sampleElements, groupNames);
+		// FIXME the rest should probably not be done here but in the data
+		// domain.
+		sourcePerspective.init(data);
+
+		RecordVAUpdateEvent e = new RecordVAUpdateEvent();
+		e.setPerspectiveID(sourcePerspective.getPerspectiveID());
+
+		eventPublisher.triggerEvent(e);
+	}
+
 	public int getNextConnectionBandID() {
 		return connectionBandIDCounter++;
 	}
@@ -1667,7 +1807,8 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	@Override
 	public void notifyOfSelectionChange(EventBasedSelectionManager selectionManager) {
 		// TODO Auto-generated method stub
-
+		updateConnectionLinesBetweenColumns();
 	}
+
 
 }

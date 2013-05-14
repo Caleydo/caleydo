@@ -468,6 +468,10 @@ public class ElementLayout implements Comparable<ElementLayout> {
 		renderer.setElementLayout(this);
 	}
 
+	public void removeBackgroundRenderer(ALayoutRenderer renderer) {
+		backgroundRenderers.remove(renderer);
+	}
+
 	public List<ALayoutRenderer> getBackgroundRenderer() {
 		return Collections.unmodifiableList(backgroundRenderers);
 	}

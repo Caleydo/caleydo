@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Objects;
 
 import org.caleydo.core.event.EventListenerManager.ListenTo;
-import org.caleydo.core.util.base.ILabelProvider;
+import org.caleydo.core.util.base.ILabeled;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
@@ -84,7 +84,7 @@ import com.google.common.collect.Iterables;
  * @author Samuel Gratzl
  *
  */
-public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLayout, IColumnRenderInfo, ILabelProvider {
+public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLayout, IColumnRenderInfo, ILabeled {
 	private final static int HIST = 0;
 	private final static int DRAG_WEIGHT = 1;
 	private final static int BUTTONS = 2;
@@ -203,11 +203,6 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 				onDragPick(pick);
 			}
 		});
-	}
-
-	@Override
-	public String getProviderName() {
-		return null;
 	}
 
 	@Override

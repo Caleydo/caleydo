@@ -32,6 +32,7 @@ import javax.swing.JWindow;
 import javax.swing.SwingUtilities;
 
 import org.caleydo.core.util.base.ILabelProvider;
+import org.caleydo.core.util.base.ILabeled;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 
@@ -58,7 +59,7 @@ final class ToolTipPickingListener extends APickingListener {
 	 * {@link ILabelProvider#getLabel()} and the title is taken from
 	 * {@link ILabelProvider#getSecondaryLabel()}.
 	 */
-	private ILabelProvider labelProvider;
+	private ILabeled labelProvider;
 
 	private class ToolTipp extends JWindow {
 
@@ -129,7 +130,7 @@ final class ToolTipPickingListener extends APickingListener {
 		this.toolTipMessage = toolTipMessage;
 	}
 
-	public ToolTipPickingListener(ILabelProvider labelProvider) {
+	public ToolTipPickingListener(ILabeled labelProvider) {
 		this.labelProvider = labelProvider;
 	}
 

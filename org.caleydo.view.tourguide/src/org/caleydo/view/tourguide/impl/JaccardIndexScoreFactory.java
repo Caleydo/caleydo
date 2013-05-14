@@ -22,15 +22,23 @@ package org.caleydo.view.tourguide.impl;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.view.tourguide.api.compute.ComputeScoreFilters;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.score.DefaultComputedReferenceGroupScore;
 import org.caleydo.view.tourguide.api.score.MultiScore;
 import org.caleydo.view.tourguide.api.score.ui.ACreateGroupScoreDialog;
+import org.caleydo.view.tourguide.api.state.ASelectGroupState;
+import org.caleydo.view.tourguide.api.state.ButtonTransition;
+import org.caleydo.view.tourguide.api.state.IState;
+import org.caleydo.view.tourguide.api.state.IStateMachine;
+import org.caleydo.view.tourguide.api.state.ITransition;
+import org.caleydo.view.tourguide.api.state.SimpleState;
 import org.caleydo.view.tourguide.impl.algorithm.JaccardIndex;
 import org.caleydo.view.tourguide.spi.IScoreFactory;
 import org.caleydo.view.tourguide.spi.score.IRegisteredScore;
@@ -57,6 +65,36 @@ public class JaccardIndexScoreFactory implements IScoreFactory {
 	private IRegisteredScore createJaccardME(String label, Perspective reference, Group group) {
 		return new DefaultComputedReferenceGroupScore(label, reference, group, JaccardIndex.get(),
 				ComputeScoreFilters.MUTUAL_EXCLUSIVE, color, bgColor);
+	}
+
+	@Override
+	public void fillStateMachine(IStateMachine stateMachine, Object eventReceiver) {
+		IState source = stateMachine.get(IStateMachine.ADD_STRATIFICATIONS);
+		IState intermediate = new SimpleState(
+				"Select query group by clicking on a brick in one of the displayed columns\nChange query by cvlicking on other brick at any time");
+		stateMachine.addTransition(source, new ButtonTransition(intermediate,
+				"Find large overlap with displayed clusters"));
+
+		IState target = stateMachine.get(IStateMachine.BROWSE_STRATIFICATIONS);
+		ITransition transition = new ASelectGroupState(target, eventReceiver) {
+			@Override
+			protected void handleSelection(TablePerspective tablePerspective, Group group) {
+				addScoreToTourGuide(EDataDomainQueryMode.STRATIFICATIONS,
+						JaccardIndexScoreFactory.this.createJaccardME(
+						null, tablePerspective.getRecordPerspective(), group));
+			}
+
+			@Override
+			public boolean apply(List<TablePerspective> tablePerspectives) {
+				return true;
+			}
+
+			@Override
+			protected boolean applyGroupFilter(Pair<TablePerspective, Group> pair) {
+				return true;
+			}
+		};
+		stateMachine.addTransition(intermediate, transition);
 	}
 
 	@Override

@@ -25,6 +25,7 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.handlers.HandlerUtil;
 
@@ -36,18 +37,23 @@ public class OpenViewHandler extends AbstractHandler {
 		return null;
 	}
 
-	private void showTourGuide(ExecutionEvent event) {
+	private static void showTourGuide(ExecutionEvent event) {
+		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindow(event);
 		for (EDataDomainQueryMode mode : EDataDomainQueryMode.values())
-			showTourGuide(event, mode);
+			showTourGuide(window, mode);
+		// show the first one again for having it the context
+		showTourGuide(window, EDataDomainQueryMode.STRATIFICATIONS);
 	}
 
-	private void showTourGuide(ExecutionEvent event, EDataDomainQueryMode mode) {
+	public static RcpGLTourGuideView showTourGuide(IWorkbenchWindow window, EDataDomainQueryMode mode) {
 		try {
-			IWorkbenchPage activePage = HandlerUtil.getActiveWorkbenchWindow(event).getActivePage();
-			RcpGLTourGuideView v = (RcpGLTourGuideView) activePage.showView(GLTourGuideView.VIEW_TYPE, mode.name(),
-						IWorkbenchPage.VIEW_ACTIVATE);
+			IWorkbenchPage activePage = window.getActivePage();
+			RcpGLTourGuideView view = (RcpGLTourGuideView) activePage.showView(GLTourGuideView.VIEW_TYPE, mode.name(),
+					IWorkbenchPage.VIEW_ACTIVATE);
+			return view;
 		} catch (PartInitException e) {
 			e.printStackTrace();
 		}
+		return null;
 	}
 }

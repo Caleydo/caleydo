@@ -29,7 +29,7 @@ import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.id.IDType;
-import org.caleydo.core.util.base.ILabelProvider;
+import org.caleydo.core.util.base.ILabeled;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.view.tourguide.internal.compute.CachedIDTypeMapper;
 import org.caleydo.view.tourguide.spi.algorithm.IComputeElement;
@@ -45,7 +45,7 @@ import com.google.common.base.Function;
  * @author Samuel Gratzl
  *
  */
-public abstract class AScoreRow extends ARow implements ILabelProvider, Cloneable, IComputeElement {
+public abstract class AScoreRow extends ARow implements ILabeled, Cloneable, IComputeElement {
 	public static final Function<IRow, String> TO_DATADOMAIN = new Function<IRow, String>() {
 		@Override
 		public String apply(IRow in) {
@@ -55,11 +55,6 @@ public abstract class AScoreRow extends ARow implements ILabelProvider, Cloneabl
 			return r.getDataDomain().getLabel() + " " + r.getLabel();
 		}
 	};
-
-	@Override
-	public final String getProviderName() {
-		return null;
-	}
 
 	public abstract boolean is(TablePerspective tablePerspective);
 

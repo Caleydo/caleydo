@@ -38,6 +38,7 @@ import org.caleydo.vis.rank.ui.column.ColumnUIs;
  */
 public final class TableHeaderUI extends ACompositeHeaderUI {
 	private final RankTableModel table;
+	private boolean isCompact = false;
 
 	public TableHeaderUI(RankTableModel table, IRankTableUIConfig config) {
 		super(config, 0);
@@ -83,11 +84,12 @@ public final class TableHeaderUI extends ACompositeHeaderUI {
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
-		g.incZ(-0.5f);
-		g.color(RenderStyle.COLOR_BACKGROUND_EVEN);
-		g.fillRect(0, h - RenderStyle.HIST_HEIGHT, w, RenderStyle.HIST_HEIGHT);
-		g.incZ(0.5f);
-
+		if (!isCompact) {
+			g.incZ(-0.5f);
+			g.color(RenderStyle.COLOR_BACKGROUND_EVEN);
+			g.fillRect(0, h - RenderStyle.HIST_HEIGHT, w, RenderStyle.HIST_HEIGHT);
+			g.incZ(0.5f);
+		}
 		super.renderImpl(g, w, h);
 	}
 }

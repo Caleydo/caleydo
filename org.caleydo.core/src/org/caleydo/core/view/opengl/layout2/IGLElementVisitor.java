@@ -20,6 +20,7 @@
 package org.caleydo.core.view.opengl.layout2;
 
 import org.caleydo.core.view.opengl.layout2.animation.AnimatedGLElementContainer;
+import org.caleydo.core.view.opengl.layout2.basic.GLElementSelector;
 
 /**
  * visitor pattern for {@link GLElement}

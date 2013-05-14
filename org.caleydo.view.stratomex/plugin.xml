@@ -2,6 +2,7 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension-point id="org.caleydo.view.stratomex.brick.contextmenu" name="Context Menu Entry Factoy" schema="schema/org.caleydo.view.stratomex.brick.contextmenu.exsd"/>
+   <extension-point id="org.caleydo.view.stratomex.AddWizardElementFactory" name="AddWizardElementFactory" schema="schema/org.caleydo.view.stratomex.AddWizardElementFactory.exsd"/>
    <extension
          point="org.eclipse.ui.views">
       <view

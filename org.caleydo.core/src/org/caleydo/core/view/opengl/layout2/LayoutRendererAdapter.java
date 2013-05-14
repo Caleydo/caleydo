@@ -9,7 +9,7 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.event.EventListenerManagers;
 import org.caleydo.core.event.EventListenerManagers.QueuedEventListenerManager;
-import org.caleydo.core.util.base.ILabelProvider;
+import org.caleydo.core.util.base.ILabeled;
 import org.caleydo.core.view.ViewManager;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -170,7 +170,7 @@ public final class LayoutRendererAdapter extends ALayoutRenderer implements IGLE
 	}
 
 	@Override
-	public IPickingListener createTooltip(ILabelProvider label) {
+	public IPickingListener createTooltip(ILabeled label) {
 		return view.getParentGLCanvas().createTooltip(label);
 	}
 

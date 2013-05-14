@@ -26,7 +26,7 @@ import java.awt.Point;
 import java.util.List;
 import java.util.Objects;
 
-import org.caleydo.core.util.base.ILabelProvider;
+import org.caleydo.core.util.base.ILabeled;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
@@ -279,15 +279,15 @@ public class GLComboBox<T> extends AGLButton {
 
 
 	/**
-	 * default value renderer, which renders the label it's a {@link ILabelProvider} otherwise the toString value
+	 * default value renderer, which renders the label it's a {@link ILabeled} otherwise the toString value
 	 */
 	public static final IGLRenderer DEFAULT = new IGLRenderer() {
 
 		@Override
 		public void render(GLGraphics g, float w, float h, GLElement parent) {
 			Object r = parent.getLayoutDataAs(Object.class, "");
-			if (r instanceof ILabelProvider)
-				r = ((ILabelProvider) r).getLabel();
+			if (r instanceof ILabeled)
+				r = ((ILabeled) r).getLabel();
 			g.drawText(Objects.toString(r), 2, 1, w - 2, h - 3);
 		}
 

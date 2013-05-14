@@ -19,7 +19,7 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.layout2;
 
-import org.caleydo.core.util.base.ILabelProvider;
+import org.caleydo.core.util.base.ILabeled;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -59,12 +59,7 @@ public class PickableGLElement extends GLElement {
 	protected void init(IGLElementContext context) {
 		super.init(context);
 		// create a tooltip listener to render the tooltip of this element
-		this.onPick(context.createTooltip(new ILabelProvider() {
-			@Override
-			public String getProviderName() {
-				return null;
-			}
-
+		this.onPick(context.createTooltip(new ILabeled() {
 			@Override
 			public String getLabel() {
 				return getTooltip();

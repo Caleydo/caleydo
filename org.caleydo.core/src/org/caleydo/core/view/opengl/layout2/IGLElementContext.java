@@ -19,7 +19,7 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.layout2;
 
-import org.caleydo.core.util.base.ILabelProvider;
+import org.caleydo.core.util.base.ILabeled;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.eclipse.swt.SWT;
@@ -104,7 +104,7 @@ public interface IGLElementContext {
 	 * @param label
 	 * @return
 	 */
-	IPickingListener createTooltip(ILabelProvider label);
+	IPickingListener createTooltip(ILabeled label);
 
 	/**
 	 * shows the context menu, defined by the given items

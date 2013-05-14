@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.internal.view;
+package org.caleydo.view.tourguide.internal.stratomex;
 
 import static org.caleydo.view.tourguide.internal.TourGuideRenderStyle.STRATOMEX_SELECTED_ELEMENTS;
 import static org.caleydo.view.tourguide.internal.TourGuideRenderStyle.STRATOMEX_TEMP_COLUMN;
@@ -43,12 +43,12 @@ import org.caleydo.core.data.selection.SelectionTypeEvent;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.AEvent;
+import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.data.ReplaceTablePerspectiveEvent;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.ITablePerspectiveBasedView;
-import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
 import org.caleydo.core.view.listener.RemoveTablePerspectiveEvent;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
@@ -61,6 +61,8 @@ import org.caleydo.view.stratomex.event.AddKaplanMaiertoStratomexEvent;
 import org.caleydo.view.stratomex.event.HighlightBrickEvent;
 import org.caleydo.view.stratomex.event.ReplaceKaplanMaierPerspectiveEvent;
 import org.caleydo.view.stratomex.event.SelectElementsEvent;
+import org.caleydo.view.stratomex.tourguide.event.ConfirmedCancelNewColumnEvent;
+import org.caleydo.view.stratomex.tourguide.event.UpdatePreviewEvent;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.impl.GeneSetEnrichmentScoreFactory;
 import org.caleydo.view.tourguide.impl.GeneSetEnrichmentScoreFactory.GeneSetScore;
@@ -128,6 +130,14 @@ public class StratomexAdapter {
 			clearHighlightRows(bak.getRecordPerspective().getIdType(), bak.getDataDomain());
 		}
 		this.brickColumns.clear();
+	}
+
+	@ListenTo
+	private void on(ConfirmedCancelNewColumnEvent event) {
+		// remove all temporary stuff
+		this.currentPreview = null;
+		this.currentPreviewGroup = null;
+		this.currentDependentPreviews.clear();
 	}
 
 	/**
@@ -502,8 +512,8 @@ public class StratomexAdapter {
 			event.setReceiver(receiver);
 			triggerEvent(event);
 		} else {
-			AddTablePerspectivesEvent event = new AddTablePerspectivesEvent(strat);
-			event.setReceiver(receiver);
+			UpdatePreviewEvent event = new UpdatePreviewEvent(strat, null);
+			event.to(receiver.getTourguide());
 			triggerEvent(event);
 		}
 	}

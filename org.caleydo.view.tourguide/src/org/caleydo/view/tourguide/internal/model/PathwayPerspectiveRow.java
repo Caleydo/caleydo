@@ -25,6 +25,7 @@ import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.datadomain.pathway.data.PathwayRecordPerspective;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
+import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 
 /**
  * @author Samuel Gratzl
@@ -42,6 +43,10 @@ public final class PathwayPerspectiveRow extends AVirtualArrayScoreRow {
 	@Override
 	public PathwayPerspectiveRow clone() {
 		return (PathwayPerspectiveRow) super.clone();
+	}
+
+	public EPathwayDatabaseType getType() {
+		return pathway.getType();
 	}
 
 	/**

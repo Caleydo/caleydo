@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.core.io.gui.dataimport;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -59,7 +60,6 @@ public class PreviewTable {
 	private PreviewTableWidget previewTable;
 
 	private final IPreviewCallback previewCallback;
-
 
 	public PreviewTable(Composite parent, MatrixDefinition spec, IPreviewCallback previewCallback) {
 		this.spec = spec;
@@ -102,15 +102,30 @@ public class PreviewTable {
 		totalNumberOfColumns = parser.getTotalNumberOfColumns();
 		this.previewTable.createDataPreviewTableFromDataMatrix(dataMatrix,
 				showOnlyPreviewColumns ? PreviewTableWidget.MAX_PREVIEW_TABLE_COLUMNS : totalNumberOfColumns);
-		previewCallback.on(totalNumberOfColumns,  parser.getTotalNumberOfRows(), dataMatrix);
+		previewCallback.on(totalNumberOfColumns, parser.getTotalNumberOfRows(), dataMatrix);
 		previewTable.updateVisibleColumns(totalNumberOfColumns);
 		this.previewTable.updateTableColors(spec.getNumberOfHeaderLines(), -1, spec.getColumnOfRowIds());
 	}
 
 	public Collection<Integer> getSelectedColumns() {
-		return previewTable.getSelectedColumns();
+		ArrayList<Integer> columns = new ArrayList<>(previewTable.getSelectedColumns());
+
+		if (columns.get(columns.size() - 1) == -1) {
+			columns.remove(columns.size() - 1);
+			int from = previewTable.getColumnCount(); // everything before was directly selected
+			int to = this.totalNumberOfColumns; // all possible
+			for (int i = from; i < to; ++i) {
+				columns.add(i);
+			}
+		}
+		return columns;
 	}
 
+	public String getValue(int rowIndex, int columnIndex) {
+		if (previewTable == null)
+			return null;
+		return previewTable.getValue(rowIndex, columnIndex);
+	}
 
 	/**
 	 * @param selectedColumns
