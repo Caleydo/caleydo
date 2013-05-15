@@ -257,16 +257,16 @@ public class GLTourGuideView extends AGLElementView {
 		}
 	}
 
-	private void scheduleAllOf(Collection<IScore> toCompute) {
+	private void scheduleAllOf(Collection<IScore> toCompute, boolean removeLeadingScoreColumns) {
 		ComputeForScoreJob job = new ComputeForScoreJob(toCompute, table.getData(), table.getDefaultFilter()
-				.getFilter(), this);
+				.getFilter(), this, removeLeadingScoreColumns);
 		if (job.hasThingsToDo()) {
 			waiting.resetJob(job);
 			job.addJobChangeListener(jobListener);
 			getPopupLayer().show(waiting, null, 0);
 			job.schedule();
 		} else {
-			addColumns(toCompute);
+			addColumns(toCompute, removeLeadingScoreColumns);
 		}
 	}
 
@@ -305,7 +305,7 @@ public class GLTourGuideView extends AGLElementView {
 	private void onScoreQueryReady(ScoreQueryReadyEvent event) {
 		getPopupLayer().hide(waiting);
 		if (event.getScores() != null) {
-			addColumns(event.getScores());
+			addColumns(event.getScores(), event.isRemoveLeadingScoreColumns());
 		} else if (event.getNewQuery() != null) {
 			int offset = table.getDataSize();
 			ADataDomainQuery q = event.getNewQuery();
@@ -320,7 +320,9 @@ public class GLTourGuideView extends AGLElementView {
 		}
 	}
 
-	private void addColumns(Collection<IScore> scores) {
+	private void addColumns(Collection<IScore> scores, boolean removeLeadingScoreColumns) {
+		if (removeLeadingScoreColumns)
+			removeLeadingScoreColumns();
 		for (IScore s : scores) {
 			int lastLabel = findLastLabelColumn();
 			if (s instanceof MultiScore) {
@@ -337,6 +339,7 @@ public class GLTourGuideView extends AGLElementView {
 				ss.orderByMe();
 			}
 		}
+		getTableBodyUI().scrollFirst(); // scroll to the top
 		updateMask();
 	}
 
@@ -502,7 +505,26 @@ public class GLTourGuideView extends AGLElementView {
 			} else
 				toCompute.add(s);
 		}
-		scheduleAllOf(toCompute);
+		if (toCompute.isEmpty())
+			return;
+		scheduleAllOf(toCompute, event.isReplaceLeadingScoreColumns());
+	}
+
+	private void removeLeadingScoreColumns() {
+		List<ARankColumnModel> columns = this.table.getColumns();
+		boolean hasOne = false;
+		Collection<ARankColumnModel> toremove = new ArrayList<>();
+		for (ARankColumnModel col : columns) {
+			if (col instanceof ScoreRankColumnModel || col instanceof StackedRankColumnModel
+					|| col instanceof MaxCompositeRankColumnModel) {
+				hasOne = true;
+				toremove.add(col);
+			} else if (hasOne)
+				break;
+		}
+		for (ARankColumnModel col : toremove) {
+			table.remove(col);
+		}
 	}
 
 	@ListenTo(sendToMe = true)

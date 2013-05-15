@@ -63,7 +63,8 @@ public abstract class ASelectTransition implements ITransition {
 				RcpGLTourGuideView tourGuide = OpenViewHandler.showTourGuide(PlatformUI.getWorkbench()
 						.getActiveWorkbenchWindow(), mode);
 				Object receiver = tourGuide.getView();
-				EventPublisher.trigger(new AddScoreColumnEvent(scores).to(receiver).from(this));
+				EventPublisher.trigger(new AddScoreColumnEvent(scores).setReplaceLeadingScoreColumns(true).to(receiver)
+						.from(this));
 			}
 		});
 	}
