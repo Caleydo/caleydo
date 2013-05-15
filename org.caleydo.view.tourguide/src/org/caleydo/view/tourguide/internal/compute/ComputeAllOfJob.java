@@ -63,7 +63,7 @@ public class ComputeAllOfJob extends AComputeJob {
 		progress(0.0f, "Preparing Data");
 		boolean creating = !query.isInitialized();
 		List<AScoreRow> data = query.getOrCreate();
-		BitSet mask = query.getMask();
+		BitSet mask = query.getRawMask();
 		System.out.println("done in " + w);
 		progress(0.0f, "Computing Scores");
 		IStatus result = runImpl(monitor, data, mask);

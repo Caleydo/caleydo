@@ -149,6 +149,22 @@ public abstract class ADataDomainQuery implements Predicate<AScoreRow> {
 		return mask;
 	}
 
+	/**
+	 * returns the unshifted mask
+	 *
+	 * @return
+	 */
+	public BitSet getRawMask() {
+		BitSet shifted = getMask();
+		if (offset == 0)
+			return shifted;
+		BitSet r = new BitSet(data.size());
+		for(int i = 0; i < data.size(); ++i) {
+			r.set(i,shifted.get(offset+i));
+		}
+		return r;
+	}
+
 	protected final void refilter(BitSet mask) {
 		if (Objects.equals(mask, this.mask))
 			return;
