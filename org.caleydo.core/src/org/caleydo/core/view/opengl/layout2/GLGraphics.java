@@ -456,7 +456,7 @@ public class GLGraphics {
 			y = 0;
 			gl.glScalef(1, -1, 1);
 		}
-		float hi = (h - lineSpace * lines.size() - 1) / lines.size();
+		float hi = (h - lineSpace * (lines.size() - 1)) / lines.size();
 		for (ListIterator<String> it = lines.listIterator(lines.size()); it.hasPrevious();) {
 			String text = it.previous();
 			float xi = x;
