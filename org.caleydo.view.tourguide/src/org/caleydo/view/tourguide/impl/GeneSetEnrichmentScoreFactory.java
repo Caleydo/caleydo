@@ -33,7 +33,12 @@ import org.caleydo.view.tourguide.api.compute.ComputeScoreFilters;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.score.DefaultComputedStratificationScore;
 import org.caleydo.view.tourguide.api.score.ui.ACreateGroupScoreDialog;
+import org.caleydo.view.tourguide.api.state.ISelectGroupState;
+import org.caleydo.view.tourguide.api.state.ISelectReaction;
+import org.caleydo.view.tourguide.api.state.IState;
 import org.caleydo.view.tourguide.api.state.IStateMachine;
+import org.caleydo.view.tourguide.api.state.SimpleState;
+import org.caleydo.view.tourguide.api.state.SimpleTransition;
 import org.caleydo.view.tourguide.impl.algorithm.AGSEAAlgorithm;
 import org.caleydo.view.tourguide.impl.algorithm.AGSEAAlgorithm.GSEAAlgorithmPValue;
 import org.caleydo.view.tourguide.impl.algorithm.GSEAAlgorithm;
@@ -59,17 +64,29 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 	private final static Color bgColor = Color.decode("#e3f4d7");
 
 	private IRegisteredScore createGSEA(String label, Perspective reference, Group group) {
+		if (label == null)
+			label = reference.getLabel() + " " + group.getLabel();
 		return new GeneSetScore(label, new GSEAAlgorithm(reference, group, 1.0f), false);
 	}
 
 	private IRegisteredScore createPGSEA(String label, Perspective reference, Group group) {
-		return new GeneSetScore(label, new PGSEAAlgorithm(reference, group), false);
+		if (label == null)
+			label = reference.getLabel() + " " + group.getLabel();
+		return new GeneSetScore(label, new PGSEAAlgorithm(reference, group),
+				false);
 	}
 
 	@Override
 	public void fillStateMachine(IStateMachine stateMachine, Object eventReceiver, List<TablePerspective> existing) {
-		// TODO Auto-generated method stub
+		if (existing.isEmpty())
+			return;
+		IState source = stateMachine.get(IStateMachine.ADD_PATHWAY);
+		IState target = stateMachine.addState("GSEA", new CreateGSEAState());
+		stateMachine.addTransition(source, new SimpleTransition(target,
+				"Find with GSEA based on displayed stratification"));
 
+		// Find with GSEA based on strat. not displayed -> n x n -> no
+		// first select a stratification then a pathway
 	}
 
 	@Override
@@ -108,6 +125,27 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 	@Override
 	public Dialog createCreateDialog(Shell shell, Object sender) {
 		return new CreateGSEADialog(shell, sender);
+	}
+
+	private class CreateGSEAState extends SimpleState implements ISelectGroupState {
+		public CreateGSEAState() {
+			super("Select query stratification by clicking on the header brick of one of the displayed columns");
+		}
+
+		@Override
+		public boolean apply(Pair<TablePerspective, Group> pair) {
+			return true;
+		}
+
+		@Override
+		public void select(TablePerspective tablePerspective, Group group, ISelectReaction reactions) {
+			//now we have the data for the stuff
+			reactions.addScoreToTourGuide(EDataDomainQueryMode.PATHWAYS,
+					createGSEA(null, tablePerspective.getRecordPerspective(), group));
+
+			// switch to a preview pathwa
+			reactions.switchTo(reactions.getState(IStateMachine.BROWSE_PATHWAY));
+		}
 	}
 
 	class CreateGSEADialog extends ACreateGroupScoreDialog {

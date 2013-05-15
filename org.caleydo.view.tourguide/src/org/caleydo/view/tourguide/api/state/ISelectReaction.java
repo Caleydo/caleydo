@@ -19,16 +19,13 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.api.state;
 
-import org.caleydo.core.io.gui.dataimport.widget.ICallback;
-import org.caleydo.core.util.base.ILabeled;
+import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
+import org.caleydo.view.tourguide.spi.score.IScore;
 
-/**
- * marker interface that the transition can be triggered by the user
- * 
- * @author Samuel Gratzl
- * 
- */
-public interface IUserTransition extends ILabeled {
+public interface ISelectReaction {
+	void switchTo(IState target);
 
-	void apply(ICallback<IState> onApply);
+	void addScoreToTourGuide(EDataDomainQueryMode mode, IScore... scores);
+
+	IState getState(String id);
 }

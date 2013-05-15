@@ -21,41 +21,49 @@ package org.caleydo.view.tourguide.internal.stratomex;
 
 import java.awt.Color;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.EventListenerManager.DeepScan;
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.io.gui.dataimport.widget.ICallback;
 import org.caleydo.core.util.base.ILabeled;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
-import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLContextLocal;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.text.TextUtils;
-import org.caleydo.view.stratomex.tourguide.IAddWizardElementFactory;
-import org.caleydo.view.tourguide.api.state.IDefaultTransition;
+import org.caleydo.view.stratomex.tourguide.AAddWizardElement;
+import org.caleydo.view.stratomex.tourguide.IStratomexAdapter;
+import org.caleydo.view.stratomex.tourguide.event.UpdateNumericalPreviewEvent;
+import org.caleydo.view.stratomex.tourguide.event.UpdatePathwayPreviewEvent;
+import org.caleydo.view.stratomex.tourguide.event.UpdateStratificationPreviewEvent;
+import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
+import org.caleydo.view.tourguide.api.state.ABrowseState;
+import org.caleydo.view.tourguide.api.state.ISelectGroupState;
+import org.caleydo.view.tourguide.api.state.ISelectReaction;
+import org.caleydo.view.tourguide.api.state.ISelectStratificationState;
 import org.caleydo.view.tourguide.api.state.IState;
 import org.caleydo.view.tourguide.api.state.ITransition;
-import org.caleydo.view.tourguide.api.state.IUserTransition;
 import org.caleydo.view.tourguide.internal.Activator;
+import org.caleydo.view.tourguide.internal.OpenViewHandler;
+import org.caleydo.view.tourguide.internal.RcpGLTourGuideView;
+import org.caleydo.view.tourguide.internal.event.AddScoreColumnEvent;
 import org.caleydo.view.tourguide.internal.score.ScoreFactories;
-
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
+import org.caleydo.view.tourguide.internal.stratomex.event.WizardEndedEvent;
+import org.caleydo.view.tourguide.internal.view.GLTourGuideView;
+import org.caleydo.view.tourguide.spi.score.IScore;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class AddWizardElement extends ALayoutRenderer implements ICallback<IState> {
-	private final Map<IState, Integer> stateMap = new HashMap<>();
+public class AddWizardElement extends AAddWizardElement implements ICallback<IState>, ISelectReaction {
 	@DeepScan
 	private StateMachineImpl stateMachine;
 
@@ -63,20 +71,17 @@ public class AddWizardElement extends ALayoutRenderer implements ICallback<IStat
 	private GLContextLocal contextLocal;
 	private int hovered = -1;
 
-	public AddWizardElement(AGLView view, Object receiver, List<TablePerspective> existing) {
+	public AddWizardElement(AGLView view, IStratomexAdapter adapter) {
+		super(adapter);
 		contextLocal = new GLContextLocal(view.getTextRenderer(), view.getTextureManager(),
 				Activator.getResourceLocator());
 		this.view = view;
-		this.stateMachine = createStateMachine(receiver, existing);
+		this.stateMachine = createStateMachine(adapter, adapter.getVisibleTablePerspectives());
 		this.stateMachine.getCurrent().onEnter();
-
-		stateMap.put(this.stateMachine.getCurrent(), 0);
-
-		// this.add(convert(this.stateMachine.getCurrent()));
 	}
 
 	private StateMachineImpl createStateMachine(Object receiver, List<TablePerspective> existing) {
-		StateMachineImpl state = new StateMachineImpl();
+		StateMachineImpl state = StateMachineImpl.create(receiver, existing);
 		ScoreFactories.fillStateMachine(state, receiver, existing);
 		return state;
 	}
@@ -84,12 +89,12 @@ public class AddWizardElement extends ALayoutRenderer implements ICallback<IStat
 	/**
 	 * @param pick
 	 */
+	@Override
 	public void onPick(Pick pick) {
 		switch (pick.getPickingMode()) {
 		case CLICKED:
 			IState current = stateMachine.getCurrent();
-			List<IUserTransition> transitions = Lists.newArrayList(Iterables.filter(
-					stateMachine.getTransitions(current), IUserTransition.class));
+			List<ITransition> transitions = stateMachine.getTransitions(current);
 			transitions.get(pick.getObjectID()).apply(this);
 			repaint();
 			break;
@@ -114,24 +119,21 @@ public class AddWizardElement extends ALayoutRenderer implements ICallback<IStat
 
 	@Override
 	public void on(IState target) {
+		stateMachine.getCurrent().onLeave();
 		stateMachine.move(target);
+		target.onEnter();
 		Collection<ITransition> transitions = stateMachine.getTransitions(target);
-		for (ITransition t : transitions) {
-			t.onSourceEnter(this);
-		}
-		// automatically switch default single transitions
-		if (transitions.size() == 1 && transitions.iterator().next() instanceof IDefaultTransition) {
-			((IDefaultTransition) transitions.iterator().next()).apply(this);
+
+		// automatically switch single transitions
+		if (transitions.size() == 1) {
+			transitions.iterator().next().apply(this);
 			return;
 		}
 
-		// if (!stateMap.containsKey(target)) {
-		// this.add(convert(target));
-		// stateMap.put(target, size() - 1);
-		// } else {
-		// setDisplayListDirty(true);
-		// layoutManager.setRenderingDirty();
-		// }
+		if (target instanceof ISelectStratificationState)
+			adapter.selectStratification((ISelectStratificationState)target);
+		else if (target instanceof ISelectGroupState)
+			adapter.selectGroup((ISelectGroupState) target);
 	}
 
 	@Override
@@ -149,7 +151,7 @@ public class AddWizardElement extends ALayoutRenderer implements ICallback<IStat
 		final float gap = h_header * 0.1f;
 
 		IState current = stateMachine.getCurrent();
-		Collection<IUserTransition> transitions = Lists.newArrayList(Iterables.filter(stateMachine.getTransitions(current), IUserTransition.class));
+		Collection<ITransition> transitions = stateMachine.getTransitions(current);
 
 		if (transitions.isEmpty()) {
 			drawMultiLineText(g, current, 0, 0, w, h);
@@ -158,7 +160,7 @@ public class AddWizardElement extends ALayoutRenderer implements ICallback<IStat
 			float hi = (h - h_header - transitions.size() * gap) / (transitions.size());
 			float y = h_header+gap;
 			int i = 0;
-			for (IUserTransition t : transitions) {
+			for (ITransition t : transitions) {
 				g.pushName(getPickingID(i));
 				if (hovered == i)
 					g.color(0.85f);
@@ -174,7 +176,7 @@ public class AddWizardElement extends ALayoutRenderer implements ICallback<IStat
 	}
 
 	private int getPickingID(int i) {
-		return view.getPickingManager().getPickingID(view.getID(), IAddWizardElementFactory.PICKING_TYPE, i);
+		return view.getPickingManager().getPickingID(view.getID(), PICKING_TYPE, i);
 	}
 
 	private void drawMultiLineText(GLGraphics g, ILabeled item, float x, float y, float w, float h) {
@@ -191,6 +193,67 @@ public class AddWizardElement extends ALayoutRenderer implements ICallback<IStat
 	protected boolean permitsWrappingDisplayLists() {
 		return true;
 	}
+
+
+	@Override
+	public void onUpdate(UpdateStratificationPreviewEvent event) {
+		if (stateMachine.getCurrent() instanceof ABrowseState) {
+			((ABrowseState) stateMachine.getCurrent()).onUpdate(event, adapter);
+		}
+	}
+
+	@Override
+	public void onUpdate(UpdatePathwayPreviewEvent event) {
+		if (stateMachine.getCurrent() instanceof ABrowseState) {
+			((ABrowseState) stateMachine.getCurrent()).onUpdate(event, adapter);
+		}
+	}
+
+	@Override
+	public void onUpdate(UpdateNumericalPreviewEvent event) {
+		if (stateMachine.getCurrent() instanceof ABrowseState) {
+			((ABrowseState) stateMachine.getCurrent()).onUpdate(event, adapter);
+		}
+	}
+
+	@Override
+	public void onSelected(TablePerspective tablePerspective) {
+		if (stateMachine.getCurrent() instanceof ISelectStratificationState) {
+			((ISelectStratificationState) stateMachine.getCurrent()).select(tablePerspective, this);
+		}
+	}
+
+	@Override
+	public void onSelected(TablePerspective tablePerspective, Group group) {
+		if (stateMachine.getCurrent() instanceof ISelectGroupState) {
+			((ISelectGroupState) stateMachine.getCurrent()).select(tablePerspective, group, this);
+		}
+	}
+
+	@Override
+	public void switchTo(IState target) {
+		on(target);
+	}
+
+	@Override
+	public void addScoreToTourGuide(EDataDomainQueryMode mode, IScore... scores) {
+		RcpGLTourGuideView tourGuide = OpenViewHandler.showTourGuide(mode);
+		GLTourGuideView receiver = tourGuide.getView();
+		EventPublisher.trigger(new AddScoreColumnEvent(scores).setReplaceLeadingScoreColumns(true).to(receiver)
+				.from(this));
+	}
+
+	@Override
+	public IState getState(String id) {
+		return stateMachine.get(id);
+	}
+
+	@Override
+	public void done(boolean confirmed) {
+		EventPublisher.trigger(new WizardEndedEvent());
+		super.done(confirmed);
+	}
+
 }
 
 

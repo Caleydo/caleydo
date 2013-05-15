@@ -17,39 +17,32 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.api.state;
+package org.caleydo.view.stratomex.tourguide.event;
 
-import org.caleydo.core.io.gui.dataimport.widget.ICallback;
+import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.event.ADirectedEvent;
 
 /**
  * @author Samuel Gratzl
  *
  */
+public class UpdateNumericalPreviewEvent extends ADirectedEvent {
+	private final TablePerspective tablePerspective;
 
-public class UserTransition implements IDefaultTransition, IUserTransition {
-	private final IState target;
-	private final String label;
-
-	public UserTransition(IState target, String label) {
-		this.target = target;
-		this.label = label;
-	}
-
-	@Override
-	public void onSourceEnter(ICallback<IState> onApply) {
-
-	}
-
-	@Override
-	public void apply(ICallback<IState> onApply) {
-		onApply.on(target);
+	public UpdateNumericalPreviewEvent(TablePerspective tablePerspective) {
+		this.tablePerspective = tablePerspective;
 	}
 
 	/**
-	 * @return the label, see {@link #label}
+	 * @return the tablePerspective, see {@link #tablePerspective}
 	 */
+	public TablePerspective getTablePerspective() {
+		return tablePerspective;
+	}
+
+
 	@Override
-	public String getLabel() {
-		return label;
+	public boolean checkIntegrity() {
+		return tablePerspective != null;
 	}
 }

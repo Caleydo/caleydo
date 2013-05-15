@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.stratomex.tourguide.event;
+package org.caleydo.view.tourguide.internal.stratomex.event;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.event.ADirectedEvent;

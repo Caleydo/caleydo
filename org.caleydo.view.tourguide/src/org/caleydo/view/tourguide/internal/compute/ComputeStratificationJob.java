@@ -14,6 +14,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 import com.google.common.base.Stopwatch;
+import com.google.common.collect.Iterables;
 
 public class ComputeStratificationJob extends AScoreJob {
 	private static final Logger log = Logger.create(ComputeStratificationJob.class);
@@ -38,15 +39,25 @@ public class ComputeStratificationJob extends AScoreJob {
 		if (data.isEmpty() || (stratScores.isEmpty() && stratMetrics.isEmpty()))
 			return Status.OK_STATUS;
 
-		final int total = data.size();
-		monitor.beginTask("Compute Tour Guide Scores", data.size());
+		final int total = data.size() + 1;
+		monitor.beginTask("Compute Tour Guide Scores", total);
 		log.info(
 				"computing similarity of %d against %d stratification scores, %d stratification metrics",
 				data.size(), stratScores.size(), stratMetrics.size());
 		Stopwatch w = new Stopwatch().start();
 
-		Iterator<IComputeElement> it = this.data.iterator();
+		// first initialize all algorithms
+		progress(0, "Initializing...");
+		for (IComputedStratificationScore score : Iterables.concat(stratMetrics, stratScores)) {
+			score.getAlgorithm().init(monitor);
+			if (Thread.interrupted() || monitor.isCanceled())
+				return Status.CANCEL_STATUS;
+		}
 		int c = 0;
+		monitor.worked(c++);
+		progress(c / (float) total, "Computing...");
+
+		Iterator<IComputeElement> it = this.data.iterator();
 		// first time the one run to compute the progress frequency interval
 		{
 			IComputeElement as = it.next();

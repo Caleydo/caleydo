@@ -17,15 +17,42 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.api.state;
+package org.caleydo.view.tourguide.internal.stratomex.event;
 
-import org.caleydo.core.io.gui.dataimport.widget.ICallback;
-import org.caleydo.core.util.base.ILabeled;
+import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.event.ADirectedEvent;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public interface ITransition extends ILabeled {
-	void apply(ICallback<IState> onApply);
+public class SelectGroupReplyEvent extends ADirectedEvent {
+	private final TablePerspective tablePerspective;
+	private final Group group;
+
+	public SelectGroupReplyEvent(TablePerspective tablePerspective, Group group) {
+		this.tablePerspective = tablePerspective;
+		this.group = group;
+	}
+
+	/**
+	 * @return the tablePerspective, see {@link #tablePerspective}
+	 */
+	public TablePerspective getTablePerspective() {
+		return tablePerspective;
+	}
+
+	/**
+	 * @return the group, see {@link #group}
+	 */
+	public Group getGroup() {
+		return group;
+	}
+
+	@Override
+	public boolean checkIntegrity() {
+		return true;
+	}
+
 }

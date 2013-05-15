@@ -17,47 +17,49 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.api.state;
+package org.caleydo.view.stratomex.tourguide;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.event.EventListenerManager.ListenTo;
-import org.caleydo.core.event.EventPublisher;
-import org.caleydo.core.util.collection.Pair;
-import org.caleydo.view.stratomex.tourguide.event.SelectGroupEvent;
-import org.caleydo.view.stratomex.tourguide.event.SelectGroupReplyEvent;
-
-import com.google.common.base.Predicate;
+import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
+import org.caleydo.core.view.opengl.picking.Pick;
+import org.caleydo.view.stratomex.tourguide.event.UpdateNumericalPreviewEvent;
+import org.caleydo.view.stratomex.tourguide.event.UpdatePathwayPreviewEvent;
+import org.caleydo.view.stratomex.tourguide.event.UpdateStratificationPreviewEvent;
 
 /**
- * basic state for triggering to select a group in Stratomex
- * 
  * @author Samuel Gratzl
- * 
+ *
  */
-public abstract class ASelectGroupState extends ASelectTransition implements Predicate<Pair<TablePerspective, Group>> {
-	private Object receiver;
+public abstract class AAddWizardElement extends ALayoutRenderer {
+	public static final String PICKING_TYPE = "templateWizard";
 
-	public ASelectGroupState(IState target, Object receiver) {
-		super(target);
-		this.receiver = receiver;
+	protected final IStratomexAdapter adapter;
+
+	public AAddWizardElement(IStratomexAdapter adapter) {
+		this.adapter = adapter;
 	}
+
+	public abstract void onPick(Pick pick);
 
 	@Override
-	protected void onEnterImpl() {
-		EventPublisher.trigger(new SelectGroupEvent(this).to(receiver).from(this));
+	protected boolean permitsWrappingDisplayLists() {
+		return true;
 	}
 
-	@ListenTo(sendToMe = true)
-	private void onEvent(SelectGroupReplyEvent event) {
-		handleSelection(event.getTablePerspective(), event.getGroup());
+	public abstract void onUpdate(UpdateStratificationPreviewEvent event);
 
-		switchToTarget();
+	public abstract void onUpdate(UpdatePathwayPreviewEvent event);
+
+	public abstract void onUpdate(UpdateNumericalPreviewEvent event);
+
+	public abstract void onSelected(TablePerspective tablePerspective);
+
+	public abstract void onSelected(TablePerspective tablePerspective, Group recordGroup);
+
+
+	public void done(boolean confirmed) {
+		// TODO Auto-generated method stub
 	}
-
-	/**
-	 * @param tablePerspective
-	 * @param group
-	 */
-	protected abstract void handleSelection(TablePerspective tablePerspective, Group group);
 }
+

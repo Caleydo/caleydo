@@ -44,14 +44,14 @@ import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.ITablePerspectiveBasedView;
 import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.stratomex.event.SelectElementsEvent;
-import org.caleydo.view.stratomex.tourguide.event.ConfirmedCancelNewColumnEvent;
 import org.caleydo.view.stratomex.tourguide.event.HighlightBrickEvent;
-import org.caleydo.view.stratomex.tourguide.event.UpdatePreviewEvent;
+import org.caleydo.view.stratomex.tourguide.event.UpdateStratificationPreviewEvent;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.internal.TourGuideRenderStyle;
 import org.caleydo.view.tourguide.internal.model.AScoreRow;
 import org.caleydo.view.tourguide.internal.model.ITablePerspectiveScoreRow;
 import org.caleydo.view.tourguide.internal.model.MaxGroupCombiner;
+import org.caleydo.view.tourguide.internal.stratomex.event.WizardEndedEvent;
 import org.caleydo.view.tourguide.spi.score.IScore;
 
 import com.google.common.base.Objects;
@@ -107,7 +107,7 @@ public class StratomexAdapter {
 	}
 
 	@ListenTo
-	private void on(ConfirmedCancelNewColumnEvent event) {
+	private void on(WizardEndedEvent event) {
 		// remove all temporary stuff
 		if (currentPreview != null) {
 			clearHighlightRows(currentPreview.getRecordPerspective().getIdType(), currentPreview.getDataDomain());
@@ -233,7 +233,7 @@ public class StratomexAdapter {
 
 	private void updatePreview(TablePerspective strat, Group group) {
 		this.currentPreview = strat;
-		UpdatePreviewEvent event = new UpdatePreviewEvent(strat);
+		UpdateStratificationPreviewEvent event = new UpdateStratificationPreviewEvent(strat);
 		event.to(receiver.getTourguide());
 		triggerEvent(event);
 

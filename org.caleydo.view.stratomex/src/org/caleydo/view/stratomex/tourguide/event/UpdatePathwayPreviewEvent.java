@@ -20,16 +20,29 @@
 package org.caleydo.view.stratomex.tourguide.event;
 
 import org.caleydo.core.event.ADirectedEvent;
+import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class ConfirmedCancelNewColumnEvent extends ADirectedEvent {
+public class UpdatePathwayPreviewEvent extends ADirectedEvent {
+	private final PathwayGraph pathway;
+
+	public UpdatePathwayPreviewEvent(PathwayGraph pathway) {
+		this.pathway = pathway;
+	}
+
+	/**
+	 * @return the pathway, see {@link #pathway}
+	 */
+	public PathwayGraph getPathway() {
+		return pathway;
+	}
+
 
 	@Override
 	public boolean checkIntegrity() {
-		return true;
+		return pathway != null;
 	}
-
 }

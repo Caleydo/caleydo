@@ -17,32 +17,13 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.stratomex.tourguide.event;
+package org.caleydo.view.tourguide.api.state;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.event.ADirectedEvent;
 
-/**
- * @author Samuel Gratzl
- *
- */
-public class UpdatePreviewEvent extends ADirectedEvent {
-	private final TablePerspective tablePerspective;
+import com.google.common.base.Predicate;
 
-	public UpdatePreviewEvent(TablePerspective tablePerspective) {
-		this.tablePerspective = tablePerspective;
-	}
-
-	/**
-	 * @return the tablePerspective, see {@link #tablePerspective}
-	 */
-	public TablePerspective getTablePerspective() {
-		return tablePerspective;
-	}
-
-
-	@Override
-	public boolean checkIntegrity() {
-		return tablePerspective != null;
-	}
+public interface ISelectStratificationState extends IState,Predicate<TablePerspective> {
+	void select(TablePerspective tablePerspective, ISelectReaction reactions);
 }
+

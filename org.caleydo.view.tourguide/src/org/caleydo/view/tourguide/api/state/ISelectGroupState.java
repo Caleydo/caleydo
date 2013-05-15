@@ -19,15 +19,18 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.api.state;
 
-import org.caleydo.core.io.gui.dataimport.widget.ICallback;
+import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.util.collection.Pair;
+
+import com.google.common.base.Predicate;
 
 /**
- * special transition that can be trigger from the outside if it is the only one
+ * basic state for triggering to select a group in Stratomex
  *
  * @author Samuel Gratzl
  *
  */
-public interface IDefaultTransition extends ITransition {
-
-	void apply(ICallback<IState> onApply);
+public interface ISelectGroupState extends IState, Predicate<Pair<TablePerspective, Group>> {
+	void select(TablePerspective tablePerspective, Group group, ISelectReaction reaction);
 }

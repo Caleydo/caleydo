@@ -17,43 +17,31 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.api.state;
+package org.caleydo.view.tourguide.internal.stratomex.state;
 
+import org.caleydo.core.data.datadomain.DataDomainOracle;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.event.EventListenerManager.ListenTo;
-import org.caleydo.core.event.EventPublisher;
-import org.caleydo.view.stratomex.tourguide.event.SelectStratificationEvent;
-import org.caleydo.view.stratomex.tourguide.event.SelectStratificationReplyEvent;
-
-import com.google.common.base.Predicate;
+import org.caleydo.view.stratomex.brick.configurer.CategoricalDataConfigurer;
+import org.caleydo.view.stratomex.tourguide.IStratomexAdapter;
+import org.caleydo.view.stratomex.tourguide.event.UpdateStratificationPreviewEvent;
+import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
+import org.caleydo.view.tourguide.api.state.ABrowseState;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public abstract class ASelectStratificationState extends ASelectTransition implements Predicate<TablePerspective> {
-	private Object receiver;
-
-	public ASelectStratificationState(IState target, Object receiver) {
-		super(target);
-		this.receiver = receiver;
+public class BrowseStratificationState extends ABrowseState {
+	public BrowseStratificationState(String label) {
+		super(EDataDomainQueryMode.STRATIFICATIONS, label);
 	}
 
 	@Override
-	public void onEnterImpl() {
-		EventPublisher.trigger(new SelectStratificationEvent(this).to(receiver).from(this));
+	public void onUpdate(UpdateStratificationPreviewEvent event, IStratomexAdapter adapter) {
+		TablePerspective tp = event.getTablePerspective();
+		if (DataDomainOracle.isCategoricalDataDomain(tp.getDataDomain()))
+			adapter.replaceTemplate(tp, new CategoricalDataConfigurer(tp));
+		else
+			adapter.replaceTemplate(tp, null);
 	}
-
-	@ListenTo(sendToMe = true)
-	private void onEvent(SelectStratificationReplyEvent event) {
-		handleSelection(event.getTablePerspective());
-
-		switchToTarget();
-	}
-
-	/**
-	 * @param tablePerspective
-	 * @param group
-	 */
-	protected abstract void handleSelection(TablePerspective tablePerspective);
 }

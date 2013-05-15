@@ -17,15 +17,32 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.api.state;
+package org.caleydo.view.stratomex.tourguide;
 
-import org.caleydo.core.io.gui.dataimport.widget.ICallback;
-import org.caleydo.core.util.base.ILabeled;
+import java.util.List;
+
+import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
+import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
+
+import com.google.common.base.Predicate;
 
 /**
+ * view of stratomex to the {@link AAddWizardElement}
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
-public interface ITransition extends ILabeled {
-	void apply(ICallback<IState> onApply);
+public interface IStratomexAdapter {
+	void replaceTemplate(TablePerspective with, IBrickConfigurer configurer);
+
+	void replaceTemplate(ALayoutRenderer renderer);
+
+	List<TablePerspective> getVisibleTablePerspectives();
+
+	void selectStratification(Predicate<TablePerspective> filter);
+
+	void selectGroup(Predicate<Pair<TablePerspective, Group>> filter);
 }

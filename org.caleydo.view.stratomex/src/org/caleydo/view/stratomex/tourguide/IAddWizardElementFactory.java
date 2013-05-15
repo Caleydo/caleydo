@@ -19,21 +19,12 @@
  *******************************************************************************/
 package org.caleydo.view.stratomex.tourguide;
 
-import java.util.List;
-
-import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
-import org.caleydo.core.view.opengl.picking.Pick;
 
 /**
  * @author Samuel Gratzl
  *
  */
 public interface IAddWizardElementFactory {
-	String PICKING_TYPE = "templateWizard";
-
-	ALayoutRenderer create(Object receiver, List<TablePerspective> existing, AGLView view);
-
-	void handlePicking(ALayoutRenderer wizard, Pick pick);
+	AAddWizardElement create(IStratomexAdapter adapter, AGLView view);
 }

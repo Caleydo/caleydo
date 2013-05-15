@@ -17,37 +17,34 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.stratomex.tourguide.event;
+package org.caleydo.view.tourguide.api.state;
 
-import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.event.ADirectedEvent;
-import org.caleydo.core.util.collection.Pair;
-
-import com.google.common.base.Predicate;
+import org.caleydo.core.io.gui.dataimport.widget.ICallback;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class SelectGroupEvent extends ADirectedEvent {
-	private final Predicate<Pair<TablePerspective, Group>> filter;
 
-	public SelectGroupEvent(Predicate<Pair<TablePerspective, Group>> filter) {
-		this.filter = filter;
+public class SimpleTransition implements ITransition {
+	private final IState target;
+	private final String label;
+
+	public SimpleTransition(IState target, String label) {
+		this.target = target;
+		this.label = label;
+	}
+
+	@Override
+	public void apply(ICallback<IState> onApply) {
+		onApply.on(target);
 	}
 
 	/**
-	 * @return the filter, see {@link #filter}
+	 * @return the label, see {@link #label}
 	 */
-	public Predicate<Pair<TablePerspective, Group>> getFilter() {
-		return filter;
-	}
-
-
 	@Override
-	public boolean checkIntegrity() {
-		return true;
+	public String getLabel() {
+		return label;
 	}
-
 }

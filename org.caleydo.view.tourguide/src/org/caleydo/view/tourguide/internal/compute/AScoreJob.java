@@ -148,7 +148,6 @@ public abstract class AScoreJob {
 			Collection<IComputedReferenceStratificationScore> stratScores) {
 		for (IComputedStratificationScore score : stratMetrics) {
 			IStratificationAlgorithm algorithm = score.getAlgorithm();
-			algorithm.init(monitor);
 			if (Thread.interrupted() || monitor.isCanceled())
 				return Status.CANCEL_STATUS;
 
@@ -170,7 +169,6 @@ public abstract class AScoreJob {
 		// all stratification scores
 		for (IComputedReferenceStratificationScore score : stratScores) {
 			IStratificationAlgorithm algorithm = score.getAlgorithm();
-			algorithm.init(monitor);
 			if (Thread.interrupted() || monitor.isCanceled())
 				return Status.CANCEL_STATUS;
 

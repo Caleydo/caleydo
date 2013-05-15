@@ -17,42 +17,18 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.stratomex.tourguide.event;
+package org.caleydo.view.tourguide.internal.stratomex.event;
 
-import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.event.ADirectedEvent;
+import org.caleydo.core.event.AEvent;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class SelectGroupReplyEvent extends ADirectedEvent {
-	private final TablePerspective tablePerspective;
-	private final Group group;
-
-	public SelectGroupReplyEvent(TablePerspective tablePerspective, Group group) {
-		this.tablePerspective = tablePerspective;
-		this.group = group;
-	}
-
-	/**
-	 * @return the tablePerspective, see {@link #tablePerspective}
-	 */
-	public TablePerspective getTablePerspective() {
-		return tablePerspective;
-	}
-
-	/**
-	 * @return the group, see {@link #group}
-	 */
-	public Group getGroup() {
-		return group;
-	}
-
+public class WizardEndedEvent extends AEvent {
 	@Override
 	public boolean checkIntegrity() {
 		return true;
 	}
-
 }
+

@@ -19,6 +19,8 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.impl;
 
+import static org.caleydo.view.tourguide.api.query.EDataDomainQueryMode.STRATIFICATIONS;
+
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,12 +35,12 @@ import org.caleydo.core.event.EventPublisher;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.score.DefaultComputedReferenceStratificationScore;
 import org.caleydo.view.tourguide.api.score.MultiScore;
-import org.caleydo.view.tourguide.api.state.ASelectStratificationState;
-import org.caleydo.view.tourguide.api.state.UserTransition;
+import org.caleydo.view.tourguide.api.state.ISelectReaction;
+import org.caleydo.view.tourguide.api.state.ISelectStratificationState;
 import org.caleydo.view.tourguide.api.state.IState;
 import org.caleydo.view.tourguide.api.state.IStateMachine;
-import org.caleydo.view.tourguide.api.state.ITransition;
 import org.caleydo.view.tourguide.api.state.SimpleState;
+import org.caleydo.view.tourguide.api.state.SimpleTransition;
 import org.caleydo.view.tourguide.api.util.ui.CaleydoLabelProvider;
 import org.caleydo.view.tourguide.impl.algorithm.AdjustedRandIndex;
 import org.caleydo.view.tourguide.internal.event.AddScoreColumnEvent;
@@ -90,26 +92,10 @@ public class AdjustedRandScoreFactory implements IScoreFactory {
 			return;
 
 		IState source = stateMachine.get(IStateMachine.ADD_STRATIFICATIONS);
-		IState intermediate = new SimpleState(
-				"Select query stratification by clicking on the header brick of one of the displayed columns\nChange query by cvlicking on other header brick at any time");
-		stateMachine.addState("AdjustedRand", intermediate);
-		stateMachine.addTransition(source, new UserTransition(intermediate,
+		IState target = stateMachine.addState("AdjustedRand", new CreateAdjustedRandState());
+
+		stateMachine.addTransition(source, new SimpleTransition(target,
 				"Find similar to displayed stratification"));
-
-		IState target = stateMachine.get(IStateMachine.BROWSE_STRATIFICATIONS);
-		ITransition transition = new ASelectStratificationState(target, eventReceiver) {
-			@Override
-			protected void handleSelection(TablePerspective tablePerspective) {
-				addScoreToTourGuide(EDataDomainQueryMode.STRATIFICATIONS,
-						AdjustedRandScoreFactory.this.create(null, tablePerspective.getRecordPerspective()));
-			}
-
-			@Override
-			public boolean apply(TablePerspective tablePerspective) {
-				return true;
-			}
-		};
-		stateMachine.addTransition(intermediate, transition);
 	}
 
 	@Override
@@ -125,12 +111,31 @@ public class AdjustedRandScoreFactory implements IScoreFactory {
 
 	@Override
 	public boolean supports(EDataDomainQueryMode mode) {
-		return mode == EDataDomainQueryMode.STRATIFICATIONS;
+		return mode == STRATIFICATIONS;
 	}
 
 	@Override
 	public Dialog createCreateDialog(Shell shell, Object receiver) {
 		return new CreateAdjustedRandScoreDialog(shell, receiver);
+	}
+
+	private class CreateAdjustedRandState extends SimpleState implements ISelectStratificationState {
+		public CreateAdjustedRandState() {
+			super("Select query stratification by clicking on the header brick of one of the displayed columns\n"
+					+ "Change query by clicking on other header brick at any time");
+		}
+
+		@Override
+		public boolean apply(TablePerspective tablePerspective) {
+			return true;
+		}
+
+		@Override
+		public void select(TablePerspective tablePerspective, ISelectReaction reactions) {
+			reactions.addScoreToTourGuide(STRATIFICATIONS,
+					create(null, tablePerspective.getRecordPerspective()));
+			reactions.switchTo(reactions.getState(IStateMachine.BROWSE_STRATIFICATIONS));
+		}
 	}
 
 	class CreateAdjustedRandScoreDialog extends Dialog {

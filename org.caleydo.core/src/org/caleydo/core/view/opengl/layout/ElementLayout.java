@@ -208,7 +208,6 @@ public class ElementLayout implements Comparable<ElementLayout> {
 				foregroundRenderer.destroy(gl);
 			}
 			foregroundRenderers.clear();
-			backgroundRenderers = null;
 		}
 
 		if (backgroundRenderers != null) {
@@ -216,7 +215,6 @@ public class ElementLayout implements Comparable<ElementLayout> {
 				foregroundRenderer.destroy(gl);
 			}
 			backgroundRenderers.clear();
-			backgroundRenderers = null;
 		}
 
 	}
