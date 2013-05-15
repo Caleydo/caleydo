@@ -258,8 +258,8 @@ public class GLTourGuideView extends AGLElementView {
 	}
 
 	private void scheduleAllOf(Collection<IScore> toCompute, boolean removeLeadingScoreColumns) {
-		ComputeForScoreJob job = new ComputeForScoreJob(toCompute, table.getData(), table.getDefaultFilter()
-				.getFilter(), this, removeLeadingScoreColumns);
+		ComputeForScoreJob job = new ComputeForScoreJob(toCompute, table.getData(),
+				table.getMyRanker(null).getFilter(), this, removeLeadingScoreColumns);
 		if (job.hasThingsToDo()) {
 			waiting.resetJob(job);
 			job.addJobChangeListener(jobListener);
