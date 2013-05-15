@@ -44,6 +44,7 @@ import org.caleydo.view.tourguide.api.state.SimpleTransition;
 import org.caleydo.view.tourguide.api.util.ui.CaleydoLabelProvider;
 import org.caleydo.view.tourguide.impl.algorithm.AdjustedRandIndex;
 import org.caleydo.view.tourguide.internal.event.AddScoreColumnEvent;
+import org.caleydo.view.tourguide.internal.stratomex.state.BrowseStratificationState;
 import org.caleydo.view.tourguide.spi.IScoreFactory;
 import org.caleydo.view.tourguide.spi.score.IRegisteredScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
@@ -92,7 +93,8 @@ public class AdjustedRandScoreFactory implements IScoreFactory {
 			return;
 
 		IState source = stateMachine.get(IStateMachine.ADD_STRATIFICATIONS);
-		IState target = stateMachine.addState("AdjustedRand", new CreateAdjustedRandState());
+		IState browse = stateMachine.addState("AdjustedRandBrowse", new UpdateAndBrowseAdjustedRand());
+		IState target = stateMachine.addState("AdjustedRand", new CreateAdjustedRandState(browse));
 
 		stateMachine.addTransition(source, new SimpleTransition(target,
 				"Find similar to displayed stratification"));
@@ -120,9 +122,12 @@ public class AdjustedRandScoreFactory implements IScoreFactory {
 	}
 
 	private class CreateAdjustedRandState extends SimpleState implements ISelectStratificationState {
-		public CreateAdjustedRandState() {
+		private final IState target;
+
+		public CreateAdjustedRandState(IState target) {
 			super("Select query stratification by clicking on the header brick of one of the displayed columns\n"
 					+ "Change query by clicking on other header brick at any time");
+			this.target = target;
 		}
 
 		@Override
@@ -134,7 +139,24 @@ public class AdjustedRandScoreFactory implements IScoreFactory {
 		public void select(TablePerspective tablePerspective, ISelectReaction reactions) {
 			reactions.addScoreToTourGuide(STRATIFICATIONS,
 					create(null, tablePerspective.getRecordPerspective()));
-			reactions.switchTo(reactions.getState(IStateMachine.BROWSE_STRATIFICATIONS));
+			reactions.switchTo(target);
+		}
+	}
+
+	private class UpdateAndBrowseAdjustedRand extends BrowseStratificationState implements ISelectStratificationState {
+		public UpdateAndBrowseAdjustedRand() {
+			super("Select a stratification in the Tour Guide to preview.\n" + "Then confirm or cancel your selection"
+					+ "Change query by clicking on other brick at any time");
+		}
+
+		@Override
+		public boolean apply(TablePerspective tablePerspective) {
+			return true;
+		}
+
+		@Override
+		public void select(TablePerspective tablePerspective, ISelectReaction reactions) {
+			reactions.addScoreToTourGuide(STRATIFICATIONS, create(null, tablePerspective.getRecordPerspective()));
 		}
 	}
 

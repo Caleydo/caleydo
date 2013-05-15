@@ -217,17 +217,21 @@ public class AddWizardElement extends AAddWizardElement implements ICallback<ISt
 	}
 
 	@Override
-	public void onSelected(TablePerspective tablePerspective) {
+	public boolean onSelected(TablePerspective tablePerspective) {
 		if (stateMachine.getCurrent() instanceof ISelectStratificationState) {
 			((ISelectStratificationState) stateMachine.getCurrent()).select(tablePerspective, this);
+			return true;
 		}
+		return false;
 	}
 
 	@Override
-	public void onSelected(TablePerspective tablePerspective, Group group) {
+	public boolean onSelected(TablePerspective tablePerspective, Group group) {
 		if (stateMachine.getCurrent() instanceof ISelectGroupState) {
 			((ISelectGroupState) stateMachine.getCurrent()).select(tablePerspective, group, this);
+			return true;
 		}
+		return false;
 	}
 
 	@Override
@@ -241,11 +245,6 @@ public class AddWizardElement extends AAddWizardElement implements ICallback<ISt
 		GLTourGuideView receiver = tourGuide.getView();
 		EventPublisher.trigger(new AddScoreColumnEvent(scores).setReplaceLeadingScoreColumns(true).to(receiver)
 				.from(this));
-	}
-
-	@Override
-	public IState getState(String id) {
-		return stateMachine.get(id);
 	}
 
 	@Override

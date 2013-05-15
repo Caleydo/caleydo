@@ -26,6 +26,4 @@ public interface ISelectReaction {
 	void switchTo(IState target);
 
 	void addScoreToTourGuide(EDataDomainQueryMode mode, IScore... scores);
-
-	IState getState(String id);
 }

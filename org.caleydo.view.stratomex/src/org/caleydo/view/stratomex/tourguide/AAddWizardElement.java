@@ -53,9 +53,9 @@ public abstract class AAddWizardElement extends ALayoutRenderer {
 
 	public abstract void onUpdate(UpdateNumericalPreviewEvent event);
 
-	public abstract void onSelected(TablePerspective tablePerspective);
+	public abstract boolean onSelected(TablePerspective tablePerspective);
 
-	public abstract void onSelected(TablePerspective tablePerspective, Group recordGroup);
+	public abstract boolean onSelected(TablePerspective tablePerspective, Group recordGroup);
 
 
 	public void done(boolean confirmed) {

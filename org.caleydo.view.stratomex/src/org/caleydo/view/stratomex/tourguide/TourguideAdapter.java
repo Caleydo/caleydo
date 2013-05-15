@@ -214,22 +214,24 @@ public class TourguideAdapter implements IStratomexAdapter {
 		if (this.selectionCurrent == brick)
 			return;
 
-		if (this.selectionCurrent != null) {
-			changeHighlight(this.selectionCurrent.getLayout(), COLOR_POSSIBLE_SELECTION);
-		}
-		changeHighlight(brick.getLayout(), COLOR_SELECTED);
-		this.selectionCurrent = brick;
-
-		stratomex.setDisplayListDirty();
-
+		boolean handled = false;
 		switch(selectionMode) {
 		case STRATIFICATION:
-			wizard.onSelected(brick.getBrickColumn().getTablePerspective());
+			handled = wizard.onSelected(brick.getBrickColumn().getTablePerspective());
 			break;
 		case GROUP:
-			wizard.onSelected(brick.getBrickColumn().getTablePerspective(), brick.getTablePerspective()
+			handled = wizard.onSelected(brick.getBrickColumn().getTablePerspective(), brick.getTablePerspective()
 					.getRecordGroup());
 			break;
+		}
+		if (handled) {
+			if (this.selectionCurrent != null) {
+				changeHighlight(this.selectionCurrent.getLayout(), COLOR_POSSIBLE_SELECTION);
+			}
+			changeHighlight(brick.getLayout(), COLOR_SELECTED);
+			this.selectionCurrent = brick;
+
+			stratomex.setDisplayListDirty();
 		}
 	}
 
@@ -250,7 +252,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 		// highlight all possibles
 		for (BrickColumn col : stratomex.getBrickColumnManager().getBrickColumns()) {
 			if (filter.apply(col.getTablePerspective()))
-				addHighlight(col.getHeaderBrick());
+				changeHighlight(col.getHeaderBrick().getLayout(), COLOR_POSSIBLE_SELECTION);
 		}
 		repaint();
 	}
@@ -263,7 +265,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 			TablePerspective tablePerspective = col.getTablePerspective();
 			for (GLBrick brick : col.getSegmentBricks()) {
 				if (filter.apply(Pair.make(tablePerspective, brick.getTablePerspective().getRecordGroup())))
-					addHighlight(brick);
+					changeHighlight(brick.getLayout(), COLOR_POSSIBLE_SELECTION);
 			}
 		}
 		repaint();
@@ -304,11 +306,6 @@ public class TourguideAdapter implements IStratomexAdapter {
 	private void repaint() {
 		stratomex.updateLayout();
 		stratomex.setDisplayListDirty();
-	}
-
-
-	private void addHighlight(GLBrick brick) {
-		brick.getLayout().addBackgroundRenderer(new BrickHighlightRenderer(COLOR_POSSIBLE_SELECTION.getRGBA()));
 	}
 
 	/**

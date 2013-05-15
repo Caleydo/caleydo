@@ -81,7 +81,8 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 		if (existing.isEmpty())
 			return;
 		IState source = stateMachine.get(IStateMachine.ADD_PATHWAY);
-		IState target = stateMachine.addState("GSEA", new CreateGSEAState());
+		IState browse = stateMachine.get(IStateMachine.BROWSE_PATHWAY);
+		IState target = stateMachine.addState("GSEA", new CreateGSEAState(browse));
 		stateMachine.addTransition(source, new SimpleTransition(target,
 				"Find with GSEA based on displayed stratification"));
 
@@ -128,8 +129,11 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 	}
 
 	private class CreateGSEAState extends SimpleState implements ISelectGroupState {
-		public CreateGSEAState() {
+		private final IState target;
+
+		public CreateGSEAState(IState target) {
 			super("Select query stratification by clicking on the header brick of one of the displayed columns");
+			this.target = target;
 		}
 
 		@Override
@@ -143,8 +147,8 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 			reactions.addScoreToTourGuide(EDataDomainQueryMode.PATHWAYS,
 					createGSEA(null, tablePerspective.getRecordPerspective(), group));
 
-			// switch to a preview pathwa
-			reactions.switchTo(reactions.getState(IStateMachine.BROWSE_PATHWAY));
+			// switch to a preview pathway
+			reactions.switchTo(target);
 		}
 	}
 
