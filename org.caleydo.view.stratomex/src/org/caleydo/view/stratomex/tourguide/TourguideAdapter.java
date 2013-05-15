@@ -36,14 +36,13 @@ import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.color.Colors;
 import org.caleydo.core.util.color.IColor;
 import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.ElementLayouts;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
-import org.caleydo.core.view.opengl.layout2.LayoutRendererAdapter;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingMode;
-import org.caleydo.view.stratomex.Activator;
 import org.caleydo.view.stratomex.EPickingType;
 import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.stratomex.brick.GLBrick;
@@ -182,6 +181,14 @@ public class TourguideAdapter {
 		};
 		stratomex.addTypePickingListener(brickPicker, EPickingType.BRICK.name());
 		stratomex.addTypePickingListener(brickPicker, EPickingType.BRICK_TITLE.name());
+
+		stratomex.addTypePickingListener(new IPickingListener() {
+			@Override
+			public void pick(Pick pick) {
+				if (templateColumn != null)
+					factory.handlePicking(templateColumn.getRenderer(), pick);
+			}
+		}, IAddWizardElementFactory.PICKING_TYPE);
 	}
 
 	/**
@@ -324,8 +331,9 @@ public class TourguideAdapter {
 	 */
 	private ElementLayout createTemplateElement(int index) {
 		assert factory != null;
-		ElementLayout l = ElementLayouts.wrap(new LayoutRendererAdapter(stratomex, Activator.getResourceLocator(),
-				factory.create(this, stratomex.getTablePerspectives()), null), 120);
+		ALayoutRenderer wizard = factory.create(this, stratomex.getTablePerspectives(), stratomex);
+		stratomex.registerEventListener(wizard);
+		ElementLayout l = ElementLayouts.wrap(wizard, 120);
 		l.addBackgroundRenderer(new ConfirmCancelLayoutRenderer(stratomex, index, this));
 		return l;
 	}
@@ -397,8 +405,10 @@ public class TourguideAdapter {
 	 * @return
 	 */
 	private int destroyTemplate() {
-		if (templateColumn != null)
+		if (templateColumn != null) {
 			templateColumn.destroy(GLContext.getCurrent().getGL().getGL2());
+			stratomex.unregisterEventListener(templateColumn.getRenderer());
+		}
 		templateColumn = null;
 		return templateIndex;
 	}

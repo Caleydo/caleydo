@@ -22,7 +22,9 @@ package org.caleydo.view.tourguide.internal.stratomex;
 import java.util.List;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
+import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.stratomex.tourguide.IAddWizardElementFactory;
 
 /**
@@ -32,8 +34,12 @@ import org.caleydo.view.stratomex.tourguide.IAddWizardElementFactory;
 public class AddWizardElementFactory implements IAddWizardElementFactory {
 
 	@Override
-	public GLElement create(Object receiver, List<TablePerspective> existing) {
-		return new AddWizardElement(receiver, existing);
+	public ALayoutRenderer create(Object receiver, List<TablePerspective> existing, AGLView view) {
+		return new AddWizardElement(view, receiver, existing);
 	}
 
+	@Override
+	public void handlePicking(ALayoutRenderer wizard, Pick pick) {
+		((AddWizardElement) wizard).onPick(pick);
+	}
 }

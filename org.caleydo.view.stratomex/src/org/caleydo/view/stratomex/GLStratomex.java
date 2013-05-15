@@ -1791,5 +1791,15 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		updateConnectionLinesBetweenColumns();
 	}
 
+	/**
+	 * @param wizard
+	 */
+	public void registerEventListener(Object elem) {
+		listeners.register(elem);
+	}
+
+	public void unregisterEventListener(Object elem) {
+		listeners.unregister(elem);
+	}
 
 }

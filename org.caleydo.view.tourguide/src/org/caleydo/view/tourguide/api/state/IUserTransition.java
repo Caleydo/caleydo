@@ -20,6 +20,7 @@
 package org.caleydo.view.tourguide.api.state;
 
 import org.caleydo.core.io.gui.dataimport.widget.ICallback;
+import org.caleydo.core.util.base.ILabeled;
 
 /**
  * marker interface that the transition can be triggered by the user
@@ -27,8 +28,7 @@ import org.caleydo.core.io.gui.dataimport.widget.ICallback;
  * @author Samuel Gratzl
  * 
  */
-public interface IUserTransition {
-	String getLabel();
+public interface IUserTransition extends ILabeled {
 
 	void apply(ICallback<IState> onApply);
 }
