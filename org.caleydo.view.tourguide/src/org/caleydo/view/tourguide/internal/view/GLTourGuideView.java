@@ -339,8 +339,10 @@ public class GLTourGuideView extends AGLElementView {
 				ss.orderByMe();
 			}
 		}
-		getTableBodyUI().scrollFirst(); // scroll to the top
-		updateMask();
+
+		TableBodyUI bodyUI = getTableBodyUI();
+		if (bodyUI != null)
+			bodyUI.scrollFirst(); // scroll to the top
 	}
 
 	/**
@@ -482,7 +484,7 @@ public class GLTourGuideView extends AGLElementView {
 	}
 
 	@ListenTo(sendToMe = true)
-	private void onAddColumn(AddScoreColumnEvent event) {
+	public void onAddColumn(AddScoreColumnEvent event) {
 		if (event.getScores().isEmpty())
 			return;
 

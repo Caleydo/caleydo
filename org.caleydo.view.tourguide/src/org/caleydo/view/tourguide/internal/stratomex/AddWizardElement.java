@@ -243,9 +243,13 @@ public class AddWizardElement extends AAddWizardElement implements ICallback<ISt
 	public void addScoreToTourGuide(EDataDomainQueryMode mode, IScore... scores) {
 		RcpGLTourGuideView tourGuide = OpenViewHandler.showTourGuide(mode);
 		GLTourGuideView receiver = tourGuide.getView();
-		EventPublisher.trigger(new AddScoreColumnEvent(scores).setReplaceLeadingScoreColumns(true).to(receiver)
-				.from(this));
+		// direct as not yet registered
+		AddScoreColumnEvent event = new AddScoreColumnEvent(scores).setReplaceLeadingScoreColumns(true);
+		event.to(receiver).from(this);
+		receiver.onAddColumn(event);
+
 	}
+
 
 	@Override
 	public void done(boolean confirmed) {
