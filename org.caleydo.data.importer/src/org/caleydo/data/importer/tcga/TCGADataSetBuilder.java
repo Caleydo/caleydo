@@ -88,15 +88,16 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 
 	@Override
 	public TCGADataSet compute() {
-		final IDSpecification sampleID = TCGADefinitions.createIDSpecification(true);
+		final IDSpecification sampleID = TCGADefinitions.createSampleIDSpecification(true);
 
 		// TCGA SAMPLE IDs look different for seq data (an "-01" is attached)
-		final IDSpecification seqSampleID = TCGADefinitions.createIDSpecification(false);
+		final IDSpecification seqSampleID = TCGADefinitions.createSampleIDSpecification(false);
 
 		final IDSpecification clinicalColumnID = new IDSpecification();
 		clinicalColumnID.setIdType("clinical");
 
-		final IDSpecification geneRowID = IDSpecification.createGene();
+		final IDSpecification geneRowID = TCGADefinitions.createGeneIDSpecificiation();
+
 		final IDSpecification proteinRowID = new IDSpecification("protein", "protein");
 		final IDSpecification microRNARowID = new IDSpecification("microRNA", "microRNA");
 		final IDSpecification clinicalRowID = new IDSpecification("TCGA_SAMPLE", "TCGA_SAMPLE");

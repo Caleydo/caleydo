@@ -176,6 +176,7 @@ public abstract class ATextParser {
 		}
 		if (idTypeParsingRules.getSubStringExpression() != null) {
 			String[] splitID = sourceID.split(idTypeParsingRules.getSubStringExpression());
+			// first one found used
 			for (String result : splitID) {
 				if (!result.isEmpty()) {
 					sourceID = result;
