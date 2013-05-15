@@ -48,8 +48,8 @@ import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.stratomex.brick.GLBrick;
 import org.caleydo.view.stratomex.column.BrickColumn;
 import org.caleydo.view.stratomex.column.BrickColumnManager;
-import org.caleydo.view.stratomex.event.HighlightBrickEvent;
 import org.caleydo.view.stratomex.tourguide.event.ConfirmedCancelNewColumnEvent;
+import org.caleydo.view.stratomex.tourguide.event.HighlightBrickEvent;
 import org.caleydo.view.stratomex.tourguide.event.SelectGroupEvent;
 import org.caleydo.view.stratomex.tourguide.event.SelectGroupReplyEvent;
 import org.caleydo.view.stratomex.tourguide.event.SelectStratificationEvent;
@@ -291,7 +291,7 @@ public class TourguideAdapter {
 		if (!event.isHighlight()) {
 			layout.clearBackgroundRenderers();
 		} else {
-			layout.addBackgroundRenderer(new BrickHighlightRenderer(event.getColor().getRGBA()));
+			layout.addBackgroundRenderer(new BrickHighlightRenderer(event.getColor().getColorComponents(null)));
 		}
 		if (layout.getLayoutManager() != null)
 			layout.updateSubLayout();

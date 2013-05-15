@@ -43,9 +43,9 @@ import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.ITablePerspectiveBasedView;
 import org.caleydo.view.stratomex.GLStratomex;
-import org.caleydo.view.stratomex.event.HighlightBrickEvent;
 import org.caleydo.view.stratomex.event.SelectElementsEvent;
 import org.caleydo.view.stratomex.tourguide.event.ConfirmedCancelNewColumnEvent;
+import org.caleydo.view.stratomex.tourguide.event.HighlightBrickEvent;
 import org.caleydo.view.stratomex.tourguide.event.UpdatePreviewEvent;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.internal.TourGuideRenderStyle;
@@ -199,7 +199,7 @@ public class StratomexAdapter {
 	private void updateTableBased(ITablePerspectiveScoreRow old, ITablePerspectiveScoreRow new_,
 			Collection<IScore> visibleColumns, IScore sortedBy) {
 		TablePerspective strat = new_ == null ? null : new_.asTablePerspective();
-		Group group = new_ == null ? null : MaxGroupCombiner.getMax(old, sortedBy);
+		Group group = new_ == null ? null : MaxGroupCombiner.getMax(new_, sortedBy);
 
 		// handle stratification changes
 		if (currentPreview != null && strat != null) { // update
@@ -266,13 +266,14 @@ public class StratomexAdapter {
 	private void unhighlightBrick(TablePerspective strat, Group g) {
 		if (g == null)
 			return;
-		triggerEvent(new HighlightBrickEvent(strat, g, receiver, this, null));
+		triggerEvent(new HighlightBrickEvent(strat, g, null).to(receiver.getTourguide()));
 	}
 
 	private void hightlightBrick(TablePerspective strat, Group g, boolean now) {
 		if (g == null)
 			return;
-		AEvent event = new HighlightBrickEvent(strat, g, receiver, this, TourGuideRenderStyle.STRATOMEX_FOUND_GROUP);
+		AEvent event = new HighlightBrickEvent(strat, g, TourGuideRenderStyle.STRATOMEX_FOUND_GROUP).to(receiver
+				.getTourguide());
 		if (now)
 			triggerEvent(event);
 		else

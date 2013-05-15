@@ -22,22 +22,40 @@ package org.caleydo.view.stratomex.tourguide;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
+import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
+import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 
-public class BrickHighlightRenderer extends ColorRenderer {
+public class BrickHighlightRenderer extends ALayoutRenderer {
+
+	private static final int OFFSET = 5;
+
+	private float[] color;
 
 	public BrickHighlightRenderer(float[] color) {
-		super(color);
+		this.color = color;
+	}
+
+	/**
+	 * @param color
+	 *            setter, see {@link color}
+	 */
+	public void setColor(float[] color) {
+		this.color = color;
+		setDisplayListDirty(true);
 	}
 
 	@Override
 	public void renderContent(GL2 gl) {
-		float xoffset = x * 0.04f;
-		float yoffset = y * 0.04f;
-		gl.glColor4f(color[0], color[1], color[2], 0.75f);
+		PixelGLConverter pixelGLConverter = layoutManager.getPixelGLConverter();
+		float xoffset = pixelGLConverter.getGLWidthForPixelWidth(OFFSET);
+		float yoffset = pixelGLConverter.getGLHeightForPixelHeight(OFFSET);
+
 		gl.glPushAttrib(GL2.GL_LINE_BIT);
+
 		gl.glLineWidth(3);
 		gl.glEnable(GL.GL_LINE_SMOOTH);
+
+		gl.glColor4f(color[0], color[1], color[2], 0.75f);
 		gl.glBegin(GL.GL_LINE_LOOP);
 		{
 			gl.glVertex3f(-xoffset, -yoffset, 0);
@@ -51,7 +69,7 @@ public class BrickHighlightRenderer extends ColorRenderer {
 
 	@Override
 	protected boolean permitsWrappingDisplayLists() {
-		return false;
+		return true;
 	}
 
 }

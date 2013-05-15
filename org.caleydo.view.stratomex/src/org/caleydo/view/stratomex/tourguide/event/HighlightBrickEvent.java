@@ -17,13 +17,13 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.stratomex.event;
+package org.caleydo.view.stratomex.tourguide.event;
+
+import java.awt.Color;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.event.AEvent;
-import org.caleydo.core.util.color.IColor;
-import org.caleydo.view.stratomex.GLStratomex;
+import org.caleydo.core.event.ADirectedEvent;
 
 /**
  * triggers that the
@@ -31,25 +31,14 @@ import org.caleydo.view.stratomex.GLStratomex;
  * @author Samuel Gratzl
  *
  */
-public class HighlightBrickEvent extends AEvent {
+public class HighlightBrickEvent extends ADirectedEvent {
 	private TablePerspective stratification;
-	private GLStratomex receiver;
-	private IColor color;
+	private Color color;
 	private Group group;
 
-	public HighlightBrickEvent(TablePerspective stratification, GLStratomex receiver, Object sender, IColor color) {
-		this.setSender(sender);
-		this.receiver = receiver;
-		this.stratification = stratification;
-		this.color = color;
-	}
-
-	public HighlightBrickEvent(TablePerspective stratification, Group group, GLStratomex receiver, Object sender,
-			IColor color) {
-		this.setSender(sender);
+	public HighlightBrickEvent(TablePerspective stratification, Group group, Color color) {
 		this.stratification = stratification;
 		this.group = group;
-		this.receiver = receiver;
 		this.color = color;
 	}
 
@@ -63,15 +52,8 @@ public class HighlightBrickEvent extends AEvent {
 	/**
 	 * @return the color, see {@link #color}
 	 */
-	public IColor getColor() {
+	public Color getColor() {
 		return color;
-	}
-
-	/**
-	 * @return the receiver, see {@link #receiver}
-	 */
-	public GLStratomex getReceiver() {
-		return receiver;
 	}
 
 	/**
@@ -87,13 +69,8 @@ public class HighlightBrickEvent extends AEvent {
 	public Group getGroup() {
 		return group;
 	}
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.caleydo.core.event.AEvent#checkIntegrity()
-	 */
 	@Override
 	public boolean checkIntegrity() {
-		return stratification != null && receiver != null;
+		return stratification != null;
 	}
 }

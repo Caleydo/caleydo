@@ -35,7 +35,7 @@ public class TourGuideRenderStyle extends GeneralRenderStyle {
 	private static final String ICON_PREFIX = "resources/icons/view/tourguide/";
 
 	public static final IColor STRATOMEX_SELECTED_ELEMENTS = Colors.YELLOW;
-	public static final IColor STRATOMEX_FOUND_GROUP = Colors.BLUE;
+	public static final Color STRATOMEX_FOUND_GROUP = Color.BLUE;
 
 	public static final Color COLOR_STRATOMEX_ROW = new Color(180, 180, 220);
 
