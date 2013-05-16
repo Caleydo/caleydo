@@ -95,6 +95,9 @@ public class DataImportWizard extends Wizard {
 	@Override
 	public boolean performFinish() {
 
+		// if (!visitedPages.contains(loadDataSetPage))
+		// return false;
+
 		if (visitedPages.contains(loadDataSetPage) || getContainer().getCurrentPage().equals(loadDataSetPage))
 			loadDataSetPage.fillDataSetDescription();
 		if (visitedPages.contains(transformDataPage) || getContainer().getCurrentPage().equals(transformDataPage))
@@ -135,6 +138,8 @@ public class DataImportWizard extends Wizard {
 
 	@Override
 	public boolean canFinish() {
+		if (!visitedPages.contains(loadDataSetPage))
+			return false;
 		return super.canFinish();
 	}
 
