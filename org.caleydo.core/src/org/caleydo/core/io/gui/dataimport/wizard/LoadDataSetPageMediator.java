@@ -481,12 +481,12 @@ public class LoadDataSetPageMediator {
 		page.previewTable.selectColumns(selectAll, dataSetDescription.getColumnOfRowIds());
 	}
 
-	public void onShowAllColumns(boolean showAllColumns) {
-		page.previewTable.createDataPreviewTableFromDataMatrix(dataMatrix);
-		page.previewTable.updateTableColors(dataSetDescription.getNumberOfHeaderLines(),
-				dataSetDescription.getRowOfColumnIDs(), dataSetDescription.getColumnOfRowIds());
-		updateWidgetsAccordingToTableChanges();
-	}
+	// public void onShowAllColumns(boolean showAllColumns) {
+	// page.previewTable.createDataPreviewTableFromDataMatrix(dataMatrix, totalNumberOfColumns);
+	// page.previewTable.updateTableColors(dataSetDescription.getNumberOfHeaderLines(),
+	// dataSetDescription.getRowOfColumnIDs(), dataSetDescription.getColumnOfRowIds());
+	// updateWidgetsAccordingToTableChanges();
+	// }
 
 	public void createDataPreviewTableFromFile() {
 		parser.parse(dataSetDescription.getDataSourcePath(), dataSetDescription.getDelimiter(), false,
@@ -497,7 +497,7 @@ public class LoadDataSetPageMediator {
 		DataImportWizard wizard = (DataImportWizard) page.getWizard();
 		wizard.setTotalNumberOfColumns(totalNumberOfColumns);
 		wizard.setTotalNumberOfRows(totalNumberOfRows);
-		page.previewTable.createDataPreviewTableFromDataMatrix(dataMatrix);
+		page.previewTable.createDataPreviewTableFromDataMatrix(dataMatrix, totalNumberOfColumns);
 		updateWidgetsAccordingToTableChanges();
 		determineIDTypes();
 		guessNumberOfHeaderRows();
