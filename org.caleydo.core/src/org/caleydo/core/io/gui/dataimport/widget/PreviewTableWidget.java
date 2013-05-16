@@ -177,7 +177,7 @@ public class PreviewTableWidget {
 
 	}
 
-	public PreviewTableWidget(Composite parent, final BooleanCallback onSelectAllColumnsCallback) {
+	public PreviewTableWidget(Composite parent) {
 		this.parent = parent;
 		bodyDataProvider = new BodyDataProvider(null, 1);
 		buildTable(bodyDataProvider, new ColumnHeaderDataProvider(1), new RowHeaderDataProvider(1));
@@ -460,18 +460,18 @@ public class PreviewTableWidget {
 	/**
 	 * Creates the {@link #previewTable} according to the {@link #dataMatrix}.
 	 */
-	public void createDataPreviewTableFromDataMatrix(List<? extends List<String>> dataMatrix) {
+	public void createDataPreviewTableFromDataMatrix(List<? extends List<String>> dataMatrix, int numColumns) {
 		if (dataMatrix == null || dataMatrix.isEmpty())
 			return;
 
-		int numTableColumns = dataMatrix.get(0).size();
 
-		columnSelectionStatus = new ArrayList<>(numTableColumns);
-		for (int i = 0; i < numTableColumns; i++) {
+		columnSelectionStatus = new ArrayList<>(numColumns);
+		for (int i = 0; i < numColumns; i++) {
 			columnSelectionStatus.add(true);
 		}
-		bodyDataProvider = new BodyDataProvider(dataMatrix, numTableColumns);
-		buildTable(bodyDataProvider, new ColumnHeaderDataProvider(numTableColumns), new RowHeaderDataProvider(
+		bodyDataProvider = new BodyDataProvider(dataMatrix, numColumns);
+		buildTable(bodyDataProvider, new ColumnHeaderDataProvider(numColumns),
+				new RowHeaderDataProvider(
 				dataMatrix.size()));
 
 	}
