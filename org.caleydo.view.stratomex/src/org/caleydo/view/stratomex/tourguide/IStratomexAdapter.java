@@ -44,7 +44,7 @@ public interface IStratomexAdapter {
 
 	List<TablePerspective> getVisibleTablePerspectives();
 
-	void selectStratification(Predicate<TablePerspective> filter);
+	void selectStratification(Predicate<TablePerspective> filter, boolean autoSelectLeftOfMe);
 
 	void selectGroup(Predicate<Pair<TablePerspective, Group>> filter);
 

@@ -80,6 +80,11 @@ public class BrowsePathwayAndStratificationState extends BrowsePathwayState impl
 		show(reactions);
 	}
 
+	@Override
+	public boolean isAutoSelect() {
+		return true;
+	}
+
 	private static class PreviewRenderer extends AForwardingRenderer {
 		public PreviewRenderer(ALayoutRenderer renderer) {
 			super(renderer);

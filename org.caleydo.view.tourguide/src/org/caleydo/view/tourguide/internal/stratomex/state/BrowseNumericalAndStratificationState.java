@@ -65,6 +65,11 @@ public class BrowseNumericalAndStratificationState extends BrowseNumericalState 
 			show(numerical, reactions);
 	}
 
+	@Override
+	public boolean isAutoSelect() {
+		return true;
+	}
+
 	private static class PreviewRenderer extends AForwardingRenderer {
 		public PreviewRenderer(ALayoutRenderer renderer) {
 			super(renderer);

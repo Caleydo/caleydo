@@ -152,7 +152,8 @@ public class AddWizardElement extends AAddWizardElement implements ICallback<ISt
 		}
 
 		if (target instanceof ISelectStratificationState)
-			adapter.selectStratification((ISelectStratificationState)target);
+			adapter.selectStratification((ISelectStratificationState) target,
+					((ISelectStratificationState) target).isAutoSelect());
 		else if (target instanceof ISelectGroupState)
 			adapter.selectGroup((ISelectGroupState) target);
 	}

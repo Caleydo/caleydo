@@ -230,6 +230,10 @@ public class TourguideAdapter implements IStratomexAdapter {
 		if (this.selectionCurrent == brick)
 			return;
 
+		selectBrick(brick);
+	}
+
+	private void selectBrick(GLBrick brick) {
 		boolean handled = false;
 		switch(selectionMode) {
 		case STRATIFICATION:
@@ -263,13 +267,25 @@ public class TourguideAdapter implements IStratomexAdapter {
 	}
 
 	@Override
-	public void selectStratification(Predicate<TablePerspective> filter) {
+	public void selectStratification(Predicate<TablePerspective> filter, boolean autoSelectLeftOfMe) {
 		this.selectionMode = ESelectionMode.STRATIFICATION;
 		// highlight all possibles
+		int index = 0;
+		GLBrick toSelect = null;
 		for (BrickColumn col : stratomex.getBrickColumnManager().getBrickColumns()) {
-			if (filter.apply(col.getTablePerspective()))
+			if (filter.apply(col.getTablePerspective())) {
 				changeHighlight(col.getHeaderBrick().getLayout(), COLOR_POSSIBLE_SELECTION);
+
+				if (autoSelectLeftOfMe && previewIndex == index) {
+					toSelect = col.getHeaderBrick();
+				}
+			}
+			index++;
 		}
+
+		if (toSelect != null)
+			selectBrick(toSelect);
+
 		repaint();
 	}
 
