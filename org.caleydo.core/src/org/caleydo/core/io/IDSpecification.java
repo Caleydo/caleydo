@@ -151,13 +151,6 @@ public class IDSpecification {
 		this.idType = idType;
 	}
 
-	public static IDSpecification createGene() {
-		IDSpecification geneIDSpecification = new IDSpecification();
-		geneIDSpecification.setIDTypeGene(true);
-		geneIDSpecification.setIdType("GENE_SYMBOL");
-		return geneIDSpecification;
-	}
-
 	/**
 	 * @param idCategory
 	 *            setter, see {@link #idCategory}
