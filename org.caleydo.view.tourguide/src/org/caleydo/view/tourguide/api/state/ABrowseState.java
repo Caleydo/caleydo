@@ -57,15 +57,15 @@ public abstract class ABrowseState implements IState {
 
 	}
 
-	public void onUpdate(UpdateStratificationPreviewEvent event, IStratomexAdapter adapter) {
+	public void onUpdate(UpdateStratificationPreviewEvent event, ISelectReaction adapter) {
 
 	}
 
-	public void onUpdate(UpdatePathwayPreviewEvent event, IStratomexAdapter adapter) {
+	public void onUpdate(UpdatePathwayPreviewEvent event, ISelectReaction adapter) {
 
 	}
 
-	public void onUpdate(UpdateNumericalPreviewEvent event, IStratomexAdapter adapter) {
+	public void onUpdate(UpdateNumericalPreviewEvent event, ISelectReaction adapter) {
 
 	}
 }

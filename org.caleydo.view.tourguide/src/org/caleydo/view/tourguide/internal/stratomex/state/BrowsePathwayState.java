@@ -27,17 +27,17 @@ import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.view.stratomex.brick.configurer.PathwayDataConfigurer;
-import org.caleydo.view.stratomex.tourguide.IStratomexAdapter;
 import org.caleydo.view.stratomex.tourguide.event.UpdatePathwayPreviewEvent;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.state.ABrowseState;
+import org.caleydo.view.tourguide.api.state.ISelectReaction;
 
 /**
  * @author Samuel Gratzl
  *
  */
 public class BrowsePathwayState extends ABrowseState {
-	private Perspective underlying;
+	protected Perspective underlying;
 
 	public BrowsePathwayState(String label) {
 		super(EDataDomainQueryMode.PATHWAYS, label);
@@ -47,19 +47,19 @@ public class BrowsePathwayState extends ABrowseState {
 	 * @param underlying
 	 *            setter, see {@link underlying}
 	 */
-	public void setUnderlying(Perspective underlying) {
+	public final void setUnderlying(Perspective underlying) {
 		this.underlying = underlying;
 	}
 
 	@Override
-	public void onUpdate(UpdatePathwayPreviewEvent event, IStratomexAdapter adapter) {
+	public void onUpdate(UpdatePathwayPreviewEvent event, ISelectReaction adapter) {
 		if (underlying == null)
 			return;
 		TablePerspective tablePerspective = asPerspective(underlying, event.getPathway());
 		adapter.replaceTemplate(tablePerspective, new PathwayDataConfigurer());
 	}
 
-	private static TablePerspective asPerspective(Perspective record, PathwayGraph pathway) {
+	protected static TablePerspective asPerspective(Perspective record, PathwayGraph pathway) {
 		PathwayDataDomain pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get().getDataDomainByType(
 				PathwayDataDomain.DATA_DOMAIN_TYPE);
 

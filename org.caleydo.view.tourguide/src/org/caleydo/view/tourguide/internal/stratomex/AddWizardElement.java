@@ -31,13 +31,16 @@ import org.caleydo.core.event.EventListenerManager.DeepScan;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.io.gui.dataimport.widget.ICallback;
 import org.caleydo.core.util.base.ILabeled;
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
+import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLContextLocal;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.text.TextUtils;
+import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
 import org.caleydo.view.stratomex.tourguide.AAddWizardElement;
 import org.caleydo.view.stratomex.tourguide.IStratomexAdapter;
 import org.caleydo.view.stratomex.tourguide.event.UpdateNumericalPreviewEvent;
@@ -198,28 +201,31 @@ public class AddWizardElement extends AAddWizardElement implements ICallback<ISt
 	@Override
 	public void onUpdate(UpdateStratificationPreviewEvent event) {
 		if (stateMachine.getCurrent() instanceof ABrowseState) {
-			((ABrowseState) stateMachine.getCurrent()).onUpdate(event, adapter);
+			((ABrowseState) stateMachine.getCurrent()).onUpdate(event, this);
 		}
 	}
 
 	@Override
 	public void onUpdate(UpdatePathwayPreviewEvent event) {
 		if (stateMachine.getCurrent() instanceof ABrowseState) {
-			((ABrowseState) stateMachine.getCurrent()).onUpdate(event, adapter);
+			((ABrowseState) stateMachine.getCurrent()).onUpdate(event, this);
 		}
 	}
 
 	@Override
 	public void onUpdate(UpdateNumericalPreviewEvent event) {
 		if (stateMachine.getCurrent() instanceof ABrowseState) {
-			((ABrowseState) stateMachine.getCurrent()).onUpdate(event, adapter);
+			((ABrowseState) stateMachine.getCurrent()).onUpdate(event, this);
 		}
 	}
 
 	@Override
 	public boolean onSelected(TablePerspective tablePerspective) {
 		if (stateMachine.getCurrent() instanceof ISelectStratificationState) {
-			((ISelectStratificationState) stateMachine.getCurrent()).select(tablePerspective, this);
+			ISelectStratificationState s = ((ISelectStratificationState) stateMachine.getCurrent());
+			if (!s.apply(tablePerspective))
+				return false;
+			s.select(tablePerspective, this);
 			return true;
 		}
 		return false;
@@ -228,7 +234,10 @@ public class AddWizardElement extends AAddWizardElement implements ICallback<ISt
 	@Override
 	public boolean onSelected(TablePerspective tablePerspective, Group group) {
 		if (stateMachine.getCurrent() instanceof ISelectGroupState) {
-			((ISelectGroupState) stateMachine.getCurrent()).select(tablePerspective, group, this);
+			ISelectGroupState s = ((ISelectGroupState) stateMachine.getCurrent());
+			if (!s.apply(Pair.make(tablePerspective, group)))
+				return false;
+			s.select(tablePerspective, group, this);
 			return true;
 		}
 		return false;
@@ -255,6 +264,17 @@ public class AddWizardElement extends AAddWizardElement implements ICallback<ISt
 	public void done(boolean confirmed) {
 		EventPublisher.trigger(new WizardEndedEvent());
 		super.done(confirmed);
+	}
+
+	@Override
+	public void replaceTemplate(ALayoutRenderer renderer) {
+		adapter.replaceTemplate(renderer);
+
+	}
+
+	@Override
+	public void replaceTemplate(TablePerspective with, IBrickConfigurer configurer) {
+		adapter.replaceTemplate(with, configurer);
 	}
 
 }

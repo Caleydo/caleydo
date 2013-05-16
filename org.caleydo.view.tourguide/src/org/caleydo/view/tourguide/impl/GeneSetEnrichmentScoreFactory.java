@@ -25,6 +25,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
@@ -43,6 +44,7 @@ import org.caleydo.view.tourguide.impl.algorithm.AGSEAAlgorithm;
 import org.caleydo.view.tourguide.impl.algorithm.AGSEAAlgorithm.GSEAAlgorithmPValue;
 import org.caleydo.view.tourguide.impl.algorithm.GSEAAlgorithm;
 import org.caleydo.view.tourguide.impl.algorithm.PGSEAAlgorithm;
+import org.caleydo.view.tourguide.internal.stratomex.state.BrowsePathwayState;
 import org.caleydo.view.tourguide.spi.IScoreFactory;
 import org.caleydo.view.tourguide.spi.algorithm.IStratificationAlgorithm;
 import org.caleydo.view.tourguide.spi.score.IRegisteredScore;
@@ -81,10 +83,13 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 		if (existing.isEmpty())
 			return;
 		IState source = stateMachine.get(IStateMachine.ADD_PATHWAY);
-		IState browse = stateMachine.get(IStateMachine.BROWSE_PATHWAY);
-		IState target = stateMachine.addState("GSEA", new CreateGSEAState(browse));
+		BrowsePathwayState browse = (BrowsePathwayState) stateMachine.get(IStateMachine.BROWSE_PATHWAY);
+		IState target = stateMachine.addState("GSEA", new CreateGSEAState(browse, true));
+		IState target2 = stateMachine.addState("PGSEA", new CreateGSEAState(browse, false));
 		stateMachine.addTransition(source, new SimpleTransition(target,
 				"Find with GSEA based on displayed stratification"));
+		stateMachine.addTransition(source, new SimpleTransition(target2,
+				"Find with PGSEA based on displayed stratification"));
 
 		// Find with GSEA based on strat. not displayed -> n x n -> no
 		// first select a stratification then a pathway
@@ -97,8 +102,7 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 
 	@Override
 	public Iterable<ScoreEntry> createGroupEntries(TablePerspective strat, Group group) {
-		// FIXME hack
-		if (!strat.getDataDomain().getLabel().toLowerCase().contains("mrna"))
+		if (!isGoodDataDomain(strat.getDataDomain()))
 			return Collections.emptyList();
 		Collection<ScoreEntry> col = new ArrayList<>();
 
@@ -118,6 +122,15 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 		return col;
 	}
 
+	/**
+	 * @param dataDomain
+	 * @return
+	 */
+	private static boolean isGoodDataDomain(IDataDomain dataDomain) {
+		// FIXME hack
+		return dataDomain.getLabel().toLowerCase().contains("mrna");
+	}
+
 	@Override
 	public boolean supports(EDataDomainQueryMode mode) {
 		return mode == EDataDomainQueryMode.PATHWAYS;
@@ -129,25 +142,35 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 	}
 
 	private class CreateGSEAState extends SimpleState implements ISelectGroupState {
-		private final IState target;
+		private final BrowsePathwayState target;
+		private final boolean createGSEA;
 
-		public CreateGSEAState(IState target) {
+		public CreateGSEAState(BrowsePathwayState target, boolean createGSEA) {
 			super("Select query stratification by clicking on the header brick of one of the displayed columns");
 			this.target = target;
+			this.createGSEA = createGSEA;
 		}
 
 		@Override
 		public boolean apply(Pair<TablePerspective, Group> pair) {
-			return true;
+			return isGoodDataDomain(pair.getFirst().getDataDomain());
 		}
 
 		@Override
-		public void select(TablePerspective tablePerspective, Group group, ISelectReaction reactions) {
+		public void select(TablePerspective strat, Group group, ISelectReaction reactions) {
 			//now we have the data for the stuff
-			reactions.addScoreToTourGuide(EDataDomainQueryMode.PATHWAYS,
-					createGSEA(null, tablePerspective.getRecordPerspective(), group));
+			AGSEAAlgorithm algorithm;
+			if (createGSEA)
+				algorithm = new GSEAAlgorithm(strat.getRecordPerspective(), group, 1.0f);
+			else
+				algorithm = new PGSEAAlgorithm(strat.getRecordPerspective(), group);
+			IScore gsea = new GeneSetScore(strat.getRecordPerspective().getLabel(), algorithm, false);
+			IScore pValue = new GeneSetScore(gsea.getLabel() + " (P-V)", algorithm.asPValue(), true);
+
+			reactions.addScoreToTourGuide(EDataDomainQueryMode.PATHWAYS, gsea, pValue);
 
 			// switch to a preview pathway
+			target.setUnderlying(strat.getRecordPerspective());
 			reactions.switchTo(target);
 		}
 	}

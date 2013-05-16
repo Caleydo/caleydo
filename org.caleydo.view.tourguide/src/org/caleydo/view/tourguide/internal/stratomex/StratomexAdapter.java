@@ -45,12 +45,14 @@ import org.caleydo.core.view.ITablePerspectiveBasedView;
 import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.stratomex.event.SelectElementsEvent;
 import org.caleydo.view.stratomex.tourguide.event.HighlightBrickEvent;
+import org.caleydo.view.stratomex.tourguide.event.UpdatePathwayPreviewEvent;
 import org.caleydo.view.stratomex.tourguide.event.UpdateStratificationPreviewEvent;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.internal.TourGuideRenderStyle;
 import org.caleydo.view.tourguide.internal.model.AScoreRow;
 import org.caleydo.view.tourguide.internal.model.ITablePerspectiveScoreRow;
 import org.caleydo.view.tourguide.internal.model.MaxGroupCombiner;
+import org.caleydo.view.tourguide.internal.model.PathwayPerspectiveRow;
 import org.caleydo.view.tourguide.internal.stratomex.event.WizardEndedEvent;
 import org.caleydo.view.tourguide.spi.score.IScore;
 
@@ -184,6 +186,7 @@ public class StratomexAdapter {
 
 		switch (mode) {
 		case PATHWAYS:
+			updatePathway((PathwayPerspectiveRow) old, (PathwayPerspectiveRow) new_, visibleColumns, sortedBy);
 			// FIXME
 			break;
 		case STRATIFICATIONS:
@@ -193,6 +196,15 @@ public class StratomexAdapter {
 		case NUMERICAL:
 			// FIXME
 			break;
+		}
+	}
+
+	private void updatePathway(PathwayPerspectiveRow old, PathwayPerspectiveRow new_,
+			Collection<IScore> visibleColumns, IScore sortedBy) {
+		if (new_ != null) {
+			UpdatePathwayPreviewEvent event = new UpdatePathwayPreviewEvent(new_.getPathway());
+			event.to(receiver.getTourguide());
+			triggerEvent(event);
 		}
 	}
 

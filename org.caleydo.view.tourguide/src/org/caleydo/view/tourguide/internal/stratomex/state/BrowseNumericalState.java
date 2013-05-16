@@ -24,10 +24,10 @@ import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.view.stratomex.brick.configurer.ClinicalDataConfigurer;
 import org.caleydo.view.stratomex.brick.configurer.NumericalDataConfigurer;
-import org.caleydo.view.stratomex.tourguide.IStratomexAdapter;
 import org.caleydo.view.stratomex.tourguide.event.UpdateNumericalPreviewEvent;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.state.ABrowseState;
+import org.caleydo.view.tourguide.api.state.ISelectReaction;
 
 /**
  * @author Samuel Gratzl
@@ -49,7 +49,7 @@ public class BrowseNumericalState extends ABrowseState {
 	}
 
 	@Override
-	public void onUpdate(UpdateNumericalPreviewEvent event, IStratomexAdapter adapter) {
+	public void onUpdate(UpdateNumericalPreviewEvent event, ISelectReaction adapter) {
 		if (underlying == null) // standalone
 			adapter.replaceTemplate(event.getTablePerspective(),
 					new NumericalDataConfigurer(event.getTablePerspective()));

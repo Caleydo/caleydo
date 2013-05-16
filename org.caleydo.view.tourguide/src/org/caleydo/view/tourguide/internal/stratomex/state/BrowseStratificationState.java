@@ -22,10 +22,10 @@ package org.caleydo.view.tourguide.internal.stratomex.state;
 import org.caleydo.core.data.datadomain.DataDomainOracle;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.view.stratomex.brick.configurer.CategoricalDataConfigurer;
-import org.caleydo.view.stratomex.tourguide.IStratomexAdapter;
 import org.caleydo.view.stratomex.tourguide.event.UpdateStratificationPreviewEvent;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.state.ABrowseState;
+import org.caleydo.view.tourguide.api.state.ISelectReaction;
 
 /**
  * @author Samuel Gratzl
@@ -37,7 +37,7 @@ public class BrowseStratificationState extends ABrowseState {
 	}
 
 	@Override
-	public void onUpdate(UpdateStratificationPreviewEvent event, IStratomexAdapter adapter) {
+	public void onUpdate(UpdateStratificationPreviewEvent event, ISelectReaction adapter) {
 		TablePerspective tp = event.getTablePerspective();
 		if (DataDomainOracle.isCategoricalDataDomain(tp.getDataDomain()))
 			adapter.replaceTemplate(tp, new CategoricalDataConfigurer(tp));

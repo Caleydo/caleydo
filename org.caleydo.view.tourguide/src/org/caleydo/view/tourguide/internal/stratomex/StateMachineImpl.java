@@ -12,6 +12,7 @@ import org.caleydo.view.tourguide.api.state.ITransition;
 import org.caleydo.view.tourguide.api.state.SimpleState;
 import org.caleydo.view.tourguide.api.state.SimpleTransition;
 import org.caleydo.view.tourguide.internal.stratomex.state.BrowseNumericalState;
+import org.caleydo.view.tourguide.internal.stratomex.state.BrowsePathwayAndStratificationState;
 import org.caleydo.view.tourguide.internal.stratomex.state.BrowsePathwayState;
 import org.caleydo.view.tourguide.internal.stratomex.state.BrowseStratificationState;
 
@@ -48,17 +49,15 @@ class StateMachineImpl implements IStateMachine {
 
 		IState addPathway = impl.addState(ADD_PATHWAY, new SimpleState("Add Pathway"));
 		impl.addTransition(current, new SimpleTransition(addPathway, "Add Pathway"));
-		IState browsePathway = impl.addState(BROWSE_PATHWAY, new BrowsePathwayState(
+		impl.addState(BROWSE_PATHWAY, new BrowsePathwayState(
 				"Select a pathway in the Tour Guide to preview.\n Then confirm or cancel your selection."));
 
 		if (!existing.isEmpty()) {
-			IState browseIntermediate = impl.addState("browseIntermediate", new BrowseNumericalState(
-					"Select a pathway in the Tour Guide."));
+			// select pathway -> show preview -> select stratification -> show both
+			IState browseIntermediate = impl.addState("browseAndSelectPathway",
+					new BrowsePathwayAndStratificationState());
 			impl.addTransition(addPathway, new SimpleTransition(browseIntermediate,
 					"Browse list and stratify with a displayed stratification"));
-			//now select and show a preview
-			//Change pathway in Tour Guide at any time
-			//Select stratification by clicking on the header brick of one of the displayed columns
 		}
 
 		IState addNumerical = impl.addState(ADD_NUMERICAL, new SimpleState("Add Numerical Data"));

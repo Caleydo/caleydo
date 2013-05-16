@@ -43,12 +43,14 @@ public class GSEAAlgorithm extends AGSEAAlgorithm {
 		if (monitor.isCanceled())
 			return;
 		this.correlation.putAll(rankedSet(inA));
+		if (monitor.isCanceled())
+			return;
 
 		int sampleSize = inA.size();
 		List<Integer> base = new ArrayList<>(perspective.getVirtualArray().getIDs());
 
 		// Randomly assign the original phenotype labels to samples,reorder genes, and re-compute ES(S)
-		for (int i = 0; i < NPERM; ++i) {
+		for (int i = 0; i < 10; ++i) {
 			if (monitor.isCanceled()) {
 				// undo initialization
 				correlation.clear();
