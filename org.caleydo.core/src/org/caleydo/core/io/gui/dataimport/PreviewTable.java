@@ -93,17 +93,14 @@ public class PreviewTable {
 	 * Creates the preview table from the file specified by {@link #groupingParseSpecification}. Widgets of the
 	 * {@link #dialog} are updated accordingly.
 	 *
-	 * @param showOnlyPreviewColumns
-	 *            Determines whether {@link #MAX_PREVIEW_TABLE_COLUMNS}, or all columns of the file are shown.
 	 */
-	public void createDataPreviewTableFromFile(boolean showOnlyPreviewColumns) {
+	public void createDataPreviewTableFromFile() {
 		parser.parse(spec.getDataSourcePath(), spec.getDelimiter(), false, PreviewTableWidget.MAX_PREVIEW_TABLE_ROWS);
 		dataMatrix = parser.getDataMatrix();
 		totalNumberOfColumns = parser.getTotalNumberOfColumns();
-		this.previewTable.createDataPreviewTableFromDataMatrix(dataMatrix,
-				showOnlyPreviewColumns ? PreviewTableWidget.MAX_PREVIEW_TABLE_COLUMNS : totalNumberOfColumns);
+		this.previewTable.createDataPreviewTableFromDataMatrix(dataMatrix);
 		previewCallback.on(totalNumberOfColumns, parser.getTotalNumberOfRows(), dataMatrix);
-		previewTable.updateVisibleColumns(totalNumberOfColumns);
+		// previewTable.updateVisibleColumns(totalNumberOfColumns);
 		this.previewTable.updateTableColors(spec.getNumberOfHeaderLines(), -1, spec.getColumnOfRowIds());
 	}
 
@@ -135,23 +132,24 @@ public class PreviewTable {
 		this.delimeter.setEnabled(true);
 		this.selectAllNone.setEnabled(true);
 
-		int maxColumnIndex = 0;
-		for (Integer columnIndex : selectedColumns) {
-			if (columnIndex > maxColumnIndex)
-				maxColumnIndex = columnIndex;
-		}
-		if (maxColumnIndex + 1 > PreviewTableWidget.MAX_PREVIEW_TABLE_COLUMNS) {
-			createDataPreviewTableFromFile(false);
-		} else {
-			createDataPreviewTableFromFile(true);
-		}
+		createDataPreviewTableFromFile();
+		// int maxColumnIndex = 0;
+		// for (Integer columnIndex : selectedColumns) {
+		// if (columnIndex > maxColumnIndex)
+		// maxColumnIndex = columnIndex;
+		// }
+		// if (maxColumnIndex + 1 > PreviewTableWidget.MAX_PREVIEW_TABLE_COLUMNS) {
+		// createDataPreviewTableFromFile(false);
+		// } else {
+		// createDataPreviewTableFromFile(true);
+		// }
 		previewTable.setSelectedColumns(selectedColumns);
 	}
 
 	public void generatePreview() {
 		this.delimeter.setEnabled(true);
 		this.selectAllNone.setEnabled(true);
-		createDataPreviewTableFromFile(true);
+		createDataPreviewTableFromFile();
 	}
 
 	public void onSelectAllNone(boolean selectAll) {
@@ -181,7 +179,7 @@ public class PreviewTable {
 
 	public void onDelimiterChanged(String delimiter) {
 		spec.setDelimiter(delimiter);
-		createDataPreviewTableFromFile(true);
+		createDataPreviewTableFromFile();
 	}
 
 	/**
@@ -189,11 +187,10 @@ public class PreviewTable {
 	 * showAllColumnsButton of the {@link #dialog}.
 	 */
 	public void onShowAllColumns(boolean showAllColumns) {
-		this.previewTable.createDataPreviewTableFromDataMatrix(dataMatrix, showAllColumns ? totalNumberOfColumns
-				: PreviewTableWidget.MAX_PREVIEW_TABLE_COLUMNS);
+		this.previewTable.createDataPreviewTableFromDataMatrix(dataMatrix);
 		// determineRowIDType();
 		this.previewTable.updateTableColors(spec.getNumberOfHeaderLines(), -1, spec.getColumnOfRowIds());
-		this.previewTable.updateVisibleColumns(totalNumberOfColumns);
+		// this.previewTable.updateVisibleColumns(totalNumberOfColumns);
 	}
 
 	public interface IPreviewCallback {

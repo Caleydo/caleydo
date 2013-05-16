@@ -230,7 +230,7 @@ public class RowConfigWidget {
 		for (int i = 0; i < dataMatrix.size(); i++) {
 			List<String> row = dataMatrix.get(i);
 			int numFloatsFound = 0;
-			for (int j = 0; j < row.size() && j < PreviewTableWidget.MAX_PREVIEW_TABLE_COLUMNS; j++) {
+			for (int j = 0; j < row.size(); j++) {
 				String text = row.get(j);
 				try {
 					// This currently only works for numerical values
@@ -252,7 +252,7 @@ public class RowConfigWidget {
 		List<String> idList = new ArrayList<String>();
 		for (int i = 0; i < dataMatrix.size() && i < MAX_CONSIDERED_IDS_FOR_ID_TYPE_DETERMINATION; i++) {
 			List<String> row = dataMatrix.get(i);
-			idList.add(row.get(this.columnOfRowIDSpinner.getSelection()));
+			idList.add(row.get(this.columnOfRowIDSpinner.getSelection() - 1));
 		}
 
 		float maxProbability = 0;

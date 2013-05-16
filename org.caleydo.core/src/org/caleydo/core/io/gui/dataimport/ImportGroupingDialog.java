@@ -126,7 +126,7 @@ public class ImportGroupingDialog extends AHelpButtonDialog implements SafeCalla
 		}, new IProvider<String>() {
 			@Override
 			public String get() {
-				return previewTable.getValue(rowConfig.getNumHeaderRows() + 1, rowConfig.getColumnOfRowID());
+				return previewTable.getValue(rowConfig.getNumHeaderRows(), rowConfig.getColumnOfRowID() - 1);
 			}
 		});
 		rowConfig.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));

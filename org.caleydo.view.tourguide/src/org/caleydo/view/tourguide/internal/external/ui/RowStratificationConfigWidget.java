@@ -24,7 +24,6 @@ import java.util.List;
 import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.io.gui.dataimport.widget.IntegerCallback;
-import org.caleydo.core.io.gui.dataimport.widget.PreviewTableWidget;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -208,7 +207,7 @@ public class RowStratificationConfigWidget {
 		for (int i = 0; i < dataMatrix.size(); i++) {
 			List<String> row = dataMatrix.get(i);
 			int numFloatsFound = 0;
-			for (int j = 0; j < row.size() && j < PreviewTableWidget.MAX_PREVIEW_TABLE_COLUMNS; j++) {
+			for (int j = 0; j < row.size(); j++) {
 				String text = row.get(j);
 				try {
 					// This currently only works for numerical values
