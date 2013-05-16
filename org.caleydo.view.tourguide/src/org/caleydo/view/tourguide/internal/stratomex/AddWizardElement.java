@@ -52,7 +52,9 @@ import org.caleydo.view.tourguide.api.state.ISelectGroupState;
 import org.caleydo.view.tourguide.api.state.ISelectReaction;
 import org.caleydo.view.tourguide.api.state.ISelectStratificationState;
 import org.caleydo.view.tourguide.api.state.IState;
+import org.caleydo.view.tourguide.api.state.IStateMachine;
 import org.caleydo.view.tourguide.api.state.ITransition;
+import org.caleydo.view.tourguide.api.state.SimpleTransition;
 import org.caleydo.view.tourguide.internal.Activator;
 import org.caleydo.view.tourguide.internal.OpenViewHandler;
 import org.caleydo.view.tourguide.internal.RcpGLTourGuideView;
@@ -86,7 +88,22 @@ public class AddWizardElement extends AAddWizardElement implements ICallback<ISt
 	private StateMachineImpl createStateMachine(Object receiver, List<TablePerspective> existing) {
 		StateMachineImpl state = StateMachineImpl.create(receiver, existing);
 		ScoreFactories.fillStateMachine(state, receiver, existing);
+
+		addStartTransition(state, IStateMachine.ADD_STRATIFICATIONS);
+		addStartTransition(state, IStateMachine.ADD_PATHWAY);
+		addStartTransition(state, IStateMachine.ADD_NUMERICAL);
+
 		return state;
+	}
+
+	/**
+	 * @param state
+	 * @param addStratifications
+	 */
+	private void addStartTransition(StateMachineImpl state, String stateID) {
+		IState target = state.get(stateID);
+		if (!state.getTransitions(target).isEmpty())
+			state.addTransition(state.getCurrent(), new SimpleTransition(target, target.getLabel()));
 	}
 
 	/**

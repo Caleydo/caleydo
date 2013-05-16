@@ -42,13 +42,11 @@ class StateMachineImpl implements IStateMachine {
 		IState current = impl.getCurrent();
 
 		IState addStratification = impl.addState(ADD_STRATIFICATIONS, new SimpleState("Add Stratification"));
-		impl.addTransition(current, new SimpleTransition(addStratification, "Add Stratification"));
 		IState browseStratification = impl.addState(BROWSE_STRATIFICATIONS, new BrowseStratificationState(
 				"Select a stratification in the Tour Guide to preview.\nThen confirm or cancel your selection."));
 		impl.addTransition(addStratification, new SimpleTransition(browseStratification, "Browse List"));
 
 		IState addPathway = impl.addState(ADD_PATHWAY, new SimpleState("Add Pathway"));
-		impl.addTransition(current, new SimpleTransition(addPathway, "Add Pathway"));
 		impl.addState(BROWSE_PATHWAY, new BrowsePathwayState(
 				"Select a pathway in the Tour Guide to preview.\n Then confirm or cancel your selection."));
 
@@ -61,7 +59,6 @@ class StateMachineImpl implements IStateMachine {
 		}
 
 		IState addNumerical = impl.addState(ADD_NUMERICAL, new SimpleState("Add Numerical Data"));
-		impl.addTransition(current, new SimpleTransition(addNumerical, "Add Numerical Data"));
 		impl.addState(BROWSE_NUMERICAL, new BrowseNumericalState(
 				"Select a stratification in the Tour Guide\nto preview.\n\nThen confirm or cancel your selection."));
 		// addTransition(addStratification, new ButtonTransition(browseStratification, "Browse List"));
