@@ -130,7 +130,7 @@ public class CategoricalContainer<CATEGORY_TYPE extends Comparable<CATEGORY_TYPE
 	@Override
 	public void addUnknown() {
 		add(unknownCategoryType);
-		if (categoricalClassDescription.getUnknownCategory() == null) {
+		if (categoricalClassDescription != null && categoricalClassDescription.getUnknownCategory() == null) {
 			categoricalClassDescription.setUnknownCategory(new CategoryProperty<CATEGORY_TYPE>(unknownCategoryType,
 					"Unknown", Colors.NOT_A_NUMBER_COLOR));
 		}
