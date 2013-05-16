@@ -21,6 +21,7 @@ package org.caleydo.view.tourguide.api.state;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
+import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormRenderer;
 import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.spi.score.IScore;
@@ -33,4 +34,6 @@ public interface ISelectReaction {
 	void replaceTemplate(TablePerspective with, IBrickConfigurer configurer);
 
 	void replaceTemplate(ALayoutRenderer renderer);
+
+	MultiFormRenderer createPreview(TablePerspective tablePerspective);
 }

@@ -19,7 +19,6 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.internal.stratomex;
 
-import java.awt.Color;
 import java.util.Collection;
 import java.util.List;
 
@@ -36,6 +35,7 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
+import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormRenderer;
 import org.caleydo.core.view.opengl.layout2.GLContextLocal;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -144,9 +144,6 @@ public class AddWizardElement extends AAddWizardElement implements ICallback<ISt
 		final GLGraphics g = new GLGraphics(gl, contextLocal, false, 0);
 		final float w = x;
 		final float h = y;
-
-		g.color(0.95f).fillRect(0, 0, w, h);
-		g.color(Color.DARK_GRAY).drawRect(0, 0, w, h);
 
 		final PixelGLConverter converter = view.getPixelGLConverter();
 
@@ -277,6 +274,10 @@ public class AddWizardElement extends AAddWizardElement implements ICallback<ISt
 		adapter.replaceTemplate(with, configurer);
 	}
 
+	@Override
+	public MultiFormRenderer createPreview(TablePerspective tablePerspective) {
+		return adapter.createPreviewRenderer(tablePerspective);
+	}
 }
 
 

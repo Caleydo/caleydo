@@ -23,6 +23,7 @@ import gleem.linalg.Vec3f;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLContext;
@@ -31,18 +32,22 @@ import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventPublisher;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.ExtensionUtils;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.color.Colors;
 import org.caleydo.core.util.color.IColor;
+import org.caleydo.core.view.ViewManager;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.ElementLayouts;
+import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormRenderer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingMode;
+import org.caleydo.view.stratomex.EEmbeddingID;
 import org.caleydo.view.stratomex.EPickingType;
 import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.stratomex.brick.GLBrick;
@@ -56,11 +61,13 @@ import org.caleydo.view.stratomex.tourguide.event.UpdateStratificationPreviewEve
 import org.caleydo.view.stratomex.tourguide.internal.BrickHighlightRenderer;
 import org.caleydo.view.stratomex.tourguide.internal.ConfirmCancelLayoutRenderer;
 import org.caleydo.view.stratomex.tourguide.internal.ESelectionMode;
+import org.caleydo.view.stratomex.tourguide.internal.TemplateHighlightRenderer;
 import org.caleydo.view.stratomex.tourguide.internal.event.AddNewColumnEvent;
 import org.caleydo.view.stratomex.tourguide.internal.event.ConfirmCancelNewColumnEvent;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 
 /**
  * @author Samuel Gratzl
@@ -333,6 +340,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 		wizard = factory.create(this, stratomex);
 		stratomex.registerEventListener(wizard);
 		ElementLayout l = ElementLayouts.wrap(wizard, 120);
+		l.addBackgroundRenderer(new TemplateHighlightRenderer());
 		l.addBackgroundRenderer(new ConfirmCancelLayoutRenderer(stratomex, index, this));
 		return l;
 	}
@@ -492,6 +500,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 			previewIndex = stratomex.getBrickColumnManager().indexOfBrickColumn(wizardPreview) - 1;
 			stratomex.removeTablePerspective(wizardPreview.getTablePerspective());
 			wizardElement = new_;
+			new_.addBackgroundRenderer(new TemplateHighlightRenderer());
 			new_.addForeGroundRenderer(new ConfirmCancelLayoutRenderer(stratomex, previewIndex, this));
 		} else {
 			throw new IllegalStateException();
@@ -501,6 +510,24 @@ public class TourguideAdapter implements IStratomexAdapter {
 	@Override
 	public List<TablePerspective> getVisibleTablePerspectives() {
 		return stratomex.getTablePerspectives();
+	}
+
+	@Override
+	public MultiFormRenderer createPreviewRenderer(TablePerspective tablePerspective) {
+		// create a preview similar to the header
+		EEmbeddingID embeddingID = EEmbeddingID.PATHWAY_HEADER_BRICK;
+		Set<String> remoteRenderedViewIDs = ViewManager.get().getRemotePlugInViewIDs(GLStratomex.VIEW_TYPE,
+				embeddingID.id());
+
+		MultiFormRenderer multiFormRenderer = new MultiFormRenderer(stratomex, true);
+		List<TablePerspective> tablePerspectives = Lists.newArrayList(tablePerspective);
+
+		String brickEventSpace = GeneralManager.get().getEventPublisher().createUniqueEventSpace();
+		for (String viewID : remoteRenderedViewIDs) {
+			multiFormRenderer.addPluginVisualization(viewID, GLStratomex.VIEW_TYPE, embeddingID.id(),
+					tablePerspectives, brickEventSpace);
+		}
+		return multiFormRenderer;
 	}
 
 }

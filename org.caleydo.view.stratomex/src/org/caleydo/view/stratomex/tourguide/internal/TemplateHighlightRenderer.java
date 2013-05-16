@@ -17,35 +17,27 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.stratomex.tourguide;
+package org.caleydo.view.stratomex.tourguide.internal;
 
-import java.util.List;
+import java.awt.Color;
 
-import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.util.collection.Pair;
-import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
-import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormRenderer;
-import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
-
-import com.google.common.base.Predicate;
+import org.caleydo.core.util.color.Colors;
+import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
 
 /**
- * view of stratomex to the {@link AAddWizardElement}
- * 
  * @author Samuel Gratzl
- * 
+ *
  */
-public interface IStratomexAdapter {
-	void replaceTemplate(TablePerspective with, IBrickConfigurer configurer);
+public class TemplateHighlightRenderer extends ColorRenderer {
+	public TemplateHighlightRenderer() {
+		super(new float[] { 0.95f, .95f, .95f, 1.f });
+		setBorderColor(Colors.rgba(Color.DARK_GRAY));
+		setDrawBorder(true);
+	}
 
-	void replaceTemplate(ALayoutRenderer renderer);
+	@Override
+	protected boolean permitsWrappingDisplayLists() {
+		return true;
+	}
 
-	List<TablePerspective> getVisibleTablePerspectives();
-
-	void selectStratification(Predicate<TablePerspective> filter);
-
-	void selectGroup(Predicate<Pair<TablePerspective, Group>> filter);
-
-	MultiFormRenderer createPreviewRenderer(TablePerspective tablePerspective);
 }

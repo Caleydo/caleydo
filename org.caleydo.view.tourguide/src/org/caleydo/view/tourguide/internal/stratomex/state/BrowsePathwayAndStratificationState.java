@@ -19,10 +19,15 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.internal.stratomex.state;
 
+import javax.media.opengl.GL2;
+
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.view.opengl.layout.AForwardingRenderer;
+import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.view.stratomex.brick.configurer.PathwayDataConfigurer;
 import org.caleydo.view.stratomex.tourguide.event.UpdatePathwayPreviewEvent;
+import org.caleydo.view.tourguide.api.state.BrowsePathwayState;
 import org.caleydo.view.tourguide.api.state.ISelectReaction;
 import org.caleydo.view.tourguide.api.state.ISelectStratificationState;
 
@@ -35,7 +40,7 @@ public class BrowsePathwayAndStratificationState extends BrowsePathwayState impl
 	private PathwayGraph pathway;
 
 	public BrowsePathwayAndStratificationState() {
-		super("Select a pathway in the Tour Guide.");
+		super("Select a pathway in the Tour Guide and select a strafication to refer to.");
 	}
 
 	@Override
@@ -48,6 +53,7 @@ public class BrowsePathwayAndStratificationState extends BrowsePathwayState impl
 	public void onUpdate(UpdatePathwayPreviewEvent event, ISelectReaction adapter) {
 		pathway = event.getPathway();
 		if (underlying == null) {
+			// adapter.replaceTemplate(create)
 			// adapter.replaceTemplate();
 			// TODO show a custom block with the pathway in it
 			// TODO show a custom view with
@@ -72,5 +78,21 @@ public class BrowsePathwayAndStratificationState extends BrowsePathwayState impl
 	public void select(TablePerspective tablePerspective, ISelectReaction reactions) {
 		setUnderlying(tablePerspective.getRecordPerspective());
 		show(reactions);
+	}
+
+	private static class PreviewRenderer extends AForwardingRenderer {
+		public PreviewRenderer(ALayoutRenderer renderer) {
+			super(renderer);
+		}
+		@Override
+		public void setLimits(float x, float y) {
+			super.setLimits(x, y);
+			currentRenderer.setLimits(x, y);
+		}
+
+		@Override
+		protected void renderContent(GL2 gl) {
+			super.renderContent(gl);
+		}
 	}
 }

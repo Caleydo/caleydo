@@ -6,15 +6,15 @@ import java.util.Set;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.event.EventListenerManager.DeepScan;
+import org.caleydo.view.tourguide.api.state.BrowseNumericalState;
+import org.caleydo.view.tourguide.api.state.BrowsePathwayState;
+import org.caleydo.view.tourguide.api.state.BrowseStratificationState;
 import org.caleydo.view.tourguide.api.state.IState;
 import org.caleydo.view.tourguide.api.state.IStateMachine;
 import org.caleydo.view.tourguide.api.state.ITransition;
 import org.caleydo.view.tourguide.api.state.SimpleState;
 import org.caleydo.view.tourguide.api.state.SimpleTransition;
-import org.caleydo.view.tourguide.internal.stratomex.state.BrowseNumericalState;
 import org.caleydo.view.tourguide.internal.stratomex.state.BrowsePathwayAndStratificationState;
-import org.caleydo.view.tourguide.internal.stratomex.state.BrowsePathwayState;
-import org.caleydo.view.tourguide.internal.stratomex.state.BrowseStratificationState;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.BiMap;

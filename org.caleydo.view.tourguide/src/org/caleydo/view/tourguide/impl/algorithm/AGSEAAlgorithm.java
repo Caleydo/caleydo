@@ -106,14 +106,4 @@ public abstract class AGSEAAlgorithm implements IStratificationAlgorithm {
 			return underlying.computePValue(a.iterator().next(), monitor);
 		}
 	}
-
-	protected static class IntFloat {
-		private final int row;
-		private final float v;
-
-		public IntFloat(int row, float v) {
-			this.row = row;
-			this.v = v;
-		}
-	}
 }
