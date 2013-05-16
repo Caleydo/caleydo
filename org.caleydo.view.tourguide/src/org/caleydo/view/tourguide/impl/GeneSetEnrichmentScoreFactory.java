@@ -30,6 +30,7 @@ import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
 import org.caleydo.view.tourguide.api.compute.ComputeScoreFilters;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.score.DefaultComputedStratificationScore;
@@ -153,7 +154,8 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 
 		@Override
 		public boolean apply(Pair<TablePerspective, Group> pair) {
-			return isGoodDataDomain(pair.getFirst().getDataDomain());
+			return isGoodDataDomain(pair.getFirst().getDataDomain())
+					&& !(pair.getFirst() instanceof PathwayTablePerspective);
 		}
 
 		@Override

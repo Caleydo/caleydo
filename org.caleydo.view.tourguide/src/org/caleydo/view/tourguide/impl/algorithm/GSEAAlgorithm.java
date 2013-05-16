@@ -1,6 +1,7 @@
 package org.caleydo.view.tourguide.impl.algorithm;
 
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -16,7 +17,6 @@ import org.caleydo.core.util.collection.Pair;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import com.google.common.base.Stopwatch;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 public class GSEAAlgorithm extends AGSEAAlgorithm {
@@ -24,7 +24,7 @@ public class GSEAAlgorithm extends AGSEAAlgorithm {
 
 	private final float p; // An exponent p to control the weight of the step.
 	private final Map<Integer, Float> correlation = Maps.newLinkedHashMap();
-	private final List<Map<Integer, Float>> permutations = Lists.newArrayListWithExpectedSize(NPERM);
+	private List<Map<Integer, Float>> permutations;
 
 
 	public GSEAAlgorithm(Perspective perspective, Group group, float p) {
@@ -43,25 +43,33 @@ public class GSEAAlgorithm extends AGSEAAlgorithm {
 		if (monitor.isCanceled())
 			return;
 		this.correlation.putAll(rankedSet(inA));
-		if (monitor.isCanceled())
+		if (monitor.isCanceled()) {
+			correlation.clear();
 			return;
+		}
 
 		int sampleSize = inA.size();
 		List<Integer> base = new ArrayList<>(perspective.getVirtualArray().getIDs());
 
 		// Randomly assign the original phenotype labels to samples,reorder genes, and re-compute ES(S)
-		for (int i = 0; i < 10; ++i) {
-			if (monitor.isCanceled()) {
-				// undo initialization
-				correlation.clear();
-				permutations.clear();
-				return;
-			}
+		List<RankedSet> sets = new ArrayList<>(NPERM);
+		for (int i = 0; i < NPERM; ++i) {
 			// shuffle randomly the ids
 			Collections.shuffle(base);
 			// select the first sampleSize elements as new class labels
 			Collection<Integer> in = base.subList(0, sampleSize);
-			permutations.add(rankedSet(in));
+			sets.add(new RankedSet(in));
+		}
+
+		if (monitor.isCanceled()) {
+			// undo initialization
+			correlation.clear();
+			return;
+		}
+
+		permutations = rankedSet(sets, monitor);
+		if (monitor.isCanceled()) {
+			correlation.clear();
 		}
 	}
 
@@ -114,6 +122,70 @@ public class GSEAAlgorithm extends AGSEAAlgorithm {
 			correlation.put(entry.getFirst(), entry.getSecond());
 		System.out.println(w);
 		return correlation;
+	}
+
+	private List<Map<Integer, Float>> rankedSet(List<RankedSet> sets, IProgressMonitor monitor) {
+		Stopwatch w = new Stopwatch().start();
+
+		ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) perspective.getDataDomain();
+		Table table = dataDomain.getTable();
+
+		List<Integer> rows = perspective.getVirtualArray().getIDs();
+		List<Integer> cols = table.getDefaultDimensionPerspective().getVirtualArray().getIDs();
+
+		for (Integer col : cols) {
+			for (Integer row : rows) {
+				Float v = table.getNormalizedValue(col, row);
+				if (v == null || v.isNaN() || v.isInfinite())
+					continue;
+				for (RankedSet s : sets)
+					s.add(row, v);
+			}
+			for (RankedSet s : sets)
+				s.flush(col);
+			if (monitor.isCanceled())
+				return null;
+		}
+		List<Map<Integer, Float>> rs = new ArrayList<>(sets.size());
+		for (RankedSet s : sets)
+			rs.add(s.correlation);
+		System.out.println(w);
+		return rs;
+	}
+
+	private static class RankedSet {
+		// mean of the expressions level of the samples for the given gen.
+		private float asum = 0;
+		private int acount = 0;
+		private float bsum = 0;
+		private int bcount = 0;
+
+		private final BitSet inA;
+		private final Map<Integer, Float> correlation = Maps.newTreeMap();
+
+		public RankedSet(Collection<Integer> inA) {
+			this.inA = new BitSet(inA.size());
+			for (Integer v : inA)
+				this.inA.set(v);
+		}
+		public void add(Integer row, float v) {
+			if (inA.get(row)) {
+				asum += v;
+				acount++;
+				// avalues.add(v);
+			} else {
+				bsum += v;
+				bcount++;
+				// bvalues.add(v);
+			}
+		}
+
+		public void flush(int col) {
+			// now some kind of correlation between the two
+			correlation.put(col, (asum / acount) / (bsum / bcount));// correlationOf(avalues, bvalues)));
+			asum = acount = 0;
+			bsum = bcount = 0;
+		}
 	}
 
 	@Override
