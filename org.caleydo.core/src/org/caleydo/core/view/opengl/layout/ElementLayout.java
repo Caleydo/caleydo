@@ -208,7 +208,6 @@ public class ElementLayout implements Comparable<ElementLayout> {
 				foregroundRenderer.destroy(gl);
 			}
 			foregroundRenderers.clear();
-			backgroundRenderers = null;
 		}
 
 		if (backgroundRenderers != null) {
@@ -216,7 +215,6 @@ public class ElementLayout implements Comparable<ElementLayout> {
 				foregroundRenderer.destroy(gl);
 			}
 			backgroundRenderers.clear();
-			backgroundRenderers = null;
 		}
 
 	}
@@ -466,6 +464,10 @@ public class ElementLayout implements Comparable<ElementLayout> {
 	public void addBackgroundRenderer(ALayoutRenderer renderer) {
 		backgroundRenderers.add(renderer);
 		renderer.setElementLayout(this);
+	}
+
+	public void removeBackgroundRenderer(ALayoutRenderer renderer) {
+		backgroundRenderers.remove(renderer);
 	}
 
 	public List<ALayoutRenderer> getBackgroundRenderer() {

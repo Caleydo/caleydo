@@ -50,7 +50,7 @@ public class AddGroupsToStratomexListener extends AEventListener<GLStratomex> {
 			AddGroupsToStratomexEvent addGroupsToStratomexEvent = (AddGroupsToStratomexEvent) event;
 			if (addGroupsToStratomexEvent.getReceiver() == handler) {
 				handler.addTablePerspectives(addGroupsToStratomexEvent.getTablePerspectives(),
-						addGroupsToStratomexEvent.getDataConfigurer());
+						addGroupsToStratomexEvent.getDataConfigurer(), addGroupsToStratomexEvent.getSourceColumn());
 			}
 		}
 
@@ -60,14 +60,14 @@ public class AddGroupsToStratomexListener extends AEventListener<GLStratomex> {
 				TablePerspective underlying = e.getUnderlying();
 				TablePerspective kaplan = e.getTablePerspectives().get(0);
 				ClinicalDataConfigurer dataConfigurer = createKaplanConfigurer(handler, underlying, kaplan);
-				handler.addTablePerspectives(e.getTablePerspectives(), dataConfigurer);
+				handler.addTablePerspectives(e.getTablePerspectives(), dataConfigurer, null);
 			}
 		}
 
 		else if (event instanceof AddTablePerspectivesEvent) {
 			AddTablePerspectivesEvent addTablePerspectivesEvent = (AddTablePerspectivesEvent) event;
 			if (addTablePerspectivesEvent.getReceiver() == handler) {
-				handler.addTablePerspectives(addTablePerspectivesEvent.getTablePerspectives(), null);
+				handler.addTablePerspectives(addTablePerspectivesEvent.getTablePerspectives(), null, null);
 			}
 		}
 	}
@@ -80,7 +80,7 @@ public class AddGroupsToStratomexListener extends AEventListener<GLStratomex> {
 			// dependent sorting
 			dataConfigurer = new ClinicalDataConfigurer();
 			ExternallyProvidedSortingStrategy sortingStrategy = new ExternallyProvidedSortingStrategy();
-			sortingStrategy.setExternalBricks(brickColumn.getBricks());
+			sortingStrategy.setExternalBricks(brickColumn.getSegmentBricks());
 			HashMap<Perspective, Perspective> m = Maps.newHashMap();
 			m.put(kaplan.getRecordPerspective(), underlying.getRecordPerspective());
 			sortingStrategy.setHashConvertedRecordPerspectiveToOrginalRecordPerspective(m);

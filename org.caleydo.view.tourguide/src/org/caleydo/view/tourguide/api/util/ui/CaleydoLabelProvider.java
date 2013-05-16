@@ -19,7 +19,7 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.api.util.ui;
 
-import org.caleydo.core.util.base.ILabelProvider;
+import org.caleydo.core.util.base.ILabeled;
 
 /**
  * @author Samuel Gratzl
@@ -28,8 +28,8 @@ import org.caleydo.core.util.base.ILabelProvider;
 public class CaleydoLabelProvider extends org.eclipse.jface.viewers.LabelProvider {
 	@Override
 	public String getText(Object element) {
-		if (element instanceof ILabelProvider) {
-			return ((ILabelProvider) element).getLabel();
+		if (element instanceof ILabeled) {
+			return ((ILabeled) element).getLabel();
 		}
 		return super.getText(element);
 	}

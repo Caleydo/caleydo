@@ -19,9 +19,16 @@
  *******************************************************************************/
 package org.caleydo.core.io.gui.dataimport.widget;
 
+import java.util.regex.PatternSyntaxException;
+
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.io.IDTypeParsingRules;
+import org.caleydo.core.io.parser.ascii.ATextParser;
+import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
@@ -66,11 +73,23 @@ public class IDParsingRulesWidget {
 	 */
 	protected Button useRegExButton;
 
+	/**
+	 * Button to specify whether the ids shall be transformed to upper case.
+	 */
+	protected Button toUpperCaseButton;
+
 	protected Label replacementRegExLabel;
 	protected Label replacementStringLabel;
 	protected Label substringRegExLabel;
 	protected Label substringExplanationLabel;
 	protected Label replacementExplanationLabel;
+	protected Label previewLabel;
+	protected Label errorImage;
+	protected Label errorLabel;
+
+	protected String idSample;
+
+	protected final ICallback<Boolean> validRegExCallback;
 
 	/**
 	 * @param parent
@@ -78,9 +97,16 @@ public class IDParsingRulesWidget {
 	 *            Template that is used to fill the widgets. May be null.
 	 * @param showEnableButton
 	 *            Determines, whether a checkbox is displayed that enables/disables all widgets.
+	 * @param idSample
+	 *            Sample id that shall be used to preview effects of regular expressions.
+	 * @param validRegExCallback
+	 *            Called when the inserted regular expression is valid or not valid. This can be used to disable buttons
+	 *            external to this widget when the inserted regex is not valid.
 	 */
 	public IDParsingRulesWidget(Composite parent, IDTypeParsingRules templateIdTypeParsingRules,
-			boolean showEnableButton) {
+			boolean showEnableButton, String idSample, ICallback<Boolean> validRegExCallback) {
+		this.idSample = idSample;
+		this.validRegExCallback = validRegExCallback;
 
 		final Group regExGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
 		regExGroup.setText("Regular expressions");
@@ -102,6 +128,24 @@ public class IDParsingRulesWidget {
 			});
 		}
 
+		ModifyListener regexModifyListener = new ModifyListener() {
+
+			@Override
+			public void modifyText(ModifyEvent e) {
+				updatePreview();
+
+			}
+		};
+
+		toUpperCaseButton = new Button(regExGroup, SWT.CHECK);
+		toUpperCaseButton.setText("To upper case");
+		toUpperCaseButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				updatePreview();
+			}
+		});
+
 		replacementExplanationLabel = new Label(regExGroup, SWT.WRAP);
 		replacementExplanationLabel
 				.setText("In order to convert the IDs of a data file into a format that can be mapped by Caleydo, regular expressions "
@@ -122,12 +166,14 @@ public class IDParsingRulesWidget {
 		GridData replacementTextFieldsGridData = new GridData(SWT.FILL, SWT.FILL, true, true);
 		replacementTextFieldsGridData.widthHint = 150;
 		replacementRegExTextField.setLayoutData(replacementTextFieldsGridData);
+		replacementRegExTextField.addModifyListener(regexModifyListener);
 
 		replacementStringLabel = new Label(regExGroup, SWT.NONE);
 		replacementStringLabel.setText("with");
 
 		replacementStringTextField = new Text(regExGroup, SWT.BORDER);
 		replacementStringTextField.setLayoutData(replacementTextFieldsGridData);
+		replacementStringTextField.addModifyListener(regexModifyListener);
 
 		substringExplanationLabel = new Label(regExGroup, SWT.WRAP);
 		substringExplanationLabel
@@ -145,6 +191,20 @@ public class IDParsingRulesWidget {
 
 		substringRegExTextField = new Text(regExGroup, SWT.BORDER);
 		substringRegExTextField.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 3, 1));
+		substringRegExTextField.addModifyListener(regexModifyListener);
+
+		if (idSample != null) {
+			gridData = new GridData(SWT.FILL, SWT.FILL, true, true, 4, 1);
+			previewLabel = new Label(regExGroup, SWT.NONE);
+			previewLabel.setLayoutData(gridData);
+		}
+
+		errorImage = new Label(parent, SWT.NONE);
+		errorImage.setImage(JFaceResources.getImage(Dialog.DLG_IMG_MESSAGE_ERROR));
+		errorImage.setVisible(false);
+		errorLabel = new Label(parent, SWT.NONE);
+		errorLabel.setText("Invalid regular expression.");
+		errorLabel.setVisible(false);
 
 		fillWidgets(templateIdTypeParsingRules);
 	}
@@ -155,21 +215,55 @@ public class IDParsingRulesWidget {
 	 * @param idTypeParsingRules
 	 */
 	private void fillWidgets(IDTypeParsingRules idTypeParsingRules) {
-		if (idTypeParsingRules == null)
-			return;
+		if (idTypeParsingRules != null) {
 
-		String[] replacingExpressions = idTypeParsingRules.getReplacingExpressions();
-		if (replacingExpressions != null && replacingExpressions.length >= 1 && replacingExpressions[0] != null) {
-			replacementRegExTextField.setText(replacingExpressions[0]);
+			String[] replacingExpressions = idTypeParsingRules.getReplacingExpressions();
+			if (replacingExpressions != null && replacingExpressions.length >= 1 && replacingExpressions[0] != null) {
+				replacementRegExTextField.setText(replacingExpressions[0]);
+			}
+			String replacementString = idTypeParsingRules.getReplacementString();
+			if (replacementString != null) {
+				replacementStringTextField.setText(replacementString);
+			}
+			String subStringExpression = idTypeParsingRules.getSubStringExpression();
+			if (subStringExpression != null) {
+				substringRegExTextField.setText(subStringExpression);
+			}
 		}
-		String replacementString = idTypeParsingRules.getReplacementString();
-		if (replacementString != null) {
-			replacementStringTextField.setText(replacementString);
+		updatePreview();
+	}
+
+	private void updatePreview() {
+		if (idSample == null)
+			return;
+		try {
+			String idPreview = ATextParser.convertID(idSample, getIDTypeParsingRules());
+			previewLabel.setText("Preview: " + idSample + "->" + idPreview);
+			if (errorImage.isVisible()) {
+				errorImage.setVisible(false);
+				errorLabel.setVisible(false);
+				validRegExCallback.on(true);
+			}
+		} catch (PatternSyntaxException e) {
+			// it can happen, that a regex is not valid during entering a value...
+			if (!errorImage.isVisible()) {
+				errorImage.setVisible(true);
+				errorLabel.setVisible(true);
+				validRegExCallback.on(false);
+			}
 		}
-		String subStringExpression = idTypeParsingRules.getSubStringExpression();
-		if (subStringExpression != null) {
-			substringRegExTextField.setText(subStringExpression);
-		}
+	}
+
+	/**
+	 * Creates parsing rules specified by the gui elements of this widget.
+	 */
+	public IDTypeParsingRules getIDTypeParsingRules() {
+		IDTypeParsingRules idTypeParsingRules = new IDTypeParsingRules();
+		idTypeParsingRules.setToUpperCase(toUpperCaseButton.getSelection());
+		idTypeParsingRules.setReplacementExpression(replacementStringTextField.getText(),
+				replacementRegExTextField.getText());
+		idTypeParsingRules.setSubStringExpression(getSubStringExpression());
+		return idTypeParsingRules;
 	}
 
 	/**
@@ -186,6 +280,8 @@ public class IDParsingRulesWidget {
 		substringRegExLabel.setEnabled(enabled);
 		substringExplanationLabel.setEnabled(enabled);
 		replacementExplanationLabel.setEnabled(enabled);
+		previewLabel.setEnabled(enabled);
+		toUpperCaseButton.setEnabled(enabled);
 	}
 
 	/**
@@ -195,24 +291,24 @@ public class IDParsingRulesWidget {
 		return useRegExButton.getSelection();
 	}
 
-	/**
-	 * @return The replacing expression entered by the user. Null will be returned in case of an empty string.
-	 */
-	public String getReplacingExpression() {
-		return replacementRegExTextField.getText().equals("") ? null : replacementRegExTextField.getText();
-	}
-
-	/**
-	 * @return The replacement string entered by the user.
-	 */
-	public String getReplacementString() {
-		return replacementStringTextField.getText();
-	}
+	// /**
+	// * @return The replacing expression entered by the user. Null will be returned in case of an empty string.
+	// */
+	// private String getReplacingExpression() {
+	// return replacementRegExTextField.getText().equals("") ? null : replacementRegExTextField.getText();
+	// }
+	//
+	// /**
+	// * @return The replacement string entered by the user.
+	// */
+	// private String getReplacementString() {
+	// return replacementStringTextField.getText();
+	// }
 
 	/**
 	 * @return The substring expression entered by te user. Null will be returned in case of an empty string.
 	 */
-	public String getSubStringExpression() {
+	private String getSubStringExpression() {
 		return substringRegExTextField.getText().equals("") ? null : substringRegExTextField.getText();
 	}
 

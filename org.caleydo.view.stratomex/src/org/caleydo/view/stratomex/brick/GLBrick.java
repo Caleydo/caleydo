@@ -27,6 +27,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
@@ -35,6 +36,8 @@ import org.caleydo.core.data.collection.table.TableUtils;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
+import org.caleydo.core.data.selection.EventBasedSelectionManager;
+import org.caleydo.core.data.selection.IEventBasedSelectionManagerUser;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
@@ -47,6 +50,7 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.contextmenu.ContextMenuCreator;
+import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
@@ -96,12 +100,12 @@ import org.caleydo.view.stratomex.dialog.CreatePathwayComparisonGroupDialog;
 import org.caleydo.view.stratomex.dialog.CreatePathwaySmallMultiplesGroupDialog;
 import org.caleydo.view.stratomex.event.AddGroupsToStratomexEvent;
 import org.caleydo.view.stratomex.event.ExportBrickDataEvent;
+import org.caleydo.view.stratomex.event.MergeBricksEvent;
 import org.caleydo.view.stratomex.event.OpenCreateKaplanMeierSmallMultiplesGroupDialogEvent;
 import org.caleydo.view.stratomex.event.OpenCreatePathwayGroupDialogEvent;
 import org.caleydo.view.stratomex.event.OpenCreatePathwaySmallMultiplesGroupDialogEvent;
 import org.caleydo.view.stratomex.event.RenameEvent;
 import org.caleydo.view.stratomex.listener.ExportBrickDataEventListener;
-import org.caleydo.view.stratomex.listener.HighlightBrickEventListener;
 import org.caleydo.view.stratomex.listener.OpenCreateKaplanMeierSmallMultiplesGroupDialogListener;
 import org.caleydo.view.stratomex.listener.OpenCreatePathwayGroupDialogListener;
 import org.caleydo.view.stratomex.listener.OpenCreatePathwaySmallMultiplesGroupDialogListener;
@@ -125,7 +129,7 @@ import org.eclipse.ui.PlatformUI;
  *
  */
 public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, ILayoutedElement, IDraggable,
-		IMultiFormChangeListener {
+		IMultiFormChangeListener, IEventBasedSelectionManagerUser {
 
 	public static String VIEW_TYPE = "org.caleydo.view.brick";
 	public static String VIEW_NAME = "Brick";
@@ -246,8 +250,8 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	private BrickColumn brickColumn;
 
-	private SelectionManager tablePerspectiveSelectionManager;
-	private SelectionManager recordGroupSelectionManager;
+	private EventBasedSelectionManager tablePerspectiveSelectionManager;
+	private EventBasedSelectionManager recordGroupSelectionManager;
 
 	private boolean isInOverviewMode = false;
 	private float previousXCoordinate = Float.NaN;
@@ -265,7 +269,6 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 	private IBrickConfigurer brickConfigurer;
 
 	private final Collection<IContextMenuBrickFactory> contextMenuFactories;
-	private HighlightBrickEventListener highlightListener;
 
 	public GLBrick(IGLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
 		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
@@ -294,8 +297,11 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 	@Override
 	public void initialize() {
 		super.initialize();
-		tablePerspectiveSelectionManager = new SelectionManager(TablePerspective.DATA_CONTAINER_IDTYPE);
-		recordGroupSelectionManager = dataDomain.cloneRecordGroupSelectionManager().clone();
+		tablePerspectiveSelectionManager = new EventBasedSelectionManager(this, TablePerspective.DATA_CONTAINER_IDTYPE);
+		tablePerspectiveSelectionManager.registerEventListeners();
+		recordGroupSelectionManager = new EventBasedSelectionManager(this, dataDomain.getRecordGroupIDType());
+		recordGroupSelectionManager.registerEventListeners();
+		// dataDomain.cloneRecordGroupSelectionManager().clone();
 
 		if (brickLayoutConfiguration == null) {
 			brickLayoutConfiguration = new DefaultBrickLayoutTemplate(this, brickColumn, stratomex);
@@ -372,7 +378,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	}
 
-	private void selectElementsByGroup() {
+	private void selectElementsByGroup(boolean select) {
 
 		// Select all elements in group with special type
 
@@ -391,8 +397,11 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 		VirtualArray va = tablePerspective.getRecordPerspective().getVirtualArray();
 
 		for (Integer recordID : va) {
-			recordSelectionManager.addToType(selectedByGroupSelectionType, va.getIdType(), recordID);// va.getIdType(),
-																										// recordID);
+			if (select) {
+				recordSelectionManager.addToType(selectedByGroupSelectionType, va.getIdType(), recordID);// va.getIdType(),
+			} else {
+				recordSelectionManager.removeFromType(selectedByGroupSelectionType, va.getIdType(), recordID);
+			} // recordID);
 		}
 
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
@@ -428,6 +437,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 		gl.glPushName(getPickingManager().getPickingID(getID(), EPickingType.BRICK.name(), getID()));
 		gl.glColor4f(1.0f, 0.0f, 0.0f, 0.5f);
 		gl.glTranslatef(0, 0, 0.1f);
+
 		gl.glBegin(GL2.GL_QUADS);
 
 		float zpos = 0f;
@@ -437,6 +447,8 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 		gl.glVertex3f(wrappingLayout.getSizeScaledX(), wrappingLayout.getSizeScaledY(), zpos);
 		gl.glVertex3f(0, wrappingLayout.getSizeScaledY(), zpos);
 		gl.glEnd();
+
+
 		gl.glPopName();
 		gl.glPopName();
 
@@ -446,6 +458,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 		gl.glCallList(baseDisplayListIndex);
 
+		gl.glTranslatef(0, 0, -0.1f);
 	}
 
 	@Override
@@ -774,6 +787,8 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 			renameListener = null;
 		}
 
+		tablePerspectiveSelectionManager.unregisterEventListeners();
+		recordGroupSelectionManager.unregisterEventListeners();
 		// if (brickLayout.getViewRenderer() instanceof IMouseWheelHandler) {
 		// visBricks
 		// .unregisterRemoteViewMouseWheelListener((IMouseWheelHandler)
@@ -790,12 +805,6 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 			eventPublisher.removeListener(exportBrickDataEventListener);
 			exportBrickDataEventListener = null;
 		}
-
-		if (highlightListener != null) {
-			eventPublisher.removeListener(highlightListener);
-			highlightListener = null;
-		}
-
 	}
 
 	private void registerPickingListeners() {
@@ -806,33 +815,55 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 			public void clicked(Pick pick) {
 
 				SelectionType currentSelectionType = tablePerspectiveSelectionManager.getSelectionType();
-				tablePerspectiveSelectionManager.clearSelection(currentSelectionType);
+				if (!stratomex.getKeyListener().isCtrlDown()) {
+					tablePerspectiveSelectionManager.clearSelection(currentSelectionType);
+					// System.out.println("clear");
+				}
+				boolean select = true;
+				if (tablePerspectiveSelectionManager.checkStatus(tablePerspectiveSelectionManager.getSelectionType(),
+						tablePerspective.getID())) {
+					tablePerspectiveSelectionManager.removeFromType(currentSelectionType, tablePerspective.getID());
+					brickLayoutConfiguration.setSelected(false);
+					select = false;
+				} else {
+					tablePerspectiveSelectionManager.addToType(currentSelectionType, tablePerspective.getID());
+					brickLayoutConfiguration.setSelected(true);
+				}
+				tablePerspectiveSelectionManager.triggerSelectionUpdateEvent();
 
-				tablePerspectiveSelectionManager.addToType(currentSelectionType, tablePerspective.getID());
+				layoutManager.updateLayout();
 
-				SelectionUpdateEvent event = new SelectionUpdateEvent();
-				event.setEventSpace(getDataDomain().getDataDomainID());
-				event.setSender(this);
-				SelectionDelta delta = tablePerspectiveSelectionManager.getDelta();
-				event.setSelectionDelta(delta);
-				GeneralManager.get().getEventPublisher().triggerEvent(event);
+				// SelectionUpdateEvent event = new SelectionUpdateEvent();
+				// event.setEventSpace(getDataDomain().getDataDomainID());
+				// event.setSender(this);
+				// SelectionDelta delta = tablePerspectiveSelectionManager.getDelta();
+				// event.setSelectionDelta(delta);
+				// GeneralManager.get().getEventPublisher().triggerEvent(event);
 
 				if (tablePerspective.getRecordGroup() != null) {
 					SelectionType currentRecordGroupSelectionType = recordGroupSelectionManager.getSelectionType();
-					recordGroupSelectionManager.clearSelection(currentRecordGroupSelectionType);
+					if (!stratomex.getKeyListener().isCtrlDown())
+						recordGroupSelectionManager.clearSelection(currentRecordGroupSelectionType);
 
-					recordGroupSelectionManager.addToType(currentRecordGroupSelectionType, tablePerspective
-							.getRecordGroup().getID());
+					if (recordGroupSelectionManager.checkStatus(recordGroupSelectionManager.getSelectionType(),
+							tablePerspective.getRecordGroup().getID())) {
+						recordGroupSelectionManager.removeFromType(currentRecordGroupSelectionType, tablePerspective
+								.getRecordGroup().getID());
+					} else {
+						recordGroupSelectionManager.addToType(currentRecordGroupSelectionType, tablePerspective
+								.getRecordGroup().getID());
+					}
+					recordGroupSelectionManager.triggerSelectionUpdateEvent();
 
-					event = new SelectionUpdateEvent();
-					event.setEventSpace(getDataDomain().getDataDomainID());
-					event.setSender(this);
-					delta = recordGroupSelectionManager.getDelta();
-					event.setSelectionDelta(delta);
-					GeneralManager.get().getEventPublisher().triggerEvent(event);
+					// event = new SelectionUpdateEvent();
+					// event.setEventSpace(getDataDomain().getDataDomainID());
+					// event.setSender(this);
+					// delta = recordGroupSelectionManager.getDelta();
+					// event.setSelectionDelta(delta);
+					// GeneralManager.get().getEventPublisher().triggerEvent(event);
 				}
 
-				selectElementsByGroup();
+				selectElementsByGroup(select);
 
 				if (!isHeaderBrick && !(brickLayoutConfiguration instanceof DetailBrickLayoutTemplate)) {
 					Point point = pick.getPickedPoint();
@@ -856,6 +887,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 				contextMenuCreator.addContextMenuItem(new RenameBrickItem(getID()));
 				contextMenuCreator.addContextMenuItem(new RemoveColumnItem(stratomex, getBrickColumn()
 						.getTablePerspective()));
+
 				contextMenuCreator.addContextMenuItem(new ExportBrickDataItem(GLBrick.this, false));
 				contextMenuCreator.addContextMenuItem(new ExportBrickDataItem(GLBrick.this, true));
 
@@ -876,6 +908,24 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 					for (IContextMenuBrickFactory factory : contextMenuFactories)
 						for (AContextMenuItem item : factory.createGroupEntries(brickColumn, tablePerspective))
 							contextMenuCreator.addContextMenuItem(item);
+
+					Set<Integer> tablePerspectiveIDs = tablePerspectiveSelectionManager
+							.getElements(tablePerspectiveSelectionManager.getSelectionType());
+					// only consider tableperspective of currently selected bricks of the same column
+					List<GLBrick> bricks = new ArrayList<>();
+					for (GLBrick brick : brickColumn.getSegmentBricks()) {
+						for (Integer id : tablePerspectiveIDs) {
+							if ((brick.getTablePerspective().getID() == id || brick == GLBrick.this)
+									&& !brick.isHeaderBrick() && !(bricks.contains(brick))) {
+								bricks.add(brick);
+							}
+						}
+					}
+					if (bricks.size() > 1) {
+						MergeBricksEvent event = new MergeBricksEvent(bricks);
+						event.to(stratomex);
+						contextMenuCreator.add(new GenericContextMenuItem("Merge selected bricks", event));
+					}
 
 					// FIXME: if added, this line causes the context menu on the bricks to not appear
 					// selectElementsByGroup();
@@ -958,23 +1008,25 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	@Override
 	public void handleSelectionUpdate(SelectionDelta selectionDelta) {
-		if (selectionDelta.getIDType() == tablePerspectiveSelectionManager.getIDType()) {
-			tablePerspectiveSelectionManager.setDelta(selectionDelta);
-
-			if (tablePerspectiveSelectionManager.checkStatus(tablePerspectiveSelectionManager.getSelectionType(),
-					tablePerspective.getID())) {
-				// brickLayout.setShowHandles(true);
-				brickLayoutConfiguration.setSelected(true);
-				stratomex.updateConnectionLinesBetweenColumns();
-			} else {
-				brickLayoutConfiguration.setSelected(false);
-				// brickLayout.setShowHandles(false);
-			}
-			// }
-			layoutManager.updateLayout();
-		} else if (selectionDelta.getIDType() == recordGroupSelectionManager.getIDType()) {
-			recordGroupSelectionManager.setDelta(selectionDelta);
-		}
+		// if (selectionDelta.getIDType() == tablePerspectiveSelectionManager.getIDType()) {
+		// tablePerspectiveSelectionManager.setDelta(selectionDelta);
+		// // System.out.println(selectionDelta);
+		// if (tablePerspectiveSelectionManager.checkStatus(tablePerspectiveSelectionManager.getSelectionType(),
+		// tablePerspective.getID())) {
+		// // brickLayout.setShowHandles(true);
+		// // System.out.println("SELECTED " + getLabel());
+		// brickLayoutConfiguration.setSelected(true);
+		// stratomex.updateConnectionLinesBetweenColumns();
+		// } else {
+		// // System.out.println("DESELECTED " + getLabel());
+		// brickLayoutConfiguration.setSelected(false);
+		// // brickLayout.setShowHandles(false);
+		// }
+		// // }
+		// layoutManager.updateLayout();
+		// } else if (selectionDelta.getIDType() == recordGroupSelectionManager.getIDType()) {
+		// recordGroupSelectionManager.setDelta(selectionDelta);
+		// }
 	}
 
 	/**
@@ -1121,6 +1173,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 					for (PathwayTablePerspective pathwayTablePerspective : pathwayTablePerspectives) {
 
 						AddGroupsToStratomexEvent event = new AddGroupsToStratomexEvent(pathwayTablePerspective);
+						event.setSourceColumn(getBrickColumn());
 						event.setDataConfigurer(new PathwayDataConfigurer());
 						event.setSender(this);
 						event.setReceiver(stratomex);
@@ -1160,10 +1213,11 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 						ClinicalDataConfigurer dataConfigurer = new ClinicalDataConfigurer();
 						ExternallyProvidedSortingStrategy sortingStrategy = new ExternallyProvidedSortingStrategy();
-						sortingStrategy.setExternalBricks(brickColumn.getBricks());
+						sortingStrategy.setExternalBricks(brickColumn.getSegmentBricks());
 						sortingStrategy.setHashConvertedRecordPerspectiveToOrginalRecordPerspective(dialog
 								.getHashConvertedRecordPerspectiveToOrginalRecordPerspective());
 						dataConfigurer.setSortingStrategy(sortingStrategy);
+						event.setSourceColumn(getBrickColumn());
 						event.setDataConfigurer(dataConfigurer);
 						event.setSender(this);
 						event.setReceiver(stratomex);
@@ -1204,6 +1258,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 					PathwayDimensionGroupData pathwayDimensionGroupData = dialog.getPathwayDimensionGroupData();
 
 					AddGroupsToStratomexEvent event = new AddGroupsToStratomexEvent(pathwayDimensionGroupData);
+					event.setSourceColumn(getBrickColumn());
 					event.setSender(stratomex);
 					eventPublisher.triggerEvent(event);
 				}
@@ -1347,6 +1402,15 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 					if (exportIdentifiersOnly) {
 						Perspective dimensionPerspective = new Perspective();
 						dimensionPerspective.setVirtualArray(new VirtualArray(dataDomain.getDimensionIDType()));
+						// Perspective recordPerspective = new Perspective(dataDomain, dataDomain.getRecordIDType());
+						// PerspectiveInitializationData recordPerspectiveInitData = new
+						// PerspectiveInitializationData();
+						// List<Integer> allIDs = new ArrayList<>(tablePerspective.getRecordPerspective()
+						// .getVirtualArray().getIDs());
+						// recordPerspectiveInitData.setData(allIDs);
+						// recordPerspective.init(recordPerspectiveInitData);
+						// TableUtils.export(dataDomain, fileName, recordPerspective, dimensionPerspective, null, null,
+						// false);
 						TableUtils.export(dataDomain, fileName, tablePerspective.getRecordPerspective(),
 								dimensionPerspective, null, null, false);
 					} else {
@@ -1479,5 +1543,29 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 	 */
 	public int getActiveRendererID() {
 		return multiFormRenderer.getActiveRendererID();
+	}
+
+	@Override
+	public void notifyOfSelectionChange(EventBasedSelectionManager selectionManager) {
+		if (selectionManager == tablePerspectiveSelectionManager) {
+			// tablePerspectiveSelectionManager.setDelta(selectionDelta);
+			// System.out.println(selectionDelta);
+
+			// if (tablePerspectiveSelectionManager.checkStatus(tablePerspectiveSelectionManager.getSelectionType(),
+			// tablePerspective.getID())) {
+			if (tablePerspectiveSelectionManager.getElements(tablePerspectiveSelectionManager.getSelectionType())
+					.contains(tablePerspective.getID())) {
+				// brickLayout.setShowHandles(true);
+				// System.out.println("SELECTED " + getLabel());
+				brickLayoutConfiguration.setSelected(true);
+				stratomex.updateConnectionLinesBetweenColumns();
+			} else {
+				// System.out.println("DESELECTED " + getLabel());
+				brickLayoutConfiguration.setSelected(false);
+				// brickLayout.setShowHandles(false);
+			}
+			// }
+			layoutManager.updateLayout();
+		}
 	}
 }

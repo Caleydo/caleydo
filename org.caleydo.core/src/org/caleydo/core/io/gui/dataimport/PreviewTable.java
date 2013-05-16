@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.core.io.gui.dataimport;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -60,7 +61,6 @@ public class PreviewTable {
 
 	private final IPreviewCallback previewCallback;
 
-
 	public PreviewTable(Composite parent, MatrixDefinition spec, IPreviewCallback previewCallback) {
 		this.spec = spec;
 		this.previewCallback = previewCallback;
@@ -81,36 +81,49 @@ public class PreviewTable {
 		});
 		this.selectAllNone.setEnabled(false);
 
-		previewTable = new PreviewTableWidget(parent, new BooleanCallback() {
-			@Override
-			public void on(boolean data) {
-				onShowAllColumns(data);
-			}
-		});
+		previewTable = new PreviewTableWidget(parent);
+		// , new BooleanCallback() {
+		// @Override
+		// public void on(boolean data) {
+		// onShowAllColumns(data);
+		// }
+		// });
 	}
 
 	/**
 	 * Creates the preview table from the file specified by {@link #groupingParseSpecification}. Widgets of the
 	 * {@link #dialog} are updated accordingly.
 	 *
-	 * @param showOnlyPreviewColumns
-	 *            Determines whether {@link #MAX_PREVIEW_TABLE_COLUMNS}, or all columns of the file are shown.
 	 */
-	public void createDataPreviewTableFromFile(boolean showOnlyPreviewColumns) {
+	public void createDataPreviewTableFromFile() {
 		parser.parse(spec.getDataSourcePath(), spec.getDelimiter(), false, PreviewTableWidget.MAX_PREVIEW_TABLE_ROWS);
 		dataMatrix = parser.getDataMatrix();
 		totalNumberOfColumns = parser.getTotalNumberOfColumns();
-		this.previewTable.createDataPreviewTableFromDataMatrix(dataMatrix,
-				showOnlyPreviewColumns ? PreviewTableWidget.MAX_PREVIEW_TABLE_COLUMNS : totalNumberOfColumns);
-		previewCallback.on(totalNumberOfColumns,  parser.getTotalNumberOfRows(), dataMatrix);
-		previewTable.updateVisibleColumns(totalNumberOfColumns);
+		this.previewTable.createDataPreviewTableFromDataMatrix(dataMatrix, totalNumberOfColumns);
+		previewCallback.on(totalNumberOfColumns, parser.getTotalNumberOfRows(), dataMatrix);
+		// previewTable.updateVisibleColumns(totalNumberOfColumns);
 		this.previewTable.updateTableColors(spec.getNumberOfHeaderLines(), -1, spec.getColumnOfRowIds());
 	}
 
 	public Collection<Integer> getSelectedColumns() {
-		return previewTable.getSelectedColumns();
+		ArrayList<Integer> columns = new ArrayList<>(previewTable.getSelectedColumns());
+
+		if (columns.get(columns.size() - 1) == -1) {
+			columns.remove(columns.size() - 1);
+			int from = previewTable.getColumnCount(); // everything before was directly selected
+			int to = this.totalNumberOfColumns; // all possible
+			for (int i = from; i < to; ++i) {
+				columns.add(i);
+			}
+		}
+		return columns;
 	}
 
+	public String getValue(int rowIndex, int columnIndex) {
+		if (previewTable == null)
+			return null;
+		return previewTable.getValue(rowIndex, columnIndex);
+	}
 
 	/**
 	 * @param selectedColumns
@@ -120,23 +133,24 @@ public class PreviewTable {
 		this.delimeter.setEnabled(true);
 		this.selectAllNone.setEnabled(true);
 
-		int maxColumnIndex = 0;
-		for (Integer columnIndex : selectedColumns) {
-			if (columnIndex > maxColumnIndex)
-				maxColumnIndex = columnIndex;
-		}
-		if (maxColumnIndex + 1 > PreviewTableWidget.MAX_PREVIEW_TABLE_COLUMNS) {
-			createDataPreviewTableFromFile(false);
-		} else {
-			createDataPreviewTableFromFile(true);
-		}
+		createDataPreviewTableFromFile();
+		// int maxColumnIndex = 0;
+		// for (Integer columnIndex : selectedColumns) {
+		// if (columnIndex > maxColumnIndex)
+		// maxColumnIndex = columnIndex;
+		// }
+		// if (maxColumnIndex + 1 > PreviewTableWidget.MAX_PREVIEW_TABLE_COLUMNS) {
+		// createDataPreviewTableFromFile(false);
+		// } else {
+		// createDataPreviewTableFromFile(true);
+		// }
 		previewTable.setSelectedColumns(selectedColumns);
 	}
 
 	public void generatePreview() {
 		this.delimeter.setEnabled(true);
 		this.selectAllNone.setEnabled(true);
-		createDataPreviewTableFromFile(true);
+		createDataPreviewTableFromFile();
 	}
 
 	public void onSelectAllNone(boolean selectAll) {
@@ -166,20 +180,19 @@ public class PreviewTable {
 
 	public void onDelimiterChanged(String delimiter) {
 		spec.setDelimiter(delimiter);
-		createDataPreviewTableFromFile(true);
+		createDataPreviewTableFromFile();
 	}
 
-	/**
-	 * Loads all columns or the {@link #MAX_PREVIEW_TABLE_COLUMNS} into the preview table, depending on the state of
-	 * showAllColumnsButton of the {@link #dialog}.
-	 */
-	public void onShowAllColumns(boolean showAllColumns) {
-		this.previewTable.createDataPreviewTableFromDataMatrix(dataMatrix, showAllColumns ? totalNumberOfColumns
-				: PreviewTableWidget.MAX_PREVIEW_TABLE_COLUMNS);
-		// determineRowIDType();
-		this.previewTable.updateTableColors(spec.getNumberOfHeaderLines(), -1, spec.getColumnOfRowIds());
-		this.previewTable.updateVisibleColumns(totalNumberOfColumns);
-	}
+	// /**
+	// * Loads all columns or the {@link #MAX_PREVIEW_TABLE_COLUMNS} into the preview table, depending on the state of
+	// * showAllColumnsButton of the {@link #dialog}.
+	// */
+	// public void onShowAllColumns(boolean showAllColumns) {
+	// this.previewTable.createDataPreviewTableFromDataMatrix(dataMatrix, totalNumberOfColumns);
+	// // determineRowIDType();
+	// this.previewTable.updateTableColors(spec.getNumberOfHeaderLines(), -1, spec.getColumnOfRowIds());
+	// // this.previewTable.updateVisibleColumns(totalNumberOfColumns);
+	// }
 
 	public interface IPreviewCallback {
 		public void on(int numColumn, int numRow, List<? extends List<String>> dataMatrix);

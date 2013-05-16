@@ -22,11 +22,11 @@ import java.util.List;
 import java.util.Set;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.collection.Pair;
-import org.caleydo.core.util.statistics.Statistics;
+import org.caleydo.view.tourguide.spi.algorithm.IComputeElement;
 import org.caleydo.view.tourguide.spi.algorithm.IGroupAlgorithm;
+import org.eclipse.core.runtime.IProgressMonitor;
 
 /**
  * @author Samuel Gratzl
@@ -56,7 +56,7 @@ public class LogRank implements IGroupAlgorithm {
 	}
 
 	@Override
-	public IDType getTargetType(Perspective a, Perspective b) {
+	public IDType getTargetType(IComputeElement a, IComputeElement b) {
 		return clinical.getRecordIDType();
 	}
 
@@ -68,21 +68,30 @@ public class LogRank implements IGroupAlgorithm {
 	}
 
 	@Override
-	public float compute(Set<Integer> a, Set<Integer> b) {
-		return compute((Iterable<Integer>) a, b);
+	public void init(IProgressMonitor monitor) {
+		// nothing todo
 	}
 
-	public float compute(Iterable<Integer> a, Iterable<Integer> b) {
+	@Override
+	public float compute(Set<Integer> a, Set<Integer> b, IProgressMonitor monitor) {
+		return compute((Iterable<Integer>) a, b, monitor);
+	}
+
+	public float compute(Iterable<Integer> a, Iterable<Integer> b, IProgressMonitor monitor) {
 		// http://en.wikipedia.org/wiki/Logrank_test and
 		// Survival Analysis: A Self-Learning Text
 		// 1. resolve data
 		Pair<List<Float>, Integer> asp = getValues(a, this.clinicalVariable);
 		List<Float> as = asp.getFirst();
 		int asurvived = asp.getSecond(); // still there after end
+		if (monitor.isCanceled())
+			return Float.NaN;
 
 		Pair<List<Float>, Integer> bsp = getValues(b, this.clinicalVariable);
 		List<Float> bs = bsp.getFirst();
 		int bsurvived = bsp.getSecond();
+		if (monitor.isCanceled())
+			return Float.NaN;
 		return Statistics.logRank(as, asurvived, bs, bsurvived);
 	}
 

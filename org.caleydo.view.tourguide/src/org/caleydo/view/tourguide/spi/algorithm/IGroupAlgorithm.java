@@ -21,15 +21,17 @@ package org.caleydo.view.tourguide.spi.algorithm;
 
 import java.util.Set;
 
-import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.id.IDType;
+import org.eclipse.core.runtime.IProgressMonitor;
 
 /**
  * @author Samuel Gratzl
  *
  */
 public interface IGroupAlgorithm {
-	IDType getTargetType(Perspective a, Perspective b);
+	void init(IProgressMonitor monitor);
+
+	IDType getTargetType(IComputeElement a, IComputeElement b);
 
 	/**
 	 * computes the score between the two sets identified by a set of integer noted in the same id type
@@ -38,7 +40,7 @@ public interface IGroupAlgorithm {
 	 * @param b
 	 * @return
 	 */
-	float compute(Set<Integer> a, Set<Integer> b);
+	float compute(Set<Integer> a, Set<Integer> b, IProgressMonitor monitor);
 
 	/**
 	 * returns the abbreviation of this algorithm

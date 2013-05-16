@@ -70,6 +70,21 @@ public final class ExtensionUtils {
 		return Collections.unmodifiableCollection(factories);
 	}
 
+	public static <T> T findFirstImplementation(String extensionPoint, String property, Class<T> type) {
+		if (RegistryFactory.getRegistry() == null)
+			return null;
+		try {
+			for (IConfigurationElement elem : RegistryFactory.getRegistry().getConfigurationElementsFor(extensionPoint)) {
+				final Object o = elem.createExecutableExtension(property);
+				if (type.isInstance(o))
+					return type.cast(o);
+			}
+		} catch (CoreException e) {
+			log.error("can't find implementations of " + extensionPoint + " : " + property, e);
+		}
+		return null;
+	}
+
 	/**
 	 * see {@link #findImplementation(String, String, Class)} but this time a label and a class
 	 *

@@ -20,21 +20,17 @@
 package org.caleydo.view.tourguide.api.query;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
-import org.caleydo.core.data.datadomain.ADataDomain;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.DataDomainOracle;
 import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.core.util.base.DefaultLabelProvider;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
-import org.caleydo.view.tourguide.spi.score.IScore;
-
-import com.google.common.base.Predicate;
-import com.google.common.collect.Lists;
 
 /**
  * the mode in which the data domain query is see {@link DataDomainQuery}
@@ -43,21 +39,38 @@ import com.google.common.collect.Lists;
  *
  */
 public enum EDataDomainQueryMode {
-	TABLE_BASED, GENE_SET;
+	STRATIFICATIONS, PATHWAYS, NUMERICAL;
 
-	public boolean isCompatible(IDataDomain dataDomain) {
-		switch(this) {
-		case GENE_SET:
-			return dataDomain instanceof PathwayDataDomain;
-		case TABLE_BASED:
-			return dataDomain instanceof ATableBasedDataDomain;
+	/**
+	 * @return
+	 */
+	public String getLabel() {
+		switch (this) {
+		case STRATIFICATIONS:
+			return "Stratifications";
+		case PATHWAYS:
+			return "Pathways";
+		case NUMERICAL:
+			return "Numerical";
 		}
 		throw new IllegalArgumentException("unknown me");
 	}
 
-	public List<? extends IDataDomain> getAllDataDomains() {
+	public boolean isCompatible(IDataDomain dataDomain) {
 		switch(this) {
-		case TABLE_BASED:
+		case PATHWAYS:
+			return dataDomain instanceof PathwayDataDomain;
+		case STRATIFICATIONS:
+			return dataDomain instanceof ATableBasedDataDomain;
+		case NUMERICAL:
+			return DataDomainOracle.isCategoricalDataDomain(dataDomain);
+		}
+		throw new IllegalArgumentException("unknown me");
+	}
+
+	public Collection<? extends IDataDomain> getAllDataDomains() {
+		switch(this) {
+		case STRATIFICATIONS:
 			List<ATableBasedDataDomain> dataDomains = new ArrayList<>(DataDomainManager.get().getDataDomainsByType(ATableBasedDataDomain.class));
 
 			for (Iterator<ATableBasedDataDomain> it = dataDomains.iterator(); it.hasNext();)
@@ -65,50 +78,22 @@ public enum EDataDomainQueryMode {
 					it.remove();
 
 			// Sort data domains alphabetically
-			Collections.sort(dataDomains, new Comparator<ADataDomain>() {
-				@Override
-				public int compare(ADataDomain dd1, ADataDomain dd2) {
-					return dd1.getLabel().compareTo(dd2.getLabel());
-				}
-			});
+			Collections.sort(dataDomains, DefaultLabelProvider.BY_LABEL);
 			return dataDomains;
-		case GENE_SET:
-			return Lists.newArrayList(DataDomainManager.get().getDataDomainsByType(PathwayDataDomain.class));
+		case PATHWAYS:
+			return DataDomainManager.get().getDataDomainsByType(PathwayDataDomain.class);
+		case NUMERICAL:
+			List<ATableBasedDataDomain> catDataDomains = new ArrayList<>(DataDomainManager.get().getDataDomainsByType(
+					ATableBasedDataDomain.class));
+
+			for (Iterator<ATableBasedDataDomain> it = catDataDomains.iterator(); it.hasNext();)
+				if (it.next().getTable().isDataHomogeneous()) // remove inhomogenous
+					it.remove();
+
+			// Sort data domains alphabetically
+			Collections.sort(catDataDomains, DefaultLabelProvider.BY_LABEL);
+			return catDataDomains;
 		}
 		throw new IllegalArgumentException("unknown me");
-	}
-
-	public Predicate<IScore> isSupportedBy() {
-		return new Predicate<IScore>() {
-			@Override
-			public boolean apply(IScore s) {
-				return s.supports(EDataDomainQueryMode.this);
-			}
-		};
-	}
-
-	/**
-	 * datadomains can be categorized in multiple categories
-	 * 
-	 * @return
-	 */
-	public int getNumCategories() {
-		switch (this) {
-		case TABLE_BASED:
-			return 2;
-		default:
-			return 1;
-		}
-	}
-
-	public int getCategory(IDataDomain dataDomain) {
-		switch (this) {
-		case TABLE_BASED:
-			if (DataDomainOracle.isCategoricalDataDomain(dataDomain))
-				return 1;
-			return 0;
-		default:
-			return 0;
-		}
 	}
 }

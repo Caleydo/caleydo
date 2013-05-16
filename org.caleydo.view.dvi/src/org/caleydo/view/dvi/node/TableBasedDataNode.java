@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -419,7 +420,7 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 			}
 		}
 
-		Set<String> dimensionPerspectiveIDs = dataDomain.getDimensionPerspectiveIDs();
+		Set<String> dimensionPerspectiveIDs = new HashSet<>(dataDomain.getDimensionPerspectiveIDs());
 
 		List<Pair<String, Perspective>> parentDimensionPerspectives = new ArrayList<Pair<String, Perspective>>();
 		Map<Perspective, List<Pair<String, Perspective>>> childDimensionPerspectiveLists = new HashMap<Perspective, List<Pair<String, Perspective>>>();

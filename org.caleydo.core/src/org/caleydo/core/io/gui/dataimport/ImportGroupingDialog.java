@@ -13,6 +13,7 @@ import org.caleydo.core.id.IDType;
 import org.caleydo.core.io.GroupingParseSpecification;
 import org.caleydo.core.io.gui.dataimport.PreviewTable.IPreviewCallback;
 import org.caleydo.core.io.gui.dataimport.widget.ICallback;
+import org.caleydo.core.io.gui.dataimport.widget.IProvider;
 import org.caleydo.core.io.gui.dataimport.widget.IntegerCallback;
 import org.caleydo.core.io.gui.dataimport.widget.LabelWidget;
 import org.caleydo.core.io.gui.dataimport.widget.LoadFileWidget;
@@ -68,8 +69,7 @@ public class ImportGroupingDialog extends AHelpButtonDialog implements SafeCalla
 		this(parentShell, rowIDCategory, null);
 	}
 
-	public ImportGroupingDialog(Shell parentShell, IDCategory rowIDCategory,
-			GroupingParseSpecification existing) {
+	public ImportGroupingDialog(Shell parentShell, IDCategory rowIDCategory, GroupingParseSpecification existing) {
 		super(parentShell);
 		this.rowIDCategory = rowIDCategory;
 		spec = new GroupingParseSpecification();
@@ -77,8 +77,7 @@ public class ImportGroupingDialog extends AHelpButtonDialog implements SafeCalla
 			spec.setDelimiter("\t");
 			spec.setNumberOfHeaderLines(1);
 		} else {
-			this.spec.setColumnIDSpecification(spec
-					.getColumnIDSpecification());
+			this.spec.setColumnIDSpecification(spec.getColumnIDSpecification());
 			this.spec.setColumnOfRowIds(spec.getColumnOfRowIds());
 			this.spec.setColumns(spec.getColumns());
 			this.spec.setContainsColumnIDs(spec.isContainsColumnIDs());
@@ -123,6 +122,11 @@ public class ImportGroupingDialog extends AHelpButtonDialog implements SafeCalla
 			@Override
 			public void on(int data) {
 				previewTable.onColumnOfRowIDChanged(data);
+			}
+		}, new IProvider<String>() {
+			@Override
+			public String get() {
+				return previewTable.getValue(rowConfig.getNumHeaderRows(), rowConfig.getColumnOfRowID() - 1);
 			}
 		});
 		rowConfig.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
@@ -192,7 +196,6 @@ public class ImportGroupingDialog extends AHelpButtonDialog implements SafeCalla
 		this.rowConfig.setCategoryID(rowIDCategory);
 		this.rowConfig.setEnabled(false);
 	}
-
 
 	private boolean validate() {
 		if (this.loadFile.getFileName().isEmpty()) {

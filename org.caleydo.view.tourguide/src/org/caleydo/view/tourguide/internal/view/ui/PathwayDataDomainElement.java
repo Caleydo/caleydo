@@ -21,7 +21,7 @@ package org.caleydo.view.tourguide.internal.view.ui;
 
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.view.tourguide.internal.event.EditDataDomainFilterEvent;
-import org.caleydo.view.tourguide.internal.view.model.PathwayDataDomainQuery;
+import org.caleydo.view.tourguide.internal.model.PathwayDataDomainQuery;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Display;
@@ -56,6 +56,11 @@ public class PathwayDataDomainElement extends ADataDomainElement {
 		} else {
 			setFilter(payload.toString());
 		}
+	}
+
+	@Override
+	protected String getLabel() {
+		return getModel().getType().getName();
 	}
 
 	private void setFilter(String filter) {

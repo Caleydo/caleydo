@@ -4,29 +4,46 @@
 package org.caleydo.core.io.gui.dataimport.widget;
 
 import java.util.ArrayList;
-import java.util.BitSet;
 import java.util.Collection;
 import java.util.List;
 
+import org.eclipse.nebula.widgets.nattable.NatTable;
+import org.eclipse.nebula.widgets.nattable.config.AbstractRegistryConfiguration;
+import org.eclipse.nebula.widgets.nattable.config.CellConfigAttributes;
+import org.eclipse.nebula.widgets.nattable.config.DefaultNatTableStyleConfiguration;
+import org.eclipse.nebula.widgets.nattable.config.IConfigRegistry;
+import org.eclipse.nebula.widgets.nattable.data.IDataProvider;
+import org.eclipse.nebula.widgets.nattable.edit.action.ToggleCheckBoxColumnAction;
+import org.eclipse.nebula.widgets.nattable.grid.GridRegion;
+import org.eclipse.nebula.widgets.nattable.grid.data.DefaultCornerDataProvider;
+import org.eclipse.nebula.widgets.nattable.grid.layer.ColumnHeaderLayer;
+import org.eclipse.nebula.widgets.nattable.grid.layer.CornerLayer;
+import org.eclipse.nebula.widgets.nattable.grid.layer.GridLayer;
+import org.eclipse.nebula.widgets.nattable.grid.layer.RowHeaderLayer;
+import org.eclipse.nebula.widgets.nattable.layer.DataLayer;
+import org.eclipse.nebula.widgets.nattable.layer.LabelStack;
+import org.eclipse.nebula.widgets.nattable.layer.cell.ColumnLabelAccumulator;
+import org.eclipse.nebula.widgets.nattable.layer.cell.ColumnOverrideLabelAccumulator;
+import org.eclipse.nebula.widgets.nattable.layer.cell.IConfigLabelAccumulator;
+import org.eclipse.nebula.widgets.nattable.painter.cell.ColumnHeaderCheckBoxPainter;
+import org.eclipse.nebula.widgets.nattable.painter.cell.ICellPainter;
+import org.eclipse.nebula.widgets.nattable.painter.cell.decorator.BeveledBorderDecorator;
+import org.eclipse.nebula.widgets.nattable.selection.SelectionLayer;
+import org.eclipse.nebula.widgets.nattable.style.CellStyleAttributes;
+import org.eclipse.nebula.widgets.nattable.style.DisplayMode;
+import org.eclipse.nebula.widgets.nattable.style.Style;
+import org.eclipse.nebula.widgets.nattable.ui.binding.UiBindingRegistry;
+import org.eclipse.nebula.widgets.nattable.ui.matcher.CellPainterMouseEventMatcher;
+import org.eclipse.nebula.widgets.nattable.ui.matcher.MouseEventMatcher;
+import org.eclipse.nebula.widgets.nattable.util.GUIHelper;
+import org.eclipse.nebula.widgets.nattable.viewport.ViewportLayer;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.TableEditor;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.RowLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.TableItem;
 
 /**
- * Manager for SWT tables to create and maintain preview tables for tabular data
- * that draws one row of buttons for selecting/deselecting columns on top and
- * one row enumeration column at the left.
+ * Manager for SWT tables to create and maintain preview tables for tabular data that draws one row of buttons for
+ * selecting/deselecting columns on top and one row enumeration column at the left.
  *
  * @author Christian Partl
  *
@@ -37,133 +54,425 @@ public class PreviewTableWidget {
 	 */
 	public static final int MAX_PREVIEW_TABLE_ROWS = 50;
 
-	/**
-	 * Maximum number of previewed columns in {@link #previewTable}.
-	 */
-	public static final int MAX_PREVIEW_TABLE_COLUMNS = 10;
 
-	// not static to release it early
-	private final Color colorNormalRow = Display.getCurrent().getSystemColor(SWT.COLOR_WHITE);
-	private final Color colorId = Display.getCurrent().getSystemColor(SWT.COLOR_GREEN);
-	private final Color colorHeaderRow = Display.getCurrent().getSystemColor(SWT.COLOR_DARK_GRAY);
-	private final Color colorBlack = Display.getCurrent().getSystemColor(SWT.COLOR_BLACK);
-	private final Color colorDeSelectedColumn = Display.getCurrent().getSystemColor(SWT.COLOR_GRAY);
-	/**
-	 * List of buttons, each created for one column to specify whether this column should be loaded or not.
-	 */
-	private final List<Button> selectedColumnButtons = new ArrayList<Button>();
+	private static final String ID_CELL = "ID_CELL";
+	private static final String HEADER_LINE_CELL = "HEADER_LINE_CELL";
 
-	private boolean areAllColumnsSelected = true;
+	int numberOfHeaderRows = -1;
+	int idRowIndex = -1;
+	int idColumnIndex = -1;
 
-	/**
-	 * Table editors that are associated with {@link #selectedColumnButtons}.
-	 */
-	private final List<TableEditor> tableEditors = new ArrayList<TableEditor>();
+	private NatTable table;
 
-	/**
-	 * Number of header lines that was set the last time
-	 * {@link #updateTableColors(int, int, int)} was called.
-	 */
-	private int oldNumberOfHeaderRows = -1;
-	/**
-	 * Index of the row that contains IDs that was set the last time
-	 * {@link #updateTableColors(int, int, int)} was called.
-	 */
-	private int oldIDRowIndex = -1;
-	/**
-	 * Index of the row that contains IDs that was set the last time
-	 * {@link #updateTableColors(int, int, int)} was called.
-	 */
-	private int oldIDColumnIndex = -1;
+	private Composite parent;
 
-	/**
-	 * Table that displays a preview of the data of the file specified by {@link #inputFileName}.
-	 */
-	private Table previewTable;
+	private List<Boolean> columnSelectionStatus = new ArrayList<>();
 
-	/**
-	 * Button to specify whether all columns of the data file should be shown in the {@link #previewTable}.
-	 */
-	private final Button showAllColumnsButton;
+	private BodyDataProvider bodyDataProvider;
 
-	/**
-	 * Shows the total number columns in the data file and the number of displayed columns of the {@link #previewTable}.
-	 */
-	private final Label tableInfoLabel;
+	private class BodyDataProvider implements IDataProvider {
 
-	private int totalNumberOfColumns;
+		private String[][] dataMatrix;
+		private int numColumns;
 
+		public BodyDataProvider(List<? extends List<String>> dataMatrix, int numDataTableColumns) {
+			if (dataMatrix != null) {
+				this.dataMatrix = new String[dataMatrix.size()][numDataTableColumns];
+				for (int i = 0; i < dataMatrix.size(); i++) {
+					for (int j = 0; j < numDataTableColumns; j++) {
+						this.dataMatrix[i][j] = dataMatrix.get(i).get(j);
+					}
+				}
+				this.numColumns = numDataTableColumns;
+			}
+		}
 
-	public PreviewTableWidget(Composite parent, final BooleanCallback onSelectAllColumnsCallback) {
-		previewTable = new Table(parent, SWT.MULTI | SWT.BORDER | SWT.FULL_SELECTION);
-		previewTable.setLinesVisible(true);
+		@Override
+		public Object getDataValue(int columnIndex, int rowIndex) {
+			return dataMatrix == null ? "" : dataMatrix[rowIndex][columnIndex];
+		}
+
+		@Override
+		public void setDataValue(int columnIndex, int rowIndex, Object newValue) {
+			// do not allow to change values
+		}
+
+		@Override
+		public int getColumnCount() {
+			return numColumns;
+		}
+
+		@Override
+		public int getRowCount() {
+			return dataMatrix == null ? 1 : dataMatrix.length;
+		}
+	}
+
+	private class ColumnHeaderDataProvider implements IDataProvider {
+
+		private int numColumns;
+
+		public ColumnHeaderDataProvider(int numColumns) {
+			this.numColumns = numColumns;
+		}
+
+		@Override
+		public Object getDataValue(int columnIndex, int rowIndex) {
+			// return "" + (isColumnHeader ? columnIndex + 1 : rowIndex + 1);
+			if (columnSelectionStatus == null || columnSelectionStatus.size() == 0)
+				return false;
+			// return null;
+			return columnSelectionStatus.get(columnIndex);
+		}
+
+		@Override
+		public void setDataValue(int columnIndex, int rowIndex, Object newValue) {
+			// prevent to disable the id column
+			if (columnSelectionStatus == null || columnSelectionStatus.size() == 0 || columnIndex == idColumnIndex)
+				return;
+			columnSelectionStatus.set(columnIndex, (Boolean) newValue);
+			table.refresh();
+		}
+
+		@Override
+		public int getColumnCount() {
+			return numColumns;
+		}
+
+		@Override
+		public int getRowCount() {
+			return 1;
+		}
+
+	}
+
+	private class RowHeaderDataProvider implements IDataProvider {
+
+		private int numRows;
+
+		public RowHeaderDataProvider(int numHeaders) {
+			this.numRows = numHeaders;
+		}
+
+		@Override
+		public Object getDataValue(int columnIndex, int rowIndex) {
+			return "" + (rowIndex + 1);
+
+		}
+
+		@Override
+		public void setDataValue(int columnIndex, int rowIndex, Object newValue) {
+			// not supported
+		}
+
+		@Override
+		public int getColumnCount() {
+			return 1;
+		}
+
+		@Override
+		public int getRowCount() {
+			return numRows;
+		}
+
+	}
+
+	public PreviewTableWidget(Composite parent) {
+		this.parent = parent;
+		bodyDataProvider = new BodyDataProvider(null, 1);
+		buildTable(bodyDataProvider, new ColumnHeaderDataProvider(1), new RowHeaderDataProvider(1));
+	}
+
+	private void buildTable(BodyDataProvider bodyDataProvider, ColumnHeaderDataProvider columnDataProvider,
+			RowHeaderDataProvider rowDataProvider) {
+
+		if (table != null) { // cleanup old
+			this.table.dispose();
+			this.table = null;
+		}
+
+		final DataLayer bodyDataLayer = new DataLayer(bodyDataProvider);
+		SelectionLayer selectionLayer = new SelectionLayer(bodyDataLayer);
+		ViewportLayer bodyLayer = new ViewportLayer(selectionLayer);
+
+		final DataLayer columnDataLayer = new DataLayer(columnDataProvider);
+		ColumnHeaderLayer columnHeaderLayer = new ColumnHeaderLayer(columnDataLayer, bodyLayer, selectionLayer);
+
+		DataLayer rowDataLayer = new DataLayer(rowDataProvider, 50, 20);
+		RowHeaderLayer rowHeaderLayer = new RowHeaderLayer(rowDataLayer, bodyLayer, selectionLayer);
+
+		DefaultCornerDataProvider cornerDataProvider = new DefaultCornerDataProvider(columnDataProvider,
+				rowDataProvider);
+		CornerLayer cornerLayer = new CornerLayer(new DataLayer(cornerDataProvider), rowHeaderLayer, columnHeaderLayer);
+
+		GridLayer gridLayer = new GridLayer(bodyLayer, columnHeaderLayer, rowHeaderLayer, cornerLayer);
+		table = new NatTable(parent, gridLayer, false);
 		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1);
 		gridData.heightHint = 300;
 		gridData.widthHint = 800;
-		previewTable.setLayoutData(gridData);
+		table.setLayoutData(gridData);
 
-		Composite tableInfoComposite = new Composite(parent, SWT.NONE);
-		RowLayout rowLayout = new RowLayout(SWT.HORIZONTAL);
-		tableInfoComposite.setLayout(rowLayout);
-		gridData = new GridData(SWT.RIGHT, SWT.TOP, true, false, 2, 1);
-		gridData.heightHint = 20;
-		tableInfoComposite.setLayoutData(gridData);
-
-		tableInfoLabel = new Label(tableInfoComposite, SWT.NONE);
-
-		new Label(tableInfoComposite, SWT.SEPARATOR | SWT.VERTICAL);
-
-		showAllColumnsButton = new Button(tableInfoComposite, SWT.CHECK);
-		showAllColumnsButton.setText("Show all Columns");
-		showAllColumnsButton.setSelection(false);
-		showAllColumnsButton.setEnabled(false);
-		showAllColumnsButton.addSelectionListener(new SelectionAdapter() {
+		IConfigLabelAccumulator cellLabelAccumulator = new IConfigLabelAccumulator() {
 			@Override
-			public void widgetSelected(SelectionEvent e) {
-				onSelectAllColumnsCallback.on(showAllColumnsButton.getSelection());
+			public void accumulateConfigLabels(LabelStack configLabels, int columnPosition, int rowPosition) {
+				if (columnPosition == idColumnIndex || rowPosition == idRowIndex) {
+					configLabels.addLabel(ID_CELL);
+				}
+				if (rowPosition < numberOfHeaderRows) {
+					configLabels.addLabel(HEADER_LINE_CELL);
+				}
+				// configLabels.addLabel(ColumnLabelAccumulator.COLUMN_LABEL_PREFIX + columnPosition);
+				// configLabels.addLabel(CHECK_BOX_CONFIG_LABEL);
+				// configLabels.addLabel(CHECK_BOX_EDITOR_CONFIG_LABEL);
+			}
+		};
+
+		bodyDataLayer.setConfigLabelAccumulator(cellLabelAccumulator);
+		ColumnOverrideLabelAccumulator acc = new ColumnOverrideLabelAccumulator(columnHeaderLayer);
+		columnHeaderLayer.setConfigLabelAccumulator(acc);
+		acc.registerColumnOverrides(9, ColumnLabelAccumulator.COLUMN_LABEL_PREFIX + 9);
+		table.addConfiguration(new DefaultNatTableStyleConfiguration());
+		// table.addConfiguration(new HeaderMenuConfiguration(table));
+		// table.addConfiguration(new AbstractRegistryConfiguration() {
+		//
+		// @Override
+		// public void configureRegistry(IConfigRegistry configRegistry) {
+		//
+		//
+		// configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_PAINTER, new CheckBoxPainter(),
+		// DisplayMode.NORMAL, CHECK_BOX_CONFIG_LABEL);
+		// // configRegistry.registerConfigAttribute(CellConfigAttributes.DISPLAY_CONVERTER, new
+		// // DefaultBooleanDisplayConverter(), DisplayMode.NORMAL, CHECK_BOX_CONFIG_LABEL);
+		// configRegistry.registerConfigAttribute(EditConfigAttributes.CELL_EDITOR, new CheckBoxCellEditor(),
+		// DisplayMode.NORMAL, CHECK_BOX_EDITOR_CONFIG_LABEL);
+		//
+		// }});
+		table.addConfiguration(new AbstractRegistryConfiguration() {
+			@Override
+			public void configureRegistry(IConfigRegistry configRegistry) {
+				Style cellStyle = new Style();
+
+				cellStyle.setAttributeValue(CellStyleAttributes.BACKGROUND_COLOR, GUIHelper.COLOR_GREEN);
+				configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_STYLE, cellStyle, DisplayMode.NORMAL,
+						ID_CELL);
+
+				cellStyle = new Style();
+				cellStyle.setAttributeValue(CellStyleAttributes.BACKGROUND_COLOR, GUIHelper.COLOR_DARK_GRAY);
+				configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_STYLE, cellStyle, DisplayMode.NORMAL,
+						HEADER_LINE_CELL);
 			}
 		});
 
-		tableInfoComposite.pack(true);
+		final ColumnHeaderCheckBoxPainter columnHeaderCheckBoxPainter = new ColumnHeaderCheckBoxPainter(columnDataLayer);
+		final ICellPainter column9HeaderPainter = new BeveledBorderDecorator(columnHeaderCheckBoxPainter);
+		// final ICellPainter column9HeaderPainter = new BeveledBorderDecorator(new CellPainterDecorator(
+		// new TextPainter(), CellEdgeEnum.RIGHT, columnHeaderCheckBoxPainter));
+		table.addConfiguration(new AbstractRegistryConfiguration() {
+			@Override
+			public void configureRegistry(IConfigRegistry configRegistry) {
+				configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_PAINTER, column9HeaderPainter,
+						DisplayMode.NORMAL, GridRegion.COLUMN_HEADER);
+			}
+
+			@Override
+			public void configureUiBindings(UiBindingRegistry uiBindingRegistry) {
+				uiBindingRegistry.registerFirstSingleClickBinding(new CellPainterMouseEventMatcher(
+						GridRegion.COLUMN_HEADER, MouseEventMatcher.LEFT_BUTTON, columnHeaderCheckBoxPainter),
+						new ToggleCheckBoxColumnAction(columnHeaderCheckBoxPainter, columnDataLayer));
+			}
+		});
+
+		table.configure();
+
+		// =========================================
+
+		// DefaultGridLayer gridLayer = new DefaultGridLayer(RowDataListFixture.getList(),
+		// RowDataListFixture.getPropertyNames(), RowDataListFixture.getPropertyToLabelMap());
+		//
+		// DataLayer columnHeaderDataLayer = (DataLayer) gridLayer.getColumnHeaderDataLayer();
+		// columnHeaderDataLayer.setConfigLabelAccumulator(new ColumnLabelAccumulator());
+		//
+		// final DataLayer bodyDataLayer = (DataLayer) gridLayer.getBodyDataLayer();
+		// IDataProvider dataProvider = bodyDataLayer.getDataProvider();
+		//
+		// // NOTE: Register the accumulator on the body data layer.
+		// // This ensures that the labels are bound to the column index and are unaffected by column order.
+		// final ColumnOverrideLabelAccumulator columnLabelAccumulator = new
+		// ColumnOverrideLabelAccumulator(bodyDataLayer);
+		// bodyDataLayer.setConfigLabelAccumulator(columnLabelAccumulator);
+		//
+		// NatTable natTable = new NatTable(parent, gridLayer, false);
+		//
+		// natTable.addConfiguration(new DefaultNatTableStyleConfiguration());
+		//
+		//
+		// final ColumnHeaderCheckBoxPainter columnHeaderCheckBoxPainter = new
+		// ColumnHeaderCheckBoxPainter(bodyDataLayer);
+		// final ICellPainter column9HeaderPainter = new BeveledBorderDecorator(new CellPainterDecorator(new
+		// TextPainter(), CellEdgeEnum.RIGHT, columnHeaderCheckBoxPainter));
+		// natTable.addConfiguration(new AbstractRegistryConfiguration() {
+		// @Override
+		// public void configureRegistry(IConfigRegistry configRegistry) {
+		// configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_PAINTER,
+		// column9HeaderPainter,
+		// DisplayMode.NORMAL,
+		// ColumnLabelAccumulator.COLUMN_LABEL_PREFIX + 9);
+		// }
+		//
+		// @Override
+		// public void configureUiBindings(UiBindingRegistry uiBindingRegistry) {
+		// uiBindingRegistry.registerFirstSingleClickBinding(
+		// new CellPainterMouseEventMatcher(GridRegion.COLUMN_HEADER, MouseEventMatcher.LEFT_BUTTON,
+		// columnHeaderCheckBoxPainter),
+		// new ToggleCheckBoxColumnAction(columnHeaderCheckBoxPainter, bodyDataLayer)
+		// );
+		// }
+		// });
+		//
+		// natTable.configure();
+		//
+		// return natTable;
+		// }
+		//
+		// public static AbstractRegistryConfiguration editableGridConfiguration(
+		// final ColumnOverrideLabelAccumulator columnLabelAccumulator,
+		// final IDataProvider dataProvider) {
+		//
+		// return new AbstractRegistryConfiguration() {
+		//
+		// @Override
+		// public void configureRegistry(IConfigRegistry configRegistry) {
+		//
+		//
+		//
+		// registerCheckBoxEditor(configRegistry, new CheckBoxPainter(), new CheckBoxCellEditor());
+		//
+		// }
+		//
+		// };
+		// }
+
+		// private static void registerConfigLabelsOnColumns(ColumnOverrideLabelAccumulator columnLabelAccumulator) {
+		// columnLabelAccumulator.registerColumnOverrides(RowDataListFixture.getColumnIndexOfProperty(RowDataListFixture.SECURITY_ID_PROP_NAME),
+		// SECURITY_ID_EDITOR, SECURITY_ID_CONFIG_LABEL);
+		//
+		// columnLabelAccumulator.registerColumnOverrides(RowDataListFixture.getColumnIndexOfProperty(RowDataListFixture.SECURITY_DESCRIPTION_PROP_NAME),
+		// ALIGN_CELL_CONTENTS_LEFT_CONFIG_LABEL);
+		//
+		// columnLabelAccumulator.registerColumnOverrides(RowDataListFixture.getColumnIndexOfProperty(RowDataListFixture.ISSUE_DATE_PROP_NAME),
+		// FORMAT_DATE_CONFIG_LABEL);
+		//
+		// columnLabelAccumulator.registerColumnOverrides(RowDataListFixture.getColumnIndexOfProperty(RowDataListFixture.PRICING_TYPE_PROP_NAME),
+		// COMBO_BOX_CONFIG_LABEL, COMBO_BOX_EDITOR_CONFIG_LABEL, FORMAT_PRICING_TYPE_CONFIG_LABEL);
+		//
+		// columnLabelAccumulator.registerColumnOverrides(RowDataListFixture.getColumnIndexOfProperty(RowDataListFixture.BID_PRICE_PROP_NAME),
+		// BID_PRICE_CONFIG_LABEL, FORMAT_DOUBLE_6_PLACES_CONFIG_LABEL, FORMAT_DOUBLE_2_PLACES_CONFIG_LABEL,
+		// ALIGN_CELL_CONTENTS_RIGHT_CONFIG_LABEL);
+		//
+		// columnLabelAccumulator.registerColumnOverrides(RowDataListFixture.getColumnIndexOfProperty(RowDataListFixture.ASK_PRICE_PROP_NAME),
+		// ASK_PRICE_CONFIG_LABEL, FORMAT_DOUBLE_6_PLACES_CONFIG_LABEL, FORMAT_DOUBLE_2_PLACES_CONFIG_LABEL,
+		// ALIGN_CELL_CONTENTS_RIGHT_CONFIG_LABEL);
+		//
+		// columnLabelAccumulator.registerColumnOverrides(RowDataListFixture.getColumnIndexOfProperty(RowDataListFixture.SPREAD_PROP_NAME),
+		// SPREAD_CONFIG_LABEL, FORMAT_DOUBLE_6_PLACES_CONFIG_LABEL, ALIGN_CELL_CONTENTS_RIGHT_CONFIG_LABEL);
+		//
+		// columnLabelAccumulator.registerColumnOverrides(RowDataListFixture.getColumnIndexOfProperty(RowDataListFixture.LOT_SIZE_PROP_NAME),
+		// LOT_SIZE_CONFIG_LABEL, FORMAT_IN_MILLIONS_CONFIG_LABEL, ALIGN_CELL_CONTENTS_RIGHT_CONFIG_LABEL);
+		//
+		// columnLabelAccumulator.registerColumnOverrides(RowDataListFixture.getColumnIndexOfProperty(RowDataListFixture.PUBLISH_FLAG_PROP_NAME),
+		// CHECK_BOX_EDITOR_CONFIG_LABEL, CHECK_BOX_CONFIG_LABEL);
+		// }
+		//
+		// private static void registerSecurityDescriptionCellStyle(IConfigRegistry configRegistry) {
+		// Style cellStyle = new Style();
+		// cellStyle.setAttributeValue(CellStyleAttributes.HORIZONTAL_ALIGNMENT, HorizontalAlignmentEnum.LEFT);
+		// configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_STYLE, cellStyle, DisplayMode.NORMAL,
+		// ALIGN_CELL_CONTENTS_LEFT_CONFIG_LABEL);
+		// }
+		//
+		// private static void registerPricingCellStyle(IConfigRegistry configRegistry) {
+		// Style cellStyle = new Style();
+		// cellStyle.setAttributeValue(CellStyleAttributes.HORIZONTAL_ALIGNMENT, HorizontalAlignmentEnum.RIGHT);
+		// configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_STYLE, cellStyle, DisplayMode.NORMAL,
+		// ALIGN_CELL_CONTENTS_RIGHT_CONFIG_LABEL);
+		// }
+
+		// private static void registerCheckBoxEditor(IConfigRegistry configRegistry, ICellPainter checkBoxCellPainter,
+		// ICellEditor checkBoxCellEditor) {
+		// configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_PAINTER, checkBoxCellPainter,
+		// DisplayMode.NORMAL, CHECK_BOX_CONFIG_LABEL);
+		// configRegistry.registerConfigAttribute(CellConfigAttributes.DISPLAY_CONVERTER, new
+		// DefaultBooleanDisplayConverter(), DisplayMode.NORMAL, CHECK_BOX_CONFIG_LABEL);
+		// configRegistry.registerConfigAttribute(EditConfigAttributes.CELL_EDITOR, checkBoxCellEditor,
+		// DisplayMode.NORMAL, CHECK_BOX_EDITOR_CONFIG_LABEL);
+		// }
+
+		// ===================================================================
+		//
+		// List<Person> myList = new ArrayList<Person>();
+		// for (int i = 0; i < 100; i++) {
+		// myList.add(new Person(i, "Joe" + i, new Date()));
+		// }
+		//
+		// String[] propertyNames = { "id", "name", "birthDate" };
+		//
+		// IColumnPropertyAccessor<Person> columnPropertyAccessor = new ReflectiveColumnPropertyAccessor<Person>(
+		// propertyNames);
+		// ListDataProvider<Person> listDataProvider = new ListDataProvider<Person>(myList, columnPropertyAccessor);
+		// DefaultGridLayer gridLayer = new DefaultGridLayer(listDataProvider, new DummyColumnHeaderDataProvider(
+		// listDataProvider));
+		// final DefaultBodyLayerStack bodyLayer = gridLayer.getBodyLayer();
+		//
+		// // Custom label "FOO" for cell at column, row index (1, 5)
+		// IConfigLabelAccumulator cellLabelAccumulator = new IConfigLabelAccumulator() {
+		// @Override
+		// public void accumulateConfigLabels(LabelStack configLabels, int columnPosition, int rowPosition) {
+		// int columnIndex = bodyLayer.getColumnIndexByPosition(columnPosition);
+		// int rowIndex = bodyLayer.getRowIndexByPosition(rowPosition);
+		// if (columnIndex == 1 && rowIndex == 5) {
+		// configLabels.addLabel(FOO_LABEL);
+		// }
+		// }
+		// };
+		// bodyLayer.setConfigLabelAccumulator(cellLabelAccumulator);
+		//
+		// NatTable natTable = new NatTable(parent, gridLayer, false);
+		//
+		// natTable.addConfiguration(new DefaultNatTableStyleConfiguration());
+		// // Custom style for label "FOO"
+		// natTable.addConfiguration(new AbstractRegistryConfiguration() {
+		// @Override
+		// public void configureRegistry(IConfigRegistry configRegistry) {
+		// Style cellStyle = new Style();
+		// cellStyle.setAttributeValue(CellStyleAttributes.BACKGROUND_COLOR, GUIHelper.COLOR_GREEN);
+		// configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_STYLE, cellStyle, DisplayMode.NORMAL,
+		// FOO_LABEL);
+		// }
+		// });
+		// natTable.configure();
+
+	}
+
+	public String getValue(int rowIndex, int columnIndex) {
+		return (String) bodyDataProvider.getDataValue(columnIndex, rowIndex);
 	}
 
 	/**
 	 * Creates the {@link #previewTable} according to the {@link #dataMatrix}.
 	 */
-	public void createDataPreviewTableFromDataMatrix(List<? extends List<String>> dataMatrix, int numDataTableColumns) {
+	public void createDataPreviewTableFromDataMatrix(List<? extends List<String>> dataMatrix, int numColumns) {
 		if (dataMatrix == null || dataMatrix.isEmpty())
 			return;
 
-		oldIDColumnIndex = -1;
-		oldIDRowIndex = -1;
-		oldNumberOfHeaderRows = -1;
 
-		previewTable.removeAll();
-		for (TableColumn tmpColumn : previewTable.getColumns()) {
-			tmpColumn.dispose();
+		columnSelectionStatus = new ArrayList<>(numColumns);
+		for (int i = 0; i < numColumns; i++) {
+			columnSelectionStatus.add(true);
 		}
-
-		int numTableColumns = Math.min(dataMatrix.get(0).size(), numDataTableColumns) + 1;
-
-		for (int i = 0; i < numTableColumns; i++) {
-			TableColumn column = new TableColumn(previewTable, SWT.NONE);
-			column.setWidth(100);
-		}
-
-		createUseColumnRow();
-
-		for (int i = 0; i < dataMatrix.size(); i++) {
-			List<String> dataRow = dataMatrix.get(i);
-			TableItem item = new TableItem(previewTable, SWT.NONE);
-			item.setText(0, "" + (i + 1));
-			for (int j = 0; j < numTableColumns - 1; j++) {
-				item.setText(j + 1, dataRow.get(j));
-			}
-		}
-
-		// determineRowIDType();
-		// updateTableColors();
-		// updateTableInfoLabel();
+		bodyDataProvider = new BodyDataProvider(dataMatrix, numColumns);
+		buildTable(bodyDataProvider, new ColumnHeaderDataProvider(numColumns),
+				new RowHeaderDataProvider(
+				dataMatrix.size()));
 
 	}
 
@@ -173,174 +482,67 @@ public class PreviewTableWidget {
 	 * @param numberOfHeaderRows
 	 *            Number of rows that should be treated as headers.
 	 * @param idRowIndex
-	 *            Index of the row that contains IDs. If no row shall be
-	 *            colored, set -1.
+	 *            Index of the row that contains IDs. If no row shall be colored, set -1.
 	 * @param idColumnIndex
-	 *            Index of the column that contains IDs. If no column shall be
-	 *            colored, set -1.
+	 *            Index of the column that contains IDs. If no column shall be colored, set -1.
 	 */
 	public void updateTableColors(int numberOfHeaderRows, int idRowIndex, int idColumnIndex) {
 
-		if (oldNumberOfHeaderRows != -1 && oldNumberOfHeaderRows < previewTable.getItemCount()) {
-			for (int i = 1; i < oldNumberOfHeaderRows + 1; i++) {
-				setTableRowBackground(i, colorNormalRow);
-			}
-		}
+		if (columnSelectionStatus != null && !columnSelectionStatus.isEmpty())
+			columnSelectionStatus.set(idColumnIndex, true);
 
-		if (oldIDRowIndex != -1 && oldIDRowIndex < previewTable.getItemCount()) {
-			if (oldNumberOfHeaderRows <= oldIDRowIndex) {
-				setTableRowBackground(oldIDRowIndex, colorNormalRow);
-			}
-		}
+		this.idRowIndex = idRowIndex;
+		this.idColumnIndex = idColumnIndex;
+		this.numberOfHeaderRows = numberOfHeaderRows;
 
-		if (oldIDColumnIndex != -1 && oldIDColumnIndex < previewTable.getColumnCount()) {
-			setTableColumnBackground(oldIDColumnIndex + 1, colorNormalRow);
-			Button selectionButton = selectedColumnButtons.get(oldIDColumnIndex);
-			selectionButton.setVisible(true);
-			if (!selectionButton.getSelection()) {
-				setTableColumnForeground(oldIDColumnIndex + 1, colorDeSelectedColumn);
-			}
-		}
-
-		if (numberOfHeaderRows < previewTable.getItemCount()) {
-			for (int i = 1; i < numberOfHeaderRows + 1; i++) {
-				setTableRowBackground(i, colorHeaderRow);
-			}
-		}
-
-		if (idRowIndex != -1 && idRowIndex < previewTable.getItemCount()) {
-			setTableRowBackground(idRowIndex + 1, colorId);
-		}
-
-		if (idColumnIndex != -1 && idColumnIndex < getColumnCount()) {
-			setTableColumnBackground(idColumnIndex + 1, colorId);
-			selectedColumnButtons.get(idColumnIndex).setVisible(false);
-			setTableColumnForeground(idColumnIndex + 1, colorBlack);
-		}
-
-		oldIDRowIndex = idRowIndex;
-		oldIDColumnIndex = idColumnIndex;
-		oldNumberOfHeaderRows = numberOfHeaderRows;
-	}
-
-	private void setTableRowBackground(int rowIndex, Color color) {
-		TableItem item = previewTable.getItem(rowIndex);
-		for (int i = 0; i < previewTable.getColumnCount(); i++) {
-			item.setBackground(i, color);
-		}
-	}
-
-	private void setTableColumnBackground(int columnIndex, Color color) {
-		for (int i = 1; i < previewTable.getItemCount(); i++) {
-			previewTable.getItem(i).setBackground(columnIndex, color);
-		}
-	}
-
-	private void setTableColumnForeground(int columnIndex, Color color) {
-		for (int i = 1; i < previewTable.getItemCount(); i++) {
-			previewTable.getItem(i).setForeground(columnIndex, color);
-		}
-	}
-
-	private void createUseColumnRow() {
-
-		TableItem tmpItem = new TableItem(previewTable, SWT.NONE);
-		tmpItem.setText("Use column");
-
-		for (Button button : selectedColumnButtons) {
-			button.dispose();
-		}
-		selectedColumnButtons.clear();
-		for (TableEditor editor : tableEditors) {
-			editor.dispose();
-		}
-		tableEditors.clear();
-
-		Button skipButton;
-		for (int colIndex = 1; colIndex < previewTable.getColumnCount(); colIndex++) {
-			skipButton = new Button(previewTable, SWT.CHECK | SWT.CENTER);
-			skipButton.setSelection(true);
-			skipButton.setData("column", colIndex);
-			skipButton.setText("" + colIndex);
-			skipButton.addSelectionListener(new SelectionAdapter() {
-				@Override
-				public void widgetSelected(SelectionEvent e) {
-					boolean skipColumn = !((Button) e.widget).getSelection();
-					setTableColumnForeground((Integer) e.widget.getData("column"), skipColumn ? colorDeSelectedColumn
-							: colorBlack);
-				}
-			});
-
-			selectedColumnButtons.add(skipButton);
-
-			TableEditor editor = new TableEditor(previewTable);
-			editor.grabHorizontal = editor.grabVertical = true;
-			editor.setEditor(skipButton, tmpItem, colIndex);
-			tableEditors.add(editor);
-		}
+		table.refresh();
 	}
 
 	public void selectColumns(boolean selectAll, int columnOfRowId) {
-		areAllColumnsSelected = selectAll;
-		if (selectAll) {
-			for (int i = 0; i < selectedColumnButtons.size(); i++) {
-				Button button = selectedColumnButtons.get(i);
-				button.setSelection(true);
-				setTableColumnForeground(i + 1, colorBlack);
-			}
-		} else {
-			for (int i = 0; i < selectedColumnButtons.size(); i++) {
-				Button button = selectedColumnButtons.get(i);
-				button.setSelection(false);
-				if (i != columnOfRowId) {
-					setTableColumnForeground(i + 1, colorDeSelectedColumn);
-				}
+
+		int numColumns = columnSelectionStatus.size();
+		columnSelectionStatus = new ArrayList<>(numColumns);
+		for (int i = 0; i < numColumns; i++) {
+			if (i == columnOfRowId) {
+				columnSelectionStatus.add(true);
+			} else {
+				columnSelectionStatus.add(selectAll);
 			}
 		}
+		table.refresh();
 	}
 
 	/**
 	 * @param selectedColumns
 	 */
 	public void setSelectedColumns(Collection<Integer> selectedColumns) {
-		BitSet s = new BitSet();
-		for(Integer c : selectedColumns)
-			s.set(c);
-		for (int i = 0; i < selectedColumnButtons.size(); ++i) {
-			selectedColumnButtons.get(i).setSelection(s.get(i));
+
+		for (int i = 0; i < columnSelectionStatus.size(); i++) {
+			columnSelectionStatus.set(i, selectedColumns.contains(i));
 		}
 	}
 
-
-	public void updateVisibleColumns(int totalNumberOfColumns) {
-		this.totalNumberOfColumns = totalNumberOfColumns;
-		int visibleColumns = getColumnCount();
-		showAllColumnsButton.setEnabled(visibleColumns <= totalNumberOfColumns);
-		tableInfoLabel.setText(visibleColumns + " of " + totalNumberOfColumns + " Columns shown");
-		tableInfoLabel.getParent().getParent().layout(true, true);
-	}
-
 	public int getColumnCount() {
-		return selectedColumnButtons.size();
+		return bodyDataProvider.getColumnCount();
 	}
 
 	public int getRowCount() {
-		return previewTable.getItemCount() - 1; // -1 for th
+		return bodyDataProvider.getRowCount();
 	}
 
 	/**
 	 * returns the current selected column indices + optional a -1 as wildcard for all unseen
-	 * 
+	 *
 	 * @return
 	 */
 	public Collection<Integer> getSelectedColumns() {
 		Collection<Integer> result = new ArrayList<>();
-		for (int i = 0; i < selectedColumnButtons.size(); ++i) {
-			if (selectedColumnButtons.get(i).getSelection())
+
+		for (int i = 0; i < columnSelectionStatus.size(); i++) {
+			if (columnSelectionStatus.get(i)) {
 				result.add(i);
+			}
 		}
-		if (this.areAllColumnsSelected) // add wildcard
-			result.add(-1);
 		return result;
 	}
 

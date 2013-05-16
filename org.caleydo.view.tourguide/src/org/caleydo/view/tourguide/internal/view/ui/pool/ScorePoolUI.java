@@ -27,7 +27,6 @@ import java.beans.IndexedPropertyChangeEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 import org.caleydo.core.util.collection.Pair;
@@ -40,9 +39,7 @@ import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
-import org.caleydo.view.tourguide.internal.score.ScoreFactories;
 import org.caleydo.view.tourguide.internal.view.GLTourGuideView;
-import org.caleydo.view.tourguide.spi.IScoreFactory;
 import org.caleydo.vis.rank.config.IRankTableUIConfig;
 import org.caleydo.vis.rank.config.RankTableUIConfigs;
 import org.caleydo.vis.rank.model.ARankColumnModel;
@@ -94,9 +91,13 @@ public class ScorePoolUI extends GLElementContainer implements IGLLayout {
 		this.add(new PaperBasket(table));
 
 		this.add(new SerialFactoryPoolElem(table));
-		for(Map.Entry<String,IScoreFactory> factory : ScoreFactories.getFactories().entrySet()) {
-			this.add(new ScoreFactoryPoolElem(factory.getKey(), factory.getValue(), view));
-		}
+
+		// final EDataDomainQueryMode mode = view.getMode();
+		// for(Map.Entry<String,IScoreFactory> factory : ScoreFactories.getFactories().entrySet()) {
+		// if (!factory.getValue().supports(mode))
+		// continue;
+		// this.add(new ScoreFactoryPoolElem(factory.getKey(), factory.getValue(), view));
+		// }
 
 		for (ARankColumnModel hidden : table.getPool()) {
 			add(wrap(hidden));

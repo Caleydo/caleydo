@@ -544,6 +544,14 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 		onScrollBarMoved(scrollBar, scrollBar.getOffset() + rowDelta);
 	}
 
+	public void scrollFirst() {
+		onScrollBarMoved(scrollBar, 0);
+	}
+
+	public void scrollLast() {
+		onScrollBarMoved(scrollBar, scrollBar.getSize() - scrollBar.getWindow());
+	}
+
 	@Override
 	public float getHeight(IScrollBar scrollBar) {
 		return getSize().y();
@@ -624,7 +632,6 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 			return;
 
 		boolean even = false;
-		enlargeRankPickers(act.getRanker().size());
 		int i = -1;
 
 		if (last instanceof ACompositeTableColumnUI<?>) {
@@ -633,12 +640,16 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 		if (last == null)
 			return;
 
-		for (IRow rankedRow : act.getRanker()) {
-			Vec4f bounds = last.getBounds(rankedRow.getIndex());
+		int[] order = act.getRanker().getOrder();
+		enlargeRankPickers(order.length);
+
+		for (int index : order) {
+			Vec4f bounds = last.getBounds(index);
 			i++;
 			even = !even;
 			if (!GLElement.areValidBounds(bounds))
 				continue;
+			IRow rankedRow = table.getDataItem(index);
 			if (pick) {
 				if (selected != rankedRow) { // the selected row is not pickable again
 					g.pushName(pickingIDs[i]);

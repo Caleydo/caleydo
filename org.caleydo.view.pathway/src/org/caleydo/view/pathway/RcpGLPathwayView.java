@@ -138,7 +138,7 @@ public class RcpGLPathwayView extends ARcpGLViewPart implements IListenerOwner, 
 		toolBarManager.add(sampleSelectionMode);
 
 		DatasetSelectionBox dataSelectionBox = new DatasetSelectionBox(DataDomainManager.get().getDataDomainByID(
-				((SerializedPathwayView) serializedView).getDataDomainID()));
+				((SerializedPathwayView) serializedView).getDataDomainID()), (GLPathway) view);
 		toolBarManager.add(dataSelectionBox);
 
 		PathwaySearchBox pathwaySearchBox = new PathwaySearchBox((GLPathway) view);

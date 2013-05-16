@@ -100,15 +100,12 @@ public class RankTableModel implements IRankColumnParent {
 	 * ranker used by default
 	 */
 	private final ColumnRanker defaultRanker;
-
-	private final ColumnFilter defaultFilter;
 	/**
 	 *
 	 */
 	public RankTableModel(IRankTableConfig config) {
 		this.config = config;
 		this.defaultRanker = new ColumnRanker(this);
-		this.defaultFilter = new ColumnFilter(this);
 	}
 
 
@@ -118,7 +115,6 @@ public class RankTableModel implements IRankColumnParent {
 		this.dataMask = copy.dataMask;
 		this.data.addAll(copy.data);
 		this.defaultRanker = copy.defaultRanker.clone(this);
-		this.defaultFilter = copy.defaultFilter.clone(this);
 		for(ARankColumnModel c : copy.pool)
 			this.pool.add(c.clone());
 		for(ARankColumnModel c : copy.columns)
@@ -143,7 +139,6 @@ public class RankTableModel implements IRankColumnParent {
 		this.dataMask = null;
 		this.data.clear();
 		this.selectedRow = null;
-		this.defaultFilter.reset();
 		// this.defaultRanker.reset();
 	}
 
@@ -686,13 +681,6 @@ public class RankTableModel implements IRankColumnParent {
 			if (columns.get(i) instanceof OrderColumn)
 				return i;
 		return columns.size();
-	}
-
-	/**
-	 * @return the defaultFilter, see {@link #defaultFilter}
-	 */
-	public ColumnFilter getDefaultFilter() {
-		return defaultFilter;
 	}
 
 	public void dirtyAllOrders() {

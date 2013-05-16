@@ -1,13 +1,14 @@
 package org.caleydo.view.tourguide.internal.compute;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.Set;
 
-import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.logging.Logger;
+import org.caleydo.view.tourguide.spi.algorithm.IComputeElement;
 import org.caleydo.view.tourguide.spi.algorithm.IGroupAlgorithm;
 import org.caleydo.view.tourguide.spi.compute.IComputedGroupScore;
 import org.caleydo.view.tourguide.spi.compute.IComputedReferenceGroupScore;
@@ -18,12 +19,13 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 import com.google.common.base.Stopwatch;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Multimap;
 
 public class ComputeScoreJob extends AScoreJob {
 	private static final Logger log = Logger.create(ComputeScoreJob.class);
 
-	private final Multimap<Perspective, Group> data;
+	private final Multimap<IComputeElement, Group> data;
 
 	private final Collection<IComputedStratificationScore> stratMetrics;
 	private final Collection<IComputedReferenceStratificationScore> stratScores;
@@ -31,9 +33,9 @@ public class ComputeScoreJob extends AScoreJob {
 	private final Collection<IComputedGroupScore> groupMetrics;
 	private final Collection<IComputedReferenceGroupScore> groupScores;
 
-
-	public ComputeScoreJob(Multimap<Perspective, Group> data,
-			Collection<IComputedStratificationScore> stratScores, Collection<IComputedGroupScore> groupScores) {
+	public ComputeScoreJob(Multimap<IComputeElement, Group> data, Collection<IComputedStratificationScore> stratScores,
+			Collection<IComputedGroupScore> groupScores, Object receiver) {
+		super(receiver);
 		Pair<Collection<IComputedStratificationScore>, Collection<IComputedReferenceStratificationScore>> strats = partition(
 				stratScores, IComputedReferenceStratificationScore.class);
 		this.stratMetrics = strats.getFirst();
@@ -52,28 +54,51 @@ public class ComputeScoreJob extends AScoreJob {
 				|| (groupMetrics.isEmpty() && groupScores.isEmpty() && stratScores.isEmpty() && stratMetrics.isEmpty()))
 			return Status.OK_STATUS;
 
-		monitor.beginTask("Compute Tour Guide Scores", data.keySet().size());
+		final int total = data.keySet().size() + 1;
+		monitor.beginTask("Compute Tour Guide Scores", total);
 		log.info(
 				"computing group similarity of %d against %d group scores, %d group metrics, %d stratification scores and %d stratification metrics",
 				data.size(), groupScores.size(), groupMetrics.size(), stratScores.size(), stratMetrics.size());
 		Stopwatch w = new Stopwatch().start();
 
-		int c = 0;
-		for (Perspective as : this.data.keySet()) {
+		progress(0, "Initializing...");
+		for (IComputedStratificationScore score : Iterables.concat(stratMetrics, stratScores)) {
+			score.getAlgorithm().init(monitor);
 			if (Thread.interrupted() || monitor.isCanceled())
-				return Status.OK_STATUS;
-
-			if (computeStratificationScores(monitor, as, stratMetrics, stratScores) != null)
 				return Status.CANCEL_STATUS;
-
-			if (computeGroupScores(monitor, as) != null)
+		}
+		for (IComputedGroupScore score : Iterables.concat(groupMetrics, groupScores)) {
+			score.getAlgorithm().init(monitor);
+			if (Thread.interrupted() || monitor.isCanceled())
 				return Status.CANCEL_STATUS;
+		}
+		int c = 0;
+		monitor.worked(c++);
+		progress(c / (float) total, "Computing...");
 
-			// cleanup cache
-			for (Group targetGroup : data.get(as)) {
-				clear(targetGroup);
+		Iterator<IComputeElement> it = this.data.keySet().iterator();
+		// first time the one run to compute the progress frequency interval
+		{
+			IComputeElement as = it.next();
+			if (!run(monitor, as))
+				return Status.CANCEL_STATUS;
+			monitor.worked(c++);
+		}
+		final int fireEvery = fireEvery(w.elapsedMillis());
+
+		int f = fireEvery - 1;
+
+		while (it.hasNext()) {
+			IComputeElement as = it.next();
+			if (f == 0) {
+				progress(c / (float) total, "Computing " + as.getLabel());
+				f = fireEvery;
 			}
-			clear(as);
+			f--;
+
+			if (!run(monitor, as))
+				return Status.CANCEL_STATUS;
+
 			monitor.worked(c++);
 		}
 		System.out.println("done in " + w);
@@ -81,11 +106,31 @@ public class ComputeScoreJob extends AScoreJob {
 		return Status.OK_STATUS;
 	}
 
-	private IStatus computeGroupScores(IProgressMonitor monitor, Perspective as) {
+	private boolean run(IProgressMonitor monitor, IComputeElement as) {
+		if (Thread.interrupted() || monitor.isCanceled())
+			return false;
+
+		if (computeStratificationScores(monitor, as, stratMetrics, stratScores) != null)
+			return false;
+
+		if (computeGroupScores(monitor, as) != null)
+			return false;
+
+		// cleanup cache
+		for (Group targetGroup : data.get(as)) {
+			clear(targetGroup);
+		}
+		clear(as);
+		return true;
+	}
+
+	private IStatus computeGroupScores(IProgressMonitor monitor, IComputeElement as) {
 		final IDType aType = as.getIdType();
 		// all metrics
 		for (IComputedGroupScore metric : this.groupMetrics) {
 			IGroupAlgorithm algorithm = metric.getAlgorithm();
+			if (Thread.interrupted() || monitor.isCanceled())
+				return Status.CANCEL_STATUS;
 			IDType target = algorithm.getTargetType(as, as);
 			for (Group ag : this.data.get(as)) {
 				if (Thread.interrupted() || monitor.isCanceled())
@@ -94,17 +139,23 @@ public class ComputeScoreJob extends AScoreJob {
 					continue;
 				Set<Integer> reference = get(as, target, target);
 				Set<Integer> tocompute = get(as, ag, target, target);
-				float v = algorithm.compute(tocompute, reference);
+
+				if (Thread.interrupted() || monitor.isCanceled())
+					return Status.CANCEL_STATUS;
+				float v = algorithm.compute(tocompute, reference, monitor);
+				if (Thread.interrupted() || monitor.isCanceled())
+					return Status.CANCEL_STATUS;
 				metric.put(ag, v);
 			}
 		}
 
 		// all scores
 		for (IComputedReferenceGroupScore score : this.groupScores) {
-			final Perspective rs = score.getStratification();
+			final IComputeElement rs = score.asComputeElement();
 			final IDType sType = rs.getIdType();
 
 			IGroupAlgorithm algorithm = score.getAlgorithm();
+
 			IDType target = algorithm.getTargetType(as, rs);
 			for (Group ag : this.data.get(as)) {
 				if (Thread.interrupted() || monitor.isCanceled())
@@ -113,7 +164,12 @@ public class ComputeScoreJob extends AScoreJob {
 					continue;
 				Set<Integer> tocompute = get(as, ag, target, sType);
 				Set<Integer> reference = get(rs, score.getGroup(), target, aType);
-				float v = algorithm.compute(tocompute, reference);
+
+				if (Thread.interrupted() || monitor.isCanceled())
+					return Status.CANCEL_STATUS;
+				float v = algorithm.compute(tocompute, reference, monitor);
+				if (Thread.interrupted() || monitor.isCanceled())
+					return Status.CANCEL_STATUS;
 				score.put(ag, v);
 			}
 		}

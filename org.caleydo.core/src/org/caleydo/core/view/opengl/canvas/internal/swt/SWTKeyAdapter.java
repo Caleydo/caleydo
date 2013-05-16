@@ -88,9 +88,9 @@ final class SWTKeyAdapter implements KeyListener {
 				return event.keyCode == Character.toLowerCase(c) || event.keyCode == Character.toUpperCase(c);
 			else
 				return false;
-				
+
 		}
-		
+
 		@Override
 		public boolean isKey(ESpecialKey c) {
 			switch (c) {
@@ -108,6 +108,14 @@ final class SWTKeyAdapter implements KeyListener {
 				return event.keyCode == SWT.ARROW_RIGHT;
 			case ALT:
 				return event.keyCode == SWT.ALT;
+			case HOME:
+				return event.keyCode == SWT.HOME;
+			case END:
+				return event.keyCode == SWT.END;
+			case PAGE_UP:
+				return event.keyCode == SWT.PAGE_UP;
+			case PAGE_DOWN:
+				return event.keyCode == SWT.PAGE_DOWN;
 			}
 			throw new IllegalStateException("unknown special key:" + c);
 		}
@@ -134,7 +142,7 @@ final class SWTKeyAdapter implements KeyListener {
 			else
 				return (event.stateMask & SWT.SHIFT) != 0 && !isKey(ESpecialKey.SHIFT);
 		}
-		
+
 		@Override
 		public boolean isAltDown() {
 
@@ -143,7 +151,7 @@ final class SWTKeyAdapter implements KeyListener {
 			else
 				return (event.stateMask & SWT.ALT) != 0 && !isKey(ESpecialKey.ALT);
 		}
-		
+
 		@Override
 		public boolean isUpDown() {
 
@@ -152,7 +160,7 @@ final class SWTKeyAdapter implements KeyListener {
 			else
 				return (event.stateMask & SWT.UP) != 0 && !isKey(ESpecialKey.UP);
 		}
-		
+
 		@Override
 		public boolean isDownDown() {
 

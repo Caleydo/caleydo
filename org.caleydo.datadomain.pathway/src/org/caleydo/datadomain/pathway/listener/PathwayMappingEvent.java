@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.event.AEvent;
+import org.caleydo.core.event.ADirectedEvent;
 
 /**
  * Events that signals that gene mapping within pathway views should be enabled.
@@ -32,7 +32,7 @@ import org.caleydo.core.event.AEvent;
  */
 @XmlRootElement
 @XmlType
-public class PathwayMappingEvent extends AEvent {
+public class PathwayMappingEvent extends ADirectedEvent {
 
 	private TablePerspective tablePerspective = null;
 

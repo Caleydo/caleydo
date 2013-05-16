@@ -190,12 +190,13 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 			}
 		});
 
-		previewTable = new PreviewTableWidget(parentComposite, new BooleanCallback() {
-			@Override
-			public void on(boolean showAllColumns) {
-				mediator.onShowAllColumns(showAllColumns);
-			}
-		});
+		previewTable = new PreviewTableWidget(parentComposite);
+		// , new BooleanCallback() {
+		// @Override
+		// public void on(boolean showAllColumns) {
+		// mediator.onShowAllColumns(showAllColumns);
+		// }
+		// });
 
 		mediator.guiCreated();
 

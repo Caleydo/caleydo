@@ -75,9 +75,9 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class BrickColumn extends ATableBasedView implements ILayoutSizeCollisionHandler, ILayoutedElement, IDraggable,
 		IGLRemoteRenderingView {
-	public static String VIEW_TYPE = "org.caleydo.view.dimensiongroup";
+	public static final String VIEW_TYPE = "org.caleydo.view.dimensiongroup";
 
-	public static String VIEW_NAME = "Brick Column";
+	public static final String VIEW_NAME = "Brick Column";
 
 	public final static int PIXEL_PER_DIMENSION = 30;
 	public final static int MIN_BRICK_WIDTH_PIXEL = 170;
@@ -820,7 +820,7 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 	 *
 	 * @return
 	 */
-	public List<GLBrick> getBricks() {
+	public List<GLBrick> getSegmentBricks() {
 		ArrayList<GLBrick> bricks = new ArrayList<GLBrick>();
 
 		for (int i = clusterBricks.size() - 1; i >= 0; i--) {
@@ -848,7 +848,7 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 			bricks.add(detailBrick);
 			return bricks;
 		}
-		return getBricks();
+		return getSegmentBricks();
 	}
 
 	public boolean isDetailBrickShown() {

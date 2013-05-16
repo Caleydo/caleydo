@@ -27,8 +27,10 @@ import java.lang.annotation.Target;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
@@ -37,6 +39,7 @@ import org.caleydo.core.util.ClassUtils;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Multimap;
 
 /**
  * Utility class to hold a list of event listeners to register and remove them all in an convenient way.
@@ -48,7 +51,7 @@ public class EventListenerManager {
 	private final Set<AEventListener<?>> listeners = new HashSet<>();
 
 	protected final IListenerOwner owner;
-	// cache for classes (cannoical name) that has no relevant methods
+	// cache for classes (cannonical name) that has no relevant methods
 	private final Set<String> nothingFounds = new HashSet<>();
 
 	EventListenerManager(IListenerOwner owner) {
@@ -107,20 +110,16 @@ public class EventListenerManager {
 	 * @param stopAtClass
 	 */
 	public final <T> T register(T listener, String eventSpace, Predicate<? super Class<?>> scanWhile) {
-		Class<?> clazz = listener.getClass();
-		if (nothingFounds.contains(clazz.getCanonicalName())) // avoid scanning useless objects again
-			return listener;
-		boolean hasOne = scan(listener, listener, eventSpace, scanWhile);
-
-		if (!hasOne)
-			nothingFounds.add(clazz.getCanonicalName());
-
+		scan(listener, listener, eventSpace, scanWhile);
 		return listener;
 	}
 
 	protected boolean scan(Object root, Object listener, String eventSpace, Predicate<? super Class<?>> scanWhile) {
 		final Class<?> clazz = listener.getClass();
-		boolean hasOne = false;
+		if (nothingFounds.contains(clazz.getCanonicalName())) // avoid scanning useless objects again
+			return false;
+
+		boolean scanAgain = false; // marker whether we have to scan this type in future runs?
 		// scan all methods
 		for (Method m : Iterables.filter(ClassUtils.findAllDeclaredMethods(clazz, scanWhile), listenToMethod)) {
 			Class<? extends AEvent> event = m.getParameterTypes()[0].asSubclass(AEvent.class);
@@ -137,7 +136,7 @@ public class EventListenerManager {
 			}
 
 			register(event, l);
-			hasOne = true;
+			scanAgain = true;
 		}
 		// scan all fields for deep scans
 		for (Field f : Iterables.filter(ClassUtils.findAllDeclaredFields(clazz, scanWhile), deepScanField)) {
@@ -150,12 +149,48 @@ public class EventListenerManager {
 				System.err.println(e);
 				continue;
 			}
-			if (field == null)
+			if (field == null) {
+				scanAgain = true; // in a later run maybe not null anymore
 				continue;
-			boolean hasFieldOne = scan(root, field, eventSpace, scanWhile);
+			}
+
+			if (field instanceof Collection<?>) {
+				@SuppressWarnings("unchecked")
+				Collection<Object> r = (Collection<Object>) field;
+				scanAll(root, r, eventSpace, scanWhile);
+				scanAgain = true; // collections may change
+			} else if (field instanceof Map<?, ?>) {
+				@SuppressWarnings("unchecked")
+				Map<?, Object> r = (Map<?, Object>) field;
+				scanAll(root, r.values(), eventSpace, scanWhile);
+				scanAgain = true; // collections may change
+			} else if (field instanceof Multimap<?, ?>) {
+				@SuppressWarnings("unchecked")
+				Multimap<?, Object> r = (Multimap<?, Object>) field;
+				scanAll(root, r.values(), eventSpace, scanWhile);
+				scanAgain = true; // collections may change
+			} else { // primitive
+				boolean hasFieldOne = scan(root, field, eventSpace, scanWhile);
+				scanAgain = scanAgain || hasFieldOne;
+			}
+
+		}
+		if (!scanAgain)
+			nothingFounds.add(clazz.getCanonicalName());
+		return scanAgain;
+	}
+
+	private boolean scanAll(Object root, Iterable<Object> listeners, String eventSpace,
+			Predicate<? super Class<?>> scanWhile) {
+		if (listeners == null)
+			return false;
+		boolean hasOne = false;
+		for (Object elem : listeners) {
+			boolean hasFieldOne = scan(root, elem, eventSpace, scanWhile);
 			hasOne = hasOne || hasFieldOne;
 		}
 		return hasOne;
+
 	}
 
 	private static final Predicate<Method> listenToMethod = new Predicate<Method>() {

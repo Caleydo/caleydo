@@ -23,6 +23,8 @@ import java.awt.Color;
 
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.util.color.Colors;
+import org.caleydo.view.tourguide.api.compute.ComputeElement;
+import org.caleydo.view.tourguide.spi.algorithm.IComputeElement;
 import org.caleydo.view.tourguide.spi.score.IStratificationScore;
 
 /**
@@ -40,13 +42,18 @@ public abstract class AReferenceStratificationScore extends AComputedStratificat
 	}
 
 	@Override
-	public boolean contains(Perspective elem) {
-		return super.contains(elem) || elem.equals(getStratification());
+	public boolean contains(IComputeElement elem) {
+		return super.contains(elem) || elem.getPersistentID().equals(getStratification().getPerspectiveID());
 	}
 
 	@Override
-	public Perspective getStratification() {
+	public final Perspective getStratification() {
 		return reference;
+	}
+
+	@Override
+	public IComputeElement asComputeElement() {
+		return new ComputeElement(reference);
 	}
 
 	@Override

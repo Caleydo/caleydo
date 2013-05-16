@@ -22,19 +22,19 @@ package org.caleydo.view.tourguide.internal;
 import org.caleydo.core.view.ARcpGLViewPart;
 import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.stratomex.RcpGLStratomexView;
+import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.internal.view.GLTourGuideView;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IPartListener2;
 import org.eclipse.ui.IViewSite;
-import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchPartReference;
 import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
 
 
 public class RcpGLTourGuideView extends ARcpGLViewPart {
-	private static int SECONDARY_IDs = 0;
+
+	private EDataDomainQueryMode mode;
 
 	public RcpGLTourGuideView() {
 		super(SerializedTourGuideView.class);
@@ -43,7 +43,7 @@ public class RcpGLTourGuideView extends ARcpGLViewPart {
 	@Override
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
-		view = new GLTourGuideView(glCanvas);
+		view = new GLTourGuideView(glCanvas, mode);
 		initializeView();
 		createPartControlGL();
 		stratomexListener.partActivated(getSite().getPage().getActivePartReference());
@@ -52,6 +52,8 @@ public class RcpGLTourGuideView extends ARcpGLViewPart {
 	@Override
 	public void init(IViewSite site) throws PartInitException {
 		super.init(site);
+		this.mode = EDataDomainQueryMode.valueOf(site.getSecondaryId());
+		this.setPartName("TourGuide: " + this.mode.getLabel());
 		site.getPage().addPartListener(stratomexListener);
 	}
 
@@ -71,31 +73,6 @@ public class RcpGLTourGuideView extends ARcpGLViewPart {
 	public void createDefaultSerializedView() {
 		serializedView = new SerializedTourGuideView();
 		determineDataConfiguration(serializedView, false);
-	}
-
-	@Override
-	public void addToolBarContent() {
-		super.addToolBarContent();
-		toolBarManager.add(new CloneEmptyViewAction(this));
-		toolBarManager.add(new CloneViewAction(this));
-	}
-
-	public void cloneView(boolean cloneData) {
-		try {
-			final IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-					.getActivePage();
-			if (cloneData) {
-				RcpGLTourGuideView clone = (RcpGLTourGuideView) activePage.showView(getViewGUIID(), ""
-						+ ++SECONDARY_IDs, IWorkbenchPage.VIEW_CREATE);
-				clone.getView().cloneFrom(this.getView());
-				activePage.showView(getViewGUIID(), "" + SECONDARY_IDs, IWorkbenchPage.VIEW_VISIBLE);
-			} else {
-				activePage.showView(getViewGUIID(), "" + SECONDARY_IDs++, IWorkbenchPage.VIEW_VISIBLE);
-			}
-		} catch (PartInitException e) {
-			e.printStackTrace();
-		}
-
 	}
 
 	@Override
@@ -171,5 +148,6 @@ public class RcpGLTourGuideView extends ARcpGLViewPart {
 		return canonicalName.startsWith("org.caleydo.view.info")
 				|| canonicalName.startsWith("org.caleydo.core.gui.toolbar");
 	}
+
 
 }

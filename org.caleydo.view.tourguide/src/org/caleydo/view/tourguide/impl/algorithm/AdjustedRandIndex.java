@@ -22,10 +22,10 @@ package org.caleydo.view.tourguide.impl.algorithm;
 import java.util.List;
 import java.util.Set;
 
-import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.id.IDType;
-import org.caleydo.core.util.statistics.Statistics;
+import org.caleydo.view.tourguide.spi.algorithm.IComputeElement;
 import org.caleydo.view.tourguide.spi.algorithm.IStratificationAlgorithm;
+import org.eclipse.core.runtime.IProgressMonitor;
 
 /**
  * @author Samuel Gratzl
@@ -43,6 +43,11 @@ public class AdjustedRandIndex implements IStratificationAlgorithm {
 	}
 
 	@Override
+	public void init(IProgressMonitor monitor) {
+		// nothing todo
+	}
+
+	@Override
 	public String getAbbreviation() {
 		return "AR";
 	}
@@ -53,12 +58,12 @@ public class AdjustedRandIndex implements IStratificationAlgorithm {
 	}
 
 	@Override
-	public IDType getTargetType(Perspective a, Perspective b) {
+	public IDType getTargetType(IComputeElement a, IComputeElement b) {
 		return a.getIdType();
 	}
 
 	@Override
-	public float compute(List<Set<Integer>> a, List<Set<Integer>> b) {
+	public float compute(List<Set<Integer>> a, List<Set<Integer>> b, IProgressMonitor monitor) {
 		return Statistics.randIndex(a, b);
 	}
 }

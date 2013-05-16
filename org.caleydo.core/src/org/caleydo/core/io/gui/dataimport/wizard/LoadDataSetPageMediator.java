@@ -43,7 +43,7 @@ public class LoadDataSetPageMediator {
 	/**
 	 * Maximum number of previewed columns in {@link #previewTable}.
 	 */
-	protected static final int MAX_PREVIEW_TABLE_COLUMNS = 10;
+	// protected static final int MAX_PREVIEW_TABLE_COLUMNS = 10;
 
 	/**
 	 * The maximum number of ids that are tested in order to determine the {@link IDType}.
@@ -202,14 +202,24 @@ public class LoadDataSetPageMediator {
 			createDataPreviewTableFromFile();
 	}
 
+	private String getRowIDSample() {
+		return page.previewTable.getValue(page.numHeaderRowsSpinner.getSelection(),
+				page.columnOfRowIDSpinner.getSelection() - 1);
+	}
+
+	private String getColumnIDSample() {
+		return page.previewTable.getValue(page.rowOfColumnIDSpinner.getSelection() - 1,
+				page.columnOfRowIDSpinner.getSelection());
+	}
+
 	public void onDefineRowIDParsing() {
 		IDType idType = getRowIDType();
 		IDTypeParsingRules templateIdTypeParsingRules = rowIDTypeParsingRules;
 		if (idType != null && templateIdTypeParsingRules == null) {
 			templateIdTypeParsingRules = idType.getIdTypeParsingRules();
 		}
-
-		DefineIDParsingDialog dialog = new DefineIDParsingDialog(new Shell(), templateIdTypeParsingRules);
+		DefineIDParsingDialog dialog = new DefineIDParsingDialog(new Shell(), templateIdTypeParsingRules,
+				getRowIDSample());
 		int status = dialog.open();
 
 		if (status == Window.OK) {
@@ -223,8 +233,8 @@ public class LoadDataSetPageMediator {
 		if (idType != null && templateIdTypeParsingRules == null) {
 			templateIdTypeParsingRules = idType.getIdTypeParsingRules();
 		}
-
-		DefineIDParsingDialog dialog = new DefineIDParsingDialog(new Shell(), templateIdTypeParsingRules);
+		DefineIDParsingDialog dialog = new DefineIDParsingDialog(new Shell(), templateIdTypeParsingRules,
+				getColumnIDSample());
 		int status = dialog.open();
 
 		if (status == Window.OK) {
@@ -372,7 +382,8 @@ public class LoadDataSetPageMediator {
 	}
 
 	private void createIDCategory(boolean isColumnCategory) {
-		CreateIDTypeDialog dialog = new CreateIDTypeDialog(new Shell());
+		CreateIDTypeDialog dialog = new CreateIDTypeDialog(new Shell(), isColumnCategory ? getColumnIDSample()
+				: getRowIDSample());
 		int status = dialog.open();
 
 		if (status == Window.OK) {
@@ -419,8 +430,9 @@ public class LoadDataSetPageMediator {
 	}
 
 	private void createIDType(boolean isColumnIDType) {
+
 		CreateIDTypeDialog dialog = new CreateIDTypeDialog(new Shell(), isColumnIDType ? columnIDCategory
-				: rowIDCategory);
+				: rowIDCategory, isColumnIDType ? getColumnIDSample() : getRowIDSample());
 		int status = dialog.open();
 
 		if (status == Window.OK) {
@@ -469,13 +481,12 @@ public class LoadDataSetPageMediator {
 		page.previewTable.selectColumns(selectAll, dataSetDescription.getColumnOfRowIds());
 	}
 
-	public void onShowAllColumns(boolean showAllColumns) {
-		page.previewTable.createDataPreviewTableFromDataMatrix(dataMatrix, showAllColumns ? totalNumberOfColumns
-				: MAX_PREVIEW_TABLE_COLUMNS);
-		page.previewTable.updateTableColors(dataSetDescription.getNumberOfHeaderLines(),
-				dataSetDescription.getRowOfColumnIDs(), dataSetDescription.getColumnOfRowIds());
-		updateWidgetsAccordingToTableChanges();
-	}
+	// public void onShowAllColumns(boolean showAllColumns) {
+	// page.previewTable.createDataPreviewTableFromDataMatrix(dataMatrix, totalNumberOfColumns);
+	// page.previewTable.updateTableColors(dataSetDescription.getNumberOfHeaderLines(),
+	// dataSetDescription.getRowOfColumnIDs(), dataSetDescription.getColumnOfRowIds());
+	// updateWidgetsAccordingToTableChanges();
+	// }
 
 	public void createDataPreviewTableFromFile() {
 		parser.parse(dataSetDescription.getDataSourcePath(), dataSetDescription.getDelimiter(), false,
@@ -486,7 +497,7 @@ public class LoadDataSetPageMediator {
 		DataImportWizard wizard = (DataImportWizard) page.getWizard();
 		wizard.setTotalNumberOfColumns(totalNumberOfColumns);
 		wizard.setTotalNumberOfRows(totalNumberOfRows);
-		page.previewTable.createDataPreviewTableFromDataMatrix(dataMatrix, MAX_PREVIEW_TABLE_COLUMNS);
+		page.previewTable.createDataPreviewTableFromDataMatrix(dataMatrix, totalNumberOfColumns);
 		updateWidgetsAccordingToTableChanges();
 		determineIDTypes();
 		guessNumberOfHeaderRows();
@@ -504,7 +515,7 @@ public class LoadDataSetPageMediator {
 		for (int i = 1; i < dataMatrix.size(); i++) {
 			ArrayList<String> row = dataMatrix.get(i);
 			int numFloatsFound = 0;
-			for (int j = 0; j < row.size() && j < MAX_PREVIEW_TABLE_COLUMNS; j++) {
+			for (int j = 0; j < row.size(); j++) {
 				String text = row.get(j);
 				try {
 					// This currently only works for numerical values
@@ -600,7 +611,7 @@ public class LoadDataSetPageMediator {
 		page.columnOfRowIDSpinner.setMaximum(totalNumberOfColumns);
 		page.rowOfColumnIDSpinner.setMaximum(totalNumberOfRows);
 		page.numHeaderRowsSpinner.setMaximum(totalNumberOfRows);
-		page.previewTable.updateVisibleColumns(totalNumberOfColumns);
+		// page.previewTable.updateVisibleColumns(totalNumberOfColumns);
 		page.parentComposite.pack(true);
 		page.parentComposite.layout(true);
 	}

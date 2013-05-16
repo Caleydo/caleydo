@@ -19,6 +19,8 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.impl;
 
+import static org.caleydo.view.tourguide.api.query.EDataDomainQueryMode.STRATIFICATIONS;
+
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,6 +35,13 @@ import org.caleydo.core.event.EventPublisher;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.score.DefaultComputedReferenceStratificationScore;
 import org.caleydo.view.tourguide.api.score.MultiScore;
+import org.caleydo.view.tourguide.api.state.BrowseStratificationState;
+import org.caleydo.view.tourguide.api.state.ISelectReaction;
+import org.caleydo.view.tourguide.api.state.ISelectStratificationState;
+import org.caleydo.view.tourguide.api.state.IState;
+import org.caleydo.view.tourguide.api.state.IStateMachine;
+import org.caleydo.view.tourguide.api.state.SimpleState;
+import org.caleydo.view.tourguide.api.state.SimpleTransition;
 import org.caleydo.view.tourguide.api.util.ui.CaleydoLabelProvider;
 import org.caleydo.view.tourguide.impl.algorithm.AdjustedRandIndex;
 import org.caleydo.view.tourguide.internal.event.AddScoreColumnEvent;
@@ -64,6 +73,7 @@ public class AdjustedRandScoreFactory implements IScoreFactory {
 	private final static Color color = Color.decode("#5fd3bc");
 	private final static Color bgColor = Color.decode("#d5fff6");
 
+
 	private IRegisteredScore create(String label, Perspective reference) {
 		return new DefaultComputedReferenceStratificationScore(label, reference, AdjustedRandIndex.get(), null, color, bgColor) {
 			@Override
@@ -75,6 +85,19 @@ public class AdjustedRandScoreFactory implements IScoreFactory {
 				return m;
 			}
 		};
+	}
+
+	@Override
+	public void fillStateMachine(IStateMachine stateMachine, Object eventReceiver, List<TablePerspective> existing) {
+		if (existing.isEmpty()) // nothing to compare
+			return;
+
+		IState source = stateMachine.get(IStateMachine.ADD_STRATIFICATIONS);
+		IState browse = stateMachine.addState("AdjustedRandBrowse", new UpdateAndBrowseAdjustedRand());
+		IState target = stateMachine.addState("AdjustedRand", new CreateAdjustedRandState(browse));
+
+		stateMachine.addTransition(source, new SimpleTransition(target,
+				"Find similar to displayed stratification"));
 	}
 
 	@Override
@@ -90,12 +113,51 @@ public class AdjustedRandScoreFactory implements IScoreFactory {
 
 	@Override
 	public boolean supports(EDataDomainQueryMode mode) {
-		return mode == EDataDomainQueryMode.TABLE_BASED;
+		return mode == STRATIFICATIONS;
 	}
 
 	@Override
 	public Dialog createCreateDialog(Shell shell, Object receiver) {
 		return new CreateAdjustedRandScoreDialog(shell, receiver);
+	}
+
+	private class CreateAdjustedRandState extends SimpleState implements ISelectStratificationState {
+		private final IState target;
+
+		public CreateAdjustedRandState(IState target) {
+			super("Select query stratification by clicking on the header brick of one of the displayed columns\n"
+					+ "Change query by clicking on other header brick at any time");
+			this.target = target;
+		}
+
+		@Override
+		public boolean apply(TablePerspective tablePerspective) {
+			return true;
+		}
+
+		@Override
+		public void select(TablePerspective tablePerspective, ISelectReaction reactions) {
+			reactions.addScoreToTourGuide(STRATIFICATIONS,
+					create(null, tablePerspective.getRecordPerspective()));
+			reactions.switchTo(target);
+		}
+	}
+
+	private class UpdateAndBrowseAdjustedRand extends BrowseStratificationState implements ISelectStratificationState {
+		public UpdateAndBrowseAdjustedRand() {
+			super("Select a stratification in the Tour Guide to preview.\n" + "Then confirm or cancel your selection"
+					+ "Change query by clicking on other brick at any time");
+		}
+
+		@Override
+		public boolean apply(TablePerspective tablePerspective) {
+			return true;
+		}
+
+		@Override
+		public void select(TablePerspective tablePerspective, ISelectReaction reactions) {
+			reactions.addScoreToTourGuide(STRATIFICATIONS, create(null, tablePerspective.getRecordPerspective()));
+		}
 	}
 
 	class CreateAdjustedRandScoreDialog extends Dialog {
@@ -133,7 +195,7 @@ public class AdjustedRandScoreFactory implements IScoreFactory {
 			this.dataDomainUI.setContentProvider(ArrayContentProvider.getInstance());
 			this.dataDomainUI.setLabelProvider(new CaleydoLabelProvider());
 			this.dataDomainUI.getCombo().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
-			this.dataDomainUI.setInput(EDataDomainQueryMode.TABLE_BASED.getAllDataDomains());
+			this.dataDomainUI.setInput(EDataDomainQueryMode.STRATIFICATIONS.getAllDataDomains());
 			this.dataDomainUI.addSelectionChangedListener(new ISelectionChangedListener() {
 				@Override
 				public void selectionChanged(SelectionChangedEvent event) {
