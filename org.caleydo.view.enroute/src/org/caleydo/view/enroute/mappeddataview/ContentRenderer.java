@@ -108,8 +108,6 @@ public abstract class ContentRenderer extends ALayoutRenderer {
 
 	public abstract void init();
 
-	private void unRegisterPickingListener() {
-		parentView.removePickingListener(pickingListener);
-	}
+	protected abstract void unRegisterPickingListener();
 
 }

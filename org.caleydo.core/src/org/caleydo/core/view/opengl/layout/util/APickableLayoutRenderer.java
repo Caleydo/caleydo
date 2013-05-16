@@ -59,9 +59,7 @@ public abstract class APickableLayoutRenderer
 		if (view == null)
 			return;
 		for (Pair<String, Integer> pickingIDPair : pickingIDs) {
-			int pickingID =
-				view.getPickingManager().getPickingID(view.getID(), pickingIDPair.getFirst(),
-					pickingIDPair.getSecond());
+			int pickingID = view.getPickingID(pickingIDPair.getFirst(), pickingIDPair.getSecond());
 
 			gl.glPushName(pickingID);
 		}

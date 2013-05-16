@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,12 +8,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -27,14 +27,12 @@ import org.caleydo.core.data.graph.tree.AHierarchyElement;
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.util.clusterer.EPDDrawingStrategyType;
 import org.caleydo.core.util.color.mapping.ColorMapper;
-import org.caleydo.core.view.opengl.picking.PickingManager;
-import org.caleydo.core.view.opengl.picking.PickingType;
+import org.caleydo.core.view.opengl.picking.SpacePickingManager;
 import org.caleydo.core.view.opengl.util.GLPrimitives;
 
 /**
- * PDDrawingStrategyExpressionColor draws the partial discs using gene
- * expression color. The color value is determinded by using gene expression
- * color mapping on the partial disc's average gene expression value.
+ * PDDrawingStrategyExpressionColor draws the partial discs using gene expression color. The color value is determinded
+ * by using gene expression color mapping on the partial disc's average gene expression value.
  * 
  * @author Christian Partl
  */
@@ -46,15 +44,13 @@ public class PDDrawingStrategyExpressionColor extends APDDrawingStrategyChildInd
 	 * Constructor.
 	 * 
 	 * @param pickingManager
-	 *            The picking manager that should handle the picking of the
-	 *            drawn elements.
+	 *            The picking manager that should handle the picking of the drawn elements.
 	 * @param viewID
-	 *            ID of the view where the elements will be displayed. Needed
-	 *            for picking.
+	 *            ID of the view where the elements will be displayed. Needed for picking.
 	 */
 	public PDDrawingStrategyExpressionColor(ColorMapper colorMapper,
-			PickingManager pickingManager, int viewID) {
-		super(pickingManager, viewID);
+ SpacePickingManager pickingManager) {
+		super(pickingManager);
 		this.colorMapper = colorMapper;
 	}
 
@@ -66,8 +62,8 @@ public class PDDrawingStrategyExpressionColor extends APDDrawingStrategyChildInd
 
 		float fRadius = pdDiscToDraw.getCurrentWidth();
 
-		gl.glPushName(pickingManager.getPickingID(viewID,
-				PickingType.RAD_HIERARCHY_PDISC_SELECTION, pdDiscToDraw.getElementID()));
+		gl.glPushName(pickingManager.getPickingID(PickingType.RAD_HIERARCHY_PDISC_SELECTION.name(),
+				pdDiscToDraw.getElementID()));
 		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
 
 		if ((!pdDiscToDraw.isAChildDrawn()) && (pdDiscToDraw.hasChildren())) {
@@ -98,8 +94,8 @@ public class PDDrawingStrategyExpressionColor extends APDDrawingStrategyChildInd
 		float fInnerRadius = pdDiscToDraw.getCurrentInnerRadius();
 		float fWidth = pdDiscToDraw.getCurrentWidth();
 
-		gl.glPushName(pickingManager.getPickingID(viewID,
-				PickingType.RAD_HIERARCHY_PDISC_SELECTION, pdDiscToDraw.getElementID()));
+		gl.glPushName(pickingManager.getPickingID(PickingType.RAD_HIERARCHY_PDISC_SELECTION.name(),
+				pdDiscToDraw.getElementID()));
 		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
 
 		if ((!pdDiscToDraw.isAChildDrawn()) && (pdDiscToDraw.hasChildren())) {

@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -29,9 +29,9 @@ import org.caleydo.view.stratomex.brick.GLBrick;
 
 /**
  * Renderer for a fuel bar.
- * 
+ *
  * @author Christian Partl
- * 
+ *
  */
 public class FuelBarRenderer extends ALayoutRenderer {
 
@@ -61,12 +61,11 @@ public class FuelBarRenderer extends ALayoutRenderer {
 
 		int currentNumElements = recordVA.size();
 
-		float fuelWidth = (float) x / totalNumElements * currentNumElements;
+		float fuelWidth = x / totalNumElements * currentNumElements;
 
 		GLStratomex stratomex = brick.getBrickColumn().getStratomexView();
 
-		gl.glPushName(stratomex.getPickingManager().getPickingID(stratomex.getID(),
-				EPickingType.BRICK.name(), brick.getID()));
+		gl.glPushName(stratomex.getPickingID(EPickingType.BRICK.name(), brick.getID()));
 		// gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
 		// PickingType.BRICK, brick.getID()));
 		gl.glBegin(GL2.GL_QUADS);
@@ -102,7 +101,7 @@ public class FuelBarRenderer extends ALayoutRenderer {
 		gl.glPopName();
 
 	}
-	
+
 	@Override
 	protected boolean permitsWrappingDisplayLists() {
 		return true;

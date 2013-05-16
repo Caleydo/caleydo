@@ -94,7 +94,7 @@ public class ScrollBarRenderer
 //				}
 //			}
 
-		}, scrollBar.getPickingType().name(), scrollBar.getID());
+		}, scrollBar.PICKING_TYPE, scrollBar.getID());
 	}
 
 	@Override
@@ -202,8 +202,7 @@ public class ScrollBarRenderer
 		// System.out.println("relative" + relativePageSize + " " + relativeSelection);
 		//System.out.println("relative2 " + scrollBarWidth + " " + positionX);
 
-		gl.glPushName(view.getPickingManager().getPickingID(view.getID(), scrollBar.getPickingType(),
-			scrollBar.getID()));
+		gl.glPushName(view.getPickingID(scrollBar.PICKING_TYPE, scrollBar.getID()));
 
 		gl.glColor4fv(color.getRGBA(), 0);
 		gl.glBegin(GL2.GL_QUADS);

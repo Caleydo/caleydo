@@ -489,13 +489,10 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	@Override
 	public void displayLocal(GL2 gl) {
 
-		pickingManager.handlePicking(this, gl);
+		if (!lazyMode)
+			handlePicking(gl);
 
 		display(gl);
-
-		if (!lazyMode) {
-			checkForHits(gl);
-		}
 	}
 
 	@Override

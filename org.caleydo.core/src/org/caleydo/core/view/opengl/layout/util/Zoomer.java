@@ -34,7 +34,6 @@ import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
-import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.scrollbar.IScrollBarUpdateHandler;
 import org.caleydo.core.view.opengl.util.scrollbar.ScrollBar;
@@ -96,7 +95,7 @@ public class Zoomer implements IMouseWheelHandler, IScrollBarUpdateHandler {
 
 		hScrollBarLayoutManager = new LayoutManager(viewFrustum, pixelGLConverter);
 		// hScrollBarTemplate = new LayoutConfiguration();
-		hScrollBar = new ScrollBar(0, 10, 5, 5, PickingType.ZOOM_SCROLLBAR, parentView.createNewScrollBarID(), this);
+		hScrollBar = new ScrollBar(0, 10, 5, 5, parentView.createNewScrollBarID(), this);
 
 		Column baseColumn = new Column();
 
@@ -119,7 +118,7 @@ public class Zoomer implements IMouseWheelHandler, IScrollBarUpdateHandler {
 
 		vScrollBarLayoutManager = new LayoutManager(viewFrustum, pixelGLConverter);
 		// vScrollBarTemplate = new LayoutConfiguration();
-		vScrollBar = new ScrollBar(0, 10, 5, 5, PickingType.ZOOM_SCROLLBAR, parentView.createNewScrollBarID(), this);
+		vScrollBar = new ScrollBar(0, 10, 5, 5, parentView.createNewScrollBarID(), this);
 
 		Row baseRow = new Row();
 

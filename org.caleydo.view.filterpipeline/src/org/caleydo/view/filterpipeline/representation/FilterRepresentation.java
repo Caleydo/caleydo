@@ -31,7 +31,7 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.view.opengl.picking.PickingManager;
+import org.caleydo.core.view.opengl.picking.SpacePickingManager;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
 import org.caleydo.core.view.opengl.util.draganddrop.IDropArea;
@@ -48,7 +48,7 @@ import org.caleydo.view.filterpipeline.renderstyle.FilterPipelineRenderStyle;
  */
 public class FilterRepresentation implements IDraggable, IRenderable, IDropArea {
 	protected FilterPipelineRenderStyle renderStyle;
-	protected PickingManager pickingManager;
+	protected SpacePickingManager pickingManager;
 	protected int viewId;
 
 	protected static final float Z_POS_BODY = 0.1f;
@@ -73,7 +73,7 @@ public class FilterRepresentation implements IDraggable, IRenderable, IDropArea 
 	float uncertaintyHeightRight = 0;
 
 	public FilterRepresentation(FilterPipelineRenderStyle renderStyle,
-			PickingManager pickingManager, int viewId) {
+ SpacePickingManager pickingManager, int viewId) {
 		this.renderStyle = renderStyle;
 		this.pickingManager = pickingManager;
 		this.viewId = viewId;

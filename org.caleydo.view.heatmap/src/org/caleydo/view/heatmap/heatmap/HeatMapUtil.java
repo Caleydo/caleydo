@@ -33,8 +33,7 @@ import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.util.color.mapping.ColorMapper;
-import org.caleydo.core.view.opengl.picking.PickingManager;
-import org.caleydo.core.view.opengl.picking.PickingType;
+import org.caleydo.core.view.opengl.picking.SpacePickingManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 
@@ -149,7 +148,7 @@ public class HeatMapUtil {
 	}
 
 	public static void renderGroupBar(GL2 gl, VirtualArray recordVA, float totalHeight, float groupWidth,
-			PickingManager pickingManager, int viewID, PickingType pickingType, TextureManager textureManager) {
+			SpacePickingManager pickingManager, int viewID, PickingType pickingType, TextureManager textureManager) {
 
 		GroupList contentGroupList = recordVA.getGroupList();
 
@@ -166,7 +165,7 @@ public class HeatMapUtil {
 				EIconTextures iconTextures = (group.getSelectionType() == SelectionType.SELECTION) ? EIconTextures.HEAT_MAP_GROUP_SELECTED
 						: EIconTextures.HEAT_MAP_GROUP_NORMAL;
 
-				gl.glPushName(pickingManager.getPickingID(viewID, pickingType, groupIndex));
+				gl.glPushName(pickingManager.getPickingID(pickingType.name(), groupIndex));
 				Vec3f lowerLeftCorner = new Vec3f(0.0f, groupPositionY - groupHeight, 0.0f);
 				Vec3f lowerRightCorner = new Vec3f(0.0f + groupWidth, groupPositionY - groupHeight, 0.0f);
 				Vec3f upperRightCorner = new Vec3f(0.0f + groupWidth, groupPositionY, 0.0f);

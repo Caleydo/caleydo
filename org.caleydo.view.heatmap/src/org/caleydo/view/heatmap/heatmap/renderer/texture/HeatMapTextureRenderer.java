@@ -26,11 +26,9 @@ import javax.media.opengl.GLProfile;
 
 import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.virtualarray.VirtualArray;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.color.mapping.ColorMapper;
-import org.caleydo.core.view.opengl.picking.PickingManager;
-import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
+import org.caleydo.view.heatmap.heatmap.PickingType;
 import org.caleydo.view.heatmap.heatmap.renderer.AHeatMapRenderer;
 
 import com.jogamp.opengl.util.texture.Texture;
@@ -61,8 +59,6 @@ public class HeatMapTextureRenderer extends AHeatMapRenderer {
 	private ArrayList<Texture> textures = new ArrayList<Texture>();
 
 	private ArrayList<Integer> numberSamples = new ArrayList<Integer>();
-
-	private PickingManager pickingManager = GeneralManager.get().getViewManager().getPickingManager();
 
 	private int numberOfDimensions;
 
@@ -238,7 +234,7 @@ public class HeatMapTextureRenderer extends AHeatMapRenderer {
 		TextureCoords texCoords = texture.getImageTexCoords();
 
 		if (groupIndex != -1)
-			gl.glPushName(pickingManager.getPickingID(viewID, PickingType.HEAT_MAP_RECORD_GROUP, groupIndex));
+			gl.glPushName(heatMap.getPickingID(PickingType.HEAT_MAP_RECORD_GROUP.name(), groupIndex));
 
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glTexCoord2d(texCoords.left(), texCoords.top());

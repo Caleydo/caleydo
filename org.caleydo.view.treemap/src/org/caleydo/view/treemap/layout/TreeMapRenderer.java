@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,12 +8,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -30,10 +30,10 @@ import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
-import org.caleydo.core.view.opengl.picking.PickingManager;
-import org.caleydo.core.view.opengl.picking.PickingType;
+import org.caleydo.core.view.opengl.picking.SpacePickingManager;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
+import org.caleydo.view.treemap.PickingType;
 
 /**
  * Class to render the treemap via jogl.
@@ -47,8 +47,7 @@ public class TreeMapRenderer {
 	public static final float SELECTION_LINE_WIDTH = 6.0f;
 
 	ViewFrustum viewFrustum;
-	PickingManager pickingManager;
-	int viewID;
+	SpacePickingManager pickingManager;
 
 	int treemapList, highlightList;
 
@@ -61,7 +60,8 @@ public class TreeMapRenderer {
 
 	private boolean bDrawLabel = true;
 
-	public void initRenderer(ViewFrustum viewFrustum, PickingManager pickingManager, int viewID, SelectionManager selectionManager,
+	public void initRenderer(ViewFrustum viewFrustum, SpacePickingManager pickingManager,
+			SelectionManager selectionManager,
 			CaleydoTextRenderer textRenderer) {
 
 		if (textRenderer == null)
@@ -69,7 +69,6 @@ public class TreeMapRenderer {
 		this.pickingManager = pickingManager;
 
 		this.viewFrustum = viewFrustum;
-		this.viewID = viewID;
 		this.selectionManager = selectionManager;
 		this.textRenderer = textRenderer;
 
@@ -181,7 +180,7 @@ public class TreeMapRenderer {
 	private void renderHelp(GL2 gl, ATreeMapNode root) {
 		List<ATreeMapNode> children = root.getChildren();
 		if (children == null || children.size() == 0) {
-			gl.glPushName(pickingManager.getPickingID(viewID, PickingType.TREEMAP_ELEMENT_SELECTED, root.getID()));
+			gl.glPushName(pickingManager.getPickingID(PickingType.TREEMAP_ELEMENT_SELECTED.name(), root.getID()));
 
 			fillRectangle(gl, root.getMinX(), root.getMinY(), root.getMaxX(), root.getMaxY(), root.getColorAttribute());
 			gl.glPopName();
@@ -271,7 +270,7 @@ public class TreeMapRenderer {
 		textRenderer.renderText(gl, text, x * viewFrustum.getWidth() + 0.03f + viewFrustum.getLeft(),
 				y * viewFrustum.getHeight() + 0.03f + viewFrustum.getBottom(), 0, GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR * scaling, 20);
 	}
-	
+
 	public void destroy(GL2 gl) {
 		gl.glDeleteLists(treemapList, 1);
 		gl.glDeleteLists(highlightList, 1);

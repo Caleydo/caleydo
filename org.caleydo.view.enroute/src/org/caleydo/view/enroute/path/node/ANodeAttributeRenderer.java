@@ -7,7 +7,6 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
-import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.view.enroute.path.APathwayPathRenderer;
 
@@ -20,8 +19,6 @@ import org.caleydo.view.enroute.path.APathwayPathRenderer;
 public abstract class ANodeAttributeRenderer {
 
 	protected final AGLView view;
-
-	protected final PickingManager pickingManager;
 
 	protected final TextureManager textureManager;
 
@@ -38,7 +35,6 @@ public abstract class ANodeAttributeRenderer {
 		this.view = view;
 		this.node = node;
 		this.pathwayPathRenderer = pathwayPathRenderer;
-		this.pickingManager = view.getPickingManager();
 		this.textureManager = view.getTextureManager();
 		this.pixelGLConverter = view.getPixelGLConverter();
 	}

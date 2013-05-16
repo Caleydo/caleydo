@@ -132,7 +132,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 			int id, String texture) {
 		GLGraphics.checkError(gl);
 
-		id = view.getPickingManager().getPickingID(view.getID(), pickingType, id + 1);
+		id = view.getPickingID(pickingType, id + 1);
 		// stratomex.addIDPickingTooltipListener("Add another column", pickingType, pickedObjectID)
 		gl.glPushName(id);
 

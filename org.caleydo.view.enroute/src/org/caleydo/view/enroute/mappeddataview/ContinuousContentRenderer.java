@@ -149,10 +149,10 @@ public class ContinuousContentRenderer extends ContentRenderer {
 				Integer resolvedSampleID = columnIDMappingManager.getID(dataDomain.getPrimaryIDType(columnIDType),
 						parent.sampleIDType, columnID);
 				if (resolvedSampleID != null) {
-					gl.glPushName(parentView.getPickingManager().getPickingID(parentView.getID(),
+					gl.glPushName(parentView.getPickingID(
 							EPickingType.SAMPLE.name(), resolvedSampleID));
 				}
-				gl.glPushName(parentView.getPickingManager().getPickingID(parentView.getID(),
+				gl.glPushName(parentView.getPickingID(
 						EPickingType.SAMPLE.name() + hashCode(), columnID));
 
 				gl.glBegin(GL2.GL_QUADS);
@@ -211,7 +211,7 @@ public class ContinuousContentRenderer extends ContentRenderer {
 		float[] topBarColor = colorCalculator.getPrimaryColor().getRGBA();
 		float[] bottomBarColor = colorCalculator.getSecondaryColor().getRGBA();
 
-		gl.glPushName(parentView.getPickingManager().getPickingID(parentView.getID(),
+		gl.glPushName(parentView.getPickingID(
 				EPickingType.SAMPLE_GROUP_RENDERER.name(), rendererID));
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glColor4fv(bottomBarColor, 0);
@@ -304,6 +304,11 @@ public class ContinuousContentRenderer extends ContentRenderer {
 
 		}
 
+	}
+
+	@Override
+	protected void unRegisterPickingListener() {
+		parentView.removeIDPickingListener(pickingListener, EPickingType.SAMPLE_GROUP_RENDERER.name(), rendererID);
 	}
 
 	@Override

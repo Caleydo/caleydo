@@ -304,8 +304,7 @@ public class GLPathwayAugmentationRenderer {
 	private void renderVertex(final GL2 gl, PathwayVertexRep vertexRep) {
 
 		float[] tmpNodeColor = null;
-		gl.glPushName(glPathwayView.getPickingManager().getPickingID(glPathwayView.getID(),
-				EPickingType.PATHWAY_ELEMENT_SELECTION.name(), vertexRep.getID()));
+		gl.glPushName(glPathwayView.getPickingID(EPickingType.PATHWAY_ELEMENT_SELECTION.name(), vertexRep.getID()));
 
 		float canvasXPos = pixelGLConverter.getGLWidthForPixelWidth(vertexRep.getCenterX());
 		float canvasYPos = pixelGLConverter.getGLHeightForPixelHeight(vertexRep.getCenterY());

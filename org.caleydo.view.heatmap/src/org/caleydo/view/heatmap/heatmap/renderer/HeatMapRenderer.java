@@ -23,8 +23,8 @@ import javax.media.opengl.GL2;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.util.color.mapping.ColorMapper;
-import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
+import org.caleydo.view.heatmap.heatmap.PickingType;
 import org.caleydo.view.heatmap.heatmap.template.AHeatMapLayoutConfiguration;
 
 public class HeatMapRenderer extends AHeatMapRenderer {
@@ -107,9 +107,8 @@ public class HeatMapRenderer extends AHeatMapRenderer {
 
 		gl.glColor4f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity);
 
-		gl.glPushName(heatMap.getPickingManager().getPickingID(heatMap.getID(),
-				PickingType.HEAT_MAP_DIMENSION_SELECTION, dimensionID));
-		gl.glPushName(heatMap.getPickingManager().getPickingID(heatMap.getID(), PickingType.HEAT_MAP_RECORD_SELECTION,
+		gl.glPushName(heatMap.getPickingID(PickingType.HEAT_MAP_DIMENSION_SELECTION.name(), dimensionID));
+		gl.glPushName(heatMap.getPickingID(PickingType.HEAT_MAP_RECORD_SELECTION.name(),
 				recordID));
 		gl.glBegin(GL2.GL_POLYGON);
 		gl.glVertex3f(fXPosition, fYPosition, FIELD_Z);

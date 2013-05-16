@@ -152,7 +152,7 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 	@Override
 	public void displayLocal(GL2 gl) {
 		if (!lazyMode)
-			pickingManager.handlePicking(this, gl);
+			handlePicking(gl);
 		display(gl);
 	}
 
@@ -174,9 +174,6 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 		}
 
 		gl.glCallList(displayListIndex);
-
-		if (!lazyMode)
-			checkForHits(gl);
 	}
 
 	private void buildDisplayList(final GL2 gl, int iGLDisplayListIndex) {
@@ -284,7 +281,7 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 		int iCount = 0;
 
 		for (ColorMarkerPoint markerPoint : markerPoints) {
-			int iColorLinePickingID = pickingManager.getPickingID(uniqueID, EPickingType.HISTOGRAM_COLOR_LINE.name(),
+			int iColorLinePickingID = getPickingID(EPickingType.HISTOGRAM_COLOR_LINE.name(),
 					iCount);
 
 			boolean bIsFirstOrLast = false;
@@ -295,8 +292,7 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 			if (markerPoint.hasLeftSpread()) {
 
 				float fLeftSpread = markerPoint.getLeftSpread();
-				int iLeftSpreadPickingID = pickingManager.getPickingID(uniqueID,
-						EPickingType.HISTOGRAM_LEFT_SPREAD_COLOR_LINE.name(), iCount);
+				int iLeftSpreadPickingID = getPickingID(EPickingType.HISTOGRAM_LEFT_SPREAD_COLOR_LINE.name(), iCount);
 
 				// the left polygon between the central line and the spread
 				Color color = markerPoint.getColor();
@@ -347,8 +343,7 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 				float fLeft = sideSpacing + markerPoint.getMappingValue() * fRenderWidth;
 				float fRight = sideSpacing + (markerPoint.getMappingValue() + fRightSpread) * fRenderWidth;
 
-				int iRightSpreadPickingID = pickingManager.getPickingID(uniqueID,
-						EPickingType.HISTOGRAM_RIGHT_SPREAD_COLOR_LINE.name(), iCount);
+				int iRightSpreadPickingID = getPickingID(EPickingType.HISTOGRAM_RIGHT_SPREAD_COLOR_LINE.name(), iCount);
 
 				// the polygon between the central line and the right spread
 				// the first part which picks the central line

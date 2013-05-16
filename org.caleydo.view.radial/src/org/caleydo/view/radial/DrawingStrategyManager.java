@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,12 +8,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -23,20 +23,18 @@ import java.util.ArrayList;
 
 import org.caleydo.core.util.clusterer.EPDDrawingStrategyType;
 import org.caleydo.core.util.color.mapping.ColorMapper;
-import org.caleydo.core.view.opengl.picking.PickingManager;
+import org.caleydo.core.view.opengl.picking.SpacePickingManager;
 
 /**
- * The DrawingStrategyFactory (Singleton) holds the instance of the current
- * default partial disc drawing strategy, which represents the current color
- * mode. It also functions as factory for the drawing strategies.
+ * The DrawingStrategyFactory (Singleton) holds the instance of the current default partial disc drawing strategy, which
+ * represents the current color mode. It also functions as factory for the drawing strategies.
  * 
  * @author Christian Partl
  */
 public final class DrawingStrategyManager {
 
 	private APDDrawingStrategy dsDefault;
-	private PickingManager pickingManager;
-	private int viewID;
+	private SpacePickingManager pickingManager;
 	private ArrayList<EPDDrawingStrategyType> alColorModes;
 	private int iColorModeIndex;
 
@@ -55,20 +53,17 @@ public final class DrawingStrategyManager {
 	 * Initializes the DrawingStrategyManager.
 	 * 
 	 * @param pickingManager
-	 *            PickingManager that shall be used for creating drawing
-	 *            strategies.
+	 *            PickingManager that shall be used for creating drawing strategies.
 	 * @param viewID
 	 *            ViewID that shall be used for creating drawing strategies.
 	 * @param alColorModes
-	 *            List that specifies the drawing strategies which are used for
-	 *            color modes of the radial hierarchy view. It must at least
-	 *            contain one valid drawing strategy type.
+	 *            List that specifies the drawing strategies which are used for color modes of the radial hierarchy
+	 *            view. It must at least contain one valid drawing strategy type.
 	 */
-	public void init(PickingManager pickingManager, int viewID,
+	public void init(SpacePickingManager pickingManager,
 			ArrayList<EPDDrawingStrategyType> alColorModes) {
 
 		this.pickingManager = pickingManager;
-		this.viewID = viewID;
 		this.alColorModes.clear();
 		this.alColorModes.addAll(alColorModes);
 		iColorModeIndex = 0;
@@ -97,18 +92,17 @@ public final class DrawingStrategyManager {
 			EPDDrawingStrategyType eDrawingStrategyType) {
 		switch (eDrawingStrategyType) {
 		case RAINBOW_COLOR:
-			return new PDDrawingStrategyRainbow(pickingManager, viewID);
+			return new PDDrawingStrategyRainbow(pickingManager);
 		case SELECTED:
-			return new PDDrawingStrategySelected(pickingManager, viewID);
+			return new PDDrawingStrategySelected(pickingManager);
 		case FIXED_COLOR:
-			return new PDDrawingStrategyFixedColor(pickingManager, viewID);
+			return new PDDrawingStrategyFixedColor(pickingManager);
 		case LABEL_DECORATOR:
 			return new PDDrawingStrategyLabelDecorator(colorMapper);
 		case EXPRESSION_COLOR:
-			return new PDDrawingStrategyExpressionColor(colorMapper, pickingManager,
-					viewID);
+			return new PDDrawingStrategyExpressionColor(colorMapper, pickingManager);
 		case INVISIBLE:
-			return new PDDrawingStrategyInvisible(pickingManager, viewID);
+			return new PDDrawingStrategyInvisible(pickingManager);
 		default:
 			return null;
 		}
@@ -124,12 +118,10 @@ public final class DrawingStrategyManager {
 	}
 
 	/**
-	 * Sets the current default drawing strategy to an instance of the specified
-	 * type.
+	 * Sets the current default drawing strategy to an instance of the specified type.
 	 * 
 	 * @param eDrawingStrategyType
-	 *            Type of the drawing strategy that shall be the new default
-	 *            drawing strategy.
+	 *            Type of the drawing strategy that shall be the new default drawing strategy.
 	 */
 	public void setDefaultStrategy(EPDDrawingStrategyType eDrawingStrategyType) {
 		dsDefault = createDrawingStrategy(eDrawingStrategyType);

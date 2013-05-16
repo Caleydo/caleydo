@@ -19,10 +19,7 @@ package org.caleydo.core.view.opengl.canvas;
 import gleem.linalg.Vec3f;
 
 import java.awt.Point;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -60,14 +57,10 @@ import org.caleydo.core.view.opengl.keyboard.GLFPSKeyListener;
 import org.caleydo.core.view.opengl.keyboard.GLKeyListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
-import org.caleydo.core.view.opengl.picking.Pick;
-import org.caleydo.core.view.opengl.picking.PickingManager;
-import org.caleydo.core.view.opengl.picking.PickingMode;
-import org.caleydo.core.view.opengl.picking.PickingType;
-import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
+import org.caleydo.core.view.opengl.picking.PickingManager2;
+import org.caleydo.core.view.opengl.picking.SpacePickingManager;
 import org.caleydo.core.view.opengl.util.FPSCounter;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
-import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -111,7 +104,7 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	 */
 	protected IGLCanvas parentGLCanvas;
 
-	protected PickingManager pickingManager;
+	private PickingManager2 pickingManager;
 
 	/**
 	 * Key listener which is created and registered in specific view.
@@ -146,12 +139,6 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 
 	protected TextureManager textureManager;
 
-	private int frameCounter = 0;
-	private int rotationFrameCounter = 0;
-	private static final int NUMBER_OF_FRAMES = 15;
-
-	protected EBusyState busyState = EBusyState.OFF;
-
 	protected ContextMenuCreator contextMenuCreator = new ContextMenuCreator();
 
 	/**
@@ -167,16 +154,6 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	 * True if the mouse is currently over this view. If lazyMode is true then the picking does not need to be rendered
 	 */
 	protected boolean lazyMode;
-
-	/**
-	 * picking listeners that are notified only for picks with a specific id / type combination. The key of the map is
-	 * the type, the key of the internal map is the pickedObjectID
-	 */
-	private HashMap<String, HashMap<Integer, Set<IPickingListener>>> idPickingListeners;
-	/**
-	 * Picking listeners that are notified for all picks of a type. The key of the map is the type.
-	 */
-	private HashMap<String, Set<IPickingListener>> typePickingListeners;
 
 	private int currentScrollBarID = 0;
 
@@ -222,18 +199,16 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 
 		glCanvas.addFocusListener(focusListener);
 
-		idPickingListeners = new HashMap<String, HashMap<Integer, Set<IPickingListener>>>();
-		typePickingListeners = new HashMap<String, Set<IPickingListener>>();
-
 		this.viewFrustum = viewFrustum;
 		viewCamera = new ViewCameraBase(uniqueID);
 
-		pickingManager = generalManager.getViewManager().getPickingManager();
 		textureManager = new TextureManager();
 
 		glMouseWheelListener = new GLMouseWheelListener(this);
 
 		pixelGLConverter = new PixelGLConverter(viewFrustum, parentGLCanvas);
+
+		pickingManager = new PickingManager2();
 
 		mouseWheelListeners = new HashSet<IMouseWheelHandler>();
 
@@ -279,6 +254,8 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 		glMouseListener.addGLCanvas(this);
 		pixelGLConverter = new PixelGLConverter(viewFrustum, parentGLCanvas);
 		textRenderer = new CaleydoTextRenderer(24);
+		parentGLCanvas.addMouseListener(pickingManager.getListener());
+
 		initLocal(gl);
 	}
 
@@ -431,39 +408,6 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	}
 
 	/**
-	 * This method clips everything outside the frustum
-	 */
-	public void clipToFrustum(GL2 gl) {
-		// if (this instanceof GLHeatMap && ((GLHeatMap) this).isInListMode())
-		// return;
-		//
-		gl.glClear(GL.GL_STENCIL_BUFFER_BIT);
-		gl.glColorMask(false, false, false, false);
-		gl.glClearStencil(0); // Clear The Stencil Buffer To 0
-		gl.glEnable(GL.GL_DEPTH_TEST); // Enables Depth Testing
-		gl.glDepthFunc(GL.GL_LEQUAL); // The Type Of Depth Testing To Do
-		gl.glEnable(GL.GL_STENCIL_TEST);
-		gl.glStencilFunc(GL.GL_ALWAYS, 1, 1);
-		gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_REPLACE);
-		gl.glDisable(GL.GL_DEPTH_TEST);
-
-		// Clip region that renders in stencil buffer (in this case the
-		// frustum)
-		gl.glBegin(GL2.GL_POLYGON);
-		gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getBottom(), -0.01f);
-		gl.glVertex3f(viewFrustum.getRight(), viewFrustum.getBottom(), -0.01f);
-		gl.glVertex3f(viewFrustum.getRight(), viewFrustum.getTop(), -0.01f);
-		gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getTop(), -0.01f);
-		gl.glEnd();
-
-		gl.glEnable(GL.GL_DEPTH_TEST);
-		gl.glColorMask(true, true, true, true);
-		gl.glStencilFunc(GL.GL_EQUAL, 1, 1);
-		gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_KEEP);
-
-	}
-
-	/**
 	 * Initialization for gl, general stuff
 	 *
 	 * @param gl
@@ -590,101 +534,12 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 		setDetailLevel(newDetailLevel);
 	}
 
-	/**
-	 * Check whether we had a picking hit somewhere during the previous run
-	 *
-	 * @param gl
-	 */
-	protected final void checkForHits(final GL2 gl) {
+	protected final void handlePicking(GL2 gl) {
 		contextMenuCreator.clear();
-		Set<String> hitTypes = pickingManager.getHitTypes(uniqueID);
-		if (hitTypes == null)
-			return;
-
-		for (String pickingType : hitTypes) {
-
-			ArrayList<Pick> alHits = null;
-
-			alHits = pickingManager.getHits(uniqueID, pickingType);
-
-			// This is a try to fix MOUSE_OUT in remote rendered views, not
-			// successful yet
-			// if(isRenderedRemote() && (alHits == null || alHits.size() == 0))
-			// {
-			// AGLView remoteRenderingView = this;
-			// while(remoteRenderingView.isRenderedRemote()) {
-			// remoteRenderingView =
-			// (AGLView)(remoteRenderingView.getRemoteRenderingGLView());
-			// }
-			// alHits = pickingManager.getHits(remoteRenderingView.getID(),
-			// pickingType);
-			// }
-
-			if (alHits != null && alHits.size() != 0) {
-
-				for (int iCount = 0; iCount < alHits.size(); iCount++) {
-					Pick tempPick = alHits.get(iCount);
-					int pickedObjectID = tempPick.getObjectID();
-					if (pickedObjectID == -1) {
-						continue;
-					}
-
-					PickingMode ePickingMode = tempPick.getPickingMode();
-
-					handlePicking(pickingType, ePickingMode, pickedObjectID, tempPick);
-					// FIXME: This is for legacy support -> picking listeners
-					// should be used
-
-					try {
-						PickingType type = PickingType.valueOf(pickingType);
-						try {
-							handlePickingEvents(type, ePickingMode, pickedObjectID, tempPick);
-						} catch (Exception e) {
-							Logger.log(new Status(IStatus.ERROR, this.toString(), "Caught exception when picking", e));
-						}
-					} catch (IllegalArgumentException e) {
-					}
-
-				}
-				pickingManager.flushHits(uniqueID, pickingType);
-			}
-		}
+		pickingManager.doPicking(gl, this);
 
 		if (contextMenuCreator.hasMenuItems())
 			contextMenuCreator.open(this);
-	}
-
-	protected void handlePicking(String pickingType, PickingMode pickingMode, int pickedObjectID, Pick pick) {
-
-		Set<IPickingListener> pickingListeners = typePickingListeners.get(pickingType);
-
-		if (pickingListeners != null) {
-			// Create copy of picking listeners to avoid concurrent modification issues when a picking listener tries to
-			// register or unregister a picking listener to this set
-			for (IPickingListener pickingListener : new HashSet<>(pickingListeners)) {
-				notifyPickingListener(pickingListener, pickingMode, pick);
-			}
-		}
-
-		HashMap<Integer, Set<IPickingListener>> map = idPickingListeners.get(pickingType);
-		if (map == null)
-			return;
-
-		pickingListeners = map.get(pickedObjectID);
-
-		if (pickingListeners != null) {
-			// Create copy of picking listeners to avoid concurrent modification issues when a picking listener tries to
-			// register or unregister a picking listener to this set
-			for (IPickingListener pickingListener : new HashSet<>(pickingListeners)) {
-				notifyPickingListener(pickingListener, pickingMode, pick);
-			}
-		}
-	}
-
-	private void notifyPickingListener(IPickingListener pickingListener, PickingMode pickingMode, Pick pick) {
-		if (pickingListener == null)
-			return;
-		pickingListener.pick(pick);
 	}
 
 	/**
@@ -699,24 +554,22 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	 *            the id identifying the picked object
 	 */
 	public void addIDPickingListener(IPickingListener pickingListener, String pickingType, int pickedObjectID) {
-		HashMap<Integer, Set<IPickingListener>> map = idPickingListeners.get(pickingType);
-		if (map == null) {
-			map = new HashMap<Integer, Set<IPickingListener>>();
-			idPickingListeners.put(pickingType, map);
-		}
-		Set<IPickingListener> pickingListeners = map.get(pickedObjectID);
-		if (pickingListeners == null) {
-			pickingListeners = new HashSet<IPickingListener>();
+		getPickingManager().addPickingListener(pickingType, pickedObjectID, pickingListener);
+	}
 
-		}
-		for (IPickingListener listener : pickingListeners) {
-			if (listener == pickingListener) {
-				return;
-			}
-		}
-		pickingListeners.add(pickingListener);
-		map.put(pickedObjectID, pickingListeners);
+	/**
+	 * @return
+	 */
+	protected final SpacePickingManager getPickingManager() {
+		return pickingManager.getSpace(getID());
+	}
 
+	public final PickingManager2 getPickingManager2() {
+		return pickingManager;
+	}
+
+	public final int getPickingID(String pickingType, int pickedObjectID) {
+		return getPickingManager().getPickingID(pickingType, pickedObjectID);
 	}
 
 	public final void addIDPickingTooltipListener(String tooltip, String pickingType, int pickedObjectID) {
@@ -742,18 +595,7 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	 *            the picking type. Take care that the type is unique for a view.
 	 */
 	public void addTypePickingListener(IPickingListener pickingListener, String pickingType) {
-		Set<IPickingListener> pickingListeners = typePickingListeners.get(pickingType);
-		if (pickingListeners == null) {
-			pickingListeners = new HashSet<IPickingListener>();
-
-		}
-		for (IPickingListener listener : pickingListeners) {
-			if (listener == pickingListener) {
-				return;
-			}
-		}
-		pickingListeners.add(pickingListener);
-		typePickingListeners.put(pickingType, pickingListeners);
+		getPickingManager().addTypePickingListener(pickingType, pickingListener);
 	}
 
 	/**
@@ -765,16 +607,7 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	 * @param pickedObjectID
 	 */
 	public void removeIDPickingListener(IPickingListener pickingListener, String pickingType, int pickedObjectID) {
-		HashMap<Integer, Set<IPickingListener>> map = idPickingListeners.get(pickingType);
-		if (map == null) {
-			return;
-		}
-
-		Set<IPickingListener> pickingListeners = map.get(pickedObjectID);
-		if (pickingListeners == null) {
-			return;
-		}
-		pickingListeners.remove(pickingListener);
+		getPickingManager().removePickingListener(pickingType, pickedObjectID, pickingListener);
 	}
 
 	/**
@@ -784,39 +617,7 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	 * @param pickingType
 	 */
 	public void removeTypePickingListener(IPickingListener pickingListener, String pickingType) {
-		Set<IPickingListener> pickingListeners = typePickingListeners.get(pickingType);
-		if (pickingListeners == null) {
-			return;
-		}
-		pickingListeners.remove(pickingListener);
-	}
-
-	/**
-	 * <p>
-	 * Remove the specified picking listener from wherever it is registered with this view.
-	 * </p>
-	 * <p>
-	 * Using {@link #removeIDPickingListener(IPickingListener, String, int)} or
-	 * {@link #removeAllTypePickingListeners(String)} is preferred to using this method for performance reasons.
-	 *
-	 * @param pickingListener
-	 */
-	public void removePickingListener(IPickingListener pickingListener) {
-
-		for (HashMap<Integer, Set<IPickingListener>> map : idPickingListeners.values()) {
-			if (map != null) {
-				for (Set<IPickingListener> pickingListeners : map.values()) {
-					if (pickingListeners != null) {
-						pickingListeners.remove(pickingListener);
-					}
-				}
-			}
-		}
-		for (Set<IPickingListener> pickingListeners : typePickingListeners.values()) {
-			if (pickingListeners != null) {
-				pickingListeners.remove(pickingListener);
-			}
-		}
+		getPickingManager().removeTypePickingListener(pickingType, pickingListener);
 	}
 
 	/**
@@ -826,25 +627,14 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	 * @param pickedObjectID
 	 */
 	public void removeAllIDPickingListeners(String pickingType, int pickedObjectID) {
-
-		HashMap<Integer, Set<IPickingListener>> map = idPickingListeners.get(pickingType);
-		if (map == null) {
-			return;
-		}
-
-		Set<IPickingListener> pickingListeners = map.get(pickedObjectID);
-		if (pickingListeners == null) {
-			return;
-		}
-		pickingListeners.clear();
+		getPickingManager().removePickingListeners(pickingType, pickedObjectID);
 	}
 
 	/**
 	 * Removes all picking listeners.
 	 */
 	public void removeAllPickingListeners() {
-		idPickingListeners.clear();
-		typePickingListeners.clear();
+		getPickingManager().removeAllPickingListeners();
 	}
 
 	/**
@@ -853,30 +643,7 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	 * @param pickingType
 	 */
 	public void removeAllTypePickingListeners(String pickingType) {
-
-		Set<IPickingListener> pickingListeners = typePickingListeners.get(pickingType);
-		if (pickingListeners == null) {
-			return;
-		}
-		pickingListeners.clear();
-	}
-
-	/**
-	 * This method is called every time a method occurs. It should take care of reacting appropriately to the events.
-	 *
-	 * @param pickingType
-	 *            the Picking type, held in EPickingType
-	 * @param pickingMode
-	 *            the Picking mode (clicked, dragged etc.)
-	 * @param pickingID
-	 *            the name specified for an element with glPushName
-	 * @param pick
-	 *            the pick object which can be useful to retrieve for example the mouse position when the pick occurred
-	 * @deprecated replaced by picking listeners. No longer abstract since it's not necessary for views to implement
-	 */
-	@Deprecated
-	protected void handlePickingEvents(final PickingType pickingType, final PickingMode pickingMode,
-			final int pickingID, final Pick pick) {
+		getPickingManager().removeTypePickingListeners(pickingType);
 	}
 
 	public final IViewCamera getViewCamera() {
@@ -890,6 +657,7 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	public final void setRemoteRenderingGLView(IGLRemoteRenderingView glRemoteRenderingView) {
 		this.glRemoteRenderingView = glRemoteRenderingView;
 		pixelGLConverter = glRemoteRenderingView.getPixelGLConverter();
+		pickingManager = glRemoteRenderingView.getPickingManager2(); // FIXME
 		ViewManager.get().registerRemoteRenderedView(this, (AGLView) glRemoteRenderingView);
 		// pixelGLConverter = new
 		// PixelGLConverter(glRemoteRenderingView.getViewFrustum(),
@@ -898,115 +666,6 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 
 	public final IGLRemoteRenderingView getRemoteRenderingGLView() {
 		return glRemoteRenderingView;
-	}
-
-	protected void renderBusyMode(final GL2 gl) {
-		float fTransparency = 0.3f * frameCounter / NUMBER_OF_FRAMES;
-		float fLoadingTransparency = 0.8f * frameCounter / NUMBER_OF_FRAMES;
-
-		if (busyState == EBusyState.ON && frameCounter < NUMBER_OF_FRAMES) {
-			frameCounter++;
-		} else if (busyState == EBusyState.SWITCH_OFF) {
-			frameCounter--;
-		}
-
-		gl.glColor4f(1, 1, 1, fTransparency);
-		gl.glBegin(GL2.GL_POLYGON);
-		gl.glVertex3f(-9, -9, 4.2f);
-		gl.glVertex3f(-9, 9, 4.2f);
-		gl.glVertex3f(9, 9, 4.2f);
-		gl.glVertex3f(9, -9, 4.2f);
-		gl.glEnd();
-
-		float fXCenter, fYCenter;
-		if (this instanceof IGLRemoteRenderingView) {
-			fXCenter = 0;
-			fYCenter = 0;
-		} else {
-			fXCenter = (viewFrustum.getRight() - viewFrustum.getLeft()) / 2;
-			fYCenter = (viewFrustum.getTop() - viewFrustum.getBottom()) / 2;
-		}
-
-		// TODO bad hack here, frustum wrong or renderStyle null
-
-		Texture tempTexture = textureManager.getIconTexture(EIconTextures.LOADING);
-		tempTexture.enable(gl);
-		tempTexture.bind(gl);
-
-		TextureCoords texCoords = tempTexture.getImageTexCoords();
-
-		gl.glPushAttrib(GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
-		gl.glColor4f(1.0f, 1.0f, 1.0f, fLoadingTransparency);
-
-		gl.glBegin(GL2.GL_POLYGON);
-
-		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-		gl.glVertex3f(fXCenter - GeneralRenderStyle.LOADING_BOX_HALF_WIDTH, fYCenter
-				- GeneralRenderStyle.LOADING_BOX_HALF_HEIGHT, 4.21f);
-		gl.glTexCoord2f(texCoords.left(), texCoords.top());
-		gl.glVertex3f(fXCenter - GeneralRenderStyle.LOADING_BOX_HALF_WIDTH, fYCenter
-				+ GeneralRenderStyle.LOADING_BOX_HALF_HEIGHT, 4.21f);
-		gl.glTexCoord2f(texCoords.right(), texCoords.top());
-		gl.glVertex3f(fXCenter + GeneralRenderStyle.LOADING_BOX_HALF_WIDTH, fYCenter
-				+ GeneralRenderStyle.LOADING_BOX_HALF_HEIGHT, 4.21f);
-		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-
-		gl.glVertex3f(fXCenter + GeneralRenderStyle.LOADING_BOX_HALF_WIDTH, fYCenter
-				- GeneralRenderStyle.LOADING_BOX_HALF_HEIGHT, 4.21f);
-		gl.glEnd();
-
-		tempTexture.disable(gl);
-
-		// gl.glColor4f(1.0f, 0.0f, 0.0f, 0.5f);
-		Texture circleTexture = textureManager.getIconTexture(EIconTextures.LOADING_CIRCLE);
-		circleTexture.enable(gl);
-		circleTexture.bind(gl);
-		texCoords = circleTexture.getImageTexCoords();
-
-		gl.glTranslatef(fXCenter - 0.6f, fYCenter, 0);
-		gl.glRotatef(-rotationFrameCounter, 0, 0, 1);
-
-		gl.glBegin(GL2.GL_POLYGON);
-		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-		gl.glVertex3f(-0.1f, -0.1f, 4.22f);
-		gl.glTexCoord2f(texCoords.left(), texCoords.top());
-		gl.glVertex3f(-0.1f, 0.1f, 4.22f);
-		gl.glTexCoord2f(texCoords.right(), texCoords.top());
-		gl.glVertex3f(0.1f, 0.1f, 4.22f);
-		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-		gl.glVertex3f(0.1f, -0.1f, 4.22f);
-		gl.glEnd();
-		gl.glRotatef(+rotationFrameCounter, 0, 0, 1);
-		gl.glTranslatef(fXCenter + 0.6f, fYCenter, 0);
-
-		rotationFrameCounter += 3;
-		gl.glPopAttrib();
-
-		circleTexture.disable(gl);
-
-		if (busyState == EBusyState.SWITCH_OFF && frameCounter <= 0) {
-			pickingManager.enablePicking(true);
-			busyState = EBusyState.OFF;
-		}
-
-		// System.out.println("Busy mode status: " +eBusyModeState);
-	}
-
-	/**
-	 * Enables the busy mode, which renders the loading dialog and disables the picking. This method may be overridden
-	 * if different behaviour is desired.
-	 *
-	 * @param bBusyMode
-	 *            true if the busy mode should be enabled, false if it should be disabled
-	 */
-	public void enableBusyMode(final boolean bBusyMode) {
-		if (!bBusyMode && busyState == EBusyState.ON) {
-			busyState = EBusyState.SWITCH_OFF;
-			pickingManager.enablePicking(true);
-		} else if (bBusyMode) {
-			pickingManager.enablePicking(false);
-			busyState = EBusyState.ON;
-		}
 	}
 
 	public final EDetailLevel getDetailLevel() {
@@ -1110,8 +769,6 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	 */
 	public final void destroy(GL2 gl) {
 		System.out.println("destroy " + label);
-
-		pickingManager.removeViewSpecificData(uniqueID);
 		unregisterEventListeners();
 		destroyViewSpecificContent(gl);
 		parentGLCanvas.removeFocusListener(focusListener);
@@ -1130,10 +787,6 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	 */
 	public CaleydoTextRenderer getTextRenderer() {
 		return textRenderer;
-	}
-
-	public PickingManager getPickingManager() {
-		return pickingManager;
 	}
 
 	@Override

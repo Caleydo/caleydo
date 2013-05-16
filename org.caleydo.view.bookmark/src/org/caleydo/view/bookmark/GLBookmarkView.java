@@ -46,9 +46,8 @@ import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
-import org.caleydo.core.view.opengl.picking.PickingMode;
-import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.eclipse.swt.widgets.Composite;
 
@@ -94,7 +93,7 @@ public class GLBookmarkView extends ATableBasedView {
 
 		public int getPickingID(ABookmarkContainer container, int privateID) {
 
-			int pickingID = pickingManager.getPickingID(uniqueID, PickingType.BOOKMARK_ELEMENT, idCount);
+			int pickingID = GLBookmarkView.this.getPickingID(PickingType.BOOKMARK_ELEMENT.name(), idCount);
 			pickingIDToBookmarkContainer.put(idCount++, new Pair<IDCategory, Integer>(container.getCategory(),
 					privateID));
 			return pickingID;
@@ -102,11 +101,6 @@ public class GLBookmarkView extends ATableBasedView {
 
 		private Pair<IDCategory, Integer> getPrivateID(int externalID) {
 			return pickingIDToBookmarkContainer.get(externalID);
-		}
-
-		private void reset() {
-			idCount = 0;
-			pickingIDToBookmarkContainer = new HashMap<Integer, Pair<IDCategory, Integer>>();
 		}
 	}
 
@@ -188,12 +182,11 @@ public class GLBookmarkView extends ATableBasedView {
 		}
 
 		gl.glCallList(displayListIndex);
-		checkForHits(gl);
 	}
 
 	@Override
 	protected void displayLocal(GL2 gl) {
-		pickingManager.handlePicking(this, gl);
+		handlePicking(gl);
 		display(gl);
 	}
 
@@ -215,19 +208,6 @@ public class GLBookmarkView extends ATableBasedView {
 		gl.glNewList(iGLDisplayListIndex, GL2.GL_COMPILE);
 		layoutManager.render(gl);
 		gl.glEndList();
-	}
-
-	@Override
-	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode, int externalID, Pick pick) {
-		switch (pickingType) {
-		case BOOKMARK_ELEMENT:
-			Pair<IDCategory, Integer> pair = pickingIDManager.getPrivateID(externalID);
-			hashCategoryToBookmarkContainer.get(pair.getFirst()).handleEvents(pickingType, pickingMode,
-					pair.getSecond(), pick);
-			break;
-		default:
-			break;
-		}
 	}
 
 	/**
@@ -262,6 +242,16 @@ public class GLBookmarkView extends ATableBasedView {
 	public void init(GL2 gl) {
 		displayListIndex = gl.glGenLists(1);
 		textRenderer = new CaleydoTextRenderer(24);
+
+		addTypePickingListener(new IPickingListener() {
+			@Override
+			public void pick(Pick pick) {
+				Pair<IDCategory, Integer> pair = pickingIDManager.getPrivateID(pick.getObjectID());
+				hashCategoryToBookmarkContainer.get(pair.getFirst()).handleEvents(PickingType.BOOKMARK_ELEMENT,
+						pick.getPickingMode(),
+						pair.getSecond(), pick);
+			}
+		}, PickingType.BOOKMARK_ELEMENT.name());
 	}
 
 	@Override

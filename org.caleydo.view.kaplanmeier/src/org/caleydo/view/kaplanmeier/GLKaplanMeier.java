@@ -215,11 +215,8 @@ public class GLKaplanMeier extends ATableBasedView {
 
 	@Override
 	public void displayLocal(GL2 gl) {
-		pickingManager.handlePicking(this, gl);
+		handlePicking(gl);
 		display(gl);
-		if (busyState != EBusyState.OFF) {
-			renderBusyMode(gl);
-		}
 	}
 
 	@Override
@@ -235,8 +232,6 @@ public class GLKaplanMeier extends ATableBasedView {
 			isDisplayListDirty = false;
 		}
 		gl.glCallList(displayListIndex);
-
-		checkForHits(gl);
 	}
 
 	private void buildDisplayList(final GL2 gl, int displayListIndex) {
@@ -383,7 +378,7 @@ public class GLKaplanMeier extends ATableBasedView {
 		}
 
 		if (!fillCurve && detailLevel == EDetailLevel.HIGH) {
-			gl.glPushName(pickingManager.getPickingID(getID(), EPickingType.KM_CURVE.name(), groupID));
+			gl.glPushName(getPickingID(EPickingType.KM_CURVE.name(), groupID));
 		}
 		gl.glColor3fv(color.getColorWithSpecificBrighness(0.7f).getRGB(), 0);
 		drawCurve(gl, dataVector);

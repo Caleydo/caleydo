@@ -49,7 +49,6 @@ import org.caleydo.core.view.opengl.canvas.internal.newt.NEWTGLCanvasFactory;
 import org.caleydo.core.view.opengl.canvas.internal.swt.SWTGLCanvasFactory;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.layout.util.multiform.IEmbeddedVisualizationInfo;
-import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -98,8 +97,6 @@ public class ViewManager extends AManager<IView> {
 	// private Map<AGLView, Set<AGLView>> hashTopLevelView2ViewsToBeDestroyed = new HashMap<AGLView, Set<AGLView>>();
 
 	private FPSAnimator fpsAnimator;
-
-	private PickingManager pickingManager = new PickingManager();
 
 	private Set<Object> busyRequests = new HashSet<Object>();
 
@@ -491,11 +488,6 @@ public class ViewManager extends AManager<IView> {
 	public Iterable<IView> getAllViews() {
 		return hashGLViewID2View.values();
 	}
-
-	public PickingManager getPickingManager() {
-		return pickingManager;
-	}
-
 
 	public void startAnimator() {
 

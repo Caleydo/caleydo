@@ -74,7 +74,7 @@ public class ColumnCaptionRenderer extends ALayoutRenderer implements ILabelProv
 
 		registerPickingListener();
 
-		pickingID = parentView.getPickingManager().getPickingID(parentView.getID(), EPickingType.SAMPLE_GROUP.name(),
+		pickingID = parentView.getPickingID(EPickingType.SAMPLE_GROUP.name(),
 				group.getID());
 
 	}

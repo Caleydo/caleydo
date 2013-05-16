@@ -73,11 +73,11 @@ public class SpacePickingManager {
 	 * @param objectId
 	 * @return
 	 */
-	public int getPickingID(Object type, int objectId) {
+	public int getPickingID(String type, int objectId) {
 		return get(type, objectId).pickingId;
 	}
 
-	private PickingManager2.PickingEntry get(Object type, int objectId) {
+	private PickingManager2.PickingEntry get(String type, int objectId) {
 		PickingKey key = new PickingKey(type, objectId);
 		PickingManager2.PickingEntry id = mapping.get(key);
 		if (id == null) {
@@ -87,7 +87,7 @@ public class SpacePickingManager {
 		return id;
 	}
 
-	private PickingListenerComposite getType(Object type) {
+	private PickingListenerComposite getType(String type) {
 		PickingListenerComposite typeListener = typeListeners.get(type);
 		if (typeListener == null) {
 			typeListener = new PickingListenerComposite(1);
@@ -102,7 +102,7 @@ public class SpacePickingManager {
 	 * @param type
 	 * @param l
 	 */
-	public void addTypePickingListener(Object type, IPickingListener l) {
+	public void addTypePickingListener(String type, IPickingListener l) {
 		getType(type).add(l);
 	}
 
@@ -112,7 +112,7 @@ public class SpacePickingManager {
 	 * @param type
 	 * @param l
 	 */
-	public boolean removeTypePickingListener(Object type, IPickingListener l) {
+	public boolean removeTypePickingListener(String type, IPickingListener l) {
 		return getType(type).remove(type);
 	}
 
@@ -122,7 +122,7 @@ public class SpacePickingManager {
 	 * @param type
 	 * @param l
 	 */
-	public boolean removeTypePickingListeners(Object type) {
+	public boolean removeTypePickingListeners(String type) {
 		return typeListeners.remove(type) != null;
 	}
 
@@ -134,7 +134,7 @@ public class SpacePickingManager {
 	 * @param l
 	 * @return the picking id of this key
 	 */
-	public int addPickingListener(Object type, int id, IPickingListener l) {
+	public int addPickingListener(String type, int id, IPickingListener l) {
 		PickingManager2.PickingEntry entry = get(type, id);
 		entry.add(l);
 		return entry.pickingId;
@@ -148,7 +148,7 @@ public class SpacePickingManager {
 	 * @param l
 	 * @return
 	 */
-	public boolean removePickingListener(Object type, int id, IPickingListener l) {
+	public boolean removePickingListener(String type, int id, IPickingListener l) {
 		PickingManager2.PickingEntry entry = get(type, id);
 		boolean r = entry.remove(l);
 		if (entry.isEmpty()) {
@@ -165,7 +165,7 @@ public class SpacePickingManager {
 	 * @param l
 	 * @return
 	 */
-	public boolean removePickingListeners(Object type, int id) {
+	public boolean removePickingListeners(String type, int id) {
 		PickingManager2.PickingEntry entry = mapping.remove(new PickingKey(type, id));
 		if (entry != null) {
 			parent.remove(entry);
@@ -179,7 +179,7 @@ public class SpacePickingManager {
 	 *
 	 * @param type
 	 */
-	public void removeAllPickingListeners(Object type) {
+	public void removeAllPickingListeners(String type) {
 		removeTypePickingListeners(type);
 		// check all ids
 		for (Iterator<Map.Entry<PickingKey, PickingManager2.PickingEntry>> it = mapping.entrySet().iterator(); it
@@ -190,6 +190,14 @@ public class SpacePickingManager {
 				it.remove();
 			}
 		}
+	}
+
+	public void removeAllPickingListeners() {
+		typeListeners.clear();
+		for (PickingManager2.PickingEntry entry : mapping.values()) {
+			parent.remove(entry);
+		}
+		mapping.clear();
 	}
 
 	/**

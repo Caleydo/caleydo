@@ -184,7 +184,7 @@ public final class LayoutRendererAdapter extends ALayoutRenderer implements IGLE
 	public int registerPickingListener(IPickingListener l, int objectId) {
 		String key = pickingBaseType + "_" + (pickingNameCounter++);
 		view.addIDPickingListener(l, key, objectId);
-		int id = view.getPickingManager().getPickingID(view.getID(), key, objectId);
+		int id = view.getPickingID(key, objectId);
 		pickingMetaData.put(l, new PickingMetaData(id, pickingBaseType, objectId));
 		return id;
 	}

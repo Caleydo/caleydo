@@ -65,8 +65,8 @@ public class RemoveNodeButtonAttributeRenderer extends ANodeAttributeRenderer {
 
 			// gl.glPushAttrib(GL2.GL_COLOR);
 			for (Integer nodeId : nodeIds) {
-				gl.glPushName(pickingManager.getPickingID(view.getID(), EPickingType.REMOVABLE_NODE.name(), nodeId));
-				gl.glPushName(pickingManager.getPickingID(view.getID(), EPickingType.REMOVE_NODE_BUTTON.name(), nodeId));
+				gl.glPushName(view.getPickingID(EPickingType.REMOVABLE_NODE.name(), nodeId));
+				gl.glPushName(view.getPickingID(EPickingType.REMOVE_NODE_BUTTON.name(), nodeId));
 			}
 			// ALinearizableNode currentNode =
 			Vec3f position = node.getPosition();

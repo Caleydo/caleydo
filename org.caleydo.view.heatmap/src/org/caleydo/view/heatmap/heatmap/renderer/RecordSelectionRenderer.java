@@ -28,8 +28,8 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
+import org.caleydo.view.heatmap.heatmap.PickingType;
 
 public class RecordSelectionRenderer extends AHeatMapRenderer {
 
@@ -63,8 +63,7 @@ public class RecordSelectionRenderer extends AHeatMapRenderer {
 					// width = heatMap.getDimensionVA().size() * fieldWidth;
 					yPosition = recordSpacing.getYDistances().get(lineIndex);
 					xPosition = 0;
-					gl.glPushName(heatMap.getPickingManager().getPickingID(
-							heatMap.getID(), PickingType.HEAT_MAP_RECORD_SELECTION,
+					gl.glPushName(heatMap.getPickingID(PickingType.HEAT_MAP_RECORD_SELECTION.name(),
 							currentLine));
 
 					float z = SELECTION_Z * selectionType.getPriority();

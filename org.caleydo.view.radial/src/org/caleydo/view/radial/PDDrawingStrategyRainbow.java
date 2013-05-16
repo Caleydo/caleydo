@@ -29,8 +29,7 @@ import org.caleydo.core.util.clusterer.EPDDrawingStrategyType;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.color.mapping.ColorMapper;
 import org.caleydo.core.util.color.mapping.ColorMarkerPoint;
-import org.caleydo.core.view.opengl.picking.PickingManager;
-import org.caleydo.core.view.opengl.picking.PickingType;
+import org.caleydo.core.view.opengl.picking.SpacePickingManager;
 import org.caleydo.core.view.opengl.util.GLPrimitives;
 
 /**
@@ -56,8 +55,8 @@ public class PDDrawingStrategyRainbow extends APDDrawingStrategyChildIndicator {
 	 *            ID of the view where the elements will be displayed. Needed
 	 *            for picking.
 	 */
-	public PDDrawingStrategyRainbow(PickingManager pickingManager, int viewID) {
-		super(pickingManager, viewID);
+	public PDDrawingStrategyRainbow(SpacePickingManager pickingManager) {
+		super(pickingManager);
 
 		ArrayList<ColorMarkerPoint> alMarkerPoints = new ArrayList<ColorMarkerPoint>();
 
@@ -78,8 +77,8 @@ public class PDDrawingStrategyRainbow extends APDDrawingStrategyChildIndicator {
 
 		float fRadius = pdDiscToDraw.getCurrentWidth();
 
-		gl.glPushName(pickingManager.getPickingID(viewID,
-				PickingType.RAD_HIERARCHY_PDISC_SELECTION, pdDiscToDraw.getElementID()));
+		gl.glPushName(pickingManager.getPickingID(PickingType.RAD_HIERARCHY_PDISC_SELECTION.name(),
+				pdDiscToDraw.getElementID()));
 		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
 
 		if ((!pdDiscToDraw.isAChildDrawn()) && (pdDiscToDraw.hasChildren())) {
@@ -109,8 +108,8 @@ public class PDDrawingStrategyRainbow extends APDDrawingStrategyChildIndicator {
 		float fInnerRadius = pdDiscToDraw.getCurrentInnerRadius();
 		float fWidth = pdDiscToDraw.getCurrentWidth();
 
-		gl.glPushName(pickingManager.getPickingID(viewID,
-				PickingType.RAD_HIERARCHY_PDISC_SELECTION, pdDiscToDraw.getElementID()));
+		gl.glPushName(pickingManager.getPickingID(PickingType.RAD_HIERARCHY_PDISC_SELECTION.name(),
+				pdDiscToDraw.getElementID()));
 		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
 
 		if ((!pdDiscToDraw.isAChildDrawn()) && (pdDiscToDraw.hasChildren())) {

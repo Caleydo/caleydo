@@ -24,7 +24,6 @@ import java.util.Map;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 
 /**
  * simpler version of {@link PickingManager} for a view specific setup
@@ -79,30 +78,6 @@ public class PickingManager2 extends APickingManager<PickingManager2.PickingEntr
 	private final Map<Integer, SpacePickingManager> spacePickingManagers = new HashMap<>();
 
 	/**
-	 * uses the given {@link GLMouseListener} to convert the current state to a {@link PickingMode}
-	 *
-	 * @param glMouseListener
-	 * @return
-	 */
-	protected static PickingMode convertToPickingMode(GLMouseListener glMouseListener) {
-		if (glMouseListener.wasMouseDoubleClicked()) {
-			return PickingMode.DOUBLE_CLICKED;
-		} else if (glMouseListener.wasMouseDragged()) {
-			return PickingMode.DRAGGED;
-		} else if (glMouseListener.wasLeftMouseButtonPressed()) {
-			return PickingMode.CLICKED;
-		} else if (glMouseListener.wasRightMouseButtonPressed()) {
-			return PickingMode.RIGHT_CLICKED;
-		} else if (glMouseListener.wasMouseMoved()) {
-			return PickingMode.MOUSE_MOVED;
-		} else if (glMouseListener.wasMouseReleased()) {
-			return PickingMode.MOUSE_RELEASED;
-		} else {
-			return null; // no picking
-		}
-	}
-
-	/**
 	 * returns a space specific picking manager, e.g. one per view instance
 	 *
 	 * @param spaceId
@@ -124,10 +99,7 @@ public class PickingManager2 extends APickingManager<PickingManager2.PickingEntr
 	 * @param view
 	 */
 	public void doPicking(final GL2 gl, final AGLView view) {
-		PickingMode mode = convertToPickingMode(view.getGLMouseListener());
-		Point pickPoint = view.getGLMouseListener().getPickedPoint();
-
-		super.doPicking(mode, pickPoint, null, gl, new Runnable() {
+		super.doPicking(gl, new Runnable() {
 			@Override
 			public void run() {
 				view.display(gl);

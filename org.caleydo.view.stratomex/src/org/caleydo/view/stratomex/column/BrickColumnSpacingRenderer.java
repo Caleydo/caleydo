@@ -344,8 +344,7 @@ public class BrickColumnSpacingRenderer
 
 	private void renderBackground(GL2 gl) {
 
-		int pickingID = stratomex.getPickingManager().getPickingID(stratomex.getID(),
-				EPickingType.DIMENSION_GROUP_SPACER.name(), ID);
+		int pickingID = stratomex.getPickingID(EPickingType.DIMENSION_GROUP_SPACER.name(), ID);
 
 		gl.glPushName(pickingID);
 		gl.glColor4f(1f, 1f, 1f, 0);
@@ -543,8 +542,7 @@ public class BrickColumnSpacingRenderer
 				float xEnd = x + subBrick.getLayout().getTranslateX()
 						- rightDimGroup.getLayout().getTranslateX();
 
-				gl.glPushName(stratomex.getPickingManager().getPickingID(stratomex.getID(),
-						EPickingType.BRICK_CONNECTION_BAND.name(),
+				gl.glPushName(stratomex.getPickingID(EPickingType.BRICK_CONNECTION_BAND.name(),
 						subGroupMatch.getConnectionBandID()));
 
 				// Render selected portion

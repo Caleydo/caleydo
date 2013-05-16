@@ -30,9 +30,6 @@ import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
-import org.caleydo.core.view.opengl.picking.Pick;
-import org.caleydo.core.view.opengl.picking.PickingMode;
-import org.caleydo.core.view.opengl.picking.PickingType;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -90,7 +87,7 @@ public class CategoryView extends ATableBasedView {
 	public void displayLocal(GL2 gl) {
 
 		if (!lazyMode)
-			pickingManager.handlePicking(this, gl);
+			handlePicking(gl);
 
 		display(gl);
 
@@ -104,14 +101,6 @@ public class CategoryView extends ATableBasedView {
 
 	@Override
 	public void display(GL2 gl) {
-		if (!lazyMode)
-			checkForHits(gl);
-	}
-
-	@Override
-	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
-			int externalID, Pick pick) {
-
 	}
 
 	@Override

@@ -69,7 +69,7 @@ public class CompoundNodePreviewMode extends ACompoundNodeMode {
 
 		// determineHighlightColor(pathwayPathRenderer.getMetaboliteSelectionManager());
 
-		gl.glPushName(pickingManager.getPickingID(view.getID(), EPickingType.LINEARIZABLE_NODE.name(), node.hashCode()));
+		gl.glPushName(view.getPickingID(EPickingType.LINEARIZABLE_NODE.name(), node.hashCode()));
 		gl.glColor4fv(backgroundColor, 0);
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glVertex3f(leftX, bottomY, nodePosition.z());

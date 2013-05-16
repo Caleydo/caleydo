@@ -113,9 +113,9 @@ class TopDownTablePerspectiveMatrixRenderingStrategy extends ATablePerspectiveMa
 								currentPositionX, currentPositionY - rowHeight));
 				perspectiveRenderer.setPosition(absolutePosition);
 				pushPickingIDs(gl, view, pickingIDsToBePushed);
-				gl.glPushName(view.getPickingManager().getPickingID(view.getID(),
+				gl.glPushName(view.getPickingID(
 						PickingType.PERSPECTIVE.name() + node.getID(), row.id.hashCode()));
-				gl.glPushName(view.getPickingManager().getPickingID(view.getID(),
+				gl.glPushName(view.getPickingID(
 						PickingType.PERSPECTIVE_PENETRATING.name() + node.getID(), row.id.hashCode()));
 				perspectiveRenderer.renderContent(gl);
 				popPickingIDs(gl, pickingIDsToBePushed);
@@ -216,9 +216,9 @@ class TopDownTablePerspectiveMatrixRenderingStrategy extends ATablePerspectiveMa
 						.getAbsolutPositionOfRelativeTablePerspectiveRendererCoordinates(new Point2D.Float(
 								currentPositionX, y - captionRowHeight - captionSpacingY));
 				perspectiveRenderer.setPosition(absolutePosition);
-				gl.glPushName(view.getPickingManager().getPickingID(view.getID(),
+				gl.glPushName(view.getPickingID(
 						PickingType.PERSPECTIVE.name() + node.getID(), column.id.hashCode()));
-				gl.glPushName(view.getPickingManager().getPickingID(view.getID(),
+				gl.glPushName(view.getPickingID(
 						PickingType.PERSPECTIVE_PENETRATING.name() + node.getID(), column.id.hashCode()));
 				pushPickingIDs(gl, view, pickingIDsToBePushed);
 				perspectiveRenderer.render(gl);
@@ -326,7 +326,7 @@ class TopDownTablePerspectiveMatrixRenderingStrategy extends ATablePerspectiveMa
 				gl.glPushMatrix();
 				int pickingID = 0;
 				if (cell instanceof TablePerspectiveRenderer) {
-					pickingID = view.getPickingManager().getPickingID(view.getID(),
+					pickingID = view.getPickingID(
 							PickingType.DATA_CONTAINER.name() + node.getID(),
 							((TablePerspectiveRenderer) cell).getTablePerspective().getID());
 
@@ -350,7 +350,7 @@ class TopDownTablePerspectiveMatrixRenderingStrategy extends ATablePerspectiveMa
 					currentDimGroupPositionX += columnWidth;
 				} else {
 
-					pickingID = view.getPickingManager().getPickingID(view.getID(),
+					pickingID = view.getPickingID(
 							PickingType.EMPTY_CELL.name() + node.getID(), ((EmptyCellRenderer) cell).getID());
 
 					gl.glTranslatef(emptyCellPositionX + cellSpacingX, row.position - rowHeight + cellSpacingY, 0);
@@ -359,7 +359,7 @@ class TopDownTablePerspectiveMatrixRenderingStrategy extends ATablePerspectiveMa
 						pixelGLConverter.getGLHeightForPixelHeight(CELL_SIZE_PIXELS));
 				gl.glPushName(pickingID);
 				for (Pair<String, Integer> pickingIDPair : pickingIDsToBePushed) {
-					gl.glPushName(view.getPickingManager().getPickingID(view.getID(), pickingIDPair.getFirst(),
+					gl.glPushName(view.getPickingID(pickingIDPair.getFirst(),
 							pickingIDPair.getSecond()));
 				}
 				cell.render(gl);

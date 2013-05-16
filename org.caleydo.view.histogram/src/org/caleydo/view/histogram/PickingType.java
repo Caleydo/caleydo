@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.view.opengl.picking;
+package org.caleydo.view.histogram;
 
 /**
  * List of all possible pickable elements. Every type of element which should be pickable must be registered here.

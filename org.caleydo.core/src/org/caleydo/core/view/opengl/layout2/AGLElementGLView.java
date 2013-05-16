@@ -17,7 +17,6 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
-import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.data.loader.ResourceLocators;
 import org.caleydo.data.loader.ResourceLocators.IResourceLocator;
 import org.eclipse.swt.widgets.Composite;
@@ -141,7 +140,6 @@ public abstract class AGLElementGLView extends AGLView implements IGLElementCont
 		}
 		g.checkError("post render");
 
-		checkForHits(gl);
 		processEvents();
 
 		gl.glPopMatrix();
@@ -158,13 +156,9 @@ public abstract class AGLElementGLView extends AGLView implements IGLElementCont
 
 	@Override
 	protected void displayLocal(GL2 gl) {
-		pickingManager.handlePicking(this, gl);
+		handlePicking(gl);
 
-		if (busyState == EBusyState.ON) {
-			renderBusyMode(gl);
-		} else {
-			display(gl);
-		}
+		display(gl);
 	}
 
 	@Override
@@ -187,7 +181,7 @@ public abstract class AGLElementGLView extends AGLView implements IGLElementCont
 	public final int registerPickingListener(IPickingListener l, int objectId) {
 		String key = pickingBaseType + "_" + (pickingNameCounter++);
 		this.addIDPickingListener(l, key, objectId);
-		int id = this.getPickingManager().getPickingID(this.getID(), key, objectId);
+		int id = this.getPickingManager().getPickingID(key, objectId);
 		pickingMetaData.put(l, new PickingMetaData(id, pickingBaseType, objectId));
 		return id;
 	}

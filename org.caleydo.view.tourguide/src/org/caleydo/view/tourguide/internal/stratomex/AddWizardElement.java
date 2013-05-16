@@ -176,7 +176,7 @@ public class AddWizardElement extends AAddWizardElement implements ICallback<ISt
 	}
 
 	private int getPickingID(int i) {
-		return view.getPickingManager().getPickingID(view.getID(), PICKING_TYPE, i);
+		return view.getPickingID(PICKING_TYPE, i);
 	}
 
 	private void drawMultiLineText(GLGraphics g, ILabeled item, float x, float y, float w, float h) {

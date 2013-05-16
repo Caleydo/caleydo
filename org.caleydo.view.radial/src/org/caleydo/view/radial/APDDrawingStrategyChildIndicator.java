@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,12 +8,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -25,11 +25,11 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
-import org.caleydo.core.view.opengl.picking.PickingManager;
+import org.caleydo.core.view.opengl.picking.SpacePickingManager;
 
 /**
- * APDDrawingStrategy encapsulates the functionality of drawing child
- * indicators, which indicate, that a partial disc has children.
+ * APDDrawingStrategy encapsulates the functionality of drawing child indicators, which indicate, that a partial disc
+ * has children.
  * 
  * @author Christian Partl
  */
@@ -46,14 +46,12 @@ public abstract class APDDrawingStrategyChildIndicator extends APDDrawingStrateg
 	 * Constructor.
 	 * 
 	 * @param pickingManager
-	 *            The picking manager that should handle the picking of the
-	 *            drawn elements.
+	 *            The picking manager that should handle the picking of the drawn elements.
 	 * @param viewID
-	 *            ID of the view where the elements will be displayed. Needed
-	 *            for picking.
+	 *            ID of the view where the elements will be displayed. Needed for picking.
 	 */
-	public APDDrawingStrategyChildIndicator(PickingManager pickingManager, int viewID) {
-		super(pickingManager, viewID);
+	public APDDrawingStrategyChildIndicator(SpacePickingManager pickingManager) {
+		super(pickingManager);
 		fArChildIndicatorColor = RadialHierarchyRenderStyle.CHILD_INDICATOR_COLOR;
 		fTransparency = 1.0f;
 	}
@@ -65,8 +63,7 @@ public abstract class APDDrawingStrategyChildIndicator extends APDDrawingStrateg
 	public abstract void drawPartialDisc(GL2 gl, GLU glu, PartialDisc pdDiscToDraw);
 
 	/**
-	 * Draws a child indicator (triangle) according to the parameters of a
-	 * partial disc.
+	 * Draws a child indicator (triangle) according to the parameters of a partial disc.
 	 * 
 	 * @param gl
 	 *            GL2 object that shall be used for drawing.
@@ -111,8 +108,8 @@ public abstract class APDDrawingStrategyChildIndicator extends APDDrawingStrateg
 	}
 
 	/**
-	 * Calculates the position of a point using the angle and radius (distance)
-	 * from the center that is assumed at (0,0).
+	 * Calculates the position of a point using the angle and radius (distance) from the center that is assumed at
+	 * (0,0).
 	 * 
 	 * @param fAngle
 	 *            Angle that determines the direction of the radius.
@@ -182,8 +179,8 @@ public abstract class APDDrawingStrategyChildIndicator extends APDDrawingStrateg
 	 * Sets the color which is used to draw the child indicator.
 	 * 
 	 * @param fArChildIndicatorColor
-	 *            RGB-Color which shall be used to draw the child indicator.
-	 *            Only the first three values of the array will be used.
+	 *            RGB-Color which shall be used to draw the child indicator. Only the first three values of the array
+	 *            will be used.
 	 */
 	public void setChildIndicatorColor(float[] fArChildIndicatorColor) {
 		if (fArChildIndicatorColor.length >= 3) {

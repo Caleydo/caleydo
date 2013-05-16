@@ -106,8 +106,7 @@ public class TablePerspectiveListRenderer extends AMultiTablePerspectiveRenderer
 
 		for (TablePerspectiveRenderer tablePerspectiveRenderer : dimensionGroupRenderers) {
 
-			int pickingID = view.getPickingManager().getPickingID(view.getID(),
-					PickingType.DATA_CONTAINER.name() + node.getID(),
+			int pickingID = view.getPickingID(PickingType.DATA_CONTAINER.name() + node.getID(),
 					tablePerspectiveRenderer.getTablePerspective().getID());
 
 			gl.glPushName(pickingID);
@@ -115,7 +114,7 @@ public class TablePerspectiveListRenderer extends AMultiTablePerspectiveRenderer
 			 {
 			 for (Pair<String, Integer> pickingPair : pickingIDsToBePushed)
 			 {
-			 gl.glPushName(view.getPickingManager().getPickingID(view.getID(),
+					gl.glPushName(view.getPickingID(
 			 pickingPair.getFirst(), pickingPair.getSecond()));
 			 }
 			 }

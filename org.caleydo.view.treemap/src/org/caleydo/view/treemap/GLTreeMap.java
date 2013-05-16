@@ -43,10 +43,9 @@ import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.IGLMouseListener.IMouseEvent;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
-import org.caleydo.core.view.opengl.picking.PickingManager;
-import org.caleydo.core.view.opengl.picking.PickingMode;
-import org.caleydo.core.view.opengl.picking.PickingType;
+import org.caleydo.core.view.opengl.picking.SpacePickingManager;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.view.treemap.layout.ATreeMapNode;
 import org.caleydo.view.treemap.layout.ClusterTreeMapNode;
@@ -88,7 +87,7 @@ public class GLTreeMap extends ATableBasedView {
 
 	private ColorMapper colorMapper;
 
-	private PickingManager remotePickingManager = null;
+	private SpacePickingManager remotePickingManager = null;
 
 	private int remoteViewID = 0;
 
@@ -151,6 +150,45 @@ public class GLTreeMap extends ATableBasedView {
 			textRenderer = new CaleydoTextRenderer(new Font("Arial", Font.PLAIN, 24));
 		renderer.initCache(gl);
 
+		if (detailLevel == EDetailLevel.VERY_LOW) {
+			return;
+		}
+
+		getActivePickingManager().addTypePickingListener(PickingType.TREEMAP_ELEMENT_SELECTED.name(),
+				new IPickingListener() {
+
+					@Override
+					public void pick(Pick pick) {
+						int pickingID = pick.getObjectID();
+						switch (pick.getPickingMode()) {
+						case CLICKED:
+							mouseWheeleSelectionId = pickingID;
+							treeSelectionManager.clearSelection(SelectionType.SELECTION);
+							treeSelectionManager.addToType(SelectionType.SELECTION, mouseWheeleSelectionId);
+							bIsMouseWheeleUsed = true;
+							mouseWheeleSelectionHeight = 0;
+							break;
+						case MOUSE_OVER:
+
+							treeSelectionManager.clearSelection(SelectionType.MOUSE_OVER);
+							treeSelectionManager.addToType(SelectionType.MOUSE_OVER, pickingID);
+							break;
+						case RIGHT_CLICKED:
+
+							break;
+						case DRAGGED:
+							// System.out.println(externalID+" dragged");
+							break;
+						default:
+							return;
+
+						}
+
+						publishSelectionEvent();
+
+						setHighLightingListDirty();
+					}
+				});
 	}
 
 	@Override
@@ -202,7 +240,7 @@ public class GLTreeMap extends ATableBasedView {
 	public void display(GL2 gl) {
 		if (isDisplayListDirty) {
 			renderer.initCache(gl);
-			renderer.initRenderer(viewFrustum, getActivePickingManager(), getPickingViewID(), treeSelectionManager,
+			renderer.initRenderer(viewFrustum, getActivePickingManager(), treeSelectionManager,
 					textRenderer);
 			renderer.renderTreeMap(gl, treeMapModel.getRoot());
 			isDisplayListDirty = false;
@@ -235,57 +273,6 @@ public class GLTreeMap extends ATableBasedView {
 		// }
 		// iGLDisplayListToCall = iGLDisplayListIndexRemote;
 		display(gl);
-	}
-
-	public void handleRemotePickingEvents(PickingType ePickingType, PickingMode ePickingMode, int externalPickingID,
-			Pick pick) {
-		if (bIsInteractive)
-			handlePickingEvents(ePickingType, ePickingMode, externalPickingID, pick);
-	}
-
-	@Override
-	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode, int pickingID, Pick pick) {
-		if (detailLevel == EDetailLevel.VERY_LOW) {
-			return;
-		}
-
-		switch (pickingType) {
-		case TREEMAP_ELEMENT_SELECTED:
-
-			switch (pickingMode) {
-
-			case CLICKED:
-				mouseWheeleSelectionId = pickingID;
-				treeSelectionManager.clearSelection(SelectionType.SELECTION);
-				treeSelectionManager.addToType(SelectionType.SELECTION, mouseWheeleSelectionId);
-				bIsMouseWheeleUsed = true;
-				mouseWheeleSelectionHeight = 0;
-				break;
-			case MOUSE_OVER:
-
-				treeSelectionManager.clearSelection(SelectionType.MOUSE_OVER);
-				treeSelectionManager.addToType(SelectionType.MOUSE_OVER, pickingID);
-				break;
-			case RIGHT_CLICKED:
-
-				break;
-			case DRAGGED:
-				// System.out.println(externalID+" dragged");
-				break;
-			default:
-				return;
-
-			}
-
-			publishSelectionEvent();
-
-			setHighLightingListDirty();
-			break;
-
-		default:
-			return;
-		}
-
 	}
 
 	private void publishSelectionEvent() {
@@ -379,11 +366,11 @@ public class GLTreeMap extends ATableBasedView {
 		this.treeSelectionManager = treeSelectionManager;
 	}
 
-	private PickingManager getActivePickingManager() {
+	private SpacePickingManager getActivePickingManager() {
 		if (remotePickingManager != null)
 			return remotePickingManager;
 		else
-			return pickingManager;
+			return getPickingManager();
 	}
 
 	private int getPickingViewID() {
@@ -393,11 +380,11 @@ public class GLTreeMap extends ATableBasedView {
 			return getID();
 	}
 
-	public PickingManager getRemotePickingManager() {
+	public SpacePickingManager getRemotePickingManager() {
 		return remotePickingManager;
 	}
 
-	public void setRemotePickingManager(PickingManager remotePickingManager, int viewID) {
+	public void setRemotePickingManager(SpacePickingManager remotePickingManager, int viewID) {
 		remoteViewID = viewID;
 		this.remotePickingManager = remotePickingManager;
 	}

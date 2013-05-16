@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,12 +8,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -23,13 +23,13 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.util.clusterer.EPDDrawingStrategyType;
-import org.caleydo.core.view.opengl.picking.PickingManager;
+import org.caleydo.core.view.opengl.picking.SpacePickingManager;
 
 /**
  * APDDrawingStrategy is the abstract base class for all partial disc drawing
  * strategies. The drawing strategies determine the way partial discs are
  * displayed.
- * 
+ *
  * @author Christian Partl
  */
 public abstract class APDDrawingStrategy {
@@ -40,12 +40,11 @@ public abstract class APDDrawingStrategy {
 	 * worse.
 	 */
 	protected int iNumSlicesPerFullDisc;
-	protected PickingManager pickingManager;
-	protected int viewID;
+	protected final SpacePickingManager pickingManager;
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param pickingManager
 	 *            The picking manager that should handle the picking of the
 	 *            drawn elements.
@@ -53,16 +52,15 @@ public abstract class APDDrawingStrategy {
 	 *            ID of the view where the elements will be displayed. Needed
 	 *            for picking.
 	 */
-	public APDDrawingStrategy(PickingManager pickingManager, int viewID) {
+	public APDDrawingStrategy(SpacePickingManager pickingManager) {
 		this.pickingManager = pickingManager;
-		this.viewID = viewID;
 		iNumSlicesPerFullDisc = RadialHierarchyRenderStyle.NUM_SLICES_PER_FULL_DISC;
 	}
 
 	/**
 	 * Draws a partial disc in a way determined by the concrete drawing strategy
 	 * class.
-	 * 
+	 *
 	 * @param gl
 	 *            GL2 object that shall be used for drawing.
 	 * @param glu
@@ -75,7 +73,7 @@ public abstract class APDDrawingStrategy {
 	/**
 	 * Draws a full circle in a way determined by the concrete drawing strategy
 	 * class.
-	 * 
+	 *
 	 * @param gl
 	 *            GL2 object that shall be used for drawing.
 	 * @param glu
@@ -92,7 +90,7 @@ public abstract class APDDrawingStrategy {
 
 	/**
 	 * Gets the color the specified partial disc would be drawn with.
-	 * 
+	 *
 	 * @param disc
 	 *            Patrtial disc for which the color should be returned.
 	 * @return Color of the specified partial disc as array of RGBA values.
@@ -101,7 +99,7 @@ public abstract class APDDrawingStrategy {
 
 	/**
 	 * Gets the number of slices which shall be drawn to approximate a disc.
-	 * 
+	 *
 	 * @return Number of slices per full disc.
 	 */
 	public int getNumSlicesPerFullDisc() {
@@ -112,28 +110,11 @@ public abstract class APDDrawingStrategy {
 	 * Sets the number of slices which shall be drawn to approximate a disc.
 	 * Higher numbers produce a better approximation but the performance is
 	 * worse.
-	 * 
+	 *
 	 * @param iNumSlicesPerFullDisc
 	 *            Number of slices per full disc.
 	 */
 	public void setNumSlicesPerFullDisc(int iNumSlicesPerFullDisc) {
 		this.iNumSlicesPerFullDisc = iNumSlicesPerFullDisc;
 	}
-
-	public PickingManager getPickingManager() {
-		return pickingManager;
-	}
-
-	public void setPickingManager(PickingManager pickingManager) {
-		this.pickingManager = pickingManager;
-	}
-
-	public int getViewID() {
-		return viewID;
-	}
-
-	public void setViewID(int viewID) {
-		this.viewID = viewID;
-	}
-
 }

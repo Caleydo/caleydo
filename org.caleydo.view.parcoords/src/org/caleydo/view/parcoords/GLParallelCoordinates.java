@@ -249,13 +249,9 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 	public void displayLocal(final GL2 gl) {
 
 		if (!lazyMode)
-			pickingManager.handlePicking(this, gl);
+			handlePicking(gl);
 
 		display(gl);
-
-		if (busyState != EBusyState.OFF) {
-			renderBusyMode(gl);
-		}
 	}
 
 	@Override
@@ -297,9 +293,6 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 		}
 
 		gl.glTranslatef(-xSideSpacing, -fYTranslation, 0.0f);
-
-		if (!lazyMode)
-			checkForHits(gl);
 	}
 
 	public void triggerAngularBrushing() {
@@ -456,7 +449,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 		float currentY = 0;
 
 		if (selectionType != SelectionType.DESELECTED) {
-			gl.glPushName(pickingManager.getPickingID(uniqueID, EPickingType.POLYLINE_SELECTION.name(), recordID));
+			gl.glPushName(getPickingID(EPickingType.POLYLINE_SELECTION.name(), recordID));
 		}
 
 		if (!renderCaption) {
@@ -536,7 +529,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 		gl.glColor4fv(X_AXIS_COLOR, 0);
 		gl.glLineWidth(X_AXIS_LINE_WIDTH);
 
-		gl.glPushName(pickingManager.getPickingID(uniqueID, EPickingType.X_AXIS_SELECTION.name(), 1));
+		gl.glPushName(getPickingID(EPickingType.X_AXIS_SELECTION.name(), 1));
 		gl.glBegin(GL.GL_LINES);
 
 		gl.glVertex3f(renderStyle.getXAxisStart(), 0.0f, 0.0f);
@@ -569,7 +562,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 				gl.glLineWidth(Y_AXIS_LINE_WIDTH);
 			}
 
-			int axisPickingID = pickingManager.getPickingID(uniqueID, EPickingType.Y_AXIS_SELECTION.name(),
+			int axisPickingID = getPickingID(EPickingType.Y_AXIS_SELECTION.name(),
 					dimensionVA.get(count));
 			gl.glPushName(axisPickingID);
 			gl.glBegin(GL.GL_LINES);
@@ -652,7 +645,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 						PCRenderStyle.NAN_Z);
 				Vec3f upperLeftCorner = new Vec3f(xOrigin - buttonWidht, nanYOrigin + buttonHeight, PCRenderStyle.NAN_Z);
 
-				int pickingID = pickingManager.getPickingID(uniqueID, EPickingType.REMOVE_NAN.name(),
+				int pickingID = getPickingID(EPickingType.REMOVE_NAN.name(),
 						dimensionVA.get(count));
 				gl.glPushName(pickingID);
 
@@ -670,7 +663,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 				// the gate add button on upperBound
 
 				float yGateAddOrigin = renderStyle.getAxisHeight();
-				pickingID = pickingManager.getPickingID(uniqueID, EPickingType.ADD_GATE.name(), dimensionVA.get(count));
+				pickingID = getPickingID(EPickingType.ADD_GATE.name(), dimensionVA.get(count));
 
 				// gate add texture - 16 x 32
 				// half width, full height
@@ -724,7 +717,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 					buttonWidht = pixelGLConverter.getGLWidthForPixelWidth(15);
 					buttonHeight = pixelGLConverter.getGLHeightForPixelHeight(63);
 
-					pickingID = pickingManager.getPickingID(uniqueID, EPickingType.MOVE_AXIS.name(), count);
+					pickingID = getPickingID(EPickingType.MOVE_AXIS.name(), count);
 					gl.glColor4f(0, 0, 0, 0f);
 					gl.glPushName(pickingID);
 					gl.glBegin(GL.GL_TRIANGLES);
@@ -741,7 +734,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 
 					float buttonOuterHight = pixelGLConverter.getGLHeightForPixelHeight(16);
 
-					pickingID = pickingManager.getPickingID(uniqueID, EPickingType.DUPLICATE_AXIS.name(), count);
+					pickingID = getPickingID(EPickingType.DUPLICATE_AXIS.name(), count);
 					// gl.glColor4f(0, 1, 0, 0.5f);
 					gl.glPushName(pickingID);
 					gl.glBegin(GL2.GL_POLYGON);
@@ -754,7 +747,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 					gl.glEnd();
 					gl.glPopName();
 
-					pickingID = pickingManager.getPickingID(uniqueID, EPickingType.REMOVE_AXIS.name(), count);
+					pickingID = getPickingID(EPickingType.REMOVE_AXIS.name(), count);
 					// gl.glColor4f(0, 0, 1, 0.5f);
 					gl.glPushName(pickingID);
 					gl.glBegin(GL2.GL_POLYGON);
@@ -774,7 +767,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 					buttonWidht = pixelGLConverter.getGLWidthForPixelWidth(8);
 					buttonHeight = pixelGLConverter.getGLHeightForPixelHeight(32);
 
-					pickingID = pickingManager.getPickingID(uniqueID, EPickingType.MOVE_AXIS.name(), count);
+					pickingID = getPickingID(EPickingType.MOVE_AXIS.name(), count);
 
 					gl.glPushAttrib(GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
 					gl.glPushName(pickingID);
@@ -856,7 +849,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 
 		// the gate add button
 		float yGateAddOrigin = renderStyle.getAxisHeight();
-		int pickingID = pickingManager.getPickingID(uniqueID, EPickingType.ADD_MASTER_GATE.name(), 1);
+		int pickingID = getPickingID(EPickingType.ADD_MASTER_GATE.name(), 1);
 
 		gl.glPushName(pickingID);
 		// the gate add button on upperBound
@@ -1588,14 +1581,14 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 		gl.glColor4fv(ANGULAR_COLOR, 0);
 		gl.glLineWidth(ANGLUAR_LINE_WIDTH);
 
-		gl.glPushName(pickingManager.getPickingID(uniqueID, EPickingType.ANGULAR_UPPER.name(), iPosition));
+		gl.glPushName(getPickingID(EPickingType.ANGULAR_UPPER.name(), iPosition));
 		gl.glBegin(GL.GL_LINES);
 		gl.glVertex3f(vecTriangleOrigin.x(), vecTriangleOrigin.y(), vecTriangleOrigin.z() + 0.02f);
 		gl.glVertex3f(vecUpperPoint.x(), vecUpperPoint.y(), vecUpperPoint.z() + 0.02f);
 		gl.glEnd();
 		gl.glPopName();
 
-		gl.glPushName(pickingManager.getPickingID(uniqueID, EPickingType.ANGULAR_UPPER.name(), iPosition));
+		gl.glPushName(getPickingID(EPickingType.ANGULAR_UPPER.name(), iPosition));
 		gl.glBegin(GL.GL_LINES);
 		gl.glVertex3f(vecTriangleOrigin.x(), vecTriangleOrigin.y(), vecTriangleOrigin.z() + 0.02f);
 		gl.glVertex3f(vecLowerPoint.x(), vecLowerPoint.y(), vecLowerPoint.z() + 0.02f);

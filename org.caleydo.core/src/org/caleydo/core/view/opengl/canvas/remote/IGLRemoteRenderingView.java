@@ -26,6 +26,7 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
+import org.caleydo.core.view.opengl.picking.PickingManager2;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -57,4 +58,6 @@ public interface IGLRemoteRenderingView extends IView {
 	 * @return
 	 */
 	public PixelGLConverter getPixelGLConverter();
+
+	public PickingManager2 getPickingManager2();
 }

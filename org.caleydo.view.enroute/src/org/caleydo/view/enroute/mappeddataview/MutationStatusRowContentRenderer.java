@@ -90,7 +90,7 @@ public class MutationStatusRowContentRenderer extends ACategoricalRowContentRend
 				Integer resolvedSampleID = columnIDMappingManager.getID(resolvedColumnIDType, parent.sampleIDType,
 						columnID);
 				if (resolvedSampleID != null) {
-					gl.glPushName(parentView.getPickingManager().getPickingID(parentView.getID(),
+					gl.glPushName(parentView.getPickingID(
 							EPickingType.SAMPLE.name(), resolvedSampleID));
 				}
 

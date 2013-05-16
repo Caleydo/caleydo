@@ -40,9 +40,9 @@ import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingMode;
-import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
@@ -123,6 +123,125 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 		layoutManager.setStaticLayoutConfiguration(detailedRenderingTemplate);
 		layoutManager.updateLayout();
 
+		if (detailLevel == EDetailLevel.VERY_LOW) {
+			return;
+		}
+
+		addTypePickingListener(new IPickingListener() {
+			@Override
+			public void pick(Pick pick) {
+				int pickingID = pick.getObjectID();
+				SelectionType selectionType;
+				switch (pick.getPickingMode()) {
+
+				case CLICKED:
+					selectionType = SelectionType.SELECTION;
+					break;
+
+				case MOUSE_OVER:
+					selectionType = SelectionType.MOUSE_OVER;
+					break;
+
+				case RIGHT_CLICKED:
+					selectionType = SelectionType.SELECTION;
+
+					if (dataDomain instanceof GeneticDataDomain && dataDomain.isColumnDimension()) {
+
+						GeneMenuItemContainer contexMenuItemContainer = new GeneMenuItemContainer();
+						contexMenuItemContainer.setDataDomain(dataDomain);
+						contexMenuItemContainer.setData(recordIDType, pickingID);
+						contextMenuCreator.addContextMenuItemContainer(contexMenuItemContainer);
+						contextMenuCreator.addSeparator();
+					} else {
+						AContextMenuItem menuItem = new BookmarkMenuItem("Bookmark "
+								+ recordIDType.getIDCategory().getHumanReadableIDType() + ": "
+								+ dataDomain.getRecordLabel(recordIDType, pickingID), recordIDType, pickingID);
+						contextMenuCreator.addContextMenuItem(menuItem);
+					}
+
+					break;
+
+				default:
+					return;
+
+				}
+
+				createRecordSelection(selectionType, pickingID);
+			}
+		}, PickingType.HEAT_MAP_RECORD_SELECTION.name());
+
+		addTypePickingListener(new IPickingListener() {
+
+			@Override
+			public void pick(Pick pick) {
+				int pickingID = pick.getObjectID();
+				SelectionType selectionType;
+				switch (pick.getPickingMode()) {
+				case CLICKED:
+					selectionType = SelectionType.SELECTION;
+					break;
+				case MOUSE_OVER:
+					selectionType = SelectionType.MOUSE_OVER;
+					break;
+				case RIGHT_CLICKED:
+
+					if (dataDomain instanceof GeneticDataDomain && !dataDomain.isColumnDimension()) {
+
+						GeneMenuItemContainer contexMenuItemContainer = new GeneMenuItemContainer();
+						contexMenuItemContainer.setDataDomain(dataDomain);
+						contexMenuItemContainer.setData(dimensionIDType, pickingID);
+						contextMenuCreator.addContextMenuItemContainer(contexMenuItemContainer);
+						contextMenuCreator.addSeparator();
+					} else {
+
+						AContextMenuItem menuItem = new BookmarkMenuItem("Bookmark "
+								+ recordIDType.getIDCategory().getHumanReadableIDType() + ": "
+								+ dataDomain.getDimensionLabel(dimensionIDType, pickingID), dimensionIDType, pickingID);
+						contextMenuCreator.addContextMenuItem(menuItem);
+					}
+
+				default:
+					return;
+				}
+
+				createDimensionSelection(selectionType, pickingID);
+			}
+		}, PickingType.HEAT_MAP_DIMENSION_SELECTION.name());
+
+		addTypePickingListener(new IPickingListener() {
+
+			@Override
+			public void pick(Pick pick) {
+				if (pick.getPickingMode() == PickingMode.CLICKED)
+					if (hideElements)
+						hideElements = false;
+					else
+						hideElements = true;
+
+				HideHeatMapElementsEvent event = new HideHeatMapElementsEvent(hideElements);
+				event.setSender(this);
+				event.setEventSpace(dataDomain.getDataDomainID());
+				eventPublisher.triggerEvent(event);
+
+				setDisplayListDirty();
+			}
+		}, PickingType.HEAT_MAP_HIDE_HIDDEN_ELEMENTS.name());
+
+		addTypePickingListener(new IPickingListener() {
+
+			@Override
+			public void pick(Pick pick) {
+				if (pick.getPickingMode() == PickingMode.CLICKED)
+					if (showCaptions)
+						showCaptions = false;
+					else {
+						showCaptions = true;
+					}
+
+				detailedRenderingTemplate.setStaticLayouts();
+				setDisplayListDirty();
+			}
+		}, PickingType.HEAT_MAP_SHOW_CAPTIONS.name());
 	}
 
 	@Override
@@ -186,13 +305,9 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 	public void displayLocal(GL2 gl) {
 
 		if (!lazyMode)
-			pickingManager.handlePicking(this, gl);
+			handlePicking(gl);
 
 		display(gl);
-
-		if (busyState != EBusyState.OFF) {
-			renderBusyMode(gl);
-		}
 	}
 
 	@Override
@@ -221,9 +336,6 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 		gl.glCallList(displayListIndex);
 		// numSentClearSelectionEvents = 0;
 
-		if (!lazyMode)
-			checkForHits(gl);
-
 	}
 
 	private void buildDisplayList(final GL2 gl, int displayListIndex) {
@@ -239,121 +351,6 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 			layoutManager.render(gl);
 		}
 		gl.glEndList();
-	}
-
-	@Override
-	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode, int pickingID, Pick pick) {
-		if (detailLevel == EDetailLevel.VERY_LOW) {
-			return;
-		}
-
-		SelectionType selectionType;
-
-		switch (pickingType) {
-		case HEAT_MAP_RECORD_SELECTION:
-			// iCurrentMouseOverElement = pickingID;
-			switch (pickingMode) {
-
-			case CLICKED:
-				selectionType = SelectionType.SELECTION;
-				break;
-
-			case MOUSE_OVER:
-				selectionType = SelectionType.MOUSE_OVER;
-				break;
-
-			case RIGHT_CLICKED:
-				selectionType = SelectionType.SELECTION;
-
-				if (dataDomain instanceof GeneticDataDomain && dataDomain.isColumnDimension()) {
-
-					GeneMenuItemContainer contexMenuItemContainer = new GeneMenuItemContainer();
-					contexMenuItemContainer.setDataDomain(dataDomain);
-					contexMenuItemContainer.setData(recordIDType, pickingID);
-					contextMenuCreator.addContextMenuItemContainer(contexMenuItemContainer);
-					contextMenuCreator.addSeparator();
-				} else {
-					AContextMenuItem menuItem = new BookmarkMenuItem("Bookmark "
-							+ recordIDType.getIDCategory().getHumanReadableIDType() + ": "
-							+ dataDomain.getRecordLabel(recordIDType, pickingID), recordIDType, pickingID);
-					contextMenuCreator.addContextMenuItem(menuItem);
-				}
-
-				break;
-
-			default:
-				return;
-
-			}
-
-			createRecordSelection(selectionType, pickingID);
-
-			break;
-
-		case HEAT_MAP_DIMENSION_SELECTION:
-
-			switch (pickingMode) {
-			case CLICKED:
-				selectionType = SelectionType.SELECTION;
-				break;
-			case MOUSE_OVER:
-				selectionType = SelectionType.MOUSE_OVER;
-				break;
-			case RIGHT_CLICKED:
-
-				if (dataDomain instanceof GeneticDataDomain && !dataDomain.isColumnDimension()) {
-
-					GeneMenuItemContainer contexMenuItemContainer = new GeneMenuItemContainer();
-					contexMenuItemContainer.setDataDomain(dataDomain);
-					contexMenuItemContainer.setData(dimensionIDType, pickingID);
-					contextMenuCreator.addContextMenuItemContainer(contexMenuItemContainer);
-					contextMenuCreator.addSeparator();
-				} else {
-
-					AContextMenuItem menuItem = new BookmarkMenuItem("Bookmark "
-							+ recordIDType.getIDCategory().getHumanReadableIDType() + ": "
-							+ dataDomain.getDimensionLabel(dimensionIDType, pickingID), dimensionIDType, pickingID);
-					contextMenuCreator.addContextMenuItem(menuItem);
-				}
-
-			default:
-				return;
-			}
-
-			createDimensionSelection(selectionType, pickingID);
-
-			break;
-
-		case HEAT_MAP_HIDE_HIDDEN_ELEMENTS:
-			if (pickingMode == PickingMode.CLICKED)
-				if (hideElements)
-					hideElements = false;
-				else
-					hideElements = true;
-
-			HideHeatMapElementsEvent event = new HideHeatMapElementsEvent(hideElements);
-			event.setSender(this);
-			event.setEventSpace(dataDomain.getDataDomainID());
-			eventPublisher.triggerEvent(event);
-
-			setDisplayListDirty();
-
-			break;
-		case HEAT_MAP_SHOW_CAPTIONS:
-
-			if (pickingMode == PickingMode.CLICKED)
-				if (showCaptions)
-					showCaptions = false;
-				else {
-					showCaptions = true;
-				}
-
-			detailedRenderingTemplate.setStaticLayouts();
-			setDisplayListDirty();
-			break;
-		default:
-			break;
-		}
 	}
 
 	private void createRecordSelection(SelectionType selectionType, int recordID) {

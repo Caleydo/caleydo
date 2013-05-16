@@ -87,7 +87,7 @@ public class RowCaptionRenderer extends ALayoutRenderer {
 		float backgroundZ = 0;
 		float frameZ = 0.3f;
 
-		gl.glPushName(parentView.getPickingManager().getPickingID(parentView.getID(), rowIDType.getTypeName(), rowID));
+		gl.glPushName(parentView.getPickingID(rowIDType.getTypeName(), rowID));
 
 		gl.glBegin(GL2.GL_QUADS);
 

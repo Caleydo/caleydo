@@ -47,13 +47,10 @@ public class GLMouseListener implements IGLMouseListener {
 	private Point pickedPointDragStart = new Point();
 	private Point pickedPointCurrent;
 
-	private boolean leftMouseButtonPressed = false;
 	private boolean rightMouseButtonPressed = false;
 	private boolean mouseMiddleButtonPressed = false;
 	private boolean mouseReleased = false;
 	private boolean mouseDragged = false;
-	private boolean mouseMoved = false;
-	private boolean mouseDoubleClick = false;
 	private boolean mouseInCanvas = false;
 
 	private int prevMouseX, prevMouseY;
@@ -74,7 +71,6 @@ public class GLMouseListener implements IGLMouseListener {
 	public void mousePressed(IMouseEvent mouseEvent) {
 
 		mouseReleased = false;
-		leftMouseButtonPressed = false;
 		rightMouseButtonPressed = false;
 
 		pickedPointDragStart.setLocation(mouseEvent.getPoint());
@@ -83,20 +79,16 @@ public class GLMouseListener implements IGLMouseListener {
 		prevMouseY = mouseEvent.getPoint().y;
 
 		if (mouseEvent.getClickCount() > 1) {
-			mouseDoubleClick = true;
 //			 System.out.println("Double click!");
 			return;
 		}
 
-		if (mouseEvent.getButton() == 1)
-			leftMouseButtonPressed = true;
-		else if (mouseEvent.getButton() == 3)
+		if (mouseEvent.getButton() == 3)
 			rightMouseButtonPressed = true;
 	}
 
 	@Override
 	public void mouseMoved(IMouseEvent mouseEvent) {
-		mouseMoved = true;
 		pickedPointCurrent = mouseEvent.getPoint();
 	}
 
@@ -114,8 +106,6 @@ public class GLMouseListener implements IGLMouseListener {
 		}
 
 		mouseReleased = true;
-
-		mouseDoubleClick = false;
 
 		if (mouseEvent.isButtonDown(2)) {
 			mouseMiddleButtonPressed = false;
@@ -247,29 +237,12 @@ public class GLMouseListener implements IGLMouseListener {
 		return mouseInCanvas;
 	}
 
-	public final boolean wasLeftMouseButtonPressed() {
-		boolean bTmp = leftMouseButtonPressed;
-		leftMouseButtonPressed = false;
-		return bTmp;
-	}
-
-	public final boolean wasMouseDoubleClicked() {
-		boolean bTmp = mouseDoubleClick;
-		mouseDoubleClick = false;
-		return bTmp;
-	}
-
 	public final boolean wasRightMouseButtonPressed() {
 		boolean bTmp = rightMouseButtonPressed;
 		rightMouseButtonPressed = false;
 		return bTmp;
 	}
 
-	public final boolean wasMouseMoved() {
-		boolean bTmp = mouseMoved;
-		mouseMoved = false;
-		return bTmp;
-	}
 
 	public final boolean wasMouseReleased() {
 		return mouseReleased;

@@ -115,9 +115,9 @@ class BottomUpTablePerspectiveMatrixRenderingStrategy extends ATablePerspectiveM
 								currentPositionX, currentPositionY));
 				perspectiveRenderer.setPosition(absolutePosition);
 				pushPickingIDs(gl, view, pickingIDsToBePushed);
-				gl.glPushName(view.getPickingManager().getPickingID(view.getID(),
+				gl.glPushName(view.getPickingID(
 						PickingType.PERSPECTIVE.name() + node.getID(), row.id.hashCode()));
-				gl.glPushName(view.getPickingManager().getPickingID(view.getID(),
+				gl.glPushName(view.getPickingID(
 						PickingType.PERSPECTIVE_PENETRATING.name() + node.getID(), row.id.hashCode()));
 				perspectiveRenderer.renderContent(gl);
 				popPickingIDs(gl, pickingIDsToBePushed);
@@ -223,9 +223,9 @@ class BottomUpTablePerspectiveMatrixRenderingStrategy extends ATablePerspectiveM
 						.getAbsolutPositionOfRelativeTablePerspectiveRendererCoordinates(new Point2D.Float(
 								currentPositionX, 0));
 				perspectiveRenderer.setPosition(absolutePosition);
-				gl.glPushName(view.getPickingManager().getPickingID(view.getID(),
+				gl.glPushName(view.getPickingID(
 						PickingType.PERSPECTIVE.name() + node.getID(), column.id.hashCode()));
-				gl.glPushName(view.getPickingManager().getPickingID(view.getID(),
+				gl.glPushName(view.getPickingID(
 						PickingType.PERSPECTIVE_PENETRATING.name() + node.getID(), column.id.hashCode()));
 				pushPickingIDs(gl, view, pickingIDsToBePushed);
 				perspectiveRenderer.render(gl);
@@ -324,7 +324,7 @@ class BottomUpTablePerspectiveMatrixRenderingStrategy extends ATablePerspectiveM
 				int pickingID = 0;
 				if (cell instanceof TablePerspectiveRenderer) {
 
-					pickingID = view.getPickingManager().getPickingID(view.getID(),
+					pickingID = view.getPickingID(
 							PickingType.DATA_CONTAINER.name() + node.getID(),
 							((TablePerspectiveRenderer) cell).getTablePerspective().getID());
 
@@ -347,7 +347,7 @@ class BottomUpTablePerspectiveMatrixRenderingStrategy extends ATablePerspectiveM
 					currentDimGroupPositionX += columnWidth;
 				} else {
 
-					pickingID = view.getPickingManager().getPickingID(view.getID(),
+					pickingID = view.getPickingID(
 							PickingType.EMPTY_CELL.name() + node.getID(), ((EmptyCellRenderer) cell).getID());
 
 					gl.glTranslatef(emptyCellPositionX + cellSpacingX, row.position + cellSpacingY, 0);

@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,12 +8,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -33,7 +33,7 @@ import org.caleydo.view.stratomex.brick.GLBrick;
 
 /**
  * Renderer for handles used for resizing and moving a brick.
- * 
+ *
  * @author Christian Partl
  * @author Alexander Lex
  */
@@ -65,7 +65,7 @@ public class HandleRenderer extends ALayoutRenderer {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param view
 	 * @param handleSize
 	 *            Size in pixels of the handles.
@@ -169,8 +169,7 @@ public class HandleRenderer extends ALayoutRenderer {
 		// }
 
 		if ((handles & MOVE_VERTICALLY_HANDLE) > 0) {
-			gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
-					EPickingType.MOVE_VERTICALLY_HANDLE.name(), brick.getID()));
+			gl.glPushName(brick.getPickingID(EPickingType.MOVE_VERTICALLY_HANDLE.name(), brick.getID()));
 			// gl.glColor4f(1f, 1f, 1f, 1);
 			Vec3f lowerLeftCorner = new Vec3f(-glHandleWidth, y / 2.0f
 					- glHandleHeight, BUTTON_Z);
@@ -208,8 +207,8 @@ public class HandleRenderer extends ALayoutRenderer {
 		}
 
 		if ((handles & MOVE_HORIZONTALLY_HANDLE) > 0) {
-			gl.glPushName(brick.getPickingManager().getPickingID(
-					brick.getBrickColumn().getStratomexView().getID(),
+			gl.glPushName(brick.getBrickColumn().getStratomexView()
+					.getPickingID(
 					EPickingType.MOVE_HORIZONTALLY_HANDLE.name(),
 					brick.getBrickColumn().getID()));
 
@@ -242,8 +241,7 @@ public class HandleRenderer extends ALayoutRenderer {
 		gl.glColor3f(0, 0, 0);
 
 		if ((handles & EXPAND_HANDLE) > 0) {
-			gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
-					EPickingType.EXPAND_LEFT_HANDLE.name(), brick.getID()));
+			gl.glPushName(brick.getPickingID(EPickingType.EXPAND_LEFT_HANDLE.name(), brick.getID()));
 
 			// gl.glBegin(GL2.GL_QUADS);
 			// gl.glVertex3f(-glHandleWidth, y, 1);
@@ -267,7 +265,7 @@ public class HandleRenderer extends ALayoutRenderer {
 		}
 
 		if ((handles & EXPAND_HANDLE) > 0) {
-			gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
+			gl.glPushName(brick.getPickingID(
 					EPickingType.EXPAND_RIGHT_HANDLE.name(), brick.getID()));
 
 			Vec3f lowerLeftCorner = new Vec3f(x, y, BUTTON_Z);

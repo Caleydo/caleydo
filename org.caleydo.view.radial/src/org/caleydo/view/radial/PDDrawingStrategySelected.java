@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,12 +8,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -25,15 +25,13 @@ import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.util.clusterer.EPDDrawingStrategyType;
-import org.caleydo.core.view.opengl.picking.PickingManager;
-import org.caleydo.core.view.opengl.picking.PickingType;
+import org.caleydo.core.view.opengl.picking.SpacePickingManager;
 import org.caleydo.core.view.opengl.util.GLPrimitives;
 
 /**
- * PDDrawingStrategySelected is responsible for drawing partial discs which have
- * been selected in some fashion. Therefore it is using a predefined fill color
- * and a definable border color (for distinguishing between e.g. Mouse Over and
- * Click).
+ * PDDrawingStrategySelected is responsible for drawing partial discs which have been selected in some fashion.
+ * Therefore it is using a predefined fill color and a definable border color (for distinguishing between e.g. Mouse
+ * Over and Click).
  * 
  * @author Christian Partl
  */
@@ -45,14 +43,12 @@ public class PDDrawingStrategySelected extends APDDrawingStrategyChildIndicator 
 	 * Constructor.
 	 * 
 	 * @param pickingManager
-	 *            The picking manager that should handle the picking of the
-	 *            drawn elements.
+	 *            The picking manager that should handle the picking of the drawn elements.
 	 * @param viewID
-	 *            ID of the view where the elements will be displayed. Needed
-	 *            for picking.
+	 *            ID of the view where the elements will be displayed. Needed for picking.
 	 */
-	public PDDrawingStrategySelected(PickingManager pickingManager, int viewID) {
-		super(pickingManager, viewID);
+	public PDDrawingStrategySelected(SpacePickingManager pickingManager) {
+		super(pickingManager);
 		fArBorderColor = SelectionType.MOUSE_OVER.getColor();
 	}
 
@@ -64,8 +60,8 @@ public class PDDrawingStrategySelected extends APDDrawingStrategyChildIndicator 
 
 		float fRadius = pdDiscToDraw.getCurrentWidth();
 
-		gl.glPushName(pickingManager.getPickingID(viewID,
-				PickingType.RAD_HIERARCHY_PDISC_SELECTION, pdDiscToDraw.getElementID()));
+		gl.glPushName(pickingManager.getPickingID(PickingType.RAD_HIERARCHY_PDISC_SELECTION.name(),
+				pdDiscToDraw.getElementID()));
 		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
 
 		if ((!pdDiscToDraw.isAChildDrawn()) && (pdDiscToDraw.hasChildren())) {
@@ -96,8 +92,8 @@ public class PDDrawingStrategySelected extends APDDrawingStrategyChildIndicator 
 		float fInnerRadius = pdDiscToDraw.getCurrentInnerRadius();
 		float fWidth = pdDiscToDraw.getCurrentWidth();
 
-		gl.glPushName(pickingManager.getPickingID(viewID,
-				PickingType.RAD_HIERARCHY_PDISC_SELECTION, pdDiscToDraw.getElementID()));
+		gl.glPushName(pickingManager.getPickingID(PickingType.RAD_HIERARCHY_PDISC_SELECTION.name(),
+				pdDiscToDraw.getElementID()));
 		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
 
 		if ((!pdDiscToDraw.isAChildDrawn()) && (pdDiscToDraw.hasChildren())) {
@@ -130,8 +126,8 @@ public class PDDrawingStrategySelected extends APDDrawingStrategyChildIndicator 
 	 * Sets the color that shall be used for drawing the partial disc's border.
 	 * 
 	 * @param fArBorderColor
-	 *            RGB-Color which shall be used to draw the partial disc's
-	 *            border. Only the first three values of the array will be used.
+	 *            RGB-Color which shall be used to draw the partial disc's border. Only the first three values of the
+	 *            array will be used.
 	 */
 	public void setBorderColor(float[] fArBorderColor) {
 		if (fArBorderColor.length >= 3) {
@@ -150,8 +146,8 @@ public class PDDrawingStrategySelected extends APDDrawingStrategyChildIndicator 
 	}
 
 	/**
-	 * Gets the coordinates of the connection point that is used for drawing a
-	 * connection line to the specified partial disc.
+	 * Gets the coordinates of the connection point that is used for drawing a connection line to the specified partial
+	 * disc.
 	 * 
 	 * @param disc
 	 *            Partial disc the connection point shall be obtained for.

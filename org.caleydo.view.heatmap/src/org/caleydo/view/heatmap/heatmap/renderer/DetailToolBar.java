@@ -22,11 +22,10 @@ package org.caleydo.view.heatmap.heatmap.renderer;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
-import org.caleydo.core.view.opengl.picking.PickingManager;
-import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
+import org.caleydo.view.heatmap.heatmap.PickingType;
 
 import com.jogamp.opengl.util.awt.TextRenderer;
 import com.jogamp.opengl.util.texture.Texture;
@@ -35,7 +34,6 @@ import com.jogamp.opengl.util.texture.TextureCoords;
 public class DetailToolBar extends ALayoutRenderer {
 
 	GLHeatMap heatMap;
-	PickingManager pickingManager;
 
 	private TextureManager iconManager;
 	private TextRenderer textRender;
@@ -48,7 +46,6 @@ public class DetailToolBar extends ALayoutRenderer {
 
 	@Override
 	public void renderContent(GL2 gl) {
-		pickingManager = heatMap.getPickingManager();
 		gl.glColor4f(0.0f, 0.0f, 0.0f, 0.4f);
 
 		gl.glBegin(GL2.GL_POLYGON);
@@ -92,7 +89,7 @@ public class DetailToolBar extends ALayoutRenderer {
 
 			gl.glColor4f(1, 1, 1, 1);
 			gl.glTranslatef(sideSpacing, spacing, 0);
-			gl.glPushName(pickingManager.getPickingID(heatMap.getID(), PickingType.HEAT_MAP_HIDE_HIDDEN_ELEMENTS, 1));
+			gl.glPushName(heatMap.getPickingID(PickingType.HEAT_MAP_HIDE_HIDDEN_ELEMENTS.name(), 1));
 			gl.glBegin(GL2.GL_POLYGON);
 			gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 			gl.glVertex3f(0, 0, buttonZ);

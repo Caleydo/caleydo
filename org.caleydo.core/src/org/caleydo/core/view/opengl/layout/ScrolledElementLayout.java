@@ -24,7 +24,6 @@ import javax.media.opengl.GL2ES1;
 
 import org.caleydo.core.util.color.Colors;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.scrollbar.IScrollBarUpdateHandler;
 import org.caleydo.core.view.opengl.util.scrollbar.ScrollBar;
@@ -57,7 +56,7 @@ public final class ScrolledElementLayout extends Row implements IScrollBarUpdate
 		Column tmp = new Column();
 		tmp.setBottomUp(true);
 
-		hScrollBar = new ScrollBar(0, 10, 5, 5, PickingType.ZOOM_SCROLLBAR, parentView.createNewScrollBarID(), this);
+		hScrollBar = new ScrollBar(0, 10, 5, 5, parentView.createNewScrollBarID(), this);
 		ElementLayout hBar = ElementLayouts.wrap(
 				new ScrollBarRenderer(hScrollBar, view, true, dndController, Colors.of(128)), -1);
 		hBar.setPixelSizeY(10);
@@ -71,7 +70,7 @@ public final class ScrolledElementLayout extends Row implements IScrollBarUpdate
 
 		this.add(tmp);
 
-		vScrollBar = new ScrollBar(0, 10, 0, 5, PickingType.ZOOM_SCROLLBAR, parentView.createNewScrollBarID(), this);
+		vScrollBar = new ScrollBar(0, 10, 0, 5, parentView.createNewScrollBarID(), this);
 		ElementLayout vBar = ElementLayouts.wrap(
 				new ScrollBarRenderer(vScrollBar, view, false, dndController, Colors.of(128)), 10);
 		vBar.setGrabY(true);

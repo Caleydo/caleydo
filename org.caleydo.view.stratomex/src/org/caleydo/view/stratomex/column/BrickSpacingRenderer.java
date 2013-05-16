@@ -85,8 +85,7 @@ public class BrickSpacingRenderer
 
 		float width = dimensionGroup.getGroupColumn().getSizeScaledX();
 		GLStratomex stratomex = dimensionGroup.getStratomexView();
-		gl.glPushName(stratomex.getPickingManager().getPickingID(stratomex.getID(),
-				EPickingType.BRICK_SPACER.name() + dimensionGroup.getID(), id));
+		gl.glPushName(stratomex.getPickingID(EPickingType.BRICK_SPACER.name() + dimensionGroup.getID(), id));
 
 		gl.glColor4f(1, 1, 1, 0);
 		gl.glBegin(GL2.GL_QUADS);

@@ -30,8 +30,7 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
-import org.caleydo.core.view.opengl.picking.PickingManager;
-import org.caleydo.core.view.opengl.picking.PickingType;
+import org.caleydo.core.view.opengl.picking.SpacePickingManager;
 import org.caleydo.core.view.opengl.util.AGLGUIElement;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
@@ -139,8 +138,7 @@ public class OneWaySlider extends AGLGUIElement {
 	 * @param iSliderBodyID
 	 *            Picking ID for the slider body.
 	 */
-	public void draw(GL2 gl, PickingManager pickingManager,
-			TextureManager textureManager, int viewID, int iSliderID,
+	public void draw(GL2 gl, SpacePickingManager pickingManager, TextureManager textureManager, int iSliderID,
 			int iSliderButtonID, int iSliderBodyID) {
 
 		gl.glPushMatrix();
@@ -150,8 +148,7 @@ public class OneWaySlider extends AGLGUIElement {
 
 		beginGUIElement(gl, scalingPivot);
 
-		gl.glPushName(pickingManager.getPickingID(viewID,
-				PickingType.RAD_HIERARCHY_SLIDER_BODY_SELECTION, iSliderBodyID));
+		gl.glPushName(pickingManager.getPickingID(PickingType.RAD_HIERARCHY_SLIDER_BODY_SELECTION.name(), iSliderBodyID));
 		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT | GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
 
 		gl.glColor3f(0.6f, 0.6f, 0.6f);
@@ -164,8 +161,7 @@ public class OneWaySlider extends AGLGUIElement {
 
 		gl.glPopName();
 
-		gl.glPushName(pickingManager.getPickingID(viewID,
-				PickingType.RAD_HIERARCHY_SLIDER_SELECTION, iSliderID));
+		gl.glPushName(pickingManager.getPickingID(PickingType.RAD_HIERARCHY_SLIDER_SELECTION.name(), iSliderID));
 
 		gl.glColor4f(0.3f, 0.3f, 0.3f, 0.5f);
 		gl.glBegin(GL2.GL_POLYGON);
@@ -177,8 +173,8 @@ public class OneWaySlider extends AGLGUIElement {
 		gl.glEnd();
 
 		gl.glPopName();
-		gl.glPushName(pickingManager.getPickingID(viewID,
-				PickingType.RAD_HIERARCHY_SLIDER_BUTTON_SELECTION, iSliderButtonID));
+		gl.glPushName(pickingManager.getPickingID(PickingType.RAD_HIERARCHY_SLIDER_BUTTON_SELECTION.name(),
+				iSliderButtonID));
 
 		Vec3f lowerLeftCorner = new Vec3f(fWidth, fDownButtonHeight, 0);
 		Vec3f lowerRightCorner = new Vec3f(0, fDownButtonHeight, 0);

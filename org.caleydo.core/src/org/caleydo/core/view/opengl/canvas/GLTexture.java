@@ -77,8 +77,7 @@ public class GLTexture extends AGLView implements IDataDomainBasedView<IDataDoma
 
 	@Override
 	public void displayLocal(final GL2 gl) {
-
-		pickingManager.handlePicking(this, gl);
+		handlePicking(gl);
 		if (isDisplayListDirty) {
 			// rebuildPathwayDisplayList(gl);
 			isDisplayListDirty = false;
@@ -95,8 +94,6 @@ public class GLTexture extends AGLView implements IDataDomainBasedView<IDataDoma
 	@Override
 	public void display(final GL2 gl) {
 		// processEvents();
-
-		checkForHits(gl);
 		renderScene(gl);
 	}
 

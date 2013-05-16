@@ -51,9 +51,9 @@ import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingMode;
-import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
@@ -154,7 +154,7 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 
 		detailLevel = EDetailLevel.HIGH;
 
-		background = new Background(uniqueID, pickingManager, renderStyle);
+		background = new Background(getPickingManager(), renderStyle);
 
 		radialMenu = new RadialMenu(this, textureManager.getIconTexture(EIconTextures.FILTER_PIPELINE_MENU_ITEM));
 		// radialMenu.addEntry( null );
@@ -174,6 +174,15 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 		gl.glEnable(GL.GL_LINE_SMOOTH);
 		gl.glEnable(GL2.GL_POLYGON_SMOOTH);
 		gl.glHint(GL2.GL_POLYGON_SMOOTH_HINT, GL.GL_NICEST);
+
+		for (final PickingType type : PickingType.values()) {
+			addTypePickingListener(new IPickingListener() {
+				@Override
+				public void pick(Pick pick) {
+					handlePickingEvents(type, pick.getPickingMode(), pick.getObjectID(), pick);
+				}
+			}, type.name());
+		}
 	}
 
 	@Override
@@ -206,17 +215,15 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 
 	@Override
 	public void displayLocal(GL2 gl) {
-		pickingManager.handlePicking(this, gl);
+		handlePicking(gl);
 		// glMouseListener = getParentGLCanvas().getGLMouseListener();
 
 		display(gl);
-		checkForHits(gl);
 	}
 
 	@Override
 	public void displayRemote(GL2 gl) {
 		display(gl);
-		checkForHits(gl);
 	}
 
 	@Override
@@ -320,7 +327,7 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 	}
 
 	private void displayCollapseArrow(GL2 gl, int id, float left) {
-		int iPickingID = pickingManager.getPickingID(uniqueID, PickingType.FILTERPIPE_START_ARROW, id);
+		int iPickingID = getPickingID(PickingType.FILTERPIPE_START_ARROW.name(), id);
 		float bottom = 0.025f;
 		float halfSize = 0.075f;
 
@@ -367,7 +374,6 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 		gl.glPopAttrib();
 	}
 
-	@Override
 	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode, int externalID, Pick pick) {
 		int newFullSizedFilter = -1;
 
@@ -639,13 +645,13 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 		}
 
 		for (Filter filter : filterManager.getFilterPipe()) {
-			FilterItem filterItem = new FilterItem(filterID++, filter, pickingManager, uniqueID);
+			FilterItem filterItem = new FilterItem(filterID++, filter, getPickingManager());
 
 			if (filter instanceof RecordMetaOrFilter)
-				filterItem.setRepresentation(new FilterRepresentationMetaOrAdvanced(renderStyle, pickingManager,
+				filterItem.setRepresentation(new FilterRepresentationMetaOrAdvanced(renderStyle, getPickingManager(),
 						uniqueID));
 			else
-				filterItem.setRepresentation(new FilterRepresentation(renderStyle, pickingManager, uniqueID));
+				filterItem.setRepresentation(new FilterRepresentation(renderStyle, getPickingManager(), uniqueID));
 
 			filterList.add(filterItem);
 		}

@@ -675,7 +675,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		if (isPathwayDataDirty)
 			initPathwayData(gl);
 
-		pickingManager.handlePicking(this, gl);
+		handlePicking(gl);
 		display(gl);
 	}
 
@@ -694,8 +694,6 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 				setHighlightVertices(false);
 			}
 		}
-
-		checkForHits(gl);
 
 		if (isDisplayListDirty) {
 			calculatePathwayScaling(gl, pathway);
@@ -823,8 +821,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 			// gl.glStencilFunc(GL2.GL_EQUAL, 0, 1);
 			gl.glStencilFunc(GL.GL_GREATER, 2, 0xff);
 			gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_KEEP);
-			gl.glPushName(generalManager.getViewManager().getPickingManager()
-					.getPickingID(uniqueID, EPickingType.PATHWAY_TEXTURE_SELECTION.name(), 0));
+			gl.glPushName(getPickingID(EPickingType.PATHWAY_TEXTURE_SELECTION.name(), 0));
 			// //////////////////////////START 2/2 HIER NEU CHRISITIAN
 			// enable shader
 			// gl.glUseProgram(shaderProgramTextOverlay);
@@ -946,8 +943,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 			isBubbleTextureDirty = false;
 		}
 
-		gl.glPushName(generalManager.getViewManager().getPickingManager()
-				.getPickingID(uniqueID, EPickingType.PATHWAY_TEXTURE_SELECTION.name(), 0));
+		gl.glPushName(getPickingID(EPickingType.PATHWAY_TEXTURE_SELECTION.name(), 0));
 
 		this.alternativeBubbleSet.getBubbleSetGLRenderer().render(gl,
 				pixelGLConverter.getGLWidthForPixelWidth(pathway.getWidth()),

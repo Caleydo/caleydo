@@ -29,11 +29,11 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.filter.RecordMetaOrFilter;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.view.opengl.picking.PickingManager;
-import org.caleydo.core.view.opengl.picking.PickingType;
+import org.caleydo.core.view.opengl.picking.SpacePickingManager;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.vislink.NURBSCurve;
+import org.caleydo.view.filterpipeline.PickingType;
 import org.caleydo.view.filterpipeline.renderstyle.FilterPipelineRenderStyle;
 
 /**
@@ -58,7 +58,7 @@ public class FilterRepresentationMetaOrAdvanced extends FilterRepresentationMeta
 	private ConnectionBandRenderer inputRenderer = new ConnectionBandRenderer();
 
 	public FilterRepresentationMetaOrAdvanced(FilterPipelineRenderStyle renderStyle,
-			PickingManager pickingManager, int viewId) {
+			SpacePickingManager pickingManager, int viewId) {
 		super(renderStyle, pickingManager, viewId);
 	}
 
@@ -92,8 +92,7 @@ public class FilterRepresentationMetaOrAdvanced extends FilterRepresentationMeta
 		for (int i = 0; i < subFilterSizes.length; ++i, curPos.setY(curPos.y() + offsetY)) {
 			heightRight = vSize.y() * (subFilterSizes[i] / 100.f);
 
-			gl.glPushName(pickingManager.getPickingID(viewId,
-					PickingType.FILTERPIPE_SUB_FILTER, i));
+			gl.glPushName(pickingManager.getPickingID(PickingType.FILTERPIPE_SUB_FILTER.name(), i));
 			renderShape(gl, GL2.GL_QUADS, curPos, subFilterWidth, scaleY * heightLeft,
 					scaleY * heightRight, renderStyle.getFilterColor(i),
 					Z_POS_BODY + 0.1f);

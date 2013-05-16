@@ -124,7 +124,7 @@ public class Gate {
 		float gateTopHeight = pixelGLConverter.getGLHeightForPixelHeight(14);
 
 		gl.glColor4f(1, 1, 1, 0f);
-		int PickingID = pcs.getPickingManager().getPickingID(pcs.getID(), EPickingType.REMOVE_GATE.name(), gateID);
+		int PickingID = pcs.getPickingID(EPickingType.REMOVE_GATE.name(), gateID);
 		gl.glPushName(PickingID);
 		gl.glBegin(GL2.GL_POLYGON);
 		gl.glVertex3f(xPosition + width, top - gateTopHeight, GATE_Z);
@@ -140,7 +140,7 @@ public class Gate {
 		Vec3f upperRightCorner = new Vec3f(xPosition + gateTopWidth - width, top, GATE_Z);
 		Vec3f upperLeftCorner = new Vec3f(xPosition - width, top, GATE_Z);
 
-		gl.glPushName(pcs.getPickingManager().getPickingID(pcs.getID(), EPickingType.GATE_TIP_SELECTION.name(), gateID));
+		gl.glPushName(pcs.getPickingID(EPickingType.GATE_TIP_SELECTION.name(), gateID));
 
 		pcs.getTextureManager().renderTexture(gl, PCRenderStyle.GATE_TOP, lowerLeftCorner, lowerRightCorner,
 				upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
@@ -185,8 +185,7 @@ public class Gate {
 		// // TODO dimension based acces
 		// }
 
-		gl.glPushName(pcs.getPickingManager()
-				.getPickingID(pcs.getID(), EPickingType.GATE_BODY_SELECTION.name(), gateID));
+		gl.glPushName(pcs.getPickingID(EPickingType.GATE_BODY_SELECTION.name(), gateID));
 
 		// gate bottom texture is as wide as gate body and 3 px high
 		float gateBottomHeight = pixelGLConverter.getGLHeightForPixelHeight(3);
@@ -201,7 +200,7 @@ public class Gate {
 
 		gl.glPopName();
 
-		gl.glPushName(pcs.getPickingManager().getPickingID(pcs.getID(), EPickingType.GATE_BOTTOM_SELECTION.name(),
+		gl.glPushName(pcs.getPickingID(EPickingType.GATE_BOTTOM_SELECTION.name(),
 				gateID));
 
 		lowerLeftCorner.set(xPosition - width, bottom, GATE_Z);

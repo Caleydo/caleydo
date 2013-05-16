@@ -425,7 +425,6 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	@Override
 	public void display(GL2 gl) {
-		checkForHits(gl);
 		processEvents();
 		handleBrickResize(gl);
 
@@ -433,8 +432,8 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 			buildBaseDisplayList(gl);
 
 		GLStratomex stratomex = getBrickColumn().getStratomexView();
-		gl.glPushName(stratomex.getPickingManager().getPickingID(stratomex.getID(), EPickingType.BRICK.name(), getID()));
-		gl.glPushName(getPickingManager().getPickingID(getID(), EPickingType.BRICK.name(), getID()));
+		gl.glPushName(stratomex.getPickingID(EPickingType.BRICK.name(), getID()));
+		gl.glPushName(getPickingID(EPickingType.BRICK.name(), getID()));
 		gl.glColor4f(1.0f, 0.0f, 0.0f, 0.5f);
 		gl.glTranslatef(0, 0, 0.1f);
 
@@ -463,7 +462,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	@Override
 	protected void displayLocal(GL2 gl) {
-		pickingManager.handlePicking(this, gl);
+		handlePicking(gl);
 		display(gl);
 	}
 

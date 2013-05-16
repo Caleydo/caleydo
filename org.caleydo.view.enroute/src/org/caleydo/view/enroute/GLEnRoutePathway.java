@@ -263,12 +263,8 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 	@Override
 	public void displayLocal(GL2 gl) {
-		pickingManager.handlePicking(this, gl);
+		handlePicking(gl);
 		display(gl);
-		if (busyState != EBusyState.OFF) {
-			renderBusyMode(gl);
-		}
-
 	}
 
 	@Override
@@ -316,8 +312,6 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 			gl.glCallList(layoutDisplayListIndex);
 			gl.glCallList(displayListIndex);
 		}
-
-		checkForHits(gl);
 	}
 
 	/**

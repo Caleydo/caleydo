@@ -668,7 +668,6 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 			stratomex.updateConnectionLinesBetweenColumns();
 		}
 		handleVerticalMoveDragging(gl);
-		checkForHits(gl);
 	}
 
 	@Override

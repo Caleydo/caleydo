@@ -28,13 +28,13 @@ import java.util.Set;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.view.opengl.picking.PickingManager;
-import org.caleydo.core.view.opengl.picking.PickingType;
+import org.caleydo.core.view.opengl.picking.SpacePickingManager;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
 import org.caleydo.core.view.opengl.util.draganddrop.IDropArea;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.view.filterpipeline.FilterItem;
+import org.caleydo.view.filterpipeline.PickingType;
 import org.caleydo.view.filterpipeline.renderstyle.FilterPipelineRenderStyle;
 
 /**
@@ -55,12 +55,11 @@ public class Background implements IRenderable, IDropArea {
 	 * @param pickingManager
 	 * @param renderStyle
 	 */
-	public Background(int viewId, PickingManager pickingManager,
+	public Background(SpacePickingManager pickingManager,
 			FilterPipelineRenderStyle renderStyle) {
 		this.renderStyle = renderStyle;
 
-		pickingId = pickingManager.getPickingID(viewId,
-				PickingType.FILTERPIPE_BACKGROUND, 0);
+		pickingId = pickingManager.getPickingID(PickingType.FILTERPIPE_BACKGROUND.name(), 0);
 	}
 
 	/**

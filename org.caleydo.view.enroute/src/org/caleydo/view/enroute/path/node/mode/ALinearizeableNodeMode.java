@@ -11,7 +11,6 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.view.enroute.path.APathwayPathRenderer;
@@ -45,8 +44,6 @@ public abstract class ALinearizeableNodeMode {
 
 	protected AGLView view;
 
-	protected PickingManager pickingManager;
-
 	protected CaleydoTextRenderer textRenderer;
 
 	protected TextureManager textureManager;
@@ -61,7 +58,6 @@ public abstract class ALinearizeableNodeMode {
 	public ALinearizeableNodeMode(AGLView view, APathwayPathRenderer pathwayPathRenderer) {
 		this.pathwayPathRenderer = pathwayPathRenderer;
 		this.view = view;
-		this.pickingManager = view.getPickingManager();
 		this.textRenderer = view.getTextRenderer();
 		this.textureManager = view.getTextureManager();
 	}

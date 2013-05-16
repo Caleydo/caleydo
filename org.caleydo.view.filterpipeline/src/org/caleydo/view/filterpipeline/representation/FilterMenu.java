@@ -28,11 +28,11 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.filter.RecordMetaOrFilter;
-import org.caleydo.core.view.opengl.picking.PickingManager;
-import org.caleydo.core.view.opengl.picking.PickingType;
+import org.caleydo.core.view.opengl.picking.SpacePickingManager;
 import org.caleydo.core.view.opengl.util.AGLGUIElement;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.view.filterpipeline.FilterItem;
+import org.caleydo.view.filterpipeline.PickingType;
 import org.caleydo.view.filterpipeline.renderstyle.FilterPipelineRenderStyle;
 
 /**
@@ -44,14 +44,14 @@ public class FilterMenu extends AGLGUIElement implements IRenderable {
 	private int mouseOverItem = -1;
 
 	private FilterPipelineRenderStyle renderStyle;
-	private PickingManager pickingManager;
+	private SpacePickingManager pickingManager;
 	private int viewId;
 
 	/**
 	 *
 	 */
 	public FilterMenu(FilterPipelineRenderStyle renderStyle,
-			PickingManager pickingManager, int viewId) {
+ SpacePickingManager pickingManager, int viewId) {
 		super();
 		minSize = 10;
 
@@ -97,8 +97,7 @@ public class FilterMenu extends AGLGUIElement implements IRenderable {
 
 		// render filter buttons
 		for (int i = 0; i < numFilters; ++i) {
-			gl.glPushName(pickingManager.getPickingID(viewId,
-					PickingType.FILTERPIPE_SUB_FILTER, i));
+			gl.glPushName(pickingManager.getPickingID(PickingType.FILTERPIPE_SUB_FILTER.name(), i));
 			gl.glBegin(GL2.GL_QUADS);
 			{
 				gl.glColor4fv(renderStyle.getFilterColor(i), 0);

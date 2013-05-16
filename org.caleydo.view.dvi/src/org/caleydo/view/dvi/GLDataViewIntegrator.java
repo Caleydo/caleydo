@@ -237,13 +237,9 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 	public void displayLocal(GL2 gl) {
 
 		if (!lazyMode)
-			pickingManager.handlePicking(this, gl);
+			handlePicking(gl);
 
 		display(gl);
-
-		if (busyState != EBusyState.OFF) {
-			renderBusyMode(gl);
-		}
 	}
 
 	@Override
@@ -285,9 +281,6 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 			}
 		}
 		gl.glCallList(displayListIndex);
-
-		if (!lazyMode)
-			checkForHits(gl);
 
 		dragAndDropController.handleDragging(gl, glMouseListener);
 

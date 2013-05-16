@@ -41,9 +41,8 @@ import org.caleydo.core.view.opengl.canvas.GLMouseAdapter;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
-import org.caleydo.core.view.opengl.picking.PickingMode;
-import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.treemap.layout.TreeMapRenderer;
 import org.caleydo.view.treemap.listener.ZoomInEvent;
@@ -131,12 +130,19 @@ public class GLHierarchicalTreeMap extends ATableBasedView implements IGLRemoteR
 
 		// mainTreeMapView = createEmbeddedTreeMap();
 		setMainTreeMapView(createEmbeddedTreeMap());
-		mainTreeMapView.setRemotePickingManager(pickingManager, getID());
+		mainTreeMapView.setRemotePickingManager(getPickingManager(), getID());
 
 		mainTreeMapView.initRemote(gl, this, glMouseListener);
 		mainTreeMapView.setDrawLabel(true);
 
 		thumbnailDisplayList = gl.glGenLists(1);
+
+		addTypePickingListener(new APickingListener() {
+			@Override
+			protected void doubleClicked(Pick pick) {
+				zoomOut(pick.getObjectID());
+			}
+		}, PickingType.TREEMAP_THUMBNAILVIEW_SELECTED.name());
 	}
 
 	@Override
@@ -189,9 +195,8 @@ public class GLHierarchicalTreeMap extends ATableBasedView implements IGLRemoteR
 		for (GLTreeMap view : thumbnailTreemapViews)
 			view.processEvents();
 
-		pickingManager.handlePicking(this, gl);
+		handlePicking(gl);
 		display(gl);
-		checkForHits(gl);
 
 	}
 
@@ -265,7 +270,7 @@ public class GLHierarchicalTreeMap extends ATableBasedView implements IGLRemoteR
 			// gl.glPushMatrix();
 			// gl.glTranslated(viewFrustum.getWidth() * xOffset,
 			// viewFrustum.getHeight() * (1.0 - yMargin - thumbNailHeight), 0);
-			gl.glPushName(pickingManager.getPickingID(getID(), PickingType.TREEMAP_THUMBNAILVIEW_SELECTED, i));
+			gl.glPushName(getPickingID(PickingType.TREEMAP_THUMBNAILVIEW_SELECTED.name(), i));
 			treemap.displayRemote(gl);
 			gl.glPopName();
 			// gl.glPopMatrix();
@@ -392,7 +397,7 @@ public class GLHierarchicalTreeMap extends ATableBasedView implements IGLRemoteR
 			thumbnailTreemapViews.remove(index);
 
 			mainTreeMapView.setDrawLabel(true);
-			mainTreeMapView.setRemotePickingManager(pickingManager, getID());
+			mainTreeMapView.setRemotePickingManager(getPickingManager(), getID());
 
 			animationControle.initAnimation(this, beginMainView, mainTreeMapView, beginThumbnails,
 					thumbnailTreemapViews, AnimationControle.ZOOM_OUT_ANIMATION);
@@ -411,20 +416,6 @@ public class GLHierarchicalTreeMap extends ATableBasedView implements IGLRemoteR
 			for (GLTreeMap view : thumbnailTreemapViews)
 				view.setDisplayListDirty();
 		}
-	}
-
-	/**
-	 * Invokes the zoom out function when a thumbnail treemap is clicked or delegates events to the embedded treemap.
-	 */
-	@Override
-	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode, int externalID, Pick pick) {
-		// System.out.println(pickingType + " " + pickingMode + ": " +
-		// externalID);
-		if (pickingType == PickingType.TREEMAP_THUMBNAILVIEW_SELECTED && pickingMode == PickingMode.DOUBLE_CLICKED) {
-			zoomOut(externalID);
-		} else
-			mainTreeMapView.handleRemotePickingEvents(pickingType, pickingMode, externalID, pick);
-
 	}
 
 	@Override
@@ -495,7 +486,7 @@ public class GLHierarchicalTreeMap extends ATableBasedView implements IGLRemoteR
 		treemap.setDataDomain(dataDomain);
 		treemap.setRemoteRenderingGLView(this);
 		treemap.registerEventListeners();
-		treemap.setRemotePickingManager(pickingManager, getID());
+		treemap.setRemotePickingManager(getPickingManager(), getID());
 		treemap.initData();
 
 		return treemap;

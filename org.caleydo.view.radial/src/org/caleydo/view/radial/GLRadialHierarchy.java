@@ -53,9 +53,9 @@ import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.picking.APickingListener;
+import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
-import org.caleydo.core.view.opengl.picking.PickingMode;
-import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.radial.contextmenu.DetailOutsideItem;
 import org.caleydo.view.radial.event.ChangeColorModeEvent;
@@ -176,6 +176,88 @@ public class GLRadialHierarchy extends ATableBasedView {
 		gl.glEnable(GL.GL_LINE_SMOOTH);
 		gl.glEnable(GL.GL_BLEND);
 		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+
+		if (detailLevel == EDetailLevel.VERY_LOW)
+			return;
+		addTypePickingListener(new IPickingListener() {
+
+			@Override
+			public void pick(Pick pick) {
+				int externalID = pick.getObjectID();
+				PartialDisc pdPickedElement = hashPartialDiscs.get(pick.getObjectID());
+
+				switch (pick.getPickingMode()) {
+				case CLICKED:
+					if (pdPickedElement != null)
+						drawingController.handleSelection(pdPickedElement);
+					break;
+
+				case MOUSE_OVER:
+					if (pdPickedElement != null)
+						drawingController.handleMouseOver(pdPickedElement);
+					break;
+
+				case RIGHT_CLICKED:
+					if (pdPickedElement != null) {
+						// Prevent handling of non genetic data in context
+						// menu
+						if (!dataDomain.getDataDomainID().equals("org.caleydo.datadomain.genetic"))
+							break;
+
+						if (!pdPickedElement.hasChildren()) {
+							AContextMenuItem menuItem = new BookmarkMenuItem("Bookmark "
+									+ dataDomain.getRecordLabel(dataDomain.getRecordIDType(), externalID),
+									dataDomain.getRecordIDType(), externalID);
+							contextMenuCreator.addContextMenuItem(menuItem);
+						} else {
+							AContextMenuItem menuItem = new DetailOutsideItem(externalID);
+							contextMenuCreator.addContextMenuItem(menuItem);
+						}
+
+						break;
+					}
+					drawingController.handleAlternativeSelection(pdPickedElement);
+					break;
+
+				default:
+					return;
+				}
+			}
+		}, PickingType.RAD_HIERARCHY_PDISC_SELECTION.name());
+
+		addTypePickingListener(new APickingListener() {
+			@Override
+			protected void clicked(Pick pick) {
+				if (pick.getObjectID() == iUpwardNavigationSliderID
+						&& upwardNavigationSlider.handleSliderSelection(PickingType.RAD_HIERARCHY_SLIDER_SELECTION)) {
+					updateHierarchyAccordingToNavigationSlider();
+					setDisplayListDirty();
+				}
+			}
+		}, PickingType.RAD_HIERARCHY_SLIDER_SELECTION.name());
+
+		addTypePickingListener(new APickingListener() {
+			@Override
+			protected void clicked(Pick pick) {
+				if (pick.getObjectID() == iUpwardNavigationSliderID
+						&& upwardNavigationSlider.handleSliderSelection(PickingType.RAD_HIERARCHY_SLIDER_BUTTON_SELECTION)) {
+					updateHierarchyAccordingToNavigationSlider();
+					setDisplayListDirty();
+				}
+			}
+		}, PickingType.RAD_HIERARCHY_SLIDER_BUTTON_SELECTION.name());
+
+		addTypePickingListener(new APickingListener() {
+			@Override
+			protected void clicked(Pick pick) {
+				if (pick.getObjectID() == iUpwardNavigationSliderID
+						&& upwardNavigationSlider.handleSliderSelection(PickingType.RAD_HIERARCHY_SLIDER_BODY_SELECTION)) {
+					updateHierarchyAccordingToNavigationSlider();
+					setDisplayListDirty();
+				}
+			}
+		}, PickingType.RAD_HIERARCHY_SLIDER_BODY_SELECTION.name());
+
 	}
 
 	@Override
@@ -245,7 +327,7 @@ public class GLRadialHierarchy extends ATableBasedView {
 		navigationHistory.reset();
 		drawingController.setDrawingState(EDrawingStateType.DRAWING_STATE_FULL_HIERARCHY);
 		LabelManager.get().clearLabels();
-		drawingStrategyManager.init(pickingManager, uniqueID, alColorModes);
+		drawingStrategyManager.init(getPickingManager(), alColorModes);
 
 		PartialDisc pdRoot = new PartialDisc(partialDiscTree, heRoot,
 				drawingStrategyManager.getDefaultDrawingStrategy());
@@ -357,16 +439,9 @@ public class GLRadialHierarchy extends ATableBasedView {
 	public void displayLocal(GL2 gl) {
 
 		if (!lazyMode)
-			pickingManager.handlePicking(this, gl);
+			handlePicking(gl);
 
 		display(gl);
-
-		if (!lazyMode)
-			checkForHits(gl);
-
-		if (busyState != EBusyState.OFF) {
-			renderBusyMode(gl);
-		}
 	}
 
 	@Override
@@ -397,8 +472,8 @@ public class GLRadialHierarchy extends ATableBasedView {
 				float fYCenter = viewFrustum.getHeight() / 2;
 
 				gl.glLoadIdentity();
-				upwardNavigationSlider.draw(gl, pickingManager, textureManager, uniqueID,
-						iUpwardNavigationSliderID, iUpwardNavigationSliderButtonID,
+				upwardNavigationSlider.draw(gl, getPickingManager(), textureManager, iUpwardNavigationSliderID,
+						iUpwardNavigationSliderButtonID,
 						iUpwardNavigationSliderBodyID);
 
 				float fCurrentSliderWidth = upwardNavigationSlider.getScaledWidth(gl);
@@ -413,8 +488,6 @@ public class GLRadialHierarchy extends ATableBasedView {
 		} else {
 			renderSymbol(gl, EIconTextures.RADIAL_SYMBOL.getFileName(), 0.5f);
 		}
-		if (!lazyMode)
-			checkForHits(gl);
 	}
 
 	/**
@@ -435,7 +508,7 @@ public class GLRadialHierarchy extends ATableBasedView {
 
 			gl.glLoadIdentity();
 
-			upwardNavigationSlider.draw(gl, pickingManager, textureManager, uniqueID,
+			upwardNavigationSlider.draw(gl, getPickingManager(), textureManager,
 					iUpwardNavigationSliderID, iUpwardNavigationSliderButtonID,
 					iUpwardNavigationSliderBodyID);
 
@@ -478,110 +551,6 @@ public class GLRadialHierarchy extends ATableBasedView {
 			setDisplayListDirty();
 
 			setNewSelection(SelectionType.SELECTION, pdCurrentSelectedElement);
-		}
-	}
-
-	@Override
-	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
-			int externalID, Pick pick) {
-		if (detailLevel == EDetailLevel.VERY_LOW) {
-			return;
-		}
-		switch (pickingType) {
-
-		case RAD_HIERARCHY_PDISC_SELECTION:
-
-			PartialDisc pdPickedElement = hashPartialDiscs.get(externalID);
-
-			switch (pickingMode) {
-			case CLICKED:
-				if (pdPickedElement != null)
-					drawingController.handleSelection(pdPickedElement);
-				break;
-
-			case MOUSE_OVER:
-				if (pdPickedElement != null)
-					drawingController.handleMouseOver(pdPickedElement);
-				break;
-
-			case RIGHT_CLICKED:
-				if (pdPickedElement != null) {
-					// Prevent handling of non genetic data in context
-					// menu
-					if (!dataDomain.getDataDomainID().equals(
-							"org.caleydo.datadomain.genetic"))
-						break;
-
-					if (!pdPickedElement.hasChildren()) {
-						AContextMenuItem menuItem = new BookmarkMenuItem("Bookmark "
-								+ dataDomain.getRecordLabel(dataDomain.getRecordIDType(),
-										externalID), dataDomain.getRecordIDType(),
- externalID);
-						contextMenuCreator.addContextMenuItem(menuItem);
-					} else {
-						AContextMenuItem menuItem = new DetailOutsideItem(externalID);
-						contextMenuCreator.addContextMenuItem(menuItem);
-					}
-
-					break;
-				}
-				drawingController.handleAlternativeSelection(pdPickedElement);
-				break;
-
-			default:
-				return;
-			}
-			break;
-
-		case RAD_HIERARCHY_SLIDER_SELECTION:
-			switch (pickingMode) {
-			case CLICKED:
-				if (externalID == iUpwardNavigationSliderID) {
-					if (upwardNavigationSlider.handleSliderSelection(pickingType)) {
-						updateHierarchyAccordingToNavigationSlider();
-						setDisplayListDirty();
-					}
-				}
-				break;
-
-			default:
-				return;
-			}
-			break;
-
-		case RAD_HIERARCHY_SLIDER_BUTTON_SELECTION:
-			switch (pickingMode) {
-			case CLICKED:
-				if (externalID == iUpwardNavigationSliderButtonID) {
-					if (upwardNavigationSlider.handleSliderSelection(pickingType)) {
-						updateHierarchyAccordingToNavigationSlider();
-						setDisplayListDirty();
-					}
-				}
-				break;
-
-			default:
-				return;
-			}
-			break;
-
-		case RAD_HIERARCHY_SLIDER_BODY_SELECTION:
-			switch (pickingMode) {
-			case CLICKED:
-				if (externalID == iUpwardNavigationSliderBodyID) {
-					if (upwardNavigationSlider.handleSliderSelection(pickingType)) {
-						updateHierarchyAccordingToNavigationSlider();
-						setDisplayListDirty();
-					}
-				}
-				break;
-
-			default:
-				return;
-			}
-			break;
-		default:
-			break;
 		}
 	}
 

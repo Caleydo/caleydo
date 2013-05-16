@@ -30,9 +30,9 @@ import org.caleydo.core.data.filter.Filter;
 import org.caleydo.core.data.filter.RecordMetaOrFilter;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.VirtualArray;
-import org.caleydo.core.view.opengl.picking.PickingManager;
-import org.caleydo.core.view.opengl.picking.PickingType;
+import org.caleydo.core.view.opengl.picking.SpacePickingManager;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
+import org.caleydo.view.filterpipeline.PickingType;
 import org.caleydo.view.filterpipeline.renderstyle.FilterPipelineRenderStyle;
 
 /**
@@ -50,7 +50,8 @@ public class FilterRepresentationMetaOr extends FilterRepresentation {
 	protected boolean sizesDirty = true;
 
 	public FilterRepresentationMetaOr(FilterPipelineRenderStyle renderStyle,
-			PickingManager pickingManager, int viewId) {
+ SpacePickingManager pickingManager,
+			int viewId) {
 		super(renderStyle, pickingManager, viewId);
 	}
 
@@ -66,8 +67,7 @@ public class FilterRepresentationMetaOr extends FilterRepresentation {
 		renderBasicShape(gl, textRenderer, renderStyle.FILTER_OR_COLOR);
 
 		for (int i = 0; i < subFilterSizes.length; ++i) {
-			gl.glPushName(pickingManager.getPickingID(viewId,
-					PickingType.FILTERPIPE_SUB_FILTER, i));
+			gl.glPushName(pickingManager.getPickingID(PickingType.FILTERPIPE_SUB_FILTER.name(), i));
 			heightRight = vSize.y() * (subFilterSizes[i] / 100.f);
 			renderShape(gl, GL2.GL_QUADS, renderStyle.getFilterColorCombined(i),
 					Z_POS_BODY);

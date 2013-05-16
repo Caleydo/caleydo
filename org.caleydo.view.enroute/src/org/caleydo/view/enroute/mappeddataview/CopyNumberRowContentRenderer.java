@@ -110,7 +110,7 @@ public class CopyNumberRowContentRenderer extends ACategoricalRowContentRenderer
 
 				Integer resolvedColumnID = columnIDMappingManager.getID(dataDomain.getPrimaryIDType(columnIDType),
 						parent.sampleIDType, columnID);
-				gl.glPushName(parentView.getPickingManager().getPickingID(parentView.getID(),
+				gl.glPushName(parentView.getPickingID(
 						EPickingType.SAMPLE.name(), resolvedColumnID));
 
 				gl.glColor3fv(bottomBarColor, 0);

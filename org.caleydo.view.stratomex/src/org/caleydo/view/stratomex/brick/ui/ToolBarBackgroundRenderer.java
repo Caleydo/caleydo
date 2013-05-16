@@ -51,8 +51,7 @@ public class ToolBarBackgroundRenderer extends ALayoutRenderer {
 				DefaultBrickLayoutTemplate.BUTTON_HEIGHT_PIXELS + 2);
 		float spacing = brick.getPixelGLConverter().getGLHeightForPixelHeight(2);
 
-		gl.glPushName(brick.getStratomex().getPickingManager()
-				.getPickingID(brick.getStratomex().getID(), EPickingType.BRICK.name(), brick.getID()));
+		gl.glPushName(brick.getStratomex().getPickingID(EPickingType.BRICK.name(), brick.getID()));
 
 		gl.glColor3fv(BrickColors.BRICK_COLOR, 0);
 		gl.glBegin(GL2.GL_QUADS);

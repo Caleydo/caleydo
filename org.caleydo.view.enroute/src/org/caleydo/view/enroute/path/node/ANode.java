@@ -30,7 +30,6 @@ import javax.media.opengl.glu.GLU;
 import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
-import org.caleydo.core.view.opengl.picking.PickingManager;
 
 /**
  * Base class for all nodes that can be displayed in the linearized pathway view.
@@ -52,8 +51,6 @@ public abstract class ANode implements ILabelProvider {
 
 	protected AGLView view;
 
-	protected PickingManager pickingManager;
-
 	/**
 	 * Determines whether the node shall be pickable.
 	 */
@@ -62,7 +59,6 @@ public abstract class ANode implements ILabelProvider {
 	public ANode(AGLView view) {
 		this.pixelGLConverter = view.getPixelGLConverter();
 		this.view = view;
-		this.pickingManager = view.getPickingManager();
 	}
 
 	/**

@@ -123,8 +123,7 @@ public abstract class ACategoricalRowContentRenderer extends ContentRenderer {
 			float[] bottomBarColor = colorCalculator.getSecondaryColor().getRGBA();
 
 			float barHeight = value * renderWith;
-			gl.glPushName(parentView.getPickingManager().getPickingID(parentView.getID(),
-					EPickingType.HISTOGRAM_BAR.name() + hashCode(), bucketNumber));
+			gl.glPushName(parentView.getPickingID(EPickingType.HISTOGRAM_BAR.name() + hashCode(), bucketNumber));
 			gl.glBegin(GL2.GL_QUADS);
 			gl.glColor3fv(bottomBarColor, 0);
 			gl.glVertex3f(0, lowerEdge, z);
@@ -179,6 +178,11 @@ public abstract class ACategoricalRowContentRenderer extends ContentRenderer {
 		// //FIXME: HACKY hashcode
 		parentView.addTypePickingListener(pickingListener, EPickingType.HISTOGRAM_BAR.name() + hashCode());
 		// }
+	}
+
+	@Override
+	protected void unRegisterPickingListener() {
+		parentView.removeTypePickingListener(pickingListener, EPickingType.HISTOGRAM_BAR.name() + hashCode());
 	}
 
 	@Override

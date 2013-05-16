@@ -26,8 +26,7 @@ import org.caleydo.core.data.filter.event.MoveFilterEvent;
 import org.caleydo.core.data.filter.event.RemoveFilterEvent;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.view.opengl.picking.PickingManager;
-import org.caleydo.core.view.opengl.picking.PickingType;
+import org.caleydo.core.view.opengl.picking.SpacePickingManager;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
 import org.caleydo.core.view.opengl.util.draganddrop.IDropArea;
@@ -61,9 +60,9 @@ public class FilterItem implements IRenderable, IDropArea {
 	 * @param pickingManager
 	 * @param uniqueID
 	 */
-	public FilterItem(int id, Filter filter, PickingManager pickingManager, int iUniqueID) {
+	public FilterItem(int id, Filter filter, SpacePickingManager pickingManager) {
 		this.id = id;
-		pickingId = pickingManager.getPickingID(iUniqueID, PickingType.FILTERPIPE_FILTER, id);
+		pickingId = pickingManager.getPickingID(PickingType.FILTERPIPE_FILTER.name(), id);
 		this.filter = filter;
 	}
 
