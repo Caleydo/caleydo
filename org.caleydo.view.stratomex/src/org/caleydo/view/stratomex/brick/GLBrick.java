@@ -1565,7 +1565,8 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 				// brickLayout.setShowHandles(false);
 			}
 			// }
-			layoutManager.updateLayout();
+			if (layoutManager != null)
+				layoutManager.updateLayout();
 		}
 	}
 }

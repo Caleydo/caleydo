@@ -28,7 +28,9 @@ import java.util.Set;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLContext;
 
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventPublisher;
@@ -51,9 +53,11 @@ import org.caleydo.view.stratomex.EEmbeddingID;
 import org.caleydo.view.stratomex.EPickingType;
 import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.stratomex.brick.GLBrick;
+import org.caleydo.view.stratomex.brick.configurer.ClinicalDataConfigurer;
 import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
 import org.caleydo.view.stratomex.column.BrickColumn;
 import org.caleydo.view.stratomex.column.BrickColumnManager;
+import org.caleydo.view.stratomex.listener.AddGroupsToStratomexListener;
 import org.caleydo.view.stratomex.tourguide.event.HighlightBrickEvent;
 import org.caleydo.view.stratomex.tourguide.event.UpdateNumericalPreviewEvent;
 import org.caleydo.view.stratomex.tourguide.event.UpdatePathwayPreviewEvent;
@@ -505,6 +509,45 @@ public class TourguideAdapter implements IStratomexAdapter {
 		} else {
 			throw new IllegalStateException();
 		}
+	}
+
+	@Override
+	public void replaceClinicalTemplate(Perspective underlying, TablePerspective numerical) {
+		TablePerspective t = asPerspective(underlying, numerical);
+		TablePerspective underlyingTP = findTablePerspective(underlying);
+		if (underlyingTP == null)
+			return;
+		ClinicalDataConfigurer configurer = AddGroupsToStratomexListener.createKaplanConfigurer(stratomex,
+				underlyingTP, t);
+		replaceTemplate(t, configurer);
+	}
+
+	private TablePerspective findTablePerspective(Perspective record) {
+		for (TablePerspective p : stratomex.getTablePerspectives())
+			if (p.getRecordPerspective() == record)
+				return p;
+		return null;
+	}
+
+	private static TablePerspective asPerspective(Perspective underlying, TablePerspective clinicalVariable) {
+		Perspective dim = clinicalVariable.getDimensionPerspective();
+		ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) dim.getDataDomain();
+
+		Perspective rec = null;
+
+		for (String id : dataDomain.getRecordPerspectiveIDs()) {
+			Perspective r = dataDomain.getTable().getRecordPerspective(id);
+			if (r.getDataDomain().equals(underlying.getDataDomain())
+					&& r.isLabelDefault() == underlying.isLabelDefault() && r.getLabel().equals(underlying.getLabel())) {
+				rec = r;
+				break;
+			}
+		}
+		if (rec == null) { // not found create a new one
+			rec = dataDomain.convertForeignPerspective(underlying);
+			dataDomain.getTable().registerRecordPerspective(rec);
+		}
+		return dataDomain.getTablePerspective(rec.getPerspectiveID(), dim.getPerspectiveID(), false);
 	}
 
 	@Override

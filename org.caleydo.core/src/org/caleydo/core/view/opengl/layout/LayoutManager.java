@@ -108,7 +108,8 @@ public class LayoutManager {
 	 * due to size changes, and one for updating the layout through to new elements
 	 */
 	public void updateLayout() {
-
+		if (baseElementLayout == null)
+			return;
 		float totalWidth = viewFrustum.getRight() - viewFrustum.getLeft();
 		float totalHeight = viewFrustum.getTop() - viewFrustum.getBottom();
 

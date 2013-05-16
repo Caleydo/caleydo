@@ -14,6 +14,7 @@ import org.caleydo.view.tourguide.api.state.IStateMachine;
 import org.caleydo.view.tourguide.api.state.ITransition;
 import org.caleydo.view.tourguide.api.state.SimpleState;
 import org.caleydo.view.tourguide.api.state.SimpleTransition;
+import org.caleydo.view.tourguide.internal.stratomex.state.BrowseNumericalAndStratificationState;
 import org.caleydo.view.tourguide.internal.stratomex.state.BrowsePathwayAndStratificationState;
 
 import com.google.common.collect.ArrayListMultimap;
@@ -39,7 +40,6 @@ class StateMachineImpl implements IStateMachine {
 		StateMachineImpl impl = new StateMachineImpl();
 
 		impl.current = impl.addState("root", new SimpleState(""));
-		IState current = impl.getCurrent();
 
 		IState addStratification = impl.addState(ADD_STRATIFICATIONS, new SimpleState("Add Stratification"));
 		IState browseStratification = impl.addState(BROWSE_STRATIFICATIONS, new BrowseStratificationState(
@@ -60,7 +60,16 @@ class StateMachineImpl implements IStateMachine {
 
 		IState addNumerical = impl.addState(ADD_NUMERICAL, new SimpleState("Add Numerical Data"));
 		impl.addState(BROWSE_NUMERICAL, new BrowseNumericalState(
-				"Select a stratification in the Tour Guide\nto preview.\n\nThen confirm or cancel your selection."));
+				"Select a entry in the Tour Guide\nto preview.\n\nThen confirm or cancel your selection."));
+
+		if (!existing.isEmpty()) {
+			// select pathway -> show preview -> select stratification -> show both
+			IState browseIntermediate = impl.addState("browseAndSelectNumerical",
+					new BrowseNumericalAndStratificationState());
+			impl.addTransition(addNumerical, new SimpleTransition(browseIntermediate,
+					"Browse list and stratify with a displayed stratification"));
+		}
+
 		// addTransition(addStratification, new ButtonTransition(browseStratification, "Browse List"));
 
 		return impl;

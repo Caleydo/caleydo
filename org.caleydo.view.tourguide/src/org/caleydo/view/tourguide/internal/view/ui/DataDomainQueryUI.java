@@ -30,6 +30,7 @@ import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.view.tourguide.internal.model.ADataDomainQuery;
 import org.caleydo.view.tourguide.internal.model.CategoricalDataDomainQuery;
+import org.caleydo.view.tourguide.internal.model.InhomogenousDataDomainQuery;
 import org.caleydo.view.tourguide.internal.model.PathwayDataDomainQuery;
 import org.caleydo.view.tourguide.internal.model.StratificationDataDomainQuery;
 import org.caleydo.view.tourguide.internal.view.specific.IDataDomainQueryModeSpecfics;
@@ -128,7 +129,11 @@ public class DataDomainQueryUI extends GLElementContainer implements IGLLayout, 
 			return new CategoricalDataDomainElement((CategoricalDataDomainQuery) q);
 		if (q instanceof PathwayDataDomainQuery)
 			return new PathwayDataDomainElement((PathwayDataDomainQuery) q);
-		return new TableDataDomainElement((StratificationDataDomainQuery) q);
+		if (q instanceof StratificationDataDomainQuery)
+			return new TableDataDomainElement((StratificationDataDomainQuery) q);
+		if (q instanceof InhomogenousDataDomainQuery)
+			return new ColumnDataDomainElement((InhomogenousDataDomainQuery) q);
+		throw new IllegalStateException();
 	}
 
 	public void updateSelections() {

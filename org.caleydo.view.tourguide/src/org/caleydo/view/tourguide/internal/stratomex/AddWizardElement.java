@@ -25,6 +25,7 @@ import java.util.List;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.EventListenerManager.DeepScan;
 import org.caleydo.core.event.EventPublisher;
@@ -291,6 +292,11 @@ public class AddWizardElement extends AAddWizardElement implements ICallback<ISt
 	@Override
 	public void replaceTemplate(TablePerspective with, IBrickConfigurer configurer) {
 		adapter.replaceTemplate(with, configurer);
+	}
+
+	@Override
+	public void replaceClinicalTemplate(Perspective underlying, TablePerspective numerical) {
+		adapter.replaceClinicalTemplate(underlying, numerical);
 	}
 
 	@Override

@@ -20,6 +20,7 @@
 package org.caleydo.view.tourguide.api.state;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormRenderer;
 import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
@@ -36,4 +37,10 @@ public interface ISelectReaction {
 	void replaceTemplate(ALayoutRenderer renderer);
 
 	MultiFormRenderer createPreview(TablePerspective tablePerspective);
+
+	/**
+	 * @param underlying
+	 * @param numerical
+	 */
+	void replaceClinicalTemplate(Perspective underlying, TablePerspective numerical);
 }

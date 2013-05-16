@@ -45,12 +45,14 @@ import org.caleydo.core.view.ITablePerspectiveBasedView;
 import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.stratomex.event.SelectElementsEvent;
 import org.caleydo.view.stratomex.tourguide.event.HighlightBrickEvent;
+import org.caleydo.view.stratomex.tourguide.event.UpdateNumericalPreviewEvent;
 import org.caleydo.view.stratomex.tourguide.event.UpdatePathwayPreviewEvent;
 import org.caleydo.view.stratomex.tourguide.event.UpdateStratificationPreviewEvent;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.internal.TourGuideRenderStyle;
 import org.caleydo.view.tourguide.internal.model.AScoreRow;
 import org.caleydo.view.tourguide.internal.model.ITablePerspectiveScoreRow;
+import org.caleydo.view.tourguide.internal.model.InhomogenousPerspectiveRow;
 import org.caleydo.view.tourguide.internal.model.MaxGroupCombiner;
 import org.caleydo.view.tourguide.internal.model.PathwayPerspectiveRow;
 import org.caleydo.view.tourguide.internal.stratomex.event.WizardEndedEvent;
@@ -195,7 +197,18 @@ public class StratomexAdapter {
 			break;
 		case NUMERICAL:
 			// FIXME
+			updateNumerical((InhomogenousPerspectiveRow) old, (InhomogenousPerspectiveRow) new_, visibleColumns,
+					sortedBy);
 			break;
+		}
+	}
+
+	private void updateNumerical(InhomogenousPerspectiveRow old, InhomogenousPerspectiveRow new_,
+			Collection<IScore> visibleColumns, IScore sortedBy) {
+		if (new_ != null) {
+			UpdateNumericalPreviewEvent event = new UpdateNumericalPreviewEvent(new_.asTablePerspective());
+			event.to(receiver.getTourguide());
+			triggerEvent(event);
 		}
 	}
 

@@ -22,6 +22,7 @@ package org.caleydo.view.stratomex.tourguide;
 import java.util.List;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
@@ -48,4 +49,10 @@ public interface IStratomexAdapter {
 	void selectGroup(Predicate<Pair<TablePerspective, Group>> filter);
 
 	MultiFormRenderer createPreviewRenderer(TablePerspective tablePerspective);
+
+	/**
+	 * @param underlying
+	 * @param numerical
+	 */
+	void replaceClinicalTemplate(Perspective underlying, TablePerspective numerical);
 }

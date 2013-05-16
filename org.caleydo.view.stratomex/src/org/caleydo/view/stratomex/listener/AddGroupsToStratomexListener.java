@@ -72,7 +72,7 @@ public class AddGroupsToStratomexListener extends AEventListener<GLStratomex> {
 		}
 	}
 
-	static ClinicalDataConfigurer createKaplanConfigurer(GLStratomex handler, TablePerspective underlying,
+	public static ClinicalDataConfigurer createKaplanConfigurer(GLStratomex handler, TablePerspective underlying,
 			TablePerspective kaplan) {
 		ClinicalDataConfigurer dataConfigurer = null;
 		BrickColumn brickColumn = handler.getBrickColumnManager().getBrickColumn(underlying);
