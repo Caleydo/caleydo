@@ -160,6 +160,7 @@ public class AddWizardElement extends AAddWizardElement implements ICallback<ISt
 			float hi = (h - h_header - transitions.size() * gap) / (transitions.size());
 			float y = h_header+gap;
 			int i = 0;
+			g.incZ();
 			for (ITransition t : transitions) {
 				g.pushName(getPickingID(i));
 				if (hovered == i)
@@ -172,6 +173,7 @@ public class AddWizardElement extends AAddWizardElement implements ICallback<ISt
 				y += hi + gap;
 				i++;
 			}
+			g.decZ();
 		}
 	}
 
