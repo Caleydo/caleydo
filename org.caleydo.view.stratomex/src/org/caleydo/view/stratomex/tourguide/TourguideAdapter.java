@@ -116,15 +116,20 @@ public class TourguideAdapter implements IStratomexAdapter {
 		this.stratomex = stratomex;
 	}
 
+	public boolean hasTourGuide() {
+		return factory != null;
+	}
+
 	public void renderAddButton(GL2 gl, float x, float y, float w, float h, int id) {
-		if (factory == null || wizardElement != null || wizardPreview != null) // not more than one at the sam etime
+		if (!hasTourGuide() || wizardElement != null || wizardPreview != null) // not more than one at the sam etime
 			return;
 		renderButton(gl, x, y, w, h, stratomex, ADD_PICKING_TYPE, id, "resources/icons/stratomex/template/add.png");
 	}
 
 	public void renderConfirmButton(GL2 gl, float x, float y, float w, float h, int id) {
-		renderButton(gl, x, y, w, h, stratomex, CONFIRM_PICKING_TYPE, id,
-				"resources/icons/stratomex/template/accept.png");
+		boolean disabled = wizardPreview == null; // no preview no accept
+		renderButton(gl, x, y, w, h, stratomex, CONFIRM_PICKING_TYPE, id, "resources/icons/stratomex/template/accept"
+				+ (disabled ? "_disabled" : "") + ".png");
 	}
 
 	public void renderCancelButton(GL2 gl, float x, float y, float w, float h, int id) {
