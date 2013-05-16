@@ -81,12 +81,13 @@ public class PreviewTable {
 		});
 		this.selectAllNone.setEnabled(false);
 
-		previewTable = new PreviewTableWidget(parent, new BooleanCallback() {
-			@Override
-			public void on(boolean data) {
-				onShowAllColumns(data);
-			}
-		});
+		previewTable = new PreviewTableWidget(parent);
+		// , new BooleanCallback() {
+		// @Override
+		// public void on(boolean data) {
+		// onShowAllColumns(data);
+		// }
+		// });
 	}
 
 	/**
@@ -98,7 +99,7 @@ public class PreviewTable {
 		parser.parse(spec.getDataSourcePath(), spec.getDelimiter(), false, PreviewTableWidget.MAX_PREVIEW_TABLE_ROWS);
 		dataMatrix = parser.getDataMatrix();
 		totalNumberOfColumns = parser.getTotalNumberOfColumns();
-		this.previewTable.createDataPreviewTableFromDataMatrix(dataMatrix);
+		this.previewTable.createDataPreviewTableFromDataMatrix(dataMatrix, totalNumberOfColumns);
 		previewCallback.on(totalNumberOfColumns, parser.getTotalNumberOfRows(), dataMatrix);
 		// previewTable.updateVisibleColumns(totalNumberOfColumns);
 		this.previewTable.updateTableColors(spec.getNumberOfHeaderLines(), -1, spec.getColumnOfRowIds());
@@ -182,16 +183,16 @@ public class PreviewTable {
 		createDataPreviewTableFromFile();
 	}
 
-	/**
-	 * Loads all columns or the {@link #MAX_PREVIEW_TABLE_COLUMNS} into the preview table, depending on the state of
-	 * showAllColumnsButton of the {@link #dialog}.
-	 */
-	public void onShowAllColumns(boolean showAllColumns) {
-		this.previewTable.createDataPreviewTableFromDataMatrix(dataMatrix);
-		// determineRowIDType();
-		this.previewTable.updateTableColors(spec.getNumberOfHeaderLines(), -1, spec.getColumnOfRowIds());
-		// this.previewTable.updateVisibleColumns(totalNumberOfColumns);
-	}
+	// /**
+	// * Loads all columns or the {@link #MAX_PREVIEW_TABLE_COLUMNS} into the preview table, depending on the state of
+	// * showAllColumnsButton of the {@link #dialog}.
+	// */
+	// public void onShowAllColumns(boolean showAllColumns) {
+	// this.previewTable.createDataPreviewTableFromDataMatrix(dataMatrix, totalNumberOfColumns);
+	// // determineRowIDType();
+	// this.previewTable.updateTableColors(spec.getNumberOfHeaderLines(), -1, spec.getColumnOfRowIds());
+	// // this.previewTable.updateVisibleColumns(totalNumberOfColumns);
+	// }
 
 	public interface IPreviewCallback {
 		public void on(int numColumn, int numRow, List<? extends List<String>> dataMatrix);
