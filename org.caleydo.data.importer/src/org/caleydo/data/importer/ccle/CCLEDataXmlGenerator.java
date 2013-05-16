@@ -36,7 +36,8 @@ import org.caleydo.data.importer.setupgenerator.DataSetDescriptionSerializer;
  */
 public class CCLEDataXmlGenerator extends DataSetDescriptionSerializer {
 	public static final String DROPBOX_CCLE_FOLDER = System.getProperty("user.home")
-			+ System.getProperty("file.separator") + "Dropbox/Caleydo/data/ccle/";
+ + "/"
+			+ "Dropbox/Caleydo/data/ccle/";
 
 	public static final String MRNA = DROPBOX_CCLE_FOLDER + "CCLE_Expression_Entrez_2012-09-29.gct";
 
@@ -205,7 +206,6 @@ public class CCLEDataXmlGenerator extends DataSetDescriptionSerializer {
 		compoundCellData.setDelimiter(";");
 		compoundCellData.setDataSetName("Compound - Cell Effect");
 		compoundCellData.setLinearSource(true);
-
 		compoundCellData.setDataSourcePath(COMPOUND_CELL_DATA);
 		compoundCellData.setNumberOfHeaderLines(1);
 
