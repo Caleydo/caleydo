@@ -489,7 +489,7 @@ public class LoadDataSetPageMediator {
 	// }
 
 	public void createDataPreviewTableFromFile() {
-		parser.parse(dataSetDescription.getDataSourcePath(), dataSetDescription.getDelimiter(), false,
+		parser.parse(dataSetDescription.getDataSourcePath(), dataSetDescription.getDelimiter(), true,
 				MAX_PREVIEW_TABLE_ROWS);
 		dataMatrix = parser.getDataMatrix();
 		totalNumberOfColumns = parser.getTotalNumberOfColumns();

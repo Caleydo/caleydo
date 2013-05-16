@@ -27,8 +27,8 @@ import org.caleydo.core.io.MatrixDefinition;
 import org.caleydo.core.io.gui.dataimport.widget.BooleanCallback;
 import org.caleydo.core.io.gui.dataimport.widget.DelimiterWidget;
 import org.caleydo.core.io.gui.dataimport.widget.ICallback;
-import org.caleydo.core.io.gui.dataimport.widget.PreviewTableWidget;
 import org.caleydo.core.io.gui.dataimport.widget.SelectAllNoneWidget;
+import org.caleydo.core.io.gui.dataimport.widget.table.PreviewTableWidget;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -96,7 +96,7 @@ public class PreviewTable {
 	 *
 	 */
 	public void createDataPreviewTableFromFile() {
-		parser.parse(spec.getDataSourcePath(), spec.getDelimiter(), false, PreviewTableWidget.MAX_PREVIEW_TABLE_ROWS);
+		parser.parse(spec.getDataSourcePath(), spec.getDelimiter(), true, PreviewTableWidget.MAX_PREVIEW_TABLE_ROWS);
 		dataMatrix = parser.getDataMatrix();
 		totalNumberOfColumns = parser.getTotalNumberOfColumns();
 		this.previewTable.createDataPreviewTableFromDataMatrix(dataMatrix, totalNumberOfColumns);

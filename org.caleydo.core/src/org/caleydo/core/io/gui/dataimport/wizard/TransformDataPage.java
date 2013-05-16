@@ -4,6 +4,7 @@
 package org.caleydo.core.io.gui.dataimport.wizard;
 
 import org.caleydo.core.io.DataSetDescription;
+import org.caleydo.core.io.gui.dataimport.widget.table.ColumnConfigTableWidget;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.swt.SWT;
@@ -106,6 +107,11 @@ public class TransformDataPage extends AImportDataPage implements Listener {
 	protected Group dataCenterGroup;
 
 	/**
+	 * Table for configuring data types of individual columns.
+	 */
+	protected ColumnConfigTableWidget columnConfigTable;
+
+	/**
 	 * Mediator of this class.
 	 */
 	private TransformDataPageMediator mediator;
@@ -139,7 +145,7 @@ public class TransformDataPage extends AImportDataPage implements Listener {
 		createTranspositionGroup(parentComposite);
 
 		createDataCenterGroup(parentComposite);
-
+		columnConfigTable = new ColumnConfigTableWidget(parentComposite);
 		// mediator.guiCreated();
 
 		setControl(parentComposite);
