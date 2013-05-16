@@ -17,46 +17,32 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.api.state;
+package org.caleydo.view.stratomex.tourguide.event;
 
-import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
-import org.caleydo.view.tourguide.internal.OpenViewHandler;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.PlatformUI;
+import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.event.ADirectedEvent;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class OpenTourGuideState implements IState {
-	private final EDataDomainQueryMode mode;
-	private final String label;
+public class UpdateStratificationPreviewEvent extends ADirectedEvent {
+	private final TablePerspective tablePerspective;
 
-	public OpenTourGuideState(EDataDomainQueryMode mode, String label) {
-		this.mode = mode;
-		this.label = label;
+	public UpdateStratificationPreviewEvent(TablePerspective tablePerspective) {
+		this.tablePerspective = tablePerspective;
 	}
 
 	/**
-	 * @return the label, see {@link #label}
+	 * @return the tablePerspective, see {@link #tablePerspective}
 	 */
-	@Override
-	public String getLabel() {
-		return label;
+	public TablePerspective getTablePerspective() {
+		return tablePerspective;
 	}
 
-	@Override
-	public void onEnter() {
-		Display.getDefault().asyncExec(new Runnable() {
-			@Override
-			public void run() {
-				OpenViewHandler.showTourGuide(PlatformUI.getWorkbench().getActiveWorkbenchWindow(), mode);
-			}
-		});
-	}
 
 	@Override
-	public void onLeave() {
-
+	public boolean checkIntegrity() {
+		return tablePerspective != null;
 	}
 }

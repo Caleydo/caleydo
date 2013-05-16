@@ -37,10 +37,7 @@ import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.data.NewDataDomainEvent;
 import org.caleydo.core.event.data.RemoveDataDomainEvent;
-import org.caleydo.core.event.data.ReplaceTablePerspectiveEvent;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
-import org.caleydo.core.view.listener.RemoveTablePerspectiveEvent;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.AGLElementView;
@@ -55,6 +52,7 @@ import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.score.MultiScore;
 import org.caleydo.view.tourguide.internal.SerializedTourGuideView;
+import org.caleydo.view.tourguide.internal.TourGuideRenderStyle;
 import org.caleydo.view.tourguide.internal.compute.ComputeAllOfJob;
 import org.caleydo.view.tourguide.internal.compute.ComputeForScoreJob;
 import org.caleydo.view.tourguide.internal.event.AddScoreColumnEvent;
@@ -70,7 +68,6 @@ import org.caleydo.view.tourguide.internal.model.CustomSubList;
 import org.caleydo.view.tourguide.internal.score.ScoreFactories;
 import org.caleydo.view.tourguide.internal.score.Scores;
 import org.caleydo.view.tourguide.internal.stratomex.StratomexAdapter;
-import org.caleydo.view.tourguide.internal.view.col.IAddToStratomex;
 import org.caleydo.view.tourguide.internal.view.col.ScoreRankColumnModel;
 import org.caleydo.view.tourguide.internal.view.specific.DataDomainModeSpecifics;
 import org.caleydo.view.tourguide.internal.view.specific.IDataDomainQueryModeSpecfics;
@@ -107,7 +104,7 @@ import org.eclipse.swt.widgets.Shell;
  * @author Samuel Gratzl
  *
  */
-public class GLTourGuideView extends AGLElementView implements IAddToStratomex {
+public class GLTourGuideView extends AGLElementView {
 	public static final String VIEW_TYPE = "org.caleydo.view.tool.tourguide";
 	public static final String VIEW_NAME = "Tour Guide";
 
@@ -174,7 +171,7 @@ public class GLTourGuideView extends AGLElementView implements IAddToStratomex {
 			}
 		});
 		this.table.add(new RankRankColumnModel().setWidth(30));
-		modeSpecifics.addDefaultColumns(this.table, this);
+		modeSpecifics.addDefaultColumns(this.table);
 
 		addAllExternalScore(this.table);
 
@@ -260,16 +257,16 @@ public class GLTourGuideView extends AGLElementView implements IAddToStratomex {
 		}
 	}
 
-	private void scheduleAllOf(Collection<IScore> toCompute) {
-		ComputeForScoreJob job = new ComputeForScoreJob(toCompute, table.getData(), table.getDefaultFilter()
-				.getFilter(), this);
+	private void scheduleAllOf(Collection<IScore> toCompute, boolean removeLeadingScoreColumns) {
+		ComputeForScoreJob job = new ComputeForScoreJob(toCompute, table.getData(),
+				table.getMyRanker(null).getFilter(), this, removeLeadingScoreColumns);
 		if (job.hasThingsToDo()) {
 			waiting.resetJob(job);
 			job.addJobChangeListener(jobListener);
 			getPopupLayer().show(waiting, null, 0);
 			job.schedule();
 		} else {
-			addColumns(toCompute);
+			addColumns(toCompute, removeLeadingScoreColumns);
 		}
 	}
 
@@ -308,7 +305,7 @@ public class GLTourGuideView extends AGLElementView implements IAddToStratomex {
 	private void onScoreQueryReady(ScoreQueryReadyEvent event) {
 		getPopupLayer().hide(waiting);
 		if (event.getScores() != null) {
-			addColumns(event.getScores());
+			addColumns(event.getScores(), event.isRemoveLeadingScoreColumns());
 		} else if (event.getNewQuery() != null) {
 			int offset = table.getDataSize();
 			ADataDomainQuery q = event.getNewQuery();
@@ -323,7 +320,9 @@ public class GLTourGuideView extends AGLElementView implements IAddToStratomex {
 		}
 	}
 
-	private void addColumns(Collection<IScore> scores) {
+	private void addColumns(Collection<IScore> scores, boolean removeLeadingScoreColumns) {
+		if (removeLeadingScoreColumns)
+			removeLeadingScoreColumns();
 		for (IScore s : scores) {
 			int lastLabel = findLastLabelColumn();
 			if (s instanceof MultiScore) {
@@ -340,7 +339,10 @@ public class GLTourGuideView extends AGLElementView implements IAddToStratomex {
 				ss.orderByMe();
 			}
 		}
-		updateMask();
+
+		TableBodyUI bodyUI = getTableBodyUI();
+		if (bodyUI != null)
+			bodyUI.scrollFirst(); // scroll to the top
 	}
 
 	/**
@@ -481,59 +483,8 @@ public class GLTourGuideView extends AGLElementView implements IAddToStratomex {
 		return r;
 	}
 
-	public void attachToStratomex() {
-		this.stratomex.attach();
-	}
-
-	public void detachFromStratomex() {
-		this.stratomex.detach();
-	}
-
-	public void switchToStratomex(GLStratomex stratomex) {
-		if (this.stratomex.setStratomex(stratomex))
-			repaint();
-		IPopupLayer popupLayer = getPopupLayer();
-		if (popupLayer == null)
-			return;
-		updateStratomexState();
-	}
-
-	@Override
-	public void add2Stratomex(AScoreRow r) {
-		stratomex.addToStratomex(r, getVisibleScores(r), mode);
-	}
-
-	@Override
-	public boolean canAdd2Stratomex(AScoreRow r) {
-		// FIXME
-		return true;
-		// return r.getPerspective() != null
-		// && (!stratomex.contains(r.getPerspective()) || stratomex.isTemporaryPreviewed(r.getPerspective()));
-	}
-
-	@ListenTo
-	private void onStratomexRemoveBrick(RemoveTablePerspectiveEvent event) {
-		if (!stratomex.is(event.getReceiver()))
-			return;
-		stratomex.removeBrick(event.getTablePerspective().getID());
-
-		AScoreRow selected = (AScoreRow) table.getSelectedRow();
-		if (selected != null && selected.is(event.getTablePerspective())) {
-			this.table.setSelectedRow(null);
-		}
-
-		// this.scoreQueryUI.updateAddToStratomexState();
-	}
-
-	/**
-	 * @param oldValue
-	 */
-	protected void destroy(ARankColumnModel model) {
-		// nothing to do
-	}
-
 	@ListenTo(sendToMe = true)
-	private void onAddColumn(AddScoreColumnEvent event) {
+	public void onAddColumn(AddScoreColumnEvent event) {
 		if (event.getScores().isEmpty())
 			return;
 
@@ -556,7 +507,26 @@ public class GLTourGuideView extends AGLElementView implements IAddToStratomex {
 			} else
 				toCompute.add(s);
 		}
-		scheduleAllOf(toCompute);
+		if (toCompute.isEmpty())
+			return;
+		scheduleAllOf(toCompute, event.isReplaceLeadingScoreColumns());
+	}
+
+	private void removeLeadingScoreColumns() {
+		List<ARankColumnModel> columns = this.table.getColumns();
+		boolean hasOne = false;
+		Collection<ARankColumnModel> toremove = new ArrayList<>();
+		for (ARankColumnModel col : columns) {
+			if (col instanceof ScoreRankColumnModel || col instanceof StackedRankColumnModel
+					|| col instanceof MaxCompositeRankColumnModel) {
+				hasOne = true;
+				toremove.add(col);
+			} else if (hasOne)
+				break;
+		}
+		for (ARankColumnModel col : toremove) {
+			table.remove(col);
+		}
 	}
 
 	@ListenTo(sendToMe = true)
@@ -579,23 +549,24 @@ public class GLTourGuideView extends AGLElementView implements IAddToStratomex {
 						this));
 	}
 
-	@ListenTo
-	private void onStratomexAddBricks(AddTablePerspectivesEvent event) {
-		if (!stratomex.is(event.getReceiver()))
-			return;
-		stratomex.addBricks(event.getTablePerspectives());
-		// TODO correctly repaint
-		// this.scoreQueryUI.updateAddToStratomexState();
+	public void attachToStratomex() {
+		this.stratomex.attach();
 	}
 
-	@ListenTo
-	private void onStratomexReplaceBricks(ReplaceTablePerspectiveEvent event) {
-		if (!stratomex.is(event.getViewID()))
-			return;
-		stratomex.replaceBricks(event.getOldPerspective(), event.getNewPerspective());
+	public void detachFromStratomex() {
+		this.stratomex.detach();
 	}
 
-	private static class RankTableUIConfig extends RankTableUIConfigBase {
+	public void switchToStratomex(GLStratomex stratomex) {
+		if (this.stratomex.setStratomex(stratomex))
+			repaint();
+		IPopupLayer popupLayer = getPopupLayer();
+		if (popupLayer == null)
+			return;
+		updateStratomexState();
+	}
+
+	private class RankTableUIConfig extends RankTableUIConfigBase {
 		public RankTableUIConfig() {
 			super(true, true, true);
 		}
@@ -621,6 +592,9 @@ public class GLTourGuideView extends AGLElementView implements IAddToStratomex {
 				g.drawLine(x, y, x + w, y);
 				g.drawLine(x, y + h, x + w, y + h);
 				g.decZ();
+			} else if (stratomex.isVisible((AScoreRow) row)) {
+				g.color(TourGuideRenderStyle.COLOR_STRATOMEX_ROW);
+				g.fillRect(x, y, w, h);
 			} else if (!even) {
 				g.color(RenderStyle.COLOR_BACKGROUND_EVEN);
 				g.fillRect(x, y, w, h);
@@ -631,7 +605,7 @@ public class GLTourGuideView extends AGLElementView implements IAddToStratomex {
 	private class TourGuideVis extends GLElementContainer {
 		public TourGuideVis() {
 			setLayout(new ReactiveFlowLayout(10));
-			this.add(new DataDomainQueryUI(queries, mode, modeSpecifics));
+			this.add(new DataDomainQueryUI(queries, modeSpecifics));
 			TableUI tableui = new TableUI(table, new RankTableUIConfig(), RowHeightLayouts.UNIFORM);
 			ScrollingDecorator sc = new ScrollingDecorator(tableui, new ScrollBar(true), null,
 					RenderStyle.SCROLLBAR_WIDTH);

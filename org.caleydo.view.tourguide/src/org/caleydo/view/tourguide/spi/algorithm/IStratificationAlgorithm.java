@@ -23,12 +23,15 @@ import java.util.List;
 import java.util.Set;
 
 import org.caleydo.core.id.IDType;
+import org.eclipse.core.runtime.IProgressMonitor;
 
 /**
  * @author Samuel Gratzl
  *
  */
 public interface IStratificationAlgorithm {
+
+	void init(IProgressMonitor monitor);
 
 	IDType getTargetType(IComputeElement a, IComputeElement b);
 
@@ -39,7 +42,7 @@ public interface IStratificationAlgorithm {
 	 * @param b
 	 * @return
 	 */
-	float compute(List<Set<Integer>> a, List<Set<Integer>> b);
+	float compute(List<Set<Integer>> a, List<Set<Integer>> b, IProgressMonitor monitor);
 
 	/**
 	 * returns the abbreviation of this algorithm

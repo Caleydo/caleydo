@@ -17,19 +17,22 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.stratomex.tourguide.event;
+package org.caleydo.core.view.opengl.util.text;
 
-import org.caleydo.core.event.ADirectedEvent;
+import java.util.List;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class ConfirmedCancelNewColumnEvent extends ADirectedEvent {
+public interface IWrappingTextRenderer extends ITextRenderer {
 
-	@Override
-	public boolean checkIntegrity() {
-		return true;
-	}
+	/**
+	 * @param text
+	 * @param width
+	 * @param lineHeight
+	 * @return
+	 */
+	List<String> wrap(String text, float width, float lineHeight);
 
 }

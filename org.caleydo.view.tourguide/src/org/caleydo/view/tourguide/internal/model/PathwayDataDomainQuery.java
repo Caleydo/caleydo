@@ -26,8 +26,9 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
-import org.caleydo.datadomain.pathway.data.PathwayRecordPerspective;
+import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
+import org.caleydo.datadomain.pathway.manager.PathwayManager;
 
 import com.google.common.collect.Lists;
 
@@ -65,10 +66,9 @@ public class PathwayDataDomainQuery extends ADataDomainQuery {
 
 	@Override
 	protected List<AScoreRow> getAll() {
-		PathwayDataDomain p = (PathwayDataDomain) dataDomain;
 		List<AScoreRow> r = Lists.newArrayList();
-		for (PathwayRecordPerspective per : p.getPathwayRecordPerspectives()) {
-			if (per.getPathway().getType() != type)
+		for (PathwayGraph per : PathwayManager.get().getAllItems()) {
+			if (per.getType() != type)
 				continue;
 			r.add(new PathwayPerspectiveRow(per));
 		}

@@ -17,37 +17,18 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.stratomex.tourguide.event;
+package org.caleydo.view.tourguide.internal.stratomex.event;
 
-import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.event.ADirectedEvent;
-import org.caleydo.core.util.collection.Pair;
-
-import com.google.common.base.Predicate;
+import org.caleydo.core.event.AEvent;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class SelectGroupEvent extends ADirectedEvent {
-	private final Predicate<Pair<TablePerspective, Group>> filter;
-
-	public SelectGroupEvent(Predicate<Pair<TablePerspective, Group>> filter) {
-		this.filter = filter;
-	}
-
-	/**
-	 * @return the filter, see {@link #filter}
-	 */
-	public Predicate<Pair<TablePerspective, Group>> getFilter() {
-		return filter;
-	}
-
-
+public class WizardEndedEvent extends AEvent {
 	@Override
 	public boolean checkIntegrity() {
 		return true;
 	}
-
 }
+

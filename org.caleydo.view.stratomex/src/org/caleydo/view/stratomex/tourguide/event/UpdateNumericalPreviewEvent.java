@@ -17,16 +17,32 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.internal.view.col;
+package org.caleydo.view.stratomex.tourguide.event;
 
-import org.caleydo.view.tourguide.internal.model.AScoreRow;
+import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.event.ADirectedEvent;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public interface IAddToStratomex {
-	boolean canAdd2Stratomex(AScoreRow r);
+public class UpdateNumericalPreviewEvent extends ADirectedEvent {
+	private final TablePerspective tablePerspective;
 
-	void add2Stratomex(AScoreRow r);
+	public UpdateNumericalPreviewEvent(TablePerspective tablePerspective) {
+		this.tablePerspective = tablePerspective;
+	}
+
+	/**
+	 * @return the tablePerspective, see {@link #tablePerspective}
+	 */
+	public TablePerspective getTablePerspective() {
+		return tablePerspective;
+	}
+
+
+	@Override
+	public boolean checkIntegrity() {
+		return tablePerspective != null;
+	}
 }

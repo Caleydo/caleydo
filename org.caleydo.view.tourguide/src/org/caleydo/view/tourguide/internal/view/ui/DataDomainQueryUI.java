@@ -28,7 +28,6 @@ import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
-import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.internal.model.ADataDomainQuery;
 import org.caleydo.view.tourguide.internal.model.CategoricalDataDomainQuery;
 import org.caleydo.view.tourguide.internal.model.PathwayDataDomainQuery;
@@ -39,14 +38,12 @@ import com.google.common.collect.Iterables;
 
 public class DataDomainQueryUI extends GLElementContainer implements IGLLayout, Comparator<GLElement> {
 
-	private final EDataDomainQueryMode mode;
 	private IDataDomainQueryModeSpecfics specifics;
 
-	public DataDomainQueryUI(Iterable<ADataDomainQuery> queries, EDataDomainQueryMode mode,
+	public DataDomainQueryUI(Iterable<ADataDomainQuery> queries,
 			IDataDomainQueryModeSpecfics specifics) {
 		super();
 		setLayout(this);
-		this.mode = mode;
 		this.specifics = specifics;
 
 		for (ADataDomainQuery q : queries) {

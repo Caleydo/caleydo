@@ -17,52 +17,35 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.api.state;
+package org.caleydo.view.stratomex.tourguide;
+
+import java.util.List;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.event.EventListenerManager.ListenTo;
-import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.util.collection.Pair;
-import org.caleydo.view.stratomex.tourguide.event.SelectGroupEvent;
-import org.caleydo.view.stratomex.tourguide.event.SelectGroupReplyEvent;
+import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
+import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormRenderer;
+import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
 
 import com.google.common.base.Predicate;
 
 /**
+ * view of stratomex to the {@link AAddWizardElement}
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
-public abstract class ASelectGroupState extends ASelectTransition {
-	private Object receiver;
+public interface IStratomexAdapter {
+	void replaceTemplate(TablePerspective with, IBrickConfigurer configurer);
 
-	public ASelectGroupState(IState target, Object receiver) {
-		super(target);
-		this.receiver = receiver;
-	}
+	void replaceTemplate(ALayoutRenderer renderer);
 
-	@Override
-	protected void onEnterImpl() {
-		EventPublisher.trigger(new SelectGroupEvent(new Predicate<Pair<TablePerspective, Group>>() {
-			@Override
-			public boolean apply(Pair<TablePerspective, Group> pair) {
-				return applyGroupFilter(pair);
-			}
-		}).to(receiver).from(this));
-	}
+	List<TablePerspective> getVisibleTablePerspectives();
 
-	protected abstract boolean applyGroupFilter(Pair<TablePerspective, Group> pair);
+	void selectStratification(Predicate<TablePerspective> filter);
 
-	@ListenTo(sendToMe = true)
-	private void onEvent(SelectGroupReplyEvent event) {
-		handleSelection(event.getTablePerspective(), event.getGroup());
+	void selectGroup(Predicate<Pair<TablePerspective, Group>> filter);
 
-		switchToTarget();
-	}
-
-	/**
-	 * @param tablePerspective
-	 * @param group
-	 */
-	protected abstract void handleSelection(TablePerspective tablePerspective, Group group);
+	MultiFormRenderer createPreviewRenderer(TablePerspective tablePerspective);
 }

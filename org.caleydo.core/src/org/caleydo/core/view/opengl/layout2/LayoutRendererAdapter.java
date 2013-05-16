@@ -16,6 +16,7 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
+import org.caleydo.core.view.opengl.util.text.CompositeTextRenderer;
 import org.caleydo.data.loader.ResourceLocators.IResourceLocator;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -61,7 +62,7 @@ public final class LayoutRendererAdapter extends ALayoutRenderer implements IGLE
 		this.eventListeners = EventListenerManagers.createQueued();
 		this.eventSpace = eventSpace;
 
-		this.local = new GLContextLocal(view.getTextRenderer(), view.getTextureManager(), locator);
+		this.local = new GLContextLocal(new CompositeTextRenderer(12, 14, 20), view.getTextureManager(), locator);
 
 		this.root.setParent(this);
 		this.root.init(this);

@@ -19,6 +19,8 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.internal;
 
+import java.awt.Color;
+
 import org.caleydo.core.util.color.Colors;
 import org.caleydo.core.util.color.IColor;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -32,9 +34,10 @@ public class TourGuideRenderStyle extends GeneralRenderStyle {
 
 	private static final String ICON_PREFIX = "resources/icons/view/tourguide/";
 
-	public static final IColor STRATOMEX_TEMP_COLUMN = Colors.YELLOW;
-	public static final IColor STRATOMEX_TEMP_GROUP = Colors.YELLOW;
 	public static final IColor STRATOMEX_SELECTED_ELEMENTS = Colors.YELLOW;
+	public static final Color STRATOMEX_FOUND_GROUP = Color.BLUE;
+
+	public static final Color COLOR_STRATOMEX_ROW = new Color(180, 180, 220);
 
 	public static final String ICON_FILTER = ICON_PREFIX + "filter.png";
 	public static final String ICON_FILTER_DISABLED = ICON_PREFIX + "filter_disabled.png";

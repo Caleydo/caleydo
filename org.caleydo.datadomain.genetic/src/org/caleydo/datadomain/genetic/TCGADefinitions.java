@@ -19,6 +19,9 @@
  *******************************************************************************/
 package org.caleydo.datadomain.genetic;
 
+import java.util.Arrays;
+import java.util.regex.Pattern;
+
 import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.io.IDTypeParsingRules;
 
@@ -45,7 +48,7 @@ public class TCGADefinitions {
 	public static final String[] TCGA_REPLACING_EXPRESSIONS = { "\\.", "\\_" };
 	public static final String TCGA_REPLACEMENT_STRING = "-";
 
-	public static IDSpecification createIDSpecification(boolean isDefault) {
+	public static IDSpecification createSampleIDSpecification(boolean isDefault) {
 		IDTypeParsingRules rule = new IDTypeParsingRules();
 		rule.setSubStringExpression(TCGA_ID_SUBSTRING_REGEX);
 		rule.setReplacementExpression(TCGA_REPLACEMENT_STRING, TCGA_REPLACING_EXPRESSIONS);
@@ -55,5 +58,21 @@ public class TCGADefinitions {
 		IDSpecification id = new IDSpecification("TCGA_SAMPLE", "TCGA_SAMPLE");
 		id.setIdTypeParsingRules(rule);
 		return id;
+	}
+
+	public static IDSpecification createGeneIDSpecificiation() {
+		IDTypeParsingRules rule = new IDTypeParsingRules();
+		rule.setSubStringExpression(Pattern.quote("|")); // using the first element before the | separator
+		rule.setDefault(false);
+
+		IDSpecification geneIDSpecification = new IDSpecification();
+		geneIDSpecification.setIDTypeGene(true);
+		geneIDSpecification.setIdType("GENE_SYMBOL");
+		geneIDSpecification.setIdTypeParsingRules(rule);
+		return geneIDSpecification;
+	}
+
+	public static void main(String[] args) {
+		System.out.println(Arrays.toString("PITX2|5308".split(Pattern.quote("|"))));
 	}
 }

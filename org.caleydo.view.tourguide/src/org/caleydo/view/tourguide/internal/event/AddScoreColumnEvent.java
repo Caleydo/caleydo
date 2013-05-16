@@ -30,11 +30,8 @@ import org.caleydo.view.tourguide.spi.score.IScore;
  *
  */
 public class AddScoreColumnEvent extends ADirectedEvent {
-	private Collection<IScore> scores;
-
-	public AddScoreColumnEvent() {
-
-	}
+	private final Collection<IScore> scores;
+	private boolean replaceLeadingScoreColumns = false;
 
 	public AddScoreColumnEvent(Collection<IScore> scores) {
 		this.scores = scores;
@@ -42,6 +39,22 @@ public class AddScoreColumnEvent extends ADirectedEvent {
 
 	public AddScoreColumnEvent(IScore... scores) {
 		this(Arrays.asList(scores));
+	}
+
+	/**
+	 * @param replaceLeadingScoreColumns
+	 *            setter, see {@link replaceLeadingScoreColumns}
+	 */
+	public AddScoreColumnEvent setReplaceLeadingScoreColumns(boolean replaceLeadingScoreColumns) {
+		this.replaceLeadingScoreColumns = replaceLeadingScoreColumns;
+		return this;
+	}
+
+	/**
+	 * @return the replaceLeadingScoreColumns, see {@link #replaceLeadingScoreColumns}
+	 */
+	public boolean isReplaceLeadingScoreColumns() {
+		return replaceLeadingScoreColumns;
 	}
 
 	public Collection<IScore> getScores() {

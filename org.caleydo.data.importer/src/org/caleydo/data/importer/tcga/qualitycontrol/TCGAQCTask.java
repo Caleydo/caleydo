@@ -55,7 +55,6 @@ public class TCGAQCTask extends ATCGATask {
 	@Override
 	public JsonElement compute() {
 		String jnlpOutputFolder = settings.getJNLPOutputDirectory();
-		String jnlpFileName = dataSetType + "_" + tumor + ".jnlp";
 
 		String projectOutputPath = settings.getDataDirectory(dataSetType.name()) + dataSetType + "_" + tumor
 				+ ".cal";
@@ -81,7 +80,8 @@ public class TCGAQCTask extends ATCGATask {
 		String projectRemoteOutputURL = settings.getTcgaServerURL() + dataSetType + "/" + dataSetType + "_" + tumor
 				+ ".cal";
 
-		JsonElement report = generateTumorReportLine(dataDomains, tumor, jnlpFileName, projectRemoteOutputURL);
+		String jnlpFileName = dataSetType + "_" + tumor + ".jnlp";
+		JsonElement report = generateTumorReportLine(dataDomains, projectRemoteOutputURL);
 
 		generateJNLP(new File(jnlpOutputFolder, jnlpFileName), projectRemoteOutputURL);
 
@@ -91,9 +91,9 @@ public class TCGAQCTask extends ATCGATask {
 	}
 
 	protected JsonElement generateTumorReportLine(Collection<ATableBasedDataDomain> dataDomains,
-			TumorType tumor, String jnlpFileName, String projectOutputPath) {
+			String projectOutputPath) {
 
-		String jnlpURL = settings.getJNLPURL(jnlpFileName);
+		String jnlpURL = settings.getJNLPURL(dataSetType.toString(), tumor);
 
 		JsonObject report = new JsonObject();
 		report.addProperty("tumorAbbreviation", tumor.getName());

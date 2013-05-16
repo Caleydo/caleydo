@@ -106,7 +106,6 @@ import org.caleydo.view.stratomex.event.OpenCreatePathwayGroupDialogEvent;
 import org.caleydo.view.stratomex.event.OpenCreatePathwaySmallMultiplesGroupDialogEvent;
 import org.caleydo.view.stratomex.event.RenameEvent;
 import org.caleydo.view.stratomex.listener.ExportBrickDataEventListener;
-import org.caleydo.view.stratomex.listener.HighlightBrickEventListener;
 import org.caleydo.view.stratomex.listener.OpenCreateKaplanMeierSmallMultiplesGroupDialogListener;
 import org.caleydo.view.stratomex.listener.OpenCreatePathwayGroupDialogListener;
 import org.caleydo.view.stratomex.listener.OpenCreatePathwaySmallMultiplesGroupDialogListener;
@@ -270,7 +269,6 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 	private IBrickConfigurer brickConfigurer;
 
 	private final Collection<IContextMenuBrickFactory> contextMenuFactories;
-	private HighlightBrickEventListener highlightListener;
 
 	public GLBrick(IGLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
 		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
@@ -439,6 +437,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 		gl.glPushName(getPickingManager().getPickingID(getID(), EPickingType.BRICK.name(), getID()));
 		gl.glColor4f(1.0f, 0.0f, 0.0f, 0.5f);
 		gl.glTranslatef(0, 0, 0.1f);
+
 		gl.glBegin(GL2.GL_QUADS);
 
 		float zpos = 0f;
@@ -448,6 +447,8 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 		gl.glVertex3f(wrappingLayout.getSizeScaledX(), wrappingLayout.getSizeScaledY(), zpos);
 		gl.glVertex3f(0, wrappingLayout.getSizeScaledY(), zpos);
 		gl.glEnd();
+
+
 		gl.glPopName();
 		gl.glPopName();
 
@@ -457,6 +458,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 		gl.glCallList(baseDisplayListIndex);
 
+		gl.glTranslatef(0, 0, -0.1f);
 	}
 
 	@Override
@@ -803,12 +805,6 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 			eventPublisher.removeListener(exportBrickDataEventListener);
 			exportBrickDataEventListener = null;
 		}
-
-		if (highlightListener != null) {
-			eventPublisher.removeListener(highlightListener);
-			highlightListener = null;
-		}
-
 	}
 
 	private void registerPickingListeners() {

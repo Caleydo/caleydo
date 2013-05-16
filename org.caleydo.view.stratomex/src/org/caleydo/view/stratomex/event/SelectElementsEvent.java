@@ -20,39 +20,25 @@
 package org.caleydo.view.stratomex.event;
 
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.event.AEvent;
+import org.caleydo.core.event.ADirectedEvent;
 import org.caleydo.core.id.IDType;
-import org.caleydo.view.stratomex.GLStratomex;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class SelectElementsEvent extends AEvent {
-
-	private GLStratomex receiver;
+public class SelectElementsEvent extends ADirectedEvent {
 	private Iterable<Integer> ids;
 	private IDType idType;
 	private SelectionType selectionType;
 
 
-	public SelectElementsEvent() {
-
-	}
-
-	public SelectElementsEvent(Iterable<Integer> ids, IDType idType, SelectionType selectionType,
-			GLStratomex receiver, Object sender) {
-		this.setSender(sender);
-		this.receiver = receiver;
+	public SelectElementsEvent(Iterable<Integer> ids, IDType idType, SelectionType selectionType) {
 		this.ids = ids;
 		this.selectionType = selectionType;
 		this.idType = idType;
 	}
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.caleydo.core.event.AEvent#checkIntegrity()
-	 */
+
 	@Override
 	public boolean checkIntegrity() {
 		return ids != null && idType != null && selectionType != null;
@@ -70,12 +56,6 @@ public class SelectElementsEvent extends AEvent {
 	 */
 	public IDType getIdType() {
 		return idType;
-	}
-	/**
-	 * @return the receiver, see {@link #receiver}
-	 */
-	public GLStratomex getReceiver() {
-		return receiver;
 	}
 
 	/**

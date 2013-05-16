@@ -20,19 +20,13 @@
 package org.caleydo.view.tourguide.internal.stratomex;
 
 import static org.caleydo.view.tourguide.internal.TourGuideRenderStyle.STRATOMEX_SELECTED_ELEMENTS;
-import static org.caleydo.view.tourguide.internal.TourGuideRenderStyle.STRATOMEX_TEMP_COLUMN;
-import static org.caleydo.view.tourguide.internal.TourGuideRenderStyle.STRATOMEX_TEMP_GROUP;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
-import java.util.Set;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.DataDomainOracle;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
@@ -45,39 +39,25 @@ import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventPublisher;
-import org.caleydo.core.event.data.ReplaceTablePerspectiveEvent;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.ITablePerspectiveBasedView;
-import org.caleydo.core.view.listener.RemoveTablePerspectiveEvent;
-import org.caleydo.datadomain.pathway.PathwayDataDomain;
-import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
-import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.view.stratomex.GLStratomex;
-import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
-import org.caleydo.view.stratomex.brick.configurer.PathwayDataConfigurer;
-import org.caleydo.view.stratomex.event.AddGroupsToStratomexEvent;
-import org.caleydo.view.stratomex.event.AddKaplanMaiertoStratomexEvent;
-import org.caleydo.view.stratomex.event.HighlightBrickEvent;
-import org.caleydo.view.stratomex.event.ReplaceKaplanMaierPerspectiveEvent;
 import org.caleydo.view.stratomex.event.SelectElementsEvent;
-import org.caleydo.view.stratomex.tourguide.event.ConfirmedCancelNewColumnEvent;
-import org.caleydo.view.stratomex.tourguide.event.UpdatePreviewEvent;
+import org.caleydo.view.stratomex.tourguide.event.HighlightBrickEvent;
+import org.caleydo.view.stratomex.tourguide.event.UpdatePathwayPreviewEvent;
+import org.caleydo.view.stratomex.tourguide.event.UpdateStratificationPreviewEvent;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
-import org.caleydo.view.tourguide.impl.GeneSetEnrichmentScoreFactory;
-import org.caleydo.view.tourguide.impl.GeneSetEnrichmentScoreFactory.GeneSetScore;
-import org.caleydo.view.tourguide.impl.LogRankMetricFactory.LogRankMetric;
-import org.caleydo.view.tourguide.impl.LogRankMetricFactory.LogRankPValue;
+import org.caleydo.view.tourguide.internal.TourGuideRenderStyle;
 import org.caleydo.view.tourguide.internal.model.AScoreRow;
 import org.caleydo.view.tourguide.internal.model.ITablePerspectiveScoreRow;
 import org.caleydo.view.tourguide.internal.model.MaxGroupCombiner;
 import org.caleydo.view.tourguide.internal.model.PathwayPerspectiveRow;
-import org.caleydo.view.tourguide.spi.compute.IComputedStratificationScore;
+import org.caleydo.view.tourguide.internal.stratomex.event.WizardEndedEvent;
 import org.caleydo.view.tourguide.spi.score.IScore;
 
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 
 /**
  * facade / adapter to {@link GLStratomex} to hide the communication details
@@ -88,16 +68,13 @@ import com.google.common.collect.Sets;
 public class StratomexAdapter {
 	private GLStratomex receiver;
 
+	/**
+	 * events that has to be triggered one frame later
+	 */
 	private final List<AEvent> delayedEvents = new ArrayList<>();
-
-	private List<TablePerspective> brickColumns = new ArrayList<>();
 
 	private TablePerspective currentPreview = null;
 	private Group currentPreviewGroup = null;
-
-	private List<TablePerspective> currentDependentPreviews = Lists.newArrayList();
-
-	private boolean temporaryPreview = false;
 
 	private final SelectionType previewSelectionType;
 
@@ -129,15 +106,16 @@ public class StratomexAdapter {
 			removePreview();
 			clearHighlightRows(bak.getRecordPerspective().getIdType(), bak.getDataDomain());
 		}
-		this.brickColumns.clear();
 	}
 
 	@ListenTo
-	private void on(ConfirmedCancelNewColumnEvent event) {
+	private void on(WizardEndedEvent event) {
 		// remove all temporary stuff
+		if (currentPreview != null) {
+			clearHighlightRows(currentPreview.getRecordPerspective().getIdType(), currentPreview.getDataDomain());
+		}
 		this.currentPreview = null;
 		this.currentPreviewGroup = null;
-		this.currentDependentPreviews.clear();
 	}
 
 	/**
@@ -151,9 +129,6 @@ public class StratomexAdapter {
 			return false;
 		this.cleanupPreview();
 		this.receiver = receiver;
-		if (this.receiver != null) {
-			this.brickColumns.addAll(this.receiver.getTablePerspectives());
-		}
 		return true;
 	}
 
@@ -170,50 +145,29 @@ public class StratomexAdapter {
 	}
 
 	/**
+	 * whether stratomex currently showing the stratification
+	 * 
 	 * @param stratification
 	 * @return
 	 */
 	public boolean contains(TablePerspective stratification) {
-		for (TablePerspective t : this.brickColumns)
+		if (!hasOne())
+			return false;
+
+		for (TablePerspective t : receiver.getTablePerspectives())
 			if (t.equals(stratification))
 				return true;
 		return false;
 	}
 
-	/**
-	 * returns whether the given {@link TablePerspective} is the currently temporary preview of Stratomex
-	 *
-	 * @param strat
-	 * @return
-	 */
-	public boolean isTemporaryPreviewed(TablePerspective strat) {
-		return temporaryPreview && currentPreview != null && currentPreview.equals(strat);
-	}
-
-	public void removeBrick(int tablePerspectiveID) {
-		for (Iterator<TablePerspective> it = brickColumns.iterator(); it.hasNext();) {
-			if (it.next().getID() == tablePerspectiveID) {
-				it.remove();
-				break;
-			}
+	public boolean isVisible(AScoreRow row) {
+		if (!hasOne())
+			return false;
+		for (TablePerspective col : receiver.getTablePerspectives()) {
+			if (row.is(col))
+				return true;
 		}
-		if (currentPreview != null && currentPreview.getID() == tablePerspectiveID) {
-			currentPreview = null;
-			currentPreviewGroup = null;
-		}
-	}
-
-	public void addBricks(Collection<TablePerspective> tablePerspectives) {
-		this.brickColumns.addAll(tablePerspectives);
-	}
-
-	public void replaceBricks(TablePerspective oldPerspective, TablePerspective newPerspective) {
-		for (ListIterator<TablePerspective> it = brickColumns.listIterator(); it.hasNext();) {
-			if (it.next().equals(oldPerspective)) {
-				it.set(newPerspective);
-				break;
-			}
-		}
+		return false;
 	}
 
 	/**
@@ -232,164 +186,53 @@ public class StratomexAdapter {
 
 		switch (mode) {
 		case PATHWAYS:
-			updatePathwayPreview(old, (PathwayPerspectiveRow) new_, visibleColumns);
+			updatePathway((PathwayPerspectiveRow) old, (PathwayPerspectiveRow) new_, visibleColumns, sortedBy);
+			// FIXME
 			break;
 		case STRATIFICATIONS:
 			updateTableBased((ITablePerspectiveScoreRow) old, (ITablePerspectiveScoreRow) new_, visibleColumns,
 					sortedBy);
 			break;
-		}
-
-	}
-
-	/**
-	 * tries to find a {@link GeneSetScore} for having an underlying table perspective as reference
-	 *
-	 * @param scores
-	 * @return
-	 */
-	private static Pair<Perspective, Group> findReferencingGSEATablePerspective(Collection<IScore> scores) {
-		for (IScore s : (scores == null ? Collections.<IScore> emptyList() : scores)) {
-			if (s instanceof IComputedStratificationScore) {
-				Pair<Perspective, Group> p = GeneSetEnrichmentScoreFactory
-						.resolve(((IComputedStratificationScore) s).getAlgorithm());
-				if (p != null) {
-					return p;
-				}
-			}
-		}
-		return null;
-	}
-
-	private static List<Integer> findReferencingClinicialVariables(Collection<IScore> scores) {
-		Set<Integer> r = Sets.newLinkedHashSet();
-		for (IScore s : (scores == null ? Collections.<IScore> emptyList() : scores)) {
-			if (s instanceof LogRankMetric) {
-				r.add(((LogRankMetric) s).getClinicalVariable());
-			} else if (s instanceof LogRankPValue)
-				r.add(((LogRankPValue) s).getClinicalVariable());
-		}
-		return Lists.newArrayList(r);
-	}
-
-	private void updatePathwayPreview(AScoreRow old, PathwayPerspectiveRow new_, Collection<IScore> visibleColumns) {
-		PathwayGraph pathway = new_ == null ? null : new_.getPathway();
-
-		Pair<Perspective, Group> undderlyingPair = findReferencingGSEATablePerspective(visibleColumns);
-		// no good column found remove old and return
-		if (undderlyingPair == null) {
-			if (old != null) {
-				removePreview();
-			}
-			return;
-		}
-
-		Perspective underlying = undderlyingPair.getFirst();
-		Group underlyingGroup = undderlyingPair.getSecond();
-
-		// handle stratification changes
-		if (currentPreview != null && pathway != null) { // update
-			TablePerspective strat = asPerspective(underlying, pathway);
-			if (currentPreview.equals(strat)) {
-				// nothing todo
-			} else { // not same stratification
-				if (!temporaryPreview || contains(strat)
-						|| !currentPreview.getDataDomain().equals(strat.getDataDomain())) {
-					// if different data domains create new one, see #1017
-					removePreview();
-					createPreview(strat, underlyingGroup, new PathwayDataConfigurer());
-				} else {
-					updateBrickColumn(currentPreview, strat);
-					this.currentPreview = strat;
-					hightlightBrick(currentPreview, underlyingGroup);
-					currentPreviewGroup = underlyingGroup;
-				}
-			}
-		} else if (currentPreview != null) { // last
-			removePreview();
-		} else if (pathway != null) { // first
-			createPreview(asPerspective(underlying, pathway), underlyingGroup, new PathwayDataConfigurer());
+		case NUMERICAL:
+			// FIXME
+			break;
 		}
 	}
 
-	/**
-	 * creates a PathwayTablePerspective out of the given {@link PathwayGraph} using the underlying
-	 * {@link TablePerspective}
-	 *
-	 * @param underlying
-	 * @param pathway
-	 * @return
-	 */
-	private TablePerspective asPerspective(Perspective record, PathwayGraph pathway) {
-		PathwayDataDomain pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get().getDataDomainByType(
-				PathwayDataDomain.DATA_DOMAIN_TYPE);
-
-		ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) record.getDataDomain();
-		Perspective dimension = dataDomain.getTable().getDefaultDimensionPerspective();
-		for (PathwayTablePerspective p : pathwayDataDomain.getTablePerspectives()) {
-			if (p.getPathway().equals(pathway) && p.getRecordPerspective().equals(record)
-					&& p.getDimensionPerspective().equals(dimension))
-				return p;
+	private void updatePathway(PathwayPerspectiveRow old, PathwayPerspectiveRow new_,
+			Collection<IScore> visibleColumns, IScore sortedBy) {
+		if (new_ != null) {
+			UpdatePathwayPreviewEvent event = new UpdatePathwayPreviewEvent(new_.getPathway());
+			event.to(receiver.getTourguide());
+			triggerEvent(event);
 		}
-		// not found create new one
-		PathwayTablePerspective pathwayDimensionGroup = new PathwayTablePerspective(dataDomain,
- pathwayDataDomain,
-				record, dimension, pathway);
-
-		pathwayDimensionGroup.setPrivate(true);
-		pathwayDataDomain.addTablePerspective(pathwayDimensionGroup);
-
-		return pathwayDimensionGroup;
 	}
 
 	private void updateTableBased(ITablePerspectiveScoreRow old, ITablePerspectiveScoreRow new_,
 			Collection<IScore> visibleColumns, IScore sortedBy) {
 		TablePerspective strat = new_ == null ? null : new_.asTablePerspective();
-		Group group = new_ == null ? null : MaxGroupCombiner.getMax(old, sortedBy);
-
-		List<Integer> clinicialVariables = findReferencingClinicialVariables(visibleColumns);
+		Group group = new_ == null ? null : MaxGroupCombiner.getMax(new_, sortedBy);
 
 		// handle stratification changes
 		if (currentPreview != null && strat != null) { // update
 			if (currentPreview.equals(strat)) {
 				if (!Objects.equal(currentPreviewGroup, group)) {
 					unhighlightBrick(currentPreview, currentPreviewGroup);
-					hightlightBrick(currentPreview, group);
+					hightlightBrick(currentPreview, group, true);
 					currentPreviewGroup = group;
 				}
 			} else { // not same stratification
-				if (!temporaryPreview || contains(strat)
-						|| !currentPreview.getDataDomain().equals(strat.getDataDomain())) {
-					// if different data domains create new one, see #1017
-					removePreview();
-					createPreview(strat, group);
-					createDependent(strat, clinicialVariables);
+				if (contains(strat)) { // part of stratomex
+					unhighlightBrick(currentPreview, currentPreviewGroup);
+					hightlightBrick(strat, group, true);
 				} else {
-					updateBrickColumn(currentPreview, strat);
-					int update = Math.min(clinicialVariables.size(), currentDependentPreviews.size());
-					for (int i = 0; i < update; ++i) {
-						TablePerspective to = asPerspective(strat, clinicialVariables.get(i));
-						updateKaplanMaierBrickColumn(currentDependentPreviews.get(i), to, strat);
-						currentDependentPreviews.set(i, to);
-					}
-					List<TablePerspective> toremove = currentDependentPreviews.subList(update,
-							currentDependentPreviews.size());
-					for (TablePerspective dependent : toremove)
-						removeBrickColumn(dependent);
-					toremove.clear();
-
-					createDependent(strat, clinicialVariables.subList(update, clinicialVariables.size()));
-
-					this.currentPreview = strat;
-					hightlightBrick(currentPreview, group);
-					currentPreviewGroup = group;
+					updatePreview(strat, group);
 				}
 			}
 		} else if (currentPreview != null) { // last
 			removePreview();
 		} else if (strat != null) { // first
-			createPreview(strat, group);
-			createDependent(strat, clinicialVariables);
+			updatePreview(strat, group);
 		}
 
 		// highlight connection band
@@ -400,55 +243,26 @@ public class StratomexAdapter {
 		}
 	}
 
-	private void createDependent(TablePerspective strat, Collection<Integer> clinicialVariables) {
-		for (Integer clinicalVariable : clinicialVariables) {
-			TablePerspective d = asPerspective(strat, clinicalVariable);
-			currentDependentPreviews.add(d);
-			createKaplanMaierBrickColumn(d, strat);
-		}
-	}
-
-	private void createPreview(TablePerspective strat, Group group) {
-		createPreview(strat, group, null);
-	}
-
-	private void createPreview(TablePerspective strat, Group group, IBrickConfigurer config) {
-		this.temporaryPreview = !contains(strat);
-		if (this.temporaryPreview) // create a new one if it is temporary
-			createBrickColumn(strat, config);
+	private void updatePreview(TablePerspective strat, Group group) {
 		this.currentPreview = strat;
+		UpdateStratificationPreviewEvent event = new UpdateStratificationPreviewEvent(strat);
+		event.to(receiver.getTourguide());
+		triggerEvent(event);
+
 		if (group != null) {
-			hightlightBrick(strat, group);
-			currentPreviewGroup = group;
-		} else
-			hightlightBrickColumn(strat);
+			hightlightBrick(strat, group, false);
+		}
+		currentPreviewGroup = group;
 	}
 
 	private void removePreview() {
-		if (temporaryPreview) // if it is just temporary remove it
-			removeBrickColumn(currentPreview);
-		else {
-			// otherwise just lowlight it
-			if (currentPreviewGroup != null)
-				unhighlightBrick(currentPreview, currentPreviewGroup);
-			else
-				unhighlightBrickColumn(currentPreview);
-		}
 		this.currentPreview = null;
 		this.currentPreviewGroup = null;
-
-		cleanupDependentPreviews();
-	}
-
-	private void cleanupDependentPreviews() {
-		for (TablePerspective dependent : currentDependentPreviews)
-			removeBrickColumn(dependent);
-		currentDependentPreviews.clear();
 	}
 
 	private void clearHighlightRows(IDType idType, IDataDomain dataDomain) {
-		AEvent event = new SelectElementsEvent(Collections.<Integer> emptyList(), idType,
-				this.previewSelectionType, receiver, this);
+		AEvent event = new SelectElementsEvent(Collections.<Integer> emptyList(), idType, this.previewSelectionType)
+				.to(receiver);
 		event.setEventSpace(dataDomain.getDataDomainID());
 		triggerEvent(event);
 	}
@@ -456,114 +270,26 @@ public class StratomexAdapter {
 	private void hightlightRows(ITablePerspectiveScoreRow new_, Collection<IScore> visibleColumns, Group new_g) {
 		Pair<Collection<Integer>, IDType> intersection = new_.getIntersection(visibleColumns, new_g);
 		AEvent event = new SelectElementsEvent(intersection.getFirst(), intersection.getSecond(),
-				this.previewSelectionType, receiver, this);
+				this.previewSelectionType).to(receiver);
 		event.setEventSpace(new_.getDataDomain().getDataDomainID());
 		triggerEvent(event);
-	}
-
-	/**
-	 * persists or and table perspective of the given
-	 *
-	 * @param elem
-	 * @param visibleColumns
-	 * @param mode
-	 */
-	public void addToStratomex(AScoreRow elem, Collection<IScore> visibleColumns, EDataDomainQueryMode mode) {
-		if (!hasOne())
-			return;
-		switch (mode) {
-		case PATHWAYS:
-			addToStratomexGeneSet((PathwayPerspectiveRow) elem, visibleColumns);
-			break;
-		case STRATIFICATIONS:
-			TablePerspective strat = ((ITablePerspectiveScoreRow) elem).asTablePerspective();
-			// TODO
-			if (strat == null)
-				return;
-			if (strat.equals(currentPreview)) { // its the preview
-				temporaryPreview = false; // definitely explicit
-				removePreview();
-			} else if (!contains(strat)) { // add it not existing
-				createBrickColumn(strat, null);
-			}
-		}
-	}
-
-	private void addToStratomexGeneSet(PathwayPerspectiveRow elem, Collection<IScore> visibleColumns) {
-		Pair<Perspective, Group> undderlyingPair = findReferencingGSEATablePerspective(visibleColumns);
-		if (undderlyingPair == null)
-			return; // can't add no reference given
-
-		PathwayGraph pathway = elem.getPathway();
-
-		TablePerspective strat = asPerspective(undderlyingPair.getFirst(), pathway);
-		if (strat.equals(currentPreview)) { // its the preview
-			temporaryPreview = false; // definitely explicit
-			removePreview();
-		} else if (!contains(strat)) { // add it not existing
-			createBrickColumn(strat, new PathwayDataConfigurer());
-		}
-	}
-
-	private void createBrickColumn(TablePerspective strat, IBrickConfigurer config) {
-		if (config != null) {
-			AddGroupsToStratomexEvent event = new AddGroupsToStratomexEvent(strat);
-			event.setDataConfigurer(config);
-			event.setReceiver(receiver);
-			triggerEvent(event);
-		} else {
-			UpdatePreviewEvent event = new UpdatePreviewEvent(strat, null);
-			event.to(receiver.getTourguide());
-			triggerEvent(event);
-		}
-	}
-
-	private void createKaplanMaierBrickColumn(TablePerspective strat, TablePerspective underlying) {
-		triggerDelayedEvent(new AddKaplanMaiertoStratomexEvent(strat, underlying, receiver));
-	}
-
-	private void updateBrickColumn(TablePerspective from, TablePerspective to) {
-		triggerEvent(new ReplaceTablePerspectiveEvent(receiver.getID(), to, from));
-	}
-
-	private void updateKaplanMaierBrickColumn(TablePerspective from, TablePerspective to, TablePerspective underlying) {
-		if (from.getRecordPerspective().equals(to.getRecordPerspective())
-				&& from.getDimensionPerspective().equals(to.getDimensionPerspective()))
-			triggerEvent(new ReplaceKaplanMaierPerspectiveEvent(receiver.getID(), to, from, underlying));
-		else {
-			triggerEvent(new RemoveTablePerspectiveEvent(from, receiver));
-			triggerDelayedEvent(new AddKaplanMaiertoStratomexEvent(to, underlying, receiver));
-		}
-	}
-
-	private void removeBrickColumn(TablePerspective strat) {
-		if (strat == null)
-			return;
-		triggerEvent(new RemoveTablePerspectiveEvent(strat, receiver));
-	}
-
-	private void unhighlightBrickColumn(TablePerspective strat) {
-		if (strat == null)
-			return;
-		triggerEvent(new HighlightBrickEvent(strat, receiver, this, null));
 	}
 
 	private void unhighlightBrick(TablePerspective strat, Group g) {
 		if (g == null)
 			return;
-		triggerDelayedEvent(new HighlightBrickEvent(strat, g, receiver, this, null));
+		triggerEvent(new HighlightBrickEvent(strat, g, null).to(receiver.getTourguide()));
 	}
 
-	private void hightlightBrickColumn(TablePerspective strat) {
-		if (strat == null)
-			return;
-		triggerEvent(new HighlightBrickEvent(strat, receiver, this, STRATOMEX_TEMP_COLUMN));
-	}
-
-	private void hightlightBrick(TablePerspective strat, Group g) {
+	private void hightlightBrick(TablePerspective strat, Group g, boolean now) {
 		if (g == null)
 			return;
-		triggerDelayedEvent(new HighlightBrickEvent(strat, g, receiver, this, STRATOMEX_TEMP_GROUP));
+		AEvent event = new HighlightBrickEvent(strat, g, TourGuideRenderStyle.STRATOMEX_FOUND_GROUP).to(receiver
+				.getTourguide());
+		if (now)
+			triggerEvent(event);
+		else
+			triggerDelayedEvent(event);
 	}
 
 	/**
@@ -646,9 +372,5 @@ public class StratomexAdapter {
 	 */
 	public boolean is(Integer receiverID) {
 		return this.receiver != null && this.receiver.getID() == receiverID;
-	}
-
-	public GLStratomex get() {
-		return this.receiver;
 	}
 }

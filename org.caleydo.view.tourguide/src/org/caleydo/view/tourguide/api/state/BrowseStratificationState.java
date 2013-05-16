@@ -17,42 +17,29 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.stratomex.tourguide.event;
+package org.caleydo.view.tourguide.api.state;
 
+import org.caleydo.core.data.datadomain.DataDomainOracle;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.event.ADirectedEvent;
+import org.caleydo.view.stratomex.brick.configurer.CategoricalDataConfigurer;
+import org.caleydo.view.stratomex.tourguide.event.UpdateStratificationPreviewEvent;
+import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class UpdatePreviewEvent extends ADirectedEvent {
-	private final TablePerspective tablePerspective;
-	private final Group group;
-
-	public UpdatePreviewEvent(TablePerspective tablePerspective, Group group) {
-		super();
-		this.tablePerspective = tablePerspective;
-		this.group = group;
-	}
-
-	/**
-	 * @return the tablePerspective, see {@link #tablePerspective}
-	 */
-	public TablePerspective getTablePerspective() {
-		return tablePerspective;
-	}
-
-	/**
-	 * @return the group, see {@link #group}
-	 */
-	public Group getGroup() {
-		return group;
+public class BrowseStratificationState extends ABrowseState {
+	public BrowseStratificationState(String label) {
+		super(EDataDomainQueryMode.STRATIFICATIONS, label);
 	}
 
 	@Override
-	public boolean checkIntegrity() {
-		return tablePerspective != null;
+	public void onUpdate(UpdateStratificationPreviewEvent event, ISelectReaction adapter) {
+		TablePerspective tp = event.getTablePerspective();
+		if (DataDomainOracle.isCategoricalDataDomain(tp.getDataDomain()))
+			adapter.replaceTemplate(tp, new CategoricalDataConfigurer(tp));
+		else
+			adapter.replaceTemplate(tp, null);
 	}
 }

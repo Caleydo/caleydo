@@ -19,8 +19,10 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.internal.stratomex;
 
-import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.view.stratomex.tourguide.AAddWizardElement;
 import org.caleydo.view.stratomex.tourguide.IAddWizardElementFactory;
+import org.caleydo.view.stratomex.tourguide.IStratomexAdapter;
 
 /**
  * @author Samuel Gratzl
@@ -29,8 +31,7 @@ import org.caleydo.view.stratomex.tourguide.IAddWizardElementFactory;
 public class AddWizardElementFactory implements IAddWizardElementFactory {
 
 	@Override
-	public GLElement create(Object receiver) {
-		return new AddWizardElement(receiver);
+	public AAddWizardElement create(IStratomexAdapter adapter, AGLView view) {
+		return new AddWizardElement(view, adapter);
 	}
-
 }

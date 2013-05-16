@@ -17,29 +17,13 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.stratomex.listener;
+package org.caleydo.view.tourguide.api.state;
 
-import org.caleydo.core.event.AEvent;
-import org.caleydo.core.event.AEventListener;
-import org.caleydo.view.stratomex.GLStratomex;
-import org.caleydo.view.stratomex.event.SelectElementsEvent;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 
-/**
- * @author Samuel Gratzl
- *
- */
-public class SelectElementsListener extends AEventListener<GLStratomex> {
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.caleydo.core.event.AEventListener#handleEvent(org.caleydo.core.event.AEvent)
-	 */
-	@Override
-	public void handleEvent(AEvent event) {
-		SelectElementsEvent e = (SelectElementsEvent) event;
-		if (e.getReceiver() != handler)
-			return;
+import com.google.common.base.Predicate;
 
-		handler.selectElements(e.getIds(), e.getIdType(), e.getEventSpace(), e.getSelectionType());
-	}
+public interface ISelectStratificationState extends IState,Predicate<TablePerspective> {
+	void select(TablePerspective tablePerspective, ISelectReaction reactions);
 }
+

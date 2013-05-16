@@ -17,35 +17,23 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.stratomex.tourguide.event;
+package org.caleydo.view.tourguide.api.state;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.event.ADirectedEvent;
+import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
+import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormRenderer;
+import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
+import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
+import org.caleydo.view.tourguide.spi.score.IScore;
 
-import com.google.common.base.Predicate;
+public interface ISelectReaction {
+	void switchTo(IState target);
 
-/**
- * @author Samuel Gratzl
- *
- */
-public class SelectStratificationEvent extends ADirectedEvent {
-	private final Predicate<TablePerspective> filter;
+	void addScoreToTourGuide(EDataDomainQueryMode mode, IScore... scores);
 
-	public SelectStratificationEvent(Predicate<TablePerspective> filter) {
-		this.filter = filter;
-	}
+	void replaceTemplate(TablePerspective with, IBrickConfigurer configurer);
 
-	/**
-	 * @return the filter, see {@link #filter}
-	 */
-	public Predicate<TablePerspective> getFilter() {
-		return filter;
-	}
+	void replaceTemplate(ALayoutRenderer renderer);
 
-
-	@Override
-	public boolean checkIntegrity() {
-		return true;
-	}
-
+	MultiFormRenderer createPreview(TablePerspective tablePerspective);
 }

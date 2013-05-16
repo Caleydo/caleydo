@@ -19,40 +19,30 @@
  *******************************************************************************/
 package org.caleydo.view.stratomex.tourguide.event;
 
-import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.ADirectedEvent;
+import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class SelectGroupReplyEvent extends ADirectedEvent {
-	private final TablePerspective tablePerspective;
-	private final Group group;
+public class UpdatePathwayPreviewEvent extends ADirectedEvent {
+	private final PathwayGraph pathway;
 
-	public SelectGroupReplyEvent(TablePerspective tablePerspective, Group group) {
-		this.tablePerspective = tablePerspective;
-		this.group = group;
+	public UpdatePathwayPreviewEvent(PathwayGraph pathway) {
+		this.pathway = pathway;
 	}
 
 	/**
-	 * @return the tablePerspective, see {@link #tablePerspective}
+	 * @return the pathway, see {@link #pathway}
 	 */
-	public TablePerspective getTablePerspective() {
-		return tablePerspective;
+	public PathwayGraph getPathway() {
+		return pathway;
 	}
 
-	/**
-	 * @return the group, see {@link #group}
-	 */
-	public Group getGroup() {
-		return group;
-	}
 
 	@Override
 	public boolean checkIntegrity() {
-		return true;
+		return pathway != null;
 	}
-
 }

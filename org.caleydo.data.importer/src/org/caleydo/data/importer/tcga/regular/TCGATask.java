@@ -19,7 +19,6 @@
  *******************************************************************************/
 package org.caleydo.data.importer.tcga.regular;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -103,12 +102,7 @@ public class TCGATask extends ATCGATask {
 		String projectRemoteOutputURL = settings.getTcgaServerURL() + run + "/" + run + "_" + tumorType
 				+ ".cal";
 
-		String jnlpFileName = run + "_" + tumorType + ".jnlp";
-
-		JsonObject report = generateTumorReportLine(dataDomains, tumorType, analysisRun, jnlpFileName,
-				projectRemoteOutputURL);
-
-		generateJNLP(new File(settings.getJNLPOutputDirectory(), jnlpFileName), projectRemoteOutputURL);
+		JsonObject report = generateTumorReportLine(dataDomains, tumorType, analysisRun, projectRemoteOutputURL);
 
 		cleanUp(dataDomains);
 
@@ -118,8 +112,8 @@ public class TCGATask extends ATCGATask {
 
 
 	protected JsonObject generateTumorReportLine(Collection<ATableBasedDataDomain> dataDomains,
-			TumorType tumor, Date analysisRun,
-			String jnlpFileName, String projectOutputPath) {
+ TumorType tumor,
+			Date analysisRun, String projectOutputPath) {
 
 		AdditionalInfo addInfoMRNA = null;
 		AdditionalInfo addInfoMRNASeq = null;
@@ -131,7 +125,7 @@ public class TCGATask extends ATCGATask {
 		AdditionalInfo addInfoMethylation = null;
 		AdditionalInfo addInfoRPPA = null;
 
-		String jnlpURL = settings.getJNLPURL(jnlpFileName);
+		String jnlpURL = settings.getJNLPURL(Settings.format(analysisRun), tumor);
 
 		String firehoseReportURL = settings.getReportUrl(analysisRun, tumor);
 

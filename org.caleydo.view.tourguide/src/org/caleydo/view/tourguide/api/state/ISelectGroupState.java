@@ -20,48 +20,17 @@
 package org.caleydo.view.tourguide.api.state;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.event.EventListenerManager.ListenTo;
-import org.caleydo.core.event.EventPublisher;
-import org.caleydo.view.stratomex.tourguide.event.SelectStratificationEvent;
-import org.caleydo.view.stratomex.tourguide.event.SelectStratificationReplyEvent;
+import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.util.collection.Pair;
 
 import com.google.common.base.Predicate;
 
 /**
+ * basic state for triggering to select a group in Stratomex
+ *
  * @author Samuel Gratzl
  *
  */
-public abstract class ASelectStratificationState extends ASelectTransition {
-	private Object receiver;
-
-	public ASelectStratificationState(IState target, Object receiver) {
-		super(target);
-		this.receiver = receiver;
-	}
-
-
-	@Override
-	public void onEnterImpl() {
-		EventPublisher.trigger(new SelectStratificationEvent(new Predicate<TablePerspective>() {
-			@Override
-			public boolean apply(TablePerspective in) {
-				return applyStratificationFilter(in);
-			}
-		}).to(receiver).from(this));
-	}
-
-	protected abstract boolean applyStratificationFilter(TablePerspective tablePerspective);
-
-	@ListenTo(sendToMe = true)
-	private void onEvent(SelectStratificationReplyEvent event) {
-		handleSelection(event.getTablePerspective());
-
-		switchToTarget();
-	}
-
-	/**
-	 * @param tablePerspective
-	 * @param group
-	 */
-	protected abstract void handleSelection(TablePerspective tablePerspective);
+public interface ISelectGroupState extends IState, Predicate<Pair<TablePerspective, Group>> {
+	void select(TablePerspective tablePerspective, Group group, ISelectReaction reaction);
 }

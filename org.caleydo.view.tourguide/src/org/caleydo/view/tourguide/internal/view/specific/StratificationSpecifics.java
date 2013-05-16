@@ -34,7 +34,6 @@ import org.caleydo.view.tourguide.internal.model.AScoreRow;
 import org.caleydo.view.tourguide.internal.model.CategoricalDataDomainQuery;
 import org.caleydo.view.tourguide.internal.model.StratificationDataDomainQuery;
 import org.caleydo.view.tourguide.internal.view.col.DataDomainRankColumnModel;
-import org.caleydo.view.tourguide.internal.view.col.IAddToStratomex;
 import org.caleydo.view.tourguide.internal.view.col.SizeRankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.RankTableModel;
@@ -58,8 +57,8 @@ public class StratificationSpecifics implements IDataDomainQueryModeSpecfics {
 	}
 
 	@Override
-	public void addDefaultColumns(RankTableModel table, IAddToStratomex add2Stratomex) {
-		table.add(new DataDomainRankColumnModel(add2Stratomex).setWidth(80).setCollapsed(true));
+	public void addDefaultColumns(RankTableModel table) {
+		table.add(new DataDomainRankColumnModel().setWidth(80).setCollapsed(true));
 		final StringRankColumnModel base = new StringRankColumnModel(GLRenderers.drawText("Stratification"),
 				StringRankColumnModel.DEFAULT);
 		table.add(base);

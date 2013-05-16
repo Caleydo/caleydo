@@ -19,12 +19,12 @@
  *******************************************************************************/
 package org.caleydo.view.stratomex.tourguide;
 
-import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 
 /**
  * @author Samuel Gratzl
  *
  */
 public interface IAddWizardElementFactory {
-	GLElement create(Object receiver);
+	AAddWizardElement create(IStratomexAdapter adapter, AGLView view);
 }

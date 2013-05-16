@@ -10,7 +10,7 @@ import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.util.statistics.Statistics;
+import org.eclipse.core.runtime.IProgressMonitor;
 
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.Maps;
@@ -35,7 +35,7 @@ public class PGSEAAlgorithm extends AGSEAAlgorithm {
 	}
 
 	@Override
-	protected void init() {
+	public void init(IProgressMonitor monitor) {
 		if (!foldChanges.isEmpty())
 			return;
 
@@ -71,6 +71,10 @@ public class PGSEAAlgorithm extends AGSEAAlgorithm {
 				}
 
 			}
+			if (monitor.isCanceled()) {
+				foldChanges.clear(); // undo init
+				return;
+			}
 
 			// now some kind of correlation between the two
 			float foldChange = Statistics.foldChange((asum / acount), (bsum / bcount));
@@ -85,7 +89,7 @@ public class PGSEAAlgorithm extends AGSEAAlgorithm {
 	}
 
 	@Override
-	protected float computeImpl(Set<Integer> geneSet) {
+	protected float computeImpl(Set<Integer> geneSet, IProgressMonitor monitor) {
 		float sum = 0;
 		int m = 0;
 		for (Integer gene : geneSet) {
@@ -104,8 +108,8 @@ public class PGSEAAlgorithm extends AGSEAAlgorithm {
 	}
 
 	@Override
-	protected float computePValueImpl(Set<Integer> geneSet) {
-		float z = compute(geneSet);
+	protected float computePValueImpl(Set<Integer> geneSet, IProgressMonitor monitor) {
+		float z = compute(geneSet, monitor);
 		if (Float.isNaN(z))
 			return Float.NaN;
 		int m = Sets.intersection(foldChanges.keySet(), geneSet).size();

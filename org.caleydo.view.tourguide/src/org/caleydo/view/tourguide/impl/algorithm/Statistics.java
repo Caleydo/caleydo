@@ -17,8 +17,9 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.util.statistics;
+package org.caleydo.view.tourguide.impl.algorithm;
 
+import java.lang.ref.SoftReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -27,6 +28,9 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import org.apache.commons.math.MathException;
+import org.apache.commons.math.distribution.ChiSquaredDistribution;
+import org.apache.commons.math.distribution.ChiSquaredDistributionImpl;
 import org.caleydo.core.util.logging.Logger;
 
 import com.google.common.collect.Sets;
@@ -47,7 +51,7 @@ public final class Statistics {
 
 	/**
 	 * computes the rand index, see <a href="http://en.wikipedia.org/wiki/Rand_index">Rand_Index</a> in Wikipedia
-	 *
+	 * 
 	 * @param x
 	 *            the collection of groups of the first stratification
 	 * @param y
@@ -112,7 +116,7 @@ public final class Statistics {
 
 	/**
 	 * computes the adjusted rand, see <a href="http://en.wikipedia.org/wiki/Rand_index">Rand_Index</a> in Wikipedia
-	 *
+	 * 
 	 * @param x
 	 *            the collection of groups of the first stratification
 	 * @param y
@@ -179,27 +183,26 @@ public final class Statistics {
 	}
 
 	// cache for most used one
-	// private static transient SoftReference<ChiSquaredDistribution> chiSquare1 = null;
+	private static transient SoftReference<ChiSquaredDistribution> chiSquare1 = null;
 
 	public static double chiSquaredProbability(double x, int df) {
-
-		return weka.core.Statistics.chiSquaredProbability(x, df);
-		// ChiSquaredDistribution d;
-		// if (df == 1) {
-		// d = chiSquare1 != null ? chiSquare1.get() : null;
-		// if (d == null) {
-		// d = new ChiSquaredDistributionImpl(1);
-		// chiSquare1 = new SoftReference<>(d);
-		// }
-		// } else {
-		// d = new ChiSquaredDistributionImpl(df);
-		// }
-		// try {
-		// return 1.0 - d.cumulativeProbability(x);
-		// } catch (MathException e) {
-		// log.error("can't compute chiSquaredProbability of " + x + " with df: " + df, e);
-		// }
-		// return Float.NaN;
+		// return weka.core.Statistics.chiSquaredProbability(x, df);
+		ChiSquaredDistribution d;
+		if (df == 1) {
+			d = chiSquare1 != null ? chiSquare1.get() : null;
+			if (d == null) {
+				d = new ChiSquaredDistributionImpl(1);
+				chiSquare1 = new SoftReference<>(d);
+			}
+		} else {
+			d = new ChiSquaredDistributionImpl(df);
+		}
+		try {
+			return 1.0 - d.cumulativeProbability(x);
+		} catch (MathException e) {
+			log.error("can't compute chiSquaredProbability of " + x + " with df: " + df, e);
+		}
+		return Float.NaN;
 	}
 
 	// public static double tTest(double mu, double[] observed) {

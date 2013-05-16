@@ -19,20 +19,13 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.api.state;
 
-import java.util.List;
-
-import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.io.gui.dataimport.widget.ICallback;
-import org.caleydo.core.view.opengl.layout2.GLElement;
-
-import com.google.common.base.Predicate;
+import org.caleydo.core.util.base.ILabeled;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public interface ITransition extends Predicate<List<TablePerspective>> {
-	void onSourceEnter(ICallback<IState> onApply);
-
-	GLElement create(ICallback<IState> onApply);
+public interface ITransition extends ILabeled {
+	void apply(ICallback<IState> onApply);
 }

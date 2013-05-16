@@ -59,7 +59,7 @@ import com.jogamp.common.util.IntIntHashMap;
 public class HeatMapElement extends PickableGLElement implements
 		TablePerspectiveSelectionMixin.ITablePerspectiveMixinCallback {
 	/**
-	 *
+	 * maximum pixel size of a text
 	 */
 	private static final int MAX_TEXT_HEIGHT = 12;
 
@@ -144,6 +144,28 @@ public class HeatMapElement extends PickableGLElement implements
 	protected void init(IGLElementContext context) {
 		super.init(context);
 		onVAUpdate(mixin.getTablePerspective());
+	}
+
+	@Override
+	public <T> T getLayoutDataAs(Class<T> clazz, T default_) {
+		if (clazz.isAssignableFrom(Vec2f.class)) {
+			return clazz.cast(getMinSize());
+		}
+		return super.getLayoutDataAs(clazz, default_);
+	}
+
+	/**
+	 * @return the recommended min size of this heatmap
+	 */
+	public Vec2f getMinSize() {
+		TablePerspective tablePerspective = mixin.getTablePerspective();
+		float w = tablePerspective.getNrDimensions() * (showDimensionLabels ? 16 : 1);
+		float h = tablePerspective.getNrRecords() * (showRecordLabels ? 16 : 1);
+		if (showRecordLabels)
+			w += TEXT_WIDTH;
+		if (showDimensionLabels)
+			h += TEXT_WIDTH;
+		return new Vec2f(w,h);
 	}
 
 	private void ensureEnoughPickingIds() {
