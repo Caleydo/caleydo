@@ -40,6 +40,7 @@ import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.color.Colors;
 import org.caleydo.core.util.color.IColor;
 import org.caleydo.core.view.ViewManager;
+import org.caleydo.core.view.listener.RemoveTablePerspectiveEvent;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
@@ -335,6 +336,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 			layout.updateSubLayout();
 	}
 
+
 	private void repaint() {
 		stratomex.updateLayout();
 		stratomex.setDisplayListDirty();
@@ -416,6 +418,21 @@ public class TourguideAdapter implements IStratomexAdapter {
 
 		repaint();
 		stratomex.relayout();
+	}
+
+	/**
+	 * listens to remove events done via the remove button and check if this was our template
+	 * 
+	 * @param event
+	 */
+	@ListenTo
+	private void onRemoveTablePerspective(RemoveTablePerspectiveEvent event) {
+		if (event.getReceiver() != stratomex)
+			return;
+		// removed my template
+		if (this.wizardPreview != null && this.wizardPreview.getTablePerspective() == event.getTablePerspective()) {
+			done(false);
+		}
 	}
 
 	/**

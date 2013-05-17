@@ -19,22 +19,14 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.internal.stratomex;
 
-import static org.caleydo.view.tourguide.internal.TourGuideRenderStyle.STRATOMEX_SELECTED_ELEMENTS;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.datadomain.DataDomainOracle;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.perspective.variable.Perspective;
-import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.selection.SelectionTypeEvent;
-import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
@@ -59,7 +51,6 @@ import org.caleydo.view.tourguide.internal.stratomex.event.WizardEndedEvent;
 import org.caleydo.view.tourguide.spi.score.IScore;
 
 import com.google.common.base.Objects;
-import com.google.common.collect.Lists;
 
 /**
  * facade / adapter to {@link GLStratomex} to hide the communication details
@@ -78,15 +69,7 @@ public class StratomexAdapter {
 	private TablePerspective currentPreview = null;
 	private Group currentPreviewGroup = null;
 
-	private final SelectionType previewSelectionType;
-
 	public StratomexAdapter() {
-		// Create volatile selection type
-		previewSelectionType = new SelectionType("Tour Guide preview selection type",
-				STRATOMEX_SELECTED_ELEMENTS.getRGBA(), 1, true, 1);
-		previewSelectionType.setManaged(false);
-
-		triggerEvent(new SelectionTypeEvent(previewSelectionType));
 	}
 
 	public void sendDelayedEvents() {
@@ -97,9 +80,6 @@ public class StratomexAdapter {
 
 	public void cleanUp() {
 		cleanupPreview();
-		SelectionTypeEvent selectionTypeEvent = new SelectionTypeEvent(previewSelectionType);
-		selectionTypeEvent.setRemove(true);
-		triggerEvent(selectionTypeEvent);
 	}
 
 	private void cleanupPreview() {
@@ -274,7 +254,7 @@ public class StratomexAdapter {
 	}
 
 	private void clearHighlightRows(IDType idType, IDataDomain dataDomain) {
-		AEvent event = new SelectElementsEvent(Collections.<Integer> emptyList(), idType, this.previewSelectionType)
+		AEvent event = new SelectElementsEvent(Collections.<Integer> emptyList(), idType, SelectionType.SELECTION)
 				.to(receiver);
 		event.setEventSpace(dataDomain.getDataDomainID());
 		triggerEvent(event);
@@ -283,7 +263,7 @@ public class StratomexAdapter {
 	private void hightlightRows(ITablePerspectiveScoreRow new_, Collection<IScore> visibleColumns, Group new_g) {
 		Pair<Collection<Integer>, IDType> intersection = new_.getIntersection(visibleColumns, new_g);
 		AEvent event = new SelectElementsEvent(intersection.getFirst(), intersection.getSecond(),
-				this.previewSelectionType).to(receiver);
+				SelectionType.SELECTION).to(receiver);
 		event.setEventSpace(new_.getDataDomain().getDataDomainID());
 		triggerEvent(event);
 	}
@@ -303,54 +283,6 @@ public class StratomexAdapter {
 			triggerEvent(event);
 		else
 			triggerDelayedEvent(event);
-	}
-
-	/**
-	 * converts the given clinicial Variable using the underlying {@link TablePerspective}
-	 *
-	 * @param underlying
-	 * @param clinicalVariable
-	 * @return
-	 */
-	private static TablePerspective asPerspective(TablePerspective underlying, Integer clinicalVariable) {
-		ATableBasedDataDomain dataDomain = DataDomainOracle.getClinicalDataDomain();
-
-		Perspective dim = null;
-		for (String id : dataDomain.getDimensionPerspectiveIDs()) {
-			Perspective d = dataDomain.getTable().getDimensionPerspective(id);
-			VirtualArray va = d.getVirtualArray();
-			if (va.size() == 1 && va.get(0) == clinicalVariable) {
-				dim = d;
-				break;
-			}
-		}
-		if (dim == null) { // not yet existing create a new one
-			dim = new Perspective(dataDomain, dataDomain.getDimensionIDType());
-			PerspectiveInitializationData data = new PerspectiveInitializationData();
-			data.setData(Lists.newArrayList(clinicalVariable));
-			dim.init(data);
-			dim.setLabel(dataDomain.getDimensionLabel(clinicalVariable), false);
-
-			dataDomain.getTable().registerDimensionPerspective(dim);
-		}
-
-		Perspective rec = null;
-		Perspective underlyingRP = underlying.getRecordPerspective();
-
-		for (String id : dataDomain.getRecordPerspectiveIDs()) {
-			Perspective r = dataDomain.getTable().getRecordPerspective(id);
-			if (r.getDataDomain().equals(underlying.getDataDomain())
-					&& r.isLabelDefault() == underlyingRP.isLabelDefault()
-					&& r.getLabel().equals(underlyingRP.getLabel())) {
-				rec = r;
-				break;
-			}
-		}
-		if (rec == null) { // not found create a new one
-			rec = dataDomain.convertForeignPerspective(underlyingRP);
-			dataDomain.getTable().registerRecordPerspective(rec);
-		}
-		return dataDomain.getTablePerspective(rec.getPerspectiveID(), dim.getPerspectiveID(), false);
 	}
 
 	private void triggerEvent(AEvent event) {

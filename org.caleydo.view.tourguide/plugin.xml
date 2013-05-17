@@ -41,12 +41,6 @@
       </command>
    </extension>
    <extension
-         point="org.caleydo.view.stratomex.brick.contextmenu">
-      <entry
-            class="org.caleydo.view.tourguide.internal.score.BrickContextMenuFactory">
-      </entry>
-   </extension>
-   <extension
          point="org.caleydo.serialize.addon">
       <addon
             class="org.caleydo.view.tourguide.internal.serialize.TourGuideSerializationAddon">

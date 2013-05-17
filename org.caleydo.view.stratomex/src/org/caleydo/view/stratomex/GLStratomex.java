@@ -100,10 +100,8 @@ import org.caleydo.view.stratomex.column.BrickColumn;
 import org.caleydo.view.stratomex.column.BrickColumnManager;
 import org.caleydo.view.stratomex.column.BrickColumnSpacingRenderer;
 import org.caleydo.view.stratomex.event.AddGroupsToStratomexEvent;
-import org.caleydo.view.stratomex.event.AddKaplanMaiertoStratomexEvent;
 import org.caleydo.view.stratomex.event.ConnectionsModeEvent;
 import org.caleydo.view.stratomex.event.MergeBricksEvent;
-import org.caleydo.view.stratomex.event.ReplaceKaplanMaierPerspectiveEvent;
 import org.caleydo.view.stratomex.event.SelectElementsEvent;
 import org.caleydo.view.stratomex.event.SplitBrickEvent;
 import org.caleydo.view.stratomex.listener.AddGroupsToStratomexListener;
@@ -984,7 +982,6 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		addGroupsToStratomexListener.setHandler(this);
 		eventPublisher.addListener(AddGroupsToStratomexEvent.class, addGroupsToStratomexListener);
 		eventPublisher.addListener(AddTablePerspectivesEvent.class, addGroupsToStratomexListener);
-		eventPublisher.addListener(AddKaplanMaiertoStratomexEvent.class, addGroupsToStratomexListener);
 
 		removeTablePerspectiveListener = new RemoveTablePerspectiveListener<>();
 		removeTablePerspectiveListener.setHandler(this);
@@ -993,7 +990,6 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		replaceTablePerspectiveListener = new ReplaceTablePerspectiveListener();
 		replaceTablePerspectiveListener.setHandler(this);
 		eventPublisher.addListener(ReplaceTablePerspectiveEvent.class, replaceTablePerspectiveListener);
-		eventPublisher.addListener(ReplaceKaplanMaierPerspectiveEvent.class, replaceTablePerspectiveListener);
 
 		listeners.register(this);
 	}
