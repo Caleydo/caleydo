@@ -133,7 +133,8 @@ public class GLElementContainer extends GLElement implements IGLElementParent, I
 		int size = this.size();
 		for (Iterator<GLElement> it = children.iterator(); it.hasNext();) {
 			GLElement e = it.next();
-			e.takeDown();
+			if (context != null)
+				e.takeDown();
 			it.remove();
 		}
 		if (size > 0) // had deleted something
