@@ -328,76 +328,25 @@ public enum ColorBrewer {
 		add(set, "#a50026", "#d73027", "#f46d43", "#fdae61", "#fee08b", "#ffffbf", "#d9ef8b", "#a6d96a", "#66bd63",
 				"#1a9850", "#006837");
 		set = data.row(ColorBrewer.Accent);
-		add(set, "#7fc97f", "#beaed4", "#fdc086");
-		add(set, "#7fc97f", "#beaed4", "#fdc086", "#ffff99");
-		add(set, "#7fc97f", "#beaed4", "#fdc086", "#ffff99", "#386cb0");
-		add(set, "#7fc97f", "#beaed4", "#fdc086", "#ffff99", "#386cb0", "#f0027f");
-		add(set, "#7fc97f", "#beaed4", "#fdc086", "#ffff99", "#386cb0", "#f0027f", "#bf5b17");
-		add(set, "#7fc97f", "#beaed4", "#fdc086", "#ffff99", "#386cb0", "#f0027f", "#bf5b17", "#666666");
+		addRange(set, 3, "#7fc97f", "#beaed4", "#fdc086", "#ffff99", "#386cb0", "#f0027f", "#bf5b17", "#666666");
 		set = data.row(ColorBrewer.Dark2);
-		add(set, "#1b9e77", "#d95f02", "#7570b3");
-		add(set, "#1b9e77", "#d95f02", "#7570b3", "#e7298a");
-		add(set, "#1b9e77", "#d95f02", "#7570b3", "#e7298a", "#66a61e");
-		add(set, "#1b9e77", "#d95f02", "#7570b3", "#e7298a", "#66a61e", "#e6ab02");
-		add(set, "#1b9e77", "#d95f02", "#7570b3", "#e7298a", "#66a61e", "#e6ab02", "#a6761d");
-		add(set, "#1b9e77", "#d95f02", "#7570b3", "#e7298a", "#66a61e", "#e6ab02", "#a6761d", "#666666");
+		addRange(set, 3, "#1b9e77", "#d95f02", "#7570b3", "#e7298a", "#66a61e", "#e6ab02", "#a6761d", "#666666");
 		set = data.row(ColorBrewer.Paired);
-		add(set, "#a6cee3", "#1f78b4", "#b2df8a");
-		add(set, "#a6cee3", "#1f78b4", "#b2df8a", "#33a02c");
-		add(set, "#a6cee3", "#1f78b4", "#b2df8a", "#33a02c", "#fb9a99");
-		add(set, "#a6cee3", "#1f78b4", "#b2df8a", "#33a02c", "#fb9a99", "#e31a1c");
-		add(set, "#a6cee3", "#1f78b4", "#b2df8a", "#33a02c", "#fb9a99", "#e31a1c", "#fdbf6f");
-		add(set, "#a6cee3", "#1f78b4", "#b2df8a", "#33a02c", "#fb9a99", "#e31a1c", "#fdbf6f", "#ff7f00");
-		add(set, "#a6cee3", "#1f78b4", "#b2df8a", "#33a02c", "#fb9a99", "#e31a1c", "#fdbf6f", "#ff7f00", "#cab2d6");
-		add(set, "#a6cee3", "#1f78b4", "#b2df8a", "#33a02c", "#fb9a99", "#e31a1c", "#fdbf6f", "#ff7f00", "#cab2d6",
-				"#6a3d9a");
-		add(set, "#a6cee3", "#1f78b4", "#b2df8a", "#33a02c", "#fb9a99", "#e31a1c", "#fdbf6f", "#ff7f00", "#cab2d6",
-				"#6a3d9a", "#ffff99");
-		add(set, "#a6cee3", "#1f78b4", "#b2df8a", "#33a02c", "#fb9a99", "#e31a1c", "#fdbf6f", "#ff7f00", "#cab2d6",
-				"#6a3d9a", "#ffff99", "#b15928");
+		addRange(set, 3, "#a6cee3", "#1f78b4", "#b2df8a", "#33a02c", "#fb9a99", "#e31a1c", "#fdbf6f", "#ff7f00",
+				"#cab2d6", "#6a3d9a", "#ffff99", "#b15928");
 		set = data.row(ColorBrewer.Pastel1);
-		add(set, "#fbb4ae", "#b3cde3", "#ccebc5");
-		add(set, "#fbb4ae", "#b3cde3", "#ccebc5", "#decbe4");
-		add(set, "#fbb4ae", "#b3cde3", "#ccebc5", "#decbe4", "#fed9a6");
-		add(set, "#fbb4ae", "#b3cde3", "#ccebc5", "#decbe4", "#fed9a6", "#ffffcc");
-		add(set, "#fbb4ae", "#b3cde3", "#ccebc5", "#decbe4", "#fed9a6", "#ffffcc", "#e5d8bd");
-		add(set, "#fbb4ae", "#b3cde3", "#ccebc5", "#decbe4", "#fed9a6", "#ffffcc", "#e5d8bd", "#fddaec");
-		add(set, "#fbb4ae", "#b3cde3", "#ccebc5", "#decbe4", "#fed9a6", "#ffffcc", "#e5d8bd", "#fddaec", "#f2f2f2");
+		addRange(set, 3, "#fbb4ae", "#b3cde3", "#ccebc5", "#decbe4", "#fed9a6", "#ffffcc", "#e5d8bd", "#fddaec",
+				"#f2f2f2");
 		set = data.row(ColorBrewer.Pastel2);
-		add(set, "#b3e2cd", "#fdcdac", "#cbd5e8");
-		add(set, "#b3e2cd", "#fdcdac", "#cbd5e8", "#f4cae4");
-		add(set, "#b3e2cd", "#fdcdac", "#cbd5e8", "#f4cae4", "#e6f5c9");
-		add(set, "#b3e2cd", "#fdcdac", "#cbd5e8", "#f4cae4", "#e6f5c9", "#fff2ae");
-		add(set, "#b3e2cd", "#fdcdac", "#cbd5e8", "#f4cae4", "#e6f5c9", "#fff2ae", "#f1e2cc");
-		add(set, "#b3e2cd", "#fdcdac", "#cbd5e8", "#f4cae4", "#e6f5c9", "#fff2ae", "#f1e2cc", "#cccccc");
+		addRange(set, 3, "#b3e2cd", "#fdcdac", "#cbd5e8", "#f4cae4", "#e6f5c9", "#fff2ae", "#f1e2cc", "#cccccc");
 		set = data.row(ColorBrewer.Set1);
-		add(set, "#e41a1c", "#377eb8", "#4daf4a");
-		add(set, "#e41a1c", "#377eb8", "#4daf4a", "#984ea3");
-		add(set, "#e41a1c", "#377eb8", "#4daf4a", "#984ea3", "#ff7f00");
-		add(set, "#e41a1c", "#377eb8", "#4daf4a", "#984ea3", "#ff7f00", "#ffff33");
-		add(set, "#e41a1c", "#377eb8", "#4daf4a", "#984ea3", "#ff7f00", "#ffff33", "#a65628");
-		add(set, "#e41a1c", "#377eb8", "#4daf4a", "#984ea3", "#ff7f00", "#ffff33", "#a65628", "#f781bf");
-		add(set, "#e41a1c", "#377eb8", "#4daf4a", "#984ea3", "#ff7f00", "#ffff33", "#a65628", "#f781bf", "#999999");
+		addRange(set, 3, "#e41a1c", "#377eb8", "#4daf4a", "#984ea3", "#ff7f00", "#ffff33", "#a65628", "#f781bf",
+				"#999999");
 		set = data.row(ColorBrewer.Set2);
-		add(set, "#66c2a5", "#fc8d62", "#8da0cb");
-		add(set, "#66c2a5", "#fc8d62", "#8da0cb", "#e78ac3");
-		add(set, "#66c2a5", "#fc8d62", "#8da0cb", "#e78ac3", "#a6d854");
-		add(set, "#66c2a5", "#fc8d62", "#8da0cb", "#e78ac3", "#a6d854", "#ffd92f");
-		add(set, "#66c2a5", "#fc8d62", "#8da0cb", "#e78ac3", "#a6d854", "#ffd92f", "#e5c494");
-		add(set, "#66c2a5", "#fc8d62", "#8da0cb", "#e78ac3", "#a6d854", "#ffd92f", "#e5c494", "#b3b3b3");
+		addRange(set, 3, "#66c2a5", "#fc8d62", "#8da0cb", "#e78ac3", "#a6d854", "#ffd92f", "#e5c494", "#b3b3b3");
 		set = data.row(ColorBrewer.Set3);
-		add(set, "#8dd3c7", "#ffffb3", "#bebada");
-		add(set, "#8dd3c7", "#ffffb3", "#bebada", "#fb8072");
-		add(set, "#8dd3c7", "#ffffb3", "#bebada", "#fb8072", "#80b1d3");
-		add(set, "#8dd3c7", "#ffffb3", "#bebada", "#fb8072", "#80b1d3", "#fdb462");
-		add(set, "#8dd3c7", "#ffffb3", "#bebada", "#fb8072", "#80b1d3", "#fdb462", "#b3de69");
-		add(set, "#8dd3c7", "#ffffb3", "#bebada", "#fb8072", "#80b1d3", "#fdb462", "#b3de69", "#fccde5");
-		add(set, "#8dd3c7", "#ffffb3", "#bebada", "#fb8072", "#80b1d3", "#fdb462", "#b3de69", "#fccde5", "#d9d9d9");
-		add(set, "#8dd3c7", "#ffffb3", "#bebada", "#fb8072", "#80b1d3", "#fdb462", "#b3de69", "#fccde5", "#d9d9d9",
-				"#bc80bd");
-		add(set, "#8dd3c7", "#ffffb3", "#bebada", "#fb8072", "#80b1d3", "#fdb462", "#b3de69", "#fccde5", "#d9d9d9",
-				"#bc80bd", "#ccebc5");
-		add(set, "#8dd3c7", "#ffffb3", "#bebada", "#fb8072", "#80b1d3", "#fdb462", "#b3de69", "#fccde5", "#d9d9d9",
+		addRange(set, 3, "#8dd3c7", "#ffffb3", "#bebada", "#fb8072", "#80b1d3", "#fdb462", "#b3de69", "#fccde5",
+				"#d9d9d9",
 				"#bc80bd", "#ccebc5", "#ffed6f");
 	}
 
@@ -405,6 +354,15 @@ public enum ColorBrewer {
 		List<Color> col = new ArrayList<>(colors.length);
 		for (String c : colors)
 			col.add(Color.decode(c));
+		set.put(colors.length, col);
+	}
+
+	private static void addRange(Map<Integer, List<Color>> set, int start, String... colors) {
+		List<Color> col = new ArrayList<>(colors.length);
+		for (String c : colors)
+			col.add(Color.decode(c));
+		for (int i = start; i < colors.length; ++i)
+			set.put(i, col.subList(0, start));
 		set.put(colors.length, col);
 	}
 
