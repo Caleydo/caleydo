@@ -19,11 +19,15 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.internal.stratomex.state;
 
+import java.util.List;
+
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.view.opengl.layout.AForwardingRenderer;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
+import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
+import org.caleydo.core.view.opengl.util.text.TextUtils;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.view.stratomex.brick.configurer.PathwayDataConfigurer;
 import org.caleydo.view.stratomex.tourguide.event.UpdatePathwayPreviewEvent;
@@ -53,10 +57,9 @@ public class BrowsePathwayAndStratificationState extends BrowsePathwayState impl
 	public void onUpdate(UpdatePathwayPreviewEvent event, ISelectReaction adapter) {
 		pathway = event.getPathway();
 		if (underlying == null) {
-			// adapter.replaceTemplate(create)
-			// adapter.replaceTemplate();
-			// TODO show a custom block with the pathway in it
-			// TODO show a custom view with
+			ALayoutRenderer preview = new MyLabelRenderer(pathway.getTitle(), adapter.getGLView());
+			adapter.replaceTemplate(new PreviewRenderer(preview, adapter.getGLView(),
+					"Select a stratification to refer to"));
 		} else {
 			show(adapter);
 		}
@@ -85,19 +88,31 @@ public class BrowsePathwayAndStratificationState extends BrowsePathwayState impl
 		return true;
 	}
 
-	private static class PreviewRenderer extends AForwardingRenderer {
-		public PreviewRenderer(ALayoutRenderer renderer) {
-			super(renderer);
-		}
-		@Override
-		public void setLimits(float x, float y) {
-			super.setLimits(x, y);
-			currentRenderer.setLimits(x, y);
+	private static class MyLabelRenderer extends ALayoutRenderer {
+		private final String label;
+		private final AGLView view;
+
+		public MyLabelRenderer(String label, AGLView view) {
+			this.label = label;
+			this.view = view;
 		}
 
 		@Override
 		protected void renderContent(GL2 gl) {
-			super.renderContent(gl);
+			float hi = view.getPixelGLConverter().getGLHeightForPixelHeight(16);
+			CaleydoTextRenderer textRenderer = view.getTextRenderer();
+			List<String> lines = TextUtils.wrap(textRenderer, label, x, hi);
+			float yi = (y * 0.5f - hi * 0.5f * lines.size());
+			for (String line : lines) {
+				float wi = textRenderer.getTextWidth(line, hi);
+				textRenderer.renderTextInBounds(gl, line, (x * 0.5f - wi * 0.5f), yi, 0, wi, hi);
+				yi += hi;
+			}
+		}
+
+		@Override
+		protected boolean permitsWrappingDisplayLists() {
+			return true;
 		}
 	}
 }

@@ -19,18 +19,11 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.internal.stratomex.state;
 
-import java.util.List;
 
-import javax.media.opengl.GL;
-import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.layout.AForwardingRenderer;
-import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormRenderer;
-import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
-import org.caleydo.core.view.opengl.util.text.TextUtils;
 import org.caleydo.view.stratomex.tourguide.event.UpdateNumericalPreviewEvent;
 import org.caleydo.view.tourguide.api.state.BrowseNumericalState;
 import org.caleydo.view.tourguide.api.state.ISelectReaction;
@@ -70,7 +63,7 @@ public class BrowseNumericalAndStratificationState extends BrowseNumericalState 
 	private void updatePreview(ISelectReaction adapter) {
 		AGLView view = adapter.getGLView();
 		MultiFormRenderer preview = adapter.createPreview(numerical);
-		adapter.replaceTemplate(new PreviewRenderer(preview, view));
+		adapter.replaceTemplate(new PreviewRenderer(preview, view, "Select a stratification to refer to"));
 	}
 
 	@Override
@@ -88,58 +81,5 @@ public class BrowseNumericalAndStratificationState extends BrowseNumericalState 
 	@Override
 	public boolean isAutoSelect() {
 		return true;
-	}
-
-	private static class PreviewRenderer extends AForwardingRenderer {
-		private final AGLView view;
-
-		public PreviewRenderer(ALayoutRenderer renderer, AGLView view) {
-			super(renderer);
-			this.view = view;
-		}
-		@Override
-		public void setLimits(float x, float y) {
-			super.setLimits(x, y);
-			currentRenderer.setLimits(x * 0.9f, y * .25f);
-		}
-
-		@Override
-		protected void renderContent(GL2 gl) {
-			float w = x;
-			float h = y;
-			float ph = h * 0.25f;
-			float pw = w * 0.9f;
-			gl.glPushMatrix();
-			gl.glTranslatef(w * 0.05f, h * 0.5f, 0);
-			float th = view.getPixelGLConverter().getGLHeightForPixelHeight(16);
-			float offset = view.getPixelGLConverter().getGLHeightForPixelHeight(2);
-
-			final CaleydoTextRenderer text = view.getTextRenderer();
-			{
-				float twi = text.getTextWidth("Preview", th);
-				text.renderTextInBounds(gl, "Preview", pw * 0.5f - twi * 0.5f, ph * 1.05f, 1.f, pw, th);
-			}
-
-			gl.glBegin(GL.GL_LINE_LOOP);
-			gl.glVertex3f(-offset, -offset, 0);
-			gl.glVertex3f(pw + offset, -offset, 0);
-			gl.glVertex3f(pw + offset, ph + offset, 0);
-			gl.glVertex3f(-offset, ph + offset, 0);
-			gl.glEnd();
-
-			super.renderContent(gl);
-
-			List<String> texts = TextUtils.wrap(text, "Select a strafication to refer to.", pw, th);
-			{
-				float yl = -texts.size() * th;
-				for (String line : texts) {
-					float twi = text.getTextWidth(line, th);
-					text.renderTextInBounds(gl, line, pw * 0.5f - twi * 0.5f, yl, 1.f, pw, th);
-					yl -= th;
-				}
-			}
-
-			gl.glPopMatrix();
-		}
 	}
 }
