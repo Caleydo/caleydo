@@ -304,6 +304,11 @@ public class AddWizardElement extends AAddWizardElement implements ICallback<ISt
 	public MultiFormRenderer createPreview(TablePerspective tablePerspective) {
 		return adapter.createPreviewRenderer(tablePerspective);
 	}
+
+	@Override
+	public AGLView getGLView() {
+		return view;
+	}
 }
 
 

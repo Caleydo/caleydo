@@ -29,7 +29,7 @@ import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
  *
  */
 public class BrowseNumericalState extends ABrowseState {
-	private Perspective underlying;
+	protected Perspective underlying;
 
 	public BrowseNumericalState(String label) {
 		super(EDataDomainQueryMode.NUMERICAL, label);

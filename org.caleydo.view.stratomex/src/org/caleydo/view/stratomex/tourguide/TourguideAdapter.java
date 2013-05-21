@@ -28,9 +28,13 @@ import java.util.Set;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLContext;
 
+import org.caleydo.core.data.collection.EDataType;
+import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.datadomain.DataDomainOracle;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
+import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventPublisher;
@@ -600,6 +604,9 @@ public class TourguideAdapter implements IStratomexAdapter {
 	public void replaceTemplate(ALayoutRenderer renderer) {
 		if (wizardElement != null) {
 			wizardElement.setRenderer(renderer);
+			renderer.setLimits(wizardElement.getSizeScaledX(), wizardElement.getSizeScaledY()); // don't know why the
+																								// element layout does
+																								// it not by it own
 		} else if (wizardPreview != null) {
 			ElementLayout new_ = ElementLayouts.wrap(renderer, 120);
 			previewIndex = stratomex.getBrickColumnManager().indexOfBrickColumn(wizardPreview) - 1;
@@ -659,7 +666,8 @@ public class TourguideAdapter implements IStratomexAdapter {
 	@Override
 	public MultiFormRenderer createPreviewRenderer(TablePerspective tablePerspective) {
 		// create a preview similar to the header
-		EEmbeddingID embeddingID = EEmbeddingID.PATHWAY_HEADER_BRICK;
+		EEmbeddingID embeddingID = selectEmbeddingID(tablePerspective);
+
 		Set<String> remoteRenderedViewIDs = ViewManager.get().getRemotePlugInViewIDs(GLStratomex.VIEW_TYPE,
 				embeddingID.id());
 
@@ -674,4 +682,29 @@ public class TourguideAdapter implements IStratomexAdapter {
 		return multiFormRenderer;
 	}
 
+	private static EEmbeddingID selectEmbeddingID(TablePerspective tablePerspective) {
+		EEmbeddingID embeddingID;
+		if (tablePerspective instanceof PathwayTablePerspective)
+			embeddingID = EEmbeddingID.PATHWAY_HEADER_BRICK;
+		else if (DataDomainOracle.isClinical(tablePerspective.getDataDomain()) && hasIntegers(tablePerspective))
+			embeddingID = EEmbeddingID.CLINICAL_HEADER_BRICK;
+		else if (DataDomainOracle.isCategoricalDataDomain(tablePerspective.getDataDomain()))
+			embeddingID = EEmbeddingID.CATEGORICAL_HEADER_BRICK;
+		else
+			embeddingID = EEmbeddingID.NUMERICAL_HEADER_BRICK;
+		return embeddingID;
+	}
+
+	/**
+	 * @param tablePerspective
+	 * @return
+	 */
+	private static boolean hasIntegers(TablePerspective tablePerspective) {
+		Table table = tablePerspective.getDataDomain().getTable();
+		VirtualArray dva = tablePerspective.getDimensionPerspective().getVirtualArray();
+		VirtualArray rva = tablePerspective.getRecordPerspective().getVirtualArray();
+		if (dva.size() == 0 || rva.size() == 0)
+			return false;
+		return table.getRawDataType(dva.get(0), rva.get(0)) != EDataType.STRING;
+	}
 }

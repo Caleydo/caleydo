@@ -56,7 +56,8 @@ public class AForwardingRenderer extends ALayoutRenderer {
 	@Override
 	public void destroy(GL2 gl) {
 		super.destroy(gl);
-		currentRenderer.destroy(gl);
+		if (currentRenderer != null)
+			currentRenderer.destroy(gl);
 	}
 
 	@Override
