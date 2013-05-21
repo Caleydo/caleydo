@@ -1,9 +1,10 @@
 /**
- * 
+ *
  */
 package org.caleydo.core.io.gui.dataimport.wizard;
 
 import org.caleydo.core.io.DataSetDescription;
+import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -17,9 +18,9 @@ import org.eclipse.swt.widgets.List;
 
 /**
  * Page that is used to specify groupings for a dataset.
- * 
+ *
  * @author Christian Partl
- * 
+ *
  */
 public class AddGroupingsPage extends AImportDataPage {
 
@@ -198,6 +199,11 @@ public class AddGroupingsPage extends AImportDataPage {
 	@Override
 	public void pageActivated() {
 		mediator.pageActivated();
+	}
+
+	@Override
+	public IWizardPage getPreviousPage() {
+		return ((DataImportWizard) getWizard()).getChosenDataTypePage();
 	}
 
 }

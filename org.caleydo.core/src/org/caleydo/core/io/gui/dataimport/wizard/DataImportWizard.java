@@ -37,9 +37,24 @@ public class DataImportWizard extends Wizard {
 	private AddGroupingsPage addGroupingsPage;
 
 	/**
-	 * Page of the wizard that is used to transform the data of the dataset.
+	 * Page to determine the type of the dataset to be loaded.
 	 */
-	private TransformDataPage transformDataPage;
+	private DataSetTypePage dataSetTypePage;
+
+	/**
+	 * Page of the wizard that is used to specify properties for a numerical dataset.
+	 */
+	private NumericalDataPropertiesPage numericalDataPage;
+
+	/**
+	 * Page of the wizard that is used to specify properties for a categorical dataset.
+	 */
+	private CategoricalDataPropertiesPage categoricalDataPage;
+
+	/**
+	 * The data page chosen by the user (numerical, categorical, or inhomogeneous).
+	 */
+	private AImportDataPage chosenDataTypePage;
 
 	/**
 	 * Determines whether all required data has been specified and the dialog can be finished.
@@ -76,19 +91,25 @@ public class DataImportWizard extends Wizard {
 	@Override
 	public void addPages() {
 		loadDataSetPage = new LoadDataSetPage(dataSetDescription);
-		transformDataPage = new TransformDataPage(dataSetDescription);
+		dataSetTypePage = new DataSetTypePage(dataSetDescription);
+		numericalDataPage = new NumericalDataPropertiesPage(dataSetDescription);
+		categoricalDataPage = new CategoricalDataPropertiesPage(dataSetDescription);
 		addGroupingsPage = new AddGroupingsPage(dataSetDescription);
 
 		IWizardContainer wizardContainer = getContainer();
 		if (wizardContainer instanceof IPageChangeProvider) {
 			IPageChangeProvider pageChangeProvider = (IPageChangeProvider) wizardContainer;
 			pageChangeProvider.addPageChangedListener(loadDataSetPage);
-			pageChangeProvider.addPageChangedListener(transformDataPage);
+			pageChangeProvider.addPageChangedListener(dataSetTypePage);
+			pageChangeProvider.addPageChangedListener(numericalDataPage);
+			pageChangeProvider.addPageChangedListener(categoricalDataPage);
 			pageChangeProvider.addPageChangedListener(addGroupingsPage);
 		}
 
 		addPage(loadDataSetPage);
-		addPage(transformDataPage);
+		addPage(dataSetTypePage);
+		addPage(categoricalDataPage);
+		addPage(numericalDataPage);
 		addPage(addGroupingsPage);
 	}
 
@@ -100,8 +121,10 @@ public class DataImportWizard extends Wizard {
 
 		if (visitedPages.contains(loadDataSetPage) || getContainer().getCurrentPage().equals(loadDataSetPage))
 			loadDataSetPage.fillDataSetDescription();
-		if (visitedPages.contains(transformDataPage) || getContainer().getCurrentPage().equals(transformDataPage))
-			transformDataPage.fillDataSetDescription();
+		if (visitedPages.contains(dataSetTypePage) || getContainer().getCurrentPage().equals(dataSetTypePage))
+			dataSetTypePage.fillDataSetDescription();
+		if (visitedPages.contains(chosenDataTypePage) || getContainer().getCurrentPage().equals(chosenDataTypePage))
+			chosenDataTypePage.fillDataSetDescription();
 		if (visitedPages.contains(addGroupingsPage) || getContainer().getCurrentPage().equals(addGroupingsPage))
 			addGroupingsPage.fillDataSetDescription();
 
@@ -138,7 +161,7 @@ public class DataImportWizard extends Wizard {
 
 	@Override
 	public boolean canFinish() {
-		if (!visitedPages.contains(loadDataSetPage))
+		if (!visitedPages.contains(dataSetTypePage) || chosenDataTypePage == null)
 			return false;
 		return super.canFinish();
 	}
@@ -190,6 +213,56 @@ public class DataImportWizard extends Wizard {
 	 */
 	public int getTotalNumberOfRows() {
 		return totalNumberOfRows;
+	}
+
+	/**
+	 * @param chosenDataTypePage
+	 *            setter, see {@link chosenDataTypePage}
+	 */
+	public void setChosenDataTypePage(AImportDataPage chosenDataTypePage) {
+		this.chosenDataTypePage = chosenDataTypePage;
+	}
+
+	/**
+	 * @return the chosenDataTypePage, see {@link #chosenDataTypePage}
+	 */
+	public AImportDataPage getChosenDataTypePage() {
+		return chosenDataTypePage;
+	}
+
+	/**
+	 * @return the loadDataSetPage, see {@link #loadDataSetPage}
+	 */
+	public LoadDataSetPage getLoadDataSetPage() {
+		return loadDataSetPage;
+	}
+
+	/**
+	 * @return the numericalDataPage, see {@link #numericalDataPage}
+	 */
+	public NumericalDataPropertiesPage getNumericalDataPage() {
+		return numericalDataPage;
+	}
+
+	/**
+	 * @return the categoricalDataPage, see {@link #categoricalDataPage}
+	 */
+	public CategoricalDataPropertiesPage getCategoricalDataPage() {
+		return categoricalDataPage;
+	}
+
+	/**
+	 * @return the dataSetTypePage, see {@link #dataSetTypePage}
+	 */
+	public DataSetTypePage getDataSetTypePage() {
+		return dataSetTypePage;
+	}
+
+	/**
+	 * @return the addGroupingsPage, see {@link #addGroupingsPage}
+	 */
+	public AddGroupingsPage getAddGroupingsPage() {
+		return addGroupingsPage;
 	}
 
 }

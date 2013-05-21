@@ -7,6 +7,7 @@ import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.gui.dataimport.widget.table.ColumnConfigTableWidget;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -27,12 +28,11 @@ import org.eclipse.swt.widgets.Text;
  * @author Christian Partl
  *
  */
-public class TransformDataPage extends AImportDataPage implements Listener {
+public class NumericalDataPropertiesPage extends AImportDataPage implements Listener {
 
-	public static final String PAGE_NAME = "Transform Data";
+	public static final String PAGE_NAME = "Numerical Dataset Properties";
 
-	public static final String PAGE_DESCRIPTION = "Specify the data transformations to be performed.";
-
+	public static final String PAGE_DESCRIPTION = "Specify properties for the numerical dataset.";
 	/**
 	 * Parent composite of all widgets in this page.
 	 */
@@ -114,7 +114,7 @@ public class TransformDataPage extends AImportDataPage implements Listener {
 	/**
 	 * Mediator of this class.
 	 */
-	private TransformDataPageMediator mediator;
+	private NumericalDataPropertiesPageMediator mediator;
 
 	/**
 	 * @param pageName
@@ -125,10 +125,10 @@ public class TransformDataPage extends AImportDataPage implements Listener {
 	// super(pageName, dataSetDescription);
 	// }
 
-	public TransformDataPage(DataSetDescription dataSetDescription) {
+	public NumericalDataPropertiesPage(DataSetDescription dataSetDescription) {
 		super(PAGE_NAME, dataSetDescription);
 		setDescription(PAGE_DESCRIPTION);
-		mediator = new TransformDataPageMediator(this, dataSetDescription);
+		mediator = new NumericalDataPropertiesPageMediator(this, dataSetDescription);
 	}
 
 	@Override
@@ -138,6 +138,9 @@ public class TransformDataPage extends AImportDataPage implements Listener {
 		parentComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		parentComposite.setLayout(new GridLayout(1, true));
 
+		Combo dataSetTypeCombo = new Combo(parentComposite, SWT.DROP_DOWN | SWT.READ_ONLY);
+		dataSetTypeCombo.setItems(new String[] { "Homogeneous Numerical", "Homogeneous Categorical", "Inhomogeneous" });
+		dataSetTypeCombo.select(0);
 		createScalingGroup(parentComposite);
 
 		createClippingGroup(parentComposite);
@@ -335,6 +338,8 @@ public class TransformDataPage extends AImportDataPage implements Listener {
 
 	@Override
 	public void pageActivated() {
+		((DataImportWizard) getWizard()).setChosenDataTypePage(this);
+		((DataImportWizard) getWizard()).getContainer().updateButtons();
 		mediator.pageActivated();
 
 	}
@@ -343,6 +348,16 @@ public class TransformDataPage extends AImportDataPage implements Listener {
 	public void handleEvent(Event event) {
 		if (getWizard().getContainer().getCurrentPage() != null)
 			getWizard().getContainer().updateButtons();
+	}
+
+	@Override
+	public IWizardPage getPreviousPage() {
+		return ((DataImportWizard) getWizard()).getDataSetTypePage();
+	}
+
+	@Override
+	public IWizardPage getNextPage() {
+		return ((DataImportWizard) getWizard()).getAddGroupingsPage();
 	}
 
 }

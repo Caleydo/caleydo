@@ -12,14 +12,14 @@ import org.caleydo.core.io.NumericalProperties;
 import org.caleydo.core.io.gui.dataimport.FilePreviewParser;
 
 /**
- * Mediator for {@link TransformDataPage}. This class is responsible for setting the states of all widgets of the page
+ * Mediator for {@link NumericalDataPropertiesPage}. This class is responsible for setting the states of all widgets of the page
  * and triggering actions according to different events that occur in the page.
  *
  *
  * @author Christian Partl
  *
  */
-public class TransformDataPageMediator {
+public class NumericalDataPropertiesPageMediator {
 
 	/**
 	 * Mode that specifies how the data is scaled.
@@ -41,14 +41,14 @@ public class TransformDataPageMediator {
 	/**
 	 * Page this class serves as mediator for.
 	 */
-	private TransformDataPage page;
+	private NumericalDataPropertiesPage page;
 
 	/**
 	 * File name of the current dataset.
 	 */
 	private String dataSourcePath = "";
 
-	public TransformDataPageMediator(TransformDataPage page, DataSetDescription dataSetDescription) {
+	public NumericalDataPropertiesPageMediator(NumericalDataPropertiesPage page, DataSetDescription dataSetDescription) {
 		this.page = page;
 		this.dataSetDescription = dataSetDescription;
 	}

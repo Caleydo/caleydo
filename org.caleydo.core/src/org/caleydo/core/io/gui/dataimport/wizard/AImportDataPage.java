@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.caleydo.core.io.gui.dataimport.wizard;
 
@@ -12,9 +12,9 @@ import org.eclipse.jface.wizard.WizardPage;
 
 /**
  * Base class for pages that are used in {@link DataImportWizard}.
- * 
+ *
  * @author Christian Partl
- * 
+ *
  */
 public abstract class AImportDataPage extends WizardPage implements IPageChangedListener {
 
@@ -22,6 +22,11 @@ public abstract class AImportDataPage extends WizardPage implements IPageChanged
 	 * The {@link DataSetDescription} for which data is defined in subclasses.
 	 */
 	protected DataSetDescription dataSetDescription;
+
+	/**
+	 * Determines whether this page is currently shown.
+	 */
+	protected boolean isActive = false;
 
 	/**
 	 * @param pageName
@@ -41,13 +46,18 @@ public abstract class AImportDataPage extends WizardPage implements IPageChanged
 	@Override
 	public void pageChanged(PageChangedEvent event) {
 
-		if (event.getSelectedPage() == getNextPage()) {
+		if (isActive && event.getSelectedPage() == getNextPage()) {
+			// System.out.println("Fill desc: " + getTitle());
 			fillDataSetDescription();
 			((DataImportWizard) getWizard()).addVisitedPage(this);
 		}
 
-		if (event.getSelectedPage() == this)
+		if (event.getSelectedPage() == this) {
+			isActive = true;
 			pageActivated();
+		} else {
+			isActive = false;
+		}
 	}
 
 	/**
@@ -57,9 +67,8 @@ public abstract class AImportDataPage extends WizardPage implements IPageChanged
 
 	@Override
 	public void performHelp() {
-//		super.performHelp();
-		LinkHandler
-				.openLink("http://www.icg.tugraz.at/project/caleydo/help/caleydo-2.0/loading-data");
+		// super.performHelp();
+		LinkHandler.openLink("http://www.icg.tugraz.at/project/caleydo/help/caleydo-2.0/loading-data");
 
 	}
 

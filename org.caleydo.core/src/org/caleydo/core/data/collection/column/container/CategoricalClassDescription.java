@@ -198,7 +198,7 @@ public class CategoricalClassDescription<CATEGORY_TYPE extends Comparable<CATEGO
 
 		if (unsortedCategories.size() > colors.size()) {
 			throw new IllegalArgumentException(
-					"Cannot auto-initialize more nominal categories then colors are available. " + unsortedCategories);
+					"Cannot auto-initialize more nominal categories than colors are available. " + unsortedCategories);
 		}
 
 		List<CATEGORY_TYPE> categories = new ArrayList<>(unsortedCategories);
