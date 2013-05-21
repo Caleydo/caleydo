@@ -80,8 +80,7 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 	}
 
 	@Override
-	public void fillStateMachine(IStateMachine stateMachine, Object eventReceiver, List<TablePerspective> existing,
-			TablePerspective dependee) {
+	public void fillStateMachine(IStateMachine stateMachine, List<TablePerspective> existing, TablePerspective dependee) {
 		IState source = stateMachine.get(IStateMachine.ADD_PATHWAY);
 		BrowsePathwayState browse = (BrowsePathwayState) stateMachine.get(IStateMachine.BROWSE_PATHWAY);
 

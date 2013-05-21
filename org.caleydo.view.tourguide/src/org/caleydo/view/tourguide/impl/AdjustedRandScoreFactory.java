@@ -88,8 +88,7 @@ public class AdjustedRandScoreFactory implements IScoreFactory {
 	}
 
 	@Override
-	public void fillStateMachine(IStateMachine stateMachine, Object eventReceiver, List<TablePerspective> existing,
-			TablePerspective dependee) {
+	public void fillStateMachine(IStateMachine stateMachine, List<TablePerspective> existing, TablePerspective dependee) {
 		if (existing.isEmpty() || dependee != null) // nothing to compare
 			return;
 

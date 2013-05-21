@@ -37,7 +37,7 @@ class StateMachineImpl implements IStateMachine {
 
 	}
 
-	public static StateMachineImpl create(Object receiver, List<TablePerspective> existing, TablePerspective source) {
+	public static StateMachineImpl create(List<TablePerspective> existing, TablePerspective source) {
 		StateMachineImpl impl = new StateMachineImpl();
 
 		impl.current = impl.addState("root", new SimpleState(""));
