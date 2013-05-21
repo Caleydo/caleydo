@@ -17,28 +17,39 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.internal.stratomex;
+package org.caleydo.view.stratomex.tourguide.internal;
 
-import org.caleydo.core.data.perspective.table.TablePerspective;
+import javax.media.opengl.GL2;
+
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.view.stratomex.tourguide.AAddWizardElement;
-import org.caleydo.view.stratomex.tourguide.IAddWizardElementFactory;
-import org.caleydo.view.stratomex.tourguide.IStratomexAdapter;
+import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
+import org.caleydo.view.stratomex.tourguide.TourguideAdapter;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class AddWizardElementFactory implements IAddWizardElementFactory {
+public class AddDependentLayoutRenderer extends ALayoutRenderer {
+	private final AGLView view;
+	private final int id;
+	private final TourguideAdapter tourguide;
 
-	@Override
-	public AAddWizardElement create(IStratomexAdapter adapter, AGLView view) {
-		return new AddWizardElement(view, adapter, null);
+	public AddDependentLayoutRenderer(AGLView view, int id, TourguideAdapter tourguide) {
+		this.view = view;
+		this.id = id;
+		this.tourguide = tourguide;
 	}
 
 	@Override
-	public AAddWizardElement createDependent(IStratomexAdapter adapter, AGLView view, TablePerspective tablePerspective) {
-		return new AddWizardElement(view, adapter, tablePerspective);
+	protected void renderContent(GL2 gl) {
+		float hi = view.getPixelGLConverter().getGLHeightForPixelHeight(34);
+		float wi = view.getPixelGLConverter().getGLWidthForPixelWidth(32);
+		tourguide.renderAddDependentButton(gl, x * 1.05f, y * 0.8f, wi, hi, id);
+	}
+
+	@Override
+	protected boolean permitsWrappingDisplayLists() {
+		return true;
 	}
 
 }

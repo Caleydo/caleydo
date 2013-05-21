@@ -40,7 +40,8 @@ import org.eclipse.swt.widgets.Shell;
  *
  */
 public interface IScoreFactory {
-	void fillStateMachine(IStateMachine stateMachine, Object eventReceiver, List<TablePerspective> existing);
+	void fillStateMachine(IStateMachine stateMachine, Object eventReceiver, List<TablePerspective> existing,
+			TablePerspective source);
 
 	/**
 	 * creates a dialog for creating a new score of this type

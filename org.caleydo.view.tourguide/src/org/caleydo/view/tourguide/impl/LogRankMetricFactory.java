@@ -71,9 +71,10 @@ import com.google.common.collect.Sets;
  */
 public class LogRankMetricFactory implements IScoreFactory {
 	@Override
-	public void fillStateMachine(IStateMachine stateMachine, Object eventReceiver, List<TablePerspective> existing) {
+	public void fillStateMachine(IStateMachine stateMachine, Object eventReceiver, List<TablePerspective> existing,
+			TablePerspective dependee) {
 		// TODO Auto-generated method stub
-
+		// FIXME
 	}
 
 	@Override

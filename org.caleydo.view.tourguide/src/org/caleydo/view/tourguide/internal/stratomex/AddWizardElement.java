@@ -77,18 +77,19 @@ public class AddWizardElement extends AAddWizardElement implements ICallback<ISt
 	private GLContextLocal contextLocal;
 	private int hovered = -1;
 
-	public AddWizardElement(AGLView view, IStratomexAdapter adapter) {
+	public AddWizardElement(AGLView view, IStratomexAdapter adapter, TablePerspective source) {
 		super(adapter);
 		contextLocal = new GLContextLocal(view.getTextRenderer(), view.getTextureManager(),
 				Activator.getResourceLocator());
 		this.view = view;
-		this.stateMachine = createStateMachine(adapter, adapter.getVisibleTablePerspectives());
+		this.stateMachine = createStateMachine(adapter, adapter.getVisibleTablePerspectives(), source);
 		this.stateMachine.getCurrent().onEnter();
 	}
 
-	private StateMachineImpl createStateMachine(Object receiver, List<TablePerspective> existing) {
-		StateMachineImpl state = StateMachineImpl.create(receiver, existing);
-		ScoreFactories.fillStateMachine(state, receiver, existing);
+	private StateMachineImpl createStateMachine(Object receiver, List<TablePerspective> existing,
+			TablePerspective source) {
+		StateMachineImpl state = StateMachineImpl.create(receiver, existing, source);
+		ScoreFactories.fillStateMachine(state, receiver, existing, source);
 
 		addStartTransition(state, IStateMachine.ADD_STRATIFICATIONS);
 		addStartTransition(state, IStateMachine.ADD_PATHWAY);

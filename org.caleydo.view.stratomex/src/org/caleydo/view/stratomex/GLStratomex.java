@@ -1175,6 +1175,8 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		brickColumn.initialize();
 		uninitializedSubViews.add(brickColumn);
 
+		tourguide.addedBrickColumn(brickColumn);
+
 		return brickColumn;
 	}
 

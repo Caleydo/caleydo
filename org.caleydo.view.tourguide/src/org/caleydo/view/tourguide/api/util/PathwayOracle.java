@@ -17,28 +17,21 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.internal.stratomex;
+package org.caleydo.view.tourguide.api.util;
 
+import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.view.stratomex.tourguide.AAddWizardElement;
-import org.caleydo.view.stratomex.tourguide.IAddWizardElementFactory;
-import org.caleydo.view.stratomex.tourguide.IStratomexAdapter;
+import org.caleydo.datadomain.pathway.PathwayDataDomain;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class AddWizardElementFactory implements IAddWizardElementFactory {
-
-	@Override
-	public AAddWizardElement create(IStratomexAdapter adapter, AGLView view) {
-		return new AddWizardElement(view, adapter, null);
-	}
-
-	@Override
-	public AAddWizardElement createDependent(IStratomexAdapter adapter, AGLView view, TablePerspective tablePerspective) {
-		return new AddWizardElement(view, adapter, tablePerspective);
+public class PathwayOracle {
+	public static boolean canBeUnderlying(TablePerspective source) {
+		return source.getDataDomain().hasIDCategory(
+				((PathwayDataDomain) DataDomainManager.get().getDataDomainByType(
+				"org.caleydo.datadomain.pathway")).getDavidIDType());
 	}
 
 }

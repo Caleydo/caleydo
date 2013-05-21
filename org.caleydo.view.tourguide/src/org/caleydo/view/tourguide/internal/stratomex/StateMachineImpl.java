@@ -14,6 +14,7 @@ import org.caleydo.view.tourguide.api.state.IStateMachine;
 import org.caleydo.view.tourguide.api.state.ITransition;
 import org.caleydo.view.tourguide.api.state.SimpleState;
 import org.caleydo.view.tourguide.api.state.SimpleTransition;
+import org.caleydo.view.tourguide.api.util.PathwayOracle;
 import org.caleydo.view.tourguide.internal.stratomex.state.BrowseNumericalAndStratificationState;
 import org.caleydo.view.tourguide.internal.stratomex.state.BrowsePathwayAndStratificationState;
 
@@ -36,7 +37,7 @@ class StateMachineImpl implements IStateMachine {
 
 	}
 
-	public static StateMachineImpl create(Object receiver, List<TablePerspective> existing) {
+	public static StateMachineImpl create(Object receiver, List<TablePerspective> existing, TablePerspective source) {
 		StateMachineImpl impl = new StateMachineImpl();
 
 		impl.current = impl.addState("root", new SimpleState(""));
@@ -44,30 +45,41 @@ class StateMachineImpl implements IStateMachine {
 		IState addStratification = impl.addState(ADD_STRATIFICATIONS, new SimpleState("Add Stratification"));
 		IState browseStratification = impl.addState(BROWSE_STRATIFICATIONS, new BrowseStratificationState(
 				"Select a stratification in the Tour Guide to preview.\nThen confirm or cancel your selection."));
-		impl.addTransition(addStratification, new SimpleTransition(browseStratification, "Browse List"));
+		if (source == null)
+			impl.addTransition(addStratification, new SimpleTransition(browseStratification, "Browse List"));
 
 		IState addPathway = impl.addState(ADD_PATHWAY, new SimpleState("Add Pathway"));
-		impl.addState(BROWSE_PATHWAY, new BrowsePathwayState(
-				"Select a pathway in the Tour Guide to preview.\n Then confirm or cancel your selection."));
+		final BrowsePathwayState browsePathway = new BrowsePathwayState(
+				"Select a pathway in the Tour Guide to preview.\n Then confirm or cancel your selection.");
+		if (source != null)
+			browsePathway.setUnderlying(source.getRecordPerspective());
+		impl.addState(BROWSE_PATHWAY, browsePathway);
 
-		if (!existing.isEmpty()) {
+		if (!existing.isEmpty() && source == null) {
 			// select pathway -> show preview -> select stratification -> show both
 			IState browseIntermediate = impl.addState("browseAndSelectPathway",
 					new BrowsePathwayAndStratificationState());
 			impl.addTransition(addPathway, new SimpleTransition(browseIntermediate,
 					"Browse list and stratify with a displayed stratification"));
+		} else if (source != null && PathwayOracle.canBeUnderlying(source)) {
+			impl.addTransition(addPathway, new SimpleTransition(browsePathway, "Browse list"));
 		}
 
 		IState addNumerical = impl.addState(ADD_NUMERICAL, new SimpleState("Add Numerical Data"));
-		impl.addState(BROWSE_NUMERICAL, new BrowseNumericalState(
-				"Select a entry in the Tour Guide\nto preview.\n\nThen confirm or cancel your selection."));
+		final BrowseNumericalState browseNumerical = new BrowseNumericalState(
+				"Select a entry in the Tour Guide\nto preview.\n\nThen confirm or cancel your selection.");
+		if (source != null)
+			browseNumerical.setUnderlying(source.getRecordPerspective());
+		impl.addState(BROWSE_NUMERICAL, browseNumerical);
 
-		if (!existing.isEmpty()) {
+		if (!existing.isEmpty() && source == null) {
 			// select pathway -> show preview -> select stratification -> show both
 			IState browseIntermediate = impl.addState("browseAndSelectNumerical",
 					new BrowseNumericalAndStratificationState());
 			impl.addTransition(addNumerical, new SimpleTransition(browseIntermediate,
 					"Browse list and stratify with a displayed stratification"));
+		} else if (source != null) {
+			impl.addTransition(addNumerical, new SimpleTransition(browseNumerical, "Browse list"));
 		}
 
 		// addTransition(addStratification, new ButtonTransition(browseStratification, "Browse List"));

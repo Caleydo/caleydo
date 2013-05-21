@@ -69,8 +69,9 @@ public class JaccardIndexScoreFactory implements IScoreFactory {
 	}
 
 	@Override
-	public void fillStateMachine(IStateMachine stateMachine, Object eventReceiver, List<TablePerspective> existing) {
-		if (existing.isEmpty()) // nothing to compare
+	public void fillStateMachine(IStateMachine stateMachine, Object eventReceiver, List<TablePerspective> existing,
+			TablePerspective dependee) {
+		if (existing.isEmpty() || dependee != null) // nothing to compare
 			return;
 
 		IState source = stateMachine.get(IStateMachine.ADD_STRATIFICATIONS);
