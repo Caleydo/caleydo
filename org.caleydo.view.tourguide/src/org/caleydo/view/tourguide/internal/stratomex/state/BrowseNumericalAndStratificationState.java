@@ -25,7 +25,7 @@ import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormRenderer;
 import org.caleydo.view.stratomex.tourguide.event.UpdateNumericalPreviewEvent;
-import org.caleydo.view.tourguide.api.state.BrowseNumericalState;
+import org.caleydo.view.tourguide.api.state.BrowseOtherState;
 import org.caleydo.view.tourguide.api.state.ISelectReaction;
 import org.caleydo.view.tourguide.api.state.ISelectStratificationState;
 
@@ -33,7 +33,7 @@ import org.caleydo.view.tourguide.api.state.ISelectStratificationState;
  * @author Samuel Gratzl
  *
  */
-public class BrowseNumericalAndStratificationState extends BrowseNumericalState implements ISelectStratificationState {
+public class BrowseNumericalAndStratificationState extends BrowseOtherState implements ISelectStratificationState {
 
 	private TablePerspective numerical;
 

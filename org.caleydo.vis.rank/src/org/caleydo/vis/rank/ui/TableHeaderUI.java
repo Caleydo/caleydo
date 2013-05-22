@@ -49,6 +49,21 @@ public final class TableHeaderUI extends ACompositeHeaderUI {
 		this.init(table.getColumns());
 	}
 
+	/**
+	 * @return the isCompact, see {@link #isCompact}
+	 */
+	public boolean isCompact() {
+		return isCompact;
+	}
+
+	/**
+	 * @param isCompact
+	 *            setter, see {@link isCompact}
+	 */
+	public void setCompact(boolean isCompact) {
+		this.isCompact = isCompact;
+	}
+
 	@Override
 	protected void setHasThick(boolean hasThick) {
 		super.setHasThick(hasThick);

@@ -27,7 +27,6 @@ import java.util.List;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
-import org.caleydo.core.data.datadomain.DataDomainOracle;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.util.base.DefaultLabelProvider;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
@@ -39,7 +38,7 @@ import org.caleydo.datadomain.pathway.PathwayDataDomain;
  *
  */
 public enum EDataDomainQueryMode {
-	STRATIFICATIONS, PATHWAYS, NUMERICAL;
+	STRATIFICATIONS, PATHWAYS, OTHER;
 
 	/**
 	 * @return
@@ -50,10 +49,14 @@ public enum EDataDomainQueryMode {
 			return "Stratifications";
 		case PATHWAYS:
 			return "Pathways";
-		case NUMERICAL:
-			return "Numerical";
+		case OTHER:
+			return "Other";
 		}
 		throw new IllegalArgumentException("unknown me");
+	}
+
+	public boolean isDependent() {
+		return this != STRATIFICATIONS;
 	}
 
 	public boolean isCompatible(IDataDomain dataDomain) {
@@ -61,9 +64,11 @@ public enum EDataDomainQueryMode {
 		case PATHWAYS:
 			return dataDomain instanceof PathwayDataDomain;
 		case STRATIFICATIONS:
-			return dataDomain instanceof ATableBasedDataDomain;
-		case NUMERICAL:
-			return DataDomainOracle.isCategoricalDataDomain(dataDomain);
+			return (dataDomain instanceof ATableBasedDataDomain && ((ATableBasedDataDomain) dataDomain).getTable()
+					.isDataHomogeneous());
+		case OTHER:
+			return (dataDomain instanceof ATableBasedDataDomain && !((ATableBasedDataDomain) dataDomain).getTable()
+					.isDataHomogeneous());
 		}
 		throw new IllegalArgumentException("unknown me");
 	}
@@ -82,7 +87,7 @@ public enum EDataDomainQueryMode {
 			return dataDomains;
 		case PATHWAYS:
 			return DataDomainManager.get().getDataDomainsByType(PathwayDataDomain.class);
-		case NUMERICAL:
+		case OTHER:
 			List<ATableBasedDataDomain> catDataDomains = new ArrayList<>(DataDomainManager.get().getDataDomainsByType(
 					ATableBasedDataDomain.class));
 

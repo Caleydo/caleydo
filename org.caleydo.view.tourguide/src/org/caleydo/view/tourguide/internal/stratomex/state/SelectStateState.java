@@ -17,45 +17,30 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.api.state;
+package org.caleydo.view.tourguide.internal.stratomex.state;
 
-import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.perspective.variable.Perspective;
-import org.caleydo.view.stratomex.tourguide.event.UpdateNumericalPreviewEvent;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
+import org.caleydo.view.tourguide.api.state.SimpleState;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class BrowseNumericalState extends ABrowseState {
-	protected Perspective underlying;
+public class SelectStateState extends SimpleState {
+	private final EDataDomainQueryMode mode;
 
-	public BrowseNumericalState(String label) {
-		super(EDataDomainQueryMode.NUMERICAL, label);
+	public SelectStateState(String label, EDataDomainQueryMode mode) {
+		super(label);
+		this.mode = mode;
 	}
 
 	/**
-	 * @param underlying
-	 *            setter, see {@link underlying}
+	 * @return the mode, see {@link #mode}
 	 */
-	public void setUnderlying(Perspective underlying) {
-		this.underlying = underlying;
+	public EDataDomainQueryMode getMode() {
+		return mode;
 	}
 
-	@Override
-	public void onUpdate(UpdateNumericalPreviewEvent event, ISelectReaction adapter) {
-		show(event.getTablePerspective(), adapter);
-	}
-
-	protected void show(TablePerspective numerical, ISelectReaction adapter) {
-		if (underlying == null) // standalone --> doesn't work
-			return;
-		// adapter.replaceTemplate(numerical, new NumericalDataConfigurer(numerical));
-		else { // dependent
-			adapter.replaceClinicalTemplate(underlying, numerical);
-		}
-	}
 
 
 }

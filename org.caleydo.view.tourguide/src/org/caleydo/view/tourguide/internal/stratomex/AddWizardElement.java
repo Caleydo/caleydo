@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.internal.stratomex;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -62,6 +63,7 @@ import org.caleydo.view.tourguide.internal.RcpGLTourGuideView;
 import org.caleydo.view.tourguide.internal.event.AddScoreColumnEvent;
 import org.caleydo.view.tourguide.internal.score.ScoreFactories;
 import org.caleydo.view.tourguide.internal.stratomex.event.WizardEndedEvent;
+import org.caleydo.view.tourguide.internal.stratomex.state.SelectStateState;
 import org.caleydo.view.tourguide.internal.view.GLTourGuideView;
 import org.caleydo.view.tourguide.spi.score.IScore;
 
@@ -92,7 +94,7 @@ public class AddWizardElement extends AAddWizardElement implements ICallback<ISt
 
 		addStartTransition(state, IStateMachine.ADD_STRATIFICATIONS);
 		addStartTransition(state, IStateMachine.ADD_PATHWAY);
-		addStartTransition(state, IStateMachine.ADD_NUMERICAL);
+		addStartTransition(state, IStateMachine.ADD_OTHER);
 
 		return state;
 	}
@@ -167,6 +169,9 @@ public class AddWizardElement extends AAddWizardElement implements ICallback<ISt
 		final PixelGLConverter converter = view.getPixelGLConverter();
 
 		final float h_header = converter.getGLHeightForPixelHeight(100);
+		final float h_category = converter.getGLHeightForPixelHeight(32);
+		final float _1px = converter.getGLWidthForPixelWidth(1);
+		final float _1pxh = converter.getGLHeightForPixelHeight(1);
 		final float gap = h_header * 0.1f;
 
 		IState current = stateMachine.getCurrent();
@@ -175,25 +180,65 @@ public class AddWizardElement extends AAddWizardElement implements ICallback<ISt
 		if (transitions.isEmpty()) {
 			drawMultiLineText(g, current, 0, 0, w, h);
 		} else {
+			boolean firstStep = stateMachine.getPrevious() == null;
+			Pair<Collection<ITransition>, Collection<ITransition>> split = splitInDependent(transitions);
+			if (split.getSecond().isEmpty() || split.getFirst().isEmpty())
+				firstStep = false;
+
 			drawMultiLineText(g, current, 0, h - h_header, w, h_header);
-			float hi = (h - h_header - transitions.size() * gap) / (transitions.size());
-			float y = h_header+gap;
-			int i = 0;
-			g.incZ();
-			for (ITransition t : transitions) {
-				g.pushName(getPickingID(i));
-				if (hovered == i)
-					g.color(0.85f);
-				else
-					g.color(0.90f);
-				g.fillRect(gap, h - y - hi, w - 2 * gap, hi);
-				g.popName();
-				drawMultiLineText(g, t, gap, h - y - hi, w - 2 * gap, hi);
-				y += hi + gap;
-				i++;
+
+			if (firstStep) {
+				float hi = (h - h_header - transitions.size() * gap - 2 * h_category - 2 * gap - _1pxh * 2)
+						/ (transitions.size());
+				float y = h_header + gap;
+
+				g.color(0.92f).fillRect(_1px, h - y - h_category, w - _1px * 2, h_category);
+				g.drawText("Independent", 0, h - y - h_category * .75f, w, h_category * .5f, VAlign.CENTER);
+				y += h_category + gap;
+				renderTransitions(g, w, h, gap, split.getSecond(), hi, y, 0);
+				y += (hi + gap) * split.getSecond().size();
+
+				g.color(0.92f).fillRect(_1px, h - y - h_category, w - _1px * 2, h_category);
+				g.drawText("Dependent", 0, h - y - h_category * .75f, w, h_category * .5f, VAlign.CENTER);
+				y += h_category + gap;
+				renderTransitions(g, w, h, gap, split.getFirst(), hi, y, split.getSecond().size());
+			} else {
+				float hi = (h - h_header - transitions.size() * gap) / (transitions.size());
+				float y = h_header + gap;
+				renderTransitions(g, w, h, gap, transitions, hi, y, 0);
 			}
-			g.decZ();
 		}
+	}
+
+	private Pair<Collection<ITransition>, Collection<ITransition>> splitInDependent(Collection<ITransition> transitions) {
+		Collection<ITransition> dependent = new ArrayList<>(transitions.size());
+		Collection<ITransition> rest = new ArrayList<>(transitions.size());
+		for (ITransition t : transitions)
+			if (t instanceof SimpleTransition && (((SimpleTransition) t).getTarget() instanceof SelectStateState)
+					&& ((SelectStateState) ((SimpleTransition) t).getTarget()).getMode().isDependent())
+				dependent.add(t);
+			else
+				rest.add(t);
+		return Pair.make(dependent, rest);
+	}
+
+	private void renderTransitions(final GLGraphics g, final float w, final float h, final float gap,
+			Collection<ITransition> transitions, float hi, float y, int i) {
+		g.incZ();
+		// if in the first step split in dependent and independent data
+		for (ITransition t : transitions) {
+			g.pushName(getPickingID(i));
+			if (hovered == i)
+				g.color(0.85f);
+			else
+				g.color(0.90f);
+			g.fillRect(gap, h - y - hi, w - 2 * gap, hi);
+			g.popName();
+			drawMultiLineText(g, t, gap, h - y - hi, w - 2 * gap, hi);
+			y += hi + gap;
+			i++;
+		}
+		g.decZ();
 	}
 
 	private int getPickingID(int i) {

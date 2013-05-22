@@ -175,7 +175,7 @@ public class StratomexAdapter {
 			updateTableBased((ITablePerspectiveScoreRow) old, (ITablePerspectiveScoreRow) new_, visibleColumns,
 					sortedBy);
 			break;
-		case NUMERICAL:
+		case OTHER:
 			// FIXME
 			updateNumerical((InhomogenousPerspectiveRow) old, (InhomogenousPerspectiveRow) new_, visibleColumns,
 					sortedBy);

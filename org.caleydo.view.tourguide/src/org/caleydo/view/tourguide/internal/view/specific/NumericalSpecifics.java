@@ -42,7 +42,7 @@ public class NumericalSpecifics implements IDataDomainQueryModeSpecfics {
 	@Override
 	public Iterable<? extends ADataDomainQuery> createDataDomainQueries() {
 		List<ADataDomainQuery> r = new ArrayList<>();
-		for (IDataDomain dd : EDataDomainQueryMode.NUMERICAL.getAllDataDomains()) {
+		for (IDataDomain dd : EDataDomainQueryMode.OTHER.getAllDataDomains()) {
 			r.add(createFor(dd));
 		}
 		return r;

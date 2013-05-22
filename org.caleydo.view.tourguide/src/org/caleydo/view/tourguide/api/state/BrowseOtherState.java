@@ -19,32 +19,43 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.api.state;
 
-import java.util.Collection;
-import java.util.Set;
-
+import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
+import org.caleydo.view.stratomex.tourguide.event.UpdateNumericalPreviewEvent;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public interface IStateMachine {
-	String ADD_PATHWAY = EDataDomainQueryMode.PATHWAYS.name();
-	String ADD_OTHER = EDataDomainQueryMode.OTHER.name();
-	String ADD_STRATIFICATIONS = EDataDomainQueryMode.STRATIFICATIONS.name();
-	String BROWSE_PATHWAY = EDataDomainQueryMode.PATHWAYS.name() + "_browse";
-	String BROWSE_OTHER = EDataDomainQueryMode.OTHER.name() + "_browse";
-	String BROWSE_STRATIFICATIONS = EDataDomainQueryMode.STRATIFICATIONS.name() + "_browse";
+public class BrowseOtherState extends ABrowseState {
+	protected Perspective underlying;
 
-	IState addState(String id, IState state);
+	public BrowseOtherState(String label) {
+		super(EDataDomainQueryMode.OTHER, label);
+	}
 
-	void addTransition(IState source, ITransition transition);
+	/**
+	 * @param underlying
+	 *            setter, see {@link underlying}
+	 */
+	public void setUnderlying(Perspective underlying) {
+		this.underlying = underlying;
+	}
 
-	IState get(String id);
+	@Override
+	public void onUpdate(UpdateNumericalPreviewEvent event, ISelectReaction adapter) {
+		show(event.getTablePerspective(), adapter);
+	}
 
-	Set<String> getStates();
+	protected void show(TablePerspective numerical, ISelectReaction adapter) {
+		if (underlying == null) // standalone --> doesn't work
+			return;
+		// adapter.replaceTemplate(numerical, new NumericalDataConfigurer(numerical));
+		else { // dependent
+			adapter.replaceClinicalTemplate(underlying, numerical);
+		}
+	}
 
-	IState getCurrent();
 
-	Collection<ITransition> getTransitions(IState state);
 }

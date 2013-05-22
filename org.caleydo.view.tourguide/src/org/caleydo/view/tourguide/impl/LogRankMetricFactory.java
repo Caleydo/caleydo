@@ -37,7 +37,7 @@ import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.base.DefaultLabelProvider;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.score.DefaultComputedGroupScore;
-import org.caleydo.view.tourguide.api.state.BrowseNumericalState;
+import org.caleydo.view.tourguide.api.state.BrowseOtherState;
 import org.caleydo.view.tourguide.api.state.IState;
 import org.caleydo.view.tourguide.api.state.IStateMachine;
 import org.caleydo.view.tourguide.api.util.ui.CaleydoLabelProvider;
@@ -74,8 +74,8 @@ import com.google.common.collect.Sets;
 public class LogRankMetricFactory implements IScoreFactory {
 	@Override
 	public void fillStateMachine(IStateMachine stateMachine, List<TablePerspective> existing, TablePerspective dependee) {
-		IState source = stateMachine.get(IStateMachine.ADD_NUMERICAL);
-		BrowseNumericalState browse = (BrowseNumericalState) stateMachine.get(IStateMachine.BROWSE_NUMERICAL);
+		IState source = stateMachine.get(IStateMachine.ADD_OTHER);
+		BrowseOtherState browse = (BrowseOtherState) stateMachine.get(IStateMachine.BROWSE_OTHER);
 
 		// FIXME log rank is to compute the significance
 		if (!existing.isEmpty() && dependee == null) {
