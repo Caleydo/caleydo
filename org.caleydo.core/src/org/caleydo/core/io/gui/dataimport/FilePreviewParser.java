@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.caleydo.core.io.gui.dataimport;
 
@@ -16,16 +16,16 @@ import org.eclipse.core.runtime.Status;
 
 /**
  * Parses the preview of a file and stores it in a data matrix.
- * 
+ *
  * @author Christian Partl
- * 
+ *
  */
 public class FilePreviewParser {
 
 	/**
 	 * Matrix that stores the data for rows and all columns of the data file.
 	 */
-	private ArrayList<ArrayList<String>> dataMatrix = new ArrayList<ArrayList<String>>();
+	private List<List<String>> dataMatrix = new ArrayList<>();
 
 	/**
 	 * The total number of columns detected in the file.
@@ -38,7 +38,7 @@ public class FilePreviewParser {
 	private int totalNumberOfRows;
 
 	/**
-	 * 
+	 *
 	 */
 	public FilePreviewParser() {
 	}
@@ -47,7 +47,7 @@ public class FilePreviewParser {
 	 * Parses the specified file and stores the data in {@link #dataMatrix}.
 	 * Additionally, the {@link #totalNumberOfRows} and
 	 * {@link #totalNumberOfColumns} are set accordingly.
-	 * 
+	 *
 	 * @param fileName
 	 *            Filename that specifies the file to be parsed.
 	 * @param delimiter
@@ -76,7 +76,7 @@ public class FilePreviewParser {
 
 					String[] row = line.split(delimiter);
 					int currentNumberOfColumns = row.length;
-					ArrayList<String> currentDataRow = new ArrayList<String>(
+					List<String> currentDataRow = new ArrayList<String>(
 							currentNumberOfColumns);
 
 					for (int i = 0; i < currentNumberOfColumns; i++) {
@@ -84,7 +84,7 @@ public class FilePreviewParser {
 					}
 
 					if (currentNumberOfColumns > totalNumberOfColumns) {
-						for (ArrayList<String> previousDataRow : dataMatrix) {
+						for (List<String> previousDataRow : dataMatrix) {
 							int previousRowLength = previousDataRow.size();
 							for (int i = 0; i < currentNumberOfColumns
 									- previousRowLength; i++) {
@@ -131,7 +131,7 @@ public class FilePreviewParser {
 	/**
 	 * @return the dataMatrix, see {@link #dataMatrix}
 	 */
-	public ArrayList<ArrayList<String>> getDataMatrix() {
+	public List<List<String>> getDataMatrix() {
 		return dataMatrix;
 	}
 

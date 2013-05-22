@@ -32,24 +32,19 @@ import org.eclipse.nebula.widgets.nattable.data.IDataProvider;
  */
 public class MatrixBasedBodyDataProvider implements IDataProvider {
 
-	private String[][] dataMatrix;
+	private List<List<String>> dataMatrix;
 	private int numColumns;
 
-	public MatrixBasedBodyDataProvider(List<? extends List<String>> dataMatrix, int numDataTableColumns) {
+	public MatrixBasedBodyDataProvider(List<List<String>> dataMatrix, int numDataTableColumns) {
 		if (dataMatrix != null) {
-			this.dataMatrix = new String[dataMatrix.size()][numDataTableColumns];
-			for (int i = 0; i < dataMatrix.size(); i++) {
-				for (int j = 0; j < numDataTableColumns; j++) {
-					this.dataMatrix[i][j] = dataMatrix.get(i).get(j);
-				}
-			}
+			this.dataMatrix = dataMatrix;
 			this.numColumns = numDataTableColumns;
 		}
 	}
 
 	@Override
 	public Object getDataValue(int columnIndex, int rowIndex) {
-		return dataMatrix == null ? "" : dataMatrix[rowIndex][columnIndex];
+		return dataMatrix == null ? "" : dataMatrix.get(rowIndex).get(columnIndex);
 	}
 
 	@Override
@@ -64,7 +59,7 @@ public class MatrixBasedBodyDataProvider implements IDataProvider {
 
 	@Override
 	public int getRowCount() {
-		return dataMatrix == null ? 1 : dataMatrix.length;
+		return dataMatrix == null ? 1 : dataMatrix.size();
 	}
 
 }

@@ -19,10 +19,20 @@
  *******************************************************************************/
 package org.caleydo.core.io.gui.dataimport.wizard;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.caleydo.core.io.DataSetDescription;
+import org.caleydo.core.io.gui.dataimport.widget.table.CategoryTable;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Group;
 
 /**
  * @author Christian
@@ -33,6 +43,17 @@ public class CategoricalDataPropertiesPage extends AImportDataPage {
 	public static final String PAGE_NAME = "Categorical Dataset Properties";
 
 	public static final String PAGE_DESCRIPTION = "Specify properties for the categorical dataset.";
+
+	/**
+	 * Radio button for ordinal categories.
+	 */
+	protected Button ordinalButton;
+	/**
+	 * Radio button for nominal categories.
+	 */
+	protected Button nominalButton;
+
+	protected CategoryTable categoryTable;
 
 	/**
 	 * @param pageName
@@ -46,6 +67,18 @@ public class CategoricalDataPropertiesPage extends AImportDataPage {
 	@Override
 	public void createControl(Composite parent) {
 		Composite parentComposite = new Composite(parent, SWT.NONE);
+		parentComposite.setLayout(new GridLayout(1, true));
+		Group categoryTypeGroup = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
+		categoryTypeGroup.setText("Category Type");
+		categoryTypeGroup.setLayout(new GridLayout(1, true));
+		ordinalButton = new Button(categoryTypeGroup, SWT.RADIO);
+		ordinalButton.setText("Ordinal");
+		ordinalButton.setSelection(true);
+
+		nominalButton = new Button(categoryTypeGroup, SWT.RADIO);
+		nominalButton.setText("Nominal");
+
+		categoryTable = new CategoryTable(parentComposite);
 		setControl(parentComposite);
 	}
 
@@ -57,9 +90,49 @@ public class CategoricalDataPropertiesPage extends AImportDataPage {
 
 	@Override
 	public void pageActivated() {
-		((DataImportWizard) getWizard()).setChosenDataTypePage(this);
-		((DataImportWizard) getWizard()).getContainer().updateButtons();
 
+		DataImportWizard wizard = (DataImportWizard) getWizard();
+		List<List<String>> categoryMatrix = extractCategoryMatrix(wizard.getFilteredDataMatrix());
+
+		categoryTable.createTableFromMatrix(categoryMatrix, 4);
+
+		wizard.setChosenDataTypePage(this);
+		wizard.getContainer().updateButtons();
+
+	}
+
+	private List<List<String>> extractCategoryMatrix(List<List<String>> fileMatrix) {
+		Map<String, Integer> categories = new HashMap<>();
+
+		for (List<String> row : fileMatrix) {
+			for (String value : row) {
+				if (!categories.containsKey(value)) {
+					categories.put(value, 1);
+				} else {
+					categories.put(value, categories.get(value) + 1);
+				}
+			}
+		}
+
+		List<String> categoryValues = new ArrayList<>(categories.keySet());
+		Collections.sort(categoryValues);
+
+		List<List<String>> categoryMatrix = new ArrayList<>(categoryValues.size());
+
+		for (String categoryValue : categoryValues) {
+			List<String> categoryRow = new ArrayList<>(4);
+			// The data value
+			categoryRow.add(categoryValue);
+			// Number of occurrences
+			categoryRow.add(categories.get(categoryValue).toString());
+			// The category name (initially same as value)
+			categoryRow.add(categoryValue);
+			// The color of the category
+			categoryRow.add("0");
+			categoryMatrix.add(categoryRow);
+		}
+
+		return categoryMatrix;
 	}
 
 	@Override

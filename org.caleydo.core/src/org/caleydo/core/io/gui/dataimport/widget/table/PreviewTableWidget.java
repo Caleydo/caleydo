@@ -381,7 +381,7 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 	 * Creates the {@link #previewTable} according to the {@link #dataMatrix}.
 	 */
 	@Override
-	public void createDataPreviewTableFromDataMatrix(List<? extends List<String>> dataMatrix, int numColumns) {
+	public void createTableFromMatrix(List<List<String>> dataMatrix, int numColumns) {
 		if (dataMatrix == null || dataMatrix.isEmpty())
 			return;
 

@@ -41,7 +41,7 @@ public class PreviewTable {
 	/**
 	 * Matrix that stores the data for {@link #MAX_PREVIEW_TABLE_ROWS} rows and all columns of the data file.
 	 */
-	private List<? extends List<String>> dataMatrix;
+	private List<List<String>> dataMatrix;
 
 	/**
 	 * The total number of columns of the input file.
@@ -99,7 +99,7 @@ public class PreviewTable {
 		parser.parse(spec.getDataSourcePath(), spec.getDelimiter(), true, PreviewTableWidget.MAX_PREVIEW_TABLE_ROWS);
 		dataMatrix = parser.getDataMatrix();
 		totalNumberOfColumns = parser.getTotalNumberOfColumns();
-		this.previewTable.createDataPreviewTableFromDataMatrix(dataMatrix, totalNumberOfColumns);
+		this.previewTable.createTableFromMatrix(dataMatrix, totalNumberOfColumns);
 		previewCallback.on(totalNumberOfColumns, parser.getTotalNumberOfRows(), dataMatrix);
 		// previewTable.updateVisibleColumns(totalNumberOfColumns);
 		this.previewTable.updateTableColors(spec.getNumberOfHeaderLines(), -1, spec.getColumnOfRowIds());

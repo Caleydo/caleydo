@@ -30,8 +30,6 @@ import org.eclipse.nebula.widgets.nattable.grid.layer.CornerLayer;
 import org.eclipse.nebula.widgets.nattable.grid.layer.GridLayer;
 import org.eclipse.nebula.widgets.nattable.grid.layer.RowHeaderLayer;
 import org.eclipse.nebula.widgets.nattable.layer.DataLayer;
-import org.eclipse.nebula.widgets.nattable.layer.cell.ColumnLabelAccumulator;
-import org.eclipse.nebula.widgets.nattable.layer.cell.ColumnOverrideLabelAccumulator;
 import org.eclipse.nebula.widgets.nattable.selection.SelectionLayer;
 import org.eclipse.nebula.widgets.nattable.viewport.ViewportLayer;
 import org.eclipse.swt.SWT;
@@ -39,34 +37,31 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- * Table used to configure different data types (Numerical, categorical) for individual columns of an inhomogeneous
- * dataset.
+ * Table for displaying and modifying properties of categories.
  *
  * @author Christian Partl
  *
  */
-public class ColumnConfigTableWidget extends AMatrixBasedTableWidget {
+public class CategoryTable extends AMatrixBasedTableWidget {
+
+	private static final String[] COLUMN_HEADERS = { "Value", "Occurrences", "Name", "Color" };
 
 	private class ColumnHeaderDataProvider implements IDataProvider {
 
-		private int numColumns;
-
-		public ColumnHeaderDataProvider(int numColumns) {
-			this.numColumns = numColumns;
-		}
-
 		@Override
 		public Object getDataValue(int columnIndex, int rowIndex) {
-			return columnIndex + 1;
+
+			return COLUMN_HEADERS[columnIndex];
 		}
 
 		@Override
 		public void setDataValue(int columnIndex, int rowIndex, Object newValue) {
+			// not possible
 		}
 
 		@Override
 		public int getColumnCount() {
-			return numColumns;
+			return 4;
 		}
 
 		@Override
@@ -76,10 +71,20 @@ public class ColumnConfigTableWidget extends AMatrixBasedTableWidget {
 
 	}
 
-	public ColumnConfigTableWidget(Composite parent) {
+	/**
+	 * @param parent
+	 */
+	public CategoryTable(Composite parent) {
 		super(parent);
 		bodyDataProvider = new MatrixBasedBodyDataProvider(null, 1);
-		buildTable(bodyDataProvider, new ColumnHeaderDataProvider(1), new LineNumberRowHeaderDataProvider(1));
+		buildTable(bodyDataProvider, new ColumnHeaderDataProvider(), new LineNumberRowHeaderDataProvider(1));
+	}
+
+	@Override
+	public void createTableFromMatrix(List<List<String>> dataMatrix, int numColumns) {
+		bodyDataProvider = new MatrixBasedBodyDataProvider(dataMatrix, numColumns);
+		buildTable(bodyDataProvider, new ColumnHeaderDataProvider(),
+				new LineNumberRowHeaderDataProvider(dataMatrix.size()));
 	}
 
 	private void buildTable(MatrixBasedBodyDataProvider bodyDataProvider, ColumnHeaderDataProvider columnDataProvider,
@@ -111,72 +116,9 @@ public class ColumnConfigTableWidget extends AMatrixBasedTableWidget {
 		gridData.widthHint = 800;
 		table.setLayoutData(gridData);
 
-		// IConfigLabelAccumulator cellLabelAccumulator = new IConfigLabelAccumulator() {
-		// @Override
-		// public void accumulateConfigLabels(LabelStack configLabels, int columnPosition, int rowPosition) {
-		// if (columnPosition == idColumnIndex || rowPosition == idRowIndex) {
-		// configLabels.addLabel(ID_CELL);
-		// }
-		// if (rowPosition < numberOfHeaderRows) {
-		// configLabels.addLabel(HEADER_LINE_CELL);
-		// }
-		// }
-		// };
-
-		// bodyDataLayer.setConfigLabelAccumulator(cellLabelAccumulator);
-		ColumnOverrideLabelAccumulator acc = new ColumnOverrideLabelAccumulator(columnHeaderLayer);
-		columnHeaderLayer.setConfigLabelAccumulator(acc);
-		acc.registerColumnOverrides(9, ColumnLabelAccumulator.COLUMN_LABEL_PREFIX + 9);
 		table.addConfiguration(new DefaultNatTableStyleConfiguration());
-		// table.addConfiguration(new AbstractRegistryConfiguration() {
-		// @Override
-		// public void configureRegistry(IConfigRegistry configRegistry) {
-		// Style cellStyle = new Style();
-		//
-		// cellStyle.setAttributeValue(CellStyleAttributes.BACKGROUND_COLOR, GUIHelper.COLOR_GREEN);
-		// configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_STYLE, cellStyle, DisplayMode.NORMAL,
-		// ID_CELL);
-		//
-		// cellStyle = new Style();
-		// cellStyle.setAttributeValue(CellStyleAttributes.BACKGROUND_COLOR, GUIHelper.COLOR_DARK_GRAY);
-		// configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_STYLE, cellStyle, DisplayMode.NORMAL,
-		// HEADER_LINE_CELL);
-		// }
-		// });
-
-		// final ColumnHeaderCheckBoxPainter columnHeaderCheckBoxPainter = new
-		// ColumnHeaderCheckBoxPainter(columnDataLayer);
-		// final ICellPainter column9HeaderPainter = new BeveledBorderDecorator(columnHeaderCheckBoxPainter);
-		// final ICellPainter column9HeaderPainter = new BeveledBorderDecorator(new CellPainterDecorator(
-		// new TextPainter(), CellEdgeEnum.RIGHT, columnHeaderCheckBoxPainter));
-		// table.addConfiguration(new AbstractRegistryConfiguration() {
-		// @Override
-		// public void configureRegistry(IConfigRegistry configRegistry) {
-		// configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_PAINTER, column9HeaderPainter,
-		// DisplayMode.NORMAL, GridRegion.COLUMN_HEADER);
-		// }
-		//
-		// @Override
-		// public void configureUiBindings(UiBindingRegistry uiBindingRegistry) {
-		// uiBindingRegistry.registerFirstSingleClickBinding(new CellPainterMouseEventMatcher(
-		// GridRegion.COLUMN_HEADER, MouseEventMatcher.LEFT_BUTTON, columnHeaderCheckBoxPainter),
-		// new ToggleCheckBoxColumnAction(columnHeaderCheckBoxPainter, columnDataLayer));
-		// }
-		// });
 
 		table.configure();
-
-	}
-
-	@Override
-	public void createTableFromMatrix(List<List<String>> dataMatrix, int numColumns) {
-		if (dataMatrix == null || dataMatrix.isEmpty())
-			return;
-
-		bodyDataProvider = new MatrixBasedBodyDataProvider(dataMatrix, numColumns);
-		buildTable(bodyDataProvider, new ColumnHeaderDataProvider(numColumns), new LineNumberRowHeaderDataProvider(
-				dataMatrix.size()));
-
 	}
 
 }

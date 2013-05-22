@@ -6,14 +6,12 @@ package org.caleydo.core.io.gui.dataimport.wizard;
 import java.util.ArrayList;
 
 import org.caleydo.core.id.IDCategory;
-import org.caleydo.core.io.ColumnDescription;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.NumericalProperties;
-import org.caleydo.core.io.gui.dataimport.FilePreviewParser;
 
 /**
- * Mediator for {@link NumericalDataPropertiesPage}. This class is responsible for setting the states of all widgets of the page
- * and triggering actions according to different events that occur in the page.
+ * Mediator for {@link NumericalDataPropertiesPage}. This class is responsible for setting the states of all widgets of
+ * the page and triggering actions according to different events that occur in the page.
  *
  *
  * @author Christian Partl
@@ -27,11 +25,6 @@ public class NumericalDataPropertiesPageMediator {
 	private String dataTransformation = "None";
 
 	private DataSetDescription dataSetDescription;
-
-	/**
-	 * Parser used to parse data files.
-	 */
-	private FilePreviewParser parser = new FilePreviewParser();
 
 	/**
 	 * Matrix that stores the data for {@link #MAX_PREVIEW_TABLE_ROWS} rows and all columns of the data file.
@@ -160,22 +153,22 @@ public class NumericalDataPropertiesPageMediator {
 
 		}
 		dataSourcePath = dataSetDescription.getDataSourcePath();
-		parser.parse(dataSetDescription.getDataSourcePath(), dataSetDescription.getDelimiter(), true, -1);
-		ArrayList<ArrayList<String>> matrix = parser.getDataMatrix();
-		ArrayList<ArrayList<String>> filteredMatrix = new ArrayList<>(matrix.size());
-		ArrayList<ColumnDescription> parsingPattern = dataSetDescription.getOrCreateParsingPattern();
-		for (int i = 0; i < matrix.size(); i++) {
-			if (i < dataSetDescription.getNumberOfHeaderLines() - 1)
-				continue;
-			ArrayList<String> row = matrix.get(i);
-			ArrayList<String> filteredRow = new ArrayList<>(parsingPattern.size());
-			for (ColumnDescription columnDescription : parsingPattern) {
-				filteredRow.add(row.get(columnDescription.getColumn()));
-			}
-			filteredMatrix.add(filteredRow);
-		}
+		// parser.parse(dataSetDescription.getDataSourcePath(), dataSetDescription.getDelimiter(), true, -1);
+		// List<List<String>> matrix = parser.getDataMatrix();
+		// List<List<String>> filteredMatrix = new ArrayList<>(matrix.size());
+		// List<ColumnDescription> parsingPattern = dataSetDescription.getOrCreateParsingPattern();
+		// for (int i = 0; i < matrix.size(); i++) {
+		// if (i < dataSetDescription.getNumberOfHeaderLines() - 1)
+		// continue;
+		// List<String> row = matrix.get(i);
+		// List<String> filteredRow = new ArrayList<>(parsingPattern.size());
+		// for (ColumnDescription columnDescription : parsingPattern) {
+		// filteredRow.add(row.get(columnDescription.getColumn()));
+		// }
+		// filteredMatrix.add(filteredRow);
+		// }
 
-		page.columnConfigTable.createDataPreviewTableFromDataMatrix(filteredMatrix, parsingPattern.size());
+		// page.columnConfigTable.createTableFromMatrix(filteredMatrix, parsingPattern.size());
 	}
 
 	private void updateColumnCountWarning() {

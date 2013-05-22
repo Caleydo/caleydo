@@ -4,6 +4,7 @@
 package org.caleydo.core.io.gui.dataimport.wizard;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.caleydo.core.io.DataLoader;
@@ -70,6 +71,11 @@ public class DataImportWizard extends Wizard {
 	 * The total number of rows in the loaded dataset.
 	 */
 	private int totalNumberOfColumns;
+
+	/**
+	 * Matrix that only contains the selected data columns (no id column) and data rows (no header rows).
+	 */
+	private List<List<String>> filteredDataMatrix;
 
 	private Set<AImportDataPage> visitedPages = new HashSet<AImportDataPage>();
 
@@ -263,6 +269,21 @@ public class DataImportWizard extends Wizard {
 	 */
 	public AddGroupingsPage getAddGroupingsPage() {
 		return addGroupingsPage;
+	}
+
+	/**
+	 * @param filteredDataMatrix
+	 *            setter, see {@link filteredDataMatrix}
+	 */
+	public void setFilteredDataMatrix(List<List<String>> filteredDataMatrix) {
+		this.filteredDataMatrix = filteredDataMatrix;
+	}
+
+	/**
+	 * @return the filteredDataMatrix, see {@link #filteredDataMatrix}
+	 */
+	public List<List<String>> getFilteredDataMatrix() {
+		return filteredDataMatrix;
 	}
 
 }

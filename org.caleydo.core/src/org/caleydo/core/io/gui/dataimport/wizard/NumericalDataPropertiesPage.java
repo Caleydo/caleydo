@@ -4,7 +4,6 @@
 package org.caleydo.core.io.gui.dataimport.wizard;
 
 import org.caleydo.core.io.DataSetDescription;
-import org.caleydo.core.io.gui.dataimport.widget.table.ColumnConfigTableWidget;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.wizard.IWizardPage;
@@ -107,11 +106,6 @@ public class NumericalDataPropertiesPage extends AImportDataPage implements List
 	protected Group dataCenterGroup;
 
 	/**
-	 * Table for configuring data types of individual columns.
-	 */
-	protected ColumnConfigTableWidget columnConfigTable;
-
-	/**
 	 * Mediator of this class.
 	 */
 	private NumericalDataPropertiesPageMediator mediator;
@@ -138,9 +132,6 @@ public class NumericalDataPropertiesPage extends AImportDataPage implements List
 		parentComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		parentComposite.setLayout(new GridLayout(1, true));
 
-		Combo dataSetTypeCombo = new Combo(parentComposite, SWT.DROP_DOWN | SWT.READ_ONLY);
-		dataSetTypeCombo.setItems(new String[] { "Homogeneous Numerical", "Homogeneous Categorical", "Inhomogeneous" });
-		dataSetTypeCombo.select(0);
 		createScalingGroup(parentComposite);
 
 		createClippingGroup(parentComposite);
@@ -148,7 +139,6 @@ public class NumericalDataPropertiesPage extends AImportDataPage implements List
 		createTranspositionGroup(parentComposite);
 
 		createDataCenterGroup(parentComposite);
-		columnConfigTable = new ColumnConfigTableWidget(parentComposite);
 		// mediator.guiCreated();
 
 		setControl(parentComposite);

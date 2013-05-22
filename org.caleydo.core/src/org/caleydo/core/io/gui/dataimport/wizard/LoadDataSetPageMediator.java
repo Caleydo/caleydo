@@ -63,12 +63,12 @@ public class LoadDataSetPageMediator {
 	/**
 	 * All registered id categories.
 	 */
-	private ArrayList<IDCategory> registeredIDCategories;
+	private List<IDCategory> registeredIDCategories;
 
 	/**
 	 * Matrix that stores the data for {@link #MAX_PREVIEW_TABLE_ROWS} rows and all columns of the data file.
 	 */
-	protected ArrayList<ArrayList<String>> dataMatrix;
+	protected List<List<String>> dataMatrix;
 
 	/**
 	 * The total number of columns of the input file.
@@ -83,12 +83,12 @@ public class LoadDataSetPageMediator {
 	/**
 	 * The IDTypes available for {@link #rowIDCategory}.
 	 */
-	protected ArrayList<IDType> rowIDTypes = new ArrayList<IDType>();
+	protected List<IDType> rowIDTypes = new ArrayList<IDType>();
 
 	/**
 	 * The IDTypes available for {@link #columnIDCategory}.
 	 */
-	protected ArrayList<IDType> columnIDTypes = new ArrayList<IDType>();
+	protected List<IDType> columnIDTypes = new ArrayList<IDType>();
 
 	/**
 	 * The current row id category.
@@ -497,7 +497,7 @@ public class LoadDataSetPageMediator {
 		DataImportWizard wizard = (DataImportWizard) page.getWizard();
 		wizard.setTotalNumberOfColumns(totalNumberOfColumns);
 		wizard.setTotalNumberOfRows(totalNumberOfRows);
-		page.previewTable.createDataPreviewTableFromDataMatrix(dataMatrix, totalNumberOfColumns);
+		page.previewTable.createTableFromMatrix(dataMatrix, totalNumberOfColumns);
 		updateWidgetsAccordingToTableChanges();
 		determineIDTypes();
 		guessNumberOfHeaderRows();
@@ -513,7 +513,7 @@ public class LoadDataSetPageMediator {
 		// be an id row
 		int numHeaderRows = 1;
 		for (int i = 1; i < dataMatrix.size(); i++) {
-			ArrayList<String> row = dataMatrix.get(i);
+			List<String> row = dataMatrix.get(i);
 			int numFloatsFound = 0;
 			for (int j = 0; j < row.size(); j++) {
 				String text = row.get(j);
@@ -537,12 +537,12 @@ public class LoadDataSetPageMediator {
 
 		List<String> rowIDList = new ArrayList<String>();
 		for (int i = 0; i < dataMatrix.size() && i < MAX_CONSIDERED_IDS_FOR_ID_TYPE_DETERMINATION; i++) {
-			ArrayList<String> row = dataMatrix.get(i);
+			List<String> row = dataMatrix.get(i);
 			rowIDList.add(row.get(dataSetDescription.getColumnOfRowIds()));
 		}
 
 		List<String> columnIDList = new ArrayList<String>();
-		ArrayList<String> idRow = dataMatrix.get(dataSetDescription.getRowOfColumnIDs());
+		List<String> idRow = dataMatrix.get(dataSetDescription.getRowOfColumnIDs());
 		for (int i = 0; i < idRow.size() && i < MAX_CONSIDERED_IDS_FOR_ID_TYPE_DETERMINATION; i++) {
 			columnIDList.add(idRow.get(i));
 		}
@@ -571,7 +571,7 @@ public class LoadDataSetPageMediator {
 	}
 
 	private void setMostProbableIDType(IDType mostProbableIDType, Combo idCategoryCombo, Combo idTypeCombo,
-			ArrayList<IDType> idTypes, boolean isColumnIDType) {
+			List<IDType> idTypes, boolean isColumnIDType) {
 		if (mostProbableIDType != null) {
 			int index = registeredIDCategories.indexOf(mostProbableIDType.getIDCategory());
 			idCategoryCombo.select(index);
@@ -603,7 +603,7 @@ public class LoadDataSetPageMediator {
 		}
 	}
 
-	protected ArrayList<IDCategory> getAvailableIDCategories() {
+	protected List<IDCategory> getAvailableIDCategories() {
 		return registeredIDCategories;
 	}
 
@@ -665,7 +665,7 @@ public class LoadDataSetPageMediator {
 
 	}
 
-	private void fillIDTypeCombo(IDCategory idCategory, ArrayList<IDType> idTypes, Combo idTypeCombo) {
+	private void fillIDTypeCombo(IDCategory idCategory, List<IDType> idTypes, Combo idTypeCombo) {
 
 		if (idCategory == null)
 			return;
@@ -742,6 +742,23 @@ public class LoadDataSetPageMediator {
 		dataSetDescription.setDataSetName(page.label.getText());
 
 		readDimensionDefinition();
+
+		List<List<String>> matrix = parser.getDataMatrix();
+		List<List<String>> filteredMatrix = new ArrayList<>(matrix.size());
+		List<ColumnDescription> parsingPattern = dataSetDescription.getOrCreateParsingPattern();
+		for (int i = 0; i < matrix.size(); i++) {
+			if (i < dataSetDescription.getNumberOfHeaderLines())
+				continue;
+			List<String> row = matrix.get(i);
+			List<String> filteredRow = new ArrayList<>(parsingPattern.size());
+			for (ColumnDescription columnDescription : parsingPattern) {
+				filteredRow.add(row.get(columnDescription.getColumn()));
+			}
+			filteredMatrix.add(filteredRow);
+		}
+
+		DataImportWizard wizard = (DataImportWizard) page.getWizard();
+		wizard.setFilteredDataMatrix(filteredMatrix);
 	}
 
 	/**

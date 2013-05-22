@@ -42,7 +42,7 @@ public abstract class AMatrixBasedTableWidget {
 		this.parent = parent;
 	}
 
-	public abstract void createDataPreviewTableFromDataMatrix(List<? extends List<String>> dataMatrix, int numColumns);
+	public abstract void createTableFromMatrix(List<List<String>> dataMatrix, int numColumns);
 
 
 	public String getValue(int rowIndex, int columnIndex) {
