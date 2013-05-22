@@ -49,7 +49,7 @@ public class MatrixBasedBodyDataProvider implements IDataProvider {
 
 	@Override
 	public void setDataValue(int columnIndex, int rowIndex, Object newValue) {
-		// do not allow to change values
+		dataMatrix.get(rowIndex).set(columnIndex, (String) newValue);
 	}
 
 	@Override
@@ -62,4 +62,10 @@ public class MatrixBasedBodyDataProvider implements IDataProvider {
 		return dataMatrix == null ? 1 : dataMatrix.size();
 	}
 
+	/**
+	 * @return the dataMatrix, see {@link #dataMatrix}
+	 */
+	public List<List<String>> getDataMatrix() {
+		return dataMatrix;
+	}
 }

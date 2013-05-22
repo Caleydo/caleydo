@@ -22,15 +22,25 @@ package org.caleydo.core.io.gui.dataimport.widget.table;
 import java.util.List;
 
 import org.eclipse.nebula.widgets.nattable.NatTable;
+import org.eclipse.nebula.widgets.nattable.config.AbstractRegistryConfiguration;
+import org.eclipse.nebula.widgets.nattable.config.CellConfigAttributes;
 import org.eclipse.nebula.widgets.nattable.config.DefaultNatTableStyleConfiguration;
+import org.eclipse.nebula.widgets.nattable.config.IConfigRegistry;
+import org.eclipse.nebula.widgets.nattable.config.IEditableRule;
 import org.eclipse.nebula.widgets.nattable.data.IDataProvider;
+import org.eclipse.nebula.widgets.nattable.edit.EditConfigAttributes;
 import org.eclipse.nebula.widgets.nattable.grid.data.DefaultCornerDataProvider;
 import org.eclipse.nebula.widgets.nattable.grid.layer.ColumnHeaderLayer;
 import org.eclipse.nebula.widgets.nattable.grid.layer.CornerLayer;
 import org.eclipse.nebula.widgets.nattable.grid.layer.GridLayer;
 import org.eclipse.nebula.widgets.nattable.grid.layer.RowHeaderLayer;
 import org.eclipse.nebula.widgets.nattable.layer.DataLayer;
+import org.eclipse.nebula.widgets.nattable.layer.cell.ColumnOverrideLabelAccumulator;
 import org.eclipse.nebula.widgets.nattable.selection.SelectionLayer;
+import org.eclipse.nebula.widgets.nattable.style.CellStyleAttributes;
+import org.eclipse.nebula.widgets.nattable.style.DisplayMode;
+import org.eclipse.nebula.widgets.nattable.style.Style;
+import org.eclipse.nebula.widgets.nattable.util.GUIHelper;
 import org.eclipse.nebula.widgets.nattable.viewport.ViewportLayer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -44,7 +54,10 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class CategoryTable extends AMatrixBasedTableWidget {
 
-	private static final String[] COLUMN_HEADERS = { "Value", "Occurrences", "Name", "Color" };
+	private static final String EDITABLE = "EDITABLE";
+	private static final String NON_EDITABLE = "NON_EDITABLE";
+
+	public static final String[] COLUMN_HEADERS = { "Value", "Count", "Name", "Color" };
 
 	private class ColumnHeaderDataProvider implements IDataProvider {
 
@@ -96,6 +109,7 @@ public class CategoryTable extends AMatrixBasedTableWidget {
 		}
 
 		final DataLayer bodyDataLayer = new DataLayer(bodyDataProvider);
+
 		SelectionLayer selectionLayer = new SelectionLayer(bodyDataLayer);
 		ViewportLayer bodyLayer = new ViewportLayer(selectionLayer);
 
@@ -117,8 +131,38 @@ public class CategoryTable extends AMatrixBasedTableWidget {
 		table.setLayoutData(gridData);
 
 		table.addConfiguration(new DefaultNatTableStyleConfiguration());
+		ColumnOverrideLabelAccumulator acc = new ColumnOverrideLabelAccumulator(bodyDataLayer);
+		bodyDataLayer.setConfigLabelAccumulator(acc);
+		acc.registerColumnOverrides(0, NON_EDITABLE);
+		acc.registerColumnOverrides(1, NON_EDITABLE);
+		acc.registerColumnOverrides(2, EDITABLE);
+		acc.registerColumnOverrides(3, "COLOR");
+		table.addConfiguration(new AbstractRegistryConfiguration() {
+
+			@Override
+			public void configureRegistry(IConfigRegistry configRegistry) {
+				configRegistry.registerConfigAttribute(EditConfigAttributes.CELL_EDITABLE_RULE,
+						IEditableRule.ALWAYS_EDITABLE, DisplayMode.EDIT, EDITABLE);
+				Style cellStyle = new Style();
+
+				cellStyle.setAttributeValue(CellStyleAttributes.FOREGROUND_COLOR, GUIHelper.COLOR_WIDGET_NORMAL_SHADOW);
+				configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_STYLE, cellStyle, DisplayMode.NORMAL,
+						NON_EDITABLE);
+
+				// cellStyle = new Style();
+				// cellStyle.setAttributeValue(CellStyleAttributes.BACKGROUND_COLOR, GUIHelper.COLOR_WHITE);
+				// configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_STYLE, cellStyle,
+				// DisplayMode.NORMAL,
+				// "WHITE");
+
+			}
+		});
 
 		table.configure();
+	}
+
+	public List<List<String>> getDataMatrix() {
+		return bodyDataProvider.getDataMatrix();
 	}
 
 }

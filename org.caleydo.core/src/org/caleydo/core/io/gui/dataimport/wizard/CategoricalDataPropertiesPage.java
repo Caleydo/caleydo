@@ -25,8 +25,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.caleydo.core.data.collection.EDataType;
+import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
+import org.caleydo.core.data.collection.column.container.CategoricalClassDescription.ECategoryType;
+import org.caleydo.core.io.ColumnDescription;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.gui.dataimport.widget.table.CategoryTable;
+import org.caleydo.core.util.color.Color;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
@@ -84,8 +89,29 @@ public class CategoricalDataPropertiesPage extends AImportDataPage {
 
 	@Override
 	public void fillDataSetDescription() {
-		// TODO Auto-generated method stub
 
+		List<List<String>> categories = categoryTable.getDataMatrix();
+		CategoricalClassDescription<String> categoricalClassDescription = new CategoricalClassDescription<>();
+		categoricalClassDescription.setCategoryType(ordinalButton.getSelection() ? ECategoryType.ORDINAL
+				: ECategoryType.NOMINAL);
+		categoricalClassDescription.setRawDataType(EDataType.STRING);
+		for (List<String> category : categories) {
+			categoricalClassDescription.addCategoryProperty(category.get(0), category.get(2), new Color("000000"));
+		}
+
+		dataSetDescription.getDataDescription().setCategoricalClassDescription(categoricalClassDescription);
+
+		ArrayList<ColumnDescription> inputPattern = new ArrayList<ColumnDescription>();
+		DataImportWizard wizard = (DataImportWizard) getWizard();
+
+		for (Integer selected : wizard.getSelectedColumns()) {
+			int columnIndex = selected.intValue();
+			if (columnIndex == dataSetDescription.getColumnOfRowIds())
+				continue;
+			inputPattern.add(new ColumnDescription(columnIndex, dataSetDescription.getDataDescription()));
+		}
+
+		dataSetDescription.setParsingPattern(inputPattern);
 	}
 
 	@Override

@@ -6,6 +6,7 @@ package org.caleydo.core.io.gui.dataimport.wizard;
 import java.util.ArrayList;
 
 import org.caleydo.core.id.IDCategory;
+import org.caleydo.core.io.ColumnDescription;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.NumericalProperties;
 
@@ -53,10 +54,7 @@ public class NumericalDataPropertiesPageMediator {
 	public void guiCreated() {
 
 		NumericalProperties numericalProperties = dataSetDescription.getDataDescription().getNumericalProperties();
-		if (numericalProperties == null) {
-			numericalProperties = new NumericalProperties();
-			dataSetDescription.getDataDescription().setNumericalProperties(numericalProperties);
-		}
+
 
 		String previousMathFiltermode = numericalProperties.getDataTransformation();
 		String[] scalingOptions = { "None", "Log10", "Log2" };
@@ -175,8 +173,8 @@ public class NumericalDataPropertiesPageMediator {
 		DataImportWizard wizard = (DataImportWizard) page.getWizard();
 		int totalNumberOfRows = wizard.getTotalNumberOfRows();
 
-		int numColumns = page.swapRowsWithColumnsButton.getSelection() ? totalNumberOfRows : (dataSetDescription
-				.getOrCreateParsingPattern().size() + 1);
+		int numColumns = page.swapRowsWithColumnsButton.getSelection() ? totalNumberOfRows : (((DataImportWizard) page
+				.getWizard()).getSelectedColumns().size() + 1);
 
 		if (page.warningIconLabel1 != null && !page.warningIconLabel1.isDisposed()) {
 			page.warningIconLabel1.dispose();
@@ -201,7 +199,7 @@ public class NumericalDataPropertiesPageMediator {
 			}
 		}
 
-		if (totalNumberOfRows > 50 && dataSetDescription.getOrCreateParsingPattern().size() > 50) {
+		if (totalNumberOfRows > 50 && numColumns > 50) {
 			if (page.warningIconLabel2 == null || page.warningIconLabel2.isDisposed()) {
 				page.warningIconLabel2 = page.createWarningIconLabel(page.dataTranspositionGroup);
 				page.warningDescriptionLabel2 = page
@@ -238,6 +236,19 @@ public class NumericalDataPropertiesPageMediator {
 
 		numericalProperties.setDataTransformation(dataTransformation);
 		dataSetDescription.setTransposeMatrix(page.swapRowsWithColumnsButton.getSelection());
+
+		ArrayList<ColumnDescription> inputPattern = new ArrayList<ColumnDescription>();
+		DataImportWizard wizard = (DataImportWizard) page.getWizard();
+
+		for (Integer selected : wizard.getSelectedColumns()) {
+			int columnIndex = selected.intValue();
+			if (columnIndex == dataSetDescription.getColumnOfRowIds())
+				continue;
+			inputPattern.add(new ColumnDescription(columnIndex, dataSetDescription.getDataDescription()));
+
+		}
+
+		dataSetDescription.setParsingPattern(inputPattern);
 	}
 
 	public boolean isDataValid() {

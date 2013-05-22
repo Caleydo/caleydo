@@ -446,8 +446,8 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 	 *
 	 * @return
 	 */
-	public Collection<Integer> getSelectedColumns() {
-		Collection<Integer> result = new ArrayList<>();
+	public List<Integer> getSelectedColumns() {
+		List<Integer> result = new ArrayList<>();
 
 		for (int i = 0; i < columnSelectionStatus.size(); i++) {
 			if (columnSelectionStatus.get(i)) {

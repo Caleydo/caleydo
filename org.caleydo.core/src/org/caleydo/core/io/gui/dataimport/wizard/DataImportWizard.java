@@ -77,6 +77,11 @@ public class DataImportWizard extends Wizard {
 	 */
 	private List<List<String>> filteredDataMatrix;
 
+	/**
+	 * All of the dataset that shall be imported.
+	 */
+	private List<Integer> selectedColumns;
+
 	private Set<AImportDataPage> visitedPages = new HashSet<AImportDataPage>();
 
 	/**
@@ -284,6 +289,21 @@ public class DataImportWizard extends Wizard {
 	 */
 	public List<List<String>> getFilteredDataMatrix() {
 		return filteredDataMatrix;
+	}
+
+	/**
+	 * @param selectedColumns
+	 *            setter, see {@link selectedColumns}
+	 */
+	public void setSelectedColumns(List<Integer> selectedColumns) {
+		this.selectedColumns = selectedColumns;
+	}
+
+	/**
+	 * @return the selectedColumns, see {@link #selectedColumns}
+	 */
+	public List<Integer> getSelectedColumns() {
+		return selectedColumns;
 	}
 
 }

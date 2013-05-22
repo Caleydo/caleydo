@@ -19,7 +19,12 @@
  *******************************************************************************/
 package org.caleydo.core.io.gui.dataimport.wizard;
 
+import org.caleydo.core.data.collection.EDataClass;
+import org.caleydo.core.data.collection.EDataType;
+import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
+import org.caleydo.core.io.DataDescription;
 import org.caleydo.core.io.DataSetDescription;
+import org.caleydo.core.io.NumericalProperties;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
@@ -74,6 +79,7 @@ public class DataSetTypePage extends AImportDataPage {
 
 		inhomogeneousDatasetButton = new Button(group, SWT.RADIO);
 		inhomogeneousDatasetButton.setText("Inhomogeneous");
+		inhomogeneousDatasetButton.setEnabled(false);
 		boldifyButtonText(inhomogeneousDatasetButton);
 		Label inhomogeneousDatasetLabel = new Label(group, SWT.NONE);
 		inhomogeneousDatasetLabel.setText("Description...");
@@ -89,8 +95,20 @@ public class DataSetTypePage extends AImportDataPage {
 
 	@Override
 	public void fillDataSetDescription() {
-		// TODO Auto-generated method stub
+		if (numericalDatasetButton.getSelection()) {
+			if (dataSetDescription.getDataDescription() == null
+					|| dataSetDescription.getDataDescription().getNumericalProperties() == null) {
+				dataSetDescription.setDataDescription(new DataDescription(EDataClass.REAL_NUMBER, EDataType.FLOAT,
+						new NumericalProperties()));
+			}
 
+		} else if (categoricalDatasetButton.getSelection()) {
+			if (dataSetDescription.getDataDescription() == null
+					|| dataSetDescription.getDataDescription().getCategoricalClassDescription() == null) {
+				dataSetDescription.setDataDescription(new DataDescription(EDataClass.CATEGORICAL, EDataType.STRING,
+						new CategoricalClassDescription<String>()));
+			}
+		}
 	}
 
 	@Override

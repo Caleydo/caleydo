@@ -7,11 +7,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
-import org.caleydo.core.io.ColumnDescription;
-import org.caleydo.core.io.DataDescription;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.GroupingParseSpecification;
 import org.caleydo.core.io.IDSpecification;
@@ -127,10 +124,6 @@ public class LoadDataSetPageMediator {
 			if (!idCategory.isInternaltCategory())
 				registeredIDCategories.add(idCategory);
 		}
-
-		// FIXME here I statically set the DataDescription for numerical data. This needs to be adapted to deal with (a)
-		// other data classes/types and (b) to be different on a per-column level.
-		dataSetDescription.setDataDescription(new DataDescription(EDataClass.REAL_NUMBER));
 
 	}
 
@@ -741,24 +734,28 @@ public class LoadDataSetPageMediator {
 		// dataSetDescription.setDataHomogeneous(page.buttonHomogeneous.getSelection());
 		dataSetDescription.setDataSetName(page.label.getText());
 
-		readDimensionDefinition();
+		dataSetDescription.setDataSourcePath(page.loadFile.getFileName());
+		// readDimensionDefinition();
 
 		List<List<String>> matrix = parser.getDataMatrix();
 		List<List<String>> filteredMatrix = new ArrayList<>(matrix.size());
-		List<ColumnDescription> parsingPattern = dataSetDescription.getOrCreateParsingPattern();
+		List<Integer> selectedColumns = page.previewTable.getSelectedColumns();
+
 		for (int i = 0; i < matrix.size(); i++) {
 			if (i < dataSetDescription.getNumberOfHeaderLines())
 				continue;
 			List<String> row = matrix.get(i);
-			List<String> filteredRow = new ArrayList<>(parsingPattern.size());
-			for (ColumnDescription columnDescription : parsingPattern) {
-				filteredRow.add(row.get(columnDescription.getColumn()));
+			List<String> filteredRow = new ArrayList<>(selectedColumns.size());
+			for (int selectedColumn : selectedColumns) {
+				if (selectedColumn != dataSetDescription.getColumnOfRowIds())
+					filteredRow.add(row.get(selectedColumn));
 			}
 			filteredMatrix.add(filteredRow);
 		}
 
 		DataImportWizard wizard = (DataImportWizard) page.getWizard();
 		wizard.setFilteredDataMatrix(filteredMatrix);
+		wizard.setSelectedColumns(selectedColumns);
 	}
 
 	/**
@@ -768,38 +765,38 @@ public class LoadDataSetPageMediator {
 	 *
 	 * @return <code>true</code> if the preparation was successful, <code>false</code> otherwise
 	 */
-	private void readDimensionDefinition() {
-		// ArrayList<String> dimensionLabels = new ArrayList<String>();
-
-		ArrayList<ColumnDescription> inputPattern = new ArrayList<ColumnDescription>();
-		// inputPattern = new StringBuffer("SKIP" + ";");
-
-		// the columnIndex here is the columnIndex of the previewTable. This is
-		// different by one from the index in the source csv.
-		for (Integer selected : page.previewTable.getSelectedColumns()) {
-			int columnIndex = selected.intValue();
-			if (columnIndex == dataSetDescription.getColumnOfRowIds())
-				continue;
-			if (columnIndex >= 0)
-				inputPattern.add(createColumnDescription(columnIndex));
-			else {
-				// wildcard creating multiple column descriptions at once, i.e til the end
-				int from = page.previewTable.getColumnCount(); // everything before was directly selected
-				int to = this.totalNumberOfColumns; // all possible
-				for (int i = from; i < to; ++i) {
-					// TODO how to handle different automatically detected types for unknown
-					inputPattern.add(new ColumnDescription(i, dataSetDescription.getDataDescription()));
-				}
-			}
-
-			// String labelText = dataMatrix.get(0).get(columnIndex);
-			// dimensionLabels.add(labelText);
-		}
-		dataSetDescription.setParsingPattern(inputPattern);
-		dataSetDescription.setDataSourcePath(page.loadFile.getFileName());
-		// dataSetDescripton.setColumnLabels(dimidMappingManagerensionLabels);
-
-	}
+	// private void readDimensionDefinition() {
+	// // ArrayList<String> dimensionLabels = new ArrayList<String>();
+	//
+	// ArrayList<ColumnDescription> inputPattern = new ArrayList<ColumnDescription>();
+	// // inputPattern = new StringBuffer("SKIP" + ";");
+	//
+	// // the columnIndex here is the columnIndex of the previewTable. This is
+	// // different by one from the index in the source csv.
+	// for (Integer selected : page.previewTable.getSelectedColumns()) {
+	// int columnIndex = selected.intValue();
+	// if (columnIndex == dataSetDescription.getColumnOfRowIds())
+	// continue;
+	// if (columnIndex >= 0)
+	// inputPattern.add(createColumnDescription(columnIndex));
+	// else {
+	// // wildcard creating multiple column descriptions at once, i.e til the end
+	// int from = page.previewTable.getColumnCount(); // everything before was directly selected
+	// int to = this.totalNumberOfColumns; // all possible
+	// for (int i = from; i < to; ++i) {
+	// // TODO how to handle different automatically detected types for unknown
+	// inputPattern.add(new ColumnDescription(i, dataSetDescription.getDataDescription()));
+	// }
+	// }
+	//
+	// // String labelText = dataMatrix.get(0).get(columnIndex);
+	// // dimensionLabels.add(labelText);
+	// }
+	// dataSetDescription.setParsingPattern(inputPattern);
+	// dataSetDescription.setDataSourcePath(page.loadFile.getFileName());
+	// // dataSetDescripton.setColumnLabels(dimidMappingManagerensionLabels);
+	//
+	// }
 
 	/**
 	 * Creates a {@link ColumnDescription} for the specified column.
@@ -808,27 +805,27 @@ public class LoadDataSetPageMediator {
 	 *            Index of the column in the file.
 	 * @return The ColumnDescription.
 	 */
-	private ColumnDescription createColumnDescription(int columnIndex) {
-
-		// TODO: This is just a temporary solution to the problem of detecting
-		// NaN values: now we expect the column to be float, if one float is
-		// found, otherwise it is a string.
-		int testSize = page.previewTable.getRowCount();
-		for (int rowIndex = dataSetDescription.getNumberOfHeaderLines(); rowIndex < testSize; rowIndex++) {
-			if (rowIndex != dataSetDescription.getRowOfColumnIDs()) {
-				String testString = dataMatrix.get(rowIndex).get(columnIndex);
-				try {
-					if (!testString.isEmpty()) {
-						Float.parseFloat(testString);
-						return new ColumnDescription(columnIndex, dataSetDescription.getDataDescription());
-					}
-				} catch (NumberFormatException nfe) {
-				}
-			}
-		}
-		throw new UnsupportedOperationException("Not implemented for non-numerica data");
-		// return new ColumnDescription(columnIndex, EDataClass.CATEGORICAL, EDataType.STRING);
-	}
+	// private ColumnDescription createColumnDescription(int columnIndex) {
+	//
+	// // TODO: This is just a temporary solution to the problem of detecting
+	// // NaN values: now we expect the column to be float, if one float is
+	// // found, otherwise it is a string.
+	// int testSize = page.previewTable.getRowCount();
+	// for (int rowIndex = dataSetDescription.getNumberOfHeaderLines(); rowIndex < testSize; rowIndex++) {
+	// if (rowIndex != dataSetDescription.getRowOfColumnIDs()) {
+	// String testString = dataMatrix.get(rowIndex).get(columnIndex);
+	// try {
+	// if (!testString.isEmpty()) {
+	// Float.parseFloat(testString);
+	// return new ColumnDescription(columnIndex, dataSetDescription.getDataDescription());
+	// }
+	// } catch (NumberFormatException nfe) {
+	// }
+	// }
+	// }
+	// throw new UnsupportedOperationException("Not implemented for non-numerica data");
+	// // return new ColumnDescription(columnIndex, EDataClass.CATEGORICAL, EDataType.STRING);
+	// }
 
 	/**
 	 * @return the dataSetDescription, see {@link #dataSetDescription}
