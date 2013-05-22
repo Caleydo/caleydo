@@ -74,7 +74,7 @@ public class DataDomainQueryUI extends GLElementContainer implements IGLLayout, 
 			}
 			y += 20;
 		}
-		return y;
+		return Math.max(y, actMaxY);
 	}
 
 	@Override

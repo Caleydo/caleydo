@@ -20,6 +20,7 @@
 package org.caleydo.vis.rank.ui.column;
 
 import static org.caleydo.core.view.opengl.layout2.layout.GLLayouts.defaultValue;
+import static org.caleydo.vis.rank.ui.RenderStyle.HIST_HEIGHT;
 import static org.caleydo.vis.rank.ui.RenderStyle.LABEL_HEIGHT;
 import gleem.linalg.Vec2f;
 
@@ -167,6 +168,9 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 
 	}
 
+	private static boolean isSmallHeader(float h) {
+		return h < (LABEL_HEIGHT + HIST_HEIGHT);
+	}
 	/**
 	 * @param hasTitle
 	 *            setter, see {@link hasTitle}
@@ -318,7 +322,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 			// RoundedRectRenderer.render(g, 0, 0, w, h, RenderStyle.HEADER_ROUNDED_RADIUS, 3,
 			// RoundedRectRenderer.FLAG_TOP);
 		}
-		if (this.armDropColum) {
+		if (this.armDropColum && !isSmallHeader(h)) {
 			g.incZ(0.6f);
 			float hi = Math.min(h - 4, 18);
 			g.drawText(armDropHint, 2, 2 + (h - hi) * .5f, w - 4, hi, VAlign.CENTER);
@@ -488,12 +492,17 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 	public void doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
 
 		IGLLayoutElement hist = children.get(HIST);
-		hist.setBounds(1, hasTitle ? LABEL_HEIGHT : 0, w - 2, h - (hasTitle ? LABEL_HEIGHT : 0));
+		final boolean smallHeader = isSmallHeader(h);
+		if (smallHeader)
+			hist.hide();
+		else
+			hist.setBounds(1, hasTitle ? LABEL_HEIGHT : 0, w - 2, h - (hasTitle ? LABEL_HEIGHT : 0));
 
 		if (config.isInteractive()) {
 			IGLLayoutElement weight = children.get(DRAG_WEIGHT);
-			weight.setBounds(w, hasTitle ? LABEL_HEIGHT : 0, (isHovered && config.canChangeWeights()) ? 8 : 0, h
-					- (hasTitle ? LABEL_HEIGHT : 0));
+			weight.setBounds(w, hasTitle && !smallHeader ? LABEL_HEIGHT : 0,
+					(isHovered && config.canChangeWeights()) ? 8 : 0, h
+					- (hasTitle && !smallHeader ? LABEL_HEIGHT : 0));
 
 			{
 				IGLLayoutElement buttons = children.get(BUTTONS);
@@ -536,7 +545,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 
 			for (IGLLayoutElement r : children.subList(UNCOLLAPSE + 1, children.size()))
 				r.setBounds(defaultValue(r.getSetX(), 0), defaultValue(r.getSetY(), h),
-						defaultValue(r.getSetWidth(), w), defaultValue(r.getSetHeight(), 40));
+						defaultValue(r.getSetWidth(), w), defaultValue(r.getSetHeight(), HIST_HEIGHT));
 		}
 
 	}

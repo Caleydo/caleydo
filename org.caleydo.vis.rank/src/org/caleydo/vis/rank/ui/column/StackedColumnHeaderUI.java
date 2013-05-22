@@ -35,6 +35,7 @@ import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
+import org.caleydo.core.view.opengl.layout2.IGLElementParent;
 import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDragInfo;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
@@ -51,6 +52,7 @@ import org.caleydo.vis.rank.ui.IColumnRenderInfo;
 import org.caleydo.vis.rank.ui.RenderStyle;
 import org.caleydo.vis.rank.ui.SeparatorUI;
 import org.caleydo.vis.rank.ui.StackedSeparatorUI;
+import org.caleydo.vis.rank.ui.TableHeaderUI;
 /**
  * @author Samuel Gratzl
  *
@@ -97,7 +99,6 @@ public class StackedColumnHeaderUI extends ACompositeHeaderUI implements IThickH
 		init(model);
 	}
 
-
 	@Override
 	protected SeparatorUI createSeparator(int index) {
 		return new StackedSeparatorUI(this, index);
@@ -127,6 +128,16 @@ public class StackedColumnHeaderUI extends ACompositeHeaderUI implements IThickH
 	}
 
 	@Override
+	protected boolean isSmallHeader() {
+		if (getParent() == null)
+			return false;
+		IGLElementParent p = getParent();
+		while (!(p instanceof TableHeaderUI))
+			p = p.getParent();
+		return ((TableHeaderUI) p).isSmallHeader();
+	}
+
+	@Override
 	public void doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
 
 		IGLLayoutElement summary = children.get(0);
@@ -138,9 +149,9 @@ public class StackedColumnHeaderUI extends ACompositeHeaderUI implements IThickH
 			return;
 		}
 
-		summary.setBounds(2, 2, w - 4, HIST_HEIGHT + LABEL_HEIGHT);
+		summary.setBounds(2, 2, w - 4, (isSmallHeader() ? 0 : HIST_HEIGHT) + LABEL_HEIGHT);
 
-		super.doLayout(children, w, h);
+		super.layoutColumns(children, w, h);
 
 		// update the alignment infos
 		if (config.isMoveAble()) {
@@ -167,7 +178,7 @@ public class StackedColumnHeaderUI extends ACompositeHeaderUI implements IThickH
 
 	@Override
 	protected float getTopPadding() {
-		return HIST_HEIGHT + LABEL_HEIGHT * 2;
+		return (isSmallHeader() ? 0 : HIST_HEIGHT) + LABEL_HEIGHT * 2;
 	}
 
 	/**
@@ -219,12 +230,13 @@ public class StackedColumnHeaderUI extends ACompositeHeaderUI implements IThickH
 	protected void renderWeights(GLGraphics g, float w) {
 		// render the distributions
 		float[] weights = model.getWeights();
-		float yi = HIST_HEIGHT + LABEL_HEIGHT + 7;
+		float histHeight = isSmallHeader() ? 0 : HIST_HEIGHT;
+		float yi = histHeight + LABEL_HEIGHT + 7;
 		float hi = LABEL_HEIGHT - 6;
 		float x = COLUMN_SPACE;
 		g.lineWidth(RenderStyle.COLOR_STACKED_BORDER_WIDTH);
 		g.color(RenderStyle.COLOR_STACKED_BORDER);
-		g.drawLine(0, HIST_HEIGHT + LABEL_HEIGHT + 4, w, HIST_HEIGHT + LABEL_HEIGHT + 4);
+		g.drawLine(0, histHeight + LABEL_HEIGHT + 4, w, histHeight + LABEL_HEIGHT + 4);
 		g.lineWidth(1);
 		for (int i = 0; i < numColumns; ++i) {
 			float wi = this.model.getChildWidth(i) + COLUMN_SPACE;
@@ -248,7 +260,8 @@ public class StackedColumnHeaderUI extends ACompositeHeaderUI implements IThickH
 	@Override
 	protected void renderPickImpl(GLGraphics g, float w, float h) {
 		g.pushName(weightsClickedPickingId);
-		float yi = HIST_HEIGHT + LABEL_HEIGHT + 7;
+		float histHeight = isSmallHeader() ? 0 : HIST_HEIGHT;
+		float yi = histHeight + LABEL_HEIGHT + 7;
 		float hi = LABEL_HEIGHT - 6;
 		float x = COLUMN_SPACE + 2;
 		g.fillRect(x, yi, w - x, hi);
