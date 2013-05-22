@@ -46,6 +46,13 @@ public class BrickColumnManager {
 		return brickColumns;
 	}
 
+	public BrickColumn getActiveBrickColumn() {
+		for (BrickColumn c : brickColumns)
+			if (c.isActive())
+				return c;
+		return null;
+	}
+
 	/**
 	 * Returns the first brick column that contains the given table perspective. If not brick column is found, null is
 	 * returned.

@@ -31,6 +31,7 @@ import javax.media.opengl.GLContext;
 import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.DataDomainOracle;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
@@ -54,13 +55,16 @@ import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingMode;
+import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
+import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.view.stratomex.EEmbeddingID;
 import org.caleydo.view.stratomex.EPickingType;
 import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.stratomex.brick.GLBrick;
 import org.caleydo.view.stratomex.brick.configurer.ClinicalDataConfigurer;
 import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
+import org.caleydo.view.stratomex.brick.configurer.PathwayDataConfigurer;
 import org.caleydo.view.stratomex.column.BrickColumn;
 import org.caleydo.view.stratomex.column.BrickColumnManager;
 import org.caleydo.view.stratomex.listener.AddGroupsToStratomexListener;
@@ -354,7 +358,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 			return;
 
 		if (!event.isHighlight()) {
-			layout.clearBackgroundRenderers();
+			layout.clearBackgroundRenderers(BrickHighlightRenderer.class);
 		} else {
 			layout.addBackgroundRenderer(new BrickHighlightRenderer(event.getColor().getColorComponents(null)));
 		}
@@ -506,9 +510,9 @@ public class TourguideAdapter implements IStratomexAdapter {
 		selectionCurrent = null;
 		// clear highlights
 		for (BrickColumn col : stratomex.getBrickColumnManager().getBrickColumns()) {
-			col.getHeaderBrick().getLayout().clearBackgroundRenderers();
+			col.getHeaderBrick().getLayout().clearBackgroundRenderers(BrickHighlightRenderer.class);
 			for (GLBrick brick : col.getSegmentBricks()) {
-				brick.getLayout().clearBackgroundRenderers();
+				brick.getLayout().clearBackgroundRenderers(BrickHighlightRenderer.class);
 			}
 		}
 
@@ -544,12 +548,30 @@ public class TourguideAdapter implements IStratomexAdapter {
 	private void onUpdatePreview(UpdatePathwayPreviewEvent event) {
 		if (wizard != null)
 			wizard.onUpdate(event);
+		else { // no wizard there check if something is selected otherwise
+			BrickColumn selected = stratomex.getBrickColumnManager().getActiveBrickColumn();
+			if (selected == null) {
+				// FIXME create a wizard at a specific step
+
+			} else {
+				replacePathwayTemplate(selected.getTablePerspective().getRecordPerspective(), event.getPathway());
+			}
+		}
 	}
 
 	@ListenTo(sendToMe = true)
 	private void onUpdateNumerical(UpdateNumericalPreviewEvent event) {
 		if (wizard != null)
 			wizard.onUpdate(event);
+		else { // no wizard there check if something is selected otherwise
+			BrickColumn selected = stratomex.getBrickColumnManager().getActiveBrickColumn();
+			if (selected == null) {
+				// FIXME
+			} else {
+				replaceClinicalTemplate(selected.getTablePerspective().getRecordPerspective(),
+						event.getTablePerspective());
+			}
+		}
 	}
 
 	/**
@@ -627,6 +649,15 @@ public class TourguideAdapter implements IStratomexAdapter {
 		replaceTemplate(t, configurer);
 	}
 
+	@Override
+	public void replacePathwayTemplate(Perspective underlying, PathwayGraph pathway) {
+		TablePerspective t = asPerspective(underlying, pathway);
+		TablePerspective underlyingTP = findTablePerspective(underlying);
+		if (underlyingTP == null)
+			return;
+		replaceTemplate(t, new PathwayDataConfigurer());
+	}
+
 	private TablePerspective findTablePerspective(Perspective record) {
 		for (TablePerspective p : stratomex.getTablePerspectives())
 			if (p.getRecordPerspective() == record)
@@ -653,6 +684,27 @@ public class TourguideAdapter implements IStratomexAdapter {
 			dataDomain.getTable().registerRecordPerspective(rec);
 		}
 		return dataDomain.getTablePerspective(rec.getPerspectiveID(), dim.getPerspectiveID(), false);
+	}
+
+	protected static TablePerspective asPerspective(Perspective record, PathwayGraph pathway) {
+		PathwayDataDomain pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get().getDataDomainByType(
+				PathwayDataDomain.DATA_DOMAIN_TYPE);
+
+		ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) record.getDataDomain();
+		Perspective dimension = dataDomain.getTable().getDefaultDimensionPerspective();
+		for (PathwayTablePerspective p : pathwayDataDomain.getTablePerspectives()) {
+			if (p.getPathway().equals(pathway) && p.getRecordPerspective().equals(record)
+					&& p.getDimensionPerspective().equals(dimension))
+				return p;
+		}
+		// not found create new one
+		PathwayTablePerspective pathwayDimensionGroup = new PathwayTablePerspective(dataDomain, pathwayDataDomain,
+				record, dimension, pathway);
+
+		pathwayDimensionGroup.setPrivate(true);
+		pathwayDataDomain.addTablePerspective(pathwayDimensionGroup);
+
+		return pathwayDimensionGroup;
 	}
 
 	@Override

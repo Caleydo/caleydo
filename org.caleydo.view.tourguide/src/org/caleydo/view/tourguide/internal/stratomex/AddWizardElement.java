@@ -42,6 +42,7 @@ import org.caleydo.core.view.opengl.layout2.GLContextLocal;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.text.TextUtils;
+import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
 import org.caleydo.view.stratomex.tourguide.AAddWizardElement;
 import org.caleydo.view.stratomex.tourguide.IStratomexAdapter;
@@ -343,6 +344,11 @@ public class AddWizardElement extends AAddWizardElement implements ICallback<ISt
 	@Override
 	public void replaceClinicalTemplate(Perspective underlying, TablePerspective numerical) {
 		adapter.replaceClinicalTemplate(underlying, numerical);
+	}
+
+	@Override
+	public void replacePathwayTemplate(Perspective underlying, PathwayGraph pathway) {
+		adapter.replacePathwayTemplate(underlying, pathway);
 	}
 
 	@Override

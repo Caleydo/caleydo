@@ -29,7 +29,6 @@ import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.text.TextUtils;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
-import org.caleydo.view.stratomex.brick.configurer.PathwayDataConfigurer;
 import org.caleydo.view.stratomex.tourguide.event.UpdatePathwayPreviewEvent;
 import org.caleydo.view.tourguide.api.state.BrowsePathwayState;
 import org.caleydo.view.tourguide.api.state.ISelectReaction;
@@ -68,8 +67,7 @@ public class BrowsePathwayAndStratificationState extends BrowsePathwayState impl
 	private void show(ISelectReaction adapter) {
 		if (underlying == null || pathway == null)
 			return;
-		TablePerspective tablePerspective = asPerspective(underlying, pathway);
-		adapter.replaceTemplate(tablePerspective, new PathwayDataConfigurer());
+		adapter.replacePathwayTemplate(underlying, pathway);
 	}
 
 	@Override
