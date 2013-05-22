@@ -88,8 +88,8 @@ public class AdjustedRandScoreFactory implements IScoreFactory {
 	}
 
 	@Override
-	public void fillStateMachine(IStateMachine stateMachine, Object eventReceiver, List<TablePerspective> existing) {
-		if (existing.isEmpty()) // nothing to compare
+	public void fillStateMachine(IStateMachine stateMachine, List<TablePerspective> existing, TablePerspective dependee) {
+		if (existing.isEmpty() || dependee != null) // nothing to compare
 			return;
 
 		IState source = stateMachine.get(IStateMachine.ADD_STRATIFICATIONS);
@@ -141,6 +141,11 @@ public class AdjustedRandScoreFactory implements IScoreFactory {
 					create(null, tablePerspective.getRecordPerspective()));
 			reactions.switchTo(target);
 		}
+
+		@Override
+		public boolean isAutoSelect() {
+			return false;
+		}
 	}
 
 	private class UpdateAndBrowseAdjustedRand extends BrowseStratificationState implements ISelectStratificationState {
@@ -157,6 +162,11 @@ public class AdjustedRandScoreFactory implements IScoreFactory {
 		@Override
 		public void select(TablePerspective tablePerspective, ISelectReaction reactions) {
 			reactions.addScoreToTourGuide(STRATIFICATIONS, create(null, tablePerspective.getRecordPerspective()));
+		}
+
+		@Override
+		public boolean isAutoSelect() {
+			return false;
 		}
 	}
 

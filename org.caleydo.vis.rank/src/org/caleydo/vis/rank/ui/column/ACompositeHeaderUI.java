@@ -51,7 +51,6 @@ import com.google.common.collect.Iterables;
  *
  */
 public abstract class ACompositeHeaderUI extends GLElementContainer implements IGLLayout, IMoveHereChecker {
-	protected static final float THICK_HEIGHT = (HIST_HEIGHT + LABEL_HEIGHT * 2);
 	protected int numColumns = 0;
 
 	private final PropertyChangeListener layoutOnChange = GLPropertyChangeListeners.relayoutOnEvent(this);
@@ -140,11 +139,15 @@ public abstract class ACompositeHeaderUI extends GLElementContainer implements I
 	}
 
 	private void init(ARankColumnModel col) {
+		if (col == null)
+			return;
 		col.addPropertyChangeListener(ARankColumnModel.PROP_WIDTH, layoutOnChange);
 		col.addPropertyChangeListener(ICollapseableColumnMixin.PROP_COLLAPSED, layoutOnChange);
 	}
 
 	private void takeDown(ARankColumnModel col) {
+		if (col == null)
+			return;
 		col.removePropertyChangeListener(ARankColumnModel.PROP_WIDTH, layoutOnChange);
 		col.removePropertyChangeListener(ICollapseableColumnMixin.PROP_COLLAPSED, layoutOnChange);
 	}
@@ -164,14 +167,23 @@ public abstract class ACompositeHeaderUI extends GLElementContainer implements I
 		super.takeDown();
 	}
 
-	@Override
-	public void doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
+	protected abstract boolean isSmallHeader();
+
+	protected final float thickHeight() {
+		if (isSmallHeader())
+			return LABEL_HEIGHT * 2;
+		return HIST_HEIGHT + LABEL_HEIGHT * 2;
+	}
+
+	protected final float layoutColumns(List<? extends IGLLayoutElement> children, float w, float h) {
 		List<? extends IGLLayoutElement> columns = children.subList(firstColumn, numColumns + firstColumn);
 		List<? extends IGLLayoutElement> separators = null;
 
+		final boolean smallHeader = isSmallHeader();
+
 		// align the columns normally
 		float x = getLeftPadding();
-		float y = getTopPadding() + (hasThick ? THICK_HEIGHT : 0);
+		float y = getTopPadding() + (hasThick ? thickHeight() : 0);
 		float hn = h - y;
 		if (config.isMoveAble()) {
 			separators = children.subList(numColumns + 1 + firstColumn, children.size());
@@ -190,7 +202,10 @@ public abstract class ACompositeHeaderUI extends GLElementContainer implements I
 				col.setBounds(x, 0, wi, h);
 			}
 			if (col.asElement() instanceof OrderColumnHeaderUI)
-				col.setBounds(x, y + HIST_HEIGHT / 2, wi, hn - HIST_HEIGHT / 2);
+				if (smallHeader)
+					col.setBounds(x, y, wi, hn);
+				else
+					col.setBounds(x, y + HIST_HEIGHT / 2, wi, hn - HIST_HEIGHT / 2);
 			else if (col.asElement() instanceof IThickHeader)
 				col.setBounds(x, 0, wi, h);
 			else
@@ -206,6 +221,7 @@ public abstract class ACompositeHeaderUI extends GLElementContainer implements I
 				((SeparatorUI) sep.asElement()).setIndex(i + 1);
 			}
 		}
+		return x;
 	}
 
 	protected abstract float getChildWidth(int i, ARankColumnModel model);

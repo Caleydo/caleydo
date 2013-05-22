@@ -28,12 +28,29 @@ import org.caleydo.core.event.ADirectedEvent;
 public class AddNewColumnEvent extends ADirectedEvent {
 
 	private int objectId;
+	private boolean dependentOne;
 
 	/**
 	 * @param objectID
 	 */
 	public AddNewColumnEvent(int objectID) {
+		this(objectID, false);
+	}
+
+	/**
+	 * @param objectID2
+	 * @param b
+	 */
+	public AddNewColumnEvent(int objectID, boolean dependentOne) {
 		this.objectId = objectID;
+		this.dependentOne = dependentOne;
+	}
+
+	/**
+	 * @return the dependentOne, see {@link #dependentOne}
+	 */
+	public boolean isDependentOne() {
+		return dependentOne;
 	}
 
 	/**

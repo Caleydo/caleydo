@@ -40,7 +40,16 @@ import org.eclipse.swt.widgets.Shell;
  *
  */
 public interface IScoreFactory {
-	void fillStateMachine(IStateMachine stateMachine, Object eventReceiver, List<TablePerspective> existing);
+	/**
+	 * add the states and transition for the create wizard to the given {@link IStateMachine}
+	 * 
+	 * @param stateMachine
+	 * @param existing
+	 *            the list of table perspective already existing
+	 * @param source
+	 *            the source {@link TablePerspective} if only a dependent one should be created
+	 */
+	void fillStateMachine(IStateMachine stateMachine, List<TablePerspective> existing, TablePerspective source);
 
 	/**
 	 * creates a dialog for creating a new score of this type

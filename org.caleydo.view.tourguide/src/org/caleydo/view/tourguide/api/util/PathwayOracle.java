@@ -17,34 +17,21 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.api.state;
+package org.caleydo.view.tourguide.api.util;
 
-import java.util.Collection;
-import java.util.Set;
-
-import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
+import org.caleydo.core.data.datadomain.DataDomainManager;
+import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.datadomain.pathway.PathwayDataDomain;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public interface IStateMachine {
-	String ADD_PATHWAY = EDataDomainQueryMode.PATHWAYS.name();
-	String ADD_OTHER = EDataDomainQueryMode.OTHER.name();
-	String ADD_STRATIFICATIONS = EDataDomainQueryMode.STRATIFICATIONS.name();
-	String BROWSE_PATHWAY = EDataDomainQueryMode.PATHWAYS.name() + "_browse";
-	String BROWSE_OTHER = EDataDomainQueryMode.OTHER.name() + "_browse";
-	String BROWSE_STRATIFICATIONS = EDataDomainQueryMode.STRATIFICATIONS.name() + "_browse";
+public class PathwayOracle {
+	public static boolean canBeUnderlying(TablePerspective source) {
+		return source.getDataDomain().hasIDCategory(
+				((PathwayDataDomain) DataDomainManager.get().getDataDomainByType(
+				"org.caleydo.datadomain.pathway")).getDavidIDType());
+	}
 
-	IState addState(String id, IState state);
-
-	void addTransition(IState source, ITransition transition);
-
-	IState get(String id);
-
-	Set<String> getStates();
-
-	IState getCurrent();
-
-	Collection<ITransition> getTransitions(IState state);
 }

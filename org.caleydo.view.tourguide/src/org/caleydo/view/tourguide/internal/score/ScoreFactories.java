@@ -77,10 +77,10 @@ public class ScoreFactories {
 		return factories.get(score);
 	}
 
-	public static void fillStateMachine(IStateMachine stateMachine, Object eventReceiver,
-			List<TablePerspective> existing) {
+	public static void fillStateMachine(IStateMachine stateMachine, List<TablePerspective> existing,
+			TablePerspective source) {
 		for (IScoreFactory f : factories.values()) {
-			f.fillStateMachine(stateMachine, eventReceiver, existing);
+			f.fillStateMachine(stateMachine, existing, source);
 		}
 	}
 }

@@ -17,42 +17,39 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.stratomex.event;
+package org.caleydo.view.stratomex.tourguide.internal;
 
-import java.util.Collections;
+import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.view.ITablePerspectiveBasedView;
-import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
+import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
+import org.caleydo.view.stratomex.tourguide.TourguideAdapter;
 
 /**
- * event triggering to show an kaplan maier plot given the underlying table perspective for the rows and the clinicial
- * variable to show
- *
  * @author Samuel Gratzl
  *
  */
-public class AddKaplanMaiertoStratomexEvent extends AddTablePerspectivesEvent {
-	private TablePerspective underlying;
+public class AddDependentLayoutRenderer extends ALayoutRenderer {
+	private final AGLView view;
+	private final int id;
+	private final TourguideAdapter tourguide;
 
-	public AddKaplanMaiertoStratomexEvent() {
-
-	}
-
-	public AddKaplanMaiertoStratomexEvent(TablePerspective perspective, TablePerspective underlying,
-			ITablePerspectiveBasedView receiver) {
-		this.underlying = underlying;
-		setTablePerspectives(Collections.singletonList(perspective));
-		setReceiver(receiver);
-	}
-
-	public TablePerspective getUnderlying() {
-		return underlying;
+	public AddDependentLayoutRenderer(AGLView view, int id, TourguideAdapter tourguide) {
+		this.view = view;
+		this.id = id;
+		this.tourguide = tourguide;
 	}
 
 	@Override
-	public boolean checkIntegrity() {
-		return super.checkIntegrity() && underlying != null;
+	protected void renderContent(GL2 gl) {
+		float hi = view.getPixelGLConverter().getGLHeightForPixelHeight(34);
+		float wi = view.getPixelGLConverter().getGLWidthForPixelWidth(32);
+		tourguide.renderAddDependentButton(gl, x * 1.05f, y * 0.8f, wi, hi, id);
+	}
+
+	@Override
+	protected boolean permitsWrappingDisplayLists() {
+		return true;
 	}
 
 }

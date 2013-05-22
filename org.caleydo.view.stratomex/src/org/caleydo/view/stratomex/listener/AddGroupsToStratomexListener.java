@@ -31,7 +31,6 @@ import org.caleydo.view.stratomex.brick.configurer.ClinicalDataConfigurer;
 import org.caleydo.view.stratomex.brick.sorting.ExternallyProvidedSortingStrategy;
 import org.caleydo.view.stratomex.column.BrickColumn;
 import org.caleydo.view.stratomex.event.AddGroupsToStratomexEvent;
-import org.caleydo.view.stratomex.event.AddKaplanMaiertoStratomexEvent;
 
 import com.google.common.collect.Maps;
 
@@ -54,16 +53,6 @@ public class AddGroupsToStratomexListener extends AEventListener<GLStratomex> {
 			}
 		}
 
-		else if (event instanceof AddKaplanMaiertoStratomexEvent) {
-			AddKaplanMaiertoStratomexEvent e = (AddKaplanMaiertoStratomexEvent) event;
-			if (e.getReceiver() == handler) {
-				TablePerspective underlying = e.getUnderlying();
-				TablePerspective kaplan = e.getTablePerspectives().get(0);
-				ClinicalDataConfigurer dataConfigurer = createKaplanConfigurer(handler, underlying, kaplan);
-				handler.addTablePerspectives(e.getTablePerspectives(), dataConfigurer, null);
-			}
-		}
-
 		else if (event instanceof AddTablePerspectivesEvent) {
 			AddTablePerspectivesEvent addTablePerspectivesEvent = (AddTablePerspectivesEvent) event;
 			if (addTablePerspectivesEvent.getReceiver() == handler) {
@@ -72,7 +61,7 @@ public class AddGroupsToStratomexListener extends AEventListener<GLStratomex> {
 		}
 	}
 
-	static ClinicalDataConfigurer createKaplanConfigurer(GLStratomex handler, TablePerspective underlying,
+	public static ClinicalDataConfigurer createKaplanConfigurer(GLStratomex handler, TablePerspective underlying,
 			TablePerspective kaplan) {
 		ClinicalDataConfigurer dataConfigurer = null;
 		BrickColumn brickColumn = handler.getBrickColumnManager().getBrickColumn(underlying);

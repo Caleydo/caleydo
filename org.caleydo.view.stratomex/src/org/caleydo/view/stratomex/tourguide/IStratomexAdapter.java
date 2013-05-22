@@ -22,10 +22,12 @@ package org.caleydo.view.stratomex.tourguide;
 import java.util.List;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormRenderer;
+import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
 
 import com.google.common.base.Predicate;
@@ -43,9 +45,13 @@ public interface IStratomexAdapter {
 
 	List<TablePerspective> getVisibleTablePerspectives();
 
-	void selectStratification(Predicate<TablePerspective> filter);
+	void selectStratification(Predicate<TablePerspective> filter, boolean autoSelectLeftOfMe);
 
 	void selectGroup(Predicate<Pair<TablePerspective, Group>> filter);
 
 	MultiFormRenderer createPreviewRenderer(TablePerspective tablePerspective);
+
+	void replaceClinicalTemplate(Perspective underlying, TablePerspective numerical);
+
+	void replacePathwayTemplate(Perspective underlying, PathwayGraph pathway);
 }

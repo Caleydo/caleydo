@@ -17,39 +17,30 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.stratomex.event;
+package org.caleydo.view.tourguide.internal.stratomex.state;
 
-import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.event.data.ReplaceTablePerspectiveEvent;
+import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
+import org.caleydo.view.tourguide.api.state.SimpleState;
 
 /**
- * special event for updating kaplan maier plot for updating the external sorting strategy
- * 
  * @author Samuel Gratzl
- * 
+ *
  */
-public class ReplaceKaplanMaierPerspectiveEvent extends ReplaceTablePerspectiveEvent {
-	private TablePerspective underlying;
+public class SelectStateState extends SimpleState {
+	private final EDataDomainQueryMode mode;
 
-	public ReplaceKaplanMaierPerspectiveEvent() {
-		super();
-	}
-
-	public ReplaceKaplanMaierPerspectiveEvent(Integer viewID, TablePerspective newPerspective,
-			TablePerspective oldPerspective, TablePerspective underlying) {
-		super(viewID, newPerspective, oldPerspective);
-		this.underlying = underlying;
+	public SelectStateState(String label, EDataDomainQueryMode mode) {
+		super(label);
+		this.mode = mode;
 	}
 
 	/**
-	 * @return the underlying, see {@link #underlying}
+	 * @return the mode, see {@link #mode}
 	 */
-	public TablePerspective getUnderlying() {
-		return underlying;
+	public EDataDomainQueryMode getMode() {
+		return mode;
 	}
 
-	@Override
-	public boolean checkIntegrity() {
-		return super.checkIntegrity() && underlying != null;
-	}
+
+
 }

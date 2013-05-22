@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.internal.stratomex;
 
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.view.stratomex.tourguide.AAddWizardElement;
 import org.caleydo.view.stratomex.tourguide.IAddWizardElementFactory;
@@ -32,6 +33,12 @@ public class AddWizardElementFactory implements IAddWizardElementFactory {
 
 	@Override
 	public AAddWizardElement create(IStratomexAdapter adapter, AGLView view) {
-		return new AddWizardElement(view, adapter);
+		return new AddWizardElement(view, adapter, null);
 	}
+
+	@Override
+	public AAddWizardElement createDependent(IStratomexAdapter adapter, AGLView view, TablePerspective tablePerspective) {
+		return new AddWizardElement(view, adapter, tablePerspective);
+	}
+
 }

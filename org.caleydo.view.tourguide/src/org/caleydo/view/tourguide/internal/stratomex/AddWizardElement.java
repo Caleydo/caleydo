@@ -19,12 +19,14 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.internal.stratomex;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.EventListenerManager.DeepScan;
 import org.caleydo.core.event.EventPublisher;
@@ -40,6 +42,7 @@ import org.caleydo.core.view.opengl.layout2.GLContextLocal;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.text.TextUtils;
+import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
 import org.caleydo.view.stratomex.tourguide.AAddWizardElement;
 import org.caleydo.view.stratomex.tourguide.IStratomexAdapter;
@@ -52,13 +55,16 @@ import org.caleydo.view.tourguide.api.state.ISelectGroupState;
 import org.caleydo.view.tourguide.api.state.ISelectReaction;
 import org.caleydo.view.tourguide.api.state.ISelectStratificationState;
 import org.caleydo.view.tourguide.api.state.IState;
+import org.caleydo.view.tourguide.api.state.IStateMachine;
 import org.caleydo.view.tourguide.api.state.ITransition;
+import org.caleydo.view.tourguide.api.state.SimpleTransition;
 import org.caleydo.view.tourguide.internal.Activator;
 import org.caleydo.view.tourguide.internal.OpenViewHandler;
 import org.caleydo.view.tourguide.internal.RcpGLTourGuideView;
 import org.caleydo.view.tourguide.internal.event.AddScoreColumnEvent;
 import org.caleydo.view.tourguide.internal.score.ScoreFactories;
 import org.caleydo.view.tourguide.internal.stratomex.event.WizardEndedEvent;
+import org.caleydo.view.tourguide.internal.stratomex.state.SelectStateState;
 import org.caleydo.view.tourguide.internal.view.GLTourGuideView;
 import org.caleydo.view.tourguide.spi.score.IScore;
 
@@ -74,19 +80,34 @@ public class AddWizardElement extends AAddWizardElement implements ICallback<ISt
 	private GLContextLocal contextLocal;
 	private int hovered = -1;
 
-	public AddWizardElement(AGLView view, IStratomexAdapter adapter) {
+	public AddWizardElement(AGLView view, IStratomexAdapter adapter, TablePerspective source) {
 		super(adapter);
 		contextLocal = new GLContextLocal(view.getTextRenderer(), view.getTextureManager(),
 				Activator.getResourceLocator());
 		this.view = view;
-		this.stateMachine = createStateMachine(adapter, adapter.getVisibleTablePerspectives());
+		this.stateMachine = createStateMachine(adapter.getVisibleTablePerspectives(), source);
 		this.stateMachine.getCurrent().onEnter();
 	}
 
-	private StateMachineImpl createStateMachine(Object receiver, List<TablePerspective> existing) {
-		StateMachineImpl state = StateMachineImpl.create(receiver, existing);
-		ScoreFactories.fillStateMachine(state, receiver, existing);
+	private StateMachineImpl createStateMachine(List<TablePerspective> existing, TablePerspective source) {
+		StateMachineImpl state = StateMachineImpl.create(existing, source);
+		ScoreFactories.fillStateMachine(state, existing, source);
+
+		addStartTransition(state, IStateMachine.ADD_STRATIFICATIONS);
+		addStartTransition(state, IStateMachine.ADD_PATHWAY);
+		addStartTransition(state, IStateMachine.ADD_OTHER);
+
 		return state;
+	}
+
+	/**
+	 * @param state
+	 * @param addStratifications
+	 */
+	private void addStartTransition(StateMachineImpl state, String stateID) {
+		IState target = state.get(stateID);
+		if (!state.getTransitions(target).isEmpty())
+			state.addTransition(state.getCurrent(), new SimpleTransition(target, target.getLabel()));
 	}
 
 	/**
@@ -134,7 +155,8 @@ public class AddWizardElement extends AAddWizardElement implements ICallback<ISt
 		}
 
 		if (target instanceof ISelectStratificationState)
-			adapter.selectStratification((ISelectStratificationState)target);
+			adapter.selectStratification((ISelectStratificationState) target,
+					((ISelectStratificationState) target).isAutoSelect());
 		else if (target instanceof ISelectGroupState)
 			adapter.selectGroup((ISelectGroupState) target);
 	}
@@ -148,6 +170,9 @@ public class AddWizardElement extends AAddWizardElement implements ICallback<ISt
 		final PixelGLConverter converter = view.getPixelGLConverter();
 
 		final float h_header = converter.getGLHeightForPixelHeight(100);
+		final float h_category = converter.getGLHeightForPixelHeight(32);
+		final float _1px = converter.getGLWidthForPixelWidth(1);
+		final float _1pxh = converter.getGLHeightForPixelHeight(1);
 		final float gap = h_header * 0.1f;
 
 		IState current = stateMachine.getCurrent();
@@ -156,25 +181,65 @@ public class AddWizardElement extends AAddWizardElement implements ICallback<ISt
 		if (transitions.isEmpty()) {
 			drawMultiLineText(g, current, 0, 0, w, h);
 		} else {
+			boolean firstStep = stateMachine.getPrevious() == null;
+			Pair<Collection<ITransition>, Collection<ITransition>> split = splitInDependent(transitions);
+			if (split.getSecond().isEmpty() || split.getFirst().isEmpty())
+				firstStep = false;
+
 			drawMultiLineText(g, current, 0, h - h_header, w, h_header);
-			float hi = (h - h_header - transitions.size() * gap) / (transitions.size());
-			float y = h_header+gap;
-			int i = 0;
-			g.incZ();
-			for (ITransition t : transitions) {
-				g.pushName(getPickingID(i));
-				if (hovered == i)
-					g.color(0.85f);
-				else
-					g.color(0.90f);
-				g.fillRect(gap, h - y - hi, w - 2 * gap, hi);
-				g.popName();
-				drawMultiLineText(g, t, gap, h - y - hi, w - 2 * gap, hi);
-				y += hi + gap;
-				i++;
+
+			if (firstStep) {
+				float hi = (h - h_header - transitions.size() * gap - 2 * h_category - 2 * gap - _1pxh * 2)
+						/ (transitions.size());
+				float y = h_header + gap;
+
+				g.color(0.92f).fillRect(_1px, h - y - h_category, w - _1px * 2, h_category);
+				g.drawText("Independent", 0, h - y - h_category * .75f, w, h_category * .5f, VAlign.CENTER);
+				y += h_category + gap;
+				renderTransitions(g, w, h, gap, split.getSecond(), hi, y, 0);
+				y += (hi + gap) * split.getSecond().size();
+
+				g.color(0.92f).fillRect(_1px, h - y - h_category, w - _1px * 2, h_category);
+				g.drawText("Dependent", 0, h - y - h_category * .75f, w, h_category * .5f, VAlign.CENTER);
+				y += h_category + gap;
+				renderTransitions(g, w, h, gap, split.getFirst(), hi, y, split.getSecond().size());
+			} else {
+				float hi = (h - h_header - transitions.size() * gap) / (transitions.size());
+				float y = h_header + gap;
+				renderTransitions(g, w, h, gap, transitions, hi, y, 0);
 			}
-			g.decZ();
 		}
+	}
+
+	private Pair<Collection<ITransition>, Collection<ITransition>> splitInDependent(Collection<ITransition> transitions) {
+		Collection<ITransition> dependent = new ArrayList<>(transitions.size());
+		Collection<ITransition> rest = new ArrayList<>(transitions.size());
+		for (ITransition t : transitions)
+			if (t instanceof SimpleTransition && (((SimpleTransition) t).getTarget() instanceof SelectStateState)
+					&& ((SelectStateState) ((SimpleTransition) t).getTarget()).getMode().isDependent())
+				dependent.add(t);
+			else
+				rest.add(t);
+		return Pair.make(dependent, rest);
+	}
+
+	private void renderTransitions(final GLGraphics g, final float w, final float h, final float gap,
+			Collection<ITransition> transitions, float hi, float y, int i) {
+		g.incZ();
+		// if in the first step split in dependent and independent data
+		for (ITransition t : transitions) {
+			g.pushName(getPickingID(i));
+			if (hovered == i)
+				g.color(0.85f);
+			else
+				g.color(0.90f);
+			g.fillRect(gap, h - y - hi, w - 2 * gap, hi);
+			g.popName();
+			drawMultiLineText(g, t, gap, h - y - hi, w - 2 * gap, hi);
+			y += hi + gap;
+			i++;
+		}
+		g.decZ();
 	}
 
 	private int getPickingID(int i) {
@@ -277,8 +342,23 @@ public class AddWizardElement extends AAddWizardElement implements ICallback<ISt
 	}
 
 	@Override
+	public void replaceClinicalTemplate(Perspective underlying, TablePerspective numerical) {
+		adapter.replaceClinicalTemplate(underlying, numerical);
+	}
+
+	@Override
+	public void replacePathwayTemplate(Perspective underlying, PathwayGraph pathway) {
+		adapter.replacePathwayTemplate(underlying, pathway);
+	}
+
+	@Override
 	public MultiFormRenderer createPreview(TablePerspective tablePerspective) {
 		return adapter.createPreviewRenderer(tablePerspective);
+	}
+
+	@Override
+	public AGLView getGLView() {
+		return view;
 	}
 }
 

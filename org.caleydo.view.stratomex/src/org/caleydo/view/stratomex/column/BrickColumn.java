@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.view.stratomex.column;
 
+import java.awt.Color;
 import java.awt.Point;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -277,6 +278,18 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 			}
 		}
 		initMainColumn();
+	}
+
+	public boolean isActive() {
+		return headerBrick.isActive();
+	}
+
+	public void activeChanged(boolean active) {
+		this.getLayout().clearBackgroundRenderers(ActiveBrickColumnRenderer.class);
+		if (active)
+			this.getLayout().addBackgroundRenderer(
+					new ActiveBrickColumnRenderer(Color.DARK_GRAY.getRGBComponents(null)));
+		this.getLayout().updateSubLayout();
 	}
 
 	/**

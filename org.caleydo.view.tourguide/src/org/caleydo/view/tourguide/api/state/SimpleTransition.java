@@ -35,6 +35,13 @@ public class SimpleTransition implements ITransition {
 		this.label = label;
 	}
 
+	/**
+	 * @return the target, see {@link #target}
+	 */
+	public IState getTarget() {
+		return target;
+	}
+
 	@Override
 	public void apply(ICallback<IState> onApply) {
 		onApply.on(target);
