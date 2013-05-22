@@ -235,9 +235,12 @@ public class GLTourGuideView extends AGLElementView {
 	protected void onActiveChanged(ADataDomainQuery q, boolean active) {
 		if (q.isInitialized()) {
 			if (active) {
+				q.createSpecificColumns(table);
 				scheduleAllOf(q);
-			} else
+			} else {
+				q.removeSpecificColumns(table);
 				updateMask();
+			}
 			return;
 		} else
 			scheduleAllOf(q);
@@ -316,6 +319,7 @@ public class GLTourGuideView extends AGLElementView {
 			List<?> m = table.getData();
 			// use sublists to save memory
 			q.init(offset, new CustomSubList<AScoreRow>((List<AScoreRow>) m, offset, m.size() - offset));
+			q.createSpecificColumns(table);
 			updateMask();
 		} else {
 			updateMask();

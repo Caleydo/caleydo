@@ -29,6 +29,7 @@ import java.util.regex.Pattern;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
+import org.caleydo.vis.rank.model.RankTableModel;
 
 /**
  * @author Samuel Gratzl
@@ -108,5 +109,15 @@ public class InhomogenousDataDomainQuery extends ADataDomainQuery {
 	@Override
 	public boolean hasFilter() {
 		return this.matches != null;
+	}
+
+	@Override
+	public void createSpecificColumns(RankTableModel table) {
+
+	}
+
+	@Override
+	public void removeSpecificColumns(RankTableModel table) {
+
 	}
 }
