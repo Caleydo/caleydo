@@ -440,9 +440,6 @@ public class TourguideAdapter implements IStratomexAdapter {
 	private void onConfirmCancelColumn(ConfirmCancelNewColumnEvent event) {
 		boolean confirm = event.isConfirm();
 
-		if (wizard == null) // nothing todo
-			return;
-
 		if (confirm && (wizardPreview == null))
 			return; // invalid action
 
