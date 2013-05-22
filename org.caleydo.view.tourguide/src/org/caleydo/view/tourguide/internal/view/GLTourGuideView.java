@@ -574,8 +574,9 @@ public class GLTourGuideView extends AGLElementView {
 	}
 
 	@ListenTo
-	private void on(WizardEndedEvent event) {
+	private void onWizardEnded(WizardEndedEvent event) {
 		table.setSelectedRow(null);
+		getTableBodyUI().repaint();
 	}
 
 	private class RankTableUIConfig extends RankTableUIConfigBase {

@@ -394,12 +394,16 @@ public class TourguideAdapter implements IStratomexAdapter {
 	 */
 	private ElementLayout createTemplateElement(int index, TablePerspective source) {
 		assert factory != null;
-		wizard = source == null ? factory.create(this, stratomex) : factory.createDependent(this, stratomex, source);
-		stratomex.registerEventListener(wizard);
+		createWizard(source);
 		ElementLayout l = ElementLayouts.wrap(wizard, 120);
 		l.addBackgroundRenderer(new TemplateHighlightRenderer());
 		l.addBackgroundRenderer(new ConfirmCancelLayoutRenderer(stratomex, index, this));
 		return l;
+	}
+
+	private void createWizard(TablePerspective source) {
+		wizard = source == null ? factory.create(this, stratomex) : factory.createDependent(this, stratomex, source);
+		stratomex.registerEventListener(wizard);
 	}
 
 	@ListenTo(sendToMe = true)
@@ -540,6 +544,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 		if (wizard != null)
 			wizard.onUpdate(event);
 		else { // no wizard there to handle add a template column on the fly
+			createWizard(null);
 			replaceTemplate(event.getTablePerspective(), null);
 		}
 	}
@@ -554,6 +559,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 				// FIXME create a wizard at a specific step
 
 			} else {
+				createWizard(selected.getTablePerspective());
 				replacePathwayTemplate(selected.getTablePerspective().getRecordPerspective(), event.getPathway());
 			}
 		}
@@ -568,6 +574,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 			if (selected == null) {
 				// FIXME
 			} else {
+				createWizard(selected.getTablePerspective());
 				replaceClinicalTemplate(selected.getTablePerspective().getRecordPerspective(),
 						event.getTablePerspective());
 			}

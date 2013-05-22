@@ -459,6 +459,7 @@ public class GLGraphics {
 		float hi = (h - lineSpace * (lines.size() - 1)) / lines.size();
 		for (ListIterator<String> it = lines.listIterator(lines.size()); it.hasPrevious();) {
 			String text = it.previous();
+			stats.incText(text.length());
 			float xi = x;
 			switch (valign) {
 			case CENTER:
