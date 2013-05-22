@@ -54,6 +54,10 @@ public final class CategoricalPerspectiveRow extends AVirtualArrayScoreRow imple
 		return label;
 	}
 
+	public Integer getDimensionID() {
+		return id;
+	}
+
 
 	@Override
 	public String getPersistentID() {
@@ -73,6 +77,10 @@ public final class CategoricalPerspectiveRow extends AVirtualArrayScoreRow imple
 			va = query.createVirtualArray(label, id);
 		}
 		return va;
+	}
+
+	public IDType getCategoryIDType() {
+		return query.getCategoryIDType();
 	}
 
 	@Override

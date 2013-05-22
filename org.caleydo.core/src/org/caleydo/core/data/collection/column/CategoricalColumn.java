@@ -47,4 +47,14 @@ public class CategoricalColumn<CATEGORY_TYPE extends Comparable<CATEGORY_TYPE>> 
 	public Set<CATEGORY_TYPE> getCategories() {
 		return rawContainer.getCategories();
 	}
+
+	/**
+	 * returns the number of matches
+	 * 
+	 * @param category
+	 * @return
+	 */
+	public int getNumberOfMatches(Object category) {
+		return rawContainer.getNumberOfMatches(category);
+	}
 }
