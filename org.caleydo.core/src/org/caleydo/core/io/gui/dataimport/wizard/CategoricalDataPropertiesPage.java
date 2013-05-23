@@ -31,10 +31,13 @@ import org.caleydo.core.data.collection.column.container.CategoricalClassDescrip
 import org.caleydo.core.io.ColumnDescription;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.gui.dataimport.widget.DataTranspositionWidget;
+import org.caleydo.core.io.gui.dataimport.widget.IntegerCallback;
 import org.caleydo.core.io.gui.dataimport.widget.table.CategoryTable;
 import org.caleydo.core.util.color.Color;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -59,10 +62,20 @@ public class CategoricalDataPropertiesPage extends AImportDataPage {
 	 * Radio button for nominal categories.
 	 */
 	protected Button nominalButton;
+	/**
+	 * Button to move a category up in the table.
+	 */
+	protected Button upButton;
+	/**
+	 * Button to move a category down in the table.
+	 */
+	protected Button downButton;
 
 	protected CategoryTable categoryTable;
 
 	protected DataTranspositionWidget dataTranspositionWidget;
+
+	protected Composite parentComposite;
 
 	/**
 	 * @param pageName
@@ -75,7 +88,7 @@ public class CategoricalDataPropertiesPage extends AImportDataPage {
 
 	@Override
 	public void createControl(Composite parent) {
-		Composite parentComposite = new Composite(parent, SWT.NONE);
+		parentComposite = new Composite(parent, SWT.NONE);
 		parentComposite.setLayout(new GridLayout(1, true));
 		Group categoryTypeGroup = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
 		categoryTypeGroup.setText("Category Type");
@@ -83,21 +96,91 @@ public class CategoricalDataPropertiesPage extends AImportDataPage {
 		ordinalButton = new Button(categoryTypeGroup, SWT.RADIO);
 		ordinalButton.setText("Ordinal");
 		ordinalButton.setSelection(true);
+		ordinalButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				upButton.setEnabled(true);
+				downButton.setEnabled(true);
+			}
+		});
 
 		nominalButton = new Button(categoryTypeGroup, SWT.RADIO);
 		nominalButton.setText("Nominal");
+		nominalButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				upButton.setEnabled(false);
+				downButton.setEnabled(false);
+			}
+		});
 
 		Group categoriesGroup = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
 		categoriesGroup.setText("Categories");
-		categoriesGroup.setLayout(new GridLayout(1, true));
+		categoriesGroup.setLayout(new GridLayout(2, false));
 		categoriesGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
-		categoryTable = new CategoryTable(categoriesGroup);
+		Composite buttonComposite = new Composite(categoriesGroup, SWT.NONE);
+		buttonComposite.setLayout(new GridLayout(1, true));
+		upButton = new Button(buttonComposite, SWT.ARROW | SWT.UP);
+		upButton.setLayoutData(new GridData(30, 30));
+		upButton.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				int selectedRowIndex = categoryTable.getSelectedRow();
+				if (selectedRowIndex != -1 && selectedRowIndex != 0) {
+					swapRows(selectedRowIndex, selectedRowIndex - 1);
+					categoryTable.update();
+					categoryTable.selectRow(selectedRowIndex - 1);
+				}
+			}
+
+		});
+		downButton = new Button(buttonComposite, SWT.ARROW | SWT.DOWN);
+		downButton.setLayoutData(new GridData(30, 30));
+		downButton.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				int selectedRowIndex = categoryTable.getSelectedRow();
+				if (selectedRowIndex != -1 && selectedRowIndex != categoryTable.getRowCount() - 1) {
+					swapRows(selectedRowIndex, selectedRowIndex + 1);
+					categoryTable.update();
+					categoryTable.selectRow(selectedRowIndex + 1);
+				}
+			}
+
+		});
+
+		categoryTable = new CategoryTable(categoriesGroup, new GridData(SWT.FILL, SWT.FILL, true, true, 1, 2),
+				new IntegerCallback() {
+
+					@Override
+					public void on(int data) {
+						if (!nominalButton.getSelection()) {
+							upButton.setEnabled(true);
+							downButton.setEnabled(true);
+						}
+						if (data == 0) {
+							upButton.setEnabled(false);
+						}
+						if (data == categoryTable.getRowCount() - 1) {
+							downButton.setEnabled(false);
+						}
+					}
+				});
 
 		dataTranspositionWidget = new DataTranspositionWidget(parentComposite, (DataImportWizard) getWizard(),
 				dataSetDescription.isTransposeMatrix());
 
 		setControl(parentComposite);
+	}
+
+	private void swapRows(int row1Index, int row2Index) {
+		List<List<String>> matrix = categoryTable.getDataMatrix();
+		List<String> copyRow1 = new ArrayList<>(matrix.get(row1Index));
+		matrix.set(row1Index, matrix.get(row2Index));
+		matrix.set(row2Index, copyRow1);
 	}
 
 	@Override
@@ -109,8 +192,7 @@ public class CategoricalDataPropertiesPage extends AImportDataPage {
 				: ECategoryType.NOMINAL);
 		categoricalClassDescription.setRawDataType(EDataType.STRING);
 		for (List<String> category : categories) {
-			categoricalClassDescription.addCategoryProperty(category.get(0), category.get(2),
-					new Color("000000"));
+			categoricalClassDescription.addCategoryProperty(category.get(0), category.get(2), new Color("000000"));
 		}
 
 		dataSetDescription.setTransposeMatrix(dataTranspositionWidget.isTransposition());
@@ -137,8 +219,9 @@ public class CategoricalDataPropertiesPage extends AImportDataPage {
 		List<List<String>> categoryMatrix = extractCategoryMatrix(wizard.getFilteredDataMatrix());
 
 		categoryTable.createTableFromMatrix(categoryMatrix, 4);
-
 		dataTranspositionWidget.update();
+		categoryTable.update();
+		parentComposite.layout(true);
 
 		wizard.setChosenDataTypePage(this);
 		wizard.getContainer().updateButtons();
