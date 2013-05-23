@@ -308,11 +308,6 @@
                   id="org.caleydo.core.gui.preferences.ViewPreferencePage"
                   name="Views">
             </page>
-            <page
-                  class="org.caleydo.core.gui.preferences.ProxyPreferencePage"
-                  id="org.caleydo.core.gui.preferences.ProxyPreferencePage"
-                  name="Proxy">
-            </page>
    </extension>
       <extension
             point="org.eclipse.ui.services">
