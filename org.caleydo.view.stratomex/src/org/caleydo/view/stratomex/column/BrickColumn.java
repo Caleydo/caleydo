@@ -19,7 +19,6 @@
  *******************************************************************************/
 package org.caleydo.view.stratomex.column;
 
-import java.awt.Color;
 import java.awt.Point;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -30,6 +29,7 @@ import java.util.Queue;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.events.RecordVAUpdateEvent;
 import org.caleydo.core.data.virtualarray.events.RecordVAUpdateListener;
 import org.caleydo.core.manager.GeneralManager;
@@ -68,6 +68,8 @@ import org.caleydo.view.stratomex.brick.layout.HeaderBrickLayoutTemplate;
 import org.caleydo.view.stratomex.brick.ui.OverviewDetailBandRenderer;
 import org.eclipse.swt.widgets.Composite;
 
+import com.google.common.collect.Iterables;
+
 /**
  * Container for a group of dimensions. Manages layouts as well as brick views for the whole dimension group.
  *
@@ -86,6 +88,11 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 	public final static int MIN_DETAIL_GAP_PIXEL = 10;
 	public final static float DETAIL_GAP_PORTION = 0.05f;
 	public final static int BETWEEN_BRICKS_SPACING = 10;
+
+	/**
+	 * marker color for {@link #setHighlightColor(float[])} to revert to the default color
+	 */
+	public final static float[] REVERT_COLOR = new float[] { 0, 0, 0, 0 };
 
 	/**
 	 * The brick at the top that shows information about and provides tools for interaction with the whole dimension
@@ -195,6 +202,8 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 		mainRow.setFrameColor(0, 0, 1, 1);
 		mainRow.sethAlign(HAlign.CENTER);
 
+		mainRow.addBackgroundRenderer(new FrameHighlightRenderer(null, false));
+
 		mainColumn = new Column("mainColumn");
 		mainColumn.setDebug(false);
 		mainColumn.setPriorityRendereing(true);
@@ -289,14 +298,6 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 
 	public boolean isActive() {
 		return headerBrick.isActive();
-	}
-
-	public void activeChanged(boolean active) {
-		this.getLayout().clearBackgroundRenderers(ActiveBrickColumnRenderer.class);
-		if (active)
-			this.getLayout().addBackgroundRenderer(
-					new ActiveBrickColumnRenderer(Color.DARK_GRAY.getRGBComponents(null)));
-		this.getLayout().updateSubLayout();
 	}
 
 	/**
@@ -1193,5 +1194,18 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 	@Override
 	protected void destroyViewSpecificContent(GL2 gl) {
 		// Nothing to do here
+	}
+
+	/**
+	 * @param fs
+	 */
+	public void setHighlightColor(float[] color) {
+		if (color == REVERT_COLOR)
+			color = isActive() ? SelectionType.SELECTION.getColor() : null;
+		FrameHighlightRenderer renderer = Iterables.getFirst(
+				Iterables.filter(getLayout().getBackgroundRenderer(), FrameHighlightRenderer.class), null);
+		if (renderer != null)
+			renderer.setColor(color);
+		return;
 	}
 }

@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.stratomex.tourguide.internal;
+package org.caleydo.view.stratomex.column;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
@@ -25,14 +25,19 @@ import javax.media.opengl.GL2;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 
-public class BrickHighlightRenderer extends ALayoutRenderer {
+import com.google.common.base.Objects;
+
+public class FrameHighlightRenderer extends ALayoutRenderer {
 
 	private static final int OFFSET = 5;
 
 	private float[] color;
 
-	public BrickHighlightRenderer(float[] color) {
+	private final boolean topOffset;
+
+	public FrameHighlightRenderer(float[] color, boolean topOffset) {
 		this.color = color;
+		this.topOffset = topOffset;
 	}
 
 	/**
@@ -40,15 +45,19 @@ public class BrickHighlightRenderer extends ALayoutRenderer {
 	 *            setter, see {@link color}
 	 */
 	public void setColor(float[] color) {
+		if (Objects.equal(this.color, color))
+			return;
 		this.color = color;
 		setDisplayListDirty(true);
 	}
 
 	@Override
 	public void renderContent(GL2 gl) {
+		if (color == null)
+			return;
 		PixelGLConverter pixelGLConverter = layoutManager.getPixelGLConverter();
 		float xoffset = pixelGLConverter.getGLWidthForPixelWidth(OFFSET);
-		float yoffset = pixelGLConverter.getGLHeightForPixelHeight(OFFSET);
+		float yoffset = (topOffset ? 1 : -1) * pixelGLConverter.getGLHeightForPixelHeight(OFFSET);
 
 		gl.glPushAttrib(GL2.GL_LINE_BIT);
 
