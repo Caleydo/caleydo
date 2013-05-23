@@ -94,7 +94,8 @@ public class CategoricalDataPropertiesPage extends AImportDataPage {
 
 		categoryTable = new CategoryTable(categoriesGroup);
 
-		dataTranspositionWidget = new DataTranspositionWidget(parentComposite, (DataImportWizard) getWizard());
+		dataTranspositionWidget = new DataTranspositionWidget(parentComposite, (DataImportWizard) getWizard(),
+				dataSetDescription.isTransposeMatrix());
 
 		setControl(parentComposite);
 	}

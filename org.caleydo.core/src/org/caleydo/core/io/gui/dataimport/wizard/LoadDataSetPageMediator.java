@@ -487,9 +487,6 @@ public class LoadDataSetPageMediator {
 		dataMatrix = parser.getDataMatrix();
 		totalNumberOfColumns = parser.getTotalNumberOfColumns();
 		totalNumberOfRows = parser.getTotalNumberOfRows();
-		DataImportWizard wizard = (DataImportWizard) page.getWizard();
-		wizard.setTotalNumberOfColumns(totalNumberOfColumns);
-		wizard.setTotalNumberOfRows(totalNumberOfRows);
 		page.previewTable.createTableFromMatrix(dataMatrix, totalNumberOfColumns);
 		updateWidgetsAccordingToTableChanges();
 		determineIDTypes();

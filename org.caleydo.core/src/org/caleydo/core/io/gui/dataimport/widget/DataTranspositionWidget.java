@@ -74,7 +74,7 @@ public class DataTranspositionWidget {
 
 	protected DataImportWizard wizard;
 
-	public DataTranspositionWidget(Composite parent, DataImportWizard wizard) {
+	public DataTranspositionWidget(Composite parent, DataImportWizard wizard, boolean transposeByDefault) {
 		this.parentComposite = parent;
 		this.wizard = wizard;
 		dataTranspositionGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
@@ -98,6 +98,7 @@ public class DataTranspositionWidget {
 				update();
 			}
 		});
+		swapRowsWithColumnsButton.setSelection(transposeByDefault);
 	}
 
 	protected Label createWarningIconLabel(Composite parent) {
@@ -116,10 +117,10 @@ public class DataTranspositionWidget {
 	}
 
 	public void update() {
-		int totalNumberOfRows = wizard.getTotalNumberOfRows();
-
-		int numColumns = swapRowsWithColumnsButton.getSelection() ? totalNumberOfRows : (wizard.getSelectedColumns()
-				.size() + 1);
+		int numRows = swapRowsWithColumnsButton.getSelection() ? wizard.getSelectedColumns().size() + 1 : wizard
+				.getFilteredDataMatrix().size() + 1;
+		int numColumns = swapRowsWithColumnsButton.getSelection() ? wizard.getFilteredDataMatrix().size() + 1 : wizard
+				.getSelectedColumns().size() + 1;
 
 		if (warningIconLabel1 != null && !warningIconLabel1.isDisposed()) {
 			warningIconLabel1.dispose();
@@ -143,7 +144,7 @@ public class DataTranspositionWidget {
 			}
 		}
 
-		if (totalNumberOfRows > 50 && numColumns > 50) {
+		if (numRows > 50 && numColumns > 50) {
 			if (warningIconLabel2 == null || warningIconLabel2.isDisposed()) {
 				warningIconLabel2 = createWarningIconLabel(dataTranspositionGroup);
 				warningDescriptionLabel2 = createWarningDescriptionLabel(

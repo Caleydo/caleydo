@@ -63,16 +63,6 @@ public class DataImportWizard extends Wizard {
 	private boolean requiredDataSpecified = false;
 
 	/**
-	 * The total number of rows in the loaded dataset.
-	 */
-	private int totalNumberOfRows;
-
-	/**
-	 * The total number of rows in the loaded dataset.
-	 */
-	private int totalNumberOfColumns;
-
-	/**
 	 * Matrix that only contains the selected data columns (no id column) and data rows (no header rows).
 	 */
 	private List<List<String>> filteredDataMatrix;
@@ -194,36 +184,6 @@ public class DataImportWizard extends Wizard {
 
 	public void addVisitedPage(AImportDataPage page) {
 		visitedPages.add(page);
-	}
-
-	/**
-	 * @param totalNumberOfColumns
-	 *            setter, see {@link #totalNumberOfColumns}
-	 */
-	public void setTotalNumberOfColumns(int totalNumberOfColumns) {
-		this.totalNumberOfColumns = totalNumberOfColumns;
-	}
-
-	/**
-	 * @return the totalNumberOfColumns, see {@link #totalNumberOfColumns}
-	 */
-	public int getTotalNumberOfColumns() {
-		return totalNumberOfColumns;
-	}
-
-	/**
-	 * @param totalNumberOfRows
-	 *            setter, see {@link #totalNumberOfRows}
-	 */
-	public void setTotalNumberOfRows(int totalNumberOfRows) {
-		this.totalNumberOfRows = totalNumberOfRows;
-	}
-
-	/**
-	 * @return the totalNumberOfRows, see {@link #totalNumberOfRows}
-	 */
-	public int getTotalNumberOfRows() {
-		return totalNumberOfRows;
 	}
 
 	/**

@@ -5,7 +5,6 @@ package org.caleydo.core.io.gui.dataimport.wizard;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.io.ColumnDescription;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.NumericalProperties;
@@ -86,9 +85,6 @@ public class NumericalDataPropertiesPageMediator {
 		if (minDefined)
 			page.minTextField.setText(numericalProperties.getMin().toString());
 
-		page.swapRowsWithColumnsButton.setEnabled(true);
-		page.swapRowsWithColumnsButton.setSelection(dataSetDescription.isTransposeMatrix());
-
 		page.useDataCenterButton.setSelection(false);
 		page.dataCenterTextField.setEnabled(false);
 		page.dataCenterTextField.setText("0");
@@ -115,13 +111,6 @@ public class NumericalDataPropertiesPageMediator {
 		dataTransformation = page.scalingCombo.getText();
 	}
 
-	/**
-	 * Sets the column count warning visible or not, depending on the current count of columns.
-	 */
-	public void swapRowsWithColumnsButtonSelected() {
-		updateColumnCountWarning();
-	}
-
 	public void useDataCenterButtonSelected() {
 		page.dataCenterTextField.setEnabled(page.useDataCenterButton.getSelection());
 	}
@@ -133,23 +122,25 @@ public class NumericalDataPropertiesPageMediator {
 		if (!dataSourcePath.equals(dataSetDescription.getDataSourcePath())) {
 			guiCreated();
 			// Guess transposal
-			DataImportWizard wizard = (DataImportWizard) page.getWizard();
-			int totalNumberOfColumns = wizard.getTotalNumberOfColumns();
-			int totalNumberOfRows = wizard.getTotalNumberOfRows();
-			IDCategory tcgaSampleCategory = IDCategory.getIDCategory("TCGA_SAMPLE");
-			if (totalNumberOfColumns > 100
-					&& totalNumberOfColumns > totalNumberOfRows
-					|| (tcgaSampleCategory != null && (dataSetDescription.getColumnIDSpecification().getIdCategory()
-							.equals(tcgaSampleCategory.getCategoryName())))) {
-				page.swapRowsWithColumnsButton.setSelection(true);
+			// DataImportWizard wizard = (DataImportWizard) page.getWizard();
+			// int totalNumberOfColumns = wizard.getTotalNumberOfColumns();
+			// int totalNumberOfRows = wizard.getTotalNumberOfRows();
+			// IDCategory tcgaSampleCategory = IDCategory.getIDCategory("TCGA_SAMPLE");
+			// if (totalNumberOfColumns > 100
+			// && totalNumberOfColumns > totalNumberOfRows
+			// || (tcgaSampleCategory != null && (dataSetDescription.getColumnIDSpecification().getIdCategory()
+			// .equals(tcgaSampleCategory.getCategoryName())))) {
+			// page.swapRowsWithColumnsButton.setSelection(true);
+			//
+			// } else {
+			// page.swapRowsWithColumnsButton.setSelection(false);
+			// }
 
-			} else {
-				page.swapRowsWithColumnsButton.setSelection(false);
-			}
-
-			updateColumnCountWarning();
+			// updateColumnCountWarning();
 
 		}
+		page.dataTranspositionWidget.update();
+
 		dataSourcePath = dataSetDescription.getDataSourcePath();
 		// parser.parse(dataSetDescription.getDataSourcePath(), dataSetDescription.getDelimiter(), true, -1);
 		// List<List<String>> matrix = parser.getDataMatrix();
@@ -169,49 +160,6 @@ public class NumericalDataPropertiesPageMediator {
 		// page.columnConfigTable.createTableFromMatrix(filteredMatrix, parsingPattern.size());
 	}
 
-	private void updateColumnCountWarning() {
-		DataImportWizard wizard = (DataImportWizard) page.getWizard();
-		int totalNumberOfRows = wizard.getTotalNumberOfRows();
-
-		int numColumns = page.swapRowsWithColumnsButton.getSelection() ? totalNumberOfRows : (((DataImportWizard) page
-				.getWizard()).getSelectedColumns().size() + 1);
-
-		if (page.warningIconLabel1 != null && !page.warningIconLabel1.isDisposed()) {
-			page.warningIconLabel1.dispose();
-			page.warningDescriptionLabel1.dispose();
-		}
-
-		if (page.warningIconLabel2 != null && !page.warningIconLabel2.isDisposed()) {
-			page.warningIconLabel2.dispose();
-			page.warningDescriptionLabel2.dispose();
-		}
-
-		page.parentComposite.layout(true);
-
-		if (numColumns > 50) {
-			String warningText1 = "Attention: the large number of columns (" + numColumns
-					+ ") may lead to an impaired visualization quality in some views";
-
-			if (page.warningIconLabel1 == null || page.warningIconLabel1.isDisposed()) {
-				page.warningIconLabel1 = page.createWarningIconLabel(page.dataTranspositionGroup);
-				page.warningDescriptionLabel1 = page.createWarningDescriptionLabel(page.dataTranspositionGroup,
-						warningText1);
-			}
-		}
-
-		if (totalNumberOfRows > 50 && numColumns > 50) {
-			if (page.warningIconLabel2 == null || page.warningIconLabel2.isDisposed()) {
-				page.warningIconLabel2 = page.createWarningIconLabel(page.dataTranspositionGroup);
-				page.warningDescriptionLabel2 = page
-						.createWarningDescriptionLabel(
-								page.dataTranspositionGroup,
-								"Attention: In your dataset the choice of dimensions is not obvious. Please choose whether you want to keep the columns in the file as dimensions (do not check) or whether you want to use the rows as dimensions.");
-			}
-		}
-
-		// page.parentComposite.pack(true);
-		page.parentComposite.layout(true);
-	}
 
 	/**
 	 * Fills the {@link #dataSetDescription} according to the widgets.
@@ -235,7 +183,7 @@ public class NumericalDataPropertiesPageMediator {
 		}
 
 		numericalProperties.setDataTransformation(dataTransformation);
-		dataSetDescription.setTransposeMatrix(page.swapRowsWithColumnsButton.getSelection());
+		dataSetDescription.setTransposeMatrix(page.dataTranspositionWidget.isTransposition());
 
 		ArrayList<ColumnDescription> inputPattern = new ArrayList<ColumnDescription>();
 		DataImportWizard wizard = (DataImportWizard) page.getWizard();

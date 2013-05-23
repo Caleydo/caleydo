@@ -4,6 +4,7 @@
 package org.caleydo.core.io.gui.dataimport.wizard;
 
 import org.caleydo.core.io.DataSetDescription;
+import org.caleydo.core.io.gui.dataimport.widget.DataTranspositionWidget;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.wizard.IWizardPage;
@@ -45,10 +46,6 @@ public class NumericalDataPropertiesPage extends AImportDataPage implements List
 	 * Text field that specifies the minimum data clipping value.
 	 */
 	protected Text maxTextField;
-	/**
-	 * Button to determine whether the dataset should be transposed.
-	 */
-	protected Button swapRowsWithColumnsButton;
 
 	/**
 	 * Button to determine whether a data center is used.
@@ -76,34 +73,11 @@ public class NumericalDataPropertiesPage extends AImportDataPage implements List
 	protected Combo scalingCombo;
 
 	/**
-	 * Label with a warning icon.
-	 */
-	protected Label warningIconLabel1;
-
-	/**
-	 * Label with a warning description.
-	 */
-	protected Label warningDescriptionLabel1;
-
-	/**
-	 * Label with a warning icon.
-	 */
-	protected Label warningIconLabel2;
-
-	/**
-	 * Label with a warning description.
-	 */
-	protected Label warningDescriptionLabel2;
-
-	/**
-	 * Group that contains widgets associated with data transposition.
-	 */
-	protected Group dataTranspositionGroup;
-
-	/**
 	 * Group that contains widgets associated with determining the data center.
 	 */
 	protected Group dataCenterGroup;
+
+	protected DataTranspositionWidget dataTranspositionWidget;
 
 	/**
 	 * Mediator of this class.
@@ -136,37 +110,13 @@ public class NumericalDataPropertiesPage extends AImportDataPage implements List
 
 		createClippingGroup(parentComposite);
 
-		createTranspositionGroup(parentComposite);
-
 		createDataCenterGroup(parentComposite);
+
+		dataTranspositionWidget = new DataTranspositionWidget(parentComposite, (DataImportWizard) getWizard(),
+				dataSetDescription.isTransposeMatrix());
 		// mediator.guiCreated();
 
 		setControl(parentComposite);
-	}
-
-	private void createTranspositionGroup(Composite parent) {
-		dataTranspositionGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
-		dataTranspositionGroup.setText("Data Transposition");
-		dataTranspositionGroup.setLayout(new GridLayout(2, false));
-		dataTranspositionGroup.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
-
-		Label transpositionExplanationLabel = new Label(dataTranspositionGroup, SWT.WRAP);
-		transpositionExplanationLabel
-				.setText("Caleydo assumes a limited number of dimensions and a lot of records.  You typically want to observe a variation in records over dimensions, where dimensions would be, for example points in time, and records expression values of genes. Dimensions do not necessarely map to columns in a source file and equally  records must not be the rows in your file. If you select this option you choose to show the rows in the file as dimensions and the columns in the file as records.");
-		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1);
-		gridData.widthHint = 600;
-		transpositionExplanationLabel.setLayoutData(gridData);
-		swapRowsWithColumnsButton = new Button(dataTranspositionGroup, SWT.CHECK);
-		swapRowsWithColumnsButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
-		swapRowsWithColumnsButton.setText("Swap Rows and Columns");
-		swapRowsWithColumnsButton.addSelectionListener(new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				mediator.swapRowsWithColumnsButtonSelected();
-			}
-		});
-
 	}
 
 	private void createDataCenterGroup(Composite parent) {
