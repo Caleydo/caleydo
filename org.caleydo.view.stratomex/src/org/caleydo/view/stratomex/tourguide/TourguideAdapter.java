@@ -69,13 +69,13 @@ import org.caleydo.view.stratomex.brick.configurer.PathwayDataConfigurer;
 import org.caleydo.view.stratomex.brick.sorting.NoSortingSortingStrategy;
 import org.caleydo.view.stratomex.column.BrickColumn;
 import org.caleydo.view.stratomex.column.BrickColumnManager;
+import org.caleydo.view.stratomex.column.FrameHighlightRenderer;
 import org.caleydo.view.stratomex.listener.AddGroupsToStratomexListener;
 import org.caleydo.view.stratomex.tourguide.event.HighlightBrickEvent;
 import org.caleydo.view.stratomex.tourguide.event.UpdateNumericalPreviewEvent;
 import org.caleydo.view.stratomex.tourguide.event.UpdatePathwayPreviewEvent;
 import org.caleydo.view.stratomex.tourguide.event.UpdateStratificationPreviewEvent;
 import org.caleydo.view.stratomex.tourguide.internal.AddAttachedLayoutRenderer;
-import org.caleydo.view.stratomex.tourguide.internal.BrickHighlightRenderer;
 import org.caleydo.view.stratomex.tourguide.internal.ConfirmCancelLayoutRenderer;
 import org.caleydo.view.stratomex.tourguide.internal.ESelectionMode;
 import org.caleydo.view.stratomex.tourguide.internal.EWizardMode;
@@ -249,7 +249,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 
 	/**
 	 * if we pick an brick
-	 * 
+	 *
 	 * @param pick
 	 */
 	protected void onBrickPick(Pick pick) {
@@ -281,24 +281,33 @@ public class TourguideAdapter implements IStratomexAdapter {
 		}
 		if (handled) {
 			if (this.selectionCurrent != null) {
-				changeHighlight(this.selectionCurrent.getLayout(), COLOR_POSSIBLE_SELECTION);
+				changeHighlight(this.selectionCurrent, COLOR_POSSIBLE_SELECTION);
 			}
-			changeHighlight(brick.getLayout(), COLOR_SELECTED);
+			changeHighlight(brick, COLOR_SELECTED);
 			this.selectionCurrent = brick;
 
 			stratomex.setDisplayListDirty();
 		}
 	}
 
-	private void changeHighlight(ElementLayout layout, IColor color) {
-		// select brick by changing highlight
-		for (BrickHighlightRenderer glow : Iterables.filter(layout.getBackgroundRenderer(),
-				BrickHighlightRenderer.class)) {
-			glow.setColor(color.getRGBA());
-			return;
+	private void changeHighlight(GLBrick brick, IColor color) {
+		if (brick.isHeaderBrick()) {
+			brick.getBrickColumn().setHighlightColor(color == null ? BrickColumn.REVERT_COLOR : color.getRGBA());
+		} else {
+			ElementLayout layout = brick.getLayout();
+			if (color == null)
+				layout.clearBackgroundRenderers(FrameHighlightRenderer.class);
+			else {
+				// select brick by changing highlight
+				for (FrameHighlightRenderer glow : Iterables.filter(layout.getBackgroundRenderer(),
+						FrameHighlightRenderer.class)) {
+					glow.setColor(color.getRGBA());
+					return;
+				}
+				// no yet there add one
+				layout.addBackgroundRenderer(new FrameHighlightRenderer(color.getRGBA(), true));
+			}
 		}
-		// no yet there add one
-		layout.addBackgroundRenderer(new BrickHighlightRenderer(color.getRGBA()));
 	}
 
 	@Override
@@ -309,7 +318,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 		GLBrick toSelect = null;
 		for (BrickColumn col : stratomex.getBrickColumnManager().getBrickColumns()) {
 			if (filter.apply(col.getTablePerspective())) {
-				changeHighlight(col.getHeaderBrick().getLayout(), COLOR_POSSIBLE_SELECTION);
+				changeHighlight(col.getHeaderBrick(), COLOR_POSSIBLE_SELECTION);
 
 				if (autoSelectLeftOfMe && previewIndex == index) {
 					toSelect = col.getHeaderBrick();
@@ -332,7 +341,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 			TablePerspective tablePerspective = col.getTablePerspective();
 			for (GLBrick brick : col.getSegmentBricks()) {
 				if (filter.apply(Pair.make(tablePerspective, brick.getTablePerspective().getRecordGroup())))
-					changeHighlight(brick.getLayout(), COLOR_POSSIBLE_SELECTION);
+					changeHighlight(brick, COLOR_POSSIBLE_SELECTION);
 			}
 		}
 		repaint();
@@ -346,28 +355,18 @@ public class TourguideAdapter implements IStratomexAdapter {
 		if (brickColumn == null)
 			return;
 
-		ElementLayout layout = null;
+		IColor c = event.isHighlight() ? Colors.of(event.getColor()) : null;
 		if (event.getGroup() == null) {
-			layout = brickColumn.getLayout();
+			changeHighlight(brickColumn.getHeaderBrick(), c);
 		} else {
 			Group g = event.getGroup();
 			for (GLBrick brick : brickColumn.getSegmentBricks()) {
 				if (g.equals(brick.getTablePerspective().getRecordGroup())) {
-					layout = brick.getLayout();
+					changeHighlight(brick, c);
 					break;
 				}
 			}
 		}
-		if (layout == null)
-			return;
-
-		if (!event.isHighlight()) {
-			layout.clearBackgroundRenderers(BrickHighlightRenderer.class);
-		} else {
-			layout.addBackgroundRenderer(new BrickHighlightRenderer(event.getColor().getColorComponents(null)));
-		}
-		if (layout.getLayoutManager() != null)
-			layout.updateSubLayout();
 	}
 
 
@@ -500,7 +499,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 
 	/**
 	 * listens to remove events done via the remove button and check if this was our template
-	 * 
+	 *
 	 * @param event
 	 */
 	@ListenTo
@@ -530,7 +529,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 
 	/**
 	 * determines whether a given BrickColumn can have dependent ones
-	 * 
+	 *
 	 * @param brickColumn
 	 * @return
 	 */
@@ -564,9 +563,9 @@ public class TourguideAdapter implements IStratomexAdapter {
 		selectionCurrent = null;
 		// clear highlights
 		for (BrickColumn col : stratomex.getBrickColumnManager().getBrickColumns()) {
-			col.getHeaderBrick().getLayout().clearBackgroundRenderers(BrickHighlightRenderer.class);
+			col.setHighlightColor(BrickColumn.REVERT_COLOR);
 			for (GLBrick brick : col.getSegmentBricks()) {
-				brick.getLayout().clearBackgroundRenderers(BrickHighlightRenderer.class);
+				brick.getLayout().clearBackgroundRenderers(FrameHighlightRenderer.class);
 			}
 		}
 
@@ -647,7 +646,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 
 	/**
 	 * whether a template column exists or not
-	 * 
+	 *
 	 * @return
 	 */
 	public boolean isEmpty() {
@@ -685,7 +684,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 
 	/**
 	 * updates the dependent brick column if an independent brick column is for it selected
-	 * 
+	 *
 	 * @param with
 	 */
 	private void updateDependentBrickColumn(TablePerspective with, BrickColumn new_) {

@@ -829,8 +829,6 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 					tablePerspectiveSelectionManager.addToType(currentSelectionType, tablePerspective.getID());
 					brickLayoutConfiguration.setSelected(true);
 				}
-				if (isHeaderBrick())
-					brickColumn.activeChanged(select);
 
 				tablePerspectiveSelectionManager.triggerSelectionUpdateEvent();
 
@@ -1561,8 +1559,6 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 				// brickLayout.setShowHandles(true);
 				// System.out.println("SELECTED " + getLabel());
 				brickLayoutConfiguration.setSelected(true);
-				if (isHeaderBrick())
-					brickColumn.activeChanged(true);
 
 				stratomex.updateConnectionLinesBetweenColumns();
 			} else {
@@ -1570,8 +1566,6 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 				// System.out.println("DESELECTED " + getLabel());
 				brickLayoutConfiguration.setSelected(false);
 				// brickLayout.setShowHandles(false);
-				if (isHeaderBrick())
-					brickColumn.activeChanged(false);
 			}
 			// }
 			if (layoutManager != null)

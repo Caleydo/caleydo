@@ -24,11 +24,11 @@ import javax.media.opengl.GL2;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.core.view.opengl.picking.PickingType;
+import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 
-import com.jogamp.opengl.util.awt.TextRenderer;
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureCoords;
 
@@ -38,7 +38,7 @@ public class DetailToolBar extends ALayoutRenderer {
 	PickingManager pickingManager;
 
 	private TextureManager iconManager;
-	private TextRenderer textRender;
+	private CaleydoTextRenderer textRender;
 
 	public DetailToolBar(GLHeatMap heatMap) {
 		this.heatMap = heatMap;
