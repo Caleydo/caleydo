@@ -31,5 +31,5 @@ public interface IAddWizardElementFactory {
 
 	AAddWizardElement createDependent(IStratomexAdapter adapter, AGLView view, TablePerspective tablePerspective);
 
-	// AAddWizardElement create
+	AAddWizardElement createIndepenent(IStratomexAdapter adapter, AGLView view, TablePerspective source);
 }

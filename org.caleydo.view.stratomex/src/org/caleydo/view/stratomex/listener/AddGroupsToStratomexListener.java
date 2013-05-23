@@ -29,6 +29,7 @@ import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
 import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.stratomex.brick.configurer.ClinicalDataConfigurer;
 import org.caleydo.view.stratomex.brick.sorting.ExternallyProvidedSortingStrategy;
+import org.caleydo.view.stratomex.brick.sorting.NoSortingSortingStrategy;
 import org.caleydo.view.stratomex.column.BrickColumn;
 import org.caleydo.view.stratomex.event.AddGroupsToStratomexEvent;
 
@@ -69,12 +70,18 @@ public class AddGroupsToStratomexListener extends AEventListener<GLStratomex> {
 			// dependent sorting
 			dataConfigurer = new ClinicalDataConfigurer();
 			ExternallyProvidedSortingStrategy sortingStrategy = new ExternallyProvidedSortingStrategy();
-			sortingStrategy.setExternalBricks(brickColumn.getSegmentBricks());
+			sortingStrategy.setExternalBrick(brickColumn);
 			HashMap<Perspective, Perspective> m = Maps.newHashMap();
 			m.put(kaplan.getRecordPerspective(), underlying.getRecordPerspective());
 			sortingStrategy.setHashConvertedRecordPerspectiveToOrginalRecordPerspective(m);
 			dataConfigurer.setSortingStrategy(sortingStrategy);
 		}
+		return dataConfigurer;
+	}
+
+	public static ClinicalDataConfigurer createTemplateKaplanConfigurer(GLStratomex handler, TablePerspective kaplan) {
+		ClinicalDataConfigurer dataConfigurer = new ClinicalDataConfigurer();
+		dataConfigurer.setSortingStrategy(new NoSortingSortingStrategy());
 		return dataConfigurer;
 	}
 }

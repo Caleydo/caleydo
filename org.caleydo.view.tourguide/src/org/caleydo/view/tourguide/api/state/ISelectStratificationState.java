@@ -24,7 +24,7 @@ import org.caleydo.core.data.perspective.table.TablePerspective;
 import com.google.common.base.Predicate;
 
 public interface ISelectStratificationState extends IState,Predicate<TablePerspective> {
-	void select(TablePerspective tablePerspective, ISelectReaction reactions);
+	void select(TablePerspective tablePerspective, IReactions reactions);
 
 	/**
 	 * @return whether automatically the left one of me should be selected, see #1202

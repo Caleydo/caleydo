@@ -19,7 +19,6 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.api.state;
 
-import org.caleydo.core.io.gui.dataimport.widget.ICallback;
 import org.caleydo.core.util.base.ILabeled;
 
 /**
@@ -27,5 +26,5 @@ import org.caleydo.core.util.base.ILabeled;
  *
  */
 public interface ITransition extends ILabeled {
-	void apply(ICallback<IState> onApply);
+	void apply(IReactions onApply);
 }

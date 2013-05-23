@@ -51,8 +51,9 @@ import org.caleydo.view.stratomex.tourguide.event.UpdatePathwayPreviewEvent;
 import org.caleydo.view.stratomex.tourguide.event.UpdateStratificationPreviewEvent;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.state.ABrowseState;
+import org.caleydo.view.tourguide.api.state.EWizardMode;
 import org.caleydo.view.tourguide.api.state.ISelectGroupState;
-import org.caleydo.view.tourguide.api.state.ISelectReaction;
+import org.caleydo.view.tourguide.api.state.IReactions;
 import org.caleydo.view.tourguide.api.state.ISelectStratificationState;
 import org.caleydo.view.tourguide.api.state.IState;
 import org.caleydo.view.tourguide.api.state.IStateMachine;
@@ -72,7 +73,7 @@ import org.caleydo.view.tourguide.spi.score.IScore;
  * @author Samuel Gratzl
  *
  */
-public class AddWizardElement extends AAddWizardElement implements ICallback<IState>, ISelectReaction {
+public class AddWizardElement extends AAddWizardElement implements ICallback<IState>, IReactions {
 	@DeepScan
 	private StateMachineImpl stateMachine;
 
@@ -80,18 +81,19 @@ public class AddWizardElement extends AAddWizardElement implements ICallback<ISt
 	private GLContextLocal contextLocal;
 	private int hovered = -1;
 
-	public AddWizardElement(AGLView view, IStratomexAdapter adapter, TablePerspective source) {
+	public AddWizardElement(AGLView view, IStratomexAdapter adapter, EWizardMode mode, TablePerspective source) {
 		super(adapter);
 		contextLocal = new GLContextLocal(view.getTextRenderer(), view.getTextureManager(),
 				Activator.getResourceLocator());
 		this.view = view;
-		this.stateMachine = createStateMachine(adapter.getVisibleTablePerspectives(), source);
+		this.stateMachine = createStateMachine(adapter.getVisibleTablePerspectives(), mode, source);
 		this.stateMachine.getCurrent().onEnter();
 	}
 
-	private StateMachineImpl createStateMachine(List<TablePerspective> existing, TablePerspective source) {
-		StateMachineImpl state = StateMachineImpl.create(existing, source);
-		ScoreFactories.fillStateMachine(state, existing, source);
+	private StateMachineImpl createStateMachine(List<TablePerspective> existing, EWizardMode mode,
+			TablePerspective source) {
+		StateMachineImpl state = StateMachineImpl.create(existing, mode, source);
+		ScoreFactories.fillStateMachine(state, existing, mode, source);
 
 		addStartTransition(state, IStateMachine.ADD_STRATIFICATIONS);
 		addStartTransition(state, IStateMachine.ADD_PATHWAY);

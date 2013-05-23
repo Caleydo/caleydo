@@ -22,6 +22,7 @@ package org.caleydo.view.tourguide.internal.model;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -43,6 +44,10 @@ import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.id.IIDTypeMapper;
+import org.caleydo.view.tourguide.internal.view.col.CategoricalPercentageRankColumnModel;
+import org.caleydo.vis.rank.model.ACompositeRankColumnModel;
+import org.caleydo.vis.rank.model.ARankColumnModel;
+import org.caleydo.vis.rank.model.RankTableModel;
 
 import com.google.common.collect.Lists;
 
@@ -113,8 +118,7 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 		IDMappingManager idMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(categoryIDType);
 
 		IIDTypeMapper<Integer, String> toLabel = idMappingManager.getIDTypeMapper(categoryIDType, categoryIDType
-				.getIDCategory()
-				.getHumanReadableIDType());
+				.getIDCategory().getHumanReadableIDType());
 
 		List<AScoreRow> r = new ArrayList<>(); // just stratifications
 		for (int category : categories) {
@@ -269,5 +273,37 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 				return p;
 		}
 		return null;
+	}
+
+	@Override
+	public void createSpecificColumns(RankTableModel table) {
+		@SuppressWarnings("unchecked")
+		// I know that String might be wrong but who cares
+		final CategoricalTable<?> ctable = (CategoricalTable<?>) getDataDomain().getTable();
+		for (CategoryProperty<?> p : ctable.getCategoryDescriptions().getCategoryProperties()) {
+			table.add(CategoricalPercentageRankColumnModel.create(p.getCategory(), ctable));
+		}
+	}
+
+	@Override
+	public void removeSpecificColumns(RankTableModel table) {
+		List<ARankColumnModel> toDestroy = new ArrayList<>();
+		flat(table.getColumns().iterator(), toDestroy);
+		for (ARankColumnModel r : toDestroy) {
+			r.hide();
+			r.destroy();
+		}
+	}
+
+	private void flat(Iterator<ARankColumnModel> cols, List<ARankColumnModel> toDestroy) {
+		while (cols.hasNext()) {
+			ARankColumnModel col = cols.next();
+			if (col instanceof ACompositeRankColumnModel) {
+				flat(((ACompositeRankColumnModel) col).iterator(), toDestroy);
+			}
+			if (col instanceof CategoricalPercentageRankColumnModel
+					&& ((CategoricalPercentageRankColumnModel) col).getDataDomain() == dataDomain)
+				toDestroy.add(col);
+		}
 	}
 }

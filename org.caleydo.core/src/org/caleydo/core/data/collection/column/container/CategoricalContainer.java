@@ -124,7 +124,7 @@ public class CategoricalContainer<CATEGORY_TYPE extends Comparable<CATEGORY_TYPE
 		}
 		container[nextIndex++] = identifier;
 		Integer numberOfMatches = hashCategoryToNumberOfMatches.get(category);
-		hashCategoryToNumberOfMatches.put(category, numberOfMatches);
+		hashCategoryToNumberOfMatches.put(category, numberOfMatches + 1);
 	}
 
 	@Override
@@ -139,6 +139,18 @@ public class CategoricalContainer<CATEGORY_TYPE extends Comparable<CATEGORY_TYPE
 	@Override
 	public boolean isUnknown(CATEGORY_TYPE value) {
 		return value == unknownCategoryType;
+	}
+
+	/**
+	 * returns the number of matches
+	 *
+	 * @param category
+	 * @return
+	 */
+	public int getNumberOfMatches(Object category) {
+		if (!hashCategoryToNumberOfMatches.containsKey(category))
+			return 0;
+		return hashCategoryToNumberOfMatches.get(category);
 	}
 
 	/**

@@ -29,6 +29,7 @@ import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.ExtensionUtils;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
+import org.caleydo.view.tourguide.api.state.EWizardMode;
 import org.caleydo.view.tourguide.api.state.IStateMachine;
 import org.caleydo.view.tourguide.internal.event.AddScoreColumnEvent;
 import org.caleydo.view.tourguide.spi.IScoreFactory;
@@ -78,9 +79,10 @@ public class ScoreFactories {
 	}
 
 	public static void fillStateMachine(IStateMachine stateMachine, List<TablePerspective> existing,
+ EWizardMode mode,
 			TablePerspective source) {
 		for (IScoreFactory f : factories.values()) {
-			f.fillStateMachine(stateMachine, existing, source);
+			f.fillStateMachine(stateMachine, existing, mode, source);
 		}
 	}
 }

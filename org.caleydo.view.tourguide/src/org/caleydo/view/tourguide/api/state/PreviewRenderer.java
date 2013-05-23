@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.internal.stratomex.state;
+package org.caleydo.view.tourguide.api.state;
 
 import java.util.List;
 
@@ -31,11 +31,11 @@ import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.text.TextUtils;
 
 /**
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
-class PreviewRenderer extends AForwardingRenderer {
+public class PreviewRenderer extends AForwardingRenderer {
 	private final AGLView view;
 	private final String label;
 

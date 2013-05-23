@@ -32,5 +32,5 @@ import com.google.common.base.Predicate;
  *
  */
 public interface ISelectGroupState extends IState, Predicate<Pair<TablePerspective, Group>> {
-	void select(TablePerspective tablePerspective, Group group, ISelectReaction reaction);
+	void select(TablePerspective tablePerspective, Group group, IReactions reaction);
 }

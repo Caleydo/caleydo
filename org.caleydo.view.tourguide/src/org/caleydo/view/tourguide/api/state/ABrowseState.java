@@ -19,7 +19,6 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.api.state;
 
-import org.caleydo.view.stratomex.tourguide.IStratomexAdapter;
 import org.caleydo.view.stratomex.tourguide.event.UpdateNumericalPreviewEvent;
 import org.caleydo.view.stratomex.tourguide.event.UpdatePathwayPreviewEvent;
 import org.caleydo.view.stratomex.tourguide.event.UpdateStratificationPreviewEvent;
@@ -57,15 +56,15 @@ public abstract class ABrowseState implements IState {
 
 	}
 
-	public void onUpdate(UpdateStratificationPreviewEvent event, ISelectReaction adapter) {
+	public void onUpdate(UpdateStratificationPreviewEvent event, IReactions adapter) {
 
 	}
 
-	public void onUpdate(UpdatePathwayPreviewEvent event, ISelectReaction adapter) {
+	public void onUpdate(UpdatePathwayPreviewEvent event, IReactions adapter) {
 
 	}
 
-	public void onUpdate(UpdateNumericalPreviewEvent event, ISelectReaction adapter) {
+	public void onUpdate(UpdateNumericalPreviewEvent event, IReactions adapter) {
 
 	}
 }

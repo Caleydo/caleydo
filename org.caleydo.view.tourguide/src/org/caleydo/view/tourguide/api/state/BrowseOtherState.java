@@ -21,6 +21,8 @@ package org.caleydo.view.tourguide.api.state;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
+import org.caleydo.view.stratomex.brick.configurer.ClinicalDataConfigurer;
+import org.caleydo.view.stratomex.brick.sorting.NoSortingSortingStrategy;
 import org.caleydo.view.stratomex.tourguide.event.UpdateNumericalPreviewEvent;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 
@@ -44,15 +46,16 @@ public class BrowseOtherState extends ABrowseState {
 	}
 
 	@Override
-	public void onUpdate(UpdateNumericalPreviewEvent event, ISelectReaction adapter) {
+	public void onUpdate(UpdateNumericalPreviewEvent event, IReactions adapter) {
 		show(event.getTablePerspective(), adapter);
 	}
 
-	protected void show(TablePerspective numerical, ISelectReaction adapter) {
-		if (underlying == null) // standalone --> doesn't work
-			return;
-		// adapter.replaceTemplate(numerical, new NumericalDataConfigurer(numerical));
-		else { // dependent
+	protected void show(TablePerspective numerical, IReactions adapter) {
+		if (underlying == null) {// standalone --> doesn't work
+			ClinicalDataConfigurer clinicalDataConfigurer = new ClinicalDataConfigurer();
+			clinicalDataConfigurer.setSortingStrategy(new NoSortingSortingStrategy());
+			adapter.replaceTemplate(numerical, clinicalDataConfigurer);
+		} else { // dependent
 			adapter.replaceClinicalTemplate(underlying, numerical);
 		}
 	}
