@@ -95,7 +95,7 @@ public class DataTranspositionWidget {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				updateColumnCountWarning();
+				update();
 			}
 		});
 	}
@@ -115,7 +115,7 @@ public class DataTranspositionWidget {
 		return warningLabel;
 	}
 
-	private void updateColumnCountWarning() {
+	public void update() {
 		int totalNumberOfRows = wizard.getTotalNumberOfRows();
 
 		int numColumns = swapRowsWithColumnsButton.getSelection() ? totalNumberOfRows : (wizard.getSelectedColumns()
@@ -154,5 +154,9 @@ public class DataTranspositionWidget {
 
 		// page.parentComposite.pack(true);
 		parentComposite.layout(true);
+	}
+
+	public boolean isTransposition() {
+		return swapRowsWithColumnsButton.getSelection();
 	}
 }

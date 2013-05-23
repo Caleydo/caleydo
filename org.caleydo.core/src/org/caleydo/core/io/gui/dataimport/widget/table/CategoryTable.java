@@ -125,9 +125,9 @@ public class CategoryTable extends AMatrixBasedTableWidget {
 
 		GridLayer gridLayer = new GridLayer(bodyLayer, columnHeaderLayer, rowHeaderLayer, cornerLayer);
 		table = new NatTable(parent, gridLayer, false);
-		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1);
-		gridData.heightHint = 300;
-		gridData.widthHint = 800;
+		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
+		// gridData.heightHint = 300;
+		// gridData.widthHint = 800;
 		table.setLayoutData(gridData);
 
 		table.addConfiguration(new DefaultNatTableStyleConfiguration());

@@ -30,10 +30,12 @@ import org.caleydo.core.data.collection.column.container.CategoricalClassDescrip
 import org.caleydo.core.data.collection.column.container.CategoricalClassDescription.ECategoryType;
 import org.caleydo.core.io.ColumnDescription;
 import org.caleydo.core.io.DataSetDescription;
+import org.caleydo.core.io.gui.dataimport.widget.DataTranspositionWidget;
 import org.caleydo.core.io.gui.dataimport.widget.table.CategoryTable;
 import org.caleydo.core.util.color.Color;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -60,6 +62,8 @@ public class CategoricalDataPropertiesPage extends AImportDataPage {
 
 	protected CategoryTable categoryTable;
 
+	protected DataTranspositionWidget dataTranspositionWidget;
+
 	/**
 	 * @param pageName
 	 * @param dataSetDescription
@@ -83,7 +87,15 @@ public class CategoricalDataPropertiesPage extends AImportDataPage {
 		nominalButton = new Button(categoryTypeGroup, SWT.RADIO);
 		nominalButton.setText("Nominal");
 
-		categoryTable = new CategoryTable(parentComposite);
+		Group categoriesGroup = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
+		categoriesGroup.setText("Categories");
+		categoriesGroup.setLayout(new GridLayout(1, true));
+		categoriesGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+
+		categoryTable = new CategoryTable(categoriesGroup);
+
+		dataTranspositionWidget = new DataTranspositionWidget(parentComposite, (DataImportWizard) getWizard());
+
 		setControl(parentComposite);
 	}
 
@@ -96,8 +108,11 @@ public class CategoricalDataPropertiesPage extends AImportDataPage {
 				: ECategoryType.NOMINAL);
 		categoricalClassDescription.setRawDataType(EDataType.STRING);
 		for (List<String> category : categories) {
-			categoricalClassDescription.addCategoryProperty(category.get(0), category.get(2), new Color("000000"));
+			categoricalClassDescription.addCategoryProperty(category.get(0), category.get(2),
+					new Color("000000"));
 		}
+
+		dataSetDescription.setTransposeMatrix(dataTranspositionWidget.isTransposition());
 
 		dataSetDescription.getDataDescription().setCategoricalClassDescription(categoricalClassDescription);
 
@@ -121,6 +136,8 @@ public class CategoricalDataPropertiesPage extends AImportDataPage {
 		List<List<String>> categoryMatrix = extractCategoryMatrix(wizard.getFilteredDataMatrix());
 
 		categoryTable.createTableFromMatrix(categoryMatrix, 4);
+
+		dataTranspositionWidget.update();
 
 		wizard.setChosenDataTypePage(this);
 		wizard.getContainer().updateButtons();
