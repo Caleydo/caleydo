@@ -135,15 +135,6 @@ public final class TextureManager {
 				upperLeftCorner, colorR, colorG, colorB, alpha);
 	}
 
-	@Deprecated
-	public void renderTexture(GL2 gl, final EIconTextures eIconTextures, Vec3f lowerLeftCorner, Vec3f lowerRightCorner,
-			Vec3f upperRightCorner, Vec3f upperLeftCorner, float[] color) {
-		renderTexture(gl, eIconTextures, lowerLeftCorner, lowerRightCorner, upperRightCorner, upperLeftCorner,
-				color[0], color[1], color[2], color[3]);
-	}
-
-
-
 	/**
 	 * Convenience method for rendering textures on a rectangle.
 	 *

@@ -29,9 +29,6 @@ package org.caleydo.core.id.object;
 @Deprecated
 public enum ManagedObjectType {
 
-	VIEW_SWT_BROWSER_GENERAL(26),
-	VIEW_SWT_BROWSER_GENOME(23),
-
 	GL_VIEW(29),
 
 	PATHWAY(58),
@@ -40,7 +37,7 @@ public enum ManagedObjectType {
 
 	DIMENSION_GROUP_SPACER(70);
 
-	private int idPrefix;
+	private final int idPrefix;
 
 	/**
 	 * Constructor.
