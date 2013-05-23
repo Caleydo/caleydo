@@ -31,7 +31,7 @@ import org.caleydo.core.view.opengl.util.text.TextUtils;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.view.stratomex.tourguide.event.UpdatePathwayPreviewEvent;
 import org.caleydo.view.tourguide.api.state.BrowsePathwayState;
-import org.caleydo.view.tourguide.api.state.ISelectReaction;
+import org.caleydo.view.tourguide.api.state.IReactions;
 import org.caleydo.view.tourguide.api.state.ISelectStratificationState;
 import org.caleydo.view.tourguide.api.state.PreviewRenderer;
 
@@ -54,7 +54,7 @@ public class BrowsePathwayAndStratificationState extends BrowsePathwayState impl
 	}
 
 	@Override
-	public void onUpdate(UpdatePathwayPreviewEvent event, ISelectReaction adapter) {
+	public void onUpdate(UpdatePathwayPreviewEvent event, IReactions adapter) {
 		pathway = event.getPathway();
 		if (underlying == null) {
 			ALayoutRenderer preview = new MyLabelRenderer(pathway.getTitle(), adapter.getGLView());
@@ -65,7 +65,7 @@ public class BrowsePathwayAndStratificationState extends BrowsePathwayState impl
 		}
 	}
 
-	private void show(ISelectReaction adapter) {
+	private void show(IReactions adapter) {
 		if (underlying == null || pathway == null)
 			return;
 		adapter.replacePathwayTemplate(underlying, pathway);
@@ -77,7 +77,7 @@ public class BrowsePathwayAndStratificationState extends BrowsePathwayState impl
 	}
 
 	@Override
-	public void select(TablePerspective tablePerspective, ISelectReaction reactions) {
+	public void select(TablePerspective tablePerspective, IReactions reactions) {
 		setUnderlying(tablePerspective.getRecordPerspective());
 		show(reactions);
 	}

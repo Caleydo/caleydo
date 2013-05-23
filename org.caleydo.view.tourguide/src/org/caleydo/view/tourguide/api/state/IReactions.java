@@ -29,7 +29,7 @@ import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.spi.score.IScore;
 
-public interface ISelectReaction {
+public interface IReactions {
 	void switchTo(IState target);
 
 	void addScoreToTourGuide(EDataDomainQueryMode mode, IScore... scores);

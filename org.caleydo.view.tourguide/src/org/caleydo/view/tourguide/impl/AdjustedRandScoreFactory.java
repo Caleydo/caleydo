@@ -36,7 +36,8 @@ import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.score.DefaultComputedReferenceStratificationScore;
 import org.caleydo.view.tourguide.api.score.MultiScore;
 import org.caleydo.view.tourguide.api.state.BrowseStratificationState;
-import org.caleydo.view.tourguide.api.state.ISelectReaction;
+import org.caleydo.view.tourguide.api.state.EWizardMode;
+import org.caleydo.view.tourguide.api.state.IReactions;
 import org.caleydo.view.tourguide.api.state.ISelectStratificationState;
 import org.caleydo.view.tourguide.api.state.IState;
 import org.caleydo.view.tourguide.api.state.IStateMachine;
@@ -88,15 +89,16 @@ public class AdjustedRandScoreFactory implements IScoreFactory {
 	}
 
 	@Override
-	public void fillStateMachine(IStateMachine stateMachine, List<TablePerspective> existing, TablePerspective dependee) {
-		if (existing.isEmpty() || dependee != null) // nothing to compare
+	public void fillStateMachine(IStateMachine stateMachine, List<TablePerspective> existing, EWizardMode mode,
+			TablePerspective source) {
+		if (mode != EWizardMode.GLOBAL || existing.isEmpty()) // nothing to compare
 			return;
 
-		IState source = stateMachine.get(IStateMachine.ADD_STRATIFICATIONS);
+		IState start = stateMachine.get(IStateMachine.ADD_STRATIFICATIONS);
 		IState browse = stateMachine.addState("AdjustedRandBrowse", new UpdateAndBrowseAdjustedRand());
 		IState target = stateMachine.addState("AdjustedRand", new CreateAdjustedRandState(browse));
 
-		stateMachine.addTransition(source, new SimpleTransition(target,
+		stateMachine.addTransition(start, new SimpleTransition(target,
 				"Find similar to displayed stratification"));
 	}
 
@@ -136,7 +138,7 @@ public class AdjustedRandScoreFactory implements IScoreFactory {
 		}
 
 		@Override
-		public void select(TablePerspective tablePerspective, ISelectReaction reactions) {
+		public void select(TablePerspective tablePerspective, IReactions reactions) {
 			reactions.addScoreToTourGuide(STRATIFICATIONS,
 					create(null, tablePerspective.getRecordPerspective()));
 			reactions.switchTo(target);
@@ -160,7 +162,7 @@ public class AdjustedRandScoreFactory implements IScoreFactory {
 		}
 
 		@Override
-		public void select(TablePerspective tablePerspective, ISelectReaction reactions) {
+		public void select(TablePerspective tablePerspective, IReactions reactions) {
 			reactions.addScoreToTourGuide(STRATIFICATIONS, create(null, tablePerspective.getRecordPerspective()));
 		}
 

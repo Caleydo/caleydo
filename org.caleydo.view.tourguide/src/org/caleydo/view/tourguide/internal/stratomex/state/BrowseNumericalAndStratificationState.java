@@ -26,7 +26,7 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormRenderer;
 import org.caleydo.view.stratomex.tourguide.event.UpdateNumericalPreviewEvent;
 import org.caleydo.view.tourguide.api.state.BrowseOtherState;
-import org.caleydo.view.tourguide.api.state.ISelectReaction;
+import org.caleydo.view.tourguide.api.state.IReactions;
 import org.caleydo.view.tourguide.api.state.ISelectStratificationState;
 import org.caleydo.view.tourguide.api.state.PreviewRenderer;
 
@@ -49,7 +49,7 @@ public class BrowseNumericalAndStratificationState extends BrowseOtherState impl
 	}
 
 	@Override
-	public void onUpdate(UpdateNumericalPreviewEvent event, ISelectReaction adapter) {
+	public void onUpdate(UpdateNumericalPreviewEvent event, IReactions adapter) {
 		numerical = event.getTablePerspective();
 		if (underlying == null) {
 			updatePreview(adapter);
@@ -61,7 +61,7 @@ public class BrowseNumericalAndStratificationState extends BrowseOtherState impl
 	 * @param adapter
 	 *
 	 */
-	private void updatePreview(ISelectReaction adapter) {
+	private void updatePreview(IReactions adapter) {
 		AGLView view = adapter.getGLView();
 		MultiFormRenderer preview = adapter.createPreview(numerical);
 		adapter.replaceTemplate(new PreviewRenderer(preview, view, "Select a stratification to refer to"));
@@ -73,7 +73,7 @@ public class BrowseNumericalAndStratificationState extends BrowseOtherState impl
 	}
 
 	@Override
-	public void select(TablePerspective tablePerspective, ISelectReaction reactions) {
+	public void select(TablePerspective tablePerspective, IReactions reactions) {
 		setUnderlying(tablePerspective.getRecordPerspective());
 		if (numerical != null)
 			show(numerical, reactions);

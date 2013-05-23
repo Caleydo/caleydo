@@ -28,7 +28,7 @@ import org.caleydo.core.event.ADirectedEvent;
 public class AddNewColumnEvent extends ADirectedEvent {
 
 	private int objectId;
-	private boolean dependentOne;
+	private boolean attached;
 
 	/**
 	 * @param objectID
@@ -41,23 +41,27 @@ public class AddNewColumnEvent extends ADirectedEvent {
 	 * @param objectID2
 	 * @param b
 	 */
-	public AddNewColumnEvent(int objectID, boolean dependentOne) {
+	public AddNewColumnEvent(int objectID, boolean attached) {
 		this.objectId = objectID;
-		this.dependentOne = dependentOne;
+		this.attached = attached;
 	}
 
 	/**
 	 * @return the dependentOne, see {@link #dependentOne}
 	 */
+	public boolean isIndependentOne() {
+		return attached && objectId % 2 == 1;
+	}
+
 	public boolean isDependentOne() {
-		return dependentOne;
+		return attached && objectId % 2 == 0;
 	}
 
 	/**
 	 * @return the objectId, see {@link #objectId}
 	 */
 	public int getObjectId() {
-		return objectId;
+		return attached ? objectId / 2 : objectId;
 	}
 
 	@Override

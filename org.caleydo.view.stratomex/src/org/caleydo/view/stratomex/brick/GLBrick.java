@@ -1216,7 +1216,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 						ClinicalDataConfigurer dataConfigurer = new ClinicalDataConfigurer();
 						ExternallyProvidedSortingStrategy sortingStrategy = new ExternallyProvidedSortingStrategy();
-						sortingStrategy.setExternalBricks(brickColumn.getSegmentBricks());
+						sortingStrategy.setExternalBrick(brickColumn);
 						sortingStrategy.setHashConvertedRecordPerspectiveToOrginalRecordPerspective(dialog
 								.getHashConvertedRecordPerspectiveToOrginalRecordPerspective());
 						dataConfigurer.setSortingStrategy(sortingStrategy);

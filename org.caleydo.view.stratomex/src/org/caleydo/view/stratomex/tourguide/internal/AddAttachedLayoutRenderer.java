@@ -29,22 +29,25 @@ import org.caleydo.view.stratomex.tourguide.TourguideAdapter;
  * @author Samuel Gratzl
  *
  */
-public class AddDependentLayoutRenderer extends ALayoutRenderer {
+public class AddAttachedLayoutRenderer extends ALayoutRenderer {
 	private final AGLView view;
 	private final int id;
 	private final TourguideAdapter tourguide;
+	private final boolean left;
 
-	public AddDependentLayoutRenderer(AGLView view, int id, TourguideAdapter tourguide) {
+	public AddAttachedLayoutRenderer(AGLView view, int id, TourguideAdapter tourguide, boolean left) {
 		this.view = view;
 		this.id = id;
 		this.tourguide = tourguide;
+		this.left = left;
 	}
 
 	@Override
 	protected void renderContent(GL2 gl) {
 		float hi = view.getPixelGLConverter().getGLHeightForPixelHeight(34);
 		float wi = view.getPixelGLConverter().getGLWidthForPixelWidth(32);
-		tourguide.renderAddDependentButton(gl, x * 1.05f, y * 0.8f, wi, hi, id);
+		tourguide.renderAddDependentButton(gl, left ? (-wi - x * 0.05f) : (x * 1.05f), y * 0.8f, wi, hi, id * 2
+				+ (left ? 1 : 0));
 	}
 
 	@Override

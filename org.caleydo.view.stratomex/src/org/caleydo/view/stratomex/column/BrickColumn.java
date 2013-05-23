@@ -240,6 +240,13 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 	}
 
 	/**
+	 * @return the brickConfigurer, see {@link #brickConfigurer}
+	 */
+	public IBrickConfigurer getBrickConfigurer() {
+		return brickConfigurer;
+	}
+
+	/**
 	 * Initializes the main column with either only the headerBrick, when the dimensionGroup is collapsed, or the
 	 * headerBrick and the clusterBricks.
 	 */

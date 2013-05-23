@@ -41,9 +41,11 @@ import org.caleydo.view.stratomex.tourguide.event.UpdateNumericalPreviewEvent;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.score.DefaultComputedGroupScore;
 import org.caleydo.view.tourguide.api.state.BrowseOtherState;
-import org.caleydo.view.tourguide.api.state.ISelectReaction;
+import org.caleydo.view.tourguide.api.state.EWizardMode;
+import org.caleydo.view.tourguide.api.state.IReactions;
 import org.caleydo.view.tourguide.api.state.IState;
 import org.caleydo.view.tourguide.api.state.IStateMachine;
+import org.caleydo.view.tourguide.api.state.ITransition;
 import org.caleydo.view.tourguide.api.state.PreviewRenderer;
 import org.caleydo.view.tourguide.api.state.SimpleTransition;
 import org.caleydo.view.tourguide.api.util.ui.CaleydoLabelProvider;
@@ -79,30 +81,19 @@ import com.google.common.collect.Sets;
  */
 public class LogRankMetricFactory implements IScoreFactory {
 	@Override
-	public void fillStateMachine(IStateMachine stateMachine, List<TablePerspective> existing, TablePerspective dependee) {
-		if (dependee != null)
-			return;
+	public void fillStateMachine(IStateMachine stateMachine, List<TablePerspective> existing, EWizardMode mode,
+			TablePerspective source) {
 
-		// FIXME log rank is to compute the significance
-		IState source = stateMachine.get(IStateMachine.ADD_STRATIFICATIONS);
+		IState start = stateMachine.get(IStateMachine.ADD_STRATIFICATIONS);
 		IState browseStratification = stateMachine.get(IStateMachine.BROWSE_STRATIFICATIONS);
 
-		if (dependee == null) {
+		if (mode == EWizardMode.GLOBAL) {
 			IState target = stateMachine.addState("LogRank", new CreateLogRankState(browseStratification));
-
-			stateMachine.addTransition(source, new SimpleTransition(target,
+			stateMachine.addTransition(start, new SimpleTransition(target,
 					"Find based on significant Kaplan-Meier change"));
+		} else if (mode == EWizardMode.INDEPENDENT) {
+			stateMachine.addTransition(start, new CreateLogRankTransition(browseStratification, source));
 		}
-	}
-
-	private static boolean hasClinicialData(List<TablePerspective> existing) {
-		if (existing.isEmpty())
-			return false;
-		for (TablePerspective t : existing) {
-			if (DataDomainOracle.isClinical(t.getDataDomain()))
-				return true;
-		}
-		return false;
 	}
 
 	@Override
@@ -134,11 +125,37 @@ public class LogRankMetricFactory implements IScoreFactory {
 		}
 
 		@Override
-		public void onUpdate(UpdateNumericalPreviewEvent event, ISelectReaction adapter) {
+		public void onUpdate(UpdateNumericalPreviewEvent event, IReactions adapter) {
 			TablePerspective numerical = event.getTablePerspective();
 			adapter.replaceTemplate(new PreviewRenderer(adapter.createPreview(numerical), adapter.getGLView(),
 					"Browse for a stratification"));
 
+			int dimId = numerical.getDimensionPerspective().getVirtualArray().get(0);
+			String label = numerical.getLabel();
+			LogRankMetric metric = new LogRankMetric(label, dimId, numerical.getDataDomain());
+			LogRankPValue pvalue = new LogRankPValue(label + " (P-V)", metric);
+
+			adapter.addScoreToTourGuide(STRATIFICATIONS, metric, pvalue);
+			adapter.switchTo(target);
+		}
+	}
+
+	public class CreateLogRankTransition implements ITransition {
+		private final IState target;
+		private final TablePerspective numerical;
+
+		public CreateLogRankTransition(IState target, TablePerspective numerical) {
+			this.target = target;
+			this.numerical = numerical;
+		}
+
+		@Override
+		public String getLabel() {
+			return "Find based on significant Kaplan-Meier change";
+		}
+
+		@Override
+		public void apply(IReactions adapter) {
 			int dimId = numerical.getDimensionPerspective().getVirtualArray().get(0);
 			String label = numerical.getLabel();
 			LogRankMetric metric = new LogRankMetric(label, dimId, numerical.getDataDomain());
