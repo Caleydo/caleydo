@@ -21,12 +21,14 @@ package org.caleydo.core.io.gui.dataimport.widget.table;
 
 import java.util.List;
 
+import org.caleydo.core.io.gui.dataimport.widget.IntegerCallback;
 import org.eclipse.nebula.widgets.nattable.NatTable;
 import org.eclipse.nebula.widgets.nattable.config.AbstractRegistryConfiguration;
 import org.eclipse.nebula.widgets.nattable.config.CellConfigAttributes;
 import org.eclipse.nebula.widgets.nattable.config.DefaultNatTableStyleConfiguration;
 import org.eclipse.nebula.widgets.nattable.config.IConfigRegistry;
 import org.eclipse.nebula.widgets.nattable.config.IEditableRule;
+import org.eclipse.nebula.widgets.nattable.coordinate.PositionCoordinate;
 import org.eclipse.nebula.widgets.nattable.data.IDataProvider;
 import org.eclipse.nebula.widgets.nattable.edit.EditConfigAttributes;
 import org.eclipse.nebula.widgets.nattable.grid.data.DefaultCornerDataProvider;
@@ -35,15 +37,17 @@ import org.eclipse.nebula.widgets.nattable.grid.layer.CornerLayer;
 import org.eclipse.nebula.widgets.nattable.grid.layer.GridLayer;
 import org.eclipse.nebula.widgets.nattable.grid.layer.RowHeaderLayer;
 import org.eclipse.nebula.widgets.nattable.layer.DataLayer;
+import org.eclipse.nebula.widgets.nattable.layer.ILayerListener;
 import org.eclipse.nebula.widgets.nattable.layer.cell.ColumnOverrideLabelAccumulator;
+import org.eclipse.nebula.widgets.nattable.layer.event.ILayerEvent;
 import org.eclipse.nebula.widgets.nattable.selection.SelectionLayer;
+import org.eclipse.nebula.widgets.nattable.selection.event.CellSelectionEvent;
+import org.eclipse.nebula.widgets.nattable.selection.event.RowSelectionEvent;
 import org.eclipse.nebula.widgets.nattable.style.CellStyleAttributes;
 import org.eclipse.nebula.widgets.nattable.style.DisplayMode;
 import org.eclipse.nebula.widgets.nattable.style.Style;
 import org.eclipse.nebula.widgets.nattable.util.GUIHelper;
 import org.eclipse.nebula.widgets.nattable.viewport.ViewportLayer;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -52,12 +56,18 @@ import org.eclipse.swt.widgets.Composite;
  * @author Christian Partl
  *
  */
-public class CategoryTable extends AMatrixBasedTableWidget {
+public class CategoryTable extends AMatrixBasedTableWidget implements ILayerListener {
 
 	private static final String EDITABLE = "EDITABLE";
 	private static final String NON_EDITABLE = "NON_EDITABLE";
 
 	public static final String[] COLUMN_HEADERS = { "Value", "Count", "Name", "Color" };
+
+	private Object layoutData;
+
+	private SelectionLayer selectionLayer;
+
+	private IntegerCallback rowSelectionCallback;
 
 	private class ColumnHeaderDataProvider implements IDataProvider {
 
@@ -87,8 +97,10 @@ public class CategoryTable extends AMatrixBasedTableWidget {
 	/**
 	 * @param parent
 	 */
-	public CategoryTable(Composite parent) {
+	public CategoryTable(Composite parent, Object layoutData, IntegerCallback rowSelectionCallback) {
 		super(parent);
+		this.layoutData = layoutData;
+		this.rowSelectionCallback = rowSelectionCallback;
 		bodyDataProvider = new MatrixBasedBodyDataProvider(null, 1);
 		buildTable(bodyDataProvider, new ColumnHeaderDataProvider(), new LineNumberRowHeaderDataProvider(1));
 	}
@@ -110,7 +122,8 @@ public class CategoryTable extends AMatrixBasedTableWidget {
 
 		final DataLayer bodyDataLayer = new DataLayer(bodyDataProvider);
 
-		SelectionLayer selectionLayer = new SelectionLayer(bodyDataLayer);
+		selectionLayer = new SelectionLayer(bodyDataLayer);
+		selectionLayer.addLayerListener(this);
 		ViewportLayer bodyLayer = new ViewportLayer(selectionLayer);
 
 		final DataLayer columnDataLayer = new DataLayer(columnDataProvider);
@@ -125,10 +138,9 @@ public class CategoryTable extends AMatrixBasedTableWidget {
 
 		GridLayer gridLayer = new GridLayer(bodyLayer, columnHeaderLayer, rowHeaderLayer, cornerLayer);
 		table = new NatTable(parent, gridLayer, false);
-		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
 		// gridData.heightHint = 300;
 		// gridData.widthHint = 800;
-		table.setLayoutData(gridData);
+		table.setLayoutData(layoutData);
 
 		table.addConfiguration(new DefaultNatTableStyleConfiguration());
 		ColumnOverrideLabelAccumulator acc = new ColumnOverrideLabelAccumulator(bodyDataLayer);
@@ -161,8 +173,37 @@ public class CategoryTable extends AMatrixBasedTableWidget {
 		table.configure();
 	}
 
+	/**
+	 * @return index of the currently selected row, -1 if no row is selected.
+	 */
+	public int getSelectedRow() {
+		PositionCoordinate[] positions = selectionLayer.getSelectedCellPositions();
+		if (positions.length >= 1)
+			return positions[0].rowPosition;
+		return -1;
+	}
+
 	public List<List<String>> getDataMatrix() {
 		return bodyDataProvider.getDataMatrix();
 	}
 
+	@Override
+	public void handleLayerEvent(ILayerEvent event) {
+		if (event instanceof CellSelectionEvent || event instanceof RowSelectionEvent) {
+			PositionCoordinate[] positions = selectionLayer.getSelectedCellPositions();
+			if (positions.length >= 1)
+				rowSelectionCallback.on(positions[0].rowPosition);
+		}
+	}
+
+	public void update() {
+		table.refresh();
+		parent.pack();
+		// table.pack(true);
+		// table.layout(true);
+	}
+
+	public void selectRow(int rowIndex) {
+		selectionLayer.selectRow(0, rowIndex, false, false);
+	}
 }
