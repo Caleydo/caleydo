@@ -19,11 +19,10 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.api.state;
 
-import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.view.stratomex.brick.configurer.ClinicalDataConfigurer;
-import org.caleydo.view.stratomex.brick.configurer.NumericalDataConfigurer;
+import org.caleydo.view.stratomex.brick.sorting.NoSortingSortingStrategy;
 import org.caleydo.view.stratomex.tourguide.event.UpdateNumericalPreviewEvent;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 
@@ -31,11 +30,11 @@ import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
  * @author Samuel Gratzl
  *
  */
-public class BrowseNumericalState extends ABrowseState {
-	private Perspective underlying;
+public class BrowseOtherState extends ABrowseState {
+	protected Perspective underlying;
 
-	public BrowseNumericalState(String label) {
-		super(EDataDomainQueryMode.NUMERICAL, label);
+	public BrowseOtherState(String label) {
+		super(EDataDomainQueryMode.OTHER, label);
 	}
 
 	/**
@@ -47,34 +46,19 @@ public class BrowseNumericalState extends ABrowseState {
 	}
 
 	@Override
-	public void onUpdate(UpdateNumericalPreviewEvent event, ISelectReaction adapter) {
-		if (underlying == null) // standalone
-			adapter.replaceTemplate(event.getTablePerspective(),
-					new NumericalDataConfigurer(event.getTablePerspective()));
-		else { // dependent
-			TablePerspective t = asPerspective(underlying, event.getTablePerspective());
-			adapter.replaceTemplate(t, new ClinicalDataConfigurer());
+	public void onUpdate(UpdateNumericalPreviewEvent event, IReactions adapter) {
+		show(event.getTablePerspective(), adapter);
+	}
+
+	protected void show(TablePerspective numerical, IReactions adapter) {
+		if (underlying == null) {// standalone --> doesn't work
+			ClinicalDataConfigurer clinicalDataConfigurer = new ClinicalDataConfigurer();
+			clinicalDataConfigurer.setSortingStrategy(new NoSortingSortingStrategy());
+			adapter.replaceTemplate(numerical, clinicalDataConfigurer);
+		} else { // dependent
+			adapter.replaceClinicalTemplate(underlying, numerical);
 		}
 	}
 
-	private static TablePerspective asPerspective(Perspective underlying, TablePerspective clinicalVariable) {
-		Perspective dim = clinicalVariable.getDimensionPerspective();
-		ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) dim.getDataDomain();
 
-		Perspective rec = null;
-
-		for (String id : dataDomain.getRecordPerspectiveIDs()) {
-			Perspective r = dataDomain.getTable().getRecordPerspective(id);
-			if (r.getDataDomain().equals(underlying.getDataDomain())
-					&& r.isLabelDefault() == underlying.isLabelDefault() && r.getLabel().equals(underlying.getLabel())) {
-				rec = r;
-				break;
-			}
-		}
-		if (rec == null) { // not found create a new one
-			rec = dataDomain.convertForeignPerspective(underlying);
-			dataDomain.getTable().registerRecordPerspective(rec);
-		}
-		return dataDomain.getTablePerspective(rec.getPerspectiveID(), dim.getPerspectiveID(), false);
-	}
 }

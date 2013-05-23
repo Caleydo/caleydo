@@ -68,9 +68,11 @@ import org.caleydo.view.tourguide.internal.model.CustomSubList;
 import org.caleydo.view.tourguide.internal.score.ScoreFactories;
 import org.caleydo.view.tourguide.internal.score.Scores;
 import org.caleydo.view.tourguide.internal.stratomex.StratomexAdapter;
+import org.caleydo.view.tourguide.internal.stratomex.event.WizardEndedEvent;
 import org.caleydo.view.tourguide.internal.view.col.ScoreRankColumnModel;
 import org.caleydo.view.tourguide.internal.view.specific.DataDomainModeSpecifics;
 import org.caleydo.view.tourguide.internal.view.specific.IDataDomainQueryModeSpecfics;
+import org.caleydo.view.tourguide.internal.view.ui.ADataDomainElement;
 import org.caleydo.view.tourguide.internal.view.ui.DataDomainQueryUI;
 import org.caleydo.view.tourguide.internal.view.ui.pool.ScorePoolUI;
 import org.caleydo.view.tourguide.spi.IScoreFactory;
@@ -233,9 +235,12 @@ public class GLTourGuideView extends AGLElementView {
 	protected void onActiveChanged(ADataDomainQuery q, boolean active) {
 		if (q.isInitialized()) {
 			if (active) {
+				q.createSpecificColumns(table);
 				scheduleAllOf(q);
-			} else
+			} else {
+				q.removeSpecificColumns(table);
 				updateMask();
+			}
 			return;
 		} else
 			scheduleAllOf(q);
@@ -314,6 +319,7 @@ public class GLTourGuideView extends AGLElementView {
 			List<?> m = table.getData();
 			// use sublists to save memory
 			q.init(offset, new CustomSubList<AScoreRow>((List<AScoreRow>) m, offset, m.size() - offset));
+			q.createSpecificColumns(table);
 			updateMask();
 		} else {
 			updateMask();
@@ -389,6 +395,11 @@ public class GLTourGuideView extends AGLElementView {
 
 		this.noStratomexVisible = stratomex.hasOne();
 		updateStratomexState();
+
+		// select first data domain element by default
+		if (!queries.isEmpty()) {
+			((ADataDomainElement) getDataDomainQueryUI().get(0)).setSelected(true);
+		}
 	}
 
 	private void updateStratomexState() {
@@ -564,6 +575,12 @@ public class GLTourGuideView extends AGLElementView {
 		if (popupLayer == null)
 			return;
 		updateStratomexState();
+	}
+
+	@ListenTo
+	private void onWizardEnded(WizardEndedEvent event) {
+		table.setSelectedRow(null);
+		getTableBodyUI().repaint();
 	}
 
 	private class RankTableUIConfig extends RankTableUIConfigBase {

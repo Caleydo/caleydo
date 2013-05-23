@@ -3,20 +3,21 @@
  */
 package org.caleydo.core.io.gui.dataimport.wizard;
 
-import org.caleydo.core.id.IDCategory;
+import java.util.ArrayList;
+
+import org.caleydo.core.io.ColumnDescription;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.NumericalProperties;
 
 /**
- * Mediator for {@link TransformDataPage}. This class is responsible for setting
- * the states of all widgets of the page and triggering actions according to
- * different events that occur in the page.
+ * Mediator for {@link NumericalDataPropertiesPage}. This class is responsible for setting the states of all widgets of
+ * the page and triggering actions according to different events that occur in the page.
  *
  *
  * @author Christian Partl
  *
  */
-public class TransformDataPageMediator {
+public class NumericalDataPropertiesPageMediator {
 
 	/**
 	 * Mode that specifies how the data is scaled.
@@ -26,32 +27,33 @@ public class TransformDataPageMediator {
 	private DataSetDescription dataSetDescription;
 
 	/**
+	 * Matrix that stores the data for {@link #MAX_PREVIEW_TABLE_ROWS} rows and all columns of the data file.
+	 */
+	protected ArrayList<ArrayList<String>> dataMatrix;
+
+	/**
 	 * Page this class serves as mediator for.
 	 */
-	private TransformDataPage page;
+	private NumericalDataPropertiesPage page;
 
 	/**
 	 * File name of the current dataset.
 	 */
 	private String dataSourcePath = "";
 
-	public TransformDataPageMediator(TransformDataPage page,
-			DataSetDescription dataSetDescription) {
+	public NumericalDataPropertiesPageMediator(NumericalDataPropertiesPage page, DataSetDescription dataSetDescription) {
 		this.page = page;
 		this.dataSetDescription = dataSetDescription;
 	}
 
 	/**
-	 * Initializes all widgets of the {@link #page}. This method should be
-	 * called after all widgets of the dialog were created.
+	 * Initializes all widgets of the {@link #page}. This method should be called after all widgets of the dialog were
+	 * created.
 	 */
 	public void guiCreated() {
 
 		NumericalProperties numericalProperties = dataSetDescription.getDataDescription().getNumericalProperties();
-		if (numericalProperties == null) {
-			numericalProperties = new NumericalProperties();
-			dataSetDescription.getDataDescription().setNumericalProperties(numericalProperties);
-		}
+
 
 		String previousMathFiltermode = numericalProperties.getDataTransformation();
 		String[] scalingOptions = { "None", "Log10", "Log2" };
@@ -83,10 +85,6 @@ public class TransformDataPageMediator {
 		if (minDefined)
 			page.minTextField.setText(numericalProperties.getMin().toString());
 
-		page.swapRowsWithColumnsButton.setEnabled(true);
-		page.swapRowsWithColumnsButton.setSelection(dataSetDescription
-				.isTransposeMatrix());
-
 		page.useDataCenterButton.setSelection(false);
 		page.dataCenterTextField.setEnabled(false);
 		page.dataCenterTextField.setText("0");
@@ -113,14 +111,6 @@ public class TransformDataPageMediator {
 		dataTransformation = page.scalingCombo.getText();
 	}
 
-	/**
-	 * Sets the column count warning visible or not, depending on the current
-	 * count of columns.
-	 */
-	public void swapRowsWithColumnsButtonSelected() {
-		updateColumnCountWarning();
-	}
-
 	public void useDataCenterButtonSelected() {
 		page.dataCenterTextField.setEnabled(page.useDataCenterButton.getSelection());
 	}
@@ -132,72 +122,44 @@ public class TransformDataPageMediator {
 		if (!dataSourcePath.equals(dataSetDescription.getDataSourcePath())) {
 			guiCreated();
 			// Guess transposal
-			DataImportWizard wizard = (DataImportWizard) page.getWizard();
-			int totalNumberOfColumns = wizard.getTotalNumberOfColumns();
-			int totalNumberOfRows = wizard.getTotalNumberOfRows();
-			IDCategory tcgaSampleCategory = IDCategory.getIDCategory("TCGA_SAMPLE");
-			if (totalNumberOfColumns > 100
-					&& totalNumberOfColumns > totalNumberOfRows
-					|| (tcgaSampleCategory != null && (dataSetDescription
-							.getColumnIDSpecification().getIdCategory()
-							.equals(tcgaSampleCategory.getCategoryName())))) {
-				page.swapRowsWithColumnsButton.setSelection(true);
+			// DataImportWizard wizard = (DataImportWizard) page.getWizard();
+			// int totalNumberOfColumns = wizard.getTotalNumberOfColumns();
+			// int totalNumberOfRows = wizard.getTotalNumberOfRows();
+			// IDCategory tcgaSampleCategory = IDCategory.getIDCategory("TCGA_SAMPLE");
+			// if (totalNumberOfColumns > 100
+			// && totalNumberOfColumns > totalNumberOfRows
+			// || (tcgaSampleCategory != null && (dataSetDescription.getColumnIDSpecification().getIdCategory()
+			// .equals(tcgaSampleCategory.getCategoryName())))) {
+			// page.swapRowsWithColumnsButton.setSelection(true);
+			//
+			// } else {
+			// page.swapRowsWithColumnsButton.setSelection(false);
+			// }
 
-			} else {
-				page.swapRowsWithColumnsButton.setSelection(false);
-			}
-
-			updateColumnCountWarning();
+			// updateColumnCountWarning();
 
 		}
+		page.dataTranspositionWidget.update();
+
 		dataSourcePath = dataSetDescription.getDataSourcePath();
+		// parser.parse(dataSetDescription.getDataSourcePath(), dataSetDescription.getDelimiter(), true, -1);
+		// List<List<String>> matrix = parser.getDataMatrix();
+		// List<List<String>> filteredMatrix = new ArrayList<>(matrix.size());
+		// List<ColumnDescription> parsingPattern = dataSetDescription.getOrCreateParsingPattern();
+		// for (int i = 0; i < matrix.size(); i++) {
+		// if (i < dataSetDescription.getNumberOfHeaderLines() - 1)
+		// continue;
+		// List<String> row = matrix.get(i);
+		// List<String> filteredRow = new ArrayList<>(parsingPattern.size());
+		// for (ColumnDescription columnDescription : parsingPattern) {
+		// filteredRow.add(row.get(columnDescription.getColumn()));
+		// }
+		// filteredMatrix.add(filteredRow);
+		// }
+
+		// page.columnConfigTable.createTableFromMatrix(filteredMatrix, parsingPattern.size());
 	}
 
-	private void updateColumnCountWarning() {
-		DataImportWizard wizard = (DataImportWizard) page.getWizard();
-		int totalNumberOfRows = wizard.getTotalNumberOfRows();
-
-		int numColumns = page.swapRowsWithColumnsButton.getSelection() ? totalNumberOfRows
-				: (dataSetDescription.getOrCreateParsingPattern().size() + 1);
-
-		if (page.warningIconLabel1 != null && !page.warningIconLabel1.isDisposed()) {
-			page.warningIconLabel1.dispose();
-			page.warningDescriptionLabel1.dispose();
-		}
-
-		if (page.warningIconLabel2 != null && !page.warningIconLabel2.isDisposed()) {
-			page.warningIconLabel2.dispose();
-			page.warningDescriptionLabel2.dispose();
-		}
-
-		page.parentComposite.layout(true);
-
-		if (numColumns > 50) {
-			String warningText1 = "Attention: the large number of columns (" + numColumns
-					+ ") may lead to an impaired visualization quality in some views";
-
-			if (page.warningIconLabel1 == null || page.warningIconLabel1.isDisposed()) {
-				page.warningIconLabel1 = page
-						.createWarningIconLabel(page.dataTranspositionGroup);
-				page.warningDescriptionLabel1 = page.createWarningDescriptionLabel(
-						page.dataTranspositionGroup, warningText1);
-			}
-		}
-
-		if (totalNumberOfRows > 50 && dataSetDescription.getOrCreateParsingPattern().size() > 50) {
-			if (page.warningIconLabel2 == null || page.warningIconLabel2.isDisposed()) {
-				page.warningIconLabel2 = page
-						.createWarningIconLabel(page.dataTranspositionGroup);
-				page.warningDescriptionLabel2 = page
-						.createWarningDescriptionLabel(
-								page.dataTranspositionGroup,
-								"Attention: In your dataset the choice of dimensions is not obvious. Please choose whether you want to keep the columns in the file as dimensions (do not check) or whether you want to use the rows as dimensions.");
-			}
-		}
-
-		// page.parentComposite.pack(true);
-		page.parentComposite.layout(true);
-	}
 
 	/**
 	 * Fills the {@link #dataSetDescription} according to the widgets.
@@ -217,13 +179,24 @@ public class TransformDataPageMediator {
 			}
 		}
 		if (page.useDataCenterButton.getSelection()) {
-			numericalProperties.setDataCenter(Double.parseDouble(page.dataCenterTextField
-					.getText()));
+			numericalProperties.setDataCenter(Double.parseDouble(page.dataCenterTextField.getText()));
 		}
 
 		numericalProperties.setDataTransformation(dataTransformation);
-		dataSetDescription.setTransposeMatrix(page.swapRowsWithColumnsButton
-				.getSelection());
+		dataSetDescription.setTransposeMatrix(page.dataTranspositionWidget.isTransposition());
+
+		ArrayList<ColumnDescription> inputPattern = new ArrayList<ColumnDescription>();
+		DataImportWizard wizard = (DataImportWizard) page.getWizard();
+
+		for (Integer selected : wizard.getSelectedColumns()) {
+			int columnIndex = selected.intValue();
+			if (columnIndex == dataSetDescription.getColumnOfRowIds())
+				continue;
+			inputPattern.add(new ColumnDescription(columnIndex, dataSetDescription.getDataDescription()));
+
+		}
+
+		dataSetDescription.setParsingPattern(inputPattern);
 	}
 
 	public boolean isDataValid() {

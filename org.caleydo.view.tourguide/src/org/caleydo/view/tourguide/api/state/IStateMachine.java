@@ -30,10 +30,10 @@ import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
  */
 public interface IStateMachine {
 	String ADD_PATHWAY = EDataDomainQueryMode.PATHWAYS.name();
-	String ADD_NUMERICAL = EDataDomainQueryMode.NUMERICAL.name();
+	String ADD_OTHER = EDataDomainQueryMode.OTHER.name();
 	String ADD_STRATIFICATIONS = EDataDomainQueryMode.STRATIFICATIONS.name();
 	String BROWSE_PATHWAY = EDataDomainQueryMode.PATHWAYS.name() + "_browse";
-	String BROWSE_NUMERICAL = EDataDomainQueryMode.NUMERICAL.name() + "_browse";
+	String BROWSE_OTHER = EDataDomainQueryMode.OTHER.name() + "_browse";
 	String BROWSE_STRATIFICATIONS = EDataDomainQueryMode.STRATIFICATIONS.name() + "_browse";
 
 	IState addState(String id, IState state);

@@ -27,6 +27,7 @@ import java.util.List;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
+import org.caleydo.view.tourguide.api.state.EWizardMode;
 import org.caleydo.view.tourguide.api.state.IStateMachine;
 import org.caleydo.view.tourguide.internal.event.AddScoreColumnEvent;
 import org.caleydo.view.tourguide.spi.score.IScore;
@@ -40,7 +41,18 @@ import org.eclipse.swt.widgets.Shell;
  *
  */
 public interface IScoreFactory {
-	void fillStateMachine(IStateMachine stateMachine, Object eventReceiver, List<TablePerspective> existing);
+	/**
+	 * add the states and transition for the create wizard to the given {@link IStateMachine}
+	 * 
+	 * @param stateMachine
+	 * @param existing
+	 *            the list of table perspective already existing
+	 * @param mode
+	 * @param source
+	 *            the source {@link TablePerspective} if only a dependent one should be created
+	 */
+	void fillStateMachine(IStateMachine stateMachine, List<TablePerspective> existing, EWizardMode mode,
+			TablePerspective source);
 
 	/**
 	 * creates a dialog for creating a new score of this type

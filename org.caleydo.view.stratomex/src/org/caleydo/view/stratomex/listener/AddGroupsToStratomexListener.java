@@ -29,9 +29,9 @@ import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
 import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.stratomex.brick.configurer.ClinicalDataConfigurer;
 import org.caleydo.view.stratomex.brick.sorting.ExternallyProvidedSortingStrategy;
+import org.caleydo.view.stratomex.brick.sorting.NoSortingSortingStrategy;
 import org.caleydo.view.stratomex.column.BrickColumn;
 import org.caleydo.view.stratomex.event.AddGroupsToStratomexEvent;
-import org.caleydo.view.stratomex.event.AddKaplanMaiertoStratomexEvent;
 
 import com.google.common.collect.Maps;
 
@@ -54,16 +54,6 @@ public class AddGroupsToStratomexListener extends AEventListener<GLStratomex> {
 			}
 		}
 
-		else if (event instanceof AddKaplanMaiertoStratomexEvent) {
-			AddKaplanMaiertoStratomexEvent e = (AddKaplanMaiertoStratomexEvent) event;
-			if (e.getReceiver() == handler) {
-				TablePerspective underlying = e.getUnderlying();
-				TablePerspective kaplan = e.getTablePerspectives().get(0);
-				ClinicalDataConfigurer dataConfigurer = createKaplanConfigurer(handler, underlying, kaplan);
-				handler.addTablePerspectives(e.getTablePerspectives(), dataConfigurer, null);
-			}
-		}
-
 		else if (event instanceof AddTablePerspectivesEvent) {
 			AddTablePerspectivesEvent addTablePerspectivesEvent = (AddTablePerspectivesEvent) event;
 			if (addTablePerspectivesEvent.getReceiver() == handler) {
@@ -72,7 +62,7 @@ public class AddGroupsToStratomexListener extends AEventListener<GLStratomex> {
 		}
 	}
 
-	static ClinicalDataConfigurer createKaplanConfigurer(GLStratomex handler, TablePerspective underlying,
+	public static ClinicalDataConfigurer createKaplanConfigurer(GLStratomex handler, TablePerspective underlying,
 			TablePerspective kaplan) {
 		ClinicalDataConfigurer dataConfigurer = null;
 		BrickColumn brickColumn = handler.getBrickColumnManager().getBrickColumn(underlying);
@@ -80,12 +70,18 @@ public class AddGroupsToStratomexListener extends AEventListener<GLStratomex> {
 			// dependent sorting
 			dataConfigurer = new ClinicalDataConfigurer();
 			ExternallyProvidedSortingStrategy sortingStrategy = new ExternallyProvidedSortingStrategy();
-			sortingStrategy.setExternalBricks(brickColumn.getSegmentBricks());
+			sortingStrategy.setExternalBrick(brickColumn);
 			HashMap<Perspective, Perspective> m = Maps.newHashMap();
 			m.put(kaplan.getRecordPerspective(), underlying.getRecordPerspective());
 			sortingStrategy.setHashConvertedRecordPerspectiveToOrginalRecordPerspective(m);
 			dataConfigurer.setSortingStrategy(sortingStrategy);
 		}
+		return dataConfigurer;
+	}
+
+	public static ClinicalDataConfigurer createTemplateKaplanConfigurer(GLStratomex handler, TablePerspective kaplan) {
+		ClinicalDataConfigurer dataConfigurer = new ClinicalDataConfigurer();
+		dataConfigurer.setSortingStrategy(new NoSortingSortingStrategy());
 		return dataConfigurer;
 	}
 }

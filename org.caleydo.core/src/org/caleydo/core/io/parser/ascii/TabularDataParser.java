@@ -19,6 +19,7 @@ package org.caleydo.core.io.parser.ascii;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.collection.column.AColumn;
@@ -99,7 +100,7 @@ public class TabularDataParser extends ATextParser {
 
 		Table table = dataDomain.getTable();
 
-		ArrayList<ColumnDescription> parsingPattern = dataSetDescription.getOrCreateParsingPattern();
+		List<ColumnDescription> parsingPattern = dataSetDescription.getOrCreateParsingPattern();
 
 		String[] headers = null;
 		if (dataSetDescription.isContainsColumnIDs()) {
@@ -261,7 +262,7 @@ public class TabularDataParser extends ATextParser {
 			reader.readLine();
 		}
 
-		ArrayList<ColumnDescription> parsingPattern = dataSetDescription.getOrCreateParsingPattern();
+		List<ColumnDescription> parsingPattern = dataSetDescription.getOrCreateParsingPattern();
 
 		int lineCounter = 0;
 		String numberParsingErrorMessage = "Could not parse a number in file " + dataSetDescription.getDataSetName()

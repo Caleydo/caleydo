@@ -35,7 +35,7 @@ public class BrowseStratificationState extends ABrowseState {
 	}
 
 	@Override
-	public void onUpdate(UpdateStratificationPreviewEvent event, ISelectReaction adapter) {
+	public void onUpdate(UpdateStratificationPreviewEvent event, IReactions adapter) {
 		TablePerspective tp = event.getTablePerspective();
 		if (DataDomainOracle.isCategoricalDataDomain(tp.getDataDomain()))
 			adapter.replaceTemplate(tp, new CategoricalDataConfigurer(tp));

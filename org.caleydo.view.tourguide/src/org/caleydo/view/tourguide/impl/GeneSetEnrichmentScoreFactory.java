@@ -36,8 +36,9 @@ import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.score.DefaultComputedStratificationScore;
 import org.caleydo.view.tourguide.api.score.ui.ACreateGroupScoreDialog;
 import org.caleydo.view.tourguide.api.state.BrowsePathwayState;
+import org.caleydo.view.tourguide.api.state.EWizardMode;
+import org.caleydo.view.tourguide.api.state.IReactions;
 import org.caleydo.view.tourguide.api.state.ISelectGroupState;
-import org.caleydo.view.tourguide.api.state.ISelectReaction;
 import org.caleydo.view.tourguide.api.state.IState;
 import org.caleydo.view.tourguide.api.state.IStateMachine;
 import org.caleydo.view.tourguide.api.state.SimpleState;
@@ -80,14 +81,15 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 	}
 
 	@Override
-	public void fillStateMachine(IStateMachine stateMachine, Object eventReceiver, List<TablePerspective> existing) {
-		IState source = stateMachine.get(IStateMachine.ADD_PATHWAY);
+	public void fillStateMachine(IStateMachine stateMachine, List<TablePerspective> existing, EWizardMode mode,
+			TablePerspective source) {
+		IState start = stateMachine.get(IStateMachine.ADD_PATHWAY);
 		BrowsePathwayState browse = (BrowsePathwayState) stateMachine.get(IStateMachine.BROWSE_PATHWAY);
 
-		if (!existing.isEmpty()) {
+		if (!existing.isEmpty() && mode == EWizardMode.GLOBAL) {
 			IState target = stateMachine.addState("GSEA", new CreateGSEAState(browse, true));
 			// IState target2 = stateMachine.addState("PGSEA", new CreateGSEAState(browse, false));
-			stateMachine.addTransition(source, new SimpleTransition(target,
+			stateMachine.addTransition(start, new SimpleTransition(target,
 					"Find with GSEA based on displayed stratification"));
 			// stateMachine.addTransition(source, new SimpleTransition(target2,
 			// "Find with PGSEA based on displayed stratification"));
@@ -170,7 +172,7 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 		}
 
 		@Override
-		public void select(TablePerspective strat, Group group, ISelectReaction reactions) {
+		public void select(TablePerspective strat, Group group, IReactions reactions) {
 			//now we have the data for the stuff
 			AGSEAAlgorithm algorithm;
 			if (createGSEA)

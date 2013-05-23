@@ -19,6 +19,7 @@ package org.caleydo.core.view.opengl.layout;
 import java.awt.Container;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -487,8 +488,20 @@ public class ElementLayout implements Comparable<ElementLayout> {
 		backgroundRenderers.clear();
 	}
 
+	public void clearBackgroundRenderers(Class<? extends ALayoutRenderer> ofType) {
+		for (Iterator<ALayoutRenderer> it = backgroundRenderers.iterator(); it.hasNext();)
+			if (ofType.isInstance(it.next()))
+				it.remove();
+	}
+
 	public void clearForegroundRenderers() {
 		foregroundRenderers.clear();
+	}
+
+	public void clearForegroundRenderers(Class<? extends ALayoutRenderer> ofType) {
+		for (Iterator<ALayoutRenderer> it = foregroundRenderers.iterator(); it.hasNext();)
+			if (ofType.isInstance(it.next()))
+				it.remove();
 	}
 
 	/**

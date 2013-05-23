@@ -19,14 +19,10 @@
  *******************************************************************************/
 package org.caleydo.view.stratomex.listener;
 
-import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
 import org.caleydo.core.event.data.ReplaceTablePerspectiveEvent;
 import org.caleydo.view.stratomex.GLStratomex;
-import org.caleydo.view.stratomex.brick.configurer.ClinicalDataConfigurer;
-import org.caleydo.view.stratomex.column.BrickColumn;
-import org.caleydo.view.stratomex.event.ReplaceKaplanMaierPerspectiveEvent;
 
 /**
  * @author alexsb
@@ -36,23 +32,6 @@ public class ReplaceTablePerspectiveListener extends AEventListener<GLStratomex>
 
 	@Override
 	public void handleEvent(AEvent event) {
-		if (event instanceof ReplaceKaplanMaierPerspectiveEvent) {
-			ReplaceKaplanMaierPerspectiveEvent e = (ReplaceKaplanMaierPerspectiveEvent) event;
-			if (handler.getID() == e.getViewID()) {
-				// update normally
-				TablePerspective underlying = e.getUnderlying();
-				BrickColumn brickColumn = handler.getBrickColumnManager().getBrickColumn(e.getOldPerspective());
-				// brickColumn.getTablePerspective()
-				ClinicalDataConfigurer dataConfigurer = AddGroupsToStratomexListener.createKaplanConfigurer(handler,
-						underlying,
-						e.getNewPerspective());
-				if (dataConfigurer != null)
-					brickColumn.setBrickConfigurer(dataConfigurer);
-				handler.replaceTablePerspective(e.getNewPerspective(), e.getOldPerspective());
-
-				assert brickColumn != null;
-			}
-		}
 		if (event instanceof ReplaceTablePerspectiveEvent) {
 			ReplaceTablePerspectiveEvent rEvent = (ReplaceTablePerspectiveEvent) event;
 			if (handler.getID() == rEvent.getViewID()) {

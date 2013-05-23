@@ -17,23 +17,42 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.api.state;
+package org.caleydo.view.stratomex.tourguide.internal;
 
-import org.caleydo.core.data.perspective.table.TablePerspective;
+import javax.media.opengl.GL2;
+
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
-import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormRenderer;
-import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
-import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
-import org.caleydo.view.tourguide.spi.score.IScore;
+import org.caleydo.view.stratomex.tourguide.TourguideAdapter;
 
-public interface ISelectReaction {
-	void switchTo(IState target);
+/**
+ * @author Samuel Gratzl
+ *
+ */
+public class AddAttachedLayoutRenderer extends ALayoutRenderer {
+	private final AGLView view;
+	private final int id;
+	private final TourguideAdapter tourguide;
+	private final boolean left;
 
-	void addScoreToTourGuide(EDataDomainQueryMode mode, IScore... scores);
+	public AddAttachedLayoutRenderer(AGLView view, int id, TourguideAdapter tourguide, boolean left) {
+		this.view = view;
+		this.id = id;
+		this.tourguide = tourguide;
+		this.left = left;
+	}
 
-	void replaceTemplate(TablePerspective with, IBrickConfigurer configurer);
+	@Override
+	protected void renderContent(GL2 gl) {
+		float hi = view.getPixelGLConverter().getGLHeightForPixelHeight(34);
+		float wi = view.getPixelGLConverter().getGLWidthForPixelWidth(32);
+		tourguide.renderAddDependentButton(gl, left ? (-wi - x * 0.05f) : (x * 1.05f), y * 0.8f, wi, hi, id * 2
+				+ (left ? 1 : 0));
+	}
 
-	void replaceTemplate(ALayoutRenderer renderer);
+	@Override
+	protected boolean permitsWrappingDisplayLists() {
+		return true;
+	}
 
-	MultiFormRenderer createPreview(TablePerspective tablePerspective);
 }

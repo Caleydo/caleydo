@@ -88,8 +88,6 @@ public abstract class CaleydoRCPViewPart extends ViewPart implements IListenerOw
 
 	protected Composite parentComposite;
 
-
-
 	protected IToolBarManager toolBarManager;
 
 	@Override
@@ -195,9 +193,16 @@ public abstract class CaleydoRCPViewPart extends ViewPart implements IListenerOw
 				boolean inconsistentSerializedView = false;
 				for (Pair<String, String> data : serializedMultiTablePerspectiveBasedView
 						.getDataDomainAndTablePerspectiveKeys()) {
-
+					if (data == null) {
+						inconsistentSerializedView = true;
+						break;
+					}
 					ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) DataDomainManager.get()
 							.getDataDomainByID(data.getFirst());
+					if (dataDomain == null) {
+						inconsistentSerializedView = true;
+						break;
+					}
 					TablePerspective tablePerspective = dataDomain.getTablePerspective(data.getSecond());
 					if (tablePerspective == null) {
 						inconsistentSerializedView = true;

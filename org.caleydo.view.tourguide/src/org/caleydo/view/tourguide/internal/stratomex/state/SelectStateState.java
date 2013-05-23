@@ -17,42 +17,30 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.stratomex.event;
+package org.caleydo.view.tourguide.internal.stratomex.state;
 
-import java.util.Collections;
-
-import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.view.ITablePerspectiveBasedView;
-import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
+import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
+import org.caleydo.view.tourguide.api.state.SimpleState;
 
 /**
- * event triggering to show an kaplan maier plot given the underlying table perspective for the rows and the clinicial
- * variable to show
- *
  * @author Samuel Gratzl
  *
  */
-public class AddKaplanMaiertoStratomexEvent extends AddTablePerspectivesEvent {
-	private TablePerspective underlying;
+public class SelectStateState extends SimpleState {
+	private final EDataDomainQueryMode mode;
 
-	public AddKaplanMaiertoStratomexEvent() {
-
+	public SelectStateState(String label, EDataDomainQueryMode mode) {
+		super(label);
+		this.mode = mode;
 	}
 
-	public AddKaplanMaiertoStratomexEvent(TablePerspective perspective, TablePerspective underlying,
-			ITablePerspectiveBasedView receiver) {
-		this.underlying = underlying;
-		setTablePerspectives(Collections.singletonList(perspective));
-		setReceiver(receiver);
+	/**
+	 * @return the mode, see {@link #mode}
+	 */
+	public EDataDomainQueryMode getMode() {
+		return mode;
 	}
 
-	public TablePerspective getUnderlying() {
-		return underlying;
-	}
 
-	@Override
-	public boolean checkIntegrity() {
-		return super.checkIntegrity() && underlying != null;
-	}
 
 }

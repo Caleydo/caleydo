@@ -29,6 +29,7 @@ import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
+import org.caleydo.vis.rank.model.RankTableModel;
 
 import com.google.common.collect.Lists;
 
@@ -92,5 +93,15 @@ public class PathwayDataDomainQuery extends ADataDomainQuery {
 	@Override
 	public boolean hasFilter() {
 		return this.matches != null;
+	}
+
+	@Override
+	public void createSpecificColumns(RankTableModel table) {
+
+	}
+
+	@Override
+	public void removeSpecificColumns(RankTableModel table) {
+
 	}
 }

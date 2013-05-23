@@ -24,21 +24,14 @@ import java.util.Collections;
 import java.util.List;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.datadomain.DataSupportDefinitions;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.internal.model.ADataDomainQuery;
-import org.caleydo.view.tourguide.internal.model.AScoreRow;
-import org.caleydo.view.tourguide.internal.model.CategoricalDataDomainQuery;
-import org.caleydo.view.tourguide.internal.model.StratificationDataDomainQuery;
+import org.caleydo.view.tourguide.internal.model.InhomogenousDataDomainQuery;
 import org.caleydo.view.tourguide.internal.view.col.DataDomainRankColumnModel;
-import org.caleydo.view.tourguide.internal.view.col.SizeRankColumnModel;
-import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.StringRankColumnModel;
-
-import com.google.common.base.Function;
 
 /**
  * @author Samuel Gratzl
@@ -49,7 +42,7 @@ public class NumericalSpecifics implements IDataDomainQueryModeSpecfics {
 	@Override
 	public Iterable<? extends ADataDomainQuery> createDataDomainQueries() {
 		List<ADataDomainQuery> r = new ArrayList<>();
-		for (IDataDomain dd : EDataDomainQueryMode.NUMERICAL.getAllDataDomains()) {
+		for (IDataDomain dd : EDataDomainQueryMode.OTHER.getAllDataDomains()) {
 			r.add(createFor(dd));
 		}
 		return r;
@@ -63,12 +56,6 @@ public class NumericalSpecifics implements IDataDomainQueryModeSpecfics {
 		table.add(base);
 		base.setWidth(150);
 		base.orderByMe();
-		table.add(new SizeRankColumnModel("#Elements", new Function<IRow, Integer>() {
-			@Override
-			public Integer apply(IRow in) {
-				return ((AScoreRow) in).size();
-			}
-		}).setWidth(75));
 	}
 
 	@Override
@@ -77,14 +64,12 @@ public class NumericalSpecifics implements IDataDomainQueryModeSpecfics {
 	}
 
 	private static ADataDomainQuery createFor(IDataDomain dd) {
-		if (DataSupportDefinitions.categoricalTables.apply(dd))
-			return new CategoricalDataDomainQuery((ATableBasedDataDomain) dd);
-		return new StratificationDataDomainQuery((ATableBasedDataDomain) dd);
+		return new InhomogenousDataDomainQuery((ATableBasedDataDomain) dd);
 	}
 
 	/**
 	 * datadomains can be categorized in multiple categories
-	 * 
+	 *
 	 * @return
 	 */
 	@Override

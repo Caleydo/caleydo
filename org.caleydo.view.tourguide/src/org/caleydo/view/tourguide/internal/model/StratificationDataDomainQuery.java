@@ -31,6 +31,7 @@ import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
+import org.caleydo.vis.rank.model.RankTableModel;
 
 /**
  * @author Samuel Gratzl
@@ -153,4 +154,15 @@ public class StratificationDataDomainQuery extends ADataDomainQuery {
 			return;
 		propertySupport.firePropertyChange(PROP_DIMENSION_SELECTION, dimensionSelection, dimensionSelection = d);
 	}
+
+	@Override
+	public void createSpecificColumns(RankTableModel table) {
+
+	}
+
+	@Override
+	public void removeSpecificColumns(RankTableModel table) {
+
+	}
+
 }

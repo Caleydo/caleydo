@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Objects;
 
 import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.vis.rank.model.RankTableModel;
 
 import com.google.common.base.Predicate;
 
@@ -186,6 +187,10 @@ public abstract class ADataDomainQuery implements Predicate<AScoreRow> {
 	public final void removePropertyChangeListener(String propertyName, PropertyChangeListener listener) {
 		propertySupport.removePropertyChangeListener(propertyName, listener);
 	}
+
+	public abstract void createSpecificColumns(RankTableModel table);
+
+	public abstract void removeSpecificColumns(RankTableModel table);
 
 	/**
 	 *

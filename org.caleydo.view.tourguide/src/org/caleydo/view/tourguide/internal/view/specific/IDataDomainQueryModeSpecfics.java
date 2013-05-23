@@ -56,6 +56,5 @@ public interface IDataDomainQueryModeSpecfics {
 	 * @return
 	 */
 	int getCategory(IDataDomain dataDomain);
-
 }
 

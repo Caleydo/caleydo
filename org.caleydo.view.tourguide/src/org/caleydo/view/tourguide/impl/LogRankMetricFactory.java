@@ -19,6 +19,8 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.impl;
 
+import static org.caleydo.view.tourguide.api.query.EDataDomainQueryMode.STRATIFICATIONS;
+
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,9 +37,17 @@ import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.base.DefaultLabelProvider;
+import org.caleydo.view.stratomex.tourguide.event.UpdateNumericalPreviewEvent;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.score.DefaultComputedGroupScore;
+import org.caleydo.view.tourguide.api.state.BrowseOtherState;
+import org.caleydo.view.tourguide.api.state.EWizardMode;
+import org.caleydo.view.tourguide.api.state.IReactions;
+import org.caleydo.view.tourguide.api.state.IState;
 import org.caleydo.view.tourguide.api.state.IStateMachine;
+import org.caleydo.view.tourguide.api.state.ITransition;
+import org.caleydo.view.tourguide.api.state.PreviewRenderer;
+import org.caleydo.view.tourguide.api.state.SimpleTransition;
 import org.caleydo.view.tourguide.api.util.ui.CaleydoLabelProvider;
 import org.caleydo.view.tourguide.impl.algorithm.LogRank;
 import org.caleydo.view.tourguide.internal.event.AddScoreColumnEvent;
@@ -71,9 +81,19 @@ import com.google.common.collect.Sets;
  */
 public class LogRankMetricFactory implements IScoreFactory {
 	@Override
-	public void fillStateMachine(IStateMachine stateMachine, Object eventReceiver, List<TablePerspective> existing) {
-		// TODO Auto-generated method stub
+	public void fillStateMachine(IStateMachine stateMachine, List<TablePerspective> existing, EWizardMode mode,
+			TablePerspective source) {
 
+		IState start = stateMachine.get(IStateMachine.ADD_STRATIFICATIONS);
+		IState browseStratification = stateMachine.get(IStateMachine.BROWSE_STRATIFICATIONS);
+
+		if (mode == EWizardMode.GLOBAL) {
+			IState target = stateMachine.addState("LogRank", new CreateLogRankState(browseStratification));
+			stateMachine.addTransition(start, new SimpleTransition(target,
+					"Find based on significant Kaplan-Meier change"));
+		} else if (mode == EWizardMode.INDEPENDENT) {
+			stateMachine.addTransition(start, new CreateLogRankTransition(browseStratification, source));
+		}
 	}
 
 	@Override
@@ -94,6 +114,56 @@ public class LogRankMetricFactory implements IScoreFactory {
 	@Override
 	public boolean supports(EDataDomainQueryMode mode) {
 		return mode == EDataDomainQueryMode.STRATIFICATIONS;
+	}
+
+	public class CreateLogRankState extends BrowseOtherState {
+		private final IState target;
+
+		public CreateLogRankState(IState target) {
+			super("Select a numerical value in the Tour Guide as a starting point for finding a stratification.");
+			this.target = target;
+		}
+
+		@Override
+		public void onUpdate(UpdateNumericalPreviewEvent event, IReactions adapter) {
+			TablePerspective numerical = event.getTablePerspective();
+			adapter.replaceTemplate(new PreviewRenderer(adapter.createPreview(numerical), adapter.getGLView(),
+					"Browse for a stratification"));
+
+			int dimId = numerical.getDimensionPerspective().getVirtualArray().get(0);
+			String label = numerical.getLabel();
+			LogRankMetric metric = new LogRankMetric(label, dimId, numerical.getDataDomain());
+			LogRankPValue pvalue = new LogRankPValue(label + " (P-V)", metric);
+
+			adapter.addScoreToTourGuide(STRATIFICATIONS, metric, pvalue);
+			adapter.switchTo(target);
+		}
+	}
+
+	public class CreateLogRankTransition implements ITransition {
+		private final IState target;
+		private final TablePerspective numerical;
+
+		public CreateLogRankTransition(IState target, TablePerspective numerical) {
+			this.target = target;
+			this.numerical = numerical;
+		}
+
+		@Override
+		public String getLabel() {
+			return "Find based on significant Kaplan-Meier change";
+		}
+
+		@Override
+		public void apply(IReactions adapter) {
+			int dimId = numerical.getDimensionPerspective().getVirtualArray().get(0);
+			String label = numerical.getLabel();
+			LogRankMetric metric = new LogRankMetric(label, dimId, numerical.getDataDomain());
+			LogRankPValue pvalue = new LogRankPValue(label + " (P-V)", metric);
+
+			adapter.addScoreToTourGuide(STRATIFICATIONS, metric, pvalue);
+			adapter.switchTo(target);
+		}
 	}
 
 	public static class LogRankMetric extends DefaultComputedGroupScore {
@@ -134,6 +204,11 @@ public class LogRankMetricFactory implements IScoreFactory {
 
 		public Integer getClinicalVariable() {
 			return clinicalVariable;
+		}
+
+		@Override
+		public PiecewiseMapping createMapping() {
+			return new PiecewiseMapping(0, Float.NaN);
 		}
 	}
 

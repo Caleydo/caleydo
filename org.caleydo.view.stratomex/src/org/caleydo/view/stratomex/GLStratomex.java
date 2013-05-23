@@ -100,10 +100,8 @@ import org.caleydo.view.stratomex.column.BrickColumn;
 import org.caleydo.view.stratomex.column.BrickColumnManager;
 import org.caleydo.view.stratomex.column.BrickColumnSpacingRenderer;
 import org.caleydo.view.stratomex.event.AddGroupsToStratomexEvent;
-import org.caleydo.view.stratomex.event.AddKaplanMaiertoStratomexEvent;
 import org.caleydo.view.stratomex.event.ConnectionsModeEvent;
 import org.caleydo.view.stratomex.event.MergeBricksEvent;
-import org.caleydo.view.stratomex.event.ReplaceKaplanMaierPerspectiveEvent;
 import org.caleydo.view.stratomex.event.SelectElementsEvent;
 import org.caleydo.view.stratomex.event.SplitBrickEvent;
 import org.caleydo.view.stratomex.listener.AddGroupsToStratomexListener;
@@ -512,9 +510,15 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 
 				tourguide.renderAddButton(gl, 0, getArchTopY(), getViewFrustum().getWidth(), getArchBottomY()
 						- getArchTopY(), 0);
-				renderEmptyViewText(gl, new String[] { "Please use the Data-View Integrator to assign ",
+				if (tourguide.hasTourGuide()) {
+					renderEmptyViewText(gl, new String[] { "To add a column showing a dataset",
+							" click the \"+\" button at the top", "or use the TourGuide or the DVI", "",
+							"Refer to http://help.caleydo.org for more information." });
+				} else {
+					renderEmptyViewText(gl, new String[] { "Please use the Data-View Integrator to assign ",
 						"one or multiple dataset(s) to StratomeX.",
 						"Refer to http://help.caleydo.org for more information." });
+				}
 				gl.glEndList();
 				isDisplayListDirty = false;
 			}
@@ -978,7 +982,6 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		addGroupsToStratomexListener.setHandler(this);
 		eventPublisher.addListener(AddGroupsToStratomexEvent.class, addGroupsToStratomexListener);
 		eventPublisher.addListener(AddTablePerspectivesEvent.class, addGroupsToStratomexListener);
-		eventPublisher.addListener(AddKaplanMaiertoStratomexEvent.class, addGroupsToStratomexListener);
 
 		removeTablePerspectiveListener = new RemoveTablePerspectiveListener<>();
 		removeTablePerspectiveListener.setHandler(this);
@@ -987,7 +990,6 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		replaceTablePerspectiveListener = new ReplaceTablePerspectiveListener();
 		replaceTablePerspectiveListener.setHandler(this);
 		eventPublisher.addListener(ReplaceTablePerspectiveEvent.class, replaceTablePerspectiveListener);
-		eventPublisher.addListener(ReplaceKaplanMaierPerspectiveEvent.class, replaceTablePerspectiveListener);
 
 		listeners.register(this);
 	}
@@ -1172,6 +1174,8 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		brickColumn.setStratomex(this);
 		brickColumn.initialize();
 		uninitializedSubViews.add(brickColumn);
+
+		tourguide.addedBrickColumn(brickColumn);
 
 		return brickColumn;
 	}

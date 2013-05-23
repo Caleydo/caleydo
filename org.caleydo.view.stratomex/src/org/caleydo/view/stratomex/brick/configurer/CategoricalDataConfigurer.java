@@ -27,9 +27,7 @@ import java.util.Set;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.ViewManager;
-import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
-import org.caleydo.core.view.opengl.layout.util.multiform.IEmbeddedVisualizationInfo;
 import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormRenderer;
 import org.caleydo.view.stratomex.EEmbeddingID;
 import org.caleydo.view.stratomex.GLStratomex;
@@ -41,7 +39,6 @@ import org.caleydo.view.stratomex.brick.layout.DefaultBrickLayoutTemplate;
 import org.caleydo.view.stratomex.brick.layout.DetailBrickLayoutTemplate;
 import org.caleydo.view.stratomex.brick.layout.HeaderBrickLayoutTemplate;
 import org.caleydo.view.stratomex.brick.layout.TitleOnlyHeaderBrickLayoutTemplate;
-import org.caleydo.view.stratomex.brick.ui.OverviewHeatMapRenderer;
 
 /**
  * Configurer for bricks to display categroical data
@@ -157,31 +154,32 @@ public class CategoricalDataConfigurer extends ATableBasedDataConfigurer {
 		// ALayoutRenderer overviewHeatMapRenderer = new OverviewHeatMapRenderer(brick.getTablePerspective(), brick
 		// .getDataDomain().getTable(), true);
 
-		ALayoutRenderer compactOverviewHeatMapRenderer = new OverviewHeatMapRenderer(brick.getTablePerspective(), brick
-				.getDataDomain().getTable(), false);
-
-		IEmbeddedVisualizationInfo visInfo = new IEmbeddedVisualizationInfo() {
-
-			@Override
-			public EScalingEntity getPrimaryWidthScalingEntity() {
-				return null;
-			}
-
-			@Override
-			public EScalingEntity getPrimaryHeightScalingEntity() {
-				return null;
-			}
-		};
+		// ALayoutRenderer compactOverviewHeatMapRenderer = new OverviewHeatMapRenderer(brick.getTablePerspective(),
+		// brick
+		// .getDataDomain().getTable(), false);
+		//
+		// IEmbeddedVisualizationInfo visInfo = new IEmbeddedVisualizationInfo() {
+		//
+		// @Override
+		// public EScalingEntity getPrimaryWidthScalingEntity() {
+		// return null;
+		// }
+		//
+		// @Override
+		// public EScalingEntity getPrimaryHeightScalingEntity() {
+		// return null;
+		// }
+		// };
 
 		// localRendererID = multiFormRenderer.addLayoutRenderer(overviewHeatMapRenderer,
 		// EIconTextures.HEAT_MAP_ICON.getFileName(), visInfo, false);
 		brick.associateIDs(globalRendererID++, localRendererID);
 
-		int compactRendererID = multiFormRenderer.addLayoutRenderer(compactOverviewHeatMapRenderer, null, visInfo,
-				false);
-		brick.associateIDs(globalRendererID++, compactRendererID);
+		// int compactRendererID = multiFormRenderer.addLayoutRenderer(compactOverviewHeatMapRenderer, null, visInfo,
+		// false);
+		// brick.associateIDs(globalRendererID++, compactRendererID);
 
-		configureBrick(multiFormRenderer, brick, compactRendererID);
+		configureBrick(multiFormRenderer, brick, -1);
 
 		// MultiFormViewSwitchingBar viewSwitchingBar = new MultiFormViewSwitchingBar(multiFormRenderer, brick);
 		//

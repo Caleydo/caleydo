@@ -17,39 +17,12 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.stratomex.event;
-
-import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.event.data.ReplaceTablePerspectiveEvent;
+package org.caleydo.view.stratomex.tourguide.internal;
 
 /**
- * special event for updating kaplan maier plot for updating the external sorting strategy
- * 
  * @author Samuel Gratzl
- * 
+ *
  */
-public class ReplaceKaplanMaierPerspectiveEvent extends ReplaceTablePerspectiveEvent {
-	private TablePerspective underlying;
-
-	public ReplaceKaplanMaierPerspectiveEvent() {
-		super();
-	}
-
-	public ReplaceKaplanMaierPerspectiveEvent(Integer viewID, TablePerspective newPerspective,
-			TablePerspective oldPerspective, TablePerspective underlying) {
-		super(viewID, newPerspective, oldPerspective);
-		this.underlying = underlying;
-	}
-
-	/**
-	 * @return the underlying, see {@link #underlying}
-	 */
-	public TablePerspective getUnderlying() {
-		return underlying;
-	}
-
-	@Override
-	public boolean checkIntegrity() {
-		return super.checkIntegrity() && underlying != null;
-	}
+public enum EWizardMode {
+	GLOBAL, DEPENDENT, INDEPENDENT
 }

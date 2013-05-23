@@ -829,6 +829,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 					tablePerspectiveSelectionManager.addToType(currentSelectionType, tablePerspective.getID());
 					brickLayoutConfiguration.setSelected(true);
 				}
+
 				tablePerspectiveSelectionManager.triggerSelectionUpdateEvent();
 
 				layoutManager.updateLayout();
@@ -1213,7 +1214,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 						ClinicalDataConfigurer dataConfigurer = new ClinicalDataConfigurer();
 						ExternallyProvidedSortingStrategy sortingStrategy = new ExternallyProvidedSortingStrategy();
-						sortingStrategy.setExternalBricks(brickColumn.getSegmentBricks());
+						sortingStrategy.setExternalBrick(brickColumn);
 						sortingStrategy.setHashConvertedRecordPerspectiveToOrginalRecordPerspective(dialog
 								.getHashConvertedRecordPerspectiveToOrginalRecordPerspective());
 						dataConfigurer.setSortingStrategy(sortingStrategy);
@@ -1558,14 +1559,17 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 				// brickLayout.setShowHandles(true);
 				// System.out.println("SELECTED " + getLabel());
 				brickLayoutConfiguration.setSelected(true);
+
 				stratomex.updateConnectionLinesBetweenColumns();
 			} else {
+				// if (this.isHeaderBrick() && brickLayoutConfiguration.gets
 				// System.out.println("DESELECTED " + getLabel());
 				brickLayoutConfiguration.setSelected(false);
 				// brickLayout.setShowHandles(false);
 			}
 			// }
-			layoutManager.updateLayout();
+			if (layoutManager != null)
+				layoutManager.updateLayout();
 		}
 	}
 }

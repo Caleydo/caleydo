@@ -28,7 +28,14 @@ import java.util.Set;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLContext;
 
+import org.caleydo.core.data.collection.EDataType;
+import org.caleydo.core.data.collection.table.Table;
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.datadomain.DataDomainManager;
+import org.caleydo.core.data.datadomain.DataDomainOracle;
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
+import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventPublisher;
@@ -38,29 +45,40 @@ import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.color.Colors;
 import org.caleydo.core.util.color.IColor;
 import org.caleydo.core.view.ViewManager;
+import org.caleydo.core.view.listener.RemoveTablePerspectiveEvent;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.ElementLayouts;
+import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormRenderer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingMode;
+import org.caleydo.datadomain.pathway.PathwayDataDomain;
+import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
+import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.view.stratomex.EEmbeddingID;
 import org.caleydo.view.stratomex.EPickingType;
 import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.stratomex.brick.GLBrick;
+import org.caleydo.view.stratomex.brick.configurer.ClinicalDataConfigurer;
 import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
+import org.caleydo.view.stratomex.brick.configurer.PathwayDataConfigurer;
+import org.caleydo.view.stratomex.brick.sorting.NoSortingSortingStrategy;
 import org.caleydo.view.stratomex.column.BrickColumn;
 import org.caleydo.view.stratomex.column.BrickColumnManager;
+import org.caleydo.view.stratomex.column.FrameHighlightRenderer;
+import org.caleydo.view.stratomex.listener.AddGroupsToStratomexListener;
 import org.caleydo.view.stratomex.tourguide.event.HighlightBrickEvent;
 import org.caleydo.view.stratomex.tourguide.event.UpdateNumericalPreviewEvent;
 import org.caleydo.view.stratomex.tourguide.event.UpdatePathwayPreviewEvent;
 import org.caleydo.view.stratomex.tourguide.event.UpdateStratificationPreviewEvent;
-import org.caleydo.view.stratomex.tourguide.internal.BrickHighlightRenderer;
+import org.caleydo.view.stratomex.tourguide.internal.AddAttachedLayoutRenderer;
 import org.caleydo.view.stratomex.tourguide.internal.ConfirmCancelLayoutRenderer;
 import org.caleydo.view.stratomex.tourguide.internal.ESelectionMode;
+import org.caleydo.view.stratomex.tourguide.internal.EWizardMode;
 import org.caleydo.view.stratomex.tourguide.internal.TemplateHighlightRenderer;
 import org.caleydo.view.stratomex.tourguide.internal.event.AddNewColumnEvent;
 import org.caleydo.view.stratomex.tourguide.internal.event.ConfirmCancelNewColumnEvent;
@@ -75,8 +93,8 @@ import com.google.common.collect.Lists;
  */
 public class TourguideAdapter implements IStratomexAdapter {
 	/**
-	 *
-	 */
+     *
+     */
 	private static final IColor COLOR_SELECTED = Colors.YELLOW;
 
 	private static final IColor COLOR_POSSIBLE_SELECTION = Colors.GREEN;
@@ -84,6 +102,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 	private static final String EXTENSION_POINT = "org.caleydo.view.stratomex.AddWizardElementFactory";
 
 	private static final String ADD_PICKING_TYPE = "templateAdd";
+	private static final String ADD_DEPENDENT_PICKING_TYPE = "templateDependentAdd";
 	private static final String CONFIRM_PICKING_TYPE = "templateConfirm";
 	private static final String CANCEL_PICKING_TYPE = "templateAbort";
 
@@ -99,6 +118,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 
 	private int previewIndex; // where
 	// what either an element or a brick
+	private EWizardMode wizardMode;
 	private ElementLayout wizardElement;
 	private BrickColumn wizardPreview;
 
@@ -112,15 +132,27 @@ public class TourguideAdapter implements IStratomexAdapter {
 		this.stratomex = stratomex;
 	}
 
+	public boolean hasTourGuide() {
+		return factory != null;
+	}
+
 	public void renderAddButton(GL2 gl, float x, float y, float w, float h, int id) {
-		if (factory == null || wizardElement != null || wizardPreview != null) // not more than one at the sam etime
+		if (!hasTourGuide() || wizardElement != null || wizardPreview != null) // not more than one at the same time
 			return;
 		renderButton(gl, x, y, w, h, stratomex, ADD_PICKING_TYPE, id, "resources/icons/stratomex/template/add.png");
 	}
 
+	public void renderAddDependentButton(GL2 gl, float x, float y, float w, float h, int id) {
+		if (!hasTourGuide() || wizardElement != null || wizardPreview != null) // not more than one at the same time
+			return;
+		renderButton(gl, x, y, w, h, stratomex, ADD_DEPENDENT_PICKING_TYPE, id,
+				"resources/icons/stratomex/template/add.png");
+	}
+
 	public void renderConfirmButton(GL2 gl, float x, float y, float w, float h, int id) {
-		renderButton(gl, x, y, w, h, stratomex, CONFIRM_PICKING_TYPE, id,
-				"resources/icons/stratomex/template/accept.png");
+		boolean disabled = wizardPreview == null; // no preview no accept
+		renderButton(gl, x, y, w, h, stratomex, CONFIRM_PICKING_TYPE, id, "resources/icons/stratomex/template/accept"
+				+ (disabled ? "_disabled" : "") + ".png");
 	}
 
 	public void renderCancelButton(GL2 gl, float x, float y, float w, float h, int id) {
@@ -156,6 +188,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 
 	public void registerPickingListeners() {
 		final Object receiver = TourguideAdapter.this;
+
 		stratomex.addTypePickingTooltipListener("Add another column at this position", ADD_PICKING_TYPE);
 		stratomex.addTypePickingListener(new IPickingListener() {
 			@Override
@@ -164,6 +197,16 @@ public class TourguideAdapter implements IStratomexAdapter {
 					EventPublisher.trigger(new AddNewColumnEvent(pick.getObjectID() - 1).to(receiver).from(this));
 			}
 		}, ADD_PICKING_TYPE);
+
+		// FIXME tooltip per stratification
+		stratomex.addTypePickingTooltipListener("Add datasets using the stratification", ADD_DEPENDENT_PICKING_TYPE);
+		stratomex.addTypePickingListener(new IPickingListener() {
+			@Override
+			public void pick(Pick pick) {
+				if (pick.getPickingMode() == PickingMode.CLICKED)
+					EventPublisher.trigger(new AddNewColumnEvent(pick.getObjectID() - 1, true).to(receiver).from(this));
+			}
+		}, ADD_DEPENDENT_PICKING_TYPE);
 
 		stratomex.addTypePickingTooltipListener("Confirm the current previewed element", CONFIRM_PICKING_TYPE);
 		stratomex.addTypePickingListener(new IPickingListener() {
@@ -184,6 +227,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 							.from(this));
 			}
 		}, CANCEL_PICKING_TYPE);
+
 
 		IPickingListener brickPicker = new IPickingListener() {
 			@Override
@@ -221,8 +265,12 @@ public class TourguideAdapter implements IStratomexAdapter {
 		if (this.selectionCurrent == brick)
 			return;
 
+		selectBrick(brick);
+	}
+
+	private void selectBrick(GLBrick brick) {
 		boolean handled = false;
-		switch(selectionMode) {
+		switch (selectionMode) {
 		case STRATIFICATION:
 			handled = wizard.onSelected(brick.getBrickColumn().getTablePerspective());
 			break;
@@ -233,34 +281,55 @@ public class TourguideAdapter implements IStratomexAdapter {
 		}
 		if (handled) {
 			if (this.selectionCurrent != null) {
-				changeHighlight(this.selectionCurrent.getLayout(), COLOR_POSSIBLE_SELECTION);
+				changeHighlight(this.selectionCurrent, COLOR_POSSIBLE_SELECTION);
 			}
-			changeHighlight(brick.getLayout(), COLOR_SELECTED);
+			changeHighlight(brick, COLOR_SELECTED);
 			this.selectionCurrent = brick;
 
 			stratomex.setDisplayListDirty();
 		}
 	}
 
-	private void changeHighlight(ElementLayout layout, IColor color) {
-		// select brick by changing highlight
-		for (BrickHighlightRenderer glow : Iterables.filter(layout.getBackgroundRenderer(),
-				BrickHighlightRenderer.class)) {
-			glow.setColor(color.getRGBA());
-			return;
+	private void changeHighlight(GLBrick brick, IColor color) {
+		if (brick.isHeaderBrick()) {
+			brick.getBrickColumn().setHighlightColor(color == null ? BrickColumn.REVERT_COLOR : color.getRGBA());
+		} else {
+			ElementLayout layout = brick.getLayout();
+			if (color == null)
+				layout.clearBackgroundRenderers(FrameHighlightRenderer.class);
+			else {
+				// select brick by changing highlight
+				for (FrameHighlightRenderer glow : Iterables.filter(layout.getBackgroundRenderer(),
+						FrameHighlightRenderer.class)) {
+					glow.setColor(color.getRGBA());
+					return;
+				}
+				// no yet there add one
+				layout.addBackgroundRenderer(new FrameHighlightRenderer(color.getRGBA(), true));
+			}
 		}
-		// no yet there add one
-		layout.addBackgroundRenderer(new BrickHighlightRenderer(color.getRGBA()));
 	}
 
 	@Override
-	public void selectStratification(Predicate<TablePerspective> filter) {
+	public void selectStratification(Predicate<TablePerspective> filter, boolean autoSelectLeftOfMe) {
 		this.selectionMode = ESelectionMode.STRATIFICATION;
 		// highlight all possibles
+		int index = 0;
+		GLBrick toSelect = null;
 		for (BrickColumn col : stratomex.getBrickColumnManager().getBrickColumns()) {
-			if (filter.apply(col.getTablePerspective()))
-				changeHighlight(col.getHeaderBrick().getLayout(), COLOR_POSSIBLE_SELECTION);
+			if (filter.apply(col.getTablePerspective())) {
+				changeHighlight(col.getHeaderBrick(), COLOR_POSSIBLE_SELECTION);
+
+				if (autoSelectLeftOfMe && previewIndex == index) {
+					toSelect = col.getHeaderBrick();
+				}
+			}
+			index++;
 		}
+
+		if (toSelect != null)
+			selectBrick(toSelect);
+
 		repaint();
 	}
 
@@ -272,7 +341,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 			TablePerspective tablePerspective = col.getTablePerspective();
 			for (GLBrick brick : col.getSegmentBricks()) {
 				if (filter.apply(Pair.make(tablePerspective, brick.getTablePerspective().getRecordGroup())))
-					changeHighlight(brick.getLayout(), COLOR_POSSIBLE_SELECTION);
+					changeHighlight(brick, COLOR_POSSIBLE_SELECTION);
 			}
 		}
 		repaint();
@@ -286,29 +355,20 @@ public class TourguideAdapter implements IStratomexAdapter {
 		if (brickColumn == null)
 			return;
 
-		ElementLayout layout = null;
+		IColor c = event.isHighlight() ? Colors.of(event.getColor()) : null;
 		if (event.getGroup() == null) {
-			layout = brickColumn.getLayout();
+			changeHighlight(brickColumn.getHeaderBrick(), c);
 		} else {
 			Group g = event.getGroup();
 			for (GLBrick brick : brickColumn.getSegmentBricks()) {
 				if (g.equals(brick.getTablePerspective().getRecordGroup())) {
-					layout = brick.getLayout();
+					changeHighlight(brick, c);
 					break;
 				}
 			}
 		}
-		if (layout == null)
-			return;
-
-		if (!event.isHighlight()) {
-			layout.clearBackgroundRenderers();
-		} else {
-			layout.addBackgroundRenderer(new BrickHighlightRenderer(event.getColor().getColorComponents(null)));
-		}
-		if (layout.getLayoutManager() != null)
-			layout.updateSubLayout();
 	}
+
 
 	private void repaint() {
 		stratomex.updateLayout();
@@ -333,36 +393,74 @@ public class TourguideAdapter implements IStratomexAdapter {
 
 	/**
 	 * @param index
+	 * @param independentOne
 	 * @return
 	 */
-	private ElementLayout createTemplateElement(int index) {
+	private ElementLayout createTemplateElement(int index, TablePerspective source, boolean independentOne) {
 		assert factory != null;
-		wizard = factory.create(this, stratomex);
-		stratomex.registerEventListener(wizard);
+		createWizard(source, independentOne);
 		ElementLayout l = ElementLayouts.wrap(wizard, 120);
 		l.addBackgroundRenderer(new TemplateHighlightRenderer());
 		l.addBackgroundRenderer(new ConfirmCancelLayoutRenderer(stratomex, index, this));
 		return l;
 	}
 
+	private void createWizard(TablePerspective source, boolean independentOne) {
+		if (source == null) {
+			wizard = factory.create(this, stratomex);
+			wizardMode = EWizardMode.GLOBAL;
+		} else if (independentOne) {
+			wizard = factory.createIndepenent(this, stratomex, source);
+			wizardMode = EWizardMode.INDEPENDENT;
+		} else {
+			wizard = factory.createDependent(this, stratomex, source);
+			wizardMode = EWizardMode.DEPENDENT;
+		}
+		stratomex.registerEventListener(wizard);
+	}
+
 	@ListenTo(sendToMe = true)
 	private void onAddEmptyColumn(AddNewColumnEvent event) {
-		if (wizardPreview != null || wizardElement != null)
+		if (wizardPreview != null || wizardElement != null) // only one at one time
 			return;
 
-		int index;
-		if (event.getObjectId() <= 0) {
-			// left or first
-			index = -1;
+		int index = 0;
+		TablePerspective source = null;
+		BrickColumnManager brickColumnManager = stratomex.getBrickColumnManager();
+		if (event.isDependentOne()) {
+			for (BrickColumn col : brickColumnManager.getBrickColumns()) {
+				if (col.getID() == event.getObjectId()) {
+					source = col.getTablePerspective();
+					break;
+				}
+				index++;
+			}
+			if (source == null)
+				return;
+		} else if (event.isIndependentOne()) {
+			for (BrickColumn col : brickColumnManager.getBrickColumns()) {
+				if (col.getID() == event.getObjectId()) {
+					source = col.getTablePerspective();
+					index -= 1; // left of
+					break;
+				}
+				index++;
+			}
+			if (source == null)
+				return;
 		} else {
-			// right of
-			BrickColumnManager brickColumnManager = stratomex.getBrickColumnManager();
-			BrickColumn col = brickColumnManager.getBrickColumnSpacers().get(event.getObjectId()).getLeftDimGroup();
-			index = col == null ? -1 : brickColumnManager.getBrickColumns().indexOf(col);
+			if (event.getObjectId() <= 0) {
+				// left or first
+				index = -1;
+			} else {
+				// right of
+				BrickColumn col = brickColumnManager.getBrickColumnSpacers().get(event.getObjectId()).getLeftDimGroup();
+				index = col == null ? -1 : brickColumnManager.getBrickColumns().indexOf(col);
+			}
 		}
 
 		previewIndex = index;
-		wizardElement = createTemplateElement(index + 1);
+		wizardElement = createTemplateElement(index + 1, source, event.isIndependentOne());
 
 		stratomex.relayout();
 	}
@@ -371,16 +469,22 @@ public class TourguideAdapter implements IStratomexAdapter {
 	private void onConfirmCancelColumn(ConfirmCancelNewColumnEvent event) {
 		boolean confirm = event.isConfirm();
 
-		if (wizard == null) // nothing todo
-			return;
-
 		if (confirm && (wizardPreview == null))
 			return; // invalid action
 
 		if (confirm) {
 			// remove the preview buttons
-			if (wizardPreview != null)
-				wizardPreview.getLayout().clearForegroundRenderers();
+			if (wizardPreview != null) {
+				final Row layout = wizardPreview.getLayout();
+				layout.clearForegroundRenderers(AddAttachedLayoutRenderer.class);
+				layout.clearForegroundRenderers(ConfirmCancelLayoutRenderer.class);
+				if (canHaveDependentColumns(wizardPreview))
+					layout.addForeGroundRenderer(new AddAttachedLayoutRenderer(stratomex, wizardPreview.getID(), this,
+							false));
+				if (canHaveIndependentColumns(wizardPreview))
+					layout.addForeGroundRenderer(new AddAttachedLayoutRenderer(stratomex, wizardPreview.getID(), this,
+							true));
+			}
 		} else {
 			if (wizardPreview != null)
 				stratomex.removeTablePerspective(wizardPreview.getTablePerspective());
@@ -394,16 +498,74 @@ public class TourguideAdapter implements IStratomexAdapter {
 	}
 
 	/**
+	 * listens to remove events done via the remove button and check if this was our template
 	 *
+	 * @param event
 	 */
+	@ListenTo
+	private void onRemoveTablePerspective(RemoveTablePerspectiveEvent event) {
+		if (event.getReceiver() != stratomex)
+			return;
+		// removed my template
+		if (this.wizardPreview != null && this.wizardPreview.getTablePerspective() == event.getTablePerspective()) {
+			done(false);
+		}
+	}
+
+	/**
+	 * @param brickColumn
+	 */
+	public void addedBrickColumn(BrickColumn brickColumn) {
+		if (!hasTourGuide())
+			return;
+
+		Row layout = brickColumn.getLayout();
+		if (canHaveDependentColumns(brickColumn))
+			layout.addForeGroundRenderer(new AddAttachedLayoutRenderer(stratomex, brickColumn.getID(), this, false));
+
+		if (canHaveIndependentColumns(brickColumn))
+			layout.addForeGroundRenderer(new AddAttachedLayoutRenderer(stratomex, brickColumn.getID(), this, true));
+	}
+
+	/**
+	 * determines whether a given BrickColumn can have dependent ones
+	 *
+	 * @param brickColumn
+	 * @return
+	 */
+	private static boolean canHaveDependentColumns(BrickColumn brickColumn) {
+		IBrickConfigurer b = brickColumn.getBrickConfigurer();
+		if (b instanceof PathwayDataConfigurer) {
+			return false;
+		}
+		if (b instanceof ClinicalDataConfigurer) {
+			return false;
+		}
+		return true;
+	}
+
+	private static boolean canHaveIndependentColumns(BrickColumn brickColumn) {
+		IBrickConfigurer b = brickColumn.getBrickConfigurer();
+		if (b instanceof PathwayDataConfigurer) {
+			return false; // TODO
+		}
+		if (b instanceof ClinicalDataConfigurer) {
+			return b.getBrickSortingStrategy() instanceof NoSortingSortingStrategy;
+		}
+		return false;
+	}
+
+	/**
+     *
+     */
 	private void done(boolean confirmed) {
 		selectionMode = null;
 		selectionCurrent = null;
 		// clear highlights
 		for (BrickColumn col : stratomex.getBrickColumnManager().getBrickColumns()) {
-			col.getHeaderBrick().getLayout().clearBackgroundRenderers();
+			col.setHighlightColor(BrickColumn.REVERT_COLOR);
 			for (GLBrick brick : col.getSegmentBricks()) {
-				brick.getLayout().clearBackgroundRenderers();
+				brick.getLayout().clearBackgroundRenderers(FrameHighlightRenderer.class);
 			}
 		}
 
@@ -431,6 +593,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 		if (wizard != null)
 			wizard.onUpdate(event);
 		else { // no wizard there to handle add a template column on the fly
+			createWizard(null, false);
 			replaceTemplate(event.getTablePerspective(), null);
 		}
 	}
@@ -439,12 +602,32 @@ public class TourguideAdapter implements IStratomexAdapter {
 	private void onUpdatePreview(UpdatePathwayPreviewEvent event) {
 		if (wizard != null)
 			wizard.onUpdate(event);
+		else { // no wizard there check if something is selected otherwise
+			BrickColumn selected = stratomex.getBrickColumnManager().getActiveBrickColumn();
+			if (selected == null) {
+				// FIXME create a wizard at a specific step
+
+			} else {
+				createWizard(selected.getTablePerspective(), false);
+				replacePathwayTemplate(selected.getTablePerspective().getRecordPerspective(), event.getPathway());
+			}
+		}
 	}
 
 	@ListenTo(sendToMe = true)
 	private void onUpdateNumerical(UpdateNumericalPreviewEvent event) {
 		if (wizard != null)
 			wizard.onUpdate(event);
+		else { // no wizard there check if something is selected otherwise
+			BrickColumn selected = stratomex.getBrickColumnManager().getActiveBrickColumn();
+			if (selected == null) {
+				// FIXME
+			} else {
+				createWizard(selected.getTablePerspective(), false);
+				replaceClinicalTemplate(selected.getTablePerspective().getRecordPerspective(),
+						event.getTablePerspective());
+			}
+		}
 	}
 
 	/**
@@ -478,23 +661,62 @@ public class TourguideAdapter implements IStratomexAdapter {
 		if (wizardElement != null) {
 			cleanupWizardElement();
 			BrickColumnManager bcm = stratomex.getBrickColumnManager();
-			BrickColumn left = previewIndex < 0 ? null : bcm.getBrickColumns().get(bcm.getCenterColumnStartIndex() + previewIndex);
+			BrickColumn left = previewIndex < 0 ? null : bcm.getBrickColumns().get(
+					bcm.getCenterColumnStartIndex() + previewIndex);
 			added = stratomex.addTablePerspectives(withL, config, left, false);
+			if (wizardMode == EWizardMode.INDEPENDENT) {
+				updateDependentBrickColumn(with, added.get(0).getSecond());
+			}
 		} else if (wizardPreview != null) {
 			added = stratomex.addTablePerspectives(withL, config, wizardPreview, true);
 			stratomex.removeTablePerspective(wizardPreview.getTablePerspective());
+			if (wizardMode == EWizardMode.INDEPENDENT) {
+				updateDependentBrickColumn(with, added.get(0).getSecond());
+			}
 		} else {
 			// create a preview on the fly
 			added = stratomex.addTablePerspectives(withL, config, wizardPreview, true);
 		}
 		wizardPreview = added.get(0).getSecond();
+		wizardPreview.getLayout().clearForegroundRenderers();
 		wizardPreview.getLayout().addForeGroundRenderer(new ConfirmCancelLayoutRenderer(stratomex, previewIndex, this));
+	}
+
+	/**
+	 * updates the dependent brick column if an independent brick column is for it selected
+	 *
+	 * @param with
+	 */
+	private void updateDependentBrickColumn(TablePerspective with, BrickColumn new_) {
+		BrickColumnManager bcm = stratomex.getBrickColumnManager();
+		int index = bcm.indexOfBrickColumn(new_) + 1;
+		if (index <= 0 || index >= bcm.getBrickColumns().size())
+			return;
+		BrickColumn toUpdate = bcm.getBrickColumns().get(index);
+		TablePerspective from = toUpdate.getTablePerspective();
+
+		IBrickConfigurer brickConfigurer = toUpdate.getBrickConfigurer();
+		if (brickConfigurer instanceof ClinicalDataConfigurer) {
+			TablePerspective to = asPerspective(with.getRecordPerspective(), from);
+			ClinicalDataConfigurer configurer = AddGroupsToStratomexListener
+					.createKaplanConfigurer(stratomex, with, to);
+
+			stratomex.addTablePerspectives(Lists.newArrayList(to), configurer, new_, true);
+			stratomex.removeTablePerspective(from);
+		} else if (brickConfigurer instanceof PathwayDataConfigurer) {
+			// TODO
+			// TablePerspective t = asPerspective(with, pathway);
+		}
+
 	}
 
 	@Override
 	public void replaceTemplate(ALayoutRenderer renderer) {
 		if (wizardElement != null) {
 			wizardElement.setRenderer(renderer);
+			renderer.setLimits(wizardElement.getSizeScaledX(), wizardElement.getSizeScaledY()); // don't know why the
+																								// element layout does
+																								// it not by it own
 		} else if (wizardPreview != null) {
 			ElementLayout new_ = ElementLayouts.wrap(renderer, 120);
 			previewIndex = stratomex.getBrickColumnManager().indexOfBrickColumn(wizardPreview) - 1;
@@ -508,6 +730,75 @@ public class TourguideAdapter implements IStratomexAdapter {
 	}
 
 	@Override
+	public void replaceClinicalTemplate(Perspective underlying, TablePerspective numerical) {
+		TablePerspective t = asPerspective(underlying, numerical);
+		TablePerspective underlyingTP = findTablePerspective(underlying);
+		if (underlyingTP == null)
+			return;
+		ClinicalDataConfigurer configurer = AddGroupsToStratomexListener.createKaplanConfigurer(stratomex,
+				underlyingTP, t);
+		replaceTemplate(t, configurer);
+	}
+
+	@Override
+	public void replacePathwayTemplate(Perspective underlying, PathwayGraph pathway) {
+		TablePerspective t = asPerspective(underlying, pathway);
+		TablePerspective underlyingTP = findTablePerspective(underlying);
+		if (underlyingTP == null)
+			return;
+		replaceTemplate(t, new PathwayDataConfigurer());
+	}
+
+	private TablePerspective findTablePerspective(Perspective record) {
+		for (TablePerspective p : stratomex.getTablePerspectives())
+			if (p.getRecordPerspective() == record)
+				return p;
+		return null;
+	}
+
+	private static TablePerspective asPerspective(Perspective underlying, TablePerspective clinicalVariable) {
+		Perspective dim = clinicalVariable.getDimensionPerspective();
+		ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) dim.getDataDomain();
+
+		Perspective rec = null;
+
+		for (String id : dataDomain.getRecordPerspectiveIDs()) {
+			Perspective r = dataDomain.getTable().getRecordPerspective(id);
+			if (r.getDataDomain().equals(underlying.getDataDomain())
+					&& r.isLabelDefault() == underlying.isLabelDefault() && r.getLabel().equals(underlying.getLabel())) {
+				rec = r;
+				break;
+			}
+		}
+		if (rec == null) { // not found create a new one
+			rec = dataDomain.convertForeignPerspective(underlying);
+			dataDomain.getTable().registerRecordPerspective(rec);
+		}
+		return dataDomain.getTablePerspective(rec.getPerspectiveID(), dim.getPerspectiveID(), false);
+	}
+
+	protected static TablePerspective asPerspective(Perspective record, PathwayGraph pathway) {
+		PathwayDataDomain pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get().getDataDomainByType(
+				PathwayDataDomain.DATA_DOMAIN_TYPE);
+
+		ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) record.getDataDomain();
+		Perspective dimension = dataDomain.getTable().getDefaultDimensionPerspective();
+		for (PathwayTablePerspective p : pathwayDataDomain.getTablePerspectives()) {
+			if (p.getPathway().equals(pathway) && p.getRecordPerspective().equals(record)
+					&& p.getDimensionPerspective().equals(dimension))
+				return p;
+		}
+		// not found create new one
+		PathwayTablePerspective pathwayDimensionGroup = new PathwayTablePerspective(dataDomain, pathwayDataDomain,
+				record, dimension, pathway);
+
+		pathwayDimensionGroup.setPrivate(true);
+		pathwayDataDomain.addTablePerspective(pathwayDimensionGroup);
+
+		return pathwayDimensionGroup;
+	}
+
+	@Override
 	public List<TablePerspective> getVisibleTablePerspectives() {
 		return stratomex.getTablePerspectives();
 	}
@@ -515,7 +806,8 @@ public class TourguideAdapter implements IStratomexAdapter {
 	@Override
 	public MultiFormRenderer createPreviewRenderer(TablePerspective tablePerspective) {
 		// create a preview similar to the header
-		EEmbeddingID embeddingID = EEmbeddingID.PATHWAY_HEADER_BRICK;
+		EEmbeddingID embeddingID = selectEmbeddingID(tablePerspective);
+
 		Set<String> remoteRenderedViewIDs = ViewManager.get().getRemotePlugInViewIDs(GLStratomex.VIEW_TYPE,
 				embeddingID.id());
 
@@ -530,4 +822,29 @@ public class TourguideAdapter implements IStratomexAdapter {
 		return multiFormRenderer;
 	}
 
+	private static EEmbeddingID selectEmbeddingID(TablePerspective tablePerspective) {
+		EEmbeddingID embeddingID;
+		if (tablePerspective instanceof PathwayTablePerspective)
+			embeddingID = EEmbeddingID.PATHWAY_HEADER_BRICK;
+		else if (DataDomainOracle.isClinical(tablePerspective.getDataDomain()) && hasIntegers(tablePerspective))
+			embeddingID = EEmbeddingID.CLINICAL_HEADER_BRICK;
+		else if (DataDomainOracle.isCategoricalDataDomain(tablePerspective.getDataDomain()))
+			embeddingID = EEmbeddingID.CATEGORICAL_HEADER_BRICK;
+		else
+			embeddingID = EEmbeddingID.NUMERICAL_HEADER_BRICK;
+		return embeddingID;
+	}
+
+	/**
+	 * @param tablePerspective
+	 * @return
+	 */
+	private static boolean hasIntegers(TablePerspective tablePerspective) {
+		Table table = tablePerspective.getDataDomain().getTable();
+		VirtualArray dva = tablePerspective.getDimensionPerspective().getVirtualArray();
+		VirtualArray rva = tablePerspective.getRecordPerspective().getVirtualArray();
+		if (dva.size() == 0 || rva.size() == 0)
+			return false;
+		return table.getRawDataType(dva.get(0), rva.get(0)) != EDataType.STRING;
+	}
 }

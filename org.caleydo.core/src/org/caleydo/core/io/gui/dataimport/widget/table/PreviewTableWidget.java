@@ -1,7 +1,7 @@
 /**
  *
  */
-package org.caleydo.core.io.gui.dataimport.widget;
+package org.caleydo.core.io.gui.dataimport.widget.table;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -42,71 +42,26 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- * Manager for SWT tables to create and maintain preview tables for tabular data that draws one row of buttons for
+ * Manager for NAT table to create and maintain preview tables for tabular data that draws one row of buttons for
  * selecting/deselecting columns on top and one row enumeration column at the left.
  *
  * @author Christian Partl
  *
  */
-public class PreviewTableWidget {
+public class PreviewTableWidget extends AMatrixBasedTableWidget {
 	/**
 	 * Maximum number of previewed rows in {@link #previewTable}.
 	 */
 	public static final int MAX_PREVIEW_TABLE_ROWS = 50;
 
-
 	private static final String ID_CELL = "ID_CELL";
 	private static final String HEADER_LINE_CELL = "HEADER_LINE_CELL";
 
-	int numberOfHeaderRows = -1;
-	int idRowIndex = -1;
-	int idColumnIndex = -1;
-
-	private NatTable table;
-
-	private Composite parent;
+	private int numberOfHeaderRows = -1;
+	private int idRowIndex = -1;
+	private int idColumnIndex = -1;
 
 	private List<Boolean> columnSelectionStatus = new ArrayList<>();
-
-	private BodyDataProvider bodyDataProvider;
-
-	private class BodyDataProvider implements IDataProvider {
-
-		private String[][] dataMatrix;
-		private int numColumns;
-
-		public BodyDataProvider(List<? extends List<String>> dataMatrix, int numDataTableColumns) {
-			if (dataMatrix != null) {
-				this.dataMatrix = new String[dataMatrix.size()][numDataTableColumns];
-				for (int i = 0; i < dataMatrix.size(); i++) {
-					for (int j = 0; j < numDataTableColumns; j++) {
-						this.dataMatrix[i][j] = dataMatrix.get(i).get(j);
-					}
-				}
-				this.numColumns = numDataTableColumns;
-			}
-		}
-
-		@Override
-		public Object getDataValue(int columnIndex, int rowIndex) {
-			return dataMatrix == null ? "" : dataMatrix[rowIndex][columnIndex];
-		}
-
-		@Override
-		public void setDataValue(int columnIndex, int rowIndex, Object newValue) {
-			// do not allow to change values
-		}
-
-		@Override
-		public int getColumnCount() {
-			return numColumns;
-		}
-
-		@Override
-		public int getRowCount() {
-			return dataMatrix == null ? 1 : dataMatrix.length;
-		}
-	}
 
 	private class ColumnHeaderDataProvider implements IDataProvider {
 
@@ -146,45 +101,14 @@ public class PreviewTableWidget {
 
 	}
 
-	private class RowHeaderDataProvider implements IDataProvider {
-
-		private int numRows;
-
-		public RowHeaderDataProvider(int numHeaders) {
-			this.numRows = numHeaders;
-		}
-
-		@Override
-		public Object getDataValue(int columnIndex, int rowIndex) {
-			return "" + (rowIndex + 1);
-
-		}
-
-		@Override
-		public void setDataValue(int columnIndex, int rowIndex, Object newValue) {
-			// not supported
-		}
-
-		@Override
-		public int getColumnCount() {
-			return 1;
-		}
-
-		@Override
-		public int getRowCount() {
-			return numRows;
-		}
-
-	}
-
 	public PreviewTableWidget(Composite parent) {
-		this.parent = parent;
-		bodyDataProvider = new BodyDataProvider(null, 1);
-		buildTable(bodyDataProvider, new ColumnHeaderDataProvider(1), new RowHeaderDataProvider(1));
+		super(parent);
+		bodyDataProvider = new MatrixBasedBodyDataProvider(null, 1);
+		buildTable(bodyDataProvider, new ColumnHeaderDataProvider(1), new LineNumberRowHeaderDataProvider(1));
 	}
 
-	private void buildTable(BodyDataProvider bodyDataProvider, ColumnHeaderDataProvider columnDataProvider,
-			RowHeaderDataProvider rowDataProvider) {
+	private void buildTable(MatrixBasedBodyDataProvider bodyDataProvider, ColumnHeaderDataProvider columnDataProvider,
+			LineNumberRowHeaderDataProvider rowDataProvider) {
 
 		if (table != null) { // cleanup old
 			this.table.dispose();
@@ -453,25 +377,20 @@ public class PreviewTableWidget {
 
 	}
 
-	public String getValue(int rowIndex, int columnIndex) {
-		return (String) bodyDataProvider.getDataValue(columnIndex, rowIndex);
-	}
-
 	/**
 	 * Creates the {@link #previewTable} according to the {@link #dataMatrix}.
 	 */
-	public void createDataPreviewTableFromDataMatrix(List<? extends List<String>> dataMatrix, int numColumns) {
+	@Override
+	public void createTableFromMatrix(List<List<String>> dataMatrix, int numColumns) {
 		if (dataMatrix == null || dataMatrix.isEmpty())
 			return;
-
 
 		columnSelectionStatus = new ArrayList<>(numColumns);
 		for (int i = 0; i < numColumns; i++) {
 			columnSelectionStatus.add(true);
 		}
-		bodyDataProvider = new BodyDataProvider(dataMatrix, numColumns);
-		buildTable(bodyDataProvider, new ColumnHeaderDataProvider(numColumns),
-				new RowHeaderDataProvider(
+		bodyDataProvider = new MatrixBasedBodyDataProvider(dataMatrix, numColumns);
+		buildTable(bodyDataProvider, new ColumnHeaderDataProvider(numColumns), new LineNumberRowHeaderDataProvider(
 				dataMatrix.size()));
 
 	}
@@ -522,21 +441,13 @@ public class PreviewTableWidget {
 		}
 	}
 
-	public int getColumnCount() {
-		return bodyDataProvider.getColumnCount();
-	}
-
-	public int getRowCount() {
-		return bodyDataProvider.getRowCount();
-	}
-
 	/**
 	 * returns the current selected column indices + optional a -1 as wildcard for all unseen
 	 *
 	 * @return
 	 */
-	public Collection<Integer> getSelectedColumns() {
-		Collection<Integer> result = new ArrayList<>();
+	public List<Integer> getSelectedColumns() {
+		List<Integer> result = new ArrayList<>();
 
 		for (int i = 0; i < columnSelectionStatus.size(); i++) {
 			if (columnSelectionStatus.get(i)) {

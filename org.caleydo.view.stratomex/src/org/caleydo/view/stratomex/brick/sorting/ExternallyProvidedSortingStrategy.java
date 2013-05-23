@@ -27,6 +27,7 @@ import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.view.stratomex.brick.GLBrick;
+import org.caleydo.view.stratomex.column.BrickColumn;
 
 /**
  * Strategy that sorts the bricks according to an externally provided .
@@ -41,7 +42,7 @@ public class ExternallyProvidedSortingStrategy
 	 * The order of the bricks in the set determines the output order of the
 	 * segementBricks.
 	 */
-	private List<GLBrick> externalSortedBricks;
+	private BrickColumn externalBrick;
 
 	/**
 	 * Hash between the converted record perspective to the original one from
@@ -74,16 +75,17 @@ public class ExternallyProvidedSortingStrategy
 					Group originalGroup = originalDimGroupRecordPerspective.getVirtualArray()
 							.getGroupList().get(groupIndex);
 
-					for (GLBrick originalBrick : externalSortedBricks) {
-
+					int i = 0;
+					for (GLBrick originalBrick : externalBrick.getSegmentBricks()) {
 						if (originalBrick.getTablePerspective().getRecordGroup() == originalGroup)
 						{
-							sortedBricks[externalSortedBricks.indexOf(originalBrick)] = brick;
-							continue;
+							sortedBricks[i] = brick;
+							break;
 						}
+						i++;
 					}
 
-					continue;
+					break;
 				}
 			}
 
@@ -99,10 +101,11 @@ public class ExternallyProvidedSortingStrategy
 	}
 
 	/**
-	 * @param externalSortedBricks setter, see {@link #externalSortedBricks}
+	 * @param externalBrick
+	 *            setter, see {@link externalBrick}
 	 */
-	public void setExternalBricks(List<GLBrick> externalSortedBricks) {
-		this.externalSortedBricks = externalSortedBricks;
+	public void setExternalBrick(BrickColumn externalBrick) {
+		this.externalBrick = externalBrick;
 	}
 
 	/**

@@ -22,8 +22,13 @@ package org.caleydo.vis.rank.ui;
 import static org.caleydo.vis.rank.ui.RenderStyle.HIST_HEIGHT;
 import static org.caleydo.vis.rank.ui.RenderStyle.LABEL_HEIGHT;
 
+import java.util.List;
+
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.core.view.opengl.layout2.basic.GLButton;
+import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
+import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.vis.rank.config.IRankTableUIConfig;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.RankTableModel;
@@ -38,21 +43,59 @@ import org.caleydo.vis.rank.ui.column.ColumnUIs;
  */
 public final class TableHeaderUI extends ACompositeHeaderUI {
 	private final RankTableModel table;
-	private boolean isCompact = false;
+	private boolean isSmallHeader = true;
 
 	public TableHeaderUI(RankTableModel table, IRankTableUIConfig config) {
-		super(config, 0);
+		super(config, 1 /* for the button */);
 		this.table = table;
 		this.table.addPropertyChangeListener(RankTableModel.PROP_COLUMNS, childrenChanged);
 		setLayoutData(table);
-		setSize(-1, (HIST_HEIGHT + LABEL_HEIGHT * 2) * 1);
+		setSize(-1, ((isSmallHeader ? 0 : HIST_HEIGHT) + LABEL_HEIGHT * 2) * 1);
+
+		{
+			GLButton toggleSmallHeader = new GLButton(GLButton.EButtonMode.CHECKBOX);
+			toggleSmallHeader.setSelected(isSmallHeader);
+			toggleSmallHeader.setCallback(new GLButton.ISelectionCallback() {
+				@Override
+				public void onSelectionChanged(GLButton button, boolean selected) {
+					setSmallHeader(selected);
+				}
+			});
+			toggleSmallHeader.setTooltip("Toggle Small / Thick Headers");
+			toggleSmallHeader.setRenderer(GLRenderers.fillImage(RenderStyle.ICON_UNCOLLAPSE));
+			toggleSmallHeader.setSelectedRenderer(GLRenderers.fillImage(RenderStyle.ICON_COLLAPSE));
+
+			this.add(toggleSmallHeader);
+		}
+
 		this.init(table.getColumns());
+	}
+
+	/**
+	 * @return the isCompact, see {@link #isCompact}
+	 */
+	@Override
+	public boolean isSmallHeader() {
+		return isSmallHeader;
+	}
+
+	/**
+	 * @param isCompact
+	 *            setter, see {@link isCompact}
+	 */
+	public void setSmallHeader(boolean isCompact) {
+		if (this.isSmallHeader == isCompact)
+			return;
+		this.isSmallHeader = isCompact;
+		relayout();
+		setSize(-1, ((!isSmallHeader ? HIST_HEIGHT : 0) + LABEL_HEIGHT) * 1 + (hasThick ? thickHeight() : 0));
+		relayoutParent();
 	}
 
 	@Override
 	protected void setHasThick(boolean hasThick) {
 		super.setHasThick(hasThick);
-		setSize(-1, (HIST_HEIGHT + LABEL_HEIGHT) * 1 + (hasThick ? THICK_HEIGHT : 0));
+		setSize(-1, ((!isSmallHeader ? HIST_HEIGHT : 0) + LABEL_HEIGHT) * 1 + (hasThick ? thickHeight() : 0));
 	}
 
 	@Override
@@ -83,8 +126,17 @@ public final class TableHeaderUI extends ACompositeHeaderUI {
 	}
 
 	@Override
+	public void doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
+		IGLLayoutElement toggleSmall = children.get(0);
+		float x = super.layoutColumns(children, w, h);
+		if (x >= w)
+			x = w - 16;
+		toggleSmall.setBounds(x, (hasThick ? thickHeight() : 0) + (LABEL_HEIGHT - 16) * 0.5f, 16, 16);
+	}
+
+	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
-		if (!isCompact) {
+		if (!isSmallHeader) {
 			g.incZ(-0.5f);
 			g.color(RenderStyle.COLOR_BACKGROUND_EVEN);
 			g.fillRect(0, h - RenderStyle.HIST_HEIGHT, w, RenderStyle.HIST_HEIGHT);

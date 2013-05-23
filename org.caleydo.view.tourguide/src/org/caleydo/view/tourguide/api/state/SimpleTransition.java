@@ -19,7 +19,6 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.api.state;
 
-import org.caleydo.core.io.gui.dataimport.widget.ICallback;
 
 /**
  * @author Samuel Gratzl
@@ -35,9 +34,16 @@ public class SimpleTransition implements ITransition {
 		this.label = label;
 	}
 
+	/**
+	 * @return the target, see {@link #target}
+	 */
+	public IState getTarget() {
+		return target;
+	}
+
 	@Override
-	public void apply(ICallback<IState> onApply) {
-		onApply.on(target);
+	public void apply(IReactions onApply) {
+		onApply.switchTo(target);
 	}
 
 	/**

@@ -32,7 +32,7 @@ public class DataDomainModeSpecifics {
 	 */
 	public static IDataDomainQueryModeSpecfics of(EDataDomainQueryMode mode) {
 		switch (mode) {
-		case NUMERICAL:
+		case OTHER:
 			return new NumericalSpecifics();
 		case PATHWAYS:
 			return new PathwaySpecifics();

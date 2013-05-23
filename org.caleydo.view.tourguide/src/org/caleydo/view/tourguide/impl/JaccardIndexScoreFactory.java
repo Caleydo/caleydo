@@ -34,8 +34,9 @@ import org.caleydo.view.tourguide.api.score.DefaultComputedReferenceGroupScore;
 import org.caleydo.view.tourguide.api.score.MultiScore;
 import org.caleydo.view.tourguide.api.score.ui.ACreateGroupScoreDialog;
 import org.caleydo.view.tourguide.api.state.BrowseStratificationState;
+import org.caleydo.view.tourguide.api.state.EWizardMode;
+import org.caleydo.view.tourguide.api.state.IReactions;
 import org.caleydo.view.tourguide.api.state.ISelectGroupState;
-import org.caleydo.view.tourguide.api.state.ISelectReaction;
 import org.caleydo.view.tourguide.api.state.IState;
 import org.caleydo.view.tourguide.api.state.IStateMachine;
 import org.caleydo.view.tourguide.api.state.SimpleState;
@@ -69,14 +70,15 @@ public class JaccardIndexScoreFactory implements IScoreFactory {
 	}
 
 	@Override
-	public void fillStateMachine(IStateMachine stateMachine, Object eventReceiver, List<TablePerspective> existing) {
-		if (existing.isEmpty()) // nothing to compare
+	public void fillStateMachine(IStateMachine stateMachine, List<TablePerspective> existing, EWizardMode mode,
+			TablePerspective source) {
+		if (mode != EWizardMode.GLOBAL || existing.isEmpty()) // nothing to compare
 			return;
 
-		IState source = stateMachine.get(IStateMachine.ADD_STRATIFICATIONS);
+		IState start = stateMachine.get(IStateMachine.ADD_STRATIFICATIONS);
 		IState browse = stateMachine.addState("JaccardIndexBrowse", new UpdateAndBrowseJaccardIndex());
 		IState target = stateMachine.addState("JaccardIndex", new CreateJaccardScoreState(browse));
-		stateMachine.addTransition(source, new SimpleTransition(target, "Find large overlap with displayed clusters"));
+		stateMachine.addTransition(start, new SimpleTransition(target, "Find large overlap with displayed clusters"));
 	}
 
 	private class CreateJaccardScoreState extends SimpleState implements ISelectGroupState {
@@ -94,7 +96,7 @@ public class JaccardIndexScoreFactory implements IScoreFactory {
 		}
 
 		@Override
-		public void select(TablePerspective tablePerspective, Group group, ISelectReaction reactions) {
+		public void select(TablePerspective tablePerspective, Group group, IReactions reactions) {
 			reactions.addScoreToTourGuide(EDataDomainQueryMode.STRATIFICATIONS,
 					createJaccardME(null, tablePerspective.getRecordPerspective(), group));
 			reactions.switchTo(target);
@@ -113,7 +115,7 @@ public class JaccardIndexScoreFactory implements IScoreFactory {
 		}
 
 		@Override
-		public void select(TablePerspective tablePerspective, Group group, ISelectReaction reactions) {
+		public void select(TablePerspective tablePerspective, Group group, IReactions reactions) {
 			reactions.addScoreToTourGuide(EDataDomainQueryMode.STRATIFICATIONS,
 					createJaccardME(null, tablePerspective.getRecordPerspective(), group));
 		}

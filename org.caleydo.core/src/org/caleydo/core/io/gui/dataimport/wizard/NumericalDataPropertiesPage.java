@@ -4,8 +4,10 @@
 package org.caleydo.core.io.gui.dataimport.wizard;
 
 import org.caleydo.core.io.DataSetDescription;
+import org.caleydo.core.io.gui.dataimport.widget.DataTranspositionWidget;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -26,12 +28,11 @@ import org.eclipse.swt.widgets.Text;
  * @author Christian Partl
  *
  */
-public class TransformDataPage extends AImportDataPage implements Listener {
+public class NumericalDataPropertiesPage extends AImportDataPage implements Listener {
 
-	public static final String PAGE_NAME = "Transform Data";
+	public static final String PAGE_NAME = "Numerical Dataset Properties";
 
-	public static final String PAGE_DESCRIPTION = "Specify the data transformations to be performed.";
-
+	public static final String PAGE_DESCRIPTION = "Specify properties for the numerical dataset.";
 	/**
 	 * Parent composite of all widgets in this page.
 	 */
@@ -45,10 +46,6 @@ public class TransformDataPage extends AImportDataPage implements Listener {
 	 * Text field that specifies the minimum data clipping value.
 	 */
 	protected Text maxTextField;
-	/**
-	 * Button to determine whether the dataset should be transposed.
-	 */
-	protected Button swapRowsWithColumnsButton;
 
 	/**
 	 * Button to determine whether a data center is used.
@@ -76,39 +73,16 @@ public class TransformDataPage extends AImportDataPage implements Listener {
 	protected Combo scalingCombo;
 
 	/**
-	 * Label with a warning icon.
-	 */
-	protected Label warningIconLabel1;
-
-	/**
-	 * Label with a warning description.
-	 */
-	protected Label warningDescriptionLabel1;
-
-	/**
-	 * Label with a warning icon.
-	 */
-	protected Label warningIconLabel2;
-
-	/**
-	 * Label with a warning description.
-	 */
-	protected Label warningDescriptionLabel2;
-
-	/**
-	 * Group that contains widgets associated with data transposition.
-	 */
-	protected Group dataTranspositionGroup;
-
-	/**
 	 * Group that contains widgets associated with determining the data center.
 	 */
 	protected Group dataCenterGroup;
 
+	protected DataTranspositionWidget dataTranspositionWidget;
+
 	/**
 	 * Mediator of this class.
 	 */
-	private TransformDataPageMediator mediator;
+	private NumericalDataPropertiesPageMediator mediator;
 
 	/**
 	 * @param pageName
@@ -119,10 +93,10 @@ public class TransformDataPage extends AImportDataPage implements Listener {
 	// super(pageName, dataSetDescription);
 	// }
 
-	public TransformDataPage(DataSetDescription dataSetDescription) {
+	public NumericalDataPropertiesPage(DataSetDescription dataSetDescription) {
 		super(PAGE_NAME, dataSetDescription);
 		setDescription(PAGE_DESCRIPTION);
-		mediator = new TransformDataPageMediator(this, dataSetDescription);
+		mediator = new NumericalDataPropertiesPageMediator(this, dataSetDescription);
 	}
 
 	@Override
@@ -136,38 +110,13 @@ public class TransformDataPage extends AImportDataPage implements Listener {
 
 		createClippingGroup(parentComposite);
 
-		createTranspositionGroup(parentComposite);
-
 		createDataCenterGroup(parentComposite);
 
+		dataTranspositionWidget = new DataTranspositionWidget(parentComposite, (DataImportWizard) getWizard(),
+				dataSetDescription.isTransposeMatrix());
 		// mediator.guiCreated();
 
 		setControl(parentComposite);
-	}
-
-	private void createTranspositionGroup(Composite parent) {
-		dataTranspositionGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
-		dataTranspositionGroup.setText("Data Transposition");
-		dataTranspositionGroup.setLayout(new GridLayout(2, false));
-		dataTranspositionGroup.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
-
-		Label transpositionExplanationLabel = new Label(dataTranspositionGroup, SWT.WRAP);
-		transpositionExplanationLabel
-				.setText("Caleydo assumes a limited number of dimensions and a lot of records.  You typically want to observe a variation in records over dimensions, where dimensions would be, for example points in time, and records expression values of genes. Dimensions do not necessarely map to columns in a source file and equally  records must not be the rows in your file. If you select this option you choose to show the rows in the file as dimensions and the columns in the file as records.");
-		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1);
-		gridData.widthHint = 600;
-		transpositionExplanationLabel.setLayoutData(gridData);
-		swapRowsWithColumnsButton = new Button(dataTranspositionGroup, SWT.CHECK);
-		swapRowsWithColumnsButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
-		swapRowsWithColumnsButton.setText("Swap Rows and Columns");
-		swapRowsWithColumnsButton.addSelectionListener(new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				mediator.swapRowsWithColumnsButtonSelected();
-			}
-		});
-
 	}
 
 	private void createDataCenterGroup(Composite parent) {
@@ -329,6 +278,8 @@ public class TransformDataPage extends AImportDataPage implements Listener {
 
 	@Override
 	public void pageActivated() {
+		((DataImportWizard) getWizard()).setChosenDataTypePage(this);
+		((DataImportWizard) getWizard()).getContainer().updateButtons();
 		mediator.pageActivated();
 
 	}
@@ -337,6 +288,16 @@ public class TransformDataPage extends AImportDataPage implements Listener {
 	public void handleEvent(Event event) {
 		if (getWizard().getContainer().getCurrentPage() != null)
 			getWizard().getContainer().updateButtons();
+	}
+
+	@Override
+	public IWizardPage getPreviousPage() {
+		return ((DataImportWizard) getWizard()).getDataSetTypePage();
+	}
+
+	@Override
+	public IWizardPage getNextPage() {
+		return ((DataImportWizard) getWizard()).getAddGroupingsPage();
 	}
 
 }

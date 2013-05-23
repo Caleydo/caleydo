@@ -19,14 +19,7 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.api.state;
 
-import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.datadomain.DataDomainManager;
-import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
-import org.caleydo.datadomain.pathway.PathwayDataDomain;
-import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
-import org.caleydo.datadomain.pathway.graph.PathwayGraph;
-import org.caleydo.view.stratomex.brick.configurer.PathwayDataConfigurer;
 import org.caleydo.view.stratomex.tourguide.event.UpdatePathwayPreviewEvent;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 
@@ -50,31 +43,9 @@ public class BrowsePathwayState extends ABrowseState {
 	}
 
 	@Override
-	public void onUpdate(UpdatePathwayPreviewEvent event, ISelectReaction adapter) {
+	public void onUpdate(UpdatePathwayPreviewEvent event, IReactions adapter) {
 		if (underlying == null)
 			return;
-		TablePerspective tablePerspective = asPerspective(underlying, event.getPathway());
-		adapter.replaceTemplate(tablePerspective, new PathwayDataConfigurer());
-	}
-
-	protected static TablePerspective asPerspective(Perspective record, PathwayGraph pathway) {
-		PathwayDataDomain pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get().getDataDomainByType(
-				PathwayDataDomain.DATA_DOMAIN_TYPE);
-
-		ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) record.getDataDomain();
-		Perspective dimension = dataDomain.getTable().getDefaultDimensionPerspective();
-		for (PathwayTablePerspective p : pathwayDataDomain.getTablePerspectives()) {
-			if (p.getPathway().equals(pathway) && p.getRecordPerspective().equals(record)
-					&& p.getDimensionPerspective().equals(dimension))
-				return p;
-		}
-		// not found create new one
-		PathwayTablePerspective pathwayDimensionGroup = new PathwayTablePerspective(dataDomain, pathwayDataDomain,
-				record, dimension, pathway);
-
-		pathwayDimensionGroup.setPrivate(true);
-		pathwayDataDomain.addTablePerspective(pathwayDimensionGroup);
-
-		return pathwayDimensionGroup;
+		adapter.replacePathwayTemplate(underlying, event.getPathway());
 	}
 }
