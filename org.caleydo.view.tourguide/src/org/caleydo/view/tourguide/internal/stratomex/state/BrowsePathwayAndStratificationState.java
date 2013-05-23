@@ -33,6 +33,7 @@ import org.caleydo.view.stratomex.tourguide.event.UpdatePathwayPreviewEvent;
 import org.caleydo.view.tourguide.api.state.BrowsePathwayState;
 import org.caleydo.view.tourguide.api.state.ISelectReaction;
 import org.caleydo.view.tourguide.api.state.ISelectStratificationState;
+import org.caleydo.view.tourguide.api.state.PreviewRenderer;
 
 /**
  * @author Samuel Gratzl

@@ -28,6 +28,7 @@ import org.caleydo.view.stratomex.tourguide.event.UpdateNumericalPreviewEvent;
 import org.caleydo.view.tourguide.api.state.BrowseOtherState;
 import org.caleydo.view.tourguide.api.state.ISelectReaction;
 import org.caleydo.view.tourguide.api.state.ISelectStratificationState;
+import org.caleydo.view.tourguide.api.state.PreviewRenderer;
 
 /**
  * @author Samuel Gratzl
