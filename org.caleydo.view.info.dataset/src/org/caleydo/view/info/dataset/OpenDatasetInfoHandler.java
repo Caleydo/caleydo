@@ -17,10 +17,9 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.info.dataset.command.handler;
+package org.caleydo.view.info.dataset;
 
 import org.caleydo.core.gui.command.AOpenViewHandler;
-import org.caleydo.view.info.dataset.RcpDatasetInfoView;
 
 public class OpenDatasetInfoHandler extends AOpenViewHandler {
 

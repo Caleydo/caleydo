@@ -35,7 +35,7 @@
    <extension
          point="org.eclipse.ui.commands">
       <command
-            defaultHandler="org.caleydo.view.info.dataset.command.handler.OpenDatasetInfoHandler"
+            defaultHandler="org.caleydo.view.info.dataset.OpenDatasetInfoHandler"
             id="org.caleydo.view.info.dataset.command.opendatasetinfo"
             name="Dataset Info">
       </command>
