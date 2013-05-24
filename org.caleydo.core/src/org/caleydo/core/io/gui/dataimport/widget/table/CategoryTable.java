@@ -19,7 +19,9 @@
  *******************************************************************************/
 package org.caleydo.core.io.gui.dataimport.widget.table;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.caleydo.core.io.gui.dataimport.widget.IntegerCallback;
 import org.eclipse.nebula.widgets.nattable.NatTable;
@@ -31,6 +33,7 @@ import org.eclipse.nebula.widgets.nattable.config.IEditableRule;
 import org.eclipse.nebula.widgets.nattable.coordinate.PositionCoordinate;
 import org.eclipse.nebula.widgets.nattable.data.IDataProvider;
 import org.eclipse.nebula.widgets.nattable.edit.EditConfigAttributes;
+import org.eclipse.nebula.widgets.nattable.grid.GridRegion;
 import org.eclipse.nebula.widgets.nattable.grid.data.DefaultCornerDataProvider;
 import org.eclipse.nebula.widgets.nattable.grid.layer.ColumnHeaderLayer;
 import org.eclipse.nebula.widgets.nattable.grid.layer.CornerLayer;
@@ -39,16 +42,29 @@ import org.eclipse.nebula.widgets.nattable.grid.layer.RowHeaderLayer;
 import org.eclipse.nebula.widgets.nattable.layer.DataLayer;
 import org.eclipse.nebula.widgets.nattable.layer.ILayerListener;
 import org.eclipse.nebula.widgets.nattable.layer.cell.ColumnOverrideLabelAccumulator;
+import org.eclipse.nebula.widgets.nattable.layer.cell.ILayerCell;
 import org.eclipse.nebula.widgets.nattable.layer.event.ILayerEvent;
+import org.eclipse.nebula.widgets.nattable.painter.cell.ICellPainter;
 import org.eclipse.nebula.widgets.nattable.selection.SelectionLayer;
 import org.eclipse.nebula.widgets.nattable.selection.event.CellSelectionEvent;
 import org.eclipse.nebula.widgets.nattable.selection.event.RowSelectionEvent;
 import org.eclipse.nebula.widgets.nattable.style.CellStyleAttributes;
 import org.eclipse.nebula.widgets.nattable.style.DisplayMode;
 import org.eclipse.nebula.widgets.nattable.style.Style;
+import org.eclipse.nebula.widgets.nattable.ui.action.IMouseAction;
+import org.eclipse.nebula.widgets.nattable.ui.binding.UiBindingRegistry;
+import org.eclipse.nebula.widgets.nattable.ui.matcher.CellPainterMouseEventMatcher;
+import org.eclipse.nebula.widgets.nattable.ui.matcher.MouseEventMatcher;
 import org.eclipse.nebula.widgets.nattable.util.GUIHelper;
 import org.eclipse.nebula.widgets.nattable.viewport.ViewportLayer;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.ColorDialog;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 
 /**
  * Table for displaying and modifying properties of categories.
@@ -68,6 +84,8 @@ public class CategoryTable extends AMatrixBasedTableWidget implements ILayerList
 	private SelectionLayer selectionLayer;
 
 	private IntegerCallback rowSelectionCallback;
+
+	private Map<String, Color> colorRegistry = new HashMap<>();
 
 	private class ColumnHeaderDataProvider implements IDataProvider {
 
@@ -94,6 +112,53 @@ public class CategoryTable extends AMatrixBasedTableWidget implements ILayerList
 
 	}
 
+	private class ColorCellPainter implements ICellPainter {
+
+		@Override
+		public void paintCell(ILayerCell cell, GC gc, Rectangle bounds, IConfigRegistry configRegistry) {
+			// gc.setForeground(GUIHelper.COLOR_BLACK);
+			gc.setBackground(colorRegistry.get(cell.getDataValue()));
+			gc.fillRectangle(bounds);
+		}
+
+		@Override
+		public int getPreferredWidth(ILayerCell cell, GC gc, IConfigRegistry configRegistry) {
+			return 20;
+		}
+
+		@Override
+		public int getPreferredHeight(ILayerCell cell, GC gc, IConfigRegistry configRegistry) {
+			return 20;
+		}
+
+		@Override
+		public ICellPainter getCellPainterAt(int x, int y, ILayerCell cell, GC gc, Rectangle adjustedCellBounds,
+				IConfigRegistry configRegistry) {
+			if (cell.getColumnPosition() == 4)
+				return this;
+			return null;
+		}
+	}
+
+	private class ChangeColorAction implements IMouseAction {
+
+		@Override
+		public void run(NatTable natTable, MouseEvent event) {
+			int sourceRowPosition = natTable.getRowPositionByY(event.y);
+			ColorDialog dialog = new ColorDialog(natTable.getShell());
+			ILayerCell cell = natTable.getCellByPosition(4, sourceRowPosition);
+			Color color = colorRegistry.get(cell.getDataValue());
+			dialog.setRGB(color.getRGB());
+			RGB newRGB = dialog.open();
+			if (newRGB != null) {
+				org.caleydo.core.util.color.Color newColor = new org.caleydo.core.util.color.Color(newRGB.red,
+						newRGB.green, newRGB.blue);
+				bodyDataProvider.setDataValue(3, sourceRowPosition - 1, newColor.getHEX());
+				update();
+			}
+		}
+	}
+
 	/**
 	 * @param parent
 	 */
@@ -108,6 +173,8 @@ public class CategoryTable extends AMatrixBasedTableWidget implements ILayerList
 	@Override
 	public void createTableFromMatrix(List<List<String>> dataMatrix, int numColumns) {
 		bodyDataProvider = new MatrixBasedBodyDataProvider(dataMatrix, numColumns);
+		updateColors();
+
 		buildTable(bodyDataProvider, new ColumnHeaderDataProvider(),
 				new LineNumberRowHeaderDataProvider(dataMatrix.size()));
 	}
@@ -149,12 +216,18 @@ public class CategoryTable extends AMatrixBasedTableWidget implements ILayerList
 		acc.registerColumnOverrides(1, NON_EDITABLE);
 		acc.registerColumnOverrides(2, EDITABLE);
 		acc.registerColumnOverrides(3, "COLOR");
+		final ColorCellPainter colorCellPainter = new ColorCellPainter();
+
 		table.addConfiguration(new AbstractRegistryConfiguration() {
 
 			@Override
 			public void configureRegistry(IConfigRegistry configRegistry) {
 				configRegistry.registerConfigAttribute(EditConfigAttributes.CELL_EDITABLE_RULE,
 						IEditableRule.ALWAYS_EDITABLE, DisplayMode.EDIT, EDITABLE);
+
+				configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_PAINTER, colorCellPainter,
+						DisplayMode.NORMAL, "COLOR");
+
 				Style cellStyle = new Style();
 
 				cellStyle.setAttributeValue(CellStyleAttributes.FOREGROUND_COLOR, GUIHelper.COLOR_WIDGET_NORMAL_SHADOW);
@@ -167,6 +240,12 @@ public class CategoryTable extends AMatrixBasedTableWidget implements ILayerList
 				// DisplayMode.NORMAL,
 				// "WHITE");
 
+			}
+
+			@Override
+			public void configureUiBindings(UiBindingRegistry uiBindingRegistry) {
+				uiBindingRegistry.registerDoubleClickBinding(new CellPainterMouseEventMatcher(GridRegion.BODY,
+						MouseEventMatcher.LEFT_BUTTON, colorCellPainter), new ChangeColorAction());
 			}
 		});
 
@@ -197,10 +276,27 @@ public class CategoryTable extends AMatrixBasedTableWidget implements ILayerList
 	}
 
 	public void update() {
+		updateColors();
 		table.refresh();
+	}
+
+	private void updateColors() {
+		dispose();
+		for (List<String> row : bodyDataProvider.getDataMatrix()) {
+			org.caleydo.core.util.color.Color c = new org.caleydo.core.util.color.Color(row.get(3));
+			int[] rgba = c.getIntRGBA();
+			colorRegistry.put(row.get(3), new Color(Display.getCurrent(), rgba[0], rgba[1], rgba[2]));
+		}
 	}
 
 	public void selectRow(int rowIndex) {
 		selectionLayer.selectRow(0, rowIndex, false, false);
+	}
+
+	public void dispose() {
+		for (Color color : colorRegistry.values()) {
+			color.dispose();
+		}
+		colorRegistry.clear();
 	}
 }

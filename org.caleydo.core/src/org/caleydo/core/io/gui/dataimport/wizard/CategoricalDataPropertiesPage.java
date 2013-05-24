@@ -232,7 +232,7 @@ public class CategoricalDataPropertiesPage extends AImportDataPage {
 			newCategoryRow.add(dialog.getValue());
 			newCategoryRow.add(new Integer(getNumberOfOccurrencesInFile(dialog.getValue())).toString());
 			newCategoryRow.add(dialog.getName());
-			newCategoryRow.add("0");
+			newCategoryRow.add("000000");
 
 			matrix.add(0, newCategoryRow);
 			categoryTable.update();
@@ -273,7 +273,8 @@ public class CategoricalDataPropertiesPage extends AImportDataPage {
 				: ECategoryType.NOMINAL);
 		categoricalClassDescription.setRawDataType(EDataType.STRING);
 		for (List<String> category : categories) {
-			categoricalClassDescription.addCategoryProperty(category.get(0), category.get(2), new Color("000000"));
+			categoricalClassDescription.addCategoryProperty(category.get(0), category.get(2),
+					new Color(category.get(3)));
 		}
 
 		dataSetDescription.setTransposeMatrix(dataTranspositionWidget.isTransposition());
@@ -337,7 +338,7 @@ public class CategoricalDataPropertiesPage extends AImportDataPage {
 			// The category name (initially same as value)
 			categoryRow.add(categoryValue);
 			// The color of the category
-			categoryRow.add("0");
+			categoryRow.add("0000FF");
 			categoryMatrix.add(categoryRow);
 		}
 
@@ -354,4 +355,9 @@ public class CategoricalDataPropertiesPage extends AImportDataPage {
 		return ((DataImportWizard) getWizard()).getAddGroupingsPage();
 	}
 
+	@Override
+	public void dispose() {
+		categoryTable.dispose();
+		super.dispose();
+	}
 }
