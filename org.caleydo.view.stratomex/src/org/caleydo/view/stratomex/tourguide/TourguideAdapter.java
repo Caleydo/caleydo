@@ -418,6 +418,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 			wizardMode = EWizardMode.DEPENDENT;
 		}
 		stratomex.registerEventListener(wizard);
+		wizard.prepare();
 	}
 
 	@ListenTo(sendToMe = true)
@@ -595,6 +596,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 			initIntermediateWizard();
 			wizard = factory.createForStratification(this, stratomex);
 			stratomex.registerEventListener(wizard);
+			wizard.prepare();
 		}
 		wizard.onUpdate(event);
 	}
@@ -614,6 +616,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 			initIntermediateWizard();
 			wizard = factory.createForPathway(this, stratomex);
 			stratomex.registerEventListener(wizard);
+			wizard.prepare();
 		}
 		wizard.onUpdate(event);
 
@@ -625,6 +628,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 			initIntermediateWizard();
 			wizard = factory.createForOther(this, stratomex);
 			stratomex.registerEventListener(wizard);
+			wizard.prepare();
 		}
 		wizard.onUpdate(event);
 	}

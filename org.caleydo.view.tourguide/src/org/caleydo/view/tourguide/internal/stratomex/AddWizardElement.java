@@ -77,6 +77,8 @@ public class AddWizardElement extends AAddWizardElement implements ICallback<ISt
 	private GLContextLocal contextLocal;
 	private int hovered = -1;
 
+	private boolean initialized = false;
+
 	public AddWizardElement(AGLView view, IStratomexAdapter adapter, StateMachineImpl stateMachine) {
 		super(adapter);
 		contextLocal = new GLContextLocal(view.getTextRenderer(), view.getTextureManager(),
@@ -86,6 +88,15 @@ public class AddWizardElement extends AAddWizardElement implements ICallback<ISt
 		this.stateMachine.getCurrent().onEnter();
 	}
 
+
+	@Override
+	public void prepare() {
+		if (!initialized) {
+			checkSelect();
+			initialized = true;
+		}
+		super.prepare();
+	}
 
 	/**
 	 * @param pick
@@ -130,7 +141,12 @@ public class AddWizardElement extends AAddWizardElement implements ICallback<ISt
 			transitions.iterator().next().apply(this);
 			return;
 		}
+		checkSelect();
+	}
 
+
+	private void checkSelect() {
+		IState target = stateMachine.getCurrent();
 		if (target instanceof ISelectStratificationState)
 			adapter.selectStratification((ISelectStratificationState) target,
 					((ISelectStratificationState) target).isAutoSelect());
