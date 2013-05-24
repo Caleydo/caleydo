@@ -28,15 +28,13 @@ import org.caleydo.core.event.ADirectedEvent;
 public class ConfirmCancelNewColumnEvent extends ADirectedEvent {
 
 	private final boolean isConfirm;
-	private final int objectID;
 
 	/**
 	 * @param b
 	 * @param objectID
 	 */
-	public ConfirmCancelNewColumnEvent(boolean confirm, int objectID) {
+	public ConfirmCancelNewColumnEvent(boolean confirm) {
 		this.isConfirm = confirm;
-		this.objectID = objectID;
 	}
 
 	/**
@@ -44,13 +42,6 @@ public class ConfirmCancelNewColumnEvent extends ADirectedEvent {
 	 */
 	public boolean isConfirm() {
 		return isConfirm;
-	}
-
-	/**
-	 * @return the objectID, see {@link #objectID}
-	 */
-	public int getObjectID() {
-		return objectID;
 	}
 
 	@Override

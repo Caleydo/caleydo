@@ -224,8 +224,9 @@ public class IDType {
 	 * @param isInternalType
 	 *            setter, see {@link #isInternalType}
 	 */
-	public void setInternalType(boolean isInternalType) {
+	public IDType setInternalType(boolean isInternalType) {
 		this.isInternalType = isInternalType;
+		return this;
 	}
 
 	/**

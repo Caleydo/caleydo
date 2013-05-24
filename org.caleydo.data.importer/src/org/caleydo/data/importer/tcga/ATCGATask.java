@@ -17,6 +17,7 @@ import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.io.DataLoader;
 import org.caleydo.core.serialize.ProjectManager;
+import org.caleydo.core.serialize.ProjectMetaData;
 import org.caleydo.data.importer.tcga.model.TCGADataSet;
 import org.caleydo.data.importer.tcga.model.TCGADataSets;
 import org.caleydo.data.importer.tcga.utils.IOUtils;
@@ -101,9 +102,10 @@ public abstract class ATCGATask extends RecursiveTask<JsonElement> {
 		}
 	}
 
-	protected static boolean saveProject(Collection<ATableBasedDataDomain> dataDomains, String projectOutputPath) {
+	protected static boolean saveProject(Collection<ATableBasedDataDomain> dataDomains, String projectOutputPath,
+			ProjectMetaData metaData) {
 		try {
-			ProjectManager.save(projectOutputPath, true, dataDomains).run(new NullProgressMonitor());
+			ProjectManager.save(projectOutputPath, true, dataDomains, metaData).run(new NullProgressMonitor());
 			return true;
 		} catch (InvocationTargetException | InterruptedException e) {
 			e.printStackTrace();

@@ -24,27 +24,13 @@ public enum EIconTextures {
 
 	NO_ICON_AVAILABLE("resources/icons/general/no_icon_available.png"),
 
-	ARROW_LEFT("resources/icons/view/remote/arrow-left.png"),
-	ARROW_RIGHT("resources/icons/view/remote/arrow-right.png"),
-	ARROW_UP("resources/icons/view/remote/arrow-up.png"),
-	ARROW_DOWN("resources/icons/view/remote/arrow-down.png"),
-
 	LOCK("resources/icons/view/remote/lock.png"),
-
-
 
 	REMOVE("resources/icons/general/remove.png"),
 
 	FILTER_PIPELINE_MENU_ITEM("resources/icons/view/filterpipeline/item_background.png"),
 	FILTER_PIPELINE_EDIT("resources/icons/view/filterpipeline/edit.png"),
 	FILTER_PIPELINE_DELETE("resources/icons/view/filterpipeline/delete.png"),
-
-	// POLYLINE_TO_AXIS("resources/icons/general/no_icon_available.png"),
-	// PREVENT_OCCLUSION("resources/icons/general/no_icon_available.png"),
-	// RENDER_SELECTION("resources/icons/general/no_icon_available.png"),
-	// RESET_SELECTIONS("resources/icons/general/no_icon_available.png"),
-	// SAVE_SELECTIONS("resources/icons/general/no_icon_available.png"),
-	// ANGULAR_BRUSHING("resources/icons/view/tablebased/parcoords/angular_brush.png"),
 
 	// hierarchical heat map
 	HEAT_MAP_SYMBOL("resources/icons/view/tablebased/heatmap/heatmap128x128.png"),
@@ -53,26 +39,7 @@ public enum EIconTextures {
 	HEAT_MAP_GROUP_SELECTED("resources/icons/view/tablebased/heatmap/hm_group_selected.png"),
 	HEAT_MAP_GROUP_NORMAL("resources/icons/view/tablebased/heatmap/hm_group_normal.png"),
 
-	// dendrogram
-	SLIDER_MIDDLE("resources/icons/view/tablebased/dendrogram/slider_middle.png"),
-	SLIDER_ENDING("resources/icons/view/tablebased/dendrogram/slider_ending.png"),
-	DENDROGRAM_HORIZONTAL_SYMBOL("resources/icons/view/tablebased/dendrogram/dendrogram_horizontal.png"),
-	DENDROGRAM_VERTICAL_SYMBOL("resources/icons/view/tablebased/dendrogram/dendrogram_vertical.png"),
-
-	PAR_COORDS_SYMBOL("resources/icons/view/tablebased/parcoords/parcoords128x128.png"),
-	PAR_COORDS_ICON("resources/icons/view/tablebased/parcoords/parcoords.png"),
-
-	PATHWAY_SYMBOL("resources/icons/view/pathway/pathway128x128.png"),
-	PATHWAY_ICON("resources/icons/view/pathway/pathway.png"),
-
 	RADIAL_SYMBOL("resources/icons/view/radial/radial.png"),
-
-	BROWSER_REFRESH_IMAGE("resources/icons/view/browser/refresh.png"),
-	BROWSER_BACK_IMAGE("resources/icons/view/browser/back.png"),
-	BROWSER_STOP_IMAGE("resources/icons/view/browser/stop.png"),
-	BROWSER_HOME_IMAGE("resources/icons/view/browser/home.png"),
-
-	PANEL_SELECTION("resources/panel/selection_background.png"),
 
 	NAVIGATION_REMOVE_VIEW("resources/icons/general/navigation_remove_view.png"),
 	NAVIGATION_DRAG_VIEW("resources/icons/general/navigation_drag_view.png"),
@@ -88,26 +55,6 @@ public enum EIconTextures {
 	NAVIGATION_MASK_CURVE_WHITE("resources/navigation/mask_curve_white.png"),
 	NAVIGATION_MASK_CURVE_NEG_WHITE("resources/navigation/mask_curve_neg_white.png"),
 
-	POOL_REMOVE_VIEW("resources/icons/general/pool_remove_view.png"),
-	POOL_DRAG_VIEW("resources/icons/general/pool_drag_view.png"),
-	POOL_VIEW_BACKGROUND("resources/navigation/pool_view_background.png"),
-	POOL_VIEW_BACKGROUND_SELECTION("resources/navigation/pool_view_background_selection.png"),
-
-	DATA_FLIPPER_CONNECTION_STRAIGHT("resources/icons/view/dataflipper/connection_straight.png"),
-	DATA_FLIPPER_CONNECTION_CORNER("resources/icons/view/dataflipper/connection_corner.png"),
-	DATA_FLIPPER_GUIDANCE_CONNECTION_STRAIGHT("resources/icons/view/dataflipper/guidance_connection_straight.png"),
-	DATA_FLIPPER_GUIDANCE_CONNECTION_STRAIGHT_HIGHLIGHT(
-			"resources/icons/view/dataflipper/guidance_connection_straight_highlight.png"),
-	DATA_FLIPPER_DATA_ICON_BACKGROUND("resources/icons/view/dataflipper/data_icon_background.png"),
-	DATA_FLIPPER_DATA_ICON_BACKGROUND_ROUND("resources/icons/view/dataflipper/data_icon_background_round.png"),
-	DATA_FLIPPER_DATA_ICON_BACKGROUND_ROUND_HIGHLIGHTED(
-			"resources/icons/view/dataflipper/data_icon_background_round_highlighted.png"),
-	DATA_FLIPPER_VIEW_ICON_BACKGROUND_ROUNDED("resources/icons/view/dataflipper/view_icon_background_rounded.png"),
-	DATA_FLIPPER_VIEW_ICON_BACKGROUND_SQUARE("resources/icons/view/dataflipper/view_icon_background_square.png"),
-	DATA_FLIPPER_EXCLAMATION_MARK("resources/icons/view/dataflipper/exclamation_mark.png"),
-	DATA_FLIPPER_TASK("resources/icons/view/dataflipper/task.png"),
-	DATA_FLIPPER_TASK_BACKGROUND("resources/icons/view/dataflipper/task_background.png"),
-
 	DATA_DOMAIN_CLINICAL("resources/icons/view/dataflipper/patient.png"),
 	DATA_DOMAIN_PATHWAY("resources/icons/view/dataflipper/pathway.png"),
 	DATA_DOMAIN_GENETIC("resources/icons/view/dataflipper/gene_expression.png"),
@@ -117,21 +64,9 @@ public enum EIconTextures {
 	LOADING("resources/loading/loading_background.png"),
 	LOADING_CIRCLE("resources/loading/loading_circle.png"),
 
-	CELL_MODEL("resources/models/cell.jpg"),
-	TISSUE_SAMPLE("resources/icons/view/tissue/tissue.png"),
-
-	// context menu elements
-	CM_LOAD_DEPENDING_PATHWAYS("/resources/context_menu/load_depending_pathways.png"),
-	CM_DEPENDING_PATHWAYS("/resources/context_menu/depending_pathways.png"),
-	CM_BOOKMARK("/resources/context_menu/bookmark.png"),
-	CM_CORNER_BLACK("/resources/context_menu/corner_black.png"),
-	CM_EDGE_BLACK("/resources/context_menu/edge_black.png"),
-	CM_SELECTION_SIDE_BLACK("/resources/context_menu/selection_side_black.png"),
 	CM_SELECTION_RIGHT_EXTENSIBLE_BLACK("/resources/context_menu/submenue_black.png"),
-	CM_SELECTION_LINES_BLACK("/resources/context_menu/selection_lines_black.png"),
 	CM_KEGG("/resources/context_menu/kegg.png"),
-	CM_SCROLL_BUTTON("/resources/context_menu/scroll_button.png"),
-	CM_SCROLL_BUTTON_OVER("/resources/context_menu/scroll_button_over.png"),
+
 
 	COMPARER_SHOW_HIDDEN("/resources/icons/view/compare/show_hidden_elements.png"),
 	COMPARER_SHOW_CAPTIONS("/resources/icons/view/compare/show_captions.png"),
@@ -143,15 +78,13 @@ public enum EIconTextures {
 
 	// MOVE_ICON("resources/icons/view/histogram/move_icon.png"),
 
-	HISTOGRAM_ICON("resources/icons/view/histogram/histogram.png"),
-
 	/** Linearized Pathway */
 	ABSTRACT_BAR_ICON("resources/icons/view/enroute/abstract_mode.png"),
 
 	NAVIGATION_BACKGROUND("resources/icons/general/navigation.png"),
 	PIN("resources/icons/general/pin.png");
 
-	private String sFileName;
+	private final String sFileName;
 
 	EIconTextures(String sFileName) {
 

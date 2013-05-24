@@ -23,6 +23,7 @@ import java.io.File;
 import java.util.Collection;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.serialize.ProjectMetaData;
 import org.caleydo.data.importer.tcga.ATCGATask;
 import org.caleydo.data.importer.tcga.EDataSetType;
 import org.caleydo.data.importer.tcga.model.TCGADataSets;
@@ -73,7 +74,9 @@ public class TCGAQCTask extends ATCGATask {
 			return null;
 		}
 
-		if (!saveProject(dataDomains, projectOutputPath)) {
+		ProjectMetaData metaData = ProjectMetaData.createDefault();
+
+		if (!saveProject(dataDomains, projectOutputPath, metaData)) {
 			return null;
 		}
 

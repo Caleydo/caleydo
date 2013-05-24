@@ -51,4 +51,17 @@
             class="org.caleydo.view.search.internal.actions.CreateCategoricalPerspectiveActionFactory">
       </factory>
    </extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="org.caleydo.core.gui.perspective">
+         <view
+               id="org.caleydo.view.search"
+               minimized="false"
+               relationship="stack"
+               relative="bottom"
+               visible="false">
+         </view>
+      </perspectiveExtension>
+   </extension>
 </plugin>

@@ -60,6 +60,7 @@ public class SerializationManager {
 			eventContext = JAXBContext.newInstance(classes);
 
 			serializableTypes = new ArrayList<Class<?>>();
+			serializableTypes.add(ProjectMetaData.class);
 			serializableTypes.add(SerializationData.class);
 			serializableTypes.add(DataDomainSerializationData.class);
 			serializableTypes.add(DataDomainList.class);

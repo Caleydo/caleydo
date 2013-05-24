@@ -31,12 +31,10 @@ import org.caleydo.view.stratomex.tourguide.TourguideAdapter;
  */
 public class ConfirmCancelLayoutRenderer extends ALayoutRenderer {
 	private final AGLView view;
-	private final int id;
 	private final TourguideAdapter tourguide;
 
-	public ConfirmCancelLayoutRenderer(AGLView view, int id, TourguideAdapter tourguide) {
+	public ConfirmCancelLayoutRenderer(AGLView view, TourguideAdapter tourguide) {
 		this.view = view;
-		this.id = id;
 		this.tourguide = tourguide;
 	}
 
@@ -44,8 +42,8 @@ public class ConfirmCancelLayoutRenderer extends ALayoutRenderer {
 	protected void renderContent(GL2 gl) {
 		float hi = view.getPixelGLConverter().getGLHeightForPixelHeight(34);
 		float wi = view.getPixelGLConverter().getGLWidthForPixelWidth(32);
-		tourguide.renderConfirmButton(gl, x * 1.05f, y * 0.8f, wi, hi, id);
-		tourguide.renderCancelButton(gl, x * 1.05f, y * 0.8f + hi, wi, hi, id);
+		tourguide.renderConfirmButton(gl, x * 1.05f, y * 0.8f, wi, hi);
+		tourguide.renderCancelButton(gl, x * 1.05f, y * 0.8f + hi, wi, hi);
 	}
 
 	@Override

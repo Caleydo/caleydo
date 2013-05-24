@@ -44,10 +44,6 @@ public class ColorMarkerPoint implements Comparable<ColorMarkerPoint> {
 	 */
 
 	private float mappingValue;
-	// @XmlElement
-	// private float[] color;
-	// @XmlElement
-	// private int[] intColor;
 
 	private Color color;
 
@@ -79,44 +75,13 @@ public class ColorMarkerPoint implements Comparable<ColorMarkerPoint> {
 	 *            the color array
 	 */
 	public ColorMarkerPoint(float mappingValue, Color color) {
-		init(mappingValue, color);
+		if (mappingValue > 1 || mappingValue < 0)
+			throw new IllegalArgumentException("Invalid value for mappingValue. Has to be between 0 and 1, but was: "
+					+ mappingValue);
+
+		this.mappingValue = mappingValue;
+		this.color = color;
 	}
-
-	// public ColorMarkerPoint(float mappingValue, int[] color) {
-	// this.intColor = color;
-	// float[] floatColor = new float[color.length];
-	//
-	// for (int count = 0; count < color.length; count++) {
-	// floatColor[count] = ((float) color[count]) / 255;
-	// }
-	// init(mappingValue, floatColor);
-	// }
-
-	/**
-	 * <p>
-	 * Alternative constructor. See {@link #ColorMarkerPoint(float, float[])}.
-	 * </p>
-	 * <p>
-	 * Values are specified one by one instead of as an array
-	 * </p>
-	 *
-	 * @param mappingValue
-	 *            see {@link #mappingValue}
-	 * @param red
-	 *            red component of the color
-	 * @param green
-	 *            green component of the color
-	 * @param blue
-	 *            blue component of the color
-	 */
-	// public ColorMarkerPoint(float mappingValue, float red, float green, float blue) {
-	// float[] color = new float[3];
-	// color[0] = red;
-	// color[1] = green;
-	// color[2] = blue;
-	// init(mappingValue, color);
-	// }
-
 	/**
 	 * Returns the inflection point on the color field
 	 *
@@ -159,8 +124,6 @@ public class ColorMarkerPoint implements Comparable<ColorMarkerPoint> {
 		return color;
 	}
 
-
-
 	public boolean hasLeftSpread() {
 		if (leftSpread > 0.0001)
 			return true;
@@ -181,18 +144,8 @@ public class ColorMarkerPoint implements Comparable<ColorMarkerPoint> {
 		return rightSpread;
 	}
 
-	private void init(float mappingValue, Color color) {
-
-		if (mappingValue > 1 || mappingValue < 0)
-			throw new IllegalArgumentException("Invalid value for mappingValue. Has to be between 0 and 1, but was: "
-					+ mappingValue);
-
-		this.mappingValue = mappingValue;
-		this.color = color;
-	}
-
 	@Override
 	public int compareTo(ColorMarkerPoint colorMarkerPoint) {
-		return new Float(mappingValue).compareTo(colorMarkerPoint.getMappingValue());
+		return Float.compare(mappingValue, colorMarkerPoint.mappingValue);
 	}
 }

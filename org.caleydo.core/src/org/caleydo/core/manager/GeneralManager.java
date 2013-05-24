@@ -31,6 +31,7 @@ import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.gui.SWTGUIManager;
 import org.caleydo.core.id.object.IDCreator;
 import org.caleydo.core.io.parser.xml.XmlParserManager;
+import org.caleydo.core.serialize.ProjectMetaData;
 import org.caleydo.core.serialize.SerializationManager;
 import org.caleydo.core.util.statistics.IStatisticsPerformer;
 import org.caleydo.core.view.ViewManager;
@@ -103,6 +104,8 @@ public class GeneralManager {
 	private SerializationManager serializationManager;
 	private IStatisticsPerformer rStatisticsPerformer;
 
+	private ProjectMetaData metaData = new ProjectMetaData();
+
 	public void init() {
 
 		PreferenceManager preferenceManager = PreferenceManager.get();
@@ -136,6 +139,21 @@ public class GeneralManager {
 			}
 		}
 		return instance;
+	}
+
+	/**
+	 * @return the metaData, see {@link #metaData}
+	 */
+	public ProjectMetaData getMetaData() {
+		return metaData;
+	}
+
+	/**
+	 * @param metaData
+	 *            setter, see {@link metaData}
+	 */
+	public void setMetaData(ProjectMetaData metaData) {
+		this.metaData = metaData;
 	}
 
 	public BasicInformation getBasicInfo() {

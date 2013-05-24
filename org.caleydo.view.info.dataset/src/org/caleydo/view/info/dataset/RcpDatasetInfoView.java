@@ -16,6 +16,11 @@
  *******************************************************************************/
 package org.caleydo.view.info.dataset;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.text.DateFormat;
+import java.util.Locale;
+
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
@@ -28,19 +33,25 @@ import org.caleydo.core.event.EventListenerManagers;
 import org.caleydo.core.event.data.DataDomainUpdateEvent;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedSingleTablePerspectiveBasedView;
+import org.caleydo.core.serialize.ProjectMetaData;
+import org.caleydo.core.util.system.BrowserUtils;
 import org.caleydo.core.view.CaleydoRCPViewPart;
 import org.caleydo.core.view.IDataDomainBasedView;
 import org.caleydo.view.histogram.GLHistogram;
 import org.caleydo.view.histogram.RcpGLColorMapperHistogramView;
 import org.caleydo.view.histogram.SerializedHistogramView;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.ExpandBar;
 import org.eclipse.swt.widgets.ExpandItem;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Link;
 
 /**
  * Data meta view showing details about a data table.
@@ -93,7 +104,14 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 
-		infoComposite = new Composite(parentComposite, SWT.NULL);
+		if (createProjectInfos()) {
+			Group g = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
+			g.setText("Data Set Information");
+			infoComposite = g;
+		} else {
+			infoComposite = new Composite(parentComposite, SWT.NULL);
+		}
+
 		infoComposite.setLayout(new GridLayout(1, false));
 		infoComposite.setLayoutData(gridData);
 
@@ -107,6 +125,54 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 		}
 
 		parent.layout();
+	}
+
+	private boolean createProjectInfos() {
+		ProjectMetaData metaData = GeneralManager.get().getMetaData();
+		if (metaData.keys().isEmpty())
+			return false;
+		Group g = new Group(parentComposite, SWT.SHADOW_ETCHED_IN | SWT.H_SCROLL | SWT.V_SCROLL);
+		g.setText("Project Information");
+		g.setLayout(new GridLayout(2, false));
+		createLine(g, "Name", metaData.getName());
+		createLine(
+				g,
+				"Creation Date",
+				DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, Locale.ENGLISH)
+				.format(metaData.getCreationDate()));
+		for (String key : metaData.keys()) {
+			createLine(g, key, metaData.get(key));
+		}
+		return true;
+	}
+
+	private void createLine(Composite parent, String label, String value) {
+		Label l = new Label(parent, SWT.NO_BACKGROUND);
+		l.setText(label + ":");
+		l.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
+
+		try {
+			final URL url = new URL(value);
+			Link v = new Link(parent, SWT.NO_BACKGROUND);
+
+			value = url.toExternalForm();
+			if (value.length() > 20)
+				value = value.substring(0, 20) + "...";
+			v.setText("<a>" + value + "</a>");
+			v.setToolTipText(url.toExternalForm());
+			v.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false));
+			v.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					BrowserUtils.openURL(url.toExternalForm());
+				}
+			});
+		} catch (MalformedURLException e) {
+			Label v = new Label(parent, SWT.NO_BACKGROUND);
+			v.setText(value);
+			v.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false));
+		}
+
 	}
 
 	@Override

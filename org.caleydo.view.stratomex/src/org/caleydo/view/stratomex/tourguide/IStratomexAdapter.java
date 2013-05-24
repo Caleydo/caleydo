@@ -26,7 +26,6 @@ import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
-import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormRenderer;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
 
@@ -49,9 +48,11 @@ public interface IStratomexAdapter {
 
 	void selectGroup(Predicate<Pair<TablePerspective, Group>> filter);
 
-	MultiFormRenderer createPreviewRenderer(TablePerspective tablePerspective);
+	ALayoutRenderer createPreviewRenderer(PathwayGraph pathway);
+	ALayoutRenderer createPreviewRenderer(TablePerspective tablePerspective);
 
 	void replaceClinicalTemplate(Perspective underlying, TablePerspective numerical);
 
 	void replacePathwayTemplate(Perspective underlying, PathwayGraph pathway);
+
 }

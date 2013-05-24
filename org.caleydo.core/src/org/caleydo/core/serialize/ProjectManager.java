@@ -128,6 +128,9 @@ public final class ProjectManager {
 	/** file name of the datadomain-file in project-folders */
 	private static final String BASIC_INFORMATION_FILE = "basic_information.xml";
 
+	/** meta data file name se {@link ProjectMetaData} */
+	private static final String METADATA_FILE = "metadata.xml";
+
 	/**
 	 * full path to directory to temporarily store the projects file before zipping
 	 */
@@ -187,6 +190,12 @@ public final class ProjectManager {
 		SerializationManager serializationManager = GeneralManager.get().getSerializationManager();
 
 		Unmarshaller unmarshaller = serializationManager.getProjectContext().createUnmarshaller();
+
+		File metaData = new File(dirName, METADATA_FILE);
+		if (metaData.exists()) {
+			ProjectMetaData m = (ProjectMetaData) unmarshaller.unmarshal(metaData);
+			GeneralManager.get().setMetaData(m);
+		}
 
 		GeneralManager.get().setBasicInfo(
 				(BasicInformation) unmarshaller.unmarshal(GeneralManager.get().getResourceLoader()
@@ -312,7 +321,7 @@ public final class ProjectManager {
 	 *            name of the file to save the project in.
 	 */
 	public static IRunnableWithProgress save(String fileName) {
-		return save(fileName, false, DataDomainManager.get().getDataDomains());
+		return save(fileName, false, DataDomainManager.get().getDataDomains(), ProjectMetaData.createDefault());
 	}
 
 	/**
@@ -323,7 +332,7 @@ public final class ProjectManager {
 	 *            if true, only the data is saved, else also the workbench is saved
 	 */
 	public static IRunnableWithProgress save(final String fileName, final boolean onlyData,
-			final Collection<? extends IDataDomain> dataDomains) {
+			final Collection<? extends IDataDomain> dataDomains, final ProjectMetaData metaData) {
 		return new IRunnableWithProgress() {
 			@Override
 			public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
@@ -345,7 +354,7 @@ public final class ProjectManager {
 					monitor.worked(w++);
 					log.info("stored plugin data");
 					log.info("storing data");
-					saveData(tempDir, dataDomains, monitor, w);
+					saveData(tempDir, dataDomains, monitor, w, metaData);
 					w += dataDomains.size() + 1;
 					log.info("stored data");
 
@@ -410,7 +419,7 @@ public final class ProjectManager {
 					savePluginData(RECENT_PROJECT_FOLDER);
 					monitor.worked(w++);
 					log.info("saving data");
-					saveData(RECENT_PROJECT_FOLDER, dataDomains, monitor, w);
+					saveData(RECENT_PROJECT_FOLDER, dataDomains, monitor, w, GeneralManager.get().getMetaData());
 					w += dataDomains.size() + 1;
 					log.info("saving workbench");
 					monitor.subTask("packing Project Data");
@@ -456,7 +465,7 @@ public final class ProjectManager {
 	}
 
 	private static void saveData(String dirName, Collection<? extends IDataDomain> toSave, IProgressMonitor monitor,
-			int w) throws JAXBException,
+			int w, ProjectMetaData metaData) throws JAXBException,
 			IOException {
 
 		SerializationManager serializationManager = GeneralManager.get().getSerializationManager();
@@ -522,6 +531,10 @@ public final class ProjectManager {
 		dataDomainList.setDataDomains(dataDomains);
 
 		marshaller.marshal(dataDomainList, dataDomainFile);
+
+		File metaDataFile = new File(dirName, METADATA_FILE);
+		marshaller.marshal(metaData, metaDataFile);
+
 		monitor.worked(w++);
 
 	}

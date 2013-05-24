@@ -218,7 +218,6 @@ Export-Package:
    org.eclipse.swt.widgets,
    org.caleydo.core.io.gui,
    org.eclipse.jface.dialogs",
- org.caleydo.core.util.conversion,
  org.caleydo.core.util.exception;uses:="org.caleydo.core.view.opengl.canvas",
  org.caleydo.core.util.execution;uses:="org.caleydo.core.event,javax.media.opengl.awt,javax.media.opengl",
  org.caleydo.core.util.format,
@@ -343,7 +342,6 @@ Export-Package:
    org.caleydo.core.view.opengl.camera,
    org.caleydo.core.view.opengl.util.vislink,
    org.caleydo.core.data.selection",
- org.caleydo.core.view.opengl.renderstyle.infoarea,
  org.caleydo.core.view.opengl.util;
   uses:="javax.media.opengl.glu,
    org.caleydo.core.view.opengl.camera,
