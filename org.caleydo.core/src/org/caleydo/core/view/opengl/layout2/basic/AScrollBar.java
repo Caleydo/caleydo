@@ -25,6 +25,7 @@ import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 
 public abstract class AScrollBar implements IScrollBar {
+	private static final float MIN_WINDOW = 8;
 	protected final boolean isHorizontal;
 	protected boolean hovered = false;
 	protected float offset;
@@ -53,10 +54,6 @@ public abstract class AScrollBar implements IScrollBar {
 		return Math.min(size - window, Math.max(0, newOffset));
 	}
 
-	protected float getOffset(float total) {
-		return offset * total / this.size;
-	}
-
 	@Override
 	public float getOffset() {
 		return offset;
@@ -72,18 +69,54 @@ public abstract class AScrollBar implements IScrollBar {
 		return size;
 	}
 
-	protected float getSize(float total) {
-		return window * total / this.size;
+	private float[] map(float total) {
+		float scale = total / this.size;
+		float w = window * scale;
+		if (w < MIN_WINDOW) { // need to scale
+			float missing = MIN_WINDOW - w;
+			total -= missing;
+			scale = total / this.size;
+			w = window * scale + missing;
+		}
+		return new float[] { offset * scale, w, scale };
+	}
+
+	private float unmap(float[] mapped, float v) {
+		return v / mapped[2];
 	}
 
 	@Override
 	public void render(GLGraphics g, float w, float h, GLElement parent) {
 		g.color(Color.LIGHT_GRAY).fillRect(0, 0, w, h);
+		float total = isHorizontal ? w : h;
+		g.color(hovered ? Color.DARK_GRAY : Color.GRAY);
+		float[] s = map(total);
+
 		if (isHorizontal) {
-			g.color(hovered ? Color.DARK_GRAY : Color.GRAY).fillRect(getOffset(w), 0, getSize(w), h);
+			g.fillRect(s[0], 0, s[1], h);
 		} else {
-			g.color(hovered ? Color.DARK_GRAY : Color.GRAY).fillRect(0, getOffset(h), w, getSize(h));
+			g.fillRect(0, s[0], w, s[1]);
 		}
+	}
+
+	protected final boolean jump(float mousePos) {
+		float total = callback.getHeight(this);
+		float[] s = map(total);
+
+		// normal drag
+		if (mousePos >= s[0] && mousePos <= (s[0] + s[1]))
+			return false;
+
+		// jump
+		float v = unmap(s, mousePos);
+		callback.onScrollBarMoved(this, clamp(v));
+		return true;
+	}
+
+	protected final void drag(float mouseDelta) {
+		float[] s = map(callback.getHeight(this));
+		float vd = unmap(s, mouseDelta);
+		callback.onScrollBarMoved(this, clamp(offset + vd));
 	}
 
 	@Override
