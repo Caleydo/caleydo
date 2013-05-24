@@ -139,6 +139,12 @@ public class GLPathwayTextureManager {
 		return hashPathwayToTexture.get(pathway);
 	}
 
+	public void clear(GL2 gl) {
+		for (Texture t : hashPathwayToTexture.values())
+			t.destroy(gl);
+		hashPathwayToTexture.clear();
+	}
+
 	public void unloadUnusedTextures(GL2 gl, LinkedList<Integer> visiblePathways) {
 
 		for (Integer element : hashPathwayToTexture.keySet().toArray(new Integer[hashPathwayToTexture.size()])) {

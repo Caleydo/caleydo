@@ -23,7 +23,7 @@ package org.caleydo.view.tourguide.internal.stratomex.state;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormRenderer;
+import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.view.stratomex.tourguide.event.UpdateNumericalPreviewEvent;
 import org.caleydo.view.tourguide.api.state.BrowseOtherState;
 import org.caleydo.view.tourguide.api.state.IReactions;
@@ -63,7 +63,7 @@ public class BrowseNumericalAndStratificationState extends BrowseOtherState impl
 	 */
 	private void updatePreview(IReactions adapter) {
 		AGLView view = adapter.getGLView();
-		MultiFormRenderer preview = adapter.createPreview(numerical);
+		ALayoutRenderer preview = adapter.createPreview(numerical);
 		adapter.replaceTemplate(new PreviewRenderer(preview, view, "Select a stratification to refer to"));
 	}
 

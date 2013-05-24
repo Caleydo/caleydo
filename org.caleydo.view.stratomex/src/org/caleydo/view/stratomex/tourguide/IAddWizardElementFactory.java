@@ -32,4 +32,10 @@ public interface IAddWizardElementFactory {
 	AAddWizardElement createDependent(IStratomexAdapter adapter, AGLView view, TablePerspective tablePerspective);
 
 	AAddWizardElement createIndepenent(IStratomexAdapter adapter, AGLView view, TablePerspective source);
+
+	AAddWizardElement createForOther(IStratomexAdapter adapter, AGLView view);
+
+	AAddWizardElement createForPathway(IStratomexAdapter adapter, AGLView view);
+
+	AAddWizardElement createForStratification(IStratomexAdapter adapter, AGLView view);
 }

@@ -79,6 +79,7 @@ import org.caleydo.view.stratomex.tourguide.internal.AddAttachedLayoutRenderer;
 import org.caleydo.view.stratomex.tourguide.internal.ConfirmCancelLayoutRenderer;
 import org.caleydo.view.stratomex.tourguide.internal.ESelectionMode;
 import org.caleydo.view.stratomex.tourguide.internal.EWizardMode;
+import org.caleydo.view.stratomex.tourguide.internal.PrimitivePathwayRenderer;
 import org.caleydo.view.stratomex.tourguide.internal.TemplateHighlightRenderer;
 import org.caleydo.view.stratomex.tourguide.internal.event.AddNewColumnEvent;
 import org.caleydo.view.stratomex.tourguide.internal.event.ConfirmCancelNewColumnEvent;
@@ -149,14 +150,14 @@ public class TourguideAdapter implements IStratomexAdapter {
 				"resources/icons/stratomex/template/add.png");
 	}
 
-	public void renderConfirmButton(GL2 gl, float x, float y, float w, float h, int id) {
+	public void renderConfirmButton(GL2 gl, float x, float y, float w, float h) {
 		boolean disabled = wizardPreview == null; // no preview no accept
-		renderButton(gl, x, y, w, h, stratomex, CONFIRM_PICKING_TYPE, id, "resources/icons/stratomex/template/accept"
+		renderButton(gl, x, y, w, h, stratomex, CONFIRM_PICKING_TYPE, 1, "resources/icons/stratomex/template/accept"
 				+ (disabled ? "_disabled" : "") + ".png");
 	}
 
-	public void renderCancelButton(GL2 gl, float x, float y, float w, float h, int id) {
-		renderButton(gl, x, y, w, h, stratomex, CANCEL_PICKING_TYPE, id,
+	public void renderCancelButton(GL2 gl, float x, float y, float w, float h) {
+		renderButton(gl, x, y, w, h, stratomex, CANCEL_PICKING_TYPE, 1,
 				"resources/icons/stratomex/template/cancel.png");
 	}
 
@@ -213,7 +214,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 			@Override
 			public void pick(Pick pick) {
 				if (pick.getPickingMode() == PickingMode.CLICKED)
-					EventPublisher.trigger(new ConfirmCancelNewColumnEvent(true, pick.getObjectID() - 1).to(receiver)
+					EventPublisher.trigger(new ConfirmCancelNewColumnEvent(true).to(receiver)
 							.from(this));
 			}
 		}, CONFIRM_PICKING_TYPE);
@@ -223,7 +224,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 			@Override
 			public void pick(Pick pick) {
 				if (pick.getPickingMode() == PickingMode.CLICKED)
-					EventPublisher.trigger(new ConfirmCancelNewColumnEvent(false, pick.getObjectID() - 1).to(receiver)
+					EventPublisher.trigger(new ConfirmCancelNewColumnEvent(false).to(receiver)
 							.from(this));
 			}
 		}, CANCEL_PICKING_TYPE);
@@ -396,12 +397,12 @@ public class TourguideAdapter implements IStratomexAdapter {
 	 * @param independentOne
 	 * @return
 	 */
-	private ElementLayout createTemplateElement(int index, TablePerspective source, boolean independentOne) {
+	private ElementLayout createTemplateElement(TablePerspective source, boolean independentOne) {
 		assert factory != null;
 		createWizard(source, independentOne);
 		ElementLayout l = ElementLayouts.wrap(wizard, 120);
 		l.addBackgroundRenderer(new TemplateHighlightRenderer());
-		l.addBackgroundRenderer(new ConfirmCancelLayoutRenderer(stratomex, index, this));
+		l.addBackgroundRenderer(new ConfirmCancelLayoutRenderer(stratomex, this));
 		return l;
 	}
 
@@ -460,7 +461,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 		}
 
 		previewIndex = index;
-		wizardElement = createTemplateElement(index + 1, source, event.isIndependentOne());
+		wizardElement = createTemplateElement(source, event.isIndependentOne());
 
 		stratomex.relayout();
 	}
@@ -590,41 +591,42 @@ public class TourguideAdapter implements IStratomexAdapter {
 
 	@ListenTo(sendToMe = true)
 	private void onUpdatePreview(UpdateStratificationPreviewEvent event) {
-		if (wizard != null)
-			wizard.onUpdate(event);
-		else { // no wizard there to handle add a template column on the fly
-			replaceTemplate(event.getTablePerspective(), null);
+		if (wizard == null) { // no wizard there to handle add a template column on the fly
+			initIntermediateWizard();
+			wizard = factory.createForStratification(this, stratomex);
+			stratomex.registerEventListener(wizard);
 		}
+		wizard.onUpdate(event);
+	}
+
+	private TablePerspective initIntermediateWizard() {
+		final BrickColumnManager bcm = stratomex.getBrickColumnManager();
+		BrickColumn selected = bcm.getActiveBrickColumn();
+		TablePerspective selectedTP = selected == null ? null : selected.getTablePerspective();
+		wizardMode = EWizardMode.GLOBAL;
+		previewIndex = selected != null ? bcm.indexOfBrickColumn(selected) : bcm.getRightColumnStartIndex() - 1;
+		return selectedTP;
 	}
 
 	@ListenTo(sendToMe = true)
 	private void onUpdatePreview(UpdatePathwayPreviewEvent event) {
-		if (wizard != null)
-			wizard.onUpdate(event);
-		else { // no wizard there check if something is selected otherwise
-			BrickColumn selected = stratomex.getBrickColumnManager().getActiveBrickColumn();
-			if (selected == null) {
-				// FIXME create a wizard at a specific step
-
-			} else {
-				replacePathwayTemplate(selected.getTablePerspective().getRecordPerspective(), event.getPathway());
-			}
+		if (wizard == null) { // no wizard there to handle add a template column on the fly
+			initIntermediateWizard();
+			wizard = factory.createForPathway(this, stratomex);
+			stratomex.registerEventListener(wizard);
 		}
+		wizard.onUpdate(event);
+
 	}
 
 	@ListenTo(sendToMe = true)
 	private void onUpdateNumerical(UpdateNumericalPreviewEvent event) {
-		if (wizard != null)
-			wizard.onUpdate(event);
-		else { // no wizard there check if something is selected otherwise
-			BrickColumn selected = stratomex.getBrickColumnManager().getActiveBrickColumn();
-			if (selected == null) {
-				// FIXME
-			} else {
-				replaceClinicalTemplate(selected.getTablePerspective().getRecordPerspective(),
-						event.getTablePerspective());
-			}
+		if (wizard == null) { // no wizard there to handle add a template column on the fly
+			initIntermediateWizard();
+			wizard = factory.createForOther(this, stratomex);
+			stratomex.registerEventListener(wizard);
 		}
+		wizard.onUpdate(event);
 	}
 
 	/**
@@ -676,7 +678,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 		}
 		wizardPreview = added.get(0).getSecond();
 		wizardPreview.getLayout().clearForegroundRenderers();
-		wizardPreview.getLayout().addForeGroundRenderer(new ConfirmCancelLayoutRenderer(stratomex, previewIndex, this));
+		wizardPreview.getLayout().addForeGroundRenderer(new ConfirmCancelLayoutRenderer(stratomex, this));
 	}
 
 	/**
@@ -720,9 +722,13 @@ public class TourguideAdapter implements IStratomexAdapter {
 			stratomex.removeTablePerspective(wizardPreview.getTablePerspective());
 			wizardElement = new_;
 			new_.addBackgroundRenderer(new TemplateHighlightRenderer());
-			new_.addForeGroundRenderer(new ConfirmCancelLayoutRenderer(stratomex, previewIndex, this));
+			new_.addForeGroundRenderer(new ConfirmCancelLayoutRenderer(stratomex, this));
 		} else {
-			throw new IllegalStateException();
+			ElementLayout new_ = ElementLayouts.wrap(renderer, 120);
+			wizardElement = new_;
+			new_.addBackgroundRenderer(new TemplateHighlightRenderer());
+			new_.addForeGroundRenderer(new ConfirmCancelLayoutRenderer(stratomex, this));
+			stratomex.relayout();
 		}
 	}
 
@@ -739,12 +745,14 @@ public class TourguideAdapter implements IStratomexAdapter {
 
 	@Override
 	public void replacePathwayTemplate(Perspective underlying, PathwayGraph pathway) {
-		TablePerspective t = asPerspective(underlying, pathway);
-		TablePerspective underlyingTP = findTablePerspective(underlying);
-		if (underlyingTP == null)
-			return;
-		replaceTemplate(t, new PathwayDataConfigurer());
+		if (underlying == null) {
+			replaceTemplate(new PrimitivePathwayRenderer(pathway, stratomex));
+		} else {
+			TablePerspective t = asPerspective(underlying, pathway);
+			replaceTemplate(t, new PathwayDataConfigurer());
+		}
 	}
+
 
 	private TablePerspective findTablePerspective(Perspective record) {
 		for (TablePerspective p : stratomex.getTablePerspectives())
@@ -801,7 +809,12 @@ public class TourguideAdapter implements IStratomexAdapter {
 	}
 
 	@Override
-	public MultiFormRenderer createPreviewRenderer(TablePerspective tablePerspective) {
+	public ALayoutRenderer createPreviewRenderer(PathwayGraph pathway) {
+		return new PrimitivePathwayRenderer(pathway, stratomex);
+	}
+
+	@Override
+	public ALayoutRenderer createPreviewRenderer(TablePerspective tablePerspective) {
 		// create a preview similar to the header
 		EEmbeddingID embeddingID = selectEmbeddingID(tablePerspective);
 

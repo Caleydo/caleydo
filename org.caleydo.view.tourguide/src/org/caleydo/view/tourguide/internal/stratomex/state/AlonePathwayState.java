@@ -19,64 +19,31 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.internal.stratomex.state;
 
-import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.view.stratomex.tourguide.event.UpdatePathwayPreviewEvent;
-import org.caleydo.view.tourguide.api.state.BrowsePathwayState;
+import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
+import org.caleydo.view.tourguide.api.state.ABrowseState;
 import org.caleydo.view.tourguide.api.state.IReactions;
-import org.caleydo.view.tourguide.api.state.ISelectStratificationState;
 import org.caleydo.view.tourguide.api.state.PreviewRenderer;
 
 /**
+ * a stupid state that show the pathway but can't never be finished
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
-public class BrowsePathwayAndStratificationState extends BrowsePathwayState implements ISelectStratificationState {
+public class AlonePathwayState extends ABrowseState {
 
-	private PathwayGraph pathway;
-
-	public BrowsePathwayAndStratificationState() {
-		super("Select a pathway in the Tour Guide and select a strafication to refer to.");
-	}
-
-	@Override
-	public void onEnter() {
-
-		super.onEnter();
+	public AlonePathwayState() {
+		super(EDataDomainQueryMode.PATHWAYS, "Select a pathway in the Tour Guide.");
 	}
 
 	@Override
 	public void onUpdate(UpdatePathwayPreviewEvent event, IReactions adapter) {
-		pathway = event.getPathway();
-		if (underlying == null) {
-			ALayoutRenderer preview = adapter.createPreview(pathway);
-			adapter.replaceTemplate(new PreviewRenderer(preview, adapter.getGLView(),
-					"Select a stratification to refer to"));
-		} else {
-			show(adapter);
-		}
-	}
-
-	private void show(IReactions adapter) {
-		if (underlying == null || pathway == null)
-			return;
-		adapter.replacePathwayTemplate(underlying, pathway);
-	}
-
-	@Override
-	public boolean apply(TablePerspective tablePerspective) {
-		return true;
-	}
-
-	@Override
-	public void select(TablePerspective tablePerspective, IReactions reactions) {
-		setUnderlying(tablePerspective.getRecordPerspective());
-		show(reactions);
-	}
-
-	@Override
-	public boolean isAutoSelect() {
-		return true;
+		PathwayGraph pathway = event.getPathway();
+		ALayoutRenderer preview = adapter.createPreview(pathway);
+		adapter.replaceTemplate(new PreviewRenderer(preview, adapter.getGLView(),
+				"A Pathway can't stand by its own, you first have to add a stratification"));
 	}
 }
