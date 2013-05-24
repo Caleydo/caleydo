@@ -31,6 +31,7 @@ import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.ProjectDescription;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ProjectManager;
+import org.caleydo.core.serialize.ProjectMetaData;
 import org.eclipse.core.runtime.NullProgressMonitor;
 
 /**
@@ -42,7 +43,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
  */
 public class XMLToProjectBuilder {
 	public Collection<ATableBasedDataDomain> buildProject(ProjectDescription projectDescription,
-			String projectFileOutputPath) {
+			String projectFileOutputPath, ProjectMetaData metaData) {
 		GeneralManager.get().setDryMode(true);
 
 		Collection<ATableBasedDataDomain> dataDomains = new ArrayList<>();
@@ -57,7 +58,7 @@ public class XMLToProjectBuilder {
 		}
 
 		try {
-			ProjectManager.save(projectFileOutputPath, true, dataDomains).run(new NullProgressMonitor());
+			ProjectManager.save(projectFileOutputPath, true, dataDomains, metaData).run(new NullProgressMonitor());
 		} catch (InvocationTargetException | InterruptedException e) {
 			throw new RuntimeException("Can't save project", e);
 		}
@@ -66,7 +67,7 @@ public class XMLToProjectBuilder {
 	}
 
 	public void buildProject(String xmlInputPath, String projectFileOutputPath) {
-		buildProject(deserialzeDataSetMetaInfo(xmlInputPath), projectFileOutputPath);
+		buildProject(deserialzeDataSetMetaInfo(xmlInputPath), projectFileOutputPath, ProjectMetaData.createDefault());
 	}
 
 	private static JAXBContext createJAXBContext() {

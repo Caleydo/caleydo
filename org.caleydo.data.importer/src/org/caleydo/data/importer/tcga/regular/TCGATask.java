@@ -19,14 +19,17 @@
  *******************************************************************************/
 package org.caleydo.data.importer.tcga.regular;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.logging.Logger;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.virtualarray.VirtualArray;
+import org.caleydo.core.serialize.ProjectMetaData;
 import org.caleydo.data.importer.tcga.ATCGATask;
 import org.caleydo.data.importer.tcga.Settings;
 import org.caleydo.data.importer.tcga.model.TCGADataSet;
@@ -88,7 +91,16 @@ public class TCGATask extends ATCGATask {
 		}
 
 		final String projectOutputPath = runSpecificOutputPath + run + "_" + tumorType + ".cal";
-		if (!saveProject(dataDomains, projectOutputPath)) {
+
+		ProjectMetaData metaData = ProjectMetaData.createDefault();
+		metaData.setName("TCGA " + tumorType.getName() + " Package");
+		DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT, Locale.ENGLISH);
+		metaData.set("Analysis Run", df.format(analysisRun));
+		metaData.set("Data Run", df.format(dataRun));
+		metaData.set("Tumor", tumorType.getLabel());
+		metaData.set("Report URL", settings.getReportUrl(analysisRun, tumorType));
+
+		if (!saveProject(dataDomains, projectOutputPath, metaData)) {
 			log.severe("Saving Project failed for tumor type " + tumorType + " for analysis run " + run);
 			return null;
 		}
