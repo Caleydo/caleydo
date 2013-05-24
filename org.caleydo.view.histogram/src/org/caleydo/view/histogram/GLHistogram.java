@@ -58,12 +58,11 @@ import org.eclipse.swt.widgets.Composite;
  * @author Alexander Lex
  */
 public class GLHistogram extends AGLView implements ISingleTablePerspectiveBasedView, IColorMappingUpdateListener {
+	public static final String VIEW_TYPE = "org.caleydo.view.histogram";
+	public static final String VIEW_NAME = "Histogram";
 
 	private TablePerspective tablePerspective;
 	private ATableBasedDataDomain dataDomain;
-	public static String VIEW_TYPE = "org.caleydo.view.histogram";
-
-	public static String VIEW_NAME = "Histogram";
 
 	private boolean useDetailLevel = true;
 
@@ -193,7 +192,7 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 
 		renderHistogram(gl);
 		if (renderColorBars && detailLevel != EDetailLevel.LOW)
-			renderColorBars(gl);
+		 renderColorBars(gl);
 		gl.glEndList();
 	}
 

@@ -19,35 +19,22 @@
  *******************************************************************************/
 package org.caleydo.view.histogram;
 
-import org.eclipse.core.runtime.Plugin;
-import org.osgi.framework.BundleContext;
+import org.caleydo.core.gui.command.AOpenViewHandler;
 
-/**
- * The activator class controls the plug-in life cycle
- */
-public class Activator extends Plugin {
-
-	// The shared instance
-	private static Activator plugin;
-
-	@Override
-	public void start(BundleContext context) throws Exception {
-		super.start(context);
-		plugin = this;
-	}
-
-	@Override
-	public void stop(BundleContext context) throws Exception {
-		plugin = null;
-		super.stop(context);
-	}
+public class OpenViewHandler extends AOpenViewHandler {
 
 	/**
-	 * Returns the shared instance
-	 * 
-	 * @return the shared instance
+	 * Counter variable for determination of the secondary view ID. Needed for
+	 * multiple instances of the same view type.
 	 */
-	public static Activator getDefault() {
-		return plugin;
+	private static int SECONDARY_ID = 0;
+
+	public OpenViewHandler() {
+		super(GLHistogram.VIEW_TYPE);
+	}
+
+	@Override
+	protected int getNextSecondaryId() {
+		return SECONDARY_ID++;
 	}
 }
