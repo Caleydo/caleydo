@@ -593,7 +593,6 @@ public class TourguideAdapter implements IStratomexAdapter {
 		if (wizard != null)
 			wizard.onUpdate(event);
 		else { // no wizard there to handle add a template column on the fly
-			createWizard(null, false);
 			replaceTemplate(event.getTablePerspective(), null);
 		}
 	}
@@ -608,7 +607,6 @@ public class TourguideAdapter implements IStratomexAdapter {
 				// FIXME create a wizard at a specific step
 
 			} else {
-				createWizard(selected.getTablePerspective(), false);
 				replacePathwayTemplate(selected.getTablePerspective().getRecordPerspective(), event.getPathway());
 			}
 		}
@@ -623,7 +621,6 @@ public class TourguideAdapter implements IStratomexAdapter {
 			if (selected == null) {
 				// FIXME
 			} else {
-				createWizard(selected.getTablePerspective(), false);
 				replaceClinicalTemplate(selected.getTablePerspective().getRecordPerspective(),
 						event.getTablePerspective());
 			}
