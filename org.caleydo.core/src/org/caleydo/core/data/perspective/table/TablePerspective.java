@@ -129,7 +129,7 @@ public class TablePerspective implements IDefaultLabelHolder {
 
 	public static IDCategory DATA_CONTAINER = IDCategory.registerCategory("DATA_CONTAINER");
 	public static IDType DATA_CONTAINER_IDTYPE = IDType.registerType("DataConatiners", DATA_CONTAINER,
-			EDataType.INTEGER);
+			EDataType.INTEGER).setInternalType(true);
 
 	/**
 	 * A group containing all elements of the {@link #recordPerspective}'s virtual array of this data container. This is
