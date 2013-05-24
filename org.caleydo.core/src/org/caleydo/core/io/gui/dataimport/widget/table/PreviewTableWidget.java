@@ -188,13 +188,14 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 		});
 
 		final ColumnHeaderCheckBoxPainter columnHeaderCheckBoxPainter = new ColumnHeaderCheckBoxPainter(columnDataLayer);
-		final ICellPainter column9HeaderPainter = new BeveledBorderDecorator(columnHeaderCheckBoxPainter);
+		final ICellPainter columnHeaderPainter = new BeveledBorderDecorator(columnHeaderCheckBoxPainter);
+
 		// final ICellPainter column9HeaderPainter = new BeveledBorderDecorator(new CellPainterDecorator(
 		// new TextPainter(), CellEdgeEnum.RIGHT, columnHeaderCheckBoxPainter));
 		table.addConfiguration(new AbstractRegistryConfiguration() {
 			@Override
 			public void configureRegistry(IConfigRegistry configRegistry) {
-				configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_PAINTER, column9HeaderPainter,
+				configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_PAINTER, columnHeaderPainter,
 						DisplayMode.NORMAL, GridRegion.COLUMN_HEADER);
 			}
 
