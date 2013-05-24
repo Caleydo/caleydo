@@ -186,7 +186,7 @@ public class LoadDataSetPageMediator {
 		page.columnOfRowIDSpinner.setSelection(1);
 		page.columnOfRowIDSpinner.setEnabled(fileSpecified);
 
-		page.buttonHomogeneous.setEnabled(fileSpecified);
+		// page.buttonHomogeneous.setEnabled(fileSpecified);
 
 		page.delimiterRadioGroup.setEnabled(fileSpecified);
 		page.selectAllNone.setEnabled(fileSpecified);

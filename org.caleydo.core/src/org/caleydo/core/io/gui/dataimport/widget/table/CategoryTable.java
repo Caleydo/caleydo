@@ -198,9 +198,6 @@ public class CategoryTable extends AMatrixBasedTableWidget implements ILayerList
 
 	public void update() {
 		table.refresh();
-		parent.pack();
-		// table.pack(true);
-		// table.layout(true);
 	}
 
 	public void selectRow(int rowIndex) {

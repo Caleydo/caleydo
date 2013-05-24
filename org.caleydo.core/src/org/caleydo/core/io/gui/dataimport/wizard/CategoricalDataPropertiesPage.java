@@ -22,18 +22,22 @@ package org.caleydo.core.io.gui.dataimport.wizard;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
 import org.caleydo.core.data.collection.column.container.CategoricalClassDescription.ECategoryType;
 import org.caleydo.core.io.ColumnDescription;
 import org.caleydo.core.io.DataSetDescription;
+import org.caleydo.core.io.gui.dataimport.CreateCategoryDialog;
 import org.caleydo.core.io.gui.dataimport.widget.DataTranspositionWidget;
 import org.caleydo.core.io.gui.dataimport.widget.IntegerCallback;
 import org.caleydo.core.io.gui.dataimport.widget.table.CategoryTable;
 import org.caleydo.core.util.color.Color;
+import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -45,7 +49,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 
 /**
- * @author Christian
+ * Page to specify categorical properties.
+ *
+ * @author Christian Partl
  *
  */
 public class CategoricalDataPropertiesPage extends AImportDataPage {
@@ -70,12 +76,22 @@ public class CategoricalDataPropertiesPage extends AImportDataPage {
 	 * Button to move a category down in the table.
 	 */
 	protected Button downButton;
+	/**
+	 * Button to add a new category.
+	 */
+	protected Button addCategoryButton;
+	/**
+	 * Button to remove an existing category.
+	 */
+	protected Button removeCategoryButton;
 
 	protected CategoryTable categoryTable;
 
 	protected DataTranspositionWidget dataTranspositionWidget;
 
 	protected Composite parentComposite;
+
+	protected Group categoriesGroup;
 
 	/**
 	 * @param pageName
@@ -114,7 +130,7 @@ public class CategoricalDataPropertiesPage extends AImportDataPage {
 			}
 		});
 
-		Group categoriesGroup = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
+		categoriesGroup = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
 		categoriesGroup.setText("Categories");
 		categoriesGroup.setLayout(new GridLayout(2, false));
 		categoriesGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
@@ -152,6 +168,32 @@ public class CategoricalDataPropertiesPage extends AImportDataPage {
 
 		});
 
+		addCategoryButton = new Button(buttonComposite, SWT.PUSH);
+		addCategoryButton.setText("Add");
+		addCategoryButton.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				addCategory();
+			}
+
+		});
+
+		removeCategoryButton = new Button(buttonComposite, SWT.PUSH);
+		removeCategoryButton.setText("Remove");
+		removeCategoryButton.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				int selectedRowIndex = categoryTable.getSelectedRow();
+				if (selectedRowIndex != -1) {
+					removeCategory(selectedRowIndex);
+					categoryTable.update();
+				}
+			}
+
+		});
+
 		categoryTable = new CategoryTable(categoriesGroup, new GridData(SWT.FILL, SWT.FILL, true, true, 1, 2),
 				new IntegerCallback() {
 
@@ -174,6 +216,45 @@ public class CategoricalDataPropertiesPage extends AImportDataPage {
 				dataSetDescription.isTransposeMatrix());
 
 		setControl(parentComposite);
+	}
+
+	private void addCategory() {
+		List<List<String>> matrix = categoryTable.getDataMatrix();
+		Set<String> categoryValues = new HashSet<>(matrix.size());
+		for (List<String> row : matrix) {
+			categoryValues.add(row.get(0));
+		}
+		CreateCategoryDialog dialog = new CreateCategoryDialog(getShell(), categoryValues);
+		int status = dialog.open();
+
+		if (status == Window.OK) {
+			List<String> newCategoryRow = new ArrayList<>(4);
+			newCategoryRow.add(dialog.getValue());
+			newCategoryRow.add(new Integer(getNumberOfOccurrencesInFile(dialog.getValue())).toString());
+			newCategoryRow.add(dialog.getName());
+			newCategoryRow.add("0");
+
+			matrix.add(0, newCategoryRow);
+			categoryTable.update();
+		}
+	}
+
+	private int getNumberOfOccurrencesInFile(String value) {
+		List<List<String>> dataMatrix = ((DataImportWizard) getWizard()).getFilteredDataMatrix();
+		int numOccurrences = 0;
+		for (List<String> row : dataMatrix) {
+			for (String v : row) {
+				if (v.equals(value)) {
+					numOccurrences++;
+				}
+			}
+		}
+		return numOccurrences;
+	}
+
+	private void removeCategory(int rowIndex) {
+		List<List<String>> matrix = categoryTable.getDataMatrix();
+		matrix.remove(rowIndex);
 	}
 
 	private void swapRows(int row1Index, int row2Index) {
@@ -220,7 +301,8 @@ public class CategoricalDataPropertiesPage extends AImportDataPage {
 
 		categoryTable.createTableFromMatrix(categoryMatrix, 4);
 		dataTranspositionWidget.update();
-		categoryTable.update();
+		categoriesGroup.pack();
+		// categoryTable.update();
 		parentComposite.layout(true);
 
 		wizard.setChosenDataTypePage(this);

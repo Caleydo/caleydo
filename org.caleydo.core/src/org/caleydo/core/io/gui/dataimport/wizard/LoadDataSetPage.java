@@ -44,11 +44,6 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 	public static final String PAGE_DESCRIPTION = "Specify the dataset you want to load.";
 
 	/**
-	 * Button to specify whether the dataset is homogeneous, i.e. all columns have the same scale.
-	 */
-	protected Button buttonHomogeneous;
-
-	/**
 	 * Combo box to specify the {@link IDCategory} for the columns of the dataset.
 	 */
 	protected Combo columnIDCategoryCombo;
@@ -329,8 +324,7 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 				mediator.rowOfColumnIDSpinnerModified();
 			}
 		});
-
-		createDataPropertiesGroup(leftConfigGroupPart);
+		// createDataPropertiesGroup(leftConfigGroupPart);
 
 		Composite rightConfigGroupPart = new Composite(columnConfigGroup, SWT.NONE);
 		rightConfigGroupPart.setLayout(new GridLayout(2, false));
@@ -410,13 +404,6 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 		});
 	}
 
-	private void createDataPropertiesGroup(Composite parent) {
-
-		buttonHomogeneous = new Button(parent, SWT.CHECK);
-		buttonHomogeneous.setText("Columns use same Scale");
-		buttonHomogeneous.setEnabled(true);
-		buttonHomogeneous.setSelection(true);
-	}
 
 	/**
 	 * Reads the min and max values (if set) from the dialog
