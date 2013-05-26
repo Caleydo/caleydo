@@ -358,6 +358,9 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 			gl.glTranslatef(position.x(), position.y(), position.z());
 			gl.glRotatef(viewCamera.getCameraRotationGrad(rot_Vec3f), rot_Vec3f.x(), rot_Vec3f.y(), rot_Vec3f.z());
 
+			// gl.glActiveTexture(GL.GL_TEXTURE0);
+			gl.glBindTexture(GL.GL_TEXTURE_2D, GL.GL_NONE);
+
 			displayLocal(gl);
 
 			if (showFPSCounter)

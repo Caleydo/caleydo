@@ -206,6 +206,10 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 		GL2 gl = drawable.getGL().getGL2();
 		// clear screen
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
+
+		// gl.glActiveTexture(GL.GL_TEXTURE0);
+		gl.glBindTexture(GL.GL_TEXTURE_2D, GL.GL_NONE);
+
 		gl.glLoadIdentity();
 		gl.glTranslatef(0.375f, 0.375f, 0);
 

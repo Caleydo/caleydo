@@ -28,8 +28,6 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 
-import com.jogamp.opengl.util.awt.TextRenderer;
-
 /**
  * Wrapper for TextRenderer that provides methods to draw text with a specified
  * minimum size (no matter what's the current size of the view).
@@ -37,7 +35,7 @@ import com.jogamp.opengl.util.awt.TextRenderer;
  * @author Christian Partl
  * @author Alexander Lex
  */
-public class CaleydoTextRenderer extends TextRenderer implements ITextRenderer {
+public class CaleydoTextRenderer extends MyTextRenderer implements ITextRenderer {
 
 	static private final String REFERENCE_TEXT = "Reference Text";
 	float fontScaling = GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR;
@@ -52,13 +50,13 @@ public class CaleydoTextRenderer extends TextRenderer implements ITextRenderer {
 	 * @param useFractionalMetrics
 	 */
 	public CaleydoTextRenderer(Font font) {
-		super(font, true, true, new DefaultRenderDelegate(), true);
+		super(font, true, true, new DefaultRenderDelegate(), false);
 		referenceBounds = super.getBounds(REFERENCE_TEXT);
 	}
 
 	public CaleydoTextRenderer(int size) {
 		super(new Font("Arial", Font.PLAIN, size), true, true, new DefaultRenderDelegate(),
-				true);
+ false);
 		referenceBounds = super.getBounds(REFERENCE_TEXT);
 	}
 
