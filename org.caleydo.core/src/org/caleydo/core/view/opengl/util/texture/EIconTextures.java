@@ -58,8 +58,6 @@ public enum EIconTextures {
 	DATA_DOMAIN_CLINICAL("resources/icons/view/dataflipper/patient.png"),
 	DATA_DOMAIN_PATHWAY("resources/icons/view/dataflipper/pathway.png"),
 	DATA_DOMAIN_GENETIC("resources/icons/view/dataflipper/gene_expression.png"),
-	DATA_DOMAIN_TISSUE("resources/icons/view/dataflipper/tissue.png"),
-	DATA_DOMAIN_ORGAN("resources/icons/view/dataflipper/organ.png"),
 
 	LOADING("resources/loading/loading_background.png"),
 	LOADING_CIRCLE("resources/loading/loading_circle.png"),
