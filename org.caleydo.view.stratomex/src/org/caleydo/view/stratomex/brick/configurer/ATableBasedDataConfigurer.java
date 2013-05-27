@@ -27,6 +27,7 @@ import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
 import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormViewSwitchingBar;
+import org.caleydo.core.view.opengl.util.text.ITextRenderer;
 import org.caleydo.view.stratomex.EPickingType;
 import org.caleydo.view.stratomex.brick.GLBrick;
 import org.caleydo.view.stratomex.brick.layout.ABrickLayoutConfiguration;
@@ -84,7 +85,9 @@ public abstract class ATableBasedDataConfigurer extends ABrickConfigurer {
 				.getDimensionGroup().getID()));
 		pickingIDs.add(new Pair<String, Integer>(EPickingType.BRICK_TITLE.name(), layoutTemplate.getBrick().getID()));
 
+		ITextRenderer textRenderer = layoutTemplate.getBrick().getTextRenderer();
 		LabelRenderer captionRenderer = new LabelRenderer(layoutTemplate.getDimensionGroup().getStratomexView(),
+				textRenderer,
 				layoutTemplate.getBrick(), pickingIDs);
 		captionLayout.setRenderer(captionRenderer);
 
@@ -109,6 +112,7 @@ public abstract class ATableBasedDataConfigurer extends ABrickConfigurer {
 		pickingIDs.add(new Pair<String, Integer>(EPickingType.BRICK_TITLE.name(), layoutTemplate.getBrick().getID()));
 
 		LabelRenderer captionRenderer = new LabelRenderer(layoutTemplate.getDimensionGroup().getStratomexView(),
+				layoutTemplate.getBrick().getTextRenderer(),
 				layoutTemplate.getBrick(), pickingIDs);
 		captionLayout.setRenderer(captionRenderer);
 
@@ -131,7 +135,8 @@ public abstract class ATableBasedDataConfigurer extends ABrickConfigurer {
 				.getDimensionGroup().getID()));
 		pickingIDs.add(new Pair<String, Integer>(EPickingType.BRICK_TITLE.name(), layoutTemplate.getBrick().getID()));
 
-		LabelRenderer captionRenderer = new LabelRenderer(layoutTemplate.getDimensionGroup(),
+		ITextRenderer textRenderer = layoutTemplate.getBrick().getTextRenderer();
+		LabelRenderer captionRenderer = new LabelRenderer(layoutTemplate.getDimensionGroup(), textRenderer,
 				layoutTemplate.getBrick(), pickingIDs);
 		captionLayout.setRenderer(captionRenderer);
 
@@ -158,7 +163,9 @@ public abstract class ATableBasedDataConfigurer extends ABrickConfigurer {
 		pickingIDs.add(new Pair<String, Integer>(EPickingType.BRICK.name(), layoutTemplate.getBrick().getID()));
 		pickingIDs.add(new Pair<String, Integer>(EPickingType.BRICK_TITLE.name(), layoutTemplate.getBrick().getID()));
 
+		ITextRenderer textRenderer = layoutTemplate.getBrick().getTextRenderer();
 		LabelRenderer captionRenderer = new LabelRenderer(layoutTemplate.getDimensionGroup().getStratomexView(),
+				textRenderer,
 				layoutTemplate.getBrick(), pickingIDs);
 
 		captionLayout.setRenderer(captionRenderer);

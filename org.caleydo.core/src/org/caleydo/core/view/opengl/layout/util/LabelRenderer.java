@@ -26,7 +26,7 @@ import javax.media.opengl.GL2;
 import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
+import org.caleydo.core.view.opengl.util.text.ITextRenderer;
 
 /**
  * Renders a text within the given bounds of the ElementLayout. The text is
@@ -67,39 +67,32 @@ public class LabelRenderer
 	 */
 	private boolean usePaddingBottom = false;
 
+	private final ITextRenderer textRenderer;
+
 	/**
 	 * @param view Rendering view.
 	 * @param text Text to render.
 	 * @param pickingType PickingType for the text.
 	 * @param id ID for picking.
 	 */
-	public LabelRenderer(AGLView view, ILabelProvider labelProvider, String pickingType, int id) {
+	protected LabelRenderer(AGLView view, ILabelProvider labelProvider, String pickingType, int id) {
 		super(view, pickingType, id);
+		this.textRenderer = view.getTextRenderer();
 		this.isPickable = true;
 		this.labelProvider = labelProvider;
 	}
 
-	public LabelRenderer(AGLView view, ILabelProvider labelProvider,
+	public LabelRenderer(AGLView view, ITextRenderer textRenderer, ILabelProvider labelProvider,
 			List<Pair<String, Integer>> pickingIDs) {
 		super(view, pickingIDs);
+		this.textRenderer = textRenderer;
 		this.isPickable = true;
 		this.labelProvider = labelProvider;
 	}
 
-	public LabelRenderer(AGLView view, String label, List<Pair<String, Integer>> pickingIDs) {
-		super(view, pickingIDs);
-		this.isPickable = true;
-		this.label = label;
-	}
-
-	public LabelRenderer(AGLView view, String label) {
-		this.isPickable = false;
+	public LabelRenderer(AGLView view, ITextRenderer textRenderer, ILabelProvider labelProvider) {
 		this.view = view;
-		this.label = label;
-	}
-
-	public LabelRenderer(AGLView view, ILabelProvider labelProvider) {
-		this.view = view;
+		this.textRenderer = textRenderer;
 		this.labelProvider = labelProvider;
 		this.isPickable = false;
 	}
@@ -175,11 +168,10 @@ public class LabelRenderer
 			popNames(gl);
 		}
 
-		CaleydoTextRenderer textRenderer = view.getTextRenderer();
 		float ySpacing = view.getPixelGLConverter().getGLHeightForPixelHeight(1);
 
 		textRenderer.setColor(0, 0, 0, 1);
-		float textWidth = textRenderer.getRequiredTextWidthWithMax(label, y - 2 * ySpacing, x);
+		float textWidth = Math.min(textRenderer.getTextWidth(label, y - 2 * ySpacing), x);
 
 		float padding = 0;
 		if (usePaddingBottom)

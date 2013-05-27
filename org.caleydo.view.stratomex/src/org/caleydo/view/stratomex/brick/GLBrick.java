@@ -274,6 +274,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
 		contextMenuFactories = createContextMenuFactories();
+		textRenderer = new CaleydoTextRenderer(24);
 	}
 
 	/**
@@ -328,7 +329,6 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	@Override
 	public void init(GL2 gl) {
-		textRenderer = new CaleydoTextRenderer(24);
 		baseDisplayListIndex = gl.glGenLists(1);
 
 		layoutManager = new LayoutManager(viewFrustum, pixelGLConverter);

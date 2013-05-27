@@ -139,7 +139,9 @@ public class ClinicalDataConfigurer extends ABrickConfigurer {
 		captionLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
 		captionLayout.setFrameColor(0, 0, 1, 1);
 
-		LabelRenderer captionRenderer = new LabelRenderer(view, layoutTemplate.getBrick(), pickingIDs);
+		LabelRenderer captionRenderer = new LabelRenderer(view, layoutTemplate.getBrick().getTextRenderer(),
+				layoutTemplate.getBrick(),
+				pickingIDs);
 		captionLayout.setRenderer(captionRenderer);
 
 		return captionLayout;

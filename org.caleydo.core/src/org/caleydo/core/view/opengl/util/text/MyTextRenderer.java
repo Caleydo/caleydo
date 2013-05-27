@@ -686,6 +686,9 @@ public class MyTextRenderer {
 			gl.glGetIntegerv(GL2.GL_MAX_TEXTURE_SIZE, sz, 0);
             packer.setMaxSize(sz[0], sz[0]);
             haveMaxSize = true;
+
+			// some kind of calling this the first time
+			uploadBunchOfCharacter('!', '~');
         }
 
         if (needToResetColor && haveCachedColor) {
@@ -743,16 +746,16 @@ public class MyTextRenderer {
             getBackingStore().end3DRendering();
         }
 
-		if (++numRenderCycles >= 200) {
-			numRenderCycles = 0;
-
-			if (DEBUG) {
-				System.err.println("Clearing unused entries in endRendering()");
-			}
-
-			// clearUnusedEntries();
-			getBackingStore().markDirty(0, 0, getBackingStore().getWidth(), getBackingStore().getHeight());
-		}
+//		if (++numRenderCycles >= 200) {
+//			numRenderCycles = 0;
+//
+//			if (DEBUG) {
+//				System.err.println("Clearing unused entries in endRendering()");
+//			}
+//
+//			// clearUnusedEntries();
+//			// getBackingStore().markDirty(0, 0, getBackingStore().getWidth(), getBackingStore().getHeight());
+		// }
     }
 
     private void clearUnusedEntries() {
@@ -762,7 +765,7 @@ public class MyTextRenderer {
         // text strings that haven't been used recently
         packer.visit(new RectVisitor() {
                 @Override
-				public void visit(Rect rect) {
+			public void visit(Rect rect) {
                     TextData data = (TextData) rect.getUserData();
 
                     if (data.used()) {
@@ -820,6 +823,26 @@ public class MyTextRenderer {
             x += advance * scaleFactor;
         }
     }
+
+	/**
+	 * uploads a bunch of characters and fills up the cache
+	 *
+	 * @param from
+	 * @param to
+	 */
+	private void uploadBunchOfCharacter(char from, char to) {
+		StringBuilder b = new StringBuilder(to - from + 1);
+		for (char c = from; c <= to; ++c)
+			b.append(c);
+
+		List/* <Glyph> */glyphs = mGlyphProducer.getGlyphs(b);
+		for (Iterator iter = glyphs.iterator(); iter.hasNext();) {
+			Glyph glyph = (Glyph) iter.next();
+			glyph.upload();
+		}
+	}
+
+
 
     private void flushGlyphPipeline() {
         if (mPipelinedQuadRenderer != null) {
@@ -922,13 +945,13 @@ public class MyTextRenderer {
         final FPSAnimator anim = new FPSAnimator(dbgCanvas, 10);
         dbgFrame.addWindowListener(new WindowAdapter() {
                 @Override
-				public void windowClosing(WindowEvent e) {
+			public void windowClosing(WindowEvent e) {
                     // Run this on another thread than the AWT event queue to
                     // make sure the call to Animator.stop() completes before
                     // exiting
                     new Thread(new Runnable() {
                             @Override
-							public void run() {
+					public void run() {
                                 anim.stop();
                             }
                         }).start();
@@ -1476,9 +1499,7 @@ public class MyTextRenderer {
             }
 
             // This is the code path taken for individual glyphs
-            if (glyphRectForTextureMapping == null) {
-                upload();
-            }
+			upload();
 
             try {
                 if (mPipelinedQuadRenderer == null) {
@@ -1535,7 +1556,10 @@ public class MyTextRenderer {
             glyphRectForTextureMapping = null;
         }
 
-        private void upload() {
+		public void upload() {
+			if (glyphRectForTextureMapping != null)
+				return;
+
             GlyphVector gv = getGlyphVector();
             Rectangle2D origBBox = preNormalize(renderDelegate.getBounds(gv, getFontRenderContext()));
             Rectangle2D bbox = normalize(origBBox);
@@ -1969,7 +1993,7 @@ public class MyTextRenderer {
             if ((frame.getWidth() != w) || (frame.getHeight() != h)) {
                 EventQueue.invokeLater(new Runnable() {
                         @Override
-						public void run() {
+					public void run() {
                             frame.setSize(w, h);
                         }
                     });
