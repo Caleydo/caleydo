@@ -29,7 +29,6 @@ import java.io.File;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.id.object.IDCreator;
-import org.caleydo.core.io.parser.xml.XmlParserManager;
 import org.caleydo.core.serialize.ProjectMetaData;
 import org.caleydo.core.serialize.SerializationManager;
 import org.caleydo.core.startup.SWTGUIManager;
@@ -96,7 +95,6 @@ public class GeneralManager {
 	private SWTGUIManager swtGUIManager;
 	private ViewManager viewManager;
 	private EventPublisher eventPublisher;
-	private XmlParserManager xmlParserManager;
 	private IDCreator idCreator;
 	private ResourceLoader resourceLoader;
 	private SerializationManager serializationManager;
@@ -112,9 +110,7 @@ public class GeneralManager {
 		eventPublisher = EventPublisher.INSTANCE;
 		viewManager = ViewManager.get();
 		swtGUIManager = new SWTGUIManager();
-		xmlParserManager = new XmlParserManager();
 		idCreator = new IDCreator();
-		xmlParserManager.initHandlers();
 		serializationManager = SerializationManager.get();
 		resourceLoader = new ResourceLoader(chain(DATA_CLASSLOADER, FILE, URL));
 	}
@@ -172,10 +168,6 @@ public class GeneralManager {
 
 	public EventPublisher getEventPublisher() {
 		return eventPublisher;
-	}
-
-	public XmlParserManager getXmlParserManager() {
-		return xmlParserManager;
 	}
 
 	/**

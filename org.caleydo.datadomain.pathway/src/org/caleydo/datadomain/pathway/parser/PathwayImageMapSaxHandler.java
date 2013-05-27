@@ -22,9 +22,9 @@ package org.caleydo.datadomain.pathway.parser;
 import java.awt.Rectangle;
 import java.util.StringTokenizer;
 
-import org.caleydo.core.io.parser.xml.AXmlParserHandler;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * SAX handler for loading KEGG imagemaps.
@@ -32,7 +32,7 @@ import org.xml.sax.SAXException;
  * @author Marc Streit
  * @author Michael Kalkusch
  */
-public class PathwayImageMapSaxHandler extends AXmlParserHandler {
+public class PathwayImageMapSaxHandler extends DefaultHandler {
 
 	protected Attributes attributes;
 
@@ -40,8 +40,6 @@ public class PathwayImageMapSaxHandler extends AXmlParserHandler {
 
 	public PathwayImageMapSaxHandler() {
 		super();
-
-		setXmlActivationTag("imagemap");
 	}
 
 	@Override
@@ -60,23 +58,6 @@ public class PathwayImageMapSaxHandler extends AXmlParserHandler {
 				handleImageMapTag();
 			} else if (sElementName.equals("area")) {
 				handleAreaTag();
-			}
-		}
-	}
-
-	@Override
-	public void endElement(String namespaceURI, String sSimpleName, String sQualifiedName) throws SAXException {
-
-		// emit("</"+sName+">");
-
-		String eName = "".equals(sSimpleName) ? sQualifiedName : sSimpleName;
-
-		if (null != eName) {
-			if (eName.equals(openingTag)) {
-				/**
-				 * section (xml block) finished, call callback function from XmlParserManager
-				 */
-				xmlParserManager.sectionFinishedByHandler(this);
 			}
 		}
 	}
@@ -143,15 +124,5 @@ public class PathwayImageMapSaxHandler extends AXmlParserHandler {
 		// ((PathwayManager)
 		// generalManager.getPathwayManager()).getCurrentPathwayImageMap().addArea(rectArea,
 		// sImageLink);
-	}
-
-	/**
-	 * @see org.caleydo.core.io.parser.xml.IXmlParserHandler#destroyHandler()
-	 * @see org.caleydo.core.io.parser.xml.AXmlParserHandler#destroyHandler()
-	 */
-	@Override
-	public void destroyHandler() {
-
-		super.destroyHandler();
 	}
 }
