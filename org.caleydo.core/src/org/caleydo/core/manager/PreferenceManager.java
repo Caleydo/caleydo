@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,12 +8,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -23,7 +23,6 @@ import java.io.File;
 import java.io.IOException;
 
 import org.caleydo.core.gui.preferences.PreferenceConstants;
-import org.caleydo.core.specialized.Organism;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -115,24 +114,14 @@ public class PreferenceManager {
 		store.setDefault(PreferenceConstants.PERFORMANCE_LEVEL, "low");
 
 		store.setDefault(PreferenceConstants.VERSION, GeneralManager.VERSION);
-		store.setDefault(PreferenceConstants.LAST_CHOSEN_ORGANISM, Organism.HOMO_SAPIENS.name());
 		store.setDefault(PreferenceConstants.LAST_CHOSEN_PROJECT_MODE, "SAMPLE_PROJECT");
 		store.setDefault(PreferenceConstants.BROWSER_QUERY_DATABASE, "GeneCards");
-
-		// visual links
-		store.setDefault(PreferenceConstants.VISUAL_LINKS_STYLE, 2);
-		store.setDefault(PreferenceConstants.VISUAL_LINKS_ANIMATION, false);
-		store.setDefault(PreferenceConstants.VISUAL_LINKS_WIDTH, 2.0f);
-		store.setDefault(PreferenceConstants.VISUAL_LINKS_COLOR, "255,255,0,255");
-		store.setDefault(PreferenceConstants.VISUAL_LINKS_ANIMATED_HALO, false);
-		store.setDefault(PreferenceConstants.VISUAL_LINKS_FOR_MOUSE_OVER, false);
-		store.setDefault(PreferenceConstants.VISUAL_LINKS_FOR_SELECTIONS, true);
 
 		// treemap
 		store.setDefault(PreferenceConstants.TREEMAP_DRAW_CLUSTER_FRAME, true);
 		store.setDefault(PreferenceConstants.TREEMAP_LAYOUT_ALGORITHM, 1);
 		store.setDefault(PreferenceConstants.TREEMAP_MAX_DEPTH, 0);
-		
+
 		// DVI
 		store.setDefault(PreferenceConstants.DVI_ALWAYS_USE_TABLE_PERSPECTIVE_DEFAULT_NAME, false);
 	}

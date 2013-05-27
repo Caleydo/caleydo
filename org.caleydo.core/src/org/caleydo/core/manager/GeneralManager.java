@@ -28,11 +28,11 @@ import java.io.File;
 
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.event.EventPublisher;
-import org.caleydo.core.gui.SWTGUIManager;
 import org.caleydo.core.id.object.IDCreator;
 import org.caleydo.core.io.parser.xml.XmlParserManager;
 import org.caleydo.core.serialize.ProjectMetaData;
 import org.caleydo.core.serialize.SerializationManager;
+import org.caleydo.core.startup.SWTGUIManager;
 import org.caleydo.core.util.statistics.IStatisticsPerformer;
 import org.caleydo.core.view.ViewManager;
 import org.caleydo.data.loader.ResourceLoader;
@@ -93,8 +93,6 @@ public class GeneralManager {
 	 */
 	private boolean isDryMode;
 
-	private BasicInformation basicInfo;
-
 	private SWTGUIManager swtGUIManager;
 	private ViewManager viewManager;
 	private EventPublisher eventPublisher;
@@ -110,8 +108,6 @@ public class GeneralManager {
 
 		PreferenceManager preferenceManager = PreferenceManager.get();
 		preferenceManager.initialize();
-
-		basicInfo = new BasicInformation();
 
 		eventPublisher = EventPublisher.INSTANCE;
 		viewManager = ViewManager.get();
@@ -154,14 +150,6 @@ public class GeneralManager {
 	 */
 	public void setMetaData(ProjectMetaData metaData) {
 		this.metaData = metaData;
-	}
-
-	public BasicInformation getBasicInfo() {
-		return basicInfo;
-	}
-
-	public void setBasicInfo(BasicInformation basicInfo) {
-		this.basicInfo = basicInfo;
 	}
 
 	/**

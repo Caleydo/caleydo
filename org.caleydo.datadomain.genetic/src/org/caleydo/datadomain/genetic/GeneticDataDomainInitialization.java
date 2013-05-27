@@ -24,7 +24,6 @@ import org.caleydo.core.id.IDType;
 import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.io.parser.ascii.IDMappingParser;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.specialized.Organism;
 
 /**
  * Class that triggers the creation of all genetic {@link IDType}s and mappings.
@@ -67,7 +66,7 @@ public class GeneticDataDomainInitialization implements IDataDomainInitializatio
 		geneIDCategory.setHumanReadableIDType(geneSymbol);
 		geneIDCategory.setDenomination("gene");
 
-		String fileName = "data/genome/mapping/david/" + GeneralManager.get().getBasicInfo().getOrganism();
+		String fileName = "data/genome/mapping/david/" + GeneticMetaData.getOrganism();
 
 		IDMappingParser.loadMapping(fileName + "_DAVID2REFSEQ_MRNA.txt", 0, -1, IDType.getIDType("DAVID"),
 				IDType.getIDType("REFSEQ_MRNA"), "\t", geneIDCategory, true, true, false, null, null);
@@ -78,7 +77,7 @@ public class GeneticDataDomainInitialization implements IDataDomainInitializatio
 		IDMappingParser.loadMapping(fileName + "_DAVID2GENE_NAME.txt", 0, -1, IDType.getIDType("DAVID"),
 				IDType.getIDType("GENE_NAME"), "\t", geneIDCategory, false, true, false, null, null);
 
-		if (GeneralManager.get().getBasicInfo().getOrganism() == Organism.MUS_MUSCULUS) {
+		if (GeneticMetaData.getOrganism() == Organism.MUS_MUSCULUS) {
 			IDMappingParser.loadMapping(fileName + "_DAVID2ENSEMBL_GENE_ID.txt", 0, -1, IDType.getIDType("DAVID"),
 					IDType.getIDType("ENSEMBL_GENE_ID"), "\t", geneIDCategory, false, true, false, null, null);
 		} else {

@@ -15,4 +15,12 @@
           <DataDomainInitialization
           class="org.caleydo.datadomain.generic.GenericDataDomainInitialization" />
    </extension>
+   <extension
+         point="org.caleydo.core.StartupAddon">
+      <addon
+            class="org.caleydo.datadomain.generic.internal.LoadGenericStartupAddon"
+            name="Load Other Data"
+            order="7">
+      </addon>
+   </extension>
 </plugin>

@@ -52,6 +52,10 @@ public class TourGuideSerializationAddon implements ISerializationAddon {
 	}
 
 	@Override
+	public void deserialize(String dirName, Unmarshaller unmarshaller) {
+
+	}
+	@Override
 	public void deserialize(String dirName, Unmarshaller unmarshaller, SerializationData data) {
 		File f = new File(dirName, PERSISTENT_SCORES_XML);
 		if (!f.exists())

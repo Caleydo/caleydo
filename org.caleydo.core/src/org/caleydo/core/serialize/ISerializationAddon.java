@@ -31,8 +31,13 @@ import org.caleydo.core.data.datadomain.IDataDomain;
  *
  */
 public interface ISerializationAddon {
-	public Collection<Class<?>> getJAXBContextClasses();
+	public Collection<? extends Class<?>> getJAXBContextClasses();
 
+	/**
+	 * @param dirName
+	 * @param unmarshaller
+	 */
+	public void deserialize(String dirName, Unmarshaller unmarshaller);
 	/**
 	 * @param dirName
 	 * @param unmarshaller
@@ -51,5 +56,6 @@ public interface ISerializationAddon {
 	 * @param serializationDataList
 	 */
 	public void load(SerializationData data);
+
 
 }

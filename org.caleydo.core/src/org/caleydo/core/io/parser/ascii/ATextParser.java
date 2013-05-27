@@ -20,9 +20,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
 
-import org.caleydo.core.gui.SWTGUIManager;
 import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.startup.SWTGUIManager;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.data.loader.ResourceLoader;
 import org.eclipse.core.runtime.IStatus;

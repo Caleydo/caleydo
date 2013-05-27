@@ -20,14 +20,13 @@
 package org.caleydo.core.startup.gui;
 
 import java.io.IOException;
+import java.util.Map;
 
 import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.startup.ApplicationMode;
-import org.caleydo.core.startup.GeneticGUIStartupProcedure;
-import org.caleydo.core.startup.SerializationStartupProcedure;
-import org.caleydo.core.startup.StartupProcessor;
-import org.caleydo.core.startup.gui.ChooseProjectTypePage.EProjectLoadType;
+import org.caleydo.core.startup.IStartupAddon;
+import org.caleydo.core.startup.IStartupProcedure;
+import org.caleydo.core.util.collection.Pair;
 import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.graphics.Rectangle;
@@ -44,10 +43,12 @@ import org.eclipse.swt.widgets.Shell;
 public class CaleydoProjectWizard
 	extends Wizard {
 
+	private IStartupProcedure result;
+	private final Map<String, IStartupAddon> addons;
 	/**
 	 * Constructor.
 	 */
-	public CaleydoProjectWizard(final Shell parentShell) {
+	public CaleydoProjectWizard(final Shell parentShell, Map<String, IStartupAddon> addons) {
 
 		this.setWindowTitle("Caleydo - Choose Data Source");
 
@@ -58,11 +59,13 @@ public class CaleydoProjectWizard
 		int y = bounds.y + (bounds.height - rect.height) / 2;
 		parentShell.setLocation(x, y);
 		parentShell.setActive();
+
+		this.addons = addons;
 	}
 
 	@Override
 	public void addPages() {
-		addPage(new ChooseProjectTypePage());
+		addPage(new ChooseProjectTypePage(addons));
 	}
 
 	private ChooseProjectTypePage getChosenProjectTypePage() {
@@ -80,62 +83,10 @@ public class CaleydoProjectWizard
 		if (page.isPageComplete()) {
 			PreferenceStore prefStore = GeneralManager.get().getPreferenceStore();
 
-			// ProjectMode previousProjectMode =
-			// ProjectMode.valueOf(prefStore.getString(PreferenceConstants.LAST_CHOSEN_PROJECT_MODE));
+			Pair<String, IStartupAddon> addon = page.getSelectedAddon();
+			prefStore.setValue(PreferenceConstants.LAST_CHOSEN_PROJECT_MODE, addon.getFirst());
 
-			prefStore.setValue(PreferenceConstants.LAST_CHOSEN_ORGANISM, page.getOrganism()
-					.name());
-
-			ProjectMode projectMode = page.getProjectMode();
-			if (projectMode == ProjectMode.LOAD_PROJECT) {
-
-				SerializationStartupProcedure startupProcedure = (SerializationStartupProcedure) StartupProcessor
-						.get().createStartupProcedure(ApplicationMode.SERIALIZATION);
-				EProjectLoadType projectLoadType = page.getProjectLoadType();
-
-				prefStore.setValue(PreferenceConstants.LAST_CHOSEN_PROJECT_LOAD_TYPE,
-						projectLoadType.name());
-
-				if (projectLoadType.equals(EProjectLoadType.RECENT)) {
-					startupProcedure.setLoadRecentProject(true);
-				}
-				else {
-					startupProcedure.setLoadRecentProject(false);
-					String projectFileName = page.getProjectFileName();
-					startupProcedure.setProjectLocation(page.getProjectFileName());
-					prefStore.setValue(PreferenceConstants.LAST_MANUALLY_CHOSEN_PROJECT,
-							projectFileName);
-
-				}
-			}
-			else if (projectMode == ProjectMode.SAMPLE_PROJECT) {
-				SerializationStartupProcedure startupProcedure = (SerializationStartupProcedure) StartupProcessor
-						.get().createStartupProcedure(ApplicationMode.SERIALIZATION);
-				startupProcedure.loadSampleProject(true);
-
-			}
-			else if (projectMode == ProjectMode.GENE_EXPRESSION_SAMPLE_DATA) {
-
-				GeneticGUIStartupProcedure startupProcedure = (GeneticGUIStartupProcedure) StartupProcessor
-						.get().createStartupProcedure(ApplicationMode.GUI);
-				startupProcedure.setLoadSampleData(true);
-			}
-			else if (projectMode == ProjectMode.GENE_EXPRESSION_NEW_DATA) {
-
-				StartupProcessor.get().createStartupProcedure(ApplicationMode.GUI);
-
-				GeneralManager.get().getBasicInfo().setOrganism(page.getOrganism());
-			}
-			else if (projectMode == ProjectMode.UNSPECIFIED_NEW_DATA) {
-				StartupProcessor.get().createStartupProcedure(ApplicationMode.GENERIC);
-
-			}
-			else {
-				throw new IllegalStateException("Not implemented!");
-			}
-
-			prefStore.setValue(PreferenceConstants.LAST_CHOSEN_PROJECT_MODE,
-					projectMode.name());
+			setResult(addon.getSecond().create());
 
 			try {
 				prefStore.save();
@@ -150,10 +101,23 @@ public class CaleydoProjectWizard
 		return false;
 	}
 
+	/**
+	 * @param result
+	 *            setter, see {@link result}
+	 */
+	public void setResult(IStartupProcedure result) {
+		this.result = result;
+	}
+
+	/**
+	 * @return the result, see {@link #result}
+	 */
+	public IStartupProcedure getResult() {
+		return result;
+	}
+
 	@Override
 	public boolean performCancel() {
-
-		// Application.bDoExit = true;
 		return true;
 	}
 }

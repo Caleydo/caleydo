@@ -14,90 +14,53 @@
  * You should have received a copy of the GNU General Public License along with this program. If not, see
  * <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.startup;
+package org.caleydo.datadomain.genetic.internal;
 
 import org.caleydo.core.data.collection.table.NumericalTable;
 import org.caleydo.core.data.datadomain.DataDomainManager;
-import org.caleydo.core.gui.util.HelpButtonWizardDialog;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.DataSetDescription.ECreateDefaultProperties;
 import org.caleydo.core.io.gui.dataimport.wizard.DataImportWizard;
-import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.serialize.ProjectManager;
-import org.caleydo.core.specialized.Organism;
-import org.caleydo.core.util.system.FileOperations;
-import org.eclipse.jface.window.Window;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
+import org.caleydo.core.startup.AImportStartupProcedure;
+import org.caleydo.datadomain.genetic.Activator;
+import org.caleydo.datadomain.genetic.Organism;
 
 /**
  * Startup procedure for project wizard.
  *
  * @author Marc Streit
  */
-public class GeneticGUIStartupProcedure extends AStartupProcedure {
+public class GeneticGUIStartupProcedure extends AImportStartupProcedure {
 
-	private boolean loadSampleData = false;
+	private final Organism organism;
+	private final boolean loadSampleData;
 
 	// NOTE: change also organism when setting another dataset
 	private static String REAL_DATA_SAMPLE_FILE = "data/genome/microarray/sample/HCC_sample_dataset_4630_24_cluster.csv";
 
-	public GeneticGUIStartupProcedure() {
-
-		// Delete old workbench state
-		FileOperations.deleteDirectory(GeneralManager.CALEYDO_HOME_PATH + ".metadata");
+	public GeneticGUIStartupProcedure(Organism organism, boolean loadSampleData) {
+		this.organism = organism;
+		this.loadSampleData = loadSampleData;
 	}
 
 	@Override
-	public void init() {
-
-		if (this.loadSampleData) {
-			GeneralManager.get().getBasicInfo().setOrganism(Organism.HOMO_SAPIENS);
-		}
-
+	public boolean run() {
+		Activator.setOrganism(organism);
 		DataDomainManager.get().initalizeDataDomain("org.caleydo.datadomain.genetic");
-
-		super.init();
+		return super.run();
 	}
 
 	@Override
-	public void execute() {
-		super.execute();
-
-		DataImportWizard dataImportWizard;
-
+	protected DataImportWizard createDataImportWizard() {
 		if (this.loadSampleData) {
 			DataSetDescription dataSetDescription = new DataSetDescription(ECreateDefaultProperties.NUMERICAL);
 			dataSetDescription.setDataSourcePath(REAL_DATA_SAMPLE_FILE);
 
 			dataSetDescription.getDataDescription().getNumericalProperties()
 					.setDataTransformation(NumericalTable.Transformation.LOG2);
-			dataImportWizard = new DataImportWizard(dataSetDescription);
+			return new DataImportWizard(dataSetDescription);
 		} else {
-			dataImportWizard = new DataImportWizard();
-		}
-		ProjectManager.deleteWorkbenchSettings();
-
-		HelpButtonWizardDialog dialog = new HelpButtonWizardDialog(
-				StartupProcessor.get().getDisplay().getActiveShell(), dataImportWizard);
-
-		if (Window.CANCEL == dialog.open())
-			StartupProcessor.get().shutdown();
-
-	}
-
-	public void setLoadSampleData(boolean loadSampleData) {
-		this.loadSampleData = loadSampleData;
-	}
-
-	@Override
-	public void postWorkbenchOpen() {
-
-		// Make DVI visible if available
-		try {
-			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView("org.caleydo.view.dvi");
-		} catch (PartInitException e) {
-			// do nothing if DVI does not exist
+			return new DataImportWizard();
 		}
 	}
 }

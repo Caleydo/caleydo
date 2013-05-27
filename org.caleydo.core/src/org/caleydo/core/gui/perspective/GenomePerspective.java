@@ -20,7 +20,6 @@
 package org.caleydo.core.gui.perspective;
 
 import org.caleydo.core.gui.toolbar.RcpToolBarView;
-import org.caleydo.core.startup.StartupProcessor;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IFolderLayout;
@@ -30,6 +29,7 @@ import org.eclipse.ui.IPlaceholderFolderLayout;
 
 public class GenomePerspective
 	implements IPerspectiveFactory {
+	public static final String PERSPECTIVE_ID = "org.caleydo.core.gui.perspective";
 
 	@Override
 	public void createInitialLayout(final IPageLayout layout) {
@@ -63,6 +63,8 @@ public class GenomePerspective
 		// bottomLayout.addPlaceholder("org.caleydo.view.filter");
 		// bottomLayout.addPlaceholder("org.caleydo.view.filterpipeline");
 
-		StartupProcessor.get().addDefaultStartViews(mainLayout);
+		// TODO via extension point
+		mainLayout.addView("org.caleydo.view.dvi");
+		mainLayout.addView("org.caleydo.view.stratomex");
 	}
 }

@@ -26,7 +26,6 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
 import org.caleydo.core.event.AEvent;
-import org.caleydo.core.manager.BasicInformation;
 import org.caleydo.core.util.ExtensionUtils;
 
 /**
@@ -64,7 +63,6 @@ public class SerializationManager {
 			serializableTypes.add(SerializationData.class);
 			serializableTypes.add(DataDomainSerializationData.class);
 			serializableTypes.add(DataDomainList.class);
-			serializableTypes.add(BasicInformation.class);
 			for (ISerializationAddon addon : addons)
 				serializableTypes.addAll(addon.getJAXBContextClasses());
 

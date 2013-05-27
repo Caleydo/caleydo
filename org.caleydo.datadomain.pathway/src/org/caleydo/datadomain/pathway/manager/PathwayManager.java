@@ -42,9 +42,10 @@ import org.caleydo.core.id.IDType;
 import org.caleydo.core.id.IIDTypeMapper;
 import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.specialized.Organism;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
+import org.caleydo.datadomain.genetic.GeneticMetaData;
+import org.caleydo.datadomain.genetic.Organism;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertex;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
@@ -319,7 +320,7 @@ public class PathwayManager extends AManager<PathwayGraph> {
 		String fileName = "";
 		String pathwayPath = pathwayDatabase.getXMLPath();
 		IPathwayResourceLoader pathwayResourceLoader = null;
-		Organism organism = GeneralManager.get().getBasicInfo().getOrganism();
+		Organism organism = GeneticMetaData.getOrganism();
 
 		if (pathwayDatabase.getType() == EPathwayDatabaseType.KEGG) {
 
