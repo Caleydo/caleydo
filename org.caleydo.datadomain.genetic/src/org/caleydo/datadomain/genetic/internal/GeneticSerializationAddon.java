@@ -20,8 +20,9 @@
 package org.caleydo.datadomain.genetic.internal;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.List;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -32,25 +33,35 @@ import org.caleydo.core.serialize.ISerializationAddon;
 import org.caleydo.core.serialize.SerializationData;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.datadomain.genetic.Activator;
-import org.caleydo.datadomain.genetic.GeneticMetaData;
+import org.caleydo.datadomain.genetic.GeneticDataDomain;
 
-public class BasicInformationSerializationAddon implements ISerializationAddon {
-	private static final Logger log = Logger.create(BasicInformationSerializationAddon.class);
+/**
+ * {@link ISerializationAddon} to register on the one hand the {@link GeneticDataDomain} and on the other hand to
+ * deserialize the old {@link BasicInformation}
+ * 
+ * @author Samuel Gratzl
+ * 
+ */
+public class GeneticSerializationAddon implements ISerializationAddon {
+	private static final Logger log = Logger.create(GeneticSerializationAddon.class);
 
 	/** file name of the datadomain-file in project-folders */
 	private static final String BASIC_INFORMATION_FILE = "basic_information.xml";
 
 	@Override
-	public Collection<Class<BasicInformation>> getJAXBContextClasses() {
-		return Collections.singleton(BasicInformation.class);
+	public List<Class<? extends Object>> getJAXBContextClasses() {
+		return Arrays.asList(GeneticDataDomain.class, BasicInformation.class);
 	}
 
 
 	@Override
 	public void deserialize(String dirName, Unmarshaller unmarshaller) {
+		File f = new File(dirName, BASIC_INFORMATION_FILE);
+		if (!f.exists())
+			return;
 		BasicInformation infos;
 		try {
-			infos = (BasicInformation) unmarshaller.unmarshal(new File(dirName, BASIC_INFORMATION_FILE));
+			infos = (BasicInformation) unmarshaller.unmarshal(f);
 			if (infos != null)
 				Activator.setOrganism(infos.getOrganism());
 		} catch (JAXBException e) {
@@ -60,13 +71,7 @@ public class BasicInformationSerializationAddon implements ISerializationAddon {
 
 	@Override
 	public void serialize(Collection<? extends IDataDomain> toSave, Marshaller marshaller, String dirName) {
-		BasicInformation infos = new BasicInformation();
-		infos.setOrganism(GeneticMetaData.getOrganism());
-		try {
-			marshaller.marshal(infos, new File(dirName, BASIC_INFORMATION_FILE));
-		} catch (JAXBException e) {
-			log.error("can't store organism", e);
-		}
+		// as now part of the project meta data no need to save it anymore
 	}
 
 	@Override
@@ -77,6 +82,7 @@ public class BasicInformationSerializationAddon implements ISerializationAddon {
 	public void deserialize(String dirName, Unmarshaller unmarshaller, SerializationData data) {
 
 	}
+
 
 
 }

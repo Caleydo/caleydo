@@ -36,9 +36,6 @@ import com.google.common.collect.Maps;
  *
  */
 public class StartupAddons {
-	/**
-	 *
-	 */
 	private static final String EXTENSION_POINT = "org.caleydo.core.StartupAddon";
 
 	public static Map<String, IStartupAddon> findAll() {
@@ -57,6 +54,7 @@ public class StartupAddons {
 			e.printStackTrace();
 		}
 
+		// sort by order
 		Collections.sort(tmp);
 		Map<String, IStartupAddon> factories = Maps.newLinkedHashMap();
 		for(StartupAddonDesc desc : tmp)

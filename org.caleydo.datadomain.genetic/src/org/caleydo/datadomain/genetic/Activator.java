@@ -19,7 +19,6 @@
  *******************************************************************************/
 package org.caleydo.datadomain.genetic;
 
-import org.caleydo.core.serialize.SerializationManager;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
@@ -41,11 +40,7 @@ public class Activator
 	public Activator() {
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.eclipse.core.runtime.Plugins#start(org.osgi.framework.BundleContext)
-	 */
+
 	/**
 	 * Creates the plug-in, registers all the types needed for serialization,
 	 * and loads the id mapping.
@@ -54,15 +49,8 @@ public class Activator
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
-
-		SerializationManager.get().registerSerializableTypes(GeneticDataDomain.class);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
-	 */
 	@Override
 	public void stop(BundleContext context) throws Exception {
 		plugin = null;
@@ -71,7 +59,7 @@ public class Activator
 
 	/**
 	 * Returns the shared instance
-	 * 
+	 *
 	 * @return the shared instance
 	 */
 	public static Activator getDefault() {
@@ -80,10 +68,8 @@ public class Activator
 
 	/**
 	 * @param organism
-	 *            setter, see {@link organism}
 	 */
 	public static void setOrganism(Organism organism) {
-		GeneticMetaData.organism = organism;
+		GeneticMetaData.setOrganism(organism);
 	}
-
 }

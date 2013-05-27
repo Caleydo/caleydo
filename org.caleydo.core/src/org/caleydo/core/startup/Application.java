@@ -75,12 +75,13 @@ public class Application implements IApplication {
 			IStartupProcedure startup = selectStartupProcedure(startups, display);
 			if (startup == null)
 				return EXIT_OK; // unstartable
+			startups = null; // cleanup
 
 			startup.preWorkbenchOpen();
 
 			ApplicationWorkbenchAdvisor advisor = new ApplicationWorkbenchAdvisor(startup);
 
-			startups = null;
+			// cleanup
 			startup = null;
 
 			int returnCode = PlatformUI.createAndRunWorkbench(display, advisor);
@@ -121,7 +122,7 @@ public class Application implements IApplication {
 		}
 		return wizardImpl.getResult();
 	}
-	
+
 	/**
 	 * @param values
 	 * @param strings

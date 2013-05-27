@@ -21,11 +21,11 @@ package org.caleydo.core.serialize;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
-import org.caleydo.core.event.AEvent;
 import org.caleydo.core.util.ExtensionUtils;
 
 /**
@@ -40,36 +40,27 @@ public class SerializationManager {
 
 	private static volatile SerializationManager instance = null;
 
-	/** {@link JAXBContext} for event (de-)serialization */
-	private JAXBContext eventContext;
-
 	/** {link JAXBContext} for project (de-)serialization */
 	private JAXBContext projectContext;
 
-	private ArrayList<Class<?>> serializableTypes;
+	private List<Class<?>> serializableTypes;
 
-	private Collection<ISerializationAddon> addons;
+	private final Collection<ISerializationAddon> addons;
 
 	private SerializationManager() {
 		addons = ExtensionUtils.findImplementation(EXTENSION_POINT, "class", ISerializationAddon.class);
-		try {
-			Collection<Class<? extends AEvent>> eventTypes = getSerializeableEventTypes();
-			Class<?>[] classes = new Class<?>[eventTypes.size()];
-			classes = eventTypes.toArray(classes);
-			eventContext = JAXBContext.newInstance(classes);
 
-			serializableTypes = new ArrayList<Class<?>>();
-			serializableTypes.add(ProjectMetaData.class);
-			serializableTypes.add(SerializationData.class);
-			serializableTypes.add(DataDomainSerializationData.class);
-			serializableTypes.add(DataDomainList.class);
-			for (ISerializationAddon addon : addons)
-				serializableTypes.addAll(addon.getJAXBContextClasses());
+		serializableTypes = new ArrayList<Class<?>>();
 
-			createNewProjectContext();
-		} catch (JAXBException ex) {
-			throw new RuntimeException("Could not create JAXBContexts", ex);
-		}
+		serializableTypes.add(ProjectMetaData.class);
+		serializableTypes.add(SerializationData.class);
+		serializableTypes.add(DataDomainSerializationData.class);
+		serializableTypes.add(DataDomainList.class);
+
+		for (ISerializationAddon addon : addons)
+			serializableTypes.addAll(addon.getJAXBContextClasses());
+
+		createNewProjectContext();
 	}
 
 	private void createNewProjectContext() {
@@ -93,43 +84,12 @@ public class SerializationManager {
 	}
 
 	/**
-	 * Gets the {@link JAXBContext} used to serialize events.
-	 *
-	 * @return events-serialization {@link JAXBContext}.
-	 */
-	public JAXBContext getEventContext() {
-		return eventContext;
-	}
-
-	/**
 	 * Gets the {@link JAXBContext} used during load/save caleydo projects.
 	 *
 	 * @return caleydo-project serialization {@link JAXBContext}.
 	 */
 	public JAXBContext getProjectContext() {
 		return projectContext;
-	}
-
-	public void registerSerializableTypes(Class<?>... serializableClasses) {
-		for (Class<?> serializableClass : serializableClasses) {
-			serializableTypes.add(serializableClass);
-		}
-		createNewProjectContext();
-	}
-
-	/**
-	 * Generates and returns a {@link Collection} of all events to serialize
-	 *
-	 * @return {@link Collection} of event-classes to transmit over the network
-	 */
-	public static Collection<Class<? extends AEvent>> getSerializeableEventTypes() {
-		Collection<Class<? extends AEvent>> eventTypes = new ArrayList<Class<? extends AEvent>>();
-
-		// FIXME: check if the list of individual events needs to be provided
-		// here
-		eventTypes.add(AEvent.class);
-
-		return eventTypes;
 	}
 
 	/**

@@ -17,48 +17,49 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.datadomain.pathway;
+package org.caleydo.datadomain.pathway.internal;
 
-import org.eclipse.core.runtime.Plugin;
-import org.osgi.framework.BundleContext;
+import java.util.Collection;
+import java.util.Collections;
+
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+
+import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.core.serialize.ISerializationAddon;
+import org.caleydo.core.serialize.SerializationData;
+import org.caleydo.datadomain.pathway.PathwayDataDomain;
 
 /**
- * The activator class controls the plug-in life cycle
+ * simple addon to register {@link PathwayDataDomain}
+ * 
+ * @author Samuel Gratzl
+ * 
  */
-public class Activator
-	extends Plugin {
+public class PathwaySerializationAddon implements ISerializationAddon {
 
-	// The plug-in ID
-	public static final String PLUGIN_ID = PathwayDataDomain.DATA_DOMAIN_TYPE;
-
-	// The shared instance
-	private static Activator plugin;
-
-	/**
-	 * The constructor
-	 */
-	public Activator() {
+	@Override
+	public Collection<? extends Class<?>> getJAXBContextClasses() {
+		return Collections.singleton(PathwayDataDomain.class);
 	}
 
 	@Override
-	public void start(BundleContext context) throws Exception {
-		super.start(context);
-	}
+	public void deserialize(String dirName, Unmarshaller unmarshaller) {
 
+	}
 
 	@Override
-	public void stop(BundleContext context) throws Exception {
-		plugin = null;
-		super.stop(context);
+	public void deserialize(String dirName, Unmarshaller unmarshaller, SerializationData data) {
+
 	}
 
-	/**
-	 * Returns the shared instance
-	 * 
-	 * @return the shared instance
-	 */
-	public static Activator getDefault() {
-		return plugin;
+	@Override
+	public void serialize(Collection<? extends IDataDomain> toSave, Marshaller marshaller, String dirName) {
+	}
+
+	@Override
+	public void load(SerializationData data) {
+
 	}
 
 }

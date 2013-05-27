@@ -86,8 +86,6 @@ import org.osgi.framework.BundleException;
  * @author Marc Streit
  */
 public final class ProjectManager {
-	private static final String SEPARATOR = File.separator;
-
 	private static final Logger log = Logger.create(ProjectManager.class);
 
 	private static String file(String... elems) {
@@ -127,10 +125,6 @@ public final class ProjectManager {
 	/** meta data file name se {@link ProjectMetaData} */
 	private static final String METADATA_FILE = "metadata.xml";
 
-	/**
-	 * full path to directory to temporarily store the projects file before zipping
-	 */
-	public static final String TEMP_PROJECT_ZIP_FOLDER = CALEYDO_HOME_PATH + "temp_load" + SEPARATOR;
 
 	/**
 	 * Loads the project from a directory
@@ -195,6 +189,7 @@ public final class ProjectManager {
 		for (ADataDomain dataDomain : dataDomainList.getDataDomains()) {
 			DataSetDescription dataSetDescription = dataDomain.getDataSetDescription();
 
+			// FIXME hack
 			if (dataDomain.getDataDomainType().equals("org.caleydo.datadomain.genetic"))
 				DataDomainManager.get().initalizeDataDomain("org.caleydo.datadomain.genetic");
 

@@ -34,6 +34,13 @@ public interface IStartupProcedure {
 	 */
 	void preWorkbenchOpen();
 
+	/**
+	 * the actual work of this startup procedure
+	 * 
+	 * @param setTitle
+	 *            callback for setting the window title
+	 * @return
+	 */
 	boolean run(Function<String, Void> setTitle);
 
 	/**

@@ -19,22 +19,32 @@
  *******************************************************************************/
 package org.caleydo.datadomain.genetic;
 
+import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.serialize.ProjectMetaData;
 import org.caleydo.datadomain.genetic.internal.BasicInformation;
 
 
 /**
- * the new {@link BasicInformation} holder
+ * the new {@link BasicInformation} holder using the {@link ProjectMetaData}
  * 
  * @author Samuel Gratzl
  * 
  */
 public class GeneticMetaData {
-	static Organism organism = Organism.HOMO_SAPIENS;
+	private static final String META_DATA_KEY_ORGANISM = "Organism";
 
 	/**
 	 * @return the organism, see {@link #organism}
 	 */
 	public static Organism getOrganism() {
-		return organism;
+		ProjectMetaData metaData = GeneralManager.get().getMetaData();
+		if (metaData.contains(META_DATA_KEY_ORGANISM)) {
+			return Organism.valueOf(metaData.get(META_DATA_KEY_ORGANISM));
+		}
+		return Organism.HOMO_SAPIENS;
+	}
+
+	static void setOrganism(Organism organism) {
+		GeneralManager.get().getMetaData().set(META_DATA_KEY_ORGANISM, organism.name());
 	}
 }

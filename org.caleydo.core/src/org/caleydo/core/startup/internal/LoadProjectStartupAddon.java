@@ -46,8 +46,10 @@ import org.kohsuke.args4j.Argument;
 import org.kohsuke.args4j.Option;
 
 /**
+ * {@link IStartupAddon} for loading a project or the recent project
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
 public class LoadProjectStartupAddon implements IStartupAddon {
 	private static final int WIDTH = 400;

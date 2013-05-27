@@ -19,6 +19,10 @@
  *******************************************************************************/
 package org.caleydo.core.startup.internal;
 
+import static org.caleydo.core.manager.GeneralManager.CALEYDO_HOME_PATH;
+
+import java.io.File;
+
 import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.collection.table.TableUtils;
 import org.caleydo.core.data.datadomain.ADataDomain;
@@ -41,25 +45,30 @@ import org.eclipse.core.runtime.Status;
 import com.google.common.base.Function;
 
 public class LoadProjectStartupProcedure implements IStartupProcedure {
-	private final String projectLocation;
+	/**
+	 * full path to directory to temporarily store the projects file before zipping
+	 */
+	public static final String TEMP_PROJECT_ZIP_FOLDER = CALEYDO_HOME_PATH + "temp_load" + File.separator;
+
+	private final String packedProjectLocation;
 	private final String unpackedProjectLocation;
 
 	public LoadProjectStartupProcedure(String project, boolean isAlreadyUnpacked) {
 		if (isAlreadyUnpacked) {
-			this.projectLocation = null;
+			this.packedProjectLocation = null;
 			this.unpackedProjectLocation = project;
 		} else {
-			this.projectLocation = project;
-			this.unpackedProjectLocation = ProjectManager.TEMP_PROJECT_ZIP_FOLDER;
+			this.packedProjectLocation = project;
+			this.unpackedProjectLocation = TEMP_PROJECT_ZIP_FOLDER;
 		}
 	}
 
 	@Override
 	public void preWorkbenchOpen() {
-		if (this.projectLocation != null) {
+		if (this.packedProjectLocation != null) {
 			// unzip data
-			FileOperations.deleteDirectory(ProjectManager.TEMP_PROJECT_ZIP_FOLDER);
-			ZipUtils.unzipToDirectory(this.projectLocation, ProjectManager.TEMP_PROJECT_ZIP_FOLDER);
+			FileOperations.deleteDirectory(this.unpackedProjectLocation);
+			ZipUtils.unzipToDirectory(this.packedProjectLocation, this.unpackedProjectLocation);
 		}
 
 		ProjectManager.loadWorkbenchData(this.unpackedProjectLocation);
@@ -112,8 +121,9 @@ public class LoadProjectStartupProcedure implements IStartupProcedure {
 
 		serializationDataList = ProjectManager.loadProjectData(unpackedProjectLocation);
 
-		if (projectLocation != null) {
-			setTitle.apply("Caleydo - " + this.projectLocation.substring(this.projectLocation.lastIndexOf("/") + 1));
+		if (packedProjectLocation != null) {
+			String normalized = this.packedProjectLocation.replace(File.separatorChar, '/');
+			setTitle.apply("Caleydo - " + normalized.substring(normalized.lastIndexOf('/') + 1));
 		}
 
 		deserializeData(serializationDataList);

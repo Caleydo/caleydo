@@ -52,6 +52,7 @@ public class GeneticGUIStartupProcedure extends AImportStartupProcedure {
 		return super.run(setTitle);
 	}
 
+
 	@Override
 	protected DataImportWizard createDataImportWizard() {
 		if (this.loadSampleData) {

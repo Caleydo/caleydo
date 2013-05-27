@@ -23,4 +23,10 @@
             order="5">
       </addon>
    </extension>
+   <extension
+         point="org.caleydo.serialize.addon">
+      <addon
+            class="org.caleydo.datadomain.genetic.internal.GeneticSerializationAddon">
+      </addon>
+   </extension>
 </plugin>
