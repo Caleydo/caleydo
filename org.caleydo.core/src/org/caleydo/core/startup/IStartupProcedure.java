@@ -19,11 +19,12 @@
  *******************************************************************************/
 package org.caleydo.core.startup;
 
+import com.google.common.base.Function;
 
 /**
- * Abstract startup procedure. Handling of view initialization and application init data.
- *
- * @author Marc Streit
+ * 
+ * @author Samuel Gratzl
+ * 
  */
 public interface IStartupProcedure {
 
@@ -33,7 +34,7 @@ public interface IStartupProcedure {
 	 */
 	void preWorkbenchOpen();
 
-	boolean run();
+	boolean run(Function<String, Void> setTitle);
 
 	/**
 	 * Initialization stuff that has to be done after the workbench opened (e.g., making a specific view activate)

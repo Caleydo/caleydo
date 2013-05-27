@@ -131,11 +131,8 @@ public class LoadProjectStartupAddon implements IStartupAddon {
 		// singleCellGD.widthHint = 100;
 		chooseProjectFile.setLayoutData(singleCellGD);
 
-		String lastProjectFileName = GeneralManager.get().getPreferenceStore()
-				.getString(PreferenceConstants.LAST_MANUALLY_CHOSEN_PROJECT);
 		projectLocationUI = new Text(composite, SWT.BORDER);
 		projectLocationUI.setEnabled(false);
-		projectLocationUI.setText(lastProjectFileName);
 		singleCellGD = new GridData(SWT.FILL, SWT.TOP, true, false);
 		singleCellGD.grabExcessHorizontalSpace = true;
 		// singleCellGD.widthHint = 300;
@@ -163,6 +160,22 @@ public class LoadProjectStartupAddon implements IStartupAddon {
 			}
 		});
 
+		String lastProjectFileName = GeneralManager.get().getPreferenceStore()
+				.getString(PreferenceConstants.LAST_MANUALLY_CHOSEN_PROJECT);
+		if ("recent".equalsIgnoreCase(lastProjectFileName)) {
+			recentProject.setSelection(true);
+		} else {
+			loadProject.setSelection(true);
+			projectLocationUI.setEnabled(true);
+			projectLocationUI.setText(lastProjectFileName);
+			chooseProjectFile.setEnabled(true);
+			if (projectLocationUI.getText() != null && !projectLocationUI.getText().isEmpty()) {
+				page.setPageComplete(true);
+			} else {
+				page.setPageComplete(false);
+			}
+		}
+
 		chooseProjectFile.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -184,8 +197,11 @@ public class LoadProjectStartupAddon implements IStartupAddon {
 
 	@Override
 	public IStartupProcedure create() {
-		if (loadRecentProject || recentProject.getSelection())
+		PreferenceStore store = PreferenceManager.get().getPreferenceStore();
+		if (loadRecentProject || recentProject.getSelection()) {
+			store.setValue(PreferenceConstants.LAST_MANUALLY_CHOSEN_PROJECT, "recent");
 			return new LoadProjectStartupProcedure(ProjectManager.RECENT_PROJECT_FOLDER, true);
+		}
 
 
 		String path;
@@ -193,9 +209,7 @@ public class LoadProjectStartupAddon implements IStartupAddon {
 			path = projectLocation.getAbsolutePath();
 		else
 			path = projectLocationUI.getText();
-		PreferenceStore store = PreferenceManager.get().getPreferenceStore();
 		store.setValue(PreferenceConstants.LAST_MANUALLY_CHOSEN_PROJECT, path);
-
 		return new LoadProjectStartupProcedure(path, false);
 	}
 

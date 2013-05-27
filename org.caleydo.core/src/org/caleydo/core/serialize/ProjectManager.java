@@ -133,18 +133,6 @@ public final class ProjectManager {
 	public static final String TEMP_PROJECT_ZIP_FOLDER = CALEYDO_HOME_PATH + "temp_load" + SEPARATOR;
 
 	/**
-	 * Loads the project from a specified zip-archive.
-	 *
-	 * @param fileName
-	 *            name of the file to load the project from
-	 * @return initialization data for the application from which it can restore itself
-	 */
-	public static void loadProjectFromZIP(String fileName) {
-		FileOperations.deleteDirectory(TEMP_PROJECT_ZIP_FOLDER);
-		ZipUtils.unzipToDirectory(fileName, TEMP_PROJECT_ZIP_FOLDER);
-	}
-
-	/**
 	 * Loads the project from a directory
 	 *
 	 * @param dirName

@@ -30,14 +30,14 @@ import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
-import org.eclipse.jface.preference.IPreferenceNode;
-import org.eclipse.jface.preference.PreferenceManager;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.application.IActionBarConfigurer;
 import org.eclipse.ui.application.IWorkbenchConfigurer;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchAdvisor;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
+
+import com.google.common.base.Function;
 
 public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 	private IStartupProcedure startup;
@@ -64,28 +64,6 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 	public void initialize(IWorkbenchConfigurer configurer) {
 		super.initialize(configurer);
 		configurer.setSaveAndRestore(true);
-	}
-
-	@Override
-	public void postStartup() {
-		super.postStartup();
-
-		filterPreferencePages();
-	}
-
-	private void filterPreferencePages() {
-
-		if (GeneralManager.RELEASE_MODE) {
-			PreferenceManager preferenceManager = this.getWorkbenchConfigurer().getWorkbench().getPreferenceManager();
-
-			for (Object node : preferenceManager.getElements(PreferenceManager.PRE_ORDER)) {
-
-				IPreferenceNode prefNode = (IPreferenceNode) node;
-				if (!prefNode.getId().contains("org.caleydo.core")) {
-					preferenceManager.remove(prefNode);
-				}
-			}
-		}
 	}
 
 	@Override
@@ -148,12 +126,20 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 		/**
 		 * Constructor.
 		 */
-		public ApplicationWorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer) {
+		public ApplicationWorkbenchWindowAdvisor(final IWorkbenchWindowConfigurer configurer) {
 			super(configurer);
 
 			// Init the core because the workbench must already be initialized for
 			// the XML startup progress bar
-			startup.run();
+
+			configurer.setTitle("Caleydo - unsaved project");
+			startup.run(new Function<String, Void>() {
+				@Override
+				public Void apply(String data) {
+					configurer.setTitle(data);
+					return null;
+				}
+			});
 		}
 
 		@Override
@@ -173,13 +159,6 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 		public void postWindowOpen() {
 
 			super.postWindowOpen();
-
-			// If the title was not set during startup (e.g. when a project is
-			// loaded), the default title is set
-			// if (windowTitle == null)
-			// setWindowTitle("Caleydo - unsaved project");
-			// else
-			getWindowConfigurer().setTitle("Caleydo - unsaved project");
 
 			removeNonCaleydoMenuEntries(getWindowConfigurer());
 

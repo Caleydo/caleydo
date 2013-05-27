@@ -28,6 +28,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
+import com.google.common.base.Function;
+
 /**
  * Startup procedure for project wizard.
  * 
@@ -47,7 +49,7 @@ public abstract class AImportStartupProcedure implements IStartupProcedure {
 	}
 
 	@Override
-	public boolean run() {
+	public boolean run(Function<String, Void> setTitle) {
 		DataImportWizard dataImportWizard = createDataImportWizard();
 
 		HelpButtonWizardDialog dialog = new HelpButtonWizardDialog(Display.getCurrent().getActiveShell(),

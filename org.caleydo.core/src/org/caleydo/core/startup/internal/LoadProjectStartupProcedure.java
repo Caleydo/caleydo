@@ -31,31 +31,38 @@ import org.caleydo.core.serialize.DataDomainSerializationData;
 import org.caleydo.core.serialize.ISerializationAddon;
 import org.caleydo.core.serialize.ProjectManager;
 import org.caleydo.core.serialize.SerializationData;
+import org.caleydo.core.serialize.ZipUtils;
 import org.caleydo.core.startup.IStartupProcedure;
 import org.caleydo.core.util.logging.Logger;
+import org.caleydo.core.util.system.FileOperations;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
+import com.google.common.base.Function;
+
 public class LoadProjectStartupProcedure implements IStartupProcedure {
 	private final String projectLocation;
-	private final boolean isDirectory;
+	private final String unpackedProjectLocation;
 
-	public LoadProjectStartupProcedure(String project, boolean isDirectory) {
-		this.projectLocation = project;
-		this.isDirectory = isDirectory;
+	public LoadProjectStartupProcedure(String project, boolean isAlreadyUnpacked) {
+		if (isAlreadyUnpacked) {
+			this.projectLocation = null;
+			this.unpackedProjectLocation = project;
+		} else {
+			this.projectLocation = project;
+			this.unpackedProjectLocation = ProjectManager.TEMP_PROJECT_ZIP_FOLDER;
+		}
 	}
 
 	@Override
 	public void preWorkbenchOpen() {
-		if (isDirectory)
-			ProjectManager.loadWorkbenchData(this.projectLocation);
-		else {
-			ProjectManager.loadProjectFromZIP(this.projectLocation);
-			ProjectManager.loadWorkbenchData(ProjectManager.TEMP_PROJECT_ZIP_FOLDER);
+		if (this.projectLocation != null) {
+			// unzip data
+			FileOperations.deleteDirectory(ProjectManager.TEMP_PROJECT_ZIP_FOLDER);
+			ZipUtils.unzipToDirectory(this.projectLocation, ProjectManager.TEMP_PROJECT_ZIP_FOLDER);
 		}
-		// FIXME
-		// ApplicationWorkbenchWindowAdvisor.setWindowTitle("Caleydo - "
-		// + this.projectLocation.substring(this.projectLocation.lastIndexOf("/") + 1));
+
+		ProjectManager.loadWorkbenchData(this.unpackedProjectLocation);
 	}
 
 	@Override
@@ -96,17 +103,17 @@ public class LoadProjectStartupProcedure implements IStartupProcedure {
 	}
 
 	@Override
-	public boolean run() {
+	public boolean run(Function<String, Void> setTitle) {
 		SerializationData serializationDataList;
 
 		// not calling super.init() on purpose
 
 		Logger.log(new Status(IStatus.INFO, this.toString(), "Load serialized project"));
 
-		if (isDirectory)
-			serializationDataList = ProjectManager.loadProjectData(ProjectManager.RECENT_PROJECT_FOLDER);
-		else {
-			serializationDataList = ProjectManager.loadProjectData(ProjectManager.TEMP_PROJECT_ZIP_FOLDER);
+		serializationDataList = ProjectManager.loadProjectData(unpackedProjectLocation);
+
+		if (projectLocation != null) {
+			setTitle.apply("Caleydo - " + this.projectLocation.substring(this.projectLocation.lastIndexOf("/") + 1));
 		}
 
 		deserializeData(serializationDataList);
