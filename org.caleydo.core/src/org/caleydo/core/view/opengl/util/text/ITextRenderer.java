@@ -80,4 +80,11 @@ public interface ITextRenderer {
 	 * @return
 	 */
 	public boolean isOriginTopLeft();
+
+	/**
+	 * whether since the previous call the texture was updated
+	 * 
+	 * @return
+	 */
+	public boolean isDirty();
 }

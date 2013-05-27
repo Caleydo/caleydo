@@ -103,6 +103,14 @@ public class CompositeTextRenderer implements ITextRenderer {
 	}
 
 	@Override
+	public boolean isDirty() {
+		boolean dirty = false;
+		for (ITextRenderer t : this.pool.values())
+			dirty = t.isDirty() || dirty;
+		return dirty;
+	}
+
+	@Override
 	public boolean isOriginTopLeft() {
 		return false;
 	}

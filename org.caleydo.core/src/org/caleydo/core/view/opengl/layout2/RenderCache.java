@@ -31,6 +31,7 @@ public final class RenderCache {
 	private int validCounter = 0;
 	private int displayListIndex = -1;
 	private int numChars;
+	private boolean wasDirty;
 	private int numVertices;
 
 	public boolean isActive() {
@@ -105,10 +106,12 @@ public final class RenderCache {
 			return false;
 		if (validCounter < 30) // 30 frames no change and not yet recording
 			return false;
-		if (w * h < 1000 || numVertices < 50) // too small area
+		if (w * h < 1000 || numVertices < 100) // too small area
 			return false;
 		// TODO no cache on text
-		if (numChars > 0)
+		// if (numChars > 0)
+		// return false;
+		if (wasDirty)
 			return false;
 		return true;
 	}
@@ -122,9 +125,11 @@ public final class RenderCache {
 		if (end) {
 			numChars += stats.getNumChars();
 			numVertices += stats.getNumVertices();
+			wasDirty = stats.isDirtyTextTexture();
 		} else {
 			numChars = -stats.getNumChars();
 			numVertices = -stats.getNumVertices();
+			wasDirty = stats.isDirtyTextTexture();
 		}
 	}
 
@@ -138,12 +143,20 @@ public final class RenderCache {
 		if (displayListIndex >= 0) {
 			g.gl.glEndList();
 			pool.stopRecording();
-			if (validCounter == 0) { // invalidated in between
+			if (throwAwayRecordedTexture()) { // invalidated in between
 				freeDisplayList(pool);
 			}
 		}
 	}
 
+
+	private boolean throwAwayRecordedTexture() {
+		if (validCounter == 0)
+			return true;
+		if (wasDirty)
+			return true;
+		return false;
+	}
 
 	public void takeDown(DisplayListPool pool) {
 		invalidate(pool);

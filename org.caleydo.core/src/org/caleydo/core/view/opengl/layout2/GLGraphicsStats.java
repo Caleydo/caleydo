@@ -30,6 +30,7 @@ public class GLGraphicsStats {
 	private int numCircles;
 	private int numRoundedRects;
 	private int numChars;
+	private boolean dirtyTextTexture = false;
 	private int numVertices;
 	private int numImages;
 
@@ -116,8 +117,23 @@ public class GLGraphicsStats {
 	}
 
 	/**
+	 * @param dirtyTextTexture
+	 *            setter, see {@link dirtyTextTexture}
+	 */
+	public void dirtyTextTexture() {
+		this.dirtyTextTexture = true;
+	}
+
+	/**
+	 * @return the dirtyTextTexture, see {@link #dirtyTextTexture}
+	 */
+	public boolean isDirtyTextTexture() {
+		return dirtyTextTexture;
+	}
+
+	/**
 	 * @param count
-	 *
+	 * 
 	 */
 	public void incPath(int count) {
 		numVertices += count;

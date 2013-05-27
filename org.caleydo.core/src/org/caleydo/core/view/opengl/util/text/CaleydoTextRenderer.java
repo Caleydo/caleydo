@@ -50,13 +50,12 @@ public class CaleydoTextRenderer extends MyTextRenderer implements ITextRenderer
 	 * @param useFractionalMetrics
 	 */
 	public CaleydoTextRenderer(Font font) {
-		super(font, true, true, new DefaultRenderDelegate(), false);
+		super(font, true, true, new DefaultRenderDelegate());
 		referenceBounds = super.getBounds(REFERENCE_TEXT);
 	}
 
 	public CaleydoTextRenderer(int size) {
-		super(new Font("Arial", Font.PLAIN, size), true, true, new DefaultRenderDelegate(),
- false);
+		super(new Font("Arial", Font.PLAIN, size), true, true, new DefaultRenderDelegate());
 		referenceBounds = super.getBounds(REFERENCE_TEXT);
 	}
 

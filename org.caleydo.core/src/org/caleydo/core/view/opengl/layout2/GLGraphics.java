@@ -475,6 +475,9 @@ public class GLGraphics {
 			y += lineSpace + hi;
 		}
 
+		if (this.text.isDirty())
+			stats.dirtyTextTexture();
+
 		if (originInTopLeft && !this.text.isOriginTopLeft())
 			gl.glPopMatrix();
 		return this;
