@@ -308,6 +308,8 @@ public class GLGraphics {
 	}
 
 	public GLGraphics renderRect(boolean fill, float x, float y, float w, float h) {
+		if (isInvalidOrZero(w) || isInvalidOrZero(h) || isInvalid(x) || isInvalid(y))
+			return this;
 		stats.incRect();
 		gl.glBegin(fill ? GL2.GL_POLYGON : GL.GL_LINE_LOOP);
 		gl.glVertex3f(x, y, z);
@@ -330,6 +332,8 @@ public class GLGraphics {
 	}
 
 	public GLGraphics fillRoundedRect(float x, float y, float w, float h, float radius, int segments) {
+		if (isInvalidOrZero(w) || isInvalidOrZero(h))
+			return this;
 		int count = RoundedRectRenderer.render(this, x, y, w, h, radius, segments, RoundedRectRenderer.FLAG_FILL
 				| RoundedRectRenderer.FLAG_ALL);
 		stats.incRoundedRect(count);
@@ -361,6 +365,8 @@ public class GLGraphics {
 	 * @return
 	 */
 	public GLGraphics fillImage(Texture texture, float x, float y, float w, float h, Color color) {
+		if (isInvalidOrZero(w) || isInvalidOrZero(h) || isInvalid(x) || isInvalid(y))
+			return this;
 		stats.incImage();
 		Vec3f lowerLeftCorner = new Vec3f(x, y, z);
 		Vec3f lowerRightCorner = new Vec3f(x + w, y, z);
@@ -382,6 +388,8 @@ public class GLGraphics {
 	}
 
 	public GLGraphics fillPolygon(Vec2f... points) {
+		if (points.length <= 0)
+			return this;
 		return fillPolygon(Arrays.asList(points));
 	}
 
@@ -390,6 +398,8 @@ public class GLGraphics {
 	}
 
 	public GLGraphics fillPolygon(ITesselatedPolygon polygon) {
+		if (polygon.size() <= 0)
+			return this;
 		stats.incPath(polygon.size());
 		polygon.fill(this, local.getTesselationRenderer());
 		return this;
@@ -408,6 +418,8 @@ public class GLGraphics {
 	}
 
 	private GLGraphics renderCircle(boolean fill, float x, float y, float radius, int numSlices) {
+		if (isInvalidOrZero(radius) || isInvalid(x) || isInvalid(y))
+			return this;
 		stats.incCircle(numSlices);
 		gl.glTranslatef(x, y, z);
 		if (fill)
@@ -437,6 +449,8 @@ public class GLGraphics {
 	 * see {@link #drawText(String, float, float, float, float)} with a dedicated horizontal alignment
 	 */
 	public GLGraphics drawText(String text, float x, float y, float w, float h, VAlign valign) {
+		if (isInvalidOrZero(w) || isInvalidOrZero(h) || isInvalid(x) || isInvalid(y))
+			return this;
 		if (text == null || text.trim().isEmpty())
 			return this;
 		if (text.indexOf('\n') < 0)
@@ -448,6 +462,8 @@ public class GLGraphics {
 
 	public GLGraphics drawText(List<String> lines, float x, float y, float w, float h, float lineSpace,
 			VAlign valign) {
+		if (isInvalidOrZero(w) || isInvalidOrZero(h) || isInvalid(x) || isInvalid(y) || isInvalid(lineSpace))
+			return this;
 		if (lines == null || lines.isEmpty())
 			return this;
 		if (originInTopLeft && !this.text.isOriginTopLeft()) {
@@ -481,6 +497,17 @@ public class GLGraphics {
 		if (originInTopLeft && !this.text.isOriginTopLeft())
 			gl.glPopMatrix();
 		return this;
+	}
+
+	/**
+	 * @param w
+	 * @return checks if the value is invalid
+	 */
+	private static boolean isInvalidOrZero(float v) {
+		return v == 0 || Float.isNaN(v) || Float.isInfinite(v);
+	}
+	private static boolean isInvalid(float v) {
+		return Float.isNaN(v) || Float.isInfinite(v);
 	}
 
 	/**
