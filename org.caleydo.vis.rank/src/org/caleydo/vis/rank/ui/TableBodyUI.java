@@ -169,6 +169,7 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 		setLayout(this);
 		this.scrollBar = config.createScrollBar(false);
 		this.scrollBar.setCallback(this);
+		this.scrollBar.setWidth(RenderStyle.SCROLLBAR_WIDTH);
 	}
 
 	protected void editRow(final OrderColumnUI col, final IRow row) {

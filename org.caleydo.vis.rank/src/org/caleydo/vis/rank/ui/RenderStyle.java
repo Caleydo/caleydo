@@ -141,7 +141,7 @@ public class RenderStyle {
 	public static final float COLOR_STACKED_BORDER_WIDTH = 1;
 	public static final float HEADER_ROUNDED_RADIUS_X = 9;
 	public static final float HEADER_ROUNDED_RADIUS_Y = 14;
-	public static final float SCROLLBAR_WIDTH = 5;
+	public static final float SCROLLBAR_WIDTH = 8;
 	public static final float SEPARATOR_PICK_WIDTH = 11;
 	public static final int STACKED_COLUMN_PADDING = 5;
 

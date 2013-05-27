@@ -50,11 +50,15 @@ public final class ScrollingDecorator extends AGLElementDecorator implements ISc
 		super(content);
 		this.scrollBarWidth = scrollBarWidth;
 		this.horizontal = horizontal != null ? new ScrollBarImpl(horizontal) : null;
-		if (horizontal != null)
+		if (horizontal != null) {
 			horizontal.setCallback(this);
+			horizontal.setWidth(scrollBarWidth);
+		}
 		this.vertical = vertical != null ? new ScrollBarImpl(vertical) : null;
-		if (vertical != null)
+		if (vertical != null) {
 			vertical.setCallback(this);
+			vertical.setWidth(scrollBarWidth);
+		}
 	}
 
 	@Override

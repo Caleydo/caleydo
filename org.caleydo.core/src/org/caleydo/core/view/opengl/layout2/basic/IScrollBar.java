@@ -36,6 +36,10 @@ import org.caleydo.core.view.opengl.picking.IPickingListener;
  */
 public interface IScrollBar extends IGLRenderer, IPickingListener {
 
+	void setWidth(float w);
+
+	float getWidth();
+
 	void renderPick(GLGraphics g, float w, float h, GLElement parent);
 
 	/**

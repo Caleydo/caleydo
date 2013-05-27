@@ -70,6 +70,7 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 		this.rowLayout = rowLayout;
 		this.scrollBar = config.createScrollBar(false);
 		this.scrollBar.setCallback(this);
+		this.scrollBar.setWidth(RenderStyle.SCROLLBAR_WIDTH);
 		ranker.addPropertyChangeListener(ColumnRanker.PROP_ORDER, this);
 		ranker.addPropertyChangeListener(ColumnRanker.PROP_INVALID, this);
 		ranker.getTable().addPropertyChangeListener(RankTableModel.PROP_SELECTED_ROW, this);
