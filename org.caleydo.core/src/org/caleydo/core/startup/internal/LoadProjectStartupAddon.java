@@ -20,6 +20,7 @@
 package org.caleydo.core.startup.internal;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.util.Date;
 
@@ -52,6 +53,9 @@ import org.kohsuke.args4j.Option;
  * 
  */
 public class LoadProjectStartupAddon implements IStartupAddon {
+	private static final String PROPERTY_CALEYDO_PROJECT_LOCATION = "caleydo.project.location";
+	static final String PREFERENCE_LOAD_CALEYDO_PROJECT = "load.caleydo.project";
+
 	private static final int WIDTH = 400;
 
 	@Argument(metaVar = "PROJECT", usage = "the caledyo project to load")
@@ -66,18 +70,37 @@ public class LoadProjectStartupAddon implements IStartupAddon {
 
 	@Override
 	public boolean init() {
+		{// check preference store -> used for open project switch workspace thing
+			PreferenceStore store = PreferenceManager.get().getPreferenceStore();
+			String loc = store.getString(PREFERENCE_LOAD_CALEYDO_PROJECT);
+			if (loc != null && !loc.trim().isEmpty() && checkFileName(loc)) {
+				store.setValue(PREFERENCE_LOAD_CALEYDO_PROJECT, "");
+				try {
+					// save right now the preferences to avoid that when crashing it will load my preferenced project
+					// again
+					store.save();
+				} catch (IOException e) {
+					// ignore
+				}
+				this.projectLocation = new File(loc);
+				return true;
+			}
+		}
+
+		{// check system property
+			String loc = System.getProperty(PROPERTY_CALEYDO_PROJECT_LOCATION);
+			if (loc != null && !loc.trim().isEmpty() && checkFileName(loc)) {
+				this.projectLocation = new File(loc);
+				return true;
+			}
+		}
+
 		if (loadRecentProject)
 			return true;
 		if (projectLocation != null && !checkFileName(projectLocation.getAbsolutePath())) {
 			projectLocation = null;
 		} else if (projectLocation != null)
 			return true;
-
-		String loc = System.getProperty("caleydo.project.location");
-		if (loc != null && checkFileName(loc)) {
-			this.projectLocation = new File(loc);
-			return true;
-		}
 
 		return false;
 	}
@@ -200,7 +223,7 @@ public class LoadProjectStartupAddon implements IStartupAddon {
 	@Override
 	public IStartupProcedure create() {
 		PreferenceStore store = PreferenceManager.get().getPreferenceStore();
-		if (loadRecentProject || recentProject.getSelection()) {
+		if (loadRecentProject || (recentProject != null && recentProject.getSelection())) {
 			store.setValue(PreferenceConstants.LAST_MANUALLY_CHOSEN_PROJECT, "recent");
 			return new LoadProjectStartupProcedure(ProjectManager.RECENT_PROJECT_FOLDER, true);
 		}

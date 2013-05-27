@@ -147,6 +147,11 @@
             id="org.caleydo.core.startup.restart"
             name="Restart">
       </command>
+      <command
+            defaultHandler="org.caleydo.core.startup.internal.OpenProjectCommand"
+            id="org.caleydo.core.startup.open"
+            name="Open Project">
+      </command>
       		
    </extension>
    <extension
@@ -158,6 +163,11 @@
          <menu
                id="org.caleydo.menu.file"
                label="File">
+            <command
+                  commandId="org.caleydo.core.startup.open"
+                  label="Open Project"
+                  style="push">
+            </command>
             <command
                   commandId="org.caleydo.core.io.gui.save_project"
                   icon="resources/icons/general/save.png"
