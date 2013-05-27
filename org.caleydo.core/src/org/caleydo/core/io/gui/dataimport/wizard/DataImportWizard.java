@@ -53,6 +53,11 @@ public class DataImportWizard extends Wizard {
 	private CategoricalDataPropertiesPage categoricalDataPage;
 
 	/**
+	 * Page of the wizard that is used to specify properties for an inhomogeneous dataset.
+	 */
+	private InhomogeneousDataPropertiesPage inhomogeneousDataPropertiesPage;
+
+	/**
 	 * The data page chosen by the user (numerical, categorical, or inhomogeneous).
 	 */
 	private AImportDataPage chosenDataTypePage;
@@ -68,9 +73,19 @@ public class DataImportWizard extends Wizard {
 	private List<List<String>> filteredDataMatrix;
 
 	/**
-	 * All of the dataset that shall be imported.
+	 * Indices of all columns of the dataset that shall be imported.
 	 */
 	private List<Integer> selectedColumns;
+
+	/**
+	 * List of selected columnIDs as they occur in the dataset.
+	 */
+	private List<String> filteredRowOfColumnIDs;
+
+	/**
+	 * List of rowIDs as they occur in the dataset.
+	 */
+	private List<String> columnOfRowIDs;
 
 	private Set<AImportDataPage> visitedPages = new HashSet<AImportDataPage>();
 
@@ -95,6 +110,7 @@ public class DataImportWizard extends Wizard {
 		dataSetTypePage = new DataSetTypePage(dataSetDescription);
 		numericalDataPage = new NumericalDataPropertiesPage(dataSetDescription);
 		categoricalDataPage = new CategoricalDataPropertiesPage(dataSetDescription);
+		inhomogeneousDataPropertiesPage = new InhomogeneousDataPropertiesPage(dataSetDescription);
 		addGroupingsPage = new AddGroupingsPage(dataSetDescription);
 
 		IWizardContainer wizardContainer = getContainer();
@@ -104,6 +120,7 @@ public class DataImportWizard extends Wizard {
 			pageChangeProvider.addPageChangedListener(dataSetTypePage);
 			pageChangeProvider.addPageChangedListener(numericalDataPage);
 			pageChangeProvider.addPageChangedListener(categoricalDataPage);
+			pageChangeProvider.addPageChangedListener(inhomogeneousDataPropertiesPage);
 			pageChangeProvider.addPageChangedListener(addGroupingsPage);
 		}
 
@@ -111,6 +128,7 @@ public class DataImportWizard extends Wizard {
 		addPage(dataSetTypePage);
 		addPage(categoricalDataPage);
 		addPage(numericalDataPage);
+		addPage(inhomogeneousDataPropertiesPage);
 		addPage(addGroupingsPage);
 	}
 
@@ -264,6 +282,43 @@ public class DataImportWizard extends Wizard {
 	 */
 	public List<Integer> getSelectedColumns() {
 		return selectedColumns;
+	}
+
+	/**
+	 * @return the inhomogeneousDataPropertiesPage, see {@link #inhomogeneousDataPropertiesPage}
+	 */
+	public InhomogeneousDataPropertiesPage getInhomogeneousDataPropertiesPage() {
+		return inhomogeneousDataPropertiesPage;
+	}
+
+	/**
+	 * @return the filteredRowOfColumnIDs, see {@link #filteredRowOfColumnIDs}
+	 */
+	public List<String> getFilteredRowOfColumnIDs() {
+		return filteredRowOfColumnIDs;
+	}
+
+	/**
+	 * @param filteredRowOfColumnIDs
+	 *            setter, see {@link filteredRowOfColumnIDs}
+	 */
+	public void setFilteredRowOfColumnIDs(List<String> filteredRowOfColumnIDs) {
+		this.filteredRowOfColumnIDs = filteredRowOfColumnIDs;
+	}
+
+	/**
+	 * @return the columnOfRowIDs, see {@link #columnOfRowIDs}
+	 */
+	public List<String> getColumnOfRowIDs() {
+		return columnOfRowIDs;
+	}
+
+	/**
+	 * @param columnOfRowIDs
+	 *            setter, see {@link columnOfRowIDs}
+	 */
+	public void setColumnOfRowIDs(List<String> columnOfRowIDs) {
+		this.columnOfRowIDs = columnOfRowIDs;
 	}
 
 }

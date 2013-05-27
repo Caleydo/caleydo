@@ -79,7 +79,6 @@ public class DataSetTypePage extends AImportDataPage {
 
 		inhomogeneousDatasetButton = new Button(group, SWT.RADIO);
 		inhomogeneousDatasetButton.setText("Inhomogeneous");
-		inhomogeneousDatasetButton.setEnabled(false);
 		boldifyButtonText(inhomogeneousDatasetButton);
 		Label inhomogeneousDatasetLabel = new Label(group, SWT.NONE);
 		inhomogeneousDatasetLabel.setText("Description...");
@@ -109,6 +108,7 @@ public class DataSetTypePage extends AImportDataPage {
 						new CategoricalClassDescription<String>()));
 			}
 		}
+		// No global data description for inhomogeneous
 	}
 
 	@Override
@@ -127,7 +127,6 @@ public class DataSetTypePage extends AImportDataPage {
 		} else if (categoricalDatasetButton.getSelection()) {
 			return wizard.getCategoricalDataPage();
 		}
-		// TODO
-		return super.getNextPage();
+		return wizard.getInhomogeneousDataPropertiesPage();
 	}
 }

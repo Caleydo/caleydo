@@ -45,19 +45,27 @@ import org.eclipse.swt.widgets.Composite;
  * @author Christian Partl
  *
  */
-public class ColumnConfigTableWidget extends AMatrixBasedTableWidget {
+public class ColumnConfigTableWidget {
+
+	protected NatTable table;
+
+	protected Composite parent;
+
+	protected MatrixBasedBodyDataProvider bodyDataProvider;
 
 	private class ColumnHeaderDataProvider implements IDataProvider {
 
-		private int numColumns;
+		private List<String> rowOfColumnIDs;
 
-		public ColumnHeaderDataProvider(int numColumns) {
-			this.numColumns = numColumns;
+		public ColumnHeaderDataProvider(List<String> rowOfColumnIDs) {
+			this.rowOfColumnIDs = rowOfColumnIDs;
 		}
 
 		@Override
 		public Object getDataValue(int columnIndex, int rowIndex) {
-			return columnIndex + 1;
+			if (rowIndex == 0 || rowOfColumnIDs == null)
+				return columnIndex + 1;
+			return rowOfColumnIDs.get(columnIndex);
 		}
 
 		@Override
@@ -66,24 +74,59 @@ public class ColumnConfigTableWidget extends AMatrixBasedTableWidget {
 
 		@Override
 		public int getColumnCount() {
-			return numColumns;
+			if (rowOfColumnIDs == null)
+				return 1;
+			return rowOfColumnIDs.size();
 		}
 
 		@Override
 		public int getRowCount() {
+			return 2;
+		}
+
+	}
+
+	private class RowHeaderDataProvider implements IDataProvider {
+
+		private List<String> columnOfRowIDs;
+
+		public RowHeaderDataProvider(List<String> columnOfRowIDs) {
+			this.columnOfRowIDs = columnOfRowIDs;
+		}
+
+		@Override
+		public Object getDataValue(int columnIndex, int rowIndex) {
+			if (columnOfRowIDs == null)
+				return rowIndex + 1;
+			return columnOfRowIDs.get(rowIndex);
+		}
+
+		@Override
+		public void setDataValue(int columnIndex, int rowIndex, Object newValue) {
+		}
+
+		@Override
+		public int getColumnCount() {
 			return 1;
+		}
+
+		@Override
+		public int getRowCount() {
+			if (columnOfRowIDs == null)
+				return 1;
+			return columnOfRowIDs.size();
 		}
 
 	}
 
 	public ColumnConfigTableWidget(Composite parent) {
-		super(parent);
+		this.parent = parent;
 		bodyDataProvider = new MatrixBasedBodyDataProvider(null, 1);
-		buildTable(bodyDataProvider, new ColumnHeaderDataProvider(1), new LineNumberRowHeaderDataProvider(1));
+		buildTable(bodyDataProvider, new ColumnHeaderDataProvider(null), new RowHeaderDataProvider(null));
 	}
 
 	private void buildTable(MatrixBasedBodyDataProvider bodyDataProvider, ColumnHeaderDataProvider columnDataProvider,
-			LineNumberRowHeaderDataProvider rowDataProvider) {
+			RowHeaderDataProvider rowDataProvider) {
 
 		if (table != null) { // cleanup old
 			this.table.dispose();
@@ -97,7 +140,7 @@ public class ColumnConfigTableWidget extends AMatrixBasedTableWidget {
 		final DataLayer columnDataLayer = new DataLayer(columnDataProvider);
 		ColumnHeaderLayer columnHeaderLayer = new ColumnHeaderLayer(columnDataLayer, bodyLayer, selectionLayer);
 
-		DataLayer rowDataLayer = new DataLayer(rowDataProvider, 50, 20);
+		DataLayer rowDataLayer = new DataLayer(rowDataProvider);
 		RowHeaderLayer rowHeaderLayer = new RowHeaderLayer(rowDataLayer, bodyLayer, selectionLayer);
 
 		DefaultCornerDataProvider cornerDataProvider = new DefaultCornerDataProvider(columnDataProvider,
@@ -168,14 +211,14 @@ public class ColumnConfigTableWidget extends AMatrixBasedTableWidget {
 
 	}
 
-	@Override
-	public void createTableFromMatrix(List<List<String>> dataMatrix, int numColumns) {
+	public void createTableFromMatrix(List<List<String>> dataMatrix, List<String> rowOfColumnIDs,
+			List<String> columnOfRowIDs) {
 		if (dataMatrix == null || dataMatrix.isEmpty())
 			return;
 
-		bodyDataProvider = new MatrixBasedBodyDataProvider(dataMatrix, numColumns);
-		buildTable(bodyDataProvider, new ColumnHeaderDataProvider(numColumns), new LineNumberRowHeaderDataProvider(
-				dataMatrix.size()));
+		bodyDataProvider = new MatrixBasedBodyDataProvider(dataMatrix, rowOfColumnIDs.size());
+		buildTable(bodyDataProvider, new ColumnHeaderDataProvider(rowOfColumnIDs), new RowHeaderDataProvider(
+				columnOfRowIDs));
 
 	}
 
