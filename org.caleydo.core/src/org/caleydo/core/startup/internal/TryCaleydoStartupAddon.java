@@ -21,7 +21,7 @@ package org.caleydo.core.startup.internal;
 
 import org.caleydo.core.startup.IStartupAddon;
 import org.caleydo.core.startup.IStartupProcedure;
-import org.caleydo.core.util.link.LinkHandler;
+import org.caleydo.core.util.system.BrowserUtils;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -59,7 +59,7 @@ public class TryCaleydoStartupAddon implements IStartupAddon {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				String link = e.text;
-				LinkHandler.openLink(link);
+				BrowserUtils.openURL(link);
 			}
 
 		};

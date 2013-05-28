@@ -19,7 +19,7 @@ import org.caleydo.core.io.gui.dataimport.widget.LabelWidget;
 import org.caleydo.core.io.gui.dataimport.widget.LoadFileWidget;
 import org.caleydo.core.io.gui.dataimport.widget.RowConfigWidget;
 import org.caleydo.core.util.execution.SafeCallable;
-import org.caleydo.core.util.link.LinkHandler;
+import org.caleydo.core.util.system.BrowserUtils;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
@@ -147,7 +147,7 @@ public class ImportGroupingDialog extends AHelpButtonDialog implements SafeCalla
 
 	@Override
 	protected void helpPressed() {
-		LinkHandler.openLink("http://www.icg.tugraz.at/project/caleydo/help/caleydo-2.0/loading-data");
+		BrowserUtils.openURL("http://www.icg.tugraz.at/project/caleydo/help/caleydo-2.0/loading-data");
 	}
 
 	@Override

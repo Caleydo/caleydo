@@ -14,7 +14,7 @@ import org.caleydo.core.io.gui.dataimport.widget.ICallback;
 import org.caleydo.core.io.gui.dataimport.widget.LabelWidget;
 import org.caleydo.core.io.gui.dataimport.widget.LoadFileWidget;
 import org.caleydo.core.util.execution.SafeCallable;
-import org.caleydo.core.util.link.LinkHandler;
+import org.caleydo.core.util.system.BrowserUtils;
 import org.caleydo.view.tourguide.api.score.ECombinedOperator;
 import org.caleydo.view.tourguide.api.util.EnumUtils;
 import org.caleydo.view.tourguide.internal.external.AExternalScoreParseSpecification;
@@ -214,7 +214,7 @@ public abstract class AImportExternalScoreDialog<T extends AExternalScoreParseSp
 
 	@Override
 	protected void helpPressed() {
-		LinkHandler.openLink("http://www.icg.tugraz.at/project/caleydo/help/caleydo-2.0/loading-data");
+		BrowserUtils.openURL("http://www.icg.tugraz.at/project/caleydo/help/caleydo-2.0/loading-data");
 	}
 
 	@Override

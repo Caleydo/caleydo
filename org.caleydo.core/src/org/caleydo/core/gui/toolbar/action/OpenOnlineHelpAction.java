@@ -20,7 +20,7 @@
 package org.caleydo.core.gui.toolbar.action;
 
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.util.link.LinkHandler;
+import org.caleydo.core.util.system.BrowserUtils;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -48,6 +48,6 @@ public class OpenOnlineHelpAction extends Action {
 	public void run() {
 		super.run();
 		setChecked(false);
-		LinkHandler.openLink(url);
+		BrowserUtils.openURL(url);
 	}
 }

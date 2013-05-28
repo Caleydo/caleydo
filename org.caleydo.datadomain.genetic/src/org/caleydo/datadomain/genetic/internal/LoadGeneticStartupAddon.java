@@ -23,7 +23,7 @@ import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.manager.PreferenceManager;
 import org.caleydo.core.startup.IStartupAddon;
 import org.caleydo.core.startup.IStartupProcedure;
-import org.caleydo.core.util.link.LinkHandler;
+import org.caleydo.core.util.system.BrowserUtils;
 import org.caleydo.datadomain.genetic.Organism;
 import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.jface.wizard.WizardPage;
@@ -78,7 +78,7 @@ public class LoadGeneticStartupAddon implements IStartupAddon {
 		SelectionAdapter linkSelectedAdapter = new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				LinkHandler.openLink(e.text);
+				BrowserUtils.openURL(e.text);
 			}
 		};
 

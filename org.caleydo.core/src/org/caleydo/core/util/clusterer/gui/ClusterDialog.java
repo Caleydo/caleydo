@@ -36,7 +36,7 @@ import org.caleydo.core.util.clusterer.Clusterers;
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.EClustererTarget;
 import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
-import org.caleydo.core.util.link.LinkHandler;
+import org.caleydo.core.util.system.BrowserUtils;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.TrayDialog;
 import org.eclipse.swt.SWT;
@@ -379,7 +379,7 @@ public class ClusterDialog extends AHelpButtonDialog implements IDataOKListener 
 
 	@Override
 	protected void helpPressed() {
-		LinkHandler.openLink("http://www.icg.tugraz.at/project/caleydo/help/manipulating-data#clustering");
+		BrowserUtils.openURL("http://www.icg.tugraz.at/project/caleydo/help/manipulating-data#clustering");
 	}
 
 }
