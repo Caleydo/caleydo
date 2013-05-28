@@ -17,25 +17,22 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.startup;
-
-import org.eclipse.core.commands.AbstractHandler;
-import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.ui.PlatformUI;
+package org.caleydo.core.internal;
 
 /**
- * simple restart command to restart the whole application
+ * set of system properties than can be set to influence the behavior of the caleydo framework
+ *
  * @author Samuel Gratzl
  *
  */
-public class RestartCommand extends AbstractHandler {
-	private static final String PROP_EXIT_CODE = "eclipse.exitcode"; //$NON-NLS-1$
+public class ConsoleFlags {
+	/**
+	 * enables experimental features, which are not yet released
+	 */
+	public static final boolean EXPERIMENTAL_MODE = Boolean.getBoolean("org.caleydo.experimental");
 
-	@Override
-	public Object execute(ExecutionEvent event) throws ExecutionException {
-		System.setProperty(PROP_EXIT_CODE, Integer.toString(24));
-		PlatformUI.getWorkbench().restart();
-		return null;
-	}
+	/**
+	 * chooses the implementation for the jogl canvas, possible values are: awt, swt (default) and newt
+	 */
+	public static final String CANVAS_IMPLEMENTATION = System.getProperty("org.caleydo.opengl", "swt");
 }

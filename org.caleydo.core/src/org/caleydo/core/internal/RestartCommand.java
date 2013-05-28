@@ -17,36 +17,25 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.startup;
+package org.caleydo.core.internal;
 
-import java.util.HashMap;
-import java.util.Map;
+import org.eclipse.core.commands.AbstractHandler;
+import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.ui.PlatformUI;
 
-import org.caleydo.core.manager.GeneralManager;
-
-public class AbstractSourceProvider
-	extends org.eclipse.ui.AbstractSourceProvider {
-
-	public final static String RELEASE_STATE = "org.caleydo.core.isReleaseState";
-
-	private final static String RELEASE_VERSION = "releaseVersion";
-	private final static String FULL_VERSION = "fullVersion";
-
-	@Override
-	public void dispose() {
-	}
+/**
+ * simple restart command to restart the whole application
+ * @author Samuel Gratzl
+ *
+ */
+public class RestartCommand extends AbstractHandler {
+	private static final String PROP_EXIT_CODE = "eclipse.exitcode"; //$NON-NLS-1$
 
 	@Override
-	public Map<String, String> getCurrentState() {
-		Map<String, String> currentState = new HashMap<String, String>(1);
-		String currentStateTmp = GeneralManager.RELEASE_MODE ? FULL_VERSION : RELEASE_VERSION;
-		currentState.put(RELEASE_STATE, currentStateTmp);
-		return currentState;
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		System.setProperty(PROP_EXIT_CODE, Integer.toString(24));
+		PlatformUI.getWorkbench().restart();
+		return null;
 	}
-
-	@Override
-	public String[] getProvidedSourceNames() {
-		return new String[] { RELEASE_STATE };
-	}
-
 }

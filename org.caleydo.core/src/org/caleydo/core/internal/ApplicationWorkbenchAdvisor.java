@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.startup;
+package org.caleydo.core.internal;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -26,6 +26,7 @@ import org.caleydo.core.gui.perspective.GenomePerspective;
 import org.caleydo.core.gui.perspective.PartListener;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ProjectManager;
+import org.caleydo.core.startup.IStartupProcedure;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;

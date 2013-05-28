@@ -17,17 +17,14 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.startup.gui;
+package org.caleydo.core.internal.gui;
 
-import java.io.IOException;
 import java.util.Map;
 
-import org.caleydo.core.gui.preferences.PreferenceConstants;
-import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.internal.MyPreferences;
 import org.caleydo.core.startup.IStartupAddon;
 import org.caleydo.core.startup.IStartupProcedure;
 import org.caleydo.core.util.collection.Pair;
-import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Monitor;
@@ -81,20 +78,10 @@ public class CaleydoProjectWizard
 	public boolean performFinish() {
 		ChooseProjectTypePage page = getChosenProjectTypePage();
 		if (page.isPageComplete()) {
-			PreferenceStore prefStore = GeneralManager.get().getPreferenceStore();
-
 			Pair<String, IStartupAddon> addon = page.getSelectedAddon();
-			prefStore.setValue(PreferenceConstants.LAST_CHOSEN_PROJECT_MODE, addon.getFirst());
+			MyPreferences.setLastChosenProjectMode(addon.getFirst());
 
 			setResult(addon.getSecond().create());
-
-			try {
-				prefStore.save();
-			}
-			catch (IOException e) {
-				throw new IllegalStateException("Unable to save preference file.");
-			}
-
 			return true;
 		}
 

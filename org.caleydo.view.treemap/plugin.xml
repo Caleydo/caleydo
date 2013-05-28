@@ -51,11 +51,17 @@
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
-            category="org.caleydo.core.gui.preferences.ViewPreferencePage"
+            category="org.caleydo.core.gui.preferences.views"
             class="org.caleydo.view.treemap.preferences.TreeMapPreferencePage"
             id="org.caleydo.view.treemap.preferences.TreeMapPreferencePage"
             name="Tree Map">
       </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="org.caleydo.view.treemap.preferences.MyPreferences">
+      </initializer>
    </extension>
    <extension
          point="org.eclipse.ui.perspectiveExtensions">

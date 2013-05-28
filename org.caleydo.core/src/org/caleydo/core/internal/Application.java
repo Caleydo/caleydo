@@ -17,20 +17,20 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.startup;
+package org.caleydo.core.internal;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Properties;
 import java.util.TreeSet;
 
+import org.caleydo.core.internal.gui.CaleydoProjectWizard;
+import org.caleydo.core.internal.startup.StartupAddons;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.PreferenceManager;
-import org.caleydo.core.startup.gui.CaleydoProjectWizard;
+import org.caleydo.core.startup.IStartupAddon;
+import org.caleydo.core.startup.IStartupProcedure;
 import org.caleydo.core.util.logging.Logger;
-import org.caleydo.core.view.ViewManager;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
@@ -85,8 +85,6 @@ public class Application implements IApplication {
 			startup = null;
 
 			int returnCode = PlatformUI.createAndRunWorkbench(display, advisor);
-
-			takeDown(log);
 
 			log.info("Bye bye!");
 
@@ -205,18 +203,4 @@ public class Application implements IApplication {
 			}
 		});
 	}
-
-	private static void takeDown(Logger log) {
-		ViewManager.get().stopAnimator();
-
-		try {
-			log.info("Save Caleydo preferences...");
-			PreferenceManager.get().getPreferenceStore().save();
-		} catch (IOException ioException) {
-			throw new IllegalStateException("Unable to save preference file at: "
-					+ PreferenceManager.getPreferencePath(), ioException);
-		}
-
-	}
-
 }

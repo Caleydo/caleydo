@@ -21,7 +21,7 @@
          point="org.eclipse.core.runtime.applications">
       <application>
          <run
-               class="org.caleydo.core.startup.Application">
+               class="org.caleydo.core.internal.Application">
          </run>
       </application>
    </extension>
@@ -82,7 +82,7 @@
          name="Caleydo"
          point="org.eclipse.ui.splashHandlers">
       <splashHandler
-            class="org.caleydo.core.startup.InteractiveSplashHandler"
+            class="org.caleydo.core.internal.InteractiveSplashHandler"
             id="org.caleydo.core.startup.progress">
       </splashHandler>
       <splashHandlerProductBinding
@@ -93,7 +93,7 @@
    <extension
          point="org.eclipse.ui.commands">
       <command
-            defaultHandler="org.caleydo.core.startup.ExitHandler"
+            defaultHandler="org.caleydo.core.internal.ExitHandler"
             id="org.caleydo.core.startup.exit"
             name="Exit">
       </command>
@@ -143,12 +143,12 @@
             name="Tool Bar">
       </command>
       <command
-            defaultHandler="org.caleydo.core.startup.RestartCommand"
+            defaultHandler="org.caleydo.core.internal.RestartCommand"
             id="org.caleydo.core.startup.restart"
             name="Restart">
       </command>
       <command
-            defaultHandler="org.caleydo.core.startup.internal.OpenProjectCommand"
+            defaultHandler="org.caleydo.core.internal.startup.OpenProjectCommand"
             id="org.caleydo.core.startup.open"
             name="Open Project">
       </command>
@@ -316,14 +316,14 @@
             </page-->
             <page
                   class="org.caleydo.core.gui.preferences.ViewPreferencePage"
-                  id="org.caleydo.core.gui.preferences.ViewPreferencePage"
+                  id="org.caleydo.core.gui.preferences.views"
                   name="Views">
             </page>
    </extension>
       <extension
             point="org.eclipse.ui.services">
          <sourceProvider
-               provider="org.caleydo.core.startup.AbstractSourceProvider">
+               provider="org.caleydo.core.internal.AbstractSourceProvider">
             <variable
                   name="org.caleydo.core.isReleaseState"
                   priorityLevel="workbench">
@@ -357,12 +357,12 @@
       <extension
             point="org.caleydo.core.StartupAddon">
          <addon
-               class="org.caleydo.core.startup.internal.TryCaleydoStartupAddon"
+               class="org.caleydo.core.internal.startup.TryCaleydoStartupAddon"
                name="Try Caleydo"
                order="0">
          </addon>
          <addon
-               class="org.caleydo.core.startup.internal.LoadProjectStartupAddon"
+               class="org.caleydo.core.internal.startup.LoadProjectStartupAddon"
                name="Load Project"
                order="1000">
          </addon>

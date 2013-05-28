@@ -17,22 +17,37 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.manager;
+package org.caleydo.core.internal.startup;
 
+import org.caleydo.core.internal.MyPreferences;
+import org.eclipse.core.commands.AbstractHandler;
+import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.FileDialog;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.handlers.HandlerUtil;
 /**
- * set of system properties than can be set to influence the behavior of the caleydo framework
- *
+ * simple restart command to restart the whole application
  * @author Samuel Gratzl
  *
  */
-public class ConsoleFlags {
-	/**
-	 * enables experimental features, which are not yet released
-	 */
-	public static final boolean EXPERIMENTAL_MODE = Boolean.getBoolean("org.caleydo.experimental");
+public class OpenProjectCommand extends AbstractHandler {
 
-	/**
-	 * chooses the implementation for the jogl canvas, possible values are: awt, swt (default) and newt
-	 */
-	public static final String CANVAS_IMPLEMENTATION = System.getProperty("org.caleydo.opengl", "swt");
+	@Override
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		FileDialog fileDialog = new FileDialog(HandlerUtil.getActiveShell(event), SWT.OPEN);
+		fileDialog.setText("Load Project");
+		String[] filterExt = { "*.cal" };
+		fileDialog.setFilterExtensions(filterExt);
+
+		String fileName = fileDialog.open();
+		if (fileName != null) {
+			MyPreferences.setAutoLoadProject(fileName);
+
+			// restart
+			PlatformUI.getWorkbench().restart();
+		}
+		return null;
+	}
 }

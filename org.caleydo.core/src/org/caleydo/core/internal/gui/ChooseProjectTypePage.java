@@ -17,14 +17,13 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.startup.gui;
+package org.caleydo.core.internal.gui;
 
 import java.util.Map;
 import java.util.Objects;
 
-import org.caleydo.core.gui.preferences.PreferenceConstants;
-import org.caleydo.core.manager.PreferenceManager;
-import org.caleydo.core.startup.Activator;
+import org.caleydo.core.internal.Activator;
+import org.caleydo.core.internal.MyPreferences;
 import org.caleydo.core.startup.IStartupAddon;
 import org.caleydo.core.util.collection.Pair;
 import org.eclipse.jface.wizard.WizardPage;
@@ -78,8 +77,7 @@ public class ChooseProjectTypePage extends WizardPage {
 		gridData.widthHint = WIDTH;
 		tabFolder.setLayoutData(gridData);
 
-		String previous = PreferenceManager.get().getPreferenceStore()
-				.getString(PreferenceConstants.LAST_CHOSEN_PROJECT_MODE);
+		String previous = MyPreferences.getLastChosenProjectMode();
 
 		for (Map.Entry<String, IStartupAddon> addon : addons.entrySet()) {
 			Composite tabContent = addon.getValue().create(tabFolder, this);

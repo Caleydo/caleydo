@@ -21,8 +21,7 @@ package org.caleydo.core.startup;
 
 import org.caleydo.core.gui.util.HelpButtonWizardDialog;
 import org.caleydo.core.io.gui.dataimport.wizard.DataImportWizard;
-import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.util.system.FileOperations;
+import org.caleydo.core.serialize.ProjectManager;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PartInitException;
@@ -40,7 +39,7 @@ public abstract class AImportStartupProcedure implements IStartupProcedure {
 
 	public AImportStartupProcedure() {
 		// Delete old workbench state
-		FileOperations.deleteDirectory(GeneralManager.CALEYDO_HOME_PATH + ".metadata");
+		ProjectManager.deleteWorkbenchSettings();
 	}
 
 	@Override

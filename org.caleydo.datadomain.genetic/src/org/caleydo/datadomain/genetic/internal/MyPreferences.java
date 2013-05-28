@@ -17,39 +17,28 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.gui.preferences;
+package org.caleydo.datadomain.genetic.internal;
 
-import org.eclipse.jface.preference.PreferencePage;
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.IWorkbenchPreferencePage;
+import org.caleydo.datadomain.genetic.Activator;
+import org.caleydo.datadomain.genetic.Organism;
+import org.eclipse.jface.preference.IPreferenceStore;
 
-public class ViewPreferencePage
-	extends PreferencePage
-	implements IWorkbenchPreferencePage {
+/**
+ * @author Samuel Gratzl
+ *
+ */
+public class MyPreferences {
+	private static final String LAST_CHOSEN_ORGANISM = "lastChosenOrganism";
 
-	public ViewPreferencePage() {
-
+	private static IPreferenceStore prefs() {
+		return Activator.getDefault().getPreferenceStore();
+	}
+	public static Organism getLastChosenOrganism() {
+		String v = prefs().getString(LAST_CHOSEN_ORGANISM);
+		return Organism.MUS_MUSCULUS.name().equals(v) ? Organism.MUS_MUSCULUS : Organism.HOMO_SAPIENS;
 	}
 
-	public ViewPreferencePage(String title) {
-		super(title);
-	}
-
-	public ViewPreferencePage(String title, ImageDescriptor image) {
-		super(title, image);
-	}
-
-	@Override
-	public void init(IWorkbench workbench) {
-		setDescription("View Specific Preferences");
-	}
-
-	@Override
-	protected Control createContents(Composite parent) {
-		return new Composite(parent, SWT.NULL);
+	public static void setLastChosenOrganism(Organism organism) {
+		prefs().setValue(LAST_CHOSEN_ORGANISM, organism.name());
 	}
 }

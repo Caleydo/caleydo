@@ -775,4 +775,4 @@ Bundle-ClassPath: .
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: www.caleydo.org
-Bundle-Activator: org.caleydo.core.startup.Activator
+Bundle-Activator: org.caleydo.core.internal.Activator

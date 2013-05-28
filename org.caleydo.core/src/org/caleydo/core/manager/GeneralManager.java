@@ -29,6 +29,7 @@ import java.io.File;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.id.object.IDCreator;
+import org.caleydo.core.internal.ConsoleFlags;
 import org.caleydo.core.serialize.ProjectMetaData;
 import org.caleydo.core.serialize.SerializationManager;
 import org.caleydo.core.startup.SWTGUIManager;
@@ -38,7 +39,6 @@ import org.caleydo.data.loader.ResourceLoader;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.jface.preference.PreferenceStore;
 
 /**
  * General manager that contains all module managers.
@@ -103,10 +103,6 @@ public class GeneralManager {
 	private ProjectMetaData metaData = new ProjectMetaData();
 
 	public void init() {
-
-		PreferenceManager preferenceManager = PreferenceManager.get();
-		preferenceManager.initialize();
-
 		eventPublisher = EventPublisher.INSTANCE;
 		viewManager = ViewManager.get();
 		swtGUIManager = new SWTGUIManager();
@@ -168,14 +164,6 @@ public class GeneralManager {
 
 	public EventPublisher getEventPublisher() {
 		return eventPublisher;
-	}
-
-	/**
-	 * Returns the preference store where Caleydo stores its preferences. The
-	 * object can store and restore preferences to/from a predefined file.
-	 */
-	public PreferenceStore getPreferenceStore() {
-		return PreferenceManager.get().getPreferenceStore();
 	}
 
 	public IDCreator getIDCreator() {

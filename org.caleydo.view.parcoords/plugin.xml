@@ -63,6 +63,7 @@
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
+            category="org.caleydo.core.gui.preferences.views"
             class="org.caleydo.view.parcoords.preferences.ParCoordsPreferencePage"
             id="org.caleydo.view.parcoords.page1"
             name="Parallel Coordinates Plot">

@@ -19,13 +19,10 @@
  *******************************************************************************/
 package org.caleydo.datadomain.genetic.internal;
 
-import org.caleydo.core.gui.preferences.PreferenceConstants;
-import org.caleydo.core.manager.PreferenceManager;
 import org.caleydo.core.startup.IStartupAddon;
 import org.caleydo.core.startup.IStartupProcedure;
 import org.caleydo.core.util.system.BrowserUtils;
 import org.caleydo.datadomain.genetic.Organism;
-import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -50,7 +47,7 @@ public class LoadGeneticStartupAddon implements IStartupAddon {
 	private static final int WIDTH = 400;
 
 	@Option(name = "-organism", aliases = { "--organism" }, usage = "the organism to use")
-	private Organism organism = Organism.HOMO_SAPIENS;
+	private Organism organism;
 
 	@Option(name = "-loadGeneData")
 	private boolean loadGeneData;
@@ -60,13 +57,10 @@ public class LoadGeneticStartupAddon implements IStartupAddon {
 
 	@Override
 	public boolean init() {
+		if (organism == null)
+			organism = MyPreferences.getLastChosenOrganism();
 		if (loadGeneData || loadSampleGeneData)
 			return true;
-
-		// restore last settings
-		PreferenceStore preferenceStore = PreferenceManager.get().getPreferenceStore();
-		if (Organism.MUS_MUSCULUS.name().equals(preferenceStore.getString(PreferenceConstants.LAST_CHOSEN_ORGANISM)))
-			organism = Organism.MUS_MUSCULUS;
 
 		return false;
 	}
@@ -160,8 +154,7 @@ public class LoadGeneticStartupAddon implements IStartupAddon {
 
 	@Override
     public IStartupProcedure create() {
-		PreferenceStore prefStore = PreferenceManager.get().getPreferenceStore();
-		prefStore.setValue(PreferenceConstants.LAST_CHOSEN_ORGANISM, organism.name());
+		MyPreferences.setLastChosenOrganism(organism);
 		return new GeneticGUIStartupProcedure(organism, loadSampleGeneData);
     }
 

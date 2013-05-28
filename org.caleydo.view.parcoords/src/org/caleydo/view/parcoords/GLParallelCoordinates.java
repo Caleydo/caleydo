@@ -65,7 +65,6 @@ import org.caleydo.core.event.data.SelectionUpdateEvent;
 import org.caleydo.core.event.view.ResetAllViewsEvent;
 import org.caleydo.core.event.view.TablePerspectivesChangedEvent;
 import org.caleydo.core.event.view.UseRandomSamplingEvent;
-import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.format.Formatter;

@@ -17,39 +17,36 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.gui.preferences;
+package org.caleydo.core.internal;
 
-import org.eclipse.jface.preference.PreferencePage;
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.IWorkbenchPreferencePage;
+import java.util.HashMap;
+import java.util.Map;
 
-public class ViewPreferencePage
-	extends PreferencePage
-	implements IWorkbenchPreferencePage {
+import org.caleydo.core.manager.GeneralManager;
 
-	public ViewPreferencePage() {
+public class AbstractSourceProvider
+	extends org.eclipse.ui.AbstractSourceProvider {
 
-	}
+	public final static String RELEASE_STATE = "org.caleydo.core.isReleaseState";
 
-	public ViewPreferencePage(String title) {
-		super(title);
-	}
+	private final static String RELEASE_VERSION = "releaseVersion";
+	private final static String FULL_VERSION = "fullVersion";
 
-	public ViewPreferencePage(String title, ImageDescriptor image) {
-		super(title, image);
+	@Override
+	public void dispose() {
 	}
 
 	@Override
-	public void init(IWorkbench workbench) {
-		setDescription("View Specific Preferences");
+	public Map<String, String> getCurrentState() {
+		Map<String, String> currentState = new HashMap<String, String>(1);
+		String currentStateTmp = GeneralManager.RELEASE_MODE ? FULL_VERSION : RELEASE_VERSION;
+		currentState.put(RELEASE_STATE, currentStateTmp);
+		return currentState;
 	}
 
 	@Override
-	protected Control createContents(Composite parent) {
-		return new Composite(parent, SWT.NULL);
+	public String[] getProvidedSourceNames() {
+		return new String[] { RELEASE_STATE };
 	}
+
 }

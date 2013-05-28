@@ -17,20 +17,16 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.startup.internal;
+package org.caleydo.core.internal.startup;
 
 import java.io.File;
-import java.io.IOException;
 import java.text.DateFormat;
 import java.util.Date;
 
-import org.caleydo.core.gui.preferences.PreferenceConstants;
-import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.PreferenceManager;
+import org.caleydo.core.internal.MyPreferences;
 import org.caleydo.core.serialize.ProjectManager;
 import org.caleydo.core.startup.IStartupAddon;
 import org.caleydo.core.startup.IStartupProcedure;
-import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -54,7 +50,6 @@ import org.kohsuke.args4j.Option;
  */
 public class LoadProjectStartupAddon implements IStartupAddon {
 	private static final String PROPERTY_CALEYDO_PROJECT_LOCATION = "caleydo.project.location";
-	static final String PREFERENCE_LOAD_CALEYDO_PROJECT = "load.caleydo.project";
 
 	private static final int WIDTH = 400;
 
@@ -71,17 +66,10 @@ public class LoadProjectStartupAddon implements IStartupAddon {
 	@Override
 	public boolean init() {
 		{// check preference store -> used for open project switch workspace thing
-			PreferenceStore store = PreferenceManager.get().getPreferenceStore();
-			String loc = store.getString(PREFERENCE_LOAD_CALEYDO_PROJECT);
+			String loc = MyPreferences.getAutoLoadProject();
 			if (loc != null && !loc.trim().isEmpty() && checkFileName(loc)) {
-				store.setValue(PREFERENCE_LOAD_CALEYDO_PROJECT, "");
-				try {
-					// save right now the preferences to avoid that when crashing it will load my preferenced project
-					// again
-					store.save();
-				} catch (IOException e) {
-					// ignore
-				}
+				MyPreferences.setAutoLoadProject(null);
+				MyPreferences.flush();
 				this.projectLocation = new File(loc);
 				return true;
 			}
@@ -185,11 +173,10 @@ public class LoadProjectStartupAddon implements IStartupAddon {
 			}
 		});
 
-		String lastProjectFileName = GeneralManager.get().getPreferenceStore()
-				.getString(PreferenceConstants.LAST_MANUALLY_CHOSEN_PROJECT);
+		String lastProjectFileName = MyPreferences.getLastManuallyChosenProject();
 		if ("recent".equalsIgnoreCase(lastProjectFileName)) {
 			recentProject.setSelection(true);
-		} else {
+		} else if (lastProjectFileName != null && !lastProjectFileName.trim().isEmpty()) {
 			loadProject.setSelection(true);
 			projectLocationUI.setEnabled(true);
 			projectLocationUI.setText(lastProjectFileName);
@@ -222,9 +209,8 @@ public class LoadProjectStartupAddon implements IStartupAddon {
 
 	@Override
 	public IStartupProcedure create() {
-		PreferenceStore store = PreferenceManager.get().getPreferenceStore();
 		if (loadRecentProject || (recentProject != null && recentProject.getSelection())) {
-			store.setValue(PreferenceConstants.LAST_MANUALLY_CHOSEN_PROJECT, "recent");
+			MyPreferences.setLastManuallyChosenProject("recent");
 			return new LoadProjectStartupProcedure(ProjectManager.RECENT_PROJECT_FOLDER, true);
 		}
 
@@ -234,7 +220,7 @@ public class LoadProjectStartupAddon implements IStartupAddon {
 			path = projectLocation.getAbsolutePath();
 		else
 			path = projectLocationUI.getText();
-		store.setValue(PreferenceConstants.LAST_MANUALLY_CHOSEN_PROJECT, path);
+		MyPreferences.setLastManuallyChosenProject(path);
 		return new LoadProjectStartupProcedure(path, false);
 	}
 
