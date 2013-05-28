@@ -98,6 +98,7 @@ import org.caleydo.view.parcoords.listener.ResetAxisSpacingEvent;
 import org.caleydo.view.parcoords.listener.ResetAxisSpacingListener;
 import org.caleydo.view.parcoords.listener.ResetParallelCoordinatesEvent;
 import org.caleydo.view.parcoords.listener.UseRandomSamplingListener;
+import org.caleydo.view.parcoords.preferences.MyPreferences;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -202,8 +203,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 		alIsAngleBlocking.add(new ArrayList<Integer>());
 
 		axisSpacings = new ArrayList<Float>();
-		numberOfRandomElements = generalManager.getPreferenceStore().getInt(
-				PreferenceConstants.PC_NUM_RANDOM_SAMPLING_POINT);
+		numberOfRandomElements = MyPreferences.getNumRandomSamplePoint();
 
 		// glSelectionHeatMap =
 		// ((ViewManager)generalManager.getViewGLCanvasManager()).getSelectionHeatMap();
@@ -1885,8 +1885,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 			numberOfRandomElements = 100;
 			break;
 		case HIGH:
-			numberOfRandomElements = generalManager.getPreferenceStore().getInt(
-					PreferenceConstants.PC_NUM_RANDOM_SAMPLING_POINT);
+			numberOfRandomElements = MyPreferences.getNumRandomSamplePoint();
 			break;
 
 		default:

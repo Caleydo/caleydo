@@ -19,14 +19,15 @@
  *******************************************************************************/
 package org.caleydo.view.parcoords.preferences;
 
-import org.caleydo.core.gui.preferences.PreferenceConstants;
+import static org.caleydo.view.parcoords.preferences.MyPreferences.NUM_RANDOM_SAMPLING_POINT;
+
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.view.parcoords.Activator;
 import org.caleydo.view.parcoords.GLParallelCoordinates;
-import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.IntegerFieldEditor;
-import org.eclipse.swt.layout.RowLayout;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
@@ -40,14 +41,8 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 public class ParCoordsPreferencePage extends FieldEditorPreferencePage implements
 		IWorkbenchPreferencePage {
 
-	private IntegerFieldEditor numRandomSamplesFE;
-	private BooleanFieldEditor limitRemoteToContext;
-
 	public ParCoordsPreferencePage() {
 		super(GRID);
-		// setPreferenceStore(Activator.getDefault().getPreferenceStore());
-		setPreferenceStore(GeneralManager.get().getPreferenceStore());
-		setDescription("Preferences for the Parallel Coordinates view.");
 	}
 
 	/**
@@ -57,35 +52,16 @@ public class ParCoordsPreferencePage extends FieldEditorPreferencePage implement
 	 */
 	@Override
 	public void createFieldEditors() {
-		// Create the layout.
-		RowLayout layout = new RowLayout();
-		// Optionally set layout fields.
-		layout.wrap = true;
-		getFieldEditorParent().setLayout(layout);
-		numRandomSamplesFE = new IntegerFieldEditor(
-				PreferenceConstants.PC_NUM_RANDOM_SAMPLING_POINT,
-				"Number of Random Samples:", getFieldEditorParent());
-		numRandomSamplesFE.loadDefault();
-		addField(numRandomSamplesFE);
-
-		limitRemoteToContext = new BooleanFieldEditor(
-				PreferenceConstants.PC_LIMIT_REMOTE_TO_CONTEXT,
-				"Limit remote views to show contextual information only",
-				getFieldEditorParent());
-		limitRemoteToContext.loadDefault();
-		addField(limitRemoteToContext);
-
-		getFieldEditorParent().pack();
-	}
-
-	@Override
-	protected void performDefaults() {
-
+		final Composite parent = getFieldEditorParent();
+		addField(new IntegerFieldEditor(
+				NUM_RANDOM_SAMPLING_POINT,
+				"Number of Random Samples:", parent));
 	}
 
 	@Override
 	public void init(IWorkbench workbench) {
-
+		setPreferenceStore(Activator.getDefault().getPreferenceStore());
+		setDescription("Preferences for the Parallel Coordinates view.");
 	}
 
 	@Override
@@ -93,12 +69,9 @@ public class ParCoordsPreferencePage extends FieldEditorPreferencePage implement
 		boolean bReturn = super.performOk();
 
 		for (AGLView glView : GeneralManager.get().getViewManager().getAllGLViews()) {
-			if (glView.getViewType().equals("org.caleydo.view.parcoords")) {
+			if (glView.getViewType().equals(GLParallelCoordinates.VIEW_TYPE)) {
 				GLParallelCoordinates parCoords = (GLParallelCoordinates) glView;
-				// if(!heatMap.isRenderedRemote())
-				// {
-				parCoords.setNumberOfSamplesToShow(numRandomSamplesFE.getIntValue());
-				// }
+				parCoords.setNumberOfSamplesToShow(MyPreferences.getNumRandomSamplePoint());
 			}
 		}
 
