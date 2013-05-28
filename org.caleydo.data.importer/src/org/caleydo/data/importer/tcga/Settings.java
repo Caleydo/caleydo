@@ -91,8 +91,8 @@ public class Settings {
 	@Option(name = "--downloadOnly", usage = "if enabled only the files will be downloaded")
 	private boolean downloadOnly = false;
 
-//FIxME
-	private Gson gson = new GsonBuilder().setPrettyPrinting().setDateFormat("yyyy_MM_dd").create();
+	private Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().setDateFormat("yyyy_MM_dd")
+			.create();
 
 
 
