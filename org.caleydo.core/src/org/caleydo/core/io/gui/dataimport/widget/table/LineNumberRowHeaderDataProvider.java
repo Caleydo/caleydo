@@ -57,4 +57,12 @@ public class LineNumberRowHeaderDataProvider implements IDataProvider {
 		return numRows;
 	}
 
+	/**
+	 * @param numRows
+	 *            setter, see {@link numRows}
+	 */
+	public void setNumRows(int numRows) {
+		this.numRows = numRows;
+	}
+
 }

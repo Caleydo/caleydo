@@ -68,4 +68,20 @@ public class MatrixBasedBodyDataProvider implements IDataProvider {
 	public List<List<String>> getDataMatrix() {
 		return dataMatrix;
 	}
+
+	/**
+	 * @param dataMatrix
+	 *            setter, see {@link dataMatrix}
+	 */
+	public void setDataMatrix(List<List<String>> dataMatrix) {
+		this.dataMatrix = dataMatrix;
+	}
+
+	/**
+	 * @param numColumns
+	 *            setter, see {@link numColumns}
+	 */
+	public void setNumColumns(int numColumns) {
+		this.numColumns = numColumns;
+	}
 }
