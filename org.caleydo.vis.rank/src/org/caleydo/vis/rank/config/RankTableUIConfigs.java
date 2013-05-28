@@ -59,6 +59,11 @@ public class RankTableUIConfigs {
 		}
 
 		@Override
+		public boolean isSmallHeaderByDefault() {
+			return wrappee.isSmallHeaderByDefault();
+		}
+
+		@Override
 		public boolean isInteractive() {
 			if (isInteractive != null)
 				return isInteractive.booleanValue();

@@ -45,6 +45,11 @@ public class RankTableUIConfigBase implements IRankTableUIConfig {
 	}
 
 	@Override
+	public boolean isSmallHeaderByDefault() {
+		return false;
+	}
+
+	@Override
 	public boolean isInteractive() {
 		return isInteractive;
 	}

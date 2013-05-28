@@ -19,9 +19,6 @@
  *******************************************************************************/
 package org.caleydo.view.kaplanmeier;
 
-import java.util.ArrayList;
-
-import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
@@ -33,13 +30,10 @@ public class Activator extends Plugin {
 	// The shared instance
 	private static Activator plugin;
 
-
 	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
-
-		registerDataDomains();
 	}
 
 	@Override
@@ -50,17 +44,5 @@ public class Activator extends Plugin {
 
 	public static Activator getDefault() {
 		return plugin;
-	}
-
-	private void registerDataDomains() {
-		ArrayList<String> dataDomainTypes = new ArrayList<String>();
-
-		dataDomainTypes.add("org.caleydo.datadomain.generic");
-
-		DataDomainManager
-				.get()
-				.getAssociationManager()
-				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
-						GLKaplanMeier.VIEW_TYPE);
 	}
 }

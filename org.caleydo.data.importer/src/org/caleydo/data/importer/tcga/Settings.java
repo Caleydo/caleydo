@@ -30,7 +30,7 @@ import com.google.gson.GsonBuilder;
  */
 public class Settings {
 	private static String CALEYDO_JNLP_GENERATOR_URL = "http://data.icg.tugraz.at/caleydo/download/webstart_"
-			+ GeneralManager.VERSION + "/jnlpgenerator.php?date={0}&tumor={1}";
+			+ GeneralManager.VERSION + "/{0}_{1}.jnlp"; // jnlpgenerator.php?date={0}&tumor={1}";
 
 	private static final String BASE_URL = "http://gdac.broadinstitute.org/runs/";
 	private static final String FILE_PATTERN = "gdac.broadinstitute.org_{2}.{3}.Level_{4}.{0,date,yyyyMMdd}00.0.0.tar.gz";
@@ -91,8 +91,8 @@ public class Settings {
 	@Option(name = "--downloadOnly", usage = "if enabled only the files will be downloaded")
 	private boolean downloadOnly = false;
 
-//FIxME
-	private Gson gson = new GsonBuilder().setPrettyPrinting().setDateFormat("yyyy_MM_dd").create();
+	private Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().setDateFormat("yyyy_MM_dd")
+			.create();
 
 
 

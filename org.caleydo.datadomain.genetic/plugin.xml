@@ -15,4 +15,18 @@
         <DataDomainInitialization
           class="org.caleydo.datadomain.genetic.GeneticDataDomainInitialization" />
    </extension>
+   <extension
+         point="org.caleydo.core.StartupAddon">
+      <addon
+            class="org.caleydo.datadomain.genetic.internal.LoadGeneticStartupAddon"
+            name="Load Genetic Data"
+            order="5">
+      </addon>
+   </extension>
+   <extension
+         point="org.caleydo.serialize.addon">
+      <addon
+            class="org.caleydo.datadomain.genetic.internal.GeneticSerializationAddon">
+      </addon>
+   </extension>
 </plugin>

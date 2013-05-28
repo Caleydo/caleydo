@@ -1,9 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: Tagsoup
-Bundle-SymbolicName: org.caleydo.lib.tagsoup
-Bundle-Version: 1.2.1
-Bundle-ClassPath: tagsoup-1.2.1.jar
-Export-Package: org.ccil.cowan.tagsoup,
- org.ccil.cowan.tagsoup.jaxp
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7

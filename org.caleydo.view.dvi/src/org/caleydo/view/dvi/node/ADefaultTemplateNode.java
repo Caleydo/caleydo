@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,12 +8,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -108,6 +108,7 @@ public abstract class ADefaultTemplateNode extends ADraggableDataGraphNode {
 						: (SPACING_PIXELS));
 	}
 
+	@Override
 	public Point2D getAbsolutPositionOfRelativeTablePerspectiveRendererCoordinates(
 			Point2D coordinates) {
 		Point2D position = graphLayout.getNodePosition(this);
@@ -139,7 +140,7 @@ public abstract class ADefaultTemplateNode extends ADraggableDataGraphNode {
 		// FIXME Why is this null in some cases??
 		if (anchorPoints == null)
 			return new Pair<Point2D, Point2D>(new Point2D.Float(0,0), new Point2D.Float(0,0));
-		
+
 		Point2D first = (Point2D) anchorPoints.getFirst().clone();
 		Point2D second = (Point2D) anchorPoints.getSecond().clone();
 
@@ -309,7 +310,7 @@ public abstract class ADefaultTemplateNode extends ADraggableDataGraphNode {
 		ElementLayout captionLayout = new ElementLayout("caption");
 		captionLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
 		captionLayout.setRatioSizeX(1);
-		captionLayout.setRenderer(new LabelRenderer(view, this,
+		captionLayout.setRenderer(new LabelRenderer(view, view.getTextRenderer(), this,
 				createNodePickingTypeList()));
 
 		return captionLayout;
@@ -376,6 +377,7 @@ public abstract class ADefaultTemplateNode extends ADraggableDataGraphNode {
 		}
 	}
 
+	@Override
 	public float getSpacingX(IDVINode node) {
 
 		IDVINode leftNode = null;
@@ -393,6 +395,7 @@ public abstract class ADefaultTemplateNode extends ADraggableDataGraphNode {
 				.getPosition().getX() + leftNode.getWidth() / 2.0f));
 	}
 
+	@Override
 	public float getSpacingY(IDVINode node) {
 		IDVINode topNode = null;
 		IDVINode bottomNode = null;
@@ -409,6 +412,7 @@ public abstract class ADefaultTemplateNode extends ADraggableDataGraphNode {
 				.getPosition().getY() + bottomNode.getHeight() / 2.0f));
 	}
 
+	@Override
 	public void recalculateNodeSize() {
 		heightPixels = 4
 				* SPACING_PIXELS

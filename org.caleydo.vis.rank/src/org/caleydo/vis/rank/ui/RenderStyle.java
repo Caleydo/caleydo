@@ -71,7 +71,7 @@ public class RenderStyle {
 
 	}
 
-	private static final String ICON_PREFIX = "resources/icons/";
+	private static final String ICON_PREFIX = "resources/icons/vis/rank/";
 	public static final String ICON_TRASH = ICON_PREFIX + "user_trash_full.png";
 	public static final String ICON_CIRCLE = ICON_PREFIX + "circle.png";
 	public static final String ICON_ARROW = ICON_PREFIX + "arrow.png";
@@ -84,6 +84,10 @@ public class RenderStyle {
 	public static final String ICON_UNCOLLAPSE = ICON_PREFIX + "bullet_toggle_minus.png";
 	public static final String ICON_COMPRESS = ICON_PREFIX + "bullet_arrow_left.png";
 	public static final String ICON_UNCOMPRESS = ICON_PREFIX + "bullet_arrow_right.png";
+
+	public static final String ICON_SMALL_HEADER_ON = ICON_PREFIX + "bullet_arrow_up.png";
+	public static final String ICON_SMALL_HEADER_OFF = ICON_PREFIX + "bullet_arrow_down.png";
+
 	public static final String ICON_HIDE = ICON_PREFIX + "delete.png";
 	public static final String ICON_DRAG = ICON_PREFIX + "drag.png";
 	public static final String ICON_ALIGN_CLASSIC = ICON_PREFIX + "align_classic.png";
@@ -137,7 +141,7 @@ public class RenderStyle {
 	public static final float COLOR_STACKED_BORDER_WIDTH = 1;
 	public static final float HEADER_ROUNDED_RADIUS_X = 9;
 	public static final float HEADER_ROUNDED_RADIUS_Y = 14;
-	public static final float SCROLLBAR_WIDTH = 5;
+	public static final float SCROLLBAR_WIDTH = 8;
 	public static final float SEPARATOR_PICK_WIDTH = 11;
 	public static final int STACKED_COLUMN_PADDING = 5;
 

@@ -74,6 +74,8 @@ public abstract class ABitmapTextRenderer {
 	 */
 	private boolean scaleByBaseLine = true;
 
+	private boolean isDirty;
+
 	/**
 	 * cache of layouted text
 	 */
@@ -110,6 +112,16 @@ public abstract class ABitmapTextRenderer {
 		pos = new Vec2f(0, baseLine);
 
 		upload('!', '~'); // upload a bunch of characters
+		isDirty = true;
+	}
+
+	/**
+	 * @return the isDirty, see {@link #isDirty}
+	 */
+	public boolean isDirty() {
+		boolean bak = isDirty;
+		isDirty = false;
+		return bak;
 	}
 
 	protected abstract Pair<Graphics2D, Dimension> createGraphics(Rectangle maxBounds);
@@ -185,7 +197,7 @@ public abstract class ABitmapTextRenderer {
 			// render this batch
 			act += render(csq.subSequence(act, Math.min(csq.length(), act + max)));
 		} while (act < csq.length());
-
+		isDirty = true;
 	}
 
 	/**

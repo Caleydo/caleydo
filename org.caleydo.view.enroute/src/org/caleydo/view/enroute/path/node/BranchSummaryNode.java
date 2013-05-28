@@ -222,7 +222,7 @@ public class BranchSummaryNode extends ANode {
 		ElementLayout numNodesLabelLayout = new ElementLayout("numNodeslabel");
 		// numNodesLabelLayout.setDebug(true);
 		// numNodesLabelLayout.setFrameColor(1, 0, 0, 1);
-		LabelRenderer numNodesLabelRenderer = new LabelRenderer(view, this);
+		LabelRenderer numNodesLabelRenderer = new LabelRenderer(view, view.getTextRenderer(), this);
 		// numNodesLabelRenderer.setAlignment(LabelRenderer.ALIGN_RIGHT);
 
 		numNodesLabelLayout.setRenderer(numNodesLabelRenderer);

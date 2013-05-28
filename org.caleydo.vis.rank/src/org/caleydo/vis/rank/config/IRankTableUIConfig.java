@@ -31,6 +31,9 @@ import org.caleydo.vis.rank.model.RankTableModel;
  *
  */
 public interface IRankTableUIConfig {
+
+	boolean isSmallHeaderByDefault();
+
 	/**
 	 * should the whole visualization be interactive, e.g button to hide, collapse,...
 	 *

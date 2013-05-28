@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -28,8 +28,6 @@ import java.util.StringTokenizer;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDType;
-import org.caleydo.core.io.parser.xml.AXmlParserHandler;
-import org.caleydo.core.io.parser.xml.IXmlParserHandler;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
@@ -48,17 +46,15 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
 /**
- * XML Parser that is able to load KEGG pathway files. The KEGG XML files follow
- * the KGML. The class triggers the calls in the PathwayManager that actually
- * creates the pathway graph and the items + item reps.
+ * XML Parser that is able to load KEGG pathway files. The KEGG XML files follow the KGML. The class triggers the calls
+ * in the PathwayManager that actually creates the pathway graph and the items + item reps.
  * 
  * @author Marc Streit
  */
-public class KgmlSaxHandler
-	extends AXmlParserHandler
-	implements IXmlParserHandler {
+public class KgmlSaxHandler extends DefaultHandler {
 
 	private PathwayItemManager pathwayItemManager;
 	private PathwayManager pathwayManager;
@@ -94,8 +90,6 @@ public class KgmlSaxHandler
 		pathwayManager = PathwayManager.get();
 
 		currentVertices = new ArrayList<PathwayVertex>();
-
-		setXmlActivationTag("pathway");
 	}
 
 	@Override
@@ -143,17 +137,6 @@ public class KgmlSaxHandler
 	@Override
 	public void endElement(String namespaceURI, String sSimpleName, String sQualifiedName) throws SAXException {
 
-		String eName = "".equals(sSimpleName) ? sQualifiedName : sSimpleName;
-
-		if (null != eName) {
-			if (eName.equals(openingTag)) {
-				/**
-				 * section (xml block) finished, call callback function from
-				 * XmlParserManager
-				 */
-				xmlParserManager.sectionFinishedByHandler(this);
-			}
-		}
 	}
 
 	/**
@@ -215,8 +198,7 @@ public class KgmlSaxHandler
 	}
 
 	/**
-	 * Reacts on the elements of the entry tag. An example entry tag looks like
-	 * this: 
+	 * Reacts on the elements of the entry tag. An example entry tag looks like this:
 	 * 
 	 * <entry id="1" name="ec:1.8.4.1" type="enzyme" reaction="rn:R01292"
 	 * link="http://www.genome.jp/dbget-bin/www_bget?enzyme+1.8.4.1">
@@ -653,14 +635,5 @@ public class KgmlSaxHandler
 			// GeneralManager.PLUGIN_ID,
 			// "Cannot add edge because one of the gene vertices was not mapped to David and therefore not inserted in the graph.\n"));
 		}
-	}
-
-	@Override
-	public void destroyHandler() {
-
-		super.destroyHandler();
-
-		hashKgmlEntryIdToVertexRep.clear();
-		hashKgmlReactionNameToVertexRep.clear();
 	}
 }

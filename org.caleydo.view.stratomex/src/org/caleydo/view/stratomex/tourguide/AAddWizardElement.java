@@ -40,6 +40,11 @@ public abstract class AAddWizardElement extends ALayoutRenderer {
 		this.adapter = adapter;
 	}
 
+	@Override
+	public void prepare() {
+		super.prepare();
+	}
+
 	public abstract void onPick(Pick pick);
 
 	@Override

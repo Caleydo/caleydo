@@ -43,12 +43,13 @@ import org.caleydo.vis.rank.ui.column.ColumnUIs;
  */
 public final class TableHeaderUI extends ACompositeHeaderUI {
 	private final RankTableModel table;
-	private boolean isSmallHeader = true;
+	private boolean isSmallHeader;
 
 	public TableHeaderUI(RankTableModel table, IRankTableUIConfig config) {
 		super(config, 1 /* for the button */);
 		this.table = table;
 		this.table.addPropertyChangeListener(RankTableModel.PROP_COLUMNS, childrenChanged);
+		this.isSmallHeader = config.isSmallHeaderByDefault();
 		setLayoutData(table);
 		setSize(-1, ((isSmallHeader ? 0 : HIST_HEIGHT) + LABEL_HEIGHT * 2) * 1);
 
@@ -62,8 +63,8 @@ public final class TableHeaderUI extends ACompositeHeaderUI {
 				}
 			});
 			toggleSmallHeader.setTooltip("Toggle Small / Thick Headers");
-			toggleSmallHeader.setRenderer(GLRenderers.fillImage(RenderStyle.ICON_UNCOLLAPSE));
-			toggleSmallHeader.setSelectedRenderer(GLRenderers.fillImage(RenderStyle.ICON_COLLAPSE));
+			toggleSmallHeader.setRenderer(GLRenderers.fillImage(RenderStyle.ICON_SMALL_HEADER_ON));
+			toggleSmallHeader.setSelectedRenderer(GLRenderers.fillImage(RenderStyle.ICON_SMALL_HEADER_OFF));
 
 			this.add(toggleSmallHeader);
 		}

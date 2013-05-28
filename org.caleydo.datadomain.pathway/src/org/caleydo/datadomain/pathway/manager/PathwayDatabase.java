@@ -20,7 +20,8 @@
 package org.caleydo.datadomain.pathway.manager;
 
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.specialized.Organism;
+import org.caleydo.datadomain.genetic.GeneticMetaData;
+import org.caleydo.datadomain.genetic.Organism;
 
 /**
  * Class that holds information about a specific pathway database.
@@ -58,7 +59,7 @@ public final class PathwayDatabase {
 				GeneralManager.CALEYDO_FOLDER_TEMPLATE, GeneralManager.CALEYDO_FOLDER);
 
 		if (type == EPathwayDatabaseType.KEGG || type == EPathwayDatabaseType.WIKIPATHWAYS) {
-			Organism eOrganism = GeneralManager.get().getBasicInfo().getOrganism();
+			Organism eOrganism = GeneticMetaData.getOrganism();
 
 			if (eOrganism == Organism.HOMO_SAPIENS) {
 				imagePath += "hsa/";

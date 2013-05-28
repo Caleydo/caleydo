@@ -16,9 +16,9 @@ import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDType;
-import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.specialized.Organism;
 import org.caleydo.core.util.logging.Logger;
+import org.caleydo.datadomain.genetic.GeneticMetaData;
+import org.caleydo.datadomain.genetic.Organism;
 import org.caleydo.datadomain.pathway.IPathwayParser;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
@@ -62,7 +62,7 @@ public class WikiPathwaysParser implements IPathwayParser {
 				.getPathwayResourceLoader(EPathwayDatabaseType.WIKIPATHWAYS);
 		PathwayDatabase pathwayDatabase = pathwayManager.getPathwayDatabaseByType(EPathwayDatabaseType.WIKIPATHWAYS);
 
-		Organism organism = GeneralManager.get().getBasicInfo().getOrganism();
+		Organism organism = GeneticMetaData.getOrganism();
 		String pathwayListFileName = null;
 
 		if (organism == Organism.HOMO_SAPIENS) {

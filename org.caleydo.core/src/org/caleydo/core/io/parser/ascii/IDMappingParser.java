@@ -26,7 +26,6 @@ import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.id.MappingType;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.specialized.Organism;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -77,11 +76,6 @@ public class IDMappingParser extends ATextParser {
 			boolean resolveCodeMappingUsingCodeToId_LUT, IDType codeResolvedFromIDType, IDType codeResolvedToIDType) {
 
 		IDMappingParser idMappingParser = null;
-
-		if (filePath.contains("ORGANISM")) {
-			Organism eOrganism = GeneralManager.get().getBasicInfo().getOrganism();
-			filePath = filePath.replace("ORGANISM", eOrganism.toString());
-		}
 
 		if (idCategory == null)
 			throw new IllegalStateException("ID Category was null");

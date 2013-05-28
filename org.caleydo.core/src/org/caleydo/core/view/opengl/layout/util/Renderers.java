@@ -31,11 +31,7 @@ public final class Renderers {
 
 	}
 
-	public static LabelRenderer createLabel(String label, AGLView view) {
-		return new LabelRenderer(view, label);
-	}
-
 	public static LabelRenderer createLabel(ILabelProvider label, AGLView view) {
-		return new LabelRenderer(view, label);
+		return new LabelRenderer(view, view.getTextRenderer(), label);
 	}
 }

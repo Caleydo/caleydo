@@ -31,8 +31,6 @@ import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.selection.events.SelectionUpdateListener;
 import org.caleydo.core.event.data.SelectionUpdateEvent;
-import org.caleydo.core.gui.preferences.PreferenceConstants;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.color.mapping.ColorMapper;
 import org.caleydo.core.util.color.mapping.UpdateColorMappingListener;
@@ -60,6 +58,7 @@ import org.caleydo.view.treemap.listener.ToggleColoringModeEvent;
 import org.caleydo.view.treemap.listener.ToggleColoringModeListener;
 import org.caleydo.view.treemap.listener.ToggleLabelEvent;
 import org.caleydo.view.treemap.listener.ToggleLabelListener;
+import org.caleydo.view.treemap.preferences.MyPreferences;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -119,15 +118,13 @@ public class GLTreeMap extends ATableBasedView {
 
 		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
 		renderer = new TreeMapRenderer();
-		renderer.setNodeFrame(
-				GeneralManager.get().getPreferenceStore().getBoolean(PreferenceConstants.TREEMAP_DRAW_CLUSTER_FRAME),
-				Color.WHITE);
+		renderer.setNodeFrame(MyPreferences.isDrawClusterFrame(), Color.WHITE);
 
 		loadLayoutAlgorithmClass();
 	}
 
 	private void loadLayoutAlgorithmClass() {
-		int algoID = GeneralManager.get().getPreferenceStore().getInt(PreferenceConstants.TREEMAP_LAYOUT_ALGORITHM);
+		int algoID = MyPreferences.getLayoutAlgorithm();
 		switch (algoID) {
 		case ILayoutAlgorithm.SQUARIFIED_LAYOUT_ALGORITHM:
 			layoutAlgorithm = new SquarifiedLayoutAlgorithm();
@@ -171,7 +168,7 @@ public class GLTreeMap extends ATableBasedView {
 		tree = tablePerspective.getRecordPerspective().getTree();
 		colorMapper = dataDomain.getColorMapper();
 		int maxDepth = Integer.MAX_VALUE;
-		maxDepth = GeneralManager.get().getPreferenceStore().getInt(PreferenceConstants.TREEMAP_MAX_DEPTH);
+		maxDepth = MyPreferences.getMapDepth();
 		if (maxDepth == 0)
 			maxDepth = Integer.MAX_VALUE;
 		// maxDepth=10;

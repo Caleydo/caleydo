@@ -589,6 +589,11 @@ public class GLTourGuideView extends AGLElementView {
 		}
 
 		@Override
+		public boolean isSmallHeaderByDefault() {
+			return true;
+		}
+
+		@Override
 		public boolean canEditValues() {
 			return false;
 		}

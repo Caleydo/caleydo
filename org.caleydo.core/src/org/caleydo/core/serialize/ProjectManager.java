@@ -51,7 +51,6 @@ import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.id.IDTypeInitializer;
 import org.caleydo.core.io.DataSetDescription;
-import org.caleydo.core.manager.BasicInformation;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.system.FileOperations;
@@ -87,8 +86,6 @@ import org.osgi.framework.BundleException;
  * @author Marc Streit
  */
 public final class ProjectManager {
-	private static final String SEPARATOR = File.separator;
-
 	private static final Logger log = Logger.create(ProjectManager.class);
 
 	private static String file(String... elems) {
@@ -125,28 +122,9 @@ public final class ProjectManager {
 	/** File name of file where list of plugins are to be stored */
 	private static final String PLUG_IN_LIST_FILE = "plugins.xml";
 
-	/** file name of the datadomain-file in project-folders */
-	private static final String BASIC_INFORMATION_FILE = "basic_information.xml";
-
 	/** meta data file name se {@link ProjectMetaData} */
 	private static final String METADATA_FILE = "metadata.xml";
 
-	/**
-	 * full path to directory to temporarily store the projects file before zipping
-	 */
-	public static final String TEMP_PROJECT_ZIP_FOLDER = CALEYDO_HOME_PATH + "temp_load" + SEPARATOR;
-
-	/**
-	 * Loads the project from a specified zip-archive.
-	 *
-	 * @param fileName
-	 *            name of the file to load the project from
-	 * @return initialization data for the application from which it can restore itself
-	 */
-	public static void loadProjectFromZIP(String fileName) {
-		FileOperations.deleteDirectory(TEMP_PROJECT_ZIP_FOLDER);
-		ZipUtils.unzipToDirectory(fileName, TEMP_PROJECT_ZIP_FOLDER);
-	}
 
 	/**
 	 * Loads the project from a directory
@@ -197,11 +175,11 @@ public final class ProjectManager {
 			GeneralManager.get().setMetaData(m);
 		}
 
-		GeneralManager.get().setBasicInfo(
-				(BasicInformation) unmarshaller.unmarshal(GeneralManager.get().getResourceLoader()
-						.getResource(dirName + ProjectManager.BASIC_INFORMATION_FILE)));
-
 		DataDomainList dataDomainList;
+
+		for (ISerializationAddon addon : serializationManager.getAddons()) {
+			addon.deserialize(dirName, unmarshaller);
+		}
 
 		dataDomainList = (DataDomainList) unmarshaller.unmarshal(GeneralManager.get().getResourceLoader()
 				.getResource(dirName + ProjectManager.DATA_DOMAIN_FILE));
@@ -211,6 +189,7 @@ public final class ProjectManager {
 		for (ADataDomain dataDomain : dataDomainList.getDataDomains()) {
 			DataSetDescription dataSetDescription = dataDomain.getDataSetDescription();
 
+			// FIXME hack
 			if (dataDomain.getDataDomainType().equals("org.caleydo.datadomain.genetic"))
 				DataDomainManager.get().initalizeDataDomain("org.caleydo.datadomain.genetic");
 
@@ -522,10 +501,6 @@ public final class ProjectManager {
 			}
 			monitor.worked(w++);
 		}
-
-		monitor.subTask("Persisting General Information");
-		String fileName = dirName + BASIC_INFORMATION_FILE;
-		marshaller.marshal(GeneralManager.get().getBasicInfo(), new File(fileName));
 
 		DataDomainList dataDomainList = new DataDomainList();
 		dataDomainList.setDataDomains(dataDomains);

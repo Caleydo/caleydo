@@ -28,18 +28,17 @@ import java.io.File;
 
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.event.EventPublisher;
-import org.caleydo.core.gui.SWTGUIManager;
 import org.caleydo.core.id.object.IDCreator;
-import org.caleydo.core.io.parser.xml.XmlParserManager;
+import org.caleydo.core.internal.ConsoleFlags;
 import org.caleydo.core.serialize.ProjectMetaData;
 import org.caleydo.core.serialize.SerializationManager;
+import org.caleydo.core.startup.SWTGUIManager;
 import org.caleydo.core.util.statistics.IStatisticsPerformer;
 import org.caleydo.core.view.ViewManager;
 import org.caleydo.data.loader.ResourceLoader;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.jface.preference.PreferenceStore;
 
 /**
  * General manager that contains all module managers.
@@ -93,12 +92,9 @@ public class GeneralManager {
 	 */
 	private boolean isDryMode;
 
-	private BasicInformation basicInfo;
-
 	private SWTGUIManager swtGUIManager;
 	private ViewManager viewManager;
 	private EventPublisher eventPublisher;
-	private XmlParserManager xmlParserManager;
 	private IDCreator idCreator;
 	private ResourceLoader resourceLoader;
 	private SerializationManager serializationManager;
@@ -107,18 +103,10 @@ public class GeneralManager {
 	private ProjectMetaData metaData = new ProjectMetaData();
 
 	public void init() {
-
-		PreferenceManager preferenceManager = PreferenceManager.get();
-		preferenceManager.initialize();
-
-		basicInfo = new BasicInformation();
-
 		eventPublisher = EventPublisher.INSTANCE;
 		viewManager = ViewManager.get();
 		swtGUIManager = new SWTGUIManager();
-		xmlParserManager = new XmlParserManager();
 		idCreator = new IDCreator();
-		xmlParserManager.initHandlers();
 		serializationManager = SerializationManager.get();
 		resourceLoader = new ResourceLoader(chain(DATA_CLASSLOADER, FILE, URL));
 	}
@@ -156,14 +144,6 @@ public class GeneralManager {
 		this.metaData = metaData;
 	}
 
-	public BasicInformation getBasicInfo() {
-		return basicInfo;
-	}
-
-	public void setBasicInfo(BasicInformation basicInfo) {
-		this.basicInfo = basicInfo;
-	}
-
 	/**
 	 * Resource loader that is responsible for loading images, textures and data
 	 * files in the Caleydo framework. DO NOT LOAD YOUR FILES ON YOUR OWN!
@@ -184,18 +164,6 @@ public class GeneralManager {
 
 	public EventPublisher getEventPublisher() {
 		return eventPublisher;
-	}
-
-	public XmlParserManager getXmlParserManager() {
-		return xmlParserManager;
-	}
-
-	/**
-	 * Returns the preference store where Caleydo stores its preferences. The
-	 * object can store and restore preferences to/from a predefined file.
-	 */
-	public PreferenceStore getPreferenceStore() {
-		return PreferenceManager.get().getPreferenceStore();
 	}
 
 	public IDCreator getIDCreator() {

@@ -34,6 +34,7 @@ import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
 import org.caleydo.core.view.opengl.layout.util.multiform.IEmbeddedVisualizationInfo;
 import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormRenderer;
+import org.caleydo.core.view.opengl.util.text.ITextRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
@@ -127,7 +128,8 @@ public class PathwayDataConfigurer extends ABrickConfigurer {
 		captionLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
 		captionLayout.setFrameColor(0, 0, 1, 1);
 
-		LabelRenderer captionRenderer = new LabelRenderer(view, labelProvider, pickingIDs);
+		ITextRenderer textRenderer = layoutTemplate.getBrick().getTextRenderer();
+		LabelRenderer captionRenderer = new LabelRenderer(view, textRenderer, labelProvider, pickingIDs);
 		captionLayout.setRenderer(captionRenderer);
 
 		return captionLayout;

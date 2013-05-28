@@ -134,12 +134,14 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 		Group g = new Group(parentComposite, SWT.SHADOW_ETCHED_IN | SWT.H_SCROLL | SWT.V_SCROLL);
 		g.setText("Project Information");
 		g.setLayout(new GridLayout(2, false));
-		createLine(g, "Name", metaData.getName());
-		createLine(
-				g,
-				"Creation Date",
-				DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, Locale.ENGLISH)
-				.format(metaData.getCreationDate()));
+		if (metaData.getName() != null)
+			createLine(g, "Name", metaData.getName());
+		if (metaData.getCreationDate() != null)
+			createLine(
+					g,
+					"Creation Date",
+					DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, Locale.ENGLISH).format(
+							metaData.getCreationDate()));
 		for (String key : metaData.keys()) {
 			createLine(g, key, metaData.get(key));
 		}
@@ -147,6 +149,8 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 	}
 
 	private void createLine(Composite parent, String label, String value) {
+		if (label == null || label.trim().isEmpty() || value == null || value.trim().isEmpty())
+			return;
 		Label l = new Label(parent, SWT.NO_BACKGROUND);
 		l.setText(label + ":");
 		l.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));

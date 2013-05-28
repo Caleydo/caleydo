@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.data.importer.tcga.regular;
 
+import java.io.File;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -76,6 +77,9 @@ public class TCGATask extends ATCGATask {
 		if (project.isEmpty())
 			return null;
 
+		if (settings.isDownloadOnly())
+			return null;
+
 		log.info("Building project file for tumor type " + tumorType + " for analysis run " + run);
 
 		Collection<ATableBasedDataDomain> dataDomains = loadProject(project);
@@ -105,14 +109,16 @@ public class TCGATask extends ATCGATask {
 			return null;
 		}
 
-		if (settings.isDownloadOnly())
-			return null;
 		log.info("Built project file for tumor type " + tumorType + " for analysis run " + run);
 
 		project = null;
 
 		String projectRemoteOutputURL = settings.getTcgaServerURL() + run + "/" + run + "_" + tumorType
 				+ ".cal";
+
+		String jnlpFileName = run + "_" + tumorType + ".jnlp";
+
+		generateJNLP(new File(settings.getJNLPOutputDirectory(), jnlpFileName), projectRemoteOutputURL);
 
 		JsonObject report = generateTumorReportLine(dataDomains, tumorType, analysisRun, projectRemoteOutputURL);
 
