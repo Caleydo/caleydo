@@ -56,7 +56,6 @@ import org.caleydo.core.event.view.NewViewEvent;
 import org.caleydo.core.event.view.SetMinViewSizeEvent;
 import org.caleydo.core.event.view.TablePerspectivesChangedEvent;
 import org.caleydo.core.event.view.ViewClosedEvent;
-import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
@@ -820,8 +819,7 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 				String tablePerspectiveLabel = dataDomain.getLabel() + " - " + recordPerspectiveLabel + "/"
 						+ dimensionPerspectiveLabel;
 
-				boolean alwaysUseDefaultNameButton = GeneralManager.get().getPreferenceStore()
-						.getBoolean(PreferenceConstants.DVI_ALWAYS_USE_TABLE_PERSPECTIVE_DEFAULT_NAME);
+				boolean alwaysUseDefaultNameButton = MyPreferences.isAwaysUseTablePerspectiveDefaultName();
 
 				if (!alwaysUseDefaultNameButton) {
 					TablePerspectiveNameInputDialog dialog = new TablePerspectiveNameInputDialog(new Shell(),
