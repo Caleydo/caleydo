@@ -76,6 +76,9 @@ public class TCGATask extends ATCGATask {
 		if (project.isEmpty())
 			return null;
 
+		if (settings.isDownloadOnly())
+			return null;
+
 		log.info("Building project file for tumor type " + tumorType + " for analysis run " + run);
 
 		Collection<ATableBasedDataDomain> dataDomains = loadProject(project);
@@ -105,8 +108,6 @@ public class TCGATask extends ATCGATask {
 			return null;
 		}
 
-		if (settings.isDownloadOnly())
-			return null;
 		log.info("Built project file for tumor type " + tumorType + " for analysis run " + run);
 
 		project = null;
