@@ -17,6 +17,7 @@
 package org.caleydo.view.info.selection;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 import javax.xml.bind.JAXBContext;
@@ -30,7 +31,6 @@ import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.view.CaleydoRCPViewPart;
 import org.eclipse.swt.SWT;
@@ -48,10 +48,9 @@ import org.eclipse.swt.widgets.TreeItem;
  * @author Alexander Lex
  */
 public class RcpSelectionInfoView extends CaleydoRCPViewPart implements IEventBasedSelectionManagerUser {
+	public static final String VIEW_TYPE = "org.caleydo.view.info.selection";
 
-	public static String VIEW_TYPE = "org.caleydo.view.info.selection";
-
-	private HashMap<SelectionManager, TreeItem> selectionManagerToSubTree = new HashMap<SelectionManager, TreeItem>();
+	private final Map<SelectionManager, TreeItem> selectionManagerToSubTree = new HashMap<SelectionManager, TreeItem>();
 
 	private Tree selectionTree;
 
@@ -60,10 +59,7 @@ public class RcpSelectionInfoView extends CaleydoRCPViewPart implements IEventBa
 	 */
 	public RcpSelectionInfoView() {
 		super();
-
 		isSupportView = true;
-		eventPublisher = GeneralManager.get().getEventPublisher();
-
 		try {
 			viewContext = JAXBContext.newInstance(SerializedSelectionInfoView.class);
 		} catch (JAXBException ex) {
