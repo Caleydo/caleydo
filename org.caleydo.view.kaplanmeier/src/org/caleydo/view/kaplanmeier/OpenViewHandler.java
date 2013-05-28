@@ -17,13 +17,12 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.kaplanmeier.command.handler;
+package org.caleydo.view.kaplanmeier;
 
 import org.caleydo.core.gui.command.AOpenViewHandler;
-import org.caleydo.view.kaplanmeier.GLKaplanMeier;
 
-public class OpenKaplanMeierHandler extends AOpenViewHandler {
-	protected OpenKaplanMeierHandler() {
+public class OpenViewHandler extends AOpenViewHandler {
+	protected OpenViewHandler() {
 		super(GLKaplanMeier.VIEW_TYPE);
 	}
 }

@@ -20,6 +20,7 @@
 package org.caleydo.core.view.opengl.picking;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * composite pattern for {@link IPickingListener}s
@@ -35,6 +36,14 @@ public final class PickingListenerComposite extends ArrayList<IPickingListener> 
 
 	public PickingListenerComposite(int initialCapacity) {
 		super(initialCapacity);
+	}
+
+	public static IPickingListener concat(IPickingListener... listeners) {
+		if (listeners.length == 1)
+			return listeners[0];
+		PickingListenerComposite c = new PickingListenerComposite();
+		c.addAll(Arrays.asList(listeners));
+		return c;
 	}
 
 	@Override

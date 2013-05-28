@@ -15,7 +15,7 @@
    <extension
          point="org.eclipse.ui.commands">
       <command
-            defaultHandler="org.caleydo.view.kaplanmeier.command.handler.OpenKaplanMeierHandler"
+            defaultHandler="org.caleydo.view.kaplanmeier.OpenViewHandler"
             id="org.caleydo.view.kaplanmeier.command.openkaplanmeier"
             name="Kaplan Meier">
       </command>
@@ -49,5 +49,14 @@
             </Embedding>
          </ParentView>
       </EmbeddingInfo>
+   </extension>
+   <extension
+         point="org.caleydo.core.data.datadomain.ViewDataDomainAssociation">
+      <association
+            view="org.caleydo.view.kaplanmeier">
+         <dataDomain
+               type="org.caleydo.datadomain.generic">
+         </dataDomain>
+      </association>
    </extension>
 </plugin>
