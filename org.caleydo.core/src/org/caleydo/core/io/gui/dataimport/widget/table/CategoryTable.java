@@ -57,6 +57,8 @@ import org.eclipse.nebula.widgets.nattable.ui.matcher.CellPainterMouseEventMatch
 import org.eclipse.nebula.widgets.nattable.ui.matcher.MouseEventMatcher;
 import org.eclipse.nebula.widgets.nattable.util.GUIHelper;
 import org.eclipse.nebula.widgets.nattable.viewport.ViewportLayer;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
@@ -72,7 +74,7 @@ import org.eclipse.swt.widgets.Display;
  * @author Christian Partl
  *
  */
-public class CategoryTable extends AMatrixBasedTableWidget implements ILayerListener {
+public class CategoryTable extends AMatrixBasedTableWidget implements ILayerListener, DisposeListener {
 
 	private static final String EDITABLE = "EDITABLE";
 	private static final String NON_EDITABLE = "NON_EDITABLE";
@@ -86,6 +88,8 @@ public class CategoryTable extends AMatrixBasedTableWidget implements ILayerList
 	private IntegerCallback rowSelectionCallback;
 
 	private Map<String, Color> colorRegistry = new HashMap<>();
+
+	private LineNumberRowHeaderDataProvider rowHeaderDataProvider;
 
 	private class ColumnHeaderDataProvider implements IDataProvider {
 
@@ -167,16 +171,19 @@ public class CategoryTable extends AMatrixBasedTableWidget implements ILayerList
 		this.layoutData = layoutData;
 		this.rowSelectionCallback = rowSelectionCallback;
 		bodyDataProvider = new MatrixBasedBodyDataProvider(null, 1);
-		buildTable(bodyDataProvider, new ColumnHeaderDataProvider(), new LineNumberRowHeaderDataProvider(1));
+		rowHeaderDataProvider = new LineNumberRowHeaderDataProvider(1);
+		buildTable(bodyDataProvider, new ColumnHeaderDataProvider(), rowHeaderDataProvider);
 	}
 
 	@Override
 	public void createTableFromMatrix(List<List<String>> dataMatrix, int numColumns) {
-		bodyDataProvider = new MatrixBasedBodyDataProvider(dataMatrix, numColumns);
-		updateColors();
+		bodyDataProvider.setDataMatrix(dataMatrix);
+		bodyDataProvider.setNumColumns(numColumns);
+		rowHeaderDataProvider.setNumRows(dataMatrix.size());
+		update();
 
-		buildTable(bodyDataProvider, new ColumnHeaderDataProvider(),
-				new LineNumberRowHeaderDataProvider(dataMatrix.size()));
+		// buildTable(bodyDataProvider, new ColumnHeaderDataProvider(),
+		// new LineNumberRowHeaderDataProvider(dataMatrix.size()));
 	}
 
 	private void buildTable(MatrixBasedBodyDataProvider bodyDataProvider, ColumnHeaderDataProvider columnDataProvider,
@@ -249,6 +256,8 @@ public class CategoryTable extends AMatrixBasedTableWidget implements ILayerList
 			}
 		});
 
+		table.addDisposeListener(this);
+
 		table.configure();
 	}
 
@@ -298,5 +307,10 @@ public class CategoryTable extends AMatrixBasedTableWidget implements ILayerList
 			color.dispose();
 		}
 		colorRegistry.clear();
+	}
+
+	@Override
+	public void widgetDisposed(DisposeEvent e) {
+		dispose();
 	}
 }

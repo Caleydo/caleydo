@@ -737,22 +737,39 @@ public class LoadDataSetPageMediator {
 		List<List<String>> matrix = parser.getDataMatrix();
 		List<List<String>> filteredMatrix = new ArrayList<>(matrix.size());
 		List<Integer> selectedColumns = page.previewTable.getSelectedColumns();
+		DataImportWizard wizard = (DataImportWizard) page.getWizard();
+		List<String> columnOfRowIDs = new ArrayList<>(matrix.size() - dataSetDescription.getNumberOfHeaderLines());
 
 		for (int i = 0; i < matrix.size(); i++) {
-			if (i < dataSetDescription.getNumberOfHeaderLines())
+
+			boolean isRowOfColumnID = false;
+			if (i == dataSetDescription.getRowOfColumnIDs()) {
+				isRowOfColumnID = true;
+			} else if (i < dataSetDescription.getNumberOfHeaderLines())
 				continue;
+
 			List<String> row = matrix.get(i);
-			List<String> filteredRow = new ArrayList<>(selectedColumns.size());
-			for (int selectedColumn : selectedColumns) {
-				if (selectedColumn != dataSetDescription.getColumnOfRowIds())
-					filteredRow.add(row.get(selectedColumn));
+			List<String> filteredRow = filterRowByIndices(row, selectedColumns);
+			if (isRowOfColumnID) {
+				wizard.setFilteredRowOfColumnIDs(filteredRow);
+			} else {
+				filteredMatrix.add(filteredRow);
+				columnOfRowIDs.add(row.get(dataSetDescription.getColumnOfRowIds()));
 			}
-			filteredMatrix.add(filteredRow);
 		}
 
-		DataImportWizard wizard = (DataImportWizard) page.getWizard();
 		wizard.setFilteredDataMatrix(filteredMatrix);
 		wizard.setSelectedColumns(selectedColumns);
+		wizard.setColumnOfRowIDs(columnOfRowIDs);
+	}
+
+	private List<String> filterRowByIndices(List<String> row, List<Integer> indices) {
+		List<String> filteredRow = new ArrayList<>(indices.size());
+		for (int selectedColumn : indices) {
+			if (selectedColumn != dataSetDescription.getColumnOfRowIds())
+				filteredRow.add(row.get(selectedColumn));
+		}
+		return filteredRow;
 	}
 
 	/**
