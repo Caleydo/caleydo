@@ -92,17 +92,9 @@ public class CategoricalDataPropertiesWidget {
 	/**
 	 * @param parent
 	 */
-	public CategoricalDataPropertiesWidget(Composite parent,
-			CategoricalClassDescription<String> categoricalClassDescription, List<List<String>> datasetMatrix,
-			int columnIndex) {
+	public CategoricalDataPropertiesWidget(Composite parent) {
 
 		this.parent = parent;
-		if (categoricalClassDescription == null) {
-			categoricalClassDescription = new CategoricalClassDescription<>();
-		}
-		this.categoricalClassDescription = categoricalClassDescription;
-		this.datasetMatrix = datasetMatrix;
-		this.consideredColumnIndex = columnIndex;
 
 		categoryTypeGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
 		categoryTypeGroup.setText("Category Type");
@@ -209,9 +201,6 @@ public class CategoricalDataPropertiesWidget {
 						}
 					}
 				});
-
-		if (datasetMatrix != null)
-			updateCategories(datasetMatrix, columnIndex, this.categoricalClassDescription);
 	}
 
 	/**

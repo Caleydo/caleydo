@@ -147,8 +147,10 @@ public class ColumnDataPropertiesDialog extends Dialog implements Listener {
 
 		if (numericalDataPropertiesWidget == null) {
 			numericalDataButton.setSelection(true);
-			numericalDataPropertiesWidget = new NumericalDataPropertiesWidget(parentComposite, numericalProperties,
-					this);
+			numericalDataPropertiesWidget = new NumericalDataPropertiesWidget(parentComposite, this);
+			if (numericalProperties != null) {
+				numericalDataPropertiesWidget.updateNumericalProperties(numericalProperties);
+			}
 			parentComposite.layout(true);
 		}
 
@@ -166,8 +168,7 @@ public class ColumnDataPropertiesDialog extends Dialog implements Listener {
 		}
 
 		if (categoricalDataPropertiesWidget == null) {
-			categoricalDataPropertiesWidget = new CategoricalDataPropertiesWidget(parentComposite,
-					categoricalClassDescription, datasetMatrix, columnIndex);
+			categoricalDataPropertiesWidget = new CategoricalDataPropertiesWidget(parentComposite);
 			if (categoricalClassDescription == null) {
 				categoricalDataPropertiesWidget.updateCategories(datasetMatrix, columnIndex);
 			} else {

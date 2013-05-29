@@ -24,6 +24,7 @@ import java.util.List;
 import org.caleydo.core.data.collection.table.TableUtils;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
 import org.caleydo.core.id.IDCategory;
@@ -35,6 +36,8 @@ import org.caleydo.core.util.clusterer.initialization.EClustererTarget;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+
+import com.google.common.collect.Lists;
 
 /**
  * Creates datadomains, perspectives, etc based on a {@link DataSetDescription}
@@ -58,6 +61,11 @@ public class DataLoader {
 			ATableBasedDataDomain dataDomain = loadDataSet(dataSetDescription);
 			loadGroupings(dataDomain, dataSetDescription);
 			runDataProcessing(dataDomain, dataSetDescription);
+
+			// Create perspectives per column for inhomogeneous datasets
+			if (dataSetDescription.getDataDescription() == null) {
+				createInitialPerspectives(dataDomain);
+			}
 			return dataDomain;
 		} catch (Exception e) {
 			Logger.log(new Status(IStatus.ERROR, "DataLoader", "Failed to load data for dataset "
@@ -259,6 +267,30 @@ public class DataLoader {
 				dataDomain.startClustering(clusterConfiguration);
 			}
 
+		}
+
+
+
+	}
+
+	/**
+	 * create initial table perspectives per column
+	 *
+	 * @param dataDomain
+	 */
+	private static void createInitialPerspectives(ATableBasedDataDomain dataDomain) {
+		List<Integer> columns = dataDomain.getTable().getColumnIDList();
+		String recordPer = dataDomain.getTable().getDefaultRecordPerspective().getPerspectiveID();
+		for (Integer col : columns) {
+			Perspective dim = new Perspective(dataDomain, dataDomain.getDimensionIDType());
+			PerspectiveInitializationData data = new PerspectiveInitializationData();
+			data.setData(Lists.newArrayList(col));
+			dim.init(data);
+			dim.setLabel(dataDomain.getDimensionLabel(col));
+			dataDomain.getTable().registerDimensionPerspective(dim, false);
+
+			TablePerspective p = dataDomain.getTablePerspective(recordPer, dim.getPerspectiveID(), false);
+			p.setLabel(dim.getLabel());
 		}
 
 	}

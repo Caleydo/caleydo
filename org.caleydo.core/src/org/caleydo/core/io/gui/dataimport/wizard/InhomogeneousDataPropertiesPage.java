@@ -61,6 +61,8 @@ public class InhomogeneousDataPropertiesPage extends AImportDataPage {
 	 */
 	protected boolean initColumnDescriptions = true;
 
+	protected Composite parentComposite;
+
 	/**
 	 * @param pageName
 	 * @param dataSetDescription
@@ -73,7 +75,7 @@ public class InhomogeneousDataPropertiesPage extends AImportDataPage {
 	@Override
 	public void createControl(Composite parent) {
 
-		Composite parentComposite = new Composite(parent, SWT.NONE);
+		parentComposite = new Composite(parent, SWT.NONE);
 		parentComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		parentComposite.setLayout(new GridLayout(1, true));
 
@@ -126,7 +128,7 @@ public class InhomogeneousDataPropertiesPage extends AImportDataPage {
 
 	@Override
 	public void fillDataSetDescription() {
-		// TODO Auto-generated method stub
+		// nothing to do, as column changes are directly saved in dataset description after the change
 
 	}
 
@@ -152,6 +154,7 @@ public class InhomogeneousDataPropertiesPage extends AImportDataPage {
 
 		table.createTableFromMatrix(wizard.getFilteredDataMatrix(), wizard.getFilteredRowOfColumnIDs(),
 				wizard.getColumnOfRowIDs(), dataSetDescription.getOrCreateParsingPattern());
+		parentComposite.layout(true);
 
 		wizard.setChosenDataTypePage(this);
 		wizard.getContainer().updateButtons();

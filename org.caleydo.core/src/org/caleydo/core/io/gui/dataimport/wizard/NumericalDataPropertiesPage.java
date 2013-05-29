@@ -36,10 +36,14 @@ public class NumericalDataPropertiesPage extends AImportDataPage implements List
 	 */
 	protected Composite parentComposite;
 
-
 	protected NumericalDataPropertiesWidget numericalDataPropertiesWidget;
 
 	protected DataTranspositionWidget dataTranspositionWidget;
+
+	/**
+	 * Determines whether this page should init its widgets from the {@link DataDescription} .
+	 */
+	protected boolean initFromDataDescription = true;
 
 	public NumericalDataPropertiesPage(DataSetDescription dataSetDescription) {
 		super(PAGE_NAME, dataSetDescription);
@@ -53,8 +57,7 @@ public class NumericalDataPropertiesPage extends AImportDataPage implements List
 		parentComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		parentComposite.setLayout(new GridLayout(1, true));
 
-		numericalDataPropertiesWidget = new NumericalDataPropertiesWidget(parentComposite, dataSetDescription
-				.getDataDescription().getNumericalProperties(), this);
+		numericalDataPropertiesWidget = new NumericalDataPropertiesWidget(parentComposite, this);
 
 		dataTranspositionWidget = new DataTranspositionWidget(parentComposite, getWizard(),
 				dataSetDescription.isTransposeMatrix());
@@ -95,9 +98,15 @@ public class NumericalDataPropertiesPage extends AImportDataPage implements List
 
 	@Override
 	public void pageActivated() {
+		if (initFromDataDescription) {
+			numericalDataPropertiesWidget.updateNumericalProperties(dataSetDescription.getDataDescription()
+					.getNumericalProperties());
+			initFromDataDescription = false;
+		}
 		getWizard().setChosenDataTypePage(this);
 		getWizard().getContainer().updateButtons();
 		dataTranspositionWidget.update();
+
 	}
 
 	@Override
@@ -114,6 +123,21 @@ public class NumericalDataPropertiesPage extends AImportDataPage implements List
 	@Override
 	public IWizardPage getNextPage() {
 		return getWizard().getAddGroupingsPage();
+	}
+
+	/**
+	 * @param initFromDataDescription
+	 *            setter, see {@link initFromDataDescription}
+	 */
+	public void setInitFromDataDescription(boolean initFromDataDescription) {
+		this.initFromDataDescription = initFromDataDescription;
+	}
+
+	/**
+	 * @return the initFromDataDescription, see {@link #initFromDataDescription}
+	 */
+	public boolean isInitFromDataDescription() {
+		return initFromDataDescription;
 	}
 
 }

@@ -92,19 +92,48 @@ public class NumericalDataPropertiesWidget {
 	/**
 	 *
 	 */
-	public NumericalDataPropertiesWidget(Composite parent, NumericalProperties numericalProperties, Listener listener) {
+	public NumericalDataPropertiesWidget(Composite parent, Listener listener) {
 		this.parent = parent;
-		if (numericalProperties != null) {
-			this.numericalProperties = numericalProperties;
-		} else {
-			this.numericalProperties = new NumericalProperties();
-		}
 
 		createScalingGroup(parent);
 
 		createClippingGroup(parent, listener);
 
 		createDataCenterGroup(parent, listener);
+	}
+
+	public void updateNumericalProperties(NumericalProperties numericalProperties) {
+		this.numericalProperties = numericalProperties;
+
+		Double dataCenter = numericalProperties.getDataCenter();
+		useDataCenterButton.setSelection(dataCenter != null);
+		dataCenterTextField.setEnabled(dataCenter != null);
+		dataCenterTextField.setText(dataCenter == null ? "0" : dataCenter.toString());
+
+		boolean maxDefined = numericalProperties.getMax() != null;
+		maxButton.setSelection(maxDefined);
+		maxTextField.setEnabled(maxDefined);
+		if (maxDefined)
+			maxTextField.setText(numericalProperties.getMax().toString());
+		else
+			maxTextField.setText("");
+
+		boolean minDefined = numericalProperties.getMin() != null;
+		minButton.setEnabled(true);
+		minButton.setSelection(minDefined);
+		minTextField.setEnabled(minDefined);
+		if (minDefined)
+			minTextField.setText(numericalProperties.getMin().toString());
+		else
+			minTextField.setText("");
+
+		String previousMathFiltermode = numericalProperties.getDataTransformation();
+		if (previousMathFiltermode.equals("Log10"))
+			scalingCombo.select(1);
+		else if (previousMathFiltermode.equals("Log2"))
+			scalingCombo.select(2);
+		else
+			scalingCombo.select(0);
 	}
 
 	private void createDataCenterGroup(Composite parent, Listener listener) {
@@ -132,18 +161,14 @@ public class NumericalDataPropertiesWidget {
 				useDataCenterButtonSelected();
 			}
 		});
-
-		Double dataCenter = numericalProperties.getDataCenter();
-		useDataCenterButton.setSelection(dataCenter != null);
+		useDataCenterButton.setSelection(false);
 
 		dataCenterTextField = new Text(dataCenterGroup, SWT.BORDER);
 		gridData = new GridData(SWT.LEFT, SWT.FILL, false, true);
 		gridData.widthHint = 70;
 		dataCenterTextField.setLayoutData(gridData);
 		dataCenterTextField.addListener(SWT.Modify, listener);
-		dataCenterTextField.setEnabled(dataCenter != null);
-		dataCenterTextField.setText(dataCenter == null ? "0" : dataCenter.toString());
-
+		dataCenterTextField.setEnabled(false);
 	}
 
 	private void createClippingGroup(Composite parent, Listener listener) {
@@ -173,13 +198,8 @@ public class NumericalDataPropertiesWidget {
 
 		maxTextField = new Text(clippingGroup, SWT.BORDER);
 		maxTextField.addListener(SWT.Modify, listener);
-
-		boolean maxDefined = numericalProperties.getMax() != null;
+		maxTextField.setEnabled(false);
 		maxButton.setEnabled(true);
-		maxButton.setSelection(maxDefined);
-		maxTextField.setEnabled(maxDefined);
-		if (maxDefined)
-			maxTextField.setText(numericalProperties.getMax().toString());
 
 		minButton = new Button(clippingGroup, SWT.CHECK);
 		minButton.setText("Min");
@@ -193,13 +213,7 @@ public class NumericalDataPropertiesWidget {
 
 		minTextField = new Text(clippingGroup, SWT.BORDER);
 		minTextField.addListener(SWT.Modify, listener);
-
-		boolean minDefined = numericalProperties.getMin() != null;
-		minButton.setEnabled(true);
-		minButton.setSelection(minDefined);
-		minTextField.setEnabled(minDefined);
-		if (minDefined)
-			minTextField.setText(numericalProperties.getMin().toString());
+		minTextField.setEnabled(false);
 
 	}
 
@@ -223,17 +237,11 @@ public class NumericalDataPropertiesWidget {
 		gridData.widthHint = 100;
 		scalingCombo.setLayoutData(gridData);
 
-		String previousMathFiltermode = numericalProperties.getDataTransformation();
 		String[] scalingOptions = { "None", "Log10", "Log2" };
 		scalingCombo.setItems(scalingOptions);
 		scalingCombo.setEnabled(true);
 
-		if (previousMathFiltermode.equals("Log10"))
-			scalingCombo.select(1);
-		else if (previousMathFiltermode.equals("Log2"))
-			scalingCombo.select(2);
-		else
-			scalingCombo.select(0);
+		scalingCombo.select(0);
 	}
 
 	/**

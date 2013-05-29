@@ -112,6 +112,8 @@ public class DataSetTypePage extends AImportDataPage {
 					|| dataSetDescription.getDataDescription().getNumericalProperties() == null || datasetChanged) {
 				dataSetDescription.setDataDescription(new DataDescription(EDataClass.REAL_NUMBER, EDataType.FLOAT,
 						new NumericalProperties()));
+				// the page needs to init from the newly created data description
+				getWizard().getNumericalDataPage().setInitFromDataDescription(true);
 			}
 
 		} else if (categoricalDatasetButton.getSelection()) {

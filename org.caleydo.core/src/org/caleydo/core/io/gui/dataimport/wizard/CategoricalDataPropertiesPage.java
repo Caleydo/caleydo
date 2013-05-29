@@ -64,15 +64,12 @@ public class CategoricalDataPropertiesPage extends AImportDataPage {
 		setDescription(PAGE_DESCRIPTION);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void createControl(Composite parent) {
 		parentComposite = new Composite(parent, SWT.NONE);
 		parentComposite.setLayout(new GridLayout(1, true));
 
-		categoricalDataWidget = new CategoricalDataPropertiesWidget(parentComposite,
-				(CategoricalClassDescription<String>) dataSetDescription.getDataDescription()
-						.getCategoricalClassDescription(), getWizard().getFilteredDataMatrix(), -1);
+		categoricalDataWidget = new CategoricalDataPropertiesWidget(parentComposite);
 
 		dataTranspositionWidget = new DataTranspositionWidget(parentComposite, getWizard(),
 				dataSetDescription.isTransposeMatrix());
