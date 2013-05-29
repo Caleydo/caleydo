@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.internal.startup;
+package org.caleydo.core.startup;
 
 import static org.caleydo.core.manager.GeneralManager.CALEYDO_HOME_PATH;
 
@@ -36,7 +36,6 @@ import org.caleydo.core.serialize.ISerializationAddon;
 import org.caleydo.core.serialize.ProjectManager;
 import org.caleydo.core.serialize.SerializationData;
 import org.caleydo.core.serialize.ZipUtils;
-import org.caleydo.core.startup.IStartupProcedure;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.system.FileOperations;
 import org.eclipse.core.runtime.IStatus;

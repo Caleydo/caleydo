@@ -21,7 +21,7 @@ import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.DataSetDescription.ECreateDefaultProperties;
 import org.caleydo.core.io.gui.dataimport.wizard.DataImportWizard;
-import org.caleydo.core.startup.AImportStartupProcedure;
+import org.caleydo.core.startup.ImportStartupProcedure;
 import org.caleydo.datadomain.genetic.Activator;
 import org.caleydo.datadomain.genetic.Organism;
 
@@ -32,7 +32,7 @@ import com.google.common.base.Function;
  *
  * @author Marc Streit
  */
-public class GeneticGUIStartupProcedure extends AImportStartupProcedure {
+public class GeneticGUIStartupProcedure extends ImportStartupProcedure {
 
 	private final Organism organism;
 	private final boolean loadSampleData;

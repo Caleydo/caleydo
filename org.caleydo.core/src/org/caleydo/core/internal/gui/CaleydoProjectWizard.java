@@ -80,6 +80,7 @@ public class CaleydoProjectWizard
 		if (page.isPageComplete()) {
 			Pair<String, IStartupAddon> addon = page.getSelectedAddon();
 			MyPreferences.setLastChosenProjectMode(addon.getFirst());
+			MyPreferences.flush();
 
 			setResult(addon.getSecond().create());
 			return true;

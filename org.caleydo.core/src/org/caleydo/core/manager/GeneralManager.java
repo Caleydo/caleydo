@@ -100,7 +100,7 @@ public class GeneralManager {
 	private SerializationManager serializationManager;
 	private IStatisticsPerformer rStatisticsPerformer;
 
-	private ProjectMetaData metaData = new ProjectMetaData();
+	private ProjectMetaData metaData = ProjectMetaData.createDefault();
 
 	public void init() {
 		eventPublisher = EventPublisher.INSTANCE;

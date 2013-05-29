@@ -17,7 +17,7 @@
 package org.caleydo.datadomain.generic.internal;
 
 import org.caleydo.core.data.datadomain.DataDomainManager;
-import org.caleydo.core.startup.AImportStartupProcedure;
+import org.caleydo.core.startup.ImportStartupProcedure;
 
 import com.google.common.base.Function;
 
@@ -26,7 +26,7 @@ import com.google.common.base.Function;
  *
  * @author Marc Streit
  */
-public class GenericGUIStartupProcedure extends AImportStartupProcedure {
+public class GenericGUIStartupProcedure extends ImportStartupProcedure {
 
 	@Override
 	public boolean run(Function<String, Void> setTitle) {

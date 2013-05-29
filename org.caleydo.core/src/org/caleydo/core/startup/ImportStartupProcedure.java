@@ -35,9 +35,9 @@ import com.google.common.base.Function;
  * @author Alexander Lex
  * @author Marc Streit
  */
-public abstract class AImportStartupProcedure implements IStartupProcedure {
+public class ImportStartupProcedure implements IStartupProcedure {
 
-	public AImportStartupProcedure() {
+	public ImportStartupProcedure() {
 		// Delete old workbench state
 		ProjectManager.deleteWorkbenchSettings();
 	}
