@@ -17,39 +17,30 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.info.selection;
+package org.caleydo.view.info.selection.external;
 
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.osgi.framework.BundleContext;
+import org.eclipse.jface.preference.FieldEditorPreferencePage;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPreferencePage;
 
-/**
- * The activator class controls the plug-in life cycle
- */
-public class Activator extends AbstractUIPlugin {
-	private static final String PLUGIN_ID = "org.caleydo.view.info.selection";
-	// The shared instance
-	private static Activator plugin;
+public class ExternalPreferencePage extends FieldEditorPreferencePage implements
+		IWorkbenchPreferencePage {
+
+	public ExternalPreferencePage() {
+		super(GRID);
+	}
 
 	@Override
-	public void start(BundleContext context) throws Exception {
-		super.start(context);
-		plugin = this;
-	}
+	public void createFieldEditors() {
+		final Composite parent = getFieldEditorParent();
 
+		addField(new ExternalFieldEditor("external.idcategory", "External Patterns", parent));
+	}
 
 	@Override
-	public void stop(BundleContext context) throws Exception {
-		plugin = null;
-		super.stop(context);
-	}
-
-
-	public static Activator getDefault() {
-		return plugin;
-	}
-
-	public static ImageDescriptor getImageDescriptor(String imageFilePath) {
-		return imageDescriptorFromPlugin(PLUGIN_ID, imageFilePath);
+	public void init(IWorkbench workbench) {
+		setPreferenceStore(org.caleydo.view.info.selection.Activator.getDefault().getPreferenceStore());
+		setDescription("Defines Open Externally Settings");
 	}
 }
