@@ -31,21 +31,21 @@ import java.util.jar.Manifest;
 /**
  * adapted and enhanced version of the eclipse jdt jar in jar launcher for simple platform checks for custom classpath
  * entries
- * 
+ *
  * notation:
- * 
+ *
  * <pre>
  * Rsrc - Class - Path[-(win | mac | linux)][-(x86 | amd64)]
  * </pre>
- * 
+ *
  * and
- * 
+ *
  * <pre>
  * RsrcMainClass
  * </pre>
- * 
+ *
  * as system property to override the main class
- * 
+ *
  * @since 3.5
  */
 public class JarInJarLauncher {
@@ -144,11 +144,13 @@ public class JarInJarLauncher {
 			else
 				rsrcUrls[i] = new URL(jarInternalUrl + rsrcPath + sep);
 		}
-		ClassLoader jceClassLoader = new URLClassLoader(rsrcUrls, null);
-		Thread.currentThread().setContextClassLoader(jceClassLoader);
-		Class<?> c = Class.forName(rsrcMainClass, true, jceClassLoader);
-		Method main = c.getMethod("main", args.getClass());
-		main.invoke(null, new Object[] { args });
+
+		try (URLClassLoader jceClassLoader = new URLClassLoader(rsrcUrls, null)) {
+			Thread.currentThread().setContextClassLoader(jceClassLoader);
+			Class<?> c = Class.forName(rsrcMainClass, true, jceClassLoader);
+			Method main = c.getMethod("main", args.getClass());
+			main.invoke(null, new Object[] { args });
+		}
 	}
 
 	/**

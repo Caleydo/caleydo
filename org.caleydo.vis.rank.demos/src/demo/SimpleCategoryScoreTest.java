@@ -38,6 +38,8 @@ import org.caleydo.vis.rank.model.RankRankColumnModel;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.mapping.BaseCategoricalMappingFunction;
 
+import com.google.common.base.Function;
+
 import demo.RankTableDemo.IModelBuilder;
 
 /**
@@ -56,7 +58,12 @@ public class SimpleCategoryScoreTest implements IModelBuilder {
 		metaData.put("Cat 4", new CategoryInfo("Category 4", Color.YELLOW));
 
 		table.add(new CategoricalRankRankColumnModel<String>(GLRenderers.drawText("Category"),
-				new ReflectionData<String>(field("value"), String.class), metaData,
+				new Function<IRow, String>() {
+					@Override
+					public String apply(IRow in) {
+						return ((SimpleRow) in).value;
+					}
+				}, metaData,
  new BaseCategoricalMappingFunction<String>(metaData
 						.keySet())));
 
