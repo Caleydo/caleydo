@@ -357,8 +357,8 @@
       <extension
             point="org.caleydo.core.StartupAddon">
          <addon
-               class="org.caleydo.core.internal.startup.TryCaleydoStartupAddon"
-               name="Try Caleydo"
+               class="org.caleydo.core.internal.startup.LoadSampleProjectStartupAddon"
+               name="Load Sample"
                order="0">
          </addon>
          <addon

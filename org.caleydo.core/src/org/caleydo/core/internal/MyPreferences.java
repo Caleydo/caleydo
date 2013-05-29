@@ -31,6 +31,7 @@ import org.eclipse.jface.preference.IPreferenceStore;
 public class MyPreferences {
 	private static final String LAST_CHOSEN_PROJECT_MODE = "lastChosenApplicationMode";
 	private static final String LAST_MANUALLY_CHOSEN_PROJECT = "lastManuallyChosenProject";
+	private static final String LAST_SAMPLE_CHOSEN_PROJECT = "lastChosenSampleProject";
 	private static final String AUTO_PROJECT_LOAD = "autoload";
 
 	private static IPreferenceStore prefs() {
@@ -43,6 +44,14 @@ public class MyPreferences {
 
 	public static void setLastManuallyChosenProject(String value) {
 		prefs().setValue(LAST_MANUALLY_CHOSEN_PROJECT, value);
+	}
+
+	public static String getLastChosenSampleProject() {
+		return prefs().getString(LAST_SAMPLE_CHOSEN_PROJECT);
+	}
+
+	public static void setLastChosenSampleProject(String value) {
+		prefs().setValue(LAST_SAMPLE_CHOSEN_PROJECT, value);
 	}
 
 	public static String getLastChosenProjectMode() {
