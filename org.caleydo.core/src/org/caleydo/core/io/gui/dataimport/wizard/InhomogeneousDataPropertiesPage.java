@@ -19,12 +19,25 @@
  *******************************************************************************/
 package org.caleydo.core.io.gui.dataimport.wizard;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.caleydo.core.data.collection.EDataClass;
+import org.caleydo.core.data.collection.EDataType;
+import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
+import org.caleydo.core.io.ColumnDescription;
+import org.caleydo.core.io.DataDescription;
 import org.caleydo.core.io.DataSetDescription;
+import org.caleydo.core.io.NumericalProperties;
 import org.caleydo.core.io.gui.dataimport.widget.table.ColumnConfigTableWidget;
+import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -40,6 +53,13 @@ public class InhomogeneousDataPropertiesPage extends AImportDataPage {
 	public static final String PAGE_DESCRIPTION = "Specify data properties for individual columns.";
 
 	protected ColumnConfigTableWidget table;
+
+	protected Button setColumnPropertiesButton;
+
+	/**
+	 * Determines whether this page should init its widgets from the {@link DataDescription} .
+	 */
+	protected boolean initColumnDescriptions = true;
 
 	/**
 	 * @param pageName
@@ -57,8 +77,51 @@ public class InhomogeneousDataPropertiesPage extends AImportDataPage {
 		parentComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		parentComposite.setLayout(new GridLayout(1, true));
 
+		setColumnPropertiesButton = new Button(parentComposite, SWT.PUSH);
+		setColumnPropertiesButton.setText("Set Column Properties");
+		setColumnPropertiesButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				int columnIndex = table.getSelectedColumn();
+				if (columnIndex != -1)
+					defineColumnProperties(columnIndex);
+			}
+		});
+
 		table = new ColumnConfigTableWidget(parentComposite);
 		setControl(parentComposite);
+	}
+
+	@SuppressWarnings("unchecked")
+	private void defineColumnProperties(int columnIndex) {
+		List<ColumnDescription> columnDescriptions = dataSetDescription.getOrCreateParsingPattern();
+		ColumnDescription columnDescription = columnDescriptions.get(columnIndex);
+		DataImportWizard wizard = getWizard();
+		ColumnDataPropertiesDialog dialog;
+		if (columnDescription.getDataDescription().getCategoricalClassDescription() != null) {
+			dialog = new ColumnDataPropertiesDialog(getShell(), (CategoricalClassDescription<String>) columnDescription
+					.getDataDescription().getCategoricalClassDescription(), wizard.getFilteredDataMatrix(), columnIndex);
+		} else {
+			dialog = new ColumnDataPropertiesDialog(getShell(), columnDescription.getDataDescription()
+					.getNumericalProperties(), wizard.getFilteredDataMatrix(), columnIndex);
+		}
+		int status = dialog.open();
+
+		if (status == Window.OK) {
+			if (dialog.isNumericalData()) {
+				NumericalProperties numericalProperties = dialog.getNumericalProperties();
+				columnDescription.setDataDescription(new DataDescription(EDataClass.REAL_NUMBER, EDataType.FLOAT,
+						numericalProperties));
+			} else {
+				CategoricalClassDescription<String> categoricalClassDescription = dialog
+						.getCategoricalClassDescription();
+				columnDescription.setDataDescription(new DataDescription(EDataClass.CATEGORICAL, EDataType.STRING,
+						categoricalClassDescription));
+			}
+
+			table.update();
+		}
+
 	}
 
 	@Override
@@ -69,22 +132,55 @@ public class InhomogeneousDataPropertiesPage extends AImportDataPage {
 
 	@Override
 	public void pageActivated() {
-		DataImportWizard wizard = (DataImportWizard) getWizard();
+		DataImportWizard wizard = getWizard();
+
+		if (initColumnDescriptions) {
+			// use default column description for each column
+			ArrayList<ColumnDescription> inputPattern = new ArrayList<ColumnDescription>();
+			DataDescription dataDescription = new DataDescription(EDataClass.REAL_NUMBER, EDataType.FLOAT,
+					new NumericalProperties());
+
+			for (Integer selected : wizard.getSelectedColumns()) {
+				int columnIndex = selected.intValue();
+				if (columnIndex == dataSetDescription.getColumnOfRowIds())
+					continue;
+				inputPattern.add(new ColumnDescription(columnIndex, dataDescription));
+			}
+
+			dataSetDescription.setParsingPattern(inputPattern);
+		}
+
 		table.createTableFromMatrix(wizard.getFilteredDataMatrix(), wizard.getFilteredRowOfColumnIDs(),
-				wizard.getColumnOfRowIDs());
+				wizard.getColumnOfRowIDs(), dataSetDescription.getOrCreateParsingPattern());
 
 		wizard.setChosenDataTypePage(this);
 		wizard.getContainer().updateButtons();
+		initColumnDescriptions = false;
 	}
 
 	@Override
 	public IWizardPage getPreviousPage() {
-		return ((DataImportWizard) getWizard()).getDataSetTypePage();
+		return getWizard().getDataSetTypePage();
 	}
 
 	@Override
 	public IWizardPage getNextPage() {
-		return ((DataImportWizard) getWizard()).getAddGroupingsPage();
+		return getWizard().getAddGroupingsPage();
+	}
+
+	/**
+	 * @param initColumnDescriptions
+	 *            setter, see {@link initColumnDescriptions}
+	 */
+	public void setInitColumnDescriptions(boolean initColumnDescriptions) {
+		this.initColumnDescriptions = initColumnDescriptions;
+	}
+
+	/**
+	 * @return the initColumnDescriptions, see {@link #initColumnDescriptions}
+	 */
+	public boolean isInitColumnDescriptions() {
+		return initColumnDescriptions;
 	}
 
 }

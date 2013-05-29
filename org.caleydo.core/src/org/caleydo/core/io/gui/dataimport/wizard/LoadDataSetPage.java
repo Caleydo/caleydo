@@ -404,7 +404,6 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 		});
 	}
 
-
 	/**
 	 * Reads the min and max values (if set) from the dialog
 	 */
@@ -421,20 +420,20 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 	@Override
 	public boolean isPageComplete() {
 		if (loadFile.getFileName().isEmpty()) {
-			((DataImportWizard) getWizard()).setRequiredDataSpecified(false);
+			getWizard().setRequiredDataSpecified(false);
 			return false;
 		}
 
 		if (rowIDCombo.getSelectionIndex() == -1) {
-			((DataImportWizard) getWizard()).setRequiredDataSpecified(false);
+			getWizard().setRequiredDataSpecified(false);
 			return false;
 		}
 
 		if (columnIDCombo.getSelectionIndex() == -1) {
-			((DataImportWizard) getWizard()).setRequiredDataSpecified(false);
+			getWizard().setRequiredDataSpecified(false);
 			return false;
 		}
-		((DataImportWizard) getWizard()).setRequiredDataSpecified(true);
+		getWizard().setRequiredDataSpecified(true);
 
 		return super.isPageComplete();
 	}

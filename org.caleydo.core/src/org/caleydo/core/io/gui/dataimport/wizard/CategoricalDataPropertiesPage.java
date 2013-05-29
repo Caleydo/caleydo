@@ -21,7 +21,9 @@ package org.caleydo.core.io.gui.dataimport.wizard;
 
 import java.util.ArrayList;
 
+import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
 import org.caleydo.core.io.ColumnDescription;
+import org.caleydo.core.io.DataDescription;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.gui.dataimport.widget.CategoricalDataPropertiesWidget;
 import org.caleydo.core.io.gui.dataimport.widget.DataTranspositionWidget;
@@ -42,40 +44,16 @@ public class CategoricalDataPropertiesPage extends AImportDataPage {
 
 	public static final String PAGE_DESCRIPTION = "Specify properties for the categorical dataset.";
 
-	// /**
-	// * Radio button for ordinal categories.
-	// */
-	// protected Button ordinalButton;
-	// /**
-	// * Radio button for nominal categories.
-	// */
-	// protected Button nominalButton;
-	// /**
-	// * Button to move a category up in the table.
-	// */
-	// protected Button upButton;
-	// /**
-	// * Button to move a category down in the table.
-	// */
-	// protected Button downButton;
-	// /**
-	// * Button to add a new category.
-	// */
-	// protected Button addCategoryButton;
-	// /**
-	// * Button to remove an existing category.
-	// */
-	// protected Button removeCategoryButton;
-	//
-	// protected CategoryTable categoryTable;
-
 	protected DataTranspositionWidget dataTranspositionWidget;
 
 	protected Composite parentComposite;
 
-	// protected Group categoriesGroup;
-
 	protected CategoricalDataPropertiesWidget categoricalDataWidget;
+
+	/**
+	 * Determines whether this page should init its widgets from the {@link DataDescription} .
+	 */
+	protected boolean initFromDataDescription = true;
 
 	/**
 	 * @param pageName
@@ -86,119 +64,17 @@ public class CategoricalDataPropertiesPage extends AImportDataPage {
 		setDescription(PAGE_DESCRIPTION);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void createControl(Composite parent) {
 		parentComposite = new Composite(parent, SWT.NONE);
 		parentComposite.setLayout(new GridLayout(1, true));
 
-		categoricalDataWidget = new CategoricalDataPropertiesWidget(parentComposite, (DataImportWizard) getWizard());
-		// Group categoryTypeGroup = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
-		// categoryTypeGroup.setText("Category Type");
-		// categoryTypeGroup.setLayout(new GridLayout(1, true));
-		// ordinalButton = new Button(categoryTypeGroup, SWT.RADIO);
-		// ordinalButton.setText("Ordinal");
-		// ordinalButton.setSelection(true);
-		// ordinalButton.addSelectionListener(new SelectionAdapter() {
-		// @Override
-		// public void widgetSelected(SelectionEvent e) {
-		// upButton.setEnabled(true);
-		// downButton.setEnabled(true);
-		// }
-		// });
-		//
-		// nominalButton = new Button(categoryTypeGroup, SWT.RADIO);
-		// nominalButton.setText("Nominal");
-		// nominalButton.addSelectionListener(new SelectionAdapter() {
-		// @Override
-		// public void widgetSelected(SelectionEvent e) {
-		// upButton.setEnabled(false);
-		// downButton.setEnabled(false);
-		// }
-		// });
-		//
-		// categoriesGroup = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
-		// categoriesGroup.setText("Categories");
-		// categoriesGroup.setLayout(new GridLayout(2, false));
-		// categoriesGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		//
-		// Composite buttonComposite = new Composite(categoriesGroup, SWT.NONE);
-		// buttonComposite.setLayout(new GridLayout(1, true));
-		// upButton = new Button(buttonComposite, SWT.ARROW | SWT.UP);
-		// upButton.setLayoutData(new GridData(30, 30));
-		// upButton.addSelectionListener(new SelectionAdapter() {
-		//
-		// @Override
-		// public void widgetSelected(SelectionEvent e) {
-		// int selectedRowIndex = categoryTable.getSelectedRow();
-		// if (selectedRowIndex != -1 && selectedRowIndex != 0) {
-		// swapRows(selectedRowIndex, selectedRowIndex - 1);
-		// categoryTable.update();
-		// categoryTable.selectRow(selectedRowIndex - 1);
-		// }
-		// }
-		//
-		// });
-		// downButton = new Button(buttonComposite, SWT.ARROW | SWT.DOWN);
-		// downButton.setLayoutData(new GridData(30, 30));
-		// downButton.addSelectionListener(new SelectionAdapter() {
-		//
-		// @Override
-		// public void widgetSelected(SelectionEvent e) {
-		// int selectedRowIndex = categoryTable.getSelectedRow();
-		// if (selectedRowIndex != -1 && selectedRowIndex != categoryTable.getRowCount() - 1) {
-		// swapRows(selectedRowIndex, selectedRowIndex + 1);
-		// categoryTable.update();
-		// categoryTable.selectRow(selectedRowIndex + 1);
-		// }
-		// }
-		//
-		// });
-		//
-		// addCategoryButton = new Button(buttonComposite, SWT.PUSH);
-		// addCategoryButton.setText("Add");
-		// addCategoryButton.addSelectionListener(new SelectionAdapter() {
-		//
-		// @Override
-		// public void widgetSelected(SelectionEvent e) {
-		// addCategory();
-		// }
-		//
-		// });
-		//
-		// removeCategoryButton = new Button(buttonComposite, SWT.PUSH);
-		// removeCategoryButton.setText("Remove");
-		// removeCategoryButton.addSelectionListener(new SelectionAdapter() {
-		//
-		// @Override
-		// public void widgetSelected(SelectionEvent e) {
-		// int selectedRowIndex = categoryTable.getSelectedRow();
-		// if (selectedRowIndex != -1) {
-		// removeCategory(selectedRowIndex);
-		// categoryTable.update();
-		// }
-		// }
-		//
-		// });
-		//
-		// categoryTable = new CategoryTable(categoriesGroup, new GridData(SWT.FILL, SWT.FILL, true, true, 1, 2),
-		// new IntegerCallback() {
-		//
-		// @Override
-		// public void on(int data) {
-		// if (!nominalButton.getSelection()) {
-		// upButton.setEnabled(true);
-		// downButton.setEnabled(true);
-		// }
-		// if (data == 0) {
-		// upButton.setEnabled(false);
-		// }
-		// if (data == categoryTable.getRowCount() - 1) {
-		// downButton.setEnabled(false);
-		// }
-		// }
-		// });
+		categoricalDataWidget = new CategoricalDataPropertiesWidget(parentComposite,
+				(CategoricalClassDescription<String>) dataSetDescription.getDataDescription()
+						.getCategoricalClassDescription(), getWizard().getFilteredDataMatrix(), -1);
 
-		dataTranspositionWidget = new DataTranspositionWidget(parentComposite, (DataImportWizard) getWizard(),
+		dataTranspositionWidget = new DataTranspositionWidget(parentComposite, getWizard(),
 				dataSetDescription.isTransposeMatrix());
 
 		setControl(parentComposite);
@@ -213,7 +89,7 @@ public class CategoricalDataPropertiesPage extends AImportDataPage {
 				categoricalDataWidget.getCategoricalClassDescription());
 
 		ArrayList<ColumnDescription> inputPattern = new ArrayList<ColumnDescription>();
-		DataImportWizard wizard = (DataImportWizard) getWizard();
+		DataImportWizard wizard = getWizard();
 
 		for (Integer selected : wizard.getSelectedColumns()) {
 			int columnIndex = selected.intValue();
@@ -225,13 +101,18 @@ public class CategoricalDataPropertiesPage extends AImportDataPage {
 		dataSetDescription.setParsingPattern(inputPattern);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void pageActivated() {
 
-		DataImportWizard wizard = (DataImportWizard) getWizard();
+		DataImportWizard wizard = getWizard();
 
-		categoricalDataWidget.updateCategories(wizard.getFilteredDataMatrix(), -1);
-
+		// categoricalDataWidget.updateCategories(wizard.getFilteredDataMatrix(), -1);
+		if (initFromDataDescription) {
+			categoricalDataWidget.updateCategories(wizard.getFilteredDataMatrix(), -1,
+					(CategoricalClassDescription<String>) dataSetDescription.getDataDescription()
+							.getCategoricalClassDescription());
+		}
 		dataTranspositionWidget.update();
 
 		// categoryTable.update();
@@ -239,17 +120,33 @@ public class CategoricalDataPropertiesPage extends AImportDataPage {
 
 		wizard.setChosenDataTypePage(this);
 		wizard.getContainer().updateButtons();
+		initFromDataDescription = false;
 
 	}
 
 	@Override
 	public IWizardPage getPreviousPage() {
-		return ((DataImportWizard) getWizard()).getDataSetTypePage();
+		return getWizard().getDataSetTypePage();
 	}
 
 	@Override
 	public IWizardPage getNextPage() {
-		return ((DataImportWizard) getWizard()).getAddGroupingsPage();
+		return getWizard().getAddGroupingsPage();
+	}
+
+	/**
+	 * @param initFromDataDescription
+	 *            setter, see {@link initFromDataDescription}
+	 */
+	public void setInitFromDataDescription(boolean initFromDataDescription) {
+		this.initFromDataDescription = initFromDataDescription;
+	}
+
+	/**
+	 * @return the initFromDataDescription, see {@link #initFromDataDescription}
+	 */
+	public boolean isInitFromDataDescription() {
+		return initFromDataDescription;
 	}
 
 }

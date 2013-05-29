@@ -83,6 +83,10 @@ public class NumericalDataPropertiesWidget {
 	 */
 	protected Group dataCenterGroup;
 
+	protected Group scalingGroup;
+
+	protected Group clippingGroup;
+
 	protected NumericalProperties numericalProperties;
 
 	/**
@@ -90,7 +94,11 @@ public class NumericalDataPropertiesWidget {
 	 */
 	public NumericalDataPropertiesWidget(Composite parent, NumericalProperties numericalProperties, Listener listener) {
 		this.parent = parent;
-		this.numericalProperties = numericalProperties;
+		if (numericalProperties != null) {
+			this.numericalProperties = numericalProperties;
+		} else {
+			this.numericalProperties = new NumericalProperties();
+		}
 
 		createScalingGroup(parent);
 
@@ -125,21 +133,22 @@ public class NumericalDataPropertiesWidget {
 			}
 		});
 
-		useDataCenterButton.setSelection(false);
+		Double dataCenter = numericalProperties.getDataCenter();
+		useDataCenterButton.setSelection(dataCenter != null);
 
 		dataCenterTextField = new Text(dataCenterGroup, SWT.BORDER);
 		gridData = new GridData(SWT.LEFT, SWT.FILL, false, true);
 		gridData.widthHint = 70;
 		dataCenterTextField.setLayoutData(gridData);
 		dataCenterTextField.addListener(SWT.Modify, listener);
-		dataCenterTextField.setEnabled(false);
-		dataCenterTextField.setText("0");
+		dataCenterTextField.setEnabled(dataCenter != null);
+		dataCenterTextField.setText(dataCenter == null ? "0" : dataCenter.toString());
 
 	}
 
 	private void createClippingGroup(Composite parent, Listener listener) {
 
-		Group clippingGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
+		clippingGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
 		clippingGroup.setText("Data Clipping");
 		clippingGroup.setLayout(new GridLayout(2, false));
 		clippingGroup.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
@@ -195,7 +204,7 @@ public class NumericalDataPropertiesWidget {
 	}
 
 	private void createScalingGroup(Composite parent) {
-		Group scalingGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
+		scalingGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
 		scalingGroup.setText("Data Scale");
 		scalingGroup.setLayout(new GridLayout(2, false));
 		scalingGroup.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
@@ -295,5 +304,11 @@ public class NumericalDataPropertiesWidget {
 		numericalProperties.setDataTransformation(scalingCombo.getText());
 
 		return numericalProperties;
+	}
+
+	public void dispose() {
+		dataCenterGroup.dispose();
+		clippingGroup.dispose();
+		scalingGroup.dispose();
 	}
 }

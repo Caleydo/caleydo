@@ -21,8 +21,10 @@ package org.caleydo.core.io.gui.dataimport.widget.table;
 
 import java.util.List;
 
+import org.caleydo.core.io.ColumnDescription;
 import org.eclipse.nebula.widgets.nattable.NatTable;
 import org.eclipse.nebula.widgets.nattable.config.DefaultNatTableStyleConfiguration;
+import org.eclipse.nebula.widgets.nattable.coordinate.PositionCoordinate;
 import org.eclipse.nebula.widgets.nattable.data.IDataProvider;
 import org.eclipse.nebula.widgets.nattable.grid.data.DefaultCornerDataProvider;
 import org.eclipse.nebula.widgets.nattable.grid.layer.ColumnHeaderLayer;
@@ -53,19 +55,34 @@ public class ColumnConfigTableWidget {
 
 	protected MatrixBasedBodyDataProvider bodyDataProvider;
 
+	protected SelectionLayer selectionLayer;
+
 	private class ColumnHeaderDataProvider implements IDataProvider {
 
 		private List<String> rowOfColumnIDs;
+		private List<ColumnDescription> columnDescriptions;
 
-		public ColumnHeaderDataProvider(List<String> rowOfColumnIDs) {
+		public ColumnHeaderDataProvider(List<String> rowOfColumnIDs, List<ColumnDescription> columnDescriptions) {
 			this.rowOfColumnIDs = rowOfColumnIDs;
+			this.columnDescriptions = columnDescriptions;
 		}
 
 		@Override
 		public Object getDataValue(int columnIndex, int rowIndex) {
-			if (rowIndex == 0 || rowOfColumnIDs == null)
+
+			if (columnDescriptions == null || rowOfColumnIDs == null)
 				return columnIndex + 1;
-			return rowOfColumnIDs.get(columnIndex);
+
+			if (rowIndex == 0) {
+				ColumnDescription columnDescription = columnDescriptions.get(columnIndex);
+				if (columnDescription.getDataDescription().getCategoricalClassDescription() != null) {
+					return "Categorical";
+				} else {
+					return "Numerical";
+				}
+			} else {
+				return rowOfColumnIDs.get(columnIndex);
+			}
 		}
 
 		@Override
@@ -122,7 +139,7 @@ public class ColumnConfigTableWidget {
 	public ColumnConfigTableWidget(Composite parent) {
 		this.parent = parent;
 		bodyDataProvider = new MatrixBasedBodyDataProvider(null, 1);
-		buildTable(bodyDataProvider, new ColumnHeaderDataProvider(null), new RowHeaderDataProvider(null));
+		buildTable(bodyDataProvider, new ColumnHeaderDataProvider(null, null), new RowHeaderDataProvider(null));
 	}
 
 	private void buildTable(MatrixBasedBodyDataProvider bodyDataProvider, ColumnHeaderDataProvider columnDataProvider,
@@ -134,7 +151,7 @@ public class ColumnConfigTableWidget {
 		}
 
 		final DataLayer bodyDataLayer = new DataLayer(bodyDataProvider);
-		SelectionLayer selectionLayer = new SelectionLayer(bodyDataLayer);
+		selectionLayer = new SelectionLayer(bodyDataLayer);
 		ViewportLayer bodyLayer = new ViewportLayer(selectionLayer);
 
 		final DataLayer columnDataLayer = new DataLayer(columnDataProvider);
@@ -154,72 +171,47 @@ public class ColumnConfigTableWidget {
 		gridData.widthHint = 800;
 		table.setLayoutData(gridData);
 
-		// IConfigLabelAccumulator cellLabelAccumulator = new IConfigLabelAccumulator() {
-		// @Override
-		// public void accumulateConfigLabels(LabelStack configLabels, int columnPosition, int rowPosition) {
-		// if (columnPosition == idColumnIndex || rowPosition == idRowIndex) {
-		// configLabels.addLabel(ID_CELL);
-		// }
-		// if (rowPosition < numberOfHeaderRows) {
-		// configLabels.addLabel(HEADER_LINE_CELL);
-		// }
-		// }
-		// };
-
-		// bodyDataLayer.setConfigLabelAccumulator(cellLabelAccumulator);
 		ColumnOverrideLabelAccumulator acc = new ColumnOverrideLabelAccumulator(columnHeaderLayer);
 		columnHeaderLayer.setConfigLabelAccumulator(acc);
 		acc.registerColumnOverrides(9, ColumnLabelAccumulator.COLUMN_LABEL_PREFIX + 9);
 		table.addConfiguration(new DefaultNatTableStyleConfiguration());
-		// table.addConfiguration(new AbstractRegistryConfiguration() {
-		// @Override
-		// public void configureRegistry(IConfigRegistry configRegistry) {
-		// Style cellStyle = new Style();
-		//
-		// cellStyle.setAttributeValue(CellStyleAttributes.BACKGROUND_COLOR, GUIHelper.COLOR_GREEN);
-		// configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_STYLE, cellStyle, DisplayMode.NORMAL,
-		// ID_CELL);
-		//
-		// cellStyle = new Style();
-		// cellStyle.setAttributeValue(CellStyleAttributes.BACKGROUND_COLOR, GUIHelper.COLOR_DARK_GRAY);
-		// configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_STYLE, cellStyle, DisplayMode.NORMAL,
-		// HEADER_LINE_CELL);
-		// }
-		// });
-
-		// final ColumnHeaderCheckBoxPainter columnHeaderCheckBoxPainter = new
-		// ColumnHeaderCheckBoxPainter(columnDataLayer);
-		// final ICellPainter column9HeaderPainter = new BeveledBorderDecorator(columnHeaderCheckBoxPainter);
-		// final ICellPainter column9HeaderPainter = new BeveledBorderDecorator(new CellPainterDecorator(
-		// new TextPainter(), CellEdgeEnum.RIGHT, columnHeaderCheckBoxPainter));
-		// table.addConfiguration(new AbstractRegistryConfiguration() {
-		// @Override
-		// public void configureRegistry(IConfigRegistry configRegistry) {
-		// configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_PAINTER, column9HeaderPainter,
-		// DisplayMode.NORMAL, GridRegion.COLUMN_HEADER);
-		// }
-		//
-		// @Override
-		// public void configureUiBindings(UiBindingRegistry uiBindingRegistry) {
-		// uiBindingRegistry.registerFirstSingleClickBinding(new CellPainterMouseEventMatcher(
-		// GridRegion.COLUMN_HEADER, MouseEventMatcher.LEFT_BUTTON, columnHeaderCheckBoxPainter),
-		// new ToggleCheckBoxColumnAction(columnHeaderCheckBoxPainter, columnDataLayer));
-		// }
-		// });
 
 		table.configure();
-
 	}
 
 	public void createTableFromMatrix(List<List<String>> dataMatrix, List<String> rowOfColumnIDs,
-			List<String> columnOfRowIDs) {
+			List<String> columnOfRowIDs, List<ColumnDescription> columnDescriptions) {
 		if (dataMatrix == null || dataMatrix.isEmpty())
 			return;
 
 		bodyDataProvider = new MatrixBasedBodyDataProvider(dataMatrix, rowOfColumnIDs.size());
-		buildTable(bodyDataProvider, new ColumnHeaderDataProvider(rowOfColumnIDs), new RowHeaderDataProvider(
-				columnOfRowIDs));
+		buildTable(bodyDataProvider, new ColumnHeaderDataProvider(rowOfColumnIDs, columnDescriptions),
+				new RowHeaderDataProvider(columnOfRowIDs));
 
+	}
+
+	/**
+	 * @return index of the currently selected row, -1 if no row is selected.
+	 */
+	public int getSelectedRow() {
+		PositionCoordinate[] positions = selectionLayer.getSelectedCellPositions();
+		if (positions.length >= 1)
+			return positions[0].rowPosition;
+		return -1;
+	}
+
+	/**
+	 * @return index of the currently selected column, -1 if no row is selected.
+	 */
+	public int getSelectedColumn() {
+		PositionCoordinate[] positions = selectionLayer.getSelectedCellPositions();
+		if (positions.length >= 1)
+			return positions[0].columnPosition;
+		return -1;
+	}
+
+	public void update() {
+		table.refresh();
 	}
 
 }

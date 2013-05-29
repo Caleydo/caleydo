@@ -138,6 +138,7 @@ public class LoadDataSetPageMediator {
 	public void onSelectFile(String inputFileName) {
 		dataSetDescription.setDataSourcePath(inputFileName);
 		initWidgets();
+		page.getWizard().getDataSetTypePage().setDatasetChanged(true);
 	}
 
 	private void initWidgets() {
@@ -737,7 +738,7 @@ public class LoadDataSetPageMediator {
 		List<List<String>> matrix = parser.getDataMatrix();
 		List<List<String>> filteredMatrix = new ArrayList<>(matrix.size());
 		List<Integer> selectedColumns = page.previewTable.getSelectedColumns();
-		DataImportWizard wizard = (DataImportWizard) page.getWizard();
+		DataImportWizard wizard = page.getWizard();
 		List<String> columnOfRowIDs = new ArrayList<>(matrix.size() - dataSetDescription.getNumberOfHeaderLines());
 
 		for (int i = 0; i < matrix.size(); i++) {
