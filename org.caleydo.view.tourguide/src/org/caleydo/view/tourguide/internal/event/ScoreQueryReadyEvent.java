@@ -22,7 +22,6 @@ package org.caleydo.view.tourguide.internal.event;
 import java.util.Collection;
 
 import org.caleydo.core.event.ADirectedEvent;
-import org.caleydo.view.tourguide.internal.model.ADataDomainQuery;
 import org.caleydo.view.tourguide.spi.score.IScore;
 
 /**
@@ -30,18 +29,10 @@ import org.caleydo.view.tourguide.spi.score.IScore;
  *
  */
 public class ScoreQueryReadyEvent extends ADirectedEvent {
-	private final ADataDomainQuery newQuery;
 	private final Collection<IScore> scores;
 	private final boolean removeLeadingScoreColumns;
 
-	public ScoreQueryReadyEvent(ADataDomainQuery newQuery) {
-		this.newQuery = newQuery;
-		this.scores = null;
-		this.removeLeadingScoreColumns = false;
-	}
-
 	public ScoreQueryReadyEvent(Collection<IScore> scores, boolean removeLeadingScoreColumns) {
-		this.newQuery = null;
 		this.scores = scores;
 		this.removeLeadingScoreColumns = removeLeadingScoreColumns;
 	}
@@ -63,13 +54,6 @@ public class ScoreQueryReadyEvent extends ADirectedEvent {
 	@Override
 	public boolean checkIntegrity() {
 		return true;
-	}
-
-	/**
-	 * @return the newQuery, see {@link #newQuery}
-	 */
-	public ADataDomainQuery getNewQuery() {
-		return newQuery;
 	}
 }
 

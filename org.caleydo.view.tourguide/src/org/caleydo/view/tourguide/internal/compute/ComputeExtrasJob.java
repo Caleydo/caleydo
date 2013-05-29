@@ -19,59 +19,58 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.internal.compute;
 
+import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Collection;
 import java.util.List;
 
 import org.caleydo.core.event.EventPublisher;
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.logging.Logger;
-import org.caleydo.view.tourguide.internal.event.InitialScoreQueryReadyEvent;
-import org.caleydo.view.tourguide.internal.event.ScoreQueryReadyEvent;
+import org.caleydo.view.tourguide.internal.event.ExtraInitialScoreQueryReadyEvent;
 import org.caleydo.view.tourguide.internal.model.ADataDomainQuery;
 import org.caleydo.view.tourguide.internal.model.AScoreRow;
 import org.caleydo.view.tourguide.spi.score.IScore;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 
-import com.google.common.base.Stopwatch;
-
 /**
+ * special job for computing a bunch of entries for a given {@link ADataDomainQuery}
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
-public class ComputeAllOfJob extends AComputeJob {
-	private static final Logger log = Logger.create(ComputeAllOfJob.class);
+public class ComputeExtrasJob extends AComputeJob {
+	private static final Logger log = Logger.create(ComputeExtrasJob.class);
 
-	private final ADataDomainQuery query;
+	private List<Pair<ADataDomainQuery, List<AScoreRow>>> extras;
 
-	public ComputeAllOfJob(ADataDomainQuery q, Collection<IScore> scores, Object receiver) {
+	public ComputeExtrasJob(List<Pair<ADataDomainQuery, List<AScoreRow>>> extras, Collection<IScore> scores,
+			Object receiver) {
 		super(scores, receiver);
-		this.query = q;
-		this.receiver = receiver;
+		this.extras = extras;
 	}
 
 	@Override
 	public boolean hasThingsToDo() {
-		if (!query.isInitialized())
-			return true;
 		return super.hasThingsToDo();
 	}
 
 	@Override
 	protected IStatus run(IProgressMonitor monitor) {
-		Stopwatch w = new Stopwatch().start();
-		log.info("compute the data for datadomain: " + query.getDataDomain().getLabel());
+		log.info("compute new data for");
 		progress(0.0f, "Preparing Data");
-		boolean creating = !query.isInitialized();
-		List<AScoreRow> data = query.getOrCreate();
-		BitSet mask = query.getRawMask();
-		System.out.println("done in " + w);
+
+		List<AScoreRow> data = new ArrayList<>();
+		for (Pair<ADataDomainQuery, List<AScoreRow>> pair : extras) {
+			data.addAll(pair.getSecond());
+		}
+		BitSet mask = new BitSet(data.size());
+		mask.set(9, data.size());
+
 		progress(0.0f, "Computing Scores");
 		IStatus result = runImpl(monitor, data, mask);
-		if (creating)
-			EventPublisher.trigger(new InitialScoreQueryReadyEvent(query).to(receiver));
-		else
-			EventPublisher.trigger(new ScoreQueryReadyEvent(null, true).to(receiver));
+		EventPublisher.trigger(new ExtraInitialScoreQueryReadyEvent(extras).to(receiver));
 		return result;
 	}
 

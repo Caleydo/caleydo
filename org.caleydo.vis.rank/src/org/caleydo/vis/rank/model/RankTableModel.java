@@ -439,6 +439,10 @@ public class RankTableModel implements IRankColumnParent {
 		return Collections.unmodifiableList(this.data);
 	}
 
+	public List<IRow> getDataModifiable() {
+		return this.data;
+	}
+
 	public List<IRow> getMaskedData() {
 		if (dataMask == null || dataMask.cardinality() == data.size())
 			return getData();

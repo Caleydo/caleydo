@@ -17,55 +17,37 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.internal.model;
+package org.caleydo.view.tourguide.internal.event;
 
-import java.util.AbstractList;
 import java.util.List;
 
+import org.caleydo.core.event.ADirectedEvent;
+import org.caleydo.core.util.collection.Pair;
+import org.caleydo.view.tourguide.internal.model.ADataDomainQuery;
+import org.caleydo.view.tourguide.internal.model.AScoreRow;
+
 /**
- * sub list variant, not checking any concurrent modifications
- * 
  * @author Samuel Gratzl
- * 
+ *
  */
-public class CustomSubList<T> extends AbstractList<T> {
-	private final int offset;
-	private final List<T> backend;
-	private final int size;
+public class ExtraInitialScoreQueryReadyEvent extends ADirectedEvent {
 
-	public CustomSubList(List<T> backend, int offset, int size) {
-		super();
-		this.backend = backend;
-		this.offset = offset;
-		this.size = size;
+	private final List<Pair<ADataDomainQuery, List<AScoreRow>>> extras;
+
+	public ExtraInitialScoreQueryReadyEvent(List<Pair<ADataDomainQuery,List<AScoreRow>>> extras) {
+		this.extras = extras;
 	}
 
 	/**
-	 * @return the backend, see {@link #backend}
+	 * @return the extras, see {@link #extras}
 	 */
-	public List<T> getBackend() {
-		return backend;
-	}
-
-	/**
-	 * @return the offset, see {@link #offset}
-	 */
-	public int getOffset() {
-		return offset;
+	public List<Pair<ADataDomainQuery, List<AScoreRow>>> getExtras() {
+		return extras;
 	}
 
 	@Override
-	public T get(int index) {
-		return backend.get(offset + index);
-	}
-
-	@Override
-	public int size() {
-		return size;
-	}
-
-	@Override
-	public T set(int index, T element) {
-		return backend.set(offset + index, element);
+	public boolean checkIntegrity() {
+		return true;
 	}
 }
+

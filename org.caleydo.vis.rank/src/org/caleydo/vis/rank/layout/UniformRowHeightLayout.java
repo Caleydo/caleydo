@@ -42,7 +42,7 @@ class UniformRowHeightLayout implements IRowHeightLayout {
 		final int selectedRank = ranker.getSelectedRank();
 		final int selectedIndex = selectedRank < 0 ? -1 : ranker.get(selectedRank).getIndex();
 
-		final int visibleRows = (int) Math.round(Math.floor((h - 5) / ROW_HEIGHT));
+		final int visibleRows = (int) Math.round(Math.floor((h - 3) / ROW_HEIGHT));
 		int[] order = ranker.getOrder();
 		final int numRows = order.length;
 

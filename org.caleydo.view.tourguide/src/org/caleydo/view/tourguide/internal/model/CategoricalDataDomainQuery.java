@@ -129,6 +129,12 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 		return r;
 	}
 
+	@Override
+	public List<AScoreRow> onDataDomainUpdated() {
+		// up to now not possible to create new categories
+		return null;
+	}
+
 	public void setSelection(Set<CategoryProperty<?>> selected) {
 		if (Objects.equals(selected, this.selected))
 			return;

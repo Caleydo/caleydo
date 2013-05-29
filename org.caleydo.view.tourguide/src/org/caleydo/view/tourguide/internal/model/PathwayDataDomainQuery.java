@@ -76,6 +76,12 @@ public class PathwayDataDomainQuery extends ADataDomainQuery {
 		return r;
 	}
 
+	@Override
+	public List<AScoreRow> onDataDomainUpdated() {
+		// up to now not way to create new pathways
+		return null;
+	}
+
 	public void setMatches(String matches) {
 		if (Objects.equals(matches, this.matches))
 			return;

@@ -35,9 +35,11 @@ import javax.media.opengl.GLAutoDrawable;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventPublisher;
+import org.caleydo.core.event.data.DataDomainUpdateEvent;
 import org.caleydo.core.event.data.NewDataDomainEvent;
 import org.caleydo.core.event.data.RemoveDataDomainEvent;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.AGLElementView;
@@ -54,10 +56,13 @@ import org.caleydo.view.tourguide.api.score.MultiScore;
 import org.caleydo.view.tourguide.internal.SerializedTourGuideView;
 import org.caleydo.view.tourguide.internal.TourGuideRenderStyle;
 import org.caleydo.view.tourguide.internal.compute.ComputeAllOfJob;
+import org.caleydo.view.tourguide.internal.compute.ComputeExtrasJob;
 import org.caleydo.view.tourguide.internal.compute.ComputeForScoreJob;
 import org.caleydo.view.tourguide.internal.event.AddScoreColumnEvent;
 import org.caleydo.view.tourguide.internal.event.CreateScoreEvent;
+import org.caleydo.view.tourguide.internal.event.ExtraInitialScoreQueryReadyEvent;
 import org.caleydo.view.tourguide.internal.event.ImportExternalScoreEvent;
+import org.caleydo.view.tourguide.internal.event.InitialScoreQueryReadyEvent;
 import org.caleydo.view.tourguide.internal.event.JobDiedEvent;
 import org.caleydo.view.tourguide.internal.event.JobStateProgressEvent;
 import org.caleydo.view.tourguide.internal.event.ScoreQueryReadyEvent;
@@ -112,7 +117,6 @@ public class GLTourGuideView extends AGLElementView {
 
 	private static final int DATADOMAIN_QUERY = 0;
 	private static final int TABLE = 1;
-	private static final int POOL = 2;
 
 	private final StratomexAdapter stratomex = new StratomexAdapter();
 	private final RankTableModel table;
@@ -210,11 +214,12 @@ public class GLTourGuideView extends AGLElementView {
 	private void onAddDataDomain(final NewDataDomainEvent event) {
 		IDataDomain dd = event.getDataDomain();
 
-		if (mode.isCompatible(dd)) {
-			for (ADataDomainQuery query : modeSpecifics.createDataDomainQuery(dd)) {
-				queries.add(query);
-				getDataDomainQueryUI().add(query);
-			}
+		if (!mode.isCompatible(dd))
+			return;
+
+		for (ADataDomainQuery query : modeSpecifics.createDataDomainQuery(dd)) {
+			queries.add(query);
+			getDataDomainQueryUI().add(query);
 		}
 	}
 
@@ -223,6 +228,7 @@ public class GLTourGuideView extends AGLElementView {
 		final String id = event.getEventSpace();
 		for (ADataDomainQuery query : queries) {
 			if (Objects.equals(query.getDataDomain().getDataDomainID(), id)) {
+				query.cleanup();
 				queries.remove(query);
 				getDataDomainQueryUI().remove(query);
 				if (query.isActive())
@@ -230,6 +236,29 @@ public class GLTourGuideView extends AGLElementView {
 				break;
 			}
 		}
+	}
+
+	@ListenTo
+	private void onDataDomainUpdate(DataDomainUpdateEvent event) {
+		boolean update = false;
+		List<Pair<ADataDomainQuery, List<AScoreRow>>> extras = new ArrayList<>();
+		for (ADataDomainQuery query : queries) {
+			if (event.getDataDomain() != query.getDataDomain())
+				continue;
+			List<AScoreRow> added = query.onDataDomainUpdated();
+			if (added == null)
+				continue;
+
+			if (added.isEmpty()) {
+				update = true;
+				continue;
+			}
+			extras.add(Pair.make(query, added));
+		}
+		if (!extras.isEmpty())
+			scheduleExtras(extras);
+		else if (update)
+			updateMask();
 	}
 
 	protected void onActiveChanged(ADataDomainQuery q, boolean active) {
@@ -275,6 +304,19 @@ public class GLTourGuideView extends AGLElementView {
 		}
 	}
 
+	private void scheduleExtras(List<Pair<ADataDomainQuery, List<AScoreRow>>> extras) {
+		Collection<IScore> scores = new ArrayList<>(getVisibleScores(null));
+		ComputeExtrasJob job = new ComputeExtrasJob(extras, scores, this);
+		if (job.hasThingsToDo()) {
+			waiting.resetJob(job);
+			job.addJobChangeListener(jobListener);
+			getPopupLayer().show(waiting, null, 0);
+			job.schedule();
+		} else {
+			onExtraInitialScoreQueryReady(new ExtraInitialScoreQueryReadyEvent(extras));
+		}
+	}
+
 	@ListenTo(sendToMe = true)
 	private void onProgressEvent(JobStateProgressEvent event) {
 		if (event.isErrornous())
@@ -305,25 +347,47 @@ public class GLTourGuideView extends AGLElementView {
 		getPopupLayer().hide(waiting);
 	}
 
-	@SuppressWarnings("unchecked")
 	@ListenTo(sendToMe = true)
 	private void onScoreQueryReady(ScoreQueryReadyEvent event) {
 		getPopupLayer().hide(waiting);
 		if (event.getScores() != null) {
 			addColumns(event.getScores(), event.isRemoveLeadingScoreColumns());
-		} else if (event.getNewQuery() != null) {
-			int offset = table.getDataSize();
-			ADataDomainQuery q = event.getNewQuery();
-			System.out.println("add data of " + q.getDataDomain().getLabel());
-			table.addData(q.getData());
-			List<?> m = table.getData();
-			// use sublists to save memory
-			q.init(offset, new CustomSubList<AScoreRow>((List<AScoreRow>) m, offset, m.size() - offset));
-			q.createSpecificColumns(table);
-			updateMask();
 		} else {
 			updateMask();
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@ListenTo(sendToMe = true)
+	private void onInitialScoreQueryReady(InitialScoreQueryReadyEvent event) {
+		getPopupLayer().hide(waiting);
+		int offset = table.getDataSize();
+		ADataDomainQuery q = event.getNewQuery();
+		System.out.println("add data of " + q.getDataDomain().getLabel());
+		table.addData(q.getOrCreate());
+		List<?> m = table.getDataModifiable();
+		// use sublists to save memory
+		q.init(offset, new CustomSubList<AScoreRow>((List<AScoreRow>) m, offset, m.size() - offset));
+		q.createSpecificColumns(table);
+		updateMask();
+	}
+
+	@SuppressWarnings("unchecked")
+	@ListenTo(sendToMe = true)
+	private void onExtraInitialScoreQueryReady(ExtraInitialScoreQueryReadyEvent event) {
+		getPopupLayer().hide(waiting);
+
+		for (Pair<ADataDomainQuery, List<AScoreRow>> pair : event.getExtras()) {
+			ADataDomainQuery q = pair.getFirst();
+			System.out.println("add data of " + q.getDataDomain().getLabel());
+			int offset = table.getDataSize();
+			table.addData(pair.getSecond());
+			List<?> m = table.getDataModifiable();
+			// use sublists to save memory
+			q.addData(offset, new CustomSubList<AScoreRow>((List<AScoreRow>) m, offset, m.size() - offset));
+		}
+
+		updateMask();
 	}
 
 	private void addColumns(Collection<IScore> scores, boolean removeLeadingScoreColumns) {
@@ -367,15 +431,9 @@ public class GLTourGuideView extends AGLElementView {
 	private void updateMask() {
 		this.mask.clear();
 		for (ADataDomainQuery q : this.queries) {
-			if (!q.isInitialized())
+			if (!q.isInitialized() || !q.isActive())
 				continue;
-			int offset = q.getOffset();
-			int size = q.getSize();
-			if (!q.isActive())
-				this.mask.set(offset, offset + size, false);
-			else {
-				this.mask.or(q.getMask());
-			}
+			this.mask.or(q.getMask());
 		}
 		table.setDataMask(this.mask);
 	}
