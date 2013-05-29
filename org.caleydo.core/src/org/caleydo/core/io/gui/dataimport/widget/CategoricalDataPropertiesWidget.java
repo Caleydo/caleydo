@@ -34,6 +34,9 @@ import org.caleydo.core.data.collection.column.container.CategoryProperty;
 import org.caleydo.core.io.gui.dataimport.CreateCategoryDialog;
 import org.caleydo.core.io.gui.dataimport.widget.table.CategoryTable;
 import org.caleydo.core.util.color.Color;
+import org.caleydo.core.util.color.mapping.ColorMapper;
+import org.caleydo.core.util.color.mapping.ColorMarkerPoint;
+import org.caleydo.core.util.color.mapping.EDefaultColorSchemes;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -107,6 +110,7 @@ public class CategoricalDataPropertiesWidget {
 			public void widgetSelected(SelectionEvent e) {
 				upButton.setEnabled(true);
 				downButton.setEnabled(true);
+				applyColorScheme(EDefaultColorSchemes.BLUE_WHITE_RED);
 			}
 		});
 
@@ -117,6 +121,7 @@ public class CategoricalDataPropertiesWidget {
 			public void widgetSelected(SelectionEvent e) {
 				upButton.setEnabled(false);
 				downButton.setEnabled(false);
+				applyColorScheme(EDefaultColorSchemes.WHITE_RED);
 			}
 		});
 
@@ -217,6 +222,10 @@ public class CategoricalDataPropertiesWidget {
 		List<List<String>> categoryMatrix = extractCategoryMatrix();
 
 		categoryTable.createTableFromMatrix(categoryMatrix, 4);
+
+		applyColorScheme(nominalButton.getSelection() ? EDefaultColorSchemes.WHITE_RED
+				: EDefaultColorSchemes.BLUE_WHITE_RED);
+
 		categoriesGroup.pack();
 	}
 
@@ -263,6 +272,9 @@ public class CategoricalDataPropertiesWidget {
 			categoryMatrix.add(category);
 		}
 		categoryTable.createTableFromMatrix(categoryMatrix, 4);
+
+		applyColorScheme(nominalButton.getSelection() ? EDefaultColorSchemes.WHITE_RED
+				: EDefaultColorSchemes.BLUE_WHITE_RED);
 		categoriesGroup.pack();
 	}
 
@@ -298,6 +310,30 @@ public class CategoricalDataPropertiesWidget {
 		}
 
 		return categoryMatrix;
+	}
+
+	private void applyColorScheme(EDefaultColorSchemes colorScheme) {
+		List<List<String>> categoryMatrix = categoryTable.getDataMatrix();
+		if (colorScheme.isDiscrete()) {
+			int colorIndex = 0;
+			List<ColorMarkerPoint> colorMarkerPoints = colorScheme.getColorMarkerPoints();
+			for (List<String> row : categoryMatrix) {
+				row.set(3, colorMarkerPoints.get(colorIndex).getColor().getHEX());
+				colorIndex++;
+				if (colorIndex >= colorMarkerPoints.size()) {
+					colorIndex = 0;
+				}
+			}
+		} else {
+			ColorMapper colorMapper = new ColorMapper(colorScheme.getColorMarkerPoints());
+			for (int i = 0; i < categoryMatrix.size(); i++) {
+				float value = (float) i / (float) (categoryMatrix.size() - 1);
+				List<String> row = categoryMatrix.get(i);
+				row.set(3, colorMapper.getColorAsObject(value).getHEX());
+			}
+		}
+
+		categoryTable.update();
 	}
 
 	private void addCategoryCount(Map<String, Integer> categories, String value) {

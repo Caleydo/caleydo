@@ -93,8 +93,7 @@ public enum EDefaultColorSchemes {
 			new Color(171, 217, 233),
 			new Color(44, 123, 182)),
 
-	GREY_RED("Grey-Red", "2-class Red-Grey  color scheme Print friendly.", Colors.NEUTRAL_GREY, new Color(202, 0,
-			32)),
+	GREY_RED("Grey-Red", "2-class Red-Grey  color scheme Print friendly.", Colors.NEUTRAL_GREY, new Color(202, 0, 32)),
 	// -------- DISCRETE COLOR SCHEMES ---------
 
 	WHITE_RED(
@@ -117,6 +116,11 @@ public enum EDefaultColorSchemes {
 	private String colorSchemeDescription;
 
 	/**
+	 * Determines whether the color scheme uses discrete colors.
+	 */
+	private boolean isDiscrete;
+
+	/**
 	 *
 	 */
 
@@ -124,14 +128,16 @@ public enum EDefaultColorSchemes {
 		initialize(colorSchemeName, colorShemeDescription, false, colors);
 	}
 
-	private EDefaultColorSchemes(String colorSchemeName, String colorShemeDescription, boolean isDescrete,
+	private EDefaultColorSchemes(String colorSchemeName, String colorShemeDescription, boolean isDiscrete,
 			Color... colors) {
-		initialize(colorSchemeName, colorShemeDescription, isDescrete, colors);
+
+		initialize(colorSchemeName, colorShemeDescription, isDiscrete, colors);
 	}
 
-	private void initialize(String colorSchemeName, String colorShemeDescription, boolean isDescrete, Color[] colors) {
+	private void initialize(String colorSchemeName, String colorShemeDescription, boolean isDiscrete, Color[] colors) {
 		this.colorSchemeName = colorSchemeName;
 		this.colorSchemeDescription = colorShemeDescription;
+		this.isDiscrete = isDiscrete;
 		if (colors.length < 2)
 			throw new IllegalStateException("At least two values required");
 		colorMarkerPoints = new ArrayList<ColorMarkerPoint>();
@@ -142,13 +148,13 @@ public enum EDefaultColorSchemes {
 		float nextMappingVlaue = 0;
 
 		float spread = 0.05f;
-		if (isDescrete)
+		if (isDiscrete)
 			spread = 1.0f / colors.length;
 		for (Color color : colors) {
 			point = new ColorMarkerPoint(nextMappingVlaue, color);
 
 			// set spread only for first and last
-			if (colorCount == 0 || (isDescrete && colorCount != colors.length - 1)) {
+			if (colorCount == 0 || (isDiscrete && colorCount != colors.length - 1)) {
 				point.setRightSpread(spread);
 			}
 			if (colorCount == colors.length - 1) {
@@ -188,5 +194,12 @@ public enum EDefaultColorSchemes {
 		colorMapper.setColorSchemeName(colorSchemeName);
 		colorMapper.setColorSchemeDescription(colorSchemeDescription);
 		return colorMapper;
+	}
+
+	/**
+	 * @return the isDiscrete, see {@link #isDiscrete}
+	 */
+	public boolean isDiscrete() {
+		return isDiscrete;
 	}
 }
