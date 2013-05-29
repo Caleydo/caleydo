@@ -129,8 +129,6 @@ public class StackedColumnUI extends ACompositeTableColumnUI<StackedRankColumnMo
 				weights[i] = this.model.getChildWidth(i);
 
 			final RankTableModel table = this.model.getTable();
-			IRow selected = table.getSelectedRow();
-
 			IRowSetter wrappedSetter = new IRowSetter() {
 				@Override
 				public void set(int rowIndex, float x, float y, float w, float h, boolean pickable) {

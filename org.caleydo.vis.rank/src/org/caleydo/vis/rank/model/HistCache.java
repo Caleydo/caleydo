@@ -83,13 +83,10 @@ public class HistCache {
 	private int countValidEntries(Iterable<IRow> it, IFloatFunction<IRow> map) {
 		// Stopwatch w = new Stopwatch().start();
 		int valid = 0;
-		int invalid = 0;
 		for (IRow row : it) {
 			float v = map.applyPrimitive(row);
 			if (!Float.isNaN(v))
 				valid++;
-			else
-				invalid++;
 		}
 		// System.out.println("valid: " + valid + " and " + invalid + " " + w);
 		return valid;

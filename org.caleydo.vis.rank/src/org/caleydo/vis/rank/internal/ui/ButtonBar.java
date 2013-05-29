@@ -108,6 +108,7 @@ public class ButtonBar extends GLElementContainer  {
 		// }
 		String imagePath = toImagePath(elem.isSelected() ? elem.getSelectedRenderer() : elem.getRenderer());
 		if (imagePath != null) {
+			@SuppressWarnings("resource")
 			InputStream in = locator.get(imagePath);
 			if (in != null)
 				item.setImageInputStream(in);
