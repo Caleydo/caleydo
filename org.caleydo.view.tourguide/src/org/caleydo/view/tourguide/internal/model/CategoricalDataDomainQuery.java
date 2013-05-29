@@ -277,7 +277,7 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 
 	@Override
 	public void createSpecificColumns(RankTableModel table) {
-		@SuppressWarnings("unchecked")
+
 		// I know that String might be wrong but who cares
 		final CategoricalTable<?> ctable = (CategoricalTable<?>) getDataDomain().getTable();
 		for (CategoryProperty<?> p : ctable.getCategoryDescriptions().getCategoryProperties()) {
