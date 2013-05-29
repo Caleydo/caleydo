@@ -17,45 +17,37 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package demo;
+package org.caleydo.view.tourguide.internal.event;
 
-import java.lang.reflect.Field;
-import java.util.Collections;
-import java.util.Set;
+import java.util.List;
 
-import org.caleydo.vis.rank.model.IRow;
-
-import com.google.common.base.Function;
+import org.caleydo.core.event.ADirectedEvent;
+import org.caleydo.core.util.collection.Pair;
+import org.caleydo.view.tourguide.internal.model.ADataDomainQuery;
+import org.caleydo.view.tourguide.internal.model.AScoreRow;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class ReflectionSetData<T> implements Function<IRow, Set<T>> {
-	private final Field field;
-	private final Class<T> clazz;
+public class ExtraInitialScoreQueryReadyEvent extends ADirectedEvent {
 
-	public ReflectionSetData(Field field, Class<T> clazz) {
-		this.field = field;
-		this.clazz = clazz;
-		field.setAccessible(true);
+	private final List<Pair<ADataDomainQuery, List<AScoreRow>>> extras;
+
+	public ExtraInitialScoreQueryReadyEvent(List<Pair<ADataDomainQuery,List<AScoreRow>>> extras) {
+		this.extras = extras;
+	}
+
+	/**
+	 * @return the extras, see {@link #extras}
+	 */
+	public List<Pair<ADataDomainQuery, List<AScoreRow>>> getExtras() {
+		return extras;
 	}
 
 	@Override
-	public Set<T> apply(IRow in) {
-		try {
-			Object r = field.get(in);
-			if (clazz == String.class)
-				return Collections.singleton(clazz.cast(r == null ? "" : r.toString()));
-			if (r instanceof Set<?>)
-				return (Set<T>) r;
-			if (clazz.isInstance(r))
-				return Collections.singleton(clazz.cast(r));
-			return null;
-		} catch (IllegalArgumentException | IllegalAccessException e) {
-			e.printStackTrace();
-		}
-		return null;
+	public boolean checkIntegrity() {
+		return true;
 	}
 }
 

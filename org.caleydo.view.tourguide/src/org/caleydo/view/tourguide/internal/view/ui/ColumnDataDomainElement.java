@@ -21,7 +21,6 @@ package org.caleydo.view.tourguide.internal.view.ui;
 
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventPublisher;
-import org.caleydo.core.event.data.DataDomainUpdateEvent;
 import org.caleydo.view.tourguide.internal.event.EditDataDomainFilterEvent;
 import org.caleydo.view.tourguide.internal.model.InhomogenousDataDomainQuery;
 import org.eclipse.jface.dialogs.InputDialog;
@@ -60,13 +59,6 @@ public class ColumnDataDomainElement extends ADataDomainElement {
 		} else {
 			setFilter(payload.toString());
 		}
-	}
-
-	@ListenTo
-	private void onDataDomainUpdate(DataDomainUpdateEvent event) {
-		if (event.getDataDomain() != this.model.getDataDomain())
-			return;
-		this.model.onDataDomainUpdated();
 	}
 
 	private void setFilter(String filter) {

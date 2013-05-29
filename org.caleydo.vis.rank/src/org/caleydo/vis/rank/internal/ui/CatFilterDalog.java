@@ -44,11 +44,9 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tree;
-import org.eclipse.ui.internal.WorkbenchMessages;
 
 /**
  *
@@ -82,7 +80,7 @@ public class CatFilterDalog<CATEGORY_TYPE> extends AFilterDalog {
 
 		CheckboxTreeViewer treeViewer = createTreeViewer(composite);
 		treeViewer.setCheckedElements(selection.toArray());
-		Control buttonComposite = createSelectionButtons(composite);
+		createSelectionButtons(composite);
 		data = new GridData(GridData.FILL_BOTH);
 		data.widthHint = convertWidthInCharsToPixels(60);
 		data.heightHint = convertHeightInCharsToPixels(18);
@@ -161,7 +159,7 @@ public class CatFilterDalog<CATEGORY_TYPE> extends AFilterDalog {
 		data.grabExcessHorizontalSpace = true;
 		buttonComposite.setLayoutData(data);
 		Button selectButton = createButton(buttonComposite, IDialogConstants.SELECT_ALL_ID,
-				WorkbenchMessages.CheckedTreeSelectionDialog_select_all, false);
+ "Select &All", false);
 		SelectionListener listener = new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -171,7 +169,7 @@ public class CatFilterDalog<CATEGORY_TYPE> extends AFilterDalog {
 		};
 		selectButton.addSelectionListener(listener);
 		Button deselectButton = createButton(buttonComposite, IDialogConstants.DESELECT_ALL_ID,
-				WorkbenchMessages.CheckedTreeSelectionDialog_deselect_all, false);
+ "Select &None", false);
 		listener = new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {

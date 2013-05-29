@@ -88,7 +88,6 @@ public class StarsValueElement extends ValueElement {
 			tex.bind(gl);
 
 			gl.glBegin(GL2.GL_QUADS);
-			float s = -(1 - v) * model.getStars();
 			gl.glTexCoord2f(-(1 - v) * model.getStars(), 0);
 			gl.glVertex3f(w * v, 0, z);
 			gl.glTexCoord2f(0, 0);

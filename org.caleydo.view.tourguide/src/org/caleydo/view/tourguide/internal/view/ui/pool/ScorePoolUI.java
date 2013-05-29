@@ -41,7 +41,6 @@ import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.internal.view.GLTourGuideView;
 import org.caleydo.vis.rank.config.IRankTableUIConfig;
-import org.caleydo.vis.rank.config.RankTableUIConfigs;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.mixin.IHideableColumnMixin;
@@ -79,11 +78,8 @@ public class ScorePoolUI extends GLElementContainer implements IGLLayout {
 	};
 	private boolean armed;
 
-	private final IRankTableUIConfig config;
-
 	public ScorePoolUI(RankTableModel table, IRankTableUIConfig config, GLTourGuideView view) {
 		this.table = table;
-		this.config = RankTableUIConfigs.nonInteractive(config);
 		table.addPropertyChangeListener(RankTableModel.PROP_POOL, listener);
 		setLayout(this);
 		setLayoutData(new Vec2f(110, (LABEL_HEIGHT + 8) * 3));

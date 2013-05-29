@@ -28,8 +28,6 @@ import java.beans.PropertyChangeListener;
 import java.util.List;
 import java.util.Locale;
 
-import javax.media.opengl.GL2;
-
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
@@ -199,8 +197,7 @@ public class StackedColumnHeaderUI extends ACompositeHeaderUI implements IThickH
 
 			g.lineWidth(RenderStyle.COLOR_STACKED_BORDER_WIDTH);
 			g.color(RenderStyle.COLOR_STACKED_BORDER);
-			GL2 gl = g.gl;
-			float z = g.z();
+
 			// gl.glBegin(GL.GL_LINE_STRIP);
 			// {
 			// gl.glVertex3f(0, h, z);

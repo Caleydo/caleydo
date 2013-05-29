@@ -129,6 +129,12 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 		return r;
 	}
 
+	@Override
+	public List<AScoreRow> onDataDomainUpdated() {
+		// up to now not possible to create new categories
+		return null;
+	}
+
 	public void setSelection(Set<CategoryProperty<?>> selected) {
 		if (Objects.equals(selected, this.selected))
 			return;
@@ -277,7 +283,7 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 
 	@Override
 	public void createSpecificColumns(RankTableModel table) {
-		@SuppressWarnings("unchecked")
+
 		// I know that String might be wrong but who cares
 		final CategoricalTable<?> ctable = (CategoricalTable<?>) getDataDomain().getTable();
 		for (CategoryProperty<?> p : ctable.getCategoryDescriptions().getCategoryProperties()) {

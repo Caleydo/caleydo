@@ -22,9 +22,13 @@ package org.caleydo.view.tourguide.internal.model;
 import static org.caleydo.vis.rank.model.StringRankColumnModel.starToRegex;
 
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.regex.Pattern;
 
 import org.caleydo.core.data.collection.table.Table;
@@ -42,6 +46,9 @@ public class StratificationDataDomainQuery extends ADataDomainQuery {
 
 	private String matches = null;
 	private Perspective dimensionSelection = null;
+
+	// snapshot when creating the data for fast comparison
+	private Set<String> snapshot;
 
 	public StratificationDataDomainQuery(ATableBasedDataDomain dataDomain) {
 		super(dataDomain);
@@ -65,7 +72,7 @@ public class StratificationDataDomainQuery extends ADataDomainQuery {
 		ATableBasedDataDomain d = (ATableBasedDataDomain) dataDomain;
 
 		List<AScoreRow> r = new ArrayList<>();
-
+		this.snapshot = new HashSet<>(d.getRecordPerspectiveIDs());
 		for (String rowPerspectiveID : d.getRecordPerspectiveIDs()) {
 			Perspective p = d.getTable().getRecordPerspective(rowPerspectiveID);
 			if (p.isDefault() || p.isPrivate())
@@ -73,6 +80,49 @@ public class StratificationDataDomainQuery extends ADataDomainQuery {
 			r.add(new StratificationPerspectiveRow(p, this));
 		}
 		return r;
+	}
+
+	@Override
+	public List<AScoreRow> onDataDomainUpdated() {
+		if (!isInitialized()) // not yet used
+			return null;
+		ATableBasedDataDomain d = getDataDomain();
+
+		Set<String> current = new TreeSet<>(d.getRecordPerspectiveIDs());
+
+		if (snapshot.equals(d.getRecordPerspectiveIDs()))
+			return null;
+
+		// black list and remove existing
+
+		BitSet blackList = new BitSet();
+		{
+			int i = 0;
+			for (AScoreRow row : data) {
+				StratificationPerspectiveRow r = (StratificationPerspectiveRow) row;
+				Perspective perspective = r.getStratification();
+				blackList.set(i++, !current.remove(perspective.getPerspectiveID()));
+			}
+		}
+		for (int i = blackList.nextSetBit(0); i >= 0; i = blackList.nextSetBit(i + 1)) {
+			data.set(i, null); // clear out
+		}
+
+		// add new stuff
+		List<AScoreRow> added = new ArrayList<>(1);
+		for (String rowPerspectiveID : current) {
+			Perspective p = d.getTable().getRecordPerspective(rowPerspectiveID);
+			if (p.isDefault() || p.isPrivate())
+				continue;
+			// try to reuse old entries
+			// we have add some stuff
+			added.add(new StratificationPerspectiveRow(p, this));
+		}
+		if (added.isEmpty())
+			updateFilter();
+
+		snapshot = new TreeSet<>(d.getRecordPerspectiveIDs());
+		return added;
 	}
 
 	private String getDimensionPerspectiveID() {

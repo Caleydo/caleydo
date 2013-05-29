@@ -271,9 +271,6 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 
 		// render the bands
 		if (!dontneedToRenderBands(w)) {
-			IScrollBar pScroll = previousRanker.getScrollBar();
-			IScrollBar aScroll = this.getScrollBar();
-
 			ITableColumnUI previous = body.getLastCorrespondingColumn(previousRanker, true);
 			ITableColumnUI self = body.getLastCorrespondingColumn(this, true);
 			if (self == null || self == this || previous == null || previous instanceof OrderColumnUI)
@@ -417,12 +414,6 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 				arrow(g, x2 - 7, right.y(), right.w(), left.y() <= 0);
 			}
 		}
-	}
-
-	private Color deltaToColor(int delta, Color gray) {
-		if (delta == 0)
-			return gray;
-		return delta < 0 ? Color.GREEN : Color.RED;
 	}
 
 	protected float getAlphaFromDelta(int delta) {

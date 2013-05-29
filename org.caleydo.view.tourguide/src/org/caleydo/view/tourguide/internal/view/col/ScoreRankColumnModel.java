@@ -20,7 +20,6 @@
 package org.caleydo.view.tourguide.internal.view.col;
 
 import org.caleydo.core.data.perspective.variable.Perspective;
-import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
@@ -92,12 +91,6 @@ public class ScoreRankColumnModel extends FloatRankColumnModel implements IGLRen
 	private static Perspective resolveStratification(IScore score) {
 		if (score instanceof IStratificationScore)
 			return ((IStratificationScore) score).getStratification();
-		return null;
-	}
-
-	private static Group resolveGroup(IScore score) {
-		if (score instanceof IGroupScore)
-			return ((IGroupScore) score).getGroup();
 		return null;
 	}
 

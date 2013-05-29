@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Objects;
 
 import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.vis.rank.model.RankTableModel;
 
 import com.google.common.base.Predicate;
@@ -42,9 +43,8 @@ public abstract class ADataDomainQuery implements Predicate<AScoreRow> {
 
 	protected final IDataDomain dataDomain;
 
-	private int offset;
 	private BitSet mask = null;
-	private List<AScoreRow> data;
+	protected OffsetList<AScoreRow> data = null;
 	private boolean active = false;
 
 	public ADataDomainQuery(IDataDomain dataDomain) {
@@ -89,38 +89,27 @@ public abstract class ADataDomainQuery implements Predicate<AScoreRow> {
 		return active;
 	}
 
-	public final synchronized void init(int offset, List<AScoreRow> data) {
-		this.data = data;
-		if (this.offset != offset && this.mask != null) {
-			this.offset = offset;
-			this.mask = null;
-		}
-		this.offset = offset;
+	public final void init(int offset, List<AScoreRow> data) {
+		this.data = new OffsetList<>(offset,data);
+		this.mask = null;
 	}
 
-	/**
-	 * @return the data, see {@link #data}
-	 */
-	public final List<AScoreRow> getData() {
-		return data;
+	public final void addData(int offset, List<AScoreRow> data) {
+		if (this.data == null)
+			init(offset, data);
+		else {
+			this.mask = null;
+			this.data.addSubList(offset,data);
+		}
 	}
 
 	public final synchronized List<AScoreRow> getOrCreate() {
-		if (isInitialized())
-			return getData();
-		this.data = getAll();
-		return data;
-	}
-
-	/**
-	 * @return the offset, see {@link #offset}
-	 */
-	public final int getOffset() {
-		return offset;
-	}
-
-	public final int getSize() {
-		return data == null ? 0 : data.size();
+		if (isInitialized()) {
+			return this.data;
+		}
+		List<AScoreRow> all = getAll();
+		this.data = new OffsetList<>(0, all);
+		return all;
 	}
 
 	protected final void updateFilter() {
@@ -133,10 +122,14 @@ public abstract class ADataDomainQuery implements Predicate<AScoreRow> {
 	}
 
 	private BitSet computeMask() {
-		BitSet m = new BitSet(offset + data.size());
-		for (int i = 0; i < data.size(); ++i) {
-			AScoreRow r = data.get(i);
-			m.set(offset + i, apply(r));
+		BitSet m = new BitSet(this.data.getMaxIndex());
+		for(Pair<Integer,List<AScoreRow>> elem : this.data.subLists()) {
+			int offset = elem.getFirst();
+			List<AScoreRow> data = elem.getSecond();
+			for (int i = 0; i < data.size(); ++i) {
+				AScoreRow r = data.get(i);
+				m.set(offset + i, r != null && apply(r));
+			}
 		}
 		return m;
 	}
@@ -157,11 +150,16 @@ public abstract class ADataDomainQuery implements Predicate<AScoreRow> {
 	 */
 	public BitSet getRawMask() {
 		BitSet shifted = getMask();
-		if (offset == 0)
+		if (this.data.isDummy())
 			return shifted;
-		BitSet r = new BitSet(data.size());
-		for(int i = 0; i < data.size(); ++i) {
-			r.set(i,shifted.get(offset+i));
+		BitSet r = new BitSet(this.data.size());
+		int j = 0;
+		for (Pair<Integer, List<AScoreRow>> elem : this.data.subLists()) {
+			int offset = elem.getFirst();
+			List<AScoreRow> data = elem.getSecond();
+			for (int i = 0; i < data.size(); ++i, ++j) {
+				r.set(j, shifted.get(offset + i));
+			}
 		}
 		return r;
 	}
@@ -193,13 +191,17 @@ public abstract class ADataDomainQuery implements Predicate<AScoreRow> {
 	public abstract void removeSpecificColumns(RankTableModel table);
 
 	/**
-	 *
+	 * 
+	 * @return null if nothing changed, or else if the data were updated
 	 */
-	public void onDataDomainUpdated() {
-		if (!isInitialized()) // not yet used
+	public abstract List<AScoreRow> onDataDomainUpdated();
+
+	public void cleanup() {
+		if (!this.isInitialized()) {
 			return;
-		// we need to adapt stuff of our perspective rows -> mask exceptions
-		// black list for removed stuff + white list for added staff
-		// FIXME
+		}
+		// set every item in the data list to null for cleaning up the data
+		for (int i = 0; i < this.data.size(); ++i)
+			this.data.set(i, null);
 	}
 }
