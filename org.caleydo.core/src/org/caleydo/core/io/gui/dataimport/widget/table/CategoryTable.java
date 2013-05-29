@@ -212,8 +212,6 @@ public class CategoryTable extends AMatrixBasedTableWidget implements ILayerList
 
 		GridLayer gridLayer = new GridLayer(bodyLayer, columnHeaderLayer, rowHeaderLayer, cornerLayer);
 		table = new NatTable(parent, gridLayer, false);
-		// gridData.heightHint = 300;
-		// gridData.widthHint = 800;
 		table.setLayoutData(layoutData);
 
 		table.addConfiguration(new DefaultNatTableStyleConfiguration());
@@ -271,6 +269,16 @@ public class CategoryTable extends AMatrixBasedTableWidget implements ILayerList
 		return -1;
 	}
 
+	/**
+	 * @return index of the currently selected column, -1 if no row is selected.
+	 */
+	public int getSelectedColumn() {
+		PositionCoordinate[] positions = selectionLayer.getSelectedCellPositions();
+		if (positions.length >= 1)
+			return positions[0].columnPosition;
+		return -1;
+	}
+
 	public List<List<String>> getDataMatrix() {
 		return bodyDataProvider.getDataMatrix();
 	}
@@ -290,7 +298,7 @@ public class CategoryTable extends AMatrixBasedTableWidget implements ILayerList
 	}
 
 	private void updateColors() {
-		dispose();
+		disposeColors();
 		for (List<String> row : bodyDataProvider.getDataMatrix()) {
 			org.caleydo.core.util.color.Color c = new org.caleydo.core.util.color.Color(row.get(3));
 			int[] rgba = c.getIntRGBA();
@@ -302,7 +310,7 @@ public class CategoryTable extends AMatrixBasedTableWidget implements ILayerList
 		selectionLayer.selectRow(0, rowIndex, false, false);
 	}
 
-	public void dispose() {
+	public void disposeColors() {
 		for (Color color : colorRegistry.values()) {
 			color.dispose();
 		}
@@ -311,6 +319,6 @@ public class CategoryTable extends AMatrixBasedTableWidget implements ILayerList
 
 	@Override
 	public void widgetDisposed(DisposeEvent e) {
-		dispose();
+		disposeColors();
 	}
 }

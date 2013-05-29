@@ -36,57 +36,10 @@ public class NumericalDataPropertiesPage extends AImportDataPage implements List
 	 */
 	protected Composite parentComposite;
 
-	// /**
-	// * Text field that specifies the minimum data clipping value.
-	// */
-	// protected Text minTextField;
-	// /**
-	// * Text field that specifies the minimum data clipping value.
-	// */
-	// protected Text maxTextField;
-	//
-	// /**
-	// * Button to determine whether a data center is used.
-	// */
-	// protected Button useDataCenterButton;
-	//
-	// /**
-	// * Text field used to define the data center.
-	// */
-	// protected Text dataCenterTextField;
-	//
-	// /**
-	// * Button to enable the {@link #maxTextField};
-	// */
-	// protected Button maxButton;
-	//
-	// /**
-	// * Button to enable the {@link #minTextField};
-	// */
-	// protected Button minButton;
-	//
-	// /**
-	// * Combo to define the scaling method that should be applied to the data.
-	// */
-	// protected Combo scalingCombo;
-	//
-	// /**
-	// * Group that contains widgets associated with determining the data center.
-	// */
-	// protected Group dataCenterGroup;
 
 	protected NumericalDataPropertiesWidget numericalDataPropertiesWidget;
 
 	protected DataTranspositionWidget dataTranspositionWidget;
-
-	/**
-	 * @param pageName
-	 * @param dataSetDescription
-	 */
-	// protected TransformDataPage(String pageName, DataSetDescription
-	// dataSetDescription) {
-	// super(pageName, dataSetDescription);
-	// }
 
 	public NumericalDataPropertiesPage(DataSetDescription dataSetDescription) {
 		super(PAGE_NAME, dataSetDescription);
@@ -103,15 +56,8 @@ public class NumericalDataPropertiesPage extends AImportDataPage implements List
 		numericalDataPropertiesWidget = new NumericalDataPropertiesWidget(parentComposite, dataSetDescription
 				.getDataDescription().getNumericalProperties(), this);
 
-		// createScalingGroup(parentComposite);
-		//
-		// createClippingGroup(parentComposite);
-		//
-		// createDataCenterGroup(parentComposite);
-
-		dataTranspositionWidget = new DataTranspositionWidget(parentComposite, (DataImportWizard) getWizard(),
+		dataTranspositionWidget = new DataTranspositionWidget(parentComposite, getWizard(),
 				dataSetDescription.isTransposeMatrix());
-		// mediator.guiCreated();
 
 		setControl(parentComposite);
 	}
@@ -134,7 +80,7 @@ public class NumericalDataPropertiesPage extends AImportDataPage implements List
 		dataSetDescription.setTransposeMatrix(dataTranspositionWidget.isTransposition());
 
 		ArrayList<ColumnDescription> inputPattern = new ArrayList<ColumnDescription>();
-		DataImportWizard wizard = (DataImportWizard) getWizard();
+		DataImportWizard wizard = getWizard();
 
 		for (Integer selected : wizard.getSelectedColumns()) {
 			int columnIndex = selected.intValue();
@@ -149,8 +95,8 @@ public class NumericalDataPropertiesPage extends AImportDataPage implements List
 
 	@Override
 	public void pageActivated() {
-		((DataImportWizard) getWizard()).setChosenDataTypePage(this);
-		((DataImportWizard) getWizard()).getContainer().updateButtons();
+		getWizard().setChosenDataTypePage(this);
+		getWizard().getContainer().updateButtons();
 		dataTranspositionWidget.update();
 	}
 
@@ -162,12 +108,12 @@ public class NumericalDataPropertiesPage extends AImportDataPage implements List
 
 	@Override
 	public IWizardPage getPreviousPage() {
-		return ((DataImportWizard) getWizard()).getDataSetTypePage();
+		return getWizard().getDataSetTypePage();
 	}
 
 	@Override
 	public IWizardPage getNextPage() {
-		return ((DataImportWizard) getWizard()).getAddGroupingsPage();
+		return getWizard().getAddGroupingsPage();
 	}
 
 }

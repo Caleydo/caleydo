@@ -30,9 +30,9 @@ import java.util.Set;
 import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
 import org.caleydo.core.data.collection.column.container.CategoricalClassDescription.ECategoryType;
+import org.caleydo.core.data.collection.column.container.CategoryProperty;
 import org.caleydo.core.io.gui.dataimport.CreateCategoryDialog;
 import org.caleydo.core.io.gui.dataimport.widget.table.CategoryTable;
-import org.caleydo.core.io.gui.dataimport.wizard.DataImportWizard;
 import org.caleydo.core.util.color.Color;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
@@ -75,19 +75,36 @@ public class CategoricalDataPropertiesWidget {
 	 */
 	protected Button removeCategoryButton;
 
+	protected Group categoryTypeGroup;
+
 	protected CategoryTable categoryTable;
 
 	protected Composite parent;
 
 	protected Group categoriesGroup;
 
-	protected DataImportWizard wizard;
+	protected List<List<String>> datasetMatrix;
 
-	public CategoricalDataPropertiesWidget(Composite parent, DataImportWizard wizard) {
+	protected int consideredColumnIndex = -1;
+
+	protected CategoricalClassDescription<String> categoricalClassDescription;
+
+	/**
+	 * @param parent
+	 */
+	public CategoricalDataPropertiesWidget(Composite parent,
+			CategoricalClassDescription<String> categoricalClassDescription, List<List<String>> datasetMatrix,
+			int columnIndex) {
 
 		this.parent = parent;
-		this.wizard = wizard;
-		Group categoryTypeGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
+		if (categoricalClassDescription == null) {
+			categoricalClassDescription = new CategoricalClassDescription<>();
+		}
+		this.categoricalClassDescription = categoricalClassDescription;
+		this.datasetMatrix = datasetMatrix;
+		this.consideredColumnIndex = columnIndex;
+
+		categoryTypeGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
 		categoryTypeGroup.setText("Category Type");
 		categoryTypeGroup.setLayout(new GridLayout(1, true));
 		ordinalButton = new Button(categoryTypeGroup, SWT.RADIO);
@@ -193,6 +210,8 @@ public class CategoricalDataPropertiesWidget {
 					}
 				});
 
+		if (datasetMatrix != null)
+			updateCategories(datasetMatrix, columnIndex, this.categoricalClassDescription);
 	}
 
 	/**
@@ -203,23 +222,71 @@ public class CategoricalDataPropertiesWidget {
 	 * @param columnIndex
 	 *            Index of a single column that is used for category extraction. Set -1 if whole matrix should be used.
 	 */
-	public void updateCategories(List<List<String>> dataMatrix, int columnIndex) {
-		List<List<String>> categoryMatrix = extractCategoryMatrix(wizard.getFilteredDataMatrix(), columnIndex);
+	public void updateCategories(List<List<String>> datasetMatrix, int columnIndex) {
+		this.datasetMatrix = datasetMatrix;
+		this.consideredColumnIndex = columnIndex;
+		List<List<String>> categoryMatrix = extractCategoryMatrix();
 
 		categoryTable.createTableFromMatrix(categoryMatrix, 4);
 		categoriesGroup.pack();
 	}
 
-	private List<List<String>> extractCategoryMatrix(List<List<String>> fileMatrix, int columnIndex) {
+	public void updateCategories(List<List<String>> datasetMatrix, int columnIndex,
+			CategoricalClassDescription<String> categoricalClassDescription) {
+		this.datasetMatrix = datasetMatrix;
+		this.consideredColumnIndex = columnIndex;
+		List<List<String>> categoryMatrix = new ArrayList<>(categoricalClassDescription.getCategoryProperties().size());
+
+		if (categoricalClassDescription.getCategoryType() == ECategoryType.NOMINAL) {
+			nominalButton.setSelection(true);
+			ordinalButton.setSelection(false);
+		} else {
+			ordinalButton.setSelection(true);
+			nominalButton.setSelection(false);
+		}
+
+		Map<String, Integer> occurrenceMap = new HashMap<>();
+		for (CategoryProperty<String> categoryProperty : categoricalClassDescription.getCategoryProperties()) {
+			occurrenceMap.put(categoryProperty.getCategory(), 0);
+		}
+
+		for (List<String> row : datasetMatrix) {
+			if (consideredColumnIndex == -1) {
+				for (String value : row) {
+					if (occurrenceMap.containsKey(value)) {
+						occurrenceMap.put(value, occurrenceMap.get(value) + 1);
+					}
+				}
+			} else {
+				if (occurrenceMap.containsKey(row.get(consideredColumnIndex))) {
+					occurrenceMap.put(row.get(consideredColumnIndex),
+							occurrenceMap.get(row.get(consideredColumnIndex)) + 1);
+				}
+			}
+		}
+
+		for (CategoryProperty<String> categoryProperty : categoricalClassDescription.getCategoryProperties()) {
+			List<String> category = new ArrayList<>(4);
+			category.add(categoryProperty.getCategory());
+			category.add(occurrenceMap.get(categoryProperty.getCategory()).toString());
+			category.add(categoryProperty.getCategoryName());
+			category.add(categoryProperty.getColor().getHEX());
+			categoryMatrix.add(category);
+		}
+		categoryTable.createTableFromMatrix(categoryMatrix, 4);
+		categoriesGroup.pack();
+	}
+
+	private List<List<String>> extractCategoryMatrix() {
 		Map<String, Integer> categories = new HashMap<>();
 
-		for (List<String> row : fileMatrix) {
-			if (columnIndex == -1) {
+		for (List<String> row : datasetMatrix) {
+			if (consideredColumnIndex == -1) {
 				for (String value : row) {
 					addCategoryCount(categories, value);
 				}
 			} else {
-				addCategoryCount(categories, row.get(columnIndex));
+				addCategoryCount(categories, row.get(consideredColumnIndex));
 			}
 		}
 
@@ -253,12 +320,12 @@ public class CategoricalDataPropertiesWidget {
 	}
 
 	private void addCategory() {
-		List<List<String>> matrix = categoryTable.getDataMatrix();
-		Set<String> categoryValues = new HashSet<>(matrix.size());
-		for (List<String> row : matrix) {
+		List<List<String>> categoryMatrix = categoryTable.getDataMatrix();
+		Set<String> categoryValues = new HashSet<>(categoryMatrix.size());
+		for (List<String> row : categoryMatrix) {
 			categoryValues.add(row.get(0));
 		}
-		CreateCategoryDialog dialog = new CreateCategoryDialog(wizard.getShell(), categoryValues);
+		CreateCategoryDialog dialog = new CreateCategoryDialog(parent.getShell(), categoryValues);
 		int status = dialog.open();
 
 		if (status == Window.OK) {
@@ -268,17 +335,22 @@ public class CategoricalDataPropertiesWidget {
 			newCategoryRow.add(dialog.getName());
 			newCategoryRow.add("000000");
 
-			matrix.add(0, newCategoryRow);
+			categoryMatrix.add(0, newCategoryRow);
 			categoryTable.update();
 		}
 	}
 
 	private int getNumberOfOccurrencesInFile(String value) {
-		List<List<String>> dataMatrix = wizard.getFilteredDataMatrix();
 		int numOccurrences = 0;
-		for (List<String> row : dataMatrix) {
-			for (String v : row) {
-				if (v.equals(value)) {
+		for (List<String> row : datasetMatrix) {
+			if (consideredColumnIndex == -1) {
+				for (String v : row) {
+					if (v.equals(value)) {
+						numOccurrences++;
+					}
+				}
+			} else {
+				if (value.equals(row.get(consideredColumnIndex))) {
 					numOccurrences++;
 				}
 			}
@@ -287,15 +359,15 @@ public class CategoricalDataPropertiesWidget {
 	}
 
 	private void removeCategory(int rowIndex) {
-		List<List<String>> matrix = categoryTable.getDataMatrix();
-		matrix.remove(rowIndex);
+		List<List<String>> categories = categoryTable.getDataMatrix();
+		categories.remove(rowIndex);
 	}
 
 	private void swapRows(int row1Index, int row2Index) {
-		List<List<String>> matrix = categoryTable.getDataMatrix();
-		List<String> copyRow1 = new ArrayList<>(matrix.get(row1Index));
-		matrix.set(row1Index, matrix.get(row2Index));
-		matrix.set(row2Index, copyRow1);
+		List<List<String>> categoryMatrix = categoryTable.getDataMatrix();
+		List<String> copyRow1 = new ArrayList<>(categoryMatrix.get(row1Index));
+		categoryMatrix.set(row1Index, categoryMatrix.get(row2Index));
+		categoryMatrix.set(row2Index, copyRow1);
 	}
 
 	/**
@@ -312,6 +384,11 @@ public class CategoricalDataPropertiesWidget {
 					new Color(category.get(3)));
 		}
 		return categoricalClassDescription;
+	}
+
+	public void dispose() {
+		categoryTypeGroup.dispose();
+		categoriesGroup.dispose();
 	}
 
 }

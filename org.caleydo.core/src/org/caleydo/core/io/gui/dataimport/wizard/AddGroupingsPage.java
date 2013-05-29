@@ -203,7 +203,7 @@ public class AddGroupingsPage extends AImportDataPage {
 
 	@Override
 	public IWizardPage getPreviousPage() {
-		return ((DataImportWizard) getWizard()).getChosenDataTypePage();
+		return getWizard().getChosenDataTypePage();
 	}
 
 }

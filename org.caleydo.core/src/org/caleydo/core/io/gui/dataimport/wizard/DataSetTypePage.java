@@ -19,12 +19,20 @@
  *******************************************************************************/
 package org.caleydo.core.io.gui.dataimport.wizard;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
+import org.caleydo.core.data.collection.column.container.CategoricalClassDescription.ECategoryType;
 import org.caleydo.core.io.DataDescription;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.NumericalProperties;
+import org.caleydo.core.util.color.Color;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
@@ -48,6 +56,11 @@ public class DataSetTypePage extends AImportDataPage {
 	protected Button numericalDatasetButton;
 	protected Button categoricalDatasetButton;
 	protected Button inhomogeneousDatasetButton;
+
+	/**
+	 * determines whether a new dataset has been loaded prior visiting this page.
+	 */
+	protected boolean datasetChanged = true;
 
 	/**
 	 * @param pageName
@@ -96,37 +109,86 @@ public class DataSetTypePage extends AImportDataPage {
 	public void fillDataSetDescription() {
 		if (numericalDatasetButton.getSelection()) {
 			if (dataSetDescription.getDataDescription() == null
-					|| dataSetDescription.getDataDescription().getNumericalProperties() == null) {
+					|| dataSetDescription.getDataDescription().getNumericalProperties() == null || datasetChanged) {
 				dataSetDescription.setDataDescription(new DataDescription(EDataClass.REAL_NUMBER, EDataType.FLOAT,
 						new NumericalProperties()));
 			}
 
 		} else if (categoricalDatasetButton.getSelection()) {
 			if (dataSetDescription.getDataDescription() == null
-					|| dataSetDescription.getDataDescription().getCategoricalClassDescription() == null) {
+					|| dataSetDescription.getDataDescription().getCategoricalClassDescription() == null
+					|| datasetChanged) {
+				CategoricalClassDescription<String> categoricalClassDescription = createCategoricalClassDescription();
 				dataSetDescription.setDataDescription(new DataDescription(EDataClass.CATEGORICAL, EDataType.STRING,
-						new CategoricalClassDescription<String>()));
+						categoricalClassDescription));
+				// the page needs to init from the newly created data description
+				getWizard().getCategoricalDataPage().setInitFromDataDescription(true);
+			}
+		} else {
+			if (datasetChanged || dataSetDescription.getDataDescription() != null) {
+				getWizard().getInhomogeneousDataPropertiesPage().setInitColumnDescriptions(true);
+				// No global data description for inhomogeneous
+				dataSetDescription.setDataDescription(null);
 			}
 		}
-		// No global data description for inhomogeneous
+		datasetChanged = false;
+	}
+
+	private CategoricalClassDescription<String> createCategoricalClassDescription() {
+
+		Set<String> categories = new HashSet<>();
+
+		for (List<String> row : getWizard().getFilteredDataMatrix()) {
+			for (String value : row) {
+				categories.add(value);
+			}
+		}
+
+		List<String> categoryValues = new ArrayList<>(categories);
+		Collections.sort(categoryValues);
+
+		CategoricalClassDescription<String> categoricalClassDescription = new CategoricalClassDescription<>();
+		categoricalClassDescription.setCategoryType(ECategoryType.ORDINAL);
+		categoricalClassDescription.setRawDataType(EDataType.STRING);
+
+		for (String categoryValue : categoryValues) {
+			categoricalClassDescription.addCategoryProperty(categoryValue, categoryValue, new Color("000000"));
+		}
+
+		return categoricalClassDescription;
 	}
 
 	@Override
 	public void pageActivated() {
 		// The user must always visit the following page before he can finish
-		((DataImportWizard) getWizard()).setChosenDataTypePage(null);
-		((DataImportWizard) getWizard()).getContainer().updateButtons();
+		getWizard().setChosenDataTypePage(null);
+		getWizard().getContainer().updateButtons();
 
 	}
 
 	@Override
 	public IWizardPage getNextPage() {
-		DataImportWizard wizard = (DataImportWizard) getWizard();
+		DataImportWizard wizard = getWizard();
 		if (numericalDatasetButton.getSelection()) {
 			return wizard.getNumericalDataPage();
 		} else if (categoricalDatasetButton.getSelection()) {
 			return wizard.getCategoricalDataPage();
 		}
 		return wizard.getInhomogeneousDataPropertiesPage();
+	}
+
+	/**
+	 * @param datasetChanged
+	 *            setter, see {@link datasetChanged}
+	 */
+	public void setDatasetChanged(boolean datasetChanged) {
+		this.datasetChanged = datasetChanged;
+	}
+
+	/**
+	 * @return the datasetChanged, see {@link #datasetChanged}
+	 */
+	public boolean isDatasetChanged() {
+		return datasetChanged;
 	}
 }

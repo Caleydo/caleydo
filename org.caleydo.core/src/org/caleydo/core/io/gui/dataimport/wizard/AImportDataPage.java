@@ -49,7 +49,7 @@ public abstract class AImportDataPage extends WizardPage implements IPageChanged
 		if (isActive && event.getSelectedPage() == getNextPage()) {
 			// System.out.println("Fill desc: " + getTitle());
 			fillDataSetDescription();
-			((DataImportWizard) getWizard()).addVisitedPage(this);
+			getWizard().addVisitedPage(this);
 		}
 
 		if (event.getSelectedPage() == this) {
@@ -70,6 +70,11 @@ public abstract class AImportDataPage extends WizardPage implements IPageChanged
 		// super.performHelp();
 		BrowserUtils.openURL("http://www.icg.tugraz.at/project/caleydo/help/caleydo-2.0/loading-data");
 
+	}
+
+	@Override
+	public DataImportWizard getWizard() {
+		return (DataImportWizard) super.getWizard();
 	}
 
 }
