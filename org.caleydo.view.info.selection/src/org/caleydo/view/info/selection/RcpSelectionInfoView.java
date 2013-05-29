@@ -33,11 +33,20 @@ import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.view.CaleydoRCPViewPart;
+import org.caleydo.view.info.selection.external.OpenExternalAction;
+import org.caleydo.view.info.selection.external.OpenExternalWrappingAction;
+import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.action.IMenuListener;
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
@@ -53,6 +62,8 @@ public class RcpSelectionInfoView extends CaleydoRCPViewPart implements IEventBa
 	private final Map<SelectionManager, TreeItem> selectionManagerToSubTree = new HashMap<SelectionManager, TreeItem>();
 
 	private Tree selectionTree;
+
+	private OpenExternalWrappingAction openExternalWrapper;
 
 	/**
 	 * Constructor.
@@ -103,7 +114,54 @@ public class RcpSelectionInfoView extends CaleydoRCPViewPart implements IEventBa
 
 		createSelectionManagersForIDCategories();
 
+		this.injectExternalFeature();
+
 		parentComposite.layout();
+
+		addToolBarContent();
+	}
+
+	private void injectExternalFeature() {
+		// initalize the context menu
+		MenuManager menuMgr = new MenuManager("#PopupMenu"); //$NON-NLS-1$
+		menuMgr.setRemoveAllWhenShown(true);
+		menuMgr.addMenuListener(new IMenuListener() {
+			@Override
+			public void menuAboutToShow(IMenuManager manager) {
+				IAction action = openExternalWrapper.getWrappee();
+				if (action == null)
+					return;
+				manager.add(action);
+			}
+		});
+		Menu menu = menuMgr.createContextMenu(selectionTree);
+		selectionTree.setMenu(menu);
+
+		selectionTree.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				IAction action = createOpenExternalFor(selectionTree.getSelection());
+				openExternalWrapper.setWrappee(action);
+			}
+		});
+	}
+
+	private IAction createOpenExternalFor(TreeItem[] treeItems) {
+		if (treeItems.length == 0)
+			return null;
+		TreeItem treeItem = treeItems[0];
+
+		IDType type = (IDType) treeItem.getData("idType");
+		if (type == null)
+			return null;
+		return OpenExternalAction.create(type, treeItem.getData());
+	}
+
+	@Override
+	public void addToolBarContent() {
+		this.openExternalWrapper = new OpenExternalWrappingAction();
+		toolBarManager.add(openExternalWrapper);
+		super.addToolBarContent();
 	}
 
 	@Override
@@ -186,6 +244,7 @@ public class RcpSelectionInfoView extends CaleydoRCPViewPart implements IEventBa
 			item.setText(humanReadableID + "");
 			item.setBackground(color);
 			item.setData(id);
+			item.setData("idType", idType);
 			item.setData("selection_type", selectionType);
 		}
 

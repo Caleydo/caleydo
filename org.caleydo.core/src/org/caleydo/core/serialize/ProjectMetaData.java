@@ -49,6 +49,7 @@ public class ProjectMetaData {
 
 	public static ProjectMetaData createDefault() {
 		ProjectMetaData m = new ProjectMetaData();
+		m.setName("");
 		m.setCreationDate(new Date());
 		m.setVersion(GeneralManager.VERSION);
 		return m;

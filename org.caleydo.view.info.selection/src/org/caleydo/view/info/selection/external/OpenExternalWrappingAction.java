@@ -17,39 +17,44 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.info.selection;
+package org.caleydo.view.info.selection.external;
 
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.osgi.framework.BundleContext;
+import org.caleydo.view.info.selection.Activator;
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IAction;
 
 /**
- * The activator class controls the plug-in life cycle
+ * @author Samuel Gratzl
+ *
  */
-public class Activator extends AbstractUIPlugin {
-	private static final String PLUGIN_ID = "org.caleydo.view.info.selection";
-	// The shared instance
-	private static Activator plugin;
+public class OpenExternalWrappingAction extends Action {
+	private IAction wrappee = null;
+
+	public OpenExternalWrappingAction() {
+		super("Open Externally", Activator.getImageDescriptor("resources/icons/external.png"));
+		setEnabled(false);
+	}
+
+	/**
+	 * @param wrappee
+	 *            setter, see {@link wrappee}
+	 */
+	public void setWrappee(IAction wrappee) {
+		this.wrappee = wrappee;
+		setEnabled(wrappee != null);
+	}
+
+	/**
+	 * @return the wrappee, see {@link #wrappee}
+	 */
+	public IAction getWrappee() {
+		return wrappee;
+	}
 
 	@Override
-	public void start(BundleContext context) throws Exception {
-		super.start(context);
-		plugin = this;
-	}
-
-
-	@Override
-	public void stop(BundleContext context) throws Exception {
-		plugin = null;
-		super.stop(context);
-	}
-
-
-	public static Activator getDefault() {
-		return plugin;
-	}
-
-	public static ImageDescriptor getImageDescriptor(String imageFilePath) {
-		return imageDescriptorFromPlugin(PLUGIN_ID, imageFilePath);
+	public void run() {
+		if (wrappee != null)
+			wrappee.run();
 	}
 }
+

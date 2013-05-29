@@ -19,6 +19,8 @@
  *******************************************************************************/
 package org.caleydo.core.internal.startup;
 
+import org.caleydo.core.startup.LoadProjectStartupProcedure;
+
 
 
 public class LoadSampleProjectStartupProjecdure extends LoadProjectStartupProcedure {
