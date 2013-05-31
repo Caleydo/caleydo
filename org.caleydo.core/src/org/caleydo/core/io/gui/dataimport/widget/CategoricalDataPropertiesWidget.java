@@ -31,6 +31,7 @@ import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
 import org.caleydo.core.data.collection.column.container.CategoricalClassDescription.ECategoryType;
 import org.caleydo.core.data.collection.column.container.CategoryProperty;
+import org.caleydo.core.io.gui.dataimport.ChooseColorSchemeDialog;
 import org.caleydo.core.io.gui.dataimport.CreateCategoryDialog;
 import org.caleydo.core.io.gui.dataimport.widget.table.CategoryTable;
 import org.caleydo.core.util.color.Color;
@@ -79,6 +80,11 @@ public class CategoricalDataPropertiesWidget {
 	 */
 	protected Button removeCategoryButton;
 
+	/**
+	 * Button to trigger the {@link ChooseColorSchemeDialog} to select and apply a color scheme.
+	 */
+	protected Button chooseColorSchemeButton;
+
 	protected Group categoryTypeGroup;
 
 	protected CategoryTable categoryTable;
@@ -92,6 +98,8 @@ public class CategoricalDataPropertiesWidget {
 	protected int consideredColumnIndex = -1;
 
 	protected CategoricalClassDescription<String> categoricalClassDescription;
+
+	protected ColorBrewer currentColorScheme = ColorBrewer.RdBu;
 
 	/**
 	 * @param parent
@@ -190,6 +198,16 @@ public class CategoricalDataPropertiesWidget {
 
 		});
 
+		chooseColorSchemeButton = new Button(buttonComposite, SWT.PUSH);
+		chooseColorSchemeButton.setText("Choose Color Scheme");
+		chooseColorSchemeButton.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				chooseColorScheme();
+			}
+		});
+
 		categoryTable = new CategoryTable(categoriesGroup, new GridData(SWT.FILL, SWT.FILL, true, true, 1, 2),
 				new IntegerCallback() {
 
@@ -278,6 +296,30 @@ public class CategoricalDataPropertiesWidget {
 		categoriesGroup.pack();
 	}
 
+	private void chooseColorScheme() {
+		List<ColorBrewer> colorSchemes = new ArrayList<>();
+
+		if (nominalButton.getSelection()) {
+			colorSchemes.addAll(ColorBrewer.getSets(EColorSchemeType.QUALITATIVE));
+		} else {
+			colorSchemes.addAll(ColorBrewer.getSets(EColorSchemeType.SEQUENTIAL));
+			colorSchemes.addAll(ColorBrewer.getSets(EColorSchemeType.DIVERGING));
+		}
+		Collections.sort(colorSchemes);
+		List<Integer> numColors = new ArrayList<>(colorSchemes.size());
+		for (ColorBrewer scheme : colorSchemes) {
+			numColors.add(determineSchemeSize(categoryTable.getRowCount(), scheme));
+		}
+
+		ChooseColorSchemeDialog dialog = new ChooseColorSchemeDialog(parent.getShell(), colorSchemes, numColors,
+				currentColorScheme);
+		int status = dialog.open();
+
+		if (status == Window.OK) {
+			applyColorScheme(dialog.getSelectedColorScheme());
+		}
+	}
+
 	private int determineSchemeSize(int numCategories, ColorBrewer scheme) {
 		if (scheme.getSizes().contains(numCategories)) {
 			return numCategories;
@@ -345,7 +387,7 @@ public class CategoricalDataPropertiesWidget {
 				row.set(3, colorMapper.getColorAsObject(value).getHEX());
 			}
 		}
-
+		currentColorScheme = colorScheme;
 		categoryTable.update();
 	}
 

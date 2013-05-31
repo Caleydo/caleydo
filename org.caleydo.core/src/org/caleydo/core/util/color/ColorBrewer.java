@@ -436,13 +436,12 @@ public enum ColorBrewer {
 		double mappingValueDistance = 1d / (colors.size() - 1);
 		float nextMappingValue = 0;
 
-		float spread = 0.05f;
-		if (type == EColorSchemeType.QUALITATIVE)
-			spread = 1.0f / colors.size();
+		float spread = 0.00001f;
+		// if (type == EColorSchemeType.QUALITATIVE)
+		// spread = 1.0f / colors.size();
 		for (Color color : colors) {
-			if (colorCount == colors.size() - 1)
-				nextMappingValue = 1;
-			ColorMarkerPoint point = new ColorMarkerPoint(nextMappingValue,
+			float value = (float) colorCount / (float) (colors.size() - 1);
+			ColorMarkerPoint point = new ColorMarkerPoint(value,
 					(org.caleydo.core.util.color.Color) Colors.of(color));
 
 			// set spread only for first and last

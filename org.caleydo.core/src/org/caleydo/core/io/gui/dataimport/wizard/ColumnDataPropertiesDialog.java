@@ -101,7 +101,7 @@ public class ColumnDataPropertiesDialog extends Dialog implements Listener {
 
 		parentComposite = new Composite(parent, SWT.NONE);
 		parentComposite.setLayout(new GridLayout(1, false));
-		parentComposite.setLayoutData(new GridData(600, 600));
+		parentComposite.setLayoutData(new GridData(700, 600));
 
 		Group group = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
 		group.setText("Data Type");
