@@ -34,9 +34,10 @@ import org.caleydo.core.data.collection.column.container.CategoryProperty;
 import org.caleydo.core.io.gui.dataimport.CreateCategoryDialog;
 import org.caleydo.core.io.gui.dataimport.widget.table.CategoryTable;
 import org.caleydo.core.util.color.Color;
+import org.caleydo.core.util.color.ColorBrewer;
+import org.caleydo.core.util.color.Colors;
+import org.caleydo.core.util.color.EColorSchemeType;
 import org.caleydo.core.util.color.mapping.ColorMapper;
-import org.caleydo.core.util.color.mapping.ColorMarkerPoint;
-import org.caleydo.core.util.color.mapping.EDefaultColorSchemes;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -110,7 +111,7 @@ public class CategoricalDataPropertiesWidget {
 			public void widgetSelected(SelectionEvent e) {
 				upButton.setEnabled(true);
 				downButton.setEnabled(true);
-				applyColorScheme(EDefaultColorSchemes.BLUE_WHITE_RED);
+				applyColorScheme(ColorBrewer.RdBu);
 			}
 		});
 
@@ -121,7 +122,7 @@ public class CategoricalDataPropertiesWidget {
 			public void widgetSelected(SelectionEvent e) {
 				upButton.setEnabled(false);
 				downButton.setEnabled(false);
-				applyColorScheme(EDefaultColorSchemes.WHITE_RED);
+				applyColorScheme(ColorBrewer.Set1);
 			}
 		});
 
@@ -223,8 +224,7 @@ public class CategoricalDataPropertiesWidget {
 
 		categoryTable.createTableFromMatrix(categoryMatrix, 4);
 
-		applyColorScheme(nominalButton.getSelection() ? EDefaultColorSchemes.WHITE_RED
-				: EDefaultColorSchemes.BLUE_WHITE_RED);
+		applyColorScheme(nominalButton.getSelection() ? ColorBrewer.Set1 : ColorBrewer.RdBu);
 
 		categoriesGroup.pack();
 	}
@@ -273,9 +273,20 @@ public class CategoricalDataPropertiesWidget {
 		}
 		categoryTable.createTableFromMatrix(categoryMatrix, 4);
 
-		applyColorScheme(nominalButton.getSelection() ? EDefaultColorSchemes.WHITE_RED
-				: EDefaultColorSchemes.BLUE_WHITE_RED);
+		applyColorScheme(nominalButton.getSelection() ? ColorBrewer.Set1 : ColorBrewer.RdBu);
+
 		categoriesGroup.pack();
+	}
+
+	private int determineSchemeSize(int numCategories, ColorBrewer scheme) {
+		if (scheme.getSizes().contains(numCategories)) {
+			return numCategories;
+		}
+		int maxSize = scheme.getMaxSize();
+		if (numCategories > maxSize) {
+			return maxSize;
+		}
+		return scheme.getMinSize();
 	}
 
 	private List<List<String>> extractCategoryMatrix() {
@@ -312,20 +323,22 @@ public class CategoricalDataPropertiesWidget {
 		return categoryMatrix;
 	}
 
-	private void applyColorScheme(EDefaultColorSchemes colorScheme) {
+	private void applyColorScheme(ColorBrewer colorScheme) {
 		List<List<String>> categoryMatrix = categoryTable.getDataMatrix();
-		if (colorScheme.isDiscrete()) {
+		int numColors = determineSchemeSize(categoryTable.getRowCount(), colorScheme);
+		if (colorScheme.getType() == EColorSchemeType.QUALITATIVE) {
 			int colorIndex = 0;
-			List<ColorMarkerPoint> colorMarkerPoints = colorScheme.getColorMarkerPoints();
+			List<java.awt.Color> colors = colorScheme.get(numColors);
 			for (List<String> row : categoryMatrix) {
-				row.set(3, colorMarkerPoints.get(colorIndex).getColor().getHEX());
+				Color color = (Color) Colors.of(colors.get(colorIndex));
+				row.set(3, color.getHEX());
 				colorIndex++;
-				if (colorIndex >= colorMarkerPoints.size()) {
+				if (colorIndex >= colors.size()) {
 					colorIndex = 0;
 				}
 			}
 		} else {
-			ColorMapper colorMapper = new ColorMapper(colorScheme.getColorMarkerPoints());
+			ColorMapper colorMapper = colorScheme.asColorMapper(numColors);
 			for (int i = 0; i < categoryMatrix.size(); i++) {
 				float value = (float) i / (float) (categoryMatrix.size() - 1);
 				List<String> row = categoryMatrix.get(i);

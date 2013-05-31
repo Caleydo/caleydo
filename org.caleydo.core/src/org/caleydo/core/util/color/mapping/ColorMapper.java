@@ -18,6 +18,7 @@ package org.caleydo.core.util.color.mapping;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
@@ -36,8 +37,8 @@ import org.eclipse.ui.PlatformUI;
 @XmlType
 public class ColorMapper {
 
-	private ArrayList<Color> colorList;
-	private ArrayList<ColorMarkerPoint> markerPoints;
+	private List<Color> colorList;
+	private List<ColorMarkerPoint> markerPoints;
 
 	// ColorMappingType colorMappingType;
 
@@ -70,7 +71,7 @@ public class ColorMapper {
 	 * @throws IllegalArgumentException
 	 *             if values in marker points are not increasing, or if fvalue > 1 || fvalue < 0
 	 */
-	public ColorMapper(ArrayList<ColorMarkerPoint> markerPoints) {
+	public ColorMapper(List<ColorMarkerPoint> markerPoints) {
 		setMarkerPoints(markerPoints);
 	}
 
@@ -145,7 +146,7 @@ public class ColorMapper {
 	 */
 	private void setUpMapping() {
 		Collections.sort(markerPoints);
-		ArrayList<ColorMarkerPoint> finalMarkerPoints = considerSpread();
+		List<ColorMarkerPoint> finalMarkerPoints = considerSpread();
 		float srcValue, destValue;
 
 		for (int count = 0; count < finalMarkerPoints.size() - 1; count++) {
@@ -206,7 +207,7 @@ public class ColorMapper {
 	 *
 	 * @return the list of marker points
 	 */
-	public ArrayList<ColorMarkerPoint> getMarkerPoints() {
+	public List<ColorMarkerPoint> getMarkerPoints() {
 		return markerPoints;
 	}
 
@@ -217,7 +218,7 @@ public class ColorMapper {
 	 *
 	 * @return the list of marker points without spreads but points for spreads
 	 */
-	public ArrayList<ColorMarkerPoint> getConvertedMarkerPoints() {
+	public List<ColorMarkerPoint> getConvertedMarkerPoints() {
 		return considerSpread();
 	}
 
@@ -231,8 +232,8 @@ public class ColorMapper {
 	 *
 	 * @return the list with all the marker points instead of spreads
 	 */
-	private ArrayList<ColorMarkerPoint> considerSpread() {
-		ArrayList<ColorMarkerPoint> finalColorMarkerPoints = new ArrayList<ColorMarkerPoint>();
+	private List<ColorMarkerPoint> considerSpread() {
+		List<ColorMarkerPoint> finalColorMarkerPoints = new ArrayList<ColorMarkerPoint>();
 
 		for (ColorMarkerPoint point : markerPoints) {
 			if (point.hasLeftSpread()) {
@@ -249,7 +250,7 @@ public class ColorMapper {
 		return finalColorMarkerPoints;
 	}
 
-	public ArrayList<Color> getColorList() {
+	public List<Color> getColorList() {
 		return colorList;
 	}
 
@@ -261,7 +262,7 @@ public class ColorMapper {
 		return Colors.NOT_A_NUMBER_COLOR;
 	}
 
-	public void setMarkerPoints(ArrayList<ColorMarkerPoint> markerPoints) {
+	public void setMarkerPoints(List<ColorMarkerPoint> markerPoints) {
 		this.markerPoints = markerPoints;
 		init();
 	}
@@ -273,7 +274,7 @@ public class ColorMapper {
 
 	public static void createColorMappingPreview(ColorMapper colorMapper, CLabel colorMappingPreview) {
 
-		ArrayList<ColorMarkerPoint> markerPoints = colorMapper.getMarkerPoints();
+		List<ColorMarkerPoint> markerPoints = colorMapper.getMarkerPoints();
 
 		org.eclipse.swt.graphics.Color[] alColor = new org.eclipse.swt.graphics.Color[markerPoints.size()];
 		int[] colorMarkerPoints = new int[markerPoints.size() - 1];

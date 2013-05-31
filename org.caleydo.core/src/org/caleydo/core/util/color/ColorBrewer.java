@@ -21,9 +21,13 @@ package org.caleydo.core.util.color;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.caleydo.core.util.color.mapping.ColorMapper;
+import org.caleydo.core.util.color.mapping.ColorMarkerPoint;
 
 import com.google.common.collect.Table;
 import com.google.common.collect.TreeBasedTable;
@@ -35,41 +39,57 @@ import com.google.common.collect.TreeBasedTable;
  *
  */
 public enum ColorBrewer {
-	YlGn,
-	YlGnBu,
-	GnBu,
-	BuGn,
-	PuBuGn,
-	PuBu,
-	BuPu,
-	RdPu,
-	PuRd,
-	OrRd,
-	YlOrRd,
-	Accent,
-	YlOrBr,
-	Purples,
-	Blues,
-	Greens,
-	Oranges,
-	Reds,
-	Greys,
-	BrBG,
-	PuOr,
-	PRGn,
-	PiYG,
-	RdBu,
-	RdGy,
-	RdYlBu,
-	Spectral,
-	RdYlGn,
-	Dark2,
-	Paired,
-	Pastel1,
-	Pastel2,
-	Set1,
-	Set2,
-	Set3;
+	YlGn(EColorSchemeType.SEQUENTIAL),
+	YlGnBu(EColorSchemeType.SEQUENTIAL),
+	GnBu(EColorSchemeType.SEQUENTIAL),
+	BuGn(EColorSchemeType.SEQUENTIAL),
+	PuBuGn(EColorSchemeType.SEQUENTIAL),
+	PuBu(EColorSchemeType.SEQUENTIAL),
+	BuPu(EColorSchemeType.SEQUENTIAL),
+	RdPu(EColorSchemeType.SEQUENTIAL),
+	PuRd(EColorSchemeType.SEQUENTIAL),
+	OrRd(EColorSchemeType.SEQUENTIAL),
+	YlOrRd(EColorSchemeType.SEQUENTIAL),
+	Accent(EColorSchemeType.QUALITATIVE),
+	YlOrBr(EColorSchemeType.SEQUENTIAL),
+	Purples(EColorSchemeType.SEQUENTIAL),
+	Blues(EColorSchemeType.SEQUENTIAL),
+	Greens(EColorSchemeType.SEQUENTIAL),
+	Oranges(EColorSchemeType.SEQUENTIAL),
+	Reds(EColorSchemeType.SEQUENTIAL),
+	Greys(EColorSchemeType.SEQUENTIAL),
+	BrBG(EColorSchemeType.DIVERGING),
+	PuOr(EColorSchemeType.DIVERGING),
+	PRGn(EColorSchemeType.DIVERGING),
+	PiYG(EColorSchemeType.DIVERGING),
+	RdBu(EColorSchemeType.DIVERGING),
+	RdGy(EColorSchemeType.DIVERGING),
+	RdYlBu(EColorSchemeType.DIVERGING),
+	Spectral(EColorSchemeType.DIVERGING),
+	RdYlGn(EColorSchemeType.DIVERGING),
+	Dark2(EColorSchemeType.QUALITATIVE),
+	Paired(EColorSchemeType.QUALITATIVE),
+	Pastel1(EColorSchemeType.QUALITATIVE),
+	Pastel2(EColorSchemeType.QUALITATIVE),
+	Set1(EColorSchemeType.QUALITATIVE),
+	Set2(EColorSchemeType.QUALITATIVE),
+	Set3(EColorSchemeType.QUALITATIVE);
+
+	/**
+	 * The type of this color scheme.
+	 */
+	private EColorSchemeType type;
+
+	private ColorBrewer(EColorSchemeType type) {
+		this.type = type;
+	}
+
+	/**
+	 * @return the type, see {@link #type}
+	 */
+	public EColorSchemeType getType() {
+		return type;
+	}
 
 	private static final Table<ColorBrewer, Integer, List<Color>> data = TreeBasedTable.create();
 
@@ -365,7 +385,7 @@ public enum ColorBrewer {
 	/**
 	 * add special linear range colors where {@link Color#darker()} and {@link Color#brighter()} use colors from the
 	 * same set
-	 * 
+	 *
 	 * @param set
 	 * @param colors
 	 */
@@ -382,12 +402,63 @@ public enum ColorBrewer {
 		for (String c : colors)
 			col.add(Color.decode(c));
 		for (int i = start; i < colors.length; ++i)
-			set.put(i, col.subList(0, start));
+			set.put(i, col.subList(0, i));
 		set.put(colors.length, col);
 	}
 
 	public Set<Integer> getSizes() {
 		return data.row(this).keySet();
+	}
+
+	public int getMaxSize() {
+		int max = Integer.MIN_VALUE;
+		for (Integer size : data.row(this).keySet()) {
+			if (size > max)
+				max = size;
+		}
+		return max;
+	}
+
+	public int getMinSize() {
+		int min = Integer.MAX_VALUE;
+		for (Integer size : data.row(this).keySet()) {
+			if (size < min)
+				min = size;
+		}
+		return min;
+	}
+
+	public ColorMapper asColorMapper(int size) {
+		List<Color> colors = data.get(this, size);
+		List<ColorMarkerPoint> colorMarkerPoints = new ArrayList<>(colors.size());
+
+		int colorCount = 0;
+		double mappingValueDistance = 1d / (colors.size() - 1);
+		float nextMappingValue = 0;
+
+		float spread = 0.05f;
+		if (type == EColorSchemeType.QUALITATIVE)
+			spread = 1.0f / colors.size();
+		for (Color color : colors) {
+			if (colorCount == colors.size() - 1)
+				nextMappingValue = 1;
+			ColorMarkerPoint point = new ColorMarkerPoint(nextMappingValue,
+					(org.caleydo.core.util.color.Color) Colors.of(color));
+
+			// set spread only for first and last
+			if (colorCount == 0 || (type == EColorSchemeType.QUALITATIVE && colorCount != colors.size() - 1)) {
+				point.setRightSpread(spread);
+			}
+			if (colorCount == colors.size() - 1) {
+				point.setLeftSpread(spread);
+
+			}
+			colorMarkerPoints.add(point);
+			nextMappingValue += mappingValueDistance;
+			colorCount++;
+		}
+
+		return new ColorMapper(colorMarkerPoints);
 	}
 
 	public static Set<ColorBrewer> getSets(int size) {
@@ -402,11 +473,33 @@ public enum ColorBrewer {
 		return get(size).get(index);
 	}
 
+	public static Set<ColorBrewer> getSets(int size, EColorSchemeType type) {
+		Set<ColorBrewer> set = getSets(size);
+		Set<ColorBrewer> result = new HashSet<>();
+		for (ColorBrewer scheme : set) {
+			if (scheme.getType() == type) {
+				result.add(scheme);
+			}
+		}
+
+		return result;
+	}
+
+	public static Set<ColorBrewer> getSets(EColorSchemeType type) {
+		Set<ColorBrewer> set = new HashSet<>();
+		for (ColorBrewer scheme : values()) {
+			if (scheme.getType() == type) {
+				set.add(scheme);
+			}
+		}
+		return set;
+	}
+
 	/**
 	 * special color version, where {@link #darker()} and {@link #brighter()} are just lookups in a color set
-	 * 
+	 *
 	 * @author Samuel Gratzl
-	 * 
+	 *
 	 */
 	private static class BrewerColor extends Color {
 		private static final long serialVersionUID = -6536215871696621355L;

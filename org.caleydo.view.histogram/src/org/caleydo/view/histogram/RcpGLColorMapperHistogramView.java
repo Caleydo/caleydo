@@ -17,6 +17,7 @@
 package org.caleydo.view.histogram;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.caleydo.core.data.collection.table.NumericalTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
@@ -133,7 +134,7 @@ public class RcpGLColorMapperHistogramView extends RcpGLHistogramView implements
 			return;
 		if (!dataDomain.getTable().isDataHomogeneous())
 			return;
-		ArrayList<ColorMarkerPoint> markerPoints = dataDomain.getColorMapper().getMarkerPoints();
+		List<ColorMarkerPoint> markerPoints = dataDomain.getColorMapper().getMarkerPoints();
 
 		Color[] alColor = new Color[markerPoints.size()];
 		int[] colorMarkerPoints = new int[markerPoints.size() - 1];

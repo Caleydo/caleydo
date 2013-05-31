@@ -278,7 +278,7 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 	private void renderColorBars(GL2 gl) {
 
 		fRenderWidth = (viewFrustum.getWidth() - 2 * sideSpacing);
-		ArrayList<ColorMarkerPoint> markerPoints = dataDomain.getColorMapper().getMarkerPoints();
+		List<ColorMarkerPoint> markerPoints = dataDomain.getColorMapper().getMarkerPoints();
 
 		int iCount = 0;
 
@@ -448,7 +448,7 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 		float[] fArTargetWorldCoordinates = GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl,
 				currentPoint.x, currentPoint.y);
 
-		ArrayList<ColorMarkerPoint> markerPoints = dataDomain.getColorMapper().getMarkerPoints();
+		List<ColorMarkerPoint> markerPoints = dataDomain.getColorMapper().getMarkerPoints();
 		ColorMarkerPoint markerPoint = markerPoints.get(iColorMappingPointMoved);
 
 		float fClickedPointX = fArTargetWorldCoordinates[0];
