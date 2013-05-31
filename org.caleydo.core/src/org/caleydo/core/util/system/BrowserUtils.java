@@ -32,6 +32,9 @@ import java.net.URL;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
@@ -50,6 +53,13 @@ public class BrowserUtils {
 			log.error("can't open URL: " + url, e);
 		}
 	}
+
+	public static final SelectionListener LINK_LISTENER = new SelectionAdapter() {
+		@Override
+		public void widgetSelected(SelectionEvent e) {
+			openURL(e.text);
+		}
+	};
 
 	public static void openURL(URL url) {
 		if (PlatformUI.isWorkbenchRunning()) {

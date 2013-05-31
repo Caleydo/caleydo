@@ -41,8 +41,6 @@ import org.caleydo.view.histogram.GLHistogram;
 import org.caleydo.view.histogram.RcpGLColorMapperHistogramView;
 import org.caleydo.view.histogram.SerializedHistogramView;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -185,15 +183,10 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 			value = url.toExternalForm();
 			if (value.length() > 20)
 				value = value.substring(0, 20) + "...";
-			v.setText("<a>" + value + "</a>");
+			v.setText("<a href=\"" + url.toExternalForm() + "\">" + value + "</a>");
 			v.setToolTipText(url.toExternalForm());
 			v.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false));
-			v.addSelectionListener(new SelectionAdapter() {
-				@Override
-				public void widgetSelected(SelectionEvent e) {
-					BrowserUtils.openURL(url.toExternalForm());
-				}
-			});
+			v.addSelectionListener(BrowserUtils.LINK_LISTENER);
 		} catch (MalformedURLException e) {
 			Label v = new Label(parent, SWT.NO_BACKGROUND);
 			v.setText(value);

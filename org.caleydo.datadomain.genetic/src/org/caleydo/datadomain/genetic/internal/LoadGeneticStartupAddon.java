@@ -68,14 +68,6 @@ public class LoadGeneticStartupAddon implements IStartupAddon {
 
 	@Override
 	public Composite create(Composite parent, final WizardPage page) {
-
-		SelectionAdapter linkSelectedAdapter = new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				BrowserUtils.openURL(e.text);
-			}
-		};
-
 		page.setPageComplete(true);
 
 		Composite composite = new Composite(parent, SWT.NONE);
@@ -139,7 +131,7 @@ public class LoadGeneticStartupAddon implements IStartupAddon {
 		link.setText("This option loads a single sample mRNA expression dataset with samples for hepatocellular carcinoma (about 4000 genes and 39 experiments) through the standard loading dialog. The dataset is made available by the Institute of Pathology at the Medical University of Graz.\n\nDataset: <a href=\""
 				+ HCC_SAMPLE_DATASET_PAPER_LINK + "\">" + HCC_SAMPLE_DATASET_PAPER_LINK + "</a>");
 		link.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		link.addSelectionListener(linkSelectedAdapter);
+		link.addSelectionListener(BrowserUtils.LINK_LISTENER);
 
 		btnSampleData.addSelectionListener(new SelectionAdapter() {
 			@Override
