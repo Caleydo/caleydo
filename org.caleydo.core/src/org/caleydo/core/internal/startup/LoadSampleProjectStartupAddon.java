@@ -26,6 +26,8 @@ import org.caleydo.core.internal.MyPreferences;
 import org.caleydo.core.startup.IStartupAddon;
 import org.caleydo.core.startup.IStartupProcedure;
 import org.caleydo.core.util.system.BrowserUtils;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -48,6 +50,8 @@ import org.eclipse.swt.widgets.Link;
  *
  */
 public class LoadSampleProjectStartupAddon implements IStartupAddon {
+	private static final String EXTENSION_POINT = "org.caleydo.core.SampleProject";
+
 	private URL selectedChoice = null;
 
 	@Override
@@ -63,20 +67,12 @@ public class LoadSampleProjectStartupAddon implements IStartupAddon {
 		Composite g = new Composite(parent, SWT.NONE);
 		g.setLayout(new GridLayout(1, false));
 
-
-		createSample(
-				"http://data.icg.tugraz.at/caleydo/download/3.0/samples/tcga_gbm.cal",
-				"Load Sample Project",
-				"This sample project loads five linked datasets from the <a href=\""
-						+ "http://cancergenome.nih.gov"
-						+ "\">TCGA</a> GBM dataset made available by the Broad Institute's <a href=\""
-						+ "http://gdac.broadinstitute.org"
-						+ "\">Genome Data Analysis Center (GDAC)</a>."
-						+ "\n"
-						+ "\n"
-						+ "The datasets are mRNA expression data, microRNA expression, methylation and copy-number data. Additionally some clinical data is available. The project contains 300-550 samples for each dataset. The expression datasets contain about 1,500 pre-selected values, copy number status is availiabe for about 5,000 genes. "
-						+ "\n" + "The ideal choice if you want to try out multi-dataset analysis in Calyedo.\n", g, l);
-
+		for (IConfigurationElement elem : RegistryFactory.getRegistry().getConfigurationElementsFor(EXTENSION_POINT)) {
+			String name = elem.getAttribute("name");
+			String url = elem.getAttribute("url");
+			String description = elem.getAttribute("description");
+			createSample(url, name, description, g, l);
+		}
 		return g;
 	}
 
