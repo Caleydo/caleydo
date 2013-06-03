@@ -57,7 +57,7 @@ public class IDType {
 	 * The {@link IDCategory} of an {@link IDType} specifies to which category an ID belongs. The contract is, that
 	 * between two IDTypes that share the same IDCategory there must exist a mapping in the {@link IDMappingManager}.
 	 */
-	private IDCategory idCategory;
+	private final IDCategory idCategory;
 
 	/**
 	 * Type name that needs to be a unique value for every new IDType. Besides being unique, it should also be
@@ -68,23 +68,24 @@ public class IDType {
 	/**
 	 * Specifies the data type of the IDType. Allowed values are {@link EDataType#INTEGER} and {@link EDataType#STRING}
 	 */
-	private EDataType dataType;
+	private final EDataType dataType;
 
 	/**
 	 * flag determining whether a type is internal only, meaning that it is dynamically generated using, e.g., a running
 	 * number (true), or an externally provided ID (e.g., refseq, false)
 	 */
-	private boolean isInternalType = false;
+	private final boolean isInternalType;
 
 	/**
 	 * Rules for parsing an id type. Defaults to null.
 	 */
 	private IDTypeParsingRules idTypeParsingRules = null;
 
-	private IDType(String typeName, IDCategory idCategory, EDataType dataType) {
+	private IDType(String typeName, IDCategory idCategory, EDataType dataType, boolean internal) {
 		this.typeName = typeName;
 		this.idCategory = idCategory;
 		this.dataType = dataType;
+		this.isInternalType = internal;
 	}
 
 	/**
@@ -119,6 +120,10 @@ public class IDType {
 	 * @return the created ID Type
 	 */
 	public static IDType registerType(String typeName, IDCategory idCategory, EDataType dataType) {
+		return registerType(typeName, idCategory, dataType, false);
+	}
+
+	private static IDType registerType(String typeName, IDCategory idCategory, EDataType dataType, boolean internal) {
 		if (!(dataType == EDataType.INTEGER || dataType == EDataType.STRING))
 			throw new IllegalStateException(
 					"IDTypes are allowed to be only either of type INTEGER or STRING, but was: " + dataType);
@@ -132,13 +137,17 @@ public class IDType {
 							+ "Previously registered type: " + idType + ", Category: " + idType.getIDCategory()
 							+ ", DataType: " + idType.getDataType());
 			} else {
-				idType = new IDType(typeName, idCategory, dataType);
+				idType = new IDType(typeName, idCategory, dataType, internal);
 				registeredTypes.put(typeName, idType);
 				idCategory.addIDType(idType);
 				Logger.log(new Status(IStatus.INFO, "IDType", "Registering IDType " + typeName));
 			}
 			return idType;
 		}
+	}
+
+	public static IDType registerInternalType(String typeName, IDCategory idCategory, EDataType dataType) {
+		return registerType(typeName, idCategory, dataType, true);
 	}
 
 	/**
@@ -201,16 +210,6 @@ public class IDType {
 	public boolean isInternalType() {
 		return isInternalType;
 	}
-
-	/**
-	 * @param isInternalType
-	 *            setter, see {@link #isInternalType}
-	 */
-	public IDType setInternalType(boolean isInternalType) {
-		this.isInternalType = isInternalType;
-		return this;
-	}
-
 	/**
 	 * @return the idCategory, see {@link #idCategory}
 	 */

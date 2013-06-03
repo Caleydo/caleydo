@@ -79,6 +79,9 @@ import org.caleydo.core.util.base.IDefaultLabelHolder;
 @XmlType
 @XmlRootElement
 public class TablePerspective implements IDefaultLabelHolder {
+	public static final IDCategory DATA_CONTAINER = IDCategory.registerInternalCategory("DATA_CONTAINER");
+	public static final IDType DATA_CONTAINER_IDTYPE = IDType.registerInternalType("DataContainers", DATA_CONTAINER,
+			EDataType.INTEGER);
 
 	/** The static counter used to create unique ids */
 	private static final AtomicInteger idCounter = new AtomicInteger();
@@ -126,10 +129,6 @@ public class TablePerspective implements IDefaultLabelHolder {
 	 */
 	@XmlElement
 	protected boolean isPrivate;
-
-	public static IDCategory DATA_CONTAINER = IDCategory.registerCategory("DATA_CONTAINER");
-	public static IDType DATA_CONTAINER_IDTYPE = IDType.registerType("DataConatiners", DATA_CONTAINER,
-			EDataType.INTEGER).setInternalType(true);
 
 	/**
 	 * A group containing all elements of the {@link #recordPerspective}'s virtual array of this data container. This is
