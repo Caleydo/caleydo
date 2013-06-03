@@ -119,7 +119,7 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 		SelectionLayer selectionLayer = new SelectionLayer(bodyDataLayer);
 		ViewportLayer bodyLayer = new ViewportLayer(selectionLayer);
 
-		final DataLayer columnDataLayer = new DataLayer(columnDataProvider);
+		final DataLayer columnDataLayer = new DataLayer(columnDataProvider, 120, 25);
 		ColumnHeaderLayer columnHeaderLayer = new ColumnHeaderLayer(columnDataLayer, bodyLayer, selectionLayer);
 
 		DataLayer rowDataLayer = new DataLayer(rowDataProvider, 50, 20);

@@ -63,14 +63,14 @@ public class CategoricalDataPropertiesWidget {
 	 * Radio button for nominal categories.
 	 */
 	protected Button nominalButton;
-	/**
-	 * Button to move a category up in the table.
-	 */
-	protected Button upButton;
-	/**
-	 * Button to move a category down in the table.
-	 */
-	protected Button downButton;
+	// /**
+	// * Button to move a category up in the table.
+	// */
+	// protected Button upButton;
+	// /**
+	// * Button to move a category down in the table.
+	// */
+	// protected Button downButton;
 	/**
 	 * Button to add a new category.
 	 */
@@ -83,7 +83,7 @@ public class CategoricalDataPropertiesWidget {
 	/**
 	 * Button to trigger the {@link ChooseColorSchemeDialog} to select and apply a color scheme.
 	 */
-	protected Button chooseColorSchemeButton;
+	protected Button applyColorSchemeButton;
 
 	protected Group categoryTypeGroup;
 
@@ -117,9 +117,11 @@ public class CategoricalDataPropertiesWidget {
 		ordinalButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				upButton.setEnabled(true);
-				downButton.setEnabled(true);
+				// upButton.setEnabled(true);
+				// downButton.setEnabled(true);
+				categoryTable.setRowsMoveable(true);
 				applyColorScheme(ColorBrewer.RdBu);
+				categoriesGroup.layout(true);
 			}
 		});
 
@@ -128,9 +130,11 @@ public class CategoricalDataPropertiesWidget {
 		nominalButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				upButton.setEnabled(false);
-				downButton.setEnabled(false);
+				// upButton.setEnabled(false);
+				// downButton.setEnabled(false);
+				categoryTable.setRowsMoveable(false);
 				applyColorScheme(ColorBrewer.Set1);
+				categoriesGroup.layout(true);
 			}
 		});
 
@@ -141,39 +145,9 @@ public class CategoricalDataPropertiesWidget {
 
 		Composite buttonComposite = new Composite(categoriesGroup, SWT.NONE);
 		buttonComposite.setLayout(new GridLayout(1, true));
-		upButton = new Button(buttonComposite, SWT.ARROW | SWT.UP);
-		upButton.setLayoutData(new GridData(30, 30));
-		upButton.addSelectionListener(new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				int selectedRowIndex = categoryTable.getSelectedRow();
-				if (selectedRowIndex != -1 && selectedRowIndex != 0) {
-					swapRows(selectedRowIndex, selectedRowIndex - 1);
-					categoryTable.update();
-					categoryTable.selectRow(selectedRowIndex - 1);
-				}
-			}
-
-		});
-		downButton = new Button(buttonComposite, SWT.ARROW | SWT.DOWN);
-		downButton.setLayoutData(new GridData(30, 30));
-		downButton.addSelectionListener(new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				int selectedRowIndex = categoryTable.getSelectedRow();
-				if (selectedRowIndex != -1 && selectedRowIndex != categoryTable.getRowCount() - 1) {
-					swapRows(selectedRowIndex, selectedRowIndex + 1);
-					categoryTable.update();
-					categoryTable.selectRow(selectedRowIndex + 1);
-				}
-			}
-
-		});
-
 		addCategoryButton = new Button(buttonComposite, SWT.PUSH);
 		addCategoryButton.setText("Add");
+		addCategoryButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		addCategoryButton.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -185,6 +159,7 @@ public class CategoricalDataPropertiesWidget {
 
 		removeCategoryButton = new Button(buttonComposite, SWT.PUSH);
 		removeCategoryButton.setText("Remove");
+		removeCategoryButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		removeCategoryButton.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -198,9 +173,10 @@ public class CategoricalDataPropertiesWidget {
 
 		});
 
-		chooseColorSchemeButton = new Button(buttonComposite, SWT.PUSH);
-		chooseColorSchemeButton.setText("Choose Color Scheme");
-		chooseColorSchemeButton.addSelectionListener(new SelectionAdapter() {
+		applyColorSchemeButton = new Button(buttonComposite, SWT.PUSH);
+		applyColorSchemeButton.setText("Apply Color Scheme");
+		applyColorSchemeButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		applyColorSchemeButton.addSelectionListener(new SelectionAdapter() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -208,23 +184,40 @@ public class CategoricalDataPropertiesWidget {
 			}
 		});
 
-		categoryTable = new CategoryTable(categoriesGroup, new GridData(SWT.FILL, SWT.FILL, true, true, 1, 2),
-				new IntegerCallback() {
+		categoryTable = new CategoryTable(categoriesGroup, new GridData(SWT.FILL, SWT.FILL, true, true, 1, 2), true);
 
-					@Override
-					public void on(int data) {
-						if (!nominalButton.getSelection()) {
-							upButton.setEnabled(true);
-							downButton.setEnabled(true);
-						}
-						if (data == 0) {
-							upButton.setEnabled(false);
-						}
-						if (data == categoryTable.getRowCount() - 1) {
-							downButton.setEnabled(false);
-						}
-					}
-				});
+		// buttonComposite = new Composite(categoriesGroup, SWT.NONE);
+		// buttonComposite.setLayout(new GridLayout(1, true));
+		// upButton = new Button(buttonComposite, SWT.ARROW | SWT.UP);
+		// upButton.setLayoutData(new GridData(30, 30));
+		// upButton.addSelectionListener(new SelectionAdapter() {
+		//
+		// @Override
+		// public void widgetSelected(SelectionEvent e) {
+		// int selectedRowIndex = categoryTable.getSelectedRow();
+		// if (selectedRowIndex != -1 && selectedRowIndex != 0) {
+		// swapRows(selectedRowIndex, selectedRowIndex - 1);
+		// categoryTable.update();
+		// categoryTable.selectRow(selectedRowIndex - 1);
+		// }
+		// }
+		//
+		// });
+		// downButton = new Button(buttonComposite, SWT.ARROW | SWT.DOWN);
+		// downButton.setLayoutData(new GridData(30, 30));
+		// downButton.addSelectionListener(new SelectionAdapter() {
+		//
+		// @Override
+		// public void widgetSelected(SelectionEvent e) {
+		// int selectedRowIndex = categoryTable.getSelectedRow();
+		// if (selectedRowIndex != -1 && selectedRowIndex != categoryTable.getRowCount() - 1) {
+		// swapRows(selectedRowIndex, selectedRowIndex + 1);
+		// categoryTable.update();
+		// categoryTable.selectRow(selectedRowIndex + 1);
+		// }
+		// }
+		//
+		// });
 	}
 
 	/**
@@ -441,13 +434,6 @@ public class CategoricalDataPropertiesWidget {
 	private void removeCategory(int rowIndex) {
 		List<List<String>> categories = categoryTable.getDataMatrix();
 		categories.remove(rowIndex);
-	}
-
-	private void swapRows(int row1Index, int row2Index) {
-		List<List<String>> categoryMatrix = categoryTable.getDataMatrix();
-		List<String> copyRow1 = new ArrayList<>(categoryMatrix.get(row1Index));
-		categoryMatrix.set(row1Index, categoryMatrix.get(row2Index));
-		categoryMatrix.set(row2Index, copyRow1);
 	}
 
 	/**
