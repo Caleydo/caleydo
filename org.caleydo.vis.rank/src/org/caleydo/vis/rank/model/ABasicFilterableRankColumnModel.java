@@ -51,6 +51,8 @@ public abstract class ABasicFilterableRankColumnModel extends ARankColumnModel i
 					@SuppressWarnings("unchecked")
 					Collection<IRow> news = (Collection<IRow>) evt.getNewValue();
 					maskInvalid.set(table.getDataSize() - news.size(), table.getDataSize());
+				} else {
+					System.err.println();
 				}
 				break;
 			}

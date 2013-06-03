@@ -643,7 +643,8 @@ public class TourguideAdapter implements IStratomexAdapter {
 			columns.add(0, wizardElement);
 		else {
 			int index = previewIndex - stratomex.getBrickColumnManager().getCenterColumnStartIndex();
-			columns.add(index + 1, wizardElement);
+			index = Math.min(index + 1, columns.size());
+			columns.add(index, wizardElement);
 		}
 	}
 

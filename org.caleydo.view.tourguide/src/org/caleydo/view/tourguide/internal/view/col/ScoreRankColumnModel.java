@@ -72,6 +72,13 @@ public class ScoreRankColumnModel extends FloatRankColumnModel implements IGLRen
 	}
 
 	/**
+	 * dirty the mapping to indicate the values might have changed and to clear caches
+	 */
+	public void dirty() {
+		propertySupport.firePropertyChange(PROP_MAPPING, null, data);
+	}
+
+	/**
 	 * @return the score, see {@link #score}
 	 */
 	public IScore getScore() {

@@ -353,6 +353,7 @@ public class GLTourGuideView extends AGLElementView {
 		if (event.getScores() != null) {
 			addColumns(event.getScores(), event.isRemoveLeadingScoreColumns());
 		} else {
+			invalidVisibleScores();
 			updateMask();
 		}
 	}
@@ -369,6 +370,8 @@ public class GLTourGuideView extends AGLElementView {
 		// use sublists to save memory
 		q.init(offset, new CustomSubList<AScoreRow>((List<AScoreRow>) m, offset, m.size() - offset));
 		q.createSpecificColumns(table);
+
+		invalidVisibleScores();
 		updateMask();
 	}
 
@@ -387,6 +390,7 @@ public class GLTourGuideView extends AGLElementView {
 			q.addData(offset, new CustomSubList<AScoreRow>((List<AScoreRow>) m, offset, m.size() - offset));
 		}
 
+		invalidVisibleScores();
 		updateMask();
 	}
 
@@ -551,6 +555,21 @@ public class GLTourGuideView extends AGLElementView {
 				it.remove();
 		}
 		return r;
+	}
+
+	private void invalidVisibleScores() {
+		Deque<ARankColumnModel> cols = new LinkedList<>(table.getColumns());
+		while (!cols.isEmpty()) {
+			ARankColumnModel model = cols.pollFirst();
+			if (model instanceof ScoreRankColumnModel) {
+				((ScoreRankColumnModel) model).dirty();
+			} else if (model instanceof StackedRankColumnModel) {
+				cols.addAll(((StackedRankColumnModel) model).getChildren());
+			} else if (model instanceof MaxCompositeRankColumnModel) {
+				MaxCompositeRankColumnModel max = (MaxCompositeRankColumnModel) model;
+				cols.addAll(max.getChildren());
+			}
+		}
 	}
 
 	@ListenTo(sendToMe = true)

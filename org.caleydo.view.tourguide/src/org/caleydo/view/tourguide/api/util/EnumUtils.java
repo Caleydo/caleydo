@@ -19,7 +19,6 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.api.util;
 
-import org.caleydo.core.util.base.ILabeled;
 
 /**
  * collection of utility function for managing enums
@@ -38,20 +37,5 @@ public class EnumUtils {
 		for (int i = 0; i < values.length; ++i)
 			n[i] = values[i].name();
 		return n;
-	}
-
-	public static <E extends Enum<E> & ILabeled> String[] getLabels(Class<E> clazz) {
-		E[] values = clazz.getEnumConstants();
-		String[] n = new String[values.length];
-		for (int i = 0; i < values.length; ++i)
-			n[i] = values[i].getLabel();
-		return n;
-	}
-
-	public static <E extends Enum<E> & ILabeled> E valueOfByLabels(Class<E> clazz, String label) {
-		for (E value : clazz.getEnumConstants())
-			if (value.getLabel().equals(label))
-				return value;
-		return null;
 	}
 }
