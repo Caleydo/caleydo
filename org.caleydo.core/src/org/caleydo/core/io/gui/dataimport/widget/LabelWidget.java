@@ -37,11 +37,11 @@ public class LabelWidget {
 		Group group = new Group(parent, SWT.SHADOW_ETCHED_IN);
 		group.setText(label);
 		group.setLayout(new GridLayout(1, false));
-		group.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		group.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
 		this.label = new Text(group, SWT.BORDER);
 		this.label.setEnabled(false);
-		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
+		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
 		gridData.widthHint = 100;
 		this.label.setLayoutData(gridData);
 	}
