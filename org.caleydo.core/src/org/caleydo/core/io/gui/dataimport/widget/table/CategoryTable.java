@@ -19,11 +19,13 @@
  *******************************************************************************/
 package org.caleydo.core.io.gui.dataimport.widget.table;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.caleydo.core.io.gui.dataimport.widget.IntegerCallback;
+import org.caleydo.core.manager.GeneralManager;
 import org.eclipse.nebula.widgets.nattable.NatTable;
 import org.eclipse.nebula.widgets.nattable.config.AbstractRegistryConfiguration;
 import org.eclipse.nebula.widgets.nattable.config.CellConfigAttributes;
@@ -45,6 +47,8 @@ import org.eclipse.nebula.widgets.nattable.layer.cell.ColumnOverrideLabelAccumul
 import org.eclipse.nebula.widgets.nattable.layer.cell.ILayerCell;
 import org.eclipse.nebula.widgets.nattable.layer.event.ILayerEvent;
 import org.eclipse.nebula.widgets.nattable.painter.cell.ICellPainter;
+import org.eclipse.nebula.widgets.nattable.painter.cell.ImagePainter;
+import org.eclipse.nebula.widgets.nattable.painter.cell.decorator.CellPainterDecorator;
 import org.eclipse.nebula.widgets.nattable.selection.SelectionLayer;
 import org.eclipse.nebula.widgets.nattable.selection.event.CellSelectionEvent;
 import org.eclipse.nebula.widgets.nattable.selection.event.RowSelectionEvent;
@@ -55,6 +59,7 @@ import org.eclipse.nebula.widgets.nattable.ui.action.IMouseAction;
 import org.eclipse.nebula.widgets.nattable.ui.binding.UiBindingRegistry;
 import org.eclipse.nebula.widgets.nattable.ui.matcher.CellPainterMouseEventMatcher;
 import org.eclipse.nebula.widgets.nattable.ui.matcher.MouseEventMatcher;
+import org.eclipse.nebula.widgets.nattable.ui.util.CellEdgeEnum;
 import org.eclipse.nebula.widgets.nattable.util.GUIHelper;
 import org.eclipse.nebula.widgets.nattable.viewport.ViewportLayer;
 import org.eclipse.swt.events.DisposeEvent;
@@ -166,13 +171,12 @@ public class CategoryTable extends AMatrixBasedTableWidget implements ILayerList
 	/**
 	 * @param parent
 	 */
-	public CategoryTable(Composite parent, Object layoutData, IntegerCallback rowSelectionCallback) {
+	public CategoryTable(Composite parent, Object layoutData, boolean areRowsMoveable) {
 		super(parent);
 		this.layoutData = layoutData;
-		this.rowSelectionCallback = rowSelectionCallback;
 		bodyDataProvider = new MatrixBasedBodyDataProvider(null, 1);
 		rowHeaderDataProvider = new LineNumberRowHeaderDataProvider(1);
-		buildTable(bodyDataProvider, new ColumnHeaderDataProvider(), rowHeaderDataProvider);
+		buildTable(bodyDataProvider, new ColumnHeaderDataProvider(), rowHeaderDataProvider, areRowsMoveable);
 	}
 
 	@Override
@@ -186,30 +190,33 @@ public class CategoryTable extends AMatrixBasedTableWidget implements ILayerList
 		// new LineNumberRowHeaderDataProvider(dataMatrix.size()));
 	}
 
+	public void setRowsMoveable(boolean areRowsMoveable) {
+		buildTable(bodyDataProvider, new ColumnHeaderDataProvider(), rowHeaderDataProvider, areRowsMoveable);
+		table.refresh();
+	}
+
 	private void buildTable(MatrixBasedBodyDataProvider bodyDataProvider, ColumnHeaderDataProvider columnDataProvider,
-			LineNumberRowHeaderDataProvider rowDataProvider) {
+			LineNumberRowHeaderDataProvider rowDataProvider, final boolean areRowsMoveable) {
 
 		if (table != null) { // cleanup old
 			this.table.dispose();
 			this.table = null;
 		}
 
-		final DataLayer bodyDataLayer = new DataLayer(bodyDataProvider);
+		final DataLayer bodyDataLayer = new DataLayer(bodyDataProvider, 120, 24);
 
 		selectionLayer = new SelectionLayer(bodyDataLayer);
 		selectionLayer.addLayerListener(this);
 		ViewportLayer bodyLayer = new ViewportLayer(selectionLayer);
 
-		final DataLayer columnDataLayer = new DataLayer(columnDataProvider);
+		final DataLayer columnDataLayer = new DataLayer(columnDataProvider, 120, 25);
 		ColumnHeaderLayer columnHeaderLayer = new ColumnHeaderLayer(columnDataLayer, bodyLayer, selectionLayer);
 
-		DataLayer rowDataLayer = new DataLayer(rowDataProvider, 50, 20);
+		DataLayer rowDataLayer = new DataLayer(rowDataProvider, 41, 24);
 		RowHeaderLayer rowHeaderLayer = new RowHeaderLayer(rowDataLayer, bodyLayer, selectionLayer);
-
 		DefaultCornerDataProvider cornerDataProvider = new DefaultCornerDataProvider(columnDataProvider,
 				rowDataProvider);
 		CornerLayer cornerLayer = new CornerLayer(new DataLayer(cornerDataProvider), rowHeaderLayer, columnHeaderLayer);
-
 		GridLayer gridLayer = new GridLayer(bodyLayer, columnHeaderLayer, rowHeaderLayer, cornerLayer);
 		table = new NatTable(parent, gridLayer, false);
 		table.setLayoutData(layoutData);
@@ -223,6 +230,13 @@ public class CategoryTable extends AMatrixBasedTableWidget implements ILayerList
 		acc.registerColumnOverrides(3, "COLOR");
 		final ColorCellPainter colorCellPainter = new ColorCellPainter();
 
+		final ImagePainter upPainter = new ImagePainter(GeneralManager.get().getResourceLoader()
+				.getImage(parent.getDisplay(), "resources/icons/general/arrow_up.png"));
+		final ImagePainter downPainter = new ImagePainter(GeneralManager.get().getResourceLoader()
+				.getImage(parent.getDisplay(), "resources/icons/general/arrow_down.png"));
+
+		final ICellPainter rowHeaderPainter = new CellPainterDecorator(upPainter, CellEdgeEnum.BOTTOM, downPainter);
+
 		table.addConfiguration(new AbstractRegistryConfiguration() {
 
 			@Override
@@ -233,17 +247,16 @@ public class CategoryTable extends AMatrixBasedTableWidget implements ILayerList
 				configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_PAINTER, colorCellPainter,
 						DisplayMode.NORMAL, "COLOR");
 
+				if (areRowsMoveable) {
+					configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_PAINTER, rowHeaderPainter,
+							DisplayMode.NORMAL, GridRegion.ROW_HEADER);
+				}
+
 				Style cellStyle = new Style();
 
 				cellStyle.setAttributeValue(CellStyleAttributes.FOREGROUND_COLOR, GUIHelper.COLOR_WIDGET_NORMAL_SHADOW);
 				configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_STYLE, cellStyle, DisplayMode.NORMAL,
 						NON_EDITABLE);
-
-				// cellStyle = new Style();
-				// cellStyle.setAttributeValue(CellStyleAttributes.BACKGROUND_COLOR, GUIHelper.COLOR_WHITE);
-				// configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_STYLE, cellStyle,
-				// DisplayMode.NORMAL,
-				// "WHITE");
 
 			}
 
@@ -251,12 +264,51 @@ public class CategoryTable extends AMatrixBasedTableWidget implements ILayerList
 			public void configureUiBindings(UiBindingRegistry uiBindingRegistry) {
 				uiBindingRegistry.registerDoubleClickBinding(new CellPainterMouseEventMatcher(GridRegion.BODY,
 						MouseEventMatcher.LEFT_BUTTON, colorCellPainter), new ChangeColorAction());
+
+				if (areRowsMoveable) {
+					uiBindingRegistry.registerFirstSingleClickBinding(new CellPainterMouseEventMatcher(
+							GridRegion.ROW_HEADER, MouseEventMatcher.LEFT_BUTTON, upPainter), new IMouseAction() {
+
+						@Override
+						public void run(NatTable natTable, MouseEvent event) {
+							int rowIndex = natTable.getRowPositionByY(event.y) - 1;
+
+							if (rowIndex > 0) {
+								swapRows(rowIndex, rowIndex - 1);
+								update();
+								selectRow(rowIndex - 1);
+							}
+						}
+					});
+
+					uiBindingRegistry.registerFirstSingleClickBinding(new CellPainterMouseEventMatcher(
+							GridRegion.ROW_HEADER, MouseEventMatcher.LEFT_BUTTON, downPainter), new IMouseAction() {
+
+						@Override
+						public void run(NatTable natTable, MouseEvent event) {
+							int rowIndex = natTable.getRowPositionByY(event.y) - 1;
+
+							if (rowIndex != -1 && rowIndex < getRowCount() - 2) {
+								swapRows(rowIndex, rowIndex + 1);
+								update();
+								selectRow(rowIndex + 1);
+							}
+						}
+					});
+				}
 			}
 		});
 
 		table.addDisposeListener(this);
 
 		table.configure();
+	}
+
+	private void swapRows(int row1Index, int row2Index) {
+		List<List<String>> categoryMatrix = getDataMatrix();
+		List<String> copyRow1 = new ArrayList<>(categoryMatrix.get(row1Index));
+		categoryMatrix.set(row1Index, categoryMatrix.get(row2Index));
+		categoryMatrix.set(row2Index, copyRow1);
 	}
 
 	/**
@@ -285,7 +337,7 @@ public class CategoryTable extends AMatrixBasedTableWidget implements ILayerList
 
 	@Override
 	public void handleLayerEvent(ILayerEvent event) {
-		if (event instanceof CellSelectionEvent || event instanceof RowSelectionEvent) {
+		if (rowSelectionCallback != null && (event instanceof CellSelectionEvent || event instanceof RowSelectionEvent)) {
 			PositionCoordinate[] positions = selectionLayer.getSelectedCellPositions();
 			if (positions.length >= 1)
 				rowSelectionCallback.on(positions[0].rowPosition);
@@ -320,5 +372,13 @@ public class CategoryTable extends AMatrixBasedTableWidget implements ILayerList
 	@Override
 	public void widgetDisposed(DisposeEvent e) {
 		disposeColors();
+	}
+
+	/**
+	 * @param rowSelectionCallback
+	 *            setter, see {@link rowSelectionCallback}
+	 */
+	public void setRowSelectionCallback(IntegerCallback rowSelectionCallback) {
+		this.rowSelectionCallback = rowSelectionCallback;
 	}
 }
