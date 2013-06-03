@@ -706,6 +706,8 @@ public class LoadDataSetPageMediator {
 		rowIDSpecification.setIdCategory(rowIDType.getIDCategory().getCategoryName());
 		if (rowIDTypeParsingRules != null) {
 			rowIDSpecification.setIdTypeParsingRules(rowIDTypeParsingRules);
+		} else if (rowIDType.getIdTypeParsingRules() != null) {
+			rowIDSpecification.setIdTypeParsingRules(rowIDType.getIdTypeParsingRules());
 		} else if (rowIDType.getTypeName().equalsIgnoreCase("REFSEQ_MRNA")) {
 			// for REFSEQ_MRNA we ignore the .1, etc.
 			IDTypeParsingRules parsingRules = new IDTypeParsingRules();
@@ -723,6 +725,8 @@ public class LoadDataSetPageMediator {
 		columnIDSpecification.setIdCategory(columnIDType.getIDCategory().getCategoryName());
 		if (columnIDTypeParsingRules != null) {
 			columnIDSpecification.setIdTypeParsingRules(columnIDTypeParsingRules);
+		} else if (columnIDType.getIdTypeParsingRules() != null) {
+			columnIDSpecification.setIdTypeParsingRules(columnIDType.getIdTypeParsingRules());
 		}
 
 		dataSetDescription.setColumnIDSpecification(columnIDSpecification);
