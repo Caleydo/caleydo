@@ -115,17 +115,18 @@ public final class RemoteFile implements IRunnableWithProgress {
 			try (InputStream in = new BufferedInputStream(connection.getInputStream())) {
 				byte[] data = new byte[BUFFER_SIZE];
 				int count = 0;
-				int total = 0;
+				int acc = 0;
 
 				int i = 0;
 				while ((count = in.read(data)) != -1) {
-					total += count;
+					acc += count;
 					out.write(data, 0, count);
 					if (i++ >= WORK_TRIGGER_FREQUENCY) {
 						i -= WORK_TRIGGER_FREQUENCY;
 						if (monitor.isCanceled())
 							break;
-						monitor.worked(total);
+						monitor.worked(acc);
+						acc = 0;
 					}
 				}
 			}
