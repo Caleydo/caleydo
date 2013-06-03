@@ -43,7 +43,7 @@ public class LoadSampleProjectStartupProcedure extends LoadProjectStartupProcedu
 
 	@Override
 	public void preWorkbenchOpen() {
-		if (!rFile.inCache()) {
+		if (!rFile.inCache(false)) {
 			try {
 				new ProgressMonitorDialog(new Shell()).run(true, false, rFile);
 			} catch (InvocationTargetException | InterruptedException e) {

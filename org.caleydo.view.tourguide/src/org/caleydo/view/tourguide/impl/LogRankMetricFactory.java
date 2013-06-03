@@ -40,6 +40,7 @@ import org.caleydo.core.util.base.DefaultLabelProvider;
 import org.caleydo.view.stratomex.tourguide.event.UpdateNumericalPreviewEvent;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.score.DefaultComputedGroupScore;
+import org.caleydo.view.tourguide.api.score.MultiScore;
 import org.caleydo.view.tourguide.api.state.BrowseOtherState;
 import org.caleydo.view.tourguide.api.state.EWizardMode;
 import org.caleydo.view.tourguide.api.state.IReactions;
@@ -116,6 +117,20 @@ public class LogRankMetricFactory implements IScoreFactory {
 		return mode == EDataDomainQueryMode.STRATIFICATIONS;
 	}
 
+	private static MultiScore createLogRankScore(TablePerspective numerical) {
+		int dimId = numerical.getDimensionPerspective().getVirtualArray().get(0);
+		String label = numerical.getLabel();
+		ATableBasedDataDomain clinical = numerical.getDataDomain();
+		LogRankMetric metric = new LogRankMetric(label, dimId, clinical);
+		LogRankPValue pvalue = new LogRankPValue(label + " (P-V)", metric);
+
+		MultiScore multiScore = new MultiScore("LogRank of " + label, wrap(clinical.getColor()),
+				darker(clinical.getColor()), 1);
+		multiScore.add(metric);
+		multiScore.add(pvalue);
+		return multiScore;
+	}
+
 	public class CreateLogRankState extends BrowseOtherState {
 		private final IState target;
 
@@ -130,12 +145,8 @@ public class LogRankMetricFactory implements IScoreFactory {
 			adapter.replaceTemplate(new PreviewRenderer(adapter.createPreview(numerical), adapter.getGLView(),
 					"Browse for a stratification"));
 
-			int dimId = numerical.getDimensionPerspective().getVirtualArray().get(0);
-			String label = numerical.getLabel();
-			LogRankMetric metric = new LogRankMetric(label, dimId, numerical.getDataDomain());
-			LogRankPValue pvalue = new LogRankPValue(label + " (P-V)", metric);
-
-			adapter.addScoreToTourGuide(STRATIFICATIONS, metric, pvalue);
+			MultiScore multiScore = createLogRankScore(numerical);
+			adapter.addScoreToTourGuide(STRATIFICATIONS, multiScore);
 			adapter.switchTo(target);
 		}
 	}
@@ -156,12 +167,7 @@ public class LogRankMetricFactory implements IScoreFactory {
 
 		@Override
 		public void apply(IReactions adapter) {
-			int dimId = numerical.getDimensionPerspective().getVirtualArray().get(0);
-			String label = numerical.getLabel();
-			LogRankMetric metric = new LogRankMetric(label, dimId, numerical.getDataDomain());
-			LogRankPValue pvalue = new LogRankPValue(label + " (P-V)", metric);
-
-			adapter.addScoreToTourGuide(STRATIFICATIONS, metric, pvalue);
+			adapter.addScoreToTourGuide(STRATIFICATIONS, createLogRankScore(numerical));
 			adapter.switchTo(target);
 		}
 	}

@@ -396,7 +396,8 @@ public class GLTourGuideView extends AGLElementView {
 		for (IScore s : scores) {
 			int lastLabel = findLastLabelColumn();
 			if (s instanceof MultiScore) {
-				ACompositeRankColumnModel combined = table.getConfig().createNewCombined(0);
+				ACompositeRankColumnModel combined = table.getConfig().createNewCombined(
+						((MultiScore) s).getCombinedType());
 				table.add(lastLabel + 1, combined);
 				for (IScore s2 : ((MultiScore) s)) {
 					combined.add(new ScoreRankColumnModel(s2));
@@ -566,7 +567,7 @@ public class GLTourGuideView extends AGLElementView {
 				((IRegisteredScore) s).onRegistered();
 			if (s instanceof MultiScore) {
 				MultiScore sm = (MultiScore) s;
-				MultiScore tmp = new MultiScore(sm.getLabel(), sm.getColor(), sm.getBGColor());
+				MultiScore tmp = new MultiScore(sm.getLabel(), sm.getColor(), sm.getBGColor(), sm.getCombinedType());
 				for (IScore s2 : ((MultiScore) s)) {
 					if (s2 instanceof IRegisteredScore)
 						((IRegisteredScore) s2).onRegistered();

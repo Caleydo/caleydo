@@ -55,13 +55,14 @@ public class LogRank implements IGroupAlgorithm {
 		return "Log Rank of ";
 	}
 
+
 	@Override
 	public IDType getTargetType(IComputeElement a, IComputeElement b) {
 		return clinical.getRecordIDType();
 	}
 
 	public static float getPValue(float logRankScore) {
-		if (Float.isNaN(logRankScore))
+		if (Float.isNaN(logRankScore) || Float.isInfinite(logRankScore))
 			return Float.NaN;
 		double r = Statistics.chiSquaredProbability(logRankScore, 1); // see #983
 		return (float) r;
@@ -92,7 +93,10 @@ public class LogRank implements IGroupAlgorithm {
 		int bsurvived = bsp.getSecond();
 		if (monitor.isCanceled())
 			return Float.NaN;
-		return Statistics.logRank(as, asurvived, bs, bsurvived);
+		float r = Statistics.logRank(as, asurvived, bs, bsurvived);
+		if (Float.isInfinite(r))
+			return Float.NaN;
+		return r;
 	}
 
 	private Pair<List<Float>, Integer> getValues(Iterable<Integer> a, Integer col) {

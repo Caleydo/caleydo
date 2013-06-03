@@ -34,6 +34,7 @@ import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
 import org.caleydo.view.tourguide.api.compute.ComputeScoreFilters;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.score.DefaultComputedStratificationScore;
+import org.caleydo.view.tourguide.api.score.MultiScore;
 import org.caleydo.view.tourguide.api.score.ui.ACreateGroupScoreDialog;
 import org.caleydo.view.tourguide.api.state.BrowsePathwayState;
 import org.caleydo.view.tourguide.api.state.EWizardMode;
@@ -185,16 +186,8 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 
 		@Override
 		public void select(TablePerspective strat, Group group, IReactions reactions) {
-			//now we have the data for the stuff
-			AGSEAAlgorithm algorithm;
-			if (createGSEA)
-				algorithm = new GSEAAlgorithm(strat.getRecordPerspective(), group, 1.0f);
-			else
-				algorithm = new PGSEAAlgorithm(strat.getRecordPerspective(), group);
-			IScore gsea = new GeneSetScore(strat.getRecordPerspective().getLabel(), algorithm, false);
-			IScore pValue = new GeneSetScore(gsea.getLabel() + " (P-V)", algorithm.asPValue(), true);
-
-			reactions.addScoreToTourGuide(EDataDomainQueryMode.PATHWAYS, gsea, pValue);
+			MultiScore score = createScore(strat, group, createGSEA);
+			reactions.addScoreToTourGuide(EDataDomainQueryMode.PATHWAYS, score);
 
 			// switch to a preview pathway
 			target.setUnderlying(strat.getRecordPerspective());
@@ -302,5 +295,27 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 		if (algorithm instanceof AGSEAAlgorithm)
 			return Pair.make(((AGSEAAlgorithm) algorithm).getPerspective(), ((AGSEAAlgorithm) algorithm).getGroup());
 		return null;
+	}
+
+	/**
+	 * @param strat
+	 * @param group
+	 * @param createGSEA
+	 * @return
+	 */
+	public static MultiScore createScore(TablePerspective strat, Group group, boolean createGSEA) {
+		// now we have the data for the stuff
+		AGSEAAlgorithm algorithm;
+		if (createGSEA)
+			algorithm = new GSEAAlgorithm(strat.getRecordPerspective(), group, 1.0f);
+		else
+			algorithm = new PGSEAAlgorithm(strat.getRecordPerspective(), group);
+		IScore gsea = new GeneSetScore(strat.getRecordPerspective().getLabel(), algorithm, false);
+		IScore pValue = new GeneSetScore(gsea.getLabel() + " (P-V)", algorithm.asPValue(), true);
+
+		MultiScore s = new MultiScore(gsea.getLabel(), color, bgColor, 1);
+		s.add(gsea);
+		s.add(pValue);
+		return s;
 	}
 }

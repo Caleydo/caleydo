@@ -40,14 +40,27 @@ import com.google.common.collect.Iterators;
  *
  */
 public class MultiScore extends DefaultLabelProvider implements IScore, Iterable<IScore> {
-	private Collection<IScore> children = new ArrayList<>();
-	private Color color;
-	private Color bgColor;
+	private final Collection<IScore> children = new ArrayList<>();
+	private final Color color;
+	private final Color bgColor;
+	private final int combinedType;
 
 	public MultiScore(String label, Color color, Color bgColor) {
+		this(label, color, bgColor, 0);
+	}
+
+	public MultiScore(String label, Color color, Color bgColor, int combinedType) {
 		setLabel(label);
 		this.color = color;
 		this.bgColor = bgColor;
+		this.combinedType = combinedType;
+	}
+
+	/**
+	 * @return the combinedType, see {@link #combinedType}
+	 */
+	public int getCombinedType() {
+		return combinedType;
 	}
 
 	/**
