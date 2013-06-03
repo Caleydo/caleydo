@@ -75,8 +75,9 @@ public class StratificationDataDomainQuery extends ADataDomainQuery {
 		this.snapshot = new HashSet<>(d.getRecordPerspectiveIDs());
 		for (String rowPerspectiveID : d.getRecordPerspectiveIDs()) {
 			Perspective p = d.getTable().getRecordPerspective(rowPerspectiveID);
-			if (p.isDefault() || p.isPrivate())
+			if (p.isPrivate())
 				continue;
+			// include the default stratificatition see #1227
 			r.add(new StratificationPerspectiveRow(p, this));
 		}
 		return r;
@@ -178,6 +179,8 @@ public class StratificationDataDomainQuery extends ADataDomainQuery {
 	public void setMatches(String matches) {
 		if (Objects.equals(matches, this.matches))
 			return;
+		if (matches != null && matches.trim().isEmpty())
+			matches = null;
 		this.matches = matches;
 		updateFilter();
 	}

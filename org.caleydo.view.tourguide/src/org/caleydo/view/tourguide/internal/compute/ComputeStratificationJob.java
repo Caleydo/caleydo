@@ -54,8 +54,8 @@ public class ComputeStratificationJob extends AScoreJob {
 				return Status.CANCEL_STATUS;
 		}
 		int c = 0;
-		monitor.worked(c++);
-		progress(c / (float) total, "Computing...");
+		monitor.worked(1);
+		progress(c++ / (float) total, "Computing...");
 
 		Iterator<IComputeElement> it = this.data.iterator();
 		// first time the one run to compute the progress frequency interval
@@ -63,7 +63,8 @@ public class ComputeStratificationJob extends AScoreJob {
 			IComputeElement as = it.next();
 			if (!run(monitor, as))
 				return Status.CANCEL_STATUS;
-			monitor.worked(c++);
+			monitor.worked(1);
+			c++;
 		}
 		final int fireEvery = fireEvery(w.elapsedMillis());
 
@@ -80,7 +81,8 @@ public class ComputeStratificationJob extends AScoreJob {
 			if (!run(monitor, as))
 				return Status.CANCEL_STATUS;
 
-			monitor.worked(c++);
+			monitor.worked(1);
+			c++;
 		}
 		System.out.println("done in " + w);
 		monitor.done();

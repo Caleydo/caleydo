@@ -86,7 +86,7 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 		IState start = stateMachine.get(IStateMachine.ADD_PATHWAY);
 		BrowsePathwayState browse = (BrowsePathwayState) stateMachine.get(IStateMachine.BROWSE_PATHWAY);
 
-		if (!existing.isEmpty() && mode == EWizardMode.GLOBAL) {
+		if (!existing.isEmpty() && mode == EWizardMode.GLOBAL && hasGoodOnes(existing)) {
 			IState target = stateMachine.addState("GSEA", new CreateGSEAState(browse, true));
 			// IState target2 = stateMachine.addState("PGSEA", new CreateGSEAState(browse, false));
 			stateMachine.addTransition(start, new SimpleTransition(target,
@@ -107,6 +107,18 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 		// // "Find with PGSEA based on displayed stratification"));
 		// }
 
+	}
+
+	/**
+	 * @param existing
+	 * @return
+	 */
+	private static boolean hasGoodOnes(List<TablePerspective> existing) {
+		for (TablePerspective t : existing) {
+			if (isGoodDataDomain(t.getDataDomain()) && !(t instanceof PathwayTablePerspective))
+				return true;
+		}
+		return false;
 	}
 
 	@Override

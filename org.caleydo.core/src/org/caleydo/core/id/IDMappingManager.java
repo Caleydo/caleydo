@@ -90,11 +90,10 @@ import com.google.common.collect.Sets;
  *
  */
 public class IDMappingManager {
-
 	/**
 	 * The {@link IDCategory} for which this mapping manager provides the mapping
 	 */
-	private IDCategory idCategory;
+	private final IDCategory idCategory;
 
 	/** A counter for dynamically created primary IDs */
 	private int primaryTypeCounter = 0;
@@ -102,13 +101,13 @@ public class IDMappingManager {
 	/**
 	 * HashMap that contains all mappings identified by their MappingType.
 	 */
-	private Map<MappingType, Map<?, ?>> hashMappingType2Map;
+	private final Map<MappingType, Map<?, ?>> hashMappingType2Map;
 
 	/**
 	 * Graph of mappings. IDTypes are the vertices of the graph, edges represent a mapping from one IDType to another
 	 * that is backed up by a corresponding map in hashType2Mapping.
 	 */
-	private DefaultDirectedWeightedGraph<IDType, MappingType> mappingGraph;
+	private final DefaultDirectedWeightedGraph<IDType, MappingType> mappingGraph;
 
 	/**
 	 * Constructor.

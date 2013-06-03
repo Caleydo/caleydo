@@ -320,30 +320,28 @@ public final class ProjectManager {
 				log.info("saving to " + fileName);
 				String tempDir = dir("temp_project" + System.currentTimeMillis());
 				FileOperations.createDirectory(tempDir);
-				int w = 0;
 				try {
 					if (!onlyData) {
 						monitor.subTask("Saving Workbench Data");
 						saveWorkbenchData(tempDir);
-						monitor.worked(w++);
+						monitor.worked(1);
 					}
 					log.info("storing plugin data");
 					monitor.subTask("Saving Plugin Data");
 					savePluginData(tempDir);
-					monitor.worked(w++);
+					monitor.worked(1);
 					log.info("stored plugin data");
 					log.info("storing data");
-					saveData(tempDir, dataDomains, monitor, w, metaData);
-					w += dataDomains.size() + 1;
+					saveData(tempDir, dataDomains, monitor, metaData);
 					log.info("stored data");
 
 					monitor.subTask("packing Project Data");
 					ZipUtils.zipDirectory(tempDir, fileName);
-					monitor.worked(w++);
+					monitor.worked(1);
 
 					monitor.subTask("cleanup temporary data");
 					FileOperations.deleteDirectory(tempDir);
-					monitor.worked(w++);
+					monitor.worked(1);
 					String message = "Caleydo project successfully written to\n" + fileName;
 					log.info(message);
 					monitor.done();
@@ -385,25 +383,23 @@ public final class ProjectManager {
 				final Collection<IDataDomain> dataDomains = DataDomainManager.get().getDataDomains();
 
 				monitor.beginTask("Saving Recent Project", 1 + 1 + dataDomains.size() + 1 + 1 + 1);
-				int w = 0;
 				monitor.subTask("Preparing Data");
 				if (new File(RECENT_PROJECT_FOLDER).exists())
 					FileOperations.renameDirectory(RECENT_PROJECT_FOLDER, RECENT_PROJECT_FOLDER_TMP);
 
 				FileOperations.createDirectory(RECENT_PROJECT_FOLDER);
-				monitor.worked(w++);
+				monitor.worked(1);
 				try {
 					log.info("saving plugin data");
 					monitor.subTask("Saving Plugin Data");
 					savePluginData(RECENT_PROJECT_FOLDER);
-					monitor.worked(w++);
+					monitor.worked(1);
 					log.info("saving data");
-					saveData(RECENT_PROJECT_FOLDER, dataDomains, monitor, w, GeneralManager.get().getMetaData());
-					w += dataDomains.size() + 1;
+					saveData(RECENT_PROJECT_FOLDER, dataDomains, monitor, GeneralManager.get().getMetaData());
 					log.info("saving workbench");
 					monitor.subTask("packing Project Data");
 					saveWorkbenchData(RECENT_PROJECT_FOLDER);
-					monitor.worked(w++);
+					monitor.worked(1);
 					log.info("saved");
 				} catch (Exception e) {
 					log.error("Faild to auto-save project.", e);
@@ -444,7 +440,7 @@ public final class ProjectManager {
 	}
 
 	private static void saveData(String dirName, Collection<? extends IDataDomain> toSave, IProgressMonitor monitor,
-			int w, ProjectMetaData metaData) throws JAXBException,
+			ProjectMetaData metaData) throws JAXBException,
 			IOException {
 
 		SerializationManager serializationManager = GeneralManager.get().getSerializationManager();
@@ -462,7 +458,7 @@ public final class ProjectManager {
 		for (IDataDomain dataDomain : toSave) {
 			monitor.subTask("Persisting Datadomain: " + dataDomain.getLabel());
 			if (!dataDomain.isSerializeable()) {
-				monitor.worked(w++);
+				monitor.worked(1);
 				continue;
 			}
 
@@ -499,7 +495,7 @@ public final class ProjectManager {
 							.getTable().getDimensionPerspective(dimensionPerspectiveID));
 				}
 			}
-			monitor.worked(w++);
+			monitor.worked(1);
 		}
 
 		DataDomainList dataDomainList = new DataDomainList();
@@ -510,7 +506,7 @@ public final class ProjectManager {
 		File metaDataFile = new File(dirName, METADATA_FILE);
 		marshaller.marshal(metaData, metaDataFile);
 
-		monitor.worked(w++);
+		monitor.worked(1);
 
 	}
 

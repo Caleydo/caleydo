@@ -39,7 +39,6 @@ public class TableDataDomainElement extends ADataDomainElement {
 
 	public TableDataDomainElement(StratificationDataDomainQuery model) {
 		super(model);
-		setHasFilter(true);
 	}
 
 	@Override
@@ -89,6 +88,7 @@ public class TableDataDomainElement extends ADataDomainElement {
 
 	private void setFilter(String filter) {
 		getModel().setMatches(filter);
+		setHasFilter(model.hasFilter());
 	}
 
 	@ListenTo(sendToMe = true)
