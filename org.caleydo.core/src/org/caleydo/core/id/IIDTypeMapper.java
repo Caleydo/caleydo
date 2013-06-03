@@ -30,9 +30,9 @@ import com.google.common.base.Function;
  *
  */
 public interface IIDTypeMapper<K, V> extends Function<K, Set<V>> {
-	public IDType getSource();
+	IDType getSource();
 
-	public IDType getTarget();
+	IDType getTarget();
 
 	/**
 	 * maps the given set of ids at once
@@ -40,7 +40,7 @@ public interface IIDTypeMapper<K, V> extends Function<K, Set<V>> {
 	 * @param sourceIds
 	 * @return a set with all mapped id, that were able to be mapped, e.g. if empty nothing were able to be mapped
 	 */
-	public Set<V> apply(Iterable<K> sourceIds);
+	Set<V> apply(Iterable<K> sourceIds);
 
 	/**
 	 * predicate whether the current id can be mapped to the target type
@@ -48,5 +48,5 @@ public interface IIDTypeMapper<K, V> extends Function<K, Set<V>> {
 	 * @param sourceId
 	 * @return
 	 */
-	public boolean isMapAble(K sourceId);
+	boolean isMapAble(K sourceId);
 }

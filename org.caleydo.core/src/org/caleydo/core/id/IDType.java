@@ -88,24 +88,6 @@ public class IDType {
 	}
 
 	/**
-	 * Should be used for de-serialization only
-	 *
-	 * @param idCategory
-	 */
-	public void setIdCategory(IDCategory idCategory) {
-		this.idCategory = idCategory;
-	}
-
-	/**
-	 * Should be used for de-serialization only
-	 *
-	 * @param idCategory
-	 */
-	public void setDataType(EDataType dataType) {
-		this.dataType = dataType;
-	}
-
-	/**
 	 * @param idTypeParsingRules
 	 *            setter, see {@link #idTypeParsingRules}
 	 */
