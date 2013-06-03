@@ -179,6 +179,8 @@ public class StratificationDataDomainQuery extends ADataDomainQuery {
 	public void setMatches(String matches) {
 		if (Objects.equals(matches, this.matches))
 			return;
+		if (matches != null && matches.trim().isEmpty())
+			matches = null;
 		this.matches = matches;
 		updateFilter();
 	}
