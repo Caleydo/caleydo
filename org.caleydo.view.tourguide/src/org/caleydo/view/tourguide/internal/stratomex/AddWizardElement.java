@@ -182,7 +182,7 @@ public class AddWizardElement extends AAddWizardElement implements ICallback<ISt
 			drawMultiLineText(g, current, 0, h - h_header, w, h_header);
 
 			if (firstStep) {
-				float hi = (h - h_header - transitions.size() * gap - 2 * h_category - 2 * gap - _1pxh * 2)
+				float hi = (h - h_header - transitions.size() * gap - 2 * h_category - 2 * gap - _1pxh * 3)
 						/ (transitions.size());
 				float y = h_header + gap;
 
@@ -197,7 +197,7 @@ public class AddWizardElement extends AAddWizardElement implements ICallback<ISt
 				y += h_category + gap;
 				renderTransitions(g, w, h, gap, split.getFirst(), hi, y, split.getSecond().size());
 			} else {
-				float hi = (h - h_header - transitions.size() * gap) / (transitions.size());
+				float hi = (h - h_header - transitions.size() * gap - _1pxh * 3) / (transitions.size());
 				float y = h_header + gap;
 				renderTransitions(g, w, h, gap, transitions, hi, y, 0);
 			}
