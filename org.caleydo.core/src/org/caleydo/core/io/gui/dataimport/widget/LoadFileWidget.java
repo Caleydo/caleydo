@@ -45,7 +45,7 @@ public class LoadFileWidget {
 		Group group = new Group(parent, SWT.SHADOW_ETCHED_IN);
 		group.setText("Input File");
 		group.setLayout(new GridLayout(2, false));
-		group.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		group.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
 		Button openFileButton = new Button(group, SWT.PUSH);
 		openFileButton.setText(label);
@@ -57,7 +57,7 @@ public class LoadFileWidget {
 		});
 		this.label = new Text(group, SWT.BORDER);
 		this.label.setEnabled(false);
-		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
+		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
 		gridData.widthHint = 200;
 		this.label.setLayoutData(gridData);
 	}

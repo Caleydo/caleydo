@@ -39,7 +39,7 @@ public class SelectAllNoneWidget {
 		this.group = new Group(parent, SWT.SHADOW_ETCHED_IN);
 		this.group.setText("Column Selection");
 		this.group.setLayout(new GridLayout(2, false));
-		this.group.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, false, true));
+		this.group.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, false, false));
 		Button all = new Button(this.group, SWT.PUSH);
 		all.setText("Select All");
 		all.addSelectionListener(new SelectionAdapter() {

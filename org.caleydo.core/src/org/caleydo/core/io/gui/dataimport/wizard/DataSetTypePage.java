@@ -37,6 +37,7 @@ import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -81,20 +82,32 @@ public class DataSetTypePage extends AImportDataPage {
 		numericalDatasetButton.setText("Numerical");
 		numericalDatasetButton.setSelection(true);
 		boldifyButtonText(numericalDatasetButton);
-		Label numericalDatasetLabel = new Label(group, SWT.NONE);
-		numericalDatasetLabel.setText("Description...");
+		Label numericalDatasetLabel = new Label(group, SWT.WRAP);
+		numericalDatasetLabel
+				.setText("A homogeneous numerical dataset consists of numerical data only and uses the same scales in all columns.");
+		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
+		gridData.widthHint = 200;
+		numericalDatasetLabel.setLayoutData(gridData);
 
 		categoricalDatasetButton = new Button(group, SWT.RADIO);
 		categoricalDatasetButton.setText("Categorical");
 		boldifyButtonText(categoricalDatasetButton);
-		Label categoricalDatasetLabel = new Label(group, SWT.NONE);
-		categoricalDatasetLabel.setText("Description...");
+		Label categoricalDatasetLabel = new Label(group, SWT.WRAP);
+		categoricalDatasetLabel
+				.setText("A homogeneous categorical dataset consists of categorical data only and uses the same categories in all columns.");
+		gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
+		gridData.widthHint = 200;
+		categoricalDatasetLabel.setLayoutData(gridData);
 
 		inhomogeneousDatasetButton = new Button(group, SWT.RADIO);
 		inhomogeneousDatasetButton.setText("Inhomogeneous");
 		boldifyButtonText(inhomogeneousDatasetButton);
-		Label inhomogeneousDatasetLabel = new Label(group, SWT.NONE);
-		inhomogeneousDatasetLabel.setText("Description...");
+		Label inhomogeneousDatasetLabel = new Label(group, SWT.WRAP);
+		inhomogeneousDatasetLabel
+				.setText("Individual columns of an inhomogeneous dataset can contain either numerical or categorical data. Scales or categories may also differ across columns.");
+		gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
+		gridData.widthHint = 200;
+		inhomogeneousDatasetLabel.setLayoutData(gridData);
 
 		setControl(group);
 	}

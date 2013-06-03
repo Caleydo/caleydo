@@ -203,11 +203,11 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 		Group rowConfigGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
 		rowConfigGroup.setText("Row Configuration");
 		rowConfigGroup.setLayout(new GridLayout(2, false));
-		rowConfigGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		rowConfigGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
 		Composite leftConfigGroupPart = new Composite(rowConfigGroup, SWT.NONE);
 		leftConfigGroupPart.setLayout(new GridLayout(2, false));
-		leftConfigGroupPart.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		leftConfigGroupPart.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
 		createIDCategoryGroup(leftConfigGroupPart, "Row ID Class", false);
 		createIDTypeGroup(leftConfigGroupPart, false);
@@ -219,7 +219,7 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 		numHeaderRowsSpinner.setMinimum(1);
 		numHeaderRowsSpinner.setMaximum(Integer.MAX_VALUE);
 		numHeaderRowsSpinner.setIncrement(1);
-		GridData gridData = new GridData(SWT.LEFT, SWT.FILL, false, true);
+		GridData gridData = new GridData(SWT.LEFT, SWT.FILL, false, false);
 		gridData.widthHint = 70;
 		numHeaderRowsSpinner.setLayoutData(gridData);
 		numHeaderRowsSpinner.addModifyListener(new ModifyListener() {
@@ -236,7 +236,7 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 		columnOfRowIDSpinner.setMinimum(1);
 		columnOfRowIDSpinner.setMaximum(Integer.MAX_VALUE);
 		columnOfRowIDSpinner.setIncrement(1);
-		gridData = new GridData(SWT.LEFT, SWT.FILL, false, true);
+		gridData = new GridData(SWT.LEFT, SWT.FILL, false, false);
 		gridData.widthHint = 70;
 		columnOfRowIDSpinner.setLayoutData(gridData);
 		columnOfRowIDSpinner.addModifyListener(new ModifyListener() {
@@ -248,7 +248,7 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 
 		Composite rightConfigGroupPart = new Composite(rowConfigGroup, SWT.NONE);
 		rightConfigGroupPart.setLayout(new GridLayout(2, false));
-		rightConfigGroupPart.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, false, true));
+		rightConfigGroupPart.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, false, false));
 
 		createRowIDCategoryButton = createNewIDCategoryButton(rightConfigGroupPart);
 		createRowIDCategoryButton.addSelectionListener(new SelectionAdapter() {
@@ -299,11 +299,11 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 		Group columnConfigGroup = new Group(parent, SWT.NONE);
 		columnConfigGroup.setText("Column Configuration");
 		columnConfigGroup.setLayout(new GridLayout(2, false));
-		columnConfigGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		columnConfigGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
 		Composite leftConfigGroupPart = new Composite(columnConfigGroup, SWT.NONE);
 		leftConfigGroupPart.setLayout(new GridLayout(2, false));
-		leftConfigGroupPart.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		leftConfigGroupPart.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
 		createIDCategoryGroup(leftConfigGroupPart, "Column ID Class", true);
 		createIDTypeGroup(leftConfigGroupPart, true);
@@ -315,7 +315,7 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 		rowOfColumnIDSpinner.setMinimum(1);
 		rowOfColumnIDSpinner.setMaximum(Integer.MAX_VALUE);
 		rowOfColumnIDSpinner.setIncrement(1);
-		GridData gridData = new GridData(SWT.LEFT, SWT.FILL, false, true);
+		GridData gridData = new GridData(SWT.LEFT, SWT.FILL, false, false);
 		gridData.widthHint = 70;
 		rowOfColumnIDSpinner.setLayoutData(gridData);
 		rowOfColumnIDSpinner.addModifyListener(new ModifyListener() {
@@ -328,7 +328,7 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 
 		Composite rightConfigGroupPart = new Composite(columnConfigGroup, SWT.NONE);
 		rightConfigGroupPart.setLayout(new GridLayout(2, false));
-		rightConfigGroupPart.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, false, true));
+		rightConfigGroupPart.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, false, false));
 
 		createColumnIDCategoryButton = createNewIDCategoryButton(rightConfigGroupPart);
 		createColumnIDCategoryButton.addSelectionListener(new SelectionAdapter() {
@@ -363,7 +363,7 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 		idTypeLabel.setText(isColumnIDTypeGroup ? "Column ID Type" : "Row ID Type");
 		idTypeLabel.setLayoutData(new GridData(SWT.LEFT));
 		Combo idCombo = new Combo(parent, SWT.DROP_DOWN | SWT.READ_ONLY);
-		idCombo.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		idCombo.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
 		if (isColumnIDTypeGroup) {
 			columnIDCombo = idCombo;
@@ -386,7 +386,7 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 		recordIDCategoryGroup.setText(groupLabel);
 		recordIDCategoryGroup.setLayoutData(new GridData(SWT.LEFT));
 		Combo idCategoryCombo = new Combo(parent, SWT.DROP_DOWN | SWT.READ_ONLY);
-		idCategoryCombo.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		idCategoryCombo.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		idCategoryCombo.setText("<Please Select>");
 
 		if (isColumnCategory) {
