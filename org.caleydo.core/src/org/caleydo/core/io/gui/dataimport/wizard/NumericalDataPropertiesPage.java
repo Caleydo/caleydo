@@ -77,8 +77,10 @@ public class NumericalDataPropertiesPage extends AImportDataPage implements List
 	@Override
 	public void fillDataSetDescription() {
 
-		DataDescription dataDescription = new DataDescription(EDataClass.REAL_NUMBER, EDataType.FLOAT,
-				numericalDataPropertiesWidget.getNumericalProperties());
+		EDataType dataType = numericalDataPropertiesWidget.getDataType();
+
+		DataDescription dataDescription = new DataDescription(dataType == EDataType.FLOAT ? EDataClass.REAL_NUMBER
+				: EDataClass.NATURAL_NUMBER, dataType, numericalDataPropertiesWidget.getNumericalProperties());
 		dataSetDescription.setDataDescription(dataDescription);
 		dataSetDescription.setTransposeMatrix(dataTranspositionWidget.isTransposition());
 
@@ -101,6 +103,7 @@ public class NumericalDataPropertiesPage extends AImportDataPage implements List
 		if (initFromDataDescription) {
 			numericalDataPropertiesWidget.updateNumericalProperties(dataSetDescription.getDataDescription()
 					.getNumericalProperties());
+			numericalDataPropertiesWidget.setDataType(dataSetDescription.getDataDescription().getRawDataType());
 			initFromDataDescription = false;
 		}
 		getWizard().setChosenDataTypePage(this);

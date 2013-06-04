@@ -21,6 +21,7 @@ package org.caleydo.core.io.gui.dataimport.wizard;
 
 import java.util.List;
 
+import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
 import org.caleydo.core.io.NumericalProperties;
 import org.caleydo.core.io.gui.dataimport.widget.CategoricalDataPropertiesWidget;
@@ -67,15 +68,18 @@ public class ColumnDataPropertiesDialog extends Dialog implements Listener {
 
 	private int columnIndex;
 
+	private EDataType dataType = EDataType.FLOAT;
+
 	/**
 	 * @param parentShell
 	 */
 	protected ColumnDataPropertiesDialog(Shell parentShell, NumericalProperties numericalProperties,
-			List<List<String>> datasetMatrix, int columnIndex) {
+			EDataType dataType, List<List<String>> datasetMatrix, int columnIndex) {
 		super(parentShell);
 		this.numericalProperties = numericalProperties;
 		this.datasetMatrix = datasetMatrix;
 		this.columnIndex = columnIndex;
+		this.dataType = dataType;
 	}
 
 	/**
@@ -150,6 +154,7 @@ public class ColumnDataPropertiesDialog extends Dialog implements Listener {
 			numericalDataPropertiesWidget = new NumericalDataPropertiesWidget(parentComposite, this);
 			if (numericalProperties != null) {
 				numericalDataPropertiesWidget.updateNumericalProperties(numericalProperties);
+				numericalDataPropertiesWidget.setDataType(dataType);
 			}
 			parentComposite.layout(true);
 		}
@@ -161,6 +166,7 @@ public class ColumnDataPropertiesDialog extends Dialog implements Listener {
 
 		if (numericalDataPropertiesWidget != null) {
 			// temporarily save settings
+			dataType = numericalDataPropertiesWidget.getDataType();
 			numericalProperties = numericalDataPropertiesWidget.getNumericalProperties();
 			numericalDataPropertiesWidget.dispose();
 			parentComposite.layout(true);
@@ -184,6 +190,7 @@ public class ColumnDataPropertiesDialog extends Dialog implements Listener {
 	protected void okPressed() {
 		if (numericalDataButton.getSelection()) {
 			isNumericalData = true;
+			dataType = numericalDataPropertiesWidget.getDataType();
 			numericalProperties = numericalDataPropertiesWidget.getNumericalProperties();
 			categoricalClassDescription = null;
 		} else {
@@ -192,6 +199,13 @@ public class ColumnDataPropertiesDialog extends Dialog implements Listener {
 			numericalProperties = null;
 		}
 		super.okPressed();
+	}
+
+	/**
+	 * @return the dataType, see {@link #dataType}
+	 */
+	public EDataType getDataType() {
+		return dataType;
 	}
 
 	/**
