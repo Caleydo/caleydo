@@ -24,6 +24,7 @@ import gleem.linalg.Vec2f;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.basic.IScrollBar;
 import org.caleydo.core.view.opengl.layout2.basic.ScrollBar;
+import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.ui.RenderStyle;
 
@@ -83,6 +84,12 @@ public class RankTableUIConfigBase implements IRankTableUIConfig {
 		g.fillPolygon(new Vec2f(0, 0), new Vec2f(rx, 0), new Vec2f(0, ry));
 		g.fillPolygon(new Vec2f(w - rx, 0), new Vec2f(w, 0), new Vec2f(w, ry));
 		// g.fillImage(RenderStyle.ICON_STAR, w - 16, -8, 16, 16);
+	}
+
+	@Override
+	public void renderHeaderBackground(GLGraphics g, float w, float h, float labelHeight, ARankColumnModel model) {
+		g.color(model.getBgColor());
+		g.fillRect(0, 0, w, h);
 	}
 
 	@Override

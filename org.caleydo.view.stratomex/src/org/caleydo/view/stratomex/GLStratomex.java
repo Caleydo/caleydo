@@ -508,7 +508,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 			if (isDisplayListDirty) {
 				gl.glNewList(displayListIndex, GL2.GL_COMPILE);
 
-				tourguide.renderAddButton(gl, 0, getArchTopY(), getViewFrustum().getWidth(), getArchBottomY()
+				tourguide.renderStartButton(gl, 0, getArchTopY(), getViewFrustum().getWidth(), getArchBottomY()
 						- getArchTopY(), 0);
 				if (tourguide.hasTourGuide()) {
 					renderEmptyViewText(gl, new String[] { "To add a column showing a dataset",
