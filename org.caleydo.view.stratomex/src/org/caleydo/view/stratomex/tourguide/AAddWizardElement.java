@@ -62,6 +62,9 @@ public abstract class AAddWizardElement extends ALayoutRenderer {
 
 	public abstract boolean onSelected(TablePerspective tablePerspective, Group recordGroup);
 
+	public abstract boolean canGoBack();
+
+	public abstract void goBack();
 
 	public void done(boolean confirmed) {
 		// TODO Auto-generated method stub

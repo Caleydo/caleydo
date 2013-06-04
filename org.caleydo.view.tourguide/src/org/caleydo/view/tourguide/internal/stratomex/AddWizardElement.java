@@ -30,7 +30,6 @@ import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.EventListenerManager.DeepScan;
 import org.caleydo.core.event.EventPublisher;
-import org.caleydo.core.io.gui.dataimport.widget.ICallback;
 import org.caleydo.core.util.base.ILabeled;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -69,7 +68,7 @@ import org.caleydo.view.tourguide.spi.score.IScore;
  * @author Samuel Gratzl
  *
  */
-public class AddWizardElement extends AAddWizardElement implements ICallback<IState>, IReactions {
+public class AddWizardElement extends AAddWizardElement implements IReactions {
 	@DeepScan
 	private StateMachineImpl stateMachine;
 
@@ -78,6 +77,8 @@ public class AddWizardElement extends AAddWizardElement implements ICallback<ISt
 	private int hovered = -1;
 
 	private boolean initialized = false;
+
+	private boolean canGoBack = true;
 
 	public AddWizardElement(AGLView view, IStratomexAdapter adapter, StateMachineImpl stateMachine) {
 		super(adapter);
@@ -128,22 +129,6 @@ public class AddWizardElement extends AAddWizardElement implements ICallback<ISt
 		setDisplayListDirty(true);
 		layoutManager.setRenderingDirty();
 	}
-
-	@Override
-	public void on(IState target) {
-		stateMachine.getCurrent().onLeave();
-		stateMachine.move(target);
-		target.onEnter();
-		Collection<ITransition> transitions = stateMachine.getTransitions(target);
-
-		// automatically switch single transitions
-		if (transitions.size() == 1) {
-			transitions.iterator().next().apply(this);
-			return;
-		}
-		checkSelect();
-	}
-
 
 	private void checkSelect() {
 		IState target = stateMachine.getCurrent();
@@ -302,7 +287,28 @@ public class AddWizardElement extends AAddWizardElement implements ICallback<ISt
 
 	@Override
 	public void switchTo(IState target) {
-		on(target);
+		stateMachine.move(target);
+		Collection<ITransition> transitions = stateMachine.getTransitions(target);
+
+		// automatically switch single transitions
+		if (transitions.size() == 1) {
+			transitions.iterator().next().apply(this);
+			return;
+		}
+		checkSelect();
+	}
+
+	@Override
+	public boolean canGoBack() {
+		return stateMachine.getPrevious() != null && canGoBack;
+	}
+
+	@Override
+	public void goBack() {
+		if (!canGoBack())
+			return;
+		stateMachine.goBack();
+		checkSelect();
 	}
 
 	@Override
@@ -313,7 +319,6 @@ public class AddWizardElement extends AAddWizardElement implements ICallback<ISt
 		AddScoreColumnEvent event = new AddScoreColumnEvent(scores).setReplaceLeadingScoreColumns(true);
 		event.to(receiver).from(this);
 		receiver.onAddColumn(event);
-
 	}
 
 
@@ -325,22 +330,25 @@ public class AddWizardElement extends AAddWizardElement implements ICallback<ISt
 
 	@Override
 	public void replaceTemplate(ALayoutRenderer renderer) {
+		canGoBack = false;
 		adapter.replaceTemplate(renderer);
-
 	}
 
 	@Override
 	public void replaceTemplate(TablePerspective with, IBrickConfigurer configurer) {
+		canGoBack = false;
 		adapter.replaceTemplate(with, configurer);
 	}
 
 	@Override
 	public void replaceClinicalTemplate(Perspective underlying, TablePerspective numerical) {
+		canGoBack = false;
 		adapter.replaceClinicalTemplate(underlying, numerical);
 	}
 
 	@Override
 	public void replacePathwayTemplate(Perspective underlying, PathwayGraph pathway) {
+		canGoBack = false;
 		adapter.replacePathwayTemplate(underlying, pathway);
 	}
 

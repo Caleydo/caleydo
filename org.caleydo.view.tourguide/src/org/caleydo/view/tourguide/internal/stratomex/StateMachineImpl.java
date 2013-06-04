@@ -47,6 +47,13 @@ class StateMachineImpl implements IStateMachine {
 		this.current.onEnter();
 	}
 
+	public void goBack() {
+		IState previous = history.pollLast();
+		this.current.onLeave();
+		this.current = previous;
+		this.current.onEnter();
+	}
+
 	public IState getPrevious() {
 		return history.isEmpty() ? null : history.getLast();
 	}

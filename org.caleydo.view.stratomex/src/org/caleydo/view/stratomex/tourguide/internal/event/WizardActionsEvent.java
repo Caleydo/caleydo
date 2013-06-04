@@ -25,23 +25,15 @@ import org.caleydo.core.event.ADirectedEvent;
  * @author Samuel Gratzl
  *
  */
-public class ConfirmCancelNewColumnEvent extends ADirectedEvent {
+public class WizardActionsEvent extends ADirectedEvent {
+	private final String pickingType;
 
-	private final boolean isConfirm;
-
-	/**
-	 * @param b
-	 * @param objectID
-	 */
-	public ConfirmCancelNewColumnEvent(boolean confirm) {
-		this.isConfirm = confirm;
+	public WizardActionsEvent(String pickingType) {
+		this.pickingType = pickingType;
 	}
 
-	/**
-	 * @return the isConfirm, see {@link #isConfirm}
-	 */
-	public boolean isConfirm() {
-		return isConfirm;
+	public String getPickingType() {
+		return pickingType;
 	}
 
 	@Override

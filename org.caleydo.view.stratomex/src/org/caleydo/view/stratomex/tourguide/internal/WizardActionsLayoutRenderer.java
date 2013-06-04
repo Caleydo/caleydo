@@ -29,11 +29,11 @@ import org.caleydo.view.stratomex.tourguide.TourguideAdapter;
  * @author Samuel Gratzl
  *
  */
-public class ConfirmCancelLayoutRenderer extends ALayoutRenderer {
+public class WizardActionsLayoutRenderer extends ALayoutRenderer {
 	private final AGLView view;
 	private final TourguideAdapter tourguide;
 
-	public ConfirmCancelLayoutRenderer(AGLView view, TourguideAdapter tourguide) {
+	public WizardActionsLayoutRenderer(AGLView view, TourguideAdapter tourguide) {
 		this.view = view;
 		this.tourguide = tourguide;
 	}
@@ -42,13 +42,14 @@ public class ConfirmCancelLayoutRenderer extends ALayoutRenderer {
 	protected void renderContent(GL2 gl) {
 		float hi = view.getPixelGLConverter().getGLHeightForPixelHeight(34);
 		float wi = view.getPixelGLConverter().getGLWidthForPixelWidth(32);
-		tourguide.renderConfirmButton(gl, x * 1.05f, y * 0.8f, wi, hi);
-		tourguide.renderCancelButton(gl, x * 1.05f, y * 0.8f + hi, wi, hi);
+		tourguide.renderConfirmButton(gl, x * 1.05f, y * 0.8f + hi, wi, hi);
+		tourguide.renderCancelButton(gl, x * 1.05f, y * 0.8f + hi * 2, wi, hi);
+		tourguide.renderBackButton(gl, x * 1.05f, y * 0.8f, wi, hi);
 	}
 
 	@Override
 	protected boolean permitsWrappingDisplayLists() {
-		return true;
+		return false;
 	}
 
 }
