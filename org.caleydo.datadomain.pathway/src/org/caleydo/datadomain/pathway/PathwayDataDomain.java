@@ -38,6 +38,7 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+import org.caleydo.datadomain.genetic.EGeneIDTypes;
 import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayDatabase;
@@ -117,9 +118,11 @@ public class PathwayDataDomain extends ADataDomain {
 
 		primaryIDType = IDType.getIDType("PATHWAY_VERTEX");
 
-		geneIDMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(IDCategory.getIDCategory("GENE"));
+		final IDCategory gene = IDCategory.getIDCategory(EGeneIDTypes.GENE.name());
 
-		addIDCategory(IDCategory.getIDCategory("GENE"));
+		geneIDMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(gene);
+
+		addIDCategory(gene);
 
 		metaboliteIDCategory = IDCategory.registerCategory("METABOLITE");
 

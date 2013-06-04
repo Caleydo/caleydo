@@ -74,7 +74,7 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 
 	private final NumberFormat formatter;
 
-	private final IFloatFunction<IRow> data;
+	protected final IFloatFunction<IRow> data;
 	private final Map<IRow, Float> valueOverrides = new HashMap<>(3);
 	private final ICallback<IMappingFunction> callback = new ICallback<IMappingFunction>() {
 		@Override

@@ -202,34 +202,31 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 
 		}
 
-		recordIDType = IDType.registerType("record_" + dataDomainID + "_" + hashCode(), recordIDCategory,
-				EDataType.INTEGER);
-		recordIDType.setInternalType(true);
-		dimensionIDType = IDType.registerType("dimension_" + dataDomainID + "_" + hashCode(), dimensionIDCategory,
-				EDataType.INTEGER);
-		dimensionIDType.setInternalType(true);
+		final String seed = dataDomainID + "_" + hashCode();
+		{
+			recordIDType = IDType.registerInternalType("record_" + seed, recordIDCategory, EDataType.INTEGER);
+			recordGroupIDCategory = IDCategory.registerInternalCategory(recordIDCategory.getCategoryName() + "_GROUP");
+			recordGroupIDType = IDType.registerInternalType("group_record_" + seed, recordGroupIDCategory,
+					EDataType.INTEGER);
+			recordIDMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(recordIDCategory);
+			recordSelectionManager = new SelectionManager(recordIDType);
+			addIDCategory(recordIDCategory);
+		}
 
-		recordGroupIDCategory = IDCategory.registerCategory(recordIDCategory.getCategoryName() + "_GROUP");
-		recordGroupIDCategory.setInternalCategory(true);
-		recordGroupIDType = IDType.registerType("group_record_" + dataDomainID + "_" + hashCode(),
-				recordGroupIDCategory, EDataType.INTEGER);
-		recordGroupIDType.setInternalType(true);
+		{
+			dimensionIDType = IDType.registerInternalType("dimension_" + seed, dimensionIDCategory, EDataType.INTEGER);
+			dimensionGroupIDCategory = IDCategory.registerInternalCategory(dimensionIDCategory.getCategoryName()
+					+ "_GROUP");
+			dimensionGroupIDType = IDType.registerInternalType("group_dimension_" + seed, dimensionGroupIDCategory,
+					EDataType.INTEGER);
 
-		dimensionGroupIDCategory = IDCategory.registerCategory(dimensionIDCategory.getCategoryName() + "_GROUP");
-		dimensionGroupIDCategory.setInternalCategory(true);
-		dimensionGroupIDType = IDType.registerType("group_dimension_" + dataDomainID + "_" + hashCode(),
-				dimensionGroupIDCategory, EDataType.INTEGER);
-		dimensionGroupIDType.setInternalType(true);
+			dimensionIDMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(dimensionIDCategory);
 
-		recordIDMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(recordIDCategory);
-		dimensionIDMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(dimensionIDCategory);
+			dimensionSelectionManager = new SelectionManager(dimensionIDType);
+			recordGroupSelectionManager = new SelectionManager(recordGroupIDType);
 
-		recordSelectionManager = new SelectionManager(recordIDType);
-		dimensionSelectionManager = new SelectionManager(dimensionIDType);
-		recordGroupSelectionManager = new SelectionManager(recordGroupIDType);
-
-		addIDCategory(dimensionIDCategory);
-		addIDCategory(recordIDCategory);
+			addIDCategory(dimensionIDCategory);
+		}
 
 		super.init();
 

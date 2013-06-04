@@ -375,5 +375,10 @@
                name="Load Sample Project"
                url="http://data.icg.tugraz.at/caleydo/download/3.0/samples/tcga_gbm.cal">
          </sample>
+         <sample
+               description="TODO"
+               name="CCLE Sample Project"
+               url="http://data.icg.tugraz.at/caleydo/download/3.0/samples/ccle.cal">
+         </sample>
       </extension>
 </plugin>

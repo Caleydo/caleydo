@@ -46,9 +46,9 @@ public enum EDataDomainQueryMode {
 	public String getLabel() {
 		switch (this) {
 		case STRATIFICATIONS:
-			return "Stratifications";
+			return "Stratification";
 		case PATHWAYS:
-			return "Pathways";
+			return "Pathway";
 		case OTHER:
 			return "Other";
 		}

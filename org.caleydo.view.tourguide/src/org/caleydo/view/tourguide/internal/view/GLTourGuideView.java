@@ -33,6 +33,7 @@ import java.util.Objects;
 import javax.media.opengl.GLAutoDrawable;
 
 import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.data.DataDomainUpdateEvent;
@@ -54,7 +55,6 @@ import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.score.MultiScore;
 import org.caleydo.view.tourguide.internal.SerializedTourGuideView;
-import org.caleydo.view.tourguide.internal.TourGuideRenderStyle;
 import org.caleydo.view.tourguide.internal.compute.ComputeAllOfJob;
 import org.caleydo.view.tourguide.internal.compute.ComputeExtrasJob;
 import org.caleydo.view.tourguide.internal.compute.ComputeForScoreJob;
@@ -353,6 +353,7 @@ public class GLTourGuideView extends AGLElementView {
 		if (event.getScores() != null) {
 			addColumns(event.getScores(), event.isRemoveLeadingScoreColumns());
 		} else {
+			invalidVisibleScores();
 			updateMask();
 		}
 	}
@@ -369,6 +370,8 @@ public class GLTourGuideView extends AGLElementView {
 		// use sublists to save memory
 		q.init(offset, new CustomSubList<AScoreRow>((List<AScoreRow>) m, offset, m.size() - offset));
 		q.createSpecificColumns(table);
+
+		invalidVisibleScores();
 		updateMask();
 	}
 
@@ -387,6 +390,7 @@ public class GLTourGuideView extends AGLElementView {
 			q.addData(offset, new CustomSubList<AScoreRow>((List<AScoreRow>) m, offset, m.size() - offset));
 		}
 
+		invalidVisibleScores();
 		updateMask();
 	}
 
@@ -396,7 +400,8 @@ public class GLTourGuideView extends AGLElementView {
 		for (IScore s : scores) {
 			int lastLabel = findLastLabelColumn();
 			if (s instanceof MultiScore) {
-				ACompositeRankColumnModel combined = table.getConfig().createNewCombined(0);
+				ACompositeRankColumnModel combined = table.getConfig().createNewCombined(
+						((MultiScore) s).getCombinedType());
 				table.add(lastLabel + 1, combined);
 				for (IScore s2 : ((MultiScore) s)) {
 					combined.add(new ScoreRankColumnModel(s2));
@@ -552,6 +557,21 @@ public class GLTourGuideView extends AGLElementView {
 		return r;
 	}
 
+	private void invalidVisibleScores() {
+		Deque<ARankColumnModel> cols = new LinkedList<>(table.getColumns());
+		while (!cols.isEmpty()) {
+			ARankColumnModel model = cols.pollFirst();
+			if (model instanceof ScoreRankColumnModel) {
+				((ScoreRankColumnModel) model).dirty();
+			} else if (model instanceof StackedRankColumnModel) {
+				cols.addAll(((StackedRankColumnModel) model).getChildren());
+			} else if (model instanceof MaxCompositeRankColumnModel) {
+				MaxCompositeRankColumnModel max = (MaxCompositeRankColumnModel) model;
+				cols.addAll(max.getChildren());
+			}
+		}
+	}
+
 	@ListenTo(sendToMe = true)
 	public void onAddColumn(AddScoreColumnEvent event) {
 		if (event.getScores().isEmpty())
@@ -566,7 +586,7 @@ public class GLTourGuideView extends AGLElementView {
 				((IRegisteredScore) s).onRegistered();
 			if (s instanceof MultiScore) {
 				MultiScore sm = (MultiScore) s;
-				MultiScore tmp = new MultiScore(sm.getLabel(), sm.getColor(), sm.getBGColor());
+				MultiScore tmp = new MultiScore(sm.getLabel(), sm.getColor(), sm.getBGColor(), sm.getCombinedType());
 				for (IScore s2 : ((MultiScore) s)) {
 					if (s2 instanceof IRegisteredScore)
 						((IRegisteredScore) s2).onRegistered();
@@ -658,14 +678,26 @@ public class GLTourGuideView extends AGLElementView {
 
 		@Override
 		public EButtonBarPositionMode getButtonBarPosition() {
-			return EButtonBarPositionMode.OVER_LABEL;
+			return EButtonBarPositionMode.UNDER_LABEL;
+		}
+
+		@Override
+		public void renderIsOrderByGlyph(GLGraphics g, float w, float h, boolean orderByIt) {
+			if (orderByIt) {
+				g.fillImage(RenderStyle.ICON_SMALL_HEADER_OFF, w * .5f - 7, -4, 14, 14);
+			}
+		}
+
+		@Override
+		public void renderHeaderBackground(GLGraphics g, float w, float h, float labelHeight, ARankColumnModel model) {
+			g.color(model.getColor()).fillRect(0, labelHeight - 3, w, 2);
 		}
 
 		@Override
 		public void renderRowBackground(GLGraphics g, float x, float y, float w, float h, boolean even, IRow row,
 				IRow selected) {
 			if (row == selected) {
-				g.color(RenderStyle.COLOR_SELECTED_ROW);
+				g.color(SelectionType.SELECTION.getColor());
 				g.incZ();
 				g.fillRect(x, y, w, h);
 				g.color(RenderStyle.COLOR_SELECTED_BORDER);
@@ -673,7 +705,7 @@ public class GLTourGuideView extends AGLElementView {
 				g.drawLine(x, y + h, x + w, y + h);
 				g.decZ();
 			} else if (stratomex.isVisible((AScoreRow) row)) {
-				g.color(TourGuideRenderStyle.COLOR_STRATOMEX_ROW);
+				g.color(RenderStyle.COLOR_SELECTED_ROW);
 				g.fillRect(x, y, w, h);
 			} else if (!even) {
 				g.color(RenderStyle.COLOR_BACKGROUND_EVEN);

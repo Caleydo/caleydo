@@ -25,7 +25,7 @@ import java.util.List;
 
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
-import org.caleydo.core.util.collection.Pair;
+import org.caleydo.view.info.selection.external.MyPreferences.OpenExternally;
 import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -92,7 +92,39 @@ public class ExternalFieldEditor extends FieldEditor {
 				return row.category.getCategoryName();
 			}
 		});
-		idCategory.getColumn().setToolTipText("Use {0} as placeholder");
+
+		TableViewerColumn label = createTableColumn(viewer, "Label");
+		label.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				IDCategoryPattern row = (IDCategoryPattern) element;
+				return row.label == null ? "" : row.label;
+			}
+		});
+		label.setEditingSupport(new EditingSupport(viewer) {
+			@Override
+			protected void setValue(Object element, Object value) {
+				IDCategoryPattern row = (IDCategoryPattern) element;
+				row.label = value.toString();
+			}
+
+			@Override
+			protected Object getValue(Object element) {
+				IDCategoryPattern row = (IDCategoryPattern) element;
+				return row.label == null ? "" : row.label;
+			}
+
+			@Override
+			protected CellEditor getCellEditor(Object element) {
+				return new TextCellEditor(viewer.getTable());
+			}
+
+			@Override
+			protected boolean canEdit(Object element) {
+				return true;
+			}
+		});
+
 		TableViewerColumn idType = createTableColumn(viewer, "Argument ID Type");
 		idType.setLabelProvider(new ColumnLabelProvider() {
 			@Override
@@ -141,6 +173,7 @@ public class ExternalFieldEditor extends FieldEditor {
 				return row.pattern == null ? "" : row.pattern;
 			}
 		});
+		pattern.getColumn().setToolTipText("Use {0} as placeholder");
 		pattern.setEditingSupport(new EditingSupport(viewer) {
 			@Override
 			protected void setValue(Object element, Object value) {
@@ -166,8 +199,9 @@ public class ExternalFieldEditor extends FieldEditor {
 		});
 
 		tableColumnLayout.setColumnData(idCategory.getColumn(), new ColumnWeightData(15, 100, true));
+		tableColumnLayout.setColumnData(label.getColumn(), new ColumnWeightData(15, 100, true));
 		tableColumnLayout.setColumnData(idType.getColumn(), new ColumnWeightData(15, 100, true));
-		tableColumnLayout.setColumnData(pattern.getColumn(), new ColumnWeightData(70, 100, true));
+		tableColumnLayout.setColumnData(pattern.getColumn(), new ColumnWeightData(55, 100, true));
 
 		viewer.setInput(data);
 	}
@@ -190,13 +224,15 @@ public class ExternalFieldEditor extends FieldEditor {
 	private void read(boolean defaultValue) {
 		IPreferenceStore store = getPreferenceStore();
 		for (IDCategoryPattern p : this.data) {
-			Pair<String, IDType> pair = MyPreferences.getExternalIDCategory(store, p.category, defaultValue);
+			OpenExternally pair = MyPreferences.getExternalIDCategory(store, p.category, defaultValue);
 			if (pair == null) {
 				p.idType = null;
 				p.pattern = null;
+				p.label = "";
 			} else {
-				p.idType = pair.getSecond();
-				p.pattern = pair.getFirst();
+				p.idType = pair.getIdType();
+				p.pattern = pair.getPattern();
+				p.label = pair.getLabel();
 			}
 		}
 		if (viewer != null)
@@ -230,6 +266,7 @@ public class ExternalFieldEditor extends FieldEditor {
 
 	private static class IDCategoryPattern implements Comparable<IDCategoryPattern> {
 		private final IDCategory category;
+		private String label;
 		private String pattern;
 		private IDType idType;
 		private final String[] publicIDTypes;

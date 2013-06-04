@@ -169,14 +169,12 @@ public class StratomexAdapter {
 		switch (mode) {
 		case PATHWAYS:
 			updatePathway((PathwayPerspectiveRow) old, (PathwayPerspectiveRow) new_, visibleColumns, sortedBy);
-			// FIXME
 			break;
 		case STRATIFICATIONS:
 			updateTableBased((ITablePerspectiveScoreRow) old, (ITablePerspectiveScoreRow) new_, visibleColumns,
 					sortedBy);
 			break;
 		case OTHER:
-			// FIXME
 			updateNumerical((InhomogenousPerspectiveRow) old, (InhomogenousPerspectiveRow) new_, visibleColumns,
 					sortedBy);
 			break;
@@ -277,7 +275,7 @@ public class StratomexAdapter {
 	private void hightlightBrick(TablePerspective strat, Group g, boolean now) {
 		if (g == null)
 			return;
-		AEvent event = new HighlightBrickEvent(strat, g, TourGuideRenderStyle.STRATOMEX_FOUND_GROUP).to(receiver
+		AEvent event = new HighlightBrickEvent(strat, g, TourGuideRenderStyle.COLOR_STRATOMEX_ROW).to(receiver
 				.getTourguide());
 		if (now)
 			triggerEvent(event);

@@ -352,8 +352,9 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 	protected boolean filterEntry(IRow row) {
 		if (filterInferredPercentage >= 1)
 			return super.filterEntry(row);
-		if (!super.filterEntry(row))
+		if (!super.filterEntry(row)) {
 			return false;
+		}
 		boolean[] inferreds = isValueInferreds(row);
 		boolean any = false;
 		for (int i = 0; i < inferreds.length; ++i) {

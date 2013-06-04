@@ -31,7 +31,7 @@ public class OpenExternalWrappingAction extends Action {
 	private IAction wrappee = null;
 
 	public OpenExternalWrappingAction() {
-		super("Open Externally", Activator.getImageDescriptor("resources/icons/external.png"));
+		super("Search In ...", Activator.getImageDescriptor("resources/icons/external.png"));
 		setEnabled(false);
 	}
 
@@ -42,6 +42,7 @@ public class OpenExternalWrappingAction extends Action {
 	public void setWrappee(IAction wrappee) {
 		this.wrappee = wrappee;
 		setEnabled(wrappee != null);
+		setText(wrappee == null ? "Search In ..." : wrappee.getText());
 	}
 
 	/**

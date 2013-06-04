@@ -175,7 +175,7 @@ public abstract class ARankColumnModel implements IDragInfo, IRankColumnModel {
 	 */
 	@Override
 	public RankTableModel getTable() {
-		return parent.getTable();
+		return parent == null ? null : parent.getTable();
 	}
 
 	public final boolean isCombineAble(ARankColumnModel with, boolean clone, int combineMode) {

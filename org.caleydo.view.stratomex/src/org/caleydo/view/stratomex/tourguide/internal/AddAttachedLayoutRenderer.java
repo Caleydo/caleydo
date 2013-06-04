@@ -44,9 +44,11 @@ public class AddAttachedLayoutRenderer extends ALayoutRenderer {
 
 	@Override
 	protected void renderContent(GL2 gl) {
-		float hi = view.getPixelGLConverter().getGLHeightForPixelHeight(34);
-		float wi = view.getPixelGLConverter().getGLWidthForPixelWidth(32);
-		tourguide.renderAddDependentButton(gl, left ? (-wi - x * 0.05f) : (x * 1.05f), y * 0.8f, wi, hi, id * 2
+		float w1px = view.getPixelGLConverter().getGLWidthForPixelWidth(1);
+		float h1px = view.getPixelGLConverter().getGLHeightForPixelHeight(1);
+		float hi = h1px * 24;
+		float wi = w1px * 24;
+		tourguide.renderAddDependentButton(gl, left ? (-wi - w1px * 2) : (x + w1px * 2), y - hi * 2, wi, hi, id * 2
 				+ (left ? 1 : 0));
 	}
 

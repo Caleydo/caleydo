@@ -21,6 +21,7 @@ package org.caleydo.vis.rank.config;
 
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.basic.IScrollBar;
+import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
 
 /**
@@ -108,6 +109,11 @@ public class RankTableUIConfigs {
 		public void renderRowBackground(GLGraphics g, float x, float y, float w, float h, boolean even, IRow row,
 				IRow selected) {
 			wrappee.renderRowBackground(g, x, y, w, h, even, row, selected);
+		}
+
+		@Override
+		public void renderHeaderBackground(GLGraphics g, float w, float h, float labelHeight, ARankColumnModel model) {
+			wrappee.renderHeaderBackground(g, w, h, labelHeight, model);
 		}
 
 		@Override

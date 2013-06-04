@@ -21,10 +21,11 @@ package org.caleydo.view.tourguide.internal;
 
 import java.awt.Color;
 
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.util.color.Colors;
-import org.caleydo.core.util.color.IColor;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
+import org.caleydo.vis.rank.ui.RenderStyle;
 
 public class TourGuideRenderStyle extends GeneralRenderStyle {
 
@@ -34,10 +35,11 @@ public class TourGuideRenderStyle extends GeneralRenderStyle {
 
 	private static final String ICON_PREFIX = "resources/icons/view/tourguide/";
 
-	public static final IColor STRATOMEX_SELECTED_ELEMENTS = Colors.YELLOW;
-	public static final Color STRATOMEX_FOUND_GROUP = Color.BLUE;
+	public static final Color STRATOMEX_FOUND_GROUP = Colors.of(new org.caleydo.core.util.color.Color(
+			SelectionType.SELECTION.getColor()));
 
-	public static final Color COLOR_STRATOMEX_ROW = new Color(180, 180, 220);
+	public static final float[] COLOR_SELECTED_ROW = SelectionType.SELECTION.getColor();
+	public static final Color COLOR_STRATOMEX_ROW = RenderStyle.COLOR_SELECTED_ROW;
 
 	public static final String ICON_FILTER = ICON_PREFIX + "filter.png";
 	public static final String ICON_FILTER_DISABLED = ICON_PREFIX + "filter_disabled.png";

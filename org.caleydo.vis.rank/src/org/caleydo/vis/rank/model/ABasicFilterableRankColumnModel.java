@@ -46,9 +46,14 @@ public abstract class ABasicFilterableRankColumnModel extends ARankColumnModel i
 		public void propertyChange(PropertyChangeEvent evt) {
 			switch (evt.getPropertyName()) {
 			case RankTableModel.PROP_DATA:
-				@SuppressWarnings("unchecked")
-				Collection<IRow> news = (Collection<IRow>) evt.getNewValue();
-				maskInvalid.set(getTable().getDataSize() - news.size(), getTable().getDataSize());
+				RankTableModel table = getTable();
+				if (table != null) {
+					@SuppressWarnings("unchecked")
+					Collection<IRow> news = (Collection<IRow>) evt.getNewValue();
+					maskInvalid.set(table.getDataSize() - news.size(), table.getDataSize());
+				} else {
+					System.err.println();
+				}
 				break;
 			}
 		}

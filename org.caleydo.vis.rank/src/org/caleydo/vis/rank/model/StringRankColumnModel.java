@@ -192,10 +192,11 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 				IInputValidator validator = new IInputValidator() {
 					@Override
 					public String isValid(String newText) {
-						if (newText.length() >= 2)
-							EventPublisher.trigger(new SearchEvent(newText).to(summary));
-						if (newText.isEmpty())
-							EventPublisher.trigger(new SearchEvent(null).to(summary));
+						// no auto search according to nils
+						// if (newText.length() >= 2)
+						// EventPublisher.trigger(new SearchEvent(newText).to(summary));
+						// if (newText.isEmpty())
+						// EventPublisher.trigger(new SearchEvent(null).to(summary));
 						return null;
 					}
 				};

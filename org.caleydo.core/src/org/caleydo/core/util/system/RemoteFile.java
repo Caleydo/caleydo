@@ -46,8 +46,10 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
 /**
+ * helper class for handling remote files and local caches of them
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
 public final class RemoteFile implements IRunnableWithProgress {
 	private static final Logger log = Logger.create(RemoteFile.class);
@@ -69,12 +71,40 @@ public final class RemoteFile implements IRunnableWithProgress {
 		this.file = f;
 	}
 
+	/**
+	 * factory for creating a {@link RemoteFile}
+	 * 
+	 * @param url
+	 * @return
+	 */
 	public static RemoteFile of(URL url) {
 		return new RemoteFile(url);
 	}
 
-	public boolean inCache() {
-		return file.exists();
+	/**
+	 * checks whether the file is already in the cache
+	 * 
+	 * @param checkModificationDate
+	 *            check also whether the remote and local modification date matches
+	 * @return
+	 */
+	public boolean inCache(boolean checkModificationDate) {
+		if (!file.exists())
+			return false;
+		if (!checkModificationDate)
+			return true;
+		long have = file.lastModified();
+		URLConnection connection;
+		try {
+			connection = url.openConnection();
+			connection.connect();
+
+			long expected = connection.getLastModified();
+			return expected == have;
+		} catch (IOException e) {
+			log.warn("can't check modification date of: " + url, e);
+			return true; // assume correct as we can't verify it
+		}
 	}
 
 	/**
@@ -85,6 +115,8 @@ public final class RemoteFile implements IRunnableWithProgress {
 	}
 
 	/**
+	 * the exception caught during {@link #run(IProgressMonitor)} or null if none occurred
+	 * 
 	 * @return the caught, see {@link #caught}
 	 */
 	public Exception getCaught() {
@@ -93,7 +125,7 @@ public final class RemoteFile implements IRunnableWithProgress {
 
 	@Override
 	public void run(IProgressMonitor monitor) {
-		if (inCache()) {
+		if (inCache(false)) {
 			monitor.done();
 			return;
 		}
@@ -231,6 +263,8 @@ public final class RemoteFile implements IRunnableWithProgress {
 		}
 
 		/**
+		 * converts the given path with the given suffix to a unique derivat that doesn't yet exist
+		 * 
 		 * @param local
 		 * @return
 		 */

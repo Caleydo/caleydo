@@ -304,10 +304,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 	}
 
 	protected void renderBackground(GLGraphics g, float w, float h) {
-		g.color(model.getBgColor());
-		g.fillRect(0, 0, w, h);
-		// RoundedRectRenderer.render(g, 0, 0, w, h, RenderStyle.HEADER_ROUNDED_RADIUS, 0, RoundedRectRenderer.FLAG_FILL
-		// | RoundedRectRenderer.FLAG_TOP);
+		config.renderHeaderBackground(g, w, h, LABEL_HEIGHT, model);
 		renderOrderGlyph(g, w, h);
 
 		if (isCollapsed)
@@ -319,8 +316,6 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 		}
 		if (headerHovered) {
 			g.drawRect(0, 0, w, h);
-			// RoundedRectRenderer.render(g, 0, 0, w, h, RenderStyle.HEADER_ROUNDED_RADIUS, 3,
-			// RoundedRectRenderer.FLAG_TOP);
 		}
 		if (this.armDropColum && !isSmallHeader(h)) {
 			g.incZ(0.6f);

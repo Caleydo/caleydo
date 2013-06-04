@@ -84,7 +84,7 @@ public class IDMappingParser extends ATextParser {
 
 		MappingType mappingType = idMappingManager.createMap(fromIDType, toIDType, isMultiMap, createReverseMap);
 
-		if (!filePath.equals("already_loaded")) {
+		{
 			idMappingParser = new IDMappingParser(idCategory, filePath, mappingType);
 			idMappingParser.setTokenSeperator(delimiter);
 			idMappingParser.setStartParsingAtLine(startParsingAtLine);
@@ -98,10 +98,18 @@ public class IDMappingParser extends ATextParser {
 		}
 	}
 
+	// public static class MappingLoader {
+	// private final MappingType mappingType;
+	//
+	// public MappingLoader(IDType fromIDType, IDType toIDType, boolean isMultiMap) {
+	//
+	// }
+	// }
+
 	/**
 	 * Constructor.
 	 */
-	public IDMappingParser(IDCategory idCategory, String fileName, MappingType mappingType) {
+	private IDMappingParser(IDCategory idCategory, String fileName, MappingType mappingType) {
 		super(fileName);
 
 		this.mappingType = mappingType;
