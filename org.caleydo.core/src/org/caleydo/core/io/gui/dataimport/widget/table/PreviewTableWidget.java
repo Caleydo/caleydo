@@ -25,13 +25,13 @@ import org.eclipse.nebula.widgets.nattable.grid.layer.GridLayer;
 import org.eclipse.nebula.widgets.nattable.grid.layer.RowHeaderLayer;
 import org.eclipse.nebula.widgets.nattable.layer.DataLayer;
 import org.eclipse.nebula.widgets.nattable.layer.LabelStack;
-import org.eclipse.nebula.widgets.nattable.layer.cell.ColumnLabelAccumulator;
-import org.eclipse.nebula.widgets.nattable.layer.cell.ColumnOverrideLabelAccumulator;
 import org.eclipse.nebula.widgets.nattable.layer.cell.IConfigLabelAccumulator;
 import org.eclipse.nebula.widgets.nattable.layer.cell.ILayerCell;
 import org.eclipse.nebula.widgets.nattable.painter.cell.ColumnHeaderCheckBoxPainter;
 import org.eclipse.nebula.widgets.nattable.painter.cell.ICellPainter;
+import org.eclipse.nebula.widgets.nattable.painter.cell.TextPainter;
 import org.eclipse.nebula.widgets.nattable.painter.cell.decorator.BeveledBorderDecorator;
+import org.eclipse.nebula.widgets.nattable.painter.cell.decorator.CellPainterDecorator;
 import org.eclipse.nebula.widgets.nattable.selection.SelectionLayer;
 import org.eclipse.nebula.widgets.nattable.style.CellStyleAttributes;
 import org.eclipse.nebula.widgets.nattable.style.DisplayMode;
@@ -39,6 +39,7 @@ import org.eclipse.nebula.widgets.nattable.style.Style;
 import org.eclipse.nebula.widgets.nattable.ui.binding.UiBindingRegistry;
 import org.eclipse.nebula.widgets.nattable.ui.matcher.CellPainterMouseEventMatcher;
 import org.eclipse.nebula.widgets.nattable.ui.matcher.MouseEventMatcher;
+import org.eclipse.nebula.widgets.nattable.ui.util.CellEdgeEnum;
 import org.eclipse.nebula.widgets.nattable.util.GUIHelper;
 import org.eclipse.nebula.widgets.nattable.viewport.ViewportLayer;
 import org.eclipse.swt.SWT;
@@ -109,6 +110,13 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 			return bodyDataProvider.getDataValue(cell.getColumnIndex(), cell.getRowIndex());
 		}
 
+	}
+
+	private class ColumnNumberCellPainter extends TextPainter {
+		@Override
+		protected String convertDataType(ILayerCell cell, IConfigRegistry configRegistry) {
+			return new Integer(cell.getColumnIndex() + 1).toString();
+		}
 	}
 
 	private class ColumnHeaderDataProvider implements IDataProvider {
@@ -203,9 +211,10 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 		};
 
 		bodyDataLayer.setConfigLabelAccumulator(cellLabelAccumulator);
-		ColumnOverrideLabelAccumulator acc = new ColumnOverrideLabelAccumulator(columnHeaderLayer);
-		columnHeaderLayer.setConfigLabelAccumulator(acc);
-		acc.registerColumnOverrides(9, ColumnLabelAccumulator.COLUMN_LABEL_PREFIX + 9);
+		// ColumnOverrideLabelAccumulator acc = new ColumnOverrideLabelAccumulator(columnHeaderLayer);
+		// columnHeaderLayer.setConfigLabelAccumulator(acc);
+		// acc.registerColumnOverrides(9, ColumnLabelAccumulator.COLUMN_LABEL_PREFIX + 9);
+
 		table.addConfiguration(new DefaultNatTableStyleConfiguration());
 		if (columnIDConverter == null)
 			columnIDConverter = new RegExIDConverter(null);
@@ -233,7 +242,9 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 		});
 
 		final ColumnHeaderCheckBoxPainter columnHeaderCheckBoxPainter = new ColumnHeaderCheckBoxPainter(columnDataLayer);
-		final ICellPainter columnHeaderPainter = new BeveledBorderDecorator(columnHeaderCheckBoxPainter);
+
+		final ICellPainter columnHeaderPainter = new BeveledBorderDecorator(new CellPainterDecorator(
+				new ColumnNumberCellPainter(), CellEdgeEnum.LEFT, columnHeaderCheckBoxPainter));
 
 		table.addConfiguration(new AbstractRegistryConfiguration() {
 			@Override
