@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.internal.view.specific;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -35,6 +36,7 @@ import org.caleydo.view.tourguide.internal.model.CategoricalDataDomainQuery;
 import org.caleydo.view.tourguide.internal.model.StratificationDataDomainQuery;
 import org.caleydo.view.tourguide.internal.view.col.DataDomainRankColumnModel;
 import org.caleydo.view.tourguide.internal.view.col.SizeRankColumnModel;
+import org.caleydo.vis.rank.model.GroupRankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.StringRankColumnModel;
@@ -64,14 +66,17 @@ public class StratificationSpecifics implements IDataDomainQueryModeSpecfics {
 		table.add(base);
 		base.setWidth(150);
 		base.orderByMe();
-		table.add(new SizeRankColumnModel("#Elements", new Function<IRow, Integer>() {
+
+		GroupRankColumnModel group = new GroupRankColumnModel("Metrics", Color.GRAY, new Color(0.95f, .95f, .95f));
+		table.add(group);
+		group.add(new SizeRankColumnModel("#Elements", new Function<IRow, Integer>() {
 			@Override
 			public Integer apply(IRow in) {
 				return ((AScoreRow) in).size();
 			}
 		}).setWidth(75));
 
-		table.add(new SizeRankColumnModel("#Clusters", new Function<IRow, Integer>() {
+		group.add(new SizeRankColumnModel("#Clusters", new Function<IRow, Integer>() {
 			@Override
 			public Integer apply(IRow in) {
 				return ((AScoreRow) in).getGroupSize();

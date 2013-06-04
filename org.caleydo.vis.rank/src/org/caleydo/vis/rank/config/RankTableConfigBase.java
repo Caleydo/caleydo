@@ -23,6 +23,7 @@ import org.caleydo.core.view.opengl.picking.AdvancedPick;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.vis.rank.model.ACompositeRankColumnModel;
 import org.caleydo.vis.rank.model.ARankColumnModel;
+import org.caleydo.vis.rank.model.GroupRankColumnModel;
 import org.caleydo.vis.rank.model.IRankColumnParent;
 import org.caleydo.vis.rank.model.MaxCompositeRankColumnModel;
 import org.caleydo.vis.rank.model.OrderColumn;
@@ -70,6 +71,8 @@ public class RankTableConfigBase implements IRankTableConfig {
 
 	@Override
 	public boolean canBeReusedForCombining(ACompositeRankColumnModel t, int combineMode) {
+		if (t instanceof GroupRankColumnModel)
+			return true;
 		switch (combineMode) {
 		case SUM_MODE:
 			return t instanceof StackedRankColumnModel;

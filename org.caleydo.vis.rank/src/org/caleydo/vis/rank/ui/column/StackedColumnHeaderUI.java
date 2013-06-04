@@ -141,7 +141,8 @@ public class StackedColumnHeaderUI extends ACompositeHeaderUI implements IThickH
 		IGLLayoutElement summary = children.get(0);
 
 		if (model.isCompressed()) {
-			summary.setBounds(0, getTopPadding(), w, h - getTopPadding());
+			boolean isSmallHeader = isSmallHeader();
+			summary.setBounds(0, getTopPadding(isSmallHeader), w, h - getTopPadding(isSmallHeader));
 			for (IGLLayoutElement child : children.subList(1, children.size()))
 				child.hide();
 			return;
@@ -175,8 +176,8 @@ public class StackedColumnHeaderUI extends ACompositeHeaderUI implements IThickH
 	}
 
 	@Override
-	protected float getTopPadding() {
-		return (isSmallHeader() ? 0 : HIST_HEIGHT) + LABEL_HEIGHT * 2;
+	public float getTopPadding(boolean smallHeader) {
+		return (smallHeader ? 0 : HIST_HEIGHT) + LABEL_HEIGHT * 2;
 	}
 
 	/**

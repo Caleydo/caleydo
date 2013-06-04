@@ -31,6 +31,7 @@ import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
+import org.caleydo.core.view.opengl.layout2.IGLElementParent;
 import org.caleydo.core.view.opengl.layout2.animation.MoveTransitions;
 import org.caleydo.core.view.opengl.layout2.animation.MoveTransitions.IMoveTransition;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
@@ -38,6 +39,7 @@ import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
+import org.caleydo.vis.rank.config.IRankTableUIConfig;
 import org.caleydo.vis.rank.internal.event.AnnotationEditEvent;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
@@ -45,6 +47,7 @@ import org.caleydo.vis.rank.model.MaxCompositeRankColumnModel;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.SimpleHistogram;
 import org.caleydo.vis.rank.ui.RenderUtils;
+import org.caleydo.vis.rank.ui.column.ACompositeHeaderUI;
 
 /**
  * @author Samuel Gratzl
@@ -92,8 +95,13 @@ public class MaxScoreSummary extends GLElementContainer implements IGLLayout {
 			return;
 		switch (pick.getPickingMode()) {
 		case MOUSE_OVER:
+			IGLElementParent parent = getParent();
+			while (!(parent instanceof ACompositeHeaderUI)) {
+				parent = parent.getParent();
+			}
+			IRankTableUIConfig config = ((ACompositeHeaderUI) parent).getConfig();
 			for (ARankColumnModel m : this.model) {
-				this.add(new Child(m));
+				this.add(new Child(m, config));
 			}
 			break;
 		case MOUSE_OUT:
@@ -173,19 +181,21 @@ public class MaxScoreSummary extends GLElementContainer implements IGLLayout {
 	private static class Child extends GLElementContainer {
 		private static final IMoveTransition move = new MoveTransitions.MoveTransitionBase(NO, LINEAR, NO, NO);
 		private final ARankColumnModel model;
-		public Child(ARankColumnModel model) {
+		private final IRankTableUIConfig config;
+
+		public Child(ARankColumnModel model, IRankTableUIConfig config) {
 			super(GLLayouts.flowVertical(0));
 			setLayoutData(move);
 			this.model = model;
 			this.add(new GLElement(model.getHeaderRenderer()).setSize(-1, 10).setLocation(0, 2));
 			this.add(model.createSummary(false));
 			setzDelta(0.5f);
+			this.config = config;
 		}
 
 		@Override
 		protected void renderImpl(GLGraphics g, float w, float h) {
-			g.color(model.getBgColor());
-			g.fillRect(0, 0, w, h);
+			config.renderHeaderBackground(g, w, h, 10, model);
 			// RoundedRectRenderer.render(g, 0, 0, w, h, RenderStyle.HEADER_ROUNDED_RADIUS, 3,
 			// RoundedRectRenderer.FLAG_FILL | RoundedRectRenderer.FLAG_TOP);
 			super.renderImpl(g, w, h);
