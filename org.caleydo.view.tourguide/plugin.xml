@@ -10,7 +10,7 @@
             class="org.caleydo.view.tourguide.internal.RcpGLTourGuideView"
             icon="resources/icons/icon.png"
             id="org.caleydo.view.tool.tourguide"
-            name="Tour Guide">
+            name="LineUp">
       </view>
    </extension>
    <extension
