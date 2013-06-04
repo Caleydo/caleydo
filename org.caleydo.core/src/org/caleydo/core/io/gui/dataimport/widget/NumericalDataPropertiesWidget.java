@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.core.io.gui.dataimport.widget;
 
+import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.io.NumericalProperties;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -83,9 +84,16 @@ public class NumericalDataPropertiesWidget {
 	 */
 	protected Group dataCenterGroup;
 
+	/**
+	 * Combo to define the type of the data.
+	 */
+	protected Combo dataTypeCombo;
+
 	protected Group scalingGroup;
 
 	protected Group clippingGroup;
+
+	protected Group dataTypeGroup;
 
 	protected NumericalProperties numericalProperties;
 
@@ -94,6 +102,8 @@ public class NumericalDataPropertiesWidget {
 	 */
 	public NumericalDataPropertiesWidget(Composite parent, Listener listener) {
 		this.parent = parent;
+
+		createDataTypeGroup(parent);
 
 		createScalingGroup(parent);
 
@@ -134,6 +144,33 @@ public class NumericalDataPropertiesWidget {
 			scalingCombo.select(2);
 		else
 			scalingCombo.select(0);
+	}
+
+	private void createDataTypeGroup(Composite parent) {
+		dataTypeGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
+		dataTypeGroup.setText("Data Type");
+		dataTypeGroup.setLayout(new GridLayout(2, false));
+		dataTypeGroup.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+
+		Label dataTypeExplanationLabel = new Label(dataTypeGroup, SWT.WRAP);
+		dataTypeExplanationLabel.setText("Specify the type of numerical data.");
+		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1);
+		gridData.widthHint = 200;
+		dataTypeExplanationLabel.setLayoutData(gridData);
+
+		Label scalingMethodLabel = new Label(dataTypeGroup, SWT.NONE);
+		scalingMethodLabel.setText("Type");
+
+		dataTypeCombo = new Combo(dataTypeGroup, SWT.DROP_DOWN | SWT.READ_ONLY);
+		gridData = new GridData();
+		gridData.widthHint = 120;
+		dataTypeCombo.setLayoutData(gridData);
+
+		String[] scalingOptions = { "Real Number", "Natural Number" };
+		dataTypeCombo.setItems(scalingOptions);
+		dataTypeCombo.setEnabled(true);
+
+		dataTypeCombo.select(0);
 	}
 
 	private void createDataCenterGroup(Composite parent, Listener listener) {
@@ -234,7 +271,7 @@ public class NumericalDataPropertiesWidget {
 
 		scalingCombo = new Combo(scalingGroup, SWT.DROP_DOWN | SWT.READ_ONLY);
 		gridData = new GridData();
-		gridData.widthHint = 100;
+		gridData.widthHint = 120;
 		scalingCombo.setLayoutData(gridData);
 
 		String[] scalingOptions = { "None", "Log10", "Log2" };
@@ -314,7 +351,21 @@ public class NumericalDataPropertiesWidget {
 		return numericalProperties;
 	}
 
+	public EDataType getDataType() {
+		if (dataTypeCombo.getSelectionIndex() == 0)
+			return EDataType.FLOAT;
+		return EDataType.INTEGER;
+	}
+
+	public void setDataType(EDataType dataType) {
+		if (dataType == EDataType.FLOAT)
+			dataTypeCombo.select(0);
+		else
+			dataTypeCombo.select(1);
+	}
+
 	public void dispose() {
+		dataTypeGroup.dispose();
 		dataCenterGroup.dispose();
 		clippingGroup.dispose();
 		scalingGroup.dispose();

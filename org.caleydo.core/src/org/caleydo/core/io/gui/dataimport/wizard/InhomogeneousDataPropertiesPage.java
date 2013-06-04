@@ -105,14 +105,17 @@ public class InhomogeneousDataPropertiesPage extends AImportDataPage {
 					.getDataDescription().getCategoricalClassDescription(), wizard.getFilteredDataMatrix(), columnIndex);
 		} else {
 			dialog = new ColumnDataPropertiesDialog(getShell(), columnDescription.getDataDescription()
-					.getNumericalProperties(), wizard.getFilteredDataMatrix(), columnIndex);
+					.getNumericalProperties(), columnDescription.getDataDescription().getRawDataType(),
+					wizard.getFilteredDataMatrix(), columnIndex);
 		}
 		int status = dialog.open();
 
 		if (status == Window.OK) {
 			if (dialog.isNumericalData()) {
 				NumericalProperties numericalProperties = dialog.getNumericalProperties();
-				columnDescription.setDataDescription(new DataDescription(EDataClass.REAL_NUMBER, EDataType.FLOAT,
+				EDataType dataType = dialog.getDataType();
+				columnDescription.setDataDescription(new DataDescription(
+						dataType == EDataType.FLOAT ? EDataClass.REAL_NUMBER : EDataClass.NATURAL_NUMBER, dataType,
 						numericalProperties));
 			} else {
 				CategoricalClassDescription<String> categoricalClassDescription = dialog
