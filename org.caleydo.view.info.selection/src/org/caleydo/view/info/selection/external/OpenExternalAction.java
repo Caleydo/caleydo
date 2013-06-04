@@ -25,9 +25,9 @@ import java.util.Set;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
-import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.system.BrowserUtils;
 import org.caleydo.view.info.selection.Activator;
+import org.caleydo.view.info.selection.external.MyPreferences.OpenExternally;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 
@@ -38,8 +38,8 @@ import org.eclipse.jface.action.IAction;
 public class OpenExternalAction extends Action {
 	private final String url;
 
-	public OpenExternalAction(String url) {
-		super("Open Externally",Activator.getImageDescriptor("resources/icons/external.png"));
+	public OpenExternalAction(String label, String url) {
+		super("Search in " + label, Activator.getImageDescriptor("resources/icons/external.png"));
 		this.url = url;
 	}
 
@@ -49,12 +49,13 @@ public class OpenExternalAction extends Action {
 	}
 
 	public static IAction create(IDType type, Object value) {
-		Pair<String,IDType> pair = MyPreferences.getExternalIDCategory(type.getIDCategory());
+		OpenExternally pair = MyPreferences.getExternalIDCategory(type.getIDCategory());
 		if (pair == null)
 			return null;
 
-		String pattern = pair.getFirst();
-		IDType argumentType = pair.getSecond();
+		String pattern = pair.getPattern();
+		IDType argumentType = pair.getIdType();
+		String label = pair.getLabel();
 
 		IDMappingManager manager = IDMappingManagerRegistry.get().getIDMappingManager(argumentType);
 		Set<Object> result = manager.getIDAsSet(type, argumentType, value);
@@ -64,6 +65,6 @@ public class OpenExternalAction extends Action {
 
 		String url = MessageFormat.format(pattern, id);
 
-		return new OpenExternalAction(url);
+		return new OpenExternalAction(label, url);
 	}
 }
