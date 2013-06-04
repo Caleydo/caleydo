@@ -127,6 +127,11 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 	 */
 	protected DelimiterWidget delimiterRadioGroup;
 
+	/**
+	 * Checkbox to determine whether the columns are inhomogeneous.
+	 */
+	protected Button inhomogeneousColumnsButton;
+
 	protected SelectAllNoneWidget selectAllNone;
 
 	protected LoadFileWidget loadFile;
@@ -301,6 +306,18 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 		columnConfigGroup.setLayout(new GridLayout(2, false));
 		columnConfigGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
+		inhomogeneousColumnsButton = new Button(columnConfigGroup, SWT.CHECK);
+		inhomogeneousColumnsButton.setText("Inhomogeneous Columns");
+		inhomogeneousColumnsButton.setSelection(false);
+		inhomogeneousColumnsButton.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 2, 1));
+		inhomogeneousColumnsButton.addListener(SWT.Selection, this);
+		inhomogeneousColumnsButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				mediator.onInhomogeneousColumnsSelected(inhomogeneousColumnsButton.getSelection());
+			}
+		});
+
 		Composite leftConfigGroupPart = new Composite(columnConfigGroup, SWT.NONE);
 		leftConfigGroupPart.setLayout(new GridLayout(2, false));
 		leftConfigGroupPart.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
@@ -429,7 +446,7 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 			return false;
 		}
 
-		if (columnIDCombo.getSelectionIndex() == -1) {
+		if (columnIDCombo.getSelectionIndex() == -1 && !inhomogeneousColumnsButton.getSelection()) {
 			getWizard().setRequiredDataSpecified(false);
 			return false;
 		}

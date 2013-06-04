@@ -165,6 +165,9 @@ public class LoadDataSetPageMediator {
 		fillIDTypeCombo(columnIDCategory, columnIDTypes, page.columnIDCombo);
 		page.columnIDCombo.setEnabled(fileSpecified && (page.columnIDCategoryCombo.getSelectionIndex() != -1));
 
+		page.inhomogeneousColumnsButton.setEnabled(fileSpecified);
+		page.inhomogeneousColumnsButton.setSelection(false);
+
 		page.createRowIDCategoryButton.setEnabled(fileSpecified);
 
 		page.createColumnIDCategoryButton.setEnabled(fileSpecified);
@@ -205,6 +208,19 @@ public class LoadDataSetPageMediator {
 	private String getColumnIDSample() {
 		return page.previewTable.getValue(page.rowOfColumnIDSpinner.getSelection() - 1,
 				page.columnOfRowIDSpinner.getSelection());
+	}
+
+	public void onInhomogeneousColumnsSelected(boolean isInhomgeneous) {
+		page.columnIDCategoryCombo.setEnabled(!isInhomgeneous);
+		page.columnIDCombo.setEnabled(!isInhomgeneous);
+		page.createColumnIDCategoryButton.setEnabled(!isInhomgeneous);
+		page.createColumnIDTypeButton.setEnabled(!isInhomgeneous);
+		page.defineColumnIDParsingButton.setEnabled(!isInhomgeneous);
+		if (isInhomgeneous) {
+			setColumnIDTypeParsingRules(null);
+			page.columnIDCategoryCombo.clearSelection();
+			page.columnIDCombo.clearSelection();
+		}
 	}
 
 	public void onDefineRowIDParsing() {
@@ -734,20 +750,22 @@ public class LoadDataSetPageMediator {
 		// rowIDSpecification.setIdTypeParsingRules(parsingRules);
 		// }
 
-		IDSpecification columnIDSpecification = new IDSpecification();
-		IDType columnIDType = IDType.getIDType(page.columnIDCombo.getItem(page.columnIDCombo.getSelectionIndex()));
-		// columnIDTypes.get(page.columnIDCombo.getSelectionIndex());
-		columnIDSpecification.setIdType(columnIDType.getTypeName());
-		if (columnIDType.getIDCategory().getCategoryName().equals("GENE"))
-			columnIDSpecification.setIDTypeGene(true);
-		columnIDSpecification.setIdCategory(columnIDType.getIDCategory().getCategoryName());
-		// if (columnIDTypeParsingRules != null) {
-		columnIDSpecification.setIdTypeParsingRules(columnIDTypeParsingRules);
-		// } else if (columnIDType.getIdTypeParsingRules() != null) {
-		// columnIDSpecification.setIdTypeParsingRules(columnIDType.getIdTypeParsingRules());
-		// }
+		if (!page.inhomogeneousColumnsButton.getSelection()) {
+			IDSpecification columnIDSpecification = new IDSpecification();
+			IDType columnIDType = IDType.getIDType(page.columnIDCombo.getItem(page.columnIDCombo.getSelectionIndex()));
+			// columnIDTypes.get(page.columnIDCombo.getSelectionIndex());
+			columnIDSpecification.setIdType(columnIDType.getTypeName());
+			if (columnIDType.getIDCategory().getCategoryName().equals("GENE"))
+				columnIDSpecification.setIDTypeGene(true);
+			columnIDSpecification.setIdCategory(columnIDType.getIDCategory().getCategoryName());
+			// if (columnIDTypeParsingRules != null) {
+			columnIDSpecification.setIdTypeParsingRules(columnIDTypeParsingRules);
+			// } else if (columnIDType.getIdTypeParsingRules() != null) {
+			// columnIDSpecification.setIdTypeParsingRules(columnIDType.getIdTypeParsingRules());
+			// }
+			dataSetDescription.setColumnIDSpecification(columnIDSpecification);
+		}
 
-		dataSetDescription.setColumnIDSpecification(columnIDSpecification);
 		dataSetDescription.setRowIDSpecification(rowIDSpecification);
 
 		// TODO check buttonHomogeneous
