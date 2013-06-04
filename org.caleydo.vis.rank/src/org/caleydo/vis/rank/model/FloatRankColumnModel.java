@@ -156,7 +156,8 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 
 	@Override
 	public void editMapping(GLElement summary, IGLElementContext context) {
-		GLElement m = MappingFunctionUIs.create(mapping, asRawData(), getColor(), getBgColor(), callback);
+		GLElement m = MappingFunctionUIs.create(mapping, asRawData(), getColor(), new Color(0.95f, .95f, .95f),
+				callback);
 		m.setzDelta(0.5f);
 		Vec2f location = summary.getAbsoluteLocation();
 		Vec2f size = summary.getSize();

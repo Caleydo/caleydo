@@ -89,14 +89,14 @@ public final class TableHeaderUI extends ACompositeHeaderUI {
 			return;
 		this.isSmallHeader = isCompact;
 		relayout();
-		setSize(-1, ((!isSmallHeader ? HIST_HEIGHT : 0) + LABEL_HEIGHT) * 1 + (hasThick ? thickHeight() : 0));
+		setSize(-1, ((!isSmallHeader ? HIST_HEIGHT : 0) + LABEL_HEIGHT) * 1 + thickOffset);
 		relayoutParent();
 	}
 
 	@Override
-	protected void setHasThick(boolean hasThick) {
-		super.setHasThick(hasThick);
-		setSize(-1, ((!isSmallHeader ? HIST_HEIGHT : 0) + LABEL_HEIGHT) * 1 + (hasThick ? thickHeight() : 0));
+	protected void setHasThick(float thickOffset) {
+		super.setHasThick(thickOffset);
+		setSize(-1, ((!isSmallHeader ? HIST_HEIGHT : 0) + LABEL_HEIGHT) * 1 + thickOffset);
 	}
 
 	@Override
@@ -132,7 +132,7 @@ public final class TableHeaderUI extends ACompositeHeaderUI {
 		float x = super.layoutColumns(children, w, h);
 		if (x >= w)
 			x = w - 16;
-		toggleSmall.setBounds(x, (hasThick ? thickHeight() : 0) + (LABEL_HEIGHT - 16) * 0.5f, 16, 16);
+		toggleSmall.setBounds(x, thickOffset + (LABEL_HEIGHT - 16) * 0.5f, 16, 16);
 	}
 
 	@Override

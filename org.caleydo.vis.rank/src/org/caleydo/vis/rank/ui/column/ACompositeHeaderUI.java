@@ -21,7 +21,6 @@ package org.caleydo.vis.rank.ui.column;
 
 import static org.caleydo.vis.rank.ui.RenderStyle.COLUMN_SPACE;
 import static org.caleydo.vis.rank.ui.RenderStyle.HIST_HEIGHT;
-import static org.caleydo.vis.rank.ui.RenderStyle.LABEL_HEIGHT;
 
 import java.beans.IndexedPropertyChangeEvent;
 import java.beans.PropertyChangeEvent;
@@ -44,7 +43,6 @@ import org.caleydo.vis.rank.ui.RenderStyle;
 import org.caleydo.vis.rank.ui.SeparatorUI;
 import org.caleydo.vis.rank.ui.SeparatorUI.IMoveHereChecker;
 
-import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
 /**
  * @author Samuel Gratzl
@@ -62,7 +60,7 @@ public abstract class ACompositeHeaderUI extends GLElementContainer implements I
 	};
 
 	protected final IRankTableUIConfig config;
-	protected boolean hasThick;
+	protected float thickOffset;
 
 	private final int firstColumn;
 
@@ -73,11 +71,8 @@ public abstract class ACompositeHeaderUI extends GLElementContainer implements I
 	}
 
 	protected void init(Iterable<ARankColumnModel> children) {
-		boolean hasCurrentThick = false;
 		for (ARankColumnModel col : children) {
 			GLElement elem = wrap(col);
-			if (elem instanceof IThickHeader)
-				hasCurrentThick = true;
 			this.add(elem);
 			numColumns++;
 		}
@@ -86,18 +81,32 @@ public abstract class ACompositeHeaderUI extends GLElementContainer implements I
 			for (int i = 0; i < numColumns; ++i)
 				this.add(createSeparator(i + 1));
 		}
-		setHasThick(hasCurrentThick);
+		setHasThick(max(this, 0));
 	}
 
-	protected void setHasThick(boolean hasThick) {
-		if (this.hasThick == hasThick) {
+	protected void setHasThick(float thickOffset) {
+		if (this.thickOffset == thickOffset) {
 			return;
 		}
-		this.hasThick = hasThick;
+		this.thickOffset = thickOffset;
+	}
+
+	/**
+	 * @return the config, see {@link #config}
+	 */
+	public IRankTableUIConfig getConfig() {
+		return config;
 	}
 
 	protected SeparatorUI createSeparator(int index) {
 		return new SeparatorUI(this, 0);
+	}
+
+	private float max(Iterable<?> its, float max) {
+		boolean smallHeader = isSmallHeader();
+		for (IThickHeader h : Iterables.filter(its, IThickHeader.class))
+			max = Math.max(h.getTopPadding(smallHeader), max);
+		return max;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -116,9 +125,7 @@ public abstract class ACompositeHeaderUI extends GLElementContainer implements I
 					news.add(wrap(c));
 			}
 			numColumns += news.size();
-			if (!hasThick) {
-				setHasThick(Iterables.any(news, Predicates.instanceOf(IThickHeader.class)));
-			}
+			setHasThick(max(news, thickOffset));
 			asList().addAll(index + firstColumn, news);
 			if (config.isMoveAble()) {
 				for (int i = 0; i < news.size(); ++i)
@@ -130,11 +137,11 @@ public abstract class ACompositeHeaderUI extends GLElementContainer implements I
 			numColumns--;
 			if (config.isMoveAble())
 				remove(this.size() - 1); // remove last separator
-			setHasThick(Iterables.any(this, Predicates.instanceOf(IThickHeader.class)));
+			setHasThick(max(this, 0));
 		} else { // replaced
 			takeDown(get(index + firstColumn).getLayoutDataAs(ARankColumnModel.class, null));
 			set(index + firstColumn, wrap((ARankColumnModel) evt.getNewValue()));
-			setHasThick(Iterables.any(this, Predicates.instanceOf(IThickHeader.class)));
+			setHasThick(max(this, 0));
 		}
 	}
 
@@ -169,12 +176,6 @@ public abstract class ACompositeHeaderUI extends GLElementContainer implements I
 
 	protected abstract boolean isSmallHeader();
 
-	protected final float thickHeight() {
-		if (isSmallHeader())
-			return LABEL_HEIGHT * 2;
-		return HIST_HEIGHT + LABEL_HEIGHT * 2;
-	}
-
 	protected final float layoutColumns(List<? extends IGLLayoutElement> children, float w, float h) {
 		List<? extends IGLLayoutElement> columns = children.subList(firstColumn, numColumns + firstColumn);
 		List<? extends IGLLayoutElement> separators = null;
@@ -183,7 +184,7 @@ public abstract class ACompositeHeaderUI extends GLElementContainer implements I
 
 		// align the columns normally
 		float x = getLeftPadding();
-		float y = getTopPadding() + (hasThick ? thickHeight() : 0);
+		float y = getTopPadding(smallHeader) + thickOffset;
 		float hn = h - y;
 		if (config.isMoveAble()) {
 			separators = children.subList(numColumns + 1 + firstColumn, children.size());
@@ -206,9 +207,10 @@ public abstract class ACompositeHeaderUI extends GLElementContainer implements I
 					col.setBounds(x, y, wi, hn);
 				else
 					col.setBounds(x, y + HIST_HEIGHT / 2, wi, hn - HIST_HEIGHT / 2);
-			else if (col.asElement() instanceof IThickHeader)
-				col.setBounds(x, 0, wi, h);
-			else
+			else if (col.asElement() instanceof IThickHeader) {
+				float offset = thickOffset - ((IThickHeader) col.asElement()).getTopPadding(smallHeader);
+				col.setBounds(x, offset, wi, h - offset);
+			} else
 				col.setBounds(x, y, wi, hn);
 			x += wi + COLUMN_SPACE;
 			if (config.isMoveAble() && separators != null) {
@@ -230,7 +232,7 @@ public abstract class ACompositeHeaderUI extends GLElementContainer implements I
 		return RenderStyle.COLUMN_SPACE;
 	}
 
-	protected float getTopPadding() {
+	protected float getTopPadding(boolean isSmallHeader) {
 		return 0;
 	}
 }

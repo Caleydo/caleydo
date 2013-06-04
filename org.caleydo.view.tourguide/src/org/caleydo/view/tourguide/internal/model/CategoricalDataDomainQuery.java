@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.internal.model;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -44,9 +45,11 @@ import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.id.IIDTypeMapper;
+import org.caleydo.core.util.color.Colors;
 import org.caleydo.view.tourguide.internal.view.col.CategoricalPercentageRankColumnModel;
 import org.caleydo.vis.rank.model.ACompositeRankColumnModel;
 import org.caleydo.vis.rank.model.ARankColumnModel;
+import org.caleydo.vis.rank.model.GroupRankColumnModel;
 import org.caleydo.vis.rank.model.RankTableModel;
 
 import com.google.common.collect.Lists;
@@ -283,11 +286,13 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 
 	@Override
 	public void createSpecificColumns(RankTableModel table) {
-
-		// I know that String might be wrong but who cares
 		final CategoricalTable<?> ctable = (CategoricalTable<?>) getDataDomain().getTable();
+		ATableBasedDataDomain d = getDataDomain();
+		Color color = Colors.of(d.getColor());
+		GroupRankColumnModel group = new GroupRankColumnModel(d.getLabel() + " Metrics", color, color.brighter());
+		table.add(group);
 		for (CategoryProperty<?> p : ctable.getCategoryDescriptions().getCategoryProperties()) {
-			table.add(CategoricalPercentageRankColumnModel.create(p.getCategory(), ctable));
+			group.add(CategoricalPercentageRankColumnModel.create(p.getCategory(), ctable));
 		}
 	}
 
@@ -304,10 +309,12 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 	private void flat(Iterator<ARankColumnModel> cols, List<ARankColumnModel> toDestroy) {
 		while (cols.hasNext()) {
 			ARankColumnModel col = cols.next();
-			if (col instanceof ACompositeRankColumnModel) {
+			if (col instanceof GroupRankColumnModel
+					&& ((GroupRankColumnModel) col).getTitle().startsWith(getDataDomain().getLabel())) {
+				toDestroy.add(col);
+			} else if (col instanceof ACompositeRankColumnModel) {
 				flat(((ACompositeRankColumnModel) col).iterator(), toDestroy);
-			}
-			if (col instanceof CategoricalPercentageRankColumnModel
+			} else if (col instanceof CategoricalPercentageRankColumnModel
 					&& ((CategoricalPercentageRankColumnModel) col).getDataDomain() == dataDomain)
 				toDestroy.add(col);
 		}

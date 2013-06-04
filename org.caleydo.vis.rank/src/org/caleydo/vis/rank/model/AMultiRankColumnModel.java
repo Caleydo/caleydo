@@ -56,8 +56,10 @@ import com.google.common.collect.Iterables;
 import com.google.common.primitives.Floats;
 
 /**
+ * a {@link ACompositeRankColumnModel} which is rankable
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
 public abstract class AMultiRankColumnModel extends ACompositeRankColumnModel implements IMultiColumnMixin,
 		IExplodeableColumnMixin, IHideableColumnMixin, ICollapseableColumnMixin, IFilterColumnMixin, IGLRenderer {

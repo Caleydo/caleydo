@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.internal.view.specific;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -36,6 +37,7 @@ import org.caleydo.view.tourguide.internal.model.PathwayDataDomainQuery;
 import org.caleydo.view.tourguide.internal.model.PathwayPerspectiveRow;
 import org.caleydo.view.tourguide.internal.view.col.SizeRankColumnModel;
 import org.caleydo.vis.rank.model.CategoricalRankColumnModel;
+import org.caleydo.vis.rank.model.GroupRankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.StringRankColumnModel;
@@ -71,7 +73,10 @@ public class PathwaySpecifics implements IDataDomainQueryModeSpecfics {
 			metaData.put(type, type.getName());
 		}
 
-		table.add(new CategoricalRankColumnModel<>(GLRenderers.drawText("Database"), new Function<IRow,EPathwayDatabaseType>() {
+		GroupRankColumnModel group = new GroupRankColumnModel("Metrics", Color.GRAY, new Color(0.95f, .95f, .95f));
+		table.add(group);
+		group.add(new CategoricalRankColumnModel<>(GLRenderers.drawText("Database"),
+				new Function<IRow, EPathwayDatabaseType>() {
 			@Override
 			public EPathwayDatabaseType apply(IRow in) {
 				PathwayPerspectiveRow r = (PathwayPerspectiveRow)in;
@@ -87,7 +92,7 @@ public class PathwaySpecifics implements IDataDomainQueryModeSpecfics {
 		// }
 		// }).setCollapsed(true));
 
-		table.add(new SizeRankColumnModel("#Genes", new Function<IRow, Integer>() {
+		group.add(new SizeRankColumnModel("#Genes", new Function<IRow, Integer>() {
 			@Override
 			public Integer apply(IRow in) {
 				int s = ((AScoreRow) in).size();

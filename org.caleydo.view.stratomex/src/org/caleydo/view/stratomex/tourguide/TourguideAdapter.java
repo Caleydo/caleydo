@@ -57,6 +57,7 @@ import org.caleydo.core.view.opengl.layout.ElementLayouts;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormRenderer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingMode;
@@ -81,13 +82,13 @@ import org.caleydo.view.stratomex.tourguide.event.UpdateNumericalPreviewEvent;
 import org.caleydo.view.stratomex.tourguide.event.UpdatePathwayPreviewEvent;
 import org.caleydo.view.stratomex.tourguide.event.UpdateStratificationPreviewEvent;
 import org.caleydo.view.stratomex.tourguide.internal.AddAttachedLayoutRenderer;
-import org.caleydo.view.stratomex.tourguide.internal.ConfirmCancelLayoutRenderer;
 import org.caleydo.view.stratomex.tourguide.internal.ESelectionMode;
 import org.caleydo.view.stratomex.tourguide.internal.EWizardMode;
 import org.caleydo.view.stratomex.tourguide.internal.PrimitivePathwayRenderer;
 import org.caleydo.view.stratomex.tourguide.internal.TemplateHighlightRenderer;
+import org.caleydo.view.stratomex.tourguide.internal.WizardActionsLayoutRenderer;
 import org.caleydo.view.stratomex.tourguide.internal.event.AddNewColumnEvent;
-import org.caleydo.view.stratomex.tourguide.internal.event.ConfirmCancelNewColumnEvent;
+import org.caleydo.view.stratomex.tourguide.internal.event.WizardActionsEvent;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
@@ -99,6 +100,7 @@ import com.jogamp.opengl.util.texture.Texture;
  *
  */
 public class TourguideAdapter implements IStratomexAdapter {
+	private static final String ICON_PREFIX = "resources/icons/stratomex/template/";
 	private static final IColor COLOR_SELECTED = new Color(SelectionType.SELECTION.getColor());
 	private static final IColor COLOR_POSSIBLE_SELECTION = Colors.NEUTRAL_GREY;
 
@@ -108,6 +110,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 	private static final String ADD_DEPENDENT_PICKING_TYPE = "templateDependentAdd";
 	private static final String CONFIRM_PICKING_TYPE = "templateConfirm";
 	private static final String CANCEL_PICKING_TYPE = "templateAbort";
+	private static final String BACK_PICKING_TYPE = "templateBack";
 
 	private final GLStratomex stratomex;
 
@@ -144,32 +147,38 @@ public class TourguideAdapter implements IStratomexAdapter {
 	public void renderAddButton(GL2 gl, float x, float y, float w, float h, int id) {
 		if (!hasTourGuide() || wizardElement != null || wizardPreview != null) // not more than one at the same time
 			return;
-		renderButton(gl, x, y, w, h, 24, stratomex, ADD_PICKING_TYPE, id, "resources/icons/stratomex/template/add.png");
+		renderButton(gl, x, y, w, h, 24, stratomex, ADD_PICKING_TYPE, id, "add.png");
 	}
 
 	public void renderStartButton(GL2 gl, float x, float y, float w, float h, int id) {
 		if (!hasTourGuide() || wizardElement != null || wizardPreview != null) // not more than one at the same time
 			return;
-		renderButton(gl, x, y, w, h, 32, stratomex, ADD_PICKING_TYPE, id, "resources/icons/stratomex/template/add.png");
+		renderButton(gl, x, y, w, h, 32, stratomex, ADD_PICKING_TYPE, id, "add.png");
 	}
 
 	public void renderAddDependentButton(GL2 gl, float x, float y, float w, float h, int id) {
 		if (!hasTourGuide() || wizardElement != null || wizardPreview != null) // not more than one at the same time
 			return;
 		renderButton(gl, x, y, w, h, 24, stratomex, ADD_DEPENDENT_PICKING_TYPE, id,
-				"resources/icons/stratomex/template/add.png");
+ "add.png");
 	}
 
 	public void renderConfirmButton(GL2 gl, float x, float y, float w, float h) {
 		boolean disabled = wizardPreview == null; // no preview no accept
 		renderButton(gl, x, y, w, h, 32, stratomex, CONFIRM_PICKING_TYPE, 1,
-				"resources/icons/stratomex/template/accept"
+ "accept"
 				+ (disabled ? "_disabled" : "") + ".png");
 	}
 
 	public void renderCancelButton(GL2 gl, float x, float y, float w, float h) {
 		renderButton(gl, x, y, w, h, 32, stratomex, CANCEL_PICKING_TYPE, 1,
-				"resources/icons/stratomex/template/cancel.png");
+ "cancel.png");
+	}
+
+	public void renderBackButton(GL2 gl, float x, float y, float w, float h) {
+		boolean disabled = wizard == null || !wizard.canGoBack(); // check can go back
+		renderButton(gl, x, y, w, h, 32, stratomex, BACK_PICKING_TYPE, 1, "arrow_undo" + (disabled ? "_disabled" : "")
+				+ ".png");
 	}
 
 	private void renderButton(GL2 gl, float x, float y, float w, float h, int diameter, AGLView view,
@@ -196,7 +205,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 		float col = isHovered ? 0.8f : 1.f;
 		gl.glPushAttrib(GL2.GL_TEXTURE_BIT);
 		TextureManager t = view.getTextureManager();
-		Texture tex = t.get(texture);
+		Texture tex = t.get(ICON_PREFIX + texture);
 		tex.enable(gl);
 		gl.glTexEnvi(GL2ES1.GL_TEXTURE_ENV, GL2ES1.GL_TEXTURE_ENV_MODE, GL2ES1.GL_MODULATE);
 		t.renderTexture(gl, tex, lowerLeftCorner, lowerRightCorner, upperRightCorner, upperLeftCorner, col, col, col, 1);
@@ -228,7 +237,6 @@ public class TourguideAdapter implements IStratomexAdapter {
 			}
 		}, ADD_PICKING_TYPE);
 
-		// FIXME tooltip per stratification
 		stratomex.addTypePickingTooltipListener("Add datasets using the stratification", ADD_DEPENDENT_PICKING_TYPE);
 		stratomex.addTypePickingListener(new IPickingListener() {
 			@Override
@@ -249,47 +257,36 @@ public class TourguideAdapter implements IStratomexAdapter {
 			}
 		}, ADD_DEPENDENT_PICKING_TYPE);
 
-		stratomex.addTypePickingTooltipListener("Confirm the current previewed element", CONFIRM_PICKING_TYPE);
-		stratomex.addTypePickingListener(new IPickingListener() {
-			@Override
-			public void pick(Pick pick) {
-				switch (pick.getPickingMode()) {
-				case CLICKED:
-					EventPublisher.trigger(new ConfirmCancelNewColumnEvent(true).to(receiver)
-							.from(this));
-					break;
-				case MOUSE_OVER:
-					hoveredButton = CONFIRM_PICKING_TYPE + pick.getObjectID();
-					break;
-				case MOUSE_OUT:
-					hoveredButton = null;
-					break;
-				default:
-					break;
-				}
+		class ActionPickingListener extends APickingListener {
+			private final String pickingType;
+
+			ActionPickingListener(String pickingType) {
+				this.pickingType = pickingType;
 			}
-		}, CONFIRM_PICKING_TYPE);
+
+			@Override
+			protected void clicked(Pick pick) {
+				EventPublisher.trigger(new WizardActionsEvent(pickingType).to(receiver).from(this));
+			}
+			@Override
+			protected void mouseOut(Pick pick) {
+				hoveredButton = null;
+			}
+
+			@Override
+			protected void mouseOver(Pick pick) {
+				hoveredButton = pickingType + pick.getObjectID();
+			}
+		}
+
+		stratomex.addTypePickingTooltipListener("Confirm the current previewed element", CONFIRM_PICKING_TYPE);
+		stratomex.addTypePickingListener(new ActionPickingListener(CONFIRM_PICKING_TYPE), CONFIRM_PICKING_TYPE);
 
 		stratomex.addTypePickingTooltipListener("Cancel temporary column", CANCEL_PICKING_TYPE);
-		stratomex.addTypePickingListener(new IPickingListener() {
-			@Override
-			public void pick(Pick pick) {
-				switch (pick.getPickingMode()) {
-				case CLICKED:
-					EventPublisher.trigger(new ConfirmCancelNewColumnEvent(false).to(receiver)
-							.from(this));
-					break;
-				case MOUSE_OVER:
-					hoveredButton = CANCEL_PICKING_TYPE + pick.getObjectID();
-					break;
-				case MOUSE_OUT:
-					hoveredButton = null;
-					break;
-				default:
-					break;
-				}
-			}
-		}, CANCEL_PICKING_TYPE);
+		stratomex.addTypePickingListener(new ActionPickingListener(CANCEL_PICKING_TYPE), CANCEL_PICKING_TYPE);
+
+		stratomex.addTypePickingTooltipListener("Go Back", BACK_PICKING_TYPE);
+		stratomex.addTypePickingListener(new ActionPickingListener(BACK_PICKING_TYPE), BACK_PICKING_TYPE);
 
 
 		IPickingListener brickPicker = new IPickingListener() {
@@ -464,7 +461,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 		createWizard(source, independentOne);
 		ElementLayout l = ElementLayouts.wrap(wizard, 120);
 		l.addBackgroundRenderer(new TemplateHighlightRenderer());
-		l.addBackgroundRenderer(new ConfirmCancelLayoutRenderer(stratomex, this));
+		l.addBackgroundRenderer(new WizardActionsLayoutRenderer(stratomex, this));
 		return l;
 	}
 
@@ -530,18 +527,16 @@ public class TourguideAdapter implements IStratomexAdapter {
 	}
 
 	@ListenTo(sendToMe = true)
-	private void onConfirmCancelColumn(ConfirmCancelNewColumnEvent event) {
-		boolean confirm = event.isConfirm();
-
-		if (confirm && (wizardPreview == null))
-			return; // invalid action
-
-		if (confirm) {
+	private void onWizardAction(WizardActionsEvent event) {
+		switch (event.getPickingType()) {
+		case CONFIRM_PICKING_TYPE:
+			if (wizardPreview == null)
+				return;
 			// remove the preview buttons
 			if (wizardPreview != null) {
 				final Row layout = wizardPreview.getLayout();
 				layout.clearForegroundRenderers(AddAttachedLayoutRenderer.class);
-				layout.clearForegroundRenderers(ConfirmCancelLayoutRenderer.class);
+				layout.clearForegroundRenderers(WizardActionsLayoutRenderer.class);
 				if (canHaveDependentColumns(wizardPreview))
 					layout.addForeGroundRenderer(new AddAttachedLayoutRenderer(stratomex, wizardPreview.getID(), this,
 							false));
@@ -549,16 +544,24 @@ public class TourguideAdapter implements IStratomexAdapter {
 					layout.addForeGroundRenderer(new AddAttachedLayoutRenderer(stratomex, wizardPreview.getID(), this,
 							true));
 			}
-		} else {
+			// reset
+			done(true);
+			stratomex.relayout();
+			break;
+		case CANCEL_PICKING_TYPE:
 			if (wizardPreview != null)
 				stratomex.removeTablePerspective(wizardPreview.getTablePerspective());
+			// reset
+			done(false);
+			stratomex.relayout();
+			break;
+		case BACK_PICKING_TYPE:
+			if (wizard != null)
+				wizard.goBack();
+			break;
 		}
 
-		// reset
-		done(confirm);
-
 		repaint();
-		stratomex.relayout();
 	}
 
 	/**
@@ -745,7 +748,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 		}
 		wizardPreview = added.get(0).getSecond();
 		wizardPreview.getLayout().clearForegroundRenderers();
-		wizardPreview.getLayout().addForeGroundRenderer(new ConfirmCancelLayoutRenderer(stratomex, this));
+		wizardPreview.getLayout().addForeGroundRenderer(new WizardActionsLayoutRenderer(stratomex, this));
 	}
 
 	/**
@@ -789,12 +792,12 @@ public class TourguideAdapter implements IStratomexAdapter {
 			stratomex.removeTablePerspective(wizardPreview.getTablePerspective());
 			wizardElement = new_;
 			new_.addBackgroundRenderer(new TemplateHighlightRenderer());
-			new_.addForeGroundRenderer(new ConfirmCancelLayoutRenderer(stratomex, this));
+			new_.addForeGroundRenderer(new WizardActionsLayoutRenderer(stratomex, this));
 		} else {
 			ElementLayout new_ = ElementLayouts.wrap(renderer, 120);
 			wizardElement = new_;
 			new_.addBackgroundRenderer(new TemplateHighlightRenderer());
-			new_.addForeGroundRenderer(new ConfirmCancelLayoutRenderer(stratomex, this));
+			new_.addForeGroundRenderer(new WizardActionsLayoutRenderer(stratomex, this));
 			stratomex.relayout();
 		}
 	}
