@@ -7,12 +7,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.caleydo.core.io.IDTypeParsingRules;
+import org.caleydo.core.io.parser.ascii.ATextParser;
 import org.eclipse.nebula.widgets.nattable.NatTable;
 import org.eclipse.nebula.widgets.nattable.config.AbstractRegistryConfiguration;
 import org.eclipse.nebula.widgets.nattable.config.CellConfigAttributes;
 import org.eclipse.nebula.widgets.nattable.config.DefaultNatTableStyleConfiguration;
 import org.eclipse.nebula.widgets.nattable.config.IConfigRegistry;
 import org.eclipse.nebula.widgets.nattable.data.IDataProvider;
+import org.eclipse.nebula.widgets.nattable.data.convert.IDisplayConverter;
 import org.eclipse.nebula.widgets.nattable.edit.action.ToggleCheckBoxColumnAction;
 import org.eclipse.nebula.widgets.nattable.grid.GridRegion;
 import org.eclipse.nebula.widgets.nattable.grid.data.DefaultCornerDataProvider;
@@ -25,6 +28,7 @@ import org.eclipse.nebula.widgets.nattable.layer.LabelStack;
 import org.eclipse.nebula.widgets.nattable.layer.cell.ColumnLabelAccumulator;
 import org.eclipse.nebula.widgets.nattable.layer.cell.ColumnOverrideLabelAccumulator;
 import org.eclipse.nebula.widgets.nattable.layer.cell.IConfigLabelAccumulator;
+import org.eclipse.nebula.widgets.nattable.layer.cell.ILayerCell;
 import org.eclipse.nebula.widgets.nattable.painter.cell.ColumnHeaderCheckBoxPainter;
 import org.eclipse.nebula.widgets.nattable.painter.cell.ICellPainter;
 import org.eclipse.nebula.widgets.nattable.painter.cell.decorator.BeveledBorderDecorator;
@@ -56,12 +60,56 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 
 	private static final String ID_CELL = "ID_CELL";
 	private static final String HEADER_LINE_CELL = "HEADER_LINE_CELL";
+	private static final String COLUMN_ID = "COLUMN_ID";
+	private static final String ROW_ID = "ROW_ID";
 
 	private int numberOfHeaderRows = -1;
 	private int idRowIndex = -1;
 	private int idColumnIndex = -1;
 
 	private List<Boolean> columnSelectionStatus = new ArrayList<>();
+	private RegExIDConverter columnIDConverter;
+	private RegExIDConverter rowIDConverter;
+
+	private class RegExIDConverter implements IDisplayConverter {
+		private IDTypeParsingRules idTypeParsingRules;
+
+		public RegExIDConverter(IDTypeParsingRules idTypeParsingRules) {
+			this.idTypeParsingRules = idTypeParsingRules;
+		}
+
+		/**
+		 * @param idTypeParsingRules
+		 *            setter, see {@link idTypeParsingRules}
+		 */
+		public void setIdTypeParsingRules(IDTypeParsingRules idTypeParsingRules) {
+			this.idTypeParsingRules = idTypeParsingRules;
+		}
+
+		@Override
+		public Object canonicalToDisplayValue(Object canonicalValue) {
+			if (idTypeParsingRules == null || canonicalValue == null)
+				return canonicalValue;
+			return ATextParser.convertID((String) canonicalValue, idTypeParsingRules);
+		}
+
+		@Override
+		public Object displayToCanonicalValue(Object displayValue) {
+			// We can not get the canonical value without further information
+			return displayValue;
+		}
+
+		@Override
+		public Object canonicalToDisplayValue(ILayerCell cell, IConfigRegistry configRegistry, Object canonicalValue) {
+			return canonicalToDisplayValue(canonicalValue);
+		}
+
+		@Override
+		public Object displayToCanonicalValue(ILayerCell cell, IConfigRegistry configRegistry, Object displayValue) {
+			return bodyDataProvider.getDataValue(cell.getColumnIndex(), cell.getRowIndex());
+		}
+
+	}
 
 	private class ColumnHeaderDataProvider implements IDataProvider {
 
@@ -145,9 +193,12 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 				if (rowPosition < numberOfHeaderRows) {
 					configLabels.addLabel(HEADER_LINE_CELL);
 				}
-				// configLabels.addLabel(ColumnLabelAccumulator.COLUMN_LABEL_PREFIX + columnPosition);
-				// configLabels.addLabel(CHECK_BOX_CONFIG_LABEL);
-				// configLabels.addLabel(CHECK_BOX_EDITOR_CONFIG_LABEL);
+				if (columnPosition == idColumnIndex && rowPosition >= numberOfHeaderRows && rowPosition != idRowIndex) {
+					configLabels.addLabel(ROW_ID);
+				}
+				if (rowPosition == idRowIndex && columnPosition != idColumnIndex) {
+					configLabels.addLabel(COLUMN_ID);
+				}
 			}
 		};
 
@@ -156,21 +207,11 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 		columnHeaderLayer.setConfigLabelAccumulator(acc);
 		acc.registerColumnOverrides(9, ColumnLabelAccumulator.COLUMN_LABEL_PREFIX + 9);
 		table.addConfiguration(new DefaultNatTableStyleConfiguration());
-		// table.addConfiguration(new HeaderMenuConfiguration(table));
-		// table.addConfiguration(new AbstractRegistryConfiguration() {
-		//
-		// @Override
-		// public void configureRegistry(IConfigRegistry configRegistry) {
-		//
-		//
-		// configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_PAINTER, new CheckBoxPainter(),
-		// DisplayMode.NORMAL, CHECK_BOX_CONFIG_LABEL);
-		// // configRegistry.registerConfigAttribute(CellConfigAttributes.DISPLAY_CONVERTER, new
-		// // DefaultBooleanDisplayConverter(), DisplayMode.NORMAL, CHECK_BOX_CONFIG_LABEL);
-		// configRegistry.registerConfigAttribute(EditConfigAttributes.CELL_EDITOR, new CheckBoxCellEditor(),
-		// DisplayMode.NORMAL, CHECK_BOX_EDITOR_CONFIG_LABEL);
-		//
-		// }});
+		if (columnIDConverter == null)
+			columnIDConverter = new RegExIDConverter(null);
+		if (rowIDConverter == null)
+			rowIDConverter = new RegExIDConverter(null);
+
 		table.addConfiguration(new AbstractRegistryConfiguration() {
 			@Override
 			public void configureRegistry(IConfigRegistry configRegistry) {
@@ -184,14 +225,16 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 				cellStyle.setAttributeValue(CellStyleAttributes.BACKGROUND_COLOR, GUIHelper.COLOR_DARK_GRAY);
 				configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_STYLE, cellStyle, DisplayMode.NORMAL,
 						HEADER_LINE_CELL);
+				configRegistry.registerConfigAttribute(CellConfigAttributes.DISPLAY_CONVERTER, columnIDConverter,
+						DisplayMode.NORMAL, COLUMN_ID);
+				configRegistry.registerConfigAttribute(CellConfigAttributes.DISPLAY_CONVERTER, rowIDConverter,
+						DisplayMode.NORMAL, ROW_ID);
 			}
 		});
 
 		final ColumnHeaderCheckBoxPainter columnHeaderCheckBoxPainter = new ColumnHeaderCheckBoxPainter(columnDataLayer);
 		final ICellPainter columnHeaderPainter = new BeveledBorderDecorator(columnHeaderCheckBoxPainter);
 
-		// final ICellPainter column9HeaderPainter = new BeveledBorderDecorator(new CellPainterDecorator(
-		// new TextPainter(), CellEdgeEnum.RIGHT, columnHeaderCheckBoxPainter));
 		table.addConfiguration(new AbstractRegistryConfiguration() {
 			@Override
 			public void configureRegistry(IConfigRegistry configRegistry) {
@@ -208,173 +251,6 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 		});
 
 		table.configure();
-
-		// =========================================
-
-		// DefaultGridLayer gridLayer = new DefaultGridLayer(RowDataListFixture.getList(),
-		// RowDataListFixture.getPropertyNames(), RowDataListFixture.getPropertyToLabelMap());
-		//
-		// DataLayer columnHeaderDataLayer = (DataLayer) gridLayer.getColumnHeaderDataLayer();
-		// columnHeaderDataLayer.setConfigLabelAccumulator(new ColumnLabelAccumulator());
-		//
-		// final DataLayer bodyDataLayer = (DataLayer) gridLayer.getBodyDataLayer();
-		// IDataProvider dataProvider = bodyDataLayer.getDataProvider();
-		//
-		// // NOTE: Register the accumulator on the body data layer.
-		// // This ensures that the labels are bound to the column index and are unaffected by column order.
-		// final ColumnOverrideLabelAccumulator columnLabelAccumulator = new
-		// ColumnOverrideLabelAccumulator(bodyDataLayer);
-		// bodyDataLayer.setConfigLabelAccumulator(columnLabelAccumulator);
-		//
-		// NatTable natTable = new NatTable(parent, gridLayer, false);
-		//
-		// natTable.addConfiguration(new DefaultNatTableStyleConfiguration());
-		//
-		//
-		// final ColumnHeaderCheckBoxPainter columnHeaderCheckBoxPainter = new
-		// ColumnHeaderCheckBoxPainter(bodyDataLayer);
-		// final ICellPainter column9HeaderPainter = new BeveledBorderDecorator(new CellPainterDecorator(new
-		// TextPainter(), CellEdgeEnum.RIGHT, columnHeaderCheckBoxPainter));
-		// natTable.addConfiguration(new AbstractRegistryConfiguration() {
-		// @Override
-		// public void configureRegistry(IConfigRegistry configRegistry) {
-		// configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_PAINTER,
-		// column9HeaderPainter,
-		// DisplayMode.NORMAL,
-		// ColumnLabelAccumulator.COLUMN_LABEL_PREFIX + 9);
-		// }
-		//
-		// @Override
-		// public void configureUiBindings(UiBindingRegistry uiBindingRegistry) {
-		// uiBindingRegistry.registerFirstSingleClickBinding(
-		// new CellPainterMouseEventMatcher(GridRegion.COLUMN_HEADER, MouseEventMatcher.LEFT_BUTTON,
-		// columnHeaderCheckBoxPainter),
-		// new ToggleCheckBoxColumnAction(columnHeaderCheckBoxPainter, bodyDataLayer)
-		// );
-		// }
-		// });
-		//
-		// natTable.configure();
-		//
-		// return natTable;
-		// }
-		//
-		// public static AbstractRegistryConfiguration editableGridConfiguration(
-		// final ColumnOverrideLabelAccumulator columnLabelAccumulator,
-		// final IDataProvider dataProvider) {
-		//
-		// return new AbstractRegistryConfiguration() {
-		//
-		// @Override
-		// public void configureRegistry(IConfigRegistry configRegistry) {
-		//
-		//
-		//
-		// registerCheckBoxEditor(configRegistry, new CheckBoxPainter(), new CheckBoxCellEditor());
-		//
-		// }
-		//
-		// };
-		// }
-
-		// private static void registerConfigLabelsOnColumns(ColumnOverrideLabelAccumulator columnLabelAccumulator) {
-		// columnLabelAccumulator.registerColumnOverrides(RowDataListFixture.getColumnIndexOfProperty(RowDataListFixture.SECURITY_ID_PROP_NAME),
-		// SECURITY_ID_EDITOR, SECURITY_ID_CONFIG_LABEL);
-		//
-		// columnLabelAccumulator.registerColumnOverrides(RowDataListFixture.getColumnIndexOfProperty(RowDataListFixture.SECURITY_DESCRIPTION_PROP_NAME),
-		// ALIGN_CELL_CONTENTS_LEFT_CONFIG_LABEL);
-		//
-		// columnLabelAccumulator.registerColumnOverrides(RowDataListFixture.getColumnIndexOfProperty(RowDataListFixture.ISSUE_DATE_PROP_NAME),
-		// FORMAT_DATE_CONFIG_LABEL);
-		//
-		// columnLabelAccumulator.registerColumnOverrides(RowDataListFixture.getColumnIndexOfProperty(RowDataListFixture.PRICING_TYPE_PROP_NAME),
-		// COMBO_BOX_CONFIG_LABEL, COMBO_BOX_EDITOR_CONFIG_LABEL, FORMAT_PRICING_TYPE_CONFIG_LABEL);
-		//
-		// columnLabelAccumulator.registerColumnOverrides(RowDataListFixture.getColumnIndexOfProperty(RowDataListFixture.BID_PRICE_PROP_NAME),
-		// BID_PRICE_CONFIG_LABEL, FORMAT_DOUBLE_6_PLACES_CONFIG_LABEL, FORMAT_DOUBLE_2_PLACES_CONFIG_LABEL,
-		// ALIGN_CELL_CONTENTS_RIGHT_CONFIG_LABEL);
-		//
-		// columnLabelAccumulator.registerColumnOverrides(RowDataListFixture.getColumnIndexOfProperty(RowDataListFixture.ASK_PRICE_PROP_NAME),
-		// ASK_PRICE_CONFIG_LABEL, FORMAT_DOUBLE_6_PLACES_CONFIG_LABEL, FORMAT_DOUBLE_2_PLACES_CONFIG_LABEL,
-		// ALIGN_CELL_CONTENTS_RIGHT_CONFIG_LABEL);
-		//
-		// columnLabelAccumulator.registerColumnOverrides(RowDataListFixture.getColumnIndexOfProperty(RowDataListFixture.SPREAD_PROP_NAME),
-		// SPREAD_CONFIG_LABEL, FORMAT_DOUBLE_6_PLACES_CONFIG_LABEL, ALIGN_CELL_CONTENTS_RIGHT_CONFIG_LABEL);
-		//
-		// columnLabelAccumulator.registerColumnOverrides(RowDataListFixture.getColumnIndexOfProperty(RowDataListFixture.LOT_SIZE_PROP_NAME),
-		// LOT_SIZE_CONFIG_LABEL, FORMAT_IN_MILLIONS_CONFIG_LABEL, ALIGN_CELL_CONTENTS_RIGHT_CONFIG_LABEL);
-		//
-		// columnLabelAccumulator.registerColumnOverrides(RowDataListFixture.getColumnIndexOfProperty(RowDataListFixture.PUBLISH_FLAG_PROP_NAME),
-		// CHECK_BOX_EDITOR_CONFIG_LABEL, CHECK_BOX_CONFIG_LABEL);
-		// }
-		//
-		// private static void registerSecurityDescriptionCellStyle(IConfigRegistry configRegistry) {
-		// Style cellStyle = new Style();
-		// cellStyle.setAttributeValue(CellStyleAttributes.HORIZONTAL_ALIGNMENT, HorizontalAlignmentEnum.LEFT);
-		// configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_STYLE, cellStyle, DisplayMode.NORMAL,
-		// ALIGN_CELL_CONTENTS_LEFT_CONFIG_LABEL);
-		// }
-		//
-		// private static void registerPricingCellStyle(IConfigRegistry configRegistry) {
-		// Style cellStyle = new Style();
-		// cellStyle.setAttributeValue(CellStyleAttributes.HORIZONTAL_ALIGNMENT, HorizontalAlignmentEnum.RIGHT);
-		// configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_STYLE, cellStyle, DisplayMode.NORMAL,
-		// ALIGN_CELL_CONTENTS_RIGHT_CONFIG_LABEL);
-		// }
-
-		// private static void registerCheckBoxEditor(IConfigRegistry configRegistry, ICellPainter checkBoxCellPainter,
-		// ICellEditor checkBoxCellEditor) {
-		// configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_PAINTER, checkBoxCellPainter,
-		// DisplayMode.NORMAL, CHECK_BOX_CONFIG_LABEL);
-		// configRegistry.registerConfigAttribute(CellConfigAttributes.DISPLAY_CONVERTER, new
-		// DefaultBooleanDisplayConverter(), DisplayMode.NORMAL, CHECK_BOX_CONFIG_LABEL);
-		// configRegistry.registerConfigAttribute(EditConfigAttributes.CELL_EDITOR, checkBoxCellEditor,
-		// DisplayMode.NORMAL, CHECK_BOX_EDITOR_CONFIG_LABEL);
-		// }
-
-		// ===================================================================
-		//
-		// List<Person> myList = new ArrayList<Person>();
-		// for (int i = 0; i < 100; i++) {
-		// myList.add(new Person(i, "Joe" + i, new Date()));
-		// }
-		//
-		// String[] propertyNames = { "id", "name", "birthDate" };
-		//
-		// IColumnPropertyAccessor<Person> columnPropertyAccessor = new ReflectiveColumnPropertyAccessor<Person>(
-		// propertyNames);
-		// ListDataProvider<Person> listDataProvider = new ListDataProvider<Person>(myList, columnPropertyAccessor);
-		// DefaultGridLayer gridLayer = new DefaultGridLayer(listDataProvider, new DummyColumnHeaderDataProvider(
-		// listDataProvider));
-		// final DefaultBodyLayerStack bodyLayer = gridLayer.getBodyLayer();
-		//
-		// // Custom label "FOO" for cell at column, row index (1, 5)
-		// IConfigLabelAccumulator cellLabelAccumulator = new IConfigLabelAccumulator() {
-		// @Override
-		// public void accumulateConfigLabels(LabelStack configLabels, int columnPosition, int rowPosition) {
-		// int columnIndex = bodyLayer.getColumnIndexByPosition(columnPosition);
-		// int rowIndex = bodyLayer.getRowIndexByPosition(rowPosition);
-		// if (columnIndex == 1 && rowIndex == 5) {
-		// configLabels.addLabel(FOO_LABEL);
-		// }
-		// }
-		// };
-		// bodyLayer.setConfigLabelAccumulator(cellLabelAccumulator);
-		//
-		// NatTable natTable = new NatTable(parent, gridLayer, false);
-		//
-		// natTable.addConfiguration(new DefaultNatTableStyleConfiguration());
-		// // Custom style for label "FOO"
-		// natTable.addConfiguration(new AbstractRegistryConfiguration() {
-		// @Override
-		// public void configureRegistry(IConfigRegistry configRegistry) {
-		// Style cellStyle = new Style();
-		// cellStyle.setAttributeValue(CellStyleAttributes.BACKGROUND_COLOR, GUIHelper.COLOR_GREEN);
-		// configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_STYLE, cellStyle, DisplayMode.NORMAL,
-		// FOO_LABEL);
-		// }
-		// });
-		// natTable.configure();
 
 	}
 
@@ -394,6 +270,16 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 		buildTable(bodyDataProvider, new ColumnHeaderDataProvider(numColumns), new LineNumberRowHeaderDataProvider(
 				dataMatrix.size()));
 
+	}
+
+	public void setColumnIDTypeParsingRules(IDTypeParsingRules idTypeParsingRules) {
+		this.columnIDConverter.setIdTypeParsingRules(idTypeParsingRules);
+		table.refresh();
+	}
+
+	public void setRowIDTypeParsingRules(IDTypeParsingRules idTypeParsingRules) {
+		this.rowIDConverter.setIdTypeParsingRules(idTypeParsingRules);
+		table.refresh();
 	}
 
 	/**

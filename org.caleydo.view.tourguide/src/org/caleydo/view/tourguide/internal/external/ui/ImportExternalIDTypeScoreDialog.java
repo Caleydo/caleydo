@@ -7,6 +7,8 @@ import java.util.List;
 
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
+import org.caleydo.core.io.IDTypeParsingRules;
+import org.caleydo.core.io.gui.dataimport.widget.ICallback;
 import org.caleydo.core.io.gui.dataimport.widget.IProvider;
 import org.caleydo.core.io.gui.dataimport.widget.IntegerCallback;
 import org.caleydo.core.io.gui.dataimport.widget.RowConfigWidget;
@@ -58,6 +60,11 @@ public class ImportExternalIDTypeScoreDialog extends AImportExternalScoreDialog<
 			public void on(int data) {
 				previewTable.onColumnOfRowIDChanged(data);
 			}
+		}, new ICallback<IDTypeParsingRules>() {
+			@Override
+			public void on(IDTypeParsingRules data) {
+				previewTable.setRowIDTypeParsingRules(data);
+			}
 		}, new IProvider<String>() {
 
 			@Override
@@ -85,7 +92,6 @@ public class ImportExternalIDTypeScoreDialog extends AImportExternalScoreDialog<
 		this.rowConfig.setCategoryID(rowIDCategory);
 		this.rowConfig.setEnabled(false);
 	}
-
 
 	@Override
 	protected boolean validate() {
