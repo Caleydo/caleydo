@@ -33,7 +33,6 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 
 import org.caleydo.core.data.collection.table.TableUtils;
-import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
@@ -73,16 +72,9 @@ import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
-import org.caleydo.datadomain.genetic.GeneticDataDomain;
-import org.caleydo.datadomain.pathway.data.PathwayDimensionGroupData;
-import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
 import org.caleydo.view.stratomex.EPickingType;
 import org.caleydo.view.stratomex.GLStratomex;
-import org.caleydo.view.stratomex.brick.configurer.ClinicalDataConfigurer;
 import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
-import org.caleydo.view.stratomex.brick.configurer.PathwayDataConfigurer;
-import org.caleydo.view.stratomex.brick.contextmenu.CreateKaplanMeierSmallMultiplesGroupItem;
-import org.caleydo.view.stratomex.brick.contextmenu.CreatePathwaySmallMultiplesGroupItem;
 import org.caleydo.view.stratomex.brick.contextmenu.ExportBrickDataItem;
 import org.caleydo.view.stratomex.brick.contextmenu.RemoveColumnItem;
 import org.caleydo.view.stratomex.brick.contextmenu.RenameBrickItem;
@@ -91,29 +83,17 @@ import org.caleydo.view.stratomex.brick.layout.CollapsedBrickLayoutTemplate;
 import org.caleydo.view.stratomex.brick.layout.CompactHeaderBrickLayoutTemplate;
 import org.caleydo.view.stratomex.brick.layout.DefaultBrickLayoutTemplate;
 import org.caleydo.view.stratomex.brick.layout.DetailBrickLayoutTemplate;
-import org.caleydo.view.stratomex.brick.sorting.ExternallyProvidedSortingStrategy;
 import org.caleydo.view.stratomex.brick.ui.RectangleCoordinates;
 import org.caleydo.view.stratomex.brick.ui.RelationIndicatorRenderer;
 import org.caleydo.view.stratomex.column.BrickColumn;
-import org.caleydo.view.stratomex.dialog.CreateKaplanMeierSmallMultiplesGroupDialog;
-import org.caleydo.view.stratomex.dialog.CreatePathwayComparisonGroupDialog;
-import org.caleydo.view.stratomex.dialog.CreatePathwaySmallMultiplesGroupDialog;
-import org.caleydo.view.stratomex.event.AddGroupsToStratomexEvent;
 import org.caleydo.view.stratomex.event.ExportBrickDataEvent;
 import org.caleydo.view.stratomex.event.MergeBricksEvent;
-import org.caleydo.view.stratomex.event.OpenCreateKaplanMeierSmallMultiplesGroupDialogEvent;
-import org.caleydo.view.stratomex.event.OpenCreatePathwayGroupDialogEvent;
-import org.caleydo.view.stratomex.event.OpenCreatePathwaySmallMultiplesGroupDialogEvent;
 import org.caleydo.view.stratomex.event.RenameEvent;
 import org.caleydo.view.stratomex.listener.ExportBrickDataEventListener;
-import org.caleydo.view.stratomex.listener.OpenCreateKaplanMeierSmallMultiplesGroupDialogListener;
-import org.caleydo.view.stratomex.listener.OpenCreatePathwayGroupDialogListener;
-import org.caleydo.view.stratomex.listener.OpenCreatePathwaySmallMultiplesGroupDialogListener;
 import org.caleydo.view.stratomex.listener.RelationsUpdatedListener;
 import org.caleydo.view.stratomex.listener.RenameListener;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -238,11 +218,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 	/** same as {@link #leftRelationIndicatorRenderer} for the right side */
 	private RelationIndicatorRenderer rightRelationIndicatorRenderer;
 
-	private OpenCreatePathwaySmallMultiplesGroupDialogListener openCreatePathwaySmallMultiplesGroupDialogListener;
-	private OpenCreateKaplanMeierSmallMultiplesGroupDialogListener openCreateKaplanMeierSmallMultiplesGroupDialogListener;
-
 	private RelationsUpdatedListener relationsUpdateListener;
-	private OpenCreatePathwayGroupDialogListener openCreatePathwayGroupDialogListener;
 	private RenameListener renameListener;
 	private ExportBrickDataEventListener exportBrickDataEventListener;
 
@@ -731,23 +707,9 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 		selectionUpdateListener.setHandler(this);
 		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 
-		openCreatePathwayGroupDialogListener = new OpenCreatePathwayGroupDialogListener();
-		openCreatePathwayGroupDialogListener.setHandler(this);
-		eventPublisher.addListener(OpenCreatePathwayGroupDialogEvent.class, openCreatePathwayGroupDialogListener);
-
-		openCreatePathwaySmallMultiplesGroupDialogListener = new OpenCreatePathwaySmallMultiplesGroupDialogListener();
-		openCreatePathwaySmallMultiplesGroupDialogListener.setHandler(this);
-		eventPublisher.addListener(OpenCreatePathwaySmallMultiplesGroupDialogEvent.class,
-				openCreatePathwaySmallMultiplesGroupDialogListener);
-
 		renameListener = new RenameListener();
 		renameListener.setHandler(this);
 		eventPublisher.addListener(RenameEvent.class, renameListener);
-
-		openCreateKaplanMeierSmallMultiplesGroupDialogListener = new OpenCreateKaplanMeierSmallMultiplesGroupDialogListener();
-		openCreateKaplanMeierSmallMultiplesGroupDialogListener.setHandler(this);
-		eventPublisher.addListener(OpenCreateKaplanMeierSmallMultiplesGroupDialogEvent.class,
-				openCreateKaplanMeierSmallMultiplesGroupDialogListener);
 
 		exportBrickDataEventListener = new ExportBrickDataEventListener();
 		exportBrickDataEventListener.setHandler(this);
@@ -773,15 +735,6 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 			selectionUpdateListener = null;
 		}
 
-		if (openCreatePathwayGroupDialogListener != null) {
-			eventPublisher.removeListener(openCreatePathwayGroupDialogListener);
-			openCreatePathwayGroupDialogListener = null;
-		}
-		if (openCreatePathwaySmallMultiplesGroupDialogListener != null) {
-			eventPublisher.removeListener(openCreatePathwaySmallMultiplesGroupDialogListener);
-			openCreatePathwaySmallMultiplesGroupDialogListener = null;
-		}
-
 		if (renameListener != null) {
 			eventPublisher.removeListener(renameListener);
 			renameListener = null;
@@ -795,11 +748,6 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 		// brickLayout
 		// .getViewRenderer());
 		// }
-
-		if (openCreateKaplanMeierSmallMultiplesGroupDialogListener != null) {
-			eventPublisher.removeListener(openCreateKaplanMeierSmallMultiplesGroupDialogListener);
-			openCreateKaplanMeierSmallMultiplesGroupDialogListener = null;
-		}
 
 		if (exportBrickDataEventListener != null) {
 			eventPublisher.removeListener(exportBrickDataEventListener);
@@ -894,12 +842,6 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 				if (brickColumn.getTablePerspective() == tablePerspective) {
 					// header brick
-					if (dataDomain instanceof GeneticDataDomain && !dataDomain.isColumnDimension()) {
-						contextMenuCreator.addContextMenuItem(new CreatePathwaySmallMultiplesGroupItem(brickColumn
-								.getTablePerspective(), brickColumn.getTablePerspective().getDimensionPerspective()));
-					}
-					contextMenuCreator.addContextMenuItem(new CreateKaplanMeierSmallMultiplesGroupItem(brickColumn
-							.getTablePerspective(), brickColumn.getTablePerspective().getDimensionPerspective()));
 
 					for (IContextMenuBrickFactory factory : contextMenuFactories)
 						for (AContextMenuItem item : factory.createStratification(brickColumn))
@@ -1146,125 +1088,6 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	public void setBrickConfigurer(IBrickConfigurer brickConfigurer) {
 		this.brickConfigurer = brickConfigurer;
-	}
-
-	/**
-	 * FIXME this should not be here but somewhere specific to genes
-	 *
-	 * @param sourceDataDomain
-	 * @param sourceRecordVA
-	 */
-	public void openCreatePathwaySmallMultiplesGroupDialog(final TablePerspective dimensionGroupTablePerspective,
-			final Perspective dimensionPerspective) {
-		getParentComposite().getDisplay().asyncExec(new Runnable() {
-			@Override
-			public void run() {
-				Shell shell = new Shell();
-				// shell.setSize(500, 800);
-
-				CreatePathwaySmallMultiplesGroupDialog dialog = new CreatePathwaySmallMultiplesGroupDialog(shell,
-						dimensionGroupTablePerspective, dimensionPerspective);
-				dialog.create();
-				dialog.setBlockOnOpen(true);
-
-				if (dialog.open() == IStatus.OK) {
-
-					List<PathwayTablePerspective> pathwayTablePerspectives = dialog.getPathwayTablePerspective();
-
-					for (PathwayTablePerspective pathwayTablePerspective : pathwayTablePerspectives) {
-
-						AddGroupsToStratomexEvent event = new AddGroupsToStratomexEvent(pathwayTablePerspective);
-						event.setSourceColumn(getBrickColumn());
-						event.setDataConfigurer(new PathwayDataConfigurer());
-						event.setSender(this);
-						event.setReceiver(stratomex);
-						eventPublisher.triggerEvent(event);
-					}
-				}
-			}
-		});
-	}
-
-	/**
-	 * FIXME this should not be here but somewhere specific to genes
-	 *
-	 * @param sourceDataDomain
-	 * @param sourceRecordVA
-	 */
-	public void openCreateKaplanMeierSmallMultiplesGroupDialog(final TablePerspective dimensionGroupTablePerspective,
-			final Perspective dimensionPerspective) {
-
-		getParentComposite().getDisplay().asyncExec(new Runnable() {
-			@Override
-			public void run() {
-				Shell shell = new Shell();
-				CreateKaplanMeierSmallMultiplesGroupDialog dialog = new CreateKaplanMeierSmallMultiplesGroupDialog(
-						shell, dimensionGroupTablePerspective);
-				dialog.create();
-				dialog.setBlockOnOpen(true);
-
-				if (dialog.open() == IStatus.OK) {
-
-					List<TablePerspective> kaplanMeierDimensionGroupDataList = dialog
-							.getKaplanMeierDimensionGroupDataList();
-
-					for (TablePerspective kaplanMeierDimensionGroupData : kaplanMeierDimensionGroupDataList) {
-
-						AddGroupsToStratomexEvent event = new AddGroupsToStratomexEvent(kaplanMeierDimensionGroupData);
-
-						ClinicalDataConfigurer dataConfigurer = new ClinicalDataConfigurer();
-						ExternallyProvidedSortingStrategy sortingStrategy = new ExternallyProvidedSortingStrategy();
-						sortingStrategy.setExternalBrick(brickColumn);
-						sortingStrategy.setHashConvertedRecordPerspectiveToOrginalRecordPerspective(dialog
-								.getHashConvertedRecordPerspectiveToOrginalRecordPerspective());
-						dataConfigurer.setSortingStrategy(sortingStrategy);
-						event.setSourceColumn(getBrickColumn());
-						event.setDataConfigurer(dataConfigurer);
-						event.setSender(this);
-						event.setReceiver(stratomex);
-						eventPublisher.triggerEvent(event);
-					}
-				}
-			}
-
-		});
-	}
-
-	/**
-	 * FIXME this should not be here but somewhere specific to genes
-	 *
-	 * @param sourceDataDomain
-	 * @param sourceRecordVA
-	 */
-	public void openCreatePathwayGroupDialog(final ATableBasedDataDomain sourceDataDomain,
-			final VirtualArray sourceRecordVA) {
-		getParentComposite().getDisplay().asyncExec(new Runnable() {
-			@Override
-			public void run() {
-				Shell shell = new Shell();
-				// shell.setSize(500, 800);
-
-				CreatePathwayComparisonGroupDialog dialog = new CreatePathwayComparisonGroupDialog(shell,
-						tablePerspective);
-				dialog.create();
-				dialog.setSourceDataDomain(sourceDataDomain);
-				dialog.setSourceVA(sourceRecordVA);
-				dialog.setDimensionPerspective(tablePerspective.getDimensionPerspective());
-				dialog.setRecordPerspective(tablePerspective.getRecordPerspective());
-
-				dialog.setBlockOnOpen(true);
-
-				if (dialog.open() == IStatus.OK) {
-
-					PathwayDimensionGroupData pathwayDimensionGroupData = dialog.getPathwayDimensionGroupData();
-
-					AddGroupsToStratomexEvent event = new AddGroupsToStratomexEvent(pathwayDimensionGroupData);
-					event.setSourceColumn(getBrickColumn());
-					event.setSender(stratomex);
-					eventPublisher.triggerEvent(event);
-				}
-			}
-		});
 	}
 
 	/**
