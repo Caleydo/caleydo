@@ -113,6 +113,8 @@ public class LoadDataSetPageMediator {
 	 */
 	protected IDTypeParsingRules columnIDTypeParsingRules;
 
+	protected boolean datasetChanged = true;
+
 	public LoadDataSetPageMediator(LoadDataSetPage page, DataSetDescription dataSetDescription) {
 		this.page = page;
 		this.dataSetDescription = dataSetDescription;
@@ -140,6 +142,7 @@ public class LoadDataSetPageMediator {
 		dataSetDescription.setDataSourcePath(inputFileName);
 		initWidgets();
 		page.getWizard().getDataSetTypePage().setDatasetChanged(true);
+		datasetChanged = true;
 	}
 
 	private void initWidgets() {
@@ -165,8 +168,10 @@ public class LoadDataSetPageMediator {
 		fillIDTypeCombo(columnIDCategory, columnIDTypes, page.columnIDCombo);
 		page.columnIDCombo.setEnabled(fileSpecified && (page.columnIDCategoryCombo.getSelectionIndex() != -1));
 
-		page.inhomogeneousColumnsButton.setEnabled(fileSpecified);
-		page.inhomogeneousColumnsButton.setSelection(false);
+		page.homogeneousDatasetButton.setEnabled(fileSpecified);
+		page.homogeneousDatasetButton.setSelection(true);
+		page.inhomogeneousDatasetButton.setEnabled(fileSpecified);
+		page.inhomogeneousDatasetButton.setSelection(false);
 
 		page.createRowIDCategoryButton.setEnabled(fileSpecified);
 
@@ -210,13 +215,15 @@ public class LoadDataSetPageMediator {
 				page.columnOfRowIDSpinner.getSelection());
 	}
 
-	public void onInhomogeneousColumnsSelected(boolean isInhomgeneous) {
-		page.columnIDCategoryCombo.setEnabled(!isInhomgeneous);
-		page.columnIDCombo.setEnabled(!isInhomgeneous);
-		page.createColumnIDCategoryButton.setEnabled(!isInhomgeneous);
-		page.createColumnIDTypeButton.setEnabled(!isInhomgeneous);
-		page.defineColumnIDParsingButton.setEnabled(!isInhomgeneous);
-		if (isInhomgeneous) {
+	public void onHomogeneousDatasetSelected(boolean isHomogeneous) {
+		page.columnIDCategoryCombo.setEnabled(isHomogeneous);
+		page.columnIDCombo.setEnabled(isHomogeneous);
+		page.createColumnIDCategoryButton.setEnabled(isHomogeneous);
+		page.createColumnIDTypeButton.setEnabled(isHomogeneous);
+		page.defineColumnIDParsingButton.setEnabled(isHomogeneous);
+		page.columnIDCategoryLabel.setEnabled(isHomogeneous);
+		page.columnIDTypeLabel.setEnabled(isHomogeneous);
+		if (!isHomogeneous) {
 			setColumnIDTypeParsingRules(null);
 			page.columnIDCategoryCombo.clearSelection();
 			page.columnIDCombo.clearSelection();
@@ -764,7 +771,7 @@ public class LoadDataSetPageMediator {
 		// rowIDSpecification.setIdTypeParsingRules(parsingRules);
 		// }
 
-		if (!page.inhomogeneousColumnsButton.getSelection()) {
+		if (!page.inhomogeneousDatasetButton.getSelection()) {
 			IDSpecification columnIDSpecification = new IDSpecification();
 			IDType columnIDType = IDType.getIDType(page.columnIDCombo.getItem(page.columnIDCombo.getSelectionIndex()));
 			// columnIDTypes.get(page.columnIDCombo.getSelectionIndex());
@@ -821,6 +828,15 @@ public class LoadDataSetPageMediator {
 		wizard.setFilteredDataMatrix(filteredMatrix);
 		wizard.setSelectedColumns(selectedColumns);
 		wizard.setColumnOfRowIDs(columnOfRowIDs);
+
+		if (page.inhomogeneousDatasetButton.getSelection()) {
+			if (datasetChanged || dataSetDescription.getDataDescription() != null) {
+				page.getWizard().getInhomogeneousDataPropertiesPage().setInitColumnDescriptions(true);
+				// No global data description for inhomogeneous
+				dataSetDescription.setDataDescription(null);
+			}
+		}
+		datasetChanged = false;
 	}
 
 	private List<String> filterRowByIndices(List<String> row, List<Integer> indices) {

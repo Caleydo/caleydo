@@ -128,9 +128,22 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 	protected DelimiterWidget delimiterRadioGroup;
 
 	/**
-	 * Checkbox to determine whether the columns are inhomogeneous.
+	 * Button to determine whether the columns are homogeneous.
 	 */
-	protected Button inhomogeneousColumnsButton;
+	protected Button homogeneousDatasetButton;
+
+	/**
+	 * Button to determine whether the columns are inhomogeneous.
+	 */
+	protected Button inhomogeneousDatasetButton;
+
+	protected Label columnIDCategoryLabel;
+
+	protected Label columnIDTypeLabel;
+
+	protected Label rowIDCategoryLabel;
+
+	protected Label rowIDTypeLabel;
 
 	protected SelectAllNoneWidget selectAllNone;
 
@@ -168,6 +181,41 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 
 		// label
 		label = new LabelWidget(parentComposite, "Dataset Name");
+
+		Group datasetConfigGroup = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
+		datasetConfigGroup.setText("Dataset Configuration");
+		datasetConfigGroup.setLayout(new GridLayout(2, false));
+		datasetConfigGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 2, 1));
+		Label homogenetyExplanation = new Label(datasetConfigGroup, SWT.WRAP);
+		homogenetyExplanation
+				.setText("Inhomogeneous datasets have a different meaning for every column and do not need to be of the same data type or ID Type. For example, you could load a table where in one column contains the sex of patients while the next column contains their age.\n"
+						+ "In homogeneous datasets every column is of the same type and has the same bounds. For example, in a file with normalized gene expression data all columns are of the same type and have the same bounds. This is also true for categorical data where the cateogries are global across all columns. ");
+		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, false, 2, 1);
+		gd.widthHint = 400;
+		homogenetyExplanation.setLayoutData(gd);
+		homogeneousDatasetButton = new Button(datasetConfigGroup, SWT.RADIO);
+		homogeneousDatasetButton.setText("Homogeneous");
+
+		homogeneousDatasetButton.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false));
+		homogeneousDatasetButton.addListener(SWT.Selection, this);
+		homogeneousDatasetButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				mediator.onHomogeneousDatasetSelected(true);
+			}
+		});
+
+		inhomogeneousDatasetButton = new Button(datasetConfigGroup, SWT.RADIO);
+		inhomogeneousDatasetButton.setText("Inhomogeneous");
+
+		inhomogeneousDatasetButton.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false));
+		inhomogeneousDatasetButton.addListener(SWT.Selection, this);
+		inhomogeneousDatasetButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				mediator.onHomogeneousDatasetSelected(false);
+			}
+		});
 
 		// Row Config
 		createRowConfigPart(parentComposite);
@@ -308,29 +356,6 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 		columnConfigGroup.setLayout(new GridLayout(2, false));
 		columnConfigGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
-		// TODO move to right place
-		Label homogenetyExplanation = new Label(columnConfigGroup, SWT.WRAP);
-		homogenetyExplanation
-				.setText("Inhomogeneous datasets have a different meaning for every column and do not need to be of the same data type or ID Type. For example, you could load a table where in one column contains the sex of patients while the next column contains their age.\n"
-						+ "In homogeneous datasets every column is of the same type and has the same bounds. For example, in a file with normalized gene expression data all columns are of the same type and have the same bounds. This is also true for categorical data where the cateogries are global across all columns. ");
-		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, false);
-		gd.widthHint = 400;
-
-		homogenetyExplanation.setLayoutData(gd);
-
-		inhomogeneousColumnsButton = new Button(columnConfigGroup, SWT.CHECK);
-		inhomogeneousColumnsButton.setText("Inhomogeneous Columns");
-
-		inhomogeneousColumnsButton.setSelection(false);
-		inhomogeneousColumnsButton.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 2, 1));
-		inhomogeneousColumnsButton.addListener(SWT.Selection, this);
-		inhomogeneousColumnsButton.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				mediator.onInhomogeneousColumnsSelected(inhomogeneousColumnsButton.getSelection());
-			}
-		});
-
 		Composite leftConfigGroupPart = new Composite(columnConfigGroup, SWT.NONE);
 		leftConfigGroupPart.setLayout(new GridLayout(2, false));
 		leftConfigGroupPart.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
@@ -400,8 +425,10 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 
 		if (isColumnIDTypeGroup) {
 			columnIDCombo = idCombo;
+			columnIDTypeLabel = idTypeLabel;
 		} else {
 			rowIDCombo = idCombo;
+			rowIDTypeLabel = idTypeLabel;
 		}
 
 		idCombo.addListener(SWT.Modify, this);
@@ -415,10 +442,10 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 	}
 
 	private void createIDCategoryGroup(Composite parent, String groupLabel, final boolean isColumnCategory) {
-		Label recordIDCategoryGroup = new Label(parent, SWT.SHADOW_ETCHED_IN);
-		recordIDCategoryGroup.setText(groupLabel);
+		Label idCategoryLabel = new Label(parent, SWT.SHADOW_ETCHED_IN);
+		idCategoryLabel.setText(groupLabel);
 
-		recordIDCategoryGroup.setLayoutData(new GridData(SWT.LEFT));
+		idCategoryLabel.setLayoutData(new GridData(SWT.LEFT));
 		Combo idCategoryCombo = new Combo(parent, SWT.DROP_DOWN | SWT.READ_ONLY);
 		idCategoryCombo
 				.setToolTipText("ID classes define groups of ID types that can be mapped to each other. For example a 'gene' ID class could contain multiple ID types, such as 'ensemble ID' and 'gene short name' that can be mapped to each other.");
@@ -427,8 +454,10 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 
 		if (isColumnCategory) {
 			columnIDCategoryCombo = idCategoryCombo;
+			columnIDCategoryLabel = idCategoryLabel;
 		} else {
 			rowIDCategoryCombo = idCategoryCombo;
+			rowIDCategoryLabel = idCategoryLabel;
 		}
 
 		idCategoryCombo.addModifyListener(new ModifyListener() {
@@ -465,7 +494,7 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 			return false;
 		}
 
-		if (columnIDCombo.getSelectionIndex() == -1 && !inhomogeneousColumnsButton.getSelection()) {
+		if (columnIDCombo.getSelectionIndex() == -1 && !inhomogeneousDatasetButton.getSelection()) {
 			getWizard().setRequiredDataSpecified(false);
 			return false;
 		}
@@ -476,8 +505,10 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 
 	@Override
 	public IWizardPage getNextPage() {
-
-		return super.getNextPage();
+		if (inhomogeneousDatasetButton.getSelection()) {
+			return getWizard().getInhomogeneousDataPropertiesPage();
+		}
+		return getWizard().getDataSetTypePage();
 	}
 
 	@Override

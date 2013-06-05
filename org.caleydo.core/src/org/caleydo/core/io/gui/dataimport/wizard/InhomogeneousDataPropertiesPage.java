@@ -166,7 +166,7 @@ public class InhomogeneousDataPropertiesPage extends AImportDataPage {
 
 	@Override
 	public IWizardPage getPreviousPage() {
-		return getWizard().getDataSetTypePage();
+		return getWizard().getLoadDataSetPage();
 	}
 
 	@Override

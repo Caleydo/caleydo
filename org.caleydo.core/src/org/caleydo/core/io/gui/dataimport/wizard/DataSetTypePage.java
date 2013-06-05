@@ -56,7 +56,7 @@ public class DataSetTypePage extends AImportDataPage {
 
 	protected Button numericalDatasetButton;
 	protected Button categoricalDatasetButton;
-	protected Button inhomogeneousDatasetButton;
+	// protected Button inhomogeneousDatasetButton;
 
 	/**
 	 * determines whether a new dataset has been loaded prior visiting this page.
@@ -99,15 +99,15 @@ public class DataSetTypePage extends AImportDataPage {
 		gridData.widthHint = 200;
 		categoricalDatasetLabel.setLayoutData(gridData);
 
-		inhomogeneousDatasetButton = new Button(group, SWT.RADIO);
-		inhomogeneousDatasetButton.setText("Inhomogeneous");
-		boldifyButtonText(inhomogeneousDatasetButton);
-		Label inhomogeneousDatasetLabel = new Label(group, SWT.WRAP);
-		inhomogeneousDatasetLabel
-				.setText("Individual columns of an inhomogeneous dataset can contain either numerical or categorical data. Scales or categories may also differ across columns.");
-		gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
-		gridData.widthHint = 200;
-		inhomogeneousDatasetLabel.setLayoutData(gridData);
+		// inhomogeneousDatasetButton = new Button(group, SWT.RADIO);
+		// inhomogeneousDatasetButton.setText("Inhomogeneous");
+		// boldifyButtonText(inhomogeneousDatasetButton);
+		// Label inhomogeneousDatasetLabel = new Label(group, SWT.WRAP);
+		// inhomogeneousDatasetLabel
+		// .setText("Individual columns of an inhomogeneous dataset can contain either numerical or categorical data. Scales or categories may also differ across columns.");
+		// gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
+		// gridData.widthHint = 200;
+		// inhomogeneousDatasetLabel.setLayoutData(gridData);
 
 		setControl(group);
 	}
@@ -139,13 +139,14 @@ public class DataSetTypePage extends AImportDataPage {
 				// the page needs to init from the newly created data description
 				getWizard().getCategoricalDataPage().setInitFromDataDescription(true);
 			}
-		} else {
-			if (datasetChanged || dataSetDescription.getDataDescription() != null) {
-				getWizard().getInhomogeneousDataPropertiesPage().setInitColumnDescriptions(true);
-				// No global data description for inhomogeneous
-				dataSetDescription.setDataDescription(null);
-			}
 		}
+		// else {
+		// if (datasetChanged || dataSetDescription.getDataDescription() != null) {
+		// getWizard().getInhomogeneousDataPropertiesPage().setInitColumnDescriptions(true);
+		// // No global data description for inhomogeneous
+		// dataSetDescription.setDataDescription(null);
+		// }
+		// }
 		datasetChanged = false;
 	}
 
@@ -186,10 +187,8 @@ public class DataSetTypePage extends AImportDataPage {
 		DataImportWizard wizard = getWizard();
 		if (numericalDatasetButton.getSelection()) {
 			return wizard.getNumericalDataPage();
-		} else if (categoricalDatasetButton.getSelection()) {
-			return wizard.getCategoricalDataPage();
 		}
-		return wizard.getInhomogeneousDataPropertiesPage();
+		return wizard.getCategoricalDataPage();
 	}
 
 	/**
