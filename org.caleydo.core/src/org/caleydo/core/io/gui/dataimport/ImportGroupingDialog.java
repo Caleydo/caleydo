@@ -11,6 +11,7 @@ import org.caleydo.core.gui.util.AHelpButtonDialog;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.io.GroupingParseSpecification;
+import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.io.gui.dataimport.PreviewTable.IPreviewCallback;
 import org.caleydo.core.io.gui.dataimport.widget.ICallback;
 import org.caleydo.core.io.gui.dataimport.widget.IProvider;
@@ -122,6 +123,11 @@ public class ImportGroupingDialog extends AHelpButtonDialog implements SafeCalla
 			@Override
 			public void on(int data) {
 				previewTable.onColumnOfRowIDChanged(data);
+			}
+		}, new ICallback<IDTypeParsingRules>() {
+			@Override
+			public void on(IDTypeParsingRules data) {
+				previewTable.setRowIDTypeParsingRules(data);
 			}
 		}, new IProvider<String>() {
 			@Override

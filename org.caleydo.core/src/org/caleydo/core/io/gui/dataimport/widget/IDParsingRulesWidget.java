@@ -31,6 +31,8 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
@@ -84,6 +86,8 @@ public class IDParsingRulesWidget {
 	protected Label substringExplanationLabel;
 	protected Label replacementExplanationLabel;
 	protected Label previewLabel;
+	protected Label originalIDLabel;
+	protected Label convertedIDLabel;
 	protected Label errorImage;
 	protected Label errorLabel;
 
@@ -196,7 +200,21 @@ public class IDParsingRulesWidget {
 		if (idSample != null) {
 			gridData = new GridData(SWT.FILL, SWT.FILL, true, true, 4, 1);
 			previewLabel = new Label(regExGroup, SWT.NONE);
+			previewLabel.setText("Preview: ");
 			previewLabel.setLayoutData(gridData);
+			FontData fontData = previewLabel.getFont().getFontData()[0];
+			Font font = new Font(previewLabel.getDisplay(), new FontData(fontData.getName(), fontData.getHeight(),
+					SWT.BOLD));
+			previewLabel.setFont(font);
+
+			gridData = new GridData(SWT.FILL, SWT.FILL, true, true, 4, 1);
+			originalIDLabel = new Label(regExGroup, SWT.NONE);
+			originalIDLabel.setText("Original ID: " + idSample);
+			originalIDLabel.setLayoutData(gridData);
+			gridData = new GridData(SWT.FILL, SWT.FILL, true, true, 4, 1);
+			convertedIDLabel = new Label(regExGroup, SWT.NONE);
+			convertedIDLabel.setLayoutData(gridData);
+
 		}
 
 		errorImage = new Label(parent, SWT.NONE);
@@ -238,7 +256,7 @@ public class IDParsingRulesWidget {
 			return;
 		try {
 			String idPreview = ATextParser.convertID(idSample, getIDTypeParsingRules());
-			previewLabel.setText("Preview: " + idSample + "->" + idPreview);
+			convertedIDLabel.setText("Converted ID: " + idPreview);
 			if (errorImage.isVisible()) {
 				errorImage.setVisible(false);
 				errorLabel.setVisible(false);
@@ -280,7 +298,11 @@ public class IDParsingRulesWidget {
 		substringRegExLabel.setEnabled(enabled);
 		substringExplanationLabel.setEnabled(enabled);
 		replacementExplanationLabel.setEnabled(enabled);
-		previewLabel.setEnabled(enabled);
+		if (convertedIDLabel != null) {
+			previewLabel.setEnabled(enabled);
+			originalIDLabel.setEnabled(enabled);
+			convertedIDLabel.setEnabled(enabled);
+		}
 		toUpperCaseButton.setEnabled(enabled);
 	}
 

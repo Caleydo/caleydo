@@ -16,6 +16,7 @@ import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.io.gui.dataimport.CreateIDTypeDialog;
 import org.caleydo.core.io.gui.dataimport.DefineIDParsingDialog;
 import org.caleydo.core.io.gui.dataimport.FilePreviewParser;
+import org.caleydo.core.io.parser.ascii.ATextParser;
 import org.caleydo.core.util.collection.Pair;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
@@ -164,6 +165,9 @@ public class LoadDataSetPageMediator {
 		fillIDTypeCombo(columnIDCategory, columnIDTypes, page.columnIDCombo);
 		page.columnIDCombo.setEnabled(fileSpecified && (page.columnIDCategoryCombo.getSelectionIndex() != -1));
 
+		page.inhomogeneousColumnsButton.setEnabled(fileSpecified);
+		page.inhomogeneousColumnsButton.setSelection(false);
+
 		page.createRowIDCategoryButton.setEnabled(fileSpecified);
 
 		page.createColumnIDCategoryButton.setEnabled(fileSpecified);
@@ -206,33 +210,45 @@ public class LoadDataSetPageMediator {
 				page.columnOfRowIDSpinner.getSelection());
 	}
 
-	public void onDefineRowIDParsing() {
-		IDType idType = getRowIDType();
-		IDTypeParsingRules templateIdTypeParsingRules = rowIDTypeParsingRules;
-		if (idType != null && templateIdTypeParsingRules == null) {
-			templateIdTypeParsingRules = idType.getIdTypeParsingRules();
+	public void onInhomogeneousColumnsSelected(boolean isInhomgeneous) {
+		page.columnIDCategoryCombo.setEnabled(!isInhomgeneous);
+		page.columnIDCombo.setEnabled(!isInhomgeneous);
+		page.createColumnIDCategoryButton.setEnabled(!isInhomgeneous);
+		page.createColumnIDTypeButton.setEnabled(!isInhomgeneous);
+		page.defineColumnIDParsingButton.setEnabled(!isInhomgeneous);
+		if (isInhomgeneous) {
+			setColumnIDTypeParsingRules(null);
+			page.columnIDCategoryCombo.clearSelection();
+			page.columnIDCombo.clearSelection();
 		}
-		DefineIDParsingDialog dialog = new DefineIDParsingDialog(new Shell(), templateIdTypeParsingRules,
-				getRowIDSample());
+	}
+
+	public void onDefineRowIDParsing() {
+		// IDType idType = getRowIDType();
+		// IDTypeParsingRules templateIdTypeParsingRules = rowIDTypeParsingRules;
+		// if (idType != null && templateIdTypeParsingRules == null) {
+		// templateIdTypeParsingRules = idType.getIdTypeParsingRules();
+		// }
+		DefineIDParsingDialog dialog = new DefineIDParsingDialog(new Shell(), rowIDTypeParsingRules, getRowIDSample());
 		int status = dialog.open();
 
 		if (status == Window.OK) {
-			rowIDTypeParsingRules = dialog.getIdTypeParsingRules();
+			setRowIDTypeParsingRules(dialog.getIdTypeParsingRules());
 		}
 	}
 
 	public void onDefineColumnIDParsing() {
-		IDType idType = getColumnIDType();
-		IDTypeParsingRules templateIdTypeParsingRules = columnIDTypeParsingRules;
-		if (idType != null && templateIdTypeParsingRules == null) {
-			templateIdTypeParsingRules = idType.getIdTypeParsingRules();
-		}
-		DefineIDParsingDialog dialog = new DefineIDParsingDialog(new Shell(), templateIdTypeParsingRules,
+		// IDType idType = getColumnIDType();
+		// IDTypeParsingRules templateIdTypeParsingRules = columnIDTypeParsingRules;
+		// if (idType != null && templateIdTypeParsingRules == null) {
+		// templateIdTypeParsingRules = idType.getIdTypeParsingRules();
+		// }
+		DefineIDParsingDialog dialog = new DefineIDParsingDialog(new Shell(), columnIDTypeParsingRules,
 				getColumnIDSample());
 		int status = dialog.open();
 
 		if (status == Window.OK) {
-			columnIDTypeParsingRules = dialog.getIdTypeParsingRules();
+			setColumnIDTypeParsingRules(dialog.getIdTypeParsingRules());
 		}
 	}
 
@@ -256,18 +272,36 @@ public class LoadDataSetPageMediator {
 		if (isColumnIDType) {
 			if (page.columnIDCombo.getSelectionIndex() != -1) {
 				page.defineColumnIDParsingButton.setEnabled(true);
+				setColumnIDTypeParsingRules(getColumnIDType().getIdTypeParsingRules());
 			} else {
 				page.defineColumnIDParsingButton.setEnabled(false);
+				setColumnIDTypeParsingRules(null);
 			}
-			columnIDTypeParsingRules = null;
+
 		} else {
 			if (page.rowIDCombo.getSelectionIndex() != -1) {
 				page.defineRowIDParsingButton.setEnabled(true);
+				setRowIDTypeParsingRules(getRowIDType().getIdTypeParsingRules());
 			} else {
 				page.defineRowIDParsingButton.setEnabled(false);
+				setRowIDTypeParsingRules(null);
 			}
-			rowIDTypeParsingRules = null;
+
 		}
+	}
+
+	private void setRowIDTypeParsingRules(IDTypeParsingRules rowIDTypeParsingRules) {
+		this.rowIDTypeParsingRules = rowIDTypeParsingRules;
+		page.previewTable.setRowIDTypeParsingRules(rowIDTypeParsingRules);
+	}
+
+	/**
+	 * @param columnIDTypeParsingRules
+	 *            setter, see {@link columnIDTypeParsingRules}
+	 */
+	public void setColumnIDTypeParsingRules(IDTypeParsingRules columnIDTypeParsingRules) {
+		this.columnIDTypeParsingRules = columnIDTypeParsingRules;
+		page.previewTable.setColumnIDTypeParsingRules(columnIDTypeParsingRules);
 	}
 
 	/**
@@ -704,32 +738,34 @@ public class LoadDataSetPageMediator {
 		if (rowIDType.getIDCategory().getCategoryName().equals("GENE"))
 			rowIDSpecification.setIDTypeGene(true);
 		rowIDSpecification.setIdCategory(rowIDType.getIDCategory().getCategoryName());
-		if (rowIDTypeParsingRules != null) {
-			rowIDSpecification.setIdTypeParsingRules(rowIDTypeParsingRules);
-		} else if (rowIDType.getIdTypeParsingRules() != null) {
-			rowIDSpecification.setIdTypeParsingRules(rowIDType.getIdTypeParsingRules());
-		} else if (rowIDType.getTypeName().equalsIgnoreCase("REFSEQ_MRNA")) {
-			// for REFSEQ_MRNA we ignore the .1, etc.
-			IDTypeParsingRules parsingRules = new IDTypeParsingRules();
-			parsingRules.setSubStringExpression("\\.");
-			parsingRules.setDefault(true);
-			rowIDSpecification.setIdTypeParsingRules(parsingRules);
-		}
+		// if (rowIDTypeParsingRules != null) {
+		rowIDSpecification.setIdTypeParsingRules(rowIDTypeParsingRules);
+		// } else if (rowIDType.getIdTypeParsingRules() != null) {
+		// rowIDSpecification.setIdTypeParsingRules(rowIDType.getIdTypeParsingRules());
+		// } else if (rowIDType.getTypeName().equalsIgnoreCase("REFSEQ_MRNA")) {
+		// // for REFSEQ_MRNA we ignore the .1, etc.
+		// IDTypeParsingRules parsingRules = new IDTypeParsingRules();
+		// parsingRules.setSubStringExpression("\\.");
+		// parsingRules.setDefault(true);
+		// rowIDSpecification.setIdTypeParsingRules(parsingRules);
+		// }
 
-		IDSpecification columnIDSpecification = new IDSpecification();
-		IDType columnIDType = IDType.getIDType(page.columnIDCombo.getItem(page.columnIDCombo.getSelectionIndex()));
-		// columnIDTypes.get(page.columnIDCombo.getSelectionIndex());
-		columnIDSpecification.setIdType(columnIDType.getTypeName());
-		if (columnIDType.getIDCategory().getCategoryName().equals("GENE"))
-			columnIDSpecification.setIDTypeGene(true);
-		columnIDSpecification.setIdCategory(columnIDType.getIDCategory().getCategoryName());
-		if (columnIDTypeParsingRules != null) {
+		if (!page.inhomogeneousColumnsButton.getSelection()) {
+			IDSpecification columnIDSpecification = new IDSpecification();
+			IDType columnIDType = IDType.getIDType(page.columnIDCombo.getItem(page.columnIDCombo.getSelectionIndex()));
+			// columnIDTypes.get(page.columnIDCombo.getSelectionIndex());
+			columnIDSpecification.setIdType(columnIDType.getTypeName());
+			if (columnIDType.getIDCategory().getCategoryName().equals("GENE"))
+				columnIDSpecification.setIDTypeGene(true);
+			columnIDSpecification.setIdCategory(columnIDType.getIDCategory().getCategoryName());
+			// if (columnIDTypeParsingRules != null) {
 			columnIDSpecification.setIdTypeParsingRules(columnIDTypeParsingRules);
-		} else if (columnIDType.getIdTypeParsingRules() != null) {
-			columnIDSpecification.setIdTypeParsingRules(columnIDType.getIdTypeParsingRules());
+			// } else if (columnIDType.getIdTypeParsingRules() != null) {
+			// columnIDSpecification.setIdTypeParsingRules(columnIDType.getIdTypeParsingRules());
+			// }
+			dataSetDescription.setColumnIDSpecification(columnIDSpecification);
 		}
 
-		dataSetDescription.setColumnIDSpecification(columnIDSpecification);
 		dataSetDescription.setRowIDSpecification(rowIDSpecification);
 
 		// TODO check buttonHomogeneous
@@ -756,10 +792,15 @@ public class LoadDataSetPageMediator {
 			List<String> row = matrix.get(i);
 			List<String> filteredRow = filterRowByIndices(row, selectedColumns);
 			if (isRowOfColumnID) {
-				wizard.setFilteredRowOfColumnIDs(filteredRow);
+				List<String> convertedFilteredRow = new ArrayList<>(filteredRow.size());
+				for (String id : filteredRow) {
+					convertedFilteredRow.add(ATextParser.convertID(id, columnIDTypeParsingRules));
+				}
+				wizard.setFilteredRowOfColumnIDs(convertedFilteredRow);
 			} else {
 				filteredMatrix.add(filteredRow);
-				columnOfRowIDs.add(row.get(dataSetDescription.getColumnOfRowIds()));
+				columnOfRowIDs.add(ATextParser.convertID(row.get(dataSetDescription.getColumnOfRowIds()),
+						rowIDTypeParsingRules));
 			}
 		}
 

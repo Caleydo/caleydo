@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.io.MatrixDefinition;
 import org.caleydo.core.io.gui.dataimport.widget.BooleanCallback;
 import org.caleydo.core.io.gui.dataimport.widget.DelimiterWidget;
@@ -168,6 +169,14 @@ public class PreviewTable {
 
 		}
 
+	}
+
+	public void setColumnIDTypeParsingRules(IDTypeParsingRules idTypeParsingRules) {
+		previewTable.setColumnIDTypeParsingRules(idTypeParsingRules);
+	}
+
+	public void setRowIDTypeParsingRules(IDTypeParsingRules idTypeParsingRules) {
+		previewTable.setRowIDTypeParsingRules(idTypeParsingRules);
 	}
 
 	/**

@@ -68,7 +68,8 @@ public class RowConfigWidget {
 	private IDTypeParsingRules idTypeParsingRules;
 
 	public RowConfigWidget(Composite parent, final IntegerCallback onNumHeaderRowsChanged,
-			final IntegerCallback onColumnOfRowIDChanged, final IProvider<String> idSampleProvider) {
+			final IntegerCallback onColumnOfRowIDChanged, final ICallback<IDTypeParsingRules> onParsingRulesChanged,
+			final IProvider<String> idSampleProvider) {
 		this.idSampleProvider = idSampleProvider;
 		this.group = new Group(parent, SWT.SHADOW_ETCHED_IN);
 		group.setText("Row Configuration");
@@ -93,6 +94,10 @@ public class RowConfigWidget {
 			@Override
 			public void modifyText(ModifyEvent e) {
 				idTypeParsingRules = null;
+				if (getIDType() != null) {
+					idTypeParsingRules = getIDType().getIdTypeParsingRules();
+				}
+				onParsingRulesChanged.on(idTypeParsingRules);
 			}
 		});
 
@@ -102,6 +107,7 @@ public class RowConfigWidget {
 			@Override
 			public void widgetSelected(SelectionEvent event) {
 				onDefineParsing();
+				onParsingRulesChanged.on(idTypeParsingRules);
 			}
 		});
 
