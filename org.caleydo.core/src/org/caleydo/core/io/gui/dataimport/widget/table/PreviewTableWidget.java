@@ -159,8 +159,22 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 
 	public PreviewTableWidget(Composite parent) {
 		super(parent);
-		bodyDataProvider = new MatrixBasedBodyDataProvider(null, 1);
-		buildTable(bodyDataProvider, new ColumnHeaderDataProvider(1), new LineNumberRowHeaderDataProvider(1));
+		List<List<String>> emptyMatrix = createEmptyDataMatrix(15, 10);
+		bodyDataProvider = new MatrixBasedBodyDataProvider(emptyMatrix, emptyMatrix.size());
+		buildTable(bodyDataProvider, new ColumnHeaderDataProvider(10),
+				new LineNumberRowHeaderDataProvider(emptyMatrix.size()));
+	}
+
+	private List<List<String>> createEmptyDataMatrix(int numRows, int numColumns) {
+		List<List<String>> dataMatrix = new ArrayList<>(numRows);
+		for (int i = 0; i < numRows; i++) {
+			List<String> row = new ArrayList<>(numColumns);
+			for (int j = 0; j < numColumns; j++) {
+				row.add("");
+			}
+			dataMatrix.add(row);
+		}
+		return dataMatrix;
 	}
 
 	private void buildTable(MatrixBasedBodyDataProvider bodyDataProvider, ColumnHeaderDataProvider columnDataProvider,
@@ -358,6 +372,10 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 			}
 		}
 		return result;
+	}
+
+	public void setEnabled(boolean isEnabled) {
+		table.setEnabled(isEnabled);
 	}
 
 }

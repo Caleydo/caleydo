@@ -201,6 +201,8 @@ public class LoadDataSetPageMediator {
 		page.delimiterRadioGroup.setEnabled(fileSpecified);
 		page.selectAllNone.setEnabled(fileSpecified);
 
+		page.previewTable.setEnabled(fileSpecified);
+
 		if (fileSpecified)
 			createDataPreviewTableFromFile();
 	}
