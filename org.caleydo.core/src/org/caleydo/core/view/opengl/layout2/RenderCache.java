@@ -106,7 +106,7 @@ public final class RenderCache {
 			return false;
 		if (validCounter < 30) // 30 frames no change and not yet recording
 			return false;
-		if (w * h < 1000 || numVertices < 100) // too small area
+		if (w * h < 2500 || numVertices < 100) // too small area
 			return false;
 		// TODO no cache on text
 		// if (numChars > 0)
