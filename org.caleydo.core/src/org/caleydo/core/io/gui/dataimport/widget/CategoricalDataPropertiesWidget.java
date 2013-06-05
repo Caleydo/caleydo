@@ -159,8 +159,20 @@ public class CategoricalDataPropertiesWidget {
 
 		Composite buttonComposite = new Composite(categoriesGroup, SWT.NONE);
 		buttonComposite.setLayout(new GridLayout(1, true));
+
+		applyColorSchemeButton = new Button(buttonComposite, SWT.PUSH);
+		applyColorSchemeButton.setText("Select Color Scheme");
+		applyColorSchemeButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		applyColorSchemeButton.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				chooseColorScheme();
+			}
+		});
+
 		addCategoryButton = new Button(buttonComposite, SWT.PUSH);
-		addCategoryButton.setText("Add");
+		addCategoryButton.setText("Add Category");
 		addCategoryButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		addCategoryButton.addSelectionListener(new SelectionAdapter() {
 
@@ -172,7 +184,7 @@ public class CategoricalDataPropertiesWidget {
 		});
 
 		removeCategoryButton = new Button(buttonComposite, SWT.PUSH);
-		removeCategoryButton.setText("Remove");
+		removeCategoryButton.setText("Remove Category");
 		removeCategoryButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		removeCategoryButton.addSelectionListener(new SelectionAdapter() {
 
@@ -187,16 +199,7 @@ public class CategoricalDataPropertiesWidget {
 
 		});
 
-		applyColorSchemeButton = new Button(buttonComposite, SWT.PUSH);
-		applyColorSchemeButton.setText("Apply Color Scheme");
-		applyColorSchemeButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-		applyColorSchemeButton.addSelectionListener(new SelectionAdapter() {
 
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				chooseColorScheme();
-			}
-		});
 
 		categoryTable = new CategoryTable(categoriesGroup, new GridData(SWT.FILL, SWT.FILL, true, true, 1, 2), true);
 
