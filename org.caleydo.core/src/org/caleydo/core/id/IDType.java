@@ -253,7 +253,7 @@ public class IDType {
 					}
 				} catch (NumberFormatException e) {
 				}
-			} else if (getDataType().equals(EDataType.INTEGER)) {
+			} else if (getDataType().equals(EDataType.STRING)) {
 				if (idMappingManager.doesElementExist(this, currentID)) {
 					numMatchedIDs++;
 				} else if (getTypeName().equals("REFSEQ_MRNA")) { // FIXME hack

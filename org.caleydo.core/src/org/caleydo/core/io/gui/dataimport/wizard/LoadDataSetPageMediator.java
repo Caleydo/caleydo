@@ -517,8 +517,7 @@ public class LoadDataSetPageMediator {
 	// }
 
 	public void createDataPreviewTableFromFile() {
-		parser.parse(dataSetDescription.getDataSourcePath(), dataSetDescription.getDelimiter(), true,
-				MAX_PREVIEW_TABLE_ROWS);
+		parser.parse(dataSetDescription.getDataSourcePath(), dataSetDescription.getDelimiter(), true, -1);
 		dataMatrix = parser.getDataMatrix();
 		totalNumberOfColumns = parser.getTotalNumberOfColumns();
 		totalNumberOfRows = parser.getTotalNumberOfRows();
@@ -529,8 +528,9 @@ public class LoadDataSetPageMediator {
 
 		page.previewTable.updateTableColors(dataSetDescription.getNumberOfHeaderLines(),
 				dataSetDescription.getRowOfColumnIDs(), dataSetDescription.getColumnOfRowIds());
+		// page.parentComposite.pack(true);
+		// page.parentComposite.redraw();
 
-		page.parentComposite.pack();
 	}
 
 	private void guessNumberOfHeaderRows() {
@@ -560,6 +560,18 @@ public class LoadDataSetPageMediator {
 
 	private void determineIDTypes() {
 
+		IDType mostProbableRowIDType = null;
+		IDType mostProbableColumnIDType = null;
+
+		IDSpecification rowIDSpec = dataSetDescription.getRowIDSpecification();
+		IDSpecification columnIDSpec = dataSetDescription.getColumnIDSpecification();
+		if (rowIDSpec != null) {
+			mostProbableRowIDType = IDType.getIDType(rowIDSpec.getIdType());
+		}
+		if (columnIDSpec != null) {
+			mostProbableColumnIDType = IDType.getIDType(columnIDSpec.getIdType());
+		}
+
 		List<String> rowIDList = new ArrayList<String>();
 		for (int i = 0; i < dataMatrix.size() && i < MAX_CONSIDERED_IDS_FOR_ID_TYPE_DETERMINATION; i++) {
 			List<String> row = dataMatrix.get(i);
@@ -572,8 +584,10 @@ public class LoadDataSetPageMediator {
 			columnIDList.add(idRow.get(i));
 		}
 
-		IDType mostProbableRowIDType = determineMostProbableIDType(rowIDList);
-		IDType mostProbableColumnIDType = determineMostProbableIDType(columnIDList);
+		if (mostProbableRowIDType == null)
+			mostProbableRowIDType = determineMostProbableIDType(rowIDList);
+		if (mostProbableColumnIDType == null)
+			mostProbableColumnIDType = determineMostProbableIDType(columnIDList);
 
 		setMostProbableIDTypes(mostProbableRowIDType, mostProbableColumnIDType);
 	}

@@ -187,8 +187,9 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 
 		GridLayer gridLayer = new GridLayer(bodyLayer, columnHeaderLayer, rowHeaderLayer, cornerLayer);
 		table = new NatTable(parent, gridLayer, false);
-		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1);
-		gridData.heightHint = 300;
+		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 2);
+
+		gridData.heightHint = 400;
 		gridData.widthHint = 800;
 		table.setLayoutData(gridData);
 
@@ -312,7 +313,11 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 		this.idColumnIndex = idColumnIndex;
 		this.numberOfHeaderRows = numberOfHeaderRows;
 
+		// table.pack();
+		// table.layout(true);
 		table.refresh();
+
+		// table.redraw();
 	}
 
 	public void selectColumns(boolean selectAll, int columnOfRowId) {
