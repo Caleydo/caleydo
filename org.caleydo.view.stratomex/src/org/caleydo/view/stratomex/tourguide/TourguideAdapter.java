@@ -21,6 +21,7 @@ package org.caleydo.view.stratomex.tourguide;
 
 import gleem.linalg.Vec3f;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -126,7 +127,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 	// what either an element or a brick
 	private EWizardMode wizardMode;
 	private ElementLayout wizardElement;
-	private BrickColumn wizardPreview;
+	private List<BrickColumn> wizardPreviews = new ArrayList<>();
 
 	/**
 	 * the current selection and related information
@@ -145,26 +146,26 @@ public class TourguideAdapter implements IStratomexAdapter {
 	}
 
 	public void renderAddButton(GL2 gl, float x, float y, float w, float h, int id) {
-		if (!hasTourGuide() || wizardElement != null || wizardPreview != null) // not more than one at the same time
+		if (!hasTourGuide() || wizardElement != null || !wizardPreviews.isEmpty()) // not more than one at the same time
 			return;
 		renderButton(gl, x, y, w, h, 24, stratomex, ADD_PICKING_TYPE, id, "add.png");
 	}
 
 	public void renderStartButton(GL2 gl, float x, float y, float w, float h, int id) {
-		if (!hasTourGuide() || wizardElement != null || wizardPreview != null) // not more than one at the same time
+		if (!hasTourGuide() || wizardElement != null || !wizardPreviews.isEmpty()) // not more than one at the same time
 			return;
 		renderButton(gl, x, y, w, h, 32, stratomex, ADD_PICKING_TYPE, id, "add.png");
 	}
 
 	public void renderAddDependentButton(GL2 gl, float x, float y, float w, float h, int id) {
-		if (!hasTourGuide() || wizardElement != null || wizardPreview != null) // not more than one at the same time
+		if (!hasTourGuide() || wizardElement != null || !wizardPreviews.isEmpty()) // not more than one at the same time
 			return;
 		renderButton(gl, x, y, w, h, 24, stratomex, ADD_DEPENDENT_PICKING_TYPE, id,
  "add.png");
 	}
 
 	public void renderConfirmButton(GL2 gl, float x, float y, float w, float h) {
-		boolean disabled = wizardPreview == null; // no preview no accept
+		boolean disabled = wizardPreviews.isEmpty(); // no preview no accept
 		renderButton(gl, x, y, w, h, 32, stratomex, CONFIRM_PICKING_TYPE, 1,
  "accept"
 				+ (disabled ? "_disabled" : "") + ".png");
@@ -482,7 +483,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 
 	@ListenTo(sendToMe = true)
 	private void onAddEmptyColumn(AddNewColumnEvent event) {
-		if (wizardPreview != null || wizardElement != null) // only one at one time
+		if (!wizardPreviews.isEmpty() || wizardElement != null) // only one at one time
 			return;
 
 		int index = 0;
@@ -530,10 +531,11 @@ public class TourguideAdapter implements IStratomexAdapter {
 	private void onWizardAction(WizardActionsEvent event) {
 		switch (event.getPickingType()) {
 		case CONFIRM_PICKING_TYPE:
-			if (wizardPreview == null)
+			if (wizardPreviews.isEmpty())
 				return;
 			// remove the preview buttons
-			if (wizardPreview != null) {
+			if (!wizardPreviews.isEmpty()) {
+				BrickColumn wizardPreview = wizardPreviews.get(0);
 				final Row layout = wizardPreview.getLayout();
 				layout.clearForegroundRenderers(AddAttachedLayoutRenderer.class);
 				layout.clearForegroundRenderers(WizardActionsLayoutRenderer.class);
@@ -549,8 +551,9 @@ public class TourguideAdapter implements IStratomexAdapter {
 			stratomex.relayout();
 			break;
 		case CANCEL_PICKING_TYPE:
-			if (wizardPreview != null)
-				stratomex.removeTablePerspective(wizardPreview.getTablePerspective());
+			for (BrickColumn col : wizardPreviews) {
+				stratomex.removeTablePerspective(col.getTablePerspective());
+			}
 			// reset
 			done(false);
 			stratomex.relayout();
@@ -574,8 +577,9 @@ public class TourguideAdapter implements IStratomexAdapter {
 		if (event.getReceiver() != stratomex)
 			return;
 		// removed my template
-		if (this.wizardPreview != null && this.wizardPreview.getTablePerspective() == event.getTablePerspective()) {
-			done(false);
+		for (BrickColumn wizardPreview : wizardPreviews) {
+			if (wizardPreview.getTablePerspective() == event.getTablePerspective())
+				done(false);
 		}
 	}
 
@@ -640,7 +644,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 		if (wizardElement != null)
 			cleanupWizardElement();
 
-		wizardPreview = null;
+		wizardPreviews.clear();
 
 		if (wizard != null) {
 			wizard.done(confirmed);
@@ -723,11 +727,12 @@ public class TourguideAdapter implements IStratomexAdapter {
 	}
 
 	@Override
-	public void replaceTemplate(TablePerspective with, IBrickConfigurer config) {
+	public void replaceTemplate(TablePerspective with, IBrickConfigurer config, boolean extra) {
 		List<Pair<Integer, BrickColumn>> added;
 		final List<TablePerspective> withL = Collections.singletonList(with);
 
 		if (wizardElement != null) {
+			assert !extra;
 			cleanupWizardElement();
 			BrickColumnManager bcm = stratomex.getBrickColumnManager();
 			BrickColumn left = previewIndex < 0 ? null : bcm.getBrickColumns().get(
@@ -736,19 +741,35 @@ public class TourguideAdapter implements IStratomexAdapter {
 			if (wizardMode == EWizardMode.INDEPENDENT) {
 				updateDependentBrickColumn(with, added.get(0).getSecond());
 			}
-		} else if (wizardPreview != null) {
-			added = stratomex.addTablePerspectives(withL, config, wizardPreview, true);
-			stratomex.removeTablePerspective(wizardPreview.getTablePerspective());
-			if (wizardMode == EWizardMode.INDEPENDENT) {
-				updateDependentBrickColumn(with, added.get(0).getSecond());
+			wizardPreviews.add(added.get(0).getSecond());
+		} else if (!wizardPreviews.isEmpty()) {
+			if (extra) {
+				if (wizardPreviews.size() == 1) { // add extra
+					added = stratomex.addTablePerspectives(withL, config, wizardPreviews.get(0), true);
+					wizardPreviews.add(added.get(0).getSecond());
+				} else { // update extra
+					BrickColumn extraPreview = wizardPreviews.get(0);
+					added = stratomex.addTablePerspectives(withL, config, extraPreview, true);
+					stratomex.removeTablePerspective(extraPreview.getTablePerspective());
+					wizardPreviews.set(1, added.get(0).getSecond());
+				}
+			} else {
+				BrickColumn wizardPreview = wizardPreviews.get(0);
+				added = stratomex.addTablePerspectives(withL, config, wizardPreview, true);
+				stratomex.removeTablePerspective(wizardPreview.getTablePerspective());
+				if (wizardMode == EWizardMode.INDEPENDENT) {
+					updateDependentBrickColumn(with, added.get(0).getSecond());
+				}
+				wizardPreviews.set(0, added.get(0).getSecond());
 			}
+
 		} else {
 			// create a preview on the fly
-			added = stratomex.addTablePerspectives(withL, config, wizardPreview, true);
+			added = stratomex.addTablePerspectives(withL, config, null, true);
+			wizardPreviews.add(added.get(0).getSecond());
 		}
-		wizardPreview = added.get(0).getSecond();
-		wizardPreview.getLayout().clearForegroundRenderers();
-		wizardPreview.getLayout().addForeGroundRenderer(new WizardActionsLayoutRenderer(stratomex, this));
+		wizardPreviews.get(0).getLayout().clearForegroundRenderers();
+		wizardPreviews.get(0).getLayout().addForeGroundRenderer(new WizardActionsLayoutRenderer(stratomex, this));
 	}
 
 	/**
@@ -786,10 +807,13 @@ public class TourguideAdapter implements IStratomexAdapter {
 			renderer.setLimits(wizardElement.getSizeScaledX(), wizardElement.getSizeScaledY()); // don't know why the
 																								// element layout does
 																								// it not by it own
-		} else if (wizardPreview != null) {
+		} else if (!wizardPreviews.isEmpty()) {
 			ElementLayout new_ = ElementLayouts.wrap(renderer, 120);
+			BrickColumn wizardPreview = wizardPreviews.get(0);
 			previewIndex = stratomex.getBrickColumnManager().indexOfBrickColumn(wizardPreview) - 1;
-			stratomex.removeTablePerspective(wizardPreview.getTablePerspective());
+			for (BrickColumn preview : wizardPreviews)
+				stratomex.removeTablePerspective(preview.getTablePerspective());
+			wizardPreviews.clear();
 			wizardElement = new_;
 			new_.addBackgroundRenderer(new TemplateHighlightRenderer());
 			new_.addForeGroundRenderer(new WizardActionsLayoutRenderer(stratomex, this));
@@ -803,23 +827,23 @@ public class TourguideAdapter implements IStratomexAdapter {
 	}
 
 	@Override
-	public void replaceClinicalTemplate(Perspective underlying, TablePerspective numerical) {
+	public void replaceClinicalTemplate(Perspective underlying, TablePerspective numerical, boolean extra) {
 		TablePerspective t = asPerspective(underlying, numerical);
 		TablePerspective underlyingTP = findTablePerspective(underlying);
 		if (underlyingTP == null)
 			return;
 		ClinicalDataConfigurer configurer = AddGroupsToStratomexListener.createKaplanConfigurer(stratomex,
 				underlyingTP, t);
-		replaceTemplate(t, configurer);
+		replaceTemplate(t, configurer, extra);
 	}
 
 	@Override
-	public void replacePathwayTemplate(Perspective underlying, PathwayGraph pathway) {
+	public void replacePathwayTemplate(Perspective underlying, PathwayGraph pathway, boolean extra) {
 		if (underlying == null) {
 			replaceTemplate(new PrimitivePathwayRenderer(pathway, stratomex));
 		} else {
 			TablePerspective t = asPerspective(underlying, pathway);
-			replaceTemplate(t, new PathwayDataConfigurer());
+			replaceTemplate(t, new PathwayDataConfigurer(), extra);
 		}
 	}
 

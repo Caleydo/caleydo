@@ -44,6 +44,6 @@ public class BrowsePathwayState extends ABrowseState {
 
 	@Override
 	public void onUpdate(UpdatePathwayPreviewEvent event, IReactions adapter) {
-		adapter.replacePathwayTemplate(underlying, event.getPathway());
+		adapter.replacePathwayTemplate(underlying, event.getPathway(), false);
 	}
 }

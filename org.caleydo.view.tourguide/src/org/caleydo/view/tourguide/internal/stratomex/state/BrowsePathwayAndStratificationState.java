@@ -61,7 +61,7 @@ public class BrowsePathwayAndStratificationState extends BrowsePathwayState impl
 	private void show(IReactions adapter) {
 		if (underlying == null || pathway == null)
 			return;
-		adapter.replacePathwayTemplate(underlying, pathway);
+		adapter.replacePathwayTemplate(underlying, pathway, false);
 	}
 
 	@Override

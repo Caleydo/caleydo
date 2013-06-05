@@ -45,7 +45,7 @@ public interface IReactions {
 	 * @param underlying
 	 * @param numerical
 	 */
-	void replaceClinicalTemplate(Perspective underlying, TablePerspective numerical);
+	void replaceClinicalTemplate(Perspective underlying, TablePerspective numerical, boolean extra);
 
 	/**
 	 * @return
@@ -56,6 +56,6 @@ public interface IReactions {
 	 * @param underlying
 	 * @param pathway
 	 */
-	void replacePathwayTemplate(Perspective underlying, PathwayGraph pathway);
+	void replacePathwayTemplate(Perspective underlying, PathwayGraph pathway, boolean extra);
 
 }

@@ -38,7 +38,7 @@ import com.google.common.base.Predicate;
  * 
  */
 public interface IStratomexAdapter {
-	void replaceTemplate(TablePerspective with, IBrickConfigurer configurer);
+	void replaceTemplate(TablePerspective with, IBrickConfigurer configurer, boolean extra);
 
 	void replaceTemplate(ALayoutRenderer renderer);
 
@@ -51,8 +51,8 @@ public interface IStratomexAdapter {
 	ALayoutRenderer createPreviewRenderer(PathwayGraph pathway);
 	ALayoutRenderer createPreviewRenderer(TablePerspective tablePerspective);
 
-	void replaceClinicalTemplate(Perspective underlying, TablePerspective numerical);
+	void replaceClinicalTemplate(Perspective underlying, TablePerspective numerical, boolean extra);
 
-	void replacePathwayTemplate(Perspective underlying, PathwayGraph pathway);
+	void replacePathwayTemplate(Perspective underlying, PathwayGraph pathway, boolean extra);
 
 }

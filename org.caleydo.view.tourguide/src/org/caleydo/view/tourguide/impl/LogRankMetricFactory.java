@@ -37,10 +37,13 @@ import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.base.DefaultLabelProvider;
+import org.caleydo.view.stratomex.brick.configurer.CategoricalDataConfigurer;
 import org.caleydo.view.stratomex.tourguide.event.UpdateNumericalPreviewEvent;
+import org.caleydo.view.stratomex.tourguide.event.UpdateStratificationPreviewEvent;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.score.DefaultComputedGroupScore;
 import org.caleydo.view.tourguide.api.score.MultiScore;
+import org.caleydo.view.tourguide.api.state.ABrowseState;
 import org.caleydo.view.tourguide.api.state.BrowseOtherState;
 import org.caleydo.view.tourguide.api.state.EWizardMode;
 import org.caleydo.view.tourguide.api.state.IReactions;
@@ -86,13 +89,15 @@ public class LogRankMetricFactory implements IScoreFactory {
 			TablePerspective source) {
 
 		IState start = stateMachine.get(IStateMachine.ADD_STRATIFICATIONS);
-		IState browseStratification = stateMachine.get(IStateMachine.BROWSE_STRATIFICATIONS);
 
 		if (mode == EWizardMode.GLOBAL) {
-			IState target = stateMachine.addState("LogRank", new CreateLogRankState(browseStratification));
+			BothUpdateLogRankState browse = new BothUpdateLogRankState();
+			stateMachine.addState("LogRankBrowse", browse);
+			IState target = stateMachine.addState("LogRank", new CreateLogRankState(browse));
 			stateMachine.addTransition(start, new SimpleTransition(target,
 					"Find based on significant Kaplan-Meier change"));
 		} else if (mode == EWizardMode.INDEPENDENT) {
+			IState browseStratification = stateMachine.get(IStateMachine.BROWSE_STRATIFICATIONS);
 			stateMachine.addTransition(start, new CreateLogRankTransition(browseStratification, source));
 		}
 	}
@@ -131,10 +136,10 @@ public class LogRankMetricFactory implements IScoreFactory {
 		return multiScore;
 	}
 
-	public class CreateLogRankState extends BrowseOtherState {
-		private final IState target;
+	private class CreateLogRankState extends BrowseOtherState {
+		private final BothUpdateLogRankState target;
 
-		public CreateLogRankState(IState target) {
+		public CreateLogRankState(BothUpdateLogRankState target) {
 			super("Select a numerical value in the Tour Guide as a starting point for finding a stratification.");
 			this.target = target;
 		}
@@ -147,11 +152,30 @@ public class LogRankMetricFactory implements IScoreFactory {
 
 			MultiScore multiScore = createLogRankScore(numerical);
 			adapter.addScoreToTourGuide(STRATIFICATIONS, multiScore);
+			target.numerical = numerical;
 			adapter.switchTo(target);
 		}
 	}
 
-	public class CreateLogRankTransition implements ITransition {
+	private class BothUpdateLogRankState extends ABrowseState {
+		private TablePerspective numerical;
+
+		public BothUpdateLogRankState() {
+			super(EDataDomainQueryMode.STRATIFICATIONS, "Browse List");
+		}
+
+		@Override
+		public void onUpdate(UpdateStratificationPreviewEvent event, IReactions adapter) {
+			TablePerspective tp = event.getTablePerspective();
+			if (DataDomainOracle.isCategoricalDataDomain(tp.getDataDomain()))
+				adapter.replaceTemplate(tp, new CategoricalDataConfigurer(tp));
+			else
+				adapter.replaceTemplate(tp, null);
+			adapter.replaceClinicalTemplate(tp.getRecordPerspective(), numerical, true);
+		}
+	}
+
+	private class CreateLogRankTransition implements ITransition {
 		private final IState target;
 		private final TablePerspective numerical;
 

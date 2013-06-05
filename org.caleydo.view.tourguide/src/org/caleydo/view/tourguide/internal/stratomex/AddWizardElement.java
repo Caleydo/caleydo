@@ -339,19 +339,19 @@ public class AddWizardElement extends AAddWizardElement implements IReactions {
 	@Override
 	public void replaceTemplate(TablePerspective with, IBrickConfigurer configurer) {
 		canGoBack = false;
-		adapter.replaceTemplate(with, configurer);
+		adapter.replaceTemplate(with, configurer, false);
 	}
 
 	@Override
-	public void replaceClinicalTemplate(Perspective underlying, TablePerspective numerical) {
+	public void replaceClinicalTemplate(Perspective underlying, TablePerspective numerical, boolean extra) {
 		canGoBack = false;
-		adapter.replaceClinicalTemplate(underlying, numerical);
+		adapter.replaceClinicalTemplate(underlying, numerical, extra);
 	}
 
 	@Override
-	public void replacePathwayTemplate(Perspective underlying, PathwayGraph pathway) {
+	public void replacePathwayTemplate(Perspective underlying, PathwayGraph pathway, boolean extra) {
 		canGoBack = false;
-		adapter.replacePathwayTemplate(underlying, pathway);
+		adapter.replacePathwayTemplate(underlying, pathway, extra);
 	}
 
 	@Override

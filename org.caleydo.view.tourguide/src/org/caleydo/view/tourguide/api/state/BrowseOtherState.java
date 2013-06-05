@@ -56,7 +56,7 @@ public class BrowseOtherState extends ABrowseState {
 			clinicalDataConfigurer.setSortingStrategy(new NoSortingSortingStrategy());
 			adapter.replaceTemplate(numerical, clinicalDataConfigurer);
 		} else { // dependent
-			adapter.replaceClinicalTemplate(underlying, numerical);
+			adapter.replaceClinicalTemplate(underlying, numerical, false);
 		}
 	}
 

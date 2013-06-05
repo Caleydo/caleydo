@@ -96,6 +96,7 @@ import org.caleydo.vis.rank.model.RankRankColumnModel;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.StackedRankColumnModel;
 import org.caleydo.vis.rank.model.StringRankColumnModel;
+import org.caleydo.vis.rank.model.mixin.IAnnotatedColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 import org.caleydo.vis.rank.ui.RankTableKeyListener;
 import org.caleydo.vis.rank.ui.RankTableUIMouseKeyListener;
@@ -402,6 +403,9 @@ public class GLTourGuideView extends AGLElementView {
 			if (s instanceof MultiScore) {
 				ACompositeRankColumnModel combined = table.getConfig().createNewCombined(
 						((MultiScore) s).getCombinedType());
+				if (combined instanceof IAnnotatedColumnMixin) {
+					((IAnnotatedColumnMixin) combined).setTitle(s.getLabel());
+				}
 				table.add(lastLabel + 1, combined);
 				for (IScore s2 : ((MultiScore) s)) {
 					combined.add(new ScoreRankColumnModel(s2));
