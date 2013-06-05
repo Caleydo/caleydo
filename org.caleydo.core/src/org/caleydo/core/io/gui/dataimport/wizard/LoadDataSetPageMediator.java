@@ -141,8 +141,7 @@ public class LoadDataSetPageMediator {
 	public void onSelectFile(String inputFileName) {
 		dataSetDescription.setDataSourcePath(inputFileName);
 		initWidgets();
-		page.getWizard().getDataSetTypePage().setDatasetChanged(true);
-		datasetChanged = true;
+		setDataSetChanged(true);
 	}
 
 	private void initWidgets() {
@@ -391,6 +390,12 @@ public class LoadDataSetPageMediator {
 		dataSetDescription.setNumberOfHeaderLines(numHeaderRows);
 		page.previewTable.updateTableColors(dataSetDescription.getNumberOfHeaderLines(),
 				dataSetDescription.getRowOfColumnIDs(), dataSetDescription.getColumnOfRowIds());
+		setDataSetChanged(true);
+	}
+
+	protected void setDataSetChanged(boolean datasetChanged) {
+		page.getWizard().getDataSetTypePage().setDatasetChanged(datasetChanged);
+		this.datasetChanged = datasetChanged;
 	}
 
 	/**
@@ -400,6 +405,7 @@ public class LoadDataSetPageMediator {
 		dataSetDescription.setColumnOfRowIds(page.columnOfRowIDSpinner.getSelection() - 1);
 		page.previewTable.updateTableColors(dataSetDescription.getNumberOfHeaderLines(),
 				dataSetDescription.getRowOfColumnIDs(), dataSetDescription.getColumnOfRowIds());
+		setDataSetChanged(true);
 	}
 
 	/**
@@ -507,15 +513,19 @@ public class LoadDataSetPageMediator {
 		}
 		page.previewTable.updateTableColors(dataSetDescription.getNumberOfHeaderLines(),
 				dataSetDescription.getRowOfColumnIDs(), dataSetDescription.getColumnOfRowIds());
+		setDataSetChanged(true);
 	}
 
 	public void onDelimiterChanged(String delimiter) {
 		dataSetDescription.setDelimiter(delimiter);
 		createDataPreviewTableFromFile();
+		setDataSetChanged(true);
 	}
 
 	public void onSelectAllNone(boolean selectAll) {
 		page.previewTable.selectColumns(selectAll, dataSetDescription.getColumnOfRowIds());
+		page.getWizard().getDataSetTypePage().setDatasetChanged(true);
+		setDataSetChanged(true);
 	}
 
 	// public void onShowAllColumns(boolean showAllColumns) {

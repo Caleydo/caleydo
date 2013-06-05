@@ -82,7 +82,7 @@ public class PreviewTable {
 		});
 		this.selectAllNone.setEnabled(false);
 
-		previewTable = new PreviewTableWidget(parent);
+		previewTable = new PreviewTableWidget(parent, null);
 		// , new BooleanCallback() {
 		// @Override
 		// public void on(boolean data) {

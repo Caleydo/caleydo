@@ -48,6 +48,8 @@ import org.eclipse.nebula.widgets.nattable.layer.cell.ILayerCell;
 import org.eclipse.nebula.widgets.nattable.layer.event.ILayerEvent;
 import org.eclipse.nebula.widgets.nattable.painter.cell.ICellPainter;
 import org.eclipse.nebula.widgets.nattable.painter.cell.ImagePainter;
+import org.eclipse.nebula.widgets.nattable.painter.cell.TextPainter;
+import org.eclipse.nebula.widgets.nattable.painter.cell.decorator.BeveledBorderDecorator;
 import org.eclipse.nebula.widgets.nattable.painter.cell.decorator.CellPainterDecorator;
 import org.eclipse.nebula.widgets.nattable.selection.SelectionLayer;
 import org.eclipse.nebula.widgets.nattable.selection.event.CellSelectionEvent;
@@ -203,7 +205,7 @@ public class CategoryTable extends AMatrixBasedTableWidget implements ILayerList
 			this.table = null;
 		}
 
-		final DataLayer bodyDataLayer = new DataLayer(bodyDataProvider, 120, 24);
+		final DataLayer bodyDataLayer = new DataLayer(bodyDataProvider, 120, 36);
 
 		selectionLayer = new SelectionLayer(bodyDataLayer);
 		selectionLayer.addLayerListener(this);
@@ -212,7 +214,7 @@ public class CategoryTable extends AMatrixBasedTableWidget implements ILayerList
 		final DataLayer columnDataLayer = new DataLayer(columnDataProvider, 120, 25);
 		ColumnHeaderLayer columnHeaderLayer = new ColumnHeaderLayer(columnDataLayer, bodyLayer, selectionLayer);
 
-		DataLayer rowDataLayer = new DataLayer(rowDataProvider, 41, 24);
+		DataLayer rowDataLayer = new DataLayer(rowDataProvider, 80, 36);
 		RowHeaderLayer rowHeaderLayer = new RowHeaderLayer(rowDataLayer, bodyLayer, selectionLayer);
 		DefaultCornerDataProvider cornerDataProvider = new DefaultCornerDataProvider(columnDataProvider,
 				rowDataProvider);
@@ -230,12 +232,17 @@ public class CategoryTable extends AMatrixBasedTableWidget implements ILayerList
 		acc.registerColumnOverrides(3, "COLOR");
 		final ColorCellPainter colorCellPainter = new ColorCellPainter();
 
-		final ImagePainter upPainter = new ImagePainter(GeneralManager.get().getResourceLoader()
-				.getImage(parent.getDisplay(), "resources/icons/general/arrow_up.png"));
-		final ImagePainter downPainter = new ImagePainter(GeneralManager.get().getResourceLoader()
+		final ICellPainter upImagePainter = new ImagePainter(GeneralManager.get()
+				.getResourceLoader().getImage(parent.getDisplay(), "resources/icons/general/arrow_up.png"));
+		final ICellPainter downImagePainter = new ImagePainter(GeneralManager.get()
+.getResourceLoader()
 				.getImage(parent.getDisplay(), "resources/icons/general/arrow_down.png"));
 
-		final ICellPainter rowHeaderPainter = new CellPainterDecorator(upPainter, CellEdgeEnum.BOTTOM, downPainter);
+		final ICellPainter upPainter = new BeveledBorderDecorator(upImagePainter);
+		final ICellPainter downPainter = new BeveledBorderDecorator(downImagePainter);
+
+		final ICellPainter rowHeaderPainter = new CellPainterDecorator(new TextPainter(), CellEdgeEnum.LEFT,
+				new CellPainterDecorator(upPainter, CellEdgeEnum.BOTTOM, downPainter));
 
 		table.addConfiguration(new AbstractRegistryConfiguration() {
 
@@ -266,8 +273,7 @@ public class CategoryTable extends AMatrixBasedTableWidget implements ILayerList
 						MouseEventMatcher.LEFT_BUTTON, colorCellPainter), new ChangeColorAction());
 
 				if (areRowsMoveable) {
-					uiBindingRegistry.registerFirstSingleClickBinding(new CellPainterMouseEventMatcher(
-							GridRegion.ROW_HEADER, MouseEventMatcher.LEFT_BUTTON, upPainter), new IMouseAction() {
+					IMouseAction moveUp = new IMouseAction() {
 
 						@Override
 						public void run(NatTable natTable, MouseEvent event) {
@@ -279,22 +285,33 @@ public class CategoryTable extends AMatrixBasedTableWidget implements ILayerList
 								selectRow(rowIndex - 1);
 							}
 						}
-					});
+					};
 
-					uiBindingRegistry.registerFirstSingleClickBinding(new CellPainterMouseEventMatcher(
-							GridRegion.ROW_HEADER, MouseEventMatcher.LEFT_BUTTON, downPainter), new IMouseAction() {
+					IMouseAction moveDown = new IMouseAction() {
 
 						@Override
 						public void run(NatTable natTable, MouseEvent event) {
 							int rowIndex = natTable.getRowPositionByY(event.y) - 1;
 
-							if (rowIndex != -1 && rowIndex < getRowCount() - 2) {
+							if (rowIndex != -1 && rowIndex < getRowCount() - 1) {
 								swapRows(rowIndex, rowIndex + 1);
 								update();
 								selectRow(rowIndex + 1);
 							}
 						}
-					});
+					};
+
+					uiBindingRegistry.registerFirstSingleClickBinding(new CellPainterMouseEventMatcher(
+							GridRegion.ROW_HEADER, MouseEventMatcher.LEFT_BUTTON, upPainter), moveUp);
+
+					uiBindingRegistry.registerFirstSingleClickBinding(new CellPainterMouseEventMatcher(
+							GridRegion.ROW_HEADER, MouseEventMatcher.LEFT_BUTTON, downPainter), moveDown);
+
+					uiBindingRegistry.registerFirstSingleClickBinding(new CellPainterMouseEventMatcher(
+							GridRegion.ROW_HEADER, MouseEventMatcher.LEFT_BUTTON, upImagePainter), moveUp);
+
+					uiBindingRegistry.registerFirstSingleClickBinding(new CellPainterMouseEventMatcher(
+							GridRegion.ROW_HEADER, MouseEventMatcher.LEFT_BUTTON, downImagePainter), moveDown);
 				}
 			}
 		});

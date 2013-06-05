@@ -10,6 +10,7 @@ import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.io.gui.dataimport.widget.BooleanCallback;
 import org.caleydo.core.io.gui.dataimport.widget.DelimiterWidget;
 import org.caleydo.core.io.gui.dataimport.widget.ICallback;
+import org.caleydo.core.io.gui.dataimport.widget.IntegerCallback;
 import org.caleydo.core.io.gui.dataimport.widget.LabelWidget;
 import org.caleydo.core.io.gui.dataimport.widget.LoadFileWidget;
 import org.caleydo.core.io.gui.dataimport.widget.SelectAllNoneWidget;
@@ -248,7 +249,13 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 			}
 		});
 
-		previewTable = new PreviewTableWidget(parentComposite);
+		previewTable = new PreviewTableWidget(parentComposite, new IntegerCallback() {
+
+			@Override
+			public void on(int data) {
+				mediator.setDataSetChanged(true);
+			}
+		});
 		// , new BooleanCallback() {
 		// @Override
 		// public void on(boolean showAllColumns) {
