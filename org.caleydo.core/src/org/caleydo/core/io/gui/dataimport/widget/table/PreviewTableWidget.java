@@ -160,6 +160,9 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 	public PreviewTableWidget(Composite parent) {
 		super(parent);
 		List<List<String>> emptyMatrix = createEmptyDataMatrix(15, 10);
+
+		emptyMatrix.get(0).add("1");
+
 		bodyDataProvider = new MatrixBasedBodyDataProvider(emptyMatrix, emptyMatrix.size());
 		buildTable(bodyDataProvider, new ColumnHeaderDataProvider(10),
 				new LineNumberRowHeaderDataProvider(emptyMatrix.size()));

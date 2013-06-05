@@ -48,6 +48,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
 
 /**
  * @author Christian
@@ -110,7 +111,7 @@ public class CategoricalDataPropertiesWidget {
 
 		categoryTypeGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
 		categoryTypeGroup.setText("Category Type");
-		categoryTypeGroup.setLayout(new GridLayout(1, true));
+		categoryTypeGroup.setLayout(new GridLayout(2, true));
 		ordinalButton = new Button(categoryTypeGroup, SWT.RADIO);
 		ordinalButton.setText("Ordinal");
 		ordinalButton.setSelection(true);
@@ -125,6 +126,13 @@ public class CategoricalDataPropertiesWidget {
 			}
 		});
 
+		Label ordinalLabel = new Label(categoryTypeGroup, SWT.WRAP);
+		ordinalLabel
+				.setText("Choose ordinal if your categories have an order. An example are population groups 'teenagers', 'adults' and 'seniors' which can be ordered by age.");
+		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
+		// gridData.widthHint = 500;
+		ordinalLabel.setLayoutData(gridData);
+
 		nominalButton = new Button(categoryTypeGroup, SWT.RADIO);
 		nominalButton.setText("Nominal");
 		nominalButton.addSelectionListener(new SelectionAdapter() {
@@ -137,6 +145,12 @@ public class CategoricalDataPropertiesWidget {
 				categoriesGroup.layout(true);
 			}
 		});
+		Label nominalLabel = new Label(categoryTypeGroup, SWT.WRAP);
+		nominalLabel
+				.setText("Choose nominal if your categories have no order. An example is sex where no order between 'female' and 'male' is possible.");
+		gridData = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
+		// gridData.widthHint = 500;
+		nominalLabel.setLayoutData(gridData);
 
 		categoriesGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
 		categoriesGroup.setText("Categories");

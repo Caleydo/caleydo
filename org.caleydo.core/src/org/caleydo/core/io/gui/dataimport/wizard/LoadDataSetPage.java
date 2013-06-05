@@ -20,6 +20,8 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -184,15 +186,23 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 
 		Group datasetConfigGroup = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
 		datasetConfigGroup.setText("Dataset Configuration");
-		datasetConfigGroup.setLayout(new GridLayout(2, false));
-		datasetConfigGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 2, 1));
+		datasetConfigGroup.setLayout(new GridLayout(3, false));
+		datasetConfigGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 3, 1));
 		Label homogenetyExplanation = new Label(datasetConfigGroup, SWT.WRAP);
 		homogenetyExplanation
 				.setText("Inhomogeneous datasets have a different meaning for every column and do not need to be of the same data type or ID Type. For example, you could load a table where in one column contains the sex of patients while the next column contains their age.\n"
 						+ "In homogeneous datasets every column is of the same type and has the same bounds. For example, in a file with normalized gene expression data all columns are of the same type and have the same bounds. This is also true for categorical data where the cateogries are global across all columns. ");
-		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, false, 2, 1);
+		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, false, 3, 1);
 		gd.widthHint = 400;
 		homogenetyExplanation.setLayoutData(gd);
+
+		Label chooseHomogenetyLabel = new Label(datasetConfigGroup, SWT.BOLD);
+		chooseHomogenetyLabel.setText("Choose Dataset Type:");
+
+		FontData fontData = chooseHomogenetyLabel.getFont().getFontData()[0];
+		Font font = new Font(null, new FontData(fontData.getName(), fontData.getHeight(), SWT.BOLD));
+		chooseHomogenetyLabel.setFont(font);
+
 		homogeneousDatasetButton = new Button(datasetConfigGroup, SWT.RADIO);
 		homogeneousDatasetButton.setText("Homogeneous");
 
