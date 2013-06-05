@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.caleydo.core.io.IDTypeParsingRules;
+import org.caleydo.core.io.gui.dataimport.widget.IntegerCallback;
 import org.caleydo.core.io.parser.ascii.ATextParser;
 import org.eclipse.nebula.widgets.nattable.NatTable;
 import org.eclipse.nebula.widgets.nattable.config.AbstractRegistryConfiguration;
@@ -24,6 +25,7 @@ import org.eclipse.nebula.widgets.nattable.grid.layer.CornerLayer;
 import org.eclipse.nebula.widgets.nattable.grid.layer.GridLayer;
 import org.eclipse.nebula.widgets.nattable.grid.layer.RowHeaderLayer;
 import org.eclipse.nebula.widgets.nattable.layer.DataLayer;
+import org.eclipse.nebula.widgets.nattable.layer.IUniqueIndexLayer;
 import org.eclipse.nebula.widgets.nattable.layer.LabelStack;
 import org.eclipse.nebula.widgets.nattable.layer.cell.IConfigLabelAccumulator;
 import org.eclipse.nebula.widgets.nattable.layer.cell.ILayerCell;
@@ -43,6 +45,7 @@ import org.eclipse.nebula.widgets.nattable.ui.util.CellEdgeEnum;
 import org.eclipse.nebula.widgets.nattable.util.GUIHelper;
 import org.eclipse.nebula.widgets.nattable.viewport.ViewportLayer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 
@@ -63,6 +66,7 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 	private static final String HEADER_LINE_CELL = "HEADER_LINE_CELL";
 	private static final String COLUMN_ID = "COLUMN_ID";
 	private static final String ROW_ID = "ROW_ID";
+	private static final String DISABLED_CELL = "DISABLED_CELL";
 
 	private int numberOfHeaderRows = -1;
 	private int idRowIndex = -1;
@@ -71,6 +75,32 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 	private List<Boolean> columnSelectionStatus = new ArrayList<>();
 	private RegExIDConverter columnIDConverter;
 	private RegExIDConverter rowIDConverter;
+
+	private IntegerCallback onColumnSelection;
+
+	private class ColumnSelectionAction extends ToggleCheckBoxColumnAction {
+
+		/**
+		 * @param columnHeaderCheckBoxPainter
+		 * @param bodyDataLayer
+		 */
+		public ColumnSelectionAction(ColumnHeaderCheckBoxPainter columnHeaderCheckBoxPainter,
+				IUniqueIndexLayer bodyDataLayer) {
+			super(columnHeaderCheckBoxPainter, bodyDataLayer);
+		}
+
+		@Override
+		public void run(NatTable natTable, MouseEvent event) {
+			super.run(natTable, event);
+			int columnIndex = natTable.getColumnPositionByX(event.x) - 1;
+
+			if (columnIndex != -1 && onColumnSelection != null) {
+
+				onColumnSelection.on(columnIndex);
+			}
+		}
+
+	}
 
 	private class RegExIDConverter implements IDisplayConverter {
 		private IDTypeParsingRules idTypeParsingRules;
@@ -157,8 +187,9 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 
 	}
 
-	public PreviewTableWidget(Composite parent) {
+	public PreviewTableWidget(Composite parent, IntegerCallback onColumnSelection) {
 		super(parent);
+		this.onColumnSelection = onColumnSelection;
 		List<List<String>> emptyMatrix = createEmptyDataMatrix(15, 10);
 		bodyDataProvider = new MatrixBasedBodyDataProvider(emptyMatrix, emptyMatrix.size());
 		buildTable(bodyDataProvider, new ColumnHeaderDataProvider(10),
@@ -177,8 +208,8 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 		return dataMatrix;
 	}
 
-	private void buildTable(MatrixBasedBodyDataProvider bodyDataProvider, ColumnHeaderDataProvider columnDataProvider,
-			LineNumberRowHeaderDataProvider rowDataProvider) {
+	private void buildTable(MatrixBasedBodyDataProvider bodyDataProvider,
+			final ColumnHeaderDataProvider columnDataProvider, LineNumberRowHeaderDataProvider rowDataProvider) {
 
 		if (table != null) { // cleanup old
 			this.table.dispose();
@@ -222,6 +253,10 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 				if (rowPosition == idRowIndex && columnPosition != idColumnIndex) {
 					configLabels.addLabel(COLUMN_ID);
 				}
+
+				if ((Boolean) columnDataProvider.getDataValue(columnPosition, 0) == false) {
+					configLabels.addLabel(DISABLED_CELL);
+				}
 			}
 		};
 
@@ -253,6 +288,12 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 						DisplayMode.NORMAL, COLUMN_ID);
 				configRegistry.registerConfigAttribute(CellConfigAttributes.DISPLAY_CONVERTER, rowIDConverter,
 						DisplayMode.NORMAL, ROW_ID);
+
+				cellStyle = new Style();
+
+				cellStyle.setAttributeValue(CellStyleAttributes.FOREGROUND_COLOR, GUIHelper.COLOR_WIDGET_NORMAL_SHADOW);
+				configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_STYLE, cellStyle, DisplayMode.NORMAL,
+						DISABLED_CELL);
 			}
 		});
 
@@ -272,7 +313,19 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 			public void configureUiBindings(UiBindingRegistry uiBindingRegistry) {
 				uiBindingRegistry.registerFirstSingleClickBinding(new CellPainterMouseEventMatcher(
 						GridRegion.COLUMN_HEADER, MouseEventMatcher.LEFT_BUTTON, columnHeaderCheckBoxPainter),
-						new ToggleCheckBoxColumnAction(columnHeaderCheckBoxPainter, columnDataLayer));
+						new ColumnSelectionAction(columnHeaderCheckBoxPainter, columnDataLayer));
+
+				// uiBindingRegistry.registerFirstSingleClickBinding(new CellPainterMouseEventMatcher(
+				// GridRegion.COLUMN_HEADER, MouseEventMatcher.LEFT_BUTTON, columnHeaderCheckBoxPainter),
+				// new IMouseAction() extends ToggleCheckBoxColumnAction {
+				//
+				// @Override
+				// public void run(NatTable natTable, MouseEvent event) {
+				//
+				//
+				// }
+				// });
+
 			}
 		});
 
