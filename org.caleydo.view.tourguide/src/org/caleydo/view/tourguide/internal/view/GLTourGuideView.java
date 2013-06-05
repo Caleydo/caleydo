@@ -66,6 +66,7 @@ import org.caleydo.view.tourguide.internal.event.ImportExternalScoreEvent;
 import org.caleydo.view.tourguide.internal.event.InitialScoreQueryReadyEvent;
 import org.caleydo.view.tourguide.internal.event.JobDiedEvent;
 import org.caleydo.view.tourguide.internal.event.JobStateProgressEvent;
+import org.caleydo.view.tourguide.internal.event.RemoveLeadingScoreColumnsEvent;
 import org.caleydo.view.tourguide.internal.event.ScoreQueryReadyEvent;
 import org.caleydo.view.tourguide.internal.external.ImportExternalScoreCommand;
 import org.caleydo.view.tourguide.internal.model.ADataDomainQuery;
@@ -292,16 +293,16 @@ public class GLTourGuideView extends AGLElementView {
 		}
 	}
 
-	private void scheduleAllOf(Collection<IScore> toCompute, boolean removeLeadingScoreColumns) {
+	private void scheduleAllOf(Collection<IScore> toCompute) {
 		ComputeForScoreJob job = new ComputeForScoreJob(toCompute, table.getData(),
-				table.getMyRanker(null).getFilter(), this, removeLeadingScoreColumns);
+				table.getMyRanker(null).getFilter(), this);
 		if (job.hasThingsToDo()) {
 			waiting.resetJob(job);
 			job.addJobChangeListener(jobListener);
 			getPopupLayer().show(waiting, null, 0);
 			job.schedule();
 		} else {
-			addColumns(toCompute, removeLeadingScoreColumns);
+			addColumns(toCompute);
 		}
 	}
 
@@ -352,7 +353,7 @@ public class GLTourGuideView extends AGLElementView {
 	private void onScoreQueryReady(ScoreQueryReadyEvent event) {
 		getPopupLayer().hide(waiting);
 		if (event.getScores() != null) {
-			addColumns(event.getScores(), event.isRemoveLeadingScoreColumns());
+			addColumns(event.getScores());
 		} else {
 			invalidVisibleScores();
 			updateMask();
@@ -395,9 +396,7 @@ public class GLTourGuideView extends AGLElementView {
 		updateMask();
 	}
 
-	private void addColumns(Collection<IScore> scores, boolean removeLeadingScoreColumns) {
-		if (removeLeadingScoreColumns)
-			removeLeadingScoreColumns();
+	private void addColumns(Collection<IScore> scores) {
 		for (IScore s : scores) {
 			int lastLabel = findLastLabelColumn();
 			if (s instanceof MultiScore) {
@@ -599,10 +598,11 @@ public class GLTourGuideView extends AGLElementView {
 		}
 		if (toCompute.isEmpty())
 			return;
-		scheduleAllOf(toCompute, event.isReplaceLeadingScoreColumns());
+		scheduleAllOf(toCompute);
 	}
 
-	private void removeLeadingScoreColumns() {
+	@ListenTo
+	private void onRemoveLeadingScoreColumns(RemoveLeadingScoreColumnsEvent event) {
 		List<ARankColumnModel> columns = this.table.getColumns();
 		boolean hasOne = false;
 		Collection<ARankColumnModel> toremove = new ArrayList<>();

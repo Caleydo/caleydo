@@ -19,31 +19,18 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.internal.event;
 
-import java.util.Collection;
-
 import org.caleydo.core.event.ADirectedEvent;
-import org.caleydo.view.tourguide.spi.score.IScore;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class ScoreQueryReadyEvent extends ADirectedEvent {
-	private final Collection<IScore> scores;
-
-	public ScoreQueryReadyEvent(Collection<IScore> scores) {
-		this.scores = scores;
-	}
-	/**
-	 * @return the scores, see {@link #scores}
-	 */
-	public Collection<IScore> getScores() {
-		return scores;
-	}
+public class RemoveLeadingScoreColumnsEvent extends ADirectedEvent {
 
 	@Override
 	public boolean checkIntegrity() {
 		return true;
 	}
+
 }
 

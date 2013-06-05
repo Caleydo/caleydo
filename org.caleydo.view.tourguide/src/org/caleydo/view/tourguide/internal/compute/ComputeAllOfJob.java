@@ -71,7 +71,7 @@ public class ComputeAllOfJob extends AComputeJob {
 		if (creating)
 			EventPublisher.trigger(new InitialScoreQueryReadyEvent(query).to(receiver));
 		else
-			EventPublisher.trigger(new ScoreQueryReadyEvent(null, true).to(receiver));
+			EventPublisher.trigger(new ScoreQueryReadyEvent(null).to(receiver));
 		return result;
 	}
 

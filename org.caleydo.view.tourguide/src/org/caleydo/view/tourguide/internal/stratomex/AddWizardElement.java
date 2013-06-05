@@ -59,6 +59,7 @@ import org.caleydo.view.tourguide.internal.Activator;
 import org.caleydo.view.tourguide.internal.OpenViewHandler;
 import org.caleydo.view.tourguide.internal.RcpGLTourGuideView;
 import org.caleydo.view.tourguide.internal.event.AddScoreColumnEvent;
+import org.caleydo.view.tourguide.internal.event.RemoveLeadingScoreColumnsEvent;
 import org.caleydo.view.tourguide.internal.stratomex.event.WizardEndedEvent;
 import org.caleydo.view.tourguide.internal.stratomex.state.SelectStateState;
 import org.caleydo.view.tourguide.internal.view.GLTourGuideView;
@@ -316,7 +317,7 @@ public class AddWizardElement extends AAddWizardElement implements IReactions {
 		RcpGLTourGuideView tourGuide = OpenViewHandler.showTourGuide(mode);
 		GLTourGuideView receiver = tourGuide.getView();
 		// direct as not yet registered
-		AddScoreColumnEvent event = new AddScoreColumnEvent(scores).setReplaceLeadingScoreColumns(true);
+		AddScoreColumnEvent event = new AddScoreColumnEvent(scores);
 		event.to(receiver).from(this);
 		receiver.onAddColumn(event);
 	}
@@ -324,6 +325,7 @@ public class AddWizardElement extends AAddWizardElement implements IReactions {
 
 	@Override
 	public void done(boolean confirmed) {
+		EventPublisher.trigger(new RemoveLeadingScoreColumnsEvent());
 		EventPublisher.trigger(new WizardEndedEvent());
 		super.done(confirmed);
 	}
