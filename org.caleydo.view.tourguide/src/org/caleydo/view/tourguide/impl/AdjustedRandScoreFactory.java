@@ -123,6 +123,12 @@ public class AdjustedRandScoreFactory implements IScoreFactory {
 		return new CreateAdjustedRandScoreDialog(shell, receiver);
 	}
 
+	private void createAdjustedRandScore(TablePerspective tablePerspective, IReactions reactions) {
+		String label = String.format("Sim. to %s %s", tablePerspective.getDataDomain().getLabel(), tablePerspective
+				.getRecordPerspective().getLabel());
+		reactions.addScoreToTourGuide(STRATIFICATIONS, create(label, tablePerspective.getRecordPerspective()));
+	}
+
 	private class CreateAdjustedRandState extends SimpleState implements ISelectStratificationState {
 		private final IState target;
 
@@ -139,8 +145,7 @@ public class AdjustedRandScoreFactory implements IScoreFactory {
 
 		@Override
 		public void select(TablePerspective tablePerspective, IReactions reactions) {
-			reactions.addScoreToTourGuide(STRATIFICATIONS,
-					create(null, tablePerspective.getRecordPerspective()));
+			createAdjustedRandScore(tablePerspective, reactions);
 			reactions.switchTo(target);
 		}
 
@@ -163,7 +168,7 @@ public class AdjustedRandScoreFactory implements IScoreFactory {
 
 		@Override
 		public void select(TablePerspective tablePerspective, IReactions reactions) {
-			reactions.addScoreToTourGuide(STRATIFICATIONS, create(null, tablePerspective.getRecordPerspective()));
+			createAdjustedRandScore(tablePerspective, reactions);
 		}
 
 		@Override

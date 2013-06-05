@@ -119,12 +119,12 @@ public class LogRankMetricFactory implements IScoreFactory {
 
 	private static MultiScore createLogRankScore(TablePerspective numerical) {
 		int dimId = numerical.getDimensionPerspective().getVirtualArray().get(0);
-		String label = numerical.getLabel();
+		String label = String.format("Sig. Change of %s", numerical.getLabel());
 		ATableBasedDataDomain clinical = numerical.getDataDomain();
-		LogRankMetric metric = new LogRankMetric(label, dimId, clinical);
-		LogRankPValue pvalue = new LogRankPValue(label + " (P-V)", metric);
+		LogRankMetric metric = new LogRankMetric("LogRank", dimId, clinical);
+		LogRankPValue pvalue = new LogRankPValue("P-Value", metric);
 
-		MultiScore multiScore = new MultiScore("LogRank of " + label, wrap(clinical.getColor()),
+		MultiScore multiScore = new MultiScore(label, wrap(clinical.getColor()),
 				darker(clinical.getColor()), 1);
 		multiScore.add(metric);
 		multiScore.add(pvalue);

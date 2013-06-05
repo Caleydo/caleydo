@@ -81,6 +81,13 @@ public class JaccardIndexScoreFactory implements IScoreFactory {
 		stateMachine.addTransition(start, new SimpleTransition(target, "Find large overlap with displayed clusters"));
 	}
 
+	private void createJaccardScore(TablePerspective tablePerspective, Group group, IReactions reactions) {
+		String label = String.format("Sim. to %s %s %s", tablePerspective.getDataDomain().getLabel(), tablePerspective
+				.getRecordPerspective().getLabel(), group.getLabel());
+		reactions.addScoreToTourGuide(EDataDomainQueryMode.STRATIFICATIONS,
+				createJaccardME(label, tablePerspective.getRecordPerspective(), group));
+	}
+
 	private class CreateJaccardScoreState extends SimpleState implements ISelectGroupState {
 		private final IState target;
 
@@ -97,8 +104,7 @@ public class JaccardIndexScoreFactory implements IScoreFactory {
 
 		@Override
 		public void select(TablePerspective tablePerspective, Group group, IReactions reactions) {
-			reactions.addScoreToTourGuide(EDataDomainQueryMode.STRATIFICATIONS,
-					createJaccardME(null, tablePerspective.getRecordPerspective(), group));
+			createJaccardScore(tablePerspective, group, reactions);
 			reactions.switchTo(target);
 		}
 	}
@@ -116,8 +122,7 @@ public class JaccardIndexScoreFactory implements IScoreFactory {
 
 		@Override
 		public void select(TablePerspective tablePerspective, Group group, IReactions reactions) {
-			reactions.addScoreToTourGuide(EDataDomainQueryMode.STRATIFICATIONS,
-					createJaccardME(null, tablePerspective.getRecordPerspective(), group));
+			createJaccardScore(tablePerspective, group, reactions);
 		}
 	}
 
