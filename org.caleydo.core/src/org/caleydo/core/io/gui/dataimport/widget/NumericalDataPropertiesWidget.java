@@ -163,10 +163,10 @@ public class NumericalDataPropertiesWidget {
 
 		dataTypeCombo = new Combo(dataTypeGroup, SWT.DROP_DOWN | SWT.READ_ONLY);
 		gridData = new GridData();
-		gridData.widthHint = 120;
+		gridData.widthHint = 250;
 		dataTypeCombo.setLayoutData(gridData);
 
-		String[] scalingOptions = { "Real Number", "Natural Number" };
+		String[] scalingOptions = { "Real Number (Float)", "Natural Number (Integer)" };
 		dataTypeCombo.setItems(scalingOptions);
 		dataTypeCombo.setEnabled(true);
 
@@ -217,7 +217,7 @@ public class NumericalDataPropertiesWidget {
 
 		Label clippingExplanationLabel = new Label(clippingGroup, SWT.WRAP);
 		clippingExplanationLabel
-				.setText("Specify the value range for the dataset. Every data point exceeding this range will be clipped to the lower and upper limits respectively.");
+				.setText("Specify the value range for the dataset. By default the value range is infered as the minimum and maximum of the dataset. This can be used to specify bounds in the data. For example, if you want to see your data relative to 0 but all data points are greater than 0 you should specify 0 here as the minimum.  You can also use this to clip your data. If you, for example, select '3' as the maximum every data point exceeding this range will be clipped to '3' for display.");
 		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1);
 		gridData.widthHint = 200;
 		clippingExplanationLabel.setLayoutData(gridData);
@@ -261,7 +261,8 @@ public class NumericalDataPropertiesWidget {
 		scalingGroup.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 
 		Label scalingExplanationLabel = new Label(scalingGroup, SWT.WRAP);
-		scalingExplanationLabel.setText("Specify the way every data point should be scaled.");
+		scalingExplanationLabel
+				.setText("Specify the way the data should be scaled. A linear scale is best if you are interested in absolute relationships within your data. A logarithmic scale is best if you are interested in the relative differences between data points and if your data is distributed inhomogeneously on a wide scale. Gene expression data, for example, is usually interpreted on a logarithmic scale.");
 		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1);
 		gridData.widthHint = 200;
 		scalingExplanationLabel.setLayoutData(gridData);
@@ -274,7 +275,7 @@ public class NumericalDataPropertiesWidget {
 		gridData.widthHint = 120;
 		scalingCombo.setLayoutData(gridData);
 
-		String[] scalingOptions = { "None", "Log10", "Log2" };
+		String[] scalingOptions = { "Linear", "Log10", "Log2" };
 		scalingCombo.setItems(scalingOptions);
 		scalingCombo.setEnabled(true);
 

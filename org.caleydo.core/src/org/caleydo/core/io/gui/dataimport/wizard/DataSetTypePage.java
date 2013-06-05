@@ -75,8 +75,13 @@ public class DataSetTypePage extends AImportDataPage {
 	@Override
 	public void createControl(Composite parent) {
 		Group group = new Group(parent, SWT.SHADOW_ETCHED_IN);
-		group.setText("Dataset Type");
+		group.setText("Select the data type of your homogeneous dataset.");
 		group.setLayout(new GridLayout(1, true));
+
+		// Label introLabel = new Label(group, SWT.WRAP);
+		// introLabel.setText("Select the data type of your homogeneous dataset.");
+		// GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
+		// gridData.widthHint = 200;
 
 		numericalDatasetButton = new Button(group, SWT.RADIO);
 		numericalDatasetButton.setText("Numerical");
@@ -84,7 +89,7 @@ public class DataSetTypePage extends AImportDataPage {
 		boldifyButtonText(numericalDatasetButton);
 		Label numericalDatasetLabel = new Label(group, SWT.WRAP);
 		numericalDatasetLabel
-				.setText("A homogeneous numerical dataset consists of numerical data only and uses the same scales in all columns.");
+				.setText("Choose if all columns in your dataset are numerical (integer or real numbers) and homogeneous (all columns have the same meaning and bounds).");
 		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
 		gridData.widthHint = 200;
 		numericalDatasetLabel.setLayoutData(gridData);
@@ -94,17 +99,17 @@ public class DataSetTypePage extends AImportDataPage {
 		boldifyButtonText(categoricalDatasetButton);
 		Label categoricalDatasetLabel = new Label(group, SWT.WRAP);
 		categoricalDatasetLabel
-				.setText("A homogeneous categorical dataset consists of categorical data only and uses the same categories in all columns.");
+				.setText("Choose if your dataset is categorical and contains the same categories in all columns.");
 		gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
 		gridData.widthHint = 200;
 		categoricalDatasetLabel.setLayoutData(gridData);
 
+		// TODO: remove
 		inhomogeneousDatasetButton = new Button(group, SWT.RADIO);
 		inhomogeneousDatasetButton.setText("Inhomogeneous");
 		boldifyButtonText(inhomogeneousDatasetButton);
 		Label inhomogeneousDatasetLabel = new Label(group, SWT.WRAP);
-		inhomogeneousDatasetLabel
-				.setText("Individual columns of an inhomogeneous dataset can contain either numerical or categorical data. Scales or categories may also differ across columns.");
+		inhomogeneousDatasetLabel.setText("REMOVE.");
 		gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
 		gridData.widthHint = 200;
 		inhomogeneousDatasetLabel.setLayoutData(gridData);
