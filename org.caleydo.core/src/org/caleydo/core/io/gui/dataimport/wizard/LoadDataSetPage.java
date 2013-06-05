@@ -207,6 +207,7 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 
 		Group rowConfigGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
 		rowConfigGroup.setText("Row Configuration");
+		rowConfigGroup.setToolTipText("Set the properties of the rows of the data file.");
 		rowConfigGroup.setLayout(new GridLayout(2, false));
 		rowConfigGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
@@ -303,11 +304,23 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 
 		Group columnConfigGroup = new Group(parent, SWT.NONE);
 		columnConfigGroup.setText("Column Configuration");
+		columnConfigGroup.setToolTipText("Set the properties of the columns of the data file.");
 		columnConfigGroup.setLayout(new GridLayout(2, false));
 		columnConfigGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
+		// TODO move to right place
+		Label homogenetyExplanation = new Label(columnConfigGroup, SWT.WRAP);
+		homogenetyExplanation
+				.setText("Inhomogeneous datasets have a different meaning for every column and do not need to be of the same data type or ID Type. For example, you could load a table where in one column contains the sex of patients while the next column contains their age.\n"
+						+ "In homogeneous datasets every column is of the same type and has the same bounds. For example, in a file with normalized gene expression data all columns are of the same type and have the same bounds. This is also true for categorical data where the cateogries are global across all columns. ");
+		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, false);
+		gd.widthHint = 400;
+
+		homogenetyExplanation.setLayoutData(gd);
+
 		inhomogeneousColumnsButton = new Button(columnConfigGroup, SWT.CHECK);
 		inhomogeneousColumnsButton.setText("Inhomogeneous Columns");
+
 		inhomogeneousColumnsButton.setSelection(false);
 		inhomogeneousColumnsButton.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 2, 1));
 		inhomogeneousColumnsButton.addListener(SWT.Selection, this);
@@ -378,8 +391,11 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 	private void createIDTypeGroup(Composite parent, final boolean isColumnIDTypeGroup) {
 		Label idTypeLabel = new Label(parent, SWT.SHADOW_ETCHED_IN);
 		idTypeLabel.setText(isColumnIDTypeGroup ? "Column ID Type" : "Row ID Type");
+
 		idTypeLabel.setLayoutData(new GridData(SWT.LEFT));
 		Combo idCombo = new Combo(parent, SWT.DROP_DOWN | SWT.READ_ONLY);
+		idCombo.setToolTipText("ID types are used to identify rows and columns and map them to other datasets or query public databases.");
+
 		idCombo.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
 		if (isColumnIDTypeGroup) {
@@ -401,8 +417,11 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 	private void createIDCategoryGroup(Composite parent, String groupLabel, final boolean isColumnCategory) {
 		Label recordIDCategoryGroup = new Label(parent, SWT.SHADOW_ETCHED_IN);
 		recordIDCategoryGroup.setText(groupLabel);
+
 		recordIDCategoryGroup.setLayoutData(new GridData(SWT.LEFT));
 		Combo idCategoryCombo = new Combo(parent, SWT.DROP_DOWN | SWT.READ_ONLY);
+		idCategoryCombo
+				.setToolTipText("ID classes define groups of ID types that can be mapped to each other. For example a 'gene' ID class could contain multiple ID types, such as 'ensemble ID' and 'gene short name' that can be mapped to each other.");
 		idCategoryCombo.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		idCategoryCombo.setText("<Please Select>");
 
