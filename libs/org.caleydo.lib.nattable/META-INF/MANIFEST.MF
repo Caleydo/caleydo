@@ -4,7 +4,7 @@ Bundle-Name: NatTable
 Bundle-SymbolicName: org.caleydo.lib.nattable
 Bundle-Version: 2.1
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Bundle-ClassPath: org.eclipse.nebula.widgets.nattable.core-0.9.0.jar
+Bundle-ClassPath: org.eclipse.nebula.widgets.nattable.core_1.0.0.201305291732.jar
 Export-Package: org.eclipse.nebula.widgets.nattable,
  org.eclipse.nebula.widgets.nattable.blink,
  org.eclipse.nebula.widgets.nattable.blink.command,
