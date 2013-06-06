@@ -547,6 +547,9 @@ public class LoadDataSetPageMediator {
 
 		page.previewTable.updateTableColors(dataSetDescription.getNumberOfHeaderLines(),
 				dataSetDescription.getRowOfColumnIDs(), dataSetDescription.getColumnOfRowIds());
+		// page.parentComposite.pack();
+		// page.parentComposite.setSize(800, 600);
+		// page.parentComposite.setSize(page.parentComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 		// page.parentComposite.pack(true);
 		// page.parentComposite.redraw();
 
@@ -670,8 +673,8 @@ public class LoadDataSetPageMediator {
 		page.rowOfColumnIDSpinner.setMaximum(totalNumberOfRows);
 		page.numHeaderRowsSpinner.setMaximum(totalNumberOfRows);
 		// page.previewTable.updateVisibleColumns(totalNumberOfColumns);
-		page.parentComposite.pack(true);
-		page.parentComposite.layout(true);
+		// page.parentComposite.pack(true);
+		// page.parentComposite.layout(true);
 	}
 
 	private IDType determineMostProbableIDType(List<String> idList) {

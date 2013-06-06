@@ -29,6 +29,7 @@ import org.caleydo.core.io.gui.dataimport.widget.CategoricalDataPropertiesWidget
 import org.caleydo.core.io.gui.dataimport.widget.DataTranspositionWidget;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 
@@ -65,8 +66,9 @@ public class CategoricalDataPropertiesPage extends AImportDataPage {
 	}
 
 	@Override
-	public void createControl(Composite parent) {
+	protected void createGuiElements(Composite parent) {
 		parentComposite = new Composite(parent, SWT.NONE);
+		parentComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		parentComposite.setLayout(new GridLayout(1, true));
 
 		categoricalDataWidget = new CategoricalDataPropertiesWidget(parentComposite);
@@ -74,7 +76,6 @@ public class CategoricalDataPropertiesPage extends AImportDataPage {
 		dataTranspositionWidget = new DataTranspositionWidget(parentComposite, getWizard(),
 				dataSetDescription.isTransposeMatrix());
 
-		setControl(parentComposite);
 	}
 
 	@Override

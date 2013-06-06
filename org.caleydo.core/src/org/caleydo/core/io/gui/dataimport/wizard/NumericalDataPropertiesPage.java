@@ -51,8 +51,7 @@ public class NumericalDataPropertiesPage extends AImportDataPage implements List
 	}
 
 	@Override
-	public void createControl(Composite parent) {
-
+	protected void createGuiElements(Composite parent) {
 		parentComposite = new Composite(parent, SWT.NONE);
 		parentComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		parentComposite.setLayout(new GridLayout(1, true));
@@ -61,8 +60,6 @@ public class NumericalDataPropertiesPage extends AImportDataPage implements List
 
 		dataTranspositionWidget = new DataTranspositionWidget(parentComposite, getWizard(),
 				dataSetDescription.isTransposeMatrix());
-
-		setControl(parentComposite);
 	}
 
 	@Override

@@ -77,9 +77,9 @@ public class AddGroupingsPage extends AImportDataPage {
 	}
 
 	@Override
-	public void createControl(Composite parent) {
-
+	protected void createGuiElements(Composite parent) {
 		Composite parentComposite = new Composite(parent, SWT.NONE);
+		parentComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		parentComposite.setLayout(new GridLayout(2, true));
 
 		Label groupingDescriptionLabel = new Label(parentComposite, SWT.WRAP);
@@ -93,8 +93,6 @@ public class AddGroupingsPage extends AImportDataPage {
 		createGroupingGroup(parentComposite, "Row Groupings", false);
 
 		mediator.guiCreated();
-
-		setControl(parentComposite);
 	}
 
 	private void createGroupingGroup(Composite parent, String groupLabel,
