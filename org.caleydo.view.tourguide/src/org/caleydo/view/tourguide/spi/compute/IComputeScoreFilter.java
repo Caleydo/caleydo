@@ -23,11 +23,11 @@ import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.view.tourguide.spi.algorithm.IComputeElement;
 
 /**
- * defines whether for a given combinatin of stratification and group the score should be computed or not
- *
+ * defines whether for a given combination of stratification and group the score should be computed or not
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
 public interface IComputeScoreFilter {
-	public boolean doCompute(IComputeElement a, Group ag, IComputeElement b, Group bg);
+	boolean doCompute(IComputeElement a, Group ag, IComputeElement b, Group bg);
 }

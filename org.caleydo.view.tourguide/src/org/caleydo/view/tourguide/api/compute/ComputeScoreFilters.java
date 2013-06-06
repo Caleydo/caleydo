@@ -8,6 +8,12 @@ import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.view.tourguide.spi.algorithm.IComputeElement;
 import org.caleydo.view.tourguide.spi.compute.IComputeScoreFilter;
 
+/**
+ * factory class for filters that check whether the score of two {@link IComputeElement} should be computed or not
+ * 
+ * @author Samuel Gratzl
+ * 
+ */
 public final class ComputeScoreFilters {
 	public static IComputeScoreFilter ALL = new IComputeScoreFilter() {
 		@Override

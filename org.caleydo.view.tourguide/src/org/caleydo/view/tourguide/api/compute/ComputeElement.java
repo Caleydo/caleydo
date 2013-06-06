@@ -30,8 +30,11 @@ import org.caleydo.core.id.IDType;
 import org.caleydo.view.tourguide.spi.algorithm.IComputeElement;
 
 /**
+ * 
+ * implementation of {@link IComputeElement} based on a {@link Perspective}
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
 public final class ComputeElement implements IComputeElement {
 	private final Perspective stratifation;

@@ -53,7 +53,20 @@ public interface IScore extends ILabeled {
 
 	Color getBGColor();
 
+	/**
+	 * factory method for creating a {@link PiecewiseMapping} which is used by the mapping editor of the column
+	 * 
+	 * @return
+	 */
 	PiecewiseMapping createMapping();
 
+	/**
+	 * computes the score of the given {@link IComputeElement}
+	 * 
+	 * @param elem
+	 * @param g
+	 *            optional depending whether this kind of score is based on groups or not
+	 * @return the score or {@link Float#NaN} otherwise
+	 */
 	float apply(IComputeElement elem, Group g);
 }

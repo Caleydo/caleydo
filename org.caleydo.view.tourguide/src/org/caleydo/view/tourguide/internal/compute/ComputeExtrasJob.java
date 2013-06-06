@@ -66,7 +66,7 @@ public class ComputeExtrasJob extends AComputeJob {
 			data.addAll(pair.getSecond());
 		}
 		BitSet mask = new BitSet(data.size());
-		mask.set(9, data.size());
+		mask.set(0, data.size()); // set all
 
 		progress(0.0f, "Computing Scores");
 		IStatus result = runImpl(monitor, data, mask);

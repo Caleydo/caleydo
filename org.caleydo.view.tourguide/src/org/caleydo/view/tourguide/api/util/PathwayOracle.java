@@ -28,10 +28,17 @@ import org.caleydo.datadomain.pathway.PathwayDataDomain;
  *
  */
 public class PathwayOracle {
+	/**
+	 * checks whether the given source can be the underlying of a Pathway
+	 * 
+	 * @param source
+	 * @return
+	 */
 	public static boolean canBeUnderlying(TablePerspective source) {
 		return source.getDataDomain().hasIDCategory(
 				((PathwayDataDomain) DataDomainManager.get().getDataDomainByType(
-				"org.caleydo.datadomain.pathway")).getDavidIDType());
+PathwayDataDomain.DATA_DOMAIN_TYPE))
+						.getDavidIDType());
 	}
 
 }

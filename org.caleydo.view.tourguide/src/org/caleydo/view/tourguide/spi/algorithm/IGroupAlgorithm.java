@@ -21,18 +21,15 @@ package org.caleydo.view.tourguide.spi.algorithm;
 
 import java.util.Set;
 
-import org.caleydo.core.id.IDType;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 /**
+ * a group algorithm is an abstract definition of an algorithm that computes of two Sets a score
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
-public interface IGroupAlgorithm {
-	void init(IProgressMonitor monitor);
-
-	IDType getTargetType(IComputeElement a, IComputeElement b);
-
+public interface IGroupAlgorithm extends IAlgorithm {
 	/**
 	 * computes the score between the two sets identified by a set of integer noted in the same id type
 	 *
@@ -41,13 +38,4 @@ public interface IGroupAlgorithm {
 	 * @return
 	 */
 	float compute(Set<Integer> a, Set<Integer> b, IProgressMonitor monitor);
-
-	/**
-	 * returns the abbreviation of this algorithm
-	 *
-	 * @return
-	 */
-	String getAbbreviation();
-
-	String getDescription();
 }

@@ -45,8 +45,10 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 
 /**
+ * basic job implementation that
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
 public abstract class AComputeJob extends Job {
 	private final List<IComputedStratificationScore> stratScores;
@@ -61,18 +63,42 @@ public abstract class AComputeJob extends Job {
 		this.receiver = receiver;
 	}
 
+	/**
+	 * triggers a progress message
+	 * 
+	 * @param completed
+	 * @param text
+	 */
 	protected final void progress(float completed, String text) {
 		EventPublisher.trigger(new JobStateProgressEvent(text, completed, false).to(receiver).from(this));
 	}
 
+	/**
+	 * triggers an progress error message
+	 * 
+	 * @param text
+	 */
 	protected final void error(String text) {
 		EventPublisher.trigger(new JobStateProgressEvent(text, 1.0f, true).to(receiver).from(this));
 	}
 
+	/**
+	 * whether the job has some work
+	 * 
+	 * @return
+	 */
 	public boolean hasThingsToDo() {
 		return !stratScores.isEmpty() || !groupScores.isEmpty();
 	}
 
+	/**
+	 * computes scores of the given masked data
+	 * 
+	 * @param monitor
+	 * @param data
+	 * @param mask
+	 * @return
+	 */
 	protected IStatus runImpl(IProgressMonitor monitor, List<AScoreRow> data, BitSet mask) {
 		IStatus result;
 		if (!stratScores.isEmpty() && groupScores.isEmpty()) {

@@ -31,11 +31,33 @@ import org.caleydo.view.tourguide.spi.score.IScore;
  *
  */
 public interface IComputedStratificationScore extends IRegisteredScore {
-	public boolean contains(IComputeElement a);
+	/**
+	 * already in the cache?
+	 * 
+	 * @param a
+	 * @return
+	 */
+	boolean contains(IComputeElement a);
 
-	public void put(IComputeElement a, float value);
+	/**
+	 * put the result in the cache
+	 * 
+	 * @param a
+	 * @param value
+	 */
+	void put(IComputeElement a, float value);
 
-	public IStratificationAlgorithm getAlgorithm();
+	/**
+	 * returns the algorithm to compute this score
+	 * 
+	 * @return
+	 */
+	IStratificationAlgorithm getAlgorithm();
 
-	public IComputeScoreFilter getFilter();
+	/**
+	 * returns the filter apply for skipping invalid combination pairs
+	 * 
+	 * @return
+	 */
+	IComputeScoreFilter getFilter();
 }

@@ -53,6 +53,8 @@ import org.eclipse.swt.widgets.Text;
 import com.google.common.collect.Lists;
 
 /**
+ * a basic dialog for creating a group score
+ *
  * @author Samuel Gratzl
  *
  */
@@ -71,9 +73,9 @@ public abstract class ACreateGroupScoreDialog extends Dialog {
 	private ComboViewer stratificationUI;
 	private ComboViewer groupUI;
 
-	public ACreateGroupScoreDialog(Shell shell, Object sender) {
+	public ACreateGroupScoreDialog(Shell shell, Object receiver) {
 		super(shell);
-		this.receiver = sender;
+		this.receiver = receiver;
 	}
 
 	@Override
@@ -137,8 +139,18 @@ public abstract class ACreateGroupScoreDialog extends Dialog {
 		return c;
 	}
 
+	/**
+	 * adds specific widgets to this dialog
+	 * 
+	 * @param c
+	 */
 	protected abstract void addTypeSpecific(Composite c);
 
+	/**
+	 * updates stratifications based on the given {@link ATableBasedDataDomain}
+	 * 
+	 * @param dataDomain
+	 */
 	protected void updateStratifications(ATableBasedDataDomain dataDomain) {
 		if (dataDomain == null) {
 			this.stratificationUI.setInput(null);
@@ -159,6 +171,11 @@ public abstract class ACreateGroupScoreDialog extends Dialog {
 		}
 	}
 
+	/**
+	 * updates group based on the given {@link Perspective}
+	 * 
+	 * @param perspective
+	 */
 	protected void updateGroups(Perspective perspective) {
 		if (perspective == null) {
 			this.groupUI.setInput(null);

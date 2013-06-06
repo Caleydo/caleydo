@@ -31,9 +31,10 @@ import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.text.TextUtils;
 
 /**
- *
+ * a {@link ALayoutRenderer} which have a small preview inside besides an additional label describing it
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
 public class PreviewRenderer extends AForwardingRenderer {
 	private final AGLView view;

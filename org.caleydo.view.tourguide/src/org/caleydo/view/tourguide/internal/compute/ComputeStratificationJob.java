@@ -50,6 +50,7 @@ public class ComputeStratificationJob extends AScoreJob {
 		progress(0, "Initializing...");
 		for (IComputedStratificationScore score : Iterables.concat(stratMetrics, stratScores)) {
 			score.getAlgorithm().init(monitor);
+
 			if (Thread.interrupted() || monitor.isCanceled())
 				return Status.CANCEL_STATUS;
 		}

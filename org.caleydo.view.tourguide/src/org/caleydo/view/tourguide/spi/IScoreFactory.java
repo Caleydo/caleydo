@@ -49,7 +49,8 @@ public interface IScoreFactory {
 	 *            the list of table perspective already existing
 	 * @param mode
 	 * @param source
-	 *            the source {@link TablePerspective} if only a dependent one should be created
+	 *            the source {@link TablePerspective} in case of {@link EWizardMode#DEPENDENT} and
+	 *            {@link EWizardMode#INDEPENDENT}
 	 */
 	void fillStateMachine(IStateMachine stateMachine, List<TablePerspective> existing, EWizardMode mode,
 			TablePerspective source);

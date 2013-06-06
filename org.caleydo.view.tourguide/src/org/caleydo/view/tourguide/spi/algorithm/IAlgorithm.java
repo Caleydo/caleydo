@@ -17,28 +17,46 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.api.state;
+package org.caleydo.view.tourguide.spi.algorithm;
 
-import org.caleydo.core.util.base.ILabeled;
+import org.caleydo.core.id.IDType;
+import org.eclipse.core.runtime.IProgressMonitor;
 
 /**
- * definition of a state in the {@link IStateMachine}
+ * basic interface for {@link IGroupAlgorithm} and {@link IStratificationAlgorithm}
  * 
  * @author Samuel Gratzl
  * 
  */
-public interface IState extends ILabeled {
+public interface IAlgorithm {
+	/**
+	 * triggers to initialize this algorithm
+	 * 
+	 * @param monitor
+	 */
+	void init(IProgressMonitor monitor);
 
 	/**
-	 * called when the state will be entered
+	 * returns the target {@link IDType} that should be used for converting the ids of the two given
+	 * {@link IComputeElement}s
+	 * 
+	 * @param a
+	 * @param b
+	 * @return
 	 */
-	void onEnter();
+	IDType getTargetType(IComputeElement a, IComputeElement b);
 
 	/**
-	 * called when the state will be leaved
+	 * returns the abbreviation of this algorithm
+	 * 
+	 * @return
 	 */
-	void onLeave();
+	String getAbbreviation();
 
-	@Override
-	boolean equals(Object obj);
+	/**
+	 * returns a small description what this algorithm does
+	 * 
+	 * @return
+	 */
+	String getDescription();
 }

@@ -23,7 +23,19 @@ import org.caleydo.core.data.perspective.table.TablePerspective;
 
 import com.google.common.base.Predicate;
 
+/**
+ * special kind of a state that triggers that the user is able to select a {@link TablePerspective} stratification
+ * 
+ * @author Samuel Gratzl
+ * 
+ */
 public interface ISelectStratificationState extends IState,Predicate<TablePerspective> {
+	/**
+	 * called when the users selects a stratification
+	 * 
+	 * @param tablePerspective
+	 * @param reactions
+	 */
 	void select(TablePerspective tablePerspective, IReactions reactions);
 
 	/**

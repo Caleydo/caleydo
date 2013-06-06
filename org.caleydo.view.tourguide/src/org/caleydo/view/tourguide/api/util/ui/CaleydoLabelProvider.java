@@ -20,10 +20,13 @@
 package org.caleydo.view.tourguide.api.util.ui;
 
 import org.caleydo.core.util.base.ILabeled;
+import org.eclipse.jface.viewers.LabelProvider;
 
 /**
+ * {@link LabelProvider} for a {@link ILabeled} element
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
 public class CaleydoLabelProvider extends org.eclipse.jface.viewers.LabelProvider {
 	@Override

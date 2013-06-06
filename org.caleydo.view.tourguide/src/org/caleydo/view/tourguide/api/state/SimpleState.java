@@ -21,8 +21,10 @@ package org.caleydo.view.tourguide.api.state;
 
 
 /**
+ * simple implementation of a {@link IState}
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
 public class SimpleState implements IState {
 	private final String label;

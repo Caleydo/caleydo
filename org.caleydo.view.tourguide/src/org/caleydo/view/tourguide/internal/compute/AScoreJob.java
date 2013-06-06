@@ -30,6 +30,12 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Table;
 
+/**
+ * basic score computation job which is just a utility class for the subclassed job instances
+ * 
+ * @author Samuel Gratzl
+ * 
+ */
 public abstract class AScoreJob {
 	private final CachedIDTypeMapper mapper = new CachedIDTypeMapper();
 	private final Table<IComputeElement, Pair<IDType, IDType>, Set<Integer>> stratCache = HashBasedTable.create();
