@@ -192,7 +192,7 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 		this.onColumnSelection = onColumnSelection;
 		List<List<String>> emptyMatrix = createEmptyDataMatrix(15, 10);
 
-		emptyMatrix.get(0).add("1");
+		// emptyMatrix.get(0).add("1");
 
 		bodyDataProvider = new MatrixBasedBodyDataProvider(emptyMatrix, emptyMatrix.size());
 		buildTable(bodyDataProvider, new ColumnHeaderDataProvider(10),

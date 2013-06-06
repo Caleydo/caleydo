@@ -19,6 +19,9 @@
  *******************************************************************************/
 package org.caleydo.core.io.gui.dataimport.widget;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.io.NumericalProperties;
 import org.eclipse.swt.SWT;
@@ -96,6 +99,8 @@ public class NumericalDataPropertiesWidget {
 	protected Group dataTypeGroup;
 
 	protected NumericalProperties numericalProperties;
+
+	protected Map<Integer, String> scalingTextMap = new HashMap<>();
 
 	/**
 	 *
@@ -276,6 +281,9 @@ public class NumericalDataPropertiesWidget {
 		scalingCombo.setLayoutData(gridData);
 
 		String[] scalingOptions = { "Linear", "Log10", "Log2" };
+		scalingTextMap.put(0, "None");
+		scalingTextMap.put(1, "Log10");
+		scalingTextMap.put(2, "Log2");
 		scalingCombo.setItems(scalingOptions);
 		scalingCombo.setEnabled(true);
 
@@ -347,7 +355,7 @@ public class NumericalDataPropertiesWidget {
 			numericalProperties.setDataCenter(Double.parseDouble(dataCenterTextField.getText()));
 		}
 
-		numericalProperties.setDataTransformation(scalingCombo.getText());
+		numericalProperties.setDataTransformation(scalingTextMap.get(scalingCombo.getSelectionIndex()));
 
 		return numericalProperties;
 	}

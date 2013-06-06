@@ -111,7 +111,8 @@ public class CategoricalDataPropertiesWidget {
 
 		categoryTypeGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
 		categoryTypeGroup.setText("Category Type");
-		categoryTypeGroup.setLayout(new GridLayout(2, true));
+		categoryTypeGroup.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+		categoryTypeGroup.setLayout(new GridLayout(1, true));
 		ordinalButton = new Button(categoryTypeGroup, SWT.RADIO);
 		ordinalButton.setText("Ordinal");
 		ordinalButton.setSelection(true);
