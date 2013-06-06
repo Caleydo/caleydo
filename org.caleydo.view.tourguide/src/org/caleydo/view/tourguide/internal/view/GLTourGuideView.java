@@ -51,6 +51,7 @@ import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IPopupLayer;
 import org.caleydo.core.view.opengl.layout2.basic.ScrollBar;
 import org.caleydo.core.view.opengl.layout2.basic.ScrollingDecorator;
+import org.caleydo.core.view.opengl.layout2.basic.WaitingElement;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
@@ -285,7 +286,7 @@ public class GLTourGuideView extends AGLElementView {
 		Collection<IScore> scores = new ArrayList<>(getVisibleScores(null));
 		ComputeAllOfJob job = new ComputeAllOfJob(q, scores, this);
 		if (job.hasThingsToDo()) {
-			waiting.resetJob(job);
+			waiting.reset(job);
 			job.addJobChangeListener(jobListener);
 			getPopupLayer().show(waiting, null, 0);
 			job.schedule();
@@ -298,7 +299,7 @@ public class GLTourGuideView extends AGLElementView {
 		ComputeForScoreJob job = new ComputeForScoreJob(toCompute, table.getData(),
 				table.getMyRanker(null).getFilter(), this);
 		if (job.hasThingsToDo()) {
-			waiting.resetJob(job);
+			waiting.reset(job);
 			job.addJobChangeListener(jobListener);
 			getPopupLayer().show(waiting, null, 0);
 			job.schedule();
@@ -311,7 +312,7 @@ public class GLTourGuideView extends AGLElementView {
 		Collection<IScore> scores = new ArrayList<>(getVisibleScores(null));
 		ComputeExtrasJob job = new ComputeExtrasJob(extras, scores, this);
 		if (job.hasThingsToDo()) {
-			waiting.resetJob(job);
+			waiting.reset(job);
 			job.addJobChangeListener(jobListener);
 			getPopupLayer().show(waiting, null, 0);
 			job.schedule();
@@ -322,7 +323,7 @@ public class GLTourGuideView extends AGLElementView {
 
 	@ListenTo(sendToMe = true)
 	private void onProgressEvent(JobStateProgressEvent event) {
-		if (event.isErrornous())
+		if (event.isErroneous())
 			waiting.error(event.getText());
 		else
 			waiting.progress(event.getCompleted(), event.getText());

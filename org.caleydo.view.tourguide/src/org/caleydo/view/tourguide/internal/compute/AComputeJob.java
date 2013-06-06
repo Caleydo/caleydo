@@ -27,6 +27,7 @@ import java.util.Set;
 
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.EventPublisher;
+import org.caleydo.core.io.gui.dataimport.widget.ICallback;
 import org.caleydo.view.tourguide.internal.event.JobStateProgressEvent;
 import org.caleydo.view.tourguide.internal.model.AScoreRow;
 import org.caleydo.view.tourguide.internal.score.Scores;
@@ -50,7 +51,7 @@ import com.google.common.collect.Multimap;
  * @author Samuel Gratzl
  * 
  */
-public abstract class AComputeJob extends Job {
+public abstract class AComputeJob extends Job implements ICallback<Boolean> {
 	private final List<IComputedStratificationScore> stratScores;
 	private final List<IComputedGroupScore> groupScores;
 	protected Object receiver;
@@ -61,6 +62,12 @@ public abstract class AComputeJob extends Job {
 		stratScores = Lists.newArrayList(Iterables.filter(flatten, IComputedStratificationScore.class));
 		groupScores = Lists.newArrayList(Iterables.filter(flatten, IComputedGroupScore.class));
 		this.receiver = receiver;
+	}
+
+	@Override
+	public final void on(Boolean data) {
+		if (data)
+			cancel();
 	}
 
 	/**

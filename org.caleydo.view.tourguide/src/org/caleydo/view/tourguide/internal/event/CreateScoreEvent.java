@@ -22,8 +22,10 @@ package org.caleydo.view.tourguide.internal.event;
 import org.caleydo.core.event.ADirectedEvent;
 
 /**
+ * triggers to create a new score given by name
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
 public class CreateScoreEvent extends ADirectedEvent {
 

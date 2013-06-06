@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.internal.view;
+package org.caleydo.core.view.opengl.layout2.basic;
 
 import java.awt.Color;
 import java.nio.FloatBuffer;
@@ -27,21 +27,20 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.GL2ES1;
 import javax.media.opengl.fixedfunc.GLPointerFunc;
 
+import org.caleydo.core.io.gui.dataimport.widget.ICallback;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.GLSandBox;
-import org.caleydo.core.view.opengl.layout2.basic.AGLButton;
 import org.caleydo.core.view.opengl.picking.AdvancedPick;
 import org.caleydo.core.view.opengl.picking.Pick;
-import org.eclipse.core.runtime.jobs.Job;
 
 import com.jogamp.common.nio.Buffers;
 
 /**
- * monitors a job and renders a waiting icon
- *
+ * renders waiting icon with optional cancel button and progress text
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
 public class WaitingElement extends AGLButton {
     private static final FloatBuffer vertices;
@@ -73,7 +72,7 @@ public class WaitingElement extends AGLButton {
 	private float acc = 0;
 	private float completed = 0.f;
 	private String text = "";
-	private Job current = null;
+	private ICallback<Boolean> onCancel = null;
 
     @Override
     protected void renderImpl(GLGraphics g, float w, float h) {
@@ -106,19 +105,21 @@ public class WaitingElement extends AGLButton {
 		if (completed < 0)
 			g.textColor(Color.RED);
 		g.drawText(String.format("%.0f%%", Math.abs(completed) * 100), 0, h * 0.5f - 16, w, 16, VAlign.CENTER);
-		if (!text.isEmpty()) {
+		if (text != null && !text.isEmpty()) {
 			g.drawText(text, 0, h * 0.5f + 2, w, 10, VAlign.CENTER);
 		}
 
 		if (completed < 0)
 			g.textColor(Color.BLACK);
 
-		float wi = g.text.getTextWidth("Cancel", 12);
-		g.drawText("Cancel", 0, h * 0.5f + r + 10, w, 12, VAlign.CENTER);
-		if (hovered)
-			g.withMove((w - wi - 10) * 0.5f, h * 0.5f + r + 10, hoverEffect, wi + 10, 16, this);
-		if (armed)
-			g.withMove((w - wi - 10) * 0.5f, h * 0.5f + r + 10, armedEffect, wi + 10, 16, this);
+		if (onCancel != null) {
+			float wi = g.text.getTextWidth("Cancel", 12);
+			g.drawText("Cancel", 0, h * 0.5f + r + 10, w, 12, VAlign.CENTER);
+			if (hovered)
+				g.withMove((w - wi - 10) * 0.5f, h * 0.5f + r + 10, hoverEffect, wi + 10, 16, this);
+			if (armed)
+				g.withMove((w - wi - 10) * 0.5f, h * 0.5f + r + 10, armedEffect, wi + 10, 16, this);
+		}
 
 		repaint(); // for the animation
     }
@@ -131,13 +132,15 @@ public class WaitingElement extends AGLButton {
 	}
 
 	/**
-	 * @param job
+	 * reset this waiting element and set a new (optional) cancel callback
+	 * 
+	 * @param onCancel
 	 */
-	public void resetJob(Job job) {
+	public void reset(ICallback<Boolean> onCancel) {
 		completed = 0;
 		text = "";
-		this.current = job;
-		setVisibility(job != null ? EVisibility.PICKABLE : EVisibility.VISIBLE);
+		this.onCancel = onCancel;
+		setVisibility(onCancel != null ? EVisibility.PICKABLE : EVisibility.VISIBLE);
 	}
 
     private float computeAngle(int deltaTimeMs) {
@@ -146,14 +149,25 @@ public class WaitingElement extends AGLButton {
 		return acc;
     }
 
-	public void error(String text) {
-		this.completed *= -1;
+	/**
+	 * updates the progress completion state with an optional text
+	 * 
+	 * @param completed
+	 * @param text
+	 */
+	public void progress(float completed, String text) {
+		this.completed = completed;
 		this.text = text;
 		repaint();
 	}
 
-	public void progress(float completed, String text) {
-		this.completed = completed;
+	/**
+	 * marks that there is no progress anymore and that an error occurred described using the parameter
+	 * 
+	 * @param text
+	 */
+	public void error(String text) {
+		this.completed *= -1;
 		this.text = text;
 		repaint();
 	}
@@ -180,7 +194,7 @@ public class WaitingElement extends AGLButton {
 			return;
 		armed = true;
 		if (!(pick instanceof AdvancedPick)) {
-			current.cancel();
+			if (onCancel != null) onCancel.on(Boolean.TRUE);
 			armed = false;
 		}
 		repaint();
@@ -191,7 +205,7 @@ public class WaitingElement extends AGLButton {
 		if (!armed)
 			return;
 		armed = false;
-		current.cancel();
+		if (onCancel != null) onCancel.on(Boolean.TRUE);
 		repaint();
 	}
 

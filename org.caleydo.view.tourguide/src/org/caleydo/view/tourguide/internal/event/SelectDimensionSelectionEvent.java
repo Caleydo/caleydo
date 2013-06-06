@@ -23,8 +23,10 @@ import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.event.ADirectedEvent;
 
 /**
+ * helper event for triggering the selection of a stratification dimension perspective
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
 public class SelectDimensionSelectionEvent extends ADirectedEvent {
 	private Perspective dim;
