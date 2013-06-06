@@ -73,8 +73,7 @@ public class InhomogeneousDataPropertiesPage extends AImportDataPage {
 	}
 
 	@Override
-	public void createControl(Composite parent) {
-
+	protected void createGuiElements(Composite parent) {
 		parentComposite = new Composite(parent, SWT.NONE);
 		parentComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		parentComposite.setLayout(new GridLayout(1, true));
@@ -91,7 +90,6 @@ public class InhomogeneousDataPropertiesPage extends AImportDataPage {
 		});
 
 		table = new ColumnConfigTableWidget(parentComposite);
-		setControl(parentComposite);
 	}
 
 	@SuppressWarnings("unchecked")

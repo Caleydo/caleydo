@@ -28,6 +28,7 @@ import org.caleydo.core.io.gui.dataimport.widget.CategoricalDataPropertiesWidget
 import org.caleydo.core.io.gui.dataimport.widget.NumericalDataPropertiesWidget;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
@@ -70,6 +71,8 @@ public class ColumnDataPropertiesDialog extends Dialog implements Listener {
 
 	private EDataType dataType = EDataType.FLOAT;
 
+	private ScrolledComposite scrolledComposite;
+
 	/**
 	 * @param parentShell
 	 */
@@ -103,9 +106,25 @@ public class ColumnDataPropertiesDialog extends Dialog implements Listener {
 	@Override
 	protected Control createDialogArea(Composite parent) {
 
+		// scrolledComposite = new ScrolledComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL);
+		// GridLayout l = new GridLayout(1, true);
+		// l.horizontalSpacing = 0;
+		// l.verticalSpacing = 0;
+		// l.marginHeight = 0;
+		// l.marginHeight = 0;
+		// scrolledComposite.setLayout(l);
+		// scrolledComposite.setExpandHorizontal(true);
+		// scrolledComposite.setExpandVertical(true);
+
+		// this.parent = new Composite(scrolledComposite, SWT.NONE);
+		//
+		// this.parent.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		// this.parent.setLayout(l);
+
 		parentComposite = new Composite(parent, SWT.NONE);
+		// scrolledComposite.setContent(parentComposite);
 		parentComposite.setLayout(new GridLayout(1, false));
-		parentComposite.setLayoutData(new GridData(800, 600));
+		parentComposite.setLayoutData(new GridData(800, 800));
 
 		Group group = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
 		group.setText("Data Type");
@@ -128,6 +147,9 @@ public class ColumnDataPropertiesDialog extends Dialog implements Listener {
 			}
 		});
 
+		// parentComposite.pack();
+		// scrolledComposite.setMinSize(800, 800);
+
 		if (numericalProperties != null) {
 			numericalDataButton.setSelection(true);
 			showNumericalDataWidgets();
@@ -139,6 +161,8 @@ public class ColumnDataPropertiesDialog extends Dialog implements Listener {
 
 		return parent;
 	}
+
+
 
 	private void showNumericalDataWidgets() {
 		if (categoricalDataPropertiesWidget != null) {
@@ -158,7 +182,6 @@ public class ColumnDataPropertiesDialog extends Dialog implements Listener {
 			}
 			parentComposite.layout(true);
 		}
-
 		// parentComposite.pack();
 	}
 

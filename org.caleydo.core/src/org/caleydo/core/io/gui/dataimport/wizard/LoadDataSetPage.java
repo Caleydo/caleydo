@@ -165,14 +165,32 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 		mediator = new LoadDataSetPageMediator(this, dataSetDescription);
 	}
 
+	//
+	// @Override
+	// public void createControl(Composite parent) {
+	//
+	// ScrolledComposite sc1 = new ScrolledComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL);
+	// sc1.setLayout(new GridLayout(1, true));
+	// sc1.setExpandHorizontal(true);
+	// sc1.setExpandVertical(true);
+	//
+	//
+	//
+	// parentComposite.pack();
+	// // parentComposite.setSize(parentComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+	// sc1.setMinSize(parentComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+	// // parentComposite.layout(true, true);
+	// // sc1.layout(true, true);
+	// // sc1.setMinSize(2000, 1500);
+	// setControl(sc1);
+	// }
+
 	@Override
-	public void createControl(Composite parent) {
-
-		int numGridCols = 2;
-
+	protected void createGuiElements(Composite parent) {
 		parentComposite = new Composite(parent, SWT.NONE);
-		GridLayout layout = new GridLayout(numGridCols, true);
+		GridLayout layout = new GridLayout(2, true);
 		parentComposite.setLayout(layout);
+		parentComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
 		// File Selection
 		loadFile = new LoadFileWidget(parentComposite, "Open Data File", new ICallback<String>() {
@@ -265,7 +283,6 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 
 		mediator.guiCreated();
 
-		setControl(parentComposite);
 	}
 
 	private void createRowConfigPart(Composite parent) {

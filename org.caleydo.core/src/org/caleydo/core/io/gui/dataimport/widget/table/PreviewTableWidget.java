@@ -75,8 +75,10 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 	private List<Boolean> columnSelectionStatus = new ArrayList<>();
 	private RegExIDConverter columnIDConverter;
 	private RegExIDConverter rowIDConverter;
-
 	private IntegerCallback onColumnSelection;
+
+	private ColumnHeaderDataProvider columnHeaderDataProvider;
+	private LineNumberRowHeaderDataProvider rowHeaderDataProvider;
 
 	private class ColumnSelectionAction extends ToggleCheckBoxColumnAction {
 
@@ -185,6 +187,14 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 			return 1;
 		}
 
+		/**
+		 * @param numColumns
+		 *            setter, see {@link numColumns}
+		 */
+		public void setNumColumns(int numColumns) {
+			this.numColumns = numColumns;
+		}
+
 	}
 
 	public PreviewTableWidget(Composite parent, IntegerCallback onColumnSelection) {
@@ -194,9 +204,10 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 
 		// emptyMatrix.get(0).add("1");
 
-		bodyDataProvider = new MatrixBasedBodyDataProvider(emptyMatrix, emptyMatrix.size());
-		buildTable(bodyDataProvider, new ColumnHeaderDataProvider(10),
-				new LineNumberRowHeaderDataProvider(emptyMatrix.size()));
+		bodyDataProvider = new MatrixBasedBodyDataProvider(emptyMatrix, 10);
+		columnHeaderDataProvider = new ColumnHeaderDataProvider(10);
+		rowHeaderDataProvider = new LineNumberRowHeaderDataProvider(emptyMatrix.size());
+		buildTable(bodyDataProvider, columnHeaderDataProvider, rowHeaderDataProvider);
 	}
 
 	private List<List<String>> createEmptyDataMatrix(int numRows, int numColumns) {
@@ -235,10 +246,10 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 
 		GridLayer gridLayer = new GridLayer(bodyLayer, columnHeaderLayer, rowHeaderLayer, cornerLayer);
 		table = new NatTable(parent, gridLayer, false);
-		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 2);
+		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1);
 
-		gridData.heightHint = 400;
-		gridData.widthHint = 800;
+		// gridData.heightHint = 100;
+		// gridData.widthHint = 800;
 		table.setLayoutData(gridData);
 
 		IConfigLabelAccumulator cellLabelAccumulator = new IConfigLabelAccumulator() {
@@ -348,10 +359,13 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 		for (int i = 0; i < numColumns; i++) {
 			columnSelectionStatus.add(true);
 		}
-		bodyDataProvider = new MatrixBasedBodyDataProvider(dataMatrix, numColumns);
-		buildTable(bodyDataProvider, new ColumnHeaderDataProvider(numColumns), new LineNumberRowHeaderDataProvider(
-				dataMatrix.size()));
-
+		bodyDataProvider.setDataMatrix(dataMatrix);
+		bodyDataProvider.setNumColumns(numColumns);
+		columnHeaderDataProvider.setNumColumns(numColumns);
+		rowHeaderDataProvider.setNumRows(dataMatrix.size());
+		// buildTable(bodyDataProvider, new ColumnHeaderDataProvider(numColumns), new LineNumberRowHeaderDataProvider(
+		// dataMatrix.size()));
+		table.refresh();
 	}
 
 	public void setColumnIDTypeParsingRules(IDTypeParsingRules idTypeParsingRules) {
@@ -383,6 +397,7 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 		this.idColumnIndex = idColumnIndex;
 		this.numberOfHeaderRows = numberOfHeaderRows;
 
+		// table.setSize(table.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 		// table.pack();
 		// table.layout(true);
 		table.refresh();

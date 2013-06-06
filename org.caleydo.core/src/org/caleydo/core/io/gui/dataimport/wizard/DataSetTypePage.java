@@ -73,15 +73,11 @@ public class DataSetTypePage extends AImportDataPage {
 	}
 
 	@Override
-	public void createControl(Composite parent) {
+	protected void createGuiElements(Composite parent) {
 		Group group = new Group(parent, SWT.SHADOW_ETCHED_IN);
 		group.setText("Select the data type of your homogeneous dataset.");
 		group.setLayout(new GridLayout(1, true));
-
-		// Label introLabel = new Label(group, SWT.WRAP);
-		// introLabel.setText("Select the data type of your homogeneous dataset.");
-		// GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
-		// gridData.widthHint = 200;
+		group.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
 		numericalDatasetButton = new Button(group, SWT.RADIO);
 		numericalDatasetButton.setText("Numerical");
@@ -103,8 +99,6 @@ public class DataSetTypePage extends AImportDataPage {
 		gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
 		gridData.widthHint = 200;
 		categoricalDatasetLabel.setLayoutData(gridData);
-
-		setControl(group);
 	}
 
 	private void boldifyButtonText(Button button) {
