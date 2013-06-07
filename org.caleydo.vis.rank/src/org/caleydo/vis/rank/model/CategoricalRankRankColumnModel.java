@@ -54,7 +54,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 import com.google.common.base.Function;
-import com.google.common.collect.Sets;
 
 /**
  * a special categorical column with at most {@link #MAX_CATEGORY_COLORS} colors which supports that this column is part
@@ -157,7 +156,7 @@ public class CategoricalRankRankColumnModel<CATEGORY_TYPE> extends ABasicFiltera
 		Set<CATEGORY_TYPE> bak = new HashSet<>(this.selection);
 		this.selection.clear();
 		this.selection.addAll(filter);
-		if (Sets.difference(bak, this.selection).isEmpty()) {
+		if (this.selection.equals(bak)) {
 			setGlobalFilter(isGlobalFilter);
 		} else {
 			this.isGlobalFilter = isGlobalFilter;

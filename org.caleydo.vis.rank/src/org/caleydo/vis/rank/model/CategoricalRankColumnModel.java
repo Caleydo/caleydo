@@ -46,7 +46,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 import com.google.common.base.Function;
-import com.google.common.collect.Sets;
 
 /**
  * @author Samuel Gratzl
@@ -127,7 +126,7 @@ public class CategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<CATEGOR
 		Set<CATEGORY_TYPE> bak = new HashSet<>(this.selection);
 		this.selection.clear();
 		this.selection.addAll(filter);
-		if (Sets.difference(bak, this.selection).isEmpty()) {
+		if (this.selection.equals(bak)) {
 			setGlobalFilter(isGlobalFilter);
 		} else {
 			this.isGlobalFilter = isGlobalFilter;
