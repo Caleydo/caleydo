@@ -19,6 +19,8 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.config;
 
+import java.util.Collections;
+
 import org.caleydo.core.view.opengl.picking.AdvancedPick;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.vis.rank.model.ACompositeRankColumnModel;
@@ -27,6 +29,7 @@ import org.caleydo.vis.rank.model.GroupRankColumnModel;
 import org.caleydo.vis.rank.model.IRankColumnParent;
 import org.caleydo.vis.rank.model.MaxCompositeRankColumnModel;
 import org.caleydo.vis.rank.model.OrderColumn;
+import org.caleydo.vis.rank.model.RankRankColumnModel;
 import org.caleydo.vis.rank.model.StackedRankColumnModel;
 import org.caleydo.vis.rank.model.mixin.IFloatRankableColumnMixin;
 
@@ -67,6 +70,11 @@ public class RankTableConfigBase implements IRankTableConfig {
 		default:
 			return new MaxCompositeRankColumnModel();
 		}
+	}
+
+	@Override
+	public Iterable<? extends ARankColumnModel> createAutoSnapshotColumns(boolean createEmpty) {
+		return Collections.singleton(new RankRankColumnModel());
 	}
 
 	@Override
