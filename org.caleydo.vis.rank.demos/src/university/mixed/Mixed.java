@@ -25,6 +25,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
@@ -53,7 +54,7 @@ import demo.RankTableDemo.IModelBuilder;
 public class Mixed implements IModelBuilder {
 	@Override
 	public void apply(RankTableModel table) throws Exception {
-		Map<String, String> metaData = new HashMap<>();
+		Set<String> countries = new TreeSet<>();
 
 		Map<String, String> synonyms = new HashMap<>();
 		synonyms.put("ETH Zurich (Swiss Federal Institute of Technology)",
@@ -67,6 +68,8 @@ public class Mixed implements IModelBuilder {
 			all.addAll(wbu.keySet());
 			Map<String, Pair<String, AcademicUniversityYear[]>> arwu = AcademicUniversityYear.readData(2012);
 			all.addAll(arwu.keySet());
+
+			Map<String, String> wbucountries = WorldUniversityYear.readCountries();
 
 			List<UniversityRow> rows = new ArrayList<>(all.size());
 			for (String university : all) {
@@ -82,8 +85,11 @@ public class Mixed implements IModelBuilder {
 //					if (r.country == null)
 //						r.country = top100under50.get(university).country;
 //				}
+				if (r.country == null)
+					r.country = wbucountries.get(r.schoolname);
+
 				if (r.country != null)
-					metaData.put(r.country, r.country);
+					countries.add(r.country);
 				rows.add(r);
 			}
 			table.addData(rows);
@@ -92,14 +98,14 @@ public class Mixed implements IModelBuilder {
 		table.add(new RankRankColumnModel());
 		table.add(new StringRankColumnModel(GLRenderers.drawText("Institution", VAlign.CENTER),
 				StringRankColumnModel.DEFAULT));
-		table.add(new CategoricalRankColumnModel<>(GLRenderers.drawText("Country", VAlign.CENTER),
+		table.add(CategoricalRankColumnModel.createSimple(GLRenderers.drawText("Country", VAlign.CENTER),
 				new Function<IRow, String>() {
 					@Override
 					public String apply(IRow in) {
 						UniversityRow r = (UniversityRow) in;
 						return r.country;
 					}
-				}, metaData));
+				}, countries));
 
 		table.orderBy(WorldUniversityYear.addYear(table, "World University Ranking",
 				new Function<IRow, WorldUniversityYear>() {
