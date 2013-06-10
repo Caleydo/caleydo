@@ -84,9 +84,9 @@ public class RoundedRectRenderer {
 	}
 
 	public static int render(GLGraphics g, float x, float y, float w, float h, float radius, int segments, int flags) {
-		assert w < radius * 2;
-		assert h < radius * 2;
-		assert radius > 0;
+		assert w >= radius * 2 : "w" + w + " " + radius;
+		assert h >= radius * 2 : "h" + h + " " + radius;
+		assert radius > 0 : "radius <= 0";
 		int count = 0;
 		float[] offsets = getRoundedOffsets(radius, segments);
 		final int ol = offsets.length - 1;
