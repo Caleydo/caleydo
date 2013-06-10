@@ -36,7 +36,7 @@ import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
  * @author Alexander Lex
  */
 public class CaleydoTextRenderer extends MyTextRenderer implements ITextRenderer {
-
+	private static final String FONT_NAME = "Arial";
 	static private final String REFERENCE_TEXT = "Reference Text";
 	float fontScaling = GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR;
 
@@ -55,7 +55,11 @@ public class CaleydoTextRenderer extends MyTextRenderer implements ITextRenderer
 	}
 
 	public CaleydoTextRenderer(int size) {
-		super(new Font("Arial", Font.PLAIN, size), true, true, new DefaultRenderDelegate());
+		this(size, Font.PLAIN);
+	}
+
+	public CaleydoTextRenderer(int size, int style) {
+		super(new Font(FONT_NAME, style, size), true, true, new DefaultRenderDelegate());
 		referenceBounds = super.getBounds(REFERENCE_TEXT);
 	}
 

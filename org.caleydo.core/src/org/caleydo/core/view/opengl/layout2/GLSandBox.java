@@ -31,6 +31,7 @@ import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.SimplePickingManager;
 import org.caleydo.core.view.opengl.util.text.CompositeTextRenderer;
+import org.caleydo.core.view.opengl.util.text.ETextStyle;
 import org.caleydo.core.view.opengl.util.text.ITextRenderer;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.data.loader.ResourceLoader;
@@ -219,12 +220,14 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 
 		AGLView.initGLContext(gl);
 
-		ITextRenderer text = createTextRenderer();
+		ITextRenderer text_plain = createTextRenderer(ETextStyle.PLAIN);
+		ITextRenderer text_bold = createTextRenderer(ETextStyle.BOLD);
+		ITextRenderer text_italics = createTextRenderer(ETextStyle.ITALIC);
 		IResourceLocator loader = createResourceLocator();
 		TextureManager textures = new TextureManager(new ResourceLoader(loader));
 
 
-		this.local = new GLContextLocal(text, textures, loader);
+		this.local = new GLContextLocal(text_plain, text_bold, text_italics, textures, loader);
 
 		gl.glLoadIdentity();
 		this.root.setParent(this);
@@ -236,8 +239,8 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 				ResourceLocators.classLoader(root.getClass().getClassLoader()), ResourceLocators.FILE);
 	}
 
-	protected ITextRenderer createTextRenderer() {
-		return new CompositeTextRenderer(8, 16, 24, 40);
+	protected ITextRenderer createTextRenderer(ETextStyle style) {
+		return new CompositeTextRenderer(style, 8, 16, 24, 40);
 	}
 
 	@Override

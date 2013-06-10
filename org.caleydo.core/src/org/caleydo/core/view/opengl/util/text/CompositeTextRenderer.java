@@ -45,22 +45,23 @@ public class CompositeTextRenderer implements ITextRenderer {
 	 */
 	private final IFloatFunction mapper;
 
-	public CompositeTextRenderer(int size, int... sizes) {
-		this(FloatFunctions.IDENTITY, size, sizes);
+	public CompositeTextRenderer(ETextStyle style, int size, int... sizes) {
+		this(FloatFunctions.IDENTITY, style, size, sizes);
 	}
 
-	public CompositeTextRenderer(IFloatFunction mapper, int size, int... sizes) {
+	public CompositeTextRenderer(IFloatFunction mapper, ETextStyle style, int size, int... sizes) {
 		this.mapper = mapper;
-		add(size);
+		add(style, size);
 		for (int s : sizes)
-			add(s);
+			add(style, s);
 	}
 
 	/**
 	 * @param size
 	 */
-	private void add(int size) {
-		CaleydoTextRenderer t = new CaleydoTextRenderer(size);
+	private void add(ETextStyle style, int size) {
+		int awtstyle = style.toAWTFontStyle();
+		CaleydoTextRenderer t = new CaleydoTextRenderer(size, awtstyle);
 		pool.put(t.getReferenceHeight(), t);
 	}
 

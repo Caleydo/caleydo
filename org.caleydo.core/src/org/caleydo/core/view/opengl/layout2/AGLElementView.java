@@ -46,8 +46,6 @@ import org.caleydo.core.view.opengl.canvas.IGLView;
 import org.caleydo.core.view.opengl.layout2.animation.AnimatedGLElementContainer;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.SimplePickingManager;
-import org.caleydo.core.view.opengl.util.text.CompositeTextRenderer;
-import org.caleydo.core.view.opengl.util.text.ITextRenderer;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.data.loader.ResourceLocators;
@@ -154,11 +152,10 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 	@Override
 	public void init(GLAutoDrawable drawable) {
 		GL2 gl = drawable.getGL().getGL2();
-		ITextRenderer text = new CompositeTextRenderer(8, 16, 24, 40);
 		IResourceLocator locator = createResourceLocator();
 		TextureManager textures = createTextureManager(locator);
 
-		local = new GLContextLocal(text, textures, locator);
+		local = new GLContextLocal(textures, locator);
 
 		AGLView.initGLContext(gl);
 

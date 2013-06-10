@@ -39,6 +39,7 @@ import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLContextLocal;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.picking.Pick;
+import org.caleydo.core.view.opengl.util.text.ETextStyle;
 import org.caleydo.core.view.opengl.util.text.TextUtils;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
@@ -232,7 +233,8 @@ public class AddWizardElement extends AAddWizardElement implements IReactions {
 
 		List<String> lines = TextUtils.wrap(g.text, item.getLabel(), w, lineHeight);
 
-		g.drawText(lines, x, y + (h - lineHeight * lines.size()) * 0.5f, w, lineHeight * lines.size(), 0, VAlign.CENTER);
+		g.drawText(lines, x, y + (h - lineHeight * lines.size()) * 0.5f, w, lineHeight * lines.size(), 0,
+				VAlign.CENTER, ETextStyle.PLAIN);
 	}
 
 	@Override
