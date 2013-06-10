@@ -3,6 +3,7 @@
  */
 package org.caleydo.core.io.gui.dataimport.wizard;
 
+import org.caleydo.core.gui.util.FontUtil;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.io.DataSetDescription;
@@ -21,8 +22,6 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -218,9 +217,7 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 		Label chooseHomogenetyLabel = new Label(datasetConfigGroup, SWT.BOLD);
 		chooseHomogenetyLabel.setText("Choose Dataset Type:");
 
-		FontData fontData = chooseHomogenetyLabel.getFont().getFontData()[0];
-		Font font = new Font(null, new FontData(fontData.getName(), fontData.getHeight(), SWT.BOLD));
-		chooseHomogenetyLabel.setFont(font);
+		FontUtil.makeBold(chooseHomogenetyLabel);
 
 		homogeneousDatasetButton = new Button(datasetConfigGroup, SWT.RADIO);
 		homogeneousDatasetButton.setText("Homogeneous");

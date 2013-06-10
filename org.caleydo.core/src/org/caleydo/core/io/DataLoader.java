@@ -34,6 +34,7 @@ import org.caleydo.core.io.parser.ascii.GroupingParser;
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.EClustererTarget;
 import org.caleydo.core.util.logging.Logger;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
@@ -53,23 +54,33 @@ public class DataLoader {
 	 *
 	 * @param dataSetDescription
 	 *            The information for how to create everything
+	 * @param monitor
+	 *            Monitor for progress indication. May be null.
 	 * @return the loaded {@link ATableBasedDataDomain} or null if an error occurred
 	 */
-	public static ATableBasedDataDomain loadData(DataSetDescription dataSetDescription) {
+	public static ATableBasedDataDomain loadData(DataSetDescription dataSetDescription, IProgressMonitor monitor) {
+
+		monitor.beginTask("Loading Dataset", dataSetDescription.getDataDescription() == null ? 5 : 4);
+		if (monitor != null)
+			monitor.subTask("Initializing ID Types");
 		IDTypeInitializer.initIDs(dataSetDescription);
+		if (monitor != null)
+			monitor.worked(1);
+		ATableBasedDataDomain dataDomain = null;
 		try {
-			ATableBasedDataDomain dataDomain = loadDataSet(dataSetDescription);
-			loadGroupings(dataDomain, dataSetDescription);
-			runDataProcessing(dataDomain, dataSetDescription);
+			dataDomain = loadDataSet(dataSetDescription, monitor);
+			loadGroupings(dataDomain, dataSetDescription, monitor);
+			runDataProcessing(dataDomain, dataSetDescription, monitor);
 
 			// Create perspectives per column for inhomogeneous datasets
 			if (dataSetDescription.getDataDescription() == null) {
-				createInitialPerspectives(dataDomain);
+				createInitialPerspectives(dataDomain, monitor);
 			}
 			return dataDomain;
 		} catch (Exception e) {
 			Logger.log(new Status(IStatus.ERROR, "DataLoader", "Failed to load data for dataset "
 					+ dataSetDescription.getDataSetName(), e));
+			DataDomainManager.get().unregister(dataDomain);
 			return null;
 		}
 	}
@@ -101,8 +112,11 @@ public class DataLoader {
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 */
-	private static ATableBasedDataDomain loadDataSet(DataSetDescription dataSetDescription)
+	private static ATableBasedDataDomain loadDataSet(DataSetDescription dataSetDescription, IProgressMonitor monitor)
 			throws FileNotFoundException, IOException {
+
+		if (monitor != null)
+			monitor.subTask("Loading data");
 
 		ATableBasedDataDomain dataDomain;
 
@@ -133,6 +147,9 @@ public class DataLoader {
 
 		// the place the matrix is stored:
 		TableUtils.loadData(dataDomain, dataSetDescription, true, createDefaultRecordPerspective);
+		if (monitor != null)
+			monitor.worked(1);
+
 		return dataDomain;
 
 	}
@@ -143,7 +160,11 @@ public class DataLoader {
 	 *
 	 * @param dataSetDescription
 	 */
-	public static void loadGroupings(ATableBasedDataDomain dataDomain, DataSetDescription dataSetDescription) {
+	public static void loadGroupings(ATableBasedDataDomain dataDomain, DataSetDescription dataSetDescription,
+			IProgressMonitor monitor) {
+
+		if (monitor != null)
+			monitor.subTask("Loading Groupings");
 
 		List<GroupingParseSpecification> columnGroupingSpecifications = dataSetDescription
 				.getColumnGroupingSpecifications();
@@ -165,6 +186,9 @@ public class DataLoader {
 				loadRecordGroupings(dataDomain, rowGroupingSpecifications);
 			}
 		}
+
+		if (monitor != null)
+			monitor.worked(1);
 	}
 
 	/**
@@ -182,8 +206,7 @@ public class DataLoader {
 				targetIDType);
 
 		for (PerspectiveInitializationData data : dimensionPerspectivesInitData) {
-			Perspective dimensionPerspective = new Perspective(dataDomain,
-					dataDomain.getDimensionIDType());
+			Perspective dimensionPerspective = new Perspective(dataDomain, dataDomain.getDimensionIDType());
 			dimensionPerspective.init(data);
 			dataDomain.getTable().registerDimensionPerspective(dimensionPerspective);
 		}
@@ -229,7 +252,11 @@ public class DataLoader {
 		return perspectiveDatas;
 	}
 
-	private static void runDataProcessing(ATableBasedDataDomain dataDomain, DataSetDescription dataSetDescription) {
+	private static void runDataProcessing(ATableBasedDataDomain dataDomain, DataSetDescription dataSetDescription,
+			IProgressMonitor monitor) {
+		if (monitor != null)
+			monitor.subTask("Processing Data");
+
 		DataProcessingDescription dataProcessingDescription = dataSetDescription.getDataProcessingDescription();
 		if (dataProcessingDescription == null)
 			return;
@@ -269,7 +296,8 @@ public class DataLoader {
 
 		}
 
-
+		if (monitor != null)
+			monitor.worked(1);
 
 	}
 
@@ -278,7 +306,9 @@ public class DataLoader {
 	 *
 	 * @param dataDomain
 	 */
-	private static void createInitialPerspectives(ATableBasedDataDomain dataDomain) {
+	private static void createInitialPerspectives(ATableBasedDataDomain dataDomain, IProgressMonitor monitor) {
+		if (monitor != null)
+			monitor.subTask("Initializing Dataset");
 		List<Integer> columns = dataDomain.getTable().getColumnIDList();
 		String recordPer = dataDomain.getTable().getDefaultRecordPerspective().getPerspectiveID();
 		for (Integer col : columns) {
@@ -292,14 +322,14 @@ public class DataLoader {
 			TablePerspective p = dataDomain.getTablePerspective(recordPer, dim.getPerspectiveID(), false);
 			p.setLabel(dim.getLabel());
 		}
-
+		if (monitor != null)
+			monitor.worked(1);
 	}
 
 	private static void setUpRecordClustering(ClusterConfiguration clusterConfiguration,
 			ATableBasedDataDomain dataDomain) {
 		clusterConfiguration.setClusterTarget(EClustererTarget.RECORD_CLUSTERING);
-		Perspective targetRecordPerspective = new Perspective(dataDomain,
-				dataDomain.getRecordIDType());
+		Perspective targetRecordPerspective = new Perspective(dataDomain, dataDomain.getRecordIDType());
 		dataDomain.getTable().registerRecordPerspective(targetRecordPerspective);
 		targetRecordPerspective.setLabel(clusterConfiguration.toString(), false);
 		clusterConfiguration.setOptionalTargetRecordPerspective(targetRecordPerspective);
@@ -308,8 +338,7 @@ public class DataLoader {
 	private static void setUpDimensionClustering(ClusterConfiguration clusterConfiguration,
 			ATableBasedDataDomain dataDomain) {
 		clusterConfiguration.setClusterTarget(EClustererTarget.DIMENSION_CLUSTERING);
-		Perspective targetDimensionPerspective = new Perspective(dataDomain,
-				dataDomain.getDimensionIDType());
+		Perspective targetDimensionPerspective = new Perspective(dataDomain, dataDomain.getDimensionIDType());
 		dataDomain.getTable().registerDimensionPerspective(targetDimensionPerspective);
 
 		targetDimensionPerspective.setLabel(clusterConfiguration.toString(), false);

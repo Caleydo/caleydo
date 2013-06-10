@@ -3,13 +3,23 @@
  */
 package org.caleydo.core.io.gui.dataimport.wizard;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.io.DataLoader;
 import org.caleydo.core.io.DataSetDescription;
+import org.caleydo.core.io.gui.dataimport.DatasetImportStatusDialog;
+import org.caleydo.core.util.logging.Logger;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.IPageChangeProvider;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.wizard.IWizardContainer;
 import org.eclipse.jface.wizard.Wizard;
 
@@ -89,6 +99,8 @@ public class DataImportWizard extends Wizard {
 
 	private Set<AImportDataPage> visitedPages = new HashSet<AImportDataPage>();
 
+	private ATableBasedDataDomain dataDomain;
+
 	/**
 	 *
 	 */
@@ -147,9 +159,51 @@ public class DataImportWizard extends Wizard {
 		if (visitedPages.contains(addGroupingsPage) || getContainer().getCurrentPage().equals(addGroupingsPage))
 			addGroupingsPage.fillDataSetDescription();
 
-		// ATableBasedDataDomain dataDomain;
+		ProgressMonitorDialog dialog = new ProgressMonitorDialog(getShell());
 
-		DataLoader.loadData(dataSetDescription);
+		try {
+			dialog.run(true, false, new IRunnableWithProgress() {
+
+				@Override
+				public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+					dataDomain = DataLoader.loadData(dataSetDescription, monitor);
+				}
+			});
+		} catch (Exception e) {
+			Logger.log(new Status(IStatus.ERROR, this.toString(), "Dataset loading failed: " + e.getMessage()));
+		}
+		if (dataDomain == null) {
+			MessageDialog.openError(getShell(), "Dataset Loading Failed", "An error has occurred during loading file "
+					+ dataSetDescription.getDataSourcePath());
+		} else {
+			DatasetImportStatusDialog d = new DatasetImportStatusDialog(getShell(), dataDomain);
+			d.open();
+		}
+
+		// DataLoader.loadData(dataSetDescription, null);
+
+		// try {
+		// new ProgressMonitorDialog(shell).run(true, true,
+		// new LongRunningOperation(indeterminate.getSelection()));
+		// } catch (InvocationTargetException e) {
+		// MessageDialog.openError(shell, "Error", e.getMessage());
+		// } catch (InterruptedException e) {
+		// MessageDialog.openInformation(shell, "Cancelled", e.getMessage());
+		// }
+
+		// ATableBasedDataDomain dataDomain;
+		// Job job = new Job("First Job") {
+		// @Override
+		// protected IStatus run(IProgressMonitor monitor) {
+		//
+		//
+		// // Use this to open a Shell in the UI thread
+		// return Status.OK_STATUS;
+		// }
+		//
+		// };
+		// job.setUser(true);
+		// job.schedule();
 
 		// todo handle failure
 

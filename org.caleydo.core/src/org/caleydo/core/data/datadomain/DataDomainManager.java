@@ -251,6 +251,8 @@ public class DataDomainManager {
 	 * @param dataDomain
 	 */
 	public synchronized void unregister(IDataDomain dataDomain) {
+		if (dataDomain == null)
+			return;
 
 		if (byID.containsKey(dataDomain.getDataDomainID()))
 			byID.remove(dataDomain.getDataDomainID());

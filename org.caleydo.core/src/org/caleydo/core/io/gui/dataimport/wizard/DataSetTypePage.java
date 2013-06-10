@@ -29,14 +29,13 @@ import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
 import org.caleydo.core.data.collection.column.container.CategoricalClassDescription.ECategoryType;
+import org.caleydo.core.gui.util.FontUtil;
 import org.caleydo.core.io.DataDescription;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.NumericalProperties;
 import org.caleydo.core.util.color.Color;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -82,7 +81,7 @@ public class DataSetTypePage extends AImportDataPage {
 		numericalDatasetButton = new Button(group, SWT.RADIO);
 		numericalDatasetButton.setText("Numerical");
 		numericalDatasetButton.setSelection(true);
-		boldifyButtonText(numericalDatasetButton);
+		FontUtil.makeBold(numericalDatasetButton);
 		Label numericalDatasetLabel = new Label(group, SWT.WRAP);
 		numericalDatasetLabel
 				.setText("Choose if all columns in your dataset are numerical (integer or real numbers) and homogeneous (all columns have the same meaning and bounds).");
@@ -92,7 +91,7 @@ public class DataSetTypePage extends AImportDataPage {
 
 		categoricalDatasetButton = new Button(group, SWT.RADIO);
 		categoricalDatasetButton.setText("Categorical");
-		boldifyButtonText(categoricalDatasetButton);
+		FontUtil.makeBold(categoricalDatasetButton);
 		Label categoricalDatasetLabel = new Label(group, SWT.WRAP);
 		categoricalDatasetLabel
 				.setText("Choose if your dataset is categorical and contains the same categories in all columns.");
@@ -101,11 +100,6 @@ public class DataSetTypePage extends AImportDataPage {
 		categoricalDatasetLabel.setLayoutData(gridData);
 	}
 
-	private void boldifyButtonText(Button button) {
-		FontData fontData = button.getFont().getFontData()[0];
-		Font font = new Font(button.getDisplay(), new FontData(fontData.getName(), fontData.getHeight(), SWT.BOLD));
-		button.setFont(font);
-	}
 
 	@Override
 	public void fillDataSetDescription() {
