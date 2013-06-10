@@ -53,6 +53,7 @@ import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.picking.AdvancedPick;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
+import org.caleydo.core.view.opengl.util.text.ETextStyle;
 import org.caleydo.data.loader.ResourceLocators;
 import org.caleydo.data.loader.ResourceLocators.IResourceLocator;
 import org.caleydo.vis.rank.config.IRankTableConfig;
@@ -309,7 +310,9 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 
 		if (isCollapsed)
 			return;
-		if (hasTitle) {
+		boolean small = isSmallHeader(h);
+
+		if (hasTitle && !(armDropColum && small)) {
 			g.move(2, 2);
 			model.getHeaderRenderer().render(g, w - 6, LABEL_HEIGHT - 6, this);
 			g.move(-2, -2);
@@ -317,10 +320,15 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 		if (headerHovered) {
 			g.drawRect(0, 0, w, h);
 		}
-		if (this.armDropColum && !isSmallHeader(h)) {
+		if (this.armDropColum) {
 			g.incZ(0.6f);
-			float hi = Math.min(h - 4, 18);
-			g.drawText(armDropHint, 2, 2 + (h - hi) * .5f, w - 4, hi, VAlign.CENTER);
+			if (small) {
+				// render as title hint
+				g.drawText(armDropHint, 2, 2, w - 6, LABEL_HEIGHT - 6, VAlign.CENTER, ETextStyle.BOLD);
+			} else {
+				float hi = Math.min(h - 4, 18);
+				g.drawText(armDropHint, 2, 2 + (h - hi) * .5f, w - 4, hi, VAlign.CENTER, ETextStyle.BOLD);
+			}
 			g.incZ(-0.6f);
 		}
 	}

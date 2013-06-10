@@ -39,7 +39,7 @@ public class ColumnUIs {
 			return new StackedColumnHeaderUI((StackedRankColumnModel) model, config);
 		if (model instanceof OrderColumn)
 			return new OrderColumnHeaderUI(model, config);
-		if (model instanceof ACompositeRankColumnModel)
+		if (model instanceof NestedRankColumnModel || (model instanceof GroupRankColumnModel))
 			return new SimpleColumnHeaderUI((ACompositeRankColumnModel) model, config);
 		return new ColumnHeaderUI(model, config);
 	}
