@@ -41,7 +41,6 @@ import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.rank.internal.event.AnnotationEditEvent;
 import org.caleydo.vis.rank.internal.ui.TitleDescriptionDialog;
-import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IExplodeableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IFloatRankableColumnMixin;
@@ -62,7 +61,7 @@ import com.google.common.primitives.Floats;
  * 
  */
 public abstract class AMultiRankColumnModel extends ACompositeRankColumnModel implements IMultiColumnMixin,
-		IExplodeableColumnMixin, IHideableColumnMixin, ICollapseableColumnMixin, IFilterColumnMixin, IGLRenderer {
+		IExplodeableColumnMixin, IHideableColumnMixin, IGLRenderer {
 	private final BitSet mask = new BitSet();
 	private final BitSet maskInvalid = new BitSet();
 	private float filterMin = 0;
@@ -129,7 +128,6 @@ public abstract class AMultiRankColumnModel extends ACompositeRankColumnModel im
 	/**
 	 * @return the isGlobalFilter, see {@link #isGlobalFilter}
 	 */
-	@Override
 	public boolean isGlobalFilter() {
 		return isGlobalFilter;
 	}
@@ -149,7 +147,6 @@ public abstract class AMultiRankColumnModel extends ACompositeRankColumnModel im
 		maskInvalid.set(0, getTable().getDataSize());
 	}
 
-	@Override
 	public final void filter(List<IRow> data, BitSet mask) {
 		if (!isFiltered())
 			return;
@@ -162,7 +159,6 @@ public abstract class AMultiRankColumnModel extends ACompositeRankColumnModel im
 		mask.and(this.mask);
 	}
 
-	@Override
 	public boolean isFiltered() {
 		return filterMin > 0 || filterMax < 1;
 	}
@@ -181,7 +177,7 @@ public abstract class AMultiRankColumnModel extends ACompositeRankColumnModel im
 		float bak2 = filterMax;
 		this.filterMin = min;
 		this.filterMax = max;
-		propertySupport.firePropertyChange(PROP_FILTER, Pair.make(bak1, bak2), Pair.make(min, max));
+		propertySupport.firePropertyChange(IFilterColumnMixin.PROP_FILTER, Pair.make(bak1, bak2), Pair.make(min, max));
 	}
 
 	/**
@@ -198,7 +194,6 @@ public abstract class AMultiRankColumnModel extends ACompositeRankColumnModel im
 		return filterMax;
 	}
 
-	@Override
 	public void editFilter(final GLElement summary, IGLElementContext context) {
 		// FIXME
 		GLElement m = createEditFilterPopup(asRawData(), summary);

@@ -25,6 +25,7 @@ import java.beans.PropertyChangeListener;
 
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
+import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IFloatRankableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IMappedColumnMixin;
@@ -38,7 +39,8 @@ import org.caleydo.vis.rank.ui.detail.ValueElement;
  * @author Samuel Gratzl
  *
  */
-public class MaxCompositeRankColumnModel extends AMultiRankColumnModel {
+public class MaxCompositeRankColumnModel extends AMultiRankColumnModel implements ICollapseableColumnMixin,
+		IFilterColumnMixin {
 
 	private final PropertyChangeListener listener = new PropertyChangeListener() {
 		@Override

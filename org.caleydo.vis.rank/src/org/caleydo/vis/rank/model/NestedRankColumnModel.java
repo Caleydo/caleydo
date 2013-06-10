@@ -23,11 +23,7 @@ import java.awt.Color;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import org.caleydo.core.util.function.FloatFunctions;
-import org.caleydo.core.util.function.IFloatList;
 import org.caleydo.core.view.opengl.layout2.GLElement;
-import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
-import org.caleydo.vis.rank.model.mixin.ICompressColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IFloatRankableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IMappedColumnMixin;
@@ -36,7 +32,6 @@ import org.caleydo.vis.rank.model.mixin.ISnapshotableColumnMixin;
 import org.caleydo.vis.rank.ui.RenderStyle;
 import org.caleydo.vis.rank.ui.detail.MultiRankScoreSummary;
 import org.caleydo.vis.rank.ui.detail.ScoreBarElement;
-import org.caleydo.vis.rank.ui.detail.ScoreFilter2;
 import org.caleydo.vis.rank.ui.detail.ValueElement;
 
 import com.google.common.collect.Iterables;
@@ -48,9 +43,7 @@ import com.jogamp.common.util.IntObjectHashMap;
  * @author Samuel Gratzl
  *
  */
-public class StackedRankColumnModel extends AMultiRankColumnModel implements ISnapshotableColumnMixin,
-		ICompressColumnMixin, ICollapseableColumnMixin, IFilterColumnMixin {
-	public static final String PROP_ALIGNMENT = "alignment";
+public class NestedRankColumnModel extends AMultiRankColumnModel implements ISnapshotableColumnMixin {
 	public static final String PROP_WEIGHTS = "weights";
 
 	private final PropertyChangeListener listener = new PropertyChangeListener() {
@@ -58,8 +51,6 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 		public void propertyChange(PropertyChangeEvent evt) {
 			switch(evt.getPropertyName()) {
 			case PROP_WIDTH:
-				cacheMulti.clear();
-				invalidAllFilter();
 				onWeightChanged((ARankColumnModel) evt.getSource(), (float) evt.getOldValue(),
 						(float) evt.getNewValue());
 				break;
@@ -72,42 +63,27 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 			}
 		}
 	};
-
-	/**
-	 * which is the current aligned column index or -1 for all
-	 */
-	private int alignment = 0;
-	private boolean isCompressed = false;
-	private float compressedWidth = 100;
-
-	/**
-	 * if more than x percent of the the score is created by inferred values, filter it out
-	 */
-	private float filterInferredPercentage = 0.99f;
 	private IntObjectHashMap cacheMulti = new IntObjectHashMap();
 
-	public StackedRankColumnModel() {
+	public NestedRankColumnModel() {
 		this(Color.GRAY, new Color(0.95f, .95f, .95f));
 	}
 
-	public StackedRankColumnModel(Color color, Color bgColor) {
-		super(color, bgColor, "SUM");
+	public NestedRankColumnModel(Color color, Color bgColor) {
+		super(color, bgColor, "NESTED");
 		width = +RenderStyle.STACKED_COLUMN_PADDING * 2;
 	}
 
-	public StackedRankColumnModel(StackedRankColumnModel copy) {
+	public NestedRankColumnModel(NestedRankColumnModel copy) {
 		super(copy);
-		this.alignment = copy.alignment;
-		this.isCompressed = copy.isCompressed;
-		this.filterInferredPercentage = copy.filterInferredPercentage;
 		setHeaderRenderer(this);
 		width = RenderStyle.STACKED_COLUMN_PADDING * 2;
 		cloneInitChildren();
 	}
 
 	@Override
-	public StackedRankColumnModel clone() {
-		return new StackedRankColumnModel(this);
+	public NestedRankColumnModel clone() {
+		return new NestedRankColumnModel(this);
 	}
 
 	@Override
@@ -120,7 +96,6 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 		cacheMulti.clear();
 		float oldWidth = size() == 1 ? (getSpaces() - RenderStyle.COLUMN_SPACE) : width;
 		super.setWidth(oldWidth + model.getWidth() + RenderStyle.COLUMN_SPACE);
-		model.setParentData(model.getWidth());
 	}
 
 	@Override
@@ -129,12 +104,7 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 		model.removePropertyChangeListener(PROP_WIDTH, listener);
 		model.removePropertyChangeListener(IFilterColumnMixin.PROP_FILTER, listener);
 		model.removePropertyChangeListener(IMappedColumnMixin.PROP_MAPPING, listener);
-		// addDirectWeight(-model.getWeight());
-		if (alignment > size() - 2) {
-			setAlignment(alignment - 1);
-		}
 		super.setWidth(width - model.getWidth() - RenderStyle.COLUMN_SPACE);
-		model.setParentData(null);
 		cacheMulti.clear();
 	}
 
@@ -145,7 +115,6 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 	}
 
 	protected void onWeightChanged(ARankColumnModel child, float oldValue, float newValue) {
-		child.setParentData(newValue);
 		super.setWidth(width + (newValue - oldValue));
 	}
 
@@ -165,15 +134,10 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 
 	@Override
 	public ARankColumnModel setWidth(float width) {
-		if (isCompressed) {
-			this.propertySupport.firePropertyChange(PROP_WIDTH, compressedWidth, this.compressedWidth = width);
-			return this;
-		}
 		float shift = getSpaces();
 		float factor = (width - shift) / (this.width - shift); // new / old
 		for (ARankColumnModel col : this) {
-			float wi = ((float) col.getParentData()) * factor;
-			col.setParentData(wi);
+			float wi = col.getWidth() * factor;
 			col.removePropertyChangeListener(PROP_WIDTH, listener);
 			col.setWidth(wi);
 			col.addPropertyChangeListener(PROP_WIDTH, listener);
@@ -183,10 +147,6 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 
 	@Override
 	public float getWidth() {
-		if (isCollapsed())
-			return COLLAPSED_WIDTH;
-		if (isCompressed)
-			return compressedWidth;
 		return super.getWidth();
 	}
 
@@ -205,19 +165,32 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 		float s = 0;
 		final int size = children.size();
 		MultiFloat f = getSplittedValue(row);
-		float[] ws = this.getWeights();
+
+		double m = Math.pow(10, size);
 		for (int i = 0; i < size; ++i) {
 			float fi = f.values[i];
 			if (Float.isNaN(fi))
 				return Float.NaN;
-			s += fi * ws[i];
+			m /= 10;
+			s += fi * m;
 		}
+		s /= Math.pow(10, size - 1);
 		return s;
 	}
 
 	@Override
 	public int compare(IRow o1, IRow o2) {
-		return Float.compare(applyPrimitive(o1), applyPrimitive(o2));
+		final int size = children.size();
+		MultiFloat f1 = getSplittedValue(o1);
+		MultiFloat f2 = getSplittedValue(o2);
+		for (int i = 0; i < size; ++i) {
+			float a = f1.values[i];
+			float b = f2.values[i];
+			int c = Float.compare(a, b);
+			if (c != 0)
+				return c;
+		}
+		return 0;
 	}
 
 	@Override
@@ -241,48 +214,11 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 		return f;
 	}
 
-	/**
-	 * @return the alignment, see {@link #alignment}
-	 */
-	public int getAlignment() {
-		return alignment;
-	}
-
-	/**
-	 * @param alignment
-	 *            setter, see {@link alignment}
-	 */
-	public void setAlignment(int alignment) {
-		if (alignment > this.children.size())
-			alignment = this.children.size();
-		if (alignment == this.alignment)
-			return;
-		propertySupport.firePropertyChange(PROP_ALIGNMENT, this.alignment, this.alignment = alignment);
-	}
-
 	@Override
 	public void orderBy(IRankableColumnMixin child) {
-		int index = indexOf((ARankColumnModel)child);
-		if (alignment == index)
-			setAlignment(index + 1);
-		else
-			setAlignment(index);
+		parent.orderBy(child);
 	}
 
-	/**
-	 * returns the weights how much a individual column contributes to the overall scores, i.e. the normalized weights
-	 *
-	 * @return
-	 */
-	public float[] getWeights() {
-		float[] r = new float[this.size()];
-		float base = width - getSpaces();
-		int i = 0;
-		for (ARankColumnModel col : this) {
-			r[i++] = (float) col.getParentData() / base;
-		}
-		return r;
-	}
 
 	/**
 	 * @return
@@ -290,103 +226,6 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 	private float getSpaces() {
 		return RenderStyle.STACKED_COLUMN_PADDING * 2 + RenderStyle.COLUMN_SPACE * size();
 	}
-
-	public void setWeights(float[] weights) {
-		assert this.size() == weights.length;
-		float sum = 0;
-		for (float v : weights)
-			sum += v;
-		float factor = (width - getSpaces()) / sum;
-		int i = 0;
-		for (ARankColumnModel col : this) {
-			float w = weights[i++] * factor;
-			col.setParentData(w);
-			col.setWidthImpl(w);
-		}
-		propertySupport.firePropertyChange(PROP_WEIGHTS, null, weights);
-	}
-
-	public float getChildWidth(int i) {
-		return (float) get(i).getParentData();
-	}
-
-	public boolean isAlignAll() {
-		return alignment < 0;
-	}
-
-	public void setAlignAll(boolean alignAll) {
-		if (isAlignAll() == alignAll)
-			return;
-		this.setAlignment(-alignment - 1);
-	}
-
-	@Override
-	protected GLElement createEditFilterPopup(IFloatList data, GLElement summary) {
-		return new ScoreFilter2(this, data, summary);
-	}
-	/**
-	 * @return the filterInferredPercentage, see {@link #filterInferredPercentage}
-	 */
-	public float getFilterInferredPercentage() {
-		return filterInferredPercentage;
-	}
-
-	/**
-	 * @param filterInferredPercentage
-	 *            setter, see {@link filterInferredPercentage}
-	 */
-	public void setFilterInferredPercentage(float filterInferredPercentage) {
-		filterInferredPercentage = FloatFunctions.CLAMP01.apply(filterInferredPercentage);
-		if (this.filterInferredPercentage == filterInferredPercentage)
-			return;
-		invalidAllFilter();
-		propertySupport.firePropertyChange(PROP_FILTER, this.filterInferredPercentage,
-				this.filterInferredPercentage = filterInferredPercentage);
-	}
-
-	@Override
-	public boolean isFiltered() {
-		return super.isFiltered() || filterInferredPercentage < 1;
-	}
-
-	@Override
-	protected boolean filterEntry(IRow row) {
-		if (filterInferredPercentage >= 1)
-			return super.filterEntry(row);
-		if (!super.filterEntry(row)) {
-			return false;
-		}
-		boolean[] inferreds = isValueInferreds(row);
-		boolean any = false;
-		for (int i = 0; i < inferreds.length; ++i) {
-			if (inferreds[i]) {
-				any = true;
-			}
-		}
-		if (!any)
-			return true;
-		float[] ws = getWeights();
-		float inferPercentage = 0;
-		for (int i = 0; i < inferreds.length; ++i) {
-			if (inferreds[i])
-				inferPercentage += ws[i];
-		}
-		return inferPercentage < filterInferredPercentage;
-	}
-
-	/**
-	 * @return the isCompressed, see {@link #isCompressed}
-	 */
-	@Override
-	public boolean isCompressed() {
-		return isCompressed || isCollapsed();
-	}
-
-	@Override
-	public void setCompressed(boolean compressed) {
-		this.propertySupport.firePropertyChange(PROP_COMPRESSED, this.isCompressed, this.isCompressed = compressed);
-	}
-
 
 	@Override
 	public void explode() {

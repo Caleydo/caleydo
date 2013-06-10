@@ -35,6 +35,7 @@ import org.caleydo.data.loader.ResourceLocators;
 import org.caleydo.vis.rank.config.IRankTableUIConfig;
 import org.caleydo.vis.rank.internal.ui.ButtonBar;
 import org.caleydo.vis.rank.layout.IRowHeightLayout;
+import org.caleydo.vis.rank.model.NestedRankColumnModel;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.StackedRankColumnModel;
 
@@ -73,26 +74,43 @@ public class RankTableUI extends GLElementContainer implements ISelectionCallbac
 			}
 		}
 		buttons.addSpacer();
-		GLButton b = new GLButton();
-		b.setCallback(new ISelectionCallback() {
-			@Override
-			public void onSelectionChanged(GLButton button, boolean selected) {
-				StackedRankColumnModel m = new StackedRankColumnModel();
-				m.setWidth(100);
-				table.add(m);
-			}
-		});
-		buttons.addButton(b, "Create an empty Stacked Combined Column", RenderStyle.ICON_ADD_STACKED,
-				RenderStyle.ICON_ADD_STACKED);
-		b = new GLButton();
-		b.setCallback(new ISelectionCallback() {
-			@Override
-			public void onSelectionChanged(GLButton button, boolean selected) {
-				table.addSnapshot(null);
-			}
-		});
-		buttons.addButton(b, "Create a new Separator Column", RenderStyle.ICON_ADD_SEPARATOR,
-				RenderStyle.ICON_ADD_SEPARATOR);
+		{
+			GLButton b = new GLButton();
+			b.setCallback(new ISelectionCallback() {
+				@Override
+				public void onSelectionChanged(GLButton button, boolean selected) {
+					StackedRankColumnModel m = new StackedRankColumnModel();
+					m.setWidth(100);
+					table.add(m);
+				}
+			});
+			buttons.addButton(b, "Create an empty Stacked Combined Column", RenderStyle.ICON_ADD_STACKED,
+					RenderStyle.ICON_ADD_STACKED);
+		}
+		{
+			GLButton b = new GLButton();
+			b.setCallback(new ISelectionCallback() {
+				@Override
+				public void onSelectionChanged(GLButton button, boolean selected) {
+					NestedRankColumnModel m = new NestedRankColumnModel();
+					m.setWidth(100);
+					table.add(m);
+				}
+			});
+			buttons.addButton(b, "Create an empty Nested Combined Column", RenderStyle.ICON_ADD_NESTED,
+					RenderStyle.ICON_ADD_NESTED);
+		}
+		{
+			GLButton b = new GLButton();
+			b.setCallback(new ISelectionCallback() {
+				@Override
+				public void onSelectionChanged(GLButton button, boolean selected) {
+					table.addSnapshot(null);
+				}
+			});
+			buttons.addButton(b, "Create a new Separator Column", RenderStyle.ICON_ADD_SEPARATOR,
+					RenderStyle.ICON_ADD_SEPARATOR);
+		}
 
 		this.add(buttons);
 
