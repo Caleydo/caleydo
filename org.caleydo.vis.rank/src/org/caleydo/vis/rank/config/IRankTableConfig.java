@@ -117,5 +117,5 @@ public interface IRankTableConfig {
 	 * 
 	 * @return
 	 */
-	Iterable<? extends ARankColumnModel> createAutoSnapshotColumns(boolean createEmpty);
+	Iterable<? extends ARankColumnModel> createAutoSnapshotColumns(RankTableModel table, ARankColumnModel model);
 }

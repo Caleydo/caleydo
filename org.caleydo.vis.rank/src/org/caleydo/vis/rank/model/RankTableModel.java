@@ -661,7 +661,7 @@ public class RankTableModel implements IRankColumnParent {
 	 */
 	public void addSnapshot(ARankColumnModel model) {
 		add(new OrderColumn());
-		for (ARankColumnModel col : config.createAutoSnapshotColumns(model == null))
+		for (ARankColumnModel col : config.createAutoSnapshotColumns(this, model))
 			add(col);
 		if (model != null)
 			add(model.clone());

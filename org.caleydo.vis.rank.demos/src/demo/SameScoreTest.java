@@ -22,6 +22,7 @@ package demo;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -30,9 +31,11 @@ import org.caleydo.core.view.opengl.layout2.GLSandBox;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.vis.rank.data.AFloatFunction;
 import org.caleydo.vis.rank.data.FloatInferrers;
+import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.ARow;
 import org.caleydo.vis.rank.model.FloatRankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
+import org.caleydo.vis.rank.model.RankRankColumnModel;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
 
@@ -59,6 +62,11 @@ public class SameScoreTest implements IModelBuilder {
 		for (int i = 0; i < 100; ++i)
 			rows.add(new SimpleRow(Math.round(r.nextFloat() * 10) / 10.f));
 		table.addData(rows);
+	}
+
+	@Override
+	public Iterable<? extends ARankColumnModel> createAutoSnapshotColumns(RankTableModel table, ARankColumnModel model) {
+		return Collections.singleton(new RankRankColumnModel());
 	}
 
 	static class SimpleRow extends ARow {

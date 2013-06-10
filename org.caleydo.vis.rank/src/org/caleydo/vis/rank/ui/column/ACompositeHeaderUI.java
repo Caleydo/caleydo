@@ -197,7 +197,7 @@ public abstract class ACompositeHeaderUI extends GLElementContainer implements I
 			ARankColumnModel model = col.getLayoutDataAs(ARankColumnModel.class, null);
 			float wi = getChildWidth(i, model);
 
-			if (i == (columns.size() - 1) && model instanceof IGrabRemainingHorizontalSpace) {
+			if (i == (columns.size() - 1) && model instanceof IGrabRemainingHorizontalSpace && (!model.isCollapsed())) {
 				// catch all
 				wi = w - x - RenderStyle.SCROLLBAR_WIDTH;
 				col.setBounds(x, 0, wi, h);

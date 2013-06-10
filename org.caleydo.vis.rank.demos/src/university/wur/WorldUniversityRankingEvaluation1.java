@@ -20,12 +20,14 @@
 package university.wur;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLSandBox;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
+import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.ARow;
 import org.caleydo.vis.rank.model.CategoricalRankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
@@ -74,6 +76,13 @@ public class WorldUniversityRankingEvaluation1 implements IModelBuilder {
 		table.add(cat);
 
 		WorldUniversityYear.addYear(table, "World University Ranking", new YearGetter(0), false, true);
+	}
+
+	@Override
+	public Iterable<? extends ARankColumnModel> createAutoSnapshotColumns(RankTableModel table, ARankColumnModel model) {
+		Collection<ARankColumnModel> ms = new ArrayList<>(2);
+		ms.add(new RankRankColumnModel());
+		return ms;
 	}
 
 	static class YearGetter implements Function<IRow, WorldUniversityYear> {

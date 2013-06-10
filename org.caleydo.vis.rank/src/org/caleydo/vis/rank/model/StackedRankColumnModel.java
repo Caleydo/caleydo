@@ -383,8 +383,9 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 	}
 
 	@Override
-	public void setCompressed(boolean compressed) {
+	public ICompressColumnMixin setCompressed(boolean compressed) {
 		this.propertySupport.firePropertyChange(PROP_COMPRESSED, this.isCompressed, this.isCompressed = compressed);
+		return this;
 	}
 
 

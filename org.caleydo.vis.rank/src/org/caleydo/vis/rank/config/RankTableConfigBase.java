@@ -31,6 +31,7 @@ import org.caleydo.vis.rank.model.MaxCompositeRankColumnModel;
 import org.caleydo.vis.rank.model.NestedRankColumnModel;
 import org.caleydo.vis.rank.model.OrderColumn;
 import org.caleydo.vis.rank.model.RankRankColumnModel;
+import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.StackedRankColumnModel;
 import org.caleydo.vis.rank.model.mixin.IFloatRankableColumnMixin;
 
@@ -95,7 +96,7 @@ public class RankTableConfigBase implements IRankTableConfig {
 	}
 
 	@Override
-	public Iterable<? extends ARankColumnModel> createAutoSnapshotColumns(boolean createEmpty) {
+	public Iterable<? extends ARankColumnModel> createAutoSnapshotColumns(RankTableModel table, ARankColumnModel model) {
 		return Collections.singleton(new RankRankColumnModel());
 	}
 

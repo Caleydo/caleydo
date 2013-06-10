@@ -467,7 +467,7 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 				x += 0;
 			} else {
 				float wi = model.getWidth();
-				if (!it.hasNext() && model instanceof IGrabRemainingHorizontalSpace) {
+				if (!it.hasNext() && model instanceof IGrabRemainingHorizontalSpace && (!model.isCollapsed())) {
 					// catch all
 					wi = w - x - RenderStyle.SCROLLBAR_WIDTH;
 					col.setBounds(x, 0, wi, h);

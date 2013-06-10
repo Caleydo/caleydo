@@ -23,6 +23,7 @@ package demo;
 import java.awt.Color;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +31,7 @@ import java.util.Random;
 
 import org.caleydo.core.view.opengl.layout2.GLSandBox;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
+import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.ARow;
 import org.caleydo.vis.rank.model.CategoricalRankRankColumnModel;
 import org.caleydo.vis.rank.model.CategoricalRankRankColumnModel.CategoryInfo;
@@ -73,6 +75,11 @@ public class SimpleCategoryScoreTest implements IModelBuilder {
 		for (int i = 0; i < 20; ++i)
 			rows.add(new SimpleRow(categories.get(r.nextInt(categories.size()))));
 		table.addData(rows);
+	}
+
+	@Override
+	public Iterable<? extends ARankColumnModel> createAutoSnapshotColumns(RankTableModel table, ARankColumnModel model) {
+		return Collections.singleton(new RankRankColumnModel());
 	}
 
 	public static Field field(String f) throws NoSuchFieldException {
