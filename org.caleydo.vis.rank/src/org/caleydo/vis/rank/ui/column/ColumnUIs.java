@@ -38,22 +38,22 @@ public class ColumnUIs {
 	public static GLElement createHeader(ARankColumnModel model, IRankTableUIConfig config, boolean allowComplex) {
 		if (allowComplex && model instanceof StackedRankColumnModel)
 			return new StackedColumnHeaderUI((StackedRankColumnModel) model, config);
+		if (allowComplex && (model instanceof NestedRankColumnModel || (model instanceof GroupRankColumnModel)))
+			return new SimpleColumnHeaderUI((ACompositeRankColumnModel) model, config);
 		if (model instanceof OrderColumn)
 			return new OrderColumnHeaderUI(model, config);
 		if (model instanceof MaxCompositeRankColumnModel)
 			return new MaxColumnHeaderUI((MaxCompositeRankColumnModel) model, config);
-		if (model instanceof NestedRankColumnModel || (model instanceof GroupRankColumnModel))
-			return new SimpleColumnHeaderUI((ACompositeRankColumnModel) model, config);
 		return new ColumnHeaderUI(model, config);
 	}
 
 	public static ITableColumnUI createBody(ARankColumnModel model, boolean allowComplex) {
 		if (allowComplex && model instanceof StackedRankColumnModel)
 			return new StackedColumnUI((StackedRankColumnModel) model);
+		if (allowComplex && (model instanceof NestedRankColumnModel || (model instanceof GroupRankColumnModel)))
+			return new SimpleColumnUI((ACompositeRankColumnModel) model);
 		if (model instanceof RankRankColumnModel)
 			return new RankColumnUI(model);
-		if (model instanceof NestedRankColumnModel || (model instanceof GroupRankColumnModel))
-			return new SimpleColumnUI((ACompositeRankColumnModel) model);
 		return new ColumnUI(model);
 	}
 

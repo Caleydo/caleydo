@@ -719,7 +719,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 
 	/**
 	 * drop drag column again
-	 * 
+	 *
 	 * @param pick
 	 */
 	private void onDropColumn(Pick pick) {

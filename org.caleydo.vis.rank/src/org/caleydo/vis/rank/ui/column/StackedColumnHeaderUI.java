@@ -23,8 +23,6 @@ import static org.caleydo.vis.rank.ui.RenderStyle.COLUMN_SPACE;
 import static org.caleydo.vis.rank.ui.RenderStyle.HIST_HEIGHT;
 import static org.caleydo.vis.rank.ui.RenderStyle.LABEL_HEIGHT;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.List;
 import java.util.Locale;
 
@@ -33,7 +31,6 @@ import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
-import org.caleydo.core.view.opengl.layout2.IGLElementParent;
 import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDragInfo;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
@@ -44,37 +41,15 @@ import org.caleydo.vis.rank.internal.event.WeightsChangedEvent;
 import org.caleydo.vis.rank.model.ACompositeRankColumnModel;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.StackedRankColumnModel;
-import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
-import org.caleydo.vis.rank.model.mixin.ICompressColumnMixin;
-import org.caleydo.vis.rank.ui.IColumnRenderInfo;
 import org.caleydo.vis.rank.ui.RenderStyle;
 import org.caleydo.vis.rank.ui.SeparatorUI;
 import org.caleydo.vis.rank.ui.StackedSeparatorUI;
-import org.caleydo.vis.rank.ui.TableHeaderUI;
 /**
  * @author Samuel Gratzl
  *
  */
-public class StackedColumnHeaderUI extends ACompositeHeaderUI implements IThickHeader, IColumnRenderInfo {
-	protected static final int SUMMARY = 0;
+public class StackedColumnHeaderUI extends SimpleColumnHeaderUI {
 	public final AlignmentDragInfo align = new AlignmentDragInfo();
-
-	protected final StackedRankColumnModel model;
-
-	private final PropertyChangeListener listener = new PropertyChangeListener() {
-		@Override
-		public void propertyChange(PropertyChangeEvent evt) {
-			switch (evt.getPropertyName()) {
-			case StackedRankColumnModel.PROP_WEIGHTS:
-			case StackedRankColumnModel.PROP_ALIGNMENT:
-				relayout();
-				break;
-			case ICompressColumnMixin.PROP_COMPRESSED:
-			case ICollapseableColumnMixin.PROP_COLLAPSED:
-				onCompressedChanged();
-			}
-		}
-	};
 
 	private final IPickingListener onWeightsClicked = new IPickingListener() {
 		@Override
@@ -85,16 +60,12 @@ public class StackedColumnHeaderUI extends ACompositeHeaderUI implements IThickH
 	private int weightsClickedPickingId = -1;
 
 	public StackedColumnHeaderUI(StackedRankColumnModel model, IRankTableUIConfig config) {
-		super(config, 1);
-		this.model = model;
-		setLayoutData(model);
-		this.add(0, new StackedSummaryHeaderUI(model, config));
-		model.addPropertyChangeListener(ACompositeRankColumnModel.PROP_CHILDREN, childrenChanged);
-		model.addPropertyChangeListener(StackedRankColumnModel.PROP_ALIGNMENT, listener);
-		model.addPropertyChangeListener(StackedRankColumnModel.PROP_WEIGHTS, listener);
-		model.addPropertyChangeListener(ICompressColumnMixin.PROP_COMPRESSED, listener);
-		model.addPropertyChangeListener(ICollapseableColumnMixin.PROP_COLLAPSED, listener);
-		init(model);
+		super(model, config);
+	}
+
+	@Override
+	protected GLElement createSummary(ACompositeRankColumnModel model, IRankTableUIConfig config) {
+		return new StackedSummaryHeaderUI((StackedRankColumnModel) model, config);
 	}
 
 	@Override
@@ -117,22 +88,7 @@ public class StackedColumnHeaderUI extends ACompositeHeaderUI implements IThickH
 	@Override
 	protected void takeDown() {
 		context.unregisterPickingListener(weightsClickedPickingId);
-		model.removePropertyChangeListener(StackedRankColumnModel.PROP_ALIGNMENT, listener);
-		model.removePropertyChangeListener(ACompositeRankColumnModel.PROP_CHILDREN, childrenChanged);
-		model.removePropertyChangeListener(StackedRankColumnModel.PROP_WEIGHTS, childrenChanged);
-		model.removePropertyChangeListener(ICompressColumnMixin.PROP_COMPRESSED, listener);
-		model.removePropertyChangeListener(ICollapseableColumnMixin.PROP_COLLAPSED, listener);
 		super.takeDown();
-	}
-
-	@Override
-	protected boolean isSmallHeader() {
-		if (getParent() == null)
-			return false;
-		IGLElementParent p = getParent();
-		while (!(p instanceof TableHeaderUI))
-			p = p.getParent();
-		return ((TableHeaderUI) p).isSmallHeader();
 	}
 
 	@Override
@@ -140,7 +96,8 @@ public class StackedColumnHeaderUI extends ACompositeHeaderUI implements IThickH
 
 		IGLLayoutElement summary = children.get(0);
 
-		if (model.isCompressed()) {
+		StackedRankColumnModel stacked = getModel();
+		if (stacked.isCompressed()) {
 			boolean isSmallHeader = isSmallHeader();
 			summary.setBounds(0, getTopPadding(isSmallHeader), w, h - getTopPadding(isSmallHeader));
 			for (IGLLayoutElement child : children.subList(1, children.size()))
@@ -156,23 +113,11 @@ public class StackedColumnHeaderUI extends ACompositeHeaderUI implements IThickH
 		if (config.isMoveAble()) {
 			List<? extends IGLLayoutElement> separators = children.subList(numColumns + 2, children.size());
 			final IGLLayoutElement sep0 = children.get(numColumns + 1);
-			((StackedSeparatorUI) sep0.asElement()).setAlignment(this.model.getAlignment());
+			((StackedSeparatorUI) sep0.asElement()).setAlignment(stacked.getAlignment());
 			for (IGLLayoutElement sep : separators) {
-				((StackedSeparatorUI) sep.asElement()).setAlignment(this.model.getAlignment());
+				((StackedSeparatorUI) sep.asElement()).setAlignment(stacked.getAlignment());
 			}
 		}
-	}
-
-
-	protected void onCompressedChanged() {
-		((StackedSummaryHeaderUI) get(SUMMARY)).setHasTitle(model.isCompressed());
-		relayout();
-		relayoutParent();
-	}
-
-	@Override
-	protected float getLeftPadding() {
-		return +RenderStyle.STACKED_COLUMN_PADDING;
 	}
 
 	@Override
@@ -184,41 +129,15 @@ public class StackedColumnHeaderUI extends ACompositeHeaderUI implements IThickH
 	 * @return the model, see {@link #model}
 	 */
 	public StackedRankColumnModel getModel() {
-		return model;
+		return (StackedRankColumnModel) model;
 	}
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
-		if (!model.isCompressed()) {
-			g.decZ().decZ();
-			g.color(model.getBgColor());
-			g.fillRect(0, 0, w, h);
-			// RoundedRectRenderer.render(g, 0, 0, w, h, RenderStyle.HEADER_ROUNDED_RADIUS, 3,
-			// RoundedRectRenderer.FLAG_FILL | RoundedRectRenderer.FLAG_TOP);
-
-			g.lineWidth(RenderStyle.COLOR_STACKED_BORDER_WIDTH);
-			g.color(RenderStyle.COLOR_STACKED_BORDER);
-
-			// gl.glBegin(GL.GL_LINE_STRIP);
-			// {
-			// gl.glVertex3f(0, h, z);
-			// renderRoundedCorner(g, 0, 0, RenderStyle.HEADER_ROUNDED_RADIUS, 0, RoundedRectRenderer.FLAG_TOP_LEFT);
-			// renderRoundedCorner(g, w - RenderStyle.HEADER_ROUNDED_RADIUS, 0, RenderStyle.HEADER_ROUNDED_RADIUS, 0,
-			// RoundedRectRenderer.FLAG_TOP_RIGHT);
-			// gl.glVertex3f(w, h, z);
-			// }
-			// gl.glEnd();
-			g.drawRect(0, 0, w, h);
-			g.lineWidth(1);
-			g.incZ().incZ();
-
-			// g.drawLine(x, yi, x, yi + hi + 2);
-		}
 		super.renderImpl(g, w, h);
 
-		if (!model.isCompressed()) {
+		if (!((StackedRankColumnModel) model).isCompressed()) {
 			g.incZ();
-			config.renderIsOrderByGlyph(g, w, h, model.getMyRanker().getOrderBy() == model);
 			renderWeights(g, w);
 			g.decZ();
 		}
@@ -227,7 +146,8 @@ public class StackedColumnHeaderUI extends ACompositeHeaderUI implements IThickH
 
 	protected void renderWeights(GLGraphics g, float w) {
 		// render the distributions
-		float[] weights = model.getWeights();
+		StackedRankColumnModel stacked = getModel();
+		float[] weights = stacked.getWeights();
 		float histHeight = isSmallHeader() ? 0 : HIST_HEIGHT;
 		float yi = histHeight + LABEL_HEIGHT + 7;
 		float hi = LABEL_HEIGHT - 6;
@@ -237,7 +157,7 @@ public class StackedColumnHeaderUI extends ACompositeHeaderUI implements IThickH
 		g.drawLine(0, histHeight + LABEL_HEIGHT + 4, w, histHeight + LABEL_HEIGHT + 4);
 		g.lineWidth(1);
 		for (int i = 0; i < numColumns; ++i) {
-			float wi = this.model.getChildWidth(i) + COLUMN_SPACE;
+			float wi = stacked.getChildWidth(i) + COLUMN_SPACE;
 			// g.drawLine(x, yi, x, yi + hi + 2);
 			g.drawText(String.format(Locale.ENGLISH, "%.2f%%", weights[i] * 100), x, yi, wi, hi - 4,
 					VAlign.CENTER);
@@ -248,11 +168,11 @@ public class StackedColumnHeaderUI extends ACompositeHeaderUI implements IThickH
 
 	@Override
 	protected float getChildWidth(int i, ARankColumnModel model) {
-		return this.model.getChildWidth(i);
+		return getModel().getChildWidth(i);
 	}
 
 	public void setAlignment(int index) {
-		model.setAlignment(index);
+		getModel().setAlignment(index);
 	}
 
 	@Override
@@ -273,45 +193,17 @@ public class StackedColumnHeaderUI extends ACompositeHeaderUI implements IThickH
 	protected void onWeightsClicked(Pick pick) {
 		if (pick.isAnyDragging() || pick.getPickingMode() != PickingMode.DOUBLE_CLICKED)
 			return;
-		EditWeightsDialog.show(this.model, this);
+		EditWeightsDialog.show(getModel(), this);
 	}
 
 	@ListenTo(sendToMe = true)
 	private void onWeightsChanged(WeightsChangedEvent event) {
-		model.setWeights(event.getWeights());
+		getModel().setWeights(event.getWeights());
 		relayout();
-	}
-
-	@Override
-	public boolean canMoveHere(int index, ARankColumnModel model, boolean clone) {
-		return this.model.isMoveAble(model, index, clone);
-	}
-
-	@Override
-	public void moveHere(int index, ARankColumnModel model, boolean clone) {
-		assert canMoveHere(index, model, clone);
-		this.model.move(model, index, clone);
 	}
 
 	public static class AlignmentDragInfo implements IDragInfo {
 
 	}
-
-
-	@Override
-	public boolean isCollapsed() {
-		return model.isCollapsed();
-	}
-
-	@Override
-	public VAlign getAlignment() {
-		return VAlign.LEFT;
-	}
-
-	@Override
-	public boolean hasFreeSpace() {
-		return true;
-	}
-
 }
 
