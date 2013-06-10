@@ -98,6 +98,7 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 	public StackedRankColumnModel(StackedRankColumnModel copy) {
 		super(copy);
 		this.alignment = copy.alignment;
+		this.compressedWidth = copy.compressedWidth;
 		this.isCompressed = copy.isCompressed;
 		this.filterInferredPercentage = copy.filterInferredPercentage;
 		setHeaderRenderer(this);

@@ -19,8 +19,11 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.ui.column;
 
+import static org.caleydo.vis.rank.ui.RenderStyle.HIST_HEIGHT;
 import static org.caleydo.vis.rank.ui.RenderStyle.LABEL_HEIGHT;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.List;
 
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
@@ -31,6 +34,9 @@ import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.vis.rank.config.IRankTableUIConfig;
 import org.caleydo.vis.rank.model.ACompositeRankColumnModel;
 import org.caleydo.vis.rank.model.ARankColumnModel;
+import org.caleydo.vis.rank.model.StackedRankColumnModel;
+import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
+import org.caleydo.vis.rank.model.mixin.ICompressColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 import org.caleydo.vis.rank.ui.IColumnRenderInfo;
 import org.caleydo.vis.rank.ui.RenderStyle;
@@ -40,16 +46,49 @@ import org.caleydo.vis.rank.ui.TableHeaderUI;
  *
  */
 public class SimpleColumnHeaderUI extends ACompositeHeaderUI implements IThickHeader, IColumnRenderInfo {
+	protected static final int SUMMARY = 0;
 	protected final ACompositeRankColumnModel model;
+
+	private final PropertyChangeListener listener = new PropertyChangeListener() {
+		@Override
+		public void propertyChange(PropertyChangeEvent evt) {
+			switch (evt.getPropertyName()) {
+			case StackedRankColumnModel.PROP_WEIGHTS:
+			case StackedRankColumnModel.PROP_ALIGNMENT:
+				relayout();
+				break;
+			case ICompressColumnMixin.PROP_COMPRESSED:
+			case ICollapseableColumnMixin.PROP_COLLAPSED:
+				onCompressedChanged();
+			}
+		}
+	};
 
 	public SimpleColumnHeaderUI(ACompositeRankColumnModel model, IRankTableUIConfig config) {
 		super(config, 1);
 		this.model = model;
 		setLayoutData(model);
-		this.add(0, new SimpleSummaryHeaderUI(model, config));
+		this.add(0, createSummary(model, config));
 		model.addPropertyChangeListener(ACompositeRankColumnModel.PROP_CHILDREN, childrenChanged);
+		model.addPropertyChangeListener(ICompressColumnMixin.PROP_COMPRESSED, listener);
+		model.addPropertyChangeListener(ICollapseableColumnMixin.PROP_COLLAPSED, listener);
+		model.addPropertyChangeListener(StackedRankColumnModel.PROP_ALIGNMENT, listener);
+		model.addPropertyChangeListener(StackedRankColumnModel.PROP_WEIGHTS, listener);
 		init(model);
 	}
+
+	protected GLElement createSummary(ACompositeRankColumnModel model, IRankTableUIConfig config) {
+		return new SimpleSummaryHeaderUI(model, config);
+	}
+
+	protected void onCompressedChanged() {
+		if (model instanceof ICompressColumnMixin) {
+			((AColumnHeaderUI) get(SUMMARY)).setHasTitle(((ICompressColumnMixin) model).isCompressed());
+		}
+		relayout();
+		relayoutParent();
+	}
+
 	@Override
 	protected GLElement wrapImpl(ARankColumnModel model) {
 		GLElement g = ColumnUIs.createHeader(model, config, false);
@@ -59,6 +98,10 @@ public class SimpleColumnHeaderUI extends ACompositeHeaderUI implements IThickHe
 	@Override
 	protected void takeDown() {
 		model.removePropertyChangeListener(ACompositeRankColumnModel.PROP_CHILDREN, childrenChanged);
+		model.removePropertyChangeListener(ICompressColumnMixin.PROP_COMPRESSED, listener);
+		model.removePropertyChangeListener(ICollapseableColumnMixin.PROP_COLLAPSED, listener);
+		model.removePropertyChangeListener(StackedRankColumnModel.PROP_ALIGNMENT, listener);
+		model.removePropertyChangeListener(StackedRankColumnModel.PROP_WEIGHTS, childrenChanged);
 		super.takeDown();
 	}
 
@@ -85,15 +128,26 @@ public class SimpleColumnHeaderUI extends ACompositeHeaderUI implements IThickHe
 	@Override
 	public void doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
 		IGLLayoutElement summary = children.get(0);
-		summary.setBounds(2, 0, w - 4, LABEL_HEIGHT);
+
+		if (model instanceof ICompressColumnMixin && ((ICompressColumnMixin) model).isCompressed()) {
+			boolean isSmallHeader = isSmallHeader();
+			summary.setBounds(0, getTopPadding(isSmallHeader), w, h - getTopPadding(isSmallHeader));
+			for (IGLLayoutElement child : children.subList(1, children.size()))
+				child.hide();
+			return;
+		}
+
+		summary.setBounds(2, 2, w - 4, (isSmallHeader() ? 0 : HIST_HEIGHT) + LABEL_HEIGHT);
 		super.layoutColumns(children, w, h);
 	}
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
-		if (true) {
-			config.renderHeaderBackground(g, w, h, LABEL_HEIGHT, model);
+		final boolean isCompressed = (model instanceof ICompressColumnMixin && ((ICompressColumnMixin) model)
+				.isCompressed());
+		if (!isCompressed) {
 			g.decZ().decZ();
+			config.renderHeaderBackground(g, w, h, LABEL_HEIGHT, model);
 
 			g.lineWidth(RenderStyle.COLOR_STACKED_BORDER_WIDTH);
 			g.color(RenderStyle.COLOR_STACKED_BORDER);
@@ -102,13 +156,17 @@ public class SimpleColumnHeaderUI extends ACompositeHeaderUI implements IThickHe
 			g.lineWidth(1);
 			g.incZ().incZ();
 		}
-		super.renderImpl(g, w, h);
+		renderBaseImpl(g, w, h);
 
-		if (model instanceof IRankableColumnMixin) {
+		if (model instanceof IRankableColumnMixin && !isCompressed) {
 			g.incZ();
 			config.renderIsOrderByGlyph(g, w, h, model.getMyRanker().getOrderBy() == model);
 			g.decZ();
 		}
+	}
+
+	protected void renderBaseImpl(GLGraphics g, float w, float h) {
+		super.renderImpl(g, w, h);
 	}
 
 	@Override

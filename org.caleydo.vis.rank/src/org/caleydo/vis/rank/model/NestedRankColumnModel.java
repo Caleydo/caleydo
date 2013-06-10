@@ -24,6 +24,8 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
+import org.caleydo.vis.rank.model.mixin.ICompressColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IFloatRankableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IMappedColumnMixin;
@@ -43,7 +45,8 @@ import com.jogamp.common.util.IntObjectHashMap;
  * @author Samuel Gratzl
  *
  */
-public class NestedRankColumnModel extends AMultiRankColumnModel implements ISnapshotableColumnMixin {
+public class NestedRankColumnModel extends AMultiRankColumnModel implements ISnapshotableColumnMixin,
+		ICompressColumnMixin, ICollapseableColumnMixin {
 	public static final String PROP_WEIGHTS = "weights";
 
 	private final PropertyChangeListener listener = new PropertyChangeListener() {
@@ -64,6 +67,8 @@ public class NestedRankColumnModel extends AMultiRankColumnModel implements ISna
 		}
 	};
 	private IntObjectHashMap cacheMulti = new IntObjectHashMap();
+	private boolean isCompressed = false;
+	private float compressedWidth = 100;
 
 	public NestedRankColumnModel() {
 		this(Color.GRAY, new Color(0.95f, .95f, .95f));
@@ -77,6 +82,8 @@ public class NestedRankColumnModel extends AMultiRankColumnModel implements ISna
 	public NestedRankColumnModel(NestedRankColumnModel copy) {
 		super(copy);
 		setHeaderRenderer(this);
+		this.isCompressed = copy.isCompressed;
+		this.compressedWidth = copy.compressedWidth;
 		width = RenderStyle.STACKED_COLUMN_PADDING * 2;
 		cloneInitChildren();
 	}
@@ -134,6 +141,10 @@ public class NestedRankColumnModel extends AMultiRankColumnModel implements ISna
 
 	@Override
 	public ARankColumnModel setWidth(float width) {
+		if (isCompressed) {
+			this.propertySupport.firePropertyChange(PROP_WIDTH, compressedWidth, this.compressedWidth = width);
+			return this;
+		}
 		float shift = getSpaces();
 		float factor = (width - shift) / (this.width - shift); // new / old
 		for (ARankColumnModel col : this) {
@@ -147,9 +158,12 @@ public class NestedRankColumnModel extends AMultiRankColumnModel implements ISna
 
 	@Override
 	public float getWidth() {
+		if (isCollapsed())
+			return COLLAPSED_WIDTH;
+		if (isCompressed)
+			return compressedWidth;
 		return super.getWidth();
 	}
-
 	@Override
 	public GLElement createSummary(boolean interactive) {
 		return new MultiRankScoreSummary(this, interactive);
@@ -162,20 +176,13 @@ public class NestedRankColumnModel extends AMultiRankColumnModel implements ISna
 
 	@Override
 	public float applyPrimitive(IRow row) {
-		float s = 0;
 		final int size = children.size();
 		MultiFloat f = getSplittedValue(row);
 
-		double m = Math.pow(10, size);
-		for (int i = 0; i < size; ++i) {
-			float fi = f.values[i];
-			if (Float.isNaN(fi))
-				return Float.NaN;
-			m /= 10;
-			s += fi * m;
-		}
-		s /= Math.pow(10, size - 1);
-		return s;
+		// strategy up to now return the primary value
+		if (size == 0)
+			return Float.NaN;
+		return f.values[0];
 	}
 
 	@Override
@@ -209,7 +216,7 @@ public class NestedRankColumnModel extends AMultiRankColumnModel implements ISna
 		for (int i = 0; i < s.length; ++i) {
 			s[i] = ((IFloatRankableColumnMixin) get(i)).applyPrimitive(row);
 		}
-		MultiFloat f = new MultiFloat(-1, s);
+		MultiFloat f = new MultiFloat(0, s);
 		cacheMulti.put(row.getIndex(), f);
 		return f;
 	}
@@ -230,5 +237,19 @@ public class NestedRankColumnModel extends AMultiRankColumnModel implements ISna
 	@Override
 	public void explode() {
 		parent.explode(this);
+	}
+
+	/**
+	 * @return the isCompressed, see {@link #isCompressed}
+	 */
+	@Override
+	public boolean isCompressed() {
+		return isCompressed || isCollapsed();
+	}
+
+	@Override
+	public ICompressColumnMixin setCompressed(boolean compressed) {
+		this.propertySupport.firePropertyChange(PROP_COMPRESSED, this.isCompressed, this.isCompressed = compressed);
+		return this;
 	}
 }
