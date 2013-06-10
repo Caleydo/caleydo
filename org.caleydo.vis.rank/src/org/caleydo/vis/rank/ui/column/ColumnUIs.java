@@ -24,6 +24,7 @@ import org.caleydo.vis.rank.config.IRankTableUIConfig;
 import org.caleydo.vis.rank.model.ACompositeRankColumnModel;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.GroupRankColumnModel;
+import org.caleydo.vis.rank.model.MaxCompositeRankColumnModel;
 import org.caleydo.vis.rank.model.NestedRankColumnModel;
 import org.caleydo.vis.rank.model.OrderColumn;
 import org.caleydo.vis.rank.model.RankRankColumnModel;
@@ -39,6 +40,8 @@ public class ColumnUIs {
 			return new StackedColumnHeaderUI((StackedRankColumnModel) model, config);
 		if (model instanceof OrderColumn)
 			return new OrderColumnHeaderUI(model, config);
+		if (model instanceof MaxCompositeRankColumnModel)
+			return new MaxColumnHeaderUI((MaxCompositeRankColumnModel) model, config);
 		if (model instanceof NestedRankColumnModel || (model instanceof GroupRankColumnModel))
 			return new SimpleColumnHeaderUI((ACompositeRankColumnModel) model, config);
 		return new ColumnHeaderUI(model, config);

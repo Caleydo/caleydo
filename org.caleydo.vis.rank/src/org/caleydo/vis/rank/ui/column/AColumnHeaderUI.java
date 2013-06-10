@@ -91,8 +91,9 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 	private final static int DRAG_WEIGHT = 1;
 	private final static int BUTTONS = 2;
 	private final static int UNCOLLAPSE = 3;
+	protected final static int FIRST_CUSTOM = 4;
 
-	private final IRankTableUIConfig config;
+	protected final IRankTableUIConfig config;
 	private boolean isHovered;
 	private boolean armDropColum;
 	private String armDropHint;
@@ -100,7 +101,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 	private boolean isCollapsed;
 
 	private boolean isDragging;
-	private boolean headerHovered;
+	protected boolean headerHovered;
 
 	protected final ARankColumnModel model;
 	private PropertyChangeListener filterChangedListener;
@@ -546,7 +547,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 			uncollapse.setBounds((w - RenderStyle.BUTTON_WIDTH) * .5f, 2, RenderStyle.BUTTON_WIDTH,
 					isHovered ? RenderStyle.BUTTON_WIDTH : 0);
 
-			for (IGLLayoutElement r : children.subList(UNCOLLAPSE + 1, children.size()))
+			for (IGLLayoutElement r : children.subList(FIRST_CUSTOM, children.size()))
 				r.setBounds(defaultValue(r.getSetX(), 0), defaultValue(r.getSetY(), h),
 						defaultValue(r.getSetWidth(), w), defaultValue(r.getSetHeight(), HIST_HEIGHT));
 		}
