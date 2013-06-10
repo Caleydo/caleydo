@@ -44,6 +44,7 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.IGLView;
 import org.caleydo.core.view.opengl.layout2.animation.AnimatedGLElementContainer;
+import org.caleydo.core.view.opengl.layout2.util.GLSanityCheck;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.SimplePickingManager;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
@@ -229,6 +230,8 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 			root.getMouseLayer().relayout();
 		}
 
+		GLSanityCheck s = null;
+		assert (s = GLSanityCheck.create(gl)) != null;
 		pickingManager.doPicking(g.gl, new Runnable() {
 			@Override
 			public void run() {
@@ -236,14 +239,17 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 			}
 		});
 		g.checkError();
+		assert s != null && s.verify(gl);
 
 		// 2. pass: layouting
 		root.layout(deltaTimeMs);
 
+		assert (s = GLSanityCheck.create(gl)) != null;
 		// 3. pass: rendering
 		root.render(g);
 
 		g.checkError();
+		assert s != null && s.verify(gl);
 	}
 
 

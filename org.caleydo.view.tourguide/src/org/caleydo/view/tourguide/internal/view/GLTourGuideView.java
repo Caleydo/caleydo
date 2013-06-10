@@ -19,7 +19,6 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.internal.view;
 
-import java.awt.Color;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
@@ -696,7 +695,7 @@ public class GLTourGuideView extends AGLElementView {
 
 		@Override
 		public void renderHeaderBackground(GLGraphics g, float w, float h, float labelHeight, ARankColumnModel model) {
-			g.color(Color.WHITE).fillRect(0, 0, w, h);
+			g.color(0.96f).fillRect(0, 0, w, h);
 			g.color(model.getBgColor()).fillRect(0, labelHeight - 3, w, 2);
 		}
 

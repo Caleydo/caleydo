@@ -67,11 +67,19 @@ public class LoadSampleProjectStartupAddon implements IStartupAddon {
 		Composite g = new Composite(parent, SWT.NONE);
 		g.setLayout(new GridLayout(1, false));
 
+		Button first = null;
 		for (IConfigurationElement elem : RegistryFactory.getRegistry().getConfigurationElementsFor(EXTENSION_POINT)) {
 			String name = elem.getAttribute("name");
 			String url = elem.getAttribute("url");
 			String description = elem.getAttribute("description");
-			createSample(url, name, description, g, l);
+			if (first == null)
+				first = createSample(url, name, description, g, l);
+			else
+				createSample(url, name, description, g, l);
+		}
+		if (selectedChoice == null && first != null) {
+			first.setSelection(true);
+			selectedChoice = (URL) first.getData();
 		}
 		return g;
 	}
