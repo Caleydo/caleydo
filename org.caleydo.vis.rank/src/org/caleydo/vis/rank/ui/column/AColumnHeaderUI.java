@@ -173,6 +173,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 	private static boolean isSmallHeader(float h) {
 		return h < (LABEL_HEIGHT + HIST_HEIGHT);
 	}
+
 	/**
 	 * @param hasTitle
 	 *            setter, see {@link hasTitle}
@@ -505,8 +506,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 		if (config.isInteractive()) {
 			IGLLayoutElement weight = children.get(DRAG_WEIGHT);
 			weight.setBounds(w, hasTitle && !smallHeader ? LABEL_HEIGHT : 0,
-					(isHovered && config.canChangeWeights()) ? 8 : 0, h
-					- (hasTitle && !smallHeader ? LABEL_HEIGHT : 0));
+					(isHovered && config.canChangeWeights()) ? 8 : 0, h - (hasTitle && !smallHeader ? LABEL_HEIGHT : 0));
 
 			{
 				IGLLayoutElement buttons = children.get(BUTTONS);
@@ -542,10 +542,29 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 					buttons.setBounds(2, yb, w - 4, hb);
 				}
 			}
-
-			IGLLayoutElement uncollapse = children.get(UNCOLLAPSE);
-			uncollapse.setBounds((w - RenderStyle.BUTTON_WIDTH) * .5f, 2, RenderStyle.BUTTON_WIDTH,
-					isHovered ? RenderStyle.BUTTON_WIDTH : 0);
+			{
+				IGLLayoutElement uncollapse = children.get(UNCOLLAPSE);
+				float yb = 0;
+				switch (config.getButtonBarPosition()) {
+				case AT_THE_BOTTOM:
+					yb = isHovered ? (h - 2 - RenderStyle.BUTTON_WIDTH) : h;
+					break;
+				case OVER_LABEL: // at the top
+					yb = 0;
+					break;
+				case UNDER_LABEL: // under the label
+					yb = LABEL_HEIGHT;
+					break;
+				case ABOVE_LABEL: // above the label
+					yb = isHovered ? -RenderStyle.BUTTON_WIDTH : 0;
+					break;
+				case BELOW_HIST: // below the histogram
+					yb = isHovered ? h : h;
+					break;
+				}
+				uncollapse.setBounds((w - RenderStyle.BUTTON_WIDTH) * .5f, yb, RenderStyle.BUTTON_WIDTH,
+						isHovered ? RenderStyle.BUTTON_WIDTH : 0);
+			}
 
 			for (IGLLayoutElement r : children.subList(FIRST_CUSTOM, children.size()))
 				r.setBounds(defaultValue(r.getSetX(), 0), defaultValue(r.getSetY(), h),
@@ -640,8 +659,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 				context.setCursor(-1);
 				if (info != null)
 					model.combine(info.getSecond(), RenderStyle.isCloneDragging(pick),
-							tableConfig
-							.getCombineMode(model, pick));
+							tableConfig.getCombineMode(model, pick));
 			}
 			break;
 		case DOUBLE_CLICKED:
@@ -701,7 +719,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 
 	/**
 	 * drop drag column again
-	 *
+	 * 
 	 * @param pick
 	 */
 	private void onDropColumn(Pick pick) {
@@ -738,6 +756,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 
 	class DragElement extends PickableGLElement {
 		private boolean hovered = false;
+
 		public DragElement() {
 			setRenderer(GLRenderers.fillImage(RenderStyle.ICON_DRAG));
 			setTooltip("Drag this element to change the weight of this column");
