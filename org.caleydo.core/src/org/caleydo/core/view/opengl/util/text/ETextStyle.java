@@ -17,28 +17,27 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.api.state;
+package org.caleydo.core.view.opengl.util.text;
 
-import org.caleydo.core.util.base.ILabeled;
+import java.awt.Font;
 
 /**
- * definition of a state in the {@link IStateMachine}
- * 
+ * different text styles
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
-public interface IState extends ILabeled {
+public enum ETextStyle {
+	PLAIN, BOLD, ITALIC;
 
-	/**
-	 * called when the state will be entered
-	 */
-	void onEnter();
-
-	/**
-	 * called when the state will be leaved
-	 */
-	void onLeave();
-
-	@Override
-	boolean equals(Object obj);
+	public int toAWTFontStyle() {
+		switch (this) {
+		case BOLD:
+			return Font.BOLD;
+		case ITALIC:
+			return Font.ITALIC;
+		default:
+			return Font.PLAIN;
+		}
+	}
 }

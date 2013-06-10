@@ -22,6 +22,12 @@ import com.google.common.base.Stopwatch;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Multimap;
 
+/**
+ * work horse for computing stratifaction as well as group scores
+ * 
+ * @author Samuel Gratzl
+ * 
+ */
 public class ComputeScoreJob extends AScoreJob {
 	private static final Logger log = Logger.create(ComputeScoreJob.class);
 
@@ -36,11 +42,13 @@ public class ComputeScoreJob extends AScoreJob {
 	public ComputeScoreJob(Multimap<IComputeElement, Group> data, Collection<IComputedStratificationScore> stratScores,
 			Collection<IComputedGroupScore> groupScores, Object receiver) {
 		super(receiver);
+		// split in stratification and reference stratification scores
 		Pair<Collection<IComputedStratificationScore>, Collection<IComputedReferenceStratificationScore>> strats = partition(
 				stratScores, IComputedReferenceStratificationScore.class);
 		this.stratMetrics = strats.getFirst();
 		this.stratScores = strats.getSecond();
 
+		// split in group scores and reference group scores
 		Pair<Collection<IComputedGroupScore>, Collection<IComputedReferenceGroupScore>> groups = partition(groupScores,
 				IComputedReferenceGroupScore.class);
 		this.groupMetrics = groups.getFirst();
@@ -133,20 +141,27 @@ public class ComputeScoreJob extends AScoreJob {
 			IGroupAlgorithm algorithm = metric.getAlgorithm();
 			if (Thread.interrupted() || monitor.isCanceled())
 				return Status.CANCEL_STATUS;
+
 			IDType target = algorithm.getTargetType(as, as);
+
 			for (Group ag : this.data.get(as)) {
 				if (Thread.interrupted() || monitor.isCanceled())
 					return Status.CANCEL_STATUS;
+
 				if (metric.contains(as, ag) || !metric.getFilter().doCompute(as, ag, as, null))
-					continue;
+					continue; // skip as already in the cache or don't compute this pair
+
 				Set<Integer> reference = get(as, target, target);
 				Set<Integer> tocompute = get(as, ag, target, target);
 
 				if (Thread.interrupted() || monitor.isCanceled())
 					return Status.CANCEL_STATUS;
+
 				float v = algorithm.compute(tocompute, reference, monitor);
+
 				if (Thread.interrupted() || monitor.isCanceled())
 					return Status.CANCEL_STATUS;
+
 				metric.put(ag, v);
 			}
 		}
@@ -159,19 +174,25 @@ public class ComputeScoreJob extends AScoreJob {
 			IGroupAlgorithm algorithm = score.getAlgorithm();
 
 			IDType target = algorithm.getTargetType(as, rs);
+
 			for (Group ag : this.data.get(as)) {
 				if (Thread.interrupted() || monitor.isCanceled())
 					return Status.CANCEL_STATUS;
+
 				if (score.contains(as, ag) || !score.getFilter().doCompute(as, ag, rs, score.getGroup()))
 					continue;
+
 				Set<Integer> tocompute = get(as, ag, target, sType);
 				Set<Integer> reference = get(rs, score.getGroup(), target, aType);
 
 				if (Thread.interrupted() || monitor.isCanceled())
 					return Status.CANCEL_STATUS;
+
 				float v = algorithm.compute(tocompute, reference, monitor);
+
 				if (Thread.interrupted() || monitor.isCanceled())
 					return Status.CANCEL_STATUS;
+
 				score.put(ag, v);
 			}
 		}

@@ -25,11 +25,11 @@ package org.caleydo.vis.rank.model.mixin;
  * @author Samuel Gratzl
  *
  */
-public interface ICompressColumnMixin extends IRankColumnModel {
+public interface ICompressColumnMixin extends ICollapseableColumnMixin {
 	String PROP_COMPRESSED = "compressed";
 
 	boolean isCompressed();
 
-	void setCompressed(boolean compressed);
+	ICompressColumnMixin setCompressed(boolean compressed);
 
 }

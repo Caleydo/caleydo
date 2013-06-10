@@ -22,19 +22,15 @@ package org.caleydo.view.tourguide.spi.algorithm;
 import java.util.List;
 import java.util.Set;
 
-import org.caleydo.core.id.IDType;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 /**
+ * similar to {@link IGroupAlgorithm} but this time for a whole stratification consisting of a a list of groups
+ *
  * @author Samuel Gratzl
  *
  */
-public interface IStratificationAlgorithm {
-
-	void init(IProgressMonitor monitor);
-
-	IDType getTargetType(IComputeElement a, IComputeElement b);
-
+public interface IStratificationAlgorithm extends IAlgorithm{
 	/**
 	 * computes the score between the two stratifications identified by their collection of group sets
 	 *
@@ -49,7 +45,9 @@ public interface IStratificationAlgorithm {
 	 *
 	 * @return
 	 */
+	@Override
 	String getAbbreviation();
 
+	@Override
 	String getDescription();
 }

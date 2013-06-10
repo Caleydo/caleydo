@@ -27,8 +27,8 @@ import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.vis.rank.layout.IRowLayoutInstance.IRowSetter;
+import org.caleydo.vis.rank.model.ACompositeRankColumnModel;
 import org.caleydo.vis.rank.model.ARankColumnModel;
-import org.caleydo.vis.rank.model.GroupRankColumnModel;
 import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.ICompressColumnMixin;
 import org.caleydo.vis.rank.ui.RenderStyle;
@@ -37,7 +37,7 @@ import org.caleydo.vis.rank.ui.RenderStyle;
  * @author Samuel Gratzl
  *
  */
-public class GroupColumnUI extends ACompositeTableColumnUI<GroupRankColumnModel> {
+public class SimpleColumnUI extends ACompositeTableColumnUI<ACompositeRankColumnModel> {
 
 	private final PropertyChangeListener listener = new PropertyChangeListener() {
 		@Override
@@ -51,7 +51,7 @@ public class GroupColumnUI extends ACompositeTableColumnUI<GroupRankColumnModel>
 		}
 	};
 
-	public GroupColumnUI(GroupRankColumnModel model) {
+	public SimpleColumnUI(ACompositeRankColumnModel model) {
 		super(model, 0);
 		model.addPropertyChangeListener(ICompressColumnMixin.PROP_COMPRESSED, listener);
 		model.addPropertyChangeListener(ICollapseableColumnMixin.PROP_COLLAPSED, listener);

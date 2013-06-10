@@ -25,12 +25,14 @@ import java.beans.PropertyChangeListener;
 
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
+import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IFloatRankableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IMappedColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
+import org.caleydo.vis.rank.model.mixin.ISnapshotableColumnMixin;
 import org.caleydo.vis.rank.ui.GLPropertyChangeListeners;
-import org.caleydo.vis.rank.ui.detail.MaxScoreSummary;
+import org.caleydo.vis.rank.ui.detail.MultiRankScoreSummary;
 import org.caleydo.vis.rank.ui.detail.MultiScoreBarElement;
 import org.caleydo.vis.rank.ui.detail.ValueElement;
 
@@ -38,7 +40,8 @@ import org.caleydo.vis.rank.ui.detail.ValueElement;
  * @author Samuel Gratzl
  *
  */
-public class MaxCompositeRankColumnModel extends AMultiRankColumnModel {
+public class MaxCompositeRankColumnModel extends AMultiRankColumnModel implements ICollapseableColumnMixin,
+		IFilterColumnMixin, ISnapshotableColumnMixin {
 
 	private final PropertyChangeListener listener = new PropertyChangeListener() {
 		@Override
@@ -87,7 +90,7 @@ public class MaxCompositeRankColumnModel extends AMultiRankColumnModel {
 
 	@Override
 	public GLElement createSummary(boolean interactive) {
-		return new MaxScoreSummary(this, interactive);
+		return new MultiRankScoreSummary(this, interactive);
 	}
 
 	@Override

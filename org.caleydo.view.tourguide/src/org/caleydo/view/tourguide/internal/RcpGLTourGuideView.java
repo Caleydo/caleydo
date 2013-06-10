@@ -46,6 +46,7 @@ public class RcpGLTourGuideView extends ARcpGLViewPart {
 		view = new GLTourGuideView(glCanvas, mode);
 		initializeView();
 		createPartControlGL();
+		// mark active part again as active
 		stratomexListener.partActivated(getSite().getPage().getActivePartReference());
 	}
 
@@ -80,6 +81,9 @@ public class RcpGLTourGuideView extends ARcpGLViewPart {
 		return GLTourGuideView.VIEW_TYPE;
 	}
 
+	/**
+	 * listener that checks which stratomex is open and tell that the tour guide instance
+	 */
 	private final IPartListener2 stratomexListener = new IPartListener2() {
 		@Override
 		public void partVisible(IWorkbenchPartReference partRef) {

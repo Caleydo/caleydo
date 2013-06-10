@@ -31,7 +31,7 @@ import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.vis.rank.config.IRankTableUIConfig;
 import org.caleydo.vis.rank.model.ACompositeRankColumnModel;
 import org.caleydo.vis.rank.model.ARankColumnModel;
-import org.caleydo.vis.rank.model.GroupRankColumnModel;
+import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 import org.caleydo.vis.rank.ui.IColumnRenderInfo;
 import org.caleydo.vis.rank.ui.RenderStyle;
 import org.caleydo.vis.rank.ui.TableHeaderUI;
@@ -39,14 +39,14 @@ import org.caleydo.vis.rank.ui.TableHeaderUI;
  * @author Samuel Gratzl
  *
  */
-public class GroupColumnHeaderUI extends ACompositeHeaderUI implements IThickHeader, IColumnRenderInfo {
-	protected final GroupRankColumnModel model;
+public class SimpleColumnHeaderUI extends ACompositeHeaderUI implements IThickHeader, IColumnRenderInfo {
+	protected final ACompositeRankColumnModel model;
 
-	public GroupColumnHeaderUI(GroupRankColumnModel model, IRankTableUIConfig config) {
+	public SimpleColumnHeaderUI(ACompositeRankColumnModel model, IRankTableUIConfig config) {
 		super(config, 1);
 		this.model = model;
 		setLayoutData(model);
-		this.add(0, new GroupSummaryHeaderUI(model, config));
+		this.add(0, new SimpleSummaryHeaderUI(model, config));
 		model.addPropertyChangeListener(ACompositeRankColumnModel.PROP_CHILDREN, childrenChanged);
 		init(model);
 	}
@@ -94,28 +94,21 @@ public class GroupColumnHeaderUI extends ACompositeHeaderUI implements IThickHea
 		if (true) {
 			config.renderHeaderBackground(g, w, h, LABEL_HEIGHT, model);
 			g.decZ().decZ();
-			// RoundedRectRenderer.render(g, 0, 0, w, h, RenderStyle.HEADER_ROUNDED_RADIUS, 3,
-			// RoundedRectRenderer.FLAG_FILL | RoundedRectRenderer.FLAG_TOP);
 
 			g.lineWidth(RenderStyle.COLOR_STACKED_BORDER_WIDTH);
 			g.color(RenderStyle.COLOR_STACKED_BORDER);
 
-			// gl.glBegin(GL.GL_LINE_STRIP);
-			// {
-			// gl.glVertex3f(0, h, z);
-			// renderRoundedCorner(g, 0, 0, RenderStyle.HEADER_ROUNDED_RADIUS, 0, RoundedRectRenderer.FLAG_TOP_LEFT);
-			// renderRoundedCorner(g, w - RenderStyle.HEADER_ROUNDED_RADIUS, 0, RenderStyle.HEADER_ROUNDED_RADIUS, 0,
-			// RoundedRectRenderer.FLAG_TOP_RIGHT);
-			// gl.glVertex3f(w, h, z);
-			// }
-			// gl.glEnd();
 			g.drawRect(0, 0, w, h);
 			g.lineWidth(1);
 			g.incZ().incZ();
-
-			// g.drawLine(x, yi, x, yi + hi + 2);
 		}
 		super.renderImpl(g, w, h);
+
+		if (model instanceof IRankableColumnMixin) {
+			g.incZ();
+			config.renderIsOrderByGlyph(g, w, h, model.getMyRanker().getOrderBy() == model);
+			g.decZ();
+		}
 	}
 
 	@Override

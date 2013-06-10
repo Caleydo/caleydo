@@ -32,14 +32,23 @@ import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 
 /**
+ * id type mapper cache that avoid looking up all {@link IIDTypeMapper} again and again
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
 public class CachedIDTypeMapper {
 
 	private final Table<IDType, IDType, IIDTypeMapper<Integer, Integer>> mappers = HashBasedTable.create();
 	private final Table<IDType, IDType, Predicate<Integer>> predicates = HashBasedTable.create();
 
+	/**
+	 * computes a predicate that check if a given id is available in the target {@link IDType}
+	 * 
+	 * @param source
+	 * @param target
+	 * @return
+	 */
 	public Predicate<Integer> in(final IDType source, final IDType target) {
 		if (source == target)
 			return Predicates.alwaysTrue();
@@ -66,6 +75,13 @@ public class CachedIDTypeMapper {
 		return mapper;
 	}
 
+	/**
+	 * returns the {@link IIDTypeMapper} for a given pair
+	 * 
+	 * @param source
+	 * @param target
+	 * @return
+	 */
 	public IIDTypeMapper<Integer, Integer> get(IDType source, IDType target) {
 		// find way
 		IIDTypeMapper<Integer, Integer> mapper = mappers.get(source, target);

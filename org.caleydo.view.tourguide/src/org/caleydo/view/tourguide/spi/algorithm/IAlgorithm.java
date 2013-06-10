@@ -17,39 +17,46 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.internal.event;
+package org.caleydo.view.tourguide.spi.algorithm;
 
-import org.caleydo.core.event.ADirectedEvent;
+import org.caleydo.core.id.IDType;
+import org.eclipse.core.runtime.IProgressMonitor;
 
 /**
+ * basic interface for {@link IGroupAlgorithm} and {@link IStratificationAlgorithm}
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
-public class CreateScoreColumnEvent extends ADirectedEvent {
-	private Type type;
-
-	public enum Type {
-		COMBINED, COLLAPSED, JACCARD, ADJUSTED_RAND
-	}
-
-	public CreateScoreColumnEvent() {
-
-	}
-
-	public CreateScoreColumnEvent(Type type, Object sender) {
-		this.type = type;
-		this.setSender(sender);
-	}
+public interface IAlgorithm {
+	/**
+	 * triggers to initialize this algorithm
+	 * 
+	 * @param monitor
+	 */
+	void init(IProgressMonitor monitor);
 
 	/**
-	 * @return the type, see {@link #type}
+	 * returns the target {@link IDType} that should be used for converting the ids of the two given
+	 * {@link IComputeElement}s
+	 * 
+	 * @param a
+	 * @param b
+	 * @return
 	 */
-	public Type getType() {
-		return type;
-	}
+	IDType getTargetType(IComputeElement a, IComputeElement b);
 
-	@Override
-	public boolean checkIntegrity() {
-		return true;
-	}
+	/**
+	 * returns the abbreviation of this algorithm
+	 * 
+	 * @return
+	 */
+	String getAbbreviation();
+
+	/**
+	 * returns a small description what this algorithm does
+	 * 
+	 * @return
+	 */
+	String getDescription();
 }

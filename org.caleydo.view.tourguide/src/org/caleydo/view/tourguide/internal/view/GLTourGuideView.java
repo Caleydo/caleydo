@@ -19,7 +19,6 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.internal.view;
 
-import java.awt.Color;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
@@ -51,6 +50,7 @@ import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IPopupLayer;
 import org.caleydo.core.view.opengl.layout2.basic.ScrollBar;
 import org.caleydo.core.view.opengl.layout2.basic.ScrollingDecorator;
+import org.caleydo.core.view.opengl.layout2.basic.WaitingElement;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
@@ -285,7 +285,7 @@ public class GLTourGuideView extends AGLElementView {
 		Collection<IScore> scores = new ArrayList<>(getVisibleScores(null));
 		ComputeAllOfJob job = new ComputeAllOfJob(q, scores, this);
 		if (job.hasThingsToDo()) {
-			waiting.resetJob(job);
+			waiting.reset(job);
 			job.addJobChangeListener(jobListener);
 			getPopupLayer().show(waiting, null, 0);
 			job.schedule();
@@ -298,7 +298,7 @@ public class GLTourGuideView extends AGLElementView {
 		ComputeForScoreJob job = new ComputeForScoreJob(toCompute, table.getData(),
 				table.getMyRanker(null).getFilter(), this);
 		if (job.hasThingsToDo()) {
-			waiting.resetJob(job);
+			waiting.reset(job);
 			job.addJobChangeListener(jobListener);
 			getPopupLayer().show(waiting, null, 0);
 			job.schedule();
@@ -311,7 +311,7 @@ public class GLTourGuideView extends AGLElementView {
 		Collection<IScore> scores = new ArrayList<>(getVisibleScores(null));
 		ComputeExtrasJob job = new ComputeExtrasJob(extras, scores, this);
 		if (job.hasThingsToDo()) {
-			waiting.resetJob(job);
+			waiting.reset(job);
 			job.addJobChangeListener(jobListener);
 			getPopupLayer().show(waiting, null, 0);
 			job.schedule();
@@ -322,7 +322,7 @@ public class GLTourGuideView extends AGLElementView {
 
 	@ListenTo(sendToMe = true)
 	private void onProgressEvent(JobStateProgressEvent event) {
-		if (event.isErrornous())
+		if (event.isErroneous())
 			waiting.error(event.getText());
 		else
 			waiting.progress(event.getCompleted(), event.getText());
@@ -695,7 +695,7 @@ public class GLTourGuideView extends AGLElementView {
 
 		@Override
 		public void renderHeaderBackground(GLGraphics g, float w, float h, float labelHeight, ARankColumnModel model) {
-			g.color(Color.WHITE).fillRect(0, 0, w, h);
+			g.color(0.96f).fillRect(0, 0, w, h);
 			g.color(model.getBgColor()).fillRect(0, labelHeight - 3, w, 2);
 		}
 

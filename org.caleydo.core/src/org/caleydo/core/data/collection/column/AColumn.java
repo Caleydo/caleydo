@@ -103,7 +103,7 @@ public abstract class AColumn<RawContainerType extends IContainer<RawType>, RawT
 	 *            a float array containing the raw data
 	 */
 	public void setRawData(RawContainerType rawContainer) {
-		assert this.rawContainer != null : "Raw data was already set in column " + id + " , tried to set again.";
+		assert this.rawContainer == null : "Raw data was already set in column " + id + " , tried to set again.";
 		assert rawContainer.getDataType().equals(rawDataType) : "Raw data in container and in column don't match";
 
 		this.rawContainer = rawContainer;

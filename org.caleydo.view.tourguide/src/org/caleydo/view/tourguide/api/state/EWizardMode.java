@@ -20,10 +20,23 @@
 package org.caleydo.view.tourguide.api.state;
 
 /**
+ * different modi of the wizard
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
 public enum EWizardMode {
-	GLOBAL, DEPENDENT, INDEPENDENT
+	/**
+	 * adding something from scratch
+	 */
+	GLOBAL,
+	/**
+	 * add a dependent element to the given one
+	 */
+	DEPENDENT,
+	/**
+	 * add an independent elememtn to the given one
+	 */
+	INDEPENDENT
 
 }

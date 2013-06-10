@@ -32,11 +32,33 @@ import org.caleydo.view.tourguide.spi.score.IScore;
  *
  */
 public interface IComputedGroupScore extends IRegisteredScore {
-	public boolean contains(IComputeElement a, Group ag);
+	/**
+	 * already in the cache?
+	 * 
+	 * @param a
+	 * @return
+	 */
+	boolean contains(IComputeElement a, Group ag);
 
-	public void put(Group ag, float value);
+	/**
+	 * put the result in the cache
+	 * 
+	 * @param a
+	 * @param value
+	 */
+	void put(Group ag, float value);
 
-	public IGroupAlgorithm getAlgorithm();
+	/**
+	 * returns the algorithm to compute this score
+	 * 
+	 * @return
+	 */
+	IGroupAlgorithm getAlgorithm();
 
-	public IComputeScoreFilter getFilter();
+	/**
+	 * returns the filter apply for skipping invalid combination pairs
+	 * 
+	 * @return
+	 */
+	IComputeScoreFilter getFilter();
 }

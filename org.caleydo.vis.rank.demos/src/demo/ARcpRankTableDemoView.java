@@ -29,11 +29,14 @@ import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.vis.rank.config.RankTableConfigBase;
 import org.caleydo.vis.rank.config.RankTableUIConfigs;
 import org.caleydo.vis.rank.layout.RowHeightLayouts;
+import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.ui.RankTableKeyListener;
 import org.caleydo.vis.rank.ui.RankTableUI;
 import org.caleydo.vis.rank.ui.RankTableUIMouseKeyListener;
 import org.eclipse.swt.widgets.Composite;
+
+import demo.RankTableDemo.IModelBuilder;
 
 /**
  * @author Samuel Gratzl
@@ -64,11 +67,18 @@ public abstract class ARcpRankTableDemoView extends ARcpGLViewPart {
 
 		public GLView(IGLCanvas glCanvas, String viewType, String viewName) {
 			super(glCanvas, viewType, viewName);
-			this.table = new RankTableModel(new RankTableConfigBase());
+			final IModelBuilder builder = createModel();
+			this.table = new RankTableModel(new RankTableConfigBase() {
+				@Override
+				public Iterable<? extends ARankColumnModel> createAutoSnapshotColumns(RankTableModel table,
+						ARankColumnModel model) {
+					return builder.createAutoSnapshotColumns(table, model);
+				}
+			});
 
-			canvas.addKeyListener(new RankTableKeyListener(table));
 			try {
-				createModel().apply(table);
+				canvas.addKeyListener(new RankTableKeyListener(table));
+				builder.apply(table);
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();

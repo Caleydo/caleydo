@@ -19,6 +19,8 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.config;
 
+import java.util.Collections;
+
 import org.caleydo.core.view.opengl.picking.AdvancedPick;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.vis.rank.model.ACompositeRankColumnModel;
@@ -26,7 +28,10 @@ import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.GroupRankColumnModel;
 import org.caleydo.vis.rank.model.IRankColumnParent;
 import org.caleydo.vis.rank.model.MaxCompositeRankColumnModel;
+import org.caleydo.vis.rank.model.NestedRankColumnModel;
 import org.caleydo.vis.rank.model.OrderColumn;
+import org.caleydo.vis.rank.model.RankRankColumnModel;
+import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.StackedRankColumnModel;
 import org.caleydo.vis.rank.model.mixin.IFloatRankableColumnMixin;
 
@@ -42,6 +47,7 @@ import org.caleydo.vis.rank.model.mixin.IFloatRankableColumnMixin;
 public class RankTableConfigBase implements IRankTableConfig {
 	private static final int MAX_MODE = 0;
 	private static final int SUM_MODE = 1;
+	private static final int NESTED_MODE = 2;
 
 	@Override
 	public boolean isMoveAble(ARankColumnModel model, boolean clone) {
@@ -50,13 +56,29 @@ public class RankTableConfigBase implements IRankTableConfig {
 
 	@Override
 	public int getCombineMode(ARankColumnModel model, Pick pick) {
-		int default_ = model instanceof StackedRankColumnModel ? SUM_MODE : MAX_MODE;
+		int default_ = defaultMode(model);
 		if (!(pick instanceof AdvancedPick))
 			return default_;
 		AdvancedPick apick = (AdvancedPick) pick;
 		if (apick.isAltDown())
 			return 1 - default_; // opposite one
+		if (apick.isShiftDown())
+			return NESTED_MODE;
 		return default_;
+	}
+
+	/**
+	 * @param model
+	 * @return
+	 */
+	private int defaultMode(ARankColumnModel model) {
+		if (model instanceof StackedRankColumnModel)
+			return SUM_MODE;
+		if (model instanceof MaxCompositeRankColumnModel)
+			return MAX_MODE;
+		if (model instanceof NestedRankColumnModel)
+			return NESTED_MODE;
+		return MAX_MODE;
 	}
 
 	@Override
@@ -64,9 +86,18 @@ public class RankTableConfigBase implements IRankTableConfig {
 		switch (combineMode) {
 		case SUM_MODE:
 			return new StackedRankColumnModel();
+		case NESTED_MODE:
+			return new NestedRankColumnModel();
+		case MAX_MODE:
+			return new MaxCompositeRankColumnModel();
 		default:
 			return new MaxCompositeRankColumnModel();
 		}
+	}
+
+	@Override
+	public Iterable<? extends ARankColumnModel> createAutoSnapshotColumns(RankTableModel table, ARankColumnModel model) {
+		return Collections.singleton(new RankRankColumnModel());
 	}
 
 	@Override
@@ -76,6 +107,9 @@ public class RankTableConfigBase implements IRankTableConfig {
 		switch (combineMode) {
 		case SUM_MODE:
 			return t instanceof StackedRankColumnModel;
+		case NESTED_MODE:
+			return t instanceof NestedRankColumnModel;
+		case MAX_MODE:
 		default:
 			return t instanceof MaxCompositeRankColumnModel;
 		}
@@ -91,6 +125,9 @@ public class RankTableConfigBase implements IRankTableConfig {
 		switch (combineMode) {
 		case SUM_MODE:
 			return parent.getClass() != StackedRankColumnModel.class;
+		case NESTED_MODE:
+			return parent.getClass() != NestedRankColumnModel.class;
+		case MAX_MODE:
 		default:
 			return parent.getClass() != MaxCompositeRankColumnModel.class;
 		}
@@ -101,6 +138,9 @@ public class RankTableConfigBase implements IRankTableConfig {
 		switch (combineMode) {
 		case SUM_MODE:
 			return "SUM";
+		case NESTED_MODE:
+			return "NESTED";
+		case MAX_MODE:
 		default:
 			return "MAX";
 		}

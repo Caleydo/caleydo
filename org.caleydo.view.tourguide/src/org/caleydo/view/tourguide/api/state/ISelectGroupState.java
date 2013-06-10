@@ -32,5 +32,12 @@ import com.google.common.base.Predicate;
  *
  */
 public interface ISelectGroupState extends IState, Predicate<Pair<TablePerspective, Group>> {
+	/**
+	 * called when the user selects a stratification and its corresponding group
+	 * 
+	 * @param tablePerspective
+	 * @param group
+	 * @param reaction
+	 */
 	void select(TablePerspective tablePerspective, Group group, IReactions reaction);
 }

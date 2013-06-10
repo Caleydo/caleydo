@@ -43,6 +43,9 @@ public class MultiScore extends DefaultLabelProvider implements IScore, Iterable
 	private final Collection<IScore> children = new ArrayList<>();
 	private final Color color;
 	private final Color bgColor;
+	/**
+	 * the combined modi for creating a combined rank column
+	 */
 	private final int combinedType;
 
 	public MultiScore(String label, Color color, Color bgColor) {

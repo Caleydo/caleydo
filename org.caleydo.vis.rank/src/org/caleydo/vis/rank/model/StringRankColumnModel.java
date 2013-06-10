@@ -316,7 +316,7 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 	class MyValueElement extends ValueElement {
 		@Override
 		protected void renderImpl(GLGraphics g, float w, float h) {
-			if (h < 5)
+			if (h < 5 || (w - 7) < 10)
 				return;
 			String value = getTooltip();
 			if (value == null)

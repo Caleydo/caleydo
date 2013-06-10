@@ -25,8 +25,10 @@ import org.caleydo.core.event.ADirectedEvent;
 import org.caleydo.view.tourguide.spi.score.IScore;
 
 /**
+ * marker event that the scores for a given set of scores are computed
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
 public class ScoreQueryReadyEvent extends ADirectedEvent {
 	private final Collection<IScore> scores;

@@ -26,8 +26,10 @@ import org.caleydo.core.event.ADirectedEvent;
 import org.caleydo.view.tourguide.spi.score.IScore;
 
 /**
+ * event for adding scores to tour guide
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
 public class AddScoreColumnEvent extends ADirectedEvent {
 	private final Collection<IScore> scores;

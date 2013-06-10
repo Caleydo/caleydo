@@ -29,20 +29,22 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.TreeMap;
 
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLSandBox;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
+import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.ARow;
 import org.caleydo.vis.rank.model.CategoricalRankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.OrderColumn;
 import org.caleydo.vis.rank.model.RankRankColumnModel;
 import org.caleydo.vis.rank.model.RankTableModel;
+import org.caleydo.vis.rank.model.StackedRankColumnModel;
 import org.caleydo.vis.rank.model.StringRankColumnModel;
 
 import com.google.common.base.Function;
@@ -67,24 +69,22 @@ public class WorldUniversityRanking implements IModelBuilder {
 		Map<String, WorldUniversityYear[]> data = WorldUniversityYear.readData(2012, 2011, 2010, 2009, 2008, 2007);
 		countries.keySet().retainAll(data.keySet());
 
-		Map<String, String> countryMetaData = new TreeMap<>();
 		List<UniversityRow> rows = new ArrayList<>(data.size());
 		for (Map.Entry<String, WorldUniversityYear[]> entry : data.entrySet()) {
-			String c = countries.get(entry.getKey());
-			if (c != null)
-				countryMetaData.put(c, c);
 			rows.add(new UniversityRow(entry.getKey(), entry.getValue(), countries.get(entry.getKey())));
 		}
 		table.addData(rows);
 		data = null;
 
 		table.add(new RankRankColumnModel());
-		table.add(new StringRankColumnModel(GLRenderers.drawText("School Name", VAlign.CENTER),
-				StringRankColumnModel.DEFAULT).setWidth(300));
+		final ARankColumnModel label = new StringRankColumnModel(GLRenderers.drawText("School Name", VAlign.CENTER),
+				StringRankColumnModel.DEFAULT).setWidth(300);
+		table.add(label);
 
-		CategoricalRankColumnModel<String> cat = new CategoricalRankColumnModel<String>(GLRenderers.drawText("Country",
+		CategoricalRankColumnModel<String> cat = CategoricalRankColumnModel
+				.createSimple(GLRenderers.drawText("Country",
 				VAlign.CENTER), new ReflectionData<>(UniversityRow.class.getDeclaredField("country"), String.class),
-				countryMetaData);
+						countries.values());
 		table.add(cat);
 
 		int rankColWidth = 40;
@@ -94,21 +94,39 @@ public class WorldUniversityRanking implements IModelBuilder {
 
 		WorldUniversityYear.addSpecialYear(table, new YearGetter(0));
 
+		addYear(label, rankColWidth, table, "2011", new YearGetter(1)).setCompressed(true);
+		addYear(label, rankColWidth, table, "2010", new YearGetter(2)).setCompressed(true);
+		addYear(label, rankColWidth, table, "2009", new YearGetter(3)).setCollapsed(true);
+		addYear(label, rankColWidth, table, "2008", new YearGetter(4)).setCollapsed(true);
+		addYear(label, rankColWidth, table, "2007", new YearGetter(5)).setCollapsed(true);
+	}
+
+	private static StackedRankColumnModel addYear(ARankColumnModel label, int rankColWidth, RankTableModel table,
+			String title, YearGetter year) {
 		table.add(new OrderColumn());
 		table.add(new RankRankColumnModel().setWidth(rankColWidth));
-		WorldUniversityYear.addYear(table, "2011", new YearGetter(1), false, false).setCompressed(true);
-		table.add(new OrderColumn());
-		table.add(new RankRankColumnModel().setWidth(rankColWidth));
-		WorldUniversityYear.addYear(table, "2010", new YearGetter(2), false, false).setCompressed(true);
-		table.add(new OrderColumn());
-		table.add(new RankRankColumnModel().setWidth(rankColWidth));
-		WorldUniversityYear.addYear(table, "2009", new YearGetter(3), false, false).setCollapsed(true);
-		table.add(new OrderColumn());
-		table.add(new RankRankColumnModel().setWidth(rankColWidth));
-		WorldUniversityYear.addYear(table, "2008", new YearGetter(4), false, false).setCollapsed(true);
-		table.add(new OrderColumn());
-		table.add(new RankRankColumnModel().setWidth(rankColWidth));
-		WorldUniversityYear.addYear(table, "2007", new YearGetter(5), false, false).setCollapsed(true);
+		table.add(label.clone().setCollapsed(true));
+		StackedRankColumnModel model = WorldUniversityYear.addYear(table, title, year, false, false);
+		model.orderByMe();
+		return model;
+	}
+
+	@Override
+	public Iterable<? extends ARankColumnModel> createAutoSnapshotColumns(RankTableModel table, ARankColumnModel model) {
+		Collection<ARankColumnModel> ms = new ArrayList<>(2);
+		ms.add(new RankRankColumnModel());
+		ARankColumnModel desc = find(table, "School Name");
+		if (desc != null)
+			ms.add(desc.clone().setCollapsed(true));
+		return ms;
+	}
+
+	private static ARankColumnModel find(RankTableModel table, String name) {
+		for (ARankColumnModel model : table.getColumns()) {
+			if (model.getTitle().equals(name))
+				return model;
+		}
+		return null;
 	}
 
 	public static void dump() throws IOException {

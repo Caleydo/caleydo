@@ -28,6 +28,7 @@ import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
 import org.caleydo.vis.rank.config.RankTableConfigBase;
 import org.caleydo.vis.rank.config.RankTableUIConfigs;
 import org.caleydo.vis.rank.layout.RowHeightLayouts;
+import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.ui.RankTableKeyListener;
 import org.caleydo.vis.rank.ui.RankTableUI;
@@ -42,12 +43,18 @@ public class RankTableDemo extends GLSandBox {
 
 	protected final RankTableModel table;
 
-	public RankTableDemo(Shell parentShell, String name, IModelBuilder model) {
+	public RankTableDemo(Shell parentShell, String name, final IModelBuilder builder) {
 		super(parentShell, name, createRoot(), new GLPadding(5),
 				new Dimension(800, 600));
-		this.table = new RankTableModel(new RankTableConfigBase());
+		this.table = new RankTableModel(new RankTableConfigBase() {
+			@Override
+			public Iterable<? extends ARankColumnModel> createAutoSnapshotColumns(RankTableModel table,
+					ARankColumnModel model) {
+				return builder.createAutoSnapshotColumns(table, model);
+			}
+		});
 		try {
-			model.apply(table);
+			builder.apply(table);
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
@@ -92,5 +99,7 @@ public class RankTableDemo extends GLSandBox {
 
 	public interface IModelBuilder {
 		void apply(RankTableModel table) throws Exception;
+
+		Iterable<? extends ARankColumnModel> createAutoSnapshotColumns(RankTableModel table, ARankColumnModel model);
 	}
 }

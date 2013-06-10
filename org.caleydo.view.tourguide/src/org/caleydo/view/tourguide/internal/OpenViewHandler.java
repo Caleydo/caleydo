@@ -37,16 +37,12 @@ public class OpenViewHandler extends AbstractHandler {
 
 	@Override
 	public final Object execute(ExecutionEvent event) throws ExecutionException {
-		showTourGuide(event);
-		return null;
-	}
-
-	private static void showTourGuide(ExecutionEvent event) {
 		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindow(event);
 		for (EDataDomainQueryMode mode : EDataDomainQueryMode.values())
 			showTourGuideImpl(window, mode);
 		// show the first one again for having it the context
 		showTourGuideImpl(window, EDataDomainQueryMode.STRATIFICATIONS);
+		return null;
 	}
 
 	private static RcpGLTourGuideView showTourGuideImpl(IWorkbenchWindow window, EDataDomainQueryMode mode) {
@@ -61,8 +57,14 @@ public class OpenViewHandler extends AbstractHandler {
 		return null;
 	}
 
+	/**
+	 * triggers to open tour guide
+	 * 
+	 * @param mode
+	 * @return
+	 */
 	public static RcpGLTourGuideView showTourGuide(final EDataDomainQueryMode mode) {
-		if (Display.getDefault().getThread() != Thread.currentThread()) {
+		if (Display.getDefault().getThread() != Thread.currentThread()) { // not the right thread
 			return DisplayUtils.syncExec(Display.getDefault(), new SafeCallable<RcpGLTourGuideView>() {
 				@Override
 				public RcpGLTourGuideView call() {

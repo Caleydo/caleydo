@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.caleydo.core.data.collection.EDataType;
@@ -49,7 +50,7 @@ public class CategoricalContainer<CATEGORY_TYPE extends Comparable<CATEGORY_TYPE
 	public static final Integer UNKNOWN_CATEGORY_INT = Integer.MIN_VALUE;
 
 	/** The data type corresponding to CategoryType */
-	private EDataType dataType;
+	private final EDataType dataType;
 
 	/**
 	 * This contains the short that is used for the next available key. This also corresponds to the number of
@@ -60,21 +61,21 @@ public class CategoricalContainer<CATEGORY_TYPE extends Comparable<CATEGORY_TYPE
 	private int nextIndex = 0;
 
 	/** The array that holds the mapped keys as they appear in the input files */
-	private short[] container;
+	private final short[] container;
 
 	/** BiMap that maps category names to identifiers. */
-	private BiMap<CATEGORY_TYPE, Short> hashCategoryToIdentifier = HashBiMap.create();
+	private final BiMap<CATEGORY_TYPE, Short> hashCategoryToIdentifier = HashBiMap.create();
 
 	/** Maps every category to the number of elements it contains */
-	private HashMap<CATEGORY_TYPE, Integer> hashCategoryToNumberOfMatches = new HashMap<>();
+	private final Map<CATEGORY_TYPE, Integer> hashCategoryToNumberOfMatches = new HashMap<>();
 
-	private HashMap<Short, Float> hashCategoryKeyToNormalizedValue = new HashMap<>();
+	private final Map<Short, Float> hashCategoryKeyToNormalizedValue = new HashMap<>();
 
 	/**
 	 * Category for values where the category is not known, typically because of parsing errors or a missing definition
 	 * in the file.
 	 */
-	private CATEGORY_TYPE unknownCategoryType;
+	private final CATEGORY_TYPE unknownCategoryType;
 
 	/**
 	 * An ordered list of categories for this container. Can either be set using
@@ -93,8 +94,9 @@ public class CategoricalContainer<CATEGORY_TYPE extends Comparable<CATEGORY_TYPE
 	 *            {@link #UNKNOWN_CATEOGRY_STRING} unless there is a good reason not to do so.
 	 */
 	public CategoricalContainer(int size, EDataType dataType, CATEGORY_TYPE unknownCategoryType) {
-		container = new short[size];
+		this.container = new short[size];
 		this.unknownCategoryType = unknownCategoryType;
+		this.dataType = dataType;
 		initCategory(unknownCategoryType);
 	}
 

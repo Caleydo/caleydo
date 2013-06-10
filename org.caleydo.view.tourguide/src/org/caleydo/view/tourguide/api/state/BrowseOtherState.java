@@ -51,7 +51,7 @@ public class BrowseOtherState extends ABrowseState {
 	}
 
 	protected void show(TablePerspective numerical, IReactions adapter) {
-		if (underlying == null) {// standalone --> doesn't work
+		if (underlying == null) { // stand alone
 			ClinicalDataConfigurer clinicalDataConfigurer = new ClinicalDataConfigurer();
 			clinicalDataConfigurer.setSortingStrategy(new NoSortingSortingStrategy());
 			adapter.replaceTemplate(numerical, clinicalDataConfigurer);

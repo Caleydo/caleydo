@@ -111,4 +111,11 @@ public interface IRankTableConfig {
 	 * @return
 	 */
 	int getCombineMode(ARankColumnModel model, Pick pick);
+
+	/**
+	 * which columns should be automatically created during a new snapshot
+	 * 
+	 * @return
+	 */
+	Iterable<? extends ARankColumnModel> createAutoSnapshotColumns(RankTableModel table, ARankColumnModel model);
 }

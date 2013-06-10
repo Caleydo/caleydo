@@ -21,6 +21,7 @@ package university.mup;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -28,6 +29,7 @@ import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLSandBox;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.vis.rank.data.FloatInferrers;
+import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.ARow;
 import org.caleydo.vis.rank.model.FloatRankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
@@ -84,6 +86,24 @@ public class MeasuringUniversityPerformance implements IModelBuilder {
 		table.add(new FloatRankColumnModel(new ReflectionFloatData(UniversityRow.class.getDeclaredField("enrollment")),
 				GLRenderers.drawText("Enrollment Fall 2007", VAlign.CENTER), Color.LIGHT_GRAY, Color.LIGHT_GRAY
 						.brighter(), new PiecewiseMapping(0, Float.NaN), FloatInferrers.MEDIAN));
+	}
+
+	@Override
+	public Iterable<? extends ARankColumnModel> createAutoSnapshotColumns(RankTableModel table, ARankColumnModel model) {
+		Collection<ARankColumnModel> ms = new ArrayList<>(2);
+		ms.add(new RankRankColumnModel());
+		ARankColumnModel desc = find(table, "School Name");
+		if (desc != null)
+			ms.add(desc.clone().setCollapsed(true));
+		return ms;
+	}
+
+	private static ARankColumnModel find(RankTableModel table, String name) {
+		for (ARankColumnModel model : table.getColumns()) {
+			if (model.getTitle().equals(name))
+				return model;
+		}
+		return null;
 	}
 
 	static class YearGetter implements Function<IRow, Entry[]> {

@@ -109,8 +109,8 @@ public final class RenderCache {
 		if (w * h < 2500 || numVertices < 100) // too small area
 			return false;
 		// TODO no cache on text
-		// if (numChars > 0)
-		// return false;
+		if (numChars > 0)
+			return false;
 		if (wasDirty)
 			return false;
 		return true;

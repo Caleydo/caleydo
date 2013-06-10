@@ -25,8 +25,8 @@ import org.caleydo.vis.rank.internal.event.AnnotationEditEvent;
 import org.caleydo.vis.rank.model.AMultiRankColumnModel;
 
 
-public class StackedScoreSummary extends ScoreSummary {
-	public StackedScoreSummary(AMultiRankColumnModel model, boolean interactive) {
+public class MultiRankScoreSummary extends ScoreSummary {
+	public MultiRankScoreSummary(AMultiRankColumnModel model, boolean interactive) {
 		super(model, interactive);
 	}
 

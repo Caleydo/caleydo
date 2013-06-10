@@ -24,17 +24,15 @@ import org.caleydo.core.event.ADirectedEvent;
 import org.caleydo.view.tourguide.api.score.ISerializeableScore;
 
 /**
+ * triggers the import dialog of an external score
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
 public class ImportExternalScoreEvent extends ADirectedEvent {
 	private ATableBasedDataDomain dataDomain;
 	private boolean inDimensionDirection;
 	private Class<? extends ISerializeableScore> type;
-
-	public ImportExternalScoreEvent() {
-
-	}
 
 	public ImportExternalScoreEvent(ATableBasedDataDomain dataDomain, boolean inDimensionDirection,
 			Class<? extends ISerializeableScore> type) {
@@ -44,11 +42,6 @@ public class ImportExternalScoreEvent extends ADirectedEvent {
 		this.type = type;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.caleydo.core.event.AEvent#checkIntegrity()
-	 */
 	@Override
 	public boolean checkIntegrity() {
 		return dataDomain != null && type != null;

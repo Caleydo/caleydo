@@ -112,7 +112,8 @@ public class RenderStyle {
 	public static final String ICON_FIND = ICON_PREFIX + "find.png";
 
 	public static final String ICON_ADD_SEPARATOR = ICON_PREFIX + "table_relationship.png";
-	public static final String ICON_ADD_STACKED = ICON_PREFIX + "table_add.png";
+	public static final String ICON_ADD_STACKED = ICON_PREFIX + "table_sum_add.png";
+	public static final String ICON_ADD_NESTED = ICON_PREFIX + "table_nested_add.png";
 
 	public static final String ICON_COMPLEX_MAPPING = ICON_PREFIX + "hatching.png";
 	/**

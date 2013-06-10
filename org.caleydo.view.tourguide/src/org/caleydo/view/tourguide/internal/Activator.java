@@ -36,22 +36,12 @@ public class Activator extends Plugin {
 	// The shared instance
 	private static Activator plugin;
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.eclipse.core.runtime.Plugins#start(org.osgi.framework.BundleContext)
-	 */
 	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
-	 */
 	@Override
 	public void stop(BundleContext context) throws Exception {
 		plugin = null;
@@ -71,11 +61,21 @@ public class Activator extends Plugin {
 		return AbstractUIPlugin.imageDescriptorFromPlugin(ID, path);
 	}
 
+	/**
+	 * returns the {@link IResourceLocator} for this view
+	 * 
+	 * @return
+	 */
 	public static IResourceLocator getResourceLocator() {
 		return ResourceLocators.chain(ResourceLocators.classLoader(plugin.getClass().getClassLoader()),
 				ResourceLocators.DATA_CLASSLOADER, ResourceLocators.FILE);
 	}
 
+	/**
+	 * see {@link #getResourceLocator()} wrapped as a {@link ResourceLoader}
+	 * 
+	 * @return
+	 */
 	public static ResourceLoader getResourceLoader() {
 		return new ResourceLoader(getResourceLocator());
 	}

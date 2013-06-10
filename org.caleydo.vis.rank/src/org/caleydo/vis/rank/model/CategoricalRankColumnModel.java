@@ -28,6 +28,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.view.opengl.layout2.GLElement;
@@ -46,7 +47,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 import com.google.common.base.Function;
-import com.google.common.collect.Sets;
 
 /**
  * @author Samuel Gratzl
@@ -63,6 +63,15 @@ public class CategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<CATEGOR
 	public CategoricalRankColumnModel(IGLRenderer header, final Function<IRow, CATEGORY_TYPE> data,
 			Map<CATEGORY_TYPE, String> metaData) {
 		this(header, data, metaData, Color.GRAY, new Color(.95f, .95f, .95f));
+	}
+
+	public static CategoricalRankColumnModel<String> createSimple(IGLRenderer header,
+			final Function<IRow, String> data,
+			Collection<String> items) {
+		Map<String, String> map = new TreeMap<>();
+		for (String s : items)
+			map.put(s, s);
+		return new CategoricalRankColumnModel<>(header, data, map);
 	}
 
 	public CategoricalRankColumnModel(IGLRenderer header, final Function<IRow, CATEGORY_TYPE> data,
@@ -127,7 +136,7 @@ public class CategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<CATEGOR
 		Set<CATEGORY_TYPE> bak = new HashSet<>(this.selection);
 		this.selection.clear();
 		this.selection.addAll(filter);
-		if (Sets.difference(bak, this.selection).isEmpty()) {
+		if (this.selection.equals(bak)) {
 			setGlobalFilter(isGlobalFilter);
 		} else {
 			this.isGlobalFilter = isGlobalFilter;

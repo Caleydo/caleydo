@@ -23,12 +23,15 @@ import java.util.List;
 
 import org.caleydo.core.event.ADirectedEvent;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.view.tourguide.internal.compute.ComputeExtrasJob;
 import org.caleydo.view.tourguide.internal.model.ADataDomainQuery;
 import org.caleydo.view.tourguide.internal.model.AScoreRow;
 
 /**
+ * response of the {@link ComputeExtrasJob} which triggers to add extra lines a a set of given {@link ADataDomainQuery}
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
 public class ExtraInitialScoreQueryReadyEvent extends ADirectedEvent {
 

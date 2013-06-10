@@ -20,20 +20,32 @@
 package org.caleydo.view.tourguide.internal.event;
 
 import org.caleydo.core.event.ADirectedEvent;
+import org.eclipse.core.runtime.IProgressMonitor;
 
 /**
+ * event that updates the progress of the state using Events instead of {@link IProgressMonitor}
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
 public class JobStateProgressEvent extends ADirectedEvent {
+	/**
+	 * text to show
+	 */
 	private final String text;
+	/**
+	 * completion state in percent
+	 */
 	private final float completed;
-	private final boolean errornous;
+	/**
+	 * is this an erroneous progress update, i.e the text describes an error
+	 */
+	private final boolean erroneous;
 
-	public JobStateProgressEvent(String text, float completed, boolean errornous) {
+	public JobStateProgressEvent(String text, float completed, boolean erroneous) {
 		this.text = text;
 		this.completed = completed;
-		this.errornous = errornous;
+		this.erroneous = erroneous;
 	}
 
 	/**
@@ -43,8 +55,11 @@ public class JobStateProgressEvent extends ADirectedEvent {
 		return completed;
 	}
 
-	public boolean isErrornous() {
-		return errornous;
+	/**
+	 * @return the erroneous, see {@link #erroneous}
+	 */
+	public boolean isErroneous() {
+		return erroneous;
 	}
 
 	/**
@@ -56,7 +71,6 @@ public class JobStateProgressEvent extends ADirectedEvent {
 
 	@Override
 	public boolean checkIntegrity() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 

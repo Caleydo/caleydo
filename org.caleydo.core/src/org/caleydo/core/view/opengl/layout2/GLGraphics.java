@@ -21,6 +21,7 @@ import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.core.view.opengl.layout2.renderer.RoundedRectRenderer;
 import org.caleydo.core.view.opengl.util.GLPrimitives;
 import org.caleydo.core.view.opengl.util.spline.ITesselatedPolygon;
+import org.caleydo.core.view.opengl.util.text.ETextStyle;
 import org.caleydo.core.view.opengl.util.text.ITextRenderer;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.data.loader.ResourceLocators.IResourceLocator;
@@ -78,7 +79,7 @@ public class GLGraphics {
 		this.local = local;
 		this.text = local.getText();
 		this.deltaTimeMs = deltaTimeMs;
-		text.setColor(Color.BLACK);
+		textColor(Color.BLACK);
 		this.locator.push(local.getLoader());
 		this.originInTopLeft = originInTopLeft;
 	}
@@ -239,6 +240,8 @@ public class GLGraphics {
 
 	public GLGraphics textColor(Color color) {
 		text.setColor(color);
+		local.getText_bold().setColor(color);
+		local.getText_italic().setColor(color);
 		return this;
 	}
 
@@ -248,6 +251,8 @@ public class GLGraphics {
 
 	public GLGraphics textColor(float r, float g, float b, float a) {
 		text.setColor(r, g, b, a);
+		local.getText_bold().setColor(r, g, b, a);
+		local.getText_italic().setColor(r, g, b, a);
 		return this;
 	}
 
@@ -449,24 +454,29 @@ public class GLGraphics {
 	 * see {@link #drawText(String, float, float, float, float)} with a dedicated horizontal alignment
 	 */
 	public GLGraphics drawText(String text, float x, float y, float w, float h, VAlign valign) {
+		return drawText(text, x, y, w, h, valign, ETextStyle.PLAIN);
+	}
+
+	public GLGraphics drawText(String text, float x, float y, float w, float h, VAlign valign, ETextStyle style) {
 		if (isInvalidOrZero(w) || isInvalidOrZero(h) || isInvalid(x) || isInvalid(y))
 			return this;
 		if (text == null || text.trim().isEmpty())
 			return this;
 		if (text.indexOf('\n') < 0)
-			return drawText(Collections.singletonList(text), x, y, w, h, 0, valign);
+			return drawText(Collections.singletonList(text), x, y, w, h, 0, valign, style);
 		else {
-			return drawText(Arrays.asList(text.split("\n")), x, y, w, h, 0, valign);
+			return drawText(Arrays.asList(text.split("\n")), x, y, w, h, 0, valign, style);
 		}
 	}
 
-	public GLGraphics drawText(List<String> lines, float x, float y, float w, float h, float lineSpace,
-			VAlign valign) {
+	public GLGraphics drawText(List<String> lines, float x, float y, float w, float h, float lineSpace, VAlign valign,
+			ETextStyle style) {
 		if (isInvalidOrZero(w) || isInvalidOrZero(h) || isInvalid(x) || isInvalid(y) || isInvalid(lineSpace))
 			return this;
 		if (lines == null || lines.isEmpty())
 			return this;
-		if (originInTopLeft && !this.text.isOriginTopLeft()) {
+		ITextRenderer font = selectFont(style);
+		if (originInTopLeft && !font.isOriginTopLeft()) {
 			gl.glPushMatrix();
 			gl.glTranslatef(0, y + h, 0);
 			y = 0;
@@ -479,24 +489,37 @@ public class GLGraphics {
 			float xi = x;
 			switch (valign) {
 			case CENTER:
-				xi += w * 0.5f - Math.min(this.text.getTextWidth(text, hi), w) * 0.5f;
+				xi += w * 0.5f - Math.min(font.getTextWidth(text, hi), w) * 0.5f;
 				break;
 			case RIGHT:
-				xi += w - Math.min(this.text.getTextWidth(text, hi), w);
+				xi += w - Math.min(font.getTextWidth(text, hi), w);
 				break;
 			default:
 				break;
 			}
-			this.text.renderTextInBounds(gl, text, xi, y, z + 0.25f, w, hi);
+			font.renderTextInBounds(gl, text, xi, y, z + 0.25f, w, hi);
 			y += lineSpace + hi;
 		}
 
-		if (this.text.isDirty())
+		if (font.isDirty())
 			stats.dirtyTextTexture();
 
-		if (originInTopLeft && !this.text.isOriginTopLeft())
+		if (originInTopLeft && !font.isOriginTopLeft())
 			gl.glPopMatrix();
 		return this;
+	}
+
+	private ITextRenderer selectFont(ETextStyle style) {
+		if (style == null)
+			return text;
+		switch (style) {
+		case BOLD:
+			return local.getText_bold();
+		case ITALIC:
+			return local.getText_italic();
+		default:
+			return text;
+		}
 	}
 
 	/**

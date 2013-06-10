@@ -206,8 +206,8 @@ public final class BitmapTextRenderer extends ABitmapTextRenderer implements ITe
 		}
 
 		@Override
-		protected ITextRenderer createTextRenderer() {
-			return new BitmapTextRenderer(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
+		protected ITextRenderer createTextRenderer(ETextStyle style) {
+			return new BitmapTextRenderer(new Font(Font.SANS_SERIF, style.toAWTFontStyle(), 12));
 		}
 	}
 

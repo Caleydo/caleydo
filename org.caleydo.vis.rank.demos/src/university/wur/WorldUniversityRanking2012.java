@@ -30,14 +30,15 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.TreeMap;
 
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLSandBox;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
+import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.ARow;
 import org.caleydo.vis.rank.model.CategoricalRankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
@@ -63,12 +64,8 @@ public class WorldUniversityRanking2012 implements IModelBuilder {
 		Map<String, WorldUniversityYear[]> data = WorldUniversityYear.readData(2012);
 		countries.keySet().retainAll(data.keySet());
 
-		Map<String, String> countryMetaData = new TreeMap<>();
 		List<UniversityRow> rows = new ArrayList<>(data.size());
 		for (Map.Entry<String, WorldUniversityYear[]> entry : data.entrySet()) {
-			String c = countries.get(entry.getKey());
-			if (c != null)
-				countryMetaData.put(c, c);
 			rows.add(new UniversityRow(entry.getKey(), entry.getValue(), countries.get(entry.getKey())));
 		}
 		table.addData(rows);
@@ -82,15 +79,36 @@ public class WorldUniversityRanking2012 implements IModelBuilder {
 		label.setWidth(240);
 		table.add(label);
 
-		CategoricalRankColumnModel<String> cat = new CategoricalRankColumnModel<String>(GLRenderers.drawText(
+		CategoricalRankColumnModel<String> cat = CategoricalRankColumnModel
+				.createSimple(GLRenderers.drawText(
 "Country",
 				VAlign.CENTER), new ReflectionData<>(UniversityRow.class.getDeclaredField("country"), String.class),
-				countryMetaData);
+						countries.values());
 		table.add(cat);
 
 		WorldUniversityYear.addYear(table, "World University Ranking", new YearGetter(0), true, false).orderByMe();
 
 		WorldUniversityYear.addSpecialYear(table, new YearGetter(0));
+	}
+
+	@Override
+	public Iterable<? extends ARankColumnModel> createAutoSnapshotColumns(RankTableModel table, ARankColumnModel model) {
+		Collection<ARankColumnModel> ms = new ArrayList<>(2);
+		ms.add(new RankRankColumnModel());
+		ARankColumnModel desc = find(table, "School Name");
+		if (desc != null)
+			ms.add(desc.clone().setCollapsed(true));
+		return ms;
+	}
+
+	private static ARankColumnModel find(RankTableModel table, String name) {
+		if (table == null)
+			return null;
+		for (ARankColumnModel model : table.getColumns()) {
+			if (model.getTitle().equals(name))
+				return model;
+		}
+		return null;
 	}
 
 	public static void dump() throws IOException {

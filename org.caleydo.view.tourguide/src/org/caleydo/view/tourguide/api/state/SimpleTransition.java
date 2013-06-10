@@ -21,8 +21,10 @@ package org.caleydo.view.tourguide.api.state;
 
 
 /**
+ * simple implementation of an {@link ITransition}
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
 
 public class SimpleTransition implements ITransition {

@@ -190,6 +190,8 @@ public class GLElement implements IHasGLLayoutData {
 	 * @param g
 	 */
 	public final void render(GLGraphics g) {
+		if (context == null)
+			return;
 		if (!needToRender()) {
 			cache.invalidate(context.getDisplayListPool());
 			return;
@@ -234,6 +236,8 @@ public class GLElement implements IHasGLLayoutData {
 	 * @param g
 	 */
 	public final void renderPick(GLGraphics g) {
+		if (context == null)
+			return;
 		if (!needToRender() || !hasPickAbles()) {
 			pickCache.invalidate(context.getDisplayListPool());
 			return;

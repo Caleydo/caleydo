@@ -22,8 +22,10 @@ package org.caleydo.view.tourguide.internal.event;
 import org.caleydo.core.event.ADirectedEvent;
 
 /**
+ * event for handling the request and response of editing a data domain
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
 public class EditDataDomainFilterEvent extends ADirectedEvent {
 

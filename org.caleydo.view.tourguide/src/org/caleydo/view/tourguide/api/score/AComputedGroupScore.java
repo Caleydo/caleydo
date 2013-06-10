@@ -30,8 +30,10 @@ import org.caleydo.view.tourguide.spi.score.IScore;
 import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
 
 /**
+ * basic implementation of a {@link IScore} that is based on groups including caching implementation
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
 public abstract class AComputedGroupScore extends DefaultLabelProvider implements IScore {
 	protected Map<Integer, Float> scores = new ConcurrentHashMap<>();

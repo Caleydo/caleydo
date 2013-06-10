@@ -21,14 +21,14 @@ package org.caleydo.vis.rank.ui.column;
 
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.vis.rank.config.IRankTableUIConfig;
-import org.caleydo.vis.rank.model.GroupRankColumnModel;
+import org.caleydo.vis.rank.model.ARankColumnModel;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class GroupSummaryHeaderUI extends AColumnHeaderUI {
-	public GroupSummaryHeaderUI(final GroupRankColumnModel model, IRankTableUIConfig config) {
+public class SimpleSummaryHeaderUI extends AColumnHeaderUI {
+	public SimpleSummaryHeaderUI(final ARankColumnModel model, IRankTableUIConfig config) {
 		super(model, config, true, false);
 	}
 
