@@ -21,10 +21,13 @@ package org.caleydo.core.io.gui.dataimport.widget.table;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.caleydo.core.io.gui.dataimport.widget.IntegerCallback;
+import org.caleydo.core.io.gui.dataimport.widget.table.ITableDataChangeListener.EChangeType;
 import org.caleydo.core.manager.GeneralManager;
 import org.eclipse.nebula.widgets.nattable.NatTable;
 import org.eclipse.nebula.widgets.nattable.config.AbstractRegistryConfiguration;
@@ -97,6 +100,8 @@ public class CategoryTable extends AMatrixBasedTableWidget implements ILayerList
 	private Map<String, Color> colorRegistry = new HashMap<>();
 
 	private LineNumberRowHeaderDataProvider rowHeaderDataProvider;
+
+	private Set<ITableDataChangeListener> listeners = new HashSet<>();
 
 	private class ColumnHeaderDataProvider implements IDataProvider {
 
@@ -176,7 +181,13 @@ public class CategoryTable extends AMatrixBasedTableWidget implements ILayerList
 	public CategoryTable(Composite parent, Object layoutData, boolean areRowsMoveable) {
 		super(parent);
 		this.layoutData = layoutData;
-		bodyDataProvider = new MatrixBasedBodyDataProvider(null, 1);
+		bodyDataProvider = new MatrixBasedBodyDataProvider(null, 1) {
+			@Override
+			public void setDataValue(int columnIndex, int rowIndex, Object newValue) {
+				super.setDataValue(columnIndex, rowIndex, newValue);
+				notifyListeners(EChangeType.VALUE);
+			}
+		};
 		rowHeaderDataProvider = new LineNumberRowHeaderDataProvider(1);
 		buildTable(bodyDataProvider, new ColumnHeaderDataProvider(), rowHeaderDataProvider, areRowsMoveable);
 	}
@@ -187,7 +198,6 @@ public class CategoryTable extends AMatrixBasedTableWidget implements ILayerList
 		bodyDataProvider.setNumColumns(numColumns);
 		rowHeaderDataProvider.setNumRows(dataMatrix.size());
 		update();
-
 		// buildTable(bodyDataProvider, new ColumnHeaderDataProvider(),
 		// new LineNumberRowHeaderDataProvider(dataMatrix.size()));
 	}
@@ -206,6 +216,7 @@ public class CategoryTable extends AMatrixBasedTableWidget implements ILayerList
 		}
 
 		final DataLayer bodyDataLayer = new DataLayer(bodyDataProvider, 120, 36);
+		bodyDataLayer.addLayerListener(this);
 
 		selectionLayer = new SelectionLayer(bodyDataLayer);
 		selectionLayer.addLayerListener(this);
@@ -232,10 +243,9 @@ public class CategoryTable extends AMatrixBasedTableWidget implements ILayerList
 		acc.registerColumnOverrides(3, "COLOR");
 		final ColorCellPainter colorCellPainter = new ColorCellPainter();
 
-		final ICellPainter upImagePainter = new ImagePainter(GeneralManager.get()
-				.getResourceLoader().getImage(parent.getDisplay(), "resources/icons/general/arrow_up.png"));
-		final ICellPainter downImagePainter = new ImagePainter(GeneralManager.get()
-.getResourceLoader()
+		final ICellPainter upImagePainter = new ImagePainter(GeneralManager.get().getResourceLoader()
+				.getImage(parent.getDisplay(), "resources/icons/general/arrow_up.png"));
+		final ICellPainter downImagePainter = new ImagePainter(GeneralManager.get().getResourceLoader()
 				.getImage(parent.getDisplay(), "resources/icons/general/arrow_down.png"));
 
 		final ICellPainter upPainter = new BeveledBorderDecorator(upImagePainter);
@@ -321,11 +331,18 @@ public class CategoryTable extends AMatrixBasedTableWidget implements ILayerList
 		table.configure();
 	}
 
+	private void notifyListeners(EChangeType changeType) {
+		for (ITableDataChangeListener l : listeners) {
+			l.dataChanged(changeType);
+		}
+	}
+
 	private void swapRows(int row1Index, int row2Index) {
 		List<List<String>> categoryMatrix = getDataMatrix();
 		List<String> copyRow1 = new ArrayList<>(categoryMatrix.get(row1Index));
 		categoryMatrix.set(row1Index, categoryMatrix.get(row2Index));
 		categoryMatrix.set(row2Index, copyRow1);
+		notifyListeners(EChangeType.STRUCTURAL);
 	}
 
 	/**
@@ -388,6 +405,7 @@ public class CategoryTable extends AMatrixBasedTableWidget implements ILayerList
 
 	@Override
 	public void widgetDisposed(DisposeEvent e) {
+		listeners.clear();
 		disposeColors();
 	}
 
@@ -397,5 +415,15 @@ public class CategoryTable extends AMatrixBasedTableWidget implements ILayerList
 	 */
 	public void setRowSelectionCallback(IntegerCallback rowSelectionCallback) {
 		this.rowSelectionCallback = rowSelectionCallback;
+	}
+
+	public void registerTableDataChangeListener(ITableDataChangeListener listener) {
+		if (listener != null)
+			listeners.add(listener);
+	}
+
+	public void unregisterTableDataChangeListener(ITableDataChangeListener listener) {
+		if (listener != null)
+			listeners.remove(listener);
 	}
 }
