@@ -149,12 +149,12 @@ public class GroupRankColumnModel extends ACompositeRankColumnModel implements I
 
 	@Override
 	public GLElement createSummary(boolean interactive) {
-		return null;
+		return new GLElement();
 	}
 
 	@Override
 	public ValueElement createValue() {
-		return null;
+		return new ValueElement();
 	}
 
 	@Override
