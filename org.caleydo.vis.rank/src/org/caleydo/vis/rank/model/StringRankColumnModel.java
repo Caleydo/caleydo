@@ -29,15 +29,16 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 
 import org.caleydo.core.event.EventListenerManager.ListenTo;
-import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.util.base.ILabeled;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
+import org.caleydo.core.view.opengl.layout2.ISWTLayer.ISWTLayerRunnable;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.rank.internal.event.FilterEvent;
 import org.caleydo.vis.rank.internal.event.SearchEvent;
 import org.caleydo.vis.rank.internal.ui.StringFilterDialog;
+import org.caleydo.vis.rank.internal.ui.StringSearchDialog;
 import org.caleydo.vis.rank.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IGrabRemainingHorizontalSpace;
 import org.caleydo.vis.rank.model.mixin.IRankColumnModel;
@@ -45,11 +46,9 @@ import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.ISearchableColumnMixin;
 import org.caleydo.vis.rank.ui.GLPropertyChangeListeners;
 import org.caleydo.vis.rank.ui.detail.ValueElement;
-import org.eclipse.jface.dialogs.IInputValidator;
-import org.eclipse.jface.dialogs.InputDialog;
-import org.eclipse.jface.window.Window;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
 
 import com.google.common.base.Function;
 
@@ -63,15 +62,15 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 		IFilterColumnMixin, IRankableColumnMixin, ISearchableColumnMixin {
 	/**
 	 * different strategies for filter modi
-	 *
+	 * 
 	 * @author Samuel Gratzl
-	 *
+	 * 
 	 */
 	public enum FilterStrategy {
 		STAR_WILDCARD, SUBSTRING, REGEX;
 
 		public String getHint() {
-			switch(this) {
+			switch (this) {
 			case SUBSTRING:
 				return "(containing)";
 			case STAR_WILDCARD:
@@ -95,6 +94,8 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 		}
 
 		public boolean apply(String prepared, String v) {
+			if (v == null || v.isEmpty())
+				return false;
 			switch (this) {
 			case SUBSTRING:
 				return v.toLowerCase().contains(prepared);
@@ -178,63 +179,87 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 	@Override
 	public final void editFilter(final GLElement summary, IGLElementContext context) {
 		final Vec2f location = summary.getAbsoluteLocation();
-		Display.getDefault().asyncExec(new Runnable() {
+		context.getSWTLayer().run(new ISWTLayerRunnable() {
 			@Override
-			public void run() {
-				new StringFilterDialog(new Shell(), getTitle(), filterStrategy.getHint(), summary, filter,
-						isGlobalFilter, getTable().hasSnapshots()).open();
+			public void run(Display display, Composite canvas) {
+				Point loc = canvas.toDisplay((int) location.x(), (int) location.y());
+				StringFilterDialog dialog = new StringFilterDialog(canvas.getShell(), getTitle(), filterStrategy
+						.getHint(), summary, filter, isGlobalFilter, getTable().hasSnapshots(), loc);
+				dialog.open();
 			}
 		});
 	}
 
 	@Override
 	public void openSearchDialog(final GLElement summary, IGLElementContext context) {
-		Display.getDefault().asyncExec(new Runnable() {
+		final Vec2f location = summary.getAbsoluteLocation();
+		context.getSWTLayer().run(new ISWTLayerRunnable() {
 			@Override
-			public void run() {
-				IInputValidator validator = new IInputValidator() {
-					@Override
-					public String isValid(String newText) {
-						// no auto search according to nils
-						// if (newText.length() >= 2)
-						// EventPublisher.trigger(new SearchEvent(newText).to(summary));
-						// if (newText.isEmpty())
-						// EventPublisher.trigger(new SearchEvent(null).to(summary));
-						return null;
-					}
-				};
-				String bak = filter;
-				InputDialog d = new InputDialog(null, "Search within column: " + getTitle(),
- "Search String "
-						+ filterStrategy.getHint(), filter, validator);
-				if (d.open() == Window.OK) {
-					String v = d.getValue().trim();
-					if (v.length() == 0)
-						v = null;
-					EventPublisher.trigger(new SearchEvent(v).to(summary));
-				} else {
-					EventPublisher.trigger(new SearchEvent(bak).to(summary));
-				}
+			public void run(Display display, Composite canvas) {
+				Point loc = canvas.toDisplay((int) location.x(), (int) location.y());
+				StringSearchDialog dialog = new StringSearchDialog(canvas.getShell(), getTitle(), filterStrategy
+						.getHint(), summary, filter, loc);
+				dialog.open();
 			}
 		});
 	}
 
 	/**
 	 * @param search
+	 * @param isForward
 	 */
-	public void onSearch(String search) {
+	public void onSearch(String search, boolean wrapSearch, boolean isForward) {
 		if (search == null || search.trim().isEmpty())
 			return;
 		String prepared = filterStrategy.prepare(search);
-		for (IRow row : getMyRanker()) {
-			String v = this.data.apply(row);
-			if (v == null)
-				continue;
-			if (filterStrategy.apply(prepared, v)) {
-				getTable().setSelectedRow(row);
-				break;
+		ColumnRanker ranker = getMyRanker();
+		final int selected = ranker.getSelectedRank();
+		int[] order = ranker.getOrder();
+		RankTableModel table = ranker.getTable();
+
+		if (isForward) {
+			int start = Math.min(selected < 0 ? 0 : selected + 1, order.length - 1);
+			// from start to end
+			for (int i = start; i < order.length; ++i) {
+				IRow row = table.getDataItem(order[i]);
+				if (filterStrategy.apply(prepared, this.data.apply(row))) {
+					table.setSelectedRow(row);
+					return;
+				}
+			}
+			if (wrapSearch) {
+				// from 0 to start-1
+				for (int i = 0; i < start - 1; ++i) {
+					IRow row = table.getDataItem(order[i]);
+					if (filterStrategy.apply(prepared, this.data.apply(row))) {
+						table.setSelectedRow(row);
+						return;
+					}
+				}
+			}
+		} else {
+			int start = Math.max(selected < 0 ? order.length - 1 : selected - 1, 0);
+			// from start to 0
+			for (int i = start; i >= 0; --i) {
+				IRow row = table.getDataItem(order[i]);
+				if (filterStrategy.apply(prepared, this.data.apply(row))) {
+					table.setSelectedRow(row);
+					return;
+				}
+			}
+			if (wrapSearch) {
+				// from end to start+1
+				for (int i = order.length - 1; i >= start + 1; --i) {
+					IRow row = table.getDataItem(order[i]);
+					if (filterStrategy.apply(prepared, this.data.apply(row))) {
+						table.setSelectedRow(row);
+						return;
+					}
+				}
 			}
 		}
+		// nothing found
+		table.setSelectedRow(null);
 	}
 
 	public void setFilter(String filter, boolean isFilterGlobally) {
@@ -311,7 +336,7 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 
 		@ListenTo(sendToMe = true)
 		private void onSetSearch(SearchEvent event) {
-			onSearch((String) event.getSearch());
+			onSearch((String) event.getSearch(), event.isWrapSearch(), event.isForward());
 		}
 
 	}

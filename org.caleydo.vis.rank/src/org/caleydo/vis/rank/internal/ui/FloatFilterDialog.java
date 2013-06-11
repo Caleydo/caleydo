@@ -25,6 +25,7 @@ import org.caleydo.vis.rank.internal.event.FilterEvent;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -47,8 +48,8 @@ public class FloatFilterDialog extends AFilterDialog {
 
 
 	public FloatFilterDialog(Shell parentShell, String title, Object receiver, boolean filterNotMapped,
-			boolean filterMissing, boolean filterGlobally, boolean hasSnapshots) {
-		super(parentShell, title, receiver, filterGlobally, hasSnapshots);
+			boolean filterMissing, boolean filterGlobally, boolean hasSnapshots, Point loc) {
+		super(parentShell, "Filter " + title, receiver, filterGlobally, hasSnapshots, loc);
 		this.filterMissing = filterMissing;
 		this.filterNotMapped = filterNotMapped;
 	}
@@ -63,12 +64,12 @@ public class FloatFilterDialog extends AFilterDialog {
 	protected void createSpecificFilterUI(Composite composite) {
 		filterNotMappedUI = new Button(composite, SWT.CHECK);
 		filterNotMappedUI.setText("Filter Not Mapped Entries?");
-		filterNotMappedUI.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, true));
+		filterNotMappedUI.setLayoutData(twoColumns(new GridData(SWT.LEFT, SWT.CENTER, true, true)));
 		filterNotMappedUI.setSelection(filterNotMapped);
 
 		filterMissingUI = new Button(composite, SWT.CHECK);
 		filterMissingUI.setText("Filter Missing Value Entries?");
-		filterMissingUI.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, true));
+		filterMissingUI.setLayoutData(twoColumns(new GridData(SWT.LEFT, SWT.CENTER, true, true)));
 		filterMissingUI.setSelection(filterMissing);
 
 		Label separator = new Label(composite, SWT.SEPARATOR | SWT.HORIZONTAL);
@@ -77,17 +78,27 @@ public class FloatFilterDialog extends AFilterDialog {
 		SelectionAdapter adapter = new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				triggerEvent();
+				triggerEvent(false);
 			}
 		};
 		filterNotMappedUI.addSelectionListener(adapter);
 		filterMissingUI.addSelectionListener(adapter);
+
+		createApplyGlobally(composite);
+		addOKButton(composite, true);
 	}
 
 	@Override
-	protected void triggerEvent() {
-		EventPublisher.trigger(new FilterEvent(new FilterChecked(filterNotMappedUI.getSelection(), filterMissingUI
-				.getSelection(), filterGloballyUI.getSelection())).to(receiver));
+	protected void triggerEvent(boolean cancel) {
+		boolean a, b;
+		if (cancel) {
+			a = filterNotMapped;
+			b = filterMissing;
+		} else {
+			a = filterNotMappedUI.getSelection();
+			b = filterMissingUI.getSelection();
+		}
+		EventPublisher.trigger(new FilterEvent(new FilterChecked(a, b, isFilterGlobally())).to(receiver));
 	}
 
 	public static class FilterChecked {

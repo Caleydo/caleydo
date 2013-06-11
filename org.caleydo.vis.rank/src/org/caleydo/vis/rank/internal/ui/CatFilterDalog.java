@@ -30,7 +30,6 @@ import java.util.Set;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.vis.rank.internal.event.FilterEvent;
 import org.caleydo.vis.rank.model.CategoricalRankRankColumnModel.CategoryInfo;
-import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CheckboxTreeViewer;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
@@ -40,6 +39,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -61,8 +61,8 @@ public class CatFilterDalog<CATEGORY_TYPE> extends AFilterDialog {
 	private CheckboxTreeViewer fViewer;
 
 	public CatFilterDalog(Shell parentShell, String title, Object receiver, Map<CATEGORY_TYPE, ?> metaData,
-			Set<CATEGORY_TYPE> selection, boolean filterGlobally, boolean hasSnapshots) {
-		super(parentShell, title, receiver, filterGlobally, hasSnapshots);
+			Set<CATEGORY_TYPE> selection, boolean filterGlobally, boolean hasSnapshots, Point loc) {
+		super(parentShell, "Filter " + title, receiver, filterGlobally, hasSnapshots, loc);
 		this.metaData = metaData;
 		this.selection = new LinkedHashSet<>(selection);
 	}
@@ -70,33 +70,69 @@ public class CatFilterDalog<CATEGORY_TYPE> extends AFilterDialog {
 	@Override
 	protected void createSpecificFilterUI(Composite composite) {
 		// create message
-		Label label = new Label(composite, SWT.WRAP);
-		label.setText("Selection Items to include:");
-		GridData data = new GridData(GridData.GRAB_HORIZONTAL | GridData.GRAB_VERTICAL | GridData.HORIZONTAL_ALIGN_FILL
-				| GridData.VERTICAL_ALIGN_CENTER);
-		data.widthHint = convertHorizontalDLUsToPixels(IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH);
-		label.setLayoutData(data);
-		label.setFont(composite.getFont());
+		Composite buttonComposite = new Composite(composite, SWT.RIGHT);
+		GridData data = new GridData(SWT.LEFT, SWT.TOP, false, false);
+		data.horizontalSpan = 2;
+		buttonComposite.setLayoutData(data);
+		GridLayout layout = new GridLayout(3, false);
+		layout.marginHeight = 0;
+		layout.marginWidth = 0;
+		layout.verticalSpacing = 0;
+		{
+			Label label = new Label(buttonComposite, SWT.WRAP);
+			label.setText("Selection Items to include:");
+			data = new GridData(SWT.LEFT, SWT.TOP, false, false);
+			data.horizontalSpan = 2;
+			label.setLayoutData(data);
+			label.setFont(composite.getFont());
+
+			Button selectButton = new Button(buttonComposite, SWT.PUSH);
+			selectButton.setText("Select &All");
+			SelectionListener listener = new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					Object[] viewerElements = ArrayContentProvider.getInstance().getElements(metaData.keySet());
+					fViewer.setCheckedElements(viewerElements);
+				}
+			};
+			selectButton.addSelectionListener(listener);
+			Button deselectButton = new Button(buttonComposite, SWT.PUSH);
+			selectButton.setText("Select &None");
+			listener = new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					fViewer.setCheckedElements(new Object[0]);
+				}
+			};
+			deselectButton.addSelectionListener(listener);
+		}
 
 		CheckboxTreeViewer treeViewer = createTreeViewer(composite);
 		treeViewer.setCheckedElements(selection.toArray());
-		createSelectionButtons(composite);
 		data = new GridData(GridData.FILL_BOTH);
-		data.widthHint = convertWidthInCharsToPixels(60);
-		data.heightHint = convertHeightInCharsToPixels(18);
+		data.widthHint = getCharWith(composite, 60);
+		data.heightHint = getCharHeight(composite) * 10;
+		data.horizontalSpan = 2;
 		Tree treeWidget = treeViewer.getTree();
 		treeWidget.setLayoutData(data);
 		treeWidget.setFont(composite.getFont());
+
+		createApplyGlobally(composite);
+		addOKButton(composite, true);
 	}
 
 	@Override
-	protected void triggerEvent() {
+	protected void triggerEvent(boolean cancel) {
+		if (cancel) {
+			EventPublisher.trigger(new FilterEvent(selection, filterGlobally).to(receiver));
+			return;
+		}
 		Object[] result = fViewer.getCheckedElements();
 		Set<Object> r = new HashSet<>();
 		for (int i = 0; i < result.length; i++) {
 			r.add(result[i]);
 		}
-		EventPublisher.trigger(new FilterEvent(r, filterGloballyUI.getSelection()).to(receiver));
+		EventPublisher.trigger(new FilterEvent(r, isFilterGlobally()).to(receiver));
 	}
 
 	/**
@@ -138,60 +174,6 @@ public class CatFilterDalog<CATEGORY_TYPE> extends AFilterDialog {
 		fViewer.setComparator(new ViewerComparator());
 		fViewer.setInput(metaData.keySet());
 		return fViewer;
-	}
-
-	/**
-	 * Adds the selection and deselection buttons to the dialog.
-	 *
-	 * @param composite
-	 *            the parent composite
-	 * @return Composite the composite the buttons were created in.
-	 */
-	protected Composite createSelectionButtons(Composite composite) {
-		Composite buttonComposite = new Composite(composite, SWT.RIGHT);
-		GridLayout layout = new GridLayout();
-		layout.numColumns = 0;
-		layout.marginWidth = 0;
-		layout.horizontalSpacing = convertHorizontalDLUsToPixels(IDialogConstants.HORIZONTAL_SPACING);
-		buttonComposite.setLayout(layout);
-		buttonComposite.setFont(composite.getFont());
-		GridData data = new GridData(GridData.HORIZONTAL_ALIGN_END | GridData.GRAB_HORIZONTAL);
-		data.grabExcessHorizontalSpace = true;
-		buttonComposite.setLayoutData(data);
-		Button selectButton = createButton(buttonComposite, IDialogConstants.SELECT_ALL_ID,
- "Select &All", false);
-		SelectionListener listener = new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				Object[] viewerElements = ArrayContentProvider.getInstance().getElements(metaData.keySet());
-				fViewer.setCheckedElements(viewerElements);
-			}
-		};
-		selectButton.addSelectionListener(listener);
-		Button deselectButton = createButton(buttonComposite, IDialogConstants.DESELECT_ALL_ID,
- "Select &None", false);
-		listener = new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				fViewer.setCheckedElements(new Object[0]);
-			}
-		};
-		deselectButton.addSelectionListener(listener);
-		return buttonComposite;
-	}
-
-	@Override
-	protected void okPressed() {
-		// real values
-		triggerEvent();
-		super.okPressed();
-	}
-
-	@Override
-	protected void cancelPressed() {
-		// original values
-		EventPublisher.trigger(new FilterEvent(selection, filterGlobally).to(receiver));
-		super.cancelPressed();
 	}
 
 	static class ArrayTreeContentProvider extends ArrayContentProvider implements ITreeContentProvider {
