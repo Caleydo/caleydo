@@ -22,6 +22,7 @@ package org.caleydo.core.internal.startup;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.caleydo.core.gui.util.FontUtil;
 import org.caleydo.core.internal.MyPreferences;
 import org.caleydo.core.startup.IStartupAddon;
 import org.caleydo.core.startup.IStartupProcedure;
@@ -37,6 +38,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
 
 /**
@@ -73,9 +75,9 @@ public class LoadSampleProjectStartupAddon implements IStartupAddon {
 			String url = elem.getAttribute("url");
 			String description = elem.getAttribute("description");
 			if (first == null)
-				first = createSample(url, name, description, g, l);
+				first = createSample(url, name, description, g, l, true);
 			else
-				createSample(url, name, description, g, l);
+				createSample(url, name, description, g, l, false);
 		}
 		if (selectedChoice == null && first != null) {
 			first.setSelection(true);
@@ -84,11 +86,20 @@ public class LoadSampleProjectStartupAddon implements IStartupAddon {
 		return g;
 	}
 
-	private Button createSample(String url, String name, String description, Composite g, SelectionListener l) {
+	private Button createSample(String url, String name, String description, Composite g, SelectionListener l,
+			boolean first) {
 		try {
+			if (!first) {
+				Label spacer = new Label(g, SWT.NONE);
+				GridData spacerData = new GridData();
+				spacer.setLayoutData(spacerData);
+				spacer.setVisible(false);
+			}
 			URL u = new URL(url);
 			Button button = new Button(g, SWT.RADIO);
 			button.setText(name);
+			FontUtil.makeBold(button);
+
 			button.setData(u);
 			button.addSelectionListener(l);
 			GridData gd = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
@@ -104,6 +115,7 @@ public class LoadSampleProjectStartupAddon implements IStartupAddon {
 			desc.addSelectionListener(BrowserUtils.LINK_LISTENER);
 			gd = new GridData(GridData.FILL_HORIZONTAL);
 			desc.setLayoutData(gd);
+
 			return button;
 		} catch (MalformedURLException e) {
 			System.err.println("invalid url:" + url);
