@@ -27,6 +27,7 @@ import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
 import org.caleydo.core.io.ColumnDescription;
 import org.caleydo.core.io.DataDescription;
+import org.caleydo.core.io.DataDescriptionUtil;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.NumericalProperties;
 import org.caleydo.core.io.gui.dataimport.widget.table.ColumnConfigTableWidget;
@@ -140,14 +141,16 @@ public class InhomogeneousDataPropertiesPage extends AImportDataPage {
 		if (initColumnDescriptions) {
 			// use default column description for each column
 			ArrayList<ColumnDescription> inputPattern = new ArrayList<ColumnDescription>();
-			DataDescription dataDescription = new DataDescription(EDataClass.REAL_NUMBER, EDataType.FLOAT,
-					new NumericalProperties());
-
+			List<List<String>> dataMatrix = getWizard().getFilteredDataMatrix();
+			int matrixColumnIndex = 0;
 			for (Integer selected : wizard.getSelectedColumns()) {
 				int columnIndex = selected.intValue();
 				if (columnIndex == dataSetDescription.getColumnOfRowIds())
 					continue;
+				DataDescription dataDescription = DataDescriptionUtil.createDataDescription(dataMatrix,
+						matrixColumnIndex);
 				inputPattern.add(new ColumnDescription(columnIndex, dataDescription));
+				matrixColumnIndex++;
 			}
 
 			dataSetDescription.setParsingPattern(inputPattern);

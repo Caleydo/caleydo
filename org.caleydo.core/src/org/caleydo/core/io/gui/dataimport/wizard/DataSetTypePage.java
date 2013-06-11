@@ -19,21 +19,9 @@
  *******************************************************************************/
 package org.caleydo.core.io.gui.dataimport.wizard;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import org.caleydo.core.data.collection.EDataClass;
-import org.caleydo.core.data.collection.EDataType;
-import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
-import org.caleydo.core.data.collection.column.container.CategoricalClassDescription.ECategoryType;
 import org.caleydo.core.gui.util.FontUtil;
-import org.caleydo.core.io.DataDescription;
+import org.caleydo.core.io.DataDescriptionUtil;
 import org.caleydo.core.io.DataSetDescription;
-import org.caleydo.core.io.NumericalProperties;
-import org.caleydo.core.util.color.Color;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -100,14 +88,14 @@ public class DataSetTypePage extends AImportDataPage {
 		categoricalDatasetLabel.setLayoutData(gridData);
 	}
 
-
 	@Override
 	public void fillDataSetDescription() {
 		if (numericalDatasetButton.getSelection()) {
 			if (dataSetDescription.getDataDescription() == null
 					|| dataSetDescription.getDataDescription().getNumericalProperties() == null || datasetChanged) {
-				dataSetDescription.setDataDescription(new DataDescription(EDataClass.REAL_NUMBER, EDataType.FLOAT,
-						new NumericalProperties()));
+
+				dataSetDescription.setDataDescription(DataDescriptionUtil.createNumericalDataDescription(getWizard()
+						.getFilteredDataMatrix()));
 				// the page needs to init from the newly created data description
 				getWizard().getNumericalDataPage().setInitFromDataDescription(true);
 			}
@@ -116,9 +104,8 @@ public class DataSetTypePage extends AImportDataPage {
 			if (dataSetDescription.getDataDescription() == null
 					|| dataSetDescription.getDataDescription().getCategoricalClassDescription() == null
 					|| datasetChanged) {
-				CategoricalClassDescription<String> categoricalClassDescription = createCategoricalClassDescription();
-				dataSetDescription.setDataDescription(new DataDescription(EDataClass.CATEGORICAL, EDataType.STRING,
-						categoricalClassDescription));
+				dataSetDescription.setDataDescription(DataDescriptionUtil.createCategoricalDataDescription(getWizard()
+						.getFilteredDataMatrix()));
 				// the page needs to init from the newly created data description
 				getWizard().getCategoricalDataPage().setInitFromDataDescription(true);
 			}
@@ -133,33 +120,47 @@ public class DataSetTypePage extends AImportDataPage {
 		datasetChanged = false;
 	}
 
-	private CategoricalClassDescription<String> createCategoricalClassDescription() {
+	// private void updateWidgets() {
+	// if (datasetChanged) {
+	// if (isNumericalDataset()) {
+	// numericalDatasetButton.setSelection(true);
+	// categoricalDatasetButton.setSelection(false);
+	// } else {
+	// numericalDatasetButton.setSelection(false);
+	// categoricalDatasetButton.setSelection(true);
+	// }
+	//
+	// }
+	// }
 
-		Set<String> categories = new HashSet<>();
-
-		for (List<String> row : getWizard().getFilteredDataMatrix()) {
-			for (String value : row) {
-				categories.add(value);
-			}
-		}
-
-		List<String> categoryValues = new ArrayList<>(categories);
-		Collections.sort(categoryValues);
-
-		CategoricalClassDescription<String> categoricalClassDescription = new CategoricalClassDescription<>();
-		categoricalClassDescription.setCategoryType(ECategoryType.ORDINAL);
-		categoricalClassDescription.setRawDataType(EDataType.STRING);
-
-		for (String categoryValue : categoryValues) {
-			categoricalClassDescription.addCategoryProperty(categoryValue, categoryValue, new Color("000000"));
-		}
-
-		return categoricalClassDescription;
-	}
+	// private boolean isNumericalDataset() {
+	// int numFloatsParsed = 0;
+	// int valuesConsidered = 0;
+	// for (List<String> row : getWizard().getFilteredDataMatrix()) {
+	// for (String value : row) {
+	// try {
+	// valuesConsidered++;
+	// Float.parseFloat(value);
+	// numFloatsParsed++;
+	// // at least half of the dataset must consist of readable floats
+	// if (numFloatsParsed >= row.size() * getWizard().getFilteredDataMatrix().size() * 0.5f) {
+	// return true;
+	// }
+	// } catch (NumberFormatException e) {
+	// continue;
+	// }
+	// if (valuesConsidered > row.size() * getWizard().getFilteredDataMatrix().size() * 0.5f) {
+	// return false;
+	// }
+	// }
+	// }
+	// return false;
+	// }
 
 	@Override
 	public void pageActivated() {
-		// The user must always visit the following page before he can finish
+		// The user must always visit the next page before he can finish
+		// updateWidgets();
 		getWizard().setChosenDataTypePage(null);
 		getWizard().getContainer().updateButtons();
 
