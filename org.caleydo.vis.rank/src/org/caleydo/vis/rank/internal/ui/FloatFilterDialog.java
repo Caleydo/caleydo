@@ -37,7 +37,7 @@ import org.eclipse.swt.widgets.Shell;
  * @author Samuel Gratzl
  *
  */
-public class FloatFilterDialog extends AFilterDalog {
+public class FloatFilterDialog extends AFilterDialog {
 
 	private Button filterNotMappedUI;
 	private Button filterMissingUI;

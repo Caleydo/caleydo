@@ -9,16 +9,12 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.event.EventListenerManagers;
 import org.caleydo.core.event.EventListenerManagers.QueuedEventListenerManager;
-import org.caleydo.core.util.base.ILabeled;
-import org.caleydo.core.view.ViewManager;
-import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
+import org.caleydo.core.view.opengl.layout2.internal.SWTLayer;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.data.loader.ResourceLocators.IResourceLocator;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 
 /**
  * adapter between {@link ALayoutRenderer} and {@link GLElement}, such that {@link GLElement} can be as an
@@ -170,13 +166,8 @@ public final class LayoutRendererAdapter extends ALayoutRenderer implements IGLE
 	}
 
 	@Override
-	public IPickingListener createTooltip(ILabeled label) {
-		return view.getParentGLCanvas().createTooltip(label);
-	}
-
-	@Override
-	public void showContextMenu(Iterable<? extends AContextMenuItem> items) {
-		ViewManager.get().getCanvasFactory().showPopupMenu(view.getParentGLCanvas(), items);
+	public ISWTLayer getSWTLayer() {
+		return new SWTLayer(view.getParentGLCanvas());
 	}
 
 	@Override
@@ -203,19 +194,6 @@ public final class LayoutRendererAdapter extends ALayoutRenderer implements IGLE
 				return;
 			}
 		}
-	}
-
-
-	@Override
-	public void setCursor(final int swtCursorConst) {
-		final Composite c = view.getParentGLCanvas().asComposite();
-		final Display d = c.getDisplay();
-		d.asyncExec(new Runnable() {
-			@Override
-			public void run() {
-				c.setCursor(swtCursorConst < 0 ? null : d.getSystemCursor(swtCursorConst));
-			}
-		});
 	}
 
 	@Override

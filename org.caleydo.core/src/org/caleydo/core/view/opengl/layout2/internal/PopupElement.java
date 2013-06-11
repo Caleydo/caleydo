@@ -113,19 +113,19 @@ class PopupElement extends GLElementContainer implements IGLLayout, IGLRenderer,
 			return;
 		switch (pick.getPickingMode()) {
 		case MOUSE_OVER:
-			context.setCursor(SWT.CURSOR_HAND);
+			context.getSWTLayer().setCursor(SWT.CURSOR_HAND);
 			break;
 		case CLICKED:
 			pick.setDoDragging(true);
 			break;
 		case MOUSE_OUT:
 			if (!pick.isDoDragging())
-				context.setCursor(-1);
+				context.getSWTLayer().resetCursor();
 			break;
 		case MOUSE_RELEASED:
 			if (!pick.isDoDragging())
 				return;
-			context.setCursor(-1);
+			context.getSWTLayer().resetCursor();
 			break;
 		case DRAGGED:
 			int dx = pick.getDx();
@@ -222,14 +222,14 @@ class PopupElement extends GLElementContainer implements IGLLayout, IGLRenderer,
 		protected void onMouseOver(Pick pick) {
 			if (pick.isAnyDragging())
 				return;
-			context.setCursor(SWT.CURSOR_SIZESE);
+			context.getSWTLayer().setCursor(SWT.CURSOR_SIZESE);
 		}
 
 		@Override
 		protected void onMouseOut(Pick pick) {
 			if (pick.isAnyDragging())
 				return;
-			context.setCursor(-1);
+			context.getSWTLayer().resetCursor();
 		}
 
 		@Override

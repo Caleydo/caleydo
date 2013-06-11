@@ -203,7 +203,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 	@Override
 	protected void init(IGLElementContext context) {
 		super.init(context);
-		onPick(context.createTooltip(this));
+		onPick(context.getSWTLayer().createTooltip(this));
 		dragPickingId = context.registerPickingListener(new IPickingListener() {
 			@Override
 			public void pick(Pick pick) {
@@ -592,13 +592,13 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 			if (pick.isAnyDragging())
 				return;
 			this.headerHovered = true;
-			context.setCursor(SWT.CURSOR_HAND);
+			context.getSWTLayer().setCursor(SWT.CURSOR_HAND);
 			relayout();
 			break;
 		case MOUSE_OUT:
 			if (this.headerHovered) {
 				this.headerHovered = false;
-				context.setCursor(-1);
+				context.getSWTLayer().setCursor(-1);
 				relayout();
 			}
 			break;
@@ -656,7 +656,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 				if (info != null)
 					m.removeDraggable(info.getFirst());
 				m.setDropable(ARankColumnModel.class, false);
-				context.setCursor(-1);
+				context.getSWTLayer().setCursor(-1);
 				if (info != null)
 					model.combine(info.getSecond(), RenderStyle.isCloneDragging(pick),
 							tableConfig.getCombineMode(model, pick));
@@ -692,7 +692,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 			}
 
 		}
-		context.showContextMenu(items);
+		context.getSWTLayer().showContextMenu(items);
 	}
 
 	@ListenTo(sendToMe = true)
@@ -729,7 +729,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 				l.removeDraggable(this.model);
 			}
 			this.isDragging = false;
-			context.setCursor(-1);
+			context.getSWTLayer().setCursor(-1);
 			return;
 		}
 	}
@@ -768,14 +768,14 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 			if (pick.isAnyDragging())
 				return;
 			this.hovered = true;
-			context.setCursor(SWT.CURSOR_HAND);
+			context.getSWTLayer().setCursor(SWT.CURSOR_HAND);
 			repaintAll();
 		}
 
 		@Override
 		protected void onMouseOut(Pick pick) {
 			if (this.hovered)
-				context.setCursor(-1);
+				context.getSWTLayer().setCursor(-1);
 			this.hovered = false;
 			repaintAll();
 		}

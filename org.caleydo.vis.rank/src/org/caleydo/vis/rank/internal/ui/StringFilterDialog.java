@@ -22,7 +22,6 @@ package org.caleydo.vis.rank.internal.ui;
 
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.vis.rank.internal.event.FilterEvent;
-import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -38,7 +37,7 @@ import org.eclipse.swt.widgets.Text;
  * @author Samuel Gratzl
  *
  */
-public class StringFilterDalog extends AFilterDalog {
+public class StringFilterDialog extends AFilterDialog {
 	private final String filter;
 
 	private Text text;
@@ -46,7 +45,7 @@ public class StringFilterDalog extends AFilterDalog {
 	private String hint;
 
 
-	public StringFilterDalog(Shell parentShell, String title, String hint, Object receiver, String filter,
+	public StringFilterDialog(Shell parentShell, String title, String hint, Object receiver, String filter,
 			boolean filterGlobally, boolean hasSnapshots) {
 		super(parentShell, title, receiver, filterGlobally, hasSnapshots);
 		this.hint = hint;
@@ -58,10 +57,7 @@ public class StringFilterDalog extends AFilterDalog {
 		// create message
 		Label label = new Label(composite, SWT.WRAP);
 		label.setText("Edit the filter: " + hint);
-		GridData data = new GridData(GridData.GRAB_HORIZONTAL | GridData.GRAB_VERTICAL | GridData.HORIZONTAL_ALIGN_FILL
-				| GridData.VERTICAL_ALIGN_CENTER);
-		data.widthHint = convertHorizontalDLUsToPixels(IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH);
-		label.setLayoutData(data);
+		label.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
 		label.setFont(composite.getFont());
 
 		text = new Text(composite, SWT.BORDER);

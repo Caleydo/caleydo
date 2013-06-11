@@ -35,7 +35,7 @@ import org.eclipse.swt.widgets.Shell;
  * @author Samuel Gratzl
  *
  */
-public abstract class AFilterDalog extends Dialog {
+public abstract class AFilterDialog extends Dialog {
 	protected final Object receiver;
 
 	protected final String title;
@@ -44,7 +44,7 @@ public abstract class AFilterDalog extends Dialog {
 
 	protected Button filterGloballyUI;
 
-	public AFilterDalog(Shell parentShell, String title, Object receiver, boolean filterGlobally, boolean hasSnapshots) {
+	public AFilterDialog(Shell parentShell, String title, Object receiver, boolean filterGlobally, boolean hasSnapshots) {
 		super(parentShell);
 		this.title = title;
 		this.receiver = receiver;

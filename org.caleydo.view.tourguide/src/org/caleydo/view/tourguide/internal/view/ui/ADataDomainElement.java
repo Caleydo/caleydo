@@ -104,7 +104,7 @@ public abstract class ADataDomainElement extends GLButton implements GLButton.IS
 		}
 		DataDomainActions.add(creator, model.getDataDomain(), this, true);
 
-		context.showContextMenu(creator);
+		context.getSWTLayer().showContextMenu(creator);
 	}
 
 	/**

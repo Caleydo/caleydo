@@ -19,6 +19,8 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.model;
 
+import gleem.linalg.Vec2f;
+
 import java.awt.Color;
 import java.beans.PropertyChangeListener;
 import java.util.BitSet;
@@ -35,7 +37,7 @@ import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.rank.internal.event.FilterEvent;
 import org.caleydo.vis.rank.internal.event.SearchEvent;
-import org.caleydo.vis.rank.internal.ui.StringFilterDalog;
+import org.caleydo.vis.rank.internal.ui.StringFilterDialog;
 import org.caleydo.vis.rank.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IGrabRemainingHorizontalSpace;
 import org.caleydo.vis.rank.model.mixin.IRankColumnModel;
@@ -175,10 +177,11 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 
 	@Override
 	public final void editFilter(final GLElement summary, IGLElementContext context) {
+		final Vec2f location = summary.getAbsoluteLocation();
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				new StringFilterDalog(new Shell(), getTitle(), filterStrategy.getHint(), summary, filter,
+				new StringFilterDialog(new Shell(), getTitle(), filterStrategy.getHint(), summary, filter,
 						isGlobalFilter, getTable().hasSnapshots()).open();
 			}
 		});

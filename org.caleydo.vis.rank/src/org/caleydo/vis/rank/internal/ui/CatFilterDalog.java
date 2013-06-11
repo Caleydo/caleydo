@@ -54,7 +54,7 @@ import org.eclipse.swt.widgets.Tree;
  * @author Samuel Gratzl
  *
  */
-public class CatFilterDalog<CATEGORY_TYPE> extends AFilterDalog {
+public class CatFilterDalog<CATEGORY_TYPE> extends AFilterDialog {
 	private final Map<CATEGORY_TYPE, ?> metaData;
 	private final Set<CATEGORY_TYPE> selection;
 

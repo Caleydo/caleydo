@@ -34,16 +34,15 @@ import org.caleydo.core.event.EventListenerManagers.QueuedEventListenerManager;
 import org.caleydo.core.id.object.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.util.base.ILabeled;
 import org.caleydo.core.view.AView;
 import org.caleydo.core.view.ViewManager;
-import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.IGLView;
 import org.caleydo.core.view.opengl.layout2.animation.AnimatedGLElementContainer;
+import org.caleydo.core.view.opengl.layout2.internal.SWTLayer;
 import org.caleydo.core.view.opengl.layout2.util.GLSanityCheck;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.SimplePickingManager;
@@ -51,8 +50,6 @@ import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.data.loader.ResourceLocators;
 import org.caleydo.data.loader.ResourceLocators.IResourceLocator;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 
 import com.google.common.base.Predicate;
 
@@ -77,12 +74,14 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 
 	private boolean visible = true;
 	private GLContextLocal local;
+	private final ISWTLayer swtLayer;
 
 	public AGLElementView(IGLCanvas glCanvas, String viewType, String viewName) {
 		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.GL_VIEW), glCanvas.asComposite(),
 				viewType,
 				viewName);
 		this.canvas = glCanvas;
+		this.swtLayer = new SWTLayer(glCanvas);
 		this.canvas.addGLEventListener(this);
 		this.canvas.addMouseListener(pickingManager.getListener());
 	}
@@ -96,16 +95,6 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 	@Override
 	public final IGLElementParent getParent() {
 		return null;
-	}
-
-	@Override
-	public final IPickingListener createTooltip(ILabeled label) {
-		return canvas.createTooltip(label);
-	}
-
-	@Override
-	public final void showContextMenu(Iterable<? extends AContextMenuItem> items) {
-		ViewManager.get().getCanvasFactory().showPopupMenu(canvas, items);
 	}
 
 	@Override
@@ -290,6 +279,11 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 	}
 
 	@Override
+	public final ISWTLayer getSWTLayer() {
+		return swtLayer;
+	}
+
+	@Override
 	public final boolean moved(GLElement child) {
 		return true;
 	}
@@ -334,18 +328,6 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 	@Override
 	public final void repaintPick() {
 
-	}
-
-	@Override
-	public final void setCursor(final int swtCursorConst) {
-		final Composite c = canvas.asComposite();
-		final Display d = c.getDisplay();
-		d.asyncExec(new Runnable() {
-			@Override
-			public void run() {
-				c.setCursor(swtCursorConst < 0 ? null : d.getSystemCursor(swtCursorConst));
-			}
-		});
 	}
 
 

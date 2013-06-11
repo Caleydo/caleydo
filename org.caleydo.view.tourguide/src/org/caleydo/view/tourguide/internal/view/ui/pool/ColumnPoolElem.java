@@ -83,7 +83,7 @@ public class ColumnPoolElem extends APoolElem {
 				l.removeDraggable(this.model);
 			}
 			this.isDragging = false;
-			context.setCursor(-1);
+			context.getSWTLayer().setCursor(-1);
 			return;
 		}
 	}

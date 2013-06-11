@@ -17,8 +17,6 @@ import javax.media.opengl.fixedfunc.GLMatrixFunc;
 
 import org.caleydo.core.event.EventListenerManagers;
 import org.caleydo.core.event.EventListenerManagers.QueuedEventListenerManager;
-import org.caleydo.core.util.base.ILabeled;
-import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -26,6 +24,7 @@ import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.IGLKeyListener;
 import org.caleydo.core.view.opengl.canvas.internal.IGLCanvasFactory;
 import org.caleydo.core.view.opengl.canvas.internal.swt.SWTGLCanvasFactory;
+import org.caleydo.core.view.opengl.layout2.internal.SWTLayer;
 import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
@@ -41,7 +40,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
@@ -69,6 +67,7 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 
 	protected final Shell shell;
 	protected final IGLCanvas canvas;
+	private final ISWTLayer swtLayer;
 	protected boolean renderPick;
 
 	private GLPadding padding = GLPadding.ZERO;
@@ -94,6 +93,7 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 
 		this.canvas = canvasFactory.create(caps, shell);
 		canvas.asComposite().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		this.swtLayer = new SWTLayer(canvas);
 
 		this.padding = padding;
 		canvas.addGLEventListener(this);
@@ -155,16 +155,6 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 	}
 
 	@Override
-	public IPickingListener createTooltip(ILabeled label) {
-		return canvas.createTooltip(label);
-	}
-
-	@Override
-	public void showContextMenu(Iterable<? extends AContextMenuItem> items) {
-		new SWTGLCanvasFactory().showPopupMenu(canvas, items);
-	}
-
-	@Override
 	public void repaintPick() {
 
 	}
@@ -200,6 +190,11 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 	@Override
 	public IPopupLayer getPopupLayer() {
 		return root.getPopupLayer();
+	}
+
+	@Override
+	public final ISWTLayer getSWTLayer() {
+		return swtLayer;
 	}
 
 	@Override
@@ -340,17 +335,6 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 
 	}
 
-	@Override
-	public void setCursor(final int swtCursorConst) {
-		final Composite c = canvas.asComposite();
-		final Display d = c.getDisplay();
-		d.asyncExec(new Runnable() {
-			@Override
-			public void run() {
-				c.setCursor(swtCursorConst < 0 ? null : d.getSystemCursor(swtCursorConst));
-			}
-		});
-	}
 
 	public static void main(String[] args, IGLRenderer renderer) {
 		main(args, new GLElement(renderer));
