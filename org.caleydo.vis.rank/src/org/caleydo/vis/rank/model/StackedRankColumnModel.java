@@ -22,6 +22,7 @@ package org.caleydo.vis.rank.model;
 import java.awt.Color;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Comparator;
 
 import org.caleydo.core.util.function.FloatFunctions;
 import org.caleydo.core.util.function.IFloatList;
@@ -305,6 +306,19 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 			col.setWidthImpl(w);
 		}
 		propertySupport.firePropertyChange(PROP_WEIGHTS, null, weights);
+	}
+
+	/**
+	 * sorts the children decreasing by their weight
+	 */
+	public void sortByWeights() {
+		cacheMulti.clear();
+		sortBy(new Comparator<ARankColumnModel>() {
+			@Override
+			public int compare(ARankColumnModel o1, ARankColumnModel o2) {
+				return -Float.compare((float) o1.getParentData(), (float) o2.getParentData());
+			}
+		});
 	}
 
 	public float getChildWidth(int i) {

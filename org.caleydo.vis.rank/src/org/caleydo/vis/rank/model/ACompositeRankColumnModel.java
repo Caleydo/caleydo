@@ -22,10 +22,12 @@ package org.caleydo.vis.rank.model;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
 import com.google.common.collect.Iterators;
+import com.google.common.collect.Lists;
 
 /**
  * @author Samuel Gratzl
@@ -34,6 +36,7 @@ import com.google.common.collect.Iterators;
 public abstract class ACompositeRankColumnModel extends ARankColumnModel implements Iterable<ARankColumnModel>,
 		IRankColumnParent {
 	public static final String PROP_CHILDREN = "children";
+	public static final String PROP_CHILDREN_ORDER = "childrenOrder";
 
 	protected final List<ARankColumnModel> children = new ArrayList<>(2);
 
@@ -105,6 +108,12 @@ public abstract class ACompositeRankColumnModel extends ARankColumnModel impleme
 			model.getParent().remove(model);
 			add(to, model);
 		}
+	}
+
+	protected final void sortBy(Comparator<? super ARankColumnModel> comparator) {
+		List<ARankColumnModel> bak = Lists.newArrayList(getChildren());
+		Collections.sort(children, comparator);
+		propertySupport.firePropertyChange(PROP_CHILDREN_ORDER, bak, getChildren());
 	}
 
 	protected void moved(int from, int to) {

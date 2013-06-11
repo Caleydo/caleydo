@@ -69,7 +69,7 @@ public class SimpleRankTableStatsElement extends PickableGLElement implements Pr
 		int total = table.getDataMask() != null ? table.getDataMask().cardinality() : table.getDataSize();
 		int filtered = table.getMyRanker(null).getFilter().cardinality();
 		b.append(filtered).append(" visible of ").append(total)
-				.append(String.format(" (%.2f%%)", ((float) filtered) / total));
+				.append(String.format(" (%.2f%%)", (filtered * 100.f) / total));
 		return b.toString();
 	}
 }

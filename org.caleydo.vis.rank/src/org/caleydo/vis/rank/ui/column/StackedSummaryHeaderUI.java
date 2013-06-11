@@ -91,13 +91,28 @@ public class StackedSummaryHeaderUI extends AColumnHeaderUI {
 			buttons.addButton(0, b, "Toggle classic multi-col score bar table and stacked one",
 					RenderStyle.ICON_ALIGN_CLASSIC, RenderStyle.ICON_ALIGN_STACKED);
 		}
+		{
+			final StackedRankColumnModel m = (StackedRankColumnModel) model;
+			final GLButton b = new GLButton(EButtonMode.BUTTON);
+			b.setSize(RenderStyle.BUTTON_WIDTH, -1);
+			final ISelectionCallback callback = new ISelectionCallback() {
+				@Override
+				public void onSelectionChanged(GLButton button, boolean selected) {
+					m.sortByWeights();
+				}
+			};
+			b.setCallback(callback);
+			buttons.addButton(1, b, "Sort members by weight", RenderStyle.ICON_SORT_BY_WEIGHT,
+					RenderStyle.ICON_SORT_BY_WEIGHT);
+		}
+
 		return buttons;
 	}
 
 	@Override
 	protected void showContextMenu(List<AContextMenuItem> items) {
 		items.add(SeparatorMenuItem.INSTANCE);
-		GenericContextMenuItem editWeights = new GenericContextMenuItem("Edit Weights",
+		GenericContextMenuItem editWeights = new GenericContextMenuItem("Edit weights",
 				new OpenEditWeightsEvent().to(this));
 		items.add(editWeights);
 		items.add(0, new GenericContextMenuItem("Order by this attribute", new OrderByMeEvent().to(this)));
@@ -109,7 +124,21 @@ public class StackedSummaryHeaderUI extends AColumnHeaderUI {
 		EditWeightsDialog.show((StackedRankColumnModel) this.model, getParent());
 	}
 
+	@ListenTo(sendToMe = true)
+	private void onSortByWeights(SortByWeightsEvent event) {
+		((StackedRankColumnModel) model).sortByWeights();
+	}
+
 	public static class OpenEditWeightsEvent extends ADirectedEvent {
+
+		@Override
+		public boolean checkIntegrity() {
+			return true;
+		}
+
+	}
+
+	public static class SortByWeightsEvent extends ADirectedEvent {
 
 		@Override
 		public boolean checkIntegrity() {

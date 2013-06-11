@@ -60,6 +60,10 @@ public class SimpleColumnHeaderUI extends ACompositeHeaderUI implements IThickHe
 			case ICompressColumnMixin.PROP_COMPRESSED:
 			case ICollapseableColumnMixin.PROP_COLLAPSED:
 				onCompressedChanged();
+				break;
+			case ACompositeRankColumnModel.PROP_CHILDREN_ORDER:
+				onChildrenOrderChanged(model.getChildren());
+				break;
 			}
 		}
 	};
@@ -70,6 +74,7 @@ public class SimpleColumnHeaderUI extends ACompositeHeaderUI implements IThickHe
 		setLayoutData(model);
 		this.add(0, createSummary(model, config));
 		model.addPropertyChangeListener(ACompositeRankColumnModel.PROP_CHILDREN, childrenChanged);
+		model.addPropertyChangeListener(ACompositeRankColumnModel.PROP_CHILDREN_ORDER, listener);
 		model.addPropertyChangeListener(ICompressColumnMixin.PROP_COMPRESSED, listener);
 		model.addPropertyChangeListener(ICollapseableColumnMixin.PROP_COLLAPSED, listener);
 		model.addPropertyChangeListener(StackedRankColumnModel.PROP_ALIGNMENT, listener);
@@ -98,6 +103,7 @@ public class SimpleColumnHeaderUI extends ACompositeHeaderUI implements IThickHe
 	@Override
 	protected void takeDown() {
 		model.removePropertyChangeListener(ACompositeRankColumnModel.PROP_CHILDREN, childrenChanged);
+		model.removePropertyChangeListener(ACompositeRankColumnModel.PROP_CHILDREN_ORDER, listener);
 		model.removePropertyChangeListener(ICompressColumnMixin.PROP_COMPRESSED, listener);
 		model.removePropertyChangeListener(ICollapseableColumnMixin.PROP_COLLAPSED, listener);
 		model.removePropertyChangeListener(StackedRankColumnModel.PROP_ALIGNMENT, listener);

@@ -49,8 +49,8 @@ public class ColumnRanker implements Iterable<IRow> {
 	private boolean dirtyFilter = true;
 
 	/**
-	 * a set containing only the visible entries without reordering
-	 */
+	 * a set containing only the visible entries without reordering FIXME not implemented
+	 **/
 	private BitSet visible;
 	private boolean dirtyVisible = true;
 

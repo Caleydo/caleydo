@@ -45,7 +45,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 /**
- *
+ * 
  * @author Samuel Gratzl
  * 
  */
@@ -108,7 +108,7 @@ public class EditWeightsDialog extends TitleAreaDialog implements VerifyListener
 		this.sum.setText(toString(100));
 		this.sum.setForeground(parent.getDisplay().getSystemColor(SWT.COLOR_DARK_GRAY));
 		this.sum.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-		// FIXME
+
 		return parent;
 	}
 
