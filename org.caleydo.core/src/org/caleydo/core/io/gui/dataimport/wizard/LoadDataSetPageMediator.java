@@ -140,6 +140,8 @@ public class LoadDataSetPageMediator {
 
 	public void onSelectFile(String inputFileName) {
 		dataSetDescription.setDataSourcePath(inputFileName);
+		dataSetDescription.setRowIDSpecification(null);
+		dataSetDescription.setColumnIDSpecification(null);
 		initWidgets();
 		setDataSetChanged(true);
 	}

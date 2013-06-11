@@ -126,8 +126,9 @@ public class NumericalDataPropertiesWidget {
 		dataCenterTextField.setText(dataCenter == null ? "0" : dataCenter.toString());
 
 		boolean maxDefined = numericalProperties.getMax() != null;
-		maxButton.setSelection(maxDefined);
-		maxTextField.setEnabled(maxDefined);
+		maxButton.setEnabled(true);
+		maxButton.setSelection(false);
+		maxTextField.setEnabled(false);
 		if (maxDefined)
 			maxTextField.setText(numericalProperties.getMax().toString());
 		else
@@ -135,8 +136,8 @@ public class NumericalDataPropertiesWidget {
 
 		boolean minDefined = numericalProperties.getMin() != null;
 		minButton.setEnabled(true);
-		minButton.setSelection(minDefined);
-		minTextField.setEnabled(minDefined);
+		minButton.setSelection(false);
+		minTextField.setEnabled(false);
 		if (minDefined)
 			minTextField.setText(numericalProperties.getMin().toString());
 		else
