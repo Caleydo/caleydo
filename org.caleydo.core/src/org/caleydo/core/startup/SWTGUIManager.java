@@ -47,7 +47,6 @@ public class SWTGUIManager {
 					loadingProgressBar.setSelection(iPercentage);
 			}
 		});
-		loadingProgressBar.setSelection(iPercentage);
 	}
 
 	public void setProgressBarText(final String text) {

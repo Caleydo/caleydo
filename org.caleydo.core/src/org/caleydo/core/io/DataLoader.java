@@ -67,22 +67,16 @@ public class DataLoader {
 		if (monitor != null)
 			monitor.worked(1);
 		ATableBasedDataDomain dataDomain = null;
-		try {
-			dataDomain = loadDataSet(dataSetDescription, monitor);
-			loadGroupings(dataDomain, dataSetDescription, monitor);
-			runDataProcessing(dataDomain, dataSetDescription, monitor);
 
-			// Create perspectives per column for inhomogeneous datasets
-			if (dataSetDescription.getDataDescription() == null) {
-				createInitialPerspectives(dataDomain, monitor);
-			}
-			return dataDomain;
-		} catch (Exception e) {
-			Logger.log(new Status(IStatus.ERROR, "DataLoader", "Failed to load data for dataset "
-					+ dataSetDescription.getDataSetName(), e));
-			DataDomainManager.get().unregister(dataDomain);
-			return null;
+		dataDomain = loadDataSet(dataSetDescription, monitor);
+		loadGroupings(dataDomain, dataSetDescription, monitor);
+		runDataProcessing(dataDomain, dataSetDescription, monitor);
+
+		// Create perspectives per column for inhomogeneous datasets
+		if (dataSetDescription.getDataDescription() == null) {
+			createInitialPerspectives(dataDomain, monitor);
 		}
+		return dataDomain;
 	}
 
 	/**
@@ -112,8 +106,7 @@ public class DataLoader {
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 */
-	private static ATableBasedDataDomain loadDataSet(DataSetDescription dataSetDescription, IProgressMonitor monitor)
-			throws FileNotFoundException, IOException {
+	private static ATableBasedDataDomain loadDataSet(DataSetDescription dataSetDescription, IProgressMonitor monitor) {
 
 		if (monitor != null)
 			monitor.subTask("Loading data");
@@ -145,8 +138,15 @@ public class DataLoader {
 
 		boolean createDefaultRecordPerspective = true;
 
-		// the place the matrix is stored:
-		TableUtils.loadData(dataDomain, dataSetDescription, true, createDefaultRecordPerspective);
+		try {
+			// the place the matrix is stored:
+			TableUtils.loadData(dataDomain, dataSetDescription, true, createDefaultRecordPerspective);
+		} catch (Exception e) {
+			Logger.log(new Status(IStatus.ERROR, "DataLoader", "Failed to load data for dataset "
+					+ dataSetDescription.getDataSetName(), e));
+			DataDomainManager.get().unregister(dataDomain);
+			return null;
+		}
 		if (monitor != null)
 			monitor.worked(1);
 
