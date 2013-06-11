@@ -73,6 +73,7 @@ public class RankTableUI extends GLElementContainer implements ISelectionCallbac
 				buttons.addButton(b);
 			}
 		}
+		buttons.add(new SimpleRankTableStatsElement(table));
 		buttons.addSpacer();
 		{
 			GLButton b = new GLButton();
