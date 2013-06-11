@@ -28,6 +28,7 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.caleydo.core.view.opengl.layout2.GLElement;
@@ -57,6 +58,9 @@ public abstract class ACompositeTableColumnUI<T extends ACompositeRankColumnMode
 			case ACompositeRankColumnModel.PROP_CHILDREN:
 				onChildrenChanged((IndexedPropertyChangeEvent) evt);
 				break;
+			case ACompositeRankColumnModel.PROP_CHILDREN_ORDER:
+				onChildrenOrderChanged();
+				break;
 			}
 		}
 	};
@@ -68,9 +72,34 @@ public abstract class ACompositeTableColumnUI<T extends ACompositeRankColumnMode
 		setLayout(this);
 		setLayoutData(model);
 		model.addPropertyChangeListener(ACompositeRankColumnModel.PROP_CHILDREN, listener);
+		model.addPropertyChangeListener(ACompositeRankColumnModel.PROP_CHILDREN_ORDER, listener);
 		for (ARankColumnModel col2 : model) {
 			this.add(wrap(col2));
 		}
+	}
+
+	/**
+	 * change order of children
+	 */
+	protected void onChildrenOrderChanged() {
+		final List<GLElement> keep = new ArrayList<>(asList().subList(0, firstColumn));
+		sortBy(new Comparator<GLElement>() {
+			@Override
+			public int compare(GLElement o1, GLElement o2) {
+				int i1 = keep.indexOf(o1);
+				int i2 = keep.indexOf(o2);
+				if (i1 == -1 && i2 == -1) {
+					// check model
+					return model.indexOf(o1.getLayoutDataAs(ARankColumnModel.class, null))
+							- model.indexOf(o2.getLayoutDataAs(ARankColumnModel.class, null));
+				} else if (i1 == -1)
+					return 1;
+				else if (i2 == -1)
+					return -1;
+				else
+					return i1 - i2;
+			}
+		});
 	}
 
 	@Override
@@ -93,6 +122,7 @@ public abstract class ACompositeTableColumnUI<T extends ACompositeRankColumnMode
 	@Override
 	protected void takeDown() {
 		model.removePropertyChangeListener(ACompositeRankColumnModel.PROP_CHILDREN, listener);
+		model.removePropertyChangeListener(ACompositeRankColumnModel.PROP_CHILDREN_ORDER, listener);
 		super.takeDown();
 	}
 

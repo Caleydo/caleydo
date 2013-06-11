@@ -684,7 +684,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 
 	protected void showContextMenu(List<AContextMenuItem> items) {
 		if (model instanceof IRankableColumnMixin) {
-			if (getParent() instanceof StackedColumnHeaderUI) {
+			if (getParent() instanceof StackedColumnHeaderUI) { // FIXME hack
 				items.add(0, new GenericContextMenuItem("Align by this attribute", new OrderByMeEvent().to(this)));
 				items.add(1, new GenericContextMenuItem("Order by this attribute", new OrderByMeEvent(true).to(this)));
 			} else {

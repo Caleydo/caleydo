@@ -28,6 +28,7 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.caleydo.core.view.opengl.layout2.GLElement;
@@ -35,6 +36,7 @@ import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.vis.rank.config.IRankTableUIConfig;
+import org.caleydo.vis.rank.model.ACompositeRankColumnModel;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IGrabRemainingHorizontalSpace;
@@ -55,7 +57,11 @@ public abstract class ACompositeHeaderUI extends GLElementContainer implements I
 	protected final PropertyChangeListener childrenChanged = new PropertyChangeListener() {
 		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
-			onChildrenChanged((IndexedPropertyChangeEvent) evt);
+			switch (evt.getPropertyName()) {
+			case ACompositeRankColumnModel.PROP_CHILDREN:
+				onChildrenChanged((IndexedPropertyChangeEvent) evt);
+				break;
+			}
 		}
 	};
 
@@ -143,6 +149,36 @@ public abstract class ACompositeHeaderUI extends GLElementContainer implements I
 			set(index + firstColumn, wrap((ARankColumnModel) evt.getNewValue()));
 			setHasThick(max(this, 0));
 		}
+	}
+
+	protected final void onChildrenOrderChanged(final List<ARankColumnModel> children) {
+		final List<GLElement> before = new ArrayList<>(asList().subList(0, firstColumn));
+		final List<GLElement> after = new ArrayList<>(asList().subList(firstColumn + numColumns, size()));
+		sortBy(new Comparator<GLElement>() {
+			@Override
+			public int compare(GLElement o1, GLElement o2) {
+				int b1 = before.indexOf(o1);
+				int b2 = before.indexOf(o2);
+				if (b1 != -1 && b2 != -1)
+					return b1 - b2;
+				if (b1 != -1)
+					return -1;
+				if (b2 != -1)
+					return 1;
+				int a1 = after.indexOf(o1);
+				int a2 = after.indexOf(o2);
+				if (a1 != -1 && a2 != -1)
+					return a1 - a2;
+				if (a1 != -1)
+					return 1;
+				if (a2 != -1)
+					return -1;
+
+				// check model
+				return children.indexOf(o1.getLayoutDataAs(ARankColumnModel.class, null))
+						- children.indexOf(o2.getLayoutDataAs(ARankColumnModel.class, null));
+			}
+		});
 	}
 
 	private void init(ARankColumnModel col) {

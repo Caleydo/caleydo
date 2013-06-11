@@ -28,6 +28,6 @@ import org.caleydo.core.view.opengl.layout2.IGLElementContext;
  * @author Samuel Gratzl
  * 
  */
-public interface ISearchableColumnMixin extends IRankColumnModel {
+public interface ISearchableColumnMixin extends IFilterColumnMixin {
 	void openSearchDialog(GLElement summary, IGLElementContext context);
 }
