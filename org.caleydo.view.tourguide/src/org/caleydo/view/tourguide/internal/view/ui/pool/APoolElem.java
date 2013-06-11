@@ -49,7 +49,7 @@ public abstract class APoolElem extends PickableGLElement {
 		if (pick.isAnyDragging())
 			return;
 		armed = true;
-		context.setCursor(SWT.CURSOR_HAND);
+		context.getSWTLayer().setCursor(SWT.CURSOR_HAND);
 		repaint();
 	}
 
@@ -57,7 +57,7 @@ public abstract class APoolElem extends PickableGLElement {
 	protected void onMouseOut(Pick pick) {
 		if (armed) {
 			armed = false;
-			context.setCursor(-1);
+			context.getSWTLayer().setCursor(-1);
 			repaint();
 		}
 	}

@@ -17,58 +17,64 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.view.opengl.canvas;
-
-import javax.media.opengl.GLAutoDrawable;
-import javax.media.opengl.GLEventListener;
+package org.caleydo.core.view.opengl.layout2.internal;
 
 import org.caleydo.core.util.base.ILabeled;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
+import org.caleydo.core.view.opengl.canvas.IGLCanvas;
+import org.caleydo.core.view.opengl.layout2.ISWTLayer;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public interface IGLCanvas {
-	void addMouseListener(IGLMouseListener listener);
+public class SWTLayer implements ISWTLayer {
+	private final IGLCanvas canvas;
 
-	void removeMouseListener(IGLMouseListener listener);
-
-	void addFocusListener(IGLFocusListener listener);
-
-	void removeFocusListener(IGLFocusListener listener);
-
-	void requestFocus();
-
-	void addKeyListener(IGLKeyListener listener);
-
-	void removeKeyListener(IGLKeyListener listener);
-
-	void addGLEventListener(GLEventListener listener);
-
-	void removeGLEventListener(GLEventListener listener);
-
-	int getWidth();
-
-	int getHeight();
-
-	GLAutoDrawable asGLAutoDrawAble();
-
-	Composite asComposite();
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see java.lang.Object#toString()
+	/**
+	 * @param asComposite
 	 */
+	public SWTLayer(IGLCanvas canvas) {
+		this.canvas = canvas;
+	}
+
 	@Override
-	public String toString();
+	public final IPickingListener createTooltip(ILabeled label) {
+		return canvas.createTooltip(label);
+	}
 
-	IPickingListener createTooltip(ILabeled label);
+	@Override
+	public final void showContextMenu(Iterable<? extends AContextMenuItem> items) {
+		canvas.showPopupMenu(items);
+	}
 
-	IPickingListener createTooltip(String label);
+	@Override
+	public final void setCursor(final int swtCursorConst) {
+		run(new ISWTLayerRunnable() {
+			@Override
+			public void run(Display display, Composite canvas) {
+				canvas.setCursor(swtCursorConst < 0 ? null : display.getSystemCursor(swtCursorConst));
+			}
+		});
+	}
 
-	void showPopupMenu(final Iterable<? extends AContextMenuItem> items);
+	@Override
+	public void resetCursor() {
+		setCursor(-1);
+	}
+
+	@Override
+	public void run(final ISWTLayerRunnable runnable) {
+		final Composite c = canvas.asComposite();
+		final Display d = c.getDisplay();
+		d.asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				runnable.run(d, c);
+			}
+		});
+	}
 }

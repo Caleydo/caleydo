@@ -40,6 +40,7 @@ import org.caleydo.core.util.function.FloatStatistics;
 import org.caleydo.core.util.function.IFloatList;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
+import org.caleydo.core.view.opengl.layout2.ISWTLayer.ISWTLayerRunnable;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.rank.data.IFloatFunction;
 import org.caleydo.vis.rank.data.IFloatInferrer;
@@ -57,8 +58,9 @@ import org.caleydo.vis.rank.ui.detail.ScoreBarElement;
 import org.caleydo.vis.rank.ui.detail.ScoreSummary;
 import org.caleydo.vis.rank.ui.detail.ValueElement;
 import org.caleydo.vis.rank.ui.mapping.MappingFunctionUIs;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
 
 import com.google.common.primitives.Floats;
 
@@ -339,12 +341,14 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 
 	@Override
 	public void editFilter(final GLElement summary, IGLElementContext context) {
-		Display.getDefault().asyncExec(new Runnable() {
+		final Vec2f location = summary.getAbsoluteLocation();
+		context.getSWTLayer().run(new ISWTLayerRunnable() {
 			@Override
-			public void run() {
-				new FloatFilterDialog(new Shell(), getTitle(), summary, filterNotMappedEntries, filterMissingEntries,
-						isGlobalFilter(), getTable().hasSnapshots())
-						.open();
+			public void run(Display display, Composite canvas) {
+				Point loc = canvas.toDisplay((int) location.x(), (int) location.y());
+				FloatFilterDialog dialog = new FloatFilterDialog(canvas.getShell(), getTitle(), summary,
+						filterNotMappedEntries, filterMissingEntries, isGlobalFilter, getTable().hasSnapshots(), loc);
+				dialog.open();
 			}
 		});
 	}

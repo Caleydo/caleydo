@@ -101,7 +101,7 @@ public class StackedSummaryHeaderUI extends AColumnHeaderUI {
 				new OpenEditWeightsEvent().to(this));
 		items.add(editWeights);
 		items.add(0, new GenericContextMenuItem("Order by this attribute", new OrderByMeEvent().to(this)));
-		context.showContextMenu(items);
+		context.getSWTLayer().showContextMenu(items);
 	}
 
 	@ListenTo(sendToMe = true)

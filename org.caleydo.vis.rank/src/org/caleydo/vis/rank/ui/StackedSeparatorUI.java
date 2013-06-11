@@ -161,7 +161,7 @@ public class StackedSeparatorUI extends SeparatorUI {
 			Pair<GLElement, AlignmentDragInfo> info = m.getFirstDraggable(AlignmentDragInfo.class);
 			if (info != null) {
 				m.removeDraggable(info.getFirst());
-				context.setCursor(-1);
+				context.getSWTLayer().setCursor(-1);
 				armed = false;
 				getStacked().setAlignment(index);
 			}

@@ -17,17 +17,41 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.view.opengl.canvas.internal;
+package org.caleydo.core.view.opengl.layout2;
 
-import javax.media.opengl.GLCapabilitiesImmutable;
-
-import org.caleydo.core.view.opengl.canvas.IGLCanvas;
+import org.caleydo.core.util.base.ILabeled;
+import org.caleydo.core.view.contextmenu.AContextMenuItem;
+import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public interface IGLCanvasFactory {
-	IGLCanvas create(GLCapabilitiesImmutable caps, Composite parent);
+public interface ISWTLayer {
+	void setCursor(int swtCursorConst);
+
+	void resetCursor();
+
+	void run(ISWTLayerRunnable runnable);
+
+	/**
+	 * shows the context menu, defined by the given items
+	 * 
+	 * @param items
+	 */
+	void showContextMenu(Iterable<? extends AContextMenuItem> items);
+
+	/**
+	 * creates a gl canvas specific picking listener that shows the given label
+	 * 
+	 * @param label
+	 * @return
+	 */
+	IPickingListener createTooltip(ILabeled label);
+
+	public interface ISWTLayerRunnable {
+		void run(Display display, Composite canvas);
+	}
 }

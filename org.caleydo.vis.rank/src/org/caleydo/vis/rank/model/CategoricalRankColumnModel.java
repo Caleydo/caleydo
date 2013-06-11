@@ -19,6 +19,8 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.model;
 
+import gleem.linalg.Vec2f;
+
 import java.awt.Color;
 import java.beans.PropertyChangeListener;
 import java.util.BitSet;
@@ -34,6 +36,7 @@ import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
+import org.caleydo.core.view.opengl.layout2.ISWTLayer.ISWTLayerRunnable;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.rank.internal.event.FilterEvent;
 import org.caleydo.vis.rank.internal.ui.CatFilterDalog;
@@ -43,8 +46,9 @@ import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 import org.caleydo.vis.rank.ui.GLPropertyChangeListeners;
 import org.caleydo.vis.rank.ui.IColumnRenderInfo;
 import org.caleydo.vis.rank.ui.detail.ValueElement;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
 
 import com.google.common.base.Function;
 
@@ -121,12 +125,14 @@ public class CategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<CATEGOR
 
 	@Override
 	public final void editFilter(final GLElement summary, IGLElementContext context) {
-		Display.getDefault().asyncExec(new Runnable() {
+		final Vec2f location = summary.getAbsoluteLocation();
+		context.getSWTLayer().run(new ISWTLayerRunnable() {
 			@Override
-			public void run() {
-				new CatFilterDalog<CATEGORY_TYPE>(new Shell(), getTitle(), summary, metaData, selection,
-						isGlobalFilter, getTable().hasSnapshots())
-						.open();
+			public void run(Display display, Composite canvas) {
+				Point loc = canvas.toDisplay((int) location.x(), (int) location.y());
+				CatFilterDalog<CATEGORY_TYPE> dialog = new CatFilterDalog<>(canvas.getShell(), getTitle(), summary,
+						metaData, selection, isGlobalFilter, getTable().hasSnapshots(), loc);
+				dialog.open();
 			}
 		});
 	}

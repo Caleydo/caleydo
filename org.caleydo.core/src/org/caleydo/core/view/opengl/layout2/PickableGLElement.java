@@ -59,7 +59,7 @@ public class PickableGLElement extends GLElement {
 	protected void init(IGLElementContext context) {
 		super.init(context);
 		// create a tooltip listener to render the tooltip of this element
-		this.onPick(context.createTooltip(new ILabeled() {
+		this.onPick(context.getSWTLayer().createTooltip(new ILabeled() {
 			@Override
 			public String getLabel() {
 				return getTooltip();

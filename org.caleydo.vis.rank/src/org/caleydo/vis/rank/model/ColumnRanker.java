@@ -49,6 +49,12 @@ public class ColumnRanker implements Iterable<IRow> {
 	private boolean dirtyFilter = true;
 
 	/**
+	 * a set containing only the visible entries without reordering
+	 */
+	private BitSet visible;
+	private boolean dirtyVisible = true;
+
+	/**
 	 * current order
 	 *
 	 * <pre>
@@ -91,6 +97,8 @@ public class ColumnRanker implements Iterable<IRow> {
 		this.ranks.setKeyNotFoundValue(-1);
 		this.filter = clone.filter;
 		this.dirtyFilter = clone.dirtyFilter;
+		this.visible = clone.visible;
+		this.dirtyVisible = clone.dirtyVisible;
 		this.order = clone.order;
 		this.exaequoOffsets.putAll(clone.exaequoOffsets);
 		this.dirtyOrder = clone.dirtyOrder;

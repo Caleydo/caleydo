@@ -71,7 +71,7 @@ public class PaperBasket extends APoolElem {
 					ARankColumnModel.class);
 			context.getMouseLayer().removeDraggable(draggable.getFirst());
 			table.removeFromPool(draggable.getSecond());
-			context.setCursor(-1);
+			context.getSWTLayer().setCursor(-1);
 			armed = false;
 			repaint();
 		}

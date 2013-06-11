@@ -135,7 +135,7 @@ public class SeparatorUI extends PickableGLElement {
 		Pair<GLElement, ARankColumnModel> info = m.getFirstDraggable(ARankColumnModel.class);
 		m.removeDraggable(info.getFirst());
 		m.setDropable(ARankColumnModel.class, false);
-		context.setCursor(-1);
+		context.getSWTLayer().setCursor(-1);
 		armed = false;
 		model.moveHere(index, info.getSecond(), RenderStyle.isCloneDragging(pick));
 	}

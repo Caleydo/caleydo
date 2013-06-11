@@ -25,7 +25,6 @@ import java.util.List;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.contextmenu.AContextMenuItem.EContextMenuType;
 import org.caleydo.core.view.contextmenu.item.SeparatorMenuItem;
-import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.internal.IGLCanvasFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MenuEvent;
@@ -58,10 +57,8 @@ public abstract class ASWTBasedCanvasFactory implements IGLCanvasFactory {
 		TextureIO.addTextureWriter(new IIOTextureWriter());
 	}
 
-	@Override
-	public final void showPopupMenu(IGLCanvas canvas, Iterable<? extends AContextMenuItem> items) {
+	public static void showSWTPopupMenu(Iterable<? extends AContextMenuItem> items, final Composite parent) {
 		final Iterable<? extends AContextMenuItem> items2 = Lists.newArrayList(items);
-		final Composite parent = canvas.asComposite();
 		parent.getDisplay().asyncExec(new Runnable() {
 			@Override
 			public void run() {
@@ -90,10 +87,9 @@ public abstract class ASWTBasedCanvasFactory implements IGLCanvasFactory {
 				m.setVisible(true);
 			}
 		});
-
 	}
 
-	private void create(Menu parent, Menu m, final AContextMenuItem item) {
+	private static void create(Menu parent, Menu m, final AContextMenuItem item) {
 		if (item instanceof SeparatorMenuItem) {
 			new MenuItem(parent, SWT.SEPARATOR);
 			return;

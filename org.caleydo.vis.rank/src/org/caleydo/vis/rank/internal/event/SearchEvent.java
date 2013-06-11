@@ -29,13 +29,29 @@ import org.caleydo.core.event.ADirectedEvent;
  */
 public class SearchEvent extends ADirectedEvent {
 	private Object search;
-
+	private boolean isWrapSearch;
+	private boolean isForward;
 	/**
 	 * @param filter
 	 */
-	public SearchEvent(Object search) {
+	public SearchEvent(Object search, boolean isWrapSearch, boolean forward) {
 		super();
 		this.search = search;
+		this.isWrapSearch = isWrapSearch;
+		this.isForward = forward;
+	}
+
+	/**
+	 * @return the isForward, see {@link #isForward}
+	 */
+	public boolean isForward() {
+		return isForward;
+	}
+	/**
+	 * @return the isWrapSearch, see {@link #isWrapSearch}
+	 */
+	public boolean isWrapSearch() {
+		return isWrapSearch;
 	}
 
 	/**

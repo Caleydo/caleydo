@@ -170,7 +170,7 @@ public class ScorePoolUI extends GLElementContainer implements IGLLayout {
 			if (armed) {
 				context.getMouseLayer().removeDraggable(pair.getFirst());
 				pair.getSecond().hide();
-				context.setCursor(-1);
+				context.getSWTLayer().setCursor(-1);
 				armed = false;
 				repaint();
 			}

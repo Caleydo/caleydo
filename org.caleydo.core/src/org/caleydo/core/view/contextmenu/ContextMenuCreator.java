@@ -25,7 +25,6 @@ import java.util.List;
 
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.util.collection.Pair;
-import org.caleydo.core.view.ViewManager;
 import org.caleydo.core.view.contextmenu.item.SeparatorMenuItem;
 import org.caleydo.core.view.opengl.canvas.IGLView;
 
@@ -74,7 +73,7 @@ public class ContextMenuCreator implements Iterable<AContextMenuItem> {
 	}
 
 	public synchronized void open(final IGLView view) {
-		ViewManager.get().getCanvasFactory().showPopupMenu(view.getParentGLCanvas(), menuItems);
+		view.getParentGLCanvas().showPopupMenu(menuItems);
 	}
 
 	@Override

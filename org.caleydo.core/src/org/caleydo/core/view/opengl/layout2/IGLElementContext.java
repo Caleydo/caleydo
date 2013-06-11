@@ -19,10 +19,7 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.layout2;
 
-import org.caleydo.core.util.base.ILabeled;
-import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
-import org.eclipse.swt.SWT;
 
 /**
  * basic interface for the context of a element hierarchy, e.g. one {@link IGLElementContext} per opengl canvas
@@ -77,8 +74,14 @@ public interface IGLElementContext {
 	IPopupLayer getPopupLayer();
 
 	/**
+	 * 
+	 * @return
+	 */
+	ISWTLayer getSWTLayer();
+
+	/**
 	 * chance for a context to initialize an added element
-	 *
+	 * 
 	 * @param element
 	 */
 	void init(GLElement element);
@@ -89,27 +92,4 @@ public interface IGLElementContext {
 	 * @param element
 	 */
 	void takeDown(GLElement element);
-
-	/**
-	 * the the current cursor, using {@link SWT} constants
-	 *
-	 * @param the
-	 *            SWT constant or -1 for the default
-	 */
-	void setCursor(int swtCursorConst);
-
-	/**
-	 * creates a gl canvas specific picking listener that shows the given label
-	 *
-	 * @param label
-	 * @return
-	 */
-	IPickingListener createTooltip(ILabeled label);
-
-	/**
-	 * shows the context menu, defined by the given items
-	 *
-	 * @param items
-	 */
-	void showContextMenu(Iterable<? extends AContextMenuItem> items);
 }

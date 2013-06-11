@@ -433,7 +433,7 @@ public class HeatMapElement extends PickableGLElement implements
 		super.layout(deltaTimeMs);
 
 		if (!toShow.isEmpty()) { // show the context menu
-			context.showContextMenu(toShow);
+			context.getSWTLayer().showContextMenu(toShow);
 			toShow.clear();
 		}
 	}
