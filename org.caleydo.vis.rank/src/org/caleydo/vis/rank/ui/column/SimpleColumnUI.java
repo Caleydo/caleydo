@@ -22,10 +22,12 @@ package org.caleydo.vis.rank.ui.column;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.List;
 
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.vis.rank.layout.IRowLayoutInstance.IRowSetter;
 import org.caleydo.vis.rank.model.ACompositeRankColumnModel;
 import org.caleydo.vis.rank.model.ARankColumnModel;
@@ -52,9 +54,10 @@ public class SimpleColumnUI extends ACompositeTableColumnUI<ACompositeRankColumn
 	};
 
 	public SimpleColumnUI(ACompositeRankColumnModel model) {
-		super(model, 0);
+		super(model, 1);
 		model.addPropertyChangeListener(ICompressColumnMixin.PROP_COMPRESSED, listener);
 		model.addPropertyChangeListener(ICollapseableColumnMixin.PROP_COLLAPSED, listener);
+		this.add(0, wrap(model));
 	}
 
 	protected void onCompressedChanged() {
@@ -73,6 +76,19 @@ public class SimpleColumnUI extends ACompositeTableColumnUI<ACompositeRankColumn
 		model.removePropertyChangeListener(ICompressColumnMixin.PROP_COMPRESSED, listener);
 		model.removePropertyChangeListener(ICollapseableColumnMixin.PROP_COLLAPSED, listener);
 		super.takeDown();
+	}
+
+	@Override
+	public void doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
+		IGLLayoutElement elem = children.get(0);
+		if (model instanceof ICompressColumnMixin && ((ICompressColumnMixin) model).isCompressed()) {
+			elem.setBounds(0, 0, w, h);
+			for (IGLLayoutElement child : children.subList(1, children.size()))
+				child.hide();
+		} else {
+			elem.hide();
+			super.doLayout(children, w, h);
+		}
 	}
 
 	@Override

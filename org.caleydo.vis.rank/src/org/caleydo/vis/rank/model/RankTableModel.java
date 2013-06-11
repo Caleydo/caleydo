@@ -663,8 +663,12 @@ public class RankTableModel implements IRankColumnParent {
 		add(new OrderColumn());
 		for (ARankColumnModel col : config.createAutoSnapshotColumns(this, model))
 			add(col);
-		if (model != null)
-			add(model.clone());
+		if (model != null) {
+			ARankColumnModel clone = model.clone();
+			add(clone);
+			if (clone instanceof IRankableColumnMixin)
+				((IRankableColumnMixin) clone).orderByMe();
+		}
 	}
 
 	/**
