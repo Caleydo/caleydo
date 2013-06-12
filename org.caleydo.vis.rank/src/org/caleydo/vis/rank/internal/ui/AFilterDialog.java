@@ -64,7 +64,8 @@ public abstract class AFilterDialog extends Window {
 
 	@Override
 	protected Point getInitialLocation(Point initialSize) {
-		return loc;
+		Point computeSize = getShell().getChildren()[0].computeSize(SWT.DEFAULT, SWT.DEFAULT);
+		return new Point(loc.x, loc.y - computeSize.y);
 	}
 
 	@Override
