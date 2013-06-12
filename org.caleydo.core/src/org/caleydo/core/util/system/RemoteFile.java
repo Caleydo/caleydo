@@ -47,9 +47,9 @@ import com.google.common.collect.HashBiMap;
 
 /**
  * helper class for handling remote files and local caches of them
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public final class RemoteFile implements IRunnableWithProgress {
 	private static final Logger log = Logger.create(RemoteFile.class);
@@ -73,7 +73,7 @@ public final class RemoteFile implements IRunnableWithProgress {
 
 	/**
 	 * factory for creating a {@link RemoteFile}
-	 * 
+	 *
 	 * @param url
 	 * @return
 	 */
@@ -83,7 +83,7 @@ public final class RemoteFile implements IRunnableWithProgress {
 
 	/**
 	 * checks whether the file is already in the cache
-	 * 
+	 *
 	 * @param checkModificationDate
 	 *            check also whether the remote and local modification date matches
 	 * @return
@@ -116,7 +116,7 @@ public final class RemoteFile implements IRunnableWithProgress {
 
 	/**
 	 * the exception caught during {@link #run(IProgressMonitor)} or null if none occurred
-	 * 
+	 *
 	 * @return the caught, see {@link #caught}
 	 */
 	public Exception getCaught() {
@@ -142,7 +142,8 @@ public final class RemoteFile implements IRunnableWithProgress {
 			lastModified = connection.getLastModified();
 			if (length < 0)
 				length = IProgressMonitor.UNKNOWN;
-			monitor.beginTask("Downloading: " + url, length);
+			monitor.beginTask(String.format("Downloading: %s (%d MB)", url, length / 1024 / 1024), length);
+
 
 			try (InputStream in = new BufferedInputStream(connection.getInputStream())) {
 				byte[] data = new byte[BUFFER_SIZE];
@@ -264,7 +265,7 @@ public final class RemoteFile implements IRunnableWithProgress {
 
 		/**
 		 * converts the given path with the given suffix to a unique derivat that doesn't yet exist
-		 * 
+		 *
 		 * @param local
 		 * @return
 		 */
