@@ -68,6 +68,10 @@ public class AddGroupingsPage extends AImportDataPage {
 	 */
 	protected Button removeRowGroupingButton;
 
+	protected Group columnGroupingsGroup;
+
+	protected Group rowGroupingsGroup;
+
 	private AddGroupingsPageMediator mediator;
 
 	public AddGroupingsPage(DataSetDescription dataSetDescription) {
@@ -186,6 +190,12 @@ public class AddGroupingsPage extends AImportDataPage {
 					mediator.removeRowGroupingButtonSelected();
 				}
 			});
+		}
+
+		if (isColumnGrouping) {
+			columnGroupingsGroup = groupingsGroup;
+		} else {
+			rowGroupingsGroup = groupingsGroup;
 		}
 	}
 
