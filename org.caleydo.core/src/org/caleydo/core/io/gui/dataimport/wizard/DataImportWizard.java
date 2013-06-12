@@ -234,7 +234,7 @@ public class DataImportWizard extends Wizard {
 
 	@Override
 	public boolean canFinish() {
-		if (!visitedPages.contains(dataSetTypePage) || chosenDataTypePage == null)
+		if (chosenDataTypePage == null)
 			return false;
 		return super.canFinish();
 	}

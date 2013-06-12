@@ -85,6 +85,11 @@ public class ColumnDataPropertiesDialog extends Dialog implements Listener {
 		this.dataType = dataType;
 	}
 
+	@Override
+	protected boolean isResizable() {
+		return true;
+	}
+
 	/**
 	 * @param parentShell
 	 */
@@ -106,25 +111,27 @@ public class ColumnDataPropertiesDialog extends Dialog implements Listener {
 	@Override
 	protected Control createDialogArea(Composite parent) {
 
-		// scrolledComposite = new ScrolledComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL);
-		// GridLayout l = new GridLayout(1, true);
-		// l.horizontalSpacing = 0;
-		// l.verticalSpacing = 0;
-		// l.marginHeight = 0;
-		// l.marginHeight = 0;
-		// scrolledComposite.setLayout(l);
-		// scrolledComposite.setExpandHorizontal(true);
-		// scrolledComposite.setExpandVertical(true);
+		scrolledComposite = new ScrolledComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL);
+		GridLayout l = new GridLayout(1, true);
+		l.horizontalSpacing = 0;
+		l.verticalSpacing = 0;
+		l.marginHeight = 0;
+		l.marginHeight = 0;
+		scrolledComposite.setLayout(l);
+		scrolledComposite.setExpandHorizontal(true);
+		scrolledComposite.setExpandVertical(true);
+		scrolledComposite.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, true));
 
 		// this.parent = new Composite(scrolledComposite, SWT.NONE);
 		//
 		// this.parent.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		// this.parent.setLayout(l);
 
-		parentComposite = new Composite(parent, SWT.NONE);
-		// scrolledComposite.setContent(parentComposite);
+		parentComposite = new Composite(scrolledComposite, SWT.NONE);
+		scrolledComposite.setContent(parentComposite);
 		parentComposite.setLayout(new GridLayout(1, false));
-		parentComposite.setLayoutData(new GridData(800, 800));
+		parentComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		// parentComposite.setLayoutData(new GridData(820, 660));
 
 		Group group = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
 		group.setText("Data Type");
@@ -147,8 +154,7 @@ public class ColumnDataPropertiesDialog extends Dialog implements Listener {
 			}
 		});
 
-		// parentComposite.pack();
-		// scrolledComposite.setMinSize(800, 800);
+
 
 		if (numericalProperties != null) {
 			numericalDataButton.setSelection(true);
@@ -156,10 +162,25 @@ public class ColumnDataPropertiesDialog extends Dialog implements Listener {
 		} else {
 			categoricalDataButton.setSelection(true);
 
-			showCategoricalDataWidgets();
 		}
 
+		// scrolledComposite.setSize(820, 660);
+		scrolledComposite.setMinSize(820, 660);
+		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, true);
+		gd.widthHint = 825;
+		gd.heightHint = 760;
+		parent.setLayoutData(gd);
+		parent.layout(true, true);
+		parent.pack(true);
+
+
 		return parent;
+	}
+
+	@Override
+	protected Control createButtonBar(Composite parent) {
+		// TODO Auto-generated method stub
+		return super.createButtonBar(parent);
 	}
 
 

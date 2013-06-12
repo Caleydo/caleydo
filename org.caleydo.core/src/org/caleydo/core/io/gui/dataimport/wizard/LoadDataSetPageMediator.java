@@ -802,6 +802,8 @@ public class LoadDataSetPageMediator {
 			// columnIDSpecification.setIdTypeParsingRules(columnIDType.getIdTypeParsingRules());
 			// }
 			dataSetDescription.setColumnIDSpecification(columnIDSpecification);
+		} else {
+			dataSetDescription.setColumnIDSpecification(null);
 		}
 
 		dataSetDescription.setRowIDSpecification(rowIDSpecification);

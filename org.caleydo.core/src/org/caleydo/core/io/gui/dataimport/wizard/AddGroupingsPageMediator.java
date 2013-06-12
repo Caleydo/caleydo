@@ -161,9 +161,24 @@ public class AddGroupingsPageMediator {
 		rowGroupingsListSelected();
 	}
 
+	private void enableColumnGrouping(boolean enabled) {
+		page.columnGroupingsGroup.setEnabled(enabled);
+		page.addColumnGroupingButton.setEnabled(enabled);
+		page.editColumnGroupingButton.setEnabled(enabled);
+		page.removeColumnGroupingButton.setEnabled(enabled);
+		page.columnGroupingsList.setEnabled(enabled);
+	}
+
 	public void pageActivated() {
-		String columnIDCategoryString = dataSetDescription.getColumnIDSpecification().getIdCategory();
-		columnIDCategory = IDCategory.getIDCategory(columnIDCategoryString);
+		if (dataSetDescription.getColumnIDSpecification() == null) {
+			enableColumnGrouping(false);
+			page.columnGroupingsList.removeAll();
+			columnGroupingSpecifications.clear();
+		} else {
+			String columnIDCategoryString = dataSetDescription.getColumnIDSpecification().getIdCategory();
+			columnIDCategory = IDCategory.getIDCategory(columnIDCategoryString);
+			enableColumnGrouping(true);
+		}
 		String rowIDCategoryString = dataSetDescription.getRowIDSpecification().getIdCategory();
 		rowIDCategory = IDCategory.getIDCategory(rowIDCategoryString);
 

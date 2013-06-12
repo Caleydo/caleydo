@@ -77,19 +77,19 @@ public class RowConfigWidget {
 
 		Composite leftConfigGroupPart = new Composite(group, SWT.NONE);
 		leftConfigGroupPart.setLayout(new GridLayout(3, false));
-		leftConfigGroupPart.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		leftConfigGroupPart.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
 		Label idCategoryLabel = new Label(leftConfigGroupPart, SWT.SHADOW_ETCHED_IN);
 		idCategoryLabel.setText("Row ID Class");
 		idCategoryLabel.setLayoutData(new GridData(SWT.LEFT));
 		this.categoryIDLabel = new Label(leftConfigGroupPart, SWT.NONE);
-		categoryIDLabel.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
+		categoryIDLabel.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 2, 1));
 
 		Label idTypeLabel = new Label(leftConfigGroupPart, SWT.SHADOW_ETCHED_IN);
 		idTypeLabel.setText("Row ID Type");
 		idTypeLabel.setLayoutData(new GridData(SWT.LEFT));
 		this.rowIDCombo = new Combo(leftConfigGroupPart, SWT.DROP_DOWN | SWT.READ_ONLY);
-		rowIDCombo.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		rowIDCombo.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		rowIDCombo.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
@@ -119,7 +119,7 @@ public class RowConfigWidget {
 		numHeaderRowsSpinner.setMaximum(Integer.MAX_VALUE);
 		numHeaderRowsSpinner.setIncrement(1);
 		numHeaderRowsSpinner.setSelection(1);
-		GridData gridData = new GridData(SWT.LEFT, SWT.FILL, false, true, 2, 1);
+		GridData gridData = new GridData(SWT.LEFT, SWT.FILL, false, false, 2, 1);
 		gridData.widthHint = 70;
 		numHeaderRowsSpinner.setLayoutData(gridData);
 		numHeaderRowsSpinner.addModifyListener(new ModifyListener() {
@@ -138,7 +138,7 @@ public class RowConfigWidget {
 		columnOfRowIDSpinner.setMaximum(Integer.MAX_VALUE);
 		columnOfRowIDSpinner.setIncrement(1);
 		columnOfRowIDSpinner.setSelection(1);
-		gridData = new GridData(SWT.LEFT, SWT.FILL, false, true, 2, 1);
+		gridData = new GridData(SWT.LEFT, SWT.FILL, false, false, 2, 1);
 		gridData.widthHint = 70;
 		columnOfRowIDSpinner.setLayoutData(gridData);
 		columnOfRowIDSpinner.addModifyListener(new ModifyListener() {
