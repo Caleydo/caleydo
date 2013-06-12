@@ -58,6 +58,8 @@ import org.eclipse.swt.widgets.Label;
  */
 public class CategoricalDataPropertiesWidget implements ITableDataChangeListener {
 
+	protected static final int NO_NEUTRAL_CATEGORY_INDEX = 0;
+
 	/**
 	 * Radio button for ordinal categories.
 	 */
@@ -96,7 +98,7 @@ public class CategoricalDataPropertiesWidget implements ITableDataChangeListener
 	/**
 	 * Check box determining whether there should be a neutral category.
 	 */
-	protected Button existsNeutralCategoryButton;
+	// protected Button existsNeutralCategoryButton;
 
 	/**
 	 * Check box to invert the order of the color scheme.
@@ -141,7 +143,8 @@ public class CategoricalDataPropertiesWidget implements ITableDataChangeListener
 			public void widgetSelected(SelectionEvent e) {
 				// upButton.setEnabled(true);
 				// downButton.setEnabled(true);
-				existsNeutralCategoryButton.setEnabled(true);
+				// existsNeutralCategoryButton.setEnabled(true);
+				neutralCategoryCombo.setEnabled(true);
 				categoryTable.setRowsMoveable(true);
 				applyColorScheme(ColorBrewer.RdBu);
 				categoriesGroup.layout(true);
@@ -162,8 +165,9 @@ public class CategoricalDataPropertiesWidget implements ITableDataChangeListener
 			public void widgetSelected(SelectionEvent e) {
 				// upButton.setEnabled(false);
 				// downButton.setEnabled(false);
-				existsNeutralCategoryButton.setEnabled(false);
-				existsNeutralCategoryButton.setSelection(false);
+				// existsNeutralCategoryButton.setEnabled(false);
+				// existsNeutralCategoryButton.setSelection(false);
+				neutralCategoryCombo.select(NO_NEUTRAL_CATEGORY_INDEX);
 				neutralCategoryCombo.setEnabled(false);
 				categoryTable.setRowsMoveable(false);
 				applyColorScheme(ColorBrewer.Set1);
@@ -207,19 +211,24 @@ public class CategoricalDataPropertiesWidget implements ITableDataChangeListener
 			}
 		});
 
-		existsNeutralCategoryButton = new Button(buttonComposite, SWT.CHECK);
-		existsNeutralCategoryButton.setText("Use Neutral Category");
-		existsNeutralCategoryButton.setSelection(false);
-		existsNeutralCategoryButton.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				neutralCategoryCombo.setEnabled(existsNeutralCategoryButton.getSelection());
-				applyColorScheme(currentColorScheme);
-			}
-		});
+		// existsNeutralCategoryButton = new Button(buttonComposite, SWT.CHECK);
+		// existsNeutralCategoryButton.setText("Use Neutral Category");
+		// existsNeutralCategoryButton.setSelection(false);
+		// existsNeutralCategoryButton.addSelectionListener(new SelectionAdapter() {
+		// @Override
+		// public void widgetSelected(SelectionEvent e) {
+		// neutralCategoryCombo.setEnabled(existsNeutralCategoryButton.getSelection());
+		// applyColorScheme(currentColorScheme);
+		// }
+		// });
+
+		Label neutralCategoryLabel = new Label(buttonComposite, SWT.NONE);
+		neutralCategoryLabel.setText("Neutral Color Category:");
 
 		neutralCategoryCombo = new Combo(buttonComposite, SWT.DROP_DOWN | SWT.READ_ONLY);
-		neutralCategoryCombo.setEnabled(false);
+		neutralCategoryCombo.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+		neutralCategoryCombo.add("None");
+		neutralCategoryCombo.select(NO_NEUTRAL_CATEGORY_INDEX);
 		neutralCategoryCombo.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -307,7 +316,7 @@ public class CategoricalDataPropertiesWidget implements ITableDataChangeListener
 
 		categoryTable.createTableFromMatrix(categoryMatrix, 4);
 
-		updateNeutralCategoryWidget(false);
+		updateNeutralCategoryWidget();
 
 		applyColorScheme(nominalButton.getSelection() ? ColorBrewer.Set1 : ColorBrewer.RdBu);
 
@@ -358,24 +367,25 @@ public class CategoricalDataPropertiesWidget implements ITableDataChangeListener
 		}
 		categoryTable.createTableFromMatrix(categoryMatrix, 4);
 
-		updateNeutralCategoryWidget(false);
+		updateNeutralCategoryWidget();
 
 		applyColorScheme(nominalButton.getSelection() ? ColorBrewer.Set1 : ColorBrewer.RdBu);
 
 		categoriesGroup.pack();
 	}
 
-	private void updateNeutralCategoryWidget(boolean keepSelection) {
+	private void updateNeutralCategoryWidget() {
 
 		String currentText = neutralCategoryCombo.getText();
 
 		List<List<String>> categoryMatrix = categoryTable.getDataMatrix();
 		neutralCategoryCombo.removeAll();
+		neutralCategoryCombo.add("None");
 		for (List<String> categoryRow : categoryMatrix) {
 			neutralCategoryCombo.add(categoryRow.get(2));
 		}
 
-		int selectionIndex = keepSelection ? neutralCategoryCombo.indexOf(currentText) : -1;
+		int selectionIndex = neutralCategoryCombo.indexOf(currentText);
 		if (selectionIndex == -1) {
 			selectionIndex = (int) Math.ceil((categoryMatrix.size() / 2.0f)) - 1;
 			if (selectionIndex < 0)
@@ -410,10 +420,11 @@ public class CategoricalDataPropertiesWidget implements ITableDataChangeListener
 
 	private int determineSchemeSize(ColorBrewer scheme) {
 		int numCategories = categoryTable.getRowCount();
-		if (scheme.getType() != EColorSchemeType.QUALITATIVE && existsNeutralCategoryButton.getSelection()) {
+		if (scheme.getType() != EColorSchemeType.QUALITATIVE
+				&& neutralCategoryCombo.getSelectionIndex() != NO_NEUTRAL_CATEGORY_INDEX) {
 			int neutralCategoryIndex = neutralCategoryCombo.getSelectionIndex();
-			int numUpperCategories = numCategories - (neutralCategoryIndex + 1);
-			int numLowerCategories = neutralCategoryIndex;
+			int numUpperCategories = numCategories - (neutralCategoryIndex);
+			int numLowerCategories = neutralCategoryIndex - 1;
 			int numRequiredCategories = Math.max(numUpperCategories, numLowerCategories) * 2 + 1;
 			if (scheme.getSizes().contains(numRequiredCategories)) {
 				return numRequiredCategories;
@@ -497,16 +508,16 @@ public class CategoricalDataPropertiesWidget implements ITableDataChangeListener
 			}
 		} else {
 			ColorMapper colorMapper = colorScheme.asColorMapper(numColors);
-			if (existsNeutralCategoryButton.getSelection()) {
-				int neutralCategoryIndex = neutralCategoryCombo.getSelectionIndex();
-				float lowerCategoriesMappingValueIncrease = (neutralCategoryIndex == 0) ? 0
-						: 1.0f / neutralCategoryIndex * 0.5f;
+			int neutralCategoryIndex = neutralCategoryCombo.getSelectionIndex();
+			if (neutralCategoryIndex != NO_NEUTRAL_CATEGORY_INDEX) {
+
+				float lowerCategoriesMappingValueIncrease = (neutralCategoryIndex == 1) ? 0
+						: 1.0f / (neutralCategoryIndex - 1) * 0.5f;
 				float upperCategoriesMappingValueIncrease = (categoryMatrix.size() == categoryMatrix.size()
-						- (neutralCategoryIndex + 1)) ? 0
-						: 1.0f / (categoryMatrix.size() - (neutralCategoryIndex + 1)) * 0.5f;
+						- neutralCategoryIndex) ? 0 : 1.0f / (categoryMatrix.size() - neutralCategoryIndex) * 0.5f;
 				float currentMappingValue = 0;
 				for (int i = 0; i < categoryMatrix.size(); i++) {
-					if (i == neutralCategoryIndex) {
+					if (i == neutralCategoryIndex - 1) {
 						currentMappingValue = 0.5f;
 					} else if (i == categoryMatrix.size() - 1) {
 						currentMappingValue = 1.0f;
@@ -516,7 +527,7 @@ public class CategoricalDataPropertiesWidget implements ITableDataChangeListener
 					row.set(3,
 							colorMapper.getColorAsObject(
 									reverseColorScheme ? 1.0f - currentMappingValue : currentMappingValue).getHEX());
-					currentMappingValue += i < neutralCategoryIndex ? lowerCategoriesMappingValueIncrease
+					currentMappingValue += i < (neutralCategoryIndex - 1) ? lowerCategoriesMappingValueIncrease
 							: upperCategoriesMappingValueIncrease;
 				}
 
@@ -558,7 +569,7 @@ public class CategoricalDataPropertiesWidget implements ITableDataChangeListener
 
 			categoryMatrix.add(0, newCategoryRow);
 			categoryTable.update();
-			updateNeutralCategoryWidget(true);
+			updateNeutralCategoryWidget();
 			applyColorScheme(currentColorScheme);
 		}
 	}
@@ -585,7 +596,7 @@ public class CategoricalDataPropertiesWidget implements ITableDataChangeListener
 		List<List<String>> categories = categoryTable.getDataMatrix();
 		categories.remove(rowIndex);
 		categoryTable.update();
-		updateNeutralCategoryWidget(true);
+		updateNeutralCategoryWidget();
 		applyColorScheme(currentColorScheme);
 	}
 
@@ -612,7 +623,7 @@ public class CategoricalDataPropertiesWidget implements ITableDataChangeListener
 
 	@Override
 	public void dataChanged(EChangeType changeType) {
-		updateNeutralCategoryWidget(existsNeutralCategoryButton.getSelection());
+		updateNeutralCategoryWidget();
 		if (changeType == EChangeType.STRUCTURAL) {
 			applyColorScheme(currentColorScheme);
 		}

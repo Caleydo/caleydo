@@ -405,7 +405,7 @@ public class CategoryTable extends AMatrixBasedTableWidget implements ILayerList
 
 	@Override
 	public void widgetDisposed(DisposeEvent e) {
-		listeners.clear();
+		// listeners.clear();
 		disposeColors();
 	}
 
