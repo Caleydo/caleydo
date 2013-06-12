@@ -156,15 +156,18 @@ public final class RemoteFile implements IRunnableWithProgress {
 					out.write(data, 0, count);
 					if (i++ >= WORK_TRIGGER_FREQUENCY) {
 						i -= WORK_TRIGGER_FREQUENCY;
-						if (monitor.isCanceled())
+						if (monitor.isCanceled()) {
 							break;
+						}
 						monitor.worked(acc);
 						acc = 0;
 					}
 				}
 			}
-			monitor.done();
-			successful = true;
+			if (!monitor.isCanceled()) {
+				monitor.done();
+				successful = true;
+			}
 		} catch (IOException e) {
 			log.error("can't download file: " + url, e);
 			caught = e;

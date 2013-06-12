@@ -145,6 +145,11 @@ public class LoadGeneticStartupAddon implements IStartupAddon {
 	}
 
 	@Override
+	public boolean validate() {
+		return organism != null;
+	}
+
+	@Override
     public IStartupProcedure create() {
 		MyPreferences.setLastChosenOrganism(organism);
 		return new GeneticGUIStartupProcedure(organism, loadSampleGeneData);
