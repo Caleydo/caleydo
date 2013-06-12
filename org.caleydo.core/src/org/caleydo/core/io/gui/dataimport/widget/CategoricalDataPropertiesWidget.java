@@ -254,10 +254,6 @@ public class CategoricalDataPropertiesWidget implements ITableDataChangeListener
 
 		});
 
-
-
-
-
 		categoryTable = new CategoryTable(categoriesGroup, new GridData(SWT.FILL, SWT.FILL, true, true, 1, 2), true);
 
 		categoryTable.registerTableDataChangeListener(this);
@@ -491,7 +487,8 @@ public class CategoricalDataPropertiesWidget implements ITableDataChangeListener
 			int colorIndex = 0;
 			List<java.awt.Color> colors = colorScheme.get(numColors);
 			for (List<String> row : categoryMatrix) {
-				Color color = (Color) Colors.of(colors.get(colorIndex));
+				Color color = (Color) Colors.of(colors
+						.get(reverseColorScheme ? numColors - colorIndex - 1 : colorIndex));
 				row.set(3, color.getHEX());
 				colorIndex++;
 				if (colorIndex >= colors.size()) {
