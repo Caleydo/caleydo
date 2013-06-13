@@ -953,6 +953,22 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 
 		addTypePickingListener(new APickingListener() {
 			@Override
+			protected void mouseOver(Pick pick) {
+				for (BrickColumnSpacingRenderer manager : brickColumnManager.getBrickColumnSpacers().values())
+					manager.setHeaderHovered(true);
+				super.mouseOver(pick);
+			}
+
+			@Override
+			protected void mouseOut(Pick pick) {
+				for (BrickColumnSpacingRenderer manager : brickColumnManager.getBrickColumnSpacers().values())
+					manager.setHeaderHovered(false);
+				super.mouseOut(pick);
+			}
+		}, EPickingType.DIMENSION_GROUP_SPACER_HEADER.name());
+
+		addTypePickingListener(new APickingListener() {
+			@Override
 			public void clicked(Pick pick) {
 				isHorizontalMoveDraggingActive = true;
 				movedBrickColumn = pick.getObjectID();

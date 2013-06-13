@@ -21,29 +21,36 @@ package org.caleydo.view.stratomex.tourguide.internal;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
+import org.caleydo.core.view.opengl.picking.IPickingListener;
+import org.caleydo.core.view.opengl.picking.Pick;
+import org.caleydo.view.stratomex.EPickingType;
+import org.caleydo.view.stratomex.column.BrickColumn;
 import org.caleydo.view.stratomex.tourguide.TourguideAdapter;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class AddAttachedLayoutRenderer extends ALayoutRenderer {
-	private final AGLView view;
+public class AddAttachedLayoutRenderer extends ALayoutRenderer implements IPickingListener {
+	private final BrickColumn view;
 	private final int id;
 	private final TourguideAdapter tourguide;
 	private final boolean left;
+	private boolean show = false;
 
-	public AddAttachedLayoutRenderer(AGLView view, int id, TourguideAdapter tourguide, boolean left) {
+	public AddAttachedLayoutRenderer(BrickColumn view, TourguideAdapter tourguide, boolean left) {
 		this.view = view;
-		this.id = id;
+		this.id = view.getID();
 		this.tourguide = tourguide;
 		this.left = left;
+		view.getStratomexView().addTypePickingListener(this, EPickingType.BRICK.name());
 	}
 
 	@Override
 	protected void renderContent(GL2 gl) {
+		if (!show)
+			return;
 		float w1px = view.getPixelGLConverter().getGLWidthForPixelWidth(1);
 		float h1px = view.getPixelGLConverter().getGLHeightForPixelHeight(1);
 		float hi = h1px * 24;
@@ -54,7 +61,26 @@ public class AddAttachedLayoutRenderer extends ALayoutRenderer {
 
 	@Override
 	protected boolean permitsWrappingDisplayLists() {
-		return true;
+		return false;
+	}
+
+	@Override
+	public void pick(Pick pick) {
+		switch(pick.getPickingMode()) {
+		case MOUSE_OVER:
+			show = pick.getObjectID() == view.getHeaderBrick().getID();
+			setDisplayListDirty(true);
+			break;
+		default:
+			break;
+		}
+
+	}
+
+	@Override
+	public void destroy(GL2 gl) {
+		view.getStratomexView().removeTypePickingListener(this, EPickingType.BRICK.name());
+		super.destroy(gl);
 	}
 
 }

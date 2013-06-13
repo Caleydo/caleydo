@@ -540,10 +540,10 @@ public class TourguideAdapter implements IStratomexAdapter {
 				layout.clearForegroundRenderers(AddAttachedLayoutRenderer.class);
 				layout.clearForegroundRenderers(WizardActionsLayoutRenderer.class);
 				if (canHaveDependentColumns(wizardPreview))
-					layout.addForeGroundRenderer(new AddAttachedLayoutRenderer(stratomex, wizardPreview.getID(), this,
+					layout.addForeGroundRenderer(new AddAttachedLayoutRenderer(wizardPreview, this,
 							false));
 				if (canHaveIndependentColumns(wizardPreview))
-					layout.addForeGroundRenderer(new AddAttachedLayoutRenderer(stratomex, wizardPreview.getID(), this,
+					layout.addForeGroundRenderer(new AddAttachedLayoutRenderer(wizardPreview, this,
 							true));
 			}
 			// reset
@@ -592,10 +592,10 @@ public class TourguideAdapter implements IStratomexAdapter {
 
 		Row layout = brickColumn.getLayout();
 		if (canHaveDependentColumns(brickColumn))
-			layout.addForeGroundRenderer(new AddAttachedLayoutRenderer(stratomex, brickColumn.getID(), this, false));
+			layout.addForeGroundRenderer(new AddAttachedLayoutRenderer(brickColumn, this, false));
 
 		if (canHaveIndependentColumns(brickColumn))
-			layout.addForeGroundRenderer(new AddAttachedLayoutRenderer(stratomex, brickColumn.getID(), this, true));
+			layout.addForeGroundRenderer(new AddAttachedLayoutRenderer(brickColumn, this, true));
 	}
 
 	/**
