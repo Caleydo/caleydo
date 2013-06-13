@@ -30,15 +30,13 @@ import org.caleydo.core.io.DataDescription;
 import org.caleydo.core.io.DataDescriptionUtil;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.NumericalProperties;
-import org.caleydo.core.io.gui.dataimport.widget.table.ColumnConfigTableWidget;
+import org.caleydo.core.io.gui.dataimport.widget.IntegerCallback;
+import org.caleydo.core.io.gui.dataimport.widget.table.ColumnConfigTable;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -53,9 +51,9 @@ public class InhomogeneousDataPropertiesPage extends AImportDataPage {
 
 	public static final String PAGE_DESCRIPTION = "Specify data properties for individual columns.";
 
-	protected ColumnConfigTableWidget table;
+	protected ColumnConfigTable table;
 
-	protected Button setColumnPropertiesButton;
+	// protected Button setColumnPropertiesButton;
 
 	/**
 	 * Determines whether this page should init its widgets from the {@link DataDescription} .
@@ -79,18 +77,24 @@ public class InhomogeneousDataPropertiesPage extends AImportDataPage {
 		parentComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		parentComposite.setLayout(new GridLayout(1, true));
 
-		setColumnPropertiesButton = new Button(parentComposite, SWT.PUSH);
-		setColumnPropertiesButton.setText("Set Column Properties");
-		setColumnPropertiesButton.addSelectionListener(new SelectionAdapter() {
+		// setColumnPropertiesButton = new Button(parentComposite, SWT.PUSH);
+		// setColumnPropertiesButton.setText("Set Column Properties");
+		// setColumnPropertiesButton.addSelectionListener(new SelectionAdapter() {
+		// @Override
+		// public void widgetSelected(SelectionEvent e) {
+		// int columnIndex = table.getSelectedColumn();
+		// if (columnIndex != -1)
+		// defineColumnProperties(columnIndex);
+		// }
+		// });
+
+		table = new ColumnConfigTable(parentComposite, new IntegerCallback() {
+
 			@Override
-			public void widgetSelected(SelectionEvent e) {
-				int columnIndex = table.getSelectedColumn();
-				if (columnIndex != -1)
-					defineColumnProperties(columnIndex);
+			public void on(int data) {
+				defineColumnProperties(data);
 			}
 		});
-
-		table = new ColumnConfigTableWidget(parentComposite);
 	}
 
 	@SuppressWarnings("unchecked")

@@ -161,17 +161,20 @@ public class ColumnDataPropertiesDialog extends Dialog implements Listener {
 			showNumericalDataWidgets();
 		} else {
 			categoricalDataButton.setSelection(true);
-
+			showCategoricalDataWidgets();
 		}
 
-		// scrolledComposite.setSize(820, 660);
+
 		scrolledComposite.setMinSize(820, 660);
 		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, true);
 		gd.widthHint = 825;
 		gd.heightHint = 760;
 		parent.setLayoutData(gd);
-		parent.layout(true, true);
-		parent.pack(true);
+		// parent.layout(true, true);
+		// parent.pack(true);
+		//
+		// parentComposite.layout(true);
+		// parentComposite.pack();
 
 
 		return parent;

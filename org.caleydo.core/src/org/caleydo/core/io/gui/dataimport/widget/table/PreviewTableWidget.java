@@ -13,7 +13,6 @@ import org.caleydo.core.io.parser.ascii.ATextParser;
 import org.eclipse.nebula.widgets.nattable.NatTable;
 import org.eclipse.nebula.widgets.nattable.config.AbstractRegistryConfiguration;
 import org.eclipse.nebula.widgets.nattable.config.CellConfigAttributes;
-import org.eclipse.nebula.widgets.nattable.config.DefaultNatTableStyleConfiguration;
 import org.eclipse.nebula.widgets.nattable.config.IConfigRegistry;
 import org.eclipse.nebula.widgets.nattable.data.IDataProvider;
 import org.eclipse.nebula.widgets.nattable.data.convert.IDisplayConverter;
@@ -32,7 +31,6 @@ import org.eclipse.nebula.widgets.nattable.layer.cell.ILayerCell;
 import org.eclipse.nebula.widgets.nattable.painter.cell.ColumnHeaderCheckBoxPainter;
 import org.eclipse.nebula.widgets.nattable.painter.cell.ICellPainter;
 import org.eclipse.nebula.widgets.nattable.painter.cell.TextPainter;
-import org.eclipse.nebula.widgets.nattable.painter.cell.decorator.BeveledBorderDecorator;
 import org.eclipse.nebula.widgets.nattable.painter.cell.decorator.CellPainterDecorator;
 import org.eclipse.nebula.widgets.nattable.selection.SelectionLayer;
 import org.eclipse.nebula.widgets.nattable.style.CellStyleAttributes;
@@ -279,7 +277,7 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 		// columnHeaderLayer.setConfigLabelAccumulator(acc);
 		// acc.registerColumnOverrides(9, ColumnLabelAccumulator.COLUMN_LABEL_PREFIX + 9);
 
-		table.addConfiguration(new DefaultNatTableStyleConfiguration());
+		table.addConfiguration(new DefaultCaleydoNatTableConfiguration());
 		if (columnIDConverter == null)
 			columnIDConverter = new RegExIDConverter(null);
 		if (rowIDConverter == null)
@@ -312,8 +310,7 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 		});
 
 		final ColumnHeaderCheckBoxPainter columnHeaderCheckBoxPainter = new ColumnHeaderCheckBoxPainter(columnDataLayer);
-
-		final ICellPainter columnHeaderPainter = new BeveledBorderDecorator(new CellPainterDecorator(
+		final ICellPainter columnHeaderPainter = new GridLineCellPainterDecorator(new CellPainterDecorator(
 				new ColumnNumberCellPainter(), CellEdgeEnum.LEFT, columnHeaderCheckBoxPainter));
 
 		table.addConfiguration(new AbstractRegistryConfiguration() {

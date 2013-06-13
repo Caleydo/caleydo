@@ -32,7 +32,6 @@ import org.caleydo.core.manager.GeneralManager;
 import org.eclipse.nebula.widgets.nattable.NatTable;
 import org.eclipse.nebula.widgets.nattable.config.AbstractRegistryConfiguration;
 import org.eclipse.nebula.widgets.nattable.config.CellConfigAttributes;
-import org.eclipse.nebula.widgets.nattable.config.DefaultNatTableStyleConfiguration;
 import org.eclipse.nebula.widgets.nattable.config.IConfigRegistry;
 import org.eclipse.nebula.widgets.nattable.config.IEditableRule;
 import org.eclipse.nebula.widgets.nattable.coordinate.PositionCoordinate;
@@ -54,6 +53,7 @@ import org.eclipse.nebula.widgets.nattable.painter.cell.ImagePainter;
 import org.eclipse.nebula.widgets.nattable.painter.cell.TextPainter;
 import org.eclipse.nebula.widgets.nattable.painter.cell.decorator.BeveledBorderDecorator;
 import org.eclipse.nebula.widgets.nattable.painter.cell.decorator.CellPainterDecorator;
+import org.eclipse.nebula.widgets.nattable.painter.layer.NatGridLayerPainter;
 import org.eclipse.nebula.widgets.nattable.selection.SelectionLayer;
 import org.eclipse.nebula.widgets.nattable.selection.event.CellSelectionEvent;
 import org.eclipse.nebula.widgets.nattable.selection.event.RowSelectionEvent;
@@ -234,7 +234,7 @@ public class CategoryTable extends AMatrixBasedTableWidget implements ILayerList
 		table = new NatTable(parent, gridLayer, false);
 		table.setLayoutData(layoutData);
 
-		table.addConfiguration(new DefaultNatTableStyleConfiguration());
+		table.addConfiguration(new DefaultCaleydoNatTableConfiguration());
 		ColumnOverrideLabelAccumulator acc = new ColumnOverrideLabelAccumulator(bodyDataLayer);
 		bodyDataLayer.setConfigLabelAccumulator(acc);
 		acc.registerColumnOverrides(0, NON_EDITABLE);
@@ -258,6 +258,8 @@ public class CategoryTable extends AMatrixBasedTableWidget implements ILayerList
 
 			@Override
 			public void configureRegistry(IConfigRegistry configRegistry) {
+
+
 				configRegistry.registerConfigAttribute(EditConfigAttributes.CELL_EDITABLE_RULE,
 						IEditableRule.ALWAYS_EDITABLE, DisplayMode.EDIT, EDITABLE);
 
@@ -325,6 +327,9 @@ public class CategoryTable extends AMatrixBasedTableWidget implements ILayerList
 				}
 			}
 		});
+
+		NatGridLayerPainter layerPainter = new NatGridLayerPainter(table);
+		table.setLayerPainter(layerPainter);
 
 		table.addDisposeListener(this);
 
