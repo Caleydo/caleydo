@@ -195,7 +195,7 @@ public class NestedRankColumnModel extends AMultiRankColumnModel implements ISna
 			float b = f2.values[i];
 			int c = Float.compare(a, b);
 			if (c != 0)
-				return c;
+				return -c;
 		}
 		return 0;
 	}
