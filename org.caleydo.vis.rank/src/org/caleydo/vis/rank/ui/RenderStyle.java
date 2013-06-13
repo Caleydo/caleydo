@@ -92,6 +92,7 @@ public class RenderStyle {
 	public static final String ICON_DRAG = ICON_PREFIX + "drag.png";
 	public static final String ICON_ALIGN_CLASSIC = ICON_PREFIX + "align_classic.png";
 	public static final String ICON_ALIGN_STACKED = ICON_PREFIX + "align_stacked.png";
+	public static final String ICON_ALIGN_STACKED_ORDERED = ICON_PREFIX + "align_ordered.png";
 
 	public static final String ICON_SHOW_RANK_DELTA = ICON_PREFIX + "chart_down_color.png";
 	public static final String ICON_HIDE_RANK_DELTA = ICON_PREFIX + "chart_down_color_disabled.png";

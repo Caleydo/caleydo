@@ -48,7 +48,7 @@ public class RankTableKeyListener implements IGLKeyListener {
 		else if (e.isControlDown() && (e.isKey(TOGGLE_ALIGN_ALL))) {
 			// short cut for align all
 			for (StackedRankColumnModel stacked : Iterables.filter(table.getColumns(), StackedRankColumnModel.class)) {
-				stacked.setAlignAll(!stacked.isAlignAll());
+				stacked.switchToNextAlignment();
 			}
 		}
 	}
