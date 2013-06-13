@@ -30,16 +30,15 @@ import org.caleydo.core.io.DataDescription;
 import org.caleydo.core.io.DataDescriptionUtil;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.NumericalProperties;
-import org.caleydo.core.io.gui.dataimport.widget.table.ColumnConfigTableWidget;
+import org.caleydo.core.io.gui.dataimport.widget.IntegerCallback;
+import org.caleydo.core.io.gui.dataimport.widget.table.ColumnConfigTable;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 
 /**
  * Page for defining properties of inhomogeneous datasets.
@@ -53,9 +52,9 @@ public class InhomogeneousDataPropertiesPage extends AImportDataPage {
 
 	public static final String PAGE_DESCRIPTION = "Specify data properties for individual columns.";
 
-	protected ColumnConfigTableWidget table;
+	protected ColumnConfigTable table;
 
-	protected Button setColumnPropertiesButton;
+	// protected Button setColumnPropertiesButton;
 
 	/**
 	 * Determines whether this page should init its widgets from the {@link DataDescription} .
@@ -79,18 +78,29 @@ public class InhomogeneousDataPropertiesPage extends AImportDataPage {
 		parentComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		parentComposite.setLayout(new GridLayout(1, true));
 
-		setColumnPropertiesButton = new Button(parentComposite, SWT.PUSH);
-		setColumnPropertiesButton.setText("Set Column Properties");
-		setColumnPropertiesButton.addSelectionListener(new SelectionAdapter() {
+		Label descriptionLabel = new Label(parentComposite, SWT.WRAP);
+		descriptionLabel
+				.setText("In an inhomogeneous dataset the properties of each column need to be configured individually. \nYou can do so by clicking the \'Set Properties\' button at the top of each column.");
+		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, false);
+		gd.widthHint = 400;
+		// setColumnPropertiesButton = new Button(parentComposite, SWT.PUSH);
+		// setColumnPropertiesButton.setText("Set Column Properties");
+		// setColumnPropertiesButton.addSelectionListener(new SelectionAdapter() {
+		// @Override
+		// public void widgetSelected(SelectionEvent e) {
+		// int columnIndex = table.getSelectedColumn();
+		// if (columnIndex != -1)
+		// defineColumnProperties(columnIndex);
+		// }
+		// });
+
+		table = new ColumnConfigTable(parentComposite, new IntegerCallback() {
+
 			@Override
-			public void widgetSelected(SelectionEvent e) {
-				int columnIndex = table.getSelectedColumn();
-				if (columnIndex != -1)
-					defineColumnProperties(columnIndex);
+			public void on(int data) {
+				defineColumnProperties(data);
 			}
 		});
-
-		table = new ColumnConfigTableWidget(parentComposite);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -98,14 +108,16 @@ public class InhomogeneousDataPropertiesPage extends AImportDataPage {
 		List<ColumnDescription> columnDescriptions = dataSetDescription.getOrCreateParsingPattern();
 		ColumnDescription columnDescription = columnDescriptions.get(columnIndex);
 		DataImportWizard wizard = getWizard();
+		String columnCaption = wizard.getFilteredRowOfColumnIDs().get(columnIndex);
 		ColumnDataPropertiesDialog dialog;
 		if (columnDescription.getDataDescription().getCategoricalClassDescription() != null) {
 			dialog = new ColumnDataPropertiesDialog(getShell(), (CategoricalClassDescription<String>) columnDescription
-					.getDataDescription().getCategoricalClassDescription(), wizard.getFilteredDataMatrix(), columnIndex);
+					.getDataDescription().getCategoricalClassDescription(), wizard.getFilteredDataMatrix(),
+					columnIndex, columnCaption);
 		} else {
 			dialog = new ColumnDataPropertiesDialog(getShell(), columnDescription.getDataDescription()
 					.getNumericalProperties(), columnDescription.getDataDescription().getRawDataType(),
-					wizard.getFilteredDataMatrix(), columnIndex);
+					wizard.getFilteredDataMatrix(), columnIndex, columnCaption);
 		}
 		int status = dialog.open();
 

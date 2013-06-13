@@ -73,16 +73,20 @@ public class ColumnDataPropertiesDialog extends Dialog implements Listener {
 
 	private ScrolledComposite scrolledComposite;
 
+	private String columnCaption;
+
+
 	/**
 	 * @param parentShell
 	 */
-	protected ColumnDataPropertiesDialog(Shell parentShell, NumericalProperties numericalProperties,
-			EDataType dataType, List<List<String>> datasetMatrix, int columnIndex) {
+	public ColumnDataPropertiesDialog(Shell parentShell, NumericalProperties numericalProperties, EDataType dataType,
+			List<List<String>> datasetMatrix, int columnIndex, String columnCaption) {
 		super(parentShell);
 		this.numericalProperties = numericalProperties;
 		this.datasetMatrix = datasetMatrix;
 		this.columnIndex = columnIndex;
 		this.dataType = dataType;
+		this.columnCaption = columnCaption;
 	}
 
 	@Override
@@ -93,19 +97,20 @@ public class ColumnDataPropertiesDialog extends Dialog implements Listener {
 	/**
 	 * @param parentShell
 	 */
-	protected ColumnDataPropertiesDialog(Shell parentShell,
+	public ColumnDataPropertiesDialog(Shell parentShell,
 			CategoricalClassDescription<String> categoricalClassDescription, List<List<String>> datasetMatrix,
-			int columnIndex) {
+			int columnIndex, String columnCaption) {
 		super(parentShell);
 		this.categoricalClassDescription = categoricalClassDescription;
 		this.datasetMatrix = datasetMatrix;
 		this.columnIndex = columnIndex;
+		this.columnCaption = columnCaption;
 	}
 
 	@Override
 	protected void configureShell(Shell newShell) {
 		super.configureShell(newShell);
-		newShell.setText("Column Data Properties");
+		newShell.setText("Data Properties Of Column " + columnCaption);
 	}
 
 	@Override
@@ -161,17 +166,20 @@ public class ColumnDataPropertiesDialog extends Dialog implements Listener {
 			showNumericalDataWidgets();
 		} else {
 			categoricalDataButton.setSelection(true);
-
+			showCategoricalDataWidgets();
 		}
 
-		// scrolledComposite.setSize(820, 660);
+
 		scrolledComposite.setMinSize(820, 660);
 		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, true);
 		gd.widthHint = 825;
 		gd.heightHint = 760;
 		parent.setLayoutData(gd);
-		parent.layout(true, true);
-		parent.pack(true);
+		// parent.layout(true, true);
+		// parent.pack(true);
+		//
+		// parentComposite.layout(true);
+		// parentComposite.pack();
 
 
 		return parent;

@@ -22,21 +22,34 @@ package org.caleydo.core.io.gui.dataimport.widget.table;
 import java.util.List;
 
 import org.caleydo.core.io.ColumnDescription;
+import org.caleydo.core.io.gui.dataimport.widget.IntegerCallback;
 import org.eclipse.nebula.widgets.nattable.NatTable;
-import org.eclipse.nebula.widgets.nattable.config.DefaultNatTableStyleConfiguration;
+import org.eclipse.nebula.widgets.nattable.config.AbstractRegistryConfiguration;
+import org.eclipse.nebula.widgets.nattable.config.CellConfigAttributes;
+import org.eclipse.nebula.widgets.nattable.config.IConfigRegistry;
 import org.eclipse.nebula.widgets.nattable.coordinate.PositionCoordinate;
 import org.eclipse.nebula.widgets.nattable.data.IDataProvider;
+import org.eclipse.nebula.widgets.nattable.grid.GridRegion;
 import org.eclipse.nebula.widgets.nattable.grid.data.DefaultCornerDataProvider;
 import org.eclipse.nebula.widgets.nattable.grid.layer.ColumnHeaderLayer;
 import org.eclipse.nebula.widgets.nattable.grid.layer.CornerLayer;
 import org.eclipse.nebula.widgets.nattable.grid.layer.GridLayer;
 import org.eclipse.nebula.widgets.nattable.grid.layer.RowHeaderLayer;
 import org.eclipse.nebula.widgets.nattable.layer.DataLayer;
-import org.eclipse.nebula.widgets.nattable.layer.cell.ColumnLabelAccumulator;
-import org.eclipse.nebula.widgets.nattable.layer.cell.ColumnOverrideLabelAccumulator;
+import org.eclipse.nebula.widgets.nattable.layer.LabelStack;
+import org.eclipse.nebula.widgets.nattable.layer.cell.IConfigLabelAccumulator;
+import org.eclipse.nebula.widgets.nattable.painter.cell.ButtonCellPainter;
+import org.eclipse.nebula.widgets.nattable.painter.cell.TextPainter;
+import org.eclipse.nebula.widgets.nattable.painter.layer.NatGridLayerPainter;
 import org.eclipse.nebula.widgets.nattable.selection.SelectionLayer;
+import org.eclipse.nebula.widgets.nattable.style.DisplayMode;
+import org.eclipse.nebula.widgets.nattable.ui.action.IMouseAction;
+import org.eclipse.nebula.widgets.nattable.ui.binding.UiBindingRegistry;
+import org.eclipse.nebula.widgets.nattable.ui.matcher.CellLabelMouseEventMatcher;
+import org.eclipse.nebula.widgets.nattable.ui.matcher.MouseEventMatcher;
 import org.eclipse.nebula.widgets.nattable.viewport.ViewportLayer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 
@@ -47,7 +60,9 @@ import org.eclipse.swt.widgets.Composite;
  * @author Christian Partl
  *
  */
-public class ColumnConfigTableWidget {
+public class ColumnConfigTable {
+
+	protected static final String COLUMN_PROPERTIES_BUTTON = "COLUMN_PROPERTIES_BUTTON";
 
 	protected NatTable table;
 
@@ -56,6 +71,8 @@ public class ColumnConfigTableWidget {
 	protected MatrixBasedBodyDataProvider bodyDataProvider;
 
 	protected SelectionLayer selectionLayer;
+
+	protected IntegerCallback onSetColumnProperties;
 
 	private class ColumnHeaderDataProvider implements IDataProvider {
 
@@ -72,8 +89,9 @@ public class ColumnConfigTableWidget {
 
 			if (columnDescriptions == null || rowOfColumnIDs == null)
 				return columnIndex + 1;
-
 			if (rowIndex == 0) {
+				return "Set Properties";
+			} else if (rowIndex == 1) {
 				ColumnDescription columnDescription = columnDescriptions.get(columnIndex);
 				if (columnDescription.getDataDescription().getCategoricalClassDescription() != null) {
 					return "Categorical";
@@ -98,7 +116,7 @@ public class ColumnConfigTableWidget {
 
 		@Override
 		public int getRowCount() {
-			return 2;
+			return 3;
 		}
 
 	}
@@ -136,8 +154,9 @@ public class ColumnConfigTableWidget {
 
 	}
 
-	public ColumnConfigTableWidget(Composite parent) {
+	public ColumnConfigTable(Composite parent, IntegerCallback onSetColumnProperties) {
 		this.parent = parent;
+		this.onSetColumnProperties = onSetColumnProperties;
 		bodyDataProvider = new MatrixBasedBodyDataProvider(null, 1);
 		buildTable(bodyDataProvider, new ColumnHeaderDataProvider(null, null), new RowHeaderDataProvider(null));
 	}
@@ -171,13 +190,71 @@ public class ColumnConfigTableWidget {
 		gridData.widthHint = 800;
 		table.setLayoutData(gridData);
 
-		ColumnOverrideLabelAccumulator acc = new ColumnOverrideLabelAccumulator(columnHeaderLayer);
-		columnHeaderLayer.setConfigLabelAccumulator(acc);
-		acc.registerColumnOverrides(9, ColumnLabelAccumulator.COLUMN_LABEL_PREFIX + 9);
-		table.addConfiguration(new DefaultNatTableStyleConfiguration());
+		IConfigLabelAccumulator acc = new IConfigLabelAccumulator() {
+
+			@Override
+			public void accumulateConfigLabels(LabelStack configLabels, int columnPosition, int rowPosition) {
+				if (rowPosition == 0) {
+					configLabels.addLabel(COLUMN_PROPERTIES_BUTTON);
+				}
+			}
+		};
+
+		// ColumnOverrideLabelAccumulator acc = new ColumnOverrideLabelAccumulator(columnHeaderLayer);
+		columnDataLayer.setConfigLabelAccumulator(acc);
+
+		final ButtonCellPainter propertiesButton = new ButtonCellPainter(new TextPainter(false, true, true));
+		propertiesButton.addClickListener(new IMouseAction() {
+
+			@Override
+			public void run(NatTable natTable, MouseEvent event) {
+				onSetColumnProperties.on(natTable.getColumnPositionByX(event.x) - 1);
+			}
+		});
+
+		// acc.registerColumnOverrides(9, ColumnLabelAccumulator.COLUMN_LABEL_PREFIX + 9);
+		// table.addConfiguration(new DefaultNatTableStyleConfiguration());
+		table.addConfiguration(new DefaultCaleydoNatTableConfiguration());
+		table.addConfiguration(new AbstractRegistryConfiguration() {
+
+			@Override
+			public void configureRegistry(IConfigRegistry configRegistry) {
+
+				configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_PAINTER, propertiesButton,
+						DisplayMode.NORMAL, COLUMN_PROPERTIES_BUTTON);
+			}
+
+			@Override
+			public void configureUiBindings(UiBindingRegistry uiBindingRegistry) {
+				CellLabelMouseEventMatcher mouseEventMatcher = new CellLabelMouseEventMatcher(GridRegion.COLUMN_HEADER,
+						MouseEventMatcher.LEFT_BUTTON, COLUMN_PROPERTIES_BUTTON);
+
+				// Inform the button painter of the click.
+				uiBindingRegistry.registerMouseDownBinding(mouseEventMatcher, propertiesButton);
+			}
+
+		});
+
+		NatGridLayerPainter layerPainter = new NatGridLayerPainter(table);
+		table.setLayerPainter(layerPainter);
+
+		// DefaultSelectionStyleConfiguration selectionStyle = new DefaultSelectionStyleConfiguration();
+		// selectionStyle.selectionFont = GUIHelper.getFont(new FontData("Verdana", 8, SWT.NORMAL));
+		// selectionStyle.selectionBgColor = GUIHelper.getColor(217, 232, 251);
+		// selectionStyle.selectionFgColor = GUIHelper.COLOR_BLACK;
+		// selectionStyle.anchorBorderStyle = new BorderStyle(1, GUIHelper.COLOR_DARK_GRAY, LineStyleEnum.SOLID);
+		// selectionStyle.anchorBgColor = GUIHelper.getColor(65, 113, 43);
+		// selectionStyle.selectedHeaderBgColor = GUIHelper.getColor(156, 209, 103);
+		// table.addConfiguration(selectionStyle);
 
 		table.configure();
 	}
+
+
+
+
+
+
 
 	public void createTableFromMatrix(List<List<String>> dataMatrix, List<String> rowOfColumnIDs,
 			List<String> columnOfRowIDs, List<ColumnDescription> columnDescriptions) {

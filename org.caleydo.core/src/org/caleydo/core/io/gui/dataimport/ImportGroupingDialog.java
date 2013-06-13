@@ -101,7 +101,7 @@ public class ImportGroupingDialog extends AHelpButtonDialog implements SafeCalla
 	protected Control createDialogArea(Composite parent) {
 		int numGridCols = 2;
 
-		parentComposite = new Composite(parent, SWT.NONE);
+		parentComposite = new Composite(parent, SWT.BORDER);
 		GridLayout layout = new GridLayout(numGridCols, false);
 		parentComposite.setLayout(layout);
 		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, true);
@@ -247,13 +247,14 @@ public class ImportGroupingDialog extends AHelpButtonDialog implements SafeCalla
 		this.rowConfig.setEnabled(true);
 
 		this.previewTable.generatePreview();
+		// this.parentComposite.layout(true, true);
 	}
 
 	protected void onPreviewChanged(int totalNumberOfColumns, int totalNumberOfRows,
 			List<? extends List<String>> dataMatrix) {
 		this.rowConfig.setMaxDimension(totalNumberOfColumns, totalNumberOfRows);
 		this.rowConfig.determineConfigFromPreview(dataMatrix, this.rowIDCategory);
-		parentComposite.pack();
+		// parentComposite.pack();
 		parentComposite.layout(true);
 	}
 }

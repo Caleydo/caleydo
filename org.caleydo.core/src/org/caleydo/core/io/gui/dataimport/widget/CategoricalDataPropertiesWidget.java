@@ -186,6 +186,10 @@ public class CategoricalDataPropertiesWidget implements ITableDataChangeListener
 		categoriesGroup.setLayout(new GridLayout(2, false));
 		categoriesGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
+		categoryTable = new CategoryTable(categoriesGroup, new GridData(SWT.FILL, SWT.FILL, true, true, 1, 2), true);
+
+		categoryTable.registerTableDataChangeListener(this);
+
 		Composite buttonComposite = new Composite(categoriesGroup, SWT.NONE);
 		buttonComposite.setLayout(new GridLayout(1, true));
 
@@ -262,10 +266,6 @@ public class CategoricalDataPropertiesWidget implements ITableDataChangeListener
 			}
 
 		});
-
-		categoryTable = new CategoryTable(categoriesGroup, new GridData(SWT.FILL, SWT.FILL, true, true, 1, 2), true);
-
-		categoryTable.registerTableDataChangeListener(this);
 
 		// buttonComposite = new Composite(categoriesGroup, SWT.NONE);
 		// buttonComposite.setLayout(new GridLayout(1, true));
