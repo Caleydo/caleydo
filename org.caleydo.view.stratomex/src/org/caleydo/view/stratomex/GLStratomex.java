@@ -134,7 +134,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	public static final String VIEW_NAME = "StratomeX";
 
 	private final static int ARCH_PIXEL_HEIGHT = 100;
-	private final static int ARCH_PIXEL_WIDTH = 80;
+	private final static int ARCH_PIXEL_WIDTH = 140;
 	private final static float ARCH_BOTTOM_PERCENT = 1f;
 	private final static float ARCH_STAND_WIDTH_PERCENT = 0.05f;
 
@@ -1638,6 +1638,118 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 				groupSizes.add(sharedRecordVA.size());
 				sampleElements.add(sizeCounter);
 				sizeCounter += sharedRecordVA.size();
+				groupNames.add(sourceVA.getGroupList().get(groupIndex).getLabel() + " Split 1");
+
+				newIDs.addAll(remainingGroupIDs);
+				groupSizes.add(remainingGroupIDs.size());
+				sampleElements.add(sizeCounter);
+				sizeCounter += remainingGroupIDs.size();
+				groupNames.add(sourceVA.getGroupList().get(groupIndex).getLabel() + " Split 2");
+			} else {
+				newIDs.addAll(sourceVA.getIDsOfGroup(groupIndex));
+				groupSizes.add(sourceVA.getGroupList().get(groupIndex).getSize());
+				sampleElements.add(sizeCounter);
+				sizeCounter += sourceVA.getGroupList().get(groupIndex).getSize();
+				groupNames.add(sourceVA.getGroupList().get(groupIndex).getLabel());
+			}
+
+		}
+
+		PerspectiveInitializationData data = new PerspectiveInitializationData();
+
+		data.setData(newIDs, groupSizes, sampleElements, groupNames);
+		// FIXME the rest should probably not be done here but in the data
+		// domain.
+		sourcePerspective.init(data);
+
+		RecordVAUpdateEvent event = new RecordVAUpdateEvent();
+		event.setPerspectiveID(sourcePerspective.getPerspectiveID());
+
+		eventPublisher.triggerEvent(event);
+
+	}
+	
+	/**
+	 * Splits a brick into two portions: those values that are in the band identified through the connection band id and
+	 * the others.
+	 */
+	public void createBrick(VirtualArray selectedRecordVA, GLBrick sourceBrick) {
+		//BrickConnection brickConnection = hashConnectionBandIDToRecordVA.get(connectionBandID);
+		//VirtualArray sharedRecordVA = brickConnection.getSharedRecordVirtualArray();
+
+		Perspective sourcePerspective;
+		VirtualArray sourceVA;
+		Integer sourceGroupIndex;
+//		GLBrick sourceBrick;
+//		if (isSplitLeftBrick) {
+//			sourceBrick = brickConnection.getLeftBrick();
+//		} else {
+//			sourceBrick = brickConnection.getRightBrick();
+//		}
+		
+		
+
+		sourcePerspective = sourceBrick.getBrickColumn().getTablePerspective().getRecordPerspective();
+		sourceVA = sourcePerspective.getVirtualArray();
+		sourceGroupIndex = sourceBrick.getTablePerspective().getRecordGroup().getGroupIndex();
+
+		boolean idNeedsConverting = false;
+		if (!sourceVA.getIdType().equals(selectedRecordVA.getIdType())) {
+			idNeedsConverting = true;
+			// sharedRecordVA =
+			// sourceBrick.getDataDomain().convertForeignRecordPerspective(foreignPerspective)
+		}
+
+		List<Integer> remainingGroupIDs = new ArrayList<Integer>();
+
+		// this is necessary because the originalGroupIDs is backed by the
+		// original VA and changes in it also change the VA
+		for (Integer id : sourceVA.getIDsOfGroup(sourceGroupIndex)) {
+			remainingGroupIDs.add(id);
+		}
+
+		IDMappingManager idMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(
+				sourceVA.getIdType().getIDCategory());
+
+		if (idNeedsConverting) {
+			VirtualArray mappedSharedRecordVA = new VirtualArray(sourceVA.getIdType());
+			for (Integer recordID : selectedRecordVA) {
+				recordID = idMappingManager.getID(selectedRecordVA.getIdType(), sourceVA.getIdType(), recordID);
+				if (recordID == null || recordID == -1)
+					continue;
+				mappedSharedRecordVA.append(recordID);
+			}
+			selectedRecordVA = mappedSharedRecordVA;
+		}
+
+		// remove the ids of the shared record va from the group which is beeing
+		// split
+		for (Integer recordID : selectedRecordVA) {
+
+			Iterator<Integer> remainingGroupIDIterator = remainingGroupIDs.iterator();
+			while (remainingGroupIDIterator.hasNext()) {
+				Integer id = remainingGroupIDIterator.next();
+				if (id.equals(recordID)) {
+					remainingGroupIDIterator.remove();
+				}
+			}
+		}
+
+		sourceVA.getGroupList().updateGroupInfo();
+
+		List<Integer> newIDs = new ArrayList<Integer>(sourceVA.size());
+		List<Integer> groupSizes = new ArrayList<Integer>(sourceVA.getGroupList().size() + 1);
+		List<String> groupNames = new ArrayList<String>(sourceVA.getGroupList().size() + 1);
+		List<Integer> sampleElements = new ArrayList<Integer>(sourceVA.getGroupList().size() + 1);
+
+		// build up the data for the perspective
+		int sizeCounter = 0;
+		for (Integer groupIndex = 0; groupIndex < sourceVA.getGroupList().size(); groupIndex++) {
+			if (groupIndex == sourceGroupIndex) {
+				newIDs.addAll(selectedRecordVA.getIDs());
+				groupSizes.add(selectedRecordVA.size());
+				sampleElements.add(sizeCounter);
+				sizeCounter += selectedRecordVA.size();
 				groupNames.add(sourceVA.getGroupList().get(groupIndex).getLabel() + " Split 1");
 
 				newIDs.addAll(remainingGroupIDs);

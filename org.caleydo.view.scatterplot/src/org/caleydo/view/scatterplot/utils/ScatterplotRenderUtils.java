@@ -68,6 +68,8 @@ public class ScatterplotRenderUtils {
 	public void render(GL2 gl, ScatterplotElement scatterplotElement, float width, float height)
 	{		
 		//TODO: No need to call every render cycle, can be called at only resize events
+		
+		
 		findScreenMappingConstants(width, height);
 		
 		//TODO: fix this!
@@ -141,6 +143,8 @@ public class ScatterplotRenderUtils {
 	private void findScreenMappingConstants(float width, float height)
 	{	
 		sideSpacing = 15.0f; //view.getParentComposite(). getPixelGLConverter().getGLWidthForPixelWidth(ScatterplotRenderStyle.SIDE_SPACING);
+		
+		
 		
 		xScale = (width - (2.0f * sideSpacing));
 		yScale = (height - (2.0f * sideSpacing));
