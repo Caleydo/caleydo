@@ -38,6 +38,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 
 /**
  * Page for defining properties of inhomogeneous datasets.
@@ -77,6 +78,11 @@ public class InhomogeneousDataPropertiesPage extends AImportDataPage {
 		parentComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		parentComposite.setLayout(new GridLayout(1, true));
 
+		Label descriptionLabel = new Label(parentComposite, SWT.WRAP);
+		descriptionLabel
+				.setText("In an inhomogeneous dataset the properties of each column need to be configured individually. \nYou can do so by clicking the \'Set Properties\' button at the top of each column.");
+		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, false);
+		gd.widthHint = 400;
 		// setColumnPropertiesButton = new Button(parentComposite, SWT.PUSH);
 		// setColumnPropertiesButton.setText("Set Column Properties");
 		// setColumnPropertiesButton.addSelectionListener(new SelectionAdapter() {
@@ -102,14 +108,16 @@ public class InhomogeneousDataPropertiesPage extends AImportDataPage {
 		List<ColumnDescription> columnDescriptions = dataSetDescription.getOrCreateParsingPattern();
 		ColumnDescription columnDescription = columnDescriptions.get(columnIndex);
 		DataImportWizard wizard = getWizard();
+		String columnCaption = wizard.getFilteredRowOfColumnIDs().get(columnIndex);
 		ColumnDataPropertiesDialog dialog;
 		if (columnDescription.getDataDescription().getCategoricalClassDescription() != null) {
 			dialog = new ColumnDataPropertiesDialog(getShell(), (CategoricalClassDescription<String>) columnDescription
-					.getDataDescription().getCategoricalClassDescription(), wizard.getFilteredDataMatrix(), columnIndex);
+					.getDataDescription().getCategoricalClassDescription(), wizard.getFilteredDataMatrix(),
+					columnIndex, columnCaption);
 		} else {
 			dialog = new ColumnDataPropertiesDialog(getShell(), columnDescription.getDataDescription()
 					.getNumericalProperties(), columnDescription.getDataDescription().getRawDataType(),
-					wizard.getFilteredDataMatrix(), columnIndex);
+					wizard.getFilteredDataMatrix(), columnIndex, columnCaption);
 		}
 		int status = dialog.open();
 
