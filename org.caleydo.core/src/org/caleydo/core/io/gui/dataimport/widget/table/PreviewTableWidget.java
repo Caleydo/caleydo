@@ -32,6 +32,7 @@ import org.eclipse.nebula.widgets.nattable.painter.cell.ColumnHeaderCheckBoxPain
 import org.eclipse.nebula.widgets.nattable.painter.cell.ICellPainter;
 import org.eclipse.nebula.widgets.nattable.painter.cell.TextPainter;
 import org.eclipse.nebula.widgets.nattable.painter.cell.decorator.CellPainterDecorator;
+import org.eclipse.nebula.widgets.nattable.painter.layer.NatGridLayerPainter;
 import org.eclipse.nebula.widgets.nattable.selection.SelectionLayer;
 import org.eclipse.nebula.widgets.nattable.style.CellStyleAttributes;
 import org.eclipse.nebula.widgets.nattable.style.DisplayMode;
@@ -339,6 +340,9 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 
 			}
 		});
+
+		NatGridLayerPainter layerPainter = new NatGridLayerPainter(table);
+		table.setLayerPainter(layerPainter);
 
 		table.configure();
 

@@ -40,6 +40,7 @@ import org.eclipse.nebula.widgets.nattable.layer.LabelStack;
 import org.eclipse.nebula.widgets.nattable.layer.cell.IConfigLabelAccumulator;
 import org.eclipse.nebula.widgets.nattable.painter.cell.ButtonCellPainter;
 import org.eclipse.nebula.widgets.nattable.painter.cell.TextPainter;
+import org.eclipse.nebula.widgets.nattable.painter.layer.NatGridLayerPainter;
 import org.eclipse.nebula.widgets.nattable.selection.SelectionLayer;
 import org.eclipse.nebula.widgets.nattable.style.DisplayMode;
 import org.eclipse.nebula.widgets.nattable.ui.action.IMouseAction;
@@ -234,7 +235,8 @@ public class ColumnConfigTable {
 
 		});
 
-
+		NatGridLayerPainter layerPainter = new NatGridLayerPainter(table);
+		table.setLayerPainter(layerPainter);
 
 		// DefaultSelectionStyleConfiguration selectionStyle = new DefaultSelectionStyleConfiguration();
 		// selectionStyle.selectionFont = GUIHelper.getFont(new FontData("Verdana", 8, SWT.NORMAL));
