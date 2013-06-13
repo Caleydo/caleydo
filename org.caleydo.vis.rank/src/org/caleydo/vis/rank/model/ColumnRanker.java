@@ -285,7 +285,7 @@ public class ColumnRanker implements Iterable<IRow> {
 			}
 			order = newOrder;
 			ranks = newRanks;
-		} else if (orderBy instanceof IFloatRankableColumnMixin) {
+		} else if (orderBy instanceof IFloatRankableColumnMixin && !(orderBy instanceof NestedRankColumnModel)) {
 			IFloatRankableColumnMixin orderByF = (IFloatRankableColumnMixin) orderBy;
 			List<IntFloat> targetOrderItems = new ArrayList<>(data.size());
 			for (int i = 0; i < data.size(); ++i) {

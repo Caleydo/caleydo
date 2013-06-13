@@ -321,6 +321,7 @@ public class AddWizardElement extends AAddWizardElement implements IReactions {
 		// direct as not yet registered
 		AddScoreColumnEvent event = new AddScoreColumnEvent(scores);
 		event.to(receiver).from(this);
+		receiver.onRemoveLeadingScoreColumns(new RemoveLeadingScoreColumnsEvent());
 		receiver.onAddColumn(event);
 	}
 

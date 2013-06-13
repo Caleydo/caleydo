@@ -324,7 +324,8 @@ public class TourguideAdapter implements IStratomexAdapter {
 			return;
 		if (this.selectionCurrent == brick)
 			return;
-
+		if (this.wizardPreviews.contains(brick.getBrickColumn())) // can't select temporarly
+			return;
 		selectBrick(brick);
 	}
 
