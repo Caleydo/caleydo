@@ -606,7 +606,7 @@ public class GLTourGuideView extends AGLElementView {
 	}
 
 	@ListenTo
-	private void onRemoveLeadingScoreColumns(RemoveLeadingScoreColumnsEvent event) {
+	public void onRemoveLeadingScoreColumns(RemoveLeadingScoreColumnsEvent event) {
 		List<ARankColumnModel> columns = this.table.getColumns();
 		boolean hasOne = false;
 		Collection<ARankColumnModel> toremove = new ArrayList<>();
@@ -622,6 +622,7 @@ public class GLTourGuideView extends AGLElementView {
 			table.remove(col);
 		}
 	}
+
 
 	@ListenTo(sendToMe = true)
 	private void onCreateScore(final CreateScoreEvent event) {
