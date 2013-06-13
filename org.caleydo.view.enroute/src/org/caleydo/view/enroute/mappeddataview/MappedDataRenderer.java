@@ -36,6 +36,7 @@ import org.caleydo.core.event.AEvent;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -75,7 +76,7 @@ public class MappedDataRenderer {
 
 	public static float[] SUMMARY_BAR_COLOR = { 49f / 255f, 163f / 255, 84f / 255, 1f };
 
-	public static final SelectionType abstractGroupType = new SelectionType("AbstactGroup", new int[] { 0, 0, 0 }, 1,
+	public static final SelectionType abstractGroupType = new SelectionType("AbstactGroup", new Color(0, 0, 0), 1,
 			false, 0);
 
 	public static final int ABSTRACT_GROUP_PIXEL_WIDTH = 100;

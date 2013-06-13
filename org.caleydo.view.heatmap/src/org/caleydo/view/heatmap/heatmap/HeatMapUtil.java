@@ -32,6 +32,7 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.GroupList;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.color.mapping.ColorMapper;
 import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.core.view.opengl.picking.PickingType;
@@ -173,7 +174,7 @@ public class HeatMapUtil {
 				Vec3f upperLeftCorner = new Vec3f(0.0f, groupPositionY, 0.0f);
 
 				textureManager.renderTexture(gl, iconTextures, lowerLeftCorner, lowerRightCorner, upperRightCorner,
-						upperLeftCorner, 1, 1, 1, 1);
+						upperLeftCorner, Color.WHITE);
 
 				gl.glPopName();
 				if (groupIndex < contentGroupList.size() - 1) {

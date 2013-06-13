@@ -19,7 +19,7 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.model;
 
-import java.awt.Color;
+
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.lang.reflect.Method;
@@ -32,6 +32,7 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptException;
 
 import org.caleydo.core.event.EventListenerManager.ListenTo;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.ISWTLayer.ISWTLayerRunnable;
@@ -59,9 +60,9 @@ import com.jogamp.common.util.IntObjectHashMap;
 
 /**
  * a special combiner based on a scripted java script function
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public class ScriptedRankColumnModel extends AMultiRankColumnModel implements ICollapseableColumnMixin,
 		IFilterColumnMixin, ISnapshotableColumnMixin, IScriptedColumnMixin {

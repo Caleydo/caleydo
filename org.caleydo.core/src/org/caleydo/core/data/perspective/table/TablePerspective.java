@@ -385,6 +385,10 @@ public class TablePerspective implements IDefaultLabelHolder {
 	 */
 	public void setRecordGroup(Group recordGroup) {
 		this.recordGroup = recordGroup;
+		GroupList groupList = new GroupList();
+		Group group = new Group(recordGroup);
+		groupList.append(group);
+		this.recordPerspective.getVirtualArray().setGroupList(groupList);
 	}
 
 	/**

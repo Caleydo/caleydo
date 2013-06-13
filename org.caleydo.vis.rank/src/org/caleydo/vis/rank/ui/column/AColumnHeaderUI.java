@@ -24,7 +24,6 @@ import static org.caleydo.vis.rank.ui.RenderStyle.HIST_HEIGHT;
 import static org.caleydo.vis.rank.ui.RenderStyle.LABEL_HEIGHT;
 import gleem.linalg.Vec2f;
 
-import java.awt.Color;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
@@ -33,6 +32,7 @@ import java.util.Objects;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.util.base.ILabeled;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
@@ -288,7 +288,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 			// RoundedRectRenderer.FLAG_FILL | RoundedRectRenderer.FLAG_TOP);
 			if (isDraggingAColumn()) {
 				float wi = RenderStyle.SEPARATOR_PICK_WIDTH - RenderStyle.COLUMN_SPACE;
-				g.color(Color.blue).fillRect(wi * 0.5f, 0, w - wi, h).color(Color.black);
+				g.color(Color.BLUE).fillRect(wi * 0.5f, 0, w - wi, h).color(Color.BLACK);
 			} else
 				g.fillRect(0, 0, w, h);
 			g.popName();

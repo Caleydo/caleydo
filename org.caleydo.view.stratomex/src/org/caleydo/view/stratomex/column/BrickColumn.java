@@ -1201,7 +1201,7 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 	 */
 	public void setHighlightColor(float[] color) {
 		if (color == REVERT_COLOR)
-			color = isActive() ? SelectionType.SELECTION.getColor() : null;
+			color = isActive() ? SelectionType.SELECTION.getColor().getRGBA() : null;
 		FrameHighlightRenderer renderer = Iterables.getFirst(
 				Iterables.filter(getLayout().getBackgroundRenderer(), FrameHighlightRenderer.class), null);
 		if (renderer != null)

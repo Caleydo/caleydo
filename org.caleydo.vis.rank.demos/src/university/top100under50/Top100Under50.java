@@ -19,7 +19,7 @@
  *******************************************************************************/
 package university.top100under50;
 
-import java.awt.Color;
+import org.caleydo.core.util.color.Color;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;

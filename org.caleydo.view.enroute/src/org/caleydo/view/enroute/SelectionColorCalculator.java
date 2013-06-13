@@ -54,13 +54,13 @@ public class SelectionColorCalculator {
 		if (selectionTypes.size() != 0
 				&& !selectionTypes.get(0).equals(SelectionType.NORMAL)
 				&& selectionTypes.get(0).isVisible()) {
-			float[] color = selectionTypes.get(0).getColor();
+			float[] color = selectionTypes.get(0).getColor().getRGBA();
 			primaryColor.setRGBA(new float[] {color[0], color[1], color[2], 1});
 
 			if (selectionTypes.size() > 1
 					&& !selectionTypes.get(1).equals(SelectionType.NORMAL)
 					&& selectionTypes.get(1).isVisible()) {
-				color = selectionTypes.get(1).getColor();
+				color = selectionTypes.get(1).getColor().getRGBA();
 				secondaryColor.setRGBA(new float[] {color[0], color[1], color[2], 1});
 			} else {
 				secondaryColor.setRGBA(primaryColor.getRGBA());

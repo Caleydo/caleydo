@@ -19,7 +19,6 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.canvas.internal.awt;
 
-import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.MouseInfo;
 import java.awt.PointerInfo;
@@ -73,14 +72,14 @@ final class ToolTipPickingListener extends APickingListener {
 			setLayout(layout);
 			JLabel label = new JLabel(message);
 			JPanel panel = new JPanel();
-			panel.setBorder(BorderFactory.createLineBorder(Color.black));
+			panel.setBorder(BorderFactory.createLineBorder(java.awt.Color.BLACK));
 			FlowLayout panelLayout = new FlowLayout(FlowLayout.CENTER);
 			panelLayout.setHgap(2);
 			panelLayout.setVgap(1);
 			panel.setLayout(panelLayout);
 			panel.add(label);
 			getContentPane().add(panel);
-			getContentPane().setBackground(new Color(225, 225, 225));
+			getContentPane().setBackground(new java.awt.Color(225, 225, 225));
 			getContentPane().setFocusable(false);
 
 			pack();

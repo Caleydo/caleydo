@@ -19,12 +19,14 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.model;
 
-import java.awt.Color;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+
+import org.caleydo.core.util.color.Color;
 
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;

@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package setvis;
 
@@ -13,24 +13,23 @@ import java.awt.image.PixelGrabber;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.media.opengl.GL2;
+
+import org.caleydo.core.util.color.ColorManager;
+
+import setvis.bubbleset.BubbleSet;
 import setvis.gui.CanvasComponent;
 import setvis.shape.AbstractShapeGenerator;
-import setvis.SetOutline;
-import setvis.bubbleset.BubbleSet;
 import setvis.shape.BSplineShapeGenerator;
-
-import javax.media.opengl.GL2;
 
 import com.jogamp.opengl.util.awt.TextureRenderer;
 import com.jogamp.opengl.util.texture.Texture;
-
-import org.caleydo.core.util.color.ColorManager;
 
 public class BubbleSetGLRenderer {
 
 	private Texture bubbleSetsTexture;
 	private TextureRenderer texRenderer=null;
-	
+
 	public SetOutline setOutline;
 	private AbstractShapeGenerator shaper;
 	private CanvasComponent bubblesetCanvas;
@@ -46,13 +45,13 @@ public class BubbleSetGLRenderer {
 		bubblesetCanvas.setDefaultView();
 		// we will adapt the dimensions in each frame
 	}
-	
+
 	public void init(final GL2 gl){
 		texRenderer = new TextureRenderer(1280, 768, true);
 	}
-	
+
 	public int getNumberOfGroups(){return numberOfGroups;}
-	
+
 	public void clearBubbleSet(){
 		numberOfGroups = bubblesetCanvas.getGroupCount() - 1;
 		while (bubblesetCanvas.getGroupCount() > 0) {
@@ -61,7 +60,7 @@ public class BubbleSetGLRenderer {
 			numberOfGroups--;
 		}
 	}
-	
+
 	void setOutlineThickness(int thickness, boolean selection){
 		if(selection)
 			outlineThickness=thickness;
@@ -72,12 +71,12 @@ public class BubbleSetGLRenderer {
 	public void addToLastGroup(ArrayList<Rectangle2D> items, ArrayList<Line2D> edges){
 		addToGroup(items, edges, numberOfGroups);
 	}
-	
+
 	public void addToGroup(ArrayList<Rectangle2D> items, ArrayList<Line2D> edges, int groupID){
 		// add items
 		for(Rectangle2D node : items){
 			bubblesetCanvas.addItem(numberOfGroups, node.getMinX(), node.getMinY(), node.getWidth(), node.getHeight());
-		}		
+		}
 		//add edges
 		if(edges!=null){
 			for(Line2D edge : edges){
@@ -85,21 +84,21 @@ public class BubbleSetGLRenderer {
 			}
 		}
 	}
-	
+
 	public int addGroup(ArrayList<Rectangle2D> items, ArrayList<Line2D> edges, Color colorValue){
 		if(items==null)
 			return -1;
 
 		// new group
-		numberOfGroups++;		
+		numberOfGroups++;
 		int groupID=numberOfGroups;
-		
+
 		//use user defined color value
 		if(colorValue!=null){
 			bubblesetCanvas.addGroup(colorValue, outlineThickness, true);
 		}
 		//use color from look up table
-		else{ 
+		else{
 			List<org.caleydo.core.util.color.Color> colorTable = (ColorManager.get()).getColorList("qualitativeColors");
 			int colorID;
 			// avoid the last two colors because they are close to orange
@@ -111,13 +110,13 @@ public class BubbleSetGLRenderer {
 			org.caleydo.core.util.color.Color c = colorTable.get(colorID);
 			bubblesetCanvas.addGroup(new Color(c.r,c.g,c.b), outlineThickness, true);
 		}
-					
+
 		addToGroup(items, edges, groupID);
 		//
-		
+
 		return numberOfGroups;
 	}
-	
+
 	public void update(GL2 gl, float[] selectionColor, int selectionID)
 	{
 		if(selectionColor!=null && selectionID>=0 && selectionID <= numberOfGroups){
@@ -126,80 +125,80 @@ public class BubbleSetGLRenderer {
 		}else{
 			bubblesetCanvas.setSelection(-1); // the selected set will
 		}
- 
+
 		Graphics2D g2d = texRenderer.createGraphics();
 		if (numberOfGroups >= 0) {
 			bubblesetCanvas.paint(g2d);
 		}
-		g2d.dispose();	
+		g2d.dispose();
 	}
-	
+
 	public void setSize(int width, int height){
 		texRenderer.setSize(width,height);
 	}
-	
+
 	public void renderPxl(GL2 gl, float pxlWidth, float pxlHeight, float opacity)
 	{
 		texRenderer.setColor(1.0f, 1.0f, 1.0f, opacity);
 		bubbleSetsTexture = texRenderer.getTexture();
-		
+
 		gl.glEnable(GL2.GL_BLEND);
 		gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
-		
+
 		bubbleSetsTexture.enable(gl);
 		bubbleSetsTexture.bind(gl);
 		gl.glBegin(GL2.GL_QUADS);
 			gl.glTexCoord2f(0, 0);
 			gl.glVertex3f(0.0f, 0.0f, 0.0f);
-			
+
 			gl.glTexCoord2f(1, 0);
 			gl.glVertex3f(pxlWidth, 0.0f, 0.0f);
-			
+
 			gl.glTexCoord2f(1, 1);
 			gl.glVertex3f(pxlWidth, pxlHeight, 0.0f);
-			
+
 			gl.glTexCoord2f(0, 1);
 			gl.glVertex3f(0.0f, pxlHeight, 0.0f);
 		gl.glEnd();
 		bubbleSetsTexture.disable(gl);
 		//gl.glDisable(GL2.GL_BLEND);
 	}
-	
+
 	public void renderPxl(GL2 gl, float pxlWidth, float pxlHeight)
-	{		
+	{
 		texRenderer.setColor(1.0f, 1.0f, 1.0f, 0.75f);
 		bubbleSetsTexture = texRenderer.getTexture();
-		
+
 		gl.glEnable(GL2.GL_BLEND);
 		gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
-		
+
 		bubbleSetsTexture.enable(gl);
 		bubbleSetsTexture.bind(gl);
 		gl.glBegin(GL2.GL_QUADS);
 			gl.glTexCoord2f(0, 0);
 			gl.glVertex3f(0.0f, 0.0f, 0.0f);
-			
+
 			gl.glTexCoord2f(1, 0);
 			gl.glVertex3f(pxlWidth, 0.0f, 0.0f);
-			
+
 			gl.glTexCoord2f(1, 1);
 			gl.glVertex3f(pxlWidth, pxlHeight, 0.0f);
-			
+
 			gl.glTexCoord2f(0, 1);
 			gl.glVertex3f(0.0f, pxlHeight, 0.0f);
 		gl.glEnd();
 		bubbleSetsTexture.disable(gl);
 		//gl.glDisable(GL2.GL_BLEND);
 	}
-	
+
 	public void render(GL2 gl, float glWidth, float glHeight, float opacity)
-	{		
+	{
 		texRenderer.setColor(1.0f, 1.0f, 1.0f,  opacity);
 		bubbleSetsTexture = texRenderer.getTexture();
-		
+
 		gl.glEnable(GL2.GL_BLEND);
 		gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
-		
+
 		bubbleSetsTexture.enable(gl);
 		bubbleSetsTexture.bind(gl);
 		gl.glBegin(GL2.GL_QUADS);
@@ -212,17 +211,17 @@ public class BubbleSetGLRenderer {
 			gl.glTexCoord2f(0, 0);
 			gl.glVertex3f(0.0f, glHeight, 0.0f);
 		gl.glEnd();
-		bubbleSetsTexture.disable(gl);	
+		bubbleSetsTexture.disable(gl);
 		//gl.glDisable(GL2.GL_BLEND);
 	}
 	public void render(GL2 gl, float glWidth, float glHeight)
-	{		
+	{
 		texRenderer.setColor(1.0f, 1.0f, 1.0f, 0.75f);
 		bubbleSetsTexture = texRenderer.getTexture();
-		
+
 		gl.glEnable(GL2.GL_BLEND);
 		gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
-		
+
 		bubbleSetsTexture.enable(gl);
 		bubbleSetsTexture.bind(gl);
 		gl.glBegin(GL2.GL_QUADS);
@@ -235,10 +234,10 @@ public class BubbleSetGLRenderer {
 			gl.glTexCoord2f(0, 0);
 			gl.glVertex3f(0.0f, glHeight, 0.0f);
 		gl.glEnd();
-		bubbleSetsTexture.disable(gl);	
+		bubbleSetsTexture.disable(gl);
 		//gl.glDisable(GL2.GL_BLEND);
 	}
-	
+
 	public int[] getPxl(int posX, int posY)
 	{
 		int[] pixels = new int[1];
@@ -252,6 +251,6 @@ public class BubbleSetGLRenderer {
 		}
 		return pixels;
 	}
-	
+
 
 }

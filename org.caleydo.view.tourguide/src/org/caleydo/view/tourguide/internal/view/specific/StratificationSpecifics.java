@@ -19,7 +19,7 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.internal.view.specific;
 
-import java.awt.Color;
+import org.caleydo.core.util.color.Color;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

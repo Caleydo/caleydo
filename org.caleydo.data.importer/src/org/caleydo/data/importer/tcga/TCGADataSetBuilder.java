@@ -48,7 +48,7 @@ import org.caleydo.core.util.clusterer.algorithm.kmeans.KMeansClusterConfigurati
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
 import org.caleydo.core.util.collection.Pair;
-import org.caleydo.core.util.color.Colors;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.data.importer.tcga.model.ClinicalMapping;
 import org.caleydo.data.importer.tcga.model.TCGADataSet;
 import org.caleydo.datadomain.genetic.TCGADefinitions;
@@ -252,8 +252,8 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 					.getDataDescription().getCategoricalClassDescription();
 			cats.setCategoryType(ECategoryType.ORDINAL);
 			cats.setRawDataType(EDataType.INTEGER);
-			cats.addCategoryProperty(0, "Not Mutated", Colors.NEUTRAL_GREY);
-			cats.addCategoryProperty(1, "Mutated", Colors.RED);
+		cats.addCategoryProperty(0, "Not Mutated", Color.NEUTRAL_GREY);
+		cats.addCategoryProperty(1, "Mutated", Color.RED);
 			return dataSet;
 
 
@@ -302,11 +302,11 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 				.getCategoricalClassDescription();
 		cats.setCategoryType(ECategoryType.ORDINAL);
 		cats.setRawDataType(EDataType.INTEGER);
-		cats.addCategoryProperty(-2, "Homozygous deletion", Colors.BLUE);
-		cats.addCategoryProperty(-1, "Heterozygous deletion", Colors.BLUE.getColorWithSpecificBrighness(0.5f));
-		cats.addCategoryProperty(0, "NORMAL", Colors.NEUTRAL_GREY);
-		cats.addCategoryProperty(1, "Low level amplification", Colors.RED.getColorWithSpecificBrighness(0.5f));
-		cats.addCategoryProperty(2, "High level amplification", Colors.RED);
+		cats.addCategoryProperty(-2, "Homozygous deletion", Color.BLUE);
+		cats.addCategoryProperty(-1, "Heterozygous deletion", Color.BLUE.getColorWithSpecificBrighness(0.5f));
+		cats.addCategoryProperty(0, "NORMAL", Color.NEUTRAL_GREY);
+		cats.addCategoryProperty(1, "Low level amplification", Color.RED.getColorWithSpecificBrighness(0.5f));
+		cats.addCategoryProperty(2, "High level amplification", Color.RED);
 
 		// File cnmfGroupingFile = fileProvider.extractAnalysisRunFile("cnmf.membership.txt",
 		// "CopyNumber_Clustering_CNMF", LEVEL);

@@ -41,7 +41,7 @@ public class PCRenderStyle extends GeneralRenderStyle {
 			this.selectionType = selectionType;
 			this.lineWidth = selectionType.getLineWidth();
 			this.zDepth = POLYLINE_NORMAL_Z + selectionType.getPriority() * (POLYLINE_SELECTED_Z - POLYLINE_NORMAL_Z);
-			this.color = selectionType.getColor();
+			this.color = selectionType.getColor().getRGBA();
 			updateOcclusionPrev(nrElements);
 		}
 

@@ -22,7 +22,6 @@ package org.caleydo.vis.rank.model;
 import gleem.linalg.Vec2f;
 import gleem.linalg.Vec4f;
 
-import java.awt.Color;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.NumberFormat;
@@ -34,6 +33,7 @@ import java.util.Map;
 
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.io.gui.dataimport.widget.ICallback;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.util.function.AFloatList;
 import org.caleydo.core.util.function.FloatStatistics;

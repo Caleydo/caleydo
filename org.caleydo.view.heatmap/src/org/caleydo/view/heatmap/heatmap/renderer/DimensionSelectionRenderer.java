@@ -48,10 +48,10 @@ public class DimensionSelectionRenderer extends AHeatMapRenderer {
 		float xPosition = 0;
 
 		if (selectionType == SelectionType.SELECTION) {
-			gl.glColor4fv(SelectionType.SELECTION.getColor(), 0);
+			gl.glColor4fv(SelectionType.SELECTION.getColor().getRGBA(), 0);
 			gl.glLineWidth(SELECTED_LINE_WIDTH);
 		} else if (selectionType == SelectionType.MOUSE_OVER) {
-			gl.glColor4fv(SelectionType.MOUSE_OVER.getColor(), 0);
+			gl.glColor4fv(SelectionType.MOUSE_OVER.getColor().getRGBA(), 0);
 			gl.glLineWidth(MOUSE_OVER_LINE_WIDTH);
 		}
 

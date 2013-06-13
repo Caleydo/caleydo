@@ -19,10 +19,10 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.ui.mapping;
 
-import java.awt.Color;
 import java.util.Map;
 
 import org.caleydo.core.io.gui.dataimport.widget.ICallback;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.function.IFloatList;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.vis.rank.model.CategoricalRankRankColumnModel.CategoryInfo;

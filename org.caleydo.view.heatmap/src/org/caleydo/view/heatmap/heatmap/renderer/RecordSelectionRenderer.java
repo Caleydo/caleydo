@@ -46,7 +46,7 @@ public class RecordSelectionRenderer extends AHeatMapRenderer {
 		float yPosition = y;
 		float xPosition = 0;
 
-		gl.glColor4fv(selectionType.getColor(), 0);
+		gl.glColor4fv(selectionType.getColor().getRGBA(), 0);
 		gl.glLineWidth(SELECTED_LINE_WIDTH);
 
 		int lineIndex = 0;

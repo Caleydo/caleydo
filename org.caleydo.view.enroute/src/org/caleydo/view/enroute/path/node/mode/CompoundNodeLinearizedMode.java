@@ -80,7 +80,7 @@ public class CompoundNodeLinearizedMode extends ACompoundNodeMode {
 
 		if (!determineHighlightColor())
 			return;
-		gl.glColor3fv(highlightColor, 0);
+		gl.glColor3fv(highlightColor.getRGB(), 0);
 		gl.glPushMatrix();
 		gl.glTranslatef(node.getPosition().x(), node.getPosition().y(), 1);
 		GLPrimitives.renderCircleBorder(gl, glu,

@@ -19,7 +19,6 @@ package org.caleydo.core.util.color.mapping;
 import java.util.ArrayList;
 
 import org.caleydo.core.util.color.Color;
-import org.caleydo.core.util.color.Colors;
 
 /**
  * <p>
@@ -51,25 +50,25 @@ public enum EDefaultColorSchemes {
 			"3-class Red-Blue diverging color scheme from colorbrewer.org. Color-blind and print friendly.",
 			new Color(5, 113, 176),
 			// new Color( 247, 247, 247 ),
-			Colors.NEUTRAL_GREY,
+			Color.NEUTRAL_GREY,
 			new Color(202, 0, 32)),
 	GREEN_WHITE_BROWN(
 			"Green-White-Brown",
 			"3-class Brown-Blue-Green diverging color scheme from colorbrewer.org. Color-blind and print friendly.",
 			new Color(1, 133, 113),
-			Colors.NEUTRAL_GREY,
+			Color.NEUTRAL_GREY,
 			new Color(166, 97, 26)),
 	GREEN_WHITE_PURPLE(
 			"Green-White-Purple",
 			"3-class Purple-Green diverging color scheme from colorbrewer.org. Color-blind and print friendly. May cause issues with bad LCDs",
 			new Color(0, 136, 55),
-			Colors.NEUTRAL_GREY,
+			Color.NEUTRAL_GREY,
 			new Color(123, 50, 148)),
 	GREY_WHITE_RED(
 			"Grey-White-Red",
 			"3-class Red-Grey diverging color scheme from colorbrewer.org. Print friendly. May cause issues with color-blind users and bad LCDs",
 			new Color(64, 64, 64),
-			Colors.NEUTRAL_GREY,
+			Color.NEUTRAL_GREY,
 			new Color(202, 0, 32)),
 
 	BLUE_RED_YELLOW(
@@ -93,7 +92,7 @@ public enum EDefaultColorSchemes {
 			new Color(171, 217, 233),
 			new Color(44, 123, 182)),
 
-	GREY_RED("Grey-Red", "2-class Red-Grey  color scheme Print friendly.", Colors.NEUTRAL_GREY, new Color(202, 0, 32)),
+	GREY_RED("Grey-Red", "2-class Red-Grey  color scheme Print friendly.", Color.NEUTRAL_GREY, new Color(202, 0, 32)),
 	// -------- DISCRETE COLOR SCHEMES ---------
 
 	WHITE_RED(
@@ -101,7 +100,7 @@ public enum EDefaultColorSchemes {
 			"2-class White-Blue diverging color scheme from colorbrewer.org. Color-blind and print friendly.",
 			true,
 			// new Color( 247, 247, 247 },
-			Colors.NEUTRAL_GREY,
+			Color.NEUTRAL_GREY,
 			new Color(202, 0, 32));
 
 	private ArrayList<ColorMarkerPoint> colorMarkerPoints;

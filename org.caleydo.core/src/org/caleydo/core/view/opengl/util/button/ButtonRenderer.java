@@ -208,19 +208,19 @@ public class ButtonRenderer extends APickableLayoutRenderer {
 		switch (textureRotation) {
 		case TEXTURE_ROTATION_0:
 			textureManager.renderTexture(gl, button.getIconPath(), lowerLeftCorner, lowerRightCorner, upperRightCorner,
-					upperLeftCorner, 1, 1, 1, 1);
+					upperLeftCorner);
 			break;
 		case TEXTURE_ROTATION_90:
 			textureManager.renderTexture(gl, button.getIconPath(), lowerRightCorner, upperRightCorner, upperLeftCorner,
-					lowerLeftCorner, 1, 1, 1, 1);
+					lowerLeftCorner);
 			break;
 		case TEXTURE_ROTATION_180:
 			textureManager.renderTexture(gl, button.getIconPath(), upperRightCorner, upperLeftCorner, lowerLeftCorner,
-					lowerRightCorner, 1, 1, 1, 1);
+					lowerRightCorner);
 			break;
 		case TEXTURE_ROTATION_270:
 			textureManager.renderTexture(gl, button.getIconPath(), upperLeftCorner, lowerLeftCorner, lowerRightCorner,
-					upperRightCorner, 1, 1, 1, 1);
+					upperRightCorner);
 			break;
 		}
 

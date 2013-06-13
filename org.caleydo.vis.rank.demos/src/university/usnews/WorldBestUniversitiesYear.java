@@ -21,7 +21,6 @@ package university.usnews;
 
 import static demo.RankTableDemo.toFloat;
 
-import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -29,6 +28,7 @@ import java.nio.charset.Charset;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.vis.rank.data.AFloatFunction;
@@ -118,7 +118,7 @@ public class WorldBestUniversitiesYear {
 	private static FloatRankColumnModel col(Function<IRow, WorldBestUniversitiesYear> year, int col, String text,
 			String color, String bgColor) {
 		return new FloatRankColumnModel(new ValueGetter(year, col), GLRenderers.drawText(text, VAlign.CENTER),
-				Color.decode(color), Color.decode(bgColor), percentage(), FloatInferrers.MEDIAN);
+				new Color(color), new Color(bgColor), percentage(), FloatInferrers.MEDIAN);
 	}
 
 	protected static PiecewiseMapping percentage() {

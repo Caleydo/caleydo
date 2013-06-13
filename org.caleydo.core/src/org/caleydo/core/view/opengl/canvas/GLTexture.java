@@ -27,6 +27,7 @@ import javax.media.opengl.GL2;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.IDataDomainBasedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
@@ -117,7 +118,7 @@ public class GLTexture extends AGLView implements IDataDomainBasedView<IDataDoma
 						new Vec3f(viewFrustum.getRight(), viewFrustum.getBottom(), 0),
 						new Vec3f(viewFrustum.getRight(), viewFrustum.getTop()
 								- topMargin, 0), new Vec3f(viewFrustum.getLeft(),
-								viewFrustum.getTop() - topMargin, 0), 1, 1, 1, 1);
+ viewFrustum.getTop() - topMargin, 0), Color.WHITE);
 			} catch (IllegalStateException e) {
 				// Render nothing if texture does not exist
 			}
@@ -125,7 +126,7 @@ public class GLTexture extends AGLView implements IDataDomainBasedView<IDataDoma
 		// gl.glPopName();
 
 		if (currentSelectionType != SelectionType.NORMAL) {
-			gl.glColor3fv(currentSelectionType.getColor(), 0);
+			gl.glColor3fv(currentSelectionType.getColor().getRGB(), 0);
 			gl.glLineWidth(4);
 			gl.glBegin(GL.GL_LINE_LOOP);
 			gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getBottom(), 0);

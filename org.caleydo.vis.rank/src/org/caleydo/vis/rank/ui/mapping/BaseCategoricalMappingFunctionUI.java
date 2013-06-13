@@ -24,13 +24,13 @@ import static org.caleydo.vis.rank.ui.RenderStyle.LABEL_HEIGHT;
 import static org.caleydo.vis.rank.ui.RenderStyle.binsForWidth;
 import gleem.linalg.Vec2f;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 import org.caleydo.core.io.gui.dataimport.widget.ICallback;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.util.function.FloatFunctions;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;

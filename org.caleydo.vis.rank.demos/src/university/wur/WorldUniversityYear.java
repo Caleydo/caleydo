@@ -21,7 +21,6 @@ package university.wur;
 
 import static demo.RankTableDemo.toFloat;
 
-import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -32,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.vis.rank.data.AFloatFunction;
@@ -213,7 +213,7 @@ public class WorldUniversityYear {
 		}
 		if (addStars) {
 			StarsRankColumnModel s = new StarsRankColumnModel(new ValueGetter(year, COL_QSSTARS), GLRenderers.drawText(
-					"QS Stars", VAlign.CENTER), Color.decode("#FECC5C"), Color.decode("#FFFFB2"), 6);
+					"QS Stars", VAlign.CENTER), new Color("#FECC5C"), new Color("#FFFFB2"), 6);
 			table.add(s);
 		}
 		return stacked;
@@ -238,7 +238,7 @@ public class WorldUniversityYear {
 
 	private static FloatRankColumnModel col(Function<IRow, WorldUniversityYear> year, int col, String text,
 			String color, String bgColor) {
-		return col(year, col, text, Color.decode(color), Color.decode(bgColor));
+		return col(year, col, text, new Color(color), new Color(bgColor));
 	}
 
 	private static FloatRankColumnModel col(Function<IRow, WorldUniversityYear> year, int col, String text,

@@ -23,8 +23,36 @@ package org.caleydo.core.util.color;
  * read only version of a color
  *
  * @author Samuel Gratzl
+ * @author Alexander Lex
  *
  */
 public interface IColor {
+
+
+	public float[] getRGB();
 	public float[] getRGBA();
+
+	/** Returns the hexadecimal representation of the color */
+	public String getHEX();
+
+	/**
+	 *
+	 * @param brightness
+	 *            1 is bright, 0 is black
+	 * @return
+	 */
+	public Color getColorWithSpecificBrighness(float brightness);
+
+	/**
+	 * Get the color as an int RGBA array with a range of 0-255
+	 * @return
+	 */
+	public int[] getIntRGBA();
+
+	/**
+	 * Returns the equivalent AWT color
+	 * 
+	 * @return
+	 */
+	public java.awt.Color getAWTColor();
 }

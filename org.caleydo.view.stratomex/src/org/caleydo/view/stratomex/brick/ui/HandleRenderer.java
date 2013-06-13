@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,12 +8,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -23,6 +23,7 @@ import gleem.linalg.Vec3f;
 
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -33,7 +34,7 @@ import org.caleydo.view.stratomex.brick.GLBrick;
 
 /**
  * Renderer for handles used for resizing and moving a brick.
- * 
+ *
  * @author Christian Partl
  * @author Alexander Lex
  */
@@ -65,7 +66,7 @@ public class HandleRenderer extends ALayoutRenderer {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param view
 	 * @param handleSize
 	 *            Size in pixels of the handles.
@@ -182,8 +183,8 @@ public class HandleRenderer extends ALayoutRenderer {
 
 			textureManager.renderTexture(gl,
 					EIconTextures.NAVIGATION_BACKGROUND, upperRightCorner,
-					upperLeftCorner, lowerLeftCorner, lowerRightCorner, 1, 1,
-					1, 1);
+ upperLeftCorner,
+					lowerLeftCorner, lowerRightCorner, Color.WHITE);
 
 			lowerLeftCorner = new Vec3f(-glHandleWidth, y / 2.0f, BUTTON_Z);
 			lowerRightCorner = new Vec3f(0, y / 2.0f, BUTTON_Z);
@@ -193,8 +194,8 @@ public class HandleRenderer extends ALayoutRenderer {
 
 			textureManager.renderTexture(gl,
 					EIconTextures.NAVIGATION_BACKGROUND, lowerLeftCorner,
-					lowerRightCorner, upperRightCorner, upperLeftCorner, 1, 1,
-					1, 1);
+ lowerRightCorner,
+					upperRightCorner, upperLeftCorner, Color.WHITE);
 
 			// gl.glBegin(GL2.GL_QUADS);
 			// gl.glVertex3f(-glHandleWidth * 2.0f, y / 2.0f - glHandleHeight,
@@ -223,8 +224,8 @@ public class HandleRenderer extends ALayoutRenderer {
 
 			textureManager.renderTexture(gl,
 					EIconTextures.NAVIGATION_BACKGROUND, lowerRightCorner,
-					upperLeftCorner, upperRightCorner, lowerLeftCorner, 1, 1,
-					1, 1);
+ upperLeftCorner,
+					upperRightCorner, lowerLeftCorner, Color.WHITE);
 
 			lowerLeftCorner = new Vec3f(x / 2f + glHandleWidth, y, BUTTON_Z);
 			lowerRightCorner = new Vec3f(x / 2f, y, 1);
@@ -233,8 +234,8 @@ public class HandleRenderer extends ALayoutRenderer {
 					+ glHandleHeight, BUTTON_Z);
 			textureManager.renderTexture(gl,
 					EIconTextures.NAVIGATION_BACKGROUND, upperLeftCorner,
-					lowerRightCorner, lowerLeftCorner, upperRightCorner, 1, 1,
-					1, 1);
+ lowerRightCorner,
+					lowerLeftCorner, upperRightCorner, Color.WHITE);
 
 			gl.glPopName();
 		}
@@ -260,8 +261,7 @@ public class HandleRenderer extends ALayoutRenderer {
 					* glHandleHeight, BUTTON_Z);
 			textureManager.renderTexture(gl,
 					EIconTextures.NAVIGATION_NEXT_BIG_MIDDLE, upperLeftCorner,
-					lowerRightCorner, lowerLeftCorner, upperRightCorner, 1, 1,
-					1, 1);
+					lowerRightCorner, lowerLeftCorner, upperRightCorner, Color.WHITE);
 
 			gl.glPopName();
 		}
@@ -278,8 +278,7 @@ public class HandleRenderer extends ALayoutRenderer {
 					BUTTON_Z);
 			textureManager.renderTexture(gl,
 					EIconTextures.NAVIGATION_NEXT_BIG_MIDDLE, lowerLeftCorner,
-					upperRightCorner, upperLeftCorner, lowerRightCorner, 1, 1,
-					1, 1);
+					upperRightCorner, upperLeftCorner, lowerRightCorner, Color.WHITE);
 
 			gl.glPopName();
 		}

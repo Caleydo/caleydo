@@ -21,7 +21,6 @@ package nasatxl;
 
 import static demo.RankTableDemo.toFloat;
 
-import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -33,6 +32,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLSandBox;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
@@ -70,13 +70,15 @@ public class NASATxlResults implements IModelBuilder {
 
 		ReflectionFloatData data = new ReflectionFloatData(field("time"));
 		FloatRankColumnModel f = new FloatRankColumnModel(data, GLRenderers.drawText("Execution Time (s)",
-				VAlign.CENTER),
-				Color.decode("#FFD92F"), Color.decode("#FFFFCC"), new PiecewiseMapping(0, Float.NaN),
+				VAlign.CENTER), new Color("#FFD92F"), new Color("#FFFFCC"), new PiecewiseMapping(0, Float.NaN),
 				FloatInferrers.MEDIAN);
 		f.setWidth(150);
 		table.add(f);
 
-		table.add(col("mental_demand","Mental Demand\nHow much mental and perceptual activity was required? Was the task easy or demanding, simple or complex?","#FC9272","#FEE0D2"));
+		table.add(col(
+				"mental_demand",
+				"Mental Demand\nHow much mental and perceptual activity was required? Was the task easy or demanding, simple or complex?",
+				"#FC9272", "#FEE0D2"));
 		table.add(col(
 				"physical_demand",
 				"Physical Demand\nHow much physical activity was required? Was the task easy or demanding, slack or strenuous?",
@@ -98,7 +100,6 @@ public class NASATxlResults implements IModelBuilder {
 				"Frustration Level\nHow irritated, stresses, and annoyed versus content, relaxed, and complacent did you feel during the task?",
 				"#DFC27D", "#F6E8C3"));
 	}
-
 
 	@Override
 	public Iterable<? extends ARankColumnModel> createAutoSnapshotColumns(RankTableModel table, ARankColumnModel model) {
@@ -150,7 +151,8 @@ public class NASATxlResults implements IModelBuilder {
 			throws NoSuchFieldException, SecurityException {
 		ReflectionFloatData data = new ReflectionFloatData(field(field));
 		FloatRankColumnModel f = new FloatRankColumnModel(data, GLRenderers.drawText(label, VAlign.CENTER),
-				Color.decode(color), Color.decode(bgColor), mapping(), FloatInferrers.MEDIAN);
+ new Color(
+				color), new Color(bgColor), mapping(), FloatInferrers.MEDIAN);
 		f.setWidth(150);
 		return f;
 	}
@@ -159,8 +161,6 @@ public class NASATxlResults implements IModelBuilder {
 		PiecewiseMapping m = new PiecewiseMapping(0, 100);
 		return m;
 	}
-
-
 
 	static class NASATxlTest extends ARow {
 		public int task;

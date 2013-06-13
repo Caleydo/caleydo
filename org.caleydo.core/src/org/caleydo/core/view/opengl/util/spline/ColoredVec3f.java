@@ -27,12 +27,12 @@ import org.caleydo.core.util.color.IColor;
 
 /**
  * a vertex with a color
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public class ColoredVec3f extends Vec3f {
-	private IColor color = Colors.NEUTRAL_GREY;
+	private IColor color = Color.NEUTRAL_GREY;
 
 	/**
 	 * @param color

@@ -19,7 +19,7 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.model;
 
-import java.awt.Color;
+import org.caleydo.core.util.color.Color;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 

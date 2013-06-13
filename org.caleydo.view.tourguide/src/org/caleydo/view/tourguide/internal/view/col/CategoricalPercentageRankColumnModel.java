@@ -19,12 +19,10 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.internal.view.col;
 
-import java.awt.Color;
-
 import org.caleydo.core.data.collection.column.container.CategoryProperty;
 import org.caleydo.core.data.collection.table.CategoricalTable;
 import org.caleydo.core.data.datadomain.IDataDomain;
-import org.caleydo.core.util.color.Colors;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.view.tourguide.internal.model.CategoricalPerspectiveRow;
 import org.caleydo.vis.rank.data.AFloatFunction;
@@ -71,7 +69,7 @@ public class CategoricalPercentageRankColumnModel extends FloatRankColumnModel {
 				return have;
 			}
 		};
-		Color col = Colors.of(property.getColor());
+		Color col = property.getColor();
 		Color bgColor = col.brighter().brighter();
 		return new CategoricalPercentageRankColumnModel(data, catName, col, bgColor, table.getDataDomain(),
 				table.depth());

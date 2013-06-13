@@ -40,7 +40,6 @@
 package org.caleydo.core.view.opengl.util.text;
 
 import java.awt.AlphaComposite;
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Graphics2D;
@@ -66,6 +65,8 @@ import javax.media.opengl.GL2ES2;
 import javax.media.opengl.GLContext;
 import javax.media.opengl.GLException;
 import javax.media.opengl.fixedfunc.GLPointerFunc;
+
+import org.caleydo.core.util.color.Color;
 
 import com.jogamp.common.nio.Buffers;
 import com.jogamp.opengl.GLExtensions;
@@ -251,7 +252,7 @@ public class MyTextRenderer {
 	 * the Java 2D level. The <code>renderDelegate</code> provides more control over the text rendered. If
 	 * <CODE>mipmap</CODE> is true, attempts to use OpenGL's automatic mipmap generation for better smoothing when
 	 * rendering the TextureRenderer's contents at a distance.
-	 * 
+	 *
 	 * @param font
 	 *            the font to render with
 	 * @param antialiased
@@ -371,7 +372,7 @@ public class MyTextRenderer {
             flushGlyphPipeline();
         }
 
-        getBackingStore().setColor(color);
+		getBackingStore().setColor(color.getAWTColor());
         haveCachedColor = true;
         cachedColor = color;
     }
@@ -515,7 +516,7 @@ public class MyTextRenderer {
 
             // Set up composite, font and rendering hints
             cachedGraphics.setComposite(AlphaComposite.Src);
-            cachedGraphics.setColor(Color.WHITE);
+			cachedGraphics.setColor(java.awt.Color.WHITE);
             cachedGraphics.setFont(font);
             cachedGraphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
                                             (antialiased ? RenderingHints.VALUE_TEXT_ANTIALIAS_ON
@@ -565,7 +566,7 @@ public class MyTextRenderer {
             if (cachedColor == null) {
                 getBackingStore().setColor(cachedR, cachedG, cachedB, cachedA);
             } else {
-                getBackingStore().setColor(cachedColor);
+				getBackingStore().setColor(cachedColor.getAWTColor());
             }
 
             needToResetColor = false;
@@ -1144,7 +1145,7 @@ public class MyTextRenderer {
                         ((TextureRenderer) newBackingStore).setColor(cachedR,
                                                                      cachedG, cachedB, cachedA);
                     } else {
-                        ((TextureRenderer) newBackingStore).setColor(cachedColor);
+						((TextureRenderer) newBackingStore).setColor(cachedColor.getAWTColor());
                     }
                 }
             } else {

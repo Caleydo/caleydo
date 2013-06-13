@@ -21,7 +21,6 @@ package food;
 
 import static demo.RankTableDemo.toFloat;
 
-import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -37,6 +36,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLSandBox;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
@@ -164,7 +164,7 @@ public class Food implements IModelBuilder {
 	}
 
 	private static Pair<Color, Color> colors(String c1, String c2) {
-		return Pair.make(Color.decode(c1), Color.decode(c2));
+		return Pair.make(new Color(c1), new Color(c2));
 	}
 
 	protected static Map<Integer, String> readData(List<FoodRow> rows) throws IOException {

@@ -19,7 +19,7 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.layout2.basic;
 
-import java.awt.Color;
+import org.caleydo.core.util.color.Color;
 import java.util.Locale;
 
 import org.caleydo.core.view.opengl.layout.Column.VAlign;

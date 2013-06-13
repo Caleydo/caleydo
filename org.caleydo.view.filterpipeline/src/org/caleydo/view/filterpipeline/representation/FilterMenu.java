@@ -101,7 +101,7 @@ public class FilterMenu extends AGLGUIElement implements IRenderable {
 					PickingType.FILTERPIPE_SUB_FILTER, i));
 			gl.glBegin(GL2.GL_QUADS);
 			{
-				gl.glColor4fv(renderStyle.getFilterColor(i), 0);
+				gl.glColor4fv(renderStyle.getFilterColor(i).getRGBA(), 0);
 
 				gl.glVertex3d(x - 0.9f * width, y + (i + 1.1f) * 0.3f, 0.9);
 				gl.glVertex3d(x - 0.9f * width, y + (i + 1.9f) * 0.3f, 0.9);

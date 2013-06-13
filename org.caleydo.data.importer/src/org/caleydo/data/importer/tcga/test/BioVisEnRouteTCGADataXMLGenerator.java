@@ -27,7 +27,6 @@ import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.io.ParsingRule;
 import org.caleydo.core.util.color.Color;
-import org.caleydo.core.util.color.Colors;
 import org.caleydo.data.importer.setupgenerator.DataSetDescriptionSerializer;
 import org.caleydo.datadomain.genetic.TCGADefinitions;
 
@@ -174,7 +173,7 @@ public class BioVisEnRouteTCGADataXMLGenerator extends DataSetDescriptionSeriali
 		categoricalClassDescription.setRawDataType(EDataType.INTEGER);
 		categoricalClassDescription.addCategoryProperty(-2, "Homozygous deletion", new Color("0571b0"));
 		categoricalClassDescription.addCategoryProperty(-1, "Heterozygous deletion", new Color("5f99ba"));
-		categoricalClassDescription.addCategoryProperty(0, "NORMAL", Colors.NEUTRAL_GREY);
+		categoricalClassDescription.addCategoryProperty(0, "NORMAL", Color.NEUTRAL_GREY);
 		categoricalClassDescription.addCategoryProperty(1, "Low level amplification", new Color("c95d6e"));
 		categoricalClassDescription.addCategoryProperty(2, "High level amplification", new Color("c4001f"));
 
@@ -205,8 +204,8 @@ public class BioVisEnRouteTCGADataXMLGenerator extends DataSetDescriptionSeriali
 		@SuppressWarnings("unchecked")
 		CategoricalClassDescription<Integer> categoricalClassDescription = (CategoricalClassDescription<Integer>) mutationDataDescription
 				.getDataDescription().getCategoricalClassDescription();
-		categoricalClassDescription.addCategoryProperty(0, "Not Mutated", Colors.NEUTRAL_GREY);
-		categoricalClassDescription.addCategoryProperty(1, "Mutated", Colors.RED);
+		categoricalClassDescription.addCategoryProperty(0, "Not Mutated", Color.NEUTRAL_GREY);
+		categoricalClassDescription.addCategoryProperty(1, "Mutated", Color.RED);
 
 		mutationDataDescription.setNumberOfHeaderLines(1);
 

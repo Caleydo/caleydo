@@ -19,8 +19,8 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.internal.view.ui.pool;
 
-import java.awt.Color;
 
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 import org.caleydo.core.view.opengl.picking.Pick;

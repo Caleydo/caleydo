@@ -26,7 +26,7 @@ import static org.caleydo.core.view.opengl.layout2.IPopupLayer.FLAG_RESIZEABLE;
 import gleem.linalg.Vec2f;
 import gleem.linalg.Vec4f;
 
-import java.awt.Color;
+import org.caleydo.core.util.color.Color;
 import java.util.List;
 
 import org.caleydo.core.view.opengl.layout2.GLElement;

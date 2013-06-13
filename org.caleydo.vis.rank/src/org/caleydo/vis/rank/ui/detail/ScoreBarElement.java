@@ -19,11 +19,12 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.ui.detail;
 
-import java.awt.Color;
+
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
@@ -78,7 +79,7 @@ public class ScoreBarElement extends ValueElement {
 			if (collapseColor == null)
 				g.color(1 - v, 1 - v, 1 - v, 1);
 			else {
-				float[] rgb = collapseColor.getColorComponents(null);
+				float[] rgb = collapseColor.getRGB();
 				g.color(rgb[0], rgb[1], rgb[2], v);
 			}
 			g.fillRect(0, 1, w - 2, h - 2);

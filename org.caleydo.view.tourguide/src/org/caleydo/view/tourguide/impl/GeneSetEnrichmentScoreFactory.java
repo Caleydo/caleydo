@@ -19,7 +19,6 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.impl;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -30,6 +29,7 @@ import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
 import org.caleydo.view.tourguide.api.compute.ComputeScoreFilters;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
@@ -65,8 +65,8 @@ import org.eclipse.swt.widgets.Shell;
  *
  */
 public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
-	private final static Color color = Color.decode("#80ffb3");
-	private final static Color bgColor = Color.decode("#e3f4d7");
+	private final static Color color = new Color("#80ffb3");
+	private final static Color bgColor = new Color("#e3f4d7");
 
 	private IRegisteredScore createGSEA(String label, Perspective reference, Group group) {
 		if (label == null)
