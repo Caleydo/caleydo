@@ -19,11 +19,11 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.layout;
 
-import org.caleydo.vis.rank.model.MaxCompositeRankColumnModel;
+import org.caleydo.vis.rank.model.MaxRankColumnModel;
 
 /**
  * row height layouts determine on the one hand the row heights of items and will also be used for layouting the rows of
- * a {@link MaxCompositeRankColumnModel}
+ * a {@link MaxRankColumnModel}
  *
  * @author Samuel Gratzl
  *

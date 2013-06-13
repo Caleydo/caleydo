@@ -73,6 +73,7 @@ import org.caleydo.vis.rank.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IHideableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IMappedColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
+import org.caleydo.vis.rank.model.mixin.IScriptedColumnMixin;
 import org.caleydo.vis.rank.model.mixin.ISearchableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.ISnapshotableColumnMixin;
 import org.caleydo.vis.rank.ui.IColumnRenderInfo;
@@ -391,6 +392,17 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 				}
 			});
 			buttons.addButton(b, "Search for an item", RenderStyle.ICON_FIND, RenderStyle.ICON_FIND);
+		}
+		if (model instanceof IScriptedColumnMixin) {
+			final IScriptedColumnMixin m = (IScriptedColumnMixin) model;
+			GLButton b = new GLButton();
+			b.setCallback(new ISelectionCallback() {
+				@Override
+				public void onSelectionChanged(GLButton button, boolean selected) {
+					m.editCode(get(HIST), context);
+				}
+			});
+			buttons.addButton(b, "Edit Combination Code", RenderStyle.ICON_EDIT_CODE, RenderStyle.ICON_EDIT_CODE);
 		}
 		if (model instanceof IMappedColumnMixin) {
 			final IMappedColumnMixin m = (IMappedColumnMixin) model;

@@ -77,8 +77,8 @@ public class CaleydoProjectWizard
 	@Override
 	public boolean performFinish() {
 		ChooseProjectTypePage page = getChosenProjectTypePage();
-		if (page.isPageComplete()) {
-			Pair<String, IStartupAddon> addon = page.getSelectedAddon();
+		Pair<String, IStartupAddon> addon = page.getSelectedAddon();
+		if (page.isPageComplete() && addon.getSecond().validate()) {
 			MyPreferences.setLastChosenProjectMode(addon.getFirst());
 			MyPreferences.flush();
 

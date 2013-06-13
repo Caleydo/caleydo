@@ -54,6 +54,10 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 	public static final String PROP_ALIGNMENT = "alignment";
 	public static final String PROP_WEIGHTS = "weights";
 
+	public enum Alignment {
+		ALL, ORDERED, SINGLE
+	}
+
 	private final PropertyChangeListener listener = new PropertyChangeListener() {
 		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
@@ -75,9 +79,10 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 	};
 
 	/**
-	 * which is the current aligned column index or -1 for all
+	 * which is the current aligned column index or ALIGN_ALL for all
 	 */
-	private int alignment = 0;
+	private Alignment alignment = Alignment.SINGLE;
+	private int alignmentDetails = 0;
 	private boolean isCompressed = false;
 	private float compressedWidth = 100;
 
@@ -132,8 +137,8 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 		model.removePropertyChangeListener(IFilterColumnMixin.PROP_FILTER, listener);
 		model.removePropertyChangeListener(IMappedColumnMixin.PROP_MAPPING, listener);
 		// addDirectWeight(-model.getWeight());
-		if (alignment > size() - 2) {
-			setAlignment(alignment - 1);
+		if (alignmentDetails > size() - 2) {
+			setAlignment(alignmentDetails - 1);
 		}
 		super.setWidth(width - model.getWidth() - RenderStyle.COLUMN_SPACE);
 		model.setParentData(null);
@@ -246,8 +251,15 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 	/**
 	 * @return the alignment, see {@link #alignment}
 	 */
-	public int getAlignment() {
+	/**
+	 * @return the alignment, see {@link #alignment}
+	 */
+	public Alignment getAlignment() {
 		return alignment;
+	}
+
+	public int getSingleAlignment() {
+		return alignment != Alignment.SINGLE ? -1 : alignmentDetails;
 	}
 
 	/**
@@ -257,7 +269,21 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 	public void setAlignment(int alignment) {
 		if (alignment > this.children.size())
 			alignment = this.children.size();
-		if (alignment == this.alignment)
+		if (alignmentDetails == alignment && this.alignment == Alignment.SINGLE)
+			return;
+		this.alignment = Alignment.SINGLE;
+		propertySupport.firePropertyChange(PROP_ALIGNMENT, this.alignmentDetails, this.alignmentDetails = alignment);
+	}
+
+	/**
+	 *
+	 */
+	public void switchToNextAlignment() {
+		setAlignment(Alignment.values()[(alignment.ordinal() + 1) % (Alignment.values().length)]);
+	}
+
+	public void setAlignment(Alignment alignment) {
+		if (this.alignment == alignment)
 			return;
 		propertySupport.firePropertyChange(PROP_ALIGNMENT, this.alignment, this.alignment = alignment);
 	}
@@ -265,7 +291,7 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 	@Override
 	public void orderBy(IRankableColumnMixin child) {
 		int index = indexOf((ARankColumnModel)child);
-		if (alignment == index)
+		if (alignmentDetails == index && alignment == Alignment.SINGLE)
 			setAlignment(index + 1);
 		else
 			setAlignment(index);
@@ -323,16 +349,6 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 
 	public float getChildWidth(int i) {
 		return (float) get(i).getParentData();
-	}
-
-	public boolean isAlignAll() {
-		return alignment < 0;
-	}
-
-	public void setAlignAll(boolean alignAll) {
-		if (isAlignAll() == alignAll)
-			return;
-		this.setAlignment(-alignment - 1);
 	}
 
 	@Override

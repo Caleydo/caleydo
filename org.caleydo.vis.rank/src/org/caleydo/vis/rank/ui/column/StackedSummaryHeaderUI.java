@@ -28,10 +28,12 @@ import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
 import org.caleydo.core.view.contextmenu.item.SeparatorMenuItem;
+import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton.EButtonMode;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton.ISelectionCallback;
+import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.rank.config.IRankTableUIConfig;
 import org.caleydo.vis.rank.internal.event.OrderByMeEvent;
 import org.caleydo.vis.rank.internal.ui.ButtonBar;
@@ -69,27 +71,40 @@ public class StackedSummaryHeaderUI extends AColumnHeaderUI {
 
 		{
 			final StackedRankColumnModel m = (StackedRankColumnModel) model;
-			final GLButton b = new GLButton(EButtonMode.CHECKBOX);
+			final GLButton b = new GLButton(EButtonMode.BUTTON);
 			b.setSize(RenderStyle.BUTTON_WIDTH, -1);
-			b.setSelected(m.isAlignAll());
 			final ISelectionCallback callback = new ISelectionCallback() {
 				@Override
 				public void onSelectionChanged(GLButton button, boolean selected) {
-					m.setAlignAll(!m.isAlignAll());
+					m.switchToNextAlignment();
 				}
 			};
 			b.setCallback(callback);
 			onAlignmentChange = new PropertyChangeListener() {
 				@Override
 				public void propertyChange(PropertyChangeEvent evt) {
-					b.setCallback(null);
-					b.setSelected(m.isAlignAll());
-					b.setCallback(callback);
+					b.repaint();
 				}
 			};
 			m.addPropertyChangeListener(StackedRankColumnModel.PROP_ALIGNMENT, onAlignmentChange);
-			buttons.addButton(0, b, "Toggle classic multi-col score bar table and stacked one",
+			buttons.addButton(0, b, "Toggle different column alignemnts (stacked, classic and ordered stacked)",
 					RenderStyle.ICON_ALIGN_CLASSIC, RenderStyle.ICON_ALIGN_STACKED);
+			b.setRenderer(new  IGLRenderer() {
+				@Override
+				public void render(GLGraphics g, float w, float h, GLElement parent) {
+					switch(m.getAlignment()) {
+					case ALL:
+						g.fillImage(RenderStyle.ICON_ALIGN_CLASSIC, 0, 0, w, h);
+						break;
+					case ORDERED:
+						g.fillImage(RenderStyle.ICON_ALIGN_STACKED_ORDERED, 0, 0, w, h);
+						break;
+					case SINGLE:
+						g.fillImage(RenderStyle.ICON_ALIGN_STACKED, 0, 0, w, h);
+						break;
+					}
+				}
+			});
 		}
 		{
 			final StackedRankColumnModel m = (StackedRankColumnModel) model;

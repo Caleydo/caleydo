@@ -92,6 +92,7 @@ public class RenderStyle {
 	public static final String ICON_DRAG = ICON_PREFIX + "drag.png";
 	public static final String ICON_ALIGN_CLASSIC = ICON_PREFIX + "align_classic.png";
 	public static final String ICON_ALIGN_STACKED = ICON_PREFIX + "align_stacked.png";
+	public static final String ICON_ALIGN_STACKED_ORDERED = ICON_PREFIX + "align_ordered.png";
 
 	public static final String ICON_SHOW_RANK_DELTA = ICON_PREFIX + "chart_down_color.png";
 	public static final String ICON_HIDE_RANK_DELTA = ICON_PREFIX + "chart_down_color_disabled.png";
@@ -114,10 +115,12 @@ public class RenderStyle {
 	public static final String ICON_ADD_SEPARATOR = ICON_PREFIX + "table_relationship.png";
 	public static final String ICON_ADD_STACKED = ICON_PREFIX + "table_sum_add.png";
 	public static final String ICON_ADD_NESTED = ICON_PREFIX + "table_nested_add.png";
+	public static final String ICON_ADD_SCRIPTED = ICON_PREFIX + "table_scripted_add.png";
 
 	public static final String ICON_COMPLEX_MAPPING = ICON_PREFIX + "hatching.png";
 
 	public static final String ICON_SORT_BY_WEIGHT = ICON_PREFIX + "sortByWeight.png";
+	public static final String ICON_EDIT_CODE = ICON_PREFIX + "script_js_edit.png";
 	/**
 	 * space between columns
 	 */

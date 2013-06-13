@@ -42,7 +42,14 @@ public interface IStartupAddon {
 	 * @param page
 	 * @return
 	 */
-	Composite create(Composite parent, WizardPage page);
+	Composite create(Composite parent, final WizardPage page);
+
+	/**
+	 * validates this page
+	 * 
+	 * @return
+	 */
+	boolean validate();
 
 	/**
 	 * creates the startup procedure that will load the configured data

@@ -38,6 +38,7 @@ import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.vis.rank.config.IRankTableUIConfig;
 import org.caleydo.vis.rank.model.ACompositeRankColumnModel;
 import org.caleydo.vis.rank.model.ARankColumnModel;
+import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IGrabRemainingHorizontalSpace;
 import org.caleydo.vis.rank.ui.GLPropertyChangeListeners;
@@ -58,6 +59,7 @@ public abstract class ACompositeHeaderUI extends GLElementContainer implements I
 		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
 			switch (evt.getPropertyName()) {
+			case RankTableModel.PROP_COLUMNS:
 			case ACompositeRankColumnModel.PROP_CHILDREN:
 				onChildrenChanged((IndexedPropertyChangeEvent) evt);
 				break;

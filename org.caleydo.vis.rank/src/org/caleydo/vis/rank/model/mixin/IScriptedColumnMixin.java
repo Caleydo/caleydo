@@ -17,44 +17,19 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.vis.rank.ui;
+package org.caleydo.vis.rank.model.mixin;
 
-import org.caleydo.core.view.opengl.canvas.IGLKeyListener;
-import org.caleydo.vis.rank.model.RankTableModel;
-import org.caleydo.vis.rank.model.StackedRankColumnModel;
-
-import com.google.common.collect.Iterables;
+import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class RankTableKeyListener implements IGLKeyListener {
-	private static final char TOGGLE_ALIGN_ALL = 't';
+public interface IScriptedColumnMixin {
+	String PROP_CODE = "code";
 
-	private final RankTableModel table;
+	String getCode();
 
-	public RankTableKeyListener(RankTableModel table) {
-		super();
-		this.table = table;
-	}
-
-	@Override
-	public void keyPressed(IKeyEvent e) {
-		if (e.isKey(ESpecialKey.DOWN))
-			table.selectNextRow();
-		else if (e.isKey(ESpecialKey.UP))
-			table.selectPreviousRow();
-		else if (e.isControlDown() && (e.isKey(TOGGLE_ALIGN_ALL))) {
-			// short cut for align all
-			for (StackedRankColumnModel stacked : Iterables.filter(table.getColumns(), StackedRankColumnModel.class)) {
-				stacked.switchToNextAlignment();
-			}
-		}
-	}
-
-	@Override
-	public void keyReleased(IKeyEvent e) {
-
-	}
+	void editCode(GLElement summary, IGLElementContext context);
 }

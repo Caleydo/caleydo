@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.core.internal.startup;
 
+import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -26,9 +27,16 @@ import org.caleydo.core.gui.util.FontUtil;
 import org.caleydo.core.internal.MyPreferences;
 import org.caleydo.core.startup.IStartupAddon;
 import org.caleydo.core.startup.IStartupProcedure;
+import org.caleydo.core.startup.LoadProjectStartupProcedure;
+import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.system.BrowserUtils;
+import org.caleydo.core.util.system.RemoteFile;
 import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.RegistryFactory;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.dialogs.ErrorDialog;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -38,8 +46,8 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
+import org.eclipse.swt.widgets.Shell;
 
 /**
  * This tab lets you choose between a sample project, which has e.g. cluster data included and a sample dataset,
@@ -53,7 +61,6 @@ import org.eclipse.swt.widgets.Link;
  */
 public class LoadSampleProjectStartupAddon implements IStartupAddon {
 	private static final String EXTENSION_POINT = "org.caleydo.core.SampleProject";
-
 	private URL selectedChoice = null;
 
 	@Override
@@ -89,12 +96,6 @@ public class LoadSampleProjectStartupAddon implements IStartupAddon {
 	private Button createSample(String url, String name, String description, Composite g, SelectionListener l,
 			boolean first) {
 		try {
-			if (!first) {
-				Label spacer = new Label(g, SWT.NONE);
-				GridData spacerData = new GridData();
-				spacer.setLayoutData(spacerData);
-				spacer.setVisible(false);
-			}
 			URL u = new URL(url);
 			Button button = new Button(g, SWT.RADIO);
 			button.setText(name);
@@ -103,8 +104,9 @@ public class LoadSampleProjectStartupAddon implements IStartupAddon {
 			button.setData(u);
 			button.addSelectionListener(l);
 			GridData gd = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
-			gd.horizontalSpan = 1;
+			gd.verticalIndent = first ? 0 : 20;
 			button.setLayoutData(gd);
+
 			if (url.equals(MyPreferences.getLastChosenSampleProject())) {
 				button.setSelection(true);
 				selectedChoice = u;
@@ -125,6 +127,25 @@ public class LoadSampleProjectStartupAddon implements IStartupAddon {
 	}
 
 	@Override
+	public boolean validate() {
+		if (this.selectedChoice == null)
+			return false;
+		// Try to download the file with interruption
+		RemoteFile file = RemoteFile.of(this.selectedChoice);
+		if (!file.inCache(false)) {
+			try {
+				new ProgressMonitorDialog(new Shell()).run(true, true, file);
+			} catch (InvocationTargetException | InterruptedException e) {
+				Status status = new Status(IStatus.ERROR, this.getClass().getSimpleName(), "Error during downloading: "
+						+ selectedChoice, e);
+				ErrorDialog.openError(null, "Download Error", "Error during downloading: " + selectedChoice, status);
+				Logger.log(status);
+			}
+		}
+		return file.inCache(false);
+	}
+
+	@Override
 	public boolean init() {
 		return false;
 	}
@@ -132,7 +153,7 @@ public class LoadSampleProjectStartupAddon implements IStartupAddon {
 	@Override
 	public IStartupProcedure create() {
 		MyPreferences.setLastChosenSampleProject(selectedChoice.toString());
-		return new LoadSampleProjectStartupProcedure(selectedChoice);
+		return new LoadProjectStartupProcedure(RemoteFile.of(selectedChoice).getFile().getAbsolutePath(), false);
 	}
 
 }

@@ -19,9 +19,8 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.api.score;
 
-import java.util.Arrays;
-
 import org.caleydo.core.util.base.ILabeled;
+import org.caleydo.vis.rank.model.mapping.MappingFunctions;
 
 import com.google.common.base.Function;
 
@@ -71,43 +70,17 @@ public enum ECombinedOperator implements Function<float[], Float>, ILabeled {
 	}
 
 	public float combine(float[] data) {
-		float c = 0;
 		switch (this) {
 		case MAX:
-			if (data.length == 0)
-				return Float.NaN;
-			c = data[0];
-			for (int i = 1; i < data.length; ++i)
-				c = Math.max(c, data[i]);
-			return c;
+			return MappingFunctions.max(data);
 		case MIN:
-			if (data.length == 0)
-				return Float.NaN;
-			c = data[0];
-			for (int i = 1; i < data.length; ++i)
-				c = Math.min(c, data[i]);
-			return c;
+			return MappingFunctions.min(data);
 		case MEAN:
-			if (data.length == 0)
-				return 0;
-			c = 0;
-			for (int i = 0; i < data.length; ++i)
-				c += data[i];
-			return c / data.length;
+			return MappingFunctions.mean(data);
 		case GEOMETRIC_MEAN:
-			if (data.length == 0)
-				return 1;
-			c = 1;
-			for (int i = 0; i < data.length; ++i)
-				c *= data[i];
-			return (float) Math.pow(c, 1. / data.length);
+			return MappingFunctions.geometricMean(data);
 		case MEDIAN:
-			Arrays.sort(data);
-			int center = data.length / 2;
-			if (data.length % 2 == 0)
-				return 0.5f * (data[center] + data[center + 1]);
-			else
-				return data[center + 1];
+			return MappingFunctions.median(data);
 		}
 		throw new IllegalStateException("unknown operator: " + this);
 	}

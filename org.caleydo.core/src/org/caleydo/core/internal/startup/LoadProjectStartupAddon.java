@@ -209,6 +209,11 @@ public class LoadProjectStartupAddon implements IStartupAddon {
 	}
 
 	@Override
+	public boolean validate() {
+		return true;
+	}
+
+	@Override
 	public IStartupProcedure create() {
 		if (loadRecentProject || (recentProject != null && recentProject.getSelection())) {
 			MyPreferences.setLastManuallyChosenProject("recent");

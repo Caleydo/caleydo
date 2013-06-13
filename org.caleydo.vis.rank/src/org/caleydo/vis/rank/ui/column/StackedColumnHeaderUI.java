@@ -113,9 +113,9 @@ public class StackedColumnHeaderUI extends SimpleColumnHeaderUI {
 		if (config.isMoveAble()) {
 			List<? extends IGLLayoutElement> separators = children.subList(numColumns + 2, children.size());
 			final IGLLayoutElement sep0 = children.get(numColumns + 1);
-			((StackedSeparatorUI) sep0.asElement()).setAlignment(stacked.getAlignment());
+			((StackedSeparatorUI) sep0.asElement()).setAlignment(stacked.getSingleAlignment());
 			for (IGLLayoutElement sep : separators) {
-				((StackedSeparatorUI) sep.asElement()).setAlignment(stacked.getAlignment());
+				((StackedSeparatorUI) sep.asElement()).setAlignment(stacked.getSingleAlignment());
 			}
 		}
 	}

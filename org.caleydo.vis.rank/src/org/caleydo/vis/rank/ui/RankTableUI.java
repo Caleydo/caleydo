@@ -37,6 +37,7 @@ import org.caleydo.vis.rank.internal.ui.ButtonBar;
 import org.caleydo.vis.rank.layout.IRowHeightLayout;
 import org.caleydo.vis.rank.model.NestedRankColumnModel;
 import org.caleydo.vis.rank.model.RankTableModel;
+import org.caleydo.vis.rank.model.ScriptedRankColumnModel;
 import org.caleydo.vis.rank.model.StackedRankColumnModel;
 
 /**
@@ -100,6 +101,19 @@ public class RankTableUI extends GLElementContainer implements ISelectionCallbac
 			});
 			buttons.addButton(b, "Create an empty Nested Combined Column", RenderStyle.ICON_ADD_NESTED,
 					RenderStyle.ICON_ADD_NESTED);
+		}
+		{
+			GLButton b = new GLButton();
+			b.setCallback(new ISelectionCallback() {
+				@Override
+				public void onSelectionChanged(GLButton button, boolean selected) {
+					ScriptedRankColumnModel m = new ScriptedRankColumnModel();
+					m.setWidth(100);
+					table.add(m);
+				}
+			});
+			buttons.addButton(b, "Create an empty Scripted Combined Column", RenderStyle.ICON_ADD_SCRIPTED,
+					RenderStyle.ICON_ADD_SCRIPTED);
 		}
 		{
 			GLButton b = new GLButton();

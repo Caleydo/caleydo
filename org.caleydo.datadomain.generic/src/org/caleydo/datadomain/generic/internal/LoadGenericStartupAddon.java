@@ -72,6 +72,11 @@ public class LoadGenericStartupAddon implements IStartupAddon {
 	}
 
 	@Override
+	public boolean validate() {
+		return true;
+	}
+
+	@Override
     public IStartupProcedure create() {
 		return new GenericGUIStartupProcedure();
     }
