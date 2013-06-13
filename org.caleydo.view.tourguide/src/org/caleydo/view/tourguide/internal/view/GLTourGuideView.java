@@ -91,7 +91,7 @@ import org.caleydo.vis.rank.layout.RowHeightLayouts;
 import org.caleydo.vis.rank.model.ACompositeRankColumnModel;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
-import org.caleydo.vis.rank.model.MaxCompositeRankColumnModel;
+import org.caleydo.vis.rank.model.MaxRankColumnModel;
 import org.caleydo.vis.rank.model.RankRankColumnModel;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.StackedRankColumnModel;
@@ -544,8 +544,8 @@ public class GLTourGuideView extends AGLElementView {
 				r.add(((ScoreRankColumnModel) model).getScore());
 			} else if (model instanceof StackedRankColumnModel) {
 				cols.addAll(((StackedRankColumnModel) model).getChildren());
-			} else if (model instanceof MaxCompositeRankColumnModel) {
-				MaxCompositeRankColumnModel max = (MaxCompositeRankColumnModel) model;
+			} else if (model instanceof MaxRankColumnModel) {
+				MaxRankColumnModel max = (MaxRankColumnModel) model;
 				if (row != null) {
 					int repr = max.getSplittedValue(row).getRepr();
 					cols.add(max.get(repr));
@@ -569,8 +569,8 @@ public class GLTourGuideView extends AGLElementView {
 				((ScoreRankColumnModel) model).dirty();
 			} else if (model instanceof StackedRankColumnModel) {
 				cols.addAll(((StackedRankColumnModel) model).getChildren());
-			} else if (model instanceof MaxCompositeRankColumnModel) {
-				MaxCompositeRankColumnModel max = (MaxCompositeRankColumnModel) model;
+			} else if (model instanceof MaxRankColumnModel) {
+				MaxRankColumnModel max = (MaxRankColumnModel) model;
 				cols.addAll(max.getChildren());
 			}
 		}
@@ -612,7 +612,7 @@ public class GLTourGuideView extends AGLElementView {
 		Collection<ARankColumnModel> toremove = new ArrayList<>();
 		for (ARankColumnModel col : columns) {
 			if (col instanceof ScoreRankColumnModel || col instanceof StackedRankColumnModel
-					|| col instanceof MaxCompositeRankColumnModel) {
+					|| col instanceof MaxRankColumnModel) {
 				hasOne = true;
 				toremove.add(col);
 			} else if (hasOne)

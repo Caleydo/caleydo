@@ -17,21 +17,19 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.vis.rank.layout;
+package org.caleydo.vis.rank.model.mixin;
 
-import org.caleydo.vis.rank.model.MaxRankColumnModel;
+import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 
 /**
- * row height layouts determine on the one hand the row heights of items and will also be used for layouting the rows of
- * a {@link MaxRankColumnModel}
- *
  * @author Samuel Gratzl
  *
  */
-public class RowHeightLayouts {
+public interface IScriptedColumnMixin {
+	String PROP_CODE = "code";
 
+	String getCode();
 
-	public static final IRowHeightLayout UNIFORM = new UniformRowHeightLayout();
-
-	public static final IRowHeightLayout FISH_EYE = new FishEyeRowHeightLayout();
+	void editCode(GLElement summary, IGLElementContext context);
 }

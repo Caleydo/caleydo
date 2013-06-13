@@ -37,10 +37,12 @@ import org.caleydo.vis.rank.ui.detail.MultiScoreBarElement;
 import org.caleydo.vis.rank.ui.detail.ValueElement;
 
 /**
+ * a combiner that produces the max of it's children
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
-public class MaxCompositeRankColumnModel extends AMultiRankColumnModel implements ICollapseableColumnMixin,
+public class MaxRankColumnModel extends AMultiRankColumnModel implements ICollapseableColumnMixin,
 		IFilterColumnMixin, ISnapshotableColumnMixin {
 
 	private final PropertyChangeListener listener = new PropertyChangeListener() {
@@ -56,22 +58,22 @@ public class MaxCompositeRankColumnModel extends AMultiRankColumnModel implement
 		}
 	};
 
-	public MaxCompositeRankColumnModel() {
+	public MaxRankColumnModel() {
 		this(Color.GRAY, new Color(0.95f, .95f, .95f));
 	}
 
-	public MaxCompositeRankColumnModel(Color color, Color bgColor) {
+	public MaxRankColumnModel(Color color, Color bgColor) {
 		super(color, bgColor, "MAX");
 	}
 
-	public MaxCompositeRankColumnModel(MaxCompositeRankColumnModel copy) {
+	public MaxRankColumnModel(MaxRankColumnModel copy) {
 		super(copy);
 		cloneInitChildren();
 	}
 
 	@Override
-	public MaxCompositeRankColumnModel clone() {
-		return new MaxCompositeRankColumnModel(this);
+	public MaxRankColumnModel clone() {
+		return new MaxRankColumnModel(this);
 	}
 
 	@Override
@@ -165,7 +167,7 @@ public class MaxCompositeRankColumnModel extends AMultiRankColumnModel implement
 		private final PropertyChangeListener l = GLPropertyChangeListeners.repaintOnEvent(this);
 
 		public RepaintingGLElement() {
-			super(MaxCompositeRankColumnModel.this);
+			super(MaxRankColumnModel.this);
 		}
 		@Override
 		protected void init(IGLElementContext context) {

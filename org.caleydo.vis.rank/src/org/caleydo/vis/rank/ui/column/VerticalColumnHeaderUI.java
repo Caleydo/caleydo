@@ -43,7 +43,6 @@ import org.caleydo.vis.rank.config.IRankTableUIConfig;
 import org.caleydo.vis.rank.config.RankTableUIConfigs;
 import org.caleydo.vis.rank.model.ACompositeRankColumnModel;
 import org.caleydo.vis.rank.model.ARankColumnModel;
-import org.caleydo.vis.rank.model.MaxCompositeRankColumnModel;
 
 import com.google.common.collect.Lists;
 
@@ -51,7 +50,7 @@ import com.google.common.collect.Lists;
  * @author Samuel Gratzl
  *
  */
-public class MaxColumnHeaderUI extends AColumnHeaderUI {
+public class VerticalColumnHeaderUI extends AColumnHeaderUI {
 	private static final IMoveTransition move = new MoveTransitions.MoveTransitionBase(Transitions.NO, LINEAR,
 			Transitions.NO, Transitions.NO);
 	protected final PropertyChangeListener childrenChanged = new PropertyChangeListener() {
@@ -64,7 +63,7 @@ public class MaxColumnHeaderUI extends AColumnHeaderUI {
 	private int childrenPickingId;
 	private boolean childrenHovered;
 
-	public MaxColumnHeaderUI(MaxCompositeRankColumnModel model, IRankTableUIConfig config) {
+	public VerticalColumnHeaderUI(ACompositeRankColumnModel model, IRankTableUIConfig config) {
 		super(model, config, true, true);
 		model.addPropertyChangeListener(ACompositeRankColumnModel.PROP_CHILDREN, childrenChanged);
 		for (ARankColumnModel m : model) {

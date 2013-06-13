@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.config;
 
+import java.awt.Color;
 import java.util.Collections;
 
 import org.caleydo.core.view.opengl.picking.AdvancedPick;
@@ -27,18 +28,19 @@ import org.caleydo.vis.rank.model.ACompositeRankColumnModel;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.GroupRankColumnModel;
 import org.caleydo.vis.rank.model.IRankColumnParent;
-import org.caleydo.vis.rank.model.MaxCompositeRankColumnModel;
+import org.caleydo.vis.rank.model.MaxRankColumnModel;
 import org.caleydo.vis.rank.model.NestedRankColumnModel;
 import org.caleydo.vis.rank.model.OrderColumn;
 import org.caleydo.vis.rank.model.RankRankColumnModel;
 import org.caleydo.vis.rank.model.RankTableModel;
+import org.caleydo.vis.rank.model.ScriptedRankColumnModel;
 import org.caleydo.vis.rank.model.StackedRankColumnModel;
 import org.caleydo.vis.rank.model.mixin.IFloatRankableColumnMixin;
 
 /**
  * basic implementation of {@link IRankTableConfig}
  *
- * with all features enabled and combine by default to a {@link MaxCompositeRankColumnModel} and with ALT down to a
+ * with all features enabled and combine by default to a {@link MaxRankColumnModel} and with ALT down to a
  * {@link StackedRankColumnModel}
  *
  * @author Samuel Gratzl
@@ -48,6 +50,8 @@ public class RankTableConfigBase implements IRankTableConfig {
 	private static final int MAX_MODE = 0;
 	private static final int SUM_MODE = 1;
 	private static final int NESTED_MODE = 2;
+	private static final int SCRIPTED_MODE = 3;
+	private static final int GROUP_MODE = 4;
 
 	@Override
 	public boolean isMoveAble(ARankColumnModel model, boolean clone) {
@@ -61,7 +65,7 @@ public class RankTableConfigBase implements IRankTableConfig {
 			return default_;
 		AdvancedPick apick = (AdvancedPick) pick;
 		if (apick.isAltDown())
-			return 1 - default_; // opposite one
+			return SUM_MODE; // opposite one
 		if (apick.isShiftDown())
 			return NESTED_MODE;
 		return default_;
@@ -74,10 +78,14 @@ public class RankTableConfigBase implements IRankTableConfig {
 	private int defaultMode(ARankColumnModel model) {
 		if (model instanceof StackedRankColumnModel)
 			return SUM_MODE;
-		if (model instanceof MaxCompositeRankColumnModel)
+		if (model instanceof MaxRankColumnModel)
 			return MAX_MODE;
 		if (model instanceof NestedRankColumnModel)
 			return NESTED_MODE;
+		if (model instanceof ScriptedRankColumnModel)
+			return SCRIPTED_MODE;
+		if (model instanceof GroupRankColumnModel)
+			return GROUP_MODE;
 		return MAX_MODE;
 	}
 
@@ -89,9 +97,13 @@ public class RankTableConfigBase implements IRankTableConfig {
 		case NESTED_MODE:
 			return new NestedRankColumnModel();
 		case MAX_MODE:
-			return new MaxCompositeRankColumnModel();
+			return new MaxRankColumnModel();
+		case GROUP_MODE:
+			return new GroupRankColumnModel("Group", Color.GRAY, new Color(0.95f, .95f, .95f));
+		case SCRIPTED_MODE:
+			return new ScriptedRankColumnModel();
 		default:
-			return new MaxCompositeRankColumnModel();
+			return new MaxRankColumnModel();
 		}
 	}
 
@@ -109,9 +121,13 @@ public class RankTableConfigBase implements IRankTableConfig {
 			return t instanceof StackedRankColumnModel;
 		case NESTED_MODE:
 			return t instanceof NestedRankColumnModel;
+		case GROUP_MODE:
+			return t instanceof GroupRankColumnModel;
+		case SCRIPTED_MODE:
+			return t instanceof ScriptedRankColumnModel;
 		case MAX_MODE:
 		default:
-			return t instanceof MaxCompositeRankColumnModel;
+			return t instanceof MaxRankColumnModel;
 		}
 	}
 
@@ -127,9 +143,13 @@ public class RankTableConfigBase implements IRankTableConfig {
 			return parent.getClass() != StackedRankColumnModel.class;
 		case NESTED_MODE:
 			return parent.getClass() != NestedRankColumnModel.class;
+		case GROUP_MODE:
+			return parent.getClass() != GroupRankColumnModel.class;
+		case SCRIPTED_MODE:
+			return parent.getClass() != ScriptedRankColumnModel.class;
 		case MAX_MODE:
 		default:
-			return parent.getClass() != MaxCompositeRankColumnModel.class;
+			return parent.getClass() != MaxRankColumnModel.class;
 		}
 	}
 
@@ -140,6 +160,10 @@ public class RankTableConfigBase implements IRankTableConfig {
 			return "SUM";
 		case NESTED_MODE:
 			return "NESTED";
+		case SCRIPTED_MODE:
+			return "CODE";
+		case GROUP_MODE:
+			return "GROUP";
 		case MAX_MODE:
 		default:
 			return "MAX";
