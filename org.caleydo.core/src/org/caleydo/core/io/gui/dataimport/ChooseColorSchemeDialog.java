@@ -27,6 +27,7 @@ import java.util.Set;
 import org.caleydo.core.util.color.ColorBrewer;
 import org.caleydo.core.util.color.EColorSchemeType;
 import org.caleydo.core.util.color.mapping.ColorMapper;
+import org.caleydo.core.util.system.BrowserUtils;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
@@ -41,6 +42,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Shell;
 
 /**
@@ -85,7 +87,10 @@ public class ChooseColorSchemeDialog extends Dialog {
 	@Override
 	protected Control createDialogArea(Composite parent) {
 
-		Group colorSchemeGroup = new Group(parent, SWT.NONE);
+		Composite parentComposite = new Composite(parent, SWT.NONE);
+		parentComposite.setLayout(new GridLayout(1, true));
+
+		Group colorSchemeGroup = new Group(parentComposite, SWT.NONE);
 		GridLayout gridLayout = new GridLayout(2, false);
 		colorSchemeGroup.setLayout(gridLayout);
 		colorSchemeGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -110,6 +115,10 @@ public class ChooseColorSchemeDialog extends Dialog {
 				createGradientPreview(colorSchemeGroup, scheme, numColors.get(i));
 			}
 		}
+
+		Link colorBrewerLink = new Link(parentComposite, SWT.NONE);
+		colorBrewerLink.setText("Color schemes taken from <A>http://www.ColorBrewer.org</A>");
+		colorBrewerLink.addSelectionListener(BrowserUtils.LINK_LISTENER);
 
 		return parent;
 	}
