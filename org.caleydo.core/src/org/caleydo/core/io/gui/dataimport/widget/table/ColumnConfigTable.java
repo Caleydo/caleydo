@@ -169,7 +169,7 @@ public class ColumnConfigTable {
 			this.table = null;
 		}
 
-		final DataLayer bodyDataLayer = new DataLayer(bodyDataProvider);
+		final DataLayer bodyDataLayer = new DataLayer(bodyDataProvider, 120, 20);
 		selectionLayer = new SelectionLayer(bodyDataLayer);
 		ViewportLayer bodyLayer = new ViewportLayer(selectionLayer);
 
@@ -203,7 +203,7 @@ public class ColumnConfigTable {
 		// ColumnOverrideLabelAccumulator acc = new ColumnOverrideLabelAccumulator(columnHeaderLayer);
 		columnDataLayer.setConfigLabelAccumulator(acc);
 
-		final ButtonCellPainter propertiesButton = new ButtonCellPainter(new TextPainter(false, true, true));
+		final ButtonCellPainter propertiesButton = new ButtonCellPainter(new TextPainter());
 		propertiesButton.addClickListener(new IMouseAction() {
 
 			@Override
@@ -214,7 +214,7 @@ public class ColumnConfigTable {
 
 		// acc.registerColumnOverrides(9, ColumnLabelAccumulator.COLUMN_LABEL_PREFIX + 9);
 		// table.addConfiguration(new DefaultNatTableStyleConfiguration());
-		table.addConfiguration(new DefaultCaleydoNatTableConfiguration());
+		NatTableUtil.applyDefaultNatTableStyling(table);
 		table.addConfiguration(new AbstractRegistryConfiguration() {
 
 			@Override
@@ -249,12 +249,6 @@ public class ColumnConfigTable {
 
 		table.configure();
 	}
-
-
-
-
-
-
 
 	public void createTableFromMatrix(List<List<String>> dataMatrix, List<String> rowOfColumnIDs,
 			List<String> columnOfRowIDs, List<ColumnDescription> columnDescriptions) {
