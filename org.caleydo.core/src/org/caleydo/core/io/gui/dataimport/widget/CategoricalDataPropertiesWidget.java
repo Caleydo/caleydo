@@ -59,6 +59,10 @@ public class CategoricalDataPropertiesWidget implements ITableDataChangeListener
 
 	protected static final int NO_NEUTRAL_CATEGORY_INDEX = 0;
 
+	protected static final ColorBrewer DEFAULT_SEQUENTIAL_COLOR_SCHEME = ColorBrewer.Reds;
+	protected static final ColorBrewer DEFAULT_DIVERGING_COLOR_SCHEME = ColorBrewer.RdBu;
+	protected static final ColorBrewer DEFAULT_QUALITATIVE_COLOR_SCHEME = ColorBrewer.Set1;
+
 	/**
 	 * Radio button for ordinal categories.
 	 */
@@ -121,7 +125,7 @@ public class CategoricalDataPropertiesWidget implements ITableDataChangeListener
 
 	protected CategoricalClassDescription<String> categoricalClassDescription;
 
-	protected ColorBrewer currentColorScheme = ColorBrewer.RdBu;
+	protected ColorBrewer currentColorScheme = DEFAULT_SEQUENTIAL_COLOR_SCHEME;
 
 	/**
 	 * @param parent
@@ -145,7 +149,8 @@ public class CategoricalDataPropertiesWidget implements ITableDataChangeListener
 				// existsNeutralCategoryButton.setEnabled(true);
 				neutralCategoryCombo.setEnabled(true);
 				categoryTable.setRowsMoveable(true);
-				applyColorScheme(ColorBrewer.RdBu);
+				applyColorScheme(isNeutralColorSelected() ? DEFAULT_DIVERGING_COLOR_SCHEME
+						: DEFAULT_SEQUENTIAL_COLOR_SCHEME);
 				categoriesGroup.layout(true);
 			}
 		});
@@ -169,7 +174,7 @@ public class CategoricalDataPropertiesWidget implements ITableDataChangeListener
 				neutralCategoryCombo.select(NO_NEUTRAL_CATEGORY_INDEX);
 				neutralCategoryCombo.setEnabled(false);
 				categoryTable.setRowsMoveable(false);
-				applyColorScheme(ColorBrewer.Set1);
+				applyColorScheme(DEFAULT_QUALITATIVE_COLOR_SCHEME);
 				categoriesGroup.layout(true);
 			}
 		});
@@ -192,7 +197,12 @@ public class CategoricalDataPropertiesWidget implements ITableDataChangeListener
 		Composite buttonComposite = new Composite(categoriesGroup, SWT.NONE);
 		buttonComposite.setLayout(new GridLayout(1, true));
 
-		applyColorSchemeButton = new Button(buttonComposite, SWT.PUSH);
+		Group colorPropertiesGroup = new Group(buttonComposite, SWT.SHADOW_ETCHED_IN);
+		colorPropertiesGroup.setText("Color Properties");
+		colorPropertiesGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		colorPropertiesGroup.setLayout(new GridLayout(1, true));
+
+		applyColorSchemeButton = new Button(colorPropertiesGroup, SWT.PUSH);
 		applyColorSchemeButton.setText("Select Color 		Scheme");
 		applyColorSchemeButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		applyColorSchemeButton.addSelectionListener(new SelectionAdapter() {
@@ -203,7 +213,7 @@ public class CategoricalDataPropertiesWidget implements ITableDataChangeListener
 			}
 		});
 
-		reverseColorSchemeOrderButton = new Button(buttonComposite, SWT.PUSH);
+		reverseColorSchemeOrderButton = new Button(colorPropertiesGroup, SWT.PUSH);
 		reverseColorSchemeOrderButton.setText("Reverse Color Scheme Order");
 		// reverseColorSchemeOrderButton.setSelection(false);
 		reverseColorSchemeOrderButton.addSelectionListener(new SelectionAdapter() {
@@ -225,21 +235,32 @@ public class CategoricalDataPropertiesWidget implements ITableDataChangeListener
 		// }
 		// });
 
-		Label neutralCategoryLabel = new Label(buttonComposite, SWT.NONE);
+		Label neutralCategoryLabel = new Label(colorPropertiesGroup, SWT.NONE);
 		neutralCategoryLabel.setText("Neutral Color Category:");
 
-		neutralCategoryCombo = new Combo(buttonComposite, SWT.DROP_DOWN | SWT.READ_ONLY);
+		neutralCategoryCombo = new Combo(colorPropertiesGroup, SWT.DROP_DOWN | SWT.READ_ONLY);
 		neutralCategoryCombo.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 		neutralCategoryCombo.add("None");
 		neutralCategoryCombo.select(NO_NEUTRAL_CATEGORY_INDEX);
 		neutralCategoryCombo.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				applyColorScheme(currentColorScheme);
+				if (currentColorScheme.getType() != EColorSchemeType.DIVERGING && isNeutralColorSelected()) {
+					applyColorScheme(DEFAULT_DIVERGING_COLOR_SCHEME);
+				} else if (currentColorScheme.getType() != EColorSchemeType.SEQUENTIAL && !isNeutralColorSelected()) {
+					applyColorScheme(DEFAULT_SEQUENTIAL_COLOR_SCHEME);
+				} else {
+					applyColorScheme(currentColorScheme);
+				}
 			}
 		});
 
-		addCategoryButton = new Button(buttonComposite, SWT.PUSH);
+		Group modifyCategoriesGroup = new Group(buttonComposite, SWT.SHADOW_ETCHED_IN);
+		modifyCategoriesGroup.setText("Modify Categories");
+		modifyCategoriesGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		modifyCategoriesGroup.setLayout(new GridLayout(1, true));
+
+		addCategoryButton = new Button(modifyCategoriesGroup, SWT.PUSH);
 		addCategoryButton.setText("Add Category");
 		addCategoryButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		addCategoryButton.addSelectionListener(new SelectionAdapter() {
@@ -251,7 +272,7 @@ public class CategoricalDataPropertiesWidget implements ITableDataChangeListener
 
 		});
 
-		removeCategoryButton = new Button(buttonComposite, SWT.PUSH);
+		removeCategoryButton = new Button(modifyCategoriesGroup, SWT.PUSH);
 		removeCategoryButton.setText("Remove Category");
 		removeCategoryButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		removeCategoryButton.addSelectionListener(new SelectionAdapter() {
@@ -300,6 +321,10 @@ public class CategoricalDataPropertiesWidget implements ITableDataChangeListener
 		// });
 	}
 
+	private boolean isNeutralColorSelected() {
+		return neutralCategoryCombo.getSelectionIndex() != NO_NEUTRAL_CATEGORY_INDEX;
+	}
+
 	/**
 	 * Updates categories according to the provided data matrix.
 	 *
@@ -317,7 +342,13 @@ public class CategoricalDataPropertiesWidget implements ITableDataChangeListener
 
 		updateNeutralCategoryWidget();
 
-		applyColorScheme(nominalButton.getSelection() ? ColorBrewer.Set1 : ColorBrewer.RdBu);
+		if (nominalButton.getSelection()) {
+			applyColorScheme(DEFAULT_QUALITATIVE_COLOR_SCHEME);
+		} else if (isNeutralColorSelected()) {
+			applyColorScheme(DEFAULT_DIVERGING_COLOR_SCHEME);
+		} else {
+			applyColorScheme(DEFAULT_SEQUENTIAL_COLOR_SCHEME);
+		}
 
 		categoriesGroup.pack();
 	}
@@ -368,7 +399,13 @@ public class CategoricalDataPropertiesWidget implements ITableDataChangeListener
 
 		updateNeutralCategoryWidget();
 
-		applyColorScheme(nominalButton.getSelection() ? ColorBrewer.Set1 : ColorBrewer.RdBu);
+		if (nominalButton.getSelection()) {
+			applyColorScheme(DEFAULT_QUALITATIVE_COLOR_SCHEME);
+		} else if (isNeutralColorSelected()) {
+			applyColorScheme(DEFAULT_DIVERGING_COLOR_SCHEME);
+		} else {
+			applyColorScheme(DEFAULT_SEQUENTIAL_COLOR_SCHEME);
+		}
 
 		categoriesGroup.pack();
 	}
@@ -399,8 +436,11 @@ public class CategoricalDataPropertiesWidget implements ITableDataChangeListener
 		if (nominalButton.getSelection()) {
 			colorSchemes.addAll(ColorBrewer.getSets(EColorSchemeType.QUALITATIVE));
 		} else {
-			colorSchemes.addAll(ColorBrewer.getSets(EColorSchemeType.SEQUENTIAL));
-			colorSchemes.addAll(ColorBrewer.getSets(EColorSchemeType.DIVERGING));
+			if (isNeutralColorSelected()) {
+				colorSchemes.addAll(ColorBrewer.getSets(EColorSchemeType.DIVERGING));
+			} else {
+				colorSchemes.addAll(ColorBrewer.getSets(EColorSchemeType.SEQUENTIAL));
+			}
 		}
 		Collections.sort(colorSchemes);
 		List<Integer> numColors = new ArrayList<>(colorSchemes.size());
@@ -419,8 +459,7 @@ public class CategoricalDataPropertiesWidget implements ITableDataChangeListener
 
 	private int determineSchemeSize(ColorBrewer scheme) {
 		int numCategories = categoryTable.getRowCount();
-		if (scheme.getType() != EColorSchemeType.QUALITATIVE
-				&& neutralCategoryCombo.getSelectionIndex() != NO_NEUTRAL_CATEGORY_INDEX) {
+		if (scheme.getType() != EColorSchemeType.QUALITATIVE && isNeutralColorSelected()) {
 			int neutralCategoryIndex = neutralCategoryCombo.getSelectionIndex();
 			int numUpperCategories = numCategories - (neutralCategoryIndex);
 			int numLowerCategories = neutralCategoryIndex - 1;
@@ -512,7 +551,7 @@ public class CategoricalDataPropertiesWidget implements ITableDataChangeListener
 		} else {
 			ColorMapper colorMapper = colorScheme.asColorMapper(numColors);
 			int neutralCategoryIndex = neutralCategoryCombo.getSelectionIndex();
-			if (neutralCategoryIndex != NO_NEUTRAL_CATEGORY_INDEX) {
+			if (isNeutralColorSelected()) {
 
 				float lowerCategoriesMappingValueIncrease = (neutralCategoryIndex == 1) ? 0
 						: 1.0f / (neutralCategoryIndex - 1) * 0.5f;

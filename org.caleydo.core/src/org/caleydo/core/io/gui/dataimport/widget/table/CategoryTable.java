@@ -209,11 +209,6 @@ public class CategoryTable extends AMatrixBasedTableWidget implements ILayerList
 	private void buildTable(MatrixBasedBodyDataProvider bodyDataProvider, ColumnHeaderDataProvider columnDataProvider,
 			LineNumberRowHeaderDataProvider rowDataProvider, final boolean areRowsMoveable) {
 
-		if (table != null) { // cleanup old
-			this.table.dispose();
-			this.table = null;
-		}
-
 		final DataLayer bodyDataLayer = new DataLayer(bodyDataProvider, 120, 36);
 		bodyDataLayer.addLayerListener(this);
 
@@ -230,7 +225,11 @@ public class CategoryTable extends AMatrixBasedTableWidget implements ILayerList
 				rowDataProvider);
 		CornerLayer cornerLayer = new CornerLayer(new DataLayer(cornerDataProvider), rowHeaderLayer, columnHeaderLayer);
 		GridLayer gridLayer = new GridLayer(bodyLayer, columnHeaderLayer, rowHeaderLayer, cornerLayer);
+		if (table == null) {
 		table = new NatTable(parent, gridLayer, false);
+		} else {
+			table.setLayer(gridLayer);
+		}
 		table.setLayoutData(layoutData);
 
 		NatTableUtil.applyDefaultNatTableStyling(table);
@@ -267,6 +266,9 @@ public class CategoryTable extends AMatrixBasedTableWidget implements ILayerList
 
 				if (areRowsMoveable) {
 					configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_PAINTER, rowHeaderPainter,
+							DisplayMode.NORMAL, GridRegion.ROW_HEADER);
+				} else {
+					configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_PAINTER, new TextPainter(),
 							DisplayMode.NORMAL, GridRegion.ROW_HEADER);
 				}
 

@@ -53,6 +53,8 @@ public class NatTableToolTip extends DefaultToolTip {
 		int col = natTable.getColumnPositionByX(event.x);
 		int row = natTable.getRowPositionByY(event.y);
 		ILayerCell cell = natTable.getCellByPosition(col, row);
+		if (cell == null)
+			return null;
 		Object dataValue = cell.getDataValue();
 
 		if (dataValue == null)
