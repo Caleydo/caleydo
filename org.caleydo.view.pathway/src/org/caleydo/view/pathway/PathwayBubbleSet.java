@@ -1,9 +1,8 @@
 /**
- * 
+ *
  */
 package org.caleydo.view.pathway;
 
-import java.awt.Color;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
@@ -11,6 +10,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.color.ColorManager;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.PathwayPath;
@@ -22,15 +22,15 @@ import setvis.BubbleSetGLRenderer;
 
 
 
-public class PathwayBubbleSet 
+public class PathwayBubbleSet
 {
 	////////////////////////////////////////////////
 	// private section
-	////////////////////////////////////////////////	
+	////////////////////////////////////////////////
 	private BubbleSetGLRenderer renderer= new BubbleSetGLRenderer();
 	private PathwayGraph pathway=null;
 	////////////////////////////////////////////////
-	// public section 
+	// public section
 	////////////////////////////////////////////////
 	public PathwayBubbleSet(){
 
@@ -41,16 +41,16 @@ public class PathwayBubbleSet
 	public void setBubbleSetGLRenderer(BubbleSetGLRenderer newRenderer){
 		renderer=newRenderer;
 	}
-	
+
 	public void setPathwayGraph(PathwayGraph aPathway){
 		pathway=aPathway;
 	}
-	
+
 	public void clear(){
 		renderer.clearBubbleSet();
 	}
-	
-	public void addAllPaths(List<GraphPath<PathwayVertexRep, DefaultEdge>> allPaths){			
+
+	public void addAllPaths(List<GraphPath<PathwayVertexRep, DefaultEdge>> allPaths){
 		for (GraphPath<PathwayVertexRep, DefaultEdge> path : allPaths) {
 			if (path == null)
 				break;
@@ -58,25 +58,25 @@ public class PathwayBubbleSet
 		}
 	}
 
-	public void addAllPaths(List<GraphPath<PathwayVertexRep, DefaultEdge>> allPaths, int selectionID){	
+	public void addAllPaths(List<GraphPath<PathwayVertexRep, DefaultEdge>> allPaths, int selectionID){
 		List<org.caleydo.core.util.color.Color> colorTable = (ColorManager.get()).getColorList("qualitativeColors");
 		int id=0;
 		int colorID=0;
 		GraphPath<PathwayVertexRep, DefaultEdge> selPath=null;
-		float [] selColor=SelectionType.SELECTION.getColor();
-		
+		// float [] selColor=SelectionType.SELECTION.getColor();
+
 		//add selection first
 		for (GraphPath<PathwayVertexRep, DefaultEdge> path : allPaths) {
 			if (path == null)
 				break;
-			if(selectionID==id){											
+			if(selectionID==id){
 				//addColoredPath(path,new Color(selColor[0],selColor[1],selColor[2]));
 				//addColoredPath(path,new Color(selColor[0],selColor[1],selColor[2]));
 				//addColoredPath(path,new Color(selColor[0],selColor[1],selColor[2]));
 				break;
 			}
 			id++;
-		}		
+		}
 		id=0;
 		for (GraphPath<PathwayVertexRep, DefaultEdge> path : allPaths) {
 
@@ -89,19 +89,19 @@ public class PathwayBubbleSet
 				colorID = colorTable.size() - 1;
 			if (path == null)
 				break;
-			
-			if(selectionID!=id){								
+
+			if(selectionID!=id){
 				org.caleydo.core.util.color.Color c = colorTable.get(colorID);
-				addColoredPath(path,new Color(c.r/1.0f,c.g/1.0f,c.b/1.0f));				
+				addColoredPath(path,new Color(c.r/1.0f,c.g/1.0f,c.b/1.0f));
 			}
 			id++;
-		}		
+		}
 	}
-	
+
 	public void addColoredPath(GraphPath<PathwayVertexRep, DefaultEdge> path, Color colorValue)
 	{
-		// single node path = no edge exist 
-		if (path.getEndVertex() == path.getStartVertex()) { 
+		// single node path = no edge exist
+		if (path.getEndVertex() == path.getStartVertex()) {
 			PathwayVertexRep sourceVertexRep = path.getEndVertex();
 			double bbItemW = sourceVertexRep.getWidth();
 			double bbItemH = sourceVertexRep.getHeight();
@@ -109,9 +109,9 @@ public class PathwayBubbleSet
 			double posY = sourceVertexRep.getLowerLeftCornerY();//.getLowerLeftCornerY();
 			ArrayList<Rectangle2D> items= new ArrayList<>();
 			items.add(new Rectangle2D.Double(posX, posY, bbItemW, bbItemH));
-			renderer.addGroup(items, null , colorValue);
+			renderer.addGroup(items, null, colorValue.getAWTColor());
 		}
-		// add path by adding each of its nodes 
+		// add path by adding each of its nodes
 		else {
 			if(pathway==null)return;
 			ArrayList<Rectangle2D> items= new ArrayList<>();
@@ -125,7 +125,7 @@ public class PathwayBubbleSet
 //				double posX = sourceVertexRep.getCenterX();
 //				double posY = sourceVertexRep.getCenterY();
 //				double tX = targetVertexRep.getCenterX();
-//				double tY = targetVertexRep.getCenterY();				
+//				double tY = targetVertexRep.getCenterY();
 				double bbItemW = sourceVertexRep.getWidth();
 				double bbItemH = sourceVertexRep.getHeight();
 				double posX = sourceVertexRep.getLowerLeftCornerX();
@@ -142,16 +142,16 @@ public class PathwayBubbleSet
 				items.add(new Rectangle2D.Double(
 						targetVertexRep.getLowerLeftCornerX(), targetVertexRep.getLowerLeftCornerY(),
 						targetVertexRep.getWidth(), targetVertexRep.getHeight()));
-			}			
-			renderer.addGroup(items, edges , colorValue);
+			}
+			renderer.addGroup(items, edges, colorValue.getAWTColor());
 		}
 	}
-	
-	
+
+
 	public void addPath(GraphPath<PathwayVertexRep, DefaultEdge> path)
 	{
-		// single node path = no edge exist 
-		if (path.getEndVertex() == path.getStartVertex()) { 
+		// single node path = no edge exist
+		if (path.getEndVertex() == path.getStartVertex()) {
 			PathwayVertexRep sourceVertexRep = path.getEndVertex();
 			double bbItemW = sourceVertexRep.getWidth();
 			double bbItemH = sourceVertexRep.getHeight();
@@ -161,7 +161,7 @@ public class PathwayBubbleSet
 			items.add(new Rectangle2D.Double(posX, posY, bbItemW, bbItemH));
 			renderer.addGroup(items, null , null);
 		}
-		// add path by adding each of its nodes 
+		// add path by adding each of its nodes
 		else {
 			if(pathway==null)return;
 			ArrayList<Rectangle2D> items= new ArrayList<>();
@@ -175,7 +175,7 @@ public class PathwayBubbleSet
 //				double posX = sourceVertexRep.getCenterX();
 //				double posY = sourceVertexRep.getCenterY();
 //				double tX = targetVertexRep.getCenterX();
-//				double tY = targetVertexRep.getCenterY();				
+//				double tY = targetVertexRep.getCenterY();
 				double bbItemW = sourceVertexRep.getWidth();
 				double bbItemH = sourceVertexRep.getHeight();
 				double posX = sourceVertexRep.getLowerLeftCornerX();
@@ -192,23 +192,23 @@ public class PathwayBubbleSet
 				items.add(new Rectangle2D.Double(
 						targetVertexRep.getLowerLeftCornerX(), targetVertexRep.getLowerLeftCornerY(),
 						targetVertexRep.getWidth(), targetVertexRep.getHeight()));
-			}			
+			}
 			renderer.addGroup(items, edges , null);
 		}
 	}
-	
+
 	public void addContextPathSegements(List<List<PathwayVertexRep>> contextPaths){
-		Color contextPathColor=new Color(0.0f,0.0f,1.0f); 
+		Color contextPathColor=new Color(0.0f,0.0f,1.0f);
 		ArrayList<Rectangle2D> items= new ArrayList<>();
 		ArrayList<Line2D> edges= new ArrayList<>();
 		int i=0;
-		for (List<PathwayVertexRep> pathSegment : contextPaths) 
+		for (List<PathwayVertexRep> pathSegment : contextPaths)
 		{
 			i=0;
 			Rectangle2D prevRect = new Rectangle2D.Double(0f, 0f, 0f, 0f);
 			edges.clear();
 			items.clear();
-			for (PathwayVertexRep node : pathSegment) {				
+			for (PathwayVertexRep node : pathSegment) {
 				double bbItemW = node.getWidth();
 				double bbItemH = node.getHeight();
 				double posX = node.getLowerLeftCornerX();
@@ -219,19 +219,19 @@ public class PathwayBubbleSet
 				}
 				prevRect.setRect(posX, posY, bbItemW, bbItemH);
 				i++;
-			}			
-			renderer.addGroup(items, edges, contextPathColor);
+			}
+			renderer.addGroup(items, edges, contextPathColor.getAWTColor());
 		}
 	}
-	
+
 	public void addPathSegements(List<PathwayPath> pathSegments){
-		if (pathSegments.size() <= 0) return; 	
-		float[] selColor=SelectionType.SELECTION.getColor();
-		Color pathSegColor=new Color(selColor[0],selColor[1],selColor[2]); 
+		if (pathSegments.size() <= 0) return;
+
+		Color pathSegColor = SelectionType.SELECTION.getColor();
 		int outlineThickness = 3;
-		for (PathwayPath pathSegment : pathSegments) 
+		for (PathwayPath pathSegment : pathSegments)
 		{
-			if (pathSegment.getPathway() == pathway) 
+			if (pathSegment.getPathway() == pathway)
 			{
 				ArrayList<Rectangle2D> items= new ArrayList<>();
 				ArrayList<Line2D> edges= new ArrayList<>();
@@ -252,10 +252,10 @@ public class PathwayBubbleSet
 						double posY = sourceVertexRep.getLowerLeftCornerY();
 						double tX = targetVertexRep.getLowerLeftCornerX();
 						double tY = targetVertexRep.getLowerLeftCornerY();
-	
+
 						items.add(new Rectangle2D.Double(posX, posY, bbItemW, bbItemH));
 						edges.add(new Line2D.Double(posX, posY, tX, tY));
-					}					
+					}
 					// add last item
 					if (pathSegment.getPath().getEdgeList().size() > 0) {
 						DefaultEdge lastEdge = pathSegment.getPath().getEdgeList()
@@ -268,27 +268,27 @@ public class PathwayBubbleSet
 						}
 					}
 				}
-				renderer.addGroup(items, edges, pathSegColor);
-			}//if (pathSegment.getPathway() == pathway) 		
-		}//for (PathwayPath pathSegment : pathSegments) 
+				renderer.addGroup(items, edges, pathSegColor.getAWTColor());
+			}//if (pathSegment.getPathway() == pathway)
+		}//for (PathwayPath pathSegment : pathSegments)
 	}
-	
-	
+
+
 	public void addPortals(Set<PathwayVertexRep> portalVertexReps){
 		if(portalVertexReps==null)return;
 
-		Color portalColor=new Color(1f,0f,0f); 
+		Color portalColor=new Color(1f,0f,0f);
 
 		for (PathwayVertexRep portal : portalVertexReps) {
 			double posX = portal.getLowerLeftCornerX();
 			double posY = portal.getLowerLeftCornerY();
 			double bbItemW = portal.getWidth();
-			double bbItemH = portal.getHeight();		
+			double bbItemH = portal.getHeight();
 			ArrayList<Rectangle2D> items= new ArrayList<>();
 			items.add(new Rectangle2D.Double(posX, posY, bbItemW, bbItemH));
-			renderer.addGroup(items, null , portalColor);
+			renderer.addGroup(items, null, portalColor.getAWTColor());
 		}
 	}
-	
+
 }
 

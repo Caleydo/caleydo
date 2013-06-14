@@ -22,7 +22,7 @@ package org.caleydo.view.stratomex.brick.layout;
 import java.util.ArrayList;
 
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.util.color.Colors;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutConfiguration;
@@ -69,7 +69,7 @@ public abstract class ABrickLayoutConfiguration extends LayoutConfiguration {
 					.getColor().getRGBA();
 
 		if (!brick.isHeaderBrick())
-			color = Colors.NEUTRAL_GREY.getRGBA();
+			color = Color.NEUTRAL_GREY.getRGBA();
 
 		borderedAreaRenderer.setColor(color);
 
@@ -293,23 +293,22 @@ public abstract class ABrickLayoutConfiguration extends LayoutConfiguration {
 
 	public void setSelected(boolean selected) {
 
-
 		if (brick.isHeaderBrick()) {
-			brickColumn.setHighlightColor(selected ? SelectionType.SELECTION.getColor() : null);
+			brickColumn.setHighlightColor(selected ? SelectionType.SELECTION.getColor().getRGBA() : null);
 			return;
 		} else {
-			 if (selected) {
+			if (selected) {
 				float[] color = new float[4];
-				float[] selectionColor = SelectionType.SELECTION.getColor();
+				float[] selectionColor = SelectionType.SELECTION.getColor().getRGBA();
 				color[0] = selectionColor[0] * 0.4f + BorderedAreaRenderer.DEFAULT_COLOR[0] * 0.6f;
 				color[1] = selectionColor[1] * 0.4f + BorderedAreaRenderer.DEFAULT_COLOR[1] * 0.6f;
 				color[2] = selectionColor[2] * 0.4f + BorderedAreaRenderer.DEFAULT_COLOR[2] * 0.6f;
 				color[3] = 1;
-				 borderedAreaRenderer.setColor(color);
-			 } else {
-				 borderedAreaRenderer.setColor(Colors.NEUTRAL_GREY.getRGBA());
-			 }
-		 }
+				borderedAreaRenderer.setColor(color);
+			} else {
+				borderedAreaRenderer.setColor(Color.NEUTRAL_GREY.getRGBA());
+			}
+		}
 	}
 
 	/**

@@ -21,7 +21,6 @@ package org.caleydo.vis.rank.model;
 
 import gleem.linalg.Vec2f;
 
-import java.awt.Color;
 import java.beans.PropertyChangeListener;
 import java.text.NumberFormat;
 import java.util.BitSet;
@@ -30,6 +29,7 @@ import java.util.Locale;
 
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;

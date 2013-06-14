@@ -89,13 +89,28 @@ public class Group implements IDefaultLabelHolder {
 	 * Default Constructor
 	 */
 	public Group() {
+		init();
 	}
 
 	public Group(int size) {
 		this.setSize(size);
+		init();
 	}
 
-	{
+	/**
+	 * Initialize a clone of a group with the same size, ID and label. Start index may vary.
+	 *
+	 * TODO: this is not synchronous for changes
+	 * 
+	 * @param clone
+	 */
+	public Group(Group clone) {
+		this.id = clone.id;
+		this.size = clone.size;
+		this.label = clone.label;
+	}
+
+	private void init() {
 		id = GROUP_ID_COUNTER.getAndIncrement();
 		label = "Group " + id;
 	}
@@ -110,6 +125,7 @@ public class Group implements IDefaultLabelHolder {
 	 *            this group (i.e. the most typical element)
 	 */
 	public Group(int size, int representativeElementIndex) {
+		init();
 		this.setSize(size);
 		this.setRepresentativeElementIndex(representativeElementIndex);
 	}
@@ -127,6 +143,7 @@ public class Group implements IDefaultLabelHolder {
 	 *            group
 	 */
 	public Group(int size, int representativeElementIndex, ClusterNode clusterNode) {
+		init();
 		this.setSize(size);
 		this.setRepresentativeElementIndex(representativeElementIndex);
 		this.setClusterNode(clusterNode);
@@ -228,7 +245,7 @@ public class Group implements IDefaultLabelHolder {
 
 	@Override
 	public String toString() {
-		return "Group: " + groupIndex + ", size: " + size;
+		return "Group: " + groupIndex + ", size: " + size + ", id:" + id;
 	}
 
 	public void setPerspectiveID(String perspectiveID) {

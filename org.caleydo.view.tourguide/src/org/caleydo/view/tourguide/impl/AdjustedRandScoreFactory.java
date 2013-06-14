@@ -21,7 +21,6 @@ package org.caleydo.view.tourguide.impl;
 
 import static org.caleydo.view.tourguide.api.query.EDataDomainQueryMode.STRATIFICATIONS;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -32,6 +31,7 @@ import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.EventPublisher;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.score.DefaultComputedReferenceStratificationScore;
 import org.caleydo.view.tourguide.api.score.MultiScore;
@@ -71,16 +71,16 @@ import org.eclipse.swt.widgets.Text;
  *
  */
 public class AdjustedRandScoreFactory implements IScoreFactory {
-	private final static Color color = Color.decode("#5fd3bc");
-	private final static Color bgColor = Color.decode("#d5fff6");
-
+	private final static Color color = new Color("#5fd3bc");
+	private final static Color bgColor = new Color("#d5fff6");
 
 	private IRegisteredScore create(String label, Perspective reference) {
-		return new DefaultComputedReferenceStratificationScore(label, reference, AdjustedRandIndex.get(), null, color, bgColor) {
+		return new DefaultComputedReferenceStratificationScore(label, reference, AdjustedRandIndex.get(), null, color,
+				bgColor) {
 			@Override
 			public PiecewiseMapping createMapping() {
 				PiecewiseMapping m = new PiecewiseMapping(-1, 1);
-				m.put(-1,1);
+				m.put(-1, 1);
 				m.put(0, 0);
 				m.put(1, 1);
 				return m;
@@ -98,8 +98,7 @@ public class AdjustedRandScoreFactory implements IScoreFactory {
 		IState browse = stateMachine.addState("AdjustedRandBrowse", new UpdateAndBrowseAdjustedRand());
 		IState target = stateMachine.addState("AdjustedRand", new CreateAdjustedRandState(browse));
 
-		stateMachine.addTransition(start, new SimpleTransition(target,
-				"Find similar to displayed stratification"));
+		stateMachine.addTransition(start, new SimpleTransition(target, "Find similar to displayed stratification"));
 	}
 
 	@Override

@@ -2,8 +2,7 @@ package org.caleydo.vis.rank.ui.mapping;
 
 import static org.caleydo.vis.rank.ui.RenderStyle.LABEL_HEIGHT;
 
-import java.awt.Color;
-
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;

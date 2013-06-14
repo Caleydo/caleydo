@@ -22,7 +22,6 @@ package org.caleydo.vis.rank.model;
 import gleem.linalg.Vec2f;
 import gleem.linalg.Vec4f;
 
-import java.awt.Color;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.BitSet;
@@ -31,6 +30,7 @@ import java.util.List;
 
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.util.function.AFloatList;
 import org.caleydo.core.util.function.IFloatList;
@@ -56,9 +56,9 @@ import com.google.common.primitives.Floats;
 
 /**
  * a {@link ACompositeRankColumnModel} which is rankable
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public abstract class AMultiRankColumnModel extends ACompositeRankColumnModel implements IMultiColumnMixin,
 		IExplodeableColumnMixin, IHideableColumnMixin, IGLRenderer {

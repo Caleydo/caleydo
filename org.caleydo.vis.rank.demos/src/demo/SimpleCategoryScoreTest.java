@@ -20,7 +20,7 @@ package demo;
  *******************************************************************************/
 
 
-import java.awt.Color;
+import org.caleydo.core.util.color.Color;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;

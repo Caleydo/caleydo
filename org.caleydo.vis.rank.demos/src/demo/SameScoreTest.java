@@ -20,12 +20,12 @@ package demo;
  *******************************************************************************/
 
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLSandBox;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
@@ -54,7 +54,7 @@ public class SameScoreTest implements IModelBuilder {
 			public float applyPrimitive(IRow in) {
 				return ((SimpleRow) in).value;
 			}
-		}, GLRenderers.drawText("Float", VAlign.CENTER), Color.decode("#ffb380"), Color.decode("#ffe6d5"),
+		}, GLRenderers.drawText("Float", VAlign.CENTER), new Color("#ffb380"), new Color("#ffe6d5"),
 				new PiecewiseMapping(0, Float.NaN), FloatInferrers.MEAN));
 
 		Random r = new Random(200);

@@ -193,9 +193,9 @@ public class ColorRenderer extends APickableLayoutRenderer {
 	protected void renderContent(GL2 gl) {
 		// TODO: make display lists usable.
 		if (colorProvider != null) {
-			color = colorProvider.getColor();
+			color = colorProvider.getColor().getRGBA();
 			useGradient = colorProvider.useGradient();
-			gradientColor = colorProvider.getGradientColor();
+			gradientColor = colorProvider.getGradientColor().getRGBA();
 			isHorizontalGradient = colorProvider.isHorizontalGradient();
 		}
 		pushNames(gl);

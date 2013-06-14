@@ -24,7 +24,6 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.util.color.Color;
-import org.caleydo.core.util.color.Colors;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.ui.PlatformUI;
 
@@ -182,7 +181,7 @@ public class ColorMapper {
 	 */
 	public Color getColorAsObject(float value) {
 		if (Float.isNaN(value))
-			return Colors.NOT_A_NUMBER_COLOR;
+			return Color.NOT_A_NUMBER_COLOR;
 
 		if (value > 1 || value < 0)
 			throw new IllegalArgumentException("Invalid value in fValue. Has to be between 0 and 1 but was: " + value);
@@ -259,7 +258,7 @@ public class ColorMapper {
 	}
 
 	public Color getNotANumberColor() {
-		return Colors.NOT_A_NUMBER_COLOR;
+		return Color.NOT_A_NUMBER_COLOR;
 	}
 
 	public void setMarkerPoints(List<ColorMarkerPoint> markerPoints) {

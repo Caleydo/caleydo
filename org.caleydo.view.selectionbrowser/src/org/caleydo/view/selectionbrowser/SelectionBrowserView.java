@@ -39,13 +39,13 @@ import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
 import org.caleydo.core.view.swt.ASWTView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -55,7 +55,6 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.PlatformUI;
-
 /**
  * Selection browser that is located in the side-bar.
  *
@@ -71,12 +70,12 @@ public class SelectionBrowserView extends ASWTView implements ISelectionHandler,
 	private final static String SELECTION_TYPE_NAME_4 = "Selected by group 4";
 
 	/** Colors taken from color brewer qualitative "Set 1" with 8 colors */
-	private final static float[] SELECTION_COLOR_1 = new float[] { 152f / 255, 78f / 255, 163f / 255, 1 };
-	private final static float[] SELECTION_COLOR_2 = new float[] { 1, 127f / 255, 0, 1 }; // yellow
-	private final static float[] SELECTION_COLOR_3 = new float[] { 247f / 255, 129f / 255, 191f / 255, 1 };
+	private final static Color SELECTION_COLOR_1 = new Color(152f / 255, 78f / 255, 163f / 255, 1f);
+	private final static Color SELECTION_COLOR_2 =  new Color( 1, 127f / 255, 0, 1 ); // yellow
+	private final static Color SELECTION_COLOR_3 =  new Color( 247f / 255, 129f / 255, 191f / 255, 1 );
 	// private final static float[] SELECTION_COLOR_3 = new float[] { 1, 1,
 	// 51f/255, 1 };
-	private final static float[] SELECTION_COLOR_4 = new float[] { 166f / 255, 86f / 255, 40f / 255, 1 };
+	private final static Color SELECTION_COLOR_4 = new Color(166f / 255, 86f / 255, 40f / 255, 1);
 
 	SelectionManager recordSelectionManager;
 	SelectionManager dimensionSelectionManager;
@@ -314,7 +313,6 @@ public class SelectionBrowserView extends ASWTView implements ISelectionHandler,
 
 	private void updateContentTree() {
 		ArrayList<SelectionType> sTypes = recordSelectionManager.getSelectionTypes();
-		Color color = null;
 		contentTree.removeAll();
 		for (SelectionType tmpSelectionType : sTypes) {
 
@@ -323,14 +321,10 @@ public class SelectionBrowserView extends ASWTView implements ISelectionHandler,
 
 			TreeItem item = new TreeItem(contentTree, SWT.NONE);
 
-			float[] fArColor = tmpSelectionType.getColor();
-
-			color = new Color(parentComposite.getDisplay(), (int) (fArColor[0] * 255), (int) (fArColor[1] * 255),
-					(int) (fArColor[2] * 255));
 
 			item.setText(tmpSelectionType.toString() + " ("
 					+ recordSelectionManager.getNumberOfElements(tmpSelectionType) + ")");
-			item.setBackground(color);
+			item.setBackground(tmpSelectionType.getColor().getSWTColor(parentComposite.getDisplay()));
 			item.setData(tmpSelectionType);
 
 			contentTree.setExpanded(true);

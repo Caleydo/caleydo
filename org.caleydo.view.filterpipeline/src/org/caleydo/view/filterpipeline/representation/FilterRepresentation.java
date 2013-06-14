@@ -31,6 +31,7 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
@@ -72,8 +73,7 @@ public class FilterRepresentation implements IDraggable, IRenderable, IDropArea 
 	float heightRight = 0;
 	float uncertaintyHeightRight = 0;
 
-	public FilterRepresentation(FilterPipelineRenderStyle renderStyle,
-			PickingManager pickingManager, int viewId) {
+	public FilterRepresentation(FilterPipelineRenderStyle renderStyle, PickingManager pickingManager, int viewId) {
 		this.renderStyle = renderStyle;
 		this.pickingManager = pickingManager;
 		this.viewId = viewId;
@@ -117,10 +117,7 @@ public class FilterRepresentation implements IDraggable, IRenderable, IDropArea 
 		if (filter.getUncertaintyOutput() == null)
 			return 0;
 
-		return heightRight
-				- heightRight
-				* ((float) filter.getUncertaintyOutput().size() / filter.getOutput()
-						.size());
+		return heightRight - heightRight * ((float) filter.getUncertaintyOutput().size() / filter.getOutput().size());
 	}
 
 	@Override
@@ -130,41 +127,34 @@ public class FilterRepresentation implements IDraggable, IRenderable, IDropArea 
 		uncertaintyHeightRight = getUncertaintyHeightRight();
 
 		gl.glPushName(iPickingID);
-		renderBasicShape(gl, textRenderer,
-				renderStyle.getUncertaintyColor(filter.getId() + 1));
+		renderBasicShape(gl, textRenderer, renderStyle.getUncertaintyColor(filter.getId() + 1));
 		gl.glPopName();
 
 		// render selection/mouseover if needed
 		if (selectionType != SelectionType.NORMAL) {
-			gl.glLineWidth((selectionType == SelectionType.SELECTION) ? SelectionType.SELECTION
-					.getLineWidth() : SelectionType.MOUSE_OVER.getLineWidth());
+			gl.glLineWidth((selectionType == SelectionType.SELECTION) ? SelectionType.SELECTION.getLineWidth()
+					: SelectionType.MOUSE_OVER.getLineWidth());
 
-			renderShape(
-					gl,
-					GL.GL_LINE_LOOP,
-					(selectionType == SelectionType.SELECTION) ? SelectionType.SELECTION
-							.getColor() : SelectionType.MOUSE_OVER.getColor(), Z_POS_MARK);
+			renderShape(gl, GL.GL_LINE_LOOP,
+					(selectionType == SelectionType.SELECTION) ? SelectionType.SELECTION.getColor()
+							: SelectionType.MOUSE_OVER.getColor(), Z_POS_MARK);
 		}
 
 		// label
-		textRenderer.renderText(gl, filter.getLabel(), vPos.x() + 0.05f,
-				vPos.y() + 0.05f, Z_POS_TEXT, 0.004f, 20);
+		textRenderer.renderText(gl, filter.getLabel(), vPos.x() + 0.05f, vPos.y() + 0.05f, Z_POS_TEXT, 0.004f, 20);
 
 		renderOutputBand(gl, new float[] { vPos.x() + vSize.x(), vPos.y(), Z_POS_BODY },
-				new float[] { vPos.x() + vSize.x(), vPos.y() + heightRight, Z_POS_BODY },
-				new float[] { vPos.x() + vSize.x() + 0.058f * vSize.x(),
-						vPos.y() + heightRight, Z_POS_BODY },
-				new float[] { vPos.x() + vSize.x() + 0.058f * vSize.x(), vPos.y(),
-						Z_POS_BODY }, new float[] { 0.8f, 0.8f, 0.8f, 0.5f },
-				new float[] { 0f, 0f, 0f, 1f });
+				new float[] { vPos.x() + vSize.x(), vPos.y() + heightRight, Z_POS_BODY }, new float[] {
+						vPos.x() + vSize.x() + 0.058f * vSize.x(), vPos.y() + heightRight, Z_POS_BODY }, new float[] {
+						vPos.x() + vSize.x() + 0.058f * vSize.x(), vPos.y(), Z_POS_BODY }, new Color(0.8f, 0.8f, 0.8f,
+						0.5f), new Color(0f, 0f, 0f, 1f));
 	}
 
-	protected void renderShape(GL2 gl, int renderMode, final Vec2f pos, float width,
-			float heightLeft, float heightRight, float offsetLeft, float offsetRight,
-			float[] color, float z) {
+	protected void renderShape(GL2 gl, int renderMode, final Vec2f pos, float width, float heightLeft,
+			float heightRight, float offsetLeft, float offsetRight, Color color, float z) {
 		gl.glBegin(renderMode);
 		{
-			gl.glColor4fv(color, 0);
+			gl.glColor4fv(color.getRGBA(), 0);
 
 			gl.glVertex3f(pos.x(), pos.y() + offsetLeft, z);
 			gl.glVertex3f(pos.x(), pos.y() + offsetLeft + heightLeft, z);
@@ -174,17 +164,17 @@ public class FilterRepresentation implements IDraggable, IRenderable, IDropArea 
 		gl.glEnd();
 	}
 
-	protected void renderShape(GL2 gl, int renderMode, final Vec2f pos, float width,
-			float heightLeft, float heightRight, float offsetRight, float[] color, float z) {
+	protected void renderShape(GL2 gl, int renderMode, final Vec2f pos, float width, float heightLeft,
+			float heightRight, float offsetRight, Color color, float z) {
 		renderShape(gl, renderMode, pos, width, heightLeft, heightRight, 0, 0, color, z);
 	}
 
-	protected void renderShape(GL2 gl, int renderMode, final Vec2f pos, float width,
-			float heightLeft, float heightRight, float[] color, float z) {
-		renderShape(gl, renderMode, pos, width, heightLeft, heightRight, 0, color, z);
+	protected void renderShape(GL2 gl, int renderMode, final Vec2f pos, float width, float heightLeft,
+			float heightRight, Color color, float z) {
+		renderShape(gl, renderMode, pos, width, heightLeft, heightRight, color, z);
 	}
 
-	protected void renderShape(GL2 gl, int renderMode, float[] color, float z) {
+	protected void renderShape(GL2 gl, int renderMode, Color color, float z) {
 		renderShape(gl, renderMode, vPos, vSize.x(), heightLeft, heightRight, color, z);
 	}
 
@@ -194,8 +184,7 @@ public class FilterRepresentation implements IDraggable, IRenderable, IDropArea 
 	 * @param gl
 	 * @param color
 	 */
-	protected void renderBasicShape(GL2 gl, CaleydoTextRenderer textRenderer,
-			float[] color) {
+	protected void renderBasicShape(GL2 gl, CaleydoTextRenderer textRenderer, Color color) {
 
 		gl.glLineWidth(1);
 		// Render outline of filter
@@ -207,28 +196,25 @@ public class FilterRepresentation implements IDraggable, IRenderable, IDropArea 
 		else {
 
 			// Render uncertain area
-			renderShape(gl, GL2.GL_QUADS, vPos, vSize.x(), 0, uncertaintyHeightRight
-					- heightRight, heightLeft, heightRight, color, Z_POS_BODY);
+			renderShape(gl, GL2.GL_QUADS, vPos, vSize.x(), 0, uncertaintyHeightRight - heightRight, heightLeft,
+					heightRight, color, Z_POS_BODY);
 
 			// Render certain area
-			renderShape(gl, GL2.GL_QUADS, vPos, vSize.x(), heightLeft,
-					uncertaintyHeightRight, 0, 0, renderStyle.FILTER_COLOR_UNCERTAINTY,
-					Z_POS_BODY);
+			renderShape(gl, GL2.GL_QUADS, vPos, vSize.x(), heightLeft, uncertaintyHeightRight, 0, 0,
+					renderStyle.FILTER_COLOR_UNCERTAINTY, Z_POS_BODY);
 
 			// Render delimiter line between certain and uncertain area
-			renderShape(gl, GL.GL_LINE_LOOP, vPos, vSize.x(), 0, 0, heightLeft,
-					uncertaintyHeightRight, renderStyle.FILTER_BORDER_COLOR, Z_POS_BORDER);
+			renderShape(gl, GL.GL_LINE_LOOP, vPos, vSize.x(), 0, 0, heightLeft, uncertaintyHeightRight,
+					renderStyle.FILTER_BORDER_COLOR, Z_POS_BORDER);
 		}
 
 		// currently not filtered elements
-		textRenderer.renderText(gl, "" + filter.getOutput().size(), vPos.x() + vSize.x()
-				- 0.03f, vPos.y() + heightRight + 0.05f, Z_POS_TEXT, 0.004f, 20);
+		textRenderer.renderText(gl, "" + filter.getOutput().size(), vPos.x() + vSize.x() - 0.03f, vPos.y()
+				+ heightRight + 0.05f, Z_POS_TEXT, 0.004f, 20);
 
 		// label
-		textRenderer.renderText(gl, ""
-				+ (filter.getOutput().size() - filter.getInput().size())
-		/* + " (-"+filter.getSizeVADelta()+")" */, vPos.x() + 0.2f, vPos.y() - 0.1f,
-				Z_POS_TEXT, 0.004f, 20);
+		textRenderer.renderText(gl, "" + (filter.getOutput().size() - filter.getInput().size())
+		/* + " (-"+filter.getSizeVADelta()+")" */, vPos.x() + 0.2f, vPos.y() - 0.1f, Z_POS_TEXT, 0.004f, 20);
 	}
 
 	/**
@@ -242,9 +228,9 @@ public class FilterRepresentation implements IDraggable, IRenderable, IDropArea 
 	 * @param bodyColor
 	 * @param borderColor
 	 */
-	protected void renderOutputBand(GL2 gl, float[] bottomLeft, float[] topLeft,
-			float[] topRight, float[] bottomRight, float[] bodyColor, float[] borderColor) {
-		gl.glColor4fv(bodyColor, 0);
+	protected void renderOutputBand(GL2 gl, float[] bottomLeft, float[] topLeft, float[] topRight, float[] bottomRight,
+			Color bodyColor, Color borderColor) {
+		gl.glColor4fv(bodyColor.getRGBA(), 0);
 		gl.glBegin(GL2.GL_QUADS);
 		{
 			gl.glVertex3fv(topLeft, 0);
@@ -254,7 +240,7 @@ public class FilterRepresentation implements IDraggable, IRenderable, IDropArea 
 		}
 		gl.glEnd();
 
-		gl.glColor4fv(borderColor, 0);
+		gl.glColor4fv(borderColor.getRGBA(), 0);
 		gl.glLineWidth(1);
 		gl.glBegin(GL.GL_LINES);
 		{
@@ -268,8 +254,7 @@ public class FilterRepresentation implements IDraggable, IRenderable, IDropArea 
 	}
 
 	/**
-	 * Updates the selection state by gathering the selection state from the
-	 * given {@link SelectionManager}
+	 * Updates the selection state by gathering the selection state from the given {@link SelectionManager}
 	 *
 	 * @param selectionManager
 	 */
@@ -290,11 +275,9 @@ public class FilterRepresentation implements IDraggable, IRenderable, IDropArea 
 	@Override
 	public void handleDragging(GL2 gl, float mouseCoordinateX, float mouseCoordinateY) {
 		Vec2f tempPos = vPos.copy();
-		vPos.add(new Vec2f(mouseCoordinateX - vDragStart.x(), mouseCoordinateY
-				- vDragStart.y()));
+		vPos.add(new Vec2f(mouseCoordinateX - vDragStart.x(), mouseCoordinateY - vDragStart.y()));
 
-		renderShape(gl, GL2.GL_POLYGON, renderStyle.getFilterColorDrag(filter.getId()),
-				Z_POS_DRAG);
+		renderShape(gl, GL2.GL_POLYGON, renderStyle.getFilterColorDrag(filter.getId()), Z_POS_DRAG);
 
 		vPos = tempPos;
 	}
@@ -305,15 +288,14 @@ public class FilterRepresentation implements IDraggable, IRenderable, IDropArea 
 	}
 
 	@Override
-	public void handleDragOver(GL2 gl, Set<IDraggable> draggables,
-			float mouseCoordinateX, float mouseCoordinateY) {
+	public void handleDragOver(GL2 gl, Set<IDraggable> draggables, float mouseCoordinateX, float mouseCoordinateY) {
 		gl.glLineWidth(5);
 		renderShape(gl, GL.GL_LINE_LOOP, renderStyle.DRAG_OVER_COLOR, Z_POS_DRAG_OVER);
 	}
 
 	@Override
-	public void handleDrop(GL2 gl, Set<IDraggable> draggables, float mouseCoordinateX,
-			float mouseCoordinateY, DragAndDropController dragAndDropController) {
+	public void handleDrop(GL2 gl, Set<IDraggable> draggables, float mouseCoordinateX, float mouseCoordinateY,
+			DragAndDropController dragAndDropController) {
 		// TODO Auto-generated method stub
 	}
 
@@ -326,8 +308,7 @@ public class FilterRepresentation implements IDraggable, IRenderable, IDropArea 
 	}
 
 	@Override
-	public void handleDropAreaReplaced()
-	{
+	public void handleDropAreaReplaced() {
 		// TODO Auto-generated method stub
 
 	}

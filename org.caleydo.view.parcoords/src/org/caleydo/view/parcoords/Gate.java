@@ -23,6 +23,7 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.table.NumericalTable;
 import org.caleydo.core.data.collection.table.Table;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 
@@ -143,7 +144,7 @@ public class Gate {
 		gl.glPushName(pcs.getPickingManager().getPickingID(pcs.getID(), EPickingType.GATE_TIP_SELECTION.name(), gateID));
 
 		pcs.getTextureManager().renderTexture(gl, PCRenderStyle.GATE_TOP, lowerLeftCorner, lowerRightCorner,
-				upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
+				upperRightCorner, upperLeftCorner, Color.WHITE);
 
 		// gate_menu texture is 77x22
 		float menuWidth = pixelGLConverter.getGLWidthForPixelWidth(77);
@@ -155,7 +156,7 @@ public class Gate {
 		upperLeftCorner.set(xPosition - menuWidth + width, top, GATE_Z);
 
 		pcs.getTextureManager().renderTexture(gl, PCRenderStyle.GATE_MENUE, lowerLeftCorner, lowerRightCorner,
-				upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
+				upperRightCorner, upperLeftCorner, Color.WHITE);
 
 		pcs.getTextRenderer().setColor(1, 1, 1, 1);
 
@@ -197,7 +198,7 @@ public class Gate {
 		upperLeftCorner.set(xPosition - width, top - gateTopHeight, GATE_Z);
 
 		pcs.getTextureManager().renderTexture(gl, PCRenderStyle.GATE_BODY, lowerLeftCorner, lowerRightCorner,
-				upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
+				upperRightCorner, upperLeftCorner, Color.WHITE);
 
 		gl.glPopName();
 
@@ -210,7 +211,7 @@ public class Gate {
 		upperLeftCorner.set(xPosition - width, bottom + gateBottomHeight, GATE_Z);
 
 		pcs.getTextureManager().renderTexture(gl, PCRenderStyle.GATE_BOTTOM, lowerLeftCorner, lowerRightCorner,
-				upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
+				upperRightCorner, upperLeftCorner, Color.WHITE);
 
 		lowerLeftCorner.set(xPosition - menuWidth + width, bottom - menuHeight, GATE_Z);
 		lowerRightCorner.set(xPosition + width, bottom - menuHeight, GATE_Z);
@@ -218,7 +219,7 @@ public class Gate {
 		upperLeftCorner.set(xPosition - menuWidth + width, bottom, GATE_Z);
 
 		pcs.getTextureManager().renderTexture(gl, PCRenderStyle.GATE_MENUE, lowerLeftCorner, lowerRightCorner,
-				upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
+				upperRightCorner, upperLeftCorner, Color.WHITE);
 
 		if (table instanceof NumericalTable) {
 

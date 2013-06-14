@@ -3,7 +3,6 @@ package org.caleydo.core.view.opengl.layout2;
 import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 
-import java.awt.Color;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -14,7 +13,7 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.util.base.ILabeled;
-import org.caleydo.core.util.color.IColor;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
@@ -72,7 +71,6 @@ public class GLGraphics {
 	 * gl context locals for once per context
 	 */
 	private final GLContextLocal local;
-
 
 	public GLGraphics(GL2 gl, GLContextLocal local, boolean originInTopLeft, int deltaTimeMs) {
 		this.gl = gl;
@@ -147,6 +145,7 @@ public class GLGraphics {
 		int error = gl.glGetError();
 		return error > 0;
 	}
+
 	/**
 	 * checks for errors and prints a {@link System#err} message
 	 *
@@ -207,17 +206,14 @@ public class GLGraphics {
 
 	// ############## color setters
 
-	public GLGraphics color(IColor color) {
+	public GLGraphics color(Color color) {
 		return color(color.getRGBA());
 	}
 
-	public GLGraphics color(Color color) {
-		return color(color.getComponents(null));
+	public GLGraphics color(float gray) {
+		return color(gray, gray, gray);
 	}
 
-	public GLGraphics color(float grey) {
-		return color(grey, grey, grey);
-	}
 	public GLGraphics color(float r, float g, float b) {
 		return color(r, g, b, 1);
 	}
@@ -234,9 +230,6 @@ public class GLGraphics {
 			return color(rgba[0], rgba[1], rgba[2], rgba[3]);
 	}
 
-	public GLGraphics textColor(IColor color) {
-		return textColor(color.getRGBA());
-	}
 
 	public GLGraphics textColor(Color color) {
 		text.setColor(color);
@@ -250,9 +243,10 @@ public class GLGraphics {
 	}
 
 	public GLGraphics textColor(float r, float g, float b, float a) {
-		text.setColor(r, g, b, a);
-		local.getText_bold().setColor(r, g, b, a);
-		local.getText_italic().setColor(r, g, b, a);
+		Color color = new Color(r, g, b, a);
+		text.setColor(color);
+		local.getText_bold().setColor(color);
+		local.getText_italic().setColor(color);
 		return this;
 	}
 
@@ -378,17 +372,12 @@ public class GLGraphics {
 		Vec3f upperRightCorner = new Vec3f(x + w, y + h, z);
 		Vec3f upperLeftCorner = new Vec3f(x, y + h, z);
 
-		org.caleydo.core.util.color.Color tmp = new org.caleydo.core.util.color.Color(color.getRed(), color.getGreen(),
-				color.getBlue(), color.getAlpha());
-
 		if (originInTopLeft)
 			local.getTextures().renderTexture(gl, texture, upperLeftCorner, upperRightCorner, lowerRightCorner,
-					lowerLeftCorner,
-					tmp.r, tmp.g, tmp.b, tmp.a);
+					lowerLeftCorner, color);
 		else
 			local.getTextures().renderTexture(gl, texture, lowerLeftCorner, lowerRightCorner, upperRightCorner,
-					upperLeftCorner,
-					tmp.r, tmp.g, tmp.b, tmp.a);
+					upperLeftCorner, color);
 		return this;
 	}
 
@@ -529,6 +518,7 @@ public class GLGraphics {
 	private static boolean isInvalidOrZero(float v) {
 		return v == 0 || Float.isNaN(v) || Float.isInfinite(v);
 	}
+
 	private static boolean isInvalid(float v) {
 		return Float.isNaN(v) || Float.isInfinite(v);
 	}

@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.caleydo.core.data.collection.EDataType;
-import org.caleydo.core.util.color.Colors;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -134,7 +134,7 @@ public class CategoricalContainer<CATEGORY_TYPE extends Comparable<CATEGORY_TYPE
 		add(unknownCategoryType);
 		if (categoricalClassDescription != null && categoricalClassDescription.getUnknownCategory() == null) {
 			categoricalClassDescription.setUnknownCategory(new CategoryProperty<CATEGORY_TYPE>(unknownCategoryType,
-					"Unknown", Colors.NOT_A_NUMBER_COLOR));
+					"Unknown", Color.NOT_A_NUMBER_COLOR));
 		}
 	}
 

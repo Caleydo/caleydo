@@ -20,7 +20,6 @@
 package org.caleydo.vis.rank.internal.ui;
 
 
-import java.awt.Color;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -160,15 +159,15 @@ public class CatFilterDalog<CATEGORY_TYPE> extends AFilterDialog {
 				CATEGORY_TYPE k = (CATEGORY_TYPE) element;
 				Object r = metaData.get(k);
 				if (r instanceof CategoryInfo) {
-					return toSWT(((CategoryInfo) r).getColor());
+					return ((CategoryInfo) r).getColor().getSWTColor(parent.getDisplay());
 				}
 				return null;
 			}
 
-			protected org.eclipse.swt.graphics.Color toSWT(Color color) {
-				return new org.eclipse.swt.graphics.Color(parent.getDisplay(), color.getRed(), color.getGreen(),
-						color.getBlue());
-			}
+			// protected org.eclipse.swt.graphics.Color toSWT(Color color) {
+			// return new org.eclipse.swt.graphics.Color(parent.getDisplay(), color.getRed(), color.getGreen(),
+			// color.getBlue());
+			// }
 		};
 		fViewer.setLabelProvider(label);
 		fViewer.setComparator(new ViewerComparator());

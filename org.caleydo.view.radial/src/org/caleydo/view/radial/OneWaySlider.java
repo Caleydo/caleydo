@@ -186,8 +186,8 @@ public class OneWaySlider extends AGLGUIElement {
 		Vec3f upperLeftCorner = new Vec3f(fWidth, 0, 0);
 
 		textureManager.renderTexture(gl, EIconTextures.NAVIGATION_NEXT_BIG_MIDDLE,
-				lowerLeftCorner, lowerRightCorner, upperRightCorner, upperLeftCorner, 1,
-				1, 1, 1);
+ lowerLeftCorner, lowerRightCorner,
+				upperRightCorner, upperLeftCorner);
 
 		gl.glPopName();
 

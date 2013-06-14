@@ -159,7 +159,7 @@ public class RelationIndicatorRenderer extends ALayoutRenderer {
 			if (brick.getTablePerspectiveSelectionManager().checkStatus(
 					SelectionType.SELECTION,
 					brick.getTablePerspective().getRecordGroup().getID()))
-				gl.glColor4fv(SelectionType.SELECTION.getColor(), 0);
+				gl.glColor4fv(SelectionType.SELECTION.getColor().getRGBA(), 0);
 			else
 
 				gl.glColor3f(1, 1, 1);

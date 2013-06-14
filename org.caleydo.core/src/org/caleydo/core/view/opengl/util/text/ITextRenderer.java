@@ -19,9 +19,11 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.util.text;
 
-import java.awt.Color;
+
 
 import javax.media.opengl.GL2;
+
+import org.caleydo.core.util.color.Color;
 
 /**
  * basic interface for a class than can render text
@@ -38,18 +40,8 @@ public interface ITextRenderer {
 	public void setColor(Color color);
 
 	/**
-	 * set the text color to the specified one
-	 *
-	 * @param r
-	 * @param g
-	 * @param b
-	 * @param a
-	 */
-	public void setColor(float r, float g, float b, float a);
-
-	/**
 	 * returns the size of the given text using the given height
-	 * 
+	 *
 	 * @param text
 	 * @param height
 	 * @return
@@ -76,14 +68,14 @@ public interface ITextRenderer {
 
 	/**
 	 * describes the rendering information of this teture renderer
-	 * 
+	 *
 	 * @return
 	 */
 	public boolean isOriginTopLeft();
 
 	/**
 	 * whether since the previous call the texture was updated
-	 * 
+	 *
 	 * @return
 	 */
 	public boolean isDirty();

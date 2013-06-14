@@ -226,10 +226,7 @@ public class RcpSelectionInfoView extends CaleydoRCPViewPart implements IEventBa
 	}
 
 	private synchronized void createItems(TreeItem tree, SelectionType selectionType, Set<Integer> IDs, IDType idType) {
-		Color color;
-		int[] intColor = selectionType.getIntColor();
-
-		color = new Color(parentComposite.getDisplay(), intColor[0], intColor[1], intColor[2]);
+		Color color = selectionType.getColor().getSWTColor(parentComposite.getDisplay());
 
 		IDMappingManager idMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(idType);
 

@@ -29,6 +29,7 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.filter.RecordMetaOrFilter;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
@@ -57,8 +58,8 @@ public class FilterRepresentationMetaOrAdvanced extends FilterRepresentationMeta
 
 	private ConnectionBandRenderer inputRenderer = new ConnectionBandRenderer();
 
-	public FilterRepresentationMetaOrAdvanced(FilterPipelineRenderStyle renderStyle,
-			PickingManager pickingManager, int viewId) {
+	public FilterRepresentationMetaOrAdvanced(FilterPipelineRenderStyle renderStyle, PickingManager pickingManager,
+			int viewId) {
 		super(renderStyle, pickingManager, viewId);
 	}
 
@@ -92,31 +93,25 @@ public class FilterRepresentationMetaOrAdvanced extends FilterRepresentationMeta
 		for (int i = 0; i < subFilterSizes.length; ++i, curPos.setY(curPos.y() + offsetY)) {
 			heightRight = vSize.y() * (subFilterSizes[i] / 100.f);
 
-			gl.glPushName(pickingManager.getPickingID(viewId,
-					PickingType.FILTERPIPE_SUB_FILTER, i));
-			renderShape(gl, GL2.GL_QUADS, curPos, subFilterWidth, scaleY * heightLeft,
-					scaleY * heightRight, renderStyle.getFilterColor(i),
-					Z_POS_BODY + 0.1f);
+			gl.glPushName(pickingManager.getPickingID(viewId, PickingType.FILTERPIPE_SUB_FILTER, i));
+			renderShape(gl, GL2.GL_QUADS, curPos, subFilterWidth, scaleY * heightLeft, scaleY * heightRight,
+					renderStyle.getFilterColor(i), Z_POS_BODY + 0.1f);
 			gl.glLineWidth(1);
-			renderShape(gl, GL.GL_LINE_LOOP, curPos, subFilterWidth,
-					scaleY * heightLeft, scaleY * heightRight,
+			renderShape(gl, GL.GL_LINE_LOOP, curPos, subFilterWidth, scaleY * heightLeft, scaleY * heightRight,
 					renderStyle.FILTER_BORDER_COLOR, Z_POS_BORDER + 0.1f);
 			gl.glPopName();
 
-			textRenderer.renderText(gl, ((RecordMetaOrFilter) filter.getFilter())
-					.getFilterList().get(i).getLabel(), curPos.x() + 0.02f,
-					curPos.y() + 0.02f, Z_POS_TEXT, 0.0035f, 18);
+			textRenderer.renderText(gl, ((RecordMetaOrFilter) filter.getFilter()).getFilterList().get(i).getLabel(),
+					curPos.x() + 0.02f, curPos.y() + 0.02f, Z_POS_TEXT, 0.0035f, 18);
 
-			renderInputBand(gl, new Vec2f(vPos.x(), vPos.y() + heightLeft), new Vec2f(
-					curPos.x(), curPos.y() + scaleY * heightLeft), vPos, curPos,
-					0.7f - ((float) i / subFilterSizes.length) * 0.6f, delta,
+			renderInputBand(gl, new Vec2f(vPos.x(), vPos.y() + heightLeft), new Vec2f(curPos.x(), curPos.y() + scaleY
+					* heightLeft), vPos, curPos, 0.7f - ((float) i / subFilterSizes.length) * 0.6f, delta,
 					renderStyle.getFilterColorCombined(i));
 
 			if (mouseOverItem == i) {
 				// render mouse over
 				gl.glLineWidth(SelectionType.MOUSE_OVER.getLineWidth());
-				renderShape(gl, GL.GL_LINE_LOOP, curPos, subFilterWidth, scaleY
-						* heightLeft, scaleY * heightRight,
+				renderShape(gl, GL.GL_LINE_LOOP, curPos, subFilterWidth, scaleY * heightLeft, scaleY * heightRight,
 						SelectionType.MOUSE_OVER.getColor(), Z_POS_MARK);
 			}
 
@@ -148,24 +143,18 @@ public class FilterRepresentationMetaOrAdvanced extends FilterRepresentationMeta
 				float filterBottom = vPos.y() + vSize.y() * (outputSteps / 100.f);
 				float height = vSize.y() * (intersection.numElements / 100.f);
 
-				renderOutputBand(gl,
-						new float[] { filterRight, filterBottom, Z_POS_BODY },
-						new float[] { filterRight, filterBottom + height, Z_POS_BODY },
-						new float[] { filterRight + 0.058f * vSize.x(),
-								filterBottom + height, Z_POS_BODY }, new float[] {
-								filterRight + 0.058f * vSize.x(), filterBottom,
-								Z_POS_BODY }, new float[] { 0.8f, 0.8f, 0.8f, .5f },
-						new float[] { 0f, 0f, 0f, 1f });
+				renderOutputBand(gl, new float[] { filterRight, filterBottom, Z_POS_BODY }, new float[] { filterRight,
+						filterBottom + height, Z_POS_BODY }, new float[] { filterRight + 0.058f * vSize.x(),
+						filterBottom + height, Z_POS_BODY }, new float[] { filterRight + 0.058f * vSize.x(),
+						filterBottom, Z_POS_BODY }, new Color(0.8f, 0.8f, 0.8f, .5f), new Color(0f, 0f, 0f, 1f));
 
 				for (int filterId : intersection.filterIds) {
-					float subFilterBottom = subFiltersBottom + filterId * offsetY
-							+ scaleY * vSize.y() * (currentSteps[filterId] / 100.f);
+					float subFilterBottom = subFiltersBottom + filterId * offsetY + scaleY * vSize.y()
+							* (currentSteps[filterId] / 100.f);
 
-					renderOutputBand(gl, new float[] { subFilterRight, subFilterBottom,
-							Z_POS_BODY }, new float[] { subFilterRight,
-							subFilterBottom + scaleY * height, Z_POS_BODY }, new float[] {
-							filterRight, filterBottom + height, Z_POS_BODY },
-							new float[] { filterRight, filterBottom, Z_POS_BODY },
+					renderOutputBand(gl, new float[] { subFilterRight, subFilterBottom, Z_POS_BODY }, new float[] {
+							subFilterRight, subFilterBottom + scaleY * height, Z_POS_BODY }, new float[] { filterRight,
+							filterBottom + height, Z_POS_BODY }, new float[] { filterRight, filterBottom, Z_POS_BODY },
 							renderStyle.getColorSubfilterOutput(filterId),
 							renderStyle.getColorSubfilterOutputBorder(filterId));
 
@@ -183,14 +172,12 @@ public class FilterRepresentationMetaOrAdvanced extends FilterRepresentationMeta
 
 		// render selection/mouseover if needed
 		if (selectionType != SelectionType.NORMAL && mouseOverItem < 0) {
-			gl.glLineWidth((selectionType == SelectionType.SELECTION) ? SelectionType.SELECTION
-					.getLineWidth() : SelectionType.MOUSE_OVER.getLineWidth());
+			gl.glLineWidth((selectionType == SelectionType.SELECTION) ? SelectionType.SELECTION.getLineWidth()
+					: SelectionType.MOUSE_OVER.getLineWidth());
 
-			renderShape(
-					gl,
-					GL.GL_LINE_LOOP,
-					(selectionType == SelectionType.SELECTION) ? SelectionType.SELECTION
-							.getColor() : SelectionType.MOUSE_OVER.getColor(), Z_POS_MARK);
+			renderShape(gl, GL.GL_LINE_LOOP,
+					(selectionType == SelectionType.SELECTION) ? SelectionType.SELECTION.getColor()
+							: SelectionType.MOUSE_OVER.getColor(), Z_POS_MARK);
 		}
 	}
 
@@ -202,10 +189,8 @@ public class FilterRepresentationMetaOrAdvanced extends FilterRepresentationMeta
 	private float calculateFilterScalingY() {
 		// calculate the available space for the subfilters
 		float delta = heightLeft - heightRight;
-		float availableHeightLeft = subfilterScalingY
-				* (heightLeft - spacingLeft * delta);
-		float availableHeightRight = subfilterScalingY
-				* (heightRight + spacingRight * delta);
+		float availableHeightLeft = subfilterScalingY * (heightLeft - spacingLeft * delta);
+		float availableHeightRight = subfilterScalingY * (heightRight + spacingRight * delta);
 
 		float scalingLeft = availableHeightLeft / (subFilterSizes.length * heightLeft);
 
@@ -225,26 +210,23 @@ public class FilterRepresentationMetaOrAdvanced extends FilterRepresentationMeta
 	 *
 	 * @param gl
 	 */
-	private void renderInputBand(GL2 gl, Vec2f topLeft, Vec2f topRight, Vec2f bottomLeft,
-			Vec2f bottomRight, float horizontScale, float delta, float[] color) {
+	private void renderInputBand(GL2 gl, Vec2f topLeft, Vec2f topRight, Vec2f bottomLeft, Vec2f bottomRight,
+			float horizontScale, float delta, float[] color) {
 		ArrayList<Vec3f> topInputPoints = new ArrayList<Vec3f>();
 		float inputWidth = topRight.x() - topLeft.x();
 
 		// top curve
 		topInputPoints.add(new Vec3f(topLeft.x(), topLeft.y(), Z_POS_BODY));
-		topInputPoints.add(new Vec3f(topLeft.x() + horizontScale * inputWidth, topLeft
-				.y() - spacingLeft * delta, Z_POS_BODY));
-		topInputPoints.add(new Vec3f(topLeft.x() + horizontScale * inputWidth, topRight
-				.y(), Z_POS_BODY));
+		topInputPoints.add(new Vec3f(topLeft.x() + horizontScale * inputWidth, topLeft.y() - spacingLeft * delta,
+				Z_POS_BODY));
+		topInputPoints.add(new Vec3f(topLeft.x() + horizontScale * inputWidth, topRight.y(), Z_POS_BODY));
 		topInputPoints.add(new Vec3f(topRight.x(), topRight.y(), Z_POS_BODY));
 
 		// bottom curve
 		ArrayList<Vec3f> bottomInputPoints = new ArrayList<Vec3f>();
 		bottomInputPoints.add(new Vec3f(bottomRight.x(), bottomRight.y(), Z_POS_BODY));
-		bottomInputPoints.add(new Vec3f(bottomLeft.x() + horizontScale * inputWidth,
-				bottomRight.y(), Z_POS_BODY));
-		bottomInputPoints.add(new Vec3f(bottomLeft.x() + horizontScale * inputWidth,
-				bottomLeft.y(), Z_POS_BODY));
+		bottomInputPoints.add(new Vec3f(bottomLeft.x() + horizontScale * inputWidth, bottomRight.y(), Z_POS_BODY));
+		bottomInputPoints.add(new Vec3f(bottomLeft.x() + horizontScale * inputWidth, bottomLeft.y(), Z_POS_BODY));
 		bottomInputPoints.add(new Vec3f(bottomLeft.x(), bottomLeft.y(), Z_POS_BODY));
 
 		NURBSCurve topCurve = new NURBSCurve(topInputPoints, NUMBER_OF_SPLINE_POINTS);
@@ -260,8 +242,7 @@ public class FilterRepresentationMetaOrAdvanced extends FilterRepresentationMeta
 		gl.glEnd();
 
 		// Band border
-		NURBSCurve bottomCurve = new NURBSCurve(bottomInputPoints,
-				NUMBER_OF_SPLINE_POINTS);
+		NURBSCurve bottomCurve = new NURBSCurve(bottomInputPoints, NUMBER_OF_SPLINE_POINTS);
 		gl.glBegin(GL.GL_LINE_STRIP);
 		{
 			for (Vec3f point : bottomCurve.getCurvePoints())

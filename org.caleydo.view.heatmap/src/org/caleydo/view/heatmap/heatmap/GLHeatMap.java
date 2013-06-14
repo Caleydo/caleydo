@@ -28,6 +28,7 @@ import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.event.data.SelectionUpdateEvent;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.color.mapping.IColorMappingUpdateListener;
 import org.caleydo.core.util.color.mapping.UpdateColorMappingEvent;
 import org.caleydo.core.util.color.mapping.UpdateColorMappingListener;
@@ -68,7 +69,7 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 
 	public static String VIEW_NAME = "Heatmap";
 
-	public static final SelectionType SELECTION_HIDDEN = new SelectionType("Hidden", new float[] { 0f, 0f, 0f, 1f }, 1,
+	public static final SelectionType SELECTION_HIDDEN = new SelectionType("Hidden", new Color(0f, 0f, 0f, 1f), 1,
 			false, 0.2f);
 
 	private HeatMapRenderStyle renderStyle;

@@ -19,7 +19,6 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.internal.model;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -45,7 +44,7 @@ import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.id.IIDTypeMapper;
-import org.caleydo.core.util.color.Colors;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.view.tourguide.internal.view.col.CategoricalPercentageRankColumnModel;
 import org.caleydo.vis.rank.model.ACompositeRankColumnModel;
 import org.caleydo.vis.rank.model.ARankColumnModel;
@@ -288,7 +287,7 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 	public void createSpecificColumns(RankTableModel table) {
 		final CategoricalTable<?> ctable = (CategoricalTable<?>) getDataDomain().getTable();
 		ATableBasedDataDomain d = getDataDomain();
-		Color color = Colors.of(d.getColor());
+		Color color = d.getColor();
 		GroupRankColumnModel group = new GroupRankColumnModel(d.getLabel() + " Metrics", color, color.brighter());
 		table.add(group);
 		for (CategoryProperty<?> p : ctable.getCategoryDescriptions().getCategoryProperties()) {

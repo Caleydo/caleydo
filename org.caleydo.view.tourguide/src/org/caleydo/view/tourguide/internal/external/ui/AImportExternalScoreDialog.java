@@ -69,7 +69,7 @@ public abstract class AImportExternalScoreDialog<T extends AExternalScoreParseSp
 
 	private Button normalize;
 
-	private Button color;
+	private Button colorButton;
 
 	private Text mappingMin;
 
@@ -140,10 +140,10 @@ public abstract class AImportExternalScoreDialog<T extends AExternalScoreParseSp
 		Label label = new Label(extra, SWT.TOP | SWT.LEFT);
 		label.setText("Score Color");
 		label.setLayoutData(new GridData(SWT.LEFT));
-		this.color = new Button(extra, SWT.PUSH);
-		this.color.setText("Select Color");
-		this.color.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
-		this.color.addSelectionListener(new SelectionAdapter() {
+		this.colorButton = new Button(extra, SWT.PUSH);
+		this.colorButton.setText("Select Color");
+		this.colorButton.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+		this.colorButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent event) {
 				// Create the color-change dialog
@@ -151,7 +151,7 @@ public abstract class AImportExternalScoreDialog<T extends AExternalScoreParseSp
 
 				// Set the selected color in the dialog from
 				// user's selected color
-				dlg.setRGB(color.getBackground().getRGB());
+				dlg.setRGB(colorButton.getBackground().getRGB());
 
 				// Change the title bar text
 				dlg.setText("Choose a Color");
@@ -160,10 +160,10 @@ public abstract class AImportExternalScoreDialog<T extends AExternalScoreParseSp
 				RGB rgb = dlg.open();
 				if (rgb != null) {
 					// Dispose the old color, create the new one, and set into the label
-					Color old = color.getBackground();
+					Color old = colorButton.getBackground();
 					Color new_ = new Color(getShell().getDisplay(), rgb);
 					old.dispose();
-					color.setBackground(new_);
+					colorButton.setBackground(new_);
 				}
 			}
 		});
@@ -249,8 +249,7 @@ public abstract class AImportExternalScoreDialog<T extends AExternalScoreParseSp
 
 		this.operator.select(spec.getOperator().ordinal());
 		this.normalize.setSelection(spec.isNormalizeScores());
-		this.color.setBackground(new Color(display, spec.getColor().getRed(), spec.getColor().getGreen(), spec
-				.getColor().getBlue()));
+		this.colorButton.setBackground(spec.getColor().getSWTColor(display));
 		this.mappingMin.setText(convert(spec.getMappingMin()));
 		this.mappingMax.setText(convert(spec.getMappingMin()));
 	}
@@ -268,7 +267,7 @@ public abstract class AImportExternalScoreDialog<T extends AExternalScoreParseSp
 		this.label.setText("");
 		this.label.setEnabled(false);
 
-		this.color.setBackground(new Color(display, 192, 192, 192));
+		this.colorButton.setBackground(new Color(display, 192, 192, 192));
 	}
 
 
@@ -288,8 +287,8 @@ public abstract class AImportExternalScoreDialog<T extends AExternalScoreParseSp
 		spec.setNormalizeScores(this.normalize.getSelection());
 		spec.setOperator(ECombinedOperator.valueOf(this.operator.getText()));
 		spec.setRankingName(this.label.getText());
-		Color c = this.color.getBackground();
-		spec.setColor(new java.awt.Color(c.getRed(), c.getGreen(), c.getBlue()));
+		Color c = this.colorButton.getBackground();
+		spec.setColor(org.caleydo.core.util.color.Color.fromSWTColor(c));
 		spec.setMappingMin(convert(this.mappingMin));
 		spec.setMappingMax(convert(this.mappingMax));
 	}

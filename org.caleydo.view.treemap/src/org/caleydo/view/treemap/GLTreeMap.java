@@ -16,7 +16,7 @@
  *******************************************************************************/
 package org.caleydo.view.treemap;
 
-import java.awt.Color;
+import org.caleydo.core.util.color.Color;
 import java.awt.Font;
 import java.util.ArrayList;
 

@@ -19,7 +19,7 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.layout2.internal;
 
-import java.awt.Color;
+import org.caleydo.core.util.color.Color;
 
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;

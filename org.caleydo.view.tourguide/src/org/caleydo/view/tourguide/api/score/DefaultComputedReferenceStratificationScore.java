@@ -19,7 +19,7 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.api.score;
 
-import java.awt.Color;
+import org.caleydo.core.util.color.Color;
 
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.view.tourguide.api.compute.ComputeScoreFilters;

@@ -19,7 +19,7 @@
  *******************************************************************************/
 package org.caleydo.core.util.color;
 
-import java.awt.Color;
+import org.caleydo.core.util.color.Color;
 import java.util.ArrayList;
 import java.util.List;
 

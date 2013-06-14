@@ -404,29 +404,25 @@ public class BrickColumnSpacingRenderer extends ALayoutRenderer implements IDrop
 			leftCenterBrickTop = layout.getTranslateY() + layout.getSizeScaledY();
 
 			if (!leftDimGroup.isDetailBrickShown())
-				xStart = leftDimGroup.getLayout().getTranslateX()
-						- leftCenterBrick.getLayout().getTranslateX();
+				xStart = leftDimGroup.getLayout().getTranslateX() - leftCenterBrick.getLayout().getTranslateX();
 
 			// Render straight band connection from center brick to dimension
 			// group on
 			// the LEFT
 			if (xStart != 0) {
-				connectionRenderer.renderStraightBand(gl, new float[] { xStart,
-						leftCenterBrickTop, 0 }, new float[] { xStart, leftCenterBrickBottom,
-						0 }, new float[] { 0, leftCenterBrickTop, 0 }, new float[] { 0,
-						leftCenterBrickBottom, 0 }, false, 0, GLStratomex.ARCH_COLOR,
-						GLStratomex.ARCH_COLOR[3], true);
+				connectionRenderer.renderStraightBand(gl, new float[] { xStart, leftCenterBrickTop, 0 }, new float[] {
+						xStart, leftCenterBrickBottom, 0 }, new float[] { 0, leftCenterBrickTop, 0 }, new float[] { 0,
+						leftCenterBrickBottom, 0 }, false, 0, GLStratomex.ARCH_COLOR, GLStratomex.ARCH_COLOR[3], true);
 				// render add button
 				gl.glPushName(pickingID);
 				drawQuad(gl, xStart, leftCenterBrickTop, x, leftCenterBrickBottom - leftCenterBrickTop);
 				if (hovered)
 					stratomex.getTourguide().renderAddButton(gl, xStart, leftCenterBrickTop, x,
-						leftCenterBrickBottom - leftCenterBrickTop, ID);
+							leftCenterBrickBottom - leftCenterBrickTop, ID);
 				gl.glPopName();
 			}
 
-		}
-		else {
+		} else {
 			if (rightDimGroup != null) {
 				leftCenterBrickBottom = stratomex.getArchBottomY();
 				leftCenterBrickTop = stratomex.getArchTopY();
@@ -444,8 +440,7 @@ public class BrickColumnSpacingRenderer extends ALayoutRenderer implements IDrop
 			rightCenterBrickTop = layout.getTranslateY() + layout.getSizeScaledY();
 
 			if (!rightDimGroup.isDetailBrickShown())
-				xEnd = x + rightCenterBrick.getLayout().getTranslateX()
-						- rightDimGroup.getLayout().getTranslateX();
+				xEnd = x + rightCenterBrick.getLayout().getTranslateX() - rightDimGroup.getLayout().getTranslateX();
 			else
 				xEnd = rightCenterBrick.getLayout().getTranslateX();
 
@@ -454,25 +449,20 @@ public class BrickColumnSpacingRenderer extends ALayoutRenderer implements IDrop
 			// the RIGHT
 			if (xEnd != 0 && !(xEnd < x + 0.000001f && xEnd > x - 0.000001f)) {
 
-				connectionRenderer.renderStraightBand(gl, new float[] { x,
-						rightCenterBrickTop, 0 },
-						new float[] { x, rightCenterBrickBottom, 0 }, new float[] { xEnd,
-								rightCenterBrickTop, 0 }, new float[] { xEnd,
-								rightCenterBrickBottom, 0 }, false, 0, GLStratomex.ARCH_COLOR,
-						GLStratomex.ARCH_COLOR[3], true);
+				connectionRenderer.renderStraightBand(gl, new float[] { x, rightCenterBrickTop, 0 }, new float[] { x,
+						rightCenterBrickBottom, 0 }, new float[] { xEnd, rightCenterBrickTop, 0 }, new float[] { xEnd,
+						rightCenterBrickBottom, 0 }, false, 0, GLStratomex.ARCH_COLOR, GLStratomex.ARCH_COLOR[3], true);
 				// render add button
 				gl.glPushName(pickingID);
 				drawQuad(gl, x, rightCenterBrickTop, xEnd - x, rightCenterBrickBottom - rightCenterBrickTop);
 				if (hovered)
 					stratomex.getTourguide().renderAddButton(gl, x, rightCenterBrickTop, xEnd - x,
-						rightCenterBrickBottom
- - rightCenterBrickTop, ID);
+							rightCenterBrickBottom - rightCenterBrickTop, ID);
 				gl.glPopName();
 
 			}
 
-		}
-		else {
+		} else {
 			if (leftDimGroup != null) {
 				rightCenterBrickBottom = stratomex.getArchBottomY();
 				rightCenterBrickTop = stratomex.getArchTopY();
@@ -483,20 +473,18 @@ public class BrickColumnSpacingRenderer extends ALayoutRenderer implements IDrop
 		if (leftCenterBrickBottom == 0 && rightCenterBrickBottom == 0)
 			return;
 
-		connectionRenderer.renderSingleBand(gl, new float[] { 0, leftCenterBrickTop, 0 },
-				new float[] { 0, leftCenterBrickBottom, 0 }, new float[] { x,
-						rightCenterBrickTop, 0 },
-				new float[] { x, rightCenterBrickBottom, 0 }, false, curveOffset, 0,
-				GLStratomex.ARCH_COLOR, true);
+		connectionRenderer.renderSingleBand(gl, new float[] { 0, leftCenterBrickTop, 0 }, new float[] { 0,
+				leftCenterBrickBottom, 0 }, new float[] { x, rightCenterBrickTop, 0 }, new float[] { x,
+				rightCenterBrickBottom, 0 }, false, curveOffset, 0, GLStratomex.ARCH_COLOR, true);
 
 		// render add button
 		gl.glPushName(pickingID);
 		drawQuad(gl, 0, (leftCenterBrickTop + rightCenterBrickTop) * 0.5f, x, (leftCenterBrickBottom
-				- leftCenterBrickTop
-				+ rightCenterBrickBottom - rightCenterBrickTop) * 0.5f);
+				- leftCenterBrickTop + rightCenterBrickBottom - rightCenterBrickTop) * 0.5f);
 		if (hovered)
 			stratomex.getTourguide().renderAddButton(gl, 0, (leftCenterBrickTop + rightCenterBrickTop) * 0.5f, x,
-				(leftCenterBrickBottom - leftCenterBrickTop + rightCenterBrickBottom - rightCenterBrickTop) * 0.5f, ID);
+					(leftCenterBrickBottom - leftCenterBrickTop + rightCenterBrickBottom - rightCenterBrickTop) * 0.5f,
+					ID);
 		gl.glPopName();
 	}
 
@@ -557,7 +545,7 @@ public class BrickColumnSpacingRenderer extends ALayoutRenderer implements IDrop
 						continue;
 					}
 
-					color = selectionType.getColor();
+					color = selectionType.getColor().getRGBA();
 
 					if (stratomex.isConnectionsHighlightDynamic() == false) {
 

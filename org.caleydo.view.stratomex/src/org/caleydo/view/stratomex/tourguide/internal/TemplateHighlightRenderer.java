@@ -19,9 +19,7 @@
  *******************************************************************************/
 package org.caleydo.view.stratomex.tourguide.internal;
 
-import java.awt.Color;
-
-import org.caleydo.core.util.color.Colors;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
 
 /**
@@ -31,7 +29,7 @@ import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
 public class TemplateHighlightRenderer extends ColorRenderer {
 	public TemplateHighlightRenderer() {
 		super(new float[] { 0.95f, .95f, .95f, 1.f });
-		setBorderColor(Colors.rgba(Color.DARK_GRAY));
+		setBorderColor(Color.DARK_GRAY.getRGBA());
 		setDrawBorder(true);
 	}
 

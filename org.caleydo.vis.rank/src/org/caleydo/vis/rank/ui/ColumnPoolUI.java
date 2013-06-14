@@ -22,7 +22,7 @@ package org.caleydo.vis.rank.ui;
 import static org.caleydo.vis.rank.ui.RenderStyle.HIST_HEIGHT;
 import static org.caleydo.vis.rank.ui.RenderStyle.LABEL_HEIGHT;
 
-import java.awt.Color;
+import org.caleydo.core.util.color.Color;
 import java.beans.IndexedPropertyChangeEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;

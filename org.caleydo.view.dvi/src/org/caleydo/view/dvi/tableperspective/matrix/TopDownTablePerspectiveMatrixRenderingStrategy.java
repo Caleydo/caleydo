@@ -27,6 +27,7 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
 import org.caleydo.core.view.opengl.util.button.Button;
@@ -77,7 +78,7 @@ class TopDownTablePerspectiveMatrixRenderingStrategy extends ATablePerspectiveMa
 		float currentPositionY = y - captionRowHeight - captionSpacingY;
 		float textHeight = pixelGLConverter.getGLHeightForPixelHeight(TEXT_HEIGHT_PIXELS);
 
-		textRenderer.setColor(new float[] { 0, 0, 0 });
+		textRenderer.setColor(Color.BLACK);
 		textRenderer.renderTextInBounds(gl, rowsCaption, currentPositionX + captionSpacingX, y - captionRowHeight
 				+ captionSpacingY, 0, captionColumnWidth - textHeight, textHeight);
 
@@ -168,7 +169,7 @@ class TopDownTablePerspectiveMatrixRenderingStrategy extends ATablePerspectiveMa
 			}
 
 			// gl.glColor3f(0, 0, 0);
-			textRenderer.setColor(new float[] { 0, 0, 0 });
+			textRenderer.setColor(Color.BLACK);
 			textRenderer.renderTextInBounds(gl, row.labelProvider.getLabel(), currentPositionX + captionSpacingX
 					+ parentIndent + childIndent, textPositionY, 0.1f, captionColumnWidth - childIndent - parentIndent
 					- 2 * captionSpacingX, textHeight);
@@ -286,7 +287,7 @@ class TopDownTablePerspectiveMatrixRenderingStrategy extends ATablePerspectiveMa
 			gl.glTranslatef(textPositionX, y - childIndent - parentIndent - captionSpacingY, 0);
 			gl.glRotatef(-90, 0, 0, 1);
 			// gl.glColor3f(0, 0, 0);
-			textRenderer.setColor(new float[] { 0, 0, 0 });
+			textRenderer.setColor(Color.BLACK);
 			textRenderer.renderTextInBounds(gl, column.labelProvider.getLabel(), 0, 0, 0.1f, captionRowHeight
 					- childIndent - parentIndent - 2 * captionSpacingY, textHeight);
 			gl.glPopMatrix();

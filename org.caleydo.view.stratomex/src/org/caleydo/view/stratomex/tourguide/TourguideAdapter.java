@@ -47,8 +47,6 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.ExtensionUtils;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.color.Color;
-import org.caleydo.core.util.color.Colors;
-import org.caleydo.core.util.color.IColor;
 import org.caleydo.core.view.ViewManager;
 import org.caleydo.core.view.listener.RemoveTablePerspectiveEvent;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -102,8 +100,8 @@ import com.jogamp.opengl.util.texture.Texture;
  */
 public class TourguideAdapter implements IStratomexAdapter {
 	private static final String ICON_PREFIX = "resources/icons/stratomex/template/";
-	private static final IColor COLOR_SELECTED = new Color(SelectionType.SELECTION.getColor());
-	private static final IColor COLOR_POSSIBLE_SELECTION = Colors.NEUTRAL_GREY;
+	private static final Color COLOR_SELECTED = SelectionType.SELECTION.getColor();
+	private static final Color COLOR_POSSIBLE_SELECTION = Color.NEUTRAL_GREY;
 
 	private static final String EXTENSION_POINT = "org.caleydo.view.stratomex.AddWizardElementFactory";
 
@@ -203,13 +201,13 @@ public class TourguideAdapter implements IStratomexAdapter {
 		Vec3f upperRightCorner = new Vec3f(xi + wi, yi + hi, z);
 		Vec3f upperLeftCorner = new Vec3f(xi, yi + hi, z);
 
-		float col = isHovered ? 0.8f : 1.f;
+		Color col = isHovered ? new Color(0.8f, 0.8f, 0.8f) : new Color(1f, 1f, 1f);
 		gl.glPushAttrib(GL2.GL_TEXTURE_BIT);
 		TextureManager t = view.getTextureManager();
 		Texture tex = t.get(ICON_PREFIX + texture);
 		tex.enable(gl);
 		gl.glTexEnvi(GL2ES1.GL_TEXTURE_ENV, GL2ES1.GL_TEXTURE_ENV_MODE, GL2ES1.GL_MODULATE);
-		t.renderTexture(gl, tex, lowerLeftCorner, lowerRightCorner, upperRightCorner, upperLeftCorner, col, col, col, 1);
+		t.renderTexture(gl, tex, lowerLeftCorner, lowerRightCorner, upperRightCorner, upperLeftCorner, col);
 		gl.glPopAttrib();
 		gl.glPopName();
 		GLGraphics.checkError(gl);
@@ -352,7 +350,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 		}
 	}
 
-	private void changeHighlight(GLBrick brick, IColor color) {
+	private void changeHighlight(GLBrick brick, Color color) {
 		if (brick.isHeaderBrick()) {
 			brick.getBrickColumn().setHighlightColor(color == null ? BrickColumn.REVERT_COLOR : color.getRGBA());
 		} else {
@@ -417,7 +415,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 		if (brickColumn == null)
 			return;
 
-		IColor c = event.isHighlight() ? Colors.of(event.getColor()) : null;
+		Color c = event.isHighlight() ? event.getColor() : null;
 		if (event.getGroup() == null) {
 			changeHighlight(brickColumn.getHeaderBrick(), c);
 		} else {

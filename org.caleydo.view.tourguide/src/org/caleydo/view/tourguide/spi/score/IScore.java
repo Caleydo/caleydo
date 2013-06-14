@@ -19,7 +19,7 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.spi.score;
 
-import java.awt.Color;
+import org.caleydo.core.util.color.Color;
 
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.base.ILabeled;

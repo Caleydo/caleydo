@@ -19,11 +19,11 @@
  *******************************************************************************/
 package org.caleydo.core.io.gui.dataimport;
 
-import java.awt.Color;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.color.ColorBrewer;
 import org.caleydo.core.util.color.EColorSchemeType;
 import org.caleydo.core.util.color.mapping.ColorMapper;
@@ -149,8 +149,7 @@ public class ChooseColorSchemeDialog extends Dialog {
 			// preview.setLayoutData(gridData);
 			RowData rowData = new RowData(20, 20);
 			preview.setLayoutData(rowData);
-			org.eclipse.swt.graphics.Color c = new org.eclipse.swt.graphics.Color(Display.getCurrent(), color.getRed(),
-					color.getGreen(), color.getBlue());
+			org.eclipse.swt.graphics.Color c = color.getSWTColor(Display.getCurrent());
 			preview.setBackground(c);
 			preview.update();
 			registeredColors.add(c);

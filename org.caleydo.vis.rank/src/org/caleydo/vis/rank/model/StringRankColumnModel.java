@@ -21,7 +21,6 @@ package org.caleydo.vis.rank.model;
 
 import gleem.linalg.Vec2f;
 
-import java.awt.Color;
 import java.beans.PropertyChangeListener;
 import java.util.BitSet;
 import java.util.List;
@@ -30,6 +29,7 @@ import java.util.regex.Pattern;
 
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.util.base.ILabeled;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
@@ -62,9 +62,9 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 		IFilterColumnMixin, IRankableColumnMixin, ISearchableColumnMixin {
 	/**
 	 * different strategies for filter modi
-	 * 
+	 *
 	 * @author Samuel Gratzl
-	 * 
+	 *
 	 */
 	public enum FilterStrategy {
 		STAR_WILDCARD, SUBSTRING, REGEX;

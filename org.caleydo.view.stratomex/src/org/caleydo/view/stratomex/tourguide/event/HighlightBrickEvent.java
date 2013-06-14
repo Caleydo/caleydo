@@ -19,11 +19,12 @@
  *******************************************************************************/
 package org.caleydo.view.stratomex.tourguide.event;
 
-import java.awt.Color;
+
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.ADirectedEvent;
+import org.caleydo.core.util.color.Color;
 
 /**
  * triggers that the

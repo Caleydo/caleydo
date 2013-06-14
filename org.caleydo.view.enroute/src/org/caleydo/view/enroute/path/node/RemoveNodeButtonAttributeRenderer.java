@@ -81,7 +81,7 @@ public class RemoveNodeButtonAttributeRenderer extends ANodeAttributeRenderer {
 			Vec3f upperLeftCorner = new Vec3f(lowerLeftCorner.x(), upperRightCorner.y(), position.z());
 
 			textureManager.renderTexture(gl, EIconTextures.REMOVE, lowerLeftCorner, lowerRightCorner, upperRightCorner,
-					upperLeftCorner, 1, 1, 1, 1);
+					upperLeftCorner);
 
 			for (int i = 0; i < nodeIds.size(); i++) {
 				gl.glPopName();

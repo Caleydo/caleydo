@@ -21,7 +21,7 @@ package org.caleydo.view.tourguide.internal.view.ui.pool;
 
 import gleem.linalg.Vec2f;
 
-import java.awt.Color;
+import org.caleydo.core.util.color.Color;
 
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
