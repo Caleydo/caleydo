@@ -89,7 +89,7 @@ public final class TableHeaderUI extends ACompositeHeaderUI {
 			return;
 		this.isSmallHeader = isCompact;
 		relayout();
-		setSize(-1, ((!isSmallHeader ? HIST_HEIGHT : 0) + LABEL_HEIGHT) * 1 + thickOffset);
+		setHasThick(max(this, 0));
 		relayoutParent();
 	}
 

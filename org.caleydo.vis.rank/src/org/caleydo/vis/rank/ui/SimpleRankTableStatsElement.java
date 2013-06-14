@@ -36,7 +36,7 @@ public class SimpleRankTableStatsElement extends PickableGLElement implements Pr
 
 	public SimpleRankTableStatsElement(RankTableModel table) {
 		this.table = table;
-		setSize(150, 12);
+		setSize(180, 12);
 	}
 
 	@Override

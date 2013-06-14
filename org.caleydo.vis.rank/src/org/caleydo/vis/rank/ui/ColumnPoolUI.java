@@ -22,7 +22,6 @@ package org.caleydo.vis.rank.ui;
 import static org.caleydo.vis.rank.ui.RenderStyle.HIST_HEIGHT;
 import static org.caleydo.vis.rank.ui.RenderStyle.LABEL_HEIGHT;
 
-import org.caleydo.core.util.color.Color;
 import java.beans.IndexedPropertyChangeEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -30,6 +29,7 @@ import java.util.List;
 import java.util.Objects;
 
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
@@ -88,7 +88,7 @@ public class ColumnPoolUI extends GLElementContainer implements IGLLayout {
 		this.isSmallHeader = config.isSmallHeaderByDefault();
 		table.addPropertyChangeListener(RankTableModel.PROP_POOL, listener);
 		setLayout(this);
-		setSize(-1, LABEL_HEIGHT + HIST_HEIGHT + 10);
+		setSize(-1, LABEL_HEIGHT + HIST_HEIGHT);
 		this.add(new PaperBasket(table).setSize(LABEL_HEIGHT + HIST_HEIGHT, -1));
 
 		{
