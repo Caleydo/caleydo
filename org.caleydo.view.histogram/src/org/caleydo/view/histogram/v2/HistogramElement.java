@@ -18,7 +18,7 @@ package org.caleydo.view.histogram.v2;
 
 import gleem.linalg.Vec2f;
 
-import java.awt.Color;
+import org.caleydo.core.util.color.Color;
 import java.util.List;
 
 import javax.media.opengl.GL2;

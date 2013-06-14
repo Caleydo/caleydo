@@ -22,7 +22,7 @@ package org.caleydo.view.tourguide.internal.view.ui.pool;
 import static org.caleydo.vis.rank.ui.RenderStyle.LABEL_HEIGHT;
 import gleem.linalg.Vec2f;
 
-import java.awt.Color;
+import org.caleydo.core.util.color.Color;
 import java.beans.IndexedPropertyChangeEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;

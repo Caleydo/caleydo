@@ -19,10 +19,8 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.api.score;
 
-import java.awt.Color;
-
 import org.caleydo.core.data.perspective.variable.Perspective;
-import org.caleydo.core.util.color.Colors;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.view.tourguide.api.compute.ComputeElement;
 import org.caleydo.view.tourguide.spi.algorithm.IComputeElement;
 import org.caleydo.view.tourguide.spi.score.IStratificationScore;
@@ -36,8 +34,8 @@ public abstract class AReferenceStratificationScore extends AComputedStratificat
 	protected final Perspective reference;
 
 	public AReferenceStratificationScore(String label, Perspective reference, Color color, Color bgColor) {
-		super(label == null ? reference.getLabel() : label, Colors.of(reference.getDataDomain().getColor()), Colors.of(
-				reference.getDataDomain().getColor()).brighter());
+		super(label == null ? reference.getLabel() : label, reference.getDataDomain().getColor(), reference
+				.getDataDomain().getColor().brighter());
 		this.reference = reference;
 	}
 

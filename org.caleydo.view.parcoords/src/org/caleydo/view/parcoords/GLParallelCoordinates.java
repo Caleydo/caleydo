@@ -67,6 +67,7 @@ import org.caleydo.core.event.view.TablePerspectivesChangedEvent;
 import org.caleydo.core.event.view.UseRandomSamplingEvent;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
@@ -554,12 +555,12 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 		while (count < numberOfAxis) {
 			float xPosition = axisSpacings.get(count);
 			if (selectedSet.contains(dimensionVA.get(count))) {
-				gl.glColor4fv(SelectionType.SELECTION.getColor(), 0);
+				gl.glColor4fv(SelectionType.SELECTION.getColor().getRGBA(), 0);
 				gl.glLineWidth(Y_AXIS_SELECTED_LINE_WIDTH);
 				gl.glEnable(GL2.GL_LINE_STIPPLE);
 				gl.glLineStipple(2, (short) 0xAAAA);
 			} else if (mouseOverSet.contains(dimensionVA.get(count))) {
-				gl.glColor4fv(SelectionType.MOUSE_OVER.getColor(), 0);
+				gl.glColor4fv(SelectionType.MOUSE_OVER.getColor().getRGBA(), 0);
 				gl.glLineWidth(Y_AXIS_MOUSE_OVER_LINE_WIDTH);
 				gl.glEnable(GL2.GL_LINE_STIPPLE);
 				gl.glLineStipple(2, (short) 0xAAAA);
@@ -656,7 +657,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 				gl.glPushName(pickingID);
 
 				textureManager.renderTexture(gl, PCRenderStyle.NAN, lowerLeftCorner, lowerRightCorner,
-						upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
+						upperRightCorner, upperLeftCorner, Color.WHITE);
 
 				gl.glPopName();
 
@@ -684,7 +685,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 				gl.glPushName(pickingID);
 
 				textureManager.renderTexture(gl, PCRenderStyle.ADD_GATE, lowerLeftCorner, lowerRightCorner,
-						upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
+						upperRightCorner, upperLeftCorner, Color.WHITE);
 
 				gl.glPopName();
 
@@ -707,14 +708,14 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 						// tempTexture = textureManager.getIconTexture(gl,
 						// dropTexture);
 						textureManager.renderTexture(gl, dropTexture, lowerLeftCorner, lowerRightCorner,
-								upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
+								upperRightCorner, upperLeftCorner, Color.WHITE);
 
 						if (!bWasAxisMoved) {
 							dropTexture = PCRenderStyle.DROP_NORMAL;
 						}
 					} else {
 						textureManager.renderTexture(gl, PCRenderStyle.DROP_NORMAL, lowerLeftCorner, lowerRightCorner,
-								upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
+								upperRightCorner, upperLeftCorner, Color.WHITE);
 					}
 
 					// picking for the sub-parts of the drop texture
@@ -784,7 +785,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 					upperLeftCorner.set(xOrigin - buttonWidht, fYDropOrigin, AXIS_Z);
 
 					textureManager.renderTexture(gl, PCRenderStyle.SMALL_DROP, lowerLeftCorner, lowerRightCorner,
-							upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
+							upperRightCorner, upperLeftCorner, Color.WHITE);
 
 					gl.glPopName();
 					gl.glPopAttrib();
@@ -871,7 +872,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 		Vec3f upperLeftCorner = new Vec3f(xOrigin - buttonWidht, yGateAddOrigin + buttonHeight, AXIS_Z);
 
 		textureManager.renderTexture(gl, PCRenderStyle.ADD_GATE, lowerLeftCorner, lowerRightCorner, upperRightCorner,
-				upperLeftCorner, 1, 1, 1, 1);
+				upperLeftCorner, Color.WHITE);
 
 		gl.glPopName();
 

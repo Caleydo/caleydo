@@ -46,7 +46,7 @@ public final class ComputeScoreFilters {
 	public static IComputeScoreFilter MUTUAL_EXCLUSIVE = new IComputeScoreFilter() {
 		@Override
 		public boolean doCompute(IComputeElement a, Group ag, IComputeElement b, Group bg) {
-			if (ag == null || !Objects.equals(ag.getGroupIndex(), bg.getGroupIndex()))
+			if (ag == null || !Objects.equals(ag.getLabel(), bg.getLabel()))
 				return true;
 			IDataDomain dataDomain = b.getDataDomain();
 			if (!DataDomainOracle.isCategoricalDataDomain(dataDomain))

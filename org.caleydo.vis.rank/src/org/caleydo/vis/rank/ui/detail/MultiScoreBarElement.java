@@ -19,12 +19,13 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.ui.detail;
 
-import java.awt.Color;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.IRow;

@@ -21,13 +21,13 @@ package org.caleydo.vis.rank.ui.mapping;
 
 import gleem.linalg.Vec2f;
 
-import java.awt.Color;
 import java.awt.Point;
 import java.util.List;
 import java.util.Map;
 
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;

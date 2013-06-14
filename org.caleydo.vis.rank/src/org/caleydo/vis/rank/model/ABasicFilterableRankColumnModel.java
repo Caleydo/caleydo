@@ -19,13 +19,14 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.model;
 
-import java.awt.Color;
+
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.BitSet;
 import java.util.Collection;
 import java.util.List;
 
+import org.caleydo.core.util.color.Color;
 import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IHideableColumnMixin;
@@ -52,7 +53,7 @@ public abstract class ABasicFilterableRankColumnModel extends ARankColumnModel i
 					Collection<IRow> news = (Collection<IRow>) evt.getNewValue();
 					maskInvalid.set(table.getDataSize() - news.size(), table.getDataSize());
 				} else {
-					System.err.println();
+					// System.err.println();
 				}
 				break;
 			}

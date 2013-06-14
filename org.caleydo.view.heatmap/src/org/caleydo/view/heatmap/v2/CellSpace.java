@@ -17,44 +17,37 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.util.color;
+package org.caleydo.view.heatmap.v2;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public final class Colors {
-	private Colors() {
+public class CellSpace {
+	private final float position;
+	private final float size;
 
-	}
-
-	public static final IColor TRANSPARENT = new Color(1f, 1, 1, 0);
-	public static final Color RED = new Color(1f, 0, 0, 1);
-	public static final IColor GREEN = new Color(0f, 1, 0, 1);
-	public static final Color BLUE = new Color(0f, 0, 1, 1);
-	public static final IColor YELLOW = new Color(1f, 1, 0, 1);
-	public static final IColor BLACK = new Color(0f, 0, 0, 1);
-
-	public static final Color NEUTRAL_GREY = new Color(220, 220, 220);
-	public static final Color NOT_A_NUMBER_COLOR = new Color(0.3f, 0.3f, 0.3f);
-
-	public static IColor of(java.awt.Color color) {
-		return new Color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
-	}
-
-	public static java.awt.Color of(Color color) {
-		return new java.awt.Color(color.r, color.g, color.b, color.a);
-	}
-
-	public static float[] rgba(java.awt.Color color) {
-		return of(color).getRGBA();
+	/**
+	 * @param position
+	 * @param size
+	 */
+	public CellSpace(float position, float size) {
+		super();
+		this.position = position;
+		this.size = size;
 	}
 
 	/**
-	 * @param i
-	 * @return
+	 * @return the position, see {@link #position}
 	 */
-	public static IColor of(int grey) {
-		return new Color(grey, grey, grey);
+	public float getPosition() {
+		return position;
+	}
+
+	/**
+	 * @return the size, see {@link #size}
+	 */
+	public float getSize() {
+		return size;
 	}
 }

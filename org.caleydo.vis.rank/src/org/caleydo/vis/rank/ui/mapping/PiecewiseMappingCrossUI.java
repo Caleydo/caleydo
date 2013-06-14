@@ -21,7 +21,6 @@ package org.caleydo.vis.rank.ui.mapping;
 
 import gleem.linalg.Vec2f;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -30,6 +29,7 @@ import java.util.Map;
 
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;

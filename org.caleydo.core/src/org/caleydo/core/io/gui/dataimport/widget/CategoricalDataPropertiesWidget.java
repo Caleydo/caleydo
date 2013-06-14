@@ -37,7 +37,6 @@ import org.caleydo.core.io.gui.dataimport.widget.table.CategoryTable;
 import org.caleydo.core.io.gui.dataimport.widget.table.ITableDataChangeListener;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.color.ColorBrewer;
-import org.caleydo.core.util.color.Colors;
 import org.caleydo.core.util.color.EColorSchemeType;
 import org.caleydo.core.util.color.mapping.ColorMapper;
 import org.eclipse.jface.window.Window;
@@ -491,15 +490,19 @@ public class CategoricalDataPropertiesWidget implements ITableDataChangeListener
 		return categoryMatrix;
 	}
 
+	/**
+	 * TODO: Move this to the general category properties
+	 *
+	 * @param colorScheme
+	 */
 	private void applyColorScheme(ColorBrewer colorScheme) {
 		List<List<String>> categoryMatrix = categoryTable.getDataMatrix();
 		int numColors = determineSchemeSize(colorScheme);
 		if (colorScheme.getType() == EColorSchemeType.QUALITATIVE) {
 			int colorIndex = 0;
-			List<java.awt.Color> colors = colorScheme.get(numColors);
+			List<Color> colors = colorScheme.get(numColors);
 			for (List<String> row : categoryMatrix) {
-				Color color = (Color) Colors.of(colors
-						.get(reverseColorScheme ? numColors - colorIndex - 1 : colorIndex));
+				Color color = colors.get(reverseColorScheme ? numColors - colorIndex - 1 : colorIndex);
 				row.set(3, color.getHEX());
 				colorIndex++;
 				if (colorIndex >= colors.size()) {

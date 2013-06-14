@@ -19,11 +19,11 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.ui.detail;
 
-import java.awt.Color;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;

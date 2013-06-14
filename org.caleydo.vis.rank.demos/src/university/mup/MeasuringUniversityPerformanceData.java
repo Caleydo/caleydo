@@ -21,7 +21,6 @@ package university.mup;
 
 import static demo.RankTableDemo.toFloat;
 
-import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -33,6 +32,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.vis.rank.data.AFloatFunction;
@@ -187,7 +187,7 @@ public class MeasuringUniversityPerformanceData {
 	private static FloatRankColumnModel col(Function<IRow, Entry[]> year, int col, String text, String color,
 			String bgColor) {
 		return new FloatRankColumnModel(new ValueGetter(year, col), GLRenderers.drawText(text, VAlign.CENTER),
-				Color.decode(color), Color.decode(bgColor), unbound(), FloatInferrers.MEDIAN,
+				new Color(color), new Color(bgColor), unbound(), FloatInferrers.MEDIAN,
 				NumberFormat.getIntegerInstance(Locale.ENGLISH));
 	}
 

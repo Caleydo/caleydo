@@ -19,10 +19,11 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.model;
 
-import java.awt.Color;
+
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
@@ -38,9 +39,9 @@ import org.caleydo.vis.rank.ui.detail.ValueElement;
 
 /**
  * a combiner that produces the max of it's children
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public class MaxRankColumnModel extends AMultiRankColumnModel implements ICollapseableColumnMixin,
 		IFilterColumnMixin, ISnapshotableColumnMixin {

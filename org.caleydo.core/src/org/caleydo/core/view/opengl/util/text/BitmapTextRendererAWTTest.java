@@ -20,7 +20,6 @@ package org.caleydo.core.view.opengl.util.text;
  *******************************************************************************/
 
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
@@ -31,6 +30,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.util.color.Color;
 
 public class BitmapTextRendererAWTTest extends Frame {
 	private BufferedImage image;
@@ -45,8 +45,8 @@ public class BitmapTextRendererAWTTest extends Frame {
 
 		image = new BufferedImage(640, 640, BufferedImage.TYPE_INT_RGB);
 		final Graphics2D g = image.createGraphics();
-		g.setBackground(Color.BLACK);
-		g.setColor(Color.WHITE);
+		g.setBackground(Color.BLACK.getAWTColor());
+		g.setColor(Color.WHITE.getAWTColor());
 		g.clearRect(0, 0, image.getWidth(), image.getHeight());
 		ABitmapTextRenderer t = new ABitmapTextRenderer(new Font("Arial", Font.PLAIN, 50)) {
 

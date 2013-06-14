@@ -19,7 +19,7 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.layout2.basic;
 
-import java.awt.Color;
+
 import java.nio.FloatBuffer;
 
 import javax.media.opengl.GL;
@@ -28,6 +28,7 @@ import javax.media.opengl.GL2ES1;
 import javax.media.opengl.fixedfunc.GLPointerFunc;
 
 import org.caleydo.core.io.gui.dataimport.widget.ICallback;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.GLSandBox;
@@ -38,9 +39,9 @@ import com.jogamp.common.nio.Buffers;
 
 /**
  * renders waiting icon with optional cancel button and progress text
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public class WaitingElement extends AGLButton {
     private static final FloatBuffer vertices;
@@ -49,7 +50,7 @@ public class WaitingElement extends AGLButton {
     static {
     	final int numberOfPoints = 12;
 		final int numberOfVisiblePoints = 10;
-		final float[] color = Color.BLACK.getColorComponents(null);
+		final float[] color = Color.BLACK.getRGB();
 		float[] verts = new float[numberOfVisiblePoints * 2];
 		float[] cols = new float[numberOfVisiblePoints * 4];
 
@@ -133,7 +134,7 @@ public class WaitingElement extends AGLButton {
 
 	/**
 	 * reset this waiting element and set a new (optional) cancel callback
-	 * 
+	 *
 	 * @param onCancel
 	 */
 	public void reset(ICallback<Boolean> onCancel) {
@@ -151,7 +152,7 @@ public class WaitingElement extends AGLButton {
 
 	/**
 	 * updates the progress completion state with an optional text
-	 * 
+	 *
 	 * @param completed
 	 * @param text
 	 */
@@ -163,7 +164,7 @@ public class WaitingElement extends AGLButton {
 
 	/**
 	 * marks that there is no progress anymore and that an error occurred described using the parameter
-	 * 
+	 *
 	 * @param text
 	 */
 	public void error(String text) {

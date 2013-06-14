@@ -26,6 +26,7 @@ import java.nio.IntBuffer;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 
 /**
@@ -306,7 +307,8 @@ public class CaleydoTextRenderer extends MyTextRenderer implements ITextRenderer
 	 *
 	 * @param color
 	 */
-	public void setColor(float[] color) {
-		setColor(color[0], color[1], color[2], 1);
+	@Override
+	public void setColor(Color color) {
+		setColor(color.r, color.g, color.b, color.a);
 	}
 }

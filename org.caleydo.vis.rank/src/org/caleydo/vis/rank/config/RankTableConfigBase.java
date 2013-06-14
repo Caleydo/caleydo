@@ -19,7 +19,7 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.config;
 
-import java.awt.Color;
+import org.caleydo.core.util.color.Color;
 import java.util.Collections;
 
 import org.caleydo.core.view.opengl.picking.AdvancedPick;

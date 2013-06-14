@@ -21,7 +21,7 @@ package org.caleydo.core.view.opengl.layout2.basic;
 
 import gleem.linalg.Vec2f;
 
-import java.awt.Color;
+import org.caleydo.core.util.color.Color;
 import java.awt.Point;
 import java.util.List;
 import java.util.Objects;

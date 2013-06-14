@@ -313,7 +313,7 @@ public class SelectionManager implements IListenerOwner, Cloneable {
 	/**
 	 * Same as {@link #removeFromType(SelectionType, int)} with an additional parameter sourceIDType that is used for
 	 * conversion of IDs if necessary
-	 * 
+	 *
 	 * @param targetType
 	 * @param sourceIDType
 	 * @param elementID
@@ -330,7 +330,7 @@ public class SelectionManager implements IListenerOwner, Cloneable {
 
 	/**
 	 * Same as {@link #removeFromType(SelectionType, int)} but for a list
-	 * 
+	 *
 	 * @param targetType
 	 *            the selection type the element should be added to
 	 * @param idCollection
@@ -585,26 +585,38 @@ public class SelectionManager implements IListenerOwner, Cloneable {
 	}
 
 	/**
-	 * Returns the {@link SelectionType}s for an elementID. As if element ID is not in the selection manager
 	 * <p>
-	 * The <code>SelectionType</code>s are sorted by their Priority ( {@link SelectionType#getPriority()})
+	 * Returns the {@link SelectionType}s for an elementID ranked by their priority with the highest priority at the
+	 * beginning of the list (see {@link SelectionType#getPriority()})
 	 * </p>
 	 *
 	 * @param elementID
 	 * @return selection type or NULL
 	 */
 	public synchronized List<SelectionType> getSelectionTypes(int elementID) {
-
 		List<SelectionType> selectedTypes = new ArrayList<SelectionType>(2);
 		for (SelectionType type : selectionTypes) {
 			if (checkStatus(type, elementID))
 				selectedTypes.add(type);
 		}
-		if (selectedTypes.isEmpty())
-			selectedTypes.add(SelectionType.NORMAL);
+		// if (selectedTypes.isEmpty())
+		// selectedTypes.add(SelectionType.NORMAL);
 		Collections.sort(selectedTypes);
 		Collections.reverse(selectedTypes);
 		return selectedTypes;
+	}
+
+	/**
+	 * Returns the highest priority SelectionType for the specified element or null if the element is not selected.
+	 *
+	 * @param elementID
+	 * @return
+	 */
+	public synchronized SelectionType getHighestSelectionType(int elementID) {
+		List<SelectionType> selectionTypes = getSelectionTypes(elementID);
+		if (selectionTypes.isEmpty())
+			return null;
+		return selectionTypes.get(0);
 	}
 
 	/**

@@ -19,8 +19,8 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.ui.detail;
 
-import java.awt.Color;
 
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.ui.RenderStyle;
@@ -63,7 +63,7 @@ public class ColoredValueElement extends ValueElement {
 
 			float calpha = RenderStyle.computeHighlightAlpha(alpha, rankDelta);
 			Color base = rankDelta < 0 ? Color.GREEN : Color.RED;
-			Color c = new Color(base.getRed(), base.getGreen(), base.getBlue(), (int) (calpha * 255));
+			Color c = new Color(base.r, base.g, base.b, calpha);
 			g.decZ();
 			g.color(c);
 			g.fillRect(0, 0, w, h);

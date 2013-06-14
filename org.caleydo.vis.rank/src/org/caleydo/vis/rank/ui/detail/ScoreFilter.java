@@ -21,8 +21,7 @@ package org.caleydo.vis.rank.ui.detail;
 
 import static org.caleydo.vis.rank.ui.RenderStyle.binsForWidth;
 
-import java.awt.Color;
-
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.function.IFloatList;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;

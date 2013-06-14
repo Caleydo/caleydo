@@ -19,7 +19,6 @@
  *******************************************************************************/
 package org.caleydo.core.util.color;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -378,7 +377,7 @@ public enum ColorBrewer {
 	private static void add(Map<Integer, List<Color>> set, String... colors) {
 		List<Color> col = new ArrayList<>(colors.length);
 		for (String c : colors)
-			col.add(Color.decode(c));
+			col.add(new Color(c));
 		set.put(colors.length, col);
 	}
 
@@ -393,14 +392,14 @@ public enum ColorBrewer {
 		List<Color> col = new ArrayList<>(colors.length);
 		int i = 0;
 		for (String c : colors)
-			col.add(BrewerColor.decode(c, col, i++));
+			col.add(new BrewerColor(c, col, i++));
 		set.put(colors.length, col);
 	}
 
 	private static void addRange(Map<Integer, List<Color>> set, int start, String... colors) {
 		List<Color> col = new ArrayList<>(colors.length);
 		for (String c : colors)
-			col.add(Color.decode(c));
+			col.add(new Color(c));
 		for (int i = start; i < colors.length; ++i)
 			set.put(i, col.subList(0, i));
 		set.put(colors.length, col);
@@ -441,8 +440,7 @@ public enum ColorBrewer {
 		// spread = 1.0f / colors.size();
 		for (Color color : colors) {
 			float value = (float) colorCount / (float) (colors.size() - 1);
-			ColorMarkerPoint point = new ColorMarkerPoint(value,
-					(org.caleydo.core.util.color.Color) Colors.of(color));
+			ColorMarkerPoint point = new ColorMarkerPoint(value, color);
 
 			// set spread only for first and last
 			if (colorCount == 0 || (type == EColorSchemeType.QUALITATIVE && colorCount != colors.size() - 1)) {
@@ -505,15 +503,16 @@ public enum ColorBrewer {
 		private final int index;
 		private final List<Color> set;
 
-		public BrewerColor(int r, int g, int b, int a, List<Color> set, int index) {
-			super(r, g, b, a);
+		// public BrewerColor(float r, float g, float b, float a, List<Color> set, int index) {
+		// super(r, g, b, a);
+		// this.set = set;
+		// this.index = index;
+		// }
+
+		public BrewerColor(String hexColor, List<Color> set, int index) {
+			super(hexColor);
 			this.set = set;
 			this.index = index;
-		}
-
-		public static BrewerColor decode(String nm, List<Color> set, int index) {
-			Color base = Color.decode(nm);
-			return new BrewerColor(base.getRed(), base.getGreen(), base.getBlue(), base.getAlpha(), set, index);
 		}
 
 		@Override

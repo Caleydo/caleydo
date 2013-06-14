@@ -162,12 +162,15 @@ public class TesselationRenderer {
 					a += weight[j] * rgba[3];
 				}
 				cv.setColor(r, g, b, a);
+				outData[0] = cv;
 			} else if (type instanceof Vec3f) {
 				Vec3f v = new Vec3f();
 				v.set((float) coords[0], (float) coords[1], (float) coords[2]);
+				outData[0] = v;
 			} else if (type instanceof Vec2f) {
 				Vec2f v = new Vec2f();
 				v.set((float) coords[0], (float) coords[1]);
+				outData[0] = v;
 			}
 		}
 
@@ -178,7 +181,8 @@ public class TesselationRenderer {
 
 		@Override
 		public void error(int errnum) {
-			// String err = g.glu().gluErrorString(errnum);
+			// GLU glu = GLU.createGLU();
+			// String err = glu.gluErrorString(errnum);
 			System.err.println("Tessellation Error: " + errnum);
 		}
 

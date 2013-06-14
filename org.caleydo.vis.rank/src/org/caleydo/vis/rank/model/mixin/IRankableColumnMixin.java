@@ -19,7 +19,7 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.model.mixin;
 
-import java.awt.Color;
+import org.caleydo.core.util.color.Color;
 import java.util.Comparator;
 
 import org.caleydo.vis.rank.model.ColumnRanker;

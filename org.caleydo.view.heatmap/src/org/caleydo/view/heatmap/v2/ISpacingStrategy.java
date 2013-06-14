@@ -17,14 +17,21 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.util.color;
+package org.caleydo.view.heatmap.v2;
+
+import org.caleydo.core.data.perspective.variable.Perspective;
+import org.caleydo.core.data.selection.SelectionManager;
 
 /**
- * read only version of a color
- *
  * @author Samuel Gratzl
  *
  */
-public interface IColor {
-	public float[] getRGBA();
+public interface ISpacingStrategy {
+	ISpacingLayout apply(Perspective perspective, SelectionManager manager, boolean hideHidden, float size);
+
+	public interface ISpacingLayout {
+		float getPosition(int index);
+
+		float getSize(int index);
+	}
 }

@@ -27,6 +27,7 @@ import java.util.Map;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.data.loader.ITextureLoader;
 import org.eclipse.core.runtime.IStatus;
@@ -80,7 +81,7 @@ public final class TextureManager {
 
 	/**
 	 * load a texture once, using the specified {@link ITextureLoader}
-	 * 
+	 *
 	 * @param texture
 	 * @param locator
 	 * @return
@@ -129,10 +130,22 @@ public final class TextureManager {
 	 */
 	@Deprecated
 	public void renderTexture(GL2 gl, final EIconTextures eIconTextures, Vec3f lowerLeftCorner, Vec3f lowerRightCorner,
-			Vec3f upperRightCorner, Vec3f upperLeftCorner, float colorR, float colorG, float colorB, float alpha) {
+			Vec3f upperRightCorner, Vec3f upperLeftCorner, Color color) {
 
 		renderTexture(gl, eIconTextures.getFileName(), lowerLeftCorner, lowerRightCorner, upperRightCorner,
-				upperLeftCorner, colorR, colorG, colorB, alpha);
+				upperLeftCorner, color);
+	}
+
+	/**
+	 * Wrapper for {@link #renderTexture(GL2, EIconTextures, Vec3f, Vec3f, Vec3f, Vec3f, Color)} with color set to
+	 * default white
+	 */
+	@Deprecated
+	public void renderTexture(GL2 gl, final EIconTextures eIconTextures, Vec3f lowerLeftCorner, Vec3f lowerRightCorner,
+			Vec3f upperRightCorner, Vec3f upperLeftCorner) {
+
+		renderTexture(gl, eIconTextures.getFileName(), lowerLeftCorner, lowerRightCorner, upperRightCorner,
+				upperLeftCorner, Color.WHITE);
 	}
 
 	/**
@@ -160,16 +173,22 @@ public final class TextureManager {
 	 *            Alpha value the Polygon should have where the texture is drawn on.
 	 */
 	public void renderTexture(GL2 gl, final String texturePath, Vec3f lowerLeftCorner, Vec3f lowerRightCorner,
-			Vec3f upperRightCorner, Vec3f upperLeftCorner, float colorR, float colorG, float colorB, float alpha) {
+			Vec3f upperRightCorner, Vec3f upperLeftCorner, Color color) {
 
 		try {
 			Texture tempTexture = getIconTexture(texturePath);
-			renderTexture(gl, tempTexture, lowerLeftCorner, lowerRightCorner, upperRightCorner, upperLeftCorner,
-					colorR, colorG, colorB, alpha);
+			renderTexture(gl, tempTexture, lowerLeftCorner, lowerRightCorner, upperRightCorner, upperLeftCorner, color);
 
 		} catch (Exception e) {
 			Logger.log(new Status(IStatus.ERROR, this.toString(), "Unable to load texture " + texturePath));
 		}
+	}
+
+	/** Wrapper for {@link #renderTexture(GL2, EIconTextures, Vec3f, Vec3f, Vec3f, Vec3f, Color)} with white background */
+	public void renderTexture(GL2 gl, final String texturePath, Vec3f lowerLeftCorner, Vec3f lowerRightCorner,
+			Vec3f upperRightCorner, Vec3f upperLeftCorner) {
+		renderTexture(gl, texturePath, lowerLeftCorner, lowerRightCorner, upperRightCorner, upperLeftCorner,
+				Color.WHITE);
 	}
 
 	/**
@@ -197,13 +216,13 @@ public final class TextureManager {
 	 *            Alpha value the Polygon should have where the texture is drawn on.
 	 */
 	public void renderTexture(GL2 gl, final Texture texture, Vec3f lowerLeftCorner, Vec3f lowerRightCorner,
-			Vec3f upperRightCorner, Vec3f upperLeftCorner, float colorR, float colorG, float colorB, float alpha) {
+			Vec3f upperRightCorner, Vec3f upperLeftCorner, Color color) {
 		texture.enable(gl);
 		texture.bind(gl);
 
 		TextureCoords texCoords = texture.getImageTexCoords();
 
-		gl.glColor4f(colorR, colorG, colorB, alpha);
+		gl.glColor4fv(color.getRGBA(), 0);
 		gl.glBegin(GL2.GL_POLYGON);
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 		gl.glVertex3f(lowerLeftCorner.x(), lowerLeftCorner.y(), lowerLeftCorner.z());

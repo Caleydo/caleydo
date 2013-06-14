@@ -104,7 +104,7 @@ public abstract class ABookmark extends ALayoutRenderer implements ILayoutedElem
 		if (topLevelType == null)
 			return;
 
-		highlightColor = topLevelType.getColor();
+		highlightColor = topLevelType.getColor().getRGBA();
 
 		ElementLayout layout = getLayout();
 		if (highlightColor != null) {

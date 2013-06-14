@@ -32,6 +32,7 @@ import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.id.IDType;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
@@ -303,7 +304,7 @@ public class GLPathwayAugmentationRenderer {
 
 	private void renderVertex(final GL2 gl, PathwayVertexRep vertexRep) {
 
-		float[] tmpNodeColor = null;
+		Color tmpNodeColor = null;
 		gl.glPushName(glPathwayView.getPickingManager().getPickingID(glPathwayView.getID(),
 				EPickingType.PATHWAY_ELEMENT_SELECTION.name(), vertexRep.getID()));
 
@@ -346,8 +347,8 @@ public class GLPathwayAugmentationRenderer {
 			gl.glColorMask(true, true, true, true);
 			gl.glEnable(GL.GL_DEPTH_TEST);
 
-			tmpNodeColor = new float[] { 0.f, 0.f, 0.f, 0.0f };
-			gl.glColor4fv(tmpNodeColor, 0);
+			tmpNodeColor = Color.TRANSPARENT;
+			gl.glColor4fv(tmpNodeColor.getRGBA(), 0);
 			renderQuad(gl, nodeWidth, nodeHeight);
 
 			// Handle selection highlighting of element
@@ -357,13 +358,13 @@ public class GLPathwayAugmentationRenderer {
 				// || (pathway != null && pathwaySelectionManager
 				// .checkStatus(SelectionType.SELECTION, pathway.getID()))) {
 				tmpNodeColor = SelectionType.SELECTION.getColor();
-				gl.glColor4fv(tmpNodeColor, 0);
+				gl.glColor4fv(tmpNodeColor.getRGBA(), 0);
 				renderFrame(gl, nodeWidth, nodeHeight);
 			} else if (vertexSelectionManager.checkStatus(SelectionType.MOUSE_OVER, vertexRep.getID())) {
 				// || (pathway != null && pathwaySelectionManager.checkStatus(SelectionType.MOUSE_OVER,
 				// pathway.getID()))) {
 				tmpNodeColor = SelectionType.MOUSE_OVER.getColor();
-				gl.glColor4fv(tmpNodeColor, 0);
+				gl.glColor4fv(tmpNodeColor.getRGBA(), 0);
 				renderFrame(gl, nodeWidth, nodeHeight);
 			}
 
@@ -391,7 +392,7 @@ public class GLPathwayAugmentationRenderer {
 					|| metabolicSelectionManager.checkStatus(SelectionType.SELECTION, vertexRep.getName().hashCode())) {
 				tmpNodeColor = SelectionType.SELECTION.getColor();
 
-				gl.glColor4fv(tmpNodeColor, 0);
+				gl.glColor4fv(tmpNodeColor.getRGBA(), 0);
 				gl.glCallList(framedCompoundNodeDisplayListId);
 
 				gl.glEnable(GL.GL_STENCIL_TEST);
@@ -412,7 +413,7 @@ public class GLPathwayAugmentationRenderer {
 					|| metabolicSelectionManager.checkStatus(SelectionType.MOUSE_OVER, vertexRep.getName().hashCode())) {
 				tmpNodeColor = SelectionType.MOUSE_OVER.getColor();
 
-				gl.glColor4fv(tmpNodeColor, 0);
+				gl.glColor4fv(tmpNodeColor.getRGBA(), 0);
 				gl.glCallList(framedCompoundNodeDisplayListId);
 
 				gl.glEnable(GL.GL_STENCIL_TEST);
@@ -433,7 +434,7 @@ public class GLPathwayAugmentationRenderer {
 
 			tmpNodeColor = PathwayRenderStyle.COMPOUND_NODE_COLOR;
 
-			gl.glColor4fv(tmpNodeColor, 0);
+			gl.glColor4fv(tmpNodeColor.getRGBA(), 0);
 			gl.glCallList(compoundNodeDisplayListId);
 
 			break;
@@ -466,7 +467,7 @@ public class GLPathwayAugmentationRenderer {
 				gl.glEnable(GL.GL_BLEND);
 
 				// Handle selection highlighting of element
-				float[] nodeColor;
+				Color nodeColor;
 
 				if (vertexSelectionManager.checkStatus(SelectionType.SELECTION, vertexRep.getID())) {
 					nodeColor = SelectionType.SELECTION.getColor();
@@ -477,10 +478,10 @@ public class GLPathwayAugmentationRenderer {
 				} else if (vertexSelectionManager.checkStatus(SelectionType.NORMAL, vertexRep.getID())) {
 					nodeColor = PathwayRenderStyle.ENZYME_NODE_COLOR;
 				} else {
-					nodeColor = new float[] { 0, 0, 0, 0 };
+					nodeColor = Color.BLACK;
 				}
 
-				gl.glColor4fv(nodeColor, 0);
+				gl.glColor4fv(nodeColor.getRGBA(), 0);
 				gl.glCallList(framedEnzymeNodeDisplayListId);
 
 				if (!vertexSelectionManager.checkStatus(SelectionType.DESELECTED, vertexRep.getID())) {
@@ -569,7 +570,7 @@ public class GLPathwayAugmentationRenderer {
 					gl.glPushMatrix();
 					gl.glTranslatef(0, -(2f * thirdOfstdDevBarHeight - onePxlHeight), 0);
 					if (vertexSelectionManager.checkStatus(SelectionType.SELECTION, vertexRep.getID())) {
-						nodeColor = SelectionType.SELECTION.getColor();
+						nodeColor = SelectionType.SELECTION.getColor().getRGBA();
 						gl.glColor4fv(nodeColor, 0);
 						renderFrame(gl, width + onePxlWidth, height + (2f * thirdOfstdDevBarHeight) - onePxlHeight);
 						// gl.glCallList(framedMappedEnzymeNodeDisplayListId);
@@ -588,7 +589,7 @@ public class GLPathwayAugmentationRenderer {
 						gl.glEnable(GL.GL_DEPTH_TEST);
 						gl.glEnable(GL.GL_BLEND);
 					} else if (vertexSelectionManager.checkStatus(SelectionType.MOUSE_OVER, vertexRep.getID())) {
-						nodeColor = SelectionType.MOUSE_OVER.getColor();
+						nodeColor = SelectionType.MOUSE_OVER.getColor().getRGBA();
 						gl.glColor4fv(nodeColor, 0);
 						renderFrame(gl, width + onePxlWidth, height + (2f * thirdOfstdDevBarHeight) - onePxlHeight);
 						// gl.glCallList(framedMappedEnzymeNodeDisplayListId);
@@ -633,7 +634,7 @@ public class GLPathwayAugmentationRenderer {
 
 					// Handle selection highlighting of element
 					if (vertexSelectionManager.checkStatus(SelectionType.SELECTION, vertexRep.getID())) {
-						nodeColor = SelectionType.SELECTION.getColor();
+						nodeColor = SelectionType.SELECTION.getColor().getRGBA();
 						gl.glColor4fv(nodeColor, 0);
 						renderQuad(gl, width * 3, height * 3);
 
@@ -655,7 +656,7 @@ public class GLPathwayAugmentationRenderer {
 						gl.glEnable(GL.GL_DEPTH_TEST);
 						gl.glEnable(GL.GL_BLEND);
 					} else if (vertexSelectionManager.checkStatus(SelectionType.MOUSE_OVER, vertexRep.getID())) {
-						nodeColor = SelectionType.MOUSE_OVER.getColor();
+						nodeColor = SelectionType.MOUSE_OVER.getColor().getRGBA();
 						gl.glColor4fv(nodeColor, 0);
 						renderQuad(gl, width * 3, height * 3);
 
@@ -688,7 +689,7 @@ public class GLPathwayAugmentationRenderer {
 				renderQuad(gl, width, height);
 				// gl.glCallList(enzymeNodeDisplayListId);
 
-				nodeColor = PathwayRenderStyle.ENZYME_NODE_COLOR;
+				nodeColor = PathwayRenderStyle.ENZYME_NODE_COLOR.getRGBA();
 				gl.glColor4f(nodeColor[0], nodeColor[1], nodeColor[2], 0.7f);
 				// gl.glCallList(compoundNodeDisplayListId);
 				float boxWidth = pixelGLConverter.getGLWidthForPixelWidth(PathwayRenderStyle.COMPOUND_NODE_PIXEL_WIDTH);
@@ -708,13 +709,13 @@ public class GLPathwayAugmentationRenderer {
 				//
 				// Handle selection highlighting of element
 				if (vertexSelectionManager.checkStatus(SelectionType.SELECTION, vertexRep.getID())) {
-					nodeColor = SelectionType.SELECTION.getColor();
+					nodeColor = SelectionType.SELECTION.getColor().getRGBA();
 					gl.glColor4fv(nodeColor, 0);
 					renderFrame(gl, width + onePxlWidth, height + thirdOfstdDevBarHeight);
 					// gl.glCallList(framedEnzymeNodeDisplayListId);
 					maskFramedEnzymeNode(gl, width, height);
 				} else if (vertexSelectionManager.checkStatus(SelectionType.MOUSE_OVER, vertexRep.getID())) {
-					nodeColor = SelectionType.MOUSE_OVER.getColor();
+					nodeColor = SelectionType.MOUSE_OVER.getColor().getRGBA();
 					gl.glColor4fv(nodeColor, 0);
 					renderFrame(gl, width + onePxlWidth, height + thirdOfstdDevBarHeight);
 					// gl.glCallList(framedEnzymeNodeDisplayListId);
@@ -725,13 +726,13 @@ public class GLPathwayAugmentationRenderer {
 		} else {
 			// Handle selection highlighting of element
 			if (vertexSelectionManager.checkStatus(SelectionType.SELECTION, vertexRep.getID())) {
-				nodeColor = SelectionType.SELECTION.getColor();
+				nodeColor = SelectionType.SELECTION.getColor().getRGBA();
 				maskFramedEnzymeNode(gl, width, height);
 			} else if (vertexSelectionManager.checkStatus(SelectionType.MOUSE_OVER, vertexRep.getID())) {
-				nodeColor = SelectionType.MOUSE_OVER.getColor();
+				nodeColor = SelectionType.MOUSE_OVER.getColor().getRGBA();
 				maskFramedEnzymeNode(gl, width, height);
 			} else if (vertexSelectionManager.checkStatus(SelectionType.NORMAL, vertexRep.getID())) {
-				nodeColor = PathwayRenderStyle.ENZYME_NODE_COLOR;
+				nodeColor = PathwayRenderStyle.ENZYME_NODE_COLOR.getRGBA();
 			} else {
 				nodeColor = new float[] { 0, 0, 0, 0 };
 			}

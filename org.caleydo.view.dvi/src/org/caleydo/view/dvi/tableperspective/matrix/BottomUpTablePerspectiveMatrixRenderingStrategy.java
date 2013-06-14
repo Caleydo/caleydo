@@ -28,6 +28,7 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
 import org.caleydo.core.view.opengl.util.button.Button;
@@ -82,7 +83,7 @@ class BottomUpTablePerspectiveMatrixRenderingStrategy extends ATablePerspectiveM
 		float currentPositionY = captionRowHeight + captionSpacingY;
 		float textHeight = pixelGLConverter.getGLHeightForPixelHeight(TEXT_HEIGHT_PIXELS);
 
-		textRenderer.setColor(new float[] { 0, 0, 0 });
+		textRenderer.setColor(Color.BLACK);
 		textRenderer.renderTextInBounds(gl, rowsCaption, currentPositionX + captionSpacingX, captionRowHeight
 				- captionSpacingY - textHeight + pixelGLConverter.getGLHeightForPixelHeight(3), 0, captionColumnWidth
 				- textHeight, textHeight);
@@ -91,7 +92,7 @@ class BottomUpTablePerspectiveMatrixRenderingStrategy extends ATablePerspectiveM
 		gl.glTranslatef(currentPositionX + captionColumnWidth - captionSpacingX, captionSpacingY, 0);
 		gl.glRotatef(90, 0, 0, 1);
 		// gl.glColor3f(0, 0, 0);
-		textRenderer.setColor(new float[] { 0, 0, 0 });
+		textRenderer.setColor(Color.BLACK);
 		textRenderer.renderTextInBounds(gl, columnsCaption, 0, 0, 0, captionRowHeight - textHeight, textHeight);
 		gl.glPopMatrix();
 
@@ -173,7 +174,7 @@ class BottomUpTablePerspectiveMatrixRenderingStrategy extends ATablePerspectiveM
 			float textPositionY = currentPositionY + (rowHeight - textHeight) / 2.0f
 					+ pixelGLConverter.getGLHeightForPixelHeight(2);
 
-			textRenderer.setColor(new float[] { 0, 0, 0 });
+			textRenderer.setColor(Color.BLACK);
 			textRenderer.renderTextInBounds(gl, row.labelProvider.getLabel(), currentPositionX + captionSpacingX
 					+ parentIndent + childIndent, textPositionY, 0.1f, captionColumnWidth - childIndent - parentIndent
 					- 2 * captionSpacingX, textHeight);
@@ -285,7 +286,7 @@ class BottomUpTablePerspectiveMatrixRenderingStrategy extends ATablePerspectiveM
 			gl.glTranslatef(textPositionX, parentIndent + childIndent + captionSpacingY, 0.1f);
 			gl.glRotatef(90, 0, 0, 1);
 			// gl.glColor3f(0, 0, 0);
-			textRenderer.setColor(new float[] { 0, 0, 0 });
+			textRenderer.setColor(Color.BLACK);
 			textRenderer.renderTextInBounds(gl, column.labelProvider.getLabel(), 0, 0, 0, captionRowHeight
 					- parentIndent - childIndent - 2 * captionSpacingY, textHeight);
 			gl.glPopMatrix();

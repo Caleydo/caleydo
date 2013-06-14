@@ -19,11 +19,12 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.ui;
 
-import java.awt.Color;
+
 import java.util.Map;
 
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.vis.rank.model.CategoricalRankRankColumnModel.CategoryInfo;
 import org.caleydo.vis.rank.model.SimpleHistogram;

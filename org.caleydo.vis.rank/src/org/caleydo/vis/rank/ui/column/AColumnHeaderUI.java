@@ -24,7 +24,6 @@ import static org.caleydo.vis.rank.ui.RenderStyle.HIST_HEIGHT;
 import static org.caleydo.vis.rank.ui.RenderStyle.LABEL_HEIGHT;
 import gleem.linalg.Vec2f;
 
-import java.awt.Color;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
@@ -33,6 +32,7 @@ import java.util.Objects;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.util.base.ILabeled;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
@@ -92,7 +92,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 	private final static int DRAG_WEIGHT = 1;
 	private final static int BUTTONS = 2;
 	private final static int UNCOLLAPSE = 3;
-	protected final static int FIRST_CUSTOM = 4;
+
 
 	protected final IRankTableUIConfig config;
 	private boolean isHovered;
@@ -169,6 +169,10 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 			onCollapsedChanged(!isCollapsed); // force a change
 		}
 
+	}
+
+	protected final int firstColumn() {
+		return config.isInteractive() ? 4 : 1;
 	}
 
 	private static boolean isSmallHeader(float h) {
@@ -288,7 +292,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 			// RoundedRectRenderer.FLAG_FILL | RoundedRectRenderer.FLAG_TOP);
 			if (isDraggingAColumn()) {
 				float wi = RenderStyle.SEPARATOR_PICK_WIDTH - RenderStyle.COLUMN_SPACE;
-				g.color(Color.blue).fillRect(wi * 0.5f, 0, w - wi, h).color(Color.black);
+				g.color(Color.BLUE).fillRect(wi * 0.5f, 0, w - wi, h).color(Color.BLACK);
 			} else
 				g.fillRect(0, 0, w, h);
 			g.popName();
@@ -578,7 +582,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 						isHovered ? RenderStyle.BUTTON_WIDTH : 0);
 			}
 
-			for (IGLLayoutElement r : children.subList(FIRST_CUSTOM, children.size()))
+			for (IGLLayoutElement r : children.subList(firstColumn(), children.size()))
 				r.setBounds(defaultValue(r.getSetX(), 0), defaultValue(r.getSetY(), h),
 						defaultValue(r.getSetWidth(), w), defaultValue(r.getSetHeight(), HIST_HEIGHT));
 		}

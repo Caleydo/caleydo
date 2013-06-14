@@ -23,12 +23,13 @@ import gleem.linalg.Vec3f;
 
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 
 /**
  * Renders a texture within the layout element.
- * 
+ *
  * @author Partl
  */
 public class TextureRenderer extends ALayoutRenderer {
@@ -38,7 +39,7 @@ public class TextureRenderer extends ALayoutRenderer {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param imagePath
 	 *            Path to the image that shall be used as texture.
 	 * @param textureManager
@@ -56,7 +57,8 @@ public class TextureRenderer extends ALayoutRenderer {
 		Vec3f upperLeftCorner = new Vec3f(0, y, 0);
 
 		textureManager.renderTexture(gl, imagePath, lowerLeftCorner, lowerRightCorner,
-				upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
+ upperRightCorner,
+				upperLeftCorner, Color.WHITE);
 	}
 
 	@Override

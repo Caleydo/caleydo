@@ -34,7 +34,7 @@ import org.caleydo.core.io.ProjectDescription;
 import org.caleydo.core.util.clusterer.algorithm.kmeans.KMeansClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
-import org.caleydo.core.util.color.Colors;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.data.importer.setupgenerator.DataSetDescriptionSerializer;
 import org.caleydo.datadomain.genetic.TCGADefinitions;
 
@@ -244,13 +244,13 @@ public class TCGATestDataXMLGenerator extends DataSetDescriptionSerializer {
 				.getDataDescription().getCategoricalClassDescription();
 		categoricalClassDescription.setCategoryType(ECategoryType.ORDINAL);
 		categoricalClassDescription.setRawDataType(EDataType.INTEGER);
-		categoricalClassDescription.addCategoryProperty(-2, "Homozygous deletion", Colors.BLUE);
+		categoricalClassDescription.addCategoryProperty(-2, "Homozygous deletion", Color.BLUE);
 		categoricalClassDescription.addCategoryProperty(-1, "Heterozygous deletion",
-				Colors.BLUE.getColorWithSpecificBrighness(0.5f));
-		categoricalClassDescription.addCategoryProperty(0, "NORMAL", Colors.NEUTRAL_GREY);
+				Color.BLUE.getColorWithSpecificBrighness(0.5f));
+		categoricalClassDescription.addCategoryProperty(0, "NORMAL", Color.NEUTRAL_GREY);
 		categoricalClassDescription.addCategoryProperty(1, "Low level amplification",
-				Colors.RED.getColorWithSpecificBrighness(0.5f));
-		categoricalClassDescription.addCategoryProperty(2, "High level amplification", Colors.RED);
+				Color.RED.getColorWithSpecificBrighness(0.5f));
+		categoricalClassDescription.addCategoryProperty(2, "High level amplification", Color.RED);
 
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(3);
@@ -315,8 +315,8 @@ public class TCGATestDataXMLGenerator extends DataSetDescriptionSerializer {
 		@SuppressWarnings("unchecked")
 		CategoricalClassDescription<Integer> categoricalClassDescription = (CategoricalClassDescription<Integer>) mutationDataDescription
 				.getDataDescription().getCategoricalClassDescription();
-		categoricalClassDescription.addCategoryProperty(0, "Not Mutated", Colors.NEUTRAL_GREY);
-		categoricalClassDescription.addCategoryProperty(1, "Mutated", Colors.RED);
+		categoricalClassDescription.addCategoryProperty(0, "Not Mutated", Color.NEUTRAL_GREY);
+		categoricalClassDescription.addCategoryProperty(1, "Mutated", Color.RED);
 
 		mutationDataDescription.setNumberOfHeaderLines(1);
 

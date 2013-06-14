@@ -21,7 +21,6 @@ package org.caleydo.view.enroute.path;
 
 import gleem.linalg.Vec3f;
 
-import java.awt.Color;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
@@ -33,6 +32,7 @@ import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.util.connectionline.ClosedArrowRenderer;
 import org.caleydo.core.view.opengl.util.connectionline.ConnectionLineRenderer;
@@ -62,7 +62,7 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 	private BubbleSetGLRenderer bubbleSetRenderer = new BubbleSetGLRenderer();
 	private ArrayList<Rectangle2D> bubbleSetItems = new ArrayList<>();
 	private ArrayList<Line2D> bubbleSetEdges = new ArrayList<>();
-	private Color bubbleSetColor = new Color(SelectionType.SELECTION.getColor()[0],SelectionType.SELECTION.getColor()[1],SelectionType.SELECTION.getColor()[2]);
+	private Color bubbleSetColor = SelectionType.SELECTION.getColor();
 	private boolean isBubbleSetInitialized = false;
 
 	/**
@@ -298,8 +298,8 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 						i++;
 					}// if
 				} // for(PathwayVertexRep node : segment){
-				this.bubbleSetRenderer.addGroup(bubbleSetItems, bubbleSetEdges, bubbleSetColor);
-				this.bubbleSetRenderer.addGroup(bubbleSetItems, bubbleSetEdges, bubbleSetColor);
+				this.bubbleSetRenderer.addGroup(bubbleSetItems, bubbleSetEdges, bubbleSetColor.getAWTColor());
+				this.bubbleSetRenderer.addGroup(bubbleSetItems, bubbleSetEdges, bubbleSetColor.getAWTColor());
 			}// for (List<PathwayVertexRep> segment
 
 			((BubbleSet) this.bubbleSetRenderer.setOutline).useVirtualEdges(false);

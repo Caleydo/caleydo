@@ -19,12 +19,13 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.util.text;
 
-import java.awt.Color;
+
 import java.util.NavigableMap;
 import java.util.TreeMap;
 
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.function.FloatFunctions;
 import org.caleydo.core.util.function.IFloatFunction;
 
@@ -71,11 +72,6 @@ public class CompositeTextRenderer implements ITextRenderer {
 			t.setColor(color);
 	}
 
-	@Override
-	public void setColor(float r, float g, float b, float a) {
-		for (CaleydoTextRenderer t : pool.values())
-			t.setColor(r, g, b, a);
-	}
 
 	@Override
 	public float getTextWidth(String text, float height) {

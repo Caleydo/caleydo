@@ -21,8 +21,7 @@ package org.caleydo.vis.rank.internal.ui.anim;
 
 import gleem.linalg.Vec4f;
 
-import java.awt.Color;
-
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.vis.rank.ui.RenderStyle;
@@ -69,7 +68,7 @@ public class ColorTransition {
 	public void render(GLElement elem, GLGraphics g, float alpha) {
 		float calpha = RenderStyle.computeHighlightAlpha(alpha, delta);
 		Color base = delta < 0 ? Color.GREEN : Color.RED;
-		Color c = new Color(base.getRed(), base.getGreen(), base.getBlue(), (int) (calpha * 255));
+		Color c = new Color(base.r, base.g, base.b, (int) (calpha * 255));
 		Vec4f bounds = elem.getBounds();
 		g.decZ();
 		g.color(c);

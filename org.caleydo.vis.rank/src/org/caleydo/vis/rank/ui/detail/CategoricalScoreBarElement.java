@@ -19,8 +19,8 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.ui.detail;
 
-import java.awt.Color;
 
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.vis.rank.model.CategoricalRankRankColumnModel;
 import org.caleydo.vis.rank.model.IRow;

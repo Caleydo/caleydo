@@ -19,7 +19,7 @@
  *******************************************************************************/
 package university.mup;
 
-import java.awt.Color;
+import org.caleydo.core.util.color.Color;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;

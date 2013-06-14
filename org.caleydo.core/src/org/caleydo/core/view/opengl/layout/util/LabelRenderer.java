@@ -25,6 +25,7 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.util.text.ITextRenderer;
 
@@ -170,7 +171,7 @@ public class LabelRenderer
 
 		float ySpacing = view.getPixelGLConverter().getGLHeightForPixelHeight(1);
 
-		textRenderer.setColor(0, 0, 0, 1);
+		textRenderer.setColor(Color.BLACK);
 		float textWidth = Math.min(textRenderer.getTextWidth(label, y - 2 * ySpacing), x);
 
 		float padding = 0;

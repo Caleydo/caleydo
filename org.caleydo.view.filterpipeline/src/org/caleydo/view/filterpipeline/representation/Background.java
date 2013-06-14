@@ -107,7 +107,7 @@ public class Background implements IRenderable, IDropArea {
 		gl.glLineWidth(renderStyle.DRAG_LINE_WIDTH);
 		gl.glBegin(GL.GL_LINES);
 		{
-			gl.glColor4fv(renderStyle.DRAG_LINE_COLOR, 0);
+			gl.glColor4fv(renderStyle.DRAG_LINE_COLOR.getRGBA(), 0);
 			gl.glVertex3f(dropPositions[nearestDropPositionId],
 					renderStyle.FILTER_SPACING_BOTTOM, 0.9f);
 			gl.glVertex3f(dropPositions[nearestDropPositionId], renderStyle
@@ -182,7 +182,7 @@ public class Background implements IRenderable, IDropArea {
 		gl.glPushName(pickingId);
 		gl.glBegin(GL2.GL_POLYGON);
 		{
-			gl.glColor4fv(renderStyle.BACKGROUND_COLOR, 0);
+			gl.glColor4fv(renderStyle.BACKGROUND_COLOR.getRGBA(), 0);
 
 			gl.glVertex3f(0, 0, 0);
 			gl.glVertex3f(0, height, 0);

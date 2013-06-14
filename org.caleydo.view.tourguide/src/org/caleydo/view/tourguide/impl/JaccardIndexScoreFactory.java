@@ -19,7 +19,6 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.impl;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -28,6 +27,7 @@ import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.view.tourguide.api.compute.ComputeScoreFilters;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.score.DefaultComputedReferenceGroupScore;
@@ -57,8 +57,8 @@ import org.eclipse.swt.widgets.Shell;
  *
  */
 public class JaccardIndexScoreFactory implements IScoreFactory {
-	private final static Color color = Color.decode("#ffb380");
-	private final static Color bgColor = Color.decode("#ffe6d5");
+	private final static Color color = new Color("#ffb380");
+	private final static Color bgColor = new Color("#ffe6d5");
 
 	private IRegisteredScore createJaccard(String label, Perspective reference, Group group) {
 		return new DefaultComputedReferenceGroupScore(label, reference, group, JaccardIndex.get(), null, color, bgColor);

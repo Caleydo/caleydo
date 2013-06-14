@@ -22,7 +22,7 @@ package org.caleydo.vis.rank.ui.column;
 import gleem.linalg.Vec2f;
 import gleem.linalg.Vec4f;
 
-import java.awt.Color;
+import org.caleydo.core.util.color.Color;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 

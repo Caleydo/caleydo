@@ -19,8 +19,8 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.model;
 
-import java.awt.Color;
 
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.util.function.FloatFunctions;
 import org.caleydo.core.view.opengl.layout2.GLElement;

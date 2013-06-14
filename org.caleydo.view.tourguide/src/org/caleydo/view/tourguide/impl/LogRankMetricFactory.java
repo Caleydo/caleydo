@@ -21,7 +21,7 @@ package org.caleydo.view.tourguide.impl;
 
 import static org.caleydo.view.tourguide.api.query.EDataDomainQueryMode.STRATIFICATIONS;
 
-import java.awt.Color;
+import org.caleydo.core.util.color.Color;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;

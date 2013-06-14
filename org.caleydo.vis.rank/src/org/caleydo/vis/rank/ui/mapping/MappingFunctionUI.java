@@ -22,7 +22,6 @@ package org.caleydo.vis.rank.ui.mapping;
 import static org.caleydo.vis.rank.ui.RenderStyle.LABEL_HEIGHT;
 import static org.caleydo.vis.rank.ui.RenderStyle.binsForWidth;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,6 +33,7 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.io.gui.dataimport.widget.ICallback;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.function.ArrayFloatList;
 import org.caleydo.core.util.function.FloatFunctions;
 import org.caleydo.core.util.function.FloatStatistics;
@@ -452,8 +452,8 @@ public class MappingFunctionUI extends GLElementContainer implements GLButton.IS
 		IFloatList data = new ArrayFloatList(arr);
 		FloatStatistics s = FloatStatistics.of(data.iterator());
 		model.setActStatistics(s);
-		final MappingFunctionUI root = new MappingFunctionUI(model, data, Color.decode("#9ECAE1"),
-				Color.decode("#DEEBF7"), null);
+		final MappingFunctionUI root = new MappingFunctionUI(model, data, new Color("#9ECAE1"), new Color("#DEEBF7"),
+				null);
 		root.addMode(new PiecewiseMappingParallelUI(model, true));
 		root.addMode(new PiecewiseMappingCrossUI(model, true));
 

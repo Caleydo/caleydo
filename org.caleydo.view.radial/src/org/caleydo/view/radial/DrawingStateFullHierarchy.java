@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,12 +8,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -36,7 +36,7 @@ import org.caleydo.core.view.opengl.util.GLPrimitives;
  * In this drawing state the radial hierarchy is drawn at the center of the
  * screen. Other drawing states can be reached by selecting and alternatively
  * selecting partial discs.
- * 
+ *
  * @author Christian Partl
  */
 
@@ -48,7 +48,7 @@ public class DrawingStateFullHierarchy extends ADrawingState {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param drawingController
 	 *            DrawingController that holds the drawing states.
 	 * @param radialHierarchy
@@ -65,7 +65,7 @@ public class DrawingStateFullHierarchy extends ADrawingState {
 	/**
 	 * Initializes drawing strategies for all selected elements of the radial
 	 * hierarchy's selection manager.
-	 * 
+	 *
 	 * @param mapSelectedDrawingStrategies
 	 *            Map is filled with key-value pairs where the key is a selected
 	 *            partial disc and its value is the corresponding drawing
@@ -187,13 +187,13 @@ public class DrawingStateFullHierarchy extends ADrawingState {
 					.createDrawingStrategy(EPDDrawingStrategyType.SELECTED);
 
 			if (mapSelectedElements.get(pdSelected) == SelectionType.SELECTION) {
-				dsCurrent.setBorderColor(SelectionType.SELECTION.getColor());
+				dsCurrent.setBorderColor(SelectionType.SELECTION.getColor().getRGBA());
 			}
 			if (mapChildIndictatorElements.containsKey(pdSelected)) {
 				if (mapChildIndictatorElements.get(pdSelected) == SelectionType.SELECTION) {
-					dsCurrent.setChildIndicatorColor(SelectionType.SELECTION.getColor());
+					dsCurrent.setChildIndicatorColor(SelectionType.SELECTION.getColor().getRGBA());
 				} else {
-					dsCurrent.setChildIndicatorColor(SelectionType.MOUSE_OVER.getColor());
+					dsCurrent.setChildIndicatorColor(SelectionType.MOUSE_OVER.getColor().getRGBA());
 				}
 				mapChildIndictatorElements.remove(pdSelected);
 			}
@@ -208,9 +208,9 @@ public class DrawingStateFullHierarchy extends ADrawingState {
 							.getDefaultDrawingStrategy().getDrawingStrategyType());
 
 			if (mapChildIndictatorElements.get(pdIndicated) == SelectionType.SELECTION) {
-				dsCurrent.setChildIndicatorColor(SelectionType.SELECTION.getColor());
+				dsCurrent.setChildIndicatorColor(SelectionType.SELECTION.getColor().getRGBA());
 			} else {
-				dsCurrent.setChildIndicatorColor(SelectionType.MOUSE_OVER.getColor());
+				dsCurrent.setChildIndicatorColor(SelectionType.MOUSE_OVER.getColor().getRGBA());
 			}
 
 			pdIndicated.setPDDrawingStrategy(dsCurrent);
@@ -260,9 +260,9 @@ public class DrawingStateFullHierarchy extends ADrawingState {
 		if (parentIndicatorType != SelectionType.NORMAL) {
 			gl.glPushClientAttrib(GL.GL_COLOR_BUFFER_BIT);
 			if (parentIndicatorType == SelectionType.SELECTION)
-				gl.glColor3fv(SelectionType.SELECTION.getColor(), 0);
+				gl.glColor3fv(SelectionType.SELECTION.getColor().getRGB(), 0);
 			else
-				gl.glColor3fv(SelectionType.MOUSE_OVER.getColor(), 0);
+				gl.glColor3fv(SelectionType.MOUSE_OVER.getColor().getRGB(), 0);
 			GLPrimitives.renderCircle(glu, fDiscWidth / 2.0f, 100);
 			GLPrimitives.renderCircleBorder(gl, glu, fDiscWidth / 2.0f, 100, 2);
 			gl.glPopAttrib();

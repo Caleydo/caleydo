@@ -24,7 +24,7 @@ import java.awt.Point;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GL2ES1;
 
-import org.caleydo.core.util.color.Colors;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
@@ -105,7 +105,7 @@ public class Zoomer implements IMouseWheelHandler, IScrollBarUpdateHandler {
 		hScrollBarLayout.setRatioSizeX(1.0f);
 		hScrollBarLayout
 .setRenderer(new ScrollBarRenderer(hScrollBar, parentView, true,
-				scrollBarDragAndDropController, Colors.BLACK));
+				scrollBarDragAndDropController, Color.BLACK));
 
 		ElementLayout hSpacingLayout = new ElementLayout("horizontalSpacing");
 		hSpacingLayout.setRatioSizeX(1.0f);
@@ -127,7 +127,7 @@ public class Zoomer implements IMouseWheelHandler, IScrollBarUpdateHandler {
 		vScrollBarLayout.setPixelSizeX(10);
 		vScrollBarLayout.setRatioSizeY(1.0f);
 		vScrollBarLayout.setRenderer(new ScrollBarRenderer(vScrollBar, parentView, false,
-				scrollBarDragAndDropController, Colors.BLACK));
+				scrollBarDragAndDropController, Color.BLACK));
 
 		ElementLayout vSpacingLayout = new ElementLayout("verticalSpacing");
 		vSpacingLayout.setRatioSizeX(1.0f);
