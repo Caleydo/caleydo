@@ -241,7 +241,7 @@ public class ColumnRanker implements Iterable<IRow> {
 	 * sorts the current data
 	 */
 	void order() {
-		if (!dirtyOrder)
+		if (!dirtyOrder && order != null)
 			return;
 		dirtyOrder = false;
 		// System.out.println("sort");

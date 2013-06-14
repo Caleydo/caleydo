@@ -43,6 +43,14 @@ public class GLSlider extends PickableGLElement {
 	 */
 	private static final int BAR_WIDTH = 5;
 
+	public enum EValueVisibility {
+		NONE, VISIBLE, VISIBLE_HOVERED, VISIBLE_DRAGGED;
+
+		boolean show(boolean dragged, boolean hovered) {
+			return this == VISIBLE || (this == VISIBLE_HOVERED && hovered) || (this == VISIBLE_DRAGGED && dragged);
+		}
+	}
+
 	private ISelectionCallback callback = DUMMY_CALLBACK;
 
 	/**
@@ -69,7 +77,14 @@ public class GLSlider extends PickableGLElement {
 	/**
 	 * show the value or not
 	 */
-	private boolean isShowText = true;
+	private EValueVisibility valueVisibility = EValueVisibility.VISIBLE;
+
+	private EValueVisibility minMaxVisibility = EValueVisibility.NONE;
+
+	/**
+	 * the format string to use for rendering a value using {@link String#format(String, Object...)}
+	 */
+	private String valueFormat = "%.2f";
 
 	public GLSlider() {
 
@@ -98,19 +113,50 @@ public class GLSlider extends PickableGLElement {
 	}
 
 	/**
-	 * @return the isShowText, see {@link #isShowText}
+	 * @param valueFormat
+	 *            setter, see {@link valueFormat}
 	 */
-	public boolean isShowText() {
-		return isShowText;
+	public GLSlider setValueFormat(String valueFormat) {
+		this.valueFormat = valueFormat;
+		return this;
 	}
 
 	/**
-	 * @param isShowText
-	 *            setter, see {@link isShowText}
+	 * @param valueVisibility
+	 *            setter, see {@link valueVisibility}
 	 */
-	public GLSlider setShowText(boolean isShowText) {
-		this.isShowText = isShowText;
+	public GLSlider setValueVisibility(EValueVisibility valueVisibility) {
+		if (this.valueVisibility == valueVisibility)
+			return this;
+		this.valueVisibility = valueVisibility;
+		repaint();
 		return this;
+	}
+
+	/**
+	 * @return the valueVisibility, see {@link #valueVisibility}
+	 */
+	public EValueVisibility getValueVisibility() {
+		return valueVisibility;
+	}
+
+	/**
+	 * @param minMaxVisibility
+	 *            setter, see {@link minMaxVisibility}
+	 */
+	public GLSlider setMinMaxVisibility(EValueVisibility minMaxVisibility) {
+		if (this.minMaxVisibility == minMaxVisibility)
+			return this;
+		this.minMaxVisibility = minMaxVisibility;
+		repaint();
+		return this;
+	}
+
+	/**
+	 * @return the minMaxVisibility, see {@link #minMaxVisibility}
+	 */
+	public EValueVisibility getMinMaxVisibility() {
+		return minMaxVisibility;
 	}
 
 	/**
@@ -124,14 +170,40 @@ public class GLSlider extends PickableGLElement {
 	 * @param value
 	 *            setter, see {@link value}
 	 */
-	public void setValue(float value) {
+	public GLSlider setValue(float value) {
 		value = Math.max(min, Math.min(max, value));
 		if (this.value == value)
-			return;
+			return this;
 		this.value = value;
 		repaintAll();
 		fireCallback(value);
+		return this;
 	}
+
+	public GLSlider setMinMax(float min, float max) {
+		if (this.min == min && this.max == max)
+			return this;
+		this.min = min;
+		this.max = max;
+		this.value = Math.max(min, Math.min(max, value));
+		repaintAll();
+		return this;
+	}
+
+	/**
+	 * @return the min, see {@link #min}
+	 */
+	public float getMin() {
+		return min;
+	}
+
+	/**
+	 * @return the max, see {@link #max}
+	 */
+	public float getMax() {
+		return max;
+	}
+
 
 	protected final void fireCallback(float value) {
 		callback.onSelectionChanged(this, value);
@@ -158,21 +230,41 @@ public class GLSlider extends PickableGLElement {
 			g.color(Color.GRAY);
 		else
 			g.color(Color.LIGHT_GRAY);
+		boolean showText = valueVisibility.show(dragged, hovered);
+		boolean showMinMaxText = minMaxVisibility.show(dragged, hovered);
+
 		if (isHorizontal) {
 			float x = mapValue(w);
 			g.fillRect(x, 0, Math.min(BAR_WIDTH, w - x), h);
-			if (isShowText)
-				g.drawText(String.format(Locale.ENGLISH, "%.2f", value), 2, 2, w - 4, h - 8, VAlign.CENTER);
+			if (showMinMaxText) {
+				g.textColor(Color.DARK_GRAY);
+				g.drawText(format(min), 2, 4, w - 4, h - 11, VAlign.LEFT);
+				g.drawText(format(max), 2, 4, w - 5, h - 11, VAlign.RIGHT);
+				g.textColor(Color.BLACK);
+			}
+			if (showText)
+				g.drawText(format(value), 2, 2, w - 4, h - 8, VAlign.CENTER);
 		} else {
 			float y = mapValue(h);
 			g.fillRect(0, y, w, Math.min(BAR_WIDTH, h - y));
-			if (isShowText) {
+			if (showText || showMinMaxText)
 				g.save().gl.glRotatef(90, 0, 0, 1);
-				g.drawText(String.format(Locale.ENGLISH, "%.2f", value), 2, 2 - w, h - 4, w - 8, VAlign.CENTER);
-				g.restore();
+			if (showMinMaxText) {
+				g.textColor(Color.DARK_GRAY);
+				g.drawText(format(min), 2, 4 - w, h - 4, w - 11, VAlign.LEFT);
+				g.drawText(format(max), 2, 4 - w, h - 5, w - 11, VAlign.RIGHT);
+				g.textColor(Color.BLACK);
 			}
+			if (showText)
+				g.drawText(format(value), 2, 2 - w, h - 4, w - 8, VAlign.CENTER);
+			if (showText || showMinMaxText)
+				g.restore();
 		}
 		g.color(Color.BLACK).drawRect(0, 0, w, h);
+	}
+
+	protected String format(float v) {
+		return String.format(Locale.ENGLISH, valueFormat, v);
 	}
 
 	private float mapValue(float total) {
@@ -267,7 +359,8 @@ public class GLSlider extends PickableGLElement {
 	public static void main(String[] args) {
 		GLElementContainer c = new GLElementContainer(GLLayouts.flowHorizontal(2));
 		c.add(new GLElement());
-		c.add(new GLSlider(0, 1, 0.2f).setHorizontal(false).setSize(32, -1));
+		c.add(new GLSlider(0, 1, 0.2f).setHorizontal(true).setMinMaxVisibility(EValueVisibility.VISIBLE_DRAGGED)
+				.setSize(-1, 32));
 		c.add(new GLElement());
 		GLSandBox.main(args, c);
 	}

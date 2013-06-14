@@ -17,28 +17,21 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.heatmap.v2.spacing;
+package org.caleydo.view.heatmap.v2;
+
+import org.caleydo.view.heatmap.v2.spacing.FishEyeSpacingCalculator;
+import org.caleydo.view.heatmap.v2.spacing.UniformSpacingCalculator;
 
 /**
+ * factory for different ISpacingStrategys
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
-public interface IRecordSpacingLayout {
-	/**
-	 * @return
-	 */
-	float getFieldWidth();
+public class SpacingStrategies {
+	public static final ISpacingStrategy UNIFORM = new UniformSpacingCalculator();
 
-	/**
-	 * @param recordIndex
-	 * @return
-	 */
-	float getFieldHeight(int recordIndex);
-
-	/**
-	 * @param lineIndex
-	 * @return
-	 */
-	float getYPosition(int lineIndex);
-
+	public static final ISpacingStrategy fishEye(float minSelectionSize) {
+		return new FishEyeSpacingCalculator(minSelectionSize);
+	}
 }

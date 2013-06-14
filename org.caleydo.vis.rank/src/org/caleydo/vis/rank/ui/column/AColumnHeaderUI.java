@@ -92,7 +92,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 	private final static int DRAG_WEIGHT = 1;
 	private final static int BUTTONS = 2;
 	private final static int UNCOLLAPSE = 3;
-	protected final static int FIRST_CUSTOM = 4;
+
 
 	protected final IRankTableUIConfig config;
 	private boolean isHovered;
@@ -171,8 +171,12 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 
 	}
 
+	protected final int firstColumn() {
+		return config.isInteractive() ? 4 : 1;
+	}
+
 	private static boolean isSmallHeader(float h) {
-		return h < (LABEL_HEIGHT + HIST_HEIGHT);
+		return h < (LABEL_HEIGHT + HIST_HEIGHT * 0.5f);
 	}
 
 	/**
@@ -578,7 +582,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 						isHovered ? RenderStyle.BUTTON_WIDTH : 0);
 			}
 
-			for (IGLLayoutElement r : children.subList(FIRST_CUSTOM, children.size()))
+			for (IGLLayoutElement r : children.subList(firstColumn(), children.size()))
 				r.setBounds(defaultValue(r.getSetX(), 0), defaultValue(r.getSetY(), h),
 						defaultValue(r.getSetWidth(), w), defaultValue(r.getSetHeight(), HIST_HEIGHT));
 		}

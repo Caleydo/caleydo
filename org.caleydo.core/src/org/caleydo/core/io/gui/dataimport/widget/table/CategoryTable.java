@@ -53,7 +53,6 @@ import org.eclipse.nebula.widgets.nattable.painter.cell.ImagePainter;
 import org.eclipse.nebula.widgets.nattable.painter.cell.TextPainter;
 import org.eclipse.nebula.widgets.nattable.painter.cell.decorator.BeveledBorderDecorator;
 import org.eclipse.nebula.widgets.nattable.painter.cell.decorator.CellPainterDecorator;
-import org.eclipse.nebula.widgets.nattable.painter.layer.NatGridLayerPainter;
 import org.eclipse.nebula.widgets.nattable.selection.SelectionLayer;
 import org.eclipse.nebula.widgets.nattable.selection.event.CellSelectionEvent;
 import org.eclipse.nebula.widgets.nattable.selection.event.RowSelectionEvent;
@@ -210,11 +209,6 @@ public class CategoryTable extends AMatrixBasedTableWidget implements ILayerList
 	private void buildTable(MatrixBasedBodyDataProvider bodyDataProvider, ColumnHeaderDataProvider columnDataProvider,
 			LineNumberRowHeaderDataProvider rowDataProvider, final boolean areRowsMoveable) {
 
-		if (table != null) { // cleanup old
-			this.table.dispose();
-			this.table = null;
-		}
-
 		final DataLayer bodyDataLayer = new DataLayer(bodyDataProvider, 120, 36);
 		bodyDataLayer.addLayerListener(this);
 
@@ -231,10 +225,14 @@ public class CategoryTable extends AMatrixBasedTableWidget implements ILayerList
 				rowDataProvider);
 		CornerLayer cornerLayer = new CornerLayer(new DataLayer(cornerDataProvider), rowHeaderLayer, columnHeaderLayer);
 		GridLayer gridLayer = new GridLayer(bodyLayer, columnHeaderLayer, rowHeaderLayer, cornerLayer);
+		if (table == null) {
 		table = new NatTable(parent, gridLayer, false);
+		} else {
+			table.setLayer(gridLayer);
+		}
 		table.setLayoutData(layoutData);
 
-		table.addConfiguration(new DefaultCaleydoNatTableConfiguration());
+		NatTableUtil.applyDefaultNatTableStyling(table);
 		ColumnOverrideLabelAccumulator acc = new ColumnOverrideLabelAccumulator(bodyDataLayer);
 		bodyDataLayer.setConfigLabelAccumulator(acc);
 		acc.registerColumnOverrides(0, NON_EDITABLE);
@@ -268,6 +266,9 @@ public class CategoryTable extends AMatrixBasedTableWidget implements ILayerList
 
 				if (areRowsMoveable) {
 					configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_PAINTER, rowHeaderPainter,
+							DisplayMode.NORMAL, GridRegion.ROW_HEADER);
+				} else {
+					configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_PAINTER, new TextPainter(),
 							DisplayMode.NORMAL, GridRegion.ROW_HEADER);
 				}
 
@@ -327,9 +328,6 @@ public class CategoryTable extends AMatrixBasedTableWidget implements ILayerList
 				}
 			}
 		});
-
-		NatGridLayerPainter layerPainter = new NatGridLayerPainter(table);
-		table.setLayerPainter(layerPainter);
 
 		table.addDisposeListener(this);
 

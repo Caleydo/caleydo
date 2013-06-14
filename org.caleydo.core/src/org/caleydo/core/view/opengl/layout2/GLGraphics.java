@@ -207,7 +207,7 @@ public class GLGraphics {
 	// ############## color setters
 
 	public GLGraphics color(Color color) {
-		return color(color.getRGBA());
+		return color(color.r, color.g, color.b, color.a);
 	}
 
 	public GLGraphics color(float gray) {
@@ -221,6 +221,10 @@ public class GLGraphics {
 	public GLGraphics color(float r, float g, float b, float a) {
 		gl.glColor4f(r, g, b, a);
 		return this;
+	}
+
+	public GLGraphics color(String hex) {
+		return color(new Color(hex));
 	}
 
 	public GLGraphics color(float[] rgba) {
@@ -243,11 +247,7 @@ public class GLGraphics {
 	}
 
 	public GLGraphics textColor(float r, float g, float b, float a) {
-		Color color = new Color(r, g, b, a);
-		text.setColor(color);
-		local.getText_bold().setColor(color);
-		local.getText_italic().setColor(color);
-		return this;
+		return textColor(new Color(r, g, b, a));
 	}
 
 	public GLGraphics textColor(float[] rgba) {

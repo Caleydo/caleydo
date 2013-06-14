@@ -110,7 +110,7 @@ public abstract class ACompositeHeaderUI extends GLElementContainer implements I
 		return new SeparatorUI(this, 0);
 	}
 
-	private float max(Iterable<?> its, float max) {
+	protected final float max(Iterable<?> its, float max) {
 		boolean smallHeader = isSmallHeader();
 		for (IThickHeader h : Iterables.filter(its, IThickHeader.class))
 			max = Math.max(h.getTopPadding(smallHeader), max);

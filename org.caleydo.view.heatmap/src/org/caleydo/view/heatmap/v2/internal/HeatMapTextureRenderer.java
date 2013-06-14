@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License along with this program. If not, see
  * <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.heatmap.v2;
+package org.caleydo.view.heatmap.v2.internal;
 
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
@@ -32,6 +32,7 @@ import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
+import org.caleydo.view.heatmap.v2.IBlockColorer;
 
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureData;
