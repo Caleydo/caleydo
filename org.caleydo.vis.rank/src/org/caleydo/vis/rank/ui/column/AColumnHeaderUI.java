@@ -176,7 +176,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 	}
 
 	private static boolean isSmallHeader(float h) {
-		return h < (LABEL_HEIGHT + HIST_HEIGHT);
+		return h < (LABEL_HEIGHT + HIST_HEIGHT * 0.5f);
 	}
 
 	/**
