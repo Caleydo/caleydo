@@ -43,7 +43,7 @@ public class ColumnUIs {
 			return new SimpleColumnHeaderUI((ACompositeRankColumnModel) model, config);
 		if (model instanceof OrderColumn)
 			return new OrderColumnHeaderUI(model, config);
-		if (allowComplex && (model instanceof MaxRankColumnModel || model instanceof ScriptedRankColumnModel))
+		if (model instanceof MaxRankColumnModel || model instanceof ScriptedRankColumnModel)
 			return new VerticalColumnHeaderUI((ACompositeRankColumnModel) model, config);
 		return new ColumnHeaderUI(model, config);
 	}

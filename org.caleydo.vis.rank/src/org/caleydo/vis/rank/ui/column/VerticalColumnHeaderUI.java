@@ -32,6 +32,7 @@ import java.util.List;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
+import org.caleydo.core.view.opengl.layout2.IGLElementParent;
 import org.caleydo.core.view.opengl.layout2.animation.MoveTransitions;
 import org.caleydo.core.view.opengl.layout2.animation.MoveTransitions.IMoveTransition;
 import org.caleydo.core.view.opengl.layout2.animation.Transitions;
@@ -104,7 +105,7 @@ public class VerticalColumnHeaderUI extends AColumnHeaderUI {
 	protected void takeDown() {
 		context.unregisterPickingListener(childrenPickingId);
 		model.removePropertyChangeListener(ACompositeRankColumnModel.PROP_CHILDREN, childrenChanged);
-		for (GLElement col : Lists.newArrayList(this.iterator()).subList(FIRST_CUSTOM, size())) {
+		for (GLElement col : Lists.newArrayList(this.iterator()).subList(firstColumn(), size())) {
 			takeDown(col.getLayoutDataAs(ARankColumnModel.class, null));
 		}
 		super.takeDown();
@@ -113,9 +114,10 @@ public class VerticalColumnHeaderUI extends AColumnHeaderUI {
 	@SuppressWarnings("unchecked")
 	protected void onChildrenChanged(IndexedPropertyChangeEvent evt) {
 		int index = evt.getIndex();
+		final int firstColumn = firstColumn();
 		if (evt.getOldValue() instanceof Integer) { // moved
 			int movedFrom = (Integer) evt.getOldValue();
-			add(index + FIRST_CUSTOM, get(movedFrom + FIRST_CUSTOM));
+			add(index + firstColumn, get(movedFrom + firstColumn));
 		} else if (evt.getOldValue() == null) { // new
 			Collection<GLElement> news = null;
 			if (evt.getNewValue() instanceof ARankColumnModel) {
@@ -126,13 +128,13 @@ public class VerticalColumnHeaderUI extends AColumnHeaderUI {
 					news.add(wrap(c));
 			}
 			for (GLElement new_ : news)
-				add(index++ + FIRST_CUSTOM, new_);
+				add(index++ + firstColumn, new_);
 		} else if (evt.getNewValue() == null) { // removed
-			takeDown(get(index + FIRST_CUSTOM).getLayoutDataAs(ARankColumnModel.class, null));
-			remove(index + FIRST_CUSTOM);
+			takeDown(get(index + firstColumn).getLayoutDataAs(ARankColumnModel.class, null));
+			remove(index + firstColumn);
 		} else { // replaced
-			takeDown(get(index + FIRST_CUSTOM).getLayoutDataAs(ARankColumnModel.class, null));
-			set(index + FIRST_CUSTOM, wrap((ARankColumnModel) evt.getNewValue()));
+			takeDown(get(index + firstColumn).getLayoutDataAs(ARankColumnModel.class, null));
+			set(index + firstColumn, wrap((ARankColumnModel) evt.getNewValue()));
 		}
 	}
 
@@ -147,22 +149,47 @@ public class VerticalColumnHeaderUI extends AColumnHeaderUI {
 		return elem;
 	}
 
+	private boolean isDownAlignment() {
+		boolean down = true;
+		IGLElementParent p = getParent();
+		do {
+			if (p instanceof VerticalColumnHeaderUI)
+				down = !down;
+			p = p.getParent();
+		} while (p != null);
+		return down;
+	}
+
 	@Override
 	public void doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
 		super.doLayout(children, w, h);
-		List<? extends IGLLayoutElement> childs = children.subList(FIRST_CUSTOM, children.size());
+		List<? extends IGLLayoutElement> childs = children.subList(firstColumn(), children.size());
 
 		if (headerHovered)
 			childrenHovered = true;
-		if (childrenHovered && !this.isCollapsed()) {
-			float y = h;
-			for (IGLLayoutElement child : childs) {
-				child.setBounds(0, y, w, h);
-				y += h;
+		boolean showChildren = childrenHovered && !this.isCollapsed();
+		if (isDownAlignment()) {
+			if (showChildren) {
+				float y = h;
+				for (IGLLayoutElement child : childs) {
+					child.setBounds(0, y, w, h);
+					y += h;
+				}
+			} else {
+				for (IGLLayoutElement child : childs)
+					child.setBounds(0, h, w, 0);
 			}
 		} else {
-			for (IGLLayoutElement child : childs)
-				child.setBounds(0, h, w, 0);
+			if (showChildren) {
+				float x = w;
+				for (IGLLayoutElement child : childs) {
+					child.setBounds(x, 0, w, h);
+					x += w;
+				}
+			} else {
+				for (IGLLayoutElement child : childs)
+					child.setBounds(w, 0, 0, h);
+			}
 		}
 	}
 
