@@ -245,9 +245,11 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 		for (int bucketCount = 0; bucketCount < histogram.size(); bucketCount++) {
 			Integer iValue = histogram.get(bucketCount);
 			if (useColor)
+ {
 				gl.glColor3fv(
 						dataDomain.getColorMapper().getColor(
 								continuousColorDistance * iCount + continuousColorDistance / 2), 0);
+			}
 
 			gl.glLineWidth(3.0f);
 			gl.glBegin(GL2.GL_POLYGON);

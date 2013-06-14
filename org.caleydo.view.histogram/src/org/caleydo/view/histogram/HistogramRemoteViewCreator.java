@@ -38,14 +38,18 @@ public class HistogramRemoteViewCreator implements IRemoteViewCreator {
 
 			Histogram histogram = null;
 
+
 			if (dataDomain.getLabel().toLowerCase().contains("copy")) {
 				histogram = TablePerspectiveStatistics.calculateHistogram(dataDomain.getTable(), tablePerspective
 						.getRecordPerspective().getVirtualArray(), tablePerspective.getDimensionPerspective()
 						.getVirtualArray(), 5);
+				System.out.println("HEEEEELP  - histo hack ");
 			} else if (dataDomain.getLabel().toLowerCase().contains("mutation")) {
 				histogram = TablePerspectiveStatistics.calculateHistogram(dataDomain.getTable(), tablePerspective
 						.getRecordPerspective().getVirtualArray(), tablePerspective.getDimensionPerspective()
 						.getVirtualArray(), 2);
+
+				System.out.println("HEEEEELP  - histo hack ");
 
 			} else {
 				histogram = tablePerspective.getContainerStatistics().getHistogram();
