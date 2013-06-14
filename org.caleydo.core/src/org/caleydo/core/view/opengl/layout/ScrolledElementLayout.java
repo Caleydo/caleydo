@@ -22,7 +22,7 @@ package org.caleydo.core.view.opengl.layout;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GL2ES1;
 
-import org.caleydo.core.util.color.Colors;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
@@ -32,9 +32,9 @@ import org.caleydo.core.view.opengl.util.scrollbar.ScrollBarRenderer;
 
 /**
  * wrapper for an (fixed size) elementlayout to provide scrollbars around it
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public final class ScrolledElementLayout extends Row implements IScrollBarUpdateHandler {
 
@@ -58,8 +58,8 @@ public final class ScrolledElementLayout extends Row implements IScrollBarUpdate
 		tmp.setBottomUp(true);
 
 		hScrollBar = new ScrollBar(0, 10, 5, 5, PickingType.ZOOM_SCROLLBAR, parentView.createNewScrollBarID(), this);
-		ElementLayout hBar = ElementLayouts.wrap(
-				new ScrollBarRenderer(hScrollBar, view, true, dndController, Colors.of(128)), -1);
+		ElementLayout hBar = ElementLayouts.wrap(new ScrollBarRenderer(hScrollBar, view, true, dndController,
+				new Color(0.5f)), -1);
 		hBar.setPixelSizeY(10);
 		tmp.add(hBar);
 
@@ -72,8 +72,8 @@ public final class ScrolledElementLayout extends Row implements IScrollBarUpdate
 		this.add(tmp);
 
 		vScrollBar = new ScrollBar(0, 10, 0, 5, PickingType.ZOOM_SCROLLBAR, parentView.createNewScrollBarID(), this);
-		ElementLayout vBar = ElementLayouts.wrap(
-				new ScrollBarRenderer(vScrollBar, view, false, dndController, Colors.of(128)), 10);
+		ElementLayout vBar = ElementLayouts.wrap(new ScrollBarRenderer(vScrollBar, view, false, dndController,
+				new Color(0.5f)), 10);
 		vBar.setGrabY(true);
 		vBar.setPixelSizeX(10);
 		this.add(vBar);
@@ -104,7 +104,6 @@ public final class ScrolledElementLayout extends Row implements IScrollBarUpdate
 			super.updateSubLayout();
 		}
 	}
-
 
 	void beginScrolling(GL2 gl) {
 		float width = wrapper.getSizeScaledX();

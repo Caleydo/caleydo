@@ -28,7 +28,6 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.color.Color;
-import org.caleydo.core.util.color.IColor;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.data.loader.ITextureLoader;
 import org.eclipse.core.runtime.IStatus;
@@ -217,7 +216,7 @@ public final class TextureManager {
 	 *            Alpha value the Polygon should have where the texture is drawn on.
 	 */
 	public void renderTexture(GL2 gl, final Texture texture, Vec3f lowerLeftCorner, Vec3f lowerRightCorner,
-			Vec3f upperRightCorner, Vec3f upperLeftCorner, IColor color) {
+			Vec3f upperRightCorner, Vec3f upperLeftCorner, Color color) {
 		texture.enable(gl);
 		texture.bind(gl);
 

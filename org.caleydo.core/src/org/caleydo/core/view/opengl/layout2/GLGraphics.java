@@ -14,7 +14,6 @@ import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.util.base.ILabeled;
 import org.caleydo.core.util.color.Color;
-import org.caleydo.core.util.color.IColor;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
@@ -207,16 +206,12 @@ public class GLGraphics {
 
 	// ############## color setters
 
-	public GLGraphics color(IColor color) {
-		return color(color.getRGBA());
-	}
-
 	public GLGraphics color(Color color) {
 		return color(color.getRGBA());
 	}
 
-	public GLGraphics color(float grey) {
-		return color(grey, grey, grey);
+	public GLGraphics color(float gray) {
+		return color(gray, gray, gray);
 	}
 
 	public GLGraphics color(float r, float g, float b) {
@@ -235,9 +230,6 @@ public class GLGraphics {
 			return color(rgba[0], rgba[1], rgba[2], rgba[3]);
 	}
 
-	public GLGraphics textColor(IColor color) {
-		return textColor(color.getRGBA());
-	}
 
 	public GLGraphics textColor(Color color) {
 		text.setColor(color);

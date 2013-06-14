@@ -9,8 +9,7 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.util.color.Color;
 
 /**
- * Determines the colors for objects of that want to encode more than one
- * selection type in their color.
+ * Determines the colors for objects of that want to encode more than one selection type in their color.
  *
  * @author Christian Partl
  *
@@ -18,15 +17,13 @@ import org.caleydo.core.util.color.Color;
 public class SelectionColorCalculator {
 
 	/**
-	 * The color that is used for the {@link SelectionType} with the highest
-	 * priority. If {@link SelectionType#NORMAL} has the highest priority,
-	 * {@link #baseColor} is used.
+	 * The color that is used for the {@link SelectionType} with the highest priority. If {@link SelectionType#NORMAL}
+	 * has the highest priority, {@link #baseColor} is used.
 	 */
 	private Color primaryColor;
 	/**
-	 * The color that is used for the {@link SelectionType} with the second
-	 * highest priority. If there is no second <code>SelectionType</code>,
-	 * {@link #primaryColor} is used.
+	 * The color that is used for the {@link SelectionType} with the second highest priority. If there is no second
+	 * <code>SelectionType</code>, {@link #primaryColor} is used.
 	 */
 	private Color secondaryColor;
 	/**
@@ -51,24 +48,22 @@ public class SelectionColorCalculator {
 
 	public void calculateColors(List<SelectionType> selectionTypes) {
 
-		if (selectionTypes.size() != 0
-				&& !selectionTypes.get(0).equals(SelectionType.NORMAL)
+		if (selectionTypes.size() != 0 && !selectionTypes.get(0).equals(SelectionType.NORMAL)
 				&& selectionTypes.get(0).isVisible()) {
-			float[] color = selectionTypes.get(0).getColor().getRGBA();
-			primaryColor.setRGBA(new float[] {color[0], color[1], color[2], 1});
 
-			if (selectionTypes.size() > 1
-					&& !selectionTypes.get(1).equals(SelectionType.NORMAL)
+			primaryColor = selectionTypes.get(0).getColor();
+
+			if (selectionTypes.size() > 1 && !selectionTypes.get(1).equals(SelectionType.NORMAL)
 					&& selectionTypes.get(1).isVisible()) {
-				color = selectionTypes.get(1).getColor().getRGBA();
-				secondaryColor.setRGBA(new float[] {color[0], color[1], color[2], 1});
+				secondaryColor = selectionTypes.get(1).getColor();
+
 			} else {
-				secondaryColor.setRGBA(primaryColor.getRGBA());
+				secondaryColor = primaryColor;
 			}
 		} else {
 
-			primaryColor.setRGBA(baseColor.getRGBA());
-			secondaryColor.setRGBA(baseColor.getRGBA());
+			primaryColor = baseColor;
+			secondaryColor = baseColor;
 		}
 	}
 

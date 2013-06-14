@@ -47,7 +47,6 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.ExtensionUtils;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.color.Color;
-import org.caleydo.core.util.color.IColor;
 import org.caleydo.core.view.ViewManager;
 import org.caleydo.core.view.listener.RemoveTablePerspectiveEvent;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -101,8 +100,8 @@ import com.jogamp.opengl.util.texture.Texture;
  */
 public class TourguideAdapter implements IStratomexAdapter {
 	private static final String ICON_PREFIX = "resources/icons/stratomex/template/";
-	private static final IColor COLOR_SELECTED = SelectionType.SELECTION.getColor();
-	private static final IColor COLOR_POSSIBLE_SELECTION = Color.NEUTRAL_GREY;
+	private static final Color COLOR_SELECTED = SelectionType.SELECTION.getColor();
+	private static final Color COLOR_POSSIBLE_SELECTION = Color.NEUTRAL_GREY;
 
 	private static final String EXTENSION_POINT = "org.caleydo.view.stratomex.AddWizardElementFactory";
 
@@ -351,7 +350,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 		}
 	}
 
-	private void changeHighlight(GLBrick brick, IColor color) {
+	private void changeHighlight(GLBrick brick, Color color) {
 		if (brick.isHeaderBrick()) {
 			brick.getBrickColumn().setHighlightColor(color == null ? BrickColumn.REVERT_COLOR : color.getRGBA());
 		} else {

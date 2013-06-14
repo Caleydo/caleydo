@@ -24,11 +24,11 @@ import org.eclipse.swt.graphics.Device;
 /**
  * Class representing a color using RGBA values.
  *
- * @author Partl
  * @author Alexander Lex
+ * @author Christian Partl
  */
 @XmlType
-public class Color implements IColor {
+public class Color {
 
 	public static final Color TRANSPARENT = new Color(1f, 1, 1, 0);
 	public static final Color RED = new Color(1f, 0, 0, 1);
@@ -42,8 +42,8 @@ public class Color implements IColor {
 	public static final Color SELECTION_ORANGE = new Color(236, 112, 20);
 	public static final Color MOUSE_OVER_ORANGE = new Color(249, 196, 79);
 
-	public static final Color BLACK = new Color(0f, 0f, 0f, 1);
-	public static final Color WHITE = new Color(1f, 1f, 1f, 1);
+	public static final Color BLACK = new Color(0f);
+	public static final Color WHITE = new Color(1f);
 
 	public static final Color GRAY = new Color(0.5f, 0.5f, 0.5f);
 	public static final Color DARK_GRAY = new Color(0.2f, 0.2f, 0.2f);
@@ -53,26 +53,39 @@ public class Color implements IColor {
 	public static final Color NOT_A_NUMBER_COLOR = new Color(0.3f, 0.3f, 0.3f);
 
 	@XmlElement
-	public float r = 1;
+	public float r;
 	@XmlElement
-	public float g = 1;
+	public float g;
 	@XmlElement
-	public float b = 1;
+	public float b;
 	@XmlElement
-	public float a = 1;
+	public float a;
 
 	private int[] intColor = null;
 
 	private static final float colorDepth = 255;
 
+	/** Empty constructor. Should only be used by serialization */
 	public Color() {
 
 	}
 
-	/**
-	 * RGB Constructor taking ints in the range of 0 - {@link #colorDepth} (255).
-	 *
-	 */
+	/** Initialize red, green, blue. Assumes alpha 1 */
+	public Color(float r, float g, float b) {
+		setRGBA(r, g, b, 1);
+	}
+
+	/** Initialize red, green, blue and alpha */
+	public Color(float r, float g, float b, float a) {
+		setRGBA(r, g, b, a);
+	}
+
+	/** Initialize red, green, blue and alpha in an array of exactly length 4 */
+	public Color(float[] rgba) {
+		setRGBA(rgba);
+	}
+
+	/** Initialize based on a hex string. Legal formats are 'ffffff' and '#ffffff' */
 	public Color(String hexColor) {
 		if (hexColor.length() == 7 && hexColor.startsWith("#"))
 			hexColor = hexColor.substring(1);
@@ -85,32 +98,28 @@ public class Color implements IColor {
 		setRGBA(r, g, b, 255);
 	}
 
-	public Color(float r, float g, float b, float a) {
-		setRGBA(r, g, b, a);
-	}
-
-	public Color(float r, float g, float b) {
-		setRGBA(r, g, b, 1);
+	/**
+	 * Creates an opaque color based on the integers in the range of 0 - {@link #colorDepth} (255).
+	 *
+	 */
+	public Color(int r, int g, int b) {
+		this(r, g, b, 255);
 	}
 
 	/**
-	 * RGBA Constructor taking ints in the range of 0 - {@link #colorDepth} (255).
+	 * Creates a color based on the integers in the range of 0 - {@link #colorDepth} (255).
 	 *
 	 */
 	public Color(int r, int g, int b, int a) {
 		setRGBA(r, g, b, a);
 	}
 
-	/**
-	 * RGB Constructor taking ints in the range of 0 - {@link #colorDepth} (255).
-	 *
-	 */
-	public Color(int r, int g, int b) {
-
-		this(r, g, b, 255);
+	/** Creates an opaque gray color (a, g, b are set to intensity). */
+	public Color(float intensity) {
+		setRGBA(intensity, intensity, intensity, 1);
 	}
 
-	public void setRGBA(float r, float g, float b, float a) {
+	private void setRGBA(float r, float g, float b, float a) {
 		if (r > 1 || g > 1 || b > 1 || a > 1 || r < 0 || g < 0 || b < 0 || a < 0) {
 			System.out.println("One color value was < 0 or > 1" + r + g + b + a);
 			throw new IllegalArgumentException("One color value was < 0 or > 1: " + r + ";" + g + ";" + b + ";" + a);
@@ -121,14 +130,9 @@ public class Color implements IColor {
 		this.a = a;
 	}
 
-	public Color(float[] rgba) {
-		setRGBA(rgba);
-	}
-
-	public void setRGBA(float[] rgba) {
+	private void setRGBA(float[] rgba) {
 		if (rgba.length != 4)
 			throw new IllegalArgumentException("Invalid length of color array rgba");
-
 		setRGBA(rgba[0], rgba[1], rgba[2], rgba[3]);
 	}
 
@@ -141,12 +145,12 @@ public class Color implements IColor {
 		setRGBA(r / colorDepth, g / colorDepth, b / colorDepth, a / colorDepth);
 	}
 
-	@Override
+	/** Returns the red, green and blue color component as a float array of length 3 */
 	public float[] getRGB() {
 		return new float[] { r, g, b };
 	}
 
-	@Override
+	/** Returns the red, green and blue color component and the alpha value as array of length 4 */
 	public float[] getRGBA() {
 		return new float[] { r, g, b, a };
 	}
@@ -162,7 +166,7 @@ public class Color implements IColor {
 		return new float[] { r, g, b, a };
 	}
 
-	@Override
+	/** Returns the hexadecimal representation of the color */
 	public String getHEX() {
 		String hexColor = Integer.toHexString(new java.awt.Color((int) (r * 255f), (int) (g * 255f), (int) (b * 255f))
 				.getRGB());
@@ -170,7 +174,13 @@ public class Color implements IColor {
 		return hexColor;
 	}
 
-	@Override
+	/**
+	 * Creates a new color with the identical value component but with the brightness specified
+	 *
+	 * @param brightness
+	 *            1 is bright, 0 is black
+	 * @return
+	 */
 	public Color getColorWithSpecificBrighness(float brightness) {
 
 		float[] hsb = new float[3];
@@ -182,12 +192,17 @@ public class Color implements IColor {
 				convertedColor.getBlue() / 255f);
 	}
 
+	/**
+	 * Creates a new color that is a darker version of this Color. Uses the AWT implementation.
+	 *
+	 * @return
+	 */
 	public Color darker() {
 		return new Color(getAWTColor().darker().getComponents(null));
 	}
 
 	/**
-	 * Gets a brighter version of this color.
+	 * Creates a new color that is a darker version of this Color. Uses the AWT implementation. *
 	 *
 	 * @return
 	 */
@@ -195,7 +210,11 @@ public class Color implements IColor {
 		return new Color(getAWTColor().brighter().getComponents(null));
 	}
 
-	@Override
+	/**
+	 * Returns a new int arrray containing the RGBA components with a range of 0 to #colorDepth (255)
+	 *
+	 * @return
+	 */
 	public int[] getIntRGBA() {
 		if (intColor == null) {
 			intColor = new int[4];
@@ -207,24 +226,34 @@ public class Color implements IColor {
 		return intColor;
 	}
 
-	@Override
+	/**
+	 * Creates a new, equivalent AWT color
+	 *
+	 * @return
+	 */
 	public java.awt.Color getAWTColor() {
 		return new java.awt.Color(r, g, b);
 	}
 
+	/**
+	 * Creates a new, equivalent SWT Color
+	 *
+	 * @param device
+	 * @return
+	 */
 	public org.eclipse.swt.graphics.Color getSWTColor(Device device) {
 		int[] intColor = getIntRGBA();
 		return new org.eclipse.swt.graphics.Color(device, intColor[0], intColor[1], intColor[2]);
 	}
 
+	/** Creates a new Color equivalent to the provides SWT color */
+	public static Color fromSWTColor(org.eclipse.swt.graphics.Color swtColor) {
+		return new Color(swtColor.getRed(), swtColor.getGreen(), swtColor.getBlue());
+	}
+
 	@Override
 	public String toString() {
 		return "Color [" + r + "," + g + "," + b + "," + a + "]";
-	}
-
-	/** Returns a new color equal to the provided SWT color */
-	public static Color fromSWTColor(org.eclipse.swt.graphics.Color swtColor) {
-		return new Color(swtColor.getRed(), swtColor.getGreen(), swtColor.getBlue());
 	}
 
 }

@@ -34,7 +34,6 @@ import javax.media.opengl.GLContext;
 
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.color.Color;
-import org.caleydo.core.util.color.IColor;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.GLSandBox;
@@ -60,7 +59,7 @@ public final class BitmapTextRenderer extends ABitmapTextRenderer implements ITe
 	/**
 	 * the text color to use
 	 */
-	private IColor color = Color.BLACK;
+	private Color color = Color.BLACK;
 
 
 	public BitmapTextRenderer(Font base) {

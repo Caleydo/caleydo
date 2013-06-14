@@ -22,8 +22,6 @@ package org.caleydo.core.view.opengl.util.spline;
 import gleem.linalg.Vec3f;
 
 import org.caleydo.core.util.color.Color;
-import org.caleydo.core.util.color.Colors;
-import org.caleydo.core.util.color.IColor;
 
 /**
  * a vertex with a color
@@ -32,19 +30,16 @@ import org.caleydo.core.util.color.IColor;
  *
  */
 public class ColoredVec3f extends Vec3f {
-	private IColor color = Color.NEUTRAL_GREY;
+	private Color color = Color.NEUTRAL_GREY;
 
 	/**
 	 * @param color
 	 *            setter, see {@link color}
 	 */
-	public void setColor(IColor color) {
+	public void setColor(Color color) {
 		this.color = color;
 	}
 
-	public void setColor(java.awt.Color color) {
-		this.color = Colors.of(color);
-	}
 
 	public void setColor(float r, float g, float b, float a) {
 		this.color = new Color(r, g, b, a);
@@ -53,7 +48,7 @@ public class ColoredVec3f extends Vec3f {
 	/**
 	 * @return the color, see {@link #color}
 	 */
-	public IColor getColor() {
+	public Color getColor() {
 		return color;
 	}
 }
