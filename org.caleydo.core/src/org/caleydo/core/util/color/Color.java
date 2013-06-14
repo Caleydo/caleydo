@@ -193,6 +193,23 @@ public class Color {
 	}
 
 	/**
+	 * Creates a new color that is 30% less saturated
+	 *
+	 * @return
+	 */
+	public Color lessSaturated() {
+		float[] hsb = java.awt.Color.RGBtoHSB((int) (r * 255f), (int) (g * 255f), (int) (b * 255f), null);
+		hsb[1] *= 0.7f;
+
+		int rgbColor = java.awt.Color.HSBtoRGB(hsb[0], hsb[1], hsb[2]);
+
+		int r = (rgbColor & 0x00FF0000) >> 16;
+		int g = (rgbColor & 0x0000FF00) >> 8;
+		int b = rgbColor & 0x000000FF;
+		return new Color(r, g, b, (int) this.a * 255);
+	}
+
+	/**
 	 * Creates a new color that is a darker version of this Color. Uses the AWT implementation.
 	 *
 	 * @return
@@ -224,6 +241,19 @@ public class Color {
 			intColor[3] = Math.round(a * colorDepth);
 		}
 		return intColor;
+	}
+
+	/**
+	 * Returns true if the color is (almost) gray
+	 *
+	 * @return
+	 */
+	public boolean isGray()
+	{
+		float delta = 0.05f;
+		if (Math.abs(r - g) < delta && Math.abs(g - b) < delta)
+				return true;
+		return false;
 	}
 
 	/**
