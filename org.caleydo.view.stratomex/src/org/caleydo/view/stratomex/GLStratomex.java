@@ -99,19 +99,24 @@ import org.caleydo.view.stratomex.brick.contextmenu.SplitBrickItem;
 import org.caleydo.view.stratomex.column.BrickColumn;
 import org.caleydo.view.stratomex.column.BrickColumnManager;
 import org.caleydo.view.stratomex.column.BrickColumnSpacingRenderer;
+import org.caleydo.view.stratomex.dualFrame.ManualClusterCreationManager;
 import org.caleydo.view.stratomex.event.AddGroupsToStratomexEvent;
 import org.caleydo.view.stratomex.event.AddKaplanMaiertoStratomexEvent;
 import org.caleydo.view.stratomex.event.ConnectionsModeEvent;
+import org.caleydo.view.stratomex.event.CreateBrickEvent;
 import org.caleydo.view.stratomex.event.HighlightBrickEvent;
+import org.caleydo.view.stratomex.event.InitiateClusterCreationEvent;
 import org.caleydo.view.stratomex.event.MergeBricksEvent;
 import org.caleydo.view.stratomex.event.ReplaceKaplanMaierPerspectiveEvent;
 import org.caleydo.view.stratomex.event.SelectElementsEvent;
 import org.caleydo.view.stratomex.event.SplitBrickEvent;
 import org.caleydo.view.stratomex.listener.AddGroupsToStratomexListener;
 import org.caleydo.view.stratomex.listener.ConnectionsModeListener;
+import org.caleydo.view.stratomex.listener.CreateBrickListener;
 import org.caleydo.view.stratomex.listener.DataDomainEventListener;
 import org.caleydo.view.stratomex.listener.GLStratomexKeyListener;
 import org.caleydo.view.stratomex.listener.HighlightBrickEventListener;
+import org.caleydo.view.stratomex.listener.InitiateClusterCreationEventListener;
 import org.caleydo.view.stratomex.listener.ReplaceTablePerspectiveListener;
 import org.caleydo.view.stratomex.listener.SelectElementsListener;
 import org.caleydo.view.stratomex.listener.SplitBrickListener;
@@ -149,6 +154,8 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	private SplitBrickListener splitBrickListener;
 	private RemoveTablePerspectiveListener<GLStratomex> removeTablePerspectiveListener;
 	private ReplaceTablePerspectiveListener replaceTablePerspectiveListener;
+	private InitiateClusterCreationEventListener initiateClusterCreationListener;
+	private CreateBrickListener createBrickListener;
 	private final EventListenerManager listeners = EventListenerManagers.wrap(this);
 
 	private BrickColumnManager brickColumnManager;
@@ -237,6 +244,11 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 
 	@DeepScan
 	private TourguideAdapter tourguide;
+	
+	/**
+	 * The manager class to maintain manual cluster creation
+	 */
+	private ManualClusterCreationManager clusterCreator;
 
 	/**
 	 * Constructor.
@@ -261,6 +273,8 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		textureManager = new TextureManager(new ResourceLoader(Activator.getResourceLocator()));
 
 		tourguide = new TourguideAdapter(this);
+		
+		clusterCreator = new ManualClusterCreationManager(this);
 
 		registerPickingListeners();
 
@@ -1005,6 +1019,14 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		replaceTablePerspectiveListener.setHandler(this);
 		eventPublisher.addListener(ReplaceTablePerspectiveEvent.class, replaceTablePerspectiveListener);
 		eventPublisher.addListener(ReplaceKaplanMaierPerspectiveEvent.class, replaceTablePerspectiveListener);
+		
+		initiateClusterCreationListener = new InitiateClusterCreationEventListener();
+		initiateClusterCreationListener.setHandler(this);
+		eventPublisher.addListener(InitiateClusterCreationEvent.class, initiateClusterCreationListener);
+		
+		createBrickListener = new CreateBrickListener();
+		createBrickListener.setHandler(this);
+		eventPublisher.addListener(CreateBrickEvent.class, createBrickListener);
 
 		listeners.register(HighlightBrickEvent.class, new HighlightBrickEventListener(this));
 		listeners.register(SelectElementsEvent.class, new SelectElementsListener().setHandler(this));
@@ -1920,6 +1942,14 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	public void notifyOfSelectionChange(EventBasedSelectionManager selectionManager) {
 		// TODO Auto-generated method stub
 		updateConnectionLinesBetweenColumns();
+	}
+
+	public ManualClusterCreationManager getClusterCreator() {
+		return clusterCreator;
+	}
+
+	public void setClusterCreator(ManualClusterCreationManager clusterCreator) {
+		this.clusterCreator = clusterCreator;
 	}
 
 

@@ -86,6 +86,7 @@ import org.caleydo.view.stratomex.brick.contextmenu.CreatePathwaySmallMultiplesG
 import org.caleydo.view.stratomex.brick.contextmenu.ExportBrickDataItem;
 import org.caleydo.view.stratomex.brick.contextmenu.RemoveColumnItem;
 import org.caleydo.view.stratomex.brick.contextmenu.RenameBrickItem;
+import org.caleydo.view.stratomex.brick.contextmenu.CreateClusterManualItem;
 import org.caleydo.view.stratomex.brick.layout.ABrickLayoutConfiguration;
 import org.caleydo.view.stratomex.brick.layout.CollapsedBrickLayoutTemplate;
 import org.caleydo.view.stratomex.brick.layout.CompactHeaderBrickLayoutTemplate;
@@ -894,6 +895,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 				contextMenuCreator.addContextMenuItem(new ExportBrickDataItem(GLBrick.this, false));
 				contextMenuCreator.addContextMenuItem(new ExportBrickDataItem(GLBrick.this, true));
+				contextMenuCreator.addContextMenuItem(new CreateClusterManualItem(GLBrick.this));
 
 				if (brickColumn.getTablePerspective() == tablePerspective) {
 					// header brick
