@@ -66,19 +66,6 @@
       </factory>
    </extension>
    <extension
-         point="org.eclipse.ui.perspectiveExtensions">
-      <perspectiveExtension
-            targetID="org.caleydo.core.gui.perspective">
-         <view
-               id="org.caleydo.view.tool.tourguide"
-               minimized="false"
-               relationship="stack"
-               relative="bottom"
-               visible="false">
-         </view>
-      </perspectiveExtension>
-   </extension>
-   <extension
          point="org.caleydo.view.stratomex.AddWizardElementFactory">
       <factory
             class="org.caleydo.view.tourguide.internal.stratomex.AddWizardElementFactory">

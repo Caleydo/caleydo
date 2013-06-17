@@ -872,7 +872,8 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 
 				TablePerspective tablePerspective = dataDomain.getTablePerspective(currentRecordPerspeciveID,
 						currentDimensionPerspeciveID);
-				tablePerspective.setLabel(tablePerspectiveLabel, false);
+				if (!alwaysUseDefaultNameButton)
+					tablePerspective.setLabel(tablePerspectiveLabel, false);
 
 				if (tablePerspective.isPrivate()) {
 					tablePerspective.setPrivate(false);
