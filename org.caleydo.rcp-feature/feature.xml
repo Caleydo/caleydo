@@ -16,6 +16,7 @@
 
    <copyright url="http://www.caleydo.org">
       Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler University Linz.
+
 All Rights Reserved.
    </copyright>
 
@@ -549,3 +550,4 @@ All Rights Reserved.
          unpack="false"/>
 
 </feature>
+

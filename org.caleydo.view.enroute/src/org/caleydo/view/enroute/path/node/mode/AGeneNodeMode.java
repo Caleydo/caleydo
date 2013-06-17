@@ -78,7 +78,7 @@ public abstract class AGeneNodeMode extends ALayoutBasedNodeMode implements ICol
 
 	@Override
 	public Color getGradientColor() {
-		return (gradientColor != null) ? backgroundColor : gradientColor;
+		return (gradientColor != null) ? gradientColor : backgroundColor;
 	}
 
 	@Override

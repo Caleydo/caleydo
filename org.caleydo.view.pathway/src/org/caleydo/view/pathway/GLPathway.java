@@ -825,15 +825,15 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 			gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_KEEP);
 			gl.glPushName(generalManager.getViewManager().getPickingManager()
 					.getPickingID(uniqueID, EPickingType.PATHWAY_TEXTURE_SELECTION.name(), 0));
-			// //////////////////////////START 2/2 HIER NEU CHRISITIAN
+			// ////////////////////////START 2/2 HIER NEU CHRISITIAN
 			// enable shader
-			// gl.glUseProgram(shaderProgramTextOverlay);
-			// int pathwayTex = gl.glGetUniformLocation(shaderProgramTextOverlay, "pathwayTex");
-			// gl.glUniform1i(pathwayTex, 0);
+			gl.glUseProgram(shaderProgramTextOverlay);
+			int pathwayTex = gl.glGetUniformLocation(shaderProgramTextOverlay, "pathwayTex");
+			gl.glUniform1i(pathwayTex, 0);
 			pathwayTextureManager.renderPathway(gl, this, pathway, fPathwayTransparency, false);
-			// gl.glUseProgram(0);
+			gl.glUseProgram(0);
 			// disable shader
-			// //////////////////////////END 2/2 HIER NEU CHRISITIAN
+			// ////////////////////////END 2/2 HIER NEU CHRISITIAN
 			// pathwayTextureManager.renderPathway(gl, this, pathway, fPathwayTransparency, false);
 			gl.glPopName();
 
@@ -1034,7 +1034,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 
 	@ListenTo
 	public void onMapTablePerspective(PathwayMappingEvent event) {
-		if (event.getReceiver() != this)
+		if (!event.getEventSpace().equals(pathwayPathEventSpace) && event.getReceiver() != this)
 			return;
 		augmentationRenderer.setMappingPerspective(event.getTablePerspective());
 		setDisplayListDirty();

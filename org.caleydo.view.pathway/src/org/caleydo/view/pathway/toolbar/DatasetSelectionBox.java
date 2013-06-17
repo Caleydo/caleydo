@@ -113,6 +113,7 @@ public class DatasetSelectionBox extends ControlContribution {
 				} else {
 					PathwayMappingEvent event = new PathwayMappingEvent();
 					event.setSender(this);
+					event.to(pathwayView);
 					GeneralManager.get().getEventPublisher().triggerEvent(event);
 				}
 

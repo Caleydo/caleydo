@@ -32,6 +32,7 @@ import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.id.IDType;
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
@@ -348,6 +349,8 @@ public class GLPathwayAugmentationRenderer {
 			gl.glEnable(GL.GL_DEPTH_TEST);
 
 			tmpNodeColor = Color.TRANSPARENT;
+			gl.glEnable(GL.GL_BLEND);
+			gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 			gl.glColor4fv(tmpNodeColor.getRGBA(), 0);
 			renderQuad(gl, nodeWidth, nodeHeight);
 
@@ -537,7 +540,6 @@ public class GLPathwayAugmentationRenderer {
 				nodeColor = null;
 			}
 			if (average != null && nodeColor != null) {
-
 
 				gl.glColor4f(nodeColor[0], nodeColor[1], nodeColor[2], 0.8f);
 				if (glPathwayView.getDetailLevel() == EDetailLevel.HIGH) {
@@ -751,40 +753,40 @@ public class GLPathwayAugmentationRenderer {
 			}
 		}
 
-		// Pair<TablePerspective, Average> highestAverage = null;
-		// Average average;
-		// for (TablePerspective tablePerspective : glPathwayView.getTablePerspectives()) {
-		// average = getExpressionAverage(tablePerspective, vertexRep);
-		// if (average == null)
-		// continue;
-		// if (average.getStandardDeviation() > 0.1) {
-		// if (highestAverage == null
-		// || average.getStandardDeviation() > highestAverage.getSecond().getStandardDeviation()) {
-		// highestAverage = new Pair<>(tablePerspective, average);
-		// }
-		// }
-		// }
-		//
-		// if (highestAverage != null) {
-		//
-		// gl.glColor3fv(highestAverage.getFirst().getDataDomain().getColor().getRGB(), 0);
-		// // gl.glColor3f(1, 0, 0);
-		// gl.glBegin(GL2.GL_POLYGON);
-		// gl.glVertex3f(width, 0, PathwayRenderStyle.Z_OFFSET);
-		// gl.glVertex3f(width - 5 * onePxlWidth, 0, PathwayRenderStyle.Z_OFFSET);
-		// gl.glVertex3f(width - 4 * onePxlWidth, height + 7, PathwayRenderStyle.Z_OFFSET);
-		// gl.glVertex3f(width - 1 * onePxlWidth, height + 7, PathwayRenderStyle.Z_OFFSET);
-		// gl.glEnd();
-		//
-		// // gl.glColor3fv(tablePerspective.getDataDomain().getColor().getRGB(), 0);
-		// gl.glBegin(GL2.GL_POLYGON);
-		// gl.glVertex3f(width, height + 5, PathwayRenderStyle.Z_OFFSET);
-		// gl.glVertex3f(width - 5 * onePxlWidth, height + 5, PathwayRenderStyle.Z_OFFSET);
-		// gl.glVertex3f(width - 5 * onePxlWidth, height, PathwayRenderStyle.Z_OFFSET);
-		// gl.glVertex3f(width, height, PathwayRenderStyle.Z_OFFSET);
-		// gl.glEnd();
-		//
-		// }
+		Pair<TablePerspective, Average> highestAverage = null;
+		Average average;
+		for (TablePerspective tablePerspective : glPathwayView.getTablePerspectives()) {
+			average = getExpressionAverage(tablePerspective, vertexRep);
+			if (average == null)
+				continue;
+			if (average.getStandardDeviation() > 0.1) {
+				if (highestAverage == null
+						|| average.getStandardDeviation() > highestAverage.getSecond().getStandardDeviation()) {
+					highestAverage = new Pair<>(tablePerspective, average);
+				}
+			}
+		}
+
+		if (highestAverage != null) {
+
+			gl.glColor3fv(highestAverage.getFirst().getDataDomain().getColor().getRGB(), 0);
+			// gl.glColor3f(1, 0, 0);
+			gl.glBegin(GL2.GL_POLYGON);
+			gl.glVertex3f(width, height, PathwayRenderStyle.Z_OFFSET);
+			gl.glVertex3f(width - 5 * onePxlWidth, height, PathwayRenderStyle.Z_OFFSET);
+			gl.glVertex3f(width - 4 * onePxlWidth, 7 * onePxlWidth, PathwayRenderStyle.Z_OFFSET);
+			gl.glVertex3f(width - 1 * onePxlWidth, 7 * onePxlWidth, PathwayRenderStyle.Z_OFFSET);
+			gl.glEnd();
+
+			// gl.glColor3fv(tablePerspective.getDataDomain().getColor().getRGB(), 0);
+			gl.glBegin(GL2.GL_POLYGON);
+			gl.glVertex3f(width, 5 * onePxlWidth, PathwayRenderStyle.Z_OFFSET);
+			gl.glVertex3f(width - 5 * onePxlWidth, 5 * onePxlWidth, PathwayRenderStyle.Z_OFFSET);
+			gl.glVertex3f(width - 5 * onePxlWidth, 0, PathwayRenderStyle.Z_OFFSET);
+			gl.glVertex3f(width, 0, PathwayRenderStyle.Z_OFFSET);
+			gl.glEnd();
+
+		}
 
 	}
 

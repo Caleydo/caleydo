@@ -1,3 +1,4 @@
+
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
@@ -5,8 +6,7 @@
 
    <aboutInfo>
       <image path="resources/wizard/wizard.png"/>
-      <text>
-         Caleydo - Visualization for Molecular Biology
+      <text>         Caleydo - Visualization for Molecular Biology
 http:// www.caleydo.org
 
 Copyright 2005 - 2012  by 
@@ -49,6 +49,7 @@ Caleydo is open-source software licenced under the GPL V3
    <license>
         <url>http://www.caleydo.org</url>
         <text>
+>>>>>>> refs/remotes/origin/develop
    GNU GENERAL PUBLIC LICENSE
                        Version 3, 29 June 2007
 
@@ -722,6 +723,7 @@ into proprietary programs.  If your program is a subroutine library, you
 may consider it more useful to permit linking proprietary applications with
 the library.  If this is what you want to do, use the GNU Lesser General
 Public License instead of this License.  But first, please read
+
 &lt;http://www.gnu.org/philosophy/why-not-lgpl.html&gt;.
          </text>
    </license>
@@ -795,3 +797,4 @@ Public License instead of this License.  But first, please read
    </configurations>
 
 </product>
+
