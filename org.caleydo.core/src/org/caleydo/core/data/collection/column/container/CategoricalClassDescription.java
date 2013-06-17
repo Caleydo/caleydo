@@ -32,6 +32,7 @@ import org.caleydo.core.data.collection.table.CategoricalTable;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.NumericalProperties;
 import org.caleydo.core.util.color.Color;
+import org.caleydo.core.util.color.ColorBrewer;
 import org.caleydo.core.util.color.ColorManager;
 
 /**
@@ -230,4 +231,30 @@ public class CategoricalClassDescription<CATEGORY_TYPE extends Comparable<CATEGO
 		return b.toString();
 	}
 
+	/**
+	 * Applies a specified color scheme to the present categories.
+	 * 
+	 * @param colorScheme
+	 *            ColorScheme to apply.
+	 * @param neutralCategory
+	 *            If the color scheme is diverging, a neutral color is assigned to this category. May be null.
+	 * @param reverseColorScheme
+	 *            Determines whether the colors should be applied in reverse order.
+	 */
+	public void applyColorScheme(ColorBrewer colorScheme, CATEGORY_TYPE neutralCategory, boolean reverseColorScheme) {
+
+		CategoryProperty<CATEGORY_TYPE> neutralCategoryProperty = hashCategoryToProperties.get(neutralCategory);
+
+		int neutralColorIndex = -1;
+		if (neutralCategoryProperty != null) {
+			neutralColorIndex = categoryProperties.indexOf(neutralCategoryProperty);
+		}
+
+		List<Color> colors = colorScheme.getColors(categoryProperties.size(), neutralColorIndex, reverseColorScheme);
+
+		for (int i = 0; i < categoryProperties.size(); i++) {
+			CategoryProperty<CATEGORY_TYPE> categoryProperty = categoryProperties.get(i);
+			categoryProperty.setColor(colors.get(i));
+		}
+	}
 }
