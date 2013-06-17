@@ -953,6 +953,20 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 
 		addTypePickingListener(new APickingListener() {
 			@Override
+			public void dragged(Pick pick) {
+
+				if (dragAndDropController.isDragging() && dragAndDropController.getDraggingMode() != null
+						&& dragAndDropController.getDraggingMode().equals("DimensionGroupDrag")) {
+					dragAndDropController.setDropArea(brickColumnManager.getBrickColumnSpacers()
+							.get(pick.getObjectID()));
+				} else {
+					if (dragAndDropController.isDragging()) {
+
+					}
+				}
+			}
+
+			@Override
 			protected void mouseOver(Pick pick) {
 				for (BrickColumnSpacingRenderer manager : brickColumnManager.getBrickColumnSpacers().values())
 					manager.setHeaderHovered(true);
