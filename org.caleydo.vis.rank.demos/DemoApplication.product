@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="LineUp Demos" uid="demos" id="org.caleydo.vis.rank.demos.product" application="org.caleydo.vis.rank.demos.application" version="1.0.0.qualifier" useFeatures="false" includeLaunchers="true">
+<product name="LineUp Demos" uid="demos" id="org.caleydo.vis.rank.demos.product" application="org.caleydo.vis.rank.demos.application" version="1.0.1.qualifier" useFeatures="false" includeLaunchers="true">
 
    <aboutInfo>
       <image path="/org.caleydo.core/resources/wizard/wizard.png"/>

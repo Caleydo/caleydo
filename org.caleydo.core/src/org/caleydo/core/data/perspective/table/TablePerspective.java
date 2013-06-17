@@ -343,7 +343,8 @@ public class TablePerspective implements IDefaultLabelHolder {
 	@Override
 	public String getLabel() {
 		if (label == null)
-			label = dimensionPerspective.getLabel() + "/" + recordPerspective.getLabel();
+			label = dataDomain.getLabel() + " - " + recordPerspective.getLabel() + "/"
+					+ dimensionPerspective.getLabel();
 		return label;
 	}
 
