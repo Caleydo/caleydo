@@ -45,8 +45,8 @@ public class ColumnDataDomainElement extends ADataDomainElement {
 			Display.getDefault().asyncExec(new Runnable() {
 				@Override
 				public void run() {
-					InputDialog d = new InputDialog(null, "Filter Table (* = wildcard)",
-							"Edit Dimension Perspective Filter",
+					InputDialog d = new InputDialog(null, "Filter table (* = wildcard)",
+							"Edit dimension perspective filter",
 							getModel().getMatches(), null);
 					if (d.open() == Window.OK) {
 						String v = d.getValue().trim();

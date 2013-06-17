@@ -137,14 +137,14 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 			GSEAAlgorithm algorithm = new GSEAAlgorithm(strat.getRecordPerspective(), group, 1.0f);
 			IScore gsea = new GeneSetScore(strat.getRecordPerspective().getLabel(), algorithm, false);
 			IScore pValue = new GeneSetScore(gsea.getLabel() + " (P-V)", algorithm.asPValue(), true);
-			col.add(new ScoreEntry("Gene Set Enrichment Analysis of Group", gsea, pValue));
+			col.add(new ScoreEntry("Gene Set Enrichment Analysis of group", gsea, pValue));
 		}
 
 		{
 			PGSEAAlgorithm algorithm = new PGSEAAlgorithm(strat.getRecordPerspective(), group);
 			IScore gsea = new GeneSetScore(strat.getRecordPerspective().getLabel(), algorithm, false);
 			IScore pValue = new GeneSetScore(gsea.getLabel() + " (P-V)", algorithm.asPValue(), true);
-			col.add(new ScoreEntry("Parametric Gene Set Enrichment Analysis of Group", gsea, pValue));
+			col.add(new ScoreEntry("Parametric Gene Set Enrichment Analysis of group", gsea, pValue));
 		}
 		return col;
 	}
@@ -242,7 +242,7 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 
 		@Override
 		protected String getLabel() {
-			return "Gene Set Enrichment Analysis of Group";
+			return "Gene Set Enrichment Analysis of group";
 		}
 
 		@Override

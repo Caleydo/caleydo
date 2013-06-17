@@ -99,7 +99,7 @@ public class StringSearchDialog extends AFilterDialog {
 		Image image = FieldDecorationRegistry.getDefault().getFieldDecoration(FieldDecorationRegistry.DEC_INFORMATION)
 				.getImage();
 		// Set description and image
-		deco.setDescriptionText("Search String " + hint);
+		deco.setDescriptionText("Search string " + hint);
 		deco.setImage(image);
 		// Hide deco if not in focus
 		deco.setShowOnlyOnFocus(true);

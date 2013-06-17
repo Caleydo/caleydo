@@ -21,7 +21,6 @@ package org.caleydo.view.tourguide.impl;
 
 import static org.caleydo.view.tourguide.api.query.EDataDomainQueryMode.STRATIFICATIONS;
 
-import org.caleydo.core.util.color.Color;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -37,6 +36,7 @@ import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.base.DefaultLabelProvider;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.view.stratomex.brick.configurer.CategoricalDataConfigurer;
 import org.caleydo.view.stratomex.tourguide.event.UpdateNumericalPreviewEvent;
 import org.caleydo.view.stratomex.tourguide.event.UpdateStratificationPreviewEvent;
@@ -124,7 +124,7 @@ public class LogRankMetricFactory implements IScoreFactory {
 
 	private static MultiScore createLogRankScore(TablePerspective numerical) {
 		int dimId = numerical.getDimensionPerspective().getVirtualArray().get(0);
-		String label = String.format("Sig. Change of %s", numerical.getLabel());
+		String label = String.format("Sig. change of %s", numerical.getLabel());
 		ATableBasedDataDomain clinical = numerical.getDataDomain();
 		LogRankMetric metric = new LogRankMetric("LogRank", dimId, clinical);
 		LogRankPValue pvalue = new LogRankPValue("P-Value", metric);
