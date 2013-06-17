@@ -1710,7 +1710,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 //		}
 		
 		
-
+		//sourceBrick.getBrickColumn().get
 		sourcePerspective = sourceBrick.getBrickColumn().getTablePerspective().getRecordPerspective();
 		sourceVA = sourcePerspective.getVirtualArray();
 		sourceGroupIndex = sourceBrick.getTablePerspective().getRecordGroup().getGroupIndex();

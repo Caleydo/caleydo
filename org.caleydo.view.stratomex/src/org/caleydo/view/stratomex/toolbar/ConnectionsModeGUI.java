@@ -21,6 +21,7 @@ package org.caleydo.view.stratomex.toolbar;
 
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.view.stratomex.event.ConnectionsModeEvent;
+import org.caleydo.view.stratomex.event.CreateBrickEvent;
 import org.eclipse.jface.action.ControlContribution;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.RowData;
@@ -46,6 +47,25 @@ public class ConnectionsModeGUI extends ControlContribution {
 		// layout.marginHeight = layout.marginWidth = layout.horizontalSpacing =
 		// 0;
 		composite.setLayout(layout);
+		
+		Button button1 = new Button(composite, SWT.PUSH);
+		button1.setText("Split Brick");
+		
+		Listener listenerButton = new Listener() {
+			@Override
+			public void handleEvent(Event event) {
+				
+				System.out.println("Split brick called!");
+
+				GeneralManager
+				.get()
+				.getEventPublisher()
+				.triggerEvent(new CreateBrickEvent());
+				
+			}
+
+		};
+		button1.addListener(SWT.Selection, listenerButton);
 
 		final Button[] radios = new Button[1];
 		radios[0] = new Button(composite, SWT.CHECK);

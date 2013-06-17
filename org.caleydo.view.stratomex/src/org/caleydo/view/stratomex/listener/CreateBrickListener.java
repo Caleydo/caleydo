@@ -35,7 +35,7 @@ public class CreateBrickListener extends AEventListener<GLStratomex> {
 		if (event instanceof CreateBrickEvent) {
 			//SplitBrickEvent splitBrickEvent = (SplitBrickEvent) event;			
 			//handler.createBrick(((CreateBrickEvent) event).getSelectedRecordVA(), ((CreateBrickEvent) event).getSourceBrick());
-			handler.getClusterCreator().CreateManualClustering(((CreateBrickEvent) event).getSelectedRecordVA());
+			handler.getClusterCreator().CreateManualClustering();
 			//handler.splitBrick(splitBrickEvent.getConnectionBandID(), splitBrickEvent.isSplitLeftBrick());
 		}
 	}

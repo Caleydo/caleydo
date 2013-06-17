@@ -136,10 +136,10 @@ public class ScatterplotElement extends GLElement implements TablePerspectiveSel
 	protected void renderImpl(GLGraphics g, float w, float h) {
 		if (!dataColumnsSet | !readyForRender)
 			return;	
-		if (this.isRenderRemote())
-		{
-			h = w;
-		}
+//		if (this.isRenderRemote())
+//		{
+//			h = w;
+//		}
 		
 		g.pushResourceLocator(Activator.getResourceLocator());
 		//super.renderImpl(g, w, h);
@@ -156,10 +156,10 @@ public class ScatterplotElement extends GLElement implements TablePerspectiveSel
 		if (!dataColumnsSet | !readyForRender)
 			return;	
 		
-		if (this.isRenderRemote())
-		{
-			h = w;
-		}
+//		if (this.isRenderRemote())
+//		{
+//			h = w;
+//		}
 		
 		g.pushResourceLocator(Activator.getResourceLocator());
 		//super.renderPickImpl(g, w, h);
@@ -241,6 +241,8 @@ public class ScatterplotElement extends GLElement implements TablePerspectiveSel
 				{
 					
 				}
+				
+				
 				
 				this.readyForRender = true;
 				

@@ -180,9 +180,9 @@ public class DataSelectionBarGUI extends ControlContribution
 		// If it is a items space view
 		// the recordPerspective will be used as the visual entity
 		// and the dimensionPerspective will be the visualization axes
-		if(visDomainCombo.getItem(visDomainCombo.getSelectionIndex()) == EVisualizationSpaceType.ITEMS_SPACE.toString())
+		if(visDomainCombo.getItem(visDomainCombo.getSelectionIndex()).toString().equals(EVisualizationSpaceType.ITEMS_SPACE.toString()))
 		{
-			if(dataDomainCombo.getItem(dataDomainCombo.getSelectionIndex()) == EDataGenerationType.RAW_DATA.toString())
+			if(dataDomainCombo.getItem(dataDomainCombo.getSelectionIndex()).toString().equals(EDataGenerationType.RAW_DATA.toString()))
 			{
 				IDType chosenVisEntityIDType = tablePerspective.getDimensionPerspective().getIdType();
 				for (Integer id : tablePerspective.getDimensionPerspective().getVirtualArray()) {
@@ -197,7 +197,7 @@ public class DataSelectionBarGUI extends ControlContribution
 				}
 			}
 			// Use derived data, such as statistics
-			else if (dataDomainCombo.getItem(dataDomainCombo.getSelectionIndex()) == EDataGenerationType.DERIVED_DATA.toString())
+			else if (dataDomainCombo.getItem(dataDomainCombo.getSelectionIndex()).toString().equals(EDataGenerationType.DERIVED_DATA.toString()))
 			{
 				for(EStatisticsType statType: EStatisticsType.values()){
 					xAxisCombo.add(statType.name());
@@ -205,9 +205,9 @@ public class DataSelectionBarGUI extends ControlContribution
 				}
 			}
 		}
-		else if (visDomainCombo.getItem(visDomainCombo.getSelectionIndex()) == EVisualizationSpaceType.DIMENSIONS_SPACE.toString())
+		else if (visDomainCombo.getItem(visDomainCombo.getSelectionIndex()).toString().equals(EVisualizationSpaceType.DIMENSIONS_SPACE.toString()))
 		{
-			if(dataDomainCombo.getItem(dataDomainCombo.getSelectionIndex()) == EDataGenerationType.RAW_DATA.toString())
+			if(dataDomainCombo.getItem(dataDomainCombo.getSelectionIndex()).toString().equals(EDataGenerationType.RAW_DATA.toString()))
 			{
 				IDType chosenVisEntityIDType = tablePerspective.getRecordPerspective().getIdType();
 				for (Integer id : tablePerspective.getRecordPerspective().getVirtualArray()) {
@@ -222,7 +222,7 @@ public class DataSelectionBarGUI extends ControlContribution
 				}
 			}
 			// Use derived data, such as statistics
-			else if (dataDomainCombo.getItem(dataDomainCombo.getSelectionIndex()) == EDataGenerationType.DERIVED_DATA.toString())
+			else if (dataDomainCombo.getItem(dataDomainCombo.getSelectionIndex()).toString().equals(EDataGenerationType.DERIVED_DATA.toString()))
 			{
 				for(EStatisticsType statType: EStatisticsType.values()){
 					xAxisCombo.add(statType.name());
@@ -237,8 +237,8 @@ public class DataSelectionBarGUI extends ControlContribution
 		xAxisCombo.select(0);
 		yAxisCombo.select(0);
 		
-		//xAxisCombo.pack();
-		//yAxisCombo.pack();
+		xAxisCombo.pack();
+		yAxisCombo.pack();
 		
 		parentComposite.layout();
 		
