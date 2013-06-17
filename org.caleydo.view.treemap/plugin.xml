@@ -63,17 +63,4 @@
             class="org.caleydo.view.treemap.preferences.MyPreferences">
       </initializer>
    </extension>
-   <extension
-         point="org.eclipse.ui.perspectiveExtensions">
-      <perspectiveExtension
-            targetID="org.caleydo.core.gui.perspective">
-         <view
-               id="org.caleydo.view.treemap.hierarchical"
-               minimized="false"
-               relationship="stack"
-               relative="main"
-               visible="false">
-         </view>
-      </perspectiveExtension>
-   </extension>
 </plugin>
