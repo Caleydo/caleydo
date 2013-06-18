@@ -50,7 +50,7 @@ public class XMLToProjectBuilder {
 
 		// Iterate over data type sets and trigger processing
 		for (DataSetDescription dataSetDescription : projectDescription.getDataSetDescriptionCollection()) {
-			ATableBasedDataDomain dataDomain = DataLoader.loadData(dataSetDescription, null);
+			ATableBasedDataDomain dataDomain = DataLoader.loadData(dataSetDescription, new NullProgressMonitor());
 			if (dataDomain != null)
 				dataDomains.add(dataDomain);
 			else

@@ -16,8 +16,8 @@
  *******************************************************************************/
 package org.caleydo.data.importer.tcga;
 
+import org.caleydo.core.util.color.AlexColorPalette;
 import org.caleydo.core.util.color.Color;
-import org.caleydo.core.util.color.ColorManager;
 
 /**
  * A list of different dataset types that we are able to load for TCGA and which have a grouping. These are the dataset
@@ -28,21 +28,19 @@ import org.caleydo.core.util.color.ColorManager;
  */
 public enum EDataSetType {
 
-	mRNA("mRNA", ColorManager.get().getColorList(ColorManager.QUALITATIVE_COLORS).get(0)),
-	mRNAseq("mRNA-seq", ColorManager.get().getColorList(ColorManager.QUALITATIVE_COLORS).get(0)
-			.getColorWithSpecificBrighness(0.7f)),
-	microRNA("microRNA", ColorManager.get().getColorList(ColorManager.QUALITATIVE_COLORS).get(1)),
-	microRNAseq("microRNA-seq", ColorManager.get().getColorList(ColorManager.QUALITATIVE_COLORS).get(1)
-			.getColorWithSpecificBrighness(0.7f)),
-	methylation("Methylation", ColorManager.get().getColorList(ColorManager.QUALITATIVE_COLORS).get(2)),
-	RPPA("RPPA", ColorManager.get().getColorList(ColorManager.QUALITATIVE_COLORS).get(3)),
-	copyNumber("Copy Number", ColorManager.get().getColorList(ColorManager.QUALITATIVE_COLORS).get(4)),
-	mutation("Mutations", ColorManager.get().getColorList(ColorManager.QUALITATIVE_COLORS).get(5)),
-	clinical("Clinical", ColorManager.get().getColorList(ColorManager.QUALITATIVE_COLORS).get(6));
+	mRNA("mRNA", AlexColorPalette.Medium.get().get(0)),
+	mRNAseq("mRNA-seq", AlexColorPalette.Medium.get().get(0).darker()),
+	microRNA("microRNA", AlexColorPalette.Medium.get().get(1)),
+	microRNAseq("microRNA-seq", AlexColorPalette.Medium.get().get(1).darker()),
+	methylation("Methylation", AlexColorPalette.Medium.get().get(2)),
+	RPPA("RPPA", AlexColorPalette.Medium.get().get(3)),
+	copyNumber("Copy Number", AlexColorPalette.Medium.get().get(4)),
+	mutation("Mutations", AlexColorPalette.Medium.get().get(5)),
+	clinical("Clinical", AlexColorPalette.Medium.get().get(6));
 
-	private Color color;
+	private final Color color;
 
-	private String name;
+	private final String name;
 
 	private EDataSetType(String name, Color color) {
 		this.name = name;

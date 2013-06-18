@@ -44,13 +44,15 @@ public class ColorManager {
 	{
 		List<Pair<Color, Boolean>> qualitativeColorList = new ArrayList<>();
 
-		qualitativeColorList.add(make(new Color("06799F"), false));
-		qualitativeColorList.add(make(new Color("C60017"), false));
-		qualitativeColorList.add(make(new Color("00654e"), false));
-		qualitativeColorList.add(make(new Color("D2006B"), false));
-		qualitativeColorList.add(make(new Color("A65500"), false));
-		qualitativeColorList.add(make(new Color("60016D"), false));
-		qualitativeColorList.add(make(new Color("A6A000"), false));
+		for (Color c : AlexColorPalette.Medium.get()) {
+			qualitativeColorList.add(make(c, false));
+			qualitativeColorList.add(make(c, false));
+			qualitativeColorList.add(make(c, false));
+			qualitativeColorList.add(make(c, false));
+			qualitativeColorList.add(make(c, false));
+			qualitativeColorList.add(make(c, false));
+			qualitativeColorList.add(make(c, false));
+		}
 
 		// Colors from colorbrewer qualitative Set3
 		// qualitativeColorList.add(make(new Color(141, 211, 199), false));
