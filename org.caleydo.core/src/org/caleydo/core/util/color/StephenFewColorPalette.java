@@ -19,7 +19,6 @@
  *******************************************************************************/
 package org.caleydo.core.util.color;
 
-import org.caleydo.core.util.color.Color;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,7 +68,6 @@ public final class StephenFewColorPalette {
 	}
 
 	private static class StephenFewColor extends Color {
-		private static final long serialVersionUID = 2758390673115402628L;
 		private Color darker;
 		private Color brighter;
 

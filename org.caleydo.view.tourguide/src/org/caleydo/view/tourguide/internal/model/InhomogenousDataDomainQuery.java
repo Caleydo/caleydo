@@ -19,17 +19,16 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.internal.model;
 
-import static org.caleydo.vis.rank.model.StringRankColumnModel.starToRegex;
-
 import java.util.ArrayList;
 import java.util.BitSet;
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.regex.Pattern;
 
+import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
@@ -40,7 +39,7 @@ import org.caleydo.vis.rank.model.RankTableModel;
  *
  */
 public class InhomogenousDataDomainQuery extends ADataDomainQuery {
-	private String matches = null;
+	private Set<EDataType> selectedDataTypes = EnumSet.of(EDataType.INTEGER);
 
 	// snapshot when creating the data for fast comparison
 	private Set<String> snapshot;
@@ -57,9 +56,11 @@ public class InhomogenousDataDomainQuery extends ADataDomainQuery {
 	@Override
 	public boolean apply(AScoreRow row) {
 		assert row.getDataDomain() == dataDomain;
-		if (matches == null)
-			return true;
-		return Pattern.matches(starToRegex(matches), row.getLabel());
+		InhomogenousPerspectiveRow r = (InhomogenousPerspectiveRow) row;
+		Perspective clinical = r.getStratification();
+		Integer dimensionID = clinical.getVirtualArray().get(0);
+		EDataType type = getDataDomain().getTable().getRawDataType(dimensionID, 0);
+		return selectedDataTypes.contains(type);
 	}
 
 	@Override
@@ -142,23 +143,29 @@ public class InhomogenousDataDomainQuery extends ADataDomainQuery {
 		return per;
 	}
 
-	public void setMatches(String matches) {
-		if (Objects.equals(matches, this.matches))
+	public void setMatches(Set<EDataType> selected) {
+		if (Objects.equals(selectedDataTypes, selected))
 			return;
-		this.matches = matches;
+		this.selectedDataTypes = selected;
 		updateFilter();
 	}
 
-	/**
-	 * @return the matches, see {@link #matches}
+
+		/**
+	 * @return the selectedDataTypes, see {@link #selectedDataTypes}
 	 */
-	public String getMatches() {
-		return matches;
+	public Set<EDataType> getSelectedDataTypes() {
+		return selectedDataTypes;
 	}
 
 	@Override
 	public boolean hasFilter() {
-		return this.matches != null;
+		return this.selectedDataTypes.size() < EDataType.values().length;
+	}
+
+	@Override
+	public boolean isFilteringPossible() {
+		return true;
 	}
 
 	@Override

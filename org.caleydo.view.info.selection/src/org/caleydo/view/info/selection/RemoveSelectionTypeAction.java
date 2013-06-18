@@ -17,28 +17,30 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.internal.view.ui;
+package org.caleydo.view.info.selection;
 
-import org.caleydo.view.tourguide.internal.model.PathwayDataDomainQuery;
+import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.data.selection.SelectionTypeEvent;
+import org.caleydo.core.event.EventPublisher;
+import org.eclipse.jface.action.Action;
 
-public class PathwayDataDomainElement extends ADataDomainElement {
+/**
+ * @author Samuel Gratzl
+ *
+ */
+public class RemoveSelectionTypeAction extends Action {
+	private final SelectionType selectionType;
 
-	public PathwayDataDomainElement(PathwayDataDomainQuery model) {
-		super(model);
+	public RemoveSelectionTypeAction(SelectionType selectionType) {
+		super("Remove");
+		this.selectionType = selectionType;
 	}
 
 	@Override
-	public PathwayDataDomainQuery getModel() {
-		return (PathwayDataDomainQuery) super.getModel();
-	}
-
-	@Override
-	protected void onFilterEdit(boolean isStartEditing, Object payload) {
-
-	}
-
-	@Override
-	protected String getLabel() {
-		return getModel().getType().getName();
+	public void run() {
+		SelectionTypeEvent event = new SelectionTypeEvent();
+		event.addSelectionType(selectionType);
+		event.setRemove(true);
+		EventPublisher.trigger(event);
 	}
 }

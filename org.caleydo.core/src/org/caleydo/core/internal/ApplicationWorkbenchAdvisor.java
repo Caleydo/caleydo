@@ -153,6 +153,7 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 			IWorkbenchWindowConfigurer configurer = getWindowConfigurer();
 			configurer.setShowCoolBar(false);
 			configurer.setShowStatusLine(false);
+			configurer.setShowFastViewBars(true);
 			configurer.getWindow().getPartService().addPartListener(new PartListener());
 		}
 

@@ -49,6 +49,7 @@ import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.color.Color;
+import org.caleydo.core.util.color.ColorBrewer;
 import org.caleydo.data.importer.tcga.model.ClinicalMapping;
 import org.caleydo.data.importer.tcga.model.TCGADataSet;
 import org.caleydo.datadomain.genetic.TCGADefinitions;
@@ -307,6 +308,7 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 		cats.addCategoryProperty(0, "NORMAL", Color.NEUTRAL_GREY);
 		cats.addCategoryProperty(1, "Low level amplification", Color.RED.getColorWithSpecificBrighness(0.5f));
 		cats.addCategoryProperty(2, "High level amplification", Color.RED);
+		cats.applyColorScheme(ColorBrewer.RdBu, 0, true);
 
 		// File cnmfGroupingFile = fileProvider.extractAnalysisRunFile("cnmf.membership.txt",
 		// "CopyNumber_Clustering_CNMF", LEVEL);

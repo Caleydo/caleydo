@@ -156,7 +156,7 @@ public class AdjustedRandScoreFactory implements IScoreFactory {
 
 	private class UpdateAndBrowseAdjustedRand extends BrowseStratificationState implements ISelectStratificationState {
 		public UpdateAndBrowseAdjustedRand() {
-			super("Select a stratification in the Tour Guide to preview.\n" + "Then confirm or cancel your selection"
+			super("Select a stratification in the LineUp to preview.\n" + "Then confirm or cancel your selection"
 					+ "Change query by clicking on other brick at any time");
 		}
 
@@ -192,7 +192,7 @@ public class AdjustedRandScoreFactory implements IScoreFactory {
 		@Override
 		public void create() {
 			super.create();
-			this.getShell().setText("Create a new Adjusted Rand Index Score");
+			this.getShell().setText("Create a new Adjusted Rand Index score");
 			this.setBlockOnOpen(false);
 		}
 
@@ -262,7 +262,7 @@ public class AdjustedRandScoreFactory implements IScoreFactory {
 
 		private boolean validate() {
 			if (dataDomainUI.getSelection() == null)
-				MessageDialog.openError(getParentShell(), "A Data Domain is required", "A Data Domain is required");
+				MessageDialog.openError(getParentShell(), "A data domain is required", "A data domain is required");
 			return true;
 		}
 

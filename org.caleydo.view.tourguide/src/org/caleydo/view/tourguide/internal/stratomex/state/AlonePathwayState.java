@@ -29,14 +29,14 @@ import org.caleydo.view.tourguide.api.state.PreviewRenderer;
 
 /**
  * a stupid state that show the pathway but can't never be finished
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public class AlonePathwayState extends ABrowseState {
 
 	public AlonePathwayState() {
-		super(EDataDomainQueryMode.PATHWAYS, "Select a pathway in the Tour Guide.");
+		super(EDataDomainQueryMode.PATHWAYS, "Select a pathway in the LineUp.");
 	}
 
 	@Override

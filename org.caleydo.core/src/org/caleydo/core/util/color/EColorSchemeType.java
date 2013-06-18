@@ -19,6 +19,8 @@
  *******************************************************************************/
 package org.caleydo.core.util.color;
 
+import com.google.common.base.Predicate;
+
 /**
  * Different types for color schemes.
  *
@@ -27,4 +29,16 @@ package org.caleydo.core.util.color;
  */
 public enum EColorSchemeType {
 	SEQUENTIAL, DIVERGING, QUALITATIVE;
+
+	/**
+	 * @return
+	 */
+	public Predicate<IColorPalette> isOf() {
+		return new Predicate<IColorPalette>() {
+			@Override
+			public boolean apply(IColorPalette in) {
+				return in.getType() == EColorSchemeType.this;
+			}
+		};
+	}
 }

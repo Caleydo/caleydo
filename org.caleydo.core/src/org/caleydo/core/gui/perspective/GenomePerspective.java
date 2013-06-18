@@ -19,7 +19,12 @@
  *******************************************************************************/
 package org.caleydo.core.gui.perspective;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.caleydo.core.gui.toolbar.RcpToolBarView;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IFolderLayout;
@@ -63,8 +68,29 @@ public class GenomePerspective
 		// bottomLayout.addPlaceholder("org.caleydo.view.filter");
 		// bottomLayout.addPlaceholder("org.caleydo.view.filterpipeline");
 
-		// TODO via extension point
-		mainLayout.addView("org.caleydo.view.dvi");
-		mainLayout.addView("org.caleydo.view.stratomex");
+		// all the views that should be initially shown
+		List<String> initialViews = Arrays.asList("org.caleydo.view.dvi", "org.caleydo.view.stratomex");
+		for (String initialView : initialViews) {
+			mainLayout.addView(initialView);
+		}
+
+		// create placeholders for all registered caleydo views depending on their prefix: tool, info or main
+		for (IConfigurationElement elem : RegistryFactory.getRegistry().getConfigurationElementsFor("org.eclipse.ui.views")) {
+			if(!"view".equals(elem.getName()))
+				continue;
+			if (!"org.caleydo.core.views".equals(elem.getAttribute("category"))) // wrong category
+				continue;
+			String id = elem.getAttribute("id");
+			boolean allowMultiple = "true".equalsIgnoreCase(elem.getAttribute("allowMultiple"));
+			if (id == null || (initialViews.contains(id) && !allowMultiple)) // part of the initial views skip
+				continue;
+			if (id.startsWith("org.caleydo.view.info")) {
+				// manual
+			} else if (id.startsWith("org.caleydo.view.tool")) {
+				bottomLayout.addPlaceholder(id + (allowMultiple ? ":*" : ""));
+			} else if (id.startsWith("org.caleydo.view")) {
+				mainLayout.addPlaceholder(id + (allowMultiple ? ":*" : ""));
+			}
+		}
 	}
 }

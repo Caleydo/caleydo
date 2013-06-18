@@ -126,6 +126,16 @@ public class ColumnRanker implements Iterable<IRow> {
 	 * @param col
 	 */
 	public void checkOrderChanges(ARankColumnModel from, ARankColumnModel to) {
+		// check recursivly
+		if (from instanceof ACompositeRankColumnModel) {
+			for (ARankColumnModel child : ((ACompositeRankColumnModel) from))
+				checkOrderChanges(child, null);
+		}
+		if (to instanceof ACompositeRankColumnModel) {
+			for (ARankColumnModel child : ((ACompositeRankColumnModel) to))
+				checkOrderChanges(null, child);
+		}
+
 		if (from instanceof IFilterColumnMixin && ((IFilterColumnMixin) from).isFiltered()) { // filter elements
 			dirtyFilter = true;
 			if (orderBy == from) {
@@ -181,7 +191,7 @@ public class ColumnRanker implements Iterable<IRow> {
 	 * @return the orderBy, see {@link #orderBy}
 	 */
 	public IRankableColumnMixin getOrderBy() {
-		checkOrder();
+		getOrder();
 		return orderBy;
 	}
 
@@ -194,19 +204,18 @@ public class ColumnRanker implements Iterable<IRow> {
 		return getTable().findAllMyFilteredColumns(this);
 	}
 
-	public int size() {
+	public synchronized int size() {
 		if (!dirtyOrder && order != null)
 			return order.length;
 		if (!dirtyFilter && filter != null)
 			return filter.cardinality();
-		checkOrder();
-		return order.length;
+		return getOrder().length;
 	}
 
 	/**
 	 * performs filtering
 	 */
-	private void filter() {
+	private synchronized void filter() {
 		if (!dirtyFilter)
 			return;
 		dirtyFilter = false;
@@ -215,37 +224,32 @@ public class ColumnRanker implements Iterable<IRow> {
 		final List<IRow> data = table.getData();
 		// System.out.println("filter");
 		// start with data mask
+		BitSet new_;
 		if (dataMask != null)
-			filter = (BitSet) dataMask.clone();
+			new_ = (BitSet) dataMask.clone();
 		else {
-			filter = new BitSet(data.size());
-			filter.set(0, data.size());
+			new_ = new BitSet(data.size());
+			new_.set(0, data.size());
 		}
 
 		for (Iterator<IFilterColumnMixin> it = findAllFiltered(); it.hasNext();) {
-			it.next().filter(data, filter);
+			it.next().filter(data, new_);
 		}
 
 		dirtyOrder = true;
+		filter = new_;
 		order();
-	}
-
-	private void checkOrder() {
-		if (dirtyFilter) {
-			filter();
-		} else
-			order();
 	}
 
 	/**
 	 * sorts the current data
 	 */
-	void order() {
+	synchronized void order() {
 		if (!dirtyOrder && order != null)
 			return;
 		dirtyOrder = false;
 		// System.out.println("sort");
-		order = null;
+		// order = null;
 		int[] deltas = null;
 		boolean anyDelta = false;
 
@@ -404,12 +408,12 @@ public class ColumnRanker implements Iterable<IRow> {
 	public int getRank(IRow row) {
 		if (row == null)
 			return -1;
-		checkOrder();
+		getOrder();
 		return ranks.get(row.getIndex());
 	}
 
 	public boolean hasDefinedRank() {
-		checkOrder();
+		getOrder();
 		return orderBy != null;
 	}
 
@@ -417,16 +421,16 @@ public class ColumnRanker implements Iterable<IRow> {
 	public IRow get(int rank) {
 		if (rank < 0)
 			return null;
-		checkOrder();
-		if (order.length <= rank)
+		int[] order2 = getOrder();
+		if (order2.length <= rank)
 			return null;
-		return getTable().getDataItem(order[rank]);
+		return getTable().getDataItem(order2[rank]);
 	}
 
 	/**
 	 * @return
 	 */
-	public BitSet getFilter() {
+	public synchronized BitSet getFilter() {
 		filter();
 		return filter;
 	}
@@ -434,14 +438,17 @@ public class ColumnRanker implements Iterable<IRow> {
 	/**
 	 * @return
 	 */
-	public int[] getOrder() {
-		checkOrder();
+	public synchronized int[] getOrder() {
+		if (dirtyFilter) {
+			filter();
+		} else
+			order();
 		return order;
 	}
 
 	@Override
 	public Iterator<IRow> iterator() {
-		checkOrder();
+		final int[] order = getOrder();
 		final RankTableModel table = getTable();
 		return new Iterator<IRow>() {
 			int cursor = 0;
@@ -498,7 +505,7 @@ public class ColumnRanker implements Iterable<IRow> {
 
 	public IRow selectNext(IRow row) {
 		int r = getRank(row);
-		if (r == order.length - 1)
+		if (r == getOrder().length - 1)
 			return row;
 		return get(r + 1);
 	}

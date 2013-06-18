@@ -17,28 +17,55 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.internal.view.ui;
+package org.caleydo.core.util.color;
 
-import org.caleydo.view.tourguide.internal.model.PathwayDataDomainQuery;
+import java.util.List;
+import java.util.SortedSet;
 
-public class PathwayDataDomainElement extends ADataDomainElement {
+import org.caleydo.core.util.base.ILabeled;
+import org.caleydo.core.util.color.mapping.ColorMapper;
 
-	public PathwayDataDomainElement(PathwayDataDomainQuery model) {
-		super(model);
-	}
+/**
+ * abstract version of a color palette
+ * 
+ * @author Samuel Gratzl
+ * 
+ */
+public interface IColorPalette extends ILabeled {
+	/**
+	 * return a sorted set of available sizes
+	 * 
+	 * @return
+	 */
+	SortedSet<Integer> getSizes();
 
-	@Override
-	public PathwayDataDomainQuery getModel() {
-		return (PathwayDataDomainQuery) super.getModel();
-	}
+	/**
+	 * returns a specific palette
+	 * 
+	 * @param size
+	 * @return
+	 */
+	List<Color> get(int size);
 
-	@Override
-	protected void onFilterEdit(boolean isStartEditing, Object payload) {
+	/**
+	 * short cut for {@link #getSizes()} and {@link List#get(int)}
+	 * 
+	 * @param size
+	 * @param index
+	 * @return
+	 */
+	Color get(int size, int index);
 
-	}
+	/**
+	 * converts a given palette to a {@link ColorManager}
+	 * 
+	 * @param size
+	 * @return
+	 */
+	ColorMapper asColorMapper(int size);
 
-	@Override
-	protected String getLabel() {
-		return getModel().getType().getName();
-	}
+	/**
+	 * @return
+	 */
+	EColorSchemeType getType();
 }

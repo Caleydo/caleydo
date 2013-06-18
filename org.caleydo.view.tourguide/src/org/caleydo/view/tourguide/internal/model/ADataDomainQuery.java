@@ -53,6 +53,8 @@ public abstract class ADataDomainQuery implements Predicate<AScoreRow> {
 
 	public abstract boolean hasFilter();
 
+	public abstract boolean isFilteringPossible();
+
 	/**
 	 *
 	 * @return pair with a list of the stratifications rows and one with the stratification, groups

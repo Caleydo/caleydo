@@ -34,7 +34,7 @@ import org.caleydo.vis.rank.ui.detail.ValueElement;
 public class DataDomainRankColumnModel extends StringRankColumnModel {
 
 	public DataDomainRankColumnModel() {
-		super(GLRenderers.drawText("Data Domain", VAlign.CENTER), AScoreRow.TO_DATADOMAIN);
+		super(GLRenderers.drawText("Data domain", VAlign.CENTER), AScoreRow.TO_DATADOMAIN);
 	}
 
 	public DataDomainRankColumnModel(DataDomainRankColumnModel copy) {

@@ -62,6 +62,7 @@ public class CaleydoTextRenderer extends MyTextRenderer implements ITextRenderer
 	public CaleydoTextRenderer(int size, int style) {
 		super(new Font(FONT_NAME, style, size), true, true, new DefaultRenderDelegate());
 		referenceBounds = super.getBounds(REFERENCE_TEXT);
+		setUseVertexArrays(false);
 	}
 
 	@Override

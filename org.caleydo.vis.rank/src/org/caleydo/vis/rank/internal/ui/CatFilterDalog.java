@@ -69,24 +69,25 @@ public class CatFilterDalog<CATEGORY_TYPE> extends AFilterDialog {
 	@Override
 	protected void createSpecificFilterUI(Composite composite) {
 		// create message
-		Composite buttonComposite = new Composite(composite, SWT.RIGHT);
-		GridData data = new GridData(SWT.LEFT, SWT.TOP, false, false);
+		Composite buttonComposite = new Composite(composite, SWT.NONE);
+		GridData data = new GridData(SWT.FILL, SWT.TOP, true, false);
 		data.horizontalSpan = 2;
 		buttonComposite.setLayoutData(data);
 		GridLayout layout = new GridLayout(3, false);
 		layout.marginHeight = 0;
 		layout.marginWidth = 0;
 		layout.verticalSpacing = 0;
+		buttonComposite.setLayout(layout);
 		{
 			Label label = new Label(buttonComposite, SWT.WRAP);
-			label.setText("Selection Items to include:");
-			data = new GridData(SWT.LEFT, SWT.TOP, false, false);
-			data.horizontalSpan = 2;
+			label.setText("Selection items to include:");
+			data = new GridData(SWT.LEFT, SWT.CENTER, true, false);
+			data.horizontalSpan = 1;
 			label.setLayoutData(data);
 			label.setFont(composite.getFont());
 
 			Button selectButton = new Button(buttonComposite, SWT.PUSH);
-			selectButton.setText("Select &All");
+			selectButton.setText("Select &all");
 			SelectionListener listener = new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
@@ -94,17 +95,20 @@ public class CatFilterDalog<CATEGORY_TYPE> extends AFilterDialog {
 					fViewer.setCheckedElements(viewerElements);
 				}
 			};
+			selectButton.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false));
 			selectButton.addSelectionListener(listener);
 			Button deselectButton = new Button(buttonComposite, SWT.PUSH);
-			selectButton.setText("Select &None");
+			deselectButton.setText("Select &aone");
 			listener = new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
 					fViewer.setCheckedElements(new Object[0]);
 				}
 			};
+			deselectButton.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false));
 			deselectButton.addSelectionListener(listener);
 		}
+		buttonComposite.pack();
 
 		CheckboxTreeViewer treeViewer = createTreeViewer(composite);
 		treeViewer.setCheckedElements(selection.toArray());

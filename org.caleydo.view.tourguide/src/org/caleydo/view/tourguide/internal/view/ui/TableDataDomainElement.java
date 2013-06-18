@@ -23,17 +23,12 @@ import java.util.Collection;
 
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
-import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.view.contextmenu.AContextMenuItem.EContextMenuType;
 import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
 import org.caleydo.core.view.contextmenu.GroupContextMenuItem;
-import org.caleydo.view.tourguide.internal.event.EditDataDomainFilterEvent;
 import org.caleydo.view.tourguide.internal.event.SelectDimensionSelectionEvent;
 import org.caleydo.view.tourguide.internal.model.StratificationDataDomainQuery;
-import org.eclipse.jface.dialogs.InputDialog;
-import org.eclipse.jface.window.Window;
-import org.eclipse.swt.widgets.Display;
 
 public class TableDataDomainElement extends ADataDomainElement {
 
@@ -54,7 +49,7 @@ public class TableDataDomainElement extends ADataDomainElement {
 			Perspective dim = getModel().getDimensionSelection();
 			if (dim == null)
 				dim = dims.iterator().next();
-			GroupContextMenuItem item = new GroupContextMenuItem("Used Dimension Perspective");
+			GroupContextMenuItem item = new GroupContextMenuItem("Used dimension perspective");
 			creator.addContextMenuItem(item);
 			for (Perspective d : dims)
 				item.add(new GenericContextMenuItem(d.getLabel(), EContextMenuType.CHECK,
@@ -64,36 +59,13 @@ public class TableDataDomainElement extends ADataDomainElement {
 	}
 
 	@ListenTo(sendToMe = true)
-	@Override
-	protected void onFilterEdit(boolean isStartEditing, Object payload) {
-		if (isStartEditing) {
-			Display.getDefault().asyncExec(new Runnable() {
-				@Override
-				public void run() {
-					InputDialog d = new InputDialog(null, "Filter Table (* = wildcard)",
-							"Edit Record Perspective Filter",
-							getModel().getMatches(), null);
-					if (d.open() == Window.OK) {
-						String v = d.getValue().trim();
-						if (v.length() == 0)
-							v = "";
-						EventPublisher.trigger(new EditDataDomainFilterEvent(v).to(TableDataDomainElement.this));
-					}
-				}
-			});
-		} else {
-			setFilter(payload.toString());
-		}
-	}
-
-	private void setFilter(String filter) {
-		getModel().setMatches(filter);
-		setHasFilter(model.hasFilter());
-	}
-
-	@ListenTo(sendToMe = true)
 	private void onSelectionDimension(final SelectDimensionSelectionEvent e) {
 		Perspective d = e.getDim();
 		getModel().setDimensionSelection(d);
+	}
+
+	@Override
+	protected void onFilterEdit(boolean isStartEditing, Object payload) {
+
 	}
 }

@@ -90,7 +90,7 @@ public final class CategoricalPerspectiveRow extends AVirtualArrayScoreRow imple
 
 	@Override
 	public int getGroupSize() {
-		return query.getGroupSize();
+		return query.getGroupSize(this.id);
 	}
 
 	@Override
