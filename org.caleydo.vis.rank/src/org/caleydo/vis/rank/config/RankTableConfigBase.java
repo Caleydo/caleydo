@@ -19,9 +19,9 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.config;
 
-import org.caleydo.core.util.color.Color;
 import java.util.Collections;
 
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.picking.AdvancedPick;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.vis.rank.model.ACompositeRankColumnModel;
@@ -47,11 +47,11 @@ import org.caleydo.vis.rank.model.mixin.IFloatRankableColumnMixin;
  *
  */
 public class RankTableConfigBase implements IRankTableConfig {
-	private static final int MAX_MODE = 0;
-	private static final int SUM_MODE = 1;
-	private static final int NESTED_MODE = 2;
-	private static final int SCRIPTED_MODE = 3;
-	private static final int GROUP_MODE = 4;
+	public static final int MAX_MODE = 0;
+	public static final int SUM_MODE = 1;
+	public static final int NESTED_MODE = 2;
+	public static final int SCRIPTED_MODE = 3;
+	public static final int GROUP_MODE = 4;
 
 	@Override
 	public boolean isMoveAble(ARankColumnModel model, boolean clone) {

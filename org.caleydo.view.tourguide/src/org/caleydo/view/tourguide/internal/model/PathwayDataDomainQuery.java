@@ -19,11 +19,7 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.internal.model;
 
-import static org.caleydo.vis.rank.model.StringRankColumnModel.starToRegex;
-
 import java.util.List;
-import java.util.Objects;
-import java.util.regex.Pattern;
 
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
@@ -38,7 +34,6 @@ import com.google.common.collect.Lists;
  *
  */
 public class PathwayDataDomainQuery extends ADataDomainQuery {
-	private String matches = null;
 	private final EPathwayDatabaseType type;
 
 	public PathwayDataDomainQuery(PathwayDataDomain dataDomain, EPathwayDatabaseType type) {
@@ -59,10 +54,7 @@ public class PathwayDataDomainQuery extends ADataDomainQuery {
 
 	@Override
 	public boolean apply(AScoreRow row) {
-		if (matches == null)
-			return true;
-		assert row.getDataDomain() == dataDomain;
-		return Pattern.matches(starToRegex(matches), row.getLabel());
+		return true;
 	}
 
 	@Override
@@ -82,23 +74,14 @@ public class PathwayDataDomainQuery extends ADataDomainQuery {
 		return null;
 	}
 
-	public void setMatches(String matches) {
-		if (Objects.equals(matches, this.matches))
-			return;
-		this.matches = matches;
-		updateFilter();
-	}
-
-	/**
-	 * @return the matches, see {@link #matches}
-	 */
-	public String getMatches() {
-		return matches;
+	@Override
+	public boolean hasFilter() {
+		return false;
 	}
 
 	@Override
-	public boolean hasFilter() {
-		return this.matches != null;
+	public boolean isFilteringPossible() {
+		return false;
 	}
 
 	@Override
