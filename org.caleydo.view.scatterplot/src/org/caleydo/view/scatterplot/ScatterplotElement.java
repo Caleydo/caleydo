@@ -136,10 +136,11 @@ public class ScatterplotElement extends GLElement implements TablePerspectiveSel
 	protected void renderImpl(GLGraphics g, float w, float h) {
 		if (!dataColumnsSet | !readyForRender)
 			return;	
-//		if (this.isRenderRemote())
-//		{
-//			h = w;
-//		}
+		if (this.isRenderRemote())
+		{
+			h = ScatterPlotVisInfo.MIN_HEIGHT_PIXELS;
+			w = ScatterPlotVisInfo.MIN_WIDTH_PIXELS;
+		}
 		
 		g.pushResourceLocator(Activator.getResourceLocator());
 		//super.renderImpl(g, w, h);
@@ -156,10 +157,11 @@ public class ScatterplotElement extends GLElement implements TablePerspectiveSel
 		if (!dataColumnsSet | !readyForRender)
 			return;	
 		
-//		if (this.isRenderRemote())
-//		{
-//			h = w;
-//		}
+		if (this.isRenderRemote())
+		{
+			h = ScatterPlotVisInfo.MIN_HEIGHT_PIXELS;
+			w = ScatterPlotVisInfo.MIN_WIDTH_PIXELS;
+		}
 		
 		g.pushResourceLocator(Activator.getResourceLocator());
 		//super.renderPickImpl(g, w, h);
@@ -226,7 +228,7 @@ public class ScatterplotElement extends GLElement implements TablePerspectiveSel
 				dataColumns.add(col1);
 				dataColumns.add(col2);
 				
-				renderUtil = new ScatterplotRenderUtils();
+				renderUtil = new ScatterplotRenderUtils(this.renderRemote);
 				renderUtil.PerformDataLoadedOperations(this);
 				
 				// First time the dataset is loaded
@@ -377,7 +379,8 @@ public class ScatterplotElement extends GLElement implements TablePerspectiveSel
 			selectionRect.setRight(pickedPoint.x);
 			selectionRect.setTop(firstClickPoint.y);
 			selectionRect.setBottom(pickedPoint.y);
-			selectionRect.ComputeScreenToDataMapping(renderUtil, dataColumns, getSize().x(), getSize().y());
+			
+			selectionRect.ComputeScreenToDataMapping(renderUtil, dataColumns, ScatterPlotVisInfo.MIN_WIDTH_PIXELS, ScatterPlotVisInfo.MIN_HEIGHT_PIXELS);
 			renderUtil.performBrushing(this, selectionRect);
 			break;
 		

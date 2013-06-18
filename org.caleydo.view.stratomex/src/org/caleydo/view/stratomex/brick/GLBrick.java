@@ -20,6 +20,7 @@
 package org.caleydo.view.stratomex.brick;
 
 import java.awt.Point;
+import java.nio.channels.ScatteringByteChannel;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -650,7 +651,17 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 			wrappingLayout.setPixelSizeY(staticBrickHeight);
 			break;
 		case VIEW_DEPENDENT:
-			int defaultHeightPixels = brickLayoutConfiguration.getDefaultHeightPixels();
+			//TODO: This is a cheap hack now to pass fixed sizes for embedded views using new GLElements
+			// Currently for the scatterplots 
+			int defaultHeightPixels = 0;
+			if(rendererID == 0)
+			{
+				defaultHeightPixels = 200;
+			}
+			else
+			{
+				defaultHeightPixels = brickLayoutConfiguration.getDefaultHeightPixels();
+			}
 			wrappingLayout.setPixelSizeY(defaultHeightPixels);
 			break;
 		case PROPORTIONAL:
@@ -675,7 +686,15 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 			wrappingLayout.setPixelSizeX(staticBrickWidth);
 			break;
 		case DATA_TYPE_DEFAULT:
-			wrappingLayout.setPixelSizeX(brickConfigurer.getDefaultWidth());
+			if(rendererID == 0)
+			{
+				wrappingLayout.setPixelSizeX(200);
+			}
+			else
+			{
+				wrappingLayout.setPixelSizeX(brickConfigurer.getDefaultWidth());
+			}
+			
 			break;
 		case VIEW_DEPENDENT:
 			int defaultWidthPixels = brickLayoutConfiguration.getDefaultWidthPixels();

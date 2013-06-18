@@ -56,13 +56,19 @@ public class ScatterplotRenderUtils {
 	private float POINT_SIZE_MULTIPLIER = 0.4f;
 	private float POINT_BORDER_SIZE_MULTIPLIER = 0.45f;
 	
+	private float SIDE_SPACING_LOCAL_RENDER = 15.0f;
+	private float SIDE_SPACING_REMOTE_RENDER = 35.0f;
+	
 	private float zDepth = 10.0f;
+	
+	private boolean remoteRenderView;
 	
 	
 	private ArrayList<Integer> idList;
 	
-	public ScatterplotRenderUtils() {
+	public ScatterplotRenderUtils(boolean _remoteRenderView) {
 		super();
+		this.remoteRenderView = _remoteRenderView;
 	}
 	
 	public void render(GL2 gl, ScatterplotElement scatterplotElement, float width, float height)
@@ -142,7 +148,15 @@ public class ScatterplotRenderUtils {
 	 */
 	private void findScreenMappingConstants(float width, float height)
 	{	
-		sideSpacing = 15.0f; //view.getParentComposite(). getPixelGLConverter().getGLWidthForPixelWidth(ScatterplotRenderStyle.SIDE_SPACING);
+		if (remoteRenderView)
+		{
+			sideSpacing = this.SIDE_SPACING_REMOTE_RENDER;
+		}
+		else
+		{
+			sideSpacing = this.SIDE_SPACING_LOCAL_RENDER;
+		}
+		
 		
 		
 		
@@ -380,6 +394,8 @@ public class ScatterplotRenderUtils {
         gl.glVertex3f(width, height - sideSpacing, zDepth + 1);
 
         gl.glEnd();
+        
+        gl.glDisable(GL2.GL_LINE_STIPPLE);
 	}
 	
 	
@@ -406,6 +422,8 @@ public class ScatterplotRenderUtils {
 		gl.glEnd();
 		
 		gl.glPolygonMode(gl.GL_FRONT_AND_BACK, gl.GL_FILL);
+		
+		gl.glDisable(GL2.GL_LINE_STIPPLE);
 	}
 	
 	public void performBrushing(ScatterplotElement scatterplotElement, SelectionRectangle rect)

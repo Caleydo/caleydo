@@ -3,6 +3,9 @@ package org.caleydo.view.scatterplot;
 import org.caleydo.core.view.opengl.layout.util.multiform.IEmbeddedVisualizationInfo;
 
 public class ScatterPlotVisInfo implements IEmbeddedVisualizationInfo {
+	
+	public static int MIN_HEIGHT_PIXELS = 200;
+	public static int MIN_WIDTH_PIXELS = 200;
 
 	public ScatterPlotVisInfo() {
 	}
@@ -25,7 +28,7 @@ public class ScatterPlotVisInfo implements IEmbeddedVisualizationInfo {
 	 * @return The minimum height in pixels required by the renderer.
 	 */
 	public int getMinHeightPixels() {
-		return 100;
+		return MIN_HEIGHT_PIXELS;
 	}
 
 	/**
@@ -34,7 +37,7 @@ public class ScatterPlotVisInfo implements IEmbeddedVisualizationInfo {
 	 * @return The minimum width in pixels required by the renderer.
 	 */
 	public int getMinWidthPixels() {
-		return 100;
+		return MIN_WIDTH_PIXELS;
 	}
 
 }
