@@ -19,8 +19,6 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.internal.model;
 
-import static org.caleydo.vis.rank.model.StringRankColumnModel.starToRegex;
-
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Collection;
@@ -29,7 +27,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.regex.Pattern;
 
 import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
@@ -44,7 +41,6 @@ import org.caleydo.vis.rank.model.RankTableModel;
 public class StratificationDataDomainQuery extends ADataDomainQuery {
 	public static final String PROP_DIMENSION_SELECTION = "dimensionSelection";
 
-	private String matches = null;
 	private Perspective dimensionSelection = null;
 
 	// snapshot when creating the data for fast comparison
@@ -61,10 +57,7 @@ public class StratificationDataDomainQuery extends ADataDomainQuery {
 
 	@Override
 	public boolean apply(AScoreRow row) {
-		assert row.getDataDomain() == dataDomain;
-		if (matches == null)
-			return true;
-		return Pattern.matches(starToRegex(matches), row.getLabel());
+		return true;
 	}
 
 	@Override
@@ -181,25 +174,15 @@ public class StratificationDataDomainQuery extends ADataDomainQuery {
 		return dimensionSelection;
 	}
 
-	public void setMatches(String matches) {
-		if (Objects.equals(matches, this.matches))
-			return;
-		if (matches != null && matches.trim().isEmpty())
-			matches = null;
-		this.matches = matches;
-		updateFilter();
-	}
-
-	/**
-	 * @return the matches, see {@link #matches}
-	 */
-	public String getMatches() {
-		return matches;
-	}
 
 	@Override
 	public boolean hasFilter() {
-		return this.matches != null;
+		return false;
+	}
+
+	@Override
+	public boolean isFilteringPossible() {
+		return false;
 	}
 
 	/**

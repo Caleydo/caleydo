@@ -153,6 +153,11 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 		return selected.size() < getCategories().size();
 	}
 
+	@Override
+	public boolean isFilteringPossible() {
+		return true;
+	}
+
 	public int getGroupSize(Integer category) {
 		ATableBasedDataDomain dataDomain2 = getDataDomain();
 		CategoricalTable<?> table = (CategoricalTable<?>)dataDomain2.getTable();
