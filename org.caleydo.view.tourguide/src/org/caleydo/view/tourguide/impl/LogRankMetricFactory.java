@@ -140,7 +140,7 @@ public class LogRankMetricFactory implements IScoreFactory {
 		private final BothUpdateLogRankState target;
 
 		public CreateLogRankState(BothUpdateLogRankState target) {
-			super("Select a numerical value in the Tour Guide as a starting point for finding a stratification.");
+			super("Select a numerical value in the LineUp as a starting point for finding a stratification.");
 			this.target = target;
 		}
 

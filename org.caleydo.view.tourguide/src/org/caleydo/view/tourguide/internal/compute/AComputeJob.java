@@ -47,9 +47,9 @@ import com.google.common.collect.Multimap;
 
 /**
  * basic job implementation that
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public abstract class AComputeJob extends Job implements ICallback<Boolean> {
 	private final List<IComputedStratificationScore> stratScores;
@@ -57,7 +57,7 @@ public abstract class AComputeJob extends Job implements ICallback<Boolean> {
 	protected Object receiver;
 
 	public AComputeJob(Collection<IScore> scores, Object receiver) {
-		super("Compute Tour Guide Scores");
+		super("Compute LineUp Scores");
 		Set<IScore> flatten = Scores.flatten(scores);
 		stratScores = Lists.newArrayList(Iterables.filter(flatten, IComputedStratificationScore.class));
 		groupScores = Lists.newArrayList(Iterables.filter(flatten, IComputedGroupScore.class));
@@ -72,7 +72,7 @@ public abstract class AComputeJob extends Job implements ICallback<Boolean> {
 
 	/**
 	 * triggers a progress message
-	 * 
+	 *
 	 * @param completed
 	 * @param text
 	 */
@@ -82,7 +82,7 @@ public abstract class AComputeJob extends Job implements ICallback<Boolean> {
 
 	/**
 	 * triggers an progress error message
-	 * 
+	 *
 	 * @param text
 	 */
 	protected final void error(String text) {
@@ -91,7 +91,7 @@ public abstract class AComputeJob extends Job implements ICallback<Boolean> {
 
 	/**
 	 * whether the job has some work
-	 * 
+	 *
 	 * @return
 	 */
 	public boolean hasThingsToDo() {
@@ -100,7 +100,7 @@ public abstract class AComputeJob extends Job implements ICallback<Boolean> {
 
 	/**
 	 * computes scores of the given masked data
-	 * 
+	 *
 	 * @param monitor
 	 * @param data
 	 * @param mask

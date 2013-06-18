@@ -40,7 +40,7 @@ public class ComputeStratificationJob extends AScoreJob {
 			return Status.OK_STATUS;
 
 		final int total = data.size() + 1;
-		monitor.beginTask("Compute Tour Guide Scores", total);
+		monitor.beginTask("Compute LineUp Scores", total);
 		log.info(
 				"computing similarity of %d against %d stratification scores, %d stratification metrics",
 				data.size(), stratScores.size(), stratMetrics.size());
