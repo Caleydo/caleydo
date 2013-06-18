@@ -78,6 +78,8 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 	private ColumnHeaderDataProvider columnHeaderDataProvider;
 	private LineNumberRowHeaderDataProvider rowHeaderDataProvider;
 
+	private DataLayer bodyDataLayer;
+
 	private class ColumnSelectionAction extends ToggleCheckBoxColumnAction {
 
 		/**
@@ -228,7 +230,7 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 			this.table = null;
 		}
 
-		final DataLayer bodyDataLayer = new DataLayer(bodyDataProvider);
+		bodyDataLayer = new DataLayer(bodyDataProvider);
 		SelectionLayer selectionLayer = new SelectionLayer(bodyDataLayer);
 		ViewportLayer bodyLayer = new ViewportLayer(selectionLayer);
 
@@ -286,6 +288,7 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 		table.addConfiguration(new AbstractRegistryConfiguration() {
 			@Override
 			public void configureRegistry(IConfigRegistry configRegistry) {
+
 				Style cellStyle = new Style();
 
 				cellStyle.setAttributeValue(CellStyleAttributes.BACKGROUND_COLOR, GUIHelper.COLOR_GREEN);
@@ -360,6 +363,26 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 		bodyDataProvider.setNumColumns(numColumns);
 		columnHeaderDataProvider.setNumColumns(numColumns);
 		rowHeaderDataProvider.setNumRows(dataMatrix.size());
+
+		table.addConfiguration(new AbstractRegistryConfiguration() {
+
+			@Override
+			public void configureRegistry(IConfigRegistry configRegistry) {
+				ICellPainter bodyPainter = null;
+				for (int i = 0; i < Math.min(5, columnHeaderDataProvider.getColumnCount()); i++) {
+					bodyDataLayer.setColumnWidthByPosition(i, 120);
+				}
+				if (columnHeaderDataProvider.getColumnCount() < 5) {
+					bodyPainter = new TextPainter(false, true, true);
+				} else {
+					bodyPainter = new TextPainter();
+				}
+				configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_PAINTER, bodyPainter,
+						DisplayMode.NORMAL, GridRegion.BODY);
+			}
+		});
+		table.configure();
+
 		// buildTable(bodyDataProvider, new ColumnHeaderDataProvider(numColumns), new LineNumberRowHeaderDataProvider(
 		// dataMatrix.size()));
 		table.refresh();
