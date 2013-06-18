@@ -19,7 +19,6 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.canvas.internal.swt;
 
-
 import java.util.List;
 
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
@@ -51,7 +50,9 @@ public abstract class ASWTBasedCanvasFactory implements IGLCanvasFactory {
 
 	public ASWTBasedCanvasFactory() {
 		// disable awt as good as possible
-		System.setProperty("java.awt.headless", "true");
+		if (!System.getProperty("os.name").startsWith("Windows")) {
+			System.setProperty("java.awt.headless", "true");
+		}
 		// re add texture provider from awt for javax.imageio as the flag disables them
 		TextureIO.addTextureProvider(new IIOTextureProvider());
 		TextureIO.addTextureWriter(new IIOTextureWriter());
