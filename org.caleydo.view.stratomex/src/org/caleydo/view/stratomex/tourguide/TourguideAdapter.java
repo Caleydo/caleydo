@@ -831,6 +831,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 		TablePerspective underlyingTP = findTablePerspective(underlying);
 		if (underlyingTP == null)
 			return;
+
 		ClinicalDataConfigurer configurer = AddGroupsToStratomexListener.createKaplanConfigurer(stratomex,
 				underlyingTP, t);
 		replaceTemplate(t, configurer, extra);

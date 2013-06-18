@@ -412,6 +412,13 @@ public class GLTourGuideView extends AGLElementView {
 				}
 				if (combined instanceof IRankableColumnMixin)
 					((IRankableColumnMixin) combined).orderByMe();
+				else
+					for (ARankColumnModel m : combined) {
+						if (m instanceof IRankableColumnMixin) {
+							((IRankableColumnMixin) m).orderByMe();
+							break;
+						}
+					}
 			} else {
 				ScoreRankColumnModel ss = new ScoreRankColumnModel(s);
 				table.add(lastLabel + 1, ss);
