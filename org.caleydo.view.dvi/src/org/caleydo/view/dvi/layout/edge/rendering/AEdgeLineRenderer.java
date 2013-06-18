@@ -52,13 +52,13 @@ public abstract class AEdgeLineRenderer extends AEdgeRenderer {
 			return;
 		gl.glPushAttrib(GL2.GL_LINE_BIT | GL.GL_COLOR_BUFFER_BIT);
 		if (highlight) {
-			gl.glColor3f(0.5f, 0.5f, 0.5f);
-		} else {
 			gl.glColor3f(0.8f, 0.8f, 0.8f);
+		} else {
+			gl.glColor3f(0.95f, 0.95f, 0.95f);
 		}
 		// gl.glLineWidth(2);
-		gl.glEnable(GL2.GL_LINE_STIPPLE);
-		gl.glLineStipple(1, (short) 127);
+		// gl.glEnable(GL2.GL_LINE_STIPPLE);
+		// gl.glLineStipple(1, (short) 127);
 
 		IDVINode node1 = edge.getNode1();
 		IDVINode node2 = edge.getNode2();
