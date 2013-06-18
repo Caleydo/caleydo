@@ -17,33 +17,30 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.internal.stratomex.state;
+package org.caleydo.view.info.selection;
 
-import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
-import org.caleydo.datadomain.pathway.graph.PathwayGraph;
-import org.caleydo.view.stratomex.tourguide.event.UpdatePathwayPreviewEvent;
-import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
-import org.caleydo.view.tourguide.api.state.ABrowseState;
-import org.caleydo.view.tourguide.api.state.IReactions;
-import org.caleydo.view.tourguide.api.state.PreviewRenderer;
+import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.data.selection.SelectionTypeEvent;
+import org.caleydo.core.event.EventPublisher;
+import org.eclipse.jface.action.Action;
 
 /**
- * a stupid state that show the pathway but can't never be finished
- *
  * @author Samuel Gratzl
  *
  */
-public class AlonePathwayState extends ABrowseState {
+public class RemoveSelectionTypeAction extends Action {
+	private final SelectionType selectionType;
 
-	public AlonePathwayState() {
-		super(EDataDomainQueryMode.PATHWAYS, "Select a pathway in the LineUp.");
+	public RemoveSelectionTypeAction(SelectionType selectionType) {
+		super("Remove");
+		this.selectionType = selectionType;
 	}
 
 	@Override
-	public void onUpdate(UpdatePathwayPreviewEvent event, IReactions adapter) {
-		PathwayGraph pathway = event.getPathway();
-		ALayoutRenderer preview = adapter.createPreview(pathway);
-		adapter.replaceTemplate(new PreviewRenderer(preview, adapter.getGLView(),
-				"A Pathway can't stand by its own, you first have to add a stratification"));
+	public void run() {
+		SelectionTypeEvent event = new SelectionTypeEvent();
+		event.addSelectionType(selectionType);
+		event.setRemove(true);
+		EventPublisher.trigger(event);
 	}
 }

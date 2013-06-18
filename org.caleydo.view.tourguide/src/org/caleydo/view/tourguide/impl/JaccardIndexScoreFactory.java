@@ -111,7 +111,7 @@ public class JaccardIndexScoreFactory implements IScoreFactory {
 
 	private class UpdateAndBrowseJaccardIndex extends BrowseStratificationState implements ISelectGroupState {
 		public UpdateAndBrowseJaccardIndex() {
-			super("Select a stratification in the Tour Guide to preview.\n" + "Then confirm or cancel your selection"
+			super("Select a stratification in the LineUp to preview.\n" + "Then confirm or cancel your selection"
 					+ "Change query by clicking on other brick at any time");
 		}
 

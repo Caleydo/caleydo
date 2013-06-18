@@ -156,7 +156,7 @@ public class AdjustedRandScoreFactory implements IScoreFactory {
 
 	private class UpdateAndBrowseAdjustedRand extends BrowseStratificationState implements ISelectStratificationState {
 		public UpdateAndBrowseAdjustedRand() {
-			super("Select a stratification in the Tour Guide to preview.\n" + "Then confirm or cancel your selection"
+			super("Select a stratification in the LineUp to preview.\n" + "Then confirm or cancel your selection"
 					+ "Change query by clicking on other brick at any time");
 		}
 

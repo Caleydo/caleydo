@@ -170,6 +170,7 @@ public class ColorMapper {
 				fColor.r = srcColor.r + (destColor.r - srcColor.r) / divisor;
 				fColor.g = srcColor.g + (destColor.g - srcColor.g) / divisor;
 				fColor.b = srcColor.b + (destColor.b - srcColor.b) / divisor;
+				fColor.a = srcColor.a + (destColor.a - srcColor.a) / divisor;
 			}
 		}
 	}

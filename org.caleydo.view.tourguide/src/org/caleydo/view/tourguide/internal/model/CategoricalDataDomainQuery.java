@@ -88,10 +88,6 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 		return categoryIDType;
 	}
 
-	public int getGroupSize() {
-		return selected.size();
-	}
-
 	@SuppressWarnings("unchecked")
 	public List<CategoryProperty<?>> getCategories() {
 		final CategoricalTable<?> table = (CategoricalTable<?>) getDataDomain().getTable();
@@ -157,6 +153,19 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 		return selected.size() < getCategories().size();
 	}
 
+	public int getGroupSize(Integer category) {
+		ATableBasedDataDomain dataDomain2 = getDataDomain();
+		CategoricalTable<?> table = (CategoricalTable<?>)dataDomain2.getTable();
+		CategoricalClassDescription<?> categoryDescriptions = (CategoricalClassDescription<?>) table
+				.getDataClassSpecificDescription(category, 0);
+		int count = 0;
+		for (CategoryProperty<?> property : categoryDescriptions) {
+			int cp = table.getNumberOfMatches(property.getCategory(), getCategoryIDType(), category);
+			if (cp > 0)
+				count++;
+		}
+		return count;
+	}
 	/**
 	 * @param id
 	 * @return

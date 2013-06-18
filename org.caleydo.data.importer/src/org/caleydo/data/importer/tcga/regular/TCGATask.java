@@ -33,7 +33,6 @@ import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.serialize.ProjectMetaData;
 import org.caleydo.data.importer.tcga.ATCGATask;
 import org.caleydo.data.importer.tcga.Settings;
-import org.caleydo.data.importer.tcga.model.TCGADataSet;
 import org.caleydo.data.importer.tcga.model.TCGADataSets;
 import org.caleydo.data.importer.tcga.model.TumorType;
 
@@ -87,11 +86,6 @@ public class TCGATask extends ATCGATask {
 			log.warning("No Data Domains loaded for tumor type " + tumorType + " for analysis run " + run
 					+ " -> skipping rest");
 			return null;
-		}
-
-		log.info("Post Processing project file for tumor type " + tumorType + " for analysis run " + run);
-		for (TCGADataSet set : project) {
-			new TCGAPostprocessingTask(set, settings).invoke();
 		}
 
 		final String projectOutputPath = runSpecificOutputPath + run + "_" + tumorType + ".cal";
