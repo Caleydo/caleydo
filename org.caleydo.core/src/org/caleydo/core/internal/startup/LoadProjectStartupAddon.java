@@ -20,6 +20,8 @@
 package org.caleydo.core.internal.startup;
 
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.DateFormat;
 import java.util.Date;
 
@@ -177,7 +179,8 @@ public class LoadProjectStartupAddon implements IStartupAddon {
 		String lastProjectFileName = MyPreferences.getLastManuallyChosenProject();
 		if ("recent".equalsIgnoreCase(lastProjectFileName)) {
 			recentProject.setSelection(true);
-		} else if (lastProjectFileName != null && !lastProjectFileName.trim().isEmpty()) {
+		} else if (lastProjectFileName != null && !lastProjectFileName.trim().isEmpty()
+				&& validatePath(lastProjectFileName)) {
 			loadProject.setSelection(true);
 			projectLocationUI.setEnabled(true);
 			projectLocationUI.setText(lastProjectFileName);
@@ -210,7 +213,36 @@ public class LoadProjectStartupAddon implements IStartupAddon {
 
 	@Override
 	public boolean validate() {
+		if (loadRecentProject || (recentProject != null && recentProject.getSelection()))
+			return true;
+
+		if (projectLocationUI != null) {
+			return validatePath(projectLocationUI.getText());
+		}
+
 		return true;
+
+	}
+
+	private boolean validatePath(String path) {
+		if (isURL(path))
+			return true;
+		File file = new File(path);
+		if (!file.exists())
+			return false;
+		return true;
+	}
+
+	/**
+	 * @param path
+	 * @return
+	 */
+	private static boolean isURL(String path) {
+		try {
+			return new URL(path) != null;
+		} catch (MalformedURLException e) {
+			return false;
+		}
 	}
 
 	@Override

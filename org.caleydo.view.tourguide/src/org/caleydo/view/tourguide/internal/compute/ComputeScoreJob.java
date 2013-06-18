@@ -24,9 +24,9 @@ import com.google.common.collect.Multimap;
 
 /**
  * work horse for computing stratifaction as well as group scores
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public class ComputeScoreJob extends AScoreJob {
 	private static final Logger log = Logger.create(ComputeScoreJob.class);
@@ -63,7 +63,7 @@ public class ComputeScoreJob extends AScoreJob {
 			return Status.OK_STATUS;
 
 		final int total = data.keySet().size() + 1;
-		monitor.beginTask("Compute Tour Guide Scores", total);
+		monitor.beginTask("Compute LineUp Scores", total);
 		log.info(
 				"computing group similarity of %d against %d group scores, %d group metrics, %d stratification scores and %d stratification metrics",
 				data.size(), groupScores.size(), groupMetrics.size(), stratScores.size(), stratMetrics.size());

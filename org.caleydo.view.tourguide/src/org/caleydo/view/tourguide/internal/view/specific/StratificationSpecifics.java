@@ -19,7 +19,6 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.internal.view.specific;
 
-import org.caleydo.core.util.color.Color;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -28,6 +27,7 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainOracle;
 import org.caleydo.core.data.datadomain.DataSupportDefinitions;
 import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.internal.model.ADataDomainQuery;
@@ -76,7 +76,7 @@ public class StratificationSpecifics implements IDataDomainQueryModeSpecfics {
 			}
 		}).setWidth(75));
 
-		group.add(new SizeRankColumnModel("#Clusters", new Function<IRow, Integer>() {
+		group.add(new SizeRankColumnModel("#Groups", new Function<IRow, Integer>() {
 			@Override
 			public Integer apply(IRow in) {
 				return ((AScoreRow) in).getGroupSize();

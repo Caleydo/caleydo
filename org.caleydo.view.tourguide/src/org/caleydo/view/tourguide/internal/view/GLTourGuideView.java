@@ -116,7 +116,7 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class GLTourGuideView extends AGLElementView {
 	public static final String VIEW_TYPE = "org.caleydo.view.tool.tourguide";
-	public static final String VIEW_NAME = "Tour Guide";
+	public static final String VIEW_NAME = "LineUp";
 
 	private static final int DATADOMAIN_QUERY = 0;
 	private static final int TABLE = 1;
@@ -412,6 +412,13 @@ public class GLTourGuideView extends AGLElementView {
 				}
 				if (combined instanceof IRankableColumnMixin)
 					((IRankableColumnMixin) combined).orderByMe();
+				else
+					for (ARankColumnModel m : combined) {
+						if (m instanceof IRankableColumnMixin) {
+							((IRankableColumnMixin) m).orderByMe();
+							break;
+						}
+					}
 			} else {
 				ScoreRankColumnModel ss = new ScoreRankColumnModel(s);
 				table.add(lastLabel + 1, ss);

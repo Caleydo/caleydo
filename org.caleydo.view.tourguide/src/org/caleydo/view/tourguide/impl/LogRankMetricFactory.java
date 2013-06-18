@@ -61,6 +61,7 @@ import org.caleydo.view.tourguide.spi.algorithm.IGroupAlgorithm;
 import org.caleydo.view.tourguide.spi.score.IDecoratedScore;
 import org.caleydo.view.tourguide.spi.score.IRegisteredScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
+import org.caleydo.vis.rank.config.RankTableConfigBase;
 import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.Dialog;
@@ -130,9 +131,10 @@ public class LogRankMetricFactory implements IScoreFactory {
 		LogRankPValue pvalue = new LogRankPValue("P-Value", metric);
 
 		MultiScore multiScore = new MultiScore(label, wrap(clinical.getColor()),
-				darker(clinical.getColor()), 1);
-		multiScore.add(metric);
+ darker(clinical.getColor()),
+				RankTableConfigBase.NESTED_MODE);
 		multiScore.add(pvalue);
+		multiScore.add(metric);
 		return multiScore;
 	}
 
@@ -140,7 +142,7 @@ public class LogRankMetricFactory implements IScoreFactory {
 		private final BothUpdateLogRankState target;
 
 		public CreateLogRankState(BothUpdateLogRankState target) {
-			super("Select a numerical value in the Tour Guide as a starting point for finding a stratification.");
+			super("Select a numerical value in the LineUp as a starting point for finding a stratification.");
 			this.target = target;
 		}
 

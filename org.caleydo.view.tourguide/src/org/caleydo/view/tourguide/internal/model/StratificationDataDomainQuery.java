@@ -130,8 +130,13 @@ public class StratificationDataDomainQuery extends ADataDomainQuery {
 		String dimensionPerspectiveID = null;
 		if (dimensionSelection != null)
 			dimensionPerspectiveID = dimensionSelection.getPerspectiveID();
-		else
-			dimensionPerspectiveID = getDimensionPerspectives().iterator().next().getPerspectiveID();
+		else {
+			for (Perspective p : getDimensionPerspectives()) {
+				if (!p.isDefault())
+					return p.getPerspectiveID();
+			}
+			return getDimensionPerspectives().iterator().next().getPerspectiveID();
+		}
 		return dimensionPerspectiveID;
 	}
 

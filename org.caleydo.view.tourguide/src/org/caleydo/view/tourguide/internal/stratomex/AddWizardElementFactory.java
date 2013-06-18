@@ -138,19 +138,19 @@ public class AddWizardElementFactory implements IAddWizardElementFactory {
 				EDataDomainQueryMode.STRATIFICATIONS));
 
 		state.addState(BROWSE_STRATIFICATIONS, new BrowseStratificationState(
-				"Select a stratification in the Tour Guide to preview.\nThen confirm or cancel your selection."));
+				"Select a stratification in the LineUp to preview.\nThen confirm or cancel your selection."));
 
 		state.addState(ADD_PATHWAY, new SelectStateState("Add pathway", EDataDomainQueryMode.PATHWAYS));
 
 		state.addState(BROWSE_PATHWAY, new BrowsePathwayState(
-				"Select a pathway in the Tour Guide to preview.\n Then confirm or cancel your selection."));
+				"Select a pathway in the LineUp to preview.\n Then confirm or cancel your selection."));
 
 		state.addState(ADD_OTHER,
 				new SelectStateState("Add other data " + toString(EDataDomainQueryMode.OTHER.getAllDataDomains()),
 						EDataDomainQueryMode.OTHER));
 
 		state.addState(BROWSE_OTHER, new BrowseOtherState(
-				"Select a entry in the Tour Guide\nto preview.\n\nThen confirm or cancel your selection."));
+				"Select a entry in the LineUp\nto preview.\n\nThen confirm or cancel your selection."));
 	}
 
 	/**
