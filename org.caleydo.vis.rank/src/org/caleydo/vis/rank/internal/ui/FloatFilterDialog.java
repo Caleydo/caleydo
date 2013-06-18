@@ -63,12 +63,12 @@ public class FloatFilterDialog extends AFilterDialog {
 	@Override
 	protected void createSpecificFilterUI(Composite composite) {
 		filterNotMappedUI = new Button(composite, SWT.CHECK);
-		filterNotMappedUI.setText("Filter Not Mapped Entries?");
+		filterNotMappedUI.setText("Filter not mapped entries?");
 		filterNotMappedUI.setLayoutData(twoColumns(new GridData(SWT.LEFT, SWT.CENTER, true, true)));
 		filterNotMappedUI.setSelection(filterNotMapped);
 
 		filterMissingUI = new Button(composite, SWT.CHECK);
-		filterMissingUI.setText("Filter Missing Value Entries?");
+		filterMissingUI.setText("Filter missing value entries?");
 		filterMissingUI.setLayoutData(twoColumns(new GridData(SWT.LEFT, SWT.CENTER, true, true)));
 		filterMissingUI.setSelection(filterMissing);
 

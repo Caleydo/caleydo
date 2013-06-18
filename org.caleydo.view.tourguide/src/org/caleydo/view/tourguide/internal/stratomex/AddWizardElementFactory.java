@@ -92,7 +92,7 @@ public class AddWizardElementFactory implements IAddWizardElementFactory {
 
 		switch (mode) {
 		case GLOBAL:
-			state.addTransition(addStratification, new SimpleTransition(browseStratification, "Browse List"));
+			state.addTransition(addStratification, new SimpleTransition(browseStratification, "Browse list"));
 			state.addTransition(addNumerical, new SimpleTransition(browseNumerical, "Browse list"));
 			state.addState(ALONE_PATHWAY, new AlonePathwayState());
 
@@ -120,7 +120,7 @@ public class AddWizardElementFactory implements IAddWizardElementFactory {
 			state.addTransition(addNumerical, new SimpleTransition(browseNumerical, "Browse list"));
 			break;
 		case INDEPENDENT:
-			state.addTransition(addStratification, new SimpleTransition(browseStratification, "Browse List"));
+			state.addTransition(addStratification, new SimpleTransition(browseStratification, "Browse list"));
 			break;
 		}
 
@@ -134,19 +134,19 @@ public class AddWizardElementFactory implements IAddWizardElementFactory {
 	}
 
 	private static void addDefaultStates(StateMachineImpl state) {
-		state.addState(ADD_STRATIFICATIONS, new SelectStateState("Add Stratification",
+		state.addState(ADD_STRATIFICATIONS, new SelectStateState("Add stratification",
 				EDataDomainQueryMode.STRATIFICATIONS));
 
 		state.addState(BROWSE_STRATIFICATIONS, new BrowseStratificationState(
 				"Select a stratification in the Tour Guide to preview.\nThen confirm or cancel your selection."));
 
-		state.addState(ADD_PATHWAY, new SelectStateState("Add Pathway", EDataDomainQueryMode.PATHWAYS));
+		state.addState(ADD_PATHWAY, new SelectStateState("Add pathway", EDataDomainQueryMode.PATHWAYS));
 
 		state.addState(BROWSE_PATHWAY, new BrowsePathwayState(
 				"Select a pathway in the Tour Guide to preview.\n Then confirm or cancel your selection."));
 
 		state.addState(ADD_OTHER,
-				new SelectStateState("Add Other Data " + toString(EDataDomainQueryMode.OTHER.getAllDataDomains()),
+				new SelectStateState("Add other data " + toString(EDataDomainQueryMode.OTHER.getAllDataDomains()),
 						EDataDomainQueryMode.OTHER));
 
 		state.addState(BROWSE_OTHER, new BrowseOtherState(

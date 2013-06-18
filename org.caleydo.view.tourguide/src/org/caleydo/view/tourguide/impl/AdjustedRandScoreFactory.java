@@ -192,7 +192,7 @@ public class AdjustedRandScoreFactory implements IScoreFactory {
 		@Override
 		public void create() {
 			super.create();
-			this.getShell().setText("Create a new Adjusted Rand Index Score");
+			this.getShell().setText("Create a new Adjusted Rand Index score");
 			this.setBlockOnOpen(false);
 		}
 
@@ -262,7 +262,7 @@ public class AdjustedRandScoreFactory implements IScoreFactory {
 
 		private boolean validate() {
 			if (dataDomainUI.getSelection() == null)
-				MessageDialog.openError(getParentShell(), "A Data Domain is required", "A Data Domain is required");
+				MessageDialog.openError(getParentShell(), "A data domain is required", "A data domain is required");
 			return true;
 		}
 

@@ -111,7 +111,7 @@ public abstract class ADataDomainElement extends GLButton implements GLButton.IS
 	 * @param creator
 	 */
 	protected void createContextMenu(ContextMenuCreator creator) {
-		creator.addContextMenuItem(new GenericContextMenuItem("Edit Filter", new EditDataDomainFilterEvent().to(this)));
+		creator.addContextMenuItem(new GenericContextMenuItem("Edit filter", new EditDataDomainFilterEvent().to(this)));
 		creator.addSeparator();
 	}
 

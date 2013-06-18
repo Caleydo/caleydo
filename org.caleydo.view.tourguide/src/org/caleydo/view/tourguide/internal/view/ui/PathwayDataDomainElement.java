@@ -43,7 +43,7 @@ public class PathwayDataDomainElement extends ADataDomainElement {
 			Display.getDefault().asyncExec(new Runnable() {
 				@Override
 				public void run() {
-					InputDialog d = new InputDialog(null, "Filter Pathways", "Edit Pathway Regex Filter", getModel()
+					InputDialog d = new InputDialog(null, "Filter pathways", "Edit pathway regex filter", getModel()
 							.getMatches(), null);
 					if (d.open() == Window.OK) {
 						String v = d.getValue().trim();

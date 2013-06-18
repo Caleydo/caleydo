@@ -81,17 +81,14 @@ public class GenomePerspective
 			if (!"org.caleydo.core.views".equals(elem.getAttribute("category"))) // wrong category
 				continue;
 			String id = elem.getAttribute("id");
-			System.out.println(elem.getAttribute("allowMultiple"));
 			boolean allowMultiple = "true".equalsIgnoreCase(elem.getAttribute("allowMultiple"));
 			if (id == null || (initialViews.contains(id) && !allowMultiple)) // part of the initial views skip
 				continue;
 			if (id.startsWith("org.caleydo.view.info")) {
 				// manual
 			} else if (id.startsWith("org.caleydo.view.tool")) {
-				System.out.println("adding bottom placeholder for " + id + (allowMultiple ? ":*" : ""));
 				bottomLayout.addPlaceholder(id + (allowMultiple ? ":*" : ""));
 			} else if (id.startsWith("org.caleydo.view")) {
-				System.out.println("adding main placeholder for " + id + (allowMultiple ? ":*" : ""));
 				mainLayout.addPlaceholder(id + (allowMultiple ? ":*" : ""));
 			}
 		}

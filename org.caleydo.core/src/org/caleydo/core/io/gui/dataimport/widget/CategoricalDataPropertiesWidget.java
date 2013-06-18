@@ -38,7 +38,6 @@ import org.caleydo.core.io.gui.dataimport.widget.table.ITableDataChangeListener;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.color.ColorBrewer;
 import org.caleydo.core.util.color.EColorSchemeType;
-import org.caleydo.core.util.color.mapping.ColorMapper;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -445,7 +444,8 @@ public class CategoricalDataPropertiesWidget implements ITableDataChangeListener
 		Collections.sort(colorSchemes);
 		List<Integer> numColors = new ArrayList<>(colorSchemes.size());
 		for (ColorBrewer scheme : colorSchemes) {
-			numColors.add(determineSchemeSize(scheme));
+			numColors.add(scheme.determineSchemeSize(categoryTable.getRowCount(),
+					isNeutralColorSelected() ? neutralCategoryCombo.getSelectionIndex() - 1 : -1));
 		}
 
 		ChooseColorSchemeDialog dialog = new ChooseColorSchemeDialog(parent.getShell(), colorSchemes, numColors,
@@ -457,43 +457,43 @@ public class CategoricalDataPropertiesWidget implements ITableDataChangeListener
 		}
 	}
 
-	private int determineSchemeSize(ColorBrewer scheme) {
-		int numCategories = categoryTable.getRowCount();
-		if (scheme.getType() != EColorSchemeType.QUALITATIVE && isNeutralColorSelected()) {
-			int neutralCategoryIndex = neutralCategoryCombo.getSelectionIndex();
-			int numUpperCategories = numCategories - (neutralCategoryIndex);
-			int numLowerCategories = neutralCategoryIndex - 1;
-			int numRequiredCategories = Math.max(numUpperCategories, numLowerCategories) * 2 + 1;
-			if (scheme.getSizes().contains(numRequiredCategories)) {
-				return numRequiredCategories;
-			}
-			int maxSize = scheme.getMaxSize();
-			// The scheme should contain one specific neutral color in the middle -> the number of colors has to be odd
-			if (maxSize % 2.0f == 0 && scheme.getSizes().contains(maxSize - 1)) {
-				maxSize = maxSize - 1;
-			}
-			if (numCategories > maxSize) {
-				return maxSize;
-			}
-
-			int minSize = scheme.getMinSize();
-			// The scheme should contain one specific neutral color in the middle -> the number of colors has to be odd
-			if (minSize % 2.0f == 0 && scheme.getSizes().contains(minSize + 1)) {
-				minSize = minSize + 1;
-			}
-			return minSize;
-
-		} else {
-			if (scheme.getSizes().contains(numCategories)) {
-				return numCategories;
-			}
-			int maxSize = scheme.getMaxSize();
-			if (numCategories > maxSize) {
-				return maxSize;
-			}
-			return scheme.getMinSize();
-		}
-	}
+	// private int determineSchemeSize(ColorBrewer scheme) {
+	// int numCategories = categoryTable.getRowCount();
+	// if (scheme.getType() != EColorSchemeType.QUALITATIVE && isNeutralColorSelected()) {
+	// int neutralCategoryIndex = neutralCategoryCombo.getSelectionIndex();
+	// int numUpperCategories = numCategories - (neutralCategoryIndex);
+	// int numLowerCategories = neutralCategoryIndex - 1;
+	// int numRequiredCategories = Math.max(numUpperCategories, numLowerCategories) * 2 + 1;
+	// if (scheme.getSizes().contains(numRequiredCategories)) {
+	// return numRequiredCategories;
+	// }
+	// int maxSize = scheme.getMaxSize();
+	// // The scheme should contain one specific neutral color in the middle -> the number of colors has to be odd
+	// if (maxSize % 2.0f == 0 && scheme.getSizes().contains(maxSize - 1)) {
+	// maxSize = maxSize - 1;
+	// }
+	// if (numCategories > maxSize) {
+	// return maxSize;
+	// }
+	//
+	// int minSize = scheme.getMinSize();
+	// // The scheme should contain one specific neutral color in the middle -> the number of colors has to be odd
+	// if (minSize % 2.0f == 0 && scheme.getSizes().contains(minSize + 1)) {
+	// minSize = minSize + 1;
+	// }
+	// return minSize;
+	//
+	// } else {
+	// if (scheme.getSizes().contains(numCategories)) {
+	// return numCategories;
+	// }
+	// int maxSize = scheme.getMaxSize();
+	// if (numCategories > maxSize) {
+	// return maxSize;
+	// }
+	// return scheme.getMinSize();
+	// }
+	// }
 
 	private List<List<String>> extractCategoryMatrix() {
 		Map<String, Integer> categories = new HashMap<>();
@@ -536,51 +536,58 @@ public class CategoricalDataPropertiesWidget implements ITableDataChangeListener
 	 */
 	private void applyColorScheme(ColorBrewer colorScheme) {
 		List<List<String>> categoryMatrix = categoryTable.getDataMatrix();
-		int numColors = determineSchemeSize(colorScheme);
-		if (colorScheme.getType() == EColorSchemeType.QUALITATIVE) {
-			int colorIndex = 0;
-			List<Color> colors = colorScheme.get(numColors);
-			for (List<String> row : categoryMatrix) {
-				Color color = colors.get(reverseColorScheme ? numColors - colorIndex - 1 : colorIndex);
-				row.set(3, color.getHEX());
-				colorIndex++;
-				if (colorIndex >= colors.size()) {
-					colorIndex = 0;
-				}
-			}
-		} else {
-			ColorMapper colorMapper = colorScheme.asColorMapper(numColors);
-			int neutralCategoryIndex = neutralCategoryCombo.getSelectionIndex();
-			if (isNeutralColorSelected()) {
-
-				float lowerCategoriesMappingValueIncrease = (neutralCategoryIndex == 1) ? 0
-						: 1.0f / (neutralCategoryIndex - 1) * 0.5f;
-				float upperCategoriesMappingValueIncrease = (categoryMatrix.size() == categoryMatrix.size()
-						- neutralCategoryIndex) ? 0 : 1.0f / (categoryMatrix.size() - neutralCategoryIndex) * 0.5f;
-				float currentMappingValue = 0;
-				for (int i = 0; i < categoryMatrix.size(); i++) {
-					if (i == neutralCategoryIndex - 1) {
-						currentMappingValue = 0.5f;
-					} else if (i == categoryMatrix.size() - 1) {
-						currentMappingValue = 1.0f;
-					}
-
-					List<String> row = categoryMatrix.get(i);
-					row.set(3,
-							colorMapper.getColorAsObject(
-									reverseColorScheme ? 1.0f - currentMappingValue : currentMappingValue).getHEX());
-					currentMappingValue += i < (neutralCategoryIndex - 1) ? lowerCategoriesMappingValueIncrease
-							: upperCategoriesMappingValueIncrease;
-				}
-
-			} else {
-				for (int i = 0; i < categoryMatrix.size(); i++) {
-					float value = (float) i / (float) (categoryMatrix.size() - 1);
-					List<String> row = categoryMatrix.get(i);
-					row.set(3, colorMapper.getColorAsObject(reverseColorScheme ? 1.0f - value : value).getHEX());
-				}
-			}
+		List<Color> colors = colorScheme.getColors(categoryMatrix.size(), neutralCategoryCombo.getSelectionIndex() - 1,
+				reverseColorScheme);
+		for (int i = 0; i < categoryMatrix.size(); i++) {
+			List<String> row = categoryMatrix.get(i);
+			row.set(3, colors.get(i).getHEX());
 		}
+
+		// int numColors = determineSchemeSize(colorScheme);
+		// if (colorScheme.getType() == EColorSchemeType.QUALITATIVE) {
+		// int colorIndex = 0;
+		// List<Color> colors = colorScheme.get(numColors);
+		// for (List<String> row : categoryMatrix) {
+		// Color color = colors.get(reverseColorScheme ? numColors - colorIndex - 1 : colorIndex);
+		// row.set(3, color.getHEX());
+		// colorIndex++;
+		// if (colorIndex >= colors.size()) {
+		// colorIndex = 0;
+		// }
+		// }
+		// } else {
+		// ColorMapper colorMapper = colorScheme.asColorMapper(numColors);
+		// int neutralCategoryIndex = neutralCategoryCombo.getSelectionIndex();
+		// if (isNeutralColorSelected()) {
+		//
+		// float lowerCategoriesMappingValueIncrease = (neutralCategoryIndex == 1) ? 0
+		// : 1.0f / (neutralCategoryIndex - 1) * 0.5f;
+		// float upperCategoriesMappingValueIncrease = (categoryMatrix.size() == categoryMatrix.size()
+		// - neutralCategoryIndex) ? 0 : 1.0f / (categoryMatrix.size() - neutralCategoryIndex) * 0.5f;
+		// float currentMappingValue = 0;
+		// for (int i = 0; i < categoryMatrix.size(); i++) {
+		// if (i == neutralCategoryIndex - 1) {
+		// currentMappingValue = 0.5f;
+		// } else if (i == categoryMatrix.size() - 1) {
+		// currentMappingValue = 1.0f;
+		// }
+		//
+		// List<String> row = categoryMatrix.get(i);
+		// row.set(3,
+		// colorMapper.getColorAsObject(
+		// reverseColorScheme ? 1.0f - currentMappingValue : currentMappingValue).getHEX());
+		// currentMappingValue += i < (neutralCategoryIndex - 1) ? lowerCategoriesMappingValueIncrease
+		// : upperCategoriesMappingValueIncrease;
+		// }
+		//
+		// } else {
+		// for (int i = 0; i < categoryMatrix.size(); i++) {
+		// float value = (float) i / (float) (categoryMatrix.size() - 1);
+		// List<String> row = categoryMatrix.get(i);
+		// row.set(3, colorMapper.getColorAsObject(reverseColorScheme ? 1.0f - value : value).getHEX());
+		// }
+		// }
+		// }
 		currentColorScheme = colorScheme;
 		categoryTable.update();
 	}
