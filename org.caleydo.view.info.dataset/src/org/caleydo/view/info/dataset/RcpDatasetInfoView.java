@@ -182,7 +182,7 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 
 			value = url.toExternalForm();
 			if (value.length() > 20)
-				value = value.substring(0, 20) + "...";
+				value = value.substring(0, 20 - 3) + "...";
 			v.setText("<a href=\"" + url.toExternalForm() + "\">" + value + "</a>");
 			v.setToolTipText(url.toExternalForm());
 			v.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false));
