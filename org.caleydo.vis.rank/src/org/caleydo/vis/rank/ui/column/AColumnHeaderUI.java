@@ -161,7 +161,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 					((ICollapseableColumnMixin) model).setCollapsed(false);
 				}
 			});
-			b.setTooltip("Toggle Collapse / Expand of this column");
+			b.setTooltip("Toggle collapse / expand of this column");
 			b.setLayoutData(0);
 			this.add(b, 0);
 
@@ -384,7 +384,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 					m.setShowRankDelta(selected);
 				}
 			});
-			buttons.addButton(b, "Show Rank Delta", RenderStyle.ICON_SHOW_RANK_DELTA, RenderStyle.ICON_HIDE_RANK_DELTA);
+			buttons.addButton(b, "Show rank delta", RenderStyle.ICON_SHOW_RANK_DELTA, RenderStyle.ICON_HIDE_RANK_DELTA);
 		}
 		if (model instanceof ISearchableColumnMixin) {
 			final ISearchableColumnMixin m = (ISearchableColumnMixin) model;
@@ -406,7 +406,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 					m.editCode(get(HIST), context);
 				}
 			});
-			buttons.addButton(b, "Edit Combination Code", RenderStyle.ICON_EDIT_CODE, RenderStyle.ICON_EDIT_CODE);
+			buttons.addButton(b, "Edit combination code", RenderStyle.ICON_EDIT_CODE, RenderStyle.ICON_EDIT_CODE);
 		}
 		if (model instanceof IMappedColumnMixin) {
 			final IMappedColumnMixin m = (IMappedColumnMixin) model;
@@ -468,7 +468,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 						m.setCollapsed(selected);
 					}
 				});
-				buttons.addButton(b, "Toggle Collapse / Expand of this column", RenderStyle.ICON_UNCOLLAPSE,
+				buttons.addButton(b, "Toggle collapse / expand of this column", RenderStyle.ICON_UNCOLLAPSE,
 						RenderStyle.ICON_COLLAPSE);
 			}
 		}
@@ -483,7 +483,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 					m.setCompressed(selected);
 				}
 			});
-			buttons.addButton(b, "Toggle Compress / Unpack of this column", RenderStyle.ICON_COMPRESS,
+			buttons.addButton(b, "Toggle compress / unpack of this column", RenderStyle.ICON_COMPRESS,
 					RenderStyle.ICON_UNCOMPRESS);
 		}
 		if (model instanceof IHideableColumnMixin) {
@@ -496,7 +496,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 						m.hide();
 				}
 			});
-			buttons.addButton(b, "Removes this column", RenderStyle.ICON_HIDE, RenderStyle.ICON_HIDE);
+			buttons.addButton(b, "Remove this column", RenderStyle.ICON_HIDE, RenderStyle.ICON_HIDE);
 		}
 		return buttons;
 	}

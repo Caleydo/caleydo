@@ -55,7 +55,7 @@ public class IntegerFilterDialog extends AFilterDialog {
 	@Override
 	public void create() {
 		super.create();
-		getShell().setText("Edit Filter of Size");
+		getShell().setText("Edit filter of size");
 	}
 
 	@Override

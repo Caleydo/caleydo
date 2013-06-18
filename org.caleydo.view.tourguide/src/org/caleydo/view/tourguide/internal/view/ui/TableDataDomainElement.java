@@ -54,7 +54,7 @@ public class TableDataDomainElement extends ADataDomainElement {
 			Perspective dim = getModel().getDimensionSelection();
 			if (dim == null)
 				dim = dims.iterator().next();
-			GroupContextMenuItem item = new GroupContextMenuItem("Used Dimension Perspective");
+			GroupContextMenuItem item = new GroupContextMenuItem("Used dimension perspective");
 			creator.addContextMenuItem(item);
 			for (Perspective d : dims)
 				item.add(new GenericContextMenuItem(d.getLabel(), EContextMenuType.CHECK,
@@ -70,8 +70,8 @@ public class TableDataDomainElement extends ADataDomainElement {
 			Display.getDefault().asyncExec(new Runnable() {
 				@Override
 				public void run() {
-					InputDialog d = new InputDialog(null, "Filter Table (* = wildcard)",
-							"Edit Record Perspective Filter",
+					InputDialog d = new InputDialog(null, "Filter table (* = wildcard)",
+							"Edit record perspective filter",
 							getModel().getMatches(), null);
 					if (d.open() == Window.OK) {
 						String v = d.getValue().trim();

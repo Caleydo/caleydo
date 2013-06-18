@@ -130,7 +130,7 @@ public class JaccardIndexScoreFactory implements IScoreFactory {
 	public Iterable<ScoreEntry> createGroupEntries(TablePerspective strat, Group group) {
 		Collection<ScoreEntry> col = new ArrayList<>();
 		col.add(new ScoreEntry("Score group", (IScore) createJaccard(null, strat.getRecordPerspective(), group)));
-		col.add(new ScoreEntry("Score group  (Mutual Exclusive)", (IScore) createJaccardME(null,
+		col.add(new ScoreEntry("Score group  (mutual exclusive)", (IScore) createJaccardME(null,
 				strat.getRecordPerspective(), group)));
 		return col;
 	}
@@ -148,7 +148,7 @@ public class JaccardIndexScoreFactory implements IScoreFactory {
 		for (Group group : rs.getVirtualArray().getGroupList()) {
 			composite.add(createJaccardME(null, rs, group));
 		}
-		col.add(new ScoreEntry("Score all groups in column (Mutual Exclusive)", (IScore) composite));
+		col.add(new ScoreEntry("Score all groups in column (mutual exclusive)", (IScore) composite));
 		return col;
 	}
 

@@ -19,26 +19,53 @@
  *******************************************************************************/
 package org.caleydo.core.util.color;
 
-import com.google.common.base.Predicate;
+import java.util.List;
+import java.util.SortedSet;
+
+import org.caleydo.core.util.base.ILabeled;
+import org.caleydo.core.util.color.mapping.ColorMapper;
 
 /**
- * Different types for color schemes.
- *
- * @author Christian Partl
- *
+ * abstract version of a color palette
+ * 
+ * @author Samuel Gratzl
+ * 
  */
-public enum EColorSchemeType {
-	SEQUENTIAL, DIVERGING, QUALITATIVE;
+public interface IColorPalette extends ILabeled {
+	/**
+	 * return a sorted set of available sizes
+	 * 
+	 * @return
+	 */
+	SortedSet<Integer> getSizes();
+
+	/**
+	 * returns a specific palette
+	 * 
+	 * @param size
+	 * @return
+	 */
+	List<Color> get(int size);
+
+	/**
+	 * short cut for {@link #getSizes()} and {@link List#get(int)}
+	 * 
+	 * @param size
+	 * @param index
+	 * @return
+	 */
+	Color get(int size, int index);
+
+	/**
+	 * converts a given palette to a {@link ColorManager}
+	 * 
+	 * @param size
+	 * @return
+	 */
+	ColorMapper asColorMapper(int size);
 
 	/**
 	 * @return
 	 */
-	public Predicate<IColorPalette> isOf() {
-		return new Predicate<IColorPalette>() {
-			@Override
-			public boolean apply(IColorPalette in) {
-				return in.getType() == EColorSchemeType.this;
-			}
-		};
-	}
+	EColorSchemeType getType();
 }

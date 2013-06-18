@@ -83,7 +83,7 @@ public class EditValuesDialog extends Dialog {
 	@Override
 	public void create() {
 		super.create();
-		getShell().setText("Edit Values of row: " + row);
+		getShell().setText("Edit values of row: " + row);
 	}
 
 	@Override

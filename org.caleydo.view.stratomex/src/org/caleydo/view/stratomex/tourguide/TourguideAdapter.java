@@ -284,7 +284,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 		stratomex.addTypePickingTooltipListener("Cancel temporary column", CANCEL_PICKING_TYPE);
 		stratomex.addTypePickingListener(new ActionPickingListener(CANCEL_PICKING_TYPE), CANCEL_PICKING_TYPE);
 
-		stratomex.addTypePickingTooltipListener("Go Back", BACK_PICKING_TYPE);
+		stratomex.addTypePickingTooltipListener("Go back", BACK_PICKING_TYPE);
 		stratomex.addTypePickingListener(new ActionPickingListener(BACK_PICKING_TYPE), BACK_PICKING_TYPE);
 
 
