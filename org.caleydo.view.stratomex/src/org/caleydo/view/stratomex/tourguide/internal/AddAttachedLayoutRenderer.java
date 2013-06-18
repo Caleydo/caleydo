@@ -68,7 +68,7 @@ public class AddAttachedLayoutRenderer extends ALayoutRenderer implements IPicki
 	public void pick(Pick pick) {
 		switch(pick.getPickingMode()) {
 		case MOUSE_OVER:
-			show = pick.getObjectID() == view.getHeaderBrick().getID();
+			show = view.getHeaderBrick() != null && pick.getObjectID() == view.getHeaderBrick().getID();
 			setDisplayListDirty(true);
 			break;
 		default:
