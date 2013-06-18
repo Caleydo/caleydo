@@ -432,8 +432,8 @@ public enum ColorBrewer {
 		List<ColorMarkerPoint> colorMarkerPoints = new ArrayList<>(colors.size());
 
 		int colorCount = 0;
-		double mappingValueDistance = 1d / (colors.size() - 1);
-		float nextMappingValue = 0;
+		// double mappingValueDistance = 1d / (colors.size() - 1);
+		// float nextMappingValue = 0;
 
 		float spread = 0.00001f;
 		// if (type == EColorSchemeType.QUALITATIVE)
@@ -451,7 +451,7 @@ public enum ColorBrewer {
 
 			}
 			colorMarkerPoints.add(point);
-			nextMappingValue += mappingValueDistance;
+			// nextMappingValue += mappingValueDistance;
 			colorCount++;
 		}
 
@@ -460,6 +460,135 @@ public enum ColorBrewer {
 
 	public static Set<ColorBrewer> getSets(int size) {
 		return data.column(size).keySet();
+	}
+
+	/**
+	 * Creates a list of colors for the number of specified colors and the neutral color index from this color scheme.
+	 * Depending on the type of color scheme the returned colors may contain duplicates for qualitative schemes, or
+	 * interpolate between colors for diverging or sequential schemes, if more colors are requested than present.
+	 *
+	 * @param numColors
+	 *            Number of colors that shall be generated.
+	 * @param neutralColorIndex
+	 *            Index of the color that should serve as neutral color. Only considered for diverging color schemes.
+	 *            Specify -1 if there should be no specific neutral color.
+	 * @return List of colors for this color scheme.
+	 */
+	public List<Color> getColors(int numColors, int neutralColorIndex, boolean reverseColorScheme) {
+
+		List<Color> result = new ArrayList<>(numColors);
+
+		int numAvailableColors = determineSchemeSize(numColors, neutralColorIndex);
+		if (getType() == EColorSchemeType.QUALITATIVE) {
+			int colorIndex = 0;
+			List<Color> colors = get(numAvailableColors);
+			for (int i = 0; i < numColors; i++) {
+				Color color = colors.get(reverseColorScheme ? numAvailableColors - colorIndex - 1 : colorIndex);
+				result.add(color);
+				colorIndex++;
+				if (colorIndex >= colors.size()) {
+					colorIndex = 0;
+				}
+			}
+		} else {
+			ColorMapper colorMapper = asColorMapper(numAvailableColors);
+			if (getType() == EColorSchemeType.DIVERGING && neutralColorIndex >= 0) {
+
+				float lowerCategoriesMappingValueIncrease = (neutralColorIndex == 0) ? 0
+						: (1.0f / neutralColorIndex) * 0.5f;
+				float upperCategoriesMappingValueIncrease = (numColors == neutralColorIndex + 1) ? 0
+						: 1.0f / (numColors - neutralColorIndex - 1) * 0.5f;
+				float currentMappingValue = 0;
+				for (int i = 0; i < numColors; i++) {
+					if (i == neutralColorIndex) {
+						currentMappingValue = 0.5f;
+					} else if (i == numColors - 1) {
+						currentMappingValue = 1.0f;
+					}
+
+					result.add(colorMapper.getColorAsObject(reverseColorScheme ? 1.0f - currentMappingValue
+							: currentMappingValue));
+					currentMappingValue += i < neutralColorIndex ? lowerCategoriesMappingValueIncrease
+							: upperCategoriesMappingValueIncrease;
+				}
+
+			} else {
+				for (int i = 0; i < numColors; i++) {
+					float value = i / (float) (numColors - 1);
+					result.add(colorMapper.getColorAsObject(reverseColorScheme ? 1.0f - value : value));
+				}
+			}
+		}
+
+		return result;
+	}
+
+	/**
+	 * Same as {@link #getColors(int, -1, false)}
+	 *
+	 * @param numColors
+	 * @return
+	 */
+	public List<Color> getColors(int numColors) {
+		return getColors(numColors, -1, false);
+	}
+
+	/**
+	 * Same as {@link #getColors(int, int, false)}
+	 *
+	 * @param numColors
+	 * @param neutralColorIndex
+	 * @return
+	 */
+	public List<Color> getColors(int numColors, int neutralColorIndex) {
+		return getColors(numColors, neutralColorIndex, false);
+	}
+
+	/**
+	 * Determines the available size of this color scheme that suits the specifications.
+	 *
+	 * @param numColors
+	 *            Number of colors required.
+	 * @param neutralColorIndex
+	 *            Index of the neutral color. Only valid for diverging color schemes. Use -1 to specify no special
+	 *            neutral color.
+	 * @return
+	 */
+	public int determineSchemeSize(int numColors, int neutralColorIndex) {
+
+		if (getType() == EColorSchemeType.DIVERGING && neutralColorIndex != -1) {
+			int numUpperCategories = numColors - (neutralColorIndex + 1);
+			int numLowerCategories = neutralColorIndex;
+			int numRequiredCategories = Math.max(numUpperCategories, numLowerCategories) * 2 + 1;
+			if (getSizes().contains(numRequiredCategories)) {
+				return numRequiredCategories;
+			}
+			int maxSize = getMaxSize();
+			// The scheme should contain one specific neutral color in the middle -> the number of colors has to be odd
+			if (maxSize % 2.0f == 0 && getSizes().contains(maxSize - 1)) {
+				maxSize = maxSize - 1;
+			}
+			if (numColors > maxSize) {
+				return maxSize;
+			}
+
+			int minSize = getMinSize();
+			// The scheme should contain one specific neutral color in the middle -> the number of colors has to be odd
+			if (minSize % 2.0f == 0 && getSizes().contains(minSize + 1)) {
+				minSize = minSize + 1;
+			}
+			return minSize;
+
+		} else {
+			if (getSizes().contains(numColors)) {
+				return numColors;
+			}
+			int maxSize = getMaxSize();
+			if (numColors > maxSize) {
+				return maxSize;
+			}
+			return getMinSize();
+		}
 	}
 
 	public List<Color> get(int size) {
