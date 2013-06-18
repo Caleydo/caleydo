@@ -42,6 +42,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Shell;
 
@@ -58,6 +59,8 @@ public class ChooseColorSchemeDialog extends Dialog {
 	private ColorBrewer selectedColorScheme;
 
 	private List<Integer> numColors;
+
+	private String explanationText;
 
 	private Set<org.eclipse.swt.graphics.Color> registeredColors = new HashSet<>();
 
@@ -81,7 +84,16 @@ public class ChooseColorSchemeDialog extends Dialog {
 	@Override
 	protected void configureShell(Shell newShell) {
 		super.configureShell(newShell);
-		newShell.setText("Select Color Scheme");
+		if (selectedColorScheme.getType() == EColorSchemeType.DIVERGING) {
+			newShell.setText("Diverging Color Schemes");
+			explanationText = "Showing 'diverging' color schemes for ordinal data since a neutral category was selected. Unselect the neutral category to show 'sequential' color schemes.";
+		} else if (selectedColorScheme.getType() == EColorSchemeType.SEQUENTIAL) {
+			newShell.setText("Sequential Color Schemes");
+			explanationText = "Showing 'sequential' color schemes for ordinal data since no neutral category was selected. Select a neutral category to show 'diverging' color schemes.";
+		} else {
+			newShell.setText("Qualitative Color Schemes");
+			explanationText = "Showing 'sequential' color schemes for nominal data.";
+		}
 	}
 
 	@Override
@@ -115,6 +127,12 @@ public class ChooseColorSchemeDialog extends Dialog {
 				createGradientPreview(colorSchemeGroup, scheme, numColors.get(i));
 			}
 		}
+
+		Label explanationLabel = new Label(parentComposite, SWT.WRAP);
+		explanationLabel.setText(explanationText);
+		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, true);
+		gd.widthHint = 400;
+		explanationLabel.setLayoutData(gd);
 
 		Link colorBrewerLink = new Link(parentComposite, SWT.NONE);
 		colorBrewerLink.setText("Color schemes taken from <A>http://www.ColorBrewer.org</A>");
