@@ -33,6 +33,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
+import javax.xml.bind.JAXB;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -162,6 +163,23 @@ public final class ProjectManager {
 			}
 			bundle.start();
 		}
+	}
+
+	/**
+	 * checks whether the unpacked project at the given location is compatible with this version using the project
+	 * metadata
+	 * 
+	 * @param unpackedProjectLocation
+	 * @return true if it can be loaded
+	 */
+	public static boolean checkCompatibility(String dirName) {
+		File metaData = new File(dirName, METADATA_FILE);
+		if (!metaData.exists())
+			return false;
+		ProjectMetaData data = JAXB.unmarshal(metaData, ProjectMetaData.class);
+		if (data == null)
+			return false;
+		return GeneralManager.VERSION.equalsIgnoreCase(data.getVersion());
 	}
 
 	private static SerializationData loadData(String dirName) throws IOException, JAXBException {

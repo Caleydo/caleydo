@@ -47,7 +47,18 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 		this.startup = startup;
 	}
 	@Override
-	public WorkbenchWindowAdvisor createWorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer) {
+	public WorkbenchWindowAdvisor createWorkbenchWindowAdvisor(final IWorkbenchWindowConfigurer configurer) {
+		// Init the core because the workbench must already be initialized for
+		// the XML startup progress bar
+
+		configurer.setTitle("Caleydo - unsaved project");
+		startup.run(new Function<String, Void>() {
+			@Override
+			public Void apply(String data) {
+				configurer.setTitle(data);
+				return null;
+			}
+		});
 		return new ApplicationWorkbenchWindowAdvisor(configurer);
 	}
 
@@ -129,18 +140,6 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 		 */
 		public ApplicationWorkbenchWindowAdvisor(final IWorkbenchWindowConfigurer configurer) {
 			super(configurer);
-
-			// Init the core because the workbench must already be initialized for
-			// the XML startup progress bar
-
-			configurer.setTitle("Caleydo - unsaved project");
-			startup.run(new Function<String, Void>() {
-				@Override
-				public Void apply(String data) {
-					configurer.setTitle(data);
-					return null;
-				}
-			});
 		}
 
 		@Override

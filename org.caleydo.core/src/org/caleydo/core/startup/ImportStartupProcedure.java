@@ -43,8 +43,8 @@ public class ImportStartupProcedure implements IStartupProcedure {
 	}
 
 	@Override
-	public void preWorkbenchOpen() {
-
+	public boolean preWorkbenchOpen() {
+		return true;
 	}
 
 	@Override

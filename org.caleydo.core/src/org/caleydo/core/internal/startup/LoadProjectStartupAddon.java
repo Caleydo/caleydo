@@ -32,6 +32,8 @@ import org.caleydo.core.startup.IStartupProcedure;
 import org.caleydo.core.startup.LoadProjectStartupProcedure;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
@@ -205,6 +207,18 @@ public class LoadProjectStartupAddon implements IStartupAddon {
 					projectLocationUI.setText(fileName);
 					page.setPageComplete(true);
 				}
+			}
+		});
+		projectLocationUI.addFocusListener(new FocusListener() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				if (projectLocationUI.getText().length() > 0 && validatePath(projectLocationUI.getText()))
+					page.setPageComplete(true);
+			}
+
+			@Override
+			public void focusGained(FocusEvent e) {
+
 			}
 		});
 

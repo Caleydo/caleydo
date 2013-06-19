@@ -40,6 +40,7 @@ import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.system.FileOperations;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.dialogs.MessageDialog;
 
 import com.google.common.base.Function;
 
@@ -63,14 +64,22 @@ public class LoadProjectStartupProcedure implements IStartupProcedure {
 	}
 
 	@Override
-	public void preWorkbenchOpen() {
+	public boolean preWorkbenchOpen() {
 		if (this.packedProjectLocation != null) {
 			// unzip data
 			FileOperations.deleteDirectory(this.unpackedProjectLocation);
 			ZipUtils.unzipToDirectory(this.packedProjectLocation, this.unpackedProjectLocation);
 		}
 
+		if (!ProjectManager.checkCompatibility(this.unpackedProjectLocation)){
+			Logger.create(LoadProjectStartupProcedure.class).error(
+					"incompatible project: " + this.packedProjectLocation);
+			MessageDialog.openError(null, "Error incompatible project", "the project file:\n"+this.packedProjectLocation+"\n\nis not compatible with the this Caleydo version");
+			return false;
+		}
+
 		ProjectManager.loadWorkbenchData(this.unpackedProjectLocation);
+		return true;
 	}
 
 	@Override
