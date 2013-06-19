@@ -4,12 +4,14 @@
 package org.caleydo.core.io.gui.dataimport.wizard;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.io.DataSetDescription;
+import org.caleydo.core.io.FileUtil;
 import org.caleydo.core.io.GroupingParseSpecification;
 import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.io.IDTypeParsingRules;
@@ -113,6 +115,16 @@ public class LoadDataSetPageMediator {
 	 */
 	protected IDTypeParsingRules columnIDTypeParsingRules;
 
+	/**
+	 * Determines whether the file was transposed.
+	 */
+	protected boolean isTransposed = false;
+
+	/**
+	 * The transposed version of the input file.
+	 */
+	protected File transposedDataFile;
+
 	protected boolean datasetChanged = true;
 
 	public LoadDataSetPageMediator(LoadDataSetPage page, DataSetDescription dataSetDescription) {
@@ -143,7 +155,29 @@ public class LoadDataSetPageMediator {
 		dataSetDescription.setRowIDSpecification(null);
 		dataSetDescription.setColumnIDSpecification(null);
 		initWidgets();
+		isTransposed = false;
+		transposedDataFile = null;
 		setDataSetChanged(true);
+	}
+
+	public void transposeFile() {
+		isTransposed = !isTransposed;
+		if (isTransposed && transposedDataFile == null) {
+			loadTransposedFile();
+		}
+		initWidgets();
+		setDataSetChanged(true);
+	}
+
+	private void loadTransposedFile() {
+		try {
+			transposedDataFile = File.createTempFile("tmptransposed", "txt");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		FileUtil.transposeCSV(page.loadFile.getFileName(), transposedDataFile.getAbsolutePath(),
+				page.delimiterRadioGroup.getDelimeter());
 	}
 
 	private void initWidgets() {
@@ -151,11 +185,13 @@ public class LoadDataSetPageMediator {
 		String inputFileName = dataSetDescription.getDataSourcePath();
 		boolean fileSpecified = dataSetDescription.getDataSourcePath() != null;
 
-		page.loadFile.setFileName(fileSpecified ? inputFileName : "");
+		if (!isTransposed) {
+			page.loadFile.setFileName(fileSpecified ? inputFileName : "");
 
-		page.label.setText(fileSpecified ? inputFileName.substring(inputFileName.lastIndexOf(File.separator) + 1,
-				inputFileName.lastIndexOf(".")) : "");
-		page.label.setEnabled(fileSpecified);
+			page.label.setText(fileSpecified ? inputFileName.substring(inputFileName.lastIndexOf(File.separator) + 1,
+					inputFileName.lastIndexOf(".")) : "");
+			page.label.setEnabled(fileSpecified);
+		}
 
 		fillIDCategoryCombo(page.rowIDCategoryCombo);
 		page.rowIDCategoryCombo.setEnabled(fileSpecified);
@@ -520,7 +556,11 @@ public class LoadDataSetPageMediator {
 
 	public void onDelimiterChanged(String delimiter) {
 		dataSetDescription.setDelimiter(delimiter);
+		if (isTransposed) {
+			loadTransposedFile();
+		}
 		createDataPreviewTableFromFile();
+
 		setDataSetChanged(true);
 	}
 
@@ -538,7 +578,8 @@ public class LoadDataSetPageMediator {
 	// }
 
 	public void createDataPreviewTableFromFile() {
-		parser.parse(dataSetDescription.getDataSourcePath(), dataSetDescription.getDelimiter(), true, -1);
+		parser.parse(isTransposed ? transposedDataFile.getAbsolutePath() : dataSetDescription.getDataSourcePath(),
+				dataSetDescription.getDelimiter(), true, -1);
 		dataMatrix = parser.getDataMatrix();
 		totalNumberOfColumns = parser.getTotalNumberOfColumns();
 		totalNumberOfRows = parser.getTotalNumberOfRows();
@@ -812,7 +853,8 @@ public class LoadDataSetPageMediator {
 		// dataSetDescription.setDataHomogeneous(page.buttonHomogeneous.getSelection());
 		dataSetDescription.setDataSetName(page.label.getText());
 
-		dataSetDescription.setDataSourcePath(page.loadFile.getFileName());
+		dataSetDescription.setDataSourcePath(isTransposed ? transposedDataFile.getAbsolutePath() : page.loadFile
+				.getFileName());
 		// readDimensionDefinition();
 
 		List<List<String>> matrix = parser.getDataMatrix();

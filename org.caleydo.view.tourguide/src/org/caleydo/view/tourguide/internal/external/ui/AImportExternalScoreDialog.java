@@ -200,7 +200,7 @@ public abstract class AImportExternalScoreDialog<T extends AExternalScoreParseSp
 			public void on(int numColumn, int numRow, List<? extends List<String>> dataMatrix) {
 				onPreviewChanged(numColumn, numRow, dataMatrix);
 			}
-		});
+		}, false);
 
 
 		init(parent.getDisplay());
@@ -315,7 +315,7 @@ public abstract class AImportExternalScoreDialog<T extends AExternalScoreParseSp
 
 		this.label.setEnabled(true);
 
-		this.previewTable.generatePreview();
+		this.previewTable.generatePreview(true);
 	}
 
 	protected void onPreviewChanged(int totalNumberOfColumns, int totalNumberOfRows,

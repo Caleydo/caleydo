@@ -17,13 +17,10 @@
 package org.caleydo.data.importer.tcga;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -40,6 +37,7 @@ import org.caleydo.core.io.DataDescription;
 import org.caleydo.core.io.DataProcessingDescription;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.DataSetDescription.ECreateDefaultProperties;
+import org.caleydo.core.io.FileUtil;
 import org.caleydo.core.io.GroupingParseSpecification;
 import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.io.IDTypeParsingRules;
@@ -330,6 +328,7 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 			return null;
 
 		File out = new File(clinicalFile.getParentFile(), "T" + clinicalFile.getName());
+
 		transposeCSV(clinicalFile.getPath(), out.getPath());
 
 		DataSetDescription dataSet = new DataSetDescription();
@@ -387,43 +386,45 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 
 	private void transposeCSV(String fileName, String fileNameOut) {
 		log.info("tranposing: " + fileName);
-		File in = new File(fileName);
+		// File in = new File(fileName);
 		File out = new File(fileNameOut);
 
 		if (out.exists() && !settings.isCleanCache())
 			return;
 
-		List<String> data;
-		try {
-			data = Files.readAllLines(in.toPath(), Charset.defaultCharset());
-		} catch (IOException e2) {
-			e2.printStackTrace();
-			return;
-		}
-		// split into parts
-		String[][] parts = new String[data.size()][];
-		int maxCol = -1;
-		for (int i = 0; i < data.size(); ++i) {
-			parts[i] = data.get(i).split("\t");
-			if (parts[i].length > maxCol)
-				maxCol = parts[i].length;
-		}
-		data = null;
-
-		try (BufferedWriter writer = Files.newBufferedWriter(out.toPath(), Charset.defaultCharset())) {
-			for (int c = 0; c < maxCol; ++c) {
-				for (int i = 0; i < parts.length; ++i) {
-					if (i > 0)
-						writer.append('\t');
-					String[] p = parts[i];
-					if (p.length > c)
-						writer.append(p[c]);
-				}
-				writer.newLine();
-			}
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		FileUtil.transposeCSV(fileName, fileNameOut, "\t");
+		//
+		// List<String> data;
+		// try {
+		// data = Files.readAllLines(in.toPath(), Charset.defaultCharset());
+		// } catch (IOException e2) {
+		// e2.printStackTrace();
+		// return;
+		// }
+		// // split into parts
+		// String[][] parts = new String[data.size()][];
+		// int maxCol = -1;
+		// for (int i = 0; i < data.size(); ++i) {
+		// parts[i] = data.get(i).split("\t");
+		// if (parts[i].length > maxCol)
+		// maxCol = parts[i].length;
+		// }
+		// data = null;
+		//
+		// try (BufferedWriter writer = Files.newBufferedWriter(out.toPath(), Charset.defaultCharset())) {
+		// for (int c = 0; c < maxCol; ++c) {
+		// for (int i = 0; i < parts.length; ++i) {
+		// if (i > 0)
+		// writer.append('\t');
+		// String[] p = parts[i];
+		// if (p.length > c)
+		// writer.append(p[c]);
+		// }
+		// writer.newLine();
+		// }
+		// } catch (IOException e1) {
+		// // TODO Auto-generated catch block
+		// e1.printStackTrace();
+		// }
 	}
 }

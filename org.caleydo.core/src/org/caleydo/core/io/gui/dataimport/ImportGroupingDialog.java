@@ -146,7 +146,7 @@ public class ImportGroupingDialog extends AHelpButtonDialog implements SafeCalla
 			public void on(int numColumn, int numRow, List<? extends List<String>> dataMatrix) {
 				onPreviewChanged(numColumn, numRow, dataMatrix);
 			}
-		});
+		}, true);
 
 		init();
 
@@ -246,7 +246,7 @@ public class ImportGroupingDialog extends AHelpButtonDialog implements SafeCalla
 		this.label.setEnabled(true);
 		this.rowConfig.setEnabled(true);
 
-		this.previewTable.generatePreview();
+		this.previewTable.generatePreview(true);
 		// this.parentComposite.layout(true, true);
 	}
 

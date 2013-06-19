@@ -15,6 +15,7 @@ import org.caleydo.core.io.gui.dataimport.widget.IntegerCallback;
 import org.caleydo.core.io.gui.dataimport.widget.LabelWidget;
 import org.caleydo.core.io.gui.dataimport.widget.LoadFileWidget;
 import org.caleydo.core.io.gui.dataimport.widget.SelectAllNoneWidget;
+import org.caleydo.core.io.gui.dataimport.widget.table.INoArgumentCallback;
 import org.caleydo.core.io.gui.dataimport.widget.table.PreviewTableWidget;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
@@ -269,6 +270,12 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 			@Override
 			public void on(int data) {
 				mediator.setDataSetChanged(true);
+			}
+		}, true, new INoArgumentCallback() {
+
+			@Override
+			public void on() {
+				mediator.transposeFile();
 			}
 		});
 		// , new BooleanCallback() {
