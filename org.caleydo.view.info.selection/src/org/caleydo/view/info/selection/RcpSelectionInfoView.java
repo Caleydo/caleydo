@@ -39,10 +39,12 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ITreeContentProvider;
+import org.eclipse.jface.viewers.ITreeSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.StyledCellLabelProvider;
 import org.eclipse.jface.viewers.StyledString;
+import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerCell;
@@ -106,9 +108,13 @@ public class RcpSelectionInfoView extends CaleydoRCPViewPart implements IEventBa
 		selectionTree.addFilter(new ViewerFilter() {
 			@Override
 			public boolean select(Viewer viewer, Object parentElement, Object element) {
-				if (element instanceof CategoryItem)
+				if (element instanceof CategoryItem && !isSelected(element, false)) {
 					return ((CategoryItem) element).getTotal() > 0;
-				if (element instanceof SelectionTypeItem)
+				}
+				// if selected or parent selected and a default one
+				if (element instanceof SelectionTypeItem
+						&& !(isSelected(element, true) || (isSelected(parentElement, true) && ((SelectionTypeItem) element)
+								.isDefaultOne())))
 					return ((SelectionTypeItem) element).size() > 0;
 				return true;
 			}
@@ -119,6 +125,27 @@ public class RcpSelectionInfoView extends CaleydoRCPViewPart implements IEventBa
 		selectionTree.setInput(this.categories);
 
 		addToolBarContent();
+	}
+
+	/**
+	 * @param element
+	 * @param checkParents
+	 * @return
+	 */
+	protected boolean isSelected(Object element, boolean leafesOnly) {
+		ITreeSelection selection = (ITreeSelection)selectionTree.getSelection();
+		for (TreePath path : selection.getPaths()) {
+			if (leafesOnly) {
+				if (path.getLastSegment() == element)
+					return true;
+			} else {
+				for (int i = 0; i < path.getSegmentCount(); ++i) {
+					if (path.getSegment(i) == element)
+						return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	@Override
@@ -291,6 +318,10 @@ public class RcpSelectionInfoView extends CaleydoRCPViewPart implements IEventBa
 
 	@Override
 	public synchronized void notifyOfSelectionChange(final EventBasedSelectionManager selectionManager) {
+		if (parentComposite.isDisposed()) {
+			unregisterEventListeners();
+			return;
+		}
 		parentComposite.getDisplay().asyncExec(new Runnable() {
 			@Override
 			public void run() {
@@ -298,6 +329,10 @@ public class RcpSelectionInfoView extends CaleydoRCPViewPart implements IEventBa
 				for (CategoryItem item : categories)
 					if (item.getCategory() == target) {
 						item.update();
+						for (SelectionTypeItem s : item.getChildren()) {
+							if (s.size() > 0 && s.size() <= 4 && !selectionTree.getExpandedState(s))
+								selectionTree.setExpandedState(s, true);
+						}
 						// selectionTree.setHasChildren(item, item.getTotal() > 0);
 						break;
 					}
