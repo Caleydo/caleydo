@@ -20,6 +20,7 @@
 package org.caleydo.view.info.selection.model;
 
 import java.util.NavigableSet;
+import java.util.Set;
 import java.util.TreeSet;
 
 import org.caleydo.core.data.selection.SelectionType;
@@ -52,9 +53,11 @@ public class SelectionTypeItem implements ILabeled, Comparable<SelectionTypeItem
 
 	public NavigableSet<ElementItem> getChildren() {
 		NavigableSet<ElementItem> items = new TreeSet<>();
-		for(Integer id : parent.getManager().getElements(selectionType)) {
-			items.add(new ElementItem(this, id, parent.toLabel(id)));
-		}
+		Set<Integer> elements = parent.getManager().getElements(selectionType);
+		if (elements != null)
+			for (Integer id : elements) {
+				items.add(new ElementItem(this, id, parent.toLabel(id)));
+			}
 		return items;
 	}
 
@@ -83,6 +86,10 @@ public class SelectionTypeItem implements ILabeled, Comparable<SelectionTypeItem
 	@Override
 	public String getLabel() {
 		return selectionType.getType();
+	}
+
+	public boolean isDefaultOne() {
+		return selectionType == SelectionType.SELECTION || selectionType == SelectionType.MOUSE_OVER;
 	}
 
 	@Override

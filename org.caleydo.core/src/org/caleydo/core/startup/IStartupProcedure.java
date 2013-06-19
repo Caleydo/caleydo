@@ -22,9 +22,9 @@ package org.caleydo.core.startup;
 import com.google.common.base.Function;
 
 /**
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public interface IStartupProcedure {
 
@@ -32,14 +32,14 @@ public interface IStartupProcedure {
 	 * Initialization stuff that has to be done before the workbench opens
 	 * (e.g., copying the workbench data from a serialized project).
 	 */
-	void preWorkbenchOpen();
+	boolean preWorkbenchOpen();
 
 	/**
 	 * the actual work of this startup procedure
-	 * 
+	 *
 	 * @param setTitle
 	 *            callback for setting the window title
-	 * @return
+	 * @return whether the procedure was successful
 	 */
 	boolean run(Function<String, Void> setTitle);
 

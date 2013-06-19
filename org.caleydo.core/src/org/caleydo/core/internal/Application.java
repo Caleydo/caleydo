@@ -77,7 +77,10 @@ public class Application implements IApplication {
 				return EXIT_OK; // unstartable
 			startups = null; // cleanup
 
-			startup.preWorkbenchOpen();
+			if (!startup.preWorkbenchOpen()) {
+				log.info("error during pre workbench open of: " + startup);
+				return EXIT_OK;
+			}
 
 			ApplicationWorkbenchAdvisor advisor = new ApplicationWorkbenchAdvisor(startup);
 

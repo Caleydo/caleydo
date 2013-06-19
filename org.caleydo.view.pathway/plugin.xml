@@ -4,7 +4,6 @@
    <extension
          point="org.eclipse.ui.views">
       <view
-            allowMultiple="true"
             category="org.caleydo.core.views"
             class="org.caleydo.view.pathway.RcpGLPathwayView"
             icon="resources/icons/pathway.png"

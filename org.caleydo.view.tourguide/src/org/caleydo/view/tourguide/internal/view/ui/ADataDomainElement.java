@@ -29,6 +29,7 @@ public abstract class ADataDomainElement extends GLButton implements GLButton.IS
 
 	public ADataDomainElement(ADataDomainQuery model) {
 		this.model = model;
+		setHasFilter(model.hasFilter());
 		setLayoutData(model);
 		setMode(EButtonMode.CHECKBOX);
 		setSize(-1, 18);
@@ -132,7 +133,8 @@ public abstract class ADataDomainElement extends GLButton implements GLButton.IS
 
 		float tw = Math.min(g.text.getTextWidth(getLabel(), 14), w - 18 - 18);
 		g.drawText(getLabel(), 18, 1, w - 18 - 18, 14);
-		g.fillImage(hasFilter ? ICON_FILTER : ICON_FILTER_DISABLED, 18 + tw + 2, 2, 12, 12);
+		if (model.isFilteringPossible())
+			g.fillImage(hasFilter ? ICON_FILTER : ICON_FILTER_DISABLED, 18 + tw + 2, 2, 12, 12);
 	}
 
 	protected String getLabel() {
