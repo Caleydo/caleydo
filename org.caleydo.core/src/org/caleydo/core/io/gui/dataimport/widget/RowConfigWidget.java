@@ -80,13 +80,13 @@ public class RowConfigWidget {
 		leftConfigGroupPart.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
 		Label idCategoryLabel = new Label(leftConfigGroupPart, SWT.SHADOW_ETCHED_IN);
-		idCategoryLabel.setText("Row ID Class");
+		idCategoryLabel.setText("Row Type");
 		idCategoryLabel.setLayoutData(new GridData(SWT.LEFT));
 		this.categoryIDLabel = new Label(leftConfigGroupPart, SWT.NONE);
 		categoryIDLabel.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 2, 1));
 
 		Label idTypeLabel = new Label(leftConfigGroupPart, SWT.SHADOW_ETCHED_IN);
-		idTypeLabel.setText("Row ID Type");
+		idTypeLabel.setText("Row Identifier");
 		idTypeLabel.setLayoutData(new GridData(SWT.LEFT));
 		this.rowIDCombo = new Combo(leftConfigGroupPart, SWT.DROP_DOWN | SWT.READ_ONLY);
 		rowIDCombo.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));

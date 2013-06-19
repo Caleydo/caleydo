@@ -114,7 +114,7 @@ public class CreateIDTypeDialog extends Dialog {
 	@Override
 	protected void configureShell(Shell newShell) {
 		super.configureShell(newShell);
-		newShell.setText(mediator.isCreateIDCategory() ? "Create ID Class" : "Create ID Type");
+		newShell.setText(mediator.isCreateIDCategory() ? "Create Type" : "Create Identifier");
 	}
 
 	@Override
@@ -124,7 +124,7 @@ public class CreateIDTypeDialog extends Dialog {
 		parentComposite.setLayout(new GridLayout(2, false));
 
 		Label categoryIDLabel = new Label(parentComposite, SWT.NONE);
-		categoryIDLabel.setText("ID Class name");
+		categoryIDLabel.setText("Type name");
 
 		categoryNameTextField = new Text(parentComposite, SWT.BORDER);
 		categoryNameTextField.addModifyListener(new ModifyListener() {
@@ -142,7 +142,7 @@ public class CreateIDTypeDialog extends Dialog {
 		dataTypeCombo.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
 		Label idTypeLabel = new Label(parentComposite, SWT.NONE);
-		idTypeLabel.setText("ID type name");
+		idTypeLabel.setText("Identifier name");
 
 		typeNameTextField = new Text(parentComposite, SWT.BORDER);
 		typeNameTextField.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));

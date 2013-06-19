@@ -208,7 +208,7 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 		datasetConfigGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 3, 1));
 		Label homogenetyExplanation = new Label(datasetConfigGroup, SWT.WRAP);
 		homogenetyExplanation
-				.setText("Inhomogeneous datasets have a different meaning for every column and do not need to be of the same data type or ID Type. For example, you could load a table where in one column contains the sex of patients while the next column contains their age.\n"
+				.setText("Inhomogeneous datasets have a different meaning for every column and do not need to be of the same data type or identifier. For example, you could load a table where in one column contains the sex of patients while the next column contains their age.\n"
 						+ "In homogeneous datasets every column is of the same type and has the same bounds. For example, in a file with normalized gene expression data all columns are of the same type and have the same bounds. This is also true for categorical data where the cateogries are global across all columns. ");
 		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, false, 3, 1);
 		gd.widthHint = 400;
@@ -294,7 +294,7 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 		leftConfigGroupPart.setLayout(new GridLayout(2, false));
 		leftConfigGroupPart.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
-		createIDCategoryGroup(leftConfigGroupPart, "Row ID Class", false);
+		createIDCategoryGroup(leftConfigGroupPart, "Row Type", false);
 		createIDTypeGroup(leftConfigGroupPart, false);
 
 		Label startParseAtLineLabel = new Label(leftConfigGroupPart, SWT.NONE);
@@ -391,7 +391,7 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 		leftConfigGroupPart.setLayout(new GridLayout(2, false));
 		leftConfigGroupPart.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
-		createIDCategoryGroup(leftConfigGroupPart, "Column ID Class", true);
+		createIDCategoryGroup(leftConfigGroupPart, "Column Type", true);
 		createIDTypeGroup(leftConfigGroupPart, true);
 
 		Label rowOfColumnIDLabel = new Label(leftConfigGroupPart, SWT.NONE);
@@ -446,11 +446,11 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 
 	private void createIDTypeGroup(Composite parent, final boolean isColumnIDTypeGroup) {
 		Label idTypeLabel = new Label(parent, SWT.SHADOW_ETCHED_IN);
-		idTypeLabel.setText(isColumnIDTypeGroup ? "Column ID Type" : "Row ID Type");
+		idTypeLabel.setText(isColumnIDTypeGroup ? "Column Identifier" : "Row Identifier");
 
 		idTypeLabel.setLayoutData(new GridData(SWT.LEFT));
 		Combo idCombo = new Combo(parent, SWT.DROP_DOWN | SWT.READ_ONLY);
-		idCombo.setToolTipText("ID types are used to identify rows and columns and map them to other datasets or query public databases.");
+		idCombo.setToolTipText("Identifiers are used to identify rows and columns and map them to other datasets or query public databases.");
 
 		idCombo.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
