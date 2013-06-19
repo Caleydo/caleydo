@@ -33,7 +33,7 @@ public class OpenViewItem extends AContextMenuItem {
 
 	public OpenViewItem(IView view) {
 
-		setLabel("Open View");
+		setLabel("Open view");
 
 		// ARcpGLViewPart viewPart = GeneralManager.get().getViewManager()
 		// .getViewPartFromView(view);

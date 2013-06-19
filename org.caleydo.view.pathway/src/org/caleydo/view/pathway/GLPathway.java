@@ -33,6 +33,7 @@ import java.util.Set;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataSupportDefinition;
 import org.caleydo.core.data.perspective.table.TablePerspective;
@@ -540,10 +541,12 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 					contextMenuCreator.addContextMenuItem(menuItem);
 
 				} else if (vertexRep.getType() == EPathwayVertexType.gene) {
-					if (!isRenderedRemote()) {
+					if (!isRenderedRemote() && !tablePerspectives.isEmpty()) {
+						ATableBasedDataDomain datadomain = tablePerspectives.get(0).getDataDomain();
 						for (PathwayVertex pathwayVertex : vertexRep.getPathwayVertices()) {
 							for (Integer davidID : pathwayItemManager.getDavidIdByPathwayVertex(pathwayVertex)) {
 								GeneMenuItemContainer contexMenuItemContainer = new GeneMenuItemContainer();
+								contexMenuItemContainer.setDataDomain(datadomain);
 								contexMenuItemContainer.setData(pathwayDataDomain.getDavidIDType(), davidID);
 								contextMenuCreator.addContextMenuItemContainer(contexMenuItemContainer);
 							}

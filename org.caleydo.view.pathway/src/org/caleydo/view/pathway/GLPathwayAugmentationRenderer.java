@@ -921,4 +921,11 @@ public class GLPathwayAugmentationRenderer {
 		this.mappingPerspective = mappingPerspective;
 	}
 
+	/**
+	 * @return the mappingPerspective, see {@link #mappingPerspective}
+	 */
+	public TablePerspective getMappingPerspective() {
+		return mappingPerspective;
+	}
+
 }

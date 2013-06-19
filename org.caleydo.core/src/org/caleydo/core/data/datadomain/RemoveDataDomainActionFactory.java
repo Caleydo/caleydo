@@ -36,7 +36,8 @@ public class RemoveDataDomainActionFactory implements IDataDomainActionFactory {
 	public Collection<Pair<String, ? extends AEvent>> create(IDataDomain dataDomain, Object sender) {
 		Collection<Pair<String, ? extends AEvent>> r = new ArrayList<>(1);
 		if (dataDomain instanceof ATableBasedDataDomain)
-			r.add(Pair.make("Remove Data Set", new AskRemoveDataDomainEvent(dataDomain)));
+			r.add(Pair.make("Remove " + dataDomain.getProviderName().toLowerCase(), new AskRemoveDataDomainEvent(
+					dataDomain)));
 		return r;
 	}
 }

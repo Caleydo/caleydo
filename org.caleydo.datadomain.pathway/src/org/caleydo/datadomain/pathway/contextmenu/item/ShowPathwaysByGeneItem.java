@@ -49,7 +49,7 @@ public class ShowPathwaysByGeneItem extends AContextMenuItem {
 	 */
 	public ShowPathwaysByGeneItem(PathwayDataDomain dataDomain) {
 		super();
-		setLabel("Load Pathways");
+		setLabel("Load pathways");
 	}
 
 	/**

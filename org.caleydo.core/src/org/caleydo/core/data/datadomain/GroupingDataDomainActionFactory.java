@@ -39,14 +39,14 @@ public class GroupingDataDomainActionFactory implements IDataDomainActionFactory
 		if (dataDomain instanceof ATableBasedDataDomain) {
 			ATableBasedDataDomain d = (ATableBasedDataDomain) dataDomain;
 
-			r.add(Pair.make("Load Grouping for " + d.getDimensionIDCategory().getCategoryName(), new LoadGroupingEvent(
+			r.add(Pair.make("Load grouping for " + d.getDimensionIDCategory().getCategoryName(), new LoadGroupingEvent(
 					d, d.getDimensionIDCategory()).from(sender)));
-			r.add(Pair.make("Load Grouping for " + d.getRecordIDCategory().getCategoryName(), new LoadGroupingEvent(d,
+			r.add(Pair.make("Load grouping for " + d.getRecordIDCategory().getCategoryName(), new LoadGroupingEvent(d,
 					d.getRecordIDCategory()).from(sender)));
 			r.add(Pair.make(
-					"Create Grouping for " + d.getDimensionIDCategory().getCategoryName() + " using Clustering",
+					"Create grouping for " + d.getDimensionIDCategory().getCategoryName() + " using Clustering",
 					new CreateClusteringEvent(d, true).from(sender)));
-			r.add(Pair.make("Create Grouping for " + d.getRecordIDCategory().getCategoryName() + " using Clustering",
+			r.add(Pair.make("Create grouping for " + d.getRecordIDCategory().getCategoryName() + " using Clustering",
 					new CreateClusteringEvent(d, false).from(sender)));
 		}
 		return r;
