@@ -21,9 +21,7 @@
 # Copyright (C) 2009, 2012 Alexander Lex - alexander.lex@icg.tugraz.at
 #
 
-
 # Requires alien to be installed. Run  sudo apt-get install alien
-
 mount_point="/mnt/webdav"
 # the folder on the webserver where the packages are placed
 download_folder=$mount_point"/download"
@@ -112,30 +110,36 @@ move_file()
 create_zip_packages()
 {  
   echo -n "Creating linux_x86-32 tar"
+  touch $linux32_folder"/caleydo/linux.gtk.x86.txt"
   tar -czf $export_path/caleydo_$version_number"_linux_x86-32.tar.gz" -C $linux32_folder  caleydo
   echo ".... [x] done"
   
   echo -n "Creating linux_x86-64 tar"
+  touch $linux64_folder"/caleydo/linux_x86-64.txt"
   tar -czf $export_path/caleydo_$version_number"_linux_x86-64.tar.gz" -C $linux64_folder caleydo
   echo ".... [x] done"
  
   echo -n "Creating win32.x86 zip"
   cd $win32_folder
+  touch "caleydo/win_x86-32.txt"
   zip -q -r $export_path/caleydo_$version_number"_win_x86-32.zip" caleydo
   echo ".... [x] done"
   
   echo -n "Creating win32.x86-64 zip"
   cd $win64_folder
+  touch "caleydo/win_x86-64.txt"
   zip -q -r $export_path/caleydo_$version_number"_win_x86-64.zip" caleydo 
   echo ".... [x] done"
   
   echo -n "Creating macosx.cocoa.x86 zip"
   cd $mac32_folder
+  touch "caleydo/macosx_cocoa_x86-32.txt"
   zip -q -r $export_path/caleydo_$version_number"_macosx_cocoa_x86-32.zip" caleydo
   echo ".... [x] done"
   
   echo -n "Creating macosx.cocoa.x86-64 zip"
   cd $mac64_folder
+  touch "caleydo/macosx_cocoa_x86-64.txt"
   zip -q -r $export_path/caleydo_$version_number"_macosx_cocoa_x86-64.zip" caleydo 
   echo ".... [x] done"
   
@@ -146,20 +150,26 @@ create_zip_packages()
 package_importer()
 {
 
+  touch $export_root/linux.gtk.x86/linux.gtk.x86.txt
   tar -czf $export_path/caleydo_data_importer_$version_number"_linux_x86-32.tar.gz" -C $export_root/linux.gtk.x86/ caleydo_data_importer
  
+  touch $export_root/linux.gtk.x86_64/linux.gtk.x86_64.txt
   tar -czf $export_path/caleydo_data_importer_$version_number"_linux_x86-64.tar.gz" -C $export_root/linux.gtk.x86_64/ caleydo_data_importer  
   
   cd $export_root/win32.win32.x86/
+  touch win32.win32.x86.txt
   zip -q -r $export_path/caleydo_data_importer_$version_number"_win_x86-32.zip" caleydo_data_importer
   
   cd $export_root/win32.win32.x86_64/
+  touch win32.win32.x86_64.txt
   zip -q -r $export_path/caleydo_data_importer_$version_number"_win_x86-64.zip" caleydo_data_importer 
   
   cd $export_root/macosx.cocoa.x86/
+  touch macosx.cocoa.x86.txt
   zip -q -r $export_path/caleydo_data_importer_$version_number"_macosx_cocoa_x86-32.zip" caleydo_data_importer
   
   cd $export_root/macosx.cocoa.x86_64/
+  touch macosx.cocoa.x86_64.txt
   zip -q -r $export_path/caleydo_data_importer_$version_number"_macosx_cocoa_x86-64.zip" caleydo_data_importer
 }
 
