@@ -23,7 +23,7 @@ import java.util.List;
 
 import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.io.gui.dataimport.widget.IntegerCallback;
+import org.caleydo.core.util.base.IntegerCallback;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;

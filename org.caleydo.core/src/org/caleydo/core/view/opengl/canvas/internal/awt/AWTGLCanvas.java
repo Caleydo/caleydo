@@ -46,6 +46,7 @@ import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.IGLFocusListener;
 import org.caleydo.core.view.opengl.canvas.IGLKeyListener;
 import org.caleydo.core.view.opengl.canvas.IGLMouseListener;
+import org.caleydo.core.view.opengl.picking.IPickingLabelProvider;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.eclipse.swt.widgets.Composite;
 
@@ -76,6 +77,11 @@ final class AWTGLCanvas implements IGLCanvas {
 
 	@Override
 	public IPickingListener createTooltip(String label) {
+		return new ToolTipPickingListener(label);
+	}
+
+	@Override
+	public IPickingListener createTooltip(IPickingLabelProvider label) {
 		return new ToolTipPickingListener(label);
 	}
 

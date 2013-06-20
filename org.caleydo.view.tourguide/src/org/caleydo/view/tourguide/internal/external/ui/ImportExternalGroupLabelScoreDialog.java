@@ -6,7 +6,7 @@ package org.caleydo.view.tourguide.internal.external.ui;
 import java.util.List;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.io.gui.dataimport.widget.IntegerCallback;
+import org.caleydo.core.util.base.IntegerCallback;
 import org.caleydo.view.tourguide.internal.external.GroupLabelParseSpecification;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;

@@ -32,7 +32,7 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.event.EventListenerManager.ListenTo;
-import org.caleydo.core.io.gui.dataimport.widget.ICallback;
+import org.caleydo.core.util.base.ICallback;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.function.ArrayFloatList;
 import org.caleydo.core.util.function.FloatFunctions;

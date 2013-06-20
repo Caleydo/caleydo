@@ -24,6 +24,7 @@ import javax.media.opengl.GLEventListener;
 
 import org.caleydo.core.util.base.ILabeled;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
+import org.caleydo.core.view.opengl.picking.IPickingLabelProvider;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.eclipse.swt.widgets.Composite;
 
@@ -67,6 +68,8 @@ public interface IGLCanvas {
 	public String toString();
 
 	IPickingListener createTooltip(ILabeled label);
+
+	IPickingListener createTooltip(IPickingLabelProvider label);
 
 	IPickingListener createTooltip(String label);
 
