@@ -98,7 +98,7 @@ public class CatFilterDalog<CATEGORY_TYPE> extends AFilterDialog {
 			selectButton.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false));
 			selectButton.addSelectionListener(listener);
 			Button deselectButton = new Button(buttonComposite, SWT.PUSH);
-			deselectButton.setText("Select &aone");
+			deselectButton.setText("Select &none");
 			listener = new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
