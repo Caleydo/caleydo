@@ -227,6 +227,9 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 
 	private List<TablePerspective> tablePerspectives;
 
+	private int preDetailModeCenterColumnStartIndex = -1;
+	private int preDetailModeRightColumnStartIndex = -1;
+
 	@DeepScan
 	private TourguideAdapter tourguide;
 
@@ -643,6 +646,11 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	 */
 	public void switchToDetailModeRight(BrickColumn focusColumn) {
 
+		if (!isRightDetailShown && !isLeftDetailShown) {
+			preDetailModeCenterColumnStartIndex = brickColumnManager.getCenterColumnStartIndex();
+			preDetailModeRightColumnStartIndex = brickColumnManager.getRightColumnStartIndex();
+		}
+
 		int columnIndex = brickColumnManager.indexOfBrickColumn(focusColumn);
 		// false only if this is the rightmost column. If true we
 		// move anything beyond the next column out
@@ -671,6 +679,11 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	 */
 	public void switchToDetailModeLeft(BrickColumn focusColumn) {
 
+		if (!isRightDetailShown && !isLeftDetailShown) {
+			preDetailModeCenterColumnStartIndex = brickColumnManager.getCenterColumnStartIndex();
+			preDetailModeRightColumnStartIndex = brickColumnManager.getRightColumnStartIndex();
+		}
+
 		int columnIndex = brickColumnManager.indexOfBrickColumn(focusColumn);
 
 		// false only if this is the left-most column. If true we move
@@ -695,6 +708,10 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	 */
 	public void switchToOverviewModeRight() {
 		isRightDetailShown = false;
+		if (!isRightDetailShown && !isLeftDetailShown) {
+			brickColumnManager.setCenterColumnStartIndex(preDetailModeCenterColumnStartIndex);
+			brickColumnManager.setRightColumnStartIndex(preDetailModeRightColumnStartIndex);
+		}
 		initLayouts();
 	}
 
@@ -703,6 +720,10 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	 */
 	public void switchToOverviewModeLeft() {
 		isLeftDetailShown = false;
+		if (!isRightDetailShown && !isLeftDetailShown) {
+			brickColumnManager.setCenterColumnStartIndex(preDetailModeCenterColumnStartIndex);
+			brickColumnManager.setRightColumnStartIndex(preDetailModeRightColumnStartIndex);
+		}
 		initLayouts();
 	}
 
