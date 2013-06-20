@@ -29,9 +29,13 @@ import java.util.Queue;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.events.RecordVAUpdateEvent;
 import org.caleydo.core.data.virtualarray.events.RecordVAUpdateListener;
+import org.caleydo.core.event.EventListenerManager;
+import org.caleydo.core.event.EventListenerManager.ListenTo;
+import org.caleydo.core.event.EventListenerManagers;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.ViewManager;
@@ -66,6 +70,7 @@ import org.caleydo.view.stratomex.brick.layout.DefaultBrickLayoutTemplate;
 import org.caleydo.view.stratomex.brick.layout.DetailBrickLayoutTemplate;
 import org.caleydo.view.stratomex.brick.layout.HeaderBrickLayoutTemplate;
 import org.caleydo.view.stratomex.brick.ui.OverviewDetailBandRenderer;
+import org.caleydo.view.stratomex.event.SelectDimensionSelectionEvent;
 import org.eclipse.swt.widgets.Composite;
 
 import com.google.common.collect.Iterables;
@@ -181,6 +186,8 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 	public static int TOP_COLUMN_ID = 1;
 
 	IBrickConfigurer brickConfigurer;
+
+	private final EventListenerManager eventListeners = EventListenerManagers.wrap(this);
 
 	public BrickColumn(IGLCanvas canvas, Composite parentComposite, ViewFrustum viewFrustum) {
 		super(canvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
@@ -556,6 +563,9 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 		layoutSizeCollisionListener = new LayoutSizeCollisionListener();
 		layoutSizeCollisionListener.setHandler(this);
 		eventPublisher.addListener(LayoutSizeCollisionEvent.class, layoutSizeCollisionListener);
+
+		eventListeners.register(this);
+
 	}
 
 	@Override
@@ -569,6 +579,7 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 			eventPublisher.removeListener(layoutSizeCollisionListener);
 			layoutSizeCollisionListener = null;
 		}
+		eventListeners.unregister(this);
 	}
 
 	/**
@@ -1194,6 +1205,17 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 	@Override
 	protected void destroyViewSpecificContent(GL2 gl) {
 		// Nothing to do here
+	}
+
+	@ListenTo(sendToMe = true)
+	private void onSelectDimensionSelection(SelectDimensionSelectionEvent event) {
+		Perspective current = getTablePerspective().getDimensionPerspective();
+		Perspective selected = event.getDim();
+		if (selected == current)
+			return;
+		TablePerspective new_ = getDataDomain().getTablePerspective(
+				getTablePerspective().getRecordPerspective().getPerspectiveID(), selected.getPerspectiveID());
+		getStratomexView().replaceTablePerspective(new_, getTablePerspective());
 	}
 
 	/**

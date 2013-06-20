@@ -32,7 +32,9 @@ import java.util.Set;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 
+import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.collection.table.TableUtils;
+import org.caleydo.core.data.datadomain.DataSupportDefinitions;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
@@ -48,8 +50,10 @@ import org.caleydo.core.gui.util.RenameNameDialog;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
+import org.caleydo.core.view.contextmenu.AContextMenuItem.EContextMenuType;
 import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
+import org.caleydo.core.view.contextmenu.GroupContextMenuItem;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
@@ -89,6 +93,7 @@ import org.caleydo.view.stratomex.column.BrickColumn;
 import org.caleydo.view.stratomex.event.ExportBrickDataEvent;
 import org.caleydo.view.stratomex.event.MergeBricksEvent;
 import org.caleydo.view.stratomex.event.RenameEvent;
+import org.caleydo.view.stratomex.event.SelectDimensionSelectionEvent;
 import org.caleydo.view.stratomex.listener.ExportBrickDataEventListener;
 import org.caleydo.view.stratomex.listener.RelationsUpdatedListener;
 import org.caleydo.view.stratomex.listener.RenameListener;
@@ -842,6 +847,9 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 				if (brickColumn.getTablePerspective() == tablePerspective) {
 					// header brick
+					// switchable dim perspective but just for numerical tables
+					if (DataSupportDefinitions.numericalTables.apply(getDataDomain()))
+						contextMenuCreator.add(createChooseDimensionPerspectiveEntries(getBrickColumn()));
 
 					for (IContextMenuBrickFactory factory : contextMenuFactories)
 						for (AContextMenuItem item : factory.createStratification(brickColumn))
@@ -890,6 +898,26 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 				isBrickResizeActive = true;
 			}
 		}, EPickingType.RESIZE_HANDLE_LOWER_RIGHT.name(), 1);
+	}
+
+	/**
+	 * create the context menu entries to switch the dimension perspectives
+	 * 
+	 * @return
+	 */
+	protected static AContextMenuItem createChooseDimensionPerspectiveEntries(BrickColumn column) {
+		Collection<Perspective> dims = new ArrayList<>();
+		Table table = column.getDataDomain().getTable();
+		for (String id : table.getDimensionPerspectiveIDs()) {
+			dims.add(table.getDimensionPerspective(id));
+		}
+		Perspective dim = column.getTablePerspective().getDimensionPerspective();
+		GroupContextMenuItem item = new GroupContextMenuItem("Used dimension perspective");
+
+		for (Perspective d : dims)
+			item.add(new GenericContextMenuItem(d.getLabel(), EContextMenuType.CHECK,
+					new SelectDimensionSelectionEvent(d).to(column)).setState(d == dim));
+		return item;
 	}
 
 	/**
