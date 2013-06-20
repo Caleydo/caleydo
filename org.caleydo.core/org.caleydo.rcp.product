@@ -786,6 +786,10 @@ Public License instead of this License.  But first, please read
 
    <features>
       <feature id="org.caleydo.rcp.feature" version="3.0"/>
+      <feature id="org.eclipse.emf.ecore"/>
+      <feature id="org.eclipse.e4.rcp"/>
+      <feature id="org.eclipse.emf.common"/>
+      <feature id="org.eclipse.rcp"/>
    </features>
 
    <configurations>

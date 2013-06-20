@@ -540,7 +540,6 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 				IGLLayoutElement buttons = children.get(BUTTONS);
 				float minWidth = (buttons.asElement() instanceof ButtonBar) ? ((ButtonBar) buttons.asElement())
 						.getMinWidth() : 0;
-				System.out.println("layouting: " + isHovered);
 				// HACK for testing different button positions
 				boolean showButtonBar = isHovered && !isWeightDragging;
 				float yb = 0;
