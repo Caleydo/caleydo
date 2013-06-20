@@ -1013,8 +1013,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 				DecimalFormat df = new DecimalFormat("#.##");
 
 				return "Shared elements: " + numSharedElements + "\nPercentage of left group: "
-						+ df.format(percentageLeft) + "%\nPercentage of right group: " + df.format(percentageRight)
-						+ "%";
+						+ df.format(percentageLeft) + "% (of " + numLeftElements + ")\nPercentage of right group: " + df.format(percentageRight) + "% (of " + numRightElements + ")";
 			}
 		}, EPickingType.BRICK_CONNECTION_BAND.name());
 
