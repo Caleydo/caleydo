@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.io.DataSetDescription;
@@ -34,6 +35,8 @@ import org.eclipse.swt.widgets.Shell;
  *
  */
 public class LoadDataSetPageMediator {
+
+	protected static final int UNMAPPED_INDEX = 0;
 
 	/**
 	 * Maximum number of previewed rows in {@link #previewTable}.
@@ -359,57 +362,82 @@ public class LoadDataSetPageMediator {
 	public void idCategoryComboModified(boolean isColumnCategory) {
 
 		if (isColumnCategory) {
-			if (page.columnIDCategoryCombo.getSelectionIndex() != -1) {
+			if (page.columnIDCategoryCombo.getSelectionIndex() == -1)
+				return;
+			if (page.columnIDCategoryCombo.getSelectionIndex() == UNMAPPED_INDEX) {
+				columnIDCategory = null;
+				page.columnIDCombo.clearSelection();
+				page.columnIDCombo.removeAll();
+				page.columnIDCombo.setText("<Unmapped>");
+				page.columnIDCombo.setEnabled(false);
+				page.defineColumnIDParsingButton.setEnabled(false);
+				setColumnIDTypeParsingRules(null);
+				page.createColumnIDTypeButton.setEnabled(false);
+				return;
+			} else {
 				columnIDCategory = IDCategory.getIDCategory(page.columnIDCategoryCombo
 						.getItem(page.columnIDCategoryCombo.getSelectionIndex()));
 				fillIDTypeCombo(columnIDCategory, columnIDTypes, page.columnIDCombo);
 				page.columnIDCombo.setEnabled(true);
 				page.createColumnIDTypeButton.setEnabled(true);
+			}
 
-				if (dataSetDescription.getColumnGroupingSpecifications() != null) {
-					ArrayList<GroupingParseSpecification> columnGroupingSpecifications = new ArrayList<GroupingParseSpecification>(
-							dataSetDescription.getColumnGroupingSpecifications());
+			if (dataSetDescription.getColumnGroupingSpecifications() != null) {
+				ArrayList<GroupingParseSpecification> columnGroupingSpecifications = new ArrayList<GroupingParseSpecification>(
+						dataSetDescription.getColumnGroupingSpecifications());
 
-					boolean groupingParseSpecificationsRemoved = false;
-					for (GroupingParseSpecification groupingParseSpecification : columnGroupingSpecifications) {
-						String categoryString = groupingParseSpecification.getRowIDSpecification().getIdCategory();
-						if (IDCategory.getIDCategory(categoryString) != columnIDCategory) {
-							dataSetDescription.getColumnGroupingSpecifications().remove(groupingParseSpecification);
-							groupingParseSpecificationsRemoved = true;
-						}
+				boolean groupingParseSpecificationsRemoved = false;
+				for (GroupingParseSpecification groupingParseSpecification : columnGroupingSpecifications) {
+					String categoryString = groupingParseSpecification.getRowIDSpecification().getIdCategory();
+					if (IDCategory.getIDCategory(categoryString) != columnIDCategory) {
+						dataSetDescription.getColumnGroupingSpecifications().remove(groupingParseSpecification);
+						groupingParseSpecificationsRemoved = true;
 					}
+				}
 
-					if (groupingParseSpecificationsRemoved) {
-						MessageDialog.openInformation(new Shell(), "Grouping Removed",
-								"At least one column grouping was removed due to the change of the column ID class.");
-					}
+				if (groupingParseSpecificationsRemoved) {
+					MessageDialog.openInformation(new Shell(), "Grouping Removed",
+							"At least one column grouping was removed due to the change of the column type.");
 				}
 			}
 		} else {
-			if (page.rowIDCategoryCombo.getSelectionIndex() != -1) {
+
+			if (page.rowIDCategoryCombo.getSelectionIndex() == -1)
+				return;
+			if (page.rowIDCategoryCombo.getSelectionIndex() == UNMAPPED_INDEX) {
+				rowIDCategory = null;
+				page.rowIDCombo.clearSelection();
+				page.rowIDCombo.removeAll();
+				page.rowIDCombo.setText("<Unmapped>");
+				page.rowIDCombo.setEnabled(false);
+				page.defineRowIDParsingButton.setEnabled(false);
+				setRowIDTypeParsingRules(null);
+				page.createRowIDTypeButton.setEnabled(false);
+				return;
+			} else {
 				rowIDCategory = IDCategory.getIDCategory(page.rowIDCategoryCombo.getItem(page.rowIDCategoryCombo
 						.getSelectionIndex()));
 				fillIDTypeCombo(rowIDCategory, rowIDTypes, page.rowIDCombo);
 				page.rowIDCombo.setEnabled(true);
 				page.createRowIDTypeButton.setEnabled(true);
+			}
 
-				if (dataSetDescription.getRowGroupingSpecifications() != null) {
-					ArrayList<GroupingParseSpecification> rowGroupingSpecifications = new ArrayList<GroupingParseSpecification>(
-							dataSetDescription.getRowGroupingSpecifications());
+			if (dataSetDescription.getRowGroupingSpecifications() != null) {
+				ArrayList<GroupingParseSpecification> rowGroupingSpecifications = new ArrayList<GroupingParseSpecification>(
+						dataSetDescription.getRowGroupingSpecifications());
 
-					boolean groupingParseSpecificationsRemoved = false;
-					for (GroupingParseSpecification groupingParseSpecification : rowGroupingSpecifications) {
-						String categoryString = groupingParseSpecification.getRowIDSpecification().getIdCategory();
-						if (IDCategory.getIDCategory(categoryString) != rowIDCategory) {
-							dataSetDescription.getRowGroupingSpecifications().remove(groupingParseSpecification);
-							groupingParseSpecificationsRemoved = true;
-						}
+				boolean groupingParseSpecificationsRemoved = false;
+				for (GroupingParseSpecification groupingParseSpecification : rowGroupingSpecifications) {
+					String categoryString = groupingParseSpecification.getRowIDSpecification().getIdCategory();
+					if (IDCategory.getIDCategory(categoryString) != rowIDCategory) {
+						dataSetDescription.getRowGroupingSpecifications().remove(groupingParseSpecification);
+						groupingParseSpecificationsRemoved = true;
 					}
+				}
 
-					if (groupingParseSpecificationsRemoved) {
-						MessageDialog.openInformation(new Shell(), "Grouping Removed",
-								"At least one row grouping was removed due to the change of the row ID class.");
-					}
+				if (groupingParseSpecificationsRemoved) {
+					MessageDialog.openInformation(new Shell(), "Grouping Removed",
+							"At least one row grouping was removed due to the change of the row type.");
 				}
 			}
 		}
@@ -678,7 +706,7 @@ public class LoadDataSetPageMediator {
 			List<IDType> idTypes, boolean isColumnIDType) {
 		if (mostProbableIDType != null) {
 			int index = registeredIDCategories.indexOf(mostProbableIDType.getIDCategory());
-			idCategoryCombo.select(index);
+			idCategoryCombo.select(index + 1);
 			if (isColumnIDType) {
 				columnIDCategory = mostProbableIDType.getIDCategory();
 				fillIDTypeCombo(columnIDCategory, idTypes, idTypeCombo);
@@ -749,6 +777,7 @@ public class LoadDataSetPageMediator {
 		}
 
 		idCategoryCombo.removeAll();
+		idCategoryCombo.add("<Unmapped>");
 		for (IDCategory idCategory : registeredIDCategories) {
 			idCategoryCombo.add(idCategory.getCategoryName());
 		}
@@ -759,7 +788,7 @@ public class LoadDataSetPageMediator {
 		}
 		if (registeredIDCategories.size() == 1) {
 			// idCategoryCombo.setText(idCategoryCombo.getItem(0));
-			idCategoryCombo.select(0);
+			idCategoryCombo.select(1);
 		} else if (selectionIndex == -1) {
 			idCategoryCombo.deselectAll();
 		} else {
@@ -811,14 +840,27 @@ public class LoadDataSetPageMediator {
 	 */
 	public void fillDataSetDescription() {
 
-		IDSpecification rowIDSpecification = new IDSpecification();
-		IDType rowIDType = IDType.getIDType(page.rowIDCombo.getItem(page.rowIDCombo.getSelectionIndex()));
-		rowIDSpecification.setIdType(rowIDType.getTypeName());
-		if (rowIDType.getIDCategory().getCategoryName().equals("GENE"))
-			rowIDSpecification.setIDTypeGene(true);
-		rowIDSpecification.setIdCategory(rowIDType.getIDCategory().getCategoryName());
-		// if (rowIDTypeParsingRules != null) {
-		rowIDSpecification.setIdTypeParsingRules(rowIDTypeParsingRules);
+		dataSetDescription.setDataSetName(page.label.getText());
+
+		if (page.rowIDCategoryCombo.getSelectionIndex() != UNMAPPED_INDEX) {
+			IDSpecification rowIDSpecification = new IDSpecification();
+			IDType rowIDType = IDType.getIDType(page.rowIDCombo.getItem(page.rowIDCombo.getSelectionIndex()));
+			rowIDSpecification.setIdType(rowIDType.getTypeName());
+			if (rowIDType.getIDCategory().getCategoryName().equals("GENE"))
+				rowIDSpecification.setIDTypeGene(true);
+			rowIDSpecification.setIdCategory(rowIDType.getIDCategory().getCategoryName());
+			// if (rowIDTypeParsingRules != null) {
+			rowIDSpecification.setIdTypeParsingRules(rowIDTypeParsingRules);
+			dataSetDescription.setRowIDSpecification(rowIDSpecification);
+		} else {
+			IDSpecification rowIDSpecification = new IDSpecification();
+			IDCategory idCategory = IDCategory.registerCategoryIfAbsent(dataSetDescription.getDataSetName() + "_row");
+			idCategory.setInternalCategory(true);
+			IDType idType = IDType.registerType(dataSetDescription.getDataSetName() + "_row", idCategory,
+					EDataType.STRING);
+			rowIDSpecification.setIDSpecification(idCategory.getCategoryName(), idType.getTypeName());
+			dataSetDescription.setRowIDSpecification(rowIDSpecification);
+		}
 		// } else if (rowIDType.getIdTypeParsingRules() != null) {
 		// rowIDSpecification.setIdTypeParsingRules(rowIDType.getIdTypeParsingRules());
 		// } else if (rowIDType.getTypeName().equalsIgnoreCase("REFSEQ_MRNA")) {
@@ -829,7 +871,9 @@ public class LoadDataSetPageMediator {
 		// rowIDSpecification.setIdTypeParsingRules(parsingRules);
 		// }
 
-		if (!page.inhomogeneousDatasetButton.getSelection()) {
+
+		if (!page.inhomogeneousDatasetButton.getSelection()
+				&& page.columnIDCategoryCombo.getSelectionIndex() != UNMAPPED_INDEX) {
 			IDSpecification columnIDSpecification = new IDSpecification();
 			IDType columnIDType = IDType.getIDType(page.columnIDCombo.getItem(page.columnIDCombo.getSelectionIndex()));
 			// columnIDTypes.get(page.columnIDCombo.getSelectionIndex());
@@ -844,14 +888,19 @@ public class LoadDataSetPageMediator {
 			// }
 			dataSetDescription.setColumnIDSpecification(columnIDSpecification);
 		} else {
-			dataSetDescription.setColumnIDSpecification(null);
+			IDSpecification columnIDSpecification = new IDSpecification();
+			IDCategory idCategory = IDCategory
+					.registerCategoryIfAbsent(dataSetDescription.getDataSetName() + "_column");
+			idCategory.setInternalCategory(true);
+			IDType idType = IDType.registerType(dataSetDescription.getDataSetName() + "_column", idCategory,
+					EDataType.STRING);
+			columnIDSpecification.setIDSpecification(idCategory.getCategoryName(), idType.getTypeName());
+			dataSetDescription.setColumnIDSpecification(columnIDSpecification);
 		}
-
-		dataSetDescription.setRowIDSpecification(rowIDSpecification);
 
 		// TODO check buttonHomogeneous
 		// dataSetDescription.setDataHomogeneous(page.buttonHomogeneous.getSelection());
-		dataSetDescription.setDataSetName(page.label.getText());
+
 
 		dataSetDescription.setDataSourcePath(isTransposed ? transposedDataFile.getAbsolutePath() : page.loadFile
 				.getFileName());
@@ -983,5 +1032,31 @@ public class LoadDataSetPageMediator {
 	 */
 	public DataSetDescription getDataSetDescription() {
 		return dataSetDescription;
+	}
+
+	public boolean isValidConfiguration() {
+		if (page.loadFile.getFileName().isEmpty()) {
+			page.getWizard().setRequiredDataSpecified(false);
+			return false;
+		}
+
+		if (page.rowIDCombo.getSelectionIndex() == -1 && page.rowIDCategoryCombo.getSelectionIndex() != UNMAPPED_INDEX) {
+			page.getWizard().setRequiredDataSpecified(false);
+			return false;
+		}
+
+		if (page.columnIDCombo.getSelectionIndex() == -1 && !page.inhomogeneousDatasetButton.getSelection()
+				&& page.columnIDCategoryCombo.getSelectionIndex() != UNMAPPED_INDEX) {
+			page.getWizard().setRequiredDataSpecified(false);
+			return false;
+		}
+		if (page.columnIDCombo.getSelectionIndex() == -1 && page.rowIDCombo.getSelectionIndex() == -1) {
+			page.getWizard().setRequiredDataSpecified(false);
+			return false;
+		}
+
+		page.getWizard().setRequiredDataSpecified(true);
+
+		return true;
 	}
 }
