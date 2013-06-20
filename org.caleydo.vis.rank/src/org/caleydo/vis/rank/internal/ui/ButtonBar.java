@@ -68,6 +68,7 @@ public class ButtonBar extends GLElementContainer  {
 	public void addButton(GLButton b) {
 		this.add(b.setSize(RenderStyle.BUTTON_WIDTH, -1));
 	}
+
 	public void addSpacer() {
 		this.add(new GLElement());
 	}

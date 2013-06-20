@@ -58,6 +58,7 @@ import org.caleydo.data.loader.ResourceLocators;
 import org.caleydo.data.loader.ResourceLocators.IResourceLocator;
 import org.caleydo.vis.rank.config.IRankTableConfig;
 import org.caleydo.vis.rank.config.IRankTableUIConfig;
+import org.caleydo.vis.rank.config.IRankTableUIConfig.EButtonBarPositionMode;
 import org.caleydo.vis.rank.internal.event.OrderByMeEvent;
 import org.caleydo.vis.rank.internal.ui.ButtonBar;
 import org.caleydo.vis.rank.model.ARankColumnModel;
@@ -144,10 +145,10 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 		}
 		if (config.isInteractive()) {
 			this.add(new DragElement().setLayoutData(MoveTransitions.GROW_LINEAR), 0);
-			this.add(
-					createButtons().setLayoutData(
-							new MoveTransitions.MoveTransitionBase(Transitions.NO, Transitions.LINEAR, Transitions.NO,
-									Transitions.LINEAR)), 0);
+			final GLElement buttons = createButtons().setLayoutData(
+					new MoveTransitions.MoveTransitionBase(Transitions.NO, Transitions.LINEAR, Transitions.NO,
+							Transitions.LINEAR));
+			this.add(buttons, 0);
 
 			this.isCollapsed = (model instanceof ICollapseableColumnMixin) ? ((ICollapseableColumnMixin) model)
 					.isCollapsed() : false;
@@ -296,8 +297,19 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 			} else
 				g.fillRect(0, 0, w, h);
 			g.popName();
+
+			boolean showButtonBar = isHovered && !isWeightDragging;
+			if (showButtonBar && config.getButtonBarPosition() == EButtonBarPositionMode.ABOVE_LABEL) {
+				g.fillRect(0, -RenderStyle.BUTTON_WIDTH, w, RenderStyle.BUTTON_WIDTH);
+			} else if (showButtonBar && config.getButtonBarPosition() == EButtonBarPositionMode.BELOW_HIST) {
+				g.fillRect(0, h, w, RenderStyle.BUTTON_WIDTH);
+			}
+
 			g.decZ().decZ();
+
+
 		}
+
 		super.renderPickImpl(g, w, h);
 	}
 
@@ -528,7 +540,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 				IGLLayoutElement buttons = children.get(BUTTONS);
 				float minWidth = (buttons.asElement() instanceof ButtonBar) ? ((ButtonBar) buttons.asElement())
 						.getMinWidth() : 0;
-
+				System.out.println("layouting: " + isHovered);
 				// HACK for testing different button positions
 				boolean showButtonBar = isHovered && !isWeightDragging;
 				float yb = 0;

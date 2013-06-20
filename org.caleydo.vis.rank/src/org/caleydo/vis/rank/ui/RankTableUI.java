@@ -20,7 +20,6 @@
 package org.caleydo.vis.rank.ui;
 
 import org.caleydo.core.util.color.Color;
-
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
