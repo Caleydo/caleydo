@@ -40,7 +40,9 @@ import org.eclipse.ui.PlatformUI;
 
 /**
  * Events that signals browser-views to load a new URL.
- *
+ * 
+ * @author Alexander Lex
+ * @author Samuel Gratzl
  * @author Marc Streit
  */
 public class BrowserUtils {
