@@ -811,8 +811,8 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		gl.glClear(GL.GL_STENCIL_BUFFER_BIT);
 		textureOffset += PathwayRenderStyle.Z_OFFSET;
 		gl.glTranslatef(0, pathwayHeight, textureOffset);
-		if (!this.highlightVertices)
-			augmentationRenderer.setVisible(false);
+		// if (!this.highlightVertices)
+		// augmentationRenderer.setVisible(false);
 		augmentationRenderer.renderPathway(gl, pathway, false);
 		gl.glTranslatef(0, -pathwayHeight, -textureOffset);
 
