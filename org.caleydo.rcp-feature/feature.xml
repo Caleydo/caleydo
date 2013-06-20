@@ -438,27 +438,6 @@ All Rights Reserved.
          unpack="false"/>
 
    <plugin
-         id="org.caleydo.lib.jsap"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.caleydo.lib.tagsoup"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.caleydo.lib.vecmath"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.caleydo.lib.weka"
          download-size="0"
          install-size="0"
@@ -543,6 +522,19 @@ All Rights Reserved.
 
    <plugin
          id="org.caleydo.vis.rank"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.caleydo.lib.nattable"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.caleydo.view.table"
          download-size="0"
          install-size="0"
          version="0.0.0"
