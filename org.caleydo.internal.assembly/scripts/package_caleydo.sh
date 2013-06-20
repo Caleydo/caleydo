@@ -109,36 +109,38 @@ move_file()
 # create zip packages of the binaries
 create_zip_packages()
 {  
+  message="Caleydo - Visualization for molecular biology\nhttp://caleydo.org\nVersion: "$version_number"\nArch: "
   echo -n "Creating linux_x86-32 tar"
-  touch $linux32_folder"/caleydo/linux.gtk.x86.txt"
+  echo -e $message"linux.gtk.x86" > $linux32_folder"/caleydo/info.txt"
   tar -czf $export_path/caleydo_$version_number"_linux_x86-32.tar.gz" -C $linux32_folder  caleydo
   echo ".... [x] done"
   
   echo -n "Creating linux_x86-64 tar"
-  touch $linux64_folder"/caleydo/linux_x86-64.txt"
+  echo -e $message"linux_x86-64" > $linux64_folder"/caleydo/info.txt"
   tar -czf $export_path/caleydo_$version_number"_linux_x86-64.tar.gz" -C $linux64_folder caleydo
   echo ".... [x] done"
  
   echo -n "Creating win32.x86 zip"
   cd $win32_folder
-  touch "caleydo/win_x86-32.txt"
+  echo -e $message"win_x86-32" > "caleydo/info.txt"
   zip -q -r $export_path/caleydo_$version_number"_win_x86-32.zip" caleydo
   echo ".... [x] done"
   
   echo -n "Creating win32.x86-64 zip"
   cd $win64_folder
-  touch "caleydo/win_x86-64.txt"
+  echo -e $message"win_x86-64" > "caleydo/info.txt"
   zip -q -r $export_path/caleydo_$version_number"_win_x86-64.zip" caleydo 
   echo ".... [x] done"
   
   echo -n "Creating macosx.cocoa.x86 zip"
   cd $mac32_folder
-  touch "caleydo/macosx_cocoa_x86-32.txt"
+  echo -e $message"macosx_cocoa_x86-32" > "caleydo/info.txt"
   zip -q -r $export_path/caleydo_$version_number"_macosx_cocoa_x86-32.zip" caleydo
   echo ".... [x] done"
   
   echo -n "Creating macosx.cocoa.x86-64 zip"
   cd $mac64_folder
+  echo -e $message"macosx_cocoa_x86-32" > "caleydo/info.txt"
   touch "caleydo/macosx_cocoa_x86-64.txt"
   zip -q -r $export_path/caleydo_$version_number"_macosx_cocoa_x86-64.zip" caleydo 
   echo ".... [x] done"
@@ -150,26 +152,20 @@ create_zip_packages()
 package_importer()
 {
 
-  touch $export_root/linux.gtk.x86/linux.gtk.x86.txt
   tar -czf $export_path/caleydo_data_importer_$version_number"_linux_x86-32.tar.gz" -C $export_root/linux.gtk.x86/ caleydo_data_importer
  
-  touch $export_root/linux.gtk.x86_64/linux.gtk.x86_64.txt
   tar -czf $export_path/caleydo_data_importer_$version_number"_linux_x86-64.tar.gz" -C $export_root/linux.gtk.x86_64/ caleydo_data_importer  
   
   cd $export_root/win32.win32.x86/
-  touch win32.win32.x86.txt
   zip -q -r $export_path/caleydo_data_importer_$version_number"_win_x86-32.zip" caleydo_data_importer
   
   cd $export_root/win32.win32.x86_64/
-  touch win32.win32.x86_64.txt
   zip -q -r $export_path/caleydo_data_importer_$version_number"_win_x86-64.zip" caleydo_data_importer 
   
   cd $export_root/macosx.cocoa.x86/
-  touch macosx.cocoa.x86.txt
   zip -q -r $export_path/caleydo_data_importer_$version_number"_macosx_cocoa_x86-32.zip" caleydo_data_importer
   
   cd $export_root/macosx.cocoa.x86_64/
-  touch macosx.cocoa.x86_64.txt
   zip -q -r $export_path/caleydo_data_importer_$version_number"_macosx_cocoa_x86-64.zip" caleydo_data_importer
 }
 
