@@ -727,5 +727,6 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 	@Override
 	public void updateColorMapping() {
 		updateColorMapping = true;
+		setDisplayListDirty();
 	}
 }
