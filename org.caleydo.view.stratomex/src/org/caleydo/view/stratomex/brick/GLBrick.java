@@ -44,6 +44,7 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.events.SelectionUpdateListener;
 import org.caleydo.core.data.virtualarray.VirtualArray;
+import org.caleydo.core.event.data.DataDomainUpdateEvent;
 import org.caleydo.core.event.data.RelationsUpdatedEvent;
 import org.caleydo.core.event.data.SelectionUpdateEvent;
 import org.caleydo.core.gui.util.RenameNameDialog;
@@ -829,6 +830,10 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 					dragAndDropController.setDraggingMode("BrickDrag" + brickColumn.getID());
 					stratomex.setDisplayListDirty();
 				}
+
+				DataDomainUpdateEvent event = new DataDomainUpdateEvent(dataDomain);
+				event.setSender(this);
+				GeneralManager.get().getEventPublisher().triggerEvent(event);
 			}
 
 			@Override
@@ -902,7 +907,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	/**
 	 * create the context menu entries to switch the dimension perspectives
-	 * 
+	 *
 	 * @return
 	 */
 	protected static AContextMenuItem createChooseDimensionPerspectiveEntries(BrickColumn column) {
