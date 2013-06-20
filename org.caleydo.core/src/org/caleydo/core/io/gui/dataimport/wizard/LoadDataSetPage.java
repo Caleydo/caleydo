@@ -522,21 +522,8 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 
 	@Override
 	public boolean isPageComplete() {
-		if (loadFile.getFileName().isEmpty()) {
-			getWizard().setRequiredDataSpecified(false);
+		if (!mediator.isValidConfiguration())
 			return false;
-		}
-
-		if (rowIDCombo.getSelectionIndex() == -1) {
-			getWizard().setRequiredDataSpecified(false);
-			return false;
-		}
-
-		if (columnIDCombo.getSelectionIndex() == -1 && !inhomogeneousDatasetButton.getSelection()) {
-			getWizard().setRequiredDataSpecified(false);
-			return false;
-		}
-		getWizard().setRequiredDataSpecified(true);
 
 		return super.isPageComplete();
 	}
