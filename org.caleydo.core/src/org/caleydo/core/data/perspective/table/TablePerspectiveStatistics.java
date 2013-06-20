@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.Set;
 
 import org.caleydo.core.data.collection.Histogram;
+import org.caleydo.core.data.collection.table.CategoricalTable;
 import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.variable.Perspective;
@@ -67,10 +68,9 @@ public class TablePerspectiveStatistics {
 	private HashMap<IDType, HashMap<Integer, Average>> mapIDTypeToIDToAverage = new HashMap<>();
 
 	/**
-	 * Optionally it is possible to specify the number of bins for the histogram manually. This should only be done if
-	 * there really is a reason for it.
+	 * The optional number of buckets f or the histogram.
 	 */
-	private int numberOfBucketsForHistogram = Integer.MIN_VALUE;
+	private Integer numberOfBucketsForHistogram = null;
 
 	/**
 	 * A list of averages across dimensions, one for every record in the data container. Sorted as the virtual array.
@@ -79,14 +79,12 @@ public class TablePerspectiveStatistics {
 
 	/** Same as {@link #averageRecords} for dimensions */
 	private ArrayList<Average> averageDimensions;
-	
-	
+
 	/**
-	 * A list of statistics computed over the data records using all the dimensions 
+	 * A list of statistics computed over the data records using all the dimensions
 	 */
 	private StatContainer statsRecordsFull;
-	
-	
+
 	/**
 	 * A list of statistics computed over the data dimensions using all the records
 	 */
@@ -150,17 +148,29 @@ public class TablePerspectiveStatistics {
 	}
 
 	/**
+	 * <p>
 	 * Calculates a histogram for a given set of virtual arrays. One of the two VA parameters has to be a dimensionVA,
 	 * the other must be a recordVA. The order is irrelevant.
+	 * </p>
+	 * <p>
+	 * Automatically calculates the number of buckets in the histogram, which is square root of the size of the record
+	 * VA for for numerical, and the number of categories for categorical data.
+	 * </p>
 	 *
 	 * @param table
 	 * @param va1
 	 * @param va2
-	 * @param numberOfBucketsForHistogram
 	 * @return
 	 */
-	public static Histogram calculateHistogram(Table table, VirtualArray va1, VirtualArray va2,
-			int numberOfBucketsForHistogram) {
+	public static Histogram calculateHistogram(Table table, VirtualArray va1, VirtualArray va2) {
+		return calculateHistogram(table, va1, va2, null);
+	}
+
+	/**
+	 * Wrapper for {@link #calculateHistogram(Table, VirtualArray, VirtualArray)} which lets you manually specify the
+	 * number of buckets.
+	 */
+	public static Histogram calculateHistogram(Table table, VirtualArray va1, VirtualArray va2, Integer numberOfBuckets) {
 
 		if (va1 == null || va2 == null)
 			throw new IllegalArgumentException("One of the vas was null " + va1 + ", " + va2);
@@ -184,12 +194,15 @@ public class TablePerspectiveStatistics {
 					"Tried to calcualte a set-wide histogram on a not homogeneous table. This makes no sense. Use dimension based histograms instead!");
 		}
 
-		int numberOfBuckets;
+		if (numberOfBuckets == null) {
+			if (table instanceof CategoricalTable<?>) {
+				CategoricalTable<?> cTable = (CategoricalTable<?>) table;
+				numberOfBuckets = cTable.getCategoryDescriptions().size();
+			} else {
+				numberOfBuckets = (int) Math.sqrt(recordVA.size());
+			}
+		}
 
-		if (numberOfBucketsForHistogram != Integer.MIN_VALUE)
-			numberOfBuckets = numberOfBucketsForHistogram;
-		else
-			numberOfBuckets = (int) Math.sqrt(recordVA.size());
 		Histogram histogram = new Histogram(numberOfBuckets);
 
 		for (Integer dimensionID : dimensionVA) {
@@ -405,9 +418,8 @@ public class TablePerspectiveStatistics {
 
 		return averageDimension;
 	}
-	
-	public static StatContainer computeStats(boolean isFull)
-	{
+
+	public static StatContainer computeStats(boolean isFull) {
 		StatContainer resultStatContainer = new StatContainer();
 		return resultStatContainer;
 	}
@@ -416,15 +428,15 @@ public class TablePerspectiveStatistics {
 	 * @return the statsRecordsFull
 	 */
 	public StatContainer getStatsRecordsFull() {
-		if (statsRecordsFull == null)
-		{
+		if (statsRecordsFull == null) {
 			statsRecordsFull = StatisticsUtils.computeFullStatContainer();
 		}
 		return statsRecordsFull;
 	}
 
 	/**
-	 * @param statsRecordsFull the statsRecordsFull to set
+	 * @param statsRecordsFull
+	 *            the statsRecordsFull to set
 	 */
 	public void setStatsRecordsFull(StatContainer statsRecordsFull) {
 		this.statsRecordsFull = statsRecordsFull;
@@ -434,19 +446,18 @@ public class TablePerspectiveStatistics {
 	 * @return the statsDimensionsFull
 	 */
 	public StatContainer getStatsDimensionsFull() {
-		if (statsDimensionsFull == null)
-		{
+		if (statsDimensionsFull == null) {
 			statsDimensionsFull = StatisticsUtils.computeFullStatContainer();
 		}
 		return statsDimensionsFull;
 	}
 
 	/**
-	 * @param statsDimensionsFull the statsDimensionsFull to set
+	 * @param statsDimensionsFull
+	 *            the statsDimensionsFull to set
 	 */
 	public void setStatsDimensionsFull(StatContainer statsDimensionsFull) {
 		this.statsDimensionsFull = statsDimensionsFull;
 	}
-	
-	
+
 }
