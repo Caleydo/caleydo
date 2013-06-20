@@ -478,7 +478,7 @@ public class GLPathwayAugmentationRenderer {
 				} else if (vertexSelectionManager.checkStatus(SelectionType.NORMAL, vertexRep.getID())) {
 					nodeColor = PathwayRenderStyle.ENZYME_NODE_COLOR;
 				} else {
-					nodeColor = Color.BLACK;
+					nodeColor = Color.TRANSPARENT;
 				}
 
 				gl.glColor4fv(nodeColor.getRGBA(), 0);
