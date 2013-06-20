@@ -140,8 +140,7 @@ create_zip_packages()
   
   echo -n "Creating macosx.cocoa.x86-64 zip"
   cd $mac64_folder
-  echo -e $message"macosx_cocoa_x86-32" > "caleydo/info.txt"
-  touch "caleydo/macosx_cocoa_x86-64.txt"
+  echo -e $message"macosx_cocoa_x86-64" > "caleydo/info.txt"
   zip -q -r $export_path/caleydo_$version_number"_macosx_cocoa_x86-64.zip" caleydo 
   echo ".... [x] done"
   

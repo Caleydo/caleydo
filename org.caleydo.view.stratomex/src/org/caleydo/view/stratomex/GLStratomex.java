@@ -1586,11 +1586,6 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		event.setSender(this);
 		SelectionDelta delta = recordSelectionManager.getDelta();
 		event.setSelectionDelta(delta);
-		// FIXME: actually we should not send a data domain in this case -
-		// however, if we don't send it, we don't see the selection in the
-		// selection info view. to fix this, we need to redesign the selection
-		// info view.
-		event.setEventSpace(dataDomainID);
 		eventPublisher.triggerEvent(event);
 
 		updateConnectionLinesBetweenColumns();
@@ -1826,12 +1821,6 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	@Override
 	protected void destroyViewSpecificContent(GL2 gl) {
 		gl.glDeleteLists(displayListIndex, 1);
-		// if (centerLayoutManager != null)
-		// centerLayoutManager.destroy(gl);
-		// if (leftLayoutManager != null)
-		// leftLayoutManager.destroy(gl);
-		// if (rightLayoutManager != null)
-		// rightLayoutManager.destroy(gl);
 
 		if (layoutManager != null)
 			layoutManager.destroy(gl);
@@ -1848,7 +1837,6 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 
 	@Override
 	public void notifyOfSelectionChange(EventBasedSelectionManager selectionManager) {
-		// TODO Auto-generated method stub
 		updateConnectionLinesBetweenColumns();
 	}
 
