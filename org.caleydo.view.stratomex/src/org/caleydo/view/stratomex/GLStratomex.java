@@ -66,6 +66,7 @@ import org.caleydo.core.id.IDType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.util.color.mapping.UpdateColorMappingEvent;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
 import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
@@ -1861,6 +1862,11 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 
 	public void unregisterEventListener(Object elem) {
 		listeners.unregister(elem);
+	}
+
+	@ListenTo
+	public void updateColorMapping(UpdateColorMappingEvent event) {
+		layoutManager.setRenderingDirty();
 	}
 
 }
