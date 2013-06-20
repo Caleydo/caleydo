@@ -25,8 +25,8 @@ public class HistogramCreator {
 
 	public static Histogram createHistogram(double[] vector) {
 
-		int iNumberOfBuckets = (int) Math.sqrt(vector.length);
-		Histogram histogram = new Histogram(iNumberOfBuckets);// private ArrayList<Integer>
+		int numberOfBuckets = (int) Math.sqrt(vector.length);
+		Histogram histogram = new Histogram(numberOfBuckets);// private ArrayList<Integer>
 
 		double min = Double.MAX_VALUE;
 		double max = Double.MIN_VALUE;
@@ -46,8 +46,8 @@ public class HistogramCreator {
 			if (Double.isNaN(value)) {
 				histogram.addNAN(0);
 			} else {
-				int iIndex = (int) (normalize(min, max, value) * iNumberOfBuckets);
-				if (iIndex == iNumberOfBuckets)
+				int iIndex = (int) (normalize(min, max, value) * numberOfBuckets);
+				if (iIndex == numberOfBuckets)
 					iIndex--;
 				histogram.add(iIndex, 0);
 			}

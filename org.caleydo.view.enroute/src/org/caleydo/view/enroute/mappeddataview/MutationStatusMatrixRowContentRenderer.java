@@ -59,7 +59,7 @@ public class MutationStatusMatrixRowContentRenderer extends ACategoricalRowConte
 		VirtualArray dimensionVirtualArray = new VirtualArray(resolvedRowIDType);
 		dimensionVirtualArray.append(resolvedRowID);
 		histogram = TablePerspectiveStatistics.calculateHistogram(dataDomain.getTable(),
-				columnPerspective.getVirtualArray(), dimensionVirtualArray, 2);
+				columnPerspective.getVirtualArray(), dimensionVirtualArray);
 
 		registerPickingListener();
 	}

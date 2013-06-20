@@ -37,9 +37,8 @@ public class CategoricalContentPreviewRenderer extends AContentPreviewRenderer {
 
 		VirtualArray geneVA = new VirtualArray(dataDomain.getGeneIDType());
 		geneVA.append(resolvedRowID);
-		// FIXME: Bad Hack for determination of bucket count
-		histogram = TablePerspectiveStatistics.calculateHistogram(dataDomain.getTable(), experimentPerspective
-				.getVirtualArray(), geneVA, dataDomain.getLabel().toLowerCase().contains("copy") ? 5 : 2);
+		histogram = TablePerspectiveStatistics.calculateHistogram(dataDomain.getTable(),
+				experimentPerspective.getVirtualArray(), geneVA);
 	}
 
 	@Override
