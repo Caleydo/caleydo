@@ -282,8 +282,6 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 		}
 		tablePerspective.setLabel(label, false);
 		tablePerspective.setPrivate(true);
-		tablePerspective.getContainerStatistics().setNumberOfBucketsForHistogram(
-				cat.getVirtualArray().getGroupList().size());
 
 		return tablePerspective;
 	}

@@ -135,38 +135,6 @@ public class CategoricalTablePerspectiveCreator {
 		Perspective recordPerspective = dataDomain.getTable().getDefaultRecordPerspective();
 		Perspective binnedPerspective = binCategorical(convertedID, recordPerspective, dataDomain, label,
 				isTablePerspectivePrivate);
-		// }
-		// FIXME TCGA Specific hack! Move to some place sane
-		// int numberOfBins = 1;
-		// Perspective binnedPerspective;
-		// if (dataDomain.getLabel().contains("Copy")) {
-		// for (String recordPerspectiveID : dataDomain.getTable().getRecordPerspectiveIDs()) {
-		// Perspective recordPerspective = dataDomain.getTable().getRecordPerspective(recordPerspectiveID);
-		// ArrayList<String> groupLabels = new ArrayList<String>();
-		// groupLabels.add("Homozygous deletion");
-		// groupLabels.add("Heterozygous deletion");
-		// groupLabels.add("Normal");
-		// groupLabels.add("Low level amplification");
-		// groupLabels.add("High level amplification");
-		// numberOfBins = 5;
-		// binnedPerspective = binRecords(numberOfBins, convertedID, recordPerspective, dataDomain, label,
-		// groupLabels, isTablePerspectivePrivate);
-		// break;
-		// }
-		// }
-		// if (dataDomain.getLabel().contains("Mutation")) {
-		// for (String recordPerspectiveID : dataDomain.getTable().getRecordPerspectiveIDs()) {
-		// Perspective recordPerspective = dataDomain.getTable().getRecordPerspective(recordPerspectiveID);
-		// ArrayList<String> groupLabels = new ArrayList<String>();
-		// groupLabels.add("Not Mutated");
-		// groupLabels.add("Mutated");
-		// numberOfBins = 2;
-		// binnedPerspective = binRecords(numberOfBins, convertedID, recordPerspective, dataDomain, label,
-		// groupLabels, isTablePerspectivePrivate);
-		// break;
-		//
-		// }
-		// }
 
 		if (binnedPerspective != null) {
 
@@ -182,9 +150,6 @@ public class CategoricalTablePerspectiveCreator {
 			// table perspectives.
 			if (!existsAlready)
 				tablePerspective.setPrivate(isTablePerspectivePrivate);
-
-			tablePerspective.getContainerStatistics().setNumberOfBucketsForHistogram(
-					binnedPerspective.getVirtualArray().getGroupList().size());
 		}
 	}
 
