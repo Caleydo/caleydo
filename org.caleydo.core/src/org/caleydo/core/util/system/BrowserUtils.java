@@ -62,6 +62,14 @@ public class BrowserUtils {
 	};
 
 	public static void openURL(URL url) {
+		String osName = System.getProperty("os.name");
+
+		if (!(osName.startsWith("Mac OS") || osName.startsWith("Windows"))) {
+			// The system independent stuff doesn't properly work on linux
+			openURLCompatibility(url);
+			return;
+		}
+
 		if (PlatformUI.isWorkbenchRunning()) {
 			try {
 				PlatformUI.getWorkbench().getBrowserSupport().getExternalBrowser().openURL(url);
@@ -94,22 +102,16 @@ public class BrowserUtils {
 					} else if (osName.startsWith("Windows")) {
 						exec("rundll32", "url.dll", "FileProtocolHandler", link);
 					} else {
-						System.out.println("vorher");
-
-						boolean success = exec(new String[] { "xdg-open", link });
 						// Assume Unix or Linux
 						// we first try xdg-open
-
-						System.out.println("nacher");
+						boolean success = exec(new String[] { "xdg-open", link });
 						// if that fails we try using which to find a browser
 						if (!success) {
-
 							String[] browsers = { "chrome", "firefox", "opera", "konqueror", "epiphany", "mozilla",
 									"netscape" };
 							String browser = null;
 							for (int count = 0; count < browsers.length && browser == null; count++) {
 								success = exec("which", browsers[count]);
-
 								if (success) {
 									browser = browsers[count];
 								}
