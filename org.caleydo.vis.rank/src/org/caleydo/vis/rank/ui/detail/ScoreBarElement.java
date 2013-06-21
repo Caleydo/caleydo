@@ -99,8 +99,11 @@ public class ScoreBarElement extends ValueElement {
 			if (inferred) {
 				g.gl.glLineStipple(1, (short) 0xAAAA);
 				g.gl.glEnable(GL2.GL_LINE_STIPPLE);
-				g.color(0, 0, 0, .5f).drawRect(1, h * 0.1f + 1, w * v - 1, h * 0.8f - 2);
+				g.color(0, 0, 0, .5f).drawRect(0, 1, w * v, h - 2);
 				g.gl.glDisable(GL2.GL_LINE_STIPPLE);
+			} else if (getRenderInfo().getBarOutlineColor() != null) {
+				// outline
+				g.color(getRenderInfo().getBarOutlineColor()).drawRect(0, 1, w * v, h - 2);
 			}
 
 			if (model.getTable().getSelectedRow() == r) { // is selected, render the value

@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.ui;
 
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 
 /**
@@ -31,4 +32,11 @@ public interface IColumnRenderInfo {
 	VAlign getAlignment();
 
 	boolean hasFreeSpace();
+
+	/**
+	 * returns the color to use for bar outlines or null if no outline
+	 * 
+	 * @return
+	 */
+	Color getBarOutlineColor();
 }

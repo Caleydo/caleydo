@@ -25,10 +25,12 @@ import java.beans.PropertyChangeListener;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
+import org.caleydo.core.view.opengl.layout2.IGLElementParent;
 import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.SimpleHistogram;
 import org.caleydo.vis.rank.model.StarsRankColumnModel;
+import org.caleydo.vis.rank.ui.IColumnRenderInfo;
 import org.caleydo.vis.rank.ui.RenderUtils;
 
 
@@ -79,7 +81,18 @@ public class StarsSummary extends GLElement {
 			return;
 		SimpleHistogram hist = model.getHist(w);
 		int selectedBin = selectedRow == null ? -1 : hist.getBinOf(model.applyPrimitive(selectedRow));
-		RenderUtils.renderHist(g, hist, w, h, selectedBin, model.getColor(), model.getColor().darker());
+		RenderUtils.renderHist(g, hist, w, h, selectedBin, model.getColor(), model.getColor().darker(),
+				findRenderInfo().getBarOutlineColor());
+	}
+
+	/**
+	 * @return
+	 */
+	private IColumnRenderInfo findRenderInfo() {
+		IGLElementParent p = getParent();
+		while (!(p instanceof IColumnRenderInfo) && p != null)
+			p = p.getParent();
+		return (IColumnRenderInfo) p;
 	}
 
 	protected void onSelectRow(IRow selectedRow) {

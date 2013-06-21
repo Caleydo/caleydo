@@ -25,6 +25,7 @@ import org.caleydo.core.util.base.ICallback;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.function.IFloatList;
 import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.vis.rank.config.IRankTableUIConfig;
 import org.caleydo.vis.rank.model.CategoricalRankRankColumnModel.CategoryInfo;
 import org.caleydo.vis.rank.model.mapping.BaseCategoricalMappingFunction;
 import org.caleydo.vis.rank.model.mapping.ICategoricalMappingFunction;
@@ -37,8 +38,8 @@ import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
  */
 public class MappingFunctionUIs {
 	public static GLElement create(IMappingFunction model, IFloatList data, Color color, Color bgColor,
-			ICallback<? super IMappingFunction> callback) {
-		MappingFunctionUI m = new MappingFunctionUI(model, data, color, bgColor, callback);
+			ICallback<? super IMappingFunction> callback, IRankTableUIConfig config) {
+		MappingFunctionUI m = new MappingFunctionUI(model, data, color, bgColor, callback, config);
 		if (model instanceof PiecewiseMapping) {
 			m.addMode(new PiecewiseMappingParallelUI((PiecewiseMapping) model, true));
 			m.addMode(new PiecewiseMappingCrossUI((PiecewiseMapping) model, true));
@@ -56,10 +57,10 @@ public class MappingFunctionUIs {
 
 	public static <T> GLElement create(ICategoricalMappingFunction<T> model, Map<T, Integer> data,
 			Map<T, CategoryInfo> metaData, Color color, Color bgColor,
-			ICallback<? super ICategoricalMappingFunction<?>> callback) {
+			ICallback<? super ICategoricalMappingFunction<?>> callback, IRankTableUIConfig config) {
 		if (model instanceof BaseCategoricalMappingFunction)
 			return new BaseCategoricalMappingFunctionUI<T>((BaseCategoricalMappingFunction<T>) model, data, metaData,
-					color, bgColor, callback);
+					color, bgColor, callback, config);
 		return null;
 	}
 }

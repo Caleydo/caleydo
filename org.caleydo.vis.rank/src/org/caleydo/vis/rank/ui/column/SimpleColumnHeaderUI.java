@@ -26,6 +26,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
@@ -204,6 +205,11 @@ public class SimpleColumnHeaderUI extends ACompositeHeaderUI implements IThickHe
 	@Override
 	public boolean hasFreeSpace() {
 		return true;
+	}
+
+	@Override
+	public Color getBarOutlineColor() {
+		return config.getBarOutlineColor();
 	}
 
 }

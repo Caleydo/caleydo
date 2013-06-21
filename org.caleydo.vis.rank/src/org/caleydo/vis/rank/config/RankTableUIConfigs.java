@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.config;
 
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.basic.IScrollBar;
 import org.caleydo.vis.rank.model.ARankColumnModel;
@@ -119,6 +120,11 @@ public class RankTableUIConfigs {
 		@Override
 		public boolean canEditValues() {
 			return wrappee.canEditValues();
+		}
+
+		@Override
+		public Color getBarOutlineColor() {
+			return wrappee.getBarOutlineColor();
 		}
 	}
 
