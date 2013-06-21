@@ -37,7 +37,6 @@ import org.caleydo.core.data.virtualarray.similarity.SimilarityMap;
 import org.caleydo.core.data.virtualarray.similarity.VASimilarity;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
-import org.caleydo.core.id.IDType;
 import org.caleydo.core.id.object.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.logging.Logger;
@@ -272,20 +271,23 @@ public class BrickColumnSpacingRenderer extends ALayoutRenderer implements IDrop
 			int intersectionCount = 0;
 			IDMappingManager mappingManager = IDMappingManagerRegistry.get().getIDMappingManager(
 					recordVA.getIdType().getIDCategory());
-			for (Integer recordID : recordVA) {
-				if (recordVA.getIdType() != recordSelectionManager.getIDType()) {
-					IDType destIDType = recordSelectionManager.getIDType();
 
-					Set<Integer> recordIDs = mappingManager.getIDAsSet(recordVA.getIdType(), destIDType, recordID);
+			for (Integer selectedID : selectedByGroupSelections) {
+
+				if (recordVA.getIdType() != recordSelectionManager.getIDType()) {
+
+
+					Set<Integer> recordIDs = mappingManager.getIDAsSet(recordSelectionManager.getIDType(),
+							recordVA.getIdType(), selectedID);
 					if (recordIDs == null)
 						continue;
-					recordID = recordIDs.iterator().next();
+					selectedID = recordIDs.iterator().next();
 					if (recordIDs.size() > 1) {
 						Logger.log(new Status(IStatus.WARNING, this.toString(), "Multi-Mapping, not handled"));
 					}
 				}
 
-				if (recordID != null && selectedByGroupSelections.contains(recordID))
+				if (selectedID != null && recordVA.contains(selectedID))
 					intersectionCount++;
 			}
 

@@ -50,9 +50,7 @@ public abstract class ASWTBasedCanvasFactory implements IGLCanvasFactory {
 
 	public ASWTBasedCanvasFactory() {
 		// disable awt as good as possible
-		if (!System.getProperty("os.name").startsWith("Windows")) {
-			System.setProperty("java.awt.headless", "true");
-		}
+		System.setProperty("java.awt.headless", "true");
 		// re add texture provider from awt for javax.imageio as the flag disables them
 		TextureIO.addTextureProvider(new IIOTextureProvider());
 		TextureIO.addTextureWriter(new IIOTextureWriter());

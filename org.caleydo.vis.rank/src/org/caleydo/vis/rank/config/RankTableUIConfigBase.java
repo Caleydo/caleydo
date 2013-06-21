@@ -21,6 +21,7 @@ package org.caleydo.vis.rank.config;
 
 import gleem.linalg.Vec2f;
 
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.basic.IScrollBar;
 import org.caleydo.core.view.opengl.layout2.basic.ScrollBar;
@@ -122,5 +123,10 @@ public class RankTableUIConfigBase implements IRankTableUIConfig {
 	@Override
 	public boolean canEditValues() {
 		return true;
+	}
+
+	@Override
+	public Color getBarOutlineColor() {
+		return null;
 	}
 }

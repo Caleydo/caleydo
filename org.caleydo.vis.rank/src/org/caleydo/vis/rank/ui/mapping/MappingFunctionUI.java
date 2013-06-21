@@ -54,6 +54,8 @@ import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.data.loader.ResourceLocators;
+import org.caleydo.vis.rank.config.IRankTableUIConfig;
+import org.caleydo.vis.rank.config.RankTableUIConfigs;
 import org.caleydo.vis.rank.internal.event.CodeUpdateEvent;
 import org.caleydo.vis.rank.internal.ui.ButtonBar;
 import org.caleydo.vis.rank.model.DataUtils;
@@ -73,7 +75,7 @@ import org.eclipse.swt.widgets.Shell;
  *
  */
 public class MappingFunctionUI extends GLElementContainer implements GLButton.ISelectionCallback, IGLLayout,
-		GLComboBox.ISelectionCallback<EStandardMappings> {
+		GLComboBox.ISelectionCallback<EStandardMappings>, IHasUIConfig {
 
 	private static final float PADDING = 5;
 
@@ -99,9 +101,12 @@ public class MappingFunctionUI extends GLElementContainer implements GLButton.IS
 
 	private final RadioController radio = new RadioController(this);
 
+	private final IRankTableUIConfig config;
+
 	public MappingFunctionUI(IMappingFunction model, IFloatList data, Color color, Color bgColor,
-			ICallback<? super IMappingFunction> callback) {
+			ICallback<? super IMappingFunction> callback, IRankTableUIConfig config) {
 		this.callback = callback;
+		this.config = config;
 		this.model = model;
 		this.raw = data;
 		this.color = color;
@@ -136,6 +141,14 @@ public class MappingFunctionUI extends GLElementContainer implements GLButton.IS
 		this.add(buttons);
 
 		setLayout(this);
+	}
+
+	/**
+	 * @return the config, see {@link #config}
+	 */
+	@Override
+	public IRankTableUIConfig getConfig() {
+		return config;
 	}
 
 	private AMappingFunctionMode<?> getActive() {
@@ -453,7 +466,7 @@ public class MappingFunctionUI extends GLElementContainer implements GLButton.IS
 		FloatStatistics s = FloatStatistics.of(data.iterator());
 		model.setActStatistics(s);
 		final MappingFunctionUI root = new MappingFunctionUI(model, data, new Color("#9ECAE1"), new Color("#DEEBF7"),
-				null);
+				null, RankTableUIConfigs.DEFAULT);
 		root.addMode(new PiecewiseMappingParallelUI(model, true));
 		root.addMode(new PiecewiseMappingCrossUI(model, true));
 

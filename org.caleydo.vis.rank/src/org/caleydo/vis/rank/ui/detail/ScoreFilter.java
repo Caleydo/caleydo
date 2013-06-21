@@ -26,12 +26,14 @@ import org.caleydo.core.util.function.IFloatList;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
+import org.caleydo.core.view.opengl.layout2.IGLElementParent;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.vis.rank.model.AMultiRankColumnModel;
 import org.caleydo.vis.rank.model.DataUtils;
 import org.caleydo.vis.rank.model.SimpleHistogram;
+import org.caleydo.vis.rank.ui.IColumnRenderInfo;
 import org.caleydo.vis.rank.ui.RenderStyle;
 import org.caleydo.vis.rank.ui.RenderUtils;
 
@@ -139,7 +141,8 @@ public class ScoreFilter extends PickableGLElement implements IPickingListener {
 		int bins = binsForWidth(w, data.size());
 		if (cache == null || cache.size() != bins)
 			cache = DataUtils.getHist(bins, data);
-		RenderUtils.renderHist(g, cache, w, h, -1, model.getColor(), model.getColor().darker());
+		RenderUtils.renderHist(g, cache, w, h, -1, model.getColor(), model.getColor().darker(), findRenderInfo()
+				.getBarOutlineColor());
 
 		if (min > 0) {
 			g.color(0, 0, 0, 0.25f).fillRect(0, 0, min * w, h);
@@ -151,6 +154,16 @@ public class ScoreFilter extends PickableGLElement implements IPickingListener {
 			if (maxHovered)
 				g.color(Color.BLACK).fillRect(Math.min(w - 4, max * w - 2), 0, 4, h);
 		}
+	}
+
+	/**
+	 * @return
+	 */
+	private IColumnRenderInfo findRenderInfo() {
+		IGLElementParent p = getParent();
+		while (!(p instanceof IColumnRenderInfo) && p != null)
+			p = p.getParent();
+		return (IColumnRenderInfo) p;
 	}
 
 	@Override

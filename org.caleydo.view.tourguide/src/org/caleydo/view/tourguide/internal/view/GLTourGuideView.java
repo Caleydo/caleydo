@@ -41,6 +41,7 @@ import org.caleydo.core.event.data.NewDataDomainEvent;
 import org.caleydo.core.event.data.RemoveDataDomainEvent;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.AGLElementView;
@@ -725,6 +726,11 @@ public class GLTourGuideView extends AGLElementView {
 				g.color(RenderStyle.COLOR_BACKGROUND_EVEN);
 				g.fillRect(x, y, w, h);
 			}
+		}
+
+		@Override
+		public Color getBarOutlineColor() {
+			return Color.DARK_GRAY; // outline color
 		}
 	}
 

@@ -6,6 +6,7 @@ import gleem.linalg.Vec4f;
 import java.util.BitSet;
 import java.util.List;
 
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
@@ -262,6 +263,11 @@ public class ColumnUI extends AnimatedGLElementContainer implements ITableColumn
 	@Override
 	public VAlign getAlignment() {
 		return getColumnParent().getAlignment(this);
+	}
+
+	@Override
+	public Color getBarOutlineColor() {
+		return getColumnParent().getBarOutlineColor();
 	}
 
 	protected IColumModelLayout getColumnParent() {

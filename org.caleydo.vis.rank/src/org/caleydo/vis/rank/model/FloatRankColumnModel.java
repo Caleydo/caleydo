@@ -42,6 +42,7 @@ import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.ISWTLayer.ISWTLayerRunnable;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
+import org.caleydo.vis.rank.config.IRankTableUIConfig;
 import org.caleydo.vis.rank.data.IFloatFunction;
 import org.caleydo.vis.rank.data.IFloatInferrer;
 import org.caleydo.vis.rank.internal.event.FilterEvent;
@@ -157,9 +158,9 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 	}
 
 	@Override
-	public void editMapping(GLElement summary, IGLElementContext context) {
+	public void editMapping(GLElement summary, IGLElementContext context, IRankTableUIConfig config) {
 		GLElement m = MappingFunctionUIs.create(mapping, asRawData(), getColor(), new Color(0.95f, .95f, .95f),
-				callback);
+				callback, config);
 		m.setzDelta(0.5f);
 		Vec2f location = summary.getAbsoluteLocation();
 		Vec2f size = summary.getSize();

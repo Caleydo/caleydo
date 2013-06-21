@@ -7,6 +7,7 @@ import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.core.view.opengl.layout2.IGLElementParent;
 import org.caleydo.vis.rank.model.SimpleHistogram;
 import org.caleydo.vis.rank.ui.RenderUtils;
 
@@ -40,7 +41,7 @@ class HistogramElement extends GLElement {
 					VAlign.CENTER);
 			g.drawText(Formatter.formatNumber(min), 0, texty + 3, w, 12, VAlign.LEFT);
 			g.drawText(Formatter.formatNumber(max), 0, texty + 3, w, 12, VAlign.RIGHT);
-			RenderUtils.renderHist(g, hist, w, h - LABEL_HEIGHT, -1, color, Color.BLACK);
+			RenderUtils.renderHist(g, hist, w, h - LABEL_HEIGHT, -1, color, Color.BLACK, findRenderInfo());
 
 			if (!Float.isNaN(minM)) {
 				g.color(0, 0, 0, 0.25f).fillRect(0, 0, minM * w, h - LABEL_HEIGHT);
@@ -57,7 +58,7 @@ class HistogramElement extends GLElement {
 			g.color(backgroundColor).fillRect(0, histy, w, h - LABEL_HEIGHT);
 			g.color(color).drawRect(0, histy, w, h - LABEL_HEIGHT);
 			g.move(0, histy);
-			RenderUtils.renderHist(g, hist, w, h - LABEL_HEIGHT, -1, color, Color.BLACK);
+			RenderUtils.renderHist(g, hist, w, h - LABEL_HEIGHT, -1, color, Color.BLACK, findRenderInfo());
 
 			if (!Float.isNaN(minM)) {
 				g.color(0, 0, 0, 0.25f).fillRect(0, 0, minM * w, h - LABEL_HEIGHT);
@@ -67,5 +68,17 @@ class HistogramElement extends GLElement {
 			}
 			g.move(0, -histy);
 		}
+	}
+
+	/**
+	 * @return
+	 */
+	private Color findRenderInfo() {
+		IGLElementParent p = getParent();
+		while (!(p instanceof IHasUIConfig) && p != null)
+			p = p.getParent();
+		if (p == null)
+			return null;
+		return ((IHasUIConfig) p).getConfig().getBarOutlineColor();
 	}
 }

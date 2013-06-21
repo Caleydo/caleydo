@@ -24,6 +24,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
@@ -129,6 +130,11 @@ public class SimpleColumnUI extends ACompositeTableColumnUI<ACompositeRankColumn
 	@Override
 	public boolean causesReorderingLayouting() {
 		return getColumnModelParent().causesReorderingLayouting();
+	}
+
+	@Override
+	public Color getBarOutlineColor() {
+		return getColumnModelParent().getBarOutlineColor();
 	}
 
 	@Override

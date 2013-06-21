@@ -37,8 +37,10 @@ import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
+import org.caleydo.core.view.opengl.layout2.IGLElementParent;
 import org.caleydo.core.view.opengl.layout2.ISWTLayer.ISWTLayerRunnable;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
+import org.caleydo.vis.rank.config.IRankTableUIConfig;
 import org.caleydo.vis.rank.internal.event.FilterEvent;
 import org.caleydo.vis.rank.internal.ui.CatFilterDalog;
 import org.caleydo.vis.rank.model.mapping.ICategoricalMappingFunction;
@@ -284,7 +286,17 @@ public class CategoricalRankRankColumnModel<CATEGORY_TYPE> extends ABasicFiltera
 			Map<CATEGORY_TYPE, Integer> hist = getHist();
 			IRow s = getTable().getSelectedRow();
 			CATEGORY_TYPE selected = s == null ? null : getCatValue(s);
-			RenderUtils.renderHist(g, hist, w, h, selected, metaData);
+			RenderUtils.renderHist(g, hist, w, h, selected, metaData, findRenderInfo().getBarOutlineColor());
+		}
+
+		/**
+		 * @return
+		 */
+		private IColumnRenderInfo findRenderInfo() {
+			IGLElementParent p = getParent();
+			while (!(p instanceof IColumnRenderInfo) && p != null)
+				p = p.getParent();
+			return (IColumnRenderInfo) p;
 		}
 
 		@SuppressWarnings("unchecked")
@@ -326,8 +338,8 @@ public class CategoricalRankRankColumnModel<CATEGORY_TYPE> extends ABasicFiltera
 	}
 
 	@Override
-	public void editMapping(GLElement summary, IGLElementContext context) {
-		GLElement m = MappingFunctionUIs.create(mapping, getHist(), metaData, color, bgColor, callback);
+	public void editMapping(GLElement summary, IGLElementContext context, IRankTableUIConfig config) {
+		GLElement m = MappingFunctionUIs.create(mapping, getHist(), metaData, color, bgColor, callback, config);
 		m.setzDelta(0.5f);
 		Vec2f location = summary.getAbsoluteLocation();
 		Vec2f size = summary.getSize();

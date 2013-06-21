@@ -207,6 +207,11 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 	}
 
 	@Override
+	public Color getBarOutlineColor() {
+		return config.getBarOutlineColor();
+	}
+
+	@Override
 	protected void init(IGLElementContext context) {
 		super.init(context);
 		onPick(context.getSWTLayer().createTooltip(this));
@@ -426,7 +431,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 			b.setCallback(new ISelectionCallback() {
 				@Override
 				public void onSelectionChanged(GLButton button, boolean selected) {
-					m.editMapping(get(HIST), context);
+					m.editMapping(get(HIST), context, config);
 				}
 			});
 			buttons.addButton(b, "Edit the mapping of this column", RenderStyle.ICON_MAPPING, RenderStyle.ICON_MAPPING);
