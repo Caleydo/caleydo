@@ -33,11 +33,26 @@ public class Settings {
 			+ GeneralManager.VERSION + "/{0}_{1}.jnlp"; // jnlpgenerator.php?date={0}&tumor={1}";
 
 	private static final String BASE_URL = "http://gdac.broadinstitute.org/runs/";
+	/**
+	 * 0..run (a date), 1..tumor, 2..tumorSample (e.g. -TP), 3..pipelineName, 4..level
+	 */
 	private static final String FILE_PATTERN = "gdac.broadinstitute.org_{2}.{3}.Level_{4}.{0,date,yyyyMMdd}00.0.0.tar.gz";
+	/**
+	 * 0..run (a date), 1..tumor, 2..tumorSample (e.g. -TP), 3..pipelineName, 4..level
+	 */
 	private static final String DATAFILE_PATTERN = "gdac.broadinstitute.org_{1}.{3}.Level_{4}.{0,date,yyyyMMdd}00.0.0.tar.gz";
+	/**
+	 * 0..run (a date), 1..tumor, 2..tumorSample (e.g -TP), 3..file
+	 */
 	private static final String DATA_PATTERN = BASE_URL + "stddata__{0,date,yyyy_MM_dd}/data/{1}/{0,date,yyyyMMdd}/{3}";
+	/**
+	 * 0..run (a date), 1..tumor, 2..tumorSample (e.g -TP), 3..file
+	 */
 	private static final String ANALYSIS_PATTERN = BASE_URL
 			+ "analyses__{0,date,yyyy_MM_dd}/data/{1}/{0,date,yyyyMMdd}/{3}";
+	/**
+	 * 0..run (date), 1..tumor
+	 */
 	private static final String REPORT_PATTERN = BASE_URL + "analyses__{0,date,yyyy_MM_dd}/reports/cancer/{1}/";
 
 	@Option(name = "-t", required = false, aliases = { "--tumortypes" }, usage = "the tumor types to export default: \"all known\"")

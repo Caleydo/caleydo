@@ -227,9 +227,6 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 
 	private List<TablePerspective> tablePerspectives;
 
-	private int preDetailModeCenterColumnStartIndex = -1;
-	private int preDetailModeRightColumnStartIndex = -1;
-
 	@DeepScan
 	private TourguideAdapter tourguide;
 
@@ -646,11 +643,6 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	 */
 	public void switchToDetailModeRight(BrickColumn focusColumn) {
 
-		if (!isRightDetailShown && !isLeftDetailShown) {
-			preDetailModeCenterColumnStartIndex = brickColumnManager.getCenterColumnStartIndex();
-			preDetailModeRightColumnStartIndex = brickColumnManager.getRightColumnStartIndex();
-		}
-
 		int columnIndex = brickColumnManager.indexOfBrickColumn(focusColumn);
 		// false only if this is the rightmost column. If true we
 		// move anything beyond the next column out
@@ -679,11 +671,6 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	 */
 	public void switchToDetailModeLeft(BrickColumn focusColumn) {
 
-		if (!isRightDetailShown && !isLeftDetailShown) {
-			preDetailModeCenterColumnStartIndex = brickColumnManager.getCenterColumnStartIndex();
-			preDetailModeRightColumnStartIndex = brickColumnManager.getRightColumnStartIndex();
-		}
-
 		int columnIndex = brickColumnManager.indexOfBrickColumn(focusColumn);
 
 		// false only if this is the left-most column. If true we move
@@ -708,10 +695,6 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	 */
 	public void switchToOverviewModeRight() {
 		isRightDetailShown = false;
-		if (!isRightDetailShown && !isLeftDetailShown) {
-			brickColumnManager.setCenterColumnStartIndex(preDetailModeCenterColumnStartIndex);
-			brickColumnManager.setRightColumnStartIndex(preDetailModeRightColumnStartIndex);
-		}
 		initLayouts();
 	}
 
@@ -720,10 +703,6 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	 */
 	public void switchToOverviewModeLeft() {
 		isLeftDetailShown = false;
-		if (!isRightDetailShown && !isLeftDetailShown) {
-			brickColumnManager.setCenterColumnStartIndex(preDetailModeCenterColumnStartIndex);
-			brickColumnManager.setRightColumnStartIndex(preDetailModeRightColumnStartIndex);
-		}
 		initLayouts();
 	}
 
@@ -1032,9 +1011,9 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 				float percentageRight = (float) numSharedElements / numRightElements * 100;
 				DecimalFormat df = new DecimalFormat("#.##");
 
-				return "Shared elements: " + numSharedElements + "\nPercentage of left group: "
-						+ df.format(percentageLeft) + "%\nPercentage of right group: " + df.format(percentageRight)
-						+ "%";
+				return "Shared elements: " + numSharedElements + "\n" + df.format(percentageLeft) + "% of left group ("
+						+ numLeftElements + " in total)\n" + df.format(percentageRight) + "% of right group ("
+						+ numRightElements + " in total)";
 			}
 		}, EPickingType.BRICK_CONNECTION_BAND.name());
 
@@ -1607,11 +1586,6 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		event.setSender(this);
 		SelectionDelta delta = recordSelectionManager.getDelta();
 		event.setSelectionDelta(delta);
-		// FIXME: actually we should not send a data domain in this case -
-		// however, if we don't send it, we don't see the selection in the
-		// selection info view. to fix this, we need to redesign the selection
-		// info view.
-		event.setEventSpace(dataDomainID);
 		eventPublisher.triggerEvent(event);
 
 		updateConnectionLinesBetweenColumns();
@@ -1847,12 +1821,6 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	@Override
 	protected void destroyViewSpecificContent(GL2 gl) {
 		gl.glDeleteLists(displayListIndex, 1);
-		// if (centerLayoutManager != null)
-		// centerLayoutManager.destroy(gl);
-		// if (leftLayoutManager != null)
-		// leftLayoutManager.destroy(gl);
-		// if (rightLayoutManager != null)
-		// rightLayoutManager.destroy(gl);
 
 		if (layoutManager != null)
 			layoutManager.destroy(gl);
@@ -1869,7 +1837,6 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 
 	@Override
 	public void notifyOfSelectionChange(EventBasedSelectionManager selectionManager) {
-		// TODO Auto-generated method stub
 		updateConnectionLinesBetweenColumns();
 	}
 
@@ -1883,5 +1850,4 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	public void unregisterEventListener(Object elem) {
 		listeners.unregister(elem);
 	}
-
 }

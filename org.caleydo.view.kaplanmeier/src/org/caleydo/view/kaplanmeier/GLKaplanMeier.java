@@ -417,6 +417,7 @@ public class GLKaplanMeier extends AGLView implements ISingleTablePerspectiveBas
 		int remainingItemCount = dataVector.size();
 		float ySingleSampleSize = plotHeight / dataVector.size();
 
+		float z = 0.1f;
 		for (int binIndex = 0; binIndex < Math.abs(maxAxisTime); binIndex++) {
 
 			while (dataVector.size() > 0 && dataVector.get(0) <= currentTimeBin) {
@@ -425,12 +426,13 @@ public class GLKaplanMeier extends AGLView implements ISingleTablePerspectiveBas
 			}
 
 			float y = remainingItemCount * ySingleSampleSize;
+
 			gl.glBegin(GL2.GL_QUADS);
-			gl.glVertex3f(leftAxisSpacing + currentTimeBin * plotWidth, bottomAxisSpacing, 0.9f);
-			gl.glVertex3f(leftAxisSpacing + currentTimeBin * plotWidth, bottomAxisSpacing + y, 0.9f);
+			gl.glVertex3f(leftAxisSpacing + currentTimeBin * plotWidth, bottomAxisSpacing, z);
+			gl.glVertex3f(leftAxisSpacing + currentTimeBin * plotWidth, bottomAxisSpacing + y, z);
 			currentTimeBin += timeBinStepSize;
-			gl.glVertex3f(leftAxisSpacing + currentTimeBin * plotWidth, bottomAxisSpacing + y, 0.9f);
-			gl.glVertex3f(leftAxisSpacing + currentTimeBin * plotWidth, bottomAxisSpacing, 0.9f);
+			gl.glVertex3f(leftAxisSpacing + currentTimeBin * plotWidth, bottomAxisSpacing + y, z);
+			gl.glVertex3f(leftAxisSpacing + currentTimeBin * plotWidth, bottomAxisSpacing, z);
 			gl.glEnd();
 		}
 
@@ -452,8 +454,9 @@ public class GLKaplanMeier extends AGLView implements ISingleTablePerspectiveBas
 		int remainingItemCount = dataVector.size();
 		float ySingleSampleSize = plotHeight / dataVector.size();
 
+		float z = 0.11f;
 		gl.glBegin(GL.GL_LINE_STRIP);
-		gl.glVertex3f(leftAxisSpacing, bottomAxisSpacing + plotHeight, 1);
+		gl.glVertex3f(leftAxisSpacing, bottomAxisSpacing + plotHeight, z);
 
 		for (int binIndex = 0; binIndex < Math.abs(maxAxisTime); binIndex++) {
 
@@ -464,9 +467,9 @@ public class GLKaplanMeier extends AGLView implements ISingleTablePerspectiveBas
 
 			float y = remainingItemCount * ySingleSampleSize;
 
-			gl.glVertex3f(leftAxisSpacing + currentTimeBin * plotWidth, bottomAxisSpacing + y, 1);
+			gl.glVertex3f(leftAxisSpacing + currentTimeBin * plotWidth, bottomAxisSpacing + y, z);
 			currentTimeBin += timeBinStepSize;
-			gl.glVertex3f(leftAxisSpacing + currentTimeBin * plotWidth, bottomAxisSpacing + y, 1);
+			gl.glVertex3f(leftAxisSpacing + currentTimeBin * plotWidth, bottomAxisSpacing + y, z);
 		}
 
 		gl.glEnd();

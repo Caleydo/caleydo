@@ -532,6 +532,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 		case CONFIRM_PICKING_TYPE:
 			if (wizardPreviews.isEmpty())
 				return;
+
 			// remove the preview buttons
 			if (!wizardPreviews.isEmpty()) {
 				BrickColumn wizardPreview = wizardPreviews.get(0);
@@ -550,6 +551,10 @@ public class TourguideAdapter implements IStratomexAdapter {
 			stratomex.relayout();
 			break;
 		case CANCEL_PICKING_TYPE:
+			if (wizardMode == EWizardMode.INDEPENDENT && !wizardPreviews.isEmpty()) {
+				// restore the old unstratified dependend one
+				updateDependentBrickColumn(null, wizardPreviews.get(0));
+			}
 			for (BrickColumn col : wizardPreviews) {
 				stratomex.removeTablePerspective(col.getTablePerspective());
 			}
@@ -786,11 +791,25 @@ public class TourguideAdapter implements IStratomexAdapter {
 
 		IBrickConfigurer brickConfigurer = toUpdate.getBrickConfigurer();
 		if (brickConfigurer instanceof ClinicalDataConfigurer) {
-			TablePerspective to = asPerspective(with.getRecordPerspective(), from);
-			ClinicalDataConfigurer configurer = AddGroupsToStratomexListener
+			ClinicalDataConfigurer configurer;
+			TablePerspective to;
+			if (with == null) { // restore original one
+				configurer = new ClinicalDataConfigurer();
+				configurer.setSortingStrategy(new NoSortingSortingStrategy());
+				to = from.getDataDomain().getTablePerspective(
+						from.getDataDomain().getTable().getDefaultRecordPerspective().getPerspectiveID(),
+						from.getDimensionPerspective().getPerspectiveID());
+			} else {
+				to = asPerspective(with.getRecordPerspective(), from);
+				configurer = AddGroupsToStratomexListener
 					.createKaplanConfigurer(stratomex, with, to);
-
-			stratomex.addTablePerspectives(Lists.newArrayList(to), configurer, new_, true);
+			}
+			List<Pair<Integer, BrickColumn>> pairs = stratomex.addTablePerspectives(Lists.newArrayList(to), configurer,
+					new_, true);
+			if (with == null && canHaveIndependentColumns(pairs.get(0).getSecond())) { // readd add indepenent buttons
+				pairs.get(0).getSecond().getLayout()
+						.addForeGroundRenderer(new AddAttachedLayoutRenderer(pairs.get(0).getSecond(), this, true));
+			}
 			stratomex.removeTablePerspective(from);
 		} else if (brickConfigurer instanceof PathwayDataConfigurer) {
 			// TODO

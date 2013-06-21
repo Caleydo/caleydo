@@ -65,9 +65,10 @@ public class Application implements IApplication {
 
 			Map<String, IStartupAddon> startups = StartupAddons.findAll();
 
-			if (!parseArgs(startups.values(), (String[]) context.getArguments().get("application.args"))) {
-				return EXIT_OK; // invalid args
-			}
+			parseArgs(startups.values(), (String[]) context.getArguments().get("application.args"));
+			// ) {
+			// return EXIT_OK; // invalid args
+			// }
 
 			Display display = PlatformUI.createDisplay();
 

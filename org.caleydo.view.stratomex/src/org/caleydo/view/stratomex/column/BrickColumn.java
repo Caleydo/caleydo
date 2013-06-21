@@ -304,7 +304,7 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 	}
 
 	public boolean isActive() {
-		return headerBrick.isActive();
+		return headerBrick != null && headerBrick.isActive();
 	}
 
 	/**

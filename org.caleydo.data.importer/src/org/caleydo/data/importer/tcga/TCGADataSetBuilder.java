@@ -338,13 +338,17 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 		dataSet.setNumberOfHeaderLines(1);
 
 		dataSet.setRowIDSpecification(rowIdSpecification);
-		dataSet.setColumnOfRowIds(12); // "patient.bcrpatientbarcode"
 		dataSet.setColumnIDSpecification(columnIdSpecification);
 		dataSet.setRowOfColumnIDs(0);
 
 		String header = readFirstLine(out);
 		assert header != null;
 		List<String> columns = Arrays.asList(header.split("\t"));
+
+		if (columns.contains("patient.bcrpatientbarcode"))
+			dataSet.setColumnOfRowIds(columns.indexOf("patient.bcrpatientbarcode")); // "patient.bcrpatientbarcode"
+		else
+			dataSet.setColumnOfRowIds(12);
 
 		Collection<String> toInclude = settings.getClinicalVariables();
 		for (int i = 2; i < columns.size(); ++i) {
