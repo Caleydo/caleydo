@@ -149,8 +149,8 @@ public class StratificationDataDomainQuery extends ADataDomainQuery {
 
 		// We do not want to overwrite the state of already existing
 		// public table perspectives.
-		if (!existsAlready)
-			per.setPrivate(true);
+		// if (!existsAlready)
+		// per.setPrivate(true);
 
 		return per;
 	}

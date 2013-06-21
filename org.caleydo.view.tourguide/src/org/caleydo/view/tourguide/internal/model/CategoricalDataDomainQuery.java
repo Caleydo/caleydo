@@ -258,7 +258,7 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 			return tablePerspective;
 
 		Perspective cat = new Perspective(dataDomain, categoryIDType);
-		cat.setPrivate(true);
+		cat.setPrivate(false);
 		cat.setLabel(label, false);
 		PerspectiveInitializationData data = new PerspectiveInitializationData();
 		data.setData(Lists.newArrayList(id));
@@ -269,7 +269,7 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 		data.setData(va);
 		items.init(data);
 		items.setLabel(label, false);
-		items.setPrivate(true);
+		items.setPrivate(false);
 
 		if (d.isColumnDimension()) {
 			table.registerRecordPerspective(cat, false);
@@ -281,7 +281,7 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 			tablePerspective = d.getTablePerspective(items.getPerspectiveID(), cat.getPerspectiveID());
 		}
 		tablePerspective.setLabel(label, false);
-		tablePerspective.setPrivate(true);
+		tablePerspective.setPrivate(false);
 
 		return tablePerspective;
 	}
