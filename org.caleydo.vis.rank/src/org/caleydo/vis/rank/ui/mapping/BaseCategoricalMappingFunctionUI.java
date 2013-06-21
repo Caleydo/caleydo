@@ -45,6 +45,7 @@ import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.core.view.opengl.picking.Pick;
+import org.caleydo.vis.rank.config.IRankTableUIConfig;
 import org.caleydo.vis.rank.model.CategoricalRankRankColumnModel.CategoryInfo;
 import org.caleydo.vis.rank.model.SimpleHistogram;
 import org.caleydo.vis.rank.model.mapping.BaseCategoricalMappingFunction;
@@ -57,7 +58,7 @@ import org.caleydo.vis.rank.ui.RenderStyle;
  * @author Samuel Gratzl
  *
  */
-public class BaseCategoricalMappingFunctionUI<T> extends GLElementContainer implements IGLLayout {
+public class BaseCategoricalMappingFunctionUI<T> extends GLElementContainer implements IGLLayout, IHasUIConfig {
 	private static final float GAP = 10;
 	private static final float PADDING = 5;
 
@@ -70,11 +71,13 @@ public class BaseCategoricalMappingFunctionUI<T> extends GLElementContainer impl
 	private final Color backgroundColor;
 	private final Color color;
 	private final ICallback<? super ICategoricalMappingFunction<?>> callback;
+	private final IRankTableUIConfig config;
 
 	public BaseCategoricalMappingFunctionUI(BaseCategoricalMappingFunction<T> model, Map<T, Integer> data,
 			Map<T, CategoryInfo> metaData, Color color, Color bgColor,
-			ICallback<? super ICategoricalMappingFunction<?>> callback) {
+			ICallback<? super ICategoricalMappingFunction<?>> callback, IRankTableUIConfig config) {
 		this.model = model;
+		this.config = config;
 
 		this.order = new ArrayList<>(metaData.keySet());
 		this.metaData = metaData;
@@ -104,6 +107,14 @@ public class BaseCategoricalMappingFunctionUI<T> extends GLElementContainer impl
 		this.add(new RawHistogram());
 		this.add(new NormalizedHistogram());
 		this.add(new Canvas());
+	}
+
+	/**
+	 * @return the config, see {@link #config}
+	 */
+	@Override
+	public IRankTableUIConfig getConfig() {
+		return config;
 	}
 
 	protected SimpleHistogram computeHist(float w) {

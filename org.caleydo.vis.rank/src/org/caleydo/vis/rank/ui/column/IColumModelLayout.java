@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.ui.column;
 
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.vis.rank.layout.IRowLayoutInstance.IRowSetter;
 import org.caleydo.vis.rank.model.ARankColumnModel;
@@ -45,5 +46,10 @@ public interface IColumModelLayout {
 	 * @return
 	 */
 	boolean causesReorderingLayouting();
+
+	/**
+	 * @return
+	 */
+	Color getBarOutlineColor();
 
 }

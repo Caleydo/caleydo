@@ -22,7 +22,6 @@ package org.caleydo.vis.rank.ui;
 import gleem.linalg.Vec2f;
 import gleem.linalg.Vec4f;
 
-import org.caleydo.core.util.color.Color;
 import java.beans.IndexedPropertyChangeEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -34,6 +33,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.caleydo.core.event.EventListenerManager.ListenTo;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
@@ -681,5 +681,10 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 	@Override
 	public boolean hasFreeSpace(ITableColumnUI tableColumnUI) {
 		return true;
+	}
+
+	@Override
+	public Color getBarOutlineColor() {
+		return config.getBarOutlineColor();
 	}
 }
