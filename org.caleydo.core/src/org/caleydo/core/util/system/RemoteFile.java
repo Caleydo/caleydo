@@ -57,6 +57,8 @@ public final class RemoteFile implements IRunnableWithProgress {
 	private static final int BUFFER_SIZE = 4096;
 	private static final int WORK_TRIGGER_FREQUENCY = 64;
 
+	private static final int CONNECT_TIMEOUT = 10 * 1000; // [ms]
+
 	private final URL url;
 	private final File file;
 
@@ -97,6 +99,7 @@ public final class RemoteFile implements IRunnableWithProgress {
 		URLConnection connection;
 		try {
 			connection = url.openConnection();
+			connection.setConnectTimeout(CONNECT_TIMEOUT);
 			connection.connect();
 
 			long expected = connection.getLastModified();

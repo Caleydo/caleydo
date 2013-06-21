@@ -132,7 +132,8 @@ public class LoadSampleProjectStartupAddon implements IStartupAddon {
 			return false;
 		// Try to download the file with interruption
 		RemoteFile file = RemoteFile.of(this.selectedChoice);
-		if (!file.inCache(false)) {
+		if (!file.inCache(true)) {
+			file.delete();
 			try {
 				new ProgressMonitorDialog(new Shell()).run(true, true, file);
 			} catch (InvocationTargetException | InterruptedException e) {
