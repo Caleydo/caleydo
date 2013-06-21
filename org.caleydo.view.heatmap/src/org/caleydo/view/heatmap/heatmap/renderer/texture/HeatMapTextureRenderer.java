@@ -47,7 +47,7 @@ import com.jogamp.opengl.util.texture.TextureIO;
 
 public class HeatMapTextureRenderer extends AHeatMapRenderer {
 
-	private final static int MAX_ITEMS_PER_TEXTURE = 1000;
+	private final static int MAX_ITEMS_PER_TEXTURE = 2048;
 
 	private int numTexturesY = 0;
 	private int numTexturesX = 0;
@@ -73,39 +73,6 @@ public class HeatMapTextureRenderer extends AHeatMapRenderer {
 	@Override
 	public void updateSpacing() {
 
-		// if (heatMap == null)
-		// return;
-		//
-		// AHeatMapTemplate heatMapTemplate = heatMap.getTemplate();
-		//
-		// VirtualArray recordVA =
-		// heatMap.getTablePerspective().getRecordPerspective()
-		// .getVirtualArray();
-		//
-		// int recordElements = recordVA.size();
-		//
-		// RecordSelectionManager selectionManager =
-		// heatMap.getRecordSelectionManager();
-		// if (heatMap.isHideElements()) {
-		// recordElements -= selectionManager
-		// .getNumberOfElements(GLHeatMap.SELECTION_HIDDEN);
-		// }
-		//
-		// recordSpacing.calculateRecordSpacing(recordElements,
-		// heatMap.getTablePerspective()
-		// .getDimensionPerspective().getVirtualArray().size(),
-		// parameters.getSizeScaledX(), parameters.getSizeScaledY(),
-		// heatMapTemplate.getMinSelectedFieldHeight());
-		// heatMapTemplate.setContentSpacing(recordSpacing);
-		//
-		// float yPosition = parameters.getSizeScaledY();
-		// recordSpacing.getYDistances().clear();
-		// for (Integer recordID : recordVA) {
-		//
-		// float fieldHeight = recordSpacing.getFieldHeight(recordID);
-		// yPosition -= fieldHeight;
-		// recordSpacing.getYDistances().add(yPosition);
-		// }
 	}
 
 	/**
