@@ -230,8 +230,25 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	private int preDetailModeCenterColumnStartIndex = -1;
 	private int preDetailModeRightColumnStartIndex = -1;
 
+	private AddTablePerspectiveParameters addTablePerspectiveParameters;
+
 	@DeepScan
 	private TourguideAdapter tourguide;
+
+	private class AddTablePerspectiveParameters {
+		private final List<TablePerspective> newTablePerspectives;
+		private final IBrickConfigurer brickConfigurer;
+		private final BrickColumn sourceColumn;
+		private final boolean addRight;
+
+		public AddTablePerspectiveParameters(List<TablePerspective> tablePerspectives,
+				IBrickConfigurer brickConfigurer, BrickColumn sourceColumn, boolean addRight) {
+			this.newTablePerspectives = tablePerspectives;
+			this.brickConfigurer = brickConfigurer;
+			this.sourceColumn = sourceColumn;
+			this.addRight = addRight;
+		}
+	}
 
 	/**
 	 * Constructor.
@@ -636,6 +653,17 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 			// which need alpha blending...
 			dragAndDropController.handleDragging(gl, glMouseListener);
 		}
+
+		if (addTablePerspectiveParameters != null) {
+			addTablePerspectives(addTablePerspectiveParameters.newTablePerspectives,
+					addTablePerspectiveParameters.brickConfigurer, addTablePerspectiveParameters.sourceColumn,
+					addTablePerspectiveParameters.addRight);
+			addTablePerspectiveParameters = null;
+		}
+	}
+
+	public boolean isDetailMode() {
+		return isLeftDetailShown || isRightDetailShown;
 	}
 
 	/**
@@ -709,10 +737,14 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	public void switchToOverviewModeRight() {
 		isRightDetailShown = false;
 		if (!isRightDetailShown && !isLeftDetailShown) {
-			brickColumnManager.setCenterColumnStartIndex(preDetailModeCenterColumnStartIndex);
-			brickColumnManager.setRightColumnStartIndex(preDetailModeRightColumnStartIndex);
+			restoreColumnSetup();
 		}
 		initLayouts();
+	}
+
+	private void restoreColumnSetup() {
+		brickColumnManager.setCenterColumnStartIndex(preDetailModeCenterColumnStartIndex);
+		brickColumnManager.setRightColumnStartIndex(preDetailModeRightColumnStartIndex);
 	}
 
 	/**
@@ -721,8 +753,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	public void switchToOverviewModeLeft() {
 		isLeftDetailShown = false;
 		if (!isRightDetailShown && !isLeftDetailShown) {
-			brickColumnManager.setCenterColumnStartIndex(preDetailModeCenterColumnStartIndex);
-			brickColumnManager.setRightColumnStartIndex(preDetailModeRightColumnStartIndex);
+			restoreColumnSetup();
 		}
 		initLayouts();
 	}
@@ -989,8 +1020,10 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 
 			@Override
 			protected void mouseOver(Pick pick) {
-				for (BrickColumnSpacingRenderer manager : brickColumnManager.getBrickColumnSpacers().values())
-					manager.setHeaderHovered(true);
+				if (!isDetailMode()) {
+					for (BrickColumnSpacingRenderer manager : brickColumnManager.getBrickColumnSpacers().values())
+						manager.setHeaderHovered(true);
+				}
 				super.mouseOver(pick);
 			}
 
@@ -1158,14 +1191,25 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 					"newTablePerspectives in addTablePerspectives was null or empty"));
 			return added;
 		}
+		ArrayList<BrickColumn> brickColumns = brickColumnManager.getBrickColumns();
+
+		if (isLeftDetailShown || isRightDetailShown) {
+			// Hide detail bricks and add later
+			for (BrickColumn brickColumn : brickColumns) {
+				if (brickColumn.isDetailBrickShown()) {
+					brickColumn.hideDetailedBrick();
+				}
+			}
+			this.addTablePerspectiveParameters = new AddTablePerspectiveParameters(newTablePerspectives,
+					brickConfigurer, sourceColumn, addRight);
+			return added;
+		}
 
 		// if this is the first data container set, we imprint StratomeX
 		if (recordIDCategory == null) {
 			ATableBasedDataDomain dataDomain = newTablePerspectives.get(0).getDataDomain();
 			imprintVisBricks(dataDomain);
 		}
-
-		ArrayList<BrickColumn> brickColumns = brickColumnManager.getBrickColumns();
 
 		for (TablePerspective tablePerspective : newTablePerspectives) {
 			if (tablePerspective == null) {
