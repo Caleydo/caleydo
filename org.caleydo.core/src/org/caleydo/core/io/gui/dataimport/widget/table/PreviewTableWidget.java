@@ -8,8 +8,8 @@ import java.util.Collection;
 import java.util.List;
 
 import org.caleydo.core.io.IDTypeParsingRules;
-import org.caleydo.core.io.gui.dataimport.widget.IntegerCallback;
 import org.caleydo.core.io.parser.ascii.ATextParser;
+import org.caleydo.core.util.base.IntegerCallback;
 import org.eclipse.nebula.widgets.nattable.NatTable;
 import org.eclipse.nebula.widgets.nattable.config.AbstractRegistryConfiguration;
 import org.eclipse.nebula.widgets.nattable.config.CellConfigAttributes;

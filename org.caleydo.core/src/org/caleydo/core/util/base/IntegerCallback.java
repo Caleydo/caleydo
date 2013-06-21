@@ -17,14 +17,14 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.io.gui.dataimport.widget;
+package org.caleydo.core.util.base;
 
 /**
- * Generic version of a provider for any data type.
+ * special version of a {@link ICallback} for int
  *
- * @author Christian Partl
+ * @author Samuel Gratzl
  *
  */
-public interface IProvider<T> {
-	public T get();
+public interface IntegerCallback {
+	public void on(int data);
 }

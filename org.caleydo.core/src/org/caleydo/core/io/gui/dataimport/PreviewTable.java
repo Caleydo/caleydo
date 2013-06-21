@@ -28,12 +28,12 @@ import java.util.List;
 import org.caleydo.core.io.FileUtil;
 import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.io.MatrixDefinition;
-import org.caleydo.core.io.gui.dataimport.widget.BooleanCallback;
 import org.caleydo.core.io.gui.dataimport.widget.DelimiterWidget;
-import org.caleydo.core.io.gui.dataimport.widget.ICallback;
 import org.caleydo.core.io.gui.dataimport.widget.SelectAllNoneWidget;
 import org.caleydo.core.io.gui.dataimport.widget.table.INoArgumentCallback;
 import org.caleydo.core.io.gui.dataimport.widget.table.PreviewTableWidget;
+import org.caleydo.core.util.base.BooleanCallback;
+import org.caleydo.core.util.base.ICallback;
 import org.eclipse.swt.widgets.Composite;
 
 /**

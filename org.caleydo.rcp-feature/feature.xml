@@ -43,11 +43,10 @@ All Rights Reserved.
       <import plugin="org.eclipse.ui" version="3.103.0" match="greaterOrEqual"/>
       <import plugin="org.caleydo.lib.args4j" version="2.0.16" match="greaterOrEqual"/>
       <import plugin="org.caleydo.lib.jgrapht" version="0.8.3" match="greaterOrEqual"/>
-      <import plugin="org.caleydo.lib.jsap" version="2.1.0" match="greaterOrEqual"/>
-      <import plugin="org.caleydo.lib.tagsoup" version="1.2.1" match="greaterOrEqual"/>
       <import plugin="org.caleydo.lib.weka" version="3.6.8" match="greaterOrEqual"/>
       <import plugin="org.caleydo.lib.jogl" version="2.0.0" match="greaterOrEqual"/>
       <import plugin="com.google.guava" version="10.0.1" match="greaterOrEqual"/>
+      <import plugin="org.caleydo.lib.nattable" version="2.1.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.runtime" version="3.6.0" match="compatible"/>
       <import plugin="org.eclipse.help" version="3.2.0" match="compatible"/>
       <import plugin="org.eclipse.jface" version="3.5.0" match="compatible"/>
@@ -103,9 +102,9 @@ All Rights Reserved.
       <import plugin="org.eclipse.swt" version="3.100.1" match="greaterOrEqual"/>
       <import plugin="org.eclipse.jface" version="3.8.101" match="greaterOrEqual"/>
       <import plugin="org.eclipse.ui" version="3.3.0" match="compatible"/>
+      <import plugin="org.caleydo.core" version="2.2.0" match="greaterOrEqual"/>
       <import plugin="org.caleydo.datadomain.pathway" version="2.2.0" match="greaterOrEqual"/>
       <import plugin="org.caleydo.datadomain.genetic" version="2.2.0" match="greaterOrEqual"/>
-      <import plugin="org.caleydo.core" version="2.2.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.expressions" version="3.2.0" match="compatible"/>
       <import plugin="org.eclipse.core.filesystem" version="1.3.0" match="compatible"/>
       <import plugin="org.eclipse.core.runtime" version="3.7.0" match="compatible"/>
@@ -134,6 +133,10 @@ All Rights Reserved.
       <import plugin="org.apache.commons.math" version="2.1.0" match="greaterOrEqual"/>
       <import plugin="org.caleydo.vis.rank" version="2.2.0" match="greaterOrEqual"/>
       <import plugin="org.caleydo.lib.pathvisio" version="31.0.0" match="greaterOrEqual"/>
+      <import plugin="org.caleydo.datadomain.generic" version="2.2.0" match="greaterOrEqual"/>
+      <import plugin="org.apache.commons.lang" version="2.6.0" match="greaterOrEqual"/>
+      <import plugin="org.apache.commons.logging" version="1.0.4" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.e4.core.commands" version="0.10.1" match="greaterOrEqual"/>
    </requires>
 
    <plugin
@@ -535,6 +538,27 @@ All Rights Reserved.
 
    <plugin
          id="org.caleydo.view.table"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.commons.lang"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.commons.logging"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.commons.math"
          download-size="0"
          install-size="0"
          version="0.0.0"

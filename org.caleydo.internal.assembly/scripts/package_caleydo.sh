@@ -21,9 +21,7 @@
 # Copyright (C) 2009, 2012 Alexander Lex - alexander.lex@icg.tugraz.at
 #
 
-
 # Requires alien to be installed. Run  sudo apt-get install alien
-
 mount_point="/mnt/webdav"
 # the folder on the webserver where the packages are placed
 download_folder=$mount_point"/download"
@@ -111,31 +109,38 @@ move_file()
 # create zip packages of the binaries
 create_zip_packages()
 {  
+  message="Caleydo - Visualization for molecular biology\nhttp://caleydo.org\nVersion: "$version_number"\nArch: "
   echo -n "Creating linux_x86-32 tar"
+  echo -e $message"linux.gtk.x86" > $linux32_folder"/caleydo/info.txt"
   tar -czf $export_path/caleydo_$version_number"_linux_x86-32.tar.gz" -C $linux32_folder  caleydo
   echo ".... [x] done"
   
   echo -n "Creating linux_x86-64 tar"
+  echo -e $message"linux_x86-64" > $linux64_folder"/caleydo/info.txt"
   tar -czf $export_path/caleydo_$version_number"_linux_x86-64.tar.gz" -C $linux64_folder caleydo
   echo ".... [x] done"
  
   echo -n "Creating win32.x86 zip"
   cd $win32_folder
+  echo -e $message"win_x86-32" > "caleydo/info.txt"
   zip -q -r $export_path/caleydo_$version_number"_win_x86-32.zip" caleydo
   echo ".... [x] done"
   
   echo -n "Creating win32.x86-64 zip"
   cd $win64_folder
+  echo -e $message"win_x86-64" > "caleydo/info.txt"
   zip -q -r $export_path/caleydo_$version_number"_win_x86-64.zip" caleydo 
   echo ".... [x] done"
   
   echo -n "Creating macosx.cocoa.x86 zip"
   cd $mac32_folder
+  echo -e $message"macosx_cocoa_x86-32" > "caleydo/info.txt"
   zip -q -r $export_path/caleydo_$version_number"_macosx_cocoa_x86-32.zip" caleydo
   echo ".... [x] done"
   
   echo -n "Creating macosx.cocoa.x86-64 zip"
   cd $mac64_folder
+  echo -e $message"macosx_cocoa_x86-64" > "caleydo/info.txt"
   zip -q -r $export_path/caleydo_$version_number"_macosx_cocoa_x86-64.zip" caleydo 
   echo ".... [x] done"
   

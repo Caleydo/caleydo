@@ -21,7 +21,7 @@ package org.caleydo.vis.rank.ui.mapping;
 
 import java.util.Map;
 
-import org.caleydo.core.io.gui.dataimport.widget.ICallback;
+import org.caleydo.core.util.base.ICallback;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.function.IFloatList;
 import org.caleydo.core.view.opengl.layout2.GLElement;

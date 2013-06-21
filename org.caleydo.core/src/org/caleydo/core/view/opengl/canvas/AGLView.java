@@ -59,6 +59,7 @@ import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.keyboard.GLFPSKeyListener;
 import org.caleydo.core.view.opengl.keyboard.GLKeyListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.picking.IPickingLabelProvider;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingManager;
@@ -732,6 +733,10 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 
 	public final void addTypePickingTooltipListener(String tooltip, String pickingType) {
 		addTypePickingListener(this.getParentGLCanvas().createTooltip(tooltip), pickingType);
+	}
+
+	public final void addTypePickingTooltipListener(IPickingLabelProvider labelProvider, String pickingType) {
+		addTypePickingListener(this.getParentGLCanvas().createTooltip(labelProvider), pickingType);
 	}
 
 	/**

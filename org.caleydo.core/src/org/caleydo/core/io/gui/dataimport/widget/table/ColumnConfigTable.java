@@ -22,7 +22,7 @@ package org.caleydo.core.io.gui.dataimport.widget.table;
 import java.util.List;
 
 import org.caleydo.core.io.ColumnDescription;
-import org.caleydo.core.io.gui.dataimport.widget.IntegerCallback;
+import org.caleydo.core.util.base.IntegerCallback;
 import org.eclipse.nebula.widgets.nattable.NatTable;
 import org.eclipse.nebula.widgets.nattable.config.AbstractRegistryConfiguration;
 import org.eclipse.nebula.widgets.nattable.config.CellConfigAttributes;

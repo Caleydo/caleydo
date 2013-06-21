@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.core.io.gui.dataimport.widget;
 
+import org.caleydo.core.util.base.BooleanCallback;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;

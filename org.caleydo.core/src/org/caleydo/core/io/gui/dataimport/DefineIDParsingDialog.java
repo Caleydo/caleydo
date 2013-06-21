@@ -20,8 +20,8 @@
 package org.caleydo.core.io.gui.dataimport;
 
 import org.caleydo.core.io.IDTypeParsingRules;
-import org.caleydo.core.io.gui.dataimport.widget.ICallback;
 import org.caleydo.core.io.gui.dataimport.widget.IDParsingRulesWidget;
+import org.caleydo.core.util.base.ICallback;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;

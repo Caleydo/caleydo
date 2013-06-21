@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.caleydo.core.util.base.ICallback;
 import org.caleydo.core.util.collection.Pair;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;

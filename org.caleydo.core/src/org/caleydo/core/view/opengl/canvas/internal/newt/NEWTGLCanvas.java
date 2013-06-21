@@ -19,7 +19,6 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.canvas.internal.newt;
 
-
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 
@@ -31,6 +30,7 @@ import org.caleydo.core.view.opengl.canvas.IGLKeyListener;
 import org.caleydo.core.view.opengl.canvas.IGLMouseListener;
 import org.caleydo.core.view.opengl.canvas.internal.swt.ASWTBasedCanvasFactory;
 import org.caleydo.core.view.opengl.picking.APickingListener;
+import org.caleydo.core.view.opengl.picking.IPickingLabelProvider;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.eclipse.swt.widgets.Composite;
 
@@ -91,18 +91,15 @@ final class NEWTGLCanvas implements IGLCanvas {
 		}
 	}
 
-
 	@Override
 	public void requestFocus() {
 		canvas.requestFocus();
 	}
 
-
 	@Override
 	public void addKeyListener(IGLKeyListener listener) {
 		canvas.addKeyListener(new NEWTKeyAdapter(listener));
 	}
-
 
 	@Override
 	public void removeKeyListener(IGLKeyListener listener) {
@@ -114,18 +111,15 @@ final class NEWTGLCanvas implements IGLCanvas {
 		}
 	}
 
-
 	@Override
 	public void addGLEventListener(GLEventListener listener) {
 		canvas.addGLEventListener(listener);
 	}
 
-
 	@Override
 	public void removeGLEventListener(GLEventListener listener) {
 		canvas.removeGLEventListener(listener);
 	}
-
 
 	@Override
 	public int getWidth() {
@@ -152,7 +146,6 @@ final class NEWTGLCanvas implements IGLCanvas {
 		return "NEWTGLCanvas of " + canvas.toString();
 	}
 
-
 	@Override
 	public IPickingListener createTooltip(ILabeled label) {
 		// FIXME not implemented
@@ -162,6 +155,13 @@ final class NEWTGLCanvas implements IGLCanvas {
 
 	@Override
 	public IPickingListener createTooltip(String label) {
+		// FIXME not implemented
+		return new APickingListener() {
+		};
+	}
+
+	@Override
+	public IPickingListener createTooltip(IPickingLabelProvider label) {
 		// FIXME not implemented
 		return new APickingListener() {
 		};

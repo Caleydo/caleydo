@@ -24,6 +24,7 @@ import java.util.regex.PatternSyntaxException;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.io.parser.ascii.ATextParser;
+import org.caleydo.core.util.base.ICallback;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.swt.SWT;

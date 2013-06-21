@@ -17,34 +17,21 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.event.view;
-
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-
-import org.caleydo.core.event.AEvent;
+package org.caleydo.core.view.opengl.picking;
 
 /**
- * This event signals a view that a change has occurred in some part that affects the display of the view, outside of
- * other update events such as {@link SelectionUpdate}. An example is a change in color mapping.
+ * Provides a label that depends on a {@link Pick}.
  * 
- * @author Werner Puff
- * @deprecated Way to unspecific (alex)
+ * @author Christian Partl
+ * 
  */
-@XmlRootElement
-@XmlType
-@Deprecated
-public class RedrawViewEvent extends AEvent {
-
+public interface IPickingLabelProvider {
 	/**
+	 * Returns a label depending on the provided {@link Pick}.
 	 *
+	 * @param pick
+	 * @return
 	 */
-	public RedrawViewEvent() {
-	}
+	public String getLabel(Pick pick);
 
-	@Override
-	public boolean checkIntegrity() {
-		// nothing to check
-		return true;
-	}
 }

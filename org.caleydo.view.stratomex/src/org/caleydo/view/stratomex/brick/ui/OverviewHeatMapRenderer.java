@@ -39,7 +39,7 @@ import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
  */
 public class OverviewHeatMapRenderer extends ALayoutRenderer {
 
-	private ColorMapper colorMapper;
+	private Table table;
 	private ArrayList<Float> heatMapValuesMean;
 	private ArrayList<Float> heatMapValuesMeanPlusStdDev;
 	private ArrayList<Float> heatMapValuesMeanMinusStdDev;
@@ -54,7 +54,7 @@ public class OverviewHeatMapRenderer extends ALayoutRenderer {
 	 * @param showStandardDeviation
 	 */
 	public OverviewHeatMapRenderer(TablePerspective tablePerspective, Table table, boolean showStandardDeviation) {
-		colorMapper = table.getDataDomain().getColorMapper();
+		this.table = table;
 		this.showStandardDeviation = showStandardDeviation;
 
 		// float[] expressionValues = new float[tablePerspective.getNrRecords()];
@@ -102,7 +102,7 @@ public class OverviewHeatMapRenderer extends ALayoutRenderer {
 
 	@Override
 	public void renderContent(GL2 gl) {
-
+		ColorMapper colorMapper = table.getDataDomain().getColorMapper();
 		if (heatMapValuesMean.size() <= 0)
 			return;
 
@@ -210,14 +210,13 @@ public class OverviewHeatMapRenderer extends ALayoutRenderer {
 					gl.glVertex3f(currentPositionX, y, 0);
 					currentPositionX += heatMapElementWidth;
 				}
+				gl.glEnd();
 			}
 
-			gl.glVertex3f(0, stdDevHeatMapElementHeight, 0);
-			gl.glVertex3f(x, stdDevHeatMapElementHeight, 0);
-			gl.glVertex3f(0, stdDevHeatMapElementHeight + meanHeatMapElementHeight, 0);
-			gl.glVertex3f(x, stdDevHeatMapElementHeight + meanHeatMapElementHeight, 0);
-
-			gl.glEnd();
+			// gl.glVertex3f(0, stdDevHeatMapElementHeight, 0);
+			// gl.glVertex3f(x, stdDevHeatMapElementHeight, 0);
+			// gl.glVertex3f(0, stdDevHeatMapElementHeight + meanHeatMapElementHeight, 0);
+			// gl.glVertex3f(x, stdDevHeatMapElementHeight + meanHeatMapElementHeight, 0);
 
 		} else {
 			gl.glBegin(GL2.GL_QUADS);

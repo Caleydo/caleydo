@@ -20,6 +20,7 @@
 package org.caleydo.view.stratomex;
 
 import java.awt.Point;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -83,6 +84,7 @@ import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.APickingListener;
+import org.caleydo.core.view.opengl.picking.IPickingLabelProvider;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
@@ -336,8 +338,6 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		centerRowLayout.setPriorityRendereing(true);
 		centerRowLayout.setFrameColor(0, 0, 1, 1);
 
-
-
 		List<Object> columns = new ArrayList<>();
 		for (int columnIndex = brickColumnManager.getCenterColumnStartIndex(); columnIndex < brickColumnManager
 				.getRightColumnStartIndex(); columnIndex++) {
@@ -516,8 +516,8 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 							"Refer to http://help.caleydo.org for more information." });
 				} else {
 					renderEmptyViewText(gl, new String[] { "Please use the Data-View Integrator to assign ",
-						"one or multiple dataset(s) to StratomeX.",
-						"Refer to http://help.caleydo.org for more information." });
+							"one or multiple dataset(s) to StratomeX.",
+							"Refer to http://help.caleydo.org for more information." });
 				}
 				gl.glEndList();
 				isDisplayListDirty = false;
@@ -989,6 +989,34 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 			}
 		}, EPickingType.MOVE_HORIZONTALLY_HANDLE.name());
 
+		addTypePickingTooltipListener(new IPickingLabelProvider() {
+
+			@Override
+			public String getLabel(Pick pick) {
+				BrickConnection connection = hashConnectionBandIDToRecordVA.get(pick.getObjectID());
+				if (connection == null)
+					return "";
+
+				int numSharedElements = connection.getSharedRecordVirtualArray().size();
+				VirtualArray leftColumnVA = connection.getLeftBrick().getBrickColumn().getTablePerspective()
+						.getRecordPerspective().getVirtualArray();
+				int leftGroupIndex = connection.getLeftBrick().getTablePerspective().getRecordGroup().getGroupIndex();
+				int numLeftElements = leftColumnVA.getIDsOfGroup(leftGroupIndex).size();
+				float percentageLeft = (float) numSharedElements / numLeftElements * 100;
+
+				VirtualArray rightColumnVA = connection.getRightBrick().getBrickColumn().getTablePerspective()
+						.getRecordPerspective().getVirtualArray();
+				int rightGroupIndex = connection.getRightBrick().getTablePerspective().getRecordGroup().getGroupIndex();
+				int numRightElements = rightColumnVA.getIDsOfGroup(rightGroupIndex).size();
+				float percentageRight = (float) numSharedElements / numRightElements * 100;
+				DecimalFormat df = new DecimalFormat("#.##");
+
+				return "Shared elements: " + numSharedElements + "\n" + df.format(percentageLeft) + "% of left group ("
+						+ numLeftElements + " in total)\n" + df.format(percentageRight) + "% of right group ("
+						+ numRightElements + " in total)";
+			}
+		}, EPickingType.BRICK_CONNECTION_BAND.name());
+
 		tourguide.registerPickingListeners();
 	}
 
@@ -1100,8 +1128,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	}
 
 	public List<Pair<Integer, BrickColumn>> addTablePerspectives(List<TablePerspective> newTablePerspectives,
-			IBrickConfigurer brickConfigurer,
-			BrickColumn sourceColumn, boolean addRight) {
+			IBrickConfigurer brickConfigurer, BrickColumn sourceColumn, boolean addRight) {
 
 		List<Pair<Integer, BrickColumn>> added = new ArrayList<>();
 
@@ -1118,7 +1145,6 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		}
 
 		ArrayList<BrickColumn> brickColumns = brickColumnManager.getBrickColumns();
-
 
 		for (TablePerspective tablePerspective : newTablePerspectives) {
 			if (tablePerspective == null) {
@@ -1560,11 +1586,6 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		event.setSender(this);
 		SelectionDelta delta = recordSelectionManager.getDelta();
 		event.setSelectionDelta(delta);
-		// FIXME: actually we should not send a data domain in this case -
-		// however, if we don't send it, we don't see the selection in the
-		// selection info view. to fix this, we need to redesign the selection
-		// info view.
-		event.setEventSpace(dataDomainID);
 		eventPublisher.triggerEvent(event);
 
 		updateConnectionLinesBetweenColumns();
@@ -1574,6 +1595,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	private void onSplitBrick(SplitBrickEvent event) {
 		splitBrick(event.getConnectionBandID(), event.isSplitLeftBrick());
 	}
+
 	/**
 	 * Splits a brick into two portions: those values that are in the band identified through the connection band id and
 	 * the others.
@@ -1799,12 +1821,6 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	@Override
 	protected void destroyViewSpecificContent(GL2 gl) {
 		gl.glDeleteLists(displayListIndex, 1);
-		// if (centerLayoutManager != null)
-		// centerLayoutManager.destroy(gl);
-		// if (leftLayoutManager != null)
-		// leftLayoutManager.destroy(gl);
-		// if (rightLayoutManager != null)
-		// rightLayoutManager.destroy(gl);
 
 		if (layoutManager != null)
 			layoutManager.destroy(gl);
@@ -1821,7 +1837,6 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 
 	@Override
 	public void notifyOfSelectionChange(EventBasedSelectionManager selectionManager) {
-		// TODO Auto-generated method stub
 		updateConnectionLinesBetweenColumns();
 	}
 
@@ -1835,5 +1850,4 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	public void unregisterEventListener(Object elem) {
 		listeners.unregister(elem);
 	}
-
 }

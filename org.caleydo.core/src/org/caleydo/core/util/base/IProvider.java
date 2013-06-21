@@ -17,14 +17,14 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.io.gui.dataimport.widget;
+package org.caleydo.core.util.base;
 
 /**
- * special version of a {@link ICallback} for boolean
- * 
- * @author Samuel Gratzl
- * 
+ * Generic version of a provider for any data type.
+ *
+ * @author Christian Partl
+ *
  */
-public interface BooleanCallback {
-	public void on(boolean data);
+public interface IProvider<T> {
+	public T get();
 }

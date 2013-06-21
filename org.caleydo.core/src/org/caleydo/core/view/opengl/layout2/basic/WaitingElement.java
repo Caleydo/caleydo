@@ -27,7 +27,7 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.GL2ES1;
 import javax.media.opengl.fixedfunc.GLPointerFunc;
 
-import org.caleydo.core.io.gui.dataimport.widget.ICallback;
+import org.caleydo.core.util.base.ICallback;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
