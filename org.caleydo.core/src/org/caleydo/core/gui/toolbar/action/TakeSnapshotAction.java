@@ -19,21 +19,9 @@
  *******************************************************************************/
 package org.caleydo.core.gui.toolbar.action;
 
-import java.awt.AWTException;
-import java.awt.Robot;
-import java.awt.Toolkit;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.Transferable;
-import java.awt.datatransfer.UnsupportedFlavorException;
-import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import javax.imageio.ImageIO;
 
 import org.caleydo.core.gui.SimpleAction;
 import org.caleydo.core.util.logging.Logger;
@@ -70,67 +58,64 @@ public class TakeSnapshotAction extends SimpleAction {
 		if (path == null)
 			return;
 
-		Image image = null;
-		try {
-			Thread.sleep(200);
-		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		// Image image = null;
+		// try {
+		// Thread.sleep(200);
+		// } catch (InterruptedException e1) {
+		// // TODO Auto-generated catch block
+		// e1.printStackTrace();
+		// }
+		//
+		// // The default method does return empty views on windows -> use os screenshot functionality
+		// if (System.getProperty("os.name").startsWith("Windows")) {
+		//
+		// // BufferedImage i = Screenshot.readToBufferedImage(0,0, shell.getBounds().x, shell.getBounds().y, false);
+		// //
+		// // ImageIO.write("ss12345", "png", tScreenCaptureImageFile);
+		//
+		// Robot robot;
+		// // System.out.println("headless: " + GraphicsEnvironment.isHeadless());
+		// try {
+		// robot = new Robot();
+		// } catch (AWTException e) {
+		// throw new IllegalArgumentException("No robot");
+		// }
+		//
+		// // Press Alt + PrintScreen
+		// // (Windows shortcut to take a screen shot of the active window)
+		// robot.keyPress(KeyEvent.VK_ALT);
+		// robot.keyPress(KeyEvent.VK_PRINTSCREEN);
+		// robot.keyRelease(KeyEvent.VK_PRINTSCREEN);
+		// robot.keyRelease(KeyEvent.VK_ALT);
+		//
+		// // try {
+		// // Thread.sleep(1000);
+		// // } catch (InterruptedException e1) {
+		// // // TODO Auto-generated catch block
+		// // e1.printStackTrace();
+		// // }
+		//
+		// Transferable t = Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null);
+		//
+		// try {
+		// if (t != null && t.isDataFlavorSupported(DataFlavor.imageFlavor)) {
+		// // image = (Image) t.getTransferData(DataFlavor.imageFlavor);
+		// ImageIO.write((BufferedImage) t.getTransferData(DataFlavor.imageFlavor), "png", new File(
+		// path));
+		// }
+		// } catch (UnsupportedFlavorException e) {
+		// } catch (IOException e) {
+		// }
+		//
+		// } else {
 
-		// The default method does return empty views on windows -> use os screenshot functionality
-		if (System.getProperty("os.name").startsWith("Windows")) {
+		Rectangle bounds = shell.getClientArea();
+		GC gc = new GC(shell);
 
-			// BufferedImage i = Screenshot.readToBufferedImage(0,0, shell.getBounds().x, shell.getBounds().y, false);
-			//
-			// ImageIO.write("ss12345", "png", tScreenCaptureImageFile);
-
-			Robot robot;
-			// System.out.println("headless: " + GraphicsEnvironment.isHeadless());
-			try {
-				robot = new Robot();
-			} catch (AWTException e) {
-				throw new IllegalArgumentException("No robot");
-			}
-
-			// Press Alt + PrintScreen
-			// (Windows shortcut to take a screen shot of the active window)
-			robot.keyPress(KeyEvent.VK_ALT);
-			robot.keyPress(KeyEvent.VK_PRINTSCREEN);
-			robot.keyRelease(KeyEvent.VK_PRINTSCREEN);
-			robot.keyRelease(KeyEvent.VK_ALT);
-
-			// try {
-			// Thread.sleep(1000);
-			// } catch (InterruptedException e1) {
-			// // TODO Auto-generated catch block
-			// e1.printStackTrace();
-			// }
-
-			Transferable t = Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null);
-
-			try {
-				if (t != null && t.isDataFlavorSupported(DataFlavor.imageFlavor)) {
-					// image = (Image) t.getTransferData(DataFlavor.imageFlavor);
-					ImageIO.write((BufferedImage) t.getTransferData(DataFlavor.imageFlavor), "png", new File(
-path));
-				}
-			} catch (UnsupportedFlavorException e) {
-			} catch (IOException e) {
-			}
-
-		} else {
-
-			Rectangle bounds = shell.getClientArea();
-			GC gc = new GC(shell);
-
-			image = new Image(display, bounds);
-			gc.copyArea(image, 0, 0);
-			gc.dispose();
-		}
-
-		if (image == null)
-			return;
+		Image image = new Image(display, bounds);
+		gc.copyArea(image, 0, 0);
+		gc.dispose();
+		// }
 
 		ImageLoader loader = new ImageLoader();
 		loader.data = new ImageData[] { image.getImageData() };

@@ -108,7 +108,8 @@ public class RcpToolBarView extends ViewPart implements ISizeProvider {
 		toolBarManager.add(new SaveProjectAction());
 		toolBarManager.add(new ImportDataAction());
 		toolBarManager.add(new ExportDataAction());
-		toolBarManager.add(new TakeSnapshotAction());
+		if (!System.getProperty("os.name").startsWith("Windows"))
+			toolBarManager.add(new TakeSnapshotAction());
 
 		// IToolBarItem startClustering = new StartClusteringDialogAction(targetViewID);
 		// actionList.add(startClustering);
