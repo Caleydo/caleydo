@@ -47,14 +47,16 @@ import com.jogamp.opengl.util.texture.TextureIO;
 
 public class HeatMapTextureRenderer extends AHeatMapRenderer {
 
-	private final static int MAX_ITEMS_PER_TEXTURE = 2000;
+	private final static int MAX_ITEMS_PER_TEXTURE = 500;
 
-	private int numTextures = 0;
+	private int numTexturesY = 0;
+	private int numTexturesX = 0;
 
 	private int numRecords = 0;
 	private int numDims = 0;
 
-	private int samplesPerTexture = 0;
+	private int recordsPerTexture = 0;
+	private int dimsPerTexture = 0;
 
 	/** array of textures for holding the data samples */
 	private ArrayList<Texture> textures = new ArrayList<Texture>();
@@ -115,38 +117,43 @@ public class HeatMapTextureRenderer extends AHeatMapRenderer {
 	 * Init textures, build array of textures used for holding the whole samples
 	 */
 	public void initialize(GL2 gl) {
-		int textureHeight = numRecords = heatMap.getTablePerspective().getRecordPerspective().getVirtualArray()
+		int totalPixelY = numRecords = heatMap.getTablePerspective().getRecordPerspective().getVirtualArray()
 				.size();
-		int textureWidth = numDims = MAX_ITEMS_PER_TEXTURE;//
-														// heatMap.getTablePerspective().getDimensionPerspective().getVirtualArray().size();
+		int totalPixelX = numDims = MAX_ITEMS_PER_TEXTURE;// heatMap.getTablePerspective().getDimensionPerspective().getVirtualArray().size();
 
-		numTextures = (int) Math.ceil((double) numRecords / MAX_ITEMS_PER_TEXTURE);
+		numTexturesX = (int) Math.ceil((double) numDims / MAX_ITEMS_PER_TEXTURE);
+		numTexturesY = (int) Math.ceil((double) numRecords / MAX_ITEMS_PER_TEXTURE);
 
-		if (numTextures <= 1)
-			samplesPerTexture = numRecords;
+		if (numTexturesX <= 1)
+			dimsPerTexture = numDims;
 		else
-			samplesPerTexture = MAX_ITEMS_PER_TEXTURE;
+			dimsPerTexture = MAX_ITEMS_PER_TEXTURE;
+
+		if (numTexturesY <= 1)
+			recordsPerTexture = numRecords;
+		else
+			recordsPerTexture = MAX_ITEMS_PER_TEXTURE;
 
 		textures.clear();
 		numberSamples.clear();
 
 		Texture tempTexture;
 
-		samplesPerTexture = (int) Math.ceil((double) textureHeight / numTextures);
+		recordsPerTexture = (int) Math.ceil((double) totalPixelY / numTexturesY);
 
 		float lookupValue = 0;
 
-		FloatBuffer[] floatBuffer = new FloatBuffer[numTextures];
+		FloatBuffer[] floatBuffer = new FloatBuffer[numTexturesY];
 
-		for (int texture = 0; texture < numTextures; texture++) {
+		for (int texIndex = 0; texIndex < numTexturesY; texIndex++) {
 
-			if (texture == numTextures - 1) {
-				numberSamples.add(textureHeight - samplesPerTexture * texture);
-				floatBuffer[texture] = FloatBuffer.allocate((textureHeight - samplesPerTexture * texture)
-						* textureWidth * 4);
+			if (texIndex == numTexturesY - 1) {
+				numberSamples.add(totalPixelY % recordsPerTexture);
+				floatBuffer[texIndex] = FloatBuffer.allocate((totalPixelY % recordsPerTexture)
+						* totalPixelX * 4);
 			} else {
-				numberSamples.add(samplesPerTexture);
-				floatBuffer[texture] = FloatBuffer.allocate(samplesPerTexture * textureWidth * 4);
+				numberSamples.add(recordsPerTexture);
+				floatBuffer[texIndex] = FloatBuffer.allocate(recordsPerTexture * totalPixelX * 4);
 			}
 		}
 
@@ -177,7 +184,7 @@ public class HeatMapTextureRenderer extends AHeatMapRenderer {
 				floatBuffer[textureCounter].rewind();
 
 				TextureData texData = new TextureData(GLProfile.getDefault(), GL.GL_RGBA /* internalFormat */,
-						textureWidth /* height */, numberSamples.get(textureCounter) /* width */, 0 /* border */,
+						totalPixelX /* height */, numberSamples.get(textureCounter) /* width */, 0 /* border */,
 						GL.GL_RGBA /* pixelFormat */, GL.GL_FLOAT /* pixelType */, false /* mipmap */,
 						false /* dataIsCompressed */, false /* mustFlipVertically */, floatBuffer[textureCounter], null);
 
@@ -206,10 +213,10 @@ public class HeatMapTextureRenderer extends AHeatMapRenderer {
 
 		gl.glColor4f(1f, 1f, 0f, 1f);
 
-		for (int textureIndex = 0; textureIndex < numTextures; textureIndex++) {
+		for (int textureIndex = 0; textureIndex < numTexturesY; textureIndex++) {
 
-			yPosition = itemHeight * numberSamples.get(numTextures - textureIndex - 1);
-			renderTexture(gl, textures.get(numTextures - textureIndex - 1), 0, yOffset, x, yOffset + yPosition);
+			yPosition = itemHeight * numberSamples.get(numTexturesY - textureIndex - 1);
+			renderTexture(gl, textures.get(numTexturesY - textureIndex - 1), 0, yOffset, x, yOffset + yPosition);
 
 			yOffset += yPosition;
 		}
