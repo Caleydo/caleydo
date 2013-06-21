@@ -59,7 +59,7 @@ public class OpenExternalAction extends Action {
 
 		IDMappingManager manager = IDMappingManagerRegistry.get().getIDMappingManager(argumentType);
 		Set<Object> result = manager.getIDAsSet(type, argumentType, value);
-		if (result.isEmpty())
+		if (result == null || result.isEmpty())
 			return null;
 		Object id = result.iterator().next();
 

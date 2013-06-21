@@ -104,9 +104,9 @@ public class CategoryItem implements ILabeled, Comparable<CategoryItem> {
 	 * @return
 	 */
 	public String toLabel(Integer id) {
-		Set<String> label = prim2human.apply(id);
-		if (label.isEmpty())
-			return "???" + id + "???";
+		Set<String> label = prim2human == null ? null : prim2human.apply(id);
+		if (label == null || label.isEmpty())
+			return "~" + id + "~";
 		return label.iterator().next();
 	}
 
