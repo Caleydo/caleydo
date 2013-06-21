@@ -235,6 +235,7 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 				}
 				gl.glColor3fv(color, 0);
 			}
+
 			gl.glBegin(GL2.GL_POLYGON);
 			gl.glVertex3f(spacing * iCount + sideSpacing, sideSpacing, 0);
 			gl.glVertex3f(spacing * iCount + sideSpacing, sideSpacing + iValue * fOneHeightValue, 0);
