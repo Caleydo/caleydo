@@ -47,6 +47,8 @@ public class KMeansClusterer extends ALinearClusterer {
 
 	private final IntObjectHashMap cache;
 
+	private final float[] missingValues;
+
 	public KMeansClusterer(ClusterConfiguration config, int progressMultiplier, int progressOffset) {
 		super(config, progressMultiplier, progressOffset);
 		KMeansClusterConfiguration2 kMeansClusterConfiguration = (KMeansClusterConfiguration2) config
@@ -58,14 +60,14 @@ public class KMeansClusterer extends ALinearClusterer {
 		else
 			cache = null;
 
+		missingValues = new float[oppositeVA.size()];
+		Arrays.fill(missingValues, Float.NaN);
 	}
 
 	@Override
 	protected PerspectiveInitializationData cluster() {
 		if (progressAndCancel(1, false))
 			return canceled();
-
-		// FIXME missing values replace by mean
 
 		final int nrDimensions = oppositeVA.size();
 
@@ -97,18 +99,18 @@ public class KMeansClusterer extends ALinearClusterer {
 		for (; !converged && iteration < MAX_ITERATIONS; ++iteration) {
 			converged = true;
 
-			for(Cluster c : clusters) {
+			for (Cluster c : clusters) {
 				c.prepareRound();
 			}
 
-			for(int i = 0; i < assignments.length; ++i) {
+			for (int i = 0; i < assignments.length; ++i) {
 				Integer vid = va.get(i);
 				vector = getValue(vector, vid);
 				int best = -1;
 				// find best matching cluster
 				float distance = Float.POSITIVE_INFINITY;
 				for (Cluster cluster : clusters) {
-					float dc = cluster.distance(vid, vector);
+					float dc = cluster.distance(vector);
 					if (dc < distance) {
 						best = cluster.index;
 						distance = dc;
@@ -122,11 +124,11 @@ public class KMeansClusterer extends ALinearClusterer {
 
 			}
 
-			for(Cluster c : clusters)
+			for (Cluster c : clusters)
 				c.prepareMoving();
 
 			// update cluster positions
-			for(int i = 0; i < assignments.length; ++i) {
+			for (int i = 0; i < assignments.length; ++i) {
 				int best = assignments[i];
 				Integer vid = va.get(i);
 				vector = getValue(vector, vid);
@@ -143,10 +145,16 @@ public class KMeansClusterer extends ALinearClusterer {
 			lastP = p;
 		}
 
-
-		// final stop moving
 		for (Cluster c : clusters)
 			c.stopMoving();
+
+		// final computing sample
+		for (int i = 0; i < assignments.length; ++i) {
+			int best = assignments[i];
+			Integer vid = va.get(i);
+			vector = getValue(vector, vid);
+			clusters.get(best).isSample(vid, vector);
+		}
 
 		if (progressAndCancel(80, false))
 			return canceled();
@@ -200,16 +208,16 @@ public class KMeansClusterer extends ALinearClusterer {
 	 */
 	private List<Cluster> createClusters(final int nrSamples) {
 		List<Cluster> clusters = new ArrayList<>(numberOfCluster);
-		//init cluster by random selection
+		// init cluster by random selection
 		Random r = new Random();
 		BitSet used = new BitSet();
-		for(int i = 0; i < numberOfCluster; ++i) {
+		for (int i = 0; i < numberOfCluster; ++i) {
 			int p;
 			do {
 				p = r.nextInt(nrSamples - 1);
 			} while (used.get(p));
 			used.set(p);
-			clusters.add(new Cluster(i,fillVector(null, va.get(p))));
+			clusters.add(new Cluster(i, fillVector(null, va.get(p))));
 		}
 		return clusters;
 	}
@@ -227,6 +235,20 @@ public class KMeansClusterer extends ALinearClusterer {
 			this.index = index;
 			this.vector = vector;
 			this.numSamples = 1; // the starting point at least
+		}
+
+		/**
+		 * @param vid
+		 * @param vector2
+		 */
+		public void isSample(Integer id, float[] sample) {
+			float dc = KMeansClusterer.this.distance(sample, vector);
+
+			// update representative index
+			if (dc < sampleDistance) {
+				sampleDistance = dc;
+				sampleId = id;
+			}
 		}
 
 		public void add(float[] sample) {
@@ -258,16 +280,10 @@ public class KMeansClusterer extends ALinearClusterer {
 				vector[i] *= invSamples;
 		}
 
-		public float distance(Integer id, float[] sample) {
+		public float distance(float[] sample) {
 			if (isEmpty())
 				return Float.POSITIVE_INFINITY;
 			float dc = KMeansClusterer.this.distance(sample, vector);
-
-			// update representative index
-			if (dc < sampleDistance) {
-				sampleDistance = dc;
-				sampleId = id;
-			}
 			return dc;
 		}
 
@@ -300,8 +316,30 @@ public class KMeansClusterer extends ALinearClusterer {
 			values = new float[oppositeVA.size()];
 		int i = 0;
 		for (Integer oppositeVaID : oppositeVA) {
-			values[i++] = getNormalizedValue(vaID, oppositeVaID);
+			float v = getNormalizedValue(vaID, oppositeVaID);
+			if (Float.isNaN(v))
+				v = getMissingValue(i, oppositeVaID);
+			values[i++] = v;
 		}
 		return values;
+	}
+
+	private float getMissingValue(int i, Integer oppositeVaID) {
+		float cache = missingValues[i];
+		if (Float.isNaN(cache)) { // compute it
+			cache = 0;
+			int c = 0;
+			for (Integer vaID : va) {
+				float v = getNormalizedValue(vaID, oppositeVaID);
+				if (!Float.isNaN(v)) {
+					cache += v;
+					c++;
+				}
+			}
+			if (c > 0)
+				cache /= c;
+			missingValues[i] = cache;
+		}
+		return cache;
 	}
 }
