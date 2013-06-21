@@ -179,7 +179,7 @@ public final class ProjectManager {
 		ProjectMetaData data = JAXB.unmarshal(metaData, ProjectMetaData.class);
 		if (data == null)
 			return false;
-		return GeneralManager.VERSION.equalsIgnoreCase(data.getVersion());
+		return GeneralManager.canLoadDataCreatedFor(data.getVersion());
 	}
 
 	private static SerializationData loadData(String dirName) throws IOException, JAXBException {

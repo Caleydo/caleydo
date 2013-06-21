@@ -107,6 +107,12 @@ public final class RemoteFile implements IRunnableWithProgress {
 		}
 	}
 
+	public boolean delete() {
+		if (file.exists())
+			return file.delete();
+		return true;
+	}
+
 	/**
 	 * @return the file, see {@link #file}
 	 */
@@ -121,6 +127,17 @@ public final class RemoteFile implements IRunnableWithProgress {
 	 */
 	public Exception getCaught() {
 		return caught;
+	}
+
+	public File getOrLoad(boolean checkModificationDate, IProgressMonitor monitor) {
+		if (!inCache(checkModificationDate)) {
+			delete();
+			run(monitor);
+			if (!file.exists())
+				return null;
+			return file;
+		}
+		return file;
 	}
 
 	@Override

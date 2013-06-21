@@ -217,4 +217,16 @@ public class GeneralManager {
 	public boolean isDryMode() {
 		return isDryMode;
 	}
+
+	/**
+	 * checks whether data generated for the given caleydo version can be loaded with this one
+	 * 
+	 * @param caleydoVersion
+	 * @return
+	 */
+	public static boolean canLoadDataCreatedFor(String caleydoVersion) {
+		if (caleydoVersion == null)
+			return false;
+		return VERSION.equalsIgnoreCase(caleydoVersion);
+	}
 }
