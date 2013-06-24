@@ -338,7 +338,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 
 		if (hasTitle && !(armDropColum && small)) {
 			g.move(2, 2);
-			model.getHeaderRenderer().render(g, w - 6, LABEL_HEIGHT - 6, this);
+			model.getHeaderRenderer().render(g, w - 6, LABEL_HEIGHT - 7, this);
 			g.move(-2, -2);
 		}
 		if (headerHovered) {

@@ -70,7 +70,7 @@ public class CategoricalPercentageRankColumnModel extends FloatRankColumnModel {
 			}
 		};
 		Color col = property.getColor();
-		Color bgColor = col.brighter().brighter();
+		Color bgColor = col.brighter();
 		return new CategoricalPercentageRankColumnModel(data, catName, col, bgColor, table.getDataDomain(),
 				table.depth());
 

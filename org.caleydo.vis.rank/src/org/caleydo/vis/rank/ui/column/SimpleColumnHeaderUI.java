@@ -129,7 +129,7 @@ public class SimpleColumnHeaderUI extends ACompositeHeaderUI implements IThickHe
 
 	@Override
 	public float getTopPadding(boolean smallHeader) {
-		return LABEL_HEIGHT;
+		return LABEL_HEIGHT + 2;
 	}
 
 	@Override
@@ -156,9 +156,9 @@ public class SimpleColumnHeaderUI extends ACompositeHeaderUI implements IThickHe
 				.isCompressed());
 		if (!isCompressed) {
 			g.decZ().decZ();
-			g.move(RenderStyle.GROUP_COLUMN_PADDING - 1, 0);
-			config.renderHeaderBackground(g, w - RenderStyle.GROUP_COLUMN_PADDING + 1, h, LABEL_HEIGHT, model);
-			g.move(-RenderStyle.GROUP_COLUMN_PADDING + 1, 0);
+			// g.move(RenderStyle.GROUP_COLUMN_PADDING - 1, 0);
+			// config.renderHeaderBackground(g, w - RenderStyle.GROUP_COLUMN_PADDING + 1, h, LABEL_HEIGHT, model);
+			// g.move(-RenderStyle.GROUP_COLUMN_PADDING + 1, 0);
 
 			g.lineWidth(RenderStyle.COLOR_STACKED_BORDER_WIDTH);
 			g.color(RenderStyle.COLOR_STACKED_BORDER);
