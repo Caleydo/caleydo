@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.caleydo.core.data.collection.table.CategoricalTable;
+import org.caleydo.core.data.datadomain.DataDomainOracle;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
@@ -84,8 +86,17 @@ public class JaccardIndexScoreFactory implements IScoreFactory {
 	private void createJaccardScore(TablePerspective tablePerspective, Group group, IReactions reactions) {
 		String label = String.format("Sim. to %s %s %s", tablePerspective.getDataDomain().getLabel(), tablePerspective
 				.getRecordPerspective().getLabel(), group.getLabel());
-		reactions.addScoreToTourGuide(EDataDomainQueryMode.STRATIFICATIONS,
-				createJaccardME(label, tablePerspective.getRecordPerspective(), group));
+
+		IScore[] scores;
+		if (DataDomainOracle.isCategoricalDataDomain(tablePerspective.getDataDomain()) && ((CategoricalTable<?>)tablePerspective.getDataDomain().getTable()).getCategoryDescriptions().getCategoryProperties().size() == 2) {
+			//binary categorical -> add mutual exclusive score
+			scores = new IScore[] { createJaccardME("ME " + label, tablePerspective.getRecordPerspective(), group),
+					createJaccard(label, tablePerspective.getRecordPerspective(), group) };
+		} else {
+			scores = new IScore[] { createJaccard(label, tablePerspective.getRecordPerspective(), group) };
+		}
+		reactions.addScoreToTourGuide(EDataDomainQueryMode.STRATIFICATIONS,scores);
+
 	}
 
 	private class CreateJaccardScoreState extends SimpleState implements ISelectGroupState {
