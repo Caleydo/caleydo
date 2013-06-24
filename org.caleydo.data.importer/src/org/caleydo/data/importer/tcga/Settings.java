@@ -55,6 +55,9 @@ public class Settings {
 	 */
 	private static final String REPORT_PATTERN = BASE_URL + "analyses__{0,date,yyyy_MM_dd}/reports/cancer/{1}/";
 
+	@Option(name = "-awg", required = false, usage = "indicate an AWG run, i.e. use exact tumor type labels")
+	private boolean awgRun = false;
+
 	@Option(name = "-t", required = false, aliases = { "--tumortypes" }, usage = "the tumor types to export default: \"all known\"")
 	private List<String> tumorTypes = null;
 
@@ -245,6 +248,10 @@ public class Settings {
 
 	public boolean isFlatOutput() {
 		return flatOutput;
+	}
+
+	public boolean isAwgRun() {
+		return awgRun;
 	}
 
 	public int getBatchSize() {

@@ -53,7 +53,7 @@ public final class FirehoseProvider {
 		this.tumor = tumor;
 		this.relevantDate = Calendar.getInstance();
 		this.relevantDate.setTime(analysisRun);
-		this.tumorSample = guessTumorSample(tumor, this.relevantDate);
+		this.tumorSample = guessTumorSample(tumor, this.relevantDate, settings);
 		this.analysisRun = analysisRun;
 		this.dataRun = dataRun;
 		this.settings = settings;
@@ -69,7 +69,11 @@ public final class FirehoseProvider {
 	 * @param date
 	 * @return
 	 */
-	private static String guessTumorSample(TumorType tumor, Calendar cal) {
+	private static String guessTumorSample(TumorType tumor, Calendar cal, Settings settings) {
+		
+		if (settings.isAwgRun())
+			return tumor.toString();			
+		
 		if (cal.get(Calendar.YEAR) >= 2013 && tumor.toString().equalsIgnoreCase("SKCM"))
 			return tumor + "-TM";
 		if (cal.get(Calendar.YEAR) >= 2013 && tumor.toString().equalsIgnoreCase("LAML"))
@@ -160,8 +164,15 @@ public final class FirehoseProvider {
 		}
 		if (mutationFile == null) {
 			// TODO always the -TP version
-			File maf = extractAnalysisRunFile(tumor + "-TP.final_analysis_set.maf",
-					"MutSigNozzleReport2.0", LEVEL);
+			File maf = null;
+			if ( !this.settings.isAwgRun() ) {
+				maf = extractAnalysisRunFile(tumor + "-TP.final_analysis_set.maf",
+						"MutSigNozzleReport2.0", LEVEL);				
+			}
+			else {
+				maf = extractAnalysisRunFile(tumor + ".final_analysis_set.maf",
+						"MutSigNozzleReport2.0", LEVEL);								
+			}
 			if (maf != null) {
 				mutationFile = parseMAF(maf);
 				startColumn = 1;
