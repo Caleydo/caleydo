@@ -28,6 +28,19 @@ READ	Rectum adenocarcinoma
 SARC	Sarcoma
 SKCM	Skin Cutaneous Melanoma
 STAD	Stomach adenocarcinoma
+THCA-Mut_BRAF	Thyroid carcinoma (BRAF mutation)
+THCA-Mut_DARK	Thyroid carcinoma (DARK mutation)
+THCA-Mut_RAS	Thyroid carcinoma (RAS mutation)
+THCA-NT	Thyroid carcinoma (Normal Tissue)
+THCA-TM	Thyroid carcinoma (Metastatic Tumor)
+THCA-TP	Thyroid carcinoma (Primary Tumor)
+THCA-classical	Thyroid carcinoma (classical subtype)
+THCA-follicular	Thyroid carcinoma (follicular subtype)
+THCA-other	Thyroid carcinoma (other subtype)
+THCA-risk_category_High	Thyroid carcinoma (high risk)
+THCA-risk_category_Intermediate	Thyroid carcinoma (intermediate risk)
+THCA-risk_category_Low	Thyroid carcinoma (low risk)
+THCA-tall_cell	Thyroid carcinoma (tall cell)
 THCA	Thyroid carcinoma
 UCS	Uterine Carcinosarcoma
 UCEC	Uterine Corpus Endometrioid Carcinoma
