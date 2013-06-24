@@ -311,10 +311,10 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 		else
 			algorithm = new PGSEAAlgorithm(strat.getRecordPerspective(), group);
 		String label = String.format("GSEA of %s", strat.getRecordPerspective().getLabel());
-		IScore gsea = new GeneSetScore("GSEA\n"+label, algorithm, false);
-		IScore pValue = new GeneSetScore("P-Value\n" + label, algorithm.asPValue(), true);
+		IScore gsea = new GeneSetScore("GSEA", algorithm, false);
+		IScore pValue = new GeneSetScore("GSEA P-Value", algorithm.asPValue(), true);
 
-		MultiScore s = new MultiScore(gsea.getLabel(), color, bgColor, 1);
+		MultiScore s = new MultiScore(label, color, bgColor, 1);
 		s.add(gsea);
 		s.add(pValue);
 		return s;

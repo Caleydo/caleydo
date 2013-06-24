@@ -61,7 +61,7 @@ public class InhomogenousDataDomainQuery extends ADataDomainQuery {
 	public boolean apply(AScoreRow row) {
 		assert row.getDataDomain() == dataDomain;
 		InhomogenousPerspectiveRow r = (InhomogenousPerspectiveRow) row;
-		Perspective clinical = r.getStratification();
+		Perspective clinical = r.asTablePerspective().getDimensionPerspective();
 		Integer dimensionID = clinical.getVirtualArray().get(0);
 		EDataType type = getDataDomain().getTable().getRawDataType(dimensionID, 0);
 		return selectedDataTypes.contains(type) && dataClass.supports(type);
