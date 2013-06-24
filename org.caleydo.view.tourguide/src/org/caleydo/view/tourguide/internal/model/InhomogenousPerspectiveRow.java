@@ -31,9 +31,9 @@ import org.caleydo.core.data.virtualarray.group.Group;
  */
 public final class InhomogenousPerspectiveRow extends AVirtualArrayScoreRow implements ITablePerspectiveScoreRow {
 	private final InhomogenousDataDomainQuery query;
-	private final Perspective clinical;
+	private final TablePerspective clinical;
 
-	public InhomogenousPerspectiveRow(Perspective clinical, InhomogenousDataDomainQuery query) {
+	public InhomogenousPerspectiveRow(TablePerspective clinical, InhomogenousDataDomainQuery query) {
 		this.clinical = clinical;
 		this.query = query;
 	}
@@ -47,7 +47,7 @@ public final class InhomogenousPerspectiveRow extends AVirtualArrayScoreRow impl
 	 * @return the stratification, see {@link #stratification}
 	 */
 	public Perspective getStratification() {
-		return clinical;
+		return clinical.getRecordPerspective();
 	}
 
 	@Override
@@ -57,12 +57,12 @@ public final class InhomogenousPerspectiveRow extends AVirtualArrayScoreRow impl
 
 	@Override
 	public String getPersistentID() {
-		return clinical.getPerspectiveID();
+		return clinical.getTablePerspectiveKey();
 	}
 
 	@Override
 	public VirtualArray getVirtualArray() {
-		return clinical.getVirtualArray();
+		return clinical.getRecordPerspective().getVirtualArray();
 	}
 
 	@Override
@@ -82,11 +82,11 @@ public final class InhomogenousPerspectiveRow extends AVirtualArrayScoreRow impl
 
 	@Override
 	public TablePerspective asTablePerspective() {
-		return query.asTablePerspective(clinical);
+		return clinical;
 	}
 
 	@Override
 	public boolean is(TablePerspective tablePerspective) {
-		return clinical.equals(tablePerspective.getDimensionPerspective());
+		return clinical.equals(tablePerspective);
 	}
 }
