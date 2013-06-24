@@ -24,7 +24,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Set;
 
+import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.data.collection.Histogram;
+import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
 import org.caleydo.core.data.collection.table.CategoricalTable;
 import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
@@ -189,15 +191,21 @@ public class TablePerspectiveStatistics {
 			throw new IllegalArgumentException("Virtual arrays don't match table");
 		}
 
-		if (!table.isDataHomogeneous()) {
+		if (!table.isDataHomogeneous() && dimensionVA.size() > 1) {
 			throw new UnsupportedOperationException(
-					"Tried to calcualte a set-wide histogram on a not homogeneous table. This makes no sense. Use dimension based histograms instead!");
+					"Tried to calcualte a multi-set-wide histogram on a not homogeneous table. This makes no sense. Use dimension based histograms instead!");
 		}
 
 		if (numberOfBuckets == null) {
 			if (table instanceof CategoricalTable<?>) {
 				CategoricalTable<?> cTable = (CategoricalTable<?>) table;
 				numberOfBuckets = cTable.getCategoryDescriptions().size();
+			} else if (!table.isDataHomogeneous()
+					&& table.getDataClass(dimensionVA.get(0), recordVA.get(0)) == EDataClass.CATEGORICAL) {
+				CategoricalClassDescription<?> specific = (CategoricalClassDescription<?>) table
+						.getDataClassSpecificDescription(dimensionVA.get(0),
+						recordVA.get(0));
+				numberOfBuckets = specific.size();
 			} else {
 				numberOfBuckets = (int) Math.sqrt(recordVA.size());
 			}

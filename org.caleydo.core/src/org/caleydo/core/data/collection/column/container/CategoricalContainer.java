@@ -219,7 +219,8 @@ public class CategoricalContainer<CATEGORY_TYPE extends Comparable<CATEGORY_TYPE
 		float normalizedDistance = 0;
 
 		if (categoricalClassDescription.size() > 1) {
-			int numCategories = categoricalClassDescription.size() - 1;
+			// FIXME -1 and -1 again?
+			int numCategories = categoricalClassDescription.size();
 			if (categoricalClassDescription.getCategoryProperty(unknownCategoryType) != null) {
 				numCategories--;
 			}
