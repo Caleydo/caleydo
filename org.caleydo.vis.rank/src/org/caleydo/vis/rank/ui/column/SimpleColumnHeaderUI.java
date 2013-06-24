@@ -124,7 +124,7 @@ public class SimpleColumnHeaderUI extends ACompositeHeaderUI implements IThickHe
 
 	@Override
 	protected float getLeftPadding() {
-		return +RenderStyle.STACKED_COLUMN_PADDING;
+		return +RenderStyle.GROUP_COLUMN_PADDING;
 	}
 
 	@Override
@@ -138,13 +138,15 @@ public class SimpleColumnHeaderUI extends ACompositeHeaderUI implements IThickHe
 
 		if (model instanceof ICompressColumnMixin && ((ICompressColumnMixin) model).isCompressed()) {
 			boolean isSmallHeader = isSmallHeader();
-			summary.setBounds(0, getTopPadding(isSmallHeader), w, h - getTopPadding(isSmallHeader));
+			summary.setBounds(getLeftPadding(), getTopPadding(isSmallHeader), w - getLeftPadding(), h
+					- getTopPadding(isSmallHeader));
 			for (IGLLayoutElement child : children.subList(1, children.size()))
 				child.hide();
 			return;
 		}
 
-		summary.setBounds(2, 2, w - 4, (isSmallHeader() ? 0 : HIST_HEIGHT) + LABEL_HEIGHT);
+		summary.setBounds(getLeftPadding() + 2, 2, w - 4 - getLeftPadding(), (isSmallHeader() ? 0 : HIST_HEIGHT)
+				+ LABEL_HEIGHT);
 		super.layoutColumns(children, w, h);
 	}
 
@@ -154,12 +156,14 @@ public class SimpleColumnHeaderUI extends ACompositeHeaderUI implements IThickHe
 				.isCompressed());
 		if (!isCompressed) {
 			g.decZ().decZ();
-			config.renderHeaderBackground(g, w, h, LABEL_HEIGHT, model);
+			g.move(RenderStyle.GROUP_COLUMN_PADDING - 1, 0);
+			config.renderHeaderBackground(g, w - RenderStyle.GROUP_COLUMN_PADDING + 1, h, LABEL_HEIGHT, model);
+			g.move(-RenderStyle.GROUP_COLUMN_PADDING + 1, 0);
 
 			g.lineWidth(RenderStyle.COLOR_STACKED_BORDER_WIDTH);
 			g.color(RenderStyle.COLOR_STACKED_BORDER);
 
-			g.drawRect(0, 0, w, h);
+			g.drawRect(RenderStyle.GROUP_COLUMN_PADDING - 1, 0, w - RenderStyle.GROUP_COLUMN_PADDING + 1, h);
 			g.lineWidth(1);
 			g.incZ().incZ();
 		}

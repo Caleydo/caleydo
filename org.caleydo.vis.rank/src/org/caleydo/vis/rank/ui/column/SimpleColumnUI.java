@@ -96,7 +96,7 @@ public class SimpleColumnUI extends ACompositeTableColumnUI<ACompositeRankColumn
 	protected void renderImpl(GLGraphics g, float w, float h) {
 		g.decZ().decZ();
 		g.color(RenderStyle.COLOR_STACKED_BORDER).lineWidth(RenderStyle.COLOR_STACKED_BORDER_WIDTH);
-		g.drawLine(-1, 0, -1, h).drawLine(w - 1, 0, w - 1, h);
+		g.drawLine(getLeftPadding() - 1, 0, getLeftPadding() - 1, h).drawLine(w, 0, w, h);
 		g.incZ().incZ();
 		g.lineWidth(1);
 		super.renderImpl(g, w, h);
@@ -109,7 +109,7 @@ public class SimpleColumnUI extends ACompositeTableColumnUI<ACompositeRankColumn
 
 	@Override
 	protected float getLeftPadding() {
-		return RenderStyle.STACKED_COLUMN_PADDING;
+		return RenderStyle.GROUP_COLUMN_PADDING;
 	}
 
 	@Override
