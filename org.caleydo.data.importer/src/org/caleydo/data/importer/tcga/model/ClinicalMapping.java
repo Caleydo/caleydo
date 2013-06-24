@@ -50,7 +50,7 @@ public class ClinicalMapping {
 		name = name.toLowerCase();
 		for (ClinicalMapping type : types) {
 			String t = type.getName().toLowerCase();
-			if (t.equals(name) || name.startsWith(t))
+			if (t.equals(name))
 				return type;
 		}
 		return null;
