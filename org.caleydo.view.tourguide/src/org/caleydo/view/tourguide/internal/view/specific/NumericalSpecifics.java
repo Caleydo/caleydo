@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
@@ -64,7 +65,7 @@ public class NumericalSpecifics implements IDataDomainQueryModeSpecfics {
 	}
 
 	private static ADataDomainQuery createFor(IDataDomain dd) {
-		return new InhomogenousDataDomainQuery((ATableBasedDataDomain) dd);
+		return new InhomogenousDataDomainQuery((ATableBasedDataDomain) dd, EDataClass.NATURAL_NUMBER);
 	}
 
 	/**

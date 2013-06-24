@@ -21,13 +21,13 @@ package org.caleydo.view.tourguide.internal.model;
 
 import java.util.ArrayList;
 import java.util.BitSet;
-import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
@@ -39,13 +39,17 @@ import org.caleydo.vis.rank.model.RankTableModel;
  *
  */
 public class InhomogenousDataDomainQuery extends ADataDomainQuery {
-	private Set<EDataType> selectedDataTypes = EnumSet.of(EDataType.INTEGER);
+	private Set<EDataType> selectedDataTypes;
 
 	// snapshot when creating the data for fast comparison
 	private Set<String> snapshot;
 
-	public InhomogenousDataDomainQuery(ATableBasedDataDomain dataDomain) {
+	private final EDataClass dataClass;
+
+	public InhomogenousDataDomainQuery(ATableBasedDataDomain dataDomain, EDataClass dataClass) {
 		super(dataDomain);
+		this.dataClass = dataClass;
+		this.selectedDataTypes = new HashSet<>(dataClass.getSupportedDataTypes());
 	}
 
 	@Override
@@ -60,7 +64,7 @@ public class InhomogenousDataDomainQuery extends ADataDomainQuery {
 		Perspective clinical = r.getStratification();
 		Integer dimensionID = clinical.getVirtualArray().get(0);
 		EDataType type = getDataDomain().getTable().getRawDataType(dimensionID, 0);
-		return selectedDataTypes.contains(type);
+		return selectedDataTypes.contains(type) && dataClass.supports(type);
 	}
 
 	@Override
@@ -73,6 +77,9 @@ public class InhomogenousDataDomainQuery extends ADataDomainQuery {
 		for (String dimPerspectiveID : d.getDimensionPerspectiveIDs()) {
 			Perspective p = d.getTable().getDimensionPerspective(dimPerspectiveID);
 			if (p.isDefault() || p.isPrivate())
+				continue;
+			Integer dimensionID = p.getVirtualArray().get(0);
+			if (dataClass != d.getTable().getDataClass(dimensionID, 0))
 				continue;
 			r.add(new InhomogenousPerspectiveRow(p, this));
 		}
@@ -130,7 +137,13 @@ public class InhomogenousDataDomainQuery extends ADataDomainQuery {
 		ATableBasedDataDomain d = getDataDomain();
 
 		String rowPerspectiveID = d.getTable().getDefaultRecordPerspective().getPerspectiveID();
-
+		for(String recId : d.getTable().getRecordPerspectiveIDs()) {
+			Perspective recordPerspective = d.getTable().getRecordPerspective(recId);
+			if (recordPerspective.getLabel().equals(p.getLabel())) {
+				rowPerspectiveID = recId;
+				break;
+			}
+		}
 		boolean existsAlready = d.hasTablePerspective(rowPerspectiveID, p.getPerspectiveID());
 
 		TablePerspective per = d.getTablePerspective(rowPerspectiveID, p.getPerspectiveID());
@@ -150,7 +163,12 @@ public class InhomogenousDataDomainQuery extends ADataDomainQuery {
 		updateFilter();
 	}
 
-
+	/**
+	 * @return the dataClass, see {@link #dataClass}
+	 */
+	public EDataClass getDataClass() {
+		return dataClass;
+	}
 		/**
 	 * @return the selectedDataTypes, see {@link #selectedDataTypes}
 	 */
@@ -160,7 +178,7 @@ public class InhomogenousDataDomainQuery extends ADataDomainQuery {
 
 	@Override
 	public boolean hasFilter() {
-		return this.selectedDataTypes.size() < EDataType.values().length;
+		return this.selectedDataTypes.size() < dataClass.getSupportedDataTypes().size();
 	}
 
 	@Override

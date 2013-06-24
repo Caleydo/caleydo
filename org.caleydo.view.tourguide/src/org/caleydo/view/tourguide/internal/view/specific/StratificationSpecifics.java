@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainOracle;
 import org.caleydo.core.data.datadomain.DataSupportDefinitions;
@@ -33,6 +34,7 @@ import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.internal.model.ADataDomainQuery;
 import org.caleydo.view.tourguide.internal.model.AScoreRow;
 import org.caleydo.view.tourguide.internal.model.CategoricalDataDomainQuery;
+import org.caleydo.view.tourguide.internal.model.InhomogenousDataDomainQuery;
 import org.caleydo.view.tourguide.internal.model.StratificationDataDomainQuery;
 import org.caleydo.view.tourguide.internal.view.col.DataDomainRankColumnModel;
 import org.caleydo.view.tourguide.internal.view.col.SizeRankColumnModel;
@@ -90,6 +92,8 @@ public class StratificationSpecifics implements IDataDomainQueryModeSpecfics {
 	}
 
 	private static ADataDomainQuery createFor(IDataDomain dd) {
+		if (!DataSupportDefinitions.homogenousTables.apply(dd))
+			return new InhomogenousDataDomainQuery((ATableBasedDataDomain) dd, EDataClass.CATEGORICAL);
 		if (DataSupportDefinitions.categoricalTables.apply(dd))
 			return new CategoricalDataDomainQuery((ATableBasedDataDomain) dd);
 		return new StratificationDataDomainQuery((ATableBasedDataDomain) dd);
@@ -107,7 +111,8 @@ public class StratificationSpecifics implements IDataDomainQueryModeSpecfics {
 
 	@Override
 	public int getCategory(IDataDomain dataDomain) {
-		if (DataDomainOracle.isCategoricalDataDomain(dataDomain))
+		if (DataDomainOracle.isCategoricalDataDomain(dataDomain)
+				|| !DataSupportDefinitions.homogenousTables.apply(dataDomain))
 			return 1;
 		return 0;
 	}

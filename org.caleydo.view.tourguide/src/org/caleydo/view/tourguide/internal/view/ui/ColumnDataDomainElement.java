@@ -106,7 +106,7 @@ public class ColumnDataDomainElement extends ADataDomainElement {
 				}
 			});
 			categoriesUI.setContentProvider(ArrayContentProvider.getInstance());
-			categoriesUI.setInput(EDataType.values());
+			categoriesUI.setInput(getModel().getDataClass().getSupportedDataTypes());
 			for (Object s : getModel().getSelectedDataTypes()) {
 				categoriesUI.setChecked(s, true);
 			}

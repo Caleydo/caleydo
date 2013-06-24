@@ -78,10 +78,6 @@ public enum EDataDomainQueryMode {
 		case STRATIFICATIONS:
 			List<ATableBasedDataDomain> dataDomains = new ArrayList<>(DataDomainManager.get().getDataDomainsByType(ATableBasedDataDomain.class));
 
-			for (Iterator<ATableBasedDataDomain> it = dataDomains.iterator(); it.hasNext();)
-				if (!it.next().getTable().isDataHomogeneous()) // remove inhomogenous
-					it.remove();
-
 			// Sort data domains alphabetically
 			Collections.sort(dataDomains, DefaultLabelProvider.BY_LABEL);
 			return dataDomains;
