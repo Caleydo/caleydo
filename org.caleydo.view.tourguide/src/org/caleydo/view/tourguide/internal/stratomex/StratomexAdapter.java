@@ -128,7 +128,7 @@ public class StratomexAdapter {
 
 	/**
 	 * whether stratomex currently showing the stratification
-	 * 
+	 *
 	 * @param stratification
 	 * @return
 	 */
@@ -315,5 +315,12 @@ public class StratomexAdapter {
 	 */
 	public boolean is(Integer receiverID) {
 		return this.receiver != null && this.receiver.getID() == receiverID;
+	}
+
+	/**
+	 * @return
+	 */
+	public boolean isWizardVisible() {
+		return receiver != null && receiver.getTourguide().isWizardActive();
 	}
 }

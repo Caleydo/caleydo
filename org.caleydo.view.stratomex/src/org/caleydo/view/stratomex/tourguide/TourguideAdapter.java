@@ -144,19 +144,23 @@ public class TourguideAdapter implements IStratomexAdapter {
 	}
 
 	public void renderAddButton(GL2 gl, float x, float y, float w, float h, int id) {
-		if (!hasTourGuide() || wizardElement != null || !wizardPreviews.isEmpty()) // not more than one at the same time
+		if (!hasTourGuide() || isWizardActive()) // not more than one at the same time
 			return;
 		renderButton(gl, x, y, w, h, 24, stratomex, ADD_PICKING_TYPE, id, "add.png");
 	}
 
+	public boolean isWizardActive() {
+		return wizardElement != null || !wizardPreviews.isEmpty();
+	}
+
 	public void renderStartButton(GL2 gl, float x, float y, float w, float h, int id) {
-		if (!hasTourGuide() || wizardElement != null || !wizardPreviews.isEmpty()) // not more than one at the same time
+		if (!hasTourGuide() || isWizardActive()) // not more than one at the same time
 			return;
 		renderButton(gl, x, y, w, h, 32, stratomex, ADD_PICKING_TYPE, id, "add.png");
 	}
 
 	public void renderAddDependentButton(GL2 gl, float x, float y, float w, float h, int id) {
-		if (!hasTourGuide() || wizardElement != null || !wizardPreviews.isEmpty()) // not more than one at the same time
+		if (!hasTourGuide() || isWizardActive()) // not more than one at the same time
 			return;
 		renderButton(gl, x, y, w, h, 24, stratomex, ADD_DEPENDENT_PICKING_TYPE, id,
  "add.png");

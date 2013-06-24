@@ -133,7 +133,7 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 		}
 	};
 
-	public TableBodyUI(final RankTableModel table, IRowHeightLayout rowLayout, IRankTableUIConfig config) {
+	public TableBodyUI(final RankTableModel table, IRowHeightLayout rowLayout, final IRankTableUIConfig config) {
 		setAnimateByDefault(false);
 		this.table = table;
 		this.config = config;
@@ -148,13 +148,7 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 		selectRowListener.add(new IPickingListener() {
 			@Override
 			public void pick(Pick pick) {
-				switch (pick.getPickingMode()) {
-				case CLICKED:
-					table.setSelectedRow(toRow(pick));
-					break;
-				default:
-					break;
-				}
+				config.onRowClick(table, pick.getPickingMode(), toRow(pick), false);
 			}
 
 			protected IRow toRow(Pick pick) {
@@ -213,6 +207,7 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 		default:
 			break;
 		}
+		config.onRowClick(table, pick.getPickingMode(), table.getSelectedRow(), true);
 	}
 
 	@ListenTo(sendToMe = true)

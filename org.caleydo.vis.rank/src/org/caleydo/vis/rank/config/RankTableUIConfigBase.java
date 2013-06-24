@@ -25,8 +25,10 @@ import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.basic.IScrollBar;
 import org.caleydo.core.view.opengl.layout2.basic.ScrollBar;
+import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
+import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.ui.RenderStyle;
 
 /**
@@ -128,5 +130,12 @@ public class RankTableUIConfigBase implements IRankTableUIConfig {
 	@Override
 	public Color getBarOutlineColor() {
 		return null;
+	}
+
+	@Override
+	public void onRowClick(RankTableModel table, PickingMode pickingMode, IRow row, boolean isSelected) {
+		if (!isSelected && pickingMode == PickingMode.CLICKED) {
+			table.setSelectedRow(row);
+		}
 	}
 }

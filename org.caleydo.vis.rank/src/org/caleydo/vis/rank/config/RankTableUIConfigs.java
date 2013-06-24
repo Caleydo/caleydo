@@ -22,8 +22,10 @@ package org.caleydo.vis.rank.config;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.basic.IScrollBar;
+import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
+import org.caleydo.vis.rank.model.RankTableModel;
 
 /**
  * Utility methods for creating a different versions of a {@link IRankTableUIConfig}
@@ -125,6 +127,11 @@ public class RankTableUIConfigs {
 		@Override
 		public Color getBarOutlineColor() {
 			return wrappee.getBarOutlineColor();
+		}
+
+		@Override
+		public void onRowClick(RankTableModel table, PickingMode pickingMode, IRow row, boolean isSelected) {
+			wrappee.onRowClick(table, pickingMode, row, isSelected);
 		}
 	}
 

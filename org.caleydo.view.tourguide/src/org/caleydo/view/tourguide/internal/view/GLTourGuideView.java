@@ -53,6 +53,7 @@ import org.caleydo.core.view.opengl.layout2.basic.ScrollBar;
 import org.caleydo.core.view.opengl.layout2.basic.ScrollingDecorator;
 import org.caleydo.core.view.opengl.layout2.basic.WaitingElement;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
+import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.score.MultiScore;
@@ -515,6 +516,11 @@ public class GLTourGuideView extends AGLElementView {
 	}
 
 	protected void onSelectRow(AScoreRow old, AScoreRow new_) {
+		if (stratomex.isWizardVisible())
+			updatePreview(old, new_);
+	}
+
+	private void updatePreview(AScoreRow old, AScoreRow new_) {
 		stratomex.updatePreview(old, new_, getVisibleScores(new_), mode, getSortedByScore());
 	}
 
@@ -731,6 +737,15 @@ public class GLTourGuideView extends AGLElementView {
 		@Override
 		public Color getBarOutlineColor() {
 			return Color.DARK_GRAY; // outline color
+		}
+
+		@Override
+		public void onRowClick(RankTableModel table, PickingMode pickingMode, IRow row, boolean isSelected) {
+			if (!isSelected && pickingMode == PickingMode.CLICKED) {
+				table.setSelectedRow(row);
+			} else if (pickingMode == PickingMode.DOUBLE_CLICKED) {
+				updatePreview(null, (AScoreRow) row);
+			}
 		}
 	}
 
