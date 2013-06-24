@@ -1,5 +1,6 @@
 #name	Label	EDataClass	EDataType
-patient.daystobirth	Days To Birth	NATURAL_NUMBER	INTEGER
+patient.daystobirth	Age (days)	NATURAL_NUMBER	INTEGER
+patient.yearstobirth	Age (years)	NATURAL_NUMBER	INTEGER
 patient.daystodeath	Days to Death	NATURAL_NUMBER	INTEGER
 patient.daystolastfollowup	Days To Last Follow Up	NATURAL_NUMBER	INTEGER
 patient.vitalstatus	Vital Status	CATEGORICAL	STRING
