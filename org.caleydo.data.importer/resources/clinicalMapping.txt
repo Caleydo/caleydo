@@ -9,3 +9,11 @@ patient.gender	Gender	CATEGORICAL	STRING
 patient.ageatinitialpathologicdiagnosis	Age At Initial Pathologic Diagnosis	NATURAL_NUMBER	INTEGER
 patient.race	Race	CATEGORICAL	STRING
 patient.ethnicity	Ethnicity	CATEGORICAL	STRING
+patient.histologicaltype	Histological Type	CATEGORICAL	STRING
+patient.personlifetimeriskradiationexposureindicator	Radiation Risk Exposure	CATEGORICAL	STRING
+patient.primarylymphnodepresentationassessment	Lymph Node Assessment	CATEGORICAL	STRING
+patient.primaryneoplasmfocustype	Focus Type	CATEGORICAL	STRING
+patient.stageevent.pathologicstage	Overall Stage	CATEGORICAL	STRING
+patient.stageevent.tnmcategories.pathologiccategories.pathologict	T Stage	CATEGORICAL	STRING
+patient.stageevent.tnmcategories.pathologiccategories.pathologicn	N Stage	CATEGORICAL	STRING
+patient.stageevent.tnmcategories.pathologiccategories.pathologicm	M Stage	CATEGORICAL	STRING
