@@ -335,7 +335,7 @@ public class ScriptedRankColumnModel extends AMultiRankColumnModel implements IC
 		CacheRow r2 = getCacheRow(o2);
 		if (codeOrder.equalsIgnoreCase(DEFAULT_ORDER_CODE)) {
 			// fast way
-			return Float.compare(r1.value, r2.value);
+			return -Float.compare(r1.value, r2.value);
 		} else
 			return runOrderScript(r1, r2);
 	}
