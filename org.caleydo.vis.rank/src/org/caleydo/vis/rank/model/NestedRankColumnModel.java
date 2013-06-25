@@ -19,15 +19,16 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.model;
 
-import org.caleydo.core.util.color.Color;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.ICompressColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IFloatRankableColumnMixin;
+import org.caleydo.vis.rank.model.mixin.IManualComparatorMixin;
 import org.caleydo.vis.rank.model.mixin.IMappedColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.ISnapshotableColumnMixin;
@@ -46,7 +47,7 @@ import com.jogamp.common.util.IntObjectHashMap;
  *
  */
 public class NestedRankColumnModel extends AMultiRankColumnModel implements ISnapshotableColumnMixin,
-		ICompressColumnMixin, ICollapseableColumnMixin {
+		ICompressColumnMixin, ICollapseableColumnMixin, IManualComparatorMixin {
 	public static final String PROP_WEIGHTS = "weights";
 
 	private final PropertyChangeListener listener = new PropertyChangeListener() {

@@ -48,10 +48,11 @@ public class ScriptedMappingFunction extends AMappingFunction {
 	static {
 		// create code around the script
 		StringBuilder b = new StringBuilder();
-		b.append("importPackage(").append(MappingFunctions.class.getPackage().getName()).append(")\n");
-		for (Method m : MappingFunctions.class.getDeclaredMethods()) {
+		b.append("importPackage(").append(JavaScriptFunctions.class.getPackage().getName()).append(")\n");
+		for (Method m : JavaScriptFunctions.class.getDeclaredMethods()) {
 			if (Modifier.isPublic(m.getModifiers()) && Modifier.isStatic(m.getModifiers()))
-				b.append("function ").append(m.getName()).append("() { return MappingFunctions.").append(m.getName())
+				b.append("function ").append(m.getName()).append("() { return JavaScriptFunctions.")
+						.append(m.getName())
 						.append(".apply(this,arguments); }\n");
 		}
 		b.append("\n");

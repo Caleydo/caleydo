@@ -20,7 +20,7 @@
 package org.caleydo.view.tourguide.api.score;
 
 import org.caleydo.core.util.base.ILabeled;
-import org.caleydo.vis.rank.model.mapping.MappingFunctions;
+import org.caleydo.vis.rank.model.mapping.JavaScriptFunctions;
 
 import com.google.common.base.Function;
 
@@ -72,15 +72,15 @@ public enum ECombinedOperator implements Function<float[], Float>, ILabeled {
 	public float combine(float[] data) {
 		switch (this) {
 		case MAX:
-			return MappingFunctions.max(data);
+			return JavaScriptFunctions.max(data);
 		case MIN:
-			return MappingFunctions.min(data);
+			return JavaScriptFunctions.min(data);
 		case MEAN:
-			return MappingFunctions.mean(data);
+			return JavaScriptFunctions.mean(data);
 		case GEOMETRIC_MEAN:
-			return MappingFunctions.geometricMean(data);
+			return JavaScriptFunctions.geometricMean(data);
 		case MEDIAN:
-			return MappingFunctions.median(data);
+			return JavaScriptFunctions.median(data);
 		}
 		throw new IllegalStateException("unknown operator: " + this);
 	}

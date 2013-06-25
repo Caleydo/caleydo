@@ -17,75 +17,12 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.vis.rank.model.mapping;
+package org.caleydo.vis.rank.model.mixin;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class SimpleMapping extends AMappingFunction implements Cloneable {
-
-	public SimpleMapping(SimpleMapping copy) {
-		super(copy);
-	}
-
-	public SimpleMapping(float fromMin, float fromMax) {
-		super(fromMin, fromMax);
-	}
-
-	@Override
-	public String toJavaScript() {
-		return "clamp01(value)";
-	}
-
-	@Override
-	public void fromJavaScript(String code) {
-
-	}
-
-	@Override
-	public void reset() {
-
-	}
-
-	@Override
-	public float[] getMappedMin() {
-		return new float[] { 0, 0 };
-	}
-
-	@Override
-	public float[] getMappedMax() {
-		return new float[] { 1, 1 };
-	}
-
-	@Override
-	public float getMaxTo() {
-		return 1;
-	}
-
-	@Override
-	public float getMinTo() {
-		return 0;
-	}
-
-	@Override
-	public boolean isMappingDefault() {
-		return false;
-	}
-
-	@Override
-	public float apply(float in) {
-		return JavaScriptFunctions.clamp01(in);
-	}
-
-	@Override
-	public IMappingFunction clone() {
-		return new SimpleMapping(this);
-	}
-
-	@Override
-	public boolean isComplexMapping() {
-		return false;
-	}
+public interface IManualComparatorMixin extends IRankableColumnMixin {
 
 }

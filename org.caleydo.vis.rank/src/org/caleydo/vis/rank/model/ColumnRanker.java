@@ -29,6 +29,7 @@ import java.util.List;
 
 import org.caleydo.vis.rank.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IFloatRankableColumnMixin;
+import org.caleydo.vis.rank.model.mixin.IManualComparatorMixin;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 
 import com.jogamp.common.util.IntIntHashMap;
@@ -289,7 +290,7 @@ public class ColumnRanker implements Iterable<IRow> {
 			}
 			order = newOrder;
 			ranks = newRanks;
-		} else if (orderBy instanceof IFloatRankableColumnMixin && !(orderBy instanceof NestedRankColumnModel)) {
+		} else if (orderBy instanceof IFloatRankableColumnMixin && !(orderBy instanceof IManualComparatorMixin)) {
 			IFloatRankableColumnMixin orderByF = (IFloatRankableColumnMixin) orderBy;
 			List<IntFloat> targetOrderItems = new ArrayList<>(data.size());
 			for (int i = 0; i < data.size(); ++i) {

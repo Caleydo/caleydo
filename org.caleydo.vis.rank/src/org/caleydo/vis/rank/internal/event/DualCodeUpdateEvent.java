@@ -17,75 +17,41 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.vis.rank.model.mapping;
+package org.caleydo.vis.rank.internal.event;
+
+import org.caleydo.core.event.ADirectedEvent;
 
 /**
+ *
  * @author Samuel Gratzl
  *
  */
-public class SimpleMapping extends AMappingFunction implements Cloneable {
+public class DualCodeUpdateEvent extends ADirectedEvent {
+	private String code;
+	private String codeOrder;
 
-	public SimpleMapping(SimpleMapping copy) {
-		super(copy);
+	public DualCodeUpdateEvent(String code,String codeOrder) {
+		this.code = code;
+		this.codeOrder = codeOrder;
 	}
 
-	public SimpleMapping(float fromMin, float fromMax) {
-		super(fromMin, fromMax);
+	/**
+	 * @return the code, see {@link #code}
+	 */
+	public String getCode() {
+		return code;
 	}
 
-	@Override
-	public String toJavaScript() {
-		return "clamp01(value)";
-	}
-
-	@Override
-	public void fromJavaScript(String code) {
-
-	}
-
-	@Override
-	public void reset() {
-
-	}
-
-	@Override
-	public float[] getMappedMin() {
-		return new float[] { 0, 0 };
+	/**
+	 * @return the codeOrder, see {@link #codeOrder}
+	 */
+	public String getCodeOrder() {
+		return codeOrder;
 	}
 
 	@Override
-	public float[] getMappedMax() {
-		return new float[] { 1, 1 };
-	}
-
-	@Override
-	public float getMaxTo() {
-		return 1;
-	}
-
-	@Override
-	public float getMinTo() {
-		return 0;
-	}
-
-	@Override
-	public boolean isMappingDefault() {
-		return false;
-	}
-
-	@Override
-	public float apply(float in) {
-		return JavaScriptFunctions.clamp01(in);
-	}
-
-	@Override
-	public IMappingFunction clone() {
-		return new SimpleMapping(this);
-	}
-
-	@Override
-	public boolean isComplexMapping() {
-		return false;
+	public boolean checkIntegrity() {
+		return code != null;
 	}
 
 }

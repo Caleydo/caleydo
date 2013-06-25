@@ -191,7 +191,7 @@ public class PiecewiseMapping extends ScriptedMappingFunction implements Iterabl
 		if (mapping.size() < 2) {// default
 			float[] m0 = getMappedMin();
 			float[] m1 = getMappedMax();
-			return MappingFunctions.linear(m0[0], m1[0], in, m0[1], m1[1]);
+			return JavaScriptFunctions.linear(m0[0], m1[0], in, m0[1], m1[1]);
 		}
 		if (mapping.containsKey(in))
 			return mapping.get(in);
@@ -202,7 +202,7 @@ public class PiecewiseMapping extends ScriptedMappingFunction implements Iterabl
 		if (in < first || in > last)
 			return Float.NaN;
 		if (mapping.size() == 2) {
-			return MappingFunctions.linear(first, last, in, mapping.get(first), mapping.get(last));
+			return JavaScriptFunctions.linear(first, last, in, mapping.get(first), mapping.get(last));
 		} else {
 			SortedMap<Float, Float> before = mapping.headMap(in);
 			if (before.isEmpty()) // outside of the range
@@ -214,7 +214,7 @@ public class PiecewiseMapping extends ScriptedMappingFunction implements Iterabl
 				return Float.NaN;
 			Float end = after.firstKey();
 			Float endTo = after.get(end);
-			return MappingFunctions.linear(start, end, in, startTo, endTo);
+			return JavaScriptFunctions.linear(start, end, in, startTo, endTo);
 		}
 	}
 

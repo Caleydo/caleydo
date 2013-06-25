@@ -27,7 +27,10 @@ import java.util.Arrays;
  * @author Samuel Gratzl
  *
  */
-public class MappingFunctions {
+public class JavaScriptFunctions {
+	public static int compare(float a, float b) {
+		return Float.compare(a, b);
+	}
 	public static float linear(float start, float end, float in, float startTo, float endTo) {
 		if (Float.isNaN(in))
 			return in;
