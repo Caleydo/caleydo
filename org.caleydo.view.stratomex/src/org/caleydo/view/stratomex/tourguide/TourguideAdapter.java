@@ -47,6 +47,7 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.ExtensionUtils;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.color.Color;
+import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.ViewManager;
 import org.caleydo.core.view.listener.RemoveTablePerspectiveEvent;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -99,6 +100,7 @@ import com.jogamp.opengl.util.texture.Texture;
  *
  */
 public class TourguideAdapter implements IStratomexAdapter {
+	private static final Logger log = Logger.create(TourguideAdapter.class);
 	private static final String ICON_PREFIX = "resources/icons/stratomex/template/";
 	private static final Color COLOR_SELECTED = SelectionType.SELECTION.getColor();
 	private static final Color COLOR_POSSIBLE_SELECTION = Color.NEUTRAL_GREY;
@@ -162,20 +164,17 @@ public class TourguideAdapter implements IStratomexAdapter {
 	public void renderAddDependentButton(GL2 gl, float x, float y, float w, float h, int id) {
 		if (!hasTourGuide() || isWizardActive()) // not more than one at the same time
 			return;
-		renderButton(gl, x, y, w, h, 24, stratomex, ADD_DEPENDENT_PICKING_TYPE, id,
- "add.png");
+		renderButton(gl, x, y, w, h, 24, stratomex, ADD_DEPENDENT_PICKING_TYPE, id, "add.png");
 	}
 
 	public void renderConfirmButton(GL2 gl, float x, float y, float w, float h) {
 		boolean disabled = wizardPreviews.isEmpty(); // no preview no accept
-		renderButton(gl, x, y, w, h, 32, stratomex, CONFIRM_PICKING_TYPE, 1,
- "accept"
-				+ (disabled ? "_disabled" : "") + ".png");
+		renderButton(gl, x, y, w, h, 32, stratomex, CONFIRM_PICKING_TYPE, 1, "accept" + (disabled ? "_disabled" : "")
+				+ ".png");
 	}
 
 	public void renderCancelButton(GL2 gl, float x, float y, float w, float h) {
-		renderButton(gl, x, y, w, h, 32, stratomex, CANCEL_PICKING_TYPE, 1,
- "cancel.png");
+		renderButton(gl, x, y, w, h, 32, stratomex, CANCEL_PICKING_TYPE, 1, "cancel.png");
 	}
 
 	public void renderBackButton(GL2 gl, float x, float y, float w, float h) {
@@ -226,6 +225,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 			public void pick(Pick pick) {
 				switch (pick.getPickingMode()) {
 				case CLICKED:
+					log.debug("add new column");
 					EventPublisher.trigger(new AddNewColumnEvent(pick.getObjectID() - 1).to(receiver).from(this));
 					break;
 				case MOUSE_OVER:
@@ -246,6 +246,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 			public void pick(Pick pick) {
 				switch (pick.getPickingMode()) {
 				case CLICKED:
+					log.debug("add new dependent column");
 					EventPublisher.trigger(new AddNewColumnEvent(pick.getObjectID() - 1, true).to(receiver).from(this));
 					break;
 				case MOUSE_OVER:
@@ -269,6 +270,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 
 			@Override
 			protected void clicked(Pick pick) {
+				log.debug("click on wizardaction: " + pickingType);
 				EventPublisher.trigger(new WizardActionsEvent(pickingType).to(receiver).from(this));
 			}
 			@Override
@@ -741,43 +743,63 @@ public class TourguideAdapter implements IStratomexAdapter {
 
 		if (wizardElement != null) {
 			assert !extra;
-			cleanupWizardElement();
 			BrickColumnManager bcm = stratomex.getBrickColumnManager();
 			BrickColumn left = previewIndex < 0 ? null : bcm.getBrickColumns().get(
 					bcm.getCenterColumnStartIndex() + previewIndex);
 			added = stratomex.addTablePerspectives(withL, config, left, false);
-			if (wizardMode == EWizardMode.INDEPENDENT) {
-				updateDependentBrickColumn(with, added.get(0).getSecond());
+			if (added.size() > 0) {
+				cleanupWizardElement();
+				if (wizardMode == EWizardMode.INDEPENDENT) {
+					updateDependentBrickColumn(with, added.get(0).getSecond());
+				}
+				wizardPreviews.add(added.get(0).getSecond());
+			} else {
+				wizardPreviews.clear();
 			}
-			wizardPreviews.add(added.get(0).getSecond());
 		} else if (!wizardPreviews.isEmpty()) {
 			if (extra) {
 				if (wizardPreviews.size() == 1) { // add extra
 					added = stratomex.addTablePerspectives(withL, config, wizardPreviews.get(0), true);
-					wizardPreviews.add(added.get(0).getSecond());
+					if (added.size() > 0) {
+						wizardPreviews.add(added.get(0).getSecond());
+					}
 				} else { // update extra
 					BrickColumn extraPreview = wizardPreviews.get(0);
 					added = stratomex.addTablePerspectives(withL, config, extraPreview, true);
 					stratomex.removeTablePerspective(extraPreview.getTablePerspective());
-					wizardPreviews.set(1, added.get(0).getSecond());
+					if (added.size() > 0) {
+						wizardPreviews.set(1, added.get(0).getSecond());
+					} else {
+						wizardPreviews.remove(1);
+					}
 				}
 			} else {
 				BrickColumn wizardPreview = wizardPreviews.get(0);
 				added = stratomex.addTablePerspectives(withL, config, wizardPreview, true);
 				stratomex.removeTablePerspective(wizardPreview.getTablePerspective());
-				if (wizardMode == EWizardMode.INDEPENDENT) {
-					updateDependentBrickColumn(with, added.get(0).getSecond());
+				if (added.size() > 0) {
+					if (wizardMode == EWizardMode.INDEPENDENT) {
+						updateDependentBrickColumn(with, added.get(0).getSecond());
+					}
+					wizardPreviews.set(0, added.get(0).getSecond());
+				} else {
+					wizardPreviews.remove(0);
 				}
-				wizardPreviews.set(0, added.get(0).getSecond());
 			}
 
+		} else if (stratomex.isDetailMode()) {
+			return;
 		} else {
 			// create a preview on the fly
 			added = stratomex.addTablePerspectives(withL, config, null, true);
-			wizardPreviews.add(added.get(0).getSecond());
+			if (added.size() > 0) {
+				wizardPreviews.add(added.get(0).getSecond());
+			}
 		}
-		wizardPreviews.get(0).getLayout().clearForegroundRenderers();
-		wizardPreviews.get(0).getLayout().addForeGroundRenderer(new WizardActionsLayoutRenderer(stratomex, this));
+		if (added.size() > 0) {
+			wizardPreviews.get(0).getLayout().clearForegroundRenderers();
+			wizardPreviews.get(0).getLayout().addForeGroundRenderer(new WizardActionsLayoutRenderer(stratomex, this));
+		}
 	}
 
 	/**

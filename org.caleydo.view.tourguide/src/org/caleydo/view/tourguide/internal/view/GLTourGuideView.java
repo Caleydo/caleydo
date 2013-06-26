@@ -743,7 +743,7 @@ public class GLTourGuideView extends AGLElementView {
 		public void onRowClick(RankTableModel table, PickingMode pickingMode, IRow row, boolean isSelected) {
 			if (!isSelected && pickingMode == PickingMode.CLICKED) {
 				table.setSelectedRow(row);
-			} else if (pickingMode == PickingMode.DOUBLE_CLICKED) {
+			} else if (pickingMode == PickingMode.DOUBLE_CLICKED && !stratomex.isWizardVisible()) {
 				updatePreview(null, (AScoreRow) row);
 			}
 		}
