@@ -27,6 +27,7 @@ import org.caleydo.view.tourguide.api.state.BrowsePathwayState;
 import org.caleydo.view.tourguide.api.state.IReactions;
 import org.caleydo.view.tourguide.api.state.ISelectStratificationState;
 import org.caleydo.view.tourguide.api.state.PreviewRenderer;
+import org.caleydo.view.tourguide.api.util.PathwayOracle;
 
 /**
  * @author Samuel Gratzl
@@ -66,7 +67,7 @@ public class BrowsePathwayAndStratificationState extends BrowsePathwayState impl
 
 	@Override
 	public boolean apply(TablePerspective tablePerspective) {
-		return true;
+		return PathwayOracle.canBeUnderlying(tablePerspective);
 	}
 
 	@Override
