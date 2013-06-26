@@ -158,6 +158,12 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 		return true;
 	}
 
+	/**
+	 * return the expected group count for a given dimension
+	 * 
+	 * @param category
+	 * @return
+	 */
 	public int getGroupSize(Integer category) {
 		ATableBasedDataDomain dataDomain2 = getDataDomain();
 		CategoricalTable<?> table = (CategoricalTable<?>)dataDomain2.getTable();
@@ -171,8 +177,12 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 		}
 		return count;
 	}
+
 	/**
-	 * @param id
+	 * builds a virtual array given a category and a label for it
+	 * 
+	 * @param label
+	 * @param category
 	 * @return
 	 */
 	public VirtualArray createVirtualArray(String label, Integer category) {
@@ -248,7 +258,16 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 		return va;
 	}
 
-
+	/**
+	 * creates a {@link TablePerspective} out of the given data
+	 * 
+	 * @param label
+	 * @param id
+	 *            the category
+	 * @param va
+	 *            the record dimension to use
+	 * @return
+	 */
 	public TablePerspective createTablePerspective(String label, Integer id, VirtualArray va) {
 		ATableBasedDataDomain d = getDataDomain();
 		final Table table = d.getTable();
@@ -303,7 +322,7 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 		GroupRankColumnModel group = new GroupRankColumnModel(d.getLabel() + " Metrics", color, color.brighter());
 		table.add(group);
 		for (CategoryProperty<?> p : ctable.getCategoryDescriptions().getCategoryProperties()) {
-			group.add(CategoricalPercentageRankColumnModel.create(p.getCategory(), ctable));
+			group.add(CategoricalPercentageRankColumnModel.create(p.getCategory(), ctable, selected.contains(p)));
 		}
 	}
 

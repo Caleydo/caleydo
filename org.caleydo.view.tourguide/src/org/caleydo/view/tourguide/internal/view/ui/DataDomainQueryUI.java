@@ -28,6 +28,9 @@ import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
+import org.caleydo.core.view.opengl.picking.IPickingListener;
+import org.caleydo.core.view.opengl.picking.Pick;
+import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.view.tourguide.internal.model.ADataDomainQuery;
 import org.caleydo.view.tourguide.internal.model.CategoricalDataDomainQuery;
 import org.caleydo.view.tourguide.internal.model.InhomogenousDataDomainQuery;
@@ -37,7 +40,7 @@ import org.caleydo.view.tourguide.internal.view.specific.IDataDomainQueryModeSpe
 
 import com.google.common.collect.Iterables;
 
-public class DataDomainQueryUI extends GLElementContainer implements IGLLayout, Comparator<GLElement> {
+public class DataDomainQueryUI extends GLElementContainer implements IGLLayout, Comparator<GLElement>, IPickingListener {
 
 	private IDataDomainQueryModeSpecfics specifics;
 
@@ -56,6 +59,12 @@ public class DataDomainQueryUI extends GLElementContainer implements IGLLayout, 
 		setLayoutData(new Vec2f(130, guessMultiColumnHeight()));
 	}
 
+	@Override
+	public void pick(Pick pick) {
+		if (pick.getPickingMode() == PickingMode.DOUBLE_CLICKED) {
+
+		}
+	}
 	/**
 	 * @return
 	 */

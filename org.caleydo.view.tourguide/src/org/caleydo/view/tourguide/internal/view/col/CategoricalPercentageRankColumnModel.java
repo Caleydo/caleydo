@@ -54,7 +54,8 @@ public class CategoricalPercentageRankColumnModel extends FloatRankColumnModel {
 		return dataDomain;
 	}
 
-	public static CategoricalPercentageRankColumnModel create(final Object category, final CategoricalTable<?> table) {
+	public static CategoricalPercentageRankColumnModel create(final Object category, final CategoricalTable<?> table,
+			boolean isConsideredForCalculation) {
 		final CategoryProperty<?> property = table.getCategoryDescriptions().getCategoryProperty(category);
 		String catName = property.getCategoryName();
 		IFloatFunction<IRow> data = new AFloatFunction<IRow>() {
@@ -71,6 +72,11 @@ public class CategoricalPercentageRankColumnModel extends FloatRankColumnModel {
 		};
 		Color col = property.getColor();
 		Color bgColor = col.brighter();
+		if (!isConsideredForCalculation) {
+			catName += "*";
+			bgColor = Color.NEUTRAL_GREY.brighter();
+			col = Color.NEUTRAL_GREY;
+		}
 		return new CategoricalPercentageRankColumnModel(data, catName, col, bgColor, table.getDataDomain(),
 				table.depth());
 

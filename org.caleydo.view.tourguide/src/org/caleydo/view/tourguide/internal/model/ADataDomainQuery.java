@@ -32,8 +32,10 @@ import org.caleydo.vis.rank.model.RankTableModel;
 import com.google.common.base.Predicate;
 
 /**
+ * base model cass for data set selection on the left side
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
 public abstract class ADataDomainQuery implements Predicate<AScoreRow> {
 	public static final String PROP_ACTIVE = "active";
@@ -43,8 +45,17 @@ public abstract class ADataDomainQuery implements Predicate<AScoreRow> {
 
 	protected final IDataDomain dataDomain;
 
+	/**
+	 * filter mask of the entries
+	 */
 	private BitSet mask = null;
+	/**
+	 * the data list
+	 */
 	protected OffsetList<AScoreRow> data = null;
+	/**
+	 * is the list currently visible
+	 */
 	private boolean active = false;
 
 	public ADataDomainQuery(IDataDomain dataDomain) {
@@ -53,11 +64,16 @@ public abstract class ADataDomainQuery implements Predicate<AScoreRow> {
 
 	public abstract boolean hasFilter();
 
+	/**
+	 * whether filtering is possible
+	 * 
+	 * @return
+	 */
 	public abstract boolean isFilteringPossible();
 
 	/**
-	 *
-	 * @return pair with a list of the stratifications rows and one with the stratification, groups
+	 * 
+	 * @return a list of all filtered {@link AScoreRow} of this query
 	 */
 	protected abstract List<AScoreRow> getAll();
 
@@ -91,6 +107,12 @@ public abstract class ADataDomainQuery implements Predicate<AScoreRow> {
 		return active;
 	}
 
+	/**
+	 * initialized this query using the given data
+	 * 
+	 * @param offset
+	 * @param data
+	 */
 	public final void init(int offset, List<AScoreRow> data) {
 		this.data = new OffsetList<>(offset,data);
 		this.mask = null;
@@ -105,6 +127,11 @@ public abstract class ADataDomainQuery implements Predicate<AScoreRow> {
 		}
 	}
 
+	/**
+	 * optionally creates and returns the data
+	 * 
+	 * @return
+	 */
 	public final synchronized List<AScoreRow> getOrCreate() {
 		if (isInitialized()) {
 			return this.data;
@@ -114,6 +141,9 @@ public abstract class ADataDomainQuery implements Predicate<AScoreRow> {
 		return all;
 	}
 
+	/**
+	 * update the filter mask
+	 */
 	protected final void updateFilter() {
 		this.mask = null;
 		if (!this.active)
@@ -188,8 +218,18 @@ public abstract class ADataDomainQuery implements Predicate<AScoreRow> {
 		propertySupport.removePropertyChangeListener(propertyName, listener);
 	}
 
+	/**
+	 * factory method for adding query specific metric columns
+	 * 
+	 * @param table
+	 */
 	public abstract void createSpecificColumns(RankTableModel table);
 
+	/**
+	 * reverse of {@link #createSpecificColumns(RankTableModel)}
+	 * 
+	 * @param table
+	 */
 	public abstract void removeSpecificColumns(RankTableModel table);
 
 	/**
@@ -198,6 +238,9 @@ public abstract class ADataDomainQuery implements Predicate<AScoreRow> {
 	 */
 	public abstract List<AScoreRow> onDataDomainUpdated();
 
+	/**
+	 * deletes all data
+	 */
 	public void cleanup() {
 		if (!this.isInitialized()) {
 			return;
