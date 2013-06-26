@@ -44,6 +44,8 @@ public class DataDomainQueryUI extends GLElementContainer implements IGLLayout, 
 
 	private IDataDomainQueryModeSpecfics specifics;
 
+	private int counter = 0;
+
 	public DataDomainQueryUI(Iterable<ADataDomainQuery> queries,
 			IDataDomainQueryModeSpecfics specifics) {
 		super();
@@ -62,7 +64,13 @@ public class DataDomainQueryUI extends GLElementContainer implements IGLLayout, 
 	@Override
 	public void pick(Pick pick) {
 		if (pick.getPickingMode() == PickingMode.DOUBLE_CLICKED) {
-
+			int id = pick.getObjectID();
+			// deactivate all others
+			for (ADataDomainElement child : Iterables.filter(this, ADataDomainElement.class)) {
+				if (id != child.getPickingObjectId() && child.getModel().isActive())
+					child.setSelected(false);
+				System.out.println(child.getModel() + " " + child.getModel().isActive());
+			}
 		}
 	}
 	/**
@@ -134,6 +142,13 @@ public class DataDomainQueryUI extends GLElementContainer implements IGLLayout, 
 	}
 
 	private ADataDomainElement createFor(ADataDomainQuery q) {
+		ADataDomainElement elem = wrap(q);
+		elem.onPick(this);
+		elem.setPickingObjectId(++counter);
+		return elem;
+	}
+
+	private ADataDomainElement wrap(ADataDomainQuery q) {
 		if (q instanceof CategoricalDataDomainQuery)
 			return new CategoricalDataDomainElement((CategoricalDataDomainQuery) q);
 		if (q instanceof PathwayDataDomainQuery)
