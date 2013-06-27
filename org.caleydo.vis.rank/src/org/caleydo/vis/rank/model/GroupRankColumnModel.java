@@ -19,16 +19,18 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.model;
 
-import org.caleydo.core.util.color.Color;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.rank.model.mixin.IExplodeableColumnMixin;
+import org.caleydo.vis.rank.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IHideableColumnMixin;
+import org.caleydo.vis.rank.model.mixin.IMappedColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IRankColumnModel;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 import org.caleydo.vis.rank.ui.RenderStyle;
@@ -50,6 +52,10 @@ public class GroupRankColumnModel extends ACompositeRankColumnModel implements I
 			case PROP_WIDTH:
 				onWeightChanged((ARankColumnModel) evt.getSource(), (float) evt.getOldValue(),
 						(float) evt.getNewValue());
+				break;
+			case IFilterColumnMixin.PROP_FILTER:
+			case IMappedColumnMixin.PROP_MAPPING:
+				propertySupport.firePropertyChange(evt);
 				break;
 			}
 		}
@@ -87,6 +93,8 @@ public class GroupRankColumnModel extends ACompositeRankColumnModel implements I
 	protected void init(ARankColumnModel model) {
 		super.init(model);
 		model.addPropertyChangeListener(PROP_WIDTH, listener);
+		model.addPropertyChangeListener(IFilterColumnMixin.PROP_FILTER, listener);
+		model.addPropertyChangeListener(IMappedColumnMixin.PROP_MAPPING, listener);
 		float oldWidth = size() == 1 ? (getSpaces() - RenderStyle.COLUMN_SPACE) : width;
 		super.setWidth(oldWidth + model.getWidth() + RenderStyle.COLUMN_SPACE);
 	}
@@ -95,6 +103,8 @@ public class GroupRankColumnModel extends ACompositeRankColumnModel implements I
 	protected void takeDown(ARankColumnModel model) {
 		super.takeDown(model);
 		model.removePropertyChangeListener(PROP_WIDTH, listener);
+		model.removePropertyChangeListener(IFilterColumnMixin.PROP_FILTER, listener);
+		model.removePropertyChangeListener(IMappedColumnMixin.PROP_MAPPING, listener);
 		super.setWidth(width - model.getWidth() - RenderStyle.COLUMN_SPACE);
 	}
 

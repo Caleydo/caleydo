@@ -54,19 +54,21 @@ public class ButtonBar extends GLElementContainer  {
 	}
 
 
-	public void addButton(GLButton b, String label, String deselectedImage, String selectedImage) {
-		addButton(size(), b, label, deselectedImage, selectedImage);
+	public GLButton addButton(GLButton b, String label, String deselectedImage, String selectedImage) {
+		return addButton(size(), b, label, deselectedImage, selectedImage);
 	}
 
-	public void addButton(int index, GLButton b, String label, String deselectedImage, String selectedImage) {
+	public GLButton addButton(int index, GLButton b, String label, String deselectedImage, String selectedImage) {
 		b.setTooltip(label);
 		b.setRenderer(new ImageRenderer(deselectedImage));
 		b.setSelectedRenderer(new ImageRenderer(selectedImage));
 		this.add(index, b.setSize(RenderStyle.BUTTON_WIDTH, -1));
+		return b;
 	}
 
-	public void addButton(GLButton b) {
+	public GLButton addButton(GLButton b) {
 		this.add(b.setSize(RenderStyle.BUTTON_WIDTH, -1));
+		return b;
 	}
 
 	public void addSpacer() {

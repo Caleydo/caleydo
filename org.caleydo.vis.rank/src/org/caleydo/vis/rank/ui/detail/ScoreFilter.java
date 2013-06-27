@@ -160,7 +160,7 @@ public class ScoreFilter extends PickableGLElement implements IPickingListener {
 	 * @return
 	 */
 	private IColumnRenderInfo findRenderInfo() {
-		IGLElementParent p = getParent();
+		IGLElementParent p = summary.getParent();
 		while (!(p instanceof IColumnRenderInfo) && p != null)
 			p = p.getParent();
 		return (IColumnRenderInfo) p;
