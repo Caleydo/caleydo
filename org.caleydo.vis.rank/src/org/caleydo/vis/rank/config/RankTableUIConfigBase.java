@@ -138,4 +138,9 @@ public class RankTableUIConfigBase implements IRankTableUIConfig {
 			table.setSelectedRow(row);
 		}
 	}
+
+	@Override
+	public boolean isFastFiltering() {
+		return false;
+	}
 }

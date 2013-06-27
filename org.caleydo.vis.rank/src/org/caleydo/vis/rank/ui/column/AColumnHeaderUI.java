@@ -336,6 +336,12 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 			return;
 		boolean small = isSmallHeader(h);
 
+		if (config.isFastFiltering() && model instanceof IFilterColumnMixin && !(model instanceof FloatRankColumnModel)
+				&& ((IFilterColumnMixin) model).isFiltered()) {
+			// draw a filter icon
+			g.fillImage(RenderStyle.ICON_FILTER, w - 13, 1, 12, 12);
+		}
+
 		if (hasTitle && !(armDropColum && small)) {
 			g.move(2, 2);
 			model.getHeaderRenderer().render(g, w - 6, LABEL_HEIGHT - 7, this);
@@ -385,6 +391,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 					b.setCallback(null);
 					b.setSelected(m.isFiltered());
 					b.setCallback(callback);
+					repaint();
 				}
 			};
 			model.addPropertyChangeListener(IFilterColumnMixin.PROP_FILTER, filterChangedListener);

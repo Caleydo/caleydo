@@ -769,6 +769,11 @@ public class GLTourGuideView extends AGLElementView {
 				updatePreview(null, (AScoreRow) row);
 			}
 		}
+
+		@Override
+		public boolean isFastFiltering() {
+			return true;
+		}
 	}
 
 	private class TourGuideVis extends GLElementContainer {

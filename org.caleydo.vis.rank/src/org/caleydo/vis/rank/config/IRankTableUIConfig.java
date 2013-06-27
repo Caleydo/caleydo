@@ -106,4 +106,9 @@ public interface IRankTableUIConfig {
 	 */
 	void onRowClick(RankTableModel table, PickingMode pickingMode, IRow row, boolean isSelected);
 
+	/**
+	 * @return
+	 */
+	boolean isFastFiltering();
+
 }

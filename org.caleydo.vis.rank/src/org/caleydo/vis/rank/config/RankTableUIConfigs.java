@@ -68,6 +68,11 @@ public class RankTableUIConfigs {
 		}
 
 		@Override
+		public boolean isFastFiltering() {
+			return wrappee.isFastFiltering();
+		}
+
+		@Override
 		public boolean isInteractive() {
 			if (isInteractive != null)
 				return isInteractive.booleanValue();
