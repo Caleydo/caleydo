@@ -125,6 +125,11 @@ public class StackedColumnHeaderUI extends SimpleColumnHeaderUI {
 		return (smallHeader ? 0 : HIST_HEIGHT) + LABEL_HEIGHT * 2;
 	}
 
+	@Override
+	protected float getLeftPadding() {
+		return RenderStyle.STACKED_COLUMN_PADDING;
+	}
+
 	/**
 	 * @return the model, see {@link #model}
 	 */
