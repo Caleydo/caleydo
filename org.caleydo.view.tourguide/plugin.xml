@@ -53,7 +53,7 @@
             name="Adjusted Rank Score">
       </factory>
       <factory
-            class="org.caleydo.view.tourguide.impl.JaccardIndexScoreFactory"
+            class="org.caleydo.view.tourguide.impl.ClusterSimilarityScoreFactory"
             name="Jaccard Index Score">
       </factory>
       <factory

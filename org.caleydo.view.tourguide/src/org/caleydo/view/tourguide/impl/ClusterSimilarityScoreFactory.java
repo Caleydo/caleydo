@@ -30,7 +30,6 @@ import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.color.Color;
-import org.caleydo.view.tourguide.api.compute.ComputeScoreFilters;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.score.DefaultComputedReferenceGroupScore;
 import org.caleydo.view.tourguide.api.score.MultiScore;
@@ -44,6 +43,7 @@ import org.caleydo.view.tourguide.api.state.IStateMachine;
 import org.caleydo.view.tourguide.api.state.SimpleState;
 import org.caleydo.view.tourguide.api.state.SimpleTransition;
 import org.caleydo.view.tourguide.impl.algorithm.JaccardIndex;
+import org.caleydo.view.tourguide.impl.algorithm.MutualExclusive;
 import org.caleydo.view.tourguide.spi.IScoreFactory;
 import org.caleydo.view.tourguide.spi.score.IRegisteredScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
@@ -58,7 +58,7 @@ import org.eclipse.swt.widgets.Shell;
  * @author Samuel Gratzl
  *
  */
-public class JaccardIndexScoreFactory implements IScoreFactory {
+public class ClusterSimilarityScoreFactory implements IScoreFactory {
 	private final static Color color = new Color("#ffb380");
 	private final static Color bgColor = new Color("#ffe6d5");
 
@@ -66,9 +66,9 @@ public class JaccardIndexScoreFactory implements IScoreFactory {
 		return new DefaultComputedReferenceGroupScore(label, reference, group, JaccardIndex.get(), null, color, bgColor);
 	}
 
-	private IRegisteredScore createJaccardME(String label, Perspective reference, Group group) {
-		return new DefaultComputedReferenceGroupScore(label, reference, group, JaccardIndex.get(),
-				ComputeScoreFilters.MUTUAL_EXCLUSIVE, color, bgColor);
+	private IRegisteredScore createMutualExclusive(String label, Perspective reference, Group group) {
+		return new DefaultComputedReferenceGroupScore(label, reference, group, MutualExclusive.get(),
+				MutualExclusive.get(), color, bgColor);
 	}
 
 	@Override
@@ -98,7 +98,7 @@ public class JaccardIndexScoreFactory implements IScoreFactory {
 					label = String.format("Sim. to %s %s %s", tablePerspective.getDataDomain().getLabel(),
 							tablePerspective.getRecordPerspective().getLabel(), g);
 					s.add(createJaccard(label, tablePerspective.getRecordPerspective(), g));
-					me.add(createJaccardME("ME " + label, tablePerspective.getRecordPerspective(), g));
+					me.add(createMutualExclusive("ME " + label, tablePerspective.getRecordPerspective(), g));
 				}
 				scores = new IScore[] { me, s };
 			} else {
@@ -116,11 +116,10 @@ public class JaccardIndexScoreFactory implements IScoreFactory {
 			String label = String.format("Sim. to %s %s %s", tablePerspective.getDataDomain().getLabel(),
 					tablePerspective.getRecordPerspective().getLabel(), group.getLabel());
 
-			if (DataDomainOracle.isCategoricalDataDomain(tablePerspective.getDataDomain())
-					&& ((CategoricalTable<?>) tablePerspective.getDataDomain().getTable()).getCategoryDescriptions()
-							.getCategoryProperties().size() == 2) {
+			if (MutualExclusive.canHaveMutualExclusiveScore(tablePerspective
+					.getDataDomain())) {
 				// binary categorical -> add mutual exclusive score
-				scores = new IScore[] { createJaccardME("ME " + label, tablePerspective.getRecordPerspective(), group),
+				scores = new IScore[] { createMutualExclusive("ME " + label, tablePerspective.getRecordPerspective(), group),
 						createJaccard(label, tablePerspective.getRecordPerspective(), group) };
 			} else {
 				scores = new IScore[] { createJaccard(label, tablePerspective.getRecordPerspective(), group) };
@@ -128,6 +127,8 @@ public class JaccardIndexScoreFactory implements IScoreFactory {
 		}
 		reactions.addScoreToTourGuide(EDataDomainQueryMode.STRATIFICATIONS,scores);
 	}
+
+
 
 	private class CreateJaccardScoreState extends SimpleState implements ISelectGroupState {
 		private final IState target;
@@ -181,7 +182,7 @@ public class JaccardIndexScoreFactory implements IScoreFactory {
 	public Iterable<ScoreEntry> createGroupEntries(TablePerspective strat, Group group) {
 		Collection<ScoreEntry> col = new ArrayList<>();
 		col.add(new ScoreEntry("Score group", (IScore) createJaccard(null, strat.getRecordPerspective(), group)));
-		col.add(new ScoreEntry("Score group  (mutual exclusive)", (IScore) createJaccardME(null,
+		col.add(new ScoreEntry("Score group  (mutual exclusive)", (IScore) createMutualExclusive(null,
 				strat.getRecordPerspective(), group)));
 		return col;
 	}
@@ -197,7 +198,7 @@ public class JaccardIndexScoreFactory implements IScoreFactory {
 		col.add(new ScoreEntry("Score all groups in column", (IScore) composite));
 		composite = new MultiScore(rs.getLabel(), color, bgColor);
 		for (Group group : rs.getVirtualArray().getGroupList()) {
-			composite.add(createJaccardME(null, rs, group));
+			composite.add(createMutualExclusive(null, rs, group));
 		}
 		col.add(new ScoreEntry("Score all groups in column (mutual exclusive)", (IScore) composite));
 		return col;
@@ -237,7 +238,7 @@ public class JaccardIndexScoreFactory implements IScoreFactory {
 		protected IRegisteredScore createScore(String label, Perspective per, Group g) {
 			boolean m = mututalExclusiveUI.getSelection();
 			if (m)
-				return createJaccardME(label, per, g);
+				return createMutualExclusive(label, per, g);
 			else
 				return createJaccard(label, per, g);
 		}
