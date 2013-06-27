@@ -30,6 +30,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Deque;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Objects;
@@ -410,6 +411,20 @@ public class RankTableModel implements IRankColumnParent {
 	 */
 	public List<ARankColumnModel> getColumns() {
 		return Collections.unmodifiableList(columns);
+	}
+
+	public List<ARankColumnModel> getFlatColumns() {
+		List<ARankColumnModel> r = new ArrayList<>(columns.size());
+		Deque<ARankColumnModel> cols = new LinkedList<>(columns);
+
+		while (!cols.isEmpty()) {
+			ARankColumnModel model = cols.pollFirst();
+			r.add(model);
+			if (model instanceof ACompositeRankColumnModel) {
+				cols.addAll(((ACompositeRankColumnModel) model).getChildren());
+			}
+		}
+		return r;
 	}
 
 	/**

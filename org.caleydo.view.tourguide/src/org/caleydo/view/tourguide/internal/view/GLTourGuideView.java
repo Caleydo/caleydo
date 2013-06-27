@@ -79,6 +79,7 @@ import org.caleydo.view.tourguide.internal.score.Scores;
 import org.caleydo.view.tourguide.internal.stratomex.StratomexAdapter;
 import org.caleydo.view.tourguide.internal.stratomex.event.WizardEndedEvent;
 import org.caleydo.view.tourguide.internal.view.col.ScoreRankColumnModel;
+import org.caleydo.view.tourguide.internal.view.col.SizeRankColumnModel;
 import org.caleydo.view.tourguide.internal.view.specific.DataDomainModeSpecifics;
 import org.caleydo.view.tourguide.internal.view.specific.IDataDomainQueryModeSpecfics;
 import org.caleydo.view.tourguide.internal.view.ui.ADataDomainElement;
@@ -272,14 +273,28 @@ public class GLTourGuideView extends AGLElementView {
 		if (q.isInitialized()) {
 			if (active) {
 				q.createSpecificColumns(table);
+				removeAllSimpleFilter();
 				scheduleAllOf(q);
 			} else {
 				q.removeSpecificColumns(table);
 				updateMask();
 			}
 			return;
-		} else
+		} else {
+			if (active)
+				removeAllSimpleFilter();
 			scheduleAllOf(q);
+		}
+	}
+
+	private void removeAllSimpleFilter() {
+		// reset all string and integer filters
+		for (ARankColumnModel model : table.getFlatColumns()) {
+			if (model instanceof StringRankColumnModel)
+				((StringRankColumnModel) model).setFilter(null, true);
+			else if (model instanceof SizeRankColumnModel)
+				((SizeRankColumnModel) model).setFilter(null, null);
+		}
 	}
 
 	/**
