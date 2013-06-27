@@ -112,6 +112,8 @@ import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
+import com.google.common.collect.Lists;
+
 /**
  * @author Samuel Gratzl
  *
@@ -284,7 +286,7 @@ public class GLTourGuideView extends AGLElementView {
 	 * @param q
 	 */
 	private void scheduleAllOf(final ADataDomainQuery q) {
-		Collection<IScore> scores = new ArrayList<>(getVisibleScores(null));
+		Collection<IScore> scores = new ArrayList<>(getVisibleScores(null, false));
 		ComputeAllOfJob job = new ComputeAllOfJob(q, scores, this);
 		if (job.hasThingsToDo()) {
 			waiting.reset(job);
@@ -310,7 +312,7 @@ public class GLTourGuideView extends AGLElementView {
 	}
 
 	private void scheduleExtras(List<Pair<ADataDomainQuery, List<AScoreRow>>> extras) {
-		Collection<IScore> scores = new ArrayList<>(getVisibleScores(null));
+		Collection<IScore> scores = new ArrayList<>(getVisibleScores(null, false));
 		ComputeExtrasJob job = new ComputeExtrasJob(extras, scores, this);
 		if (job.hasThingsToDo()) {
 			waiting.reset(job);
@@ -521,7 +523,7 @@ public class GLTourGuideView extends AGLElementView {
 	}
 
 	private void updatePreview(AScoreRow old, AScoreRow new_) {
-		stratomex.updatePreview(old, new_, getVisibleScores(new_), mode, getSortedByScore());
+		stratomex.updatePreview(old, new_, getVisibleScores(new_, true), mode, getSortedByScore());
 	}
 
 	private IScore getSortedByScore() {
@@ -549,15 +551,18 @@ public class GLTourGuideView extends AGLElementView {
 	/**
 	 * @return
 	 */
-	private Collection<IScore> getVisibleScores(AScoreRow row) {
+	private Collection<IScore> getVisibleScores(AScoreRow row, boolean justSortingCriteria) {
 		Collection<IScore> r = new ArrayList<>();
-		Deque<ARankColumnModel> cols = new LinkedList<>(table.getColumns());
+		Deque<ARankColumnModel> cols = new LinkedList<>();
+		if (justSortingCriteria) {
+			cols.addAll(Lists.newArrayList(table.getColumnsOf(table.getDefaultRanker())));
+		} else
+			cols.addAll(table.getColumns());
+
 		while (!cols.isEmpty()) {
 			ARankColumnModel model = cols.pollFirst();
 			if (model instanceof ScoreRankColumnModel) {
 				r.add(((ScoreRankColumnModel) model).getScore());
-			} else if (model instanceof StackedRankColumnModel) {
-				cols.addAll(((StackedRankColumnModel) model).getChildren());
 			} else if (model instanceof MaxRankColumnModel) {
 				MaxRankColumnModel max = (MaxRankColumnModel) model;
 				if (row != null) {
@@ -566,6 +571,8 @@ public class GLTourGuideView extends AGLElementView {
 				} else {
 					cols.addAll(max.getChildren());
 				}
+			} else if (model instanceof ACompositeRankColumnModel) {
+				cols.addAll(((ACompositeRankColumnModel) model).getChildren());
 			}
 		}
 		for (Iterator<IScore> it = r.iterator(); it.hasNext();) {

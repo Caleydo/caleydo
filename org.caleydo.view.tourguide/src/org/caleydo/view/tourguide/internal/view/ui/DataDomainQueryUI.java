@@ -64,14 +64,18 @@ public class DataDomainQueryUI extends GLElementContainer implements IGLLayout, 
 	@Override
 	public void pick(Pick pick) {
 		if (pick.getPickingMode() == PickingMode.DOUBLE_CLICKED) {
+			System.out.println("double clicked");
 			int id = pick.getObjectID();
 			// deactivate all others
 			for (ADataDomainElement child : Iterables.filter(this, ADataDomainElement.class)) {
 				if (id != child.getPickingObjectId() && child.getModel().isActive())
 					child.setSelected(false);
-				System.out.println(child.getModel() + " " + child.getModel().isActive());
+				else if (id == child.getPickingObjectId()) // activate the double clicked never the less was the
+															// previous state was
+					child.setSelected(true);
 			}
 		}
+
 	}
 	/**
 	 * @return

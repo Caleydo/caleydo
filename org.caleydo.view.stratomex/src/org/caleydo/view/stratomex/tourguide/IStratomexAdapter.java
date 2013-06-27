@@ -46,7 +46,7 @@ public interface IStratomexAdapter {
 
 	void selectStratification(Predicate<TablePerspective> filter, boolean autoSelectLeftOfMe);
 
-	void selectGroup(Predicate<Pair<TablePerspective, Group>> filter);
+	void selectGroup(Predicate<Pair<TablePerspective, Group>> filter, boolean allowSelectAll);
 
 	ALayoutRenderer createPreviewRenderer(PathwayGraph pathway);
 	ALayoutRenderer createPreviewRenderer(TablePerspective tablePerspective);

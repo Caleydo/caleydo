@@ -52,6 +52,7 @@ import org.caleydo.view.tourguide.spi.IScoreFactory;
 import org.caleydo.view.tourguide.spi.algorithm.IStratificationAlgorithm;
 import org.caleydo.view.tourguide.spi.score.IRegisteredScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
+import org.caleydo.vis.rank.config.RankTableConfigBase;
 import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
@@ -185,8 +186,13 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 		}
 
 		@Override
+		public boolean isSelectAllSupported() {
+			return false;
+		}
+
+		@Override
 		public void select(TablePerspective strat, Group group, IReactions reactions) {
-			MultiScore score = createScore(strat, group, createGSEA);
+			IScore[] score = createScore(strat, group, createGSEA);
 			reactions.addScoreToTourGuide(EDataDomainQueryMode.PATHWAYS, score);
 
 			// switch to a preview pathway
@@ -303,20 +309,26 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 	 * @param createGSEA
 	 * @return
 	 */
-	public static MultiScore createScore(TablePerspective strat, Group group, boolean createGSEA) {
-		// now we have the data for the stuff
-		AGSEAAlgorithm algorithm;
-		if (createGSEA)
-			algorithm = new GSEAAlgorithm(strat.getRecordPerspective(), group, 1.0f);
-		else
-			algorithm = new PGSEAAlgorithm(strat.getRecordPerspective(), group);
-		String label = String.format("GSEA of %s", strat.getRecordPerspective().getLabel());
-		IScore gsea = new GeneSetScore("GSEA", algorithm, false);
-		IScore pValue = new GeneSetScore("GSEA P-Value", algorithm.asPValue(), true);
+	public static IScore[] createScore(TablePerspective strat, Group group, boolean createGSEA) {
+		if (group == null) {
+			//TODO
+			return new IScore[0];
+		} else {
+			// now we have the data for the stuff
+			AGSEAAlgorithm algorithm;
+			if (createGSEA)
+				algorithm = new GSEAAlgorithm(strat.getRecordPerspective(), group, 1.0f);
+			else
+				algorithm = new PGSEAAlgorithm(strat.getRecordPerspective(), group);
+			String label = String.format("GSEA of %s", strat.getRecordPerspective().getLabel());
+			IScore gsea = new GeneSetScore("GSEA", algorithm, false);
+			IScore pValue = new GeneSetScore("GSEA P-Value", algorithm.asPValue(), true);
 
-		MultiScore s = new MultiScore(label, color, bgColor, 1);
-		s.add(gsea);
-		s.add(pValue);
-		return s;
+			MultiScore s = new MultiScore(label, color, bgColor, RankTableConfigBase.GROUP_MODE);
+			s.add(gsea);
+			s.add(pValue);
+			return new IScore[] {s};
+		}
+
 	}
 }

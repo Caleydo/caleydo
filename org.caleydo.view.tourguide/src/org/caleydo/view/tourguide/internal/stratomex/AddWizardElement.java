@@ -138,7 +138,7 @@ public class AddWizardElement extends AAddWizardElement implements IReactions {
 			adapter.selectStratification((ISelectStratificationState) target,
 					((ISelectStratificationState) target).isAutoSelect());
 		else if (target instanceof ISelectGroupState)
-			adapter.selectGroup((ISelectGroupState) target);
+			adapter.selectGroup((ISelectGroupState) target, ((ISelectGroupState) target).isSelectAllSupported());
 	}
 
 	@Override
@@ -280,7 +280,7 @@ public class AddWizardElement extends AAddWizardElement implements IReactions {
 	public boolean onSelected(TablePerspective tablePerspective, Group group) {
 		if (stateMachine.getCurrent() instanceof ISelectGroupState) {
 			ISelectGroupState s = ((ISelectGroupState) stateMachine.getCurrent());
-			if (!s.apply(Pair.make(tablePerspective, group)))
+			if ((group == null && !s.isSelectAllSupported()) || !s.apply(Pair.make(tablePerspective, group)))
 				return false;
 			s.select(tablePerspective, group, this);
 			return true;

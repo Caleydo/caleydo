@@ -84,19 +84,49 @@ public class JaccardIndexScoreFactory implements IScoreFactory {
 	}
 
 	private void createJaccardScore(TablePerspective tablePerspective, Group group, IReactions reactions) {
-		String label = String.format("Sim. to %s %s %s", tablePerspective.getDataDomain().getLabel(), tablePerspective
-				.getRecordPerspective().getLabel(), group.getLabel());
-
 		IScore[] scores;
-		if (DataDomainOracle.isCategoricalDataDomain(tablePerspective.getDataDomain()) && ((CategoricalTable<?>)tablePerspective.getDataDomain().getTable()).getCategoryDescriptions().getCategoryProperties().size() == 2) {
-			//binary categorical -> add mutual exclusive score
-			scores = new IScore[] { createJaccardME("ME " + label, tablePerspective.getRecordPerspective(), group),
-					createJaccard(label, tablePerspective.getRecordPerspective(), group) };
+		if (group == null) {
+			if (DataDomainOracle.isCategoricalDataDomain(tablePerspective.getDataDomain())
+					&& ((CategoricalTable<?>) tablePerspective.getDataDomain().getTable()).getCategoryDescriptions()
+							.getCategoryProperties().size() == 2) {
+				String label = String.format("Sim. to %s %s", tablePerspective.getDataDomain().getLabel(),
+						tablePerspective.getRecordPerspective().getLabel());
+				MultiScore s = new MultiScore(label, color, bgColor);
+				MultiScore me = new MultiScore("ME " + label, color, bgColor);
+				// binary categorical -> add mutual exclusive score
+				for (Group g : tablePerspective.getRecordPerspective().getVirtualArray().getGroupList()) {
+					label = String.format("Sim. to %s %s %s", tablePerspective.getDataDomain().getLabel(),
+							tablePerspective.getRecordPerspective().getLabel(), g);
+					s.add(createJaccard(label, tablePerspective.getRecordPerspective(), g));
+					me.add(createJaccardME("ME " + label, tablePerspective.getRecordPerspective(), g));
+				}
+				scores = new IScore[] { me, s };
+			} else {
+				String label = String.format("Sim. to %s %s", tablePerspective.getDataDomain().getLabel(),
+						tablePerspective.getRecordPerspective().getLabel());
+				MultiScore s = new MultiScore(label, color, bgColor);
+				for (Group g : tablePerspective.getRecordPerspective().getVirtualArray().getGroupList()) {
+					label = String.format("Sim. to %s %s %s", tablePerspective.getDataDomain().getLabel(),
+							tablePerspective.getRecordPerspective().getLabel(), g);
+					s.add(createJaccard(label, tablePerspective.getRecordPerspective(), g));
+				}
+				scores = new IScore[] { s };
+			}
 		} else {
-			scores = new IScore[] { createJaccard(label, tablePerspective.getRecordPerspective(), group) };
+			String label = String.format("Sim. to %s %s %s", tablePerspective.getDataDomain().getLabel(),
+					tablePerspective.getRecordPerspective().getLabel(), group.getLabel());
+
+			if (DataDomainOracle.isCategoricalDataDomain(tablePerspective.getDataDomain())
+					&& ((CategoricalTable<?>) tablePerspective.getDataDomain().getTable()).getCategoryDescriptions()
+							.getCategoryProperties().size() == 2) {
+				// binary categorical -> add mutual exclusive score
+				scores = new IScore[] { createJaccardME("ME " + label, tablePerspective.getRecordPerspective(), group),
+						createJaccard(label, tablePerspective.getRecordPerspective(), group) };
+			} else {
+				scores = new IScore[] { createJaccard(label, tablePerspective.getRecordPerspective(), group) };
+			}
 		}
 		reactions.addScoreToTourGuide(EDataDomainQueryMode.STRATIFICATIONS,scores);
-
 	}
 
 	private class CreateJaccardScoreState extends SimpleState implements ISelectGroupState {
@@ -110,6 +140,11 @@ public class JaccardIndexScoreFactory implements IScoreFactory {
 
 		@Override
 		public boolean apply(Pair<TablePerspective, Group> pair) {
+			return true;
+		}
+
+		@Override
+		public boolean isSelectAllSupported() {
 			return true;
 		}
 
@@ -128,6 +163,11 @@ public class JaccardIndexScoreFactory implements IScoreFactory {
 
 		@Override
 		public boolean apply(Pair<TablePerspective, Group> pair) {
+			return true;
+		}
+
+		@Override
+		public boolean isSelectAllSupported() {
 			return true;
 		}
 

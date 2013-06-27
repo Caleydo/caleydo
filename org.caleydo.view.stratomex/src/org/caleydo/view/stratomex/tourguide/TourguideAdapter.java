@@ -325,7 +325,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 		if (brick == null)
 			return;
 		boolean isHeader = brick.isHeaderBrick();
-		if (isHeader != (selectionMode == ESelectionMode.STRATIFICATION))
+		if (!isHeader && (selectionMode == ESelectionMode.STRATIFICATION))
 			return;
 		if (this.selectionCurrent == brick)
 			return;
@@ -400,11 +400,13 @@ public class TourguideAdapter implements IStratomexAdapter {
 	}
 
 	@Override
-	public void selectGroup(Predicate<Pair<TablePerspective, Group>> filter) {
+	public void selectGroup(Predicate<Pair<TablePerspective, Group>> filter, boolean allowSelectAll) {
 		this.selectionMode = ESelectionMode.GROUP;
 		// highlight all possibles
 		for (BrickColumn col : stratomex.getBrickColumnManager().getBrickColumns()) {
 			TablePerspective tablePerspective = col.getTablePerspective();
+			if (allowSelectAll)
+				changeHighlight(col.getHeaderBrick(), COLOR_POSSIBLE_SELECTION);
 			for (GLBrick brick : col.getSegmentBricks()) {
 				if (filter.apply(Pair.make(tablePerspective, brick.getTablePerspective().getRecordGroup())))
 					changeHighlight(brick, COLOR_POSSIBLE_SELECTION);

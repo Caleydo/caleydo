@@ -645,6 +645,13 @@ public class RankTableModel implements IRankColumnParent {
 		return start;
 	}
 
+	/**
+	 * @return the defaultRanker, see {@link #defaultRanker}
+	 */
+	public ColumnRanker getDefaultRanker() {
+		return defaultRanker;
+	}
+
 	public IRow getDataItem(int index) {
 		return data.get(index);
 	}
