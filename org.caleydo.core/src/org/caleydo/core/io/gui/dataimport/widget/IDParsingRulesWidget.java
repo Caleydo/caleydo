@@ -25,6 +25,7 @@ import org.caleydo.core.id.IDType;
 import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.io.parser.ascii.ATextParser;
 import org.caleydo.core.util.base.ICallback;
+import org.caleydo.core.util.system.BrowserUtils;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.swt.SWT;
@@ -41,6 +42,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Text;
 
 /**
@@ -100,6 +102,7 @@ public class IDParsingRulesWidget {
 	protected Label errorImage;
 	protected Label errorLabel;
 	protected Label caseExplanationLabel;
+	protected Link regexLink;
 
 	protected String idSample;
 
@@ -274,6 +277,12 @@ public class IDParsingRulesWidget {
 		errorLabel.setText("Invalid regular expression.");
 		errorLabel.setVisible(false);
 
+		regexLink = new Link(parent, SWT.WRAP);
+		regexLink
+				.setText(" <a href=\"http://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html\">Regular Expression Reference</a>");
+		regexLink.addSelectionListener(BrowserUtils.LINK_LISTENER);
+
+
 		fillWidgets(templateIdTypeParsingRules);
 	}
 
@@ -371,6 +380,7 @@ public class IDParsingRulesWidget {
 		toLowerCaseButton.setEnabled(enabled);
 		keepCaseButton.setEnabled(enabled);
 		caseExplanationLabel.setEnabled(enabled);
+		regexLink.setEnabled(enabled);
 
 	}
 
