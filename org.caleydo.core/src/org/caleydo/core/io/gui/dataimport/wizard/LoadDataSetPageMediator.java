@@ -253,8 +253,17 @@ public class LoadDataSetPageMediator {
 	}
 
 	private String getColumnIDSample() {
-		return page.previewTable.getValue(page.rowOfColumnIDSpinner.getSelection() - 1,
-				page.columnOfRowIDSpinner.getSelection());
+		List<Integer> selectedColumns = page.previewTable.getSelectedColumns();
+		Integer sampleColumn = 0;
+		for (Integer candidate : selectedColumns) {
+			if (candidate != page.columnOfRowIDSpinner.getSelection() - 1) {
+				sampleColumn = candidate;
+				break;
+			}
+
+		}
+
+		return page.previewTable.getValue(page.rowOfColumnIDSpinner.getSelection() - 1, sampleColumn);
 	}
 
 	public void onHomogeneousDatasetSelected(boolean isHomogeneous) {
@@ -871,7 +880,6 @@ public class LoadDataSetPageMediator {
 		// rowIDSpecification.setIdTypeParsingRules(parsingRules);
 		// }
 
-
 		if (!page.inhomogeneousDatasetButton.getSelection()
 				&& page.columnIDCategoryCombo.getSelectionIndex() != UNMAPPED_INDEX) {
 			IDSpecification columnIDSpecification = new IDSpecification();
@@ -900,7 +908,6 @@ public class LoadDataSetPageMediator {
 
 		// TODO check buttonHomogeneous
 		// dataSetDescription.setDataHomogeneous(page.buttonHomogeneous.getSelection());
-
 
 		dataSetDescription.setDataSourcePath(isTransposed ? transposedDataFile.getAbsolutePath() : page.loadFile
 				.getFileName());
