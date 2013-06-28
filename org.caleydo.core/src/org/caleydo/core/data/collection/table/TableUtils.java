@@ -246,9 +246,9 @@ public class TableUtils {
 
 				for (Integer colID : colVA) {
 					if (dataDomain.isColumnDimension()) {
-						out.print(dataDomain.getTable().getRawAsString(rowID, colID));
-					} else {
 						out.print(dataDomain.getTable().getRawAsString(colID, rowID));
+					} else {
+						out.print(dataDomain.getTable().getRawAsString(rowID, colID));
 					}
 
 					out.print("\t");
