@@ -53,7 +53,7 @@ import org.eclipse.swt.widgets.Composite;
 
 /**
  * <p>
- * Kaplan Meier GL2 view.
+ * Kaplan Meier GL view.
  * </p>
  * <p>
  * TODO
@@ -68,7 +68,7 @@ public class GLKaplanMeier extends AGLView implements ISingleTablePerspectiveBas
 	public static final String VIEW_TYPE = "org.caleydo.view.kaplanmeier";
 	public static final String VIEW_NAME = "Kaplan-Meier Plot";
 
-	private static final String DEFAULT_X_AXIS_LABEL = "Time (Days)";
+	private static final String DEFAULT_X_AXIS_LABEL = "Time";
 	private static final String DEFAULT_Y_AXIS_LABEL = "Percentage of Patients";
 
 	private static final int LEFT_AXIS_SPACING_PIXELS = 70;
@@ -135,6 +135,9 @@ public class GLKaplanMeier extends AGLView implements ISingleTablePerspectiveBas
 			calculateMaxAxisTime(tablePerspective);
 		}
 		createPickingListeners();
+		xAxisLabel = tablePerspective.getDimensionPerspective().getLabel();
+		yAxisLabel = "Percentage of "
+				+ tablePerspective.getRecordPerspective().getIdType().getIDCategory().getCategoryName();
 
 		detailLevel = EDetailLevel.HIGH;
 	}
@@ -228,6 +231,7 @@ public class GLKaplanMeier extends AGLView implements ISingleTablePerspectiveBas
 	@Override
 	public void initRemote(final GL2 gl, final AGLView glParentView, final GLMouseListener glMouseListener) {
 
+
 		this.glMouseListener = glMouseListener;
 
 		init(gl);
@@ -303,6 +307,7 @@ public class GLKaplanMeier extends AGLView implements ISingleTablePerspectiveBas
 		float axisLabelWidth = textRenderer.getRequiredTextWidthWithMax(xAxisLabel,
 				pixelGLConverter.getGLHeightForPixelHeight(20), viewFrustum.getWidth());
 
+		textRenderer.setColor(Color.BLACK);
 		textRenderer.renderTextInBounds(gl, xAxisLabel, viewFrustum.getWidth() / 2.0f - axisLabelWidth / 2.0f,
 				pixelGLConverter.getGLHeightForPixelHeight(AXIS_LABEL_TEXT_SIDE_SPACING_PIXELS), 0,
 				viewFrustum.getWidth(), pixelGLConverter.getGLHeightForPixelHeight(AXIS_LABEL_TEXT_HEIGHT_PIXELS));
@@ -316,6 +321,7 @@ public class GLKaplanMeier extends AGLView implements ISingleTablePerspectiveBas
 				pixelGLConverter.getGLHeightForPixelHeight(AXIS_LABEL_TEXT_SIDE_SPACING_PIXELS
 						+ AXIS_LABEL_TEXT_HEIGHT_PIXELS), viewFrustum.getHeight() / 2.0f - axisLabelWidth / 2.0f, 0,
 				viewFrustum.getWidth(), pixelGLConverter.getGLHeightForPixelHeight(AXIS_LABEL_TEXT_HEIGHT_PIXELS), 90);
+
 
 		renderSingleAxis(gl, originX, originY, true, 6, maxAxisTime);
 		renderSingleAxis(gl, originX, originY, false, 6, 100);
@@ -368,6 +374,7 @@ public class GLKaplanMeier extends AGLView implements ISingleTablePerspectiveBas
 		VirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
 
 		ArrayList<Float> dataVector = new ArrayList<Float>();
+
 
 		final Table table = tablePerspective.getDataDomain().getTable();
 		final Integer dimensionID = dimensionVA.get(0);
