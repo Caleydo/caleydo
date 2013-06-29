@@ -225,6 +225,7 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 
 			if (useColor) {
 				float[] color;
+
 				if (dataDomain.getTable() instanceof CategoricalTable<?>) {
 					CategoricalTable<?> cTable = (CategoricalTable<?>) dataDomain.getTable();
 					color = cTable.getCategoryDescriptions().getCategoryProperties().get(bucketCount).getColor()

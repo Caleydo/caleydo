@@ -130,16 +130,16 @@ public class ConversionTools {
 				return targetData;
 			}
 
-			for (int iCount = 0; iCount < inputData.length; iCount++) {
-				if (Float.isNaN(inputData[iCount])) {
-					targetData[iCount] = Float.NaN;
+			for (int i = 0; i < inputData.length; i++) {
+				if (Float.isNaN(inputData[i])) {
+					targetData[i] = Float.NaN;
 				}
 
-				targetData[iCount] = (inputData[iCount] - min) / (max - min);
-				if (targetData[iCount] > 1) {
-					targetData[iCount] = 1;
-				} else if (targetData[iCount] < 0) {
-					targetData[iCount] = 0;
+				targetData[i] = (inputData[i] - min) / (max - min);
+				if (targetData[i] > 1) {
+					targetData[i] = 1;
+				} else if (targetData[i] < 0) {
+					targetData[i] = 0;
 				}
 			}
 		}

@@ -219,8 +219,7 @@ public class CategoricalContainer<CATEGORY_TYPE extends Comparable<CATEGORY_TYPE
 		float normalizedDistance = 0;
 
 		if (categoricalClassDescription.size() > 1) {
-			// FIXME -1 and -1 again?
-			int numCategories = categoricalClassDescription.size();
+			int numCategories = categoricalClassDescription.size() - 1;
 			if (categoricalClassDescription.getCategoryProperty(unknownCategoryType) != null) {
 				numCategories--;
 			}
@@ -242,6 +241,8 @@ public class CategoricalContainer<CATEGORY_TYPE extends Comparable<CATEGORY_TYPE
 			Short categoryID = container[count];
 			if (hashCategoryKeyToNormalizedValue.containsKey(categoryID)) {
 				float normalized = hashCategoryKeyToNormalizedValue.get(categoryID);
+				assert (normalized <= 1 && normalized >= 0) : "Normalization failed for " + this.toString()
+						+ ". Should produce value between 0 and 1 but was " + normalized;
 				target[count] = normalized;
 			} else {
 				throw new IllegalStateException("Unknown category ID: " + categoryID);

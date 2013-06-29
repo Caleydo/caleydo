@@ -203,8 +203,7 @@ public class TablePerspectiveStatistics {
 			} else if (!table.isDataHomogeneous()
 					&& table.getDataClass(dimensionVA.get(0), recordVA.get(0)) == EDataClass.CATEGORICAL) {
 				CategoricalClassDescription<?> specific = (CategoricalClassDescription<?>) table
-						.getDataClassSpecificDescription(dimensionVA.get(0),
-						recordVA.get(0));
+						.getDataClassSpecificDescription(dimensionVA.get(0), recordVA.get(0));
 				numberOfBuckets = specific.size();
 			} else {
 				numberOfBuckets = (int) Math.sqrt(recordVA.size());
@@ -221,9 +220,11 @@ public class TablePerspectiveStatistics {
 					if (Float.isNaN(value)) {
 						histogram.addNAN(recordID);
 					} else {
+						assert ((value <= 1 && value >= 0)) : "Normaization went wrong, value is " + value
+								+ " but must be between 0 and 1";
 
 						// this works because the values in the container are
-						// already noramlized
+						// already normalized
 						int bucketIndex = (int) (value * numberOfBuckets);
 						if (bucketIndex == numberOfBuckets)
 							bucketIndex--;
