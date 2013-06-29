@@ -58,6 +58,8 @@ public abstract class AScoreRow extends ARow implements ILabeled, Cloneable, ICo
 
 	public abstract boolean is(TablePerspective tablePerspective);
 
+	public abstract Collection<GroupInfo> getGroupInfos();
+
 	/**
 	 * returns the list of row ids that intersects all the relevant visible columns based on this stratifaction and
 	 * group

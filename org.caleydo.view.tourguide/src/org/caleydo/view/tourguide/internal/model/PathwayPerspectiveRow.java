@@ -111,6 +111,11 @@ public final class PathwayPerspectiveRow extends AScoreRow {
 	}
 
 	@Override
+	public Collection<GroupInfo> getGroupInfos() {
+		return Collections.singleton(new GroupInfo(group.getLabel(), group.getSize(), null));
+	}
+
+	@Override
 	public Collection<Integer> of(Group group) {
 		Set<Integer> idsInPathway = new TreeSet<Integer>();
 		for (PathwayVertexRep vertexRep : pathway.vertexSet()) {

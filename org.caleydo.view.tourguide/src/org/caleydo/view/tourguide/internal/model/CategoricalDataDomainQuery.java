@@ -20,6 +20,7 @@
 package org.caleydo.view.tourguide.internal.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -176,6 +177,19 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 				count++;
 		}
 		return count;
+	}
+
+	public Collection<GroupInfo> getGroupInfos(Integer category) {
+		ATableBasedDataDomain dataDomain2 = getDataDomain();
+		CategoricalTable<?> table = (CategoricalTable<?>) dataDomain2.getTable();
+		CategoricalClassDescription<?> categoryDescriptions = (CategoricalClassDescription<?>) table
+				.getDataClassSpecificDescription(category, 0);
+		Collection<GroupInfo> infos = new ArrayList<>();
+		for (CategoryProperty<?> property : categoryDescriptions) {
+			int cp = table.getNumberOfMatches(property.getCategory(), getCategoryIDType(), category);
+			infos.add(new GroupInfo(property.getCategoryName(), cp, property.getColor()));
+		}
+		return infos;
 	}
 
 	/**

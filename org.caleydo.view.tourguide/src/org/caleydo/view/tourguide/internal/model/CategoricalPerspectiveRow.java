@@ -19,6 +19,8 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.internal.model;
 
+import java.util.Collection;
+
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
@@ -58,7 +60,6 @@ public final class CategoricalPerspectiveRow extends AVirtualArrayScoreRow imple
 		return id;
 	}
 
-
 	@Override
 	public String getPersistentID() {
 		return query.getDataDomain().getDataDomainID() + "_" + id;
@@ -90,7 +91,14 @@ public final class CategoricalPerspectiveRow extends AVirtualArrayScoreRow imple
 
 	@Override
 	public int getGroupSize() {
+		if (this.perspective != null)
+			super.getGroupSize();
 		return query.getGroupSize(this.id);
+	}
+
+	@Override
+	public Collection<GroupInfo> getGroupInfos() {
+		return query.getGroupInfos(this.id);
 	}
 
 	@Override

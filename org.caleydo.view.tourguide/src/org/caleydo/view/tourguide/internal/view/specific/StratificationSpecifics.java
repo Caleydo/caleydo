@@ -37,6 +37,7 @@ import org.caleydo.view.tourguide.internal.model.CategoricalDataDomainQuery;
 import org.caleydo.view.tourguide.internal.model.InhomogenousDataDomainQuery;
 import org.caleydo.view.tourguide.internal.model.StratificationDataDomainQuery;
 import org.caleydo.view.tourguide.internal.view.col.DataDomainRankColumnModel;
+import org.caleydo.view.tourguide.internal.view.col.GroupDistributionRankColumnModel;
 import org.caleydo.view.tourguide.internal.view.col.SizeRankColumnModel;
 import org.caleydo.vis.rank.model.GroupRankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
@@ -84,6 +85,8 @@ public class StratificationSpecifics implements IDataDomainQueryModeSpecfics {
 				return ((AScoreRow) in).getGroupSize();
 			}
 		}).setWidth(75).setCollapsed(false));
+
+		group.add(new GroupDistributionRankColumnModel());
 	}
 
 	@Override

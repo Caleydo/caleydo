@@ -28,6 +28,9 @@ import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.id.IDType;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Collections2;
+
 /**
  * a {@link AScoreRow} based on a {@link VirtualArray}
  * 
@@ -60,6 +63,16 @@ public abstract class AVirtualArrayScoreRow extends AScoreRow {
 		if (group == null)
 			return getVirtualArray().getIDs();
 		return getVirtualArray().getIDsOfGroup(group.getGroupIndex());
+	}
+
+	@Override
+	public Collection<GroupInfo> getGroupInfos() {
+		return Collections2.transform(getGroups(), new Function<Group, GroupInfo>() {
+			@Override
+			public GroupInfo apply(Group in) {
+				return new GroupInfo(in.getLabel(), in.getSize(), null);
+			}
+		});
 	}
 
 	@Override
