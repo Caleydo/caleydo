@@ -31,7 +31,6 @@ import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.util.collection.Algorithms;
-import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -110,15 +109,13 @@ public class ContinuousContentRenderer extends ContentRenderer {
 				List<SelectionType> experimentSelectionTypes = parent.sampleSelectionManager.getSelectionTypes(
 						columnIDType, columnID);
 
-				float[] topBarColor = MappedDataRenderer.BAR_COLOR;
-				float[] bottomBarColor = MappedDataRenderer.BAR_COLOR;
+				float[] topBarColor = MappedDataRenderer.BAR_COLOR.getRGBA();
+				float[] bottomBarColor = MappedDataRenderer.BAR_COLOR.getRGBA();
 				// FIXME - bad hack
-				if (rowIDType.getIDCategory().getCategoryName().equals("GENE")) {
-					topBarColor = MappedDataRenderer.BAR_COLOR;
-					bottomBarColor = MappedDataRenderer.BAR_COLOR;
-				} else {
-					topBarColor = MappedDataRenderer.CONTEXT_BAR_COLOR;
-					bottomBarColor = MappedDataRenderer.CONTEXT_BAR_COLOR;
+				if (!rowIDType.getIDCategory().getCategoryName().equals("GENE")) {
+
+					topBarColor = MappedDataRenderer.CONTEXT_BAR_COLOR.getRGBA();
+					bottomBarColor = MappedDataRenderer.CONTEXT_BAR_COLOR.getRGBA();
 				}
 
 				List<SelectionType> selectionTypes = Algorithms.mergeListsToUniqueList(experimentSelectionTypes,
@@ -132,7 +129,7 @@ public class ContinuousContentRenderer extends ContentRenderer {
 				}
 
 				if (isHighlightMode) {
-					colorCalculator.setBaseColor(new Color(MappedDataRenderer.BAR_COLOR));
+					colorCalculator.setBaseColor(MappedDataRenderer.BAR_COLOR);
 
 					colorCalculator.calculateColors(selectionTypes);
 
@@ -193,7 +190,7 @@ public class ContinuousContentRenderer extends ContentRenderer {
 		if (average == null)
 			return;
 
-		colorCalculator.setBaseColor(new Color(MappedDataRenderer.SUMMARY_BAR_COLOR));
+		colorCalculator.setBaseColor(MappedDataRenderer.SUMMARY_BAR_COLOR);
 
 		List<List<SelectionType>> selectionLists = new ArrayList<List<SelectionType>>();
 		selectionLists.add(geneSelectionTypes);

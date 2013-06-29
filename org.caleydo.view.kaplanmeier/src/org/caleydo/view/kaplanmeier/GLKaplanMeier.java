@@ -68,9 +68,6 @@ public class GLKaplanMeier extends AGLView implements ISingleTablePerspectiveBas
 	public static final String VIEW_TYPE = "org.caleydo.view.kaplanmeier";
 	public static final String VIEW_NAME = "Kaplan-Meier Plot";
 
-	private static final String DEFAULT_X_AXIS_LABEL = "Time";
-	private static final String DEFAULT_Y_AXIS_LABEL = "Percentage of Patients";
-
 	private static final int LEFT_AXIS_SPACING_PIXELS = 70;
 	private static final int BOTTOM_AXIS_SPACING_PIXELS = 50;
 	private static final int TOP_AXIS_SPACING_PIXELS = 8;
@@ -97,12 +94,12 @@ public class GLKaplanMeier extends AGLView implements ISingleTablePerspectiveBas
 	/**
 	 * The label of the x axis.
 	 */
-	private String xAxisLabel = DEFAULT_X_AXIS_LABEL;
+	private String xAxisLabel;
 
 	/**
 	 * The label of the y axis.
 	 */
-	private String yAxisLabel = DEFAULT_Y_AXIS_LABEL;
+	private String yAxisLabel;
 
 	private TablePerspective tablePerspective;
 
@@ -231,7 +228,6 @@ public class GLKaplanMeier extends AGLView implements ISingleTablePerspectiveBas
 	@Override
 	public void initRemote(final GL2 gl, final AGLView glParentView, final GLMouseListener glMouseListener) {
 
-
 		this.glMouseListener = glMouseListener;
 
 		init(gl);
@@ -267,29 +263,24 @@ public class GLKaplanMeier extends AGLView implements ISingleTablePerspectiveBas
 
 		gl.glNewList(displayListIndex, GL2.GL_COMPILE);
 
-		VirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
+		Integer groupID = null;
+		VirtualArray recordVA;
+		if (tablePerspective.getParentTablePerspective() != null) {
+			recordVA = tablePerspective.getParentTablePerspective().getRecordPerspective().getVirtualArray();
+			groupID = tablePerspective.getRecordGroup().getID();
 
-		// do not fill curve if multiple curves are rendered in this plot
-		boolean fillCurve = recordVA.getGroupList().size() > 1 ? false : true;
+		} else {
+			recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
+		}
 
+		if (groupID != null) {
+			// render this first to consider z-order
+			renderCurve(gl, tablePerspective.getRecordGroup(), recordVA, true, true);
+		}
 		for (Group group : recordVA.getGroupList()) {
-			List<Integer> recordIDs = recordVA.getIDsOfGroup(group.getGroupIndex());
-
-			int lineWidth = 1;
-			Color color = new Color(0.5f, 0.5f, 0.5f);
-			SelectionType selectionType = recordGroupSelectionManager.getHighestSelectionType(group.getID());
-			if (selectionType != null) {
-				// || (group.getID() == mouseOverGroupID)) {
-				lineWidth = 2;
-				color = selectionType.getColor();
-			}
-
-			if (detailLevel == EDetailLevel.HIGH)
-				lineWidth *= 2;
-
-			gl.glLineWidth(lineWidth);
-
-			renderSingleKaplanMeierCurve(gl, recordIDs, fillCurve, group.getID(), color);
+			if (groupID != null && group.getID() == groupID)
+				continue;
+			renderCurve(gl, group, recordVA, false, groupID != null);
 		}
 
 		if (detailLevel == EDetailLevel.HIGH) {
@@ -297,6 +288,32 @@ public class GLKaplanMeier extends AGLView implements ISingleTablePerspectiveBas
 		}
 
 		gl.glEndList();
+	}
+
+	private void renderCurve(GL2 gl, Group group, VirtualArray recordVA, boolean fillCurve, boolean hasPrimaryCurve) {
+
+		List<Integer> recordIDs = recordVA.getIDsOfGroup(group.getGroupIndex());
+
+		int lineWidth = 1;
+
+		Color color = Color.MEDIUM_DARK_GRAY;
+		if (hasPrimaryCurve && !fillCurve) {
+			color = Color.DARK_BLUE;
+		}
+		SelectionType selectionType = recordGroupSelectionManager.getHighestSelectionType(group.getID());
+		if (selectionType != null) {
+			// || (group.getID() == mouseOverGroupID)) {
+			lineWidth = 2;
+			color = selectionType.getColor();
+		}
+
+		if (detailLevel == EDetailLevel.HIGH)
+			lineWidth *= 2;
+
+		gl.glLineWidth(lineWidth);
+
+		renderSingleKaplanMeierCurve(gl, recordIDs, fillCurve, group.getID(), color);
+
 	}
 
 	private void renderAxes(GL2 gl) {
@@ -321,7 +338,6 @@ public class GLKaplanMeier extends AGLView implements ISingleTablePerspectiveBas
 				pixelGLConverter.getGLHeightForPixelHeight(AXIS_LABEL_TEXT_SIDE_SPACING_PIXELS
 						+ AXIS_LABEL_TEXT_HEIGHT_PIXELS), viewFrustum.getHeight() / 2.0f - axisLabelWidth / 2.0f, 0,
 				viewFrustum.getWidth(), pixelGLConverter.getGLHeightForPixelHeight(AXIS_LABEL_TEXT_HEIGHT_PIXELS), 90);
-
 
 		renderSingleAxis(gl, originX, originY, true, 6, maxAxisTime);
 		renderSingleAxis(gl, originX, originY, false, 6, 100);
@@ -375,7 +391,6 @@ public class GLKaplanMeier extends AGLView implements ISingleTablePerspectiveBas
 
 		ArrayList<Float> dataVector = new ArrayList<Float>();
 
-
 		final Table table = tablePerspective.getDataDomain().getTable();
 		final Integer dimensionID = dimensionVA.get(0);
 		for (Integer recordID : recordIDs) {
@@ -394,7 +409,7 @@ public class GLKaplanMeier extends AGLView implements ISingleTablePerspectiveBas
 		if (fillCurve) {
 
 			if (color.isGray())
-				gl.glColor4fv(color.brighter().getRGBA(), 0);
+				gl.glColor4fv(color.brighter().brighter().getRGBA(), 0);
 			else
 				gl.glColor4fv(color.lessSaturated().getRGBA(), 0);
 			@SuppressWarnings("unchecked")

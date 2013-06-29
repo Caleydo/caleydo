@@ -46,11 +46,15 @@ public class Color {
 	public static final Color WHITE = new Color(1f);
 
 	public static final Color GRAY = new Color(0.5f, 0.5f, 0.5f);
+	public static final Color MEDIUM_DARK_GRAY = new Color(0.35f, 0.35f, 0.35f);
 	public static final Color DARK_GRAY = new Color(0.2f, 0.2f, 0.2f);
 	public static final Color LIGHT_GRAY = new Color(0.7f, 0.7f, 0.7f);
 
 	public static final Color NEUTRAL_GREY = new Color(220, 220, 220);
 	public static final Color NOT_A_NUMBER_COLOR = new Color(0.3f, 0.3f, 0.3f);
+
+	public static final Color DARK_GREEN = new Color(49, 163, 84);
+	public static final Color DARK_BLUE = new Color(43, 140, 190);
 
 	@XmlElement
 	public float r;

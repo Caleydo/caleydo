@@ -75,9 +75,9 @@ public abstract class ContentRenderer extends ALayoutRenderer {
 		Color barColor;
 		// FIXME - bad hack
 		if (rowIDType.getIDCategory().getCategoryName().equals("GENE")) {
-			barColor = new Color(MappedDataRenderer.BAR_COLOR);
+			barColor = MappedDataRenderer.BAR_COLOR;
 		} else {
-			barColor = new Color(MappedDataRenderer.CONTEXT_BAR_COLOR);
+			barColor = MappedDataRenderer.CONTEXT_BAR_COLOR;
 		}
 		colorCalculator = new SelectionColorCalculator(barColor);
 

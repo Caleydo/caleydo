@@ -71,10 +71,10 @@ public class MappedDataRenderer {
 
 	public static float[] CAPTION_BACKGROUND_COLOR = { 220f / 255f, 220f / 255, 220f / 255, 1f };
 
-	public static float[] BAR_COLOR = { 43f / 255f, 140f / 255, 190f / 255, 1f };
-	public static float[] CONTEXT_BAR_COLOR = { 0.3f, 0.3f, 0.3f, 1f };
+	public static Color BAR_COLOR = Color.DARK_BLUE;
+	public static Color CONTEXT_BAR_COLOR = Color.DARK_GRAY;// { 0.3f, 0.3f, 0.3f, 1f };
 
-	public static float[] SUMMARY_BAR_COLOR = { 49f / 255f, 163f / 255, 84f / 255, 1f };
+	public static Color SUMMARY_BAR_COLOR = Color.DARK_GREEN;
 
 	public static final SelectionType abstractGroupType = new SelectionType("AbstactGroup", new Color(0, 0, 0), 1,
 			false, 0);
