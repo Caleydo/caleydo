@@ -23,11 +23,9 @@ import static org.caleydo.core.manager.GeneralManager.CALEYDO_HOME_PATH;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.StringWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -57,27 +55,19 @@ import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.system.FileOperations;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.e4.ui.model.application.MApplication;
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.core.runtime.jobs.IJobManager;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.MessageBox;
-import org.eclipse.ui.IViewPart;
-import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.XMLMemento;
-import org.eclipse.ui.internal.ViewReference;
+import org.eclipse.ui.internal.Workbench;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleException;
+
+import com.google.common.io.Files;
 
 /**
  * Serializes the current state of the application into a directory or file.
@@ -168,7 +158,7 @@ public final class ProjectManager {
 	/**
 	 * checks whether the unpacked project at the given location is compatible with this version using the project
 	 * metadata
-	 * 
+	 *
 	 * @param unpackedProjectLocation
 	 * @return true if it can be loaded
 	 */
@@ -557,67 +547,104 @@ public final class ProjectManager {
 	 * @param dirName
 	 *            name of the directory to save the views to.
 	 */
-	@SuppressWarnings("restriction")
 	private static void saveWorkbenchData(String dirName) {
 		log.info("storing workbench data");
-		// see https://bugs.eclipse.org/bugs/show_bug.cgi?id=2369
-		// -> if this is implemented than a much cleaner solution can be used to persist the application model
 
-		IWorkbench workbench = PlatformUI.getWorkbench();
-		MApplication app = (MApplication) workbench.getService(MApplication.class);
+		IJobManager jobManager = Job.getJobManager();
+		// find auto saver
+		Job[] build = jobManager.find(Workbench.WORKBENCH_AUTO_SAVE_JOB);
 
-		// persist the views in their models
-		IWorkbenchWindow windows[] = workbench.getWorkbenchWindows();
-		for (int i = 0; i < windows.length; i++) {
-			IWorkbenchPage pages[] = windows[i].getPages();
-			for (int j = 0; j < pages.length; j++) {
-				IViewReference[] references = pages[j].getViewReferences();
-				for (int k = 0; k < references.length; k++) {
-					if (references[k].getView(false) != null) {
-						try {
-							persistView(((ViewReference) references[k]));
-						} catch (IOException e) {
-							log.warn("cant persist view: " + references[k].getId());
-						}
-					}
+		if (build.length == 1) {
+			Job j = build[0];
+			j.wakeUp(); // call it now
+			try {
+				j.join(); // wait for it
+				Job[] jobs = jobManager.find(null); // find the resource saver and wait for it, too
+				for (Job job : jobs)
+					if ("Workbench Auto-Save Background Job".equals(job.getName()))
+						job.join();
+
+				// clear old workbench file
+				File source = new File(WORKBENCH_XMI_FILE);
+				if (!source.exists()) {
+					log.warn("Could not save workbench data from " + source);
+					return;
 				}
+				File target = new File(dirName + WORKBENCH_XMI);
+				Files.copy(source, target);
+			} catch (InterruptedException | IOException e) {
+				log.error("can't persist workbench data", e);
 			}
+
 		}
+		// IWorkbench workbench = PlatformUI.getWorkbench();
+		// Method persist;
+		// try {
+		// persist = workbench.getClass().getDeclaredMethod("persist", boolean.class);
+		// persist.setAccessible(true);
+		// persist.invoke(workbench, false);
+		// log.info("done");
+		// } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
+		// | InvocationTargetException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
 
-		EObject local = EcoreUtil.copy((EObject) app); // create a local copy
-		MApplication localapp = (MApplication) local;
-		localapp.getMenuContributions().clear(); // manipulate like in the original
-		localapp.getSelectedElement().setMainMenu(null);
-
-		// dump the model
-		ResourceSet resSet = new ResourceSetImpl();
-		Resource resource = resSet.createResource(URI.createFileURI(dirName + WORKBENCH_XMI));
-
-		resource.getContents().add(local);
-		try {
-			resource.save(Collections.EMPTY_MAP);
-			log.info("stored workbench data");
-		} catch (IOException e) {
-			log.error("can't persist application.xmi", e);
-		}
+		// workbench.saveAll(shellProvider, runnableContext, filter, confirm)
+		// MApplication app = (MApplication) workbench.getService(MApplication.class);
+		//
+		// // persist the views in their models
+		// IWorkbenchWindow windows[] = workbench.getWorkbenchWindows();
+		// for (int i = 0; i < windows.length; i++) {
+		// IWorkbenchPage pages[] = windows[i].getPages();
+		// for (int j = 0; j < pages.length; j++) {
+		// IViewReference[] references = pages[j].getViewReferences();
+		// for (int k = 0; k < references.length; k++) {
+		// if (references[k].getView(false) != null) {
+		// try {
+		// persistView(((ViewReference) references[k]));
+		// } catch (IOException e) {
+		// log.warn("cant persist view: " + references[k].getId());
+		// }
+		// }
+		// }
+		// }
+		// }
+		//
+		// EObject local = EcoreUtil.copy((EObject) app); // create a local copy
+		// MApplication localapp = (MApplication) local;
+		// localapp.getMenuContributions().clear(); // manipulate like in the original
+		// localapp.getSelectedElement().setMainMenu(null);
+		//
+		// // dump the model
+		// ResourceSet resSet = new ResourceSetImpl();
+		// Resource resource = resSet.createResource(URI.createFileURI(dirName + WORKBENCH_XMI));
+		//
+		// resource.getContents().add(local);
+		// try {
+		// resource.save(Collections.EMPTY_MAP);
+		// log.info("stored workbench data");
+		// } catch (IOException e) {
+		// log.error("can't persist application.xmi", e);
+		// }
 	}
 
-	/**
-	 * persist the given view see {@link ViewReference#persist}
-	 *
-	 * @param viewReference
-	 * @throws IOException
-	 */
-	private static void persistView(ViewReference viewReference) throws IOException {
-		IViewPart view = viewReference.getView(false);
-		if (view != null) {
-			XMLMemento root = XMLMemento.createWriteRoot("view"); //$NON-NLS-1$
-			view.saveState(root);
-			StringWriter writer = new StringWriter();
-			root.save(writer);
-			viewReference.getModel().getPersistedState().put("memento", writer.toString());
-		}
-	}
+	// /**
+	// * persist the given view see {@link ViewReference#persist}
+	// *
+	// * @param viewReference
+	// * @throws IOException
+	// */
+	// private static void persistView(ViewReference viewReference) throws IOException {
+	// IViewPart view = viewReference.getView(false);
+	// if (view != null) {
+	//			XMLMemento root = XMLMemento.createWriteRoot("view"); //$NON-NLS-1$
+	// view.saveState(root);
+	// StringWriter writer = new StringWriter();
+	// root.save(writer);
+	// viewReference.getModel().getPersistedState().put("memento", writer.toString());
+	// }
+	// }
 
 	public static void loadWorkbenchData(String dirName) {
 		try {
