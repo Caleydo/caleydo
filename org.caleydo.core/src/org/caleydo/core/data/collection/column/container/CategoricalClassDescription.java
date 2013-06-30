@@ -53,7 +53,7 @@ import org.caleydo.core.util.color.ColorManager;
  * </p>
  * <p>
  * Elements that are either not in a pre-defined category or that cause a parsing error are collected in a
- * {@link #unknownCategory}. This category is dynamically created, but you cal also set it manually if you want to
+ * {@link #unknownCategory}. This category is dynamically created, but you can also set it manually if you want to
  * influence e.g., its label or color.
  * </p>
  * <p>
@@ -178,8 +178,14 @@ public class CategoricalClassDescription<CATEGORY_TYPE extends Comparable<CATEGO
 		return categoryProperties.iterator();
 	}
 
+	/** Returns the number of categories including the unknown category. See also {@link #sizeWithoutUnknonw()} */
 	public int size() {
 		return categoryProperties.size();
+	}
+
+	/** Returns the number of categories excluding the unknown category. See also {@link #size()).*/
+	public int sizeWithoutUnknonw() {
+		return size() - 1;
 	}
 
 	/**
@@ -233,7 +239,7 @@ public class CategoricalClassDescription<CATEGORY_TYPE extends Comparable<CATEGO
 
 	/**
 	 * Applies a specified color scheme to the present categories.
-	 * 
+	 *
 	 * @param colorScheme
 	 *            ColorScheme to apply.
 	 * @param neutralCategory

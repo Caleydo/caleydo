@@ -204,7 +204,7 @@ public class TablePerspectiveStatistics {
 					&& table.getDataClass(dimensionVA.get(0), recordVA.get(0)) == EDataClass.CATEGORICAL) {
 				CategoricalClassDescription<?> specific = (CategoricalClassDescription<?>) table
 						.getDataClassSpecificDescription(dimensionVA.get(0), recordVA.get(0));
-				numberOfBuckets = specific.size();
+				numberOfBuckets = specific.sizeWithoutUnknonw();
 			} else {
 				numberOfBuckets = (int) Math.sqrt(recordVA.size());
 			}
