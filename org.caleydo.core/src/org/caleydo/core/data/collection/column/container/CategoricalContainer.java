@@ -19,7 +19,6 @@ package org.caleydo.core.data.collection.column.container;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -219,17 +218,23 @@ public class CategoricalContainer<CATEGORY_TYPE extends Comparable<CATEGORY_TYPE
 		float normalizedDistance = 0;
 
 		if (categoricalClassDescription.size() > 1) {
-			int numCategories = categoricalClassDescription.size() - 1;
+			int numCategoryDifferences = categoricalClassDescription.size() - 1;
 			if (categoricalClassDescription.getCategoryProperty(unknownCategoryType) != null) {
-				numCategories--;
+				numCategoryDifferences--;
 			}
-			normalizedDistance = 1f / numCategories;
+			normalizedDistance = 1f / numCategoryDifferences;
 		}
 
-		for (int i = 0; i < categoricalClassDescription.size(); i++) {
-			List<CategoryProperty<CATEGORY_TYPE>> c = categoricalClassDescription.getCategoryProperties();
-			short key = hashCategoryToIdentifier.get(c.get(i).getCategory());
-			hashCategoryKeyToNormalizedValue.put(key, i * normalizedDistance);
+		int catCount = 0;
+
+		for (CategoryProperty<CATEGORY_TYPE> c : categoricalClassDescription) {
+			short key = hashCategoryToIdentifier.get(c.getCategory());
+			if (c.getCategory() == unknownCategoryType) {
+				hashCategoryKeyToNormalizedValue.put(key, Float.NaN);
+			} else {
+				hashCategoryKeyToNormalizedValue.put(key, catCount * normalizedDistance);
+				catCount++;
+			}
 		}
 
 		short key = hashCategoryToIdentifier.get(unknownCategoryType);
@@ -241,14 +246,13 @@ public class CategoricalContainer<CATEGORY_TYPE extends Comparable<CATEGORY_TYPE
 			Short categoryID = container[count];
 			if (hashCategoryKeyToNormalizedValue.containsKey(categoryID)) {
 				float normalized = hashCategoryKeyToNormalizedValue.get(categoryID);
-				assert (normalized <= 1 && normalized >= 0) : "Normalization failed for " + this.toString()
-						+ ". Should produce value between 0 and 1 but was " + normalized;
+				assert (normalized <= 1 && normalized >= 0) || Float.isNaN(normalized) : "Normalization failed for "
+						+ this.toString() + ". Should produce value between 0 and 1 or NAN but was " + normalized;
 				target[count] = normalized;
 			} else {
 				throw new IllegalStateException("Unknown category ID: " + categoryID);
 			}
 		}
-		// System.out.println("Elapsed: " + (System.currentTimeMillis() - startTime));
 		return new FloatContainer(target);
 	}
 

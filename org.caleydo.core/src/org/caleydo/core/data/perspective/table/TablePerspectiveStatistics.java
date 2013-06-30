@@ -220,9 +220,8 @@ public class TablePerspectiveStatistics {
 					if (Float.isNaN(value)) {
 						histogram.addNAN(recordID);
 					} else {
-						assert ((value <= 1 && value >= 0)) : "Normaization went wrong, value is " + value
-								+ " but must be between 0 and 1";
-
+						assert (value <= 1 && value >= 0) || Float.isNaN(value) : "Normalization failed for "
+								+ table.toString() + ". Should produce value between 0 and 1 or NAN but was " + value;
 						// this works because the values in the container are
 						// already normalized
 						int bucketIndex = (int) (value * numberOfBuckets);
