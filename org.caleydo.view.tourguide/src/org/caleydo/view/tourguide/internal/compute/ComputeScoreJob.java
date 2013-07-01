@@ -123,8 +123,6 @@ public class ComputeScoreJob extends AScoreJob {
 		if (computeStratificationScores(monitor, as, stratMetrics, stratScores) != null)
 			return false;
 
-		if (as.getLabel().equals("IDH1"))
-			System.out.println();
 		if (computeGroupScores(monitor, as) != null)
 			return false;
 
