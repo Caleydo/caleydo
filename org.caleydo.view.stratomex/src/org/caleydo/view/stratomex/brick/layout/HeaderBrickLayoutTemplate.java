@@ -163,6 +163,7 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 			viewLayout.setZoomer(zoomer);
 		}
 		viewLayout.setRenderer(viewRenderer);
+		viewLayout.addForeGroundRenderer(innerBorderedAreaRenderer);
 
 		// captionRow.append(spacingLayoutX);
 

@@ -218,6 +218,8 @@ public class HandleRenderer extends ALayoutRenderer {
 
 		gl.glColor3f(0, 0, 0);
 
+		float offset = layoutManager.getPixelGLConverter().getGLHeightForPixelHeight(1);
+
 		if ((handles & EXPAND_HANDLE) > 0) {
 			gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(), EPickingType.EXPAND_LEFT_HANDLE.name(),
 					brick.getID()));
@@ -229,8 +231,9 @@ public class HandleRenderer extends ALayoutRenderer {
 			// gl.glVertex3f(-glHandleWidth, y - 2 * glHandleHeight, 1);
 			// gl.glEnd();
 
-			Vec3f lowerLeftCorner = new Vec3f(-glHandleWidth, y, BUTTON_Z);
-			Vec3f lowerRightCorner = new Vec3f(0, y, BUTTON_Z);
+
+			Vec3f lowerLeftCorner = new Vec3f(-glHandleWidth, y + offset, BUTTON_Z);
+			Vec3f lowerRightCorner = new Vec3f(0, y + offset, BUTTON_Z);
 			Vec3f upperLeftCorner = new Vec3f(0, y - 2 * glHandleHeight, BUTTON_Z);
 			Vec3f upperRightCorner = new Vec3f(-glHandleWidth, y - 2 * glHandleHeight, BUTTON_Z);
 			textureManager.renderTexture(gl, EIconTextures.NAVIGATION_NEXT_BIG_MIDDLE, upperLeftCorner,
@@ -243,8 +246,8 @@ public class HandleRenderer extends ALayoutRenderer {
 			gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
 					EPickingType.EXPAND_RIGHT_HANDLE.name(), brick.getID()));
 
-			Vec3f lowerLeftCorner = new Vec3f(x, y, BUTTON_Z);
-			Vec3f lowerRightCorner = new Vec3f(x + glHandleWidth, y, BUTTON_Z);
+			Vec3f lowerLeftCorner = new Vec3f(x, y + offset, BUTTON_Z);
+			Vec3f lowerRightCorner = new Vec3f(x + glHandleWidth, y + offset, BUTTON_Z);
 			Vec3f upperLeftCorner = new Vec3f(x + glHandleWidth, y - 2 * glHandleHeight, BUTTON_Z);
 			Vec3f upperRightCorner = new Vec3f(x, y - 2 * glHandleHeight, BUTTON_Z);
 			textureManager.renderTexture(gl, EIconTextures.NAVIGATION_NEXT_BIG_MIDDLE, lowerLeftCorner,

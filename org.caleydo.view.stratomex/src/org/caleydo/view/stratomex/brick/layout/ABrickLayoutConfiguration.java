@@ -31,6 +31,7 @@ import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
 import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.stratomex.brick.GLBrick;
 import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
+import org.caleydo.view.stratomex.brick.ui.ViewBorderRenderer;
 import org.caleydo.view.stratomex.column.BrickColumn;
 
 /**
@@ -41,7 +42,7 @@ import org.caleydo.view.stratomex.column.BrickColumn;
  */
 public abstract class ABrickLayoutConfiguration extends LayoutConfiguration {
 
-	protected static final int SPACING_PIXELS = 4;
+	protected static final int SPACING_PIXELS = 2;
 	protected static final int DEFAULT_GUI_ELEMENT_SIZE_PIXELS = 16;
 
 	protected GLBrick brick;
@@ -53,6 +54,7 @@ public abstract class ABrickLayoutConfiguration extends LayoutConfiguration {
 	// protected EContainedViewType defaultViewType;
 	// protected ArrayList<IViewTypeChangeListener> viewTypeChangeListeners;
 	protected BorderedAreaRenderer borderedAreaRenderer;
+	protected ViewBorderRenderer innerBorderedAreaRenderer;
 
 	public ABrickLayoutConfiguration(GLBrick brick, BrickColumn brickColumn, GLStratomex stratomex) {
 		this.brick = brick;
@@ -61,6 +63,7 @@ public abstract class ABrickLayoutConfiguration extends LayoutConfiguration {
 		// validViewTypes = new HashSet<EContainedViewType>();
 		// viewTypeChangeListeners = new ArrayList<IViewTypeChangeListener>();
 		borderedAreaRenderer = new BorderedAreaRenderer();
+		innerBorderedAreaRenderer = new ViewBorderRenderer();
 
 		// if (brick.isHeaderBrick())
 		Color color = brick.getDataDomain().getColor();
@@ -72,6 +75,7 @@ public abstract class ABrickLayoutConfiguration extends LayoutConfiguration {
 			color = Color.NEUTRAL_GREY;
 
 		borderedAreaRenderer.setColor(color);
+		innerBorderedAreaRenderer.setColor(color);
 
 		// setValidViewTypes();
 		// registerPickingListeners();
