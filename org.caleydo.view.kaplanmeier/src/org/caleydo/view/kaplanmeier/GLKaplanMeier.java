@@ -296,14 +296,15 @@ public class GLKaplanMeier extends AGLView implements ISingleTablePerspectiveBas
 
 		int lineWidth = 1;
 
-		Color color = Color.MEDIUM_DARK_GRAY;
+		Color color = Color.DARK_GRAY;
+		lineWidth = 1;
 		if (hasPrimaryCurve && !fillCurve) {
-			color = Color.DARK_BLUE;
+			color = Color.LIGHT_GRAY;
 		}
 		SelectionType selectionType = recordGroupSelectionManager.getHighestSelectionType(group.getID());
 		if (selectionType != null) {
 			// || (group.getID() == mouseOverGroupID)) {
-			lineWidth = 2;
+			lineWidth += 1;
 			color = selectionType.getColor();
 		}
 
@@ -407,11 +408,13 @@ public class GLKaplanMeier extends AGLView implements ISingleTablePerspectiveBas
 		gl.glPushName(pickingManager.getPickingID(getID(), EPickingType.KM_CURVE.name(), groupID));
 
 		if (fillCurve) {
-
+			//
 			if (color.isGray())
-				gl.glColor4fv(color.brighter().brighter().getRGBA(), 0);
+				gl.glColor3fv(Color.MEDIUM_DARK_GRAY.getRGB(), 0);
+			// gl.glColor4fv(color.brighter().brighter().getRGBA(), 0);
 			else
 				gl.glColor4fv(color.lessSaturated().getRGBA(), 0);
+			// gl.glColor4fv(color.getRGBA(), 0);
 			@SuppressWarnings("unchecked")
 			ArrayList<Float> clone = (ArrayList<Float>) dataVector.clone();
 			drawFilledCurve(gl, clone);
