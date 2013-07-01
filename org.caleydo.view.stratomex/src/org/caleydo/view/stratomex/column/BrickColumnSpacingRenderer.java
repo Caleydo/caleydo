@@ -276,7 +276,6 @@ public class BrickColumnSpacingRenderer extends ALayoutRenderer implements IDrop
 
 				if (recordVA.getIdType() != recordSelectionManager.getIDType()) {
 
-
 					Set<Integer> recordIDs = mappingManager.getIDAsSet(recordSelectionManager.getIDType(),
 							recordVA.getIdType(), selectedID);
 					if (recordIDs == null)

@@ -63,13 +63,13 @@ public abstract class ABrickLayoutConfiguration extends LayoutConfiguration {
 		borderedAreaRenderer = new BorderedAreaRenderer();
 
 		// if (brick.isHeaderBrick())
-		float[] color = brick.getDataDomain().getColor().getRGBA();
+		Color color = brick.getDataDomain().getColor();
 		if (brick.getBrickColumn().getTablePerspective() instanceof PathwayTablePerspective)
 			color = ((PathwayTablePerspective) brick.getBrickColumn().getTablePerspective()).getPathwayDataDomain()
-					.getColor().getRGBA();
+					.getColor();
 
 		if (!brick.isHeaderBrick())
-			color = Color.NEUTRAL_GREY.getRGBA();
+			color = Color.NEUTRAL_GREY;
 
 		borderedAreaRenderer.setColor(color);
 
@@ -298,15 +298,10 @@ public abstract class ABrickLayoutConfiguration extends LayoutConfiguration {
 			return;
 		} else {
 			if (selected) {
-				float[] color = new float[4];
-				float[] selectionColor = SelectionType.SELECTION.getColor().getRGBA();
-				color[0] = selectionColor[0] * 0.4f + BorderedAreaRenderer.DEFAULT_COLOR[0] * 0.6f;
-				color[1] = selectionColor[1] * 0.4f + BorderedAreaRenderer.DEFAULT_COLOR[1] * 0.6f;
-				color[2] = selectionColor[2] * 0.4f + BorderedAreaRenderer.DEFAULT_COLOR[2] * 0.6f;
-				color[3] = 1;
-				borderedAreaRenderer.setColor(color);
+				Color selectionColor = SelectionType.SELECTION.getColor().lessSaturated();
+				borderedAreaRenderer.setColor(selectionColor);
 			} else {
-				borderedAreaRenderer.setColor(Color.NEUTRAL_GREY.getRGBA());
+				borderedAreaRenderer.setColor(Color.NEUTRAL_GREY);
 			}
 		}
 	}
