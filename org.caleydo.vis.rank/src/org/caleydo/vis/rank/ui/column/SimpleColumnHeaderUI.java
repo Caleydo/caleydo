@@ -158,7 +158,7 @@ public class SimpleColumnHeaderUI extends ACompositeHeaderUI implements IThickHe
 			g.decZ().decZ();
 			// float left = getLeftPadding();
 			g.move(-1, 0);
-			config.renderHeaderBackground(g, w + 1, h, LABEL_HEIGHT, model);
+			config.renderHeaderBackground(g, w + 1, h, 0, model);
 			g.move(+1, 0);
 
 			g.lineWidth(RenderStyle.COLOR_STACKED_BORDER_WIDTH);
