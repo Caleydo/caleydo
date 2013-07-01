@@ -311,6 +311,11 @@ public class AddWizardElement extends AAddWizardElement implements IReactions {
 		if (!canGoBack())
 			return;
 		stateMachine.goBack();
+		Collection<ITransition> transitions = stateMachine.getTransitions(stateMachine.getCurrent());
+		// automatically switch back single transitions
+		if (transitions.size() == 1) {
+			stateMachine.goBack();
+		}
 		checkSelect();
 	}
 
