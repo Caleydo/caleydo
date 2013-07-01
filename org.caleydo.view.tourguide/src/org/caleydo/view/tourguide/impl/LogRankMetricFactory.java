@@ -226,9 +226,9 @@ public class LogRankMetricFactory implements IScoreFactory {
 				}
 
 				@Override
-				public float compute(Set<Integer> a, Set<Integer> b, IProgressMonitor monitor) {
+				public float compute(Set<Integer> a, Group ag, Set<Integer> b, Group bg, IProgressMonitor monitor) {
 					// me versus the rest
-					return underlying.compute(a, Sets.difference(b, a), monitor);
+					return underlying.compute(a, ag, Sets.difference(b, a), bg, monitor);
 				}
 			}, null, wrap(clinical.getColor()), darker(clinical.getColor()));
 			this.clinicalVariable = clinicalVariable;

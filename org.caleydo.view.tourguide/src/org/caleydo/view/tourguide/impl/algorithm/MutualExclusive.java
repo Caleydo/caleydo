@@ -54,7 +54,9 @@ public class MutualExclusive implements IGroupAlgorithm, IComputeScoreFilter {
 		if (!(dataDomainA instanceof ATableBasedDataDomain)
 				|| !canHaveMutualExclusiveScore((ATableBasedDataDomain) dataDomainA))
 			return false;
-		return ag.getLabel().equals(bg.getLabel());
+		if (a.getGroups().contains(bg))
+			return false;// not same stratification
+		return true;
 	}
 
 	public static boolean canHaveMutualExclusiveScore(ATableBasedDataDomain dataDomain) {
@@ -88,14 +90,21 @@ public class MutualExclusive implements IGroupAlgorithm, IComputeScoreFilter {
 	}
 
 	@Override
-	public float compute(Set<Integer> q, Set<Integer> d, IProgressMonitor monitior) {
-		// 1 - |intersect( q_mut, d_mut )|/|q_mut|
-		int intersection = 0;
-		for (Integer ai : q) {
-			if (d.contains(ai))
-				intersection++;
+	public float compute(Set<Integer> d, Group gd, Set<Integer> q, Group gq, IProgressMonitor monitior) {
+		if (gq.getLabel().equals(gd.getLabel())) {
+			// mut vs mut
+			return Statistics.jaccardIndex(d, q);
+		} else {
+			// mut vs non_mut
+			// 1 - |intersect( q_mut, d_mut )|/|q_mut|
+			int intersection = 0;
+			for (Integer ai : q) {
+				if (d.contains(ai))
+					intersection++;
+			}
+			float score = 1 - ((float) intersection) / q.size();
+			return score;
 		}
-		float score = 1 - ((float) intersection) / q.size();
-		return score;
+
 	}
 }

@@ -177,7 +177,7 @@ public final class Statistics {
 				intersection++;
 		}
 		int union = b.size() + a.size() - intersection;
-
+		// intersect(a,b) / union(a,b)
 		float score = union == 0 ? 0.f : (float) intersection / union;
 		return score;
 	}

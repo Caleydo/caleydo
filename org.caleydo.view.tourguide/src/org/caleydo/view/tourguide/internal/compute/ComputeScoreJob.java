@@ -123,6 +123,8 @@ public class ComputeScoreJob extends AScoreJob {
 		if (computeStratificationScores(monitor, as, stratMetrics, stratScores) != null)
 			return false;
 
+		if (as.getLabel().equals("IDH1"))
+			System.out.println();
 		if (computeGroupScores(monitor, as) != null)
 			return false;
 
@@ -157,7 +159,7 @@ public class ComputeScoreJob extends AScoreJob {
 				if (Thread.interrupted() || monitor.isCanceled())
 					return Status.CANCEL_STATUS;
 
-				float v = algorithm.compute(tocompute, reference, monitor);
+				float v = algorithm.compute(tocompute, ag, reference, null, monitor);
 
 				if (Thread.interrupted() || monitor.isCanceled())
 					return Status.CANCEL_STATUS;
@@ -170,6 +172,7 @@ public class ComputeScoreJob extends AScoreJob {
 		for (IComputedReferenceGroupScore score : this.groupScores) {
 			final IComputeElement rs = score.asComputeElement();
 			final IDType sType = rs.getIdType();
+			Group sGroup = score.getGroup();
 
 			IGroupAlgorithm algorithm = score.getAlgorithm();
 
@@ -183,12 +186,12 @@ public class ComputeScoreJob extends AScoreJob {
 					continue;
 
 				Set<Integer> tocompute = get(as, ag, target, sType);
-				Set<Integer> reference = get(rs, score.getGroup(), target, aType);
+				Set<Integer> reference = get(rs, sGroup, target, aType);
 
 				if (Thread.interrupted() || monitor.isCanceled())
 					return Status.CANCEL_STATUS;
 
-				float v = algorithm.compute(tocompute, reference, monitor);
+				float v = algorithm.compute(tocompute, ag, reference, score.getGroup(), monitor);
 
 				if (Thread.interrupted() || monitor.isCanceled())
 					return Status.CANCEL_STATUS;
