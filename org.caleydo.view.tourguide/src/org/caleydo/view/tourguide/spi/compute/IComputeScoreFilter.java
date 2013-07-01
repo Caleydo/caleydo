@@ -29,5 +29,5 @@ import org.caleydo.view.tourguide.spi.algorithm.IComputeElement;
  * 
  */
 public interface IComputeScoreFilter {
-	boolean doCompute(IComputeElement a, Group ag, IComputeElement b, Group bg);
+	boolean doCompute(IComputeElement a, Group ag, IComputeElement reference, Group referenceGroup);
 }

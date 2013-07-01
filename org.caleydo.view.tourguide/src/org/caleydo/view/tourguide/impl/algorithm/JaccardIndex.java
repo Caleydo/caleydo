@@ -21,6 +21,7 @@ package org.caleydo.view.tourguide.impl.algorithm;
 
 import java.util.Set;
 
+import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.id.IDType;
 import org.caleydo.view.tourguide.spi.algorithm.IComputeElement;
 import org.caleydo.view.tourguide.spi.algorithm.IGroupAlgorithm;
@@ -62,7 +63,7 @@ public class JaccardIndex implements IGroupAlgorithm {
 	}
 
 	@Override
-	public float compute(Set<Integer> a, Set<Integer> b, IProgressMonitor monitior) {
+	public float compute(Set<Integer> a, Group ag, Set<Integer> b, Group bg, IProgressMonitor monitior) {
 		return Statistics.jaccardIndex(a, b);
 	}
 }

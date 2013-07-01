@@ -19,17 +19,21 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.api.query;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
+import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.util.base.DefaultLabelProvider;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
+import org.caleydo.view.tourguide.internal.model.InhomogenousDataDomainQuery;
+
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 
 /**
  * the mode in which the data domain query is see {@link DataDomainQuery}
@@ -37,7 +41,7 @@ import org.caleydo.datadomain.pathway.PathwayDataDomain;
  * @author Samuel Gratzl
  *
  */
-public enum EDataDomainQueryMode {
+public enum EDataDomainQueryMode implements Predicate<IDataDomain> {
 	STRATIFICATIONS, PATHWAYS, OTHER;
 
 	/**
@@ -59,42 +63,36 @@ public enum EDataDomainQueryMode {
 		return this != STRATIFICATIONS;
 	}
 
-	public boolean isCompatible(IDataDomain dataDomain) {
+	@Override
+	public boolean apply(IDataDomain dataDomain) {
 		switch(this) {
 		case PATHWAYS:
 			return dataDomain instanceof PathwayDataDomain;
 		case STRATIFICATIONS:
-			return (dataDomain instanceof ATableBasedDataDomain && ((ATableBasedDataDomain) dataDomain).getTable()
-					.isDataHomogeneous());
+			if (!(dataDomain instanceof ATableBasedDataDomain))
+				return false;
+			if (!((ATableBasedDataDomain) dataDomain).getTable().isDataHomogeneous())
+				return InhomogenousDataDomainQuery.hasOne(dataDomain, EDataClass.CATEGORICAL);
+			return true;
 		case OTHER:
 			return (dataDomain instanceof ATableBasedDataDomain && !((ATableBasedDataDomain) dataDomain).getTable()
-					.isDataHomogeneous());
+					.isDataHomogeneous()) && InhomogenousDataDomainQuery.hasOne(dataDomain, EDataClass.NATURAL_NUMBER);
 		}
 		throw new IllegalArgumentException("unknown me");
 	}
 
 	public Collection<? extends IDataDomain> getAllDataDomains() {
+		List<? extends IDataDomain> dataDomains;
 		switch(this) {
-		case STRATIFICATIONS:
-			List<ATableBasedDataDomain> dataDomains = new ArrayList<>(DataDomainManager.get().getDataDomainsByType(ATableBasedDataDomain.class));
-
-			// Sort data domains alphabetically
-			Collections.sort(dataDomains, DefaultLabelProvider.BY_LABEL);
-			return dataDomains;
 		case PATHWAYS:
-			return DataDomainManager.get().getDataDomainsByType(PathwayDataDomain.class);
-		case OTHER:
-			List<ATableBasedDataDomain> catDataDomains = new ArrayList<>(DataDomainManager.get().getDataDomainsByType(
-					ATableBasedDataDomain.class));
-
-			for (Iterator<ATableBasedDataDomain> it = catDataDomains.iterator(); it.hasNext();)
-				if (it.next().getTable().isDataHomogeneous()) // remove inhomogenous
-					it.remove();
-
-			// Sort data domains alphabetically
-			Collections.sort(catDataDomains, DefaultLabelProvider.BY_LABEL);
-			return catDataDomains;
+			dataDomains = DataDomainManager.get().getDataDomainsByType(PathwayDataDomain.class);
+			break;
+		default:
+			dataDomains = DataDomainManager.get().getDataDomainsByType(ATableBasedDataDomain.class);
+			break;
 		}
-		throw new IllegalArgumentException("unknown me");
+		dataDomains = Lists.newArrayList(Iterables.filter(dataDomains, this));
+		Collections.sort(dataDomains, DefaultLabelProvider.BY_LABEL);
+		return dataDomains;
 	}
 }

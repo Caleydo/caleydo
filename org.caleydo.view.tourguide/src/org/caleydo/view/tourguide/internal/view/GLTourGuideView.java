@@ -237,7 +237,7 @@ public class GLTourGuideView extends AGLElementView {
 	private void onAddDataDomain(final NewDataDomainEvent event) {
 		IDataDomain dd = event.getDataDomain();
 
-		if (!mode.isCompatible(dd))
+		if (!mode.apply(dd))
 			return;
 
 		for (ADataDomainQuery query : modeSpecifics.createDataDomainQuery(dd)) {

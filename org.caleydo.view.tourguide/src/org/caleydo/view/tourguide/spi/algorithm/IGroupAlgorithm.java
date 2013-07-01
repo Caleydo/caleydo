@@ -21,6 +21,7 @@ package org.caleydo.view.tourguide.spi.algorithm;
 
 import java.util.Set;
 
+import org.caleydo.core.data.virtualarray.group.Group;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 /**
@@ -32,10 +33,12 @@ import org.eclipse.core.runtime.IProgressMonitor;
 public interface IGroupAlgorithm extends IAlgorithm {
 	/**
 	 * computes the score between the two sets identified by a set of integer noted in the same id type
-	 *
+	 * 
 	 * @param a
+	 * @param ag
 	 * @param b
+	 * @param bg
 	 * @return
 	 */
-	float compute(Set<Integer> a, Set<Integer> b, IProgressMonitor monitor);
+	float compute(Set<Integer> a, Group ag, Set<Integer> b, Group bg, IProgressMonitor monitor);
 }
