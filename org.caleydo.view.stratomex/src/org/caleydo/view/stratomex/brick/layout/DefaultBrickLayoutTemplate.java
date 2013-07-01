@@ -170,6 +170,8 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 			viewLayout.setZoomer(zoomer);
 		}
 		viewLayout.setRenderer(viewRenderer);
+		if (!brick.isLabelDefault())
+			viewLayout.addForeGroundRenderer(innerBorderedAreaRenderer);
 
 		ElementLayout spacingLayoutY = new ElementLayout("spacingLayoutY");
 		spacingLayoutY.setPixelSizeY(SPACING_PIXELS);

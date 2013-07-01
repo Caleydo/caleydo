@@ -28,6 +28,7 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.layout.Column;
@@ -271,7 +272,7 @@ public abstract class ADefaultTemplateNode extends ADraggableDataGraphNode {
 		// return layout.getWidthPixels();
 	}
 
-	protected Row createDefaultBaseRow(float[] color, int pickingID) {
+	protected Row createDefaultBaseRow(Color color, int pickingID) {
 		Row baseRow = new Row("baseRow");
 		baseRow.setFrameColor(0, 0, 1, 0);
 

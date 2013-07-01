@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.view.tourguide.spi.algorithm.IComputeElement;
@@ -74,8 +75,8 @@ public class LogRank implements IGroupAlgorithm {
 	}
 
 	@Override
-	public float compute(Set<Integer> a, Set<Integer> b, IProgressMonitor monitor) {
-		return compute((Iterable<Integer>) a, b, monitor);
+	public float compute(Set<Integer> a, Group ag, Set<Integer> b, Group bg, IProgressMonitor monitor) {
+		return compute(a, b, monitor);
 	}
 
 	public float compute(Iterable<Integer> a, Iterable<Integer> b, IProgressMonitor monitor) {

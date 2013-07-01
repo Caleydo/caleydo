@@ -59,6 +59,9 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	protected static final int LOCK_RESIZING_BUTTON_ID = 1;
 	protected static final int VIEW_SWITCHING_MODE_BUTTON_ID = 5;
 
+	@SuppressWarnings("hiding")
+	protected static final int SPACING_PIXELS = 4;
+
 	// protected ArrayList<BrickViewSwitchingButton> viewSwitchingButtons;
 	protected List<ElementLayout> toolBarElements;
 	protected List<ElementLayout> footerBarElements;
@@ -152,6 +155,8 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutConfiguration {
 			viewLayout.setZoomer(zoomer);
 		}
 		viewLayout.setRenderer(viewRenderer);
+		viewLayout.addForeGroundRenderer(innerBorderedAreaRenderer);
+		innerBorderedAreaRenderer.setRenderSides(true);
 
 		toolBar = createToolBar();
 		footerBar = createFooterBar();
@@ -194,7 +199,7 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutConfiguration {
 		}
 
 		ElementLayout spacingLayoutX = new ElementLayout("spacingLayoutX");
-		spacingLayoutX.setPixelSizeX(SPACING_PIXELS);
+		spacingLayoutX.setPixelSizeX(SPACING_PIXELS * 3);
 		spacingLayoutX.setPixelSizeY(0);
 
 		// for (int i = 0; i < viewSwitchingButtons.size(); i++) {

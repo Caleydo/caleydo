@@ -55,7 +55,7 @@ public class PathwayDataNode extends ADataNode {
 	@Override
 	public ElementLayout setupLayout() {
 
-		Row baseRow = createDefaultBaseRow(dataDomain.getColor().getRGBA(), getID());
+		Row baseRow = createDefaultBaseRow(dataDomain.getColor(), getID());
 
 		ElementLayout spacingLayoutX = createDefaultSpacingX();
 

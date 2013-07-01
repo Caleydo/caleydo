@@ -19,83 +19,51 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.impl.algorithm;
 
-import java.util.Set;
+import java.util.List;
+import java.util.Objects;
 
+import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
+import org.caleydo.core.data.collection.column.container.CategoryProperty;
 import org.caleydo.core.data.collection.table.CategoricalTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainOracle;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.id.IDType;
 import org.caleydo.view.tourguide.spi.algorithm.IComputeElement;
-import org.caleydo.view.tourguide.spi.algorithm.IGroupAlgorithm;
 import org.caleydo.view.tourguide.spi.compute.IComputeScoreFilter;
-import org.eclipse.core.runtime.IProgressMonitor;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class MutualExclusive implements IGroupAlgorithm, IComputeScoreFilter {
-	private static final MutualExclusive instance = new MutualExclusive();
+public class MutualExclusiveScoreFilter implements IComputeScoreFilter {
+	private final CategoryProperty<?> property;
 
-	public static MutualExclusive get() {
-		return instance;
+	public MutualExclusiveScoreFilter(CategoryProperty<?> property) {
+		this.property = property;
 	}
 
 	@Override
-	public boolean doCompute(IComputeElement a, Group ag, IComputeElement b, Group bg) {
-		if (ag == null || bg == null)
+	public boolean doCompute(IComputeElement item, Group itemGroup, IComputeElement reference, Group bg) {
+		if (itemGroup == null || bg == null)
 			return false;
-		IDataDomain dataDomainA = a.getDataDomain();
-		IDataDomain dataDomainB = b.getDataDomain();
+		IDataDomain dataDomainA = item.getDataDomain();
+		IDataDomain dataDomainB = reference.getDataDomain();
 		if (!dataDomainA.equals(dataDomainB))
 			return false;
 		if (!(dataDomainA instanceof ATableBasedDataDomain)
 				|| !canHaveMutualExclusiveScore((ATableBasedDataDomain) dataDomainA))
 			return false;
-		return ag.getLabel().equals(bg.getLabel());
+		return Objects.equals(property.getCategoryName(), itemGroup.getLabel());
+	}
+
+	public static List<?> getProperties(ATableBasedDataDomain dataDomain) {
+		CategoricalClassDescription<?> categoryDescriptions = ((CategoricalTable<?>) dataDomain.getTable())
+				.getCategoryDescriptions();
+		return categoryDescriptions.getCategoryProperties();
 	}
 
 	public static boolean canHaveMutualExclusiveScore(ATableBasedDataDomain dataDomain) {
-		return DataDomainOracle.isCategoricalDataDomain(dataDomain)
-				&& ((CategoricalTable<?>) dataDomain.getTable()).getCategoryDescriptions().getCategoryProperties()
-						.size() == 2;
-	}
-
-	private MutualExclusive() {
-
-	}
-
-	@Override
-	public void init(IProgressMonitor monitor) {
-		// nothing todo
-	}
-
-	@Override
-	public String getAbbreviation() {
-		return "ME";
-	}
-
-	@Override
-	public String getDescription() {
-		return "Mutual Exclusive against ";
-	}
-
-	@Override
-	public IDType getTargetType(IComputeElement a, IComputeElement b) {
-		return a.getIdType();
-	}
-
-	@Override
-	public float compute(Set<Integer> q, Set<Integer> d, IProgressMonitor monitior) {
-		// 1 - |intersect( q_mut, d_mut )|/|q_mut|
-		int intersection = 0;
-		for (Integer ai : q) {
-			if (d.contains(ai))
-				intersection++;
-		}
-		float score = 1 - ((float) intersection) / q.size();
-		return score;
+		return DataDomainOracle.isCategoricalDataDomain(dataDomain) && getProperties(dataDomain).size() == 2;
 	}
 }

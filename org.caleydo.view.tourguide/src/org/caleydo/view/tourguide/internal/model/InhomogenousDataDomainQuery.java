@@ -30,6 +30,7 @@ import java.util.TreeSet;
 import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.vis.rank.model.RankTableModel;
@@ -65,6 +66,20 @@ public class InhomogenousDataDomainQuery extends ADataDomainQuery {
 		Integer dimensionID = clinical.getVirtualArray().get(0);
 		EDataType type = getDataDomain().getTable().getRawDataType(dimensionID, 0);
 		return selectedDataTypes.contains(type) && dataClass.supports(type);
+	}
+
+	public static boolean hasOne(IDataDomain dataDomain, EDataClass dataClass) {
+		ATableBasedDataDomain d = (ATableBasedDataDomain) dataDomain;
+		for (String dimPerspectiveID : d.getDimensionPerspectiveIDs()) {
+			Perspective p = d.getTable().getDimensionPerspective(dimPerspectiveID);
+			if (p.isDefault() || p.isPrivate())
+				continue;
+			Integer dimensionID = p.getVirtualArray().get(0);
+			if (dataClass != d.getTable().getDataClass(dimensionID, 0))
+				continue;
+			return true;
+		}
+		return false;
 	}
 
 	@Override

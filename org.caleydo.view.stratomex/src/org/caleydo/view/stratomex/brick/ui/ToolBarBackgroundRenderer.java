@@ -22,12 +22,13 @@
  */
 package org.caleydo.view.stratomex.brick.ui;
 
+
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.view.stratomex.EPickingType;
 import org.caleydo.view.stratomex.brick.GLBrick;
-import org.caleydo.view.stratomex.brick.layout.BrickColors;
 import org.caleydo.view.stratomex.brick.layout.DefaultBrickLayoutTemplate;
 
 /**
@@ -54,7 +55,7 @@ public class ToolBarBackgroundRenderer extends ALayoutRenderer {
 		gl.glPushName(brick.getStratomex().getPickingManager()
 				.getPickingID(brick.getStratomex().getID(), EPickingType.BRICK.name(), brick.getID()));
 
-		gl.glColor3fv(BrickColors.BRICK_COLOR, 0);
+		gl.glColor3fv(Color.GRAY.getRGBA(), 0);
 		gl.glBegin(GL2.GL_QUADS);
 
 		gl.glVertex3f(0, -spacing, DefaultBrickLayoutTemplate.BUTTON_Z - 0.02f);

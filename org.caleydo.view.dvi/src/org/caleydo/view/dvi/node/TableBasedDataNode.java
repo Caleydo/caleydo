@@ -252,7 +252,7 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 	@Override
 	protected ElementLayout setupLayout() {
 
-		Row baseRow = createDefaultBaseRow(dataDomain.getColor().getRGBA(), getID());
+		Row baseRow = createDefaultBaseRow(dataDomain.getColor(), getID());
 		ElementLayout spacingLayoutX = createDefaultSpacingX();
 
 		baseColumn = new Column();

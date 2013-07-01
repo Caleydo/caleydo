@@ -105,7 +105,8 @@ public class StackedColumnHeaderUI extends SimpleColumnHeaderUI {
 			return;
 		}
 
-		summary.setBounds(2, 2, w - 4, (isSmallHeader() ? 0 : HIST_HEIGHT) + LABEL_HEIGHT);
+		summary.setBounds(getLeftPadding() + 2, 2, w - 4 - getLeftPadding(), (isSmallHeader() ? 0 : HIST_HEIGHT)
+				+ LABEL_HEIGHT);
 
 		super.layoutColumns(children, w, h);
 
@@ -156,10 +157,10 @@ public class StackedColumnHeaderUI extends SimpleColumnHeaderUI {
 		float histHeight = isSmallHeader() ? 0 : HIST_HEIGHT;
 		float yi = histHeight + LABEL_HEIGHT + 7;
 		float hi = LABEL_HEIGHT - 6;
-		float x = COLUMN_SPACE;
+		float x = getLeftPadding();
 		g.lineWidth(RenderStyle.COLOR_STACKED_BORDER_WIDTH);
 		g.color(RenderStyle.COLOR_STACKED_BORDER);
-		g.drawLine(0, histHeight + LABEL_HEIGHT + 4, w, histHeight + LABEL_HEIGHT + 4);
+		g.drawLine(getLeftPadding(), histHeight + LABEL_HEIGHT + 4, w - getLeftPadding(), histHeight + LABEL_HEIGHT + 4);
 		g.lineWidth(1);
 		for (int i = 0; i < numColumns; ++i) {
 			float wi = stacked.getChildWidth(i) + COLUMN_SPACE;
