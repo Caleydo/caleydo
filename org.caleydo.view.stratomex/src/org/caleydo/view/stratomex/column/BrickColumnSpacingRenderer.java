@@ -551,23 +551,9 @@ public class BrickColumnSpacingRenderer extends ALayoutRenderer implements IDrop
 					if (stratomex.isConnectionsHighlightDynamic() == false) {
 
 						if (selectionType == SelectionType.NORMAL) {
-
-							// if (glVisBricks.getSelectedConnectionBandID() ==
-							// subGroupMatch
-							// .getConnectionBandID())
-							// {
-							// trendRatio = 0.5f;
-							// color = new float[] { 0, 0, 0 };
-							//
-							// }
-							// else
-							// {
 							trendRatio = 0.15f;
-							// }
 						} else {
-
 							trendRatio = 0.5f;
-
 						}
 					} else {
 

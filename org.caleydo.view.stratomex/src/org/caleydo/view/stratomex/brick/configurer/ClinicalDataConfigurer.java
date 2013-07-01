@@ -57,7 +57,7 @@ import org.caleydo.view.stratomex.brick.ui.KaplanMeierSummaryRenderer;
 public class ClinicalDataConfigurer extends ABrickConfigurer {
 
 	protected static final int CAPTION_HEIGHT_PIXELS = 16;
-	protected static final int SPACING_PIXELS = 4;
+	protected static final int SPACING_PIXELS = 32;
 
 	private IBrickSortingStrategy sortingStrategy;
 

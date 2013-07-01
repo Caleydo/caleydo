@@ -85,10 +85,10 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutConfiguration {
 		toolBarElements = new ArrayList<ElementLayout>();
 		footerBarElements = new ArrayList<ElementLayout>();
 		// check if this is the header brick
-		if (!brick.isHeaderBrick()) {
-			leftRelationIndicatorRenderer = new RelationIndicatorRenderer(brick, stratomex, true);
-			rightRelationIndicatorRenderer = new RelationIndicatorRenderer(brick, stratomex, false);
-		}
+		// if (!brick.isHeaderBrick()) {
+		// leftRelationIndicatorRenderer = new RelationIndicatorRenderer(brick, stratomex, true);
+		// rightRelationIndicatorRenderer = new RelationIndicatorRenderer(brick, stratomex, false);
+		// }
 		toolBar = new Row();
 		footerBar = new Row();
 		lockResizingButton = new Button(EPickingType.BRICK_LOCK_RESIZING_BUTTON.name(), LOCK_RESIZING_BUTTON_ID,
@@ -107,13 +107,13 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutConfiguration {
 		lockResizingButton.setSelected(lockResizing);
 	}
 
-	public void setLeftRelationIndicatorRenderer(RelationIndicatorRenderer leftRelationIndicatorRenderer) {
-		this.leftRelationIndicatorRenderer = leftRelationIndicatorRenderer;
-	}
-
-	public void setRightRelationIndicatorRenderer(RelationIndicatorRenderer rightRelationIndicatorRenderer) {
-		this.rightRelationIndicatorRenderer = rightRelationIndicatorRenderer;
-	}
+	// public void setLeftRelationIndicatorRenderer(RelationIndicatorRenderer leftRelationIndicatorRenderer) {
+	// this.leftRelationIndicatorRenderer = leftRelationIndicatorRenderer;
+	// }
+	//
+	// public void setRightRelationIndicatorRenderer(RelationIndicatorRenderer rightRelationIndicatorRenderer) {
+	// this.rightRelationIndicatorRenderer = rightRelationIndicatorRenderer;
+	// }
 
 	@Override
 	public void setStaticLayouts() {
@@ -121,16 +121,16 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 		baseRow.setFrameColor(0, 0, 1, 0);
 		baseElementLayout = baseRow;
-		if (!brick.isHeaderBrick()) {
-			leftRelationIndicatorRenderer.updateRelations();
-
-			rightRelationIndicatorRenderer.updateRelations();
-
-			ElementLayout leftRelationIndicatorLayout = new ElementLayout("RightRelationIndicatorLayout");
-			leftRelationIndicatorLayout.setPixelSizeX(RELATION_INDICATOR_WIDTH_PIXELS);
-			leftRelationIndicatorLayout.setRenderer(leftRelationIndicatorRenderer);
-			baseRow.append(leftRelationIndicatorLayout);
-		}
+		// if (!brick.isHeaderBrick()) {
+		// leftRelationIndicatorRenderer.updateRelations();
+		//
+		// rightRelationIndicatorRenderer.updateRelations();
+		//
+		// ElementLayout leftRelationIndicatorLayout = new ElementLayout("RightRelationIndicatorLayout");
+		// leftRelationIndicatorLayout.setPixelSizeX(RELATION_INDICATOR_WIDTH_PIXELS);
+		// leftRelationIndicatorLayout.setRenderer(leftRelationIndicatorRenderer);
+		// baseRow.append(leftRelationIndicatorLayout);
+		// }
 		Column baseColumn = new Column("baseColumn");
 		baseColumn.setFrameColor(0, 1, 0, 0);
 
