@@ -122,9 +122,7 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 			if (tablePerspective.getDataDomain().getTable() instanceof NumericalTable) {
 				histogram = tablePerspective.getContainerStatistics().getHistogram();
 			}
-
 		}
-
 	}
 
 	public void setHistogram(Histogram histogram) {
@@ -219,7 +217,13 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 					CategoricalTable<?> cTable = (CategoricalTable<?>) dataDomain.getTable();
 					color = cTable.getCategoryDescriptions().getCategoryProperties().get(bucketCount).getColor()
 							.getRGBA();
-				} else {
+				}
+				// else if(!dataDomain.getTable().isDataHomogeneous()) {
+				// dataDomain.getTable().;
+				// color = cTable.getCategoryDescriptions().getCategoryProperties().get(bucketCount).getColor()
+				// .getRGBA();
+				// }
+				else {
 					color = dataDomain.getColorMapper().getColor(
 							continuousColorDistance * iCount + continuousColorDistance / 2);
 				}
