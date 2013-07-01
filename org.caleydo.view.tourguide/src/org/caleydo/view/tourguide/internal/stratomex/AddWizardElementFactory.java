@@ -92,8 +92,9 @@ public class AddWizardElementFactory implements IAddWizardElementFactory {
 
 		switch (mode) {
 		case GLOBAL:
-			state.addTransition(addStratification, new SimpleTransition(browseStratification, "Browse list"));
-			state.addTransition(addNumerical, new SimpleTransition(browseNumerical, "Browse list"));
+			state.addTransition(addStratification, new SimpleTransition(browseStratification, "From list"));
+			state.addTransition(addNumerical, new SimpleTransition(browseNumerical,
+					"From list and display unstratified"));
 			state.addState(ALONE_PATHWAY, new AlonePathwayState());
 
 			if (!existing.isEmpty()) {
@@ -101,14 +102,14 @@ public class AddWizardElementFactory implements IAddWizardElementFactory {
 				IState browseIntermediate = state.addState(BROWSE_AND_SELECT_PATHWAY,
 						new BrowsePathwayAndStratificationState());
 				state.addTransition(addPathway, new SimpleTransition(browseIntermediate,
-						"Browse list and stratify with a displayed stratification"));
+						"From list and stratify with a displayed stratification"));
 			}
 			if (!existing.isEmpty()) {
 				// select pathway -> show preview -> select stratification -> show both
 				IState browseIntermediate = state.addState(BROWSE_AND_SELECT_OTHER,
 						new BrowseNumericalAndStratificationState());
 				state.addTransition(addNumerical, new SimpleTransition(browseIntermediate,
-						"Browse list and stratify with a displayed stratification"));
+						"From list and stratify with a displayed stratification"));
 			}
 			break;
 		case DEPENDENT:
@@ -116,11 +117,11 @@ public class AddWizardElementFactory implements IAddWizardElementFactory {
 			browseNumerical.setUnderlying(source.getRecordPerspective());
 
 			if (PathwayOracle.canBeUnderlying(source))
-				state.addTransition(addPathway, new SimpleTransition(browsePathway, "Browse list"));
-			state.addTransition(addNumerical, new SimpleTransition(browseNumerical, "Browse list"));
+				state.addTransition(addPathway, new SimpleTransition(browsePathway, "From list"));
+			state.addTransition(addNumerical, new SimpleTransition(browseNumerical, "From list"));
 			break;
 		case INDEPENDENT:
-			state.addTransition(addStratification, new SimpleTransition(browseStratification, "Browse list"));
+			state.addTransition(addStratification, new SimpleTransition(browseStratification, "From list"));
 			break;
 		}
 
@@ -134,19 +135,19 @@ public class AddWizardElementFactory implements IAddWizardElementFactory {
 	}
 
 	private static void addDefaultStates(StateMachineImpl state) {
-		state.addState(ADD_STRATIFICATIONS, new SelectStateState("Add stratification",
+		state.addState(ADD_STRATIFICATIONS, new SelectStateState("Select stratification",
 				EDataDomainQueryMode.STRATIFICATIONS));
 
 		state.addState(BROWSE_STRATIFICATIONS, new BrowseStratificationState(
 				"Select a stratification in the LineUp to preview.\nThen confirm or cancel your selection."));
 
-		state.addState(ADD_PATHWAY, new SelectStateState("Add pathway", EDataDomainQueryMode.PATHWAYS));
+		state.addState(ADD_PATHWAY, new SelectStateState("Select pathway", EDataDomainQueryMode.PATHWAYS));
 
 		state.addState(BROWSE_PATHWAY, new BrowsePathwayState(
 				"Select a pathway in the LineUp to preview.\n Then confirm or cancel your selection."));
 
 		state.addState(ADD_OTHER,
-				new SelectStateState("Add other data " + toString(EDataDomainQueryMode.OTHER.getAllDataDomains()),
+				new SelectStateState("Select other data " + toString(EDataDomainQueryMode.OTHER.getAllDataDomains()),
 						EDataDomainQueryMode.OTHER));
 
 		state.addState(BROWSE_OTHER, new BrowseOtherState(

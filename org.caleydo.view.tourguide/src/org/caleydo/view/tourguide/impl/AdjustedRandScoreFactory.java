@@ -98,7 +98,8 @@ public class AdjustedRandScoreFactory implements IScoreFactory {
 		IState browse = stateMachine.addState("AdjustedRandBrowse", new UpdateAndBrowseAdjustedRand());
 		IState target = stateMachine.addState("AdjustedRand", new CreateAdjustedRandState(browse));
 
-		stateMachine.addTransition(start, new SimpleTransition(target, "Find similar to displayed stratification"));
+		stateMachine.addTransition(start, new SimpleTransition(target,
+				"Based on similarity to displayed stratification"));
 	}
 
 	@Override

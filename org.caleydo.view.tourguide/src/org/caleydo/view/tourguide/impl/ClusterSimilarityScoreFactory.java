@@ -80,7 +80,7 @@ public class ClusterSimilarityScoreFactory implements IScoreFactory {
 		IState start = stateMachine.get(IStateMachine.ADD_STRATIFICATIONS);
 		IState browse = stateMachine.addState("JaccardIndexBrowse", new UpdateAndBrowseJaccardIndex());
 		IState target = stateMachine.addState("JaccardIndex", new CreateJaccardScoreState(browse));
-		stateMachine.addTransition(start, new SimpleTransition(target, "Find large overlap with displayed clusters"));
+		stateMachine.addTransition(start, new SimpleTransition(target, "Based on overlap with displayed cluster"));
 	}
 
 	private void createJaccardScore(TablePerspective tablePerspective, Group group, IReactions reactions) {

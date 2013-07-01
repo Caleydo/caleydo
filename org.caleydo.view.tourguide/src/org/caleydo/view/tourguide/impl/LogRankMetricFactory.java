@@ -96,7 +96,7 @@ public class LogRankMetricFactory implements IScoreFactory {
 			stateMachine.addState("LogRankBrowse", browse);
 			IState target = stateMachine.addState("LogRank", new CreateLogRankState(browse));
 			stateMachine.addTransition(start, new SimpleTransition(target,
-					"Find based on significant Kaplan-Meier change"));
+ "Based on log-rank test score (survival)"));
 		} else if (mode == EWizardMode.INDEPENDENT) {
 			IState browseStratification = stateMachine.get(IStateMachine.BROWSE_STRATIFICATIONS);
 			stateMachine.addTransition(start, new CreateLogRankTransition(browseStratification, source));
@@ -163,7 +163,7 @@ public class LogRankMetricFactory implements IScoreFactory {
 		private TablePerspective numerical;
 
 		public BothUpdateLogRankState() {
-			super(EDataDomainQueryMode.STRATIFICATIONS, "Browse List");
+			super(EDataDomainQueryMode.STRATIFICATIONS, "From list");
 		}
 
 		@Override
@@ -188,7 +188,7 @@ public class LogRankMetricFactory implements IScoreFactory {
 
 		@Override
 		public String getLabel() {
-			return "Find based on significant Kaplan-Meier change";
+			return "Based on log-rank test score (survival)";
 		}
 
 		@Override
