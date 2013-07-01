@@ -177,6 +177,8 @@ public class NumericalDataPropertiesWidget {
 		dataTypeCombo.setEnabled(true);
 
 		dataTypeCombo.select(0);
+		dataTypeGroup.layout(true, true);
+
 	}
 
 	private void createDataCenterGroup(Composite parent, Listener listener) {
@@ -212,6 +214,7 @@ public class NumericalDataPropertiesWidget {
 		dataCenterTextField.setLayoutData(gridData);
 		dataCenterTextField.addListener(SWT.Modify, listener);
 		dataCenterTextField.setEnabled(false);
+		dataCenterGroup.layout(true, true);
 	}
 
 	private void createClippingGroup(Composite parent, Listener listener) {
@@ -257,6 +260,7 @@ public class NumericalDataPropertiesWidget {
 		minTextField = new Text(clippingGroup, SWT.BORDER);
 		minTextField.addListener(SWT.Modify, listener);
 		minTextField.setEnabled(false);
+		clippingGroup.layout(true, true);
 
 	}
 
@@ -289,6 +293,7 @@ public class NumericalDataPropertiesWidget {
 		scalingCombo.setEnabled(true);
 
 		scalingCombo.select(0);
+		scalingGroup.layout(true, true);
 	}
 
 	/**
