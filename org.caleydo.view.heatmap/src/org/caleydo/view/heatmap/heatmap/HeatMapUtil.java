@@ -22,7 +22,6 @@ import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.util.color.Color;
-import org.caleydo.core.util.color.mapping.ColorMapper;
 import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
@@ -44,7 +43,6 @@ public class HeatMapUtil {
 		int numDimensions = dimensionVA.size();
 
 		ArrayList<Texture> textures = new ArrayList<Texture>();
-		ColorMapper colorMapping = table.getDataDomain().getColorMapper();
 
 		int numSamplesProcessed = 0;
 		boolean isNewTexture = true;
@@ -68,9 +66,8 @@ public class HeatMapUtil {
 					fOpacity = 0.3f;
 				}
 
-				float fLookupValue = table.getNormalizedValue(dimensionIndex, recordIndex);
 
-				float[] fArMappingColor = colorMapping.getColor(fLookupValue);
+				float[] fArMappingColor = table.getColor(dimensionIndex, recordIndex);
 
 				float[] fArRgba = { fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity };
 

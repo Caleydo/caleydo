@@ -520,7 +520,7 @@ public class GLPathwayAugmentationRenderer {
 		if (mappingPerspective != null) {
 			Average average = getExpressionAverage(mappingPerspective, vertexRep);
 			if (average != null) {
-				nodeColor = mappingPerspective.getDataDomain().getColorMapper()
+				nodeColor = mappingPerspective.getDataDomain().getTable().getColorMapper()
 						.getColor((float) average.getArithmeticMean());
 			} else {
 				nodeColor = null;

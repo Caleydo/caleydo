@@ -17,8 +17,6 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.collection.EDataType;
-import org.caleydo.core.data.collection.table.CategoricalTable;
-import org.caleydo.core.data.collection.table.NumericalTable;
 import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.datadomain.event.AggregateGroupEvent;
 import org.caleydo.core.data.datadomain.event.AggregateGroupListener;
@@ -65,7 +63,6 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.clusterer.ClusterResult;
 import org.caleydo.core.util.clusterer.Clusterers;
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
-import org.caleydo.core.util.color.mapping.ColorMapper;
 
 /**
  * <p>
@@ -135,8 +132,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 	@XmlElement
 	private Set<String> dimensionPerspectiveIDs;
 
-	/** The color-mapper to be used by views of this data domain */
-	private ColorMapper colorMapper;
+
 
 	protected IDMappingManager recordIDMappingManager;
 	protected IDMappingManager dimensionIDMappingManager;
@@ -461,29 +457,8 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 		return dimensionPerspectiveIDs;
 	}
 
-	/**
-	 * @return the colorMapper, see {@link #colorMapper}
-	 */
-	public ColorMapper getColorMapper() {
-		if (colorMapper == null) {
-			if (table instanceof NumericalTable && ((NumericalTable) table).getDataCenter() != null) {
-				colorMapper = ColorMapper.createDefaultThreeColorMapper();
-			} else if (table instanceof CategoricalTable<?>) {
-				colorMapper = ((CategoricalTable<?>) table).createColorMapper();
-			} else {
-				colorMapper = ColorMapper.createDefaultTwoColorMapper();
-			}
-		}
-		return colorMapper;
-	}
 
-	/**
-	 * @param colorMapper
-	 *            setter, see {@link #colorMapper}
-	 */
-	public void setColorMapper(ColorMapper colorMapper) {
-		this.colorMapper = colorMapper;
-	}
+
 
 	/**
 	 * Initiates clustering based on the parameters passed. Sends out an event to all affected views upon positive
@@ -540,13 +515,13 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 				}
 			}
 			targetRecordPerspective.init(recordResult);
-			targetRecordPerspective.setLabel(config.getClusterAlgorithmConfiguration().getLabel()
-					+ " " + targetRecordPerspective.getVirtualArray().getGroupList().size(), false);
+			targetRecordPerspective.setLabel(config.getClusterAlgorithmConfiguration().getLabel() + " "
+					+ targetRecordPerspective.getVirtualArray().getGroupList().size(), false);
 			if (registerLater) {
 				table.registerRecordPerspective(targetRecordPerspective);
 			}
-			EventPublisher.trigger(new RecordVAUpdateEvent(dataDomainID, targetRecordPerspective
-					.getPerspectiveID(), this));
+			EventPublisher.trigger(new RecordVAUpdateEvent(dataDomainID, targetRecordPerspective.getPerspectiveID(),
+					this));
 		}
 
 		EventPublisher.trigger(new DataDomainUpdateEvent(this));

@@ -24,6 +24,7 @@ import org.caleydo.core.event.data.DataDomainUpdateEvent;
 import org.caleydo.core.io.NumericalProperties;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Algorithms;
+import org.caleydo.core.util.color.mapping.ColorMapper;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -65,6 +66,9 @@ public class Table {
 
 	/** The data domain holding this table */
 	private ATableBasedDataDomain dataDomain;
+
+	/** The color-mapper for this table */
+	private ColorMapper colorMapper;
 
 	/**
 	 * The transformation delivered when calling the {@link #getNormalizedValue(Integer, Integer)} method without and
@@ -248,6 +252,65 @@ public class Table {
 		}
 
 		return (RAW_DATA_TYPE) columns.get(columnID).getRaw(rowID);
+	}
+
+	/**
+	 * Returns the 3-component color for the given table cell. This works independent of the data type.
+	 *
+	 * FIXME: inhomogeneous numerical is not implemented
+	 * 
+	 * @param dimensionID
+	 * @param recordID
+	 * @return
+	 */
+	public float[] getColor(Integer dimensionID, Integer recordID) {
+		if (isDataHomogeneous()) {
+			return colorMapper.getColor(getNormalizedValue(dimensionID, recordID));
+		} else {
+			if (EDataClass.CATEGORICAL.equals(getDataClass(dimensionID, recordID))) {
+				CategoricalClassDescription<?> specific = (CategoricalClassDescription<?>) getDataClassSpecificDescription(
+						dimensionID, recordID);
+				Object category = getRaw(dimensionID, recordID);
+				return specific.getCategoryProperty(category).getColor().getRGBA();
+			} else {
+				// not implemented
+				throw new IllegalStateException("not implemented");
+			}
+		}
+
+	}
+
+	/**
+	 * <p>
+	 * Returns the ColorMapper for this dataset. Warning: this only works properly for homogeneous numerical datasets.
+	 * </p>
+	 * <p>
+	 * Use {@link Table#getColor(Integer, Integer)} instead if you want access to a cell's color - which works for all
+	 * data types.
+	 * </p>
+	 * TODO: move this to Table and provide separate interfaces for homogeneous and inhomogeneous datasets.
+	 *
+	 * @return the colorMapper, see {@link #colorMapper}
+	 */
+	public ColorMapper getColorMapper() {
+		if (colorMapper == null) {
+			if (this instanceof NumericalTable && ((NumericalTable) this).getDataCenter() != null) {
+				colorMapper = ColorMapper.createDefaultThreeColorMapper();
+			} else if (this instanceof CategoricalTable<?>) {
+				colorMapper = ((CategoricalTable<?>) this).createColorMapper();
+			} else {
+				colorMapper = ColorMapper.createDefaultTwoColorMapper();
+			}
+		}
+		return colorMapper;
+	}
+
+	/**
+	 * @param colorMapper
+	 *            setter, see {@link #colorMapper}
+	 */
+	public void setColorMapper(ColorMapper colorMapper) {
+		this.colorMapper = colorMapper;
 	}
 
 	/**

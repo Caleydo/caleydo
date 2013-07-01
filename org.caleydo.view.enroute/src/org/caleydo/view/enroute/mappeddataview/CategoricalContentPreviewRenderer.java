@@ -112,7 +112,8 @@ public class CategoricalContentPreviewRenderer extends AContentPreviewRenderer {
 			// for (Integer sampleID : histogram.getIDsForBucket(bucketNumber)) {
 			// sampleSelectionTypes.addAll(parent.sampleSelectionManager.getSelectionTypes(columnIDType, sampleID));
 			// }
-			float[] baseColor = dataDomain.getColorMapper().getColor((float) bucketCount / (histogram.size() - 1));
+			float[] baseColor = dataDomain.getTable().getColorMapper()
+					.getColor((float) bucketCount / (histogram.size() - 1));
 			colorCalculator.setBaseColor(new Color(baseColor[0], baseColor[1], baseColor[2]));
 
 			// colorCalculator.calculateColors(Algorithms.mergeListsToUniqueList(selectionTypes,

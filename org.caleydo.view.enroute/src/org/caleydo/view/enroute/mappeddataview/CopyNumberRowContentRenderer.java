@@ -80,7 +80,7 @@ public class CopyNumberRowContentRenderer extends ACategoricalRowContentRenderer
 				List<SelectionType> experimentSelectionTypes = parent.sampleSelectionManager.getSelectionTypes(
 						columnIDType, columnID);
 
-				float[] baseColor = dataDomain.getColorMapper().getColor(value);
+				float[] baseColor = dataDomain.getTable().getColorMapper().getColor(value);
 				float[] topBarColor = baseColor;
 				float[] bottomBarColor = baseColor;
 

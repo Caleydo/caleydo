@@ -144,7 +144,7 @@ public class GLRadialHierarchy extends ATableBasedView {
 		// iMaxDisplayedHierarchyDepth = DISP_HIER_DEPTH_DEFAULT;
 		navigationHistory = new NavigationHistory(this, null);
 		drawingController = new DrawingController(this, navigationHistory);
-		drawingStrategyManager = new DrawingStrategyManager(dataDomain.getColorMapper());
+		drawingStrategyManager = new DrawingStrategyManager(dataDomain.getTable().getColorMapper());
 		navigationHistory.setDrawingController(drawingController);
 		iUpwardNavigationSliderButtonID = 0;
 		iUpwardNavigationSliderID = 0;

@@ -14,7 +14,6 @@ import javax.media.opengl.GLProfile;
 
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.util.color.mapping.ColorMapper;
 import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
@@ -114,9 +113,8 @@ public class HeatMapTextureRenderer extends AHeatMapRenderer {
 
 		Texture texture;
 		FloatBuffer floatBuffer = FloatBuffer.allocate(recordPixels * dimPixels * 4);
-		float lookupValue = 0;
+		// float lookupValue = 0;
 
-		ColorMapper colorMapper = heatMap.getDataDomain().getColorMapper();
 
 		VirtualArray recordVA = heatMap.getTablePerspective().getRecordPerspective().getVirtualArray();
 		for (int recordIndex = recordStartIndex; recordIndex < recordEndIndex; recordIndex++) {
@@ -124,10 +122,10 @@ public class HeatMapTextureRenderer extends AHeatMapRenderer {
 			VirtualArray dimVA = heatMap.getTablePerspective().getDimensionPerspective().getVirtualArray();
 			for (int dimIndex = dimStartIndex; dimIndex < dimEndIndex; dimIndex++) {
 
-				lookupValue = heatMap.getDataDomain().getTable()
-						.getNormalizedValue(dimVA.get(dimIndex), recordVA.get(recordIndex));
+				float[] mappingColor = heatMap.getDataDomain().getTable()
+						.getColor(dimVA.get(dimIndex), recordVA.get(recordIndex));
 
-				float[] mappingColor = colorMapper.getColor(lookupValue);
+				// float[] mappingColor = colorMapper.getColor(lookupValue);
 				floatBuffer.put(mappingColor);
 			}
 		}

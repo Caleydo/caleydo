@@ -95,7 +95,8 @@ public abstract class ACategoricalRowContentRenderer extends ContentRenderer {
 				selectionTypes.remove(SelectionType.SELECTION);
 			}
 
-			float[] baseColor = dataDomain.getColorMapper().getColor((float) bucketCount / (histogram.size() - 1));
+			float[] baseColor = dataDomain.getTable().getColorMapper()
+					.getColor((float) bucketCount / (histogram.size() - 1));
 
 			colorCalculator.setBaseColor(new Color(baseColor[0], baseColor[1], baseColor[2]));
 
