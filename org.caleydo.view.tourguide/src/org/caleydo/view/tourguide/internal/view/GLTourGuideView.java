@@ -242,6 +242,8 @@ public class GLTourGuideView extends AGLElementView {
 
 		for (ADataDomainQuery query : modeSpecifics.createDataDomainQuery(dd)) {
 			queries.add(query);
+			query.addPropertyChangeListener(ADataDomainQuery.PROP_ACTIVE, listener);
+			query.addPropertyChangeListener(ADataDomainQuery.PROP_MASK, listener);
 			getDataDomainQueryUI().add(query);
 		}
 	}
@@ -252,6 +254,8 @@ public class GLTourGuideView extends AGLElementView {
 		for (ADataDomainQuery query : queries) {
 			if (Objects.equals(query.getDataDomain().getDataDomainID(), id)) {
 				query.cleanup();
+				query.removePropertyChangeListener(ADataDomainQuery.PROP_ACTIVE, listener);
+				query.removePropertyChangeListener(ADataDomainQuery.PROP_MASK, listener);
 				queries.remove(query);
 				getDataDomainQueryUI().remove(query);
 				if (query.isActive())
