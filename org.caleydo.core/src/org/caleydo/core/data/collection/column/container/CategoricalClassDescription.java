@@ -174,6 +174,8 @@ public class CategoricalClassDescription<CATEGORY_TYPE extends Comparable<CATEGO
 
 	/** Returns the number of categories excluding the unknown category. See also {@link #size()).*/
 	public int sizeWithoutUnknonw() {
+		if (unknownCategory == null)
+			return size();
 		return size() - 1;
 	}
 
