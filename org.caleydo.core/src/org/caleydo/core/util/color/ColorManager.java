@@ -35,12 +35,6 @@ public class ColorManager {
 
 		for (Color c : AlexColorPalette.Medium.get()) {
 			qualitativeColorList.add(make(c, false));
-			qualitativeColorList.add(make(c, false));
-			qualitativeColorList.add(make(c, false));
-			qualitativeColorList.add(make(c, false));
-			qualitativeColorList.add(make(c, false));
-			qualitativeColorList.add(make(c, false));
-			qualitativeColorList.add(make(c, false));
 		}
 
 		// Colors from colorbrewer qualitative Set3

@@ -15,6 +15,7 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.Histogram;
+import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
 import org.caleydo.core.data.collection.table.CategoricalTable;
 import org.caleydo.core.data.collection.table.NumericalTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
@@ -217,13 +218,14 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 					CategoricalTable<?> cTable = (CategoricalTable<?>) dataDomain.getTable();
 					color = cTable.getCategoryDescriptions().getCategoryProperties().get(bucketCount).getColor()
 							.getRGBA();
-				}
-				// else if(!dataDomain.getTable().isDataHomogeneous()) {
-				// dataDomain.getTable().;
-				// color = cTable.getCategoryDescriptions().getCategoryProperties().get(bucketCount).getColor()
-				// .getRGBA();
-				// }
-				else {
+				} else if (!dataDomain.getTable().isDataHomogeneous() && tablePerspective != null) {
+					CategoricalClassDescription<?> specific = (CategoricalClassDescription<?>) dataDomain.getTable()
+							.getDataClassSpecificDescription(
+									tablePerspective.getDimensionPerspective().getVirtualArray().get(0),
+									tablePerspective.getRecordPerspective().getVirtualArray().get(0));
+
+					color = specific.getCategoryProperties().get(bucketCount).getColor().getRGBA();
+				} else {
 					color = dataDomain.getColorMapper().getColor(
 							continuousColorDistance * iCount + continuousColorDistance / 2);
 				}

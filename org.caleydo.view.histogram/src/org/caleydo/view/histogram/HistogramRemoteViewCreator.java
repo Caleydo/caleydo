@@ -46,6 +46,7 @@ public class HistogramRemoteViewCreator implements IRemoteViewCreator {
 
 			histogramView.setDataDomain(dataDomain);
 			histogramView.setHistogram(histogram);
+			histogramView.setTablePerspective(tablePerspective);
 		}
 		histogramView.initialize();
 		histogramView.setDetailLevel(EDetailLevel.LOW);
