@@ -156,15 +156,16 @@ public class SimpleColumnHeaderUI extends ACompositeHeaderUI implements IThickHe
 				.isCompressed());
 		if (!isCompressed) {
 			g.decZ().decZ();
-			// float left = getLeftPadding();
-			g.move(-1, 0);
-			config.renderHeaderBackground(g, w + 1, h, 0, model);
-			g.move(+1, 0);
+			float left = getLeftPadding();
+			g.save();
+			g.move(left, 0);
+			config.renderHeaderBackground(g, w - getLeftPadding(), h, 0, model);
+			g.restore();
 
 			g.lineWidth(RenderStyle.COLOR_STACKED_BORDER_WIDTH);
 			g.color(RenderStyle.COLOR_STACKED_BORDER);
 
-			g.drawRect(-1, 0, w + 1, h);
+			g.drawRect(left - 1, 0, w - left + 1, h);
 			g.lineWidth(1);
 			g.incZ().incZ();
 		}

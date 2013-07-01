@@ -151,7 +151,7 @@ public class RenderStyle {
 	public static final float SCROLLBAR_WIDTH = 8;
 	public static final float SEPARATOR_PICK_WIDTH = 11;
 	public static final int STACKED_COLUMN_PADDING = 5;
-	public static final int GROUP_COLUMN_PADDING = 10;
+	public static final int GROUP_COLUMN_PADDING = 5;
 
 
 	/**
