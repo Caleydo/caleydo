@@ -47,8 +47,6 @@ public class TableDataDomainElement extends ADataDomainElement {
 		Collection<Perspective> dims = getModel().getDimensionPerspectives();
 		if (!dims.isEmpty()) {
 			Perspective dim = getModel().getDimensionSelection();
-			if (dim == null)
-				dim = dims.iterator().next();
 			GroupContextMenuItem item = new GroupContextMenuItem("Used dimension perspective");
 			creator.addContextMenuItem(item);
 			for (Perspective d : dims)

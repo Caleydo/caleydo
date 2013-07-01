@@ -56,7 +56,7 @@ public class ScoreRankColumnModel extends FloatRankColumnModel implements IGLRen
 				this.headerMode = EHeaderMode.STRAT;
 		}
 		setHeaderRenderer(this);
-		setFilter(true, true, false);
+		setFilter(true, false, false);
 	}
 
 	public ScoreRankColumnModel(ScoreRankColumnModel copy) {

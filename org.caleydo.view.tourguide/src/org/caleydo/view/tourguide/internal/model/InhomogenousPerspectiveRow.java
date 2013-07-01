@@ -24,6 +24,7 @@ import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.id.IDType;
 
 /**
  * @author Samuel Gratzl
@@ -48,6 +49,16 @@ public final class InhomogenousPerspectiveRow extends AVirtualArrayScoreRow impl
 	 */
 	public Perspective getStratification() {
 		return clinical.getRecordPerspective();
+	}
+
+	@Override
+	public IDType getDimensionIdType() {
+		return clinical.getDimensionPerspective().getIdType();
+	}
+
+	@Override
+	public Iterable<Integer> getDimensionIDs() {
+		return clinical.getDimensionPerspective().getVirtualArray();
 	}
 
 	@Override

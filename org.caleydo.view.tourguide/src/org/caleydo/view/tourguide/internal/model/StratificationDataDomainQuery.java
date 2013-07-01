@@ -119,20 +119,6 @@ public class StratificationDataDomainQuery extends ADataDomainQuery {
 		return added;
 	}
 
-	private String getDimensionPerspectiveID() {
-		String dimensionPerspectiveID = null;
-		if (dimensionSelection != null)
-			dimensionPerspectiveID = dimensionSelection.getPerspectiveID();
-		else {
-			for (Perspective p : getDimensionPerspectives()) {
-				if (!p.isDefault())
-					return p.getPerspectiveID();
-			}
-			return getDimensionPerspectives().iterator().next().getPerspectiveID();
-		}
-		return dimensionPerspectiveID;
-	}
-
 	/**
 	 * @param dimensionPerspectiveID
 	 * @param p
@@ -141,9 +127,9 @@ public class StratificationDataDomainQuery extends ADataDomainQuery {
 	public TablePerspective asTablePerspective(Perspective p) {
 		ATableBasedDataDomain d = getDataDomain();
 
-		String dimensionPerspectiveID = getDimensionPerspectiveID();
+		String dimensionPerspectiveID = getDimensionSelection().getPerspectiveID();
 
-		boolean existsAlready = d.hasTablePerspective(p.getPerspectiveID(), dimensionPerspectiveID);
+		// boolean existsAlready = d.hasTablePerspective(p.getPerspectiveID(), dimensionPerspectiveID);
 
 		TablePerspective per = d.getTablePerspective(p.getPerspectiveID(), dimensionPerspectiveID);
 
@@ -171,7 +157,14 @@ public class StratificationDataDomainQuery extends ADataDomainQuery {
 	 * @return the dimensionSelection, see {@link #dimensionSelection}
 	 */
 	public Perspective getDimensionSelection() {
-		return dimensionSelection;
+		if (dimensionSelection != null)
+			return dimensionSelection;
+		for (Perspective p : getDimensionPerspectives()) {
+			if (p.isDefault())
+				continue;
+			return p;
+		}
+		return getDimensionPerspectives().iterator().next();
 	}
 
 

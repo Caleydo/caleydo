@@ -20,6 +20,7 @@
 package org.caleydo.view.tourguide.internal.model;
 
 import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.view.tourguide.internal.score.ExternalIDTypeScore;
 import org.caleydo.view.tourguide.spi.score.IGroupScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
 import org.caleydo.view.tourguide.spi.score.IStratificationScore;
@@ -51,6 +52,10 @@ public class MaxGroupCombiner extends AFloatFunction<IRow> {
 		AScoreRow row = (AScoreRow) in;
 		if (score instanceof IStratificationScore && !(score instanceof IGroupScore)) {
 			return score.apply(row, null); // as group independent
+		}
+		if (score instanceof ExternalIDTypeScore && !((ExternalIDTypeScore) score).isCompatible(row.getIdType())) {
+			// working on dimension ids just once
+			return score.apply(row, null);
 		}
 		float v = Float.NaN;
 		for(Group g : row.getGroups()) {

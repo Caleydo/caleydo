@@ -22,6 +22,8 @@ package org.caleydo.view.tourguide.api.compute;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.caleydo.core.data.collection.table.Table;
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.VirtualArray;
@@ -78,6 +80,21 @@ public final class ComputeElement implements IComputeElement {
 		if (group == null)
 			return getVirtualArray().getIDs();
 		return getVirtualArray().getIDsOfGroup(group.getGroupIndex());
+	}
+
+	@Override
+	public IDType getDimensionIdType() {
+		return ((ATableBasedDataDomain) stratifation.getDataDomain()).getOppositeIDType(getIdType());
+	}
+
+	@Override
+	public Iterable<Integer> getDimensionIDs() {
+		ATableBasedDataDomain d = ((ATableBasedDataDomain) stratifation.getDataDomain());
+		Table table = d.getTable();
+		if (d.getRecordIDType() == getIdType())
+			return table.getDefaultDimensionPerspective().getVirtualArray();
+		else
+			return table.getDefaultRecordPerspective().getVirtualArray();
 	}
 
 	public VirtualArray getVirtualArray() {

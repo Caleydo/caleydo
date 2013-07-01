@@ -19,11 +19,13 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.internal.model;
 
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.id.IDType;
 
 /**
  * @author Samuel Gratzl
@@ -68,6 +70,16 @@ public final class StratificationPerspectiveRow extends AVirtualArrayScoreRow im
 	@Override
 	public IDataDomain getDataDomain() {
 		return stratification.getDataDomain();
+	}
+
+	@Override
+	public IDType getDimensionIdType() {
+		return ((ATableBasedDataDomain) getDataDomain()).getOppositeIDType(getIdType());
+	}
+
+	@Override
+	public Iterable<Integer> getDimensionIDs() {
+		return query.getDimensionSelection().getVirtualArray();
 	}
 
 	@Override

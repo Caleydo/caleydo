@@ -362,13 +362,14 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 				mask.set(i, false);
 				continue;
 			}
-			if (!filterNotMappedEntries) {
+			if (Float.isNaN(v))
+				v = computeMissingValue();
+
+			if (!filterNotMappedEntries || Float.isNaN(v)) {
 				mask.set(i, true);
 				continue;
 			}
 
-			if (Float.isNaN(v))
-				v = computeMissingValue();
 			checkMapping();
 			float f = mapping.apply(v);
 			mask.set(i, !Float.isNaN(f));

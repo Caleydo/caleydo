@@ -49,6 +49,8 @@ public interface IComputeElement extends Iterable<Integer> {
 	 */
 	IDType getIdType();
 
+	IDType getDimensionIdType();
+
 	Collection<Group> getGroups();
 
 	/**
@@ -80,5 +82,10 @@ public interface IComputeElement extends Iterable<Integer> {
 	 * @return
 	 */
 	int size();
+
+	/**
+	 * @return
+	 */
+	Iterable<Integer> getDimensionIDs();
 
 }

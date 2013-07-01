@@ -92,31 +92,56 @@ public final class ExternalIDTypeScore extends AExternalScore {
 		this.scores.putAll(scores);
 	}
 
-	private boolean isCompatible(IDType type) {
-		return this.idType.getIDCategory().equals(type.getIDCategory());
+	public boolean isCompatible(IDType type) {
+		return type != null && this.idType.getIDCategory().equals(type.getIDCategory());
+	}
+
+	/**
+	 * @return the idType, see {@link #idType}
+	 */
+	public IDType getIdType() {
+		return idType;
 	}
 
 	@Override
 	public float apply(IComputeElement elem, Group g) {
-		if (!isCompatible(elem.getIdType())) {
+		if (!isCompatible(elem.getIdType()) && !isCompatible(elem.getDimensionIdType())) {
 			// can't map
 			return Float.NaN;
 		}
-		final IDType target = elem.getIdType();
-
 		Collection<Float> scores = new ArrayList<>();
-		try {
-			for (Integer id : elem.of(g)) {
-				Optional<Integer> my = mapping.get(Pair.make(target, id));
-				if (!my.isPresent())
-					continue;
-				Float s = this.scores.get(my.get());
-				if (s == null)
-					continue;
-				scores.add(s);
+
+		if (isCompatible(elem.getIdType())) {
+			final IDType target = elem.getIdType();
+			try {
+				for (Integer id : elem.of(g)) {
+					Optional<Integer> my = mapping.get(Pair.make(target, id));
+					if (!my.isPresent())
+						continue;
+					Float s = this.scores.get(my.get());
+					if (s == null)
+						continue;
+					scores.add(s);
+				}
+			} catch (ExecutionException e) {
+				log.warn("can't get mapping value", e);
 			}
-		} catch (ExecutionException e) {
-			log.warn("can't get mapping value", e);
+		} else if (isCompatible(elem.getDimensionIdType())) {
+			// for all dimensions
+			final IDType target = elem.getDimensionIdType();
+			try {
+				for (Integer id : elem.getDimensionIDs()) {
+					Optional<Integer> my = mapping.get(Pair.make(target, id));
+					if (!my.isPresent())
+						continue;
+					Float s = this.scores.get(my.get());
+					if (s == null)
+						continue;
+					scores.add(s);
+				}
+			} catch (ExecutionException e) {
+				log.warn("can't get mapping value", e);
+			}
 		}
 		if (scores.isEmpty())
 			return Float.NaN;

@@ -25,6 +25,7 @@ import java.util.Set;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
+import org.caleydo.core.id.IIDTypeMapper;
 import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.util.logging.Logger;
@@ -35,7 +36,7 @@ public class ExternalIDTypeScoreParser extends AExternalScoreParser<ScoreParseSp
 
 	private final IDType sourceIDType;
 	private final IDType targetIDType;
-	private final IDMappingManager idMapper;
+	private final IIDTypeMapper<String, Integer> idMapper;
 	private final IDTypeParsingRules parsingRules;
 
 
@@ -43,7 +44,9 @@ public class ExternalIDTypeScoreParser extends AExternalScoreParser<ScoreParseSp
 		super(spec);
 		this.targetIDType = targetIDType;
 		this.sourceIDType = IDType.getIDType(spec.getRowIDSpecification().getIdType());
-		this.idMapper = IDMappingManagerRegistry.get().getIDMappingManager(this.sourceIDType.getIDCategory());
+		IDMappingManager idMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(
+				this.sourceIDType.getIDCategory());
+		idMapper = idMappingManager.getIDTypeMapper(sourceIDType, targetIDType);
 
 		this.parsingRules = extractParsingRules(this.sourceIDType, spec.getRowIDSpecification());
 	}
@@ -60,10 +63,10 @@ public class ExternalIDTypeScoreParser extends AExternalScoreParser<ScoreParseSp
 	protected Integer extractID(String originalID) {
 		originalID = convertID(originalID, parsingRules);
 
-		Set<Integer> mappedID = idMapper.getIDAsSet(sourceIDType, targetIDType, originalID);
+		Set<Integer> mappedID = idMapper.apply(originalID);
 		if (mappedID == null || mappedID.isEmpty()) {
 			System.err.println("Could not map id: " + originalID);
-			idMapper.getIDAsSet(sourceIDType, targetIDType, originalID);
+			idMapper.apply(originalID);
 			return null;
 		}
 		if (mappedID.size() > 1) {

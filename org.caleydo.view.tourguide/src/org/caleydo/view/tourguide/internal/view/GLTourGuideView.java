@@ -56,6 +56,7 @@ import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
+import org.caleydo.view.tourguide.api.score.ISerializeableScore;
 import org.caleydo.view.tourguide.api.score.MultiScore;
 import org.caleydo.view.tourguide.internal.SerializedTourGuideView;
 import org.caleydo.view.tourguide.internal.compute.ComputeAllOfJob;
@@ -182,6 +183,20 @@ public class GLTourGuideView extends AGLElementView {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
 				onSelectRow((AScoreRow) evt.getOldValue(), (AScoreRow) evt.getNewValue());
+			}
+		});
+		this.table.addPropertyChangeListener(RankTableModel.PROP_POOL, new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				if (evt.getNewValue() == null) { // removed aka destroyed
+					// destroy persistent scores
+					if (evt.getOldValue() instanceof ScoreRankColumnModel) {
+						ScoreRankColumnModel r = (ScoreRankColumnModel) evt.getOldValue();
+						IScore score = r.getScore();
+						if (score instanceof ISerializeableScore)
+							Scores.get().removePersistentScore((ISerializeableScore) score);
+					}
+				}
 			}
 		});
 		this.table.add(new RankRankColumnModel().setWidth(30));

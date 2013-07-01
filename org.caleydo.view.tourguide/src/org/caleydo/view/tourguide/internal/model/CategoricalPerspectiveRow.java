@@ -20,6 +20,7 @@
 package org.caleydo.view.tourguide.internal.model;
 
 import java.util.Collection;
+import java.util.Collections;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
@@ -82,6 +83,16 @@ public final class CategoricalPerspectiveRow extends AVirtualArrayScoreRow imple
 
 	public IDType getCategoryIDType() {
 		return query.getCategoryIDType();
+	}
+
+	@Override
+	public IDType getDimensionIdType() {
+		return getCategoryIDType();
+	}
+
+	@Override
+	public Iterable<Integer> getDimensionIDs() {
+		return Collections.singleton(id);
 	}
 
 	@Override

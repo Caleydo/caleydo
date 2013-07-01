@@ -61,6 +61,10 @@ public final class Scores {
 		return score;
 	}
 
+	public synchronized boolean removePersistentScore(ISerializeableScore score) {
+		return this.persistentScores.remove(score);
+	}
+
 	public Iterable<ISerializeableScore> getPersistentScores() {
 		return persistentScores;
 	}

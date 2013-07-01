@@ -101,6 +101,16 @@ public final class PathwayPerspectiveRow extends AScoreRow {
 	}
 
 	@Override
+	public IDType getDimensionIdType() {
+		return null;
+	}
+
+	@Override
+	public Iterable<Integer> getDimensionIDs() {
+		return Collections.emptyList();
+	}
+
+	@Override
 	public Collection<Group> getGroups() {
 		return Collections.singleton(group);
 	}
