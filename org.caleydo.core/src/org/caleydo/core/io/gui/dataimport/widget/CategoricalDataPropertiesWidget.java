@@ -184,6 +184,8 @@ public class CategoricalDataPropertiesWidget implements ITableDataChangeListener
 		// gridData.widthHint = 500;
 		nominalLabel.setLayoutData(gridData);
 
+		categoryTypeGroup.layout(true, true);
+
 		categoriesGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
 		categoriesGroup.setText("Categories");
 		categoriesGroup.setLayout(new GridLayout(2, false));
@@ -286,6 +288,8 @@ public class CategoricalDataPropertiesWidget implements ITableDataChangeListener
 
 		});
 
+		categoriesGroup.layout(true, true);
+		parent.layout(true, true);
 		// buttonComposite = new Composite(categoriesGroup, SWT.NONE);
 		// buttonComposite.setLayout(new GridLayout(1, true));
 		// upButton = new Button(buttonComposite, SWT.ARROW | SWT.UP);

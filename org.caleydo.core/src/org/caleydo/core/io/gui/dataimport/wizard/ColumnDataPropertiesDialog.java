@@ -170,18 +170,18 @@ public class ColumnDataPropertiesDialog extends Dialog implements Listener {
 		}
 
 
-		scrolledComposite.setMinSize(840, 660);
+		scrolledComposite.setMinSize(870, 760);
 		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, true);
-		gd.widthHint = 840;
-		gd.heightHint = 760;
+		gd.widthHint = 860;
+		gd.heightHint = 750;
 		parent.setLayoutData(gd);
-		// parent.layout(true, true);
-		// parent.pack(true);
+		parent.layout(true, true);
+		scrolledComposite.layout(true, true);
 		//
 		// parentComposite.layout(true);
 		// parentComposite.pack();
 
-
+		parent.pack();
 		return parent;
 	}
 
@@ -209,9 +209,11 @@ public class ColumnDataPropertiesDialog extends Dialog implements Listener {
 				numericalDataPropertiesWidget.updateNumericalProperties(numericalProperties);
 				numericalDataPropertiesWidget.setDataType(dataType);
 			}
-			parentComposite.layout(true);
+			// numericalDataPropertiesWidget.
+			parentComposite.pack();
+			parentComposite.layout(true, true);
 		}
-		// parentComposite.pack();
+
 	}
 
 	private void showCategoricalDataWidgets() {
