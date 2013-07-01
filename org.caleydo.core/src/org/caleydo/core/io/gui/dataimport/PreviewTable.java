@@ -35,6 +35,7 @@ import org.caleydo.core.io.gui.dataimport.widget.table.PreviewTableWidget;
 import org.caleydo.core.util.base.BooleanCallback;
 import org.caleydo.core.util.base.ICallback;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Widget;
 
 /**
  * @author Samuel Gratzl
@@ -118,6 +119,10 @@ public class PreviewTable {
 		// onShowAllColumns(data);
 		// }
 		// });
+	}
+
+	public Composite getTable() {
+		return this.previewTable.getTable();
 	}
 
 	private void loadTransposedFile() {

@@ -201,6 +201,10 @@ public abstract class AImportExternalScoreDialog<T extends AExternalScoreParseSp
 				onPreviewChanged(numColumn, numRow, dataMatrix);
 			}
 		}, false);
+		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, true);
+		gd.minimumHeight = 300;
+		gd.horizontalSpan = 2;
+		previewTable.getTable().setLayoutData(gd);
 
 
 		init(parent.getDisplay());

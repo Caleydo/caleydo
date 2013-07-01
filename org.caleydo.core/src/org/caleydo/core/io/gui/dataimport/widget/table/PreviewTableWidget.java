@@ -510,4 +510,11 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 		table.setEnabled(isEnabled);
 	}
 
+	/**
+	 * @return
+	 */
+	public Composite getTable() {
+		return this.table;
+	}
+
 }
