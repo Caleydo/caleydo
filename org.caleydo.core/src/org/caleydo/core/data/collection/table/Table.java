@@ -258,14 +258,14 @@ public class Table {
 	 * Returns the 3-component color for the given table cell. This works independent of the data type.
 	 *
 	 * FIXME: inhomogeneous numerical is not implemented
-	 * 
+	 *
 	 * @param dimensionID
 	 * @param recordID
 	 * @return
 	 */
 	public float[] getColor(Integer dimensionID, Integer recordID) {
 		if (isDataHomogeneous()) {
-			return colorMapper.getColor(getNormalizedValue(dimensionID, recordID));
+			return getColorMapper().getColor(getNormalizedValue(dimensionID, recordID));
 		} else {
 			if (EDataClass.CATEGORICAL.equals(getDataClass(dimensionID, recordID))) {
 				CategoricalClassDescription<?> specific = (CategoricalClassDescription<?>) getDataClassSpecificDescription(
