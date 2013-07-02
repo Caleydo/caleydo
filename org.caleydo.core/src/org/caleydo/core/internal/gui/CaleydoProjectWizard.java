@@ -12,9 +12,6 @@ import org.caleydo.core.startup.IStartupAddon;
 import org.caleydo.core.startup.IStartupProcedure;
 import org.caleydo.core.util.collection.Pair;
 import org.eclipse.jface.wizard.Wizard;
-import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.widgets.Monitor;
-import org.eclipse.swt.widgets.Shell;
 
 /**
  * Wizard that appears after Caleydo startup.
@@ -31,18 +28,9 @@ public class CaleydoProjectWizard
 	/**
 	 * Constructor.
 	 */
-	public CaleydoProjectWizard(final Shell parentShell, Map<String, IStartupAddon> addons) {
+	public CaleydoProjectWizard(Map<String, IStartupAddon> addons) {
 
 		this.setWindowTitle("Caleydo - Choose Data Source");
-
-		Monitor primary = parentShell.getDisplay().getPrimaryMonitor();
-		Rectangle bounds = primary.getBounds();
-		Rectangle rect = parentShell.getBounds();
-		int x = bounds.x + (bounds.width - rect.width) / 2;
-		int y = bounds.y + (bounds.height - rect.height) / 2;
-		parentShell.setLocation(x, y);
-		parentShell.setActive();
-
 		this.addons = addons;
 	}
 
