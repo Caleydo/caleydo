@@ -12,12 +12,12 @@ import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
 import org.caleydo.core.view.listener.AddTablePerspectivesListener;
 
 /**
- * Interface for views that manage multiple data containers. </p>
+ * Interface for views that manage multiple table perspectives. </p>
  * <p>
  * Setting data containers can be achieved using the {@link AddTablePerspectivesEvent} and
  * {@link AddTablePerspectivesListener}.
  * </p>
- *
+ * 
  * @author Alexander Lex
  */
 public interface IMultiTablePerspectiveBasedView extends ITablePerspectiveBasedView {
@@ -38,7 +38,7 @@ public interface IMultiTablePerspectiveBasedView extends ITablePerspectiveBasedV
 
 	/**
 	 * Removes the table perspective from the view
-	 * 
+	 *
 	 * @param tablePerspective
 	 */
 	public void removeTablePerspective(TablePerspective tablePerspective);

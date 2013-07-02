@@ -83,11 +83,11 @@ import org.caleydo.view.stratomex.brick.GLBrick;
 import org.caleydo.view.stratomex.brick.configurer.CategoricalDataConfigurer;
 import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
 import org.caleydo.view.stratomex.brick.configurer.NumericalDataConfigurer;
+import org.caleydo.view.stratomex.brick.configurer.PathwayDataConfigurer;
 import org.caleydo.view.stratomex.brick.contextmenu.SplitBrickItem;
 import org.caleydo.view.stratomex.column.BrickColumn;
 import org.caleydo.view.stratomex.column.BrickColumnManager;
 import org.caleydo.view.stratomex.column.BrickColumnSpacingRenderer;
-import org.caleydo.view.stratomex.event.AddGroupsToStratomexEvent;
 import org.caleydo.view.stratomex.event.ConnectionsModeEvent;
 import org.caleydo.view.stratomex.event.MergeBricksEvent;
 import org.caleydo.view.stratomex.event.SelectElementsEvent;
@@ -1078,7 +1078,6 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 
 		addGroupsToStratomexListener = new AddGroupsToStratomexListener();
 		addGroupsToStratomexListener.setHandler(this);
-		eventPublisher.addListener(AddGroupsToStratomexEvent.class, addGroupsToStratomexListener);
 		eventPublisher.addListener(AddTablePerspectivesEvent.class, addGroupsToStratomexListener);
 
 		removeTablePerspectiveListener = new RemoveTablePerspectiveListener<>();
@@ -1202,11 +1201,11 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 				Logger.log(new Status(IStatus.ERROR, this.toString(), "Data container was null."));
 				continue;
 			}
-			if (!tablePerspective.getDataDomain().getTable().isDataHomogeneous() && brickConfigurer == null) {
-				Logger.log(new Status(IStatus.WARNING, this.toString(),
-						"Tried to add inhomogeneous table perspective without brick configurerer. Currently not supported."));
-				continue;
-			}
+			// if (!tablePerspective.getDataDomain().getTable().isDataHomogeneous() && brickConfigurer == null) {
+			// Logger.log(new Status(IStatus.WARNING, this.toString(),
+			// "Tried to add inhomogeneous table perspective without brick configurerer. Currently not supported."));
+			// continue;
+			// }
 			if (!tablePerspective.getDataDomain().getRecordIDCategory().equals(recordIDCategory)) {
 				Logger.log(new Status(IStatus.ERROR, this.toString(), "Data container " + tablePerspective
 						+ "does not match the recordIDCategory of Visbricks - no mapping possible."));
@@ -1291,7 +1290,9 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		IBrickConfigurer brickConfigurer;
 		// FIXME this is a hack to make tablePerspectives that have
 		// only one dimension categorical data
-		if (tablePerspective.getNrDimensions() == 1) {
+		if (tablePerspective instanceof PathwayTablePerspective) {
+			brickConfigurer = new PathwayDataConfigurer();
+		} else if (tablePerspective.getNrDimensions() == 1) {
 			brickConfigurer = new CategoricalDataConfigurer(tablePerspective);
 		} else {
 			brickConfigurer = new NumericalDataConfigurer(tablePerspective);
@@ -1850,7 +1851,6 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	public Set<IDataDomain> getDataDomains() {
 		Set<IDataDomain> dataDomains = new HashSet<IDataDomain>();
 		if (tablePerspectives == null) {
-			System.out.println("Problem");
 			return dataDomains;
 		}
 		for (TablePerspective tablePerspective : tablePerspectives) {

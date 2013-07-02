@@ -11,8 +11,8 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.variable.Perspective;
 
 /**
- * Bean that holds the initialization data for new started Caleydo application.
- * Used to store and restore project or to sync remote clients.
+ * Bean that holds the initialization data for new started Caleydo application. Used to store and restore project or to
+ * sync remote clients.
  *
  * @author Werner Puff
  * @author Alexander Lex
@@ -23,8 +23,7 @@ public class DataDomainSerializationData {
 	private ATableBasedDataDomain dataDomain;
 
 	/**
-	 * content of the set file the application is based on, only used to sync
-	 * remote clients
+	 * content of the set file the application is based on, only used to sync remote clients
 	 */
 	private byte[] dataTableContent;
 
@@ -64,8 +63,7 @@ public class DataDomainSerializationData {
 		return recordPerspectiveMap;
 	}
 
-	public void setRecordPerspectiveMap(
-HashMap<String, Perspective> recordPerspectiveMap) {
+	public void setRecordPerspectiveMap(HashMap<String, Perspective> recordPerspectiveMap) {
 		this.recordPerspectiveMap = recordPerspectiveMap;
 	}
 
@@ -73,8 +71,7 @@ HashMap<String, Perspective> recordPerspectiveMap) {
 		return dimensionPerspectiveMap;
 	}
 
-	public void setDimensionPerspectiveMap(
-HashMap<String, Perspective> dimensionDataMap) {
+	public void setDimensionPerspectiveMap(HashMap<String, Perspective> dimensionDataMap) {
 		this.dimensionPerspectiveMap = dimensionDataMap;
 	}
 }

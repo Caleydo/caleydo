@@ -17,7 +17,6 @@ import org.caleydo.view.stratomex.brick.configurer.ClinicalDataConfigurer;
 import org.caleydo.view.stratomex.brick.sorting.ExternallyProvidedSortingStrategy;
 import org.caleydo.view.stratomex.brick.sorting.NoSortingSortingStrategy;
 import org.caleydo.view.stratomex.column.BrickColumn;
-import org.caleydo.view.stratomex.event.AddGroupsToStratomexEvent;
 
 import com.google.common.collect.Maps;
 
@@ -32,15 +31,8 @@ public class AddGroupsToStratomexListener extends AEventListener<GLStratomex> {
 
 	@Override
 	public void handleEvent(AEvent event) {
-		if (event instanceof AddGroupsToStratomexEvent) {
-			AddGroupsToStratomexEvent addGroupsToStratomexEvent = (AddGroupsToStratomexEvent) event;
-			if (addGroupsToStratomexEvent.getReceiver() == handler) {
-				handler.addTablePerspectives(addGroupsToStratomexEvent.getTablePerspectives(),
-						addGroupsToStratomexEvent.getDataConfigurer(), addGroupsToStratomexEvent.getSourceColumn());
-			}
-		}
 
-		else if (event instanceof AddTablePerspectivesEvent) {
+		if (event instanceof AddTablePerspectivesEvent) {
 			AddTablePerspectivesEvent addTablePerspectivesEvent = (AddTablePerspectivesEvent) event;
 			if (addTablePerspectivesEvent.getReceiver() == handler) {
 				handler.addTablePerspectives(addTablePerspectivesEvent.getTablePerspectives(), null, null);
