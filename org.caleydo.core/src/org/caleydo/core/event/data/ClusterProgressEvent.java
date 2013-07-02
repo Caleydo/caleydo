@@ -9,9 +9,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.event.AEvent;
-import org.caleydo.core.util.logging.Logger;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 
 @XmlRootElement
 @XmlType
@@ -26,7 +23,7 @@ public class ClusterProgressEvent
 	}
 
 	public ClusterProgressEvent(int percentCompleted, boolean forSimilaritiesBar) {
-		Logger.log(new Status(IStatus.INFO, "Clustering", "Complete: " + percentCompleted));
+		// Logger.log(new Status(IStatus.INFO, "Clustering", "Complete: " + percentCompleted));
 		this.percentCompleted = percentCompleted;
 		this.forSimilaritiesBar = forSimilaritiesBar;
 	}

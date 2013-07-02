@@ -44,9 +44,9 @@ public class CategoricalDataPropertiesWidget implements ITableDataChangeListener
 
 	protected static final int NO_NEUTRAL_CATEGORY_INDEX = 0;
 
-	protected static final ColorBrewer DEFAULT_SEQUENTIAL_COLOR_SCHEME = ColorBrewer.Reds;
-	protected static final ColorBrewer DEFAULT_DIVERGING_COLOR_SCHEME = ColorBrewer.RdBu;
-	protected static final ColorBrewer DEFAULT_QUALITATIVE_COLOR_SCHEME = ColorBrewer.Set1;
+	protected static final ColorBrewer DEFAULT_SEQUENTIAL_COLOR_SCHEME = CategoricalClassDescription.DEFAULT_SEQUENTIAL_COLOR_SCHEME;
+	protected static final ColorBrewer DEFAULT_DIVERGING_COLOR_SCHEME = CategoricalClassDescription.DEFAULT_DIVERGING_COLOR_SCHEME;
+	protected static final ColorBrewer DEFAULT_QUALITATIVE_COLOR_SCHEME = CategoricalClassDescription.DEFAULT_QUALITATIVE_COLOR_SCHEME;
 
 	/**
 	 * Radio button for ordinal categories.

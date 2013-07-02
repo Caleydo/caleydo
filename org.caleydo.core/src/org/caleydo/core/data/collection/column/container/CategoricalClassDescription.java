@@ -22,7 +22,7 @@ import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.NumericalProperties;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.color.ColorBrewer;
-import org.caleydo.core.util.color.ColorManager;
+import org.caleydo.core.util.logging.Logger;
 
 /**
  * <p>
@@ -56,6 +56,10 @@ import org.caleydo.core.util.color.ColorManager;
 public class CategoricalClassDescription<CATEGORY_TYPE extends Comparable<CATEGORY_TYPE>> implements
 		Iterable<CategoryProperty<CATEGORY_TYPE>> {
 
+	public static final ColorBrewer DEFAULT_SEQUENTIAL_COLOR_SCHEME = ColorBrewer.Reds;
+	public static final ColorBrewer DEFAULT_DIVERGING_COLOR_SCHEME = ColorBrewer.RdBu;
+	public static final ColorBrewer DEFAULT_QUALITATIVE_COLOR_SCHEME = ColorBrewer.Set1;
+
 	/** The type of the category */
 	public enum ECategoryType {
 		ORDINAL, NOMINAL;
@@ -80,6 +84,11 @@ public class CategoricalClassDescription<CATEGORY_TYPE extends Comparable<CATEGO
 	 *
 	 */
 	public CategoricalClassDescription() {
+	}
+
+	public CategoricalClassDescription(EDataType rawDataType) {
+		setRawDataType(rawDataType);
+		categoryType = rawDataType == EDataType.STRING ? ECategoryType.NOMINAL : ECategoryType.ORDINAL;
 	}
 
 	/**
@@ -193,18 +202,26 @@ public class CategoricalClassDescription<CATEGORY_TYPE extends Comparable<CATEGO
 	 * @param unsortedCategories
 	 */
 	public void autoInitialize(Collection<CATEGORY_TYPE> unsortedCategories) {
-		List<Color> colors = ColorManager.get().getColorList(ColorManager.QUALITATIVE_COLORS);
-
-		if (unsortedCategories.size() > colors.size()) {
-			throw new IllegalArgumentException(
-					"Cannot auto-initialize more nominal categories than colors are available. " + unsortedCategories);
-		}
-
 		List<CATEGORY_TYPE> categories = new ArrayList<>(unsortedCategories);
 		Collections.sort(categories);
 
+		// auto detect NA as unknown category
+		// if (categories.contains("NA")) {
+		// setUnknownCategory((CategoryProperty<CATEGORY_TYPE>) new CategoryProperty<>("NA", Color.NOT_A_NUMBER_COLOR));
+		// categories.remove("NA");
+		// }
+		ColorBrewer cb = categoryType == ECategoryType.NOMINAL ? DEFAULT_QUALITATIVE_COLOR_SCHEME
+				: DEFAULT_SEQUENTIAL_COLOR_SCHEME;
+		Color default_ = Color.NEUTRAL_GREY;
+
 		for (int i = 0; i < categories.size(); i++) {
-			addCategoryProperty(new CategoryProperty<>(categories.get(i), colors.get(i)));
+			addCategoryProperty(new CategoryProperty<>(categories.get(i), default_));
+		}
+		if (this.size() > cb.getSizes().last()) {
+			Logger.create(CategoricalClassDescription.class).error("Cannot auto-initialize more nominal categories (%s) than colors (%s) are available, making them ALL grey",unsortedCategories,cb.getSizes().last());
+		} else {
+			CategoryProperty<CATEGORY_TYPE> unknown = getUnknownCategory();
+			applyColorScheme(cb, unknown == null ? null : unknown.getCategory(), false);
 		}
 	}
 

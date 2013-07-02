@@ -194,7 +194,7 @@ public class CategoricalContainer<CATEGORY_TYPE extends Comparable<CATEGORY_TYPE
 	public FloatContainer normalize() {
 
 		if (categoricalClassDescription == null) {
-			categoricalClassDescription = new CategoricalClassDescription<>();
+			categoricalClassDescription = new CategoricalClassDescription<>(this.dataType);
 			categoricalClassDescription.autoInitialize(hashCategoryToIdentifier.keySet());
 		}
 
