@@ -8,6 +8,7 @@ package org.caleydo.core.io;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -16,6 +17,7 @@ import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
 import org.caleydo.core.data.collection.column.container.CategoricalClassDescription.ECategoryType;
 import org.caleydo.core.util.color.Color;
+import org.caleydo.core.util.color.ColorManager;
 
 /**
  * Utility class to create default {@link DataDescription} objects from specified data.
@@ -188,8 +190,13 @@ public final class DataDescriptionUtil {
 			categoricalClassDescription.setCategoryType(ECategoryType.ORDINAL);
 			categoricalClassDescription.setRawDataType(EDataType.STRING);
 
+			Iterator<Color> colorIterator = ColorManager.get().getColorList(ColorManager.QUALITATIVE_COLORS).iterator();
+
 			for (String categoryValue : categoryValues) {
-				categoricalClassDescription.addCategoryProperty(categoryValue, categoryValue, new Color("000000"));
+				if (!colorIterator.hasNext()) {
+					colorIterator = ColorManager.get().getColorList(ColorManager.QUALITATIVE_COLORS).iterator();
+				}
+				categoricalClassDescription.addCategoryProperty(categoryValue, categoryValue, colorIterator.next());
 			}
 
 			return new DataDescription(EDataClass.CATEGORICAL, EDataType.STRING, categoricalClassDescription);

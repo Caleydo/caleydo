@@ -37,20 +37,6 @@ public class ColorManager {
 			qualitativeColorList.add(make(c, false));
 		}
 
-		// Colors from colorbrewer qualitative Set3
-		// qualitativeColorList.add(make(new Color(141, 211, 199), false));
-		// qualitativeColorList.add(make(new Color(179, 222, 105), false));
-		// qualitativeColorList.add(make(new Color(128, 177, 211), false));
-		// qualitativeColorList.add(make(new Color(190, 186, 218), false));
-		//
-		// qualitativeColorList.add(make(new Color(252, 205, 229), false));
-		//
-		// qualitativeColorList.add(make(new Color(188, 128, 189), false));
-		// qualitativeColorList.add(make(new Color(204, 235, 197), false));
-		// qualitativeColorList.add(make(new Color(255, 237, 111), false));
-		// qualitativeColorList.add(make(new Color(251, 128, 114), false));
-		// qualitativeColorList.add(make(new Color(253, 180, 98), false));
-
 		colorLists.put(QUALITATIVE_COLORS, qualitativeColorList);
 	}
 
