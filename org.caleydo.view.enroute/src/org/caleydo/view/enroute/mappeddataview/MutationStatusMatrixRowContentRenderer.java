@@ -93,7 +93,7 @@ public class MutationStatusMatrixRowContentRenderer extends ACategoricalRowConte
 		List<SelectionType> experimentSelectionTypes = parent.sampleSelectionManager.getSelectionTypes(
 				resolvedColumnIDType, columnID);
 
-		float[] mappedColor = dataDomain.getColorMapper().getColor(value);
+		float[] mappedColor = dataDomain.getTable().getColorMapper().getColor(value);
 		float[] baseColor = new float[] { mappedColor[0], mappedColor[1], mappedColor[2], 1f };
 
 		float[] topBarColor = baseColor;

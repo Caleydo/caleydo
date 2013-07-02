@@ -33,7 +33,7 @@ public class ChooseColorMappingDialog extends Dialog implements IDataOKListener 
 	public ChooseColorMappingDialog(Shell parent, ATableBasedDataDomain dataDomain) {
 		super(parent);
 		this.dataDomain = dataDomain;
-		colorMapper = dataDomain.getColorMapper();
+		colorMapper = dataDomain.getTable().getColorMapper();
 	}
 
 	@Override
@@ -53,7 +53,7 @@ public class ChooseColorMappingDialog extends Dialog implements IDataOKListener 
 
 			Button button = new Button(colorSchemeGroup, SWT.RADIO);
 			button.setText(colorScheme.getColorSchemeName());
-			if (colorScheme.getColorSchemeName().equals(dataDomain.getColorMapper().getColorSchemeName())) {
+			if (colorScheme.getColorSchemeName().equals(colorMapper.getColorSchemeName())) {
 				button.setSelection(true);
 			}
 			button.addSelectionListener(new SelectionAdapter() {
@@ -61,7 +61,7 @@ public class ChooseColorMappingDialog extends Dialog implements IDataOKListener 
 				@Override
 				public void widgetSelected(SelectionEvent e) {
 
-					dataDomain.setColorMapper(ColorMapper.createDefaultMapper(colorScheme));
+					dataDomain.getTable().setColorMapper(ColorMapper.createDefaultMapper(colorScheme));
 
 					UpdateColorMappingEvent event = new UpdateColorMappingEvent();
 					event.setEventSpace(dataDomain.getDataDomainID());
@@ -95,7 +95,7 @@ public class ChooseColorMappingDialog extends Dialog implements IDataOKListener 
 	@Override
 	protected void cancelPressed() {
 		// resetting color mapper
-		dataDomain.setColorMapper(colorMapper);
+		dataDomain.getTable().setColorMapper(colorMapper);
 		UpdateColorMappingEvent event = new UpdateColorMappingEvent();
 		event.setEventSpace(dataDomain.getDataDomainID());
 		EventPublisher.trigger(event);

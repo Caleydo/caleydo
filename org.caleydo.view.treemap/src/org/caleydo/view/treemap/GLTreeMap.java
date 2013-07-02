@@ -5,7 +5,6 @@
  ******************************************************************************/
 package org.caleydo.view.treemap;
 
-import org.caleydo.core.util.color.Color;
 import java.awt.Font;
 import java.util.ArrayList;
 
@@ -21,6 +20,7 @@ import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.selection.events.SelectionUpdateListener;
 import org.caleydo.core.event.data.SelectionUpdateEvent;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.color.mapping.ColorMapper;
 import org.caleydo.core.util.color.mapping.UpdateColorMappingListener;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -155,7 +155,7 @@ public class GLTreeMap extends ATableBasedView {
 		if (dataDomain == null)
 			return;
 		tree = tablePerspective.getRecordPerspective().getTree();
-		colorMapper = dataDomain.getColorMapper();
+		colorMapper = dataDomain.getTable().getColorMapper();
 		int maxDepth = Integer.MAX_VALUE;
 		maxDepth = MyPreferences.getMapDepth();
 		if (maxDepth == 0)

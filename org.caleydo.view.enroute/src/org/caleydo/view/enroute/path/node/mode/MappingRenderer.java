@@ -62,7 +62,7 @@ public class MappingRenderer extends ColorRenderer {
 			Average average = mappedPerspective.getContainerStatistics().getAverage(idType, ids.get(0));
 			if (average != null) {
 
-				setColor(mappedPerspective.getDataDomain().getColorMapper()
+				setColor(mappedPerspective.getDataDomain().getTable().getColorMapper()
 						.getColor((float) average.getArithmeticMean()));
 
 				// gl.glColor3f(1, 0, 0);

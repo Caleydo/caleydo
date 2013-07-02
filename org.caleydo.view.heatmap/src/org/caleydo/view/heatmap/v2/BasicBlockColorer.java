@@ -21,8 +21,7 @@ public class BasicBlockColorer implements IBlockColorer {
 
 	@Override
 	public Color apply(int recordID, int dimensionID, ATableBasedDataDomain dataDomain, boolean deSelected) {
-		float value = dataDomain.getTable().getNormalizedValue(dimensionID, recordID);
-		float[] color = dataDomain.getColorMapper().getColor(value);
+		float[] color = dataDomain.getTable().getColor(dimensionID, recordID);
 		float opacity = deSelected ? 0.3f : 1.0f;
 
 		return new Color(color[0], color[1], color[2], opacity);

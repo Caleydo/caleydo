@@ -65,7 +65,7 @@ public class RcpGLColorMapperHistogramView extends RcpGLHistogramView implements
 
 		labels = new ArrayList<CLabel>(3);
 
-		int numberOfMarkerPoints = dataDomain.getColorMapper().getMarkerPoints().size();
+		int numberOfMarkerPoints = dataDomain.getTable().getColorMapper().getMarkerPoints().size();
 
 		for (int count = 0; count < numberOfMarkerPoints; count++) {
 			CLabel label = new CLabel(labelComposite, SWT.NONE);
@@ -123,7 +123,7 @@ public class RcpGLColorMapperHistogramView extends RcpGLHistogramView implements
 			return;
 		if (!dataDomain.getTable().isDataHomogeneous())
 			return;
-		List<ColorMarkerPoint> markerPoints = dataDomain.getColorMapper().getMarkerPoints();
+		List<ColorMarkerPoint> markerPoints = dataDomain.getTable().getColorMapper().getMarkerPoints();
 
 		Color[] alColor = new Color[markerPoints.size()];
 		int[] colorMarkerPoints = new int[markerPoints.size() - 1];

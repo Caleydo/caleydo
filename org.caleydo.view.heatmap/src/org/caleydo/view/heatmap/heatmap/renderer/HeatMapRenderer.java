@@ -11,7 +11,6 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.util.color.mapping.ColorMapper;
 import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.heatmap.heatmap.template.AHeatMapLayoutConfiguration;
@@ -44,7 +43,6 @@ public class HeatMapRenderer extends AHeatMapRenderer {
 	@Override
 	public void renderContent(final GL2 gl) {
 
-		ColorMapper colorMapper = heatMap.getDataDomain().getColorMapper();
 		recordSpacing.getYDistances().clear();
 		float yPosition = y;
 		float xPosition = 0;
@@ -69,7 +67,7 @@ public class HeatMapRenderer extends AHeatMapRenderer {
 
 			for (Integer dimensionID : heatMap.getTablePerspective().getDimensionPerspective().getVirtualArray()) {
 
-				renderElement(gl, dimensionID, recordID, yPosition, xPosition, fieldHeight, fieldWidth, colorMapper);
+				renderElement(gl, dimensionID, recordID, yPosition, xPosition, fieldHeight, fieldWidth);
 
 				xPosition += fieldWidth;
 
@@ -80,19 +78,17 @@ public class HeatMapRenderer extends AHeatMapRenderer {
 	}
 
 	private void renderElement(final GL2 gl, final int dimensionID, final int recordID, final float fYPosition,
-			final float fXPosition, final float fFieldHeight, final float fFieldWidth, ColorMapper colorMapper) {
+			final float fXPosition, final float fFieldHeight, final float fFieldWidth) {
 
 		// GLHelperFunctions.drawPointAt(gl, 0, fYPosition, 0);
 
-		float value = heatMap.getDataDomain().getTable().getNormalizedValue(dimensionID, recordID);
+		float[] fArMappingColor = heatMap.getDataDomain().getTable().getColor(dimensionID, recordID);
 
 		float fOpacity = 1.0f;
 
 		if (heatMap.getRecordSelectionManager().checkStatus(SelectionType.DESELECTED, recordID)) {
 			fOpacity = 0.3f;
 		}
-
-		float[] fArMappingColor = colorMapper.getColor(value);
 
 		gl.glColor4f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity);
 

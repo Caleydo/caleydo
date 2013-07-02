@@ -61,7 +61,7 @@ public class MutationStatusRowContentRenderer extends ACategoricalRowContentRend
 				List<SelectionType> experimentSelectionTypes = parent.sampleSelectionManager.getSelectionTypes(
 						columnIDType, columnID);
 
-				float[] mappedColor = dataDomain.getColorMapper().getColor(value);
+				float[] mappedColor = dataDomain.getTable().getColorMapper().getColor(value);
 				float[] baseColor = new float[] { mappedColor[0], mappedColor[1], mappedColor[2], 1f };
 
 				float[] topBarColor = baseColor;

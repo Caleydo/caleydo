@@ -148,6 +148,7 @@ public class CategoricalClassDescription<CATEGORY_TYPE extends Comparable<CATEGO
 		this.unknownCategory = unknownCategory;
 	}
 
+
 	/**
 	 * @return the unknownCategory, see {@link #unknownCategory}
 	 */
@@ -167,16 +168,16 @@ public class CategoricalClassDescription<CATEGORY_TYPE extends Comparable<CATEGO
 		return categoryProperties.iterator();
 	}
 
-	/** Returns the number of categories including the unknown category. See also {@link #sizeWithoutUnknonw()} */
+	/** Returns the number of categories including the unknown category. See also {@link #sizeWithoutUnknown()} */
 	public int size() {
 		return categoryProperties.size();
 	}
 
 	/** Returns the number of categories excluding the unknown category. See also {@link #size()).*/
-	public int sizeWithoutUnknonw() {
-		if (unknownCategory == null)
-			return size();
-		return size() - 1;
+	public int sizeWithoutUnknown() {
+		if (categoryProperties.contains(unknownCategory))
+			return size() - 1;
+		return size();
 	}
 
 	/**
@@ -215,6 +216,17 @@ public class CategoricalClassDescription<CATEGORY_TYPE extends Comparable<CATEGO
 	 */
 	public CategoryProperty<CATEGORY_TYPE> getCategoryProperty(Object category) {
 		return hashCategoryToProperties.get(category);
+	}
+
+	/**
+	 * Returns the index of the category in this category class.
+	 *
+	 * @param category
+	 * @return
+	 */
+	public int indexOf(Object category) {
+		CategoryProperty<?> cProperty = hashCategoryToProperties.get(category);
+		return categoryProperties.indexOf(cProperty);
 	}
 
 	@Override

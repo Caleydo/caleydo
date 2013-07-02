@@ -13,6 +13,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Set;
 
+import org.caleydo.core.data.collection.CategoricalHistogram;
 import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
@@ -185,24 +186,29 @@ public class TablePerspectiveStatistics {
 					"Tried to calcualte a multi-set-wide histogram on a not homogeneous table. This makes no sense. Use dimension based histograms instead!");
 		}
 
-		if (numberOfBuckets == null) {
-			if (table instanceof CategoricalTable<?>) {
-				CategoricalTable<?> cTable = (CategoricalTable<?>) table;
-				numberOfBuckets = cTable.getCategoryDescriptions().size();
-			} else if (!table.isDataHomogeneous()
-					&& table.getDataClass(dimensionVA.get(0), recordVA.get(0)) == EDataClass.CATEGORICAL) {
-				CategoricalClassDescription<?> specific = (CategoricalClassDescription<?>) table
-						.getDataClassSpecificDescription(dimensionVA.get(0), recordVA.get(0));
-				numberOfBuckets = specific.sizeWithoutUnknonw();
-			} else {
+		if (table instanceof CategoricalTable<?>
+				|| (!table.isDataHomogeneous() && table.getDataClass(dimensionVA.get(0), recordVA.get(0)) == EDataClass.CATEGORICAL)) {
+
+			CategoricalClassDescription<?> classDescription = (CategoricalClassDescription<?>) table
+					.getDataClassSpecificDescription(dimensionVA.get(0), recordVA.get(0));
+
+			CategoricalHistogram cHistogram = new CategoricalHistogram(classDescription);
+			for (Integer dimensionID : dimensionVA) {
+				for (Integer recordID : recordVA) {
+					cHistogram.add(table.getRaw(dimensionID, recordID), recordID);
+				}
+			}
+			return cHistogram;
+
+		} else {
+			if (numberOfBuckets == null) {
 				numberOfBuckets = (int) Math.sqrt(recordVA.size());
 			}
-		}
 
-		Histogram histogram = new Histogram(numberOfBuckets);
+			Histogram histogram = new Histogram(numberOfBuckets);
 
-		for (Integer dimensionID : dimensionVA) {
-			{
+			for (Integer dimensionID : dimensionVA) {
+
 				for (Integer recordID : recordVA) {
 					float value = table.getNormalizedValue(dimensionID, recordID);
 
@@ -219,10 +225,11 @@ public class TablePerspectiveStatistics {
 						histogram.add(bucketIndex, recordID);
 					}
 				}
+
 			}
+			return histogram;
 		}
 
-		return histogram;
 	}
 
 	/**

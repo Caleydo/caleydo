@@ -88,7 +88,7 @@ public class OverviewHeatMapRenderer extends ALayoutRenderer {
 
 	@Override
 	public void renderContent(GL2 gl) {
-		ColorMapper colorMapper = table.getDataDomain().getColorMapper();
+		ColorMapper colorMapper = table.getDataDomain().getTable().getColorMapper();
 		if (heatMapValuesMean.size() <= 0)
 			return;
 

@@ -120,10 +120,7 @@ public class CategoricalContainer<CATEGORY_TYPE extends Comparable<CATEGORY_TYPE
 	@Override
 	public void addUnknown() {
 		add(unknownCategoryType);
-		if (categoricalClassDescription != null && categoricalClassDescription.getUnknownCategory() == null) {
-			categoricalClassDescription.setUnknownCategory(new CategoryProperty<CATEGORY_TYPE>(unknownCategoryType,
-					"Unknown", Color.NOT_A_NUMBER_COLOR));
-		}
+
 	}
 
 	@Override
@@ -242,6 +239,13 @@ public class CategoricalContainer<CATEGORY_TYPE extends Comparable<CATEGORY_TYPE
 				throw new IllegalStateException("Unknown category ID: " + categoryID);
 			}
 		}
+
+		// set the unknown type in the description
+		if (categoricalClassDescription.getUnknownCategory() == null) {
+			categoricalClassDescription.setUnknownCategory(new CategoryProperty<CATEGORY_TYPE>(unknownCategoryType,
+					"Unknown", Color.NOT_A_NUMBER_COLOR));
+		}
+
 		return new FloatContainer(target);
 	}
 
