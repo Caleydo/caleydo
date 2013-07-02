@@ -109,7 +109,7 @@ final class NEWTMouseAdapter implements MouseListener {
 
 		@Override
 		public int getWheelRotation() {
-			return event.getWheelRotation();
+			return (int) event.getWheelRotation();
 		}
 
 		@Override
