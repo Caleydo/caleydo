@@ -82,7 +82,7 @@ public class AffinityClusterer extends ALinearClusterer {
 		int counter = 1;
 
 		float[] dArInstance1 = new float[va.size()];
-		float[] dArInstance2 = new float[va.size()];
+		float[] instance2 = new float[va.size()];
 
 		int icnt1 = 0, icnt2 = 0, isto = 0;
 		int count = 0;
@@ -102,7 +102,8 @@ public class AffinityClusterer extends ALinearClusterer {
 
 			isto = 0;
 			for (Integer vaID : va) {
-				dArInstance1[isto] = getNormalizedValue(vaID, oppositeID);
+				dArInstance1[isto] = table.getDataDomain().getNormalizedValue(va.getIdType(), vaID,
+						oppositeVA.getIdType(), oppositeID);
 				isto++;
 			}
 
@@ -110,12 +111,13 @@ public class AffinityClusterer extends ALinearClusterer {
 			for (Integer oppositeID2 : oppositeVA) {
 				isto = 0;
 				for (Integer vaID2 : va) {
-					dArInstance2[isto] = getNormalizedValue(vaID2, oppositeID2);
+					instance2[isto] = table.getDataDomain().getNormalizedValue(va.getIdType(), vaID2,
+							oppositeVA.getIdType(), oppositeID2);
 					isto++;
 				}
 
 				if (icnt1 != icnt2) {
-					s[count] = -distanceMeasure.apply(dArInstance1, dArInstance2);
+					s[count] = -distanceMeasure.apply(dArInstance1, instance2);
 					i[count] = oppositeVA.indexOf(oppositeID);
 					k[count] = oppositeVA.indexOf(oppositeID2);
 					count++;

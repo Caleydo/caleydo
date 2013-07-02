@@ -44,13 +44,11 @@ public class TreeClusterer extends AClusterer {
 		}
 	}
 
-
 	private final ClusterTree tree;
 	private final int iNrSamples;
 	private float[][] similarities;
 	/**
-	 * Each node in the tree needs an unique number. Because of this we need a
-	 * node counter
+	 * Each node in the tree needs an unique number. Because of this we need a node counter
 	 */
 	private int iNodeCounter = (int) Math.floor(Integer.MAX_VALUE / 2);
 
@@ -92,7 +90,8 @@ public class TreeClusterer extends AClusterer {
 
 			isto = 0;
 			for (Integer opppositeID : oppositeVA) {
-				dArInstance1[isto] = getNormalizedValue(vaID, opppositeID);
+				dArInstance1[isto] = table.getDataDomain().getNormalizedValue(va.getIdType(), vaID,
+						oppositeVA.getIdType(), opppositeID);
 				isto++;
 			}
 
@@ -102,7 +101,8 @@ public class TreeClusterer extends AClusterer {
 
 				if (icnt2 < icnt1) {
 					for (Integer oppositeID2 : oppositeVA) {
-						dArInstance2[isto] = getNormalizedValue(vaID2, oppositeID2);
+						dArInstance2[isto] = table.getDataDomain().getNormalizedValue(va.getIdType(), vaID2,
+								oppositeVA.getIdType(), oppositeID2);
 						isto++;
 					}
 
@@ -184,8 +184,7 @@ public class TreeClusterer extends AClusterer {
 	}
 
 	/**
-	 * The palcluster routine performs clustering using single linking on the
-	 * given distance matrix.
+	 * The palcluster routine performs clustering using single linking on the given distance matrix.
 	 *
 	 * @param eClustererType
 	 * @return virtual array with ordered indexes
@@ -254,8 +253,7 @@ public class TreeClusterer extends AClusterer {
 	}
 
 	/**
-	 * The palcluster routine performs clustering using pairwise average linking
-	 * on the given distance matrix.
+	 * The palcluster routine performs clustering using pairwise average linking on the given distance matrix.
 	 *
 	 * @param eClustererType
 	 * @return virtual array with ordered indexes
@@ -404,7 +402,8 @@ public class TreeClusterer extends AClusterer {
 			values = new float[va.size()];
 			int isto = 0;
 			for (Integer oppositeID : oppositeVA) {
-				values[isto] = getNormalizedValue(node.getLeafID(), oppositeID);
+				values[isto] = table.getDataDomain().getNormalizedValue(va.getIdType(), node.getLeafID(),
+						oppositeVA.getIdType(), oppositeID);
 				isto++;
 			}
 		}
@@ -423,8 +422,8 @@ public class TreeClusterer extends AClusterer {
 	}
 
 	/**
-	 * The pmlcluster routine performs clustering using pairwise maximum-
-	 * (complete-) linking on the given distance matrix.
+	 * The pmlcluster routine performs clustering using pairwise maximum- (complete-) linking on the given distance
+	 * matrix.
 	 *
 	 * @param eClustererType
 	 * @return virtual array with ordered indexes
@@ -511,11 +510,9 @@ public class TreeClusterer extends AClusterer {
 	}
 
 	/**
-	 * Function returns the name of the current node. Therefore we need an index
-	 * of the gene/experiment in the VA. To avoid problems with the tree all
-	 * nodes in the tree must have unique names. Therefore we need to take care
-	 * of two hash maps holding the currently used names and their frequency of
-	 * occurrence.
+	 * Function returns the name of the current node. Therefore we need an index of the gene/experiment in the VA. To
+	 * avoid problems with the tree all nodes in the tree must have unique names. Therefore we need to take care of two
+	 * hash maps holding the currently used names and their frequency of occurrence.
 	 *
 	 * @param eClustererType
 	 *            either gene or expression clustering
@@ -601,8 +598,7 @@ public class TreeClusterer extends AClusterer {
 			return null;
 		}
 
-		TreeClusterConfiguration tConfig = (TreeClusterConfiguration) config
-				.getClusterAlgorithmConfiguration();
+		TreeClusterConfiguration tConfig = (TreeClusterConfiguration) config.getClusterAlgorithmConfiguration();
 
 		PerspectiveInitializationData tempResult;
 

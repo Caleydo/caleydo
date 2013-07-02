@@ -302,7 +302,8 @@ public class KMeansClusterer extends ALinearClusterer {
 			values = new float[oppositeVA.size()];
 		int i = 0;
 		for (Integer oppositeVaID : oppositeVA) {
-			float v = getNormalizedValue(vaID, oppositeVaID);
+			float v = table.getDataDomain().getNormalizedValue(va.getIdType(), vaID, oppositeVA.getIdType(),
+					oppositeVaID);
 			if (Float.isNaN(v))
 				v = getMissingValue(i, oppositeVaID);
 			values[i++] = v;
@@ -316,7 +317,8 @@ public class KMeansClusterer extends ALinearClusterer {
 			cache = 0;
 			int c = 0;
 			for (Integer vaID : va) {
-				float v = getNormalizedValue(vaID, oppositeVaID);
+				float v = table.getDataDomain().getNormalizedValue(va.getIdType(), vaID, oppositeVA.getIdType(),
+						oppositeVaID);
 				if (!Float.isNaN(v)) {
 					cache += v;
 					c++;

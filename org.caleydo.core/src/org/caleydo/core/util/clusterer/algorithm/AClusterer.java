@@ -23,6 +23,9 @@ import org.caleydo.core.event.data.RenameProgressBarEvent;
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
 import org.caleydo.core.util.execution.SafeCallable;
+import org.caleydo.core.util.logging.Logger;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 
 import com.jogamp.common.util.IntIntHashMap;
 
@@ -82,15 +85,7 @@ public abstract class AClusterer implements SafeCallable<PerspectiveInitializati
 		return config.getSourcePerspective().getIdType().getTypeName();
 	}
 
-	protected final Float getNormalizedValue(Integer vaID, Integer oppositeVaID) {
-		switch (config.getClusterTarget()) {
-		case DIMENSION_CLUSTERING:
-			return table.getNormalizedValue(vaID, oppositeVaID);
-		case RECORD_CLUSTERING:
-			return table.getNormalizedValue(oppositeVaID, vaID);
-		}
-		return null;
-	}
+
 
 	/**
 	 * Function sorts clusters depending on their average value
@@ -104,7 +99,8 @@ public abstract class AClusterer implements SafeCallable<PerspectiveInitializati
 			SortHelper s = new SortHelper();
 			s.index = index++;
 			for (Integer opId : oppositeVA) {
-				float temp = getNormalizedValue(vaId, opId);
+				float temp = table.getDataDomain().getNormalizedValue(va.getIdType(), vaId, oppositeVA.getIdType(),
+						opId);
 				if (!Float.isNaN(temp))
 					s.value += temp;
 			}
@@ -148,6 +144,7 @@ public abstract class AClusterer implements SafeCallable<PerspectiveInitializati
 	}
 
 	protected final PerspectiveInitializationData error(Exception e1) {
+		Logger.log(new Status(IStatus.ERROR, this.toString(), "Clustering fails: " + e1));
 		progress(100, true);
 		return null;
 	}

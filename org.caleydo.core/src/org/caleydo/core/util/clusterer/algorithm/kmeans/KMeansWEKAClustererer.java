@@ -94,7 +94,9 @@ public class KMeansWEKAClustererer extends ALinearClusterer {
 
 			for (Integer oppositeID : oppositeVA) {
 				buffer.append(table.getDataDomain().getNormalizedValue(va.getIdType(), vaID, oppositeVA.getIdType(),
-						oppositeID));
+						oppositeID)
+						+ ",");
+
 			}
 			buffer.append("\n");
 			icnt++;
@@ -169,7 +171,7 @@ public class KMeansWEKAClustererer extends ALinearClusterer {
 
 		int[] assignments = new int[data.numInstances()];
 		for (int i = 0; i < data.numInstances(); i++) {
-			assignments[i] = sampleElements.get((int)ClusterAssignments[i]);
+			assignments[i] = sampleElements.get((int) ClusterAssignments[i]);
 		}
 
 		return postProcess(assignments, sampleElements);
@@ -190,4 +192,3 @@ public class KMeansWEKAClustererer extends ALinearClusterer {
 		}
 	}
 }
-
