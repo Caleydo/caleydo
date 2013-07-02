@@ -56,16 +56,6 @@ final class NEWTKeyAdapter implements KeyListener {
 		listener.keyReleased(wrap(e));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see com.jogamp.newt.event.KeyListener#keyTyped(com.jogamp.newt.event.KeyEvent)
-	 */
-	@Override
-	public void keyTyped(KeyEvent e) {
-
-	}
-
 	/**
 	 * @param e
 	 * @return
