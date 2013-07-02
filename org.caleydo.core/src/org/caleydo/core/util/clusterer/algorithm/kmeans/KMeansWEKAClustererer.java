@@ -93,7 +93,8 @@ public class KMeansWEKAClustererer extends ALinearClusterer {
 			}
 
 			for (Integer oppositeID : oppositeVA) {
-				buffer.append(getNormalizedValue(vaID, oppositeID) + ", ");
+				buffer.append(table.getDataDomain().getNormalizedValue(va.getIdType(), vaID, oppositeVA.getIdType(),
+						oppositeID));
 			}
 			buffer.append("\n");
 			icnt++;

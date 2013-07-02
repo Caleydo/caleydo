@@ -56,7 +56,7 @@ public abstract class AClusterer implements SafeCallable<PerspectiveInitializati
 		switch (config.getClusterTarget()) {
 		case RECORD_CLUSTERING:
 			p = config.getSourceRecordPerspective();
-			opposite = config.getSourceRecordPerspective();
+			opposite = config.getSourceDimensionPerspective();
 			break;
 		case DIMENSION_CLUSTERING:
 			p = config.getSourceDimensionPerspective();

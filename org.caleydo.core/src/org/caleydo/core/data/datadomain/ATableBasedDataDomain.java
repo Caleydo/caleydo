@@ -63,6 +63,9 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.clusterer.ClusterResult;
 import org.caleydo.core.util.clusterer.Clusterers;
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
+import org.caleydo.core.util.logging.Logger;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 
 /**
  * <p>
@@ -131,8 +134,6 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 	/** Same as {@link #recordPerspectiveIDs} for dimensions */
 	@XmlElement
 	private Set<String> dimensionPerspectiveIDs;
-
-
 
 	protected IDMappingManager recordIDMappingManager;
 	protected IDMappingManager dimensionIDMappingManager;
@@ -457,9 +458,6 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 		return dimensionPerspectiveIDs;
 	}
 
-
-
-
 	/**
 	 * Initiates clustering based on the parameters passed. Sends out an event to all affected views upon positive
 	 * completion to replace their VA.
@@ -474,13 +472,17 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 		ClusterResult result = Clusterers.cluster(config);
 
 		// check if clustering failed. If so, we just ignore it.
-		if (result == null)
+		if (result == null || (result.getDimensionResult() == null && result.getRecordResult() == null)) {
+			Logger.log(new Status(IStatus.ERROR, this.toString(), "Custering failed. Result: " + result));
 			return null;
 
+		}
 		boolean registerLater = false;
 
 		switch (config.getClusterTarget()) {
 		case DIMENSION_CLUSTERING:
+			if (result.getDimensionResult() == null)
+				return null;
 			PerspectiveInitializationData dimensionResult = result.getDimensionResult();
 			Perspective targetDimensionPerspective;
 			if (config.isModifyExistingPerspective()) {
@@ -502,6 +504,8 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 					.getPerspectiveID(), this));
 			break;
 		case RECORD_CLUSTERING:
+			if (result.getRecordResult() == null)
+				return null;
 			PerspectiveInitializationData recordResult = result.getRecordResult();
 			Perspective targetRecordPerspective;
 			if (config.isModifyExistingPerspective()) {

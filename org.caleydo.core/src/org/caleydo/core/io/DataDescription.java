@@ -12,9 +12,9 @@ import org.caleydo.core.data.collection.table.Table;
 
 /**
  * Container for all meta-data on the data. Can be set on a whole-dataset level or on a column-by-column level.
- *
- * @author Alexander
- *
+ * 
+ * @author Alexander Lex
+ * 
  */
 public class DataDescription {
 

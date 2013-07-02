@@ -1194,7 +1194,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		// if this is the first data container set, we imprint StratomeX
 		if (recordIDCategory == null) {
 			ATableBasedDataDomain dataDomain = newTablePerspectives.get(0).getDataDomain();
-			imprintVisBricks(dataDomain);
+			imprintStratomex(dataDomain);
 		}
 
 		for (TablePerspective tablePerspective : newTablePerspectives) {
@@ -1372,9 +1372,16 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	 *
 	 * @param dataDomain
 	 */
-	private void imprintVisBricks(ATableBasedDataDomain dataDomain) {
+	private void imprintStratomex(ATableBasedDataDomain dataDomain) {
 		recordIDCategory = dataDomain.getRecordIDCategory();
-		IDType mappingRecordIDType = recordIDCategory.getPrimaryMappingType();
+		IDType mappingRecordIDType;
+		if (recordIDCategory.getCategoryName().equals("GENE")) {
+			// FIXME: this hack is necessary because otherwise we get pretty unintuitive results for the gene case as we
+			// have multimappings (bands highlight in portions that aren't even selected).
+			mappingRecordIDType = dataDomain.getRecordIDType();
+		} else {
+			mappingRecordIDType = recordIDCategory.getPrimaryMappingType();
+		}
 		recordSelectionManager = new EventBasedSelectionManager(this, mappingRecordIDType);
 	}
 
