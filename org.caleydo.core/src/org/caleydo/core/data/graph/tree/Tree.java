@@ -75,7 +75,8 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 	 */
 	public void initializeIDTypes(IDType leafIDType) {
 		this.leafIDType = leafIDType;
-		nodeIDType = IDType.registerType("tree_" + this.hashCode(), leafIDType.getIDCategory(), EDataType.INTEGER);
+		nodeIDType = IDType.registerInternalType("tree_" + this.hashCode(), leafIDType.getIDCategory(),
+				EDataType.INTEGER);
 	}
 
 	/**
