@@ -81,4 +81,17 @@ public enum EDataDomainQueryMode implements Predicate<IDataDomain> {
 		Collections.sort(dataDomains, DefaultLabelProvider.BY_LABEL);
 		return dataDomains;
 	}
+
+	/**
+	 * @param secondaryId
+	 * @return
+	 */
+	public static EDataDomainQueryMode valueOfSafe(String value) {
+		value = value.toLowerCase();
+		for (EDataDomainQueryMode mode : EDataDomainQueryMode.values()) {
+			if (value.contains(mode.name().toLowerCase()))
+				return mode;
+		}
+		return EDataDomainQueryMode.STRATIFICATIONS;
+	}
 }

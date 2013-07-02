@@ -39,7 +39,7 @@ public class RcpGLTourGuideView extends ARcpGLViewPart {
 	@Override
 	public void init(IViewSite site) throws PartInitException {
 		super.init(site);
-		this.mode = EDataDomainQueryMode.valueOf(site.getSecondaryId());
+		this.mode = EDataDomainQueryMode.valueOfSafe(site.getSecondaryId());
 		this.setPartName(this.mode.getLabel() + " LineUp");
 		site.getPage().addPartListener(stratomexListener);
 	}
