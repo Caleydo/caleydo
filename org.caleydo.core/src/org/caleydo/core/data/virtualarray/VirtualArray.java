@@ -473,6 +473,8 @@ public class VirtualArray implements Iterable<Integer>, Cloneable {
 	 */
 	public synchronized GroupList buildNewGroupList(ArrayList<ClusterNode> clusterNodes) {
 
+		if (groupList == null)
+			groupList = new GroupList();
 		int sampleElementIndex = 0;
 
 		for (ClusterNode node : clusterNodes) {

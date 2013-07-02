@@ -61,7 +61,7 @@ public class AffinityTab extends AClusterTab {
 		clusterFactorText = new Text(composite, SWT.BORDER);
 		clusterFactorText.addModifyListener(listenerFloatGenes);
 		clusterFactorText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		clusterFactorText.setText("1.0");
+		clusterFactorText.setText("9.0");
 		clusterFactorText
 				.setToolTipText("Float value. Range: 1 up to 10. The bigger the value the less clusters will be formed");
 	}
