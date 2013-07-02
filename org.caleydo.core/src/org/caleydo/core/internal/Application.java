@@ -102,8 +102,9 @@ public class Application implements IApplication {
 		// not yet configured choose one
 		Shell shell = new Shell(display);
 		shell.moveAbove(null);
-		CaleydoProjectWizard wizardImpl = new CaleydoProjectWizard(shell, startups);
+		CaleydoProjectWizard wizardImpl = new CaleydoProjectWizard(startups);
 		WizardDialog wizard = new WizardDialog(shell, wizardImpl);
+		wizard.setMinimumPageSize(750, 500);
 		shell.forceActive();
 		if (wizard.open() == Window.CANCEL) {
 			return null;
