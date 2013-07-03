@@ -34,10 +34,10 @@ import org.eclipse.swt.widgets.Shell;
 /**
  * Mediator for {@link LoadDataSetPage}. This class is responsible for setting the states of all widgets of the page and
  * triggering actions according to different events that occur in the page.
- *
- *
+ * 
+ * 
  * @author Christian Partl
- *
+ * 
  */
 public class LoadDataSetPageMediator {
 
@@ -369,7 +369,7 @@ public class LoadDataSetPageMediator {
 
 	/**
 	 * Fills the idTypeCombos according to the IDCategory selected by the idCategoryCombo.
-	 *
+	 * 
 	 * @param isColumnCategory
 	 *            Determines whether the column or row combo is affected.
 	 */
@@ -974,7 +974,7 @@ public class LoadDataSetPageMediator {
 	 * prepares the dimension creation definition from the preview table. The dimension creation definition consists of
 	 * the definition which columns in the data-CSV-file should be read, which should be skipped and the
 	 * dimension-labels.
-	 *
+	 * 
 	 * @return <code>true</code> if the preparation was successful, <code>false</code> otherwise
 	 */
 	// private void readDimensionDefinition() {
@@ -1012,7 +1012,7 @@ public class LoadDataSetPageMediator {
 
 	/**
 	 * Creates a {@link ColumnDescription} for the specified column.
-	 *
+	 * 
 	 * @param columnIndex
 	 *            Index of the column in the file.
 	 * @return The ColumnDescription.
@@ -1062,10 +1062,10 @@ public class LoadDataSetPageMediator {
 			page.getWizard().setRequiredDataSpecified(false);
 			return false;
 		}
-		if (page.columnIDCombo.getSelectionIndex() == -1 && page.rowIDCombo.getSelectionIndex() == -1) {
-			page.getWizard().setRequiredDataSpecified(false);
-			return false;
-		}
+		// if (page.columnIDCombo.getSelectionIndex() == -1 && page.rowIDCombo.getSelectionIndex() == -1) {
+		// page.getWizard().setRequiredDataSpecified(false);
+		// return false;
+		// }
 
 		page.getWizard().setRequiredDataSpecified(true);
 
