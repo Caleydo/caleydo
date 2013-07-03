@@ -12,7 +12,7 @@ import org.caleydo.core.event.AEvent;
 
 /**
  * Event that changes the trend highlight mode for StratomeX.
- * 
+ *
  * @author Marc Streit
  */
 @XmlRootElement
@@ -20,7 +20,7 @@ import org.caleydo.core.event.AEvent;
 public class ConnectionsModeEvent
 	extends AEvent {
 
-	private boolean connectionsOn;
+	private boolean connectionsShowOnlySelected;
 	private boolean connectionsHighlightDynamic;
 
 	/**
@@ -28,8 +28,8 @@ public class ConnectionsModeEvent
 	 */
 	private float connectionsFocusFactor;
 
-	public ConnectionsModeEvent(boolean connectionsOn, boolean connectionsHighlighDynamic, float focusFactor) {
-		this.connectionsOn = connectionsOn;
+	public ConnectionsModeEvent(boolean connectionsShowOnlySelected, boolean connectionsHighlighDynamic, float focusFactor) {
+		this.connectionsShowOnlySelected = connectionsShowOnlySelected;
 		this.connectionsHighlightDynamic = connectionsHighlighDynamic;
 		this.connectionsFocusFactor = focusFactor;
 	}
@@ -43,8 +43,8 @@ public class ConnectionsModeEvent
 		return connectionsHighlightDynamic;
 	}
 
-	public boolean isConnectionsOn() {
-		return connectionsOn;
+	public boolean isConnectionsShowOnlySelected() {
+		return connectionsShowOnlySelected;
 	}
 
 	public float getFocusFactor() {
