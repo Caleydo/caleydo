@@ -34,9 +34,6 @@ public class InteractiveSplashHandler extends AbstractSplashHandler {
 		super.init(splash);
 
 		createUI();
-
-		// Force the splash screen to layout
-		splash.layout(true);
 	}
 
 	private void createUI() {
@@ -64,15 +61,30 @@ public class InteractiveSplashHandler extends AbstractSplashHandler {
 		splash.setText("Loading Caleydo...");
 	}
 
-	public void updateProgress(int percentage) {
+	public void updateProgress(final int percentage) {
 
 		if (progressBar.isDisposed())
 			return;
+		Display.getDefault().asyncExec(new Runnable() {
 
-		progressBar.setSelection(percentage);
+			@Override
+			public void run() {
+				progressBar.setSelection(percentage);
+			}
+		});
+
 	}
 
-	public void updateProgressLabel(String message) {
-		gc.drawString(message, progressLabelX, progressLabelY, true);
+	public void updateProgressLabel(final String message) {
+		if (gc.isDisposed())
+			return;
+		Display.getDefault().asyncExec(new Runnable() {
+
+			@Override
+			public void run() {
+				gc.drawString(message, progressLabelX, progressLabelY, true);
+			}
+		});
+
 	}
 }
