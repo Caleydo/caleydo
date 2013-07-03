@@ -34,10 +34,10 @@ import org.eclipse.swt.widgets.Shell;
 /**
  * Mediator for {@link LoadDataSetPage}. This class is responsible for setting the states of all widgets of the page and
  * triggering actions according to different events that occur in the page.
- * 
- * 
+ *
+ *
  * @author Christian Partl
- * 
+ *
  */
 public class LoadDataSetPageMediator {
 
@@ -369,7 +369,7 @@ public class LoadDataSetPageMediator {
 
 	/**
 	 * Fills the idTypeCombos according to the IDCategory selected by the idCategoryCombo.
-	 * 
+	 *
 	 * @param isColumnCategory
 	 *            Determines whether the column or row combo is affected.
 	 */
@@ -627,8 +627,9 @@ public class LoadDataSetPageMediator {
 		totalNumberOfRows = parser.getTotalNumberOfRows();
 		page.previewTable.createTableFromMatrix(dataMatrix, totalNumberOfColumns);
 		updateWidgetsAccordingToTableChanges();
-		determineIDTypes();
 		guessNumberOfHeaderRows();
+		determineIDTypes();
+
 
 		page.previewTable.updateTableColors(dataSetDescription.getNumberOfHeaderLines(),
 				dataSetDescription.getRowOfColumnIDs(), dataSetDescription.getColumnOfRowIds());
@@ -643,6 +644,12 @@ public class LoadDataSetPageMediator {
 	private void guessNumberOfHeaderRows() {
 		// In grouping case we can have 0 header rows as there does not have to
 		// be an id row
+		if (dataSetDescription.getDataSourcePath().endsWith(".gct") && dataMatrix.size() >= 3) {
+			page.numHeaderRowsSpinner.setSelection(3);
+			page.rowOfColumnIDSpinner.setSelection(3);
+			return;
+		}
+
 		int numHeaderRows = 1;
 		for (int i = 1; i < dataMatrix.size(); i++) {
 			List<String> row = dataMatrix.get(i);
@@ -974,7 +981,7 @@ public class LoadDataSetPageMediator {
 	 * prepares the dimension creation definition from the preview table. The dimension creation definition consists of
 	 * the definition which columns in the data-CSV-file should be read, which should be skipped and the
 	 * dimension-labels.
-	 * 
+	 *
 	 * @return <code>true</code> if the preparation was successful, <code>false</code> otherwise
 	 */
 	// private void readDimensionDefinition() {
@@ -1012,7 +1019,7 @@ public class LoadDataSetPageMediator {
 
 	/**
 	 * Creates a {@link ColumnDescription} for the specified column.
-	 * 
+	 *
 	 * @param columnIndex
 	 *            Index of the column in the file.
 	 * @return The ColumnDescription.
