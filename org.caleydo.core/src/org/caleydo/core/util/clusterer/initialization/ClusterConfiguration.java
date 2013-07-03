@@ -13,7 +13,7 @@ import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.gui.toolbar.action.StartClusteringAction;
 import org.caleydo.core.util.clusterer.algorithm.affinity.AffinityClusterConfiguration;
 import org.caleydo.core.util.clusterer.algorithm.kmeans.KMeansClusterConfiguration;
-import org.caleydo.core.util.clusterer.algorithm.kmeans.KMeansClusterConfiguration2;
+import org.caleydo.core.util.clusterer.algorithm.kmeans.KMeansClusterConfiguration;
 import org.caleydo.core.util.clusterer.algorithm.nominal.NominalClusterConfiguration;
 import org.caleydo.core.util.clusterer.algorithm.tree.TreeClusterConfiguration;
 
@@ -45,7 +45,7 @@ import org.caleydo.core.util.clusterer.algorithm.tree.TreeClusterConfiguration;
 @XmlType
 @XmlSeeAlso({ KMeansClusterConfiguration.class, AffinityClusterConfiguration.class,
  TreeClusterConfiguration.class,
-		NominalClusterConfiguration.class, KMeansClusterConfiguration2.class })
+		NominalClusterConfiguration.class, KMeansClusterConfiguration.class })
 public class ClusterConfiguration {
 
 	private EClustererTarget clusterTarget;
