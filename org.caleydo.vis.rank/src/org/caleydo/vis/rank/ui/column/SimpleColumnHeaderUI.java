@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.vis.rank.ui.column;
 
 import static org.caleydo.vis.rank.ui.RenderStyle.HIST_HEIGHT;
@@ -156,15 +142,16 @@ public class SimpleColumnHeaderUI extends ACompositeHeaderUI implements IThickHe
 				.isCompressed());
 		if (!isCompressed) {
 			g.decZ().decZ();
-			// float left = getLeftPadding();
-			g.move(-1, 0);
-			config.renderHeaderBackground(g, w + 1, h, LABEL_HEIGHT, model);
-			g.move(+1, 0);
+			float left = getLeftPadding();
+			g.save();
+			g.move(left, 0);
+			config.renderHeaderBackground(g, w - getLeftPadding(), h, 0, model);
+			g.restore();
 
 			g.lineWidth(RenderStyle.COLOR_STACKED_BORDER_WIDTH);
 			g.color(RenderStyle.COLOR_STACKED_BORDER);
 
-			g.drawRect(-1, 0, w + 1, h);
+			g.drawRect(left - 1, 0, w - left + 1, h);
 			g.lineWidth(1);
 			g.incZ().incZ();
 		}

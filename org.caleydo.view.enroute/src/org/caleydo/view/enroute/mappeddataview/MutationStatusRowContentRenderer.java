@@ -1,3 +1,8 @@
+/*******************************************************************************
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.enroute.mappeddataview;
 
 import java.util.List;
@@ -56,7 +61,7 @@ public class MutationStatusRowContentRenderer extends ACategoricalRowContentRend
 				List<SelectionType> experimentSelectionTypes = parent.sampleSelectionManager.getSelectionTypes(
 						columnIDType, columnID);
 
-				float[] mappedColor = dataDomain.getColorMapper().getColor(value);
+				float[] mappedColor = dataDomain.getTable().getColorMapper().getColor(value);
 				float[] baseColor = new float[] { mappedColor[0], mappedColor[1], mappedColor[2], 1f };
 
 				float[] topBarColor = baseColor;

@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.tourguide.impl;
 
 import static org.caleydo.view.tourguide.api.query.EDataDomainQueryMode.STRATIFICATIONS;
@@ -96,7 +82,7 @@ public class LogRankMetricFactory implements IScoreFactory {
 			stateMachine.addState("LogRankBrowse", browse);
 			IState target = stateMachine.addState("LogRank", new CreateLogRankState(browse));
 			stateMachine.addTransition(start, new SimpleTransition(target,
-					"Find based on significant Kaplan-Meier change"));
+ "Based on log-rank test score (survival)"));
 		} else if (mode == EWizardMode.INDEPENDENT) {
 			IState browseStratification = stateMachine.get(IStateMachine.BROWSE_STRATIFICATIONS);
 			stateMachine.addTransition(start, new CreateLogRankTransition(browseStratification, source));
@@ -163,7 +149,7 @@ public class LogRankMetricFactory implements IScoreFactory {
 		private TablePerspective numerical;
 
 		public BothUpdateLogRankState() {
-			super(EDataDomainQueryMode.STRATIFICATIONS, "Browse List");
+			super(EDataDomainQueryMode.STRATIFICATIONS, "From list");
 		}
 
 		@Override
@@ -188,7 +174,7 @@ public class LogRankMetricFactory implements IScoreFactory {
 
 		@Override
 		public String getLabel() {
-			return "Find based on significant Kaplan-Meier change";
+			return "Based on log-rank test score (survival)";
 		}
 
 		@Override
@@ -226,9 +212,9 @@ public class LogRankMetricFactory implements IScoreFactory {
 				}
 
 				@Override
-				public float compute(Set<Integer> a, Set<Integer> b, IProgressMonitor monitor) {
+				public float compute(Set<Integer> a, Group ag, Set<Integer> b, Group bg, IProgressMonitor monitor) {
 					// me versus the rest
-					return underlying.compute(a, Sets.difference(b, a), monitor);
+					return underlying.compute(a, ag, Sets.difference(b, a), bg, monitor);
 				}
 			}, null, wrap(clinical.getColor()), darker(clinical.getColor()));
 			this.clinicalVariable = clinicalVariable;

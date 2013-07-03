@@ -1,19 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
- * University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
- * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
- * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with this program. If not, see
- * <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.data.datadomain;
 
 import java.util.ArrayList;
@@ -28,8 +17,6 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.collection.EDataType;
-import org.caleydo.core.data.collection.table.CategoricalTable;
-import org.caleydo.core.data.collection.table.NumericalTable;
 import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.datadomain.event.AggregateGroupEvent;
 import org.caleydo.core.data.datadomain.event.AggregateGroupListener;
@@ -76,7 +63,9 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.clusterer.ClusterResult;
 import org.caleydo.core.util.clusterer.Clusterers;
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
-import org.caleydo.core.util.color.mapping.ColorMapper;
+import org.caleydo.core.util.logging.Logger;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 
 /**
  * <p>
@@ -145,9 +134,6 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 	/** Same as {@link #recordPerspectiveIDs} for dimensions */
 	@XmlElement
 	private Set<String> dimensionPerspectiveIDs;
-
-	/** The color-mapper to be used by views of this data domain */
-	private ColorMapper colorMapper;
 
 	protected IDMappingManager recordIDMappingManager;
 	protected IDMappingManager dimensionIDMappingManager;
@@ -473,30 +459,6 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 	}
 
 	/**
-	 * @return the colorMapper, see {@link #colorMapper}
-	 */
-	public ColorMapper getColorMapper() {
-		if (colorMapper == null) {
-			if (table instanceof NumericalTable && ((NumericalTable) table).getDataCenter() != null) {
-				colorMapper = ColorMapper.createDefaultThreeColorMapper();
-			} else if (table instanceof CategoricalTable<?>) {
-				colorMapper = ((CategoricalTable<?>) table).createColorMapper();
-			} else {
-				colorMapper = ColorMapper.createDefaultTwoColorMapper();
-			}
-		}
-		return colorMapper;
-	}
-
-	/**
-	 * @param colorMapper
-	 *            setter, see {@link #colorMapper}
-	 */
-	public void setColorMapper(ColorMapper colorMapper) {
-		this.colorMapper = colorMapper;
-	}
-
-	/**
 	 * Initiates clustering based on the parameters passed. Sends out an event to all affected views upon positive
 	 * completion to replace their VA.
 	 *
@@ -510,13 +472,17 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 		ClusterResult result = Clusterers.cluster(config);
 
 		// check if clustering failed. If so, we just ignore it.
-		if (result == null)
+		if (result == null || (result.getDimensionResult() == null && result.getRecordResult() == null)) {
+			Logger.log(new Status(IStatus.ERROR, this.toString(), "Custering failed. Result: " + result));
 			return null;
 
+		}
 		boolean registerLater = false;
 
 		switch (config.getClusterTarget()) {
 		case DIMENSION_CLUSTERING:
+			if (result.getDimensionResult() == null)
+				return null;
 			PerspectiveInitializationData dimensionResult = result.getDimensionResult();
 			Perspective targetDimensionPerspective;
 			if (config.isModifyExistingPerspective()) {
@@ -538,6 +504,8 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 					.getPerspectiveID(), this));
 			break;
 		case RECORD_CLUSTERING:
+			if (result.getRecordResult() == null)
+				return null;
 			PerspectiveInitializationData recordResult = result.getRecordResult();
 			Perspective targetRecordPerspective;
 			if (config.isModifyExistingPerspective()) {
@@ -551,13 +519,13 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 				}
 			}
 			targetRecordPerspective.init(recordResult);
-			targetRecordPerspective.setLabel(config.getClusterAlgorithmConfiguration().getLabel()
-					+ " " + targetRecordPerspective.getVirtualArray().getGroupList().size(), false);
+			targetRecordPerspective.setLabel(config.getClusterAlgorithmConfiguration().getLabel() + " "
+					+ targetRecordPerspective.getVirtualArray().getGroupList().size(), false);
 			if (registerLater) {
 				table.registerRecordPerspective(targetRecordPerspective);
 			}
-			EventPublisher.trigger(new RecordVAUpdateEvent(dataDomainID, targetRecordPerspective
-					.getPerspectiveID(), this));
+			EventPublisher.trigger(new RecordVAUpdateEvent(dataDomainID, targetRecordPerspective.getPerspectiveID(),
+					this));
 		}
 
 		EventPublisher.trigger(new DataDomainUpdateEvent(this));

@@ -1,19 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
- * University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
- * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
- * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with this program. If not, see
- * <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 /**
  *
  */
@@ -24,6 +13,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Set;
 
+import org.caleydo.core.data.collection.CategoricalHistogram;
 import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
@@ -196,44 +186,50 @@ public class TablePerspectiveStatistics {
 					"Tried to calcualte a multi-set-wide histogram on a not homogeneous table. This makes no sense. Use dimension based histograms instead!");
 		}
 
-		if (numberOfBuckets == null) {
-			if (table instanceof CategoricalTable<?>) {
-				CategoricalTable<?> cTable = (CategoricalTable<?>) table;
-				numberOfBuckets = cTable.getCategoryDescriptions().size();
-			} else if (!table.isDataHomogeneous()
-					&& table.getDataClass(dimensionVA.get(0), recordVA.get(0)) == EDataClass.CATEGORICAL) {
-				CategoricalClassDescription<?> specific = (CategoricalClassDescription<?>) table
-						.getDataClassSpecificDescription(dimensionVA.get(0),
-						recordVA.get(0));
-				numberOfBuckets = specific.size();
-			} else {
+		if (table instanceof CategoricalTable<?>
+				|| (!table.isDataHomogeneous() && table.getDataClass(dimensionVA.get(0), recordVA.get(0)) == EDataClass.CATEGORICAL)) {
+
+			CategoricalClassDescription<?> classDescription = (CategoricalClassDescription<?>) table
+					.getDataClassSpecificDescription(dimensionVA.get(0), recordVA.get(0));
+
+			CategoricalHistogram cHistogram = new CategoricalHistogram(classDescription);
+			for (Integer dimensionID : dimensionVA) {
+				for (Integer recordID : recordVA) {
+					cHistogram.add(table.getRaw(dimensionID, recordID), recordID);
+				}
+			}
+			return cHistogram;
+
+		} else {
+			if (numberOfBuckets == null) {
 				numberOfBuckets = (int) Math.sqrt(recordVA.size());
 			}
-		}
 
-		Histogram histogram = new Histogram(numberOfBuckets);
+			Histogram histogram = new Histogram(numberOfBuckets);
 
-		for (Integer dimensionID : dimensionVA) {
-			{
+			for (Integer dimensionID : dimensionVA) {
+
 				for (Integer recordID : recordVA) {
 					float value = table.getNormalizedValue(dimensionID, recordID);
 
 					if (Float.isNaN(value)) {
 						histogram.addNAN(recordID);
 					} else {
-
+						assert (value <= 1 && value >= 0) || Float.isNaN(value) : "Normalization failed for "
+								+ table.toString() + ". Should produce value between 0 and 1 or NAN but was " + value;
 						// this works because the values in the container are
-						// already noramlized
+						// already normalized
 						int bucketIndex = (int) (value * numberOfBuckets);
 						if (bucketIndex == numberOfBuckets)
 							bucketIndex--;
 						histogram.add(bucketIndex, recordID);
 					}
 				}
+
 			}
+			return histogram;
 		}
 
-		return histogram;
 	}
 
 	/**

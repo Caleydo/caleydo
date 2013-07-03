@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.util.clusterer.algorithm.kmeans;
 
 import java.util.ArrayList;
@@ -316,7 +302,8 @@ public class KMeansClusterer extends ALinearClusterer {
 			values = new float[oppositeVA.size()];
 		int i = 0;
 		for (Integer oppositeVaID : oppositeVA) {
-			float v = getNormalizedValue(vaID, oppositeVaID);
+			float v = table.getDataDomain().getNormalizedValue(va.getIdType(), vaID, oppositeVA.getIdType(),
+					oppositeVaID);
 			if (Float.isNaN(v))
 				v = getMissingValue(i, oppositeVaID);
 			values[i++] = v;
@@ -330,7 +317,8 @@ public class KMeansClusterer extends ALinearClusterer {
 			cache = 0;
 			int c = 0;
 			for (Integer vaID : va) {
-				float v = getNormalizedValue(vaID, oppositeVaID);
+				float v = table.getDataDomain().getNormalizedValue(va.getIdType(), vaID, oppositeVA.getIdType(),
+						oppositeVaID);
 				if (!Float.isNaN(v)) {
 					cache += v;
 					c++;

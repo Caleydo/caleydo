@@ -1,3 +1,8 @@
+/*******************************************************************************
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.view.opengl.layout2;
 
 import gleem.linalg.Vec2f;
@@ -665,7 +670,8 @@ public class GLGraphics {
 	}
 
 	/**
-	 * shortcut to {@link GL2#glTranslatef(float, float, float)
+	 * shortcut to {@link GL2#glTranslatef(float, float, float)
+
 	 */
 	public GLGraphics move(float x, float y) {
 		if (x != 0 || y != 0)

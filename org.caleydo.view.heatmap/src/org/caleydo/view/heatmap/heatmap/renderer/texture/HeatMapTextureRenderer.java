@@ -1,19 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
- * University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
- * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
- * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with this program. If not, see
- * <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.heatmap.heatmap.renderer.texture;
 
 import java.nio.FloatBuffer;
@@ -25,7 +14,6 @@ import javax.media.opengl.GLProfile;
 
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.util.color.mapping.ColorMapper;
 import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
@@ -125,9 +113,8 @@ public class HeatMapTextureRenderer extends AHeatMapRenderer {
 
 		Texture texture;
 		FloatBuffer floatBuffer = FloatBuffer.allocate(recordPixels * dimPixels * 4);
-		float lookupValue = 0;
+		// float lookupValue = 0;
 
-		ColorMapper colorMapper = heatMap.getDataDomain().getColorMapper();
 
 		VirtualArray recordVA = heatMap.getTablePerspective().getRecordPerspective().getVirtualArray();
 		for (int recordIndex = recordStartIndex; recordIndex < recordEndIndex; recordIndex++) {
@@ -135,10 +122,10 @@ public class HeatMapTextureRenderer extends AHeatMapRenderer {
 			VirtualArray dimVA = heatMap.getTablePerspective().getDimensionPerspective().getVirtualArray();
 			for (int dimIndex = dimStartIndex; dimIndex < dimEndIndex; dimIndex++) {
 
-				lookupValue = heatMap.getDataDomain().getTable()
-						.getNormalizedValue(dimVA.get(dimIndex), recordVA.get(recordIndex));
+				float[] mappingColor = heatMap.getDataDomain().getTable()
+						.getColor(dimVA.get(dimIndex), recordVA.get(recordIndex));
 
-				float[] mappingColor = colorMapper.getColor(lookupValue);
+				// float[] mappingColor = colorMapper.getColor(lookupValue);
 				floatBuffer.put(mappingColor);
 			}
 		}

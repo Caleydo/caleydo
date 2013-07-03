@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.tourguide.internal.stratomex;
 
 import static org.caleydo.view.tourguide.api.state.IStateMachine.ADD_OTHER;
@@ -92,8 +78,9 @@ public class AddWizardElementFactory implements IAddWizardElementFactory {
 
 		switch (mode) {
 		case GLOBAL:
-			state.addTransition(addStratification, new SimpleTransition(browseStratification, "Browse list"));
-			state.addTransition(addNumerical, new SimpleTransition(browseNumerical, "Browse list"));
+			state.addTransition(addStratification, new SimpleTransition(browseStratification, "From list"));
+			state.addTransition(addNumerical, new SimpleTransition(browseNumerical,
+					"From list and display unstratified"));
 			state.addState(ALONE_PATHWAY, new AlonePathwayState());
 
 			if (!existing.isEmpty()) {
@@ -101,14 +88,14 @@ public class AddWizardElementFactory implements IAddWizardElementFactory {
 				IState browseIntermediate = state.addState(BROWSE_AND_SELECT_PATHWAY,
 						new BrowsePathwayAndStratificationState());
 				state.addTransition(addPathway, new SimpleTransition(browseIntermediate,
-						"Browse list and stratify with a displayed stratification"));
+						"From list and stratify with a displayed stratification"));
 			}
 			if (!existing.isEmpty()) {
 				// select pathway -> show preview -> select stratification -> show both
 				IState browseIntermediate = state.addState(BROWSE_AND_SELECT_OTHER,
 						new BrowseNumericalAndStratificationState());
 				state.addTransition(addNumerical, new SimpleTransition(browseIntermediate,
-						"Browse list and stratify with a displayed stratification"));
+						"From list and stratify with a displayed stratification"));
 			}
 			break;
 		case DEPENDENT:
@@ -116,11 +103,11 @@ public class AddWizardElementFactory implements IAddWizardElementFactory {
 			browseNumerical.setUnderlying(source.getRecordPerspective());
 
 			if (PathwayOracle.canBeUnderlying(source))
-				state.addTransition(addPathway, new SimpleTransition(browsePathway, "Browse list"));
-			state.addTransition(addNumerical, new SimpleTransition(browseNumerical, "Browse list"));
+				state.addTransition(addPathway, new SimpleTransition(browsePathway, "From list"));
+			state.addTransition(addNumerical, new SimpleTransition(browseNumerical, "From list"));
 			break;
 		case INDEPENDENT:
-			state.addTransition(addStratification, new SimpleTransition(browseStratification, "Browse list"));
+			state.addTransition(addStratification, new SimpleTransition(browseStratification, "From list"));
 			break;
 		}
 
@@ -134,19 +121,19 @@ public class AddWizardElementFactory implements IAddWizardElementFactory {
 	}
 
 	private static void addDefaultStates(StateMachineImpl state) {
-		state.addState(ADD_STRATIFICATIONS, new SelectStateState("Add stratification",
+		state.addState(ADD_STRATIFICATIONS, new SelectStateState("Select stratification",
 				EDataDomainQueryMode.STRATIFICATIONS));
 
 		state.addState(BROWSE_STRATIFICATIONS, new BrowseStratificationState(
 				"Select a stratification in the LineUp to preview.\nThen confirm or cancel your selection."));
 
-		state.addState(ADD_PATHWAY, new SelectStateState("Add pathway", EDataDomainQueryMode.PATHWAYS));
+		state.addState(ADD_PATHWAY, new SelectStateState("Select pathway", EDataDomainQueryMode.PATHWAYS));
 
 		state.addState(BROWSE_PATHWAY, new BrowsePathwayState(
 				"Select a pathway in the LineUp to preview.\n Then confirm or cancel your selection."));
 
 		state.addState(ADD_OTHER,
-				new SelectStateState("Add other data " + toString(EDataDomainQueryMode.OTHER.getAllDataDomains()),
+				new SelectStateState("Select other data " + toString(EDataDomainQueryMode.OTHER.getAllDataDomains()),
 						EDataDomainQueryMode.OTHER));
 
 		state.addState(BROWSE_OTHER, new BrowseOtherState(

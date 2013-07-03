@@ -1,27 +1,14 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.internal;
 
 import org.caleydo.core.manager.GeneralManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ProgressBar;
@@ -30,7 +17,7 @@ import org.eclipse.ui.splash.AbstractSplashHandler;
 
 /**
  * Caleydo splash screen with integrated progress bar.
- * 
+ *
  * @author Marc Streit
  */
 public class InteractiveSplashHandler extends AbstractSplashHandler {
@@ -48,28 +35,31 @@ public class InteractiveSplashHandler extends AbstractSplashHandler {
 	private void createUI() {
 		Shell splash = getSplash();
 
-		ProgressBar progressBar = new ProgressBar(splash, SWT.SMOOTH | SWT.BORDER);
+		ProgressBar progressBar = new ProgressBar(splash, SWT.NONE);
 		progressBar.setBounds(20, 200, splash.getSize().x - 40, 25);
 
 		splash.setBackgroundMode(SWT.INHERIT_DEFAULT);
 
+
 		Label progressMessageLabel = new Label(splash, SWT.NONE);
 		progressMessageLabel.setText(" Loading...");
 		final Display display = splash.getDisplay();
-		progressMessageLabel
-				.setFont(new Font(display, "Arial", 10, SWT.NONE));
+		GC gc = new GC(splash);
+		gc.drawString("TEST", 50, 50, true);
+		progressMessageLabel.setFont(new Font(display, "Arial", 10, SWT.NONE));
 		progressMessageLabel.setBounds(20, 230, splash.getSize().x - 40, 25);
-		progressMessageLabel.setForeground(display.getSystemColor(
-				SWT.COLOR_WHITE));
+		progressMessageLabel.setForeground(display.getSystemColor(SWT.COLOR_WHITE));
+		progressMessageLabel.setBackground(display.getSystemColor(SWT.COLOR_DARK_GRAY));
+
 
 		Label versionLabel = new Label(splash, SWT.NONE);
 		versionLabel.setText(" Version " + Activator.version);
 		versionLabel.setFont(new Font(display, "Arial", 9, SWT.NONE));
 		versionLabel.setBounds(336, 185, 150, 20);
 		versionLabel.setForeground(display.getSystemColor(SWT.COLOR_WHITE));
+		versionLabel.setBackground(display.getSystemColor(SWT.COLOR_DARK_GRAY));
 
-		GeneralManager.get().getSWTGUIManager()
-				.setExternalProgressBarAndLabel(progressBar, progressMessageLabel);
+		GeneralManager.get().getSWTGUIManager().setExternalProgressBarAndLabel(progressBar, progressMessageLabel);
 
 		splash.setText("Loading Caleydo...");
 	}

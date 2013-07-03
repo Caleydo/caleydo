@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.io.gui.dataimport.widget;
 
 import java.util.regex.PatternSyntaxException;
@@ -25,6 +11,7 @@ import org.caleydo.core.id.IDType;
 import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.io.parser.ascii.ATextParser;
 import org.caleydo.core.util.base.ICallback;
+import org.caleydo.core.util.system.BrowserUtils;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.swt.SWT;
@@ -41,6 +28,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Text;
 
 /**
@@ -76,10 +64,18 @@ public class IDParsingRulesWidget {
 	 */
 	protected Button useRegExButton;
 
-	/**
-	 * Button to specify whether the ids shall be transformed to upper case.
-	 */
+	protected final Group caseGroup;
+
+	protected final Group replaceGroup;
+
+	protected final Group substringGroup;
+
+	/** Button to specify whether the ids shall be transformed to upper case. */
 	protected Button toUpperCaseButton;
+	/** Button to specify whether the ids shall be transformed to lower case. */
+	protected Button toLowerCaseButton;
+	/** Button for keeping case */
+	protected Button keepCaseButton;
 
 	protected Label replacementRegExLabel;
 	protected Label replacementStringLabel;
@@ -91,6 +87,8 @@ public class IDParsingRulesWidget {
 	protected Label convertedIDLabel;
 	protected Label errorImage;
 	protected Label errorLabel;
+	protected Label caseExplanationLabel;
+	protected Link regexLink;
 
 	protected String idSample;
 
@@ -113,17 +111,9 @@ public class IDParsingRulesWidget {
 		this.idSample = idSample;
 		this.validRegExCallback = validRegExCallback;
 
-		final Group regExGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
-		regExGroup.setText("Regular expressions");
-		regExGroup.setLayout(new GridLayout(4, false));
-		regExGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
-
-		Composite useRegExComposite = new Composite(regExGroup, SWT.NONE);
-		useRegExComposite.setLayout(new RowLayout(SWT.HORIZONTAL));
-		useRegExComposite.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, true, false, 4, 1));
 		if (showEnableButton) {
-			useRegExButton = new Button(useRegExComposite, SWT.CHECK);
-			useRegExButton.setText("Use regular expressions to convert IDs");
+			useRegExButton = new Button(parent, SWT.CHECK);
+			useRegExButton.setText("Convert IDs");
 			useRegExButton.addSelectionListener(new SelectionAdapter() {
 
 				@Override
@@ -132,6 +122,60 @@ public class IDParsingRulesWidget {
 				}
 			});
 		}
+
+		Label conversionLabel = new Label(parent, SWT.WRAP);
+		conversionLabel
+				.setText("You can convert IDs using the follwing methods. They are applied in the order shown here.");
+		conversionLabel.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
+
+		caseGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
+		caseGroup.setText("Change Case");
+		caseGroup.setLayout(new GridLayout(1, false));
+		caseGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
+
+		caseExplanationLabel = new Label(caseGroup, SWT.WRAP);
+		caseExplanationLabel
+				.setText("Choose whether to keep the case of the IDs, convert all to lower, or convert all to upper case.");
+		caseExplanationLabel.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+
+		keepCaseButton = new Button(caseGroup, SWT.RADIO);
+		keepCaseButton.setText("Keep case unchanged");
+		keepCaseButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		keepCaseButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				updatePreview();
+			}
+		});
+
+		toUpperCaseButton = new Button(caseGroup, SWT.RADIO);
+		toUpperCaseButton.setText("Make upper case");
+		toUpperCaseButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		toUpperCaseButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				updatePreview();
+			}
+		});
+
+		toLowerCaseButton = new Button(caseGroup, SWT.RADIO);
+		toLowerCaseButton.setText("Make lower case");
+		toLowerCaseButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		toUpperCaseButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				updatePreview();
+			}
+		});
+
+		replaceGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
+		replaceGroup.setText("Replace parts of IDs");
+		replaceGroup.setLayout(new GridLayout(4, false));
+		replaceGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
+
+		Composite useRegExComposite = new Composite(replaceGroup, SWT.NONE);
+		useRegExComposite.setLayout(new RowLayout(SWT.HORIZONTAL));
+		useRegExComposite.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, true, false, 4, 1));
 
 		ModifyListener regexModifyListener = new ModifyListener() {
 
@@ -142,47 +186,41 @@ public class IDParsingRulesWidget {
 			}
 		};
 
-		toUpperCaseButton = new Button(regExGroup, SWT.CHECK);
-		toUpperCaseButton.setText("To upper case");
-		toUpperCaseButton.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				updatePreview();
-			}
-		});
-
-		replacementExplanationLabel = new Label(regExGroup, SWT.WRAP);
+		replacementExplanationLabel = new Label(replaceGroup, SWT.WRAP);
 		replacementExplanationLabel
-				.setText("In order to convert the IDs of a data file into a format that can be mapped by Caleydo, regular expressions "
-						+ "can be used. Caleydo supports two different methods for ID conversion and they are applied to the IDs in "
-						+ "consecutive order.\nIn the first method, certain expressions within an ID are replaced by a specified "
+				.setText("Replace certain expressions within an ID by a specified "
 						+ "string. For example, applying the regular expression '\\.' and the replacement string '-' on the ID "
 						+ "'abc.000.yz' results in 'abc-000-yz'.");
 		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true, 4, 1);
 		gridData.widthHint = 500;
 		replacementExplanationLabel.setLayoutData(gridData);
 
-		replacementRegExLabel = new Label(regExGroup, SWT.NONE);
+		replacementRegExLabel = new Label(replaceGroup, SWT.NONE);
 		replacementRegExLabel.setText("Replace");
 		replacementRegExLabel.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, false, true));
 
-		replacementRegExTextField = new Text(regExGroup, SWT.BORDER);
+		replacementRegExTextField = new Text(replaceGroup, SWT.BORDER);
 
 		GridData replacementTextFieldsGridData = new GridData(SWT.FILL, SWT.FILL, true, true);
 		replacementTextFieldsGridData.widthHint = 150;
 		replacementRegExTextField.setLayoutData(replacementTextFieldsGridData);
 		replacementRegExTextField.addModifyListener(regexModifyListener);
 
-		replacementStringLabel = new Label(regExGroup, SWT.NONE);
+		replacementStringLabel = new Label(replaceGroup, SWT.NONE);
 		replacementStringLabel.setText("with");
 
-		replacementStringTextField = new Text(regExGroup, SWT.BORDER);
+		replacementStringTextField = new Text(replaceGroup, SWT.BORDER);
 		replacementStringTextField.setLayoutData(replacementTextFieldsGridData);
 		replacementStringTextField.addModifyListener(regexModifyListener);
 
-		substringExplanationLabel = new Label(regExGroup, SWT.WRAP);
+		substringGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
+		substringGroup.setText("Split IDs");
+		substringGroup.setLayout(new GridLayout(4, false));
+		substringGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
+
+		substringExplanationLabel = new Label(substringGroup, SWT.WRAP);
 		substringExplanationLabel
-				.setText("The second method splits an ID into substrings around matches of the specified regular expression. "
+				.setText("Splits an ID into substrings around matches of the specified regular expression. "
 						+ "The first non-empty substring of this operation will be the resulting ID. For example, a leading string "
 						+ "'abc' can be removed from an ID 'abc-001' using the expression 'abc-'. In this case the split operation "
 						+ "results in ['','001']. Using, for example, '\\-' as expression would result in ['abc','001'] and 'abc' "
@@ -191,16 +229,16 @@ public class IDParsingRulesWidget {
 		gridData.widthHint = 500;
 		substringExplanationLabel.setLayoutData(gridData);
 
-		substringRegExLabel = new Label(regExGroup, SWT.NONE);
+		substringRegExLabel = new Label(substringGroup, SWT.NONE);
 		substringRegExLabel.setText("Substring specification");
 
-		substringRegExTextField = new Text(regExGroup, SWT.BORDER);
+		substringRegExTextField = new Text(substringGroup, SWT.BORDER);
 		substringRegExTextField.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 3, 1));
 		substringRegExTextField.addModifyListener(regexModifyListener);
 
 		if (idSample != null) {
 			gridData = new GridData(SWT.FILL, SWT.FILL, true, true, 4, 1);
-			previewLabel = new Label(regExGroup, SWT.NONE);
+			previewLabel = new Label(substringGroup, SWT.NONE);
 			previewLabel.setText("Preview: ");
 			previewLabel.setLayoutData(gridData);
 			FontData fontData = previewLabel.getFont().getFontData()[0];
@@ -209,11 +247,11 @@ public class IDParsingRulesWidget {
 			previewLabel.setFont(font);
 
 			gridData = new GridData(SWT.FILL, SWT.FILL, true, true, 4, 1);
-			originalIDLabel = new Label(regExGroup, SWT.NONE);
+			originalIDLabel = new Label(substringGroup, SWT.NONE);
 			originalIDLabel.setText("Original ID: " + idSample);
 			originalIDLabel.setLayoutData(gridData);
 			gridData = new GridData(SWT.FILL, SWT.FILL, true, true, 4, 1);
-			convertedIDLabel = new Label(regExGroup, SWT.NONE);
+			convertedIDLabel = new Label(substringGroup, SWT.NONE);
 			convertedIDLabel.setLayoutData(gridData);
 
 		}
@@ -225,6 +263,12 @@ public class IDParsingRulesWidget {
 		errorLabel.setText("Invalid regular expression.");
 		errorLabel.setVisible(false);
 
+		regexLink = new Link(parent, SWT.WRAP);
+		regexLink
+				.setText(" <a href=\"http://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html\">Regular Expression Reference</a>");
+		regexLink.addSelectionListener(BrowserUtils.LINK_LISTENER);
+
+
 		fillWidgets(templateIdTypeParsingRules);
 	}
 
@@ -234,7 +278,17 @@ public class IDParsingRulesWidget {
 	 * @param idTypeParsingRules
 	 */
 	private void fillWidgets(IDTypeParsingRules idTypeParsingRules) {
+		keepCaseButton.setSelection(true);
 		if (idTypeParsingRules != null) {
+
+			if (idTypeParsingRules.isToLowerCase()) {
+				toLowerCaseButton.setSelection(true);
+			} else if (idTypeParsingRules.isToUpperCase()) {
+				toUpperCaseButton.setSelection(true);
+			}
+			// else {
+			// keepCaseButton.setSelection(true);
+			// }
 
 			String[] replacingExpressions = idTypeParsingRules.getReplacingExpressions();
 			if (replacingExpressions != null && replacingExpressions.length >= 1 && replacingExpressions[0] != null) {
@@ -279,6 +333,7 @@ public class IDParsingRulesWidget {
 	public IDTypeParsingRules getIDTypeParsingRules() {
 		IDTypeParsingRules idTypeParsingRules = new IDTypeParsingRules();
 		idTypeParsingRules.setToUpperCase(toUpperCaseButton.getSelection());
+		idTypeParsingRules.setToLowerCase(toLowerCaseButton.getSelection());
 		idTypeParsingRules.setReplacementExpression(replacementStringTextField.getText(),
 				replacementRegExTextField.getText());
 		idTypeParsingRules.setSubStringExpression(getSubStringExpression());
@@ -291,6 +346,9 @@ public class IDParsingRulesWidget {
 	 * @param enabled
 	 */
 	public void setEnabled(boolean enabled) {
+		caseGroup.setEnabled(enabled);
+		replaceGroup.setEnabled(enabled);
+		substringGroup.setEnabled(enabled);
 		replacementRegExTextField.setEnabled(enabled);
 		replacementStringTextField.setEnabled(enabled);
 		substringRegExTextField.setEnabled(enabled);
@@ -305,6 +363,11 @@ public class IDParsingRulesWidget {
 			convertedIDLabel.setEnabled(enabled);
 		}
 		toUpperCaseButton.setEnabled(enabled);
+		toLowerCaseButton.setEnabled(enabled);
+		keepCaseButton.setEnabled(enabled);
+		caseExplanationLabel.setEnabled(enabled);
+		regexLink.setEnabled(enabled);
+
 	}
 
 	/**

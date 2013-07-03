@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.stratomex.brick.layout;
 
 import java.util.ArrayList;
@@ -59,6 +45,9 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	protected static final int LOCK_RESIZING_BUTTON_ID = 1;
 	protected static final int VIEW_SWITCHING_MODE_BUTTON_ID = 5;
 
+	@SuppressWarnings("hiding")
+	protected static final int SPACING_PIXELS = 4;
+
 	// protected ArrayList<BrickViewSwitchingButton> viewSwitchingButtons;
 	protected List<ElementLayout> toolBarElements;
 	protected List<ElementLayout> footerBarElements;
@@ -82,10 +71,10 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutConfiguration {
 		toolBarElements = new ArrayList<ElementLayout>();
 		footerBarElements = new ArrayList<ElementLayout>();
 		// check if this is the header brick
-		if (!brick.isHeaderBrick()) {
-			leftRelationIndicatorRenderer = new RelationIndicatorRenderer(brick, stratomex, true);
-			rightRelationIndicatorRenderer = new RelationIndicatorRenderer(brick, stratomex, false);
-		}
+		// if (!brick.isHeaderBrick()) {
+		// leftRelationIndicatorRenderer = new RelationIndicatorRenderer(brick, stratomex, true);
+		// rightRelationIndicatorRenderer = new RelationIndicatorRenderer(brick, stratomex, false);
+		// }
 		toolBar = new Row();
 		footerBar = new Row();
 		lockResizingButton = new Button(EPickingType.BRICK_LOCK_RESIZING_BUTTON.name(), LOCK_RESIZING_BUTTON_ID,
@@ -104,13 +93,13 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutConfiguration {
 		lockResizingButton.setSelected(lockResizing);
 	}
 
-	public void setLeftRelationIndicatorRenderer(RelationIndicatorRenderer leftRelationIndicatorRenderer) {
-		this.leftRelationIndicatorRenderer = leftRelationIndicatorRenderer;
-	}
-
-	public void setRightRelationIndicatorRenderer(RelationIndicatorRenderer rightRelationIndicatorRenderer) {
-		this.rightRelationIndicatorRenderer = rightRelationIndicatorRenderer;
-	}
+	// public void setLeftRelationIndicatorRenderer(RelationIndicatorRenderer leftRelationIndicatorRenderer) {
+	// this.leftRelationIndicatorRenderer = leftRelationIndicatorRenderer;
+	// }
+	//
+	// public void setRightRelationIndicatorRenderer(RelationIndicatorRenderer rightRelationIndicatorRenderer) {
+	// this.rightRelationIndicatorRenderer = rightRelationIndicatorRenderer;
+	// }
 
 	@Override
 	public void setStaticLayouts() {
@@ -118,16 +107,16 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 		baseRow.setFrameColor(0, 0, 1, 0);
 		baseElementLayout = baseRow;
-		if (!brick.isHeaderBrick()) {
-			leftRelationIndicatorRenderer.updateRelations();
-
-			rightRelationIndicatorRenderer.updateRelations();
-
-			ElementLayout leftRelationIndicatorLayout = new ElementLayout("RightRelationIndicatorLayout");
-			leftRelationIndicatorLayout.setPixelSizeX(RELATION_INDICATOR_WIDTH_PIXELS);
-			leftRelationIndicatorLayout.setRenderer(leftRelationIndicatorRenderer);
-			baseRow.append(leftRelationIndicatorLayout);
-		}
+		// if (!brick.isHeaderBrick()) {
+		// leftRelationIndicatorRenderer.updateRelations();
+		//
+		// rightRelationIndicatorRenderer.updateRelations();
+		//
+		// ElementLayout leftRelationIndicatorLayout = new ElementLayout("RightRelationIndicatorLayout");
+		// leftRelationIndicatorLayout.setPixelSizeX(RELATION_INDICATOR_WIDTH_PIXELS);
+		// leftRelationIndicatorLayout.setRenderer(leftRelationIndicatorRenderer);
+		// baseRow.append(leftRelationIndicatorLayout);
+		// }
 		Column baseColumn = new Column("baseColumn");
 		baseColumn.setFrameColor(0, 1, 0, 0);
 
@@ -152,6 +141,8 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutConfiguration {
 			viewLayout.setZoomer(zoomer);
 		}
 		viewLayout.setRenderer(viewRenderer);
+		viewLayout.addForeGroundRenderer(innerBorderedAreaRenderer);
+		innerBorderedAreaRenderer.setRenderSides(true);
 
 		toolBar = createToolBar();
 		footerBar = createFooterBar();
@@ -194,7 +185,7 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutConfiguration {
 		}
 
 		ElementLayout spacingLayoutX = new ElementLayout("spacingLayoutX");
-		spacingLayoutX.setPixelSizeX(SPACING_PIXELS);
+		spacingLayoutX.setPixelSizeX(SPACING_PIXELS * 3);
 		spacingLayoutX.setPixelSizeY(0);
 
 		// for (int i = 0; i < viewSwitchingButtons.size(); i++) {
@@ -391,5 +382,4 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	public void configure(IBrickConfigurer configurer) {
 		configurer.configure(this);
 	}
-
 }

@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.tourguide.internal.view;
 
 import java.beans.PropertyChangeEvent;
@@ -56,6 +42,7 @@ import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
+import org.caleydo.view.tourguide.api.score.ISerializeableScore;
 import org.caleydo.view.tourguide.api.score.MultiScore;
 import org.caleydo.view.tourguide.internal.SerializedTourGuideView;
 import org.caleydo.view.tourguide.internal.compute.ComputeAllOfJob;
@@ -184,6 +171,20 @@ public class GLTourGuideView extends AGLElementView {
 				onSelectRow((AScoreRow) evt.getOldValue(), (AScoreRow) evt.getNewValue());
 			}
 		});
+		this.table.addPropertyChangeListener(RankTableModel.PROP_POOL, new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				if (evt.getNewValue() == null) { // removed aka destroyed
+					// destroy persistent scores
+					if (evt.getOldValue() instanceof ScoreRankColumnModel) {
+						ScoreRankColumnModel r = (ScoreRankColumnModel) evt.getOldValue();
+						IScore score = r.getScore();
+						if (score instanceof ISerializeableScore)
+							Scores.get().removePersistentScore((ISerializeableScore) score);
+					}
+				}
+			}
+		});
 		this.table.add(new RankRankColumnModel().setWidth(30));
 		modeSpecifics.addDefaultColumns(this.table);
 
@@ -222,11 +223,13 @@ public class GLTourGuideView extends AGLElementView {
 	private void onAddDataDomain(final NewDataDomainEvent event) {
 		IDataDomain dd = event.getDataDomain();
 
-		if (!mode.isCompatible(dd))
+		if (!mode.apply(dd))
 			return;
 
 		for (ADataDomainQuery query : modeSpecifics.createDataDomainQuery(dd)) {
 			queries.add(query);
+			query.addPropertyChangeListener(ADataDomainQuery.PROP_ACTIVE, listener);
+			query.addPropertyChangeListener(ADataDomainQuery.PROP_MASK, listener);
 			getDataDomainQueryUI().add(query);
 		}
 	}
@@ -237,6 +240,8 @@ public class GLTourGuideView extends AGLElementView {
 		for (ADataDomainQuery query : queries) {
 			if (Objects.equals(query.getDataDomain().getDataDomainID(), id)) {
 				query.cleanup();
+				query.removePropertyChangeListener(ADataDomainQuery.PROP_ACTIVE, listener);
+				query.removePropertyChangeListener(ADataDomainQuery.PROP_MASK, listener);
 				queries.remove(query);
 				getDataDomainQueryUI().remove(query);
 				if (query.isActive())
@@ -733,7 +738,8 @@ public class GLTourGuideView extends AGLElementView {
 		@Override
 		public void renderHeaderBackground(GLGraphics g, float w, float h, float labelHeight, ARankColumnModel model) {
 			g.color(0.96f).fillRect(0, 0, w, h);
-			g.color(model.getBgColor()).fillRect(0, labelHeight - 2, w, 2);
+			if (labelHeight > 0)
+				g.color(model.getBgColor()).fillRect(0, labelHeight - 2, w, 2);
 		}
 
 		@Override

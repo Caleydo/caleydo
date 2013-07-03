@@ -1,3 +1,8 @@
+/*******************************************************************************
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 /**
  *
  */
@@ -201,6 +206,10 @@ public abstract class AImportExternalScoreDialog<T extends AExternalScoreParseSp
 				onPreviewChanged(numColumn, numRow, dataMatrix);
 			}
 		}, false);
+		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, true);
+		gd.minimumHeight = 300;
+		gd.horizontalSpan = 2;
+		previewTable.getTable().setLayoutData(gd);
 
 
 		init(parent.getDisplay());

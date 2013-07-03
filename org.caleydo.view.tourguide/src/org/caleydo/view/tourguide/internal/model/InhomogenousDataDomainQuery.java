@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.tourguide.internal.model;
 
 import java.util.ArrayList;
@@ -30,6 +16,7 @@ import java.util.TreeSet;
 import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.vis.rank.model.RankTableModel;
@@ -65,6 +52,20 @@ public class InhomogenousDataDomainQuery extends ADataDomainQuery {
 		Integer dimensionID = clinical.getVirtualArray().get(0);
 		EDataType type = getDataDomain().getTable().getRawDataType(dimensionID, 0);
 		return selectedDataTypes.contains(type) && dataClass.supports(type);
+	}
+
+	public static boolean hasOne(IDataDomain dataDomain, EDataClass dataClass) {
+		ATableBasedDataDomain d = (ATableBasedDataDomain) dataDomain;
+		for (String dimPerspectiveID : d.getDimensionPerspectiveIDs()) {
+			Perspective p = d.getTable().getDimensionPerspective(dimPerspectiveID);
+			if (p.isDefault() || p.isPrivate())
+				continue;
+			Integer dimensionID = p.getVirtualArray().get(0);
+			if (dataClass != d.getTable().getDataClass(dimensionID, 0))
+				continue;
+			return true;
+		}
+		return false;
 	}
 
 	@Override

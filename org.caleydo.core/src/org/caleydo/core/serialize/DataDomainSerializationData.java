@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.serialize;
 
 import java.util.HashMap;
@@ -25,8 +11,8 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.variable.Perspective;
 
 /**
- * Bean that holds the initialization data for new started Caleydo application.
- * Used to store and restore project or to sync remote clients.
+ * Bean that holds the initialization data for new started Caleydo application. Used to store and restore project or to
+ * sync remote clients.
  *
  * @author Werner Puff
  * @author Alexander Lex
@@ -37,8 +23,7 @@ public class DataDomainSerializationData {
 	private ATableBasedDataDomain dataDomain;
 
 	/**
-	 * content of the set file the application is based on, only used to sync
-	 * remote clients
+	 * content of the set file the application is based on, only used to sync remote clients
 	 */
 	private byte[] dataTableContent;
 
@@ -78,8 +63,7 @@ public class DataDomainSerializationData {
 		return recordPerspectiveMap;
 	}
 
-	public void setRecordPerspectiveMap(
-HashMap<String, Perspective> recordPerspectiveMap) {
+	public void setRecordPerspectiveMap(HashMap<String, Perspective> recordPerspectiveMap) {
 		this.recordPerspectiveMap = recordPerspectiveMap;
 	}
 
@@ -87,8 +71,7 @@ HashMap<String, Perspective> recordPerspectiveMap) {
 		return dimensionPerspectiveMap;
 	}
 
-	public void setDimensionPerspectiveMap(
-HashMap<String, Perspective> dimensionDataMap) {
+	public void setDimensionPerspectiveMap(HashMap<String, Perspective> dimensionDataMap) {
 		this.dimensionPerspectiveMap = dimensionDataMap;
 	}
 }

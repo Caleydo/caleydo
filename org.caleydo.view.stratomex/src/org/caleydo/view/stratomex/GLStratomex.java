@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.stratomex;
 
 import java.awt.Point;
@@ -97,11 +83,11 @@ import org.caleydo.view.stratomex.brick.GLBrick;
 import org.caleydo.view.stratomex.brick.configurer.CategoricalDataConfigurer;
 import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
 import org.caleydo.view.stratomex.brick.configurer.NumericalDataConfigurer;
+import org.caleydo.view.stratomex.brick.configurer.PathwayDataConfigurer;
 import org.caleydo.view.stratomex.brick.contextmenu.SplitBrickItem;
 import org.caleydo.view.stratomex.column.BrickColumn;
 import org.caleydo.view.stratomex.column.BrickColumnManager;
 import org.caleydo.view.stratomex.column.BrickColumnSpacingRenderer;
-import org.caleydo.view.stratomex.event.AddGroupsToStratomexEvent;
 import org.caleydo.view.stratomex.event.ConnectionsModeEvent;
 import org.caleydo.view.stratomex.event.MergeBricksEvent;
 import org.caleydo.view.stratomex.event.SelectElementsEvent;
@@ -1092,7 +1078,6 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 
 		addGroupsToStratomexListener = new AddGroupsToStratomexListener();
 		addGroupsToStratomexListener.setHandler(this);
-		eventPublisher.addListener(AddGroupsToStratomexEvent.class, addGroupsToStratomexListener);
 		eventPublisher.addListener(AddTablePerspectivesEvent.class, addGroupsToStratomexListener);
 
 		removeTablePerspectiveListener = new RemoveTablePerspectiveListener<>();
@@ -1208,7 +1193,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		// if this is the first data container set, we imprint StratomeX
 		if (recordIDCategory == null) {
 			ATableBasedDataDomain dataDomain = newTablePerspectives.get(0).getDataDomain();
-			imprintVisBricks(dataDomain);
+			imprintStratomex(dataDomain);
 		}
 
 		for (TablePerspective tablePerspective : newTablePerspectives) {
@@ -1216,11 +1201,11 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 				Logger.log(new Status(IStatus.ERROR, this.toString(), "Data container was null."));
 				continue;
 			}
-			if (!tablePerspective.getDataDomain().getTable().isDataHomogeneous() && brickConfigurer == null) {
-				Logger.log(new Status(IStatus.WARNING, this.toString(),
-						"Tried to add inhomogeneous table perspective without brick configurerer. Currently not supported."));
-				continue;
-			}
+			// if (!tablePerspective.getDataDomain().getTable().isDataHomogeneous() && brickConfigurer == null) {
+			// Logger.log(new Status(IStatus.WARNING, this.toString(),
+			// "Tried to add inhomogeneous table perspective without brick configurerer. Currently not supported."));
+			// continue;
+			// }
 			if (!tablePerspective.getDataDomain().getRecordIDCategory().equals(recordIDCategory)) {
 				Logger.log(new Status(IStatus.ERROR, this.toString(), "Data container " + tablePerspective
 						+ "does not match the recordIDCategory of Visbricks - no mapping possible."));
@@ -1305,7 +1290,9 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		IBrickConfigurer brickConfigurer;
 		// FIXME this is a hack to make tablePerspectives that have
 		// only one dimension categorical data
-		if (tablePerspective.getNrDimensions() == 1) {
+		if (tablePerspective instanceof PathwayTablePerspective) {
+			brickConfigurer = new PathwayDataConfigurer();
+		} else if (tablePerspective.getNrDimensions() == 1) {
 			brickConfigurer = new CategoricalDataConfigurer(tablePerspective);
 		} else {
 			brickConfigurer = new NumericalDataConfigurer(tablePerspective);
@@ -1386,9 +1373,16 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	 *
 	 * @param dataDomain
 	 */
-	private void imprintVisBricks(ATableBasedDataDomain dataDomain) {
+	private void imprintStratomex(ATableBasedDataDomain dataDomain) {
 		recordIDCategory = dataDomain.getRecordIDCategory();
-		IDType mappingRecordIDType = recordIDCategory.getPrimaryMappingType();
+		IDType mappingRecordIDType;
+		if (recordIDCategory.getCategoryName().equals("GENE")) {
+			// FIXME: this hack is necessary because otherwise we get pretty unintuitive results for the gene case as we
+			// have multimappings (bands highlight in portions that aren't even selected).
+			mappingRecordIDType = dataDomain.getRecordIDType();
+		} else {
+			mappingRecordIDType = recordIDCategory.getPrimaryMappingType();
+		}
 		recordSelectionManager = new EventBasedSelectionManager(this, mappingRecordIDType);
 	}
 
@@ -1857,7 +1851,6 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	public Set<IDataDomain> getDataDomains() {
 		Set<IDataDomain> dataDomains = new HashSet<IDataDomain>();
 		if (tablePerspectives == null) {
-			System.out.println("Problem");
 			return dataDomains;
 		}
 		for (TablePerspective tablePerspective : tablePerspectives) {

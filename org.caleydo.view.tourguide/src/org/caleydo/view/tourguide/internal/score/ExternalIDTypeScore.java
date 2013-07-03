@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.tourguide.internal.score;
 
 import java.util.ArrayList;
@@ -92,31 +78,56 @@ public final class ExternalIDTypeScore extends AExternalScore {
 		this.scores.putAll(scores);
 	}
 
-	private boolean isCompatible(IDType type) {
-		return this.idType.getIDCategory().equals(type.getIDCategory());
+	public boolean isCompatible(IDType type) {
+		return type != null && this.idType.getIDCategory().equals(type.getIDCategory());
+	}
+
+	/**
+	 * @return the idType, see {@link #idType}
+	 */
+	public IDType getIdType() {
+		return idType;
 	}
 
 	@Override
 	public float apply(IComputeElement elem, Group g) {
-		if (!isCompatible(elem.getIdType())) {
+		if (!isCompatible(elem.getIdType()) && !isCompatible(elem.getDimensionIdType())) {
 			// can't map
 			return Float.NaN;
 		}
-		final IDType target = elem.getIdType();
-
 		Collection<Float> scores = new ArrayList<>();
-		try {
-			for (Integer id : elem.of(g)) {
-				Optional<Integer> my = mapping.get(Pair.make(target, id));
-				if (!my.isPresent())
-					continue;
-				Float s = this.scores.get(my.get());
-				if (s == null)
-					continue;
-				scores.add(s);
+
+		if (isCompatible(elem.getIdType())) {
+			final IDType target = elem.getIdType();
+			try {
+				for (Integer id : elem.of(g)) {
+					Optional<Integer> my = mapping.get(Pair.make(target, id));
+					if (!my.isPresent())
+						continue;
+					Float s = this.scores.get(my.get());
+					if (s == null)
+						continue;
+					scores.add(s);
+				}
+			} catch (ExecutionException e) {
+				log.warn("can't get mapping value", e);
 			}
-		} catch (ExecutionException e) {
-			log.warn("can't get mapping value", e);
+		} else if (isCompatible(elem.getDimensionIdType())) {
+			// for all dimensions
+			final IDType target = elem.getDimensionIdType();
+			try {
+				for (Integer id : elem.getDimensionIDs()) {
+					Optional<Integer> my = mapping.get(Pair.make(target, id));
+					if (!my.isPresent())
+						continue;
+					Float s = this.scores.get(my.get());
+					if (s == null)
+						continue;
+					scores.add(s);
+				}
+			} catch (ExecutionException e) {
+				log.warn("can't get mapping value", e);
+			}
 		}
 		if (scores.isEmpty())
 			return Float.NaN;

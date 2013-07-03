@@ -1,19 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
- * University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
- * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
- * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with this program. If not, see
- * <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.data.importer.tcga;
 
 import java.io.BufferedReader;
@@ -28,12 +17,10 @@ import java.util.concurrent.ForkJoinTask;
 import java.util.concurrent.RecursiveTask;
 import java.util.logging.Logger;
 
-import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
 import org.caleydo.core.data.collection.column.container.CategoricalClassDescription.ECategoryType;
 import org.caleydo.core.io.ColumnDescription;
-import org.caleydo.core.io.DataDescription;
 import org.caleydo.core.io.DataProcessingDescription;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.DataSetDescription.ECreateDefaultProperties;
@@ -230,30 +217,31 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 		if (mutationFile == null) {
 			return null;
 		}
+
 		DataSetDescription dataSet = new DataSetDescription(ECreateDefaultProperties.CATEGORICAL);
-			dataSet.setDataSetName(dataSetName);
-			dataSet.setColor(dataSetType.getColor());
+		dataSet.setDataSetName(dataSetName);
+		dataSet.setColor(dataSetType.getColor());
 
-			dataSet.setDataSourcePath(mutationFile.getPath());
-			dataSet.setNumberOfHeaderLines(1);
-			ParsingRule parsingRule = new ParsingRule();
-			parsingRule.setFromColumn(startColumn);
-			parsingRule.setParseUntilEnd(true);
-			// TODO: review ordinale/integer
-			parsingRule.setColumnDescripton(new ColumnDescription());
-			dataSet.addParsingRule(parsingRule);
-			dataSet.setTransposeMatrix(true);
-			dataSet.setColumnIDSpecification(sampleIDSpecification);
-			dataSet.setRowIDSpecification(geneIDSpecification);
+		dataSet.setDataSourcePath(mutationFile.getPath());
+		dataSet.setNumberOfHeaderLines(1);
+		ParsingRule parsingRule = new ParsingRule();
+		parsingRule.setFromColumn(startColumn);
+		parsingRule.setParseUntilEnd(true);
+		// TODO: review ordinale/integer
+		parsingRule.setColumnDescripton(new ColumnDescription());
+		dataSet.addParsingRule(parsingRule);
+		dataSet.setTransposeMatrix(true);
+		dataSet.setColumnIDSpecification(sampleIDSpecification);
+		dataSet.setRowIDSpecification(geneIDSpecification);
 
-			@SuppressWarnings("unchecked")
-			CategoricalClassDescription<Integer> cats = (CategoricalClassDescription<Integer>) dataSet
-					.getDataDescription().getCategoricalClassDescription();
-			cats.setCategoryType(ECategoryType.ORDINAL);
-			cats.setRawDataType(EDataType.INTEGER);
+		@SuppressWarnings("unchecked")
+		CategoricalClassDescription<Integer> cats = (CategoricalClassDescription<Integer>) dataSet.getDataDescription()
+				.getCategoricalClassDescription();
+		cats.setCategoryType(ECategoryType.ORDINAL);
+		cats.setRawDataType(EDataType.INTEGER);
 		cats.addCategoryProperty(0, "Not Mutated", Color.NEUTRAL_GREY);
 		cats.addCategoryProperty(1, "Mutated", Color.RED);
-			return dataSet;
+		return dataSet;
 
 
 		// IDSpecification mutationSampleIDSpecification = new
@@ -364,11 +352,9 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 				ClinicalMapping mapping = ClinicalMapping.byName(name);
 				if (mapping == null && !toInclude.isEmpty()) {
 					log.warning("activly selected clinicial variable: " + name + " is not known using default");
-					dataSet.addParsingPattern(new ColumnDescription(i, new DataDescription(EDataClass.CATEGORICAL,
-							EDataType.STRING)));
+					dataSet.addParsingPattern(ClinicalMapping.createDefault(i));
 				} else if (mapping != null) {
-					dataSet.addParsingPattern(new ColumnDescription(i, new DataDescription(mapping.getDataClass(),
-							mapping.getDataType())));
+					dataSet.addParsingPattern(mapping.create(i));
 				} else {
 					continue;
 				}

@@ -1,19 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
- * University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
- * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
- * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with this program. If not, see
- * <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.kaplanmeier;
 
 import gleem.linalg.Vec3f;
@@ -53,7 +42,7 @@ import org.eclipse.swt.widgets.Composite;
 
 /**
  * <p>
- * Kaplan Meier GL2 view.
+ * Kaplan Meier GL view.
  * </p>
  * <p>
  * TODO
@@ -67,9 +56,6 @@ import org.eclipse.swt.widgets.Composite;
 public class GLKaplanMeier extends AGLView implements ISingleTablePerspectiveBasedView, IEventBasedSelectionManagerUser {
 	public static final String VIEW_TYPE = "org.caleydo.view.kaplanmeier";
 	public static final String VIEW_NAME = "Kaplan-Meier Plot";
-
-	private static final String DEFAULT_X_AXIS_LABEL = "Time (Days)";
-	private static final String DEFAULT_Y_AXIS_LABEL = "Percentage of Patients";
 
 	private static final int LEFT_AXIS_SPACING_PIXELS = 70;
 	private static final int BOTTOM_AXIS_SPACING_PIXELS = 50;
@@ -97,12 +83,12 @@ public class GLKaplanMeier extends AGLView implements ISingleTablePerspectiveBas
 	/**
 	 * The label of the x axis.
 	 */
-	private String xAxisLabel = DEFAULT_X_AXIS_LABEL;
+	private String xAxisLabel;
 
 	/**
 	 * The label of the y axis.
 	 */
-	private String yAxisLabel = DEFAULT_Y_AXIS_LABEL;
+	private String yAxisLabel;
 
 	private TablePerspective tablePerspective;
 
@@ -135,6 +121,9 @@ public class GLKaplanMeier extends AGLView implements ISingleTablePerspectiveBas
 			calculateMaxAxisTime(tablePerspective);
 		}
 		createPickingListeners();
+		xAxisLabel = tablePerspective.getDimensionPerspective().getLabel();
+		yAxisLabel = "Percentage of "
+				+ tablePerspective.getRecordPerspective().getIdType().getIDCategory().getCategoryName();
 
 		detailLevel = EDetailLevel.HIGH;
 	}
@@ -263,29 +252,24 @@ public class GLKaplanMeier extends AGLView implements ISingleTablePerspectiveBas
 
 		gl.glNewList(displayListIndex, GL2.GL_COMPILE);
 
-		VirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
+		Integer groupID = null;
+		VirtualArray recordVA;
+		if (tablePerspective.getParentTablePerspective() != null) {
+			recordVA = tablePerspective.getParentTablePerspective().getRecordPerspective().getVirtualArray();
+			groupID = tablePerspective.getRecordGroup().getID();
 
-		// do not fill curve if multiple curves are rendered in this plot
-		boolean fillCurve = recordVA.getGroupList().size() > 1 ? false : true;
+		} else {
+			recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
+		}
 
+		if (groupID != null) {
+			// render this first to consider z-order
+			renderCurve(gl, tablePerspective.getRecordGroup(), recordVA, true, true);
+		}
 		for (Group group : recordVA.getGroupList()) {
-			List<Integer> recordIDs = recordVA.getIDsOfGroup(group.getGroupIndex());
-
-			int lineWidth = 1;
-			Color color = new Color(0.5f, 0.5f, 0.5f);
-			SelectionType selectionType = recordGroupSelectionManager.getHighestSelectionType(group.getID());
-			if (selectionType != null) {
-				// || (group.getID() == mouseOverGroupID)) {
-				lineWidth = 2;
-				color = selectionType.getColor();
-			}
-
-			if (detailLevel == EDetailLevel.HIGH)
-				lineWidth *= 2;
-
-			gl.glLineWidth(lineWidth);
-
-			renderSingleKaplanMeierCurve(gl, recordIDs, fillCurve, group.getID(), color);
+			if (groupID != null && group.getID() == groupID)
+				continue;
+			renderCurve(gl, group, recordVA, false, groupID != null);
 		}
 
 		if (detailLevel == EDetailLevel.HIGH) {
@@ -293,6 +277,33 @@ public class GLKaplanMeier extends AGLView implements ISingleTablePerspectiveBas
 		}
 
 		gl.glEndList();
+	}
+
+	private void renderCurve(GL2 gl, Group group, VirtualArray recordVA, boolean fillCurve, boolean hasPrimaryCurve) {
+
+		List<Integer> recordIDs = recordVA.getIDsOfGroup(group.getGroupIndex());
+
+		int lineWidth = 1;
+
+		Color color = Color.DARK_GRAY;
+		lineWidth = 1;
+		if (hasPrimaryCurve && !fillCurve) {
+			color = Color.LIGHT_GRAY;
+		}
+		SelectionType selectionType = recordGroupSelectionManager.getHighestSelectionType(group.getID());
+		if (selectionType != null) {
+			// || (group.getID() == mouseOverGroupID)) {
+			lineWidth += 1;
+			color = selectionType.getColor();
+		}
+
+		if (detailLevel == EDetailLevel.HIGH)
+			lineWidth *= 2;
+
+		gl.glLineWidth(lineWidth);
+
+		renderSingleKaplanMeierCurve(gl, recordIDs, fillCurve, group.getID(), color);
+
 	}
 
 	private void renderAxes(GL2 gl) {
@@ -303,6 +314,7 @@ public class GLKaplanMeier extends AGLView implements ISingleTablePerspectiveBas
 		float axisLabelWidth = textRenderer.getRequiredTextWidthWithMax(xAxisLabel,
 				pixelGLConverter.getGLHeightForPixelHeight(20), viewFrustum.getWidth());
 
+		textRenderer.setColor(Color.BLACK);
 		textRenderer.renderTextInBounds(gl, xAxisLabel, viewFrustum.getWidth() / 2.0f - axisLabelWidth / 2.0f,
 				pixelGLConverter.getGLHeightForPixelHeight(AXIS_LABEL_TEXT_SIDE_SPACING_PIXELS), 0,
 				viewFrustum.getWidth(), pixelGLConverter.getGLHeightForPixelHeight(AXIS_LABEL_TEXT_HEIGHT_PIXELS));
@@ -385,11 +397,13 @@ public class GLKaplanMeier extends AGLView implements ISingleTablePerspectiveBas
 		gl.glPushName(pickingManager.getPickingID(getID(), EPickingType.KM_CURVE.name(), groupID));
 
 		if (fillCurve) {
-
+			//
 			if (color.isGray())
-				gl.glColor4fv(color.brighter().getRGBA(), 0);
+				gl.glColor3fv(Color.MEDIUM_DARK_GRAY.getRGB(), 0);
+			// gl.glColor4fv(color.brighter().brighter().getRGBA(), 0);
 			else
 				gl.glColor4fv(color.lessSaturated().getRGBA(), 0);
+			// gl.glColor4fv(color.getRGBA(), 0);
 			@SuppressWarnings("unchecked")
 			ArrayList<Float> clone = (ArrayList<Float>) dataVector.clone();
 			drawFilledCurve(gl, clone);

@@ -1,30 +1,18 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.tourguide.impl;
+
+import static org.caleydo.view.tourguide.impl.algorithm.MutualExclusiveScoreFilter.canHaveMutualExclusiveScore;
+import static org.caleydo.view.tourguide.impl.algorithm.MutualExclusiveScoreFilter.getProperties;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.caleydo.core.data.collection.table.CategoricalTable;
-import org.caleydo.core.data.datadomain.DataDomainOracle;
+import org.caleydo.core.data.collection.column.container.CategoryProperty;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
@@ -43,15 +31,12 @@ import org.caleydo.view.tourguide.api.state.IStateMachine;
 import org.caleydo.view.tourguide.api.state.SimpleState;
 import org.caleydo.view.tourguide.api.state.SimpleTransition;
 import org.caleydo.view.tourguide.impl.algorithm.JaccardIndex;
-import org.caleydo.view.tourguide.impl.algorithm.MutualExclusive;
+import org.caleydo.view.tourguide.impl.algorithm.MutualExclusiveScoreFilter;
 import org.caleydo.view.tourguide.spi.IScoreFactory;
 import org.caleydo.view.tourguide.spi.score.IRegisteredScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
 import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
 /**
@@ -66,9 +51,10 @@ public class ClusterSimilarityScoreFactory implements IScoreFactory {
 		return new DefaultComputedReferenceGroupScore(label, reference, group, JaccardIndex.get(), null, color, bgColor);
 	}
 
-	private IRegisteredScore createMutualExclusive(String label, Perspective reference, Group group) {
-		return new DefaultComputedReferenceGroupScore(label, reference, group, MutualExclusive.get(),
-				MutualExclusive.get(), color, bgColor);
+	private IRegisteredScore createMutualExclusive(String label, Perspective reference, Group group,
+			CategoryProperty<?> property) {
+		return new DefaultComputedReferenceGroupScore(label, reference, group, JaccardIndex.get(),
+				new MutualExclusiveScoreFilter(property), color, bgColor);
 	}
 
 	@Override
@@ -80,15 +66,13 @@ public class ClusterSimilarityScoreFactory implements IScoreFactory {
 		IState start = stateMachine.get(IStateMachine.ADD_STRATIFICATIONS);
 		IState browse = stateMachine.addState("JaccardIndexBrowse", new UpdateAndBrowseJaccardIndex());
 		IState target = stateMachine.addState("JaccardIndex", new CreateJaccardScoreState(browse));
-		stateMachine.addTransition(start, new SimpleTransition(target, "Find large overlap with displayed clusters"));
+		stateMachine.addTransition(start, new SimpleTransition(target, "Based on overlap with displayed cluster"));
 	}
 
 	private void createJaccardScore(TablePerspective tablePerspective, Group group, IReactions reactions) {
 		IScore[] scores;
 		if (group == null) {
-			if (DataDomainOracle.isCategoricalDataDomain(tablePerspective.getDataDomain())
-					&& ((CategoricalTable<?>) tablePerspective.getDataDomain().getTable()).getCategoryDescriptions()
-							.getCategoryProperties().size() == 2) {
+			if (canHaveMutualExclusiveScore(tablePerspective.getDataDomain())) {
 				String label = String.format("Sim. to %s %s", tablePerspective.getDataDomain().getLabel(),
 						tablePerspective.getRecordPerspective().getLabel());
 				MultiScore s = new MultiScore(label, color, bgColor);
@@ -97,8 +81,15 @@ public class ClusterSimilarityScoreFactory implements IScoreFactory {
 				for (Group g : tablePerspective.getRecordPerspective().getVirtualArray().getGroupList()) {
 					label = String.format("Sim. to %s %s %s", tablePerspective.getDataDomain().getLabel(),
 							tablePerspective.getRecordPerspective().getLabel(), g);
+
+					@SuppressWarnings("unchecked")
+					List<CategoryProperty<?>> props = (List<CategoryProperty<?>>) getProperties(tablePerspective
+							.getDataDomain());
+					for (CategoryProperty<?> prop : props) {
+						s.add(createMutualExclusive(prop.getCategoryName() + " " + label,
+								tablePerspective.getRecordPerspective(), g, prop));
+					}
 					s.add(createJaccard(label, tablePerspective.getRecordPerspective(), g));
-					me.add(createMutualExclusive("ME " + label, tablePerspective.getRecordPerspective(), g));
 				}
 				scores = new IScore[] { me, s };
 			} else {
@@ -116,11 +107,18 @@ public class ClusterSimilarityScoreFactory implements IScoreFactory {
 			String label = String.format("Sim. to %s %s %s", tablePerspective.getDataDomain().getLabel(),
 					tablePerspective.getRecordPerspective().getLabel(), group.getLabel());
 
-			if (MutualExclusive.canHaveMutualExclusiveScore(tablePerspective
+			if (canHaveMutualExclusiveScore(tablePerspective
 					.getDataDomain())) {
+				@SuppressWarnings("unchecked")
+				List<CategoryProperty<?>> props = (List<CategoryProperty<?>>) getProperties(tablePerspective
+						.getDataDomain());
+				List<IScore> scoresList = new ArrayList<IScore>();
+				for (CategoryProperty<?> prop : props) {
+					scoresList.add(createMutualExclusive(prop.getCategoryName()+" " + label, tablePerspective.getRecordPerspective(), group, prop));
+				}
+				scoresList.add(createJaccard(label, tablePerspective.getRecordPerspective(), group));
 				// binary categorical -> add mutual exclusive score
-				scores = new IScore[] { createMutualExclusive("ME " + label, tablePerspective.getRecordPerspective(), group),
-						createJaccard(label, tablePerspective.getRecordPerspective(), group) };
+				scores = scoresList.toArray(new IScore[0]);
 			} else {
 				scores = new IScore[] { createJaccard(label, tablePerspective.getRecordPerspective(), group) };
 			}
@@ -182,8 +180,6 @@ public class ClusterSimilarityScoreFactory implements IScoreFactory {
 	public Iterable<ScoreEntry> createGroupEntries(TablePerspective strat, Group group) {
 		Collection<ScoreEntry> col = new ArrayList<>();
 		col.add(new ScoreEntry("Score group", (IScore) createJaccard(null, strat.getRecordPerspective(), group)));
-		col.add(new ScoreEntry("Score group  (mutual exclusive)", (IScore) createMutualExclusive(null,
-				strat.getRecordPerspective(), group)));
 		return col;
 	}
 
@@ -196,11 +192,6 @@ public class ClusterSimilarityScoreFactory implements IScoreFactory {
 			composite.add(createJaccard(null, rs, group));
 		}
 		col.add(new ScoreEntry("Score all groups in column", (IScore) composite));
-		composite = new MultiScore(rs.getLabel(), color, bgColor);
-		for (Group group : rs.getVirtualArray().getGroupList()) {
-			composite.add(createMutualExclusive(null, rs, group));
-		}
-		col.add(new ScoreEntry("Score all groups in column (mutual exclusive)", (IScore) composite));
 		return col;
 	}
 
@@ -215,8 +206,6 @@ public class ClusterSimilarityScoreFactory implements IScoreFactory {
 	}
 
 	class CreateJaccardIndexScoreDialog extends ACreateGroupScoreDialog {
-		private Button mututalExclusiveUI;
-
 		public CreateJaccardIndexScoreDialog(Shell shell, Object sender) {
 			super(shell, sender);
 		}
@@ -228,19 +217,12 @@ public class ClusterSimilarityScoreFactory implements IScoreFactory {
 
 		@Override
 		protected void addTypeSpecific(Composite c) {
-			Label l = new Label(c, SWT.NONE);
-			l.setText("");
-			mututalExclusiveUI = new Button(c, SWT.CHECK);
-			mututalExclusiveUI.setText("Mutual Exclusive");
+
 		}
 
 		@Override
 		protected IRegisteredScore createScore(String label, Perspective per, Group g) {
-			boolean m = mututalExclusiveUI.getSelection();
-			if (m)
-				return createMutualExclusive(label, per, g);
-			else
-				return createJaccard(label, per, g);
+			return createJaccard(label, per, g);
 		}
 	}
 }
