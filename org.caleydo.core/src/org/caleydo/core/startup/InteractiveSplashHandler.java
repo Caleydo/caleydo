@@ -52,7 +52,7 @@ public class InteractiveSplashHandler extends AbstractSplashHandler {
 		gc.setFont(new Font(display, "Arial", 10, SWT.NONE));
 		gc.setForeground(display.getSystemColor(SWT.COLOR_WHITE));
 
-		updateProgessLabel("Loading...");
+		updateProgressLabel("Loading...");
 
 		gc.drawString(" Version " + GeneralManager.VERSION, 336, 185, true);
 
@@ -75,7 +75,7 @@ public class InteractiveSplashHandler extends AbstractSplashHandler {
 
 	}
 
-	public void updateProgessLabel(final String message) {
+	public void updateProgressLabel(final String message) {
 		if (gc.isDisposed())
 			return;
 		Display.getDefault().asyncExec(new Runnable() {

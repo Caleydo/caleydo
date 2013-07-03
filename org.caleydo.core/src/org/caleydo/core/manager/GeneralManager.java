@@ -19,6 +19,7 @@ import org.caleydo.core.internal.ConsoleFlags;
 import org.caleydo.core.serialize.ProjectMetaData;
 import org.caleydo.core.serialize.SerializationManager;
 import org.caleydo.core.startup.InteractiveSplashHandler;
+import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.statistics.IStatisticsPerformer;
 import org.caleydo.core.view.ViewManager;
 import org.caleydo.data.loader.ResourceLoader;
@@ -87,6 +88,8 @@ public class GeneralManager {
 	private IStatisticsPerformer rStatisticsPerformer;
 
 	private ProjectMetaData metaData = ProjectMetaData.createDefault();
+
+	private Logger logger = Logger.create(GeneralManager.class);
 
 	public void init() {
 		eventPublisher = EventPublisher.INSTANCE;
@@ -212,7 +215,19 @@ public class GeneralManager {
 		this.splash = splash;
 	}
 
-	public InteractiveSplashHandler getSplash() {
-		return splash;
+	public void updateProgress(int percentage) {
+		if (splash == null) {
+			logger.info("Progress update:" + percentage);
+		} else {
+			splash.updateProgress(percentage);
+		}
+	}
+
+	public void updateProgressLabel(String message) {
+		if (splash == null) {
+			logger.info("Progress update:" + message);
+		} else {
+			splash.updateProgressLabel(message);
+		}
 	}
 }

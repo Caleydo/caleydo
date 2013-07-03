@@ -209,7 +209,7 @@ public final class ProjectManager {
 
 				HashMap<String, Perspective> recordPerspectives = new HashMap<String, Perspective>();
 
-				GeneralManager.get().getSplash().updateProgessLabel("Loading groupings for: " + dataDomain.getLabel());
+				GeneralManager.get().updateProgressLabel("Loading groupings for: " + dataDomain.getLabel());
 
 				Set<String> recordPerspectiveIDs = ((ATableBasedDataDomain) dataDomain).getRecordPerspectiveIDs();
 				Set<String> dimensionPerspectiveIDs = ((ATableBasedDataDomain) dataDomain).getDimensionPerspectiveIDs();
@@ -230,7 +230,7 @@ public final class ProjectManager {
 					if (tree != null)
 						recordPerspective.setTree(tree);
 
-					GeneralManager.get().getSplash().updateProgress((int) (progressBarFactor * perspectiveCount));
+					GeneralManager.get().updateProgress((int) (progressBarFactor * perspectiveCount));
 					perspectiveCount++;
 				}
 
@@ -249,7 +249,7 @@ public final class ProjectManager {
 					ClusterTree tree = loadTree(extendedDirName + dimensionPerspectiveID + "_tree.xml",
 							((ATableBasedDataDomain) dataDomain).getDimensionIDType());
 					dimensionPerspective.setTree(tree);
-					GeneralManager.get().getSplash().updateProgress((int) (progressBarFactor * perspectiveCount));
+					GeneralManager.get().updateProgress((int) (progressBarFactor * perspectiveCount));
 					perspectiveCount++;
 
 				}

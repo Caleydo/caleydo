@@ -117,7 +117,7 @@ public class IDMappingParser extends ATextParser {
 	@Override
 	protected void parseFile(BufferedReader reader) throws IOException {
 
-		GeneralManager.get().getSplash().updateProgessLabel("Loading ID mapping for " + mappingType);
+		GeneralManager.get().updateProgressLabel("Loading ID mapping for " + mappingType);
 		String line;
 
 		int lineCounter = 0;
@@ -167,7 +167,7 @@ public class IDMappingParser extends ATextParser {
 
 			// Update progress bar only on each 100th line
 			if (lineCounter % 100 == 0) {
-				GeneralManager.get().getSplash().updateProgress((int) (progressBarFactor * lineCounter));
+				GeneralManager.get().updateProgress((int) (progressBarFactor * lineCounter));
 			}
 			lineCounter++;
 		}
