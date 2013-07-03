@@ -34,6 +34,9 @@ public class InteractiveSplashHandler extends AbstractSplashHandler {
 		super.init(splash);
 
 		createUI();
+
+		// Force the splash screen to layout
+		splash.layout(true);
 	}
 
 	private void createUI() {
@@ -52,7 +55,7 @@ public class InteractiveSplashHandler extends AbstractSplashHandler {
 		gc.setFont(new Font(display, "Arial", 10, SWT.NONE));
 		gc.setForeground(display.getSystemColor(SWT.COLOR_WHITE));
 
-		updateProgessLabel("Loading...");
+		updateProgressLabel("Loading...");
 
 		gc.drawString(" Version " + GeneralManager.VERSION, 336, 185, true);
 
@@ -69,7 +72,7 @@ public class InteractiveSplashHandler extends AbstractSplashHandler {
 		progressBar.setSelection(percentage);
 	}
 
-	public void updateProgessLabel(String message) {
+	public void updateProgressLabel(String message) {
 		gc.drawString(message, progressLabelX, progressLabelY, true);
 	}
 }

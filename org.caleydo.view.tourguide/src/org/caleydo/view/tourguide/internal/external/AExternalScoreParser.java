@@ -44,7 +44,7 @@ abstract class AExternalScoreParser<T extends AExternalScoreParseSpecification, 
 
 	@Override
 	protected void parseFile(BufferedReader reader) throws IOException {
-		GeneralManager.get().getSplash().updateProgessLabel("Loading ranking");
+		GeneralManager.get().updateProgressLabel("Loading ranking");
 
 		if (spec.getDataSourcePath() == null) {
 			log.info("No path for ranking specified");

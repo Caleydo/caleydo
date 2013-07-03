@@ -47,7 +47,7 @@ public class GroupingParser extends ATextParser {
 	@Override
 	protected void parseFile(BufferedReader reader) throws IOException {
 
-		GeneralManager.get().getSplash().updateProgessLabel("Loading groupings for " + targetIDType);
+		GeneralManager.get().updateProgressLabel("Loading groupings for " + targetIDType);
 		float progressBarFactor = 100f / numberOfLinesInFile;
 
 		IDSpecification idSpecification = groupingSpecifications.getRowIDSpecification();
@@ -178,7 +178,7 @@ public class GroupingParser extends ATextParser {
 				}
 				lineCounter++;
 				if (lineCounter % 100 == 0) {
-					GeneralManager.get().getSplash().updateProgress((int) (progressBarFactor * lineCounter));
+					GeneralManager.get().updateProgress((int) (progressBarFactor * lineCounter));
 				}
 			}
 
