@@ -102,8 +102,6 @@ public class IDMappingParser extends ATextParser {
 		super(fileName);
 
 		this.mappingType = mappingType;
-
-		swtGuiManager = GeneralManager.get().getSWTGUIManager();
 		this.idMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(idCategory);
 	}
 
@@ -119,7 +117,7 @@ public class IDMappingParser extends ATextParser {
 	@Override
 	protected void parseFile(BufferedReader reader) throws IOException {
 
-		swtGuiManager.setProgressBarText("Loading ID mapping for " + mappingType);
+		GeneralManager.get().getSplash().updateProgessLabel("Loading ID mapping for " + mappingType);
 		String line;
 
 		int lineCounter = 0;
@@ -169,7 +167,7 @@ public class IDMappingParser extends ATextParser {
 
 			// Update progress bar only on each 100th line
 			if (lineCounter % 100 == 0) {
-				swtGuiManager.setProgressBarPercentage((int) (progressBarFactor * lineCounter));
+				GeneralManager.get().getSplash().updateProgress((int) (progressBarFactor * lineCounter));
 			}
 			lineCounter++;
 		}

@@ -11,7 +11,6 @@ import java.io.LineNumberReader;
 
 import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.startup.SWTGUIManager;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.data.loader.ResourceLoader;
 import org.eclipse.core.runtime.IStatus;
@@ -55,11 +54,6 @@ public abstract class ATextParser {
 	protected int stopParsingAtLine = Integer.MAX_VALUE;
 
 	/**
-	 * GUI manager used to update the progress bar.
-	 */
-	protected SWTGUIManager swtGuiManager;
-
-	/**
 	 * Constructor.
 	 */
 	public ATextParser(final String fileName) {
@@ -69,7 +63,6 @@ public abstract class ATextParser {
 	public ATextParser(final String fileName, ResourceLoader loader) {
 		this.filePath = fileName;
 		this.loader = loader;
-		this.swtGuiManager = GeneralManager.get().getSWTGUIManager();
 	}
 
 	/**

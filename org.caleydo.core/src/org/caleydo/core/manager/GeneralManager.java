@@ -18,7 +18,7 @@ import org.caleydo.core.id.object.IDCreator;
 import org.caleydo.core.internal.ConsoleFlags;
 import org.caleydo.core.serialize.ProjectMetaData;
 import org.caleydo.core.serialize.SerializationManager;
-import org.caleydo.core.startup.SWTGUIManager;
+import org.caleydo.core.startup.InteractiveSplashHandler;
 import org.caleydo.core.util.statistics.IStatisticsPerformer;
 import org.caleydo.core.view.ViewManager;
 import org.caleydo.data.loader.ResourceLoader;
@@ -34,25 +34,21 @@ import org.eclipse.core.runtime.Platform;
 public class GeneralManager {
 
 	/**
-	 * In release mode non-stable or student views are automatically removed
-	 * from the workbench.
+	 * In release mode non-stable or student views are automatically removed from the workbench.
 	 */
 	public static final boolean RELEASE_MODE = !ConsoleFlags.EXPERIMENTAL_MODE;
 
 	/**
-	 * This is the current version of Caleydo. The value must be the same as
-	 * specified in the plugin/bundle. We need to access the version before the
-	 * workbench is started. Therefore we have to set it hardcoded at this
-	 * point.
+	 * This is the current version of Caleydo. The value must be the same as specified in the plugin/bundle. We need to
+	 * access the version before the workbench is started. Therefore we have to set it hardcoded at this point.
 	 */
 	public static final String VERSION = "3.0";
 
 	public static final String PLUGIN_ID = "org.caleydo.core";
 
 	/**
-	 * The template for the concrete Caleydo folder, ie CALEYDO_FOLDER. This is
-	 * used for example in XML files and is then replaced with the concrete
-	 * folder
+	 * The template for the concrete Caleydo folder, ie CALEYDO_FOLDER. This is used for example in XML files and is
+	 * then replaced with the concrete folder
 	 */
 	public static final String USER_HOME = "user.home";
 	public static final String CALEYDO_FOLDER_TEMPLATE = "caleydo.folder";
@@ -62,8 +58,8 @@ public class GeneralManager {
 
 	// public static final String CALEYDO_HOME_PATH =
 	// Platform.getLocation().toOSString()+ File.separator;
-	public static final String CALEYDO_HOME_PATH = System.getProperty(USER_HOME)
-			+ File.separator + CALEYDO_FOLDER + File.separator;
+	public static final String CALEYDO_HOME_PATH = System.getProperty(USER_HOME) + File.separator + CALEYDO_FOLDER
+			+ File.separator;
 	public static final String CALEYDO_LOG_PATH = CALEYDO_HOME_PATH + "logs" + File.separator;
 
 	/**
@@ -72,13 +68,17 @@ public class GeneralManager {
 	private volatile static GeneralManager instance;
 
 	/**
-	 * In dry mode Caleydo runs without GUI. However, the core's functionality
-	 * can be used without limitations. This is for instance used when Caleydo
-	 * project files are generated from XML files.
+	 * In dry mode Caleydo runs without GUI. However, the core's functionality can be used without limitations. This is
+	 * for instance used when Caleydo project files are generated from XML files.
 	 */
 	private boolean isDryMode;
 
-	private SWTGUIManager swtGUIManager;
+	/**
+	 * The splash handler. If the splash is active (not null) then it can be used to update the progress percentage and
+	 * label.
+	 **/
+	private InteractiveSplashHandler splash;
+
 	private ViewManager viewManager;
 	private EventPublisher eventPublisher;
 	private IDCreator idCreator;
@@ -91,15 +91,13 @@ public class GeneralManager {
 	public void init() {
 		eventPublisher = EventPublisher.INSTANCE;
 		viewManager = ViewManager.get();
-		swtGUIManager = new SWTGUIManager();
 		idCreator = new IDCreator();
 		serializationManager = SerializationManager.get();
 		resourceLoader = new ResourceLoader(chain(DATA_CLASSLOADER, FILE, URL));
 	}
 
 	/**
-	 * Returns the general method as a singleton object. When first called the
-	 * general manager is created (lazy).
+	 * Returns the general method as a singleton object. When first called the general manager is created (lazy).
 	 *
 	 * @return singleton GeneralManager instance
 	 */
@@ -131,8 +129,8 @@ public class GeneralManager {
 	}
 
 	/**
-	 * Resource loader that is responsible for loading images, textures and data
-	 * files in the Caleydo framework. DO NOT LOAD YOUR FILES ON YOUR OWN!
+	 * Resource loader that is responsible for loading images, textures and data files in the Caleydo framework. DO NOT
+	 * LOAD YOUR FILES ON YOUR OWN!
 	 *
 	 * @return resource loader
 	 */
@@ -142,10 +140,6 @@ public class GeneralManager {
 
 	public ViewManager getViewManager() {
 		return viewManager;
-	}
-
-	public SWTGUIManager getSWTGUIManager() {
-		return swtGUIManager;
 	}
 
 	public EventPublisher getEventPublisher() {
@@ -165,10 +159,8 @@ public class GeneralManager {
 			IConfigurationElement[] ce = reg
 					.getConfigurationElementsFor("org.caleydo.util.statistics.StatisticsPerformer");
 			try {
-				rStatisticsPerformer = (IStatisticsPerformer) ce[0]
-						.createExecutableExtension("class");
-			}
-			catch (Exception ex) {
+				rStatisticsPerformer = (IStatisticsPerformer) ce[0].createExecutableExtension("class");
+			} catch (Exception ex) {
 				throw new RuntimeException("Could not instantiate R Statistics Peformer", ex);
 			}
 		}
@@ -177,8 +169,7 @@ public class GeneralManager {
 	}
 
 	/**
-	 * Obtains the {@link SerializationManager} responsible for
-	 * xml-serialization related tasks
+	 * Obtains the {@link SerializationManager} responsible for xml-serialization related tasks
 	 *
 	 * @return the {@link SerializationManager} of this caleydo application
 	 */
@@ -191,7 +182,8 @@ public class GeneralManager {
 	}
 
 	/**
-	 * @param isDryMode setter, see {@link #isDryMode}
+	 * @param isDryMode
+	 *            setter, see {@link #isDryMode}
 	 */
 	public void setDryMode(boolean isDryMode) {
 		this.isDryMode = isDryMode;
@@ -206,7 +198,7 @@ public class GeneralManager {
 
 	/**
 	 * checks whether data generated for the given caleydo version can be loaded with this one
-	 * 
+	 *
 	 * @param caleydoVersion
 	 * @return
 	 */
@@ -214,5 +206,13 @@ public class GeneralManager {
 		if (caleydoVersion == null)
 			return false;
 		return VERSION.equalsIgnoreCase(caleydoVersion);
+	}
+
+	public void setSplash(InteractiveSplashHandler splash) {
+		this.splash = splash;
+	}
+
+	public InteractiveSplashHandler getSplash() {
+		return splash;
 	}
 }

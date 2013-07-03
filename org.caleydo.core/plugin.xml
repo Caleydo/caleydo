@@ -83,7 +83,7 @@
          name="Caleydo"
          point="org.eclipse.ui.splashHandlers">
       <splashHandler
-            class="org.caleydo.core.internal.InteractiveSplashHandler"
+            class="org.caleydo.core.startup.InteractiveSplashHandler"
             id="org.caleydo.core.startup.progress">
       </splashHandler>
       <splashHandlerProductBinding

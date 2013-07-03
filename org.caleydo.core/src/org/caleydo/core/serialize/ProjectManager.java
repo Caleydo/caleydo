@@ -112,7 +112,6 @@ public final class ProjectManager {
 	/** meta data file name se {@link ProjectMetaData} */
 	private static final String METADATA_FILE = "metadata.xml";
 
-
 	/**
 	 * Loads the project from a directory
 	 *
@@ -154,7 +153,7 @@ public final class ProjectManager {
 	/**
 	 * checks whether the unpacked project at the given location is compatible with this version using the project
 	 * metadata
-	 * 
+	 *
 	 * @param unpackedProjectLocation
 	 * @return true if it can be loaded
 	 */
@@ -220,8 +219,7 @@ public final class ProjectManager {
 
 				HashMap<String, Perspective> recordPerspectives = new HashMap<String, Perspective>();
 
-				GeneralManager.get().getSWTGUIManager()
-						.setProgressBarText("Loading groupings for: " + dataDomain.getLabel());
+				GeneralManager.get().getSplash().updateProgessLabel("Loading groupings for: " + dataDomain.getLabel());
 
 				Set<String> recordPerspectiveIDs = ((ATableBasedDataDomain) dataDomain).getRecordPerspectiveIDs();
 				Set<String> dimensionPerspectiveIDs = ((ATableBasedDataDomain) dataDomain).getDimensionPerspectiveIDs();
@@ -231,9 +229,8 @@ public final class ProjectManager {
 				int perspectiveCount = 0;
 				for (String recordPerspectiveID : recordPerspectiveIDs) {
 
-					Perspective recordPerspective = (Perspective) unmarshaller
-							.unmarshal(GeneralManager
-							.get().getResourceLoader().getResource(extendedDirName + recordPerspectiveID + ".xml"));
+					Perspective recordPerspective = (Perspective) unmarshaller.unmarshal(GeneralManager.get()
+							.getResourceLoader().getResource(extendedDirName + recordPerspectiveID + ".xml"));
 					recordPerspective.setDataDomain((ATableBasedDataDomain) dataDomain);
 					recordPerspective.setIDType(((ATableBasedDataDomain) dataDomain).getRecordIDType());
 					recordPerspectives.put(recordPerspectiveID, recordPerspective);
@@ -243,8 +240,7 @@ public final class ProjectManager {
 					if (tree != null)
 						recordPerspective.setTree(tree);
 
-					GeneralManager.get().getSWTGUIManager()
-							.setProgressBarPercentage((int) (progressBarFactor * perspectiveCount));
+					GeneralManager.get().getSplash().updateProgress((int) (progressBarFactor * perspectiveCount));
 					perspectiveCount++;
 				}
 
@@ -254,9 +250,8 @@ public final class ProjectManager {
 
 				for (String dimensionPerspectiveID : dimensionPerspectiveIDs) {
 
-					Perspective dimensionPerspective = (Perspective) unmarshaller
-							.unmarshal(GeneralManager.get().getResourceLoader()
-									.getResource(extendedDirName + dimensionPerspectiveID + ".xml"));
+					Perspective dimensionPerspective = (Perspective) unmarshaller.unmarshal(GeneralManager.get()
+							.getResourceLoader().getResource(extendedDirName + dimensionPerspectiveID + ".xml"));
 					dimensionPerspective.setDataDomain((ATableBasedDataDomain) dataDomain);
 					dimensionPerspective.setIDType(((ATableBasedDataDomain) dataDomain).getDimensionIDType());
 					dimensionPerspectives.put(dimensionPerspectiveID, dimensionPerspective);
@@ -264,8 +259,7 @@ public final class ProjectManager {
 					ClusterTree tree = loadTree(extendedDirName + dimensionPerspectiveID + "_tree.xml",
 							((ATableBasedDataDomain) dataDomain).getDimensionIDType());
 					dimensionPerspective.setTree(tree);
-					GeneralManager.get().getSWTGUIManager()
-							.setProgressBarPercentage((int) (progressBarFactor * perspectiveCount));
+					GeneralManager.get().getSplash().updateProgress((int) (progressBarFactor * perspectiveCount));
 					perspectiveCount++;
 
 				}
@@ -444,8 +438,7 @@ public final class ProjectManager {
 	}
 
 	private static void saveData(String dirName, Collection<? extends IDataDomain> toSave, IProgressMonitor monitor,
-			ProjectMetaData metaData) throws JAXBException,
-			IOException {
+			ProjectMetaData metaData) throws JAXBException, IOException {
 
 		SerializationManager serializationManager = GeneralManager.get().getSerializationManager();
 		JAXBContext projectContext = serializationManager.getProjectContext();

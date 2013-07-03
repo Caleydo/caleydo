@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.caleydo.core.io.parser.ascii.ATextParser;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.execution.SafeCallable;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.view.tourguide.api.score.ISerializeableScore;
@@ -43,7 +44,7 @@ abstract class AExternalScoreParser<T extends AExternalScoreParseSpecification, 
 
 	@Override
 	protected void parseFile(BufferedReader reader) throws IOException {
-		swtGuiManager.setProgressBarText("Loading ranking");
+		GeneralManager.get().getSplash().updateProgessLabel("Loading ranking");
 
 		if (spec.getDataSourcePath() == null) {
 			log.info("No path for ranking specified");

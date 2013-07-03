@@ -244,7 +244,7 @@ public class TabularDataParser extends ATextParser {
 		initializTables();
 
 		// Init progress bar
-		swtGuiManager.setProgressBarText("Loading data for: " + dataSetDescription.getDataSetName());
+		GeneralManager.get().getSplash().updateProgessLabel("Loading data for: " + dataSetDescription.getDataSetName());
 		float progressBarFactor = 100f / numberOfLinesInFile;
 
 		for (int countHeaderLines = 0; countHeaderLines < dataSetDescription.getNumberOfHeaderLines(); countHeaderLines++) {
@@ -361,7 +361,7 @@ public class TabularDataParser extends ATextParser {
 
 			}
 			if (lineCounter % 100 == 0) {
-				swtGuiManager.setProgressBarPercentage((int) (progressBarFactor * lineCounter));
+				GeneralManager.get().getSplash().updateProgress((int) (progressBarFactor * lineCounter));
 			}
 			lineCounter++;
 		}
