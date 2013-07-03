@@ -23,7 +23,7 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.data.DataDomainUpdateEvent;
-import org.caleydo.core.event.data.NewDataDomainEvent;
+import org.caleydo.core.event.data.NewDataDomainLoadedEvent;
 import org.caleydo.core.event.data.RemoveDataDomainEvent;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.collection.Pair;
@@ -220,7 +220,7 @@ public class GLTourGuideView extends AGLElementView {
 	}
 
 	@ListenTo
-	private void onAddDataDomain(final NewDataDomainEvent event) {
+	private void onAddDataDomain(final NewDataDomainLoadedEvent event) {
 		IDataDomain dd = event.getDataDomain();
 
 		if (!mode.apply(dd))
