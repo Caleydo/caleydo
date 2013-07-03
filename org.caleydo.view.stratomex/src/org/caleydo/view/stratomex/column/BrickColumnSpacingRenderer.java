@@ -528,7 +528,7 @@ public class BrickColumnSpacingRenderer extends ALayoutRenderer implements IDrop
 					float trendRatio = 0;
 					float[] color = new float[] { 0, 0, 0, 1 };
 
-					if (selectionType == SelectionType.NORMAL && !stratomex.isConnectionsOn()) {
+					if (selectionType == SelectionType.NORMAL && stratomex.isConnectionsShowOnlySelected()) {
 						continue;
 					}
 

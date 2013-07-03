@@ -58,6 +58,7 @@ public class RcpSelectionInfoView extends CaleydoRCPViewPart implements IEventBa
 	private TreeViewer selectionTree;
 
 	private OpenExternalWrappingAction openExternalWrapper;
+	private CopySelectionToClipBoardAction copyToClipBoard;
 
 	/**
 	 * Constructor.
@@ -109,7 +110,7 @@ public class RcpSelectionInfoView extends CaleydoRCPViewPart implements IEventBa
 			}
 		});
 
-		this.injectExternalFeature();
+		this.injectContextMenu();
 
 		selectionTree.setInput(this.categories);
 
@@ -250,7 +251,7 @@ public class RcpSelectionInfoView extends CaleydoRCPViewPart implements IEventBa
 		}
 	}
 
-	private void injectExternalFeature() {
+	private void injectContextMenu() {
 		// initalize the context menu
 		MenuManager menuMgr = new MenuManager("#PopupMenu"); //$NON-NLS-1$
 		menuMgr.setRemoveAllWhenShown(true);
@@ -260,6 +261,7 @@ public class RcpSelectionInfoView extends CaleydoRCPViewPart implements IEventBa
 				Object element = ((StructuredSelection) selectionTree.getSelection()).getFirstElement();
 				if (element == null)
 					return;
+				manager.add(copyToClipBoard);
 				if (element instanceof CategoryItem) {
 					// CategoryItem item = (CategoryItem)element;
 				} else if (element instanceof SelectionTypeItem) {
@@ -288,6 +290,7 @@ public class RcpSelectionInfoView extends CaleydoRCPViewPart implements IEventBa
 					IAction action = OpenExternalAction.create(item.getIDType(), item.getId());
 					openExternalWrapper.setWrappee(action);
 				}
+				copyToClipBoard.setSelection((ITreeSelection) event.getSelection());
 			}
 		});
 	}
@@ -296,6 +299,8 @@ public class RcpSelectionInfoView extends CaleydoRCPViewPart implements IEventBa
 	public void addToolBarContent() {
 		this.openExternalWrapper = new OpenExternalWrappingAction();
 		toolBarManager.add(openExternalWrapper);
+		this.copyToClipBoard = new CopySelectionToClipBoardAction();
+		toolBarManager.add(copyToClipBoard);
 		super.addToolBarContent();
 	}
 

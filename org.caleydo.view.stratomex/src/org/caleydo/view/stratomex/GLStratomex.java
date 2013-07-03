@@ -178,7 +178,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	 */
 	private EventBasedSelectionManager recordSelectionManager;
 
-	private boolean connectionsOn = true;
+	private boolean connectionsShowOnlySelected = false;
 	private boolean connectionsHighlightDynamic = false;
 
 	private int selectedConnectionBandID = -1;
@@ -1565,15 +1565,15 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 
 	@ListenTo
 	private void onHandleTrendHighlightMode(ConnectionsModeEvent event) {
-		this.connectionsOn = event.isConnectionsOn();
+		this.connectionsShowOnlySelected = event.isConnectionsShowOnlySelected();
 		this.connectionsHighlightDynamic = event.isConnectionsHighlightDynamic();
 		this.connectionsFocusFactor = event.getFocusFactor();
 
 		updateConnectionLinesBetweenColumns();
 	}
 
-	public boolean isConnectionsOn() {
-		return connectionsOn;
+	public boolean isConnectionsShowOnlySelected() {
+		return connectionsShowOnlySelected;
 	}
 
 	public boolean isConnectionsHighlightDynamic() {

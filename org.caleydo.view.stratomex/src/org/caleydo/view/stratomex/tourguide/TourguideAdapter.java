@@ -659,6 +659,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 
 	@ListenTo(sendToMe = true)
 	private void onUpdatePreview(UpdateStratificationPreviewEvent event) {
+		boolean wasOnTheFly = wizard == null;
 		if (wizard == null) { // no wizard there to handle add a template column on the fly
 			initIntermediateWizard();
 			wizard = factory.createForStratification(this, stratomex);
@@ -666,6 +667,8 @@ public class TourguideAdapter implements IStratomexAdapter {
 			wizard.prepare();
 		}
 		wizard.onUpdate(event);
+		if (wasOnTheFly && !wizardPreviews.isEmpty())
+			onWizardAction(new WizardActionsEvent(CONFIRM_PICKING_TYPE));
 	}
 
 	private TablePerspective initIntermediateWizard() {
@@ -679,6 +682,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 
 	@ListenTo(sendToMe = true)
 	private void onUpdatePreview(UpdatePathwayPreviewEvent event) {
+		boolean wasOnTheFly = wizard == null;
 		if (wizard == null) { // no wizard there to handle add a template column on the fly
 			initIntermediateWizard();
 			wizard = factory.createForPathway(this, stratomex);
@@ -686,11 +690,14 @@ public class TourguideAdapter implements IStratomexAdapter {
 			wizard.prepare();
 		}
 		wizard.onUpdate(event);
+		if (wasOnTheFly && !wizardPreviews.isEmpty())
+			onWizardAction(new WizardActionsEvent(CONFIRM_PICKING_TYPE));
 
 	}
 
 	@ListenTo(sendToMe = true)
 	private void onUpdateNumerical(UpdateNumericalPreviewEvent event) {
+		boolean wasOnTheFly = wizard == null;
 		if (wizard == null) { // no wizard there to handle add a template column on the fly
 			initIntermediateWizard();
 			wizard = factory.createForOther(this, stratomex);
@@ -698,6 +705,8 @@ public class TourguideAdapter implements IStratomexAdapter {
 			wizard.prepare();
 		}
 		wizard.onUpdate(event);
+		if (wasOnTheFly && !wizardPreviews.isEmpty())
+			onWizardAction(new WizardActionsEvent(CONFIRM_PICKING_TYPE));
 	}
 
 	/**

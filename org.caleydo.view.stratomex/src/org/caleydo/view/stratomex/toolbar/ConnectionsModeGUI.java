@@ -35,7 +35,7 @@ public class ConnectionsModeGUI extends ControlContribution {
 
 		final Button[] radios = new Button[1];
 		radios[0] = new Button(composite, SWT.CHECK);
-		radios[0].setSelection(true);
+		radios[0].setSelection(false);
 		radios[0].setText("Show Only Selected Connections");
 
 		final Button dynamicTrendHighlightButton = new Button(composite, SWT.CHECK);

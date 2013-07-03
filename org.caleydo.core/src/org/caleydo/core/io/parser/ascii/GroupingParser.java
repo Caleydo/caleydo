@@ -17,16 +17,16 @@ import org.caleydo.core.id.IDType;
 import org.caleydo.core.io.GroupingParseSpecification;
 import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.io.IDTypeParsingRules;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 /**
- * Parses a delimited text file which contains information on groupings of ids.
- * Creates {@link PerspectiveInitializationData} which then can be used to
- * create the {@link GroupList}s. The parser is based on the specification given
- * in {@link GroupingParseSpecification}.
+ * Parses a delimited text file which contains information on groupings of ids. Creates
+ * {@link PerspectiveInitializationData} which then can be used to create the {@link GroupList}s. The parser is based on
+ * the specification given in {@link GroupingParseSpecification}.
  *
  * @author Alexander Lex
  */
@@ -38,8 +38,7 @@ public class GroupingParser extends ATextParser {
 	/** Where the data is stored during parsing */
 	private ArrayList<PerspectiveInitializationData> perspectiveInitializationDatas;
 
-	public GroupingParser(GroupingParseSpecification groupingSpecifications,
-			IDType targetIDType) {
+	public GroupingParser(GroupingParseSpecification groupingSpecifications, IDType targetIDType) {
 		super(groupingSpecifications.getDataSourcePath());
 		this.groupingSpecifications = groupingSpecifications;
 		this.targetIDType = targetIDType;
@@ -48,7 +47,7 @@ public class GroupingParser extends ATextParser {
 	@Override
 	protected void parseFile(BufferedReader reader) throws IOException {
 
-		swtGuiManager.setProgressBarText("Loading groupings for " + targetIDType);
+		GeneralManager.get().getSplash().updateProgessLabel("Loading groupings for " + targetIDType);
 		float progressBarFactor = 100f / numberOfLinesInFile;
 
 		IDSpecification idSpecification = groupingSpecifications.getRowIDSpecification();
@@ -61,15 +60,14 @@ public class GroupingParser extends ATextParser {
 			parsingRules = sourceIDType.getIdTypeParsingRules();
 
 		if (!sourceIDType.getIDCategory().equals(targetIDType.getIDCategory()))
-			throw new IllegalArgumentException("Can not map between specified IDTypes: "
-					+ sourceIDType + ", " + targetIDType);
+			throw new IllegalArgumentException("Can not map between specified IDTypes: " + sourceIDType + ", "
+					+ targetIDType);
 
-		IDMappingManager idMappingManager = IDMappingManagerRegistry.get()
-				.getIDMappingManager(sourceIDType.getIDCategory());
+		IDMappingManager idMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(
+				sourceIDType.getIDCategory());
 
 		if (groupingSpecifications.getDataSourcePath() == null) {
-			Logger.log(new Status(IStatus.INFO, this.toString(),
-					"No path for grouping specified"));
+			Logger.log(new Status(IStatus.INFO, this.toString(), "No path for grouping specified"));
 			return;
 		}
 		try {
@@ -84,8 +82,7 @@ public class GroupingParser extends ATextParser {
 				String headerLine = "";
 
 				int rowOfColumnIDs = (groupingSpecifications.getRowOfColumnIDs() != null) ? groupingSpecifications
-						.getRowOfColumnIDs() : groupingSpecifications
-						.getNumberOfHeaderLines() - 1;
+						.getRowOfColumnIDs() : groupingSpecifications.getNumberOfHeaderLines() - 1;
 				for (int countToHeader = 0; countToHeader <= rowOfColumnIDs; countToHeader++) {
 					headerLine = reader.readLine();
 				}
@@ -95,8 +92,7 @@ public class GroupingParser extends ATextParser {
 
 			reader = loader.getResource(groupingSpecifications.getDataSourcePath());
 
-			for (int headerLineCounter = 0; headerLineCounter < groupingSpecifications
-					.getNumberOfHeaderLines(); headerLineCounter++) {
+			for (int headerLineCounter = 0; headerLineCounter < groupingSpecifications.getNumberOfHeaderLines(); headerLineCounter++) {
 				reader.readLine();
 			}
 
@@ -107,8 +103,7 @@ public class GroupingParser extends ATextParser {
 			String firstDataLine = null;
 			if (columnsToRead == null || headerCells == null) {
 				firstDataLine = reader.readLine();
-				String[] data = firstDataLine
-						.split(groupingSpecifications.getDelimiter());
+				String[] data = firstDataLine.split(groupingSpecifications.getDelimiter());
 				if (columnsToRead == null) {
 					columnsToRead = new ArrayList<Integer>(data.length);
 
@@ -127,8 +122,7 @@ public class GroupingParser extends ATextParser {
 
 			ArrayList<ArrayList<Pair<String, ArrayList<Integer>>>> listOfGroupLists = new ArrayList<ArrayList<Pair<String, ArrayList<Integer>>>>(
 					columnsToRead.size());
-			ArrayList<String> listOfGroupNames = new ArrayList<String>(
-					columnsToRead.size());
+			ArrayList<String> listOfGroupNames = new ArrayList<String>(columnsToRead.size());
 
 			ArrayList<Pair<String, ArrayList<Integer>>> currentGroupList;
 			// initialize for every column
@@ -158,11 +152,9 @@ public class GroupingParser extends ATextParser {
 
 				originalID = convertID(originalID, parsingRules);
 
-				Integer mappedID = idMappingManager.getID(sourceIDType, targetIDType,
-						originalID);
+				Integer mappedID = idMappingManager.getID(sourceIDType, targetIDType, originalID);
 				if (mappedID == null) {
-					Logger.log(new Status(IStatus.WARNING, this.toString(),
-							"Could not map id: " + originalID));
+					Logger.log(new Status(IStatus.WARNING, this.toString(), "Could not map id: " + originalID));
 					continue;
 				}
 
@@ -179,16 +171,14 @@ public class GroupingParser extends ATextParser {
 					// ArrayList<Integer> group = currentGroupList.get();
 					if (group == null) {
 						group = new ArrayList<Integer>();
-						currentGroupList.add(new Pair<String, ArrayList<Integer>>(
-								columns[columnID], group));
+						currentGroupList.add(new Pair<String, ArrayList<Integer>>(columns[columnID], group));
 					}
 					group.add(mappedID);
 					groupListCounter++;
 				}
 				lineCounter++;
 				if (lineCounter % 100 == 0) {
-					swtGuiManager
-							.setProgressBarPercentage((int) (progressBarFactor * lineCounter));
+					GeneralManager.get().getSplash().updateProgress((int) (progressBarFactor * lineCounter));
 				}
 			}
 
@@ -196,12 +186,10 @@ public class GroupingParser extends ATextParser {
 			perspectiveInitializationDatas = new ArrayList<PerspectiveInitializationData>();
 
 			for (int groupListCount = 0; groupListCount < listOfGroupLists.size(); groupListCount++) {
-				ArrayList<Pair<String, ArrayList<Integer>>> groupList = listOfGroupLists
-						.get(groupListCount);
+				ArrayList<Pair<String, ArrayList<Integer>>> groupList = listOfGroupLists.get(groupListCount);
 				ArrayList<Integer> sortedIDs = new ArrayList<Integer>();
 				ArrayList<Integer> clusterSizes = new ArrayList<Integer>(groupList.size());
-				ArrayList<Integer> sampleElements = new ArrayList<Integer>(
-						groupList.size());
+				ArrayList<Integer> sampleElements = new ArrayList<Integer>(groupList.size());
 				ArrayList<String> clusterNames = new ArrayList<String>(groupList.size());
 				int sampleIndex = 0;
 				for (Pair<String, ArrayList<Integer>> groupPair : groupList) {
@@ -218,8 +206,7 @@ public class GroupingParser extends ATextParser {
 				String groupLabel = listOfGroupNames.get(groupListCount);
 				if (groupLabel.equals(DEFAULT_GROUP_NAME)) {
 					if (groupingSpecifications.getGroupingName() != null) {
-						groupLabel = clusterSizes.size() + " "
-								+ groupingSpecifications.getGroupingName();
+						groupLabel = clusterSizes.size() + " " + groupingSpecifications.getGroupingName();
 					} else {
 						groupLabel = clusterSizes.size() + " Clusters";
 					}
@@ -229,14 +216,12 @@ public class GroupingParser extends ATextParser {
 			}
 
 		} catch (IOException ioException) {
-			throw new IllegalStateException("Could not read file: "
-					+ groupingSpecifications.getDataSourcePath());
+			throw new IllegalStateException("Could not read file: " + groupingSpecifications.getDataSourcePath());
 		}
 	}
 
 	/**
-	 * @return the perspectiveInitializationDatas, see
-	 *         {@link #perspectiveInitializationDatas}
+	 * @return the perspectiveInitializationDatas, see {@link #perspectiveInitializationDatas}
 	 */
 	public ArrayList<PerspectiveInitializationData> getPerspectiveInitializationDatas() {
 		return perspectiveInitializationDatas;
