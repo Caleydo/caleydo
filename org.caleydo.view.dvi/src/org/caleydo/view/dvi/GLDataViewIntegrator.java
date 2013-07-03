@@ -37,6 +37,7 @@ import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.MinSizeAppliedEvent;
 import org.caleydo.core.event.data.DataDomainUpdateEvent;
 import org.caleydo.core.event.data.NewDataDomainEvent;
+import org.caleydo.core.event.data.NewDataDomainLoadedEvent;
 import org.caleydo.core.event.data.RemoveDataDomainEvent;
 import org.caleydo.core.event.view.NewViewEvent;
 import org.caleydo.core.event.view.SetMinViewSizeEvent;
@@ -445,6 +446,7 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 		DataDomainEventListener newDataDomainEventListener = new DataDomainEventListener();
 		newDataDomainEventListener.setHandler(this);
 		listeners.register(NewDataDomainEvent.class, newDataDomainEventListener);
+		listeners.register(NewDataDomainLoadedEvent.class, newDataDomainEventListener);
 		listeners.register(RemoveDataDomainEvent.class, newDataDomainEventListener);
 
 		CreateTablePerspectiveEventListener addTablePerspectiveEventListener = new CreateTablePerspectiveEventListener();

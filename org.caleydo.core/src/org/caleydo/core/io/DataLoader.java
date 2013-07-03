@@ -25,6 +25,8 @@ import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.GroupList;
+import org.caleydo.core.event.EventPublisher;
+import org.caleydo.core.event.data.NewDataDomainLoadedEvent;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.id.IDTypeInitializer;
@@ -74,6 +76,9 @@ public class DataLoader {
 		if (dataSetDescription.getDataDescription() == null) {
 			createInitialPerspectives(dataDomain, monitor);
 		}
+
+		EventPublisher.trigger(new NewDataDomainLoadedEvent(dataDomain));
+
 		return dataDomain;
 	}
 
