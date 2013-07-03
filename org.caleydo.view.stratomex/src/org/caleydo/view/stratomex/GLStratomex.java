@@ -20,7 +20,9 @@ import java.util.Set;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 
+import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.datadomain.DataDomainOracle;
 import org.caleydo.core.data.datadomain.DataSupportDefinitions;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.datadomain.IDataSupportDefinition;
@@ -81,6 +83,7 @@ import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
 import org.caleydo.view.stratomex.brick.GLBrick;
 import org.caleydo.view.stratomex.brick.configurer.CategoricalDataConfigurer;
+import org.caleydo.view.stratomex.brick.configurer.ClinicalDataConfigurer;
 import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
 import org.caleydo.view.stratomex.brick.configurer.NumericalDataConfigurer;
 import org.caleydo.view.stratomex.brick.configurer.PathwayDataConfigurer;
@@ -1293,7 +1296,20 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		if (tablePerspective instanceof PathwayTablePerspective) {
 			brickConfigurer = new PathwayDataConfigurer();
 		} else if (tablePerspective.getNrDimensions() == 1) {
-			brickConfigurer = new CategoricalDataConfigurer(tablePerspective);
+
+			Object description = tablePerspective
+					.getDataDomain()
+					.getTable()
+					.getDataClassSpecificDescription(
+							tablePerspective.getDimensionPerspective().getVirtualArray().get(0),
+							tablePerspective.getRecordPerspective().getVirtualArray().get(0));
+
+			if (DataDomainOracle.isClinical(tablePerspective.getDataDomain())
+					&& !(description instanceof CategoricalClassDescription<?>)) {
+				brickConfigurer = new ClinicalDataConfigurer();
+			} else {
+				brickConfigurer = new CategoricalDataConfigurer(tablePerspective);
+			}
 		} else {
 			brickConfigurer = new NumericalDataConfigurer(tablePerspective);
 		}
