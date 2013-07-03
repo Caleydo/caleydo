@@ -61,15 +61,30 @@ public class InteractiveSplashHandler extends AbstractSplashHandler {
 		splash.setText("Loading Caleydo...");
 	}
 
-	public void updateProgress(int percentage) {
+	public void updateProgress(final int percentage) {
 
 		if (progressBar.isDisposed())
 			return;
+		Display.getDefault().asyncExec(new Runnable() {
 
-		progressBar.setSelection(percentage);
+			@Override
+			public void run() {
+				progressBar.setSelection(percentage);
+			}
+		});
+
 	}
 
-	public void updateProgessLabel(String message) {
-		gc.drawString(message, progressLabelX, progressLabelY, true);
+	public void updateProgessLabel(final String message) {
+		if (gc.isDisposed())
+			return;
+		Display.getDefault().asyncExec(new Runnable() {
+
+			@Override
+			public void run() {
+				gc.drawString(message, progressLabelX, progressLabelY, true);
+			}
+		});
+
 	}
 }
