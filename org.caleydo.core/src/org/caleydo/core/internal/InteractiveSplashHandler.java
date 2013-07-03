@@ -40,7 +40,6 @@ public class InteractiveSplashHandler extends AbstractSplashHandler {
 
 		splash.setBackgroundMode(SWT.INHERIT_DEFAULT);
 
-
 		Label progressMessageLabel = new Label(splash, SWT.NONE);
 		progressMessageLabel.setText(" Loading...");
 		final Display display = splash.getDisplay();
@@ -51,9 +50,8 @@ public class InteractiveSplashHandler extends AbstractSplashHandler {
 		progressMessageLabel.setForeground(display.getSystemColor(SWT.COLOR_WHITE));
 		progressMessageLabel.setBackground(display.getSystemColor(SWT.COLOR_DARK_GRAY));
 
-
 		Label versionLabel = new Label(splash, SWT.NONE);
-		versionLabel.setText(" Version " + Activator.version);
+		versionLabel.setText(" Version " + GeneralManager.VERSION);
 		versionLabel.setFont(new Font(display, "Arial", 9, SWT.NONE));
 		versionLabel.setBounds(336, 185, 150, 20);
 		versionLabel.setForeground(display.getSystemColor(SWT.COLOR_WHITE));
