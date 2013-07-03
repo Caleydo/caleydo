@@ -191,7 +191,7 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 		// reuse existing
 		TablePerspective tablePerspective = findExistingTablePerspective(label);
 		if (tablePerspective != null) {
-			if (dataDomain2.isColumnDimension()) {
+			if (dataDomain2.getRecordIDType() != getCategoryIDType()) {
 				return tablePerspective.getRecordPerspective().getVirtualArray();
 			} else {
 				return tablePerspective.getDimensionPerspective().getVirtualArray();
