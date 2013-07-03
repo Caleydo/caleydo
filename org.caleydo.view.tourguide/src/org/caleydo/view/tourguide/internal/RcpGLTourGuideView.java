@@ -10,8 +10,11 @@ import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.stratomex.RcpGLStratomexView;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.internal.view.GLTourGuideView;
+import org.eclipse.e4.ui.model.application.ui.basic.MPart;
+import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IPartListener2;
+import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchPartReference;
@@ -32,8 +35,23 @@ public class RcpGLTourGuideView extends ARcpGLViewPart {
 		view = new GLTourGuideView(glCanvas, mode);
 		initializeView();
 		createPartControlGL();
-		// mark active part again as active
-		stratomexListener.partActivated(getSite().getPage().getActivePartReference());
+
+		EPartService service = (EPartService) getSite().getService(EPartService.class);
+
+		// find visible StratomeX
+		for (MPart part : service.getParts()) {
+			if (service.isPartVisible(part)) {
+				GLTourGuideView m = getView();
+				GLStratomex stratomex = null;
+				IViewPart view = getSite().getPage().findView(part.getElementId());
+				if (view instanceof RcpGLStratomexView) {
+					RcpGLStratomexView strat = (RcpGLStratomexView) view;
+					stratomex = strat.getView();
+					if (m != null && stratomex != null)
+						m.switchToStratomex(stratomex);
+				}
+			}
+		}
 	}
 
 	@Override
@@ -73,17 +91,14 @@ public class RcpGLTourGuideView extends ARcpGLViewPart {
 	private final IPartListener2 stratomexListener = new IPartListener2() {
 		@Override
 		public void partVisible(IWorkbenchPartReference partRef) {
-
 		}
 
 		@Override
 		public void partOpened(IWorkbenchPartReference partRef) {
-
 		}
 
 		@Override
 		public void partInputChanged(IWorkbenchPartReference partRef) {
-
 		}
 
 		@Override
@@ -102,7 +117,6 @@ public class RcpGLTourGuideView extends ARcpGLViewPart {
 
 		@Override
 		public void partBroughtToTop(IWorkbenchPartReference partRef) {
-
 		}
 
 		@Override
