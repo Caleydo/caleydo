@@ -59,7 +59,6 @@
 				<include name="org.caleydo.lib.jgrapht/jgrapht-0.8.3-jdk1.6.jar" />
 				<include name="org.caleydo.lib.jsap/JSAP-2.1.jar" />
 				<include name="org.caleydo.lib.tagsoup/tagsoup-1.2.1.jar" />
-				<include name="org.caleydo.lib.weka/weka-stable-3.6.8.jar" />
 			</fileset>-->
 		</copy>
 		
