@@ -338,6 +338,7 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 		else
 			dataSet.setColumnOfRowIds(12);
 
+		int counter = 0;
 		Collection<String> toInclude = settings.getClinicalVariables();
 		for (int i = 2; i < columns.size(); ++i) {
 			String name = columns.get(i).toLowerCase();
@@ -353,13 +354,18 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 				if (mapping == null && !toInclude.isEmpty()) {
 					log.warning("activly selected clinicial variable: " + name + " is not known using default");
 					dataSet.addParsingPattern(ClinicalMapping.createDefault(i));
+					counter++;
 				} else if (mapping != null) {
 					dataSet.addParsingPattern(mapping.create(i));
+					counter++;
 				} else {
 					continue;
 				}
 			}
 		}
+		if (counter == 0) // empty file
+			return null;
+
 		return dataSet;
 	}
 
