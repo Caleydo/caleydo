@@ -654,7 +654,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 			//TODO: This is a cheap hack now to pass fixed sizes for embedded views using new GLElements
 			// Currently for the scatterplots 
 			int defaultHeightPixels = 0;
-			if(rendererID == 0)
+			if(rendererID == 0 || rendererID == 3)
 			{
 				defaultHeightPixels = 200;
 			}
@@ -686,7 +686,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 			wrappingLayout.setPixelSizeX(staticBrickWidth);
 			break;
 		case DATA_TYPE_DEFAULT:
-			if(rendererID == 0)
+			if(rendererID == 0 || rendererID == 3)
 			{
 				wrappingLayout.setPixelSizeX(200);
 			}
