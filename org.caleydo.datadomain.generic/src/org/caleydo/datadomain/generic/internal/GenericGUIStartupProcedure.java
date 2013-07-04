@@ -8,8 +8,6 @@ package org.caleydo.datadomain.generic.internal;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.startup.ImportStartupProcedure;
 
-import com.google.common.base.Function;
-
 /**
  * Startup procedure for project wizard.
  *
@@ -18,8 +16,8 @@ import com.google.common.base.Function;
 public class GenericGUIStartupProcedure extends ImportStartupProcedure {
 
 	@Override
-	public boolean run(Function<String, Void> setTitle) {
+	public void run() {
 		DataDomainManager.get().initalizeDataDomain("org.caleydo.datadomain.generic");
-		return super.run(setTitle);
+		super.run();
 	}
 }

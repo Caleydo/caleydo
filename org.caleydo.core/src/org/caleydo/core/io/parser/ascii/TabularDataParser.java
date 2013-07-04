@@ -38,6 +38,7 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.SubMonitor;
 
 /**
  * <p>
@@ -113,7 +114,6 @@ public class TabularDataParser extends ATextParser {
 			}
 		}
 
-		calculateNumberOfLinesInFile();
 		int numberOfDataLines = numberOfLinesInFile - dataSetDescription.getNumberOfHeaderLines();
 
 		// prepare for id setting of column IDs
@@ -241,15 +241,15 @@ public class TabularDataParser extends ATextParser {
 
 	@Override
 	protected void parseFile(BufferedReader reader) throws IOException {
+		SubMonitor monitor = GeneralManager.get().createSubProgressMonitor();
+		monitor.beginTask("Loading data for: " + dataSetDescription.getDataSetName(), calculateNumberOfLinesInFile());
 		initializTables();
 
 		// Init progress bar
-		GeneralManager.get().updateProgressLabel("Loading data for: " + dataSetDescription.getDataSetName());
-		float progressBarFactor = 100f / numberOfLinesInFile;
-
 		for (int countHeaderLines = 0; countHeaderLines < dataSetDescription.getNumberOfHeaderLines(); countHeaderLines++) {
 			reader.readLine();
 		}
+		monitor.worked(dataSetDescription.getNumberOfHeaderLines());
 
 		List<ColumnDescription> parsingPattern = dataSetDescription.getOrCreateParsingPattern();
 
@@ -361,7 +361,7 @@ public class TabularDataParser extends ATextParser {
 
 			}
 			if (lineCounter % 100 == 0) {
-				GeneralManager.get().updateProgress((int) (progressBarFactor * lineCounter));
+				monitor.worked(100);
 			}
 			lineCounter++;
 		}
@@ -369,6 +369,7 @@ public class TabularDataParser extends ATextParser {
 		if (parsingErrorOccured) {
 			Logger.log(new Status(IStatus.ERROR, this.toString(), numberParsingErrorMessage));
 		}
+		monitor.done();
 	}
 
 	@Override

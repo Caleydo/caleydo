@@ -22,6 +22,7 @@ import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.SubMonitor;
 
 /**
  * Parses a delimited text file which contains information on groupings of ids. Creates
@@ -46,9 +47,8 @@ public class GroupingParser extends ATextParser {
 
 	@Override
 	protected void parseFile(BufferedReader reader) throws IOException {
-
-		GeneralManager.get().updateProgressLabel("Loading groupings for " + targetIDType);
-		float progressBarFactor = 100f / numberOfLinesInFile;
+		SubMonitor monitor = GeneralManager.get().createSubProgressMonitor();
+		monitor.beginTask("Loading groupings for " + targetIDType, numberOfLinesInFile + 20);
 
 		IDSpecification idSpecification = groupingSpecifications.getRowIDSpecification();
 		IDType sourceIDType = IDType.getIDType(idSpecification.getIdType());
@@ -68,6 +68,7 @@ public class GroupingParser extends ATextParser {
 
 		if (groupingSpecifications.getDataSourcePath() == null) {
 			Logger.log(new Status(IStatus.INFO, this.toString(), "No path for grouping specified"));
+			monitor.done();
 			return;
 		}
 		try {
@@ -145,7 +146,9 @@ public class GroupingParser extends ATextParser {
 				}
 				if (line == null)
 					break;
-
+				lineCounter++;
+				if (lineCounter % 100 == 0)
+					monitor.worked(100);
 				// read ID
 				String[] columns = line.split(groupingSpecifications.getDelimiter());
 				String originalID = columns[groupingSpecifications.getColumnOfRowIds()];
@@ -176,12 +179,9 @@ public class GroupingParser extends ATextParser {
 					group.add(mappedID);
 					groupListCounter++;
 				}
-				lineCounter++;
-				if (lineCounter % 100 == 0) {
-					GeneralManager.get().updateProgress((int) (progressBarFactor * lineCounter));
-				}
 			}
 
+			monitor.setWorkRemaining(20);
 			// Create the initialization data
 			perspectiveInitializationDatas = new ArrayList<PerspectiveInitializationData>();
 
@@ -217,6 +217,8 @@ public class GroupingParser extends ATextParser {
 
 		} catch (IOException ioException) {
 			throw new IllegalStateException("Could not read file: " + groupingSpecifications.getDataSourcePath());
+		} finally {
+			monitor.done();
 		}
 	}
 

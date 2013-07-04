@@ -5,7 +5,9 @@
  ******************************************************************************/
 package org.caleydo.core.startup;
 
+import org.caleydo.core.internal.Application;
 import org.caleydo.core.manager.GeneralManager;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.graphics.Rectangle;
@@ -34,7 +36,11 @@ public class InteractiveSplashHandler extends BasicSplashHandler {
 
 
 		// public the progress monitor
-		GeneralManager.get().setSplashProgressMonitor(this.getBundleProgressMonitor());
+		IProgressMonitor monitor = this.getBundleProgressMonitor();
+		monitor.beginTask("Loading Caleydo...", 100);
+		GeneralManager.get().setSplashProgressMonitor(monitor);
+
+		Application.get().runStartup();
 	}
 
 }

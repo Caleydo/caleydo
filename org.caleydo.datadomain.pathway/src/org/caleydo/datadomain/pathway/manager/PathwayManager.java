@@ -314,8 +314,6 @@ public class PathwayManager extends AManager<PathwayGraph> {
 			} else {
 				throw new IllegalStateException("Cannot load pathways from organism " + organism);
 			}
-
-			generalManager.updateProgressLabel("Loading KEGG Pathways...");
 		}
 
 		pathwayResourceLoader = PathwayManager.get().getPathwayResourceLoader(pathwayDatabase.getType());

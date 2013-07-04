@@ -18,6 +18,7 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.SubMonitor;
 
 /**
  * <p>
@@ -116,14 +117,12 @@ public class IDMappingParser extends ATextParser {
 
 	@Override
 	protected void parseFile(BufferedReader reader) throws IOException {
-
-		GeneralManager.get().updateProgressLabel("Loading ID mapping for " + mappingType);
+		SubMonitor monitor = GeneralManager.get().createSubProgressMonitor();
 		String line;
 
 		int lineCounter = 0;
 		calculateNumberOfLinesInFile();
-
-		float progressBarFactor = 100f / numberOfLinesInFile;
+		monitor.beginTask("Loading ID mapping for " + mappingType, numberOfLinesInFile);
 
 		while ((line = reader.readLine()) != null && lineCounter <= stopParsingAtLine) {
 			/**
@@ -167,9 +166,10 @@ public class IDMappingParser extends ATextParser {
 
 			// Update progress bar only on each 100th line
 			if (lineCounter % 100 == 0) {
-				GeneralManager.get().updateProgress((int) (progressBarFactor * lineCounter));
+				monitor.worked(100);
 			}
 			lineCounter++;
 		}
+		monitor.done();
 	}
 }

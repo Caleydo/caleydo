@@ -5,14 +5,14 @@
  ******************************************************************************/
 package org.caleydo.core.startup;
 
-import com.google.common.base.Function;
+import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 
 /**
  *
  * @author Samuel Gratzl
  *
  */
-public interface IStartupProcedure {
+public interface IStartupProcedure extends Runnable {
 
 	/**
 	 * Initialization stuff that has to be done before the workbench opens
@@ -21,16 +21,7 @@ public interface IStartupProcedure {
 	boolean preWorkbenchOpen();
 
 	/**
-	 * the actual work of this startup procedure
-	 *
-	 * @param setTitle
-	 *            callback for setting the window title
-	 * @return whether the procedure was successful
-	 */
-	boolean run(Function<String, Void> setTitle);
-
-	/**
 	 * Initialization stuff that has to be done after the workbench opened (e.g., making a specific view activate)
 	 **/
-	void postWorkbenchOpen();
+	void postWorkbenchOpen(IWorkbenchWindowConfigurer configurer);
 }

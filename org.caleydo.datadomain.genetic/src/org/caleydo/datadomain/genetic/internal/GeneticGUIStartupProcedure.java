@@ -14,8 +14,6 @@ import org.caleydo.core.startup.ImportStartupProcedure;
 import org.caleydo.datadomain.genetic.Activator;
 import org.caleydo.datadomain.genetic.Organism;
 
-import com.google.common.base.Function;
-
 /**
  * Startup procedure for project wizard.
  *
@@ -35,10 +33,10 @@ public class GeneticGUIStartupProcedure extends ImportStartupProcedure {
 	}
 
 	@Override
-	public boolean run(Function<String, Void> setTitle) {
+	public void run() {
 		Activator.setOrganism(organism);
 		DataDomainManager.get().initalizeDataDomain("org.caleydo.datadomain.genetic");
-		return super.run(setTitle);
+		super.run();
 	}
 
 

@@ -27,8 +27,7 @@ import org.caleydo.core.util.system.FileOperations;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.MessageDialog;
-
-import com.google.common.base.Function;
+import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 
 public class LoadProjectStartupProcedure implements IStartupProcedure {
 	/**
@@ -69,7 +68,11 @@ public class LoadProjectStartupProcedure implements IStartupProcedure {
 	}
 
 	@Override
-	public void postWorkbenchOpen() {
+	public void postWorkbenchOpen(IWorkbenchWindowConfigurer configurer) {
+		if (packedProjectLocation != null) {
+			String normalized = this.packedProjectLocation.replace(File.separatorChar, '/');
+			configurer.setTitle("Caleydo - " + normalized.substring(normalized.lastIndexOf('/') + 1));
+		}
 	}
 
 	private static void deserializeData(SerializationData serializationDataList) {
@@ -106,7 +109,7 @@ public class LoadProjectStartupProcedure implements IStartupProcedure {
 	}
 
 	@Override
-	public boolean run(Function<String, Void> setTitle) {
+	public void run() {
 		SerializationData serializationDataList;
 
 		// not calling super.init() on purpose
@@ -115,12 +118,6 @@ public class LoadProjectStartupProcedure implements IStartupProcedure {
 
 		serializationDataList = ProjectManager.loadProjectData(unpackedProjectLocation);
 
-		if (packedProjectLocation != null) {
-			String normalized = this.packedProjectLocation.replace(File.separatorChar, '/');
-			setTitle.apply("Caleydo - " + normalized.substring(normalized.lastIndexOf('/') + 1));
-		}
-
 		deserializeData(serializationDataList);
-		return true;
 	}
 }

@@ -25,7 +25,9 @@ import org.caleydo.data.loader.ResourceLoader;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.SubMonitor;
 
 /**
  * General manager that contains all module managers.
@@ -77,7 +79,7 @@ public class GeneralManager {
 	/**
 	 * Progress monitor of the splash. Only valid during startup.
 	 **/
-	private IProgressMonitor splashProgressMonitor;
+	private SubMonitor progressMonitor;
 
 	private ViewManager viewManager;
 	private EventPublisher eventPublisher;
@@ -89,6 +91,7 @@ public class GeneralManager {
 	private ProjectMetaData metaData = ProjectMetaData.createDefault();
 
 	private Logger logger = Logger.create(GeneralManager.class);
+
 
 	public void init() {
 		eventPublisher = EventPublisher.INSTANCE;
@@ -211,22 +214,22 @@ public class GeneralManager {
 	}
 
 	public void setSplashProgressMonitor(IProgressMonitor splashProgressMonitor) {
-		this.splashProgressMonitor = splashProgressMonitor;
+		this.progressMonitor = SubMonitor.convert(splashProgressMonitor, "Loading Caleydo", 1500);
 	}
 
-	public void updateProgress(int percentage) {
-		if (splashProgressMonitor == null) {
-			logger.info("Progress update:" + percentage);
-		} else {
-			splashProgressMonitor.worked(percentage);
-		}
-	}
+	public SubMonitor createSubProgressMonitor() {
+		if (progressMonitor == null)
+			return SubMonitor.convert(new NullProgressMonitor() {
+				@Override
+				public void setTaskName(String name) {
+					logger.info("progress, set task: " + name);
+				}
 
-	public void updateProgressLabel(String message) {
-		if (splashProgressMonitor == null) {
-			logger.info("Progress update:" + message);
-		} else {
-			splashProgressMonitor.setTaskName(message);
-		}
+				@Override
+				public void beginTask(String name, int totalWork) {
+					logger.info("begin task: " + name + " (" + totalWork + ")");
+				}
+			});
+		return progressMonitor.newChild(100, SubMonitor.SUPPRESS_SUBTASK);
 	}
 }
