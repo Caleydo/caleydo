@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Caleydo Core Plug-in
 Bundle-SymbolicName: org.caleydo.core;singleton:=true
-Bundle-Version: 2.2
+Bundle-Version: 3.0
 Export-Package: org.caleydo.core.data.collection,
  org.caleydo.core.data.collection.column;
   uses:="org.caleydo.core.data.collection,

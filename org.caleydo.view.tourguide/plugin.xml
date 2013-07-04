@@ -38,7 +38,7 @@
       <command
             defaultHandler="org.caleydo.view.tourguide.internal.OpenViewHandler"
             id="org.caleydo.view.tourguide.command.open"
-            name="Tour Guide">
+            name="LineUp">
       </command>
    </extension>
    <extension
