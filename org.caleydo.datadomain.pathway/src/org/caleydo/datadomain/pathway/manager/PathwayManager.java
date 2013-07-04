@@ -115,6 +115,10 @@ public class PathwayManager extends AManager<PathwayGraph> {
 		hashPathwayToVisibilityState = new HashMap<PathwayGraph, Boolean>();
 	}
 
+	public boolean hasPathways(EPathwayDatabaseType type) {
+		return this.mapPathwayDBToPathways.containsKey(type) && !this.mapPathwayDBToPathways.get(type).isEmpty();
+	}
+
 	public PathwayDatabase createPathwayDatabase(final EPathwayDatabaseType type, final String XMLPath,
 			final String imagePath, final String imageMapPath) {
 

@@ -5,7 +5,6 @@
  ******************************************************************************/
 package org.caleydo.view.tourguide.internal.view.specific;
 
-import org.caleydo.core.util.color.Color;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -14,9 +13,11 @@ import java.util.Map;
 
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
+import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.tourguide.internal.model.ADataDomainQuery;
 import org.caleydo.view.tourguide.internal.model.AScoreRow;
 import org.caleydo.view.tourguide.internal.model.PathwayDataDomainQuery;
@@ -41,7 +42,8 @@ public class PathwaySpecifics implements IDataDomainQueryModeSpecfics {
 		PathwayDataDomain dd = DataDomainManager.get().getDataDomainsByType(PathwayDataDomain.class).get(0);
 		Collection<ADataDomainQuery> r = new ArrayList<ADataDomainQuery>();
 		for (EPathwayDatabaseType type : EPathwayDatabaseType.values()) {
-			r.add(new PathwayDataDomainQuery(dd, type));
+			if (PathwayManager.get().hasPathways(type))
+				r.add(new PathwayDataDomainQuery(dd, type));
 		}
 		return r;
 	}
@@ -100,7 +102,7 @@ public class PathwaySpecifics implements IDataDomainQueryModeSpecfics {
 
 	/**
 	 * datadomains can be categorized in multiple categories
-	 * 
+	 *
 	 * @return
 	 */
 	@Override
