@@ -27,6 +27,7 @@ import javax.media.opengl.fixedfunc.GLMatrixFunc;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
 import org.caleydo.core.event.IListenerOwner;
+import org.caleydo.core.event.view.ViewScrollEvent;
 import org.caleydo.core.id.object.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
@@ -38,6 +39,7 @@ import org.caleydo.core.view.AView;
 import org.caleydo.core.view.IDataDomainBasedView;
 import org.caleydo.core.view.ViewManager;
 import org.caleydo.core.view.contextmenu.ContextMenuCreator;
+import org.caleydo.core.view.listener.ViewScrollEventListener;
 import org.caleydo.core.view.opengl.camera.IViewCamera;
 import org.caleydo.core.view.opengl.camera.ViewCameraBase;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -175,6 +177,12 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	protected GLMouseWheelListener glMouseWheelListener;
 
 	private boolean focusGained = false;
+
+	private int scrollX = 0;
+
+	private int scrollY = 0;
+
+	private ViewScrollEventListener viewScrollEventListener;
 
 	private IGLFocusListener focusListener = new IGLFocusListener() {
 		@Override
@@ -327,6 +335,7 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 			//
 			// }
 			// });
+
 			final Vec3f rot_Vec3f = new Vec3f();
 			final Vec3f position = viewCamera.getCameraPosition();
 
@@ -342,6 +351,10 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 			gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
 			gl.glLoadIdentity();
 
+			gl.glPushMatrix();
+			gl.glTranslatef(pixelGLConverter.getGLWidthForPixelWidth(scrollX),
+					pixelGLConverter.getGLHeightForPixelHeight(scrollY), 0);
+
 			// clear screen
 			gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 
@@ -355,6 +368,7 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 
 			if (showFPSCounter)
 				fpsCounter.draw();
+			gl.glPopMatrix();
 		} catch (RuntimeException exception) {
 			ExceptionHandler.get().handleViewException(exception, this);
 		}
@@ -364,6 +378,18 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
 
 		updateViewFrustum(width, height);
+		// scrollX = x;
+		// scrollY = y;
+
+		// Display.getDefault().asyncExec(new Runnable() {
+		//
+		// @Override
+		// public void run() {
+		// Composite parentsparent = parentComposite.getParent();
+		// System.out.println("asd");
+		//
+		// }
+		// });
 
 		setDisplayListDirty();
 		hasFrustumChanged = true;
@@ -1022,10 +1048,18 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 
 	@Override
 	public void registerEventListeners() {
+		viewScrollEventListener = new ViewScrollEventListener();
+		viewScrollEventListener.setHandler(this);
+		eventPublisher.addListener(ViewScrollEvent.class, viewScrollEventListener);
 	}
 
 	@Override
 	public void unregisterEventListeners() {
+		if (viewScrollEventListener != null) {
+			eventPublisher.removeListener(viewScrollEventListener);
+			viewScrollEventListener = null;
+		}
+
 	}
 
 	/**
@@ -1302,5 +1336,12 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 					textHeight);
 			linePositionY -= textHeight;
 		}
+	}
+
+	public void onScrolled(ViewScrollEvent event) {
+		// if (System.getProperty("os.name").contains("Mac")) {
+		// scrollX = -event.getOriginX();
+		// scrollY = event.getOriginY();
+		// }
 	}
 }
