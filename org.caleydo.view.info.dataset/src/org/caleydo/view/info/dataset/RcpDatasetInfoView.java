@@ -61,7 +61,6 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 
 	private final EventListenerManager listeners = EventListenerManagers.wrap(this);
 
-
 	/**
 	 * Constructor.
 	 */
@@ -82,7 +81,7 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 	public void createPartControl(Composite parent) {
 		ExpandBar expandBar = new ExpandBar(parent, SWT.V_SCROLL | SWT.NO_BACKGROUND);
 		expandBar.setSpacing(1);
-		expandBar.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		expandBar.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true));
 
 		parentComposite = expandBar;
 
@@ -98,9 +97,8 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 		parent.layout();
 	}
 
-
 	private void createDataSetInfos(ExpandBar expandBar) {
-		this.dataSetItem = new ExpandItem(expandBar, SWT.NONE);
+		this.dataSetItem = new ExpandItem(expandBar, SWT.WRAP);
 		dataSetItem.setText("Data Set: <no selection>");
 		Composite c = new Composite(expandBar, SWT.NONE);
 		c.setLayout(new GridLayout(2, false));
@@ -198,7 +196,12 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 	}
 
 	private void updateDataSetInfo() {
-		dataSetItem.setText("Data Set: " + dataDomain.getLabel());
+		String dsLabel = "Dataset: " + dataDomain.getLabel();
+		if (dsLabel.length() > 25)
+			dsLabel = dsLabel.substring(0, 25 - 3) + "...";
+
+		// dataSetItem.setText("Data Set: " + dataDomain.getLabel().substring(0, 15));
+		dataSetItem.setText(dsLabel);
 
 		if (dataDomain instanceof ATableBasedDataDomain) {
 			ATableBasedDataDomain tableBasedDD = (ATableBasedDataDomain) dataDomain;
