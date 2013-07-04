@@ -5,7 +5,7 @@
  ******************************************************************************/
 package org.caleydo.view.enroute.path;
 
-import org.caleydo.core.view.opengl.layout.util.multiform.IEmbeddedVisualizationInfo;
+import org.caleydo.core.view.opengl.layout.util.multiform.DefaultVisInfo;
 
 /**
  * VisInfo for {@link APathwayPathRenderer}.
@@ -13,19 +13,19 @@ import org.caleydo.core.view.opengl.layout.util.multiform.IEmbeddedVisualization
  * @author Christian Partl
  *
  */
-public class PathVisInfo implements IEmbeddedVisualizationInfo {
+public class PathVisInfo extends DefaultVisInfo {
 
 	public PathVisInfo() {
 	}
 
 	@Override
-	public EScalingEntity getPrimaryWidthScalingEntity() {
-		return null;
+	public EScalingEntity getPrimaryHeightScalingEntity() {
+		return EScalingEntity.PATHWAY_VERTEX;
 	}
 
 	@Override
-	public EScalingEntity getPrimaryHeightScalingEntity() {
-		return EScalingEntity.PATHWAY_VERTEX;
+	public String getLabel() {
+		return "Path";
 	}
 
 }

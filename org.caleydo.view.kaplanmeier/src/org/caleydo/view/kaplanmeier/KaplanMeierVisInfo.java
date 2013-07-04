@@ -5,21 +5,16 @@
  ******************************************************************************/
 package org.caleydo.view.kaplanmeier;
 
-import org.caleydo.core.view.opengl.layout.util.multiform.IEmbeddedVisualizationInfo;
+import org.caleydo.core.view.opengl.layout.util.multiform.DefaultVisInfo;
 
-public class KaplanMeierVisInfo implements IEmbeddedVisualizationInfo {
+public class KaplanMeierVisInfo extends DefaultVisInfo {
 
 	public KaplanMeierVisInfo() {
 	}
 
 	@Override
-	public EScalingEntity getPrimaryWidthScalingEntity() {
-		return null;
-	}
-
-	@Override
-	public EScalingEntity getPrimaryHeightScalingEntity() {
-		return null;
+	public String getLabel() {
+		return GLKaplanMeier.VIEW_NAME;
 	}
 
 }

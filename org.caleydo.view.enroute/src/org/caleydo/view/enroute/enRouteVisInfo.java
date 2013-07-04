@@ -23,4 +23,9 @@ public class enRouteVisInfo implements IEmbeddedVisualizationInfo {
 		return EScalingEntity.RECORD;
 	}
 
+	@Override
+	public String getLabel() {
+		return GLEnRoutePathway.VIEW_NAME;
+	}
+
 }

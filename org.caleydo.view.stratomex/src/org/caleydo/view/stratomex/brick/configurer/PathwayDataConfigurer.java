@@ -18,7 +18,7 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
-import org.caleydo.core.view.opengl.layout.util.multiform.IEmbeddedVisualizationInfo;
+import org.caleydo.core.view.opengl.layout.util.multiform.DefaultVisInfo;
 import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormRenderer;
 import org.caleydo.core.view.opengl.util.text.ITextRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
@@ -185,26 +185,12 @@ public class PathwayDataConfigurer extends ABrickConfigurer {
 			brick.associateIDs(globalRendererID++, localRendererID);
 		}
 
-		IEmbeddedVisualizationInfo visInfo = new IEmbeddedVisualizationInfo() {
-
-			@Override
-			public EScalingEntity getPrimaryWidthScalingEntity() {
-				return null;
-			}
-
-			@Override
-			public EScalingEntity getPrimaryHeightScalingEntity() {
-				return null;
-			}
-
-		};
-
 		int compactRendererID = -1;
 		if (brick.isHeaderBrick()) {
 			ALayoutRenderer pathwaysSummaryCompactRenderer = new PathwaysSummaryRenderer(brick, label,
 					EPickingType.BRICK.name(), brick.getID());
-			compactRendererID = multiFormRenderer.addLayoutRenderer(pathwaysSummaryCompactRenderer, null, visInfo,
-					false);
+			compactRendererID = multiFormRenderer.addLayoutRenderer(pathwaysSummaryCompactRenderer, null,
+					new DefaultVisInfo(), false);
 			brick.setCompactRendererID(compactRendererID);
 		} else {
 			if (brick.getTablePerspective() instanceof PathwayTablePerspective) {
@@ -220,8 +206,8 @@ public class PathwayDataConfigurer extends ABrickConfigurer {
 						ALayoutRenderer compactPathwayRenderer = new CompactPathwayRenderer(brick, brick
 								.getTablePerspective().getLabel(), EPickingType.BRICK.name(), brick.getID(),
 								brick.getTextureManager(), texture);
-						compactRendererID = multiFormRenderer.addLayoutRenderer(compactPathwayRenderer, null, visInfo,
-								false);
+						compactRendererID = multiFormRenderer.addLayoutRenderer(compactPathwayRenderer, null,
+								new DefaultVisInfo(), false);
 					}
 				}
 			}

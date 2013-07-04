@@ -38,7 +38,6 @@ import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
-import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.eclipse.swt.widgets.Composite;
 
@@ -201,9 +200,9 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 			}
 		}
 
-		GLHelperFunctions.drawSmallPointAt(gl, 0.01f, 0.01f, 1);
-		GLHelperFunctions.drawSmallPointAt(gl, viewFrustum.getWidth() / 2, viewFrustum.getHeight() / 2, 1);
-		GLHelperFunctions.drawSmallPointAt(gl, viewFrustum.getWidth() - 0.01f, viewFrustum.getHeight() - 0.01f, 1);
+		// GLHelperFunctions.drawSmallPointAt(gl, 0.01f, 0.01f, 1);
+		// GLHelperFunctions.drawSmallPointAt(gl, viewFrustum.getWidth() / 2, viewFrustum.getHeight() / 2, 1);
+		// GLHelperFunctions.drawSmallPointAt(gl, viewFrustum.getWidth() - 0.01f, viewFrustum.getHeight() - 0.01f, 1);
 		float spacing = (viewFrustum.getWidth() - 2 * sideSpacing) / histogram.size();
 		float continuousColorDistance = 1.0f / histogram.size();
 

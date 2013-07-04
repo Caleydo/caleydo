@@ -226,7 +226,8 @@ public class TourguideAdapter implements IStratomexAdapter {
 			}
 		}, ADD_PICKING_TYPE);
 
-		stratomex.addTypePickingTooltipListener("Add datasets using the stratification", ADD_DEPENDENT_PICKING_TYPE);
+		stratomex.addTypePickingTooltipListener("Add column based on this column's stratification",
+				ADD_DEPENDENT_PICKING_TYPE);
 		stratomex.addTypePickingListener(new IPickingListener() {
 			@Override
 			public void pick(Pick pick) {

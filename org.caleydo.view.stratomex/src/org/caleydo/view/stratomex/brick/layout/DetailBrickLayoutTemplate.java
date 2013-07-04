@@ -207,10 +207,10 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutConfiguration {
 		// ratioSpacingLayoutX.setRatioSizeX(1);
 		// ratioSpacingLayoutX.setRatioSizeY(0);
 
-		ElementLayout lockResizingButtonLayout = new ElementLayout("lockResizingButton");
-		lockResizingButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
-		lockResizingButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
-		lockResizingButtonLayout.setRenderer(new ButtonRenderer.Builder(brick, lockResizingButton).build());
+		// ElementLayout lockResizingButtonLayout = new ElementLayout("lockResizingButton");
+		// lockResizingButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
+		// lockResizingButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
+		// lockResizingButtonLayout.setRenderer(new ButtonRenderer.Builder(brick, lockResizingButton).build());
 
 		ElementLayout toggleViewSwitchingButtonLayout = new ElementLayout("viewSwitchtingButtonLayout");
 		toggleViewSwitchingButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
@@ -225,7 +225,7 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutConfiguration {
 				.name(), CLOSE_BUTTON_ID, EIconTextures.REMOVE)).build());
 
 		// toolBar.append(ratioSpacingLayoutX);
-		toolBar.append(lockResizingButtonLayout);
+		// toolBar.append(lockResizingButtonLayout);
 		toolBar.append(spacingLayoutX);
 		toolBar.append(toggleViewSwitchingButtonLayout);
 		toolBar.append(spacingLayoutX);
@@ -248,15 +248,15 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	@Override
 	protected void registerPickingListeners() {
 
-		brick.addIDPickingListener(new APickingListener() {
-
-			@Override
-			public void clicked(Pick pick) {
-				// boolean isResizingLocked = !lockResizingButton.isSelected();
-				// brick.setSizeFixed(isResizingLocked);
-				// lockResizingButton.setSelected(isResizingLocked);
-			}
-		}, EPickingType.BRICK_LOCK_RESIZING_BUTTON.name(), LOCK_RESIZING_BUTTON_ID);
+		// brick.addIDPickingListener(new APickingListener() {
+		//
+		// @Override
+		// public void clicked(Pick pick) {
+		// // boolean isResizingLocked = !lockResizingButton.isSelected();
+		// // brick.setSizeFixed(isResizingLocked);
+		// // lockResizingButton.setSelected(isResizingLocked);
+		// }
+		// }, EPickingType.BRICK_LOCK_RESIZING_BUTTON.name(), LOCK_RESIZING_BUTTON_ID);
 
 		brick.addIDPickingListener(new APickingListener() {
 
@@ -267,6 +267,8 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutConfiguration {
 				viewSwitchingModeButton.setSelected(isGlobalViewSwitching);
 			}
 		}, EPickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON.name(), VIEW_SWITCHING_MODE_BUTTON_ID);
+		brick.addIDPickingTooltipListener("Toggle column-wide view switching",
+				EPickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON.name(), VIEW_SWITCHING_MODE_BUTTON_ID);
 
 		brick.addIDPickingListener(new APickingListener() {
 
@@ -275,6 +277,7 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutConfiguration {
 				brickColumn.hideDetailedBrick();
 			}
 		}, EPickingType.BRICK_CLOSE_BUTTON.name(), CLOSE_BUTTON_ID);
+		brick.addIDPickingTooltipListener("Close detail", EPickingType.BRICK_CLOSE_BUTTON.name(), CLOSE_BUTTON_ID);
 	}
 
 	@Override

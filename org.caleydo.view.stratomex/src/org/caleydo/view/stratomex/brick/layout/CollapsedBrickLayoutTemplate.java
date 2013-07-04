@@ -188,7 +188,7 @@ public class CollapsedBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 			}
 		}, EPickingType.BRICK_EXPAND_BUTTON.name(), EXPAND_BUTTON_ID);
-
+		brick.addIDPickingTooltipListener("Expand", EPickingType.BRICK_EXPAND_BUTTON.name(), EXPAND_BUTTON_ID);
 	}
 
 	@Override
