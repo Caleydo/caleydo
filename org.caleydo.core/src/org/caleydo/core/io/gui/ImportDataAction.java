@@ -12,7 +12,7 @@ import org.eclipse.swt.widgets.Display;
 
 public class ImportDataAction extends SimpleAction {
 
-	public static final String LABEL = "Load data";
+	public static final String LABEL = "Import Data";
 	public static final String ICON = "resources/icons/general/load_data.png";
 
 	/**

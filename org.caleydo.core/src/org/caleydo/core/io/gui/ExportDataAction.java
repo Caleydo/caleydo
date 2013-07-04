@@ -9,7 +9,7 @@ import org.caleydo.core.gui.SimpleAction;
 import org.eclipse.swt.widgets.Shell;
 
 public class ExportDataAction extends SimpleAction {
-	public static final String LABEL = "Export data";
+	public static final String LABEL = "Export Data";
 	public static final String ICON = "resources/icons/general/export_data.png";
 
 	public ExportDataAction() {
