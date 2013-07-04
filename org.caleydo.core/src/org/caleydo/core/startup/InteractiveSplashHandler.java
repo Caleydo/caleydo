@@ -19,7 +19,6 @@ import org.eclipse.ui.splash.BasicSplashHandler;
  * @author Marc Streit
  */
 public class InteractiveSplashHandler extends BasicSplashHandler {
-
 	@Override
 	public void init(Shell splash) {
 		super.init(splash);
@@ -37,4 +36,5 @@ public class InteractiveSplashHandler extends BasicSplashHandler {
 		// public the progress monitor
 		GeneralManager.get().setSplashProgressMonitor(this.getBundleProgressMonitor());
 	}
+
 }

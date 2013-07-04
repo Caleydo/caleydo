@@ -58,7 +58,8 @@ public class Application implements IApplication {
 
 
 			// create a select the startup pro
-			IStartupProcedure startup = selectStartupProcedure(startups, new Display());
+			Display display = PlatformUI.createDisplay();
+			IStartupProcedure startup = selectStartupProcedure(startups, display);
 			if (startup == null)
 				return EXIT_OK; // unstartable
 			startups = null; // cleanup
@@ -73,7 +74,6 @@ public class Application implements IApplication {
 			// cleanup
 			startup = null;
 
-			Display display = PlatformUI.createDisplay();
 			int returnCode = PlatformUI.createAndRunWorkbench(display, advisor);
 
 			log.info("Bye bye!");
@@ -106,10 +106,10 @@ public class Application implements IApplication {
 		WizardDialog wizard = new WizardDialog(shell, wizardImpl);
 		wizard.setMinimumPageSize(750, 500);
 		shell.forceActive();
-		if (wizard.open() == Window.CANCEL) {
-			return null;
-		}
-		return wizardImpl.getResult();
+		boolean ok = wizard.open() == Window.CANCEL;
+		if (!shell.isDisposed())
+			shell.dispose();
+		return ok ? wizardImpl.getResult() : null;
 	}
 
 	/**
