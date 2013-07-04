@@ -32,6 +32,7 @@ import org.caleydo.view.stratomex.brick.layout.DetailBrickLayoutTemplate;
 import org.caleydo.view.stratomex.brick.layout.HeaderBrickLayoutTemplate;
 import org.caleydo.view.stratomex.brick.layout.TitleOnlyHeaderBrickLayoutTemplate;
 import org.caleydo.view.stratomex.brick.sorting.IBrickSortingStrategy;
+import org.caleydo.view.stratomex.brick.sorting.NoSortingSortingStrategy;
 import org.caleydo.view.stratomex.brick.ui.KaplanMeierSummaryRenderer;
 
 /**
@@ -45,7 +46,9 @@ public class ClinicalDataConfigurer extends ABrickConfigurer {
 	protected static final int CAPTION_HEIGHT_PIXELS = 16;
 	protected static final int SPACING_PIXELS = 32;
 
-	private IBrickSortingStrategy sortingStrategy;
+	private IBrickSortingStrategy sortingStrategy = new NoSortingSortingStrategy();
+
+
 
 	@Override
 	public void configure(HeaderBrickLayoutTemplate layoutTemplate) {

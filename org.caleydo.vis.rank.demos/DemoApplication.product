@@ -741,7 +741,6 @@ Public License instead of this License.  But first, please read
       <plugin id="org.caleydo.lib.jgrapht"/>
       <plugin id="org.caleydo.lib.jogl"/>
       <plugin id="org.caleydo.lib.nattable"/>
-      <plugin id="org.caleydo.lib.weka"/>
       <plugin id="org.caleydo.util.gleem"/>
       <plugin id="org.caleydo.vis.rank"/>
       <plugin id="org.caleydo.vis.rank.demos"/>

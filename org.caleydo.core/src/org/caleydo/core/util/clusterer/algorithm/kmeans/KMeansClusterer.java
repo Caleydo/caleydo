@@ -37,7 +37,7 @@ public class KMeansClusterer extends ALinearClusterer {
 
 	public KMeansClusterer(ClusterConfiguration config, int progressMultiplier, int progressOffset) {
 		super(config, progressMultiplier, progressOffset);
-		KMeansClusterConfiguration2 kMeansClusterConfiguration = (KMeansClusterConfiguration2) config
+		KMeansClusterConfiguration kMeansClusterConfiguration = (KMeansClusterConfiguration) config
 				.getClusterAlgorithmConfiguration();
 		this.numberOfCluster = kMeansClusterConfiguration.getNumberOfClusters();
 

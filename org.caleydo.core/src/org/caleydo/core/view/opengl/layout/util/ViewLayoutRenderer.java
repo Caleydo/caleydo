@@ -10,7 +10,6 @@ import javax.media.opengl.GL2;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 
 /**
@@ -39,13 +38,11 @@ public class ViewLayoutRenderer extends ALayoutRenderer {
 
 	@Override
 	public void setLimits(float x, float y) {
-		if (Float.compare(this.x, x) == 0 && Float.compare(this.y, y) == 0)
+		if (Float.compare(this.x, x) == 0 && Float.compare(this.y, y) == 0
+				&& Float.compare(view.getViewFrustum().getWidth(), x) == 0
+				&& Float.compare(view.getViewFrustum().getHeight(), y) == 0)
 			return;
 		super.setLimits(x, y);
-		PixelGLConverter pixelGLConverter = view.getPixelGLConverter();
-		// FIXME: the coordinates are not correct.
-		// view.reshape(view.getParentGLCanvas().asGLAutoDrawAble(), 0, 0, pixelGLConverter.getPixelWidthForGLWidth(x),
-		// pixelGLConverter.getPixelHeightForGLHeight(y));
 
 		ViewFrustum viewFrustum = view.getViewFrustum();
 
