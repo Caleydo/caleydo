@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Tour Guide
+Bundle-Name: LineUp
 Bundle-SymbolicName: org.caleydo.view.tourguide;singleton:=true
 Bundle-Version: 3.0
 Require-Bundle: org.caleydo.core;bundle-version="2.2",
