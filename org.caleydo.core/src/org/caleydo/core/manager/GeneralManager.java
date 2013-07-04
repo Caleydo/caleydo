@@ -18,13 +18,13 @@ import org.caleydo.core.id.object.IDCreator;
 import org.caleydo.core.internal.ConsoleFlags;
 import org.caleydo.core.serialize.ProjectMetaData;
 import org.caleydo.core.serialize.SerializationManager;
-import org.caleydo.core.startup.InteractiveSplashHandler;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.statistics.IStatisticsPerformer;
 import org.caleydo.core.view.ViewManager;
 import org.caleydo.data.loader.ResourceLoader;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Platform;
 
 /**
@@ -75,10 +75,9 @@ public class GeneralManager {
 	private boolean isDryMode;
 
 	/**
-	 * The splash handler. If the splash is active (not null) then it can be used to update the progress percentage and
-	 * label.
+	 * Progress monitor of the splash. Only valid during startup.
 	 **/
-	private InteractiveSplashHandler splash;
+	private IProgressMonitor splashProgressMonitor;
 
 	private ViewManager viewManager;
 	private EventPublisher eventPublisher;
@@ -211,23 +210,23 @@ public class GeneralManager {
 		return VERSION.equalsIgnoreCase(caleydoVersion);
 	}
 
-	public void setSplash(InteractiveSplashHandler splash) {
-		this.splash = splash;
+	public void setSplashProgressMonitor(IProgressMonitor splashProgressMonitor) {
+		this.splashProgressMonitor = splashProgressMonitor;
 	}
 
 	public void updateProgress(int percentage) {
-		if (splash == null) {
+		if (splashProgressMonitor == null) {
 			logger.info("Progress update:" + percentage);
 		} else {
-			splash.updateProgress(percentage);
+			splashProgressMonitor.worked(percentage);
 		}
 	}
 
 	public void updateProgressLabel(String message) {
-		if (splash == null) {
+		if (splashProgressMonitor == null) {
 			logger.info("Progress update:" + message);
 		} else {
-			splash.updateProgressLabel(message);
+			splashProgressMonitor.setTaskName(message);
 		}
 	}
 }
