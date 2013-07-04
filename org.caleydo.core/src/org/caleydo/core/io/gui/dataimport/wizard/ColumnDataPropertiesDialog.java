@@ -156,10 +156,10 @@ public class ColumnDataPropertiesDialog extends Dialog implements Listener {
 		}
 
 
-		scrolledComposite.setMinSize(870, 760);
+		scrolledComposite.setMinSize(850, 700);
 		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, true);
-		gd.widthHint = 860;
-		gd.heightHint = 750;
+		gd.widthHint = 900;
+		gd.heightHint = 800;
 		parent.setLayoutData(gd);
 		parent.layout(true, true);
 		scrolledComposite.layout(true, true);
