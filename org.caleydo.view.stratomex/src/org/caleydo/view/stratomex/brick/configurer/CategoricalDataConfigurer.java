@@ -25,6 +25,7 @@ import org.caleydo.view.stratomex.brick.layout.DefaultBrickLayoutTemplate;
 import org.caleydo.view.stratomex.brick.layout.DetailBrickLayoutTemplate;
 import org.caleydo.view.stratomex.brick.layout.HeaderBrickLayoutTemplate;
 import org.caleydo.view.stratomex.brick.layout.TitleOnlyHeaderBrickLayoutTemplate;
+import org.caleydo.view.stratomex.brick.ui.HandleRenderer;
 
 /**
  * Configurer for bricks to display categroical data
@@ -65,6 +66,8 @@ public class CategoricalDataConfigurer extends ATableBasedDataConfigurer {
 
 	@Override
 	public void configure(DefaultBrickLayoutTemplate layoutTemplate) {
+
+		layoutTemplate.setHandles(HandleRenderer.ALL_RESIZE_HANDLES | HandleRenderer.MOVE_VERTICALLY_HANDLE);
 
 		ArrayList<ElementLayout> headerBarElements = createHeaderBarElements(layoutTemplate);
 		if (headerBarElements != null)
@@ -137,28 +140,7 @@ public class CategoricalDataConfigurer extends ATableBasedDataConfigurer {
 			brick.associateIDs(globalRendererID++, localRendererID);
 		}
 
-		// ALayoutRenderer overviewHeatMapRenderer = new OverviewHeatMapRenderer(brick.getTablePerspective(), brick
-		// .getDataDomain().getTable(), true);
 
-		// ALayoutRenderer compactOverviewHeatMapRenderer = new OverviewHeatMapRenderer(brick.getTablePerspective(),
-		// brick
-		// .getDataDomain().getTable(), false);
-		//
-		// IEmbeddedVisualizationInfo visInfo = new IEmbeddedVisualizationInfo() {
-		//
-		// @Override
-		// public EScalingEntity getPrimaryWidthScalingEntity() {
-		// return null;
-		// }
-		//
-		// @Override
-		// public EScalingEntity getPrimaryHeightScalingEntity() {
-		// return null;
-		// }
-		// };
-
-		// localRendererID = multiFormRenderer.addLayoutRenderer(overviewHeatMapRenderer,
-		// EIconTextures.HEAT_MAP_ICON.getFileName(), visInfo, false);
 		brick.associateIDs(globalRendererID++, localRendererID);
 
 		// int compactRendererID = multiFormRenderer.addLayoutRenderer(compactOverviewHeatMapRenderer, null, visInfo,

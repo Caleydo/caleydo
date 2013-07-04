@@ -45,6 +45,9 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	protected static final int RELATION_INDICATOR_WIDTH_PIXELS = 3;
 	protected static final int HANDLE_SIZE_PIXELS = 8;
 
+	protected static final int DEFAULT_HANDLES = HandleRenderer.ALL_RESIZE_HANDLES
+			| HandleRenderer.MOVE_VERTICALLY_HANDLE | HandleRenderer.EXPAND_HANDLE;
+
 	protected static final int COLLAPSE_BUTTON_ID = 0;
 	protected static final int LOCK_RESIZING_BUTTON_ID = 1;
 	protected static final int DETAIL_MODE_BUTTON_ID = 1;
@@ -136,9 +139,11 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 		baseRow.setRenderer(borderedAreaRenderer);
 
-		baseRow.addForeGroundRenderer(new HandleRenderer(brick, HANDLE_SIZE_PIXELS, brick.getTextureManager(),
-				HandleRenderer.ALL_RESIZE_HANDLES | HandleRenderer.MOVE_VERTICALLY_HANDLE
-						| HandleRenderer.EXPAND_HANDLE));
+		if (handles == null) {
+			handles = DEFAULT_HANDLES;
+		}
+
+		baseRow.addForeGroundRenderer(new HandleRenderer(brick, HANDLE_SIZE_PIXELS, brick.getTextureManager(), handles));
 
 		ElementLayout spacingLayoutX = new ElementLayout("spacingLayoutX");
 		spacingLayoutX.setPixelSizeX(SPACING_PIXELS);

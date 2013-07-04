@@ -17,6 +17,7 @@ import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
 import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.stratomex.brick.GLBrick;
 import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
+import org.caleydo.view.stratomex.brick.ui.HandleRenderer;
 import org.caleydo.view.stratomex.brick.ui.ViewBorderRenderer;
 import org.caleydo.view.stratomex.column.BrickColumn;
 
@@ -41,6 +42,8 @@ public abstract class ABrickLayoutConfiguration extends LayoutConfiguration {
 	// protected ArrayList<IViewTypeChangeListener> viewTypeChangeListeners;
 	protected BorderedAreaRenderer borderedAreaRenderer;
 	protected ViewBorderRenderer innerBorderedAreaRenderer;
+
+	protected Integer handles = null;
 
 	public ABrickLayoutConfiguration(GLBrick brick, BrickColumn brickColumn, GLStratomex stratomex) {
 		this.brick = brick;
@@ -90,6 +93,18 @@ public abstract class ABrickLayoutConfiguration extends LayoutConfiguration {
 	 */
 	public ALayoutRenderer getViewRenderer() {
 		return viewRenderer;
+	}
+
+	/**
+	 * Manually override the brick handles to be shown. See {@link HandleRenderer} for possible flags
+	 *
+	 * @param handles
+	 *            an integer that can be bit-ored with the flags defined in {@link HandleRenderer} to determine the
+	 *            handles desired.
+	 *
+	 */
+	public void setHandles(int handles) {
+		this.handles = handles;
 	}
 
 	/**

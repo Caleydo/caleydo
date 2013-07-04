@@ -45,6 +45,8 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	protected static final int LOCK_RESIZING_BUTTON_ID = 1;
 	protected static final int VIEW_SWITCHING_MODE_BUTTON_ID = 5;
 
+	protected static final int DEFAULT_HANDLES = HandleRenderer.ALL_RESIZE_HANDLES;
+
 	@SuppressWarnings("hiding")
 	protected static final int SPACING_PIXELS = 4;
 
@@ -122,8 +124,11 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 		baseRow.setRenderer(borderedAreaRenderer);
 
-		baseRow.addForeGroundRenderer(new HandleRenderer(brick, HANDLE_SIZE_PIXELS, brick.getTextureManager(),
-				HandleRenderer.ALL_RESIZE_HANDLES));
+		if (handles == null) {
+			handles = DEFAULT_HANDLES;
+		}
+
+		baseRow.addForeGroundRenderer(new HandleRenderer(brick, HANDLE_SIZE_PIXELS, brick.getTextureManager(), handles));
 
 		ElementLayout spacingLayoutX = new ElementLayout("spacingLayoutX");
 		spacingLayoutX.setPixelSizeX(SPACING_PIXELS);

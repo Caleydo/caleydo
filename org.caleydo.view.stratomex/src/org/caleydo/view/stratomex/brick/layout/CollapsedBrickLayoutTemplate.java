@@ -37,6 +37,8 @@ public class CollapsedBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	protected static final int HANDLE_SIZE_PIXELS = 10;
 	protected static final int FOOTER_BAR_HEIGHT_PIXELS = 4;
 
+	protected static final int DEFAULT_HANDLES = HandleRenderer.MOVE_VERTICALLY_HANDLE;
+
 	private static final int EXPAND_BUTTON_ID = 0;
 
 	protected ArrayList<ElementLayout> footerBarElements;
@@ -102,8 +104,12 @@ public class CollapsedBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 		footerBar = createFooterBar();
 
+		if (handles == null) {
+			handles = DEFAULT_HANDLES;
+		}
+
 		baseRow.addForeGroundRenderer(new HandleRenderer(brick, 10, brick.getTextureManager(),
-				HandleRenderer.MOVE_VERTICALLY_HANDLE));
+ handles));
 
 		ElementLayout spacingLayoutX = new ElementLayout("spacingLayoutX");
 		spacingLayoutX.setPixelSizeX(SPACING_PIXELS);

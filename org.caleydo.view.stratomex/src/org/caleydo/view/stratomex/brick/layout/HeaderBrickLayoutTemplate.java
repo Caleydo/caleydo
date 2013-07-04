@@ -55,6 +55,9 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	protected static final int LOCK_RESIZING_BUTTON_ID = 1;
 	protected static final int REMOVE_COLUMN_BUTTON_ID = 2;
 
+	protected static final int DEFAULT_HANDLES = HandleRenderer.MOVE_HORIZONTALLY_HANDLE
+			| HandleRenderer.ALL_RESIZE_HANDLES | HandleRenderer.ALL_EXPAND_HANDLES;
+
 	// protected ArrayList<BrickViewSwitchingButton> viewSwitchingButtons;
 	protected List<ElementLayout> headerBarElements;
 	protected List<ElementLayout> toolBarElements;
@@ -125,9 +128,12 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 		baseRow.setRenderer(borderedAreaRenderer);
 
+		if (handles == null) {
+			handles = DEFAULT_HANDLES;
+		}
+
 		baseRow.addForeGroundRenderer(new HandleRenderer(brick, HANDLE_SIZE_PIXELS, brick.getTextureManager(),
-				HandleRenderer.MOVE_HORIZONTALLY_HANDLE | HandleRenderer.ALL_RESIZE_HANDLES
-						| HandleRenderer.ALL_EXPAND_HANDLES));
+ handles));
 
 		ElementLayout spacingLayoutX = new ElementLayout("spacingLayoutX");
 		spacingLayoutX.setPixelSizeX(SPACING_PIXELS);

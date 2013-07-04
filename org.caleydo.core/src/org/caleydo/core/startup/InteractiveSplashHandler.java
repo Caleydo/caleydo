@@ -46,7 +46,7 @@ public class InteractiveSplashHandler extends BasicSplashHandler {
 		idLabel.setText("Version " + GeneralManager.VERSION);
 
 
-		// public the progress monitor
+		// publish the progress monitor
 		IProgressMonitor monitor = this.getBundleProgressMonitor();
 		monitor.beginTask("Loading Caleydo...", 100);
 
