@@ -27,6 +27,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.kohsuke.args4j.ClassParser;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
@@ -35,12 +36,19 @@ import org.kohsuke.args4j.CmdLineParser;
  * This class controls all aspects of the application's execution
  */
 public class Application implements IApplication {
+	private static Application instance;
 
+	public static Application get() {
+		return instance;
+	}
+
+	private IStartupProcedure startup;
 
 	@Override
 	public Object start(IApplicationContext context) throws Exception {
 		final Logger log = Logger.create(Application.class);
 		try {
+			instance = this;
 			log.info("Starting Caleydo");
 
 			dumpEnvironment(log);
@@ -59,7 +67,7 @@ public class Application implements IApplication {
 
 			// create a select the startup pro
 			Display display = PlatformUI.createDisplay();
-			IStartupProcedure startup = selectStartupProcedure(startups, display);
+			startup = selectStartupProcedure(startups, display);
 			if (startup == null)
 				return EXIT_OK; // unstartable
 			startups = null; // cleanup
@@ -69,12 +77,7 @@ public class Application implements IApplication {
 				return EXIT_OK;
 			}
 
-			ApplicationWorkbenchAdvisor advisor = new ApplicationWorkbenchAdvisor(startup);
-
-			// cleanup
-			startup = null;
-
-			int returnCode = PlatformUI.createAndRunWorkbench(display, advisor);
+			int returnCode = PlatformUI.createAndRunWorkbench(display, new ApplicationWorkbenchAdvisor());
 
 			log.info("Bye bye!");
 
@@ -86,8 +89,11 @@ public class Application implements IApplication {
 		} catch (Exception e) {
 			log.error("Caught exception, crashing.", e);
 			throw e;
+		} finally {
+			instance = null;
 		}
 	}
+
 
 	/**
 	 * @param startups
@@ -193,5 +199,20 @@ public class Application implements IApplication {
 				}
 			}
 		});
+	}
+
+
+	public void runStartup() {
+		assert startup != null;
+		startup.run();
+	}
+
+	/**
+	 * @param windowConfigurer
+	 */
+	public void postWorkbenchOpen(IWorkbenchWindowConfigurer windowConfigurer) {
+		startup.postWorkbenchOpen(windowConfigurer);
+		windowConfigurer.getWindow().getShell().setMaximized(true);
+		startup = null;
 	}
 }

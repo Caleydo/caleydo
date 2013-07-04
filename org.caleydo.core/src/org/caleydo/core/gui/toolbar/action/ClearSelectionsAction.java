@@ -14,7 +14,7 @@ import org.caleydo.core.manager.GeneralManager;
 
 public class ClearSelectionsAction extends SimpleAction {
 
-	public static final String LABEL = "Clear all selections";
+	public static final String LABEL = "Clear Selections";
 	public static final String ICON = "resources/icons/view/tablebased/clear_selections.png";
 
 	public ClearSelectionsAction() {

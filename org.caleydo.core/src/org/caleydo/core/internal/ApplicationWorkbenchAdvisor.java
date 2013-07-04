@@ -11,7 +11,6 @@ import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.gui.perspective.GenomePerspective;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ProjectManager;
-import org.caleydo.core.startup.IStartupProcedure;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
@@ -23,27 +22,9 @@ import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchAdvisor;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 
-import com.google.common.base.Function;
-
 public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
-	private IStartupProcedure startup;
-
-	public ApplicationWorkbenchAdvisor(IStartupProcedure startup) {
-		this.startup = startup;
-	}
 	@Override
 	public WorkbenchWindowAdvisor createWorkbenchWindowAdvisor(final IWorkbenchWindowConfigurer configurer) {
-		// Init the core because the workbench must already be initialized for
-		// the XML startup progress bar
-
-		configurer.setTitle("Caleydo - unsaved project");
-		startup.run(new Function<String, Void>() {
-			@Override
-			public Void apply(String data) {
-				configurer.setTitle(data);
-				return null;
-			}
-		});
 		return new ApplicationWorkbenchWindowAdvisor(configurer);
 	}
 
@@ -148,10 +129,7 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 
 			removeNonCaleydoMenuEntries(getWindowConfigurer());
 
-			startup.postWorkbenchOpen();
-			startup = null; // cleanup not used any longer
-
-			getWindowConfigurer().getWindow().getShell().setMaximized(true);
+			Application.get().postWorkbenchOpen(getWindowConfigurer());
 		}
 	}
 }

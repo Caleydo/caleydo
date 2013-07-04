@@ -570,7 +570,7 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 	public int getMinPixelHeight(EDetailLevel detailLevel) {
 		switch (detailLevel) {
 		case HIGH:
-			return 200;
+			return 300;
 		case MEDIUM:
 			return 100;
 		case LOW:
@@ -584,7 +584,7 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 	public int getMinPixelWidth(EDetailLevel detailLevel) {
 		switch (detailLevel) {
 		case HIGH:
-			return 200;
+			return 300;
 		case MEDIUM:
 			return 100;
 		case LOW:

@@ -11,7 +11,7 @@ import org.eclipse.swt.widgets.Shell;
 
 public class StartClusteringAction extends SimpleAction {
 
-	public static final String LABEL = "Clustering";
+	public static final String LABEL = "Cluster Data";
 	public static final String ICON = "resources/icons/view/tablebased/clustering.png";
 
 	/**

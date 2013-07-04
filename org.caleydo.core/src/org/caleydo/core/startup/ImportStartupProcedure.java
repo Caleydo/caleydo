@@ -8,16 +8,14 @@ package org.caleydo.core.startup;
 import org.caleydo.core.gui.util.HelpButtonWizardDialog;
 import org.caleydo.core.io.gui.dataimport.wizard.DataImportWizard;
 import org.caleydo.core.serialize.ProjectManager;
-import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
-
-import com.google.common.base.Function;
+import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 
 /**
  * Startup procedure for project wizard.
- * 
+ *
  * @author Alexander Lex
  * @author Marc Streit
  */
@@ -34,13 +32,14 @@ public class ImportStartupProcedure implements IStartupProcedure {
 	}
 
 	@Override
-	public boolean run(Function<String, Void> setTitle) {
+	public void run() {
 		DataImportWizard dataImportWizard = createDataImportWizard();
 
 		HelpButtonWizardDialog dialog = new HelpButtonWizardDialog(Display.getCurrent().getActiveShell(),
 				dataImportWizard);
 
-		return Window.OK == dialog.open();
+		dialog.open();
+		return;
 	}
 
 	protected DataImportWizard createDataImportWizard() {
@@ -48,7 +47,7 @@ public class ImportStartupProcedure implements IStartupProcedure {
 	}
 
 	@Override
-	public void postWorkbenchOpen() {
+	public void postWorkbenchOpen(IWorkbenchWindowConfigurer configurer) {
 		// Make DVI visible if available
 		try {
 			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()

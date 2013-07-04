@@ -41,6 +41,7 @@ import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.system.FileOperations;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.jobs.IJobManager;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.operation.IRunnableWithProgress;
@@ -178,6 +179,8 @@ public final class ProjectManager {
 				.getResource(dirName + ProjectManager.DATA_DOMAIN_FILE));
 
 		SerializationData serializationData = new SerializationData();
+		SubMonitor monitor = GeneralManager.get().createSubProgressMonitor();
+		monitor.beginTask("Loading Data", dataDomainList.getDataDomains().size() * 10);
 
 		for (ADataDomain dataDomain : dataDomainList.getDataDomains()) {
 			DataSetDescription dataSetDescription = dataDomain.getDataSetDescription();
@@ -209,14 +212,14 @@ public final class ProjectManager {
 
 				HashMap<String, Perspective> recordPerspectives = new HashMap<String, Perspective>();
 
-				GeneralManager.get().updateProgressLabel("Loading groupings for: " + dataDomain.getLabel());
 
 				Set<String> recordPerspectiveIDs = ((ATableBasedDataDomain) dataDomain).getRecordPerspectiveIDs();
 				Set<String> dimensionPerspectiveIDs = ((ATableBasedDataDomain) dataDomain).getDimensionPerspectiveIDs();
 
 				int nrPerspectives = recordPerspectiveIDs.size() + dimensionPerspectiveIDs.size();
-				float progressBarFactor = 100f / nrPerspectives;
-				int perspectiveCount = 0;
+				SubMonitor dataDomainMonitor = monitor.newChild(10, SubMonitor.SUPPRESS_SUBTASK);
+				dataDomainMonitor.beginTask("Loading groupings for: " + dataDomain.getLabel(), nrPerspectives);
+
 				for (String recordPerspectiveID : recordPerspectiveIDs) {
 
 					Perspective recordPerspective = (Perspective) unmarshaller.unmarshal(GeneralManager.get()
@@ -230,8 +233,7 @@ public final class ProjectManager {
 					if (tree != null)
 						recordPerspective.setTree(tree);
 
-					GeneralManager.get().updateProgress((int) (progressBarFactor * perspectiveCount));
-					perspectiveCount++;
+					dataDomainMonitor.worked(1);
 				}
 
 				dataInitializationData.setRecordPerspectiveMap(recordPerspectives);
@@ -249,15 +251,18 @@ public final class ProjectManager {
 					ClusterTree tree = loadTree(extendedDirName + dimensionPerspectiveID + "_tree.xml",
 							((ATableBasedDataDomain) dataDomain).getDimensionIDType());
 					dimensionPerspective.setTree(tree);
-					GeneralManager.get().updateProgress((int) (progressBarFactor * perspectiveCount));
-					perspectiveCount++;
 
+					dataDomainMonitor.worked(1);
 				}
 
 				dataInitializationData.setDimensionPerspectiveMap(dimensionPerspectives);
 
 				serializationData.addDataDomainSerializationData(dataInitializationData);
 
+				dataDomainMonitor.done();
+
+			} else {
+				monitor.worked(10);
 			}
 		}
 
