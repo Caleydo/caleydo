@@ -39,8 +39,7 @@ public class CompactHeaderBrickLayoutTemplate extends ABrickLayoutConfiguration 
 
 	protected int guiElementsHeight = 0;
 
-	public CompactHeaderBrickLayoutTemplate(GLBrick brick, BrickColumn brickColumn,
- GLStratomex stratomex) {
+	public CompactHeaderBrickLayoutTemplate(GLBrick brick, BrickColumn brickColumn, GLStratomex stratomex) {
 		super(brick, brickColumn, stratomex);
 		headerBarElements = new ArrayList<ElementLayout>();
 		footerBarElements = new ArrayList<ElementLayout>();
@@ -71,8 +70,7 @@ public class CompactHeaderBrickLayoutTemplate extends ABrickLayoutConfiguration 
 		if (viewLayout == null) {
 			viewLayout = new ElementLayout("compactViewLayout");
 			viewLayout.setFrameColor(1, 0, 0, 1);
-			viewLayout
-					.addBackgroundRenderer(new ColorRenderer(new float[] { 1, 1, 1, 1 }));
+			viewLayout.addBackgroundRenderer(new ColorRenderer(new float[] { 1, 1, 1, 1 }));
 		}
 		viewLayout.setRenderer(viewRenderer);
 
@@ -140,7 +138,6 @@ public class CompactHeaderBrickLayoutTemplate extends ABrickLayoutConfiguration 
 		return stratomex.getSideArchWidthPixels();
 	}
 
-
 	@Override
 	public void setLockResizing(boolean lockResizing) {
 
@@ -173,8 +170,8 @@ public class CompactHeaderBrickLayoutTemplate extends ABrickLayoutConfiguration 
 	}
 
 	/**
-	 * Sets the elements that should appear in the header bar. The elements will
-	 * placed from left to right using the order of the specified list.
+	 * Sets the elements that should appear in the header bar. The elements will placed from left to right using the
+	 * order of the specified list.
 	 *
 	 * @param headerBarElements
 	 */
@@ -183,8 +180,8 @@ public class CompactHeaderBrickLayoutTemplate extends ABrickLayoutConfiguration 
 	}
 
 	/**
-	 * Sets the elements that should appear in the footer bar. The elements will
-	 * placed from left to right using the order of the specified list.
+	 * Sets the elements that should appear in the footer bar. The elements will placed from left to right using the
+	 * order of the specified list.
 	 *
 	 * @param footerBarElements
 	 */
