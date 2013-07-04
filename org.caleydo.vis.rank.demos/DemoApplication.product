@@ -7,16 +7,10 @@
       <image path="/org.caleydo.core/resources/wizard/wizard.png"/>
       <text>
          Caleydo - Visualization for Molecular Biology
-http:// www.caleydo.org
+http:// caleydo.org
 
-Copyright 2005 - 2012  by 
-Graz University of Technology - http://www.icg.tugraz.at
-Marc Streit - http://marc.streit.com
-Alexander Lex - http://alexander-lex.com
-Christian Partl - http://icg.tugraz.at/Members/partl
-Johannes Kepler University Linz - http://www.jku.at/cg/
-
-Caleydo is open-source software licenced under the GPL V3
+Copyright 2008 - 2013  by the Caleydo Team.
+Caleydo is open-source software licenced under the New BSD license.
       </text>
    </aboutInfo>
 
@@ -40,6 +34,7 @@ Caleydo is open-source software licenced under the GPL V3
          <bmp/>
       </win>
    </launcher>
+
 
    <vm>
    </vm>
