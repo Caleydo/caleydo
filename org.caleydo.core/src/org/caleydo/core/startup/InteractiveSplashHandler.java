@@ -9,6 +9,8 @@ import org.caleydo.core.internal.Application;
 import org.caleydo.core.manager.GeneralManager;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Label;
@@ -30,6 +32,15 @@ public class InteractiveSplashHandler extends BasicSplashHandler {
 		setForeground(new RGB(255, 255, 255));
 
 		Label idLabel = new Label(getContent(), SWT.LEFT);
+		FontData fd = new FontData("Arial", 6, SWT.NORMAL);
+
+
+		final Font newFont = new Font(splash.getDisplay(), fd);
+		idLabel.setFont(newFont);
+
+		getContent().setFont(newFont);
+
+
 		idLabel.setForeground(getForeground());
 		idLabel.setBounds(new Rectangle(splash.getSize().x-80, 185, 80, 18));
 		idLabel.setText("Version " + GeneralManager.VERSION);
@@ -38,6 +49,7 @@ public class InteractiveSplashHandler extends BasicSplashHandler {
 		// public the progress monitor
 		IProgressMonitor monitor = this.getBundleProgressMonitor();
 		monitor.beginTask("Loading Caleydo...", 100);
+
 		GeneralManager.get().setSplashProgressMonitor(monitor);
 
 		Application.get().runStartup();
