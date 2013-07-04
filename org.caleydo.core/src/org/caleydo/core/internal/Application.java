@@ -106,7 +106,7 @@ public class Application implements IApplication {
 		WizardDialog wizard = new WizardDialog(shell, wizardImpl);
 		wizard.setMinimumPageSize(750, 500);
 		shell.forceActive();
-		boolean ok = wizard.open() == Window.CANCEL;
+		boolean ok = wizard.open() == Window.OK;
 		if (!shell.isDisposed())
 			shell.dispose();
 		return ok ? wizardImpl.getResult() : null;
