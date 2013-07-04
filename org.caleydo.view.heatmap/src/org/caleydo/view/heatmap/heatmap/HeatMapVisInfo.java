@@ -22,4 +22,9 @@ public class HeatMapVisInfo implements IEmbeddedVisualizationInfo {
 		return EScalingEntity.RECORD;
 	}
 
+	@Override
+	public String getLabel() {
+		return GLHeatMap.VIEW_NAME;
+	}
+
 }

@@ -282,6 +282,9 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 			}
 		}, EPickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON.name(), VIEW_SWITCHING_MODE_BUTTON_ID);
 
+		brick.addIDPickingTooltipListener("Toggle column-wide view switching",
+				EPickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON.name(), VIEW_SWITCHING_MODE_BUTTON_ID);
+
 		brick.addIDPickingListener(new APickingListener() {
 
 			@Override
@@ -291,6 +294,8 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 			}
 		}, EPickingType.BRICK_COLLAPSE_BUTTON.name(), COLLAPSE_BUTTON_ID);
 
+		brick.addIDPickingTooltipListener("Collapse", EPickingType.BRICK_COLLAPSE_BUTTON.name(), COLLAPSE_BUTTON_ID);
+
 		brick.addIDPickingListener(new APickingListener() {
 
 			@Override
@@ -298,6 +303,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 				brickColumn.showDetailedBrick(brick, false);
 			}
 		}, EPickingType.EXPAND_RIGHT_HANDLE.name(), brick.getID());
+		brick.addIDPickingTooltipListener("Show in detail", EPickingType.EXPAND_RIGHT_HANDLE.name(), brick.getID());
 
 		brick.addIDPickingListener(new APickingListener() {
 
@@ -306,6 +312,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 				brickColumn.showDetailedBrick(brick, true);
 			}
 		}, EPickingType.EXPAND_LEFT_HANDLE.name(), brick.getID());
+		brick.addIDPickingTooltipListener("Show in detail", EPickingType.EXPAND_LEFT_HANDLE.name(), brick.getID());
 	}
 
 	@Override

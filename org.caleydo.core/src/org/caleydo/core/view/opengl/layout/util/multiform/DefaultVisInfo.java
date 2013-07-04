@@ -23,4 +23,9 @@ public class DefaultVisInfo implements IEmbeddedVisualizationInfo {
 		return null;
 	}
 
+	@Override
+	public String getLabel() {
+		return "";
+	}
+
 }

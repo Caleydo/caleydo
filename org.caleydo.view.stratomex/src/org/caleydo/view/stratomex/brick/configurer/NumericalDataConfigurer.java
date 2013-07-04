@@ -15,6 +15,7 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.ViewManager;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
+import org.caleydo.core.view.opengl.layout.util.multiform.DefaultVisInfo;
 import org.caleydo.core.view.opengl.layout.util.multiform.IEmbeddedVisualizationInfo;
 import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
@@ -146,16 +147,11 @@ public class NumericalDataConfigurer extends ATableBasedDataConfigurer {
 		ALayoutRenderer compactOverviewHeatMapRenderer = new OverviewHeatMapRenderer(brick.getTablePerspective(), brick
 				.getDataDomain().getTable(), false);
 
-		IEmbeddedVisualizationInfo visInfo = new IEmbeddedVisualizationInfo() {
+		IEmbeddedVisualizationInfo visInfo = new DefaultVisInfo() {
 
 			@Override
-			public EScalingEntity getPrimaryWidthScalingEntity() {
-				return null;
-			}
-
-			@Override
-			public EScalingEntity getPrimaryHeightScalingEntity() {
-				return null;
+			public String getLabel() {
+				return "Summary Heatmap";
 			}
 		};
 

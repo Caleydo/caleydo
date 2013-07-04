@@ -5,6 +5,8 @@
  ******************************************************************************/
 package org.caleydo.core.view.opengl.layout.util.multiform;
 
+import org.caleydo.core.util.base.ILabeled;
+
 /**
  * Provides information such as scaling characteristics about an embedded visualization that is rendered by a
  * {@link MultiFormRenderer}.
@@ -12,7 +14,7 @@ package org.caleydo.core.view.opengl.layout.util.multiform;
  * @author Christian Partl
  *
  */
-public interface IEmbeddedVisualizationInfo {
+public interface IEmbeddedVisualizationInfo extends ILabeled {
 
 
 

@@ -780,6 +780,17 @@ public class MultiFormRenderer extends AForwardingRenderer implements IEmbeddedV
 		}
 	}
 
+	/**
+	 * @param rendererID
+	 * @return The vis info of the specified renderer. Null if no renderer with the specified id is present.
+	 */
+	public IEmbeddedVisualizationInfo getVisInfo(int rendererID) {
+		ARendererInfo info = rendererInfos.get(rendererID);
+		if (info == null)
+			return null;
+		return info.visInfo;
+	}
+
 	@Override
 	public void destroy(GL2 gl) {
 		super.destroy(gl);
@@ -822,5 +833,12 @@ public class MultiFormRenderer extends AForwardingRenderer implements IEmbeddedV
 		if (!ensureValidRenderer())
 			return null;
 		return currentRendererInfo.visInfo.getPrimaryHeightScalingEntity();
+	}
+
+	@Override
+	public String getLabel() {
+		if (!ensureValidRenderer())
+			return null;
+		return currentRendererInfo.visInfo.getLabel();
 	}
 }

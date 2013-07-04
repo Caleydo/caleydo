@@ -93,6 +93,11 @@ public class MultiFormViewSwitchingBar extends Row implements IMultiFormChangeLi
 			view.addIDPickingListener(pickingListener, buttonPickingType, rendererID);
 	}
 
+	public void setToolTip(String text, int rendererID) {
+		if (buttons.keySet().contains(rendererID))
+			view.addIDPickingTooltipListener(text, buttonPickingType, rendererID);
+	}
+
 	private void createButtonsForMultiformRenderer(MultiFormRenderer multiFormRenderer) {
 		Set<Integer> rendererIDs = multiFormRenderer.getRendererIDs();
 		List<Integer> idList = new ArrayList<>(rendererIDs);
@@ -138,6 +143,7 @@ public class MultiFormViewSwitchingBar extends Row implements IMultiFormChangeLi
 			add(buttonLayout);
 		}
 		buttons.put(rendererID, new Pair<>(button, buttonLayout));
+		setToolTip("Switch to " + multiFormRenderer.getVisInfo(rendererID).getLabel(), rendererID);
 	}
 
 	/**

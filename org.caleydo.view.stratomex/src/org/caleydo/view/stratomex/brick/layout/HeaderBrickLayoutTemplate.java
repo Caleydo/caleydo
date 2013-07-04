@@ -301,6 +301,7 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 				}
 			}, EPickingType.DIMENSION_GROUP_CLUSTER_BUTTON.name());
 		}
+		brick.addTypePickingTooltipListener("Cluster", EPickingType.DIMENSION_GROUP_CLUSTER_BUTTON.name());
 
 		Button removeColumnButton = new Button(EPickingType.REMOVE_COLUMN_BUTTON.name(), REMOVE_COLUMN_BUTTON_ID,
 				EIconTextures.REMOVE);
@@ -330,6 +331,7 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 				});
 			}
 		}, EPickingType.REMOVE_COLUMN_BUTTON.name());
+		brick.addTypePickingTooltipListener("Remove column", EPickingType.REMOVE_COLUMN_BUTTON.name());
 
 		return toolBar;
 	}
@@ -355,6 +357,7 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 				brickColumn.showDetailedBrick(brick, false);
 			}
 		}, EPickingType.EXPAND_RIGHT_HANDLE.name(), brick.getID());
+		brick.addIDPickingTooltipListener("Show in detail", EPickingType.EXPAND_RIGHT_HANDLE.name(), brick.getID());
 
 		brick.addIDPickingListener(new APickingListener() {
 
@@ -363,6 +366,7 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 				brickColumn.showDetailedBrick(brick, true);
 			}
 		}, EPickingType.EXPAND_LEFT_HANDLE.name(), brick.getID());
+		brick.addIDPickingTooltipListener("Show in detail", EPickingType.EXPAND_LEFT_HANDLE.name(), brick.getID());
 	}
 
 	@Override

@@ -4,7 +4,8 @@
  * Licensed under the new BSD license, available at http://caleydo.org/license
  ******************************************************************************/
 package org.caleydo.view.histogram;
-import org.caleydo.core.view.opengl.layout.util.multiform.IEmbeddedVisualizationInfo;
+
+import org.caleydo.core.view.opengl.layout.util.multiform.DefaultVisInfo;
 
 
 /**
@@ -13,19 +14,14 @@ import org.caleydo.core.view.opengl.layout.util.multiform.IEmbeddedVisualization
  * @author Christian Partl
  *
  */
-public class HistogramVisInfo implements IEmbeddedVisualizationInfo {
+public class HistogramVisInfo extends DefaultVisInfo {
 
 	public HistogramVisInfo() {
 	}
 
 	@Override
-	public EScalingEntity getPrimaryWidthScalingEntity() {
-		return null;
-	}
-
-	@Override
-	public EScalingEntity getPrimaryHeightScalingEntity() {
-		return null;
+	public String getLabel() {
+		return GLHistogram.VIEW_NAME;
 	}
 
 }

@@ -18,6 +18,7 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
+import org.caleydo.core.view.opengl.layout.util.multiform.DefaultVisInfo;
 import org.caleydo.core.view.opengl.layout.util.multiform.IEmbeddedVisualizationInfo;
 import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormRenderer;
 import org.caleydo.view.stratomex.EEmbeddingID;
@@ -47,8 +48,6 @@ public class ClinicalDataConfigurer extends ABrickConfigurer {
 	protected static final int SPACING_PIXELS = 32;
 
 	private IBrickSortingStrategy sortingStrategy = new NoSortingSortingStrategy();
-
-
 
 	@Override
 	public void configure(HeaderBrickLayoutTemplate layoutTemplate) {
@@ -129,8 +128,7 @@ public class ClinicalDataConfigurer extends ABrickConfigurer {
 		captionLayout.setFrameColor(0, 0, 1, 1);
 
 		LabelRenderer captionRenderer = new LabelRenderer(view, layoutTemplate.getBrick().getTextRenderer(),
-				layoutTemplate.getBrick(),
-				pickingIDs);
+				layoutTemplate.getBrick(), pickingIDs);
 		captionLayout.setRenderer(captionRenderer);
 
 		return captionLayout;
@@ -180,16 +178,10 @@ public class ClinicalDataConfigurer extends ABrickConfigurer {
 		ALayoutRenderer kaplanMeierSummaryRenderer = new KaplanMeierSummaryRenderer(brick, brick.getLabel(),
 				EPickingType.BRICK.name(), brick.getID());
 
-		IEmbeddedVisualizationInfo visInfo = new IEmbeddedVisualizationInfo() {
-
+		IEmbeddedVisualizationInfo visInfo = new DefaultVisInfo() {
 			@Override
-			public EScalingEntity getPrimaryWidthScalingEntity() {
-				return null;
-			}
-
-			@Override
-			public EScalingEntity getPrimaryHeightScalingEntity() {
-				return null;
+			public String getLabel() {
+				return "Kaplan-Meier Summary";
 			}
 		};
 
