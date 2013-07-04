@@ -56,10 +56,9 @@ public class Application implements IApplication {
 			// return EXIT_OK; // invalid args
 			// }
 
-			Display display = PlatformUI.createDisplay();
 
 			// create a select the startup pro
-			IStartupProcedure startup = selectStartupProcedure(startups, display);
+			IStartupProcedure startup = selectStartupProcedure(startups, new Display());
 			if (startup == null)
 				return EXIT_OK; // unstartable
 			startups = null; // cleanup
@@ -74,6 +73,7 @@ public class Application implements IApplication {
 			// cleanup
 			startup = null;
 
+			Display display = PlatformUI.createDisplay();
 			int returnCode = PlatformUI.createAndRunWorkbench(display, advisor);
 
 			log.info("Bye bye!");
