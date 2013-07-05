@@ -21,7 +21,7 @@ import org.eclipse.core.runtime.Status;
 public class IntContainer implements INumericalContainer<Integer> {
 
 	/** The value used for unknown values */
-	private static final int UNKNOWN_VALUE = Integer.MIN_VALUE;
+	public static final int UNKNOWN_VALUE = Integer.MIN_VALUE;
 
 	/** The actual data */
 	private final int[] container;

@@ -118,7 +118,6 @@ public class TableView extends ASingleTablePerspectiveSWTView implements ILayerL
 	public void onSelectionUpdate(SelectionManager manager) {
 		if (selectionLayer == null)
 			return;
-
 		Collection<Integer> records = toIndices(tablePerspective.getRecordPerspective(),  selection.getRecordSelectionManager().getElements(SelectionType.SELECTION));
 		Collection<Integer> dimensions = toIndices(tablePerspective.getDimensionPerspective(),  selection.getDimensionSelectionManager().getElements(SelectionType.SELECTION));
 
@@ -127,6 +126,8 @@ public class TableView extends ASingleTablePerspectiveSWTView implements ILayerL
 		model.clearSelection();
 
 		if (records.isEmpty() && dimensions.isEmpty()) { // nothing to be done
+			selectionLayer.addLayerListener(this); // remove me to avoid that I get my updates
+			table.redraw();
 			return;
 		}
 		if (records.isEmpty()) { // just dimensions, select columns
@@ -147,6 +148,8 @@ public class TableView extends ASingleTablePerspectiveSWTView implements ILayerL
 		}
 		if (selectionOnly) // update selection only
 			showJustSelection();
+		selectionLayer.addLayerListener(this); // remove me to avoid that I get my updates
+		table.redraw();
 	}
 
 	/**
@@ -376,13 +379,18 @@ public class TableView extends ASingleTablePerspectiveSWTView implements ILayerL
 		this.table.configure();
 	}
 
-	protected static void configureStyle(NatTable natTable, final IDisplayConverter converter) {
+	protected static void configureStyle(final NatTable natTable, final IDisplayConverter converter) {
 		DefaultNatTableStyleConfiguration natTableConfiguration = new DefaultNatTableStyleConfiguration();
 		natTableConfiguration.hAlign = HorizontalAlignmentEnum.RIGHT; // most of the time numbers
 		natTable.addConfiguration(natTableConfiguration);
 
 		DefaultSelectionStyleConfiguration selectionStyle = new DefaultSelectionStyleConfiguration();
 		selectionStyle.selectionFont = natTableConfiguration.font;
+
+		selectionStyle.selectionBgColor = SelectionType.SELECTION.getColor().getSWTColor(natTable.getDisplay());
+		selectionStyle.selectedHeaderBgColor = selectionStyle.selectionBgColor;
+		selectionStyle.anchorBgColor = selectionStyle.selectionBgColor;
+
 		natTable.addConfiguration(selectionStyle);
 
 		natTable.addConfiguration(new IConfiguration() {
