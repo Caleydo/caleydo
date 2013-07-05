@@ -59,7 +59,7 @@ import com.google.gson.JsonSyntaxException;
  */
 public class TCGABrowserStartupAddon implements IStartupAddon {
 	private static final Logger log = Logger.create(TCGABrowserStartupAddon.class);
-	private static final String PREFIX = "http://data.icg.tugraz.at/caleydo/download/3.0/tcga";
+	private static final String PREFIX = "http://data.icg.tugraz.at/caleydo/download/3.0/tcga/";
 	private static final String JSONFILE = PREFIX + "tcga_analysis_runs.json";
 	private URL selectedChoice = null;
 	private final Gson gson = new GsonBuilder().create();
