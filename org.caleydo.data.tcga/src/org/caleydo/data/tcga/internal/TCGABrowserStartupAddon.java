@@ -53,13 +53,13 @@ import com.google.gson.JsonSyntaxException;
 
 /**
  * addon that parses out json file and create a selection dialog
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public class TCGABrowserStartupAddon implements IStartupAddon {
 	private static final Logger log = Logger.create(TCGABrowserStartupAddon.class);
-	private static final String PREFIX = "http://compbio.med.harvard.edu/tcga/stratomex/data/";
+	private static final String PREFIX = "http://data.icg.tugraz.at/caleydo/download/3.0/tcga/";
 	private static final String JSONFILE = PREFIX + "tcga_analysis_runs.json";
 	private URL selectedChoice = null;
 	private final Gson gson = new GsonBuilder().create();
