@@ -32,8 +32,7 @@ public class InteractiveSplashHandler extends BasicSplashHandler {
 		setForeground(new RGB(255, 255, 255));
 
 		Label idLabel = new Label(getContent(), SWT.LEFT);
-		FontData fd = new FontData("Arial", 6, SWT.NORMAL);
-
+		FontData fd = new FontData("Arial", 8, SWT.NORMAL);
 
 		final Font newFont = new Font(splash.getDisplay(), fd);
 		idLabel.setFont(newFont);
@@ -42,7 +41,7 @@ public class InteractiveSplashHandler extends BasicSplashHandler {
 
 
 		idLabel.setForeground(getForeground());
-		idLabel.setBounds(new Rectangle(splash.getSize().x-80, 185, 80, 18));
+		idLabel.setBounds(new Rectangle(20, 180, 80, 18));
 		idLabel.setText("Version " + GeneralManager.VERSION);
 
 
