@@ -5,7 +5,7 @@
          point="org.caleydo.core.StartupAddon">
       <addon
             class="org.caleydo.data.tcga.internal.TCGABrowserStartupAddon"
-            name="TCGA Project"
+            name="TCGA Data"
             order="2">
       </addon>
    </extension>
