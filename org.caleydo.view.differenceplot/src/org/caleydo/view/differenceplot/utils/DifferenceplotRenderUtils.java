@@ -343,7 +343,7 @@ public class DifferenceplotRenderUtils {
 		}
 		else
 		{
-			gl.glColor4f( (float) (218.0/255.0), (float) (231.0/255.0), (float) (253.0/255.0), 1.0f);
+			gl.glColor4f( (float) (220.0/255.0), (float) (247.0/255.0), (float) (228.0/255.0), 1.0f);
 		}
 		
 		gl.glBegin(GL2.GL_QUADS);
@@ -360,18 +360,27 @@ public class DifferenceplotRenderUtils {
 		gl.glPointSize(pointBorderSize);
         gl.glEnable(GL2.GL_POINT_SMOOTH);
         
-//        // First render the context s.t. the highlighted are placed before the selected
-//        gl.glColor4f( (float) (200/255.0), (float) (200/255.0), (float) (200/255.0), 0.5f);
-//		gl.glBegin(GL2.GL_POINTS);
-//		for (int i = 0 ; i < differenceplotElement.getDataColumns().get(0).size(); i++)
-//		{
-//			//int recordID = scatterplotElement.getSelection().getTablePerspective().getRecordPerspective().getVirtualArray().get(i);
-//			if(!selectionManager.checkStatus(SelectionType.SELECTION, idList.get(i)))
-//			{
-//		        gl.glVertex3f((differenceplotElement.getDataColumns().get(0).get(i) - xMin) / xRange * xScale + sideSpacing, height - ((differenceplotElement.getDataColumns().get(1).get(i) - yMin) / yRange * yScale + sideSpacing ), zDepth);   
-//			}			
-//		}
-//		gl.glEnd();
+        // First render the context s.t. the highlighted are placed before the selected
+        gl.glColor4f( (float) (200/255.0), (float) (200/255.0), (float) (200/255.0), 0.5f);
+		gl.glBegin(GL2.GL_POINTS);
+		for (int i = 0 ; i < differenceplotElement.getDataColumns().get(0).size(); i++)
+		{
+			//int recordID = scatterplotElement.getSelection().getTablePerspective().getRecordPerspective().getVirtualArray().get(i);
+			if(!selectionManager.checkStatus(SelectionType.SELECTION, idList.get(i)))
+			{
+				if(significanceDiffFlags1.get(i)| significanceDiffFlags2.get(i))
+				{
+					gl.glColor4f( (float) (252/255.0), (float) (174/255.0), (float) (145/255.0), (float) (255/255.0));
+				}
+				else
+				{
+					//gl.glColor4f( (float) (253/255.0), (float) (122/255.0), (float) (55/255.0), (float) (100/255.0));
+					gl.glColor4f( (float) (189/255.0), (float) (215/255.0), (float) (231/255.0), 1.0f);
+				}
+		        gl.glVertex3f((differenceplotElement.getDataColumns().get(0).get(i) - xMin) / xRange * xScale + sideSpacing, height - ((differenceplotElement.getDataColumns().get(1).get(i) - yMin) / yRange * yScale + sideSpacing ), zDepth + 1);   
+			}			
+		}
+		gl.glEnd();
 		
 		// Now render the selected items with their outline
 		
@@ -386,8 +395,23 @@ public class DifferenceplotRenderUtils {
 			{
 				if(significanceDiffFlags1.get(i)| significanceDiffFlags2.get(i))
 				{
-					gl.glVertex3f((differenceplotElement.getDataColumns().get(0).get(i) - xMin) / xRange * xScale + sideSpacing, height - ((differenceplotElement.getDataColumns().get(1).get(i) - yMin) / yRange * yScale + sideSpacing) , zDepth + 2);		        
-				}	
+					gl.glColor4f( (float) (0/255.0), (float) (0/255.0), (float) (0/255.0), (float) (255/255.0));
+					gl.glVertex3f((differenceplotElement.getDataColumns().get(0).get(i) - xMin) / xRange * xScale + sideSpacing, height - ((differenceplotElement.getDataColumns().get(1).get(i) - yMin) / yRange * yScale + sideSpacing) , zDepth + 3);		        
+					
+				}
+				else
+				{
+					//gl.glColor4f( (float) (253/255.0), (float) (122/255.0), (float) (55/255.0), (float) (100/255.0));
+					gl.glColor4f( (float) (0/255.0), (float) (0/255.0), (float) (0/255.0), 0.2f);
+					
+					if (anyItemSelected)
+					{
+						gl.glVertex3f((differenceplotElement.getDataColumns().get(0).get(i) - xMin) / xRange * xScale + sideSpacing, height - ((differenceplotElement.getDataColumns().get(1).get(i) - yMin) / yRange * yScale + sideSpacing) , zDepth + 3);
+					}
+					
+				}
+				
+				
 			}	
 		}
 		gl.glEnd();
@@ -403,14 +427,15 @@ public class DifferenceplotRenderUtils {
 				gl.glBegin(GL2.GL_POINTS);
 				if(significanceDiffFlags1.get(i)| significanceDiffFlags2.get(i))
 				{
-					gl.glColor4f( (float) (253/255.0), (float) (122/255.0), (float) (55/255.0), (float) (255/255.0));
+					gl.glColor4f( (float) (203/255.0), (float) (24/255.0), (float) (29/255.0), (float) (255/255.0));
 				}
 				else
 				{
 					//gl.glColor4f( (float) (253/255.0), (float) (122/255.0), (float) (55/255.0), (float) (100/255.0));
-					gl.glColor4f( (float) (200/255.0), (float) (200/255.0), (float) (200/255.0), 0.2f);
+					
+					gl.glColor4f( (float) (33/255.0), (float) (113/255.0), (float) (181/255.0), 0.2f);
 				}
-				gl.glVertex3f((differenceplotElement.getDataColumns().get(0).get(i) - xMin) / xRange * xScale + sideSpacing, height - ((differenceplotElement.getDataColumns().get(1).get(i) - yMin) / yRange * yScale + sideSpacing), zDepth + 2);
+				gl.glVertex3f((differenceplotElement.getDataColumns().get(0).get(i) - xMin) / xRange * xScale + sideSpacing, height - ((differenceplotElement.getDataColumns().get(1).get(i) - yMin) / yRange * yScale + sideSpacing), zDepth + 4);
 				gl.glEnd();		
 			}			
 		}
