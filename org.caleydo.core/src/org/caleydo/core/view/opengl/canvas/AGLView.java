@@ -178,8 +178,16 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 
 	private boolean focusGained = false;
 
+	/**
+	 * FIXME: Determines the amount that should be scrolled in pixels in x direction. This variable is only used on Mac
+	 * systems, as it currently requires manual translation of the view content since swt scroll bars are not working
+	 * properly.
+	 */
 	private int scrollX = 0;
 
+	/**
+	 * Same as {@link #scrollX}, but for y direction.s
+	 */
 	private int scrollY = 0;
 
 	private ViewScrollEventListener viewScrollEventListener;
@@ -1343,5 +1351,19 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 			scrollX = -event.getOriginX();
 			scrollY = event.getOriginY();
 		}
+	}
+
+	/**
+	 * @return the scrollX, see {@link #scrollX}
+	 */
+	public int getScrollX() {
+		return scrollX;
+	}
+
+	/**
+	 * @return the scrollY, see {@link #scrollY}
+	 */
+	public int getScrollY() {
+		return scrollY;
 	}
 }

@@ -22,6 +22,7 @@ import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
+import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 
 import com.jogamp.common.nio.Buffers;
@@ -388,7 +389,17 @@ public class PickingManager {
 		// Reset picked point
 		pickPoint = null;
 
+		// FIXME: Bad hack trying to solve picking issues in scrolled views on Mac
+		if (System.getProperty("os.name").contains("Mac")) {
+		PixelGLConverter pixelGLConverter = glView.getPixelGLConverter();
+		gl.glPushMatrix();
+		gl.glTranslatef(pixelGLConverter.getGLWidthForPixelWidth(-glView.getScrollX()),
+				pixelGLConverter.getGLHeightForPixelHeight(-glView.getScrollY()), 0);
 		glView.display(gl);
+		gl.glPopMatrix();
+		} else {
+			glView.display(gl);
+		}
 
 		gl.glMatrixMode(GLMatrixFunc.GL_PROJECTION);
 		gl.glPopMatrix();
