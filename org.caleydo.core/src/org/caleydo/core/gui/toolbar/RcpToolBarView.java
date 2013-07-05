@@ -8,6 +8,7 @@ package org.caleydo.core.gui.toolbar;
 import java.util.ArrayList;
 
 import org.caleydo.core.gui.toolbar.action.ClearSelectionsAction;
+import org.caleydo.core.gui.toolbar.action.OpenProjectAction;
 import org.caleydo.core.gui.toolbar.action.SaveProjectAction;
 import org.caleydo.core.gui.toolbar.action.StartClusteringAction;
 import org.caleydo.core.gui.toolbar.action.TakeSnapshotAction;
@@ -91,6 +92,7 @@ public class RcpToolBarView extends ViewPart implements ISizeProvider {
 		alToolBar.add(toolBar2);
 		alToolBarManager.add(toolBarManager2);
 
+		toolBarManager.add(new OpenProjectAction());
 		toolBarManager.add(new SaveProjectAction());
 		toolBarManager.add(new ImportDataAction());
 		toolBarManager.add(new ExportDataAction());

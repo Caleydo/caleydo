@@ -166,6 +166,7 @@
                label="File">
             <command
                   commandId="org.caleydo.core.startup.open"
+                  icon="resources/icons/general/open.png"
                   label="Open Project"
                   style="push">
             </command>
