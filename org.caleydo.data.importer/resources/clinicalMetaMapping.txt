@@ -1,0 +1,10 @@
+#name	category	Label
+patient.vitalstatus	deceased	Deceased
+patient.vitalstatus	living	Living
+patient.gender	female	Female
+patient.gender	male	Male
+patient.race	asian	Asian
+patient.race	black or african american	Black or African american
+patient.race	white	White
+patient.ethnicity	hispanic or latino	Hispanic or latino
+patient.ethnicity	not hispanic or latino	Not hispanic or latino

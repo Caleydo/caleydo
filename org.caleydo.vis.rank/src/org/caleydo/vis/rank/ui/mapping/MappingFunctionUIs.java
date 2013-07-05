@@ -1,30 +1,17 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.vis.rank.ui.mapping;
 
 import java.util.Map;
 
-import org.caleydo.core.io.gui.dataimport.widget.ICallback;
+import org.caleydo.core.util.base.ICallback;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.function.IFloatList;
 import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.vis.rank.config.IRankTableUIConfig;
 import org.caleydo.vis.rank.model.CategoricalRankRankColumnModel.CategoryInfo;
 import org.caleydo.vis.rank.model.mapping.BaseCategoricalMappingFunction;
 import org.caleydo.vis.rank.model.mapping.ICategoricalMappingFunction;
@@ -37,8 +24,8 @@ import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
  */
 public class MappingFunctionUIs {
 	public static GLElement create(IMappingFunction model, IFloatList data, Color color, Color bgColor,
-			ICallback<? super IMappingFunction> callback) {
-		MappingFunctionUI m = new MappingFunctionUI(model, data, color, bgColor, callback);
+			ICallback<? super IMappingFunction> callback, IRankTableUIConfig config) {
+		MappingFunctionUI m = new MappingFunctionUI(model, data, color, bgColor, callback, config);
 		if (model instanceof PiecewiseMapping) {
 			m.addMode(new PiecewiseMappingParallelUI((PiecewiseMapping) model, true));
 			m.addMode(new PiecewiseMappingCrossUI((PiecewiseMapping) model, true));
@@ -56,10 +43,10 @@ public class MappingFunctionUIs {
 
 	public static <T> GLElement create(ICategoricalMappingFunction<T> model, Map<T, Integer> data,
 			Map<T, CategoryInfo> metaData, Color color, Color bgColor,
-			ICallback<? super ICategoricalMappingFunction<?>> callback) {
+			ICallback<? super ICategoricalMappingFunction<?>> callback, IRankTableUIConfig config) {
 		if (model instanceof BaseCategoricalMappingFunction)
 			return new BaseCategoricalMappingFunctionUI<T>((BaseCategoricalMappingFunction<T>) model, data, metaData,
-					color, bgColor, callback);
+					color, bgColor, callback, config);
 		return null;
 	}
 }

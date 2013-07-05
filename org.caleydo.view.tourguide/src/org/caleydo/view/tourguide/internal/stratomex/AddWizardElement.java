@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.tourguide.internal.stratomex;
 
 import java.util.ArrayList;
@@ -138,7 +124,7 @@ public class AddWizardElement extends AAddWizardElement implements IReactions {
 			adapter.selectStratification((ISelectStratificationState) target,
 					((ISelectStratificationState) target).isAutoSelect());
 		else if (target instanceof ISelectGroupState)
-			adapter.selectGroup((ISelectGroupState) target);
+			adapter.selectGroup((ISelectGroupState) target, ((ISelectGroupState) target).isSelectAllSupported());
 	}
 
 	@Override
@@ -280,7 +266,7 @@ public class AddWizardElement extends AAddWizardElement implements IReactions {
 	public boolean onSelected(TablePerspective tablePerspective, Group group) {
 		if (stateMachine.getCurrent() instanceof ISelectGroupState) {
 			ISelectGroupState s = ((ISelectGroupState) stateMachine.getCurrent());
-			if (!s.apply(Pair.make(tablePerspective, group)))
+			if ((group == null && !s.isSelectAllSupported()) || !s.apply(Pair.make(tablePerspective, group)))
 				return false;
 			s.select(tablePerspective, group, this);
 			return true;
@@ -311,6 +297,11 @@ public class AddWizardElement extends AAddWizardElement implements IReactions {
 		if (!canGoBack())
 			return;
 		stateMachine.goBack();
+		Collection<ITransition> transitions = stateMachine.getTransitions(stateMachine.getCurrent());
+		// automatically switch back single transitions
+		if (transitions.size() == 1) {
+			stateMachine.goBack();
+		}
 		checkSelect();
 	}
 

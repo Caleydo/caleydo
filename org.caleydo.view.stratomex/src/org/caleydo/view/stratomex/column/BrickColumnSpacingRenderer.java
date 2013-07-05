@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.stratomex.column;
 
 import java.util.HashMap;
@@ -37,7 +23,6 @@ import org.caleydo.core.data.virtualarray.similarity.SimilarityMap;
 import org.caleydo.core.data.virtualarray.similarity.VASimilarity;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
-import org.caleydo.core.id.IDType;
 import org.caleydo.core.id.object.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.logging.Logger;
@@ -272,20 +257,22 @@ public class BrickColumnSpacingRenderer extends ALayoutRenderer implements IDrop
 			int intersectionCount = 0;
 			IDMappingManager mappingManager = IDMappingManagerRegistry.get().getIDMappingManager(
 					recordVA.getIdType().getIDCategory());
-			for (Integer recordID : recordVA) {
-				if (recordVA.getIdType() != recordSelectionManager.getIDType()) {
-					IDType destIDType = recordSelectionManager.getIDType();
 
-					Set<Integer> recordIDs = mappingManager.getIDAsSet(recordVA.getIdType(), destIDType, recordID);
+			for (Integer selectedID : selectedByGroupSelections) {
+
+				if (recordVA.getIdType() != recordSelectionManager.getIDType()) {
+
+					Set<Integer> recordIDs = mappingManager.getIDAsSet(recordSelectionManager.getIDType(),
+							recordVA.getIdType(), selectedID);
 					if (recordIDs == null)
 						continue;
-					recordID = recordIDs.iterator().next();
+					selectedID = recordIDs.iterator().next();
 					if (recordIDs.size() > 1) {
 						Logger.log(new Status(IStatus.WARNING, this.toString(), "Multi-Mapping, not handled"));
 					}
 				}
 
-				if (recordID != null && selectedByGroupSelections.contains(recordID))
+				if (selectedID != null && recordVA.contains(selectedID))
 					intersectionCount++;
 			}
 
@@ -541,7 +528,7 @@ public class BrickColumnSpacingRenderer extends ALayoutRenderer implements IDrop
 					float trendRatio = 0;
 					float[] color = new float[] { 0, 0, 0, 1 };
 
-					if (selectionType == SelectionType.NORMAL && !stratomex.isConnectionsOn()) {
+					if (selectionType == SelectionType.NORMAL && stratomex.isConnectionsShowOnlySelected()) {
 						continue;
 					}
 
@@ -550,23 +537,9 @@ public class BrickColumnSpacingRenderer extends ALayoutRenderer implements IDrop
 					if (stratomex.isConnectionsHighlightDynamic() == false) {
 
 						if (selectionType == SelectionType.NORMAL) {
-
-							// if (glVisBricks.getSelectedConnectionBandID() ==
-							// subGroupMatch
-							// .getConnectionBandID())
-							// {
-							// trendRatio = 0.5f;
-							// color = new float[] { 0, 0, 0 };
-							//
-							// }
-							// else
-							// {
 							trendRatio = 0.15f;
-							// }
 						} else {
-
 							trendRatio = 0.5f;
-
 						}
 					} else {
 

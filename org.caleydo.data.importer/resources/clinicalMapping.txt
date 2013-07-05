@@ -1,10 +1,19 @@
-#name	Label	EDataClass	EDataType
-patient.daystobirth	Days To Birth	NATURAL_NUMBER	INTEGER
+#name	Label	EDataClass	EDataType	[[CategoryType]	[ColorBrewer Set Name]
+patient.daystobirth	Age (days)	NATURAL_NUMBER	INTEGER
+patient.yearstobirth	Age (years)	NATURAL_NUMBER	INTEGER
 patient.daystodeath	Days to Death	NATURAL_NUMBER	INTEGER
 patient.daystolastfollowup	Days To Last Follow Up	NATURAL_NUMBER	INTEGER
-patient.vitalstatus	Vital Status	CATEGORICAL	STRING
-patient.tumortissuesite	Tumor Tissue Site	CATEGORICAL	STRING
-patient.gender	Gender	CATEGORICAL	STRING
+patient.vitalstatus	Vital Status	CATEGORICAL	STRING	NOMINAL
+patient.tumortissuesite	Tumor Tissue Site	CATEGORICAL	STRING	NOMINAL
+patient.gender	Gender	CATEGORICAL	STRING	NOMINAL
 patient.ageatinitialpathologicdiagnosis	Age At Initial Pathologic Diagnosis	NATURAL_NUMBER	INTEGER
-patient.race	Race	CATEGORICAL	STRING
-patient.ethnicity	Ethnicity	CATEGORICAL	STRING
+patient.race	Race	CATEGORICAL	STRING	NOMINAL
+patient.ethnicity	Ethnicity	CATEGORICAL	STRING	NOMINAL
+patient.histologicaltype	Histological Type	CATEGORICAL	STRING	NOMINAL
+patient.personlifetimeriskradiationexposureindicator	Radiation Risk Exposure	CATEGORICAL	STRING	ORDINAL
+patient.primarylymphnodepresentationassessment	Lymph Node Assessment	CATEGORICAL	STRING	ORDINAL
+patient.primaryneoplasmfocustype	Focus Type	CATEGORICAL	STRING	NOMINAL
+patient.stageevent.pathologicstage	Overall Stage	CATEGORICAL	STRING	ORDINAL
+patient.stageevent.tnmcategories.pathologiccategories.pathologict	T Stage	CATEGORICAL	STRING	NOMINAL
+patient.stageevent.tnmcategories.pathologiccategories.pathologicn	N Stage	CATEGORICAL	STRING	NOMINAL
+patient.stageevent.tnmcategories.pathologiccategories.pathologicm	M Stage	CATEGORICAL	STRING	NOMINAL

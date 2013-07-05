@@ -1,3 +1,8 @@
+/*******************************************************************************
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.view.opengl.layout2.basic;
 
 import gleem.linalg.Vec2f;
@@ -196,7 +201,8 @@ public abstract class GLElementSelector extends GLElement implements IGLElementP
 		GLElement selected = getSelected(w, h);
 		if (selected != null)
 			selected.render(g);
-	}
+	}
+
 	@Override
 	protected void renderPickImpl(GLGraphics g, float w, float h) {
 		super.renderPickImpl(g, w, h);

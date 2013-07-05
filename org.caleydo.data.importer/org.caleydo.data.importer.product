@@ -43,10 +43,6 @@
       <plugin id="org.caleydo.lib.args4j"/>
       <plugin id="org.caleydo.lib.jgrapht"/>
       <plugin id="org.caleydo.lib.jogl"/>
-      <plugin id="org.caleydo.lib.jsap"/>
-      <plugin id="org.caleydo.lib.tagsoup"/>
-      <plugin id="org.caleydo.lib.vecmath"/>
-      <plugin id="org.caleydo.lib.weka"/>
       <plugin id="org.caleydo.util.gleem"/>
       <plugin id="org.eclipse.ant.core"/>
       <plugin id="org.eclipse.core.commands"/>

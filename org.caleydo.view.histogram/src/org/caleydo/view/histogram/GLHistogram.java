@@ -1,19 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
- * University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
- * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
- * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with this program. If not, see
- * <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.histogram;
 
 import static org.caleydo.view.histogram.HistogramRenderStyle.SIDE_SPACING;
@@ -25,13 +14,13 @@ import java.util.List;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.data.collection.CategoricalHistogram;
 import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.table.NumericalTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataSupportDefinitions;
 import org.caleydo.core.data.datadomain.IDataSupportDefinition;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.perspective.table.TablePerspectiveStatistics;
 import org.caleydo.core.event.view.RedrawViewEvent;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.color.Color;
@@ -133,9 +122,7 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 			if (tablePerspective.getDataDomain().getTable() instanceof NumericalTable) {
 				histogram = tablePerspective.getContainerStatistics().getHistogram();
 			}
-
 		}
-
 	}
 
 	public void setHistogram(Histogram histogram) {
@@ -192,7 +179,7 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 
 		renderHistogram(gl);
 		if (renderColorBars && detailLevel != EDetailLevel.LOW)
-		 renderColorBars(gl);
+			renderColorBars(gl);
 		gl.glEndList();
 	}
 
@@ -204,37 +191,18 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 	private void renderHistogram(GL2 gl) {
 		if (histogram == null) {
 			if (dataDomain != null && tablePerspective != null) {
-				// FIXME Bad hack
-				if (dataDomain.getLabel().toLowerCase().contains("copy")) {
-					histogram = TablePerspectiveStatistics.calculateHistogram(dataDomain.getTable(), tablePerspective
-							.getRecordPerspective().getVirtualArray(), tablePerspective.getDimensionPerspective()
-							.getVirtualArray(), 5);
-				} else if (dataDomain.getLabel().toLowerCase().contains("mutation")) {
-					histogram = TablePerspectiveStatistics.calculateHistogram(dataDomain.getTable(), tablePerspective
-							.getRecordPerspective().getVirtualArray(), tablePerspective.getDimensionPerspective()
-							.getVirtualArray(), 2);
-				} else {
-					histogram = tablePerspective.getContainerStatistics().getHistogram();
-				}
+				histogram = tablePerspective.getContainerStatistics().getHistogram();
 			} else if (dataDomain != null) {
 				TablePerspective defaultTablePerspective = dataDomain.getDefaultTablePerspective();
-				// FIXME Bad hack
-				if (dataDomain.getLabel().toLowerCase().contains("copy")) {
-					histogram = TablePerspectiveStatistics.calculateHistogram(dataDomain.getTable(),
-							defaultTablePerspective.getRecordPerspective().getVirtualArray(), defaultTablePerspective
-									.getDimensionPerspective().getVirtualArray(), 5);
-				} else if (dataDomain.getLabel().toLowerCase().contains("mutation")) {
-					histogram = TablePerspectiveStatistics.calculateHistogram(dataDomain.getTable(),
-							defaultTablePerspective.getRecordPerspective().getVirtualArray(), defaultTablePerspective
-									.getDimensionPerspective().getVirtualArray(), 2);
-				} else {
-					histogram = defaultTablePerspective.getContainerStatistics().getHistogram();
-				}
+				histogram = defaultTablePerspective.getContainerStatistics().getHistogram();
 			} else {
 				return;
 			}
 		}
 
+		// GLHelperFunctions.drawSmallPointAt(gl, 0.01f, 0.01f, 1);
+		// GLHelperFunctions.drawSmallPointAt(gl, viewFrustum.getWidth() / 2, viewFrustum.getHeight() / 2, 1);
+		// GLHelperFunctions.drawSmallPointAt(gl, viewFrustum.getWidth() - 0.01f, viewFrustum.getHeight() - 0.01f, 1);
 		float spacing = (viewFrustum.getWidth() - 2 * sideSpacing) / histogram.size();
 		float continuousColorDistance = 1.0f / histogram.size();
 
@@ -242,30 +210,52 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 
 		int iCount = 0;
 
+		CategoricalHistogram cHistogram = null;
+		if (histogram instanceof CategoricalHistogram) {
+			cHistogram = (CategoricalHistogram) histogram;
+		}
+
 		for (int bucketCount = 0; bucketCount < histogram.size(); bucketCount++) {
-			Integer iValue = histogram.get(bucketCount);
-			if (useColor)
- {
-				gl.glColor3fv(
-						dataDomain.getColorMapper().getColor(
-								continuousColorDistance * iCount + continuousColorDistance / 2), 0);
+			Integer size = histogram.get(bucketCount);
+
+			if (useColor) {
+				float[] color;
+
+				// if (dataDomain.getTable() instanceof CategoricalTable<?>) {
+				// CategoricalTable<?> cTable = (CategoricalTable<?>) dataDomain.getTable();
+				// color = cTable.getCategoryDescriptions().getCategoryProperties().get(bucketCount).getColor()
+				// .getRGBA();
+				// } else if (!dataDomain.getTable().isDataHomogeneous() && tablePerspective != null) {
+				if (cHistogram != null) {
+					// CategoricalClassDescription<?> specific = (CategoricalClassDescription<?>) dataDomain.getTable()
+					// .getDataClassSpecificDescription(
+					// tablePerspective.getDimensionPerspective().getVirtualArray().get(0),
+					// tablePerspective.getRecordPerspective().getVirtualArray().get(0));
+
+					color = cHistogram.getColor(bucketCount).getRGB();// specific.getCategoryProperties().get(bucketCount).getColor().getRGBA();
+				} else {
+					color = dataDomain.getTable().getColorMapper()
+							.getColor(continuousColorDistance * iCount + continuousColorDistance / 2);
+				}
+				gl.glColor3fv(color, 0);
 			}
 
-			gl.glLineWidth(3.0f);
 			gl.glBegin(GL2.GL_POLYGON);
-
 			gl.glVertex3f(spacing * iCount + sideSpacing, sideSpacing, 0);
-			gl.glVertex3f(spacing * iCount + sideSpacing, sideSpacing + iValue * fOneHeightValue, 0);
-			// gl.glColor3fv(colorMapping.getColor(fContinuousColorRegion *
-			// (iCount + 1)), 0);
-			gl.glVertex3f(spacing * (iCount + 1) + sideSpacing, sideSpacing + iValue * fOneHeightValue, 0);
+			gl.glVertex3f(spacing * iCount + sideSpacing, sideSpacing + size * fOneHeightValue, 0);
+			gl.glVertex3f(spacing * (iCount + 1) + sideSpacing, sideSpacing + size * fOneHeightValue, 0);
 			gl.glVertex3f(spacing * (iCount + 1) + sideSpacing, sideSpacing, 0);
 			gl.glEnd();
 
-			// gl.glBegin(GL.GL_LINES);
-			// gl.glVertex3f(0, 0, 0);
-			// gl.glVertex3f(2, 2, 2);
-			// gl.glEnd();
+			gl.glLineWidth(0.3f);
+
+			gl.glColor3fv(Color.DARK_GRAY.getRGBA(), 0);
+			gl.glBegin(GL.GL_LINE_LOOP);
+			gl.glVertex3f(spacing * iCount + sideSpacing, sideSpacing, 0);
+			gl.glVertex3f(spacing * iCount + sideSpacing, sideSpacing + size * fOneHeightValue, 0);
+			gl.glVertex3f(spacing * (iCount + 1) + sideSpacing, sideSpacing + size * fOneHeightValue, 0);
+			gl.glVertex3f(spacing * (iCount + 1) + sideSpacing, sideSpacing, 0);
+			gl.glEnd();
 
 			iCount++;
 		}
@@ -280,7 +270,7 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 	private void renderColorBars(GL2 gl) {
 
 		fRenderWidth = (viewFrustum.getWidth() - 2 * sideSpacing);
-		List<ColorMarkerPoint> markerPoints = dataDomain.getColorMapper().getMarkerPoints();
+		List<ColorMarkerPoint> markerPoints = dataDomain.getTable().getColorMapper().getMarkerPoints();
 
 		int iCount = 0;
 
@@ -450,7 +440,7 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 		float[] fArTargetWorldCoordinates = GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl,
 				currentPoint.x, currentPoint.y);
 
-		List<ColorMarkerPoint> markerPoints = dataDomain.getColorMapper().getMarkerPoints();
+		List<ColorMarkerPoint> markerPoints = dataDomain.getTable().getColorMapper().getMarkerPoints();
 		ColorMarkerPoint markerPoint = markerPoints.get(iColorMappingPointMoved);
 
 		float fClickedPointX = fArTargetWorldCoordinates[0];
@@ -526,7 +516,7 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 				fTargetValue = 0.01f;
 			markerPoint.setRightSpread(fTargetValue);
 		}
-		dataDomain.getColorMapper().update();
+		dataDomain.getTable().getColorMapper().update();
 
 		RedrawViewEvent event = new RedrawViewEvent();
 		event.setSender(this);

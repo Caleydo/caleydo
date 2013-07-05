@@ -1,19 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
- * University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
- * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
- * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with this program. If not, see
- * <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.util.color;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -46,11 +35,15 @@ public class Color {
 	public static final Color WHITE = new Color(1f);
 
 	public static final Color GRAY = new Color(0.5f, 0.5f, 0.5f);
+	public static final Color MEDIUM_DARK_GRAY = new Color(0.35f, 0.35f, 0.35f);
 	public static final Color DARK_GRAY = new Color(0.2f, 0.2f, 0.2f);
 	public static final Color LIGHT_GRAY = new Color(0.7f, 0.7f, 0.7f);
 
 	public static final Color NEUTRAL_GREY = new Color(220, 220, 220);
 	public static final Color NOT_A_NUMBER_COLOR = new Color(0.3f, 0.3f, 0.3f);
+
+	public static final Color DARK_GREEN = new Color(49, 163, 84);
+	public static final Color DARK_BLUE = new Color(43, 140, 190);
 
 	@XmlElement
 	public float r;

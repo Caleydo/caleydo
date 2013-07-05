@@ -1,3 +1,8 @@
+/*******************************************************************************
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 /**
  *
  */
@@ -78,7 +83,7 @@ public abstract class AGeneNodeMode extends ALayoutBasedNodeMode implements ICol
 
 	@Override
 	public Color getGradientColor() {
-		return (gradientColor != null) ? gradientColor : backgroundColor;
+		return (gradientColor != null) ? backgroundColor : gradientColor;
 	}
 
 	@Override

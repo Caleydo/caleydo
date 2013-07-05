@@ -1,26 +1,12 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.tourguide.api.score;
 
 import org.caleydo.core.util.base.ILabeled;
-import org.caleydo.vis.rank.model.mapping.MappingFunctions;
+import org.caleydo.vis.rank.model.mapping.JavaScriptFunctions;
 
 import com.google.common.base.Function;
 
@@ -72,15 +58,15 @@ public enum ECombinedOperator implements Function<float[], Float>, ILabeled {
 	public float combine(float[] data) {
 		switch (this) {
 		case MAX:
-			return MappingFunctions.max(data);
+			return JavaScriptFunctions.max(data);
 		case MIN:
-			return MappingFunctions.min(data);
+			return JavaScriptFunctions.min(data);
 		case MEAN:
-			return MappingFunctions.mean(data);
+			return JavaScriptFunctions.mean(data);
 		case GEOMETRIC_MEAN:
-			return MappingFunctions.geometricMean(data);
+			return JavaScriptFunctions.geometricMean(data);
 		case MEDIAN:
-			return MappingFunctions.median(data);
+			return JavaScriptFunctions.median(data);
 		}
 		throw new IllegalStateException("unknown operator: " + this);
 	}

@@ -1,3 +1,8 @@
+/*******************************************************************************
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 /**
  *
  */
@@ -13,12 +18,12 @@ import org.caleydo.core.id.IDType;
 import org.caleydo.core.io.GroupingParseSpecification;
 import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.io.gui.dataimport.PreviewTable.IPreviewCallback;
-import org.caleydo.core.io.gui.dataimport.widget.ICallback;
-import org.caleydo.core.io.gui.dataimport.widget.IProvider;
-import org.caleydo.core.io.gui.dataimport.widget.IntegerCallback;
 import org.caleydo.core.io.gui.dataimport.widget.LabelWidget;
 import org.caleydo.core.io.gui.dataimport.widget.LoadFileWidget;
 import org.caleydo.core.io.gui.dataimport.widget.RowConfigWidget;
+import org.caleydo.core.util.base.ICallback;
+import org.caleydo.core.util.base.IProvider;
+import org.caleydo.core.util.base.IntegerCallback;
 import org.caleydo.core.util.execution.SafeCallable;
 import org.caleydo.core.util.system.BrowserUtils;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -146,7 +151,7 @@ public class ImportGroupingDialog extends AHelpButtonDialog implements SafeCalla
 			public void on(int numColumn, int numRow, List<? extends List<String>> dataMatrix) {
 				onPreviewChanged(numColumn, numRow, dataMatrix);
 			}
-		});
+		}, true);
 
 		init();
 
@@ -246,7 +251,7 @@ public class ImportGroupingDialog extends AHelpButtonDialog implements SafeCalla
 		this.label.setEnabled(true);
 		this.rowConfig.setEnabled(true);
 
-		this.previewTable.generatePreview();
+		this.previewTable.generatePreview(true);
 		// this.parentComposite.layout(true, true);
 	}
 

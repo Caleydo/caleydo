@@ -1,3 +1,8 @@
+/*******************************************************************************
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.util.clusterer.algorithm.affinity;
 
 import java.util.ArrayList;
@@ -13,8 +18,7 @@ import org.caleydo.core.util.logging.Logger;
 import com.google.common.base.Stopwatch;
 
 /**
- * Affinity propagation clusterer. See <a
- * href="http://www.psi.toronto.edu/affinitypropagation/"> affinity
+ * Affinity propagation clusterer. See <a href="http://www.psi.toronto.edu/affinitypropagation/faq.html"> affinity
  * documentation</a>
  *
  * @author Bernhard Schlegl
@@ -40,13 +44,12 @@ public class AffinityClusterer extends ALinearClusterer {
 	 */
 	private final int[] k;
 
-	private final int nrSamples;
-
 	private final int nrSimilarities;
 
-	private final float lambda = 0.5f;
-	private final int maxIterations = 400;
-	private final int convIterations = 30;
+	/** damping factor */
+	private final float dampingFactor = 0.7f;
+	private final int maxIterations = 800;
+	private final int convIterations = 100;
 
 
 	public AffinityClusterer(ClusterConfiguration config, int progressMultiplier, int progressOffset) {
@@ -55,7 +58,6 @@ public class AffinityClusterer extends ALinearClusterer {
 		AffinityClusterConfiguration c = (AffinityClusterConfiguration) config.getClusterAlgorithmConfiguration();
 		this.clusterFactor = c.getClusterFactor();
 
-		this.nrSamples = va.size();
 		this.nrSimilarities = nrSamples * nrSamples;
 
 		this.s = new float[this.nrSimilarities];
@@ -76,19 +78,20 @@ public class AffinityClusterer extends ALinearClusterer {
 
 		int counter = 1;
 
-		float[] dArInstance1 = new float[va.size()];
-		float[] dArInstance2 = new float[va.size()];
+		float[] dArInstance1 = new float[oppositeVA.size()];
+		float[] instance2 = new float[oppositeVA.size()];
 
 		int icnt1 = 0, icnt2 = 0, isto = 0;
 		int count = 0;
 
-		for (Integer oppositeID : oppositeVA) {
+
+		for (Integer vaID : va) {
 			if (isClusteringCanceled) {
 				progress(100, true);
 				return -2;
 			}
 
-			int tempPercentage = (int) ((float) icnt1 / oppositeVA.size() * 100);
+			int tempPercentage = (int) ((float) icnt1 / va.size() * 100);
 
 			if (counter == tempPercentage) {
 				progress(counter, false);
@@ -96,23 +99,25 @@ public class AffinityClusterer extends ALinearClusterer {
 			}
 
 			isto = 0;
-			for (Integer vaID : va) {
-				dArInstance1[isto] = getNormalizedValue(vaID, oppositeID);
+			for (Integer oppositeID : oppositeVA) {
+				dArInstance1[isto] = table.getDataDomain().getNormalizedValue(oppositeVA.getIdType(), oppositeID,
+						va.getIdType(), vaID);
 				isto++;
 			}
 
 			icnt2 = 0;
-			for (Integer oppositeID2 : oppositeVA) {
+			for (Integer vaID2 : va) {
 				isto = 0;
-				for (Integer vaID2 : va) {
-					dArInstance2[isto] = getNormalizedValue(vaID2, oppositeID2);
+				for (Integer oppositeID2 : oppositeVA) {
+					instance2[isto] = table.getDataDomain().getNormalizedValue(oppositeVA.getIdType(), oppositeID2,
+							va.getIdType(), vaID2);
 					isto++;
 				}
 
 				if (icnt1 != icnt2) {
-					s[count] = -distanceMeasure.apply(dArInstance1, dArInstance2);
-					i[count] = oppositeVA.indexOf(oppositeID);
-					k[count] = oppositeVA.indexOf(oppositeID2);
+					s[count] = -distanceMeasure.apply(dArInstance1, instance2);
+					i[count] = va.indexOf(vaID);
+					k[count] = va.indexOf(vaID2);
 					count++;
 				}
 				icnt2++;
@@ -124,10 +129,10 @@ public class AffinityClusterer extends ALinearClusterer {
 		// determine median of the similarity values
 		float median = ClusterHelper.median(s);
 
-		for (Integer recordIndex : oppositeVA) {
+		for (Integer recordIndex : va) {
 			s[count] = median * clusterFactor;
-			i[count] = oppositeVA.indexOf(recordIndex);
-			k[count] = oppositeVA.indexOf(recordIndex);
+			i[count] = va.indexOf(recordIndex);
+			k[count] = va.indexOf(recordIndex);
 			count++;
 		}
 
@@ -190,9 +195,11 @@ public class AffinityClusterer extends ALinearClusterer {
 			for (j = 0; j < nrSimilarities; j++) {
 				tmp = dArAvailabilities[j] + s[j];
 				if (tmp == mx1[i[j]]) {
-					dArResposibilities[j] = lambda * dArResposibilities[j] + (1 - lambda) * (s[j] - mx2[i[j]]);
+					dArResposibilities[j] = dampingFactor * dArResposibilities[j] + (1 - dampingFactor)
+							* (s[j] - mx2[i[j]]);
 				} else {
-					dArResposibilities[j] = lambda * dArResposibilities[j] + (1 - lambda) * (s[j] - mx1[i[j]]);
+					dArResposibilities[j] = dampingFactor * dArResposibilities[j] + (1 - dampingFactor)
+							* (s[j] - mx1[i[j]]);
 				}
 			}
 
@@ -211,14 +218,14 @@ public class AffinityClusterer extends ALinearClusterer {
 					tmp = srp[k[j]];
 				}
 				if (tmp < 0.0) {
-					dArAvailabilities[j] = lambda * dArAvailabilities[j] + (1 - lambda)
+					dArAvailabilities[j] = dampingFactor * dArAvailabilities[j] + (1 - dampingFactor)
 							* tmp;
 				} else {
-					dArAvailabilities[j] = lambda * dArAvailabilities[j];
+					dArAvailabilities[j] = dampingFactor * dArAvailabilities[j];
 				}
 			}
 			for (j = nrSimilarities - nrSamples; j < nrSimilarities; j++) {
-				dArAvailabilities[j] = lambda * dArAvailabilities[j] + (1 - lambda)
+				dArAvailabilities[j] = dampingFactor * dArAvailabilities[j] + (1 - dampingFactor)
 						* (srp[k[j]] - dArResposibilities[j]);
 			}
 

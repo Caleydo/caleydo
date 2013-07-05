@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.tourguide.internal.view;
 
 import java.beans.PropertyChangeEvent;
@@ -37,10 +23,11 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.data.DataDomainUpdateEvent;
-import org.caleydo.core.event.data.NewDataDomainEvent;
+import org.caleydo.core.event.data.NewDataDomainLoadedEvent;
 import org.caleydo.core.event.data.RemoveDataDomainEvent;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.AGLElementView;
@@ -52,8 +39,10 @@ import org.caleydo.core.view.opengl.layout2.basic.ScrollBar;
 import org.caleydo.core.view.opengl.layout2.basic.ScrollingDecorator;
 import org.caleydo.core.view.opengl.layout2.basic.WaitingElement;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
+import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
+import org.caleydo.view.tourguide.api.score.ISerializeableScore;
 import org.caleydo.view.tourguide.api.score.MultiScore;
 import org.caleydo.view.tourguide.internal.SerializedTourGuideView;
 import org.caleydo.view.tourguide.internal.compute.ComputeAllOfJob;
@@ -77,6 +66,7 @@ import org.caleydo.view.tourguide.internal.score.Scores;
 import org.caleydo.view.tourguide.internal.stratomex.StratomexAdapter;
 import org.caleydo.view.tourguide.internal.stratomex.event.WizardEndedEvent;
 import org.caleydo.view.tourguide.internal.view.col.ScoreRankColumnModel;
+import org.caleydo.view.tourguide.internal.view.col.SizeRankColumnModel;
 import org.caleydo.view.tourguide.internal.view.specific.DataDomainModeSpecifics;
 import org.caleydo.view.tourguide.internal.view.specific.IDataDomainQueryModeSpecfics;
 import org.caleydo.view.tourguide.internal.view.ui.ADataDomainElement;
@@ -109,6 +99,8 @@ import org.eclipse.core.runtime.jobs.IJobChangeListener;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+
+import com.google.common.collect.Lists;
 
 /**
  * @author Samuel Gratzl
@@ -179,6 +171,20 @@ public class GLTourGuideView extends AGLElementView {
 				onSelectRow((AScoreRow) evt.getOldValue(), (AScoreRow) evt.getNewValue());
 			}
 		});
+		this.table.addPropertyChangeListener(RankTableModel.PROP_POOL, new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				if (evt.getNewValue() == null) { // removed aka destroyed
+					// destroy persistent scores
+					if (evt.getOldValue() instanceof ScoreRankColumnModel) {
+						ScoreRankColumnModel r = (ScoreRankColumnModel) evt.getOldValue();
+						IScore score = r.getScore();
+						if (score instanceof ISerializeableScore)
+							Scores.get().removePersistentScore((ISerializeableScore) score);
+					}
+				}
+			}
+		});
 		this.table.add(new RankRankColumnModel().setWidth(30));
 		modeSpecifics.addDefaultColumns(this.table);
 
@@ -214,14 +220,16 @@ public class GLTourGuideView extends AGLElementView {
 	}
 
 	@ListenTo
-	private void onAddDataDomain(final NewDataDomainEvent event) {
+	private void onAddDataDomain(final NewDataDomainLoadedEvent event) {
 		IDataDomain dd = event.getDataDomain();
 
-		if (!mode.isCompatible(dd))
+		if (!mode.apply(dd))
 			return;
 
 		for (ADataDomainQuery query : modeSpecifics.createDataDomainQuery(dd)) {
 			queries.add(query);
+			query.addPropertyChangeListener(ADataDomainQuery.PROP_ACTIVE, listener);
+			query.addPropertyChangeListener(ADataDomainQuery.PROP_MASK, listener);
 			getDataDomainQueryUI().add(query);
 		}
 	}
@@ -232,6 +240,8 @@ public class GLTourGuideView extends AGLElementView {
 		for (ADataDomainQuery query : queries) {
 			if (Objects.equals(query.getDataDomain().getDataDomainID(), id)) {
 				query.cleanup();
+				query.removePropertyChangeListener(ADataDomainQuery.PROP_ACTIVE, listener);
+				query.removePropertyChangeListener(ADataDomainQuery.PROP_MASK, listener);
 				queries.remove(query);
 				getDataDomainQueryUI().remove(query);
 				if (query.isActive())
@@ -268,21 +278,35 @@ public class GLTourGuideView extends AGLElementView {
 		if (q.isInitialized()) {
 			if (active) {
 				q.createSpecificColumns(table);
+				removeAllSimpleFilter();
 				scheduleAllOf(q);
 			} else {
 				q.removeSpecificColumns(table);
 				updateMask();
 			}
 			return;
-		} else
+		} else {
+			if (active)
+				removeAllSimpleFilter();
 			scheduleAllOf(q);
+		}
+	}
+
+	private void removeAllSimpleFilter() {
+		// reset all string and integer filters
+		for (ARankColumnModel model : table.getFlatColumns()) {
+			if (model instanceof StringRankColumnModel)
+				((StringRankColumnModel) model).setFilter(null, true);
+			else if (model instanceof SizeRankColumnModel)
+				((SizeRankColumnModel) model).setFilter(null, null);
+		}
 	}
 
 	/**
 	 * @param q
 	 */
 	private void scheduleAllOf(final ADataDomainQuery q) {
-		Collection<IScore> scores = new ArrayList<>(getVisibleScores(null));
+		Collection<IScore> scores = new ArrayList<>(getVisibleScores(null, false));
 		ComputeAllOfJob job = new ComputeAllOfJob(q, scores, this);
 		if (job.hasThingsToDo()) {
 			waiting.reset(job);
@@ -308,7 +332,7 @@ public class GLTourGuideView extends AGLElementView {
 	}
 
 	private void scheduleExtras(List<Pair<ADataDomainQuery, List<AScoreRow>>> extras) {
-		Collection<IScore> scores = new ArrayList<>(getVisibleScores(null));
+		Collection<IScore> scores = new ArrayList<>(getVisibleScores(null, false));
 		ComputeExtrasJob job = new ComputeExtrasJob(extras, scores, this);
 		if (job.hasThingsToDo()) {
 			waiting.reset(job);
@@ -514,7 +538,12 @@ public class GLTourGuideView extends AGLElementView {
 	}
 
 	protected void onSelectRow(AScoreRow old, AScoreRow new_) {
-		stratomex.updatePreview(old, new_, getVisibleScores(new_), mode, getSortedByScore());
+		if (stratomex.isWizardVisible())
+			updatePreview(old, new_);
+	}
+
+	private void updatePreview(AScoreRow old, AScoreRow new_) {
+		stratomex.updatePreview(old, new_, getVisibleScores(new_, true), mode, getSortedByScore());
 	}
 
 	private IScore getSortedByScore() {
@@ -542,15 +571,18 @@ public class GLTourGuideView extends AGLElementView {
 	/**
 	 * @return
 	 */
-	private Collection<IScore> getVisibleScores(AScoreRow row) {
+	private Collection<IScore> getVisibleScores(AScoreRow row, boolean justSortingCriteria) {
 		Collection<IScore> r = new ArrayList<>();
-		Deque<ARankColumnModel> cols = new LinkedList<>(table.getColumns());
+		Deque<ARankColumnModel> cols = new LinkedList<>();
+		if (justSortingCriteria) {
+			cols.addAll(Lists.newArrayList(table.getColumnsOf(table.getDefaultRanker())));
+		} else
+			cols.addAll(table.getColumns());
+
 		while (!cols.isEmpty()) {
 			ARankColumnModel model = cols.pollFirst();
 			if (model instanceof ScoreRankColumnModel) {
 				r.add(((ScoreRankColumnModel) model).getScore());
-			} else if (model instanceof StackedRankColumnModel) {
-				cols.addAll(((StackedRankColumnModel) model).getChildren());
 			} else if (model instanceof MaxRankColumnModel) {
 				MaxRankColumnModel max = (MaxRankColumnModel) model;
 				if (row != null) {
@@ -559,6 +591,8 @@ public class GLTourGuideView extends AGLElementView {
 				} else {
 					cols.addAll(max.getChildren());
 				}
+			} else if (model instanceof ACompositeRankColumnModel) {
+				cols.addAll(((ACompositeRankColumnModel) model).getChildren());
 			}
 		}
 		for (Iterator<IScore> it = r.iterator(); it.hasNext();) {
@@ -704,7 +738,8 @@ public class GLTourGuideView extends AGLElementView {
 		@Override
 		public void renderHeaderBackground(GLGraphics g, float w, float h, float labelHeight, ARankColumnModel model) {
 			g.color(0.96f).fillRect(0, 0, w, h);
-			g.color(model.getBgColor()).fillRect(0, labelHeight - 3, w, 2);
+			if (labelHeight > 0)
+				g.color(model.getBgColor()).fillRect(0, labelHeight - 2, w, 2);
 		}
 
 		@Override
@@ -725,6 +760,25 @@ public class GLTourGuideView extends AGLElementView {
 				g.color(RenderStyle.COLOR_BACKGROUND_EVEN);
 				g.fillRect(x, y, w, h);
 			}
+		}
+
+		@Override
+		public Color getBarOutlineColor() {
+			return Color.DARK_GRAY; // outline color
+		}
+
+		@Override
+		public void onRowClick(RankTableModel table, PickingMode pickingMode, IRow row, boolean isSelected) {
+			if (!isSelected && pickingMode == PickingMode.CLICKED) {
+				table.setSelectedRow(row);
+			} else if (pickingMode == PickingMode.DOUBLE_CLICKED && !stratomex.isWizardVisible()) {
+				updatePreview(null, (AScoreRow) row);
+			}
+		}
+
+		@Override
+		public boolean isFastFiltering() {
+			return true;
 		}
 	}
 

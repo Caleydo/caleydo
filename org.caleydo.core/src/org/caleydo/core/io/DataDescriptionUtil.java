@@ -1,27 +1,14 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.io;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -30,6 +17,7 @@ import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
 import org.caleydo.core.data.collection.column.container.CategoricalClassDescription.ECategoryType;
 import org.caleydo.core.util.color.Color;
+import org.caleydo.core.util.color.ColorManager;
 
 /**
  * Utility class to create default {@link DataDescription} objects from specified data.
@@ -202,8 +190,13 @@ public final class DataDescriptionUtil {
 			categoricalClassDescription.setCategoryType(ECategoryType.ORDINAL);
 			categoricalClassDescription.setRawDataType(EDataType.STRING);
 
+			Iterator<Color> colorIterator = ColorManager.get().getColorList(ColorManager.QUALITATIVE_COLORS).iterator();
+
 			for (String categoryValue : categoryValues) {
-				categoricalClassDescription.addCategoryProperty(categoryValue, categoryValue, new Color("000000"));
+				if (!colorIterator.hasNext()) {
+					colorIterator = ColorManager.get().getColorList(ColorManager.QUALITATIVE_COLORS).iterator();
+				}
+				categoricalClassDescription.addCategoryProperty(categoryValue, categoryValue, colorIterator.next());
 			}
 
 			return new DataDescription(EDataClass.CATEGORICAL, EDataType.STRING, categoricalClassDescription);

@@ -1,24 +1,12 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
- * University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
- * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
- * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with this program. If not, see
- * <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.histogram.v2;
 
 import gleem.linalg.Vec2f;
 
-import org.caleydo.core.util.color.Color;
 import java.util.List;
 
 import javax.media.opengl.GL2;
@@ -32,6 +20,7 @@ import org.caleydo.core.event.EventListenerManager.DeepScan;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.view.RedrawViewEvent;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.color.mapping.ColorMapper;
 import org.caleydo.core.util.color.mapping.ColorMarkerPoint;
 import org.caleydo.core.util.color.mapping.UpdateColorMappingEvent;
@@ -46,7 +35,7 @@ import org.caleydo.view.histogram.HistogramRenderStyle;
 
 /**
  * Rendering the histogram.
- * 
+ *
  * @author Samuel Gratzl
  */
 public class HistogramElement extends GLElement implements
@@ -92,7 +81,7 @@ public class HistogramElement extends GLElement implements
 				onLinePicked(pick, getDataDomain(), false);
 			}
 		});
-		int points = getDataDomain().getColorMapper().getMarkerPoints().size();
+		int points = getDataDomain().getTable().getColorMapper().getMarkerPoints().size();
 		leftSpreadPickingIds.ensure(0, points);
 		rightSpreadPickingIds.ensure(0, points);
 	}
@@ -131,17 +120,17 @@ public class HistogramElement extends GLElement implements
 		g.save();
 		g.move(padding, padding);
 		renderHist(g, getTablePerspective().getContainerStatistics().getHistogram(), w - padding * 2, h - padding * 2,
-				dataDomain.getColorMapper());
+				dataDomain.getTable().getColorMapper());
 		g.restore();
 
 		if (detailLevel.ordinal() > EDetailLevel.LOW.ordinal())
-			renderColorMapper(g, w, h, dataDomain.getColorMapper());
+			renderColorMapper(g, w, h, dataDomain.getTable().getColorMapper());
 	}
 
 	@Override
 	protected void renderPickImpl(GLGraphics g, float w, float h) {
 		if (detailLevel.ordinal() > EDetailLevel.LOW.ordinal() && getVisibility() == EVisibility.PICKABLE)
-			renderColorMapperPick(g, w, h, getDataDomain().getColorMapper());
+			renderColorMapperPick(g, w, h, getDataDomain().getTable().getColorMapper());
 		super.renderPickImpl(g, w, h);
 	}
 
@@ -250,7 +239,7 @@ public class HistogramElement extends GLElement implements
 
 	/**
 	 * Render the color bars for selecting the color mapping
-	 * 
+	 *
 	 * @param gl
 	 */
 	private void renderColorMapperPick(GLGraphics g, float w, float h, ColorMapper mapper) {
@@ -298,7 +287,7 @@ public class HistogramElement extends GLElement implements
 			pick.setDoDragging(true);
 			break;
 		case DRAGGED:
-			List<ColorMarkerPoint> markers = dataDomain.getColorMapper().getMarkerPoints();
+			List<ColorMarkerPoint> markers = dataDomain.getTable().getColorMapper().getMarkerPoints();
 			final int selected = pick.getObjectID();
 			ColorMarkerPoint point = markers.get(selected);
 			final float dv = pick.getDx() / (getSize().x() - getPadding() * 2);
@@ -336,7 +325,7 @@ public class HistogramElement extends GLElement implements
 	}
 
 	private void updateMapping(ATableBasedDataDomain dataDomain) {
-		dataDomain.getColorMapper().update();
+		dataDomain.getTable().getColorMapper().update();
 		RedrawViewEvent event = new RedrawViewEvent();
 		event.setSender(this);
 		event.setEventSpace(dataDomain.getDataDomainID());

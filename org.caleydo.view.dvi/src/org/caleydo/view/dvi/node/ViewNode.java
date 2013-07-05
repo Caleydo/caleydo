@@ -1,24 +1,11 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.dvi.node;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -30,7 +17,6 @@ import javax.media.opengl.GL2;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.ITablePerspectiveBasedView;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
@@ -57,13 +43,13 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.Status;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.FrameworkUtil;
 
-public class ViewNode extends ADefaultTemplateNode implements IDropArea {
+public class ViewNode
+	extends ADefaultTemplateNode
+	implements IDropArea {
 
 	// private TablePerspectiveListRenderer overviewTablePerspectiveRenderer;
 	protected IView representedView;
@@ -75,7 +61,7 @@ public class ViewNode extends ADefaultTemplateNode implements IDropArea {
 		super(graphLayout, view, dragAndDropController, id);
 
 		this.representedView = representedView;
-		dataDomains = new HashSet<>(representedView.getDataDomains()); // local copy
+		dataDomains = new HashSet<>(representedView.getDataDomains()); //local copy
 
 		setRepresentedViewInfo();
 		// setupLayout();
@@ -146,16 +132,14 @@ public class ViewNode extends ADefaultTemplateNode implements IDropArea {
 			iconPath = null;
 		}
 		if (iconPath != null) {
+			Bundle viewPlugin = FrameworkUtil.getBundle(representedView.getClass());
+
+			URL iconURL = viewPlugin.getEntry(iconPath);
 			try {
-				Bundle viewPlugin = FrameworkUtil.getBundle(representedView.getClass());
-
-				URL iconURL = viewPlugin.getEntry(iconPath);
-
 				iconPath = FileLocator.toFileURL(iconURL).getPath();
-			} catch (Exception e) {
-				Logger.log(new Status(IStatus.ERROR, this.toString(), "Cannot load view icon texture" + e.getMessage()));
-				throw new IllegalStateException("Cannot load view icon texture" + e.getMessage());
-
+			}
+			catch (IOException e) {
+				new IllegalStateException("Cannot load view icon texture");
 			}
 		}
 	}
@@ -340,4 +324,3 @@ public class ViewNode extends ADefaultTemplateNode implements IDropArea {
 	}
 
 }
-

@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.tourguide.impl;
 
 import java.util.ArrayList;
@@ -52,6 +38,7 @@ import org.caleydo.view.tourguide.spi.IScoreFactory;
 import org.caleydo.view.tourguide.spi.algorithm.IStratificationAlgorithm;
 import org.caleydo.view.tourguide.spi.score.IRegisteredScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
+import org.caleydo.vis.rank.config.RankTableConfigBase;
 import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
@@ -185,8 +172,13 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 		}
 
 		@Override
+		public boolean isSelectAllSupported() {
+			return false;
+		}
+
+		@Override
 		public void select(TablePerspective strat, Group group, IReactions reactions) {
-			MultiScore score = createScore(strat, group, createGSEA);
+			IScore[] score = createScore(strat, group, createGSEA);
 			reactions.addScoreToTourGuide(EDataDomainQueryMode.PATHWAYS, score);
 
 			// switch to a preview pathway
@@ -303,20 +295,26 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 	 * @param createGSEA
 	 * @return
 	 */
-	public static MultiScore createScore(TablePerspective strat, Group group, boolean createGSEA) {
-		// now we have the data for the stuff
-		AGSEAAlgorithm algorithm;
-		if (createGSEA)
-			algorithm = new GSEAAlgorithm(strat.getRecordPerspective(), group, 1.0f);
-		else
-			algorithm = new PGSEAAlgorithm(strat.getRecordPerspective(), group);
-		String label = String.format("GSEA of %s", strat.getRecordPerspective().getLabel());
-		IScore gsea = new GeneSetScore("GSEA\n"+label, algorithm, false);
-		IScore pValue = new GeneSetScore("P-Value\n" + label, algorithm.asPValue(), true);
+	public static IScore[] createScore(TablePerspective strat, Group group, boolean createGSEA) {
+		if (group == null) {
+			//TODO
+			return new IScore[0];
+		} else {
+			// now we have the data for the stuff
+			AGSEAAlgorithm algorithm;
+			if (createGSEA)
+				algorithm = new GSEAAlgorithm(strat.getRecordPerspective(), group, 1.0f);
+			else
+				algorithm = new PGSEAAlgorithm(strat.getRecordPerspective(), group);
+			String label = String.format("GSEA of %s", strat.getRecordPerspective().getLabel());
+			IScore gsea = new GeneSetScore("GSEA", algorithm, false);
+			IScore pValue = new GeneSetScore("GSEA P-Value", algorithm.asPValue(), true);
 
-		MultiScore s = new MultiScore(gsea.getLabel(), color, bgColor, 1);
-		s.add(gsea);
-		s.add(pValue);
-		return s;
+			MultiScore s = new MultiScore(label, color, bgColor, RankTableConfigBase.GROUP_MODE);
+			s.add(gsea);
+			s.add(pValue);
+			return new IScore[] {s};
+		}
+
 	}
 }

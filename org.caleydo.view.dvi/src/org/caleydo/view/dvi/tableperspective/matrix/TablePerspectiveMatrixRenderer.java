@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.dvi.tableperspective.matrix;
 
 import java.awt.Point;
@@ -53,16 +39,14 @@ import org.caleydo.view.dvi.tableperspective.PerspectiveRenderer;
 import org.caleydo.view.dvi.tableperspective.TablePerspectivePickingListener;
 import org.caleydo.view.dvi.tableperspective.TablePerspectiveRenderer;
 
-public class TablePerspectiveMatrixRenderer
-	extends AMultiTablePerspectiveRenderer {
+public class TablePerspectiveMatrixRenderer extends AMultiTablePerspectiveRenderer {
 
 	protected ATableBasedDataDomain dataDomain;
 	// private List<ADimensionGroupData> dimensionGroupDatas;
 	protected Map<TablePerspectiveRenderer, Pair<CellContainer, CellContainer>> dimensionGroupRenderers = new HashMap<TablePerspectiveRenderer, Pair<CellContainer, CellContainer>>();
 	protected Map<EmptyCellRenderer, Pair<CellContainer, CellContainer>> emptyCellRenderers = new HashMap<EmptyCellRenderer, Pair<CellContainer, CellContainer>>();
 	/**
-	 * Map containing all cells of the table identified by the concatenation of
-	 * the row.caption and column.caption
+	 * Map containing all cells of the table identified by the concatenation of the row.caption and column.caption
 	 */
 	protected Map<String, ColorRenderer> cells = new HashMap<String, ColorRenderer>();
 	protected List<CellContainer> rows = new ArrayList<CellContainer>();
@@ -151,8 +135,7 @@ public class TablePerspectiveMatrixRenderer
 						// FIXME: Check additionally if the group has a
 						// dimensionperspective
 
-						Perspective perspective = dataDomain.getTable().getRecordPerspective(
-								row.parentContainer.id);
+						Perspective perspective = dataDomain.getTable().getRecordPerspective(row.parentContainer.id);
 
 						// This works because the child containers do net get
 						// sorted in a cellcontainer
@@ -198,8 +181,7 @@ public class TablePerspectiveMatrixRenderer
 							createDimensionPerspective, dimensionVA, columnGroup);
 					if (useContextMenu) {
 						view.getContextMenuCreator().addContextMenuItem(new CreateTablePerspectiveItem(event));
-					}
-					else {
+					} else {
 						event.setSender(this);
 						GeneralManager.get().getEventPublisher().triggerEvent(event);
 					}
@@ -287,8 +269,7 @@ public class TablePerspectiveMatrixRenderer
 				Perspective perspective = null;
 				if (perspectiveRenderer.isRecordPerspective()) {
 					perspective = dataDomain.getTable().getRecordPerspective(perspectiveRenderer.getPerspectiveID());
-				}
-				else {
+				} else {
 					perspective = dataDomain.getTable().getDimensionPerspective(perspectiveRenderer.getPerspectiveID());
 				}
 
@@ -336,6 +317,40 @@ public class TablePerspectiveMatrixRenderer
 			}
 
 		}, PickingType.PERSPECTIVE_PENETRATING.name() + node.getID());
+
+		view.addTypePickingListener(new APickingListener() {
+			@Override
+			public void rightClicked(Pick pick) {
+
+				CellContainer cellContainer = null;
+
+				for (CellContainer c : rows) {
+					if (c.id.hashCode() == pick.getObjectID()) {
+						cellContainer = c;
+						break;
+					}
+				}
+
+				if (cellContainer == null) {
+					for (CellContainer c : columns) {
+						if (c.id.hashCode() == pick.getObjectID()) {
+							cellContainer = c;
+							break;
+						}
+					}
+				}
+				if (cellContainer == null || !(cellContainer.labelProvider instanceof Group))
+					return;
+
+				// view.getContextMenuCreator().addContextMenuItem(
+				// new RenameVariablePerspectiveItem(perspectiveRenderer
+				// .getPerspectiveID(), dataDomain, perspectiveRenderer
+				// .isRecordPerspective()));
+				view.getContextMenuCreator().addContextMenuItem(
+						new RenameLabelHolderItem((Group) cellContainer.labelProvider));
+
+			}
+		}, PickingType.GROUP.name() + node.getID());
 
 	}
 
@@ -586,6 +601,7 @@ public class TablePerspectiveMatrixRenderer
 		view.removeAllTypePickingListeners(PickingType.COLLAPSE_BUTTON.name() + node.getID());
 		view.removeAllTypePickingListeners(PickingType.PERSPECTIVE.name() + node.getID());
 		view.removeAllTypePickingListeners(PickingType.PERSPECTIVE_PENETRATING.name() + node.getID());
+		view.removeAllTypePickingListeners(PickingType.GROUP.name() + node.getID());
 
 	}
 

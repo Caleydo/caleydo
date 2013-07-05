@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.vis.rank.model;
 
 
@@ -24,6 +10,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.Iterator;
 
 import javax.script.Bindings;
 import javax.script.Compilable;
@@ -32,22 +19,25 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptException;
 
 import org.caleydo.core.event.EventListenerManager.ListenTo;
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.ISWTLayer.ISWTLayerRunnable;
-import org.caleydo.vis.rank.internal.event.CodeUpdateEvent;
+import org.caleydo.vis.rank.internal.event.DualCodeUpdateEvent;
+import org.caleydo.vis.rank.model.mapping.JavaScriptFunctions;
 import org.caleydo.vis.rank.model.mapping.MappedValueException;
-import org.caleydo.vis.rank.model.mapping.MappingFunctions;
 import org.caleydo.vis.rank.model.mapping.ScriptedMappingFunction;
 import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IFloatRankableColumnMixin;
+import org.caleydo.vis.rank.model.mixin.IManualComparatorMixin;
 import org.caleydo.vis.rank.model.mixin.IMappedColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IScriptedColumnMixin;
 import org.caleydo.vis.rank.model.mixin.ISnapshotableColumnMixin;
 import org.caleydo.vis.rank.ui.GLPropertyChangeListeners;
+import org.caleydo.vis.rank.ui.RenderStyle;
 import org.caleydo.vis.rank.ui.detail.JSCombineEditorDialog;
 import org.caleydo.vis.rank.ui.detail.MultiRankScoreSummary;
 import org.caleydo.vis.rank.ui.detail.ScoreBarElement;
@@ -57,6 +47,7 @@ import org.eclipse.swt.widgets.Display;
 
 import com.google.common.collect.Iterables;
 import com.jogamp.common.util.IntObjectHashMap;
+import com.jogamp.common.util.IntObjectHashMap.Entry;
 
 /**
  * a special combiner based on a scripted java script function
@@ -65,27 +56,44 @@ import com.jogamp.common.util.IntObjectHashMap;
  *
  */
 public class ScriptedRankColumnModel extends AMultiRankColumnModel implements ICollapseableColumnMixin,
-		IFilterColumnMixin, ISnapshotableColumnMixin, IScriptedColumnMixin {
+		IFilterColumnMixin, ISnapshotableColumnMixin, IScriptedColumnMixin, IManualComparatorMixin {
 	private static final String DEFAULT_CODE = "return mean(values)";
+	private static final String DEFAULT_ORDER_CODE = "return -compare(a.value,b.value)";
 	private final static String prefix;
+	private final static String infix;
 	private final static String postfix;
 
 	static {
 		// create code around the script
 		StringBuilder b = new StringBuilder();
-		b.append("importPackage(").append(MappingFunctions.class.getPackage().getName()).append(")\n");
-		for (Method m : MappingFunctions.class.getDeclaredMethods()) {
+		b.append("importPackage(").append(JavaScriptFunctions.class.getPackage().getName()).append(")\n");
+		for (Method m : JavaScriptFunctions.class.getDeclaredMethods()) {
 			if (Modifier.isPublic(m.getModifiers()) && Modifier.isStatic(m.getModifiers()))
-				b.append("function ").append(m.getName()).append("() { return MappingFunctions.").append(m.getName())
+				b.append("function ").append(m.getName()).append("() { return JavaScriptFunctions.")
+						.append(m.getName())
 						.append(".apply(this,arguments); }\n");
 		}
 		b.append("\n");
-		b.append("function run(values) {\n");
+		b.append("function run(v) {\n");
+		b.append("  var values = v.values;\n");
+		b.append("  var inferred = v.inferred;\n");
+		b.append("  var raws = v.raws;\n");
 		prefix = b.toString();
 
 		b.setLength(0);
 		b.append("\n}\n");
-		b.append("clamp01(run(vs))");
+		b.append("function order(a,b) {\n");
+		infix = b.toString();
+
+		b.setLength(0);
+		b.append("\n}\n");
+		b.append("if(mode === 'order') order(a,b);\n");
+		b.append("else if(mode === 'apply') clamp01(run(v));\n");
+		b.append("else {\n");
+		b.append("  a.value = clamp01(run(a));\n");
+		b.append("  b.value = clamp01(run(b));\n");
+		b.append("  order(a,b);");
+		b.append("}");
 		postfix = b.toString();
 	}
 
@@ -96,7 +104,6 @@ public class ScriptedRankColumnModel extends AMultiRankColumnModel implements IC
 			case IFilterColumnMixin.PROP_FILTER:
 			case IMappedColumnMixin.PROP_MAPPING:
 				cacheMulti.clear();
-				cacheValues.clear();
 				invalidAllFilter();
 				propertySupport.firePropertyChange(evt);
 				break;
@@ -105,8 +112,8 @@ public class ScriptedRankColumnModel extends AMultiRankColumnModel implements IC
 	};
 
 	private String code = DEFAULT_CODE;
+	private String codeOrder = DEFAULT_ORDER_CODE;
 	private IntObjectHashMap cacheMulti = new IntObjectHashMap();
-	private IntObjectHashMap cacheValues = new IntObjectHashMap();
 	private final ScriptEngine engine;
 	private CompiledScript script;
 
@@ -122,6 +129,7 @@ public class ScriptedRankColumnModel extends AMultiRankColumnModel implements IC
 	public ScriptedRankColumnModel(ScriptedRankColumnModel copy) {
 		super(copy);
 		this.code = copy.code;
+		this.codeOrder = copy.codeOrder;
 		this.engine = ScriptedMappingFunction.createEngine();
 		cloneInitChildren();
 	}
@@ -131,12 +139,16 @@ public class ScriptedRankColumnModel extends AMultiRankColumnModel implements IC
 		return new ScriptedRankColumnModel(this);
 	}
 
-	public static String fullCode(String code) {
+	public static String fullCode(String code, String codeOrder) {
 		StringBuilder b = new StringBuilder();
 		b.append(prefix);
 		if (!code.contains("return "))
 			b.append("return ");
 		b.append(code);
+		b.append(infix);
+		if (!code.contains("return "))
+			b.append("return ");
+		b.append(codeOrder);
 		b.append(postfix);
 		return b.toString();
 	}
@@ -146,7 +158,7 @@ public class ScriptedRankColumnModel extends AMultiRankColumnModel implements IC
 			return script;
 		try {
 			Compilable c = (Compilable) engine;
-			script = c.compile(fullCode(code));
+			script = c.compile(fullCode(code, codeOrder));
 		} catch (ScriptException e) {
 			e.printStackTrace();
 		}
@@ -157,7 +169,6 @@ public class ScriptedRankColumnModel extends AMultiRankColumnModel implements IC
 	protected void init(ARankColumnModel model) {
 		super.init(model);
 		cacheMulti.clear();
-		cacheValues.clear();
 		model.addPropertyChangeListener(IFilterColumnMixin.PROP_FILTER, listener);
 		model.addPropertyChangeListener(IMappedColumnMixin.PROP_MAPPING, listener);
 	}
@@ -168,13 +179,11 @@ public class ScriptedRankColumnModel extends AMultiRankColumnModel implements IC
 		model.removePropertyChangeListener(IFilterColumnMixin.PROP_FILTER, listener);
 		model.removePropertyChangeListener(IMappedColumnMixin.PROP_MAPPING, listener);
 		cacheMulti.clear();
-		cacheValues.clear();
 	}
 
 	@Override
 	protected void moved(int from, int to) {
 		cacheMulti.clear();
-		cacheValues.clear();
 		super.moved(from, to);
 	}
 
@@ -204,34 +213,72 @@ public class ScriptedRankColumnModel extends AMultiRankColumnModel implements IC
 
 	@Override
 	public MultiFloat getSplittedValue(IRow row) {
+		CacheRow f = getCacheRow(row);
+		return new MultiFloat(-1, f.values);
+	}
+
+	private CacheRow getCacheRow(IRow row) {
 		if (cacheMulti.containsKey(row.getIndex()))
-			return (MultiFloat) cacheMulti.get(row.getIndex());
+			return ((CacheRow) cacheMulti.get(row.getIndex()));
 		float[] s = new float[this.size()];
+		String[] raws = new String[s.length];
+		boolean[] inferred = new boolean[s.length];
 		for (int i = 0; i < s.length; ++i) {
-			s[i] = ((IFloatRankableColumnMixin) get(i)).applyPrimitive(row);
+			ARankColumnModel child = get(i);
+			if (child instanceof IFloatRankableColumnMixin) {
+				s[i] = ((IFloatRankableColumnMixin)child).applyPrimitive(row);
+				inferred[i] = ((IFloatRankableColumnMixin) child).isValueInferred(row);
+			} else {
+				s[i] = Float.NaN;
+				inferred[i] = false;
+			}
+			raws[i] = get(i).getValue(row);
 		}
-		MultiFloat f = new MultiFloat(-1, s);
-		cacheMulti.put(row.getIndex(), f);
-		return f;
+		CacheRow cacheRow = new CacheRow(s, raws, inferred);
+		cacheMulti.put(row.getIndex(), cacheRow);
+		return cacheRow;
 	}
 
 	@Override
 	public float applyPrimitive(IRow row) {
 		if (children.isEmpty())
 			return 0;
-		if (cacheValues.containsKey(row.getIndex()))
-			return (Float) cacheValues.get(row.getIndex());
-		MultiFloat splittedValue = getSplittedValue(row);
+		if (cacheMulti.containsKey(row.getIndex()) && ((CacheRow) cacheMulti.get(row.getIndex())).getValue() != null)
+			return ((CacheRow) cacheMulti.get(row.getIndex())).value;
 
-		float v = runScript(splittedValue);
-		cacheValues.put(row.getIndex(), v);
+		float v = runScript(getCacheRow(row));
+		((CacheRow) cacheMulti.get(row.getIndex())).value = v;
 		return v;
 	}
 
-	private float runScript(MultiFloat splittedValue) {
+	/**
+	 * returns the weights how much a individual column contributes to the overall scores, i.e. the normalized weights
+	 *
+	 * @return
+	 */
+	public float[] getWeights() {
+		float[] r = new float[this.size()];
+		float base = width - getSpaces();
+		int i = 0;
+		for (ARankColumnModel col : this) {
+			r[i++] = col.getWidth() / base;
+		}
+		return r;
+	}
+
+	/**
+	 * @return
+	 */
+	private float getSpaces() {
+		return RenderStyle.STACKED_COLUMN_PADDING * 2 + RenderStyle.COLUMN_SPACE * size();
+	}
+
+	private float runScript(CacheRow row) {
 		try {
 			Bindings bindings = engine.createBindings();
-			bindings.put("vs", splittedValue.values);
+			bindings.put("weights", getWeights());
+			bindings.put("v", row);
+			bindings.put("mode", "apply");
 			CompiledScript c = compileScript();
 			if (c == null)
 				return Float.NaN;
@@ -247,9 +294,36 @@ public class ScriptedRankColumnModel extends AMultiRankColumnModel implements IC
 		return Float.NaN;
 	}
 
+	private int runOrderScript(CacheRow a, CacheRow b) {
+		try {
+			Bindings bindings = engine.createBindings();
+			bindings.put("a", a);
+			bindings.put("b", b);
+			bindings.put("mode", "order");
+			CompiledScript c = compileScript();
+			if (c == null)
+				return 0;
+			Object r = compileScript().eval(bindings);
+			if (r instanceof Number)
+				return ((Number) r).intValue();
+		} catch (ScriptException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
 	@Override
 	public int compare(IRow o1, IRow o2) {
-		return Float.compare(applyPrimitive(o1), applyPrimitive(o2));
+		applyPrimitive(o1);
+		applyPrimitive(o2);
+		CacheRow r1 = getCacheRow(o1);
+		CacheRow r2 = getCacheRow(o2);
+		if (codeOrder.equalsIgnoreCase(DEFAULT_ORDER_CODE)) {
+			// fast way
+			return -Float.compare(r1.value, r2.value);
+		} else
+			return runOrderScript(r1, r2);
 	}
 
 	@Override
@@ -264,15 +338,20 @@ public class ScriptedRankColumnModel extends AMultiRankColumnModel implements IC
 	 * @param code
 	 *            setter, see {@link code}
 	 */
-	public void setCode(String code) {
-		if (this.code.equals(code)) {
+	public void setCode(String code, String codeOrder) {
+		if (this.code.equals(code) && this.codeOrder.equals(codeOrder)) {
 			return;
 		}
 		invalidAllFilter();
-		cacheValues.clear();
-		String bak = this.code;
-		propertySupport.firePropertyChange(PROP_CODE, this.code, this.code = code);
-		propertySupport.firePropertyChange(IMappedColumnMixin.PROP_MAPPING, bak, this.code);
+		for (Iterator<Entry> it = this.cacheMulti.iterator(); it.hasNext();) {
+			((CacheRow) it.next().value).value = null;
+		}
+		Pair<String, String> bak = Pair.make(this.code, this.codeOrder);
+		Pair<String, String> new_ = Pair.make(code, codeOrder);
+		this.code = code;
+		this.codeOrder = codeOrder;
+		propertySupport.firePropertyChange(PROP_CODE, bak, new_);
+		propertySupport.firePropertyChange(IMappedColumnMixin.PROP_MAPPING, bak, new_);
 	}
 
 	/**
@@ -281,6 +360,13 @@ public class ScriptedRankColumnModel extends AMultiRankColumnModel implements IC
 	@Override
 	public String getCode() {
 		return code;
+	}
+
+	/**
+	 * @return the codeOrder, see {@link #codeOrder}
+	 */
+	public String getCodeOrder() {
+		return codeOrder;
 	}
 
 	@Override
@@ -324,14 +410,55 @@ public class ScriptedRankColumnModel extends AMultiRankColumnModel implements IC
 		}
 
 		@ListenTo(sendToMe = true)
-		private void onCodeUpdate(CodeUpdateEvent event) {
-			((ScriptedRankColumnModel) model).setCode(event.getCode());
+		private void onCodeUpdate(DualCodeUpdateEvent event) {
+			((ScriptedRankColumnModel) model).setCode(event.getCode(), event.getCodeOrder());
 		}
 
 	}
 
 	@Override
 	public void orderBy(IRankableColumnMixin model) {
-		// nothing to do
+		parent.orderBy(model);
+	}
+
+	public static class CacheRow {
+		private final boolean[] inferred;
+		private final float[] values;
+		private final String[] raws;
+		private Float value = null;
+
+		public CacheRow(float[] values, String[] raws, boolean[] inferred) {
+			this.raws = raws;
+			this.values = values;
+			this.inferred = inferred;
+		}
+
+		/**
+		 * @return the inferred, see {@link #inferred}
+		 */
+		public boolean[] getInferred() {
+			return inferred;
+		}
+
+		/**
+		 * @return the values, see {@link #values}
+		 */
+		public float[] getValues() {
+			return values;
+		}
+
+		/**
+		 * @return the raws, see {@link #raws}
+		 */
+		public String[] getRaws() {
+			return raws;
+		}
+
+		/**
+		 * @return the value, see {@link #value}
+		 */
+		public Float getValue() {
+			return value;
+		}
 	}
 }

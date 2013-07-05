@@ -1,3 +1,8 @@
+/*******************************************************************************
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 /**
  *
  */
@@ -8,8 +13,8 @@ import java.util.Collection;
 import java.util.List;
 
 import org.caleydo.core.io.IDTypeParsingRules;
-import org.caleydo.core.io.gui.dataimport.widget.IntegerCallback;
 import org.caleydo.core.io.parser.ascii.ATextParser;
+import org.caleydo.core.util.base.IntegerCallback;
 import org.eclipse.nebula.widgets.nattable.NatTable;
 import org.eclipse.nebula.widgets.nattable.config.AbstractRegistryConfiguration;
 import org.eclipse.nebula.widgets.nattable.config.CellConfigAttributes;
@@ -28,6 +33,7 @@ import org.eclipse.nebula.widgets.nattable.layer.IUniqueIndexLayer;
 import org.eclipse.nebula.widgets.nattable.layer.LabelStack;
 import org.eclipse.nebula.widgets.nattable.layer.cell.IConfigLabelAccumulator;
 import org.eclipse.nebula.widgets.nattable.layer.cell.ILayerCell;
+import org.eclipse.nebula.widgets.nattable.painter.cell.ButtonCellPainter;
 import org.eclipse.nebula.widgets.nattable.painter.cell.ColumnHeaderCheckBoxPainter;
 import org.eclipse.nebula.widgets.nattable.painter.cell.ICellPainter;
 import org.eclipse.nebula.widgets.nattable.painter.cell.TextPainter;
@@ -36,7 +42,9 @@ import org.eclipse.nebula.widgets.nattable.selection.SelectionLayer;
 import org.eclipse.nebula.widgets.nattable.style.CellStyleAttributes;
 import org.eclipse.nebula.widgets.nattable.style.DisplayMode;
 import org.eclipse.nebula.widgets.nattable.style.Style;
+import org.eclipse.nebula.widgets.nattable.ui.action.IMouseAction;
 import org.eclipse.nebula.widgets.nattable.ui.binding.UiBindingRegistry;
+import org.eclipse.nebula.widgets.nattable.ui.matcher.CellLabelMouseEventMatcher;
 import org.eclipse.nebula.widgets.nattable.ui.matcher.CellPainterMouseEventMatcher;
 import org.eclipse.nebula.widgets.nattable.ui.matcher.MouseEventMatcher;
 import org.eclipse.nebula.widgets.nattable.ui.util.CellEdgeEnum;
@@ -74,11 +82,39 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 	private RegExIDConverter columnIDConverter;
 	private RegExIDConverter rowIDConverter;
 	private IntegerCallback onColumnSelection;
+	private INoArgumentCallback onTranspose;
 
 	private ColumnHeaderDataProvider columnHeaderDataProvider;
 	private LineNumberRowHeaderDataProvider rowHeaderDataProvider;
 
 	private DataLayer bodyDataLayer;
+
+	private boolean isTransposeable = false;
+	private boolean isTransposed = false;
+
+	private class TransposeDataProvider implements IDataProvider {
+
+		@Override
+		public Object getDataValue(int columnIndex, int rowIndex) {
+			return "Transpose";
+		}
+
+		@Override
+		public void setDataValue(int columnIndex, int rowIndex, Object newValue) {
+			// can not be set
+		}
+
+		@Override
+		public int getColumnCount() {
+			return 1;
+		}
+
+		@Override
+		public int getRowCount() {
+			return 1;
+		}
+
+	}
 
 	private class ColumnSelectionAction extends ToggleCheckBoxColumnAction {
 
@@ -197,9 +233,12 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 
 	}
 
-	public PreviewTableWidget(Composite parent, IntegerCallback onColumnSelection) {
+	public PreviewTableWidget(Composite parent, IntegerCallback onColumnSelection, boolean isTransposeable,
+			INoArgumentCallback onTranspose) {
 		super(parent);
 		this.onColumnSelection = onColumnSelection;
+		this.isTransposeable = isTransposeable;
+		this.onTranspose = onTranspose;
 		List<List<String>> emptyMatrix = createEmptyDataMatrix(15, 10);
 
 		// emptyMatrix.get(0).add("1");
@@ -237,11 +276,11 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 		final DataLayer columnDataLayer = new DataLayer(columnDataProvider, 120, 25);
 		ColumnHeaderLayer columnHeaderLayer = new ColumnHeaderLayer(columnDataLayer, bodyLayer, selectionLayer);
 
-		DataLayer rowDataLayer = new DataLayer(rowDataProvider, 50, 20);
+		DataLayer rowDataLayer = new DataLayer(rowDataProvider, isTransposeable ? 100 : 50, 20);
 		RowHeaderLayer rowHeaderLayer = new RowHeaderLayer(rowDataLayer, bodyLayer, selectionLayer);
 
-		DefaultCornerDataProvider cornerDataProvider = new DefaultCornerDataProvider(columnDataProvider,
-				rowDataProvider);
+		IDataProvider cornerDataProvider = isTransposeable ? new TransposeDataProvider()
+				: new DefaultCornerDataProvider(columnDataProvider, rowDataProvider);
 		CornerLayer cornerLayer = new CornerLayer(new DataLayer(cornerDataProvider), rowHeaderLayer, columnHeaderLayer);
 
 		GridLayer gridLayer = new GridLayer(bodyLayer, columnHeaderLayer, rowHeaderLayer, cornerLayer);
@@ -285,6 +324,21 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 		if (rowIDConverter == null)
 			rowIDConverter = new RegExIDConverter(null);
 
+		final ColumnHeaderCheckBoxPainter columnHeaderCheckBoxPainter = new ColumnHeaderCheckBoxPainter(columnDataLayer);
+		final ICellPainter columnHeaderPainter = new GridLineCellPainterDecorator(new CellPainterDecorator(
+				new ColumnNumberCellPainter(), CellEdgeEnum.LEFT, columnHeaderCheckBoxPainter));
+
+		final ButtonCellPainter transposeButton = new ButtonCellPainter(new TextPainter());
+		transposeButton.addClickListener(new IMouseAction() {
+
+			@Override
+			public void run(NatTable natTable, MouseEvent event) {
+				if (onTranspose != null)
+					onTranspose.on();
+
+			}
+		});
+
 		table.addConfiguration(new AbstractRegistryConfiguration() {
 			@Override
 			public void configureRegistry(IConfigRegistry configRegistry) {
@@ -309,18 +363,14 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 				cellStyle.setAttributeValue(CellStyleAttributes.FOREGROUND_COLOR, GUIHelper.COLOR_WIDGET_NORMAL_SHADOW);
 				configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_STYLE, cellStyle, DisplayMode.NORMAL,
 						DISABLED_CELL);
-			}
-		});
 
-		final ColumnHeaderCheckBoxPainter columnHeaderCheckBoxPainter = new ColumnHeaderCheckBoxPainter(columnDataLayer);
-		final ICellPainter columnHeaderPainter = new GridLineCellPainterDecorator(new CellPainterDecorator(
-				new ColumnNumberCellPainter(), CellEdgeEnum.LEFT, columnHeaderCheckBoxPainter));
-
-		table.addConfiguration(new AbstractRegistryConfiguration() {
-			@Override
-			public void configureRegistry(IConfigRegistry configRegistry) {
 				configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_PAINTER, columnHeaderPainter,
 						DisplayMode.NORMAL, GridRegion.COLUMN_HEADER);
+
+				if (isTransposeable) {
+					configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_PAINTER, transposeButton,
+							DisplayMode.NORMAL, GridRegion.CORNER);
+				}
 			}
 
 			@Override
@@ -329,17 +379,13 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 						GridRegion.COLUMN_HEADER, MouseEventMatcher.LEFT_BUTTON, columnHeaderCheckBoxPainter),
 						new ColumnSelectionAction(columnHeaderCheckBoxPainter, columnDataLayer));
 
-				// uiBindingRegistry.registerFirstSingleClickBinding(new CellPainterMouseEventMatcher(
-				// GridRegion.COLUMN_HEADER, MouseEventMatcher.LEFT_BUTTON, columnHeaderCheckBoxPainter),
-				// new IMouseAction() extends ToggleCheckBoxColumnAction {
-				//
-				// @Override
-				// public void run(NatTable natTable, MouseEvent event) {
-				//
-				//
-				// }
-				// });
+				if (isTransposeable) {
+					CellLabelMouseEventMatcher mouseEventMatcher = new CellLabelMouseEventMatcher(GridRegion.CORNER,
+							MouseEventMatcher.LEFT_BUTTON, GridRegion.CORNER);
 
+					// Inform the button painter of the click.
+					uiBindingRegistry.registerMouseDownBinding(mouseEventMatcher, transposeButton);
+				}
 			}
 		});
 
@@ -467,6 +513,13 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 
 	public void setEnabled(boolean isEnabled) {
 		table.setEnabled(isEnabled);
+	}
+
+	/**
+	 * @return
+	 */
+	public Composite getTable() {
+		return this.table;
 	}
 
 }

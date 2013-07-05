@@ -1,32 +1,16 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.internal;
 
 import java.lang.reflect.InvocationTargetException;
 
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.gui.perspective.GenomePerspective;
-import org.caleydo.core.gui.perspective.PartListener;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ProjectManager;
-import org.caleydo.core.startup.IStartupProcedure;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
@@ -38,16 +22,9 @@ import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchAdvisor;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 
-import com.google.common.base.Function;
-
 public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
-	private IStartupProcedure startup;
-
-	public ApplicationWorkbenchAdvisor(IStartupProcedure startup) {
-		this.startup = startup;
-	}
 	@Override
-	public WorkbenchWindowAdvisor createWorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer) {
+	public WorkbenchWindowAdvisor createWorkbenchWindowAdvisor(final IWorkbenchWindowConfigurer configurer) {
 		return new ApplicationWorkbenchWindowAdvisor(configurer);
 	}
 
@@ -129,18 +106,6 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 		 */
 		public ApplicationWorkbenchWindowAdvisor(final IWorkbenchWindowConfigurer configurer) {
 			super(configurer);
-
-			// Init the core because the workbench must already be initialized for
-			// the XML startup progress bar
-
-			configurer.setTitle("Caleydo - unsaved project");
-			startup.run(new Function<String, Void>() {
-				@Override
-				public Void apply(String data) {
-					configurer.setTitle(data);
-					return null;
-				}
-			});
 		}
 
 		@Override
@@ -154,7 +119,7 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 			configurer.setShowCoolBar(false);
 			configurer.setShowStatusLine(false);
 			configurer.setShowFastViewBars(true);
-			configurer.getWindow().getPartService().addPartListener(new PartListener());
+			// configurer.getWindow().getPartService().addPartListener(new PartListener());
 		}
 
 		@Override
@@ -164,10 +129,7 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 
 			removeNonCaleydoMenuEntries(getWindowConfigurer());
 
-			startup.postWorkbenchOpen();
-			startup = null; // cleanup not used any longer
-
-			getWindowConfigurer().getWindow().getShell().setMaximized(true);
+			Application.get().postWorkbenchOpen(getWindowConfigurer());
 		}
 	}
 }

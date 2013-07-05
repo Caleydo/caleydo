@@ -1,3 +1,8 @@
+/*******************************************************************************
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 /**
  *
  */
@@ -8,10 +13,10 @@ import java.util.List;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.io.IDTypeParsingRules;
-import org.caleydo.core.io.gui.dataimport.widget.ICallback;
-import org.caleydo.core.io.gui.dataimport.widget.IProvider;
-import org.caleydo.core.io.gui.dataimport.widget.IntegerCallback;
 import org.caleydo.core.io.gui.dataimport.widget.RowConfigWidget;
+import org.caleydo.core.util.base.ICallback;
+import org.caleydo.core.util.base.IProvider;
+import org.caleydo.core.util.base.IntegerCallback;
 import org.caleydo.view.tourguide.internal.external.ScoreParseSpecification;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;

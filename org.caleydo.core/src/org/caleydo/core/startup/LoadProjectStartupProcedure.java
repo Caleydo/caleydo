@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.startup;
 
 import static org.caleydo.core.manager.GeneralManager.CALEYDO_HOME_PATH;
@@ -40,8 +26,8 @@ import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.system.FileOperations;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-
-import com.google.common.base.Function;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 
 public class LoadProjectStartupProcedure implements IStartupProcedure {
 	/**
@@ -63,18 +49,30 @@ public class LoadProjectStartupProcedure implements IStartupProcedure {
 	}
 
 	@Override
-	public void preWorkbenchOpen() {
+	public boolean preWorkbenchOpen() {
 		if (this.packedProjectLocation != null) {
 			// unzip data
 			FileOperations.deleteDirectory(this.unpackedProjectLocation);
 			ZipUtils.unzipToDirectory(this.packedProjectLocation, this.unpackedProjectLocation);
 		}
 
+		if (!ProjectManager.checkCompatibility(this.unpackedProjectLocation)){
+			Logger.create(LoadProjectStartupProcedure.class).error(
+					"incompatible project: " + this.packedProjectLocation);
+			MessageDialog.openError(null, "Error incompatible project", "the project file:\n"+this.packedProjectLocation+"\n\nis not compatible with the this Caleydo version");
+			return false;
+		}
+
 		ProjectManager.loadWorkbenchData(this.unpackedProjectLocation);
+		return true;
 	}
 
 	@Override
-	public void postWorkbenchOpen() {
+	public void postWorkbenchOpen(IWorkbenchWindowConfigurer configurer) {
+		if (packedProjectLocation != null) {
+			String normalized = this.packedProjectLocation.replace(File.separatorChar, '/');
+			configurer.setTitle("Caleydo - " + normalized.substring(normalized.lastIndexOf('/') + 1));
+		}
 	}
 
 	private static void deserializeData(SerializationData serializationDataList) {
@@ -111,7 +109,7 @@ public class LoadProjectStartupProcedure implements IStartupProcedure {
 	}
 
 	@Override
-	public boolean run(Function<String, Void> setTitle) {
+	public void run() {
 		SerializationData serializationDataList;
 
 		// not calling super.init() on purpose
@@ -120,12 +118,6 @@ public class LoadProjectStartupProcedure implements IStartupProcedure {
 
 		serializationDataList = ProjectManager.loadProjectData(unpackedProjectLocation);
 
-		if (packedProjectLocation != null) {
-			String normalized = this.packedProjectLocation.replace(File.separatorChar, '/');
-			setTitle.apply("Caleydo - " + normalized.substring(normalized.lastIndexOf('/') + 1));
-		}
-
 		deserializeData(serializationDataList);
-		return true;
 	}
 }

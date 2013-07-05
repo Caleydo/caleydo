@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.util.system;
 
 import java.awt.Desktop;
@@ -40,7 +26,9 @@ import org.eclipse.ui.PlatformUI;
 
 /**
  * Events that signals browser-views to load a new URL.
- *
+ * 
+ * @author Alexander Lex
+ * @author Samuel Gratzl
  * @author Marc Streit
  */
 public class BrowserUtils {
@@ -62,6 +50,14 @@ public class BrowserUtils {
 	};
 
 	public static void openURL(URL url) {
+		String osName = System.getProperty("os.name");
+
+		if (!(osName.startsWith("Mac OS") || osName.startsWith("Windows"))) {
+			// The system independent stuff doesn't properly work on linux
+			openURLCompatibility(url);
+			return;
+		}
+
 		if (PlatformUI.isWorkbenchRunning()) {
 			try {
 				PlatformUI.getWorkbench().getBrowserSupport().getExternalBrowser().openURL(url);
@@ -94,22 +90,16 @@ public class BrowserUtils {
 					} else if (osName.startsWith("Windows")) {
 						exec("rundll32", "url.dll", "FileProtocolHandler", link);
 					} else {
-						System.out.println("vorher");
-
-						boolean success = exec(new String[] { "xdg-open", link });
 						// Assume Unix or Linux
 						// we first try xdg-open
-
-						System.out.println("nacher");
+						boolean success = exec(new String[] { "xdg-open", link });
 						// if that fails we try using which to find a browser
 						if (!success) {
-
 							String[] browsers = { "chrome", "firefox", "opera", "konqueror", "epiphany", "mozilla",
 									"netscape" };
 							String browser = null;
 							for (int count = 0; count < browsers.length && browser == null; count++) {
 								success = exec("which", browsers[count]);
-
 								if (success) {
 									browser = browsers[count];
 								}

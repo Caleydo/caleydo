@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.vis.rank.ui.column;
 
 
@@ -24,6 +10,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
@@ -95,7 +82,7 @@ public class SimpleColumnUI extends ACompositeTableColumnUI<ACompositeRankColumn
 	protected void renderImpl(GLGraphics g, float w, float h) {
 		g.decZ().decZ();
 		g.color(RenderStyle.COLOR_STACKED_BORDER).lineWidth(RenderStyle.COLOR_STACKED_BORDER_WIDTH);
-		g.drawLine(-1, 0, -1, h).drawLine(w - 1, 0, w - 1, h);
+		g.drawLine(getLeftPadding() - 1, 0, getLeftPadding() - 1, h).drawLine(w, 0, w, h);
 		g.incZ().incZ();
 		g.lineWidth(1);
 		super.renderImpl(g, w, h);
@@ -108,7 +95,7 @@ public class SimpleColumnUI extends ACompositeTableColumnUI<ACompositeRankColumn
 
 	@Override
 	protected float getLeftPadding() {
-		return RenderStyle.STACKED_COLUMN_PADDING;
+		return RenderStyle.GROUP_COLUMN_PADDING;
 	}
 
 	@Override
@@ -129,6 +116,11 @@ public class SimpleColumnUI extends ACompositeTableColumnUI<ACompositeRankColumn
 	@Override
 	public boolean causesReorderingLayouting() {
 		return getColumnModelParent().causesReorderingLayouting();
+	}
+
+	@Override
+	public Color getBarOutlineColor() {
+		return getColumnModelParent().getBarOutlineColor();
 	}
 
 	@Override

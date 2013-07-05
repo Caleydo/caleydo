@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.stratomex.brick.layout;
 
 import java.util.ArrayList;
@@ -58,6 +44,9 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	public static final float BUTTON_Z = 0.22f;
 	protected static final int RELATION_INDICATOR_WIDTH_PIXELS = 3;
 	protected static final int HANDLE_SIZE_PIXELS = 8;
+
+	protected static final int DEFAULT_HANDLES = HandleRenderer.ALL_RESIZE_HANDLES
+			| HandleRenderer.MOVE_VERTICALLY_HANDLE | HandleRenderer.EXPAND_HANDLE;
 
 	protected static final int COLLAPSE_BUTTON_ID = 0;
 	protected static final int LOCK_RESIZING_BUTTON_ID = 1;
@@ -150,9 +139,11 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 		baseRow.setRenderer(borderedAreaRenderer);
 
-		baseRow.addForeGroundRenderer(new HandleRenderer(brick, HANDLE_SIZE_PIXELS, brick.getTextureManager(),
-				HandleRenderer.ALL_RESIZE_HANDLES | HandleRenderer.MOVE_VERTICALLY_HANDLE
-						| HandleRenderer.EXPAND_HANDLE));
+		if (handles == null) {
+			handles = DEFAULT_HANDLES;
+		}
+
+		baseRow.addForeGroundRenderer(new HandleRenderer(brick, HANDLE_SIZE_PIXELS, brick.getTextureManager(), handles));
 
 		ElementLayout spacingLayoutX = new ElementLayout("spacingLayoutX");
 		spacingLayoutX.setPixelSizeX(SPACING_PIXELS);
@@ -170,6 +161,8 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 			viewLayout.setZoomer(zoomer);
 		}
 		viewLayout.setRenderer(viewRenderer);
+		if (!brick.isLabelDefault())
+			viewLayout.addForeGroundRenderer(innerBorderedAreaRenderer);
 
 		ElementLayout spacingLayoutY = new ElementLayout("spacingLayoutY");
 		spacingLayoutY.setPixelSizeY(SPACING_PIXELS);
@@ -294,6 +287,9 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 			}
 		}, EPickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON.name(), VIEW_SWITCHING_MODE_BUTTON_ID);
 
+		brick.addIDPickingTooltipListener("Toggle column-wide view switching",
+				EPickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON.name(), VIEW_SWITCHING_MODE_BUTTON_ID);
+
 		brick.addIDPickingListener(new APickingListener() {
 
 			@Override
@@ -303,6 +299,8 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 			}
 		}, EPickingType.BRICK_COLLAPSE_BUTTON.name(), COLLAPSE_BUTTON_ID);
 
+		brick.addIDPickingTooltipListener("Collapse", EPickingType.BRICK_COLLAPSE_BUTTON.name(), COLLAPSE_BUTTON_ID);
+
 		brick.addIDPickingListener(new APickingListener() {
 
 			@Override
@@ -310,6 +308,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 				brickColumn.showDetailedBrick(brick, false);
 			}
 		}, EPickingType.EXPAND_RIGHT_HANDLE.name(), brick.getID());
+		brick.addIDPickingTooltipListener("Show in detail", EPickingType.EXPAND_RIGHT_HANDLE.name(), brick.getID());
 
 		brick.addIDPickingListener(new APickingListener() {
 
@@ -318,6 +317,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 				brickColumn.showDetailedBrick(brick, true);
 			}
 		}, EPickingType.EXPAND_LEFT_HANDLE.name(), brick.getID());
+		brick.addIDPickingTooltipListener("Show in detail", EPickingType.EXPAND_LEFT_HANDLE.name(), brick.getID());
 	}
 
 	@Override

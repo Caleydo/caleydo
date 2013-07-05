@@ -1,3 +1,8 @@
+/*******************************************************************************
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.vis.rank.ui.column;
 
 import gleem.linalg.Vec2f;
@@ -6,6 +11,7 @@ import gleem.linalg.Vec4f;
 import java.util.BitSet;
 import java.util.List;
 
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
@@ -262,6 +268,11 @@ public class ColumnUI extends AnimatedGLElementContainer implements ITableColumn
 	@Override
 	public VAlign getAlignment() {
 		return getColumnParent().getAlignment(this);
+	}
+
+	@Override
+	public Color getBarOutlineColor() {
+		return getColumnParent().getBarOutlineColor();
 	}
 
 	protected IColumModelLayout getColumnParent() {

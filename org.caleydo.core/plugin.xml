@@ -75,7 +75,7 @@
          </property>
          <property
                name="aboutText"
-               value="Caleydo - Visualization for Molecular Biology&#x0A;http:// www.caleydo.org&#x0A;&#x0A;Copyright 2005 - 2012  by &#x0A;Graz University of Technology - http://www.icg.tugraz.at&#x0A;Marc Streit - http://marc.streit.com&#x0A;Alexander Lex - http://alexander-lex.com&#x0A;Christian Partl - http://icg.tugraz.at/Members/partl&#x0A;Johannes Kepler University Linz - http://www.jku.at/cg/&#x0A;&#x0A;Caleydo is open-source software licenced under the GPL V3">
+               value="Caleydo - Visualization for Molecular Biology&#x0A;http:// caleydo.org&#x0A;&#x0A;Copyright 2008 - 2013  by the Caleydo Team.&#x0A;Caleydo is open-source software licenced under the New BSD license.">
          </property>
       </product>
    </extension>
@@ -83,7 +83,7 @@
          name="Caleydo"
          point="org.eclipse.ui.splashHandlers">
       <splashHandler
-            class="org.caleydo.core.internal.InteractiveSplashHandler"
+            class="org.caleydo.core.startup.InteractiveSplashHandler"
             id="org.caleydo.core.startup.progress">
       </splashHandler>
       <splashHandlerProductBinding
@@ -166,6 +166,7 @@
                label="File">
             <command
                   commandId="org.caleydo.core.startup.open"
+                  icon="resources/icons/general/open.png"
                   label="Open Project"
                   style="push">
             </command>
@@ -343,9 +344,6 @@
       <extension
             point="org.caleydo.core.util.Clusterer">
          <clusterer
-               class="org.caleydo.core.util.clusterer.algorithm.kmeans.KMeansWEKAClustererFactory">
-         </clusterer>
-         <clusterer
                class="org.caleydo.core.util.clusterer.algorithm.kmeans.KMeansClustererFactory">
          </clusterer>
          <clusterer
@@ -359,7 +357,7 @@
             point="org.caleydo.core.StartupAddon">
          <addon
                class="org.caleydo.core.internal.startup.LoadSampleProjectStartupAddon"
-               name="Load Sample"
+               name="Load Demo Data"
                order="0">
          </addon>
          <addon

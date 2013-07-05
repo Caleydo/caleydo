@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.internal;
 
 import java.net.URL;
@@ -41,6 +27,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.kohsuke.args4j.ClassParser;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
@@ -49,12 +36,19 @@ import org.kohsuke.args4j.CmdLineParser;
  * This class controls all aspects of the application's execution
  */
 public class Application implements IApplication {
+	private static Application instance;
 
+	public static Application get() {
+		return instance;
+	}
+
+	private IStartupProcedure startup;
 
 	@Override
 	public Object start(IApplicationContext context) throws Exception {
 		final Logger log = Logger.create(Application.class);
 		try {
+			instance = this;
 			log.info("Starting Caleydo");
 
 			dumpEnvironment(log);
@@ -65,26 +59,25 @@ public class Application implements IApplication {
 
 			Map<String, IStartupAddon> startups = StartupAddons.findAll();
 
-			if (!parseArgs(startups.values(), (String[]) context.getArguments().get("application.args"))) {
-				return EXIT_OK; // invalid args
-			}
+			parseArgs(startups.values(), (String[]) context.getArguments().get("application.args"));
+			// ) {
+			// return EXIT_OK; // invalid args
+			// }
 
-			Display display = PlatformUI.createDisplay();
 
 			// create a select the startup pro
-			IStartupProcedure startup = selectStartupProcedure(startups, display);
+			Display display = PlatformUI.createDisplay();
+			startup = selectStartupProcedure(startups, display);
 			if (startup == null)
 				return EXIT_OK; // unstartable
 			startups = null; // cleanup
 
-			startup.preWorkbenchOpen();
+			if (!startup.preWorkbenchOpen()) {
+				log.info("error during pre workbench open of: " + startup);
+				return EXIT_OK;
+			}
 
-			ApplicationWorkbenchAdvisor advisor = new ApplicationWorkbenchAdvisor(startup);
-
-			// cleanup
-			startup = null;
-
-			int returnCode = PlatformUI.createAndRunWorkbench(display, advisor);
+			int returnCode = PlatformUI.createAndRunWorkbench(display, new ApplicationWorkbenchAdvisor());
 
 			log.info("Bye bye!");
 
@@ -96,8 +89,11 @@ public class Application implements IApplication {
 		} catch (Exception e) {
 			log.error("Caught exception, crashing.", e);
 			throw e;
+		} finally {
+			instance = null;
 		}
 	}
+
 
 	/**
 	 * @param startups
@@ -112,13 +108,14 @@ public class Application implements IApplication {
 		// not yet configured choose one
 		Shell shell = new Shell(display);
 		shell.moveAbove(null);
-		CaleydoProjectWizard wizardImpl = new CaleydoProjectWizard(shell, startups);
+		CaleydoProjectWizard wizardImpl = new CaleydoProjectWizard(startups);
 		WizardDialog wizard = new WizardDialog(shell, wizardImpl);
+		wizard.setMinimumPageSize(750, 500);
 		shell.forceActive();
-		if (wizard.open() == Window.CANCEL) {
-			return null;
-		}
-		return wizardImpl.getResult();
+		boolean ok = wizard.open() == Window.OK;
+		if (!shell.isDisposed())
+			shell.dispose();
+		return ok ? wizardImpl.getResult() : null;
 	}
 
 	/**
@@ -202,5 +199,20 @@ public class Application implements IApplication {
 				}
 			}
 		});
+	}
+
+
+	public void runStartup() {
+		assert startup != null;
+		startup.run();
+	}
+
+	/**
+	 * @param windowConfigurer
+	 */
+	public void postWorkbenchOpen(IWorkbenchWindowConfigurer windowConfigurer) {
+		startup.postWorkbenchOpen(windowConfigurer);
+		windowConfigurer.getWindow().getShell().setMaximized(true);
+		startup = null;
 	}
 }

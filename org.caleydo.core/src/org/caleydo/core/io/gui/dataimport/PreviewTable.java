@@ -1,36 +1,27 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.io.gui.dataimport;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.caleydo.core.io.FileUtil;
 import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.io.MatrixDefinition;
-import org.caleydo.core.io.gui.dataimport.widget.BooleanCallback;
 import org.caleydo.core.io.gui.dataimport.widget.DelimiterWidget;
-import org.caleydo.core.io.gui.dataimport.widget.ICallback;
 import org.caleydo.core.io.gui.dataimport.widget.SelectAllNoneWidget;
+import org.caleydo.core.io.gui.dataimport.widget.table.INoArgumentCallback;
 import org.caleydo.core.io.gui.dataimport.widget.table.PreviewTableWidget;
+import org.caleydo.core.util.base.BooleanCallback;
+import org.caleydo.core.util.base.ICallback;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Widget;
 
 /**
  * @author Samuel Gratzl
@@ -62,7 +53,14 @@ public class PreviewTable {
 
 	private final IPreviewCallback previewCallback;
 
-	public PreviewTable(Composite parent, MatrixDefinition spec, IPreviewCallback previewCallback) {
+	private boolean isTransposed = false;
+
+	private File transposedDataFile;
+
+	private String originalFilePath;
+
+	public PreviewTable(Composite parent, MatrixDefinition spec, IPreviewCallback previewCallback,
+			boolean isTransposeable) {
 		this.spec = spec;
 		this.previewCallback = previewCallback;
 
@@ -82,7 +80,25 @@ public class PreviewTable {
 		});
 		this.selectAllNone.setEnabled(false);
 
-		previewTable = new PreviewTableWidget(parent, null);
+		previewTable = new PreviewTableWidget(parent, null, isTransposeable, new INoArgumentCallback() {
+
+			@Override
+			public void on() {
+				isTransposed = !isTransposed;
+
+				if (isTransposed) {
+					if (transposedDataFile == null) {
+						loadTransposedFile();
+					}
+					originalFilePath = PreviewTable.this.spec.getDataSourcePath();
+					PreviewTable.this.spec.setDataSourcePath(transposedDataFile.getAbsolutePath());
+				} else {
+					PreviewTable.this.spec.setDataSourcePath(originalFilePath);
+				}
+				createDataPreviewTableFromFile();
+			}
+
+		});
 		// , new BooleanCallback() {
 		// @Override
 		// public void on(boolean data) {
@@ -91,13 +107,28 @@ public class PreviewTable {
 		// });
 	}
 
+	public Composite getTable() {
+		return this.previewTable.getTable();
+	}
+
+	private void loadTransposedFile() {
+		try {
+			transposedDataFile = File.createTempFile("tmptransposed", "txt");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		FileUtil.transposeCSV(spec.getDataSourcePath(), transposedDataFile.getAbsolutePath(), spec.getDelimiter());
+	}
+
 	/**
 	 * Creates the preview table from the file specified by {@link #groupingParseSpecification}. Widgets of the
 	 * {@link #dialog} are updated accordingly.
 	 *
 	 */
 	public void createDataPreviewTableFromFile() {
-		parser.parse(spec.getDataSourcePath(), spec.getDelimiter(), true, PreviewTableWidget.MAX_PREVIEW_TABLE_ROWS);
+		parser.parse(isTransposed ? transposedDataFile.getAbsolutePath() : spec.getDataSourcePath(),
+				spec.getDelimiter(), true, PreviewTableWidget.MAX_PREVIEW_TABLE_ROWS);
 		dataMatrix = parser.getDataMatrix();
 		totalNumberOfColumns = parser.getTotalNumberOfColumns();
 		this.previewTable.createTableFromMatrix(dataMatrix, totalNumberOfColumns);
@@ -148,7 +179,11 @@ public class PreviewTable {
 		previewTable.setSelectedColumns(selectedColumns);
 	}
 
-	public void generatePreview() {
+	public void generatePreview(boolean fileChanged) {
+		if (fileChanged) {
+			isTransposed = false;
+			transposedDataFile = null;
+		}
 		this.delimeter.setEnabled(true);
 		this.selectAllNone.setEnabled(true);
 		createDataPreviewTableFromFile();
@@ -189,6 +224,10 @@ public class PreviewTable {
 
 	public void onDelimiterChanged(String delimiter) {
 		spec.setDelimiter(delimiter);
+		if (isTransposed) {
+			loadTransposedFile();
+			spec.setDataSourcePath(transposedDataFile.getAbsolutePath());
+		}
 		createDataPreviewTableFromFile();
 	}
 

@@ -10,7 +10,8 @@
             class="org.caleydo.view.tourguide.internal.RcpGLTourGuideView"
             icon="resources/icons/icon.png"
             id="org.caleydo.view.tool.tourguide"
-            name="LineUp">
+            name="LineUp"
+            restorable="false">
       </view>
    </extension>
    <extension
@@ -37,7 +38,7 @@
       <command
             defaultHandler="org.caleydo.view.tourguide.internal.OpenViewHandler"
             id="org.caleydo.view.tourguide.command.open"
-            name="Tour Guide">
+            name="LineUp">
       </command>
    </extension>
    <extension
@@ -53,7 +54,7 @@
             name="Adjusted Rank Score">
       </factory>
       <factory
-            class="org.caleydo.view.tourguide.impl.JaccardIndexScoreFactory"
+            class="org.caleydo.view.tourguide.impl.ClusterSimilarityScoreFactory"
             name="Jaccard Index Score">
       </factory>
       <factory

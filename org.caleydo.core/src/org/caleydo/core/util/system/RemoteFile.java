@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.util.system;
 
 import java.io.BufferedInputStream;
@@ -56,6 +42,8 @@ public final class RemoteFile implements IRunnableWithProgress {
 
 	private static final int BUFFER_SIZE = 4096;
 	private static final int WORK_TRIGGER_FREQUENCY = 64;
+
+	private static final int CONNECT_TIMEOUT = 10 * 1000; // [ms]
 
 	private final URL url;
 	private final File file;
@@ -97,6 +85,7 @@ public final class RemoteFile implements IRunnableWithProgress {
 		URLConnection connection;
 		try {
 			connection = url.openConnection();
+			connection.setConnectTimeout(CONNECT_TIMEOUT);
 			connection.connect();
 
 			long expected = connection.getLastModified();
@@ -105,6 +94,12 @@ public final class RemoteFile implements IRunnableWithProgress {
 			log.warn("can't check modification date of: " + url, e);
 			return true; // assume correct as we can't verify it
 		}
+	}
+
+	public boolean delete() {
+		if (file.exists())
+			return file.delete();
+		return true;
 	}
 
 	/**
@@ -121,6 +116,17 @@ public final class RemoteFile implements IRunnableWithProgress {
 	 */
 	public Exception getCaught() {
 		return caught;
+	}
+
+	public File getOrLoad(boolean checkModificationDate, IProgressMonitor monitor) {
+		if (!inCache(checkModificationDate)) {
+			delete();
+			run(monitor);
+			if (!file.exists())
+				return null;
+			return file;
+		}
+		return file;
 	}
 
 	@Override

@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.stratomex.brick.layout;
 
 import java.util.ArrayList;
@@ -31,6 +17,8 @@ import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
 import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.stratomex.brick.GLBrick;
 import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
+import org.caleydo.view.stratomex.brick.ui.HandleRenderer;
+import org.caleydo.view.stratomex.brick.ui.ViewBorderRenderer;
 import org.caleydo.view.stratomex.column.BrickColumn;
 
 /**
@@ -41,7 +29,7 @@ import org.caleydo.view.stratomex.column.BrickColumn;
  */
 public abstract class ABrickLayoutConfiguration extends LayoutConfiguration {
 
-	protected static final int SPACING_PIXELS = 4;
+	protected static final int SPACING_PIXELS = 2;
 	protected static final int DEFAULT_GUI_ELEMENT_SIZE_PIXELS = 16;
 
 	protected GLBrick brick;
@@ -53,6 +41,9 @@ public abstract class ABrickLayoutConfiguration extends LayoutConfiguration {
 	// protected EContainedViewType defaultViewType;
 	// protected ArrayList<IViewTypeChangeListener> viewTypeChangeListeners;
 	protected BorderedAreaRenderer borderedAreaRenderer;
+	protected ViewBorderRenderer innerBorderedAreaRenderer;
+
+	protected Integer handles = null;
 
 	public ABrickLayoutConfiguration(GLBrick brick, BrickColumn brickColumn, GLStratomex stratomex) {
 		this.brick = brick;
@@ -61,17 +52,19 @@ public abstract class ABrickLayoutConfiguration extends LayoutConfiguration {
 		// validViewTypes = new HashSet<EContainedViewType>();
 		// viewTypeChangeListeners = new ArrayList<IViewTypeChangeListener>();
 		borderedAreaRenderer = new BorderedAreaRenderer();
+		innerBorderedAreaRenderer = new ViewBorderRenderer();
 
 		// if (brick.isHeaderBrick())
-		float[] color = brick.getDataDomain().getColor().getRGBA();
+		Color color = brick.getDataDomain().getColor();
 		if (brick.getBrickColumn().getTablePerspective() instanceof PathwayTablePerspective)
 			color = ((PathwayTablePerspective) brick.getBrickColumn().getTablePerspective()).getPathwayDataDomain()
-					.getColor().getRGBA();
+					.getColor();
 
 		if (!brick.isHeaderBrick())
-			color = Color.NEUTRAL_GREY.getRGBA();
+			color = Color.NEUTRAL_GREY;
 
 		borderedAreaRenderer.setColor(color);
+		innerBorderedAreaRenderer.setColor(color);
 
 		// setValidViewTypes();
 		// registerPickingListeners();
@@ -100,6 +93,18 @@ public abstract class ABrickLayoutConfiguration extends LayoutConfiguration {
 	 */
 	public ALayoutRenderer getViewRenderer() {
 		return viewRenderer;
+	}
+
+	/**
+	 * Manually override the brick handles to be shown. See {@link HandleRenderer} for possible flags
+	 *
+	 * @param handles
+	 *            an integer that can be bit-ored with the flags defined in {@link HandleRenderer} to determine the
+	 *            handles desired.
+	 *
+	 */
+	public void setHandles(int handles) {
+		this.handles = handles;
 	}
 
 	/**
@@ -298,15 +303,10 @@ public abstract class ABrickLayoutConfiguration extends LayoutConfiguration {
 			return;
 		} else {
 			if (selected) {
-				float[] color = new float[4];
-				float[] selectionColor = SelectionType.SELECTION.getColor().getRGBA();
-				color[0] = selectionColor[0] * 0.4f + BorderedAreaRenderer.DEFAULT_COLOR[0] * 0.6f;
-				color[1] = selectionColor[1] * 0.4f + BorderedAreaRenderer.DEFAULT_COLOR[1] * 0.6f;
-				color[2] = selectionColor[2] * 0.4f + BorderedAreaRenderer.DEFAULT_COLOR[2] * 0.6f;
-				color[3] = 1;
-				borderedAreaRenderer.setColor(color);
+				Color selectionColor = SelectionType.SELECTION.getColor().lessSaturated();
+				borderedAreaRenderer.setColor(selectionColor);
 			} else {
-				borderedAreaRenderer.setColor(Color.NEUTRAL_GREY.getRGBA());
+				borderedAreaRenderer.setColor(Color.NEUTRAL_GREY);
 			}
 		}
 	}

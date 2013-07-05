@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Jogl Plug-in
 Bundle-SymbolicName: org.caleydo.lib.jogl;singleton:=true
-Bundle-Version: 2.0.0.rc11
+Bundle-Version: 2.0.2.rc12
 Bundle-ClassPath: lib/jogl/jogl-all.jar,
  lib/jogl/gluegen-rt.jar
 Bundle-NativeCode: 
@@ -64,7 +64,6 @@ Export-Package: com.jogamp.common,
  com.jogamp.graph.font,
  com.jogamp.graph.geom,
  com.jogamp.graph.geom.opengl,
- com.jogamp.graph.math,
  com.jogamp.newt,
  com.jogamp.newt.awt,
  com.jogamp.newt.awt.applet,

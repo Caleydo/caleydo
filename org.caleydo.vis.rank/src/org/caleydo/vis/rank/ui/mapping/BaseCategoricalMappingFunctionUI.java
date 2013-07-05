@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.vis.rank.ui.mapping;
 
 import static org.caleydo.vis.rank.ui.RenderStyle.HIST_HEIGHT;
@@ -29,7 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import org.caleydo.core.io.gui.dataimport.widget.ICallback;
+import org.caleydo.core.util.base.ICallback;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.util.function.FloatFunctions;
@@ -45,6 +31,7 @@ import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.core.view.opengl.picking.Pick;
+import org.caleydo.vis.rank.config.IRankTableUIConfig;
 import org.caleydo.vis.rank.model.CategoricalRankRankColumnModel.CategoryInfo;
 import org.caleydo.vis.rank.model.SimpleHistogram;
 import org.caleydo.vis.rank.model.mapping.BaseCategoricalMappingFunction;
@@ -57,7 +44,7 @@ import org.caleydo.vis.rank.ui.RenderStyle;
  * @author Samuel Gratzl
  *
  */
-public class BaseCategoricalMappingFunctionUI<T> extends GLElementContainer implements IGLLayout {
+public class BaseCategoricalMappingFunctionUI<T> extends GLElementContainer implements IGLLayout, IHasUIConfig {
 	private static final float GAP = 10;
 	private static final float PADDING = 5;
 
@@ -70,11 +57,13 @@ public class BaseCategoricalMappingFunctionUI<T> extends GLElementContainer impl
 	private final Color backgroundColor;
 	private final Color color;
 	private final ICallback<? super ICategoricalMappingFunction<?>> callback;
+	private final IRankTableUIConfig config;
 
 	public BaseCategoricalMappingFunctionUI(BaseCategoricalMappingFunction<T> model, Map<T, Integer> data,
 			Map<T, CategoryInfo> metaData, Color color, Color bgColor,
-			ICallback<? super ICategoricalMappingFunction<?>> callback) {
+			ICallback<? super ICategoricalMappingFunction<?>> callback, IRankTableUIConfig config) {
 		this.model = model;
+		this.config = config;
 
 		this.order = new ArrayList<>(metaData.keySet());
 		this.metaData = metaData;
@@ -104,6 +93,14 @@ public class BaseCategoricalMappingFunctionUI<T> extends GLElementContainer impl
 		this.add(new RawHistogram());
 		this.add(new NormalizedHistogram());
 		this.add(new Canvas());
+	}
+
+	/**
+	 * @return the config, see {@link #config}
+	 */
+	@Override
+	public IRankTableUIConfig getConfig() {
+		return config;
 	}
 
 	protected SimpleHistogram computeHist(float w) {

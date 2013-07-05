@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.vis.rank.ui.column;
 
 import static org.caleydo.vis.rank.ui.RenderStyle.COLUMN_SPACE;
@@ -105,7 +91,8 @@ public class StackedColumnHeaderUI extends SimpleColumnHeaderUI {
 			return;
 		}
 
-		summary.setBounds(2, 2, w - 4, (isSmallHeader() ? 0 : HIST_HEIGHT) + LABEL_HEIGHT);
+		summary.setBounds(getLeftPadding() + 2, 2, w - 4 - getLeftPadding(), (isSmallHeader() ? 0 : HIST_HEIGHT)
+				+ LABEL_HEIGHT);
 
 		super.layoutColumns(children, w, h);
 
@@ -123,6 +110,11 @@ public class StackedColumnHeaderUI extends SimpleColumnHeaderUI {
 	@Override
 	public float getTopPadding(boolean smallHeader) {
 		return (smallHeader ? 0 : HIST_HEIGHT) + LABEL_HEIGHT * 2;
+	}
+
+	@Override
+	protected float getLeftPadding() {
+		return RenderStyle.STACKED_COLUMN_PADDING;
 	}
 
 	/**
@@ -151,10 +143,10 @@ public class StackedColumnHeaderUI extends SimpleColumnHeaderUI {
 		float histHeight = isSmallHeader() ? 0 : HIST_HEIGHT;
 		float yi = histHeight + LABEL_HEIGHT + 7;
 		float hi = LABEL_HEIGHT - 6;
-		float x = COLUMN_SPACE;
+		float x = getLeftPadding();
 		g.lineWidth(RenderStyle.COLOR_STACKED_BORDER_WIDTH);
 		g.color(RenderStyle.COLOR_STACKED_BORDER);
-		g.drawLine(0, histHeight + LABEL_HEIGHT + 4, w, histHeight + LABEL_HEIGHT + 4);
+		g.drawLine(getLeftPadding(), histHeight + LABEL_HEIGHT + 4, w - getLeftPadding(), histHeight + LABEL_HEIGHT + 4);
 		g.lineWidth(1);
 		for (int i = 0; i < numColumns; ++i) {
 			float wi = stacked.getChildWidth(i) + COLUMN_SPACE;

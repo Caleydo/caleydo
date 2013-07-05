@@ -1,38 +1,23 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.serialize;
 
 import static org.caleydo.core.manager.GeneralManager.CALEYDO_HOME_PATH;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.StringWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
+import javax.xml.bind.JAXB;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -56,27 +41,20 @@ import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.system.FileOperations;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.e4.ui.model.application.MApplication;
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.core.runtime.SubMonitor;
+import org.eclipse.core.runtime.jobs.IJobManager;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.MessageBox;
-import org.eclipse.ui.IViewPart;
-import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.XMLMemento;
-import org.eclipse.ui.internal.ViewReference;
+import org.eclipse.ui.internal.Workbench;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleException;
+
+import com.google.common.io.Files;
 
 /**
  * Serializes the current state of the application into a directory or file.
@@ -125,7 +103,6 @@ public final class ProjectManager {
 	/** meta data file name se {@link ProjectMetaData} */
 	private static final String METADATA_FILE = "metadata.xml";
 
-
 	/**
 	 * Loads the project from a directory
 	 *
@@ -164,6 +141,23 @@ public final class ProjectManager {
 		}
 	}
 
+	/**
+	 * checks whether the unpacked project at the given location is compatible with this version using the project
+	 * metadata
+	 *
+	 * @param unpackedProjectLocation
+	 * @return true if it can be loaded
+	 */
+	public static boolean checkCompatibility(String dirName) {
+		File metaData = new File(dirName, METADATA_FILE);
+		if (!metaData.exists())
+			return false;
+		ProjectMetaData data = JAXB.unmarshal(metaData, ProjectMetaData.class);
+		if (data == null)
+			return false;
+		return GeneralManager.canLoadDataCreatedFor(data.getVersion());
+	}
+
 	private static SerializationData loadData(String dirName) throws IOException, JAXBException {
 		SerializationManager serializationManager = GeneralManager.get().getSerializationManager();
 
@@ -185,6 +179,8 @@ public final class ProjectManager {
 				.getResource(dirName + ProjectManager.DATA_DOMAIN_FILE));
 
 		SerializationData serializationData = new SerializationData();
+		SubMonitor monitor = GeneralManager.get().createSubProgressMonitor();
+		monitor.beginTask("Loading Data", dataDomainList.getDataDomains().size() * 10);
 
 		for (ADataDomain dataDomain : dataDomainList.getDataDomains()) {
 			DataSetDescription dataSetDescription = dataDomain.getDataSetDescription();
@@ -216,20 +212,18 @@ public final class ProjectManager {
 
 				HashMap<String, Perspective> recordPerspectives = new HashMap<String, Perspective>();
 
-				GeneralManager.get().getSWTGUIManager()
-						.setProgressBarText("Loading groupings for: " + dataDomain.getLabel());
 
 				Set<String> recordPerspectiveIDs = ((ATableBasedDataDomain) dataDomain).getRecordPerspectiveIDs();
 				Set<String> dimensionPerspectiveIDs = ((ATableBasedDataDomain) dataDomain).getDimensionPerspectiveIDs();
 
 				int nrPerspectives = recordPerspectiveIDs.size() + dimensionPerspectiveIDs.size();
-				float progressBarFactor = 100f / nrPerspectives;
-				int perspectiveCount = 0;
+				SubMonitor dataDomainMonitor = monitor.newChild(10, SubMonitor.SUPPRESS_SUBTASK);
+				dataDomainMonitor.beginTask("Loading groupings for: " + dataDomain.getLabel(), nrPerspectives);
+
 				for (String recordPerspectiveID : recordPerspectiveIDs) {
 
-					Perspective recordPerspective = (Perspective) unmarshaller
-							.unmarshal(GeneralManager
-							.get().getResourceLoader().getResource(extendedDirName + recordPerspectiveID + ".xml"));
+					Perspective recordPerspective = (Perspective) unmarshaller.unmarshal(GeneralManager.get()
+							.getResourceLoader().getResource(extendedDirName + recordPerspectiveID + ".xml"));
 					recordPerspective.setDataDomain((ATableBasedDataDomain) dataDomain);
 					recordPerspective.setIDType(((ATableBasedDataDomain) dataDomain).getRecordIDType());
 					recordPerspectives.put(recordPerspectiveID, recordPerspective);
@@ -239,9 +233,7 @@ public final class ProjectManager {
 					if (tree != null)
 						recordPerspective.setTree(tree);
 
-					GeneralManager.get().getSWTGUIManager()
-							.setProgressBarPercentage((int) (progressBarFactor * perspectiveCount));
-					perspectiveCount++;
+					dataDomainMonitor.worked(1);
 				}
 
 				dataInitializationData.setRecordPerspectiveMap(recordPerspectives);
@@ -250,9 +242,8 @@ public final class ProjectManager {
 
 				for (String dimensionPerspectiveID : dimensionPerspectiveIDs) {
 
-					Perspective dimensionPerspective = (Perspective) unmarshaller
-							.unmarshal(GeneralManager.get().getResourceLoader()
-									.getResource(extendedDirName + dimensionPerspectiveID + ".xml"));
+					Perspective dimensionPerspective = (Perspective) unmarshaller.unmarshal(GeneralManager.get()
+							.getResourceLoader().getResource(extendedDirName + dimensionPerspectiveID + ".xml"));
 					dimensionPerspective.setDataDomain((ATableBasedDataDomain) dataDomain);
 					dimensionPerspective.setIDType(((ATableBasedDataDomain) dataDomain).getDimensionIDType());
 					dimensionPerspectives.put(dimensionPerspectiveID, dimensionPerspective);
@@ -260,16 +251,18 @@ public final class ProjectManager {
 					ClusterTree tree = loadTree(extendedDirName + dimensionPerspectiveID + "_tree.xml",
 							((ATableBasedDataDomain) dataDomain).getDimensionIDType());
 					dimensionPerspective.setTree(tree);
-					GeneralManager.get().getSWTGUIManager()
-							.setProgressBarPercentage((int) (progressBarFactor * perspectiveCount));
-					perspectiveCount++;
 
+					dataDomainMonitor.worked(1);
 				}
 
 				dataInitializationData.setDimensionPerspectiveMap(dimensionPerspectives);
 
 				serializationData.addDataDomainSerializationData(dataInitializationData);
 
+				dataDomainMonitor.done();
+
+			} else {
+				monitor.worked(10);
 			}
 		}
 
@@ -440,8 +433,7 @@ public final class ProjectManager {
 	}
 
 	private static void saveData(String dirName, Collection<? extends IDataDomain> toSave, IProgressMonitor monitor,
-			ProjectMetaData metaData) throws JAXBException,
-			IOException {
+			ProjectMetaData metaData) throws JAXBException, IOException {
 
 		SerializationManager serializationManager = GeneralManager.get().getSerializationManager();
 		JAXBContext projectContext = serializationManager.getProjectContext();
@@ -539,67 +531,104 @@ public final class ProjectManager {
 	 * @param dirName
 	 *            name of the directory to save the views to.
 	 */
-	@SuppressWarnings("restriction")
 	private static void saveWorkbenchData(String dirName) {
 		log.info("storing workbench data");
-		// see https://bugs.eclipse.org/bugs/show_bug.cgi?id=2369
-		// -> if this is implemented than a much cleaner solution can be used to persist the application model
 
-		IWorkbench workbench = PlatformUI.getWorkbench();
-		MApplication app = (MApplication) workbench.getService(MApplication.class);
+		IJobManager jobManager = Job.getJobManager();
+		// find auto saver
+		Job[] build = jobManager.find(Workbench.WORKBENCH_AUTO_SAVE_JOB);
 
-		// persist the views in their models
-		IWorkbenchWindow windows[] = workbench.getWorkbenchWindows();
-		for (int i = 0; i < windows.length; i++) {
-			IWorkbenchPage pages[] = windows[i].getPages();
-			for (int j = 0; j < pages.length; j++) {
-				IViewReference[] references = pages[j].getViewReferences();
-				for (int k = 0; k < references.length; k++) {
-					if (references[k].getView(false) != null) {
-						try {
-							persistView(((ViewReference) references[k]));
-						} catch (IOException e) {
-							log.warn("cant persist view: " + references[k].getId());
-						}
-					}
+		if (build.length == 1) {
+			Job j = build[0];
+			j.wakeUp(); // call it now
+			try {
+				j.join(); // wait for it
+				Job[] jobs = jobManager.find(null); // find the resource saver and wait for it, too
+				for (Job job : jobs)
+					if ("Workbench Auto-Save Background Job".equals(job.getName()))
+						job.join();
+
+				// clear old workbench file
+				File source = new File(WORKBENCH_XMI_FILE);
+				if (!source.exists()) {
+					log.warn("Could not save workbench data from " + source);
+					return;
 				}
+				File target = new File(dirName + WORKBENCH_XMI);
+				Files.copy(source, target);
+			} catch (InterruptedException | IOException e) {
+				log.error("can't persist workbench data", e);
 			}
+
 		}
+		// IWorkbench workbench = PlatformUI.getWorkbench();
+		// Method persist;
+		// try {
+		// persist = workbench.getClass().getDeclaredMethod("persist", boolean.class);
+		// persist.setAccessible(true);
+		// persist.invoke(workbench, false);
+		// log.info("done");
+		// } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
+		// | InvocationTargetException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
 
-		EObject local = EcoreUtil.copy((EObject) app); // create a local copy
-		MApplication localapp = (MApplication) local;
-		localapp.getMenuContributions().clear(); // manipulate like in the original
-		localapp.getSelectedElement().setMainMenu(null);
-
-		// dump the model
-		ResourceSet resSet = new ResourceSetImpl();
-		Resource resource = resSet.createResource(URI.createFileURI(dirName + WORKBENCH_XMI));
-
-		resource.getContents().add(local);
-		try {
-			resource.save(Collections.EMPTY_MAP);
-			log.info("stored workbench data");
-		} catch (IOException e) {
-			log.error("can't persist application.xmi", e);
-		}
+		// workbench.saveAll(shellProvider, runnableContext, filter, confirm)
+		// MApplication app = (MApplication) workbench.getService(MApplication.class);
+		//
+		// // persist the views in their models
+		// IWorkbenchWindow windows[] = workbench.getWorkbenchWindows();
+		// for (int i = 0; i < windows.length; i++) {
+		// IWorkbenchPage pages[] = windows[i].getPages();
+		// for (int j = 0; j < pages.length; j++) {
+		// IViewReference[] references = pages[j].getViewReferences();
+		// for (int k = 0; k < references.length; k++) {
+		// if (references[k].getView(false) != null) {
+		// try {
+		// persistView(((ViewReference) references[k]));
+		// } catch (IOException e) {
+		// log.warn("cant persist view: " + references[k].getId());
+		// }
+		// }
+		// }
+		// }
+		// }
+		//
+		// EObject local = EcoreUtil.copy((EObject) app); // create a local copy
+		// MApplication localapp = (MApplication) local;
+		// localapp.getMenuContributions().clear(); // manipulate like in the original
+		// localapp.getSelectedElement().setMainMenu(null);
+		//
+		// // dump the model
+		// ResourceSet resSet = new ResourceSetImpl();
+		// Resource resource = resSet.createResource(URI.createFileURI(dirName + WORKBENCH_XMI));
+		//
+		// resource.getContents().add(local);
+		// try {
+		// resource.save(Collections.EMPTY_MAP);
+		// log.info("stored workbench data");
+		// } catch (IOException e) {
+		// log.error("can't persist application.xmi", e);
+		// }
 	}
 
-	/**
-	 * persist the given view see {@link ViewReference#persist}
-	 *
-	 * @param viewReference
-	 * @throws IOException
-	 */
-	private static void persistView(ViewReference viewReference) throws IOException {
-		IViewPart view = viewReference.getView(false);
-		if (view != null) {
-			XMLMemento root = XMLMemento.createWriteRoot("view"); //$NON-NLS-1$
-			view.saveState(root);
-			StringWriter writer = new StringWriter();
-			root.save(writer);
-			viewReference.getModel().getPersistedState().put("memento", writer.toString());
-		}
-	}
+	// /**
+	// * persist the given view see {@link ViewReference#persist}
+	// *
+	// * @param viewReference
+	// * @throws IOException
+	// */
+	// private static void persistView(ViewReference viewReference) throws IOException {
+	// IViewPart view = viewReference.getView(false);
+	// if (view != null) {
+	//			XMLMemento root = XMLMemento.createWriteRoot("view"); //$NON-NLS-1$
+	// view.saveState(root);
+	// StringWriter writer = new StringWriter();
+	// root.save(writer);
+	// viewReference.getModel().getPersistedState().put("memento", writer.toString());
+	// }
+	// }
 
 	public static void loadWorkbenchData(String dirName) {
 		try {

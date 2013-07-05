@@ -1,3 +1,8 @@
+/*******************************************************************************
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.view.opengl.layout.util.multiform;
 
 import java.util.ArrayList;
@@ -775,6 +780,17 @@ public class MultiFormRenderer extends AForwardingRenderer implements IEmbeddedV
 		}
 	}
 
+	/**
+	 * @param rendererID
+	 * @return The vis info of the specified renderer. Null if no renderer with the specified id is present.
+	 */
+	public IEmbeddedVisualizationInfo getVisInfo(int rendererID) {
+		ARendererInfo info = rendererInfos.get(rendererID);
+		if (info == null)
+			return null;
+		return info.visInfo;
+	}
+
 	@Override
 	public void destroy(GL2 gl) {
 		super.destroy(gl);
@@ -817,5 +833,12 @@ public class MultiFormRenderer extends AForwardingRenderer implements IEmbeddedV
 		if (!ensureValidRenderer())
 			return null;
 		return currentRendererInfo.visInfo.getPrimaryHeightScalingEntity();
+	}
+
+	@Override
+	public String getLabel() {
+		if (!ensureValidRenderer())
+			return null;
+		return currentRendererInfo.visInfo.getLabel();
 	}
 }

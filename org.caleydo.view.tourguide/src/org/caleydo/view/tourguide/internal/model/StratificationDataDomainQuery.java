@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.tourguide.internal.model;
 
 import java.util.ArrayList;
@@ -119,20 +105,6 @@ public class StratificationDataDomainQuery extends ADataDomainQuery {
 		return added;
 	}
 
-	private String getDimensionPerspectiveID() {
-		String dimensionPerspectiveID = null;
-		if (dimensionSelection != null)
-			dimensionPerspectiveID = dimensionSelection.getPerspectiveID();
-		else {
-			for (Perspective p : getDimensionPerspectives()) {
-				if (!p.isDefault())
-					return p.getPerspectiveID();
-			}
-			return getDimensionPerspectives().iterator().next().getPerspectiveID();
-		}
-		return dimensionPerspectiveID;
-	}
-
 	/**
 	 * @param dimensionPerspectiveID
 	 * @param p
@@ -141,16 +113,16 @@ public class StratificationDataDomainQuery extends ADataDomainQuery {
 	public TablePerspective asTablePerspective(Perspective p) {
 		ATableBasedDataDomain d = getDataDomain();
 
-		String dimensionPerspectiveID = getDimensionPerspectiveID();
+		String dimensionPerspectiveID = getDimensionSelection().getPerspectiveID();
 
-		boolean existsAlready = d.hasTablePerspective(p.getPerspectiveID(), dimensionPerspectiveID);
+		// boolean existsAlready = d.hasTablePerspective(p.getPerspectiveID(), dimensionPerspectiveID);
 
 		TablePerspective per = d.getTablePerspective(p.getPerspectiveID(), dimensionPerspectiveID);
 
 		// We do not want to overwrite the state of already existing
 		// public table perspectives.
-		if (!existsAlready)
-			per.setPrivate(true);
+		// if (!existsAlready)
+		// per.setPrivate(true);
 
 		return per;
 	}
@@ -171,7 +143,14 @@ public class StratificationDataDomainQuery extends ADataDomainQuery {
 	 * @return the dimensionSelection, see {@link #dimensionSelection}
 	 */
 	public Perspective getDimensionSelection() {
-		return dimensionSelection;
+		if (dimensionSelection != null)
+			return dimensionSelection;
+		for (Perspective p : getDimensionPerspectives()) {
+			if (p.isDefault())
+				continue;
+			return p;
+		}
+		return getDimensionPerspectives().iterator().next();
 	}
 
 

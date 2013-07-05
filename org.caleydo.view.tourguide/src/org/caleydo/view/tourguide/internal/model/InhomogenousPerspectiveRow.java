@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.tourguide.internal.model;
 
 import org.caleydo.core.data.datadomain.IDataDomain;
@@ -24,6 +10,7 @@ import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.id.IDType;
 
 /**
  * @author Samuel Gratzl
@@ -31,9 +18,9 @@ import org.caleydo.core.data.virtualarray.group.Group;
  */
 public final class InhomogenousPerspectiveRow extends AVirtualArrayScoreRow implements ITablePerspectiveScoreRow {
 	private final InhomogenousDataDomainQuery query;
-	private final Perspective clinical;
+	private final TablePerspective clinical;
 
-	public InhomogenousPerspectiveRow(Perspective clinical, InhomogenousDataDomainQuery query) {
+	public InhomogenousPerspectiveRow(TablePerspective clinical, InhomogenousDataDomainQuery query) {
 		this.clinical = clinical;
 		this.query = query;
 	}
@@ -47,7 +34,17 @@ public final class InhomogenousPerspectiveRow extends AVirtualArrayScoreRow impl
 	 * @return the stratification, see {@link #stratification}
 	 */
 	public Perspective getStratification() {
-		return clinical;
+		return clinical.getRecordPerspective();
+	}
+
+	@Override
+	public IDType getDimensionIdType() {
+		return clinical.getDimensionPerspective().getIdType();
+	}
+
+	@Override
+	public Iterable<Integer> getDimensionIDs() {
+		return clinical.getDimensionPerspective().getVirtualArray();
 	}
 
 	@Override
@@ -57,12 +54,12 @@ public final class InhomogenousPerspectiveRow extends AVirtualArrayScoreRow impl
 
 	@Override
 	public String getPersistentID() {
-		return clinical.getPerspectiveID();
+		return clinical.getTablePerspectiveKey();
 	}
 
 	@Override
 	public VirtualArray getVirtualArray() {
-		return clinical.getVirtualArray();
+		return clinical.getRecordPerspective().getVirtualArray();
 	}
 
 	@Override
@@ -82,11 +79,11 @@ public final class InhomogenousPerspectiveRow extends AVirtualArrayScoreRow impl
 
 	@Override
 	public TablePerspective asTablePerspective() {
-		return query.asTablePerspective(clinical);
+		return clinical;
 	}
 
 	@Override
 	public boolean is(TablePerspective tablePerspective) {
-		return clinical.equals(tablePerspective.getDimensionPerspective());
+		return clinical.equals(tablePerspective);
 	}
 }

@@ -1,24 +1,9 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.view.opengl.canvas.internal.newt;
-
 
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
@@ -31,6 +16,7 @@ import org.caleydo.core.view.opengl.canvas.IGLKeyListener;
 import org.caleydo.core.view.opengl.canvas.IGLMouseListener;
 import org.caleydo.core.view.opengl.canvas.internal.swt.ASWTBasedCanvasFactory;
 import org.caleydo.core.view.opengl.picking.APickingListener;
+import org.caleydo.core.view.opengl.picking.IPickingLabelProvider;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.eclipse.swt.widgets.Composite;
 
@@ -91,18 +77,15 @@ final class NEWTGLCanvas implements IGLCanvas {
 		}
 	}
 
-
 	@Override
 	public void requestFocus() {
 		canvas.requestFocus();
 	}
 
-
 	@Override
 	public void addKeyListener(IGLKeyListener listener) {
 		canvas.addKeyListener(new NEWTKeyAdapter(listener));
 	}
-
 
 	@Override
 	public void removeKeyListener(IGLKeyListener listener) {
@@ -114,18 +97,15 @@ final class NEWTGLCanvas implements IGLCanvas {
 		}
 	}
 
-
 	@Override
 	public void addGLEventListener(GLEventListener listener) {
 		canvas.addGLEventListener(listener);
 	}
 
-
 	@Override
 	public void removeGLEventListener(GLEventListener listener) {
 		canvas.removeGLEventListener(listener);
 	}
-
 
 	@Override
 	public int getWidth() {
@@ -152,7 +132,6 @@ final class NEWTGLCanvas implements IGLCanvas {
 		return "NEWTGLCanvas of " + canvas.toString();
 	}
 
-
 	@Override
 	public IPickingListener createTooltip(ILabeled label) {
 		// FIXME not implemented
@@ -162,6 +141,13 @@ final class NEWTGLCanvas implements IGLCanvas {
 
 	@Override
 	public IPickingListener createTooltip(String label) {
+		// FIXME not implemented
+		return new APickingListener() {
+		};
+	}
+
+	@Override
+	public IPickingListener createTooltip(IPickingLabelProvider label) {
 		// FIXME not implemented
 		return new APickingListener() {
 		};

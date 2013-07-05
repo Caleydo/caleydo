@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.stratomex.brick.ui;
 
 import java.util.ArrayList;
@@ -39,7 +25,7 @@ import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
  */
 public class OverviewHeatMapRenderer extends ALayoutRenderer {
 
-	private ColorMapper colorMapper;
+	private Table table;
 	private ArrayList<Float> heatMapValuesMean;
 	private ArrayList<Float> heatMapValuesMeanPlusStdDev;
 	private ArrayList<Float> heatMapValuesMeanMinusStdDev;
@@ -54,7 +40,7 @@ public class OverviewHeatMapRenderer extends ALayoutRenderer {
 	 * @param showStandardDeviation
 	 */
 	public OverviewHeatMapRenderer(TablePerspective tablePerspective, Table table, boolean showStandardDeviation) {
-		colorMapper = table.getDataDomain().getColorMapper();
+		this.table = table;
 		this.showStandardDeviation = showStandardDeviation;
 
 		// float[] expressionValues = new float[tablePerspective.getNrRecords()];
@@ -102,7 +88,7 @@ public class OverviewHeatMapRenderer extends ALayoutRenderer {
 
 	@Override
 	public void renderContent(GL2 gl) {
-
+		ColorMapper colorMapper = table.getDataDomain().getTable().getColorMapper();
 		if (heatMapValuesMean.size() <= 0)
 			return;
 
@@ -210,14 +196,13 @@ public class OverviewHeatMapRenderer extends ALayoutRenderer {
 					gl.glVertex3f(currentPositionX, y, 0);
 					currentPositionX += heatMapElementWidth;
 				}
+				gl.glEnd();
 			}
 
-			gl.glVertex3f(0, stdDevHeatMapElementHeight, 0);
-			gl.glVertex3f(x, stdDevHeatMapElementHeight, 0);
-			gl.glVertex3f(0, stdDevHeatMapElementHeight + meanHeatMapElementHeight, 0);
-			gl.glVertex3f(x, stdDevHeatMapElementHeight + meanHeatMapElementHeight, 0);
-
-			gl.glEnd();
+			// gl.glVertex3f(0, stdDevHeatMapElementHeight, 0);
+			// gl.glVertex3f(x, stdDevHeatMapElementHeight, 0);
+			// gl.glVertex3f(0, stdDevHeatMapElementHeight + meanHeatMapElementHeight, 0);
+			// gl.glVertex3f(x, stdDevHeatMapElementHeight + meanHeatMapElementHeight, 0);
 
 		} else {
 			gl.glBegin(GL2.GL_QUADS);

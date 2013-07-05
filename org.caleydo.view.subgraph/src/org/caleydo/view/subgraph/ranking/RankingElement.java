@@ -37,6 +37,7 @@ import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
+import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.subgraph.EEmbeddingID;
@@ -163,6 +164,24 @@ public class RankingElement extends GLElementContainer {
 			public void renderHeaderBackground(GLGraphics g, float w, float h, float labelHeight, ARankColumnModel model) {
 				// TODO Auto-generated method stub
 
+			}
+
+			@Override
+			public Color getBarOutlineColor() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			@Override
+			public void onRowClick(RankTableModel table, PickingMode pickingMode, IRow row, boolean isSelected) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public boolean isFastFiltering() {
+				// TODO Auto-generated method stub
+				return false;
 			}
 		};
 

@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.stratomex.brick;
 
 import java.awt.Point;
@@ -31,8 +17,11 @@ import java.util.Set;
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
+import javax.xml.bind.annotation.XmlTransient;
 
+import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.collection.table.TableUtils;
+import org.caleydo.core.data.datadomain.DataSupportDefinitions;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
@@ -42,14 +31,21 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.events.SelectionUpdateListener;
 import org.caleydo.core.data.virtualarray.VirtualArray;
+import org.caleydo.core.event.EventListenerManager;
+import org.caleydo.core.event.EventListenerManager.ListenTo;
+import org.caleydo.core.event.EventListenerManagers;
+import org.caleydo.core.event.data.DataDomainUpdateEvent;
 import org.caleydo.core.event.data.RelationsUpdatedEvent;
 import org.caleydo.core.event.data.SelectionUpdateEvent;
 import org.caleydo.core.gui.util.RenameNameDialog;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.util.color.mapping.UpdateColorMappingEvent;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
+import org.caleydo.core.view.contextmenu.AContextMenuItem.EContextMenuType;
 import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
+import org.caleydo.core.view.contextmenu.GroupContextMenuItem;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
@@ -89,6 +85,7 @@ import org.caleydo.view.stratomex.column.BrickColumn;
 import org.caleydo.view.stratomex.event.ExportBrickDataEvent;
 import org.caleydo.view.stratomex.event.MergeBricksEvent;
 import org.caleydo.view.stratomex.event.RenameEvent;
+import org.caleydo.view.stratomex.event.SelectDimensionSelectionEvent;
 import org.caleydo.view.stratomex.listener.ExportBrickDataEventListener;
 import org.caleydo.view.stratomex.listener.RelationsUpdatedListener;
 import org.caleydo.view.stratomex.listener.RenameListener;
@@ -104,9 +101,9 @@ import org.eclipse.ui.PlatformUI;
 
 /**
  * Individual Brick for StratomeX
- *
+ * 
  * @author Alexander Lex
- *
+ * 
  */
 public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, ILayoutedElement, IDraggable,
 		IMultiFormChangeListener, IEventBasedSelectionManagerUser {
@@ -119,6 +116,9 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	private int baseDisplayListIndex;
 	private boolean isBaseDisplayListDirty = true;
+
+	@XmlTransient
+	protected final EventListenerManager listeners = EventListenerManagers.wrap(this);
 
 	/**
 	 * Renderer that handles the display of all views and renderers that have been associated with this brick by the
@@ -251,6 +251,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 		contextMenuFactories = createContextMenuFactories();
 		textRenderer = new CaleydoTextRenderer(24);
+
 	}
 
 	/**
@@ -326,7 +327,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	/**
 	 * Triggers a dialog to rename the specified group.
-	 *
+	 * 
 	 * @param groupID
 	 *            ID of the group that shall be renamed.
 	 */
@@ -423,7 +424,6 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 		gl.glVertex3f(wrappingLayout.getSizeScaledX(), wrappingLayout.getSizeScaledY(), zpos);
 		gl.glVertex3f(0, wrappingLayout.getSizeScaledY(), zpos);
 		gl.glEnd();
-
 
 		gl.glPopName();
 		gl.glPopName();
@@ -545,7 +545,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	/**
 	 * Set the {@link GLStratomex} view managing this brick, which is needed for environment information.
-	 *
+	 * 
 	 * @param stratomex
 	 */
 	public void setStratomex(GLStratomex stratomex) {
@@ -554,7 +554,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	/**
 	 * Set the {@link BrickColumn} this brick belongs to.
-	 *
+	 * 
 	 * @param brickColumn
 	 */
 	public void setBrickColumn(BrickColumn brickColumn) {
@@ -563,7 +563,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	/**
 	 * Returns the {@link BrickColumn} this brick belongs to.
-	 *
+	 * 
 	 * @return
 	 */
 	public BrickColumn getBrickColumn() {
@@ -585,7 +585,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	/**
 	 * Updates the width and height of the brick according to the specified renderer.
-	 *
+	 * 
 	 * @param viewType
 	 *            ID of the renderer in {@link #multiFormRenderer}.
 	 */
@@ -676,7 +676,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 	/**
 	 * Sets the {@link ABrickLayoutConfiguration} for this brick, specifying its appearance. If the specified view type
 	 * is valid, it will be set, otherwise the default view type will be set.
-	 *
+	 * 
 	 * @param newBrickLayout
 	 * @param viewType
 	 */
@@ -698,7 +698,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	@Override
 	public void registerEventListeners() {
-
+		listeners.register(this);
 		relationsUpdateListener = new RelationsUpdatedListener();
 		relationsUpdateListener.setHandler(this);
 		eventPublisher.addListener(RelationsUpdatedEvent.class, relationsUpdateListener);
@@ -824,6 +824,10 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 					dragAndDropController.setDraggingMode("BrickDrag" + brickColumn.getID());
 					stratomex.setDisplayListDirty();
 				}
+
+				DataDomainUpdateEvent event = new DataDomainUpdateEvent(dataDomain);
+				event.setSender(this);
+				GeneralManager.get().getEventPublisher().triggerEvent(event);
 			}
 
 			@Override
@@ -842,6 +846,9 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 				if (brickColumn.getTablePerspective() == tablePerspective) {
 					// header brick
+					// switchable dim perspective but just for numerical tables
+					if (DataSupportDefinitions.numericalTables.apply(getDataDomain()))
+						contextMenuCreator.add(createChooseDimensionPerspectiveEntries(getBrickColumn()));
 
 					for (IContextMenuBrickFactory factory : contextMenuFactories)
 						for (AContextMenuItem item : factory.createStratification(brickColumn))
@@ -874,7 +881,6 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 					// selectElementsByGroup();
 				}
 			}
-
 		};
 
 		stratomex.addIDPickingListener(pickingListener, EPickingType.BRICK.name(), getID());
@@ -893,8 +899,28 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 	}
 
 	/**
+	 * create the context menu entries to switch the dimension perspectives
+	 * 
+	 * @return
+	 */
+	protected static AContextMenuItem createChooseDimensionPerspectiveEntries(BrickColumn column) {
+		Collection<Perspective> dims = new ArrayList<>();
+		Table table = column.getDataDomain().getTable();
+		for (String id : table.getDimensionPerspectiveIDs()) {
+			dims.add(table.getDimensionPerspective(id));
+		}
+		Perspective dim = column.getTablePerspective().getDimensionPerspective();
+		GroupContextMenuItem item = new GroupContextMenuItem("Used dimension perspective");
+
+		for (Perspective d : dims)
+			item.add(new GenericContextMenuItem(d.getLabel(), EContextMenuType.CHECK,
+					new SelectDimensionSelectionEvent(d).to(column)).setState(d == dim));
+		return item;
+	}
+
+	/**
 	 * Only to be called via a {@link RelationsUpdatedListener} upon a {@link RelationsUpdatedEvent}.
-	 *
+	 * 
 	 * TODO: add parameters to check whether this brick needs to be updated
 	 */
 	public void relationsUpdated() {
@@ -911,7 +937,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	/**
 	 * Set the layout that this view is embedded in
-	 *
+	 * 
 	 * @param wrappingLayout
 	 */
 	public void setLayout(ElementLayout wrappingLayout) {
@@ -920,7 +946,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	/**
 	 * Returns the layout that this view is wrapped in, which is created by the same instance that creates the view.
-	 *
+	 * 
 	 * @return
 	 */
 	@Override
@@ -942,7 +968,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	/**
 	 * Returns the selection manager responsible for managing selections of data containers.
-	 *
+	 * 
 	 * @return
 	 */
 	public SelectionManager getTablePerspectiveSelectionManager() {
@@ -981,7 +1007,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	/**
 	 * Sets this brick collapsed
-	 *
+	 * 
 	 * @return how much this has affected the height of the brick.
 	 */
 	public void collapse() {
@@ -1025,7 +1051,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	/**
 	 * Sets, whether view switching by this brick should affect other bricks in the dimension group.
-	 *
+	 * 
 	 * @param isGlobalViewSwitching
 	 */
 	public void setGlobalViewSwitching(boolean isGlobalViewSwitching) {
@@ -1287,7 +1313,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	/**
 	 * Sets the specified renderer to be displayed.
-	 *
+	 * 
 	 * @param rendererID
 	 *            ID of the renderer in {@link #multiFormRenderer}, i.e., the local renderer ID.
 	 */
@@ -1325,7 +1351,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 	/**
 	 * Associates global, i.e., brick-column wide IDs to identify similar renderers for bricks of the same type (segment
 	 * vs. header), to the local renderer IDs used in {@link #multiFormRenderer}.
-	 *
+	 * 
 	 * @param globalRendererID
 	 *            Global renderer ID.
 	 * @param localRendererID
@@ -1338,7 +1364,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	/**
 	 * Gets the local renderer ID used by {@link #multiFormRenderer} for a global ID.
-	 *
+	 * 
 	 * @param globalRendererID
 	 *            Global renderer ID.
 	 * @return The local renderer ID, -1 if no local ID could be found for the specified global ID.
@@ -1351,7 +1377,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	/**
 	 * Gets the global renderer ID for a local ID.
-	 *
+	 * 
 	 * @param localRendererID
 	 *            Local renderer ID.
 	 * @return The global renderer ID, -1 if no global ID could be found for the specified local ID.
@@ -1394,5 +1420,10 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 			if (layoutManager != null)
 				layoutManager.updateLayout();
 		}
+	}
+
+	@ListenTo
+	public void updateColorMapping(UpdateColorMappingEvent event) {
+		layoutManager.setRenderingDirty();
 	}
 }

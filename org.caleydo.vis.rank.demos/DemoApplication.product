@@ -7,16 +7,10 @@
       <image path="/org.caleydo.core/resources/wizard/wizard.png"/>
       <text>
          Caleydo - Visualization for Molecular Biology
-http:// www.caleydo.org
+http:// caleydo.org
 
-Copyright 2005 - 2012  by 
-Graz University of Technology - http://www.icg.tugraz.at
-Marc Streit - http://marc.streit.com
-Alexander Lex - http://alexander-lex.com
-Christian Partl - http://icg.tugraz.at/Members/partl
-Johannes Kepler University Linz - http://www.jku.at/cg/
-
-Caleydo is open-source software licenced under the GPL V3
+Copyright 2008 - 2013  by the Caleydo Team.
+Caleydo is open-source software licenced under the New BSD license.
       </text>
    </aboutInfo>
 
@@ -40,6 +34,7 @@ Caleydo is open-source software licenced under the GPL V3
          <bmp/>
       </win>
    </launcher>
+
 
    <vm>
    </vm>
@@ -754,7 +749,7 @@ Public License instead of this License.  But first, please read
       <plugin id="org.eclipse.core.filesystem"/>
       <plugin id="org.eclipse.core.filesystem.aix.ppc" fragment="true"/>
       <plugin id="org.eclipse.core.filesystem.aix.ppc64" fragment="true"/>
-      <plugin id="org.eclipse.core.filesystem.hpux.ia64_32" fragment="true"/>
+      <plugin id="org.eclipse.core.filesystem.hpux.ia64" fragment="true"/>
       <plugin id="org.eclipse.core.filesystem.linux.ppc" fragment="true"/>
       <plugin id="org.eclipse.core.filesystem.linux.ppc64" fragment="true"/>
       <plugin id="org.eclipse.core.filesystem.linux.x86" fragment="true"/>
@@ -766,6 +761,7 @@ Public License instead of this License.  But first, please read
       <plugin id="org.eclipse.core.jobs"/>
       <plugin id="org.eclipse.core.resources"/>
       <plugin id="org.eclipse.core.resources.win32.x86" fragment="true"/>
+      <plugin id="org.eclipse.core.resources.win32.x86_64" fragment="true"/>
       <plugin id="org.eclipse.core.runtime"/>
       <plugin id="org.eclipse.core.runtime.compatibility.registry" fragment="true"/>
       <plugin id="org.eclipse.e4.core.commands"/>
@@ -809,7 +805,7 @@ Public License instead of this License.  But first, please read
       <plugin id="org.eclipse.swt.cocoa.macosx.x86_64" fragment="true"/>
       <plugin id="org.eclipse.swt.gtk.aix.ppc" fragment="true"/>
       <plugin id="org.eclipse.swt.gtk.aix.ppc64" fragment="true"/>
-      <plugin id="org.eclipse.swt.gtk.hpux.ia64_32" fragment="true"/>
+      <plugin id="org.eclipse.swt.gtk.hpux.ia64" fragment="true"/>
       <plugin id="org.eclipse.swt.gtk.linux.ppc" fragment="true"/>
       <plugin id="org.eclipse.swt.gtk.linux.ppc64" fragment="true"/>
       <plugin id="org.eclipse.swt.gtk.linux.s390" fragment="true"/>

@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.vis.rank.ui.column;
 
 import static org.caleydo.core.view.opengl.layout2.layout.GLLayouts.defaultValue;
@@ -58,6 +44,7 @@ import org.caleydo.data.loader.ResourceLocators;
 import org.caleydo.data.loader.ResourceLocators.IResourceLocator;
 import org.caleydo.vis.rank.config.IRankTableConfig;
 import org.caleydo.vis.rank.config.IRankTableUIConfig;
+import org.caleydo.vis.rank.config.IRankTableUIConfig.EButtonBarPositionMode;
 import org.caleydo.vis.rank.internal.event.OrderByMeEvent;
 import org.caleydo.vis.rank.internal.ui.ButtonBar;
 import org.caleydo.vis.rank.model.ARankColumnModel;
@@ -144,10 +131,10 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 		}
 		if (config.isInteractive()) {
 			this.add(new DragElement().setLayoutData(MoveTransitions.GROW_LINEAR), 0);
-			this.add(
-					createButtons().setLayoutData(
-							new MoveTransitions.MoveTransitionBase(Transitions.NO, Transitions.LINEAR, Transitions.NO,
-									Transitions.LINEAR)), 0);
+			final GLElement buttons = createButtons().setLayoutData(
+					new MoveTransitions.MoveTransitionBase(Transitions.NO, Transitions.LINEAR, Transitions.NO,
+							Transitions.LINEAR));
+			this.add(buttons, 0);
 
 			this.isCollapsed = (model instanceof ICollapseableColumnMixin) ? ((ICollapseableColumnMixin) model)
 					.isCollapsed() : false;
@@ -203,6 +190,11 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 	@Override
 	public boolean hasFreeSpace() {
 		return false;
+	}
+
+	@Override
+	public Color getBarOutlineColor() {
+		return config.getBarOutlineColor();
 	}
 
 	@Override
@@ -296,8 +288,19 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 			} else
 				g.fillRect(0, 0, w, h);
 			g.popName();
+
+			boolean showButtonBar = isHovered && !isWeightDragging;
+			if (showButtonBar && config.getButtonBarPosition() == EButtonBarPositionMode.ABOVE_LABEL) {
+				g.fillRect(0, -RenderStyle.BUTTON_WIDTH, w, RenderStyle.BUTTON_WIDTH);
+			} else if (showButtonBar && config.getButtonBarPosition() == EButtonBarPositionMode.BELOW_HIST) {
+				g.fillRect(0, h, w, RenderStyle.BUTTON_WIDTH);
+			}
+
 			g.decZ().decZ();
+
+
 		}
+
 		super.renderPickImpl(g, w, h);
 	}
 
@@ -319,9 +322,15 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 			return;
 		boolean small = isSmallHeader(h);
 
+		if (config.isFastFiltering() && model instanceof IFilterColumnMixin && !(model instanceof FloatRankColumnModel)
+				&& ((IFilterColumnMixin) model).isFiltered()) {
+			// draw a filter icon
+			g.fillImage(RenderStyle.ICON_FILTER, w - 13, 1, 12, 12);
+		}
+
 		if (hasTitle && !(armDropColum && small)) {
 			g.move(2, 2);
-			model.getHeaderRenderer().render(g, w - 6, LABEL_HEIGHT - 6, this);
+			model.getHeaderRenderer().render(g, w - 6, LABEL_HEIGHT - 7, this);
 			g.move(-2, -2);
 		}
 		if (headerHovered) {
@@ -368,6 +377,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 					b.setCallback(null);
 					b.setSelected(m.isFiltered());
 					b.setCallback(callback);
+					repaint();
 				}
 			};
 			model.addPropertyChangeListener(IFilterColumnMixin.PROP_FILTER, filterChangedListener);
@@ -414,7 +424,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 			b.setCallback(new ISelectionCallback() {
 				@Override
 				public void onSelectionChanged(GLButton button, boolean selected) {
-					m.editMapping(get(HIST), context);
+					m.editMapping(get(HIST), context, config);
 				}
 			});
 			buttons.addButton(b, "Edit the mapping of this column", RenderStyle.ICON_MAPPING, RenderStyle.ICON_MAPPING);
@@ -528,7 +538,6 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 				IGLLayoutElement buttons = children.get(BUTTONS);
 				float minWidth = (buttons.asElement() instanceof ButtonBar) ? ((ButtonBar) buttons.asElement())
 						.getMinWidth() : 0;
-
 				// HACK for testing different button positions
 				boolean showButtonBar = isHovered && !isWeightDragging;
 				float yb = 0;

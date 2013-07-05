@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: enRoute Pathway
 Bundle-SymbolicName: org.caleydo.view.enroute;singleton:=true
-Bundle-Version: 2.2
+Bundle-Version: 3.0
 Bundle-Activator: org.caleydo.view.enroute.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,

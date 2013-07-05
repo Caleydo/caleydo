@@ -1,25 +1,12 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.tourguide.internal.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -158,6 +145,12 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 		return true;
 	}
 
+	/**
+	 * return the expected group count for a given dimension
+	 * 
+	 * @param category
+	 * @return
+	 */
 	public int getGroupSize(Integer category) {
 		ATableBasedDataDomain dataDomain2 = getDataDomain();
 		CategoricalTable<?> table = (CategoricalTable<?>)dataDomain2.getTable();
@@ -171,8 +164,25 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 		}
 		return count;
 	}
+
+	public Collection<GroupInfo> getGroupInfos(Integer category) {
+		ATableBasedDataDomain dataDomain2 = getDataDomain();
+		CategoricalTable<?> table = (CategoricalTable<?>) dataDomain2.getTable();
+		CategoricalClassDescription<?> categoryDescriptions = (CategoricalClassDescription<?>) table
+				.getDataClassSpecificDescription(category, 0);
+		Collection<GroupInfo> infos = new ArrayList<>();
+		for (CategoryProperty<?> property : categoryDescriptions) {
+			int cp = table.getNumberOfMatches(property.getCategory(), getCategoryIDType(), category);
+			infos.add(new GroupInfo(property.getCategoryName(), cp, property.getColor()));
+		}
+		return infos;
+	}
+
 	/**
-	 * @param id
+	 * builds a virtual array given a category and a label for it
+	 * 
+	 * @param label
+	 * @param category
 	 * @return
 	 */
 	public VirtualArray createVirtualArray(String label, Integer category) {
@@ -181,7 +191,7 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 		// reuse existing
 		TablePerspective tablePerspective = findExistingTablePerspective(label);
 		if (tablePerspective != null) {
-			if (dataDomain2.isColumnDimension()) {
+			if (dataDomain2.getRecordIDType() != getCategoryIDType()) {
 				return tablePerspective.getRecordPerspective().getVirtualArray();
 			} else {
 				return tablePerspective.getDimensionPerspective().getVirtualArray();
@@ -248,7 +258,16 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 		return va;
 	}
 
-
+	/**
+	 * creates a {@link TablePerspective} out of the given data
+	 * 
+	 * @param label
+	 * @param id
+	 *            the category
+	 * @param va
+	 *            the record dimension to use
+	 * @return
+	 */
 	public TablePerspective createTablePerspective(String label, Integer id, VirtualArray va) {
 		ATableBasedDataDomain d = getDataDomain();
 		final Table table = d.getTable();
@@ -258,7 +277,7 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 			return tablePerspective;
 
 		Perspective cat = new Perspective(dataDomain, categoryIDType);
-		cat.setPrivate(true);
+		cat.setPrivate(false);
 		cat.setLabel(label, false);
 		PerspectiveInitializationData data = new PerspectiveInitializationData();
 		data.setData(Lists.newArrayList(id));
@@ -269,7 +288,7 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 		data.setData(va);
 		items.init(data);
 		items.setLabel(label, false);
-		items.setPrivate(true);
+		items.setPrivate(false);
 
 		if (d.isColumnDimension()) {
 			table.registerRecordPerspective(cat, false);
@@ -281,9 +300,7 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 			tablePerspective = d.getTablePerspective(items.getPerspectiveID(), cat.getPerspectiveID());
 		}
 		tablePerspective.setLabel(label, false);
-		tablePerspective.setPrivate(true);
-		tablePerspective.getContainerStatistics().setNumberOfBucketsForHistogram(
-				cat.getVirtualArray().getGroupList().size());
+		tablePerspective.setPrivate(false);
 
 		return tablePerspective;
 	}
@@ -305,7 +322,7 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 		GroupRankColumnModel group = new GroupRankColumnModel(d.getLabel() + " Metrics", color, color.brighter());
 		table.add(group);
 		for (CategoryProperty<?> p : ctable.getCategoryDescriptions().getCategoryProperties()) {
-			group.add(CategoricalPercentageRankColumnModel.create(p.getCategory(), ctable));
+			group.add(CategoricalPercentageRankColumnModel.create(p.getCategory(), ctable, selected.contains(p)));
 		}
 	}
 

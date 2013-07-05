@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.view.opengl.canvas.internal.awt;
 
 import java.awt.FlowLayout;
@@ -33,6 +19,7 @@ import javax.swing.SwingUtilities;
 import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.util.base.ILabeled;
 import org.caleydo.core.view.opengl.picking.APickingListener;
+import org.caleydo.core.view.opengl.picking.IPickingLabelProvider;
 import org.caleydo.core.view.opengl.picking.Pick;
 
 /**
@@ -59,6 +46,8 @@ final class ToolTipPickingListener extends APickingListener {
 	 * {@link ILabelProvider#getSecondaryLabel()}.
 	 */
 	private ILabeled labelProvider;
+
+	private IPickingLabelProvider pickingLabelProvider;
 
 	private class ToolTipp extends JWindow {
 
@@ -133,6 +122,10 @@ final class ToolTipPickingListener extends APickingListener {
 		this.labelProvider = labelProvider;
 	}
 
+	public ToolTipPickingListener(IPickingLabelProvider labelProvider) {
+		this.pickingLabelProvider = labelProvider;
+	}
+
 	private synchronized void createToolTip() {
 		if (toolTipThread.hideToolTip)
 			return;
@@ -175,6 +168,9 @@ final class ToolTipPickingListener extends APickingListener {
 
 		if (labelProvider != null) {
 			toolTipMessage = labelProvider.getLabel();
+		}
+		if (pickingLabelProvider != null) {
+			toolTipMessage = pickingLabelProvider.getLabel(pick);
 		}
 		triggerToolTipCreation();
 	}

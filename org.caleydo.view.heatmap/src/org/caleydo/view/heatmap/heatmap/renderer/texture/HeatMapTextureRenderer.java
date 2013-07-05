@@ -1,33 +1,19 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
- * University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
- * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
- * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with this program. If not, see
- * <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.heatmap.heatmap.renderer.texture;
 
 import java.nio.FloatBuffer;
-import java.util.ArrayList;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GL2ES1;
 import javax.media.opengl.GLProfile;
 
-import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.util.color.mapping.ColorMapper;
 import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
@@ -49,22 +35,18 @@ import com.jogamp.opengl.util.texture.TextureIO;
 
 public class HeatMapTextureRenderer extends AHeatMapRenderer {
 
-	private final static int MAX_SAMPLES_PER_TEXTURE = 2000;
+	private final static int MAX_ITEMS_PER_TEXTURE = 2048;
 
-	private int numberOfTextures = 0;
+	private int numTexturesY = 0;
+	private int numTexturesX = 0;
 
-	private int numberOfRecords = 0;
-
-	private int samplesPerTexture = 0;
+	private int numRecords = 0;
+	private int numDims = 0;
 
 	/** array of textures for holding the data samples */
-	private ArrayList<Texture> textures = new ArrayList<Texture>();
-
-	private ArrayList<Integer> numberSamples = new ArrayList<Integer>();
+	private Texture[][] textures;
 
 	private PickingManager pickingManager = GeneralManager.get().getViewManager().getPickingManager();
-
-	private int numberOfDimensions;
 
 	private int groupIndex = -1;
 
@@ -79,124 +61,88 @@ public class HeatMapTextureRenderer extends AHeatMapRenderer {
 	@Override
 	public void updateSpacing() {
 
-		// if (heatMap == null)
-		// return;
-		//
-		// AHeatMapTemplate heatMapTemplate = heatMap.getTemplate();
-		//
-		// VirtualArray recordVA =
-		// heatMap.getTablePerspective().getRecordPerspective()
-		// .getVirtualArray();
-		//
-		// int recordElements = recordVA.size();
-		//
-		// RecordSelectionManager selectionManager =
-		// heatMap.getRecordSelectionManager();
-		// if (heatMap.isHideElements()) {
-		// recordElements -= selectionManager
-		// .getNumberOfElements(GLHeatMap.SELECTION_HIDDEN);
-		// }
-		//
-		// recordSpacing.calculateRecordSpacing(recordElements,
-		// heatMap.getTablePerspective()
-		// .getDimensionPerspective().getVirtualArray().size(),
-		// parameters.getSizeScaledX(), parameters.getSizeScaledY(),
-		// heatMapTemplate.getMinSelectedFieldHeight());
-		// heatMapTemplate.setContentSpacing(recordSpacing);
-		//
-		// float yPosition = parameters.getSizeScaledY();
-		// recordSpacing.getYDistances().clear();
-		// for (Integer recordID : recordVA) {
-		//
-		// float fieldHeight = recordSpacing.getFieldHeight(recordID);
-		// yPosition -= fieldHeight;
-		// recordSpacing.getYDistances().add(yPosition);
-		// }
 	}
 
 	/**
 	 * Init textures, build array of textures used for holding the whole samples
 	 */
 	public void initialize(GL2 gl) {
-		int textureHeight = numberOfRecords = heatMap.getTablePerspective().getRecordPerspective().getVirtualArray()
-				.size();
-		int textureWidth = numberOfDimensions = heatMap.getTablePerspective().getDimensionPerspective()
-				.getVirtualArray().size();
 
-		numberOfTextures = (int) Math.ceil((double) numberOfRecords / MAX_SAMPLES_PER_TEXTURE);
+		int totalPixelX = numDims = heatMap.getTablePerspective().getDimensionPerspective().getVirtualArray().size();
+		numTexturesX = (int) Math.ceil((double) numDims / MAX_ITEMS_PER_TEXTURE);
 
-		if (numberOfTextures <= 1)
-			samplesPerTexture = numberOfRecords;
-		else
-			samplesPerTexture = MAX_SAMPLES_PER_TEXTURE;
+		int totalPixelY = numRecords = heatMap.getTablePerspective().getRecordPerspective().getVirtualArray().size();
+		numTexturesY = (int) Math.ceil((double) numRecords / MAX_ITEMS_PER_TEXTURE);
 
-		textures.clear();
-		numberSamples.clear();
+		textures = new Texture[numTexturesX][numTexturesY];
 
-		Texture tempTexture;
+		int texPixelX = totalPixelX / numTexturesX;
+		int texPixelY = totalPixelY / numTexturesY;
 
-		samplesPerTexture = (int) Math.ceil((double) textureHeight / numberOfTextures);
+		int dimStartIndex = 0;
+		for (int dimTexIndex = 0; dimTexIndex < numTexturesX; dimTexIndex++) {
 
-		float lookupValue = 0;
+			int recordStartIndex = 0;
+			for (int recordTexIndex = 0; recordTexIndex < numTexturesY; recordTexIndex++) {
 
-		FloatBuffer[] floatBuffer = new FloatBuffer[numberOfTextures];
+				int recordEndIndex = recordStartIndex + texPixelY;
+				if (recordEndIndex > totalPixelY)
+					recordEndIndex = totalPixelY - 1;
 
-		for (int texture = 0; texture < numberOfTextures; texture++) {
+				int dimEndIndex = dimStartIndex + texPixelX;
+				if (dimEndIndex > totalPixelX)
+					dimEndIndex = totalPixelX - 1;
 
-			if (texture == numberOfTextures - 1) {
-				numberSamples.add(textureHeight - samplesPerTexture * texture);
-				floatBuffer[texture] = FloatBuffer.allocate((textureHeight - samplesPerTexture * texture)
-						* textureWidth * 4);
-			} else {
-				numberSamples.add(samplesPerTexture);
-				floatBuffer[texture] = FloatBuffer.allocate(samplesPerTexture * textureWidth * 4);
+				initializeSingleTexture(gl, recordTexIndex, recordStartIndex, recordEndIndex, dimTexIndex, dimStartIndex,
+						dimEndIndex);
+
+				recordStartIndex += texPixelY;
 			}
+
+			dimStartIndex += texPixelX;
 		}
 
-		int recordCount = 0;
-		int textureCounter = 0;
-		float opacity = 1;
-
-		ColorMapper colorMapper = heatMap.getDataDomain().getColorMapper();
-		for (Integer recordID : heatMap.getTablePerspective().getRecordPerspective().getVirtualArray()) {
-
-			recordCount++;
-
-			for (Integer dimensionID : heatMap.getTablePerspective().getDimensionPerspective().getVirtualArray()) {
-				// if
-				// (contentSelectionManager.checkStatus(SelectionType.DESELECTED,
-				// recordIndex)) {
-				// fOpacity = 0.3f;
-				// } else {
-				// fOpacity = 1.0f;
-				// }
-
-				lookupValue = heatMap.getDataDomain().getTable().getNormalizedValue(dimensionID, recordID);
-
-				float[] mappingColor = colorMapper.getColor(lookupValue);
-
-				float[] rgba = { mappingColor[0], mappingColor[1], mappingColor[2], opacity };
-
-				floatBuffer[textureCounter].put(rgba);
-			}
-			if (recordCount >= numberSamples.get(textureCounter)) {
-				floatBuffer[textureCounter].rewind();
-
-				TextureData texData = new TextureData(GLProfile.getDefault(), GL.GL_RGBA /* internalFormat */,
-						textureWidth /* height */, numberSamples.get(textureCounter) /* width */, 0 /* border */,
-						GL.GL_RGBA /* pixelFormat */, GL.GL_FLOAT /* pixelType */, false /* mipmap */,
-						false /* dataIsCompressed */, false /* mustFlipVertically */, floatBuffer[textureCounter], null);
-
-				tempTexture = TextureIO.newTexture(0);
-				tempTexture.updateImage(gl, texData);
-
-				textures.add(tempTexture);
-
-				textureCounter++;
-				recordCount = 0;
-			}
-		}
 		isInitialized = true;
+	}
+
+	private void initializeSingleTexture(GL2 gl, int recordTexIndex, int recordStartIndex, int recordEndIndex,
+			int dimTexIndex, int dimStartIndex, int dimEndIndex) {
+
+		int recordPixels = recordEndIndex - recordStartIndex;
+		int dimPixels = dimEndIndex - dimStartIndex;
+
+		Texture texture;
+		FloatBuffer floatBuffer = FloatBuffer.allocate(recordPixels * dimPixels * 4);
+		// float lookupValue = 0;
+
+
+		VirtualArray recordVA = heatMap.getTablePerspective().getRecordPerspective().getVirtualArray();
+		for (int recordIndex = recordStartIndex; recordIndex < recordEndIndex; recordIndex++) {
+
+			VirtualArray dimVA = heatMap.getTablePerspective().getDimensionPerspective().getVirtualArray();
+			for (int dimIndex = dimStartIndex; dimIndex < dimEndIndex; dimIndex++) {
+
+				float[] mappingColor = heatMap.getDataDomain().getTable()
+						.getColor(dimVA.get(dimIndex), recordVA.get(recordIndex));
+
+				// float[] mappingColor = colorMapper.getColor(lookupValue);
+				floatBuffer.put(mappingColor);
+			}
+		}
+
+		floatBuffer.rewind();
+
+		TextureData texData = new TextureData(GLProfile.getDefault(), GL.GL_RGBA /* internalFormat */,
+				dimPixels /* width */, recordPixels /* height */, 0 /* border */, GL.GL_RGBA /* pixelFormat */,
+				GL.GL_FLOAT /* pixelType */, false /* mipmap */, false /* dataIsCompressed */,
+				false /* mustFlipVertically */, floatBuffer, null);
+
+		texture = TextureIO.newTexture(0);
+		texture.updateImage(gl, texData);
+
+		// System.out.println("created new texture" + dimTexIndex + " " + recordTexIndex);
+
+		textures[dimTexIndex][recordTexIndex] = texture;
 	}
 
 	@Override
@@ -206,22 +152,23 @@ public class HeatMapTextureRenderer extends AHeatMapRenderer {
 			initialize(gl);
 		}
 
-		float yOffset = 0.0f;
+		float xTexPos = 0;
 
-		// fHeight = viewFrustum.getHeight();
-		// fWidth = renderStyle.getWidthLevel1();
+		float xStep = x / numTexturesX;
+		float yStep = y / numTexturesY;
 
-		float elementHeight = y / numberOfRecords;
-		float yPosition = 0;
+		for (int texIndexX = 0; texIndexX < numTexturesX; texIndexX++) {
 
-		gl.glColor4f(1f, 1f, 0f, 1f);
+			float yTexPos = 0;
+			for (int texIndexY = 0; texIndexY < numTexturesY; texIndexY++) {
 
-		for (int textureIndex = 0; textureIndex < numberOfTextures; textureIndex++) {
+				renderTexture(gl, textures[texIndexX][numTexturesY - texIndexY - 1], xTexPos, yTexPos, xStep, yStep);
 
-			yPosition = elementHeight * numberSamples.get(numberOfTextures - textureIndex - 1);
-			renderTexture(gl, textures.get(numberOfTextures - textureIndex - 1), 0, yOffset, x, yOffset + yPosition);
+				// GLHelperFunctions.drawSmallPointAt(gl, xTexPos, yTexPos, 0);
+				yTexPos += yStep;
+			}
 
-			yOffset += yPosition;
+			xTexPos += xStep;
 		}
 	}
 
@@ -256,51 +203,6 @@ public class HeatMapTextureRenderer extends AHeatMapRenderer {
 
 		texture.disable(gl);
 	}
-
-	public float getVisualUncertaintyForLine(int imageLine, int width, int height) {
-
-		float maxUncertainty = 0;
-		float val = 0;
-		float uncertainty = 0;
-
-		float ratio = (float) numberOfRecords / (float) height;
-		int startRecord = (int) ((ratio * imageLine) - (Math.round(ratio / 2f)));
-		int endRecord = (int) ((ratio * imageLine) + (Math.round(ratio / 2f)));
-		startRecord = startRecord < 0 ? 0 : startRecord;
-		endRecord = endRecord > numberOfRecords - 1 ? numberOfRecords - 1 : endRecord;
-
-		Table table = heatMap.getDataDomain().getTable();
-		VirtualArray recordVA = heatMap.getTablePerspective().getRecordPerspective().getVirtualArray();
-		VirtualArray dimensionVA = heatMap.getTablePerspective().getDimensionPerspective().getVirtualArray();
-
-		for (int dimensionCount = 0; dimensionCount < numberOfDimensions; dimensionCount++) {
-			val = 0;
-
-			for (int i = startRecord; i < endRecord; i++) {
-				// byte[] abgr = new byte[4];
-
-				val = val + ((table.getNormalizedValue(dimensionVA.get(dimensionCount), recordVA.get(i))));
-			}
-			// buffer.get(abgr, i * numberOfExpirments * 4 + exps * 4, 4);
-
-			// getting avr over genes
-			val = val / (endRecord - startRecord);
-			// unc = difference
-			uncertainty = 0;
-			for (int i = startRecord; i < endRecord; i++) {
-				float tempVal = table.getNormalizedValue(dimensionVA.get(dimensionCount), recordVA.get(i));
-				uncertainty = Math.abs(val - tempVal);
-				if (uncertainty > maxUncertainty) {
-					maxUncertainty = uncertainty;
-				}
-			}
-			// uncertainty = uncertainty / (float) (endGene - startGene);;
-			// System.out.println(maxUncertainty);
-		}
-
-		return 1 - (maxUncertainty * 2);
-	}
-
 
 	public void setGroupIndex(int groupIndex) {
 		this.groupIndex = groupIndex;

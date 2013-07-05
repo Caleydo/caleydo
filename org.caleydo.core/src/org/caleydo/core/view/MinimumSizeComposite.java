@@ -1,28 +1,16 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.view;
 
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.IListenerOwner;
 import org.caleydo.core.event.view.SetMinViewSizeEvent;
+import org.caleydo.core.event.view.ViewScrollEvent;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.listener.SetMinViewSizeEventListener;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -30,15 +18,15 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.ui.PlatformUI;
 
-public class MinimumSizeComposite
-	extends ScrolledComposite
-	implements IListenerOwner {
+public class MinimumSizeComposite extends ScrolledComposite implements IListenerOwner {
 
 	SetMinViewSizeEventListener setMinSizeEventListener;
 
@@ -54,8 +42,7 @@ public class MinimumSizeComposite
 				Point origin = getOrigin();
 				if (event.count < 0) {
 					origin.y = Math.min(origin.y + 40, origin.y + getSize().y);
-				}
-				else {
+				} else {
 					origin.y = Math.max(origin.y - 40, 0);
 				}
 				setOrigin(origin);
@@ -68,10 +55,49 @@ public class MinimumSizeComposite
 			}
 		});
 
+		SelectionAdapter scrollBarListener = new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				triggerScrollEvent(getOrigin().x, getOrigin().y);
+			}
+		};
+		Listener l = new Listener() {
+
+			@Override
+			public void handleEvent(Event event) {
+				triggerScrollEvent(getOrigin().x, getOrigin().y);
+
+			}
+		};
+
+		// getHorizontalBar().addListener(SWT.Modify, l);
+		// getVerticalBar().addListener(SWT.Modify, l);
+
+		getHorizontalBar().addSelectionListener(scrollBarListener);
+		getVerticalBar().addSelectionListener(scrollBarListener);
+	}
+
+	@Override
+	public void setOrigin(int x, int y) {
+		super.setOrigin(x, y);
+		triggerScrollEvent(x, y);
 	}
 
 	public void setView(AGLView view) {
 		setMinSizeEventListener.setView(view);
+	}
+
+	@Override
+	public void setBounds(int x, int y, int width, int height) {
+		super.setBounds(x, y, width, height);
+		triggerScrollEvent(getOrigin().x, getOrigin().y);
+	}
+
+	private void triggerScrollEvent(int x, int y) {
+		ViewScrollEvent event = new ViewScrollEvent(x, y, getSize().x, getSize().y);
+		event.to(setMinSizeEventListener.getView());
+		EventPublisher.trigger(event);
 	}
 
 	@Override
@@ -88,8 +114,7 @@ public class MinimumSizeComposite
 	public void registerEventListeners() {
 		setMinSizeEventListener = new SetMinViewSizeEventListener();
 		setMinSizeEventListener.setHandler(this);
-		GeneralManager.get().getEventPublisher()
-			.addListener(SetMinViewSizeEvent.class, setMinSizeEventListener);
+		GeneralManager.get().getEventPublisher().addListener(SetMinViewSizeEvent.class, setMinSizeEventListener);
 	}
 
 	@Override

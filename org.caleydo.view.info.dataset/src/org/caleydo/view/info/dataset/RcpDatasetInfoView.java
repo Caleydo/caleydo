@@ -1,19 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
- * University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
- * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
- * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with this program. If not, see
- * <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.info.dataset;
 
 import java.net.MalformedURLException;
@@ -72,7 +61,6 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 
 	private final EventListenerManager listeners = EventListenerManagers.wrap(this);
 
-
 	/**
 	 * Constructor.
 	 */
@@ -93,7 +81,7 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 	public void createPartControl(Composite parent) {
 		ExpandBar expandBar = new ExpandBar(parent, SWT.V_SCROLL | SWT.NO_BACKGROUND);
 		expandBar.setSpacing(1);
-		expandBar.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		expandBar.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true));
 
 		parentComposite = expandBar;
 
@@ -109,9 +97,8 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 		parent.layout();
 	}
 
-
 	private void createDataSetInfos(ExpandBar expandBar) {
-		this.dataSetItem = new ExpandItem(expandBar, SWT.NONE);
+		this.dataSetItem = new ExpandItem(expandBar, SWT.WRAP);
 		dataSetItem.setText("Data Set: <no selection>");
 		Composite c = new Composite(expandBar, SWT.NONE);
 		c.setLayout(new GridLayout(2, false));
@@ -209,7 +196,12 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 	}
 
 	private void updateDataSetInfo() {
-		dataSetItem.setText("Data Set: " + dataDomain.getLabel());
+		String dsLabel = "Dataset: " + dataDomain.getLabel();
+		if (dsLabel.length() > 25)
+			dsLabel = dsLabel.substring(0, 25 - 3) + "...";
+
+		// dataSetItem.setText("Data Set: " + dataDomain.getLabel().substring(0, 15));
+		dataSetItem.setText(dsLabel);
 
 		if (dataDomain instanceof ATableBasedDataDomain) {
 			ATableBasedDataDomain tableBasedDD = (ATableBasedDataDomain) dataDomain;

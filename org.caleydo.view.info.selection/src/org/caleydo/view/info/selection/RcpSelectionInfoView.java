@@ -1,19 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
- * University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
- * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
- * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with this program. If not, see
- * <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.info.selection;
 
 import java.util.Collections;
@@ -39,10 +28,12 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ITreeContentProvider;
+import org.eclipse.jface.viewers.ITreeSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.StyledCellLabelProvider;
 import org.eclipse.jface.viewers.StyledString;
+import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerCell;
@@ -67,6 +58,7 @@ public class RcpSelectionInfoView extends CaleydoRCPViewPart implements IEventBa
 	private TreeViewer selectionTree;
 
 	private OpenExternalWrappingAction openExternalWrapper;
+	private CopySelectionToClipBoardAction copyToClipBoard;
 
 	/**
 	 * Constructor.
@@ -106,19 +98,44 @@ public class RcpSelectionInfoView extends CaleydoRCPViewPart implements IEventBa
 		selectionTree.addFilter(new ViewerFilter() {
 			@Override
 			public boolean select(Viewer viewer, Object parentElement, Object element) {
-				if (element instanceof CategoryItem)
+				if (element instanceof CategoryItem && !isSelected(element, false)) {
 					return ((CategoryItem) element).getTotal() > 0;
-				if (element instanceof SelectionTypeItem)
+				}
+				// if selected or parent selected and a default one
+				if (element instanceof SelectionTypeItem
+						&& !(isSelected(element, true) || (isSelected(parentElement, true) && ((SelectionTypeItem) element)
+								.isDefaultOne())))
 					return ((SelectionTypeItem) element).size() > 0;
 				return true;
 			}
 		});
 
-		this.injectExternalFeature();
+		this.injectContextMenu();
 
 		selectionTree.setInput(this.categories);
 
 		addToolBarContent();
+	}
+
+	/**
+	 * @param element
+	 * @param checkParents
+	 * @return
+	 */
+	protected boolean isSelected(Object element, boolean leafesOnly) {
+		ITreeSelection selection = (ITreeSelection)selectionTree.getSelection();
+		for (TreePath path : selection.getPaths()) {
+			if (leafesOnly) {
+				if (path.getLastSegment() == element)
+					return true;
+			} else {
+				for (int i = 0; i < path.getSegmentCount(); ++i) {
+					if (path.getSegment(i) == element)
+						return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	@Override
@@ -234,7 +251,7 @@ public class RcpSelectionInfoView extends CaleydoRCPViewPart implements IEventBa
 		}
 	}
 
-	private void injectExternalFeature() {
+	private void injectContextMenu() {
 		// initalize the context menu
 		MenuManager menuMgr = new MenuManager("#PopupMenu"); //$NON-NLS-1$
 		menuMgr.setRemoveAllWhenShown(true);
@@ -244,6 +261,7 @@ public class RcpSelectionInfoView extends CaleydoRCPViewPart implements IEventBa
 				Object element = ((StructuredSelection) selectionTree.getSelection()).getFirstElement();
 				if (element == null)
 					return;
+				manager.add(copyToClipBoard);
 				if (element instanceof CategoryItem) {
 					// CategoryItem item = (CategoryItem)element;
 				} else if (element instanceof SelectionTypeItem) {
@@ -272,6 +290,7 @@ public class RcpSelectionInfoView extends CaleydoRCPViewPart implements IEventBa
 					IAction action = OpenExternalAction.create(item.getIDType(), item.getId());
 					openExternalWrapper.setWrappee(action);
 				}
+				copyToClipBoard.setSelection((ITreeSelection) event.getSelection());
 			}
 		});
 	}
@@ -280,6 +299,8 @@ public class RcpSelectionInfoView extends CaleydoRCPViewPart implements IEventBa
 	public void addToolBarContent() {
 		this.openExternalWrapper = new OpenExternalWrappingAction();
 		toolBarManager.add(openExternalWrapper);
+		this.copyToClipBoard = new CopySelectionToClipBoardAction();
+		toolBarManager.add(copyToClipBoard);
 		super.addToolBarContent();
 	}
 
@@ -291,6 +312,10 @@ public class RcpSelectionInfoView extends CaleydoRCPViewPart implements IEventBa
 
 	@Override
 	public synchronized void notifyOfSelectionChange(final EventBasedSelectionManager selectionManager) {
+		if (parentComposite.isDisposed()) {
+			unregisterEventListeners();
+			return;
+		}
 		parentComposite.getDisplay().asyncExec(new Runnable() {
 			@Override
 			public void run() {
@@ -298,6 +323,10 @@ public class RcpSelectionInfoView extends CaleydoRCPViewPart implements IEventBa
 				for (CategoryItem item : categories)
 					if (item.getCategory() == target) {
 						item.update();
+						for (SelectionTypeItem s : item.getChildren()) {
+							if (s.size() > 0 && s.size() <= 4 && !selectionTree.getExpandedState(s))
+								selectionTree.setExpandedState(s, true);
+						}
 						// selectionTree.setHasChildren(item, item.getTotal() > 0);
 						break;
 					}

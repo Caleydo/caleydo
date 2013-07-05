@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.tourguide.internal.view.ui;
 
 import gleem.linalg.Vec2f;
@@ -28,6 +14,9 @@ import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
+import org.caleydo.core.view.opengl.picking.IPickingListener;
+import org.caleydo.core.view.opengl.picking.Pick;
+import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.view.tourguide.internal.model.ADataDomainQuery;
 import org.caleydo.view.tourguide.internal.model.CategoricalDataDomainQuery;
 import org.caleydo.view.tourguide.internal.model.InhomogenousDataDomainQuery;
@@ -37,9 +26,11 @@ import org.caleydo.view.tourguide.internal.view.specific.IDataDomainQueryModeSpe
 
 import com.google.common.collect.Iterables;
 
-public class DataDomainQueryUI extends GLElementContainer implements IGLLayout, Comparator<GLElement> {
+public class DataDomainQueryUI extends GLElementContainer implements IGLLayout, Comparator<GLElement>, IPickingListener {
 
 	private IDataDomainQueryModeSpecfics specifics;
+
+	private int counter = 0;
 
 	public DataDomainQueryUI(Iterable<ADataDomainQuery> queries,
 			IDataDomainQueryModeSpecfics specifics) {
@@ -56,6 +47,22 @@ public class DataDomainQueryUI extends GLElementContainer implements IGLLayout, 
 		setLayoutData(new Vec2f(130, guessMultiColumnHeight()));
 	}
 
+	@Override
+	public void pick(Pick pick) {
+		if (pick.getPickingMode() == PickingMode.DOUBLE_CLICKED) {
+			System.out.println("double clicked");
+			int id = pick.getObjectID();
+			// deactivate all others
+			for (ADataDomainElement child : Iterables.filter(this, ADataDomainElement.class)) {
+				if (id != child.getPickingObjectId() && child.getModel().isActive())
+					child.setSelected(false);
+				else if (id == child.getPickingObjectId()) // activate the double clicked never the less was the
+															// previous state was
+					child.setSelected(true);
+			}
+		}
+
+	}
 	/**
 	 * @return
 	 */
@@ -125,6 +132,13 @@ public class DataDomainQueryUI extends GLElementContainer implements IGLLayout, 
 	}
 
 	private ADataDomainElement createFor(ADataDomainQuery q) {
+		ADataDomainElement elem = wrap(q);
+		elem.onPick(this);
+		elem.setPickingObjectId(++counter);
+		return elem;
+	}
+
+	private ADataDomainElement wrap(ADataDomainQuery q) {
 		if (q instanceof CategoricalDataDomainQuery)
 			return new CategoricalDataDomainElement((CategoricalDataDomainQuery) q);
 		if (q instanceof PathwayDataDomainQuery)

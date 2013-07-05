@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.io.gui.dataimport.widget;
 
 import java.util.ArrayList;
@@ -27,6 +13,9 @@ import org.caleydo.core.id.IDType;
 import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.io.gui.dataimport.DefineIDParsingDialog;
+import org.caleydo.core.util.base.ICallback;
+import org.caleydo.core.util.base.IProvider;
+import org.caleydo.core.util.base.IntegerCallback;
 import org.caleydo.core.util.collection.Pair;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
@@ -80,13 +69,13 @@ public class RowConfigWidget {
 		leftConfigGroupPart.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
 		Label idCategoryLabel = new Label(leftConfigGroupPart, SWT.SHADOW_ETCHED_IN);
-		idCategoryLabel.setText("Row ID Class");
+		idCategoryLabel.setText("Row Type");
 		idCategoryLabel.setLayoutData(new GridData(SWT.LEFT));
 		this.categoryIDLabel = new Label(leftConfigGroupPart, SWT.NONE);
 		categoryIDLabel.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 2, 1));
 
 		Label idTypeLabel = new Label(leftConfigGroupPart, SWT.SHADOW_ETCHED_IN);
-		idTypeLabel.setText("Row ID Type");
+		idTypeLabel.setText("Row Identifier");
 		idTypeLabel.setLayoutData(new GridData(SWT.LEFT));
 		this.rowIDCombo = new Combo(leftConfigGroupPart, SWT.DROP_DOWN | SWT.READ_ONLY);
 		rowIDCombo.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));

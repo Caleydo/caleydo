@@ -1,3 +1,8 @@
+/*******************************************************************************
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 /**
  *
  */
@@ -10,9 +15,9 @@ import java.util.List;
 import org.caleydo.core.gui.util.AHelpButtonDialog;
 import org.caleydo.core.io.gui.dataimport.PreviewTable;
 import org.caleydo.core.io.gui.dataimport.PreviewTable.IPreviewCallback;
-import org.caleydo.core.io.gui.dataimport.widget.ICallback;
 import org.caleydo.core.io.gui.dataimport.widget.LabelWidget;
 import org.caleydo.core.io.gui.dataimport.widget.LoadFileWidget;
+import org.caleydo.core.util.base.ICallback;
 import org.caleydo.core.util.execution.SafeCallable;
 import org.caleydo.core.util.system.BrowserUtils;
 import org.caleydo.view.tourguide.api.score.ECombinedOperator;
@@ -200,7 +205,11 @@ public abstract class AImportExternalScoreDialog<T extends AExternalScoreParseSp
 			public void on(int numColumn, int numRow, List<? extends List<String>> dataMatrix) {
 				onPreviewChanged(numColumn, numRow, dataMatrix);
 			}
-		});
+		}, false);
+		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, true);
+		gd.minimumHeight = 300;
+		gd.horizontalSpan = 2;
+		previewTable.getTable().setLayoutData(gd);
 
 
 		init(parent.getDisplay());
@@ -315,7 +324,7 @@ public abstract class AImportExternalScoreDialog<T extends AExternalScoreParseSp
 
 		this.label.setEnabled(true);
 
-		this.previewTable.generatePreview();
+		this.previewTable.generatePreview(true);
 	}
 
 	protected void onPreviewChanged(int totalNumberOfColumns, int totalNumberOfRows,

@@ -1,28 +1,13 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.util.clusterer.algorithm.tree;
 
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
-import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.event.data.ClusterProgressEvent;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.clusterer.algorithm.AClusterer;
@@ -58,13 +43,11 @@ public class TreeClusterer extends AClusterer {
 		}
 	}
 
-
 	private final ClusterTree tree;
 	private final int iNrSamples;
 	private float[][] similarities;
 	/**
-	 * Each node in the tree needs an unique number. Because of this we need a
-	 * node counter
+	 * Each node in the tree needs an unique number. Because of this we need a node counter
 	 */
 	private int iNodeCounter = (int) Math.floor(Integer.MAX_VALUE / 2);
 
@@ -106,7 +89,8 @@ public class TreeClusterer extends AClusterer {
 
 			isto = 0;
 			for (Integer opppositeID : oppositeVA) {
-				dArInstance1[isto] = getNormalizedValue(vaID, opppositeID);
+				dArInstance1[isto] = table.getDataDomain().getNormalizedValue(va.getIdType(), vaID,
+						oppositeVA.getIdType(), opppositeID);
 				isto++;
 			}
 
@@ -116,7 +100,8 @@ public class TreeClusterer extends AClusterer {
 
 				if (icnt2 < icnt1) {
 					for (Integer oppositeID2 : oppositeVA) {
-						dArInstance2[isto] = getNormalizedValue(vaID2, oppositeID2);
+						dArInstance2[isto] = table.getDataDomain().getNormalizedValue(va.getIdType(), vaID2,
+								oppositeVA.getIdType(), oppositeID2);
 						isto++;
 					}
 
@@ -198,8 +183,7 @@ public class TreeClusterer extends AClusterer {
 	}
 
 	/**
-	 * The palcluster routine performs clustering using single linking on the
-	 * given distance matrix.
+	 * The palcluster routine performs clustering using single linking on the given distance matrix.
 	 *
 	 * @param eClustererType
 	 * @return virtual array with ordered indexes
@@ -268,8 +252,7 @@ public class TreeClusterer extends AClusterer {
 	}
 
 	/**
-	 * The palcluster routine performs clustering using pairwise average linking
-	 * on the given distance matrix.
+	 * The palcluster routine performs clustering using pairwise average linking on the given distance matrix.
 	 *
 	 * @param eClustererType
 	 * @return virtual array with ordered indexes
@@ -376,8 +359,7 @@ public class TreeClusterer extends AClusterer {
 		tree.setRootNode(node);
 		treeStructureToTree(node, result, result.length - 1);
 
-		calculateClusterAveragesRecursive(node, config.getSourceDimensionPerspective().getVirtualArray(), config
-				.getSourceRecordPerspective().getVirtualArray());
+		calculateClusterAveragesRecursive(node);
 
 		progressScaled(50);
 
@@ -386,11 +368,11 @@ public class TreeClusterer extends AClusterer {
 		return tempResult;
 	}
 
-	private float[] calculateClusterAveragesRecursive(ClusterNode node, VirtualArray dimensionVA, VirtualArray recordVA) {
+	private float[] calculateClusterAveragesRecursive(ClusterNode node) {
 		float[] values;
 		if (tree.hasChildren(node)) {
 			int numberOfChildren = tree.getChildren(node).size();
-			int numberOfElements = va.size();
+			int numberOfElements = oppositeVA.size();
 			float[][] tempValues;
 
 			tempValues = new float[numberOfChildren][numberOfElements];
@@ -398,7 +380,7 @@ public class TreeClusterer extends AClusterer {
 			int cnt = 0;
 
 			for (ClusterNode currentNode : tree.getChildren(node)) {
-				tempValues[cnt] = calculateClusterAveragesRecursive(currentNode, dimensionVA, recordVA);
+				tempValues[cnt] = calculateClusterAveragesRecursive(currentNode);
 				cnt++;
 			}
 
@@ -415,10 +397,11 @@ public class TreeClusterer extends AClusterer {
 		}
 		// no children --> leaf node
 		else {
-			values = new float[va.size()];
+			values = new float[oppositeVA.size()];
 			int isto = 0;
 			for (Integer oppositeID : oppositeVA) {
-				values[isto] = getNormalizedValue(node.getLeafID(), oppositeID);
+				values[isto] = table.getDataDomain().getNormalizedValue(va.getIdType(), node.getLeafID(),
+						oppositeVA.getIdType(), oppositeID);
 				isto++;
 			}
 		}
@@ -437,8 +420,8 @@ public class TreeClusterer extends AClusterer {
 	}
 
 	/**
-	 * The pmlcluster routine performs clustering using pairwise maximum-
-	 * (complete-) linking on the given distance matrix.
+	 * The pmlcluster routine performs clustering using pairwise maximum- (complete-) linking on the given distance
+	 * matrix.
 	 *
 	 * @param eClustererType
 	 * @return virtual array with ordered indexes
@@ -525,11 +508,9 @@ public class TreeClusterer extends AClusterer {
 	}
 
 	/**
-	 * Function returns the name of the current node. Therefore we need an index
-	 * of the gene/experiment in the VA. To avoid problems with the tree all
-	 * nodes in the tree must have unique names. Therefore we need to take care
-	 * of two hash maps holding the currently used names and their frequency of
-	 * occurrence.
+	 * Function returns the name of the current node. Therefore we need an index of the gene/experiment in the VA. To
+	 * avoid problems with the tree all nodes in the tree must have unique names. Therefore we need to take care of two
+	 * hash maps holding the currently used names and their frequency of occurrence.
 	 *
 	 * @param eClustererType
 	 *            either gene or expression clustering
@@ -615,8 +596,7 @@ public class TreeClusterer extends AClusterer {
 			return null;
 		}
 
-		TreeClusterConfiguration tConfig = (TreeClusterConfiguration) config
-				.getClusterAlgorithmConfiguration();
+		TreeClusterConfiguration tConfig = (TreeClusterConfiguration) config.getClusterAlgorithmConfiguration();
 
 		PerspectiveInitializationData tempResult;
 

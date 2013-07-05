@@ -1,19 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
- * University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
- * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
- * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with this program. If not, see
- * <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.pathway;
 
 import java.util.ArrayList;
@@ -32,7 +21,6 @@ import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.id.IDType;
-import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
@@ -349,8 +337,6 @@ public class GLPathwayAugmentationRenderer {
 			gl.glEnable(GL.GL_DEPTH_TEST);
 
 			tmpNodeColor = Color.TRANSPARENT;
-			gl.glEnable(GL.GL_BLEND);
-			gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 			gl.glColor4fv(tmpNodeColor.getRGBA(), 0);
 			renderQuad(gl, nodeWidth, nodeHeight);
 
@@ -534,12 +520,13 @@ public class GLPathwayAugmentationRenderer {
 		if (mappingPerspective != null) {
 			Average average = getExpressionAverage(mappingPerspective, vertexRep);
 			if (average != null) {
-				nodeColor = mappingPerspective.getDataDomain().getColorMapper()
+				nodeColor = mappingPerspective.getDataDomain().getTable().getColorMapper()
 						.getColor((float) average.getArithmeticMean());
 			} else {
 				nodeColor = null;
 			}
 			if (average != null && nodeColor != null) {
+
 
 				gl.glColor4f(nodeColor[0], nodeColor[1], nodeColor[2], 0.8f);
 				if (glPathwayView.getDetailLevel() == EDetailLevel.HIGH) {
@@ -753,40 +740,40 @@ public class GLPathwayAugmentationRenderer {
 			}
 		}
 
-		Pair<TablePerspective, Average> highestAverage = null;
-		Average average;
-		for (TablePerspective tablePerspective : glPathwayView.getTablePerspectives()) {
-			average = getExpressionAverage(tablePerspective, vertexRep);
-			if (average == null)
-				continue;
-			if (average.getStandardDeviation() > 0.1) {
-				if (highestAverage == null
-						|| average.getStandardDeviation() > highestAverage.getSecond().getStandardDeviation()) {
-					highestAverage = new Pair<>(tablePerspective, average);
-				}
-			}
-		}
-
-		if (highestAverage != null) {
-
-			gl.glColor3fv(highestAverage.getFirst().getDataDomain().getColor().getRGB(), 0);
-			// gl.glColor3f(1, 0, 0);
-			gl.glBegin(GL2.GL_POLYGON);
-			gl.glVertex3f(width, height, PathwayRenderStyle.Z_OFFSET);
-			gl.glVertex3f(width - 5 * onePxlWidth, height, PathwayRenderStyle.Z_OFFSET);
-			gl.glVertex3f(width - 4 * onePxlWidth, 7 * onePxlWidth, PathwayRenderStyle.Z_OFFSET);
-			gl.glVertex3f(width - 1 * onePxlWidth, 7 * onePxlWidth, PathwayRenderStyle.Z_OFFSET);
-			gl.glEnd();
-
-			// gl.glColor3fv(tablePerspective.getDataDomain().getColor().getRGB(), 0);
-			gl.glBegin(GL2.GL_POLYGON);
-			gl.glVertex3f(width, 5 * onePxlWidth, PathwayRenderStyle.Z_OFFSET);
-			gl.glVertex3f(width - 5 * onePxlWidth, 5 * onePxlWidth, PathwayRenderStyle.Z_OFFSET);
-			gl.glVertex3f(width - 5 * onePxlWidth, 0, PathwayRenderStyle.Z_OFFSET);
-			gl.glVertex3f(width, 0, PathwayRenderStyle.Z_OFFSET);
-			gl.glEnd();
-
-		}
+		// Pair<TablePerspective, Average> highestAverage = null;
+		// Average average;
+		// for (TablePerspective tablePerspective : glPathwayView.getTablePerspectives()) {
+		// average = getExpressionAverage(tablePerspective, vertexRep);
+		// if (average == null)
+		// continue;
+		// if (average.getStandardDeviation() > 0.1) {
+		// if (highestAverage == null
+		// || average.getStandardDeviation() > highestAverage.getSecond().getStandardDeviation()) {
+		// highestAverage = new Pair<>(tablePerspective, average);
+		// }
+		// }
+		// }
+		//
+		// if (highestAverage != null) {
+		//
+		// gl.glColor3fv(highestAverage.getFirst().getDataDomain().getColor().getRGB(), 0);
+		// // gl.glColor3f(1, 0, 0);
+		// gl.glBegin(GL2.GL_POLYGON);
+		// gl.glVertex3f(width, 0, PathwayRenderStyle.Z_OFFSET);
+		// gl.glVertex3f(width - 5 * onePxlWidth, 0, PathwayRenderStyle.Z_OFFSET);
+		// gl.glVertex3f(width - 4 * onePxlWidth, height + 7, PathwayRenderStyle.Z_OFFSET);
+		// gl.glVertex3f(width - 1 * onePxlWidth, height + 7, PathwayRenderStyle.Z_OFFSET);
+		// gl.glEnd();
+		//
+		// // gl.glColor3fv(tablePerspective.getDataDomain().getColor().getRGB(), 0);
+		// gl.glBegin(GL2.GL_POLYGON);
+		// gl.glVertex3f(width, height + 5, PathwayRenderStyle.Z_OFFSET);
+		// gl.glVertex3f(width - 5 * onePxlWidth, height + 5, PathwayRenderStyle.Z_OFFSET);
+		// gl.glVertex3f(width - 5 * onePxlWidth, height, PathwayRenderStyle.Z_OFFSET);
+		// gl.glVertex3f(width, height, PathwayRenderStyle.Z_OFFSET);
+		// gl.glEnd();
+		//
+		// }
 
 	}
 
@@ -921,6 +908,13 @@ public class GLPathwayAugmentationRenderer {
 	 */
 	public void setMappingPerspective(TablePerspective mappingPerspective) {
 		this.mappingPerspective = mappingPerspective;
+	}
+
+	/**
+	 * @return the mappingPerspective, see {@link #mappingPerspective}
+	 */
+	public TablePerspective getMappingPerspective() {
+		return mappingPerspective;
 	}
 
 }

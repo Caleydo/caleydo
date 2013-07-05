@@ -1,19 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
- * University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
- * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
- * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with this program. If not, see
- * <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.enroute.mappeddataview;
 
 import java.util.ArrayList;
@@ -31,7 +20,6 @@ import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.util.collection.Algorithms;
-import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -110,15 +98,13 @@ public class ContinuousContentRenderer extends ContentRenderer {
 				List<SelectionType> experimentSelectionTypes = parent.sampleSelectionManager.getSelectionTypes(
 						columnIDType, columnID);
 
-				float[] topBarColor = MappedDataRenderer.BAR_COLOR;
-				float[] bottomBarColor = MappedDataRenderer.BAR_COLOR;
+				float[] topBarColor = MappedDataRenderer.BAR_COLOR.getRGBA();
+				float[] bottomBarColor = MappedDataRenderer.BAR_COLOR.getRGBA();
 				// FIXME - bad hack
-				if (rowIDType.getIDCategory().getCategoryName().equals("GENE")) {
-					topBarColor = MappedDataRenderer.BAR_COLOR;
-					bottomBarColor = MappedDataRenderer.BAR_COLOR;
-				} else {
-					topBarColor = MappedDataRenderer.CONTEXT_BAR_COLOR;
-					bottomBarColor = MappedDataRenderer.CONTEXT_BAR_COLOR;
+				if (!rowIDType.getIDCategory().getCategoryName().equals("GENE")) {
+
+					topBarColor = MappedDataRenderer.CONTEXT_BAR_COLOR.getRGBA();
+					bottomBarColor = MappedDataRenderer.CONTEXT_BAR_COLOR.getRGBA();
 				}
 
 				List<SelectionType> selectionTypes = Algorithms.mergeListsToUniqueList(experimentSelectionTypes,
@@ -132,7 +118,7 @@ public class ContinuousContentRenderer extends ContentRenderer {
 				}
 
 				if (isHighlightMode) {
-					colorCalculator.setBaseColor(new Color(MappedDataRenderer.BAR_COLOR));
+					colorCalculator.setBaseColor(MappedDataRenderer.BAR_COLOR);
 
 					colorCalculator.calculateColors(selectionTypes);
 
@@ -193,7 +179,7 @@ public class ContinuousContentRenderer extends ContentRenderer {
 		if (average == null)
 			return;
 
-		colorCalculator.setBaseColor(new Color(MappedDataRenderer.SUMMARY_BAR_COLOR));
+		colorCalculator.setBaseColor(MappedDataRenderer.SUMMARY_BAR_COLOR);
 
 		List<List<SelectionType>> selectionLists = new ArrayList<List<SelectionType>>();
 		selectionLists.add(geneSelectionTypes);
