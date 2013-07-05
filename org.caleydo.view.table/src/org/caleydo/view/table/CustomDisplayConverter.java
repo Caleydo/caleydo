@@ -9,12 +9,14 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
+import org.caleydo.core.data.collection.column.container.CategoricalContainer;
+import org.caleydo.core.data.collection.column.container.IntContainer;
 import org.eclipse.nebula.widgets.nattable.data.convert.DisplayConverter;
 
 /**
  * a custom {@link DisplayConverter} to manipulate the representation of numbers, such that changing the format is
  * possible
- * 
+ *
  * @author Samuel Gratzl
  *
  */
@@ -38,7 +40,16 @@ public class CustomDisplayConverter extends DisplayConverter {
 		if (sourceValue == null)
 			return "";
 		if (sourceValue instanceof Float) {
-			return formatter.format(sourceValue);
+			Float f = (Float) sourceValue;
+			if (f.isNaN())
+				return "";
+			return formatter.format(f);
+		} else if (sourceValue instanceof Integer) {
+			Integer i = (Integer) sourceValue;
+			return i.intValue() == IntContainer.UNKNOWN_VALUE ? "" : i.toString();
+		} else if (sourceValue instanceof String) {
+			String s = (String) sourceValue;
+			return CategoricalContainer.UNKNOWN_CATEOGRY_STRING.equals(s) ? "" : s;
 		}
 		return sourceValue.toString();
 	}
