@@ -1,0 +1,79 @@
+; InstallSimple project
+
+[Setup]
+WindowTitle=Install Caleydo
+ProductName=Caleydo
+
+[Graphics]
+SplashScreen=Z:\alexsb\uni\caleydo\caleydo\org.caleydo.core\splash.bmp
+SplashScreenDelay=3
+Header=Z:\alexsb\uni\caleydo\caleydo\org.caleydo.data\resources\icons\caleydo\caleydo_windows_installer.bmp
+HeaderJustify=Right
+HeaderFontColor=0
+WizardBitmap=
+WizardFontColor=0
+
+[FirstMessage]
+Caleydo is an open source visual analysis framework targeted at biomolecular data. The biggest strength of Caleydo is the visualization of interdependencies between multiple datasets. Caleydo can load tabular data and groupings/clusterings. You can explore relationships between multiple groupings, between different datasets and see how your data maps onto pathways.
+
+Visit http://caleydo.org to learn more.
+[LastMessage]
+Thank you for installing Caleydo! 
+
+Go to http://help.caleydo.org if you need help.
+
+[LicenseAgreement]
+Copyright (c) the Caleydo Team
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+    * Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above copyright
+      notice, this list of conditions and the following disclaimer in the
+      documentation and/or other materials provided with the distribution.
+    * Neither the name of the <organization> nor the
+      names of its contributors may be used to endorse or promote products
+      derived from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+[SetupFiles]
+SourceFolder=C:\Users\alexsb\Desktop\win32.win32.x86\caleydo
+SpecialFolder=Program Files
+SetupPath=caleydo
+
+[Shortcuts]
+ProgramGroup=
+Caleydo.exe=dmq
+
+[Registry]
+[HKEY_CLASSES_ROOT\.cal]
+@="caleydo.cal"
+[HKEY_CLASSES_ROOT\caleydo.cal\DefaultIcon]
+@="<SetupPath>\\gfx\\file\\file.ico"
+[HKEY_CLASSES_ROOT\caleydo.cal]
+@="Caleydo Project"
+[HKEY_CLASSES_ROOT\caleydo.cal\shell\open\command]
+@="<SetupPath>\\CALEYDO.EXE %1"
+[HKEY_CLASSES_ROOT\.cal]
+".cal"="caleydo.cal"
+
+[Requirements]
+OperatingSystem=WinXP/Vista/2008/7
+NetFramework=0
+NetFrameworkLink=http://www.microsoft.com/en-us/download/details.aspx?id=17718
+AdminRights=1
+
+[AfterInstalling]
+Reboot=1
