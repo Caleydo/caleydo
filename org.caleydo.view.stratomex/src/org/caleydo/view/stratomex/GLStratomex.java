@@ -521,10 +521,10 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 						- getArchTopY(), 0);
 				if (tourguide.hasTourGuide()) {
 					renderEmptyViewText(gl, new String[] { "To add a column showing a dataset",
-							" click the \"+\" button at the top", "or use the TourGuide or the DVI", "",
+							" click the \"+\" button at the top", "or use the LineUp or Data-View Integrator view", "",
 							"Refer to http://help.caleydo.org for more information." });
 				} else {
-					renderEmptyViewText(gl, new String[] { "Please use the Data-View Integrator to assign ",
+					renderEmptyViewText(gl, new String[] { "Please use the the Data-View Integrator view to assign ",
 							"one or multiple dataset(s) to StratomeX.",
 							"Refer to http://help.caleydo.org for more information." });
 				}
