@@ -1339,9 +1339,9 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	}
 
 	public void onScrolled(ViewScrollEvent event) {
-		// if (System.getProperty("os.name").contains("Mac")) {
-		// scrollX = -event.getOriginX();
-		// scrollY = event.getOriginY();
-		// }
+		if (System.getProperty("os.name").contains("Mac")) {
+			scrollX = -event.getOriginX();
+			scrollY = event.getOriginY();
+		}
 	}
 }
