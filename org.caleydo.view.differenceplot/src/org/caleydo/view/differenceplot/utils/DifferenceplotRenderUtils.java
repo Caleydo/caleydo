@@ -256,7 +256,8 @@ public class DifferenceplotRenderUtils {
 		}
 		else
 		{
-			gl.glColor4f( (float) (218.0/255.0), (float) (231.0/255.0), (float) (253.0/255.0), 1.0f);
+			//gl.glColor4f( (float) (218.0/255.0), (float) (231.0/255.0), (float) (253.0/255.0), 1.0f);
+			gl.glColor4f( (float) (220.0/255.0), (float) (247.0/255.0), (float) (228.0/255.0), 1.0f);
 		}
 		
 		

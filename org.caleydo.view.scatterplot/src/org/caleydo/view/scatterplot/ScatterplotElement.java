@@ -138,8 +138,11 @@ public class ScatterplotElement extends GLElement implements TablePerspectiveSel
 			return;	
 		if (this.isRenderRemote())
 		{
-			h = ScatterPlotVisInfo.MIN_HEIGHT_PIXELS;
-			w = ScatterPlotVisInfo.MIN_WIDTH_PIXELS;
+			if(h < 300 | w < 300)
+			{
+				h = ScatterPlotVisInfo.MIN_HEIGHT_PIXELS;
+				w = ScatterPlotVisInfo.MIN_WIDTH_PIXELS;
+			}
 		}
 		
 		g.pushResourceLocator(Activator.getResourceLocator());
@@ -159,8 +162,11 @@ public class ScatterplotElement extends GLElement implements TablePerspectiveSel
 		
 		if (this.isRenderRemote())
 		{
-			h = ScatterPlotVisInfo.MIN_HEIGHT_PIXELS;
-			w = ScatterPlotVisInfo.MIN_WIDTH_PIXELS;
+			if(h < 300 | w < 300)
+			{
+				h = ScatterPlotVisInfo.MIN_HEIGHT_PIXELS;
+				w = ScatterPlotVisInfo.MIN_WIDTH_PIXELS;
+			}
 		}
 		
 		g.pushResourceLocator(Activator.getResourceLocator());
@@ -380,7 +386,19 @@ public class ScatterplotElement extends GLElement implements TablePerspectiveSel
 			selectionRect.setTop(firstClickPoint.y);
 			selectionRect.setBottom(pickedPoint.y);
 			
-			selectionRect.ComputeScreenToDataMapping(renderUtil, dataColumns, ScatterPlotVisInfo.MIN_WIDTH_PIXELS, ScatterPlotVisInfo.MIN_HEIGHT_PIXELS);
+			float renderWidth = 0;
+			float renderHeight = 0;
+			if(this.getSize().x() < 300 | this.getSize().y() < 300)
+			{
+				renderWidth = ScatterPlotVisInfo.MIN_WIDTH_PIXELS;
+				renderHeight = ScatterPlotVisInfo.MIN_HEIGHT_PIXELS;
+			}
+			else
+			{
+				renderWidth = this.getSize().x();
+				renderHeight = this.getSize().y();
+			}
+			selectionRect.ComputeScreenToDataMapping(renderUtil, dataColumns, renderWidth, renderHeight);
 			renderUtil.performBrushing(this, selectionRect);
 			break;
 		
