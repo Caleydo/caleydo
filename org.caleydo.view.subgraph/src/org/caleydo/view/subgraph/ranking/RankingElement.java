@@ -37,7 +37,6 @@ import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
-import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.subgraph.EEmbeddingID;
@@ -45,6 +44,7 @@ import org.caleydo.view.subgraph.GLSubGraph;
 import org.caleydo.view.subgraph.GLWindow;
 import org.caleydo.vis.rank.config.IRankTableUIConfig;
 import org.caleydo.vis.rank.config.RankTableConfigBase;
+import org.caleydo.vis.rank.config.RankTableUIConfigBase;
 import org.caleydo.vis.rank.data.FloatInferrers;
 import org.caleydo.vis.rank.layout.RowHeightLayouts;
 import org.caleydo.vis.rank.model.ARankColumnModel;
@@ -106,22 +106,7 @@ public class RankingElement extends GLElementContainer {
 		initTable(table);
 
 		setLayout(GLLayouts.flowVertical(0));
-		IRankTableUIConfig config = new IRankTableUIConfig() {
-			@Override
-			public boolean isMoveAble() {
-				return false;
-			}
-
-			@Override
-			public boolean isInteractive() {
-				return true;
-			}
-
-			@Override
-			public boolean canChangeWeights() {
-				return false;
-			}
-
+		IRankTableUIConfig config = new RankTableUIConfigBase(true, false, false) {
 			@Override
 			public IScrollBar createScrollBar(boolean horizontal) {
 				return new ScrollBarCompatibility(horizontal, view.getDndController());
@@ -130,11 +115,6 @@ public class RankingElement extends GLElementContainer {
 			@Override
 			public void renderIsOrderByGlyph(GLGraphics g, float w, float h, boolean orderByIt) {
 				// no highlight
-			}
-
-			@Override
-			public boolean isShowColumnPool() {
-				return false;
 			}
 
 			@Override
@@ -150,37 +130,11 @@ public class RankingElement extends GLElementContainer {
 
 			@Override
 			public boolean canEditValues() {
-				// TODO Auto-generated method stub
 				return false;
 			}
 
 			@Override
 			public boolean isSmallHeaderByDefault() {
-				// TODO Auto-generated method stub
-				return false;
-			}
-
-			@Override
-			public void renderHeaderBackground(GLGraphics g, float w, float h, float labelHeight, ARankColumnModel model) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public Color getBarOutlineColor() {
-				// TODO Auto-generated method stub
-				return null;
-			}
-
-			@Override
-			public void onRowClick(RankTableModel table, PickingMode pickingMode, IRow row, boolean isSelected) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public boolean isFastFiltering() {
-				// TODO Auto-generated method stub
 				return false;
 			}
 		};
