@@ -40,4 +40,10 @@ public class ScatterPlotVisInfo implements IEmbeddedVisualizationInfo {
 		return MIN_WIDTH_PIXELS;
 	}
 
+	@Override
+	public String getLabel() {
+		// TODO Auto-generated method stub
+		return GLScatterplot.VIEW_NAME;
+	}
+
 }
