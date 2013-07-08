@@ -819,11 +819,15 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 					.getPickingID(uniqueID, EPickingType.PATHWAY_TEXTURE_SELECTION.name(), 0));
 			// //////////////////////////START 2/2 HIER NEU CHRISITIAN
 			// enable shader
-			// gl.glUseProgram(shaderProgramTextOverlay);
-			// int pathwayTex = gl.glGetUniformLocation(shaderProgramTextOverlay, "pathwayTex");
-			// gl.glUniform1i(pathwayTex, 0);
-			pathwayTextureManager.renderPathway(gl, this, pathway, fPathwayTransparency, false);
-			// gl.glUseProgram(0);
+			if (pathway.getType() == EPathwayDatabaseType.WIKIPATHWAYS) {
+				gl.glUseProgram(shaderProgramTextOverlay);
+				int pathwayTex = gl.glGetUniformLocation(shaderProgramTextOverlay, "pathwayTex");
+				gl.glUniform1i(pathwayTex, 0);
+				pathwayTextureManager.renderPathway(gl, this, pathway, fPathwayTransparency, false);
+				gl.glUseProgram(0);
+			} else {
+				pathwayTextureManager.renderPathway(gl, this, pathway, fPathwayTransparency, false);
+			}
 			// disable shader
 			// //////////////////////////END 2/2 HIER NEU CHRISITIAN
 			// pathwayTextureManager.renderPathway(gl, this, pathway, fPathwayTransparency, false);
