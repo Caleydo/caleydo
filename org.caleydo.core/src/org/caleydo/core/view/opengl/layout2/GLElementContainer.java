@@ -1,3 +1,8 @@
+/*******************************************************************************
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.view.opengl.layout2;
 
 import gleem.linalg.Vec2f;
@@ -133,7 +138,8 @@ public class GLElementContainer extends GLElement implements IGLElementParent, I
 		int size = this.size();
 		for (Iterator<GLElement> it = children.iterator(); it.hasNext();) {
 			GLElement e = it.next();
-			e.takeDown();
+			if (context != null)
+				e.takeDown();
 			it.remove();
 		}
 		if (size > 0) // had deleted something
@@ -257,7 +263,8 @@ public class GLElementContainer extends GLElement implements IGLElementParent, I
 		for(GLElement child : children)
 			child.render(g);
 		g.decZ();
-	}
+	}
+
 	@Override
 	protected void renderPickImpl(GLGraphics g, float w, float h) {
 		super.renderPickImpl(g, w, h);

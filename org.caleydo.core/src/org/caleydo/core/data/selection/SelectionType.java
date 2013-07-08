@@ -1,22 +1,13 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
- * University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
- * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
- * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with this program. If not, see
- * <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.data.selection;
 
 import java.util.ArrayList;
+
+import org.caleydo.core.util.color.Color;
 
 /**
  * <p>
@@ -32,7 +23,7 @@ import java.util.ArrayList;
  * values that are of interest:
  * </p>
  * <ul>
- * <li><b>{@link #color}</b> either as and int[] or as a float[]. No matter which one is used the other is calculated.</li>
+ * <li><b>{@link #color}</b> as a {@link Color} object.</li>
  * <li><b>visibility</b> determines whether elements of this type should be visible</li>
  * <li><b></b></li>
  * <li><b>connectivity</b> determines whether an element should be connected via connection lines or not</li>
@@ -50,9 +41,8 @@ public class SelectionType implements Comparable<SelectionType> {
 	/** a name for the selection type, human readable */
 	private String type = "Not set";
 	/** the color the selection type should be rendered in */
-	private float[] color = new float[] { 0, 0, 0, 1 };
-	/** the color equivalent to float color in int space (0-255) */
-	private int[] intColor = new int[] { 0, 0, 0 };
+	private Color color = new Color(0, 0, 0, 1);
+
 	/**
 	 * flag that determines whether an element of this selection type should be visible or not
 	 */
@@ -73,18 +63,18 @@ public class SelectionType implements Comparable<SelectionType> {
 	 */
 	private boolean isManaged = false;
 
-	public static final SelectionType NORMAL = new SelectionType("Normal", new float[] { 0, 0, 0, 1 }, 0.3f, true, 0);
+	public static final SelectionType NORMAL = new SelectionType("Normal", new Color(0, 0, 0, 1), 0.3f, true, 0);
 
-	public static final SelectionType MOUSE_OVER = new SelectionType("MouseOver", new int[] { 249, 196, 79 }, 1, true,
+	public static final SelectionType MOUSE_OVER = new SelectionType("MouseOver", Color.MOUSE_OVER_ORANGE, 1, true,
 			0.99f);
 
-	public static final SelectionType SELECTION = new SelectionType("Selected", new int[] { 236, 112, 20 }, 1, true, 1f);
+	public static final SelectionType SELECTION = new SelectionType("Selected", Color.SELECTION_ORANGE, 1, true, 1f);
 
-	public static final SelectionType DESELECTED = new SelectionType("Deselected", new float[] { 0, 0, 0, 1 }, 1,
+	public static final SelectionType DESELECTED = new SelectionType("Deselected", new Color(0, 0, 0, 1), 1,
 			false, 0);
 
-	public static final SelectionType LEVEL_HIGHLIGHTING = new SelectionType("LevelHighlighting", new int[] { 255, 255,
-			0 }, 1, true, 1f);
+	public static final SelectionType LEVEL_HIGHLIGHTING = new SelectionType("LevelHighlighting",
+			new Color(255, 255, 0), 1, true, 1f);
 
 	private static ArrayList<SelectionType> defaultTypes = new ArrayList<SelectionType>();
 
@@ -116,40 +106,9 @@ public class SelectionType implements Comparable<SelectionType> {
 	 *            The best way to apply this to actual render hight is to specify a render height constant and multiply
 	 *            it by the priority, e.g., <code>float z = SELECTION_Z * selectionType.getPriority();</code>
 	 */
-	public SelectionType(String type, float[] color, float lineWidth, boolean isVisible, float priority) {
+	public SelectionType(String type, Color color, float lineWidth, boolean isVisible, float priority) {
 		this.type = type;
 		setColor(color);
-		setIntColor(convertFloatColor(color));
-		this.lineWidth = lineWidth;
-		this.isVisible = isVisible;
-		checkPiority(priority);
-		this.priority = priority;
-	}
-
-	/**
-	 * Convenience constructor for batch initialization, same as
-	 * {@link #SelectionType(String, float[], boolean, boolean, float)} except for that the color space is defined in
-	 * integers (0-255) instead of floats and contains only 3 values. The float color space is calculated automatically
-	 * and the transparency is assumed to be 1. It is possible to use
-	 *
-	 * @param type
-	 *            a name for the selection type, human readable
-	 * @param color
-	 *            the color the selection type should be rendered in in integers (0-255)
-	 * @param lineWidth
-	 *            the width of lines that should be used for this selection type in line rendering views
-	 * @param isVisible
-	 *            flag that determines whether an element of this selection type should be visible or not
-	 * @param isConnected
-	 *            flag that determines whether connection lines should be drawn to this selection type or not
-	 * @param priority
-	 *            a priority determining which selection type should be rendered on top in case of multi-selections. The
-	 *            valid range is 0-1 where {@link #NORMAL} has 0, {@link #MOUSE_OVER} 1 and {@link #SELECTION} 0.99
-	 */
-	public SelectionType(String type, int[] intColor, int lineWidth, boolean isVisible, float priority) {
-		this.type = type;
-		setIntColor(intColor);
-		setColor(convertIntColor(intColor));
 		this.lineWidth = lineWidth;
 		this.isVisible = isVisible;
 		checkPiority(priority);
@@ -180,7 +139,7 @@ public class SelectionType implements Comparable<SelectionType> {
 	 *
 	 * @return the color
 	 */
-	public float[] getColor() {
+	public Color getColor() {
 		return color;
 	}
 
@@ -190,31 +149,10 @@ public class SelectionType implements Comparable<SelectionType> {
 	 * @param color
 	 *            the color
 	 */
-	public void setColor(float[] color) {
-		if (color.length != 4)
-			throw new IllegalArgumentException("Color has to contain exactly 4 float values, but was: " + color);
+	public void setColor(Color color) {
 		this.color = color;
 	}
 
-	/**
-	 * Returns the int color array of length 3 (0-255)
-	 *
-	 * @return
-	 */
-	public int[] getIntColor() {
-		return intColor;
-	}
-
-	/**
-	 * Sets the int color for this selection type (0-255). Does not automatically calculate the float values;
-	 *
-	 * @param intColor
-	 */
-	public void setIntColor(int[] intColor) {
-		if (intColor.length != 3)
-			throw new IllegalArgumentException("intColor has to contain exactly 3 int values, but was: " + intColor);
-		this.intColor = intColor;
-	}
 
 	/**
 	 * @param lineWidth
@@ -312,23 +250,6 @@ public class SelectionType implements Comparable<SelectionType> {
 			return true;
 
 		return false;
-	}
-
-	private static int[] convertFloatColor(float[] color) {
-		int[] intColor = new int[3];
-		intColor[0] = (int) (color[0] * 255 / color[3]);
-		intColor[1] = (int) (color[0] * 255 / color[3]);
-		intColor[2] = (int) (color[0] * 255 / color[3]);
-		return intColor;
-	}
-
-	private static float[] convertIntColor(int[] intColor) {
-		float[] color = new float[4];
-		color[0] = ((float) intColor[0]) / 255;
-		color[1] = ((float) intColor[1]) / 255;
-		color[2] = ((float) intColor[2]) / 255;
-		color[3] = 1;
-		return color;
 	}
 
 	/**

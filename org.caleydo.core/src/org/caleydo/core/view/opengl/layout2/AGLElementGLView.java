@@ -1,3 +1,8 @@
+/*******************************************************************************
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.view.opengl.layout2;
 
 import gleem.linalg.Vec2f;
@@ -9,19 +14,16 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.event.EventListenerManager;
 import org.caleydo.core.event.EventListenerManagers;
-import org.caleydo.core.util.base.ILabeled;
-import org.caleydo.core.view.ViewManager;
-import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
+import org.caleydo.core.view.opengl.layout2.internal.SWTLayer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.data.loader.ResourceLocators;
 import org.caleydo.data.loader.ResourceLocators.IResourceLocator;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 
 /**
  * a {@link GLElement} based view using a {@link AGLView} for compatibility
@@ -44,6 +46,7 @@ public abstract class AGLElementGLView extends AGLView implements IGLElementCont
 
 	private WindowGLElement root;
 	private GLContextLocal local;
+	private final ISWTLayer swtLayer;
 
 	/**
 	 * do we need to perform a layout
@@ -54,6 +57,7 @@ public abstract class AGLElementGLView extends AGLView implements IGLElementCont
 	public AGLElementGLView(IGLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum, String viewType,
 			String viewName) {
 		super(glCanvas, parentComposite, viewFrustum, viewType, viewName);
+		this.swtLayer = new SWTLayer(glCanvas);
 	}
 
 	/**
@@ -200,16 +204,6 @@ public abstract class AGLElementGLView extends AGLView implements IGLElementCont
 	}
 
 	@Override
-	public final IPickingListener createTooltip(ILabeled label) {
-		return getParentGLCanvas().createTooltip(label);
-	}
-
-	@Override
-	public final void showContextMenu(Iterable<? extends AContextMenuItem> items) {
-		ViewManager.get().getCanvasFactory().showPopupMenu(getParentGLCanvas(), items);
-	}
-
-	@Override
 	public final void unregisterPickingListener(int pickingID) {
 		for (Map.Entry<IPickingListener, PickingMetaData> entry : pickingMetaData.entrySet()) {
 			if (entry.getValue().pickingId == pickingID) {
@@ -232,18 +226,6 @@ public abstract class AGLElementGLView extends AGLView implements IGLElementCont
 	public void unregisterEventListeners() {
 		super.unregisterEventListeners();
 		eventListeners.unregisterAll();
-	}
-
-	@Override
-	public final void setCursor(final int swtCursorConst) {
-		final Composite c = this.getParentGLCanvas().asComposite();
-		final Display d = c.getDisplay();
-		d.asyncExec(new Runnable() {
-			@Override
-			public void run() {
-				c.setCursor(swtCursorConst < 0 ? null : d.getSystemCursor(swtCursorConst));
-			}
-		});
 	}
 
 	@Override
@@ -276,6 +258,11 @@ public abstract class AGLElementGLView extends AGLView implements IGLElementCont
 	@Override
 	public final IPopupLayer getPopupLayer() {
 		return root.getPopupLayer();
+	}
+
+	@Override
+	public final ISWTLayer getSWTLayer() {
+		return swtLayer;
 	}
 
 	private static class PickingMetaData {

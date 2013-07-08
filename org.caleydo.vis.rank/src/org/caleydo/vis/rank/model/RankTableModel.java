@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.vis.rank.model;
 
 import java.beans.PropertyChangeEvent;
@@ -30,6 +16,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Deque;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Objects;
@@ -100,15 +87,12 @@ public class RankTableModel implements IRankColumnParent {
 	 * ranker used by default
 	 */
 	private final ColumnRanker defaultRanker;
-
-	private final ColumnFilter defaultFilter;
 	/**
 	 *
 	 */
 	public RankTableModel(IRankTableConfig config) {
 		this.config = config;
 		this.defaultRanker = new ColumnRanker(this);
-		this.defaultFilter = new ColumnFilter(this);
 	}
 
 
@@ -118,7 +102,6 @@ public class RankTableModel implements IRankColumnParent {
 		this.dataMask = copy.dataMask;
 		this.data.addAll(copy.data);
 		this.defaultRanker = copy.defaultRanker.clone(this);
-		this.defaultFilter = copy.defaultFilter.clone(this);
 		for(ARankColumnModel c : copy.pool)
 			this.pool.add(c.clone());
 		for(ARankColumnModel c : copy.columns)
@@ -143,7 +126,6 @@ public class RankTableModel implements IRankColumnParent {
 		this.dataMask = null;
 		this.data.clear();
 		this.selectedRow = null;
-		this.defaultFilter.reset();
 		// this.defaultRanker.reset();
 	}
 
@@ -417,6 +399,20 @@ public class RankTableModel implements IRankColumnParent {
 		return Collections.unmodifiableList(columns);
 	}
 
+	public List<ARankColumnModel> getFlatColumns() {
+		List<ARankColumnModel> r = new ArrayList<>(columns.size());
+		Deque<ARankColumnModel> cols = new LinkedList<>(columns);
+
+		while (!cols.isEmpty()) {
+			ARankColumnModel model = cols.pollFirst();
+			r.add(model);
+			if (model instanceof ACompositeRankColumnModel) {
+				cols.addAll(((ACompositeRankColumnModel) model).getChildren());
+			}
+		}
+		return r;
+	}
+
 	/**
 	 * @return the pool, see {@link #pool}
 	 */
@@ -442,6 +438,10 @@ public class RankTableModel implements IRankColumnParent {
 
 	public List<IRow> getData() {
 		return Collections.unmodifiableList(this.data);
+	}
+
+	public List<IRow> getDataModifiable() {
+		return this.data;
 	}
 
 	public List<IRow> getMaskedData() {
@@ -646,6 +646,13 @@ public class RankTableModel implements IRankColumnParent {
 		return start;
 	}
 
+	/**
+	 * @return the defaultRanker, see {@link #defaultRanker}
+	 */
+	public ColumnRanker getDefaultRanker() {
+		return defaultRanker;
+	}
+
 	public IRow getDataItem(int index) {
 		return data.get(index);
 	}
@@ -662,9 +669,14 @@ public class RankTableModel implements IRankColumnParent {
 	 */
 	public void addSnapshot(ARankColumnModel model) {
 		add(new OrderColumn());
-		add(new RankRankColumnModel());
-		if (model != null)
-			add(model.clone());
+		for (ARankColumnModel col : config.createAutoSnapshotColumns(this, model))
+			add(col);
+		if (model != null) {
+			ARankColumnModel clone = model.clone();
+			add(clone);
+			if (clone instanceof IRankableColumnMixin)
+				((IRankableColumnMixin) clone).orderByMe();
+		}
 	}
 
 	/**
@@ -686,13 +698,6 @@ public class RankTableModel implements IRankColumnParent {
 			if (columns.get(i) instanceof OrderColumn)
 				return i;
 		return columns.size();
-	}
-
-	/**
-	 * @return the defaultFilter, see {@link #defaultFilter}
-	 */
-	public ColumnFilter getDefaultFilter() {
-		return defaultFilter;
 	}
 
 	public void dirtyAllOrders() {

@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.util.conversion;
 
 import java.util.StringTokenizer;
@@ -130,16 +116,16 @@ public class ConversionTools {
 				return targetData;
 			}
 
-			for (int iCount = 0; iCount < inputData.length; iCount++) {
-				if (Float.isNaN(inputData[iCount])) {
-					targetData[iCount] = Float.NaN;
+			for (int i = 0; i < inputData.length; i++) {
+				if (Float.isNaN(inputData[i])) {
+					targetData[i] = Float.NaN;
 				}
 
-				targetData[iCount] = (inputData[iCount] - min) / (max - min);
-				if (targetData[iCount] > 1) {
-					targetData[iCount] = 1;
-				} else if (targetData[iCount] < 0) {
-					targetData[iCount] = 0;
+				targetData[i] = (inputData[i] - min) / (max - min);
+				if (targetData[i] > 1) {
+					targetData[i] = 1;
+				} else if (targetData[i] < 0) {
+					targetData[i] = 0;
 				}
 			}
 		}

@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.tourguide.internal.compute;
 
 import java.util.BitSet;
@@ -27,6 +13,7 @@ import java.util.Set;
 
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.EventPublisher;
+import org.caleydo.core.util.base.ICallback;
 import org.caleydo.view.tourguide.internal.event.JobStateProgressEvent;
 import org.caleydo.view.tourguide.internal.model.AScoreRow;
 import org.caleydo.view.tourguide.internal.score.Scores;
@@ -45,34 +32,66 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 
 /**
+ * basic job implementation that
+ *
  * @author Samuel Gratzl
  *
  */
-public abstract class AComputeJob extends Job {
+public abstract class AComputeJob extends Job implements ICallback<Boolean> {
 	private final List<IComputedStratificationScore> stratScores;
 	private final List<IComputedGroupScore> groupScores;
 	protected Object receiver;
 
 	public AComputeJob(Collection<IScore> scores, Object receiver) {
-		super("Compute Tour Guide Scores");
+		super("Compute LineUp Scores");
 		Set<IScore> flatten = Scores.flatten(scores);
 		stratScores = Lists.newArrayList(Iterables.filter(flatten, IComputedStratificationScore.class));
 		groupScores = Lists.newArrayList(Iterables.filter(flatten, IComputedGroupScore.class));
 		this.receiver = receiver;
 	}
 
+	@Override
+	public final void on(Boolean data) {
+		if (data)
+			cancel();
+	}
+
+	/**
+	 * triggers a progress message
+	 *
+	 * @param completed
+	 * @param text
+	 */
 	protected final void progress(float completed, String text) {
 		EventPublisher.trigger(new JobStateProgressEvent(text, completed, false).to(receiver).from(this));
 	}
 
+	/**
+	 * triggers an progress error message
+	 *
+	 * @param text
+	 */
 	protected final void error(String text) {
 		EventPublisher.trigger(new JobStateProgressEvent(text, 1.0f, true).to(receiver).from(this));
 	}
 
+	/**
+	 * whether the job has some work
+	 *
+	 * @return
+	 */
 	public boolean hasThingsToDo() {
 		return !stratScores.isEmpty() || !groupScores.isEmpty();
 	}
 
+	/**
+	 * computes scores of the given masked data
+	 *
+	 * @param monitor
+	 * @param data
+	 * @param mask
+	 * @return
+	 */
 	protected IStatus runImpl(IProgressMonitor monitor, List<AScoreRow> data, BitSet mask) {
 		IStatus result;
 		if (!stratScores.isEmpty() && groupScores.isEmpty()) {

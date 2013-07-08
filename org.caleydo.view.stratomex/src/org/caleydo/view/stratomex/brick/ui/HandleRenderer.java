@@ -1,28 +1,15 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *  
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *  
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.stratomex.brick.ui;
 
 import gleem.linalg.Vec3f;
 
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -33,7 +20,7 @@ import org.caleydo.view.stratomex.brick.GLBrick;
 
 /**
  * Renderer for handles used for resizing and moving a brick.
- * 
+ *
  * @author Christian Partl
  * @author Alexander Lex
  */
@@ -65,17 +52,15 @@ public class HandleRenderer extends ALayoutRenderer {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param view
 	 * @param handleSize
 	 *            Size in pixels of the handles.
 	 * @param textureManager
 	 * @param handles
-	 *            Specifies which handles shall be used, e.g.
-	 *            MOVE_VERTICALLY_HANDLE | RESIZE_HANDLE_UPPER_LEFT
+	 *            Specifies which handles shall be used, e.g. MOVE_VERTICALLY_HANDLE | RESIZE_HANDLE_UPPER_LEFT
 	 */
-	public HandleRenderer(final GLBrick brick, int handleSize,
-			TextureManager textureManager, int handles) {
+	public HandleRenderer(final GLBrick brick, int handleSize, TextureManager textureManager, int handles) {
 		this.brick = brick;
 		this.handleSize = handleSize;
 		this.textureManager = textureManager;
@@ -99,10 +84,8 @@ public class HandleRenderer extends ALayoutRenderer {
 			}
 		};
 
-		brick.getBrickColumn()
-				.getStratomexView()
-				.addTypePickingListener(brickPickingListener,
-						EPickingType.BRICK.name());
+		brick.getBrickColumn().getStratomexView()
+				.addTypePickingListener(brickPickingListener, EPickingType.BRICK.name());
 
 	}
 
@@ -112,10 +95,8 @@ public class HandleRenderer extends ALayoutRenderer {
 		if (hide)
 			return;
 
-		float glHandleHeight = brick.getPixelGLConverter()
-				.getGLHeightForPixelHeight(handleSize);
-		float glHandleWidth = brick.getPixelGLConverter()
-				.getGLWidthForPixelWidth(handleSize);
+		float glHandleHeight = brick.getPixelGLConverter().getGLHeightForPixelHeight(handleSize);
+		float glHandleWidth = brick.getPixelGLConverter().getGLWidthForPixelWidth(handleSize);
 
 		gl.glLineWidth(3);
 		gl.glColor3f(0.6f, 0.6f, 0.6f);
@@ -172,29 +153,21 @@ public class HandleRenderer extends ALayoutRenderer {
 			gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
 					EPickingType.MOVE_VERTICALLY_HANDLE.name(), brick.getID()));
 			// gl.glColor4f(1f, 1f, 1f, 1);
-			Vec3f lowerLeftCorner = new Vec3f(-glHandleWidth, y / 2.0f
-					- glHandleHeight, BUTTON_Z);
-			Vec3f lowerRightCorner = new Vec3f(0, y / 2.0f - glHandleHeight,
-					BUTTON_Z);
+			Vec3f lowerLeftCorner = new Vec3f(-glHandleWidth, y / 2.0f - glHandleHeight, BUTTON_Z);
+			Vec3f lowerRightCorner = new Vec3f(0, y / 2.0f - glHandleHeight, BUTTON_Z);
 			Vec3f upperRightCorner = new Vec3f(0, y / 2.0f, BUTTON_Z);
-			Vec3f upperLeftCorner = new Vec3f(-glHandleWidth, y / 2.0f,
-					BUTTON_Z);
+			Vec3f upperLeftCorner = new Vec3f(-glHandleWidth, y / 2.0f, BUTTON_Z);
 
-			textureManager.renderTexture(gl,
-					EIconTextures.NAVIGATION_BACKGROUND, upperRightCorner,
-					upperLeftCorner, lowerLeftCorner, lowerRightCorner, 1, 1,
-					1, 1);
+			textureManager.renderTexture(gl, EIconTextures.NAVIGATION_BACKGROUND, upperRightCorner, upperLeftCorner,
+					lowerLeftCorner, lowerRightCorner, Color.WHITE);
 
 			lowerLeftCorner = new Vec3f(-glHandleWidth, y / 2.0f, BUTTON_Z);
 			lowerRightCorner = new Vec3f(0, y / 2.0f, BUTTON_Z);
 			upperRightCorner = new Vec3f(0, y / 2.0f + glHandleHeight, BUTTON_Z);
-			upperLeftCorner = new Vec3f(-glHandleWidth, y / 2.0f
-					+ glHandleHeight, BUTTON_Z);
+			upperLeftCorner = new Vec3f(-glHandleWidth, y / 2.0f + glHandleHeight, BUTTON_Z);
 
-			textureManager.renderTexture(gl,
-					EIconTextures.NAVIGATION_BACKGROUND, lowerLeftCorner,
-					lowerRightCorner, upperRightCorner, upperLeftCorner, 1, 1,
-					1, 1);
+			textureManager.renderTexture(gl, EIconTextures.NAVIGATION_BACKGROUND, lowerLeftCorner, lowerRightCorner,
+					upperRightCorner, upperLeftCorner, Color.WHITE);
 
 			// gl.glBegin(GL2.GL_QUADS);
 			// gl.glVertex3f(-glHandleWidth * 2.0f, y / 2.0f - glHandleHeight,
@@ -208,42 +181,34 @@ public class HandleRenderer extends ALayoutRenderer {
 		}
 
 		if ((handles & MOVE_HORIZONTALLY_HANDLE) > 0) {
-			gl.glPushName(brick.getPickingManager().getPickingID(
-					brick.getBrickColumn().getStratomexView().getID(),
-					EPickingType.MOVE_HORIZONTALLY_HANDLE.name(),
-					brick.getBrickColumn().getID()));
+			gl.glPushName(brick.getPickingManager().getPickingID(brick.getBrickColumn().getStratomexView().getID(),
+					EPickingType.MOVE_HORIZONTALLY_HANDLE.name(), brick.getBrickColumn().getID()));
 
-			Vec3f lowerLeftCorner = new Vec3f(x / 2f - glHandleWidth, y,
-					BUTTON_Z);
+			Vec3f lowerLeftCorner = new Vec3f(x / 2f - glHandleWidth, y, BUTTON_Z);
 			Vec3f lowerRightCorner = new Vec3f(x / 2f, y, BUTTON_Z);
-			Vec3f upperLeftCorner = new Vec3f(x / 2f, y + glHandleHeight,
-					BUTTON_Z);
-			Vec3f upperRightCorner = new Vec3f(x / 2f - glHandleWidth, y
-					+ glHandleHeight, BUTTON_Z);
+			Vec3f upperLeftCorner = new Vec3f(x / 2f, y + glHandleHeight, BUTTON_Z);
+			Vec3f upperRightCorner = new Vec3f(x / 2f - glHandleWidth, y + glHandleHeight, BUTTON_Z);
 
-			textureManager.renderTexture(gl,
-					EIconTextures.NAVIGATION_BACKGROUND, lowerRightCorner,
-					upperLeftCorner, upperRightCorner, lowerLeftCorner, 1, 1,
-					1, 1);
+			textureManager.renderTexture(gl, EIconTextures.NAVIGATION_BACKGROUND, lowerRightCorner, upperLeftCorner,
+					upperRightCorner, lowerLeftCorner, Color.WHITE);
 
 			lowerLeftCorner = new Vec3f(x / 2f + glHandleWidth, y, BUTTON_Z);
 			lowerRightCorner = new Vec3f(x / 2f, y, 1);
 			upperLeftCorner = new Vec3f(x / 2f, y + glHandleHeight, BUTTON_Z);
-			upperRightCorner = new Vec3f(x / 2f + glHandleWidth, y
-					+ glHandleHeight, BUTTON_Z);
-			textureManager.renderTexture(gl,
-					EIconTextures.NAVIGATION_BACKGROUND, upperLeftCorner,
-					lowerRightCorner, lowerLeftCorner, upperRightCorner, 1, 1,
-					1, 1);
+			upperRightCorner = new Vec3f(x / 2f + glHandleWidth, y + glHandleHeight, BUTTON_Z);
+			textureManager.renderTexture(gl, EIconTextures.NAVIGATION_BACKGROUND, upperLeftCorner, lowerRightCorner,
+					lowerLeftCorner, upperRightCorner, Color.WHITE);
 
 			gl.glPopName();
 		}
 
 		gl.glColor3f(0, 0, 0);
 
+		float offset = layoutManager.getPixelGLConverter().getGLHeightForPixelHeight(1);
+
 		if ((handles & EXPAND_HANDLE) > 0) {
-			gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
-					EPickingType.EXPAND_LEFT_HANDLE.name(), brick.getID()));
+			gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(), EPickingType.EXPAND_LEFT_HANDLE.name(),
+					brick.getID()));
 
 			// gl.glBegin(GL2.GL_QUADS);
 			// gl.glVertex3f(-glHandleWidth, y, 1);
@@ -252,16 +217,13 @@ public class HandleRenderer extends ALayoutRenderer {
 			// gl.glVertex3f(-glHandleWidth, y - 2 * glHandleHeight, 1);
 			// gl.glEnd();
 
-			Vec3f lowerLeftCorner = new Vec3f(-glHandleWidth, y, BUTTON_Z);
-			Vec3f lowerRightCorner = new Vec3f(0, y, BUTTON_Z);
-			Vec3f upperLeftCorner = new Vec3f(0, y - 2 * glHandleHeight,
-					BUTTON_Z);
-			Vec3f upperRightCorner = new Vec3f(-glHandleWidth, y - 2
-					* glHandleHeight, BUTTON_Z);
-			textureManager.renderTexture(gl,
-					EIconTextures.NAVIGATION_NEXT_BIG_MIDDLE, upperLeftCorner,
-					lowerRightCorner, lowerLeftCorner, upperRightCorner, 1, 1,
-					1, 1);
+
+			Vec3f lowerLeftCorner = new Vec3f(-glHandleWidth, y + offset, BUTTON_Z);
+			Vec3f lowerRightCorner = new Vec3f(0, y + offset, BUTTON_Z);
+			Vec3f upperLeftCorner = new Vec3f(0, y - 2 * glHandleHeight, BUTTON_Z);
+			Vec3f upperRightCorner = new Vec3f(-glHandleWidth, y - 2 * glHandleHeight, BUTTON_Z);
+			textureManager.renderTexture(gl, EIconTextures.NAVIGATION_NEXT_BIG_MIDDLE, upperLeftCorner,
+					lowerRightCorner, lowerLeftCorner, upperRightCorner, Color.WHITE);
 
 			gl.glPopName();
 		}
@@ -270,16 +232,12 @@ public class HandleRenderer extends ALayoutRenderer {
 			gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
 					EPickingType.EXPAND_RIGHT_HANDLE.name(), brick.getID()));
 
-			Vec3f lowerLeftCorner = new Vec3f(x, y, BUTTON_Z);
-			Vec3f lowerRightCorner = new Vec3f(x + glHandleWidth, y, BUTTON_Z);
-			Vec3f upperLeftCorner = new Vec3f(x + glHandleWidth, y - 2
-					* glHandleHeight, BUTTON_Z);
-			Vec3f upperRightCorner = new Vec3f(x, y - 2 * glHandleHeight,
-					BUTTON_Z);
-			textureManager.renderTexture(gl,
-					EIconTextures.NAVIGATION_NEXT_BIG_MIDDLE, lowerLeftCorner,
-					upperRightCorner, upperLeftCorner, lowerRightCorner, 1, 1,
-					1, 1);
+			Vec3f lowerLeftCorner = new Vec3f(x, y + offset, BUTTON_Z);
+			Vec3f lowerRightCorner = new Vec3f(x + glHandleWidth, y + offset, BUTTON_Z);
+			Vec3f upperLeftCorner = new Vec3f(x + glHandleWidth, y - 2 * glHandleHeight, BUTTON_Z);
+			Vec3f upperRightCorner = new Vec3f(x, y - 2 * glHandleHeight, BUTTON_Z);
+			textureManager.renderTexture(gl, EIconTextures.NAVIGATION_NEXT_BIG_MIDDLE, lowerLeftCorner,
+					upperRightCorner, upperLeftCorner, lowerRightCorner, Color.WHITE);
 
 			gl.glPopName();
 		}

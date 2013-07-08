@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.util.clusterer.algorithm;
 
 import java.util.Arrays;
@@ -37,6 +23,9 @@ import org.caleydo.core.event.data.RenameProgressBarEvent;
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
 import org.caleydo.core.util.execution.SafeCallable;
+import org.caleydo.core.util.logging.Logger;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 
 import com.jogamp.common.util.IntIntHashMap;
 
@@ -70,7 +59,7 @@ public abstract class AClusterer implements SafeCallable<PerspectiveInitializati
 		switch (config.getClusterTarget()) {
 		case RECORD_CLUSTERING:
 			p = config.getSourceRecordPerspective();
-			opposite = config.getSourceRecordPerspective();
+			opposite = config.getSourceDimensionPerspective();
 			break;
 		case DIMENSION_CLUSTERING:
 			p = config.getSourceDimensionPerspective();
@@ -96,15 +85,7 @@ public abstract class AClusterer implements SafeCallable<PerspectiveInitializati
 		return config.getSourcePerspective().getIdType().getTypeName();
 	}
 
-	protected final Float getNormalizedValue(Integer vaID, Integer oppositeVaID) {
-		switch (config.getClusterTarget()) {
-		case DIMENSION_CLUSTERING:
-			return table.getNormalizedValue(vaID, oppositeVaID);
-		case RECORD_CLUSTERING:
-			return table.getNormalizedValue(oppositeVaID, vaID);
-		}
-		return null;
-	}
+
 
 	/**
 	 * Function sorts clusters depending on their average value
@@ -118,7 +99,8 @@ public abstract class AClusterer implements SafeCallable<PerspectiveInitializati
 			SortHelper s = new SortHelper();
 			s.index = index++;
 			for (Integer opId : oppositeVA) {
-				float temp = getNormalizedValue(vaId, opId);
+				float temp = table.getDataDomain().getNormalizedValue(va.getIdType(), vaId, oppositeVA.getIdType(),
+						opId);
 				if (!Float.isNaN(temp))
 					s.value += temp;
 			}
@@ -162,6 +144,7 @@ public abstract class AClusterer implements SafeCallable<PerspectiveInitializati
 	}
 
 	protected final PerspectiveInitializationData error(Exception e1) {
+		Logger.log(new Status(IStatus.ERROR, this.toString(), "Clustering fails: " + e1));
 		progress(100, true);
 		return null;
 	}

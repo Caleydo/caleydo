@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.tourguide.internal.compute;
 
 import java.util.BitSet;
@@ -25,6 +11,7 @@ import java.util.List;
 
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.util.logging.Logger;
+import org.caleydo.view.tourguide.internal.event.InitialScoreQueryReadyEvent;
 import org.caleydo.view.tourguide.internal.event.ScoreQueryReadyEvent;
 import org.caleydo.view.tourguide.internal.model.ADataDomainQuery;
 import org.caleydo.view.tourguide.internal.model.AScoreRow;
@@ -63,11 +50,14 @@ public class ComputeAllOfJob extends AComputeJob {
 		progress(0.0f, "Preparing Data");
 		boolean creating = !query.isInitialized();
 		List<AScoreRow> data = query.getOrCreate();
-		BitSet mask = query.getMask();
+		BitSet mask = query.getRawMask();
 		System.out.println("done in " + w);
 		progress(0.0f, "Computing Scores");
 		IStatus result = runImpl(monitor, data, mask);
-		EventPublisher.trigger(new ScoreQueryReadyEvent(creating ? query : null).to(receiver));
+		if (creating)
+			EventPublisher.trigger(new InitialScoreQueryReadyEvent(query).to(receiver));
+		else
+			EventPublisher.trigger(new ScoreQueryReadyEvent(null).to(receiver));
 		return result;
 	}
 

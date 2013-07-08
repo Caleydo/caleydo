@@ -1,27 +1,15 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.view.opengl.util.text;
 
-import java.awt.Color;
+
 
 import javax.media.opengl.GL2;
+
+import org.caleydo.core.util.color.Color;
 
 /**
  * basic interface for a class than can render text
@@ -38,15 +26,12 @@ public interface ITextRenderer {
 	public void setColor(Color color);
 
 	/**
-	 * set the text color to the specified one
+	 * returns the size of the given text using the given height
 	 *
-	 * @param r
-	 * @param g
-	 * @param b
-	 * @param a
+	 * @param text
+	 * @param height
+	 * @return
 	 */
-	public void setColor(float r, float g, float b, float a);
-
 	public float getTextWidth(String text, float height);
 
 	/**
@@ -67,5 +52,17 @@ public interface ITextRenderer {
 	 */
 	public void renderTextInBounds(GL2 gl, String text, float x, float y, float z, float w, float h);
 
+	/**
+	 * describes the rendering information of this teture renderer
+	 *
+	 * @return
+	 */
 	public boolean isOriginTopLeft();
+
+	/**
+	 * whether since the previous call the texture was updated
+	 *
+	 * @return
+	 */
+	public boolean isDirty();
 }

@@ -1,34 +1,22 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.table;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
+import org.caleydo.core.data.collection.column.container.CategoricalContainer;
+import org.caleydo.core.data.collection.column.container.IntContainer;
 import org.eclipse.nebula.widgets.nattable.data.convert.DisplayConverter;
 
 /**
  * a custom {@link DisplayConverter} to manipulate the representation of numbers, such that changing the format is
  * possible
- * 
+ *
  * @author Samuel Gratzl
  *
  */
@@ -52,7 +40,16 @@ public class CustomDisplayConverter extends DisplayConverter {
 		if (sourceValue == null)
 			return "";
 		if (sourceValue instanceof Float) {
-			return formatter.format(sourceValue);
+			Float f = (Float) sourceValue;
+			if (f.isNaN())
+				return "";
+			return formatter.format(f);
+		} else if (sourceValue instanceof Integer) {
+			Integer i = (Integer) sourceValue;
+			return i.intValue() == IntContainer.UNKNOWN_VALUE ? "" : i.toString();
+		} else if (sourceValue instanceof String) {
+			String s = (String) sourceValue;
+			return CategoricalContainer.UNKNOWN_CATEOGRY_STRING.equals(s) ? "" : s;
 		}
 		return sourceValue.toString();
 	}

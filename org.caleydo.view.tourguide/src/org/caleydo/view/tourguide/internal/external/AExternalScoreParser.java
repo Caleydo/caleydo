@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.tourguide.internal.external;
 
 import java.io.BufferedReader;
@@ -30,9 +16,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.caleydo.core.io.parser.ascii.ATextParser;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.execution.SafeCallable;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.view.tourguide.api.score.ISerializeableScore;
+import org.eclipse.core.runtime.SubMonitor;
 
 abstract class AExternalScoreParser<T extends AExternalScoreParseSpecification, K> extends ATextParser implements
 		SafeCallable<Collection<? extends ISerializeableScore>> {
@@ -57,25 +45,29 @@ abstract class AExternalScoreParser<T extends AExternalScoreParseSpecification, 
 
 	@Override
 	protected void parseFile(BufferedReader reader) throws IOException {
-		swtGuiManager.setProgressBarText("Loading ranking");
+		SubMonitor monitor = GeneralManager.get().createSubProgressMonitor();
+		monitor.beginTask("Loading Ranking", this.calculateNumberOfLinesInFile() + 10);
 
 		if (spec.getDataSourcePath() == null) {
 			log.info("No path for ranking specified");
+			monitor.done();
 			return;
 		}
 
 		if (spec.isRankParsing())
-			parseRank(reader);
+			parseRank(reader, monitor);
 		else
-			parseScore(reader);
+			parseScore(reader, monitor);
+		monitor.done();
 
 	}
 
 	/**
 	 * @param reader
+	 * @param monitor
 	 * @throws IOException
 	 */
-	private void parseScore(BufferedReader reader) throws IOException {
+	private void parseScore(BufferedReader reader, SubMonitor monitor) throws IOException {
 		final List<Integer> columnsToRead = spec.getColumns();
 
 		List<String> labels = new ArrayList<>();
@@ -94,6 +86,7 @@ abstract class AExternalScoreParser<T extends AExternalScoreParseSpecification, 
 				labels.add(columns[col]);
 			skipLines(reader, spec.getNumberOfHeaderLines() - 1 - spec.getRowOfColumnIDs());
 		}
+		monitor.worked(spec.getNumberOfHeaderLines());
 
 
 		// parse data
@@ -106,6 +99,7 @@ abstract class AExternalScoreParser<T extends AExternalScoreParseSpecification, 
 		while ((line = reader.readLine()) != null) {
 			// read ID
 			String[] columns = line.split(spec.getDelimiter());
+			monitor.worked(1);
 
 			K mappedID = extractID(columns[spec.getColumnOfRowIds()]);
 			if (mappedID == null)
@@ -122,7 +116,7 @@ abstract class AExternalScoreParser<T extends AExternalScoreParseSpecification, 
 				scores[i].put(mappedID, s);
 			}
 		}
-
+		monitor.setWorkRemaining(10);
 		for (int i = 0; i < scores.length; ++i) {
 			Map<K, Float> s = scores[i];
 			if (s.isEmpty())
@@ -161,11 +155,12 @@ abstract class AExternalScoreParser<T extends AExternalScoreParseSpecification, 
 
 	/**
 	 * @param reader
+	 * @param monitor
 	 * @throws IOException
 	 */
-	private void parseRank(BufferedReader reader) throws IOException {
+	private void parseRank(BufferedReader reader, SubMonitor monitor) throws IOException {
 		skipLines(reader, spec.getNumberOfHeaderLines());
-
+		monitor.worked(spec.getNumberOfHeaderLines());
 		List<K> ranks = new ArrayList<>(this.numberOfLinesInFile < 0 ? 100 : this.numberOfLinesInFile);
 
 		String line;
@@ -174,6 +169,7 @@ abstract class AExternalScoreParser<T extends AExternalScoreParseSpecification, 
 			String[] columns = line.split(spec.getDelimiter());
 
 			K mappedID = extractID(columns[spec.getColumnOfRowIds()]);
+			monitor.worked(1);
 			if (mappedID == null)
 				continue;
 			// read data
@@ -183,7 +179,7 @@ abstract class AExternalScoreParser<T extends AExternalScoreParseSpecification, 
 		if (ranks.isEmpty())
 			return;
 
-
+		monitor.setWorkRemaining(10);
 		float delta;
 		if (spec.isNormalizeScores()) { // convert to score
 			delta = -1.f / (ranks.size() - 1);

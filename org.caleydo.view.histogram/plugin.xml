@@ -37,7 +37,7 @@
    <extension
          point="org.eclipse.ui.commands">
       <command
-            defaultHandler="org.caleydo.view.histogram.command.handler.OpenHistogramHandler"
+            defaultHandler="org.caleydo.view.histogram.OpenViewHandler"
             id="org.caleydo.view.histogram.command.openhistogram"
             name="Histogram, Color Legend">
       </command>
@@ -95,5 +95,17 @@
             </Embedding>
          </ParentView>
       </EmbeddingInfo>
+   </extension>
+   <extension
+         point="org.caleydo.core.data.datadomain.ViewDataDomainAssociation">
+      <association
+            view="org.caleydo.view.histogram">
+         <dataDomain
+               type="org.caleydo.datadomain.genetic">
+         </dataDomain>
+         <dataDomain
+               type="org.caleydo.datadomain.generic">
+         </dataDomain>
+      </association>
    </extension>
 </plugin>

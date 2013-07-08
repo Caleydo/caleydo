@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *  
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *  
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.dvi.node;
 
 import java.awt.geom.Point2D;
@@ -28,6 +14,7 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.layout.Column;
@@ -108,6 +95,7 @@ public abstract class ADefaultTemplateNode extends ADraggableDataGraphNode {
 						: (SPACING_PIXELS));
 	}
 
+	@Override
 	public Point2D getAbsolutPositionOfRelativeTablePerspectiveRendererCoordinates(
 			Point2D coordinates) {
 		Point2D position = graphLayout.getNodePosition(this);
@@ -139,7 +127,7 @@ public abstract class ADefaultTemplateNode extends ADraggableDataGraphNode {
 		// FIXME Why is this null in some cases??
 		if (anchorPoints == null)
 			return new Pair<Point2D, Point2D>(new Point2D.Float(0,0), new Point2D.Float(0,0));
-		
+
 		Point2D first = (Point2D) anchorPoints.getFirst().clone();
 		Point2D second = (Point2D) anchorPoints.getSecond().clone();
 
@@ -270,7 +258,7 @@ public abstract class ADefaultTemplateNode extends ADraggableDataGraphNode {
 		// return layout.getWidthPixels();
 	}
 
-	protected Row createDefaultBaseRow(float[] color, int pickingID) {
+	protected Row createDefaultBaseRow(Color color, int pickingID) {
 		Row baseRow = new Row("baseRow");
 		baseRow.setFrameColor(0, 0, 1, 0);
 
@@ -309,7 +297,7 @@ public abstract class ADefaultTemplateNode extends ADraggableDataGraphNode {
 		ElementLayout captionLayout = new ElementLayout("caption");
 		captionLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
 		captionLayout.setRatioSizeX(1);
-		captionLayout.setRenderer(new LabelRenderer(view, this,
+		captionLayout.setRenderer(new LabelRenderer(view, view.getTextRenderer(), this,
 				createNodePickingTypeList()));
 
 		return captionLayout;
@@ -376,6 +364,7 @@ public abstract class ADefaultTemplateNode extends ADraggableDataGraphNode {
 		}
 	}
 
+	@Override
 	public float getSpacingX(IDVINode node) {
 
 		IDVINode leftNode = null;
@@ -393,6 +382,7 @@ public abstract class ADefaultTemplateNode extends ADraggableDataGraphNode {
 				.getPosition().getX() + leftNode.getWidth() / 2.0f));
 	}
 
+	@Override
 	public float getSpacingY(IDVINode node) {
 		IDVINode topNode = null;
 		IDVINode bottomNode = null;
@@ -409,6 +399,7 @@ public abstract class ADefaultTemplateNode extends ADraggableDataGraphNode {
 				.getPosition().getY() + bottomNode.getHeight() / 2.0f));
 	}
 
+	@Override
 	public void recalculateNodeSize() {
 		heightPixels = 4
 				* SPACING_PIXELS

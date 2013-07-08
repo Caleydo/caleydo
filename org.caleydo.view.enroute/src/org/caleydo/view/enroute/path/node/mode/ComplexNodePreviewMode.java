@@ -1,3 +1,8 @@
+/*******************************************************************************
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 /**
  *
  */
@@ -55,7 +60,7 @@ public class ComplexNodePreviewMode extends ALayoutBasedNodeMode implements ICom
 		baseColumn.addBackgroundRenderer(colorRenderer);
 
 		ElementLayout labelLayout = new ElementLayout("label");
-		LabelRenderer labelRenderer = new LabelRenderer(view, node);
+		LabelRenderer labelRenderer = new LabelRenderer(view, view.getTextRenderer(), node);
 		labelRenderer.setAlignment(LabelRenderer.LabelAlignment.CENTER);
 
 		labelLayout.setRenderer(labelRenderer);

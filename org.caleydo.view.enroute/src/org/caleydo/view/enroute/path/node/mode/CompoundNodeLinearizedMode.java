@@ -1,3 +1,8 @@
+/*******************************************************************************
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 /**
  *
  */
@@ -80,7 +85,7 @@ public class CompoundNodeLinearizedMode extends ACompoundNodeMode {
 
 		if (!determineHighlightColor())
 			return;
-		gl.glColor3fv(highlightColor, 0);
+		gl.glColor3fv(highlightColor.getRGB(), 0);
 		gl.glPushMatrix();
 		gl.glTranslatef(node.getPosition().x(), node.getPosition().y(), 1);
 		GLPrimitives.renderCircleBorder(gl, glu,

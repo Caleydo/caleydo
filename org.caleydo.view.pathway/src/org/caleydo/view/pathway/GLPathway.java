@@ -1,19 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
- * University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
- * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
- * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with this program. If not, see
- * <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.pathway;
 
 import gleem.linalg.Vec3f;
@@ -33,6 +22,7 @@ import java.util.Set;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataSupportDefinition;
 import org.caleydo.core.data.perspective.table.TablePerspective;
@@ -540,10 +530,12 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 					contextMenuCreator.addContextMenuItem(menuItem);
 
 				} else if (vertexRep.getType() == EPathwayVertexType.gene) {
-					if (!isRenderedRemote()) {
+					if (!isRenderedRemote() && !tablePerspectives.isEmpty()) {
+						ATableBasedDataDomain datadomain = tablePerspectives.get(0).getDataDomain();
 						for (PathwayVertex pathwayVertex : vertexRep.getPathwayVertices()) {
 							for (Integer davidID : pathwayItemManager.getDavidIdByPathwayVertex(pathwayVertex)) {
 								GeneMenuItemContainer contexMenuItemContainer = new GeneMenuItemContainer();
+								contexMenuItemContainer.setDataDomain(datadomain);
 								contexMenuItemContainer.setData(pathwayDataDomain.getDavidIDType(), davidID);
 								contextMenuCreator.addContextMenuItemContainer(contexMenuItemContainer);
 							}
@@ -808,8 +800,8 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		gl.glClear(GL.GL_STENCIL_BUFFER_BIT);
 		textureOffset += PathwayRenderStyle.Z_OFFSET;
 		gl.glTranslatef(0, pathwayHeight, textureOffset);
-		if (!this.highlightVertices)
-			augmentationRenderer.setVisible(false);
+		// if (!this.highlightVertices)
+		// augmentationRenderer.setVisible(false);
 		augmentationRenderer.renderPathway(gl, pathway, false);
 		gl.glTranslatef(0, -pathwayHeight, -textureOffset);
 

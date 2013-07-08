@@ -1,3 +1,8 @@
+/*******************************************************************************
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.tourguide.impl.algorithm;
 
 import java.util.List;
@@ -10,6 +15,7 @@ import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.id.IDType;
 import org.caleydo.view.tourguide.spi.algorithm.IComputeElement;
 import org.caleydo.view.tourguide.spi.algorithm.IStratificationAlgorithm;
+import org.eclipse.core.runtime.IProgressMonitor;
 
 public abstract class AGSEAAlgorithm implements IStratificationAlgorithm {
 	protected final Perspective perspective;
@@ -34,36 +40,32 @@ public abstract class AGSEAAlgorithm implements IStratificationAlgorithm {
 		return group;
 	}
 
-	protected abstract void init();
-
 	@Override
 	public final IDType getTargetType(IComputeElement a, IComputeElement b) {
 		IDataDomain dataDomain = perspective.getDataDomain();
 		return ((ATableBasedDataDomain) dataDomain).getDimensionIDType();
 	}
 
-	public final float compute(Set<Integer> geneSet) {
+	public final float compute(Set<Integer> geneSet, IProgressMonitor monitor) {
 		if (geneSet.isEmpty())
 			return Float.NaN;
-		init();
-		return computeImpl(geneSet);
+		return computeImpl(geneSet, monitor);
 	}
 
-	protected abstract float computeImpl(Set<Integer> geneSet);
+	protected abstract float computeImpl(Set<Integer> geneSet, IProgressMonitor monitor);
 
-	protected abstract float computePValueImpl(Set<Integer> geneSet);
+	protected abstract float computePValueImpl(Set<Integer> geneSet, IProgressMonitor monitor);
 
-	final float computePValue(Set<Integer> geneSet) {
+	final float computePValue(Set<Integer> geneSet, IProgressMonitor monitor) {
 		if (geneSet.isEmpty())
 			return Float.NaN;
-		init();
 
-		return computePValueImpl(geneSet);
+		return computePValueImpl(geneSet, monitor);
 	}
 
 	@Override
-	public final float compute(List<Set<Integer>> a, List<Set<Integer>> b) {
-		return compute(a.iterator().next());
+	public final float compute(List<Set<Integer>> a, List<Set<Integer>> b, IProgressMonitor monitor) {
+		return compute(a.iterator().next(), monitor);
 	}
 
 	public final IStratificationAlgorithm asPValue() {
@@ -75,6 +77,11 @@ public abstract class AGSEAAlgorithm implements IStratificationAlgorithm {
 
 		private GSEAAlgorithmPValue(AGSEAAlgorithm underlying) {
 			this.underlying = underlying;
+		}
+
+		@Override
+		public void init(IProgressMonitor monitor) {
+			this.underlying.init(monitor);
 		}
 
 		@Override
@@ -100,8 +107,8 @@ public abstract class AGSEAAlgorithm implements IStratificationAlgorithm {
 		}
 
 		@Override
-		public float compute(List<Set<Integer>> a, List<Set<Integer>> b) {
-			return underlying.computePValue(a.iterator().next());
+		public float compute(List<Set<Integer>> a, List<Set<Integer>> b, IProgressMonitor monitor) {
+			return underlying.computePValue(a.iterator().next(), monitor);
 		}
 	}
 }

@@ -1,23 +1,12 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.tourguide.internal.model;
+
+import java.util.Collection;
+import java.util.Collections;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
@@ -54,6 +43,9 @@ public final class CategoricalPerspectiveRow extends AVirtualArrayScoreRow imple
 		return label;
 	}
 
+	public Integer getDimensionID() {
+		return id;
+	}
 
 	@Override
 	public String getPersistentID() {
@@ -75,6 +67,20 @@ public final class CategoricalPerspectiveRow extends AVirtualArrayScoreRow imple
 		return va;
 	}
 
+	public IDType getCategoryIDType() {
+		return query.getCategoryIDType();
+	}
+
+	@Override
+	public IDType getDimensionIdType() {
+		return getCategoryIDType();
+	}
+
+	@Override
+	public Iterable<Integer> getDimensionIDs() {
+		return Collections.singleton(id);
+	}
+
 	@Override
 	public IDType getIdType() {
 		return query.getDataDomain().getOppositeIDType(query.getCategoryIDType());
@@ -82,7 +88,14 @@ public final class CategoricalPerspectiveRow extends AVirtualArrayScoreRow imple
 
 	@Override
 	public int getGroupSize() {
-		return query.getGroupSize();
+		if (this.perspective != null)
+			super.getGroupSize();
+		return query.getGroupSize(this.id);
+	}
+
+	@Override
+	public Collection<GroupInfo> getGroupInfos() {
+		return query.getGroupInfos(this.id);
 	}
 
 	@Override

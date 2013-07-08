@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.table;
 
 import java.util.ArrayList;
@@ -132,7 +118,6 @@ public class TableView extends ASingleTablePerspectiveSWTView implements ILayerL
 	public void onSelectionUpdate(SelectionManager manager) {
 		if (selectionLayer == null)
 			return;
-
 		Collection<Integer> records = toIndices(tablePerspective.getRecordPerspective(),  selection.getRecordSelectionManager().getElements(SelectionType.SELECTION));
 		Collection<Integer> dimensions = toIndices(tablePerspective.getDimensionPerspective(),  selection.getDimensionSelectionManager().getElements(SelectionType.SELECTION));
 
@@ -141,6 +126,8 @@ public class TableView extends ASingleTablePerspectiveSWTView implements ILayerL
 		model.clearSelection();
 
 		if (records.isEmpty() && dimensions.isEmpty()) { // nothing to be done
+			selectionLayer.addLayerListener(this); // remove me to avoid that I get my updates
+			table.redraw();
 			return;
 		}
 		if (records.isEmpty()) { // just dimensions, select columns
@@ -161,6 +148,8 @@ public class TableView extends ASingleTablePerspectiveSWTView implements ILayerL
 		}
 		if (selectionOnly) // update selection only
 			showJustSelection();
+		selectionLayer.addLayerListener(this); // remove me to avoid that I get my updates
+		table.redraw();
 	}
 
 	/**
@@ -390,13 +379,18 @@ public class TableView extends ASingleTablePerspectiveSWTView implements ILayerL
 		this.table.configure();
 	}
 
-	protected static void configureStyle(NatTable natTable, final IDisplayConverter converter) {
+	protected static void configureStyle(final NatTable natTable, final IDisplayConverter converter) {
 		DefaultNatTableStyleConfiguration natTableConfiguration = new DefaultNatTableStyleConfiguration();
 		natTableConfiguration.hAlign = HorizontalAlignmentEnum.RIGHT; // most of the time numbers
 		natTable.addConfiguration(natTableConfiguration);
 
 		DefaultSelectionStyleConfiguration selectionStyle = new DefaultSelectionStyleConfiguration();
 		selectionStyle.selectionFont = natTableConfiguration.font;
+
+		selectionStyle.selectionBgColor = SelectionType.SELECTION.getColor().getSWTColor(natTable.getDisplay());
+		selectionStyle.selectedHeaderBgColor = selectionStyle.selectionBgColor;
+		selectionStyle.anchorBgColor = selectionStyle.selectionBgColor;
+
 		natTable.addConfiguration(selectionStyle);
 
 		natTable.addConfiguration(new IConfiguration() {

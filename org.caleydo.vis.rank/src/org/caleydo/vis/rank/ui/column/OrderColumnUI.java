@@ -1,28 +1,14 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.vis.rank.ui.column;
 
 import gleem.linalg.Vec2f;
 import gleem.linalg.Vec4f;
 
-import java.awt.Color;
+import org.caleydo.core.util.color.Color;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -70,6 +56,7 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 		this.rowLayout = rowLayout;
 		this.scrollBar = config.createScrollBar(false);
 		this.scrollBar.setCallback(this);
+		this.scrollBar.setWidth(RenderStyle.SCROLLBAR_WIDTH);
 		ranker.addPropertyChangeListener(ColumnRanker.PROP_ORDER, this);
 		ranker.addPropertyChangeListener(ColumnRanker.PROP_INVALID, this);
 		ranker.getTable().addPropertyChangeListener(RankTableModel.PROP_SELECTED_ROW, this);
@@ -270,9 +257,6 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 
 		// render the bands
 		if (!dontneedToRenderBands(w)) {
-			IScrollBar pScroll = previousRanker.getScrollBar();
-			IScrollBar aScroll = this.getScrollBar();
-
 			ITableColumnUI previous = body.getLastCorrespondingColumn(previousRanker, true);
 			ITableColumnUI self = body.getLastCorrespondingColumn(this, true);
 			if (self == null || self == this || previous == null || previous instanceof OrderColumnUI)
@@ -416,12 +400,6 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 				arrow(g, x2 - 7, right.y(), right.w(), left.y() <= 0);
 			}
 		}
-	}
-
-	private Color deltaToColor(int delta, Color gray) {
-		if (delta == 0)
-			return gray;
-		return delta < 0 ? Color.GREEN : Color.RED;
 	}
 
 	protected float getAlphaFromDelta(int delta) {

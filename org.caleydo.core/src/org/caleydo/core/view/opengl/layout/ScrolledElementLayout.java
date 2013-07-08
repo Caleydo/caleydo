@@ -1,28 +1,14 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.view.opengl.layout;
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.GL2ES1;
 
-import org.caleydo.core.util.color.Colors;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
@@ -32,9 +18,9 @@ import org.caleydo.core.view.opengl.util.scrollbar.ScrollBarRenderer;
 
 /**
  * wrapper for an (fixed size) elementlayout to provide scrollbars around it
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public final class ScrolledElementLayout extends Row implements IScrollBarUpdateHandler {
 
@@ -58,8 +44,8 @@ public final class ScrolledElementLayout extends Row implements IScrollBarUpdate
 		tmp.setBottomUp(true);
 
 		hScrollBar = new ScrollBar(0, 10, 5, 5, PickingType.ZOOM_SCROLLBAR, parentView.createNewScrollBarID(), this);
-		ElementLayout hBar = ElementLayouts.wrap(
-				new ScrollBarRenderer(hScrollBar, view, true, dndController, Colors.of(128)), -1);
+		ElementLayout hBar = ElementLayouts.wrap(new ScrollBarRenderer(hScrollBar, view, true, dndController,
+				new Color(0.5f)), -1);
 		hBar.setPixelSizeY(10);
 		tmp.add(hBar);
 
@@ -72,8 +58,8 @@ public final class ScrolledElementLayout extends Row implements IScrollBarUpdate
 		this.add(tmp);
 
 		vScrollBar = new ScrollBar(0, 10, 0, 5, PickingType.ZOOM_SCROLLBAR, parentView.createNewScrollBarID(), this);
-		ElementLayout vBar = ElementLayouts.wrap(
-				new ScrollBarRenderer(vScrollBar, view, false, dndController, Colors.of(128)), 10);
+		ElementLayout vBar = ElementLayouts.wrap(new ScrollBarRenderer(vScrollBar, view, false, dndController,
+				new Color(0.5f)), 10);
 		vBar.setGrabY(true);
 		vBar.setPixelSizeX(10);
 		this.add(vBar);
@@ -104,7 +90,6 @@ public final class ScrolledElementLayout extends Row implements IScrollBarUpdate
 			super.updateSubLayout();
 		}
 	}
-
 
 	void beginScrolling(GL2 gl) {
 		float width = wrapper.getSizeScaledX();

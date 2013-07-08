@@ -1,26 +1,11 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.tourguide.internal.view.col;
 
 import org.caleydo.core.data.perspective.variable.Perspective;
-import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
@@ -57,7 +42,7 @@ public class ScoreRankColumnModel extends FloatRankColumnModel implements IGLRen
 				this.headerMode = EHeaderMode.STRAT;
 		}
 		setHeaderRenderer(this);
-		setFilter(true, true, false);
+		setFilter(true, false, false);
 	}
 
 	public ScoreRankColumnModel(ScoreRankColumnModel copy) {
@@ -70,6 +55,13 @@ public class ScoreRankColumnModel extends FloatRankColumnModel implements IGLRen
 	@Override
 	public ScoreRankColumnModel clone() {
 		return new ScoreRankColumnModel(this);
+	}
+
+	/**
+	 * dirty the mapping to indicate the values might have changed and to clear caches
+	 */
+	public void dirty() {
+		propertySupport.firePropertyChange(PROP_MAPPING, null, data);
 	}
 
 	/**
@@ -92,12 +84,6 @@ public class ScoreRankColumnModel extends FloatRankColumnModel implements IGLRen
 	private static Perspective resolveStratification(IScore score) {
 		if (score instanceof IStratificationScore)
 			return ((IStratificationScore) score).getStratification();
-		return null;
-	}
-
-	private static Group resolveGroup(IScore score) {
-		if (score instanceof IGroupScore)
-			return ((IGroupScore) score).getGroup();
 		return null;
 	}
 

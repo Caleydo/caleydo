@@ -1,28 +1,11 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.view.opengl.layout2;
 
-import org.caleydo.core.util.base.ILabeled;
-import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
-import org.eclipse.swt.SWT;
 
 /**
  * basic interface for the context of a element hierarchy, e.g. one {@link IGLElementContext} per opengl canvas
@@ -77,8 +60,14 @@ public interface IGLElementContext {
 	IPopupLayer getPopupLayer();
 
 	/**
+	 * 
+	 * @return
+	 */
+	ISWTLayer getSWTLayer();
+
+	/**
 	 * chance for a context to initialize an added element
-	 *
+	 * 
 	 * @param element
 	 */
 	void init(GLElement element);
@@ -89,27 +78,4 @@ public interface IGLElementContext {
 	 * @param element
 	 */
 	void takeDown(GLElement element);
-
-	/**
-	 * the the current cursor, using {@link SWT} constants
-	 *
-	 * @param the
-	 *            SWT constant or -1 for the default
-	 */
-	void setCursor(int swtCursorConst);
-
-	/**
-	 * creates a gl canvas specific picking listener that shows the given label
-	 *
-	 * @param label
-	 * @return
-	 */
-	IPickingListener createTooltip(ILabeled label);
-
-	/**
-	 * shows the context menu, defined by the given items
-	 *
-	 * @param items
-	 */
-	void showContextMenu(Iterable<? extends AContextMenuItem> items);
 }

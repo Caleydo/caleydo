@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.view.opengl.layout2;
 
 import gleem.linalg.Vec2f;
@@ -34,26 +20,22 @@ import org.caleydo.core.event.EventListenerManagers.QueuedEventListenerManager;
 import org.caleydo.core.id.object.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.util.base.ILabeled;
 import org.caleydo.core.view.AView;
 import org.caleydo.core.view.ViewManager;
-import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.IGLView;
 import org.caleydo.core.view.opengl.layout2.animation.AnimatedGLElementContainer;
+import org.caleydo.core.view.opengl.layout2.internal.SWTLayer;
+import org.caleydo.core.view.opengl.layout2.util.GLSanityCheck;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.SimplePickingManager;
-import org.caleydo.core.view.opengl.util.text.CompositeTextRenderer;
-import org.caleydo.core.view.opengl.util.text.ITextRenderer;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.data.loader.ResourceLocators;
 import org.caleydo.data.loader.ResourceLocators.IResourceLocator;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 
 import com.google.common.base.Predicate;
 
@@ -78,12 +60,14 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 
 	private boolean visible = true;
 	private GLContextLocal local;
+	private final ISWTLayer swtLayer;
 
 	public AGLElementView(IGLCanvas glCanvas, String viewType, String viewName) {
 		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.GL_VIEW), glCanvas.asComposite(),
 				viewType,
 				viewName);
 		this.canvas = glCanvas;
+		this.swtLayer = new SWTLayer(glCanvas);
 		this.canvas.addGLEventListener(this);
 		this.canvas.addMouseListener(pickingManager.getListener());
 	}
@@ -97,16 +81,6 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 	@Override
 	public final IGLElementParent getParent() {
 		return null;
-	}
-
-	@Override
-	public final IPickingListener createTooltip(ILabeled label) {
-		return canvas.createTooltip(label);
-	}
-
-	@Override
-	public final void showContextMenu(Iterable<? extends AContextMenuItem> items) {
-		ViewManager.get().getCanvasFactory().showPopupMenu(canvas, items);
 	}
 
 	@Override
@@ -154,11 +128,10 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 	@Override
 	public void init(GLAutoDrawable drawable) {
 		GL2 gl = drawable.getGL().getGL2();
-		ITextRenderer text = new CompositeTextRenderer(8, 16, 24, 40);
 		IResourceLocator locator = createResourceLocator();
 		TextureManager textures = createTextureManager(locator);
 
-		local = new GLContextLocal(text, textures, locator);
+		local = new GLContextLocal(textures, locator);
 
 		AGLView.initGLContext(gl);
 
@@ -206,6 +179,10 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 		GL2 gl = drawable.getGL().getGL2();
 		// clear screen
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
+
+		// gl.glActiveTexture(GL.GL_TEXTURE0);
+		gl.glBindTexture(GL.GL_TEXTURE_2D, GL.GL_NONE);
+
 		gl.glLoadIdentity();
 		gl.glTranslatef(0.375f, 0.375f, 0);
 
@@ -228,6 +205,8 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 			root.getMouseLayer().relayout();
 		}
 
+		GLSanityCheck s = null;
+		assert (s = GLSanityCheck.create(gl)) != null;
 		pickingManager.doPicking(g.gl, new Runnable() {
 			@Override
 			public void run() {
@@ -235,14 +214,17 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 			}
 		});
 		g.checkError();
+		assert s != null && s.verify(gl);
 
 		// 2. pass: layouting
 		root.layout(deltaTimeMs);
 
+		assert (s = GLSanityCheck.create(gl)) != null;
 		// 3. pass: rendering
 		root.render(g);
 
 		g.checkError();
+		assert s != null && s.verify(gl);
 	}
 
 
@@ -280,6 +262,11 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 	@Override
 	public final IPopupLayer getPopupLayer() {
 		return root == null ? null : root.getPopupLayer();
+	}
+
+	@Override
+	public final ISWTLayer getSWTLayer() {
+		return swtLayer;
 	}
 
 	@Override
@@ -327,18 +314,6 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 	@Override
 	public final void repaintPick() {
 
-	}
-
-	@Override
-	public final void setCursor(final int swtCursorConst) {
-		final Composite c = canvas.asComposite();
-		final Display d = c.getDisplay();
-		d.asyncExec(new Runnable() {
-			@Override
-			public void run() {
-				c.setCursor(swtCursorConst < 0 ? null : d.getSystemCursor(swtCursorConst));
-			}
-		});
 	}
 
 

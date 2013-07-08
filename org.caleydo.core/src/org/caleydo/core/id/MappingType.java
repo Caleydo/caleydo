@@ -1,25 +1,12 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.id;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import org.jgrapht.graph.DefaultWeightedEdge;
 
@@ -33,17 +20,17 @@ public class MappingType extends DefaultWeightedEdge {
 
 	private static final long serialVersionUID = 1L;
 
-	private IDType fromIDType;
-	private IDType toIDType;
+	private final IDType fromIDType;
+	private final IDType toIDType;
 
-	private boolean isMultiMap = false;
+	private final boolean isMultiMap;
 	/**
 	 * Flag telling whether this MappingType has an equivalent reverse
 	 * MappingType
 	 */
-	private boolean hasReverseMap = false;
+	private final boolean hasReverseMap;
 
-	private static HashMap<String, MappingType> registeredMappingTypes = new HashMap<String, MappingType>();
+	private static Map<String, MappingType> registeredMappingTypes = new HashMap<>();
 
 	/**
 	 * Constructor.
@@ -55,7 +42,6 @@ public class MappingType extends DefaultWeightedEdge {
 	 */
 	private MappingType(IDType fromIDType, IDType toIDType, boolean isMultiMap,
 			boolean hasReverseMap) {
-		super();
 		this.fromIDType = fromIDType;
 		this.toIDType = toIDType;
 		this.isMultiMap = isMultiMap;
@@ -63,9 +49,8 @@ public class MappingType extends DefaultWeightedEdge {
 	}
 
 	/**
-	 * Factory method for a new mapping type. Creates a new mapping type or
-	 * retrieves an existing mapping type if for the given parameters a mapping
-	 * type was previously registered.
+	 * Factory method for a new mapping type. Creates a new mapping type or retrieves an existing mapping type if for
+	 * the given parameters a mapping type was previously registered.
 	 * 
 	 * @param fromIDType
 	 * @param toIDType
@@ -93,8 +78,7 @@ public class MappingType extends DefaultWeightedEdge {
 	}
 
 	/**
-	 * Get a previously registered mapping type based on iths source and target
-	 * id type
+	 * Get a previously registered mapping type based on iths source and target id type
 	 * 
 	 * @param fromIDType
 	 * @param toIDType
@@ -116,27 +100,12 @@ public class MappingType extends DefaultWeightedEdge {
 	}
 
 	/**
-	 * @param fromIDType
-	 *            setter, see {@link #fromIDType}
-	 */
-	public void setFromIDType(IDType fromIDType) {
-		this.fromIDType = fromIDType;
-	}
-
-	/**
 	 * @return the toIDType, see {@link #toIDType}
 	 */
 	public IDType getToIDType() {
 		return toIDType;
 	}
 
-	/**
-	 * @param toIDType
-	 *            setter, see {@link #toIDType}
-	 */
-	public void setToIDType(IDType toIDType) {
-		this.toIDType = toIDType;
-	}
 
 	/**
 	 * @return the isMultiMap, see {@link #isMultiMap}

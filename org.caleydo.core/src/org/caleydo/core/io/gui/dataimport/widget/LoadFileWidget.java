@@ -1,24 +1,11 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.io.gui.dataimport.widget;
 
+import org.caleydo.core.util.base.ICallback;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -45,7 +32,7 @@ public class LoadFileWidget {
 		Group group = new Group(parent, SWT.SHADOW_ETCHED_IN);
 		group.setText("Input File");
 		group.setLayout(new GridLayout(2, false));
-		group.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		group.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
 		Button openFileButton = new Button(group, SWT.PUSH);
 		openFileButton.setText(label);
@@ -57,7 +44,7 @@ public class LoadFileWidget {
 		});
 		this.label = new Text(group, SWT.BORDER);
 		this.label.setEnabled(false);
-		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
+		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
 		gridData.widthHint = 200;
 		this.label.setLayoutData(gridData);
 	}
@@ -70,10 +57,10 @@ public class LoadFileWidget {
 		String[] filterExt = { "*.csv;*.txt;*.gct", "*.*" };
 		fileDialog.setFilterExtensions(filterExt);
 
-		String inputFileName = fileDialog.open().trim();
-
+		String inputFileName = fileDialog.open();
 		if (inputFileName == null)
 			return;
+		inputFileName = inputFileName.trim();
 		label.setText(inputFileName);
 		callback.on(inputFileName);
 	}

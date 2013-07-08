@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.vis.rank.internal.ui;
 
 
@@ -25,6 +11,7 @@ import org.caleydo.vis.rank.internal.event.FilterEvent;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -37,7 +24,7 @@ import org.eclipse.swt.widgets.Shell;
  * @author Samuel Gratzl
  *
  */
-public class FloatFilterDialog extends AFilterDalog {
+public class FloatFilterDialog extends AFilterDialog {
 
 	private Button filterNotMappedUI;
 	private Button filterMissingUI;
@@ -47,8 +34,8 @@ public class FloatFilterDialog extends AFilterDalog {
 
 
 	public FloatFilterDialog(Shell parentShell, String title, Object receiver, boolean filterNotMapped,
-			boolean filterMissing, boolean filterGlobally, boolean hasSnapshots) {
-		super(parentShell, title, receiver, filterGlobally, hasSnapshots);
+			boolean filterMissing, boolean filterGlobally, boolean hasSnapshots, Point loc) {
+		super(parentShell, "Filter " + title, receiver, filterGlobally, hasSnapshots, loc);
 		this.filterMissing = filterMissing;
 		this.filterNotMapped = filterNotMapped;
 	}
@@ -62,13 +49,13 @@ public class FloatFilterDialog extends AFilterDalog {
 	@Override
 	protected void createSpecificFilterUI(Composite composite) {
 		filterNotMappedUI = new Button(composite, SWT.CHECK);
-		filterNotMappedUI.setText("Filter Not Mapped Entries?");
-		filterNotMappedUI.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, true));
+		filterNotMappedUI.setText("Filter not mapped entries?");
+		filterNotMappedUI.setLayoutData(twoColumns(new GridData(SWT.LEFT, SWT.CENTER, true, true)));
 		filterNotMappedUI.setSelection(filterNotMapped);
 
 		filterMissingUI = new Button(composite, SWT.CHECK);
-		filterMissingUI.setText("Filter Missing Value Entries?");
-		filterMissingUI.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, true));
+		filterMissingUI.setText("Filter missing value entries?");
+		filterMissingUI.setLayoutData(twoColumns(new GridData(SWT.LEFT, SWT.CENTER, true, true)));
 		filterMissingUI.setSelection(filterMissing);
 
 		Label separator = new Label(composite, SWT.SEPARATOR | SWT.HORIZONTAL);
@@ -77,17 +64,27 @@ public class FloatFilterDialog extends AFilterDalog {
 		SelectionAdapter adapter = new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				triggerEvent();
+				triggerEvent(false);
 			}
 		};
 		filterNotMappedUI.addSelectionListener(adapter);
 		filterMissingUI.addSelectionListener(adapter);
+
+		createApplyGlobally(composite);
+		addOKButton(composite, true);
 	}
 
 	@Override
-	protected void triggerEvent() {
-		EventPublisher.trigger(new FilterEvent(new FilterChecked(filterNotMappedUI.getSelection(), filterMissingUI
-				.getSelection(), filterGloballyUI.getSelection())).to(receiver));
+	protected void triggerEvent(boolean cancel) {
+		boolean a, b;
+		if (cancel) {
+			a = filterNotMapped;
+			b = filterMissing;
+		} else {
+			a = filterNotMappedUI.getSelection();
+			b = filterMissingUI.getSelection();
+		}
+		EventPublisher.trigger(new FilterEvent(new FilterChecked(a, b, isFilterGlobally())).to(receiver));
 	}
 
 	public static class FilterChecked {

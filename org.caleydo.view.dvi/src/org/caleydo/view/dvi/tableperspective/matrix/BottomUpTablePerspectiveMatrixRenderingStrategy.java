@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.dvi.tableperspective.matrix;
 
 import java.awt.geom.Point2D;
@@ -28,6 +14,7 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
 import org.caleydo.core.view.opengl.util.button.Button;
@@ -82,7 +69,7 @@ class BottomUpTablePerspectiveMatrixRenderingStrategy extends ATablePerspectiveM
 		float currentPositionY = captionRowHeight + captionSpacingY;
 		float textHeight = pixelGLConverter.getGLHeightForPixelHeight(TEXT_HEIGHT_PIXELS);
 
-		textRenderer.setColor(new float[] { 0, 0, 0 });
+		textRenderer.setColor(Color.BLACK);
 		textRenderer.renderTextInBounds(gl, rowsCaption, currentPositionX + captionSpacingX, captionRowHeight
 				- captionSpacingY - textHeight + pixelGLConverter.getGLHeightForPixelHeight(3), 0, captionColumnWidth
 				- textHeight, textHeight);
@@ -91,7 +78,7 @@ class BottomUpTablePerspectiveMatrixRenderingStrategy extends ATablePerspectiveM
 		gl.glTranslatef(currentPositionX + captionColumnWidth - captionSpacingX, captionSpacingY, 0);
 		gl.glRotatef(90, 0, 0, 1);
 		// gl.glColor3f(0, 0, 0);
-		textRenderer.setColor(new float[] { 0, 0, 0 });
+		textRenderer.setColor(Color.BLACK);
 		textRenderer.renderTextInBounds(gl, columnsCaption, 0, 0, 0, captionRowHeight - textHeight, textHeight);
 		gl.glPopMatrix();
 
@@ -150,13 +137,16 @@ class BottomUpTablePerspectiveMatrixRenderingStrategy extends ATablePerspectiveM
 				childIndent = captionSpacingY * 2;
 
 				gl.glColor4fv(groupColor, 0);
-
+				// gl.glColor3f(1, 0, 0);
+				gl.glPushName(view.getPickingManager().getPickingID(view.getID(),
+						PickingType.GROUP.name() + node.getID(), row.id.hashCode()));
 				gl.glBegin(GL2.GL_QUADS);
 				gl.glVertex3f(currentPositionX, currentPositionY, 0.1f);
 				gl.glVertex3f(currentPositionX + captionColumnWidth + captionSpacingX, currentPositionY, 0.1f);
 				gl.glVertex3f(currentPositionX + captionColumnWidth + captionSpacingX, currentPositionY + rowHeight,
 						0.1f);
 				gl.glVertex3f(currentPositionX, currentPositionY + rowHeight, 0.1f);
+				gl.glPopName();
 
 				gl.glColor4fv(getPerspectiveColor(), 0);
 
@@ -164,6 +154,15 @@ class BottomUpTablePerspectiveMatrixRenderingStrategy extends ATablePerspectiveM
 				gl.glVertex3f(currentPositionX + childIndent, currentPositionY, 0.1f);
 				gl.glVertex3f(currentPositionX + childIndent, currentPositionY + rowHeight, 0.1f);
 				gl.glVertex3f(currentPositionX, currentPositionY + rowHeight, 0.1f);
+
+				// gl.glColor3f(1, 0, 0);
+				// gl.glPushName(view.getPickingManager().getPickingID(view.getID(),
+				// PickingType.GROUP.name() + node.getID(), row.id.hashCode()));
+				// gl.glVertex3f(currentPositionX + childIndent, currentPositionY, 0.1f);
+				// gl.glVertex3f(currentPositionX + captionColumnWidth, currentPositionY, 0.1f);
+				// gl.glVertex3f(currentPositionX + captionColumnWidth, currentPositionY + rowHeight, 0.1f);
+				// gl.glVertex3f(currentPositionX + childIndent, currentPositionY + rowHeight, 0.1f);
+				// gl.glPopName();
 
 				gl.glEnd();
 			}
@@ -173,7 +172,7 @@ class BottomUpTablePerspectiveMatrixRenderingStrategy extends ATablePerspectiveM
 			float textPositionY = currentPositionY + (rowHeight - textHeight) / 2.0f
 					+ pixelGLConverter.getGLHeightForPixelHeight(2);
 
-			textRenderer.setColor(new float[] { 0, 0, 0 });
+			textRenderer.setColor(Color.BLACK);
 			textRenderer.renderTextInBounds(gl, row.labelProvider.getLabel(), currentPositionX + captionSpacingX
 					+ parentIndent + childIndent, textPositionY, 0.1f, captionColumnWidth - childIndent - parentIndent
 					- 2 * captionSpacingX, textHeight);
@@ -261,12 +260,14 @@ class BottomUpTablePerspectiveMatrixRenderingStrategy extends ATablePerspectiveM
 				childIndent = captionSpacingY * 2;
 
 				gl.glColor4fv(groupColor, 0);
-
+				gl.glPushName(view.getPickingManager().getPickingID(view.getID(),
+						PickingType.GROUP.name() + node.getID(), column.id.hashCode()));
 				gl.glBegin(GL2.GL_QUADS);
 				gl.glVertex3f(currentPositionX, captionRowHeight + captionSpacingY, 0.1f);
 				gl.glVertex3f(currentPositionX + currentColumnWidth, captionRowHeight + captionSpacingY, 0.1f);
 				gl.glVertex3f(currentPositionX + currentColumnWidth, 0, 0.1f);
 				gl.glVertex3f(currentPositionX, 0, 0.1f);
+				gl.glPopName();
 
 				gl.glColor4fv(perspectiveColor, 0);
 
@@ -285,7 +286,7 @@ class BottomUpTablePerspectiveMatrixRenderingStrategy extends ATablePerspectiveM
 			gl.glTranslatef(textPositionX, parentIndent + childIndent + captionSpacingY, 0.1f);
 			gl.glRotatef(90, 0, 0, 1);
 			// gl.glColor3f(0, 0, 0);
-			textRenderer.setColor(new float[] { 0, 0, 0 });
+			textRenderer.setColor(Color.BLACK);
 			textRenderer.renderTextInBounds(gl, column.labelProvider.getLabel(), 0, 0, 0, captionRowHeight
 					- parentIndent - childIndent - 2 * captionSpacingY, textHeight);
 			gl.glPopMatrix();

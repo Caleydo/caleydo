@@ -1,3 +1,8 @@
+/*******************************************************************************
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.tourguide.internal.compute;
 
 import java.util.Collection;
@@ -19,8 +24,15 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 import com.google.common.base.Stopwatch;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Multimap;
 
+/**
+ * work horse for computing stratifaction as well as group scores
+ *
+ * @author Samuel Gratzl
+ *
+ */
 public class ComputeScoreJob extends AScoreJob {
 	private static final Logger log = Logger.create(ComputeScoreJob.class);
 
@@ -35,11 +47,13 @@ public class ComputeScoreJob extends AScoreJob {
 	public ComputeScoreJob(Multimap<IComputeElement, Group> data, Collection<IComputedStratificationScore> stratScores,
 			Collection<IComputedGroupScore> groupScores, Object receiver) {
 		super(receiver);
+		// split in stratification and reference stratification scores
 		Pair<Collection<IComputedStratificationScore>, Collection<IComputedReferenceStratificationScore>> strats = partition(
 				stratScores, IComputedReferenceStratificationScore.class);
 		this.stratMetrics = strats.getFirst();
 		this.stratScores = strats.getSecond();
 
+		// split in group scores and reference group scores
 		Pair<Collection<IComputedGroupScore>, Collection<IComputedReferenceGroupScore>> groups = partition(groupScores,
 				IComputedReferenceGroupScore.class);
 		this.groupMetrics = groups.getFirst();
@@ -53,21 +67,36 @@ public class ComputeScoreJob extends AScoreJob {
 				|| (groupMetrics.isEmpty() && groupScores.isEmpty() && stratScores.isEmpty() && stratMetrics.isEmpty()))
 			return Status.OK_STATUS;
 
-		final int total =data.keySet().size();
-		monitor.beginTask("Compute Tour Guide Scores", total);
+		final int total = data.keySet().size() + 1;
+		monitor.beginTask("Compute LineUp Scores", total);
 		log.info(
 				"computing group similarity of %d against %d group scores, %d group metrics, %d stratification scores and %d stratification metrics",
 				data.size(), groupScores.size(), groupMetrics.size(), stratScores.size(), stratMetrics.size());
 		Stopwatch w = new Stopwatch().start();
 
-		Iterator<IComputeElement> it = this.data.keySet().iterator();
+		progress(0, "Initializing...");
+		for (IComputedStratificationScore score : Iterables.concat(stratMetrics, stratScores)) {
+			score.getAlgorithm().init(monitor);
+			if (Thread.interrupted() || monitor.isCanceled())
+				return Status.CANCEL_STATUS;
+		}
+		for (IComputedGroupScore score : Iterables.concat(groupMetrics, groupScores)) {
+			score.getAlgorithm().init(monitor);
+			if (Thread.interrupted() || monitor.isCanceled())
+				return Status.CANCEL_STATUS;
+		}
 		int c = 0;
+		monitor.worked(1);
+		progress(c++ / (float) total, "Computing...");
+
+		Iterator<IComputeElement> it = this.data.keySet().iterator();
 		// first time the one run to compute the progress frequency interval
 		{
 			IComputeElement as = it.next();
 			if (!run(monitor, as))
 				return Status.CANCEL_STATUS;
-			monitor.worked(c++);
+			monitor.worked(1);
+			c++;
 		}
 		final int fireEvery = fireEvery(w.elapsedMillis());
 
@@ -84,7 +113,8 @@ public class ComputeScoreJob extends AScoreJob {
 			if (!run(monitor, as))
 				return Status.CANCEL_STATUS;
 
-			monitor.worked(c++);
+			monitor.worked(1);
+			c++;
 		}
 		System.out.println("done in " + w);
 		monitor.done();
@@ -114,15 +144,29 @@ public class ComputeScoreJob extends AScoreJob {
 		// all metrics
 		for (IComputedGroupScore metric : this.groupMetrics) {
 			IGroupAlgorithm algorithm = metric.getAlgorithm();
+			if (Thread.interrupted() || monitor.isCanceled())
+				return Status.CANCEL_STATUS;
+
 			IDType target = algorithm.getTargetType(as, as);
+
 			for (Group ag : this.data.get(as)) {
 				if (Thread.interrupted() || monitor.isCanceled())
 					return Status.CANCEL_STATUS;
+
 				if (metric.contains(as, ag) || !metric.getFilter().doCompute(as, ag, as, null))
-					continue;
+					continue; // skip as already in the cache or don't compute this pair
+
 				Set<Integer> reference = get(as, target, target);
 				Set<Integer> tocompute = get(as, ag, target, target);
-				float v = algorithm.compute(tocompute, reference);
+
+				if (Thread.interrupted() || monitor.isCanceled())
+					return Status.CANCEL_STATUS;
+
+				float v = algorithm.compute(tocompute, ag, reference, null, monitor);
+
+				if (Thread.interrupted() || monitor.isCanceled())
+					return Status.CANCEL_STATUS;
+
 				metric.put(ag, v);
 			}
 		}
@@ -131,17 +175,30 @@ public class ComputeScoreJob extends AScoreJob {
 		for (IComputedReferenceGroupScore score : this.groupScores) {
 			final IComputeElement rs = score.asComputeElement();
 			final IDType sType = rs.getIdType();
+			Group sGroup = score.getGroup();
 
 			IGroupAlgorithm algorithm = score.getAlgorithm();
+
 			IDType target = algorithm.getTargetType(as, rs);
+
 			for (Group ag : this.data.get(as)) {
 				if (Thread.interrupted() || monitor.isCanceled())
 					return Status.CANCEL_STATUS;
+
 				if (score.contains(as, ag) || !score.getFilter().doCompute(as, ag, rs, score.getGroup()))
 					continue;
+
 				Set<Integer> tocompute = get(as, ag, target, sType);
-				Set<Integer> reference = get(rs, score.getGroup(), target, aType);
-				float v = algorithm.compute(tocompute, reference);
+				Set<Integer> reference = get(rs, sGroup, target, aType);
+
+				if (Thread.interrupted() || monitor.isCanceled())
+					return Status.CANCEL_STATUS;
+
+				float v = algorithm.compute(tocompute, ag, reference, score.getGroup(), monitor);
+
+				if (Thread.interrupted() || monitor.isCanceled())
+					return Status.CANCEL_STATUS;
+
 				score.put(ag, v);
 			}
 		}

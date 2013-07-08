@@ -1,27 +1,12 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package university.wur;
 
 import static demo.RankTableDemo.toFloat;
 
-import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -32,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.vis.rank.data.AFloatFunction;
@@ -213,7 +199,7 @@ public class WorldUniversityYear {
 		}
 		if (addStars) {
 			StarsRankColumnModel s = new StarsRankColumnModel(new ValueGetter(year, COL_QSSTARS), GLRenderers.drawText(
-					"QS Stars", VAlign.CENTER), Color.decode("#FECC5C"), Color.decode("#FFFFB2"), 6);
+					"QS Stars", VAlign.CENTER), new Color("#FECC5C"), new Color("#FFFFB2"), 6);
 			table.add(s);
 		}
 		return stacked;
@@ -238,7 +224,7 @@ public class WorldUniversityYear {
 
 	private static FloatRankColumnModel col(Function<IRow, WorldUniversityYear> year, int col, String text,
 			String color, String bgColor) {
-		return col(year, col, text, Color.decode(color), Color.decode(bgColor));
+		return col(year, col, text, new Color(color), new Color(bgColor));
 	}
 
 	private static FloatRankColumnModel col(Function<IRow, WorldUniversityYear> year, int col, String text,

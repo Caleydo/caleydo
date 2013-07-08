@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.view.opengl.layout2.internal;
 
 import static org.caleydo.core.view.opengl.layout2.IPopupLayer.FLAG_BORDER;
@@ -26,7 +12,7 @@ import static org.caleydo.core.view.opengl.layout2.IPopupLayer.FLAG_RESIZEABLE;
 import gleem.linalg.Vec2f;
 import gleem.linalg.Vec4f;
 
-import java.awt.Color;
+import org.caleydo.core.util.color.Color;
 import java.util.List;
 
 import org.caleydo.core.view.opengl.layout2.GLElement;
@@ -113,19 +99,19 @@ class PopupElement extends GLElementContainer implements IGLLayout, IGLRenderer,
 			return;
 		switch (pick.getPickingMode()) {
 		case MOUSE_OVER:
-			context.setCursor(SWT.CURSOR_HAND);
+			context.getSWTLayer().setCursor(SWT.CURSOR_HAND);
 			break;
 		case CLICKED:
 			pick.setDoDragging(true);
 			break;
 		case MOUSE_OUT:
 			if (!pick.isDoDragging())
-				context.setCursor(-1);
+				context.getSWTLayer().resetCursor();
 			break;
 		case MOUSE_RELEASED:
 			if (!pick.isDoDragging())
 				return;
-			context.setCursor(-1);
+			context.getSWTLayer().resetCursor();
 			break;
 		case DRAGGED:
 			int dx = pick.getDx();
@@ -222,14 +208,14 @@ class PopupElement extends GLElementContainer implements IGLLayout, IGLRenderer,
 		protected void onMouseOver(Pick pick) {
 			if (pick.isAnyDragging())
 				return;
-			context.setCursor(SWT.CURSOR_SIZESE);
+			context.getSWTLayer().setCursor(SWT.CURSOR_SIZESE);
 		}
 
 		@Override
 		protected void onMouseOut(Pick pick) {
 			if (pick.isAnyDragging())
 				return;
-			context.setCursor(-1);
+			context.getSWTLayer().resetCursor();
 		}
 
 		@Override

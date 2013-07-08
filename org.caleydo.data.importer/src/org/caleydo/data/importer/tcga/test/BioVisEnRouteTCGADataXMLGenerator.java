@@ -1,19 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
- * University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
- * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
- * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with this program. If not, see
- * <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.data.importer.tcga.test;
 
 import org.caleydo.core.data.collection.EDataType;
@@ -27,7 +16,6 @@ import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.io.ParsingRule;
 import org.caleydo.core.util.color.Color;
-import org.caleydo.core.util.color.Colors;
 import org.caleydo.data.importer.setupgenerator.DataSetDescriptionSerializer;
 import org.caleydo.datadomain.genetic.TCGADefinitions;
 
@@ -174,7 +162,7 @@ public class BioVisEnRouteTCGADataXMLGenerator extends DataSetDescriptionSeriali
 		categoricalClassDescription.setRawDataType(EDataType.INTEGER);
 		categoricalClassDescription.addCategoryProperty(-2, "Homozygous deletion", new Color("0571b0"));
 		categoricalClassDescription.addCategoryProperty(-1, "Heterozygous deletion", new Color("5f99ba"));
-		categoricalClassDescription.addCategoryProperty(0, "NORMAL", Colors.NEUTRAL_GREY);
+		categoricalClassDescription.addCategoryProperty(0, "NORMAL", Color.NEUTRAL_GREY);
 		categoricalClassDescription.addCategoryProperty(1, "Low level amplification", new Color("c95d6e"));
 		categoricalClassDescription.addCategoryProperty(2, "High level amplification", new Color("c4001f"));
 
@@ -205,8 +193,8 @@ public class BioVisEnRouteTCGADataXMLGenerator extends DataSetDescriptionSeriali
 		@SuppressWarnings("unchecked")
 		CategoricalClassDescription<Integer> categoricalClassDescription = (CategoricalClassDescription<Integer>) mutationDataDescription
 				.getDataDescription().getCategoricalClassDescription();
-		categoricalClassDescription.addCategoryProperty(0, "Not Mutated", Colors.NEUTRAL_GREY);
-		categoricalClassDescription.addCategoryProperty(1, "Mutated", Colors.RED);
+		categoricalClassDescription.addCategoryProperty(0, "Not Mutated", Color.NEUTRAL_GREY);
+		categoricalClassDescription.addCategoryProperty(1, "Mutated", Color.RED);
 
 		mutationDataDescription.setNumberOfHeaderLines(1);
 

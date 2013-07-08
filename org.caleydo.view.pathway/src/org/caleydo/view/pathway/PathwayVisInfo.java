@@ -1,6 +1,11 @@
+/*******************************************************************************
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.pathway;
 
-import org.caleydo.core.view.opengl.layout.util.multiform.IEmbeddedVisualizationInfo;
+import org.caleydo.core.view.opengl.layout.util.multiform.DefaultVisInfo;
 
 /**
  * VisInfo for {@link GLPathway}
@@ -8,19 +13,14 @@ import org.caleydo.core.view.opengl.layout.util.multiform.IEmbeddedVisualization
  * @author Christian Partl
  *
  */
-public class PathwayVisInfo implements IEmbeddedVisualizationInfo {
+public class PathwayVisInfo extends DefaultVisInfo {
 
 	public PathwayVisInfo() {
 	}
 
 	@Override
-	public EScalingEntity getPrimaryWidthScalingEntity() {
-		return null;
-	}
-
-	@Override
-	public EScalingEntity getPrimaryHeightScalingEntity() {
-		return null;
+	public String getLabel() {
+		return GLPathway.VIEW_NAME;
 	}
 
 }

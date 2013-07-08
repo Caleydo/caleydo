@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.view.opengl.canvas;
 
 import gleem.linalg.Vec3f;
@@ -27,6 +13,7 @@ import javax.media.opengl.GL2;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.IDataDomainBasedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
@@ -117,7 +104,7 @@ public class GLTexture extends AGLView implements IDataDomainBasedView<IDataDoma
 						new Vec3f(viewFrustum.getRight(), viewFrustum.getBottom(), 0),
 						new Vec3f(viewFrustum.getRight(), viewFrustum.getTop()
 								- topMargin, 0), new Vec3f(viewFrustum.getLeft(),
-								viewFrustum.getTop() - topMargin, 0), 1, 1, 1, 1);
+ viewFrustum.getTop() - topMargin, 0), Color.WHITE);
 			} catch (IllegalStateException e) {
 				// Render nothing if texture does not exist
 			}
@@ -125,7 +112,7 @@ public class GLTexture extends AGLView implements IDataDomainBasedView<IDataDoma
 		// gl.glPopName();
 
 		if (currentSelectionType != SelectionType.NORMAL) {
-			gl.glColor3fv(currentSelectionType.getColor(), 0);
+			gl.glColor3fv(currentSelectionType.getColor().getRGB(), 0);
 			gl.glLineWidth(4);
 			gl.glBegin(GL.GL_LINE_LOOP);
 			gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getBottom(), 0);

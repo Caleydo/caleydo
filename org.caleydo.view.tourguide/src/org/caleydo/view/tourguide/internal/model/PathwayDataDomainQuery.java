@@ -1,33 +1,17 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.tourguide.internal.model;
 
-import static org.caleydo.vis.rank.model.StringRankColumnModel.starToRegex;
-
 import java.util.List;
-import java.util.Objects;
-import java.util.regex.Pattern;
 
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
-import org.caleydo.datadomain.pathway.data.PathwayRecordPerspective;
+import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
+import org.caleydo.datadomain.pathway.manager.PathwayManager;
+import org.caleydo.vis.rank.model.RankTableModel;
 
 import com.google.common.collect.Lists;
 
@@ -36,7 +20,6 @@ import com.google.common.collect.Lists;
  *
  */
 public class PathwayDataDomainQuery extends ADataDomainQuery {
-	private String matches = null;
 	private final EPathwayDatabaseType type;
 
 	public PathwayDataDomainQuery(PathwayDataDomain dataDomain, EPathwayDatabaseType type) {
@@ -57,40 +40,43 @@ public class PathwayDataDomainQuery extends ADataDomainQuery {
 
 	@Override
 	public boolean apply(AScoreRow row) {
-		if (matches == null)
-			return true;
-		assert row.getDataDomain() == dataDomain;
-		return Pattern.matches(starToRegex(matches), row.getLabel());
+		return true;
 	}
 
 	@Override
 	protected List<AScoreRow> getAll() {
-		PathwayDataDomain p = (PathwayDataDomain) dataDomain;
 		List<AScoreRow> r = Lists.newArrayList();
-		for (PathwayRecordPerspective per : p.getPathwayRecordPerspectives()) {
-			if (per.getPathway().getType() != type)
+		for (PathwayGraph per : PathwayManager.get().getAllItems()) {
+			if (per.getType() != type)
 				continue;
 			r.add(new PathwayPerspectiveRow(per));
 		}
 		return r;
 	}
 
-	public void setMatches(String matches) {
-		if (Objects.equals(matches, this.matches))
-			return;
-		this.matches = matches;
-		updateFilter();
-	}
-
-	/**
-	 * @return the matches, see {@link #matches}
-	 */
-	public String getMatches() {
-		return matches;
+	@Override
+	public List<AScoreRow> onDataDomainUpdated() {
+		// up to now not way to create new pathways
+		return null;
 	}
 
 	@Override
 	public boolean hasFilter() {
-		return this.matches != null;
+		return false;
+	}
+
+	@Override
+	public boolean isFilteringPossible() {
+		return false;
+	}
+
+	@Override
+	public void createSpecificColumns(RankTableModel table) {
+
+	}
+
+	@Override
+	public void removeSpecificColumns(RankTableModel table) {
+
 	}
 }

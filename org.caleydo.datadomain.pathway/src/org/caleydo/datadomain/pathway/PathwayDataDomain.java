@@ -1,25 +1,12 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
- * University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
- * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
- * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with this program. If not, see
- * <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.datadomain.pathway;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -30,22 +17,18 @@ import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.datadomain.ADataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
 import org.caleydo.core.event.data.DataDomainUpdateEvent;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
-import org.caleydo.core.id.IIDTypeMapper;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
-import org.caleydo.datadomain.pathway.data.PathwayRecordPerspective;
+import org.caleydo.datadomain.genetic.EGeneIDTypes;
 import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
-import org.caleydo.datadomain.pathway.graph.PathwayGraph;
-import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayDatabase;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
@@ -57,8 +40,6 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
-
-import com.google.common.collect.Lists;
 
 /**
  * The data domain for pathways triggers the loading of the pathways from KEGG.
@@ -98,12 +79,6 @@ public class PathwayDataDomain extends ADataDomain {
 	protected IDType metaboliteIDType;
 
 	/**
-	 * a list of special record perspectives holding a pathway and their corresponding david ids
-	 */
-	@XmlTransient
-	private Collection<PathwayRecordPerspective> pathwayRecordPerspectives = Lists.newArrayList();
-
-	/**
 	 * Constructor.
 	 */
 	public PathwayDataDomain() {
@@ -132,9 +107,11 @@ public class PathwayDataDomain extends ADataDomain {
 
 		primaryIDType = IDType.getIDType("PATHWAY_VERTEX");
 
-		geneIDMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(IDCategory.getIDCategory("GENE"));
+		final IDCategory gene = IDCategory.getIDCategory(EGeneIDTypes.GENE.name());
 
-		addIDCategory(IDCategory.getIDCategory("GENE"));
+		geneIDMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(gene);
+
+		addIDCategory(gene);
 
 		metaboliteIDCategory = IDCategory.registerCategory("METABOLITE");
 
@@ -182,32 +159,7 @@ public class PathwayDataDomain extends ADataDomain {
 
 		pathwayManager.notifyPathwayLoadingFinished(true);
 
-		pathwayRecordPerspectives.clear();
-		IIDTypeMapper<Integer, Integer> mapper = getGeneIDMappingManager().getIDTypeMapper(
-				PathwayVertexRep.getIdType(), getDavidIDType());
-		for (PathwayGraph pathway : pathwayManager.getAllItems()) {
-			PathwayRecordPerspective p = new PathwayRecordPerspective(pathway, this);
-			List<Integer> idsInPathway = new ArrayList<Integer>();
-			for (PathwayVertexRep vertexRep : pathway.vertexSet()) {
-				Set<Integer> ids = mapper.apply(vertexRep.getID());
-				if (ids != null)
-					idsInPathway.addAll(ids);
-			}
-			PerspectiveInitializationData data = new PerspectiveInitializationData();
-			data.setData(idsInPathway);
-			p.init(data);
-			// p.reset();
-			pathwayRecordPerspectives.add(p);
-		}
-
 		super.run();
-	}
-
-	/**
-	 * @return the pathwayRecordPerspectives, see {@link #pathwayRecordPerspectives}
-	 */
-	public Collection<PathwayRecordPerspective> getPathwayRecordPerspectives() {
-		return pathwayRecordPerspectives;
 	}
 
 	public IDType getPrimaryIDType() {

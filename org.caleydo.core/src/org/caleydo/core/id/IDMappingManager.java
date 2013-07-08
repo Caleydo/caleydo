@@ -1,19 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
- * University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
- * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
- * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with this program. If not, see
- * <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.id;
 
 import java.util.ArrayList;
@@ -90,11 +79,10 @@ import com.google.common.collect.Sets;
  *
  */
 public class IDMappingManager {
-
 	/**
 	 * The {@link IDCategory} for which this mapping manager provides the mapping
 	 */
-	private IDCategory idCategory;
+	private final IDCategory idCategory;
 
 	/** A counter for dynamically created primary IDs */
 	private int primaryTypeCounter = 0;
@@ -102,13 +90,13 @@ public class IDMappingManager {
 	/**
 	 * HashMap that contains all mappings identified by their MappingType.
 	 */
-	private Map<MappingType, Map<?, ?>> hashMappingType2Map;
+	private final Map<MappingType, Map<?, ?>> hashMappingType2Map;
 
 	/**
 	 * Graph of mappings. IDTypes are the vertices of the graph, edges represent a mapping from one IDType to another
 	 * that is backed up by a corresponding map in hashType2Mapping.
 	 */
-	private DefaultDirectedWeightedGraph<IDType, MappingType> mappingGraph;
+	private final DefaultDirectedWeightedGraph<IDType, MappingType> mappingGraph;
 
 	/**
 	 * Constructor.
@@ -249,13 +237,13 @@ public class IDMappingManager {
 	 *
 	 * TODO: several cases are not handled
 	 *
-	 * @param <KeyType>
-	 * @param <ValueType>
+	 * @param <K>
+	 * @param <V>
 	 * @param originalMappingType
 	 *            Mapping type that specifies the already existent map which is used for creating the code resolved map.
 	 */
 	@SuppressWarnings("unchecked")
-	public <KeyType, ValueType> void createCodeResolvedMap(MappingType originalMappingType,
+	public <K, V> void createCodeResolvedMap(MappingType originalMappingType,
 			IDType codeResolvedFromType, IDType codeResolvedToType) {
 
 		@SuppressWarnings("rawtypes")
@@ -269,7 +257,7 @@ public class IDMappingManager {
 		MappingType destMappingType = MappingType.registerMappingType(codeResolvedFromType, codeResolvedToType, false,
 				false); // MULTI??
 
-		Map<KeyType, ValueType> srcMap = (Map<KeyType, ValueType>) hashMappingType2Map.get(originalMappingType);
+		Map<K, V> srcMap = (Map<K, V>) hashMappingType2Map.get(originalMappingType);
 
 		if (originKeyType == destKeyType) {
 			if (originValueType != destValueType) {
@@ -281,8 +269,8 @@ public class IDMappingManager {
 
 						codeResolvedMap = new HashMap<Integer, Integer>();
 
-						IIDTypeMapper<KeyType, Integer> mapper = getIDTypeMapper(originValueType, destValueType);
-						for (KeyType key : srcMap.keySet()) {
+						IIDTypeMapper<K, Integer> mapper = getIDTypeMapper(originValueType, destValueType);
+						for (K key : srcMap.keySet()) {
 							Set<Integer> resolvedIDs = mapper.apply(key);
 
 							if (resolvedIDs == null) {
@@ -296,7 +284,7 @@ public class IDMappingManager {
 						codeResolvedMap = new MultiHashMap<Integer, Integer>();
 						MultiHashMap<Integer, String> srcMultiMap = (MultiHashMap<Integer, String>) srcMap;
 						IIDTypeMapper<String, Integer> mapper = getIDTypeMapper(originValueType, destValueType);
-						for (KeyType key : srcMap.keySet()) {
+						for (K key : srcMap.keySet()) {
 							for (String sID : srcMultiMap.getAll(key)) {
 								Set<Integer> resolvedIDs = mapper.apply(sID);
 
@@ -325,8 +313,8 @@ public class IDMappingManager {
 					if (!originalMappingType.isMultiMap()) {
 						codeResolvedMap = new HashMap<String, Integer>();
 
-						IIDTypeMapper<ValueType, String> mapper = getIDTypeMapper(originValueType, destValueType);
-						for (KeyType key : srcMap.keySet()) {
+						IIDTypeMapper<V, String> mapper = getIDTypeMapper(originValueType, destValueType);
+						for (K key : srcMap.keySet()) {
 							Set<String> resolvedIDs = mapper.apply(srcMap.get(key));
 							if (resolvedIDs == null)
 								continue;
@@ -339,7 +327,7 @@ public class IDMappingManager {
 						MultiHashMap<String, String> srcMultiMap = (MultiHashMap<String, String>) srcMap;
 
 						IIDTypeMapper<String, Integer> mapper = getIDTypeMapper(originValueType, destValueType);
-						for (KeyType key : srcMap.keySet()) {
+						for (K key : srcMap.keySet()) {
 							for (String sID : srcMultiMap.getAll(key)) {
 								Set<Integer> resolvedIDs = mapper.apply(sID);
 
@@ -366,7 +354,7 @@ public class IDMappingManager {
 					if (!originalMappingType.isMultiMap()) {
 						codeResolvedMap = new HashMap<Integer, Integer>();
 
-						for (KeyType key : srcMap.keySet()) {
+						for (K key : srcMap.keySet()) {
 							codeResolvedMap.put(
 									getID(conversionType.getFromIDType(), conversionType.getToIDType(), key),
 									srcMap.get(key));
@@ -376,7 +364,7 @@ public class IDMappingManager {
 						MultiHashMap<String, Integer> srcMultiMap = (MultiHashMap<String, Integer>) srcMap;
 						Integer iResolvedID = 0;
 
-						for (KeyType key : srcMap.keySet()) {
+						for (K key : srcMap.keySet()) {
 							iResolvedID = getID(conversionType.getFromIDType(), conversionType.getToIDType(), key);
 
 							if (iResolvedID == null) {
@@ -399,7 +387,7 @@ public class IDMappingManager {
 
 					MappingType conversionType = originalMappingType;
 
-					for (KeyType key : srcMap.keySet()) {
+					for (K key : srcMap.keySet()) {
 						codeResolvedMap.put(getID(conversionType.getFromIDType(), conversionType.getToIDType(), key),
 								srcMap.get(key));
 					}
@@ -425,22 +413,6 @@ public class IDMappingManager {
 		} else {
 			mappingGraph.setEdgeWeight(originalMappingType, 1);
 		}
-	}
-
-	/**
-	 * Gets the map of the specified mapping type for manipulation.
-	 *
-	 * @param <KeyType>
-	 * @param <ValueType>
-	 * @param type
-	 *            Mapping type that identifies the map.
-	 * @return Map that corresponds to the specified mapping type. If no such map exists, null is returned.
-	 * @deprecated replace with search feature, maps shouldn't be exposed externally
-	 */
-	@SuppressWarnings("unchecked")
-	@Deprecated
-	public <KeyType, ValueType> Map<KeyType, ValueType> getMap(MappingType type) {
-		return (Map<KeyType, ValueType>) hashMappingType2Map.get(type);
 	}
 
 	/**

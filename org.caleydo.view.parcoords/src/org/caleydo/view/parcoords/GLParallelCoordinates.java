@@ -1,19 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
- * University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
- * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
- * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with this program. If not, see
- * <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.parcoords;
 
 import static org.caleydo.view.parcoords.PCRenderStyle.ANGLUAR_LINE_WIDTH;
@@ -65,9 +54,9 @@ import org.caleydo.core.event.data.SelectionUpdateEvent;
 import org.caleydo.core.event.view.ResetAllViewsEvent;
 import org.caleydo.core.event.view.TablePerspectivesChangedEvent;
 import org.caleydo.core.event.view.UseRandomSamplingEvent;
-import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
@@ -98,6 +87,7 @@ import org.caleydo.view.parcoords.listener.ResetAxisSpacingEvent;
 import org.caleydo.view.parcoords.listener.ResetAxisSpacingListener;
 import org.caleydo.view.parcoords.listener.ResetParallelCoordinatesEvent;
 import org.caleydo.view.parcoords.listener.UseRandomSamplingListener;
+import org.caleydo.view.parcoords.preferences.MyPreferences;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -202,8 +192,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 		alIsAngleBlocking.add(new ArrayList<Integer>());
 
 		axisSpacings = new ArrayList<Float>();
-		numberOfRandomElements = generalManager.getPreferenceStore().getInt(
-				PreferenceConstants.PC_NUM_RANDOM_SAMPLING_POINT);
+		numberOfRandomElements = MyPreferences.getNumRandomSamplePoint();
 
 		// glSelectionHeatMap =
 		// ((ViewManager)generalManager.getViewGLCanvasManager()).getSelectionHeatMap();
@@ -555,12 +544,12 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 		while (count < numberOfAxis) {
 			float xPosition = axisSpacings.get(count);
 			if (selectedSet.contains(dimensionVA.get(count))) {
-				gl.glColor4fv(SelectionType.SELECTION.getColor(), 0);
+				gl.glColor4fv(SelectionType.SELECTION.getColor().getRGBA(), 0);
 				gl.glLineWidth(Y_AXIS_SELECTED_LINE_WIDTH);
 				gl.glEnable(GL2.GL_LINE_STIPPLE);
 				gl.glLineStipple(2, (short) 0xAAAA);
 			} else if (mouseOverSet.contains(dimensionVA.get(count))) {
-				gl.glColor4fv(SelectionType.MOUSE_OVER.getColor(), 0);
+				gl.glColor4fv(SelectionType.MOUSE_OVER.getColor().getRGBA(), 0);
 				gl.glLineWidth(Y_AXIS_MOUSE_OVER_LINE_WIDTH);
 				gl.glEnable(GL2.GL_LINE_STIPPLE);
 				gl.glLineStipple(2, (short) 0xAAAA);
@@ -657,7 +646,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 				gl.glPushName(pickingID);
 
 				textureManager.renderTexture(gl, PCRenderStyle.NAN, lowerLeftCorner, lowerRightCorner,
-						upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
+						upperRightCorner, upperLeftCorner, Color.WHITE);
 
 				gl.glPopName();
 
@@ -685,7 +674,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 				gl.glPushName(pickingID);
 
 				textureManager.renderTexture(gl, PCRenderStyle.ADD_GATE, lowerLeftCorner, lowerRightCorner,
-						upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
+						upperRightCorner, upperLeftCorner, Color.WHITE);
 
 				gl.glPopName();
 
@@ -708,14 +697,14 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 						// tempTexture = textureManager.getIconTexture(gl,
 						// dropTexture);
 						textureManager.renderTexture(gl, dropTexture, lowerLeftCorner, lowerRightCorner,
-								upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
+								upperRightCorner, upperLeftCorner, Color.WHITE);
 
 						if (!bWasAxisMoved) {
 							dropTexture = PCRenderStyle.DROP_NORMAL;
 						}
 					} else {
 						textureManager.renderTexture(gl, PCRenderStyle.DROP_NORMAL, lowerLeftCorner, lowerRightCorner,
-								upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
+								upperRightCorner, upperLeftCorner, Color.WHITE);
 					}
 
 					// picking for the sub-parts of the drop texture
@@ -785,7 +774,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 					upperLeftCorner.set(xOrigin - buttonWidht, fYDropOrigin, AXIS_Z);
 
 					textureManager.renderTexture(gl, PCRenderStyle.SMALL_DROP, lowerLeftCorner, lowerRightCorner,
-							upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
+							upperRightCorner, upperLeftCorner, Color.WHITE);
 
 					gl.glPopName();
 					gl.glPopAttrib();
@@ -872,7 +861,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 		Vec3f upperLeftCorner = new Vec3f(xOrigin - buttonWidht, yGateAddOrigin + buttonHeight, AXIS_Z);
 
 		textureManager.renderTexture(gl, PCRenderStyle.ADD_GATE, lowerLeftCorner, lowerRightCorner, upperRightCorner,
-				upperLeftCorner, 1, 1, 1, 1);
+				upperLeftCorner, Color.WHITE);
 
 		gl.glPopName();
 
@@ -1885,8 +1874,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 			numberOfRandomElements = 100;
 			break;
 		case HIGH:
-			numberOfRandomElements = generalManager.getPreferenceStore().getInt(
-					PreferenceConstants.PC_NUM_RANDOM_SAMPLING_POINT);
+			numberOfRandomElements = MyPreferences.getNumRandomSamplePoint();
 			break;
 
 		default:

@@ -1,19 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
- * University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
- * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
- * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with this program. If not, see
- * <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.tourguide.impl.algorithm;
 
 import java.util.ArrayList;
@@ -22,11 +11,12 @@ import java.util.List;
 import java.util.Set;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.collection.Pair;
-import org.caleydo.core.util.statistics.Statistics;
 import org.caleydo.view.tourguide.spi.algorithm.IComputeElement;
 import org.caleydo.view.tourguide.spi.algorithm.IGroupAlgorithm;
+import org.eclipse.core.runtime.IProgressMonitor;
 
 /**
  * @author Samuel Gratzl
@@ -55,35 +45,48 @@ public class LogRank implements IGroupAlgorithm {
 		return "Log Rank of ";
 	}
 
+
 	@Override
 	public IDType getTargetType(IComputeElement a, IComputeElement b) {
 		return clinical.getRecordIDType();
 	}
 
 	public static float getPValue(float logRankScore) {
-		if (Float.isNaN(logRankScore))
+		if (Float.isNaN(logRankScore) || Float.isInfinite(logRankScore))
 			return Float.NaN;
 		double r = Statistics.chiSquaredProbability(logRankScore, 1); // see #983
 		return (float) r;
 	}
 
 	@Override
-	public float compute(Set<Integer> a, Set<Integer> b) {
-		return compute((Iterable<Integer>) a, b);
+	public void init(IProgressMonitor monitor) {
+		// nothing todo
 	}
 
-	public float compute(Iterable<Integer> a, Iterable<Integer> b) {
+	@Override
+	public float compute(Set<Integer> a, Group ag, Set<Integer> b, Group bg, IProgressMonitor monitor) {
+		return compute(a, b, monitor);
+	}
+
+	public float compute(Iterable<Integer> a, Iterable<Integer> b, IProgressMonitor monitor) {
 		// http://en.wikipedia.org/wiki/Logrank_test and
 		// Survival Analysis: A Self-Learning Text
 		// 1. resolve data
 		Pair<List<Float>, Integer> asp = getValues(a, this.clinicalVariable);
 		List<Float> as = asp.getFirst();
 		int asurvived = asp.getSecond(); // still there after end
+		if (monitor.isCanceled())
+			return Float.NaN;
 
 		Pair<List<Float>, Integer> bsp = getValues(b, this.clinicalVariable);
 		List<Float> bs = bsp.getFirst();
 		int bsurvived = bsp.getSecond();
-		return Statistics.logRank(as, asurvived, bs, bsurvived);
+		if (monitor.isCanceled())
+			return Float.NaN;
+		float r = Statistics.logRank(as, asurvived, bs, bsurvived);
+		if (Float.isInfinite(r))
+			return Float.NaN;
+		return r;
 	}
 
 	private Pair<List<Float>, Integer> getValues(Iterable<Integer> a, Integer col) {

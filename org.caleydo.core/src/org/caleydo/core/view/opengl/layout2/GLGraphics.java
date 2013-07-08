@@ -1,9 +1,13 @@
+/*******************************************************************************
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.view.opengl.layout2;
 
 import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 
-import java.awt.Color;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -14,13 +18,14 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.util.base.ILabeled;
-import org.caleydo.core.util.color.IColor;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.core.view.opengl.layout2.renderer.RoundedRectRenderer;
 import org.caleydo.core.view.opengl.util.GLPrimitives;
 import org.caleydo.core.view.opengl.util.spline.ITesselatedPolygon;
+import org.caleydo.core.view.opengl.util.text.ETextStyle;
 import org.caleydo.core.view.opengl.util.text.ITextRenderer;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.data.loader.ResourceLocators.IResourceLocator;
@@ -72,13 +77,12 @@ public class GLGraphics {
 	 */
 	private final GLContextLocal local;
 
-
 	public GLGraphics(GL2 gl, GLContextLocal local, boolean originInTopLeft, int deltaTimeMs) {
 		this.gl = gl;
 		this.local = local;
 		this.text = local.getText();
 		this.deltaTimeMs = deltaTimeMs;
-		text.setColor(Color.BLACK);
+		textColor(Color.BLACK);
 		this.locator.push(local.getLoader());
 		this.originInTopLeft = originInTopLeft;
 	}
@@ -146,6 +150,7 @@ public class GLGraphics {
 		int error = gl.glGetError();
 		return error > 0;
 	}
+
 	/**
 	 * checks for errors and prints a {@link System#err} message
 	 *
@@ -206,17 +211,14 @@ public class GLGraphics {
 
 	// ############## color setters
 
-	public GLGraphics color(IColor color) {
-		return color(color.getRGBA());
-	}
-
 	public GLGraphics color(Color color) {
-		return color(color.getComponents(null));
+		return color(color.r, color.g, color.b, color.a);
 	}
 
-	public GLGraphics color(float grey) {
-		return color(grey, grey, grey);
+	public GLGraphics color(float gray) {
+		return color(gray, gray, gray);
 	}
+
 	public GLGraphics color(float r, float g, float b) {
 		return color(r, g, b, 1);
 	}
@@ -226,6 +228,10 @@ public class GLGraphics {
 		return this;
 	}
 
+	public GLGraphics color(String hex) {
+		return color(new Color(hex));
+	}
+
 	public GLGraphics color(float[] rgba) {
 		if (rgba.length == 3)
 			return color(rgba[0], rgba[1], rgba[2], 1);
@@ -233,12 +239,11 @@ public class GLGraphics {
 			return color(rgba[0], rgba[1], rgba[2], rgba[3]);
 	}
 
-	public GLGraphics textColor(IColor color) {
-		return textColor(color.getRGBA());
-	}
 
 	public GLGraphics textColor(Color color) {
 		text.setColor(color);
+		local.getText_bold().setColor(color);
+		local.getText_italic().setColor(color);
 		return this;
 	}
 
@@ -247,8 +252,7 @@ public class GLGraphics {
 	}
 
 	public GLGraphics textColor(float r, float g, float b, float a) {
-		text.setColor(r, g, b, a);
-		return this;
+		return textColor(new Color(r, g, b, a));
 	}
 
 	public GLGraphics textColor(float[] rgba) {
@@ -308,6 +312,8 @@ public class GLGraphics {
 	}
 
 	public GLGraphics renderRect(boolean fill, float x, float y, float w, float h) {
+		if (isInvalidOrZero(w) || isInvalidOrZero(h) || isInvalid(x) || isInvalid(y))
+			return this;
 		stats.incRect();
 		gl.glBegin(fill ? GL2.GL_POLYGON : GL.GL_LINE_LOOP);
 		gl.glVertex3f(x, y, z);
@@ -330,6 +336,8 @@ public class GLGraphics {
 	}
 
 	public GLGraphics fillRoundedRect(float x, float y, float w, float h, float radius, int segments) {
+		if (isInvalidOrZero(w) || isInvalidOrZero(h))
+			return this;
 		int count = RoundedRectRenderer.render(this, x, y, w, h, radius, segments, RoundedRectRenderer.FLAG_FILL
 				| RoundedRectRenderer.FLAG_ALL);
 		stats.incRoundedRect(count);
@@ -361,27 +369,26 @@ public class GLGraphics {
 	 * @return
 	 */
 	public GLGraphics fillImage(Texture texture, float x, float y, float w, float h, Color color) {
+		if (isInvalidOrZero(w) || isInvalidOrZero(h) || isInvalid(x) || isInvalid(y))
+			return this;
 		stats.incImage();
 		Vec3f lowerLeftCorner = new Vec3f(x, y, z);
 		Vec3f lowerRightCorner = new Vec3f(x + w, y, z);
 		Vec3f upperRightCorner = new Vec3f(x + w, y + h, z);
 		Vec3f upperLeftCorner = new Vec3f(x, y + h, z);
 
-		org.caleydo.core.util.color.Color tmp = new org.caleydo.core.util.color.Color(color.getRed(), color.getGreen(),
-				color.getBlue(), color.getAlpha());
-
 		if (originInTopLeft)
 			local.getTextures().renderTexture(gl, texture, upperLeftCorner, upperRightCorner, lowerRightCorner,
-					lowerLeftCorner,
-					tmp.r, tmp.g, tmp.b, tmp.a);
+					lowerLeftCorner, color);
 		else
 			local.getTextures().renderTexture(gl, texture, lowerLeftCorner, lowerRightCorner, upperRightCorner,
-					upperLeftCorner,
-					tmp.r, tmp.g, tmp.b, tmp.a);
+					upperLeftCorner, color);
 		return this;
 	}
 
 	public GLGraphics fillPolygon(Vec2f... points) {
+		if (points.length <= 0)
+			return this;
 		return fillPolygon(Arrays.asList(points));
 	}
 
@@ -390,6 +397,8 @@ public class GLGraphics {
 	}
 
 	public GLGraphics fillPolygon(ITesselatedPolygon polygon) {
+		if (polygon.size() <= 0)
+			return this;
 		stats.incPath(polygon.size());
 		polygon.fill(this, local.getTesselationRenderer());
 		return this;
@@ -408,6 +417,8 @@ public class GLGraphics {
 	}
 
 	private GLGraphics renderCircle(boolean fill, float x, float y, float radius, int numSlices) {
+		if (isInvalidOrZero(radius) || isInvalid(x) || isInvalid(y))
+			return this;
 		stats.incCircle(numSlices);
 		gl.glTranslatef(x, y, z);
 		if (fill)
@@ -437,46 +448,84 @@ public class GLGraphics {
 	 * see {@link #drawText(String, float, float, float, float)} with a dedicated horizontal alignment
 	 */
 	public GLGraphics drawText(String text, float x, float y, float w, float h, VAlign valign) {
+		return drawText(text, x, y, w, h, valign, ETextStyle.PLAIN);
+	}
+
+	public GLGraphics drawText(String text, float x, float y, float w, float h, VAlign valign, ETextStyle style) {
+		if (isInvalidOrZero(w) || isInvalidOrZero(h) || isInvalid(x) || isInvalid(y))
+			return this;
 		if (text == null || text.trim().isEmpty())
 			return this;
 		if (text.indexOf('\n') < 0)
-			return drawText(Collections.singletonList(text), x, y, w, h, 0, valign);
+			return drawText(Collections.singletonList(text), x, y, w, h, 0, valign, style);
 		else {
-			return drawText(Arrays.asList(text.split("\n")), x, y, w, h, 0, valign);
+			return drawText(Arrays.asList(text.split("\n")), x, y, w, h, 0, valign, style);
 		}
 	}
 
-	public GLGraphics drawText(List<String> lines, float x, float y, float w, float h, float lineSpace,
-			VAlign valign) {
+	public GLGraphics drawText(List<String> lines, float x, float y, float w, float h, float lineSpace, VAlign valign,
+			ETextStyle style) {
+		if (isInvalidOrZero(w) || isInvalidOrZero(h) || isInvalid(x) || isInvalid(y) || isInvalid(lineSpace))
+			return this;
 		if (lines == null || lines.isEmpty())
 			return this;
-		if (originInTopLeft && !this.text.isOriginTopLeft()) {
+		ITextRenderer font = selectFont(style);
+		if (originInTopLeft && !font.isOriginTopLeft()) {
 			gl.glPushMatrix();
 			gl.glTranslatef(0, y + h, 0);
 			y = 0;
 			gl.glScalef(1, -1, 1);
 		}
-		float hi = (h - lineSpace * lines.size() - 1) / lines.size();
+		float hi = (h - lineSpace * (lines.size() - 1)) / lines.size();
 		for (ListIterator<String> it = lines.listIterator(lines.size()); it.hasPrevious();) {
 			String text = it.previous();
+			stats.incText(text.length());
 			float xi = x;
 			switch (valign) {
 			case CENTER:
-				xi += w * 0.5f - Math.min(this.text.getTextWidth(text, hi), w) * 0.5f;
+				xi += w * 0.5f - Math.min(font.getTextWidth(text, hi), w) * 0.5f;
 				break;
 			case RIGHT:
-				xi += w - Math.min(this.text.getTextWidth(text, hi), w);
+				xi += w - Math.min(font.getTextWidth(text, hi), w);
 				break;
 			default:
 				break;
 			}
-			this.text.renderTextInBounds(gl, text, xi, y, z + 0.25f, w, hi);
+			font.renderTextInBounds(gl, text, xi, y, z + 0.25f, w, hi);
 			y += lineSpace + hi;
 		}
 
-		if (originInTopLeft && !this.text.isOriginTopLeft())
+		if (font.isDirty())
+			stats.dirtyTextTexture();
+
+		if (originInTopLeft && !font.isOriginTopLeft())
 			gl.glPopMatrix();
 		return this;
+	}
+
+	private ITextRenderer selectFont(ETextStyle style) {
+		if (style == null)
+			return text;
+		switch (style) {
+		case BOLD:
+			return local.getText_bold();
+		case ITALIC:
+			return local.getText_italic();
+		default:
+			return text;
+		}
+	}
+
+	/**
+	 * @param w
+	 * @return checks if the value is invalid
+	 */
+	private static boolean isInvalidOrZero(float v) {
+		return v == 0 || Float.isNaN(v) || Float.isInfinite(v);
+	}
+
+	private static boolean isInvalid(float v) {
+		return Float.isNaN(v) || Float.isInfinite(v);
 	}
 
 	/**
@@ -621,7 +670,8 @@ public class GLGraphics {
 	}
 
 	/**
-	 * shortcut to {@link GL2#glTranslatef(float, float, float)
+	 * shortcut to {@link GL2#glTranslatef(float, float, float)
+
 	 */
 	public GLGraphics move(float x, float y) {
 		if (x != 0 || y != 0)

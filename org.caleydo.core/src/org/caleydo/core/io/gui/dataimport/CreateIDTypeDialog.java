@@ -1,3 +1,8 @@
+/*******************************************************************************
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 /**
  *
  */
@@ -7,8 +12,8 @@ import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.io.IDTypeParsingRules;
-import org.caleydo.core.io.gui.dataimport.widget.ICallback;
 import org.caleydo.core.io.gui.dataimport.widget.IDParsingRulesWidget;
+import org.caleydo.core.util.base.ICallback;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -114,7 +119,7 @@ public class CreateIDTypeDialog extends Dialog {
 	@Override
 	protected void configureShell(Shell newShell) {
 		super.configureShell(newShell);
-		newShell.setText(mediator.isCreateIDCategory() ? "Create ID Class" : "Create ID Type");
+		newShell.setText(mediator.isCreateIDCategory() ? "Create Type" : "Create Identifier");
 	}
 
 	@Override
@@ -124,7 +129,7 @@ public class CreateIDTypeDialog extends Dialog {
 		parentComposite.setLayout(new GridLayout(2, false));
 
 		Label categoryIDLabel = new Label(parentComposite, SWT.NONE);
-		categoryIDLabel.setText("ID Class name");
+		categoryIDLabel.setText("Type name");
 
 		categoryNameTextField = new Text(parentComposite, SWT.BORDER);
 		categoryNameTextField.addModifyListener(new ModifyListener() {
@@ -142,7 +147,7 @@ public class CreateIDTypeDialog extends Dialog {
 		dataTypeCombo.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
 		Label idTypeLabel = new Label(parentComposite, SWT.NONE);
-		idTypeLabel.setText("ID type name");
+		idTypeLabel.setText("Identifier name");
 
 		typeNameTextField = new Text(parentComposite, SWT.BORDER);
 		typeNameTextField.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));

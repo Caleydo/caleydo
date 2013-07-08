@@ -1,28 +1,13 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.vis.rank.model;
 
 import gleem.linalg.Vec2f;
 import gleem.linalg.Vec4f;
 
-import java.awt.Color;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.BitSet;
@@ -31,6 +16,7 @@ import java.util.List;
 
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.util.function.AFloatList;
 import org.caleydo.core.util.function.IFloatList;
@@ -41,7 +27,6 @@ import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.rank.internal.event.AnnotationEditEvent;
 import org.caleydo.vis.rank.internal.ui.TitleDescriptionDialog;
-import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IExplodeableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IFloatRankableColumnMixin;
@@ -56,11 +41,13 @@ import com.google.common.collect.Iterables;
 import com.google.common.primitives.Floats;
 
 /**
+ * a {@link ACompositeRankColumnModel} which is rankable
+ *
  * @author Samuel Gratzl
  *
  */
 public abstract class AMultiRankColumnModel extends ACompositeRankColumnModel implements IMultiColumnMixin,
-		IExplodeableColumnMixin, IHideableColumnMixin, ICollapseableColumnMixin, IFilterColumnMixin, IGLRenderer {
+		IExplodeableColumnMixin, IHideableColumnMixin, IGLRenderer {
 	private final BitSet mask = new BitSet();
 	private final BitSet maskInvalid = new BitSet();
 	private float filterMin = 0;
@@ -127,7 +114,6 @@ public abstract class AMultiRankColumnModel extends ACompositeRankColumnModel im
 	/**
 	 * @return the isGlobalFilter, see {@link #isGlobalFilter}
 	 */
-	@Override
 	public boolean isGlobalFilter() {
 		return isGlobalFilter;
 	}
@@ -147,7 +133,6 @@ public abstract class AMultiRankColumnModel extends ACompositeRankColumnModel im
 		maskInvalid.set(0, getTable().getDataSize());
 	}
 
-	@Override
 	public final void filter(List<IRow> data, BitSet mask) {
 		if (!isFiltered())
 			return;
@@ -160,7 +145,6 @@ public abstract class AMultiRankColumnModel extends ACompositeRankColumnModel im
 		mask.and(this.mask);
 	}
 
-	@Override
 	public boolean isFiltered() {
 		return filterMin > 0 || filterMax < 1;
 	}
@@ -179,7 +163,7 @@ public abstract class AMultiRankColumnModel extends ACompositeRankColumnModel im
 		float bak2 = filterMax;
 		this.filterMin = min;
 		this.filterMax = max;
-		propertySupport.firePropertyChange(PROP_FILTER, Pair.make(bak1, bak2), Pair.make(min, max));
+		propertySupport.firePropertyChange(IFilterColumnMixin.PROP_FILTER, Pair.make(bak1, bak2), Pair.make(min, max));
 	}
 
 	/**
@@ -196,7 +180,6 @@ public abstract class AMultiRankColumnModel extends ACompositeRankColumnModel im
 		return filterMax;
 	}
 
-	@Override
 	public void editFilter(final GLElement summary, IGLElementContext context) {
 		// FIXME
 		GLElement m = createEditFilterPopup(asRawData(), summary);

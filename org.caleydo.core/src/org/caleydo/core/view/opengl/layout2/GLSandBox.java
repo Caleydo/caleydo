@@ -1,3 +1,8 @@
+/*******************************************************************************
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.view.opengl.layout2;
 
 import gleem.linalg.Vec2f;
@@ -17,8 +22,6 @@ import javax.media.opengl.fixedfunc.GLMatrixFunc;
 
 import org.caleydo.core.event.EventListenerManagers;
 import org.caleydo.core.event.EventListenerManagers.QueuedEventListenerManager;
-import org.caleydo.core.util.base.ILabeled;
-import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -26,11 +29,13 @@ import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.IGLKeyListener;
 import org.caleydo.core.view.opengl.canvas.internal.IGLCanvasFactory;
 import org.caleydo.core.view.opengl.canvas.internal.swt.SWTGLCanvasFactory;
+import org.caleydo.core.view.opengl.layout2.internal.SWTLayer;
 import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.SimplePickingManager;
 import org.caleydo.core.view.opengl.util.text.CompositeTextRenderer;
+import org.caleydo.core.view.opengl.util.text.ETextStyle;
 import org.caleydo.core.view.opengl.util.text.ITextRenderer;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.data.loader.ResourceLoader;
@@ -40,7 +45,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
@@ -68,6 +72,7 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 
 	protected final Shell shell;
 	protected final IGLCanvas canvas;
+	private final ISWTLayer swtLayer;
 	protected boolean renderPick;
 
 	private GLPadding padding = GLPadding.ZERO;
@@ -93,6 +98,7 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 
 		this.canvas = canvasFactory.create(caps, shell);
 		canvas.asComposite().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		this.swtLayer = new SWTLayer(canvas);
 
 		this.padding = padding;
 		canvas.addGLEventListener(this);
@@ -154,16 +160,6 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 	}
 
 	@Override
-	public IPickingListener createTooltip(ILabeled label) {
-		return canvas.createTooltip(label);
-	}
-
-	@Override
-	public void showContextMenu(Iterable<? extends AContextMenuItem> items) {
-		new SWTGLCanvasFactory().showPopupMenu(canvas, items);
-	}
-
-	@Override
 	public void repaintPick() {
 
 	}
@@ -202,6 +198,11 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 	}
 
 	@Override
+	public final ISWTLayer getSWTLayer() {
+		return swtLayer;
+	}
+
+	@Override
 	public boolean moved(GLElement child) {
 		return true;
 	}
@@ -219,12 +220,14 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 
 		AGLView.initGLContext(gl);
 
-		ITextRenderer text = createTextRenderer();
+		ITextRenderer text_plain = createTextRenderer(ETextStyle.PLAIN);
+		ITextRenderer text_bold = createTextRenderer(ETextStyle.BOLD);
+		ITextRenderer text_italics = createTextRenderer(ETextStyle.ITALIC);
 		IResourceLocator loader = createResourceLocator();
 		TextureManager textures = new TextureManager(new ResourceLoader(loader));
 
 
-		this.local = new GLContextLocal(text, textures, loader);
+		this.local = new GLContextLocal(text_plain, text_bold, text_italics, textures, loader);
 
 		gl.glLoadIdentity();
 		this.root.setParent(this);
@@ -236,8 +239,8 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 				ResourceLocators.classLoader(root.getClass().getClassLoader()), ResourceLocators.FILE);
 	}
 
-	protected ITextRenderer createTextRenderer() {
-		return new CompositeTextRenderer(8, 16, 24, 40);
+	protected ITextRenderer createTextRenderer(ETextStyle style) {
+		return new CompositeTextRenderer(style, 8, 16, 24, 40);
 	}
 
 	@Override
@@ -337,17 +340,6 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 
 	}
 
-	@Override
-	public void setCursor(final int swtCursorConst) {
-		final Composite c = canvas.asComposite();
-		final Display d = c.getDisplay();
-		d.asyncExec(new Runnable() {
-			@Override
-			public void run() {
-				c.setCursor(swtCursorConst < 0 ? null : d.getSystemCursor(swtCursorConst));
-			}
-		});
-	}
 
 	public static void main(String[] args, IGLRenderer renderer) {
 		main(args, new GLElement(renderer));

@@ -1,29 +1,15 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
- * University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
- * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
- * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with this program. If not, see
- * <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.data.importer.tcga;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -31,15 +17,14 @@ import java.util.concurrent.ForkJoinTask;
 import java.util.concurrent.RecursiveTask;
 import java.util.logging.Logger;
 
-import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
 import org.caleydo.core.data.collection.column.container.CategoricalClassDescription.ECategoryType;
 import org.caleydo.core.io.ColumnDescription;
-import org.caleydo.core.io.DataDescription;
 import org.caleydo.core.io.DataProcessingDescription;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.DataSetDescription.ECreateDefaultProperties;
+import org.caleydo.core.io.FileUtil;
 import org.caleydo.core.io.GroupingParseSpecification;
 import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.io.IDTypeParsingRules;
@@ -48,7 +33,8 @@ import org.caleydo.core.util.clusterer.algorithm.kmeans.KMeansClusterConfigurati
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
 import org.caleydo.core.util.collection.Pair;
-import org.caleydo.core.util.color.Colors;
+import org.caleydo.core.util.color.Color;
+import org.caleydo.core.util.color.ColorBrewer;
 import org.caleydo.data.importer.tcga.model.ClinicalMapping;
 import org.caleydo.data.importer.tcga.model.TCGADataSet;
 import org.caleydo.datadomain.genetic.TCGADefinitions;
@@ -88,15 +74,16 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 
 	@Override
 	public TCGADataSet compute() {
-		final IDSpecification sampleID = TCGADefinitions.createIDSpecification(true);
+		final IDSpecification sampleID = TCGADefinitions.createSampleIDSpecification(true);
 
 		// TCGA SAMPLE IDs look different for seq data (an "-01" is attached)
-		final IDSpecification seqSampleID = TCGADefinitions.createIDSpecification(false);
+		final IDSpecification seqSampleID = TCGADefinitions.createSampleIDSpecification(false);
 
 		final IDSpecification clinicalColumnID = new IDSpecification();
 		clinicalColumnID.setIdType("clinical");
 
-		final IDSpecification geneRowID = IDSpecification.createGene();
+		final IDSpecification geneRowID = TCGADefinitions.createGeneIDSpecificiation();
+
 		final IDSpecification proteinRowID = new IDSpecification("protein", "protein");
 		final IDSpecification microRNARowID = new IDSpecification("microRNA", "microRNA");
 		final IDSpecification clinicalRowID = new IDSpecification("TCGA_SAMPLE", "TCGA_SAMPLE");
@@ -230,30 +217,31 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 		if (mutationFile == null) {
 			return null;
 		}
+
 		DataSetDescription dataSet = new DataSetDescription(ECreateDefaultProperties.CATEGORICAL);
-			dataSet.setDataSetName(dataSetName);
-			dataSet.setColor(dataSetType.getColor());
+		dataSet.setDataSetName(dataSetName);
+		dataSet.setColor(dataSetType.getColor());
 
-			dataSet.setDataSourcePath(mutationFile.getPath());
-			dataSet.setNumberOfHeaderLines(1);
-			ParsingRule parsingRule = new ParsingRule();
-			parsingRule.setFromColumn(startColumn);
-			parsingRule.setParseUntilEnd(true);
-			// TODO: review ordinale/integer
-			parsingRule.setColumnDescripton(new ColumnDescription());
-			dataSet.addParsingRule(parsingRule);
-			dataSet.setTransposeMatrix(true);
-			dataSet.setColumnIDSpecification(sampleIDSpecification);
-			dataSet.setRowIDSpecification(geneIDSpecification);
+		dataSet.setDataSourcePath(mutationFile.getPath());
+		dataSet.setNumberOfHeaderLines(1);
+		ParsingRule parsingRule = new ParsingRule();
+		parsingRule.setFromColumn(startColumn);
+		parsingRule.setParseUntilEnd(true);
+		// TODO: review ordinale/integer
+		parsingRule.setColumnDescripton(new ColumnDescription());
+		dataSet.addParsingRule(parsingRule);
+		dataSet.setTransposeMatrix(true);
+		dataSet.setColumnIDSpecification(sampleIDSpecification);
+		dataSet.setRowIDSpecification(geneIDSpecification);
 
-			@SuppressWarnings("unchecked")
-			CategoricalClassDescription<Integer> cats = (CategoricalClassDescription<Integer>) dataSet
-					.getDataDescription().getCategoricalClassDescription();
-			cats.setCategoryType(ECategoryType.ORDINAL);
-			cats.setRawDataType(EDataType.INTEGER);
-			cats.addCategoryProperty(0, "Not Mutated", Colors.NEUTRAL_GREY);
-			cats.addCategoryProperty(1, "Mutated", Colors.RED);
-			return dataSet;
+		@SuppressWarnings("unchecked")
+		CategoricalClassDescription<Integer> cats = (CategoricalClassDescription<Integer>) dataSet.getDataDescription()
+				.getCategoricalClassDescription();
+		cats.setCategoryType(ECategoryType.ORDINAL);
+		cats.setRawDataType(EDataType.INTEGER);
+		cats.addCategoryProperty(0, "Not Mutated", Color.NEUTRAL_GREY);
+		cats.addCategoryProperty(1, "Mutated", Color.RED);
+		return dataSet;
 
 
 		// IDSpecification mutationSampleIDSpecification = new
@@ -301,11 +289,12 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 				.getCategoricalClassDescription();
 		cats.setCategoryType(ECategoryType.ORDINAL);
 		cats.setRawDataType(EDataType.INTEGER);
-		cats.addCategoryProperty(-2, "Homozygous deletion", Colors.BLUE);
-		cats.addCategoryProperty(-1, "Heterozygous deletion", Colors.BLUE.getColorWithSpecificBrighness(0.5f));
-		cats.addCategoryProperty(0, "NORMAL", Colors.NEUTRAL_GREY);
-		cats.addCategoryProperty(1, "Low level amplification", Colors.RED.getColorWithSpecificBrighness(0.5f));
-		cats.addCategoryProperty(2, "High level amplification", Colors.RED);
+		cats.addCategoryProperty(-2, "Homozygous deletion", Color.BLUE);
+		cats.addCategoryProperty(-1, "Heterozygous deletion", Color.BLUE.getColorWithSpecificBrighness(0.5f));
+		cats.addCategoryProperty(0, "NORMAL", Color.NEUTRAL_GREY);
+		cats.addCategoryProperty(1, "Low level amplification", Color.RED.getColorWithSpecificBrighness(0.5f));
+		cats.addCategoryProperty(2, "High level amplification", Color.RED);
+		cats.applyColorScheme(ColorBrewer.RdBu, 0, true);
 
 		// File cnmfGroupingFile = fileProvider.extractAnalysisRunFile("cnmf.membership.txt",
 		// "CopyNumber_Clustering_CNMF", LEVEL);
@@ -327,6 +316,7 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 			return null;
 
 		File out = new File(clinicalFile.getParentFile(), "T" + clinicalFile.getName());
+
 		transposeCSV(clinicalFile.getPath(), out.getPath());
 
 		DataSetDescription dataSet = new DataSetDescription();
@@ -336,7 +326,6 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 		dataSet.setNumberOfHeaderLines(1);
 
 		dataSet.setRowIDSpecification(rowIdSpecification);
-		dataSet.setColumnOfRowIds(12); // "patient.bcrpatientbarcode"
 		dataSet.setColumnIDSpecification(columnIdSpecification);
 		dataSet.setRowOfColumnIDs(0);
 
@@ -344,6 +333,12 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 		assert header != null;
 		List<String> columns = Arrays.asList(header.split("\t"));
 
+		if (columns.contains("patient.bcrpatientbarcode"))
+			dataSet.setColumnOfRowIds(columns.indexOf("patient.bcrpatientbarcode")); // "patient.bcrpatientbarcode"
+		else
+			dataSet.setColumnOfRowIds(12);
+
+		int counter = 0;
 		Collection<String> toInclude = settings.getClinicalVariables();
 		for (int i = 2; i < columns.size(); ++i) {
 			String name = columns.get(i).toLowerCase();
@@ -358,16 +353,19 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 				ClinicalMapping mapping = ClinicalMapping.byName(name);
 				if (mapping == null && !toInclude.isEmpty()) {
 					log.warning("activly selected clinicial variable: " + name + " is not known using default");
-					dataSet.addParsingPattern(new ColumnDescription(i, new DataDescription(EDataClass.CATEGORICAL,
-							EDataType.STRING)));
+					dataSet.addParsingPattern(ClinicalMapping.createDefault(i));
+					counter++;
 				} else if (mapping != null) {
-					dataSet.addParsingPattern(new ColumnDescription(i, new DataDescription(mapping.getDataClass(),
-							mapping.getDataType())));
+					dataSet.addParsingPattern(mapping.create(i));
+					counter++;
 				} else {
 					continue;
 				}
 			}
 		}
+		if (counter == 0) // empty file
+			return null;
+
 		return dataSet;
 	}
 
@@ -384,43 +382,45 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 
 	private void transposeCSV(String fileName, String fileNameOut) {
 		log.info("tranposing: " + fileName);
-		File in = new File(fileName);
+		// File in = new File(fileName);
 		File out = new File(fileNameOut);
 
 		if (out.exists() && !settings.isCleanCache())
 			return;
 
-		List<String> data;
-		try {
-			data = Files.readAllLines(in.toPath(), Charset.defaultCharset());
-		} catch (IOException e2) {
-			e2.printStackTrace();
-			return;
-		}
-		// split into parts
-		String[][] parts = new String[data.size()][];
-		int maxCol = -1;
-		for (int i = 0; i < data.size(); ++i) {
-			parts[i] = data.get(i).split("\t");
-			if (parts[i].length > maxCol)
-				maxCol = parts[i].length;
-		}
-		data = null;
-
-		try (BufferedWriter writer = Files.newBufferedWriter(out.toPath(), Charset.defaultCharset())) {
-			for (int c = 0; c < maxCol; ++c) {
-				for (int i = 0; i < parts.length; ++i) {
-					if (i > 0)
-						writer.append('\t');
-					String[] p = parts[i];
-					if (p.length > c)
-						writer.append(p[c]);
-				}
-				writer.newLine();
-			}
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		FileUtil.transposeCSV(fileName, fileNameOut, "\t");
+		//
+		// List<String> data;
+		// try {
+		// data = Files.readAllLines(in.toPath(), Charset.defaultCharset());
+		// } catch (IOException e2) {
+		// e2.printStackTrace();
+		// return;
+		// }
+		// // split into parts
+		// String[][] parts = new String[data.size()][];
+		// int maxCol = -1;
+		// for (int i = 0; i < data.size(); ++i) {
+		// parts[i] = data.get(i).split("\t");
+		// if (parts[i].length > maxCol)
+		// maxCol = parts[i].length;
+		// }
+		// data = null;
+		//
+		// try (BufferedWriter writer = Files.newBufferedWriter(out.toPath(), Charset.defaultCharset())) {
+		// for (int c = 0; c < maxCol; ++c) {
+		// for (int i = 0; i < parts.length; ++i) {
+		// if (i > 0)
+		// writer.append('\t');
+		// String[] p = parts[i];
+		// if (p.length > c)
+		// writer.append(p[c]);
+		// }
+		// writer.newLine();
+		// }
+		// } catch (IOException e1) {
+		// // TODO Auto-generated catch block
+		// e1.printStackTrace();
+		// }
 	}
 }

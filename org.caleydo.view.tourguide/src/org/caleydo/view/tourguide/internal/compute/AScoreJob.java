@@ -1,3 +1,8 @@
+/*******************************************************************************
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.tourguide.internal.compute;
 
 import java.util.ArrayList;
@@ -30,6 +35,12 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Table;
 
+/**
+ * basic score computation job which is just a utility class for the subclassed job instances
+ * 
+ * @author Samuel Gratzl
+ * 
+ */
 public abstract class AScoreJob {
 	private final CachedIDTypeMapper mapper = new CachedIDTypeMapper();
 	private final Table<IComputeElement, Pair<IDType, IDType>, Set<Integer>> stratCache = HashBasedTable.create();
@@ -148,6 +159,9 @@ public abstract class AScoreJob {
 			Collection<IComputedReferenceStratificationScore> stratScores) {
 		for (IComputedStratificationScore score : stratMetrics) {
 			IStratificationAlgorithm algorithm = score.getAlgorithm();
+			if (Thread.interrupted() || monitor.isCanceled())
+				return Status.CANCEL_STATUS;
+
 			IDType target = algorithm.getTargetType(va, va);
 			if (score.contains(va) || !score.getFilter().doCompute(va, null, va, null)) {
 				continue;
@@ -156,14 +170,19 @@ public abstract class AScoreJob {
 
 			if (Thread.interrupted() || monitor.isCanceled())
 				return Status.CANCEL_STATUS;
+			float v = algorithm.compute(compute, compute, monitor);
+			if (Thread.interrupted() || monitor.isCanceled())
+				return Status.CANCEL_STATUS;
 
-			float v = algorithm.compute(compute, compute);
 			score.put(va, v);
 		}
 
 		// all stratification scores
 		for (IComputedReferenceStratificationScore score : stratScores) {
 			IStratificationAlgorithm algorithm = score.getAlgorithm();
+			if (Thread.interrupted() || monitor.isCanceled())
+				return Status.CANCEL_STATUS;
+
 			final IComputeElement rs = score.asComputeElement();
 			IDType target = algorithm.getTargetType(va, rs);
 			if (score.contains(va) || !score.getFilter().doCompute(va, null, rs, null)) {
@@ -175,7 +194,10 @@ public abstract class AScoreJob {
 			if (Thread.interrupted() || monitor.isCanceled())
 				return Status.CANCEL_STATUS;
 
-			float v = algorithm.compute(compute, reference);
+			float v = algorithm.compute(compute, reference, monitor);
+			if (Thread.interrupted() || monitor.isCanceled())
+				return Status.CANCEL_STATUS;
+
 			score.put(va, v);
 		}
 		return null;

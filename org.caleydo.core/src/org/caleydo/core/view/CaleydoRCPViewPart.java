@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.view;
 
 import java.io.StringReader;
@@ -87,8 +73,6 @@ public abstract class CaleydoRCPViewPart extends ViewPart implements IListenerOw
 	protected boolean isSupportView = false;
 
 	protected Composite parentComposite;
-
-
 
 	protected IToolBarManager toolBarManager;
 
@@ -195,9 +179,16 @@ public abstract class CaleydoRCPViewPart extends ViewPart implements IListenerOw
 				boolean inconsistentSerializedView = false;
 				for (Pair<String, String> data : serializedMultiTablePerspectiveBasedView
 						.getDataDomainAndTablePerspectiveKeys()) {
-
+					if (data == null) {
+						inconsistentSerializedView = true;
+						break;
+					}
 					ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) DataDomainManager.get()
 							.getDataDomainByID(data.getFirst());
+					if (dataDomain == null) {
+						inconsistentSerializedView = true;
+						break;
+					}
 					TablePerspective tablePerspective = dataDomain.getTablePerspective(data.getSecond());
 					if (tablePerspective == null) {
 						inconsistentSerializedView = true;

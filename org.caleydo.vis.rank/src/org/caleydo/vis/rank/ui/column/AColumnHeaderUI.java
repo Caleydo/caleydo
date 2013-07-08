@@ -1,29 +1,15 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.vis.rank.ui.column;
 
 import static org.caleydo.core.view.opengl.layout2.layout.GLLayouts.defaultValue;
+import static org.caleydo.vis.rank.ui.RenderStyle.HIST_HEIGHT;
 import static org.caleydo.vis.rank.ui.RenderStyle.LABEL_HEIGHT;
 import gleem.linalg.Vec2f;
 
-import java.awt.Color;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
@@ -32,6 +18,7 @@ import java.util.Objects;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.util.base.ILabeled;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
@@ -52,10 +39,12 @@ import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.picking.AdvancedPick;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
+import org.caleydo.core.view.opengl.util.text.ETextStyle;
 import org.caleydo.data.loader.ResourceLocators;
 import org.caleydo.data.loader.ResourceLocators.IResourceLocator;
 import org.caleydo.vis.rank.config.IRankTableConfig;
 import org.caleydo.vis.rank.config.IRankTableUIConfig;
+import org.caleydo.vis.rank.config.IRankTableUIConfig.EButtonBarPositionMode;
 import org.caleydo.vis.rank.internal.event.OrderByMeEvent;
 import org.caleydo.vis.rank.internal.ui.ButtonBar;
 import org.caleydo.vis.rank.model.ARankColumnModel;
@@ -71,6 +60,7 @@ import org.caleydo.vis.rank.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IHideableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IMappedColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
+import org.caleydo.vis.rank.model.mixin.IScriptedColumnMixin;
 import org.caleydo.vis.rank.model.mixin.ISearchableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.ISnapshotableColumnMixin;
 import org.caleydo.vis.rank.ui.IColumnRenderInfo;
@@ -90,7 +80,8 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 	private final static int BUTTONS = 2;
 	private final static int UNCOLLAPSE = 3;
 
-	private final IRankTableUIConfig config;
+
+	protected final IRankTableUIConfig config;
 	private boolean isHovered;
 	private boolean armDropColum;
 	private String armDropHint;
@@ -98,7 +89,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 	private boolean isCollapsed;
 
 	private boolean isDragging;
-	private boolean headerHovered;
+	protected boolean headerHovered;
 
 	protected final ARankColumnModel model;
 	private PropertyChangeListener filterChangedListener;
@@ -140,10 +131,10 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 		}
 		if (config.isInteractive()) {
 			this.add(new DragElement().setLayoutData(MoveTransitions.GROW_LINEAR), 0);
-			this.add(
-					createButtons().setLayoutData(
-							new MoveTransitions.MoveTransitionBase(Transitions.NO, Transitions.LINEAR, Transitions.NO,
-									Transitions.LINEAR)), 0);
+			final GLElement buttons = createButtons().setLayoutData(
+					new MoveTransitions.MoveTransitionBase(Transitions.NO, Transitions.LINEAR, Transitions.NO,
+							Transitions.LINEAR));
+			this.add(buttons, 0);
 
 			this.isCollapsed = (model instanceof ICollapseableColumnMixin) ? ((ICollapseableColumnMixin) model)
 					.isCollapsed() : false;
@@ -157,7 +148,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 					((ICollapseableColumnMixin) model).setCollapsed(false);
 				}
 			});
-			b.setTooltip("Toggle Collapse / Expand of this column");
+			b.setTooltip("Toggle collapse / expand of this column");
 			b.setLayoutData(0);
 			this.add(b, 0);
 
@@ -165,6 +156,14 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 			onCollapsedChanged(!isCollapsed); // force a change
 		}
 
+	}
+
+	protected final int firstColumn() {
+		return config.isInteractive() ? 4 : 1;
+	}
+
+	private static boolean isSmallHeader(float h) {
+		return h < (LABEL_HEIGHT + HIST_HEIGHT * 0.5f);
 	}
 
 	/**
@@ -194,9 +193,14 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 	}
 
 	@Override
+	public Color getBarOutlineColor() {
+		return config.getBarOutlineColor();
+	}
+
+	@Override
 	protected void init(IGLElementContext context) {
 		super.init(context);
-		onPick(context.createTooltip(this));
+		onPick(context.getSWTLayer().createTooltip(this));
 		dragPickingId = context.registerPickingListener(new IPickingListener() {
 			@Override
 			public void pick(Pick pick) {
@@ -280,12 +284,23 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 			// RoundedRectRenderer.FLAG_FILL | RoundedRectRenderer.FLAG_TOP);
 			if (isDraggingAColumn()) {
 				float wi = RenderStyle.SEPARATOR_PICK_WIDTH - RenderStyle.COLUMN_SPACE;
-				g.color(Color.blue).fillRect(wi * 0.5f, 0, w - wi, h).color(Color.black);
+				g.color(Color.BLUE).fillRect(wi * 0.5f, 0, w - wi, h).color(Color.BLACK);
 			} else
 				g.fillRect(0, 0, w, h);
 			g.popName();
+
+			boolean showButtonBar = isHovered && !isWeightDragging;
+			if (showButtonBar && config.getButtonBarPosition() == EButtonBarPositionMode.ABOVE_LABEL) {
+				g.fillRect(0, -RenderStyle.BUTTON_WIDTH, w, RenderStyle.BUTTON_WIDTH);
+			} else if (showButtonBar && config.getButtonBarPosition() == EButtonBarPositionMode.BELOW_HIST) {
+				g.fillRect(0, h, w, RenderStyle.BUTTON_WIDTH);
+			}
+
 			g.decZ().decZ();
+
+
 		}
+
 		super.renderPickImpl(g, w, h);
 	}
 
@@ -300,28 +315,36 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 	}
 
 	protected void renderBackground(GLGraphics g, float w, float h) {
-		g.color(model.getBgColor());
-		g.fillRect(0, 0, w, h);
-		// RoundedRectRenderer.render(g, 0, 0, w, h, RenderStyle.HEADER_ROUNDED_RADIUS, 0, RoundedRectRenderer.FLAG_FILL
-		// | RoundedRectRenderer.FLAG_TOP);
+		config.renderHeaderBackground(g, w, h, LABEL_HEIGHT, model);
 		renderOrderGlyph(g, w, h);
 
 		if (isCollapsed)
 			return;
-		if (hasTitle) {
+		boolean small = isSmallHeader(h);
+
+		if (config.isFastFiltering() && model instanceof IFilterColumnMixin && !(model instanceof FloatRankColumnModel)
+				&& ((IFilterColumnMixin) model).isFiltered()) {
+			// draw a filter icon
+			g.fillImage(RenderStyle.ICON_FILTER, w - 13, 1, 12, 12);
+		}
+
+		if (hasTitle && !(armDropColum && small)) {
 			g.move(2, 2);
-			model.getHeaderRenderer().render(g, w - 6, LABEL_HEIGHT - 6, this);
+			model.getHeaderRenderer().render(g, w - 6, LABEL_HEIGHT - 7, this);
 			g.move(-2, -2);
 		}
 		if (headerHovered) {
 			g.drawRect(0, 0, w, h);
-			// RoundedRectRenderer.render(g, 0, 0, w, h, RenderStyle.HEADER_ROUNDED_RADIUS, 3,
-			// RoundedRectRenderer.FLAG_TOP);
 		}
 		if (this.armDropColum) {
 			g.incZ(0.6f);
-			float hi = Math.min(h - 4, 18);
-			g.drawText(armDropHint, 2, 2 + (h - hi) * .5f, w - 4, hi, VAlign.CENTER);
+			if (small) {
+				// render as title hint
+				g.drawText(armDropHint, 2, 2, w - 6, LABEL_HEIGHT - 6, VAlign.CENTER, ETextStyle.BOLD);
+			} else {
+				float hi = Math.min(h - 4, 18);
+				g.drawText(armDropHint, 2, 2 + (h - hi) * .5f, w - 4, hi, VAlign.CENTER, ETextStyle.BOLD);
+			}
 			g.incZ(-0.6f);
 		}
 	}
@@ -354,6 +377,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 					b.setCallback(null);
 					b.setSelected(m.isFiltered());
 					b.setCallback(callback);
+					repaint();
 				}
 			};
 			model.addPropertyChangeListener(IFilterColumnMixin.PROP_FILTER, filterChangedListener);
@@ -370,7 +394,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 					m.setShowRankDelta(selected);
 				}
 			});
-			buttons.addButton(b, "Show Rank Delta", RenderStyle.ICON_SHOW_RANK_DELTA, RenderStyle.ICON_HIDE_RANK_DELTA);
+			buttons.addButton(b, "Show rank delta", RenderStyle.ICON_SHOW_RANK_DELTA, RenderStyle.ICON_HIDE_RANK_DELTA);
 		}
 		if (model instanceof ISearchableColumnMixin) {
 			final ISearchableColumnMixin m = (ISearchableColumnMixin) model;
@@ -383,13 +407,24 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 			});
 			buttons.addButton(b, "Search for an item", RenderStyle.ICON_FIND, RenderStyle.ICON_FIND);
 		}
+		if (model instanceof IScriptedColumnMixin) {
+			final IScriptedColumnMixin m = (IScriptedColumnMixin) model;
+			GLButton b = new GLButton();
+			b.setCallback(new ISelectionCallback() {
+				@Override
+				public void onSelectionChanged(GLButton button, boolean selected) {
+					m.editCode(get(HIST), context);
+				}
+			});
+			buttons.addButton(b, "Edit combination code", RenderStyle.ICON_EDIT_CODE, RenderStyle.ICON_EDIT_CODE);
+		}
 		if (model instanceof IMappedColumnMixin) {
 			final IMappedColumnMixin m = (IMappedColumnMixin) model;
 			GLButton b = new GLButton();
 			b.setCallback(new ISelectionCallback() {
 				@Override
 				public void onSelectionChanged(GLButton button, boolean selected) {
-					m.editMapping(get(HIST), context);
+					m.editMapping(get(HIST), context, config);
 				}
 			});
 			buttons.addButton(b, "Edit the mapping of this column", RenderStyle.ICON_MAPPING, RenderStyle.ICON_MAPPING);
@@ -443,7 +478,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 						m.setCollapsed(selected);
 					}
 				});
-				buttons.addButton(b, "Toggle Collapse / Expand of this column", RenderStyle.ICON_UNCOLLAPSE,
+				buttons.addButton(b, "Toggle collapse / expand of this column", RenderStyle.ICON_UNCOLLAPSE,
 						RenderStyle.ICON_COLLAPSE);
 			}
 		}
@@ -458,7 +493,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 					m.setCompressed(selected);
 				}
 			});
-			buttons.addButton(b, "Toggle Compress / Unpack of this column", RenderStyle.ICON_COMPRESS,
+			buttons.addButton(b, "Toggle compress / unpack of this column", RenderStyle.ICON_COMPRESS,
 					RenderStyle.ICON_UNCOMPRESS);
 		}
 		if (model instanceof IHideableColumnMixin) {
@@ -471,7 +506,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 						m.hide();
 				}
 			});
-			buttons.addButton(b, "Removes this column", RenderStyle.ICON_HIDE, RenderStyle.ICON_HIDE);
+			buttons.addButton(b, "Remove this column", RenderStyle.ICON_HIDE, RenderStyle.ICON_HIDE);
 		}
 		return buttons;
 	}
@@ -488,18 +523,21 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 	public void doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
 
 		IGLLayoutElement hist = children.get(HIST);
-		hist.setBounds(1, hasTitle ? LABEL_HEIGHT : 0, w - 2, h - (hasTitle ? LABEL_HEIGHT : 0));
+		final boolean smallHeader = isSmallHeader(h);
+		if (smallHeader)
+			hist.hide();
+		else
+			hist.setBounds(1, hasTitle ? LABEL_HEIGHT : 0, w - 2, h - (hasTitle ? LABEL_HEIGHT : 0));
 
 		if (config.isInteractive()) {
 			IGLLayoutElement weight = children.get(DRAG_WEIGHT);
-			weight.setBounds(w, hasTitle ? LABEL_HEIGHT : 0, (isHovered && config.canChangeWeights()) ? 8 : 0, h
-					- (hasTitle ? LABEL_HEIGHT : 0));
+			weight.setBounds(w, hasTitle && !smallHeader ? LABEL_HEIGHT : 0,
+					(isHovered && config.canChangeWeights()) ? 8 : 0, h - (hasTitle && !smallHeader ? LABEL_HEIGHT : 0));
 
 			{
 				IGLLayoutElement buttons = children.get(BUTTONS);
 				float minWidth = (buttons.asElement() instanceof ButtonBar) ? ((ButtonBar) buttons.asElement())
 						.getMinWidth() : 0;
-
 				// HACK for testing different button positions
 				boolean showButtonBar = isHovered && !isWeightDragging;
 				float yb = 0;
@@ -529,14 +567,33 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 					buttons.setBounds(2, yb, w - 4, hb);
 				}
 			}
+			{
+				IGLLayoutElement uncollapse = children.get(UNCOLLAPSE);
+				float yb = 0;
+				switch (config.getButtonBarPosition()) {
+				case AT_THE_BOTTOM:
+					yb = isHovered ? (h - 2 - RenderStyle.BUTTON_WIDTH) : h;
+					break;
+				case OVER_LABEL: // at the top
+					yb = 0;
+					break;
+				case UNDER_LABEL: // under the label
+					yb = LABEL_HEIGHT;
+					break;
+				case ABOVE_LABEL: // above the label
+					yb = isHovered ? -RenderStyle.BUTTON_WIDTH : 0;
+					break;
+				case BELOW_HIST: // below the histogram
+					yb = isHovered ? h : h;
+					break;
+				}
+				uncollapse.setBounds((w - RenderStyle.BUTTON_WIDTH) * .5f, yb, RenderStyle.BUTTON_WIDTH,
+						isHovered ? RenderStyle.BUTTON_WIDTH : 0);
+			}
 
-			IGLLayoutElement uncollapse = children.get(UNCOLLAPSE);
-			uncollapse.setBounds((w - RenderStyle.BUTTON_WIDTH) * .5f, 2, RenderStyle.BUTTON_WIDTH,
-					isHovered ? RenderStyle.BUTTON_WIDTH : 0);
-
-			for (IGLLayoutElement r : children.subList(UNCOLLAPSE + 1, children.size()))
+			for (IGLLayoutElement r : children.subList(firstColumn(), children.size()))
 				r.setBounds(defaultValue(r.getSetX(), 0), defaultValue(r.getSetY(), h),
-						defaultValue(r.getSetWidth(), w), defaultValue(r.getSetHeight(), 40));
+						defaultValue(r.getSetWidth(), w), defaultValue(r.getSetHeight(), HIST_HEIGHT));
 		}
 
 	}
@@ -560,13 +617,13 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 			if (pick.isAnyDragging())
 				return;
 			this.headerHovered = true;
-			context.setCursor(SWT.CURSOR_HAND);
+			context.getSWTLayer().setCursor(SWT.CURSOR_HAND);
 			relayout();
 			break;
 		case MOUSE_OUT:
 			if (this.headerHovered) {
 				this.headerHovered = false;
-				context.setCursor(-1);
+				context.getSWTLayer().setCursor(-1);
 				relayout();
 			}
 			break;
@@ -624,11 +681,10 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 				if (info != null)
 					m.removeDraggable(info.getFirst());
 				m.setDropable(ARankColumnModel.class, false);
-				context.setCursor(-1);
+				context.getSWTLayer().setCursor(-1);
 				if (info != null)
 					model.combine(info.getSecond(), RenderStyle.isCloneDragging(pick),
-							tableConfig
-							.getCombineMode(model, pick));
+							tableConfig.getCombineMode(model, pick));
 			}
 			break;
 		case DOUBLE_CLICKED:
@@ -653,7 +709,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 
 	protected void showContextMenu(List<AContextMenuItem> items) {
 		if (model instanceof IRankableColumnMixin) {
-			if (getParent() instanceof StackedColumnHeaderUI) {
+			if (getParent() instanceof StackedColumnHeaderUI) { // FIXME hack
 				items.add(0, new GenericContextMenuItem("Align by this attribute", new OrderByMeEvent().to(this)));
 				items.add(1, new GenericContextMenuItem("Order by this attribute", new OrderByMeEvent(true).to(this)));
 			} else {
@@ -661,7 +717,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 			}
 
 		}
-		context.showContextMenu(items);
+		context.getSWTLayer().showContextMenu(items);
 	}
 
 	@ListenTo(sendToMe = true)
@@ -698,7 +754,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 				l.removeDraggable(this.model);
 			}
 			this.isDragging = false;
-			context.setCursor(-1);
+			context.getSWTLayer().setCursor(-1);
 			return;
 		}
 	}
@@ -725,6 +781,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 
 	class DragElement extends PickableGLElement {
 		private boolean hovered = false;
+
 		public DragElement() {
 			setRenderer(GLRenderers.fillImage(RenderStyle.ICON_DRAG));
 			setTooltip("Drag this element to change the weight of this column");
@@ -736,14 +793,14 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 			if (pick.isAnyDragging())
 				return;
 			this.hovered = true;
-			context.setCursor(SWT.CURSOR_HAND);
+			context.getSWTLayer().setCursor(SWT.CURSOR_HAND);
 			repaintAll();
 		}
 
 		@Override
 		protected void onMouseOut(Pick pick) {
 			if (this.hovered)
-				context.setCursor(-1);
+				context.getSWTLayer().setCursor(-1);
 			this.hovered = false;
 			repaintAll();
 		}

@@ -1,19 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
- * University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
- * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
- * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with this program. If not, see
- * <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.view.opengl.canvas;
 
 import gleem.linalg.Vec3f;
@@ -38,6 +27,7 @@ import javax.media.opengl.fixedfunc.GLMatrixFunc;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
 import org.caleydo.core.event.IListenerOwner;
+import org.caleydo.core.event.view.ViewScrollEvent;
 import org.caleydo.core.id.object.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
@@ -49,6 +39,7 @@ import org.caleydo.core.view.AView;
 import org.caleydo.core.view.IDataDomainBasedView;
 import org.caleydo.core.view.ViewManager;
 import org.caleydo.core.view.contextmenu.ContextMenuCreator;
+import org.caleydo.core.view.listener.ViewScrollEventListener;
 import org.caleydo.core.view.opengl.camera.IViewCamera;
 import org.caleydo.core.view.opengl.camera.ViewCameraBase;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -59,6 +50,7 @@ import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.keyboard.GLFPSKeyListener;
 import org.caleydo.core.view.opengl.keyboard.GLKeyListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.picking.IPickingLabelProvider;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingManager;
@@ -185,6 +177,20 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	protected GLMouseWheelListener glMouseWheelListener;
 
 	private boolean focusGained = false;
+
+	/**
+	 * FIXME: Determines the amount that should be scrolled in pixels in x direction. This variable is only used on Mac
+	 * systems, as it currently requires manual translation of the view content since swt scroll bars are not working
+	 * properly.
+	 */
+	private int scrollX = 0;
+
+	/**
+	 * Same as {@link #scrollX}, but for y direction.s
+	 */
+	private int scrollY = 0;
+
+	private ViewScrollEventListener viewScrollEventListener;
 
 	private IGLFocusListener focusListener = new IGLFocusListener() {
 		@Override
@@ -337,6 +343,7 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 			//
 			// }
 			// });
+
 			final Vec3f rot_Vec3f = new Vec3f();
 			final Vec3f position = viewCamera.getCameraPosition();
 
@@ -352,16 +359,24 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 			gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
 			gl.glLoadIdentity();
 
+			gl.glPushMatrix();
+			gl.glTranslatef(pixelGLConverter.getGLWidthForPixelWidth(scrollX),
+					pixelGLConverter.getGLHeightForPixelHeight(scrollY), 0);
+
 			// clear screen
 			gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 
 			gl.glTranslatef(position.x(), position.y(), position.z());
 			gl.glRotatef(viewCamera.getCameraRotationGrad(rot_Vec3f), rot_Vec3f.x(), rot_Vec3f.y(), rot_Vec3f.z());
 
+			// gl.glActiveTexture(GL.GL_TEXTURE0);
+			gl.glBindTexture(GL.GL_TEXTURE_2D, GL.GL_NONE);
+
 			displayLocal(gl);
 
 			if (showFPSCounter)
 				fpsCounter.draw();
+			gl.glPopMatrix();
 		} catch (RuntimeException exception) {
 			ExceptionHandler.get().handleViewException(exception, this);
 		}
@@ -371,6 +386,18 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
 
 		updateViewFrustum(width, height);
+		// scrollX = x;
+		// scrollY = y;
+
+		// Display.getDefault().asyncExec(new Runnable() {
+		//
+		// @Override
+		// public void run() {
+		// Composite parentsparent = parentComposite.getParent();
+		// System.out.println("asd");
+		//
+		// }
+		// });
 
 		setDisplayListDirty();
 		hasFrustumChanged = true;
@@ -731,6 +758,10 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 		addTypePickingListener(this.getParentGLCanvas().createTooltip(tooltip), pickingType);
 	}
 
+	public final void addTypePickingTooltipListener(IPickingLabelProvider labelProvider, String pickingType) {
+		addTypePickingListener(this.getParentGLCanvas().createTooltip(labelProvider), pickingType);
+	}
+
 	/**
 	 * Registers a {@link IPickingListener} for this view that is call whenever an object of the specified type was
 	 * picked, independent of the object's picking id.
@@ -1025,10 +1056,18 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 
 	@Override
 	public void registerEventListeners() {
+		viewScrollEventListener = new ViewScrollEventListener();
+		viewScrollEventListener.setHandler(this);
+		eventPublisher.addListener(ViewScrollEvent.class, viewScrollEventListener);
 	}
 
 	@Override
 	public void unregisterEventListeners() {
+		if (viewScrollEventListener != null) {
+			eventPublisher.removeListener(viewScrollEventListener);
+			viewScrollEventListener = null;
+		}
+
 	}
 
 	/**
@@ -1305,5 +1344,26 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 					textHeight);
 			linePositionY -= textHeight;
 		}
+	}
+
+	public void onScrolled(ViewScrollEvent event) {
+		if (System.getProperty("os.name").contains("Mac")) {
+			scrollX = -event.getOriginX();
+			scrollY = event.getOriginY();
+		}
+	}
+
+	/**
+	 * @return the scrollX, see {@link #scrollX}
+	 */
+	public int getScrollX() {
+		return scrollX;
+	}
+
+	/**
+	 * @return the scrollY, see {@link #scrollY}
+	 */
+	public int getScrollY() {
+		return scrollY;
 	}
 }

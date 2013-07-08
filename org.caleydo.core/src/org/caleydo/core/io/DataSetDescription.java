@@ -1,19 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
- * University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
- * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
- * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with this program. If not, see
- * <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.io;
 
 import java.io.BufferedReader;
@@ -21,6 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -98,7 +88,7 @@ public class DataSetDescription extends MatrixDefinition {
 	 * Alternatively a {@link #parsingPattern} can be set.
 	 * </p>
 	 */
-	private ArrayList<ParsingRule> parsingRules;
+	private List<ParsingRule> parsingRules;
 
 	/**
 	 * <p>
@@ -119,7 +109,7 @@ public class DataSetDescription extends MatrixDefinition {
 	 * {@link #parsingRules}.<
 	 */
 	@XmlElement
-	private ArrayList<ColumnDescription> parsingPattern = null;
+	private List<ColumnDescription> parsingPattern = null;
 
 	/**
 	 * Flag determining whether the input matrix should be transposed, i.e., whether the column in the source file
@@ -130,10 +120,10 @@ public class DataSetDescription extends MatrixDefinition {
 	/**
 	 * A list of path to grouping files for the columns of the file specified in {@link #dataSourcePath}. Optional.
 	 */
-	private ArrayList<GroupingParseSpecification> columnGroupingSpecifications;
+	private List<GroupingParseSpecification> columnGroupingSpecifications;
 
 	/** Same as {@link #columnGroupingSpecifications} for rows. Optional. */
-	private ArrayList<GroupingParseSpecification> rowGroupingSpecifications;
+	private List<GroupingParseSpecification> rowGroupingSpecifications;
 
 	/**
 	 * A description on how to pre-process (e.g., cluster, filter) the data. Optional.
@@ -214,7 +204,7 @@ public class DataSetDescription extends MatrixDefinition {
 	 * @param columnGroupingPaths
 	 *            setter, see {@link #columnGroupingSpecifications}
 	 */
-	public void setColumnGroupingSpecifications(ArrayList<GroupingParseSpecification> columnGroupingSpecifications) {
+	public void setColumnGroupingSpecifications(List<GroupingParseSpecification> columnGroupingSpecifications) {
 		this.columnGroupingSpecifications = columnGroupingSpecifications;
 	}
 
@@ -233,7 +223,7 @@ public class DataSetDescription extends MatrixDefinition {
 	/**
 	 * @return the columnGroupingSpecifications, see {@link #columnGroupingSpecifications}
 	 */
-	public ArrayList<GroupingParseSpecification> getColumnGroupingSpecifications() {
+	public List<GroupingParseSpecification> getColumnGroupingSpecifications() {
 		return columnGroupingSpecifications;
 	}
 
@@ -241,7 +231,7 @@ public class DataSetDescription extends MatrixDefinition {
 	 * @param rowGroupingSpecifications
 	 *            setter, see {@link #rowGroupingSpecifications}
 	 */
-	public void setRowGroupingSpecifications(ArrayList<GroupingParseSpecification> rowGroupingSpecifications) {
+	public void setRowGroupingSpecifications(List<GroupingParseSpecification> rowGroupingSpecifications) {
 		this.rowGroupingSpecifications = rowGroupingSpecifications;
 	}
 
@@ -261,7 +251,7 @@ public class DataSetDescription extends MatrixDefinition {
 	/**
 	 * @return the rowGroupingSpecifications, see {@link #rowGroupingSpecifications}
 	 */
-	public ArrayList<GroupingParseSpecification> getRowGroupingSpecifications() {
+	public List<GroupingParseSpecification> getRowGroupingSpecifications() {
 		return rowGroupingSpecifications;
 	}
 
@@ -269,7 +259,7 @@ public class DataSetDescription extends MatrixDefinition {
 	 * @param parsingRules
 	 *            setter, see {@link #parsingRules}
 	 */
-	public void setParsingRules(ArrayList<ParsingRule> parsingRules) {
+	public void setParsingRules(List<ParsingRule> parsingRules) {
 		for (ParsingRule rule : parsingRules) {
 			checkAndDataDescritptionForColumn(rule.getColumnDescripton());
 		}
@@ -292,7 +282,7 @@ public class DataSetDescription extends MatrixDefinition {
 	/**
 	 * @return the parsingRules, see {@link #parsingRules}
 	 */
-	public ArrayList<ParsingRule> getParsingRules() {
+	public List<ParsingRule> getParsingRules() {
 		return parsingRules;
 	}
 
@@ -300,7 +290,7 @@ public class DataSetDescription extends MatrixDefinition {
 	 * @param parsingPattern
 	 *            setter, see {@link #parsingPattern}
 	 */
-	public void setParsingPattern(ArrayList<ColumnDescription> parsingPattern) {
+	public void setParsingPattern(List<ColumnDescription> parsingPattern) {
 		for (ColumnDescription desc : parsingPattern) {
 			checkAndDataDescritptionForColumn(desc);
 		}
@@ -326,7 +316,7 @@ public class DataSetDescription extends MatrixDefinition {
 		}
 	}
 
-	public ArrayList<ColumnDescription> getOrCreateParsingPattern() {
+	public List<ColumnDescription> getOrCreateParsingPattern() {
 
 		if (parsingPattern != null && !(parsingPattern.size() == 0))
 			return parsingPattern;

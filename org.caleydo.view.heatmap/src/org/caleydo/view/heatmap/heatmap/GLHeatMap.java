@@ -1,19 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
- * University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
- * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
- * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with this program. If not, see
- * <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.heatmap.heatmap;
 
 import java.util.HashSet;
@@ -28,6 +17,7 @@ import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.event.data.SelectionUpdateEvent;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.color.mapping.IColorMappingUpdateListener;
 import org.caleydo.core.util.color.mapping.UpdateColorMappingEvent;
 import org.caleydo.core.util.color.mapping.UpdateColorMappingListener;
@@ -68,7 +58,7 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 
 	public static String VIEW_NAME = "Heatmap";
 
-	public static final SelectionType SELECTION_HIDDEN = new SelectionType("Hidden", new float[] { 0f, 0f, 0f, 1f }, 1,
+	public static final SelectionType SELECTION_HIDDEN = new SelectionType("Hidden", new Color(0f, 0f, 0f, 1f), 1,
 			false, 0.2f);
 
 	private HeatMapRenderStyle renderStyle;
@@ -726,5 +716,6 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 	@Override
 	public void updateColorMapping() {
 		updateColorMapping = true;
+		setDisplayListDirty();
 	}
 }

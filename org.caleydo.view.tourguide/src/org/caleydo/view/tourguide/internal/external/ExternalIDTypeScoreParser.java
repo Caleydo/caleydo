@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.tourguide.internal.external;
 
 import java.util.Map;
@@ -25,6 +11,7 @@ import java.util.Set;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
+import org.caleydo.core.id.IIDTypeMapper;
 import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.util.logging.Logger;
@@ -35,7 +22,7 @@ public class ExternalIDTypeScoreParser extends AExternalScoreParser<ScoreParseSp
 
 	private final IDType sourceIDType;
 	private final IDType targetIDType;
-	private final IDMappingManager idMapper;
+	private final IIDTypeMapper<String, Integer> idMapper;
 	private final IDTypeParsingRules parsingRules;
 
 
@@ -43,7 +30,9 @@ public class ExternalIDTypeScoreParser extends AExternalScoreParser<ScoreParseSp
 		super(spec);
 		this.targetIDType = targetIDType;
 		this.sourceIDType = IDType.getIDType(spec.getRowIDSpecification().getIdType());
-		this.idMapper = IDMappingManagerRegistry.get().getIDMappingManager(this.sourceIDType.getIDCategory());
+		IDMappingManager idMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(
+				this.sourceIDType.getIDCategory());
+		idMapper = idMappingManager.getIDTypeMapper(sourceIDType, targetIDType);
 
 		this.parsingRules = extractParsingRules(this.sourceIDType, spec.getRowIDSpecification());
 	}
@@ -60,10 +49,10 @@ public class ExternalIDTypeScoreParser extends AExternalScoreParser<ScoreParseSp
 	protected Integer extractID(String originalID) {
 		originalID = convertID(originalID, parsingRules);
 
-		Set<Integer> mappedID = idMapper.getIDAsSet(sourceIDType, targetIDType, originalID);
+		Set<Integer> mappedID = idMapper.apply(originalID);
 		if (mappedID == null || mappedID.isEmpty()) {
 			System.err.println("Could not map id: " + originalID);
-			idMapper.getIDAsSet(sourceIDType, targetIDType, originalID);
+			idMapper.apply(originalID);
 			return null;
 		}
 		if (mappedID.size() > 1) {

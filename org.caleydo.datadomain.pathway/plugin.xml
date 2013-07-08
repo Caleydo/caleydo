@@ -9,4 +9,10 @@
         <DataDomain
           class="org.caleydo.datadomain.pathway.PathwayDataDomain" />
    </extension>
+   <extension
+         point="org.caleydo.serialize.addon">
+      <addon
+            class="org.caleydo.datadomain.pathway.internal.PathwaySerializationAddon">
+      </addon>
+   </extension>
 </plugin>

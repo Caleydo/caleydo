@@ -1,29 +1,17 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.vis.rank.ui.column;
 
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.BitSet;
 import java.util.List;
 
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
@@ -33,6 +21,7 @@ import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.StackedRankColumnModel;
+import org.caleydo.vis.rank.model.StackedRankColumnModel.Alignment;
 import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.ICompressColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IMultiColumnMixin.MultiFloat;
@@ -120,30 +109,44 @@ public class StackedColumnUI extends ACompositeTableColumnUI<StackedRankColumnMo
 
 	@Override
 	public void layoutRows(ARankColumnModel model, final IRowSetter setter, final float w, float h) {
-		final int combinedAlign = this.model.getAlignment();
+		final Alignment alignment = this.model.getAlignment();
+		final int combinedAlign = this.model.getSingleAlignment();
 		final int index = this.model.indexOf(model);
-		if (combinedAlign >= 0 && index != combinedAlign && index >= 0) {
+
+		if (alignment == Alignment.SINGLE && combinedAlign >= 0 && index != combinedAlign && index >= 0) {
 			// moving around
 			final float[] weights = new float[this.model.size()];
 			for (int i = 0; i < weights.length; ++i)
 				weights[i] = this.model.getChildWidth(i);
 
 			final RankTableModel table = this.model.getTable();
-			IRow selected = table.getSelectedRow();
-
 			IRowSetter wrappedSetter = new IRowSetter() {
 				@Override
 				public void set(int rowIndex, float x, float y, float w, float h, boolean pickable) {
 					IRow data = table.getDataItem(rowIndex);
-					x = getX(combinedAlign, weights, index, data);
+					x = getStackedX(combinedAlign, weights, index, data);
 					setter.set(rowIndex, x, y, w, h, pickable);
 				}
 			};
 			getRanker(model).layoutRows(wrappedSetter, 0, w);
-		} else {
+		} else if (alignment == Alignment.ORDERED) { // order by value
+			// moving around
+			final float[] weights = new float[this.model.size()];
+			for (int i = 0; i < weights.length; ++i)
+				weights[i] = this.model.getChildWidth(i);
+			final RankTableModel table = this.model.getTable();
+			IRowSetter wrappedSetter = new IRowSetter() {
+				@Override
+				public void set(int rowIndex, float x, float y, float w, float h, boolean pickable) {
+					IRow data = table.getDataItem(rowIndex);
+					x = getOrderedX(weights, index, data);
+					setter.set(rowIndex, x, y, w, h, pickable);
+				}
+			};
+			getRanker(model).layoutRows(wrappedSetter, 0, w);
+		} else
 			// simple
 			getColumnModelParent().layoutRows(model, setter, w, h);
-		}
 	}
 
 	@Override
@@ -161,7 +164,9 @@ public class StackedColumnUI extends ACompositeTableColumnUI<StackedRankColumnMo
 		return getRanker(model).getNumVisibleRows();
 	}
 
-	private float getX(int combinedAlign, float[] weights, int index, IRow data) {
+	private float getStackedX(int combinedAlign, float[] weights, int index, IRow data) {
+		if (index < 0)
+			return 0;
 		float x = 0;
 		MultiFloat vs = model.getSplittedValue(data);
 		if (index < combinedAlign) {
@@ -173,6 +178,26 @@ public class StackedColumnUI extends ACompositeTableColumnUI<StackedRankColumnMo
 				x += (vs.values[i] - 1) * weights[i];
 			// x -= RenderStyle.COLUMN_SPACE;
 		}
+		return x;
+	}
+
+	private float getOrderedX(float[] weights, int index, IRow data) {
+		if (index < 0)
+			return 0;
+		float x = 0;
+		MultiFloat vs = model.getSplittedValue(data);
+		float me = vs.values[index] * weights[index];
+		BitSet larger = new BitSet(vs.values.length);
+		for(int i = 0; i < vs.values.length; ++i) {
+			float o = vs.values[i]*weights[i];
+			larger.set(i, o > me || (o == me && i > index));
+		}
+		for (int i = 0; i < index; ++i) {
+			x -= weights[i] + RenderStyle.COLUMN_SPACE;
+		}
+		// now x is at the left corner
+		for (int i = larger.nextSetBit(0); i >= 0; i = larger.nextSetBit(i + 1))
+			x += vs.values[i] * weights[i] + RenderStyle.COLUMN_SPACE;
 		return x;
 	}
 
@@ -188,22 +213,32 @@ public class StackedColumnUI extends ACompositeTableColumnUI<StackedRankColumnMo
 
 	@Override
 	public VAlign getAlignment(ITableColumnUI model) {
-		int combinedAlign = this.model.getAlignment();
-		if (combinedAlign < 0)
+		Alignment combinedAlign = this.model.getAlignment();
+		if (combinedAlign != Alignment.SINGLE)
 			return VAlign.LEFT;
 		int index = this.model.indexOf(model.getModel());
-		return (index >= combinedAlign || index < 0) ? VAlign.LEFT : VAlign.RIGHT;
+		return (index >= this.model.getSingleAlignment() || index < 0) ? VAlign.LEFT : VAlign.RIGHT;
 	}
 
 	@Override
 	public boolean hasFreeSpace(ITableColumnUI model) {
-		int combinedAlign = this.model.getAlignment();
-		if (combinedAlign < 0)
-			return true;
 		int index = this.model.indexOf(model.getModel());
 		if (index < 0)
 			return true;
-		return index >= combinedAlign ? (index == (this.model.size() - 1)) : (index == 0);
+		switch(this.model.getAlignment()) {
+		case ALL:
+			return true;
+		case SINGLE:
+			return index >= this.model.getSingleAlignment() ? (index == (this.model.size() - 1)) : (index == 0);
+		case ORDERED:
+			return false; // FIXME not implemented
+		}
+		throw new IllegalStateException();
+	}
+
+	@Override
+	public Color getBarOutlineColor() {
+		return getColumnModelParent().getBarOutlineColor();
 	}
 }
 

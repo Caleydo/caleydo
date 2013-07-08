@@ -1,3 +1,8 @@
+/*******************************************************************************
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 /**
  *
  */
@@ -81,7 +86,7 @@ public class RemoveNodeButtonAttributeRenderer extends ANodeAttributeRenderer {
 			Vec3f upperLeftCorner = new Vec3f(lowerLeftCorner.x(), upperRightCorner.y(), position.z());
 
 			textureManager.renderTexture(gl, EIconTextures.REMOVE, lowerLeftCorner, lowerRightCorner, upperRightCorner,
-					upperLeftCorner, 1, 1, 1, 1);
+					upperLeftCorner);
 
 			for (int i = 0; i < nodeIds.size(); i++) {
 				gl.glPopName();

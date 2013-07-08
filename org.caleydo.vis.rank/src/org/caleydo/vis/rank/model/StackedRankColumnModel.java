@@ -1,31 +1,20 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.vis.rank.model;
 
-import java.awt.Color;
+
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Comparator;
 
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.function.FloatFunctions;
 import org.caleydo.core.util.function.IFloatList;
 import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.ICompressColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IFloatRankableColumnMixin;
@@ -33,9 +22,9 @@ import org.caleydo.vis.rank.model.mixin.IMappedColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.ISnapshotableColumnMixin;
 import org.caleydo.vis.rank.ui.RenderStyle;
+import org.caleydo.vis.rank.ui.detail.MultiRankScoreSummary;
 import org.caleydo.vis.rank.ui.detail.ScoreBarElement;
 import org.caleydo.vis.rank.ui.detail.ScoreFilter2;
-import org.caleydo.vis.rank.ui.detail.StackedScoreSummary;
 import org.caleydo.vis.rank.ui.detail.ValueElement;
 
 import com.google.common.collect.Iterables;
@@ -48,9 +37,13 @@ import com.jogamp.common.util.IntObjectHashMap;
  *
  */
 public class StackedRankColumnModel extends AMultiRankColumnModel implements ISnapshotableColumnMixin,
-		ICompressColumnMixin {
+		ICompressColumnMixin, ICollapseableColumnMixin, IFilterColumnMixin {
 	public static final String PROP_ALIGNMENT = "alignment";
 	public static final String PROP_WEIGHTS = "weights";
+
+	public enum Alignment {
+		ALL, ORDERED, SINGLE
+	}
 
 	private final PropertyChangeListener listener = new PropertyChangeListener() {
 		@Override
@@ -73,9 +66,10 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 	};
 
 	/**
-	 * which is the current aligned column index or -1 for all
+	 * which is the current aligned column index or ALIGN_ALL for all
 	 */
-	private int alignment = 0;
+	private Alignment alignment = Alignment.SINGLE;
+	private int alignmentDetails = 0;
 	private boolean isCompressed = false;
 	private float compressedWidth = 100;
 
@@ -97,6 +91,7 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 	public StackedRankColumnModel(StackedRankColumnModel copy) {
 		super(copy);
 		this.alignment = copy.alignment;
+		this.compressedWidth = copy.compressedWidth;
 		this.isCompressed = copy.isCompressed;
 		this.filterInferredPercentage = copy.filterInferredPercentage;
 		setHeaderRenderer(this);
@@ -129,8 +124,8 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 		model.removePropertyChangeListener(IFilterColumnMixin.PROP_FILTER, listener);
 		model.removePropertyChangeListener(IMappedColumnMixin.PROP_MAPPING, listener);
 		// addDirectWeight(-model.getWeight());
-		if (alignment > size() - 2) {
-			setAlignment(alignment - 1);
+		if (alignmentDetails > size() - 2) {
+			setAlignment(alignmentDetails - 1);
 		}
 		super.setWidth(width - model.getWidth() - RenderStyle.COLUMN_SPACE);
 		model.setParentData(null);
@@ -191,7 +186,7 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 
 	@Override
 	public GLElement createSummary(boolean interactive) {
-		return new StackedScoreSummary(this, interactive);
+		return new MultiRankScoreSummary(this, interactive);
 	}
 
 	@Override
@@ -243,8 +238,15 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 	/**
 	 * @return the alignment, see {@link #alignment}
 	 */
-	public int getAlignment() {
+	/**
+	 * @return the alignment, see {@link #alignment}
+	 */
+	public Alignment getAlignment() {
 		return alignment;
+	}
+
+	public int getSingleAlignment() {
+		return alignment != Alignment.SINGLE ? -1 : alignmentDetails;
 	}
 
 	/**
@@ -254,7 +256,21 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 	public void setAlignment(int alignment) {
 		if (alignment > this.children.size())
 			alignment = this.children.size();
-		if (alignment == this.alignment)
+		if (alignmentDetails == alignment && this.alignment == Alignment.SINGLE)
+			return;
+		this.alignment = Alignment.SINGLE;
+		propertySupport.firePropertyChange(PROP_ALIGNMENT, this.alignmentDetails, this.alignmentDetails = alignment);
+	}
+
+	/**
+	 *
+	 */
+	public void switchToNextAlignment() {
+		setAlignment(Alignment.values()[(alignment.ordinal() + 1) % (Alignment.values().length)]);
+	}
+
+	public void setAlignment(Alignment alignment) {
+		if (this.alignment == alignment)
 			return;
 		propertySupport.firePropertyChange(PROP_ALIGNMENT, this.alignment, this.alignment = alignment);
 	}
@@ -262,7 +278,7 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 	@Override
 	public void orderBy(IRankableColumnMixin child) {
 		int index = indexOf((ARankColumnModel)child);
-		if (alignment == index)
+		if (alignmentDetails == index && alignment == Alignment.SINGLE)
 			setAlignment(index + 1);
 		else
 			setAlignment(index);
@@ -305,18 +321,21 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 		propertySupport.firePropertyChange(PROP_WEIGHTS, null, weights);
 	}
 
+	/**
+	 * sorts the children decreasing by their weight
+	 */
+	public void sortByWeights() {
+		cacheMulti.clear();
+		sortBy(new Comparator<ARankColumnModel>() {
+			@Override
+			public int compare(ARankColumnModel o1, ARankColumnModel o2) {
+				return -Float.compare((float) o1.getParentData(), (float) o2.getParentData());
+			}
+		});
+	}
+
 	public float getChildWidth(int i) {
 		return (float) get(i).getParentData();
-	}
-
-	public boolean isAlignAll() {
-		return alignment < 0;
-	}
-
-	public void setAlignAll(boolean alignAll) {
-		if (isAlignAll() == alignAll)
-			return;
-		this.setAlignment(-alignment - 1);
 	}
 
 	@Override
@@ -352,8 +371,9 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 	protected boolean filterEntry(IRow row) {
 		if (filterInferredPercentage >= 1)
 			return super.filterEntry(row);
-		if (!super.filterEntry(row))
+		if (!super.filterEntry(row)) {
 			return false;
+		}
 		boolean[] inferreds = isValueInferreds(row);
 		boolean any = false;
 		for (int i = 0; i < inferreds.length; ++i) {
@@ -381,8 +401,9 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 	}
 
 	@Override
-	public void setCompressed(boolean compressed) {
+	public ICompressColumnMixin setCompressed(boolean compressed) {
 		this.propertySupport.firePropertyChange(PROP_COMPRESSED, this.isCompressed, this.isCompressed = compressed);
+		return this;
 	}
 
 

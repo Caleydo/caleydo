@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *  
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *  
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.radial;
 
 import javax.media.opengl.GL;
@@ -34,7 +20,7 @@ import org.caleydo.core.view.opengl.util.GLPrimitives;
  * been selected in some fashion. Therefore it is using a predefined fill color
  * and a definable border color (for distinguishing between e.g. Mouse Over and
  * Click).
- * 
+ *
  * @author Christian Partl
  */
 public class PDDrawingStrategySelected extends APDDrawingStrategyChildIndicator {
@@ -43,7 +29,7 @@ public class PDDrawingStrategySelected extends APDDrawingStrategyChildIndicator 
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param pickingManager
 	 *            The picking manager that should handle the picking of the
 	 *            drawn elements.
@@ -53,7 +39,7 @@ public class PDDrawingStrategySelected extends APDDrawingStrategyChildIndicator 
 	 */
 	public PDDrawingStrategySelected(PickingManager pickingManager, int viewID) {
 		super(pickingManager, viewID);
-		fArBorderColor = SelectionType.MOUSE_OVER.getColor();
+		fArBorderColor = SelectionType.MOUSE_OVER.getColor().getRGBA();
 	}
 
 	@Override
@@ -119,7 +105,7 @@ public class PDDrawingStrategySelected extends APDDrawingStrategyChildIndicator 
 
 	/**
 	 * Gets the color which is used for drawing the partial disc's border.
-	 * 
+	 *
 	 * @return RGB-Color which is used to draw the partial disc's border.
 	 */
 	public float[] getBorderColor() {
@@ -128,7 +114,7 @@ public class PDDrawingStrategySelected extends APDDrawingStrategyChildIndicator 
 
 	/**
 	 * Sets the color that shall be used for drawing the partial disc's border.
-	 * 
+	 *
 	 * @param fArBorderColor
 	 *            RGB-Color which shall be used to draw the partial disc's
 	 *            border. Only the first three values of the array will be used.
@@ -152,7 +138,7 @@ public class PDDrawingStrategySelected extends APDDrawingStrategyChildIndicator 
 	/**
 	 * Gets the coordinates of the connection point that is used for drawing a
 	 * connection line to the specified partial disc.
-	 * 
+	 *
 	 * @param disc
 	 *            Partial disc the connection point shall be obtained for.
 	 * @param fHierarchyCenterX

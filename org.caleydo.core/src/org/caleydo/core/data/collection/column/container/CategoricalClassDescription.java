@@ -1,19 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
- * University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
- * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
- * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with this program. If not, see
- * <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.data.collection.column.container;
 
 import java.util.ArrayList;
@@ -32,7 +21,8 @@ import org.caleydo.core.data.collection.table.CategoricalTable;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.NumericalProperties;
 import org.caleydo.core.util.color.Color;
-import org.caleydo.core.util.color.ColorManager;
+import org.caleydo.core.util.color.ColorBrewer;
+import org.caleydo.core.util.logging.Logger;
 
 /**
  * <p>
@@ -52,7 +42,7 @@ import org.caleydo.core.util.color.ColorManager;
  * </p>
  * <p>
  * Elements that are either not in a pre-defined category or that cause a parsing error are collected in a
- * {@link #unknownCategory}. This category is dynamically created, but you cal also set it manually if you want to
+ * {@link #unknownCategory}. This category is dynamically created, but you can also set it manually if you want to
  * influence e.g., its label or color.
  * </p>
  * <p>
@@ -65,6 +55,10 @@ import org.caleydo.core.util.color.ColorManager;
 @XmlType
 public class CategoricalClassDescription<CATEGORY_TYPE extends Comparable<CATEGORY_TYPE>> implements
 		Iterable<CategoryProperty<CATEGORY_TYPE>> {
+
+	public static final ColorBrewer DEFAULT_SEQUENTIAL_COLOR_SCHEME = ColorBrewer.Reds;
+	public static final ColorBrewer DEFAULT_DIVERGING_COLOR_SCHEME = ColorBrewer.RdBu;
+	public static final ColorBrewer DEFAULT_QUALITATIVE_COLOR_SCHEME = ColorBrewer.Set1;
 
 	/** The type of the category */
 	public enum ECategoryType {
@@ -90,6 +84,11 @@ public class CategoricalClassDescription<CATEGORY_TYPE extends Comparable<CATEGO
 	 *
 	 */
 	public CategoricalClassDescription() {
+	}
+
+	public CategoricalClassDescription(EDataType rawDataType) {
+		setRawDataType(rawDataType);
+		categoryType = rawDataType == EDataType.STRING ? ECategoryType.NOMINAL : ECategoryType.ORDINAL;
 	}
 
 	/**
@@ -158,6 +157,7 @@ public class CategoricalClassDescription<CATEGORY_TYPE extends Comparable<CATEGO
 		this.unknownCategory = unknownCategory;
 	}
 
+
 	/**
 	 * @return the unknownCategory, see {@link #unknownCategory}
 	 */
@@ -177,8 +177,16 @@ public class CategoricalClassDescription<CATEGORY_TYPE extends Comparable<CATEGO
 		return categoryProperties.iterator();
 	}
 
+	/** Returns the number of categories including the unknown category. See also {@link #sizeWithoutUnknown()} */
 	public int size() {
 		return categoryProperties.size();
+	}
+
+	/** Returns the number of categories excluding the unknown category. See also {@link #size()).*/
+	public int sizeWithoutUnknown() {
+		if (categoryProperties.contains(unknownCategory))
+			return size() - 1;
+		return size();
 	}
 
 	/**
@@ -194,18 +202,26 @@ public class CategoricalClassDescription<CATEGORY_TYPE extends Comparable<CATEGO
 	 * @param unsortedCategories
 	 */
 	public void autoInitialize(Collection<CATEGORY_TYPE> unsortedCategories) {
-		List<Color> colors = ColorManager.get().getColorList(ColorManager.QUALITATIVE_COLORS);
-
-		if (unsortedCategories.size() > colors.size()) {
-			throw new IllegalArgumentException(
-					"Cannot auto-initialize more nominal categories then colors are available.");
-		}
-
 		List<CATEGORY_TYPE> categories = new ArrayList<>(unsortedCategories);
 		Collections.sort(categories);
 
+		// auto detect NA as unknown category
+		// if (categories.contains("NA")) {
+		// setUnknownCategory((CategoryProperty<CATEGORY_TYPE>) new CategoryProperty<>("NA", Color.NOT_A_NUMBER_COLOR));
+		// categories.remove("NA");
+		// }
+		ColorBrewer cb = categoryType == ECategoryType.NOMINAL ? DEFAULT_QUALITATIVE_COLOR_SCHEME
+				: DEFAULT_SEQUENTIAL_COLOR_SCHEME;
+		Color default_ = Color.NEUTRAL_GREY;
+
 		for (int i = 0; i < categories.size(); i++) {
-			addCategoryProperty(new CategoryProperty<>(categories.get(i), colors.get(i)));
+			addCategoryProperty(new CategoryProperty<>(categories.get(i), default_));
+		}
+		if (this.size() > cb.getSizes().last()) {
+			Logger.create(CategoricalClassDescription.class).error("Cannot auto-initialize more nominal categories (%s) than colors (%s) are available, making them ALL grey",unsortedCategories,cb.getSizes().last());
+		} else {
+			CategoryProperty<CATEGORY_TYPE> unknown = getUnknownCategory();
+			applyColorScheme(cb, unknown == null ? null : unknown.getCategory(), false);
 		}
 	}
 
@@ -219,6 +235,17 @@ public class CategoricalClassDescription<CATEGORY_TYPE extends Comparable<CATEGO
 		return hashCategoryToProperties.get(category);
 	}
 
+	/**
+	 * Returns the index of the category in this category class.
+	 *
+	 * @param category
+	 * @return
+	 */
+	public int indexOf(Object category) {
+		CategoryProperty<?> cProperty = hashCategoryToProperties.get(category);
+		return categoryProperties.indexOf(cProperty);
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder b = new StringBuilder("Description [");
@@ -230,4 +257,30 @@ public class CategoricalClassDescription<CATEGORY_TYPE extends Comparable<CATEGO
 		return b.toString();
 	}
 
+	/**
+	 * Applies a specified color scheme to the present categories.
+	 *
+	 * @param colorScheme
+	 *            ColorScheme to apply.
+	 * @param neutralCategory
+	 *            If the color scheme is diverging, a neutral color is assigned to this category. May be null.
+	 * @param reverseColorScheme
+	 *            Determines whether the colors should be applied in reverse order.
+	 */
+	public void applyColorScheme(ColorBrewer colorScheme, CATEGORY_TYPE neutralCategory, boolean reverseColorScheme) {
+
+		CategoryProperty<CATEGORY_TYPE> neutralCategoryProperty = hashCategoryToProperties.get(neutralCategory);
+
+		int neutralColorIndex = -1;
+		if (neutralCategoryProperty != null) {
+			neutralColorIndex = categoryProperties.indexOf(neutralCategoryProperty);
+		}
+
+		List<Color> colors = colorScheme.getColors(categoryProperties.size(), neutralColorIndex, reverseColorScheme);
+
+		for (int i = 0; i < categoryProperties.size(); i++) {
+			CategoryProperty<CATEGORY_TYPE> categoryProperty = categoryProperties.get(i);
+			categoryProperty.setColor(colors.get(i));
+		}
+	}
 }

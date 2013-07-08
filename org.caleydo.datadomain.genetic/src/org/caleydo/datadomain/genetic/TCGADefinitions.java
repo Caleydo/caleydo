@@ -1,23 +1,12 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.datadomain.genetic;
+
+import java.util.Arrays;
+import java.util.regex.Pattern;
 
 import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.io.IDTypeParsingRules;
@@ -38,16 +27,19 @@ public class TCGADefinitions {
 
 	public static final String[] KNOWN_ID_EXAMPLES = { "TCGA-06-0171-02",
 			"tcga-06-0125-02", "TCGA-02-0003-01A-01R-0177-01",
-			"TCGA-02-0004-01A-21-1898-20", "OV_20_0990" };
+ "TCGA-02-0004-01A-21-1898-20", "OV_20_0990", "tcga-a2-a04r",
+			"tcga-ab-1234-01a" };
 
 	// tcga\\-|TCGA\\-|^[a-zA-Z]|\\-..\\z
-	public static final String TCGA_ID_SUBSTRING_REGEX = "^[a-zA-Z]*\\-|\\-..\\z|\\-...\\-";
+	public static final String TCGA_ID_SUBSTRING_REGEX = "^[a-zA-Z]*\\-|\\-..\\z|\\-...\\-|\\-...\\z";
 	public static final String[] TCGA_REPLACING_EXPRESSIONS = { "\\.", "\\_" };
 	public static final String TCGA_REPLACEMENT_STRING = "-";
 
-	public static IDSpecification createIDSpecification(boolean isDefault) {
+	public static IDSpecification createSampleIDSpecification(boolean isDefault) {
 		IDTypeParsingRules rule = new IDTypeParsingRules();
+		// split by that expression and take the first element
 		rule.setSubStringExpression(TCGA_ID_SUBSTRING_REGEX);
+		// replace all . and _ with -
 		rule.setReplacementExpression(TCGA_REPLACEMENT_STRING, TCGA_REPLACING_EXPRESSIONS);
 		rule.setToLowerCase(true);
 		rule.setDefault(isDefault);
@@ -55,5 +47,21 @@ public class TCGADefinitions {
 		IDSpecification id = new IDSpecification("TCGA_SAMPLE", "TCGA_SAMPLE");
 		id.setIdTypeParsingRules(rule);
 		return id;
+	}
+
+	public static IDSpecification createGeneIDSpecificiation() {
+		IDTypeParsingRules rule = new IDTypeParsingRules();
+		rule.setSubStringExpression(Pattern.quote("|")); // using the first element before the | separator
+		rule.setDefault(false);
+
+		IDSpecification geneIDSpecification = new IDSpecification();
+		geneIDSpecification.setIDTypeGene(true);
+		geneIDSpecification.setIdType("GENE_SYMBOL");
+		geneIDSpecification.setIdTypeParsingRules(rule);
+		return geneIDSpecification;
+	}
+
+	public static void main(String[] args) {
+		System.out.println(Arrays.toString("PITX2|5308".split(Pattern.quote("|"))));
 	}
 }

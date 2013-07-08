@@ -14,24 +14,26 @@
    <extension-point id="org.caleydo.core.data.datadomain.ViewDataDomainAssociation" name="ViewDataDomainAssociation" schema="schema/org.caleydo.core.data.datadomain.ViewDataDomainAssociation.exsd"/>
    <extension-point id="org.caleydo.view.ViewEmbeddingProvider" name="ViewEmbeddingProvider" schema="schema/org.caleydo.view.ViewEmbeddingProvider.exsd"/>
    <extension-point id="org.caleydo.core.util.Clusterer" name="Clusterer" schema="schema/org.caleydo.core.util.Clusterer.exsd"/>
-	
+   <extension-point id="org.caleydo.core.StartupAddon" name="StartupAddon" schema="schema/org.caleydo.core.StartupAddon.exsd"/>
+   <extension-point id="org.caleydo.core.SampleProject" name="Sample Project Description" schema="schema/org.caleydo.core.SampleProject.exsd"/>
+
    <extension
          id="application"
          point="org.eclipse.core.runtime.applications">
       <application>
          <run
-               class="org.caleydo.core.startup.Application">
+               class="org.caleydo.core.internal.Application">
          </run>
       </application>
    </extension>
-   
+
    <extension
          point="org.eclipse.ui.views">
      <category
             name="Caleydo"
             id="org.caleydo.core.views">
       </category>
-  
+
       <view
             category="org.caleydo.core.views"
             class="org.caleydo.core.gui.toolbar.RcpToolBarView"
@@ -39,14 +41,14 @@
             id="org.caleydo.core.gui.toolbar.RcpToolBarView"
             name="Tool Bar">
       </view>
-   </extension>   
-   
+   </extension>
+
    <extension
          point="org.eclipse.ui.perspectives">
       <perspective
             name="Genome Perspective"  class="org.caleydo.core.gui.perspective.GenomePerspective"
             id="org.caleydo.core.gui.perspective">
-            
+
       </perspective>
    </extension>
    <extension
@@ -58,7 +60,7 @@
          <property
                name="appName"
                value="Caleydo">
-         </property>        
+         </property>
          <property
                name="aboutImage"
                value="resources/wizard/wizard.png">
@@ -73,7 +75,7 @@
          </property>
          <property
                name="aboutText"
-               value="Caleydo - Visualization for Molecular Biology&#x0A;http:// www.caleydo.org&#x0A;&#x0A;Copyright 2005 - 2012  by &#x0A;Graz University of Technology - http://www.icg.tugraz.at&#x0A;Marc Streit - http://marc.streit.com&#x0A;Alexander Lex - http://alexander-lex.com&#x0A;Christian Partl - http://icg.tugraz.at/Members/partl&#x0A;Johannes Kepler University Linz - http://www.jku.at/cg/&#x0A;&#x0A;Caleydo is open-source software licenced under the GPL V3">
+               value="Caleydo - Visualization for Molecular Biology&#x0A;http:// caleydo.org&#x0A;&#x0A;Copyright 2008 - 2013  by the Caleydo Team.&#x0A;Caleydo is open-source software licenced under the New BSD license.">
          </property>
       </product>
    </extension>
@@ -87,12 +89,12 @@
       <splashHandlerProductBinding
             productId="org.caleydo.core.product"
             splashId="org.caleydo.core.startup.progress">
-      </splashHandlerProductBinding>         
-   </extension>   
+      </splashHandlerProductBinding>
+   </extension>
    <extension
          point="org.eclipse.ui.commands">
       <command
-            defaultHandler="org.caleydo.core.startup.ExitHandler"
+            defaultHandler="org.caleydo.core.internal.ExitHandler"
             id="org.caleydo.core.startup.exit"
             name="Exit">
       </command>
@@ -142,21 +144,32 @@
             name="Tool Bar">
       </command>
       <command
-            defaultHandler="org.caleydo.core.startup.RestartCommand"
+            defaultHandler="org.caleydo.core.internal.RestartCommand"
             id="org.caleydo.core.startup.restart"
             name="Restart">
       </command>
-      		
+      <command
+            defaultHandler="org.caleydo.core.internal.startup.OpenProjectCommand"
+            id="org.caleydo.core.startup.open"
+            name="Open Project">
+      </command>
+
    </extension>
    <extension
          point="org.eclipse.ui.menus">
-         
-         
+
+
       <menuContribution
             locationURI="menu:org.eclipse.ui.main.menu">
          <menu
                id="org.caleydo.menu.file"
                label="File">
+            <command
+                  commandId="org.caleydo.core.startup.open"
+                  icon="resources/icons/general/open.png"
+                  label="Open Project"
+                  style="push">
+            </command>
             <command
                   commandId="org.caleydo.core.io.gui.save_project"
                   icon="resources/icons/general/save.png"
@@ -223,7 +236,7 @@
                   style="push">
             </command>
          </menu>
-         
+
          <menu
                id="org.caleydo.menu.view"
                label="View">
@@ -249,7 +262,7 @@
                   label="Legacy">
             </menu>
          </menu>
-        
+
          <menu
                id="org.caleydo.menu.help"
                label="Help"
@@ -305,19 +318,14 @@
             </page-->
             <page
                   class="org.caleydo.core.gui.preferences.ViewPreferencePage"
-                  id="org.caleydo.core.gui.preferences.ViewPreferencePage"
+                  id="org.caleydo.core.gui.preferences.views"
                   name="Views">
-            </page>
-            <page
-                  class="org.caleydo.core.gui.preferences.ProxyPreferencePage"
-                  id="org.caleydo.core.gui.preferences.ProxyPreferencePage"
-                  name="Proxy">
             </page>
    </extension>
       <extension
             point="org.eclipse.ui.services">
          <sourceProvider
-               provider="org.caleydo.core.startup.AbstractSourceProvider">
+               provider="org.caleydo.core.internal.AbstractSourceProvider">
             <variable
                   name="org.caleydo.core.isReleaseState"
                   priorityLevel="workbench">
@@ -336,9 +344,6 @@
       <extension
             point="org.caleydo.core.util.Clusterer">
          <clusterer
-               class="org.caleydo.core.util.clusterer.algorithm.kmeans.KMeansWEKAClustererFactory">
-         </clusterer>
-         <clusterer
                class="org.caleydo.core.util.clusterer.algorithm.kmeans.KMeansClustererFactory">
          </clusterer>
          <clusterer
@@ -347,5 +352,31 @@
          <clusterer
                class="org.caleydo.core.util.clusterer.algorithm.tree.TreeClustererFactory">
          </clusterer>
+      </extension>
+      <extension
+            point="org.caleydo.core.StartupAddon">
+         <addon
+               class="org.caleydo.core.internal.startup.LoadSampleProjectStartupAddon"
+               name="Load Demo Data"
+               order="0">
+         </addon>
+         <addon
+               class="org.caleydo.core.internal.startup.LoadProjectStartupAddon"
+               name="Load Project"
+               order="1000">
+         </addon>
+      </extension>
+      <extension
+            point="org.caleydo.core.SampleProject">
+         <sample
+               description="The ideal choice if you want to try out multi-dataset analysis with StratomeX in Calyedo. &#x0A;&#x0A;This project loads eight linked datasets for Glioblastoma Multiforme (GBM), collected by &lt;a href=&quot;http://cancergenome.nih.gov&quot;&gt;TCGA&lt;/a&gt; and made available by the Broad Institute&apos;s &lt;a href=&quot;http://gdac.broadinstitute.org&quot;&gt;Genome Data Analysis Center (GDAC)&lt;/a&gt;.&#x0A;The datasets are mRNA expression data (chip-based and sequencing based separately), microRNA expression, methylation, mutation, copy-number, RPPA as well as clinical data. The project contains 300-550 samples for each dataset. The expression datasets contain about 1,500 pre-selected values, copy number status is availiabe for about 5,000 genes.&#x0A;&#x0A;Download Size: 17 MB "
+               name="Try Caleydo with TCGA Glioblastoma Multiforme Dataset"
+               url="http://data.icg.tugraz.at/caleydo/download/3.0/samples/tcga_gbm.cal">
+         </sample>
+         <sample
+            description="The ideal choice if you want to try out pathway-centric analysis with enRoute in Calyedo.&#x0A;&#x0A;This project loads four linked datasets from the &lt;a href=&quot;http://www.broadinstitute.org/ccle&quot;&gt;Cancer Cell Line Encyclopedia (CCLE)&lt;/a&gt; collected by the Broad Institute and the Novartis Institutes for Biomedical Research. &#x0A;The datasets are mRNA expression, mutation and copy-number data as well as IC 50 values for the cell lines and 24 known anti cancer drugs. The project contains between 500 and 1000 samples for each dataset. The genetic datasets contain between 1,600 (mutation data) and roughly 20,000 values (other datatasets).&#x0A; &#x0A;Download Size: 77 MB"
+               name="Try Caleydo with CCLE Dataset"
+               url="http://data.icg.tugraz.at/caleydo/download/3.0/samples/ccle.cal">
+         </sample>
       </extension>
 </plugin>

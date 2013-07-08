@@ -1,24 +1,10 @@
-/**
- *
- */
+/*******************************************************************************
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.data.perspective.table;
 
-/*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
- * University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
- * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
- * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with this program. If not, see
- * <http://www.gnu.org/licenses/>
- *******************************************************************************/
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -135,38 +121,6 @@ public class CategoricalTablePerspectiveCreator {
 		Perspective recordPerspective = dataDomain.getTable().getDefaultRecordPerspective();
 		Perspective binnedPerspective = binCategorical(convertedID, recordPerspective, dataDomain, label,
 				isTablePerspectivePrivate);
-		// }
-		// FIXME TCGA Specific hack! Move to some place sane
-		// int numberOfBins = 1;
-		// Perspective binnedPerspective;
-		// if (dataDomain.getLabel().contains("Copy")) {
-		// for (String recordPerspectiveID : dataDomain.getTable().getRecordPerspectiveIDs()) {
-		// Perspective recordPerspective = dataDomain.getTable().getRecordPerspective(recordPerspectiveID);
-		// ArrayList<String> groupLabels = new ArrayList<String>();
-		// groupLabels.add("Homozygous deletion");
-		// groupLabels.add("Heterozygous deletion");
-		// groupLabels.add("Normal");
-		// groupLabels.add("Low level amplification");
-		// groupLabels.add("High level amplification");
-		// numberOfBins = 5;
-		// binnedPerspective = binRecords(numberOfBins, convertedID, recordPerspective, dataDomain, label,
-		// groupLabels, isTablePerspectivePrivate);
-		// break;
-		// }
-		// }
-		// if (dataDomain.getLabel().contains("Mutation")) {
-		// for (String recordPerspectiveID : dataDomain.getTable().getRecordPerspectiveIDs()) {
-		// Perspective recordPerspective = dataDomain.getTable().getRecordPerspective(recordPerspectiveID);
-		// ArrayList<String> groupLabels = new ArrayList<String>();
-		// groupLabels.add("Not Mutated");
-		// groupLabels.add("Mutated");
-		// numberOfBins = 2;
-		// binnedPerspective = binRecords(numberOfBins, convertedID, recordPerspective, dataDomain, label,
-		// groupLabels, isTablePerspectivePrivate);
-		// break;
-		//
-		// }
-		// }
 
 		if (binnedPerspective != null) {
 
@@ -182,9 +136,6 @@ public class CategoricalTablePerspectiveCreator {
 			// table perspectives.
 			if (!existsAlready)
 				tablePerspective.setPrivate(isTablePerspectivePrivate);
-
-			tablePerspective.getContainerStatistics().setNumberOfBucketsForHistogram(
-					binnedPerspective.getVirtualArray().getGroupList().size());
 		}
 	}
 

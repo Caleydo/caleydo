@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.tourguide.internal.view;
 
 import java.beans.PropertyChangeEvent;
@@ -33,14 +19,15 @@ import java.util.Objects;
 import javax.media.opengl.GLAutoDrawable;
 
 import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventPublisher;
-import org.caleydo.core.event.data.NewDataDomainEvent;
+import org.caleydo.core.event.data.DataDomainUpdateEvent;
+import org.caleydo.core.event.data.NewDataDomainLoadedEvent;
 import org.caleydo.core.event.data.RemoveDataDomainEvent;
-import org.caleydo.core.event.data.ReplaceTablePerspectiveEvent;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
-import org.caleydo.core.view.listener.RemoveTablePerspectiveEvent;
+import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.AGLElementView;
@@ -50,18 +37,25 @@ import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IPopupLayer;
 import org.caleydo.core.view.opengl.layout2.basic.ScrollBar;
 import org.caleydo.core.view.opengl.layout2.basic.ScrollingDecorator;
+import org.caleydo.core.view.opengl.layout2.basic.WaitingElement;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
+import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
+import org.caleydo.view.tourguide.api.score.ISerializeableScore;
 import org.caleydo.view.tourguide.api.score.MultiScore;
 import org.caleydo.view.tourguide.internal.SerializedTourGuideView;
 import org.caleydo.view.tourguide.internal.compute.ComputeAllOfJob;
+import org.caleydo.view.tourguide.internal.compute.ComputeExtrasJob;
 import org.caleydo.view.tourguide.internal.compute.ComputeForScoreJob;
 import org.caleydo.view.tourguide.internal.event.AddScoreColumnEvent;
 import org.caleydo.view.tourguide.internal.event.CreateScoreEvent;
+import org.caleydo.view.tourguide.internal.event.ExtraInitialScoreQueryReadyEvent;
 import org.caleydo.view.tourguide.internal.event.ImportExternalScoreEvent;
+import org.caleydo.view.tourguide.internal.event.InitialScoreQueryReadyEvent;
 import org.caleydo.view.tourguide.internal.event.JobDiedEvent;
 import org.caleydo.view.tourguide.internal.event.JobStateProgressEvent;
+import org.caleydo.view.tourguide.internal.event.RemoveLeadingScoreColumnsEvent;
 import org.caleydo.view.tourguide.internal.event.ScoreQueryReadyEvent;
 import org.caleydo.view.tourguide.internal.external.ImportExternalScoreCommand;
 import org.caleydo.view.tourguide.internal.model.ADataDomainQuery;
@@ -70,10 +64,12 @@ import org.caleydo.view.tourguide.internal.model.CustomSubList;
 import org.caleydo.view.tourguide.internal.score.ScoreFactories;
 import org.caleydo.view.tourguide.internal.score.Scores;
 import org.caleydo.view.tourguide.internal.stratomex.StratomexAdapter;
-import org.caleydo.view.tourguide.internal.view.col.IAddToStratomex;
+import org.caleydo.view.tourguide.internal.stratomex.event.WizardEndedEvent;
 import org.caleydo.view.tourguide.internal.view.col.ScoreRankColumnModel;
+import org.caleydo.view.tourguide.internal.view.col.SizeRankColumnModel;
 import org.caleydo.view.tourguide.internal.view.specific.DataDomainModeSpecifics;
 import org.caleydo.view.tourguide.internal.view.specific.IDataDomainQueryModeSpecfics;
+import org.caleydo.view.tourguide.internal.view.ui.ADataDomainElement;
 import org.caleydo.view.tourguide.internal.view.ui.DataDomainQueryUI;
 import org.caleydo.view.tourguide.internal.view.ui.pool.ScorePoolUI;
 import org.caleydo.view.tourguide.spi.IScoreFactory;
@@ -85,11 +81,12 @@ import org.caleydo.vis.rank.layout.RowHeightLayouts;
 import org.caleydo.vis.rank.model.ACompositeRankColumnModel;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
-import org.caleydo.vis.rank.model.MaxCompositeRankColumnModel;
+import org.caleydo.vis.rank.model.MaxRankColumnModel;
 import org.caleydo.vis.rank.model.RankRankColumnModel;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.StackedRankColumnModel;
 import org.caleydo.vis.rank.model.StringRankColumnModel;
+import org.caleydo.vis.rank.model.mixin.IAnnotatedColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 import org.caleydo.vis.rank.ui.RankTableKeyListener;
 import org.caleydo.vis.rank.ui.RankTableUIMouseKeyListener;
@@ -103,17 +100,18 @@ import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
+import com.google.common.collect.Lists;
+
 /**
  * @author Samuel Gratzl
  *
  */
-public class GLTourGuideView extends AGLElementView implements IAddToStratomex {
+public class GLTourGuideView extends AGLElementView {
 	public static final String VIEW_TYPE = "org.caleydo.view.tool.tourguide";
-	public static final String VIEW_NAME = "Tour Guide";
+	public static final String VIEW_NAME = "LineUp";
 
 	private static final int DATADOMAIN_QUERY = 0;
 	private static final int TABLE = 1;
-	private static final int POOL = 2;
 
 	private final StratomexAdapter stratomex = new StratomexAdapter();
 	private final RankTableModel table;
@@ -173,8 +171,22 @@ public class GLTourGuideView extends AGLElementView implements IAddToStratomex {
 				onSelectRow((AScoreRow) evt.getOldValue(), (AScoreRow) evt.getNewValue());
 			}
 		});
+		this.table.addPropertyChangeListener(RankTableModel.PROP_POOL, new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				if (evt.getNewValue() == null) { // removed aka destroyed
+					// destroy persistent scores
+					if (evt.getOldValue() instanceof ScoreRankColumnModel) {
+						ScoreRankColumnModel r = (ScoreRankColumnModel) evt.getOldValue();
+						IScore score = r.getScore();
+						if (score instanceof ISerializeableScore)
+							Scores.get().removePersistentScore((ISerializeableScore) score);
+					}
+				}
+			}
+		});
 		this.table.add(new RankRankColumnModel().setWidth(30));
-		modeSpecifics.addDefaultColumns(this.table, this);
+		modeSpecifics.addDefaultColumns(this.table);
 
 		addAllExternalScore(this.table);
 
@@ -208,14 +220,17 @@ public class GLTourGuideView extends AGLElementView implements IAddToStratomex {
 	}
 
 	@ListenTo
-	private void onAddDataDomain(final NewDataDomainEvent event) {
+	private void onAddDataDomain(final NewDataDomainLoadedEvent event) {
 		IDataDomain dd = event.getDataDomain();
 
-		if (mode.isCompatible(dd)) {
-			for (ADataDomainQuery query : modeSpecifics.createDataDomainQuery(dd)) {
-				queries.add(query);
-				getDataDomainQueryUI().add(query);
-			}
+		if (!mode.apply(dd))
+			return;
+
+		for (ADataDomainQuery query : modeSpecifics.createDataDomainQuery(dd)) {
+			queries.add(query);
+			query.addPropertyChangeListener(ADataDomainQuery.PROP_ACTIVE, listener);
+			query.addPropertyChangeListener(ADataDomainQuery.PROP_MASK, listener);
+			getDataDomainQueryUI().add(query);
 		}
 	}
 
@@ -224,6 +239,9 @@ public class GLTourGuideView extends AGLElementView implements IAddToStratomex {
 		final String id = event.getEventSpace();
 		for (ADataDomainQuery query : queries) {
 			if (Objects.equals(query.getDataDomain().getDataDomainID(), id)) {
+				query.cleanup();
+				query.removePropertyChangeListener(ADataDomainQuery.PROP_ACTIVE, listener);
+				query.removePropertyChangeListener(ADataDomainQuery.PROP_MASK, listener);
 				queries.remove(query);
 				getDataDomainQueryUI().remove(query);
 				if (query.isActive())
@@ -233,25 +251,65 @@ public class GLTourGuideView extends AGLElementView implements IAddToStratomex {
 		}
 	}
 
+	@ListenTo
+	private void onDataDomainUpdate(DataDomainUpdateEvent event) {
+		boolean update = false;
+		List<Pair<ADataDomainQuery, List<AScoreRow>>> extras = new ArrayList<>();
+		for (ADataDomainQuery query : queries) {
+			if (event.getDataDomain() != query.getDataDomain())
+				continue;
+			List<AScoreRow> added = query.onDataDomainUpdated();
+			if (added == null)
+				continue;
+
+			if (added.isEmpty()) {
+				update = true;
+				continue;
+			}
+			extras.add(Pair.make(query, added));
+		}
+		if (!extras.isEmpty())
+			scheduleExtras(extras);
+		else if (update)
+			updateMask();
+	}
+
 	protected void onActiveChanged(ADataDomainQuery q, boolean active) {
 		if (q.isInitialized()) {
 			if (active) {
+				q.createSpecificColumns(table);
+				removeAllSimpleFilter();
 				scheduleAllOf(q);
-			} else
+			} else {
+				q.removeSpecificColumns(table);
 				updateMask();
+			}
 			return;
-		} else
+		} else {
+			if (active)
+				removeAllSimpleFilter();
 			scheduleAllOf(q);
+		}
+	}
+
+	private void removeAllSimpleFilter() {
+		// reset all string and integer filters
+		for (ARankColumnModel model : table.getFlatColumns()) {
+			if (model instanceof StringRankColumnModel)
+				((StringRankColumnModel) model).setFilter(null, true);
+			else if (model instanceof SizeRankColumnModel)
+				((SizeRankColumnModel) model).setFilter(null, null);
+		}
 	}
 
 	/**
 	 * @param q
 	 */
 	private void scheduleAllOf(final ADataDomainQuery q) {
-		Collection<IScore> scores = new ArrayList<>(getVisibleScores(null));
+		Collection<IScore> scores = new ArrayList<>(getVisibleScores(null, false));
 		ComputeAllOfJob job = new ComputeAllOfJob(q, scores, this);
 		if (job.hasThingsToDo()) {
-			waiting.resetJob(job);
+			waiting.reset(job);
 			job.addJobChangeListener(jobListener);
 			getPopupLayer().show(waiting, null, 0);
 			job.schedule();
@@ -261,10 +319,10 @@ public class GLTourGuideView extends AGLElementView implements IAddToStratomex {
 	}
 
 	private void scheduleAllOf(Collection<IScore> toCompute) {
-		ComputeForScoreJob job = new ComputeForScoreJob(toCompute, table.getData(), table.getDefaultFilter()
-				.getFilter(), this);
+		ComputeForScoreJob job = new ComputeForScoreJob(toCompute, table.getData(),
+				table.getMyRanker(null).getFilter(), this);
 		if (job.hasThingsToDo()) {
-			waiting.resetJob(job);
+			waiting.reset(job);
 			job.addJobChangeListener(jobListener);
 			getPopupLayer().show(waiting, null, 0);
 			job.schedule();
@@ -273,9 +331,22 @@ public class GLTourGuideView extends AGLElementView implements IAddToStratomex {
 		}
 	}
 
+	private void scheduleExtras(List<Pair<ADataDomainQuery, List<AScoreRow>>> extras) {
+		Collection<IScore> scores = new ArrayList<>(getVisibleScores(null, false));
+		ComputeExtrasJob job = new ComputeExtrasJob(extras, scores, this);
+		if (job.hasThingsToDo()) {
+			waiting.reset(job);
+			job.addJobChangeListener(jobListener);
+			getPopupLayer().show(waiting, null, 0);
+			job.schedule();
+		} else {
+			onExtraInitialScoreQueryReady(new ExtraInitialScoreQueryReadyEvent(extras));
+		}
+	}
+
 	@ListenTo(sendToMe = true)
 	private void onProgressEvent(JobStateProgressEvent event) {
-		if (event.isErrornous())
+		if (event.isErroneous())
 			waiting.error(event.getText());
 		else
 			waiting.progress(event.getCompleted(), event.getText());
@@ -303,44 +374,85 @@ public class GLTourGuideView extends AGLElementView implements IAddToStratomex {
 		getPopupLayer().hide(waiting);
 	}
 
-	@SuppressWarnings("unchecked")
 	@ListenTo(sendToMe = true)
 	private void onScoreQueryReady(ScoreQueryReadyEvent event) {
 		getPopupLayer().hide(waiting);
 		if (event.getScores() != null) {
 			addColumns(event.getScores());
-		} else if (event.getNewQuery() != null) {
-			int offset = table.getDataSize();
-			ADataDomainQuery q = event.getNewQuery();
-			System.out.println("add data of " + q.getDataDomain().getLabel());
-			table.addData(q.getData());
-			List<?> m = table.getData();
-			// use sublists to save memory
-			q.init(offset, new CustomSubList<AScoreRow>((List<AScoreRow>) m, offset, m.size() - offset));
-			updateMask();
 		} else {
+			invalidVisibleScores();
 			updateMask();
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@ListenTo(sendToMe = true)
+	private void onInitialScoreQueryReady(InitialScoreQueryReadyEvent event) {
+		getPopupLayer().hide(waiting);
+		int offset = table.getDataSize();
+		ADataDomainQuery q = event.getNewQuery();
+		System.out.println("add data of " + q.getDataDomain().getLabel());
+		table.addData(q.getOrCreate());
+		List<?> m = table.getDataModifiable();
+		// use sublists to save memory
+		q.init(offset, new CustomSubList<AScoreRow>((List<AScoreRow>) m, offset, m.size() - offset));
+		q.createSpecificColumns(table);
+
+		invalidVisibleScores();
+		updateMask();
+	}
+
+	@SuppressWarnings("unchecked")
+	@ListenTo(sendToMe = true)
+	private void onExtraInitialScoreQueryReady(ExtraInitialScoreQueryReadyEvent event) {
+		getPopupLayer().hide(waiting);
+
+		for (Pair<ADataDomainQuery, List<AScoreRow>> pair : event.getExtras()) {
+			ADataDomainQuery q = pair.getFirst();
+			System.out.println("add data of " + q.getDataDomain().getLabel());
+			int offset = table.getDataSize();
+			table.addData(pair.getSecond());
+			List<?> m = table.getDataModifiable();
+			// use sublists to save memory
+			q.addData(offset, new CustomSubList<AScoreRow>((List<AScoreRow>) m, offset, m.size() - offset));
+		}
+
+		invalidVisibleScores();
+		updateMask();
 	}
 
 	private void addColumns(Collection<IScore> scores) {
 		for (IScore s : scores) {
 			int lastLabel = findLastLabelColumn();
 			if (s instanceof MultiScore) {
-				ACompositeRankColumnModel combined = table.getConfig().createNewCombined(0);
+				ACompositeRankColumnModel combined = table.getConfig().createNewCombined(
+						((MultiScore) s).getCombinedType());
+				if (combined instanceof IAnnotatedColumnMixin) {
+					((IAnnotatedColumnMixin) combined).setTitle(s.getLabel());
+				}
 				table.add(lastLabel + 1, combined);
 				for (IScore s2 : ((MultiScore) s)) {
 					combined.add(new ScoreRankColumnModel(s2));
 				}
 				if (combined instanceof IRankableColumnMixin)
 					((IRankableColumnMixin) combined).orderByMe();
+				else
+					for (ARankColumnModel m : combined) {
+						if (m instanceof IRankableColumnMixin) {
+							((IRankableColumnMixin) m).orderByMe();
+							break;
+						}
+					}
 			} else {
 				ScoreRankColumnModel ss = new ScoreRankColumnModel(s);
 				table.add(lastLabel + 1, ss);
 				ss.orderByMe();
 			}
 		}
-		updateMask();
+
+		TableBodyUI bodyUI = getTableBodyUI();
+		if (bodyUI != null)
+			bodyUI.scrollFirst(); // scroll to the top
 	}
 
 	/**
@@ -359,15 +471,9 @@ public class GLTourGuideView extends AGLElementView implements IAddToStratomex {
 	private void updateMask() {
 		this.mask.clear();
 		for (ADataDomainQuery q : this.queries) {
-			if (!q.isInitialized())
+			if (!q.isInitialized() || !q.isActive())
 				continue;
-			int offset = q.getOffset();
-			int size = q.getSize();
-			if (!q.isActive())
-				this.mask.set(offset, offset + size, false);
-			else {
-				this.mask.or(q.getMask());
-			}
+			this.mask.or(q.getMask());
 		}
 		table.setDataMask(this.mask);
 	}
@@ -387,6 +493,11 @@ public class GLTourGuideView extends AGLElementView implements IAddToStratomex {
 
 		this.noStratomexVisible = stratomex.hasOne();
 		updateStratomexState();
+
+		// select first data domain element by default
+		if (!queries.isEmpty()) {
+			((ADataDomainElement) getDataDomainQueryUI().get(0)).setSelected(true);
+		}
 	}
 
 	private void updateStratomexState() {
@@ -427,7 +538,12 @@ public class GLTourGuideView extends AGLElementView implements IAddToStratomex {
 	}
 
 	protected void onSelectRow(AScoreRow old, AScoreRow new_) {
-		stratomex.updatePreview(old, new_, getVisibleScores(new_), mode, getSortedByScore());
+		if (stratomex.isWizardVisible())
+			updatePreview(old, new_);
+	}
+
+	private void updatePreview(AScoreRow old, AScoreRow new_) {
+		stratomex.updatePreview(old, new_, getVisibleScores(new_, true), mode, getSortedByScore());
 	}
 
 	private IScore getSortedByScore() {
@@ -455,23 +571,28 @@ public class GLTourGuideView extends AGLElementView implements IAddToStratomex {
 	/**
 	 * @return
 	 */
-	private Collection<IScore> getVisibleScores(AScoreRow row) {
+	private Collection<IScore> getVisibleScores(AScoreRow row, boolean justSortingCriteria) {
 		Collection<IScore> r = new ArrayList<>();
-		Deque<ARankColumnModel> cols = new LinkedList<>(table.getColumns());
+		Deque<ARankColumnModel> cols = new LinkedList<>();
+		if (justSortingCriteria) {
+			cols.addAll(Lists.newArrayList(table.getColumnsOf(table.getDefaultRanker())));
+		} else
+			cols.addAll(table.getColumns());
+
 		while (!cols.isEmpty()) {
 			ARankColumnModel model = cols.pollFirst();
 			if (model instanceof ScoreRankColumnModel) {
 				r.add(((ScoreRankColumnModel) model).getScore());
-			} else if (model instanceof StackedRankColumnModel) {
-				cols.addAll(((StackedRankColumnModel) model).getChildren());
-			} else if (model instanceof MaxCompositeRankColumnModel) {
-				MaxCompositeRankColumnModel max = (MaxCompositeRankColumnModel) model;
+			} else if (model instanceof MaxRankColumnModel) {
+				MaxRankColumnModel max = (MaxRankColumnModel) model;
 				if (row != null) {
 					int repr = max.getSplittedValue(row).getRepr();
 					cols.add(max.get(repr));
 				} else {
 					cols.addAll(max.getChildren());
 				}
+			} else if (model instanceof ACompositeRankColumnModel) {
+				cols.addAll(((ACompositeRankColumnModel) model).getChildren());
 			}
 		}
 		for (Iterator<IScore> it = r.iterator(); it.hasNext();) {
@@ -481,59 +602,23 @@ public class GLTourGuideView extends AGLElementView implements IAddToStratomex {
 		return r;
 	}
 
-	public void attachToStratomex() {
-		this.stratomex.attach();
-	}
-
-	public void detachFromStratomex() {
-		this.stratomex.detach();
-	}
-
-	public void switchToStratomex(GLStratomex stratomex) {
-		if (this.stratomex.setStratomex(stratomex))
-			repaint();
-		IPopupLayer popupLayer = getPopupLayer();
-		if (popupLayer == null)
-			return;
-		updateStratomexState();
-	}
-
-	@Override
-	public void add2Stratomex(AScoreRow r) {
-		stratomex.addToStratomex(r, getVisibleScores(r), mode);
-	}
-
-	@Override
-	public boolean canAdd2Stratomex(AScoreRow r) {
-		// FIXME
-		return true;
-		// return r.getPerspective() != null
-		// && (!stratomex.contains(r.getPerspective()) || stratomex.isTemporaryPreviewed(r.getPerspective()));
-	}
-
-	@ListenTo
-	private void onStratomexRemoveBrick(RemoveTablePerspectiveEvent event) {
-		if (!stratomex.is(event.getReceiver()))
-			return;
-		stratomex.removeBrick(event.getTablePerspective().getID());
-
-		AScoreRow selected = (AScoreRow) table.getSelectedRow();
-		if (selected != null && selected.is(event.getTablePerspective())) {
-			this.table.setSelectedRow(null);
+	private void invalidVisibleScores() {
+		Deque<ARankColumnModel> cols = new LinkedList<>(table.getColumns());
+		while (!cols.isEmpty()) {
+			ARankColumnModel model = cols.pollFirst();
+			if (model instanceof ScoreRankColumnModel) {
+				((ScoreRankColumnModel) model).dirty();
+			} else if (model instanceof StackedRankColumnModel) {
+				cols.addAll(((StackedRankColumnModel) model).getChildren());
+			} else if (model instanceof MaxRankColumnModel) {
+				MaxRankColumnModel max = (MaxRankColumnModel) model;
+				cols.addAll(max.getChildren());
+			}
 		}
-
-		// this.scoreQueryUI.updateAddToStratomexState();
-	}
-
-	/**
-	 * @param oldValue
-	 */
-	protected void destroy(ARankColumnModel model) {
-		// nothing to do
 	}
 
 	@ListenTo(sendToMe = true)
-	private void onAddColumn(AddScoreColumnEvent event) {
+	public void onAddColumn(AddScoreColumnEvent event) {
 		if (event.getScores().isEmpty())
 			return;
 
@@ -546,7 +631,7 @@ public class GLTourGuideView extends AGLElementView implements IAddToStratomex {
 				((IRegisteredScore) s).onRegistered();
 			if (s instanceof MultiScore) {
 				MultiScore sm = (MultiScore) s;
-				MultiScore tmp = new MultiScore(sm.getLabel(), sm.getColor(), sm.getBGColor());
+				MultiScore tmp = new MultiScore(sm.getLabel(), sm.getColor(), sm.getBGColor(), sm.getCombinedType());
 				for (IScore s2 : ((MultiScore) s)) {
 					if (s2 instanceof IRegisteredScore)
 						((IRegisteredScore) s2).onRegistered();
@@ -556,8 +641,29 @@ public class GLTourGuideView extends AGLElementView implements IAddToStratomex {
 			} else
 				toCompute.add(s);
 		}
+		if (toCompute.isEmpty())
+			return;
 		scheduleAllOf(toCompute);
 	}
+
+	@ListenTo
+	public void onRemoveLeadingScoreColumns(RemoveLeadingScoreColumnsEvent event) {
+		List<ARankColumnModel> columns = this.table.getColumns();
+		boolean hasOne = false;
+		Collection<ARankColumnModel> toremove = new ArrayList<>();
+		for (ARankColumnModel col : columns) {
+			if (col instanceof ScoreRankColumnModel || col instanceof StackedRankColumnModel
+					|| col instanceof MaxRankColumnModel) {
+				hasOne = true;
+				toremove.add(col);
+			} else if (hasOne)
+				break;
+		}
+		for (ARankColumnModel col : toremove) {
+			table.remove(col);
+		}
+	}
+
 
 	@ListenTo(sendToMe = true)
 	private void onCreateScore(final CreateScoreEvent event) {
@@ -579,25 +685,37 @@ public class GLTourGuideView extends AGLElementView implements IAddToStratomex {
 						this));
 	}
 
-	@ListenTo
-	private void onStratomexAddBricks(AddTablePerspectivesEvent event) {
-		if (!stratomex.is(event.getReceiver()))
+	public void attachToStratomex() {
+		this.stratomex.attach();
+	}
+
+	public void detachFromStratomex() {
+		this.stratomex.detach();
+	}
+
+	public void switchToStratomex(GLStratomex stratomex) {
+		if (this.stratomex.setStratomex(stratomex))
+			repaint();
+		IPopupLayer popupLayer = getPopupLayer();
+		if (popupLayer == null)
 			return;
-		stratomex.addBricks(event.getTablePerspectives());
-		// TODO correctly repaint
-		// this.scoreQueryUI.updateAddToStratomexState();
+		updateStratomexState();
 	}
 
 	@ListenTo
-	private void onStratomexReplaceBricks(ReplaceTablePerspectiveEvent event) {
-		if (!stratomex.is(event.getViewID()))
-			return;
-		stratomex.replaceBricks(event.getOldPerspective(), event.getNewPerspective());
+	private void onWizardEnded(WizardEndedEvent event) {
+		table.setSelectedRow(null);
+		getTableBodyUI().repaint();
 	}
 
-	private static class RankTableUIConfig extends RankTableUIConfigBase {
+	private class RankTableUIConfig extends RankTableUIConfigBase {
 		public RankTableUIConfig() {
 			super(true, true, true);
+		}
+
+		@Override
+		public boolean isSmallHeaderByDefault() {
+			return true;
 		}
 
 		@Override
@@ -607,31 +725,67 @@ public class GLTourGuideView extends AGLElementView implements IAddToStratomex {
 
 		@Override
 		public EButtonBarPositionMode getButtonBarPosition() {
-			return EButtonBarPositionMode.OVER_LABEL;
+			return EButtonBarPositionMode.UNDER_LABEL;
+		}
+
+		@Override
+		public void renderIsOrderByGlyph(GLGraphics g, float w, float h, boolean orderByIt) {
+			if (orderByIt) {
+				g.fillImage(RenderStyle.ICON_SMALL_HEADER_OFF, w * .5f - 7, -4, 14, 14);
+			}
+		}
+
+		@Override
+		public void renderHeaderBackground(GLGraphics g, float w, float h, float labelHeight, ARankColumnModel model) {
+			g.color(0.96f).fillRect(0, 0, w, h);
+			if (labelHeight > 0)
+				g.color(model.getBgColor()).fillRect(0, labelHeight - 2, w, 2);
 		}
 
 		@Override
 		public void renderRowBackground(GLGraphics g, float x, float y, float w, float h, boolean even, IRow row,
 				IRow selected) {
 			if (row == selected) {
-				g.color(RenderStyle.COLOR_SELECTED_ROW);
+				g.color(SelectionType.SELECTION.getColor());
 				g.incZ();
 				g.fillRect(x, y, w, h);
 				g.color(RenderStyle.COLOR_SELECTED_BORDER);
 				g.drawLine(x, y, x + w, y);
 				g.drawLine(x, y + h, x + w, y + h);
 				g.decZ();
+			} else if (stratomex.isVisible((AScoreRow) row)) {
+				g.color(RenderStyle.COLOR_SELECTED_ROW);
+				g.fillRect(x, y, w, h);
 			} else if (!even) {
 				g.color(RenderStyle.COLOR_BACKGROUND_EVEN);
 				g.fillRect(x, y, w, h);
 			}
+		}
+
+		@Override
+		public Color getBarOutlineColor() {
+			return Color.DARK_GRAY; // outline color
+		}
+
+		@Override
+		public void onRowClick(RankTableModel table, PickingMode pickingMode, IRow row, boolean isSelected) {
+			if (!isSelected && pickingMode == PickingMode.CLICKED) {
+				table.setSelectedRow(row);
+			} else if (pickingMode == PickingMode.DOUBLE_CLICKED && !stratomex.isWizardVisible()) {
+				updatePreview(null, (AScoreRow) row);
+			}
+		}
+
+		@Override
+		public boolean isFastFiltering() {
+			return true;
 		}
 	}
 
 	private class TourGuideVis extends GLElementContainer {
 		public TourGuideVis() {
 			setLayout(new ReactiveFlowLayout(10));
-			this.add(new DataDomainQueryUI(queries, mode, modeSpecifics));
+			this.add(new DataDomainQueryUI(queries, modeSpecifics));
 			TableUI tableui = new TableUI(table, new RankTableUIConfig(), RowHeightLayouts.UNIFORM);
 			ScrollingDecorator sc = new ScrollingDecorator(tableui, new ScrollBar(true), null,
 					RenderStyle.SCROLLBAR_WIDTH);

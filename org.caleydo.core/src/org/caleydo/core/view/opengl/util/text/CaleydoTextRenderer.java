@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.view.opengl.util.text;
 
 import java.awt.Font;
@@ -26,9 +12,8 @@ import java.nio.IntBuffer;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
-
-import com.jogamp.opengl.util.awt.TextRenderer;
 
 /**
  * Wrapper for TextRenderer that provides methods to draw text with a specified
@@ -37,8 +22,8 @@ import com.jogamp.opengl.util.awt.TextRenderer;
  * @author Christian Partl
  * @author Alexander Lex
  */
-public class CaleydoTextRenderer extends TextRenderer implements ITextRenderer {
-
+public class CaleydoTextRenderer extends MyTextRenderer implements ITextRenderer {
+	private static final String FONT_NAME = "Arial";
 	static private final String REFERENCE_TEXT = "Reference Text";
 	float fontScaling = GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR;
 
@@ -52,14 +37,18 @@ public class CaleydoTextRenderer extends TextRenderer implements ITextRenderer {
 	 * @param useFractionalMetrics
 	 */
 	public CaleydoTextRenderer(Font font) {
-		super(font, true, true, new DefaultRenderDelegate(), true);
+		super(font, true, true, new DefaultRenderDelegate());
 		referenceBounds = super.getBounds(REFERENCE_TEXT);
 	}
 
 	public CaleydoTextRenderer(int size) {
-		super(new Font("Arial", Font.PLAIN, size), true, true, new DefaultRenderDelegate(),
-				true);
+		this(size, Font.PLAIN);
+	}
+
+	public CaleydoTextRenderer(int size, int style) {
+		super(new Font(FONT_NAME, style, size), true, true, new DefaultRenderDelegate());
 		referenceBounds = super.getBounds(REFERENCE_TEXT);
+		setUseVertexArrays(false);
 	}
 
 	@Override
@@ -305,7 +294,8 @@ public class CaleydoTextRenderer extends TextRenderer implements ITextRenderer {
 	 *
 	 * @param color
 	 */
-	public void setColor(float[] color) {
-		setColor(color[0], color[1], color[2], 1);
+	@Override
+	public void setColor(Color color) {
+		setColor(color.r, color.g, color.b, color.a);
 	}
 }

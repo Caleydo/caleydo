@@ -1,28 +1,12 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.tourguide.api.score;
 
-import java.awt.Color;
-
 import org.caleydo.core.data.perspective.variable.Perspective;
-import org.caleydo.core.util.color.Colors;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.view.tourguide.api.compute.ComputeElement;
 import org.caleydo.view.tourguide.spi.algorithm.IComputeElement;
 import org.caleydo.view.tourguide.spi.score.IStratificationScore;
@@ -36,14 +20,14 @@ public abstract class AReferenceStratificationScore extends AComputedStratificat
 	protected final Perspective reference;
 
 	public AReferenceStratificationScore(String label, Perspective reference, Color color, Color bgColor) {
-		super(label == null ? reference.getLabel() : label, Colors.of(reference.getDataDomain().getColor()), Colors.of(
-				reference.getDataDomain().getColor()).brighter());
+		super(label == null ? reference.getLabel() : label, reference.getDataDomain().getColor(), reference
+				.getDataDomain().getColor().brighter());
 		this.reference = reference;
 	}
 
 	@Override
 	public boolean contains(IComputeElement elem) {
-		return super.contains(elem) || elem.equals(getStratification());
+		return super.contains(elem) || elem.getPersistentID().equals(getStratification().getPerspectiveID());
 	}
 
 	@Override

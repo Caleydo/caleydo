@@ -1,23 +1,12 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
- * University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
- * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
- * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with this program. If not, see
- * <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.data.importer.tcga;
 
+import org.caleydo.core.util.color.AlexColorPalette;
 import org.caleydo.core.util.color.Color;
-import org.caleydo.core.util.color.ColorManager;
 
 /**
  * A list of different dataset types that we are able to load for TCGA and which have a grouping. These are the dataset
@@ -28,21 +17,19 @@ import org.caleydo.core.util.color.ColorManager;
  */
 public enum EDataSetType {
 
-	mRNA("mRNA", ColorManager.get().getColorList(ColorManager.QUALITATIVE_COLORS).get(0)),
-	mRNAseq("mRNA-seq", ColorManager.get().getColorList(ColorManager.QUALITATIVE_COLORS).get(0)
-			.getColorWithSpecificBrighness(0.7f)),
-	microRNA("microRNA", ColorManager.get().getColorList(ColorManager.QUALITATIVE_COLORS).get(1)),
-	microRNAseq("microRNA-seq", ColorManager.get().getColorList(ColorManager.QUALITATIVE_COLORS).get(1)
-			.getColorWithSpecificBrighness(0.7f)),
-	methylation("Methylation", ColorManager.get().getColorList(ColorManager.QUALITATIVE_COLORS).get(2)),
-	RPPA("RPPA", ColorManager.get().getColorList(ColorManager.QUALITATIVE_COLORS).get(3)),
-	copyNumber("Copy Number", ColorManager.get().getColorList(ColorManager.QUALITATIVE_COLORS).get(4)),
-	mutation("Mutations", ColorManager.get().getColorList(ColorManager.QUALITATIVE_COLORS).get(5)),
-	clinical("Clinical", ColorManager.get().getColorList(ColorManager.QUALITATIVE_COLORS).get(6));
+	mRNA("mRNA", AlexColorPalette.Medium.get().get(0)),
+	mRNAseq("mRNA-seq", AlexColorPalette.Medium.get().get(0).darker()),
+	microRNA("microRNA", AlexColorPalette.Medium.get().get(1)),
+	microRNAseq("microRNA-seq", AlexColorPalette.Medium.get().get(1).darker()),
+	methylation("Methylation", AlexColorPalette.Medium.get().get(2)),
+	RPPA("RPPA", AlexColorPalette.Medium.get().get(3)),
+	copyNumber("Copy Number", AlexColorPalette.Medium.get().get(4)),
+	mutation("Mutations", AlexColorPalette.Medium.get().get(5)),
+	clinical("Clinical", AlexColorPalette.Medium.get().get(6));
 
-	private Color color;
+	private final Color color;
 
-	private String name;
+	private final String name;
 
 	private EDataSetType(String name, Color color) {
 		this.name = name;

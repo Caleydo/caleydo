@@ -1,28 +1,15 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *  
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *  
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.stratomex.brick.ui;
 
 import gleem.linalg.Vec3f;
 
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
@@ -32,9 +19,9 @@ import org.caleydo.core.view.opengl.util.texture.TextureManager;
 
 /**
  * Renderer for a pathway icon and text.
- * 
+ *
  * @author Partl
- * 
+ *
  */
 public class CompactPathwayRenderer extends ALayoutRenderer {
 
@@ -48,8 +35,8 @@ public class CompactPathwayRenderer extends ALayoutRenderer {
 	private EIconTextures texture;
 	private int id;
 
-	public CompactPathwayRenderer(AGLView view, String caption, String pickingType,
-			int id, TextureManager textureManager, EIconTextures texture) {
+	public CompactPathwayRenderer(AGLView view, String caption, String pickingType, int id,
+			TextureManager textureManager, EIconTextures texture) {
 		this.view = view;
 		this.caption = caption;
 		this.pickingType = pickingType;
@@ -61,8 +48,7 @@ public class CompactPathwayRenderer extends ALayoutRenderer {
 	@Override
 	public void renderContent(GL2 gl) {
 
-		int pickingID = view.getPickingManager().getPickingID(view.getID(), pickingType,
-				id);
+		int pickingID = view.getPickingManager().getPickingID(view.getID(), pickingType, id);
 
 		PixelGLConverter pixelGLConverter = view.getPixelGLConverter();
 		float iconHeight = pixelGLConverter.getGLHeightForPixelHeight(ICON_SIZE_PIXELS);
@@ -83,8 +69,8 @@ public class CompactPathwayRenderer extends ALayoutRenderer {
 		Vec3f upperRightCorner = new Vec3f(iconWidth, iconHeight, 0);
 		Vec3f upperLeftCorner = new Vec3f(0, iconHeight, 0);
 
-		textureManager.renderTexture(gl, texture, lowerLeftCorner, lowerRightCorner,
-				upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
+		textureManager.renderTexture(gl, texture, lowerLeftCorner, lowerRightCorner, upperRightCorner, upperLeftCorner,
+				Color.WHITE);
 
 		gl.glPopName();
 
@@ -93,11 +79,11 @@ public class CompactPathwayRenderer extends ALayoutRenderer {
 		float ySpacing = view.getPixelGLConverter().getGLHeightForPixelHeight(1);
 
 		textRenderer.setColor(0, 0, 0, 1);
-		textRenderer.renderTextInBounds(gl, caption, iconWidth + spacingWidth, ySpacing,
-				0, x - (iconWidth + spacingWidth), y - 2 * ySpacing);
+		textRenderer.renderTextInBounds(gl, caption, iconWidth + spacingWidth, ySpacing, 0, x
+				- (iconWidth + spacingWidth), y - 2 * ySpacing);
 
 	}
-	
+
 	@Override
 	protected boolean permitsWrappingDisplayLists() {
 		return false;

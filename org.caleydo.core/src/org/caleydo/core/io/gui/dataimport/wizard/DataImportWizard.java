@@ -1,14 +1,30 @@
+/*******************************************************************************
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 /**
  *
  */
 package org.caleydo.core.io.gui.dataimport.wizard;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.io.DataLoader;
 import org.caleydo.core.io.DataSetDescription;
+import org.caleydo.core.io.gui.dataimport.DatasetImportStatusDialog;
+import org.caleydo.core.util.logging.Logger;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.IPageChangeProvider;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.wizard.IWizardContainer;
 import org.eclipse.jface.wizard.Wizard;
 
@@ -37,9 +53,29 @@ public class DataImportWizard extends Wizard {
 	private AddGroupingsPage addGroupingsPage;
 
 	/**
-	 * Page of the wizard that is used to transform the data of the dataset.
+	 * Page to determine the type of the dataset to be loaded.
 	 */
-	private TransformDataPage transformDataPage;
+	private DataSetTypePage dataSetTypePage;
+
+	/**
+	 * Page of the wizard that is used to specify properties for a numerical dataset.
+	 */
+	private NumericalDataPropertiesPage numericalDataPage;
+
+	/**
+	 * Page of the wizard that is used to specify properties for a categorical dataset.
+	 */
+	private CategoricalDataPropertiesPage categoricalDataPage;
+
+	/**
+	 * Page of the wizard that is used to specify properties for an inhomogeneous dataset.
+	 */
+	private InhomogeneousDataPropertiesPage inhomogeneousDataPropertiesPage;
+
+	/**
+	 * The data page chosen by the user (numerical, categorical, or inhomogeneous).
+	 */
+	private AImportDataPage chosenDataTypePage;
 
 	/**
 	 * Determines whether all required data has been specified and the dialog can be finished.
@@ -47,16 +83,28 @@ public class DataImportWizard extends Wizard {
 	private boolean requiredDataSpecified = false;
 
 	/**
-	 * The total number of rows in the loaded dataset.
+	 * Matrix that only contains the selected data columns (no id column) and data rows (no header rows).
 	 */
-	private int totalNumberOfRows;
+	private List<List<String>> filteredDataMatrix;
 
 	/**
-	 * The total number of rows in the loaded dataset.
+	 * Indices of all columns of the dataset that shall be imported.
 	 */
-	private int totalNumberOfColumns;
+	private List<Integer> selectedColumns;
+
+	/**
+	 * List of selected columnIDs as they occur in the dataset.
+	 */
+	private List<String> filteredRowOfColumnIDs;
+
+	/**
+	 * List of rowIDs as they occur in the dataset.
+	 */
+	private List<String> columnOfRowIDs;
 
 	private Set<AImportDataPage> visitedPages = new HashSet<AImportDataPage>();
+
+	private ATableBasedDataDomain dataDomain;
 
 	/**
 	 *
@@ -76,35 +124,91 @@ public class DataImportWizard extends Wizard {
 	@Override
 	public void addPages() {
 		loadDataSetPage = new LoadDataSetPage(dataSetDescription);
-		transformDataPage = new TransformDataPage(dataSetDescription);
+		dataSetTypePage = new DataSetTypePage(dataSetDescription);
+		numericalDataPage = new NumericalDataPropertiesPage(dataSetDescription);
+		categoricalDataPage = new CategoricalDataPropertiesPage(dataSetDescription);
+		inhomogeneousDataPropertiesPage = new InhomogeneousDataPropertiesPage(dataSetDescription);
 		addGroupingsPage = new AddGroupingsPage(dataSetDescription);
 
 		IWizardContainer wizardContainer = getContainer();
 		if (wizardContainer instanceof IPageChangeProvider) {
 			IPageChangeProvider pageChangeProvider = (IPageChangeProvider) wizardContainer;
 			pageChangeProvider.addPageChangedListener(loadDataSetPage);
-			pageChangeProvider.addPageChangedListener(transformDataPage);
+			pageChangeProvider.addPageChangedListener(dataSetTypePage);
+			pageChangeProvider.addPageChangedListener(numericalDataPage);
+			pageChangeProvider.addPageChangedListener(categoricalDataPage);
+			pageChangeProvider.addPageChangedListener(inhomogeneousDataPropertiesPage);
 			pageChangeProvider.addPageChangedListener(addGroupingsPage);
 		}
 
 		addPage(loadDataSetPage);
-		addPage(transformDataPage);
+		addPage(dataSetTypePage);
+		addPage(categoricalDataPage);
+		addPage(numericalDataPage);
+		addPage(inhomogeneousDataPropertiesPage);
 		addPage(addGroupingsPage);
 	}
 
 	@Override
 	public boolean performFinish() {
 
+		// if (!visitedPages.contains(loadDataSetPage))
+		// return false;
+
 		if (visitedPages.contains(loadDataSetPage) || getContainer().getCurrentPage().equals(loadDataSetPage))
 			loadDataSetPage.fillDataSetDescription();
-		if (visitedPages.contains(transformDataPage) || getContainer().getCurrentPage().equals(transformDataPage))
-			transformDataPage.fillDataSetDescription();
+		if (visitedPages.contains(dataSetTypePage) || getContainer().getCurrentPage().equals(dataSetTypePage))
+			dataSetTypePage.fillDataSetDescription();
+		if (visitedPages.contains(chosenDataTypePage) || getContainer().getCurrentPage().equals(chosenDataTypePage))
+			chosenDataTypePage.fillDataSetDescription();
 		if (visitedPages.contains(addGroupingsPage) || getContainer().getCurrentPage().equals(addGroupingsPage))
 			addGroupingsPage.fillDataSetDescription();
 
-		// ATableBasedDataDomain dataDomain;
+		ProgressMonitorDialog dialog = new ProgressMonitorDialog(getShell());
 
-		DataLoader.loadData(dataSetDescription);
+		try {
+			dialog.run(true, false, new IRunnableWithProgress() {
+
+				@Override
+				public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+					dataDomain = DataLoader.loadData(dataSetDescription, monitor);
+				}
+			});
+		} catch (Exception e) {
+			Logger.log(new Status(IStatus.ERROR, this.toString(), "Dataset loading failed: " + e.getMessage()));
+		}
+		if (dataDomain == null) {
+			MessageDialog.openError(getShell(), "Dataset Loading Failed", "An error has occurred during loading file "
+					+ dataSetDescription.getDataSourcePath());
+		} else {
+			DatasetImportStatusDialog d = new DatasetImportStatusDialog(getShell(), dataDomain);
+			d.open();
+		}
+
+		// DataLoader.loadData(dataSetDescription, null);
+
+		// try {
+		// new ProgressMonitorDialog(shell).run(true, true,
+		// new LongRunningOperation(indeterminate.getSelection()));
+		// } catch (InvocationTargetException e) {
+		// MessageDialog.openError(shell, "Error", e.getMessage());
+		// } catch (InterruptedException e) {
+		// MessageDialog.openInformation(shell, "Cancelled", e.getMessage());
+		// }
+
+		// ATableBasedDataDomain dataDomain;
+		// Job job = new Job("First Job") {
+		// @Override
+		// protected IStatus run(IProgressMonitor monitor) {
+		//
+		//
+		// // Use this to open a Shell in the UI thread
+		// return Status.OK_STATUS;
+		// }
+		//
+		// };
+		// job.setUser(true);
+		// job.schedule();
 
 		// todo handle failure
 
@@ -135,6 +239,8 @@ public class DataImportWizard extends Wizard {
 
 	@Override
 	public boolean canFinish() {
+		if (chosenDataTypePage == null)
+			return false;
 		return super.canFinish();
 	}
 
@@ -158,33 +264,120 @@ public class DataImportWizard extends Wizard {
 	}
 
 	/**
-	 * @param totalNumberOfColumns
-	 *            setter, see {@link #totalNumberOfColumns}
+	 * @param chosenDataTypePage
+	 *            setter, see {@link chosenDataTypePage}
 	 */
-	public void setTotalNumberOfColumns(int totalNumberOfColumns) {
-		this.totalNumberOfColumns = totalNumberOfColumns;
+	public void setChosenDataTypePage(AImportDataPage chosenDataTypePage) {
+		this.chosenDataTypePage = chosenDataTypePage;
 	}
 
 	/**
-	 * @return the totalNumberOfColumns, see {@link #totalNumberOfColumns}
+	 * @return the chosenDataTypePage, see {@link #chosenDataTypePage}
 	 */
-	public int getTotalNumberOfColumns() {
-		return totalNumberOfColumns;
+	public AImportDataPage getChosenDataTypePage() {
+		return chosenDataTypePage;
 	}
 
 	/**
-	 * @param totalNumberOfRows
-	 *            setter, see {@link #totalNumberOfRows}
+	 * @return the loadDataSetPage, see {@link #loadDataSetPage}
 	 */
-	public void setTotalNumberOfRows(int totalNumberOfRows) {
-		this.totalNumberOfRows = totalNumberOfRows;
+	public LoadDataSetPage getLoadDataSetPage() {
+		return loadDataSetPage;
 	}
 
 	/**
-	 * @return the totalNumberOfRows, see {@link #totalNumberOfRows}
+	 * @return the numericalDataPage, see {@link #numericalDataPage}
 	 */
-	public int getTotalNumberOfRows() {
-		return totalNumberOfRows;
+	public NumericalDataPropertiesPage getNumericalDataPage() {
+		return numericalDataPage;
+	}
+
+	/**
+	 * @return the categoricalDataPage, see {@link #categoricalDataPage}
+	 */
+	public CategoricalDataPropertiesPage getCategoricalDataPage() {
+		return categoricalDataPage;
+	}
+
+	/**
+	 * @return the dataSetTypePage, see {@link #dataSetTypePage}
+	 */
+	public DataSetTypePage getDataSetTypePage() {
+		return dataSetTypePage;
+	}
+
+	/**
+	 * @return the addGroupingsPage, see {@link #addGroupingsPage}
+	 */
+	public AddGroupingsPage getAddGroupingsPage() {
+		return addGroupingsPage;
+	}
+
+	/**
+	 * @param filteredDataMatrix
+	 *            setter, see {@link filteredDataMatrix}
+	 */
+	public void setFilteredDataMatrix(List<List<String>> filteredDataMatrix) {
+		this.filteredDataMatrix = filteredDataMatrix;
+	}
+
+	/**
+	 * @return the filteredDataMatrix, see {@link #filteredDataMatrix}
+	 */
+	public List<List<String>> getFilteredDataMatrix() {
+		return filteredDataMatrix;
+	}
+
+	/**
+	 * @param selectedColumns
+	 *            setter, see {@link selectedColumns}
+	 */
+	public void setSelectedColumns(List<Integer> selectedColumns) {
+		this.selectedColumns = selectedColumns;
+	}
+
+	/**
+	 * @return the selectedColumns, see {@link #selectedColumns}
+	 */
+	public List<Integer> getSelectedColumns() {
+		return selectedColumns;
+	}
+
+	/**
+	 * @return the inhomogeneousDataPropertiesPage, see {@link #inhomogeneousDataPropertiesPage}
+	 */
+	public InhomogeneousDataPropertiesPage getInhomogeneousDataPropertiesPage() {
+		return inhomogeneousDataPropertiesPage;
+	}
+
+	/**
+	 * @return the filteredRowOfColumnIDs, see {@link #filteredRowOfColumnIDs}
+	 */
+	public List<String> getFilteredRowOfColumnIDs() {
+		return filteredRowOfColumnIDs;
+	}
+
+	/**
+	 * @param filteredRowOfColumnIDs
+	 *            setter, see {@link filteredRowOfColumnIDs}
+	 */
+	public void setFilteredRowOfColumnIDs(List<String> filteredRowOfColumnIDs) {
+		this.filteredRowOfColumnIDs = filteredRowOfColumnIDs;
+	}
+
+	/**
+	 * @return the columnOfRowIDs, see {@link #columnOfRowIDs}
+	 */
+	public List<String> getColumnOfRowIDs() {
+		return columnOfRowIDs;
+	}
+
+	/**
+	 * @param columnOfRowIDs
+	 *            setter, see {@link columnOfRowIDs}
+	 */
+	public void setColumnOfRowIDs(List<String> columnOfRowIDs) {
+		this.columnOfRowIDs = columnOfRowIDs;
 	}
 
 }

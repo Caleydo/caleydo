@@ -1,31 +1,19 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.tourguide.spi;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
+import org.caleydo.view.tourguide.api.state.EWizardMode;
 import org.caleydo.view.tourguide.api.state.IStateMachine;
 import org.caleydo.view.tourguide.internal.event.AddScoreColumnEvent;
 import org.caleydo.view.tourguide.spi.score.IScore;
@@ -39,7 +27,19 @@ import org.eclipse.swt.widgets.Shell;
  *
  */
 public interface IScoreFactory {
-	void fillStateMachine(IStateMachine stateMachine, Object eventReceiver);
+	/**
+	 * add the states and transition for the create wizard to the given {@link IStateMachine}
+	 * 
+	 * @param stateMachine
+	 * @param existing
+	 *            the list of table perspective already existing
+	 * @param mode
+	 * @param source
+	 *            the source {@link TablePerspective} in case of {@link EWizardMode#DEPENDENT} and
+	 *            {@link EWizardMode#INDEPENDENT}
+	 */
+	void fillStateMachine(IStateMachine stateMachine, List<TablePerspective> existing, EWizardMode mode,
+			TablePerspective source);
 
 	/**
 	 * creates a dialog for creating a new score of this type

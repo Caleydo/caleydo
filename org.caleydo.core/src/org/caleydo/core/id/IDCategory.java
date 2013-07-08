@@ -1,26 +1,15 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
- * University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
- * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
- * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with this program. If not, see
- * <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.id;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -30,6 +19,8 @@ import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+
+import com.google.common.base.Preconditions;
 
 /**
  * <p>
@@ -71,9 +62,7 @@ public class IDCategory {
 	 * @return the newly registered IDCategory, or a previously registered category of the same name.
 	 */
 	public static IDCategory registerCategory(String categoryName) {
-
-		if (categoryName == null)
-			throw new IllegalArgumentException("categoryName was null");
+		Preconditions.checkNotNull(categoryName, "categoryName was null");
 
 		if (registeredCategories.containsKey(categoryName)) {
 			Logger.log(new Status(IStatus.INFO, "IDCategory", "IDCategory " + categoryName
@@ -89,28 +78,10 @@ public class IDCategory {
 		return idCategory;
 	}
 
-	/**
-	 * Returns all registered ID categories.
-	 *
-	 * @return all registered ID categories
-	 */
-	public static Collection<IDCategory> getAllRegisteredIDCategories() {
-		return registeredCategories.values();
-	}
-
-	/**
-	 * Returns the IDCategory associated with the specified name.
-	 *
-	 * @param categoryName
-	 *            the globally unique name of the category, may not be null
-	 * @return Returns null if no IDCategory of that name is specified.
-	 */
-	public static IDCategory getIDCategory(String categoryName) {
-
-		if (categoryName == null)
-			throw new IllegalArgumentException("categoryName was null");
-
-		return registeredCategories.get(categoryName);
+	public static IDCategory registerInternalCategory(String categoryName) {
+		IDCategory category = registerCategory(categoryName);
+		category.setInternalCategory(true);
+		return category;
 	}
 
 	/**
@@ -123,9 +94,30 @@ public class IDCategory {
 	}
 
 	/**
+	 * Returns all registered ID categories.
+	 * 
+	 * @return all registered ID categories
+	 */
+	public static Collection<IDCategory> getAllRegisteredIDCategories() {
+		return Collections.unmodifiableCollection(registeredCategories.values());
+	}
+
+	/**
+	 * Returns the IDCategory associated with the specified name.
+	 *
+	 * @param categoryName
+	 *            the globally unique name of the category, may not be null
+	 * @return Returns null if no IDCategory of that name is specified.
+	 */
+	public static IDCategory getIDCategory(String categoryName) {
+		Preconditions.checkNotNull(categoryName, "categoryName was null");
+		return registeredCategories.get(categoryName);
+	}
+
+	/**
 	 * The name of the category, which should be human-readable and must be unique
 	 */
-	private String categoryName;
+	private final String categoryName;
 
 	/**
 	 * For every IDCategory one central mapping type has to be defined, which must be mappable to every other IDType of
@@ -157,7 +149,7 @@ public class IDCategory {
 	/**
 	 * All registered IDTypes for this category.
 	 */
-	private ArrayList<IDType> idTypes = new ArrayList<IDType>();
+	private List<IDType> idTypes = new ArrayList<IDType>();
 
 	/**
 	 * flag determining whether a category is internal only, meaning that it is dynamically generated using, e.g., a
@@ -313,17 +305,16 @@ public class IDCategory {
 	 *
 	 * @return the idTypes, see {@link #idTypes}
 	 */
-	public ArrayList<IDType> getIdTypes() {
-		return idTypes;
+	public List<IDType> getIdTypes() {
+		return Collections.unmodifiableList(idTypes);
 	}
 
 	public List<IDType> getPublicIdTypes() {
-		List<IDType> idTypes = new ArrayList<>(this.getIdTypes());
-
-		for (Iterator<IDType> it = idTypes.iterator(); it.hasNext();)
-			if (it.next().isInternalType())
-				it.remove();
-		return idTypes;
+		List<IDType> publics = new ArrayList<>(this.idTypes.size());
+		for (IDType idType : this.idTypes)
+			if (!idType.isInternalType())
+				publics.add(idType);
+		return publics;
 	}
 
 	/**
@@ -335,8 +326,7 @@ public class IDCategory {
 		// throw new IllegalStateException("No id types specified");
 
 		if (primaryMappingType == null) {
-			primaryMappingType = IDType.registerType(categoryName + "_primary", this, EDataType.INTEGER);
-			primaryMappingType.setInternalType(true);
+			primaryMappingType = IDType.registerInternalType(categoryName + "_primary", this, EDataType.INTEGER);
 		}
 
 		if (humanReadableIDType == null) {
@@ -407,5 +397,38 @@ public class IDCategory {
 		Collections.sort(probabilityList, Collections.reverseOrder(Pair.<Float> compareFirst()));
 
 		return probabilityList;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((categoryName == null) ? 0 : categoryName.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		IDCategory other = (IDCategory) obj;
+		return Objects.equals(categoryName, other.categoryName);
+	}
+
+	public static final class IDCategoryBuilder {
+		private final String categoryName;
+
+		public IDCategoryBuilder(String categoryName) {
+			super();
+			this.categoryName = categoryName;
+		}
+
+		public IDCategory build() {
+			return new IDCategory(categoryName);
+		}
 	}
 }

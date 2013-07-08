@@ -1,3 +1,8 @@
+/*******************************************************************************
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 /**
  *
  */
@@ -163,8 +168,7 @@ public class CreateIDTypeDialogMediator {
 			idCategory = IDCategory.registerCategory(categoryName);
 
 			// Create primary IDType
-			IDType primaryIDType = IDType.registerType(categoryName + "_INT", idCategory, EDataType.INTEGER);
-			primaryIDType.setInternalType(true);
+			IDType primaryIDType = IDType.registerInternalType(categoryName + "_INT", idCategory, EDataType.INTEGER);
 			idCategory.setPrimaryMappingType(primaryIDType);
 		}
 

@@ -1,25 +1,12 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.vis.rank.model;
 
-import java.awt.Color;
+import gleem.linalg.Vec2f;
+
 import java.beans.PropertyChangeListener;
 import java.text.NumberFormat;
 import java.util.BitSet;
@@ -27,29 +14,22 @@ import java.util.List;
 import java.util.Locale;
 
 import org.caleydo.core.event.EventListenerManager.ListenTo;
-import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
+import org.caleydo.core.view.opengl.layout2.ISWTLayer.ISWTLayerRunnable;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.rank.internal.event.SizeFilterEvent;
+import org.caleydo.vis.rank.internal.ui.IntegerFilterDialog;
 import org.caleydo.vis.rank.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 import org.caleydo.vis.rank.ui.GLPropertyChangeListeners;
 import org.caleydo.vis.rank.ui.detail.ValueElement;
-import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.VerifyEvent;
-import org.eclipse.swt.events.VerifyListener;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
 
 import com.google.common.base.Function;
 
@@ -104,10 +84,14 @@ public class IntegerRankColumnModel extends ABasicFilterableRankColumnModel impl
 
 	@Override
 	public void editFilter(final GLElement summary, IGLElementContext context) {
-		Display.getDefault().asyncExec(new Runnable() {
+		final Vec2f location = summary.getAbsoluteLocation();
+		context.getSWTLayer().run(new ISWTLayerRunnable() {
 			@Override
-			public void run() {
-				new FilterDialog(new Shell(), summary).open();
+			public void run(Display display, Composite canvas) {
+				Point loc = canvas.toDisplay((int) location.x(), (int) location.y());
+				IntegerFilterDialog dialog = new IntegerFilterDialog(canvas.getShell(), getTitle(), summary, min, max,
+						isGlobalFilter, getTable().hasSnapshots(), loc);
+				dialog.open();
 			}
 		});
 	}
@@ -211,64 +195,4 @@ public class IntegerRankColumnModel extends ABasicFilterableRankColumnModel impl
 		}
 	}
 
-	private class FilterDialog extends Dialog {
-		private Text minUI;
-		private Text maxUI;
-		private final Object receiver;
-
-		public FilterDialog(Shell parentShell, Object receiver) {
-			super(parentShell);
-			this.receiver = receiver;
-		}
-
-		@Override
-		public void create() {
-			super.create();
-			getShell().setText("Edit Filter of Size");
-		}
-
-		@Override
-		protected Control createDialogArea(Composite parent) {
-			parent = (Composite) super.createDialogArea(parent);
-			GridData d = new GridData(SWT.LEFT, SWT.CENTER, true, true);
-			d.minimumWidth = 100;
-
-			Composite p = new Composite(parent, SWT.NONE);
-			p.setLayout(new GridLayout(3, true));
-			p.setLayoutData(d);
-			VerifyListener isNumber = new VerifyListener() {
-				@Override
-				public void verifyText(VerifyEvent e) {
-					String text = e.text;
-					text = text.replaceAll("\\D|-", "");
-					e.text = text;
-				}
-			};
-			minUI = new Text(p, SWT.BORDER);
-			minUI.setLayoutData(d);
-			if (min > 0)
-				minUI.setText(min + "");
-			minUI.addVerifyListener(isNumber);
-			Label l = new Label(p, SWT.NONE);
-			l.setText("<= VALUE <= ");
-			l.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, true));
-			maxUI = new Text(p, SWT.BORDER);
-			maxUI.setLayoutData(d);
-			if (max < Integer.MAX_VALUE)
-				maxUI.setText(max + "");
-			maxUI.addVerifyListener(isNumber);
-			applyDialogFont(parent);
-			return parent;
-		}
-
-		@Override
-		protected void okPressed() {
-			String t = minUI.getText().trim();
-			Integer minV = t.length() > 0 ? new Integer(t) : null;
-			t = maxUI.getText().trim();
-			Integer maxV = t.length() > 0 ? new Integer(t) : null;
-			EventPublisher.trigger(new SizeFilterEvent(minV, maxV).to(receiver));
-			super.okPressed();
-		}
-	}
 }

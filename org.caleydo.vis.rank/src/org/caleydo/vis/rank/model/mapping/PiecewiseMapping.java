@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.vis.rank.model.mapping;
 
 import java.util.Iterator;
@@ -191,7 +177,7 @@ public class PiecewiseMapping extends ScriptedMappingFunction implements Iterabl
 		if (mapping.size() < 2) {// default
 			float[] m0 = getMappedMin();
 			float[] m1 = getMappedMax();
-			return MappingFunctions.linear(m0[0], m1[0], in, m0[1], m1[1]);
+			return JavaScriptFunctions.linear(m0[0], m1[0], in, m0[1], m1[1]);
 		}
 		if (mapping.containsKey(in))
 			return mapping.get(in);
@@ -202,7 +188,7 @@ public class PiecewiseMapping extends ScriptedMappingFunction implements Iterabl
 		if (in < first || in > last)
 			return Float.NaN;
 		if (mapping.size() == 2) {
-			return MappingFunctions.linear(first, last, in, mapping.get(first), mapping.get(last));
+			return JavaScriptFunctions.linear(first, last, in, mapping.get(first), mapping.get(last));
 		} else {
 			SortedMap<Float, Float> before = mapping.headMap(in);
 			if (before.isEmpty()) // outside of the range
@@ -214,7 +200,7 @@ public class PiecewiseMapping extends ScriptedMappingFunction implements Iterabl
 				return Float.NaN;
 			Float end = after.firstKey();
 			Float endTo = after.get(end);
-			return MappingFunctions.linear(start, end, in, startTo, endTo);
+			return JavaScriptFunctions.linear(start, end, in, startTo, endTo);
 		}
 	}
 

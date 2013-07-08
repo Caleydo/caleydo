@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.tourguide.internal;
 
 import org.caleydo.data.loader.ResourceLoader;
@@ -36,22 +22,12 @@ public class Activator extends Plugin {
 	// The shared instance
 	private static Activator plugin;
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.eclipse.core.runtime.Plugins#start(org.osgi.framework.BundleContext)
-	 */
 	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
-	 */
 	@Override
 	public void stop(BundleContext context) throws Exception {
 		plugin = null;
@@ -71,11 +47,21 @@ public class Activator extends Plugin {
 		return AbstractUIPlugin.imageDescriptorFromPlugin(ID, path);
 	}
 
+	/**
+	 * returns the {@link IResourceLocator} for this view
+	 * 
+	 * @return
+	 */
 	public static IResourceLocator getResourceLocator() {
 		return ResourceLocators.chain(ResourceLocators.classLoader(plugin.getClass().getClassLoader()),
 				ResourceLocators.DATA_CLASSLOADER, ResourceLocators.FILE);
 	}
 
+	/**
+	 * see {@link #getResourceLocator()} wrapped as a {@link ResourceLoader}
+	 * 
+	 * @return
+	 */
 	public static ResourceLoader getResourceLoader() {
 		return new ResourceLoader(getResourceLocator());
 	}

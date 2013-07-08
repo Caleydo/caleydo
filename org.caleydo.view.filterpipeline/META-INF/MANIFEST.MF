@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Filter Pipeline View
 Bundle-SymbolicName: org.caleydo.view.filterpipeline;singleton:=true
-Bundle-Version: 2.2
+Bundle-Version: 3.0
 Require-Bundle: org.caleydo.core;bundle-version="2.2",
  org.caleydo.datadomain.genetic;bundle-version="2.2",
  org.caleydo.view.histogram;bundle-version="2.2"

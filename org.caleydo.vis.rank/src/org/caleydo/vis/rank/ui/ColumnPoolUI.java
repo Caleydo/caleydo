@@ -1,28 +1,13 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.vis.rank.ui;
 
 import static org.caleydo.vis.rank.ui.RenderStyle.HIST_HEIGHT;
 import static org.caleydo.vis.rank.ui.RenderStyle.LABEL_HEIGHT;
 
-import java.awt.Color;
 import java.beans.IndexedPropertyChangeEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -30,13 +15,16 @@ import java.util.List;
 import java.util.Objects;
 
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
+import org.caleydo.core.view.opengl.layout2.basic.GLButton;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
+import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.vis.rank.config.IRankTableUIConfig;
@@ -76,16 +64,34 @@ public class ColumnPoolUI extends GLElementContainer implements IGLLayout {
 		}
 	};
 	private boolean armed;
+	private boolean isSmallHeader;
 
 	private final IRankTableUIConfig config;
 
 	public ColumnPoolUI(RankTableModel table, IRankTableUIConfig config) {
 		this.table = table;
 		this.config = RankTableUIConfigs.nonInteractive(config);
+		this.isSmallHeader = config.isSmallHeaderByDefault();
 		table.addPropertyChangeListener(RankTableModel.PROP_POOL, listener);
 		setLayout(this);
 		setSize(-1, LABEL_HEIGHT + HIST_HEIGHT);
-		this.add(new PaperBasket(table).setSize(LABEL_HEIGHT + HIST_HEIGHT - 10, -1));
+		this.add(new PaperBasket(table).setSize(LABEL_HEIGHT + HIST_HEIGHT, -1));
+
+		{
+			GLButton toggleSmallHeader = new GLButton(GLButton.EButtonMode.CHECKBOX);
+			toggleSmallHeader.setSelected(isSmallHeader);
+			toggleSmallHeader.setCallback(new GLButton.ISelectionCallback() {
+				@Override
+				public void onSelectionChanged(GLButton button, boolean selected) {
+					setSmallHeader(selected);
+				}
+			});
+			toggleSmallHeader.setTooltip("Toggle Small / Thick Headers");
+			toggleSmallHeader.setRenderer(GLRenderers.fillImage(RenderStyle.ICON_SMALL_HEADER_ON));
+			toggleSmallHeader.setSelectedRenderer(GLRenderers.fillImage(RenderStyle.ICON_SMALL_HEADER_OFF));
+
+			this.add(toggleSmallHeader);
+		}
 
 		for (ARankColumnModel hidden : table.getPool()) {
 			add(wrap(hidden));
@@ -103,14 +109,64 @@ public class ColumnPoolUI extends GLElementContainer implements IGLLayout {
 		IGLLayoutElement paperBasket = children.get(0);
 		paperBasket.setBounds(w - paperBasket.getSetWidth() - 5, 5, paperBasket.getSetWidth(), h - 10);
 
-		children = children.subList(1, children.size());
+		IGLLayoutElement toggleExpand = children.get(1);
+		toggleExpand.setBounds(w - paperBasket.getSetWidth() - 5 - 16, 5, 16, 16);
+
+		children = children.subList(2, children.size());
 		float x = 5;
-		w -= paperBasket.getSetWidth();
-		float wi = Math.min(100, (w - children.size() * 5 - 5) / children.size());
-		for (IGLLayoutElement child : children) {
-			child.setBounds(x, 5, wi, h - 10);
-			x += wi + 5;
+		float y = 5;
+		w -= paperBasket.getSetWidth() - 5;
+		h -= 10;
+		if (!isSmallHeader) {
+			float wi = Math.min(100, (w - children.size() * 5 - 5) / children.size());
+			for (IGLLayoutElement child : children) {
+				child.setBounds(x, y, wi, h);
+				x += wi + 5;
+			}
+		} else {
+			int rows = (int) (h / LABEL_HEIGHT);
+			int perrow = (int) Math.ceil((float) children.size() / rows);
+			float wi = Math.min(100, (w - perrow * 5 - 5) / perrow);
+			if (wi == 100) {
+				for (IGLLayoutElement child : children) {
+					if (x + 100 < wi) {
+						x = 5;
+						y += LABEL_HEIGHT;
+					}
+					child.setBounds(x, y, wi, LABEL_HEIGHT);
+					x += wi + 5;
+				}
+			} else {
+				int i = 0;
+				for (IGLLayoutElement child : children) {
+					i++;
+					if (i % perrow == 0) {
+						x = 5;
+						y += LABEL_HEIGHT;
+					}
+					child.setBounds(x, y, wi, LABEL_HEIGHT);
+					x += wi + 5;
+				}
+			}
 		}
+	}
+
+	/**
+	 * @return the isSmallHeader, see {@link #isSmallHeader}
+	 */
+	public boolean isSmallHeader() {
+		return isSmallHeader;
+	}
+
+	/**
+	 * @param isSmallHeader
+	 *            setter, see {@link isSmallHeader}
+	 */
+	public void setSmallHeader(boolean isSmallHeader) {
+		if (this.isSmallHeader == isSmallHeader)
+			return;
+		this.isSmallHeader = isSmallHeader;
+		relayout();
 	}
 
 	protected void onDropPick(Pick pick) {
@@ -139,7 +195,7 @@ public class ColumnPoolUI extends GLElementContainer implements IGLLayout {
 			if (armed) {
 				context.getMouseLayer().removeDraggable(pair.getFirst());
 				pair.getSecond().hide();
-				context.setCursor(-1);
+				context.getSWTLayer().setCursor(-1);
 				armed = false;
 				repaint();
 			}
@@ -227,7 +283,7 @@ public class ColumnPoolUI extends GLElementContainer implements IGLLayout {
 						ARankColumnModel.class);
 				context.getMouseLayer().removeDraggable(draggable.getFirst());
 				table.removeFromPool(draggable.getSecond());
-				context.setCursor(-1);
+				context.getSWTLayer().setCursor(-1);
 				armed = false;
 				repaint();
 			}

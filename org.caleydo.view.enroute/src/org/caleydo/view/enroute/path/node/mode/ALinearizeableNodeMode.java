@@ -1,3 +1,8 @@
+/*******************************************************************************
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 /**
  *
  */
@@ -10,6 +15,7 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
@@ -36,12 +42,12 @@ public abstract class ALinearizeableNodeMode {
 	/**
 	 * The background color of the node.
 	 */
-	protected float[] backgroundColor = DEFAULT_BACKGROUND_COLOR;
+	protected Color backgroundColor = Color.WHITE;
 
 	/**
 	 * Color of the node highlight.
 	 */
-	protected float[] highlightColor;
+	protected Color highlightColor;
 
 	protected AGLView view;
 
@@ -92,7 +98,7 @@ public abstract class ALinearizeableNodeMode {
 		float x = node.getPosition().x() - node.getWidth() / 2.0f;
 		float y = node.getPosition().y() - node.getHeight() / 2.0f;
 		gl.glDisable(GL.GL_BLEND);
-		gl.glColor4f(highlightColor[0], highlightColor[1], highlightColor[2], 1f);
+		gl.glColor4fv(highlightColor.getRGBA(), 0);
 		gl.glBegin(GL.GL_LINE_LOOP);
 		gl.glVertex3f(x, y, 0.3f);
 		gl.glVertex3f(x + node.getWidth(), y, 0.3f);

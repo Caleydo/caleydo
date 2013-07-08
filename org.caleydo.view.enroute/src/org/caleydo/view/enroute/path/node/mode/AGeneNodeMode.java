@@ -1,3 +1,8 @@
+/*******************************************************************************
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 /**
  *
  */
@@ -28,7 +33,7 @@ public abstract class AGeneNodeMode extends ALayoutBasedNodeMode implements ICol
 	/**
 	 * Second color that is used to show a color gradient made up of combined selection colors.
 	 */
-	protected float[] gradientColor = null;
+	protected Color gradientColor = null;
 
 	SelectionColorCalculator colorCalculator;
 
@@ -37,8 +42,8 @@ public abstract class AGeneNodeMode extends ALayoutBasedNodeMode implements ICol
 	 */
 	public AGeneNodeMode(AGLView view, APathwayPathRenderer pathwayPathRenderer) {
 		super(view, pathwayPathRenderer);
-		backgroundColor = DEFAULT_BACKGROUND_COLOR;
-		colorCalculator = new SelectionColorCalculator(new Color(DEFAULT_BACKGROUND_COLOR));
+		backgroundColor = Color.WHITE;
+		colorCalculator = new SelectionColorCalculator(Color.WHITE);
 	}
 
 	@Override
@@ -72,12 +77,12 @@ public abstract class AGeneNodeMode extends ALayoutBasedNodeMode implements ICol
 	}
 
 	@Override
-	public float[] getColor() {
+	public Color getColor() {
 		return (gradientColor != null) ? gradientColor : backgroundColor;
 	}
 
 	@Override
-	public float[] getGradientColor() {
+	public Color getGradientColor() {
 		return (gradientColor != null) ? backgroundColor : gradientColor;
 	}
 

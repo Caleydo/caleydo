@@ -1,19 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
- * University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
- * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
- * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with this program. If not, see
- * <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 /**
  *
  */
@@ -79,6 +68,9 @@ import org.caleydo.core.util.base.IDefaultLabelHolder;
 @XmlType
 @XmlRootElement
 public class TablePerspective implements IDefaultLabelHolder {
+	public static final IDCategory DATA_CONTAINER = IDCategory.registerInternalCategory("DATA_CONTAINER");
+	public static final IDType DATA_CONTAINER_IDTYPE = IDType.registerInternalType("DataContainers", DATA_CONTAINER,
+			EDataType.INTEGER);
 
 	/** The static counter used to create unique ids */
 	private static final AtomicInteger idCounter = new AtomicInteger();
@@ -126,10 +118,6 @@ public class TablePerspective implements IDefaultLabelHolder {
 	 */
 	@XmlElement
 	protected boolean isPrivate;
-
-	public static IDCategory DATA_CONTAINER = IDCategory.registerCategory("DATA_CONTAINER");
-	public static IDType DATA_CONTAINER_IDTYPE = IDType.registerType("DataConatiners", DATA_CONTAINER,
-			EDataType.INTEGER);
 
 	/**
 	 * A group containing all elements of the {@link #recordPerspective}'s virtual array of this data container. This is
@@ -344,7 +332,8 @@ public class TablePerspective implements IDefaultLabelHolder {
 	@Override
 	public String getLabel() {
 		if (label == null)
-			label = dimensionPerspective.getLabel() + "/" + recordPerspective.getLabel();
+			label = dataDomain.getLabel() + " - " + recordPerspective.getLabel() + "/"
+					+ dimensionPerspective.getLabel();
 		return label;
 	}
 
@@ -386,6 +375,10 @@ public class TablePerspective implements IDefaultLabelHolder {
 	 */
 	public void setRecordGroup(Group recordGroup) {
 		this.recordGroup = recordGroup;
+		GroupList groupList = new GroupList();
+		Group group = new Group(recordGroup);
+		groupList.append(group);
+		this.recordPerspective.getVirtualArray().setGroupList(groupList);
 	}
 
 	/**

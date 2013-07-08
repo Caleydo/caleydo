@@ -1,25 +1,12 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.vis.rank.model;
 
-import java.awt.Color;
+import gleem.linalg.Vec2f;
+
 import java.beans.PropertyChangeListener;
 import java.util.BitSet;
 import java.util.Collection;
@@ -28,11 +15,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import org.caleydo.core.event.EventListenerManager.ListenTo;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
+import org.caleydo.core.view.opengl.layout2.ISWTLayer.ISWTLayerRunnable;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.rank.internal.event.FilterEvent;
 import org.caleydo.vis.rank.internal.ui.CatFilterDalog;
@@ -42,11 +32,11 @@ import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 import org.caleydo.vis.rank.ui.GLPropertyChangeListeners;
 import org.caleydo.vis.rank.ui.IColumnRenderInfo;
 import org.caleydo.vis.rank.ui.detail.ValueElement;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
 
 import com.google.common.base.Function;
-import com.google.common.collect.Sets;
 
 /**
  * @author Samuel Gratzl
@@ -63,6 +53,15 @@ public class CategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<CATEGOR
 	public CategoricalRankColumnModel(IGLRenderer header, final Function<IRow, CATEGORY_TYPE> data,
 			Map<CATEGORY_TYPE, String> metaData) {
 		this(header, data, metaData, Color.GRAY, new Color(.95f, .95f, .95f));
+	}
+
+	public static CategoricalRankColumnModel<String> createSimple(IGLRenderer header,
+			final Function<IRow, String> data,
+			Collection<String> items) {
+		Map<String, String> map = new TreeMap<>();
+		for (String s : items)
+			map.put(s, s);
+		return new CategoricalRankColumnModel<>(header, data, map);
 	}
 
 	public CategoricalRankColumnModel(IGLRenderer header, final Function<IRow, CATEGORY_TYPE> data,
@@ -112,12 +111,14 @@ public class CategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<CATEGOR
 
 	@Override
 	public final void editFilter(final GLElement summary, IGLElementContext context) {
-		Display.getDefault().asyncExec(new Runnable() {
+		final Vec2f location = summary.getAbsoluteLocation();
+		context.getSWTLayer().run(new ISWTLayerRunnable() {
 			@Override
-			public void run() {
-				new CatFilterDalog<CATEGORY_TYPE>(new Shell(), getTitle(), summary, metaData, selection,
-						isGlobalFilter, getTable().hasSnapshots())
-						.open();
+			public void run(Display display, Composite canvas) {
+				Point loc = canvas.toDisplay((int) location.x(), (int) location.y());
+				CatFilterDalog<CATEGORY_TYPE> dialog = new CatFilterDalog<>(canvas.getShell(), getTitle(), summary,
+						metaData, selection, isGlobalFilter, getTable().hasSnapshots(), loc);
+				dialog.open();
 			}
 		});
 	}
@@ -127,7 +128,7 @@ public class CategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<CATEGOR
 		Set<CATEGORY_TYPE> bak = new HashSet<>(this.selection);
 		this.selection.clear();
 		this.selection.addAll(filter);
-		if (Sets.difference(bak, this.selection).isEmpty()) {
+		if (this.selection.equals(bak)) {
 			setGlobalFilter(isGlobalFilter);
 		} else {
 			this.isGlobalFilter = isGlobalFilter;

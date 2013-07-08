@@ -1,19 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
- * University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
- * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
- * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with this program. If not, see
- * <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.io.parser.ascii;
 
 import java.io.BufferedReader;
@@ -26,10 +15,10 @@ import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.id.MappingType;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.specialized.Organism;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.SubMonitor;
 
 /**
  * <p>
@@ -78,11 +67,6 @@ public class IDMappingParser extends ATextParser {
 
 		IDMappingParser idMappingParser = null;
 
-		if (filePath.contains("ORGANISM")) {
-			Organism eOrganism = GeneralManager.get().getBasicInfo().getOrganism();
-			filePath = filePath.replace("ORGANISM", eOrganism.toString());
-		}
-
 		if (idCategory == null)
 			throw new IllegalStateException("ID Category was null");
 
@@ -90,7 +74,7 @@ public class IDMappingParser extends ATextParser {
 
 		MappingType mappingType = idMappingManager.createMap(fromIDType, toIDType, isMultiMap, createReverseMap);
 
-		if (!filePath.equals("already_loaded")) {
+		{
 			idMappingParser = new IDMappingParser(idCategory, filePath, mappingType);
 			idMappingParser.setTokenSeperator(delimiter);
 			idMappingParser.setStartParsingAtLine(startParsingAtLine);
@@ -104,15 +88,21 @@ public class IDMappingParser extends ATextParser {
 		}
 	}
 
+	// public static class MappingLoader {
+	// private final MappingType mappingType;
+	//
+	// public MappingLoader(IDType fromIDType, IDType toIDType, boolean isMultiMap) {
+	//
+	// }
+	// }
+
 	/**
 	 * Constructor.
 	 */
-	public IDMappingParser(IDCategory idCategory, String fileName, MappingType mappingType) {
+	private IDMappingParser(IDCategory idCategory, String fileName, MappingType mappingType) {
 		super(fileName);
 
 		this.mappingType = mappingType;
-
-		swtGuiManager = GeneralManager.get().getSWTGUIManager();
 		this.idMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(idCategory);
 	}
 
@@ -127,14 +117,12 @@ public class IDMappingParser extends ATextParser {
 
 	@Override
 	protected void parseFile(BufferedReader reader) throws IOException {
-
-		swtGuiManager.setProgressBarText("Loading ID mapping for " + mappingType);
+		SubMonitor monitor = GeneralManager.get().createSubProgressMonitor();
 		String line;
 
 		int lineCounter = 0;
 		calculateNumberOfLinesInFile();
-
-		float progressBarFactor = 100f / numberOfLinesInFile;
+		monitor.beginTask("Loading ID mapping for " + mappingType, numberOfLinesInFile);
 
 		while ((line = reader.readLine()) != null && lineCounter <= stopParsingAtLine) {
 			/**
@@ -178,9 +166,10 @@ public class IDMappingParser extends ATextParser {
 
 			// Update progress bar only on each 100th line
 			if (lineCounter % 100 == 0) {
-				swtGuiManager.setProgressBarPercentage((int) (progressBarFactor * lineCounter));
+				monitor.worked(100);
 			}
 			lineCounter++;
 		}
+		monitor.done();
 	}
 }

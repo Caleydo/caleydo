@@ -1,33 +1,21 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.serialize;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
-import org.caleydo.core.event.AEvent;
-import org.caleydo.core.manager.BasicInformation;
 import org.caleydo.core.util.ExtensionUtils;
+import org.caleydo.core.util.color.AlexColorPalette;
+import org.caleydo.core.util.color.Color;
+import org.caleydo.core.util.color.ColorBrewer;
 
 /**
  * Central access point for xml-serialization related tasks.
@@ -41,36 +29,30 @@ public class SerializationManager {
 
 	private static volatile SerializationManager instance = null;
 
-	/** {@link JAXBContext} for event (de-)serialization */
-	private JAXBContext eventContext;
-
 	/** {link JAXBContext} for project (de-)serialization */
 	private JAXBContext projectContext;
 
-	private ArrayList<Class<?>> serializableTypes;
+	private List<Class<?>> serializableTypes;
 
-	private Collection<ISerializationAddon> addons;
+	private final Collection<ISerializationAddon> addons;
 
 	private SerializationManager() {
 		addons = ExtensionUtils.findImplementation(EXTENSION_POINT, "class", ISerializationAddon.class);
-		try {
-			Collection<Class<? extends AEvent>> eventTypes = getSerializeableEventTypes();
-			Class<?>[] classes = new Class<?>[eventTypes.size()];
-			classes = eventTypes.toArray(classes);
-			eventContext = JAXBContext.newInstance(classes);
 
-			serializableTypes = new ArrayList<Class<?>>();
-			serializableTypes.add(SerializationData.class);
-			serializableTypes.add(DataDomainSerializationData.class);
-			serializableTypes.add(DataDomainList.class);
-			serializableTypes.add(BasicInformation.class);
-			for (ISerializationAddon addon : addons)
-				serializableTypes.addAll(addon.getJAXBContextClasses());
+		serializableTypes = new ArrayList<Class<?>>();
 
-			createNewProjectContext();
-		} catch (JAXBException ex) {
-			throw new RuntimeException("Could not create JAXBContexts", ex);
-		}
+		serializableTypes.add(ProjectMetaData.class);
+		serializableTypes.add(SerializationData.class);
+		serializableTypes.add(DataDomainSerializationData.class);
+		serializableTypes.add(DataDomainList.class);
+		serializableTypes.add(Color.class);
+		serializableTypes.add(AlexColorPalette.AlexColorPaletteColor.class);
+		serializableTypes.add(ColorBrewer.ColorBrewerColor.class);
+
+		for (ISerializationAddon addon : addons)
+			serializableTypes.addAll(addon.getJAXBContextClasses());
+
+		createNewProjectContext();
 	}
 
 	private void createNewProjectContext() {
@@ -94,43 +76,12 @@ public class SerializationManager {
 	}
 
 	/**
-	 * Gets the {@link JAXBContext} used to serialize events.
-	 *
-	 * @return events-serialization {@link JAXBContext}.
-	 */
-	public JAXBContext getEventContext() {
-		return eventContext;
-	}
-
-	/**
 	 * Gets the {@link JAXBContext} used during load/save caleydo projects.
 	 *
 	 * @return caleydo-project serialization {@link JAXBContext}.
 	 */
 	public JAXBContext getProjectContext() {
 		return projectContext;
-	}
-
-	public void registerSerializableTypes(Class<?>... serializableClasses) {
-		for (Class<?> serializableClass : serializableClasses) {
-			serializableTypes.add(serializableClass);
-		}
-		createNewProjectContext();
-	}
-
-	/**
-	 * Generates and returns a {@link Collection} of all events to serialize
-	 *
-	 * @return {@link Collection} of event-classes to transmit over the network
-	 */
-	public static Collection<Class<? extends AEvent>> getSerializeableEventTypes() {
-		Collection<Class<? extends AEvent>> eventTypes = new ArrayList<Class<? extends AEvent>>();
-
-		// FIXME: check if the list of individual events needs to be provided
-		// here
-		eventTypes.add(AEvent.class);
-
-		return eventTypes;
 	}
 
 	/**

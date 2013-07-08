@@ -1,9 +1,14 @@
+/*******************************************************************************
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.tourguide.impl.algorithm;
 
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -12,18 +17,17 @@ import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.util.collection.Pair;
+import org.eclipse.core.runtime.IProgressMonitor;
 
 import com.google.common.base.Stopwatch;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 public class GSEAAlgorithm extends AGSEAAlgorithm {
 	private static final int NPERM = 1000;
 
 	private final float p; // An exponent p to control the weight of the step.
-	private final Map<Integer, Float> correlation = Maps.newLinkedHashMap();
-	private final List<Map<Integer, Float>> permutations = Lists.newArrayListWithExpectedSize(NPERM);
+	private Map<Integer, Float> correlation;
+	private List<Map<Integer, Float>> permutations;
 
 
 	public GSEAAlgorithm(Perspective perspective, Group group, float p) {
@@ -32,30 +36,49 @@ public class GSEAAlgorithm extends AGSEAAlgorithm {
 
 	}
 
+
 	@Override
-	protected void init() {
-		if (!correlation.isEmpty())
+	public void init(IProgressMonitor monitor) {
+		if (correlation != null)
 			return;
 		final List<Integer> inA = perspective.getVirtualArray()
 				.getIDsOfGroup(group.getGroupIndex());
-		this.correlation.putAll(rankedSet(inA));
+		if (monitor.isCanceled())
+			return;
+		this.correlation = rankedSet(new RankedSet(inA));
+		if (monitor.isCanceled()) {
+			correlation = null;
+			return;
+		}
 
 		int sampleSize = inA.size();
 		List<Integer> base = new ArrayList<>(perspective.getVirtualArray().getIDs());
 
 		// Randomly assign the original phenotype labels to samples,reorder genes, and re-compute ES(S)
+		List<RankedSet> sets = new ArrayList<>(NPERM);
 		for (int i = 0; i < NPERM; ++i) {
 			// shuffle randomly the ids
 			Collections.shuffle(base);
 			// select the first sampleSize elements as new class labels
 			Collection<Integer> in = base.subList(0, sampleSize);
-			permutations.add(rankedSet(in));
+			sets.add(new RankedSet(in));
+		}
+
+		if (monitor.isCanceled()) {
+			// undo initialization
+			correlation = null;
+			return;
+		}
+
+		permutations = rankedSet(sets, monitor);
+		if (monitor.isCanceled()) {
+			correlation = null;
+			permutations = null;
 		}
 	}
 
-	private Map<Integer, Float> rankedSet(Collection<Integer> inA) {
+	private Map<Integer, Float> rankedSet(RankedSet inA) {
 		Stopwatch w = new Stopwatch().start();
-		inA = new HashSet<>(inA);
 
 		ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) perspective.getDataDomain();
 		Table table = dataDomain.getTable();
@@ -63,57 +86,97 @@ public class GSEAAlgorithm extends AGSEAAlgorithm {
 		List<Integer> rows = perspective.getVirtualArray().getIDs();
 		List<Integer> cols = table.getDefaultDimensionPerspective().getVirtualArray().getIDs();
 
-		List<Pair<Integer, Float>> g = new ArrayList<>(cols.size());
-		// List<Float> avalues = new ArrayList<>(inA.size());
-		// List<Float> bvalues = new ArrayList<>(rows.size() - inA.size());
-		// System.out.println(w + " " + inA.size() + " " + rows.size() + " cols " + cols.size());
-
 		for (Integer col : cols) {
-			// mean of the expressions level of the samples for the given gen.
-			float asum = 0;
-			int acount = 0;
-			float bsum = 0;
-			int bcount = 0;
-			// avalues.clear();
-			// bvalues.clear();
+
 			for (Integer row : rows) {
 				Float v = table.getNormalizedValue(col, row);
 				if (v == null || v.isNaN() || v.isInfinite())
 					continue;
-				if (inA.contains(row)) {
-					asum += v;
-					acount++;
-					// avalues.add(v);
-				} else {
-					bsum += v;
-					bcount++;
-					// bvalues.add(v);
-				}
-
+				inA.add(row, v);
 			}
-			// now some kind of correlation between the two
-			g.add(Pair.make(col, (asum / acount) / (bsum / bcount)));// correlationOf(avalues, bvalues)));
+			inA.flush(col);
+		}
+		System.out.println(w);
+		return inA.correlation;
+	}
+
+	private List<Map<Integer, Float>> rankedSet(List<RankedSet> sets, IProgressMonitor monitor) {
+		Stopwatch w = new Stopwatch().start();
+
+		ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) perspective.getDataDomain();
+		Table table = dataDomain.getTable();
+
+		List<Integer> rows = perspective.getVirtualArray().getIDs();
+		List<Integer> cols = table.getDefaultDimensionPerspective().getVirtualArray().getIDs();
+
+		for (Integer col : cols) {
+			for (Integer row : rows) {
+				Float v = table.getNormalizedValue(col, row);
+				if (v == null || v.isNaN() || v.isInfinite())
+					continue;
+				for (RankedSet s : sets)
+					s.add(row, v);
+			}
+			for (RankedSet s : sets)
+				s.flush(col);
+			if (monitor.isCanceled())
+				return null;
+		}
+		List<Map<Integer, Float>> rs = new ArrayList<>(sets.size());
+		for (RankedSet s : sets)
+			rs.add(s.correlation);
+		System.out.println(w);
+		return rs;
+	}
+
+	private static class RankedSet {
+		// mean of the expressions level of the samples for the given gen.
+		private float asum = 0;
+		private int acount = 0;
+		private float bsum = 0;
+		private int bcount = 0;
+
+		private final BitSet inA;
+		private final Map<Integer, Float> correlation = Maps.newTreeMap();
+
+		public RankedSet(Collection<Integer> inA) {
+			this.inA = new BitSet(inA.size());
+			for (Integer v : inA)
+				this.inA.set(v);
+		}
+		public void add(Integer row, float v) {
+			if (inA.get(row)) {
+				asum += v;
+				acount++;
+				// avalues.add(v);
+			} else {
+				bsum += v;
+				bcount++;
+				// bvalues.add(v);
+			}
 		}
 
-		// System.out.println("computed " + w);
-		Map<Integer, Float> correlation = Maps.newLinkedHashMap();
-		Collections.sort(g, Collections.reverseOrder());
-		for (Pair<Integer, Float> entry : g)
-			correlation.put(entry.getFirst(), entry.getSecond());
-		System.out.println(w);
-		return correlation;
+		public void flush(int col) {
+			// now some kind of correlation between the two
+			correlation.put(col, (asum / acount) / (bsum / bcount));// correlationOf(avalues, bvalues)));
+			asum = acount = 0;
+			bsum = bcount = 0;
+		}
 	}
 
 	@Override
-	protected float computeImpl(Set<Integer> geneSet) {
+	protected float computeImpl(Set<Integer> geneSet, IProgressMonitor monitor) {
 		float es = (float) enrichmentScore(correlation, geneSet);
 		return es;
 	}
 
 	@Override
-	protected float computePValueImpl(Set<Integer> geneSet) {
+	protected float computePValueImpl(Set<Integer> geneSet, IProgressMonitor monitor) {
 		float es = (float) enrichmentScore(correlation, geneSet);
 		if (Float.isNaN(es))
+			return Float.NaN;
+
+		if (monitor.isCanceled())
 			return Float.NaN;
 
 		// Randomly assign the original phenotype labels to samples,reorder genes, and re-compute ES(S)
@@ -155,6 +218,9 @@ public class GSEAAlgorithm extends AGSEAAlgorithm {
 				if (phi <= es)
 					phiSum += phi;
 			}
+
+			if (monitor.isCanceled())
+				return Float.NaN;
 		}
 		float pValue = phiSum / phiCount;
 

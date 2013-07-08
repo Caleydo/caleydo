@@ -1,31 +1,21 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.vis.rank.model;
 
-import java.awt.Color;
+
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
+import org.caleydo.core.util.color.Color;
+
 import com.google.common.collect.Iterators;
+import com.google.common.collect.Lists;
 
 /**
  * @author Samuel Gratzl
@@ -34,6 +24,7 @@ import com.google.common.collect.Iterators;
 public abstract class ACompositeRankColumnModel extends ARankColumnModel implements Iterable<ARankColumnModel>,
 		IRankColumnParent {
 	public static final String PROP_CHILDREN = "children";
+	public static final String PROP_CHILDREN_ORDER = "childrenOrder";
 
 	protected final List<ARankColumnModel> children = new ArrayList<>(2);
 
@@ -105,6 +96,12 @@ public abstract class ACompositeRankColumnModel extends ARankColumnModel impleme
 			model.getParent().remove(model);
 			add(to, model);
 		}
+	}
+
+	protected final void sortBy(Comparator<? super ARankColumnModel> comparator) {
+		List<ARankColumnModel> bak = Lists.newArrayList(getChildren());
+		Collections.sort(children, comparator);
+		propertySupport.firePropertyChange(PROP_CHILDREN_ORDER, bak, getChildren());
 	}
 
 	protected void moved(int from, int to) {

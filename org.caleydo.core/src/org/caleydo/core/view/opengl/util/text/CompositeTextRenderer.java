@@ -1,30 +1,17 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.view.opengl.util.text;
 
-import java.awt.Color;
+
 import java.util.NavigableMap;
 import java.util.TreeMap;
 
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.function.FloatFunctions;
 import org.caleydo.core.util.function.IFloatFunction;
 
@@ -45,22 +32,23 @@ public class CompositeTextRenderer implements ITextRenderer {
 	 */
 	private final IFloatFunction mapper;
 
-	public CompositeTextRenderer(int size, int... sizes) {
-		this(FloatFunctions.IDENTITY, size, sizes);
+	public CompositeTextRenderer(ETextStyle style, int size, int... sizes) {
+		this(FloatFunctions.IDENTITY, style, size, sizes);
 	}
 
-	public CompositeTextRenderer(IFloatFunction mapper, int size, int... sizes) {
+	public CompositeTextRenderer(IFloatFunction mapper, ETextStyle style, int size, int... sizes) {
 		this.mapper = mapper;
-		add(size);
+		add(style, size);
 		for (int s : sizes)
-			add(s);
+			add(style, s);
 	}
 
 	/**
 	 * @param size
 	 */
-	private void add(int size) {
-		CaleydoTextRenderer t = new CaleydoTextRenderer(size);
+	private void add(ETextStyle style, int size) {
+		int awtstyle = style.toAWTFontStyle();
+		CaleydoTextRenderer t = new CaleydoTextRenderer(size, awtstyle);
 		pool.put(t.getReferenceHeight(), t);
 	}
 
@@ -70,11 +58,6 @@ public class CompositeTextRenderer implements ITextRenderer {
 			t.setColor(color);
 	}
 
-	@Override
-	public void setColor(float r, float g, float b, float a) {
-		for (CaleydoTextRenderer t : pool.values())
-			t.setColor(r, g, b, a);
-	}
 
 	@Override
 	public float getTextWidth(String text, float height) {
@@ -100,6 +83,14 @@ public class CompositeTextRenderer implements ITextRenderer {
 		if (select == null)
 			select = this.pool.lastKey();
 		return this.pool.get(select);
+	}
+
+	@Override
+	public boolean isDirty() {
+		boolean dirty = false;
+		for (ITextRenderer t : this.pool.values())
+			dirty = t.isDirty() || dirty;
+		return dirty;
 	}
 
 	@Override

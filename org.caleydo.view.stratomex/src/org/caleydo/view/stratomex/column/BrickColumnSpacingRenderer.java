@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.stratomex.column;
 
 import java.util.HashMap;
@@ -37,7 +23,6 @@ import org.caleydo.core.data.virtualarray.similarity.SimilarityMap;
 import org.caleydo.core.data.virtualarray.similarity.VASimilarity;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
-import org.caleydo.core.id.IDType;
 import org.caleydo.core.id.object.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.logging.Logger;
@@ -65,9 +50,7 @@ import org.eclipse.core.runtime.Status;
  * @author Alexander Lex
  *
  */
-public class BrickColumnSpacingRenderer
-	extends ALayoutRenderer
-	implements IDropArea {
+public class BrickColumnSpacingRenderer extends ALayoutRenderer implements IDropArea {
 
 	public static float[] DRAG_AND_DROP_MARKER_COLOR = { 0.5f, 0.5f, 0.5f };
 
@@ -90,9 +73,10 @@ public class BrickColumnSpacingRenderer
 
 	private GLStratomex stratomex;
 
-	public BrickColumnSpacingRenderer(RelationAnalyzer relationAnalyzer,
-			ConnectionBandRenderer connectionRenderer, BrickColumn leftDimGroup,
-			BrickColumn rightDimGroup, GLStratomex glVisBricksView) {
+	private boolean hovered = false;
+
+	public BrickColumnSpacingRenderer(RelationAnalyzer relationAnalyzer, ConnectionBandRenderer connectionRenderer,
+			BrickColumn leftDimGroup, BrickColumn rightDimGroup, GLStratomex glVisBricksView) {
 
 		this.relationAnalyzer = relationAnalyzer;
 		this.leftDimGroup = leftDimGroup;
@@ -104,8 +88,7 @@ public class BrickColumnSpacingRenderer
 	}
 
 	{
-		ID = GeneralManager.get().getIDCreator()
-				.createID(ManagedObjectType.DIMENSION_GROUP_SPACER);
+		ID = GeneralManager.get().getIDCreator().createID(ManagedObjectType.DIMENSION_GROUP_SPACER);
 	}
 
 	@Override
@@ -127,15 +110,14 @@ public class BrickColumnSpacingRenderer
 		if (leftBricks.size() == 0 || rightBricks.size() == 0)
 			return;
 
-		SimilarityMap similarityMap = relationAnalyzer.getSimilarityMap(leftDimGroup
-				.getTablePerspective().getRecordPerspective().getPerspectiveID());
+		SimilarityMap similarityMap = relationAnalyzer.getSimilarityMap(leftDimGroup.getTablePerspective()
+				.getRecordPerspective().getPerspectiveID());
 
 		if (similarityMap == null)
 			return;
 
-		VASimilarity vaSimilarityMap = similarityMap
-				.getVASimilarity(rightDimGroup.getTablePerspective().getRecordPerspective()
-						.getPerspectiveID());
+		VASimilarity vaSimilarityMap = similarityMap.getVASimilarity(rightDimGroup.getTablePerspective()
+				.getRecordPerspective().getPerspectiveID());
 		if (vaSimilarityMap == null)
 			return;
 
@@ -150,10 +132,9 @@ public class BrickColumnSpacingRenderer
 
 			RectangleCoordinates leftBrickElementLayout = leftBrick.getLayoutForConnections();
 
-			GroupSimilarity leftGroupSimilarity = vaSimilarityMap
-					.getGroupSimilarity(leftDimGroup.getTablePerspective()
-							.getRecordPerspective().getPerspectiveID(), leftBrick
-							.getTablePerspective().getRecordGroup().getGroupIndex());
+			GroupSimilarity leftGroupSimilarity = vaSimilarityMap.getGroupSimilarity(leftDimGroup.getTablePerspective()
+					.getRecordPerspective().getPerspectiveID(), leftBrick.getTablePerspective().getRecordGroup()
+					.getGroupIndex());
 
 			float[] leftSimilarities = leftGroupSimilarity.getSimilarities();
 			float leftSimilarityOffsetY = 0;
@@ -164,35 +145,30 @@ public class BrickColumnSpacingRenderer
 					continue;
 
 				Group subGroup = rightBrick.getTablePerspective().getRecordGroup();
-				SubGroupMatch subGroupMatch = new SubGroupMatch(
-						stratomex.getNextConnectionBandID(), rightBrick, subGroup);
+				SubGroupMatch subGroupMatch = new SubGroupMatch(stratomex.getNextConnectionBandID(), rightBrick,
+						subGroup);
 				groupMatch.addSubGroupMatch(subGroup.getGroupIndex(), subGroupMatch);
 
-				VirtualArray similarityVA = leftGroupSimilarity
-						.getSimilarityVAs(rightBrick.getTablePerspective().getRecordGroup()
-								.getGroupIndex());
+				VirtualArray similarityVA = leftGroupSimilarity.getSimilarityVAs(rightBrick.getTablePerspective()
+						.getRecordGroup().getGroupIndex());
 
 				BrickConnection brickConnectionBand = new BrickConnection();
 				brickConnectionBand.setConnectionBandID(subGroupMatch.getConnectionBandID());
 				brickConnectionBand.setLeftBrick(leftBrick);
 				brickConnectionBand.setRightBrick(rightBrick);
 				brickConnectionBand.setSharedRecordVirtualArray(similarityVA);
-				stratomex.getHashConnectionBandIDToRecordVA().put(
-						subGroupMatch.getConnectionBandID(), brickConnectionBand);
+				stratomex.getHashConnectionBandIDToRecordVA().put(subGroupMatch.getConnectionBandID(),
+						brickConnectionBand);
 
-				Perspective leftRecordPerspective = leftBrick.getTablePerspective()
-						.getRecordPerspective();
-				Perspective rightRecordPerspective = rightBrick.getTablePerspective()
-						.getRecordPerspective();
+				Perspective leftRecordPerspective = leftBrick.getTablePerspective().getRecordPerspective();
+				Perspective rightRecordPerspective = rightBrick.getTablePerspective().getRecordPerspective();
 				HashMap<Perspective, HashMap<Perspective, BrickConnection>> hashRecordPerspectivesToConnectionBandID = stratomex
 						.getHashTablePerspectivesToConnectionBandID();
 
-				if (hashRecordPerspectivesToConnectionBandID
-						.containsKey(leftRecordPerspective)) {
-					hashRecordPerspectivesToConnectionBandID.get(leftRecordPerspective).put(
-							rightRecordPerspective, brickConnectionBand);
-				}
-				else {
+				if (hashRecordPerspectivesToConnectionBandID.containsKey(leftRecordPerspective)) {
+					hashRecordPerspectivesToConnectionBandID.get(leftRecordPerspective).put(rightRecordPerspective,
+							brickConnectionBand);
+				} else {
 					HashMap<Perspective, BrickConnection> tmp = new HashMap<Perspective, BrickConnection>();
 					tmp.put(rightRecordPerspective, brickConnectionBand);
 					hashRecordPerspectivesToConnectionBandID.put(leftRecordPerspective, tmp);
@@ -200,8 +176,8 @@ public class BrickColumnSpacingRenderer
 
 				calculateSubMatchSelections(subGroupMatch, similarityVA);
 
-				float leftSimilarityRatioY = leftSimilarities[rightBrick.getTablePerspective()
-						.getRecordGroup().getGroupIndex()];
+				float leftSimilarityRatioY = leftSimilarities[rightBrick.getTablePerspective().getRecordGroup()
+						.getGroupIndex()];
 				leftSimilarityOffsetY += leftSimilarityRatioY;
 
 				subGroupMatch.setSimilarityRatioLeft(leftSimilarityRatioY);
@@ -209,8 +185,7 @@ public class BrickColumnSpacingRenderer
 				subGroupMatch.setLeftAnchorYStart(leftBrickElementLayout.getBottom()
 						+ leftBrickElementLayout.getHeight() * (leftSimilarityOffsetY));
 
-				subGroupMatch.setLeftAnchorYEnd(leftBrickElementLayout.getBottom()
-						+ leftBrickElementLayout.getHeight()
+				subGroupMatch.setLeftAnchorYEnd(leftBrickElementLayout.getBottom() + leftBrickElementLayout.getHeight()
 						* (leftSimilarityOffsetY - leftSimilarityRatioY));
 			}
 		}
@@ -218,13 +193,11 @@ public class BrickColumnSpacingRenderer
 		for (GLBrick rightBrick : rightBricks) {
 			if (rightBrick.isHeaderBrick())
 				continue;
-			RectangleCoordinates rightBrickElementLayout = rightBrick
-					.getLayoutForConnections();
+			RectangleCoordinates rightBrickElementLayout = rightBrick.getLayoutForConnections();
 
-			GroupSimilarity rightGroupSimilarity = vaSimilarityMap
-					.getGroupSimilarity(rightDimGroup.getTablePerspective()
-							.getRecordPerspective().getPerspectiveID(), rightBrick
-							.getTablePerspective().getRecordGroup().getGroupIndex());
+			GroupSimilarity rightGroupSimilarity = vaSimilarityMap.getGroupSimilarity(rightDimGroup
+					.getTablePerspective().getRecordPerspective().getPerspectiveID(), rightBrick.getTablePerspective()
+					.getRecordGroup().getGroupIndex());
 
 			float[] rightSimilarities = rightGroupSimilarity.getSimilarities();
 
@@ -233,13 +206,13 @@ public class BrickColumnSpacingRenderer
 			for (GLBrick leftBrick : leftBricks) {
 				if (leftBrick.isHeaderBrick())
 					continue;
-				GroupMatch groupMatch = hashGroupID2GroupMatches.get(leftBrick
-						.getTablePerspective().getRecordGroup().getGroupIndex());
-				SubGroupMatch subGroupMatch = groupMatch.getSubGroupMatch(rightBrick
-						.getTablePerspective().getRecordGroup().getGroupIndex());
+				GroupMatch groupMatch = hashGroupID2GroupMatches.get(leftBrick.getTablePerspective().getRecordGroup()
+						.getGroupIndex());
+				SubGroupMatch subGroupMatch = groupMatch.getSubGroupMatch(rightBrick.getTablePerspective()
+						.getRecordGroup().getGroupIndex());
 
-				float rightSimilarityRatioY = rightSimilarities[leftBrick
-						.getTablePerspective().getRecordGroup().getGroupIndex()];
+				float rightSimilarityRatioY = rightSimilarities[leftBrick.getTablePerspective().getRecordGroup()
+						.getGroupIndex()];
 				rightSimilarityOffsetY += rightSimilarityRatioY;
 
 				subGroupMatch.setSimilarityRatioRight(rightSimilarityRatioY);
@@ -248,15 +221,13 @@ public class BrickColumnSpacingRenderer
 						+ rightBrickElementLayout.getHeight() * (rightSimilarityOffsetY));
 
 				subGroupMatch.setRightAnchorYEnd(rightBrickElementLayout.getBottom()
-						+ rightBrickElementLayout.getHeight()
-						* (rightSimilarityOffsetY - rightSimilarityRatioY));
+						+ rightBrickElementLayout.getHeight() * (rightSimilarityOffsetY - rightSimilarityRatioY));
 
 			}
 		}
 	}
 
-	private void calculateSubMatchSelections(SubGroupMatch subGroupMatch,
-			VirtualArray recordVA) {
+	private void calculateSubMatchSelections(SubGroupMatch subGroupMatch, VirtualArray recordVA) {
 
 		if (recordVA.size() == 0)
 			return;
@@ -268,13 +239,11 @@ public class BrickColumnSpacingRenderer
 		// Iterate over all selection types
 		for (SelectionType selectionType : recordSelectionManager.getSelectionTypes()) {
 
-			if (selectionType == SelectionType.MOUSE_OVER
-					|| selectionType == SelectionType.DESELECTED
+			if (selectionType == SelectionType.MOUSE_OVER || selectionType == SelectionType.DESELECTED
 					|| selectionType == SelectionType.LEVEL_HIGHLIGHTING)
 				continue;
 
-			Set<Integer> selectedByGroupSelections = recordSelectionManager
-					.getElements(selectionType);
+			Set<Integer> selectedByGroupSelections = recordSelectionManager.getElements(selectionType);
 
 			if (selectedByGroupSelections == null || selectedByGroupSelections.size() == 0) {
 
@@ -286,24 +255,24 @@ public class BrickColumnSpacingRenderer
 			}
 
 			int intersectionCount = 0;
-			IDMappingManager mappingManager = IDMappingManagerRegistry.get()
-					.getIDMappingManager(recordVA.getIdType().getIDCategory());
-			for (Integer recordID : recordVA) {
-				if (recordVA.getIdType() != recordSelectionManager.getIDType()) {
-					IDType destIDType = recordSelectionManager.getIDType();
+			IDMappingManager mappingManager = IDMappingManagerRegistry.get().getIDMappingManager(
+					recordVA.getIdType().getIDCategory());
 
-					Set<Integer> recordIDs = mappingManager.getIDAsSet(recordVA.getIdType(),
-							destIDType, recordID);
+			for (Integer selectedID : selectedByGroupSelections) {
+
+				if (recordVA.getIdType() != recordSelectionManager.getIDType()) {
+
+					Set<Integer> recordIDs = mappingManager.getIDAsSet(recordSelectionManager.getIDType(),
+							recordVA.getIdType(), selectedID);
 					if (recordIDs == null)
 						continue;
-					recordID = recordIDs.iterator().next();
+					selectedID = recordIDs.iterator().next();
 					if (recordIDs.size() > 1) {
-						Logger.log(new Status(IStatus.WARNING, this.toString(),
-								"Multi-Mapping, not handled"));
+						Logger.log(new Status(IStatus.WARNING, this.toString(), "Multi-Mapping, not handled"));
 					}
 				}
 
-				if (recordID != null && selectedByGroupSelections.contains(recordID))
+				if (selectedID != null && recordVA.contains(selectedID))
 					intersectionCount++;
 			}
 
@@ -321,8 +290,6 @@ public class BrickColumnSpacingRenderer
 		renderFlexibleArch(gl);
 		renderDimensionGroupConnections(gl);
 		renderDragAndDropMarker(gl);
-
-
 
 		// FIXME Stratomex 2.0 testing
 		// if (leftDimGroup != null && rightDimGroup != null) {
@@ -350,10 +317,10 @@ public class BrickColumnSpacingRenderer
 		gl.glPushName(pickingID);
 		gl.glColor4f(1f, 1f, 1f, 0);
 		gl.glBegin(GL2.GL_POLYGON);
-		gl.glVertex3f(0, 0, -0.2f);
-		gl.glVertex3f(x, 0, -0.2f);
-		gl.glVertex3f(x, y, -0.2f);
-		gl.glVertex3f(0, y, -0.2f);
+		gl.glVertex3f(0, 0, 0.f);
+		gl.glVertex3f(x, 0, 0.f);
+		gl.glVertex3f(x, y, 0.f);
+		gl.glVertex3f(0, y, 0.f);
 		gl.glEnd();
 		gl.glPopName();
 	}
@@ -368,8 +335,7 @@ public class BrickColumnSpacingRenderer
 			if (isVertical) {
 				gl.glVertex3f(x / 2f, 0, 1f);
 				gl.glVertex3f(x / 2f, y, 1f);
-			}
-			else {
+			} else {
 				gl.glVertex3f(0, y / 2f, 1f);
 				gl.glVertex3f(x, y / 2f, 1f);
 			}
@@ -400,6 +366,9 @@ public class BrickColumnSpacingRenderer
 		float xStart = 0;
 		float xEnd;
 
+		final int pickingID = stratomex.getPickingManager().getPickingID(stratomex.getID(),
+				EPickingType.DIMENSION_GROUP_SPACER_HEADER.name(), ID);
+
 		// handle situation where no group is contained in center arch
 		if (leftDimGroup == null && rightDimGroup == null && stratomex != null) {
 
@@ -411,8 +380,9 @@ public class BrickColumnSpacingRenderer
 		}
 
 		if (leftDimGroup != null) {
-			if (leftDimGroup.isDetailBrickShown() && !leftDimGroup.isExpandLeft())
+			if (leftDimGroup.isDetailBrickShown() && !leftDimGroup.isExpandLeft()) {
 				return;
+			}
 
 			GLBrick leftCenterBrick = leftDimGroup.getHeaderBrick();
 
@@ -421,26 +391,25 @@ public class BrickColumnSpacingRenderer
 			leftCenterBrickTop = layout.getTranslateY() + layout.getSizeScaledY();
 
 			if (!leftDimGroup.isDetailBrickShown())
-				xStart = leftDimGroup.getLayout().getTranslateX()
-						- leftCenterBrick.getLayout().getTranslateX();
+				xStart = leftDimGroup.getLayout().getTranslateX() - leftCenterBrick.getLayout().getTranslateX();
 
 			// Render straight band connection from center brick to dimension
 			// group on
 			// the LEFT
 			if (xStart != 0) {
-				connectionRenderer.renderStraightBand(gl, new float[] { xStart,
-						leftCenterBrickTop, 0 }, new float[] { xStart, leftCenterBrickBottom,
-						0 }, new float[] { 0, leftCenterBrickTop, 0 }, new float[] { 0,
-						leftCenterBrickBottom, 0 }, false, 0, GLStratomex.ARCH_COLOR,
-						GLStratomex.ARCH_COLOR[3], true);
+				connectionRenderer.renderStraightBand(gl, new float[] { xStart, leftCenterBrickTop, 0 }, new float[] {
+						xStart, leftCenterBrickBottom, 0 }, new float[] { 0, leftCenterBrickTop, 0 }, new float[] { 0,
+						leftCenterBrickBottom, 0 }, false, 0, GLStratomex.ARCH_COLOR, GLStratomex.ARCH_COLOR[3], true);
 				// render add button
-				stratomex.getTourguide().renderAddButton(gl, xStart, leftCenterBrickTop, x,
-						leftCenterBrickBottom - leftCenterBrickTop, ID);
-
+				gl.glPushName(pickingID);
+				drawQuad(gl, xStart, leftCenterBrickTop, x, leftCenterBrickBottom - leftCenterBrickTop);
+				if (hovered)
+					stratomex.getTourguide().renderAddButton(gl, xStart, leftCenterBrickTop, x,
+							leftCenterBrickBottom - leftCenterBrickTop, ID);
+				gl.glPopName();
 			}
 
-		}
-		else {
+		} else {
 			if (rightDimGroup != null) {
 				leftCenterBrickBottom = stratomex.getArchBottomY();
 				leftCenterBrickTop = stratomex.getArchTopY();
@@ -458,8 +427,7 @@ public class BrickColumnSpacingRenderer
 			rightCenterBrickTop = layout.getTranslateY() + layout.getSizeScaledY();
 
 			if (!rightDimGroup.isDetailBrickShown())
-				xEnd = x + rightCenterBrick.getLayout().getTranslateX()
-						- rightDimGroup.getLayout().getTranslateX();
+				xEnd = x + rightCenterBrick.getLayout().getTranslateX() - rightDimGroup.getLayout().getTranslateX();
 			else
 				xEnd = rightCenterBrick.getLayout().getTranslateX();
 
@@ -468,21 +436,20 @@ public class BrickColumnSpacingRenderer
 			// the RIGHT
 			if (xEnd != 0 && !(xEnd < x + 0.000001f && xEnd > x - 0.000001f)) {
 
-				connectionRenderer.renderStraightBand(gl, new float[] { x,
-						rightCenterBrickTop, 0 },
-						new float[] { x, rightCenterBrickBottom, 0 }, new float[] { xEnd,
-								rightCenterBrickTop, 0 }, new float[] { xEnd,
-								rightCenterBrickBottom, 0 }, false, 0, GLStratomex.ARCH_COLOR,
-						GLStratomex.ARCH_COLOR[3], true);
+				connectionRenderer.renderStraightBand(gl, new float[] { x, rightCenterBrickTop, 0 }, new float[] { x,
+						rightCenterBrickBottom, 0 }, new float[] { xEnd, rightCenterBrickTop, 0 }, new float[] { xEnd,
+						rightCenterBrickBottom, 0 }, false, 0, GLStratomex.ARCH_COLOR, GLStratomex.ARCH_COLOR[3], true);
 				// render add button
-				stratomex.getTourguide().renderAddButton(gl, x, rightCenterBrickTop, xEnd - x,
-						rightCenterBrickBottom
-						- rightCenterBrickTop, ID);
+				gl.glPushName(pickingID);
+				drawQuad(gl, x, rightCenterBrickTop, xEnd - x, rightCenterBrickBottom - rightCenterBrickTop);
+				if (hovered)
+					stratomex.getTourguide().renderAddButton(gl, x, rightCenterBrickTop, xEnd - x,
+							rightCenterBrickBottom - rightCenterBrickTop, ID);
+				gl.glPopName();
 
 			}
 
-		}
-		else {
+		} else {
 			if (leftDimGroup != null) {
 				rightCenterBrickBottom = stratomex.getArchBottomY();
 				rightCenterBrickTop = stratomex.getArchTopY();
@@ -493,19 +460,30 @@ public class BrickColumnSpacingRenderer
 		if (leftCenterBrickBottom == 0 && rightCenterBrickBottom == 0)
 			return;
 
-		connectionRenderer.renderSingleBand(gl, new float[] { 0, leftCenterBrickTop, 0 },
-				new float[] { 0, leftCenterBrickBottom, 0 }, new float[] { x,
-						rightCenterBrickTop, 0 },
-				new float[] { x, rightCenterBrickBottom, 0 }, false, curveOffset, 0,
-				GLStratomex.ARCH_COLOR, true);
+		connectionRenderer.renderSingleBand(gl, new float[] { 0, leftCenterBrickTop, 0 }, new float[] { 0,
+				leftCenterBrickBottom, 0 }, new float[] { x, rightCenterBrickTop, 0 }, new float[] { x,
+				rightCenterBrickBottom, 0 }, false, curveOffset, 0, GLStratomex.ARCH_COLOR, true);
 
 		// render add button
-		stratomex.getTourguide().renderAddButton(gl, 0, (leftCenterBrickTop + rightCenterBrickTop) * 0.5f, x,
-				(leftCenterBrickBottom - leftCenterBrickTop + rightCenterBrickBottom - rightCenterBrickTop) * 0.5f, ID);
-
+		gl.glPushName(pickingID);
+		drawQuad(gl, 0, (leftCenterBrickTop + rightCenterBrickTop) * 0.5f, x, (leftCenterBrickBottom
+				- leftCenterBrickTop + rightCenterBrickBottom - rightCenterBrickTop) * 0.5f);
+		if (hovered)
+			stratomex.getTourguide().renderAddButton(gl, 0, (leftCenterBrickTop + rightCenterBrickTop) * 0.5f, x,
+					(leftCenterBrickBottom - leftCenterBrickTop + rightCenterBrickBottom - rightCenterBrickTop) * 0.5f,
+					ID);
+		gl.glPopName();
 	}
 
-
+	private static void drawQuad(GL2 gl, float x, float y, float w, float h) {
+		gl.glBegin(GL2.GL_QUADS);
+		gl.glColor4f(1, 1, 1, 0);
+		gl.glVertex3f(x, y, 1.f);
+		gl.glVertex3f(x + w, y, 1.f);
+		gl.glVertex3f(x + w, y + h, 1.f);
+		gl.glVertex3f(x, y + h, 1.f);
+		gl.glEnd();
+	}
 
 	private void renderDimensionGroupConnections(GL2 gl) {
 
@@ -521,8 +499,7 @@ public class BrickColumnSpacingRenderer
 			GLBrick brick = groupMatch.getBrick();
 			float xStart = 0;
 			if (!leftDimGroup.isDetailBrickShown())
-				xStart = -(leftDimGroup.getLayout().getSizeScaledX() - brick
-						.getLayoutForConnections().getWidth()) / 2;
+				xStart = -(leftDimGroup.getLayout().getSizeScaledX() - brick.getLayoutForConnections().getWidth()) / 2;
 
 			// if (groupMatch.getBrick().isInOverviewMode())
 			// continue;
@@ -537,15 +514,12 @@ public class BrickColumnSpacingRenderer
 				// if (subGroupMatch.getBrick().isInOverviewMode())
 				// continue;
 
-				HashMap<SelectionType, Float> hashRatioToSelectionType = subGroupMatch
-						.getHashRatioToSelectionType();
+				HashMap<SelectionType, Float> hashRatioToSelectionType = subGroupMatch.getHashRatioToSelectionType();
 
-				float xEnd = x + subBrick.getLayout().getTranslateX()
-						- rightDimGroup.getLayout().getTranslateX();
+				float xEnd = x + subBrick.getLayout().getTranslateX() - rightDimGroup.getLayout().getTranslateX();
 
 				gl.glPushName(stratomex.getPickingManager().getPickingID(stratomex.getID(),
-						EPickingType.BRICK_CONNECTION_BAND.name(),
-						subGroupMatch.getConnectionBandID()));
+						EPickingType.BRICK_CONNECTION_BAND.name(), subGroupMatch.getConnectionBandID()));
 
 				// Render selected portion
 				for (SelectionType selectionType : hashRatioToSelectionType.keySet()) {
@@ -554,36 +528,20 @@ public class BrickColumnSpacingRenderer
 					float trendRatio = 0;
 					float[] color = new float[] { 0, 0, 0, 1 };
 
-					if (selectionType == SelectionType.NORMAL && !stratomex.isConnectionsOn()) {
+					if (selectionType == SelectionType.NORMAL && stratomex.isConnectionsShowOnlySelected()) {
 						continue;
 					}
 
-					color = selectionType.getColor();
+					color = selectionType.getColor().getRGBA();
 
 					if (stratomex.isConnectionsHighlightDynamic() == false) {
 
 						if (selectionType == SelectionType.NORMAL) {
-
-							// if (glVisBricks.getSelectedConnectionBandID() ==
-							// subGroupMatch
-							// .getConnectionBandID())
-							// {
-							// trendRatio = 0.5f;
-							// color = new float[] { 0, 0, 0 };
-							//
-							// }
-							// else
-							// {
 							trendRatio = 0.15f;
-							// }
-						}
-						else {
-
+						} else {
 							trendRatio = 0.5f;
-
 						}
-					}
-					else {
+					} else {
 
 						float maxRatio = Math.max(subGroupMatch.getLeftSimilarityRatio(),
 								subGroupMatch.getRightSimilarityRatio());
@@ -592,11 +550,9 @@ public class BrickColumnSpacingRenderer
 						else
 							trendRatio = 1 - (stratomex.getConnectionsFocusFactor() + (1 - maxRatio));
 
-						if (stratomex.getSelectedConnectionBandID() == subGroupMatch
-								.getConnectionBandID()) {
+						if (stratomex.getSelectedConnectionBandID() == subGroupMatch.getConnectionBandID()) {
 							trendRatio = 0.8f;
-						}
-						else {
+						} else {
 							// it would be too opaque if we use the factor
 							// determined by the slider
 							trendRatio /= 2f;
@@ -609,46 +565,31 @@ public class BrickColumnSpacingRenderer
 					if (ratio == 0)
 						continue;
 
-					float leftYDiff = subGroupMatch.getLeftAnchorYTop()
-							- subGroupMatch.getLeftAnchorYBottom();
+					float leftYDiff = subGroupMatch.getLeftAnchorYTop() - subGroupMatch.getLeftAnchorYBottom();
 					float leftYDiffSelection = leftYDiff * ratio;
 
-					float rightYDiff = subGroupMatch.getRightAnchorYTop()
-							- subGroupMatch.getRightAnchorYBottom();
+					float rightYDiff = subGroupMatch.getRightAnchorYTop() - subGroupMatch.getRightAnchorYBottom();
 					float rightYDiffSelection = rightYDiff * ratio;
 
 					// gl.glPushMatrix();
 					// gl.glTranslatef(0, 0, 0.1f);
 
-					connectionRenderer.renderSingleBand(gl,
-							new float[] { 0, subGroupMatch.getLeftAnchorYTop(), 0.0f },
-							new float[] { 0,
-									subGroupMatch.getLeftAnchorYTop() - leftYDiffSelection,
-									0.0f },
+					connectionRenderer.renderSingleBand(gl, new float[] { 0, subGroupMatch.getLeftAnchorYTop(), 0.0f },
+							new float[] { 0, subGroupMatch.getLeftAnchorYTop() - leftYDiffSelection, 0.0f },
 							new float[] { x, subGroupMatch.getRightAnchorYTop(), 0.0f },
-							new float[] { x,
-									subGroupMatch.getRightAnchorYTop() - rightYDiffSelection,
-									0.0f }, true, curveOffset, 0, color);// 0.15f);
+							new float[] { x, subGroupMatch.getRightAnchorYTop() - rightYDiffSelection, 0.0f }, true,
+							curveOffset, 0, color);// 0.15f);
 
 					// Render straight band connection from brick to dimension
 					// group on the LEFT. This is for the smaller bricks when
 					// the bricks are not of equal size
 					if (xStart != 0) {
-						connectionRenderer
-								.renderStraightBand(
-										gl,
-										new float[] { xStart,
-												subGroupMatch.getLeftAnchorYTop(), 0 },
-										new float[] {
-												xStart,
-												subGroupMatch.getLeftAnchorYTop()
-														- leftYDiffSelection, 0 },
-										new float[] { 0, subGroupMatch.getLeftAnchorYTop(), 0 },
-										new float[] {
-												0,
-												subGroupMatch.getLeftAnchorYTop()
-														- leftYDiffSelection, 0 }, false, 0,
-										color, trendRatio);// 0.5f);
+						connectionRenderer.renderStraightBand(gl,
+								new float[] { xStart, subGroupMatch.getLeftAnchorYTop(), 0 }, new float[] { xStart,
+										subGroupMatch.getLeftAnchorYTop() - leftYDiffSelection, 0 }, new float[] { 0,
+										subGroupMatch.getLeftAnchorYTop(), 0 },
+								new float[] { 0, subGroupMatch.getLeftAnchorYTop() - leftYDiffSelection, 0 }, false, 0,
+								color, trendRatio);// 0.5f);
 					}
 
 					// Render straight band connection from brick to dimension
@@ -656,14 +597,10 @@ public class BrickColumnSpacingRenderer
 					// the bricks are not of equal size
 					if (xEnd != 0) {
 
-						connectionRenderer.renderStraightBand(gl, new float[] { x,
-								subGroupMatch.getRightAnchorYTop(), 0 }, new float[] { x,
-								subGroupMatch.getRightAnchorYTop() - rightYDiffSelection, 0 },
-								new float[] { xEnd, subGroupMatch.getRightAnchorYTop(), 0 },
-								new float[] {
-										xEnd,
-										subGroupMatch.getRightAnchorYTop()
-												- rightYDiffSelection, 0 }, false, 0, color,
+						connectionRenderer.renderStraightBand(gl, new float[] { x, subGroupMatch.getRightAnchorYTop(),
+								0 }, new float[] { x, subGroupMatch.getRightAnchorYTop() - rightYDiffSelection, 0 },
+								new float[] { xEnd, subGroupMatch.getRightAnchorYTop(), 0 }, new float[] { xEnd,
+										subGroupMatch.getRightAnchorYTop() - rightYDiffSelection, 0 }, false, 0, color,
 								trendRatio);// 0.5f);
 					}
 
@@ -730,16 +667,15 @@ public class BrickColumnSpacingRenderer
 	// }
 
 	@Override
-	public void handleDragOver(GL2 gl, java.util.Set<IDraggable> draggables,
-			float mouseCoordinateX, float mouseCoordinateY) {
+	public void handleDragOver(GL2 gl, java.util.Set<IDraggable> draggables, float mouseCoordinateX,
+			float mouseCoordinateY) {
 
 		setRenderSpacer(true);
 	}
 
 	@Override
-	public void handleDrop(GL2 gl, java.util.Set<IDraggable> draggables,
-			float mouseCoordinateX, float mouseCoordinateY,
-			DragAndDropController dragAndDropController) {
+	public void handleDrop(GL2 gl, java.util.Set<IDraggable> draggables, float mouseCoordinateX,
+			float mouseCoordinateY, DragAndDropController dragAndDropController) {
 
 		stratomex.clearColumnSpacerHighlight();
 
@@ -782,5 +718,13 @@ public class BrickColumnSpacingRenderer
 	public void handleDropAreaReplaced() {
 		// TODO Auto-generated method stub
 
+	}
+
+	/**
+	 * @param b
+	 */
+	public void setHeaderHovered(boolean hovered) {
+		this.hovered = hovered;
+		setDisplayListDirty(true);
 	}
 }

@@ -1,19 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
- * University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
- * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
- * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with this program. If not, see
- * <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.heatmap.heatmap.renderer;
 
 import static org.caleydo.view.heatmap.HeatMapRenderStyle.FIELD_Z;
@@ -22,7 +11,6 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.util.color.mapping.ColorMapper;
 import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.heatmap.heatmap.template.AHeatMapLayoutConfiguration;
@@ -55,7 +43,6 @@ public class HeatMapRenderer extends AHeatMapRenderer {
 	@Override
 	public void renderContent(final GL2 gl) {
 
-		ColorMapper colorMapper = heatMap.getDataDomain().getColorMapper();
 		recordSpacing.getYDistances().clear();
 		float yPosition = y;
 		float xPosition = 0;
@@ -80,7 +67,7 @@ public class HeatMapRenderer extends AHeatMapRenderer {
 
 			for (Integer dimensionID : heatMap.getTablePerspective().getDimensionPerspective().getVirtualArray()) {
 
-				renderElement(gl, dimensionID, recordID, yPosition, xPosition, fieldHeight, fieldWidth, colorMapper);
+				renderElement(gl, dimensionID, recordID, yPosition, xPosition, fieldHeight, fieldWidth);
 
 				xPosition += fieldWidth;
 
@@ -91,19 +78,17 @@ public class HeatMapRenderer extends AHeatMapRenderer {
 	}
 
 	private void renderElement(final GL2 gl, final int dimensionID, final int recordID, final float fYPosition,
-			final float fXPosition, final float fFieldHeight, final float fFieldWidth, ColorMapper colorMapper) {
+			final float fXPosition, final float fFieldHeight, final float fFieldWidth) {
 
 		// GLHelperFunctions.drawPointAt(gl, 0, fYPosition, 0);
 
-		float value = heatMap.getDataDomain().getTable().getNormalizedValue(dimensionID, recordID);
+		float[] fArMappingColor = heatMap.getDataDomain().getTable().getColor(dimensionID, recordID);
 
 		float fOpacity = 1.0f;
 
 		if (heatMap.getRecordSelectionManager().checkStatus(SelectionType.DESELECTED, recordID)) {
 			fOpacity = 0.3f;
 		}
-
-		float[] fArMappingColor = colorMapper.getColor(value);
 
 		gl.glColor4f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity);
 

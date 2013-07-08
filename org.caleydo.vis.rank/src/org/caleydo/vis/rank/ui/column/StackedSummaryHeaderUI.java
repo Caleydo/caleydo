@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.vis.rank.ui.column;
 
 import java.beans.PropertyChangeEvent;
@@ -28,10 +14,12 @@ import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
 import org.caleydo.core.view.contextmenu.item.SeparatorMenuItem;
+import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton.EButtonMode;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton.ISelectionCallback;
+import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.rank.config.IRankTableUIConfig;
 import org.caleydo.vis.rank.internal.event.OrderByMeEvent;
 import org.caleydo.vis.rank.internal.ui.ButtonBar;
@@ -69,39 +57,67 @@ public class StackedSummaryHeaderUI extends AColumnHeaderUI {
 
 		{
 			final StackedRankColumnModel m = (StackedRankColumnModel) model;
-			final GLButton b = new GLButton(EButtonMode.CHECKBOX);
+			final GLButton b = new GLButton(EButtonMode.BUTTON);
 			b.setSize(RenderStyle.BUTTON_WIDTH, -1);
-			b.setSelected(m.isAlignAll());
 			final ISelectionCallback callback = new ISelectionCallback() {
 				@Override
 				public void onSelectionChanged(GLButton button, boolean selected) {
-					m.setAlignAll(!m.isAlignAll());
+					m.switchToNextAlignment();
 				}
 			};
 			b.setCallback(callback);
 			onAlignmentChange = new PropertyChangeListener() {
 				@Override
 				public void propertyChange(PropertyChangeEvent evt) {
-					b.setCallback(null);
-					b.setSelected(m.isAlignAll());
-					b.setCallback(callback);
+					b.repaint();
 				}
 			};
 			m.addPropertyChangeListener(StackedRankColumnModel.PROP_ALIGNMENT, onAlignmentChange);
-			buttons.addButton(0, b, "Toggle classic multi-col score bar table and stacked one",
+			buttons.addButton(0, b, "Toggle different column alignemnts (stacked, classic and ordered stacked)",
 					RenderStyle.ICON_ALIGN_CLASSIC, RenderStyle.ICON_ALIGN_STACKED);
+			b.setRenderer(new  IGLRenderer() {
+				@Override
+				public void render(GLGraphics g, float w, float h, GLElement parent) {
+					switch(m.getAlignment()) {
+					case ALL:
+						g.fillImage(RenderStyle.ICON_ALIGN_CLASSIC, 0, 0, w, h);
+						break;
+					case ORDERED:
+						g.fillImage(RenderStyle.ICON_ALIGN_STACKED_ORDERED, 0, 0, w, h);
+						break;
+					case SINGLE:
+						g.fillImage(RenderStyle.ICON_ALIGN_STACKED, 0, 0, w, h);
+						break;
+					}
+				}
+			});
 		}
+		{
+			final StackedRankColumnModel m = (StackedRankColumnModel) model;
+			final GLButton b = new GLButton(EButtonMode.BUTTON);
+			b.setSize(RenderStyle.BUTTON_WIDTH, -1);
+			final ISelectionCallback callback = new ISelectionCallback() {
+				@Override
+				public void onSelectionChanged(GLButton button, boolean selected) {
+					m.sortByWeights();
+				}
+			};
+			b.setCallback(callback);
+			buttons.addButton(1, b, "Sort members by weight", RenderStyle.ICON_SORT_BY_WEIGHT,
+					RenderStyle.ICON_SORT_BY_WEIGHT);
+		}
+
 		return buttons;
 	}
 
 	@Override
 	protected void showContextMenu(List<AContextMenuItem> items) {
 		items.add(SeparatorMenuItem.INSTANCE);
-		GenericContextMenuItem editWeights = new GenericContextMenuItem("Edit Weights",
+		GenericContextMenuItem editWeights = new GenericContextMenuItem("Edit weights",
 				new OpenEditWeightsEvent().to(this));
 		items.add(editWeights);
 		items.add(0, new GenericContextMenuItem("Order by this attribute", new OrderByMeEvent().to(this)));
-		context.showContextMenu(items);
+		context.getSWTLayer().showContextMenu(items);
 	}
 
 	@ListenTo(sendToMe = true)
@@ -109,7 +125,21 @@ public class StackedSummaryHeaderUI extends AColumnHeaderUI {
 		EditWeightsDialog.show((StackedRankColumnModel) this.model, getParent());
 	}
 
+	@ListenTo(sendToMe = true)
+	private void onSortByWeights(SortByWeightsEvent event) {
+		((StackedRankColumnModel) model).sortByWeights();
+	}
+
 	public static class OpenEditWeightsEvent extends ADirectedEvent {
+
+		@Override
+		public boolean checkIntegrity() {
+			return true;
+		}
+
+	}
+
+	public static class SortByWeightsEvent extends ADirectedEvent {
 
 		@Override
 		public boolean checkIntegrity() {

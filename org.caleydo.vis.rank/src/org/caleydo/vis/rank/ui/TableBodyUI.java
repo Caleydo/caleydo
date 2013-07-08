@@ -1,28 +1,13 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.vis.rank.ui;
 
 import gleem.linalg.Vec2f;
 import gleem.linalg.Vec4f;
 
-import java.awt.Color;
 import java.beans.IndexedPropertyChangeEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -34,6 +19,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.caleydo.core.event.EventListenerManager.ListenTo;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
@@ -133,7 +119,7 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 		}
 	};
 
-	public TableBodyUI(final RankTableModel table, IRowHeightLayout rowLayout, IRankTableUIConfig config) {
+	public TableBodyUI(final RankTableModel table, IRowHeightLayout rowLayout, final IRankTableUIConfig config) {
 		setAnimateByDefault(false);
 		this.table = table;
 		this.config = config;
@@ -148,13 +134,7 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 		selectRowListener.add(new IPickingListener() {
 			@Override
 			public void pick(Pick pick) {
-				switch (pick.getPickingMode()) {
-				case CLICKED:
-					table.setSelectedRow(toRow(pick));
-					break;
-				default:
-					break;
-				}
+				config.onRowClick(table, pick.getPickingMode(), toRow(pick), false);
 			}
 
 			protected IRow toRow(Pick pick) {
@@ -169,6 +149,7 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 		setLayout(this);
 		this.scrollBar = config.createScrollBar(false);
 		this.scrollBar.setCallback(this);
+		this.scrollBar.setWidth(RenderStyle.SCROLLBAR_WIDTH);
 	}
 
 	protected void editRow(final OrderColumnUI col, final IRow row) {
@@ -207,11 +188,12 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 				OrderColumnUI col2 = getRanker(toRelative(pick.getPickedPoint()).x());
 				items.add(new GenericContextMenuItem("Edit Values", new TriggerEditValuesEvent(col2).to(this)));
 			}
-			context.showContextMenu(items);
+			context.getSWTLayer().showContextMenu(items);
 			break;
 		default:
 			break;
 		}
+		config.onRowClick(table, pick.getPickingMode(), table.getSelectedRow(), true);
 	}
 
 	@ListenTo(sendToMe = true)
@@ -466,7 +448,7 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 				x += 0;
 			} else {
 				float wi = model.getWidth();
-				if (!it.hasNext() && model instanceof IGrabRemainingHorizontalSpace) {
+				if (!it.hasNext() && model instanceof IGrabRemainingHorizontalSpace && (!model.isCollapsed())) {
 					// catch all
 					wi = w - x - RenderStyle.SCROLLBAR_WIDTH;
 					col.setBounds(x, 0, wi, h);
@@ -680,5 +662,10 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 	@Override
 	public boolean hasFreeSpace(ITableColumnUI tableColumnUI) {
 		return true;
+	}
+
+	@Override
+	public Color getBarOutlineColor() {
+		return config.getBarOutlineColor();
 	}
 }

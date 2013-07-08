@@ -51,4 +51,13 @@
          </dataDomain>
       </association>
    </extension>
+      <extension
+         point="org.caleydo.view.ViewCategory">
+      <ViewCategory
+            isDataView="true"
+            isReleaseView="true"
+            viewID="org.caleydo.view.table">
+      </ViewCategory>
+   </extension>
 </plugin>
+

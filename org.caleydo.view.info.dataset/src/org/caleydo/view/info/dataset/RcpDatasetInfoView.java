@@ -1,20 +1,14 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
- * University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
- * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
- * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with this program. If not, see
- * <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.info.dataset;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.text.DateFormat;
+import java.util.Locale;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -28,6 +22,8 @@ import org.caleydo.core.event.EventListenerManagers;
 import org.caleydo.core.event.data.DataDomainUpdateEvent;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedSingleTablePerspectiveBasedView;
+import org.caleydo.core.serialize.ProjectMetaData;
+import org.caleydo.core.util.system.BrowserUtils;
 import org.caleydo.core.view.CaleydoRCPViewPart;
 import org.caleydo.core.view.IDataDomainBasedView;
 import org.caleydo.view.histogram.GLHistogram;
@@ -41,6 +37,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.ExpandBar;
 import org.eclipse.swt.widgets.ExpandItem;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Link;
 
 /**
  * Data meta view showing details about a data table.
@@ -53,21 +50,16 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 
 	private IDataDomain dataDomain;
 
-	private Label nameLabel;
+	private ExpandItem dataSetItem;
 	private Label recordLabel;
+	private Label recordCount;
 	private Label dimensionLabel;
+	private Label dimensionCount;
 
-	private Composite infoComposite;
-
-	private Composite histogramComposite;
-
+	private ExpandItem histogramItem;
 	private RcpGLColorMapperHistogramView histogramView;
 
-	private boolean isGUIInitialized = false;
-
 	private final EventListenerManager listeners = EventListenerManagers.wrap(this);
-
-	private ExpandBar histogramExpandBar;
 
 	/**
 	 * Constructor.
@@ -87,19 +79,15 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 
 	@Override
 	public void createPartControl(Composite parent) {
+		ExpandBar expandBar = new ExpandBar(parent, SWT.V_SCROLL | SWT.NO_BACKGROUND);
+		expandBar.setSpacing(1);
+		expandBar.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true));
 
-		parentComposite = new Composite(parent, SWT.NULL);
-		parentComposite.setLayout(new GridLayout(1, false));
+		parentComposite = expandBar;
 
-		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
-
-		infoComposite = new Composite(parentComposite, SWT.NULL);
-		infoComposite.setLayout(new GridLayout(1, false));
-		infoComposite.setLayoutData(gridData);
-
-		nameLabel = new Label(infoComposite, SWT.NONE);
-		nameLabel.setText("No data set active");
-		nameLabel.setLayoutData(gridData);
+		createProjectInfos(expandBar);
+		createDataSetInfos(expandBar);
+		createHistogramInfos(expandBar);
 
 		if (dataDomain == null) {
 			setDataDomain(DataDomainManager.get().getDataDomainByID(
@@ -109,9 +97,93 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 		parent.layout();
 	}
 
+	private void createDataSetInfos(ExpandBar expandBar) {
+		this.dataSetItem = new ExpandItem(expandBar, SWT.WRAP);
+		dataSetItem.setText("Data Set: <no selection>");
+		Composite c = new Composite(expandBar, SWT.NONE);
+		c.setLayout(new GridLayout(2, false));
+
+		recordLabel = new Label(c, SWT.NONE);
+		recordLabel.setText("");
+		recordLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
+		recordCount = new Label(c, SWT.NONE);
+		recordCount.setText("");
+		recordCount.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false));
+
+		dimensionLabel = new Label(c, SWT.NONE);
+		dimensionLabel.setText("");
+		dimensionLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
+		dimensionCount = new Label(c, SWT.NONE);
+		dimensionCount.setText("");
+		dimensionCount.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false));
+
+		dataSetItem.setControl(c);
+		dataSetItem.setHeight(c.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
+		dataSetItem.setExpanded(false);
+	}
+
+	private void createProjectInfos(ExpandBar expandBar) {
+		ProjectMetaData metaData = GeneralManager.get().getMetaData();
+		if (metaData.keys().isEmpty())
+			return;
+		ExpandItem expandItem = new ExpandItem(expandBar, SWT.NONE);
+		expandItem.setText("Project: " + metaData.getName());
+		Composite g = new Composite(expandBar, SWT.NONE);
+		g.setLayout(new GridLayout(2, false));
+		createLine(
+				g,
+				"Creation Date",
+				DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, Locale.ENGLISH).format(
+						metaData.getCreationDate()));
+		for (String key : metaData.keys()) {
+			createLine(g, key, metaData.get(key));
+		}
+
+		expandItem.setControl(g);
+		expandItem.setHeight(g.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
+		expandItem.setExpanded(true);
+	}
+
+	private void createHistogramInfos(ExpandBar expandBar) {
+		histogramItem = new ExpandItem(expandBar, SWT.NONE);
+		histogramItem.setText("Histogram");
+		histogramItem.setHeight(200);
+		Composite wrapper = new Composite(expandBar, SWT.NONE);
+		wrapper.setLayout(new FillLayout());
+		histogramItem.setControl(wrapper);
+
+		histogramItem.setExpanded(false);
+		histogramItem.getControl().setEnabled(false);
+	}
+
+	private void createLine(Composite parent, String label, String value) {
+		if (label == null || label.trim().isEmpty() || value == null || value.trim().isEmpty())
+			return;
+		Label l = new Label(parent, SWT.NO_BACKGROUND);
+		l.setText(label + ":");
+		l.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
+
+		try {
+			final URL url = new URL(value);
+			Link v = new Link(parent, SWT.NO_BACKGROUND);
+
+			value = url.toExternalForm();
+			if (value.length() > 20)
+				value = value.substring(0, 20 - 3) + "...";
+			v.setText("<a href=\"" + url.toExternalForm() + "\">" + value + "</a>");
+			v.setToolTipText(url.toExternalForm());
+			v.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false));
+			v.addSelectionListener(BrowserUtils.LINK_LISTENER);
+		} catch (MalformedURLException e) {
+			Label v = new Label(parent, SWT.NO_BACKGROUND);
+			v.setText(value);
+			v.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false));
+		}
+
+	}
+
 	@Override
 	public void setDataDomain(IDataDomain dataDomain) {
-
 		// Do nothing if new datadomain is the same as the current one, or if dd
 		// is null
 		if (dataDomain == this.dataDomain || dataDomain == null)
@@ -124,30 +196,34 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 	}
 
 	private void updateDataSetInfo() {
+		String dsLabel = "Dataset: " + dataDomain.getLabel();
+		if (dsLabel.length() > 25)
+			dsLabel = dsLabel.substring(0, 25 - 3) + "...";
 
-		if (!isGUIInitialized) {
-			initGUI();
-		}
-
-		nameLabel.setText("Name: " + dataDomain.getLabel());
+		// dataSetItem.setText("Data Set: " + dataDomain.getLabel().substring(0, 15));
+		dataSetItem.setText(dsLabel);
 
 		if (dataDomain instanceof ATableBasedDataDomain) {
 			ATableBasedDataDomain tableBasedDD = (ATableBasedDataDomain) dataDomain;
 
-			histogramExpandBar.setVisible(true);
-			recordLabel.setVisible(true);
-			dimensionLabel.setVisible(true);
+			dataSetItem.setExpanded(true);
 
-			recordLabel.setText(tableBasedDD.getRecordDenomination(true, true) + ": "
- + tableBasedDD.getTable().depth());
+			recordLabel.setText(tableBasedDD.getRecordDenomination(true, true) + ":");
+			recordCount.setText("" + tableBasedDD.getTable().depth());
 
-			dimensionLabel.setText(tableBasedDD.getDimensionDenomination(true, true) + ": "
-					+ tableBasedDD.getTable().size());
+			dimensionLabel.setText(tableBasedDD.getDimensionDenomination(true, true) + ":");
+			dimensionCount.setText("" + tableBasedDD.getTable().size());
+
+			((Composite) dataSetItem.getControl()).layout();
 
 			if (!tableBasedDD.getTable().isDataHomogeneous()) {
-				histogramExpandBar.setVisible(false);
+				histogramItem.getControl().setEnabled(false);
+				histogramItem.setExpanded(false);
 				return;
 			}
+
+			histogramItem.getControl().setEnabled(true);
+			histogramItem.setExpanded(true);
 
 			if (histogramView == null) {
 				histogramView = new RcpGLColorMapperHistogramView();
@@ -159,19 +235,13 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 								.getTablePerspectiveKey());
 
 				histogramView.setExternalSerializedView(serializedHistogramView);
-				histogramView.createPartControl(histogramComposite);
+				histogramView.createPartControl((Composite) histogramItem.getControl());
 				// Usually the canvas is registered to the GL2 animator in the
 				// PartListener. Because the GL2 histogram is no usual RCP view
 				// we
 				// have to do it on our own
 				GeneralManager.get().getViewManager().registerGLCanvasToAnimator(histogramView.getGLCanvas());
-				ExpandItem item2 = new ExpandItem(histogramExpandBar, SWT.NONE, 0);
-				item2.setText("Histogram");
-				item2.setHeight(200);
-				item2.setControl(histogramComposite);
-				item2.setExpanded(true);
-
-				histogramExpandBar.setSpacing(2);
+				((Composite) histogramItem.getControl()).layout();
 			}
 			// else {
 
@@ -187,26 +257,10 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 			((GLHistogram) histogramView.getGLView()).setDisplayListDirty();
 			// }
 		} else {
-			histogramExpandBar.setVisible(false);
-			recordLabel.setVisible(false);
-			dimensionLabel.setVisible(false);
+			dataSetItem.setExpanded(true);
+			histogramItem.setExpanded(false);
+			histogramItem.getControl().setEnabled(false);
 		}
-
-		parentComposite.layout();
-	}
-
-	private void initGUI() {
-		recordLabel = new Label(infoComposite, SWT.NONE);
-		dimensionLabel = new Label(infoComposite, SWT.NONE);
-
-		histogramExpandBar = new ExpandBar(parentComposite, SWT.V_SCROLL);
-		GridData gridData = new GridData(GridData.FILL_BOTH);
-		histogramExpandBar.setLayoutData(gridData);
-
-		histogramComposite = new Composite(histogramExpandBar, SWT.NONE);
-		histogramComposite.setLayout(new FillLayout());
-
-		isGUIInitialized = true;
 	}
 
 	@Override

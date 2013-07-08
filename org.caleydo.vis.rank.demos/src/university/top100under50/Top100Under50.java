@@ -1,27 +1,14 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package university.top100under50;
 
-import java.awt.Color;
+import org.caleydo.core.util.color.Color;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +17,7 @@ import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLSandBox;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.vis.rank.data.FloatInferrers;
+import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.ARow;
 import org.caleydo.vis.rank.model.CategoricalRankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
@@ -86,6 +74,24 @@ public class Top100Under50 implements IModelBuilder {
 		// table.add(new RankRankColumnModel());
 		// Top100Under50Year.addOverallYear(table, "Overall Score 2012", new YearGetter(0));
 
+	}
+
+	@Override
+	public Iterable<? extends ARankColumnModel> createAutoSnapshotColumns(RankTableModel table, ARankColumnModel model) {
+		Collection<ARankColumnModel> ms = new ArrayList<>(2);
+		ms.add(new RankRankColumnModel());
+		ARankColumnModel desc = find(table, "School Name");
+		if (desc != null)
+			ms.add(desc.clone().setCollapsed(true));
+		return ms;
+	}
+
+	private static ARankColumnModel find(RankTableModel table, String name) {
+		for (ARankColumnModel model : table.getColumns()) {
+			if (model.getTitle().equals(name))
+				return model;
+		}
+		return null;
 	}
 
 	public static Field field(String f) throws NoSuchFieldException {

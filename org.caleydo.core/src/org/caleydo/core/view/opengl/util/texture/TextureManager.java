@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.view.opengl.util.texture;
 
 import gleem.linalg.Vec3f;
@@ -27,6 +13,7 @@ import java.util.Map;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.data.loader.ITextureLoader;
 import org.eclipse.core.runtime.IStatus;
@@ -80,7 +67,7 @@ public final class TextureManager {
 
 	/**
 	 * load a texture once, using the specified {@link ITextureLoader}
-	 * 
+	 *
 	 * @param texture
 	 * @param locator
 	 * @return
@@ -129,20 +116,23 @@ public final class TextureManager {
 	 */
 	@Deprecated
 	public void renderTexture(GL2 gl, final EIconTextures eIconTextures, Vec3f lowerLeftCorner, Vec3f lowerRightCorner,
-			Vec3f upperRightCorner, Vec3f upperLeftCorner, float colorR, float colorG, float colorB, float alpha) {
+			Vec3f upperRightCorner, Vec3f upperLeftCorner, Color color) {
 
 		renderTexture(gl, eIconTextures.getFileName(), lowerLeftCorner, lowerRightCorner, upperRightCorner,
-				upperLeftCorner, colorR, colorG, colorB, alpha);
+				upperLeftCorner, color);
 	}
 
+	/**
+	 * Wrapper for {@link #renderTexture(GL2, EIconTextures, Vec3f, Vec3f, Vec3f, Vec3f, Color)} with color set to
+	 * default white
+	 */
 	@Deprecated
 	public void renderTexture(GL2 gl, final EIconTextures eIconTextures, Vec3f lowerLeftCorner, Vec3f lowerRightCorner,
-			Vec3f upperRightCorner, Vec3f upperLeftCorner, float[] color) {
-		renderTexture(gl, eIconTextures, lowerLeftCorner, lowerRightCorner, upperRightCorner, upperLeftCorner,
-				color[0], color[1], color[2], color[3]);
+			Vec3f upperRightCorner, Vec3f upperLeftCorner) {
+
+		renderTexture(gl, eIconTextures.getFileName(), lowerLeftCorner, lowerRightCorner, upperRightCorner,
+				upperLeftCorner, Color.WHITE);
 	}
-
-
 
 	/**
 	 * Convenience method for rendering textures on a rectangle.
@@ -169,16 +159,22 @@ public final class TextureManager {
 	 *            Alpha value the Polygon should have where the texture is drawn on.
 	 */
 	public void renderTexture(GL2 gl, final String texturePath, Vec3f lowerLeftCorner, Vec3f lowerRightCorner,
-			Vec3f upperRightCorner, Vec3f upperLeftCorner, float colorR, float colorG, float colorB, float alpha) {
+			Vec3f upperRightCorner, Vec3f upperLeftCorner, Color color) {
 
 		try {
 			Texture tempTexture = getIconTexture(texturePath);
-			renderTexture(gl, tempTexture, lowerLeftCorner, lowerRightCorner, upperRightCorner, upperLeftCorner,
-					colorR, colorG, colorB, alpha);
+			renderTexture(gl, tempTexture, lowerLeftCorner, lowerRightCorner, upperRightCorner, upperLeftCorner, color);
 
 		} catch (Exception e) {
 			Logger.log(new Status(IStatus.ERROR, this.toString(), "Unable to load texture " + texturePath));
 		}
+	}
+
+	/** Wrapper for {@link #renderTexture(GL2, EIconTextures, Vec3f, Vec3f, Vec3f, Vec3f, Color)} with white background */
+	public void renderTexture(GL2 gl, final String texturePath, Vec3f lowerLeftCorner, Vec3f lowerRightCorner,
+			Vec3f upperRightCorner, Vec3f upperLeftCorner) {
+		renderTexture(gl, texturePath, lowerLeftCorner, lowerRightCorner, upperRightCorner, upperLeftCorner,
+				Color.WHITE);
 	}
 
 	/**
@@ -206,13 +202,13 @@ public final class TextureManager {
 	 *            Alpha value the Polygon should have where the texture is drawn on.
 	 */
 	public void renderTexture(GL2 gl, final Texture texture, Vec3f lowerLeftCorner, Vec3f lowerRightCorner,
-			Vec3f upperRightCorner, Vec3f upperLeftCorner, float colorR, float colorG, float colorB, float alpha) {
+			Vec3f upperRightCorner, Vec3f upperLeftCorner, Color color) {
 		texture.enable(gl);
 		texture.bind(gl);
 
 		TextureCoords texCoords = texture.getImageTexCoords();
 
-		gl.glColor4f(colorR, colorG, colorB, alpha);
+		gl.glColor4fv(color.getRGBA(), 0);
 		gl.glBegin(GL2.GL_POLYGON);
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 		gl.glVertex3f(lowerLeftCorner.x(), lowerLeftCorner.y(), lowerLeftCorner.z());

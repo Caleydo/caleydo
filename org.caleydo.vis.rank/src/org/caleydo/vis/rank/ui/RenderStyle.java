@@ -1,26 +1,13 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.vis.rank.ui;
 
-import java.awt.Color;
 
+
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.picking.AdvancedPick;
 import org.caleydo.core.view.opengl.picking.Pick;
 
@@ -71,7 +58,7 @@ public class RenderStyle {
 
 	}
 
-	private static final String ICON_PREFIX = "resources/icons/";
+	private static final String ICON_PREFIX = "resources/icons/vis/rank/";
 	public static final String ICON_TRASH = ICON_PREFIX + "user_trash_full.png";
 	public static final String ICON_CIRCLE = ICON_PREFIX + "circle.png";
 	public static final String ICON_ARROW = ICON_PREFIX + "arrow.png";
@@ -84,10 +71,15 @@ public class RenderStyle {
 	public static final String ICON_UNCOLLAPSE = ICON_PREFIX + "bullet_toggle_minus.png";
 	public static final String ICON_COMPRESS = ICON_PREFIX + "bullet_arrow_left.png";
 	public static final String ICON_UNCOMPRESS = ICON_PREFIX + "bullet_arrow_right.png";
+
+	public static final String ICON_SMALL_HEADER_ON = ICON_PREFIX + "bullet_arrow_up.png";
+	public static final String ICON_SMALL_HEADER_OFF = ICON_PREFIX + "bullet_arrow_down.png";
+
 	public static final String ICON_HIDE = ICON_PREFIX + "delete.png";
 	public static final String ICON_DRAG = ICON_PREFIX + "drag.png";
 	public static final String ICON_ALIGN_CLASSIC = ICON_PREFIX + "align_classic.png";
 	public static final String ICON_ALIGN_STACKED = ICON_PREFIX + "align_stacked.png";
+	public static final String ICON_ALIGN_STACKED_ORDERED = ICON_PREFIX + "align_ordered.png";
 
 	public static final String ICON_SHOW_RANK_DELTA = ICON_PREFIX + "chart_down_color.png";
 	public static final String ICON_HIDE_RANK_DELTA = ICON_PREFIX + "chart_down_color_disabled.png";
@@ -108,9 +100,14 @@ public class RenderStyle {
 	public static final String ICON_FIND = ICON_PREFIX + "find.png";
 
 	public static final String ICON_ADD_SEPARATOR = ICON_PREFIX + "table_relationship.png";
-	public static final String ICON_ADD_STACKED = ICON_PREFIX + "table_add.png";
+	public static final String ICON_ADD_STACKED = ICON_PREFIX + "table_sum_add.png";
+	public static final String ICON_ADD_NESTED = ICON_PREFIX + "table_nested_add.png";
+	public static final String ICON_ADD_SCRIPTED = ICON_PREFIX + "table_scripted_add.png";
 
 	public static final String ICON_COMPLEX_MAPPING = ICON_PREFIX + "hatching.png";
+
+	public static final String ICON_SORT_BY_WEIGHT = ICON_PREFIX + "sortByWeight.png";
+	public static final String ICON_EDIT_CODE = ICON_PREFIX + "script_js_edit.png";
 	/**
 	 * space between columns
 	 */
@@ -137,9 +134,10 @@ public class RenderStyle {
 	public static final float COLOR_STACKED_BORDER_WIDTH = 1;
 	public static final float HEADER_ROUNDED_RADIUS_X = 9;
 	public static final float HEADER_ROUNDED_RADIUS_Y = 14;
-	public static final float SCROLLBAR_WIDTH = 5;
+	public static final float SCROLLBAR_WIDTH = 8;
 	public static final float SEPARATOR_PICK_WIDTH = 11;
 	public static final int STACKED_COLUMN_PADDING = 5;
+	public static final int GROUP_COLUMN_PADDING = 5;
 
 
 	/**

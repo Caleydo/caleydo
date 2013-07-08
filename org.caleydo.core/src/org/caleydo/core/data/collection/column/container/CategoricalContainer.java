@@ -1,29 +1,18 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
- * University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
- * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
- * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with this program. If not, see
- * <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.data.collection.column.container;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.caleydo.core.data.collection.EDataType;
-import org.caleydo.core.util.color.Colors;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -49,7 +38,7 @@ public class CategoricalContainer<CATEGORY_TYPE extends Comparable<CATEGORY_TYPE
 	public static final Integer UNKNOWN_CATEGORY_INT = Integer.MIN_VALUE;
 
 	/** The data type corresponding to CategoryType */
-	private EDataType dataType;
+	private final EDataType dataType;
 
 	/**
 	 * This contains the short that is used for the next available key. This also corresponds to the number of
@@ -60,21 +49,21 @@ public class CategoricalContainer<CATEGORY_TYPE extends Comparable<CATEGORY_TYPE
 	private int nextIndex = 0;
 
 	/** The array that holds the mapped keys as they appear in the input files */
-	private short[] container;
+	private final short[] container;
 
 	/** BiMap that maps category names to identifiers. */
-	private BiMap<CATEGORY_TYPE, Short> hashCategoryToIdentifier = HashBiMap.create();
+	private final BiMap<CATEGORY_TYPE, Short> hashCategoryToIdentifier = HashBiMap.create();
 
 	/** Maps every category to the number of elements it contains */
-	private HashMap<CATEGORY_TYPE, Integer> hashCategoryToNumberOfMatches = new HashMap<>();
+	private final Map<CATEGORY_TYPE, Integer> hashCategoryToNumberOfMatches = new HashMap<>();
 
-	private HashMap<Short, Float> hashCategoryKeyToNormalizedValue = new HashMap<>();
+	private final Map<Short, Float> hashCategoryKeyToNormalizedValue = new HashMap<>();
 
 	/**
 	 * Category for values where the category is not known, typically because of parsing errors or a missing definition
 	 * in the file.
 	 */
-	private CATEGORY_TYPE unknownCategoryType;
+	private final CATEGORY_TYPE unknownCategoryType;
 
 	/**
 	 * An ordered list of categories for this container. Can either be set using
@@ -93,8 +82,9 @@ public class CategoricalContainer<CATEGORY_TYPE extends Comparable<CATEGORY_TYPE
 	 *            {@link #UNKNOWN_CATEOGRY_STRING} unless there is a good reason not to do so.
 	 */
 	public CategoricalContainer(int size, EDataType dataType, CATEGORY_TYPE unknownCategoryType) {
-		container = new short[size];
+		this.container = new short[size];
 		this.unknownCategoryType = unknownCategoryType;
+		this.dataType = dataType;
 		initCategory(unknownCategoryType);
 	}
 
@@ -124,21 +114,30 @@ public class CategoricalContainer<CATEGORY_TYPE extends Comparable<CATEGORY_TYPE
 		}
 		container[nextIndex++] = identifier;
 		Integer numberOfMatches = hashCategoryToNumberOfMatches.get(category);
-		hashCategoryToNumberOfMatches.put(category, numberOfMatches);
+		hashCategoryToNumberOfMatches.put(category, numberOfMatches + 1);
 	}
 
 	@Override
 	public void addUnknown() {
 		add(unknownCategoryType);
-		if (categoricalClassDescription.getUnknownCategory() == null) {
-			categoricalClassDescription.setUnknownCategory(new CategoryProperty<CATEGORY_TYPE>(unknownCategoryType,
-					"Unknown", Colors.NOT_A_NUMBER_COLOR));
-		}
+
 	}
 
 	@Override
 	public boolean isUnknown(CATEGORY_TYPE value) {
 		return value == unknownCategoryType;
+	}
+
+	/**
+	 * returns the number of matches
+	 *
+	 * @param category
+	 * @return
+	 */
+	public int getNumberOfMatches(Object category) {
+		if (!hashCategoryToNumberOfMatches.containsKey(category))
+			return 0;
+		return hashCategoryToNumberOfMatches.get(category);
 	}
 
 	/**
@@ -195,7 +194,7 @@ public class CategoricalContainer<CATEGORY_TYPE extends Comparable<CATEGORY_TYPE
 	public FloatContainer normalize() {
 
 		if (categoricalClassDescription == null) {
-			categoricalClassDescription = new CategoricalClassDescription<>();
+			categoricalClassDescription = new CategoricalClassDescription<>(this.dataType);
 			categoricalClassDescription.autoInitialize(hashCategoryToIdentifier.keySet());
 		}
 
@@ -205,17 +204,23 @@ public class CategoricalContainer<CATEGORY_TYPE extends Comparable<CATEGORY_TYPE
 		float normalizedDistance = 0;
 
 		if (categoricalClassDescription.size() > 1) {
-			int numCategories = categoricalClassDescription.size() - 1;
+			int numCategoryDifferences = categoricalClassDescription.size() - 1;
 			if (categoricalClassDescription.getCategoryProperty(unknownCategoryType) != null) {
-				numCategories--;
+				numCategoryDifferences--;
 			}
-			normalizedDistance = 1f / numCategories;
+			normalizedDistance = 1f / numCategoryDifferences;
 		}
 
-		for (int i = 0; i < categoricalClassDescription.size(); i++) {
-			List<CategoryProperty<CATEGORY_TYPE>> c = categoricalClassDescription.getCategoryProperties();
-			short key = hashCategoryToIdentifier.get(c.get(i).getCategory());
-			hashCategoryKeyToNormalizedValue.put(key, i * normalizedDistance);
+		int catCount = 0;
+
+		for (CategoryProperty<CATEGORY_TYPE> c : categoricalClassDescription) {
+			short key = hashCategoryToIdentifier.get(c.getCategory());
+			if (c.getCategory() == unknownCategoryType) {
+				hashCategoryKeyToNormalizedValue.put(key, Float.NaN);
+			} else {
+				hashCategoryKeyToNormalizedValue.put(key, catCount * normalizedDistance);
+				catCount++;
+			}
 		}
 
 		short key = hashCategoryToIdentifier.get(unknownCategoryType);
@@ -227,12 +232,20 @@ public class CategoricalContainer<CATEGORY_TYPE extends Comparable<CATEGORY_TYPE
 			Short categoryID = container[count];
 			if (hashCategoryKeyToNormalizedValue.containsKey(categoryID)) {
 				float normalized = hashCategoryKeyToNormalizedValue.get(categoryID);
+				assert (normalized <= 1 && normalized >= 0) || Float.isNaN(normalized) : "Normalization failed for "
+						+ this.toString() + ". Should produce value between 0 and 1 or NAN but was " + normalized;
 				target[count] = normalized;
 			} else {
 				throw new IllegalStateException("Unknown category ID: " + categoryID);
 			}
 		}
-		// System.out.println("Elapsed: " + (System.currentTimeMillis() - startTime));
+
+		// set the unknown type in the description
+		if (categoricalClassDescription.getUnknownCategory() == null) {
+			categoricalClassDescription.setUnknownCategory(new CategoryProperty<CATEGORY_TYPE>(unknownCategoryType,
+					"Unknown", Color.NOT_A_NUMBER_COLOR));
+		}
+
 		return new FloatContainer(target);
 	}
 

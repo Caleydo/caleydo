@@ -3,7 +3,7 @@
  */
 package setvis;
 
-import java.awt.Color;
+import org.caleydo.core.util.color.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.PixelGrabber;

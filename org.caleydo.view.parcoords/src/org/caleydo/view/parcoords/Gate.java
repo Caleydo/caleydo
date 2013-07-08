@@ -1,19 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
- * University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
- * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
- * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with this program. If not, see
- * <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.parcoords;
 
 import static org.caleydo.view.parcoords.PCRenderStyle.GATE_Z;
@@ -23,6 +12,7 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.table.NumericalTable;
 import org.caleydo.core.data.collection.table.Table;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 
@@ -143,7 +133,7 @@ public class Gate {
 		gl.glPushName(pcs.getPickingManager().getPickingID(pcs.getID(), EPickingType.GATE_TIP_SELECTION.name(), gateID));
 
 		pcs.getTextureManager().renderTexture(gl, PCRenderStyle.GATE_TOP, lowerLeftCorner, lowerRightCorner,
-				upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
+				upperRightCorner, upperLeftCorner, Color.WHITE);
 
 		// gate_menu texture is 77x22
 		float menuWidth = pixelGLConverter.getGLWidthForPixelWidth(77);
@@ -155,7 +145,7 @@ public class Gate {
 		upperLeftCorner.set(xPosition - menuWidth + width, top, GATE_Z);
 
 		pcs.getTextureManager().renderTexture(gl, PCRenderStyle.GATE_MENUE, lowerLeftCorner, lowerRightCorner,
-				upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
+				upperRightCorner, upperLeftCorner, Color.WHITE);
 
 		pcs.getTextRenderer().setColor(1, 1, 1, 1);
 
@@ -197,7 +187,7 @@ public class Gate {
 		upperLeftCorner.set(xPosition - width, top - gateTopHeight, GATE_Z);
 
 		pcs.getTextureManager().renderTexture(gl, PCRenderStyle.GATE_BODY, lowerLeftCorner, lowerRightCorner,
-				upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
+				upperRightCorner, upperLeftCorner, Color.WHITE);
 
 		gl.glPopName();
 
@@ -210,7 +200,7 @@ public class Gate {
 		upperLeftCorner.set(xPosition - width, bottom + gateBottomHeight, GATE_Z);
 
 		pcs.getTextureManager().renderTexture(gl, PCRenderStyle.GATE_BOTTOM, lowerLeftCorner, lowerRightCorner,
-				upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
+				upperRightCorner, upperLeftCorner, Color.WHITE);
 
 		lowerLeftCorner.set(xPosition - menuWidth + width, bottom - menuHeight, GATE_Z);
 		lowerRightCorner.set(xPosition + width, bottom - menuHeight, GATE_Z);
@@ -218,7 +208,7 @@ public class Gate {
 		upperLeftCorner.set(xPosition - menuWidth + width, bottom, GATE_Z);
 
 		pcs.getTextureManager().renderTexture(gl, PCRenderStyle.GATE_MENUE, lowerLeftCorner, lowerRightCorner,
-				upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
+				upperRightCorner, upperLeftCorner, Color.WHITE);
 
 		if (table instanceof NumericalTable) {
 

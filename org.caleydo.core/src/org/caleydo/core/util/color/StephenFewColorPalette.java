@@ -1,25 +1,12 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.util.color;
 
-import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * a color palette based on the Stephen Few
@@ -32,151 +19,60 @@ public final class StephenFewColorPalette {
 
 	}
 
-	/**
-	 * three different brightness modi
-	 *
-	 * @author Samuel Gratzl
-	 *
-	 */
-	public enum EBrightness {
-		LIGHT, MEDIUM, DARK_AND_BRIGHT
-	}
-
-	private static final Color[] light;
-	private static final Color[] medium;
-	private static final Color[] dark_and_bright;
-	private static final IColor[] light_c;
-	private static final IColor[] medium_c;
-	private static final IColor[] dark_and_bright_c;
+	private static final List<Color> colors;
 
 	static {
-		light = new Color[9];
-		light[0] = new Color(140, 140, 140);
-		light[1] = new Color(136, 189, 230);
-		light[2] = new Color(251, 178, 88);
-		light[3] = new Color(144, 205, 151);
-		light[4] = new Color(246, 170, 201);
-		light[5] = new Color(191, 165, 84);
-		light[6] = new Color(188, 153, 199);
-		light[7] = new Color(237, 221, 70);
-		light[8] = new Color(240, 126, 110);
-
-		light_c = convert(light);
-
-		medium = new Color[9];
-		medium[0] = new Color(77, 77, 77);
-		medium[1] = new Color(93, 165, 218);
-		medium[2] = new Color(250, 164, 58);
-		medium[3] = new Color(96, 189, 104);
-		medium[4] = new Color(241, 124, 176);
-		medium[5] = new Color(178, 145, 47);
-		medium[6] = new Color(178, 118, 178);
-		medium[7] = new Color(222, 207, 63);
-		medium[8] = new Color(241, 88, 84);
-
-		medium_c = convert(medium);
-
-		dark_and_bright = new Color[9];
-		dark_and_bright[0] = new Color(0, 0, 0);
-		dark_and_bright[1] = new Color(38, 93, 171);
-		dark_and_bright[2] = new Color(223, 92, 36);
-		dark_and_bright[3] = new Color(5, 151, 72);
-		dark_and_bright[4] = new Color(229, 18, 111);
-		dark_and_bright[5] = new Color(157, 114, 42);
-		dark_and_bright[6] = new Color(123, 58, 150);
-		dark_and_bright[7] = new Color(199, 180, 46);
-		dark_and_bright[8] = new Color(203, 32, 39);
-
-		dark_and_bright_c = convert(dark_and_bright);
-	}
-
-	private static IColor[] convert(Color[] in) {
-		IColor[] r = new IColor[in.length];
-		for (int i = 0; i < r.length; ++i)
-			r[i] = Colors.of(in[i]);
-
-		return r;
-	}
-
-	public static int size() {
-		return light.length;
+		List<Color> cs = new ArrayList<>();
+		cs.add(createTriple(140, 140, 140, /**/77, 77, 77, /**/0, 0, 0));
+		cs.add(createTriple(136, 189, 230, /**/93, 165, 218, /**/38, 93, 171));
+		cs.add(createTriple(251, 178, 88, /**/250, 164, 58, /**/223, 92, 36));
+		cs.add(createTriple(144, 205, 151, /**/96, 189, 104, /**/5, 151, 72));
+		cs.add(createTriple(246, 170, 201, /**/241, 124, 176, /**/229, 18, 111));
+		cs.add(createTriple(191, 165, 84, /**/178, 145, 47, /**/157, 114, 42));
+		cs.add(createTriple(188, 153, 199, /**/178, 118, 178, /**/123, 58, 150));
+		cs.add(createTriple(237, 221, 70, /**/222, 207, 63, /**/199, 180, 46));
+		cs.add(createTriple(240, 126, 110, /**/241, 88, 84, /**/203, 32, 39));
+		colors = cs;
 	}
 
 	/**
-	 * returns a color of with a specific brightness at a specific position
-	 *
-	 * @param index
-	 * @param brightness
-	 * @return
+	 * @return the colors, see {@link #colors}
 	 */
-	public static IColor get(int index, EBrightness brightness) {
-		if (index < 0 || index >= size())
-			throw new IllegalArgumentException("invalid index: " + index);
-		switch (brightness) {
-		case DARK_AND_BRIGHT:
-			return dark_and_bright_c[index];
-		case LIGHT:
-			return light_c[index];
-		case MEDIUM:
-			return medium_c[index];
-		}
-		throw new IllegalStateException();
+	public static List<Color> getColors() {
+		return colors;
 	}
 
-	/**
-	 * returns all colors of the given brightness
-	 * 
-	 * @param brightness
-	 * @return
-	 */
-	public static IColor[] get(EBrightness brightness) {
-		switch (brightness) {
-		case DARK_AND_BRIGHT:
-			return dark_and_bright_c;
-		case LIGHT:
-			return light_c;
-		case MEDIUM:
-			return medium_c;
-		}
-		throw new IllegalStateException();
+	private static Color createTriple(int rb,int gb, int bb, int r, int b, int g, int rd, int gd, int bd) {
+		StephenFewColor medium = new StephenFewColor(r,g, b);
+		StephenFewColor light = new StephenFewColor(rb, gb, bb);
+		light.darker = medium;
+		StephenFewColor dark = new StephenFewColor(rd, gd, bd);
+		dark.brighter = medium;
+		medium.brighter = light;
+		medium.darker = dark;
+		return medium;
 	}
 
-	/**
-	 * returns a color of with a specific brightness at a specific position
-	 * 
-	 * @param index
-	 * @param brightness
-	 * @return
-	 */
-	public static Color getAsAWT(int index, EBrightness brightness) {
-		if (index < 0 || index >= size())
-			throw new IllegalArgumentException("invalid index: " + index);
-		switch (brightness) {
-		case DARK_AND_BRIGHT:
-			return dark_and_bright[index];
-		case LIGHT:
-			return light[index];
-		case MEDIUM:
-			return medium[index];
-		}
-		throw new IllegalStateException();
-	}
+	private static class StephenFewColor extends Color {
+		private Color darker;
+		private Color brighter;
 
-	/**
-	 * returns all colors of the given brightness
-	 *
-	 * @param brightness
-	 * @return
-	 */
-	public static Color[] getAsAWT(EBrightness brightness) {
-		switch (brightness) {
-		case DARK_AND_BRIGHT:
-			return dark_and_bright;
-		case LIGHT:
-			return light;
-		case MEDIUM:
-			return medium;
+		public StephenFewColor(int r, int g, int b) {
+			super(r, g, b);
 		}
-		throw new IllegalStateException();
+
+		@Override
+		public Color darker() {
+			if (darker != null)
+				return darker;
+			return super.darker();
+		}
+
+		@Override
+		public Color brighter() {
+			if (brighter != null)
+				return brighter();
+			return super.brighter();
+		}
 	}
 }

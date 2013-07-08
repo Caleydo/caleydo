@@ -1,24 +1,14 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
- * University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
- * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
- * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with this program. If not, see
- * <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.io.parser.ascii;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.collection.column.AColumn;
@@ -48,6 +38,7 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.SubMonitor;
 
 /**
  * <p>
@@ -99,7 +90,7 @@ public class TabularDataParser extends ATextParser {
 
 		Table table = dataDomain.getTable();
 
-		ArrayList<ColumnDescription> parsingPattern = dataSetDescription.getOrCreateParsingPattern();
+		List<ColumnDescription> parsingPattern = dataSetDescription.getOrCreateParsingPattern();
 
 		String[] headers = null;
 		if (dataSetDescription.isContainsColumnIDs()) {
@@ -123,7 +114,6 @@ public class TabularDataParser extends ATextParser {
 			}
 		}
 
-		calculateNumberOfLinesInFile();
 		int numberOfDataLines = numberOfLinesInFile - dataSetDescription.getNumberOfHeaderLines();
 
 		// prepare for id setting of column IDs
@@ -251,17 +241,17 @@ public class TabularDataParser extends ATextParser {
 
 	@Override
 	protected void parseFile(BufferedReader reader) throws IOException {
+		SubMonitor monitor = GeneralManager.get().createSubProgressMonitor();
+		monitor.beginTask("Loading data for: " + dataSetDescription.getDataSetName(), calculateNumberOfLinesInFile());
 		initializTables();
 
 		// Init progress bar
-		swtGuiManager.setProgressBarText("Loading data for: " + dataSetDescription.getDataSetName());
-		float progressBarFactor = 100f / numberOfLinesInFile;
-
 		for (int countHeaderLines = 0; countHeaderLines < dataSetDescription.getNumberOfHeaderLines(); countHeaderLines++) {
 			reader.readLine();
 		}
+		monitor.worked(dataSetDescription.getNumberOfHeaderLines());
 
-		ArrayList<ColumnDescription> parsingPattern = dataSetDescription.getOrCreateParsingPattern();
+		List<ColumnDescription> parsingPattern = dataSetDescription.getOrCreateParsingPattern();
 
 		int lineCounter = 0;
 		String numberParsingErrorMessage = "Could not parse a number in file " + dataSetDescription.getDataSetName()
@@ -371,7 +361,7 @@ public class TabularDataParser extends ATextParser {
 
 			}
 			if (lineCounter % 100 == 0) {
-				swtGuiManager.setProgressBarPercentage((int) (progressBarFactor * lineCounter));
+				monitor.worked(100);
 			}
 			lineCounter++;
 		}
@@ -379,6 +369,7 @@ public class TabularDataParser extends ATextParser {
 		if (parsingErrorOccured) {
 			Logger.log(new Status(IStatus.ERROR, this.toString(), numberParsingErrorMessage));
 		}
+		monitor.done();
 	}
 
 	@Override

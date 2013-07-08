@@ -1,19 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
- * University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
- * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
- * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with this program. If not, see
- * <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.util.color.mapping;
 
 import javax.xml.bind.annotation.XmlType;
@@ -44,10 +33,6 @@ public class ColorMarkerPoint implements Comparable<ColorMarkerPoint> {
 	 */
 
 	private float mappingValue;
-	// @XmlElement
-	// private float[] color;
-	// @XmlElement
-	// private int[] intColor;
 
 	private Color color;
 
@@ -79,44 +64,13 @@ public class ColorMarkerPoint implements Comparable<ColorMarkerPoint> {
 	 *            the color array
 	 */
 	public ColorMarkerPoint(float mappingValue, Color color) {
-		init(mappingValue, color);
+		if (mappingValue > 1 || mappingValue < 0)
+			throw new IllegalArgumentException("Invalid value for mappingValue. Has to be between 0 and 1, but was: "
+					+ mappingValue);
+
+		this.mappingValue = mappingValue;
+		this.color = color;
 	}
-
-	// public ColorMarkerPoint(float mappingValue, int[] color) {
-	// this.intColor = color;
-	// float[] floatColor = new float[color.length];
-	//
-	// for (int count = 0; count < color.length; count++) {
-	// floatColor[count] = ((float) color[count]) / 255;
-	// }
-	// init(mappingValue, floatColor);
-	// }
-
-	/**
-	 * <p>
-	 * Alternative constructor. See {@link #ColorMarkerPoint(float, float[])}.
-	 * </p>
-	 * <p>
-	 * Values are specified one by one instead of as an array
-	 * </p>
-	 *
-	 * @param mappingValue
-	 *            see {@link #mappingValue}
-	 * @param red
-	 *            red component of the color
-	 * @param green
-	 *            green component of the color
-	 * @param blue
-	 *            blue component of the color
-	 */
-	// public ColorMarkerPoint(float mappingValue, float red, float green, float blue) {
-	// float[] color = new float[3];
-	// color[0] = red;
-	// color[1] = green;
-	// color[2] = blue;
-	// init(mappingValue, color);
-	// }
-
 	/**
 	 * Returns the inflection point on the color field
 	 *
@@ -159,8 +113,6 @@ public class ColorMarkerPoint implements Comparable<ColorMarkerPoint> {
 		return color;
 	}
 
-
-
 	public boolean hasLeftSpread() {
 		if (leftSpread > 0.0001)
 			return true;
@@ -181,18 +133,8 @@ public class ColorMarkerPoint implements Comparable<ColorMarkerPoint> {
 		return rightSpread;
 	}
 
-	private void init(float mappingValue, Color color) {
-
-		if (mappingValue > 1 || mappingValue < 0)
-			throw new IllegalArgumentException("Invalid value for mappingValue. Has to be between 0 and 1, but was: "
-					+ mappingValue);
-
-		this.mappingValue = mappingValue;
-		this.color = color;
-	}
-
 	@Override
 	public int compareTo(ColorMarkerPoint colorMarkerPoint) {
-		return new Float(mappingValue).compareTo(colorMarkerPoint.getMappingValue());
+		return Float.compare(mappingValue, colorMarkerPoint.mappingValue);
 	}
 }

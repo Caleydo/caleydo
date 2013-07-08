@@ -1,25 +1,10 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *  
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *  
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.treemap.layout;
 
-import java.awt.Color;
 import java.awt.geom.Rectangle2D;
 import java.util.List;
 
@@ -29,6 +14,7 @@ import javax.media.opengl.GL2;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.core.view.opengl.picking.PickingType;
@@ -37,9 +23,9 @@ import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 
 /**
  * Class to render the treemap via jogl.
- * 
+ *
  * @author Michael Lafer
- * 
+ *
  */
 
 public class TreeMapRenderer {
@@ -77,7 +63,7 @@ public class TreeMapRenderer {
 
 	/**
 	 * Generates new Cache for treemap.
-	 * 
+	 *
 	 * @param gl
 	 */
 	public void initCache(GL2 gl) {
@@ -87,7 +73,7 @@ public class TreeMapRenderer {
 
 	/**
 	 * Sets a frame for each node.
-	 * 
+	 *
 	 * @param flag
 	 *            true when frames should be drawn
 	 * @param color
@@ -100,7 +86,7 @@ public class TreeMapRenderer {
 
 	/**
 	 * Switch label on/off
-	 * 
+	 *
 	 * @param flag
 	 *            true when labels should be drawn.
 	 */
@@ -110,7 +96,7 @@ public class TreeMapRenderer {
 
 	/**
 	 * Renders only the highlighting to cache (not display).
-	 * 
+	 *
 	 * @param gl
 	 * @param tree
 	 *            Treemap model.
@@ -156,7 +142,7 @@ public class TreeMapRenderer {
 
 	/**
 	 * Draws treemap data and highlighting from cache.
-	 * 
+	 *
 	 * @param gl
 	 */
 	public void renderTreeMapFromCache(GL2 gl) {
@@ -166,7 +152,7 @@ public class TreeMapRenderer {
 
 	/**
 	 * Renders only treemap data to cache.
-	 * 
+	 *
 	 * @param gl
 	 * @param tree
 	 *            Treemap model
@@ -196,12 +182,12 @@ public class TreeMapRenderer {
 		}
 	}
 
-	private void paintRectangle(GL2 gl, float x, float y, float xmax, float ymax, float[] color, float lineWdith) {
+	private void paintRectangle(GL2 gl, float x, float y, float xmax, float ymax, Color color, float lineWdith) {
 		gl.glLineWidth(lineWdith);
 
 		gl.glBegin(GL.GL_LINE_LOOP);
 
-		gl.glColor4f(color[0], color[1], color[2], 1);
+		gl.glColor3fv(color.getRGB(), 0);
 
 		x = viewFrustum.getWidth() * x + viewFrustum.getLeft();
 		y = viewFrustum.getHeight() * y + viewFrustum.getBottom();
@@ -239,7 +225,7 @@ public class TreeMapRenderer {
 		gl.glEnd();
 
 		if (bDrawNodeFrame) {
-			gl.glColor3f(frameColor.getColorComponents(null)[0], frameColor.getColorComponents(null)[1], frameColor.getColorComponents(null)[2]);
+			gl.glColor3fv(frameColor.getRGB(), 0);
 			gl.glLineWidth(2);
 			gl.glBegin(GL.GL_LINE_LOOP);
 			gl.glVertex3f(x, y, 0);
@@ -271,7 +257,7 @@ public class TreeMapRenderer {
 		textRenderer.renderText(gl, text, x * viewFrustum.getWidth() + 0.03f + viewFrustum.getLeft(),
 				y * viewFrustum.getHeight() + 0.03f + viewFrustum.getBottom(), 0, GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR * scaling, 20);
 	}
-	
+
 	public void destroy(GL2 gl) {
 		gl.glDeleteLists(treemapList, 1);
 		gl.glDeleteLists(highlightList, 1);

@@ -1,19 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
- * University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
- * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
- * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with this program. If not, see
- * <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.selectionbrowser;
 
 import java.util.ArrayList;
@@ -39,13 +28,13 @@ import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
 import org.caleydo.core.view.swt.ASWTView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -55,7 +44,6 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.PlatformUI;
-
 /**
  * Selection browser that is located in the side-bar.
  *
@@ -71,12 +59,12 @@ public class SelectionBrowserView extends ASWTView implements ISelectionHandler,
 	private final static String SELECTION_TYPE_NAME_4 = "Selected by group 4";
 
 	/** Colors taken from color brewer qualitative "Set 1" with 8 colors */
-	private final static float[] SELECTION_COLOR_1 = new float[] { 152f / 255, 78f / 255, 163f / 255, 1 };
-	private final static float[] SELECTION_COLOR_2 = new float[] { 1, 127f / 255, 0, 1 }; // yellow
-	private final static float[] SELECTION_COLOR_3 = new float[] { 247f / 255, 129f / 255, 191f / 255, 1 };
+	private final static Color SELECTION_COLOR_1 = new Color(152f / 255, 78f / 255, 163f / 255, 1f);
+	private final static Color SELECTION_COLOR_2 =  new Color( 1, 127f / 255, 0, 1 ); // yellow
+	private final static Color SELECTION_COLOR_3 =  new Color( 247f / 255, 129f / 255, 191f / 255, 1 );
 	// private final static float[] SELECTION_COLOR_3 = new float[] { 1, 1,
 	// 51f/255, 1 };
-	private final static float[] SELECTION_COLOR_4 = new float[] { 166f / 255, 86f / 255, 40f / 255, 1 };
+	private final static Color SELECTION_COLOR_4 = new Color(166f / 255, 86f / 255, 40f / 255, 1);
 
 	SelectionManager recordSelectionManager;
 	SelectionManager dimensionSelectionManager;
@@ -314,7 +302,6 @@ public class SelectionBrowserView extends ASWTView implements ISelectionHandler,
 
 	private void updateContentTree() {
 		ArrayList<SelectionType> sTypes = recordSelectionManager.getSelectionTypes();
-		Color color = null;
 		contentTree.removeAll();
 		for (SelectionType tmpSelectionType : sTypes) {
 
@@ -323,14 +310,10 @@ public class SelectionBrowserView extends ASWTView implements ISelectionHandler,
 
 			TreeItem item = new TreeItem(contentTree, SWT.NONE);
 
-			float[] fArColor = tmpSelectionType.getColor();
-
-			color = new Color(parentComposite.getDisplay(), (int) (fArColor[0] * 255), (int) (fArColor[1] * 255),
-					(int) (fArColor[2] * 255));
 
 			item.setText(tmpSelectionType.toString() + " ("
 					+ recordSelectionManager.getNumberOfElements(tmpSelectionType) + ")");
-			item.setBackground(color);
+			item.setBackground(tmpSelectionType.getColor().getSWTColor(parentComposite.getDisplay()));
 			item.setData(tmpSelectionType);
 
 			contentTree.setExpanded(true);

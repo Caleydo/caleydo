@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package setvis.gui;
 
@@ -37,9 +37,9 @@ import setvis.shape.AbstractShapeGenerator;
 
 /**
  * The side bar for controlling the input to the {@link CanvasComponent}.
- * 
+ *
  * @author Joschi <josua.krause@googlemail.com>
- * 
+ *
  */
 public class SideBar extends JPanel {
 
@@ -49,7 +49,7 @@ public class SideBar extends JPanel {
     /**
      * The color to indicate an invalid number.
      */
-    private static final Color ERROR = new Color(Color.HSBtoRGB(0f, 0.6f, 1f));
+	private static final Color ERROR = new Color(Color.HSBtoRGB(0f, 0.6f, 1f));
 
     /**
      * The normal input background.
@@ -69,9 +69,9 @@ public class SideBar extends JPanel {
     /**
      * A simple list model for maintaining groups of the {@link CanvasComponent}
      * .
-     * 
+     *
      * @author Joschi <josua.krause@googlemail.com>
-     * 
+     *
      */
     private class CanvasListModel extends AbstractListModel {
 
@@ -150,7 +150,7 @@ public class SideBar extends JPanel {
 
     /**
      * Creates a side bar for the given {@link Canvas}.
-     * 
+     *
      * @param cc
      *            The {@link Canvas}.
      */
@@ -356,7 +356,7 @@ public class SideBar extends JPanel {
     /**
      * Adds a series of components in a horizontal manner. This method may not
      * be called outside the constructor.
-     * 
+     *
      * @param comps
      *            The components.
      */
@@ -382,7 +382,7 @@ public class SideBar extends JPanel {
 
     /**
      * Is called when something on the outside has changed.
-     * 
+     *
      * @param changes
      *            The type of changes as defined in
      *            {@link CanvasListener#canvasChanged(int)}.
@@ -449,7 +449,7 @@ public class SideBar extends JPanel {
 
     /**
      * Refreshes the outline specific pane.
-     * 
+     *
      * @param outlineType
      *            The current outline type.
      * @param so

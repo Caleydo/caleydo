@@ -1,25 +1,13 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
- * University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
- * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
- * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with this program. If not, see
- * <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.util.color.mapping;
 
 import java.util.ArrayList;
 
 import org.caleydo.core.util.color.Color;
-import org.caleydo.core.util.color.Colors;
 
 /**
  * <p>
@@ -51,25 +39,25 @@ public enum EDefaultColorSchemes {
 			"3-class Red-Blue diverging color scheme from colorbrewer.org. Color-blind and print friendly.",
 			new Color(5, 113, 176),
 			// new Color( 247, 247, 247 ),
-			Colors.NEUTRAL_GREY,
+			Color.NEUTRAL_GREY,
 			new Color(202, 0, 32)),
 	GREEN_WHITE_BROWN(
 			"Green-White-Brown",
 			"3-class Brown-Blue-Green diverging color scheme from colorbrewer.org. Color-blind and print friendly.",
 			new Color(1, 133, 113),
-			Colors.NEUTRAL_GREY,
+			Color.NEUTRAL_GREY,
 			new Color(166, 97, 26)),
 	GREEN_WHITE_PURPLE(
 			"Green-White-Purple",
 			"3-class Purple-Green diverging color scheme from colorbrewer.org. Color-blind and print friendly. May cause issues with bad LCDs",
 			new Color(0, 136, 55),
-			Colors.NEUTRAL_GREY,
+			Color.NEUTRAL_GREY,
 			new Color(123, 50, 148)),
 	GREY_WHITE_RED(
 			"Grey-White-Red",
 			"3-class Red-Grey diverging color scheme from colorbrewer.org. Print friendly. May cause issues with color-blind users and bad LCDs",
 			new Color(64, 64, 64),
-			Colors.NEUTRAL_GREY,
+			Color.NEUTRAL_GREY,
 			new Color(202, 0, 32)),
 
 	BLUE_RED_YELLOW(
@@ -93,8 +81,7 @@ public enum EDefaultColorSchemes {
 			new Color(171, 217, 233),
 			new Color(44, 123, 182)),
 
-	GREY_RED("Grey-Red", "2-class Red-Grey  color scheme Print friendly.", Colors.NEUTRAL_GREY, new Color(202, 0,
-			32)),
+	GREY_RED("Grey-Red", "2-class Red-Grey  color scheme Print friendly.", Color.NEUTRAL_GREY, new Color(202, 0, 32)),
 	// -------- DISCRETE COLOR SCHEMES ---------
 
 	WHITE_RED(
@@ -102,7 +89,7 @@ public enum EDefaultColorSchemes {
 			"2-class White-Blue diverging color scheme from colorbrewer.org. Color-blind and print friendly.",
 			true,
 			// new Color( 247, 247, 247 },
-			Colors.NEUTRAL_GREY,
+			Color.NEUTRAL_GREY,
 			new Color(202, 0, 32));
 
 	private ArrayList<ColorMarkerPoint> colorMarkerPoints;
@@ -117,6 +104,11 @@ public enum EDefaultColorSchemes {
 	private String colorSchemeDescription;
 
 	/**
+	 * Determines whether the color scheme uses discrete colors.
+	 */
+	private boolean isDiscrete;
+
+	/**
 	 *
 	 */
 
@@ -124,14 +116,16 @@ public enum EDefaultColorSchemes {
 		initialize(colorSchemeName, colorShemeDescription, false, colors);
 	}
 
-	private EDefaultColorSchemes(String colorSchemeName, String colorShemeDescription, boolean isDescrete,
+	private EDefaultColorSchemes(String colorSchemeName, String colorShemeDescription, boolean isDiscrete,
 			Color... colors) {
-		initialize(colorSchemeName, colorShemeDescription, isDescrete, colors);
+
+		initialize(colorSchemeName, colorShemeDescription, isDiscrete, colors);
 	}
 
-	private void initialize(String colorSchemeName, String colorShemeDescription, boolean isDescrete, Color[] colors) {
+	private void initialize(String colorSchemeName, String colorShemeDescription, boolean isDiscrete, Color[] colors) {
 		this.colorSchemeName = colorSchemeName;
 		this.colorSchemeDescription = colorShemeDescription;
+		this.isDiscrete = isDiscrete;
 		if (colors.length < 2)
 			throw new IllegalStateException("At least two values required");
 		colorMarkerPoints = new ArrayList<ColorMarkerPoint>();
@@ -142,13 +136,13 @@ public enum EDefaultColorSchemes {
 		float nextMappingVlaue = 0;
 
 		float spread = 0.05f;
-		if (isDescrete)
+		if (isDiscrete)
 			spread = 1.0f / colors.length;
 		for (Color color : colors) {
 			point = new ColorMarkerPoint(nextMappingVlaue, color);
 
 			// set spread only for first and last
-			if (colorCount == 0 || (isDescrete && colorCount != colors.length - 1)) {
+			if (colorCount == 0 || (isDiscrete && colorCount != colors.length - 1)) {
 				point.setRightSpread(spread);
 			}
 			if (colorCount == colors.length - 1) {
@@ -188,5 +182,12 @@ public enum EDefaultColorSchemes {
 		colorMapper.setColorSchemeName(colorSchemeName);
 		colorMapper.setColorSchemeDescription(colorSchemeDescription);
 		return colorMapper;
+	}
+
+	/**
+	 * @return the isDiscrete, see {@link #isDiscrete}
+	 */
+	public boolean isDiscrete() {
+		return isDiscrete;
 	}
 }

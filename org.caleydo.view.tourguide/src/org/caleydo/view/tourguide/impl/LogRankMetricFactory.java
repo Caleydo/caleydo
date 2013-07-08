@@ -1,25 +1,12 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.tourguide.impl;
 
-import java.awt.Color;
+import static org.caleydo.view.tourguide.api.query.EDataDomainQueryMode.STRATIFICATIONS;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -35,9 +22,22 @@ import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.base.DefaultLabelProvider;
+import org.caleydo.core.util.color.Color;
+import org.caleydo.view.stratomex.brick.configurer.CategoricalDataConfigurer;
+import org.caleydo.view.stratomex.tourguide.event.UpdateNumericalPreviewEvent;
+import org.caleydo.view.stratomex.tourguide.event.UpdateStratificationPreviewEvent;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.score.DefaultComputedGroupScore;
+import org.caleydo.view.tourguide.api.score.MultiScore;
+import org.caleydo.view.tourguide.api.state.ABrowseState;
+import org.caleydo.view.tourguide.api.state.BrowseOtherState;
+import org.caleydo.view.tourguide.api.state.EWizardMode;
+import org.caleydo.view.tourguide.api.state.IReactions;
+import org.caleydo.view.tourguide.api.state.IState;
 import org.caleydo.view.tourguide.api.state.IStateMachine;
+import org.caleydo.view.tourguide.api.state.ITransition;
+import org.caleydo.view.tourguide.api.state.PreviewRenderer;
+import org.caleydo.view.tourguide.api.state.SimpleTransition;
 import org.caleydo.view.tourguide.api.util.ui.CaleydoLabelProvider;
 import org.caleydo.view.tourguide.impl.algorithm.LogRank;
 import org.caleydo.view.tourguide.internal.event.AddScoreColumnEvent;
@@ -47,7 +47,9 @@ import org.caleydo.view.tourguide.spi.algorithm.IGroupAlgorithm;
 import org.caleydo.view.tourguide.spi.score.IDecoratedScore;
 import org.caleydo.view.tourguide.spi.score.IRegisteredScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
+import org.caleydo.vis.rank.config.RankTableConfigBase;
 import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -70,9 +72,21 @@ import com.google.common.collect.Sets;
  */
 public class LogRankMetricFactory implements IScoreFactory {
 	@Override
-	public void fillStateMachine(IStateMachine stateMachine, Object eventReceiver) {
-		// TODO Auto-generated method stub
+	public void fillStateMachine(IStateMachine stateMachine, List<TablePerspective> existing, EWizardMode mode,
+			TablePerspective source) {
 
+		IState start = stateMachine.get(IStateMachine.ADD_STRATIFICATIONS);
+
+		if (mode == EWizardMode.GLOBAL) {
+			BothUpdateLogRankState browse = new BothUpdateLogRankState();
+			stateMachine.addState("LogRankBrowse", browse);
+			IState target = stateMachine.addState("LogRank", new CreateLogRankState(browse));
+			stateMachine.addTransition(start, new SimpleTransition(target,
+ "Based on log-rank test score (survival)"));
+		} else if (mode == EWizardMode.INDEPENDENT) {
+			IState browseStratification = stateMachine.get(IStateMachine.BROWSE_STRATIFICATIONS);
+			stateMachine.addTransition(start, new CreateLogRankTransition(browseStratification, source));
+		}
 	}
 
 	@Override
@@ -95,12 +109,92 @@ public class LogRankMetricFactory implements IScoreFactory {
 		return mode == EDataDomainQueryMode.STRATIFICATIONS;
 	}
 
+	private static MultiScore createLogRankScore(TablePerspective numerical) {
+		int dimId = numerical.getDimensionPerspective().getVirtualArray().get(0);
+		String label = String.format("Sig. change of %s", numerical.getLabel());
+		ATableBasedDataDomain clinical = numerical.getDataDomain();
+		LogRankMetric metric = new LogRankMetric("LogRank", dimId, clinical);
+		LogRankPValue pvalue = new LogRankPValue("P-Value", metric);
+
+		MultiScore multiScore = new MultiScore(label, wrap(clinical.getColor()),
+ darker(clinical.getColor()),
+				RankTableConfigBase.NESTED_MODE);
+		multiScore.add(pvalue);
+		multiScore.add(metric);
+		return multiScore;
+	}
+
+	private class CreateLogRankState extends BrowseOtherState {
+		private final BothUpdateLogRankState target;
+
+		public CreateLogRankState(BothUpdateLogRankState target) {
+			super("Select a numerical value in the LineUp as a starting point for finding a stratification.");
+			this.target = target;
+		}
+
+		@Override
+		public void onUpdate(UpdateNumericalPreviewEvent event, IReactions adapter) {
+			TablePerspective numerical = event.getTablePerspective();
+			adapter.replaceTemplate(new PreviewRenderer(adapter.createPreview(numerical), adapter.getGLView(),
+					"Browse for a stratification"));
+
+			MultiScore multiScore = createLogRankScore(numerical);
+			adapter.addScoreToTourGuide(STRATIFICATIONS, multiScore);
+			target.numerical = numerical;
+			adapter.switchTo(target);
+		}
+	}
+
+	private class BothUpdateLogRankState extends ABrowseState {
+		private TablePerspective numerical;
+
+		public BothUpdateLogRankState() {
+			super(EDataDomainQueryMode.STRATIFICATIONS, "From list");
+		}
+
+		@Override
+		public void onUpdate(UpdateStratificationPreviewEvent event, IReactions adapter) {
+			TablePerspective tp = event.getTablePerspective();
+			if (DataDomainOracle.isCategoricalDataDomain(tp.getDataDomain()))
+				adapter.replaceTemplate(tp, new CategoricalDataConfigurer(tp));
+			else
+				adapter.replaceTemplate(tp, null);
+			adapter.replaceClinicalTemplate(tp.getRecordPerspective(), numerical, true);
+		}
+	}
+
+	private class CreateLogRankTransition implements ITransition {
+		private final IState target;
+		private final TablePerspective numerical;
+
+		public CreateLogRankTransition(IState target, TablePerspective numerical) {
+			this.target = target;
+			this.numerical = numerical;
+		}
+
+		@Override
+		public String getLabel() {
+			return "Based on log-rank test score (survival)";
+		}
+
+		@Override
+		public void apply(IReactions adapter) {
+			adapter.addScoreToTourGuide(STRATIFICATIONS, createLogRankScore(numerical));
+			adapter.switchTo(target);
+		}
+	}
+
 	public static class LogRankMetric extends DefaultComputedGroupScore {
 		private final Integer clinicalVariable;
 
 		public LogRankMetric(String label, final Integer clinicalVariable, final ATableBasedDataDomain clinical) {
 			super(label, new IGroupAlgorithm() {
 				final IGroupAlgorithm underlying = LogRank.get(clinicalVariable, clinical);
+
+				@Override
+				public void init(IProgressMonitor monitor) {
+					underlying.init(monitor);
+				}
 
 				@Override
 				public IDType getTargetType(IComputeElement a, IComputeElement b) {
@@ -118,9 +212,9 @@ public class LogRankMetricFactory implements IScoreFactory {
 				}
 
 				@Override
-				public float compute(Set<Integer> a, Set<Integer> b) {
+				public float compute(Set<Integer> a, Group ag, Set<Integer> b, Group bg, IProgressMonitor monitor) {
 					// me versus the rest
-					return underlying.compute(a, Sets.difference(b, a));
+					return underlying.compute(a, ag, Sets.difference(b, a), bg, monitor);
 				}
 			}, null, wrap(clinical.getColor()), darker(clinical.getColor()));
 			this.clinicalVariable = clinicalVariable;
@@ -128,6 +222,11 @@ public class LogRankMetricFactory implements IScoreFactory {
 
 		public Integer getClinicalVariable() {
 			return clinicalVariable;
+		}
+
+		@Override
+		public PiecewiseMapping createMapping() {
+			return new PiecewiseMapping(0, Float.NaN);
 		}
 	}
 

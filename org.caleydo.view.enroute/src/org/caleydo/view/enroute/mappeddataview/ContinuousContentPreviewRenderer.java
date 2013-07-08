@@ -1,3 +1,8 @@
+/*******************************************************************************
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 /**
  *
  */
@@ -15,7 +20,6 @@ import org.caleydo.core.data.perspective.table.TablePerspectiveStatistics;
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.util.collection.Algorithms;
-import org.caleydo.core.util.color.Color;
 
 /**
  * Preview renderer for continuous content.
@@ -33,7 +37,7 @@ public class ContinuousContentPreviewRenderer extends AContentPreviewRenderer {
 	public ContinuousContentPreviewRenderer(int rowID, TablePerspective tablePerspective,
 			EventBasedSelectionManager geneSelectionManager, EventBasedSelectionManager sampleSelectionManager) {
 		super(rowID, tablePerspective, geneSelectionManager, sampleSelectionManager);
-		colorCalculator.setBaseColor(new Color(MappedDataRenderer.SUMMARY_BAR_COLOR));
+		colorCalculator.setBaseColor(MappedDataRenderer.SUMMARY_BAR_COLOR);
 		if (resolvedRowID == null)
 			return;
 		average = TablePerspectiveStatistics.calculateAverage(experimentPerspective.getVirtualArray(), dataDomain,

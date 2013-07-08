@@ -1,3 +1,8 @@
+/*******************************************************************************
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.data.importer.tcga;
 
 import java.io.File;
@@ -17,6 +22,7 @@ import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.io.DataLoader;
 import org.caleydo.core.serialize.ProjectManager;
+import org.caleydo.core.serialize.ProjectMetaData;
 import org.caleydo.data.importer.tcga.model.TCGADataSet;
 import org.caleydo.data.importer.tcga.model.TCGADataSets;
 import org.caleydo.data.importer.tcga.utils.IOUtils;
@@ -101,9 +107,10 @@ public abstract class ATCGATask extends RecursiveTask<JsonElement> {
 		}
 	}
 
-	protected static boolean saveProject(Collection<ATableBasedDataDomain> dataDomains, String projectOutputPath) {
+	protected static boolean saveProject(Collection<ATableBasedDataDomain> dataDomains, String projectOutputPath,
+			ProjectMetaData metaData) {
 		try {
-			ProjectManager.save(projectOutputPath, true, dataDomains).run(new NullProgressMonitor());
+			ProjectManager.save(projectOutputPath, true, dataDomains, metaData).run(new NullProgressMonitor());
 			return true;
 		} catch (InvocationTargetException | InterruptedException e) {
 			e.printStackTrace();
@@ -114,7 +121,7 @@ public abstract class ATCGATask extends RecursiveTask<JsonElement> {
 	protected static Collection<ATableBasedDataDomain> loadProject(TCGADataSets project) {
 		Collection<ATableBasedDataDomain> dataDomains = new ArrayList<>();
 		for (TCGADataSet desc : project) {
-			ATableBasedDataDomain dataDomain = DataLoader.loadData(desc.getDescription());
+			ATableBasedDataDomain dataDomain = DataLoader.loadData(desc.getDescription(), new NullProgressMonitor());
 			if (dataDomain == null)
 				continue;
 			dataDomains.add(dataDomain);

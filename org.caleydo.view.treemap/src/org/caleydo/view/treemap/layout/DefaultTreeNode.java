@@ -1,34 +1,20 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *  
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *  
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.treemap.layout;
 
-import java.awt.Color;
 import java.util.ArrayList;
 
 import org.caleydo.core.data.graph.tree.Tree;
+import org.caleydo.core.util.color.Color;
 
 /**
  * Static treemap model. For testing purpose only.
- * 
+ *
  * @author Michael Lafer
- * 
+ *
  */
 
 public class DefaultTreeNode extends ATreeMapNode {
@@ -43,22 +29,28 @@ public class DefaultTreeNode extends ATreeMapNode {
 
 		DefaultTreeNode node = new DefaultTreeNode(tree, 1);
 		tree.setRootNode(node);
-		tree.addChild(node, new DefaultTreeNode(tree, 1.0 / 3, Color.CYAN.getColorComponents(null), new ArrayList<ATreeMapNode>(), "1.1", 11));
+		tree.addChild(node, new DefaultTreeNode(tree, 1.0 / 3, Color.CYAN.getRGBA(), new ArrayList<ATreeMapNode>(),
+				"1.1", 11));
 
 		DefaultTreeNode node2 = new DefaultTreeNode(tree, 12);
 		tree.addChild(node, node2);
-		tree.addChild(node2, new DefaultTreeNode(tree, 1.0 / 6, Color.GRAY.getColorComponents(null), "2.1", 21));
+		tree.addChild(node2, new DefaultTreeNode(tree, 1.0 / 6, Color.GRAY.getRGBA(), "2.1", 21));
 
 		DefaultTreeNode node3 = new DefaultTreeNode(tree, 20);
 		tree.addChild(node2, node3);
-		tree.addChild(node3, new DefaultTreeNode(tree, 1.0 / 12, Color.ORANGE.getColorComponents(null), new ArrayList<ATreeMapNode>(), "3.1", 31));
-		tree.addChild(node3, new DefaultTreeNode(tree, 1.0 / 12, Color.MAGENTA.getColorComponents(null), new ArrayList<ATreeMapNode>(), "3.2", 32));
+		tree.addChild(node3, new DefaultTreeNode(tree, 1.0 / 12, Color.ORANGE.getRGBA(), new ArrayList<ATreeMapNode>(),
+				"3.1", 31));
+		tree.addChild(node3, new DefaultTreeNode(tree, 1.0 / 12, Color.MAGENTA.getRGBA(),
+				new ArrayList<ATreeMapNode>(), "3.2", 32));
 
 		DefaultTreeNode node4 = new DefaultTreeNode(tree, 13);
 		tree.addChild(node, node4);
-		tree.addChild(node4, new DefaultTreeNode(tree, 1.0 / 9, Color.RED.getColorComponents(null), new ArrayList<ATreeMapNode>(), "2.2", 22));
-		tree.addChild(node4, new DefaultTreeNode(tree, 1.0 / 9, Color.GREEN.getColorComponents(null), new ArrayList<ATreeMapNode>(), "2.3", 23));
-		tree.addChild(node4, new DefaultTreeNode(tree, 1.0 / 9, Color.BLUE.getColorComponents(null), new ArrayList<ATreeMapNode>(), "2.4", 24));
+		tree.addChild(node4, new DefaultTreeNode(tree, 1.0 / 9, Color.RED.getRGBA(), new ArrayList<ATreeMapNode>(),
+				"2.2", 22));
+		tree.addChild(node4, new DefaultTreeNode(tree, 1.0 / 9, Color.GREEN.getRGBA(), new ArrayList<ATreeMapNode>(),
+				"2.3", 23));
+		tree.addChild(node4, new DefaultTreeNode(tree, 1.0 / 9, Color.BLUE.getRGBA(), new ArrayList<ATreeMapNode>(),
+				"2.4", 24));
 
 		node.calculateHierarchyLevels(0);
 

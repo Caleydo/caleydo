@@ -1,23 +1,11 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *  
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *  
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
+
 package org.caleydo.view.stratomex.brick.ui;
+
 
 import javax.media.opengl.GL2;
 
@@ -29,11 +17,10 @@ import org.caleydo.view.stratomex.brick.GLBrick;
 import org.caleydo.view.stratomex.column.BrickColumn;
 
 /**
- * Renderer for the band between a normal brick (overview) and the detailed
- * brick.
- * 
+ * Renderer for the band between a normal brick (overview) and the detailed brick.
+ *
  * @author Partl
- * 
+ *
  */
 public class OverviewDetailBandRenderer extends ALayoutRenderer {
 
@@ -42,8 +29,7 @@ public class OverviewDetailBandRenderer extends ALayoutRenderer {
 	private ConnectionBandRenderer bandRenderer;
 	private boolean isOverviewLeft;
 
-	public OverviewDetailBandRenderer(GLBrick leftBrick, GLBrick rightBrick,
-			boolean isOverviewLeft) {
+	public OverviewDetailBandRenderer(GLBrick leftBrick, GLBrick rightBrick, boolean isOverviewLeft) {
 		this.isOverviewLeft = isOverviewLeft;
 		this.leftBrick = leftBrick;
 		this.rightBrick = rightBrick;
@@ -80,7 +66,7 @@ public class OverviewDetailBandRenderer extends ALayoutRenderer {
 
 		gl.glTranslatef(-elementLayout.getTranslateX(), -elementLayout.getTranslateY(), 0);
 
-		float[] bandColor = new float[] { 0.4f, 0.4f, 0.4f, 1 };
+		float[] bandColor = new float[] { 0, 0, 0, 0.15f };// Color.GREEN.getRGBA();
 
 		bandRenderer.init(gl);
 
@@ -89,11 +75,11 @@ public class OverviewDetailBandRenderer extends ALayoutRenderer {
 			middleAnchorTopPos = new float[] { middleAnchorX, leftTopY };
 			middleAnchorBottomPos = new float[] { middleAnchorX, leftBottomY };
 
-			bandRenderer.renderSingleBand(gl, middleAnchorTopPos, middleAnchorBottomPos,
-					rightTopPos, rightBottomPos, false, offsetX, 0, bandColor);
+			bandRenderer.renderSingleBand(gl, middleAnchorTopPos, middleAnchorBottomPos, rightTopPos, rightBottomPos,
+					false, offsetX, 0, bandColor);
 
-			bandRenderer.renderStraightBand(gl, leftTopPos, leftBottomPos,
-					middleAnchorTopPos, middleAnchorBottomPos, false, 0, bandColor, 1f);
+			bandRenderer.renderStraightBand(gl, leftTopPos, leftBottomPos, middleAnchorTopPos, middleAnchorBottomPos,
+					false, 0, bandColor, 1f);
 		} else {
 			middleAnchorX = groupColumn.getTranslateX();
 			if (middleAnchorX > rightX - offsetX) {
@@ -103,13 +89,11 @@ public class OverviewDetailBandRenderer extends ALayoutRenderer {
 			middleAnchorTopPos = new float[] { middleAnchorX, rightTopY };
 			middleAnchorBottomPos = new float[] { middleAnchorX, rightBottomY };
 
-			bandRenderer.renderSingleBand(gl, leftTopPos, leftBottomPos,
-					middleAnchorTopPos, middleAnchorBottomPos, false, offsetX, 0,
-					bandColor);
+			bandRenderer.renderSingleBand(gl, leftTopPos, leftBottomPos, middleAnchorTopPos, middleAnchorBottomPos,
+					false, offsetX, 0, bandColor);
 
-			bandRenderer.renderStraightBand(gl, middleAnchorTopPos,
-					middleAnchorBottomPos, rightTopPos, rightBottomPos, false, 0,
-					bandColor, 1f);
+			bandRenderer.renderStraightBand(gl, middleAnchorTopPos, middleAnchorBottomPos, rightTopPos, rightBottomPos,
+					false, 0, bandColor, bandColor[3]);
 		}
 
 		// gl.glBegin(GL2.GL_QUADS);
@@ -123,7 +107,7 @@ public class OverviewDetailBandRenderer extends ALayoutRenderer {
 		gl.glTranslatef(elementLayout.getTranslateX(), elementLayout.getTranslateY(), 0);
 
 	}
-	
+
 	@Override
 	protected boolean permitsWrappingDisplayLists() {
 		return false;

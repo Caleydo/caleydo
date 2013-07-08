@@ -1,3 +1,8 @@
+/*******************************************************************************
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 /**
  *
  */
@@ -10,11 +15,11 @@ import java.util.List;
 import org.caleydo.core.gui.util.AHelpButtonDialog;
 import org.caleydo.core.io.gui.dataimport.PreviewTable;
 import org.caleydo.core.io.gui.dataimport.PreviewTable.IPreviewCallback;
-import org.caleydo.core.io.gui.dataimport.widget.ICallback;
 import org.caleydo.core.io.gui.dataimport.widget.LabelWidget;
 import org.caleydo.core.io.gui.dataimport.widget.LoadFileWidget;
+import org.caleydo.core.util.base.ICallback;
 import org.caleydo.core.util.execution.SafeCallable;
-import org.caleydo.core.util.link.LinkHandler;
+import org.caleydo.core.util.system.BrowserUtils;
 import org.caleydo.view.tourguide.api.score.ECombinedOperator;
 import org.caleydo.view.tourguide.api.util.EnumUtils;
 import org.caleydo.view.tourguide.internal.external.AExternalScoreParseSpecification;
@@ -69,7 +74,7 @@ public abstract class AImportExternalScoreDialog<T extends AExternalScoreParseSp
 
 	private Button normalize;
 
-	private Button color;
+	private Button colorButton;
 
 	private Text mappingMin;
 
@@ -140,10 +145,10 @@ public abstract class AImportExternalScoreDialog<T extends AExternalScoreParseSp
 		Label label = new Label(extra, SWT.TOP | SWT.LEFT);
 		label.setText("Score Color");
 		label.setLayoutData(new GridData(SWT.LEFT));
-		this.color = new Button(extra, SWT.PUSH);
-		this.color.setText("Select Color");
-		this.color.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
-		this.color.addSelectionListener(new SelectionAdapter() {
+		this.colorButton = new Button(extra, SWT.PUSH);
+		this.colorButton.setText("Select Color");
+		this.colorButton.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+		this.colorButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent event) {
 				// Create the color-change dialog
@@ -151,7 +156,7 @@ public abstract class AImportExternalScoreDialog<T extends AExternalScoreParseSp
 
 				// Set the selected color in the dialog from
 				// user's selected color
-				dlg.setRGB(color.getBackground().getRGB());
+				dlg.setRGB(colorButton.getBackground().getRGB());
 
 				// Change the title bar text
 				dlg.setText("Choose a Color");
@@ -160,10 +165,10 @@ public abstract class AImportExternalScoreDialog<T extends AExternalScoreParseSp
 				RGB rgb = dlg.open();
 				if (rgb != null) {
 					// Dispose the old color, create the new one, and set into the label
-					Color old = color.getBackground();
+					Color old = colorButton.getBackground();
 					Color new_ = new Color(getShell().getDisplay(), rgb);
 					old.dispose();
-					color.setBackground(new_);
+					colorButton.setBackground(new_);
 				}
 			}
 		});
@@ -200,7 +205,11 @@ public abstract class AImportExternalScoreDialog<T extends AExternalScoreParseSp
 			public void on(int numColumn, int numRow, List<? extends List<String>> dataMatrix) {
 				onPreviewChanged(numColumn, numRow, dataMatrix);
 			}
-		});
+		}, false);
+		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, true);
+		gd.minimumHeight = 300;
+		gd.horizontalSpan = 2;
+		previewTable.getTable().setLayoutData(gd);
 
 
 		init(parent.getDisplay());
@@ -214,7 +223,7 @@ public abstract class AImportExternalScoreDialog<T extends AExternalScoreParseSp
 
 	@Override
 	protected void helpPressed() {
-		LinkHandler.openLink("http://www.icg.tugraz.at/project/caleydo/help/caleydo-2.0/loading-data");
+		BrowserUtils.openURL("http://www.icg.tugraz.at/project/caleydo/help/caleydo-2.0/loading-data");
 	}
 
 	@Override
@@ -249,8 +258,7 @@ public abstract class AImportExternalScoreDialog<T extends AExternalScoreParseSp
 
 		this.operator.select(spec.getOperator().ordinal());
 		this.normalize.setSelection(spec.isNormalizeScores());
-		this.color.setBackground(new Color(display, spec.getColor().getRed(), spec.getColor().getGreen(), spec
-				.getColor().getBlue()));
+		this.colorButton.setBackground(spec.getColor().getSWTColor(display));
 		this.mappingMin.setText(convert(spec.getMappingMin()));
 		this.mappingMax.setText(convert(spec.getMappingMin()));
 	}
@@ -268,7 +276,7 @@ public abstract class AImportExternalScoreDialog<T extends AExternalScoreParseSp
 		this.label.setText("");
 		this.label.setEnabled(false);
 
-		this.color.setBackground(new Color(display, 192, 192, 192));
+		this.colorButton.setBackground(new Color(display, 192, 192, 192));
 	}
 
 
@@ -288,8 +296,8 @@ public abstract class AImportExternalScoreDialog<T extends AExternalScoreParseSp
 		spec.setNormalizeScores(this.normalize.getSelection());
 		spec.setOperator(ECombinedOperator.valueOf(this.operator.getText()));
 		spec.setRankingName(this.label.getText());
-		Color c = this.color.getBackground();
-		spec.setColor(new java.awt.Color(c.getRed(), c.getGreen(), c.getBlue()));
+		Color c = this.colorButton.getBackground();
+		spec.setColor(org.caleydo.core.util.color.Color.fromSWTColor(c));
 		spec.setMappingMin(convert(this.mappingMin));
 		spec.setMappingMax(convert(this.mappingMax));
 	}
@@ -316,7 +324,7 @@ public abstract class AImportExternalScoreDialog<T extends AExternalScoreParseSp
 
 		this.label.setEnabled(true);
 
-		this.previewTable.generatePreview();
+		this.previewTable.generatePreview(true);
 	}
 
 	protected void onPreviewChanged(int totalNumberOfColumns, int totalNumberOfRows,

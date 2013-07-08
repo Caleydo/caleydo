@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.view.opengl.layout.util;
 
 import java.awt.Point;
@@ -24,7 +10,7 @@ import java.awt.Point;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GL2ES1;
 
-import org.caleydo.core.util.color.Colors;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
@@ -105,7 +91,7 @@ public class Zoomer implements IMouseWheelHandler, IScrollBarUpdateHandler {
 		hScrollBarLayout.setRatioSizeX(1.0f);
 		hScrollBarLayout
 .setRenderer(new ScrollBarRenderer(hScrollBar, parentView, true,
-				scrollBarDragAndDropController, Colors.BLACK));
+				scrollBarDragAndDropController, Color.BLACK));
 
 		ElementLayout hSpacingLayout = new ElementLayout("horizontalSpacing");
 		hSpacingLayout.setRatioSizeX(1.0f);
@@ -127,7 +113,7 @@ public class Zoomer implements IMouseWheelHandler, IScrollBarUpdateHandler {
 		vScrollBarLayout.setPixelSizeX(10);
 		vScrollBarLayout.setRatioSizeY(1.0f);
 		vScrollBarLayout.setRenderer(new ScrollBarRenderer(vScrollBar, parentView, false,
-				scrollBarDragAndDropController, Colors.BLACK));
+				scrollBarDragAndDropController, Color.BLACK));
 
 		ElementLayout vSpacingLayout = new ElementLayout("verticalSpacing");
 		vSpacingLayout.setRatioSizeX(1.0f);

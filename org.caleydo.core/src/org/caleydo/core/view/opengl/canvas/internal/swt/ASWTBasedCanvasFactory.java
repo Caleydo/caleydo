@@ -1,31 +1,15 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.view.opengl.canvas.internal.swt;
-
 
 import java.util.List;
 
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.contextmenu.AContextMenuItem.EContextMenuType;
 import org.caleydo.core.view.contextmenu.item.SeparatorMenuItem;
-import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.internal.IGLCanvasFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MenuEvent;
@@ -58,10 +42,8 @@ public abstract class ASWTBasedCanvasFactory implements IGLCanvasFactory {
 		TextureIO.addTextureWriter(new IIOTextureWriter());
 	}
 
-	@Override
-	public final void showPopupMenu(IGLCanvas canvas, Iterable<? extends AContextMenuItem> items) {
+	public static void showSWTPopupMenu(Iterable<? extends AContextMenuItem> items, final Composite parent) {
 		final Iterable<? extends AContextMenuItem> items2 = Lists.newArrayList(items);
-		final Composite parent = canvas.asComposite();
 		parent.getDisplay().asyncExec(new Runnable() {
 			@Override
 			public void run() {
@@ -90,10 +72,9 @@ public abstract class ASWTBasedCanvasFactory implements IGLCanvasFactory {
 				m.setVisible(true);
 			}
 		});
-
 	}
 
-	private void create(Menu parent, Menu m, final AContextMenuItem item) {
+	private static void create(Menu parent, Menu m, final AContextMenuItem item) {
 		if (item instanceof SeparatorMenuItem) {
 			new MenuItem(parent, SWT.SEPARATOR);
 			return;

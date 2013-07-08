@@ -1,29 +1,18 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
- * University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
- * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
- * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with this program. If not, see
- * <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.util.color.mapping;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.util.color.Color;
-import org.caleydo.core.util.color.Colors;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.ui.PlatformUI;
 
@@ -36,8 +25,8 @@ import org.eclipse.ui.PlatformUI;
 @XmlType
 public class ColorMapper {
 
-	private ArrayList<Color> colorList;
-	private ArrayList<ColorMarkerPoint> markerPoints;
+	private List<Color> colorList;
+	private List<ColorMarkerPoint> markerPoints;
 
 	// ColorMappingType colorMappingType;
 
@@ -70,7 +59,7 @@ public class ColorMapper {
 	 * @throws IllegalArgumentException
 	 *             if values in marker points are not increasing, or if fvalue > 1 || fvalue < 0
 	 */
-	public ColorMapper(ArrayList<ColorMarkerPoint> markerPoints) {
+	public ColorMapper(List<ColorMarkerPoint> markerPoints) {
 		setMarkerPoints(markerPoints);
 	}
 
@@ -145,7 +134,7 @@ public class ColorMapper {
 	 */
 	private void setUpMapping() {
 		Collections.sort(markerPoints);
-		ArrayList<ColorMarkerPoint> finalMarkerPoints = considerSpread();
+		List<ColorMarkerPoint> finalMarkerPoints = considerSpread();
 		float srcValue, destValue;
 
 		for (int count = 0; count < finalMarkerPoints.size() - 1; count++) {
@@ -170,6 +159,7 @@ public class ColorMapper {
 				fColor.r = srcColor.r + (destColor.r - srcColor.r) / divisor;
 				fColor.g = srcColor.g + (destColor.g - srcColor.g) / divisor;
 				fColor.b = srcColor.b + (destColor.b - srcColor.b) / divisor;
+				fColor.a = srcColor.a + (destColor.a - srcColor.a) / divisor;
 			}
 		}
 	}
@@ -181,7 +171,7 @@ public class ColorMapper {
 	 */
 	public Color getColorAsObject(float value) {
 		if (Float.isNaN(value))
-			return Colors.NOT_A_NUMBER_COLOR;
+			return Color.NOT_A_NUMBER_COLOR;
 
 		if (value > 1 || value < 0)
 			throw new IllegalArgumentException("Invalid value in fValue. Has to be between 0 and 1 but was: " + value);
@@ -206,7 +196,7 @@ public class ColorMapper {
 	 *
 	 * @return the list of marker points
 	 */
-	public ArrayList<ColorMarkerPoint> getMarkerPoints() {
+	public List<ColorMarkerPoint> getMarkerPoints() {
 		return markerPoints;
 	}
 
@@ -217,7 +207,7 @@ public class ColorMapper {
 	 *
 	 * @return the list of marker points without spreads but points for spreads
 	 */
-	public ArrayList<ColorMarkerPoint> getConvertedMarkerPoints() {
+	public List<ColorMarkerPoint> getConvertedMarkerPoints() {
 		return considerSpread();
 	}
 
@@ -231,8 +221,8 @@ public class ColorMapper {
 	 *
 	 * @return the list with all the marker points instead of spreads
 	 */
-	private ArrayList<ColorMarkerPoint> considerSpread() {
-		ArrayList<ColorMarkerPoint> finalColorMarkerPoints = new ArrayList<ColorMarkerPoint>();
+	private List<ColorMarkerPoint> considerSpread() {
+		List<ColorMarkerPoint> finalColorMarkerPoints = new ArrayList<ColorMarkerPoint>();
 
 		for (ColorMarkerPoint point : markerPoints) {
 			if (point.hasLeftSpread()) {
@@ -249,7 +239,7 @@ public class ColorMapper {
 		return finalColorMarkerPoints;
 	}
 
-	public ArrayList<Color> getColorList() {
+	public List<Color> getColorList() {
 		return colorList;
 	}
 
@@ -258,10 +248,10 @@ public class ColorMapper {
 	}
 
 	public Color getNotANumberColor() {
-		return Colors.NOT_A_NUMBER_COLOR;
+		return Color.NOT_A_NUMBER_COLOR;
 	}
 
-	public void setMarkerPoints(ArrayList<ColorMarkerPoint> markerPoints) {
+	public void setMarkerPoints(List<ColorMarkerPoint> markerPoints) {
 		this.markerPoints = markerPoints;
 		init();
 	}
@@ -273,7 +263,7 @@ public class ColorMapper {
 
 	public static void createColorMappingPreview(ColorMapper colorMapper, CLabel colorMappingPreview) {
 
-		ArrayList<ColorMarkerPoint> markerPoints = colorMapper.getMarkerPoints();
+		List<ColorMarkerPoint> markerPoints = colorMapper.getMarkerPoints();
 
 		org.eclipse.swt.graphics.Color[] alColor = new org.eclipse.swt.graphics.Color[markerPoints.size()];
 		int[] colorMarkerPoints = new int[markerPoints.size() - 1];

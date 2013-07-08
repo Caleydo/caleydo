@@ -1,3 +1,8 @@
+/*******************************************************************************
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 /**
  *
  */
@@ -48,7 +53,7 @@ public abstract class ACompoundNodeMode extends ALinearizeableNodeMode {
 		gl.glPushMatrix();
 		gl.glTranslatef(position.x(), position.y(), position.z());
 		// gl.glColor4f(backgroundColor[0], backgroundColor[1], backgroundColor[2], pathwayPathRenderer.getNodeAlpha());
-		gl.glColor4fv(backgroundColor, 0);
+		gl.glColor4fv(backgroundColor.getRGBA(), 0);
 		GLPrimitives.renderCircle(glu, radius / 2.0f, 16);
 		// gl.glColor4f(0, 0, 0, pathwayPathRenderer.getNodeAlpha());
 		gl.glColor4f(0, 0, 0, 1);

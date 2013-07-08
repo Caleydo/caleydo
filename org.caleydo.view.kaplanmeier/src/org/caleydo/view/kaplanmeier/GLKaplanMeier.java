@@ -1,19 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
- * University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
- * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
- * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with this program. If not, see
- * <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.kaplanmeier;
 
 import gleem.linalg.Vec3f;
@@ -26,18 +15,20 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.table.Table;
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.datadomain.DataSupportDefinitions;
+import org.caleydo.core.data.datadomain.IDataSupportDefinition;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.selection.SelectionManager;
+import org.caleydo.core.data.selection.EventBasedSelectionManager;
+import org.caleydo.core.data.selection.IEventBasedSelectionManagerUser;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.color.Color;
-import org.caleydo.core.util.color.ColorManager;
+import org.caleydo.core.view.ISingleTablePerspectiveBasedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
@@ -51,22 +42,20 @@ import org.eclipse.swt.widgets.Composite;
 
 /**
  * <p>
- * Kaplan Meier GL2 view.
+ * Kaplan Meier GL view.
  * </p>
  * <p>
  * TODO
  * </p>
  *
  * @author Marc Streit
- * @author Christian
+ * @author Christian Partl
+ * @author Alexander Lex
  */
 
-public class GLKaplanMeier extends ATableBasedView {
+public class GLKaplanMeier extends AGLView implements ISingleTablePerspectiveBasedView, IEventBasedSelectionManagerUser {
 	public static final String VIEW_TYPE = "org.caleydo.view.kaplanmeier";
 	public static final String VIEW_NAME = "Kaplan-Meier Plot";
-
-	private static final String DEFAULT_X_AXIS_LABEL = "Time (Days)";
-	private static final String DEFAULT_Y_AXIS_LABEL = "Percentage of Patients";
 
 	private static final int LEFT_AXIS_SPACING_PIXELS = 70;
 	private static final int BOTTOM_AXIS_SPACING_PIXELS = 50;
@@ -76,7 +65,9 @@ public class GLKaplanMeier extends ATableBasedView {
 	private static final int AXIS_LABEL_TEXT_SIDE_SPACING_PIXELS = 5;
 	private static final int AXIS_TICK_LABEL_SPACING_PIXELS = 12;
 
-	private SelectionManager recordGroupSelectionManager;
+	private EventBasedSelectionManager recordGroupSelectionManager;
+
+	private ATableBasedDataDomain dataDomain;
 
 	/**
 	 * The maximum time value that is mapped to the x axis. If this value is not set externally, it is calculated using
@@ -92,17 +83,14 @@ public class GLKaplanMeier extends ATableBasedView {
 	/**
 	 * The label of the x axis.
 	 */
-	private String xAxisLabel = DEFAULT_X_AXIS_LABEL;
+	private String xAxisLabel;
 
 	/**
 	 * The label of the y axis.
 	 */
-	private String yAxisLabel = DEFAULT_Y_AXIS_LABEL;
+	private String yAxisLabel;
 
-	/**
-	 * The id of the group whose curve was mouse overed.
-	 */
-	private int mouseOverGroupID = -1;
+	private TablePerspective tablePerspective;
 
 	/**
 	 * Constructor.
@@ -121,7 +109,8 @@ public class GLKaplanMeier extends ATableBasedView {
 	@Override
 	public void initialize() {
 		super.initialize();
-		recordGroupSelectionManager = dataDomain.cloneRecordGroupSelectionManager().clone();
+		recordGroupSelectionManager = new EventBasedSelectionManager(this, dataDomain.getRecordGroupIDType()
+				.getIDCategory().getPrimaryMappingType());
 	}
 
 	@Override
@@ -132,6 +121,9 @@ public class GLKaplanMeier extends ATableBasedView {
 			calculateMaxAxisTime(tablePerspective);
 		}
 		createPickingListeners();
+		xAxisLabel = tablePerspective.getDimensionPerspective().getLabel();
+		yAxisLabel = "Percentage of "
+				+ tablePerspective.getRecordPerspective().getIdType().getIDCategory().getCategoryName();
 
 		detailLevel = EDetailLevel.HIGH;
 	}
@@ -141,25 +133,42 @@ public class GLKaplanMeier extends ATableBasedView {
 		VirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
 
 		for (Group group : recordVA.getGroupList()) {
-			addIDPickingTooltipListener(group.getLabel(), EPickingType.KM_CURVE.name(), group.getID());
+			if (!group.isLabelDefault())
+				addIDPickingTooltipListener(group.getLabel(), EPickingType.KM_CURVE.name(), group.getID());
 		}
 
 		addTypePickingListener(new APickingListener() {
 
 			@Override
 			public void mouseOver(Pick pick) {
-				if (mouseOverGroupID != pick.getObjectID()) {
-					mouseOverGroupID = pick.getObjectID();
-					setDisplayListDirty();
-				}
+				// if (mouseOverGroupID != pick.getObjectID()) {
+				// mouseOverGroupID = pick.getObjectID();
+				// setDisplayListDirty();
+				// }
+				recordGroupSelectionManager.clearSelection(SelectionType.MOUSE_OVER);
+				recordGroupSelectionManager.addToType(SelectionType.MOUSE_OVER, pick.getObjectID());
+				recordGroupSelectionManager.triggerSelectionUpdateEvent();
+				setDisplayListDirty();
 			}
 
 			@Override
 			public void mouseOut(Pick pick) {
-				if (mouseOverGroupID == pick.getObjectID()) {
-					mouseOverGroupID = -1;
-					setDisplayListDirty();
-				}
+				// if (mouseOverGroupID == pick.getObjectID()) {
+				// mouseOverGroupID = -1;
+				// setDisplayListDirty();
+				// }
+				recordGroupSelectionManager.removeFromType(SelectionType.MOUSE_OVER, pick.getObjectID());
+				recordGroupSelectionManager.triggerSelectionUpdateEvent();
+				setDisplayListDirty();
+			}
+
+			@Override
+			public void clicked(Pick pick) {
+
+				recordGroupSelectionManager.clearSelection(SelectionType.SELECTION);
+				recordGroupSelectionManager.addToType(SelectionType.SELECTION, pick.getObjectID());
+				recordGroupSelectionManager.triggerSelectionUpdateEvent();
+				setDisplayListDirty();
 			}
 
 		}, EPickingType.KM_CURVE.name());
@@ -243,38 +252,24 @@ public class GLKaplanMeier extends ATableBasedView {
 
 		gl.glNewList(displayListIndex, GL2.GL_COMPILE);
 
-		VirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
+		Integer groupID = null;
+		VirtualArray recordVA;
+		if (tablePerspective.getParentTablePerspective() != null) {
+			recordVA = tablePerspective.getParentTablePerspective().getRecordPerspective().getVirtualArray();
+			groupID = tablePerspective.getRecordGroup().getID();
 
-		// do not fill curve if multiple curves are rendered in this plot
-		boolean fillCurve = recordVA.getGroupList().size() > 1 ? false : true;
+		} else {
+			recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
+		}
 
-		List<Color> colors = ColorManager.get().getColorList(ColorManager.QUALITATIVE_COLORS);
+		if (groupID != null) {
+			// render this first to consider z-order
+			renderCurve(gl, tablePerspective.getRecordGroup(), recordVA, true, true);
+		}
 		for (Group group : recordVA.getGroupList()) {
-			List<Integer> recordIDs = recordVA.getIDsOfGroup(group.getGroupIndex());
-
-			int colorIndex = 0;
-			if (tablePerspective.getRecordGroup() != null)
-				colorIndex = tablePerspective.getRecordGroup().getGroupIndex();
-			else
-				colorIndex = group.getGroupIndex();
-
-			// We only have 10 colors in the diverging color map
-			colorIndex = colorIndex % 10;
-
-			int lineWidth = 1;
-			if ((recordGroupSelectionManager.getNumberOfElements(SelectionType.SELECTION) == 1 && (Integer) recordGroupSelectionManager
-					.getElements(SelectionType.SELECTION).toArray()[0] == group.getID())
-					|| (group.getID() == mouseOverGroupID)) {
-				lineWidth = 2;
-			}
-
-
-			if (detailLevel == EDetailLevel.HIGH)
-				lineWidth *= 2;
-
-			gl.glLineWidth(lineWidth);
-
-			renderSingleKaplanMeierCurve(gl, recordIDs, colors.get(colorIndex), fillCurve, group.getID());
+			if (groupID != null && group.getID() == groupID)
+				continue;
+			renderCurve(gl, group, recordVA, false, groupID != null);
 		}
 
 		if (detailLevel == EDetailLevel.HIGH) {
@@ -282,6 +277,33 @@ public class GLKaplanMeier extends ATableBasedView {
 		}
 
 		gl.glEndList();
+	}
+
+	private void renderCurve(GL2 gl, Group group, VirtualArray recordVA, boolean fillCurve, boolean hasPrimaryCurve) {
+
+		List<Integer> recordIDs = recordVA.getIDsOfGroup(group.getGroupIndex());
+
+		int lineWidth = 1;
+
+		Color color = Color.DARK_GRAY;
+		lineWidth = 1;
+		if (hasPrimaryCurve && !fillCurve) {
+			color = Color.LIGHT_GRAY;
+		}
+		SelectionType selectionType = recordGroupSelectionManager.getHighestSelectionType(group.getID());
+		if (selectionType != null) {
+			// || (group.getID() == mouseOverGroupID)) {
+			lineWidth += 1;
+			color = selectionType.getColor();
+		}
+
+		if (detailLevel == EDetailLevel.HIGH)
+			lineWidth *= 2;
+
+		gl.glLineWidth(lineWidth);
+
+		renderSingleKaplanMeierCurve(gl, recordIDs, fillCurve, group.getID(), color);
+
 	}
 
 	private void renderAxes(GL2 gl) {
@@ -292,6 +314,7 @@ public class GLKaplanMeier extends ATableBasedView {
 		float axisLabelWidth = textRenderer.getRequiredTextWidthWithMax(xAxisLabel,
 				pixelGLConverter.getGLHeightForPixelHeight(20), viewFrustum.getWidth());
 
+		textRenderer.setColor(Color.BLACK);
 		textRenderer.renderTextInBounds(gl, xAxisLabel, viewFrustum.getWidth() / 2.0f - axisLabelWidth / 2.0f,
 				pixelGLConverter.getGLHeightForPixelHeight(AXIS_LABEL_TEXT_SIDE_SPACING_PIXELS), 0,
 				viewFrustum.getWidth(), pixelGLConverter.getGLHeightForPixelHeight(AXIS_LABEL_TEXT_HEIGHT_PIXELS));
@@ -351,8 +374,8 @@ public class GLKaplanMeier extends ATableBasedView {
 						+ RIGHT_AXIS_SPACING_PIXELS) : 0);
 	}
 
-	private void renderSingleKaplanMeierCurve(GL2 gl, List<Integer> recordIDs, Color color, boolean fillCurve,
-			int groupID) {
+	private void renderSingleKaplanMeierCurve(GL2 gl, List<Integer> recordIDs, boolean fillCurve, int groupID,
+			Color color) {
 
 		VirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
 
@@ -371,25 +394,25 @@ public class GLKaplanMeier extends ATableBasedView {
 
 		Collections.sort(dataVector);
 
-		if (fillCurve) {
+		gl.glPushName(pickingManager.getPickingID(getID(), EPickingType.KM_CURVE.name(), groupID));
 
-			gl.glColor3fv(color.getColorWithSpecificBrighness(0.9f).getRGB(), 0);
+		if (fillCurve) {
+			//
+			if (color.isGray())
+				gl.glColor3fv(Color.MEDIUM_DARK_GRAY.getRGB(), 0);
+			// gl.glColor4fv(color.brighter().brighter().getRGBA(), 0);
+			else
+				gl.glColor4fv(color.lessSaturated().getRGBA(), 0);
+			// gl.glColor4fv(color.getRGBA(), 0);
 			@SuppressWarnings("unchecked")
 			ArrayList<Float> clone = (ArrayList<Float>) dataVector.clone();
 			drawFilledCurve(gl, clone);
 
-
-
 		}
 
-		if (!fillCurve && detailLevel == EDetailLevel.HIGH) {
-			gl.glPushName(pickingManager.getPickingID(getID(), EPickingType.KM_CURVE.name(), groupID));
-		}
-		gl.glColor3fv(color.getColorWithSpecificBrighness(0.7f).getRGB(), 0);
+		gl.glColor4fv(color.getRGBA(), 0);
 		drawCurve(gl, dataVector);
-		if (!fillCurve && detailLevel == EDetailLevel.HIGH) {
-			gl.glPopName();
-		}
+		gl.glPopName();
 
 	}
 
@@ -408,6 +431,7 @@ public class GLKaplanMeier extends ATableBasedView {
 		int remainingItemCount = dataVector.size();
 		float ySingleSampleSize = plotHeight / dataVector.size();
 
+		float z = 0.1f;
 		for (int binIndex = 0; binIndex < Math.abs(maxAxisTime); binIndex++) {
 
 			while (dataVector.size() > 0 && dataVector.get(0) <= currentTimeBin) {
@@ -416,12 +440,13 @@ public class GLKaplanMeier extends ATableBasedView {
 			}
 
 			float y = remainingItemCount * ySingleSampleSize;
+
 			gl.glBegin(GL2.GL_QUADS);
-			gl.glVertex3f(leftAxisSpacing + currentTimeBin * plotWidth, bottomAxisSpacing, 0);
-			gl.glVertex3f(leftAxisSpacing + currentTimeBin * plotWidth, bottomAxisSpacing + y, 0);
+			gl.glVertex3f(leftAxisSpacing + currentTimeBin * plotWidth, bottomAxisSpacing, z);
+			gl.glVertex3f(leftAxisSpacing + currentTimeBin * plotWidth, bottomAxisSpacing + y, z);
 			currentTimeBin += timeBinStepSize;
-			gl.glVertex3f(leftAxisSpacing + currentTimeBin * plotWidth, bottomAxisSpacing + y, 0);
-			gl.glVertex3f(leftAxisSpacing + currentTimeBin * plotWidth, bottomAxisSpacing, 0);
+			gl.glVertex3f(leftAxisSpacing + currentTimeBin * plotWidth, bottomAxisSpacing + y, z);
+			gl.glVertex3f(leftAxisSpacing + currentTimeBin * plotWidth, bottomAxisSpacing, z);
 			gl.glEnd();
 		}
 
@@ -437,15 +462,15 @@ public class GLKaplanMeier extends ATableBasedView {
 		float leftAxisSpacing = (detailLevel == EDetailLevel.HIGH ? pixelGLConverter
 				.getGLWidthForPixelWidth(LEFT_AXIS_SPACING_PIXELS) : 0);
 
-
 		float timeBinStepSize = 1 / Math.abs(maxAxisTime);
 		float currentTimeBin = 0;
 
 		int remainingItemCount = dataVector.size();
 		float ySingleSampleSize = plotHeight / dataVector.size();
 
+		float z = 0.11f;
 		gl.glBegin(GL.GL_LINE_STRIP);
-		gl.glVertex3f(leftAxisSpacing, bottomAxisSpacing + plotHeight, 1);
+		gl.glVertex3f(leftAxisSpacing, bottomAxisSpacing + plotHeight, z);
 
 		for (int binIndex = 0; binIndex < Math.abs(maxAxisTime); binIndex++) {
 
@@ -456,9 +481,9 @@ public class GLKaplanMeier extends ATableBasedView {
 
 			float y = remainingItemCount * ySingleSampleSize;
 
-			gl.glVertex3f(leftAxisSpacing + currentTimeBin * plotWidth, bottomAxisSpacing + y, 1);
+			gl.glVertex3f(leftAxisSpacing + currentTimeBin * plotWidth, bottomAxisSpacing + y, z);
 			currentTimeBin += timeBinStepSize;
-			gl.glVertex3f(leftAxisSpacing + currentTimeBin * plotWidth, bottomAxisSpacing + y, 1);
+			gl.glVertex3f(leftAxisSpacing + currentTimeBin * plotWidth, bottomAxisSpacing + y, z);
 		}
 
 		gl.glEnd();
@@ -474,20 +499,6 @@ public class GLKaplanMeier extends ATableBasedView {
 	@Override
 	public String toString() {
 		return "GLKaplanMeier";
-	}
-
-	@Override
-	public void handleRedrawView() {
-		setDisplayListDirty();
-	}
-
-	@Override
-	public void handleSelectionUpdate(SelectionDelta selectionDelta) {
-		super.handleSelectionUpdate(selectionDelta);
-
-		if (selectionDelta.getIDType() == recordGroupSelectionManager.getIDType()) {
-			recordGroupSelectionManager.setDelta(selectionDelta);
-		}
 	}
 
 	@Override
@@ -576,5 +587,44 @@ public class GLKaplanMeier extends ATableBasedView {
 	protected void destroyViewSpecificContent(GL2 gl) {
 		gl.glDeleteLists(displayListIndex, 1);
 
+	}
+
+	@Override
+	public IDataSupportDefinition getDataSupportDefinition() {
+		return DataSupportDefinitions.tableBased;
+	}
+
+	@Override
+	public void setDataDomain(ATableBasedDataDomain dataDomain) {
+		this.dataDomain = dataDomain;
+
+	}
+
+	@Override
+	public ATableBasedDataDomain getDataDomain() {
+		return dataDomain;
+	}
+
+	@Override
+	public void notifyOfSelectionChange(EventBasedSelectionManager selectionManager) {
+		setDisplayListDirty();
+
+	}
+
+	@Override
+	public void setTablePerspective(TablePerspective tablePerspective) {
+		this.tablePerspective = tablePerspective;
+	}
+
+	@Override
+	public TablePerspective getTablePerspective() {
+		return tablePerspective;
+	}
+
+	@Override
+	public List<TablePerspective> getTablePerspectives() {
+		List<TablePerspective> tpList = new ArrayList<>(1);
+		tpList.add(tablePerspective);
+		return tpList;
 	}
 }

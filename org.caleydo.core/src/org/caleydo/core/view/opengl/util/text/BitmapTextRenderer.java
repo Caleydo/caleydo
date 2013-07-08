@@ -1,26 +1,10 @@
-package org.caleydo.core.view.opengl.util.text;
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
+package org.caleydo.core.view.opengl.util.text;
 
-
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics2D;
@@ -33,7 +17,7 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.GLContext;
 
 import org.caleydo.core.util.collection.Pair;
-import org.caleydo.core.util.color.Colors;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.GLSandBox;
@@ -59,7 +43,7 @@ public final class BitmapTextRenderer extends ABitmapTextRenderer implements ITe
 	/**
 	 * the text color to use
 	 */
-	private float[] color = Colors.BLACK.getRGBA();
+	private Color color = Color.BLACK;
 
 
 	public BitmapTextRenderer(Font base) {
@@ -86,8 +70,8 @@ public final class BitmapTextRenderer extends ABitmapTextRenderer implements ITe
 		Dimension size = new Dimension(1024, 1024);
 		texture = TextureRenderer.createAlphaOnlyRenderer(size.width, size.height, true);
 		Graphics2D g = texture.createGraphics();
-		g.setBackground(Color.BLACK);
-		g.setColor(Color.WHITE);
+		g.setBackground(Color.BLACK.getAWTColor());
+		g.setColor(Color.WHITE.getAWTColor());
 		return Pair.make(g, size);
 	}
 
@@ -98,13 +82,10 @@ public final class BitmapTextRenderer extends ABitmapTextRenderer implements ITe
 
 	@Override
 	public void setColor(Color color) {
-		this.color = color.getRGBComponents(null);
+		this.color = color;
 	}
 
-	@Override
-	public void setColor(float r, float g, float b, float a) {
-		this.color = new float[] { r, g, b, a };
-	}
+
 
 	@Override
 	public void renderTextInBounds(GL2 gl, String text, float x, float y, float z, float w, float h) {
@@ -122,7 +103,7 @@ public final class BitmapTextRenderer extends ABitmapTextRenderer implements ITe
 		gl.glPushMatrix();
 		gl.glTranslatef(x, y, z);
 
-		gl.glColor4fv(color, 0); // set our color
+		gl.glColor4fv(color.getRGBA(), 0); // set our color
 
 		// TODO idea is now to avoid rasterization effects, that as we are in a pixel space
 		// to align all quads to pixel borders
@@ -206,8 +187,8 @@ public final class BitmapTextRenderer extends ABitmapTextRenderer implements ITe
 		}
 
 		@Override
-		protected ITextRenderer createTextRenderer() {
-			return new BitmapTextRenderer(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
+		protected ITextRenderer createTextRenderer(ETextStyle style) {
+			return new BitmapTextRenderer(new Font(Font.SANS_SERIF, style.toAWTFontStyle(), 12));
 		}
 	}
 

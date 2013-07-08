@@ -1,3 +1,8 @@
+/*******************************************************************************
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 /**
  *
  */
@@ -70,7 +75,7 @@ public class CompoundNodePreviewMode extends ACompoundNodeMode {
 		// determineHighlightColor(pathwayPathRenderer.getMetaboliteSelectionManager());
 
 		gl.glPushName(pickingManager.getPickingID(view.getID(), EPickingType.LINEARIZABLE_NODE.name(), node.hashCode()));
-		gl.glColor4fv(backgroundColor, 0);
+		gl.glColor4fv(backgroundColor.getRGBA(), 0);
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glVertex3f(leftX, bottomY, nodePosition.z());
 		gl.glVertex3f(leftX + width, bottomY, nodePosition.z());

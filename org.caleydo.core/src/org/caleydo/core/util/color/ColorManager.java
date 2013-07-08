@@ -1,19 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
- * University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
- * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
- * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with this program. If not, see
- * <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.util.color;
 
 import static org.caleydo.core.util.collection.Pair.make;
@@ -44,27 +33,9 @@ public class ColorManager {
 	{
 		List<Pair<Color, Boolean>> qualitativeColorList = new ArrayList<>();
 
-		qualitativeColorList.add(make(new Color("06799F"), false));
-		qualitativeColorList.add(make(new Color("C60017"), false));
-		qualitativeColorList.add(make(new Color("00654e"), false));
-		qualitativeColorList.add(make(new Color("D2006B"), false));
-		qualitativeColorList.add(make(new Color("A65500"), false));
-		qualitativeColorList.add(make(new Color("60016D"), false));
-		qualitativeColorList.add(make(new Color("A6A000"), false));
-
-		// Colors from colorbrewer qualitative Set3
-		// qualitativeColorList.add(make(new Color(141, 211, 199), false));
-		// qualitativeColorList.add(make(new Color(179, 222, 105), false));
-		// qualitativeColorList.add(make(new Color(128, 177, 211), false));
-		// qualitativeColorList.add(make(new Color(190, 186, 218), false));
-		//
-		// qualitativeColorList.add(make(new Color(252, 205, 229), false));
-		//
-		// qualitativeColorList.add(make(new Color(188, 128, 189), false));
-		// qualitativeColorList.add(make(new Color(204, 235, 197), false));
-		// qualitativeColorList.add(make(new Color(255, 237, 111), false));
-		// qualitativeColorList.add(make(new Color(251, 128, 114), false));
-		// qualitativeColorList.add(make(new Color(253, 180, 98), false));
+		for (Color c : AlexColorPalette.Medium.get()) {
+			qualitativeColorList.add(make(c, false));
+		}
 
 		colorLists.put(QUALITATIVE_COLORS, qualitativeColorList);
 	}

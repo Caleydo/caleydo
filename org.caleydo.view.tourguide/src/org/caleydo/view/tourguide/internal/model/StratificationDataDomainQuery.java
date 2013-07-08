@@ -1,36 +1,24 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.tourguide.internal.model;
 
-import static org.caleydo.vis.rank.model.StringRankColumnModel.starToRegex;
-
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.regex.Pattern;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
+import org.caleydo.vis.rank.model.RankTableModel;
 
 /**
  * @author Samuel Gratzl
@@ -39,8 +27,10 @@ import org.caleydo.core.data.perspective.variable.Perspective;
 public class StratificationDataDomainQuery extends ADataDomainQuery {
 	public static final String PROP_DIMENSION_SELECTION = "dimensionSelection";
 
-	private String matches = null;
 	private Perspective dimensionSelection = null;
+
+	// snapshot when creating the data for fast comparison
+	private Set<String> snapshot;
 
 	public StratificationDataDomainQuery(ATableBasedDataDomain dataDomain) {
 		super(dataDomain);
@@ -53,10 +43,7 @@ public class StratificationDataDomainQuery extends ADataDomainQuery {
 
 	@Override
 	public boolean apply(AScoreRow row) {
-		assert row.getDataDomain() == dataDomain;
-		if (matches == null)
-			return true;
-		return Pattern.matches(starToRegex(matches), row.getLabel());
+		return true;
 	}
 
 	@Override
@@ -64,23 +51,58 @@ public class StratificationDataDomainQuery extends ADataDomainQuery {
 		ATableBasedDataDomain d = (ATableBasedDataDomain) dataDomain;
 
 		List<AScoreRow> r = new ArrayList<>();
-
+		this.snapshot = new HashSet<>(d.getRecordPerspectiveIDs());
 		for (String rowPerspectiveID : d.getRecordPerspectiveIDs()) {
 			Perspective p = d.getTable().getRecordPerspective(rowPerspectiveID);
-			if (p.isDefault() || p.isPrivate())
+			if (p.isPrivate())
 				continue;
+			// include the default stratificatition see #1227
 			r.add(new StratificationPerspectiveRow(p, this));
 		}
 		return r;
 	}
 
-	private String getDimensionPerspectiveID() {
-		String dimensionPerspectiveID = null;
-		if (dimensionSelection != null)
-			dimensionPerspectiveID = dimensionSelection.getPerspectiveID();
-		else
-			dimensionPerspectiveID = getDimensionPerspectives().iterator().next().getPerspectiveID();
-		return dimensionPerspectiveID;
+	@Override
+	public List<AScoreRow> onDataDomainUpdated() {
+		if (!isInitialized()) // not yet used
+			return null;
+		ATableBasedDataDomain d = getDataDomain();
+
+		Set<String> current = new TreeSet<>(d.getRecordPerspectiveIDs());
+
+		if (snapshot.equals(d.getRecordPerspectiveIDs()))
+			return null;
+
+		// black list and remove existing
+
+		BitSet blackList = new BitSet();
+		{
+			int i = 0;
+			for (AScoreRow row : data) {
+				StratificationPerspectiveRow r = (StratificationPerspectiveRow) row;
+				Perspective perspective = r.getStratification();
+				blackList.set(i++, !current.remove(perspective.getPerspectiveID()));
+			}
+		}
+		for (int i = blackList.nextSetBit(0); i >= 0; i = blackList.nextSetBit(i + 1)) {
+			data.set(i, null); // clear out
+		}
+
+		// add new stuff
+		List<AScoreRow> added = new ArrayList<>(1);
+		for (String rowPerspectiveID : current) {
+			Perspective p = d.getTable().getRecordPerspective(rowPerspectiveID);
+			if (p.isDefault() || p.isPrivate())
+				continue;
+			// try to reuse old entries
+			// we have add some stuff
+			added.add(new StratificationPerspectiveRow(p, this));
+		}
+		if (added.isEmpty())
+			updateFilter();
+
+		snapshot = new TreeSet<>(d.getRecordPerspectiveIDs());
+		return added;
 	}
 
 	/**
@@ -91,16 +113,16 @@ public class StratificationDataDomainQuery extends ADataDomainQuery {
 	public TablePerspective asTablePerspective(Perspective p) {
 		ATableBasedDataDomain d = getDataDomain();
 
-		String dimensionPerspectiveID = getDimensionPerspectiveID();
+		String dimensionPerspectiveID = getDimensionSelection().getPerspectiveID();
 
-		boolean existsAlready = d.hasTablePerspective(p.getPerspectiveID(), dimensionPerspectiveID);
+		// boolean existsAlready = d.hasTablePerspective(p.getPerspectiveID(), dimensionPerspectiveID);
 
 		TablePerspective per = d.getTablePerspective(p.getPerspectiveID(), dimensionPerspectiveID);
 
 		// We do not want to overwrite the state of already existing
 		// public table perspectives.
-		if (!existsAlready)
-			per.setPrivate(true);
+		// if (!existsAlready)
+		// per.setPrivate(true);
 
 		return per;
 	}
@@ -121,26 +143,25 @@ public class StratificationDataDomainQuery extends ADataDomainQuery {
 	 * @return the dimensionSelection, see {@link #dimensionSelection}
 	 */
 	public Perspective getDimensionSelection() {
-		return dimensionSelection;
+		if (dimensionSelection != null)
+			return dimensionSelection;
+		for (Perspective p : getDimensionPerspectives()) {
+			if (p.isDefault())
+				continue;
+			return p;
+		}
+		return getDimensionPerspectives().iterator().next();
 	}
 
-	public void setMatches(String matches) {
-		if (Objects.equals(matches, this.matches))
-			return;
-		this.matches = matches;
-		updateFilter();
-	}
-
-	/**
-	 * @return the matches, see {@link #matches}
-	 */
-	public String getMatches() {
-		return matches;
-	}
 
 	@Override
 	public boolean hasFilter() {
-		return this.matches != null;
+		return false;
+	}
+
+	@Override
+	public boolean isFilteringPossible() {
+		return false;
 	}
 
 	/**
@@ -153,4 +174,15 @@ public class StratificationDataDomainQuery extends ADataDomainQuery {
 			return;
 		propertySupport.firePropertyChange(PROP_DIMENSION_SELECTION, dimensionSelection, dimensionSelection = d);
 	}
+
+	@Override
+	public void createSpecificColumns(RankTableModel table) {
+
+	}
+
+	@Override
+	public void removeSpecificColumns(RankTableModel table) {
+
+	}
+
 }

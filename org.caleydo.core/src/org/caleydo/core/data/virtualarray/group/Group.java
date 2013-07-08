@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.data.virtualarray.group;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -89,13 +75,28 @@ public class Group implements IDefaultLabelHolder {
 	 * Default Constructor
 	 */
 	public Group() {
+		init();
 	}
 
 	public Group(int size) {
 		this.setSize(size);
+		init();
 	}
 
-	{
+	/**
+	 * Initialize a clone of a group with the same size, ID and label. Start index may vary.
+	 *
+	 * TODO: this is not synchronous for changes
+	 * 
+	 * @param clone
+	 */
+	public Group(Group clone) {
+		this.id = clone.id;
+		this.size = clone.size;
+		this.label = clone.label;
+	}
+
+	private void init() {
 		id = GROUP_ID_COUNTER.getAndIncrement();
 		label = "Group " + id;
 	}
@@ -110,6 +111,7 @@ public class Group implements IDefaultLabelHolder {
 	 *            this group (i.e. the most typical element)
 	 */
 	public Group(int size, int representativeElementIndex) {
+		init();
 		this.setSize(size);
 		this.setRepresentativeElementIndex(representativeElementIndex);
 	}
@@ -127,6 +129,7 @@ public class Group implements IDefaultLabelHolder {
 	 *            group
 	 */
 	public Group(int size, int representativeElementIndex, ClusterNode clusterNode) {
+		init();
 		this.setSize(size);
 		this.setRepresentativeElementIndex(representativeElementIndex);
 		this.setClusterNode(clusterNode);
@@ -228,7 +231,7 @@ public class Group implements IDefaultLabelHolder {
 
 	@Override
 	public String toString() {
-		return "Group: " + groupIndex + ", size: " + size;
+		return "Group: " + groupIndex + ", size: " + size + ", id:" + id;
 	}
 
 	public void setPerspectiveID(String perspectiveID) {

@@ -1,9 +1,15 @@
+/*******************************************************************************
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 /**
- * 
+ *
  */
 package org.caleydo.core.io.gui.dataimport.wizard;
 
 import org.caleydo.core.io.DataSetDescription;
+import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -17,9 +23,9 @@ import org.eclipse.swt.widgets.List;
 
 /**
  * Page that is used to specify groupings for a dataset.
- * 
+ *
  * @author Christian Partl
- * 
+ *
  */
 public class AddGroupingsPage extends AImportDataPage {
 
@@ -67,6 +73,10 @@ public class AddGroupingsPage extends AImportDataPage {
 	 */
 	protected Button removeRowGroupingButton;
 
+	protected Group columnGroupingsGroup;
+
+	protected Group rowGroupingsGroup;
+
 	private AddGroupingsPageMediator mediator;
 
 	public AddGroupingsPage(DataSetDescription dataSetDescription) {
@@ -76,9 +86,9 @@ public class AddGroupingsPage extends AImportDataPage {
 	}
 
 	@Override
-	public void createControl(Composite parent) {
-
+	protected void createGuiElements(Composite parent) {
 		Composite parentComposite = new Composite(parent, SWT.NONE);
+		parentComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		parentComposite.setLayout(new GridLayout(2, true));
 
 		Label groupingDescriptionLabel = new Label(parentComposite, SWT.WRAP);
@@ -92,8 +102,6 @@ public class AddGroupingsPage extends AImportDataPage {
 		createGroupingGroup(parentComposite, "Row Groupings", false);
 
 		mediator.guiCreated();
-
-		setControl(parentComposite);
 	}
 
 	private void createGroupingGroup(Composite parent, String groupLabel,
@@ -188,6 +196,12 @@ public class AddGroupingsPage extends AImportDataPage {
 				}
 			});
 		}
+
+		if (isColumnGrouping) {
+			columnGroupingsGroup = groupingsGroup;
+		} else {
+			rowGroupingsGroup = groupingsGroup;
+		}
 	}
 
 	@Override
@@ -198,6 +212,11 @@ public class AddGroupingsPage extends AImportDataPage {
 	@Override
 	public void pageActivated() {
 		mediator.pageActivated();
+	}
+
+	@Override
+	public IWizardPage getPreviousPage() {
+		return getWizard().getChosenDataTypePage();
 	}
 
 }

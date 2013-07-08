@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.stratomex.brick.layout;
 
 import java.util.ArrayList;
@@ -68,6 +54,9 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	protected static final int CLUSTER_BUTTON_ID = 0;
 	protected static final int LOCK_RESIZING_BUTTON_ID = 1;
 	protected static final int REMOVE_COLUMN_BUTTON_ID = 2;
+
+	protected static final int DEFAULT_HANDLES = HandleRenderer.MOVE_HORIZONTALLY_HANDLE
+			| HandleRenderer.ALL_RESIZE_HANDLES | HandleRenderer.ALL_EXPAND_HANDLES;
 
 	// protected ArrayList<BrickViewSwitchingButton> viewSwitchingButtons;
 	protected List<ElementLayout> headerBarElements;
@@ -139,9 +128,12 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 		baseRow.setRenderer(borderedAreaRenderer);
 
+		if (handles == null) {
+			handles = DEFAULT_HANDLES;
+		}
+
 		baseRow.addForeGroundRenderer(new HandleRenderer(brick, HANDLE_SIZE_PIXELS, brick.getTextureManager(),
-				HandleRenderer.MOVE_HORIZONTALLY_HANDLE | HandleRenderer.ALL_RESIZE_HANDLES
-						| HandleRenderer.ALL_EXPAND_HANDLES));
+ handles));
 
 		ElementLayout spacingLayoutX = new ElementLayout("spacingLayoutX");
 		spacingLayoutX.setPixelSizeX(SPACING_PIXELS);
@@ -163,6 +155,7 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 			viewLayout.setZoomer(zoomer);
 		}
 		viewLayout.setRenderer(viewRenderer);
+		viewLayout.addForeGroundRenderer(innerBorderedAreaRenderer);
 
 		// captionRow.append(spacingLayoutX);
 
@@ -314,6 +307,7 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 				}
 			}, EPickingType.DIMENSION_GROUP_CLUSTER_BUTTON.name());
 		}
+		brick.addTypePickingTooltipListener("Cluster", EPickingType.DIMENSION_GROUP_CLUSTER_BUTTON.name());
 
 		Button removeColumnButton = new Button(EPickingType.REMOVE_COLUMN_BUTTON.name(), REMOVE_COLUMN_BUTTON_ID,
 				EIconTextures.REMOVE);
@@ -343,6 +337,7 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 				});
 			}
 		}, EPickingType.REMOVE_COLUMN_BUTTON.name());
+		brick.addTypePickingTooltipListener("Remove column", EPickingType.REMOVE_COLUMN_BUTTON.name());
 
 		return toolBar;
 	}
@@ -368,6 +363,7 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 				brickColumn.showDetailedBrick(brick, false);
 			}
 		}, EPickingType.EXPAND_RIGHT_HANDLE.name(), brick.getID());
+		brick.addIDPickingTooltipListener("Show in detail", EPickingType.EXPAND_RIGHT_HANDLE.name(), brick.getID());
 
 		brick.addIDPickingListener(new APickingListener() {
 
@@ -376,6 +372,7 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 				brickColumn.showDetailedBrick(brick, true);
 			}
 		}, EPickingType.EXPAND_LEFT_HANDLE.name(), brick.getID());
+		brick.addIDPickingTooltipListener("Show in detail", EPickingType.EXPAND_LEFT_HANDLE.name(), brick.getID());
 	}
 
 	@Override

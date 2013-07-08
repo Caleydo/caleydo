@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.stratomex.brick.configurer;
 
 import java.util.ArrayList;
@@ -27,6 +13,7 @@ import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
 import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormViewSwitchingBar;
+import org.caleydo.core.view.opengl.util.text.ITextRenderer;
 import org.caleydo.view.stratomex.EPickingType;
 import org.caleydo.view.stratomex.brick.GLBrick;
 import org.caleydo.view.stratomex.brick.layout.ABrickLayoutConfiguration;
@@ -84,7 +71,9 @@ public abstract class ATableBasedDataConfigurer extends ABrickConfigurer {
 				.getDimensionGroup().getID()));
 		pickingIDs.add(new Pair<String, Integer>(EPickingType.BRICK_TITLE.name(), layoutTemplate.getBrick().getID()));
 
+		ITextRenderer textRenderer = layoutTemplate.getBrick().getTextRenderer();
 		LabelRenderer captionRenderer = new LabelRenderer(layoutTemplate.getDimensionGroup().getStratomexView(),
+				textRenderer,
 				layoutTemplate.getBrick(), pickingIDs);
 		captionLayout.setRenderer(captionRenderer);
 
@@ -109,6 +98,7 @@ public abstract class ATableBasedDataConfigurer extends ABrickConfigurer {
 		pickingIDs.add(new Pair<String, Integer>(EPickingType.BRICK_TITLE.name(), layoutTemplate.getBrick().getID()));
 
 		LabelRenderer captionRenderer = new LabelRenderer(layoutTemplate.getDimensionGroup().getStratomexView(),
+				layoutTemplate.getBrick().getTextRenderer(),
 				layoutTemplate.getBrick(), pickingIDs);
 		captionLayout.setRenderer(captionRenderer);
 
@@ -131,7 +121,8 @@ public abstract class ATableBasedDataConfigurer extends ABrickConfigurer {
 				.getDimensionGroup().getID()));
 		pickingIDs.add(new Pair<String, Integer>(EPickingType.BRICK_TITLE.name(), layoutTemplate.getBrick().getID()));
 
-		LabelRenderer captionRenderer = new LabelRenderer(layoutTemplate.getDimensionGroup(),
+		ITextRenderer textRenderer = layoutTemplate.getBrick().getTextRenderer();
+		LabelRenderer captionRenderer = new LabelRenderer(layoutTemplate.getDimensionGroup(), textRenderer,
 				layoutTemplate.getBrick(), pickingIDs);
 		captionLayout.setRenderer(captionRenderer);
 
@@ -158,7 +149,9 @@ public abstract class ATableBasedDataConfigurer extends ABrickConfigurer {
 		pickingIDs.add(new Pair<String, Integer>(EPickingType.BRICK.name(), layoutTemplate.getBrick().getID()));
 		pickingIDs.add(new Pair<String, Integer>(EPickingType.BRICK_TITLE.name(), layoutTemplate.getBrick().getID()));
 
+		ITextRenderer textRenderer = layoutTemplate.getBrick().getTextRenderer();
 		LabelRenderer captionRenderer = new LabelRenderer(layoutTemplate.getDimensionGroup().getStratomexView(),
+				textRenderer,
 				layoutTemplate.getBrick(), pickingIDs);
 
 		captionLayout.setRenderer(captionRenderer);

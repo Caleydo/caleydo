@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.stratomex.column;
 
 import java.awt.Point;
@@ -29,8 +15,13 @@ import java.util.Queue;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.events.RecordVAUpdateEvent;
 import org.caleydo.core.data.virtualarray.events.RecordVAUpdateListener;
+import org.caleydo.core.event.EventListenerManager;
+import org.caleydo.core.event.EventListenerManager.ListenTo;
+import org.caleydo.core.event.EventListenerManagers;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.ViewManager;
@@ -65,7 +56,10 @@ import org.caleydo.view.stratomex.brick.layout.DefaultBrickLayoutTemplate;
 import org.caleydo.view.stratomex.brick.layout.DetailBrickLayoutTemplate;
 import org.caleydo.view.stratomex.brick.layout.HeaderBrickLayoutTemplate;
 import org.caleydo.view.stratomex.brick.ui.OverviewDetailBandRenderer;
+import org.caleydo.view.stratomex.event.SelectDimensionSelectionEvent;
 import org.eclipse.swt.widgets.Composite;
+
+import com.google.common.collect.Iterables;
 
 /**
  * Container for a group of dimensions. Manages layouts as well as brick views for the whole dimension group.
@@ -85,6 +79,11 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 	public final static int MIN_DETAIL_GAP_PIXEL = 10;
 	public final static float DETAIL_GAP_PORTION = 0.05f;
 	public final static int BETWEEN_BRICKS_SPACING = 10;
+
+	/**
+	 * marker color for {@link #setHighlightColor(float[])} to revert to the default color
+	 */
+	public final static float[] REVERT_COLOR = new float[] { 0, 0, 0, 0 };
 
 	/**
 	 * The brick at the top that shows information about and provides tools for interaction with the whole dimension
@@ -174,6 +173,8 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 
 	IBrickConfigurer brickConfigurer;
 
+	private final EventListenerManager eventListeners = EventListenerManagers.wrap(this);
+
 	public BrickColumn(IGLCanvas canvas, Composite parentComposite, ViewFrustum viewFrustum) {
 		super(canvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
@@ -193,6 +194,8 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 		mainRow.setXDynamic(true);
 		mainRow.setFrameColor(0, 0, 1, 1);
 		mainRow.sethAlign(HAlign.CENTER);
+
+		mainRow.addBackgroundRenderer(new FrameHighlightRenderer(null, false));
 
 		mainColumn = new Column("mainColumn");
 		mainColumn.setDebug(false);
@@ -239,6 +242,13 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 	}
 
 	/**
+	 * @return the brickConfigurer, see {@link #brickConfigurer}
+	 */
+	public IBrickConfigurer getBrickConfigurer() {
+		return brickConfigurer;
+	}
+
+	/**
 	 * Initializes the main column with either only the headerBrick, when the dimensionGroup is collapsed, or the
 	 * headerBrick and the clusterBricks.
 	 */
@@ -277,6 +287,10 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 			}
 		}
 		initMainColumn();
+	}
+
+	public boolean isActive() {
+		return headerBrick != null && headerBrick.isActive();
 	}
 
 	/**
@@ -535,6 +549,9 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 		layoutSizeCollisionListener = new LayoutSizeCollisionListener();
 		layoutSizeCollisionListener.setHandler(this);
 		eventPublisher.addListener(LayoutSizeCollisionEvent.class, layoutSizeCollisionListener);
+
+		eventListeners.register(this);
+
 	}
 
 	@Override
@@ -548,6 +565,7 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 			eventPublisher.removeListener(layoutSizeCollisionListener);
 			layoutSizeCollisionListener = null;
 		}
+		eventListeners.unregister(this);
 	}
 
 	/**
@@ -1173,5 +1191,29 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 	@Override
 	protected void destroyViewSpecificContent(GL2 gl) {
 		// Nothing to do here
+	}
+
+	@ListenTo(sendToMe = true)
+	private void onSelectDimensionSelection(SelectDimensionSelectionEvent event) {
+		Perspective current = getTablePerspective().getDimensionPerspective();
+		Perspective selected = event.getDim();
+		if (selected == current)
+			return;
+		TablePerspective new_ = getDataDomain().getTablePerspective(
+				getTablePerspective().getRecordPerspective().getPerspectiveID(), selected.getPerspectiveID());
+		getStratomexView().replaceTablePerspective(new_, getTablePerspective());
+	}
+
+	/**
+	 * @param fs
+	 */
+	public void setHighlightColor(float[] color) {
+		if (color == REVERT_COLOR)
+			color = isActive() ? SelectionType.SELECTION.getColor().getRGBA() : null;
+		FrameHighlightRenderer renderer = Iterables.getFirst(
+				Iterables.filter(getLayout().getBackgroundRenderer(), FrameHighlightRenderer.class), null);
+		if (renderer != null)
+			renderer.setColor(color);
+		return;
 	}
 }

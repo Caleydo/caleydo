@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.event;
 
 import java.lang.annotation.Documented;
@@ -51,7 +37,7 @@ public class EventListenerManager {
 	private final Set<AEventListener<?>> listeners = new HashSet<>();
 
 	protected final IListenerOwner owner;
-	// cache for classes (cannoical name) that has no relevant methods
+	// cache for classes (cannonical name) that has no relevant methods
 	private final Set<String> nothingFounds = new HashSet<>();
 
 	EventListenerManager(IListenerOwner owner) {
@@ -110,20 +96,16 @@ public class EventListenerManager {
 	 * @param stopAtClass
 	 */
 	public final <T> T register(T listener, String eventSpace, Predicate<? super Class<?>> scanWhile) {
-		Class<?> clazz = listener.getClass();
-		if (nothingFounds.contains(clazz.getCanonicalName())) // avoid scanning useless objects again
-			return listener;
-		boolean hasOne = scan(listener, listener, eventSpace, scanWhile);
-
-		if (!hasOne)
-			nothingFounds.add(clazz.getCanonicalName());
-
+		scan(listener, listener, eventSpace, scanWhile);
 		return listener;
 	}
 
 	protected boolean scan(Object root, Object listener, String eventSpace, Predicate<? super Class<?>> scanWhile) {
 		final Class<?> clazz = listener.getClass();
-		boolean hasOne = false;
+		if (nothingFounds.contains(clazz.getCanonicalName())) // avoid scanning useless objects again
+			return false;
+
+		boolean scanAgain = false; // marker whether we have to scan this type in future runs?
 		// scan all methods
 		for (Method m : Iterables.filter(ClassUtils.findAllDeclaredMethods(clazz, scanWhile), listenToMethod)) {
 			Class<? extends AEvent> event = m.getParameterTypes()[0].asSubclass(AEvent.class);
@@ -140,7 +122,7 @@ public class EventListenerManager {
 			}
 
 			register(event, l);
-			hasOne = true;
+			scanAgain = true;
 		}
 		// scan all fields for deep scans
 		for (Field f : Iterables.filter(ClassUtils.findAllDeclaredFields(clazz, scanWhile), deepScanField)) {
@@ -153,31 +135,35 @@ public class EventListenerManager {
 				System.err.println(e);
 				continue;
 			}
-			if (field == null)
+			if (field == null) {
+				scanAgain = true; // in a later run maybe not null anymore
 				continue;
+			}
 
 			if (field instanceof Collection<?>) {
 				@SuppressWarnings("unchecked")
 				Collection<Object> r = (Collection<Object>) field;
-				boolean hasFieldOne = scanAll(root, r, eventSpace, scanWhile);
-				hasOne = hasOne || hasFieldOne;
+				scanAll(root, r, eventSpace, scanWhile);
+				scanAgain = true; // collections may change
 			} else if (field instanceof Map<?, ?>) {
 				@SuppressWarnings("unchecked")
 				Map<?, Object> r = (Map<?, Object>) field;
-				boolean hasFieldOne = scanAll(root, r.values(), eventSpace, scanWhile);
-				hasOne = hasOne || hasFieldOne;
+				scanAll(root, r.values(), eventSpace, scanWhile);
+				scanAgain = true; // collections may change
 			} else if (field instanceof Multimap<?, ?>) {
 				@SuppressWarnings("unchecked")
 				Multimap<?, Object> r = (Multimap<?, Object>) field;
-				boolean hasFieldOne = scanAll(root, r.values(), eventSpace, scanWhile);
-				hasOne = hasOne || hasFieldOne;
+				scanAll(root, r.values(), eventSpace, scanWhile);
+				scanAgain = true; // collections may change
 			} else { // primitive
 				boolean hasFieldOne = scan(root, field, eventSpace, scanWhile);
-				hasOne = hasOne || hasFieldOne;
+				scanAgain = scanAgain || hasFieldOne;
 			}
 
 		}
-		return hasOne;
+		if (!scanAgain)
+			nothingFounds.add(clazz.getCanonicalName());
+		return scanAgain;
 	}
 
 	private boolean scanAll(Object root, Iterable<Object> listeners, String eventSpace,

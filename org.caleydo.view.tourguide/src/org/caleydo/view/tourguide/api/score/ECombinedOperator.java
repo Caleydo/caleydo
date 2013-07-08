@@ -1,27 +1,12 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.tourguide.api.score;
 
-import java.util.Arrays;
-
 import org.caleydo.core.util.base.ILabeled;
+import org.caleydo.vis.rank.model.mapping.JavaScriptFunctions;
 
 import com.google.common.base.Function;
 
@@ -71,43 +56,17 @@ public enum ECombinedOperator implements Function<float[], Float>, ILabeled {
 	}
 
 	public float combine(float[] data) {
-		float c = 0;
 		switch (this) {
 		case MAX:
-			if (data.length == 0)
-				return Float.NaN;
-			c = data[0];
-			for (int i = 1; i < data.length; ++i)
-				c = Math.max(c, data[i]);
-			return c;
+			return JavaScriptFunctions.max(data);
 		case MIN:
-			if (data.length == 0)
-				return Float.NaN;
-			c = data[0];
-			for (int i = 1; i < data.length; ++i)
-				c = Math.min(c, data[i]);
-			return c;
+			return JavaScriptFunctions.min(data);
 		case MEAN:
-			if (data.length == 0)
-				return 0;
-			c = 0;
-			for (int i = 0; i < data.length; ++i)
-				c += data[i];
-			return c / data.length;
+			return JavaScriptFunctions.mean(data);
 		case GEOMETRIC_MEAN:
-			if (data.length == 0)
-				return 1;
-			c = 1;
-			for (int i = 0; i < data.length; ++i)
-				c *= data[i];
-			return (float) Math.pow(c, 1. / data.length);
+			return JavaScriptFunctions.geometricMean(data);
 		case MEDIAN:
-			Arrays.sort(data);
-			int center = data.length / 2;
-			if (data.length % 2 == 0)
-				return 0.5f * (data[center] + data[center + 1]);
-			else
-				return data[center + 1];
+			return JavaScriptFunctions.median(data);
 		}
 		throw new IllegalStateException("unknown operator: " + this);
 	}

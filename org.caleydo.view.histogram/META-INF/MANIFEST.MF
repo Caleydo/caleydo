@@ -2,10 +2,9 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Graz University of Technology
 Bundle-SymbolicName: org.caleydo.view.histogram;singleton:=true
-Bundle-Version: 2.2
+Bundle-Version: 3.0
 Require-Bundle: org.caleydo.core;bundle-version="2.2"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Export-Package: org.caleydo.view.histogram,
- org.caleydo.view.histogram.command.handler
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.caleydo.view.histogram.Activator
+Export-Package: org.caleydo.view.histogram

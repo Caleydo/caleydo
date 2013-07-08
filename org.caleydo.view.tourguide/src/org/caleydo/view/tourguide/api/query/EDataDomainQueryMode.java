@@ -1,36 +1,25 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.tourguide.api.query;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
+import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
-import org.caleydo.core.data.datadomain.DataDomainOracle;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.util.base.DefaultLabelProvider;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
+import org.caleydo.view.tourguide.internal.model.InhomogenousDataDomainQuery;
+
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 
 /**
  * the mode in which the data domain query is see {@link DataDomainQuery}
@@ -38,8 +27,8 @@ import org.caleydo.datadomain.pathway.PathwayDataDomain;
  * @author Samuel Gratzl
  *
  */
-public enum EDataDomainQueryMode {
-	STRATIFICATIONS, PATHWAYS, NUMERICAL;
+public enum EDataDomainQueryMode implements Predicate<IDataDomain> {
+	STRATIFICATIONS, PATHWAYS, OTHER;
 
 	/**
 	 * @return
@@ -47,53 +36,62 @@ public enum EDataDomainQueryMode {
 	public String getLabel() {
 		switch (this) {
 		case STRATIFICATIONS:
-			return "Stratifications";
+			return "Stratification";
 		case PATHWAYS:
-			return "Pathways";
-		case NUMERICAL:
-			return "Numerical";
+			return "Pathway";
+		case OTHER:
+			return "Other";
 		}
 		throw new IllegalArgumentException("unknown me");
 	}
 
-	public boolean isCompatible(IDataDomain dataDomain) {
+	public boolean isDependent() {
+		return this != STRATIFICATIONS;
+	}
+
+	@Override
+	public boolean apply(IDataDomain dataDomain) {
 		switch(this) {
 		case PATHWAYS:
 			return dataDomain instanceof PathwayDataDomain;
 		case STRATIFICATIONS:
-			return dataDomain instanceof ATableBasedDataDomain;
-		case NUMERICAL:
-			return DataDomainOracle.isCategoricalDataDomain(dataDomain);
+			if (!(dataDomain instanceof ATableBasedDataDomain))
+				return false;
+			if (!((ATableBasedDataDomain) dataDomain).getTable().isDataHomogeneous())
+				return InhomogenousDataDomainQuery.hasOne(dataDomain, EDataClass.CATEGORICAL);
+			return true;
+		case OTHER:
+			return (dataDomain instanceof ATableBasedDataDomain && !((ATableBasedDataDomain) dataDomain).getTable()
+					.isDataHomogeneous()) && InhomogenousDataDomainQuery.hasOne(dataDomain, EDataClass.NATURAL_NUMBER);
 		}
 		throw new IllegalArgumentException("unknown me");
 	}
 
 	public Collection<? extends IDataDomain> getAllDataDomains() {
+		List<? extends IDataDomain> dataDomains;
 		switch(this) {
-		case STRATIFICATIONS:
-			List<ATableBasedDataDomain> dataDomains = new ArrayList<>(DataDomainManager.get().getDataDomainsByType(ATableBasedDataDomain.class));
-
-			for (Iterator<ATableBasedDataDomain> it = dataDomains.iterator(); it.hasNext();)
-				if (!it.next().getTable().isDataHomogeneous()) // remove inhomogenous
-					it.remove();
-
-			// Sort data domains alphabetically
-			Collections.sort(dataDomains, DefaultLabelProvider.BY_LABEL);
-			return dataDomains;
 		case PATHWAYS:
-			return DataDomainManager.get().getDataDomainsByType(PathwayDataDomain.class);
-		case NUMERICAL:
-			List<ATableBasedDataDomain> catDataDomains = new ArrayList<>(DataDomainManager.get().getDataDomainsByType(
-					ATableBasedDataDomain.class));
-
-			for (Iterator<ATableBasedDataDomain> it = catDataDomains.iterator(); it.hasNext();)
-				if (it.next().getTable().isDataHomogeneous()) // remove inhomogenous
-					it.remove();
-
-			// Sort data domains alphabetically
-			Collections.sort(catDataDomains, DefaultLabelProvider.BY_LABEL);
-			return catDataDomains;
+			dataDomains = DataDomainManager.get().getDataDomainsByType(PathwayDataDomain.class);
+			break;
+		default:
+			dataDomains = DataDomainManager.get().getDataDomainsByType(ATableBasedDataDomain.class);
+			break;
 		}
-		throw new IllegalArgumentException("unknown me");
+		dataDomains = Lists.newArrayList(Iterables.filter(dataDomains, this));
+		Collections.sort(dataDomains, DefaultLabelProvider.BY_LABEL);
+		return dataDomains;
+	}
+
+	/**
+	 * @param secondaryId
+	 * @return
+	 */
+	public static EDataDomainQueryMode valueOfSafe(String value) {
+		value = value.toLowerCase();
+		for (EDataDomainQueryMode mode : EDataDomainQueryMode.values()) {
+			if (value.contains(mode.name().toLowerCase()))
+				return mode;
+		}
+		return EDataDomainQueryMode.STRATIFICATIONS;
 	}
 }

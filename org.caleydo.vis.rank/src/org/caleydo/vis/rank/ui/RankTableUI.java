@@ -1,26 +1,11 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.vis.rank.ui;
 
-import java.awt.Color;
-
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
@@ -35,7 +20,9 @@ import org.caleydo.data.loader.ResourceLocators;
 import org.caleydo.vis.rank.config.IRankTableUIConfig;
 import org.caleydo.vis.rank.internal.ui.ButtonBar;
 import org.caleydo.vis.rank.layout.IRowHeightLayout;
+import org.caleydo.vis.rank.model.NestedRankColumnModel;
 import org.caleydo.vis.rank.model.RankTableModel;
+import org.caleydo.vis.rank.model.ScriptedRankColumnModel;
 import org.caleydo.vis.rank.model.StackedRankColumnModel;
 
 /**
@@ -72,27 +59,58 @@ public class RankTableUI extends GLElementContainer implements ISelectionCallbac
 				buttons.addButton(b);
 			}
 		}
+		buttons.add(new SimpleRankTableStatsElement(table));
 		buttons.addSpacer();
-		GLButton b = new GLButton();
-		b.setCallback(new ISelectionCallback() {
-			@Override
-			public void onSelectionChanged(GLButton button, boolean selected) {
-				StackedRankColumnModel m = new StackedRankColumnModel();
-				m.setWidth(100);
-				table.add(m);
-			}
-		});
-		buttons.addButton(b, "Create an empty Stacked Combined Column", RenderStyle.ICON_ADD_STACKED,
-				RenderStyle.ICON_ADD_STACKED);
-		b = new GLButton();
-		b.setCallback(new ISelectionCallback() {
-			@Override
-			public void onSelectionChanged(GLButton button, boolean selected) {
-				table.addSnapshot(null);
-			}
-		});
-		buttons.addButton(b, "Create a new Separator Column", RenderStyle.ICON_ADD_SEPARATOR,
-				RenderStyle.ICON_ADD_SEPARATOR);
+		{
+			GLButton b = new GLButton();
+			b.setCallback(new ISelectionCallback() {
+				@Override
+				public void onSelectionChanged(GLButton button, boolean selected) {
+					StackedRankColumnModel m = new StackedRankColumnModel();
+					m.setWidth(100);
+					table.add(m);
+				}
+			});
+			buttons.addButton(b, "Create an empty Stacked Combined Column", RenderStyle.ICON_ADD_STACKED,
+					RenderStyle.ICON_ADD_STACKED);
+		}
+		{
+			GLButton b = new GLButton();
+			b.setCallback(new ISelectionCallback() {
+				@Override
+				public void onSelectionChanged(GLButton button, boolean selected) {
+					NestedRankColumnModel m = new NestedRankColumnModel();
+					m.setWidth(100);
+					table.add(m);
+				}
+			});
+			buttons.addButton(b, "Create an empty Nested Combined Column", RenderStyle.ICON_ADD_NESTED,
+					RenderStyle.ICON_ADD_NESTED);
+		}
+		{
+			GLButton b = new GLButton();
+			b.setCallback(new ISelectionCallback() {
+				@Override
+				public void onSelectionChanged(GLButton button, boolean selected) {
+					ScriptedRankColumnModel m = new ScriptedRankColumnModel();
+					m.setWidth(100);
+					table.add(m);
+				}
+			});
+			buttons.addButton(b, "Create an empty Scripted Combined Column", RenderStyle.ICON_ADD_SCRIPTED,
+					RenderStyle.ICON_ADD_SCRIPTED);
+		}
+		{
+			GLButton b = new GLButton();
+			b.setCallback(new ISelectionCallback() {
+				@Override
+				public void onSelectionChanged(GLButton button, boolean selected) {
+					table.addSnapshot(null);
+				}
+			});
+			buttons.addButton(b, "Create a new Separator Column", RenderStyle.ICON_ADD_SEPARATOR,
+					RenderStyle.ICON_ADD_SEPARATOR);
+		}
 
 		this.add(buttons);
 

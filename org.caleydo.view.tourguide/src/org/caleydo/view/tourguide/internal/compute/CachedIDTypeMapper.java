@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.tourguide.internal.compute;
 
 import java.util.HashMap;
@@ -32,14 +18,23 @@ import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 
 /**
+ * id type mapper cache that avoid looking up all {@link IIDTypeMapper} again and again
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
 public class CachedIDTypeMapper {
 
 	private final Table<IDType, IDType, IIDTypeMapper<Integer, Integer>> mappers = HashBasedTable.create();
 	private final Table<IDType, IDType, Predicate<Integer>> predicates = HashBasedTable.create();
 
+	/**
+	 * computes a predicate that check if a given id is available in the target {@link IDType}
+	 * 
+	 * @param source
+	 * @param target
+	 * @return
+	 */
 	public Predicate<Integer> in(final IDType source, final IDType target) {
 		if (source == target)
 			return Predicates.alwaysTrue();
@@ -66,6 +61,13 @@ public class CachedIDTypeMapper {
 		return mapper;
 	}
 
+	/**
+	 * returns the {@link IIDTypeMapper} for a given pair
+	 * 
+	 * @param source
+	 * @param target
+	 * @return
+	 */
 	public IIDTypeMapper<Integer, Integer> get(IDType source, IDType target) {
 		// find way
 		IIDTypeMapper<Integer, Integer> mapper = mappers.get(source, target);

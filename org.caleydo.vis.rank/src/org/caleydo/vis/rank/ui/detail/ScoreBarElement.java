@@ -1,29 +1,16 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.vis.rank.ui.detail;
 
-import java.awt.Color;
+
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
@@ -78,7 +65,7 @@ public class ScoreBarElement extends ValueElement {
 			if (collapseColor == null)
 				g.color(1 - v, 1 - v, 1 - v, 1);
 			else {
-				float[] rgb = collapseColor.getColorComponents(null);
+				float[] rgb = collapseColor.getRGB();
 				g.color(rgb[0], rgb[1], rgb[2], v);
 			}
 			g.fillRect(0, 1, w - 2, h - 2);
@@ -98,8 +85,11 @@ public class ScoreBarElement extends ValueElement {
 			if (inferred) {
 				g.gl.glLineStipple(1, (short) 0xAAAA);
 				g.gl.glEnable(GL2.GL_LINE_STIPPLE);
-				g.color(0, 0, 0, .5f).drawRect(1, h * 0.1f + 1, w * v - 1, h * 0.8f - 2);
+				g.color(0, 0, 0, .5f).drawRect(0, 1, w * v, h - 2);
 				g.gl.glDisable(GL2.GL_LINE_STIPPLE);
+			} else if (getRenderInfo().getBarOutlineColor() != null) {
+				// outline
+				g.color(getRenderInfo().getBarOutlineColor()).drawRect(0, 1, w * v, h - 2);
 			}
 
 			if (model.getTable().getSelectedRow() == r) { // is selected, render the value

@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.search.internal;
 
 import java.util.ArrayList;
@@ -72,6 +58,7 @@ import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowData;
@@ -154,6 +141,7 @@ public final class RcpSearchView extends CaleydoRCPViewPart {
 		resultsScrolled.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		resultsScrolled.setExpandVertical(true);
 		resultsScrolled.setExpandHorizontal(true);
+		resultsScrolled.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_BLUE));
 
 		results = new Composite(resultsScrolled, SWT.NONE);
 		results.setLayout(new GridLayout(1, false));
@@ -452,14 +440,14 @@ public final class RcpSearchView extends CaleydoRCPViewPart {
 	 */
 	private Group createResultTable(Composite composite, IDCategory category, final Map<IDType, Set<?>> foundIdTypes) {
 		Group group = new Group(results, SWT.SHADOW_ETCHED_IN);
-		group.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
-		group.setLayout(new GridLayout(1, true));
+		final GridData gd = new GridData(SWT.FILL, SWT.TOP, true, false);
+		group.setLayoutData(gd);
+		group.setLayout(new FillLayout());
 		group.setText(category.getCategoryName());
 
-		final TableViewer viewer = new TableViewer(group, SWT.FULL_SELECTION | SWT.BORDER | SWT.VIRTUAL);
+		final TableViewer viewer = new TableViewer(group, SWT.FULL_SELECTION | SWT.BORDER | SWT.VIRTUAL | SWT.NO_SCROLL);
 		viewer.getTable().setLinesVisible(true);
 		viewer.getTable().setHeaderVisible(true);
-		viewer.getTable().setLayoutData(new GridData(GridData.FILL_BOTH));
 		viewer.setContentProvider(ArrayContentProvider.getInstance());
 
 		SelectionTriggerListener listener = new SelectionTriggerListener(category);
@@ -504,6 +492,9 @@ public final class RcpSearchView extends CaleydoRCPViewPart {
 			}
 		});
 
+		// TableColumnLayout layout = new TableColumnLayout();
+		// viewer.getTable().setLayout(layout);
+
 		// add columns for every public type
 		for (final IDType type : types) {
 			TableViewerColumn col = createTableColumn(viewer, type.getTypeName());
@@ -523,10 +514,16 @@ public final class RcpSearchView extends CaleydoRCPViewPart {
 					return found ? Display.getCurrent().getSystemColor(SWT.COLOR_GRAY) : null;
 				}
 			});
+			// col.getColumn().pack();
+			// layout.setColumnData(col.getColumn(), new ColumnWeightData(col.getColumn().getWidth()));
 		}
 
 		createContextMenu(viewer, perspectives);
 
+		// // Pack the columns
+		// for (int i = 0, n = viewer.getTable().getColumnCount(); i < n; i++) {
+		// viewer.getTable().getColumn(i).pack();
+		// }
 		return group;
 	}
 

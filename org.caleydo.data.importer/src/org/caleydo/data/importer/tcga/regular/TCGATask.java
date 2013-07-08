@@ -1,33 +1,22 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.data.importer.tcga.regular;
 
 import java.io.File;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.logging.Logger;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.virtualarray.VirtualArray;
+import org.caleydo.core.serialize.ProjectMetaData;
 import org.caleydo.data.importer.tcga.ATCGATask;
 import org.caleydo.data.importer.tcga.Settings;
 import org.caleydo.data.importer.tcga.model.TCGADataSet;
@@ -74,6 +63,9 @@ public class TCGATask extends ATCGATask {
 		if (project.isEmpty())
 			return null;
 
+		if (settings.isDownloadOnly())
+			return null;
+
 		log.info("Building project file for tumor type " + tumorType + " for analysis run " + run);
 
 		Collection<ATableBasedDataDomain> dataDomains = loadProject(project);
@@ -89,13 +81,20 @@ public class TCGATask extends ATCGATask {
 		}
 
 		final String projectOutputPath = runSpecificOutputPath + run + "_" + tumorType + ".cal";
-		if (!saveProject(dataDomains, projectOutputPath)) {
+
+		ProjectMetaData metaData = ProjectMetaData.createDefault();
+		metaData.setName("TCGA " + tumorType.getName() + " Package");
+		DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT, Locale.ENGLISH);
+		metaData.set("Analysis Run", df.format(analysisRun));
+		metaData.set("Data Run", df.format(dataRun));
+		metaData.set("Tumor", tumorType.getLabel());
+		metaData.set("Report URL", settings.getReportUrl(analysisRun, tumorType));
+
+		if (!saveProject(dataDomains, projectOutputPath, metaData)) {
 			log.severe("Saving Project failed for tumor type " + tumorType + " for analysis run " + run);
 			return null;
 		}
 
-		if (settings.isDownloadOnly())
-			return null;
 		log.info("Built project file for tumor type " + tumorType + " for analysis run " + run);
 
 		project = null;
@@ -105,10 +104,9 @@ public class TCGATask extends ATCGATask {
 
 		String jnlpFileName = run + "_" + tumorType + ".jnlp";
 
-		JsonObject report = generateTumorReportLine(dataDomains, tumorType, analysisRun, jnlpFileName,
-				projectRemoteOutputURL);
-
 		generateJNLP(new File(settings.getJNLPOutputDirectory(), jnlpFileName), projectRemoteOutputURL);
+
+		JsonObject report = generateTumorReportLine(dataDomains, tumorType, analysisRun, projectRemoteOutputURL);
 
 		cleanUp(dataDomains);
 
@@ -118,8 +116,8 @@ public class TCGATask extends ATCGATask {
 
 
 	protected JsonObject generateTumorReportLine(Collection<ATableBasedDataDomain> dataDomains,
-			TumorType tumor, Date analysisRun,
-			String jnlpFileName, String projectOutputPath) {
+ TumorType tumor,
+			Date analysisRun, String projectOutputPath) {
 
 		AdditionalInfo addInfoMRNA = null;
 		AdditionalInfo addInfoMRNASeq = null;
@@ -131,7 +129,7 @@ public class TCGATask extends ATCGATask {
 		AdditionalInfo addInfoMethylation = null;
 		AdditionalInfo addInfoRPPA = null;
 
-		String jnlpURL = settings.getJNLPURL(jnlpFileName);
+		String jnlpURL = settings.getJNLPURL(Settings.format(analysisRun), tumor);
 
 		String firehoseReportURL = settings.getReportUrl(analysisRun, tumor);
 

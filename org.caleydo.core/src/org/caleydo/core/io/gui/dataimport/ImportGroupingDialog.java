@@ -1,3 +1,8 @@
+/*******************************************************************************
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 /**
  *
  */
@@ -11,15 +16,16 @@ import org.caleydo.core.gui.util.AHelpButtonDialog;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.io.GroupingParseSpecification;
+import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.io.gui.dataimport.PreviewTable.IPreviewCallback;
-import org.caleydo.core.io.gui.dataimport.widget.ICallback;
-import org.caleydo.core.io.gui.dataimport.widget.IProvider;
-import org.caleydo.core.io.gui.dataimport.widget.IntegerCallback;
 import org.caleydo.core.io.gui.dataimport.widget.LabelWidget;
 import org.caleydo.core.io.gui.dataimport.widget.LoadFileWidget;
 import org.caleydo.core.io.gui.dataimport.widget.RowConfigWidget;
+import org.caleydo.core.util.base.ICallback;
+import org.caleydo.core.util.base.IProvider;
+import org.caleydo.core.util.base.IntegerCallback;
 import org.caleydo.core.util.execution.SafeCallable;
-import org.caleydo.core.util.link.LinkHandler;
+import org.caleydo.core.util.system.BrowserUtils;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
@@ -100,9 +106,13 @@ public class ImportGroupingDialog extends AHelpButtonDialog implements SafeCalla
 	protected Control createDialogArea(Composite parent) {
 		int numGridCols = 2;
 
-		parentComposite = new Composite(parent, SWT.NONE);
+		parentComposite = new Composite(parent, SWT.BORDER);
 		GridLayout layout = new GridLayout(numGridCols, false);
 		parentComposite.setLayout(layout);
+		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, true);
+		gd.widthHint = 600;
+		gd.heightHint = 650;
+		parentComposite.setLayoutData(gd);
 
 		loadFile = new LoadFileWidget(parentComposite, "Open Grouping File", new ICallback<String>() {
 			@Override
@@ -123,20 +133,25 @@ public class ImportGroupingDialog extends AHelpButtonDialog implements SafeCalla
 			public void on(int data) {
 				previewTable.onColumnOfRowIDChanged(data);
 			}
+		}, new ICallback<IDTypeParsingRules>() {
+			@Override
+			public void on(IDTypeParsingRules data) {
+				previewTable.setRowIDTypeParsingRules(data);
+			}
 		}, new IProvider<String>() {
 			@Override
 			public String get() {
-				return previewTable.getValue(rowConfig.getNumHeaderRows() + 1, rowConfig.getColumnOfRowID());
+				return previewTable.getValue(rowConfig.getNumHeaderRows(), rowConfig.getColumnOfRowID() - 1);
 			}
 		});
-		rowConfig.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
+		rowConfig.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 2, 1));
 
 		previewTable = new PreviewTable(parentComposite, this.spec, new IPreviewCallback() {
 			@Override
 			public void on(int numColumn, int numRow, List<? extends List<String>> dataMatrix) {
 				onPreviewChanged(numColumn, numRow, dataMatrix);
 			}
-		});
+		}, true);
 
 		init();
 
@@ -147,7 +162,7 @@ public class ImportGroupingDialog extends AHelpButtonDialog implements SafeCalla
 
 	@Override
 	protected void helpPressed() {
-		LinkHandler.openLink("http://www.icg.tugraz.at/project/caleydo/help/caleydo-2.0/loading-data");
+		BrowserUtils.openURL("http://www.icg.tugraz.at/project/caleydo/help/caleydo-2.0/loading-data");
 	}
 
 	@Override
@@ -236,14 +251,15 @@ public class ImportGroupingDialog extends AHelpButtonDialog implements SafeCalla
 		this.label.setEnabled(true);
 		this.rowConfig.setEnabled(true);
 
-		this.previewTable.generatePreview();
+		this.previewTable.generatePreview(true);
+		// this.parentComposite.layout(true, true);
 	}
 
 	protected void onPreviewChanged(int totalNumberOfColumns, int totalNumberOfRows,
 			List<? extends List<String>> dataMatrix) {
 		this.rowConfig.setMaxDimension(totalNumberOfColumns, totalNumberOfRows);
 		this.rowConfig.determineConfigFromPreview(dataMatrix, this.rowIDCategory);
-		parentComposite.pack();
+		// parentComposite.pack();
 		parentComposite.layout(true);
 	}
 }

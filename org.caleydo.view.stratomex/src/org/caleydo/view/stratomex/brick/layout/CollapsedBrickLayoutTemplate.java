@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.stratomex.brick.layout;
 
 import java.util.ArrayList;
@@ -50,6 +36,8 @@ public class CollapsedBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	protected static final int BUTTON_WIDTH_PIXELS = 16;
 	protected static final int HANDLE_SIZE_PIXELS = 10;
 	protected static final int FOOTER_BAR_HEIGHT_PIXELS = 4;
+
+	protected static final int DEFAULT_HANDLES = HandleRenderer.MOVE_VERTICALLY_HANDLE;
 
 	private static final int EXPAND_BUTTON_ID = 0;
 
@@ -116,8 +104,12 @@ public class CollapsedBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 		footerBar = createFooterBar();
 
+		if (handles == null) {
+			handles = DEFAULT_HANDLES;
+		}
+
 		baseRow.addForeGroundRenderer(new HandleRenderer(brick, 10, brick.getTextureManager(),
-				HandleRenderer.MOVE_VERTICALLY_HANDLE));
+ handles));
 
 		ElementLayout spacingLayoutX = new ElementLayout("spacingLayoutX");
 		spacingLayoutX.setPixelSizeX(SPACING_PIXELS);
@@ -202,7 +194,7 @@ public class CollapsedBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 			}
 		}, EPickingType.BRICK_EXPAND_BUTTON.name(), EXPAND_BUTTON_ID);
-
+		brick.addIDPickingTooltipListener("Expand", EPickingType.BRICK_EXPAND_BUTTON.name(), EXPAND_BUTTON_ID);
 	}
 
 	@Override

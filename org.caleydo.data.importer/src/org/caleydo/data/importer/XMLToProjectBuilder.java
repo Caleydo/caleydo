@@ -1,19 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
- * University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
- * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
- * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with this program. If not, see
- * <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.data.importer;
 
 import java.io.File;
@@ -31,6 +20,7 @@ import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.ProjectDescription;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ProjectManager;
+import org.caleydo.core.serialize.ProjectMetaData;
 import org.eclipse.core.runtime.NullProgressMonitor;
 
 /**
@@ -42,14 +32,14 @@ import org.eclipse.core.runtime.NullProgressMonitor;
  */
 public class XMLToProjectBuilder {
 	public Collection<ATableBasedDataDomain> buildProject(ProjectDescription projectDescription,
-			String projectFileOutputPath) {
+			String projectFileOutputPath, ProjectMetaData metaData) {
 		GeneralManager.get().setDryMode(true);
 
 		Collection<ATableBasedDataDomain> dataDomains = new ArrayList<>();
 
 		// Iterate over data type sets and trigger processing
 		for (DataSetDescription dataSetDescription : projectDescription.getDataSetDescriptionCollection()) {
-			ATableBasedDataDomain dataDomain = DataLoader.loadData(dataSetDescription);
+			ATableBasedDataDomain dataDomain = DataLoader.loadData(dataSetDescription, new NullProgressMonitor());
 			if (dataDomain != null)
 				dataDomains.add(dataDomain);
 			else
@@ -57,7 +47,7 @@ public class XMLToProjectBuilder {
 		}
 
 		try {
-			ProjectManager.save(projectFileOutputPath, true, dataDomains).run(new NullProgressMonitor());
+			ProjectManager.save(projectFileOutputPath, true, dataDomains, metaData).run(new NullProgressMonitor());
 		} catch (InvocationTargetException | InterruptedException e) {
 			throw new RuntimeException("Can't save project", e);
 		}
@@ -66,7 +56,7 @@ public class XMLToProjectBuilder {
 	}
 
 	public void buildProject(String xmlInputPath, String projectFileOutputPath) {
-		buildProject(deserialzeDataSetMetaInfo(xmlInputPath), projectFileOutputPath);
+		buildProject(deserialzeDataSetMetaInfo(xmlInputPath), projectFileOutputPath, ProjectMetaData.createDefault());
 	}
 
 	private static JAXBContext createJAXBContext() {

@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.view.opengl.layout.util;
 
 import java.util.List;
@@ -25,8 +11,9 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
+import org.caleydo.core.view.opengl.util.text.ITextRenderer;
 
 /**
  * Renders a text within the given bounds of the ElementLayout. The text is
@@ -67,39 +54,32 @@ public class LabelRenderer
 	 */
 	private boolean usePaddingBottom = false;
 
+	private final ITextRenderer textRenderer;
+
 	/**
 	 * @param view Rendering view.
 	 * @param text Text to render.
 	 * @param pickingType PickingType for the text.
 	 * @param id ID for picking.
 	 */
-	public LabelRenderer(AGLView view, ILabelProvider labelProvider, String pickingType, int id) {
+	protected LabelRenderer(AGLView view, ILabelProvider labelProvider, String pickingType, int id) {
 		super(view, pickingType, id);
+		this.textRenderer = view.getTextRenderer();
 		this.isPickable = true;
 		this.labelProvider = labelProvider;
 	}
 
-	public LabelRenderer(AGLView view, ILabelProvider labelProvider,
+	public LabelRenderer(AGLView view, ITextRenderer textRenderer, ILabelProvider labelProvider,
 			List<Pair<String, Integer>> pickingIDs) {
 		super(view, pickingIDs);
+		this.textRenderer = textRenderer;
 		this.isPickable = true;
 		this.labelProvider = labelProvider;
 	}
 
-	public LabelRenderer(AGLView view, String label, List<Pair<String, Integer>> pickingIDs) {
-		super(view, pickingIDs);
-		this.isPickable = true;
-		this.label = label;
-	}
-
-	public LabelRenderer(AGLView view, String label) {
-		this.isPickable = false;
+	public LabelRenderer(AGLView view, ITextRenderer textRenderer, ILabelProvider labelProvider) {
 		this.view = view;
-		this.label = label;
-	}
-
-	public LabelRenderer(AGLView view, ILabelProvider labelProvider) {
-		this.view = view;
+		this.textRenderer = textRenderer;
 		this.labelProvider = labelProvider;
 		this.isPickable = false;
 	}
@@ -175,11 +155,10 @@ public class LabelRenderer
 			popNames(gl);
 		}
 
-		CaleydoTextRenderer textRenderer = view.getTextRenderer();
 		float ySpacing = view.getPixelGLConverter().getGLHeightForPixelHeight(1);
 
-		textRenderer.setColor(0, 0, 0, 1);
-		float textWidth = textRenderer.getRequiredTextWidthWithMax(label, y - 2 * ySpacing, x);
+		textRenderer.setColor(Color.BLACK);
+		float textWidth = Math.min(textRenderer.getTextWidth(label, y - 2 * ySpacing), x);
 
 		float padding = 0;
 		if (usePaddingBottom)

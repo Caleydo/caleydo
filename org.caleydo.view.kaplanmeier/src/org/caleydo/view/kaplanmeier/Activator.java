@@ -1,27 +1,10 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.kaplanmeier;
 
-import java.util.ArrayList;
-
-import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
@@ -33,13 +16,10 @@ public class Activator extends Plugin {
 	// The shared instance
 	private static Activator plugin;
 
-
 	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
-
-		registerDataDomains();
 	}
 
 	@Override
@@ -50,17 +30,5 @@ public class Activator extends Plugin {
 
 	public static Activator getDefault() {
 		return plugin;
-	}
-
-	private void registerDataDomains() {
-		ArrayList<String> dataDomainTypes = new ArrayList<String>();
-
-		dataDomainTypes.add("org.caleydo.datadomain.generic");
-
-		DataDomainManager
-				.get()
-				.getAssociationManager()
-				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
-						GLKaplanMeier.VIEW_TYPE);
 	}
 }

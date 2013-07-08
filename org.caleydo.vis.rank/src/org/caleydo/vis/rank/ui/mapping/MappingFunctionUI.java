@@ -1,28 +1,13 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.vis.rank.ui.mapping;
 
 import static org.caleydo.vis.rank.ui.RenderStyle.LABEL_HEIGHT;
 import static org.caleydo.vis.rank.ui.RenderStyle.binsForWidth;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,7 +18,8 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.event.EventListenerManager.ListenTo;
-import org.caleydo.core.io.gui.dataimport.widget.ICallback;
+import org.caleydo.core.util.base.ICallback;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.function.ArrayFloatList;
 import org.caleydo.core.util.function.FloatFunctions;
 import org.caleydo.core.util.function.FloatStatistics;
@@ -54,6 +40,8 @@ import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.data.loader.ResourceLocators;
+import org.caleydo.vis.rank.config.IRankTableUIConfig;
+import org.caleydo.vis.rank.config.RankTableUIConfigs;
 import org.caleydo.vis.rank.internal.event.CodeUpdateEvent;
 import org.caleydo.vis.rank.internal.ui.ButtonBar;
 import org.caleydo.vis.rank.model.DataUtils;
@@ -73,7 +61,7 @@ import org.eclipse.swt.widgets.Shell;
  *
  */
 public class MappingFunctionUI extends GLElementContainer implements GLButton.ISelectionCallback, IGLLayout,
-		GLComboBox.ISelectionCallback<EStandardMappings> {
+		GLComboBox.ISelectionCallback<EStandardMappings>, IHasUIConfig {
 
 	private static final float PADDING = 5;
 
@@ -99,9 +87,12 @@ public class MappingFunctionUI extends GLElementContainer implements GLButton.IS
 
 	private final RadioController radio = new RadioController(this);
 
+	private final IRankTableUIConfig config;
+
 	public MappingFunctionUI(IMappingFunction model, IFloatList data, Color color, Color bgColor,
-			ICallback<? super IMappingFunction> callback) {
+			ICallback<? super IMappingFunction> callback, IRankTableUIConfig config) {
 		this.callback = callback;
+		this.config = config;
 		this.model = model;
 		this.raw = data;
 		this.color = color;
@@ -136,6 +127,14 @@ public class MappingFunctionUI extends GLElementContainer implements GLButton.IS
 		this.add(buttons);
 
 		setLayout(this);
+	}
+
+	/**
+	 * @return the config, see {@link #config}
+	 */
+	@Override
+	public IRankTableUIConfig getConfig() {
+		return config;
 	}
 
 	private AMappingFunctionMode<?> getActive() {
@@ -452,8 +451,8 @@ public class MappingFunctionUI extends GLElementContainer implements GLButton.IS
 		IFloatList data = new ArrayFloatList(arr);
 		FloatStatistics s = FloatStatistics.of(data.iterator());
 		model.setActStatistics(s);
-		final MappingFunctionUI root = new MappingFunctionUI(model, data, Color.decode("#9ECAE1"),
-				Color.decode("#DEEBF7"), null);
+		final MappingFunctionUI root = new MappingFunctionUI(model, data, new Color("#9ECAE1"), new Color("#DEEBF7"),
+				null, RankTableUIConfigs.DEFAULT);
 		root.addMode(new PiecewiseMappingParallelUI(model, true));
 		root.addMode(new PiecewiseMappingCrossUI(model, true));
 

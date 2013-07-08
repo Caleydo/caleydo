@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.filterpipeline.representation;
 
 import java.util.ArrayList;
@@ -30,6 +16,7 @@ import org.caleydo.core.data.filter.Filter;
 import org.caleydo.core.data.filter.RecordMetaOrFilter;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.VirtualArray;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
@@ -49,8 +36,7 @@ public class FilterRepresentationMetaOr extends FilterRepresentation {
 
 	protected boolean sizesDirty = true;
 
-	public FilterRepresentationMetaOr(FilterPipelineRenderStyle renderStyle,
-			PickingManager pickingManager, int viewId) {
+	public FilterRepresentationMetaOr(FilterPipelineRenderStyle renderStyle, PickingManager pickingManager, int viewId) {
 		super(renderStyle, pickingManager, viewId);
 	}
 
@@ -66,11 +52,9 @@ public class FilterRepresentationMetaOr extends FilterRepresentation {
 		renderBasicShape(gl, textRenderer, renderStyle.FILTER_OR_COLOR);
 
 		for (int i = 0; i < subFilterSizes.length; ++i) {
-			gl.glPushName(pickingManager.getPickingID(viewId,
-					PickingType.FILTERPIPE_SUB_FILTER, i));
+			gl.glPushName(pickingManager.getPickingID(viewId, PickingType.FILTERPIPE_SUB_FILTER, i));
 			heightRight = vSize.y() * (subFilterSizes[i] / 100.f);
-			renderShape(gl, GL2.GL_QUADS, renderStyle.getFilterColorCombined(i),
-					Z_POS_BODY);
+			renderShape(gl, GL2.GL_QUADS, new Color(renderStyle.getFilterColorCombined(i)), Z_POS_BODY);
 			gl.glPopName();
 		}
 		gl.glPopName();
@@ -87,8 +71,7 @@ public class FilterRepresentationMetaOr extends FilterRepresentation {
 			heightRight = vSize.y() * (subFilterSizes[mouseOverItem] / 100.f);
 			gl.glLineWidth(SelectionType.MOUSE_OVER.getLineWidth());
 
-			renderShape(gl, GL.GL_LINE_LOOP, SelectionType.MOUSE_OVER.getColor(),
-					Z_POS_MARK);
+			renderShape(gl, GL.GL_LINE_LOOP, SelectionType.MOUSE_OVER.getColor(), Z_POS_MARK);
 		}
 
 		// reset height
@@ -96,14 +79,12 @@ public class FilterRepresentationMetaOr extends FilterRepresentation {
 
 		// render selection/mouseover if needed
 		if (selectionType != SelectionType.NORMAL && mouseOverItem < 0) {
-			gl.glLineWidth((selectionType == SelectionType.SELECTION) ? SelectionType.SELECTION
-					.getLineWidth() : SelectionType.MOUSE_OVER.getLineWidth());
+			gl.glLineWidth((selectionType == SelectionType.SELECTION) ? SelectionType.SELECTION.getLineWidth()
+					: SelectionType.MOUSE_OVER.getLineWidth());
 
-			renderShape(
-					gl,
-					GL.GL_LINE_LOOP,
-					(selectionType == SelectionType.SELECTION) ? SelectionType.SELECTION
-							.getColor() : SelectionType.MOUSE_OVER.getColor(), Z_POS_MARK);
+			renderShape(gl, GL.GL_LINE_LOOP,
+					(selectionType == SelectionType.SELECTION) ? SelectionType.SELECTION.getColor()
+							: SelectionType.MOUSE_OVER.getColor(), Z_POS_MARK);
 		}
 	}
 
@@ -112,10 +93,8 @@ public class FilterRepresentationMetaOr extends FilterRepresentation {
 
 		// TODO also handle dimension filter
 		@SuppressWarnings("unchecked")
-		VirtualArray input = filter
-				.getInput().clone();
-		ArrayList<Filter> filterList = ((RecordMetaOrFilter) filter.getFilter())
-				.getFilterList();
+		VirtualArray input = filter.getInput().clone();
+		ArrayList<Filter> filterList = ((RecordMetaOrFilter) filter.getFilter()).getFilterList();
 
 		subFilterSizes = new int[filterList.size()];
 		subFiltersPassedElements = new ArrayList<SortedSet<Integer>>(filterList.size());
@@ -148,8 +127,7 @@ public class FilterRepresentationMetaOr extends FilterRepresentation {
 	 * Calculate all intersections between every combination of subfilters
 	 */
 	private void calculateIntersections() {
-		System.out.println("Check intersections (" + elementsPassed.size()
-				+ " elements):");
+		System.out.println("Check intersections (" + elementsPassed.size() + " elements):");
 
 		intersections.clear();
 		int numSubFilters = subFilterSizes.length;
@@ -179,8 +157,7 @@ public class FilterRepresentationMetaOr extends FilterRepresentation {
 				System.out.println(s + "]");
 
 				// get output of first filter
-				SortedSet<Integer> intersection = new TreeSet<Integer>(
-						subFiltersPassedElements.get(currentFilters[0]));
+				SortedSet<Integer> intersection = new TreeSet<Integer>(subFiltersPassedElements.get(currentFilters[0]));
 
 				// remove all elements passing another filter not contained
 				// in the intersection
@@ -199,16 +176,13 @@ public class FilterRepresentationMetaOr extends FilterRepresentation {
 
 				// calculate intersection with remaining elements
 				for (int i = 1; i < count; ++i) {
-					intersection.retainAll(subFiltersPassedElements
-							.get(currentFilters[i]));
+					intersection.retainAll(subFiltersPassedElements.get(currentFilters[i]));
 				}
 
-				System.out.println("Got intersection containing " + intersection.size()
-						+ " elements.");
+				System.out.println("Got intersection containing " + intersection.size() + " elements.");
 
 				if (!intersection.isEmpty()) {
-					Intersection curIntersection = new Intersection(
-							currentFilters.clone(), intersection.size());
+					Intersection curIntersection = new Intersection(currentFilters.clone(), intersection.size());
 
 					if (count == 1 && currentFilters[0] == numSubFilters - 1)
 						lastIntersection = curIntersection;

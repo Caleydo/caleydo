@@ -1,26 +1,14 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
- * University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
- * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
- * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with this program. If not, see
- * <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.io.parser.ascii;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
 
-import org.caleydo.core.gui.SWTGUIManager;
 import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.logging.Logger;
@@ -66,11 +54,6 @@ public abstract class ATextParser {
 	protected int stopParsingAtLine = Integer.MAX_VALUE;
 
 	/**
-	 * GUI manager used to update the progress bar.
-	 */
-	protected SWTGUIManager swtGuiManager;
-
-	/**
 	 * Constructor.
 	 */
 	public ATextParser(final String fileName) {
@@ -80,7 +63,6 @@ public abstract class ATextParser {
 	public ATextParser(final String fileName, ResourceLoader loader) {
 		this.filePath = fileName;
 		this.loader = loader;
-		this.swtGuiManager = GeneralManager.get().getSWTGUIManager();
 	}
 
 	/**
@@ -176,6 +158,7 @@ public abstract class ATextParser {
 		}
 		if (idTypeParsingRules.getSubStringExpression() != null) {
 			String[] splitID = sourceID.split(idTypeParsingRules.getSubStringExpression());
+			// first one found used
 			for (String result : splitID) {
 				if (!result.isEmpty()) {
 					sourceID = result;

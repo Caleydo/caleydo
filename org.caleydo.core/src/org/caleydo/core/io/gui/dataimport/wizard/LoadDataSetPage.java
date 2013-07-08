@@ -1,19 +1,27 @@
+/*******************************************************************************
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 /**
  *
  */
 package org.caleydo.core.io.gui.dataimport.wizard;
 
+import org.caleydo.core.gui.util.FontUtil;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.IDTypeParsingRules;
-import org.caleydo.core.io.gui.dataimport.widget.BooleanCallback;
 import org.caleydo.core.io.gui.dataimport.widget.DelimiterWidget;
-import org.caleydo.core.io.gui.dataimport.widget.ICallback;
 import org.caleydo.core.io.gui.dataimport.widget.LabelWidget;
 import org.caleydo.core.io.gui.dataimport.widget.LoadFileWidget;
-import org.caleydo.core.io.gui.dataimport.widget.PreviewTableWidget;
 import org.caleydo.core.io.gui.dataimport.widget.SelectAllNoneWidget;
+import org.caleydo.core.io.gui.dataimport.widget.table.INoArgumentCallback;
+import org.caleydo.core.io.gui.dataimport.widget.table.PreviewTableWidget;
+import org.caleydo.core.util.base.BooleanCallback;
+import org.caleydo.core.util.base.ICallback;
+import org.caleydo.core.util.base.IntegerCallback;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -42,11 +50,6 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 	public static final String PAGE_NAME = "Load Dataset";
 
 	public static final String PAGE_DESCRIPTION = "Specify the dataset you want to load.";
-
-	/**
-	 * Button to specify whether the dataset is homogeneous, i.e. all columns have the same scale.
-	 */
-	protected Button buttonHomogeneous;
 
 	/**
 	 * Combo box to specify the {@link IDCategory} for the columns of the dataset.
@@ -132,6 +135,24 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 	 */
 	protected DelimiterWidget delimiterRadioGroup;
 
+	/**
+	 * Button to determine whether the columns are homogeneous.
+	 */
+	protected Button homogeneousDatasetButton;
+
+	/**
+	 * Button to determine whether the columns are inhomogeneous.
+	 */
+	protected Button inhomogeneousDatasetButton;
+
+	protected Label columnIDCategoryLabel;
+
+	protected Label columnIDTypeLabel;
+
+	protected Label rowIDCategoryLabel;
+
+	protected Label rowIDTypeLabel;
+
 	protected SelectAllNoneWidget selectAllNone;
 
 	protected LoadFileWidget loadFile;
@@ -149,14 +170,32 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 		mediator = new LoadDataSetPageMediator(this, dataSetDescription);
 	}
 
+	//
+	// @Override
+	// public void createControl(Composite parent) {
+	//
+	// ScrolledComposite sc1 = new ScrolledComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL);
+	// sc1.setLayout(new GridLayout(1, true));
+	// sc1.setExpandHorizontal(true);
+	// sc1.setExpandVertical(true);
+	//
+	//
+	//
+	// parentComposite.pack();
+	// // parentComposite.setSize(parentComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+	// sc1.setMinSize(parentComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+	// // parentComposite.layout(true, true);
+	// // sc1.layout(true, true);
+	// // sc1.setMinSize(2000, 1500);
+	// setControl(sc1);
+	// }
+
 	@Override
-	public void createControl(Composite parent) {
-
-		int numGridCols = 2;
-
+	protected void createGuiElements(Composite parent) {
 		parentComposite = new Composite(parent, SWT.NONE);
-		GridLayout layout = new GridLayout(numGridCols, true);
+		GridLayout layout = new GridLayout(2, true);
 		parentComposite.setLayout(layout);
+		parentComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
 		// File Selection
 		loadFile = new LoadFileWidget(parentComposite, "Open Data File", new ICallback<String>() {
@@ -168,6 +207,47 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 
 		// label
 		label = new LabelWidget(parentComposite, "Dataset Name");
+
+		Group datasetConfigGroup = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
+		datasetConfigGroup.setText("Dataset Configuration");
+		datasetConfigGroup.setLayout(new GridLayout(3, false));
+		datasetConfigGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 3, 1));
+		Label homogenetyExplanation = new Label(datasetConfigGroup, SWT.WRAP);
+		homogenetyExplanation
+				.setText("Inhomogeneous datasets have a different meaning for every column and do not need to be of the same data type or identifier. For example, you could load a table where in one column contains the sex of patients while the next column contains their age.\n"
+						+ "In homogeneous datasets every column is of the same type and has the same bounds. For example, in a file with normalized gene expression data all columns are of the same type and have the same bounds. This is also true for categorical data where the cateogries are global across all columns. ");
+		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, false, 3, 1);
+		gd.widthHint = 400;
+		homogenetyExplanation.setLayoutData(gd);
+
+		Label chooseHomogenetyLabel = new Label(datasetConfigGroup, SWT.BOLD);
+		chooseHomogenetyLabel.setText("Choose Dataset Type:");
+
+		FontUtil.makeBold(chooseHomogenetyLabel);
+
+		homogeneousDatasetButton = new Button(datasetConfigGroup, SWT.RADIO);
+		homogeneousDatasetButton.setText("Homogeneous");
+
+		homogeneousDatasetButton.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false));
+		homogeneousDatasetButton.addListener(SWT.Selection, this);
+		homogeneousDatasetButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				mediator.onHomogeneousDatasetSelected(true);
+			}
+		});
+
+		inhomogeneousDatasetButton = new Button(datasetConfigGroup, SWT.RADIO);
+		inhomogeneousDatasetButton.setText("Inhomogeneous");
+
+		inhomogeneousDatasetButton.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false));
+		inhomogeneousDatasetButton.addListener(SWT.Selection, this);
+		inhomogeneousDatasetButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				mediator.onHomogeneousDatasetSelected(false);
+			}
+		});
 
 		// Row Config
 		createRowConfigPart(parentComposite);
@@ -190,30 +270,43 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 			}
 		});
 
-		previewTable = new PreviewTableWidget(parentComposite, new BooleanCallback() {
+		previewTable = new PreviewTableWidget(parentComposite, new IntegerCallback() {
+
 			@Override
-			public void on(boolean showAllColumns) {
-				mediator.onShowAllColumns(showAllColumns);
+			public void on(int data) {
+				mediator.setDataSetChanged(true);
+			}
+		}, true, new INoArgumentCallback() {
+
+			@Override
+			public void on() {
+				mediator.transposeFile();
 			}
 		});
+		// , new BooleanCallback() {
+		// @Override
+		// public void on(boolean showAllColumns) {
+		// mediator.onShowAllColumns(showAllColumns);
+		// }
+		// });
 
 		mediator.guiCreated();
 
-		setControl(parentComposite);
 	}
 
 	private void createRowConfigPart(Composite parent) {
 
 		Group rowConfigGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
 		rowConfigGroup.setText("Row Configuration");
+		rowConfigGroup.setToolTipText("Set the properties of the rows of the data file.");
 		rowConfigGroup.setLayout(new GridLayout(2, false));
-		rowConfigGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		rowConfigGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
 		Composite leftConfigGroupPart = new Composite(rowConfigGroup, SWT.NONE);
 		leftConfigGroupPart.setLayout(new GridLayout(2, false));
-		leftConfigGroupPart.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		leftConfigGroupPart.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
-		createIDCategoryGroup(leftConfigGroupPart, "Row ID Class", false);
+		createIDCategoryGroup(leftConfigGroupPart, "Row Type", false);
 		createIDTypeGroup(leftConfigGroupPart, false);
 
 		Label startParseAtLineLabel = new Label(leftConfigGroupPart, SWT.NONE);
@@ -223,7 +316,7 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 		numHeaderRowsSpinner.setMinimum(1);
 		numHeaderRowsSpinner.setMaximum(Integer.MAX_VALUE);
 		numHeaderRowsSpinner.setIncrement(1);
-		GridData gridData = new GridData(SWT.LEFT, SWT.FILL, false, true);
+		GridData gridData = new GridData(SWT.LEFT, SWT.FILL, false, false);
 		gridData.widthHint = 70;
 		numHeaderRowsSpinner.setLayoutData(gridData);
 		numHeaderRowsSpinner.addModifyListener(new ModifyListener() {
@@ -240,7 +333,7 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 		columnOfRowIDSpinner.setMinimum(1);
 		columnOfRowIDSpinner.setMaximum(Integer.MAX_VALUE);
 		columnOfRowIDSpinner.setIncrement(1);
-		gridData = new GridData(SWT.LEFT, SWT.FILL, false, true);
+		gridData = new GridData(SWT.LEFT, SWT.FILL, false, false);
 		gridData.widthHint = 70;
 		columnOfRowIDSpinner.setLayoutData(gridData);
 		columnOfRowIDSpinner.addModifyListener(new ModifyListener() {
@@ -252,7 +345,7 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 
 		Composite rightConfigGroupPart = new Composite(rowConfigGroup, SWT.NONE);
 		rightConfigGroupPart.setLayout(new GridLayout(2, false));
-		rightConfigGroupPart.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, false, true));
+		rightConfigGroupPart.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, false, false));
 
 		createRowIDCategoryButton = createNewIDCategoryButton(rightConfigGroupPart);
 		createRowIDCategoryButton.addSelectionListener(new SelectionAdapter() {
@@ -302,14 +395,15 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 
 		Group columnConfigGroup = new Group(parent, SWT.NONE);
 		columnConfigGroup.setText("Column Configuration");
+		columnConfigGroup.setToolTipText("Set the properties of the columns of the data file.");
 		columnConfigGroup.setLayout(new GridLayout(2, false));
-		columnConfigGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		columnConfigGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
 		Composite leftConfigGroupPart = new Composite(columnConfigGroup, SWT.NONE);
 		leftConfigGroupPart.setLayout(new GridLayout(2, false));
-		leftConfigGroupPart.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		leftConfigGroupPart.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
-		createIDCategoryGroup(leftConfigGroupPart, "Column ID Class", true);
+		createIDCategoryGroup(leftConfigGroupPart, "Column Type", true);
 		createIDTypeGroup(leftConfigGroupPart, true);
 
 		Label rowOfColumnIDLabel = new Label(leftConfigGroupPart, SWT.NONE);
@@ -319,7 +413,7 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 		rowOfColumnIDSpinner.setMinimum(1);
 		rowOfColumnIDSpinner.setMaximum(Integer.MAX_VALUE);
 		rowOfColumnIDSpinner.setIncrement(1);
-		GridData gridData = new GridData(SWT.LEFT, SWT.FILL, false, true);
+		GridData gridData = new GridData(SWT.LEFT, SWT.FILL, false, false);
 		gridData.widthHint = 70;
 		rowOfColumnIDSpinner.setLayoutData(gridData);
 		rowOfColumnIDSpinner.addModifyListener(new ModifyListener() {
@@ -328,12 +422,11 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 				mediator.rowOfColumnIDSpinnerModified();
 			}
 		});
-
-		createDataPropertiesGroup(leftConfigGroupPart);
+		// createDataPropertiesGroup(leftConfigGroupPart);
 
 		Composite rightConfigGroupPart = new Composite(columnConfigGroup, SWT.NONE);
 		rightConfigGroupPart.setLayout(new GridLayout(2, false));
-		rightConfigGroupPart.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, false, true));
+		rightConfigGroupPart.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, false, false));
 
 		createColumnIDCategoryButton = createNewIDCategoryButton(rightConfigGroupPart);
 		createColumnIDCategoryButton.addSelectionListener(new SelectionAdapter() {
@@ -365,15 +458,20 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 
 	private void createIDTypeGroup(Composite parent, final boolean isColumnIDTypeGroup) {
 		Label idTypeLabel = new Label(parent, SWT.SHADOW_ETCHED_IN);
-		idTypeLabel.setText(isColumnIDTypeGroup ? "Column ID Type" : "Row ID Type");
+		idTypeLabel.setText(isColumnIDTypeGroup ? "Column Identifier" : "Row Identifier");
+
 		idTypeLabel.setLayoutData(new GridData(SWT.LEFT));
 		Combo idCombo = new Combo(parent, SWT.DROP_DOWN | SWT.READ_ONLY);
-		idCombo.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		idCombo.setToolTipText("Identifiers are used to identify rows and columns and map them to other datasets or query public databases.");
+
+		idCombo.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
 		if (isColumnIDTypeGroup) {
 			columnIDCombo = idCombo;
+			columnIDTypeLabel = idTypeLabel;
 		} else {
 			rowIDCombo = idCombo;
+			rowIDTypeLabel = idTypeLabel;
 		}
 
 		idCombo.addListener(SWT.Modify, this);
@@ -387,17 +485,22 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 	}
 
 	private void createIDCategoryGroup(Composite parent, String groupLabel, final boolean isColumnCategory) {
-		Label recordIDCategoryGroup = new Label(parent, SWT.SHADOW_ETCHED_IN);
-		recordIDCategoryGroup.setText(groupLabel);
-		recordIDCategoryGroup.setLayoutData(new GridData(SWT.LEFT));
+		Label idCategoryLabel = new Label(parent, SWT.SHADOW_ETCHED_IN);
+		idCategoryLabel.setText(groupLabel);
+
+		idCategoryLabel.setLayoutData(new GridData(SWT.LEFT));
 		Combo idCategoryCombo = new Combo(parent, SWT.DROP_DOWN | SWT.READ_ONLY);
-		idCategoryCombo.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		idCategoryCombo
+				.setToolTipText("ID classes define groups of ID types that can be mapped to each other. For example a 'gene' ID class could contain multiple ID types, such as 'ensemble ID' and 'gene short name' that can be mapped to each other.");
+		idCategoryCombo.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		idCategoryCombo.setText("<Please Select>");
 
 		if (isColumnCategory) {
 			columnIDCategoryCombo = idCategoryCombo;
+			columnIDCategoryLabel = idCategoryLabel;
 		} else {
 			rowIDCategoryCombo = idCategoryCombo;
+			rowIDCategoryLabel = idCategoryLabel;
 		}
 
 		idCategoryCombo.addModifyListener(new ModifyListener() {
@@ -407,14 +510,6 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 				mediator.idCategoryComboModified(isColumnCategory);
 			}
 		});
-	}
-
-	private void createDataPropertiesGroup(Composite parent) {
-
-		buttonHomogeneous = new Button(parent, SWT.CHECK);
-		buttonHomogeneous.setText("Columns use same Scale");
-		buttonHomogeneous.setEnabled(true);
-		buttonHomogeneous.setSelection(true);
 	}
 
 	/**
@@ -432,29 +527,18 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 
 	@Override
 	public boolean isPageComplete() {
-		if (loadFile.getFileName().isEmpty()) {
-			((DataImportWizard) getWizard()).setRequiredDataSpecified(false);
+		if (!mediator.isValidConfiguration())
 			return false;
-		}
-
-		if (rowIDCombo.getSelectionIndex() == -1) {
-			((DataImportWizard) getWizard()).setRequiredDataSpecified(false);
-			return false;
-		}
-
-		if (columnIDCombo.getSelectionIndex() == -1) {
-			((DataImportWizard) getWizard()).setRequiredDataSpecified(false);
-			return false;
-		}
-		((DataImportWizard) getWizard()).setRequiredDataSpecified(true);
 
 		return super.isPageComplete();
 	}
 
 	@Override
 	public IWizardPage getNextPage() {
-
-		return super.getNextPage();
+		if (inhomogeneousDatasetButton.getSelection()) {
+			return getWizard().getInhomogeneousDataPropertiesPage();
+		}
+		return getWizard().getDataSetTypePage();
 	}
 
 	@Override
@@ -465,6 +549,8 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 
 	@Override
 	public void pageActivated() {
+		getWizard().setChosenDataTypePage(null);
+		getWizard().getContainer().updateButtons();
 	}
 
 }

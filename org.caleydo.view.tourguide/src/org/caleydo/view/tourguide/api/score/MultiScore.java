@@ -1,25 +1,11 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.tourguide.api.score;
 
-import java.awt.Color;
+import org.caleydo.core.util.color.Color;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -40,14 +26,30 @@ import com.google.common.collect.Iterators;
  *
  */
 public class MultiScore extends DefaultLabelProvider implements IScore, Iterable<IScore> {
-	private Collection<IScore> children = new ArrayList<>();
-	private Color color;
-	private Color bgColor;
+	private final Collection<IScore> children = new ArrayList<>();
+	private final Color color;
+	private final Color bgColor;
+	/**
+	 * the combined modi for creating a combined rank column
+	 */
+	private final int combinedType;
 
 	public MultiScore(String label, Color color, Color bgColor) {
+		this(label, color, bgColor, 0);
+	}
+
+	public MultiScore(String label, Color color, Color bgColor, int combinedType) {
 		setLabel(label);
 		this.color = color;
 		this.bgColor = bgColor;
+		this.combinedType = combinedType;
+	}
+
+	/**
+	 * @return the combinedType, see {@link #combinedType}
+	 */
+	public int getCombinedType() {
+		return combinedType;
 	}
 
 	/**

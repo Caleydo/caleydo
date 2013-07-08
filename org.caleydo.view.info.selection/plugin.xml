@@ -34,9 +34,35 @@
    <extension
          point="org.eclipse.ui.commands">
       <command
-            defaultHandler="org.caleydo.view.info.selection.command.handler.OpenSelectionInfoHandler"
+            defaultHandler="org.caleydo.view.info.selection.OpenViewHandler"
             id="org.caleydo.view.info.selection.command.openselectioninfo"
             name="Selection Info">
       </command>
+   </extension>
+   <extension
+         point="org.caleydo.core.data.datadomain.ViewDataDomainAssociation">
+      <association
+            view="org.caleydo.view.info.selection">
+         <dataDomain
+               type="org.caleydo.datadomain.genetic">
+         </dataDomain>
+         <dataDomain
+               type="org.caleydo.datadomain.generic">
+         </dataDomain>
+      </association>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="org.caleydo.view.info.selection.external.ExternalPreferencePage"
+            id="org.caleydo.view.info.selection.external"
+            name="Selection">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="org.caleydo.view.info.selection.external.MyPreferences">
+      </initializer>
    </extension>
 </plugin>

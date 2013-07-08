@@ -1,3 +1,8 @@
+/*******************************************************************************
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.view.tourguide.internal.view.ui;
 
 import static org.caleydo.view.tourguide.internal.TourGuideRenderStyle.ICON_FILTER;
@@ -29,6 +34,7 @@ public abstract class ADataDomainElement extends GLButton implements GLButton.IS
 
 	public ADataDomainElement(ADataDomainQuery model) {
 		this.model = model;
+		setHasFilter(model.hasFilter());
 		setLayoutData(model);
 		setMode(EButtonMode.CHECKBOX);
 		setSize(-1, 18);
@@ -104,14 +110,14 @@ public abstract class ADataDomainElement extends GLButton implements GLButton.IS
 		}
 		DataDomainActions.add(creator, model.getDataDomain(), this, true);
 
-		context.showContextMenu(creator);
+		context.getSWTLayer().showContextMenu(creator);
 	}
 
 	/**
 	 * @param creator
 	 */
 	protected void createContextMenu(ContextMenuCreator creator) {
-		creator.addContextMenuItem(new GenericContextMenuItem("Edit Filter", new EditDataDomainFilterEvent().to(this)));
+		creator.addContextMenuItem(new GenericContextMenuItem("Edit filter", new EditDataDomainFilterEvent().to(this)));
 		creator.addSeparator();
 	}
 
@@ -126,11 +132,14 @@ public abstract class ADataDomainElement extends GLButton implements GLButton.IS
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
 		super.renderImpl(g, w, h);
-		g.color(model.getDataDomain().getColor()).fillRect(2, 2, 14, 14);
-		g.fillImage(getStandardIcon("checkbox", isSelected()), 0, 0, 18, 18);
+		if (isSelected())
+			g.color(model.getDataDomain().getColor()).fillRect(2, 2, 14, 14);
+		g.fillImage(getStandardIcon("checkbox", false), 0, 0, 18, 18);
+
 		float tw = Math.min(g.text.getTextWidth(getLabel(), 14), w - 18 - 18);
 		g.drawText(getLabel(), 18, 1, w - 18 - 18, 14);
-		g.fillImage(hasFilter ? ICON_FILTER : ICON_FILTER_DISABLED, 18 + tw + 2, 2, 12, 12);
+		if (model.isFilteringPossible())
+			g.fillImage(hasFilter ? ICON_FILTER : ICON_FILTER_DISABLED, 18 + tw + 2, 2, 12, 12);
 	}
 
 	protected String getLabel() {

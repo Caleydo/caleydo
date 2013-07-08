@@ -1,28 +1,15 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.data.importer.tcga.qualitycontrol;
 
 import java.io.File;
 import java.util.Collection;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.serialize.ProjectMetaData;
 import org.caleydo.data.importer.tcga.ATCGATask;
 import org.caleydo.data.importer.tcga.EDataSetType;
 import org.caleydo.data.importer.tcga.model.TCGADataSets;
@@ -55,7 +42,6 @@ public class TCGAQCTask extends ATCGATask {
 	@Override
 	public JsonElement compute() {
 		String jnlpOutputFolder = settings.getJNLPOutputDirectory();
-		String jnlpFileName = dataSetType + "_" + tumor + ".jnlp";
 
 		String projectOutputPath = settings.getDataDirectory(dataSetType.name()) + dataSetType + "_" + tumor
 				+ ".cal";
@@ -74,14 +60,17 @@ public class TCGAQCTask extends ATCGATask {
 			return null;
 		}
 
-		if (!saveProject(dataDomains, projectOutputPath)) {
+		ProjectMetaData metaData = ProjectMetaData.createDefault();
+
+		if (!saveProject(dataDomains, projectOutputPath, metaData)) {
 			return null;
 		}
 
 		String projectRemoteOutputURL = settings.getTcgaServerURL() + dataSetType + "/" + dataSetType + "_" + tumor
 				+ ".cal";
 
-		JsonElement report = generateTumorReportLine(dataDomains, tumor, jnlpFileName, projectRemoteOutputURL);
+		String jnlpFileName = dataSetType + "_" + tumor + ".jnlp";
+		JsonElement report = generateTumorReportLine(dataDomains, projectRemoteOutputURL);
 
 		generateJNLP(new File(jnlpOutputFolder, jnlpFileName), projectRemoteOutputURL);
 
@@ -91,9 +80,9 @@ public class TCGAQCTask extends ATCGATask {
 	}
 
 	protected JsonElement generateTumorReportLine(Collection<ATableBasedDataDomain> dataDomains,
-			TumorType tumor, String jnlpFileName, String projectOutputPath) {
+			String projectOutputPath) {
 
-		String jnlpURL = settings.getJNLPURL(jnlpFileName);
+		String jnlpURL = settings.getJNLPURL(dataSetType.toString(), tumor);
 
 		JsonObject report = new JsonObject();
 		report.addProperty("tumorAbbreviation", tumor.getName());

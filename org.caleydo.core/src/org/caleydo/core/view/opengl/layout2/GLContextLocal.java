@@ -1,3 +1,8 @@
+/*******************************************************************************
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.view.opengl.layout2;
 
 import javax.media.opengl.GL2;
@@ -5,6 +10,8 @@ import javax.media.opengl.GLContext;
 import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.view.opengl.util.spline.TesselationRenderer;
+import org.caleydo.core.view.opengl.util.text.CompositeTextRenderer;
+import org.caleydo.core.view.opengl.util.text.ETextStyle;
 import org.caleydo.core.view.opengl.util.text.ITextRenderer;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.data.loader.ResourceLocators.IResourceLocator;
@@ -16,7 +23,9 @@ import org.caleydo.data.loader.ResourceLocators.IResourceLocator;
  *
  */
 public class GLContextLocal {
-	private final ITextRenderer text;
+	private final ITextRenderer text_plain;
+	private final ITextRenderer text_bold;
+	private final ITextRenderer text_italic;
 
 	private final TextureManager textures;
 
@@ -30,8 +39,23 @@ public class GLContextLocal {
 
 	private final TimeDelta timeDelta = new TimeDelta();
 
+	public GLContextLocal(TextureManager textures, IResourceLocator loader) {
+		this(createText(ETextStyle.PLAIN), createText(ETextStyle.BOLD), createText(ETextStyle.ITALIC), textures, loader);
+	}
+
+	private static ITextRenderer createText(ETextStyle style) {
+		return new CompositeTextRenderer(style, 8, 16, 24, 40);
+	}
+
 	public GLContextLocal(ITextRenderer text, TextureManager textures, IResourceLocator loader) {
-		this.text = text;
+		this(text, text, text, textures, loader);
+	}
+
+	public GLContextLocal(ITextRenderer text_plain, ITextRenderer text_bold, ITextRenderer text_italic,
+			TextureManager textures, IResourceLocator loader) {
+		this.text_plain = text_plain;
+		this.text_bold = text_bold;
+		this.text_italic = text_italic;
 		this.textures = textures;
 		this.loader = loader;
 	}
@@ -49,7 +73,21 @@ public class GLContextLocal {
 	 * @return the text, see {@link #text}
 	 */
 	public ITextRenderer getText() {
-		return text;
+		return text_plain;
+	}
+
+	/**
+	 * @return the text_bold, see {@link #text_bold}
+	 */
+	public ITextRenderer getText_bold() {
+		return text_bold;
+	}
+
+	/**
+	 * @return the text_italic, see {@link #text_italic}
+	 */
+	public ITextRenderer getText_italic() {
+		return text_italic;
 	}
 
 	/**

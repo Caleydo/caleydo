@@ -1,19 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org IContainer
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
- * University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
- * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
- * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with this program. If not, see
- * <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.data.collection.table;
 
 import java.util.ArrayList;
@@ -35,6 +24,7 @@ import org.caleydo.core.event.data.DataDomainUpdateEvent;
 import org.caleydo.core.io.NumericalProperties;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Algorithms;
+import org.caleydo.core.util.color.mapping.ColorMapper;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -76,6 +66,9 @@ public class Table {
 
 	/** The data domain holding this table */
 	private ATableBasedDataDomain dataDomain;
+
+	/** The color-mapper for this table */
+	private ColorMapper colorMapper;
 
 	/**
 	 * The transformation delivered when calling the {@link #getNormalizedValue(Integer, Integer)} method without and
@@ -259,6 +252,65 @@ public class Table {
 		}
 
 		return (RAW_DATA_TYPE) columns.get(columnID).getRaw(rowID);
+	}
+
+	/**
+	 * Returns the 3-component color for the given table cell. This works independent of the data type.
+	 *
+	 * FIXME: inhomogeneous numerical is not implemented
+	 *
+	 * @param dimensionID
+	 * @param recordID
+	 * @return
+	 */
+	public float[] getColor(Integer dimensionID, Integer recordID) {
+		if (isDataHomogeneous()) {
+			return getColorMapper().getColor(getNormalizedValue(dimensionID, recordID));
+		} else {
+			if (EDataClass.CATEGORICAL.equals(getDataClass(dimensionID, recordID))) {
+				CategoricalClassDescription<?> specific = (CategoricalClassDescription<?>) getDataClassSpecificDescription(
+						dimensionID, recordID);
+				Object category = getRaw(dimensionID, recordID);
+				return specific.getCategoryProperty(category).getColor().getRGBA();
+			} else {
+				// not implemented
+				throw new IllegalStateException("not implemented");
+			}
+		}
+
+	}
+
+	/**
+	 * <p>
+	 * Returns the ColorMapper for this dataset. Warning: this only works properly for homogeneous numerical datasets.
+	 * </p>
+	 * <p>
+	 * Use {@link Table#getColor(Integer, Integer)} instead if you want access to a cell's color - which works for all
+	 * data types.
+	 * </p>
+	 * TODO: move this to Table and provide separate interfaces for homogeneous and inhomogeneous datasets.
+	 *
+	 * @return the colorMapper, see {@link #colorMapper}
+	 */
+	public ColorMapper getColorMapper() {
+		if (colorMapper == null) {
+			if (this instanceof NumericalTable && ((NumericalTable) this).getDataCenter() != null) {
+				colorMapper = ColorMapper.createDefaultThreeColorMapper();
+			} else if (this instanceof CategoricalTable<?>) {
+				colorMapper = ((CategoricalTable<?>) this).createColorMapper();
+			} else {
+				colorMapper = ColorMapper.createDefaultTwoColorMapper();
+			}
+		}
+		return colorMapper;
+	}
+
+	/**
+	 * @param colorMapper
+	 *            setter, see {@link #colorMapper}
+	 */
+	public void setColorMapper(ColorMapper colorMapper) {
+		this.colorMapper = colorMapper;
 	}
 
 	/**

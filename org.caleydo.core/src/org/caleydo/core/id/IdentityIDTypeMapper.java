@@ -1,3 +1,8 @@
+/*******************************************************************************
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.id;
 
 import java.util.Collections;
@@ -46,11 +51,7 @@ final class IdentityIDTypeMapper<K, V> implements IIDTypeMapper<K, V> {
 	public boolean isMapAble(K sourceId) {
 		return sourceId != null;
 	}
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see java.lang.Object#hashCode()
-	 */
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -59,11 +60,6 @@ final class IdentityIDTypeMapper<K, V> implements IIDTypeMapper<K, V> {
 		return result;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -82,11 +78,6 @@ final class IdentityIDTypeMapper<K, V> implements IIDTypeMapper<K, V> {
 		return true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see java.lang.Object#toString()
-	 */
 	@Override
 	public String toString() {
 		return String.format("IdentityIDTypeMapper [sourceAndTarget=%s]", sourceAndTarget);

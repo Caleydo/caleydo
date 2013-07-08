@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.view.opengl.util.button;
 
 import gleem.linalg.Vec3f;
@@ -208,19 +194,19 @@ public class ButtonRenderer extends APickableLayoutRenderer {
 		switch (textureRotation) {
 		case TEXTURE_ROTATION_0:
 			textureManager.renderTexture(gl, button.getIconPath(), lowerLeftCorner, lowerRightCorner, upperRightCorner,
-					upperLeftCorner, 1, 1, 1, 1);
+					upperLeftCorner);
 			break;
 		case TEXTURE_ROTATION_90:
 			textureManager.renderTexture(gl, button.getIconPath(), lowerRightCorner, upperRightCorner, upperLeftCorner,
-					lowerLeftCorner, 1, 1, 1, 1);
+					lowerLeftCorner);
 			break;
 		case TEXTURE_ROTATION_180:
 			textureManager.renderTexture(gl, button.getIconPath(), upperRightCorner, upperLeftCorner, lowerLeftCorner,
-					lowerRightCorner, 1, 1, 1, 1);
+					lowerRightCorner);
 			break;
 		case TEXTURE_ROTATION_270:
 			textureManager.renderTexture(gl, button.getIconPath(), upperLeftCorner, lowerLeftCorner, lowerRightCorner,
-					upperRightCorner, 1, 1, 1, 1);
+					upperRightCorner);
 			break;
 		}
 

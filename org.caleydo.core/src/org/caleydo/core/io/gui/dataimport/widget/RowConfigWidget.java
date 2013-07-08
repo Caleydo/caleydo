@@ -1,22 +1,8 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.io.gui.dataimport.widget;
 
 import java.util.ArrayList;
@@ -27,6 +13,9 @@ import org.caleydo.core.id.IDType;
 import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.io.gui.dataimport.DefineIDParsingDialog;
+import org.caleydo.core.util.base.ICallback;
+import org.caleydo.core.util.base.IProvider;
+import org.caleydo.core.util.base.IntegerCallback;
 import org.caleydo.core.util.collection.Pair;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
@@ -68,7 +57,8 @@ public class RowConfigWidget {
 	private IDTypeParsingRules idTypeParsingRules;
 
 	public RowConfigWidget(Composite parent, final IntegerCallback onNumHeaderRowsChanged,
-			final IntegerCallback onColumnOfRowIDChanged, final IProvider<String> idSampleProvider) {
+			final IntegerCallback onColumnOfRowIDChanged, final ICallback<IDTypeParsingRules> onParsingRulesChanged,
+			final IProvider<String> idSampleProvider) {
 		this.idSampleProvider = idSampleProvider;
 		this.group = new Group(parent, SWT.SHADOW_ETCHED_IN);
 		group.setText("Row Configuration");
@@ -76,23 +66,27 @@ public class RowConfigWidget {
 
 		Composite leftConfigGroupPart = new Composite(group, SWT.NONE);
 		leftConfigGroupPart.setLayout(new GridLayout(3, false));
-		leftConfigGroupPart.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		leftConfigGroupPart.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
 		Label idCategoryLabel = new Label(leftConfigGroupPart, SWT.SHADOW_ETCHED_IN);
-		idCategoryLabel.setText("Row ID Class");
+		idCategoryLabel.setText("Row Type");
 		idCategoryLabel.setLayoutData(new GridData(SWT.LEFT));
 		this.categoryIDLabel = new Label(leftConfigGroupPart, SWT.NONE);
-		categoryIDLabel.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
+		categoryIDLabel.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 2, 1));
 
 		Label idTypeLabel = new Label(leftConfigGroupPart, SWT.SHADOW_ETCHED_IN);
-		idTypeLabel.setText("Row ID Type");
+		idTypeLabel.setText("Row Identifier");
 		idTypeLabel.setLayoutData(new GridData(SWT.LEFT));
 		this.rowIDCombo = new Combo(leftConfigGroupPart, SWT.DROP_DOWN | SWT.READ_ONLY);
-		rowIDCombo.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		rowIDCombo.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		rowIDCombo.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
 				idTypeParsingRules = null;
+				if (getIDType() != null) {
+					idTypeParsingRules = getIDType().getIdTypeParsingRules();
+				}
+				onParsingRulesChanged.on(idTypeParsingRules);
 			}
 		});
 
@@ -102,6 +96,7 @@ public class RowConfigWidget {
 			@Override
 			public void widgetSelected(SelectionEvent event) {
 				onDefineParsing();
+				onParsingRulesChanged.on(idTypeParsingRules);
 			}
 		});
 
@@ -113,7 +108,7 @@ public class RowConfigWidget {
 		numHeaderRowsSpinner.setMaximum(Integer.MAX_VALUE);
 		numHeaderRowsSpinner.setIncrement(1);
 		numHeaderRowsSpinner.setSelection(1);
-		GridData gridData = new GridData(SWT.LEFT, SWT.FILL, false, true, 2, 1);
+		GridData gridData = new GridData(SWT.LEFT, SWT.FILL, false, false, 2, 1);
 		gridData.widthHint = 70;
 		numHeaderRowsSpinner.setLayoutData(gridData);
 		numHeaderRowsSpinner.addModifyListener(new ModifyListener() {
@@ -132,7 +127,7 @@ public class RowConfigWidget {
 		columnOfRowIDSpinner.setMaximum(Integer.MAX_VALUE);
 		columnOfRowIDSpinner.setIncrement(1);
 		columnOfRowIDSpinner.setSelection(1);
-		gridData = new GridData(SWT.LEFT, SWT.FILL, false, true, 2, 1);
+		gridData = new GridData(SWT.LEFT, SWT.FILL, false, false, 2, 1);
 		gridData.widthHint = 70;
 		columnOfRowIDSpinner.setLayoutData(gridData);
 		columnOfRowIDSpinner.addModifyListener(new ModifyListener() {
@@ -230,7 +225,7 @@ public class RowConfigWidget {
 		for (int i = 0; i < dataMatrix.size(); i++) {
 			List<String> row = dataMatrix.get(i);
 			int numFloatsFound = 0;
-			for (int j = 0; j < row.size() && j < PreviewTableWidget.MAX_PREVIEW_TABLE_COLUMNS; j++) {
+			for (int j = 0; j < row.size(); j++) {
 				String text = row.get(j);
 				try {
 					// This currently only works for numerical values
@@ -252,7 +247,7 @@ public class RowConfigWidget {
 		List<String> idList = new ArrayList<String>();
 		for (int i = 0; i < dataMatrix.size() && i < MAX_CONSIDERED_IDS_FOR_ID_TYPE_DETERMINATION; i++) {
 			List<String> row = dataMatrix.get(i);
-			idList.add(row.get(this.columnOfRowIDSpinner.getSelection()));
+			idList.add(row.get(this.columnOfRowIDSpinner.getSelection() - 1));
 		}
 
 		float maxProbability = 0;
