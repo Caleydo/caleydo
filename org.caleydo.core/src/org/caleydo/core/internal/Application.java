@@ -190,6 +190,7 @@ public class Application implements IApplication {
 		if (workbench == null)
 			return;
 
+
 		final Display display = workbench.getDisplay();
 		display.syncExec(new Runnable() {
 			@Override
@@ -204,7 +205,14 @@ public class Application implements IApplication {
 
 	public void runStartup() {
 		assert startup != null;
-		startup.run();
+		// run the startup in an own thread but wait in the gui thread till its done
+		Thread t = new Thread(startup);
+		t.start();
+		Display display = Display.getCurrent();
+		while (t.isAlive() && !display.isDisposed()) {
+			if (!display.readAndDispatch())
+				display.sleep();
+		}
 	}
 
 	/**
