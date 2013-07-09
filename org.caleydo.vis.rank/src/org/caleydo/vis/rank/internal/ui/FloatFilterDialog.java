@@ -49,7 +49,7 @@ public class FloatFilterDialog extends AFilterDialog {
 	@Override
 	protected void createSpecificFilterUI(Composite composite) {
 		filterNotMappedUI = new Button(composite, SWT.CHECK);
-		filterNotMappedUI.setText("Filter not mapped entries?");
+		filterNotMappedUI.setText("Filter not Mapped entries?");
 		filterNotMappedUI.setLayoutData(twoColumns(new GridData(SWT.LEFT, SWT.CENTER, true, true)));
 		filterNotMappedUI.setSelection(filterNotMapped);
 
