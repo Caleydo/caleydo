@@ -110,8 +110,8 @@ public class ImportGroupingDialog extends AHelpButtonDialog implements SafeCalla
 		GridLayout layout = new GridLayout(numGridCols, false);
 		parentComposite.setLayout(layout);
 		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, true);
-		gd.widthHint = 600;
-		gd.heightHint = 650;
+		gd.widthHint = 900;
+		gd.heightHint = 670;
 		parentComposite.setLayoutData(gd);
 
 		loadFile = new LoadFileWidget(parentComposite, "Open Grouping File", new ICallback<String>() {

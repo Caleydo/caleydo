@@ -83,7 +83,7 @@ public final class SearchBox
 	 * class description lists the style constants that are applicable to the class. Style bits are also
 	 * inherited from superclasses.
 	 * </p>
-	 * 
+	 *
 	 * @param parent
 	 *            a widget which will be the parent of the new instance (cannot be null)
 	 * @param style
@@ -137,7 +137,7 @@ public final class SearchBox
 					comboEvent(event);
 					return;
 				}
-				if (getShell() == event.widget) {
+				if (!isDisposed() && getShell() == event.widget) {
 					handleFocus(SWT.FocusOut);
 				}
 			}
@@ -178,7 +178,7 @@ public final class SearchBox
 
 	/**
 	 * Adds the argument to the end of the receiver's list.
-	 * 
+	 *
 	 * @param string
 	 *            the new item
 	 * @exception IllegalArgumentException
@@ -206,7 +206,7 @@ public final class SearchBox
 	/**
 	 * Adds the listener to the collection of listeners who will be notified when the receiver's text is
 	 * modified, by sending it one of the messages defined in the <code>ModifyListener</code> interface.
-	 * 
+	 *
 	 * @param listener
 	 *            the listener which should be notified
 	 * @exception IllegalArgumentException
@@ -239,7 +239,7 @@ public final class SearchBox
 	 * <code>widgetDefaultSelected</code> is typically called when ENTER is pressed the combo's text area.
 	 * </p>
 	 * <ul>
-	 * 
+	 *
 	 * @param listener
 	 *            the listener which should be notified
 	 * @exception IllegalArgumentException
@@ -285,7 +285,7 @@ public final class SearchBox
 	 * <p>
 	 * Note: To clear the selected items in the receiver's list, use <code>deselectAll()</code>.
 	 * </p>
-	 * 
+	 *
 	 * @exception SWTException
 	 *                <ul>
 	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
@@ -404,7 +404,7 @@ public final class SearchBox
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public void deselect(int index) {
 		checkWidget();
@@ -412,7 +412,7 @@ public final class SearchBox
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public void deselectAll() {
 		checkWidget();
@@ -495,7 +495,7 @@ public final class SearchBox
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public boolean getEditable() {
 		checkWidget();
@@ -503,7 +503,7 @@ public final class SearchBox
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public String getItem(int index) {
 		checkWidget();
@@ -511,7 +511,7 @@ public final class SearchBox
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public int getItemCount() {
 		checkWidget();
@@ -519,7 +519,7 @@ public final class SearchBox
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public int getItemHeight() {
 		checkWidget();
@@ -527,7 +527,7 @@ public final class SearchBox
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public String[] getItems() {
 		checkWidget();
@@ -551,7 +551,7 @@ public final class SearchBox
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public Point getSelection() {
 		checkWidget();
@@ -559,7 +559,7 @@ public final class SearchBox
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public int getSelectionIndex() {
 		checkWidget();
@@ -573,7 +573,7 @@ public final class SearchBox
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public String getText() {
 		checkWidget();
@@ -581,7 +581,7 @@ public final class SearchBox
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public int getTextHeight() {
 		checkWidget();
@@ -589,7 +589,7 @@ public final class SearchBox
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public int getTextLimit() {
 		checkWidget();
@@ -597,7 +597,7 @@ public final class SearchBox
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public int getVisibleItemCount() {
 		checkWidget();
@@ -650,7 +650,7 @@ public final class SearchBox
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public int indexOf(String string) {
 		checkWidget();
@@ -661,7 +661,7 @@ public final class SearchBox
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public int indexOf(String string, int start) {
 		checkWidget();
@@ -926,7 +926,7 @@ public final class SearchBox
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	// public void remove(int index) {
 	// checkWidget();
@@ -941,7 +941,7 @@ public final class SearchBox
 	// list.remove(start, end);
 	// }
 	/**
-	 * 
+	 *
 	 */
 	public void remove(String string) {
 		checkWidget();
@@ -953,7 +953,7 @@ public final class SearchBox
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public void removeAll() {
 		checkWidget();
@@ -963,7 +963,7 @@ public final class SearchBox
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public void removeModifyListener(ModifyListener listener) {
 		checkWidget();
@@ -974,7 +974,7 @@ public final class SearchBox
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public void removeSelectionListener(SelectionListener listener) {
 		checkWidget();
@@ -986,7 +986,7 @@ public final class SearchBox
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public void select(int index) {
 		checkWidget();
@@ -1021,7 +1021,7 @@ public final class SearchBox
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public void setEditable(boolean editable) {
 		checkWidget();
@@ -1073,14 +1073,14 @@ public final class SearchBox
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	// public void setItem(int index, String string) {
 	// checkWidget();
 	// list.setItem(index, string);
 	// }
 	/**
-	 * 
+	 *
 	 */
 	public void setItems(String[] items) {
 		checkWidget();
@@ -1100,7 +1100,7 @@ public final class SearchBox
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	@Override
 	public void setLayout(Layout layout) {
@@ -1109,7 +1109,7 @@ public final class SearchBox
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public void setSelection(Point selection) {
 		checkWidget();
@@ -1120,7 +1120,7 @@ public final class SearchBox
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public void setText(String string) {
 		checkWidget();
@@ -1139,7 +1139,7 @@ public final class SearchBox
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public void setTextLimit(int limit) {
 		checkWidget();
@@ -1163,7 +1163,7 @@ public final class SearchBox
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public void setVisibleItemCount(int count) {
 		checkWidget();

@@ -67,7 +67,7 @@ public class StringFilterDialog extends AFilterDialog {
 		Image image = FieldDecorationRegistry.getDefault().getFieldDecoration(FieldDecorationRegistry.DEC_INFORMATION)
 				.getImage();
 		// Set description and image
-		deco.setDescriptionText("Edit filter " + hint);
+		deco.setDescriptionText("Edit Filter " + hint);
 		deco.setImage(image);
 		// Hide deco if not in focus
 		deco.setShowOnlyOnFocus(true);

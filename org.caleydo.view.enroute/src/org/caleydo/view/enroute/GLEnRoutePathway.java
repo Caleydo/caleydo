@@ -24,6 +24,7 @@ import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
 import org.caleydo.core.data.selection.IEventBasedSelectionManagerUser;
+import org.caleydo.core.data.selection.SelectionCommands;
 import org.caleydo.core.data.virtualarray.events.ClearGroupSelectionEvent;
 import org.caleydo.core.data.virtualarray.events.PerspectiveUpdatedEvent;
 import org.caleydo.core.data.virtualarray.group.GroupList;
@@ -47,9 +48,9 @@ import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
-import org.caleydo.core.view.opengl.layout.util.multiform.DefaultVisInfo;
-import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.picking.APickingListener;
+import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
@@ -219,10 +220,10 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		layoutManager = new LayoutManager(viewFrustum, pixelGLConverter);
 		layoutManager.setUseDisplayLists(true);
 		ElementLayout pathElementLayout = new ElementLayout();
-		MultiFormRenderer mr = new MultiFormRenderer(this, false);
-		mr.addLayoutRenderer(pathRenderer, null, new DefaultVisInfo(), true);
-		pathElementLayout.setPixelSizeX(pathRenderer.getMinWidthPixels());
-		pathElementLayout.setRenderer(mr);
+		// MultiFormRenderer mr = new MultiFormRenderer(this, false);
+		// mr.addLayoutRenderer(pathRenderer, null, new DefaultVisInfo(), true);
+		// pathElementLayout.setPixelSizeX(pathRenderer.getMinWidthPixels());
+		pathElementLayout.setRenderer(pathRenderer);
 		layoutManager.setBaseElementLayout(pathElementLayout);
 		layoutManager.updateLayout();
 
@@ -269,6 +270,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	@Override
 	public void display(GL2 gl) {
 
+		gl.glTranslatef(0, 0, 0.5f);
 		if (isLayoutDirty) {
 			layoutManager.updateLayout();
 		}
@@ -288,6 +290,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 				float topSpacing = pixelGLConverter.getGLWidthForPixelWidth(TOP_SPACING_MAPPED_DATA);
 
 				gl.glNewList(layoutDisplayListIndex, GL2.GL_COMPILE);
+				renderBackground(gl);
 				gl.glPushMatrix();
 				gl.glTranslatef(dataRowPositionX, topSpacing, 0);
 				mappedDataRenderer.renderBaseRepresentation(gl);
@@ -305,8 +308,23 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 			gl.glCallList(layoutDisplayListIndex);
 			gl.glCallList(displayListIndex);
 		}
-
+		gl.glTranslatef(0, 0, -0.5f);
 		checkForHits(gl);
+	}
+
+	private void renderBackground(GL2 gl) {
+		gl.glPushMatrix();
+		gl.glTranslatef(0, 0, -0.2f);
+		gl.glPushName(getPickingManager().getPickingID(getID(), EPickingType.BACKGROUND.name(), 0));
+		gl.glColor4f(1, 0, 0, 0);
+		gl.glBegin(GL2.GL_QUADS);
+		gl.glVertex3f(0, 0, 0);
+		gl.glVertex3f(0, viewFrustum.getHeight(), 0);
+		gl.glVertex3f(viewFrustum.getWidth(), viewFrustum.getHeight(), 0);
+		gl.glVertex3f(viewFrustum.getWidth(), 0, 0);
+		gl.glEnd();
+		gl.glPopName();
+		gl.glPopMatrix();
 	}
 
 	/**
@@ -448,7 +466,16 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		removeTablePerspectiveListener.setHandler(this);
 		removeTablePerspectiveListener.setEventSpace(pathwayPathEventSpace);
 		eventPublisher.addListener(RemoveTablePerspectiveEvent.class, removeTablePerspectiveListener);
+		registerPickingListeners();
+	}
 
+	public void registerPickingListeners() {
+		addIDPickingListener(new APickingListener() {
+			@Override
+			protected void clicked(Pick pick) {
+				SelectionCommands.clearSelections();
+			}
+		}, EPickingType.BACKGROUND.name(), 0);
 	}
 
 	@Override

@@ -325,7 +325,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 
 		recordSelectionManager.clearSelection(SelectionType.DESELECTED);
 		clearFilters();
-		triggerRecordFilterEvent(delta, "Removed via gates");
+		triggerRecordFilterEvent(delta, "Removed via Gates");
 
 	}
 

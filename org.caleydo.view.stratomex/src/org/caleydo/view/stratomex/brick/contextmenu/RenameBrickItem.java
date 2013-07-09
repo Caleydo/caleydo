@@ -12,7 +12,7 @@ public class RenameBrickItem extends AContextMenuItem {
 
 	public RenameBrickItem(Integer brickID) {
 
-		setLabel("Set name/ rename");
+		setLabel("Set Name/ Rename");
 
 		RenameEvent event = new RenameEvent(brickID);
 		event.setSender(this);

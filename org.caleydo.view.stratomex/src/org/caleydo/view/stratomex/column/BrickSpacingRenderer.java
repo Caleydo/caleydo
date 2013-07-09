@@ -10,6 +10,7 @@ import java.util.Set;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.data.selection.SelectionCommands;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -60,6 +61,11 @@ public class BrickSpacingRenderer
 				{
 					dragAndDropController.setDropArea(BrickSpacingRenderer.this);
 				}
+			}
+
+			@Override
+			protected void clicked(Pick pick) {
+				SelectionCommands.clearSelections();
 			}
 
 		}, EPickingType.BRICK_SPACER.name() + dimensionGroup.getID(), id);

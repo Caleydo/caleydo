@@ -31,6 +31,7 @@ import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
 import org.caleydo.core.data.selection.IEventBasedSelectionManagerUser;
+import org.caleydo.core.data.selection.SelectionCommands;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
@@ -990,6 +991,11 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 					}
 				}
 			}
+
+			@Override
+			protected void clicked(Pick pick) {
+				SelectionCommands.clearSelections();
+			}
 		}, EPickingType.DIMENSION_GROUP_SPACER.name());
 
 		addTypePickingListener(new APickingListener() {
@@ -1021,6 +1027,11 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 				for (BrickColumnSpacingRenderer manager : brickColumnManager.getBrickColumnSpacers().values())
 					manager.setHeaderHovered(false);
 				super.mouseOut(pick);
+			}
+
+			@Override
+			protected void clicked(Pick pick) {
+				SelectionCommands.clearSelections();
 			}
 		}, EPickingType.DIMENSION_GROUP_SPACER_HEADER.name());
 
