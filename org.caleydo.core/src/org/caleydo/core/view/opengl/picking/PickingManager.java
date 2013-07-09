@@ -8,6 +8,7 @@ package org.caleydo.core.view.opengl.picking;
 import java.awt.Point;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -373,8 +374,10 @@ public class PickingManager {
 
 		/* create 5x5 pixel picking region near cursor location */
 		GLU glu = new GLU();
-		glu.gluPickMatrix(pickPoint.x, (viewport[3] - pickPoint.y),//
+		Point shiftedPoint = glView.applyScrolling(pickPoint);
+		glu.gluPickMatrix(shiftedPoint.x, (viewport[3] - shiftedPoint.y),//
 				5.0, 5.0, viewport, 0); // pick width and height is set to 5
+		
 		// (i.e. picking tolerance)
 
 		float fAspectRatio = (float) (viewport[3] - viewport[1]) / (float) (viewport[2] - viewport[0]);
@@ -389,20 +392,16 @@ public class PickingManager {
 		// Reset picked point
 		pickPoint = null;
 
-		// FIXME: Bad hack trying to solve picking issues in scrolled views on Mac
-		if (System.getProperty("os.name").contains("Mac")) {
-			gl.glPushMatrix();
-			glView.applyScrolling(gl);
-			glView.display(gl);
-			gl.glPopMatrix();
-		} else {
-			glView.display(gl);
-		}
+		gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
+		gl.glPushMatrix();
+		gl.glLoadIdentity();
+		glView.display(gl);
+		gl.glPopMatrix();
 
 		gl.glMatrixMode(GLMatrixFunc.GL_PROJECTION);
 		gl.glPopMatrix();
 		gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
-
+		
 		iHitCount = gl.glRenderMode(GL2.GL_RENDER);
 		pickingBuffer.get(iArPickingBuffer);
 		// System.out.println("Picking Buffer: " + iArPickingBuffer[0]);
