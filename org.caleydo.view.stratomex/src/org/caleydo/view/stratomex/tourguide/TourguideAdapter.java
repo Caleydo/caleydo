@@ -764,7 +764,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 				} else { // update extra
 					BrickColumn extraPreview = wizardPreviews.get(0);
 					added = stratomex.addTablePerspectives(withL, config, extraPreview, true);
-					stratomex.removeTablePerspective(extraPreview.getTablePerspective());
+					stratomex.removeTablePerspective(wizardPreviews.get(1).getTablePerspective());
 					if (added.size() > 0) {
 						wizardPreviews.set(1, added.get(0).getSecond());
 					} else {
