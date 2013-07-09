@@ -134,6 +134,7 @@ public class DemoApplication implements IApplication {
 			menu2.add(new ShowView("Top 100 under 50 2012", "rankvis.demo.university.top100under50"));
 			menu2.add(new ShowView("Food Nutrition", "rankvis.demo.food"));
 			menu2.add(new ShowView("NASA Task Load Index User Study Results", "rankvis.demo.nasatxl"));
+			menu2.add(new ShowView("Kiva Lenders", "rankvis.demo.kivalenders"));
 
 			menuBar.add(menu2);
 

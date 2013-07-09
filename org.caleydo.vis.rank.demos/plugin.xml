@@ -65,6 +65,13 @@
             name="Food Nutrition"
             restorable="true">
       </view>
+      <view
+            allowMultiple="true"
+            category="org.caleydo.core.views"
+            class="kiva.KIVALendersResultsView"
+            id="rankvis.demo.kivalenders"
+            name="Kiva Lenders">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.perspectives">

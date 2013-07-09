@@ -18,7 +18,7 @@ import com.google.common.base.Function;
  */
 public class SizeRankColumnModel extends IntegerRankColumnModel {
 	public SizeRankColumnModel(String label, Function<IRow, Integer> data) {
-		super(GLRenderers.drawText(label, VAlign.CENTER), data);
+		super(data, GLRenderers.drawText(label, VAlign.CENTER));
 	}
 
 	public SizeRankColumnModel(SizeRankColumnModel copy) {

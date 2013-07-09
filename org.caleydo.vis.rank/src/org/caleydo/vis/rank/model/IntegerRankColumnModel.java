@@ -46,11 +46,11 @@ public class IntegerRankColumnModel extends ABasicFilterableRankColumnModel impl
 
 	private final NumberFormat formatter;
 
-	public IntegerRankColumnModel(IGLRenderer header, Function<IRow, Integer> data) {
-		this(header, data, Color.GRAY, new Color(.95f, .95f, .95f), NumberFormat.getInstance(Locale.ENGLISH));
+	public IntegerRankColumnModel(Function<IRow, Integer> data, IGLRenderer header) {
+		this(data, header, Color.GRAY, new Color(.95f, .95f, .95f), NumberFormat.getInstance(Locale.ENGLISH));
 	}
 
-	public IntegerRankColumnModel(IGLRenderer header, Function<IRow, Integer> data, Color color, Color bgColor,
+	public IntegerRankColumnModel(Function<IRow, Integer> data, IGLRenderer header, Color color, Color bgColor,
 			NumberFormat formatter) {
 		super(color, bgColor);
 		setHeaderRenderer(header);

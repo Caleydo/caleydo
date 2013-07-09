@@ -61,8 +61,8 @@ public class Top100Under50 implements IModelBuilder {
 		table.add(new CategoricalRankColumnModel<String>(GLRenderers.drawText("Country", VAlign.CENTER),
 				new ReflectionData<String>(field("country"), String.class), metaData));
 
-		table.add(new IntegerRankColumnModel(GLRenderers.drawText("Year Founded", VAlign.CENTER),
-				new ReflectionData<Integer>(field("yearFounded"), Integer.class), Color.GRAY, new Color(.95f, .95f,
+		table.add(new IntegerRankColumnModel(new ReflectionData<Integer>(field("yearFounded"), Integer.class),
+				GLRenderers.drawText("Year Founded", VAlign.CENTER), Color.GRAY, new Color(.95f, .95f,
 						.95f), null));
 
 		table.add(new StringRankColumnModel(GLRenderers.drawText("Location", VAlign.CENTER),
