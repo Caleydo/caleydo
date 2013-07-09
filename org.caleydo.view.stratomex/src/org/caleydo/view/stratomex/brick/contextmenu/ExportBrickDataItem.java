@@ -19,7 +19,7 @@ public class ExportBrickDataItem extends AContextMenuItem {
 
 	public ExportBrickDataItem(GLBrick brick, boolean exportIdentifiersOnly) {
 
-		setLabel(exportIdentifiersOnly ? "Export identifiers" : "Export data");
+		setLabel(exportIdentifiersOnly ? "Export Identifiers" : "Export Data");
 
 		ExportBrickDataEvent event = new ExportBrickDataEvent(brick, exportIdentifiersOnly);
 		event.setSender(this);

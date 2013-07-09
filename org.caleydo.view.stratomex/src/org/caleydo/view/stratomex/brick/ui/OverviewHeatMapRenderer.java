@@ -51,6 +51,8 @@ public class OverviewHeatMapRenderer extends ALayoutRenderer {
 		ArrayList<Average> averageDimensions = tablePerspective.getContainerStatistics().getAverageDimensions();
 
 		for (Average averageDimension : averageDimensions) {
+			if (averageDimension == null)
+				continue;
 			heatMapValuesMean.add((float) averageDimension.getArithmeticMean());
 			heatMapValuesMeanMinusStdDev.add((float) averageDimension.getArithmeticMean()
 					- (float) averageDimension.getStandardDeviation());

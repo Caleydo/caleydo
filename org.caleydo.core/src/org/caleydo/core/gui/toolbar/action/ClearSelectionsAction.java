@@ -5,12 +5,8 @@
  ******************************************************************************/
 package org.caleydo.core.gui.toolbar.action;
 
-import org.caleydo.core.data.selection.ESelectionCommandType;
-import org.caleydo.core.data.selection.SelectionCommand;
-import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.event.data.SelectionCommandEvent;
+import org.caleydo.core.data.selection.SelectionCommands;
 import org.caleydo.core.gui.SimpleAction;
-import org.caleydo.core.manager.GeneralManager;
 
 public class ClearSelectionsAction extends SimpleAction {
 
@@ -34,16 +30,6 @@ public class ClearSelectionsAction extends SimpleAction {
 		// resetSelectionTypesEvent.setSender(this);
 		// GeneralManager.get().getEventPublisher().triggerEvent(resetSelectionTypesEvent);
 
-		SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR);
-		command.setSelectionType(SelectionType.SELECTION);
-		SelectionCommandEvent commandEvent = new SelectionCommandEvent();
-		commandEvent.setSelectionCommand(command);
-		GeneralManager.get().getEventPublisher().triggerEvent(commandEvent);
-
-		command = new SelectionCommand(ESelectionCommandType.CLEAR);
-		command.setSelectionType(SelectionType.MOUSE_OVER);
-		commandEvent = new SelectionCommandEvent();
-		commandEvent.setSelectionCommand(command);
-		GeneralManager.get().getEventPublisher().triggerEvent(commandEvent);
+		SelectionCommands.clearSelections();
 	}
 }

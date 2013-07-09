@@ -37,15 +37,11 @@ import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
 import org.caleydo.core.view.opengl.util.draganddrop.IDropArea;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.dvi.GLDataViewIntegrator;
-import org.caleydo.view.dvi.contextmenu.ShowViewWithoutDataItem;
 import org.caleydo.view.dvi.layout.AGraphLayout;
 import org.caleydo.view.dvi.tableperspective.AMultiTablePerspectiveRenderer;
 import org.caleydo.view.dvi.tableperspective.PerspectiveRenderer;
 import org.caleydo.view.dvi.tableperspective.TablePerspectiveListRenderer;
 import org.caleydo.view.dvi.tableperspective.matrix.TablePerspectiveMatrixRenderer;
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExtensionRegistry;
-import org.eclipse.core.runtime.Platform;
 
 public class TableBasedDataNode extends ADataNode implements IDropArea {
 
@@ -190,48 +186,6 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 			}
 
 		}, DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id);
-
-		// FIXME: Bad hack
-		if (dataDomain.getLabel().toLowerCase().contains("copy")
-				|| dataDomain.getLabel().toLowerCase().contains("mutation")) {
-			final boolean isCopyNumber = dataDomain.getLabel().toLowerCase().contains("copy");
-
-			view.addIDPickingTooltipListener("To create a " + (isCopyNumber ? "copy number" : "mutation status")
-					+ " categorization for one gene use the Search view.", DATA_GRAPH_NODE_PICKING_TYPE, id);
-
-			view.addIDPickingListener(new APickingListener() {
-
-				@Override
-				public void rightClicked(Pick pick) {
-
-					IExtensionRegistry registry = Platform.getExtensionRegistry();
-					IConfigurationElement[] viewElements = registry.getConfigurationElementsFor("org.eclipse.ui.views");
-					boolean viewExists = false;
-					for (IConfigurationElement element : viewElements) {
-
-						String bundleID = element.getAttribute("id");
-						if (bundleID.startsWith("org.caleydo.view.search")) {
-							viewExists = true;
-							break;
-						}
-
-					}
-					if (viewExists) {
-						view.getContextMenuCreator().addContextMenuItem(
-								new ShowViewWithoutDataItem("org.caleydo.view.search",
-										"Create Categorization of a Gene's "
-												+ (isCopyNumber ? "Copy Number" : "Mutation") + " Status"));
-
-					}
-
-				}
-			}, DATA_GRAPH_NODE_PICKING_TYPE, id);
-		}
-		if (dataDomain.getLabel().contains("Clinical")) {
-			view.addIDPickingTooltipListener(
-					"To add clinical data to StratomeX use context menu of a data column in StratomeX.",
-					DATA_GRAPH_NODE_PICKING_TYPE, id);
-		}
 	}
 
 
