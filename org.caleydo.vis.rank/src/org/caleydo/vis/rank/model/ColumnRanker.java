@@ -371,15 +371,16 @@ public class ColumnRanker implements Iterable<IRow> {
 
 		@Override
 		public int compareTo(IntFloat o) {
-			boolean n1 = Float.isNaN(value);
-			boolean n2 = Float.isNaN(o.value);
-			if (n1 != n2)
-				return n1 ? 1 : -1;
-			int c = -Float.compare(value, o.value);
-			// if (c == 0)
-			// return Integer.compare(id, o.id);
-			return c;
+			return -nanCompare(value, o.value, false);
 		}
+	}
+
+	public static int nanCompare(float a, float b, boolean isNaNLarge) {
+		boolean n1 = Float.isNaN(a);
+		boolean n2 = Float.isNaN(b);
+		if (n1 != n2)
+			return (n1 ? 1 : -1) * (isNaNLarge ? 1 : -1);
+		return Float.compare(a, b);
 	}
 
 	public int getVisualRank(IRow row) {
