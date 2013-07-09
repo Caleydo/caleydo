@@ -8,6 +8,7 @@ package org.caleydo.core.view.opengl.canvas;
 import gleem.linalg.Vec3f;
 
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -183,7 +184,7 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	 * systems, as it currently requires manual translation of the view content since swt scroll bars are not working
 	 * properly.
 	 */
-	private int scrollX = 0;
+	private Rectangle scrollRect = new Rectangle(0, 0);
 
 	/**
 	 * Same as {@link #scrollX}, but for y direction.s
@@ -360,8 +361,7 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 			gl.glLoadIdentity();
 
 			gl.glPushMatrix();
-			gl.glTranslatef(pixelGLConverter.getGLWidthForPixelWidth(scrollX),
-					pixelGLConverter.getGLHeightForPixelHeight(scrollY), 0);
+			applyScrolling(gl);
 
 			// clear screen
 			gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
@@ -1348,22 +1348,22 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 
 	public void onScrolled(ViewScrollEvent event) {
 		if (System.getProperty("os.name").contains("Mac")) {
-			scrollX = -event.getOriginX();
-			scrollY = event.getOriginY();
+			this.scrollRect.x = event.getOriginX();
+			this.scrollRect.y = event.getOriginY();
+			this.scrollRect.width = event.getWidth();
+			this.scrollRect.height = event.getHeight();
 		}
 	}
 
-	/**
-	 * @return the scrollX, see {@link #scrollX}
-	 */
-	public int getScrollX() {
-		return scrollX;
-	}
-
-	/**
-	 * @return the scrollY, see {@link #scrollY}
-	 */
-	public int getScrollY() {
-		return scrollY;
+	public final void applyScrolling(GL2 gl) {
+		if (!System.getProperty("os.name").contains("Mac") || this.scrollRect.width <= 0 )
+			return;
+		float offsetx = pixelGLConverter.getGLWidthForPixelWidth(scrollRect.x);
+		int visibleHeight = pixelGLConverter.getPixelHeightForGLHeight(viewFrustum.getHeight());
+		float offsety = pixelGLConverter.getGLHeightForPixelHeight(visibleHeight - scrollRect.height - scrollRect.y);
+		//as we start with 0,0 in the LOWER left corner, we have to adapt the y offset
+		//System.out.println("canvas: "+visibleHeight+" real: "+scrollRect.height+ " offset: "+scrollRect.y+" "+offsety);
+		
+		gl.glTranslatef(-offsetx, -offsety, 0);
 	}
 }
