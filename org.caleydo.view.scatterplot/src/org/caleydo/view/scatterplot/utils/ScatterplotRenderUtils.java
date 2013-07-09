@@ -14,6 +14,7 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.TablePerspectiveSelectionMixin;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.view.scatterplot.GLScatterplot;
 import org.caleydo.view.scatterplot.ScatterplotElement;
 import org.caleydo.view.scatterplot.renderstyle.ScatterplotRenderStyle;
@@ -61,14 +62,18 @@ public class ScatterplotRenderUtils {
 	
 	private float zDepth = 10.0f;
 	
+	private CaleydoTextRenderer textRenderer;
+	
 	private boolean remoteRenderView;
 	
+	private String labelText;
 	
 	private ArrayList<Integer> idList;
 	
 	public ScatterplotRenderUtils(boolean _remoteRenderView) {
 		super();
 		this.remoteRenderView = _remoteRenderView;
+		textRenderer = new CaleydoTextRenderer(18);
 	}
 	
 	public void render(GL2 gl, ScatterplotElement scatterplotElement, float width, float height)
@@ -118,6 +123,9 @@ public class ScatterplotRenderUtils {
 		}
 		
 		computeDataRangeConstants(scatterplotElement.getDataColumns());
+		
+		this.labelText = "";
+		this.labelText += scatterplotElement.getDataSelectionConf().getAxisLabels().get(0) + " - " + scatterplotElement.getDataSelectionConf().getAxisLabels().get(1);
 	}
 	
 	
@@ -272,6 +280,8 @@ public class ScatterplotRenderUtils {
 			}			
 		}
 		gl.glEnd();		
+		
+		renderLabelText(gl, width, height, labelText);
 	}
 	
 	/**
@@ -372,6 +382,8 @@ public class ScatterplotRenderUtils {
 			}			
 		}
 		gl.glEnd();		
+		
+		renderLabelText(gl, width, height, labelText);
 	}
 	
 	/**
@@ -396,6 +408,30 @@ public class ScatterplotRenderUtils {
         gl.glEnd();
         
         gl.glDisable(GL2.GL_LINE_STIPPLE);
+	}
+	
+	private void renderLabelText(GL2 gl, float width, float height, String labelText)
+	{
+		float textHeight = 12;
+		float safetySpacing = 2;
+		//String labelText = "mean vs. stdDev";
+				
+		textRenderer.setColor(0, 0, 0, 1);
+		float linePositionY = 2;//height / 2.0f + textHeight * labelText.length() / 2.0f;
+		
+		float requiredWidth = textRenderer.getRequiredTextWidth(labelText, textHeight);
+		float linePositionX = 2;//width / 2.0f - requiredWidth / 2.0f;
+ 
+		gl.glPushMatrix();
+		gl.glTranslatef(linePositionX + ((requiredWidth + safetySpacing)/2.0f) , linePositionY + (textHeight / 2.0f), 15);
+		gl.glScalef(1f,-1f,0f);
+		//gl.glRotatef(90f, 0f,0f,1f);
+		gl.glTranslatef(-linePositionX - ((requiredWidth + safetySpacing)/2.0f), -linePositionY - (textHeight / 2.0f), -15);
+		textRenderer.renderTextInBounds(gl, labelText, linePositionX, linePositionY, 15, requiredWidth + safetySpacing, textHeight);
+		
+		gl.glPopMatrix();
+		
+		
 	}
 	
 	
