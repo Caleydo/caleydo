@@ -386,7 +386,7 @@ public class DifferenceplotRenderUtils {
 		}
 		gl.glEnd();		
 		
-		renderLabelText(gl, width, height, labelText);
+		//renderLabelText(gl, width, height, labelText);
 	}
 	
 	private void renderLowDetail(GL2 gl, DifferenceplotElement differenceplotElement, float width, float height, ArrayList<Boolean> significanceDiffFlags1, ArrayList<Boolean> significanceDiffFlags2)
