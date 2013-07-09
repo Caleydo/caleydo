@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
+import org.caleydo.core.io.DataDescriptionUtil;
 import org.caleydo.core.io.NumericalProperties;
 import org.caleydo.core.io.gui.dataimport.widget.CategoricalDataPropertiesWidget;
 import org.caleydo.core.io.gui.dataimport.widget.NumericalDataPropertiesWidget;
@@ -60,7 +61,6 @@ public class ColumnDataPropertiesDialog extends Dialog implements Listener {
 	private ScrolledComposite scrolledComposite;
 
 	private String columnCaption;
-
 
 	/**
 	 * @param parentShell
@@ -145,8 +145,6 @@ public class ColumnDataPropertiesDialog extends Dialog implements Listener {
 			}
 		});
 
-
-
 		if (numericalProperties != null) {
 			numericalDataButton.setSelection(true);
 			showNumericalDataWidgets();
@@ -154,7 +152,6 @@ public class ColumnDataPropertiesDialog extends Dialog implements Listener {
 			categoricalDataButton.setSelection(true);
 			showCategoricalDataWidgets();
 		}
-
 
 		scrolledComposite.setMinSize(850, 700);
 		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, true);
@@ -176,8 +173,6 @@ public class ColumnDataPropertiesDialog extends Dialog implements Listener {
 		// TODO Auto-generated method stub
 		return super.createButtonBar(parent);
 	}
-
-
 
 	private void showNumericalDataWidgets() {
 		if (categoricalDataPropertiesWidget != null) {
@@ -202,6 +197,7 @@ public class ColumnDataPropertiesDialog extends Dialog implements Listener {
 
 	}
 
+	@SuppressWarnings("unchecked")
 	private void showCategoricalDataWidgets() {
 
 		if (numericalDataPropertiesWidget != null) {
@@ -216,11 +212,12 @@ public class ColumnDataPropertiesDialog extends Dialog implements Listener {
 		if (categoricalDataPropertiesWidget == null) {
 			categoricalDataPropertiesWidget = new CategoricalDataPropertiesWidget(parentComposite);
 			if (categoricalClassDescription == null) {
-				categoricalDataPropertiesWidget.updateCategories(datasetMatrix, columnIndex);
-			} else {
-				categoricalDataPropertiesWidget.updateCategories(datasetMatrix, columnIndex,
-						categoricalClassDescription);
+				categoricalClassDescription = (CategoricalClassDescription<String>) DataDescriptionUtil
+						.createCategoricalDataDescription(datasetMatrix, columnIndex).getCategoricalClassDescription();
 			}
+
+			categoricalDataPropertiesWidget.updateCategories(datasetMatrix, columnIndex, categoricalClassDescription);
+
 			parentComposite.layout(true);
 		}
 		// parentComposite.pack();
