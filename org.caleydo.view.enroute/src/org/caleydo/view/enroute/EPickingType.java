@@ -22,7 +22,7 @@ public enum EPickingType {
 	LINEARIZABLE_NODE,
 	REMOVABLE_NODE,
 	REMOVE_NODE_BUTTON,
-
+	BACKGROUND,
 
 	/** Picking type for samples */
 	SAMPLE,
