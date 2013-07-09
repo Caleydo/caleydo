@@ -66,7 +66,7 @@ public class CatFilterDalog<CATEGORY_TYPE> extends AFilterDialog {
 		buttonComposite.setLayout(layout);
 		{
 			Label label = new Label(buttonComposite, SWT.WRAP);
-			label.setText("Selection items to include:");
+			label.setText("Selection Items to Include:");
 			data = new GridData(SWT.LEFT, SWT.CENTER, true, false);
 			data.horizontalSpan = 1;
 			label.setLayoutData(data);
@@ -84,7 +84,7 @@ public class CatFilterDalog<CATEGORY_TYPE> extends AFilterDialog {
 			selectButton.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false));
 			selectButton.addSelectionListener(listener);
 			Button deselectButton = new Button(buttonComposite, SWT.PUSH);
-			deselectButton.setText("Select &none");
+			deselectButton.setText("Select &None");
 			listener = new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {

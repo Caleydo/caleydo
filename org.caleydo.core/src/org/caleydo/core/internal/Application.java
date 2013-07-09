@@ -10,6 +10,8 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Properties;
 import java.util.TreeSet;
+import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.Semaphore;
 
 import org.caleydo.core.internal.gui.CaleydoProjectWizard;
 import org.caleydo.core.internal.startup.StartupAddons;
@@ -23,10 +25,14 @@ import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.osgi.service.datalocation.Location;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.activities.WorkbenchActivityHelper;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.kohsuke.args4j.ClassParser;
 import org.kohsuke.args4j.CmdLineException;
@@ -43,6 +49,7 @@ public class Application implements IApplication {
 	}
 
 	private IStartupProcedure startup;
+	private volatile boolean startupDone;
 
 	@Override
 	public Object start(IApplicationContext context) throws Exception {
@@ -206,13 +213,43 @@ public class Application implements IApplication {
 	public void runStartup() {
 		assert startup != null;
 		// run the startup in an own thread but wait in the gui thread till its done
-		Thread t = new Thread(startup);
+		final Runnable dummy = new Runnable() {
+			@Override
+			public void run() {
+				//mark as done
+				startupDone = true;
+			}
+		};
+		Thread t = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					startup.run();
+				} finally {
+					//notify and wake up main thread
+					Display.getDefault().asyncExec(dummy);
+				}
+			}
+		});
 		t.start();
-		Display display = Display.getCurrent();
-		while (t.isAlive() && !display.isDisposed()) {
+		final Display display = Display.getCurrent();
+		while (!startupDone && !display.isDisposed()) {
 			if (!display.readAndDispatch())
 				display.sleep();
 		}
+		//strange issue #1413 the workbench shell needs to be active to start running. Try to start it up
+		display.addFilter(SWT.Show, new Listener() {
+			
+			@Override
+			public void handleEvent(Event event) {
+				if (event.widget instanceof Shell) {
+					System.out.println("show: "+
+							((Shell)event.widget).getText());
+					display.removeFilter(SWT.Show, this);
+					((Shell)event.widget).forceActive();
+				}
+			}
+		});
 	}
 
 	/**

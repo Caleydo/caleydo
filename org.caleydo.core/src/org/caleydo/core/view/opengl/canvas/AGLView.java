@@ -10,6 +10,7 @@ import gleem.linalg.Vec3f;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -1358,12 +1359,28 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	public final void applyScrolling(GL2 gl) {
 		if (!System.getProperty("os.name").contains("Mac") || this.scrollRect.width <= 0 )
 			return;
-		float offsetx = pixelGLConverter.getGLWidthForPixelWidth(scrollRect.x);
-		int visibleHeight = pixelGLConverter.getPixelHeightForGLHeight(viewFrustum.getHeight());
-		float offsety = pixelGLConverter.getGLHeightForPixelHeight(visibleHeight - scrollRect.height - scrollRect.y);
+		int canvasWidth = parentGLCanvas.getWidth();
+		int canvasHeight = parentGLCanvas.getHeight();
+		int scrollWidth = scrollRect.width;
+		int scrollHeight = scrollRect.height;
+		boolean needsScrollBarX = canvasWidth > scrollWidth;
+		boolean needsScrollBarY = canvasHeight > scrollHeight;
+		int offsetx = scrollRect.x;
+		int offsety = canvasHeight - scrollHeight - scrollRect.y;
+		if (!needsScrollBarX)
+			offsetx = 0;
+		if (!needsScrollBarY)
+			offsety = 0;
+		float foffsetx = pixelGLConverter.getGLWidthForPixelWidth(offsetx);
+		float foffsety = pixelGLConverter.getGLHeightForPixelHeight(offsety);
 		//as we start with 0,0 in the LOWER left corner, we have to adapt the y offset
-		//System.out.println("canvas: "+visibleHeight+" real: "+scrollRect.height+ " offset: "+scrollRect.y+" "+offsety);
+		//System.out.println("canvas: "+canvasWidth+"/"+canvasHeight+" real: "+scrollRect.width+"/"+scrollRect.height+ " offset: "+scrollRect.x+"/"+scrollRect.y+" "+offsetx+"/"+offsety);
 		
-		gl.glTranslatef(-offsetx, -offsety, 0);
+		gl.glTranslatef(-foffsetx, -foffsety, 0);
+	}
+
+	public Point applyScrolling(Point pickPoint) {
+		//the point is already in the right relative coordinates
+		return pickPoint;
 	}
 }

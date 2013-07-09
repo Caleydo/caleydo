@@ -107,7 +107,7 @@ public abstract class AFilterDialog extends Window {
 	protected final void createApplyGlobally(Composite composite) {
 		if (hasSnapshots) {
 			filterGloballyUI = new Button(composite, SWT.CHECK);
-			filterGloballyUI.setText("Apply filter to all snapshots?");
+			filterGloballyUI.setText("Apply Filter to All Snapshots?");
 			filterGloballyUI.setLayoutData(twoColumns(new GridData(SWT.LEFT, SWT.CENTER, true, false)));
 			filterGloballyUI.setSelection(filterGlobally);
 			SelectionAdapter adapter = new SelectionAdapter() {
