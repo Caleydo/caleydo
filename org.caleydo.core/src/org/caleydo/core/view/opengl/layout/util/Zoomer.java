@@ -7,8 +7,8 @@ package org.caleydo.core.view.opengl.layout.util;
 
 import java.awt.Point;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
-import javax.media.opengl.GL2ES1;
 
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -89,8 +89,7 @@ public class Zoomer implements IMouseWheelHandler, IScrollBarUpdateHandler {
 		ElementLayout hScrollBarLayout = new ElementLayout("horizontalScrollBar");
 		hScrollBarLayout.setPixelSizeY(10);
 		hScrollBarLayout.setRatioSizeX(1.0f);
-		hScrollBarLayout
-.setRenderer(new ScrollBarRenderer(hScrollBar, parentView, true,
+		hScrollBarLayout.setRenderer(new ScrollBarRenderer(hScrollBar, parentView, true,
 				scrollBarDragAndDropController, Color.BLACK));
 
 		ElementLayout hSpacingLayout = new ElementLayout("horizontalSpacing");
@@ -136,22 +135,26 @@ public class Zoomer implements IMouseWheelHandler, IScrollBarUpdateHandler {
 		viewportPositionX = pixelGLConverter.getPixelWidthForCurrentGLTransform(gl);
 		viewportPositionY = pixelGLConverter.getPixelHeightForCurrentGLTransform(gl);
 
-		double[] clipPlane1 = new double[] { 0.0, 1.0, 0.0, 0.0 };
-		double[] clipPlane2 = new double[] { 1.0, 0.0, 0.0, 0.0 };
-		double[] clipPlane3 = new double[] { -1.0, 0.0, 0.0, parentLayout.getSizeScaledX() };
-		double[] clipPlane4 = new double[] { 0.0, -1.0, 0.0, parentLayout.getSizeScaledY() };
-
-		gl.glClipPlane(GL2ES1.GL_CLIP_PLANE0, clipPlane1, 0);
-		gl.glClipPlane(GL2ES1.GL_CLIP_PLANE1, clipPlane2, 0);
-		gl.glClipPlane(GL2ES1.GL_CLIP_PLANE2, clipPlane3, 0);
-		gl.glClipPlane(GL2ES1.GL_CLIP_PLANE3, clipPlane4, 0);
-		gl.glEnable(GL2ES1.GL_CLIP_PLANE0);
-		gl.glEnable(GL2ES1.GL_CLIP_PLANE1);
-		gl.glEnable(GL2ES1.GL_CLIP_PLANE2);
-		gl.glEnable(GL2ES1.GL_CLIP_PLANE3);
-
 		float x = parentLayout.getSizeScaledX();
 		float y = parentLayout.getSizeScaledY();
+
+		// double[] clipPlane1 = new double[] { 0.0, 1.0, 0.0, 0.0 };
+		// double[] clipPlane2 = new double[] { 1.0, 0.0, 0.0, 0.0 };
+		// double[] clipPlane3 = new double[] { -1.0, 0.0, 0.0, parentLayout.getSizeScaledX() };
+		// double[] clipPlane4 = new double[] { 0.0, -1.0, 0.0, parentLayout.getSizeScaledY() };
+		//
+		// gl.glClipPlane(GL2ES1.GL_CLIP_PLANE0, clipPlane1, 0);
+		// gl.glClipPlane(GL2ES1.GL_CLIP_PLANE1, clipPlane2, 0);
+		// gl.glClipPlane(GL2ES1.GL_CLIP_PLANE2, clipPlane3, 0);
+		// gl.glClipPlane(GL2ES1.GL_CLIP_PLANE3, clipPlane4, 0);
+		// gl.glEnable(GL2ES1.GL_CLIP_PLANE0);
+		// gl.glEnable(GL2ES1.GL_CLIP_PLANE1);
+		// gl.glEnable(GL2ES1.GL_CLIP_PLANE2);
+		// gl.glEnable(GL2ES1.GL_CLIP_PLANE3);
+		gl.glEnable(GL.GL_SCISSOR_TEST);
+		gl.glScissor(viewportPositionX, viewportPositionY, pixelGLConverter.getPixelWidthForGLWidth(x),
+				pixelGLConverter.getPixelHeightForGLHeight(y));
+		// gl.glScissor(viewportPositionX, viewportPositionY, 2000, 1000);
 
 		// System.out.println(currentZoomScale);
 
@@ -261,10 +264,11 @@ public class Zoomer implements IMouseWheelHandler, IScrollBarUpdateHandler {
 
 		previousZoomScale = currentZoomScale;
 
-		gl.glDisable(GL2ES1.GL_CLIP_PLANE0);
-		gl.glDisable(GL2ES1.GL_CLIP_PLANE1);
-		gl.glDisable(GL2ES1.GL_CLIP_PLANE2);
-		gl.glDisable(GL2ES1.GL_CLIP_PLANE3);
+		// gl.glDisable(GL2ES1.GL_CLIP_PLANE0);
+		// gl.glDisable(GL2ES1.GL_CLIP_PLANE1);
+		// gl.glDisable(GL2ES1.GL_CLIP_PLANE2);
+		// gl.glDisable(GL2ES1.GL_CLIP_PLANE3);
+		gl.glDisable(GL.GL_SCISSOR_TEST);
 
 		if (currentZoomScale == 1.0f)
 			return;
