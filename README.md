@@ -8,7 +8,7 @@ For user documentation and installation based on binaries please refer to the [C
 Installation
 ============
 
-see [Developer Instructions](wiki/Developer-Instructions)
+see [Developer Instructions](../../wiki/Developer-Instructions)
  
 Team
 ====
