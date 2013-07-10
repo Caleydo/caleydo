@@ -14,10 +14,26 @@ import gleem.linalg.Vec4f;
  *
  */
 public interface IPopupLayer {
+	/**
+	 * closeable popup
+	 */
 	int FLAG_CLOSEABLE = 1 << 0;
+	/**
+	 * resizeable popup
+	 */
 	int FLAG_RESIZEABLE = 1 << 1;
+	/**
+	 * moveable popup
+	 */
 	int FLAG_MOVEABLE = 1 << 2;
+	/**
+	 * border around the popup
+	 */
 	int FLAG_BORDER = 1 << 3;
+	/**
+	 * collapse by double clicking the header
+	 */
+	int FLAG_COLLAPSABLE = 1 << 4;
 	int FLAG_ALL = FLAG_CLOSEABLE | FLAG_RESIZEABLE | FLAG_MOVEABLE | FLAG_BORDER;
 
 	/**
