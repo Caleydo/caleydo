@@ -33,12 +33,18 @@ public class ImportStartupProcedure implements IStartupProcedure {
 
 	@Override
 	public void run() {
-		DataImportWizard dataImportWizard = createDataImportWizard();
+		Display.getDefault().syncExec(new Runnable() {
 
-		HelpButtonWizardDialog dialog = new HelpButtonWizardDialog(Display.getCurrent().getActiveShell(),
-				dataImportWizard);
+			@Override
+			public void run() {
+				DataImportWizard dataImportWizard = createDataImportWizard();
+				HelpButtonWizardDialog dialog = new HelpButtonWizardDialog(Display.getCurrent().getActiveShell(),
+						dataImportWizard);
 
-		dialog.open();
+				dialog.open();
+			}
+		});
+
 		return;
 	}
 
