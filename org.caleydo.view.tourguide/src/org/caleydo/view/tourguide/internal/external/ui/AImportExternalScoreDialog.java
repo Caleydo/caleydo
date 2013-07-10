@@ -84,6 +84,7 @@ public abstract class AImportExternalScoreDialog<T extends AExternalScoreParseSp
 		this(parentShell, null);
 	}
 
+	@SuppressWarnings("unchecked")
 	public AImportExternalScoreDialog(Shell parentShell,T existing) {
 		super(parentShell);
 		if (existing == null) {

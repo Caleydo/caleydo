@@ -17,12 +17,10 @@ import org.caleydo.core.id.IDType;
  *
  */
 public final class InhomogenousPerspectiveRow extends AVirtualArrayScoreRow implements ITablePerspectiveScoreRow {
-	private final InhomogenousDataDomainQuery query;
 	private final TablePerspective clinical;
 
-	public InhomogenousPerspectiveRow(TablePerspective clinical, InhomogenousDataDomainQuery query) {
+	public InhomogenousPerspectiveRow(TablePerspective clinical) {
 		this.clinical = clinical;
-		this.query = query;
 	}
 
 	@Override
