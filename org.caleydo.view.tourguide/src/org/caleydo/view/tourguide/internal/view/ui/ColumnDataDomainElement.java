@@ -46,7 +46,9 @@ public class ColumnDataDomainElement extends ADataDomainElement {
 				}
 			});
 		} else {
-			this.setSelection((Set<EDataType>) payload);
+			@SuppressWarnings("unchecked")
+			Set<EDataType> p = (Set<EDataType>) payload;
+			this.setSelection(p);
 		}
 	}
 

@@ -45,7 +45,9 @@ public class CategoricalDataDomainElement extends ADataDomainElement {
 				 }
 			 });
 		} else {
-			this.setSelection((Set<CategoryProperty<?>>) payload);
+			@SuppressWarnings("unchecked")
+			Set<CategoryProperty<?>> p = (Set<CategoryProperty<?>>) payload;
+			this.setSelection(p);
 		}
 	}
 
