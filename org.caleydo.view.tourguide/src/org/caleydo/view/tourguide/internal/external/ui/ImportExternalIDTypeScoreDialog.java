@@ -77,7 +77,7 @@ public class ImportExternalIDTypeScoreDialog extends AImportExternalScoreDialog<
 				return null;
 			}
 		});
-		rowConfig.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		rowConfig.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
 	}
 
 	@Override
