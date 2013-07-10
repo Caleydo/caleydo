@@ -10,7 +10,6 @@ import gleem.linalg.Vec3f;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -186,11 +185,6 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	 * properly.
 	 */
 	private Rectangle scrollRect = new Rectangle(0, 0);
-
-	/**
-	 * Same as {@link #scrollX}, but for y direction.s
-	 */
-	private int scrollY = 0;
 
 	private ViewScrollEventListener viewScrollEventListener;
 
