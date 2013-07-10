@@ -8,7 +8,6 @@ package org.caleydo.core.view.opengl.picking;
 import java.awt.Point;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -23,7 +22,6 @@ import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
-import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 
 import com.jogamp.common.nio.Buffers;

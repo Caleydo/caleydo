@@ -10,8 +10,6 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Properties;
 import java.util.TreeSet;
-import java.util.concurrent.CyclicBarrier;
-import java.util.concurrent.Semaphore;
 
 import org.caleydo.core.internal.gui.CaleydoProjectWizard;
 import org.caleydo.core.internal.startup.StartupAddons;
@@ -32,7 +30,6 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.activities.WorkbenchActivityHelper;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.kohsuke.args4j.ClassParser;
 import org.kohsuke.args4j.CmdLineException;

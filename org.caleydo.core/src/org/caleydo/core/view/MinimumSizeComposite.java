@@ -5,8 +5,6 @@
  ******************************************************************************/
 package org.caleydo.core.view;
 
-import java.awt.Rectangle;
-
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
 import org.caleydo.core.event.EventPublisher;
