@@ -107,9 +107,13 @@ public abstract class AImportExternalScoreDialog<T extends AExternalScoreParseSp
 	protected Control createDialogArea(Composite parent) {
 		int numGridCols = 2;
 
-		parentComposite = new Composite(parent, SWT.NONE);
+		parentComposite = new Composite(parent, SWT.BORDER);
 		GridLayout layout = new GridLayout(numGridCols, false);
 		parentComposite.setLayout(layout);
+		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, true);
+		gd.widthHint = 900;
+		gd.heightHint = 670;
+		parentComposite.setLayoutData(gd);
 
 		loadFile = new LoadFileWidget(parentComposite, "Open Score File", new ICallback<String>() {
 			@Override
@@ -122,83 +126,85 @@ public abstract class AImportExternalScoreDialog<T extends AExternalScoreParseSp
 
 		createRowConfig(parentComposite);
 
-		Group extra = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
-		extra.setText("Extra Settings");
-		extra.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-		extra.setLayout(new GridLayout(2, false));
-		Label operatorLabel = new Label(extra, SWT.TOP | SWT.LEFT);
-		operatorLabel.setText("Combine Operator");
-		operatorLabel.setLayoutData(new GridData(SWT.LEFT));
-		this.operator = new Combo(extra, SWT.DROP_DOWN | SWT.READ_ONLY);
-		this.operator.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
-		this.operator
-				.setToolTipText("The operator to use if multiple scores needs to be combined for a single element");
-		this.operator.setItems(EnumUtils.getNames(ECombinedOperator.class));
-		this.operator.setText(ECombinedOperator.MEAN.name());
+		{
+			Group extra = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
+			extra.setText("Extra Settings");
+			extra.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
+			extra.setLayout(new GridLayout(2, false));
+			Label operatorLabel = new Label(extra, SWT.TOP | SWT.LEFT);
+			operatorLabel.setText("Combine Operator");
+			operatorLabel.setLayoutData(new GridData(SWT.LEFT));
+			this.operator = new Combo(extra, SWT.DROP_DOWN | SWT.READ_ONLY);
+			this.operator.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+			this.operator
+					.setToolTipText("The operator to use if multiple scores needs to be combined for a single element");
+			this.operator.setItems(EnumUtils.getNames(ECombinedOperator.class));
+			this.operator.setText(ECombinedOperator.MEAN.name());
 
-		Label normalizeLabel = new Label(extra, SWT.TOP | SWT.LEFT);
-		normalizeLabel.setLayoutData(new GridData(SWT.LEFT));
-		this.normalize = new Button(extra, SWT.CHECK);
-		this.normalize.setText("Normalize Scores");
-		this.normalize.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+			Label normalizeLabel = new Label(extra, SWT.TOP | SWT.LEFT);
+			normalizeLabel.setLayoutData(new GridData(SWT.LEFT));
+			this.normalize = new Button(extra, SWT.CHECK);
+			this.normalize.setText("Normalize Scores");
+			this.normalize.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 
-		Label label = new Label(extra, SWT.TOP | SWT.LEFT);
-		label.setText("Score Color");
-		label.setLayoutData(new GridData(SWT.LEFT));
-		this.colorButton = new Button(extra, SWT.PUSH);
-		this.colorButton.setText("Select Color");
-		this.colorButton.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
-		this.colorButton.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent event) {
-				// Create the color-change dialog
-				ColorDialog dlg = new ColorDialog(getShell());
+			Label label = new Label(extra, SWT.TOP | SWT.LEFT);
+			label.setText("Score Color");
+			label.setLayoutData(new GridData(SWT.LEFT));
+			this.colorButton = new Button(extra, SWT.PUSH);
+			this.colorButton.setText("Select Color");
+			this.colorButton.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+			this.colorButton.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent event) {
+					// Create the color-change dialog
+					ColorDialog dlg = new ColorDialog(getShell());
 
-				// Set the selected color in the dialog from
-				// user's selected color
-				dlg.setRGB(colorButton.getBackground().getRGB());
+					// Set the selected color in the dialog from
+					// user's selected color
+					dlg.setRGB(colorButton.getBackground().getRGB());
 
-				// Change the title bar text
-				dlg.setText("Choose a Color");
+					// Change the title bar text
+					dlg.setText("Choose a Color");
 
-				// Open the dialog and retrieve the selected color
-				RGB rgb = dlg.open();
-				if (rgb != null) {
-					// Dispose the old color, create the new one, and set into the label
-					Color old = colorButton.getBackground();
-					Color new_ = new Color(getShell().getDisplay(), rgb);
-					old.dispose();
-					colorButton.setBackground(new_);
+					// Open the dialog and retrieve the selected color
+					RGB rgb = dlg.open();
+					if (rgb != null) {
+						// Dispose the old color, create the new one, and set into the label
+						Color old = colorButton.getBackground();
+						Color new_ = new Color(getShell().getDisplay(), rgb);
+						old.dispose();
+						colorButton.setBackground(new_);
+					}
 				}
-			}
-		});
+			});
 
-		VerifyListener isNumber = new VerifyListener() {
-			@Override
-			public void verifyText(VerifyEvent e) {
-				String text = e.text;
-				text = text.replaceAll("[^0-9-.]", "");
-				e.text = text;
-			}
-		};
+			VerifyListener isNumber = new VerifyListener() {
+				@Override
+				public void verifyText(VerifyEvent e) {
+					String text = e.text;
+					text = text.replaceAll("[^0-9-.]", "");
+					e.text = text;
+				}
+			};
 
-		label = new Label(extra, SWT.TOP | SWT.LEFT);
-		label.setText("Value Range Minimum");
-		label.setLayoutData(new GridData(SWT.LEFT));
-		this.mappingMin = new Text(extra, SWT.BORDER);
-		this.mappingMin.addVerifyListener(isNumber);
-		this.mappingMin.setText("0");
-		this.mappingMin.setToolTipText("Leave blank for unbound");
-		this.mappingMin.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+			label = new Label(extra, SWT.TOP | SWT.LEFT);
+			label.setText("Value Range Minimum");
+			label.setLayoutData(new GridData(SWT.LEFT));
+			this.mappingMin = new Text(extra, SWT.BORDER);
+			this.mappingMin.addVerifyListener(isNumber);
+			this.mappingMin.setText("0");
+			this.mappingMin.setToolTipText("Leave blank for unbound");
+			this.mappingMin.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 
-		label = new Label(extra, SWT.TOP | SWT.LEFT);
-		label.setText("Value Range Maximum");
-		label.setLayoutData(new GridData(SWT.LEFT));
-		this.mappingMax = new Text(extra, SWT.BORDER);
-		this.mappingMax.addVerifyListener(isNumber);
-		this.mappingMax.setText("1");
-		this.mappingMax.setToolTipText("Leave blank for unbound");
-		this.mappingMax.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+			label = new Label(extra, SWT.TOP | SWT.LEFT);
+			label.setText("Value Range Maximum");
+			label.setLayoutData(new GridData(SWT.LEFT));
+			this.mappingMax = new Text(extra, SWT.BORDER);
+			this.mappingMax.addVerifyListener(isNumber);
+			this.mappingMax.setText("1");
+			this.mappingMax.setToolTipText("Leave blank for unbound");
+			this.mappingMax.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+		}
 
 		previewTable = new PreviewTable(parentComposite, this.spec, new IPreviewCallback() {
 			@Override
@@ -206,7 +212,7 @@ public abstract class AImportExternalScoreDialog<T extends AExternalScoreParseSp
 				onPreviewChanged(numColumn, numRow, dataMatrix);
 			}
 		}, false);
-		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, true);
+		gd = new GridData(SWT.FILL, SWT.FILL, true, true);
 		gd.minimumHeight = 300;
 		gd.horizontalSpan = 2;
 		previewTable.getTable().setLayoutData(gd);
@@ -325,11 +331,12 @@ public abstract class AImportExternalScoreDialog<T extends AExternalScoreParseSp
 		this.label.setEnabled(true);
 
 		this.previewTable.generatePreview(true);
+		// this.parentComposite.layout(true, true);
 	}
 
 	protected void onPreviewChanged(int totalNumberOfColumns, int totalNumberOfRows,
 			List<? extends List<String>> dataMatrix) {
-		parentComposite.pack();
+		// parentComposite.pack();
 		parentComposite.layout(true);
 	}
 }
