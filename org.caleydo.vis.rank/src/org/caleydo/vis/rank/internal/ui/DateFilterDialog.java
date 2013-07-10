@@ -5,55 +5,47 @@
  ******************************************************************************/
 package org.caleydo.vis.rank.internal.ui;
 
+import java.util.Date;
+
 import org.caleydo.core.event.EventPublisher;
-import org.caleydo.vis.rank.internal.event.IntegerFilterEvent;
+import org.caleydo.vis.rank.internal.event.DateFilterEvent;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.VerifyEvent;
-import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class IntegerFilterDialog extends AFilterDialog {
+public class DateFilterDialog extends AFilterDialog {
 
-	private final int min;
-	private final int max;
+	private final Date before;
+	private final Date after;
 
-	private Text minUI;
-	private Text maxUI;
+	private DateTime minUI;
+	private DateTime maxUI;
 
 
-	public IntegerFilterDialog(Shell parentShell, String title, Object receiver, int min, int max,
+	public DateFilterDialog(Shell parentShell, String title, Object receiver, Date min, Date max,
 			boolean filterGlobally, boolean hasSnapshots, Point loc) {
 		super(parentShell, "Filter " + title, receiver, filterGlobally, hasSnapshots, loc);
-		this.min = min;
-		this.max = max;
+		this.before = min;
+		this.after = max;
 	}
 
 	@Override
 	public void create() {
 		super.create();
-		getShell().setText("Edit Filter of size");
+		getShell().setText("Edit Filter of " + title);
 	}
 
 	@Override
 	protected void createSpecificFilterUI(Composite composite) {
-		VerifyListener isNumber = new VerifyListener() {
-			@Override
-			public void verifyText(VerifyEvent e) {
-				String text = e.text;
-				text = text.replaceAll("\\D|-", "");
-				e.text = text;
-			}
-		};
 		Composite p = new Composite(composite, SWT.NONE);
 		GridLayout layout = new GridLayout(3, false);
 		layout.marginHeight = 0;
@@ -62,22 +54,16 @@ public class IntegerFilterDialog extends AFilterDialog {
 		p.setLayout(layout);
 
 		GridData d = new GridData(SWT.LEFT, SWT.CENTER, true, true);
-		d.widthHint = getCharWith(composite, 4);
-		minUI = new Text(p, SWT.BORDER);
+		d.widthHint = getCharWith(composite, 50);
+		minUI = new DateTime(p, SWT.BORDER | SWT.DROP_DOWN | SWT.TIME | SWT.DATE);
 		minUI.setLayoutData(d);
-		if (min > 0)
-			minUI.setText(min + "");
-		minUI.addVerifyListener(isNumber);
 
 		Label l = new Label(p, SWT.NONE);
 		l.setText("<= VALUE <=");
 		l.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, true));
 
-		maxUI = new Text(p, SWT.BORDER);
+		maxUI = new DateTime(p, SWT.BORDER | SWT.DROP_DOWN);
 		maxUI.setLayoutData(d);
-		if (max < Integer.MAX_VALUE)
-			maxUI.setText(max + "");
-		maxUI.addVerifyListener(isNumber);
 
 		createApplyGlobally(composite);
 		addOKButton(composite, false);
@@ -86,13 +72,13 @@ public class IntegerFilterDialog extends AFilterDialog {
 	@Override
 	protected void triggerEvent(boolean cancel) {
 		if (cancel) {
-			EventPublisher.trigger(new IntegerFilterEvent(min, max).to(receiver));
+			EventPublisher.trigger(new DateFilterEvent(before, after).to(receiver));
 			return;
 		}
-		String t = minUI.getText().trim();
-		Integer minV = t.length() > 0 ? new Integer(t) : null;
-		t = maxUI.getText().trim();
-		Integer maxV = t.length() > 0 ? new Integer(t) : null;
-		EventPublisher.trigger(new IntegerFilterEvent(minV, maxV).to(receiver));
+		// String t = minUI.get
+		// Integer minV = t.length() > 0 ? new Integer(t) : null;
+		// t = maxUI.getText().trim();
+		// Integer maxV = t.length() > 0 ? new Integer(t) : null;
+		// EventPublisher.trigger(new DateFilterEvent(minV, maxV).to(receiver));
 	}
 }

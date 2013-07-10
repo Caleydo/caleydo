@@ -13,14 +13,14 @@ import org.caleydo.core.event.ADirectedEvent;
  * @author Samuel Gratzl
  *
  */
-public class SizeFilterEvent extends ADirectedEvent {
+public class IntegerFilterEvent extends ADirectedEvent {
 	private Integer min;
 	private Integer max;
 
 	/**
 	 * @param filter
 	 */
-	public SizeFilterEvent(Integer min, Integer max) {
+	public IntegerFilterEvent(Integer min, Integer max) {
 		super();
 		this.min = min;
 		this.max = max;

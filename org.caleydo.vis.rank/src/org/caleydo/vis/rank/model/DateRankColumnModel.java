@@ -8,8 +8,9 @@ package org.caleydo.vis.rank.model;
 import gleem.linalg.Vec2f;
 
 import java.beans.PropertyChangeListener;
-import java.text.NumberFormat;
+import java.text.DateFormat;
 import java.util.BitSet;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -21,8 +22,8 @@ import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.ISWTLayer.ISWTLayerRunnable;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
-import org.caleydo.vis.rank.internal.event.IntegerFilterEvent;
-import org.caleydo.vis.rank.internal.ui.IntegerFilterDialog;
+import org.caleydo.vis.rank.internal.event.DateFilterEvent;
+import org.caleydo.vis.rank.internal.ui.DateFilterDialog;
 import org.caleydo.vis.rank.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 import org.caleydo.vis.rank.ui.GLPropertyChangeListeners;
@@ -37,38 +38,43 @@ import com.google.common.base.Function;
  * @author Samuel Gratzl
  *
  */
-public class IntegerRankColumnModel extends ABasicFilterableRankColumnModel implements IRankableColumnMixin,
+public class DateRankColumnModel extends ABasicFilterableRankColumnModel implements IRankableColumnMixin,
 		IFilterColumnMixin {
-	private final Function<IRow, Integer> data;
+	private final Function<IRow, Date> data;
 
-	private int min = 0;
-	private int max = Integer.MAX_VALUE;
-
-	private final NumberFormat formatter;
-
-	public IntegerRankColumnModel(IGLRenderer header, Function<IRow, Integer> data) {
-		this(header, data, Color.GRAY, new Color(.95f, .95f, .95f), NumberFormat.getInstance(Locale.ENGLISH));
+	public enum DateMode {
+		YEAR, DATE, TIME, DATE_TIME
 	}
 
-	public IntegerRankColumnModel(IGLRenderer header, Function<IRow, Integer> data, Color color, Color bgColor,
-			NumberFormat formatter) {
+	private Date from = null;
+	private Date to = null;
+
+	private final DateFormat formatter;
+
+	public DateRankColumnModel(IGLRenderer header, Function<IRow, Date> data) {
+		this(header, data, Color.GRAY, new Color(.95f, .95f, .95f), DateFormat.getDateInstance(DateFormat.SHORT,
+				Locale.ENGLISH));
+	}
+
+	public DateRankColumnModel(IGLRenderer header, Function<IRow, Date> data, Color color, Color bgColor,
+			DateFormat formatter) {
 		super(color, bgColor);
 		setHeaderRenderer(header);
 		this.data = data;
 		this.formatter = formatter;
 	}
 
-	public IntegerRankColumnModel(IntegerRankColumnModel copy) {
+	public DateRankColumnModel(DateRankColumnModel copy) {
 		super(copy);
 		this.data = copy.data;
-		this.min = copy.min;
-		this.max = copy.max;
+		this.from = copy.from;
+		this.to = copy.to;
 		this.formatter = copy.formatter;
 	}
 
 	@Override
-	public IntegerRankColumnModel clone() {
-		return new IntegerRankColumnModel(this);
+	public DateRankColumnModel clone() {
+		return new DateRankColumnModel(this);
 	}
 
 	@Override
@@ -89,7 +95,7 @@ public class IntegerRankColumnModel extends ABasicFilterableRankColumnModel impl
 			@Override
 			public void run(Display display, Composite canvas) {
 				Point loc = canvas.toDisplay((int) location.x(), (int) location.y());
-				IntegerFilterDialog dialog = new IntegerFilterDialog(canvas.getShell(), getTitle(), summary, min, max,
+				DateFilterDialog dialog = new DateFilterDialog(canvas.getShell(), getTitle(), summary, from, to,
 						isGlobalFilter, getTable().hasSnapshots(), loc);
 				dialog.open();
 			}
@@ -100,39 +106,44 @@ public class IntegerRankColumnModel extends ABasicFilterableRankColumnModel impl
 	 * @param min2
 	 * @param max2
 	 */
-	public void setFilter(Integer min2, Integer max2) {
+	public void setFilter(Date from2, Date to2) {
 		invalidAllFilter();
-		Pair<Integer, Integer> old = Pair.make(min, max);
-		min = min2 == null ? 0 : min2.intValue();
-		max = max2 == null ? Integer.MAX_VALUE : max2.intValue();
-		propertySupport.firePropertyChange(PROP_FILTER, old, Pair.make(min, max));
+		Pair<Date, Date> old = Pair.make(from, to);
+		from = from2;
+		to = to2;
+		propertySupport.firePropertyChange(PROP_FILTER, old, Pair.make(from, to));
 	}
 
 	@Override
 	public boolean isFiltered() {
-		return min > 0 || max < Integer.MAX_VALUE;
+		return from != null || to != null;
 	}
 
 	@Override
 	protected void updateMask(BitSet todo, List<IRow> data, BitSet mask) {
 		for (int i = todo.nextSetBit(0); i >= 0; i = todo.nextSetBit(i + 1)) {
-			int value = getInt(data.get(i));
-			mask.set(i, value >= min && value <= max);
+			// int value = getInt(data.get(i));
+			// mask.set(i, value >= min && value <= max);
 		}
 	}
 
-	public int getInt(IRow prow) {
+	public Date getDate(IRow prow) {
 		return data.apply(prow);
 	}
 
 	@Override
 	public String getValue(IRow row) {
-		return "" + getInt(row);
+		// FIXME
+		return "" + getDate(row);
 	}
 
 	@Override
 	public int compare(IRow o1, IRow o2) {
-		return getInt(o1) - getInt(o2);
+		Date a = getDate(o1);
+		Date b = getDate(o2);
+		if (a == b)
+			return 0;
+		return (a == null) ? 1 : a.compareTo(b);
 	}
 
 	@Override
@@ -147,7 +158,7 @@ public class IntegerRankColumnModel extends ABasicFilterableRankColumnModel impl
 				return;
 			super.renderImpl(g, w, h);
 			float hi = Math.min(h, 16);
-			int f = getInt(getLayoutDataAs(IRow.class, null));
+			Date f = getDate(getLayoutDataAs(IRow.class, null));
 			g.drawText(formatter == null ? f + "" : formatter.format(f), 1, 1 + (h - hi) * 0.5f, w - 2,
 						hi - 2);
 		}
@@ -175,24 +186,25 @@ public class IntegerRankColumnModel extends ABasicFilterableRankColumnModel impl
 		}
 
 		@ListenTo(sendToMe = true)
-		private void onSetFilter(IntegerFilterEvent event) {
-			setFilter(event.getMin(), event.getMax());
+		private void onSetFilter(DateFilterEvent event) {
+			setFilter(event.getBefore(), event.getAfter());
 		}
 
 		@Override
 		protected void renderImpl(GLGraphics g, float w, float h) {
 			super.renderImpl(g, w, h);
-			if (w < 20)
-				return;
-			g.drawText("Filter:", 4, 2, w - 4, 12);
-			StringBuilder b = new StringBuilder();
-			if (min > 0)
-				b.append(min).append(" <= v");
-			if (max < Integer.MAX_VALUE)
-				b.append(b.length() > 0 ? " <= " : "v <= ").append(max);
-			if (b.length() == 0)
-				b.append("<None>");
-			g.drawText(b.toString(), 4, 18, w - 4, 12);
+			// TODO
+			// if (w < 20)
+			// return;
+			// g.drawText("Filter:", 4, 2, w - 4, 12);
+			// StringBuilder b = new StringBuilder();
+			// if (min > 0)
+			// b.append(min).append(" <= v");
+			// if (max < Integer.MAX_VALUE)
+			// b.append(b.length() > 0 ? " <= " : "v <= ").append(max);
+			// if (b.length() == 0)
+			// b.append("<None>");
+			// g.drawText(b.toString(), 4, 18, w - 4, 12);
 		}
 	}
 
