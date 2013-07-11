@@ -151,7 +151,7 @@ public abstract class AGLElementGLView extends AGLView implements IGLElementCont
 	}
 
 	@Override
-	protected void updateViewFrustum(int width, int height) {
+	protected void updateViewFrustum(float width, float height) {
 		viewFrustum.setLeft(0);
 		viewFrustum.setRight(width);
 		viewFrustum.setTop(height); // still wrong but with the right dimensions, see #display(GL2 gl)

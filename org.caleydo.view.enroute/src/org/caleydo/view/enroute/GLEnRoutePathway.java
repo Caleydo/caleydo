@@ -397,12 +397,12 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	 *            View height in pixels required by the linearized path and its rows.
 	 */
 	private void adaptViewSize(int minViewWidth, int minViewHeightRequiredByPath) {
-		boolean updateWidth = minViewWidth > parentGLCanvas.getWidth()
-				|| (minViewWidth < parentGLCanvas.getWidth() && (minViewWidth > minWidth || minViewWidth + 3 < minWidth));
+		boolean updateWidth = minViewWidth > parentGLCanvas.getDIPWidth()
+				|| (minViewWidth < parentGLCanvas.getDIPWidth() && (minViewWidth > minWidth || minViewWidth + 3 < minWidth));
 
 		boolean updateHeight = false;
 
-		if (pathRendererChanged || parentGLCanvas.getHeight() < minViewHeightRequiredByPath) {
+		if (pathRendererChanged || parentGLCanvas.getDIPHeight() < minViewHeightRequiredByPath) {
 			// System.out.println("setting min height:" + minViewHeightPixels);
 			pathRendererChanged = false;
 			updateHeight = true;

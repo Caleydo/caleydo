@@ -8,7 +8,6 @@ package org.caleydo.core.view.opengl.layout2;
 import gleem.linalg.Vec2f;
 import gleem.linalg.Vec4f;
 
-import java.awt.Point;
 import java.util.Objects;
 
 import org.caleydo.core.view.opengl.layout2.geom.Rect;
@@ -490,17 +489,6 @@ public class GLElement implements IHasGLLayoutData {
 		absolute.sub(getLocation());
 		return absolute;
 	}
-
-	/**
-	 * see {@link #toRelative(Vec2f)} for {@link Point}
-	 *
-	 * @param absolute
-	 * @return
-	 */
-	public final Vec2f toRelative(Point absolute) {
-		return toRelative(new Vec2f(absolute.x, absolute.y));
-	}
-
 
 	/**
 	 * returns the layouted size of this element

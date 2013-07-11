@@ -735,7 +735,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 		}
 	}
 
-	protected void onChangeWeight(int dx, boolean takeFromRight) {
+	protected void onChangeWeight(float dx, boolean takeFromRight) {
 		if (dx == 0)
 			return;
 		// float delta = (dx / getSize().x())*;
@@ -763,7 +763,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 		IMouseLayer l = context.getMouseLayer();
 		GLElement elem = new DraggedScoreHeaderItem();
 		elem.setSize(getSize().x(), getSize().y());
-		Vec2f loc = toRelative(pick.getPickedPoint());
+		Vec2f loc = toRelative(pick.getDIPPickedPoint());
 		elem.setLocation(-loc.x(), -loc.y());
 		isDragging = true;
 		l.addDraggable(elem, this.model);

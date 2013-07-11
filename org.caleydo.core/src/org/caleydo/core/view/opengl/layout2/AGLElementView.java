@@ -7,8 +7,6 @@ package org.caleydo.core.view.opengl.layout2;
 
 import gleem.linalg.Vec2f;
 
-import java.awt.Point;
-
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
@@ -184,6 +182,7 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 
 		gl.glLoadIdentity();
 		gl.glTranslatef(0.375f, 0.375f, 0);
+		canvas.applyScaling(gl);
 
 		final GLGraphics g = new GLGraphics(gl, local, true, deltaTimeMs);
 		g.clearError();
@@ -198,9 +197,10 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 		}
 
 		// 1. pass: picking
-		Point mousePos = pickingManager.getCurrentMousePos();
+		Vec2f mousePos = pickingManager.getCurrentMousePos();
 		if (mousePos != null) {
-			root.getMouseLayer().setBounds(mousePos.x, mousePos.y, getWidth() - mousePos.x, getHeight() - mousePos.y);
+			root.getMouseLayer().setBounds(mousePos.x(), mousePos.y(), getWidth() - mousePos.x(),
+					getHeight() - mousePos.y());
 			root.getMouseLayer().relayout();
 		}
 

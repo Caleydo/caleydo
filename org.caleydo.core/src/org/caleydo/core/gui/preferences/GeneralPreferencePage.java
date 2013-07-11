@@ -35,7 +35,8 @@ public class GeneralPreferencePage extends FieldEditorPreferencePage implements 
 	public void createFieldEditors() {
 		final Composite parent = getFieldEditorParent();
 		ScaleFieldEditor s = new ScaleFieldEditor(MyPreferences.VIEW_ZOOM_FACTOR, "View Scaling Factor:", parent, 20,
-				1000, 10, 50);
+				180, 10, 20);
+
 		addField(s);
 	}
 

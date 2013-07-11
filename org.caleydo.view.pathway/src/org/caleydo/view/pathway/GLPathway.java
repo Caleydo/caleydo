@@ -51,7 +51,6 @@ import org.caleydo.core.view.listener.AddTablePerspectivesListener;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
-import org.caleydo.core.view.opengl.canvas.GLMouseAdapter;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.IGLKeyListener;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
@@ -383,13 +382,6 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 	}
 
 	protected void registerMouseListeners() {
-
-		parentGLCanvas.addMouseListener(new GLMouseAdapter() {
-			@Override
-			public void mouseWheelMoved(IMouseEvent e) {
-				// selectNextPath();
-			}
-		});
 	}
 
 	public void setSelectPathAction(SelectPathAction aSelectPathAction) {
@@ -582,8 +574,8 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 				if (allPaths == null || allPaths.isEmpty())
 					return;
 
-				int pickX = (int) pick.getPickedPoint().getX();
-				int pickY = (int) pick.getPickedPoint().getY();
+				int pickX = (int) pick.getDIPPickedPoint().x();
+				int pickY = (int) pick.getDIPPickedPoint().y();
 
 				float pathwayTextureScaling = 1;
 

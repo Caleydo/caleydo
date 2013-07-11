@@ -3,7 +3,7 @@
  * Copyright (c) The Caleydo Team. All rights reserved.
  * Licensed under the new BSD license, available at http://caleydo.org/license
  ******************************************************************************/
-package org.caleydo.core.view.opengl.canvas.internal.awt;
+package org.caleydo.core.view.opengl.canvas;
 
 import gleem.linalg.Vec2f;
 

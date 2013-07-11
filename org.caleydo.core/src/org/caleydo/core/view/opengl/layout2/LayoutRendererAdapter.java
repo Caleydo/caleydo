@@ -105,10 +105,10 @@ public final class LayoutRendererAdapter extends ALayoutRenderer implements IGLE
 		// 0,h w,h
 		gl.glTranslatef(0, y, 0);
 		gl.glScalef(x / w, -y / h, 1);
-		int hh = view.getParentGLCanvas().getHeight();
+		float hh = view.getParentGLCanvas().getDIPHeight();
 
-		this.location = new Vec2f(pixelGLConverter.getPixelWidthForCurrentGLTransform(gl), hh
-				- pixelGLConverter.getPixelHeightForCurrentGLTransform(gl));
+		this.location = pixelGLConverter.getCurrentPixelPos(gl);
+		this.location.setY(hh - this.location.y());
 
 		if (dirty) {
 			root.setBounds(0, 0, w, h);

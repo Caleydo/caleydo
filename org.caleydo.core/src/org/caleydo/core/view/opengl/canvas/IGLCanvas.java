@@ -5,6 +5,10 @@
  ******************************************************************************/
 package org.caleydo.core.view.opengl.canvas;
 
+import java.awt.Rectangle;
+import java.awt.geom.Rectangle2D;
+
+import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 
@@ -37,19 +41,44 @@ public interface IGLCanvas {
 
 	void removeGLEventListener(GLEventListener listener);
 
-	int getWidth();
+	/**
+	 * @return the width of this canvas in DIP units
+	 */
+	float getDIPWidth();
 
-	int getHeight();
+	/**
+	 * @return the height of this canvas in DIP units
+	 */
+	float getDIPHeight();
+
+	/**
+	 * @return the width of this canvas the desired unit
+	 */
+	float getWidth(Units unit);
+
+	/**
+	 * @return the height of this canvas the desired unit
+	 */
+	float getHeight(Units unit);
+
+	/**
+	 * converts the (scaled) dip to pixel used for OpenGL
+	 *
+	 * @param dip
+	 * @return
+	 */
+	int toRawPixel(float dip);
+
+	/**
+	 * @param viewArea_dip
+	 * @return
+	 */
+	Rectangle toRawPixel(Rectangle2D.Float viewArea_dip);
 
 	GLAutoDrawable asGLAutoDrawAble();
 
 	Composite asComposite();
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see java.lang.Object#toString()
-	 */
 	@Override
 	public String toString();
 
@@ -60,4 +89,9 @@ public interface IGLCanvas {
 	IPickingListener createTooltip(String label);
 
 	void showPopupMenu(final Iterable<? extends AContextMenuItem> items);
+
+	/**
+	 * @param gl
+	 */
+	void applyScaling(GL2 gl);
 }

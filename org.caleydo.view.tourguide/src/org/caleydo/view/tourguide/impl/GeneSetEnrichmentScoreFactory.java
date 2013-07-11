@@ -160,7 +160,7 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 		private final boolean createGSEA;
 
 		public CreateGSEAState(BrowsePathwayState target, boolean createGSEA) {
-			super("Select query stratification by clicking on the header brick of one of the displayed columns");
+			super("Select query group by clicking on the a brick of one of the displayed columns");
 			this.target = target;
 			this.createGSEA = createGSEA;
 		}

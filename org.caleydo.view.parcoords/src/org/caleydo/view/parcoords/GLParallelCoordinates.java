@@ -19,9 +19,9 @@ import static org.caleydo.view.parcoords.PCRenderStyle.Y_AXIS_LINE_WIDTH;
 import static org.caleydo.view.parcoords.PCRenderStyle.Y_AXIS_MOUSE_OVER_LINE_WIDTH;
 import static org.caleydo.view.parcoords.PCRenderStyle.Y_AXIS_SELECTED_LINE_WIDTH;
 import gleem.linalg.Rotf;
+import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -73,7 +73,6 @@ import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
-import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
@@ -940,11 +939,11 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 		hasFilterChanged = true;
 		// bIsDisplayListDirtyLocal = true;
 		// bIsDisplayListDirtyRemote = true;
-		Point currentPoint = glMouseListener.getPickedPoint();
+		Vec2f currentPoint = glMouseListener.getDIPPickedPoint();
 
-		int pixelHeight = parentGLCanvas.getHeight() - currentPoint.y;
+		float pixelHeight = parentGLCanvas.getDIPHeight() - currentPoint.y();
 
-		float x = pixelGLConverter.getGLWidthForPixelWidth(currentPoint.x);
+		float x = pixelGLConverter.getGLWidthForPixelWidth(currentPoint.x());
 		float y = pixelGLConverter.getGLHeightForPixelHeight(pixelHeight);
 
 		// float[] fArTargetWorldCoordinates = GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl,
@@ -1502,10 +1501,9 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 		hasFilterChanged = true;
 		if (bIsAngularBrushingFirstTime) {
 			fCurrentAngle = fDefaultAngle;
-			Point currentPoint = linePick.getPickedPoint();
-			float[] fArPoint = GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x,
-					currentPoint.y);
-			vecAngularBrushingPoint = new Vec3f(fArPoint[0], fArPoint[1], 0.01f);
+			Vec2f pointCordinates = pixelGLConverter.convertMouseCoord2GL(glMouseListener.getDIPPickedPoint());
+
+			vecAngularBrushingPoint = new Vec3f(pointCordinates.x(), pointCordinates.y(), 0.01f);
 			bIsAngularBrushingFirstTime = false;
 
 		}
@@ -1553,10 +1551,8 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 		float fLegLength = vecCenterLine.length();
 
 		if (bIsAngularDraggingActive) {
-			Point pickedPoint = glMouseListener.getPickedPoint();
-			float fArPoint[] = GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, pickedPoint.x,
-					pickedPoint.y);
-			Vec3f vecPickedPoint = new Vec3f(fArPoint[0], fArPoint[1], 0.01f);
+			Vec2f pointCordinates = pixelGLConverter.convertMouseCoord2GL(glMouseListener.getDIPPickedPoint());
+			Vec3f vecPickedPoint = new Vec3f(pointCordinates.x(), pointCordinates.y(), 0.01f);
 			Vec3f vecTempLine = vecPickedPoint.minus(vecTriangleOrigin);
 
 			fCurrentAngle = getAngle(vecTempLine, vecCenterLine);
@@ -1678,12 +1674,9 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 
 	private void adjustAxisSpacing(GL2 gl) {
 
-		Point currentPoint = glMouseListener.getPickedPoint();
+		Vec2f pointCordinates = pixelGLConverter.convertMouseCoord2GL(glMouseListener.getDIPPickedPoint());
 
-		float[] fArTargetWorldCoordinates = GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl,
-				currentPoint.x, currentPoint.y);
-
-		float fWidth = fArTargetWorldCoordinates[0] - xSideSpacing;
+		float fWidth = pointCordinates.x() - xSideSpacing;
 
 		if (bWasAxisDraggedFirstTime) {
 			// adjust from the actually clicked point to the center of the axis

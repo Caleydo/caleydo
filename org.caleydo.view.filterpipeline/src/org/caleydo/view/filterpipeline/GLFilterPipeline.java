@@ -40,7 +40,6 @@ import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.core.view.opengl.picking.PickingType;
-import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
@@ -402,7 +401,7 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 					selectionManager.addToType(SelectionType.SELECTION, externalID);
 				}
 
-				dragAndDropController.setDraggingStartPosition(pick.getPickedPoint());
+				dragAndDropController.setDraggingStartPosition(pick.getDIPPickedPoint());
 				dragAndDropController.addDraggable(filterList.get(externalID).getRepresentation());
 				break;
 			case RIGHT_CLICKED:
@@ -507,10 +506,8 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 
 	private void updateMousePosition(GL2 gl) {
 		try {
-			float windowCoords[] = GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl,
-					glMouseListener.getPickedPoint().x, glMouseListener.getPickedPoint().y);
-
-			mousePosition.set(windowCoords[0], windowCoords[1]);
+			Vec2f pointCordinates = pixelGLConverter.convertMouseCoord2GL(glMouseListener.getDIPPickedPoint());
+			mousePosition.set(pointCordinates.x(), pointCordinates.y());
 		} catch (Exception e) {
 			// System.out.println("Failed to get mouse position: "+e);
 		}

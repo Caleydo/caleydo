@@ -10,7 +10,7 @@ import javax.media.opengl.GLEventListener;
 
 import org.caleydo.core.util.base.ILabeled;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
-import org.caleydo.core.view.opengl.canvas.IGLCanvas;
+import org.caleydo.core.view.opengl.canvas.AGLCanvas;
 import org.caleydo.core.view.opengl.canvas.IGLFocusListener;
 import org.caleydo.core.view.opengl.canvas.IGLKeyListener;
 import org.caleydo.core.view.opengl.canvas.IGLMouseListener;
@@ -30,7 +30,7 @@ import com.jogamp.newt.swt.NewtCanvasSWT;
  * @author Samuel Gratzl
  *
  */
-final class NEWTGLCanvas implements IGLCanvas {
+final class NEWTGLCanvas extends AGLCanvas {
 	private final NewtCanvasSWT composite;
 	private final GLWindow canvas;
 
@@ -48,7 +48,7 @@ final class NEWTGLCanvas implements IGLCanvas {
 
 	@Override
 	public void addMouseListener(IGLMouseListener listener) {
-		NEWTMouseAdapter adapter = new NEWTMouseAdapter(listener);
+		NEWTMouseAdapter adapter = new NEWTMouseAdapter(listener, this);
 		canvas.addMouseListener(adapter);
 	}
 
@@ -105,16 +105,6 @@ final class NEWTGLCanvas implements IGLCanvas {
 	@Override
 	public void removeGLEventListener(GLEventListener listener) {
 		canvas.removeGLEventListener(listener);
-	}
-
-	@Override
-	public int getWidth() {
-		return canvas.getWidth();
-	}
-
-	@Override
-	public int getHeight() {
-		return canvas.getHeight();
 	}
 
 	@Override

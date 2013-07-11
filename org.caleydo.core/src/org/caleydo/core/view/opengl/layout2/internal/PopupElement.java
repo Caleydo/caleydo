@@ -135,8 +135,8 @@ class PopupElement extends GLElementContainer implements IGLLayout, IGLRenderer,
 			context.getSWTLayer().resetCursor();
 			break;
 		case DRAGGED:
-			int dx = pick.getDx();
-			int dy = pick.getDy();
+			float dx = pick.getDx();
+			float dy = pick.getDy();
 			Vec2f l = getLocation();
 			setLocation(l.x() + dx, l.y() + dy);
 			break;
@@ -217,7 +217,7 @@ class PopupElement extends GLElementContainer implements IGLLayout, IGLRenderer,
 	 * @param dx
 	 * @param dy
 	 */
-	protected void resize(int dx, int dy) {
+	protected void resize(float dx, float dy) {
 		Vec2f s = this.getSize();
 		setSize(s.x() + dx, s.y() + dy);
 		relayout();

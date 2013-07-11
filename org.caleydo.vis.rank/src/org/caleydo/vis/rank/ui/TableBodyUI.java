@@ -143,7 +143,7 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 			}
 
 			protected OrderColumnUI getRankerUI(Pick pick) {
-				return getRanker(toRelative(pick.getPickedPoint()).x());
+				return getRanker(toRelative(pick.getDIPPickedPoint()).x());
 			}
 		});
 		setLayout(this);
@@ -178,14 +178,14 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 		switch (pick.getPickingMode()) {
 		case DOUBLE_CLICKED:
 			if (config.canEditValues()) {
-				OrderColumnUI col = getRanker(toRelative(pick.getPickedPoint()).x());
+				OrderColumnUI col = getRanker(toRelative(pick.getDIPPickedPoint()).x());
 				editRow(col, table.getSelectedRow());
 			}
 			break;
 		case RIGHT_CLICKED:
 			List<AContextMenuItem> items = new ArrayList<>(1);
 			if (config.canEditValues()) {
-				OrderColumnUI col2 = getRanker(toRelative(pick.getPickedPoint()).x());
+				OrderColumnUI col2 = getRanker(toRelative(pick.getDIPPickedPoint()).x());
 				items.add(new GenericContextMenuItem("Edit Values", new TriggerEditValuesEvent(col2).to(this)));
 			}
 			context.getSWTLayer().showContextMenu(items);

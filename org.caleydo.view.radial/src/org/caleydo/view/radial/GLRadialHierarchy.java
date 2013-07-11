@@ -374,7 +374,7 @@ public class GLRadialHierarchy extends ATableBasedView {
 
 		if (pdRealRootElement != null && pdCurrentRootElement != null) {
 
-			if (upwardNavigationSlider.handleDragging(gl, glMouseListener)) {
+			if (upwardNavigationSlider.handleDragging(gl, glMouseListener, pixelGLConverter)) {
 				updateHierarchyAccordingToNavigationSlider();
 			}
 			// clipToFrustum(gl);

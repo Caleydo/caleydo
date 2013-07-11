@@ -5,9 +5,9 @@
  ******************************************************************************/
 package org.caleydo.core.view.opengl.canvas;
 
+import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -359,6 +359,7 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 
 			gl.glPushMatrix();
 			applyScrolling(gl);
+			parentGLCanvas.applyScaling(gl);
 
 			// clear screen
 			gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
@@ -382,7 +383,7 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	@Override
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
 
-		updateViewFrustum(width, height);
+		updateViewFrustum(parentGLCanvas.getDIPWidth(), parentGLCanvas.getDIPHeight());
 		// scrollX = x;
 		// scrollY = y;
 
@@ -415,10 +416,10 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	 * @param width
 	 * @param height
 	 */
-	protected void updateViewFrustum(int width, int height) {
+	protected void updateViewFrustum(float width, float height) {
 		viewFrustum.setLeft(0);
 		viewFrustum.setBottom(0);
-		float aspectRatio = (float) height / (float) width;
+		float aspectRatio = height / width;
 		viewFrustum.setTop(aspectRatio);
 		viewFrustum.setRight(1);
 	}
@@ -1260,7 +1261,7 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	 * @param wheelPosition
 	 */
 	@Override
-	public void handleMouseWheel(int wheelAmount, Point wheelPosition) {
+	public void handleMouseWheel(int wheelAmount, Vec2f wheelPosition) {
 		for (IMouseWheelHandler listener : mouseWheelListeners) {
 			listener.handleMouseWheel(wheelAmount, wheelPosition);
 		}
@@ -1355,8 +1356,9 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	public final void applyScrolling(GL2 gl) {
 		if (!System.getProperty("os.name").contains("Mac") || this.scrollRect.width <= 0 )
 			return;
-		int canvasWidth = parentGLCanvas.getWidth();
-		int canvasHeight = parentGLCanvas.getHeight();
+		org.eclipse.swt.graphics.Point size = parentGLCanvas.asComposite().getSize();
+		int canvasWidth = size.x;
+		int canvasHeight = size.y;
 		int scrollWidth = scrollRect.width;
 		int scrollHeight = scrollRect.height;
 		boolean needsScrollBarX = canvasWidth > scrollWidth;
@@ -1373,10 +1375,5 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 		//System.out.println("canvas: "+canvasWidth+"/"+canvasHeight+" real: "+scrollRect.width+"/"+scrollRect.height+ " offset: "+scrollRect.x+"/"+scrollRect.y+" "+offsetx+"/"+offsety);
 
 		gl.glTranslatef(-foffsetx, -foffsety, 0);
-	}
-
-	public Point applyScrolling(Point pickPoint) {
-		//the point is already in the right relative coordinates
-		return pickPoint;
 	}
 }

@@ -5,6 +5,8 @@
  ******************************************************************************/
 package org.caleydo.core.view.opengl.picking;
 
+import gleem.linalg.Vec2f;
+
 import java.awt.Point;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
@@ -315,39 +317,35 @@ public class PickingManager {
 
 		GLMouseListener glMouseListener = glView.getGLMouseListener();
 
-		Point pickPoint = null;
+		Point pickRealPoint = glMouseListener.getRAWPickedPoint();
 
 		PickingMode ePickingMode = PickingMode.CLICKED;
 
 		if (glMouseListener.wasMouseDoubleClicked()) {
-			pickPoint = glMouseListener.getPickedPoint();
 			ePickingMode = PickingMode.DOUBLE_CLICKED;
 		} else if (glMouseListener.wasMouseDragged()) {
-			pickPoint = glMouseListener.getPickedPoint();
 			ePickingMode = PickingMode.DRAGGED;
 		} else if (glMouseListener.wasLeftMouseButtonPressed()) {
-			pickPoint = glMouseListener.getPickedPoint();
 			ePickingMode = PickingMode.CLICKED;
 		} else if (glMouseListener.wasRightMouseButtonPressed()) {
-			pickPoint = glMouseListener.getPickedPoint();
 			ePickingMode = PickingMode.RIGHT_CLICKED;
 		} else if (glMouseListener.wasMouseMoved()) {
 			// Restart timer
 			// hashViewIDToLastMouseMovedTimeStamp.put(viewID,
 			// System.nanoTime());
 			hashViewIDToIsMouseOverPickingEvent.put(glView.getID(), true);
-			pickPoint = glMouseListener.getPickedPoint();
 			ePickingMode = PickingMode.MOUSE_OVER;
 		} else if (hashViewIDToIsMouseOverPickingEvent.get(glView.getID()) != null
 				&& hashViewIDToIsMouseOverPickingEvent.get(glView.getID()) == true) {
+
 			// pickPoint = glMouseListener.getPickedPoint();
 			// hashViewIDToLastMouseMovedTimeStamp.put(viewID,
 			// System.nanoTime());
 			// ePickingMode = PickingMode.MOUSE_OVER;
-		}
-
-		if (pickPoint == null)
 			return;
+		} else {
+			return;
+		}
 
 		hashViewIDToIsMouseOverPickingEvent.put(glView.getID(), false);
 
@@ -372,10 +370,9 @@ public class PickingManager {
 
 		/* create 5x5 pixel picking region near cursor location */
 		GLU glu = new GLU();
-		Point shiftedPoint = glView.applyScrolling(pickPoint);
-		glu.gluPickMatrix(shiftedPoint.x, (viewport[3] - shiftedPoint.y),//
+		glu.gluPickMatrix(pickRealPoint.x, (viewport[3] - pickRealPoint.y),//
 				5.0, 5.0, viewport, 0); // pick width and height is set to 5
-		
+
 		// (i.e. picking tolerance)
 
 		float fAspectRatio = (float) (viewport[3] - viewport[1]) / (float) (viewport[2] - viewport[0]);
@@ -386,20 +383,19 @@ public class PickingManager {
 		// gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
 
 		// Store picked point
-		Point tmpPickPoint = (Point) pickPoint.clone();
-		// Reset picked point
-		pickPoint = null;
+		Vec2f pickDIPPoint = glMouseListener.getDIPPickedPoint();
 
 		gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
 		gl.glPushMatrix();
 		gl.glLoadIdentity();
+		glView.getParentGLCanvas().applyScaling(gl);
 		glView.display(gl);
 		gl.glPopMatrix();
 
 		gl.glMatrixMode(GLMatrixFunc.GL_PROJECTION);
 		gl.glPopMatrix();
 		gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
-		
+
 		iHitCount = gl.glRenderMode(GL2.GL_RENDER);
 		pickingBuffer.get(iArPickingBuffer);
 		// System.out.println("Picking Buffer: " + iArPickingBuffer[0]);
@@ -412,7 +408,7 @@ public class PickingManager {
 		IGLCanvas parentCanvas = glView.getParentGLCanvas();
 
 		if (iAlPickedObjectId.size() > 0) {
-			processPicks(iAlPickedObjectId, ePickingMode, tmpPickPoint, glMouseListener.getPickedPointDragStart());
+			processPicks(iAlPickedObjectId, ePickingMode, pickDIPPoint, glMouseListener.getDIPPickedPointDragStart());
 
 			Set<Integer> processedViews = new HashSet<Integer>();
 
@@ -532,7 +528,7 @@ public class PickingManager {
 											}
 											// if (hitContainer.getPickingTypes().size() <= 0) {
 											Pick pick = new Pick(previousPick.getObjectID(), PickingMode.MOUSE_OUT,
-													tmpPickPoint, glMouseListener.getPickedPointDragStart(),
+													pickDIPPoint, glMouseListener.getDIPPickedPointDragStart(),
 													fMinimumZValue);
 											hitContainer.addPicksForPickingType(pickingType, pick, true);
 
@@ -565,7 +561,7 @@ public class PickingManager {
 
 			}
 
-			addMouseOutForPicksOfSpecifiedViews(remoteRenderedViewIDs, glMouseListener, tmpPickPoint);
+			addMouseOutForPicksOfSpecifiedViews(remoteRenderedViewIDs, glMouseListener, pickDIPPoint);
 
 		}
 	}
@@ -593,7 +589,7 @@ public class PickingManager {
 	 * @param pickedPoint
 	 */
 	private void addMouseOutForPicksOfSpecifiedViews(Set<Integer> viewIDs, GLMouseListener glMouseListener,
-			Point pickedPoint) {
+			Vec2f pickedDIPPoint) {
 
 		for (Integer viewID : viewIDs) {
 
@@ -611,8 +607,8 @@ public class PickingManager {
 							hitContainer = new ViewSpecificHitListContainer();
 							hashViewIDToViewSpecificHitListContainer.put(viewID, hitContainer);
 						}
-						Pick pick = new Pick(previousPick.getObjectID(), PickingMode.MOUSE_OUT, pickedPoint,
-								glMouseListener.getPickedPointDragStart(), fMinimumZValue);
+						Pick pick = new Pick(previousPick.getObjectID(), PickingMode.MOUSE_OUT, pickedDIPPoint,
+								glMouseListener.getDIPPickedPointDragStart(), fMinimumZValue);
 						hitContainer.addPicksForPickingType(pickingType, pick, true);
 					}
 				}
@@ -781,8 +777,8 @@ public class PickingManager {
 	 * @param pickedPoint
 	 * @param dragStartPoint
 	 */
-	private void processPicks(ArrayList<Integer> alPickingIDs, PickingMode myMode, Point pickedPoint,
-			Point dragStartPoint) {
+	private void processPicks(ArrayList<Integer> alPickingIDs, PickingMode myMode, Vec2f pickedDIPPoint,
+			Vec2f dragStartPoint) {
 
 		HashMap<Integer, ViewSpecificHitListContainer> currentHitListContainers = new HashMap<Integer, ViewSpecificHitListContainer>();
 		HashMap<Integer, HashMap<String, ArrayList<Pick>>> picksToAddToPreviousHitListContainers = new HashMap<Integer, HashMap<String, ArrayList<Pick>>>();
@@ -792,7 +788,7 @@ public class PickingManager {
 			String eType = pickAssociatedValues.getSecond();
 			int viewIDToUse = pickAssociatedValues.getFirst();
 
-			Pick pick = new Pick(getPickedObjectIDFromPickingID(viewIDToUse, eType, pickingID), myMode, pickedPoint,
+			Pick pick = new Pick(getPickedObjectIDFromPickingID(viewIDToUse, eType, pickingID), myMode, pickedDIPPoint,
 					dragStartPoint, fMinimumZValue);
 
 			ViewSpecificHitListContainer hitContainer = hashViewIDToViewSpecificHitListContainer.get(viewIDToUse);
@@ -892,7 +888,7 @@ public class PickingManager {
 
 						if (isMouseOutOnPreviousPick) {
 							hitContainer.addPicksForPickingType(pickingType, new Pick(previousPick.getObjectID(),
-									PickingMode.MOUSE_OUT, pickedPoint, dragStartPoint, fMinimumZValue), false);
+									PickingMode.MOUSE_OUT, pickedDIPPoint, dragStartPoint, fMinimumZValue), false);
 						}
 					}
 

@@ -5,7 +5,8 @@
  ******************************************************************************/
 package org.caleydo.view.stratomex;
 
-import java.awt.Point;
+import gleem.linalg.Vec2f;
+
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -75,7 +76,6 @@ import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.IPickingLabelProvider;
 import org.caleydo.core.view.opengl.picking.Pick;
-import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
@@ -766,17 +766,14 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 			return;
 		}
 
-		Point currentPoint = glMouseListener.getPickedPoint();
-
-		float[] pointCordinates = GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x,
-				currentPoint.y);
+		final Vec2f currentPoint = glMouseListener.getDIPPickedPoint();
+		Vec2f pointCordinates = pixelGLConverter.convertMouseCoord2GL(currentPoint);
 
 		if (Float.isNaN(previousXCoordinate)) {
-			previousXCoordinate = pointCordinates[0];
+			previousXCoordinate = pointCordinates.x();
 			return;
 		}
-
-		float change = pointCordinates[0] - previousXCoordinate;
+		float change = pointCordinates.x() - previousXCoordinate;
 
 		// float change = -0.1f;
 		// isHorizontalMoveDraggingActive = false;
@@ -792,19 +789,20 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		}
 
 		if (!Float.isNaN(leftLimitXCoordinate)) {
-			if (leftLimitXCoordinate >= currentPoint.x)
+			if (leftLimitXCoordinate >= currentPoint.x())
 				return;
 			else
 				leftLimitXCoordinate = Float.NaN;
 		}
 
 		if (!Float.isNaN(rightLimitXCoordinate)) {
-			if (rightLimitXCoordinate <= currentPoint.x)
+			if (rightLimitXCoordinate <= currentPoint.x())
 				return;
 			else
 				rightLimitXCoordinate = Float.NaN;
 		}
-		previousXCoordinate = pointCordinates[0];
+
+		previousXCoordinate = pointCordinates.x();
 
 		// the spacing left of the moved element
 		ElementLayout leftSpacing = null;
@@ -865,7 +863,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 
 				while (remainingChange > 0) {
 					if (centerRowLayout.size() < rightIndex + 2) {
-						rightLimitXCoordinate = currentPoint.x;
+						rightLimitXCoordinate = currentPoint.x();
 						break;
 					}
 					rightIndex += 2;
@@ -878,7 +876,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 						savedSize = spacing.getSizeScaledX() - minWidth;
 						remainingChange -= savedSize;
 						if (rightIndex == centerRowLayout.size() - 1) {
-							rightLimitXCoordinate = currentPoint.x;
+							rightLimitXCoordinate = currentPoint.x();
 						}
 						spacing.setAbsoluteSizeX(minWidth);
 					}
@@ -902,7 +900,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 				while (remainingChange < 0) {
 					if (leftIndex < 2) {
 						// if (leftIndex == 0) {
-						leftLimitXCoordinate = currentPoint.x;
+						leftLimitXCoordinate = currentPoint.x();
 						// }
 						break;
 					}
@@ -918,7 +916,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 						savedSize = spacing.getSizeScaledX() - minWidth;
 						remainingChange += savedSize;
 						if (leftIndex == 0) {
-							leftLimitXCoordinate = currentPoint.x;
+							leftLimitXCoordinate = currentPoint.x();
 						}
 
 						spacing.setAbsoluteSizeX(minWidth);
@@ -954,7 +952,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 			@Override
 			public void clicked(Pick pick) {
 				dragAndDropController.clearDraggables();
-				dragAndDropController.setDraggingStartPosition(pick.getPickedPoint());
+				dragAndDropController.setDraggingStartPosition(pick.getDIPPickedPoint());
 				dragAndDropController.addDraggable((BrickColumn) generalManager.getViewManager().getGLView(
 						pick.getObjectID()));
 				dragAndDropController.setDraggingMode("DimensionGroupDrag");

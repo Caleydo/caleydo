@@ -7,8 +7,6 @@ package org.caleydo.core.view.opengl.layout2.basic;
 
 import gleem.linalg.Vec2f;
 
-import java.awt.Point;
-
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
@@ -65,7 +63,7 @@ public interface IScrollBar extends IGLRenderer, IPickingListener {
 		 * @param pickedPoint
 		 * @return
 		 */
-		Vec2f toRelative(Point pickedPoint);
+		Vec2f toRelative(Vec2f pickedPoint);
 
 		/**
 		 * returns the total height/width that is used to render the scrollbar
