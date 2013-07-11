@@ -5,7 +5,7 @@
  ******************************************************************************/
 package org.caleydo.vis.rank.internal.event;
 
-import java.util.Date;
+import java.util.Calendar;
 
 import org.caleydo.core.event.ADirectedEvent;
 
@@ -16,13 +16,13 @@ import org.caleydo.core.event.ADirectedEvent;
  *
  */
 public class DateFilterEvent extends ADirectedEvent {
-	private Date before;
-	private Date after;
+	private Calendar before;
+	private Calendar after;
 
 	/**
 	 * @param filter
 	 */
-	public DateFilterEvent(Date before, Date after) {
+	public DateFilterEvent(Calendar before, Calendar after) {
 		super();
 		this.before = before;
 		this.after = after;
@@ -31,14 +31,14 @@ public class DateFilterEvent extends ADirectedEvent {
 	/**
 	 * @return the before, see {@link #before}
 	 */
-	public Date getBefore() {
+	public Calendar getBefore() {
 		return before;
 	}
-	
+
 	/**
 	 * @return the after, see {@link #after}
 	 */
-	public Date getAfter() {
+	public Calendar getAfter() {
 		return after;
 	}
 

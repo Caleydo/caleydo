@@ -243,6 +243,7 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 
 	}
 
+
 	@Override
 	public void initialize() {
 		ViewManager viewManager = GeneralManager.get().getViewManager();
@@ -1369,7 +1370,7 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 		float foffsety = pixelGLConverter.getGLHeightForPixelHeight(offsety);
 		//as we start with 0,0 in the LOWER left corner, we have to adapt the y offset
 		//System.out.println("canvas: "+canvasWidth+"/"+canvasHeight+" real: "+scrollRect.width+"/"+scrollRect.height+ " offset: "+scrollRect.x+"/"+scrollRect.y+" "+offsetx+"/"+offsety);
-		
+
 		gl.glTranslatef(-foffsetx, -foffsety, 0);
 	}
 

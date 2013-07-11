@@ -10,6 +10,7 @@ import gleem.linalg.Vec2f;
 import java.beans.PropertyChangeListener;
 import java.text.DateFormat;
 import java.util.BitSet;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -43,25 +44,59 @@ public class DateRankColumnModel extends ABasicFilterableRankColumnModel impleme
 	private final Function<IRow, Date> data;
 
 	public enum DateMode {
-		YEAR, DATE, TIME, DATE_TIME
+		DATE, TIME, DATE_TIME
 	}
 
-	private Date from = null;
-	private Date to = null;
+	private Calendar from = null;
+	private Calendar to = null;
 
+	private final DateMode mode;
 	private final DateFormat formatter;
 
 	public DateRankColumnModel(IGLRenderer header, Function<IRow, Date> data) {
-		this(header, data, Color.GRAY, new Color(.95f, .95f, .95f), DateFormat.getDateInstance(DateFormat.SHORT,
-				Locale.ENGLISH));
+		this(header, data, Color.GRAY, new Color(.95f, .95f, .95f), DateMode.DATE);
 	}
 
-	public DateRankColumnModel(IGLRenderer header, Function<IRow, Date> data, Color color, Color bgColor,
-			DateFormat formatter) {
+	public DateRankColumnModel(IGLRenderer header, Function<IRow, Date> data, Color color, Color bgColor, DateMode mode) {
 		super(color, bgColor);
 		setHeaderRenderer(header);
 		this.data = data;
-		this.formatter = formatter;
+		this.mode = mode;
+		this.formatter = toFormatter(mode);
+	}
+
+	private static DateFormat toFormatter(DateMode mode) {
+		switch(mode) {
+		case DATE:
+			return DateFormat.getDateInstance(DateFormat.SHORT, Locale.ENGLISH);
+		case TIME:
+			return DateFormat.getTimeInstance(DateFormat.SHORT, Locale.ENGLISH);
+		case DATE_TIME:
+			return DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, Locale.ENGLISH);
+		}
+		throw new IllegalStateException();
+	}
+
+	private static Calendar asCalendar(Date date, DateMode mode) {
+		assert date != null;
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		switch (mode) {
+		case DATE:
+			cal.set(Calendar.HOUR_OF_DAY, 0);
+			cal.set(Calendar.MINUTE, 0);
+			cal.set(Calendar.SECOND, 0);
+			cal.set(Calendar.MILLISECOND, 0);
+			break;
+		case TIME:
+			cal.set(Calendar.YEAR, 0);
+			cal.set(Calendar.MONTH, 0);
+			cal.set(Calendar.DATE, 0);
+			break;
+		case DATE_TIME:
+			break;
+		}
+		return cal;
 	}
 
 	public DateRankColumnModel(DateRankColumnModel copy) {
@@ -69,6 +104,7 @@ public class DateRankColumnModel extends ABasicFilterableRankColumnModel impleme
 		this.data = copy.data;
 		this.from = copy.from;
 		this.to = copy.to;
+		this.mode = copy.mode;
 		this.formatter = copy.formatter;
 	}
 
@@ -96,7 +132,7 @@ public class DateRankColumnModel extends ABasicFilterableRankColumnModel impleme
 			public void run(Display display, Composite canvas) {
 				Point loc = canvas.toDisplay((int) location.x(), (int) location.y());
 				DateFilterDialog dialog = new DateFilterDialog(canvas.getShell(), getTitle(), summary, from, to,
-						isGlobalFilter, getTable().hasSnapshots(), loc);
+						isGlobalFilter, getTable().hasSnapshots(), loc, mode);
 				dialog.open();
 			}
 		});
@@ -106,9 +142,9 @@ public class DateRankColumnModel extends ABasicFilterableRankColumnModel impleme
 	 * @param min2
 	 * @param max2
 	 */
-	public void setFilter(Date from2, Date to2) {
+	public void setFilter(Calendar from2, Calendar to2) {
 		invalidAllFilter();
-		Pair<Date, Date> old = Pair.make(from, to);
+		Pair<Calendar, Calendar> old = Pair.make(from, to);
 		from = from2;
 		to = to2;
 		propertySupport.firePropertyChange(PROP_FILTER, old, Pair.make(from, to));
@@ -122,8 +158,13 @@ public class DateRankColumnModel extends ABasicFilterableRankColumnModel impleme
 	@Override
 	protected void updateMask(BitSet todo, List<IRow> data, BitSet mask) {
 		for (int i = todo.nextSetBit(0); i >= 0; i = todo.nextSetBit(i + 1)) {
-			// int value = getInt(data.get(i));
-			// mask.set(i, value >= min && value <= max);
+			Date date = getDate(data.get(i));
+			if (date == null || (from == null && to == null)) {
+				mask.set(i, true);
+				continue;
+			}
+			Calendar cal = asCalendar(date, mode);
+			mask.set(i, (from == null || cal.compareTo(from) >= 0) && (to == null || cal.compareTo(to) <= 0));
 		}
 	}
 
@@ -131,10 +172,15 @@ public class DateRankColumnModel extends ABasicFilterableRankColumnModel impleme
 		return data.apply(prow);
 	}
 
+	public Calendar getCalendar(IRow prow) {
+		Date d = getDate(prow);
+		return d == null ? null : asCalendar(d, mode);
+	}
+
 	@Override
 	public String getValue(IRow row) {
-		// FIXME
-		return "" + getDate(row);
+		Date d = getDate(row);
+		return d == null ? "" : formatter.format(d);
 	}
 
 	@Override
