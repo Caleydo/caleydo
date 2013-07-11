@@ -115,7 +115,7 @@ public final class ProjectManager {
 			loadPluginData(dirName);
 			return loadData(dirName);
 		} catch (Exception e) {
-			log.error("Failed to load project from\n" + dirName, e);
+			log.error("Error Loading Project from\n" + dirName, e);
 			return null;
 		}
 
@@ -124,7 +124,7 @@ public final class ProjectManager {
 	private static void loadPluginData(String dirName) throws JAXBException, BundleException {
 		File pluginFile = new File(dirName + ProjectManager.PLUG_IN_LIST_FILE);
 		if (!pluginFile.exists()) {
-			log.info("Could not load plugin data from " + pluginFile);
+			log.info("Error Loading Plugin Data  " + pluginFile);
 			return;
 		}
 
@@ -134,7 +134,7 @@ public final class ProjectManager {
 		for (String plugIn : plugInList.plugIns) {
 			Bundle bundle = Platform.getBundle(plugIn);
 			if (bundle == null) {
-				log.warn("Could not load bundle: %s", plugIn);
+				log.warn("Error Loading Bundle : %s", plugIn);
 				continue;
 			}
 			bundle.start();
@@ -218,7 +218,7 @@ public final class ProjectManager {
 
 				int nrPerspectives = recordPerspectiveIDs.size() + dimensionPerspectiveIDs.size();
 				SubMonitor dataDomainMonitor = monitor.newChild(10, SubMonitor.SUPPRESS_SUBTASK);
-				dataDomainMonitor.beginTask("Loading groupings for: " + dataDomain.getLabel(), nrPerspectives);
+				dataDomainMonitor.beginTask("Loading Groupings for: " + dataDomain.getLabel(), nrPerspectives);
 
 				for (String recordPerspectiveID : recordPerspectiveIDs) {
 
@@ -310,7 +310,7 @@ public final class ProjectManager {
 			public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
 				monitor.beginTask("Saving Project to " + fileName, (onlyData ? 0 : 1) + 1 + dataDomains.size() + 1 + 1
 						+ 1);
-				log.info("saving to " + fileName);
+				log.info("Saving Project to " + fileName);
 				String tempDir = dir("temp_project" + System.currentTimeMillis());
 				FileOperations.createDirectory(tempDir);
 				try {
@@ -319,28 +319,28 @@ public final class ProjectManager {
 						saveWorkbenchData(tempDir);
 						monitor.worked(1);
 					}
-					log.info("storing plugin data");
+					log.info("Storing Plugin Data");
 					monitor.subTask("Saving Plugin Data");
 					savePluginData(tempDir);
 					monitor.worked(1);
-					log.info("stored plugin data");
-					log.info("storing data");
+					log.info("Stored Plugin Data");
+					log.info("Storing Data");
 					saveData(tempDir, dataDomains, monitor, metaData);
-					log.info("stored data");
+					log.info("Stored Data");
 
-					monitor.subTask("packing Project Data");
+					monitor.subTask("Packing Project Data");
 					ZipUtils.zipDirectory(tempDir, fileName);
 					monitor.worked(1);
 
-					monitor.subTask("cleanup temporary data");
+					monitor.subTask("Cleanup Temporary Data");
 					FileOperations.deleteDirectory(tempDir);
 					monitor.worked(1);
-					String message = "Caleydo project successfully written to\n" + fileName;
+					String message = "Successfully Wrote Project to\n" + fileName;
 					log.info(message);
 					monitor.done();
 					showMessageBox("Project Save", message);
 				} catch (Exception e) {
-					String failureMessage = "Faild to save project to " + fileName + ".";
+					String failureMessage = "Error Saving Project to " + fileName + ".";
 					log.error(failureMessage, e);
 					showMessageBox("Project Save", failureMessage);
 				}
@@ -383,23 +383,23 @@ public final class ProjectManager {
 				FileOperations.createDirectory(RECENT_PROJECT_FOLDER);
 				monitor.worked(1);
 				try {
-					log.info("saving plugin data");
+					log.info("Saving Plugin Data");
 					monitor.subTask("Saving Plugin Data");
 					savePluginData(RECENT_PROJECT_FOLDER);
 					monitor.worked(1);
-					log.info("saving data");
+					log.info("Saving Data");
 					saveData(RECENT_PROJECT_FOLDER, dataDomains, monitor, GeneralManager.get().getMetaData());
-					log.info("saving workbench");
-					monitor.subTask("packing Project Data");
+					log.info("Saving Workbench");
+					monitor.subTask("Packing Project Data");
 					saveWorkbenchData(RECENT_PROJECT_FOLDER);
 					monitor.worked(1);
 					log.info("saved");
 				} catch (Exception e) {
-					log.error("Faild to auto-save project.", e);
+					log.error("Error Saving Auto-Save Project", e);
 				}
 				monitor.subTask("Cleanup temporary data");
 				FileOperations.deleteDirectory(RECENT_PROJECT_FOLDER_TMP);
-				log.info("saved recent project");
+				log.info("Saved Recent Project");
 				monitor.done();
 			}
 		};
@@ -426,7 +426,7 @@ public final class ProjectManager {
 			Marshaller marshaller = context.createMarshaller();
 			marshaller.marshal(plugInList, pluginFile);
 		} catch (JAXBException ex) {
-			log.error("Could not serialize plug-in names: " + plugInList.toString(), ex);
+			log.error("Error Serializing Plugin-Ins: " + plugInList.toString(), ex);
 			throw ex;
 		}
 
@@ -472,7 +472,7 @@ public final class ProjectManager {
 							.getResource(sourceFileName));
 				} catch (IllegalStateException e) {
 					e.printStackTrace();
-					throw new IllegalStateException("Error saving project file", e);
+					throw new IllegalStateException("Error Saving Project File", e);
 				}
 
 				ATableBasedDataDomain tableBasedDataDomain = (ATableBasedDataDomain) dataDomain;
@@ -532,7 +532,7 @@ public final class ProjectManager {
 	 *            name of the directory to save the views to.
 	 */
 	private static void saveWorkbenchData(String dirName) {
-		log.info("storing workbench data");
+		log.info("Storing Workbench Data");
 
 		IJobManager jobManager = Job.getJobManager();
 		// find auto saver
@@ -551,13 +551,13 @@ public final class ProjectManager {
 				// clear old workbench file
 				File source = new File(WORKBENCH_XMI_FILE);
 				if (!source.exists()) {
-					log.warn("Could not save workbench data from " + source);
+					log.warn("Error Saving Workbench Data from " + source);
 					return;
 				}
 				File target = new File(dirName + WORKBENCH_XMI);
 				Files.copy(source, target);
 			} catch (InterruptedException | IOException e) {
-				log.error("can't persist workbench data", e);
+				log.error("Error Saving Workbench Data", e);
 			}
 
 		}
@@ -638,7 +638,7 @@ public final class ProjectManager {
 
 			File workbenchFile = new File(dirName + WORKBENCH_XMI);
 			if (!workbenchFile.exists()) {
-				log.info("Could not load workbench data from " + workbenchFile);
+				log.info("Error Loading Workbench Data  from " + workbenchFile);
 				return;
 			}
 			// Create .metadata folder if it does not exist yet. This is the case when Caleydo is started the first
@@ -649,7 +649,7 @@ public final class ProjectManager {
 			}
 			FileOperations.copyFolder(workbenchFile, target);
 		} catch (IOException e) {
-			log.warn("Could not load workbench data from " + dirName, e);
+			log.warn("Error Loading Workbench Data  from " + dirName, e);
 		}
 	}
 
