@@ -5,6 +5,8 @@
  ******************************************************************************/
 package org.caleydo.vis.rank.internal.event;
 
+import java.util.Calendar;
+
 import org.caleydo.core.event.ADirectedEvent;
 
 /**
@@ -13,31 +15,31 @@ import org.caleydo.core.event.ADirectedEvent;
  * @author Samuel Gratzl
  *
  */
-public class SizeFilterEvent extends ADirectedEvent {
-	private Integer min;
-	private Integer max;
+public class DateFilterEvent extends ADirectedEvent {
+	private Calendar before;
+	private Calendar after;
 
 	/**
 	 * @param filter
 	 */
-	public SizeFilterEvent(Integer min, Integer max) {
+	public DateFilterEvent(Calendar before, Calendar after) {
 		super();
-		this.min = min;
-		this.max = max;
+		this.before = before;
+		this.after = after;
 	}
 
 	/**
-	 * @return the min, see {@link #min}
+	 * @return the before, see {@link #before}
 	 */
-	public Integer getMin() {
-		return min;
+	public Calendar getBefore() {
+		return before;
 	}
 
 	/**
-	 * @return the max, see {@link #max}
+	 * @return the after, see {@link #after}
 	 */
-	public Integer getMax() {
-		return max;
+	public Calendar getAfter() {
+		return after;
 	}
 
 	@Override

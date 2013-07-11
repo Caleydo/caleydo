@@ -103,40 +103,54 @@ public final class FirehoseProvider {
 				+ tumor + System.getProperty("file.separator"));
 	}
 
-	private File findStandardClusteredFile(EDataSetType type) {
-		return extractAnalysisRunFile("outputprefix.expclu.gct", type.getTCGAAbbr() + "_Clustering_CNMF", LEVEL);
+	private Pair<File, Boolean> findStandardSampledClusteredFile(EDataSetType type) {
+		return Pair.make(
+				extractAnalysisRunFile("outputprefix.expclu.gct", type.getTCGAAbbr() + "_Clustering_CNMF", LEVEL),
+				false);
 	}
 
-	public File findRPPAMatrixFile() {
-		return findStandardClusteredFile(EDataSetType.RPPA);
+	public Pair<File, Boolean> findRPPAMatrixFile(boolean loadFullGenes) {
+		return findStandardSampledClusteredFile(EDataSetType.RPPA);
 	}
 
-	public File findMethylationMatrixFile() {
-		return findStandardClusteredFile(EDataSetType.methylation);
+	public Pair<File, Boolean> findMethylationMatrixFile(boolean loadFullGenes) {
+		return findStandardSampledClusteredFile(EDataSetType.methylation);
 	}
 
-	public File findmRNAMatrixFile(boolean loadSampledGenes) {
-		if (loadSampledGenes)
-			return findStandardClusteredFile(EDataSetType.mRNA);
-		return extractAnalysisRunFile(getFileName(".medianexp.txt"), "mRNA_Preprocess_Median", LEVEL);
+	public Pair<File, Boolean> findmRNAMatrixFile(boolean loadFullGenes) {
+		if (loadFullGenes) {
+			File r = extractAnalysisRunFile(getFileName(".medianexp.txt"), "mRNA_Preprocess_Median", LEVEL);
+			if (r != null)
+				return Pair.make(r, true);
+		}
+		return findStandardSampledClusteredFile(EDataSetType.mRNA);
 	}
 
-	public File findmRNAseqMatrixFile(boolean loadSampledGenes) {
-		if (loadSampledGenes)
-			return findStandardClusteredFile(EDataSetType.mRNAseq);
-		return extractAnalysisRunFile(getFileName(".mRNAseq_RPKM_log2.txt"), "mRNAseq_Preprocess", LEVEL);
+	public Pair<File, Boolean> findmRNAseqMatrixFile(boolean loadFullGenes) {
+		if (loadFullGenes) {
+			File r = extractAnalysisRunFile(getFileName(".mRNAseq_RPKM_log2.txt"), "mRNAseq_Preprocess", LEVEL);
+			if (r != null)
+				return Pair.make(r, true);
+		}
+		return findStandardSampledClusteredFile(EDataSetType.mRNAseq);
 	}
 
-	public File findmicroRNAMatrixFile(boolean loadSampledGenes) {
-		if (loadSampledGenes)
-			return findStandardClusteredFile(EDataSetType.microRNA);
-		return extractAnalysisRunFile(getFileName(".miR_expression.txt"), "miR_Preprocess", LEVEL);
+	public Pair<File, Boolean> findmicroRNAMatrixFile(boolean loadFullGenes) {
+		if (loadFullGenes) {
+			File r = extractAnalysisRunFile(getFileName(".miR_expression.txt"), "miR_Preprocess", LEVEL);
+			if (r != null)
+				return Pair.make(r, true);
+		}
+		return findStandardSampledClusteredFile(EDataSetType.microRNA);
 	}
 
-	public File findmicroRNAseqMatrixFile(boolean loadSampledGenes) {
-		if (loadSampledGenes)
-			return findStandardClusteredFile(EDataSetType.microRNAseq);
-		return extractAnalysisRunFile(getFileName(".miRseq_RPKM_log2.txt"), "miRseq_Preprocess", LEVEL);
+	public Pair<File, Boolean> findmicroRNAseqMatrixFile(boolean loadFullGenes) {
+		if (loadFullGenes) {
+			File r = extractAnalysisRunFile(getFileName(".miRseq_RPKM_log2.txt"), "miRseq_Preprocess", LEVEL);
+			if (r != null)
+				return Pair.make(r, true);
+		}
+		return findStandardSampledClusteredFile(EDataSetType.microRNAseq);
 	}
 
 	public File findHiearchicalGrouping(EDataSetType type) {
