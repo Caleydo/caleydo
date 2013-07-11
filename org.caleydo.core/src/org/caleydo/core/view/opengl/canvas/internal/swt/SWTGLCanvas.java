@@ -34,6 +34,7 @@ final class SWTGLCanvas extends AGLCanvas {
 	private final Table<Integer, Object, Object> listenerMapping = HashBasedTable.create();
 
 	SWTGLCanvas(GLCanvas canvas) {
+		super(canvas);
 		this.canvas = canvas;
 	}
 
@@ -98,6 +99,7 @@ final class SWTGLCanvas extends AGLCanvas {
 			}
 		});
 	}
+
 
 	@Override
 	public void addFocusListener(final IGLFocusListener listener) {

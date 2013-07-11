@@ -232,8 +232,8 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 	public final void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
 		GL2 gl = drawable.getGL().getGL2();
 
-		viewFrustum.setRight(width);
-		viewFrustum.setBottom(height);
+		viewFrustum.setRight(canvas.getDIPWidth());
+		viewFrustum.setBottom(canvas.getDIPHeight());
 
 		gl.glViewport(x, y, width, height);
 		gl.glMatrixMode(GLMatrixFunc.GL_PROJECTION);

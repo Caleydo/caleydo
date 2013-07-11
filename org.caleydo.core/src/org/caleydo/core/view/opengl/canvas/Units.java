@@ -7,6 +7,8 @@ package org.caleydo.core.view.opengl.canvas;
 
 import gleem.linalg.Vec2f;
 
+import org.caleydo.core.gui.util.DisplayUtils;
+import org.caleydo.core.util.execution.SafeCallable;
 import org.caleydo.core.util.function.AFloatFunction;
 import org.caleydo.core.util.function.FloatFunctions;
 import org.caleydo.core.util.function.IFloatFunction;
@@ -22,7 +24,12 @@ public enum Units implements IFloatFunction {
 	PX, PT, EM, DIP;
 
 	private static final float base = 96;
-	private static final int dpi = Display.getDefault().getDPI().x;
+	private static final int dpi = DisplayUtils.syncExec(Display.getDefault(),new SafeCallable<Integer>() {
+		@Override
+		public Integer call() {
+			return Display.getCurrent().getDPI().x;
+		}
+	});
 
 	private static final float pt2dip;
 	private static final float px2dip;

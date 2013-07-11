@@ -45,6 +45,7 @@ final class AWTGLCanvas extends AGLCanvas {
 	private final Composite composite;
 
 	AWTGLCanvas(GLCanvas canvas, Composite composite) {
+		super(canvas);
 		this.canvas = canvas;
 		this.composite = composite;
 	}

@@ -35,6 +35,7 @@ final class NEWTGLCanvas extends AGLCanvas {
 	private final GLWindow canvas;
 
 	NEWTGLCanvas(GLWindow window, NewtCanvasSWT canvas) {
+		super(window);
 		this.canvas = window;
 		this.composite = canvas;
 	}
