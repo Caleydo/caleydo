@@ -244,9 +244,9 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	 * Constructor.
 	 *
 	 */
-	public GLStratomex(IGLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+	public GLStratomex(IGLCanvas glCanvas, ViewFrustum viewFrustum) {
 
-		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
+		super(glCanvas, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
 		connectionRenderer = new ConnectionBandRenderer();
 
@@ -475,7 +475,8 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	@Override
 	public void initLocal(GL2 gl) {
 
-		// Register keyboard listener to GL2 canvas
+		// Register keyboard listener to GL2 canva
+		final Composite parentComposite = parentGLCanvas.asComposite();
 		parentComposite.getDisplay().asyncExec(new Runnable() {
 			@Override
 			public void run() {
@@ -1275,7 +1276,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		BrickColumn brickColumn = (BrickColumn) GeneralManager
 				.get()
 				.getViewManager()
-				.createGLView(BrickColumn.class, getParentGLCanvas(), parentComposite,
+				.createGLView(BrickColumn.class, getParentGLCanvas(),
 						new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1, -1, 1));
 
 		/**

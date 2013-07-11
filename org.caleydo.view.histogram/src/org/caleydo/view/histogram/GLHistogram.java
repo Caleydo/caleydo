@@ -39,7 +39,6 @@ import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
-import org.eclipse.swt.widgets.Composite;
 
 /**
  * Rendering the histogram.
@@ -84,9 +83,9 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 	 * @param viewLabel
 	 * @param viewFrustum
 	 */
-	public GLHistogram(IGLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+	public GLHistogram(IGLCanvas glCanvas, ViewFrustum viewFrustum) {
 
-		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
+		super(glCanvas, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
 		// registerEventListeners();
 

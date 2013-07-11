@@ -34,7 +34,6 @@ public class HeatMapRemoteViewCreator implements IRemoteViewCreator {
 				.get()
 				.getViewManager()
 				.createGLView(GLHeatMap.class, remoteRenderingView.getParentGLCanvas(),
-						remoteRenderingView.getParentComposite(),
 						new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1, -1, 1));
 
 		heatMap.setRemoteRenderingGLView((IGLRemoteRenderingView) remoteRenderingView);

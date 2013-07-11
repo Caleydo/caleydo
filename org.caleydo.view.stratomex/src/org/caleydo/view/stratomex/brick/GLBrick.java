@@ -93,7 +93,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
@@ -101,9 +100,9 @@ import org.eclipse.ui.PlatformUI;
 
 /**
  * Individual Brick for StratomeX
- * 
+ *
  * @author Alexander Lex
- * 
+ *
  */
 public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, ILayoutedElement, IDraggable,
 		IMultiFormChangeListener, IEventBasedSelectionManagerUser {
@@ -246,8 +245,8 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	private final Collection<IContextMenuBrickFactory> contextMenuFactories;
 
-	public GLBrick(IGLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
-		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
+	public GLBrick(IGLCanvas glCanvas, ViewFrustum viewFrustum) {
+		super(glCanvas, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
 		contextMenuFactories = createContextMenuFactories();
 		textRenderer = new CaleydoTextRenderer(24);
@@ -327,7 +326,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	/**
 	 * Triggers a dialog to rename the specified group.
-	 * 
+	 *
 	 * @param groupID
 	 *            ID of the group that shall be renamed.
 	 */
@@ -340,7 +339,8 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 			@Override
 			public void run() {
-				String r = RenameNameDialog.show(getParentComposite().getShell(), "Rename '" + getLabel() + "' to",
+				String r = RenameNameDialog.show(getParentGLCanvas().asComposite().getShell(), "Rename '" + getLabel()
+						+ "' to",
 						getLabel());
 				if (r != null) {
 					label = r;
@@ -545,7 +545,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	/**
 	 * Set the {@link GLStratomex} view managing this brick, which is needed for environment information.
-	 * 
+	 *
 	 * @param stratomex
 	 */
 	public void setStratomex(GLStratomex stratomex) {
@@ -554,7 +554,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	/**
 	 * Set the {@link BrickColumn} this brick belongs to.
-	 * 
+	 *
 	 * @param brickColumn
 	 */
 	public void setBrickColumn(BrickColumn brickColumn) {
@@ -563,7 +563,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	/**
 	 * Returns the {@link BrickColumn} this brick belongs to.
-	 * 
+	 *
 	 * @return
 	 */
 	public BrickColumn getBrickColumn() {
@@ -585,7 +585,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	/**
 	 * Updates the width and height of the brick according to the specified renderer.
-	 * 
+	 *
 	 * @param viewType
 	 *            ID of the renderer in {@link #multiFormRenderer}.
 	 */
@@ -676,7 +676,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 	/**
 	 * Sets the {@link ABrickLayoutConfiguration} for this brick, specifying its appearance. If the specified view type
 	 * is valid, it will be set, otherwise the default view type will be set.
-	 * 
+	 *
 	 * @param newBrickLayout
 	 * @param viewType
 	 */
@@ -900,7 +900,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	/**
 	 * create the context menu entries to switch the dimension perspectives
-	 * 
+	 *
 	 * @return
 	 */
 	protected static AContextMenuItem createChooseDimensionPerspectiveEntries(BrickColumn column) {
@@ -920,7 +920,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	/**
 	 * Only to be called via a {@link RelationsUpdatedListener} upon a {@link RelationsUpdatedEvent}.
-	 * 
+	 *
 	 * TODO: add parameters to check whether this brick needs to be updated
 	 */
 	public void relationsUpdated() {
@@ -937,7 +937,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	/**
 	 * Set the layout that this view is embedded in
-	 * 
+	 *
 	 * @param wrappingLayout
 	 */
 	public void setLayout(ElementLayout wrappingLayout) {
@@ -946,7 +946,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	/**
 	 * Returns the layout that this view is wrapped in, which is created by the same instance that creates the view.
-	 * 
+	 *
 	 * @return
 	 */
 	@Override
@@ -968,7 +968,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	/**
 	 * Returns the selection manager responsible for managing selections of data containers.
-	 * 
+	 *
 	 * @return
 	 */
 	public SelectionManager getTablePerspectiveSelectionManager() {
@@ -1007,7 +1007,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	/**
 	 * Sets this brick collapsed
-	 * 
+	 *
 	 * @return how much this has affected the height of the brick.
 	 */
 	public void collapse() {
@@ -1051,7 +1051,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	/**
 	 * Sets, whether view switching by this brick should affect other bricks in the dimension group.
-	 * 
+	 *
 	 * @param isGlobalViewSwitching
 	 */
 	public void setGlobalViewSwitching(boolean isGlobalViewSwitching) {
@@ -1313,7 +1313,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	/**
 	 * Sets the specified renderer to be displayed.
-	 * 
+	 *
 	 * @param rendererID
 	 *            ID of the renderer in {@link #multiFormRenderer}, i.e., the local renderer ID.
 	 */
@@ -1351,7 +1351,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 	/**
 	 * Associates global, i.e., brick-column wide IDs to identify similar renderers for bricks of the same type (segment
 	 * vs. header), to the local renderer IDs used in {@link #multiFormRenderer}.
-	 * 
+	 *
 	 * @param globalRendererID
 	 *            Global renderer ID.
 	 * @param localRendererID
@@ -1364,7 +1364,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	/**
 	 * Gets the local renderer ID used by {@link #multiFormRenderer} for a global ID.
-	 * 
+	 *
 	 * @param globalRendererID
 	 *            Global renderer ID.
 	 * @return The local renderer ID, -1 if no local ID could be found for the specified global ID.
@@ -1377,7 +1377,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	/**
 	 * Gets the global renderer ID for a local ID.
-	 * 
+	 *
 	 * @param localRendererID
 	 *            Local renderer ID.
 	 * @return The global renderer ID, -1 if no global ID could be found for the specified local ID.

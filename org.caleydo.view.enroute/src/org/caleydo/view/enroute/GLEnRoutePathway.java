@@ -72,6 +72,7 @@ import org.caleydo.view.pathway.GLPathway;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 /**
@@ -177,9 +178,9 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	 * @param viewLabel
 	 * @param viewFrustum
 	 */
-	public GLEnRoutePathway(IGLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+	public GLEnRoutePathway(IGLCanvas glCanvas, ViewFrustum viewFrustum) {
 
-		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
+		super(glCanvas, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
 		geneSelectionManager = new EventBasedSelectionManager(this, primaryRowIDType);
 		geneSelectionManager.registerEventListeners();
@@ -238,11 +239,12 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	public void initRemote(final GL2 gl, final AGLView glParentView, final GLMouseListener glMouseListener) {
 
 		// Register keyboard listener to GL2 canvas
-		glParentView.getParentComposite().getDisplay().asyncExec(new Runnable() {
+		final Composite composite = glParentView.getParentGLCanvas().asComposite();
+		composite.getDisplay().asyncExec(new Runnable() {
 			@Override
 			public void run() {
 				if (glKeyListener != null)
-					glParentView.getParentComposite().addKeyListener(glKeyListener);
+					composite.addKeyListener(glKeyListener);
 			}
 		});
 
@@ -885,7 +887,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	@ListenTo
 	public void showContextSelectionDialog(final ShowContextElementSelectionDialogEvent event) {
 
-		getParentComposite().getDisplay().asyncExec(new Runnable() {
+		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
 				Shell shell = new Shell();
@@ -909,7 +911,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	@ListenTo
 	public void showGroupSelectionDialog(final ShowGroupSelectionDialogEvent event) {
 
-		getParentComposite().getDisplay().asyncExec(new Runnable() {
+		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
 				Shell shell = new Shell();

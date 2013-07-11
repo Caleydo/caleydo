@@ -208,10 +208,10 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	 * @param viewName
 	 *            TODO
 	 */
-	protected AGLView(IGLCanvas glCanvas, final Composite parentComposite, final ViewFrustum viewFrustum,
+	protected AGLView(IGLCanvas glCanvas, final ViewFrustum viewFrustum,
 			String viewType, String viewName) {
 
-		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.GL_VIEW), parentComposite, viewType,
+		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.GL_VIEW), viewType,
 				viewName);
 
 		parentGLCanvas = glCanvas;
@@ -261,6 +261,7 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	public void init(GLAutoDrawable drawable) {
 
 		final GLFPSKeyListener fpsKeyListener = new GLFPSKeyListener(this);
+		final Composite parentComposite = parentGLCanvas.asComposite();
 		parentComposite.getDisplay().asyncExec(new Runnable() {
 			@Override
 			public void run() {

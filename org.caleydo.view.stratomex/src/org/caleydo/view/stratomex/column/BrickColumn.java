@@ -57,7 +57,6 @@ import org.caleydo.view.stratomex.brick.layout.DetailBrickLayoutTemplate;
 import org.caleydo.view.stratomex.brick.layout.HeaderBrickLayoutTemplate;
 import org.caleydo.view.stratomex.brick.ui.OverviewDetailBandRenderer;
 import org.caleydo.view.stratomex.event.SelectDimensionSelectionEvent;
-import org.eclipse.swt.widgets.Composite;
 
 import com.google.common.collect.Iterables;
 
@@ -175,8 +174,8 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 
 	private final EventListenerManager eventListeners = EventListenerManagers.wrap(this);
 
-	public BrickColumn(IGLCanvas canvas, Composite parentComposite, ViewFrustum viewFrustum) {
-		super(canvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
+	public BrickColumn(IGLCanvas canvas, ViewFrustum viewFrustum) {
+		super(canvas, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
 	}
 
@@ -460,7 +459,7 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 			Class<? extends ABrickLayoutConfiguration> layoutTemplateClass) {
 		ViewFrustum brickFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 0, 0, 0, -4, 4);
 		GLBrick brick = (GLBrick) GeneralManager.get().getViewManager()
-				.createGLView(GLBrick.class, parentGLCanvas, parentComposite, brickFrustum);
+				.createGLView(GLBrick.class, parentGLCanvas, brickFrustum);
 
 		brick.setDataDomain(dataDomain);
 		brick.setTablePerspective(tablePerspective);

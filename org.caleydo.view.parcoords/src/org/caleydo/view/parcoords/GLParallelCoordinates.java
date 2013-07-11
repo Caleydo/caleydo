@@ -88,7 +88,6 @@ import org.caleydo.view.parcoords.listener.ResetAxisSpacingListener;
 import org.caleydo.view.parcoords.listener.ResetParallelCoordinatesEvent;
 import org.caleydo.view.parcoords.listener.UseRandomSamplingListener;
 import org.caleydo.view.parcoords.preferences.MyPreferences;
-import org.eclipse.swt.widgets.Composite;
 
 /**
  * This class is responsible for rendering the parallel coordinates
@@ -180,8 +179,8 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 	/**
 	 * Constructor.
 	 */
-	public GLParallelCoordinates(IGLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
-		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
+	public GLParallelCoordinates(IGLCanvas glCanvas, ViewFrustum viewFrustum) {
+		super(glCanvas, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
 		// custom one
 		this.textureManager = new TextureManager(Activator.getResourceLoader());

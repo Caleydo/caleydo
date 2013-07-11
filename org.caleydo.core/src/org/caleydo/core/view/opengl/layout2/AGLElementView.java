@@ -63,8 +63,7 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 	private final ISWTLayer swtLayer;
 
 	public AGLElementView(IGLCanvas glCanvas, String viewType, String viewName) {
-		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.GL_VIEW), glCanvas.asComposite(),
-				viewType,
+		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.GL_VIEW), viewType,
 				viewName);
 		this.canvas = glCanvas;
 		this.swtLayer = new SWTLayer(glCanvas);

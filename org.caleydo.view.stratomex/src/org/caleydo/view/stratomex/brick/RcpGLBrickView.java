@@ -35,7 +35,7 @@ public class RcpGLBrickView extends ARcpGLViewPart {
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
 
-		view = new GLBrick(glCanvas, parentComposite, serializedView.getViewFrustum());
+		view = new GLBrick(glCanvas, serializedView.getViewFrustum());
 		initializeView();
 		createPartControlGL();
 	}

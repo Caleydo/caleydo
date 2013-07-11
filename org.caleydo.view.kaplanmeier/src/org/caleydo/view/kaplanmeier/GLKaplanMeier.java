@@ -38,7 +38,6 @@ import org.caleydo.core.view.opengl.util.connectionline.ConnectionLineRenderer;
 import org.caleydo.core.view.opengl.util.connectionline.LineCrossingRenderer;
 import org.caleydo.core.view.opengl.util.connectionline.LineLabelRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
-import org.eclipse.swt.widgets.Composite;
 
 /**
  * <p>
@@ -99,9 +98,9 @@ public class GLKaplanMeier extends AGLView implements ISingleTablePerspectiveBas
 	 * @param viewLabel
 	 * @param viewFrustum
 	 */
-	public GLKaplanMeier(IGLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+	public GLKaplanMeier(IGLCanvas glCanvas, ViewFrustum viewFrustum) {
 
-		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
+		super(glCanvas, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
 		textRenderer = new CaleydoTextRenderer(24);
 	}

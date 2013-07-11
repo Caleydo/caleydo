@@ -12,7 +12,6 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
-import org.eclipse.swt.widgets.Composite;
 
 /**
  * Interface for accessing views that remotely render other views.
@@ -22,8 +21,6 @@ import org.eclipse.swt.widgets.Composite;
 public interface IGLRemoteRenderingView extends IView {
 
 	public IGLCanvas getParentGLCanvas();
-
-	public Composite getParentComposite();
 
 	/**
 	 * Retrieves all the contained views from a given view. The correct

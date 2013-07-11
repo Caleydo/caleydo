@@ -23,7 +23,6 @@ import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.data.loader.ResourceLocators;
 import org.caleydo.data.loader.ResourceLocators.IResourceLocator;
-import org.eclipse.swt.widgets.Composite;
 
 /**
  * a {@link GLElement} based view using a {@link AGLView} for compatibility
@@ -54,9 +53,9 @@ public abstract class AGLElementGLView extends AGLView implements IGLElementCont
 	protected boolean isLayoutDirty = true;
 
 
-	public AGLElementGLView(IGLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum, String viewType,
+	public AGLElementGLView(IGLCanvas glCanvas, ViewFrustum viewFrustum, String viewType,
 			String viewName) {
-		super(glCanvas, parentComposite, viewFrustum, viewType, viewName);
+		super(glCanvas, viewFrustum, viewType, viewName);
 		this.swtLayer = new SWTLayer(glCanvas);
 	}
 

@@ -92,7 +92,7 @@ import org.caleydo.view.pathway.listener.SelectPathModeEventListener;
 import org.caleydo.view.pathway.listener.ShowPortalNodesEventListener;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.jgrapht.GraphPath;
 import org.jgrapht.alg.KShortestPaths;
 import org.jgrapht.graph.DefaultEdge;
@@ -245,8 +245,8 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 	/**
 	 * Constructor.
 	 */
-	public GLPathway(IGLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
-		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
+	public GLPathway(IGLCanvas glCanvas, ViewFrustum viewFrustum) {
+		super(glCanvas, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
 		pathwayManager = PathwayManager.get();
 		pathwayItemManager = PathwayItemManager.get();
@@ -404,7 +404,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 				// //comment_1/2:
 				if (e.isControlDown() && (e.isKey('o'))) { // ctrl +o
 					enablePathSelection(!isPathSelectionMode);
-					getParentComposite().getDisplay().asyncExec(new Runnable() {
+					Display.getDefault().asyncExec(new Runnable() {
 						@Override
 						public void run() {
 							if (selectPathAction != null) {

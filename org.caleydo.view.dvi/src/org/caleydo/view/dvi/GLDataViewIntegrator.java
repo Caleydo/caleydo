@@ -100,6 +100,7 @@ import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
@@ -153,9 +154,9 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 	/**
 	 * Constructor.
 	 */
-	public GLDataViewIntegrator(IGLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+	public GLDataViewIntegrator(IGLCanvas glCanvas, ViewFrustum viewFrustum) {
 
-		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
+		super(glCanvas, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
 		connectionBandRenderer = new ConnectionBandRenderer();
 
@@ -175,6 +176,7 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 		displayListIndex = gl.glGenLists(1);
 
 		// Register keyboard listener to GL2 canvas
+		final Composite parentComposite = parentGLCanvas.asComposite();
 		parentComposite.getDisplay().asyncExec(new Runnable() {
 			@Override
 			public void run() {
@@ -790,7 +792,7 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 		final String dimensionPerspectiveLabel = (createDimensionPerspective) ? (dimensionGroup.getLabel())
 				: dataDomain.getTable().getDimensionPerspective(dimensionPerspectiveID).getLabel();
 
-		parentComposite.getDisplay().asyncExec(new Runnable() {
+		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
 
@@ -877,7 +879,7 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 	public void openView(final IView view) {
 		final CaleydoRCPViewPart viewPart = GeneralManager.get().getViewManager().getViewPartFromView(view);
 
-		parentComposite.getDisplay().asyncExec(new Runnable() {
+		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
 
@@ -894,7 +896,7 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 
 	public void createViewWithoutData(final String viewID) {
 
-		parentComposite.getDisplay().asyncExec(new Runnable() {
+		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
 
@@ -911,7 +913,7 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 
 	public void createView(final String viewID, final IDataDomain dataDomain, final TablePerspective tablePerspective) {
 
-		parentComposite.getDisplay().asyncExec(new Runnable() {
+		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
 
@@ -1028,7 +1030,7 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 	 * @param labelHolder
 	 */
 	public void renameLabelHolder(final ILabelHolder labelHolder) {
-		parentComposite.getDisplay().asyncExec(new Runnable() {
+		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
 

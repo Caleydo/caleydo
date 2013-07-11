@@ -46,7 +46,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IWorkbenchPage;
@@ -519,14 +518,14 @@ public class ViewManager extends AManager<IView> {
 	}
 
 	@SuppressWarnings("rawtypes")
-	public AGLView createGLView(Class<? extends AGLView> viewClass, IGLCanvas glCanvas, Composite parentComposite,
+	public AGLView createGLView(Class<? extends AGLView> viewClass, IGLCanvas glCanvas,
 			ViewFrustum viewFrustum) {
 
 		AGLView view;
 		try {
-			Class[] argTypes = { IGLCanvas.class, Composite.class, ViewFrustum.class };
+			Class[] argTypes = { IGLCanvas.class, ViewFrustum.class };
 			Constructor aConstructor = viewClass.getConstructor(argTypes);
-			view = (AGLView) aConstructor.newInstance(glCanvas, parentComposite, viewFrustum);
+			view = (AGLView) aConstructor.newInstance(glCanvas, viewFrustum);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new IllegalStateException("Cannot create GL view " + viewClass);

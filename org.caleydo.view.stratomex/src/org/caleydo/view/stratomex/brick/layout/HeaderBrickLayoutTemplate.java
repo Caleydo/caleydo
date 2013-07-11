@@ -33,6 +33,7 @@ import org.caleydo.view.stratomex.brick.GLBrick;
 import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
 import org.caleydo.view.stratomex.brick.ui.HandleRenderer;
 import org.caleydo.view.stratomex.column.BrickColumn;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 /**
@@ -259,7 +260,7 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 				@Override
 				public void clicked(Pick pick) {
 
-					brick.getParentComposite().getDisplay().asyncExec(new Runnable() {
+					Display.getDefault().asyncExec(new Runnable() {
 						@Override
 						public void run() {
 
@@ -326,7 +327,7 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 			@Override
 			public void clicked(Pick pick) {
 
-				brick.getParentComposite().getDisplay().asyncExec(new Runnable() {
+				Display.getDefault().asyncExec(new Runnable() {
 					@Override
 					public void run() {
 						RemoveTablePerspectiveEvent event = new RemoveTablePerspectiveEvent(brick.getBrickColumn()
