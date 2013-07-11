@@ -20,9 +20,9 @@ import org.caleydo.vis.rank.ui.detail.ValueElement;
 
 /**
  * a column showing the group distributions
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public class GroupDistributionRankColumnModel extends ARankColumnModel {
 
@@ -59,7 +59,7 @@ public class GroupDistributionRankColumnModel extends ARankColumnModel {
 		if (sum == 0)
 			return default_;
 		StringBuilder b = new StringBuilder();
-		b.append("total:\t").append(sum);
+		b.append("Total:\t").append(sum);
 		for (GroupInfo info : infos)
 			b.append('\n').append(info.getLabel()).append('\t').append(info.getSize())
 					.append(String.format("(%.2f%%)", info.getSize() / (float) sum));
