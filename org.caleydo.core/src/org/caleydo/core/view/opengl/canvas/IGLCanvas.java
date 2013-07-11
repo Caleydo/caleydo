@@ -8,11 +8,11 @@ package org.caleydo.core.view.opengl.canvas;
 import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 
-import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 
 import org.caleydo.core.util.base.ILabeled;
+import org.caleydo.core.util.function.IFloatFunction;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.opengl.picking.IPickingLabelProvider;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
@@ -75,6 +75,11 @@ public interface IGLCanvas {
 	 */
 	Rectangle toRawPixel(Rectangle2D.Float viewArea_dip);
 
+	/**
+	 * @return
+	 */
+	IFloatFunction toRawPixelFunction();
+
 	GLAutoDrawable asGLAutoDrawAble();
 
 	Composite asComposite();
@@ -89,9 +94,4 @@ public interface IGLCanvas {
 	IPickingListener createTooltip(String label);
 
 	void showPopupMenu(final Iterable<? extends AContextMenuItem> items);
-
-	/**
-	 * @param gl
-	 */
-	void applyScaling(GL2 gl);
 }

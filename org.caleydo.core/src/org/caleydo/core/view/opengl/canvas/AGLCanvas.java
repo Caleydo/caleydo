@@ -11,13 +11,14 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 
-import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.GLRunnable;
 
 import org.caleydo.core.internal.Activator;
 import org.caleydo.core.internal.MyPreferences;
+import org.caleydo.core.util.function.AFloatFunction;
+import org.caleydo.core.util.function.IFloatFunction;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 
@@ -60,6 +61,16 @@ public abstract class AGLCanvas implements IGLCanvas {
 	}
 
 	@Override
+	public IFloatFunction toRawPixelFunction() {
+		return new AFloatFunction() {
+			@Override
+			public float apply(float dip) {
+				return toRawPixel(dip);
+			}
+		};
+	}
+
+	@Override
 	public final float getWidth(Units unit) {
 		return unit.unapply(getDIPWidth());
 	}
@@ -67,11 +78,6 @@ public abstract class AGLCanvas implements IGLCanvas {
 	@Override
 	public final float getHeight(Units unit) {
 		return unit.unapply(getDIPHeight());
-	}
-
-	@Override
-	public final void applyScaling(GL2 gl) {
-		// gl.glScalef(scale, scale, 1);
 	}
 
 	@Override

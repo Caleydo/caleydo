@@ -128,7 +128,7 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 		IResourceLocator locator = createResourceLocator();
 		TextureManager textures = createTextureManager(locator);
 
-		local = new GLContextLocal(textures, locator);
+		local = new GLContextLocal(textures, locator, canvas);
 
 		AGLView.initGLContext(gl);
 
@@ -182,7 +182,6 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 
 		gl.glLoadIdentity();
 		gl.glTranslatef(0.375f, 0.375f, 0);
-		canvas.applyScaling(gl);
 
 		final GLGraphics g = new GLGraphics(gl, local, true, deltaTimeMs);
 		g.clearError();

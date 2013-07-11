@@ -273,8 +273,6 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 		gl.glLoadIdentity();
 		gl.glTranslatef(0.375f, 0.375f, 0);
-		canvas.applyScaling(gl);
-
 
 		float paddedWidth = getWidth() - padding.left - padding.right;
 		float paddedHeight = getHeight() - padding.top - padding.bottom;

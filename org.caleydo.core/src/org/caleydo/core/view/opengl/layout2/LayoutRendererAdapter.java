@@ -62,7 +62,7 @@ public final class LayoutRendererAdapter extends ALayoutRenderer implements IGLE
 		this.eventListeners = EventListenerManagers.createQueued();
 		this.eventSpace = eventSpace;
 
-		this.local = new GLContextLocal(view.getTextureManager(), locator);
+		this.local = new GLContextLocal(view.getTextureManager(), locator, view.getParentGLCanvas());
 
 		this.root.setParent(this);
 		this.root.init(this);

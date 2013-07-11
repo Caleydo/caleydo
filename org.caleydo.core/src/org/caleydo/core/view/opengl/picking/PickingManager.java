@@ -388,7 +388,6 @@ public class PickingManager {
 		gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
 		gl.glPushMatrix();
 		gl.glLoadIdentity();
-		glView.getParentGLCanvas().applyScaling(gl);
 		glView.display(gl);
 		gl.glPopMatrix();
 

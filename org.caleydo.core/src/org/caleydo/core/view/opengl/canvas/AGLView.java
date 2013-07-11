@@ -359,7 +359,6 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 
 			gl.glPushMatrix();
 			applyScrolling(gl);
-			parentGLCanvas.applyScaling(gl);
 
 			// clear screen
 			gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
