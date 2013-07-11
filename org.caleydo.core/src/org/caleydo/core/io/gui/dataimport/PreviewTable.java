@@ -21,7 +21,6 @@ import org.caleydo.core.io.gui.dataimport.widget.table.PreviewTableWidget;
 import org.caleydo.core.util.base.BooleanCallback;
 import org.caleydo.core.util.base.ICallback;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Widget;
 
 /**
  * @author Samuel Gratzl
@@ -244,5 +243,17 @@ public class PreviewTable {
 
 	public interface IPreviewCallback {
 		public void on(int numColumn, int numRow, List<? extends List<String>> dataMatrix);
+	}
+
+	public int getNumRows() {
+		if (dataMatrix == null)
+			return 0;
+		return dataMatrix.size();
+	}
+
+	public int getNumColumns() {
+		if (dataMatrix == null || dataMatrix.isEmpty())
+			return 0;
+		return dataMatrix.get(0).size();
 	}
 }
