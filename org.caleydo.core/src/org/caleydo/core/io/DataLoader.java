@@ -89,16 +89,20 @@ public class DataLoader {
 	 * @param groupingSpec
 	 *            the specification of the grouping
 	 * */
-	public static void loadGrouping(ATableBasedDataDomain dataDomain, GroupingParseSpecification groupingSpec) {
+	public static List<Perspective> loadGrouping(ATableBasedDataDomain dataDomain,
+			GroupingParseSpecification groupingSpec) {
 		ArrayList<GroupingParseSpecification> groupingList = new ArrayList<GroupingParseSpecification>(1);
 		groupingList.add(groupingSpec);
 		IDCategory category = IDCategory.getIDCategory(groupingSpec.getRowIDSpecification().getIdCategory());
 
+		List<Perspective> perspectives = null;
 		if (dataDomain.getRecordIDCategory().equals(category)) {
-			loadRecordGroupings(dataDomain, groupingList);
+			perspectives = loadRecordGroupings(dataDomain, groupingList);
 		} else if (dataDomain.getDimensionIDCategory().equals(category)) {
-			loadDimensionGroupings(dataDomain, groupingList);
+			perspectives = loadDimensionGroupings(dataDomain, groupingList);
 		}
+
+		return perspectives;
 	}
 
 	/**
@@ -163,8 +167,8 @@ public class DataLoader {
 	 *
 	 * @param dataSetDescription
 	 */
-	public static void loadGroupings(ATableBasedDataDomain dataDomain, DataSetDescription dataSetDescription,
-			IProgressMonitor monitor) {
+	public static void loadGroupings(ATableBasedDataDomain dataDomain,
+			DataSetDescription dataSetDescription, IProgressMonitor monitor) {
 
 		if (monitor != null)
 			monitor.subTask("Loading Groupings");
@@ -200,20 +204,22 @@ public class DataLoader {
 	 * @param dataDomain
 	 * @param dimensionGroupings
 	 */
-	private static void loadDimensionGroupings(ATableBasedDataDomain dataDomain,
+	private static List<Perspective> loadDimensionGroupings(ATableBasedDataDomain dataDomain,
 			List<GroupingParseSpecification> dimensionGroupings) {
 
 		IDType targetIDType = dataDomain.getDimensionIDType();
 
 		List<PerspectiveInitializationData> dimensionPerspectivesInitData = parseGrouping(dimensionGroupings,
 				targetIDType);
-
+		List<Perspective> perspectives = new ArrayList<>(dimensionPerspectivesInitData.size());
 		for (PerspectiveInitializationData data : dimensionPerspectivesInitData) {
 			Perspective dimensionPerspective = new Perspective(dataDomain, dataDomain.getDimensionIDType());
 			dimensionPerspective.init(data);
 			dataDomain.getTable().registerDimensionPerspective(dimensionPerspective);
+			perspectives.add(dimensionPerspective);
 		}
 
+		return perspectives;
 	}
 
 	/**
@@ -222,18 +228,21 @@ public class DataLoader {
 	 * @param dataDomain
 	 * @param recordGroupings
 	 */
-	private static void loadRecordGroupings(ATableBasedDataDomain dataDomain,
+	private static List<Perspective> loadRecordGroupings(ATableBasedDataDomain dataDomain,
 			List<GroupingParseSpecification> recordGroupings) {
 
 		IDType targetIDType = dataDomain.getRecordIDType();
 
 		List<PerspectiveInitializationData> recordPerspectivesInitData = parseGrouping(recordGroupings, targetIDType);
-
+		List<Perspective> perspectives = new ArrayList<>(recordPerspectivesInitData.size());
 		for (PerspectiveInitializationData data : recordPerspectivesInitData) {
 			Perspective recordPerspective = new Perspective(dataDomain, targetIDType);
 			recordPerspective.init(data);
 			dataDomain.getTable().registerRecordPerspective(recordPerspective);
+			perspectives.add(recordPerspective);
 		}
+
+		return perspectives;
 	}
 
 	/**
@@ -338,7 +347,7 @@ public class DataLoader {
 				table.registerRecordPerspective(rec, false);
 				recordPer = rec.getPerspectiveID();
 			} else {
-				//default one
+				// default one
 				recordPer = table.getDefaultRecordPerspective().getPerspectiveID();
 			}
 
