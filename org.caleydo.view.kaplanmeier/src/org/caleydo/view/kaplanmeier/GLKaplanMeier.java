@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.table.Table;
@@ -37,6 +36,7 @@ import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.connectionline.ConnectionLineRenderer;
 import org.caleydo.core.view.opengl.util.connectionline.LineCrossingRenderer;
 import org.caleydo.core.view.opengl.util.connectionline.LineLabelRenderer;
+import org.caleydo.core.view.opengl.util.connectionline.LineLabelRenderer.EAlignmentX;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.eclipse.swt.widgets.Composite;
 
@@ -302,7 +302,7 @@ public class GLKaplanMeier extends AGLView implements ISingleTablePerspectiveBas
 
 		gl.glLineWidth(lineWidth);
 
-		renderSingleKaplanMeierCurve(gl, recordIDs, fillCurve, group.getID(), color);
+		renderSingleKaplanMeierCurve(gl, recordIDs, fillCurve, group, color);
 
 	}
 
@@ -374,7 +374,7 @@ public class GLKaplanMeier extends AGLView implements ISingleTablePerspectiveBas
 						+ RIGHT_AXIS_SPACING_PIXELS) : 0);
 	}
 
-	private void renderSingleKaplanMeierCurve(GL2 gl, List<Integer> recordIDs, boolean fillCurve, int groupID,
+	private void renderSingleKaplanMeierCurve(GL2 gl, List<Integer> recordIDs, boolean fillCurve, Group group,
 			Color color) {
 
 		VirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
@@ -394,7 +394,7 @@ public class GLKaplanMeier extends AGLView implements ISingleTablePerspectiveBas
 
 		Collections.sort(dataVector);
 
-		gl.glPushName(pickingManager.getPickingID(getID(), EPickingType.KM_CURVE.name(), groupID));
+		gl.glPushName(pickingManager.getPickingID(getID(), EPickingType.KM_CURVE.name(), group.getID()));
 
 		if (fillCurve) {
 			//
@@ -410,8 +410,8 @@ public class GLKaplanMeier extends AGLView implements ISingleTablePerspectiveBas
 
 		}
 
-		gl.glColor4fv(color.getRGBA(), 0);
-		drawCurve(gl, dataVector);
+		// gl.glColor4fv(color.getRGBA(), 0);
+		drawCurve(gl, dataVector, color, group.getLabel());
 		gl.glPopName();
 
 	}
@@ -452,7 +452,7 @@ public class GLKaplanMeier extends AGLView implements ISingleTablePerspectiveBas
 
 	}
 
-	private void drawCurve(GL2 gl, ArrayList<Float> dataVector) {
+	private void drawCurve(GL2 gl, ArrayList<Float> dataVector, Color color, String label) {
 
 		float plotHeight = getPlotHeight();
 		float plotWidth = getPlotWidth();
@@ -469,8 +469,10 @@ public class GLKaplanMeier extends AGLView implements ISingleTablePerspectiveBas
 		float ySingleSampleSize = plotHeight / dataVector.size();
 
 		float z = 0.11f;
-		gl.glBegin(GL.GL_LINE_STRIP);
-		gl.glVertex3f(leftAxisSpacing, bottomAxisSpacing + plotHeight, z);
+		List<Vec3f> linePoints = new ArrayList<>();
+		linePoints.add(new Vec3f(leftAxisSpacing, bottomAxisSpacing + plotHeight, z));
+		// gl.glBegin(GL.GL_LINE_STRIP);
+		// gl.glVertex3f(leftAxisSpacing, bottomAxisSpacing + plotHeight, z);
 
 		for (int binIndex = 0; binIndex < Math.abs(maxAxisTime); binIndex++) {
 
@@ -481,12 +483,25 @@ public class GLKaplanMeier extends AGLView implements ISingleTablePerspectiveBas
 
 			float y = remainingItemCount * ySingleSampleSize;
 
-			gl.glVertex3f(leftAxisSpacing + currentTimeBin * plotWidth, bottomAxisSpacing + y, z);
+			// gl.glVertex3f(leftAxisSpacing + currentTimeBin * plotWidth, bottomAxisSpacing + y, z);
+			linePoints.add(new Vec3f(leftAxisSpacing + currentTimeBin * plotWidth, bottomAxisSpacing + y, z));
 			currentTimeBin += timeBinStepSize;
-			gl.glVertex3f(leftAxisSpacing + currentTimeBin * plotWidth, bottomAxisSpacing + y, z);
+			linePoints.add(new Vec3f(leftAxisSpacing + currentTimeBin * plotWidth, bottomAxisSpacing + y, z));
+			// gl.glVertex3f(leftAxisSpacing + currentTimeBin * plotWidth, bottomAxisSpacing + y, z);
 		}
 
-		gl.glEnd();
+		ConnectionLineRenderer connectionLineRenderer = new ConnectionLineRenderer();
+		connectionLineRenderer.setLineColor(color.getRGBA());
+		if (detailLevel == EDetailLevel.HIGH) {
+			LineLabelRenderer lineLabelRenderer = new LineLabelRenderer(1f, pixelGLConverter, label, textRenderer);
+			lineLabelRenderer.setAlignmentX(EAlignmentX.RIGHT);
+			lineLabelRenderer.setBackGroundColor(new float[] { 1, 1, 1, 0.5f });
+			lineLabelRenderer.setLabelTranslation(10, 0);
+			connectionLineRenderer.addAttributeRenderer(lineLabelRenderer);
+		}
+		connectionLineRenderer.renderLine(gl, linePoints);
+
+		// gl.glEnd();
 	}
 
 	@Override
