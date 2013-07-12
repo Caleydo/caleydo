@@ -114,7 +114,9 @@ public class RcpGLPathwayView extends ARcpGLViewPart implements IListenerOwner, 
 
 			@Override
 			public void run() {
-				minSizeComposite.setMinSize(pathway.getWidth(), pathway.getHeight());
+				int w = glCanvas.toRawPixel(pathway.getWidth());
+				int h = glCanvas.toRawPixel(pathway.getHeight());
+				minSizeComposite.setMinSize(w, h);
 			}
 		});
 

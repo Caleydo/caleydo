@@ -364,10 +364,9 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 			this.waitForMinSizeApplication = waitForMinSizeApplication;
 			isMinSizeApplied = false;
 
-			EventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
 			SetMinViewSizeEvent event = new SetMinViewSizeEvent(this);
 			event.setMinViewSize(minViewWidthPixels, minViewHeightPixels);
-			eventPublisher.triggerEvent(event);
+			EventPublisher.trigger(event);
 			// parentComposite.getParent();
 		}
 		// }
@@ -989,7 +988,9 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 			// relativePosition.getSecond() * drawingAreaHeight));
 			// }
 
-			// updateMinWindowSize(true);
+			SetMinViewSizeEvent event = new SetMinViewSizeEvent(this);
+			event.setMinViewSize(minViewWidthPixels, minViewHeightPixels);
+			EventPublisher.trigger(event);
 		}
 	}
 

@@ -21,6 +21,7 @@ import java.util.Set;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
+import javax.media.opengl.GLException;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
@@ -109,9 +110,8 @@ import setvis.bubbleset.BubbleSet;
 public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedView, IViewCommandHandler,
 		IEventBasedSelectionManagerUser, IColorMappingUpdateListener, IPathwayRepresentation {
 
-	public static String VIEW_TYPE = "org.caleydo.view.pathway";
-
-	public static String VIEW_NAME = "Pathway";
+	public static final String VIEW_TYPE = "org.caleydo.view.pathway";
+	public static final String VIEW_NAME = "Pathway";
 
 	public static final String DEFAULT_PATHWAY_PATH_EVENT_SPACE = "pathwayPath";
 
@@ -765,9 +765,10 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 
 		// //////////////////////////START 1/2 HIER NEU CHRISITIAN
 		if (!initShader) {
+			initShader = true;
 			try {
 				initShaders(gl);
-			} catch (IOException e) {
+			} catch (IOException | GLException e) {
 				e.printStackTrace();
 			}
 		}

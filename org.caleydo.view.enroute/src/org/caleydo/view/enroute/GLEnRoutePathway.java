@@ -507,6 +507,8 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		setLayoutDirty();
 		// System.out.println("reshape: " + x + ", " + y + ", " + width + "x" +
 		// height);
+		if (minWidth > 0 && minHeight > 0)
+			setMinViewSize(minWidth, minHeight);
 	}
 
 	/**
