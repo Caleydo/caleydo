@@ -249,4 +249,12 @@ public class HandleRenderer extends ALayoutRenderer {
 	protected boolean permitsWrappingDisplayLists() {
 		return false;
 	}
+
+	/**
+	 * @param hide
+	 *            setter, see {@link hide}
+	 */
+	public void setHide(boolean hide) {
+		this.hide = hide;
+	}
 }
