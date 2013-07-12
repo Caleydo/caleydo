@@ -66,6 +66,7 @@ public class BrickSpacingRenderer
 			@Override
 			protected void clicked(Pick pick) {
 				SelectionCommands.clearSelections();
+				stratomex.hideAllBrickToolbars();
 			}
 
 		}, EPickingType.BRICK_SPACER.name() + dimensionGroup.getID(), id);

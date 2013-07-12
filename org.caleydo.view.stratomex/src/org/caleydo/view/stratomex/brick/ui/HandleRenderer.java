@@ -17,6 +17,7 @@ import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.view.stratomex.EPickingType;
 import org.caleydo.view.stratomex.brick.GLBrick;
+import org.caleydo.view.stratomex.column.BrickColumn;
 
 /**
  * Renderer for handles used for resizing and moving a brick.
@@ -205,8 +206,8 @@ public class HandleRenderer extends ALayoutRenderer {
 		gl.glColor3f(0, 0, 0);
 
 		float offset = layoutManager.getPixelGLConverter().getGLHeightForPixelHeight(1);
-
-		if ((handles & EXPAND_HANDLE) > 0) {
+		BrickColumn brickColumn = brick.getBrickColumn();
+		if ((handles & EXPAND_HANDLE) > 0 && !(brickColumn.isDetailBrickShown() && !brickColumn.isExpandLeft())) {
 			gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(), EPickingType.EXPAND_LEFT_HANDLE.name(),
 					brick.getID()));
 
@@ -228,7 +229,7 @@ public class HandleRenderer extends ALayoutRenderer {
 			gl.glPopName();
 		}
 
-		if ((handles & EXPAND_HANDLE) > 0) {
+		if ((handles & EXPAND_HANDLE) > 0 && !(brickColumn.isDetailBrickShown() && brickColumn.isExpandLeft())) {
 			gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
 					EPickingType.EXPAND_RIGHT_HANDLE.name(), brick.getID()));
 
@@ -247,5 +248,13 @@ public class HandleRenderer extends ALayoutRenderer {
 	@Override
 	protected boolean permitsWrappingDisplayLists() {
 		return false;
+	}
+
+	/**
+	 * @param hide
+	 *            setter, see {@link hide}
+	 */
+	public void setHide(boolean hide) {
+		this.hide = hide;
 	}
 }

@@ -11,11 +11,14 @@ import java.beans.PropertyChangeListener;
 import java.util.BitSet;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
+import org.apache.commons.lang.StringUtils;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLElement;
@@ -36,36 +39,41 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
 import com.google.common.base.Function;
+import com.google.common.base.Functions;
+import com.google.common.base.Objects;
+import com.google.common.base.Predicates;
 import com.google.common.collect.HashMultiset;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Iterators;
 import com.google.common.collect.Multiset;
 
 /**
+ * multiple categories for one element model
+ *
  * @author Samuel Gratzl
  *
  */
-public class CategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<CATEGORY_TYPE>> extends
-		ABasicFilterableRankColumnModel implements
- IFilterColumnMixin, IGrabRemainingHorizontalSpace,
+public class MultiCategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<CATEGORY_TYPE>> extends
+		ABasicFilterableRankColumnModel implements IFilterColumnMixin, IGrabRemainingHorizontalSpace,
 		IRankableColumnMixin {
-	private final Function<IRow, CATEGORY_TYPE> data;
+	private final Function<IRow, Set<CATEGORY_TYPE>> data;
 	private final Set<CATEGORY_TYPE> selection = new HashSet<>();
 	private final Map<CATEGORY_TYPE, String> metaData;
 
-	public CategoricalRankColumnModel(IGLRenderer header, final Function<IRow, CATEGORY_TYPE> data,
+	public MultiCategoricalRankColumnModel(IGLRenderer header, final Function<IRow, Set<CATEGORY_TYPE>> data,
 			Map<CATEGORY_TYPE, String> metaData) {
 		this(header, data, metaData, Color.GRAY, new Color(.95f, .95f, .95f));
 	}
 
-	public static CategoricalRankColumnModel<String> createSimple(IGLRenderer header,
-			final Function<IRow, String> data,
-			Collection<String> items) {
+	public static MultiCategoricalRankColumnModel<String> createSimple(IGLRenderer header,
+			final Function<IRow, Set<String>> data, Collection<String> items) {
 		Map<String, String> map = new TreeMap<>();
 		for (String s : items)
 			map.put(s, s);
-		return new CategoricalRankColumnModel<>(header, data, map);
+		return new MultiCategoricalRankColumnModel<>(header, data, map);
 	}
 
-	public CategoricalRankColumnModel(IGLRenderer header, final Function<IRow, CATEGORY_TYPE> data,
+	public MultiCategoricalRankColumnModel(IGLRenderer header, final Function<IRow, Set<CATEGORY_TYPE>> data,
 			Map<CATEGORY_TYPE, String> metaData, Color color, Color bgColor) {
 		super(color, bgColor);
 		setHeaderRenderer(header);
@@ -74,8 +82,7 @@ public class CategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<CATEGOR
 		this.selection.addAll(metaData.keySet());
 	}
 
-
-	public CategoricalRankColumnModel(CategoricalRankColumnModel<CATEGORY_TYPE> copy) {
+	public MultiCategoricalRankColumnModel(MultiCategoricalRankColumnModel<CATEGORY_TYPE> copy) {
 		super(copy);
 		setHeaderRenderer(getHeaderRenderer());
 		this.data = copy.data;
@@ -84,8 +91,8 @@ public class CategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<CATEGOR
 	}
 
 	@Override
-	public CategoricalRankColumnModel<CATEGORY_TYPE> clone() {
-		return new CategoricalRankColumnModel<>(this);
+	public MultiCategoricalRankColumnModel<CATEGORY_TYPE> clone() {
+		return new MultiCategoricalRankColumnModel<>(this);
 	}
 
 	public Map<CATEGORY_TYPE, String> getMetaData() {
@@ -94,10 +101,10 @@ public class CategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<CATEGOR
 
 	@Override
 	public String getValue(IRow row) {
-		CATEGORY_TYPE value = getCatValue(row);
-		if (value == null)
+		Set<CATEGORY_TYPE> value = getCatValue(row);
+		if (value == null || value.isEmpty())
 			return "";
-		return metaData.get(value);
+		return StringUtils.join(Iterators.transform(value.iterator(), Functions.forMap(metaData, null)), ',');
 	}
 
 	@Override
@@ -142,17 +149,33 @@ public class CategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<CATEGOR
 		return selection.size() < metaData.size();
 	}
 
-	public CATEGORY_TYPE getCatValue(IRow row) {
+	public Set<CATEGORY_TYPE> getCatValue(IRow row) {
 		return data.apply(row);
 	}
 
 	@Override
 	public int compare(IRow o1, IRow o2) {
-		CATEGORY_TYPE t1 = getCatValue(o1);
-		CATEGORY_TYPE t2 = getCatValue(o2);
+		Set<CATEGORY_TYPE> t1 = getCatValue(o1);
+		Set<CATEGORY_TYPE> t2 = getCatValue(o2);
+		if (Objects.equal(t1, t2))
+			return 0;
 		if ((t1 != null) != (t2 != null))
 			return t1 == null ? 1 : -1;
-		return t1 == null ? 0 : t1.compareTo(t2);
+		assert t1 != null && t2 != null;
+		// idea: as comparable sort their values, decreasing and compare them
+		Iterator<CATEGORY_TYPE> ita = new TreeSet<>(t1).iterator();
+		Iterator<CATEGORY_TYPE> itb = new TreeSet<>(t2).iterator();
+		int c;
+		while (ita.hasNext() && itb.hasNext()) {
+			CATEGORY_TYPE a = ita.next();
+			CATEGORY_TYPE b = itb.next();
+			if ((c = a.compareTo(b)) != 0)
+				return c;
+		}
+		// one is maybe longer than the other
+		if (ita.hasNext() == itb.hasNext())
+			return 0;
+		return ita.hasNext() ? 1 : -1; // the longer the bigger
 	}
 
 	@Override
@@ -163,8 +186,8 @@ public class CategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<CATEGOR
 	@Override
 	protected void updateMask(BitSet todo, List<IRow> data, BitSet mask) {
 		for (int i = todo.nextSetBit(0); i >= 0; i = todo.nextSetBit(i + 1)) {
-			CATEGORY_TYPE v = this.data.apply(data.get(i));
-			mask.set(i, selection.contains(v));
+			Set<CATEGORY_TYPE> v = this.data.apply(data.get(i));
+			mask.set(i, v == null ? false : Iterables.any(v, Predicates.in(selection)));
 		}
 	}
 
@@ -174,10 +197,10 @@ public class CategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<CATEGOR
 	public Multiset<CATEGORY_TYPE> getHist() {
 		Multiset<CATEGORY_TYPE> hist = HashMultiset.create(metaData.size());
 		for (IRow r : getMyRanker()) {
-			CATEGORY_TYPE v = getCatValue(r);
-			if (v == null) // TODO nan
+			Set<CATEGORY_TYPE> vs = getCatValue(r);
+			if (vs == null) // TODO nan
 				continue;
-			hist.add(v);
+			hist.addAll(vs);
 		}
 		return hist;
 	}
@@ -242,12 +265,8 @@ public class CategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<CATEGOR
 
 		@Override
 		public String getTooltip() {
-			CATEGORY_TYPE value = getCatValue(getLayoutDataAs(IRow.class, null));
-			if (value == null)
-				return null;
-			return metaData.get(value);
+			return getValue(getLayoutDataAs(IRow.class, null));
 		}
 	}
-
 
 }

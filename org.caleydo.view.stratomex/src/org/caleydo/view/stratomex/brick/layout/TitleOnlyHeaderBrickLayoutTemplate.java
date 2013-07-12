@@ -132,4 +132,10 @@ public class TitleOnlyHeaderBrickLayoutTemplate extends ABrickLayoutConfiguratio
 		configurer.configure(this);
 	}
 
+	@Override
+	public ToolBar getToolBar() {
+		// No toolbar
+		return null;
+	}
+
 }

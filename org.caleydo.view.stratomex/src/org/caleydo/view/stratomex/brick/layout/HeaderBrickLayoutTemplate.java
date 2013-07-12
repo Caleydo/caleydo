@@ -77,7 +77,7 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 	protected int guiElementsHeight = 0;
 	protected Row headerBar;
-	protected Row toolBar;
+	protected ToolBar toolBar;
 	protected Row footerBar;
 
 	public HeaderBrickLayoutTemplate(GLBrick brick, BrickColumn brickColumn, GLStratomex stratomex) {
@@ -133,8 +133,8 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 			handles = DEFAULT_HANDLES;
 		}
 
-		baseRow.addForeGroundRenderer(new HandleRenderer(brick, HANDLE_SIZE_PIXELS, brick.getTextureManager(),
- handles));
+		handleRenderer = new HandleRenderer(brick, HANDLE_SIZE_PIXELS, brick.getTextureManager(), handles);
+		baseRow.addForeGroundRenderer(handleRenderer);
 
 		ElementLayout spacingLayoutX = new ElementLayout("spacingLayoutX");
 		spacingLayoutX.setPixelSizeX(SPACING_PIXELS);
@@ -222,8 +222,8 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	 * @param pixelHeight
 	 * @return
 	 */
-	protected Row createToolBar() {
-		Row toolBar = new ToolBar("ToolBarRow", brick);
+	protected ToolBar createToolBar() {
+		ToolBar toolBar = new ToolBar("ToolBarRow", brick);
 		toolBar.setPixelSizeY(0);
 
 		ElementLayout spacingLayoutX = new ElementLayout("spacingLayoutX");
@@ -361,6 +361,8 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 			@Override
 			public void clicked(Pick pick) {
+				if (brickColumn.isDetailBrickShown() && brickColumn.isExpandLeft())
+					return;
 				brickColumn.showDetailedBrick(brick, false);
 			}
 		}, EPickingType.EXPAND_RIGHT_HANDLE.name(), brick.getID());
@@ -370,6 +372,8 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 			@Override
 			public void clicked(Pick pick) {
+				if (brickColumn.isDetailBrickShown() && !brickColumn.isExpandLeft())
+					return;
 				brickColumn.showDetailedBrick(brick, true);
 			}
 		}, EPickingType.EXPAND_LEFT_HANDLE.name(), brick.getID());
@@ -505,6 +509,11 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	@Override
 	public void configure(IBrickConfigurer configurer) {
 		configurer.configure(this);
+	}
+
+	@Override
+	public ToolBar getToolBar() {
+		return toolBar;
 	}
 
 }

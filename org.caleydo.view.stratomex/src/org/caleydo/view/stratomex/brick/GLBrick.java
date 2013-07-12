@@ -32,6 +32,7 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.events.SelectionUpdateListener;
 import org.caleydo.core.data.virtualarray.VirtualArray;
+import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.EventListenerManager;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventListenerManagers;
@@ -79,6 +80,8 @@ import org.caleydo.view.stratomex.brick.layout.CollapsedBrickLayoutTemplate;
 import org.caleydo.view.stratomex.brick.layout.CompactHeaderBrickLayoutTemplate;
 import org.caleydo.view.stratomex.brick.layout.DefaultBrickLayoutTemplate;
 import org.caleydo.view.stratomex.brick.layout.DetailBrickLayoutTemplate;
+import org.caleydo.view.stratomex.brick.layout.ToolBar;
+import org.caleydo.view.stratomex.brick.ui.HandleRenderer;
 import org.caleydo.view.stratomex.brick.ui.RectangleCoordinates;
 import org.caleydo.view.stratomex.brick.ui.RelationIndicatorRenderer;
 import org.caleydo.view.stratomex.column.BrickColumn;
@@ -345,6 +348,10 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 				if (r != null) {
 					label = r;
 					tablePerspective.setLabel(label, false);
+					VirtualArray va = getBrickColumn().getTablePerspective().getRecordPerspective().getVirtualArray();
+					int groupIndex = tablePerspective.getRecordGroup().getGroupIndex();
+					Group group = va.getGroupList().get(groupIndex);
+					group.setLabel(label);
 					setDisplayListDirty();
 
 					if (brickLayoutConfiguration instanceof DefaultBrickLayoutTemplate)
@@ -893,6 +900,18 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 				isBrickResizeActive = true;
 			}
 		}, EPickingType.RESIZE_HANDLE_LOWER_RIGHT.name(), 1);
+	}
+
+	public void hideToolBar() {
+		ToolBar toolbar = brickLayoutConfiguration.getToolBar();
+		if (toolbar != null) {
+			toolbar.setHide(true);
+		}
+		HandleRenderer handleRenderer = brickLayoutConfiguration.getHandleRenderer();
+		if (handleRenderer != null) {
+			handleRenderer.setHide(true);
+		}
+		setDisplayListDirty();
 	}
 
 	/**

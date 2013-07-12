@@ -104,14 +104,19 @@ public abstract class ADataDomainElement extends GLButton implements GLButton.IS
 
 		Collection<Pair<String, ? extends AEvent>> collection = ExternalScoringDataDomainActionFactory.create(
 				model.getDataDomain(), context);
-		if (!collection.isEmpty()) {
-			creator.addAll(collection);
+		creator.addAll(collection);
+		boolean added = !collection.isEmpty();
+
+		added = model.addCustomDomainActions(creator, this) || added;
+		if (added)
 			creator.addSeparator();
-		}
+
 		DataDomainActions.add(creator, model.getDataDomain(), this, true);
 
 		context.getSWTLayer().showContextMenu(creator);
 	}
+
+
 
 	/**
 	 * @param creator

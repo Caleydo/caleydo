@@ -6,8 +6,12 @@
 package org.caleydo.datadomain.pathway.manager;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -28,8 +32,9 @@ import org.caleydo.core.id.IDType;
 import org.caleydo.core.id.IIDTypeMapper;
 import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.serialize.ZipUtils;
 import org.caleydo.core.util.logging.Logger;
-import org.caleydo.data.loader.ResourceLoader;
+import org.caleydo.core.util.system.RemoteFile;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.genetic.GeneticMetaData;
 import org.caleydo.datadomain.genetic.Organism;
@@ -43,6 +48,7 @@ import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.jgrapht.DirectedGraph;
@@ -60,6 +66,7 @@ import org.xml.sax.helpers.XMLReaderFactory;
  * @author Marc Streit
  */
 public class PathwayManager extends AManager<PathwayGraph> {
+	private static final Logger log = Logger.create(PathwayManager.class);
 
 	private volatile static PathwayManager pathwayManager;
 
@@ -119,22 +126,17 @@ public class PathwayManager extends AManager<PathwayGraph> {
 		return this.mapPathwayDBToPathways.containsKey(type) && !this.mapPathwayDBToPathways.get(type).isEmpty();
 	}
 
-	public PathwayDatabase createPathwayDatabase(final EPathwayDatabaseType type, final String XMLPath,
-			final String imagePath, final String imageMapPath) {
+	public PathwayDatabase createPathwayDatabase(final EPathwayDatabaseType type) {
 
 		// Check if requested pathway database is already loaded (e.g. using
 		// caching)
 		if (hashPathwayDatabase.containsKey(type))
 			return hashPathwayDatabase.get(type);
 
-		PathwayDatabase pathwayDatabase = new PathwayDatabase(type, XMLPath, imagePath, imagePath);
+		PathwayDatabase pathwayDatabase = new PathwayDatabase(type);
 
 		hashPathwayDatabase.put(type, pathwayDatabase);
 		createPathwayResourceLoader(pathwayDatabase.getType());
-
-		Logger.log(new Status(IStatus.INFO, this.toString(), "Setting pathway loading path: database-type:[" + type
-				+ "] " + "xml-path:[" + pathwayDatabase.getXMLPath() + "] image-path:["
-				+ pathwayDatabase.getImagePath() + "] image-map-path:[" + pathwayDatabase.getImageMapPath() + "]"));
 
 		return pathwayDatabase;
 	}
@@ -288,42 +290,26 @@ public class PathwayManager extends AManager<PathwayGraph> {
 		throw new IllegalStateException("Unknown pathway database " + type);
 	}
 
-	public void loadPathwaysByType(PathwayDatabase pathwayDatabase) {
-
+	public void loadKEGGPathways(PathwayDatabase pathwayDatabase) {
+		assert pathwayDatabase.getType() == EPathwayDatabaseType.KEGG;
 		// // Try reading list of files directly from local hard dist
 		// File folder = new File(sXMLPath);
 		// File[] arFiles = folder.listFiles();
 
-		GeneralManager generalManager = GeneralManager.get();
+		File baseDir = preparePathwayData(pathwayDatabase.getType());
 
 		Logger.log(new Status(IStatus.INFO, "PathwayLoaderThread", "Start parsing " + pathwayDatabase.getName()
 				+ " pathways."));
 
-		String line = null;
-		String fileName = "";
-		String pathwayPath = pathwayDatabase.getXMLPath();
-		IPathwayResourceLoader pathwayResourceLoader = null;
-		Organism organism = GeneticMetaData.getOrganism();
-
-		if (pathwayDatabase.getType() == EPathwayDatabaseType.KEGG) {
-
-			if (organism == Organism.HOMO_SAPIENS) {
-				fileName = "data/pathway_list_KEGG_homo_sapiens.txt";
-			} else if (organism == Organism.MUS_MUSCULUS) {
-				fileName = "data/pathway_list_KEGG_mus_musculus.txt";
-			} else {
-				throw new IllegalStateException("Cannot load pathways from organism " + organism);
-			}
-		}
-
-		pathwayResourceLoader = PathwayManager.get().getPathwayResourceLoader(pathwayDatabase.getType());
-
-		if (pathwayResourceLoader == null)
+		if (baseDir == null)
 			return;
 
-		ResourceLoader general = GeneralManager.get().getResourceLoader();
+		pathwayDatabase.setBaseDir(baseDir);
 
-		try (BufferedReader file = (pathwayDatabase.getType() == EPathwayDatabaseType.KEGG ? pathwayResourceLoader.getResource(fileName) : general.getResource(fileName))){
+		String line = null;
+		String fileName = "";
+
+		try (BufferedReader file = new BufferedReader(new FileReader(new File(baseDir, "metadata.txt")))) {
 			StringTokenizer tokenizer;
 			String pathwayName;
 
@@ -349,7 +335,7 @@ public class PathwayManager extends AManager<PathwayGraph> {
 					reader.setEntityResolver(kgmlParser);
 					reader.setContentHandler(kgmlParser);
 
-					in = pathwayResourceLoader.getInputSource(pathwayPath + pathwayName);
+					in = new InputSource(new BufferedReader(new FileReader(new File(baseDir, pathwayName))));
 					reader.parse(in);
 
 					currentPathwayGraph.setWidth(Integer.valueOf(tokenizer.nextToken()).intValue());
@@ -675,5 +661,32 @@ public class PathwayManager extends AManager<PathwayGraph> {
 		}
 
 		return vertexReps;
+	}
+
+	/**
+	 * @param wikipathways
+	 */
+	public File preparePathwayData(EPathwayDatabaseType type) {
+		final String URL_PATTERN = GeneralManager.DATA_URL_PREFIX + "pathways/%s_%s.zip";
+		final Organism organism = GeneticMetaData.getOrganism();
+
+		URL url = null;
+		try {
+			url = new URL(String.format(URL_PATTERN, type.name().toLowerCase(), organism.name().toLowerCase()));
+			RemoteFile zip = RemoteFile.of(url);
+			File localZip = zip.getOrLoad(true, new NullProgressMonitor());
+			if (localZip == null || !localZip.exists()) {
+				log.error("can't download: " + url);
+				return null;
+			}
+			File unpacked = new File(localZip.getParentFile(), localZip.getName().replaceAll("\\.zip", ""));
+			if (unpacked.exists())
+				return unpacked;
+			ZipUtils.unzipToDirectory(localZip.getAbsolutePath(), unpacked.getAbsolutePath());
+			return unpacked;
+		} catch (MalformedURLException e) {
+			log.error("can't download: " + url);
+			return null;
+		}
 	}
 }

@@ -80,4 +80,12 @@ public class ToolBar extends Row {
 		remove(brick.getViewSwitchingBar());
 		super.destroy(gl);
 	}
+
+	/**
+	 * @param hide
+	 *            setter, see {@link hide}
+	 */
+	public void setHide(boolean hide) {
+		this.hide = hide;
+	}
 }
