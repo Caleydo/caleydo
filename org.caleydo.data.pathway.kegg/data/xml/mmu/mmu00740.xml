@@ -202,7 +202,7 @@
     </entry>
     <entry id="67" name="mmu:233016" type="gene" reaction="rn:R09520"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:233016">
-        <graphics name="Blvrb, MGC11726, MGC27866" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Blvrb" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="790" y="353" width="46" height="17"/>
     </entry>
     <entry id="68" name="path:mmu00860" type="map"

@@ -62,7 +62,7 @@
     </entry>
     <entry id="12" name="hsa:4128 hsa:4129" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:4128+hsa:4129">
-        <graphics name="MAOA..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="MAOA, MAO-A..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="434" y="565" width="46" height="17"/>
     </entry>
     <entry id="13" name="hsa:6531" type="gene"
@@ -157,7 +157,7 @@
     </entry>
     <entry id="31" name="hsa:4128 hsa:4129" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:4128+hsa:4129">
-        <graphics name="MAOA..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="MAOA, MAO-A..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="434" y="220" width="46" height="17"/>
     </entry>
     <entry id="32" name="cpd:C03758" type="compound"
@@ -177,7 +177,7 @@
     </entry>
     <entry id="35" name="hsa:111" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:111">
-        <graphics name="ADCY5, AC5" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="ADCY5, AC5, FDFM" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="803" y="330" width="46" height="17"/>
     </entry>
     <entry id="36" name="cpd:C03758" type="compound"
@@ -237,7 +237,7 @@
     </entry>
     <entry id="47" name="hsa:111" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:111">
-        <graphics name="ADCY5, AC5" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="ADCY5, AC5, FDFM" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="807" y="697" width="46" height="17"/>
     </entry>
     <entry id="48" name="hsa:5566 hsa:5567 hsa:5568 hsa:5613" type="gene"
@@ -312,7 +312,7 @@
     </entry>
     <entry id="62" name="hsa:4128 hsa:4129" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:4128+hsa:4129">
-        <graphics name="MAOA..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="MAOA, MAO-A..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="436" y="926" width="46" height="17"/>
     </entry>
     <entry id="63" name="hsa:6531" type="gene"
@@ -342,7 +342,7 @@
     </entry>
     <entry id="68" name="hsa:111" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:111">
-        <graphics name="ADCY5, AC5" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="ADCY5, AC5, FDFM" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="805" y="1067" width="46" height="17"/>
     </entry>
     <entry id="69" name="hsa:5566 hsa:5567 hsa:5568 hsa:5613" type="gene"
@@ -367,7 +367,7 @@
     </entry>
     <entry id="73" name="hsa:4790 hsa:5970" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:4790+hsa:5970">
-        <graphics name="NFKB1, EBP-1, KBF1, NF-kappa-B, NF-kappaB, NFKB-p105, NFKB-p50, NFkappaB, p105, p50..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="NFKB1, EBP-1, KBF1, NF-kB1, NF-kappa-B, NF-kappaB, NFKB-p105, NFKB-p50, NFkappaB, p105, p50..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="890" y="916" width="46" height="17"/>
     </entry>
     <entry id="74" name="cpd:C00575" type="compound"
@@ -387,7 +387,7 @@
     </entry>
     <entry id="77" name="hsa:627" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:627">
-        <graphics name="BDNF" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="BDNF, ANON2, BULN2" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="1108" y="711" width="46" height="17"/>
     </entry>
     <entry id="78" name="hsa:2891" type="gene"
@@ -402,7 +402,7 @@
     </entry>
     <entry id="80" name="hsa:116443 hsa:116444 hsa:2902 hsa:2903 hsa:2904 hsa:2905 hsa:2906" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:116443+hsa:116444+hsa:2902+hsa:2903+hsa:2904+hsa:2905+hsa:2906">
-        <graphics name="GRIN3A, NMDAR-L, NR3A..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="GRIN3A, GluN3A, NMDAR-L, NR3A..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="642" y="921" width="46" height="17"/>
     </entry>
     <entry id="81" name="hsa:1742" type="gene"

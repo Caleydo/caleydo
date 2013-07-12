@@ -185,8 +185,8 @@
         <graphics name="Sec61b, 1190006C12Rik, AI326121, AW122942" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="343" y="154" width="46" height="17"/>
     </entry>
-    <entry id="38" name="mmu:100041121 mmu:100042561 mmu:100043027 mmu:100043039 mmu:100046078 mmu:20335 mmu:632883" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:100041121+mmu:100042561+mmu:100043027+mmu:100043039+mmu:100046078+mmu:20335+mmu:632883">
+    <entry id="38" name="mmu:100041121 mmu:100042561 mmu:100043027 mmu:100046078 mmu:20335" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:100041121+mmu:100042561+mmu:100043027+mmu:100046078+mmu:20335">
         <graphics name="Gm10144..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="389" y="154" width="46" height="17"/>
     </entry>

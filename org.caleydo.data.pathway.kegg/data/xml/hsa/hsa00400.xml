@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
-<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Jun 21, 2012 18:07:15 +0900 (GMT+09:00) -->
+<!DOCTYPE pathway SYSTEM "http://www.kegg.jp/kegg/xml/KGML_v0.7.1_.dtd">
+<!-- Creation date: Feb 25, 2013 11:59:08 +0900 (GMT+09:00) -->
 <pathway name="path:hsa00400" org="hsa" number="00400"
          title="Phenylalanine, tyrosine and tryptophan biosynthesis"
-         image="http://www.genome.jp/kegg/pathway/hsa/hsa00400.png"
-         link="http://www.genome.jp/kegg-bin/show_pathway?hsa00400">
+         image="http://www.kegg.jp/kegg/pathway/hsa/hsa00400.png"
+         link="http://www.kegg.jp/kegg-bin/show_pathway?hsa00400">
     <entry id="8" name="ko:K01626 ko:K03856 ko:K13853" type="ortholog" reaction="rn:R01826"
         link="http://www.kegg.jp/dbget-bin/www_bget?K01626+K03856+K13853">
         <graphics name="K01626..." fgcolor="#000000" bgcolor="#FFFFFF"
@@ -428,22 +428,22 @@
     <entry id="118" name="cpd:C00441" type="compound"
         link="http://www.kegg.jp/dbget-bin/www_bget?C00441">
         <graphics name="C00441" fgcolor="#000000" bgcolor="#FFFFFF"
-             type="circle" x="602" y="200" width="8" height="8"/>
+             type="circle" x="602" y="201" width="8" height="8"/>
     </entry>
     <entry id="119" name="cpd:C16848" type="compound"
         link="http://www.kegg.jp/dbget-bin/www_bget?C16848">
         <graphics name="C16848" fgcolor="#000000" bgcolor="#FFFFFF"
-             type="circle" x="592" y="232" width="8" height="8"/>
+             type="circle" x="593" y="242" width="8" height="8"/>
     </entry>
     <entry id="120" name="ko:K11646" type="ortholog" reaction="rn:R08569"
         link="http://www.kegg.jp/dbget-bin/www_bget?K11646">
         <graphics name="K11646" fgcolor="#000000" bgcolor="#FFFFFF"
              type="rectangle" x="470" y="202" width="46" height="17"/>
     </entry>
-    <entry id="121" name="ko:K11645" type="ortholog" reaction="rn:R08568"
-        link="http://www.kegg.jp/dbget-bin/www_bget?K11645">
-        <graphics name="K11645" fgcolor="#000000" bgcolor="#FFFFFF"
-             type="rectangle" x="561" y="201" width="46" height="17"/>
+    <entry id="121" name="ko:K16306" type="ortholog" reaction="rn:R08568"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K16306">
+        <graphics name="K16306" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="561" y="202" width="46" height="17"/>
     </entry>
     <entry id="122" name="ko:K05821" type="ortholog" reaction="rn:R00692"
         link="http://www.kegg.jp/dbget-bin/www_bget?K05821">
@@ -474,6 +474,26 @@
         link="http://www.kegg.jp/dbget-bin/www_bget?K00270">
         <graphics name="K00270" fgcolor="#000000" bgcolor="#FFFFFF"
              type="rectangle" x="549" y="744" width="46" height="17"/>
+    </entry>
+    <entry id="130" name="cpd:C01094" type="compound"
+        link="http://www.kegg.jp/dbget-bin/www_bget?C01094">
+        <graphics name="C01094" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="688" y="242" width="8" height="8"/>
+    </entry>
+    <entry id="131" name="ko:K16305" type="ortholog" reaction="rn:R10050"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K16305">
+        <graphics name="K16305" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="642" y="243" width="46" height="17"/>
+    </entry>
+    <entry id="133" name="cpd:C00354" type="compound"
+        link="http://www.kegg.jp/dbget-bin/www_bget?C00354">
+        <graphics name="C00354" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="688" y="280" width="8" height="8"/>
+    </entry>
+    <entry id="134" name="ko:K16305" type="ortholog" reaction="rn:R10049"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K16305">
+        <graphics name="K16305" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="643" y="280" width="46" height="17"/>
     </entry>
     <relation entry1="60" entry2="69" type="ECrel">
         <subtype name="compound" value="99"/>

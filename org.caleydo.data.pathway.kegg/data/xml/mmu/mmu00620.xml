@@ -57,7 +57,7 @@
     </entry>
     <entry id="68" name="mmu:18746 mmu:18770" type="gene" reaction="rn:R00200 rn:R02320"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:18746+mmu:18770">
-        <graphics name="Pkm2, AA414905, AL024370, AL024424, Pk-2, Pk-3, Pk3..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Pkm, AA414905, AL024370, AL024424, Pk-2, Pk-3, Pk3, Pkm2..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="412" y="320" width="46" height="17"/>
     </entry>
     <entry id="69" name="ko:K01734" type="ortholog" reaction="rn:R01016"
@@ -70,13 +70,13 @@
         <graphics name="K07248" fgcolor="#000000" bgcolor="#FFFFFF"
              type="rectangle" x="497" y="147" width="46" height="17"/>
     </entry>
-    <entry id="72" name="mmu:11677 mmu:11997 mmu:14187" type="gene" reaction="rn:R02531"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:11677+mmu:11997+mmu:14187">
+    <entry id="72" name="mmu:11677 mmu:11997 mmu:14187 mmu:67861" type="gene" reaction="rn:R02531"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:11677+mmu:11997+mmu:14187+mmu:67861">
         <graphics name="Akr1b3, ALR2, AR, Ahr-1, Ahr1, Akr1b1, Aldor1, Aldr1..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="667" y="123" width="46" height="17"/>
     </entry>
-    <entry id="73" name="mmu:11677 mmu:11997 mmu:14187" type="gene" reaction="rn:R02577"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:11677+mmu:11997+mmu:14187">
+    <entry id="73" name="mmu:11677 mmu:11997 mmu:14187 mmu:67861" type="gene" reaction="rn:R02577"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:11677+mmu:11997+mmu:14187+mmu:67861">
         <graphics name="Akr1b3, ALR2, AR, Ahr-1, Ahr1, Akr1b1, Aldor1, Aldr1..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="715" y="82" width="46" height="17"/>
     </entry>
@@ -225,8 +225,8 @@
         <graphics name="Acss2, 1110017C11Rik, ACAS, Acas1, Acas2, AceCS1, Acs1..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="714" y="636" width="46" height="17"/>
     </entry>
-    <entry id="111" name="mmu:110695 mmu:11668 mmu:11669 mmu:11671 mmu:56752 mmu:72535" type="gene" reaction="rn:R00710 rn:R00711"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:110695+mmu:11668+mmu:11669+mmu:11671+mmu:56752+mmu:72535">
+    <entry id="111" name="mmu:110695 mmu:11669 mmu:11671 mmu:56752 mmu:72535" type="gene" reaction="rn:R00710 rn:R00711"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:110695+mmu:11669+mmu:11671+mmu:56752+mmu:72535">
         <graphics name="Aldh7a1, Atq1, D18Wsu181e..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="827" y="585" width="46" height="17"/>
     </entry>

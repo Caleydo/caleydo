@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
-<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Jun 1, 2012 10:40:28 +0900 (GMT+09:00) -->
+<!DOCTYPE pathway SYSTEM "http://www.kegg.jp/kegg/xml/KGML_v0.7.1_.dtd">
+<!-- Creation date: Mar 13, 2013 16:08:40 +0900 (GMT+09:00) -->
 <pathway name="path:hsa00250" org="hsa" number="00250"
          title="Alanine, aspartate and glutamate metabolism"
-         image="http://www.genome.jp/kegg/pathway/hsa/hsa00250.png"
-         link="http://www.genome.jp/kegg-bin/show_pathway?hsa00250">
+         image="http://www.kegg.jp/kegg/pathway/hsa/hsa00250.png"
+         link="http://www.kegg.jp/kegg-bin/show_pathway?hsa00250">
     <entry id="16" name="cpd:C00122" type="compound"
         link="http://www.kegg.jp/dbget-bin/www_bget?C00122">
         <graphics name="C00122" fgcolor="#000000" bgcolor="#FFFFFF"
@@ -298,7 +298,7 @@
     <entry id="91" name="hsa:18" type="gene" reaction="rn:R01648"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:18">
         <graphics name="ABAT, GABA-AT, GABAT, NPD009" fgcolor="#000000" bgcolor="#BFFFBF"
-             type="rectangle" x="338" y="704" width="46" height="17"/>
+             type="rectangle" x="338" y="693" width="46" height="17"/>
     </entry>
     <entry id="93" name="hsa:2571 hsa:2572" type="gene" reaction="rn:R00261"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2571+hsa:2572">
@@ -367,7 +367,7 @@
     </entry>
     <entry id="117" name="hsa:2673 hsa:9945" type="gene" reaction="rn:R00768"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2673+hsa:9945">
-        <graphics name="GFPT1, GFA, GFAT, GFAT_1, GFAT1, GFAT1m, GFPT..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="GFPT1, CMSTA1, GFA, GFAT, GFAT_1, GFAT1, GFAT1m, GFPT, GFPT1L, MSLG..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="883" y="656" width="46" height="17"/>
     </entry>
     <entry id="119" name="hsa:5471" type="gene" reaction="rn:R01072"
@@ -410,8 +410,8 @@
         <graphics name="Histidine metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
              type="roundrectangle" x="516" y="734" width="121" height="25"/>
     </entry>
-    <entry id="127" name="path:map00910" type="map"
-        link="http://www.kegg.jp/dbget-bin/www_bget?map00910">
+    <entry id="127" name="path:hsa00910" type="map"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa00910">
         <graphics name="Nitrogen metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
              type="roundrectangle" x="516" y="762" width="121" height="25"/>
     </entry>
@@ -454,6 +454,11 @@
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa00250">
         <graphics name="TITLE:Alanine, aspartate and glutamate metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
              type="roundrectangle" x="250" y="58" width="419" height="25"/>
+    </entry>
+    <entry id="136" name="ko:K16871" type="ortholog" reaction="rn:R10178"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K16871">
+        <graphics name="K16871" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="338" y="714" width="46" height="17"/>
     </entry>
     <relation entry1="63" entry2="59" type="maplink">
         <subtype name="compound" value="21"/>
@@ -1188,8 +1193,8 @@
     </reaction>
     <reaction id="87" name="rn:R00243 rn:R00248" type="reversible">
         <substrate id="82" name="cpd:C00025"/>
-        <product id="134" name="cpd:C00014"/>
         <product id="19" name="cpd:C00026"/>
+        <product id="134" name="cpd:C00014"/>
     </reaction>
     <reaction id="91" name="rn:R01648" type="reversible">
         <substrate id="89" name="cpd:C00334"/>

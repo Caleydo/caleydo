@@ -145,8 +145,8 @@
         <graphics name="Slc9a6, 3732426M05, 6430520C02Rik, NHE6, mKIAA0267" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="830" y="355" width="46" height="17"/>
     </entry>
-    <entry id="30" name="mmu:100046079 mmu:100048613 mmu:110323 mmu:12857 mmu:12858 mmu:12859 mmu:12861 mmu:12862 mmu:12864 mmu:12865 mmu:12866 mmu:12867 mmu:12868 mmu:12869 mmu:17708 mmu:17709 mmu:17710 mmu:17711 mmu:20463 mmu:22272 mmu:22273 mmu:333182 mmu:621837 mmu:622178 mmu:66142 mmu:66152 mmu:66445 mmu:66576 mmu:66594 mmu:66694 mmu:67003 mmu:67530 mmu:75483 mmu:78174 mmu:84682" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:100046079+mmu:100048613+mmu:110323+mmu:12857+mmu:12858+mmu:12859+mmu:12861+mmu:12862+mmu:12864+mmu:12865+mmu:12866+mmu:12867+mmu:12868+mmu:12869+mmu:17708+mmu:17709+mmu:17710+mmu:17711+mmu:20463+mmu:22272+mmu:22273+mmu:333182+mmu:621837+mmu:622178+mmu:66142+mmu:66152+mmu:66445+mmu:66576+mmu:66594+mmu:66694+mmu:67003+mmu:67530+mmu:75483+mmu:78174+mmu:84682">
+    <entry id="30" name="mmu:100046079 mmu:100048613 mmu:110323 mmu:12857 mmu:12858 mmu:12859 mmu:12861 mmu:12862 mmu:12864 mmu:12865 mmu:12866 mmu:12867 mmu:12868 mmu:12869 mmu:17708 mmu:17709 mmu:17710 mmu:17711 mmu:20463 mmu:22272 mmu:22273 mmu:333182 mmu:66142 mmu:66152 mmu:66445 mmu:66576 mmu:66594 mmu:66694 mmu:67003 mmu:67530 mmu:75483 mmu:78174 mmu:84682" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:100046079+mmu:100048613+mmu:110323+mmu:12857+mmu:12858+mmu:12859+mmu:12861+mmu:12862+mmu:12864+mmu:12865+mmu:12866+mmu:12867+mmu:12868+mmu:12869+mmu:17708+mmu:17709+mmu:17710+mmu:17711+mmu:20463+mmu:22272+mmu:22273+mmu:333182+mmu:66142+mmu:66152+mmu:66445+mmu:66576+mmu:66594+mmu:66694+mmu:67003+mmu:67530+mmu:75483+mmu:78174+mmu:84682">
         <graphics name="100046079..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="879" y="280" width="46" height="17"/>
     </entry>

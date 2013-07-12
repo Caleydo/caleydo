@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
-<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Sep 14, 2011 15:22:55 +0900 (GMT+09:00) -->
+<!DOCTYPE pathway SYSTEM "http://www.kegg.jp/kegg/xml/KGML_v0.7.1_.dtd">
+<!-- Creation date: Mar 1, 2013 16:33:01 +0900 (GMT+09:00) -->
 <pathway name="path:hsa00232" org="hsa" number="00232"
          title="Caffeine metabolism"
-         image="http://www.genome.jp/kegg/pathway/hsa/hsa00232.png"
-         link="http://www.genome.jp/kegg-bin/show_pathway?hsa00232">
+         image="http://www.kegg.jp/kegg/pathway/hsa/hsa00232.png"
+         link="http://www.kegg.jp/kegg-bin/show_pathway?hsa00232">
     <entry id="25" name="cpd:C00385" type="compound"
         link="http://www.kegg.jp/dbget-bin/www_bget?C00385">
         <graphics name="C00385" fgcolor="#000000" bgcolor="#FFFFFF"
@@ -65,9 +65,9 @@
         <graphics name="XDH, XO, XOR" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="396" y="641" width="46" height="17"/>
     </entry>
-    <entry id="40" name="ko:K00365" type="ortholog" reaction="rn:R07981"
-        link="http://www.kegg.jp/dbget-bin/www_bget?K00365">
-        <graphics name="K00365" fgcolor="#000000" bgcolor="#FFFFFF"
+    <entry id="40" name="ko:K00365 ko:K16838" type="ortholog" reaction="rn:R07981"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K00365+K16838">
+        <graphics name="K00365..." fgcolor="#000000" bgcolor="#FFFFFF"
              type="rectangle" x="745" y="470" width="46" height="17"/>
     </entry>
     <entry id="44" name="hsa:7498" type="gene" reaction="rn:R07978"
@@ -92,7 +92,7 @@
     </entry>
     <entry id="52" name="hsa:10 hsa:9" type="gene" reaction="rn:R07940"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:10+hsa:9">
-        <graphics name="NAT2, AAC2, PNAT..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="NAT2, AAC2, NAT-2, PNAT..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="551" y="148" width="46" height="17"/>
     </entry>
     <entry id="53" name="ko:K12731" type="ortholog" reaction="rn:R07919"

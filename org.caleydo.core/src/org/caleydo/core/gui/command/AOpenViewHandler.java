@@ -37,7 +37,7 @@ public abstract class AOpenViewHandler extends AbstractHandler implements IHandl
 		try {
 			IWorkbenchPage activePage = HandlerUtil.getActiveWorkbenchWindow(event).getActivePage();
 			if (allowMultiple) { // multipe ones
-				activePage.showView(view, Integer.toString(UUID.randomUUID().clockSequence()),
+				activePage.showView(view, Integer.toString(UUID.randomUUID().hashCode(), Character.MAX_RADIX),
 						IWorkbenchPage.VIEW_ACTIVATE);
 			} else { // single one
 				activePage.showView(view);

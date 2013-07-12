@@ -17,7 +17,7 @@
     </entry>
     <entry id="3" name="hsa:27343" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:27343">
-        <graphics name="POLL, BETAN, FLJ46002, POLKAPPA" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="POLL, BETAN, POLKAPPA" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="819" y="473" width="46" height="17"/>
     </entry>
     <entry id="4" name="hsa:3981" type="gene"
@@ -32,12 +32,12 @@
     </entry>
     <entry id="6" name="hsa:27434" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:27434">
-        <graphics name="POLM, FLJ35482, Pol_Mu, Tdt-N" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="POLM, Pol_Mu, Tdt-N" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="872" y="473" width="46" height="17"/>
     </entry>
     <entry id="7" name="hsa:64421" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:64421">
-        <graphics name="DCLRE1C, A-SCID, DCLREC1C, FLJ11360, FLJ36438, RS-SCID, SCIDA, SNM1C, hSNM1C" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="DCLRE1C, A-SCID, DCLREC1C, RS-SCID, SCIDA, SNM1C, hSNM1C" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="819" y="346" width="45" height="19"/>
     </entry>
     <entry id="8" name="ko:K10981" type="ortholog"
@@ -82,7 +82,7 @@
     </entry>
     <entry id="16" name="hsa:7520" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:7520">
-        <graphics name="XRCC5, FLJ39089, KARP-1, KARP1, KU80, KUB2, Ku86, NFIV" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="XRCC5, KARP-1, KARP1, KU80, KUB2, Ku86, NFIV" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="688" y="227" width="46" height="17"/>
     </entry>
     <entry id="17" name="hsa:7518" type="gene"
@@ -102,7 +102,7 @@
     </entry>
     <entry id="20" name="hsa:79840" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:79840">
-        <graphics name="NHEJ1, FLJ12610, XLF" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="NHEJ1, XLF" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="819" y="611" width="46" height="17"/>
     </entry>
     <entry id="21" name="ko:K10982" type="ortholog"

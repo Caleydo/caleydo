@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
-<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
+<!DOCTYPE pathway SYSTEM "http://www.kegg.jp/kegg/xml/KGML_v0.7.1_.dtd">
 <!-- Creation date: Jun 29, 2012 14:34:58 +0900 (GMT+09:00) -->
 <pathway name="path:mmu00601" org="mmu" number="00601"
          title="Glycosphingolipid biosynthesis - lacto and neolacto series"
-         image="http://www.genome.jp/kegg/pathway/mmu/mmu00601.png"
-         link="http://www.genome.jp/kegg-bin/show_pathway?mmu00601">
+         image="http://www.kegg.jp/kegg/pathway/mmu/mmu00601.png"
+         link="http://www.kegg.jp/kegg-bin/show_pathway?mmu00601">
     <entry id="37" name="mmu:72297" type="gene" reaction="rn:R05974"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:72297">
         <graphics name="B3gnt3, 2210008L19Rik" fgcolor="#000000" bgcolor="#BFFFBF"
@@ -32,7 +32,7 @@
     </entry>
     <entry id="42" name="mmu:14345" type="gene" reaction="rn:R06221"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:14345">
-        <graphics name="Fut4, AI451562, CD15, FAL, FucT-IV, LeX, SSEA-1" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Fut4, AI451562, CD15, FAL, FucT-IV, LeX, SSEA-1, Ssea1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="563" y="862" width="46" height="17"/>
     </entry>
     <entry id="43" name="ko:K00716 ko:K07633 ko:K07634" type="ortholog" reaction="rn:R06221"
@@ -92,32 +92,32 @@
     </entry>
     <entry id="54" name="mmu:14345" type="gene" reaction="rn:R06039"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:14345">
-        <graphics name="Fut4, AI451562, CD15, FAL, FucT-IV, LeX, SSEA-1" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Fut4, AI451562, CD15, FAL, FucT-IV, LeX, SSEA-1, Ssea1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="369" y="791" width="46" height="17"/>
     </entry>
     <entry id="55" name="mmu:14345" type="gene" reaction="rn:R06038"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:14345">
-        <graphics name="Fut4, AI451562, CD15, FAL, FucT-IV, LeX, SSEA-1" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Fut4, AI451562, CD15, FAL, FucT-IV, LeX, SSEA-1, Ssea1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="563" y="791" width="46" height="17"/>
     </entry>
     <entry id="56" name="mmu:14345" type="gene" reaction="rn:R06076"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:14345">
-        <graphics name="Fut4, AI451562, CD15, FAL, FucT-IV, LeX, SSEA-1" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Fut4, AI451562, CD15, FAL, FucT-IV, LeX, SSEA-1, Ssea1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="829" y="791" width="46" height="17"/>
     </entry>
     <entry id="57" name="mmu:14345" type="gene" reaction="rn:R06095"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:14345">
-        <graphics name="Fut4, AI451562, CD15, FAL, FucT-IV, LeX, SSEA-1" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Fut4, AI451562, CD15, FAL, FucT-IV, LeX, SSEA-1, Ssea1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="563" y="454" width="46" height="17"/>
     </entry>
     <entry id="58" name="mmu:14345 mmu:14347" type="gene" reaction="rn:R06075"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:14345+mmu:14347">
-        <graphics name="Fut4, AI451562, CD15, FAL, FucT-IV, LeX, SSEA-1..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Fut4, AI451562, CD15, FAL, FucT-IV, LeX, SSEA-1, Ssea1..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="762" y="268" width="46" height="17"/>
     </entry>
     <entry id="59" name="mmu:14345" type="gene" reaction="rn:R06025"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:14345">
-        <graphics name="Fut4, AI451562, CD15, FAL, FucT-IV, LeX, SSEA-1" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Fut4, AI451562, CD15, FAL, FucT-IV, LeX, SSEA-1, Ssea1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="500" y="346" width="46" height="17"/>
     </entry>
     <entry id="60" name="ko:K00716 ko:K07633 ko:K07634" type="ortholog" reaction="rn:R06038"
@@ -367,7 +367,7 @@
     </entry>
     <entry id="110" name="mmu:14343 mmu:14344 mmu:56546" type="gene" reaction="rn:R06085 rn:R06086 rn:R06089 rn:R06090"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:14343+mmu:14344+mmu:56546">
-        <graphics name="Fut1, H, MGC129302, MGC129303..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Fut1..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="982" y="712" width="46" height="17"/>
     </entry>
     <entry id="112" name="mmu:14348" type="gene" reaction="rn:R06038"
@@ -377,7 +377,7 @@
     </entry>
     <entry id="113" name="mmu:14345" type="gene" reaction="rn:R06222"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:14345">
-        <graphics name="Fut4, AI451562, CD15, FAL, FucT-IV, LeX, SSEA-1" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Fut4, AI451562, CD15, FAL, FucT-IV, LeX, SSEA-1, Ssea1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="369" y="862" width="46" height="17"/>
     </entry>
     <entry id="114" name="mmu:14348" type="gene" reaction="rn:R06039"
@@ -387,7 +387,7 @@
     </entry>
     <entry id="115" name="mmu:14345" type="gene" reaction="rn:R06230"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:14345">
-        <graphics name="Fut4, AI451562, CD15, FAL, FucT-IV, LeX, SSEA-1" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Fut4, AI451562, CD15, FAL, FucT-IV, LeX, SSEA-1, Ssea1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="762" y="564" width="46" height="17"/>
     </entry>
     <entry id="116" name="mmu:54613" type="gene" reaction="rn:R06037"
@@ -397,12 +397,12 @@
     </entry>
     <entry id="119" name="mmu:14345" type="gene" reaction="rn:R06224"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:14345">
-        <graphics name="Fut4, AI451562, CD15, FAL, FucT-IV, LeX, SSEA-1" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Fut4, AI451562, CD15, FAL, FucT-IV, LeX, SSEA-1, Ssea1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="369" y="933" width="46" height="17"/>
     </entry>
     <entry id="120" name="mmu:14345" type="gene" reaction="rn:R06227"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:14345">
-        <graphics name="Fut4, AI451562, CD15, FAL, FucT-IV, LeX, SSEA-1" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Fut4, AI451562, CD15, FAL, FucT-IV, LeX, SSEA-1, Ssea1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="829" y="862" width="46" height="17"/>
     </entry>
     <entry id="121" name="mmu:80908" type="gene" reaction="rn:R06193"
@@ -412,7 +412,7 @@
     </entry>
     <entry id="122" name="mmu:14343 mmu:14344 mmu:56546" type="gene" reaction="rn:R06041"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:14343+mmu:14344+mmu:56546">
-        <graphics name="Fut1, H, MGC129302, MGC129303..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Fut1..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="694" y="851" width="46" height="17"/>
     </entry>
     <entry id="123" name="mmu:108902 mmu:53625" type="gene" reaction="rn:R05974"
@@ -462,7 +462,7 @@
     </entry>
     <entry id="136" name="mmu:14595" type="gene" reaction="rn:R06033"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:14595">
-        <graphics name="B4galt1, AA407245, B-1,4-GalT, GalT, Ggtb, Ggtb2" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="B4galt1, B-1,4-GalT, B-1,4-GalT1, GalT, Ggtb, Ggtb2, b4Gal-T1, beta-1,4-GalT, beta-1,4-GalT1, beta4Gal-T1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="824" y="392" width="46" height="17"/>
     </entry>
     <entry id="137" name="mmu:14594" type="gene" reaction="rn:R05978"
@@ -477,12 +477,12 @@
     </entry>
     <entry id="139" name="mmu:14343 mmu:14344 mmu:56546" type="gene" reaction="rn:R06024"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:14343+mmu:14344+mmu:56546">
-        <graphics name="Fut1, H, MGC129302, MGC129303..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Fut1..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="563" y="376" width="46" height="17"/>
     </entry>
     <entry id="140" name="mmu:14343 mmu:14344 mmu:56546" type="gene" reaction="rn:R06027"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:14343+mmu:14344+mmu:56546">
-        <graphics name="Fut1, H, MGC129302, MGC129303..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Fut1..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="694" y="376" width="46" height="17"/>
     </entry>
     <entry id="141" name="mmu:108105" type="gene" reaction="rn:R05971"
@@ -502,7 +502,7 @@
     </entry>
     <entry id="144" name="mmu:14343 mmu:14344 mmu:56546" type="gene" reaction="rn:R06035"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:14343+mmu:14344+mmu:56546">
-        <graphics name="Fut1, H, MGC129302, MGC129303..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Fut1..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="829" y="712" width="46" height="17"/>
     </entry>
     <entry id="145" name="mmu:80908" type="gene" reaction="rn:R06197"
@@ -512,12 +512,12 @@
     </entry>
     <entry id="146" name="mmu:14595" type="gene" reaction="rn:R05977"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:14595">
-        <graphics name="B4galt1, AA407245, B-1,4-GalT, GalT, Ggtb, Ggtb2" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="B4galt1, B-1,4-GalT, B-1,4-GalT1, GalT, Ggtb, Ggtb2, b4Gal-T1, beta-1,4-GalT, beta-1,4-GalT1, beta4Gal-T1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="475" y="182" width="46" height="17"/>
     </entry>
     <entry id="147" name="mmu:14343 mmu:14344 mmu:56546" type="gene" reaction="rn:R06031"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:14343+mmu:14344+mmu:56546">
-        <graphics name="Fut1, H, MGC129302, MGC129303..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Fut1..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="432" y="512" width="46" height="17"/>
     </entry>
     <entry id="148" name="path:mmu00600" type="map"
@@ -537,7 +537,7 @@
     </entry>
     <entry id="157" name="mmu:26877" type="gene" reaction="rn:R06006"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:26877">
-        <graphics name="B3galt1, 6330417G03Rik" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="B3galt1, beta3Gal-T1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="222" y="182" width="46" height="17"/>
     </entry>
     <entry id="158" name="mmu:26878" type="gene" reaction="rn:R06006"
@@ -552,7 +552,7 @@
     </entry>
     <entry id="161" name="mmu:14343 mmu:14344 mmu:56546" type="gene" reaction="rn:R06156"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:14343+mmu:14344+mmu:56546">
-        <graphics name="Fut1, H, MGC129302, MGC129303..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Fut1..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="180" y="376" width="46" height="17"/>
     </entry>
     <entry id="164" name="gl:G00038" type="compound"
@@ -562,7 +562,7 @@
     </entry>
     <entry id="166" name="mmu:14343 mmu:14344 mmu:56546" type="gene" reaction="rn:R06170"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:14343+mmu:14344+mmu:56546">
-        <graphics name="Fut1, H, MGC129302, MGC129303..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Fut1..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="310" y="376" width="46" height="17"/>
     </entry>
     <entry id="167" name="mmu:14594" type="gene" reaction="rn:R06169"
@@ -662,17 +662,17 @@
     </entry>
     <entry id="193" name="mmu:80908" type="gene" reaction="rn:R06167"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:80908">
-        <graphics name="Abo, NAGAT" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="Abo, NAGAT" fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="253,1118,293,1118"/>
     </entry>
     <entry id="194" name="mmu:20441 mmu:20443" type="gene" reaction="rn:R06153"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:20441+mmu:20443">
-        <graphics name="St3gal3, ST3N, Siat3, Siat6..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="St3gal3, ST3N, Siat3, Siat6..." fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="264,1074,294,1104"/>
     </entry>
     <entry id="195" name="mmu:14594 mmu:80908" type="gene" reaction="rn:R06169 rn:R06168"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:14594+mmu:80908">
-        <graphics name="Ggta1, AW108479, GALT, Gal, Ggta, Ggta-1, alpha3GalT..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="Ggta1, AW108479, GALT, Gal, Ggta, Ggta-1, alpha3GalT..." fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="263,1160,293,1130"/>
     </entry>
     <entry id="196" name="ko:K00716" type="ortholog" reaction="rn:R06163"
@@ -682,12 +682,12 @@
     </entry>
     <entry id="197" name="mmu:14343 mmu:14344 mmu:56546" type="gene" reaction="rn:R06156 rn:R06170"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:14343+mmu:14344+mmu:56546">
-        <graphics name="Fut1, H, MGC129302, MGC129303..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="Fut1..." fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="310,1133,310,1163"/>
     </entry>
     <entry id="198" name="mmu:26877 mmu:26878 mmu:93961" type="gene" reaction="rn:R06006"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:26877+mmu:26878+mmu:93961">
-        <graphics name="B3galt1, 6330417G03Rik..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="B3galt1, beta3Gal-T1..." fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="333,1118,363,1118"/>
     </entry>
     <entry id="199" name="ko:K00716" type="ortholog" reaction="rn:R06165 rn:R06155 rn:R06164 rn:R06163 rn:R06162"
@@ -697,122 +697,122 @@
     </entry>
     <entry id="200" name="mmu:108105" type="gene" reaction="rn:R05971"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:108105">
-        <graphics name="B3gnt5, beta3GnT5" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="B3gnt5, beta3GnT5" fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="421,1118,451,1118"/>
     </entry>
     <entry id="203" name="mmu:80908" type="gene" reaction="rn:R06187"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:80908">
-        <graphics name="Abo, NAGAT" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="Abo, NAGAT" fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="478,1397,518,1397"/>
     </entry>
     <entry id="204" name="mmu:108902 mmu:231727 mmu:53625 mmu:72297" type="gene" reaction="rn:R05975"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:108902+mmu:231727+mmu:53625+mmu:72297">
-        <graphics name="B3gnt1, 1500032M01Rik, B3gnt6, BETA3GNT1, iGAT, iGNT..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="B3gnt1, 1500032M01Rik, B3gnt6, BETA3GNT1, iGAT, iGNT..." fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="489,1353,519,1383"/>
     </entry>
     <entry id="205" name="mmu:54613" type="gene" reaction="rn:R06026"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:54613">
-        <graphics name="St3gal6, 1700023B24Rik, AI930218, AW552396, Siat10, St3galVI" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="St3gal6, 1700023B24Rik, AI930218, AW552396, Siat10, St3galVI" fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="488,1439,518,1409"/>
     </entry>
     <entry id="206" name="mmu:14538" type="gene" reaction="rn:R06189"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:14538">
-        <graphics name="Gcnt2, 5330430K10Rik, IGnT, IGnTA, IGnTB, IGnTC" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="Gcnt2, 5330430K10Rik, IGnT, IGnTA, IGnTB, IGnTC" fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="536,1380,536,1340"/>
     </entry>
     <entry id="207" name="mmu:14343 mmu:14344 mmu:56546" type="gene" reaction="rn:R06024 rn:R06027"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:14343+mmu:14344+mmu:56546">
-        <graphics name="Fut1, H, MGC129302, MGC129303..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="Fut1..." fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="542,1412,542,1452"/>
     </entry>
     <entry id="208" name="mmu:108105" type="gene" reaction="rn:R05977"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:108105">
-        <graphics name="B3gnt5, beta3GnT5" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="B3gnt5, beta3GnT5" fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="558,1397,588,1397"/>
     </entry>
     <entry id="209" name="mmu:14345 mmu:14347 mmu:14348" type="gene" reaction="rn:R06025 rn:R06075 rn:R06095 rn:R06230 rn:R06221 rn:R06224 rn:R06227"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:14345+mmu:14347+mmu:14348">
-        <graphics name="Fut4, AI451562, CD15, FAL, FucT-IV, LeX, SSEA-1..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="Fut4, AI451562, CD15, FAL, FucT-IV, LeX, SSEA-1, Ssea1..." fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="619,1451,619,1411"/>
     </entry>
     <entry id="210" name="mmu:108105" type="gene" reaction="rn:R05971"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:108105">
-        <graphics name="B3gnt5, beta3GnT5" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="B3gnt5, beta3GnT5" fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="646,1397,676,1397"/>
     </entry>
     <entry id="213" name="mmu:14594 mmu:80908" type="gene" reaction="rn:R05978 rn:R06029"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:14594+mmu:80908">
-        <graphics name="Ggta1, AW108479, GALT, Gal, Ggta, Ggta-1, alpha3GalT..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="Ggta1, AW108479, GALT, Gal, Ggta, Ggta-1, alpha3GalT..." fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="534,1452,534,1412"/>
     </entry>
     <entry id="214" name="mmu:20449" type="gene" reaction="rn:R06032"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:20449">
-        <graphics name="St8sia1, 9330109E03Rik, GD3S, Sia-T, Siat8, Siat8a" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="St8sia1, 9330109E03Rik, GD3S, Sia-T, Siat8, Siat8a" fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="396,1441,426,1441"/>
     </entry>
     <entry id="216" name="mmu:14343 mmu:14344 mmu:56546" type="gene" reaction="rn:R06031"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:14343+mmu:14344+mmu:56546">
-        <graphics name="Fut1, H, MGC129302, MGC129303..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="Fut1..." fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="335,1417,350,1402"/>
     </entry>
     <entry id="217" name="mmu:80908" type="gene" reaction="rn:R06197"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:80908">
-        <graphics name="Abo, NAGAT" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="Abo, NAGAT" fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="336,1374,351,1389"/>
     </entry>
     <entry id="218" name="mmu:14345 mmu:14348" type="gene" reaction="rn:R06038 rn:R06222 rn:R06076"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:14345+mmu:14348">
-        <graphics name="Fut4, AI451562, CD15, FAL, FucT-IV, LeX, SSEA-1..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="Fut4, AI451562, CD15, FAL, FucT-IV, LeX, SSEA-1, Ssea1..." fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="412,1382,432,1362"/>
     </entry>
     <entry id="219" name="mmu:14595 mmu:56375 mmu:57370" type="gene" reaction="rn:R06033"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:14595+mmu:56375+mmu:57370">
-        <graphics name="B4galt1, AA407245, B-1,4-GalT, GalT, Ggtb, Ggtb2..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="B4galt1, B-1,4-GalT, B-1,4-GalT1, GalT, Ggtb, Ggtb2, b4Gal-T1, beta-1,4-GalT, beta-1,4-GalT1, beta4Gal-T1..." fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="403,1313,433,1343"/>
     </entry>
     <entry id="220" name="mmu:54613" type="gene" reaction="rn:R06037 rn:R06232"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:54613">
-        <graphics name="St3gal6, 1700023B24Rik, AI930218, AW552396, Siat10, St3galVI" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="St3gal6, 1700023B24Rik, AI930218, AW552396, Siat10, St3galVI" fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="384,1289,384,1259"/>
     </entry>
     <entry id="221" name="mmu:108902 mmu:53625 mmu:72297" type="gene" reaction="rn:R05974"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:108902+mmu:53625+mmu:72297">
-        <graphics name="B3gnt1, 1500032M01Rik, B3gnt6, BETA3GNT1, iGAT, iGNT..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="B3gnt1, 1500032M01Rik, B3gnt6, BETA3GNT1, iGAT, iGNT..." fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="349,1274,369,1294"/>
     </entry>
     <entry id="222" name="mmu:14345 mmu:14348" type="gene" reaction="rn:R06039"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:14345+mmu:14348">
-        <graphics name="Fut4, AI451562, CD15, FAL, FucT-IV, LeX, SSEA-1..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="Fut4, AI451562, CD15, FAL, FucT-IV, LeX, SSEA-1, Ssea1..." fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="279,1288,294,1273"/>
     </entry>
     <entry id="225" name="mmu:80908" type="gene" reaction="rn:R06193"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:80908">
-        <graphics name="Abo, NAGAT" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="Abo, NAGAT" fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="348,1336,368,1316"/>
     </entry>
     <entry id="226" name="mmu:80908" type="gene" reaction="rn:R06190"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:80908">
-        <graphics name="Abo, NAGAT" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="Abo, NAGAT" fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="338,1306,368,1306"/>
     </entry>
     <entry id="227" name="mmu:14343 mmu:14344 mmu:56546" type="gene" reaction="rn:R06035 rn:R06085 rn:R06090"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:14343+mmu:14344+mmu:56546">
-        <graphics name="Fut1, H, MGC129302, MGC129303..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="Fut1..." fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="388,1351,388,1321"/>
     </entry>
     <entry id="229" name="mmu:14343 mmu:14344 mmu:56546" type="gene" reaction="rn:R06041"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:14343+mmu:14344+mmu:56546">
-        <graphics name="Fut1, H, MGC129302, MGC129303..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="Fut1..." fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="204,1364,219,1349"/>
     </entry>
     <entry id="230" name="mmu:80908" type="gene" reaction="rn:R06191"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:80908">
-        <graphics name="Abo, NAGAT" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="Abo, NAGAT" fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="205,1321,220,1336"/>
     </entry>
     <entry id="234" name="mmu:14343 mmu:14344 mmu:56546" type="gene" reaction="rn:R06086 rn:R06089"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:14343+mmu:14344+mmu:56546">
-        <graphics name="Fut1, H, MGC129302, MGC129303..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="Fut1..." fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="449,1262,449,1292"/>
     </entry>
     <relation entry1="141" entry2="146" type="ECrel">

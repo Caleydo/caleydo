@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
-<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
+<!DOCTYPE pathway SYSTEM "http://www.kegg.jp/kegg/xml/KGML_v0.7.1_.dtd">
 <!-- Creation date: Jul 2, 2012 10:28:40 +0900 (GMT+09:00) -->
 <pathway name="path:mmu00604" org="mmu" number="00604"
          title="Glycosphingolipid biosynthesis - ganglio series"
-         image="http://www.genome.jp/kegg/pathway/mmu/mmu00604.png"
-         link="http://www.genome.jp/kegg-bin/show_pathway?mmu00604">
+         image="http://www.kegg.jp/kegg/pathway/mmu/mmu00604.png"
+         link="http://www.kegg.jp/kegg-bin/show_pathway?mmu00604">
     <entry id="16" name="mmu:20442 mmu:20444" type="gene" reaction="rn:R05949"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:20442+mmu:20444">
-        <graphics name="St3gal1, 5330418N22Rik, AI467004, MGC90735, ST3GalI, Siat4, Siat4a, St3gal-1..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="St3gal1, 5330418N22Rik, AI467004, ST3GalI, Siat4, Siat4a, St3gal-1..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="536" y="447" width="46" height="17"/>
     </entry>
     <entry id="34" name="mmu:12091" type="gene" reaction="rn:R06010"
@@ -117,7 +117,7 @@
     </entry>
     <entry id="55" name="mmu:225742" type="gene" reaction="rn:R05947"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:225742">
-        <graphics name="St8sia5, MGC41119, ST8SiaV, Siat8e" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="St8sia5, ST8SiaV, Siat8e" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="614" y="183" width="46" height="17"/>
     </entry>
     <entry id="56" name="mmu:11416" type="gene"
@@ -137,7 +137,7 @@
     </entry>
     <entry id="59" name="mmu:225742" type="gene" reaction="rn:R05950"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:225742">
-        <graphics name="St8sia5, MGC41119, ST8SiaV, Siat8e" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="St8sia5, ST8SiaV, Siat8e" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="536" y="560" width="46" height="17"/>
     </entry>
     <entry id="60" name="mmu:50935" type="gene" reaction="rn:R05951"
@@ -162,7 +162,7 @@
     </entry>
     <entry id="64" name="mmu:225742" type="gene" reaction="rn:R05958"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:225742">
-        <graphics name="St8sia5, MGC41119, ST8SiaV, Siat8e" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="St8sia5, ST8SiaV, Siat8e" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="214" y="560" width="46" height="17"/>
     </entry>
     <entry id="65" name="mmu:20447" type="gene" reaction="rn:R05959"
@@ -177,12 +177,12 @@
     </entry>
     <entry id="67" name="mmu:20448" type="gene" reaction="rn:R05959"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:20448">
-        <graphics name="St6galnac4, MGC102103, Siat7d" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="St6galnac4, SIAT7-D, ST6GalNAcIV, Siat7d" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="177" y="494" width="46" height="17"/>
     </entry>
     <entry id="69" name="mmu:225742" type="gene" reaction="rn:R05943"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:225742">
-        <graphics name="St8sia5, MGC41119, ST8SiaV, Siat8e" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="St8sia5, ST8SiaV, Siat8e" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="376" y="560" width="46" height="17"/>
     </entry>
     <entry id="70" name="mmu:54218" type="gene" reaction="rn:R05948"
@@ -197,7 +197,7 @@
     </entry>
     <entry id="72" name="mmu:20442 mmu:20444" type="gene" reaction="rn:R05942"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:20442+mmu:20444">
-        <graphics name="St3gal1, 5330418N22Rik, AI467004, MGC90735, ST3GalI, Siat4, Siat4a, St3gal-1..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="St3gal1, 5330418N22Rik, AI467004, ST3GalI, Siat4, Siat4a, St3gal-1..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="376" y="447" width="46" height="17"/>
     </entry>
     <entry id="73" name="mmu:20454" type="gene" reaction="rn:R05937"
@@ -227,7 +227,7 @@
     </entry>
     <entry id="84" name="mmu:20442 mmu:20444" type="gene" reaction="rn:R05957"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:20442+mmu:20444">
-        <graphics name="St3gal1, 5330418N22Rik, AI467004, MGC90735, ST3GalI, Siat4, Siat4a, St3gal-1..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="St3gal1, 5330418N22Rik, AI467004, ST3GalI, Siat4, Siat4a, St3gal-1..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="214" y="447" width="46" height="17"/>
     </entry>
     <entry id="85" name="mmu:14421" type="gene" reaction="rn:R05946"
@@ -312,42 +312,42 @@
     </entry>
     <entry id="106" name="mmu:54218" type="gene" reaction="rn:R05956 rn:R05941 rn:R05948 rn:R05953"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:54218">
-        <graphics name="B3galt4, Gal-T2, Galt2" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="B3galt4, Gal-T2, Galt2" fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="350,805,365,790"/>
     </entry>
     <entry id="107" name="mmu:225742" type="gene" reaction="rn:R05958 rn:R05943 rn:R05950 rn:R05955"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:225742">
-        <graphics name="St8sia5, MGC41119, ST8SiaV, Siat8e" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="St8sia5, ST8SiaV, Siat8e" fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="205,787,235,787"/>
     </entry>
     <entry id="108" name="mmu:20442 mmu:20444" type="gene" reaction="rn:R05957 rn:R05942 rn:R05949 rn:R05954"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:20442+mmu:20444">
-        <graphics name="St3gal1, 5330418N22Rik, AI467004, MGC90735, ST3GalI, Siat4, Siat4a, St3gal-1..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="St3gal1, 5330418N22Rik, AI467004, ST3GalI, Siat4, Siat4a, St3gal-1..." fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="299,787,314,802"/>
     </entry>
     <entry id="110" name="mmu:20447 mmu:20448 mmu:26938 mmu:50935" type="gene" reaction="rn:R05959 rn:R05945 rn:R05951"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:20447+mmu:20448+mmu:26938+mmu:50935">
-        <graphics name="St6galnac3, Siat7c..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="St6galnac3, Siat7c..." fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="351,760,366,775"/>
     </entry>
     <entry id="111" name="mmu:20449 mmu:225742" type="gene" reaction="rn:R05947"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:20449+mmu:225742">
-        <graphics name="St8sia1, 9330109E03Rik, GD3S, Sia-T, Siat8, Siat8a..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="St8sia1, 9330109E03Rik, GD3S, Sia-T, Siat8, Siat8a..." fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="237,858,267,858"/>
     </entry>
     <entry id="112" name="mmu:20449" type="gene" reaction="rn:R05940"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:20449">
-        <graphics name="St8sia1, 9330109E03Rik, GD3S, Sia-T, Siat8, Siat8a" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="St8sia1, 9330109E03Rik, GD3S, Sia-T, Siat8, Siat8a" fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="331,858,361,858"/>
     </entry>
     <entry id="113" name="mmu:14421" type="gene" reaction="rn:R05938 rn:R05939 rn:R05946 rn:R05952"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:14421">
-        <graphics name="B4galnt1, 4933429D13Rik, Gal-NAc-T, GalNAc-T, GalNAcT, Galgt1, Ggm-2, Ggm2" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="B4galnt1, 4933429D13Rik, Gal-NAc-T, GalNAc-T, GalNAcT, Galgt1, Ggm-2, Ggm2" fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="420,791,440,811"/>
     </entry>
     <entry id="114" name="mmu:20454" type="gene" reaction="rn:R05937"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:20454">
-        <graphics name="St3gal5, 3S-T, Siat9, [a]2" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="St3gal5, 3S-T, Siat9, [a]2" fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="419,850,439,830"/>
     </entry>
     <relation entry1="73" entry2="74" type="ECrel">

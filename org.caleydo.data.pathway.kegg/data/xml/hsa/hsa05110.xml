@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
-<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Jun 11, 2012 11:20:27 +0900 (GMT+09:00) -->
+<!DOCTYPE pathway SYSTEM "http://www.kegg.jp/kegg/xml/KGML_v0.7.1_.dtd">
+<!-- Creation date: May 29, 2013 17:31:26 +0900 (GMT+09:00) -->
 <pathway name="path:hsa05110" org="hsa" number="05110"
          title="Vibrio cholerae infection"
-         image="http://www.genome.jp/kegg/pathway/hsa/hsa05110.png"
-         link="http://www.genome.jp/kegg-bin/show_pathway?hsa05110">
+         image="http://www.kegg.jp/kegg/pathway/hsa/hsa05110.png"
+         link="http://www.kegg.jp/kegg-bin/show_pathway?hsa05110">
     <entry id="1" name="hsa:4583" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:4583">
         <graphics name="MUC2, MLP, MUC-2, SMUC" fgcolor="#000000" bgcolor="#BFFFBF"
@@ -187,12 +187,12 @@
     </entry>
     <entry id="38" name="hsa:9414" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:9414">
-        <graphics name="TJP2, C9DUPq21.11, DFNA51, DUP9q21.11, MGC26306, X104, ZO2" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="TJP2, C9DUPq21.11, DFNA51, DUP9q21.11, X104, ZO2" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="659" y="648" width="46" height="17"/>
     </entry>
     <entry id="39" name="hsa:7082" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:7082">
-        <graphics name="TJP1, DKFZp686M05161, MGC133289, ZO-1" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="TJP1, ZO-1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="610" y="648" width="46" height="17"/>
     </entry>
     <entry id="40" name="cpd:C00575" type="compound"
@@ -207,22 +207,22 @@
     </entry>
     <entry id="42" name="hsa:2778" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2778">
-        <graphics name="GNAS, AHO, C20orf45, GNAS1, GPSA, GSA, GSP, MGC33735, NESP, PHP1A, PHP1B, PHP1C, POH" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="GNAS, AHO, C20orf45, GNAS1, GPSA, GSA, GSP, NESP, PHP1A, PHP1B, PHP1C, POH" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="668" y="287" width="46" height="17"/>
     </entry>
     <entry id="43" name="hsa:3784" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:3784">
-        <graphics name="KCNQ1, ATFB1, ATFB3, FLJ26167, JLNS1, KCNA8, KCNA9, KVLQT1, Kv1.9, Kv7.1, LQT, LQT1, RWS, SQT2, WRS" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="KCNQ1, ATFB1, ATFB3, JLNS1, KCNA8, KCNA9, KVLQT1, Kv1.9, Kv7.1, LQT, LQT1, RWS, SQT2, WRS" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="746" y="353" width="46" height="17"/>
     </entry>
     <entry id="44" name="hsa:5578 hsa:5579 hsa:5582" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5578+hsa:5579+hsa:5582">
-        <graphics name="PRKCA, AAG6, MGC129900, MGC129901, PKC-alpha, PKCA, PRKACA..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="PRKCA, AAG6, PKC-alpha, PKCA, PRKACA..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="525" y="621" width="46" height="17"/>
     </entry>
     <entry id="45" name="hsa:6558" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:6558">
-        <graphics name="SLC12A2, BSC, BSC2, MGC104233, NKCC1" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="SLC12A2, BSC, BSC2, NKCC1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="746" y="403" width="46" height="17"/>
     </entry>
     <entry id="46" name="hsa:5335 hsa:5336" type="gene"
@@ -232,7 +232,7 @@
     </entry>
     <entry id="47" name="hsa:5566 hsa:5567 hsa:5568 hsa:5613" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5566+hsa:5567+hsa:5568+hsa:5613">
-        <graphics name="PRKACA, MGC102831, MGC48865, PKACA..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="PRKACA, PKACA..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="517" y="395" width="46" height="17"/>
     </entry>
     <entry id="48" name="ko:K10953" type="ortholog"
@@ -257,7 +257,7 @@
     </entry>
     <entry id="52" name="hsa:109 hsa:115" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:109+hsa:115">
-        <graphics name="ADCY3, AC3, KIAA0511..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="ADCY3, AC3..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="746" y="287" width="46" height="17"/>
     </entry>
     <entry id="53" name="cpd:C00698" type="compound"

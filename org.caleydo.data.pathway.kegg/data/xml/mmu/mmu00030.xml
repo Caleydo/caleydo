@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
-<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
+<!DOCTYPE pathway SYSTEM "http://www.kegg.jp/kegg/xml/KGML_v0.7.1_.dtd">
 <!-- Creation date: May 31, 2012 15:36:30 +0900 (GMT+09:00) -->
 <pathway name="path:mmu00030" org="mmu" number="00030"
          title="Pentose phosphate pathway"
-         image="http://www.genome.jp/kegg/pathway/mmu/mmu00030.png"
-         link="http://www.genome.jp/kegg-bin/show_pathway?mmu00030">
+         image="http://www.kegg.jp/kegg/pathway/mmu/mmu00030.png"
+         link="http://www.kegg.jp/kegg-bin/show_pathway?mmu00030">
     <entry id="35" name="ko:K05774" type="ortholog" reaction="rn:R06836"
         link="http://www.kegg.jp/dbget-bin/www_bget?K05774">
         <graphics name="K05774" fgcolor="#000000" bgcolor="#FFFFFF"
@@ -75,8 +75,8 @@
         <graphics name="Tkt, p68..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="305" y="446" width="46" height="17"/>
     </entry>
-    <entry id="49" name="mmu:11674 mmu:11676 mmu:230163" type="gene" reaction="rn:R01070"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:11674+mmu:11676+mmu:230163">
+    <entry id="49" name="mmu:11674 mmu:11676 mmu:230163 mmu:353204" type="gene" reaction="rn:R01070"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:11674+mmu:11676+mmu:230163+mmu:353204">
         <graphics name="Aldoa, Aldo-1, Aldo1..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="200" y="562" width="46" height="17"/>
     </entry>

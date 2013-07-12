@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
-<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: May 26, 2011 16:54:54 +0900 (GMT+09:00) -->
+<!DOCTYPE pathway SYSTEM "http://www.kegg.jp/kegg/xml/KGML_v0.7.1_.dtd">
+<!-- Creation date: Nov 29, 2012 10:38:47 +0900 (GMT+09:00) -->
 <pathway name="path:mmu04974" org="mmu" number="04974"
          title="Protein digestion and absorption"
-         image="http://www.genome.jp/kegg/pathway/mmu/mmu04974.png"
-         link="http://www.genome.jp/kegg-bin/show_pathway?mmu04974">
+         image="http://www.kegg.jp/kegg/pathway/mmu/mmu04974.png"
+         link="http://www.kegg.jp/kegg-bin/show_pathway?mmu04974">
     <entry id="1" name="path:mmu04974" type="map"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu04974">
         <graphics name="TITLE:Protein digestion and absorption" fgcolor="#000000" bgcolor="#FFFFFF"
@@ -100,9 +100,9 @@
         <graphics name="Pancreatic secretion" fgcolor="#000000" bgcolor="#FFFFFF"
              type="roundrectangle" x="217" y="313" width="124" height="25"/>
     </entry>
-    <entry id="20" name="mmu:103964 mmu:22072 mmu:436522 mmu:67373" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:103964+mmu:22072+mmu:436522+mmu:67373">
-        <graphics name="Try5, 1810049H19Rik, Tc, Tesp4..." fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="20" name="mmu:100040233 mmu:103964 mmu:22072 mmu:22074 mmu:436522 mmu:67373 mmu:73626" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:100040233+mmu:103964+mmu:22072+mmu:22074+mmu:436522+mmu:67373+mmu:73626">
+        <graphics name="Gm10334..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="159" y="361" width="46" height="17"/>
     </entry>
     <entry id="21" name="mmu:20532" type="gene"
@@ -280,8 +280,8 @@
         <graphics name="Eln, AI385707, AI480567, E030024M20Rik" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="134" y="591" width="46" height="17"/>
     </entry>
-    <entry id="56" name="mmu:12814 mmu:12815 mmu:12816 mmu:12818 mmu:12819 mmu:12821 mmu:12822 mmu:12824 mmu:12825 mmu:12826 mmu:12827 mmu:12829 mmu:12830 mmu:12831 mmu:12832 mmu:12833 mmu:12834 mmu:12835 mmu:12839 mmu:12840 mmu:12841 mmu:12842 mmu:12843 mmu:245026 mmu:53867 mmu:68553 mmu:94216" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:12814+mmu:12815+mmu:12816+mmu:12818+mmu:12819+mmu:12821+mmu:12822+mmu:12824+mmu:12825+mmu:12826+mmu:12827+mmu:12829+mmu:12830+mmu:12831+mmu:12832+mmu:12833+mmu:12834+mmu:12835+mmu:12839+mmu:12840+mmu:12841+mmu:12842+mmu:12843+mmu:245026+mmu:53867+mmu:68553+mmu:94216">
+    <entry id="56" name="mmu:12814 mmu:12815 mmu:12816 mmu:12817 mmu:12818 mmu:12819 mmu:12821 mmu:12822 mmu:12824 mmu:12825 mmu:12826 mmu:12827 mmu:12828 mmu:12829 mmu:12830 mmu:12831 mmu:12832 mmu:12833 mmu:12834 mmu:12835 mmu:12836 mmu:12839 mmu:12840 mmu:12841 mmu:12842 mmu:12843 mmu:245026 mmu:373864 mmu:53867 mmu:68553 mmu:69700 mmu:71355 mmu:94216" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:12814+mmu:12815+mmu:12816+mmu:12817+mmu:12818+mmu:12819+mmu:12821+mmu:12822+mmu:12824+mmu:12825+mmu:12826+mmu:12827+mmu:12828+mmu:12829+mmu:12830+mmu:12831+mmu:12832+mmu:12833+mmu:12834+mmu:12835+mmu:12836+mmu:12839+mmu:12840+mmu:12841+mmu:12842+mmu:12843+mmu:245026+mmu:373864+mmu:53867+mmu:68553+mmu:69700+mmu:71355+mmu:94216">
         <graphics name="Col11a1, C530001D20Rik, cho..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="134" y="615" width="46" height="17"/>
     </entry>

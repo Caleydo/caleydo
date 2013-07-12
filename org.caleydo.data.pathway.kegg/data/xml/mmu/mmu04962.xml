@@ -110,8 +110,8 @@
         <graphics name="Aqp2, AQP-CD, WCH-CD, cph, jpk" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="106" y="631" width="46" height="17"/>
     </entry>
-    <entry id="22" name="mmu:11857 mmu:192662" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:11857+mmu:192662">
+    <entry id="22" name="mmu:11857 mmu:14570 mmu:192662" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:11857+mmu:14570+mmu:192662">
         <graphics name="Arhgdib, D4, Gdid4, Ly-GDI..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="400" y="273" width="46" height="17"/>
     </entry>
@@ -157,7 +157,7 @@
     </entry>
     <entry id="31" name="mmu:110350 mmu:13424 mmu:13426 mmu:13427 mmu:213575 mmu:234663 mmu:235661 mmu:56455 mmu:68097" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:110350+mmu:13424+mmu:13426+mmu:13427+mmu:213575+mmu:234663+mmu:235661+mmu:56455+mmu:68097">
-        <graphics name="Dync2h1, 4432416O06Rik, AI448217, D030010H02Rik, D330044F14Rik, DHC1b, DHC2, Dnchc2, mKIAA1997..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Dync2h1, 4432416O06Rik, AI448217, D030010H02Rik, D330044F14Rik, DHC1b, DHC2, Dnchc2, b2b414Clo, mKIAA1997..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="335" y="314" width="46" height="17"/>
     </entry>
     <relation entry1="4" entry2="5" type="PPrel">

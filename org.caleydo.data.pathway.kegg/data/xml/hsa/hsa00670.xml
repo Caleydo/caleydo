@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
-<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
+<!DOCTYPE pathway SYSTEM "http://www.kegg.jp/kegg/xml/KGML_v0.7.1_.dtd">
 <!-- Creation date: Sep 13, 2011 11:38:34 +0900 (GMT+09:00) -->
 <pathway name="path:hsa00670" org="hsa" number="00670"
          title="One carbon pool by folate"
-         image="http://www.genome.jp/kegg/pathway/hsa/hsa00670.png"
-         link="http://www.genome.jp/kegg-bin/show_pathway?hsa00670">
+         image="http://www.kegg.jp/kegg/pathway/hsa/hsa00670.png"
+         link="http://www.kegg.jp/kegg-bin/show_pathway?hsa00670">
     <entry id="16" name="path:hsa00670" type="map"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa00670">
         <graphics name="TITLE:One carbon pool by folate" fgcolor="#000000" bgcolor="#FFFFFF"
@@ -22,7 +22,7 @@
     </entry>
     <entry id="20" name="hsa:2618" type="gene" reaction="rn:R04326"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2618">
-        <graphics name="GART, AIRS, GARS, GARTF, MGC47764, PAIS, PGFT, PRGS" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="GART, AIRS, GARS, GARTF, PAIS, PGFT, PRGS" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="333" y="411" width="46" height="17"/>
     </entry>
     <entry id="21" name="hsa:10841" type="gene" reaction="rn:R02302"
@@ -95,9 +95,9 @@
         <graphics name="C00664" fgcolor="#000000" bgcolor="#FFFFFF"
              type="circle" x="486" y="444" width="8" height="8"/>
     </entry>
-    <entry id="41" name="hsa:10588" type="gene" reaction="rn:R02301"
-        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:10588">
-        <graphics name="MTHFS, FLJ30410, HsT19268" fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="41" name="hsa:100528021 hsa:10588" type="gene" reaction="rn:R02301"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:100528021+hsa:10588">
+        <graphics name="ST20-MTHFS..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="534" y="239" width="46" height="17"/>
     </entry>
     <entry id="42" name="hsa:275" type="gene" reaction="rn:R02300"
@@ -112,7 +112,7 @@
     </entry>
     <entry id="47" name="hsa:10840 hsa:160428" type="gene" reaction="rn:R00941"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:10840+hsa:160428">
-        <graphics name="ALDH1L1, 10-fTHF, DKFZp781N0997, FDH, FTHFD..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="ALDH1L1, 10-FTHFDH, 10-fTHF, FDH, FTHFD..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="284" y="373" width="46" height="17"/>
     </entry>
     <entry id="48" name="ko:K01433" type="ortholog" reaction="rn:R00944"
@@ -122,27 +122,27 @@
     </entry>
     <entry id="49" name="hsa:25902 hsa:4522" type="gene" reaction="rn:R00943"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:25902+hsa:4522">
-        <graphics name="MTHFD1L, DKFZp586G1517, FLJ21145, FTHFSDC1, MTC1THFS, dJ292B18.2..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="MTHFD1L, FTHFSDC1, MTC1THFS, dJ292B18.2..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="283" y="302" width="46" height="17"/>
     </entry>
     <entry id="50" name="hsa:2618" type="gene" reaction="rn:R04325"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2618">
-        <graphics name="GART, AIRS, GARS, GARTF, MGC47764, PAIS, PGFT, PRGS" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="GART, AIRS, GARS, GARTF, PAIS, PGFT, PRGS" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="283" y="258" width="46" height="17"/>
     </entry>
     <entry id="51" name="hsa:471" type="gene" reaction="rn:R04560"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:471">
-        <graphics name="ATIC, AICAR, AICARFT, FLJ93545, IMPCHASE, PURH" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="ATIC, AICAR, AICARFT, IMPCHASE, PURH" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="283" y="238" width="46" height="17"/>
     </entry>
     <entry id="52" name="hsa:7298" type="gene" reaction="rn:R02101"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:7298">
-        <graphics name="TYMS, HST422, MGC88736, TMS, TS" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="TYMS, HST422, TMS, TS" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="397" y="520" width="46" height="17"/>
     </entry>
     <entry id="54" name="hsa:4548" type="gene" reaction="rn:R00946"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:4548">
-        <graphics name="MTR, FLJ33168, FLJ43216, FLJ45386, MS, cblG" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="MTR, MS, cblG" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="397" y="477" width="46" height="17"/>
     </entry>
     <entry id="60" name="ko:K03465" type="ortholog" reaction="rn:R06613"
@@ -152,7 +152,7 @@
     </entry>
     <entry id="61" name="hsa:6470 hsa:6472" type="gene" reaction="rn:R00945"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:6470+hsa:6472">
-        <graphics name="SHMT1, CSHMT, MGC15229, MGC24556, SHMT..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="SHMT1, CSHMT, SHMT..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="398" y="191" width="46" height="17"/>
     </entry>
     <entry id="64" name="hsa:275" type="gene" reaction="rn:R04125"

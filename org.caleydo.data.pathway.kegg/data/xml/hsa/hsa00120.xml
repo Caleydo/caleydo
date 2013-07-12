@@ -42,7 +42,7 @@
     </entry>
     <entry id="26" name="hsa:1109" type="gene" reaction="rn:R04824 rn:R04825"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:1109">
-        <graphics name="AKR1C4, 3-alpha-HSD, C11, CDR, CHDR, DD-4, DD4, HAKRA; aldo-keto reductase family 1, member C4 (chlordecone reductase; 3-alpha hydroxysteroid dehydrogenase, type I" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="AKR1C4, 3-alpha-HSD, C11, CDR, CHDR, DD-4, DD4, HAKRA" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="516" y="581" width="46" height="17"/>
     </entry>
     <entry id="28" name="hsa:1593" type="gene" reaction="rn:R04807"
@@ -62,7 +62,7 @@
     </entry>
     <entry id="40" name="hsa:1109" type="gene" reaction="rn:R04818 rn:R04819"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:1109">
-        <graphics name="AKR1C4, 3-alpha-HSD, C11, CDR, CHDR, DD-4, DD4, HAKRA; aldo-keto reductase family 1, member C4 (chlordecone reductase; 3-alpha hydroxysteroid dehydrogenase, type I" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="AKR1C4, 3-alpha-HSD, C11, CDR, CHDR, DD-4, DD4, HAKRA" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="202" y="582" width="46" height="17"/>
     </entry>
     <entry id="47" name="hsa:9023" type="gene" reaction="rn:R07218"

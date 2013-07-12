@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
-<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: May 21, 2010 11:19:02 +0900 (GMT+09:00) -->
+<!DOCTYPE pathway SYSTEM "http://www.kegg.jp/kegg/xml/KGML_v0.7.1_.dtd">
+<!-- Creation date: May 29, 2013 18:26:44 +0900 (GMT+09:00) -->
 <pathway name="path:hsa04966" org="hsa" number="04966"
          title="Collecting duct acid secretion"
-         image="http://www.genome.jp/kegg/pathway/hsa/hsa04966.png"
-         link="http://www.genome.jp/kegg-bin/show_pathway?hsa04966">
+         image="http://www.kegg.jp/kegg/pathway/hsa/hsa04966.png"
+         link="http://www.kegg.jp/kegg-bin/show_pathway?hsa04966">
     <entry id="1" name="path:hsa04966" type="map"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa04966">
         <graphics name="TITLE:Collecting duct acid secretion" fgcolor="#000000" bgcolor="#FFFFFF"
@@ -27,7 +27,7 @@
     </entry>
     <entry id="5" name="hsa:6521" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:6521">
-        <graphics name="SLC4A1, AE1, BND3, CD233, DI, EMPB3, EPB3, FR, MGC116750, MGC116753, MGC126619, MGC126623, RTA1A, SW, WD, WD1, WR" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="SLC4A1, AE1, BND3, CD233, DI, EMPB3, EPB3, FR, RTA1A, SW, WD, WD1, WR" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="544" y="339" width="46" height="17"/>
     </entry>
     <entry id="6" name="hsa:495 hsa:496" type="gene"
@@ -57,7 +57,7 @@
     </entry>
     <entry id="11" name="hsa:760" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:760">
-        <graphics name="CA2, CA-II, CAII, Car2" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CA2, CA-II, CAC, CAII, Car2" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="392" y="502" width="46" height="17"/>
     </entry>
     <entry id="12" name="cpd:C00698" type="compound"
@@ -82,12 +82,12 @@
     </entry>
     <entry id="17" name="hsa:10723" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:10723">
-        <graphics name="SLC12A7, DKFZp434F076, KCC4" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="SLC12A7, KCC4" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="542" y="470" width="46" height="17"/>
     </entry>
     <entry id="18" name="hsa:1188" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:1188">
-        <graphics name="CLCNKB, CLCKB, ClC-K2, ClC-Kb, MGC24087, hClC-Kb" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CLCNKB, CLCKB, ClC-K2, ClC-Kb" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="543" y="517" width="46" height="17"/>
     </entry>
     <entry id="19" name="cpd:C00238" type="compound"

@@ -22,7 +22,7 @@
     </entry>
     <entry id="4" name="hsa:56907 hsa:84501" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:56907+hsa:84501">
-        <graphics name="SPIRE1, MGC150621, MGC150622, Spir-1..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="SPIRE1, Spir-1..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="515" y="411" width="46" height="17"/>
     </entry>
     <entry id="5" name="hsa:56776" type="gene"
@@ -37,12 +37,12 @@
     </entry>
     <entry id="7" name="hsa:143689 hsa:440822 hsa:55124 hsa:9271" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:143689+hsa:440822+hsa:55124+hsa:9271">
-        <graphics name="PIWIL4, DKFZp686P01248, FLJ36156, HIWI2, MIWI2..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="PIWIL4, HIWI2, MIWI2..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="216" y="527" width="46" height="17"/>
     </entry>
     <entry id="8" name="hsa:64506" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:64506">
-        <graphics name="CPEB1, CEBP, CPE-BP1, CPEB, FLJ13203, MGC34136, MGC60106" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CPEB1, CEBP, CPE-BP1, CPEB" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="216" y="508" width="46" height="17"/>
     </entry>
     <entry id="9" name="ko:K02360" type="ortholog"
@@ -92,7 +92,7 @@
     </entry>
     <entry id="19" name="hsa:2113 hsa:2114" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2113+hsa:2114">
-        <graphics name="ETS1, ETS-1, EWSR2, FLJ10768..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="ETS1, ETS-1, EWSR2..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="582" y="166" width="46" height="17"/>
     </entry>
     <entry id="20" name="hsa:5594 hsa:5595" type="gene"

@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
-<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
+<!DOCTYPE pathway SYSTEM "http://www.kegg.jp/kegg/xml/KGML_v0.7.1_.dtd">
 <!-- Creation date: Jun 29, 2012 14:34:58 +0900 (GMT+09:00) -->
 <pathway name="path:hsa00601" org="hsa" number="00601"
          title="Glycosphingolipid biosynthesis - lacto and neolacto series"
-         image="http://www.genome.jp/kegg/pathway/hsa/hsa00601.png"
-         link="http://www.genome.jp/kegg-bin/show_pathway?hsa00601">
+         image="http://www.kegg.jp/kegg/pathway/hsa/hsa00601.png"
+         link="http://www.kegg.jp/kegg-bin/show_pathway?hsa00601">
     <entry id="37" name="hsa:10331" type="gene" reaction="rn:R05974"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:10331">
         <graphics name="B3GNT3, B3GAL-T8, B3GN-T3, B3GNT-3, HP10328, TMEM3, beta3Gn-T3" fgcolor="#000000" bgcolor="#BFFFBF"
@@ -37,27 +37,27 @@
     </entry>
     <entry id="43" name="hsa:2525 hsa:2527 hsa:2528" type="gene" reaction="rn:R06221"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2525+hsa:2527+hsa:2528">
-        <graphics name="FUT3, CD174, FT3B, FucT-III, LE, Les, MGC131739..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="FUT3, CD174, FT3B, FucT-III, LE, Les..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="537" y="843" width="46" height="17"/>
     </entry>
     <entry id="44" name="hsa:2525 hsa:2527 hsa:2528" type="gene" reaction="rn:R06222"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2525+hsa:2527+hsa:2528">
-        <graphics name="FUT3, CD174, FT3B, FucT-III, LE, Les, MGC131739..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="FUT3, CD174, FT3B, FucT-III, LE, Les..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="343" y="843" width="46" height="17"/>
     </entry>
     <entry id="45" name="hsa:2525 hsa:2527 hsa:2528" type="gene" reaction="rn:R06224"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2525+hsa:2527+hsa:2528">
-        <graphics name="FUT3, CD174, FT3B, FucT-III, LE, Les, MGC131739..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="FUT3, CD174, FT3B, FucT-III, LE, Les..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="343" y="914" width="46" height="17"/>
     </entry>
     <entry id="46" name="hsa:2525 hsa:2527 hsa:2528" type="gene" reaction="rn:R06230"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2525+hsa:2527+hsa:2528">
-        <graphics name="FUT3, CD174, FT3B, FucT-III, LE, Les, MGC131739..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="FUT3, CD174, FT3B, FucT-III, LE, Les..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="735" y="543" width="46" height="17"/>
     </entry>
     <entry id="47" name="hsa:2525 hsa:2527 hsa:2528" type="gene" reaction="rn:R06227"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2525+hsa:2527+hsa:2528">
-        <graphics name="FUT3, CD174, FT3B, FucT-III, LE, Les, MGC131739..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="FUT3, CD174, FT3B, FucT-III, LE, Les..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="803" y="843" width="46" height="17"/>
     </entry>
     <entry id="48" name="hsa:8702" type="gene" reaction="rn:R06033"
@@ -122,27 +122,27 @@
     </entry>
     <entry id="60" name="hsa:2525 hsa:2527 hsa:2528" type="gene" reaction="rn:R06038"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2525+hsa:2527+hsa:2528">
-        <graphics name="FUT3, CD174, FT3B, FucT-III, LE, Les, MGC131739..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="FUT3, CD174, FT3B, FucT-III, LE, Les..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="537" y="772" width="46" height="17"/>
     </entry>
     <entry id="61" name="hsa:2525 hsa:2527 hsa:2528" type="gene" reaction="rn:R06039"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2525+hsa:2527+hsa:2528">
-        <graphics name="FUT3, CD174, FT3B, FucT-III, LE, Les, MGC131739..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="FUT3, CD174, FT3B, FucT-III, LE, Les..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="343" y="772" width="46" height="17"/>
     </entry>
     <entry id="62" name="hsa:2525 hsa:2527 hsa:2528" type="gene" reaction="rn:R06076"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2525+hsa:2527+hsa:2528">
-        <graphics name="FUT3, CD174, FT3B, FucT-III, LE, Les, MGC131739..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="FUT3, CD174, FT3B, FucT-III, LE, Les..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="803" y="772" width="46" height="17"/>
     </entry>
     <entry id="63" name="hsa:2525 hsa:2527 hsa:2528" type="gene" reaction="rn:R06095"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2525+hsa:2527+hsa:2528">
-        <graphics name="FUT3, CD174, FT3B, FucT-III, LE, Les, MGC131739..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="FUT3, CD174, FT3B, FucT-III, LE, Les..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="537" y="435" width="46" height="17"/>
     </entry>
     <entry id="64" name="hsa:2525 hsa:2527 hsa:2528" type="gene" reaction="rn:R06025"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2525+hsa:2527+hsa:2528">
-        <graphics name="FUT3, CD174, FT3B, FucT-III, LE, Les, MGC131739..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="FUT3, CD174, FT3B, FucT-III, LE, Les..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="475" y="325" width="46" height="17"/>
     </entry>
     <entry id="65" name="gl:G00078" type="compound"
@@ -357,12 +357,12 @@
     </entry>
     <entry id="108" name="hsa:28" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:28">
-        <graphics name="ABO, A3GALNT, A3GALT1, GTB, NAGAT; ABO blood group (transferase A, alpha 1-3-N-acetylgalactosaminyltransferase" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="ABO, A3GALNT, A3GALT1, GTB, NAGAT" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="1013" y="749" width="46" height="17"/>
     </entry>
     <entry id="109" name="hsa:28" type="gene" reaction="rn:R06191"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:28">
-        <graphics name="ABO, A3GALNT, A3GALT1, GTB, NAGAT; ABO blood group (transferase A, alpha 1-3-N-acetylgalactosaminyltransferase" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="ABO, A3GALNT, A3GALT1, GTB, NAGAT" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="662" y="890" width="46" height="17"/>
     </entry>
     <entry id="110" name="hsa:2523 hsa:2524" type="gene" reaction="rn:R06085 rn:R06086 rn:R06089 rn:R06090"
@@ -407,7 +407,7 @@
     </entry>
     <entry id="121" name="hsa:28" type="gene" reaction="rn:R06193"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:28">
-        <graphics name="ABO, A3GALNT, A3GALT1, GTB, NAGAT; ABO blood group (transferase A, alpha 1-3-N-acetylgalactosaminyltransferase" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="ABO, A3GALNT, A3GALT1, GTB, NAGAT" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="762" y="749" width="46" height="17"/>
     </entry>
     <entry id="122" name="hsa:2523 hsa:2524" type="gene" reaction="rn:R06041"
@@ -422,12 +422,12 @@
     </entry>
     <entry id="126" name="hsa:28" type="gene" reaction="rn:R06190"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:28">
-        <graphics name="ABO, A3GALNT, A3GALT1, GTB, NAGAT; ABO blood group (transferase A, alpha 1-3-N-acetylgalactosaminyltransferase" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="ABO, A3GALNT, A3GALT1, GTB, NAGAT" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="884" y="749" width="46" height="17"/>
     </entry>
     <entry id="127" name="hsa:2651" type="gene" reaction="rn:R06189"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2651">
-        <graphics name="GCNT2, CCAT, GCNT2C, GCNT5, IGNT, II, MGC163396, NACGT1, NAGCT1, ULG3, bA360O19.2, bA421M1.1" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="GCNT2, CCAT, GCNT2C, GCNT5, IGNT, II, NACGT1, NAGCT1, ULG3, bA360O19.2, bA421M1.1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="884" y="607" width="46" height="17"/>
     </entry>
     <entry id="128" name="hsa:10690" type="gene" reaction="rn:R06076"
@@ -442,7 +442,7 @@
     </entry>
     <entry id="131" name="hsa:2525 hsa:2527 hsa:2528" type="gene" reaction="rn:R06075"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2525+hsa:2527+hsa:2528">
-        <graphics name="FUT3, CD174, FT3B, FucT-III, LE, Les, MGC131739..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="FUT3, CD174, FT3B, FucT-III, LE, Les..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="762" y="247" width="46" height="17"/>
     </entry>
     <entry id="133" name="hsa:10402" type="gene" reaction="rn:R06026"
@@ -462,7 +462,7 @@
     </entry>
     <entry id="136" name="hsa:2683" type="gene" reaction="rn:R06033"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2683">
-        <graphics name="B4GALT1, B4GAL-T1, CDG2D, DKFZp686N19253, GGTB2, GT1, GTB, MGC50983, beta4Gal-T1" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="B4GALT1, B4GAL-T1, CDG2D, GGTB2, GT1, GTB, beta4Gal-T1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="824" y="392" width="46" height="17"/>
     </entry>
     <entry id="137" name="ko:K00743" type="ortholog" reaction="rn:R05978"
@@ -472,7 +472,7 @@
     </entry>
     <entry id="138" name="hsa:28" type="gene" reaction="rn:R06029"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:28">
-        <graphics name="ABO, A3GALNT, A3GALT1, GTB, NAGAT; ABO blood group (transferase A, alpha 1-3-N-acetylgalactosaminyltransferase" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="ABO, A3GALNT, A3GALT1, GTB, NAGAT" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="623" y="411" width="46" height="17"/>
     </entry>
     <entry id="139" name="hsa:2523 hsa:2524" type="gene" reaction="rn:R06024"
@@ -497,7 +497,7 @@
     </entry>
     <entry id="143" name="hsa:28" type="gene" reaction="rn:R06187"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:28">
-        <graphics name="ABO, A3GALNT, A3GALT1, GTB, NAGAT; ABO blood group (transferase A, alpha 1-3-N-acetylgalactosaminyltransferase" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="ABO, A3GALNT, A3GALT1, GTB, NAGAT" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="500" y="411" width="46" height="17"/>
     </entry>
     <entry id="144" name="hsa:2523 hsa:2524" type="gene" reaction="rn:R06035"
@@ -507,12 +507,12 @@
     </entry>
     <entry id="145" name="hsa:28" type="gene" reaction="rn:R06197"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:28">
-        <graphics name="ABO, A3GALNT, A3GALT1, GTB, NAGAT; ABO blood group (transferase A, alpha 1-3-N-acetylgalactosaminyltransferase" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="ABO, A3GALNT, A3GALT1, GTB, NAGAT" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="398" y="553" width="46" height="17"/>
     </entry>
     <entry id="146" name="hsa:2683" type="gene" reaction="rn:R05977"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2683">
-        <graphics name="B4GALT1, B4GAL-T1, CDG2D, DKFZp686N19253, GGTB2, GT1, GTB, MGC50983, beta4Gal-T1" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="B4GALT1, B4GAL-T1, CDG2D, GGTB2, GT1, GTB, beta4Gal-T1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="475" y="182" width="46" height="17"/>
     </entry>
     <entry id="147" name="hsa:2523 hsa:2524" type="gene" reaction="rn:R06031"
@@ -537,7 +537,7 @@
     </entry>
     <entry id="157" name="hsa:8708" type="gene" reaction="rn:R06006"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:8708">
-        <graphics name="B3GALT1, MGC126594, beta3Gal-T1" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="B3GALT1, beta3Gal-T1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="222" y="182" width="46" height="17"/>
     </entry>
     <entry id="158" name="hsa:8707" type="gene" reaction="rn:R06006"
@@ -572,7 +572,7 @@
     </entry>
     <entry id="168" name="hsa:28" type="gene" reaction="rn:R06168"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:28">
-        <graphics name="ABO, A3GALNT, A3GALT1, GTB, NAGAT; ABO blood group (transferase A, alpha 1-3-N-acetylgalactosaminyltransferase" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="ABO, A3GALNT, A3GALT1, GTB, NAGAT" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="247" y="411" width="46" height="17"/>
     </entry>
     <entry id="169" name="gl:G00039" type="compound"
@@ -587,12 +587,12 @@
     </entry>
     <entry id="173" name="hsa:2525" type="gene" reaction="rn:R06163"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2525">
-        <graphics name="FUT3, CD174, FT3B, FucT-III, LE, Les, MGC131739" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="FUT3, CD174, FT3B, FucT-III, LE, Les" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="180" y="445" width="46" height="17"/>
     </entry>
     <entry id="174" name="hsa:2525" type="gene" reaction="rn:R06164"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2525">
-        <graphics name="FUT3, CD174, FT3B, FucT-III, LE, Les, MGC131739" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="FUT3, CD174, FT3B, FucT-III, LE, Les" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="310" y="445" width="46" height="17"/>
     </entry>
     <entry id="175" name="gl:G00040" type="compound"
@@ -607,7 +607,7 @@
     </entry>
     <entry id="178" name="hsa:28" type="gene" reaction="rn:R06167"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:28">
-        <graphics name="ABO, A3GALNT, A3GALT1, GTB, NAGAT; ABO blood group (transferase A, alpha 1-3-N-acetylgalactosaminyltransferase" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="ABO, A3GALNT, A3GALT1, GTB, NAGAT" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="112" y="411" width="46" height="17"/>
     </entry>
     <entry id="179" name="gl:G00042" type="compound"
@@ -622,12 +622,12 @@
     </entry>
     <entry id="182" name="hsa:2525" type="gene" reaction="rn:R06162"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2525">
-        <graphics name="FUT3, CD174, FT3B, FucT-III, LE, Les, MGC131739" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="FUT3, CD174, FT3B, FucT-III, LE, Les" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="47" y="445" width="46" height="17"/>
     </entry>
     <entry id="184" name="hsa:2525" type="gene" reaction="rn:R06155"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2525">
-        <graphics name="FUT3, CD174, FT3B, FucT-III, LE, Les, MGC131739" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="FUT3, CD174, FT3B, FucT-III, LE, Les" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="112" y="333" width="46" height="17"/>
     </entry>
     <entry id="185" name="gl:G00046" type="compound"
@@ -637,12 +637,12 @@
     </entry>
     <entry id="187" name="hsa:6487" type="gene" reaction="rn:R06153"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:6487">
-        <graphics name="ST3GAL3, MRT12, SIAT6, ST3GALII, ST3GalIII, ST3N" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="ST3GAL3, EIEE15, MRT12, SIAT6, ST3GALII, ST3GalIII, ST3N" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="247" y="247" width="46" height="17"/>
     </entry>
     <entry id="188" name="hsa:6484" type="gene" reaction="rn:R06153"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:6484">
-        <graphics name="ST3GAL4, CGS23, FLJ11867, FLJ46764, NANTA3, SAT3, SIAT4, SIAT4C, ST3GalIV, STZ" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="ST3GAL4, CGS23, NANTA3, SAT3, SIAT4, SIAT4C, ST3GalIV, STZ" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="247" y="268" width="46" height="17"/>
     </entry>
     <entry id="189" name="gl:G00047" type="compound"
@@ -657,162 +657,162 @@
     </entry>
     <entry id="192" name="hsa:2525" type="gene" reaction="rn:R06165"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2525">
-        <graphics name="FUT3, CD174, FT3B, FucT-III, LE, Les, MGC131739" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="FUT3, CD174, FT3B, FucT-III, LE, Les" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="369" y="258" width="46" height="17"/>
     </entry>
     <entry id="193" name="hsa:28" type="gene" reaction="rn:R06167"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:28">
-        <graphics name="ABO, A3GALNT, A3GALT1, GTB, NAGAT; ABO blood group (transferase A, alpha 1-3-N-acetylgalactosaminyltransferase" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="ABO, A3GALNT, A3GALT1, GTB, NAGAT" fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="253,1118,293,1118"/>
     </entry>
     <entry id="194" name="hsa:6484 hsa:6487" type="gene" reaction="rn:R06153"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:6484+hsa:6487">
-        <graphics name="ST3GAL4, CGS23, FLJ11867, FLJ46764, NANTA3, SAT3, SIAT4, SIAT4C, ST3GalIV, STZ..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="ST3GAL4, CGS23, NANTA3, SAT3, SIAT4, SIAT4C, ST3GalIV, STZ..." fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="264,1074,294,1104"/>
     </entry>
     <entry id="195" name="hsa:28" type="gene" reaction="rn:R06169 rn:R06168"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:28">
-        <graphics name="ABO, A3GALNT, A3GALT1, GTB, NAGAT; ABO blood group (transferase A, alpha 1-3-N-acetylgalactosaminyltransferase" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="ABO, A3GALNT, A3GALT1, GTB, NAGAT" fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="263,1160,293,1130"/>
     </entry>
     <entry id="196" name="hsa:2525" type="gene" reaction="rn:R06163"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2525">
-        <graphics name="FUT3, CD174, FT3B, FucT-III, LE, Les, MGC131739" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="FUT3, CD174, FT3B, FucT-III, LE, Les" fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="311,1102,311,1072"/>
     </entry>
     <entry id="197" name="hsa:2523 hsa:2524" type="gene" reaction="rn:R06156 rn:R06170"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2523+hsa:2524">
-        <graphics name="FUT1, H, HH, HSC..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="FUT1, H, HH, HSC..." fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="310,1133,310,1163"/>
     </entry>
     <entry id="198" name="hsa:10317 hsa:8707 hsa:8708" type="gene" reaction="rn:R06006"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:10317+hsa:8707+hsa:8708">
-        <graphics name="B3GALT5, B3GalT-V, B3GalTx, B3T5, GLCT5, beta3Gal-T5..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="B3GALT5, B3GalT-V, B3GalTx, B3T5, GLCT5, beta3Gal-T5..." fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="333,1118,363,1118"/>
     </entry>
     <entry id="199" name="hsa:2525" type="gene" reaction="rn:R06165 rn:R06155 rn:R06164 rn:R06163 rn:R06162"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2525">
-        <graphics name="FUT3, CD174, FT3B, FucT-III, LE, Les, MGC131739" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="FUT3, CD174, FT3B, FucT-III, LE, Les" fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="388,1102,388,1072"/>
     </entry>
     <entry id="200" name="hsa:84002" type="gene" reaction="rn:R05971"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:84002">
-        <graphics name="B3GNT5, B3GN-T5, beta3Gn-T5" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="B3GNT5, B3GN-T5, beta3Gn-T5" fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="421,1118,451,1118"/>
     </entry>
     <entry id="203" name="hsa:28" type="gene" reaction="rn:R06187"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:28">
-        <graphics name="ABO, A3GALNT, A3GALT1, GTB, NAGAT; ABO blood group (transferase A, alpha 1-3-N-acetylgalactosaminyltransferase" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="ABO, A3GALNT, A3GALT1, GTB, NAGAT" fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="478,1397,518,1397"/>
     </entry>
     <entry id="204" name="hsa:10331 hsa:10678 hsa:11041 hsa:79369" type="gene" reaction="rn:R05975"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:10331+hsa:10678+hsa:11041+hsa:79369">
-        <graphics name="B3GNT3, B3GAL-T8, B3GN-T3, B3GNT-3, HP10328, TMEM3, beta3Gn-T3..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="B3GNT3, B3GAL-T8, B3GN-T3, B3GNT-3, HP10328, TMEM3, beta3Gn-T3..." fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="489,1353,519,1383"/>
     </entry>
     <entry id="205" name="hsa:10402" type="gene" reaction="rn:R06026"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:10402">
-        <graphics name="ST3GAL6, SIAT10, ST3GALVI" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="ST3GAL6, SIAT10, ST3GALVI" fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="488,1439,518,1409"/>
     </entry>
     <entry id="206" name="hsa:2651" type="gene" reaction="rn:R06189"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2651">
-        <graphics name="GCNT2, CCAT, GCNT2C, GCNT5, IGNT, II, MGC163396, NACGT1, NAGCT1, ULG3, bA360O19.2, bA421M1.1" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="GCNT2, CCAT, GCNT2C, GCNT5, IGNT, II, NACGT1, NAGCT1, ULG3, bA360O19.2, bA421M1.1" fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="536,1380,536,1340"/>
     </entry>
     <entry id="207" name="hsa:2523 hsa:2524" type="gene" reaction="rn:R06024 rn:R06027"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2523+hsa:2524">
-        <graphics name="FUT1, H, HH, HSC..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="FUT1, H, HH, HSC..." fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="542,1412,542,1452"/>
     </entry>
     <entry id="208" name="hsa:84002" type="gene" reaction="rn:R05977"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:84002">
-        <graphics name="B3GNT5, B3GN-T5, beta3Gn-T5" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="B3GNT5, B3GN-T5, beta3Gn-T5" fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="558,1397,588,1397"/>
     </entry>
     <entry id="209" name="hsa:10690 hsa:2525 hsa:2526 hsa:2527 hsa:2528 hsa:2529" type="gene" reaction="rn:R06025 rn:R06075 rn:R06095 rn:R06230 rn:R06221 rn:R06224 rn:R06227"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:10690+hsa:2525+hsa:2526+hsa:2527+hsa:2528+hsa:2529">
-        <graphics name="FUT9, Fuc-TIX..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="FUT9, Fuc-TIX..." fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="619,1451,619,1411"/>
     </entry>
     <entry id="210" name="hsa:84002" type="gene" reaction="rn:R05971"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:84002">
-        <graphics name="B3GNT5, B3GN-T5, beta3Gn-T5" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="B3GNT5, B3GN-T5, beta3Gn-T5" fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="646,1397,676,1397"/>
     </entry>
     <entry id="213" name="hsa:28" type="gene" reaction="rn:R05978 rn:R06029"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:28">
-        <graphics name="ABO, A3GALNT, A3GALT1, GTB, NAGAT; ABO blood group (transferase A, alpha 1-3-N-acetylgalactosaminyltransferase" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="ABO, A3GALNT, A3GALT1, GTB, NAGAT" fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="534,1452,534,1412"/>
     </entry>
     <entry id="214" name="hsa:6489" type="gene" reaction="rn:R06032"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:6489">
-        <graphics name="ST8SIA1, GD3S, SIAT8, SIAT8-A, SIAT8A, ST8SiaI" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="ST8SIA1, GD3S, SIAT8, SIAT8-A, SIAT8A, ST8SiaI" fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="396,1441,426,1441"/>
     </entry>
     <entry id="216" name="hsa:2523 hsa:2524" type="gene" reaction="rn:R06031"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2523+hsa:2524">
-        <graphics name="FUT1, H, HH, HSC..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="FUT1, H, HH, HSC..." fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="335,1417,350,1402"/>
     </entry>
     <entry id="217" name="hsa:28" type="gene" reaction="rn:R06197"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:28">
-        <graphics name="ABO, A3GALNT, A3GALT1, GTB, NAGAT; ABO blood group (transferase A, alpha 1-3-N-acetylgalactosaminyltransferase" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="ABO, A3GALNT, A3GALT1, GTB, NAGAT" fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="336,1374,351,1389"/>
     </entry>
     <entry id="218" name="hsa:10690 hsa:2525 hsa:2526 hsa:2527 hsa:2528" type="gene" reaction="rn:R06038 rn:R06222 rn:R06076"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:10690+hsa:2525+hsa:2526+hsa:2527+hsa:2528">
-        <graphics name="FUT9, Fuc-TIX..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="FUT9, Fuc-TIX..." fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="412,1382,432,1362"/>
     </entry>
     <entry id="219" name="hsa:2683 hsa:8702 hsa:8703" type="gene" reaction="rn:R06033"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2683+hsa:8702+hsa:8703">
-        <graphics name="B4GALT1, B4GAL-T1, CDG2D, DKFZp686N19253, GGTB2, GT1, GTB, MGC50983, beta4Gal-T1..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="B4GALT1, B4GAL-T1, CDG2D, GGTB2, GT1, GTB, beta4Gal-T1..." fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="403,1313,433,1343"/>
     </entry>
     <entry id="220" name="hsa:10402" type="gene" reaction="rn:R06037 rn:R06232"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:10402">
-        <graphics name="ST3GAL6, SIAT10, ST3GALVI" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="ST3GAL6, SIAT10, ST3GALVI" fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="384,1289,384,1259"/>
     </entry>
     <entry id="221" name="hsa:10331 hsa:10678 hsa:11041" type="gene" reaction="rn:R05974"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:10331+hsa:10678+hsa:11041">
-        <graphics name="B3GNT3, B3GAL-T8, B3GN-T3, B3GNT-3, HP10328, TMEM3, beta3Gn-T3..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="B3GNT3, B3GAL-T8, B3GN-T3, B3GNT-3, HP10328, TMEM3, beta3Gn-T3..." fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="349,1274,369,1294"/>
     </entry>
     <entry id="222" name="hsa:10690 hsa:2525 hsa:2526 hsa:2527 hsa:2528" type="gene" reaction="rn:R06039"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:10690+hsa:2525+hsa:2526+hsa:2527+hsa:2528">
-        <graphics name="FUT9, Fuc-TIX..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="FUT9, Fuc-TIX..." fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="279,1288,294,1273"/>
     </entry>
     <entry id="225" name="hsa:28" type="gene" reaction="rn:R06193"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:28">
-        <graphics name="ABO, A3GALNT, A3GALT1, GTB, NAGAT; ABO blood group (transferase A, alpha 1-3-N-acetylgalactosaminyltransferase" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="ABO, A3GALNT, A3GALT1, GTB, NAGAT" fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="348,1336,368,1316"/>
     </entry>
     <entry id="226" name="hsa:28" type="gene" reaction="rn:R06190"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:28">
-        <graphics name="ABO, A3GALNT, A3GALT1, GTB, NAGAT; ABO blood group (transferase A, alpha 1-3-N-acetylgalactosaminyltransferase" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="ABO, A3GALNT, A3GALT1, GTB, NAGAT" fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="338,1306,368,1306"/>
     </entry>
     <entry id="227" name="hsa:2523 hsa:2524" type="gene" reaction="rn:R06035 rn:R06085 rn:R06090"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2523+hsa:2524">
-        <graphics name="FUT1, H, HH, HSC..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="FUT1, H, HH, HSC..." fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="388,1351,388,1321"/>
     </entry>
     <entry id="229" name="hsa:2523 hsa:2524" type="gene" reaction="rn:R06041"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2523+hsa:2524">
-        <graphics name="FUT1, H, HH, HSC..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="FUT1, H, HH, HSC..." fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="204,1364,219,1349"/>
     </entry>
     <entry id="230" name="hsa:28" type="gene" reaction="rn:R06191"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:28">
-        <graphics name="ABO, A3GALNT, A3GALT1, GTB, NAGAT; ABO blood group (transferase A, alpha 1-3-N-acetylgalactosaminyltransferase" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="ABO, A3GALNT, A3GALT1, GTB, NAGAT" fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="205,1321,220,1336"/>
     </entry>
     <entry id="234" name="hsa:2523 hsa:2524" type="gene" reaction="rn:R06086 rn:R06089"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2523+hsa:2524">
-        <graphics name="FUT1, H, HH, HSC..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="FUT1, H, HH, HSC..." fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="449,1262,449,1292"/>
     </entry>
     <relation entry1="141" entry2="146" type="ECrel">

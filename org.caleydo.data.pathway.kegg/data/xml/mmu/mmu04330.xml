@@ -57,7 +57,7 @@
     </entry>
     <entry id="11" name="mmu:19208" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:19208">
-        <graphics name="Ptcra, pT-alpha, pT[a], pTalpha" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Ptcra, gp33, pT-alpha, pT-alpha-TCR, pT[a], pTa, pTalpha" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="810" y="234" width="46" height="17"/>
     </entry>
     <entry id="12" name="mmu:15205 mmu:15208" type="gene"
@@ -92,7 +92,7 @@
     </entry>
     <entry id="18" name="mmu:66340" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:66340">
-        <graphics name="Psenen, 1700023M09Rik" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Psenen, 1700023M09Rik, Pen-2" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="263" y="273" width="46" height="17"/>
     </entry>
     <entry id="19" name="mmu:14357 mmu:207521 mmu:209200 mmu:74198 mmu:80904" type="gene"

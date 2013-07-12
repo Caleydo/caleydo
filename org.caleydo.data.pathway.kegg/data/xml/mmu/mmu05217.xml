@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
-<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Sep 13, 2010 13:03:10 +0900 (JST) -->
+<!DOCTYPE pathway SYSTEM "http://www.kegg.jp/kegg/xml/KGML_v0.7.1_.dtd">
+<!-- Creation date: Feb 7, 2013 16:49:32 +0900 (GMT+09:00) -->
 <pathway name="path:mmu05217" org="mmu" number="05217"
          title="Basal cell carcinoma"
-         image="http://www.genome.jp/kegg/pathway/mmu/mmu05217.png"
-         link="http://www.genome.jp/kegg-bin/show_pathway?mmu05217">
+         image="http://www.kegg.jp/kegg/pathway/mmu/mmu05217.png"
+         link="http://www.kegg.jp/kegg-bin/show_pathway?mmu05217">
     <entry id="1" name="ko:K06227" type="ortholog"
         link="http://www.kegg.jp/dbget-bin/www_bget?K06227">
         <graphics name="K06227" fgcolor="#000000" bgcolor="#FFFFFF"
@@ -15,9 +15,9 @@
         <graphics name="C00187" fgcolor="#000000" bgcolor="#FFFFFF"
              type="circle" x="132" y="308" width="8" height="8"/>
     </entry>
-    <entry id="3" name="mmu:14632 mmu:14633 mmu:14634" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:14632+mmu:14633+mmu:14634">
-        <graphics name="Gli1, AV235269, Zfp-5, Zfp5..." fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="3" name="mmu:14632" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:14632">
+        <graphics name="Gli1, AV235269, Zfp-5, Zfp5" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="678" y="340" width="46" height="17"/>
     </entry>
     <entry id="4" name="mmu:19206 mmu:19207" type="gene"
@@ -62,12 +62,12 @@
     </entry>
     <entry id="12" name="mmu:12005 mmu:12006" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:12005+mmu:12006">
-        <graphics name="Axin1, AI316800, Axin, Fu, Kb, Ki, MGC132911, fused, kinky, knobbly..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Axin1, AI316800, Axin, Fu, Kb, Ki, fused, kinky, knobbly..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="435" y="477" width="46" height="17"/>
     </entry>
     <entry id="13" name="mmu:13542 mmu:13543 mmu:13544" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:13542+mmu:13543+mmu:13544">
-        <graphics name="Dvl1, Dvl, KIAA4029, mKIAA4029..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Dvl1, Dvl, mKIAA4029..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="304" y="494" width="46" height="17"/>
     </entry>
     <entry id="14" name="mmu:14362 mmu:14365 mmu:14366 mmu:14367 mmu:14368 mmu:14369 mmu:14370 mmu:14371 mmu:57265 mmu:93897" type="gene"
@@ -87,7 +87,7 @@
     </entry>
     <entry id="17" name="mmu:269209" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:269209">
-        <graphics name="Stk36, 1700112N14Rik, B930045J24, FU, Fused, KIAA1278, MGC58023, mKIAA1278" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Stk36, 1700112N14Rik, B930045J24, FU, Fused, mKIAA1278" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="395" y="356" width="46" height="17"/>
     </entry>
     <entry id="18" name="mmu:319757" type="gene"

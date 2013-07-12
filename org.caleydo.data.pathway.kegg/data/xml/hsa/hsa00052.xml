@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
-<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
+<!DOCTYPE pathway SYSTEM "http://www.kegg.jp/kegg/xml/KGML_v0.7.1_.dtd">
 <!-- Creation date: May 31, 2012 15:54:04 +0900 (GMT+09:00) -->
 <pathway name="path:hsa00052" org="hsa" number="00052"
          title="Galactose metabolism"
-         image="http://www.genome.jp/kegg/pathway/hsa/hsa00052.png"
-         link="http://www.genome.jp/kegg-bin/show_pathway?hsa00052">
+         image="http://www.kegg.jp/kegg/pathway/hsa/hsa00052.png"
+         link="http://www.kegg.jp/kegg-bin/show_pathway?hsa00052">
     <entry id="52" name="ko:K00094" type="ortholog" reaction="rn:R05571"
         link="http://www.kegg.jp/dbget-bin/www_bget?K00094">
         <graphics name="K00094" fgcolor="#000000" bgcolor="#FFFFFF"
@@ -30,8 +30,8 @@
         <graphics name="PFKL, PFK-B..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="977" y="561" width="46" height="17"/>
     </entry>
-    <entry id="57" name="ko:K01635 ko:K08302" type="ortholog" reaction="rn:R01069"
-        link="http://www.kegg.jp/dbget-bin/www_bget?K01635+K08302">
+    <entry id="57" name="ko:K01635 ko:K08302 ko:K16371" type="ortholog" reaction="rn:R01069"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K01635+K08302+K16371">
         <graphics name="K01635..." fgcolor="#000000" bgcolor="#FFFFFF"
              type="rectangle" x="1003" y="310" width="46" height="17"/>
     </entry>
@@ -62,7 +62,7 @@
     </entry>
     <entry id="63" name="hsa:2548 hsa:2595 hsa:8972" type="gene" reaction="rn:R00801"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2548+hsa:2595+hsa:8972">
-        <graphics name="GAA, LYAG; glucosidase, alpha..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="GAA, LYAG..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="774" y="500" width="46" height="17"/>
     </entry>
     <entry id="64" name="hsa:2717" type="gene" reaction="rn:R01103"
@@ -127,7 +127,7 @@
     </entry>
     <entry id="76" name="hsa:5236 hsa:55276" type="gene" reaction="rn:R00959"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5236+hsa:55276">
-        <graphics name="PGM1, GSD14..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="PGM1, CDG1T, GSD14..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="518" y="388" width="46" height="17"/>
     </entry>
     <entry id="77" name="hsa:2683 hsa:3906 hsa:8704" type="gene" reaction="rn:R00503"
@@ -142,7 +142,7 @@
     </entry>
     <entry id="79" name="hsa:7360" type="gene" reaction="rn:R00289"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:7360">
-        <graphics name="UGP2, UDPG, UDPGP2, UGPP2, pHC379, UGP1" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="UGP2, UDPG, UDPGP, UDPGP2, UGP1, UGPP1, UGPP2, pHC379" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="518" y="236" width="46" height="17"/>
     </entry>
     <entry id="81" name="hsa:2592" type="gene" reaction="rn:R00955"
@@ -210,8 +210,8 @@
         <graphics name="K04618" fgcolor="#000000" bgcolor="#FFFFFF"
              type="rectangle" x="335" y="118" width="46" height="17"/>
     </entry>
-    <entry id="99" name="hsa:2538 hsa:57818" type="gene" reaction="rn:R01788"
-        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2538+hsa:57818">
+    <entry id="99" name="hsa:2538 hsa:57818 hsa:92579" type="gene" reaction="rn:R01788"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2538+hsa:57818+hsa:92579">
         <graphics name="G6PC, G6PC1, G6PT, GSD1, GSD1a..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="440" y="417" width="46" height="17"/>
     </entry>

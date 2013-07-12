@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
-<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Jun 4, 2012 10:31:45 +0900 (GMT+09:00) -->
+<!DOCTYPE pathway SYSTEM "http://www.kegg.jp/kegg/xml/KGML_v0.7.1_.dtd">
+<!-- Creation date: Jun 17, 2013 16:59:13 +0900 (GMT+09:00) -->
 <pathway name="path:hsa00360" org="hsa" number="00360"
          title="Phenylalanine metabolism"
-         image="http://www.genome.jp/kegg/pathway/hsa/hsa00360.png"
-         link="http://www.genome.jp/kegg-bin/show_pathway?hsa00360">
+         image="http://www.kegg.jp/kegg/pathway/hsa/hsa00360.png"
+         link="http://www.kegg.jp/kegg-bin/show_pathway?hsa00360">
     <entry id="54" name="ko:K01666" type="ortholog" reaction="rn:R00750"
         link="http://www.kegg.jp/dbget-bin/www_bget?K01666">
         <graphics name="K01666" fgcolor="#000000" bgcolor="#FFFFFF"
@@ -87,7 +87,7 @@
     </entry>
     <entry id="72" name="hsa:4128 hsa:4129" type="gene" reaction="rn:R02613"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:4128+hsa:4129">
-        <graphics name="MAOA..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="MAOA, MAO-A..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="269" y="382" width="46" height="17"/>
     </entry>
     <entry id="73" name="hsa:3242" type="gene" reaction="rn:R01372"

@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
-<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Mar 31, 2011 10:58:10 +0900 (GMT+09:00) -->
+<!DOCTYPE pathway SYSTEM "http://www.kegg.jp/kegg/xml/KGML_v0.7.1_.dtd">
+<!-- Creation date: May 30, 2013 17:23:55 +0900 (GMT+09:00) -->
 <pathway name="path:mmu04978" org="mmu" number="04978"
          title="Mineral absorption"
-         image="http://www.genome.jp/kegg/pathway/mmu/mmu04978.png"
-         link="http://www.genome.jp/kegg-bin/show_pathway?mmu04978">
+         image="http://www.kegg.jp/kegg/pathway/mmu/mmu04978.png"
+         link="http://www.kegg.jp/kegg-bin/show_pathway?mmu04978">
     <entry id="1" name="path:mmu04978" type="map"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu04978">
         <graphics name="TITLE:Mineral absorption" fgcolor="#000000" bgcolor="#FFFFFF"
@@ -140,8 +140,8 @@
         <graphics name="C14818" fgcolor="#000000" bgcolor="#FFFFFF"
              type="circle" x="769" y="600" width="8" height="8"/>
     </entry>
-    <entry id="28" name="mmu:100862446 mmu:14319 mmu:67634" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:100862446+mmu:14319+mmu:67634">
+    <entry id="28" name="mmu:100862446 mmu:14319 mmu:14325 mmu:67634" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:100862446+mmu:14319+mmu:14325+mmu:67634">
         <graphics name="100862446..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="643" y="653" width="46" height="17"/>
     </entry>

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: May 31, 2012 16:38:34 +0900 (GMT+09:00) -->
+<!-- Creation date: Sep 10, 2012 16:34:04 +0900 (GMT+09:00) -->
 <pathway name="path:hsa00100" org="hsa" number="00100"
          title="Steroid biosynthesis"
          image="http://www.genome.jp/kegg/pathway/hsa/hsa00100.png"
@@ -417,7 +417,7 @@
     </entry>
     <entry id="127" name="hsa:6646 hsa:8435" type="gene" reaction="rn:R01461"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:6646+hsa:8435">
-        <graphics name="SOAT1, ACACT, ACAT, ACAT1, RP11-215I23.2, SOAT, STAT..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="SOAT1, ACACT, ACAT, ACAT-1, ACAT1, SOAT, STAT..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="195" y="671" width="46" height="17"/>
     </entry>
     <entry id="131" name="hsa:120227" type="gene" reaction="rn:R03611"

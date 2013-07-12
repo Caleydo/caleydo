@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
-<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
+<!DOCTYPE pathway SYSTEM "http://www.kegg.jp/kegg/xml/KGML_v0.7.1_.dtd">
 <!-- Creation date: Jun 8, 2012 09:27:10 +0900 (GMT+09:00) -->
 <pathway name="path:hsa00630" org="hsa" number="00630"
          title="Glyoxylate and dicarboxylate metabolism"
-         image="http://www.genome.jp/kegg/pathway/hsa/hsa00630.png"
-         link="http://www.genome.jp/kegg-bin/show_pathway?hsa00630">
+         image="http://www.kegg.jp/kegg/pathway/hsa/hsa00630.png"
+         link="http://www.kegg.jp/kegg-bin/show_pathway?hsa00630">
     <entry id="74" name="hsa:81888" type="gene" reaction="rn:R01394"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:81888">
-        <graphics name="HYI, HT036, MGC20767" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="HYI, HT036" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="382" y="519" width="46" height="17"/>
     </entry>
     <entry id="75" name="hsa:48 hsa:50" type="gene" reaction="rn:R01900"
@@ -52,7 +52,7 @@
     </entry>
     <entry id="88" name="hsa:125061" type="gene" reaction="rn:R01959"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:125061">
-        <graphics name="AFMID, DKFZp686F03259, KF, MGC167063" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="AFMID, FKF, KF, KFA" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="1094" y="241" width="46" height="17"/>
     </entry>
     <entry id="90" name="hsa:48 hsa:50" type="gene" reaction="rn:R01325"
@@ -210,8 +210,8 @@
         <graphics name="Purine metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
              type="roundrectangle" x="840" y="565" width="105" height="25"/>
     </entry>
-    <entry id="136" name="path:map00910" type="map"
-        link="http://www.kegg.jp/dbget-bin/www_bget?map00910">
+    <entry id="136" name="path:hsa00910" type="map"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa00910">
         <graphics name="Nitrogen metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
              type="roundrectangle" x="1032" y="367" width="119" height="25"/>
     </entry>
@@ -227,7 +227,7 @@
     </entry>
     <entry id="139" name="hsa:283871" type="gene" reaction="rn:R01334"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:283871">
-        <graphics name="PGP, MGC4692" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="PGP" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="598" y="602" width="46" height="17"/>
     </entry>
     <entry id="140" name="ko:K00018" type="ortholog" reaction="rn:R00717"
@@ -597,7 +597,7 @@
     </entry>
     <entry id="216" name="hsa:6470 hsa:6472" type="gene" reaction="rn:R00945"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:6470+hsa:6472">
-        <graphics name="SHMT1, CSHMT, MGC15229, MGC24556, SHMT..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="SHMT1, CSHMT, SHMT..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="705" y="824" width="46" height="17"/>
     </entry>
     <entry id="217" name="hsa:2653" type="gene" reaction="rn:R01221"
@@ -627,7 +627,7 @@
     </entry>
     <entry id="224" name="hsa:847" type="gene" reaction="rn:R00009"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:847">
-        <graphics name="CAT, MGC138422, MGC138424" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CAT" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="761" y="548" width="46" height="17"/>
     </entry>
     <entry id="226" name="ko:K14272" type="ortholog" reaction="rn:R00372"

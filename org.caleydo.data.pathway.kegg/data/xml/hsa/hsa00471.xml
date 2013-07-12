@@ -47,7 +47,7 @@
     </entry>
     <entry id="23" name="hsa:2746 hsa:2747" type="gene" reaction="rn:R00243 rn:R00248"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2746+hsa:2747">
-        <graphics name="GLUD1, GDH, GDH1, GLUD, MGC132003..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="GLUD1, GDH, GDH1, GLUD..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="187" y="256" width="46" height="17"/>
     </entry>
     <entry id="24" name="ko:K01776" type="ortholog" reaction="rn:R00260"
@@ -62,12 +62,12 @@
     </entry>
     <entry id="27" name="hsa:27165 hsa:2744" type="gene" reaction="rn:R01579"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:27165+hsa:2744">
-        <graphics name="GLS2, GA, GLS, LGA, MGC71567, hLGA..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="GLS2, GA, GLS, LGA, hLGA..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="297" y="170" width="46" height="17"/>
     </entry>
     <entry id="28" name="hsa:27165 hsa:2744" type="gene" reaction="rn:R00256"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:27165+hsa:2744">
-        <graphics name="GLS2, GA, GLS, LGA, MGC71567, hLGA..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="GLS2, GA, GLS, LGA, hLGA..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="171" y="170" width="46" height="17"/>
     </entry>
     <entry id="29" name="cpd:C00064" type="compound"

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Mar 24, 2010 10:47:31 +0900 (GMT+09:00) -->
+<!-- Creation date: Oct 2, 2012 14:04:48 +0900 (GMT+09:00) -->
 <pathway name="path:mmu05210" org="mmu" number="05210"
          title="Colorectal cancer"
          image="http://www.genome.jp/kegg/pathway/mmu/mmu05210.png"
@@ -22,7 +22,7 @@
     </entry>
     <entry id="4" name="mmu:18706 mmu:18707 mmu:18708 mmu:18709 mmu:18710 mmu:30955 mmu:320207 mmu:74769" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:18706+mmu:18707+mmu:18708+mmu:18709+mmu:18710+mmu:30955+mmu:320207+mmu:74769">
-        <graphics name="Pik3ca, 6330412C24Rik, MGC161268, caPI3K, p110, p110alpha..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Pik3ca, 6330412C24Rik, caPI3K, p110, p110alpha..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="499" y="357" width="46" height="17"/>
     </entry>
     <entry id="5" name="mmu:12371" type="gene"
@@ -72,7 +72,7 @@
     </entry>
     <entry id="14" name="mmu:16653" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:16653">
-        <graphics name="Kras, AI929937, K-ras, Ki-ras, Kras-2, Kras2, MGC7141, p21B, ras" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Kras, AI929937, K-ras, Ki-ras, Kras-2, Kras2, p21B, ras" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="444" y="403" width="46" height="17"/>
     </entry>
     <entry id="15" name="mmu:109880 mmu:110157 mmu:11836" type="gene"
@@ -87,12 +87,12 @@
     </entry>
     <entry id="17" name="mmu:12005 mmu:12006" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:12005+mmu:12006">
-        <graphics name="Axin1, AI316800, Axin, Fu, Kb, Ki, MGC132911, fused, kinky, knobbly..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Axin1, AI316800, Axin, Fu, Kb, Ki, fused, kinky, knobbly..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="632" y="169" width="46" height="17"/>
     </entry>
     <entry id="18" name="mmu:12005 mmu:12006" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:12005+mmu:12006">
-        <graphics name="Axin1, AI316800, Axin, Fu, Kb, Ki, MGC132911, fused, kinky, knobbly..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Axin1, AI316800, Axin, Fu, Kb, Ki, fused, kinky, knobbly..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="634" y="250" width="46" height="17"/>
     </entry>
     <entry id="19" name="mmu:19730" type="gene"
@@ -248,7 +248,7 @@
     <entry id="49" name="path:mmu04010" type="map"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu04010">
         <graphics name="MAPK signaling pathway" fgcolor="#000000" bgcolor="#FFFFFF"
-             type="roundrectangle" x="391" y="361" width="111" height="34"/>
+             type="roundrectangle" x="636" y="435" width="111" height="34"/>
     </entry>
     <entry id="50" name="path:mmu04350" type="map"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu04350">
@@ -275,13 +275,18 @@
         <graphics name="TITLE:Colorectal cancer" fgcolor="#000000" bgcolor="#FFFFFF"
              type="roundrectangle" x="140" y="43" width="176" height="25"/>
     </entry>
-    <entry id="55" name="undefined" type="group">
+    <entry id="55" name="path:mmu04151" type="map"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu04151">
+        <graphics name="PI3K-Akt signaling pathway" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="426" y="326" width="111" height="34"/>
+    </entry>
+    <entry id="56" name="undefined" type="group">
         <graphics fgcolor="#000000" bgcolor="#FFFFFF"
              type="rectangle" x="423" y="520" width="46" height="34"/>
         <component id="5"/>
         <component id="6"/>
     </entry>
-    <entry id="56" name="undefined" type="group">
+    <entry id="57" name="undefined" type="group">
         <graphics fgcolor="#000000" bgcolor="#FFFFFF"
              type="rectangle" x="277" y="597" width="46" height="34"/>
         <component id="10"/>
@@ -362,13 +367,13 @@
     <relation entry1="35" entry2="37" type="PPrel">
         <subtype name="missing interaction" value="-/-"/>
     </relation>
-    <relation entry1="1" entry2="55" type="PPrel">
+    <relation entry1="1" entry2="56" type="PPrel">
         <subtype name="missing interaction" value="-/-"/>
     </relation>
-    <relation entry1="55" entry2="7" type="PPrel">
+    <relation entry1="56" entry2="7" type="PPrel">
         <subtype name="missing interaction" value="-/-"/>
     </relation>
-    <relation entry1="56" entry2="9" type="PPrel">
+    <relation entry1="57" entry2="9" type="PPrel">
         <subtype name="missing interaction" value="-/-"/>
     </relation>
     <relation entry1="9" entry2="11" type="PPrel">

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="Caleydo" uid="org.caleydo" id="org.caleydo.core.product" application="org.caleydo.core.application" version="3.0" useFeatures="true" includeLaunchers="true">
+<product name="Caleydo" uid="org.caleydo" id="org.caleydo.core.product" application="org.caleydo.core.application" version="3.0.0" useFeatures="true" includeLaunchers="true">
 
    <aboutInfo>
       <image path="resources/wizard/wizard.png"/>

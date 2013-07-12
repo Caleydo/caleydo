@@ -62,7 +62,7 @@
     </entry>
     <entry id="12" name="mmu:12550" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:12550">
-        <graphics name="Cdh1, AA960649, Ecad, L-CAM, UVO, Um" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Cdh1, AA960649, E-cad, Ecad, L-CAM, UVO, Um" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="222" y="683" width="46" height="17"/>
     </entry>
     <entry id="13" name="path:mmu05216" type="map"
@@ -77,7 +77,7 @@
     </entry>
     <entry id="15" name="mmu:12443" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:12443">
-        <graphics name="Ccnd1, AI327039, Cyl-1, PRAD1, bcl-1, cD1" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Ccnd1, AI327039, CycD1, Cyl-1, PRAD1, bcl-1, cD1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="835" y="694" width="46" height="17"/>
     </entry>
     <entry id="16" name="mmu:26395 mmu:26396" type="gene"

@@ -67,7 +67,7 @@
     </entry>
     <entry id="17" name="hsa:55163" type="gene" reaction="rn:R01710"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:55163">
-        <graphics name="PNPO, FLJ10535, PDXPO" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="PNPO, PDXPO" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="586" y="150" width="46" height="17"/>
     </entry>
     <entry id="18" name="cpd:C00232" type="compound"
@@ -212,37 +212,37 @@
     </entry>
     <entry id="86" name="hsa:55163" type="gene" reaction="rn:R00277"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:55163">
-        <graphics name="PNPO, FLJ10535, PDXPO" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="PNPO, PDXPO" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="720" y="145" width="46" height="17"/>
     </entry>
     <entry id="88" name="hsa:493911 hsa:57026" type="gene" reaction="rn:R02494"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:493911+hsa:57026">
-        <graphics name="PHOSPHO2, MGC111048, MGC22679..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="PHOSPHO2..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="640" y="86" width="46" height="17"/>
     </entry>
     <entry id="89" name="hsa:8566" type="gene" reaction="rn:R02493"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:8566">
-        <graphics name="PDXK, C21orf124, C21orf97, DKFZp566A071, FLJ31940, FLJ37311, MGC15873, MGC31754, MGC52346, PKH, PNK" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="PDXK, C21orf124, C21orf97, PKH, PNK" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="640" y="67" width="46" height="17"/>
     </entry>
     <entry id="90" name="hsa:493911 hsa:57026" type="gene" reaction="rn:R01911"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:493911+hsa:57026">
-        <graphics name="PHOSPHO2, MGC111048, MGC22679..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="PHOSPHO2..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="639" y="358" width="46" height="17"/>
     </entry>
     <entry id="91" name="hsa:8566" type="gene" reaction="rn:R01909"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:8566">
-        <graphics name="PDXK, C21orf124, C21orf97, DKFZp566A071, FLJ31940, FLJ37311, MGC15873, MGC31754, MGC52346, PKH, PNK" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="PDXK, C21orf124, C21orf97, PKH, PNK" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="639" y="339" width="46" height="17"/>
     </entry>
     <entry id="92" name="hsa:493911 hsa:57026" type="gene" reaction="rn:R00173"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:493911+hsa:57026">
-        <graphics name="PHOSPHO2, MGC111048, MGC22679..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="PHOSPHO2..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="640" y="222" width="46" height="17"/>
     </entry>
     <entry id="93" name="hsa:8566" type="gene" reaction="rn:R00174"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:8566">
-        <graphics name="PDXK, C21orf124, C21orf97, DKFZp566A071, FLJ31940, FLJ37311, MGC15873, MGC31754, MGC52346, PKH, PNK" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="PDXK, C21orf124, C21orf97, PKH, PNK" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="640" y="203" width="46" height="17"/>
     </entry>
     <entry id="94" name="ko:K01733" type="ortholog" reaction="rn:R05086"
@@ -257,7 +257,7 @@
     </entry>
     <entry id="96" name="hsa:29968" type="gene" reaction="rn:R05085"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:29968">
-        <graphics name="PSAT1, EPIP, MGC1460, PSA, PSAT" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="PSAT1, EPIP, PSA, PSAT" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="665" y="513" width="46" height="17"/>
     </entry>
     <entry id="97" name="ko:K03473" type="ortholog" reaction="rn:R04210"
@@ -272,7 +272,7 @@
     </entry>
     <entry id="101" name="hsa:55163" type="gene" reaction="rn:R00278"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:55163">
-        <graphics name="PNPO, FLJ10535, PDXPO" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="PNPO, PDXPO" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="720" y="283" width="46" height="17"/>
     </entry>
     <entry id="103" name="ko:K05275" type="ortholog" reaction="rn:R01708"
@@ -282,7 +282,7 @@
     </entry>
     <entry id="104" name="hsa:55163" type="gene" reaction="rn:R01711"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:55163">
-        <graphics name="PNPO, FLJ10535, PDXPO" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="PNPO, PDXPO" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="586" y="286" width="46" height="17"/>
     </entry>
     <entry id="105" name="ko:K03474" type="ortholog" reaction="rn:R05838"

@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
-<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Jun 1, 2010 17:13:42 +0900 (GMT+09:00) -->
+<!DOCTYPE pathway SYSTEM "http://www.kegg.jp/kegg/xml/KGML_v0.7.1_.dtd">
+<!-- Creation date: Mar 7, 2013 10:40:35 +0900 (GMT+09:00) -->
 <pathway name="path:mmu04115" org="mmu" number="04115"
          title="p53 signaling pathway"
-         image="http://www.genome.jp/kegg/pathway/mmu/mmu04115.png"
-         link="http://www.genome.jp/kegg-bin/show_pathway?mmu04115">
+         image="http://www.kegg.jp/kegg/pathway/mmu/mmu04115.png"
+         link="http://www.kegg.jp/kegg-bin/show_pathway?mmu04115">
     <entry id="1" name="mmu:20437 mmu:20438" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:20437+mmu:20438">
         <graphics name="Siah1a, AA982064, AI853500, Sinh1a..." fgcolor="#000000" bgcolor="#BFFFBF"
@@ -77,7 +77,7 @@
     </entry>
     <entry id="15" name="mmu:22084" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:22084">
-        <graphics name="Tsc2, Tcs2" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Tsc2, Nafld, Tcs2" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="617" y="550" width="46" height="17"/>
     </entry>
     <entry id="16" name="mmu:53892" type="gene"
@@ -127,7 +127,7 @@
     </entry>
     <entry id="25" name="mmu:12521" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:12521">
-        <graphics name="Cd82, AA682076, AL023070, C33, Kai1, Tspan27" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Cd82, AA682076, AL023070, C33, IA4, Kai1, Tspan27" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="669" y="468" width="46" height="17"/>
     </entry>
     <entry id="27" name="mmu:21825" type="gene"
@@ -242,7 +242,7 @@
     </entry>
     <entry id="50" name="mmu:68098" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:68098">
-        <graphics name="Rchy1, 6720407C15Rik, ARNIP, AU042618, CHIMP, PRO1996, Pirh2, Zfp363, mARNIP" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Rchy1, ARNIP, CHIMP, Pirh2, Zfp363, Znf363" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="669" y="629" width="46" height="17"/>
     </entry>
     <entry id="51" name="mmu:13197 mmu:17873 mmu:23882" type="gene"
@@ -257,7 +257,7 @@
     </entry>
     <entry id="53" name="mmu:12443 mmu:12444 mmu:12445" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:12443+mmu:12444+mmu:12445">
-        <graphics name="Ccnd1, AI327039, Cyl-1, PRAD1, bcl-1, cD1..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Ccnd1, AI327039, CycD1, Cyl-1, PRAD1, bcl-1, cD1..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="693" y="79" width="46" height="17"/>
     </entry>
     <entry id="54" name="mmu:64058" type="gene"

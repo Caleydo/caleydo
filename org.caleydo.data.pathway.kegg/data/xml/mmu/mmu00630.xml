@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
-<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
+<!DOCTYPE pathway SYSTEM "http://www.kegg.jp/kegg/xml/KGML_v0.7.1_.dtd">
 <!-- Creation date: Jun 8, 2012 09:27:10 +0900 (GMT+09:00) -->
 <pathway name="path:mmu00630" org="mmu" number="00630"
          title="Glyoxylate and dicarboxylate metabolism"
-         image="http://www.genome.jp/kegg/pathway/mmu/mmu00630.png"
-         link="http://www.genome.jp/kegg-bin/show_pathway?mmu00630">
+         image="http://www.kegg.jp/kegg/pathway/mmu/mmu00630.png"
+         link="http://www.kegg.jp/kegg-bin/show_pathway?mmu00630">
     <entry id="74" name="mmu:68180" type="gene" reaction="rn:R01394"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:68180">
         <graphics name="Hyi, 2700033B16Rik, 6430559E15Rik, HT036" fgcolor="#000000" bgcolor="#BFFFBF"
@@ -52,7 +52,7 @@
     </entry>
     <entry id="88" name="mmu:71562" type="gene" reaction="rn:R01959"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:71562">
-        <graphics name="Afmid, 9030621K19Rik, Ammd, Kf, formylase" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Afmid, 9030621K19Rik, Ammd, FKF, KFA, Kf, formylase" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="1094" y="241" width="46" height="17"/>
     </entry>
     <entry id="90" name="mmu:11428 mmu:11429" type="gene" reaction="rn:R01325"
@@ -67,7 +67,7 @@
     </entry>
     <entry id="94" name="mmu:15112 mmu:56185" type="gene" reaction="rn:R00475"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:15112+mmu:56185">
-        <graphics name="Hao1, GOX, Gox1, Hao-1, MGC141211..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Hao1, GOX, Gox1, Hao-1..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="759" y="497" width="46" height="17"/>
     </entry>
     <entry id="95" name="mmu:76238" type="gene" reaction="rn:R00465"
@@ -92,7 +92,7 @@
     </entry>
     <entry id="106" name="mmu:12974 mmu:71832" type="gene" reaction="rn:R00351"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:12974+mmu:71832">
-        <graphics name="Cs, 2610511A05Rik, 9030605P22Rik, BB234005, Cis..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Cs, 2610511A05Rik, 9030605P22Rik, BB234005, Cis, ahl4..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="556" y="144" width="46" height="17"/>
     </entry>
     <entry id="107" name="ko:K07248" type="ortholog" reaction="rn:R01333"
@@ -210,8 +210,8 @@
         <graphics name="Purine metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
              type="roundrectangle" x="840" y="565" width="105" height="25"/>
     </entry>
-    <entry id="136" name="path:map00910" type="map"
-        link="http://www.kegg.jp/dbget-bin/www_bget?map00910">
+    <entry id="136" name="path:mmu00910" type="map"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu00910">
         <graphics name="Nitrogen metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
              type="roundrectangle" x="1032" y="367" width="119" height="25"/>
     </entry>
@@ -227,7 +227,7 @@
     </entry>
     <entry id="139" name="mmu:67078" type="gene" reaction="rn:R01334"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:67078">
-        <graphics name="Pgp, 1700012G19Rik, AI481330, MGC103027" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Pgp, 1700012G19Rik, AI481330" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="598" y="602" width="46" height="17"/>
     </entry>
     <entry id="140" name="ko:K00018" type="ortholog" reaction="rn:R00717"
@@ -587,7 +587,7 @@
     </entry>
     <entry id="214" name="mmu:11611" type="gene" reaction="rn:R00588"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:11611">
-        <graphics name="Agxt, Agt1, Agxt1" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Agxt, AGT, Agt1, Agxt1, SPT" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="596" y="847" width="46" height="17"/>
     </entry>
     <entry id="215" name="cpd:C00065" type="compound"

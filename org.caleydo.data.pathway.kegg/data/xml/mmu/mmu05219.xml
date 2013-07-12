@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
-<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Mar 31, 2009 09:50:12 +0900 (JST) -->
+<!DOCTYPE pathway SYSTEM "http://www.kegg.jp/kegg/xml/KGML_v0.7.1_.dtd">
+<!-- Creation date: Mar 8, 2013 15:41:38 +0900 (GMT+09:00) -->
 <pathway name="path:mmu05219" org="mmu" number="05219"
          title="Bladder cancer"
-         image="http://www.genome.jp/kegg/pathway/mmu/mmu05219.png"
-         link="http://www.genome.jp/kegg-bin/show_pathway?mmu05219">
+         image="http://www.kegg.jp/kegg/pathway/mmu/mmu05219.png"
+         link="http://www.kegg.jp/kegg-bin/show_pathway?mmu05219">
     <entry id="1" name="path:mmu04520" type="map"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu04520">
         <graphics name="Adherens junction" fgcolor="#000000" bgcolor="#FFFFFF"
@@ -35,9 +35,9 @@
         <graphics name="Tymp, 2900072D10Rik, Ecgf1, PD-ECGF, PDECGF, Pdgfec" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="487" y="605" width="46" height="17"/>
     </entry>
-    <entry id="7" name="mmu:14205 mmu:18654 mmu:22339 mmu:22340 mmu:22341" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:14205+mmu:18654+mmu:22339+mmu:22340+mmu:22341">
-        <graphics name="Figf, AI325264, VEGF-D, Vegfd..." fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="7" name="mmu:22339" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:22339">
+        <graphics name="Vegfa, Vegf, Vegf120, Vegf164, Vegf188, Vpf" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="796" y="506" width="46" height="17"/>
     </entry>
     <entry id="8" name="ko:K10030" type="ortholog"
@@ -52,12 +52,12 @@
     </entry>
     <entry id="10" name="mmu:13649" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:13649">
-        <graphics name="Egfr, 9030024J15Rik, AI552599, Erbb, Errp, Wa5, wa-2, wa2" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Egfr, 9030024J15Rik, AI552599, Erbb, Errb1, Errp, Wa5, wa-2, wa2" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="255" y="507" width="46" height="17"/>
     </entry>
     <entry id="11" name="mmu:12550" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:12550">
-        <graphics name="Cdh1, AA960649, Ecad, L-CAM, MGC107495, UVO, Um" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Cdh1, AA960649, E-cad, Ecad, L-CAM, UVO, Um" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="255" y="575" width="46" height="17"/>
     </entry>
     <entry id="12" name="mmu:13866" type="gene"
@@ -102,7 +102,7 @@
     </entry>
     <entry id="20" name="mmu:13555 mmu:13557 mmu:242705" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:13555+mmu:13557+mmu:242705">
-        <graphics name="E2f1, E2F-1, KIAA4009, mKIAA4009..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="E2f1, E2F-1, mKIAA4009..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="1022" y="426" width="46" height="17"/>
     </entry>
     <entry id="21" name="mmu:19645" type="gene"
@@ -127,7 +127,7 @@
     </entry>
     <entry id="25" name="mmu:12443" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:12443">
-        <graphics name="Ccnd1, AI327039, Cyl-1, PRAD1, bcl-1, cD1" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Ccnd1, AI327039, CycD1, Cyl-1, PRAD1, bcl-1, cD1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="939" y="379" width="46" height="17"/>
     </entry>
     <entry id="26" name="path:mmu04010" type="map"
@@ -137,7 +137,7 @@
     </entry>
     <entry id="27" name="mmu:73086" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:73086">
-        <graphics name="Rps6ka5, 3110005L17Rik, 6330404E13Rik, AI854034, MGC28385, MSK1, MSPK1, RLPK" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Rps6ka5, 3110005L17Rik, 6330404E13Rik, AI854034, MSK1, MSPK1, RLPK" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="697" y="156" width="46" height="17"/>
     </entry>
     <entry id="28" name="mmu:12578" type="gene"

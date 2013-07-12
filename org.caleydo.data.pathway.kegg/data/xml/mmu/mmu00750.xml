@@ -60,9 +60,9 @@
         <graphics name="Butanoate metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
              type="roundrectangle" x="241" y="148" width="126" height="25"/>
     </entry>
-    <entry id="16" name="mmu:11761 mmu:213043" type="gene" reaction="rn:R01709"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:11761+mmu:213043">
-        <graphics name="Aox1, AI196512, AI255253, Ao, Aox-1, Aox-2, Aox2, MGC13774, Moro, Ro..." fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="16" name="mmu:11761 mmu:213043 mmu:71724 mmu:71872" type="gene" reaction="rn:R01709"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:11761+mmu:213043+mmu:71724+mmu:71872">
+        <graphics name="Aox1, AI196512, AI255253, Ao, Aox-1, Aox-2, Aox2, Moro, Ro..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="498" y="202" width="46" height="17"/>
     </entry>
     <entry id="17" name="mmu:103711" type="gene" reaction="rn:R01710"

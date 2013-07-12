@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Jul 2, 2009 13:14:53 +0900 (JST) -->
+<!-- Creation date: Jul 18, 2012 10:44:08 +0900 (GMT+09:00) -->
 <pathway name="path:hsa04930" org="hsa" number="04930"
          title="Type II diabetes mellitus"
          image="http://www.genome.jp/kegg/pathway/hsa/hsa04930.png"
@@ -57,7 +57,7 @@
     </entry>
     <entry id="11" name="hsa:122809 hsa:8651 hsa:8835 hsa:9021" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:122809+hsa:8651+hsa:8835+hsa:9021">
-        <graphics name="SOCS4, DKFZp686J1568, SOCS7..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="SOCS4, SOCS7..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="349" y="313" width="46" height="17"/>
     </entry>
     <entry id="12" name="hsa:5594 hsa:5595" type="gene"
@@ -87,12 +87,12 @@
     </entry>
     <entry id="17" name="hsa:3551" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:3551">
-        <graphics name="IKBKB, FLJ33771, FLJ36218, FLJ38368, FLJ40509, IKK-beta, IKK2, IKKB, MGC131801, NFKBIKB" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="IKBKB, IKK-beta, IKK2, IKKB, NFKBIKB" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="349" y="368" width="46" height="17"/>
     </entry>
     <entry id="18" name="hsa:5580 hsa:5581" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5580+hsa:5581">
-        <graphics name="PRKCD, MAY1, MGC49908, PKCD, nPKC-delta..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="PRKCD, MAY1, PKCD, nPKC-delta..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="349" y="466" width="46" height="17"/>
     </entry>
     <entry id="19" name="hsa:3651" type="gene"
@@ -107,7 +107,7 @@
     </entry>
     <entry id="21" name="hsa:5599 hsa:5601 hsa:5602" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5599+hsa:5601+hsa:5602">
-        <graphics name="MAPK8, JNK, JNK1, JNK1A2, JNK21B1/2, PRKM8, SAPK1..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="MAPK8, JNK, JNK-46, JNK1, JNK1A2, JNK21B1/2, PRKM8, SAPK1, SAPK1c..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="349" y="388" width="46" height="17"/>
     </entry>
     <entry id="22" name="hsa:5590" type="gene"
@@ -122,7 +122,7 @@
     </entry>
     <entry id="24" name="hsa:5599 hsa:5601 hsa:5602" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5599+hsa:5601+hsa:5602">
-        <graphics name="MAPK8, JNK, JNK1, JNK1A2, JNK21B1/2, PRKM8, SAPK1..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="MAPK8, JNK, JNK-46, JNK1, JNK1A2, JNK21B1/2, PRKM8, SAPK1, SAPK1c..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="369" y="589" width="46" height="17"/>
     </entry>
     <entry id="25" name="hsa:773 hsa:774 hsa:775 hsa:776 hsa:777 hsa:8913" type="gene"
@@ -142,7 +142,7 @@
     </entry>
     <entry id="28" name="hsa:2475" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2475">
-        <graphics name="MTOR, FLJ44809, FRAP, FRAP1, FRAP2, RAFT1, RAPT1" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="MTOR, FRAP, FRAP1, FRAP2, RAFT1, RAPT1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="349" y="417" width="46" height="17"/>
     </entry>
     <entry id="29" name="hsa:389692" type="gene"
@@ -157,7 +157,7 @@
     </entry>
     <entry id="31" name="hsa:3767" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:3767">
-        <graphics name="KCNJ11, BIR, HHF2, IKATP, KIR6.2, MGC133230, PHHI, TNDM3" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="KCNJ11, BIR, HHF2, IKATP, KIR6.2, PHHI, TNDM3" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="266" y="728" width="46" height="17"/>
     </entry>
     <entry id="32" name="hsa:6833" type="gene"
@@ -294,7 +294,7 @@
     <relation entry1="31" entry2="9" type="PCrel">
     </relation>
     <relation entry1="25" entry2="26" type="PPrel">
-        <subtype name="compound" value="13"/>
+        <subtype name="compound" value="14"/>
     </relation>
     <relation entry1="27" entry2="1" type="PPrel">
         <subtype name="indirect effect" value="..&gt;"/>

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Mar 28, 2011 11:08:46 +0900 (GMT+09:00) -->
+<!-- Creation date: Oct 2, 2012 11:58:39 +0900 (GMT+09:00) -->
 <pathway name="path:mmu04623" org="mmu" number="04623"
          title="Cytosolic DNA-sensing pathway"
          image="http://www.genome.jp/kegg/pathway/mmu/mmu04623.png"
@@ -122,7 +122,7 @@
     </entry>
     <entry id="24" name="mmu:230073" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:230073">
-        <graphics name="Ddx58, 6430573D20Rik, C330021E21, RIG-I" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Ddx58, 6430573D20Rik, C330021E21, RIG-I, RLR-1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="512" y="176" width="46" height="17"/>
     </entry>
     <entry id="25" name="mmu:18033 mmu:19697" type="gene"
@@ -145,9 +145,9 @@
         <graphics name="Il6, Il-6" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="997" y="143" width="46" height="17"/>
     </entry>
-    <entry id="29" name="mmu:20016 mmu:20018 mmu:218832 mmu:245841 mmu:26939 mmu:66420 mmu:66491 mmu:67005 mmu:67065 mmu:67486 mmu:69833 mmu:69870 mmu:70408 mmu:70428 mmu:74414 mmu:78929" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:20016+mmu:20018+mmu:218832+mmu:245841+mmu:26939+mmu:66420+mmu:66491+mmu:67005+mmu:67065+mmu:67486+mmu:69833+mmu:69870+mmu:70408+mmu:70428+mmu:74414+mmu:78929">
-        <graphics name="Polr1c, 40kDa, AA409007, AA959927, AL024089, Polr1e, RPA40, Rpo1-1..." fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="29" name="mmu:100862456 mmu:20016 mmu:20018 mmu:218832 mmu:245841 mmu:26939 mmu:66420 mmu:66491 mmu:67005 mmu:67065 mmu:67486 mmu:69833 mmu:69870 mmu:70408 mmu:70428 mmu:74414 mmu:78929" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:100862456+mmu:20016+mmu:20018+mmu:218832+mmu:245841+mmu:26939+mmu:66420+mmu:66491+mmu:67005+mmu:67065+mmu:67486+mmu:69833+mmu:69870+mmu:70408+mmu:70428+mmu:74414+mmu:78929">
+        <graphics name="100862456..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="332" y="189" width="46" height="17"/>
     </entry>
     <entry id="30" name="path:mmu04622" type="map"
@@ -184,6 +184,11 @@
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu04623">
         <graphics name="TITLE:Cytosolic DNA-sensing pathway" fgcolor="#000000" bgcolor="#FFFFFF"
              type="roundrectangle" x="186" y="58" width="292" height="25"/>
+    </entry>
+    <entry id="37" name="path:mmu04064" type="map"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu04064">
+        <graphics name="NF-kappa B signaling pathway" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="724" y="411" width="121" height="34"/>
     </entry>
     <relation entry1="24" entry2="15" type="PPrel">
         <subtype name="activation" value="--&gt;"/>

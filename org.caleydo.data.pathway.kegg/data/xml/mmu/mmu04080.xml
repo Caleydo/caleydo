@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
-<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Aug 30, 2011 17:50:17 +0900 (GMT+09:00) -->
+<!DOCTYPE pathway SYSTEM "http://www.kegg.jp/kegg/xml/KGML_v0.7.1_.dtd">
+<!-- Creation date: May 1, 2013 10:40:05 +0900 (GMT+09:00) -->
 <pathway name="path:mmu04080" org="mmu" number="04080"
          title="Neuroactive ligand-receptor interaction"
-         image="http://www.genome.jp/kegg/pathway/mmu/mmu04080.png"
-         link="http://www.genome.jp/kegg-bin/show_pathway?mmu04080">
-    <entry id="1" name="mmu:103964 mmu:13035 mmu:14061 mmu:14938 mmu:18815 mmu:22072 mmu:436522 mmu:67373" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:103964+mmu:13035+mmu:14061+mmu:14938+mmu:18815+mmu:22072+mmu:436522+mmu:67373">
-        <graphics name="Try5, 1810049H19Rik, Tc, Tesp4..." fgcolor="#000000" bgcolor="#BFFFBF"
+         image="http://www.kegg.jp/kegg/pathway/mmu/mmu04080.png"
+         link="http://www.kegg.jp/kegg-bin/show_pathway?mmu04080">
+    <entry id="1" name="mmu:100040233 mmu:103964 mmu:13035 mmu:14061 mmu:14938 mmu:18815 mmu:22072 mmu:22074 mmu:436522 mmu:67373 mmu:73626" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:100040233+mmu:103964+mmu:13035+mmu:14061+mmu:14938+mmu:18815+mmu:22072+mmu:22074+mmu:436522+mmu:67373+mmu:73626">
+        <graphics name="Gm10334..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="530" y="276" width="46" height="17"/>
     </entry>
     <entry id="2" name="cpd:C15906" type="compound"
@@ -222,7 +222,7 @@
     </entry>
     <entry id="44" name="mmu:17200" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:17200">
-        <graphics name="Mc2r, ACTHR" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Mc2r, ACTH-R, ACTHR, MC2-R" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="407" y="317" width="46" height="17"/>
     </entry>
     <entry id="45" name="cpd:C15901" type="compound"
@@ -337,7 +337,7 @@
     </entry>
     <entry id="67" name="mmu:14810 mmu:14811 mmu:14812 mmu:14813 mmu:14814 mmu:170483 mmu:242443" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:14810+mmu:14811+mmu:14812+mmu:14813+mmu:14814+mmu:170483+mmu:242443">
-        <graphics name="Grin1, GluRdelta1, GluRzeta1, M100174, NMDAR1, NR1, Nmdar, Rgsc174..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Grin1, GluN1, GluRdelta1, GluRzeta1, M100174, NMDAR1, NR1, Nmdar, Rgsc174..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="1267" y="146" width="46" height="17"/>
     </entry>
     <entry id="68" name="cpd:C02465 cpd:C01829" type="compound"
@@ -697,7 +697,7 @@
     </entry>
     <entry id="142" name="mmu:12000 mmu:26361 mmu:54140" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:12000+mmu:26361+mmu:54140">
-        <graphics name="Avpr2, ADHR, DI1, DIR, ND1, V2R..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Avpr2, ADHR, DI1, DIR, ND1, V2R, VPV2R..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="614" y="225" width="46" height="17"/>
     </entry>
     <entry id="143" name="mmu:21336" type="gene"

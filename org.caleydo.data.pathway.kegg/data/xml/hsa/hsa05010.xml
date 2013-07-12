@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
-<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
+<!DOCTYPE pathway SYSTEM "http://www.kegg.jp/kegg/xml/KGML_v0.7.1_.dtd">
 <!-- Creation date: Nov 16, 2010 13:05:49 +0900 (GMT+09:00) -->
 <pathway name="path:hsa05010" org="hsa" number="05010"
          title="Alzheimer's disease"
-         image="http://www.genome.jp/kegg/pathway/hsa/hsa05010.png"
-         link="http://www.genome.jp/kegg-bin/show_pathway?hsa05010">
+         image="http://www.kegg.jp/kegg/pathway/hsa/hsa05010.png"
+         link="http://www.kegg.jp/kegg-bin/show_pathway?hsa05010">
     <entry id="1" name="hsa:55851" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:55851">
         <graphics name="PSENEN, MSTP064, PEN-2, PEN2" fgcolor="#000000" bgcolor="#BFFFBF"
@@ -20,9 +20,9 @@
         <graphics name="NCSTN, APH2" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="379" y="297" width="46" height="17"/>
     </entry>
-    <entry id="4" name="hsa:51107" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:51107">
-        <graphics name="APH1A, 6530402N02Rik, APH-1, APH-1A, CGI-78" fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="4" name="hsa:51107 hsa:83464" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:51107+hsa:83464">
+        <graphics name="APH1A, 6530402N02Rik, APH-1, APH-1A, CGI-78..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="425" y="297" width="46" height="17"/>
     </entry>
     <entry id="5" name="hsa:23621 hsa:25825" type="gene"
@@ -55,9 +55,9 @@
         <graphics name="CASP9, APAF-3, APAF3, CASPASE-9c, ICE-LAP6, MCH6, PPP1R56" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="810" y="429" width="46" height="17"/>
     </entry>
-    <entry id="11" name="ko:K04741" type="ortholog"
-        link="http://www.kegg.jp/dbget-bin/www_bget?K04741">
-        <graphics name="K04741" fgcolor="#000000" bgcolor="#FFFFFF"
+    <entry id="11" name="hsa:100506742" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:100506742">
+        <graphics name="CASP12, CASP-12, CASP12P1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="900" y="599" width="46" height="17"/>
     </entry>
     <entry id="12" name="hsa:836" type="gene"
@@ -137,12 +137,12 @@
     </entry>
     <entry id="28" name="hsa:2902 hsa:2903 hsa:2904 hsa:2905 hsa:2906" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2902+hsa:2903+hsa:2904+hsa:2905+hsa:2906">
-        <graphics name="GRIN1, MRD8, NMDA1, NMDAR1, NR1..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="GRIN1, GluN1, MRD8, NMDA1, NMDAR1, NR1..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="278" y="597" width="46" height="17"/>
     </entry>
     <entry id="29" name="hsa:775 hsa:776 hsa:778 hsa:779" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:775+hsa:776+hsa:778+hsa:779">
-        <graphics name="CACNA1C, CACH2, CACN2, CACNL1A1, CCHL1A1, CaV1.2, TS..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CACNA1C, CACH2, CACN2, CACNL1A1, CCHL1A1, CaV1.2, LQT8, TS..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="278" y="632" width="46" height="17"/>
     </entry>
     <entry id="30" name="cpd:C00076" type="compound"
@@ -267,7 +267,7 @@
     </entry>
     <entry id="54" name="hsa:11261 hsa:5530 hsa:5532 hsa:5533 hsa:5534 hsa:5535 hsa:63928" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:11261+hsa:5530+hsa:5532+hsa:5533+hsa:5534+hsa:5535+hsa:63928">
-        <graphics name="CHP, SLC9A1BP..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CHP1, CHP, SLC9A1BP, Sid470p, p22, p24..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="637" y="455" width="46" height="17"/>
     </entry>
     <entry id="55" name="hsa:572" type="gene"
@@ -317,7 +317,7 @@
     </entry>
     <entry id="64" name="hsa:840" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:840">
-        <graphics name="CASP7, CMH-1, ICE-LAP3, MCH3" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CASP7, CASP-7, CMH-1, ICE-LAP3, LICE2, MCH3" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="663" y="837" width="46" height="17"/>
     </entry>
     <entry id="65" name="hsa:2932" type="gene"

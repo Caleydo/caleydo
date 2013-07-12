@@ -247,12 +247,12 @@
     </entry>
     <entry id="49" name="mmu:12313 mmu:12314 mmu:12315 mmu:494124 mmu:70405 mmu:80796" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:12313+mmu:12314+mmu:12315+mmu:494124+mmu:70405+mmu:80796">
-        <graphics name="Calm1, AI256814, AI327027, AI461935, AL024000, CaM, Calm, Calm2, Calm3..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Calm1, AI256814, AI327027, AI461935, AL024000, CaM, Calm..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="688" y="365" width="46" height="17"/>
     </entry>
     <entry id="50" name="mmu:12313 mmu:12314 mmu:12315 mmu:494124 mmu:70405 mmu:80796" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:12313+mmu:12314+mmu:12315+mmu:494124+mmu:70405+mmu:80796">
-        <graphics name="Calm1, AI256814, AI327027, AI461935, AL024000, CaM, Calm, Calm2, Calm3..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Calm1, AI256814, AI327027, AI461935, AL024000, CaM, Calm..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="674" y="856" width="46" height="17"/>
     </entry>
     <relation entry1="9" entry2="26" type="PCrel">

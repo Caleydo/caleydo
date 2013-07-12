@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
-<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Mar 21, 2012 11:40:20 +0900 (GMT+09:00) -->
+<!DOCTYPE pathway SYSTEM "http://www.kegg.jp/kegg/xml/KGML_v0.7.1_.dtd">
+<!-- Creation date: May 29, 2013 17:26:18 +0900 (GMT+09:00) -->
 <pathway name="path:hsa04910" org="hsa" number="04910"
          title="Insulin signaling pathway"
-         image="http://www.genome.jp/kegg/pathway/hsa/hsa04910.png"
-         link="http://www.genome.jp/kegg-bin/show_pathway?hsa04910">
+         image="http://www.kegg.jp/kegg/pathway/hsa/hsa04910.png"
+         link="http://www.kegg.jp/kegg-bin/show_pathway?hsa04910">
     <entry id="1" name="hsa:7248" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:7248">
         <graphics name="TSC1, LAM, TSC" fgcolor="#000000" bgcolor="#BFFFBF"
@@ -17,7 +17,7 @@
     </entry>
     <entry id="3" name="hsa:3636" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:3636">
-        <graphics name="INPPL1, SHIP2" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="INPPL1, OPSMD, SHIP2" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="334" y="220" width="46" height="17"/>
     </entry>
     <entry id="4" name="hsa:3551" type="gene"
@@ -65,9 +65,9 @@
         <graphics name="FASN, FAS, OA-519, SDR27X1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="956" y="230" width="46" height="17"/>
     </entry>
-    <entry id="13" name="hsa:51422 hsa:53632 hsa:5562 hsa:5563 hsa:5564 hsa:5565 hsa:5571" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:51422+hsa:53632+hsa:5562+hsa:5563+hsa:5564+hsa:5565+hsa:5571">
-        <graphics name="PRKAG2, AAKG, AAKG2, CMH6, H91620p, WPWS..." fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="13" name="hsa:101060511 hsa:51422 hsa:53632 hsa:5562 hsa:5563 hsa:5564 hsa:5565 hsa:5571" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:101060511+hsa:51422+hsa:53632+hsa:5562+hsa:5563+hsa:5564+hsa:5565+hsa:5571">
+        <graphics name="101060511..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="875" y="222" width="46" height="17"/>
     </entry>
     <entry id="14" name="cpd:C00369" type="compound"
@@ -97,7 +97,7 @@
     </entry>
     <entry id="19" name="hsa:5499 hsa:5500 hsa:5501 hsa:5506 hsa:5507 hsa:5509 hsa:79660" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5499+hsa:5500+hsa:5501+hsa:5506+hsa:5507+hsa:5509+hsa:79660">
-        <graphics name="PPP1CA, PP-1A, PP1alpha, PPP1A..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="PPP1CA, PP-1A, PP1A, PP1alpha, PPP1A..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="770" y="453" width="46" height="17"/>
     </entry>
     <entry id="20" name="hsa:5313" type="gene"
@@ -137,7 +137,7 @@
     </entry>
     <entry id="27" name="hsa:5834 hsa:5836 hsa:5837" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5834+hsa:5836+hsa:5837">
-        <graphics name="PYGB, GPBB; phosphorylase, glycogen..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="PYGB, GPBB..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="956" y="453" width="46" height="17"/>
     </entry>
     <entry id="28" name="hsa:2308" type="gene"
@@ -162,7 +162,7 @@
     </entry>
     <entry id="32" name="hsa:1977 hsa:253314 hsa:9470" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:1977+hsa:253314+hsa:9470">
-        <graphics name="EIF4E, CBP, EIF4E1, EIF4EL1, EIF4F..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="EIF4E, AUTS19, CBP, EIF4E1, EIF4EL1, EIF4F..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="770" y="645" width="46" height="17"/>
     </entry>
     <entry id="33" name="hsa:5604 hsa:5605" type="gene"
@@ -187,7 +187,7 @@
     </entry>
     <entry id="37" name="hsa:6198 hsa:6199" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:6198+hsa:6199">
-        <graphics name="RPS6KB1, PS6K, S6K, S6K1, STK14A, p70(S6K)-alpha, p70-S6K, p70-alpha..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="RPS6KB1, PS6K, S6K, S6K-beta-1, S6K1, STK14A, p70_S6KA, p70(S6K)-alpha, p70-S6K, p70-alpha..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="616" y="609" width="46" height="17"/>
     </entry>
     <entry id="38" name="hsa:2885" type="gene"
@@ -215,8 +215,8 @@
         <graphics name="PCK1, PEPCK-C, PEPCK1, PEPCKC..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="956" y="339" width="46" height="17"/>
     </entry>
-    <entry id="43" name="hsa:2538 hsa:57818" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2538+hsa:57818">
+    <entry id="43" name="hsa:2538 hsa:57818 hsa:92579" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2538+hsa:57818+hsa:92579">
         <graphics name="G6PC, G6PC1, G6PT, GSD1, GSD1a..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="956" y="301" width="46" height="17"/>
     </entry>
@@ -257,7 +257,7 @@
     </entry>
     <entry id="51" name="hsa:10000 hsa:207 hsa:208" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:10000+hsa:207+hsa:208">
-        <graphics name="AKT3, PKB-GAMMA, PKBG, PRKBG, RAC-PK-gamma, RAC-gamma, STK-2..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="AKT3, MPPH, PKB-GAMMA, PKBG, PRKBG, RAC-PK-gamma, RAC-gamma, STK-2..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="616" y="408" width="46" height="17"/>
     </entry>
     <entry id="52" name="hsa:23533 hsa:5290 hsa:5291 hsa:5293 hsa:5294 hsa:5295 hsa:5296 hsa:8503" type="gene"
@@ -312,7 +312,7 @@
     </entry>
     <entry id="62" name="hsa:5170" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5170">
-        <graphics name="PDPK1, PDK1, PRO0461" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="PDPK1, PDK1, PDPK2, PRO0461" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="516" y="408" width="46" height="17"/>
     </entry>
     <entry id="63" name="hsa:23624 hsa:867 hsa:868" type="gene"

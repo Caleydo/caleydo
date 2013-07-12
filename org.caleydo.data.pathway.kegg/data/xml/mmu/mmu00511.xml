@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
-<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Feb 1, 2011 17:36:51 +0900 (GMT+09:00) -->
+<!DOCTYPE pathway SYSTEM "http://www.kegg.jp/kegg/xml/KGML_v0.7.1_.dtd">
+<!-- Creation date: Jun 3, 2013 16:49:56 +0900 (GMT+09:00) -->
 <pathway name="path:mmu00511" org="mmu" number="00511"
          title="Other glycan degradation"
-         image="http://www.genome.jp/kegg/pathway/mmu/mmu00511.png"
-         link="http://www.genome.jp/kegg-bin/show_pathway?mmu00511">
+         image="http://www.kegg.jp/kegg/pathway/mmu/mmu00511.png"
+         link="http://www.kegg.jp/kegg-bin/show_pathway?mmu00511">
     <entry id="1" name="path:mmu00511" type="map"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu00511">
         <graphics name="TITLE:Other glycan degradation" fgcolor="#000000" bgcolor="#FFFFFF"
@@ -125,9 +125,9 @@
         <graphics name="Glb1, AW125515, Bge, Bgl, Bgl-e, Bgl-s, Bgl-t, Bgs, Bgt, C130097A14Rik" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
              type="line" coords="422,426,452,426"/>
     </entry>
-    <entry id="26" name="mmu:14466" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:14466">
-        <graphics name="Gba, GBA1, GC, GCase, GLUC, betaGC" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+    <entry id="26" name="mmu:14466 mmu:230101" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:14466+mmu:230101">
+        <graphics name="Gba, GBA1, GC, GCase, GLUC, betaGC..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
              type="line" coords="492,426,522,426"/>
     </entry>
     <entry id="27" name="path:mmu00510" type="map"

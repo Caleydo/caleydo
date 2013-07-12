@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
-<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: May 31, 2012 15:46:40 +0900 (GMT+09:00) -->
+<!DOCTYPE pathway SYSTEM "http://www.kegg.jp/kegg/xml/KGML_v0.7.1_.dtd">
+<!-- Creation date: Mar 1, 2013 13:51:50 +0900 (GMT+09:00) -->
 <pathway name="path:hsa00040" org="hsa" number="00040"
          title="Pentose and glucuronate interconversions"
-         image="http://www.genome.jp/kegg/pathway/hsa/hsa00040.png"
-         link="http://www.genome.jp/kegg-bin/show_pathway?hsa00040">
+         image="http://www.kegg.jp/kegg/pathway/hsa/hsa00040.png"
+         link="http://www.kegg.jp/kegg-bin/show_pathway?hsa00040">
     <entry id="61" name="ko:K01184" type="ortholog" reaction="rn:R01982"
         link="http://www.kegg.jp/dbget-bin/www_bget?K01184">
         <graphics name="K01184" fgcolor="#000000" bgcolor="#FFFFFF"
@@ -28,12 +28,12 @@
     <entry id="65" name="cpd:C03033" type="compound"
         link="http://www.kegg.jp/dbget-bin/www_bget?C03033">
         <graphics name="C03033" fgcolor="#000000" bgcolor="#FFFFFF"
-             type="circle" x="462" y="343" width="8" height="8"/>
+             type="circle" x="462" y="348" width="8" height="8"/>
     </entry>
     <entry id="66" name="hsa:2990 hsa:9365" type="gene" reaction="rn:R01478"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2990+hsa:9365">
         <graphics name="GUSB, BG, MPS7..." fgcolor="#000000" bgcolor="#BFFFBF"
-             type="rectangle" x="512" y="343" width="46" height="17"/>
+             type="rectangle" x="513" y="348" width="46" height="17"/>
     </entry>
     <entry id="67" name="cpd:C00085" type="compound"
         link="http://www.kegg.jp/dbget-bin/www_bget?C00085">
@@ -167,7 +167,7 @@
     </entry>
     <entry id="99" name="hsa:7360" type="gene" reaction="rn:R00289"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:7360">
-        <graphics name="UGP2, UDPG, UDPGP2, UGPP2, pHC379, UGP1" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="UGP2, UDPG, UDPGP, UDPGP2, UGP1, UGPP1, UGPP2, pHC379" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="358" y="432" width="46" height="17"/>
     </entry>
     <entry id="100" name="ko:K01625" type="ortholog" reaction="rn:R05605"
@@ -178,12 +178,22 @@
     <entry id="101" name="hsa:10720 hsa:10941 hsa:54490 hsa:54575 hsa:54576 hsa:54577 hsa:54578 hsa:54579 hsa:54600 hsa:54657 hsa:54658 hsa:54659 hsa:574537 hsa:7363 hsa:7364 hsa:7365 hsa:7366 hsa:7367 hsa:79799" type="gene" reaction="rn:R01383"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:10720+hsa:10941+hsa:54490+hsa:54575+hsa:54576+hsa:54577+hsa:54578+hsa:54579+hsa:54600+hsa:54657+hsa:54658+hsa:54659+hsa:574537+hsa:7363+hsa:7364+hsa:7365+hsa:7366+hsa:7367+hsa:79799">
         <graphics name="UGT2B11..." fgcolor="#000000" bgcolor="#BFFFBF"
-             type="rectangle" x="410" y="343" width="46" height="17"/>
+             type="rectangle" x="409" y="348" width="46" height="17"/>
     </entry>
     <entry id="102" name="hsa:7358" type="gene" reaction="rn:R00286"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:7358">
         <graphics name="UGDH, GDH, UDP-GlcDH, UDPGDH, UGD" fgcolor="#000000" bgcolor="#BFFFBF"
-             type="rectangle" x="358" y="360" width="46" height="17"/>
+             type="rectangle" x="358" y="366" width="46" height="17"/>
+    </entry>
+    <entry id="104" name="ko:K16190" type="ortholog" reaction="rn:R01476"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K16190">
+        <graphics name="K16190" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="512" y="315" width="46" height="17"/>
+    </entry>
+    <entry id="105" name="ko:K12447" type="ortholog" reaction="rn:R01381"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K12447">
+        <graphics name="K12447" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="409" y="325" width="46" height="17"/>
     </entry>
     <entry id="106" name="ko:K00874" type="ortholog" reaction="rn:R01541"
         link="http://www.kegg.jp/dbget-bin/www_bget?K00874">
@@ -205,9 +215,9 @@
         <graphics name="K01686" fgcolor="#000000" bgcolor="#FFFFFF"
              type="rectangle" x="254" y="275" width="46" height="17"/>
     </entry>
-    <entry id="110" name="ko:K01685" type="ortholog" reaction="rn:R01540"
-        link="http://www.kegg.jp/dbget-bin/www_bget?K01685">
-        <graphics name="K01685" fgcolor="#000000" bgcolor="#FFFFFF"
+    <entry id="110" name="ko:K01685 ko:K16849 ko:K16850" type="ortholog" reaction="rn:R01540"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K01685+K16849+K16850">
+        <graphics name="K01685..." fgcolor="#000000" bgcolor="#FFFFFF"
              type="rectangle" x="177" y="243" width="46" height="17"/>
     </entry>
     <entry id="111" name="ko:K01812" type="ortholog" reaction="rn:R01983"
@@ -228,7 +238,7 @@
     <entry id="114" name="path:hsa00562" type="map"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa00562">
         <graphics name="Inositol phosphate metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
-             type="roundrectangle" x="568" y="417" width="107" height="34"/>
+             type="roundrectangle" x="568" y="428" width="107" height="34"/>
     </entry>
     <entry id="115" name="path:hsa00053" type="map"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa00053">

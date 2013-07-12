@@ -212,7 +212,7 @@
     </entry>
     <entry id="42" name="mmu:12313 mmu:12314 mmu:12315 mmu:494124 mmu:70405 mmu:80796" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:12313+mmu:12314+mmu:12315+mmu:494124+mmu:70405+mmu:80796">
-        <graphics name="Calm1, AI256814, AI327027, AI461935, AL024000, CaM, Calm, Calm2, Calm3..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Calm1, AI256814, AI327027, AI461935, AL024000, CaM, Calm..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="777" y="561" width="46" height="17"/>
     </entry>
     <entry id="43" name="mmu:108058 mmu:12322 mmu:12323 mmu:12325 mmu:12326" type="gene"
@@ -292,7 +292,7 @@
     </entry>
     <entry id="58" name="mmu:12313 mmu:12314 mmu:12315 mmu:494124 mmu:70405 mmu:80796" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:12313+mmu:12314+mmu:12315+mmu:494124+mmu:70405+mmu:80796">
-        <graphics name="Calm1, AI256814, AI327027, AI461935, AL024000, CaM, Calm, Calm2, Calm3..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Calm1, AI256814, AI327027, AI461935, AL024000, CaM, Calm..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="778" y="916" width="46" height="17"/>
     </entry>
     <entry id="59" name="mmu:19055 mmu:19056 mmu:19057 mmu:19058 mmu:19059 mmu:56398 mmu:70261" type="gene"

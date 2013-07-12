@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
-<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Jan 17, 2012 13:45:35 +0900 (GMT+09:00) -->
+<!DOCTYPE pathway SYSTEM "http://www.kegg.jp/kegg/xml/KGML_v0.7.1_.dtd">
+<!-- Creation date: Feb 8, 2013 10:47:15 +0900 (GMT+09:00) -->
 <pathway name="path:mmu00591" org="mmu" number="00591"
          title="Linoleic acid metabolism"
-         image="http://www.genome.jp/kegg/pathway/mmu/mmu00591.png"
-         link="http://www.genome.jp/kegg-bin/show_pathway?mmu00591">
-    <entry id="17" name="mmu:100041375 mmu:100066 mmu:107141 mmu:13077 mmu:13095 mmu:13096 mmu:13097 mmu:13098 mmu:13099 mmu:13106 mmu:13109 mmu:13110 mmu:13112 mmu:13113 mmu:13114 mmu:226105 mmu:226143 mmu:230459 mmu:337924 mmu:404195 mmu:433247 mmu:53973 mmu:56388 mmu:665095 mmu:69888 mmu:72082 mmu:72303 mmu:74519" type="gene" reaction="rn:R07055"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:100041375+mmu:100066+mmu:107141+mmu:13077+mmu:13095+mmu:13096+mmu:13097+mmu:13098+mmu:13099+mmu:13106+mmu:13109+mmu:13110+mmu:13112+mmu:13113+mmu:13114+mmu:226105+mmu:226143+mmu:230459+mmu:337924+mmu:404195+mmu:433247+mmu:53973+mmu:56388+mmu:665095+mmu:69888+mmu:72082+mmu:72303+mmu:74519">
-        <graphics name="Cyp3a41b, Cyp3a41a..." fgcolor="#000000" bgcolor="#BFFFBF"
+         image="http://www.kegg.jp/kegg/pathway/mmu/mmu00591.png"
+         link="http://www.kegg.jp/kegg-bin/show_pathway?mmu00591">
+    <entry id="17" name="mmu:100041375 mmu:100066 mmu:107141 mmu:13077 mmu:13095 mmu:13096 mmu:13097 mmu:13098 mmu:13099 mmu:13106 mmu:13109 mmu:13110 mmu:13112 mmu:13113 mmu:13114 mmu:226105 mmu:226143 mmu:230459 mmu:242546 mmu:337924 mmu:404195 mmu:433247 mmu:53973 mmu:56388 mmu:665095 mmu:69888 mmu:72082 mmu:72303 mmu:74519" type="gene" reaction="rn:R07055"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:100041375+mmu:100066+mmu:107141+mmu:13077+mmu:13095+mmu:13096+mmu:13097+mmu:13098+mmu:13099+mmu:13106+mmu:13109+mmu:13110+mmu:13112+mmu:13113+mmu:13114+mmu:226105+mmu:226143+mmu:230459+mmu:242546+mmu:337924+mmu:404195+mmu:433247+mmu:53973+mmu:56388+mmu:665095+mmu:69888+mmu:72082+mmu:72303+mmu:74519">
+        <graphics name="Cyp3a41b..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="341" y="365" width="46" height="17"/>
     </entry>
     <entry id="18" name="cpd:C04717" type="compound"
@@ -75,14 +75,14 @@
         <graphics name="Arachidonic acid metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
              type="roundrectangle" x="120" y="138" width="162" height="25"/>
     </entry>
-    <entry id="31" name="mmu:100041375 mmu:100066 mmu:107141 mmu:13077 mmu:13095 mmu:13096 mmu:13097 mmu:13098 mmu:13099 mmu:13106 mmu:13109 mmu:13110 mmu:13112 mmu:13113 mmu:13114 mmu:226105 mmu:226143 mmu:230459 mmu:337924 mmu:404195 mmu:433247 mmu:53973 mmu:56388 mmu:665095 mmu:69888 mmu:72082 mmu:72303 mmu:74519" type="gene" reaction="rn:R07056"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:100041375+mmu:100066+mmu:107141+mmu:13077+mmu:13095+mmu:13096+mmu:13097+mmu:13098+mmu:13099+mmu:13106+mmu:13109+mmu:13110+mmu:13112+mmu:13113+mmu:13114+mmu:226105+mmu:226143+mmu:230459+mmu:337924+mmu:404195+mmu:433247+mmu:53973+mmu:56388+mmu:665095+mmu:69888+mmu:72082+mmu:72303+mmu:74519">
-        <graphics name="Cyp3a41b, Cyp3a41a..." fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="31" name="mmu:100041375 mmu:100066 mmu:107141 mmu:13077 mmu:13095 mmu:13096 mmu:13097 mmu:13098 mmu:13099 mmu:13106 mmu:13109 mmu:13110 mmu:13112 mmu:13113 mmu:13114 mmu:226105 mmu:226143 mmu:230459 mmu:242546 mmu:337924 mmu:404195 mmu:433247 mmu:53973 mmu:56388 mmu:665095 mmu:69888 mmu:72082 mmu:72303 mmu:74519" type="gene" reaction="rn:R07056"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:100041375+mmu:100066+mmu:107141+mmu:13077+mmu:13095+mmu:13096+mmu:13097+mmu:13098+mmu:13099+mmu:13106+mmu:13109+mmu:13110+mmu:13112+mmu:13113+mmu:13114+mmu:226105+mmu:226143+mmu:230459+mmu:242546+mmu:337924+mmu:404195+mmu:433247+mmu:53973+mmu:56388+mmu:665095+mmu:69888+mmu:72082+mmu:72303+mmu:74519">
+        <graphics name="Cyp3a41b..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="282" y="365" width="46" height="17"/>
     </entry>
-    <entry id="32" name="mmu:83702" type="gene" reaction="rn:R07058"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:83702">
-        <graphics name="Akr1c6, 3alpha-HSD, Akr1c1, Hsd17b5" fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="32" name="ko:K00100" type="ortholog" reaction="rn:R07058"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K00100">
+        <graphics name="K00100" fgcolor="#000000" bgcolor="#FFFFFF"
              type="rectangle" x="597" y="422" width="46" height="17"/>
     </entry>
     <entry id="33" name="cpd:C14827" type="compound"
@@ -100,14 +100,14 @@
         <graphics name="TITLE:Linoleic acid metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
              type="roundrectangle" x="155" y="58" width="229" height="25"/>
     </entry>
-    <entry id="36" name="ko:K00460" type="ortholog" reaction="rn:R03626"
-        link="http://www.kegg.jp/dbget-bin/www_bget?K00460">
-        <graphics name="K00460" fgcolor="#000000" bgcolor="#FFFFFF"
+    <entry id="36" name="mmu:11687" type="gene" reaction="rn:R03626"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:11687">
+        <graphics name="Alox15, 12-LO, Alox12l, L-12LO" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="622" y="311" width="46" height="17"/>
     </entry>
-    <entry id="38" name="mmu:18778 mmu:18780 mmu:18781 mmu:18782 mmu:18783 mmu:18784 mmu:211429 mmu:237625 mmu:26565 mmu:26970 mmu:26971 mmu:329502 mmu:53357 mmu:66350 mmu:665270 mmu:69836 mmu:78390" type="gene" reaction="rn:R07064"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:18778+mmu:18780+mmu:18781+mmu:18782+mmu:18783+mmu:18784+mmu:211429+mmu:237625+mmu:26565+mmu:26970+mmu:26971+mmu:329502+mmu:53357+mmu:66350+mmu:665270+mmu:69836+mmu:78390">
-        <graphics name="Pla2g1b, MGC6679, Pla2a, sPLA2IB..." fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="38" name="mmu:18778 mmu:18780 mmu:18781 mmu:18782 mmu:18783 mmu:18784 mmu:211429 mmu:225845 mmu:232889 mmu:237625 mmu:26565 mmu:26970 mmu:26971 mmu:271844 mmu:329502 mmu:53357 mmu:66350 mmu:665270 mmu:69836 mmu:78390" type="gene" reaction="rn:R07064"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:18778+mmu:18780+mmu:18781+mmu:18782+mmu:18783+mmu:18784+mmu:211429+mmu:225845+mmu:232889+mmu:237625+mmu:26565+mmu:26970+mmu:26971+mmu:271844+mmu:329502+mmu:53357+mmu:66350+mmu:665270+mmu:69836+mmu:78390">
+        <graphics name="Pla2g1b, Pla2a, sPLA2IB..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="341" y="204" width="46" height="17"/>
     </entry>
     <entry id="42" name="ko:K08262" type="ortholog" reaction="rn:R05740"
@@ -206,6 +206,15 @@
     <relation entry1="17" entry2="38" type="ECrel">
         <subtype name="compound" value="49"/>
     </relation>
+    <relation entry1="36" entry2="38" type="ECrel">
+        <subtype name="compound" value="49"/>
+    </relation>
+    <relation entry1="31" entry2="36" type="ECrel">
+        <subtype name="compound" value="49"/>
+    </relation>
+    <relation entry1="17" entry2="36" type="ECrel">
+        <subtype name="compound" value="49"/>
+    </relation>
     <reaction id="17" name="rn:R07055" type="irreversible">
         <substrate id="49" name="cpd:C01595"/>
         <product id="29" name="cpd:C14825"/>
@@ -214,9 +223,9 @@
         <substrate id="49" name="cpd:C01595"/>
         <product id="48" name="cpd:C14826"/>
     </reaction>
-    <reaction id="32" name="rn:R07058" type="irreversible">
-        <substrate id="52" name="cpd:C14762"/>
-        <product id="22" name="cpd:C14765"/>
+    <reaction id="36" name="rn:R03626" type="irreversible">
+        <substrate id="49" name="cpd:C01595"/>
+        <product id="18" name="cpd:C04717"/>
     </reaction>
     <reaction id="38" name="rn:R07064" type="irreversible">
         <substrate id="45" name="cpd:C00157"/>

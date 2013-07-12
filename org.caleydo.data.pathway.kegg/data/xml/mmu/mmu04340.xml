@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
-<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: May 15, 2012 11:47:57 +0900 (GMT+09:00) -->
+<!DOCTYPE pathway SYSTEM "http://www.kegg.jp/kegg/xml/KGML_v0.7.1_.dtd">
+<!-- Creation date: Feb 7, 2013 16:43:39 +0900 (GMT+09:00) -->
 <pathway name="path:mmu04340" org="mmu" number="04340"
          title="Hedgehog signaling pathway"
-         image="http://www.genome.jp/kegg/pathway/mmu/mmu04340.png"
-         link="http://www.genome.jp/kegg-bin/show_pathway?mmu04340">
+         image="http://www.kegg.jp/kegg/pathway/mmu/mmu04340.png"
+         link="http://www.kegg.jp/kegg-bin/show_pathway?mmu04340">
     <entry id="1" name="path:mmu04350" type="map"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu04350">
         <graphics name="TGF-beta signaling pathway" fgcolor="#000000" bgcolor="#FFFFFF"
@@ -30,8 +30,8 @@
         <graphics name="Ptch1, A230106A15Rik, Ptc, Ptc1, Ptch, mes..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="680" y="270" width="46" height="17"/>
     </entry>
-    <entry id="6" name="mmu:12156 mmu:12159 mmu:12160 mmu:12161 mmu:12162 mmu:12163 mmu:12164" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:12156+mmu:12159+mmu:12160+mmu:12161+mmu:12162+mmu:12163+mmu:12164">
+    <entry id="6" name="mmu:12156 mmu:12159" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:12156+mmu:12159">
         <graphics name="Bmp2, AI467020, Bmp2a..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="680" y="245" width="46" height="17"/>
     </entry>
@@ -62,7 +62,7 @@
     </entry>
     <entry id="12" name="mmu:103583 mmu:12234" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:103583+mmu:12234">
-        <graphics name="Fbxw11, 2310065A07Rik, AA536858, BTRC2, BTRCP2, Fbxw1b, HOS, mKIAA0696..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Fbxw11, 2310065A07Rik, AA536858, BTRC2, BTRCP2, Fbxw1b, HOS..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="490" y="321" width="46" height="17"/>
     </entry>
     <entry id="13" name="mmu:14632 mmu:14633 mmu:14634" type="gene"

@@ -102,7 +102,7 @@
     </entry>
     <entry id="69" name="hsa:4598" type="gene" reaction="rn:R02245"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:4598">
-        <graphics name="MVK, FLJ96772, LRBP, MK, MVLK" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="MVK, LRBP, MK, MVLK" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="434" y="477" width="46" height="17"/>
     </entry>
     <entry id="70" name="hsa:38 hsa:39" type="gene" reaction="rn:R00238"
@@ -112,7 +112,7 @@
     </entry>
     <entry id="71" name="hsa:3157 hsa:3158" type="gene" reaction="rn:R01978"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:3157+hsa:3158">
-        <graphics name="HMGCS1, HMGCS, MGC90332..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="HMGCS1, HMGCS..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="434" y="284" width="46" height="17"/>
     </entry>
     <entry id="73" name="ko:K00054" type="ortholog" reaction="rn:R02081"
@@ -322,12 +322,12 @@
     </entry>
     <entry id="118" name="hsa:79947" type="gene" reaction="rn:R05556"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:79947">
-        <graphics name="DHDDS, CIT, CPT, DS, FLJ13102, HDS, RP59" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="DHDDS, CIT, CPT, DS, HDS, RP59" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="382" y="1172" width="46" height="17"/>
     </entry>
     <entry id="119" name="hsa:23590 hsa:57107" type="gene" reaction="rn:R09249"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:23590+hsa:57107">
-        <graphics name="PDSS1, COQ1, DPS, MGC70953, RP13-16H11.3, SPS, TPRT, TPT, TPT_1, hDPS1..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="PDSS1, COQ1, COQ10D2, DPS, RP13-16H11.3, SPS, TPRT, TPT, TPT_1, hDPS1..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="553" y="1234" width="46" height="17"/>
     </entry>
     <entry id="120" name="path:hsa00510" type="map"
@@ -387,7 +387,7 @@
     </entry>
     <entry id="132" name="hsa:2339 hsa:2342" type="gene" reaction="rn:R09844"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2339+hsa:2342">
-        <graphics name="FNTA, FPTA, MGC99680, PGGT1A, PTAR2..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="FNTA, FPTA, PGGT1A, PTAR2..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="368" y="1052" width="46" height="17"/>
     </entry>
     <entry id="133" name="hsa:9986" type="gene" reaction="rn:R09845"
@@ -397,7 +397,7 @@
     </entry>
     <entry id="134" name="hsa:23463" type="gene" reaction="rn:R04496"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:23463">
-        <graphics name="ICMT, HSTE14, MGC39955, MST098, MSTP098, PCCMT, PCMT, PPMT" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="ICMT, HSTE14, MST098, MSTP098, PCCMT, PCMT, PPMT" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="148" y="1052" width="46" height="17"/>
     </entry>
     <entry id="135" name="ko:K15889" type="ortholog" reaction="rn:R09846"
@@ -407,7 +407,7 @@
     </entry>
     <entry id="136" name="hsa:51449" type="gene" reaction="rn:R09562"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:51449">
-        <graphics name="PCYOX1, KIAA0908, PCL1" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="PCYOX1, PCL1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="116" y="970" width="46" height="17"/>
     </entry>
     <entry id="137" name="ko:K15890 ko:K15891" type="ortholog" reaction="rn:R03264"
@@ -472,12 +472,12 @@
     </entry>
     <entry id="149" name="hsa:51449" type="gene" reaction="rn:R09562"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:51449">
-        <graphics name="PCYOX1, KIAA0908, PCL1" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="PCYOX1, PCL1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="66" y="970" width="46" height="17"/>
     </entry>
     <entry id="150" name="hsa:10269" type="gene" reaction="rn:R09845"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:10269">
-        <graphics name="ZMPSTE24, FACE-1, FACE1, FLJ14968, HGPS, PRO1, STE24, Ste24p" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="ZMPSTE24, FACE-1, FACE1, HGPS, PRO1, STE24, Ste24p" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="259" y="1041" width="46" height="17"/>
     </entry>
     <entry id="151" name="cpd:C20121" type="compound"

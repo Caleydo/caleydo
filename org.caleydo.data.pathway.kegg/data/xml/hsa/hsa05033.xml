@@ -107,7 +107,7 @@
     </entry>
     <entry id="21" name="hsa:116443 hsa:116444 hsa:2902 hsa:2903 hsa:2904 hsa:2905 hsa:2906" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:116443+hsa:116444+hsa:2902+hsa:2903+hsa:2904+hsa:2905+hsa:2906">
-        <graphics name="GRIN3A, NMDAR-L, NR3A..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="GRIN3A, GluN3A, NMDAR-L, NR3A..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="549" y="933" width="46" height="17"/>
     </entry>
     <entry id="22" name="hsa:2890 hsa:2891 hsa:2892 hsa:2893" type="gene"
@@ -122,7 +122,7 @@
     </entry>
     <entry id="24" name="hsa:116443 hsa:116444 hsa:2902 hsa:2903 hsa:2904 hsa:2905 hsa:2906" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:116443+hsa:116444+hsa:2902+hsa:2903+hsa:2904+hsa:2905+hsa:2906">
-        <graphics name="GRIN3A, NMDAR-L, NR3A..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="GRIN3A, GluN3A, NMDAR-L, NR3A..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="1188" y="923" width="46" height="17"/>
     </entry>
     <entry id="25" name="cpd:C00025" type="compound"

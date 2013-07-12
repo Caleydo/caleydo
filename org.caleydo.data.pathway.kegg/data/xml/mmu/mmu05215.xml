@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Nov 17, 2009 16:27:14 +0900 (JST) -->
+<!-- Creation date: Oct 2, 2012 13:45:13 +0900 (GMT+09:00) -->
 <pathway name="path:mmu05215" org="mmu" number="05215"
          title="Prostate cancer"
          image="http://www.genome.jp/kegg/pathway/mmu/mmu05215.png"
@@ -157,7 +157,7 @@
     </entry>
     <entry id="31" name="mmu:13649 mmu:13866 mmu:14182 mmu:14183 mmu:16001 mmu:18595 mmu:18596 mmu:23920" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:13649+mmu:13866+mmu:14182+mmu:14183+mmu:16001+mmu:18595+mmu:18596+mmu:23920">
-        <graphics name="Egfr, 9030024J15Rik, AI552599, Erbb, Errp, Wa5, wa-2, wa2..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Egfr, 9030024J15Rik, AI552599, Erbb, Errb1, Errp, Wa5, wa-2, wa2..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="307" y="471" width="46" height="17"/>
     </entry>
     <entry id="32" name="path:mmu04210" type="map"
@@ -285,19 +285,24 @@
         <graphics name="Braf, 9930012E13Rik, AA120551, AA387315, AA473386, B-raf, Braf-2, Braf2, C230098H17, C87398, D6Ertd631e..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="459" y="596" width="46" height="17"/>
     </entry>
-    <entry id="57" name="undefined" type="group">
+    <entry id="57" name="path:mmu04151" type="map"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu04151">
+        <graphics name="PI3K-Akt signaling pathway" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="479" y="321" width="104" height="34"/>
+    </entry>
+    <entry id="58" name="undefined" type="group">
         <graphics fgcolor="#000000" bgcolor="#FFFFFF"
              type="rectangle" x="907" y="322" width="46" height="34"/>
         <component id="26"/>
         <component id="37"/>
     </entry>
-    <entry id="58" name="undefined" type="group">
+    <entry id="59" name="undefined" type="group">
         <graphics fgcolor="#000000" bgcolor="#FFFFFF"
              type="rectangle" x="603" y="697" width="46" height="34"/>
         <component id="5"/>
         <component id="6"/>
     </entry>
-    <entry id="59" name="undefined" type="group">
+    <entry id="60" name="undefined" type="group">
         <graphics fgcolor="#000000" bgcolor="#FFFFFF"
              type="rectangle" x="466" y="705" width="46" height="34"/>
         <component id="21"/>
@@ -389,11 +394,11 @@
         <subtype name="activation" value="--&gt;"/>
         <subtype name="phosphorylation" value="+p"/>
     </relation>
-    <relation entry1="57" entry2="39" type="PPrel">
+    <relation entry1="58" entry2="39" type="PPrel">
         <subtype name="activation" value="--&gt;"/>
         <subtype name="phosphorylation" value="+p"/>
     </relation>
-    <relation entry1="54" entry2="58" type="PPrel">
+    <relation entry1="54" entry2="59" type="PPrel">
         <subtype name="indirect effect" value="..&gt;"/>
     </relation>
     <relation entry1="28" entry2="39" type="PPrel">
@@ -420,13 +425,13 @@
     <relation entry1="7" entry2="13" type="GErel">
         <subtype name="expression" value="--&gt;"/>
     </relation>
-    <relation entry1="59" entry2="58" type="PPrel">
+    <relation entry1="60" entry2="59" type="PPrel">
         <subtype name="activation" value="--&gt;"/>
     </relation>
     <relation entry1="51" entry2="22" type="PCrel">
         <subtype name="missing interaction" value="-/-"/>
     </relation>
-    <relation entry1="47" entry2="57" type="PPrel">
+    <relation entry1="47" entry2="58" type="PPrel">
         <subtype name="missing interaction" value="-/-"/>
     </relation>
     <relation entry1="16" entry2="30" type="PPrel">
@@ -438,13 +443,13 @@
     <relation entry1="10" entry2="43" type="PCrel">
         <subtype name="missing interaction" value="-/-"/>
     </relation>
-    <relation entry1="17" entry2="59" type="PCrel">
+    <relation entry1="17" entry2="60" type="PCrel">
         <subtype name="activation" value="--&gt;"/>
     </relation>
-    <relation entry1="19" entry2="59" type="PCrel">
+    <relation entry1="19" entry2="60" type="PCrel">
         <subtype name="activation" value="--&gt;"/>
     </relation>
-    <relation entry1="18" entry2="59" type="PCrel">
+    <relation entry1="18" entry2="60" type="PCrel">
         <subtype name="activation" value="--&gt;"/>
     </relation>
 </pathway>

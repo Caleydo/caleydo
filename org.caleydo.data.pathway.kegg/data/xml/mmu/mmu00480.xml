@@ -52,7 +52,7 @@
     </entry>
     <entry id="40" name="mmu:625249" type="gene" reaction="rn:R03167"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:625249">
-        <graphics name="Gpx4, 1700027O09Rik, MGC103187, MGC118087, PHGPx, mtPHGPx, snGPx" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Gpx4, 1700027O09Rik, PHGPx, mtPHGPx, snGPx" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="217" y="546" width="46" height="17"/>
     </entry>
     <entry id="41" name="mmu:66073" type="gene" reaction="rn:R03915 rn:R02824"
@@ -77,7 +77,7 @@
     </entry>
     <entry id="45" name="mmu:15926 mmu:269951" type="gene" reaction="rn:R00267"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:15926+mmu:269951">
-        <graphics name="Idh1, AI314845, AI788952, E030024J03Rik, Id-1, Idh-1, Idpc, MGC115782..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Idh1, AI314845, AI788952, E030024J03Rik, Id-1, Idh-1, Idpc..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="169" y="490" width="46" height="17"/>
     </entry>
     <entry id="46" name="mmu:14854" type="gene" reaction="rn:R00497"
@@ -102,7 +102,7 @@
     </entry>
     <entry id="50" name="mmu:75475" type="gene" reaction="rn:R00251"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:75475">
-        <graphics name="Oplah, 1700010G02Rik, MGC28663, MGC36824" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Oplah, 1700010G02Rik" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="374" y="144" width="46" height="17"/>
     </entry>
     <entry id="51" name="mmu:110175" type="gene" reaction="rn:R02743"
@@ -120,9 +120,9 @@
         <graphics name="Ggct, A030007L17Rik, AA673177, Gctg, Ggc" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="196" y="236" width="46" height="17"/>
     </entry>
-    <entry id="55" name="mmu:14857 mmu:14858 mmu:14859 mmu:14860 mmu:14862 mmu:14863 mmu:14864 mmu:14865 mmu:14866 mmu:14867 mmu:14869 mmu:14870 mmu:14871 mmu:14872 mmu:14873 mmu:211666 mmu:56615 mmu:66447 mmu:68214 mmu:68312 mmu:76263" type="gene" reaction="rn:R03522"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:14857+mmu:14858+mmu:14859+mmu:14860+mmu:14862+mmu:14863+mmu:14864+mmu:14865+mmu:14866+mmu:14867+mmu:14869+mmu:14870+mmu:14871+mmu:14872+mmu:14873+mmu:211666+mmu:56615+mmu:66447+mmu:68214+mmu:68312+mmu:76263">
-        <graphics name="Gsta1, Gst2-1, OTTMUSG00000031890..." fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="55" name="mmu:103140 mmu:14857 mmu:14858 mmu:14859 mmu:14860 mmu:14862 mmu:14863 mmu:14864 mmu:14865 mmu:14866 mmu:14867 mmu:14869 mmu:14870 mmu:14871 mmu:14872 mmu:14873 mmu:211666 mmu:56615 mmu:66447 mmu:68214 mmu:68312 mmu:76263" type="gene" reaction="rn:R03522"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:103140+mmu:14857+mmu:14858+mmu:14859+mmu:14860+mmu:14862+mmu:14863+mmu:14864+mmu:14865+mmu:14866+mmu:14867+mmu:14869+mmu:14870+mmu:14871+mmu:14872+mmu:14873+mmu:211666+mmu:56615+mmu:66447+mmu:68214+mmu:68312+mmu:76263">
+        <graphics name="Gstt3, AI118089..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="388" y="526" width="46" height="17"/>
     </entry>
     <entry id="56" name="ko:K01917 ko:K01460" type="ortholog" reaction="rn:R01917"
@@ -352,7 +352,7 @@
     </entry>
     <entry id="135" name="mmu:18263" type="gene" reaction="rn:R00670"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:18263">
-        <graphics name="Odc1, MGC103389, ODC" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Odc1, ODC" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="208" y="683" width="46" height="17"/>
     </entry>
     <entry id="136" name="mmu:20810" type="gene" reaction="rn:R01920"

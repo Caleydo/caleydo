@@ -92,7 +92,7 @@
     </entry>
     <entry id="25" name="mmu:20442 mmu:20444" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:20442+mmu:20444">
-        <graphics name="St3gal1, 5330418N22Rik, AI467004, MGC90735, ST3GalI, Siat4, Siat4a, St3gal-1..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="St3gal1, 5330418N22Rik, AI467004, ST3GalI, Siat4, Siat4a, St3gal-1..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
              type="line" coords="745,508,775,508"/>
     </entry>
     <entry id="28" name="mmu:14595 mmu:53418 mmu:57370" type="gene"
