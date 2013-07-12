@@ -10,6 +10,7 @@ import gleem.linalg.Vec2f;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
+import java.awt.geom.Rectangle2D.Float;
 
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
@@ -53,6 +54,12 @@ public abstract class AGLCanvas implements IGLCanvas {
 
 	public final Vec2f toDIP(Point point) {
 		return new Vec2f(dip(point.x), dip(point.y));
+	}
+	
+	@Override
+	public Float toDIP(Rectangle viewArea_raw) {
+		return new Rectangle2D.Float(toDIP(viewArea_raw.x), toDIP(viewArea_raw.y), toDIP(viewArea_raw.width),
+				toDIP(viewArea_raw.height));
 	}
 
 	@Override

@@ -317,8 +317,6 @@ public class PickingManager {
 
 		GLMouseListener glMouseListener = glView.getGLMouseListener();
 
-		Point pickRealPoint = glMouseListener.getRAWPickedPoint();
-
 		PickingMode ePickingMode = PickingMode.CLICKED;
 
 		if (glMouseListener.wasMouseDoubleClicked()) {
@@ -346,6 +344,9 @@ public class PickingManager {
 		} else {
 			return;
 		}
+		Point pickRealPoint = glMouseListener.getRAWPickedPoint();
+		if (pickRealPoint == null)
+			return;
 
 		hashViewIDToIsMouseOverPickingEvent.put(glView.getID(), false);
 

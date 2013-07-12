@@ -75,6 +75,8 @@ public interface IGLCanvas {
 	 */
 	Rectangle toRawPixel(Rectangle2D.Float viewArea_dip);
 
+	Rectangle2D.Float toDIP(Rectangle viewArea_raw);
+
 	/**
 	 * @return
 	 */
