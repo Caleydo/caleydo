@@ -7,9 +7,8 @@ package org.caleydo.data.pathway.wikipathways;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,7 +30,6 @@ import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertex;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGroupRep;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
-import org.caleydo.datadomain.pathway.manager.IPathwayResourceLoader;
 import org.caleydo.datadomain.pathway.manager.PathwayDatabase;
 import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
@@ -62,50 +60,28 @@ public class WikiPathwaysParser implements IPathwayParser {
 	@Override
 	public void parse() {
 		PathwayManager pathwayManager = PathwayManager.get();
-
-		IPathwayResourceLoader resourceLoader = pathwayManager
-				.getPathwayResourceLoader(EPathwayDatabaseType.WIKIPATHWAYS);
-		PathwayDatabase pathwayDatabase = pathwayManager.getPathwayDatabaseByType(EPathwayDatabaseType.WIKIPATHWAYS);
-
+		File baseDir = pathwayManager.preparePathwayData(EPathwayDatabaseType.WIKIPATHWAYS);
 		Organism organism = GeneticMetaData.getOrganism();
-		String pathwayListFileName = null;
-
-		if (organism == Organism.HOMO_SAPIENS) {
-			pathwayListFileName = PathwayListGenerator.LIST_FILE_WIKIPATHWAYS_HOMO_SAPIENS;
-		} else if (organism == Organism.MUS_MUSCULUS) {
-			pathwayListFileName = PathwayListGenerator.LIST_FILE_WIKIPATHWAYS_MUS_MUSCULUS;
-		} else {
+		if (baseDir == null)
 			throw new IllegalStateException("Cannot load pathways from organism " + organism);
-		}
 
-		BufferedReader pathwayListFile = resourceLoader.getResource(pathwayListFileName);
-		String line = null;
+		PathwayDatabase pathwayDatabase = pathwayManager.getPathwayDatabaseByType(EPathwayDatabaseType.WIKIPATHWAYS);
+		pathwayDatabase.setBaseDir(baseDir);
 
-
-		try {
-			File tmpPathwayFile = File.createTempFile("tmppathway", "gpml");
-
+		try (BufferedReader pathwayListFile = new BufferedReader(new FileReader(new File(baseDir, "metadata.txt")))) {
+			String line = null;
 			while ((line = pathwayListFile.readLine()) != null) {
 				String[] tokens = line.split("\\s");
 
-				Files.copy(resourceLoader.getInputSource(pathwayDatabase.getXMLPath() + tokens[0]).getByteStream(),
-						tmpPathwayFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-
+				File pathwayFile = new File(baseDir, tokens[0]);
 				PathwayImporter importer = new GpmlFormat();
-				Pathway pathway = importer.doImport(tmpPathwayFile);
+				Pathway pathway = importer.doImport(pathwayFile);
 				createPathwayGraph(pathway, tokens[0].substring(0, tokens[0].length() - 5), Integer.valueOf(tokens[1])
 						.intValue(), Integer.valueOf(tokens[2]).intValue());
 
 			}
 		} catch (IOException | ConverterException e) {
-			throw new IllegalStateException("Error reading pathway list file " + pathwayListFileName);
-		} finally {
-			if (pathwayListFile != null) {
-				try {
-					pathwayListFile.close();
-				} catch (IOException e) {
-				}
-			}
+			throw new IllegalStateException("Error reading pathway list file");
 		}
 	}
 

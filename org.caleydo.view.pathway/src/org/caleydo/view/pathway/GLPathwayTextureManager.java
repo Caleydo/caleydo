@@ -44,14 +44,11 @@ public class GLPathwayTextureManager {
 
 		Texture pathwayTexture = null;
 
-		String pathwayTexturePath = pathway.getImageLink();
 		EPathwayDatabaseType type = pathway.getType();
-
-		pathwayTexturePath = PathwayManager.get().getPathwayDatabaseByType(type).getImagePath() + pathwayTexturePath;
 
 		Logger.log(new Status(IStatus.INFO, this.toString(), "Load pathway texture with ID: " + pathway.getID()));
 
-		pathwayTexture = PathwayManager.get().getPathwayResourceLoader(type).getTexture(pathwayTexturePath);
+		pathwayTexture = PathwayManager.get().getPathwayDatabaseByType(type).loadTexture(pathway);
 
 		hashPathwayToTexture.put(pathway, pathwayTexture);
 
