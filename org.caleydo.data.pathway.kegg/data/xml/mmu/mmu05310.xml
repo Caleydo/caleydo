@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
-<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Nov 17, 2009 16:33:16 +0900 (JST) -->
+<!DOCTYPE pathway SYSTEM "http://www.kegg.jp/kegg/xml/KGML_v0.7.1_.dtd">
+<!-- Creation date: Jul 8, 2013 14:49:12 +0900 (GMT+09:00) -->
 <pathway name="path:mmu05310" org="mmu" number="05310"
          title="Asthma"
-         image="http://www.genome.jp/kegg/pathway/mmu/mmu05310.png"
-         link="http://www.genome.jp/kegg-bin/show_pathway?mmu05310">
+         image="http://www.kegg.jp/kegg/pathway/mmu/mmu05310.png"
+         link="http://www.kegg.jp/kegg-bin/show_pathway?mmu05310">
     <entry id="1" name="path:mmu04060" type="map"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu04060">
         <graphics name="Cytokine-cytokine receptor interaction" fgcolor="#000000" bgcolor="#FFFFFF"
@@ -27,7 +27,7 @@
     </entry>
     <entry id="5" name="mmu:100504404 mmu:14960 mmu:14961 mmu:14969 mmu:14998 mmu:14999 mmu:15000 mmu:15001 mmu:15002" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:100504404+mmu:14960+mmu:14961+mmu:14969+mmu:14998+mmu:14999+mmu:15000+mmu:15001+mmu:15002">
-        <graphics name="H2-Ea-ps, AI323765, E-alpha-f, H-2Ea, H2-Ea, I-Ealpha, Ia-3, Ia3, MGC117888..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="H2-Ea-ps, AI323765, E-alpha-f, H-2Ea, H2-Ea, I-Ealpha, Ia-3, Ia3..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="165" y="296" width="46" height="17"/>
     </entry>
     <entry id="6" name="ko:K10784 ko:K10785" type="ortholog"
@@ -52,7 +52,7 @@
     </entry>
     <entry id="10" name="mmu:100504404 mmu:14960 mmu:14961 mmu:14969 mmu:14998 mmu:14999 mmu:15000 mmu:15001 mmu:15002" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:100504404+mmu:14960+mmu:14961+mmu:14969+mmu:14998+mmu:14999+mmu:15000+mmu:15001+mmu:15002">
-        <graphics name="H2-Ea-ps, AI323765, E-alpha-f, H-2Ea, H2-Ea, I-Ealpha, Ia-3, Ia3, MGC117888..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="H2-Ea-ps, AI323765, E-alpha-f, H-2Ea, H2-Ea, I-Ealpha, Ia-3, Ia3..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="549" y="307" width="46" height="17"/>
     </entry>
     <entry id="11" name="mmu:16153" type="gene"
@@ -97,12 +97,12 @@
     </entry>
     <entry id="19" name="mmu:19074" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:19074">
-        <graphics name="Prg2, MBP, MGC130327, mMBP, mMBP-1" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Prg2, MBP, mMBP, mMBP-1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="1027" y="433" width="46" height="17"/>
     </entry>
     <entry id="20" name="mmu:16061" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:16061">
-        <graphics name="Igh-VJ558, AI893585, MGC118142, MGC6727" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Igh-VJ558, AI893585" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="682" y="205" width="46" height="17"/>
     </entry>
     <entry id="21" name="mmu:16189" type="gene"
@@ -192,17 +192,17 @@
     </entry>
     <entry id="38" name="mmu:16061" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:16061">
-        <graphics name="Igh-VJ558, AI893585, MGC118142, MGC6727" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Igh-VJ558, AI893585" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="592" y="253" width="46" height="17"/>
     </entry>
     <entry id="39" name="mmu:16061" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:16061">
-        <graphics name="Igh-VJ558, AI893585, MGC118142, MGC6727" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Igh-VJ558, AI893585" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="782" y="177" width="46" height="17"/>
     </entry>
     <entry id="40" name="mmu:16061" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:16061">
-        <graphics name="Igh-VJ558, AI893585, MGC118142, MGC6727" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Igh-VJ558, AI893585" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="783" y="151" width="46" height="17"/>
     </entry>
     <entry id="41" name="cpd:C05951" type="compound"
@@ -227,7 +227,7 @@
     </entry>
     <entry id="45" name="mmu:21926" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:21926">
-        <graphics name="Tnf, DIF, MGC151434, TNF-alpha, TNFSF2, TNFalpha, Tnfa, Tnfsf1a" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Tnf, DIF, TNF-alpha, TNFSF2, TNFalpha, Tnfa, Tnfsf1a" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="797" y="384" width="46" height="17"/>
     </entry>
     <entry id="46" name="mmu:16163" type="gene"

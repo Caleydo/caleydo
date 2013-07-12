@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
-<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
+<!DOCTYPE pathway SYSTEM "http://www.kegg.jp/kegg/xml/KGML_v0.7.1_.dtd">
 <!-- Creation date: May 31, 2012 14:52:44 +0900 (GMT+09:00) -->
 <pathway name="path:mmu00020" org="mmu" number="00020"
          title="Citrate cycle (TCA cycle)"
-         image="http://www.genome.jp/kegg/pathway/mmu/mmu00020.png"
-         link="http://www.genome.jp/kegg-bin/show_pathway?mmu00020">
+         image="http://www.kegg.jp/kegg/pathway/mmu/mmu00020.png"
+         link="http://www.kegg.jp/kegg-bin/show_pathway?mmu00020">
     <entry id="27" name="ko:K00239 ko:K00240 ko:K00241 ko:K00242 ko:K00244 ko:K00245 ko:K00246 ko:K00247" type="ortholog" reaction="rn:R00412"
         link="http://www.kegg.jp/dbget-bin/www_bget?K00239+K00240+K00241+K00242+K00244+K00245+K00246+K00247">
         <graphics name="K00239..." fgcolor="#000000" bgcolor="#FFFFFF"
@@ -50,8 +50,8 @@
         <graphics name="Idh1, AI314845, AI788952, E030024J03Rik, Id-1, Idh-1, Idpc..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="697" y="505" width="46" height="17"/>
     </entry>
-    <entry id="36" name="mmu:15929 mmu:170718 mmu:67834" type="gene" reaction="rn:R00709"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:15929+mmu:170718+mmu:67834">
+    <entry id="36" name="mmu:15929 mmu:170718 mmu:243996 mmu:67834" type="gene" reaction="rn:R00709"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:15929+mmu:170718+mmu:243996+mmu:67834">
         <graphics name="Idh3g..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="755" y="458" width="46" height="17"/>
     </entry>
@@ -87,7 +87,7 @@
     </entry>
     <entry id="43" name="mmu:12974 mmu:71832" type="gene" reaction="rn:R00351"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:12974+mmu:71832">
-        <graphics name="Cs, 2610511A05Rik, 9030605P22Rik, BB234005, Cis..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Cs, 2610511A05Rik, 9030605P22Rik, BB234005, Cis, ahl4..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="413" y="334" width="46" height="17"/>
     </entry>
     <entry id="44" name="mmu:17448 mmu:17449" type="gene" reaction="rn:R00342"

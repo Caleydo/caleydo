@@ -212,7 +212,7 @@
     </entry>
     <entry id="42" name="mmu:110350 mmu:13424 mmu:13426 mmu:13427 mmu:234663 mmu:235661" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:110350+mmu:13424+mmu:13426+mmu:13427+mmu:234663+mmu:235661">
-        <graphics name="Dync2h1, 4432416O06Rik, AI448217, D030010H02Rik, D330044F14Rik, DHC1b, DHC2, Dnchc2, mKIAA1997..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Dync2h1, 4432416O06Rik, AI448217, D030010H02Rik, D330044F14Rik, DHC1b, DHC2, Dnchc2, b2b414Clo, mKIAA1997..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="848" y="1066" width="46" height="17"/>
     </entry>
     <entry id="43" name="ko:K15352" type="ortholog"
@@ -405,8 +405,8 @@
         <graphics name="Ccl4, AT744.1, Act-2, MIP-1B, Mip1b, Scya4" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="1056" y="478" width="43" height="17"/>
     </entry>
-    <entry id="81" name="mmu:14825 mmu:20310" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:14825+mmu:20310">
+    <entry id="81" name="mmu:14825 mmu:20310 mmu:330122" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:14825+mmu:20310+mmu:330122">
         <graphics name="Cxcl1, Fsp, Gro1, KC, Mgsa, N51, Scyb1, gro..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="1056" y="499" width="43" height="17"/>
     </entry>

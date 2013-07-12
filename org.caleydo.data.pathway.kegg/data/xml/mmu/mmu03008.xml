@@ -60,14 +60,14 @@
         <graphics name="Tcof1, AA408847, AW209012, treacle" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="301" y="164" width="46" height="17"/>
     </entry>
-    <entry id="12" name="mmu:100045968 mmu:100862468 mmu:20826 mmu:434401" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:100045968+mmu:100862468+mmu:20826+mmu:434401">
+    <entry id="12" name="mmu:100045968 mmu:100862468 mmu:20826" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:100045968+mmu:100862468+mmu:20826">
         <graphics name="100045968..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="378" y="238" width="46" height="17"/>
     </entry>
     <entry id="13" name="mmu:55989" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:55989">
-        <graphics name="Nop58, MGC105209, MSSP, Nol5, SIK, nop5" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Nop58, MSSP, Nol5, SIK, nop5" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="332" y="238" width="46" height="17"/>
     </entry>
     <entry id="14" name="mmu:67134" type="gene"
@@ -97,7 +97,7 @@
     </entry>
     <entry id="19" name="mmu:245474" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:245474">
-        <graphics name="Dkc1, BC068171, MGC107501" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Dkc1, BC068171" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="463" y="221" width="46" height="17"/>
     </entry>
     <entry id="20" name="mmu:633406 mmu:73736" type="gene"
@@ -112,7 +112,7 @@
     </entry>
     <entry id="22" name="mmu:98956" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:98956">
-        <graphics name="Nat10, AI429152, MGC25461" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Nat10, AI429152" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="468" y="382" width="46" height="17"/>
     </entry>
     <entry id="23" name="mmu:195434 mmu:72554" type="gene"
@@ -122,7 +122,7 @@
     </entry>
     <entry id="24" name="mmu:213895" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:213895">
-        <graphics name="Bms1, AA408648, AU020092, AU043373, BB007109, BC030906, Bms1l, KIAA0187, mKIAA0187" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Bms1, AA408648, AU020092, AU043373, BB007109, BC030906, Bms1l, mKIAA0187" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="373" y="382" width="46" height="17"/>
     </entry>
     <entry id="25" name="mmu:59028" type="gene"
@@ -137,7 +137,7 @@
     </entry>
     <entry id="27" name="mmu:102614 mmu:117109 mmu:208366 mmu:227522 mmu:54364 mmu:66161 mmu:67724 mmu:69961 mmu:74097" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:102614+mmu:117109+mmu:208366+mmu:227522+mmu:54364+mmu:66161+mmu:67724+mmu:69961+mmu:74097">
-        <graphics name="Rpp25, AI851155, MGC102363..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Rpp25, AI851155..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="431" y="490" width="46" height="17"/>
     </entry>
     <entry id="28" name="mmu:24127 mmu:24128" type="gene"
@@ -152,7 +152,7 @@
     </entry>
     <entry id="30" name="mmu:230737 mmu:237107 mmu:30877" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:230737+mmu:237107+mmu:30877">
-        <graphics name="Gnl2, BC003262, HUMAUANTIG, MGC7863, Ngp-1..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Gnl2, BC003262, HUMAUANTIG, Ngp-1..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="651" y="583" width="46" height="17"/>
     </entry>
     <entry id="31" name="mmu:100019" type="gene"
@@ -202,7 +202,7 @@
     </entry>
     <entry id="40" name="mmu:73674" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:73674">
-        <graphics name="Wdr75, 1300003A18Rik, 2410118I19Rik, C77608, FLJ12545, MGC143988" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Wdr75, 1300003A18Rik, 2410118I19Rik, C77608" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="201" y="359" width="46" height="17"/>
     </entry>
     <entry id="41" name="mmu:105372" type="gene"
@@ -217,7 +217,7 @@
     </entry>
     <entry id="43" name="mmu:217995" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:217995">
-        <graphics name="Heatr1, AA517551, B130016L12Rik, BC019693, MGC30806" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Heatr1, AA517551, B130016L12Rik, BC019693" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="155" y="359" width="46" height="17"/>
     </entry>
     <entry id="44" name="ko:K14547" type="ortholog"
@@ -232,7 +232,7 @@
     </entry>
     <entry id="46" name="mmu:217109" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:217109">
-        <graphics name="Utp18, 6230425C22Rik, 6430513M13, MGC141453, MGC141454, Wdr50" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Utp18, 6230425C22Rik, 6430513M13, Wdr50" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="63" y="403" width="46" height="17"/>
     </entry>
     <entry id="47" name="mmu:213773" type="gene"
@@ -242,17 +242,17 @@
     </entry>
     <entry id="48" name="mmu:216987" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:216987">
-        <graphics name="Utp6, 4732497O03Rik, HCA66, MGC25509" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Utp6, 4732497O03Rik, HCA66" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="155" y="412" width="46" height="17"/>
     </entry>
     <entry id="49" name="mmu:110816" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:110816">
-        <graphics name="Pwp2, 6530411D08Rik, MGC117973, Pwp2h, wdp103" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Pwp2, 6530411D08Rik, Pwp2h, wdp103" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="201" y="412" width="46" height="17"/>
     </entry>
     <entry id="50" name="mmu:225348" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:225348">
-        <graphics name="Wdr36, 5730444A13Rik, MGC38421, Ta-wdrp" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Wdr36, 5730444A13Rik, Ta-wdrp" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="63" y="420" width="46" height="17"/>
     </entry>
     <entry id="51" name="mmu:269470" type="gene"
@@ -292,7 +292,7 @@
     </entry>
     <entry id="58" name="mmu:71340" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:71340">
-        <graphics name="Riok1, 3110046C13Rik, 5430416A05Rik, Ad034, MGC7300" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Riok1, 3110046C13Rik, 5430416A05Rik, Ad034" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="334" y="781" width="46" height="17"/>
     </entry>
     <entry id="59" name="mmu:57815" type="gene"
@@ -307,7 +307,7 @@
     </entry>
     <entry id="61" name="mmu:108143 mmu:545600" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:108143+mmu:545600">
-        <graphics name="Taf9, 2310012M09Rik, 2810046E22Rik, 4921516M08Rik, AA673500, AU045423, Ak6, MGC117979, TAFII31, Taf2g..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Taf9, 2310012M09Rik, 2810046E22Rik, 4921516M08Rik, AA673500, AU045423, Ak6, TAFII31, Taf2g..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="266" y="804" width="46" height="17"/>
     </entry>
     <entry id="62" name="ko:K14576" type="ortholog"
@@ -332,12 +332,12 @@
     </entry>
     <entry id="66" name="mmu:68272" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:68272">
-        <graphics name="Rbm28, 2810480G15Rik, AI503051, MGC12075, MGC38664" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Rbm28, 2810480G15Rik, AI503051" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="586" y="646" width="46" height="17"/>
     </entry>
     <entry id="67" name="mmu:67619" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:67619">
-        <graphics name="Nob1, 1700021I09Rik, ART-4, MGC118441, MGC144649, MGC144650, Nob1p, Psmd8bp1" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Nob1, 1700021I09Rik, ART-4, Nob1p, Psmd8bp1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="348" y="660" width="46" height="17"/>
     </entry>
     <relation entry1="3" entry2="4" type="PPrel">

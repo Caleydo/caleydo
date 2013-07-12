@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
-<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: May 21, 2010 11:16:26 +0900 (GMT+09:00) -->
+<!DOCTYPE pathway SYSTEM "http://www.kegg.jp/kegg/xml/KGML_v0.7.1_.dtd">
+<!-- Creation date: May 29, 2013 18:25:06 +0900 (GMT+09:00) -->
 <pathway name="path:hsa04964" org="hsa" number="04964"
          title="Proximal tubule bicarbonate reclamation"
-         image="http://www.genome.jp/kegg/pathway/hsa/hsa04964.png"
-         link="http://www.genome.jp/kegg-bin/show_pathway?hsa04964">
+         image="http://www.kegg.jp/kegg/pathway/hsa/hsa04964.png"
+         link="http://www.kegg.jp/kegg-bin/show_pathway?hsa04964">
     <entry id="1" name="path:hsa04964" type="map"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa04964">
         <graphics name="TITLE:Proximal tubule bicarbonate reclamation" fgcolor="#000000" bgcolor="#FFFFFF"
@@ -32,7 +32,7 @@
     </entry>
     <entry id="6" name="hsa:8671" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:8671">
-        <graphics name="SLC4A4, HNBC1, KNBC, NBC1, NBC2, SLC4A5, hhNMC, pNBC" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="SLC4A4, HNBC1, KNBC, NBC1, NBC2, NBCe1-A, SLC4A5, hhNMC, pNBC" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="613" y="312" width="46" height="17"/>
     </entry>
     <entry id="7" name="hsa:6550" type="gene"
@@ -82,7 +82,7 @@
     </entry>
     <entry id="16" name="hsa:760" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:760">
-        <graphics name="CA2, CA-II, CAII, Car2" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CA2, CA-II, CAC, CAII, Car2" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="394" y="402" width="46" height="17"/>
     </entry>
     <entry id="17" name="cpd:C01330" type="compound"
@@ -227,7 +227,7 @@
     </entry>
     <entry id="45" name="hsa:1468" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:1468">
-        <graphics name="SLC25A10, DIC; solute carrier family 25 (mitochondrial carrier" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="SLC25A10, DIC" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="375" y="721" width="46" height="17"/>
     </entry>
     <entry id="46" name="cpd:C00149" type="compound"

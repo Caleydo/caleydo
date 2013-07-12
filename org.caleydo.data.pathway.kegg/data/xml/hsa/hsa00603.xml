@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
-<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
+<!DOCTYPE pathway SYSTEM "http://www.kegg.jp/kegg/xml/KGML_v0.7.1_.dtd">
 <!-- Creation date: Jun 6, 2012 14:03:12 +0900 (GMT+09:00) -->
 <pathway name="path:hsa00603" org="hsa" number="00603"
          title="Glycosphingolipid biosynthesis - globo series"
-         image="http://www.genome.jp/kegg/pathway/hsa/hsa00603.png"
-         link="http://www.genome.jp/kegg-bin/show_pathway?hsa00603">
+         image="http://www.kegg.jp/kegg/pathway/hsa/hsa00603.png"
+         link="http://www.kegg.jp/kegg-bin/show_pathway?hsa00603">
     <entry id="3" name="hsa:6482 hsa:6483" type="gene" reaction="rn:R05967"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:6482+hsa:6483">
         <graphics name="ST3GAL1, Gal-NAc6S, SIAT4A, SIATFL, ST3GalA, ST3GalA.1, ST3GalIA, ST3GalIA,1, ST3O..." fgcolor="#000000" bgcolor="#BFFFBF"
@@ -87,7 +87,7 @@
     </entry>
     <entry id="39" name="hsa:53947" type="gene" reaction="rn:R05960"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:53947">
-        <graphics name="A4GALT, A14GALT, A4GALT1, Gb3S, P(k), P1, PK" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="A4GALT, A14GALT, A4GALT1, Gb3S, P(k), P1, P1PK, PK" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="162" y="190" width="46" height="17"/>
     </entry>
     <entry id="40" name="gl:G00094" type="compound"
@@ -157,42 +157,42 @@
     </entry>
     <entry id="58" name="hsa:6489" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:6489">
-        <graphics name="ST8SIA1, GD3S, SIAT8, SIAT8-A, SIAT8A, ST8SiaI" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="ST8SIA1, GD3S, SIAT8, SIAT8-A, SIAT8A, ST8SiaI" fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="62,701,92,701"/>
     </entry>
     <entry id="59" name="hsa:2523 hsa:2524" type="gene" reaction="rn:R05968"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2523+hsa:2524">
-        <graphics name="FUT1, H, HH, HSC..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="FUT1, H, HH, HSC..." fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="174,729,189,714"/>
     </entry>
     <entry id="61" name="hsa:26301" type="gene" reaction="rn:R05965"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:26301">
-        <graphics name="GBGT1, A3GALNT, FS, UNQ2513" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="GBGT1, A3GALNT, FS, UNQ2513" fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="219,651,249,651"/>
     </entry>
     <entry id="63" name="hsa:10317" type="gene" reaction="rn:R05964"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:10317">
-        <graphics name="B3GALT5, B3GalT-V, B3GalTx, B3T5, GLCT5, beta3Gal-T5" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="B3GALT5, B3GalT-V, B3GalTx, B3T5, GLCT5, beta3Gal-T5" fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="220,693,250,663"/>
     </entry>
     <entry id="64" name="hsa:53947" type="gene" reaction="rn:R05960"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:53947">
-        <graphics name="A4GALT, A14GALT, A4GALT1, Gb3S, P(k), P1, PK" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="A4GALT, A14GALT, A4GALT1, Gb3S, P(k), P1, P1PK, PK" fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="377,651,407,651"/>
     </entry>
     <entry id="65" name="hsa:6482 hsa:6483" type="gene" reaction="rn:R05967"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:6482+hsa:6483">
-        <graphics name="ST3GAL1, Gal-NAc6S, SIAT4A, SIATFL, ST3GalA, ST3GalA.1, ST3GalIA, ST3GalIA,1, ST3O..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="ST3GAL1, Gal-NAc6S, SIAT4A, SIATFL, ST3GalA, ST3GalA.1, ST3GalIA, ST3GalIA,1, ST3O..." fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="157,701,187,701"/>
     </entry>
     <entry id="66" name="hsa:8706" type="gene" reaction="rn:R05962"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:8706">
-        <graphics name="B3GALNT1, B3GALT3, GLCT3, GLOB, Gb4Cer, P, P1, beta3Gal-T3, galT3" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="B3GALNT1, B3GALT3, GLCT3, GLOB, Gb4Cer, P, P1, beta3Gal-T3, galT3" fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="306,651,336,651"/>
     </entry>
     <entry id="72" name="hsa:10690" type="gene" reaction="rn:R05904"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:10690">
-        <graphics name="FUT9, Fuc-TIX" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="FUT9, Fuc-TIX" fgcolor="#66CC66" bgcolor="#FFFFFF"
              type="line" coords="152,622,167,607"/>
     </entry>
     <relation entry1="39" entry2="51" type="ECrel">

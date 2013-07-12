@@ -1,18 +1,18 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Jul 2, 2009 13:14:53 +0900 (JST) -->
+<!-- Creation date: Jul 18, 2012 10:44:08 +0900 (GMT+09:00) -->
 <pathway name="path:mmu04930" org="mmu" number="04930"
          title="Type II diabetes mellitus"
          image="http://www.genome.jp/kegg/pathway/mmu/mmu04930.png"
          link="http://www.genome.jp/kegg-bin/show_pathway?mmu04930">
     <entry id="1" name="mmu:18746 mmu:18770" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:18746+mmu:18770">
-        <graphics name="Pkm2, AA414905, AL024370, AL024424, Pk-2, Pk-3, Pk3..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Pkm, AA414905, AL024370, AL024424, Pk-2, Pk-3, Pk3, Pkm2..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="432" y="762" width="46" height="17"/>
     </entry>
     <entry id="2" name="mmu:18706 mmu:18707 mmu:18708 mmu:18709 mmu:18710 mmu:30955 mmu:320207 mmu:74769" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:18706+mmu:18707+mmu:18708+mmu:18709+mmu:18710+mmu:30955+mmu:320207+mmu:74769">
-        <graphics name="Pik3ca, 6330412C24Rik, MGC161268, caPI3K, p110, p110alpha..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Pik3ca, 6330412C24Rik, caPI3K, p110, p110alpha..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="515" y="250" width="46" height="17"/>
     </entry>
     <entry id="3" name="mmu:20528" type="gene"
@@ -117,7 +117,7 @@
     </entry>
     <entry id="23" name="mmu:21926" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:21926">
-        <graphics name="Tnf, DIF, MGC151434, TNF-alpha, TNFSF2, TNFalpha, Tnfa, Tnfsf1a" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Tnf, DIF, TNF-alpha, TNFSF2, TNFalpha, Tnfa, Tnfsf1a" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="183" y="417" width="46" height="17"/>
     </entry>
     <entry id="24" name="mmu:26414 mmu:26419 mmu:26420" type="gene"
@@ -142,7 +142,7 @@
     </entry>
     <entry id="28" name="mmu:56717" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:56717">
-        <graphics name="Mtor, 2610315D21Rik, AI327068, FRAP, FRAP2, Frap1, MGC118056, RAFT1, RAPT1, flat" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Mtor, 2610315D21Rik, AI327068, FRAP, FRAP2, Frap1, RAFT1, RAPT1, flat" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="349" y="417" width="46" height="17"/>
     </entry>
     <entry id="29" name="mmu:378435" type="gene"
@@ -294,7 +294,7 @@
     <relation entry1="31" entry2="9" type="PCrel">
     </relation>
     <relation entry1="25" entry2="26" type="PPrel">
-        <subtype name="compound" value="13"/>
+        <subtype name="compound" value="14"/>
     </relation>
     <relation entry1="27" entry2="1" type="PPrel">
         <subtype name="indirect effect" value="..&gt;"/>

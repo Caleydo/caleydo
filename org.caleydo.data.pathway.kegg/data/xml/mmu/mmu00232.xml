@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
-<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Sep 14, 2011 15:22:55 +0900 (GMT+09:00) -->
+<!DOCTYPE pathway SYSTEM "http://www.kegg.jp/kegg/xml/KGML_v0.7.1_.dtd">
+<!-- Creation date: Mar 1, 2013 16:33:01 +0900 (GMT+09:00) -->
 <pathway name="path:mmu00232" org="mmu" number="00232"
          title="Caffeine metabolism"
-         image="http://www.genome.jp/kegg/pathway/mmu/mmu00232.png"
-         link="http://www.genome.jp/kegg-bin/show_pathway?mmu00232">
+         image="http://www.kegg.jp/kegg/pathway/mmu/mmu00232.png"
+         link="http://www.kegg.jp/kegg-bin/show_pathway?mmu00232">
     <entry id="25" name="cpd:C00385" type="compound"
         link="http://www.kegg.jp/dbget-bin/www_bget?C00385">
         <graphics name="C00385" fgcolor="#000000" bgcolor="#FFFFFF"

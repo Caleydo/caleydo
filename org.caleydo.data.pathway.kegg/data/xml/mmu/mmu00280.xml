@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Jun 1, 2012 11:34:43 +0900 (GMT+09:00) -->
+<!-- Creation date: Sep 12, 2012 13:58:20 +0900 (GMT+09:00) -->
 <pathway name="path:mmu00280" org="mmu" number="00280"
          title="Valine, leucine and isoleucine degradation"
          image="http://www.genome.jp/kegg/pathway/mmu/mmu00280.png"
@@ -130,9 +130,9 @@
         <graphics name="Hmgcs2, 1300002P16, mHS..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="227" y="661" width="46" height="17"/>
     </entry>
-    <entry id="79" name="mmu:353371 mmu:64059 mmu:67041" type="gene" reaction="rn:R00410"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:353371+mmu:64059+mmu:67041">
-        <graphics name="Oxct2b, Scot-t2..." fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="79" name="mmu:101056567 mmu:353371 mmu:64059 mmu:67041" type="gene" reaction="rn:R00410"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:101056567+mmu:353371+mmu:64059+mmu:67041">
+        <graphics name="101056567..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="203" y="733" width="46" height="17"/>
     </entry>
     <entry id="80" name="mmu:15356" type="gene" reaction="rn:R01360"
@@ -210,8 +210,8 @@
         <graphics name="Bcat1, BCATc, Eca39..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="597" y="204" width="46" height="17"/>
     </entry>
-    <entry id="96" name="mmu:100328588 mmu:100470 mmu:14204" type="gene" reaction="rn:R02197"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:100328588+mmu:100470+mmu:14204">
+    <entry id="96" name="mmu:100328588 mmu:100470 mmu:14204 mmu:73988" type="gene" reaction="rn:R02197"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:100328588+mmu:100470+mmu:14204+mmu:73988">
         <graphics name="Nup62-il4i1..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="549" y="204" width="46" height="17"/>
     </entry>
@@ -230,13 +230,13 @@
         <graphics name="Pcca, C79630..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="599" y="816" width="46" height="17"/>
     </entry>
-    <entry id="100" name="mmu:11761 mmu:213043" type="gene" reaction="rn:R03871"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:11761+mmu:213043">
+    <entry id="100" name="mmu:11761 mmu:213043 mmu:71724 mmu:71872" type="gene" reaction="rn:R03871"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:11761+mmu:213043+mmu:71724+mmu:71872">
         <graphics name="Aox1, AI196512, AI255253, Ao, Aox-1, Aox-2, Aox2, Moro, Ro..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="454" y="803" width="46" height="17"/>
     </entry>
-    <entry id="101" name="mmu:110695 mmu:11668 mmu:11669 mmu:11671 mmu:56752 mmu:72535" type="gene" reaction="rn:R03869"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:110695+mmu:11668+mmu:11669+mmu:11671+mmu:56752+mmu:72535">
+    <entry id="101" name="mmu:110695 mmu:11669 mmu:11671 mmu:56752 mmu:72535" type="gene" reaction="rn:R03869"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:110695+mmu:11669+mmu:11671+mmu:56752+mmu:72535">
         <graphics name="Aldh7a1, Atq1, D18Wsu181e..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="404" y="803" width="46" height="17"/>
     </entry>
@@ -540,7 +540,7 @@
         <graphics name="Acad8, 2310016C19Rik, AI786953" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="430" y="506" width="46" height="17"/>
     </entry>
-    <entry id="174" name="ko:K00271" type="ortholog" reaction="rn:R01212"
+    <entry id="174" name="ko:K00271" type="ortholog" reaction="rn:R01434"
         link="http://www.kegg.jp/dbget-bin/www_bget?K00271">
         <graphics name="K00271" fgcolor="#000000" bgcolor="#FFFFFF"
              type="rectangle" x="382" y="204" width="46" height="17"/>
@@ -804,10 +804,10 @@
         <subtype name="compound" value="149"/>
     </relation>
     <reaction id="54" name="rn:R07604" type="irreversible">
-        <substrate id="53" name="cpd:C15978"/>
         <substrate id="58" name="cpd:C15972"/>
-        <product id="159" name="cpd:C15979"/>
+        <substrate id="53" name="cpd:C15978"/>
         <product id="61" name="cpd:C00068"/>
+        <product id="159" name="cpd:C15979"/>
     </reaction>
     <reaction id="55" name="rn:R07618" type="irreversible">
         <substrate id="56" name="cpd:C15973"/>
@@ -820,16 +820,16 @@
     <reaction id="64" name="rn:R07600" type="irreversible">
         <substrate id="59" name="cpd:C15972"/>
         <substrate id="60" name="cpd:C15976"/>
-        <product id="156" name="cpd:C15977"/>
         <product id="62" name="cpd:C00068"/>
+        <product id="156" name="cpd:C15977"/>
     </reaction>
     <reaction id="69" name="rn:R07618" type="irreversible">
         <substrate id="65" name="cpd:C15973"/>
         <product id="66" name="cpd:C15972"/>
     </reaction>
     <reaction id="70" name="rn:R07602" type="irreversible">
-        <substrate id="67" name="cpd:C15974"/>
         <substrate id="66" name="cpd:C15972"/>
+        <substrate id="67" name="cpd:C15974"/>
         <product id="68" name="cpd:C00068"/>
         <product id="129" name="cpd:C15975"/>
     </reaction>
@@ -848,8 +848,8 @@
     </reaction>
     <reaction id="80" name="rn:R01360" type="irreversible">
         <substrate id="134" name="cpd:C00356"/>
-        <product id="135" name="cpd:C00164"/>
         <product id="137" name="cpd:C00024"/>
+        <product id="135" name="cpd:C00164"/>
     </reaction>
     <reaction id="81" name="rn:R02085" type="reversible">
         <substrate id="134" name="cpd:C00356"/>
@@ -878,8 +878,8 @@
     </reaction>
     <reaction id="89" name="rn:R00927" type="irreversible">
         <substrate id="145" name="cpd:C03344"/>
-        <product id="144" name="cpd:C00100"/>
         <product id="137" name="cpd:C00024"/>
+        <product id="144" name="cpd:C00100"/>
     </reaction>
     <reaction id="90" name="rn:R05066" type="reversible">
         <substrate id="152" name="cpd:C06001"/>
@@ -899,8 +899,8 @@
         <product id="56" name="cpd:C15973"/>
     </reaction>
     <reaction id="94" name="rn:R07599" type="irreversible">
-        <substrate id="62" name="cpd:C00068"/>
         <substrate id="155" name="cpd:C00141"/>
+        <substrate id="62" name="cpd:C00068"/>
         <product id="60" name="cpd:C15976"/>
     </reaction>
     <reaction id="95" name="rn:R02199" type="irreversible">
@@ -973,8 +973,8 @@
         <product id="149" name="cpd:C00630"/>
     </reaction>
     <reaction id="112" name="rn:R07601" type="irreversible">
-        <substrate id="68" name="cpd:C00068"/>
         <substrate id="128" name="cpd:C00233"/>
+        <substrate id="68" name="cpd:C00068"/>
         <product id="67" name="cpd:C15974"/>
     </reaction>
     <reaction id="113" name="rn:R04097" type="irreversible">

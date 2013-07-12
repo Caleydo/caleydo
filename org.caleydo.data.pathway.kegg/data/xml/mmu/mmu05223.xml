@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Jun 11, 2012 11:27:48 +0900 (GMT+09:00) -->
+<!-- Creation date: Oct 2, 2012 14:12:42 +0900 (GMT+09:00) -->
 <pathway name="path:mmu05223" org="mmu" number="05223"
          title="Non-small cell lung cancer"
          image="http://www.genome.jp/kegg/pathway/mmu/mmu05223.png"
@@ -62,7 +62,7 @@
     </entry>
     <entry id="12" name="mmu:18706 mmu:18707 mmu:18708 mmu:18709 mmu:18710 mmu:30955 mmu:320207 mmu:74769" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:18706+mmu:18707+mmu:18708+mmu:18709+mmu:18710+mmu:30955+mmu:320207+mmu:74769">
-        <graphics name="Pik3ca, 6330412C24Rik, MGC161268, caPI3K, p110, p110alpha..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Pik3ca, 6330412C24Rik, caPI3K, p110, p110alpha..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="445" y="324" width="46" height="17"/>
     </entry>
     <entry id="13" name="mmu:12567 mmu:12571 mmu:640611" type="gene"
@@ -77,7 +77,7 @@
     </entry>
     <entry id="15" name="mmu:13555 mmu:13557 mmu:242705" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:13555+mmu:13557+mmu:242705">
-        <graphics name="E2f1, E2F-1, KIAA4009, mKIAA4009..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="E2f1, E2F-1, mKIAA4009..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="1024" y="317" width="46" height="17"/>
     </entry>
     <entry id="16" name="mmu:15461 mmu:16653 mmu:18176" type="gene"
@@ -102,7 +102,7 @@
     </entry>
     <entry id="20" name="mmu:13649" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:13649">
-        <graphics name="Egfr, 9030024J15Rik, AI552599, Erbb, Errp, Wa5, wa-2, wa2" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Egfr, 9030024J15Rik, AI552599, Erbb, Errb1, Errp, Wa5, wa-2, wa2" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="303" y="475" width="46" height="17"/>
     </entry>
     <entry id="21" name="mmu:56484" type="gene"
@@ -182,7 +182,7 @@
     </entry>
     <entry id="36" name="mmu:54354" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:54354">
-        <graphics name="Rassf5, 1300019G20Rik, AU042887, MGC107647, Maxp1, Nore1, Nore1A, Nore1B, Rapl" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Rassf5, 1300019G20Rik, AU042887, Maxp1, Nore1, Nore1A, Nore1B, Rapl" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="493" y="233" width="46" height="17"/>
     </entry>
     <entry id="37" name="mmu:12443" type="gene"
@@ -202,7 +202,7 @@
     </entry>
     <entry id="40" name="mmu:18706 mmu:18707 mmu:30955 mmu:74769" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:18706+mmu:18707+mmu:30955+mmu:74769">
-        <graphics name="Pik3ca, 6330412C24Rik, MGC161268, caPI3K, p110, p110alpha..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Pik3ca, 6330412C24Rik, caPI3K, p110, p110alpha..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="445" y="553" width="46" height="17"/>
     </entry>
     <entry id="41" name="mmu:14198" type="gene"
@@ -232,7 +232,7 @@
     </entry>
     <entry id="46" name="mmu:16653" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:16653">
-        <graphics name="Kras, AI929937, K-ras, Ki-ras, Kras-2, Kras2, MGC7141, p21B, ras" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Kras, AI929937, K-ras, Ki-ras, Kras-2, Kras2, p21B, ras" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="365" y="324" width="46" height="17"/>
     </entry>
     <entry id="47" name="path:mmu04110" type="map"
@@ -260,15 +260,15 @@
         <graphics name="MAPK signaling pathway" fgcolor="#000000" bgcolor="#FFFFFF"
              type="roundrectangle" x="725" y="436" width="104" height="34"/>
     </entry>
-    <entry id="52" name="path:mmu04210" type="map"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu04210">
-        <graphics name="Apoptosis" fgcolor="#000000" bgcolor="#FFFFFF"
-             type="roundrectangle" x="769" y="589" width="104" height="34"/>
-    </entry>
-    <entry id="53" name="path:mmu04012" type="map"
+    <entry id="52" name="path:mmu04012" type="map"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu04012">
         <graphics name="ErbB signaling pathway" fgcolor="#000000" bgcolor="#FFFFFF"
              type="roundrectangle" x="397" y="588" width="104" height="34"/>
+    </entry>
+    <entry id="53" name="path:mmu04151" type="map"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu04151">
+        <graphics name="PI3K-Akt signaling pathway" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="774" y="588" width="104" height="34"/>
     </entry>
     <entry id="54" name="undefined" type="group">
         <graphics fgcolor="#000000" bgcolor="#FFFFFF"

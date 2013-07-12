@@ -7,7 +7,7 @@
          link="http://www.genome.jp/kegg-bin/show_pathway?hsa00785">
     <entry id="5" name="hsa:11019" type="gene" reaction="rn:R07768"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:11019">
-        <graphics name="LIAS, LAS, LIP1, LS, MGC23245" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="LIAS, LAS, LIP1, LS, PDHLD" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="180" y="205" width="46" height="17"/>
     </entry>
     <entry id="6" name="hsa:387787" type="gene" reaction="rn:R07769"
@@ -37,7 +37,7 @@
     </entry>
     <entry id="11" name="hsa:11019" type="gene" reaction="rn:R07767"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:11019">
-        <graphics name="LIAS, LAS, LIP1, LS, MGC23245" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="LIAS, LAS, LIP1, LS, PDHLD" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="280" y="305" width="46" height="17"/>
     </entry>
     <entry id="12" name="hsa:387787" type="gene" reaction="rn:R07766"
@@ -52,7 +52,7 @@
     </entry>
     <entry id="15" name="hsa:51601" type="gene" reaction="rn:R07771"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:51601">
-        <graphics name="LIPT1, MGC12290, MGC13378" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="LIPT1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="446" y="305" width="46" height="17"/>
     </entry>
     <entry id="16" name="cpd:C05752" type="compound"

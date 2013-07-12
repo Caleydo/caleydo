@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
-<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: May 21, 2010 11:19:02 +0900 (GMT+09:00) -->
+<!DOCTYPE pathway SYSTEM "http://www.kegg.jp/kegg/xml/KGML_v0.7.1_.dtd">
+<!-- Creation date: May 29, 2013 18:26:44 +0900 (GMT+09:00) -->
 <pathway name="path:mmu04966" org="mmu" number="04966"
          title="Collecting duct acid secretion"
-         image="http://www.genome.jp/kegg/pathway/mmu/mmu04966.png"
-         link="http://www.genome.jp/kegg-bin/show_pathway?mmu04966">
+         image="http://www.kegg.jp/kegg/pathway/mmu/mmu04966.png"
+         link="http://www.kegg.jp/kegg-bin/show_pathway?mmu04966">
     <entry id="1" name="path:mmu04966" type="map"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu04966">
         <graphics name="TITLE:Collecting duct acid secretion" fgcolor="#000000" bgcolor="#FFFFFF"

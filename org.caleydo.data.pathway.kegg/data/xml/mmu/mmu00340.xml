@@ -65,8 +65,8 @@
         <graphics name="Hdc, 4732480P20, AW108189, Hdc-a, Hdc-c, Hdc-e, Hdc-s" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="657" y="330" width="46" height="17"/>
     </entry>
-    <entry id="54" name="mmu:110695 mmu:11668 mmu:11669 mmu:11671 mmu:56752 mmu:72535" type="gene" reaction="rn:R04065"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:110695+mmu:11668+mmu:11669+mmu:11671+mmu:56752+mmu:72535">
+    <entry id="54" name="mmu:110695 mmu:11669 mmu:11671 mmu:56752 mmu:72535" type="gene" reaction="rn:R04065"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:110695+mmu:11669+mmu:11671+mmu:56752+mmu:72535">
         <graphics name="Aldh7a1, Atq1, D18Wsu181e..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="422" y="341" width="46" height="17"/>
     </entry>
@@ -75,8 +75,8 @@
         <graphics name="Maob, 6330414K01Rik, MAO-B..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="574" y="445" width="46" height="17"/>
     </entry>
-    <entry id="56" name="mmu:11670 mmu:56847 mmu:621603 mmu:67689" type="gene" reaction="rn:R04996"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:11670+mmu:56847+mmu:621603+mmu:67689">
+    <entry id="56" name="mmu:11670 mmu:56847 mmu:621603 mmu:67689 mmu:73458" type="gene" reaction="rn:R04996"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:11670+mmu:56847+mmu:621603+mmu:67689+mmu:73458">
         <graphics name="Aldh3a1, Ahd-4, Ahd4, Aldh, Aldh3..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="574" y="520" width="46" height="17"/>
     </entry>

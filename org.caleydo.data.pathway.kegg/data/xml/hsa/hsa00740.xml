@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
-<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
+<!DOCTYPE pathway SYSTEM "http://www.kegg.jp/kegg/xml/KGML_v0.7.1_.dtd">
 <!-- Creation date: Jun 8, 2012 13:38:31 +0900 (GMT+09:00) -->
 <pathway name="path:hsa00740" org="hsa" number="00740"
          title="Riboflavin metabolism"
-         image="http://www.genome.jp/kegg/pathway/hsa/hsa00740.png"
-         link="http://www.genome.jp/kegg-bin/show_pathway?hsa00740">
+         image="http://www.kegg.jp/kegg/pathway/hsa/hsa00740.png"
+         link="http://www.kegg.jp/kegg-bin/show_pathway?hsa00740">
     <entry id="3" name="cpd:C15556" type="compound"
         link="http://www.kegg.jp/dbget-bin/www_bget?C15556">
         <graphics name="C15556" fgcolor="#000000" bgcolor="#FFFFFF"
@@ -127,17 +127,17 @@
     </entry>
     <entry id="46" name="hsa:80308" type="gene" reaction="rn:R00161"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:80308">
-        <graphics name="FLAD1, FAD1, FADS, MGC31803, MGC40255, RP11-307C12.7" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="FLAD1, FAD1, FADS, RP11-307C12.7" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="742" y="305" width="46" height="17"/>
     </entry>
-    <entry id="48" name="hsa:51205 hsa:52 hsa:53 hsa:54 hsa:55 hsa:93650" type="gene" reaction="rn:R00548"
-        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:51205+hsa:52+hsa:53+hsa:54+hsa:55+hsa:93650">
-        <graphics name="ACP6, ACPL1, LPAP, PACPL1..." fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="48" name="hsa:101060704 hsa:51205 hsa:52 hsa:53 hsa:54 hsa:55 hsa:93650" type="gene" reaction="rn:R00548"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:101060704+hsa:51205+hsa:52+hsa:53+hsa:54+hsa:55+hsa:93650">
+        <graphics name="101060704..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="634" y="282" width="46" height="17"/>
     </entry>
     <entry id="49" name="hsa:55312" type="gene" reaction="rn:R00549"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:55312">
-        <graphics name="RFK, FLJ11149, RIFK" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="RFK, RIFK" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="633" y="305" width="46" height="17"/>
     </entry>
     <entry id="50" name="ko:K01497 ko:K14652" type="ortholog" reaction="rn:R00425"
@@ -202,7 +202,7 @@
     </entry>
     <entry id="67" name="hsa:645" type="gene" reaction="rn:R09520"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:645">
-        <graphics name="BLVRB, BVRB, FLR, MGC117413, SDR43U1" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="BLVRB, BVRB, FLR, SDR43U1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="790" y="353" width="46" height="17"/>
     </entry>
     <entry id="68" name="path:hsa00860" type="map"

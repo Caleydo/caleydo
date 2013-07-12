@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
-<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Jun 4, 2012 10:31:45 +0900 (GMT+09:00) -->
+<!DOCTYPE pathway SYSTEM "http://www.kegg.jp/kegg/xml/KGML_v0.7.1_.dtd">
+<!-- Creation date: Jun 17, 2013 16:59:13 +0900 (GMT+09:00) -->
 <pathway name="path:mmu00360" org="mmu" number="00360"
          title="Phenylalanine metabolism"
-         image="http://www.genome.jp/kegg/pathway/mmu/mmu00360.png"
-         link="http://www.genome.jp/kegg-bin/show_pathway?mmu00360">
+         image="http://www.kegg.jp/kegg/pathway/mmu/mmu00360.png"
+         link="http://www.kegg.jp/kegg-bin/show_pathway?mmu00360">
     <entry id="54" name="ko:K01666" type="ortholog" reaction="rn:R00750"
         link="http://www.kegg.jp/dbget-bin/www_bget?K01666">
         <graphics name="K01666" fgcolor="#000000" bgcolor="#FFFFFF"
@@ -20,8 +20,8 @@
         <graphics name="Tropane, piperidine and pyridine alkaloid biosynthesis" fgcolor="#000000" bgcolor="#FFFFFF"
              type="roundrectangle" x="244" y="172" width="160" height="34"/>
     </entry>
-    <entry id="57" name="mmu:11670 mmu:56847 mmu:621603 mmu:67689" type="gene" reaction="rn:R02536 rn:R02537"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:11670+mmu:56847+mmu:621603+mmu:67689">
+    <entry id="57" name="mmu:11670 mmu:56847 mmu:621603 mmu:67689 mmu:73458" type="gene" reaction="rn:R02536 rn:R02537"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:11670+mmu:56847+mmu:621603+mmu:67689+mmu:73458">
         <graphics name="Aldh3a1, Ahd-4, Ahd4, Aldh, Aldh3..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="269" y="490" width="46" height="17"/>
     </entry>
@@ -150,8 +150,8 @@
         <graphics name="K01426" fgcolor="#000000" bgcolor="#FFFFFF"
              type="rectangle" x="212" y="534" width="46" height="17"/>
     </entry>
-    <entry id="89" name="mmu:100328588 mmu:100470 mmu:14204" type="gene" reaction="rn:R00689"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:100328588+mmu:100470+mmu:14204">
+    <entry id="89" name="mmu:100328588 mmu:100470 mmu:14204 mmu:73988" type="gene" reaction="rn:R00689"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:100328588+mmu:100470+mmu:14204+mmu:73988">
         <graphics name="Nup62-il4i1..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="496" y="289" width="46" height="17"/>
     </entry>

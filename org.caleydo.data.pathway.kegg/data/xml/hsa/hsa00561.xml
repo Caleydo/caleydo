@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
-<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Jun 6, 2012 10:43:50 +0900 (GMT+09:00) -->
+<!DOCTYPE pathway SYSTEM "http://www.kegg.jp/kegg/xml/KGML_v0.7.1_.dtd">
+<!-- Creation date: Feb 8, 2013 09:16:02 +0900 (GMT+09:00) -->
 <pathway name="path:hsa00561" org="hsa" number="00561"
          title="Glycerolipid metabolism"
-         image="http://www.genome.jp/kegg/pathway/hsa/hsa00561.png"
-         link="http://www.genome.jp/kegg-bin/show_pathway?hsa00561">
+         image="http://www.kegg.jp/kegg/pathway/hsa/hsa00561.png"
+         link="http://www.kegg.jp/kegg-bin/show_pathway?hsa00561">
     <entry id="35" name="ko:K00679" type="ortholog" reaction="rn:R05333"
         link="http://www.kegg.jp/dbget-bin/www_bget?K00679">
         <graphics name="K00679" fgcolor="#000000" bgcolor="#FFFFFF"
@@ -30,8 +30,8 @@
         <graphics name="Glycerophospholipid metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
              type="roundrectangle" x="94" y="430" width="117" height="34"/>
     </entry>
-    <entry id="41" name="hsa:1056 hsa:119548 hsa:3990 hsa:5406 hsa:5407 hsa:5408 hsa:80339 hsa:8513 hsa:9388" type="gene" reaction="rn:R02250"
-        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:1056+hsa:119548+hsa:3990+hsa:5406+hsa:5407+hsa:5408+hsa:80339+hsa:8513+hsa:9388">
+    <entry id="41" name="hsa:1056 hsa:119548 hsa:3990 hsa:5406 hsa:5407 hsa:5408 hsa:57104 hsa:80339 hsa:8513 hsa:9388" type="gene" reaction="rn:R02250"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:1056+hsa:119548+hsa:3990+hsa:5406+hsa:5407+hsa:5408+hsa:57104+hsa:80339+hsa:8513+hsa:9388">
         <graphics name="CEL, BAL, BSDL, BSSL, CELL, CEase, FAP, FAPP, LIPA, MODY8..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="636" y="456" width="46" height="17"/>
     </entry>
@@ -55,8 +55,8 @@
         <graphics name="LPIN1, PAP1..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="448" y="502" width="46" height="17"/>
     </entry>
-    <entry id="47" name="hsa:1056 hsa:119548 hsa:3990 hsa:5406 hsa:5407 hsa:5408 hsa:80339 hsa:8513 hsa:9388" type="gene" reaction="rn:R02687"
-        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:1056+hsa:119548+hsa:3990+hsa:5406+hsa:5407+hsa:5408+hsa:80339+hsa:8513+hsa:9388">
+    <entry id="47" name="hsa:1056 hsa:119548 hsa:3990 hsa:5406 hsa:5407 hsa:5408 hsa:57104 hsa:80339 hsa:8513 hsa:9388" type="gene" reaction="rn:R02687"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:1056+hsa:119548+hsa:3990+hsa:5406+hsa:5407+hsa:5408+hsa:57104+hsa:80339+hsa:8513+hsa:9388">
         <graphics name="CEL, BAL, BSDL, BSSL, CELL, CEase, FAP, FAPP, LIPA, MODY8..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="557" y="446" width="46" height="17"/>
     </entry>
@@ -72,7 +72,7 @@
     </entry>
     <entry id="50" name="hsa:55750" type="gene" reaction="rn:R02757"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:55750">
-        <graphics name="AGK, MTDPS10, MULK" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="AGK, CATC5, MTDPS10, MULK" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="446" y="421" width="46" height="17"/>
     </entry>
     <entry id="51" name="hsa:11343" type="gene" reaction="rn:R01351"
@@ -491,12 +491,12 @@
     </relation>
     <reaction id="41" name="rn:R02250" type="irreversible">
         <substrate id="80" name="cpd:C00422"/>
-        <product id="81" name="cpd:C00641"/>
         <product id="96" name="cpd:C00162"/>
+        <product id="81" name="cpd:C00641"/>
     </reaction>
     <reaction id="42" name="rn:R02251" type="irreversible">
-        <substrate id="81" name="cpd:C00641"/>
         <substrate id="95" name="cpd:C00040"/>
+        <substrate id="81" name="cpd:C00641"/>
         <product id="80" name="cpd:C00422"/>
     </reaction>
     <reaction id="45" name="rn:R02239" type="irreversible">
@@ -557,8 +557,8 @@
     </reaction>
     <reaction id="71" name="rn:R01350" type="irreversible">
         <substrate id="80" name="cpd:C00422"/>
-        <product id="81" name="cpd:C00641"/>
         <product id="96" name="cpd:C00162"/>
+        <product id="81" name="cpd:C00641"/>
     </reaction>
     <reaction id="72" name="rn:R04470" type="irreversible">
         <substrate id="106" name="cpd:C06037"/>

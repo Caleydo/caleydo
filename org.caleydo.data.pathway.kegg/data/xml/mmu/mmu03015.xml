@@ -60,8 +60,8 @@
         <graphics name="Pnn, AU045199, D12Ertd512e" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="199" y="258" width="46" height="17"/>
     </entry>
-    <entry id="12" name="mmu:100043292 mmu:21681 mmu:56009 mmu:624262" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:100043292+mmu:21681+mmu:56009+mmu:624262">
+    <entry id="12" name="mmu:100043292 mmu:21681 mmu:56009" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:100043292+mmu:21681+mmu:56009">
         <graphics name="Gm4340..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="245" y="258" width="46" height="17"/>
     </entry>

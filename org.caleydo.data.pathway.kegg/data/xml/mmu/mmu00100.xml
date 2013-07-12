@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: May 31, 2012 16:38:34 +0900 (GMT+09:00) -->
+<!-- Creation date: Sep 10, 2012 16:34:04 +0900 (GMT+09:00) -->
 <pathway name="path:mmu00100" org="mmu" number="00100"
          title="Steroid biosynthesis"
          image="http://www.genome.jp/kegg/pathway/mmu/mmu00100.png"

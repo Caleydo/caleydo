@@ -50,9 +50,9 @@
         <graphics name="Glycolysis / Gluconeogenesis" fgcolor="#000000" bgcolor="#FFFFFF"
              type="roundrectangle" x="412" y="260" width="73" height="25"/>
     </entry>
-    <entry id="18" name="mmu:353371 mmu:64059 mmu:67041" type="gene" reaction="rn:R00410"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:353371+mmu:64059+mmu:67041">
-        <graphics name="Oxct2b, Scot-t2..." fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="18" name="mmu:101056567 mmu:353371 mmu:64059 mmu:67041" type="gene" reaction="rn:R00410"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:101056567+mmu:353371+mmu:64059+mmu:67041">
+        <graphics name="101056567..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="73" y="316" width="46" height="17"/>
     </entry>
     <entry id="19" name="path:mmu00650" type="map"

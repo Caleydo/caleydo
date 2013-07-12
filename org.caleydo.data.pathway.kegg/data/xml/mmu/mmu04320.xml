@@ -22,7 +22,7 @@
     </entry>
     <entry id="4" name="mmu:234857 mmu:68166" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:234857+mmu:68166">
-        <graphics name="Spire2, BC026502, KIAA1832, MGC31610, Spir-2, Spir2..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Spire2, BC026502, Spir-2, Spir2..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="515" y="411" width="46" height="17"/>
     </entry>
     <entry id="5" name="mmu:54418" type="gene"
@@ -42,7 +42,7 @@
     </entry>
     <entry id="8" name="mmu:12877" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:12877">
-        <graphics name="Cpeb1, AU024112, Cpeb, MGC159179, mCPEB" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Cpeb1, AU024112, Cpeb, mCPEB" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="216" y="508" width="46" height="17"/>
     </entry>
     <entry id="9" name="ko:K02360" type="ortholog"
@@ -72,7 +72,7 @@
     </entry>
     <entry id="14" name="mmu:18128 mmu:18129 mmu:18131 mmu:18132" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:18128+mmu:18129+mmu:18131+mmu:18132">
-        <graphics name="Notch1, 9930111A19Rik, Mis6, Tan1, lin-12..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Notch1, 9930111A19Rik, Mis6, N1, Tan1, lin-12..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="164" y="291" width="46" height="17"/>
     </entry>
     <entry id="16" name="ko:K02174" type="ortholog"
@@ -92,7 +92,7 @@
     </entry>
     <entry id="19" name="mmu:23871 mmu:23872" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:23871+mmu:23872">
-        <graphics name="Ets1, AI196000, AI448617, D230050P06, Ets-1, MGC130355, MGC18571, Tpl1..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Ets1, AI196000, AI448617, D230050P06, Ets-1, Tpl1..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="582" y="166" width="46" height="17"/>
     </entry>
     <entry id="20" name="mmu:26413 mmu:26417" type="gene"
@@ -112,7 +112,7 @@
     </entry>
     <entry id="23" name="mmu:16653" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:16653">
-        <graphics name="Kras, AI929937, K-ras, Ki-ras, Kras-2, Kras2, MGC7141, p21B, ras" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Kras, AI929937, K-ras, Ki-ras, Kras-2, Kras2, p21B, ras" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="270" y="203" width="46" height="17"/>
     </entry>
     <entry id="24" name="mmu:20662 mmu:20663" type="gene"
@@ -132,7 +132,7 @@
     </entry>
     <entry id="27" name="mmu:13649" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:13649">
-        <graphics name="Egfr, 9030024J15Rik, AI552599, Erbb, Errp, Wa5, wa-2, wa2" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Egfr, 9030024J15Rik, AI552599, Erbb, Errb1, Errp, Wa5, wa-2, wa2" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="164" y="154" width="46" height="17"/>
     </entry>
     <entry id="28" name="ko:K02104" type="ortholog"

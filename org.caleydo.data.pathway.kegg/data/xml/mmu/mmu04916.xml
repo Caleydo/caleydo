@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Sep 13, 2010 13:00:15 +0900 (JST) -->
+<!-- Creation date: Oct 16, 2012 17:34:30 +0900 (GMT+09:00) -->
 <pathway name="path:mmu04916" org="mmu" number="04916"
          title="Melanogenesis"
          image="http://www.genome.jp/kegg/pathway/mmu/mmu04916.png"
@@ -27,7 +27,7 @@
     </entry>
     <entry id="5" name="mmu:17342" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:17342">
-        <graphics name="Mitf, Bhlhe32, Vitiligo, Wh, bw, mi, vit" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Mitf, BCC2, Bhlhe32, Gsfbcc2, Vitiligo, Wh, bw, mi, vit" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="532" y="328" width="46" height="17"/>
     </entry>
     <entry id="6" name="mmu:13190" type="gene"
@@ -57,7 +57,7 @@
     </entry>
     <entry id="11" name="mmu:12313 mmu:12314 mmu:12315 mmu:494124 mmu:70405 mmu:80796" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:12313+mmu:12314+mmu:12315+mmu:494124+mmu:70405+mmu:80796">
-        <graphics name="Calm1, AI256814, AI327027, AI461935, AL024000, CaM, Calm, Calm2, Calm3..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Calm1, AI256814, AI327027, AI461935, AL024000, CaM, Calm..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="498" y="430" width="46" height="17"/>
     </entry>
     <entry id="12" name="mmu:14677 mmu:14678 mmu:14679 mmu:14681" type="gene"
@@ -77,7 +77,7 @@
     </entry>
     <entry id="15" name="mmu:17342" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:17342">
-        <graphics name="Mitf, Bhlhe32, Vitiligo, Wh, bw, mi, vit" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Mitf, BCC2, Bhlhe32, Gsfbcc2, Vitiligo, Wh, bw, mi, vit" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="802" y="235" width="46" height="17"/>
     </entry>
     <entry id="16" name="cpd:C05606" type="compound"

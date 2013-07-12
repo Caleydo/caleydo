@@ -277,7 +277,7 @@
     </entry>
     <entry id="55" name="hsa:60 hsa:71" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:60+hsa:71">
-        <graphics name="ACTB, PS1TP5BP1..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="ACTB, BRWS1, PS1TP5BP1..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="801" y="524" width="46" height="17"/>
     </entry>
     <entry id="56" name="ko:K11007" type="ortholog"

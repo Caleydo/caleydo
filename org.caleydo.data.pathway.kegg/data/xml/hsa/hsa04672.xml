@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
-<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
+<!DOCTYPE pathway SYSTEM "http://www.kegg.jp/kegg/xml/KGML_v0.7.1_.dtd">
 <!-- Creation date: Sep 2, 2010 10:55:09 +0900 (JST) -->
 <pathway name="path:hsa04672" org="hsa" number="04672"
          title="Intestinal immune network for IgA production"
-         image="http://www.genome.jp/kegg/pathway/hsa/hsa04672.png"
-         link="http://www.genome.jp/kegg-bin/show_pathway?hsa04672">
+         image="http://www.kegg.jp/kegg/pathway/hsa/hsa04672.png"
+         link="http://www.kegg.jp/kegg-bin/show_pathway?hsa04672">
     <entry id="1" name="hsa:7040" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:7040">
         <graphics name="TGFB1, CED, DPD1, LAP, TGFB, TGFbeta" fgcolor="#000000" bgcolor="#BFFFBF"
@@ -37,7 +37,7 @@
     </entry>
     <entry id="7" name="hsa:8741" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:8741">
-        <graphics name="TNFSF13, APRIL, CD256, FLJ57090, TALL-2, TALL2, TRDL-1, ZTNF2" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="TNFSF13, APRIL, CD256, TALL-2, TALL2, TRDL-1, ZTNF2" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="465" y="514" width="46" height="17"/>
     </entry>
     <entry id="8" name="hsa:10673" type="gene"
@@ -52,17 +52,17 @@
     </entry>
     <entry id="10" name="hsa:958" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:958">
-        <graphics name="CD40, Bp50, CDW40, MGC9013, TNFRSF5, p50" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CD40, Bp50, CDW40, TNFRSF5, p50" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="573" y="678" width="46" height="17"/>
     </entry>
     <entry id="11" name="hsa:115650" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:115650">
-        <graphics name="TNFRSF13C, BAFF-R, BAFFR, BROMIX, CD268, CVID4, MGC138235, prolixin" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="TNFRSF13C, BAFF-R, BAFFR, BROMIX, CD268, CVID4, prolixin" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="573" y="533" width="46" height="17"/>
     </entry>
     <entry id="12" name="hsa:23495" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:23495">
-        <graphics name="TNFRSF13B, CD267, CVID, CVID2, FLJ39942, MGC133214, MGC39952, TACI, TNFRSF14B" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="TNFRSF13B, CD267, CVID, CVID2, TACI, TNFRSF14B" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="573" y="493" width="46" height="17"/>
     </entry>
     <entry id="13" name="hsa:608" type="gene"
@@ -77,7 +77,7 @@
     </entry>
     <entry id="15" name="hsa:940" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:940">
-        <graphics name="CD28, MGC138290, Tp44" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CD28, Tp44" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="318" y="627" width="46" height="17"/>
     </entry>
     <entry id="16" name="ko:K10784 ko:K10785" type="ortholog"
@@ -85,19 +85,19 @@
         <graphics name="K10784..." fgcolor="#000000" bgcolor="#FFFFFF"
              type="rectangle" x="368" y="627" width="46" height="17"/>
     </entry>
-    <entry id="17" name="hsa:3108 hsa:3109 hsa:3111 hsa:3112 hsa:3113 hsa:3115 hsa:3117 hsa:3118 hsa:3119 hsa:3122 hsa:3123 hsa:3125 hsa:3126 hsa:3127" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:3108+hsa:3109+hsa:3111+hsa:3112+hsa:3113+hsa:3115+hsa:3117+hsa:3118+hsa:3119+hsa:3122+hsa:3123+hsa:3125+hsa:3126+hsa:3127">
-        <graphics name="HLA-DMA, D6S222E, DMA, HLADM, RING6..." fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="17" name="hsa:100507709 hsa:100507714 hsa:100509457 hsa:101060835 hsa:3108 hsa:3109 hsa:3111 hsa:3112 hsa:3113 hsa:3115 hsa:3117 hsa:3118 hsa:3119 hsa:3122 hsa:3123 hsa:3125 hsa:3126 hsa:3127" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:100507709+hsa:100507714+hsa:100509457+hsa:101060835+hsa:3108+hsa:3109+hsa:3111+hsa:3112+hsa:3113+hsa:3115+hsa:3117+hsa:3118+hsa:3119+hsa:3122+hsa:3123+hsa:3125+hsa:3126+hsa:3127">
+        <graphics name="100507709..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="573" y="658" width="46" height="17"/>
     </entry>
     <entry id="18" name="hsa:10803" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:10803">
-        <graphics name="CCR9, CDw199, GPR-9-6, GPR28" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CCR9, CC-CKR-9, CDw199, GPR-9-6, GPR28" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="1161" y="522" width="46" height="17"/>
     </entry>
     <entry id="19" name="hsa:3586" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:3586">
-        <graphics name="IL10, CSIF, IL-10, IL10A, MGC126450, MGC126451, TGIF" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="IL10, CSIF, GVHDS, IL-10, IL10A, TGIF" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="1470" y="717" width="46" height="17"/>
     </entry>
     <entry id="20" name="hsa:2826" type="gene"
@@ -105,19 +105,19 @@
         <graphics name="CCR10, GPR2" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="1161" y="502" width="46" height="17"/>
     </entry>
-    <entry id="21" name="hsa:10850 hsa:56477" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:10850+hsa:56477">
-        <graphics name="CCL27, ALP, CTACK, CTAK, ESKINE, ILC, PESKY, SCYA27..." fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="21" name="hsa:56477" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:56477">
+        <graphics name="CCL28, CCK1, MEC, SCYA28" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="1314" y="502" width="46" height="17"/>
     </entry>
     <entry id="22" name="hsa:3600" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:3600">
-        <graphics name="IL15, IL-15, MGC9721" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="IL15, IL-15" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="1244" y="930" width="46" height="17"/>
     </entry>
     <entry id="23" name="hsa:8741" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:8741">
-        <graphics name="TNFSF13, APRIL, CD256, FLJ57090, TALL-2, TALL2, TRDL-1, ZTNF2" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="TNFSF13, APRIL, CD256, TALL-2, TALL2, TRDL-1, ZTNF2" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="465" y="884" width="46" height="17"/>
     </entry>
     <entry id="24" name="hsa:10673" type="gene"
@@ -127,12 +127,12 @@
     </entry>
     <entry id="25" name="hsa:23495" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:23495">
-        <graphics name="TNFRSF13B, CD267, CVID, CVID2, FLJ39942, MGC133214, MGC39952, TACI, TNFRSF14B" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="TNFRSF13B, CD267, CVID, CVID2, TACI, TNFRSF14B" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="573" y="638" width="46" height="17"/>
     </entry>
     <entry id="26" name="hsa:23495" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:23495">
-        <graphics name="TNFRSF13B, CD267, CVID, CVID2, FLJ39942, MGC133214, MGC39952, TACI, TNFRSF14B" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="TNFRSF13B, CD267, CVID, CVID2, TACI, TNFRSF14B" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="571" y="909" width="46" height="17"/>
     </entry>
     <entry id="27" name="path:hsa04670" type="map"
@@ -142,17 +142,17 @@
     </entry>
     <entry id="28" name="hsa:10803" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:10803">
-        <graphics name="CCR9, CDw199, GPR-9-6, GPR28" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CCR9, CC-CKR-9, CDw199, GPR-9-6, GPR28" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="909" y="504" width="46" height="17"/>
     </entry>
     <entry id="29" name="hsa:3676 hsa:3695" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:3676+hsa:3695">
-        <graphics name="ITGA4, CD49D, IA4, MGC90518..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="ITGA4, CD49D, IA4..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="909" y="525" width="46" height="17"/>
     </entry>
     <entry id="30" name="hsa:3676 hsa:3695" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:3676+hsa:3695">
-        <graphics name="ITGA4, CD49D, IA4, MGC90518..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="ITGA4, CD49D, IA4..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="1161" y="542" width="46" height="17"/>
     </entry>
     <entry id="31" name="hsa:8174" type="gene"
@@ -165,14 +165,14 @@
         <graphics name="CXCL12, IRH, PBSF, SCYB12, SDF1, SDF1A, SDF1B, TLSF, TPAR1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="1314" y="482" width="46" height="17"/>
     </entry>
-    <entry id="33" name="hsa:3108 hsa:3109 hsa:3111 hsa:3112 hsa:3113 hsa:3115 hsa:3117 hsa:3118 hsa:3119 hsa:3122 hsa:3123 hsa:3125 hsa:3126 hsa:3127" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:3108+hsa:3109+hsa:3111+hsa:3112+hsa:3113+hsa:3115+hsa:3117+hsa:3118+hsa:3119+hsa:3122+hsa:3123+hsa:3125+hsa:3126+hsa:3127">
-        <graphics name="HLA-DMA, D6S222E, DMA, HLADM, RING6..." fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="33" name="hsa:100507709 hsa:100507714 hsa:100509457 hsa:101060835 hsa:3108 hsa:3109 hsa:3111 hsa:3112 hsa:3113 hsa:3115 hsa:3117 hsa:3118 hsa:3119 hsa:3122 hsa:3123 hsa:3125 hsa:3126 hsa:3127" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:100507709+hsa:100507714+hsa:100509457+hsa:101060835+hsa:3108+hsa:3109+hsa:3111+hsa:3112+hsa:3113+hsa:3115+hsa:3117+hsa:3118+hsa:3119+hsa:3122+hsa:3123+hsa:3125+hsa:3126+hsa:3127">
+        <graphics name="100507709..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="369" y="489" width="46" height="17"/>
     </entry>
     <entry id="34" name="hsa:3565" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:3565">
-        <graphics name="IL4, BCGF-1, BCGF1, BSF-1, BSF1, IL-4, MGC79402" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="IL4, BCGF-1, BCGF1, BSF-1, BSF1, IL-4" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="465" y="743" width="46" height="17"/>
     </entry>
     <entry id="35" name="hsa:57379" type="gene"
@@ -185,24 +185,24 @@
         <graphics name="AICDA, AID, ARP2, CDA2, HIGM2" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="626" y="513" width="46" height="17"/>
     </entry>
-    <entry id="37" name="hsa:100132941 hsa:100291917" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:100132941+hsa:100291917">
-        <graphics name="100132941..." fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="37" name="ko:K06856" type="ortholog"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K06856">
+        <graphics name="K06856" fgcolor="#000000" bgcolor="#FFFFFF"
              type="rectangle" x="622" y="884" width="46" height="17"/>
     </entry>
-    <entry id="38" name="hsa:100132941 hsa:100291917" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:100132941+hsa:100291917">
-        <graphics name="100132941..." fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="38" name="ko:K06856" type="ortholog"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K06856">
+        <graphics name="K06856" fgcolor="#000000" bgcolor="#FFFFFF"
              type="rectangle" x="620" y="618" width="46" height="17"/>
     </entry>
-    <entry id="39" name="hsa:100132941 hsa:100291917" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:100132941+hsa:100291917">
-        <graphics name="100132941..." fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="39" name="ko:K06856" type="ortholog"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K06856">
+        <graphics name="K06856" fgcolor="#000000" bgcolor="#FFFFFF"
              type="rectangle" x="621" y="467" width="46" height="17"/>
     </entry>
     <entry id="40" name="hsa:6370" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:6370">
-        <graphics name="CCL25, Ckb15, MGC150327, SCYA25, TECK" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CCL25, Ckb15, SCYA25, TECK" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="1314" y="522" width="46" height="17"/>
     </entry>
     <entry id="41" name="ko:K10784 ko:K10785" type="ortholog"
@@ -217,7 +217,7 @@
     </entry>
     <entry id="43" name="hsa:3565" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:3565">
-        <graphics name="IL4, BCGF-1, BCGF1, BSF-1, BSF1, IL-4, MGC79402" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="IL4, BCGF-1, BCGF1, BSF-1, BSF1, IL-4" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="513" y="402" width="46" height="17"/>
     </entry>
     <entry id="44" name="hsa:3567" type="gene"
@@ -232,7 +232,7 @@
     </entry>
     <entry id="46" name="hsa:3586" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:3586">
-        <graphics name="IL10, CSIF, IL-10, IL10A, MGC126450, MGC126451, TGIF" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="IL10, CSIF, GVHDS, IL-10, IL10A, TGIF" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="465" y="440" width="46" height="17"/>
     </entry>
     <entry id="47" name="hsa:3558" type="gene"
@@ -257,7 +257,7 @@
     </entry>
     <entry id="51" name="hsa:3586" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:3586">
-        <graphics name="IL10, CSIF, IL-10, IL10A, MGC126450, MGC126451, TGIF" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="IL10, CSIF, GVHDS, IL-10, IL10A, TGIF" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="465" y="969" width="46" height="17"/>
     </entry>
     <entry id="52" name="hsa:3558" type="gene"
@@ -272,7 +272,7 @@
     </entry>
     <entry id="54" name="hsa:4055" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:4055">
-        <graphics name="LTBR, CD18, D12S370, LT-BETA-R, TNF-R-III, TNFCR, TNFR-RP, TNFR2-RP, TNFRSF3" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="LTBR, CD18, D12S370, LT-BETA-R, TNF-R-III, TNFCR, TNFR-RP, TNFR2-RP, TNFR3, TNFRSF3" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="302" y="1068" width="46" height="17"/>
     </entry>
     <entry id="55" name="hsa:9020" type="gene"
@@ -282,12 +282,12 @@
     </entry>
     <entry id="56" name="hsa:29851" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:29851">
-        <graphics name="ICOS, AILIM, CD278, CVID1, MGC39850" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="ICOS, AILIM, CD278, CVID1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="398" y="698" width="46" height="17"/>
     </entry>
     <entry id="57" name="hsa:23308" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:23308">
-        <graphics name="ICOSLG, B7-H2, B7H2, B7RP-1, B7RP1, CD275, GL50, ICOS-L, ICOSL, KIAA0653, LICOS" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="ICOSLG, B7-H2, B7H2, B7RP-1, B7RP1, CD275, GL50, ICOS-L, ICOSL, LICOS" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="573" y="698" width="46" height="17"/>
     </entry>
     <entry id="58" name="hsa:7852" type="gene"
@@ -297,17 +297,17 @@
     </entry>
     <entry id="59" name="hsa:3601" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:3601">
-        <graphics name="IL15RA, CD215, MGC104179" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="IL15RA, CD215" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="1161" y="930" width="46" height="17"/>
     </entry>
-    <entry id="60" name="hsa:100132941 hsa:100291917" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:100132941+hsa:100291917">
-        <graphics name="100132941..." fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="60" name="ko:K06856" type="ortholog"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K06856">
+        <graphics name="K06856" fgcolor="#000000" bgcolor="#FFFFFF"
              type="rectangle" x="1619" y="498" width="46" height="17"/>
     </entry>
     <entry id="61" name="hsa:5284" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5284">
-        <graphics name="PIGR, FLJ22667, MGC125361, MGC125362" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="PIGR" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="1619" y="323" width="46" height="17"/>
     </entry>
     <entry id="62" name="path:hsa04672" type="map"
@@ -371,9 +371,6 @@
         <subtype name="activation" value="--&gt;"/>
     </relation>
     <relation entry1="22" entry2="59" type="PPrel">
-        <subtype name="binding/association" value="---"/>
-    </relation>
-    <relation entry1="60" entry2="61" type="PPrel">
         <subtype name="binding/association" value="---"/>
     </relation>
     <relation entry1="23" entry2="26" type="PPrel">

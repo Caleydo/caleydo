@@ -107,12 +107,12 @@
     </entry>
     <entry id="48" name="hsa:51380" type="gene" reaction="rn:R01682"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:51380">
-        <graphics name="CSAD, CSD, FLJ44987, FLJ45500, MGC119354, MGC119355, MGC119357, PCAP" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CSAD, CSD, PCAP" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="300" y="313" width="46" height="17"/>
     </entry>
     <entry id="49" name="hsa:2571 hsa:2572" type="gene" reaction="rn:R01682"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2571+hsa:2572">
-        <graphics name="GAD1, CPSQ1, FLJ45882, GAD, SCP..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="GAD1, CPSQ1, GAD, SCP..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="300" y="292" width="46" height="17"/>
     </entry>
     <entry id="52" name="hsa:1036" type="gene" reaction="rn:R00893"
@@ -122,27 +122,27 @@
     </entry>
     <entry id="53" name="hsa:84890" type="gene" reaction="rn:R02467"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:84890">
-        <graphics name="ADO, C10orf22, DKFZp564C046, FLJ14547" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="ADO, C10orf22" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="300" y="145" width="46" height="17"/>
     </entry>
     <entry id="54" name="hsa:51380" type="gene" reaction="rn:R02466"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:51380">
-        <graphics name="CSAD, CSD, FLJ44987, FLJ45500, MGC119354, MGC119355, MGC119357, PCAP" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CSAD, CSD, PCAP" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="300" y="204" width="46" height="17"/>
     </entry>
     <entry id="55" name="hsa:2571 hsa:2572" type="gene" reaction="rn:R02466"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2571+hsa:2572">
-        <graphics name="GAD1, CPSQ1, FLJ45882, GAD, SCP..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="GAD1, CPSQ1, GAD, SCP..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="300" y="183" width="46" height="17"/>
     </entry>
     <entry id="56" name="hsa:124975 hsa:2678 hsa:2686 hsa:2687" type="gene" reaction="rn:R01687"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:124975+hsa:2678+hsa:2686+hsa:2687">
-        <graphics name="GGT6, FLJ25990, FLJ90165..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="GGT6..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="446" y="231" width="46" height="17"/>
     </entry>
     <entry id="57" name="hsa:570" type="gene" reaction="rn:R03720"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:570">
-        <graphics name="BAAT, BACAT, BAT, FLJ20300, MGC104432" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="BAAT, BACAT, BAT" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="274" y="340" width="46" height="17"/>
     </entry>
     <entry id="58" name="ko:K00925" type="ortholog" reaction="rn:R00315"

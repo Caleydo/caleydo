@@ -22,17 +22,17 @@
     </entry>
     <entry id="5" name="hsa:2683 hsa:8703 hsa:8704" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2683+hsa:8703+hsa:8704">
-        <graphics name="B4GALT1, B4GAL-T1, CDG2D, DKFZp686N19253, GGTB2, GT1, GTB, MGC50983, beta4Gal-T1..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="B4GALT1, B4GAL-T1, CDG2D, GGTB2, GT1, GTB, beta4Gal-T1..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
              type="line" coords="651,264,681,264"/>
     </entry>
     <entry id="6" name="hsa:6487" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:6487">
-        <graphics name="ST3GAL3, SIAT6, ST3GALII, ST3GalIII, ST3N" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="ST3GAL3, MRT12, SIAT6, ST3GALII, ST3GalIII, ST3N" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
              type="line" coords="578,265,608,265"/>
     </entry>
     <entry id="10" name="hsa:2683 hsa:8703 hsa:8704" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2683+hsa:8703+hsa:8704">
-        <graphics name="B4GALT1, B4GAL-T1, CDG2D, DKFZp686N19253, GGTB2, GT1, GTB, MGC50983, beta4Gal-T1..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="B4GALT1, B4GAL-T1, CDG2D, GGTB2, GT1, GTB, beta4Gal-T1..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
              type="line" coords="648,198,678,198"/>
     </entry>
     <entry id="11" name="hsa:10678 hsa:11041" type="gene"
@@ -42,7 +42,7 @@
     </entry>
     <entry id="12" name="hsa:2683 hsa:8703 hsa:8704" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2683+hsa:8703+hsa:8704">
-        <graphics name="B4GALT1, B4GAL-T1, CDG2D, DKFZp686N19253, GGTB2, GT1, GTB, MGC50983, beta4Gal-T1..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="B4GALT1, B4GAL-T1, CDG2D, GGTB2, GT1, GTB, beta4Gal-T1..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
              type="line" coords="476,198,506,198"/>
     </entry>
     <entry id="13" name="hsa:8702" type="gene"
@@ -62,7 +62,7 @@
     </entry>
     <entry id="16" name="hsa:2530" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2530">
-        <graphics name="FUT8, MGC26465" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="FUT8" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
              type="line" coords="1029,179,1029,209"/>
     </entry>
     <entry id="20" name="hsa:8534" type="gene"
@@ -92,12 +92,12 @@
     </entry>
     <entry id="25" name="hsa:6482 hsa:6483" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:6482+hsa:6483">
-        <graphics name="ST3GAL1, DKFZp666E036, DKFZp779K2051, FLJ36548, Gal-NAc6S, MGC9183, SIAT4A, SIATFL, ST3GalA, ST3GalA.1, ST3GalIA, ST3GalIA,1, ST3O..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="ST3GAL1, Gal-NAc6S, SIAT4A, SIATFL, ST3GalA, ST3GalA.1, ST3GalIA, ST3GalIA,1, ST3O..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
              type="line" coords="745,508,775,508"/>
     </entry>
     <entry id="28" name="hsa:2683 hsa:8703 hsa:8704" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2683+hsa:8703+hsa:8704">
-        <graphics name="B4GALT1, B4GAL-T1, CDG2D, DKFZp686N19253, GGTB2, GT1, GTB, MGC50983, beta4Gal-T1..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="B4GALT1, B4GAL-T1, CDG2D, GGTB2, GT1, GTB, beta4Gal-T1..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
              type="line" coords="723,443,753,443"/>
     </entry>
     <entry id="29" name="hsa:10678 hsa:11041" type="gene"
@@ -107,7 +107,7 @@
     </entry>
     <entry id="30" name="hsa:2683 hsa:8703 hsa:8704" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2683+hsa:8703+hsa:8704">
-        <graphics name="B4GALT1, B4GAL-T1, CDG2D, DKFZp686N19253, GGTB2, GT1, GTB, MGC50983, beta4Gal-T1..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="B4GALT1, B4GAL-T1, CDG2D, GGTB2, GT1, GTB, beta4Gal-T1..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
              type="line" coords="551,443,581,443"/>
     </entry>
     <entry id="31" name="hsa:8702" type="gene"

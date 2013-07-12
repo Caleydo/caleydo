@@ -262,7 +262,7 @@
     </entry>
     <entry id="53" name="mmu:271457" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:271457">
-        <graphics name="Rab5a, 2410015H04Rik, AI663973, AU021172" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Rab5a, 2410015H04Rik, AI663973, AU021172, nnyRab5a" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="1080" y="839" width="46" height="17"/>
     </entry>
     <entry id="54" name="mmu:19055 mmu:19056 mmu:19057 mmu:19058 mmu:19059 mmu:56398 mmu:70261" type="gene"

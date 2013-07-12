@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
-<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Jun 8, 2012 09:43:49 +0900 (GMT+09:00) -->
+<!DOCTYPE pathway SYSTEM "http://www.kegg.jp/kegg/xml/KGML_v0.7.1_.dtd">
+<!-- Creation date: May 16, 2013 15:36:13 +0900 (GMT+09:00) -->
 <pathway name="path:mmu00640" org="mmu" number="00640"
          title="Propanoate metabolism"
-         image="http://www.genome.jp/kegg/pathway/mmu/mmu00640.png"
-         link="http://www.genome.jp/kegg-bin/show_pathway?mmu00640">
+         image="http://www.kegg.jp/kegg/pathway/mmu/mmu00640.png"
+         link="http://www.kegg.jp/kegg-bin/show_pathway?mmu00640">
     <entry id="47" name="ko:K13788 ko:K00625 ko:K15024" type="ortholog" reaction="rn:R00921"
         link="http://www.kegg.jp/dbget-bin/www_bget?K13788+K00625+K15024">
         <graphics name="K13788..." fgcolor="#000000" bgcolor="#FFFFFF"
@@ -42,12 +42,12 @@
     </entry>
     <entry id="54" name="mmu:104776" type="gene" reaction="rn:R00935"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:104776">
-        <graphics name="Aldh6a1, 1110038I05Rik, AI314632, MGC37325, Mmsdh" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Aldh6a1, 1110038I05Rik, AI314632, Mmsdh" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="936" y="430" width="46" height="17"/>
     </entry>
     <entry id="55" name="mmu:104776" type="gene" reaction="rn:R03381"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:104776">
-        <graphics name="Aldh6a1, 1110038I05Rik, AI314632, MGC37325, Mmsdh" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Aldh6a1, 1110038I05Rik, AI314632, Mmsdh" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="890" y="609" width="46" height="17"/>
     </entry>
     <entry id="57" name="mmu:73724" type="gene" reaction="rn:R02765"
@@ -147,7 +147,7 @@
     </entry>
     <entry id="78" name="mmu:227095" type="gene" reaction="rn:R03157 rn:R03158"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:227095">
-        <graphics name="Hibch, 2610509I15Rik, AI648812, MGC31364" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Hibch, 2610509I15Rik, AI648812" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="412" y="365" width="46" height="17"/>
     </entry>
     <entry id="79" name="ko:K00822" type="ortholog" reaction="rn:R00907"
@@ -165,14 +165,14 @@
         <graphics name="K00114" fgcolor="#000000" bgcolor="#FFFFFF"
              type="rectangle" x="261" y="594" width="46" height="17"/>
     </entry>
-    <entry id="83" name="mmu:110695 mmu:11668 mmu:11669 mmu:11671 mmu:56752 mmu:72535" type="gene" reaction="rn:R02940"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:110695+mmu:11668+mmu:11669+mmu:11671+mmu:56752+mmu:72535">
+    <entry id="83" name="mmu:110695 mmu:11669 mmu:11671 mmu:56752 mmu:72535" type="gene" reaction="rn:R02940"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:110695+mmu:11669+mmu:11671+mmu:56752+mmu:72535">
         <graphics name="Aldh7a1, Atq1, D18Wsu181e..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="285" y="527" width="46" height="17"/>
     </entry>
     <entry id="86" name="mmu:104776" type="gene" reaction="rn:R00705 rn:R00706"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:104776">
-        <graphics name="Aldh6a1, 1110038I05Rik, AI314632, MGC37325, Mmsdh" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Aldh6a1, 1110038I05Rik, AI314632, Mmsdh" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="207" y="309" width="46" height="17"/>
     </entry>
     <entry id="88" name="ko:K01574" type="ortholog" reaction="rn:R01366"
@@ -257,7 +257,7 @@
     </entry>
     <entry id="106" name="mmu:104776" type="gene" reaction="rn:R00740"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:104776">
-        <graphics name="Aldh6a1, 1110038I05Rik, AI314632, MGC37325, Mmsdh" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Aldh6a1, 1110038I05Rik, AI314632, Mmsdh" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="313" y="309" width="46" height="17"/>
     </entry>
     <entry id="107" name="mmu:74147 mmu:93747 mmu:97212" type="gene" reaction="rn:R03045"

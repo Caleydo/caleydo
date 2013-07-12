@@ -12,7 +12,7 @@
     </entry>
     <entry id="13" name="hsa:1610" type="gene" reaction="rn:R02457"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:1610">
-        <graphics name="DAO, DAAO, DAMOX, MGC35381, OXDA" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="DAO, DAAO, DAMOX, OXDA" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="242" y="308" width="46" height="17"/>
     </entry>
     <entry id="14" name="ko:K00824" type="ortholog" reaction="rn:R02459"
@@ -27,7 +27,7 @@
     </entry>
     <entry id="19" name="hsa:1610" type="gene" reaction="rn:R02923"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:1610">
-        <graphics name="DAO, DAAO, DAMOX, MGC35381, OXDA" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="DAO, DAAO, DAMOX, OXDA" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="390" y="347" width="46" height="17"/>
     </entry>
     <entry id="21" name="ko:K00824" type="ortholog" reaction="rn:R02924"

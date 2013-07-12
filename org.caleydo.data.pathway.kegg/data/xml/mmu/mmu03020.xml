@@ -135,9 +135,9 @@
         <graphics name="Polr2j, 14.5kDa, Polr2i, Rpb11a, Rpo2-4" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="436" y="406" width="46" height="17"/>
     </entry>
-    <entry id="27" name="ko:K03009" type="ortholog"
-        link="http://www.kegg.jp/dbget-bin/www_bget?K03009">
-        <graphics name="K03009" fgcolor="#000000" bgcolor="#FFFFFF"
+    <entry id="27" name="mmu:100862456" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:100862456">
+        <graphics name="100862456" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="684" y="406" width="46" height="17"/>
     </entry>
     <entry id="28" name="mmu:70428" type="gene"

@@ -17,7 +17,7 @@
     </entry>
     <entry id="3" name="hsa:5018" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5018">
-        <graphics name="OXA1L, MGC133129, OXA1" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="OXA1L, OXA1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="105" y="196" width="46" height="17"/>
     </entry>
     <entry id="4" name="ko:K03117" type="ortholog"
@@ -77,12 +77,12 @@
     </entry>
     <entry id="15" name="hsa:6727" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:6727">
-        <graphics name="SRP14, ALURBP, MGC14326" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="SRP14, ALURBP" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="297" y="274" width="46" height="17"/>
     </entry>
     <entry id="16" name="hsa:6731" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:6731">
-        <graphics name="SRP72" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="SRP72, BMFF" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="346" y="257" width="46" height="17"/>
     </entry>
     <entry id="17" name="hsa:6730" type="gene"
@@ -102,12 +102,12 @@
     </entry>
     <entry id="20" name="hsa:6734" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:6734">
-        <graphics name="SRPR, DP, MGC17355, MGC3650, MGC9571, Sralpha" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="SRPR, DP, Sralpha" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="297" y="305" width="46" height="17"/>
     </entry>
     <entry id="21" name="hsa:6726" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:6726">
-        <graphics name="SRP9, ALURBP, MGC110981" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="SRP9, ALURBP" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="297" y="257" width="46" height="17"/>
     </entry>
     <entry id="22" name="ko:K03071" type="ortholog"
@@ -132,7 +132,7 @@
     </entry>
     <entry id="27" name="hsa:7095" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:7095">
-        <graphics name="SEC62, Dtrp1, FLJ32803, HTP1, TLOC1, TP-1" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="SEC62, Dtrp1, HTP1, TLOC1, TP-1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="297" y="181" width="46" height="17"/>
     </entry>
     <entry id="28" name="hsa:11231" type="gene"
@@ -147,7 +147,7 @@
     </entry>
     <entry id="30" name="hsa:9789" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:9789">
-        <graphics name="SPCS2, KIAA0102, MGC117366" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="SPCS2" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="340" y="513" width="46" height="17"/>
     </entry>
     <entry id="31" name="hsa:29927 hsa:55176" type="gene"
@@ -157,7 +157,7 @@
     </entry>
     <entry id="32" name="hsa:60559" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:60559">
-        <graphics name="SPCS3, DKFZp564J1864, FLJ22649, PRO3567, SPC22/23, SPC3, YLR066W" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="SPCS3, PRO3567, SPC22/23, SPC3, YLR066W" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="386" y="513" width="46" height="17"/>
     </entry>
     <entry id="33" name="hsa:23478 hsa:90701" type="gene"
@@ -167,7 +167,7 @@
     </entry>
     <entry id="34" name="hsa:196294" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:196294">
-        <graphics name="IMMP1L, FLJ25059, IMP1, IMP1-LIKE" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="IMMP1L, IMP1, IMP1-LIKE" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="295" y="535" width="46" height="17"/>
     </entry>
     <entry id="35" name="hsa:83943" type="gene"
@@ -192,7 +192,7 @@
     </entry>
     <entry id="39" name="hsa:3309" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:3309">
-        <graphics name="HSPA5, BIP, FLJ26106, GRP78, MIF2" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="HSPA5, BIP, GRP78, MIF2" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="297" y="208" width="46" height="17"/>
     </entry>
     <entry id="40" name="ko:K13301" type="ortholog"

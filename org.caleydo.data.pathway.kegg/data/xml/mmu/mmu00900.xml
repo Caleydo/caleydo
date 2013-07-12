@@ -122,7 +122,7 @@
     </entry>
     <entry id="74" name="mmu:15357" type="gene" reaction="rn:R02082"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:15357">
-        <graphics name="Hmgcr, HMG-CoAR, MGC103269, Red" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Hmgcr, HMG-CoAR, Red" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="409" y="392" width="46" height="17"/>
     </entry>
     <entry id="75" name="cpd:C00356" type="compound"
@@ -235,9 +235,9 @@
         <graphics name="K03527" fgcolor="#000000" bgcolor="#FFFFFF"
              type="rectangle" x="672" y="628" width="46" height="17"/>
     </entry>
-    <entry id="97" name="mmu:100039655 mmu:319554" type="gene" reaction="rn:R01123"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:100039655+mmu:319554">
-        <graphics name="Gm9745..." fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="97" name="mmu:319554 mmu:320581" type="gene" reaction="rn:R01123"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:319554+mmu:320581">
+        <graphics name="Idi1, 4832416K17Rik..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="613" y="668" width="46" height="17"/>
     </entry>
     <entry id="98" name="ko:K03527" type="ortholog" reaction="rn:R05884 rn:R08209"
@@ -250,14 +250,14 @@
         <graphics name="Mvd, C78718, Mpd" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="493" y="587" width="46" height="17"/>
     </entry>
-    <entry id="100" name="mmu:68603" type="gene" reaction="rn:R03245"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:68603">
-        <graphics name="Pmvk, 1110011E12Rik, 2900002L22Rik, AV001327, PMK, PMKA, PMKASE" fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="100" name="mmu:101056319 mmu:68603" type="gene" reaction="rn:R03245"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:101056319+mmu:68603">
+        <graphics name="101056319..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="434" y="548" width="46" height="17"/>
     </entry>
     <entry id="102" name="mmu:110196 mmu:14593" type="gene" reaction="rn:R01658"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:110196+mmu:14593">
-        <graphics name="Fdps, 6030492I17Rik, AI256750, Fdpsl1, MGC107162, mKIAA1293..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Fdps, 6030492I17Rik, AI256750, Fdpsl1, mKIAA1293..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="673" y="727" width="46" height="17"/>
     </entry>
     <entry id="103" name="ko:K12503" type="ortholog" reaction="rn:R08528"
@@ -267,7 +267,7 @@
     </entry>
     <entry id="104" name="mmu:110196 mmu:14593" type="gene" reaction="rn:R02003"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:110196+mmu:14593">
-        <graphics name="Fdps, 6030492I17Rik, AI256750, Fdpsl1, MGC107162, mKIAA1293..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Fdps, 6030492I17Rik, AI256750, Fdpsl1, mKIAA1293..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="493" y="915" width="46" height="17"/>
     </entry>
     <entry id="105" name="ko:K00806" type="ortholog" reaction="rn:R06447"
@@ -322,7 +322,7 @@
     </entry>
     <entry id="118" name="mmu:67422" type="gene" reaction="rn:R05556"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:67422">
-        <graphics name="Dhdds, 3222401G21Rik, DS, HDS, W91638" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Dhdds, 3222401G21Rik, CIT, DS, HDS, W91638" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="382" y="1172" width="46" height="17"/>
     </entry>
     <entry id="119" name="mmu:56075 mmu:71365" type="gene" reaction="rn:R09249"
@@ -397,7 +397,7 @@
     </entry>
     <entry id="134" name="mmu:57295" type="gene" reaction="rn:R04496"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:57295">
-        <graphics name="Icmt, 1700008E11Rik, C80758, Gm13095, HSTE14, MGC118506, OTTMUSG00000010406, PPMT, STE14, pcCMT" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Icmt, 1700008E11Rik, C80758, Gm13095, HSTE14, OTTMUSG00000010406, PPMT, STE14, pcCMT" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="148" y="1052" width="46" height="17"/>
     </entry>
     <entry id="135" name="ko:K15889" type="ortholog" reaction="rn:R09846"

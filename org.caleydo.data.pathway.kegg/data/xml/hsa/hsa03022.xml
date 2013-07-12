@@ -122,7 +122,7 @@
     </entry>
     <entry id="24" name="hsa:2966 hsa:728340 hsa:730394" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2966+hsa:728340+hsa:730394">
-        <graphics name="GTF2H2, BTF2, BTF2P44, T-BTF2P44, TFIIH..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="GTF2H2, BTF2, BTF2P44, T-BTF2P44, TFIIH, p44..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="590" y="513" width="46" height="17"/>
     </entry>
     <entry id="25" name="hsa:2967" type="gene"
@@ -157,7 +157,7 @@
     </entry>
     <entry id="31" name="hsa:8148" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:8148">
-        <graphics name="TAF15, Npl3, RBP56, TAF2N, TAFII68, hTAFII68" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="TAF15, Npl3, RBP56, TAF2N, TAFII68" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="348" y="602" width="46" height="17"/>
     </entry>
     <entry id="32" name="hsa:404672" type="gene"

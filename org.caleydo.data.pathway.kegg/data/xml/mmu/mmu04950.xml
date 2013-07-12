@@ -117,7 +117,7 @@
     </entry>
     <entry id="23" name="mmu:11925" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:11925">
-        <graphics name="Neurog3, Atoh5, MGC129292, MGC129293, Math4B, bHLHa7, ngn3" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Neurog3, Atoh5, Math4B, bHLHa7, ngn3" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="442" y="399" width="46" height="17"/>
     </entry>
     <entry id="24" name="mmu:18508" type="gene"
@@ -142,7 +142,7 @@
     </entry>
     <entry id="28" name="mmu:15242" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:15242">
-        <graphics name="Hhex, Hex, Hhex-rs2, Prh, Prhx" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Hhex, Hex, Hex1, Hhex-rs2, Prh, Prhx" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="459" y="110" width="46" height="17"/>
     </entry>
     <entry id="29" name="mmu:15285" type="gene"

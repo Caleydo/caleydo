@@ -72,7 +72,7 @@
     </entry>
     <entry id="55" name="hsa:4128 hsa:4129" type="gene" reaction="rn:R04674"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:4128+hsa:4129">
-        <graphics name="MAOA..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="MAOA, MAO-A..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="574" y="445" width="46" height="17"/>
     </entry>
     <entry id="56" name="hsa:218 hsa:220 hsa:221 hsa:222" type="gene" reaction="rn:R04996"
@@ -182,7 +182,7 @@
     </entry>
     <entry id="79" name="hsa:114049 hsa:131965 hsa:51409 hsa:55798" type="gene" reaction="rn:R01159"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:114049+hsa:131965+hsa:51409+hsa:55798">
-        <graphics name="WBSCR22, HASJ4442, HUSSY-3, PP3381, WBMT..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="WBSCR22, HASJ4442, HUSSY-3, MERM1, PP3381, WBMT..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="803" y="240" width="46" height="17"/>
     </entry>
     <entry id="82" name="cpd:C00119" type="compound"

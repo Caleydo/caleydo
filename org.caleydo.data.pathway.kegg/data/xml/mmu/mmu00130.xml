@@ -67,7 +67,7 @@
     </entry>
     <entry id="61" name="mmu:71883" type="gene" reaction="rn:R05000 rn:R05616 rn:R07273"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:71883">
-        <graphics name="Coq2, 2310002F18Rik, MGC91278" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Coq2, 2310002F18Rik" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="407" y="550" width="46" height="17"/>
     </entry>
     <entry id="62" name="ko:K00568" type="ortholog" reaction="rn:R08781 rn:R05614"
@@ -287,7 +287,7 @@
     </entry>
     <entry id="111" name="mmu:234724" type="gene" reaction="rn:R00734"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:234724">
-        <graphics name="Tat, MGC37772, MGC37789, MGC37790, MGC37819, MGC37828, MGC37842" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Tat" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="271" y="235" width="46" height="17"/>
     </entry>
     <entry id="113" name="ko:K01904" type="ortholog" reaction="rn:R01616"

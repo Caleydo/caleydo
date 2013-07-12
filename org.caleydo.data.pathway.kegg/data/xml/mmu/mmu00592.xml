@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
-<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Jun 6, 2012 11:50:51 +0900 (GMT+09:00) -->
+<!DOCTYPE pathway SYSTEM "http://www.kegg.jp/kegg/xml/KGML_v0.7.1_.dtd">
+<!-- Creation date: Feb 8, 2013 10:33:14 +0900 (GMT+09:00) -->
 <pathway name="path:mmu00592" org="mmu" number="00592"
          title="alpha-Linolenic acid metabolism"
-         image="http://www.genome.jp/kegg/pathway/mmu/mmu00592.png"
-         link="http://www.genome.jp/kegg-bin/show_pathway?mmu00592">
+         image="http://www.kegg.jp/kegg/pathway/mmu/mmu00592.png"
+         link="http://www.kegg.jp/kegg-bin/show_pathway?mmu00592">
     <entry id="24" name="ko:K10527" type="ortholog" reaction="rn:R07897 rn:R07898"
         link="http://www.kegg.jp/dbget-bin/www_bget?K10527">
         <graphics name="K10527" fgcolor="#000000" bgcolor="#FFFFFF"
@@ -37,12 +37,12 @@
     </entry>
     <entry id="30" name="mmu:113868 mmu:235674" type="gene" reaction="rn:R07899"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:113868+mmu:235674">
-        <graphics name="Acaa1a, Acaa, Acaa1, D9Ertd25e, MGC7090, PTL..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Acaa1a, Acaa, Acaa1, D9Ertd25e, PTL..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="299" y="681" width="46" height="17"/>
     </entry>
     <entry id="31" name="mmu:113868 mmu:235674" type="gene" reaction="rn:R07895"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:113868+mmu:235674">
-        <graphics name="Acaa1a, Acaa, Acaa1, D9Ertd25e, MGC7090, PTL..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Acaa1a, Acaa, Acaa1, D9Ertd25e, PTL..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="191" y="610" width="46" height="17"/>
     </entry>
     <entry id="32" name="ko:K01723" type="ortholog" reaction="rn:R07863"
@@ -187,7 +187,7 @@
     </entry>
     <entry id="61" name="mmu:113868 mmu:235674" type="gene" reaction="rn:R07891"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:113868+mmu:235674">
-        <graphics name="Acaa1a, Acaa, Acaa1, D9Ertd25e, MGC7090, PTL..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Acaa1a, Acaa, Acaa1, D9Ertd25e, PTL..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="505" y="610" width="46" height="17"/>
     </entry>
     <entry id="62" name="mmu:11430 mmu:80911" type="gene" reaction="rn:R07888"
@@ -215,9 +215,9 @@
         <graphics name="K01723" fgcolor="#000000" bgcolor="#FFFFFF"
              type="rectangle" x="353" y="327" width="46" height="17"/>
     </entry>
-    <entry id="68" name="mmu:18778 mmu:18780 mmu:18781 mmu:18782 mmu:18783 mmu:18784 mmu:211429 mmu:237625 mmu:26565 mmu:26970 mmu:26971 mmu:329502 mmu:53357 mmu:66350 mmu:665270 mmu:69836 mmu:78390" type="gene" reaction="rn:R07859"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:18778+mmu:18780+mmu:18781+mmu:18782+mmu:18783+mmu:18784+mmu:211429+mmu:237625+mmu:26565+mmu:26970+mmu:26971+mmu:329502+mmu:53357+mmu:66350+mmu:665270+mmu:69836+mmu:78390">
-        <graphics name="Pla2g1b, MGC6679, Pla2a, sPLA2IB..." fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="68" name="mmu:18778 mmu:18780 mmu:18781 mmu:18782 mmu:18783 mmu:18784 mmu:211429 mmu:225845 mmu:232889 mmu:237625 mmu:26565 mmu:26970 mmu:26971 mmu:271844 mmu:329502 mmu:53357 mmu:66350 mmu:665270 mmu:69836 mmu:78390" type="gene" reaction="rn:R07859"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:18778+mmu:18780+mmu:18781+mmu:18782+mmu:18783+mmu:18784+mmu:211429+mmu:225845+mmu:232889+mmu:237625+mmu:26565+mmu:26970+mmu:26971+mmu:271844+mmu:329502+mmu:53357+mmu:66350+mmu:665270+mmu:69836+mmu:78390">
+        <graphics name="Pla2g1b, Pla2a, sPLA2IB..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="220" y="136" width="46" height="17"/>
     </entry>
     <entry id="69" name="ko:K10526" type="ortholog" reaction="rn:R07887"
@@ -240,9 +240,9 @@
         <graphics name="K10529" fgcolor="#000000" bgcolor="#FFFFFF"
              type="rectangle" x="191" y="286" width="46" height="17"/>
     </entry>
-    <entry id="73" name="ko:K01058" type="ortholog" reaction="rn:R07860"
-        link="http://www.kegg.jp/dbget-bin/www_bget?K01058">
-        <graphics name="K01058" fgcolor="#000000" bgcolor="#FFFFFF"
+    <entry id="73" name="mmu:225845" type="gene" reaction="rn:R07860"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:225845">
+        <graphics name="Pla2g16, C78643, HRSL3, Hrasls3, Hrev107, MLP-3" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="270" y="136" width="46" height="17"/>
     </entry>
     <entry id="74" name="ko:K00454" type="ortholog" reaction="rn:R07864"
@@ -328,6 +328,9 @@
     <relation entry1="68" entry2="71" type="ECrel">
         <subtype name="compound" value="85"/>
     </relation>
+    <relation entry1="71" entry2="73" type="ECrel">
+        <subtype name="compound" value="85"/>
+    </relation>
     <relation entry1="29" entry2="61" type="ECrel">
         <subtype name="compound" value="44"/>
     </relation>
@@ -365,5 +368,9 @@
     <reaction id="71" name="rn:R07861" type="irreversible">
         <substrate id="85" name="cpd:C06427"/>
         <product id="52" name="cpd:C16300"/>
+    </reaction>
+    <reaction id="73" name="rn:R07860" type="irreversible">
+        <substrate id="76" name="cpd:C00157"/>
+        <product id="85" name="cpd:C06427"/>
     </reaction>
 </pathway>

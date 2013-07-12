@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Jun 15, 2012 09:37:18 +0900 (GMT+09:00) -->
+<!-- Creation date: Jul 30, 2012 09:18:01 +0900 (GMT+09:00) -->
 <pathway name="path:mmu00053" org="mmu" number="00053"
          title="Ascorbate and aldarate metabolism"
          image="http://www.genome.jp/kegg/pathway/mmu/mmu00053.png"
@@ -17,7 +17,7 @@
     </entry>
     <entry id="52" name="mmu:268756" type="gene" reaction="rn:R03184"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:268756">
-        <graphics name="Gulo, 5730581M22, AU018375, BC028822, MGC29968, MGC37793, MGC37880, sfx, unh, unhip" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Gulo, 5730581M22, AU018375, BC028822, sfx, unh, unhip" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="437" y="489" width="46" height="17"/>
     </entry>
     <entry id="53" name="ko:K00064" type="ortholog" reaction="rn:R07675"
@@ -54,6 +54,11 @@
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:56727">
         <graphics name="Miox, 0610009I10Rik, AI314022, Aldrl6, C85427, RSOR" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="427" y="353" width="46" height="17"/>
+    </entry>
+    <entry id="60" name="ko:K16190" type="ortholog" reaction="rn:R01476"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K16190">
+        <graphics name="K16190" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="475" y="310" width="46" height="17"/>
     </entry>
     <entry id="62" name="mmu:22235" type="gene" reaction="rn:R00286"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:22235">
@@ -192,7 +197,7 @@
     </entry>
     <entry id="93" name="mmu:268756" type="gene" reaction="rn:R00647"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:268756">
-        <graphics name="Gulo, 5730581M22, AU018375, BC028822, MGC29968, MGC37793, MGC37880, sfx, unh, unhip" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Gulo, 5730581M22, AU018375, BC028822, sfx, unh, unhip" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="349" y="489" width="46" height="17"/>
     </entry>
     <entry id="94" name="path:mmu00053" type="map"
@@ -270,8 +275,8 @@
         <graphics name="K01706" fgcolor="#000000" bgcolor="#FFFFFF"
              type="rectangle" x="726" y="201" width="46" height="17"/>
     </entry>
-    <entry id="114" name="mmu:110695 mmu:11668 mmu:11669 mmu:11671 mmu:56752 mmu:72535" type="gene" reaction="rn:R02957"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:110695+mmu:11668+mmu:11669+mmu:11671+mmu:56752+mmu:72535">
+    <entry id="114" name="mmu:110695 mmu:11669 mmu:11671 mmu:56752 mmu:72535" type="gene" reaction="rn:R02957"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:110695+mmu:11669+mmu:11671+mmu:56752+mmu:72535">
         <graphics name="Aldh7a1, Atq1, D18Wsu181e..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="618" y="346" width="46" height="17"/>
     </entry>
@@ -445,10 +450,10 @@
         <graphics name="C00618" fgcolor="#000000" bgcolor="#FFFFFF"
              type="circle" x="308" y="786" width="8" height="8"/>
     </entry>
-    <entry id="161" name="mmu:100559 mmu:100727 mmu:22236 mmu:22238 mmu:231396 mmu:394430 mmu:394432 mmu:394433 mmu:394434 mmu:394435 mmu:394436 mmu:552899 mmu:71773 mmu:72094 mmu:94215 mmu:94284" type="gene" reaction="rn:R08615"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:100559+mmu:100727+mmu:22236+mmu:22238+mmu:231396+mmu:394430+mmu:394432+mmu:394433+mmu:394434+mmu:394435+mmu:394436+mmu:552899+mmu:71773+mmu:72094+mmu:94215+mmu:94284">
+    <entry id="161" name="mmu:100559 mmu:100727 mmu:112417 mmu:22236 mmu:22238 mmu:231396 mmu:243085 mmu:394430 mmu:394432 mmu:394433 mmu:394434 mmu:394435 mmu:394436 mmu:552899 mmu:71773 mmu:72094 mmu:94215 mmu:94284" type="gene" reaction="rn:R08615"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:100559+mmu:100727+mmu:112417+mmu:22236+mmu:22238+mmu:231396+mmu:243085+mmu:394430+mmu:394432+mmu:394433+mmu:394434+mmu:394435+mmu:394436+mmu:552899+mmu:71773+mmu:72094+mmu:94215+mmu:94284">
         <graphics name="Ugt2b38, 9430041C03Rik, AA986709..." fgcolor="#000000" bgcolor="#BFFFBF"
-             type="rectangle" x="423" y="239" width="46" height="17"/>
+             type="rectangle" x="423" y="293" width="46" height="17"/>
     </entry>
     <entry id="162" name="path:mmu00051" type="map"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu00051">
@@ -464,6 +469,11 @@
         link="http://www.kegg.jp/dbget-bin/www_bget?C15924">
         <graphics name="C15924" fgcolor="#000000" bgcolor="#FFFFFF"
              type="circle" x="311" y="345" width="8" height="8"/>
+    </entry>
+    <entry id="168" name="ko:K12447" type="ortholog" reaction="rn:R01381"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K12447">
+        <graphics name="K12447" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="500" y="237" width="46" height="17"/>
     </entry>
     <relation entry1="52" entry2="104" type="ECrel">
         <subtype name="compound" value="126"/>

@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
-<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Nov 8, 2010 11:03:55 +0900 (JST) -->
+<!DOCTYPE pathway SYSTEM "http://www.kegg.jp/kegg/xml/KGML_v0.7.1_.dtd">
+<!-- Creation date: Feb 14, 2013 11:52:08 +0900 (GMT+09:00) -->
 <pathway name="path:mmu05150" org="mmu" number="05150"
          title="Staphylococcus aureus infection"
-         image="http://www.genome.jp/kegg/pathway/mmu/mmu05150.png"
-         link="http://www.genome.jp/kegg-bin/show_pathway?mmu05150">
+         image="http://www.kegg.jp/kegg/pathway/mmu/mmu05150.png"
+         link="http://www.kegg.jp/kegg-bin/show_pathway?mmu05150">
     <entry id="1" name="mmu:11537" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:11537">
         <graphics name="Cfd, Adn, DF" fgcolor="#000000" bgcolor="#BFFFBF"
@@ -152,12 +152,12 @@
     </entry>
     <entry id="31" name="mmu:16061" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:16061">
-        <graphics name="Igh-VJ558, AI893585, MGC118142, MGC6727" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Igh-VJ558, AI893585" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="639" y="533" width="46" height="17"/>
     </entry>
     <entry id="32" name="mmu:16061" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:16061">
-        <graphics name="Igh-VJ558, AI893585, MGC118142, MGC6727" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Igh-VJ558, AI893585" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="325" y="343" width="46" height="17"/>
     </entry>
     <entry id="33" name="mmu:12630" type="gene"
@@ -217,7 +217,7 @@
     </entry>
     <entry id="44" name="mmu:100504404 mmu:14960 mmu:14961 mmu:14969 mmu:14998 mmu:14999 mmu:15000 mmu:15001 mmu:15002" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:100504404+mmu:14960+mmu:14961+mmu:14969+mmu:14998+mmu:14999+mmu:15000+mmu:15001+mmu:15002">
-        <graphics name="H2-Ea-ps, AI323765, E-alpha-f, H-2Ea, H2-Ea, I-Ealpha, Ia-3, Ia3, MGC117888..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="H2-Ea-ps, AI323765, E-alpha-f, H-2Ea, H2-Ea, I-Ealpha, Ia-3, Ia3..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="481" y="1012" width="46" height="17"/>
     </entry>
     <entry id="45" name="ko:K10784" type="ortholog"
@@ -277,12 +277,12 @@
     </entry>
     <entry id="56" name="mmu:16061" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:16061">
-        <graphics name="Igh-VJ558, AI893585, MGC118142, MGC6727" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Igh-VJ558, AI893585" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="482" y="1069" width="46" height="17"/>
     </entry>
     <entry id="57" name="mmu:15894" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:15894">
-        <graphics name="Icam1, CD54, Icam-1, Ly-47, MALA-2, MGC6195" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Icam1, CD54, Icam-1, Ly-47, MALA-2" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="1047" y="757" width="46" height="17"/>
     </entry>
     <entry id="58" name="mmu:16414 mmu:16415" type="gene"
@@ -297,7 +297,7 @@
     </entry>
     <entry id="60" name="mmu:20344" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:20344">
-        <graphics name="Selp, CD62P, GMP-140, Grmp, LECAM3, MGC129336, MGC129337, PADGEM" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Selp, CD62P, GMP-140, Grmp, LECAM3, PADGEM" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="1047" y="800" width="46" height="17"/>
     </entry>
     <entry id="61" name="mmu:20345" type="gene"
@@ -337,7 +337,7 @@
     </entry>
     <entry id="69" name="mmu:14289 mmu:14294" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:14289+mmu:14294">
-        <graphics name="Fpr2, E330010I07Rik, Fpr-rs2, MGC151443..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Fpr2, E330010I07Rik, Fpr-rs2..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="732" y="650" width="46" height="17"/>
     </entry>
     <entry id="70" name="cpd:C16059 cpd:C16060 cpd:C16061 cpd:C16062" type="compound"

@@ -27,7 +27,7 @@
     </entry>
     <entry id="13" name="mmu:110417" type="gene" reaction="rn:R05916"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:110417">
-        <graphics name="Pigh, 2210416H01Rik, A930028P05Rik, MGC102258" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Pigh, 2210416H01Rik, A930028P05Rik" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="129" y="189" width="46" height="17"/>
     </entry>
     <entry id="14" name="mmu:67292" type="gene" reaction="rn:R05916"
@@ -127,7 +127,7 @@
     </entry>
     <entry id="33" name="mmu:327942" type="gene" reaction="rn:R05917"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:327942">
-        <graphics name="Pigl, Gm737, MGC106811" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Pigl, Gm737" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="273" y="188" width="46" height="17"/>
     </entry>
     <entry id="34" name="mmu:329777" type="gene"
@@ -167,7 +167,7 @@
     </entry>
     <entry id="41" name="mmu:56703" type="gene" reaction="rn:R08107"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:56703">
-        <graphics name="Pigo, FLJ00350, mFLJ00350" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Pigo, mFLJ00350" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="476" y="447" width="46" height="17"/>
     </entry>
     <entry id="42" name="mmu:70325" type="gene" reaction="rn:R05918"
@@ -247,7 +247,7 @@
     </entry>
     <entry id="67" name="mmu:56703" type="gene" reaction="rn:R08107"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:56703">
-        <graphics name="Pigo, FLJ00350, mFLJ00350" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="Pigo, mFLJ00350" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
              type="line" coords="133,575,133,605"/>
     </entry>
     <entry id="68" name="mmu:433931" type="gene" reaction="rn:R05924"

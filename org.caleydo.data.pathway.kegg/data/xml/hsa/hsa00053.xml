@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Jun 15, 2012 09:37:18 +0900 (GMT+09:00) -->
+<!-- Creation date: Jul 30, 2012 09:18:01 +0900 (GMT+09:00) -->
 <pathway name="path:hsa00053" org="hsa" number="00053"
          title="Ascorbate and aldarate metabolism"
          image="http://www.genome.jp/kegg/pathway/hsa/hsa00053.png"
@@ -52,8 +52,13 @@
     </entry>
     <entry id="59" name="hsa:55586" type="gene" reaction="rn:R01184"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:55586">
-        <graphics name="MIOX, ALDRL6, MGC90217" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="MIOX, ALDRL6" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="427" y="353" width="46" height="17"/>
+    </entry>
+    <entry id="60" name="ko:K16190" type="ortholog" reaction="rn:R01476"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K16190">
+        <graphics name="K16190" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="475" y="310" width="46" height="17"/>
     </entry>
     <entry id="62" name="hsa:7358" type="gene" reaction="rn:R00286"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:7358">
@@ -272,7 +277,7 @@
     </entry>
     <entry id="114" name="hsa:217 hsa:219 hsa:223 hsa:224 hsa:501" type="gene" reaction="rn:R02957"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:217+hsa:219+hsa:223+hsa:224+hsa:501">
-        <graphics name="ALDH2, ALDH-E2, ALDHI, ALDM, MGC1806..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="ALDH2, ALDH-E2, ALDHI, ALDM..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="618" y="346" width="46" height="17"/>
     </entry>
     <entry id="118" name="ko:K13873" type="ortholog" reaction="rn:R01757"
@@ -447,8 +452,8 @@
     </entry>
     <entry id="161" name="hsa:10720 hsa:10941 hsa:54490 hsa:54575 hsa:54576 hsa:54577 hsa:54578 hsa:54579 hsa:54600 hsa:54657 hsa:54658 hsa:54659 hsa:574537 hsa:7363 hsa:7364 hsa:7365 hsa:7366 hsa:7367 hsa:79799" type="gene" reaction="rn:R08615"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:10720+hsa:10941+hsa:54490+hsa:54575+hsa:54576+hsa:54577+hsa:54578+hsa:54579+hsa:54600+hsa:54657+hsa:54658+hsa:54659+hsa:574537+hsa:7363+hsa:7364+hsa:7365+hsa:7366+hsa:7367+hsa:79799">
-        <graphics name="UGT2B11, MGC129611, MGC129612..." fgcolor="#000000" bgcolor="#BFFFBF"
-             type="rectangle" x="423" y="239" width="46" height="17"/>
+        <graphics name="UGT2B11..." fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="423" y="293" width="46" height="17"/>
     </entry>
     <entry id="162" name="path:hsa00051" type="map"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa00051">
@@ -464,6 +469,11 @@
         link="http://www.kegg.jp/dbget-bin/www_bget?C15924">
         <graphics name="C15924" fgcolor="#000000" bgcolor="#FFFFFF"
              type="circle" x="311" y="345" width="8" height="8"/>
+    </entry>
+    <entry id="168" name="ko:K12447" type="ortholog" reaction="rn:R01381"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K12447">
+        <graphics name="K12447" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="500" y="237" width="46" height="17"/>
     </entry>
     <relation entry1="89" entry2="107" type="maplink">
         <subtype name="compound" value="141"/>

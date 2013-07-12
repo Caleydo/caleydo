@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
-<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Jun 26, 2012 13:16:47 +0900 (GMT+09:00) -->
+<!DOCTYPE pathway SYSTEM "http://www.kegg.jp/kegg/xml/KGML_v0.7.1_.dtd">
+<!-- Creation date: Nov 21, 2012 15:14:05 +0900 (GMT+09:00) -->
 <pathway name="path:mmu00562" org="mmu" number="00562"
          title="Inositol phosphate metabolism"
-         image="http://www.genome.jp/kegg/pathway/mmu/mmu00562.png"
-         link="http://www.genome.jp/kegg-bin/show_pathway?mmu00562">
+         image="http://www.kegg.jp/kegg/pathway/mmu/mmu00562.png"
+         link="http://www.kegg.jp/kegg-bin/show_pathway?mmu00562">
     <entry id="38" name="cpd:C11557" type="compound"
         link="http://www.kegg.jp/dbget-bin/www_bget?C11557">
         <graphics name="C11557" fgcolor="#000000" bgcolor="#FFFFFF"
@@ -37,7 +37,7 @@
     </entry>
     <entry id="44" name="mmu:19211" type="gene" reaction="rn:R04513"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:19211">
-        <graphics name="Pten, 2310035O07Rik, A130070J02Rik, AI463227, B430203M17Rik, MGC183880, MMAC1, TEP1" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Pten, 2310035O07Rik, A130070J02Rik, AI463227, B430203M17Rik, MMAC1, TEP1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="610" y="94" width="46" height="17"/>
     </entry>
     <entry id="45" name="mmu:17330" type="gene" reaction="rn:R03434"
@@ -52,7 +52,7 @@
     </entry>
     <entry id="47" name="mmu:228550 mmu:233011 mmu:320404" type="gene" reaction="rn:R03433"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:228550+mmu:233011+mmu:320404">
-        <graphics name="Itpka, MGC28924..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Itpka..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="174" y="238" width="46" height="17"/>
     </entry>
     <entry id="48" name="mmu:217837" type="gene" reaction="rn:R03428"
@@ -107,7 +107,7 @@
     </entry>
     <entry id="58" name="mmu:17772" type="gene" reaction="rn:R03330"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:17772">
-        <graphics name="Mtm1, AF073996, KIAA4176, Mtm, mKIAA4176" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Mtm1, AF073996, Mtm, mKIAA4176" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="693" y="339" width="46" height="17"/>
     </entry>
     <entry id="59" name="path:mmu00562" type="map"
@@ -140,9 +140,9 @@
         <graphics name="Pi4kb, AA437822, ESTM41, Pik4cb..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="711" y="231" width="46" height="17"/>
     </entry>
-    <entry id="66" name="ko:K01114" type="ortholog" reaction="rn:R03332"
-        link="http://www.kegg.jp/dbget-bin/www_bget?K01114">
-        <graphics name="K01114" fgcolor="#000000" bgcolor="#FFFFFF"
+    <entry id="66" name="ko:K01114 ko:K16619" type="ortholog" reaction="rn:R03332"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K01114+K16619">
+        <graphics name="K01114..." fgcolor="#000000" bgcolor="#FFFFFF"
              type="rectangle" x="776" y="293" width="46" height="17"/>
     </entry>
     <entry id="67" name="mmu:18717 mmu:18719 mmu:18720 mmu:227733" type="gene" reaction="rn:R03469"
@@ -157,7 +157,7 @@
     </entry>
     <entry id="69" name="mmu:17772" type="gene" reaction="rn:R03363"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:17772">
-        <graphics name="Mtm1, AF073996, KIAA4176, Mtm, mKIAA4176" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Mtm1, AF073996, Mtm, mKIAA4176" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="870" y="199" width="46" height="17"/>
     </entry>
     <entry id="70" name="path:mmu00040" type="map"
@@ -177,7 +177,7 @@
     </entry>
     <entry id="73" name="mmu:114875 mmu:18795 mmu:18796 mmu:18797 mmu:18798 mmu:18799 mmu:18802 mmu:18803 mmu:234779 mmu:72469 mmu:74055" type="gene" reaction="rn:R03435"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:114875+mmu:18795+mmu:18796+mmu:18797+mmu:18798+mmu:18799+mmu:18802+mmu:18803+mmu:234779+mmu:72469+mmu:74055">
-        <graphics name="Plcz1, 1700041H07Rik, MGC123405, MGC123406, PLCzeta..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Plcz1, 1700041H07Rik, PLCzeta..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="397" y="150" width="46" height="17"/>
     </entry>
     <entry id="74" name="ko:K01771" type="ortholog" reaction="rn:R03332"
@@ -192,7 +192,7 @@
     </entry>
     <entry id="78" name="mmu:18706 mmu:18707 mmu:30955 mmu:74769" type="gene" reaction="rn:R04545"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:18706+mmu:18707+mmu:30955+mmu:74769">
-        <graphics name="Pik3ca, 6330412C24Rik, MGC161268, caPI3K, p110, p110alpha..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Pik3ca, 6330412C24Rik, caPI3K, p110, p110alpha..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="610" y="150" width="46" height="17"/>
     </entry>
     <entry id="79" name="ko:K00010" type="ortholog" reaction="rn:R01183"
@@ -397,7 +397,7 @@
     </entry>
     <entry id="127" name="mmu:104776" type="gene" reaction="rn:R00705 rn:R00706"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:104776">
-        <graphics name="Aldh6a1, 1110038I05Rik, AI314632, MGC37325, Mmsdh" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Aldh6a1, 1110038I05Rik, AI314632, Mmsdh" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="953" y="478" width="46" height="17"/>
     </entry>
     <entry id="128" name="mmu:21991" type="gene" reaction="rn:R01015"
@@ -442,7 +442,7 @@
     </entry>
     <entry id="141" name="mmu:16331 mmu:16332" type="gene" reaction="rn:R09827"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:16331+mmu:16332">
-        <graphics name="Inpp5d, AI323613, MGC117680, SHIP, SHIP-1, SHIP1, s-SHIP..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Inpp5d, AI323613, SHIP, SHIP-1, SHIP1, s-SHIP..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="679" y="123" width="46" height="17"/>
     </entry>
     <entry id="142" name="path:mmu00020" type="map"

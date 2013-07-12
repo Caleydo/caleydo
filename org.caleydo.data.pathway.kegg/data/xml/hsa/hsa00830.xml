@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
-<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Apr 2, 2012 14:12:40 +0900 (GMT+09:00) -->
+<!DOCTYPE pathway SYSTEM "http://www.kegg.jp/kegg/xml/KGML_v0.7.1_.dtd">
+<!-- Creation date: Apr 17, 2013 11:46:00 +0900 (GMT+09:00) -->
 <pathway name="path:hsa00830" org="hsa" number="00830"
          title="Retinol metabolism"
-         image="http://www.genome.jp/kegg/pathway/hsa/hsa00830.png"
-         link="http://www.genome.jp/kegg-bin/show_pathway?hsa00830">
+         image="http://www.kegg.jp/kegg/pathway/hsa/hsa00830.png"
+         link="http://www.kegg.jp/kegg-bin/show_pathway?hsa00830">
     <entry id="3" name="cpd:C05917" type="compound"
         link="http://www.kegg.jp/dbget-bin/www_bget?C05917">
         <graphics name="C05917" fgcolor="#000000" bgcolor="#FFFFFF"
@@ -32,7 +32,7 @@
     </entry>
     <entry id="10" name="hsa:53630" type="gene" reaction="rn:R00032"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:53630">
-        <graphics name="BCMO1, BCDO, BCDO1, BCMO, BCO, BCO1, FLJ10730" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="BCMO1, BCDO, BCDO1, BCMO, BCO, BCO1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="359" y="233" width="46" height="17"/>
     </entry>
     <entry id="11" name="cpd:C02094" type="compound"
@@ -42,13 +42,18 @@
     </entry>
     <entry id="13" name="hsa:216 hsa:8854" type="gene" reaction="rn:R02123"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:216+hsa:8854">
-        <graphics name="ALDH1A1, ALDC, ALDH-E1, ALDH1, ALDH11, MGC2318, PUMB1, RALDH1..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="ALDH1A1, ALDC, ALDH-E1, ALDH1, ALDH11, PUMB1, RALDH1..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="467" y="218" width="46" height="17"/>
     </entry>
     <entry id="14" name="cpd:C00777" type="compound"
         link="http://www.kegg.jp/dbget-bin/www_bget?C00777">
         <graphics name="C00777" fgcolor="#000000" bgcolor="#FFFFFF"
              type="circle" x="551" y="208" width="8" height="8"/>
+    </entry>
+    <entry id="15" name="hsa:316" type="gene" reaction="rn:R02125"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:316">
+        <graphics name="AOX1, AO, AOH1" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="467" y="197" width="46" height="17"/>
     </entry>
     <entry id="16" name="cpd:C02075 cpd:C02588" type="compound"
         link="http://www.kegg.jp/dbget-bin/www_bget?C02075+C02588">
@@ -57,7 +62,7 @@
     </entry>
     <entry id="19" name="hsa:9227" type="gene" reaction="rn:R08387"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:9227">
-        <graphics name="LRAT, LCA14, MGC33103" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="LRAT, LCA14" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="223" y="339" width="46" height="17"/>
     </entry>
     <entry id="20" name="cpd:C00899" type="compound"
@@ -72,7 +77,7 @@
     </entry>
     <entry id="23" name="hsa:51109 hsa:5959" type="gene" reaction="rn:R03048 rn:R08380"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:51109+hsa:5959">
-        <graphics name="RDH11, ARSDR1, CGI82, FLJ32633, HCBP12, MDT1, PSDR1, RALR1, SCALD, SDR7C1..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="RDH11, ARSDR1, CGI82, HCBP12, MDT1, PSDR1, RALR1, SCALD, SDR7C1..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="269" y="478" width="46" height="17"/>
     </entry>
     <entry id="25" name="cpd:C16682" type="compound"
@@ -97,7 +102,7 @@
     </entry>
     <entry id="32" name="hsa:54884" type="gene" reaction="rn:R07163"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:54884">
-        <graphics name="RETSAT, FLJ20296" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="RETSAT" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="150" y="209" width="46" height="17"/>
     </entry>
     <entry id="33" name="hsa:6121" type="gene" reaction="rn:R08388"
@@ -107,7 +112,7 @@
     </entry>
     <entry id="34" name="hsa:145226 hsa:51109 hsa:5959" type="gene" reaction="rn:R08382 rn:R08383"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:145226+hsa:51109+hsa:5959">
-        <graphics name="RDH12, FLJ30273, LCA13, LCA3, SDR7C2..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="RDH12, LCA13, LCA3, RP53, SDR7C2..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="276" y="139" width="46" height="17"/>
     </entry>
     <entry id="39" name="cpd:C00778" type="compound"
@@ -132,7 +137,7 @@
     </entry>
     <entry id="44" name="hsa:158835 hsa:8694" type="gene" reaction="rn:R08381"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:158835+hsa:8694">
-        <graphics name="AWAT2, DC4, DGAT2L4, MFAT, WS..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="AWAT2, ARAT, DC4, DGAT2L4, MFAT, WS..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="173" y="541" width="46" height="17"/>
     </entry>
     <entry id="46" name="cpd:C03455" type="compound"
@@ -142,12 +147,12 @@
     </entry>
     <entry id="47" name="hsa:9227" type="gene" reaction="rn:R08389"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:9227">
-        <graphics name="LRAT, LCA14, MGC33103" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="LRAT, LCA14" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="223" y="541" width="46" height="17"/>
     </entry>
     <entry id="48" name="hsa:158835 hsa:8694" type="gene" reaction="rn:R02366 rn:R02367"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:158835+hsa:8694">
-        <graphics name="AWAT2, DC4, DGAT2L4, MFAT, WS..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="AWAT2, ARAT, DC4, DGAT2L4, MFAT, WS..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="173" y="339" width="46" height="17"/>
     </entry>
     <entry id="49" name="cpd:C05916" type="compound"
@@ -207,12 +212,12 @@
     </entry>
     <entry id="67" name="hsa:145226 hsa:157506 hsa:50700 hsa:51109 hsa:8608" type="gene" reaction="rn:R02124 rn:R08379"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:145226+hsa:157506+hsa:50700+hsa:51109+hsa:8608">
-        <graphics name="RDH12, FLJ30273, LCA13, LCA3, SDR7C2..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="RDH12, LCA13, LCA3, RP53, SDR7C2..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="252" y="280" width="46" height="17"/>
     </entry>
-    <entry id="68" name="hsa:10170 hsa:10901 hsa:317749 hsa:9249" type="gene" reaction="rn:R02124 rn:R08379"
-        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:10170+hsa:10901+hsa:317749+hsa:9249">
-        <graphics name="DHRS9, 3ALPHA-HSD, RDH15, RDHL, RDHTBE, RETSDR8, SDR9C4..." fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="68" name="hsa:10170 hsa:10901 hsa:317749 hsa:728635 hsa:9249" type="gene" reaction="rn:R02124 rn:R08379"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:10170+hsa:10901+hsa:317749+hsa:728635+hsa:9249">
+        <graphics name="DHRS9, 3ALPHA-HSD, RDH-TBE, RDH15, RDHL, RDHTBE, RETSDR8, SDR9C4..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="300" y="280" width="46" height="17"/>
     </entry>
     <entry id="70" name="cpd:C16680" type="compound"
@@ -280,32 +285,43 @@
         <graphics name="CYP2A6, CPA6, CYP2A, CYP2A3, CYPIIA6, P450C2A, P450PB..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="756" y="219" width="46" height="17"/>
     </entry>
-    <entry id="85" name="hsa:10901 hsa:317749" type="gene" reaction="rn:R08383"
-        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:10901+hsa:317749">
-        <graphics name="DHRS4, CR, FLJ11008, NRDR, PHCR, PSCD, SCAD-SRL, SDR-SRL, SDR25C1, SDR25C2..." fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="85" name="hsa:10901 hsa:317749 hsa:728635" type="gene" reaction="rn:R08383"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:10901+hsa:317749+hsa:728635">
+        <graphics name="DHRS4, CR, NRDR, PHCR, PSCD, SCAD-SRL, SDR-SRL, SDR25C1, SDR25C2..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="276" y="118" width="46" height="17"/>
+    </entry>
+    <entry id="86" name="hsa:316" type="gene" reaction="rn:R08384"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:316">
+        <graphics name="AOX1, AO, AOH1" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="467" y="118" width="46" height="17"/>
     </entry>
     <entry id="87" name="hsa:216 hsa:8854" type="gene" reaction="rn:R08385"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:216+hsa:8854">
-        <graphics name="ALDH1A1, ALDC, ALDH-E1, ALDH1, ALDH11, MGC2318, PUMB1, RALDH1..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="ALDH1A1, ALDC, ALDH-E1, ALDH1, ALDH11, PUMB1, RALDH1..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="467" y="139" width="46" height="17"/>
     </entry>
     <entry id="88" name="hsa:10720 hsa:10941 hsa:54490 hsa:54575 hsa:54576 hsa:54577 hsa:54578 hsa:54579 hsa:54600 hsa:54657 hsa:54658 hsa:54659 hsa:574537 hsa:7363 hsa:7364 hsa:7365 hsa:7366 hsa:7367 hsa:79799" type="gene" reaction="rn:R02902"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:10720+hsa:10941+hsa:54490+hsa:54575+hsa:54576+hsa:54577+hsa:54578+hsa:54579+hsa:54600+hsa:54657+hsa:54658+hsa:54659+hsa:574537+hsa:7363+hsa:7364+hsa:7365+hsa:7366+hsa:7367+hsa:79799">
-        <graphics name="UGT2B11, MGC129611, MGC129612..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="UGT2B11..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="617" y="373" width="46" height="17"/>
     </entry>
     <entry id="89" name="hsa:8228" type="gene" reaction="rn:R02368"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:8228">
-        <graphics name="PNPLA4, DXS1283E, GS2" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="PNPLA4, DXS1283E, GS2, iPLA2eta" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="140" y="314" width="46" height="17"/>
     </entry>
     <entry id="91" name="hsa:195814 hsa:8630" type="gene" reaction="rn:R02124"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:195814+hsa:8630">
-        <graphics name="SDR16C5, FLJ33105, RDH#2, RDH-E2, RDHE2..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="SDR16C5, RDH#2, RDH-E2, RDHE2..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="300" y="259" width="46" height="17"/>
     </entry>
+    <relation entry1="85" entry2="86" type="ECrel">
+        <subtype name="compound" value="27"/>
+    </relation>
     <relation entry1="85" entry2="87" type="ECrel">
+        <subtype name="compound" value="27"/>
+    </relation>
+    <relation entry1="34" entry2="86" type="ECrel">
         <subtype name="compound" value="27"/>
     </relation>
     <relation entry1="34" entry2="87" type="ECrel">
@@ -413,14 +429,62 @@
     <relation entry1="10" entry2="13" type="ECrel">
         <subtype name="compound" value="8"/>
     </relation>
+    <relation entry1="10" entry2="15" type="ECrel">
+        <subtype name="compound" value="8"/>
+    </relation>
     <relation entry1="7" entry2="13" type="ECrel">
+        <subtype name="compound" value="8"/>
+    </relation>
+    <relation entry1="7" entry2="15" type="ECrel">
         <subtype name="compound" value="8"/>
     </relation>
     <relation entry1="67" entry2="13" type="ECrel">
         <subtype name="compound" value="8"/>
     </relation>
+    <relation entry1="67" entry2="15" type="ECrel">
+        <subtype name="compound" value="8"/>
+    </relation>
     <relation entry1="68" entry2="13" type="ECrel">
         <subtype name="compound" value="8"/>
+    </relation>
+    <relation entry1="68" entry2="15" type="ECrel">
+        <subtype name="compound" value="8"/>
+    </relation>
+    <relation entry1="15" entry2="54" type="ECrel">
+        <subtype name="compound" value="14"/>
+    </relation>
+    <relation entry1="15" entry2="57" type="ECrel">
+        <subtype name="compound" value="14"/>
+    </relation>
+    <relation entry1="15" entry2="56" type="ECrel">
+        <subtype name="compound" value="14"/>
+    </relation>
+    <relation entry1="15" entry2="82" type="ECrel">
+        <subtype name="compound" value="14"/>
+    </relation>
+    <relation entry1="15" entry2="73" type="ECrel">
+        <subtype name="compound" value="14"/>
+    </relation>
+    <relation entry1="15" entry2="77" type="ECrel">
+        <subtype name="compound" value="14"/>
+    </relation>
+    <relation entry1="15" entry2="79" type="ECrel">
+        <subtype name="compound" value="14"/>
+    </relation>
+    <relation entry1="15" entry2="76" type="ECrel">
+        <subtype name="compound" value="14"/>
+    </relation>
+    <relation entry1="15" entry2="78" type="ECrel">
+        <subtype name="compound" value="14"/>
+    </relation>
+    <relation entry1="15" entry2="74" type="ECrel">
+        <subtype name="compound" value="14"/>
+    </relation>
+    <relation entry1="15" entry2="75" type="ECrel">
+        <subtype name="compound" value="14"/>
+    </relation>
+    <relation entry1="15" entry2="88" type="ECrel">
+        <subtype name="compound" value="14"/>
     </relation>
     <relation entry1="13" entry2="54" type="ECrel">
         <subtype name="compound" value="14"/>
@@ -635,6 +699,9 @@
     <relation entry1="91" entry2="13" type="ECrel">
         <subtype name="compound" value="8"/>
     </relation>
+    <relation entry1="91" entry2="15" type="ECrel">
+        <subtype name="compound" value="8"/>
+    </relation>
     <reaction id="7" name="rn:R02124" type="reversible">
         <substrate id="5" name="cpd:C00473"/>
         <product id="8" name="cpd:C00376"/>
@@ -646,6 +713,10 @@
     <reaction id="10" name="rn:R00032" type="irreversible">
         <substrate id="11" name="cpd:C02094"/>
         <product id="8" name="cpd:C00376"/>
+    </reaction>
+    <reaction id="15" name="rn:R02125" type="irreversible">
+        <substrate id="8" name="cpd:C00376"/>
+        <product id="14" name="cpd:C00777"/>
     </reaction>
     <reaction id="19" name="rn:R08387" type="irreversible">
         <substrate id="5" name="cpd:C00473"/>
@@ -730,6 +801,10 @@
     <reaction id="85" name="rn:R08383" type="reversible">
         <substrate id="25" name="cpd:C16682"/>
         <product id="27" name="cpd:C16681"/>
+    </reaction>
+    <reaction id="86" name="rn:R08384" type="irreversible">
+        <substrate id="27" name="cpd:C16681"/>
+        <product id="29" name="cpd:C15493"/>
     </reaction>
     <reaction id="87" name="rn:R08385" type="irreversible">
         <substrate id="27" name="cpd:C16681"/>

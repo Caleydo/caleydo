@@ -22,12 +22,12 @@
     </entry>
     <entry id="4" name="hsa:27304" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:27304">
-        <graphics name="MOCS3, MGC9252, UBA4, dJ914P20.3" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="MOCS3, UBA4, dJ914P20.3" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="294" y="471" width="46" height="17"/>
     </entry>
     <entry id="5" name="hsa:81605" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:81605">
-        <graphics name="URM1, C9orf74, MGC2668" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="URM1, C9orf74" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="200" y="471" width="46" height="17"/>
     </entry>
     <entry id="6" name="hsa:9054" type="gene"
@@ -37,17 +37,17 @@
     </entry>
     <entry id="7" name="hsa:348180" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:348180">
-        <graphics name="CTU2, C16orf84, MGC131681, MGC148063, MGC148064, NCS2, UPF0432" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CTU2, C16orf84, NCS2, UPF0432" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="385" y="457" width="46" height="17"/>
     </entry>
     <entry id="8" name="hsa:90353" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:90353">
-        <graphics name="CTU1, ATPBD3, MGC17332, NCS6" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CTU1, ATPBD3, NCS6" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="385" y="440" width="46" height="17"/>
     </entry>
     <entry id="9" name="hsa:4357 hsa:7263" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:4357+hsa:7263">
-        <graphics name="MPST, MGC24539, MST, TST2..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="MPST, MST, TST2..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="292" y="434" width="46" height="17"/>
     </entry>
     <entry id="10" name="ko:K14171" type="ortholog"
@@ -122,7 +122,7 @@
     </entry>
     <entry id="24" name="hsa:55687" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:55687">
-        <graphics name="TRMU, MGC99627, MTO2, MTU1, TRMT, TRMT1, TRNT1" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="TRMU, MTO2, MTU1, TRMT, TRMT1, TRNT1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="429" y="666" width="46" height="17"/>
     </entry>
     <entry id="25" name="hsa:9054" type="gene"
@@ -147,7 +147,7 @@
     </entry>
     <entry id="29" name="hsa:4338" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:4338">
-        <graphics name="MOCS2, MCBPE, MOCO1, MOCS2A, MOCS2B, MPTS" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="MOCS2, MCBPE, MOCO1, MOCO1-A, MOCO1-B, MOCS2A, MOCS2B, MPTS" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="888" y="588" width="46" height="17"/>
     </entry>
     <entry id="30" name="ko:K03636" type="ortholog"
@@ -157,7 +157,7 @@
     </entry>
     <entry id="31" name="hsa:27304" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:27304">
-        <graphics name="MOCS3, MGC9252, UBA4, dJ914P20.3" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="MOCS3, UBA4, dJ914P20.3" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="818" y="588" width="46" height="17"/>
     </entry>
     <entry id="32" name="cpd:C00378" type="compound"
@@ -202,12 +202,12 @@
     </entry>
     <entry id="40" name="hsa:4338" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:4338">
-        <graphics name="MOCS2, MCBPE, MOCO1, MOCS2A, MOCS2B, MPTS" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="MOCS2, MCBPE, MOCO1, MOCO1-A, MOCO1-B, MOCS2A, MOCS2B, MPTS" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="724" y="471" width="46" height="17"/>
     </entry>
     <entry id="41" name="hsa:27304" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:27304">
-        <graphics name="MOCS3, MGC9252, UBA4, dJ914P20.3" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="MOCS3, UBA4, dJ914P20.3" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="818" y="471" width="46" height="17"/>
     </entry>
     <entry id="42" name="cpd:C05924" type="compound"
@@ -237,12 +237,12 @@
     </entry>
     <entry id="47" name="hsa:4337" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:4337">
-        <graphics name="MOCS1, KIAA0381, MIG11, MOCOD" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="MOCS1, MIG11, MOCOD" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="937" y="451" width="46" height="17"/>
     </entry>
     <entry id="48" name="hsa:4337" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:4337">
-        <graphics name="MOCS1, KIAA0381, MIG11, MOCOD" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="MOCS1, MIG11, MOCOD" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="939" y="544" width="46" height="17"/>
     </entry>
     <entry id="49" name="cpd:C00097" type="compound"
@@ -262,7 +262,7 @@
     </entry>
     <entry id="52" name="hsa:4338" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:4338">
-        <graphics name="MOCS2, MCBPE, MOCO1, MOCS2A, MOCS2B, MPTS" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="MOCS2, MCBPE, MOCO1, MOCO1-A, MOCO1-B, MOCS2A, MOCS2B, MPTS" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="887" y="471" width="46" height="17"/>
     </entry>
     <relation entry1="6" entry2="9" type="PPrel">

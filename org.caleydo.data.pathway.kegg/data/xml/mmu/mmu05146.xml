@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
-<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Oct 19, 2010 14:17:07 +0900 (JST) -->
+<!DOCTYPE pathway SYSTEM "http://www.kegg.jp/kegg/xml/KGML_v0.7.1_.dtd">
+<!-- Creation date: May 29, 2013 17:48:33 +0900 (GMT+09:00) -->
 <pathway name="path:mmu05146" org="mmu" number="05146"
          title="Amoebiasis"
-         image="http://www.genome.jp/kegg/pathway/mmu/mmu05146.png"
-         link="http://www.genome.jp/kegg-bin/show_pathway?mmu05146">
+         image="http://www.kegg.jp/kegg/pathway/mmu/mmu05146.png"
+         link="http://www.kegg.jp/kegg-bin/show_pathway?mmu05146">
     <entry id="1" name="ko:K08570" type="ortholog"
         link="http://www.kegg.jp/dbget-bin/www_bget?K08570">
         <graphics name="K08570" fgcolor="#000000" bgcolor="#FFFFFF"
@@ -15,9 +15,9 @@
         <graphics name="Il1b, IL-1beta, Il-1b" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="382" y="185" width="46" height="17"/>
     </entry>
-    <entry id="3" name="ko:K10955" type="ortholog"
-        link="http://www.kegg.jp/dbget-bin/www_bget?K10955">
-        <graphics name="K10955" fgcolor="#000000" bgcolor="#FFFFFF"
+    <entry id="3" name="mmu:17831" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:17831">
+        <graphics name="Muc2, 2010015E03Rik, MCM, wnn" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="397" y="234" width="46" height="17"/>
     </entry>
     <entry id="4" name="mmu:14268" type="gene"
@@ -287,7 +287,7 @@
     </entry>
     <entry id="60" name="mmu:18747 mmu:18749 mmu:19108" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:18747+mmu:18749+mmu:19108">
-        <graphics name="Prkaca, Cs, PKA, PKCD, Pkaca..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Prkaca, PKCD, Pkaca..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="193" y="357" width="46" height="17"/>
     </entry>
     <entry id="61" name="ko:K13974" type="ortholog"
@@ -310,8 +310,8 @@
         <graphics name="Arachidonic acid metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
              type="roundrectangle" x="749" y="1024" width="92" height="34"/>
     </entry>
-    <entry id="65" name="mmu:12814 mmu:12815 mmu:12824 mmu:12825 mmu:12826 mmu:12827 mmu:12829 mmu:12830 mmu:12831 mmu:12832 mmu:12842 mmu:12843 mmu:53867 mmu:94216" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:12814+mmu:12815+mmu:12824+mmu:12825+mmu:12826+mmu:12827+mmu:12829+mmu:12830+mmu:12831+mmu:12832+mmu:12842+mmu:12843+mmu:53867+mmu:94216">
+    <entry id="65" name="mmu:12814 mmu:12815 mmu:12824 mmu:12825 mmu:12826 mmu:12827 mmu:12828 mmu:12829 mmu:12830 mmu:12831 mmu:12832 mmu:12842 mmu:12843 mmu:373864 mmu:53867 mmu:71355 mmu:94216" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:12814+mmu:12815+mmu:12824+mmu:12825+mmu:12826+mmu:12827+mmu:12828+mmu:12829+mmu:12830+mmu:12831+mmu:12832+mmu:12842+mmu:12843+mmu:373864+mmu:53867+mmu:71355+mmu:94216">
         <graphics name="Col11a1, C530001D20Rik, cho..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="397" y="269" width="46" height="17"/>
     </entry>
@@ -340,8 +340,8 @@
         <graphics name="Fn1, E330027I09, Fn, Fn-1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="634" y="623" width="46" height="17"/>
     </entry>
-    <entry id="73" name="mmu:12814 mmu:12815 mmu:12824 mmu:12825 mmu:12826 mmu:12827 mmu:12829 mmu:12830 mmu:12831 mmu:12832 mmu:12842 mmu:12843 mmu:53867 mmu:94216" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:12814+mmu:12815+mmu:12824+mmu:12825+mmu:12826+mmu:12827+mmu:12829+mmu:12830+mmu:12831+mmu:12832+mmu:12842+mmu:12843+mmu:53867+mmu:94216">
+    <entry id="73" name="mmu:12814 mmu:12815 mmu:12824 mmu:12825 mmu:12826 mmu:12827 mmu:12828 mmu:12829 mmu:12830 mmu:12831 mmu:12832 mmu:12842 mmu:12843 mmu:373864 mmu:53867 mmu:71355 mmu:94216" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:12814+mmu:12815+mmu:12824+mmu:12825+mmu:12826+mmu:12827+mmu:12828+mmu:12829+mmu:12830+mmu:12831+mmu:12832+mmu:12842+mmu:12843+mmu:373864+mmu:53867+mmu:71355+mmu:94216">
         <graphics name="Col11a1, C530001D20Rik, cho..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="683" y="623" width="46" height="17"/>
     </entry>

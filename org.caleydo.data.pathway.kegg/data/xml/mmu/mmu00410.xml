@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Aug 22, 2011 16:27:25 +0900 (GMT+09:00) -->
+<!-- Creation date: Jul 17, 2012 17:49:15 +0900 (GMT+09:00) -->
 <pathway name="path:mmu00410" org="mmu" number="00410"
          title="beta-Alanine metabolism"
          image="http://www.genome.jp/kegg/pathway/mmu/mmu00410.png"
@@ -42,7 +42,7 @@
     </entry>
     <entry id="40" name="mmu:227095" type="gene" reaction="rn:R03158"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:227095">
-        <graphics name="Hibch, 2610509I15Rik, AI648812, MGC31364" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Hibch, 2610509I15Rik, AI648812" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="528" y="605" width="46" height="17"/>
     </entry>
     <entry id="44" name="mmu:56690" type="gene" reaction="rn:R00233"
@@ -52,7 +52,7 @@
     </entry>
     <entry id="45" name="mmu:104776" type="gene" reaction="rn:R00705 rn:R00706"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:104776">
-        <graphics name="Aldh6a1, 1110038I05Rik, AI314632, MGC37325, Mmsdh" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Aldh6a1, 1110038I05Rik, AI314632, Mmsdh" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="203" y="574" width="46" height="17"/>
     </entry>
     <entry id="47" name="ko:K00822" type="ortholog" reaction="rn:R00907"
@@ -115,8 +115,8 @@
         <graphics name="Aoc3, SSAO, VAP1..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="577" y="293" width="46" height="17"/>
     </entry>
-    <entry id="61" name="mmu:110695 mmu:11668 mmu:11669 mmu:11671 mmu:56752 mmu:72535" type="gene" reaction="rn:R00904"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:110695+mmu:11668+mmu:11669+mmu:11671+mmu:56752+mmu:72535">
+    <entry id="61" name="mmu:110695 mmu:11669 mmu:11671 mmu:56752 mmu:72535" type="gene" reaction="rn:R00904"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:110695+mmu:11669+mmu:11671+mmu:56752+mmu:72535">
         <graphics name="Aldh7a1, Atq1, D18Wsu181e..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="467" y="282" width="46" height="17"/>
     </entry>
@@ -132,7 +132,7 @@
     </entry>
     <entry id="64" name="mmu:99586" type="gene" reaction="rn:R00978"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:99586">
-        <graphics name="Dpyd, AI315208, DPD, E330028L06Rik, MGC37940" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Dpyd, AI315208, DPD, E330028L06Rik" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="123" y="272" width="46" height="17"/>
     </entry>
     <entry id="66" name="mmu:107239" type="gene" reaction="rn:R01164"
@@ -330,8 +330,8 @@
         <graphics name="C00106" fgcolor="#000000" bgcolor="#FFFFFF"
              type="circle" x="71" y="260" width="8" height="8"/>
     </entry>
-    <entry id="113" name="mmu:11670 mmu:56847 mmu:621603 mmu:67689" type="gene" reaction="rn:R00904"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:11670+mmu:56847+mmu:621603+mmu:67689">
+    <entry id="113" name="mmu:11670 mmu:56847 mmu:621603 mmu:67689 mmu:73458" type="gene" reaction="rn:R00904"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:11670+mmu:56847+mmu:621603+mmu:67689+mmu:73458">
         <graphics name="Aldh3a1, Ahd-4, Ahd4, Aldh, Aldh3..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="467" y="303" width="46" height="17"/>
     </entry>
@@ -654,8 +654,8 @@
     </reaction>
     <reaction id="68" name="rn:R01166" type="irreversible">
         <substrate id="97" name="cpd:C00386"/>
-        <product id="98" name="cpd:C00135"/>
         <product id="78" name="cpd:C00099"/>
+        <product id="98" name="cpd:C00135"/>
     </reaction>
     <reaction id="70" name="rn:R03286" type="irreversible">
         <substrate id="78" name="cpd:C00099"/>
@@ -671,7 +671,7 @@
     </reaction>
     <reaction id="118" name="rn:R01166" type="irreversible">
         <substrate id="97" name="cpd:C00386"/>
-        <product id="98" name="cpd:C00135"/>
         <product id="78" name="cpd:C00099"/>
+        <product id="98" name="cpd:C00135"/>
     </reaction>
 </pathway>

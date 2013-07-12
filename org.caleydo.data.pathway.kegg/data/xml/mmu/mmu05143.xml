@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
-<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Feb 10, 2011 10:57:28 +0900 (GMT+09:00) -->
+<!DOCTYPE pathway SYSTEM "http://www.kegg.jp/kegg/xml/KGML_v0.7.1_.dtd">
+<!-- Creation date: May 30, 2013 11:27:50 +0900 (GMT+09:00) -->
 <pathway name="path:mmu05143" org="mmu" number="05143"
          title="African trypanosomiasis"
-         image="http://www.genome.jp/kegg/pathway/mmu/mmu05143.png"
-         link="http://www.genome.jp/kegg-bin/show_pathway?mmu05143">
+         image="http://www.kegg.jp/kegg/pathway/mmu/mmu05143.png"
+         link="http://www.kegg.jp/kegg-bin/show_pathway?mmu05143">
     <entry id="1" name="path:mmu05143" type="map"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu05143">
         <graphics name="TITLE:African trypanosomiasis" fgcolor="#000000" bgcolor="#FFFFFF"
@@ -22,7 +22,7 @@
     </entry>
     <entry id="4" name="mmu:16159 mmu:16160" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:16159+mmu:16160">
-        <graphics name="Il12a, IL-12p35, Il-12a, Ll12a, MGC151228, MGC151232, p35..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Il12a, IL-12p35, Il-12a, Ll12a, p35..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="655" y="372" width="46" height="17"/>
     </entry>
     <entry id="5" name="mmu:16173" type="gene"
@@ -37,7 +37,7 @@
     </entry>
     <entry id="7" name="mmu:21926" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:21926">
-        <graphics name="Tnf, DIF, MGC151434, TNF-alpha, TNFSF2, TNFalpha, Tnfa, Tnfsf1a" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Tnf, DIF, TNF-alpha, TNFSF2, TNFalpha, Tnfa, Tnfsf1a" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="790" y="210" width="46" height="17"/>
     </entry>
     <entry id="8" name="ko:K14473" type="ortholog"
@@ -62,7 +62,7 @@
     </entry>
     <entry id="13" name="mmu:16775" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:16775">
-        <graphics name="Lama4, MGC141567" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Lama4" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="1065" y="248" width="46" height="17"/>
     </entry>
     <entry id="14" name="mmu:16176" type="gene"
@@ -82,12 +82,12 @@
     </entry>
     <entry id="17" name="mmu:16061" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:16061">
-        <graphics name="Igh-VJ558, AI893585, MGC118142, MGC6727" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Igh-VJ558, AI893585" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="482" y="242" width="46" height="17"/>
     </entry>
     <entry id="18" name="mmu:16061" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:16061">
-        <graphics name="Igh-VJ558, AI893585, MGC118142, MGC6727" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Igh-VJ558, AI893585" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="482" y="262" width="46" height="17"/>
     </entry>
     <entry id="19" name="mmu:16153" type="gene"
@@ -107,7 +107,7 @@
     </entry>
     <entry id="22" name="mmu:15894" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:15894">
-        <graphics name="Icam1, CD54, Icam-1, Ly-47, MALA-2, MGC6195" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Icam1, CD54, Icam-1, Ly-47, MALA-2" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="982" y="289" width="46" height="17"/>
     </entry>
     <entry id="23" name="path:mmu04610" type="map"
@@ -157,7 +157,7 @@
     </entry>
     <entry id="33" name="mmu:11806" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:11806">
-        <graphics name="Apoa1, Alp-1, Apoa-1, Brp-14, Ltw-1, Lvtw-1, MGC102525, Sep-1, Sep-2, Sep2" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Apoa1, Alp-1, Apoa-1, Brp-14, Ltw-1, Lvtw-1, Sep-1, Sep-2, Sep2" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="205" y="516" width="46" height="17"/>
     </entry>
     <entry id="34" name="mmu:100503605 mmu:110257 mmu:15122 mmu:15129 mmu:15130" type="gene"
@@ -252,7 +252,7 @@
     </entry>
     <entry id="52" name="path:mmu04710" type="map"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu04710">
-        <graphics name="Circadian rhythm - mammal" fgcolor="#000000" bgcolor="#FFFFFF"
+        <graphics name="Circadian rhythm" fgcolor="#000000" bgcolor="#FFFFFF"
              type="roundrectangle" x="1411" y="450" width="92" height="25"/>
     </entry>
     <entry id="53" name="path:mmu04620" type="map"

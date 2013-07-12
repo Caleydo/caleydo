@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
-<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Jan 17, 2012 13:45:35 +0900 (GMT+09:00) -->
+<!DOCTYPE pathway SYSTEM "http://www.kegg.jp/kegg/xml/KGML_v0.7.1_.dtd">
+<!-- Creation date: Feb 8, 2013 10:47:15 +0900 (GMT+09:00) -->
 <pathway name="path:hsa00591" org="hsa" number="00591"
          title="Linoleic acid metabolism"
-         image="http://www.genome.jp/kegg/pathway/hsa/hsa00591.png"
-         link="http://www.genome.jp/kegg-bin/show_pathway?hsa00591">
+         image="http://www.kegg.jp/kegg/pathway/hsa/hsa00591.png"
+         link="http://www.kegg.jp/kegg-bin/show_pathway?hsa00591">
     <entry id="17" name="hsa:1544 hsa:1551 hsa:1557 hsa:1558 hsa:1559 hsa:1562 hsa:1571 hsa:1573 hsa:1576 hsa:1577 hsa:64816" type="gene" reaction="rn:R07055"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:1544+hsa:1551+hsa:1557+hsa:1558+hsa:1559+hsa:1562+hsa:1571+hsa:1573+hsa:1576+hsa:1577+hsa:64816">
         <graphics name="CYP1A2, CP12, P3-450, P450(PA)..." fgcolor="#000000" bgcolor="#BFFFBF"
@@ -105,9 +105,9 @@
         <graphics name="ALOX15, 15-LOX-1, 15LOX-1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="622" y="311" width="46" height="17"/>
     </entry>
-    <entry id="38" name="hsa:100137049 hsa:123745 hsa:151056 hsa:26279 hsa:30814 hsa:391013 hsa:50487 hsa:5319 hsa:5320 hsa:5321 hsa:5322 hsa:64600 hsa:81579 hsa:8398 hsa:8399 hsa:84647 hsa:8681" type="gene" reaction="rn:R07064"
-        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:100137049+hsa:123745+hsa:151056+hsa:26279+hsa:30814+hsa:391013+hsa:50487+hsa:5319+hsa:5320+hsa:5321+hsa:5322+hsa:64600+hsa:81579+hsa:8398+hsa:8399+hsa:84647+hsa:8681">
-        <graphics name="PLA2G4B, DKFZp686N12131, FLJ17693, FLJ42498, FLJ53173, HsT16992, cPLA2-beta..." fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="38" name="hsa:100137049 hsa:11145 hsa:123745 hsa:151056 hsa:255189 hsa:26279 hsa:283748 hsa:30814 hsa:391013 hsa:50487 hsa:5319 hsa:5320 hsa:5321 hsa:5322 hsa:64600 hsa:81579 hsa:8398 hsa:8399 hsa:84647 hsa:8605 hsa:8681" type="gene" reaction="rn:R07064"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:100137049+hsa:11145+hsa:123745+hsa:151056+hsa:255189+hsa:26279+hsa:283748+hsa:30814+hsa:391013+hsa:50487+hsa:5319+hsa:5320+hsa:5321+hsa:5322+hsa:64600+hsa:81579+hsa:8398+hsa:8399+hsa:84647+hsa:8605+hsa:8681">
+        <graphics name="PLA2G4B, HsT16992, cPLA2-beta..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="341" y="204" width="46" height="17"/>
     </entry>
     <entry id="42" name="ko:K08262" type="ortholog" reaction="rn:R05740"

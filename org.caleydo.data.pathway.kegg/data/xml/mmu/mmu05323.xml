@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
-<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
+<!DOCTYPE pathway SYSTEM "http://www.kegg.jp/kegg/xml/KGML_v0.7.1_.dtd">
 <!-- Creation date: Apr 7, 2011 11:35:49 +0900 (GMT+09:00) -->
 <pathway name="path:mmu05323" org="mmu" number="05323"
          title="Rheumatoid arthritis"
-         image="http://www.genome.jp/kegg/pathway/mmu/mmu05323.png"
-         link="http://www.genome.jp/kegg-bin/show_pathway?mmu05323">
+         image="http://www.kegg.jp/kegg/pathway/mmu/mmu05323.png"
+         link="http://www.kegg.jp/kegg-bin/show_pathway?mmu05323">
     <entry id="1" name="path:mmu05323" type="map"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu05323">
         <graphics name="TITLE:Rheumatoid arthritis" fgcolor="#000000" bgcolor="#FFFFFF"
@@ -42,7 +42,7 @@
     </entry>
     <entry id="8" name="mmu:21926" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:21926">
-        <graphics name="Tnf, DIF, MGC151434, TNF-alpha, TNFSF2, TNFalpha, Tnfa, Tnfsf1a" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Tnf, DIF, TNF-alpha, TNFSF2, TNFalpha, Tnfa, Tnfsf1a" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="619" y="503" width="46" height="17"/>
     </entry>
     <entry id="9" name="mmu:16193" type="gene"
@@ -102,7 +102,7 @@
     </entry>
     <entry id="20" name="mmu:12981" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:12981">
-        <graphics name="Csf2, Csfgm, GMCSF, Gm-CSf, MGC151255, MGC151257, MGI-IGM" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Csf2, Csfgm, GMCSF, Gm-CSf, MGI-IGM" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="1168" y="410" width="46" height="17"/>
     </entry>
     <entry id="21" name="mmu:16193" type="gene"
@@ -137,12 +137,12 @@
     </entry>
     <entry id="27" name="mmu:16061" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:16061">
-        <graphics name="Igh-VJ558, AI893585, MGC118142, MGC6727" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Igh-VJ558, AI893585" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="744" y="292" width="46" height="17"/>
     </entry>
     <entry id="28" name="mmu:100504404 mmu:14960 mmu:14961 mmu:14969 mmu:14998 mmu:14999 mmu:15000 mmu:15001 mmu:15002" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:100504404+mmu:14960+mmu:14961+mmu:14969+mmu:14998+mmu:14999+mmu:15000+mmu:15001+mmu:15002">
-        <graphics name="H2-Ea-ps, AI323765, E-alpha-f, H-2Ea, H2-Ea, I-Ealpha, Ia-3, Ia3, MGC117888..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="H2-Ea-ps, AI323765, E-alpha-f, H-2Ea, H2-Ea, I-Ealpha, Ia-3, Ia3..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="206" y="322" width="46" height="17"/>
     </entry>
     <entry id="29" name="ko:K10784 ko:K10785" type="ortholog"
@@ -152,7 +152,7 @@
     </entry>
     <entry id="30" name="mmu:108664 mmu:110935 mmu:114143 mmu:11964 mmu:11966 mmu:11972 mmu:11973 mmu:11974 mmu:11975 mmu:11984 mmu:140494 mmu:21871 mmu:242341 mmu:27060 mmu:338375 mmu:54411 mmu:66144 mmu:66237 mmu:66290 mmu:66335 mmu:68775 mmu:73834 mmu:74915 mmu:76252" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:108664+mmu:110935+mmu:114143+mmu:11964+mmu:11966+mmu:11972+mmu:11973+mmu:11974+mmu:11975+mmu:11984+mmu:140494+mmu:21871+mmu:242341+mmu:27060+mmu:338375+mmu:54411+mmu:66144+mmu:66237+mmu:66290+mmu:66335+mmu:68775+mmu:73834+mmu:74915+mmu:76252">
-        <graphics name="Atp6v1h, 0710001F19Rik, AU022349, CGI-11, MGC11985, SFD, SFDalpha, SFDbeta, VMA13..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Atp6v1h, 0710001F19Rik, AU022349, CGI-11, SFD, SFDalpha, SFDbeta, VMA13..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="1005" y="732" width="46" height="17"/>
     </entry>
     <entry id="31" name="cpd:C00080" type="compound"
@@ -172,12 +172,12 @@
     </entry>
     <entry id="34" name="mmu:69583" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:69583">
-        <graphics name="Tnfsf13, 2310026N09Rik, April, MGC106105, Tall2, Trdl1" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Tnfsf13, 2310026N09Rik, April, Tall2, Trdl1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="525" y="343" width="46" height="17"/>
     </entry>
     <entry id="35" name="mmu:24099" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:24099">
-        <graphics name="Tnfsf13b, BAFF, BLyS, D8Ertd387e, MGC124060, MGC124061, TALL-1, TALL1, THANK, TNFSF20, zTNF4" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Tnfsf13b, BAFF, BLyS, D8Ertd387e, TALL-1, TALL1, THANK, TNFSF20, zTNF4" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="525" y="363" width="46" height="17"/>
     </entry>
     <entry id="36" name="mmu:16408 mmu:16414 mmu:16415" type="gene"
@@ -187,7 +187,7 @@
     </entry>
     <entry id="37" name="mmu:15894" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:15894">
-        <graphics name="Icam1, CD54, Icam-1, Ly-47, MALA-2, MGC6195" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Icam1, CD54, Icam-1, Ly-47, MALA-2" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="363" y="384" width="46" height="17"/>
     </entry>
     <entry id="38" name="mmu:12519 mmu:12524" type="gene"
@@ -220,9 +220,9 @@
         <graphics name="Il18, Igif, Il-18" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="643" y="541" width="46" height="17"/>
     </entry>
-    <entry id="44" name="mmu:18654 mmu:22339 mmu:22340" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:18654+mmu:22339+mmu:22340">
-        <graphics name="Pgf, AI854365, PIGF, Plgf..." fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="44" name="mmu:22339" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:22339">
+        <graphics name="Vegfa, Vegf, Vegf120, Vegf164, Vegf188, Vpf" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="974" y="234" width="46" height="17"/>
     </entry>
     <entry id="45" name="mmu:20315" type="gene"
@@ -285,9 +285,9 @@
         <graphics name="Toll-like receptor signaling pathway" fgcolor="#000000" bgcolor="#FFFFFF"
              type="roundrectangle" x="672" y="422" width="92" height="34"/>
     </entry>
-    <entry id="58" name="ko:K14624" type="ortholog"
-        link="http://www.kegg.jp/dbget-bin/www_bget?K14624">
-        <graphics name="K14624" fgcolor="#000000" bgcolor="#FFFFFF"
+    <entry id="58" name="mmu:100862578 mmu:20293 mmu:20296" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:100862578+mmu:20293+mmu:20296">
+        <graphics name="100862578..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="820" y="167" width="46" height="17"/>
     </entry>
     <entry id="59" name="mmu:12477" type="gene"

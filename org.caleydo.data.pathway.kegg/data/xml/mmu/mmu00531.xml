@@ -107,7 +107,7 @@
     </entry>
     <entry id="40" name="mmu:545291" type="gene" reaction="rn:R07811"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:545291">
-        <graphics name="Hpse2, Gm968" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Hpse2, Gm968, Hpa2" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="355" y="235" width="46" height="17"/>
     </entry>
     <entry id="41" name="mmu:15442" type="gene" reaction="rn:R07811"
