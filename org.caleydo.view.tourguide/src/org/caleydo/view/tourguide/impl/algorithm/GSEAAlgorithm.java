@@ -56,12 +56,15 @@ public class GSEAAlgorithm extends AGSEAAlgorithm {
 
 		// Randomly assign the original phenotype labels to samples,reorder genes, and re-compute ES(S)
 		List<RankedSet> sets = new ArrayList<>(NPERM);
+		monitor.setTaskName("Computing " + NPERM + " random permutations");
 		for (int i = 0; i < NPERM; ++i) {
 			// shuffle randomly the ids
 			Collections.shuffle(base);
 			// select the first sampleSize elements as new class labels
 			Collection<Integer> in = base.subList(0, sampleSize);
 			sets.add(new RankedSet(in));
+			if (i % 50 == 0)
+				monitor.setTaskName("Computing " + NPERM + " random permutations (" + i + ")");
 		}
 
 		if (monitor.isCanceled()) {

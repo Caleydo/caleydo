@@ -76,14 +76,15 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 
 		if (!existing.isEmpty() && mode == EWizardMode.GLOBAL && hasGoodOnes(existing)) {
 			IState target = stateMachine.addState("GSEA", new CreateGSEAState(browse, true));
-			// IState target2 = stateMachine.addState("PGSEA", new CreateGSEAState(browse, false));
+			IState target2 = stateMachine.addState("PGSEA", new CreateGSEAState(browse, false));
 			stateMachine.addTransition(start, new SimpleTransition(target,
 					"Find with GSEA based on displayed stratification"));
-			// stateMachine.addTransition(source, new SimpleTransition(target2,
-			// "Find with PGSEA based on displayed stratification"));
+			stateMachine.addTransition(start, new SimpleTransition(target2,
+					"Find with PGSEA based on displayed stratification"));
 		}
 
-		// doesn't work as we have to browse for a group
+		// auto mode
+		// doesn't work as we have to browse for a group not a stratification
 		// {
 		// // Find with GSEA based on strat. not displayed -> n x n -> no
 		// // first select a stratification then a pathway
@@ -160,7 +161,7 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 		private final boolean createGSEA;
 
 		public CreateGSEAState(BrowsePathwayState target, boolean createGSEA) {
-			super("Select query stratification by clicking on the header brick of one of the displayed columns");
+			super("Select query group by clicking on a brick of one of the displayed columns");
 			this.target = target;
 			this.createGSEA = createGSEA;
 		}
@@ -310,9 +311,9 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 			IScore gsea = new GeneSetScore("GSEA", algorithm, false);
 			IScore pValue = new GeneSetScore("GSEA P-Value", algorithm.asPValue(), true);
 
-			MultiScore s = new MultiScore(label, color, bgColor, RankTableConfigBase.GROUP_MODE);
-			s.add(gsea);
+			MultiScore s = new MultiScore(label, color, bgColor, RankTableConfigBase.NESTED_MODE);
 			s.add(pValue);
+			s.add(gsea);
 			return new IScore[] {s};
 		}
 

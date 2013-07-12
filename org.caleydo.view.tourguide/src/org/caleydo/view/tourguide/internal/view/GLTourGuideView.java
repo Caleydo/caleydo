@@ -80,6 +80,7 @@ import org.caleydo.vis.rank.config.RankTableUIConfigBase;
 import org.caleydo.vis.rank.layout.RowHeightLayouts;
 import org.caleydo.vis.rank.model.ACompositeRankColumnModel;
 import org.caleydo.vis.rank.model.ARankColumnModel;
+import org.caleydo.vis.rank.model.GroupRankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.MaxRankColumnModel;
 import org.caleydo.vis.rank.model.RankRankColumnModel;
@@ -652,11 +653,11 @@ public class GLTourGuideView extends AGLElementView {
 		boolean hasOne = false;
 		Collection<ARankColumnModel> toremove = new ArrayList<>();
 		for (ARankColumnModel col : columns) {
-			if (col instanceof ScoreRankColumnModel || col instanceof StackedRankColumnModel
-					|| col instanceof MaxRankColumnModel) {
+			if (col instanceof ScoreRankColumnModel
+					|| (col instanceof ACompositeRankColumnModel && hasScore((ACompositeRankColumnModel) col))) {
 				hasOne = true;
 				toremove.add(col);
-			} else if (hasOne)
+			} else if (hasOne || col instanceof GroupRankColumnModel)
 				break;
 		}
 		for (ARankColumnModel col : toremove) {
@@ -664,6 +665,19 @@ public class GLTourGuideView extends AGLElementView {
 		}
 	}
 
+
+	/**
+	 * @param col
+	 * @return
+	 */
+	private boolean hasScore(ACompositeRankColumnModel col) {
+		for (ARankColumnModel c : col) {
+			if (c instanceof ScoreRankColumnModel
+					|| (c instanceof ACompositeRankColumnModel && hasScore((ACompositeRankColumnModel) c)))
+				return true;
+		}
+		return false;
+	}
 
 	@ListenTo(sendToMe = true)
 	private void onCreateScore(final CreateScoreEvent event) {
