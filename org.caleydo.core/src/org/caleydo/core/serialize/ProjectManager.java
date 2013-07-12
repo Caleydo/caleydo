@@ -212,7 +212,6 @@ public final class ProjectManager {
 
 				HashMap<String, Perspective> recordPerspectives = new HashMap<String, Perspective>();
 
-
 				Set<String> recordPerspectiveIDs = ((ATableBasedDataDomain) dataDomain).getRecordPerspectiveIDs();
 				Set<String> dimensionPerspectiveIDs = ((ATableBasedDataDomain) dataDomain).getDimensionPerspectiveIDs();
 
@@ -561,74 +560,7 @@ public final class ProjectManager {
 			}
 
 		}
-		// IWorkbench workbench = PlatformUI.getWorkbench();
-		// Method persist;
-		// try {
-		// persist = workbench.getClass().getDeclaredMethod("persist", boolean.class);
-		// persist.setAccessible(true);
-		// persist.invoke(workbench, false);
-		// log.info("done");
-		// } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
-		// | InvocationTargetException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
-
-		// workbench.saveAll(shellProvider, runnableContext, filter, confirm)
-		// MApplication app = (MApplication) workbench.getService(MApplication.class);
-		//
-		// // persist the views in their models
-		// IWorkbenchWindow windows[] = workbench.getWorkbenchWindows();
-		// for (int i = 0; i < windows.length; i++) {
-		// IWorkbenchPage pages[] = windows[i].getPages();
-		// for (int j = 0; j < pages.length; j++) {
-		// IViewReference[] references = pages[j].getViewReferences();
-		// for (int k = 0; k < references.length; k++) {
-		// if (references[k].getView(false) != null) {
-		// try {
-		// persistView(((ViewReference) references[k]));
-		// } catch (IOException e) {
-		// log.warn("cant persist view: " + references[k].getId());
-		// }
-		// }
-		// }
-		// }
-		// }
-		//
-		// EObject local = EcoreUtil.copy((EObject) app); // create a local copy
-		// MApplication localapp = (MApplication) local;
-		// localapp.getMenuContributions().clear(); // manipulate like in the original
-		// localapp.getSelectedElement().setMainMenu(null);
-		//
-		// // dump the model
-		// ResourceSet resSet = new ResourceSetImpl();
-		// Resource resource = resSet.createResource(URI.createFileURI(dirName + WORKBENCH_XMI));
-		//
-		// resource.getContents().add(local);
-		// try {
-		// resource.save(Collections.EMPTY_MAP);
-		// log.info("stored workbench data");
-		// } catch (IOException e) {
-		// log.error("can't persist application.xmi", e);
-		// }
 	}
-
-	// /**
-	// * persist the given view see {@link ViewReference#persist}
-	// *
-	// * @param viewReference
-	// * @throws IOException
-	// */
-	// private static void persistView(ViewReference viewReference) throws IOException {
-	// IViewPart view = viewReference.getView(false);
-	// if (view != null) {
-	//			XMLMemento root = XMLMemento.createWriteRoot("view"); //$NON-NLS-1$
-	// view.saveState(root);
-	// StringWriter writer = new StringWriter();
-	// root.save(writer);
-	// viewReference.getModel().getPersistedState().put("memento", writer.toString());
-	// }
-	// }
 
 	public static void loadWorkbenchData(String dirName) {
 		try {
