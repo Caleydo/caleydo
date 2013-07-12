@@ -13,7 +13,7 @@ import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
-import org.caleydo.core.util.base.DefaultLabelProvider;
+import org.caleydo.core.util.base.Labels;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.view.tourguide.internal.model.InhomogenousDataDomainQuery;
 
@@ -78,7 +78,7 @@ public enum EDataDomainQueryMode implements Predicate<IDataDomain> {
 			break;
 		}
 		dataDomains = Lists.newArrayList(Iterables.filter(dataDomains, this));
-		Collections.sort(dataDomains, DefaultLabelProvider.BY_LABEL);
+		Collections.sort(dataDomains, Labels.BY_LABEL);
 		return dataDomains;
 	}
 

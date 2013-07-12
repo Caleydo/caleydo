@@ -12,10 +12,9 @@ import java.io.PrintWriter;
 import javax.swing.ImageIcon;
 
 /**
- * Helper tool can load a pathway list from a local folder. This is needed
- * because the folder.listFiles method does not work in deployed RCP
- * applications.
- * 
+ * FIXME adapt Helper tool can load a pathway list from a local folder. This is needed because the folder.listFiles
+ * method does not work in deployed RCP applications.
+ *
  * @author Marc Streit
  */
 public class PathwayListGenerator {
