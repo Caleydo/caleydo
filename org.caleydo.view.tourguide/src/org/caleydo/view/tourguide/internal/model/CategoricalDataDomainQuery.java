@@ -32,12 +32,17 @@ import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.id.IIDTypeMapper;
 import org.caleydo.core.util.color.Color;
+import org.caleydo.core.view.opengl.layout.Column.VAlign;
+import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.view.tourguide.internal.view.col.CategoricalPercentageRankColumnModel;
 import org.caleydo.vis.rank.model.ACompositeRankColumnModel;
 import org.caleydo.vis.rank.model.ARankColumnModel;
+import org.caleydo.vis.rank.model.CategoricalRankColumnModel;
 import org.caleydo.vis.rank.model.GroupRankColumnModel;
+import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.RankTableModel;
 
+import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 
 /**
@@ -147,7 +152,7 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 
 	/**
 	 * return the expected group count for a given dimension
-	 * 
+	 *
 	 * @param category
 	 * @return
 	 */
@@ -180,7 +185,7 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 
 	/**
 	 * builds a virtual array given a category and a label for it
-	 * 
+	 *
 	 * @param label
 	 * @param category
 	 * @return
@@ -260,7 +265,7 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 
 	/**
 	 * creates a {@link TablePerspective} out of the given data
-	 * 
+	 *
 	 * @param label
 	 * @param id
 	 *            the category
@@ -324,6 +329,41 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 		for (CategoryProperty<?> p : ctable.getCategoryDescriptions().getCategoryProperties()) {
 			group.add(CategoricalPercentageRankColumnModel.create(p.getCategory(), ctable, selected.contains(p)));
 		}
+		for (String id : d.getDimensionPerspectiveIDs()) {
+			Perspective p = ctable.getDimensionPerspective(id);
+			if (p.isDefault() || p.getVirtualArray().size() <= 1 || p.getVirtualArray().getGroupList().size() <= 1)
+				continue;
+			//use the complex perspective over multiple genes with a group list as a categorical column
+			group.add(createCategoricalFromGroupList(p.getLabel(), p.getVirtualArray()));
+		}
+	}
+
+	/**
+	 * @param va
+	 * @return
+	 */
+	private ARankColumnModel createCategoricalFromGroupList(String label, final VirtualArray va) {
+		Collection<String> items = new ArrayList<>();
+		for (Group g : va.getGroupList()) {
+			items.add(g.getLabel());
+		}
+		Function<IRow, String> toGroup = new Function<IRow, String>() {
+			@Override
+			public String apply(IRow in) {
+				if (!(in instanceof CategoricalPerspectiveRow))
+					return null;
+				CategoricalPerspectiveRow r = (CategoricalPerspectiveRow) in;
+				if (r.getCategoryIDType() != va.getIdType())
+					return null;
+				List<Group> groups = va.getGroupOf(r.getDimensionID());
+				if (groups.isEmpty())
+					return null;
+				if (groups.size() > 1)
+					return "multiple"; // FIXME
+				return groups.get(0).getLabel();
+			}
+		};
+		return CategoricalRankColumnModel.createSimple(GLRenderers.drawText(label, VAlign.CENTER), toGroup, items);
 	}
 
 	@Override
