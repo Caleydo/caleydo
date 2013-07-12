@@ -380,7 +380,7 @@
         <graphics name="SRC, ASV, SRC1, c-SRC, p60-Src" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="1260" y="857" width="46" height="17"/>
     </entry>
-    <entry id="150" name="hsa:5578＋mmu:18750" type="gene"
+    <entry id="150" name="hsa:5578" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5578＋mmu:18750">
         <graphics name="5578＋mmu:18750" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="1260" y="761" width="46" height="17"/>
