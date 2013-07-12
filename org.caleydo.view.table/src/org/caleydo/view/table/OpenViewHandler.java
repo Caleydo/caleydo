@@ -8,17 +8,7 @@ package org.caleydo.view.table;
 import org.caleydo.core.gui.command.AOpenViewHandler;
 
 public class OpenViewHandler extends AOpenViewHandler {
-	/**
-	 * Counter variable for determination of the secondary view ID. Needed for multiple instances of the same view type.
-	 */
-	private static int SECONDARY_ID = 0;
-
 	public OpenViewHandler() {
-		super(TableView.VIEW_TYPE);
-	}
-
-	@Override
-	protected int getNextSecondaryId() {
-		return SECONDARY_ID++;
+		super(TableView.VIEW_TYPE, true);
 	}
 }

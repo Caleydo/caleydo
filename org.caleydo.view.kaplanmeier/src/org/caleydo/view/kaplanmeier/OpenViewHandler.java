@@ -8,7 +8,7 @@ package org.caleydo.view.kaplanmeier;
 import org.caleydo.core.gui.command.AOpenViewHandler;
 
 public class OpenViewHandler extends AOpenViewHandler {
-	protected OpenViewHandler() {
+	public OpenViewHandler() {
 		super(GLKaplanMeier.VIEW_TYPE);
 	}
 }
