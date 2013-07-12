@@ -360,6 +360,8 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 			@Override
 			public void clicked(Pick pick) {
+				if (brickColumn.isDetailBrickShown() && brickColumn.isExpandLeft())
+					return;
 				brickColumn.showDetailedBrick(brick, false);
 			}
 		}, EPickingType.EXPAND_RIGHT_HANDLE.name(), brick.getID());
@@ -369,6 +371,8 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 			@Override
 			public void clicked(Pick pick) {
+				if (brickColumn.isDetailBrickShown() && !brickColumn.isExpandLeft())
+					return;
 				brickColumn.showDetailedBrick(brick, true);
 			}
 		}, EPickingType.EXPAND_LEFT_HANDLE.name(), brick.getID());
