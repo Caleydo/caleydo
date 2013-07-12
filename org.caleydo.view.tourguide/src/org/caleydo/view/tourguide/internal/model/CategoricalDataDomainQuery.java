@@ -7,6 +7,7 @@ package org.caleydo.view.tourguide.internal.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -31,19 +32,22 @@ import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.id.IIDTypeMapper;
+import org.caleydo.core.util.base.Labels;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.view.tourguide.internal.view.col.CategoricalPercentageRankColumnModel;
 import org.caleydo.vis.rank.model.ACompositeRankColumnModel;
 import org.caleydo.vis.rank.model.ARankColumnModel;
-import org.caleydo.vis.rank.model.CategoricalRankColumnModel;
 import org.caleydo.vis.rank.model.GroupRankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
+import org.caleydo.vis.rank.model.MultiCategoricalRankColumnModel;
 import org.caleydo.vis.rank.model.RankTableModel;
 
 import com.google.common.base.Function;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 /**
  * @author Samuel Gratzl
@@ -347,9 +351,9 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 		for (Group g : va.getGroupList()) {
 			items.add(g.getLabel());
 		}
-		Function<IRow, String> toGroup = new Function<IRow, String>() {
+		Function<IRow, Set<String>> toGroup = new Function<IRow, Set<String>>() {
 			@Override
-			public String apply(IRow in) {
+			public Set<String> apply(IRow in) {
 				if (!(in instanceof CategoricalPerspectiveRow))
 					return null;
 				CategoricalPerspectiveRow r = (CategoricalPerspectiveRow) in;
@@ -358,12 +362,12 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 				List<Group> groups = va.getGroupOf(r.getDimensionID());
 				if (groups.isEmpty())
 					return null;
-				if (groups.size() > 1)
-					return "multiple"; // FIXME
-				return groups.get(0).getLabel();
+				if (groups.size() == 1)
+					return Collections.singleton(groups.get(0).getLabel());
+				return Sets.newTreeSet(Iterables.transform(groups, Labels.TO_LABEL));
 			}
 		};
-		return CategoricalRankColumnModel.createSimple(GLRenderers.drawText(label, VAlign.CENTER), toGroup, items);
+		return MultiCategoricalRankColumnModel.createSimple(GLRenderers.drawText(label, VAlign.CENTER), toGroup, items);
 	}
 
 	@Override
