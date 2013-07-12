@@ -27,6 +27,7 @@ public enum Units implements IFloatFunction {
 	private static final int dpi = DisplayUtils.syncExec(Display.getDefault(),new SafeCallable<Integer>() {
 		@Override
 		public Integer call() {
+			System.out.println("DPI: "+Display.getCurrent().getDPI());
 			return Display.getCurrent().getDPI().x;
 		}
 	});

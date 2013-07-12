@@ -9,6 +9,7 @@ import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 
 import java.awt.Rectangle;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -1355,15 +1356,15 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	public final void applyScrolling(GL2 gl) {
 		if (!System.getProperty("os.name").contains("Mac") || this.scrollRect.width <= 0 )
 			return;
-		org.eclipse.swt.graphics.Point size = parentGLCanvas.asComposite().getSize();
-		int canvasWidth = size.x;
-		int canvasHeight = size.y;
-		int scrollWidth = scrollRect.width;
-		int scrollHeight = scrollRect.height;
+		float canvasWidth = parentGLCanvas.getDIPWidth();
+		float canvasHeight = parentGLCanvas.getDIPHeight();
+		Rectangle2D.Float scrollRect = parentGLCanvas.toDIP(this.scrollRect);
+		float scrollWidth = scrollRect.width;
+		float scrollHeight = scrollRect.height;
 		boolean needsScrollBarX = canvasWidth > scrollWidth;
 		boolean needsScrollBarY = canvasHeight > scrollHeight;
-		int offsetx = scrollRect.x;
-		int offsety = canvasHeight - scrollHeight - scrollRect.y;
+		float offsetx = scrollRect.x;
+		float offsety = canvasHeight - scrollHeight - scrollRect.y;
 		if (!needsScrollBarX)
 			offsetx = 0;
 		if (!needsScrollBarY)
