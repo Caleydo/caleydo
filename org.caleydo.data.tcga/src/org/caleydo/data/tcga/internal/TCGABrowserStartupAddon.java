@@ -19,6 +19,7 @@ import org.caleydo.core.startup.IStartupAddon;
 import org.caleydo.core.startup.IStartupProcedure;
 import org.caleydo.core.startup.LoadProjectStartupProcedure;
 import org.caleydo.core.util.logging.Logger;
+import org.caleydo.core.util.system.BrowserUtils;
 import org.caleydo.core.util.system.RemoteFile;
 import org.caleydo.data.tcga.internal.model.RunOverview;
 import org.caleydo.data.tcga.internal.model.TumorProject;
@@ -40,10 +41,12 @@ import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.TextStyle;
-import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Shell;
 
 import com.google.gson.Gson;
@@ -72,7 +75,11 @@ public class TCGABrowserStartupAddon implements IStartupAddon {
 	@Override
 	public Composite create(Composite parent, final WizardPage page) {
 		parent = new Composite(parent, SWT.NONE);
-		parent.setLayout(new FillLayout());
+		parent.setLayout(new GridLayout());
+		Link label = new Link(parent, SWT.NO_BACKGROUND);
+		label.addSelectionListener(BrowserUtils.LINK_LISTENER);
+		label.setText("Please be advised that downloading \"The Cancer Genome Atlas\" data constitutes agreement to the <a href=\"http://cancergenome.nih.gov/abouttcga/policies/policiesguidelines\">policies and guidelines on data usage and publications</a>");
+		label.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 		try {
 			File file = RemoteFile.of(new URL(JSONFILE)).getOrLoad(true, new NullProgressMonitor());
 			if (file == null) {
@@ -86,6 +93,7 @@ public class TCGABrowserStartupAddon implements IStartupAddon {
 				RunOverview[] model = createModel(file);
 				v.setInput(model);
 				v.getTree().setItemCount(model.length);
+				v.getTree().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 				v.addSelectionChangedListener(new ISelectionChangedListener() {
 					@Override
 					public void selectionChanged(SelectionChangedEvent event) {
