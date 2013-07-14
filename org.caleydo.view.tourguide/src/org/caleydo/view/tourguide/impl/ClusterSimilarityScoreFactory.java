@@ -132,8 +132,8 @@ public class ClusterSimilarityScoreFactory implements IScoreFactory {
 		private final IState target;
 
 		public CreateJaccardScoreState(IState target) {
-			super("Select query group by clicking on a brick in one of the displayed columns\n"
-					+ "Change query by clicking on other brick at any time");
+			super("Select query group by clicking on a block in one of the displayed columns\n"
+					+ "Change query by clicking on other block at any time");
 			this.target = target;
 		}
 
@@ -157,7 +157,7 @@ public class ClusterSimilarityScoreFactory implements IScoreFactory {
 	private class UpdateAndBrowseJaccardIndex extends BrowseStratificationState implements ISelectGroupState {
 		public UpdateAndBrowseJaccardIndex() {
 			super("Select a stratification in the LineUp to preview.\n" + "Then confirm or cancel your selection"
-					+ "Change query by clicking on other brick at any time");
+					+ "Change query by clicking on other block at any time");
 		}
 
 		@Override
