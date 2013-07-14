@@ -21,6 +21,7 @@ import java.util.Set;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
+import javax.media.opengl.GLException;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
@@ -775,7 +776,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		if (!initShader) {
 			try {
 				initShaders(gl);
-			} catch (IOException e) {
+			} catch (IOException | GLException e) {
 				e.printStackTrace();
 			}
 		}
@@ -819,15 +820,14 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 					.getPickingID(uniqueID, EPickingType.PATHWAY_TEXTURE_SELECTION.name(), 0));
 			// //////////////////////////START 2/2 HIER NEU CHRISITIAN
 			// enable shader
-			if (pathway.getType() == EPathwayDatabaseType.WIKIPATHWAYS) {
-				gl.glUseProgram(shaderProgramTextOverlay);
-				int pathwayTex = gl.glGetUniformLocation(shaderProgramTextOverlay, "pathwayTex");
-				gl.glUniform1i(pathwayTex, 0);
-				pathwayTextureManager.renderPathway(gl, this, pathway, fPathwayTransparency, false);
-				gl.glUseProgram(0);
-			} else {
-				pathwayTextureManager.renderPathway(gl, this, pathway, fPathwayTransparency, false);
-			}
+			gl.glUseProgram(shaderProgramTextOverlay);
+			// texture
+			gl.glUniform1i(gl.glGetUniformLocation(shaderProgramTextOverlay, "pathwayTex"), 0);
+			// which type
+			gl.glUniform1i(gl.glGetUniformLocation(shaderProgramTextOverlay, "mode"), this.pathway.getType().ordinal());
+			pathwayTextureManager.renderPathway(gl, this, pathway, fPathwayTransparency, false);
+			gl.glUseProgram(0);
+
 			// disable shader
 			// //////////////////////////END 2/2 HIER NEU CHRISITIAN
 			// pathwayTextureManager.renderPathway(gl, this, pathway, fPathwayTransparency, false);
