@@ -333,11 +333,14 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 		for (CategoryProperty<?> p : ctable.getCategoryDescriptions().getCategoryProperties()) {
 			group.add(CategoricalPercentageRankColumnModel.create(p.getCategory(), ctable, selected.contains(p)));
 		}
+		group = new GroupRankColumnModel(d.getLabel() + " Groupings", color, color.brighter());
 		for (String id : d.getDimensionPerspectiveIDs()) {
 			Perspective p = ctable.getDimensionPerspective(id);
 			if (p.isDefault() || p.getVirtualArray().size() <= 1 || p.getVirtualArray().getGroupList().size() <= 1)
 				continue;
 			//use the complex perspective over multiple genes with a group list as a categorical column
+			if (group.size() == 0)
+				table.add(group);
 			group.add(createCategoricalFromGroupList(p.getLabel(), p.getVirtualArray()));
 		}
 	}
@@ -367,7 +370,8 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 				return Sets.newTreeSet(Iterables.transform(groups, Labels.TO_LABEL));
 			}
 		};
-		return MultiCategoricalRankColumnModel.createSimple(GLRenderers.drawText(label, VAlign.CENTER), toGroup, items);
+		return MultiCategoricalRankColumnModel.createSimple(GLRenderers.drawText(label, VAlign.CENTER), toGroup, items,
+				"");
 	}
 
 	@Override
@@ -384,7 +388,7 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 		while (cols.hasNext()) {
 			ARankColumnModel col = cols.next();
 			if (col instanceof GroupRankColumnModel
-					&& ((GroupRankColumnModel) col).getTitle().startsWith(getDataDomain().getLabel())) {
+					&& ((GroupRankColumnModel) col).getTitle().startsWith(getDataDomain().getLabel() + " ")) {
 				toDestroy.add(col);
 			} else if (col instanceof ACompositeRankColumnModel) {
 				flat(((ACompositeRankColumnModel) col).iterator(), toDestroy);

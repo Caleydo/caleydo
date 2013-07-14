@@ -15,7 +15,6 @@ import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
-import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
@@ -48,7 +47,7 @@ public class GLPathwayTextureManager {
 
 		Logger.log(new Status(IStatus.INFO, this.toString(), "Load pathway texture with ID: " + pathway.getID()));
 
-		pathwayTexture = PathwayManager.get().getPathwayDatabaseByType(type).loadTexture(pathway);
+		pathwayTexture = pathway.getTexture();
 
 		hashPathwayToTexture.put(pathway, pathwayTexture);
 

@@ -5,6 +5,7 @@
  ******************************************************************************/
 package org.caleydo.datadomain.pathway.parser;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -37,7 +38,7 @@ import org.xml.sax.helpers.DefaultHandler;
 /**
  * XML Parser that is able to load KEGG pathway files. The KEGG XML files follow the KGML. The class triggers the calls
  * in the PathwayManager that actually creates the pathway graph and the items + item reps.
- * 
+ *
  * @author Marc Streit
  */
 public class KgmlSaxHandler extends DefaultHandler {
@@ -66,16 +67,27 @@ public class KgmlSaxHandler extends DefaultHandler {
 	private PathwayVertexRep relationTargetVertexRep;
 	private EPathwayRelationEdgeType relationType;
 
+	private final File image;
+
 	/**
 	 * Constructor.
 	 */
-	public KgmlSaxHandler() {
+	public KgmlSaxHandler(File image) {
 		super();
 
 		pathwayItemManager = PathwayItemManager.get();
 		pathwayManager = PathwayManager.get();
 
 		currentVertices = new ArrayList<PathwayVertex>();
+
+		this.image = image;
+	}
+
+	/**
+	 * @return the currentPathway, see {@link #currentPathway}
+	 */
+	public PathwayGraph getCurrentPathway() {
+		return currentPathway;
 	}
 
 	@Override
@@ -164,14 +176,7 @@ public class KgmlSaxHandler extends DefaultHandler {
 			title = "unknown title";
 		}
 
-		String pathwayTexturePath = sImageLink.substring(sImageLink.lastIndexOf('/') + 1, sImageLink.length());
-
-		// FIX inconsistency between XML data which state the pathway images as
-		// GIFs - but we have them as
-		// PNGs
-		pathwayTexturePath = pathwayTexturePath.replace(".gif", ".png");
-
-		currentPathway = pathwayManager.createPathway(EPathwayDatabaseType.KEGG, name, title, pathwayTexturePath,
+		currentPathway = pathwayManager.createPathway(EPathwayDatabaseType.KEGG, name, title, image,
 				externalLink);
 
 		hashKgmlEntryIdToVertexRep.clear();
@@ -185,10 +190,10 @@ public class KgmlSaxHandler extends DefaultHandler {
 
 	/**
 	 * Reacts on the elements of the entry tag. An example entry tag looks like this:
-	 * 
+	 *
 	 * <entry id="1" name="ec:1.8.4.1" type="enzyme" reaction="rn:R01292"
 	 * link="http://www.genome.jp/dbget-bin/www_bget?enzyme+1.8.4.1">
-	 * 
+	 *
 	 */
 	protected void handleEntryTag() {
 		int entryId = 0;

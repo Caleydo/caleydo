@@ -15,7 +15,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 import java.util.TreeSet;
 
 import org.apache.commons.lang.StringUtils;
@@ -43,8 +42,10 @@ import com.google.common.base.Functions;
 import com.google.common.base.Objects;
 import com.google.common.base.Predicates;
 import com.google.common.collect.HashMultiset;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Multiset;
 
 /**
@@ -59,27 +60,29 @@ public class MultiCategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<CA
 	private final Function<IRow, Set<CATEGORY_TYPE>> data;
 	private final Set<CATEGORY_TYPE> selection = new HashSet<>();
 	private final Map<CATEGORY_TYPE, String> metaData;
+	private final String labelNA;
+	private boolean filterNA = false;
 
 	public MultiCategoricalRankColumnModel(IGLRenderer header, final Function<IRow, Set<CATEGORY_TYPE>> data,
-			Map<CATEGORY_TYPE, String> metaData) {
-		this(header, data, metaData, Color.GRAY, new Color(.95f, .95f, .95f));
+			Map<CATEGORY_TYPE, String> metaData, String labelNA) {
+		this(header, data, metaData, Color.GRAY, new Color(.95f, .95f, .95f), labelNA);
 	}
 
 	public static MultiCategoricalRankColumnModel<String> createSimple(IGLRenderer header,
-			final Function<IRow, Set<String>> data, Collection<String> items) {
-		Map<String, String> map = new TreeMap<>();
-		for (String s : items)
-			map.put(s, s);
-		return new MultiCategoricalRankColumnModel<>(header, data, map);
+			final Function<IRow, Set<String>> data, Collection<String> items, String none) {
+		ImmutableMap<String, String> map = Maps.uniqueIndex(items, Functions.<String> identity());
+		return new MultiCategoricalRankColumnModel<>(header, data, map, none);
 	}
 
 	public MultiCategoricalRankColumnModel(IGLRenderer header, final Function<IRow, Set<CATEGORY_TYPE>> data,
-			Map<CATEGORY_TYPE, String> metaData, Color color, Color bgColor) {
+			Map<CATEGORY_TYPE, String> metaData, Color color, Color bgColor, String labelNA) {
 		super(color, bgColor);
 		setHeaderRenderer(header);
 		this.data = data;
 		this.metaData = metaData;
 		this.selection.addAll(metaData.keySet());
+		this.labelNA = labelNA;
+
 	}
 
 	public MultiCategoricalRankColumnModel(MultiCategoricalRankColumnModel<CATEGORY_TYPE> copy) {
@@ -88,6 +91,8 @@ public class MultiCategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<CA
 		this.data = copy.data;
 		this.metaData = copy.metaData;
 		this.selection.addAll(copy.selection);
+		this.filterNA = copy.filterNA;
+		this.labelNA = copy.labelNA;
 	}
 
 	@Override
@@ -103,7 +108,7 @@ public class MultiCategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<CA
 	public String getValue(IRow row) {
 		Set<CATEGORY_TYPE> value = getCatValue(row);
 		if (value == null || value.isEmpty())
-			return "";
+			return labelNA;
 		return StringUtils.join(Iterators.transform(value.iterator(), Functions.forMap(metaData, null)), ',');
 	}
 
@@ -125,28 +130,40 @@ public class MultiCategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<CA
 			public void run(Display display, Composite canvas) {
 				Point loc = canvas.toDisplay((int) location.x(), (int) location.y());
 				CatFilterDalog<CATEGORY_TYPE> dialog = new CatFilterDalog<>(canvas.getShell(), getTitle(), summary,
-						metaData, selection, isGlobalFilter, getTable().hasSnapshots(), loc);
+						metaData, selection, isGlobalFilter, getTable().hasSnapshots(), loc, filterNA, labelNA);
 				dialog.open();
 			}
 		});
 	}
 
-	protected void setFilter(Collection<CATEGORY_TYPE> filter, boolean isGlobalFilter) {
+	protected void setFilter(Collection<CATEGORY_TYPE> filter, boolean filterNA, boolean isGlobalFilter) {
 		invalidAllFilter();
 		Set<CATEGORY_TYPE> bak = new HashSet<>(this.selection);
 		this.selection.clear();
 		this.selection.addAll(filter);
-		if (this.selection.equals(bak)) {
+		boolean sameSelection = this.selection.equals(bak);
+		if (sameSelection && this.filterNA == filterNA) {
 			setGlobalFilter(isGlobalFilter);
-		} else {
+		} else if (!sameSelection) {
 			this.isGlobalFilter = isGlobalFilter;
+			this.filterNA = filterNA;
 			propertySupport.firePropertyChange(PROP_FILTER, bak, this.selection);
+		} else if (this.filterNA != filterNA) {
+			this.isGlobalFilter = isGlobalFilter;
+			propertySupport.firePropertyChange(PROP_FILTER, this.filterNA, this.filterNA = filterNA);
 		}
 	}
 
 	@Override
 	public boolean isFiltered() {
-		return selection.size() < metaData.size();
+		return selection.size() < metaData.size() || filterNA;
+	}
+
+	/**
+	 * @return the filterNA, see {@link #filterNA}
+	 */
+	public boolean isFilterNA() {
+		return filterNA;
 	}
 
 	public Set<CATEGORY_TYPE> getCatValue(IRow row) {
@@ -187,7 +204,10 @@ public class MultiCategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<CA
 	protected void updateMask(BitSet todo, List<IRow> data, BitSet mask) {
 		for (int i = todo.nextSetBit(0); i >= 0; i = todo.nextSetBit(i + 1)) {
 			Set<CATEGORY_TYPE> v = this.data.apply(data.get(i));
-			mask.set(i, v == null ? false : Iterables.any(v, Predicates.in(selection)));
+			if ((v == null || v.isEmpty()) && filterNA)
+				mask.set(i, false);
+			else
+				mask.set(i, v == null ? true : Iterables.any(v, Predicates.in(selection)));
 		}
 	}
 
@@ -241,7 +261,7 @@ public class MultiCategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<CA
 		@SuppressWarnings("unchecked")
 		@ListenTo(sendToMe = true)
 		private void onSetFilter(FilterEvent event) {
-			setFilter((Collection<CATEGORY_TYPE>) event.getFilter(), event.isFilterGlobally());
+			setFilter((Collection<CATEGORY_TYPE>) event.getFilter(), event.isFilterNA(), event.isFilterGlobally());
 		}
 	}
 
