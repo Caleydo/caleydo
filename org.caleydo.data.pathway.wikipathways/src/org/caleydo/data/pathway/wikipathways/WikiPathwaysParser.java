@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,8 +34,11 @@ import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayDatabase;
 import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.pathvisio.core.model.ConverterException;
 import org.pathvisio.core.model.GpmlFormat;
 import org.pathvisio.core.model.ObjectType;
@@ -42,7 +46,7 @@ import org.pathvisio.core.model.Pathway;
 import org.pathvisio.core.model.PathwayElement;
 import org.pathvisio.core.model.PathwayImporter;
 
-public class WikiPathwaysParser implements IPathwayParser {
+public class WikiPathwaysParser implements IPathwayParser, IRunnableWithProgress {
 
 	/**
 	 * Maps wikipathway db names to idtypes in caleydo.
@@ -58,9 +62,15 @@ public class WikiPathwaysParser implements IPathwayParser {
 	}
 
 	@Override
+	public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+		PathwayManager pathwayManager = PathwayManager.get();
+		pathwayManager.preparePathwayData(EPathwayDatabaseType.WIKIPATHWAYS, monitor);
+	}
+
+	@Override
 	public void parse() {
 		PathwayManager pathwayManager = PathwayManager.get();
-		File baseDir = pathwayManager.preparePathwayData(EPathwayDatabaseType.WIKIPATHWAYS);
+		File baseDir = pathwayManager.preparePathwayData(EPathwayDatabaseType.WIKIPATHWAYS, new NullProgressMonitor());
 		Organism organism = GeneticMetaData.getOrganism();
 		if (baseDir == null)
 			throw new IllegalStateException("Cannot load pathways from organism " + organism);

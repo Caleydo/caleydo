@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Reader;
+import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
@@ -29,6 +30,8 @@ import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayDatabase;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.SubMonitor;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
@@ -40,8 +43,50 @@ import com.google.common.io.Files;
  * @author Samuel Gratzl
  *
  */
-public class KEGGParser {
+public class KEGGParser implements IRunnableWithProgress {
 	private static final Logger log = Logger.create(KEGGParser.class);
+
+	@Override
+	public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+		final String organismKey = toKEGGOrganism(GeneticMetaData.getOrganism());
+
+		SubMonitor m = SubMonitor.convert(monitor);
+		RemoteFile listRFile = RemoteFile.of(toURL("http://rest.kegg.jp/list/pathway/" + organismKey), ".txt");
+		File listFile = listRFile.getOrLoad(false, monitor);
+
+		if (listFile == null || !listFile.exists()) {
+			log.error("can't load list data from: " + listRFile.getUrl());
+			return;
+		}
+		log.info("Start parsing KEGG pathways.");
+
+		List<String> lines;
+		try {
+			lines = Files.readLines(listFile, Charset.defaultCharset());
+		} catch (IOException e) {
+			log.error("can't read list data of " + listFile, e);
+			return;
+		}
+
+		m.beginTask("Loading Pathways", lines.size() * 20);
+		for (String line : lines) {
+			String pathwayName = line.substring(5, 13);
+
+			SubMonitor subsub = m.newChild(20, SubMonitor.SUPPRESS_SUBTASK);
+			subsub.beginTask("First-time Downloading KEGG pathway " + pathwayName, 20);
+
+			RemoteFile imageRFile = RemoteFile.of(toURL("http://rest.kegg.jp/get/" + pathwayName + "/image"), ".png");
+			RemoteFile kgmlRFile = RemoteFile.of(toURL("http://rest.kegg.jp/get/" + pathwayName + "/kgml"), ".kgml");
+			if (!imageRFile.inCache(false))
+				log.info("downloading: " + imageRFile.getUrl());
+			imageRFile.getOrLoad(false, subsub.newChild(10));
+			if (!kgmlRFile.inCache(false))
+				log.info("downloading: " + kgmlRFile.getUrl());
+			kgmlRFile.getOrLoad(false, subsub.newChild(10));
+		}
+		log.info("Finished parsing KEGG pathways.");
+		m.done();
+	}
 
 	public static void parse(PathwayDatabase pathwayDatabase) {
 		assert pathwayDatabase.getType() == EPathwayDatabaseType.KEGG;

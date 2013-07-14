@@ -14,6 +14,7 @@ import java.util.TreeSet;
 import org.caleydo.core.internal.gui.CaleydoProjectWizard;
 import org.caleydo.core.internal.startup.StartupAddons;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.startup.CacheInitializers;
 import org.caleydo.core.startup.IStartupAddon;
 import org.caleydo.core.startup.IStartupProcedure;
 import org.caleydo.core.util.logging.Logger;
@@ -221,6 +222,7 @@ public class Application implements IApplication {
 			@Override
 			public void run() {
 				try {
+					CacheInitializers.runInitializers(GeneralManager.get().createSubProgressMonitor());
 					startup.run();
 				} finally {
 					//notify and wake up main thread
@@ -236,7 +238,7 @@ public class Application implements IApplication {
 		}
 		//strange issue #1413 the workbench shell needs to be active to start running. Try to start it up
 		display.addFilter(SWT.Show, new Listener() {
-			
+
 			@Override
 			public void handleEvent(Event event) {
 				if (event.widget instanceof Shell) {

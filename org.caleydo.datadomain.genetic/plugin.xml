@@ -29,4 +29,10 @@
             class="org.caleydo.datadomain.genetic.internal.GeneticSerializationAddon">
       </addon>
    </extension>
+   <extension
+         point="org.caleydo.core.CacheInitializer">
+      <initializer
+            class="org.caleydo.datadomain.genetic.GeneticDataDomainInitialization">
+      </initializer>
+   </extension>
 </plugin>

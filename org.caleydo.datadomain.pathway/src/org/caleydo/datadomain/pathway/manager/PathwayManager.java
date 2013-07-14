@@ -29,6 +29,7 @@ import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ZipUtils;
 import org.caleydo.core.util.logging.Logger;
+import org.caleydo.core.util.system.FileOperations;
 import org.caleydo.core.util.system.RemoteFile;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.genetic.GeneticMetaData;
@@ -41,8 +42,8 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.jgrapht.DirectedGraph;
@@ -571,9 +572,10 @@ public class PathwayManager extends AManager<PathwayGraph> {
 	}
 
 	/**
+	 * @param monitor
 	 * @param wikipathways
 	 */
-	public File preparePathwayData(EPathwayDatabaseType type) {
+	public File preparePathwayData(EPathwayDatabaseType type, IProgressMonitor monitor) {
 		final String URL_PATTERN = GeneralManager.DATA_URL_PREFIX + "pathways/%s_%s.zip";
 		final Organism organism = GeneticMetaData.getOrganism();
 
@@ -581,7 +583,14 @@ public class PathwayManager extends AManager<PathwayGraph> {
 		try {
 			url = new URL(String.format(URL_PATTERN, type.name().toLowerCase(), organism.name().toLowerCase()));
 			RemoteFile zip = RemoteFile.of(url);
-			File localZip = zip.getOrLoad(true, new NullProgressMonitor());
+
+			if (!zip.inCache(true)) {
+				File tmp = zip.getFile();
+				File unpacked = new File(tmp.getParentFile(), tmp.getName().replaceAll("\\.zip", ""));
+				FileOperations.deleteDirectory(unpacked);
+			}
+
+			File localZip = zip.getOrLoad(true, monitor);
 			if (localZip == null || !localZip.exists()) {
 				log.error("can't download: " + url);
 				return null;

@@ -6,6 +6,7 @@
 package org.caleydo.datadomain.genetic;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
@@ -21,7 +22,9 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ZipUtils;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.system.RemoteFile;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 
 /**
  * Class that triggers the creation of all genetic {@link IDType}s and mappings.
@@ -29,7 +32,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
  * @author Marc Streit
  *
  */
-public class GeneticDataDomainInitialization implements IDataDomainInitialization {
+public class GeneticDataDomainInitialization implements IDataDomainInitialization, IRunnableWithProgress {
 	private static final String URL_PATTERN = GeneralManager.DATA_URL_PREFIX + "mappings/%s.zip";
 	private static final Logger log = Logger.create(GeneticDataDomainInitialization.class);
 	private static boolean isAlreadyInitialized = false;
@@ -81,7 +84,7 @@ public class GeneticDataDomainInitialization implements IDataDomainInitializatio
 	}
 
 	private static void loadMapping(IDCategory geneIDCategory) {
-		File base = prepareFile();
+		File base = prepareFile(new NullProgressMonitor());
 		if (base == null)
 			return;
 
@@ -117,12 +120,12 @@ public class GeneticDataDomainInitialization implements IDataDomainInitializatio
 		return new File(base, string).getAbsolutePath();
 	}
 
-	private static File prepareFile() {
+	private static File prepareFile(IProgressMonitor monitor) {
 		URL url = null;
 		try {
 			url = new URL(String.format(URL_PATTERN, GeneticMetaData.getOrganism().name().toLowerCase()));
 			RemoteFile zip = RemoteFile.of(url);
-			File localZip = zip.getOrLoad(true, new NullProgressMonitor());
+			File localZip = zip.getOrLoad(true, monitor);
 			if (localZip == null || !localZip.exists()) {
 				log.error("can't download: " + url);
 				return null;
@@ -136,6 +139,12 @@ public class GeneticDataDomainInitialization implements IDataDomainInitializatio
 			log.error("can't download: " + url);
 			return null;
 		}
+	}
+
+	@Override
+	public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+		// loading zip and extracting it during initialization
+		prepareFile(monitor);
 	}
 
 	private static void initSamples() {
