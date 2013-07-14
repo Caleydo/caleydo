@@ -367,7 +367,8 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 				return Sets.newTreeSet(Iterables.transform(groups, Labels.TO_LABEL));
 			}
 		};
-		return MultiCategoricalRankColumnModel.createSimple(GLRenderers.drawText(label, VAlign.CENTER), toGroup, items);
+		return MultiCategoricalRankColumnModel.createSimple(GLRenderers.drawText(label, VAlign.CENTER), toGroup, items,
+				"");
 	}
 
 	@Override
