@@ -19,9 +19,9 @@ import com.google.common.collect.Table;
 
 /**
  * id type mapper cache that avoid looking up all {@link IIDTypeMapper} again and again
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public class CachedIDTypeMapper {
 
@@ -30,7 +30,7 @@ public class CachedIDTypeMapper {
 
 	/**
 	 * computes a predicate that check if a given id is available in the target {@link IDType}
-	 * 
+	 *
 	 * @param source
 	 * @param target
 	 * @return
@@ -63,7 +63,7 @@ public class CachedIDTypeMapper {
 
 	/**
 	 * returns the {@link IIDTypeMapper} for a given pair
-	 * 
+	 *
 	 * @param source
 	 * @param target
 	 * @return
@@ -74,6 +74,8 @@ public class CachedIDTypeMapper {
 		if (mapper == null) {
 			mapper = IDMappingManagerRegistry.get().getIDMappingManager(target.getIDCategory())
 					.getIDTypeMapper(source, target);
+			if (mapper == null)
+				System.err.println("can't map: " + source + " to " + target);
 			mappers.put(source, target, mapper);
 		}
 		return mapper;

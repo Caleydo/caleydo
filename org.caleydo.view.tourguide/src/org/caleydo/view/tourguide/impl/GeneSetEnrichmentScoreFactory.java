@@ -33,6 +33,7 @@ import org.caleydo.view.tourguide.api.state.SimpleTransition;
 import org.caleydo.view.tourguide.impl.algorithm.AGSEAAlgorithm;
 import org.caleydo.view.tourguide.impl.algorithm.AGSEAAlgorithm.GSEAAlgorithmPValue;
 import org.caleydo.view.tourguide.impl.algorithm.GSEAAlgorithm;
+import org.caleydo.view.tourguide.impl.algorithm.GeneSetMappedAlgorithm;
 import org.caleydo.view.tourguide.impl.algorithm.PGSEAAlgorithm;
 import org.caleydo.view.tourguide.spi.IScoreFactory;
 import org.caleydo.view.tourguide.spi.algorithm.IStratificationAlgorithm;
@@ -282,6 +283,31 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 		}
 	}
 
+	public static class GeneSetMatchedScore extends DefaultComputedStratificationScore {
+		private final boolean isPercentage;
+
+		public GeneSetMatchedScore(String label, IStratificationAlgorithm algorithm, boolean isPercentage) {
+			super(label, algorithm, ComputeScoreFilters.ALL, isPercentage ? color.darker() : color, bgColor);
+			this.isPercentage = isPercentage;
+		}
+
+		@Override
+		public boolean supports(EDataDomainQueryMode mode) {
+			return mode == EDataDomainQueryMode.PATHWAYS;
+		}
+
+		@Override
+		public PiecewiseMapping createMapping() {
+			PiecewiseMapping m;
+			if (isPercentage) {
+				m = new PiecewiseMapping(0, 1);
+			} else {
+				m = new PiecewiseMapping(0, Float.NaN);
+			}
+			return m;
+		}
+	}
+
 	public static Pair<Perspective, Group> resolve(IStratificationAlgorithm algorithm) {
 		if (algorithm instanceof GSEAAlgorithmPValue)
 			algorithm = ((GSEAAlgorithmPValue) algorithm).getUnderlying();
@@ -303,18 +329,23 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 		} else {
 			// now we have the data for the stuff
 			AGSEAAlgorithm algorithm;
+			Perspective perspective = strat.getRecordPerspective();
+			Perspective genes = strat.getDimensionPerspective();
+			String prefix = createGSEA ? "GSEA" : "PGSEA";
 			if (createGSEA)
-				algorithm = new GSEAAlgorithm(strat.getRecordPerspective(), group, 1.0f);
+				algorithm = new GSEAAlgorithm(perspective, group, 1.0f);
 			else
-				algorithm = new PGSEAAlgorithm(strat.getRecordPerspective(), group);
-			String label = String.format("GSEA of %s", strat.getRecordPerspective().getLabel());
-			IScore gsea = new GeneSetScore("GSEA", algorithm, false);
-			IScore pValue = new GeneSetScore("GSEA P-Value", algorithm.asPValue(), true);
+				algorithm = new PGSEAAlgorithm(perspective, group);
+			String label = String.format(prefix + " of %s", perspective.getLabel());
+			IScore gsea = new GeneSetScore(prefix, algorithm, false);
+			IScore pValue = new GeneSetScore(prefix + "P-Value", algorithm.asPValue(), true);
 
 			MultiScore s = new MultiScore(label, color, bgColor, RankTableConfigBase.NESTED_MODE);
 			s.add(pValue);
 			s.add(gsea);
-			return new IScore[] {s};
+			IScore matched = new GeneSetMatchedScore("# Mapped Genes", new GeneSetMappedAlgorithm(genes, false), false);
+			IScore matchedP = new GeneSetMatchedScore("% Mapped Genes", new GeneSetMappedAlgorithm(genes, true), true);
+			return new IScore[] { matchedP, matched, s };
 		}
 
 	}
