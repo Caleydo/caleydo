@@ -32,6 +32,7 @@ import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayDatabase;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
+import org.caleydo.datadomain.pathway.parser.KEGGParser;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
@@ -132,8 +133,7 @@ public class PathwayDataDomain extends ADataDomain {
 		PathwayManager pathwayManager = PathwayManager.get();
 
 		PathwayDatabase pathwayDatabase = pathwayManager.createPathwayDatabase(EPathwayDatabaseType.KEGG);
-
-		pathwayManager.loadKEGGPathways(pathwayDatabase);
+		KEGGParser.parse(pathwayDatabase);
 
 		pathwayDatabase = pathwayManager.createPathwayDatabase(EPathwayDatabaseType.WIKIPATHWAYS);
 

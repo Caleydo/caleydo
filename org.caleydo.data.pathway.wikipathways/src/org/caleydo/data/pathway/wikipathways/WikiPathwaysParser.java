@@ -66,7 +66,6 @@ public class WikiPathwaysParser implements IPathwayParser {
 			throw new IllegalStateException("Cannot load pathways from organism " + organism);
 
 		PathwayDatabase pathwayDatabase = pathwayManager.getPathwayDatabaseByType(EPathwayDatabaseType.WIKIPATHWAYS);
-		pathwayDatabase.setBaseDir(baseDir);
 
 		try (BufferedReader pathwayListFile = new BufferedReader(new FileReader(new File(baseDir, "metadata.txt")))) {
 			String line = null;
@@ -77,7 +76,7 @@ public class WikiPathwaysParser implements IPathwayParser {
 				PathwayImporter importer = new GpmlFormat();
 				Pathway pathway = importer.doImport(pathwayFile);
 				createPathwayGraph(pathway, tokens[0].substring(0, tokens[0].length() - 5), Integer.valueOf(tokens[1])
-						.intValue(), Integer.valueOf(tokens[2]).intValue());
+						.intValue(), Integer.valueOf(tokens[2]).intValue(), baseDir);
 
 			}
 		} catch (IOException | ConverterException e) {
@@ -97,13 +96,14 @@ public class WikiPathwaysParser implements IPathwayParser {
 	 *            Width of the image in pixels.
 	 * @param pixelHeight
 	 *            Height of the image in pixels.
+	 * @param baseDir
 	 */
-	private void createPathwayGraph(Pathway pathway, String imageFileName, int pixelWidth, int pixelHeight) {
+	private void createPathwayGraph(Pathway pathway, String imageFileName, int pixelWidth, int pixelHeight, File baseDir) {
 		PathwayManager pathwayManager = PathwayManager.get();
 		PathwayItemManager pathwayItemManager = PathwayItemManager.get();
 
 		PathwayGraph pathwayGraph = pathwayManager.createPathway(EPathwayDatabaseType.WIKIPATHWAYS, imageFileName,
-				pathway.getMappInfo().getMapInfoName(), imageFileName + ".png", "");
+				pathway.getMappInfo().getMapInfoName(), new File(baseDir, imageFileName + ".png"), "");
 		pathwayGraph.setWidth(pixelWidth);
 		pathwayGraph.setHeight(pixelHeight);
 

@@ -5,11 +5,7 @@
  ******************************************************************************/
 package org.caleydo.datadomain.pathway.manager;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -22,7 +18,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -41,7 +36,6 @@ import org.caleydo.datadomain.genetic.Organism;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertex;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
-import org.caleydo.datadomain.pathway.parser.KgmlSaxHandler;
 import org.caleydo.datadomain.pathway.parser.PathwayImageMap;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
@@ -55,10 +49,6 @@ import org.jgrapht.DirectedGraph;
 import org.jgrapht.Graphs;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
-import org.xml.sax.helpers.XMLReaderFactory;
 
 /**
  * The pathway manager is in charge of creating and handling the pathways. The class is implemented as a singleton.
@@ -91,8 +81,6 @@ public class PathwayManager extends AManager<PathwayGraph> {
 	 * image.
 	 */
 	private PathwayImageMap currentPathwayImageMap;
-
-	private PathwayGraph currentPathwayGraph;
 
 	private boolean pathwayLoadingFinished;
 
@@ -142,8 +130,8 @@ public class PathwayManager extends AManager<PathwayGraph> {
 	}
 
 	public PathwayGraph createPathway(final EPathwayDatabaseType type, final String sName, final String sTitle,
-			final String sImageLink, final String sExternalLink) {
-		PathwayGraph pathway = new PathwayGraph(type, sName, sTitle, sImageLink, sExternalLink);
+			final File image, final String sExternalLink) {
+		PathwayGraph pathway = new PathwayGraph(type, sName, sTitle, image, sExternalLink);
 
 		registerItem(pathway);
 		Map<String, PathwayGraph> mapTitleToPathway = mapPathwayDBToPathways.get(type);
@@ -153,8 +141,6 @@ public class PathwayManager extends AManager<PathwayGraph> {
 		}
 		mapTitleToPathway.put(sTitle, pathway);
 		hashPathwayToVisibilityState.put(pathway, false);
-
-		currentPathwayGraph = pathway;
 
 		return pathway;
 	}
@@ -290,86 +276,7 @@ public class PathwayManager extends AManager<PathwayGraph> {
 		throw new IllegalStateException("Unknown pathway database " + type);
 	}
 
-	public void loadKEGGPathways(PathwayDatabase pathwayDatabase) {
-		assert pathwayDatabase.getType() == EPathwayDatabaseType.KEGG;
-		// // Try reading list of files directly from local hard dist
-		// File folder = new File(sXMLPath);
-		// File[] arFiles = folder.listFiles();
 
-		File baseDir = preparePathwayData(pathwayDatabase.getType());
-
-		Logger.log(new Status(IStatus.INFO, "PathwayLoaderThread", "Start parsing " + pathwayDatabase.getName()
-				+ " pathways."));
-
-		if (baseDir == null)
-			return;
-
-		pathwayDatabase.setBaseDir(baseDir);
-
-		String line = null;
-		String fileName = "";
-
-		try (BufferedReader file = new BufferedReader(new FileReader(new File(baseDir, "metadata.txt")))) {
-			StringTokenizer tokenizer;
-			String pathwayName;
-
-			while ((line = file.readLine()) != null) {
-				tokenizer = new StringTokenizer(line, " ");
-
-				pathwayName = tokenizer.nextToken();
-
-				// Skip non pathway files
-				if (!pathwayName.endsWith(".xml") && !line.contains("h_") && !line.contains("m_")) {
-					continue;
-				}
-
-				InputSource in = null;
-				try {
-					XMLReader reader = XMLReaderFactory.createXMLReader();
-
-					// Entity resolver avoids the XML Reader
-					// to check external DTDs.
-					reader.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-
-					KgmlSaxHandler kgmlParser = new KgmlSaxHandler();
-					reader.setEntityResolver(kgmlParser);
-					reader.setContentHandler(kgmlParser);
-
-					in = new InputSource(new BufferedReader(new FileReader(new File(baseDir, pathwayName))));
-					reader.parse(in);
-
-					currentPathwayGraph.setWidth(Integer.valueOf(tokenizer.nextToken()).intValue());
-					currentPathwayGraph.setHeight(Integer.valueOf(tokenizer.nextToken()).intValue());
-
-					int iImageWidth = currentPathwayGraph.getWidth();
-					int iImageHeight = currentPathwayGraph.getHeight();
-
-					if (iImageWidth == -1 || iImageHeight == -1) {
-						Logger.log(new Status(IStatus.INFO, "PathwayLoaderThread", "Pathway texture width="
-								+ iImageWidth + " / height=" + iImageHeight));
-					}
-				} catch (SAXException e) {
-					Logger.log(new Status(IStatus.ERROR, "PathwayLoaderThread", "SAXParser-error during parsing file "
-							+ pathwayName + ".\n SAX error: " + e.toString(), e));
-				} finally {
-					if (in != null) {
-						if (in.getByteStream() != null)
-							in.getByteStream().close();
-						if (in.getCharacterStream() != null)
-							in.getCharacterStream().close();
-					}
-				}
-			}
-
-		} catch (FileNotFoundException e) {
-			throw new IllegalStateException("Pathway list file " + fileName + " not found.");
-		} catch (IOException e) {
-			throw new IllegalStateException("Error reading data from pathway list file: " + fileName);
-		}
-
-		Logger.log(new Status(IStatus.INFO, "PathwayLoaderThread", "Finished parsing " + pathwayDatabase.getName()
-				+ " pathways."));
-	}
 
 	/**
 	 * Returns all pathways where a specific gene is contained at least once.
