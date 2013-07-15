@@ -44,7 +44,7 @@ public class Pick {
 	/**
 	 * the mouse x,y delta between the last call, used by {@link PickingMode#MOUSE_MOVED} and
 	 * {@link PickingMode#DRAGGED}
-	 * 
+	 *
 	 * supported by {@link PickingManager2} and {@link SimplePickingManager}
 	 */
 	private final Vec2f dv;
@@ -120,7 +120,7 @@ public class Pick {
 	}
 
 	public Vec2f getDIPPickedPoint() {
-		return this.pickedPoint;
+		return new Vec2f(this.pickedPoint);
 	}
 	/**
 	 * The 2D screen coordinates of the mouse position at the time the pick
