@@ -7,7 +7,6 @@ package org.caleydo.vis.rank.ui.mapping;
 
 import gleem.linalg.Vec2f;
 
-import java.awt.Point;
 import java.util.List;
 import java.util.Map;
 
@@ -105,8 +104,8 @@ public class PiecewiseMappingParallelUI extends MappingParallelUI<PiecewiseMappi
 			return;
 		switch (pick.getPickingMode()) {
 		case CLICKED:
-			Vec2f r = toRelative(pick.getPickedPoint());
-			onAddPoint(toDragMode(pick.getPickedPoint()), isHorizontal ? r.x() : r.y());
+			Vec2f r = toRelative(pick.getDIPPickedPoint());
+			onAddPoint(toDragMode(pick.getDIPPickedPoint()), isHorizontal ? r.x() : r.y());
 			this.repaint();
 			break;
 		default:
@@ -119,7 +118,7 @@ public class PiecewiseMappingParallelUI extends MappingParallelUI<PiecewiseMappi
 			child.setBounds(0, 0, w, h);
 	}
 
-	public void drag(PointLinePoint point, EDragMode mode, int dv) {
+	public void drag(PointLinePoint point, EDragMode mode, float dv) {
 		if (dv == 0) // no change
 			return;
 		float max = isHorizontal ? getSize().x() : -getSize().y();
@@ -335,11 +334,11 @@ public class PiecewiseMappingParallelUI extends MappingParallelUI<PiecewiseMappi
 		protected void onDragged(Pick pick) {
 			if (!pick.isDoDragging())
 				return;
-			int dv = isHorizontal ? pick.getDx() : pick.getDy();
+			float dv = isHorizontal ? pick.getDx() : pick.getDy();
 			if (dv == 0)
 				return;
 			this.pseudo = false;
-			drag(this, toDragMode(pick.getPickedPoint()), dv);
+			drag(this, toDragMode(pick.getDIPPickedPoint()), dv);
 			this.repaintAll();
 		}
 
@@ -374,7 +373,7 @@ public class PiecewiseMappingParallelUI extends MappingParallelUI<PiecewiseMappi
 	/**
 	 * @param pickedPoint
 	 */
-	private EDragMode toDragMode(Point pickedPoint) {
+	private EDragMode toDragMode(Vec2f pickedPoint) {
 		Vec2f r = toRelative(pickedPoint);
 		float v = isHorizontal ? r.y() : r.x();
 		float max = isHorizontal ? getSize().y() : getSize().x();

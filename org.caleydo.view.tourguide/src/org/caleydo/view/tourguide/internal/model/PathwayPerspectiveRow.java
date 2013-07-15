@@ -5,13 +5,10 @@
  ******************************************************************************/
 package org.caleydo.view.tourguide.internal.model;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
@@ -21,7 +18,6 @@ import org.caleydo.core.id.IDType;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
-import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 
 /**
@@ -31,14 +27,14 @@ import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 public final class PathwayPerspectiveRow extends AScoreRow {
 	private final PathwayGraph pathway;
 	private final Group group;
+	private final IDType idType;
+	private final Set<Integer> ids;
 
-	public PathwayPerspectiveRow(PathwayGraph pathway) {
+	public PathwayPerspectiveRow(PathwayGraph pathway, IDType idType, Set<Integer> ids) {
 		this.pathway = pathway;
-		List<Integer> idsInPathway = new ArrayList<Integer>();
-		for (PathwayVertexRep vertexRep : pathway.vertexSet()) {
-			idsInPathway.add(vertexRep.getID());
-		}
-		this.group = new Group(pathway.vertexSet().size(), 0);
+		this.idType = idType;
+		this.ids = ids;
+		this.group = new Group(ids.size(), 0);
 		this.group.setLabel(pathway.getName(), false);
 		this.group.setStartIndex(0);
 		this.group.setGroupIndex(0);
@@ -83,7 +79,7 @@ public final class PathwayPerspectiveRow extends AScoreRow {
 
 	@Override
 	public IDType getIdType() {
-		return PathwayVertexRep.getIdType();
+		return idType;
 	}
 
 	@Override
@@ -113,11 +109,7 @@ public final class PathwayPerspectiveRow extends AScoreRow {
 
 	@Override
 	public Collection<Integer> of(Group group) {
-		Set<Integer> idsInPathway = new TreeSet<Integer>();
-		for (PathwayVertexRep vertexRep : pathway.vertexSet()) {
-			idsInPathway.add(vertexRep.getID());
-		}
-		return idsInPathway;
+		return ids;
 	}
 
 	@Override

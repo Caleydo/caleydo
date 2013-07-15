@@ -5,6 +5,10 @@
  ******************************************************************************/
 package org.caleydo.datadomain.genetic;
 
+import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Arrays;
 
 import org.caleydo.core.data.collection.EDataType;
@@ -15,6 +19,12 @@ import org.caleydo.core.id.IDType;
 import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.io.parser.ascii.IDMappingParser;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.serialize.ZipUtils;
+import org.caleydo.core.util.logging.Logger;
+import org.caleydo.core.util.system.RemoteFile;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 
 /**
  * Class that triggers the creation of all genetic {@link IDType}s and mappings.
@@ -22,8 +32,9 @@ import org.caleydo.core.manager.GeneralManager;
  * @author Marc Streit
  *
  */
-public class GeneticDataDomainInitialization implements IDataDomainInitialization {
-
+public class GeneticDataDomainInitialization implements IDataDomainInitialization, IRunnableWithProgress {
+	private static final String URL_PATTERN = GeneralManager.DATA_URL_PREFIX + "mappings/%s.zip";
+	private static final Logger log = Logger.create(GeneticDataDomainInitialization.class);
 	private static boolean isAlreadyInitialized = false;
 
 	@Override
@@ -73,35 +84,67 @@ public class GeneticDataDomainInitialization implements IDataDomainInitializatio
 	}
 
 	private static void loadMapping(IDCategory geneIDCategory) {
-		String basename = "data/genome/mapping/david/" + GeneticMetaData.getOrganism();
+		File base = prepareFile(new NullProgressMonitor());
+		if (base == null)
+			return;
 
 		final IDType david = IDType.getIDType(EGeneIDTypes.DAVID.name());
 
-		IDMappingParser.loadMapping(basename + "_DAVID2REFSEQ_MRNA.txt", 0, -1, david,
+		IDMappingParser.loadMapping(toFile(base,"DAVID2REFSEQ_MRNA.txt"), 0, -1, david,
 				IDType.getIDType(EGeneIDTypes.REFSEQ_MRNA.name()), "\t", geneIDCategory, true, true, false, null, null);
-		IDMappingParser.loadMapping(basename + "_DAVID2ENTREZ_GENE_ID.txt", 0, -1, david,
+		IDMappingParser.loadMapping(toFile(base,"DAVID2ENTREZ_GENE_ID.txt"), 0, -1, david,
 				IDType.getIDType(EGeneIDTypes.ENTREZ_GENE_ID.name()), "\t", geneIDCategory, false, true, false, null,
 				null);
-		IDMappingParser.loadMapping(basename + "_DAVID2GENE_SYMBOL.txt", 0, -1, david,
+		IDMappingParser.loadMapping(toFile(base,"DAVID2GENE_SYMBOL.txt"), 0, -1, david,
 						IDType.getIDType(EGeneIDTypes.GENE_SYMBOL.name()), "\t", geneIDCategory, false, true, false,
 						null, null);
-		IDMappingParser.loadMapping(basename + "_DAVID2GENE_NAME.txt", 0, -1, david,
+		IDMappingParser.loadMapping(toFile(base,"DAVID2GENE_NAME.txt"), 0, -1, david,
 				IDType.getIDType(EGeneIDTypes.GENE_NAME.name()), "\t", geneIDCategory, false, true, false, null, null);
 
 		if (GeneticMetaData.getOrganism() == Organism.MUS_MUSCULUS) {
-			IDMappingParser.loadMapping(basename + "_DAVID2ENSEMBL_GENE_ID.txt", 0, -1, david,
+			IDMappingParser.loadMapping(toFile(base, "DAVID2ENSEMBL_GENE_ID.txt"), 0, -1, david,
 					IDType.getIDType(EGeneIDTypes.ENSEMBL_GENE_ID.name()), "\t", geneIDCategory, false, true, false,
 					null, null);
 		} else {
 			// This is indirection via REFSEQ_MRNA instead of DAVID is needed as
 			// we currently do not have a mapping file DAVID2ENSEMBL for home
 			// sapiens
-			IDMappingParser.loadMapping("data/genome/mapping/" + Organism.HOMO_SAPIENS
-					+ "_ENSEMBL_GENE_ID_2_REFSEQ_MRNA.txt", 0, -1,
+			IDMappingParser.loadMapping(toFile(base,"ENSEMBL_GENE_ID_2_REFSEQ_MRNA.txt"), 0, -1,
 					IDType.getIDType(EGeneIDTypes.ENSEMBL_GENE_ID.name()),
 					IDType.getIDType(EGeneIDTypes.REFSEQ_MRNA.name()), ";", geneIDCategory, true, true, true,
 					IDType.getIDType(EGeneIDTypes.ENSEMBL_GENE_ID.name()), david);
 		}
+	}
+
+	private static String toFile(File base, String string) {
+		return new File(base, string).getAbsolutePath();
+	}
+
+	private static File prepareFile(IProgressMonitor monitor) {
+		URL url = null;
+		try {
+			url = new URL(String.format(URL_PATTERN, GeneticMetaData.getOrganism().name().toLowerCase()));
+			RemoteFile zip = RemoteFile.of(url);
+			File localZip = zip.getOrLoad(true, monitor);
+			if (localZip == null || !localZip.exists()) {
+				log.error("can't download: " + url);
+				return null;
+			}
+			File unpacked = new File(localZip.getParentFile(), localZip.getName().replaceAll("\\.zip", ""));
+			if (unpacked.exists())
+				return unpacked;
+			ZipUtils.unzipToDirectory(localZip.getAbsolutePath(), unpacked.getAbsolutePath());
+			return unpacked;
+		} catch (MalformedURLException e) {
+			log.error("can't download: " + url);
+			return null;
+		}
+	}
+
+	@Override
+	public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+		// loading zip and extracting it during initialization
+		prepareFile(monitor);
 	}
 
 	private static void initSamples() {

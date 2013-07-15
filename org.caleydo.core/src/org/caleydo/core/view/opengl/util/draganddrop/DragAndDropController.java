@@ -5,7 +5,8 @@
  ******************************************************************************/
 package org.caleydo.core.view.opengl.util.draganddrop;
 
-import java.awt.Point;
+import gleem.linalg.Vec2f;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,9 +18,9 @@ import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 
 /**
  * Fixme: document!!
- * 
+ *
  * @author Christian Partl
- * 
+ *
  */
 public class DragAndDropController {
 
@@ -27,7 +28,7 @@ public class DragAndDropController {
 	private IDropArea dropArea;
 	private boolean isDragging;
 	private boolean isDraggingFirstTime;
-	private Point startDraggingWindowCoords;
+	private Vec2f startDraggingWindowCoords;
 	private AGLView view;
 	@Deprecated
 	/**
@@ -52,7 +53,7 @@ public class DragAndDropController {
 		draggables.remove(draggable);
 	}
 
-	public void setDraggingProperties(Point draggingStartPosition, String draggingMode) {
+	public void setDraggingProperties(Vec2f draggingStartPosition, String draggingMode) {
 		this.draggingMode = draggingMode;
 		this.startDraggingWindowCoords = draggingStartPosition;
 	}
@@ -86,53 +87,33 @@ public class DragAndDropController {
 		}
 
 		if (isDragging) {
-			Point mouseWinCoords = glMouseListener.getPickedPoint();
-
-			float[] fArTargetWorldCoordinates = new float[] { 0, 0 };
+			Vec2f mouseWinCoords = glMouseListener.getDIPPickedPoint();
 
 			PixelGLConverter pixelGLConverter = view.getPixelGLConverter();
-			// GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl,
-			// mouseWinCoords.x,
-			// mouseWinCoords.y);
-			fArTargetWorldCoordinates[0] = pixelGLConverter
-					.getGLWidthForPixelWidth(mouseWinCoords.x);
-			fArTargetWorldCoordinates[1] = pixelGLConverter
-					.getGLHeightForPixelHeight(view.getParentGLCanvas().getHeight()
-							- mouseWinCoords.y);
+			Vec2f targetWorldCoordinates = pixelGLConverter.convertMouseCoord2GL(mouseWinCoords);
 
 			if (dropArea != null) {
-				dropArea.handleDragOver(gl, draggables, fArTargetWorldCoordinates[0],
-						fArTargetWorldCoordinates[1]);
+				dropArea.handleDragOver(gl, draggables, targetWorldCoordinates.x(), targetWorldCoordinates.y());
 			}
 
 			for (IDraggable draggable : draggables) {
 				if (isDraggingFirstTime) {
 
-					float[] fArStartDraggingWorldCoordinates = new float[] { 0, 0 };
-					// GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl,
-					// startDraggingWindowCoords.x,
-					// startDraggingWindowCoords.y);
-					fArStartDraggingWorldCoordinates[0] = pixelGLConverter
-							.getGLWidthForPixelWidth(startDraggingWindowCoords.x);
-					fArStartDraggingWorldCoordinates[1] = pixelGLConverter
-							.getGLHeightForPixelHeight(view.getParentGLCanvas()
-									.getHeight() - startDraggingWindowCoords.y);
-					draggable.setDraggingStartPoint(fArStartDraggingWorldCoordinates[0],
-							fArStartDraggingWorldCoordinates[1]);
+					Vec2f startDraggingWorldCoordinates = pixelGLConverter
+							.convertMouseCoord2GL(startDraggingWindowCoords);
+					draggable.setDraggingStartPoint(startDraggingWorldCoordinates.x(),
+							startDraggingWorldCoordinates.y());
 				}
-				draggable.handleDragging(gl, fArTargetWorldCoordinates[0],
-						fArTargetWorldCoordinates[1]);
+				draggable.handleDragging(gl, targetWorldCoordinates.x(), targetWorldCoordinates.y());
 			}
 
 			if (glMouseListener.wasMouseReleased()) {
 				isDragging = false;
 				for (IDraggable draggable : draggables) {
-					draggable.handleDrop(gl, fArTargetWorldCoordinates[0],
-							fArTargetWorldCoordinates[1]);
+					draggable.handleDrop(gl, targetWorldCoordinates.x(), targetWorldCoordinates.y());
 				}
 				if (dropArea != null) {
-					dropArea.handleDrop(gl, draggables, fArTargetWorldCoordinates[0],
-							fArTargetWorldCoordinates[1], this);
+					dropArea.handleDrop(gl, draggables, targetWorldCoordinates.x(), targetWorldCoordinates.y(), this);
 
 				}
 				clearDraggables();
@@ -161,7 +142,7 @@ public class DragAndDropController {
 		return draggables.contains(draggable);
 	}
 
-	public void setDraggingStartPosition(Point startPosition) {
+	public void setDraggingStartPosition(Vec2f startPosition) {
 		startDraggingWindowCoords = startPosition;
 	}
 

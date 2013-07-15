@@ -68,7 +68,7 @@ public class ImportExternalGroupLabelScoreDialog extends AImportExternalScoreDia
 						previewTable.onColumnOfRowIDChanged(data);
 					}
 				});
-		rowConfig.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		rowConfig.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
 	}
 
 	@Override

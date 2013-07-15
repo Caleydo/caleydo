@@ -14,18 +14,16 @@ import org.caleydo.data.importer.tcga.model.TCGADataSet;
 
 /**
  * utility task to create the initial table perspectives for the clinical data domain
- * 
+ *
  */
 public class TCGAPostprocessingTask extends RecursiveAction {
 	// private static final Logger log = Logger.getLogger(TCGAPostprocessingTask.class.getSimpleName());
 	private static final long serialVersionUID = 7378867458430247164L;
 
 	private final TCGADataSet dataSet;
-	private TCGASettings settings;
 
-	public TCGAPostprocessingTask(TCGADataSet dataSet, TCGASettings settings) {
+	public TCGAPostprocessingTask(TCGADataSet dataSet) {
 		this.dataSet = dataSet;
-		this.settings = settings;
 	}
 
 	@Override

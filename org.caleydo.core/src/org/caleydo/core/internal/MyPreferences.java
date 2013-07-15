@@ -7,6 +7,7 @@ package org.caleydo.core.internal;
 
 import java.io.IOException;
 
+import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPersistentPreferenceStore;
 import org.eclipse.jface.preference.IPreferenceStore;
 
@@ -14,14 +15,26 @@ import org.eclipse.jface.preference.IPreferenceStore;
  * @author Samuel Gratzl
  *
  */
-public class MyPreferences {
+public class MyPreferences extends AbstractPreferenceInitializer {
 	private static final String LAST_CHOSEN_PROJECT_MODE = "lastChosenApplicationMode";
 	private static final String LAST_MANUALLY_CHOSEN_PROJECT = "lastManuallyChosenProject";
 	private static final String LAST_SAMPLE_CHOSEN_PROJECT = "lastChosenSampleProject";
 	private static final String AUTO_PROJECT_LOAD = "autoload";
 
+	public static final String VIEW_ZOOM_FACTOR = "view.zoomfactor";
+
 	private static IPreferenceStore prefs() {
 		return Activator.getDefault().getPreferenceStore();
+	}
+
+	@Override
+	public void initializeDefaultPreferences() {
+		IPreferenceStore store = prefs();
+		store.setDefault(VIEW_ZOOM_FACTOR, 100);
+	}
+
+	public static float getViewZoomFactor() {
+		return prefs().getInt(VIEW_ZOOM_FACTOR) / 100.f;
 	}
 
 	public static String getLastManuallyChosenProject() {

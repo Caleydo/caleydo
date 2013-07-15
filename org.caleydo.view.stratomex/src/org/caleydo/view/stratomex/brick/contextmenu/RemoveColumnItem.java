@@ -18,7 +18,7 @@ public class RemoveColumnItem extends AContextMenuItem {
 
 	public RemoveColumnItem(IMultiTablePerspectiveBasedView view, TablePerspective tablePerspective) {
 
-		setLabel("Remove column");
+		setLabel("Remove Column");
 
 		RemoveTablePerspectiveEvent event = new RemoveTablePerspectiveEvent(
 tablePerspective, view);

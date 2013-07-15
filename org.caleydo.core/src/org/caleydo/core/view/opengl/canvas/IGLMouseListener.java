@@ -5,6 +5,8 @@
  ******************************************************************************/
 package org.caleydo.core.view.opengl.canvas;
 
+import gleem.linalg.Vec2f;
+
 import java.awt.Dimension;
 import java.awt.Point;
 
@@ -30,7 +32,11 @@ public interface IGLMouseListener {
 	void mouseExited(IMouseEvent mouseEvent);
 
 	public interface IMouseEvent {
-		Point getPoint();
+		Vec2f getPoint(Units unit);
+
+		Vec2f getDIPPoint();
+
+		Point getRAWPoint();
 
 		int getClickCount();
 

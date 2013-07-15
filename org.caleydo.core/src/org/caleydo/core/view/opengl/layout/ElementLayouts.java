@@ -42,9 +42,4 @@ public final class ElementLayouts {
 	public static ElementLayout wrap(ALayoutRenderer renderer, int width) {
 		return create().width(width).render(renderer).build();
 	}
-
-	public static ElementLayout scrollAlbe(AGLView view, ElementLayout content) {
-		ScrolledElementLayout l = new ScrolledElementLayout(view, content);
-		return l;
-	}
 }

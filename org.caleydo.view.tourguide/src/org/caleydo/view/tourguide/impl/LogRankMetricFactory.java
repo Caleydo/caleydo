@@ -81,8 +81,8 @@ public class LogRankMetricFactory implements IScoreFactory {
 			BothUpdateLogRankState browse = new BothUpdateLogRankState();
 			stateMachine.addState("LogRankBrowse", browse);
 			IState target = stateMachine.addState("LogRank", new CreateLogRankState(browse));
-			stateMachine.addTransition(start, new SimpleTransition(target,
- "Based on log-rank test score (survival)"));
+			stateMachine.addTransition(start, new SimpleTransition(target, "Based on log-rank test score (survival)",
+					null));
 		} else if (mode == EWizardMode.INDEPENDENT) {
 			IState browseStratification = stateMachine.get(IStateMachine.BROWSE_STRATIFICATIONS);
 			stateMachine.addTransition(start, new CreateLogRankTransition(browseStratification, source));
@@ -170,6 +170,16 @@ public class LogRankMetricFactory implements IScoreFactory {
 		public CreateLogRankTransition(IState target, TablePerspective numerical) {
 			this.target = target;
 			this.numerical = numerical;
+		}
+
+		@Override
+		public boolean isEnabled() {
+			return true;
+		}
+
+		@Override
+		public String getDisabledReason() {
+			return null;
 		}
 
 		@Override

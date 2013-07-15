@@ -10,7 +10,6 @@ import gleem.linalg.Vec2f;
 import java.beans.PropertyChangeListener;
 import java.util.BitSet;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +36,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
 import com.google.common.base.Function;
+import com.google.common.collect.HashMultiset;
+import com.google.common.collect.Multiset;
 
 /**
  * @author Samuel Gratzl
@@ -47,12 +48,19 @@ public class CategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<CATEGOR
  IFilterColumnMixin, IGrabRemainingHorizontalSpace,
 		IRankableColumnMixin {
 	private final Function<IRow, CATEGORY_TYPE> data;
-	private Set<CATEGORY_TYPE> selection = new HashSet<>();
-	private Map<CATEGORY_TYPE, String> metaData;
+	private final Set<CATEGORY_TYPE> selection = new HashSet<>();
+	private final String labelNA;
+	private boolean filterNA = false;
+	private final Map<CATEGORY_TYPE, String> metaData;
 
 	public CategoricalRankColumnModel(IGLRenderer header, final Function<IRow, CATEGORY_TYPE> data,
 			Map<CATEGORY_TYPE, String> metaData) {
-		this(header, data, metaData, Color.GRAY, new Color(.95f, .95f, .95f));
+		this(header, data, metaData, "");
+	}
+
+	public CategoricalRankColumnModel(IGLRenderer header, final Function<IRow, CATEGORY_TYPE> data,
+			Map<CATEGORY_TYPE, String> metaData, String labelNA) {
+		this(header, data, metaData, Color.GRAY, new Color(.95f, .95f, .95f),labelNA);
 	}
 
 	public static CategoricalRankColumnModel<String> createSimple(IGLRenderer header,
@@ -61,14 +69,15 @@ public class CategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<CATEGOR
 		Map<String, String> map = new TreeMap<>();
 		for (String s : items)
 			map.put(s, s);
-		return new CategoricalRankColumnModel<>(header, data, map);
+		return new CategoricalRankColumnModel<>(header, data, map,"");
 	}
 
 	public CategoricalRankColumnModel(IGLRenderer header, final Function<IRow, CATEGORY_TYPE> data,
-			Map<CATEGORY_TYPE, String> metaData, Color color, Color bgColor) {
+			Map<CATEGORY_TYPE, String> metaData, Color color, Color bgColor, String labelNA) {
 		super(color, bgColor);
 		setHeaderRenderer(header);
 		this.data = data;
+		this.labelNA = labelNA == null? "" : labelNA;
 		this.metaData = metaData;
 		this.selection.addAll(metaData.keySet());
 	}
@@ -80,6 +89,8 @@ public class CategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<CATEGOR
 		this.data = copy.data;
 		this.metaData = copy.metaData;
 		this.selection.addAll(copy.selection);
+		this.filterNA = copy.filterNA;
+		this.labelNA = copy.labelNA;
 	}
 
 	@Override
@@ -95,7 +106,7 @@ public class CategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<CATEGOR
 	public String getValue(IRow row) {
 		CATEGORY_TYPE value = getCatValue(row);
 		if (value == null)
-			return "";
+			return labelNA;
 		return metaData.get(value);
 	}
 
@@ -117,28 +128,40 @@ public class CategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<CATEGOR
 			public void run(Display display, Composite canvas) {
 				Point loc = canvas.toDisplay((int) location.x(), (int) location.y());
 				CatFilterDalog<CATEGORY_TYPE> dialog = new CatFilterDalog<>(canvas.getShell(), getTitle(), summary,
-						metaData, selection, isGlobalFilter, getTable().hasSnapshots(), loc);
+						metaData, selection, isGlobalFilter, getTable().hasSnapshots(), loc, filterNA, labelNA);
 				dialog.open();
 			}
 		});
 	}
 
-	protected void setFilter(Collection<CATEGORY_TYPE> filter, boolean isGlobalFilter) {
+	protected void setFilter(Collection<CATEGORY_TYPE> filter, boolean isFilterNA, boolean isGlobalFilter) {
 		invalidAllFilter();
 		Set<CATEGORY_TYPE> bak = new HashSet<>(this.selection);
 		this.selection.clear();
 		this.selection.addAll(filter);
-		if (this.selection.equals(bak)) {
+		boolean sameSelection=this.selection.equals(bak);
+		if (sameSelection && this.filterNA == isFilterNA) {
 			setGlobalFilter(isGlobalFilter);
-		} else {
+		} else if (!sameSelection){
 			this.isGlobalFilter = isGlobalFilter;
+			this.filterNA = isFilterNA;
 			propertySupport.firePropertyChange(PROP_FILTER, bak, this.selection);
+		} else if (this.filterNA != isFilterNA) {
+			this.isGlobalFilter = isGlobalFilter;
+			propertySupport.firePropertyChange(PROP_FILTER, this.filterNA, this.filterNA = isFilterNA);
 		}
 	}
 
 	@Override
 	public boolean isFiltered() {
 		return selection.size() < metaData.size();
+	}
+
+	/**
+	 * @return the filterNA, see {@link #filterNA}
+	 */
+	public boolean isFilterNA() {
+		return filterNA;
 	}
 
 	public CATEGORY_TYPE getCatValue(IRow row) {
@@ -163,24 +186,23 @@ public class CategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<CATEGOR
 	protected void updateMask(BitSet todo, List<IRow> data, BitSet mask) {
 		for (int i = todo.nextSetBit(0); i >= 0; i = todo.nextSetBit(i + 1)) {
 			CATEGORY_TYPE v = this.data.apply(data.get(i));
-			mask.set(i, selection.contains(v));
+			if (v == null && filterNA)
+				mask.set(i,false);
+			else
+				mask.set(i, v == null ? true : selection.contains(v));
 		}
 	}
 
 	/**
 	 * @return
 	 */
-	public Map<CATEGORY_TYPE, Integer> getHist() {
-		Map<CATEGORY_TYPE, Integer> hist = new HashMap<>();
+	public Multiset<CATEGORY_TYPE> getHist() {
+		Multiset<CATEGORY_TYPE> hist = HashMultiset.create(metaData.size());
 		for (IRow r : getMyRanker()) {
 			CATEGORY_TYPE v = getCatValue(r);
 			if (v == null) // TODO nan
 				continue;
-			Integer c = hist.get(v);
-			if (c == null)
-				hist.put(v, 1);
-			else
-				hist.put(v, c + 1);
+			hist.add(v);
 		}
 		return hist;
 	}
@@ -221,7 +243,7 @@ public class CategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<CATEGOR
 		@SuppressWarnings("unchecked")
 		@ListenTo(sendToMe = true)
 		private void onSetFilter(FilterEvent event) {
-			setFilter((Collection<CATEGORY_TYPE>) event.getFilter(), event.isFilterGlobally());
+			setFilter((Collection<CATEGORY_TYPE>) event.getFilter(), event.isFilterNA(), event.isFilterGlobally());
 		}
 	}
 
@@ -247,7 +269,7 @@ public class CategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<CATEGOR
 		public String getTooltip() {
 			CATEGORY_TYPE value = getCatValue(getLayoutDataAs(IRow.class, null));
 			if (value == null)
-				return null;
+				return labelNA;
 			return metaData.get(value);
 		}
 	}

@@ -5,6 +5,8 @@
  ******************************************************************************/
 package org.caleydo.core.view.opengl.canvas.internal.awt;
 
+import gleem.linalg.Vec2f;
+
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.InputEvent;
@@ -14,8 +16,10 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
+import org.caleydo.core.view.opengl.canvas.AGLCanvas;
 import org.caleydo.core.view.opengl.canvas.IGLMouseListener;
 import org.caleydo.core.view.opengl.canvas.IGLMouseListener.IMouseEvent;
+import org.caleydo.core.view.opengl.canvas.Units;
 
 /**
  * @author Samuel Gratzl
@@ -24,9 +28,11 @@ import org.caleydo.core.view.opengl.canvas.IGLMouseListener.IMouseEvent;
 final class AWTMouseAdapter implements MouseListener, MouseMotionListener, MouseWheelListener {
 
 	private final IGLMouseListener listener;
+	private final AGLCanvas canvas;
 
-	public AWTMouseAdapter(IGLMouseListener listener) {
+	public AWTMouseAdapter(IGLMouseListener listener, AGLCanvas canvas) {
 		this.listener = listener;
+		this.canvas = canvas;
 	}
 
 	/**
@@ -80,20 +86,32 @@ final class AWTMouseAdapter implements MouseListener, MouseMotionListener, Mouse
 	 * @param e
 	 * @return
 	 */
-	private static IMouseEvent wrap(MouseEvent e) {
-		return new AWTMouseEventAdapter(e);
+	private IMouseEvent wrap(MouseEvent e) {
+		return new AWTMouseEventAdapter(e, canvas.toDIP(e.getPoint()));
 	}
 
 	private static class AWTMouseEventAdapter implements IMouseEvent {
 		private final MouseEvent event;
+		private final Vec2f point;
 
-		AWTMouseEventAdapter(MouseEvent event) {
+		AWTMouseEventAdapter(MouseEvent event, Vec2f point) {
 			this.event = event;
+			this.point = point;
 		}
 
 		@Override
-		public Point getPoint() {
+		public Point getRAWPoint() {
 			return event.getPoint();
+		}
+
+		@Override
+		public Vec2f getDIPPoint() {
+			return point;
+		}
+
+		@Override
+		public Vec2f getPoint(Units unit) {
+			return unit.unapply(point);
 		}
 
 		@Override

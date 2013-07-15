@@ -13,15 +13,17 @@ import java.util.Objects;
 
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.view.contextmenu.ContextMenuCreator;
+import org.caleydo.view.tourguide.internal.view.ui.ADataDomainElement;
 import org.caleydo.vis.rank.model.RankTableModel;
 
 import com.google.common.base.Predicate;
 
 /**
  * base model cass for data set selection on the left side
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public abstract class ADataDomainQuery implements Predicate<AScoreRow> {
 	public static final String PROP_ACTIVE = "active";
@@ -52,13 +54,13 @@ public abstract class ADataDomainQuery implements Predicate<AScoreRow> {
 
 	/**
 	 * whether filtering is possible
-	 * 
+	 *
 	 * @return
 	 */
 	public abstract boolean isFilteringPossible();
 
 	/**
-	 * 
+	 *
 	 * @return a list of all filtered {@link AScoreRow} of this query
 	 */
 	protected abstract List<AScoreRow> getAll();
@@ -95,7 +97,7 @@ public abstract class ADataDomainQuery implements Predicate<AScoreRow> {
 
 	/**
 	 * initialized this query using the given data
-	 * 
+	 *
 	 * @param offset
 	 * @param data
 	 */
@@ -115,7 +117,7 @@ public abstract class ADataDomainQuery implements Predicate<AScoreRow> {
 
 	/**
 	 * optionally creates and returns the data
-	 * 
+	 *
 	 * @return
 	 */
 	public final synchronized List<AScoreRow> getOrCreate() {
@@ -206,20 +208,20 @@ public abstract class ADataDomainQuery implements Predicate<AScoreRow> {
 
 	/**
 	 * factory method for adding query specific metric columns
-	 * 
+	 *
 	 * @param table
 	 */
 	public abstract void createSpecificColumns(RankTableModel table);
 
 	/**
 	 * reverse of {@link #createSpecificColumns(RankTableModel)}
-	 * 
+	 *
 	 * @param table
 	 */
 	public abstract void removeSpecificColumns(RankTableModel table);
 
 	/**
-	 * 
+	 *
 	 * @return null if nothing changed, or else if the data were updated
 	 */
 	public abstract List<AScoreRow> onDataDomainUpdated();
@@ -234,5 +236,9 @@ public abstract class ADataDomainQuery implements Predicate<AScoreRow> {
 		// set every item in the data list to null for cleaning up the data
 		for (int i = 0; i < this.data.size(); ++i)
 			this.data.set(i, null);
+	}
+
+	public boolean addCustomDomainActions(ContextMenuCreator creator, ADataDomainElement ui) {
+		return false;
 	}
 }

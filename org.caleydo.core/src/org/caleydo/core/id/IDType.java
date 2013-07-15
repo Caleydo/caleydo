@@ -11,6 +11,7 @@ import java.util.Map;
 
 import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.io.IDTypeParsingRules;
+import org.caleydo.core.io.parser.ascii.ATextParser;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -199,6 +200,7 @@ public class IDType {
 	public boolean isInternalType() {
 		return isInternalType;
 	}
+
 	/**
 	 * @return the idCategory, see {@link #idCategory}
 	 */
@@ -234,20 +236,23 @@ public class IDType {
 
 		for (String currentID : idList) {
 
+			String convertedID = idTypeParsingRules != null ? ATextParser.convertID(currentID, idTypeParsingRules)
+					: currentID;
+
 			if (getDataType().equals(EDataType.INTEGER)) {
 				try {
-					Integer idInt = Integer.valueOf(currentID);
+					Integer idInt = Integer.valueOf(convertedID);
 					if (idMappingManager.doesElementExist(this, idInt)) {
 						numMatchedIDs++;
 					}
 				} catch (NumberFormatException e) {
 				}
 			} else if (getDataType().equals(EDataType.STRING)) {
-				if (idMappingManager.doesElementExist(this, currentID)) {
+				if (idMappingManager.doesElementExist(this, convertedID)) {
 					numMatchedIDs++;
 				} else if (getTypeName().equals("REFSEQ_MRNA")) { // FIXME hack
-					if (currentID.contains(".")) {
-						if (idMappingManager.doesElementExist(this, currentID.substring(0, currentID.indexOf(".")))) {
+					if (convertedID.contains(".")) {
+						if (idMappingManager.doesElementExist(this, convertedID.substring(0, convertedID.indexOf(".")))) {
 							numMatchedIDs++;
 						}
 					}

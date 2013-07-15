@@ -6,11 +6,15 @@
 package org.caleydo.core.view.opengl.canvas.internal.swt;
 
 
+import gleem.linalg.Vec2f;
+
 import java.awt.Dimension;
 import java.awt.Point;
 
+import org.caleydo.core.view.opengl.canvas.AGLCanvas;
 import org.caleydo.core.view.opengl.canvas.IGLMouseListener;
 import org.caleydo.core.view.opengl.canvas.IGLMouseListener.IMouseEvent;
+import org.caleydo.core.view.opengl.canvas.Units;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MenuDetectEvent;
 import org.eclipse.swt.events.MenuDetectListener;
@@ -29,9 +33,11 @@ final class SWTMouseAdapter implements MouseListener, MouseMoveListener, MouseWh
 		MenuDetectListener {
 
 	private final IGLMouseListener listener;
+	private final AGLCanvas canvas;
 
-	public SWTMouseAdapter(IGLMouseListener listener) {
+	public SWTMouseAdapter(IGLMouseListener listener, AGLCanvas canvas) {
 		this.listener = listener;
+		this.canvas = canvas;
 	}
 
 	/**
@@ -89,19 +95,31 @@ final class SWTMouseAdapter implements MouseListener, MouseMoveListener, MouseWh
 		//
 	}
 
-	private static IMouseEvent wrap(MouseEvent e) {
-		return new SWTMouseEventAdapter(e);
+	private IMouseEvent wrap(MouseEvent e) {
+		return new SWTMouseEventAdapter(e, canvas.toDIP(new Point(e.x, e.y)));
 	}
 
 	private static class SWTMouseEventAdapter implements IMouseEvent {
 		private final MouseEvent event;
+		private final Vec2f point;
 
-		SWTMouseEventAdapter(MouseEvent event) {
+		SWTMouseEventAdapter(MouseEvent event, Vec2f point) {
 			this.event = event;
+			this.point = point;
 		}
 
 		@Override
-		public Point getPoint() {
+		public Vec2f getDIPPoint() {
+			return point;
+		}
+
+		@Override
+		public Vec2f getPoint(Units unit) {
+			return unit.unapply(point);
+		}
+
+		@Override
+		public Point getRAWPoint() {
 			return new Point(event.x, event.y);
 		}
 

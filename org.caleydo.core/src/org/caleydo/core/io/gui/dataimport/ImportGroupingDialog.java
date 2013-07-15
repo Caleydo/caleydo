@@ -68,6 +68,8 @@ public class ImportGroupingDialog extends AHelpButtonDialog implements SafeCalla
 	 */
 	private final GroupingParseSpecification spec;
 
+	private int numRowsInFile = 0;
+
 	/**
 	 * @param parentShell
 	 */
@@ -110,8 +112,8 @@ public class ImportGroupingDialog extends AHelpButtonDialog implements SafeCalla
 		GridLayout layout = new GridLayout(numGridCols, false);
 		parentComposite.setLayout(layout);
 		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, true);
-		gd.widthHint = 600;
-		gd.heightHint = 650;
+		gd.widthHint = 900;
+		gd.heightHint = 670;
 		parentComposite.setLayoutData(gd);
 
 		loadFile = new LoadFileWidget(parentComposite, "Open Grouping File", new ICallback<String>() {
@@ -252,6 +254,7 @@ public class ImportGroupingDialog extends AHelpButtonDialog implements SafeCalla
 		this.rowConfig.setEnabled(true);
 
 		this.previewTable.generatePreview(true);
+		numRowsInFile = previewTable.getNumRows();
 		// this.parentComposite.layout(true, true);
 	}
 
@@ -261,5 +264,12 @@ public class ImportGroupingDialog extends AHelpButtonDialog implements SafeCalla
 		this.rowConfig.determineConfigFromPreview(dataMatrix, this.rowIDCategory);
 		// parentComposite.pack();
 		parentComposite.layout(true);
+	}
+
+	/**
+	 * @return the numRowsInFile, see {@link #numRowsInFile}
+	 */
+	public int getNumRowsInFile() {
+		return numRowsInFile;
 	}
 }

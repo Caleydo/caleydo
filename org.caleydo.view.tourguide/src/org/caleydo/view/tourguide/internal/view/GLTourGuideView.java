@@ -15,6 +15,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.media.opengl.GLAutoDrawable;
 
@@ -80,8 +81,10 @@ import org.caleydo.vis.rank.config.RankTableUIConfigBase;
 import org.caleydo.vis.rank.layout.RowHeightLayouts;
 import org.caleydo.vis.rank.model.ACompositeRankColumnModel;
 import org.caleydo.vis.rank.model.ARankColumnModel;
+import org.caleydo.vis.rank.model.GroupRankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.MaxRankColumnModel;
+import org.caleydo.vis.rank.model.RankColumnModels;
 import org.caleydo.vis.rank.model.RankRankColumnModel;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.StackedRankColumnModel;
@@ -652,18 +655,38 @@ public class GLTourGuideView extends AGLElementView {
 		boolean hasOne = false;
 		Collection<ARankColumnModel> toremove = new ArrayList<>();
 		for (ARankColumnModel col : columns) {
-			if (col instanceof ScoreRankColumnModel || col instanceof StackedRankColumnModel
-					|| col instanceof MaxRankColumnModel) {
+			if ((col instanceof ScoreRankColumnModel && !(((ScoreRankColumnModel) col).getScore() instanceof ISerializeableScore))
+					|| (col instanceof ACompositeRankColumnModel && hasScore((ACompositeRankColumnModel) col))) {
 				hasOne = true;
 				toremove.add(col);
-			} else if (hasOne)
+			} else if (hasOne || col instanceof GroupRankColumnModel)
 				break;
 		}
 		for (ARankColumnModel col : toremove) {
+			Set<ARankColumnModel> children = RankColumnModels.flatten(col);
+			// look in the children for things to persist i.e move to the memo pad, e.g. external scores
+			for (ARankColumnModel r : children) {
+				if (r instanceof ScoreRankColumnModel
+						&& ((ScoreRankColumnModel) r).getScore() instanceof ISerializeableScore)
+					r.hide();
+			}
 			table.remove(col);
 		}
 	}
 
+
+	/**
+	 * @param col
+	 * @return
+	 */
+	private boolean hasScore(ACompositeRankColumnModel col) {
+		for (ARankColumnModel c : col) {
+			if (c instanceof ScoreRankColumnModel
+					|| (c instanceof ACompositeRankColumnModel && hasScore((ACompositeRankColumnModel) c)))
+				return true;
+		}
+		return false;
+	}
 
 	@ListenTo(sendToMe = true)
 	private void onCreateScore(final CreateScoreEvent event) {

@@ -19,7 +19,7 @@
  *******************************************************************************/
 package org.caleydo.view.subgraph;
 
-import java.awt.Point;
+import gleem.linalg.Vec2f;
 
 import javax.media.opengl.GL2ES1;
 
@@ -116,12 +116,16 @@ public class ScrollableGLElementAdapter extends GLElementAdapter implements IMou
 		endScrollBars(g, w, h);
 	}
 
+
 	@Override
-	public void handleMouseWheel(int wheelAmount, Point wheelPosition) {
-		if ((wheelPosition.x > getAbsoluteLocation().x() && wheelPosition.x < getAbsoluteLocation().x() + getSize().x())
-				&& (wheelPosition.y > getAbsoluteLocation().y() && wheelPosition.y < getAbsoluteLocation().y()
+	public void handleMouseWheel(int wheelAmount, Vec2f wheelPosition) {
+		if ((wheelPosition.get(0) > getAbsoluteLocation().x() && wheelPosition.get(0) < getAbsoluteLocation().x()
+				+ getSize().x())
+				&& (wheelPosition.get(1) > getAbsoluteLocation().y() && wheelPosition.get(1) < getAbsoluteLocation()
+						.y()
 						+ getSize().y())) {
 			vScrollBarPosition += -wheelAmount * vScrollBarSize * 0.5f;
 		}
+
 	}
 }

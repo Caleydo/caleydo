@@ -24,6 +24,7 @@ import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
 import org.caleydo.core.data.selection.IEventBasedSelectionManagerUser;
+import org.caleydo.core.data.selection.SelectionCommands;
 import org.caleydo.core.data.virtualarray.events.ClearGroupSelectionEvent;
 import org.caleydo.core.data.virtualarray.events.PerspectiveUpdatedEvent;
 import org.caleydo.core.data.virtualarray.group.GroupList;
@@ -47,9 +48,9 @@ import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
-import org.caleydo.core.view.opengl.layout.util.multiform.DefaultVisInfo;
-import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.picking.APickingListener;
+import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
@@ -71,6 +72,7 @@ import org.caleydo.view.pathway.GLPathway;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 /**
@@ -176,9 +178,9 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	 * @param viewLabel
 	 * @param viewFrustum
 	 */
-	public GLEnRoutePathway(IGLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+	public GLEnRoutePathway(IGLCanvas glCanvas, ViewFrustum viewFrustum) {
 
-		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
+		super(glCanvas, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
 		geneSelectionManager = new EventBasedSelectionManager(this, primaryRowIDType);
 		geneSelectionManager.registerEventListeners();
@@ -219,10 +221,10 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		layoutManager = new LayoutManager(viewFrustum, pixelGLConverter);
 		layoutManager.setUseDisplayLists(true);
 		ElementLayout pathElementLayout = new ElementLayout();
-		MultiFormRenderer mr = new MultiFormRenderer(this, false);
-		mr.addLayoutRenderer(pathRenderer, null, new DefaultVisInfo(), true);
-		pathElementLayout.setPixelSizeX(pathRenderer.getMinWidthPixels());
-		pathElementLayout.setRenderer(mr);
+		// MultiFormRenderer mr = new MultiFormRenderer(this, false);
+		// mr.addLayoutRenderer(pathRenderer, null, new DefaultVisInfo(), true);
+		// pathElementLayout.setPixelSizeX(pathRenderer.getMinWidthPixels());
+		pathElementLayout.setRenderer(pathRenderer);
 		layoutManager.setBaseElementLayout(pathElementLayout);
 		layoutManager.updateLayout();
 
@@ -237,11 +239,12 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	public void initRemote(final GL2 gl, final AGLView glParentView, final GLMouseListener glMouseListener) {
 
 		// Register keyboard listener to GL2 canvas
-		glParentView.getParentComposite().getDisplay().asyncExec(new Runnable() {
+		final Composite composite = glParentView.getParentGLCanvas().asComposite();
+		composite.getDisplay().asyncExec(new Runnable() {
 			@Override
 			public void run() {
 				if (glKeyListener != null)
-					glParentView.getParentComposite().addKeyListener(glKeyListener);
+					composite.addKeyListener(glKeyListener);
 			}
 		});
 
@@ -269,6 +272,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	@Override
 	public void display(GL2 gl) {
 
+		gl.glTranslatef(0, 0, 0.5f);
 		if (isLayoutDirty) {
 			layoutManager.updateLayout();
 		}
@@ -288,6 +292,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 				float topSpacing = pixelGLConverter.getGLWidthForPixelWidth(TOP_SPACING_MAPPED_DATA);
 
 				gl.glNewList(layoutDisplayListIndex, GL2.GL_COMPILE);
+				renderBackground(gl);
 				gl.glPushMatrix();
 				gl.glTranslatef(dataRowPositionX, topSpacing, 0);
 				mappedDataRenderer.renderBaseRepresentation(gl);
@@ -305,8 +310,23 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 			gl.glCallList(layoutDisplayListIndex);
 			gl.glCallList(displayListIndex);
 		}
-
+		gl.glTranslatef(0, 0, -0.5f);
 		checkForHits(gl);
+	}
+
+	private void renderBackground(GL2 gl) {
+		gl.glPushMatrix();
+		gl.glTranslatef(0, 0, -0.2f);
+		gl.glPushName(getPickingManager().getPickingID(getID(), EPickingType.BACKGROUND.name(), 0));
+		gl.glColor4f(1, 0, 0, 0);
+		gl.glBegin(GL2.GL_QUADS);
+		gl.glVertex3f(0, 0, 0);
+		gl.glVertex3f(0, viewFrustum.getHeight(), 0);
+		gl.glVertex3f(viewFrustum.getWidth(), viewFrustum.getHeight(), 0);
+		gl.glVertex3f(viewFrustum.getWidth(), 0, 0);
+		gl.glEnd();
+		gl.glPopName();
+		gl.glPopMatrix();
 	}
 
 	/**
@@ -377,12 +397,12 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	 *            View height in pixels required by the linearized path and its rows.
 	 */
 	private void adaptViewSize(int minViewWidth, int minViewHeightRequiredByPath) {
-		boolean updateWidth = minViewWidth > parentGLCanvas.getWidth()
-				|| (minViewWidth < parentGLCanvas.getWidth() && (minViewWidth > minWidth || minViewWidth + 3 < minWidth));
+		boolean updateWidth = minViewWidth > parentGLCanvas.getDIPWidth()
+				|| (minViewWidth < parentGLCanvas.getDIPWidth() && (minViewWidth > minWidth || minViewWidth + 3 < minWidth));
 
 		boolean updateHeight = false;
 
-		if (pathRendererChanged || parentGLCanvas.getHeight() < minViewHeightRequiredByPath) {
+		if (pathRendererChanged || parentGLCanvas.getDIPHeight() < minViewHeightRequiredByPath) {
 			// System.out.println("setting min height:" + minViewHeightPixels);
 			pathRendererChanged = false;
 			updateHeight = true;
@@ -448,7 +468,16 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		removeTablePerspectiveListener.setHandler(this);
 		removeTablePerspectiveListener.setEventSpace(pathwayPathEventSpace);
 		eventPublisher.addListener(RemoveTablePerspectiveEvent.class, removeTablePerspectiveListener);
+		registerPickingListeners();
+	}
 
+	public void registerPickingListeners() {
+		addIDPickingListener(new APickingListener() {
+			@Override
+			protected void clicked(Pick pick) {
+				SelectionCommands.clearSelections();
+			}
+		}, EPickingType.BACKGROUND.name(), 0);
 	}
 
 	@Override
@@ -478,6 +507,8 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		setLayoutDirty();
 		// System.out.println("reshape: " + x + ", " + y + ", " + width + "x" +
 		// height);
+		if (minWidth > 0 && minHeight > 0)
+			setMinViewSize(minWidth, minHeight);
 	}
 
 	/**
@@ -858,7 +889,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	@ListenTo
 	public void showContextSelectionDialog(final ShowContextElementSelectionDialogEvent event) {
 
-		getParentComposite().getDisplay().asyncExec(new Runnable() {
+		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
 				Shell shell = new Shell();
@@ -882,7 +913,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	@ListenTo
 	public void showGroupSelectionDialog(final ShowGroupSelectionDialogEvent event) {
 
-		getParentComposite().getDisplay().asyncExec(new Runnable() {
+		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
 				Shell shell = new Shell();

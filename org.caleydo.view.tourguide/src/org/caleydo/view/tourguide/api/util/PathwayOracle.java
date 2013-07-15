@@ -5,7 +5,9 @@
  ******************************************************************************/
 package org.caleydo.view.tourguide.api.util;
 
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
+import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 
@@ -16,12 +18,17 @@ import org.caleydo.datadomain.pathway.PathwayDataDomain;
 public class PathwayOracle {
 	/**
 	 * checks whether the given source can be the underlying of a Pathway
-	 * 
+	 *
 	 * @param source
 	 * @return
 	 */
 	public static boolean canBeUnderlying(TablePerspective source) {
-		return source.getDataDomain().hasIDCategory(
+		return canBeUnderlying(source.getDataDomain());
+	}
+
+	public static boolean canBeUnderlying(IDataDomain source) {
+		return source instanceof ATableBasedDataDomain
+				&& ((ATableBasedDataDomain) source).hasIDCategory(
 				((PathwayDataDomain) DataDomainManager.get().getDataDomainByType(
 PathwayDataDomain.DATA_DOMAIN_TYPE))
 						.getDavidIDType());

@@ -95,7 +95,8 @@ public class MinimumSizeComposite extends ScrolledComposite implements IListener
 	}
 
 	private void triggerScrollEvent(int x, int y) {
-		ViewScrollEvent event = new ViewScrollEvent(x, y, getSize().x, getSize().y);
+		org.eclipse.swt.graphics.Rectangle r = getClientArea();
+		ViewScrollEvent event = new ViewScrollEvent(x, y,r.width, r.height);
 		event.to(setMinSizeEventListener.getView());
 		EventPublisher.trigger(event);
 	}

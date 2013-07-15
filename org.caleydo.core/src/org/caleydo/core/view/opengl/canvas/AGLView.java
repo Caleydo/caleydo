@@ -5,9 +5,11 @@
  ******************************************************************************/
 package org.caleydo.core.view.opengl.canvas;
 
+import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 
-import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -183,12 +185,8 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	 * systems, as it currently requires manual translation of the view content since swt scroll bars are not working
 	 * properly.
 	 */
-	private int scrollX = 0;
 
-	/**
-	 * Same as {@link #scrollX}, but for y direction.s
-	 */
-	private int scrollY = 0;
+	private Rectangle scrollRect = new Rectangle(0, 0);
 
 	private ViewScrollEventListener viewScrollEventListener;
 
@@ -212,11 +210,10 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	 * @param viewName
 	 *            TODO
 	 */
-	protected AGLView(IGLCanvas glCanvas, final Composite parentComposite, final ViewFrustum viewFrustum,
-			String viewType, String viewName) {
 
-		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.GL_VIEW), parentComposite, viewType,
-				viewName);
+	protected AGLView(IGLCanvas glCanvas, final ViewFrustum viewFrustum, String viewType, String viewName) {
+
+		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.GL_VIEW), viewType, viewName);
 
 		parentGLCanvas = glCanvas;
 
@@ -264,6 +261,7 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	public void init(GLAutoDrawable drawable) {
 
 		final GLFPSKeyListener fpsKeyListener = new GLFPSKeyListener(this);
+		final Composite parentComposite = parentGLCanvas.asComposite();
 		parentComposite.getDisplay().asyncExec(new Runnable() {
 			@Override
 			public void run() {
@@ -360,8 +358,7 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 			gl.glLoadIdentity();
 
 			gl.glPushMatrix();
-			gl.glTranslatef(pixelGLConverter.getGLWidthForPixelWidth(scrollX),
-					pixelGLConverter.getGLHeightForPixelHeight(scrollY), 0);
+			applyScrolling(gl);
 
 			// clear screen
 			gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
@@ -385,7 +382,7 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	@Override
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
 
-		updateViewFrustum(width, height);
+		updateViewFrustum(parentGLCanvas.getDIPWidth(), parentGLCanvas.getDIPHeight());
 		// scrollX = x;
 		// scrollY = y;
 
@@ -418,10 +415,10 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	 * @param width
 	 * @param height
 	 */
-	protected void updateViewFrustum(int width, int height) {
+	protected void updateViewFrustum(float width, float height) {
 		viewFrustum.setLeft(0);
 		viewFrustum.setBottom(0);
-		float aspectRatio = (float) height / (float) width;
+		float aspectRatio = height / width;
 		viewFrustum.setTop(aspectRatio);
 		viewFrustum.setRight(1);
 	}
@@ -1263,7 +1260,7 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	 * @param wheelPosition
 	 */
 	@Override
-	public void handleMouseWheel(int wheelAmount, Point wheelPosition) {
+	public void handleMouseWheel(int wheelAmount, Vec2f wheelPosition) {
 		for (IMouseWheelHandler listener : mouseWheelListeners) {
 			listener.handleMouseWheel(wheelAmount, wheelPosition);
 		}
@@ -1348,22 +1345,35 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 
 	public void onScrolled(ViewScrollEvent event) {
 		if (System.getProperty("os.name").contains("Mac")) {
-			scrollX = -event.getOriginX();
-			scrollY = event.getOriginY();
+			this.scrollRect.x = event.getOriginX();
+			this.scrollRect.y = event.getOriginY();
+			this.scrollRect.width = event.getWidth();
+			this.scrollRect.height = event.getHeight();
 		}
 	}
 
-	/**
-	 * @return the scrollX, see {@link #scrollX}
-	 */
-	public int getScrollX() {
-		return scrollX;
-	}
+	public final void applyScrolling(GL2 gl) {
+		if (!System.getProperty("os.name").contains("Mac") || this.scrollRect.width <= 0)
+			return;
+		float canvasWidth = parentGLCanvas.getDIPWidth();
+		float canvasHeight = parentGLCanvas.getDIPHeight();
+		Rectangle2D.Float scrollRect = parentGLCanvas.toDIP(this.scrollRect);
+		float scrollWidth = scrollRect.width;
+		float scrollHeight = scrollRect.height;
+		boolean needsScrollBarX = canvasWidth > scrollWidth;
+		boolean needsScrollBarY = canvasHeight > scrollHeight;
+		float offsetx = scrollRect.x;
+		float offsety = canvasHeight - scrollHeight - scrollRect.y;
+		if (!needsScrollBarX)
+			offsetx = 0;
+		if (!needsScrollBarY)
+			offsety = 0;
+		float foffsetx = pixelGLConverter.getGLWidthForPixelWidth(offsetx);
+		float foffsety = pixelGLConverter.getGLHeightForPixelHeight(offsety);
+		// as we start with 0,0 in the LOWER left corner, we have to adapt the y offset
+		// System.out.println("canvas: "+canvasWidth+"/"+canvasHeight+" real: "+scrollRect.width+"/"+scrollRect.height+
+		// " offset: "+scrollRect.x+"/"+scrollRect.y+" "+offsetx+"/"+offsety);
 
-	/**
-	 * @return the scrollY, see {@link #scrollY}
-	 */
-	public int getScrollY() {
-		return scrollY;
+		gl.glTranslatef(-foffsetx, -foffsety, 0);
 	}
 }

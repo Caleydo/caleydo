@@ -34,7 +34,6 @@ public class ParCoordsRemoteViewCreator implements IRemoteViewCreator {
 				.get()
 				.getViewManager()
 				.createGLView(GLParallelCoordinates.class, remoteRenderingView.getParentGLCanvas(),
-						remoteRenderingView.getParentComposite(),
 						new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1, -1, 1));
 		parCoords.setRemoteRenderingGLView((IGLRemoteRenderingView) remoteRenderingView);
 

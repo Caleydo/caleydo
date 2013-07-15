@@ -5,10 +5,10 @@
  ******************************************************************************/
 package org.caleydo.core.view.opengl.canvas.listener;
 
-import java.awt.Point;
+import gleem.linalg.Vec2f;
 
 public interface IMouseWheelHandler {
 
-	public void handleMouseWheel(int wheelAmount, Point wheelPosition);
+	public void handleMouseWheel(int wheelAmount, Vec2f wheelPosition);
 
 }

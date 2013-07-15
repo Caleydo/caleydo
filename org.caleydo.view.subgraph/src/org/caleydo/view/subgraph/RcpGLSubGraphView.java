@@ -53,7 +53,7 @@ public class RcpGLSubGraphView extends ARcpGLViewPart {
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
 
-		GLSubGraph subgraph = new GLSubGraph(glCanvas, parentComposite, serializedView.getViewFrustum());
+		GLSubGraph subgraph = new GLSubGraph(glCanvas, serializedView.getViewFrustum());
 		view = subgraph;
 		initializeView();
 

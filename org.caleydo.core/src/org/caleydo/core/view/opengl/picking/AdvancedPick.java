@@ -5,10 +5,13 @@
  ******************************************************************************/
 package org.caleydo.core.view.opengl.picking;
 
+import gleem.linalg.Vec2f;
+
 import java.awt.Dimension;
 import java.awt.Point;
 
 import org.caleydo.core.view.opengl.canvas.IGLMouseListener.IMouseEvent;
+import org.caleydo.core.view.opengl.canvas.Units;
 
 /**
  * simpler wrapper to signalizes, whether this kind of pickings are coming from the "better" picking manager
@@ -17,21 +20,32 @@ import org.caleydo.core.view.opengl.canvas.IGLMouseListener.IMouseEvent;
 public class AdvancedPick extends Pick implements IMouseEvent {
 	private final IMouseEvent event;
 
-	public AdvancedPick(int objectID, PickingMode ePickingMode, Point pickedPoint, Point dragStartPoint, float depth,
-			int dx, int dy, boolean isAnyDragging, IMouseEvent event) {
-		super(objectID, ePickingMode, pickedPoint, dragStartPoint, depth, dx, dy, isAnyDragging);
+	public AdvancedPick(int objectID, PickingMode ePickingMode, Vec2f dragStartPoint, float depth,
+ Vec2f dv,
+			boolean isAnyDragging, IMouseEvent event) {
+		super(objectID, ePickingMode, event.getDIPPoint(), dragStartPoint, depth, dv, isAnyDragging);
 		this.event = event;
 	}
 
-	public AdvancedPick(int objectID, PickingMode ePickingMode, Point pickedPoint, Point dragStartPoint, float depth,
+	public AdvancedPick(int objectID, PickingMode ePickingMode, Vec2f dragStartPoint, float depth,
 			IMouseEvent event) {
-		super(objectID, ePickingMode, pickedPoint, dragStartPoint, depth);
+		super(objectID, ePickingMode, event.getDIPPoint(), dragStartPoint, depth);
 		this.event = event;
 	}
 
 	@Override
-	public Point getPoint() {
-		return getPickedPoint();
+	public Vec2f getDIPPoint() {
+		return event.getDIPPoint();
+	}
+
+	@Override
+	public Vec2f getPoint(Units unit) {
+		return event.getPoint(unit);
+	}
+
+	@Override
+	public Point getRAWPoint() {
+		return event.getRAWPoint();
 	}
 
 	@Override

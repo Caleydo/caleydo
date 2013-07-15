@@ -44,6 +44,7 @@ import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormRenderer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.picking.APickingListener;
+import org.caleydo.core.view.opengl.picking.IPickingLabelProvider;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingMode;
@@ -295,6 +296,15 @@ public class TourguideAdapter implements IStratomexAdapter {
 			public void pick(Pick pick) {
 				if (wizard != null)
 					wizard.onPick(pick);
+			}
+		}, AAddWizardElement.PICKING_TYPE);
+		stratomex.addTypePickingTooltipListener(new IPickingLabelProvider() {
+
+			@Override
+			public String getLabel(Pick pick) {
+				if (wizard != null)
+					return wizard.getLabel(pick);
+				return null;
 			}
 		}, AAddWizardElement.PICKING_TYPE);
 	}
@@ -764,7 +774,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 				} else { // update extra
 					BrickColumn extraPreview = wizardPreviews.get(0);
 					added = stratomex.addTablePerspectives(withL, config, extraPreview, true);
-					stratomex.removeTablePerspective(extraPreview.getTablePerspective());
+					stratomex.removeTablePerspective(wizardPreviews.get(1).getTablePerspective());
 					if (added.size() > 0) {
 						wizardPreviews.set(1, added.get(0).getSecond());
 					} else {

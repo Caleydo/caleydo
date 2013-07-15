@@ -77,7 +77,7 @@ public class AdjustedRandScoreFactory implements IScoreFactory {
 	@Override
 	public void fillStateMachine(IStateMachine stateMachine, List<TablePerspective> existing, EWizardMode mode,
 			TablePerspective source) {
-		if (mode != EWizardMode.GLOBAL || existing.isEmpty()) // nothing to compare
+		if (mode != EWizardMode.GLOBAL) // nothing to compare
 			return;
 
 		IState start = stateMachine.get(IStateMachine.ADD_STRATIFICATIONS);
@@ -85,7 +85,8 @@ public class AdjustedRandScoreFactory implements IScoreFactory {
 		IState target = stateMachine.addState("AdjustedRand", new CreateAdjustedRandState(browse));
 
 		stateMachine.addTransition(start, new SimpleTransition(target,
-				"Based on similarity to displayed stratification"));
+				"Based on similarity to displayed stratification",
+				existing.isEmpty() ? "At least one stratification must already be visible" : null));
 	}
 
 	@Override
@@ -119,8 +120,8 @@ public class AdjustedRandScoreFactory implements IScoreFactory {
 		private final IState target;
 
 		public CreateAdjustedRandState(IState target) {
-			super("Select query stratification by clicking on the header brick of one of the displayed columns\n"
-					+ "Change query by clicking on other header brick at any time");
+			super("Select query stratification by clicking on the header block of one of the displayed columns\n"
+					+ "Change query by clicking on other header block at any time");
 			this.target = target;
 		}
 
@@ -144,7 +145,7 @@ public class AdjustedRandScoreFactory implements IScoreFactory {
 	private class UpdateAndBrowseAdjustedRand extends BrowseStratificationState implements ISelectStratificationState {
 		public UpdateAndBrowseAdjustedRand() {
 			super("Select a stratification in the LineUp to preview.\n" + "Then confirm or cancel your selection"
-					+ "Change query by clicking on other brick at any time");
+					+ "Change query by clicking on other block at any time");
 		}
 
 		@Override

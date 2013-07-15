@@ -65,6 +65,9 @@ public class GeneralManager {
 			+ File.separator;
 	public static final String CALEYDO_LOG_PATH = CALEYDO_HOME_PATH + "logs" + File.separator;
 
+	public static final String DATA_URL_PREFIX = "http://data.icg.tugraz.at/caleydo/download/" + GeneralManager.VERSION
+			+ "/";
+
 	/**
 	 * General manager as a singleton
 	 */

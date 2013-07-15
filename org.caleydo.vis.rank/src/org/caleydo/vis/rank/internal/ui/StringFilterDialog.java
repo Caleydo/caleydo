@@ -67,7 +67,7 @@ public class StringFilterDialog extends AFilterDialog {
 		Image image = FieldDecorationRegistry.getDefault().getFieldDecoration(FieldDecorationRegistry.DEC_INFORMATION)
 				.getImage();
 		// Set description and image
-		deco.setDescriptionText("Edit filter " + hint);
+		deco.setDescriptionText("Edit Filter " + hint);
 		deco.setImage(image);
 		// Hide deco if not in focus
 		deco.setShowOnlyOnFocus(true);
@@ -79,12 +79,12 @@ public class StringFilterDialog extends AFilterDialog {
 	@Override
 	protected void triggerEvent(boolean cancel) {
 		if (cancel) // original values
-			EventPublisher.trigger(new FilterEvent(filter, filterGlobally).to(receiver));
+			EventPublisher.trigger(new FilterEvent(filter, false, filterGlobally).to(receiver));
 		else {
 			String t = text.getText();
 			t = t.trim();
 			t = t.isEmpty() ? null : t;
-			EventPublisher.trigger(new FilterEvent(t, isFilterGlobally()).to(receiver));
+			EventPublisher.trigger(new FilterEvent(t, false, isFilterGlobally()).to(receiver));
 		}
 	}
 }

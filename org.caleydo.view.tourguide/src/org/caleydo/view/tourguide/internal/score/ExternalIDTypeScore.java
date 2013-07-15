@@ -28,6 +28,7 @@ import org.caleydo.view.tourguide.api.score.ECombinedOperator;
 import org.caleydo.view.tourguide.internal.external.ScoreParseSpecification;
 import org.caleydo.view.tourguide.internal.serialize.IDTypeAdapter;
 import org.caleydo.view.tourguide.spi.algorithm.IComputeElement;
+import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
@@ -87,6 +88,13 @@ public final class ExternalIDTypeScore extends AExternalScore {
 	 */
 	public IDType getIdType() {
 		return idType;
+	}
+
+	@Override
+	public PiecewiseMapping createMapping() {
+		if (isRank)
+			return new PiecewiseMapping(0, Float.NaN);
+		return super.createMapping();
 	}
 
 	@Override

@@ -40,7 +40,7 @@ public class ScrollBarCompatibility extends AScrollBar implements IDraggable {
 			break;
 		case CLICKED:
 			dragAndDropController.clearDraggables();
-			dragAndDropController.setDraggingProperties(pick.getPickedPoint(), "ScrollbarDrag");
+			dragAndDropController.setDraggingProperties(pick.getDIPPickedPoint(), "ScrollbarDrag");
 			dragAndDropController.addDraggable(this);
 			break;
 		case MOUSE_OUT:

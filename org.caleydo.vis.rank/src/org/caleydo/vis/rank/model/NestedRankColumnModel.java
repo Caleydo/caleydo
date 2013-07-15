@@ -180,9 +180,9 @@ public class NestedRankColumnModel extends AMultiRankColumnModel implements ISna
 		for (int i = 0; i < size; ++i) {
 			float a = f1.values[i];
 			float b = f2.values[i];
-			int c = Float.compare(a, b);
+			int c = -ColumnRanker.nanCompare(a, b, false);
 			if (c != 0)
-				return -c;
+				return c;
 		}
 		return 0;
 	}

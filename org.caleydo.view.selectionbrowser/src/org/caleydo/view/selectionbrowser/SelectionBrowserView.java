@@ -81,18 +81,20 @@ public class SelectionBrowserView extends ASWTView implements ISelectionHandler,
 	private SelectionCommandListener selectionCommandListener;
 
 	private RedrawViewListener redrawViewListener;
+	private Composite parentComposite;
 
 	/**
 	 * Constructor.
 	 */
 	public SelectionBrowserView(Composite parentComposite) {
 
-		super(-1, parentComposite, "SelectionBrowser???", "Selection Browser");
+		super(-1, "SelectionBrowser???", "Selection Browser");
 		generalManager = GeneralManager.get();
 		eventPublisher = generalManager.getEventPublisher();
 		registerEventListeners();
 		recordSelectionManager = new SelectionManager(IDType.getIDType("SAMPLE"));
 		initSelectedByGroupSelectionTypes();
+		this.parentComposite = parentComposite;
 	}
 
 	private void initContent() {

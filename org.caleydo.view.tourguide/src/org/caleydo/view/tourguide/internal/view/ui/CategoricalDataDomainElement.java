@@ -45,7 +45,9 @@ public class CategoricalDataDomainElement extends ADataDomainElement {
 				 }
 			 });
 		} else {
-			this.setSelection((Set<CategoryProperty<?>>) payload);
+			@SuppressWarnings("unchecked")
+			Set<CategoryProperty<?>> p = (Set<CategoryProperty<?>>) payload;
+			this.setSelection(p);
 		}
 	}
 
@@ -65,7 +67,7 @@ public class CategoricalDataDomainElement extends ADataDomainElement {
 		@Override
 		public void create() {
 			super.create();
-			getShell().setText("Edit filter of " + model.getDataDomain().getLabel());
+			getShell().setText("Edit Filter of " + model.getDataDomain().getLabel());
 			this.setBlockOnOpen(false);
 		}
 
