@@ -30,7 +30,6 @@ public class PathwayCreatorForStratomex implements IRemoteViewCreator {
 				.get()
 				.getViewManager()
 				.createGLView(GLPathway.class, remoteRenderingView.getParentGLCanvas(),
-						remoteRenderingView.getParentComposite(),
 						new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1, -1, 1));
 		TablePerspective tablePerspective = null;
 		if (tablePerspectives.size() > 0) {

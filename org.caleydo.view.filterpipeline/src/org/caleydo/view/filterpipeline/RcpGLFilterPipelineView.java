@@ -46,7 +46,7 @@ public class RcpGLFilterPipelineView extends ARcpGLViewPart implements IListener
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
 
-		view = new GLFilterPipeline(glCanvas, parentComposite, serializedView.getViewFrustum());
+		view = new GLFilterPipeline(glCanvas, serializedView.getViewFrustum());
 		initializeView();
 		createPartControlGL();
 	}

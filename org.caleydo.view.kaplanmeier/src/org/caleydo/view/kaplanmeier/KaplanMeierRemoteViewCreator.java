@@ -37,7 +37,6 @@ public class KaplanMeierRemoteViewCreator implements IRemoteViewCreator {
 				.get()
 				.getViewManager()
 				.createGLView(GLKaplanMeier.class, remoteRenderingView.getParentGLCanvas(),
-						remoteRenderingView.getParentComposite(),
 						new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1, -1, 1));
 		if (tablePerspectives.size() > 0) {
 			TablePerspective tablePerspective = tablePerspectives.get(0);

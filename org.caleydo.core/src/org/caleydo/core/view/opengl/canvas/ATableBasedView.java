@@ -39,7 +39,6 @@ import org.caleydo.core.view.ISingleTablePerspectiveBasedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
-import org.eclipse.swt.widgets.Composite;
 
 /**
  * Base class for OpenGL2 views that visualize {@link Table}s.
@@ -100,9 +99,9 @@ public abstract class ATableBasedView extends AGLView implements ISingleTablePer
 	 *            TODO
 	 * @param label
 	 */
-	protected ATableBasedView(IGLCanvas glCanvas, Composite parentComposite, final ViewFrustum viewFrustum,
+	protected ATableBasedView(IGLCanvas glCanvas, final ViewFrustum viewFrustum,
 			String viewType, String viewName) {
-		super(glCanvas, parentComposite, viewFrustum, viewType, viewName);
+		super(glCanvas, viewFrustum, viewType, viewName);
 
 
 	}

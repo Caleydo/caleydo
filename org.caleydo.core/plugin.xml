@@ -380,4 +380,10 @@
                url="http://data.icg.tugraz.at/caleydo/download/3.0/samples/ccle.cal">
          </sample>
       </extension>
+      <extension
+            point="org.eclipse.core.runtime.preferences">
+         <initializer
+               class="org.caleydo.core.internal.MyPreferences">
+         </initializer>
+      </extension>
 </plugin>

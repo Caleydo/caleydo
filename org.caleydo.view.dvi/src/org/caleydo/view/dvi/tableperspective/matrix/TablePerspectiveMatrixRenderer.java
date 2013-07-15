@@ -5,7 +5,8 @@
  ******************************************************************************/
 package org.caleydo.view.dvi.tableperspective.matrix;
 
-import java.awt.Point;
+import gleem.linalg.Vec2f;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -242,9 +243,9 @@ public class TablePerspectiveMatrixRenderer extends AMultiTablePerspectiveRender
 				if (perspectiveRenderer == null)
 					return;
 
-				Point point = pick.getPickedPoint();
+				Vec2f point = pick.getDIPPickedPoint();
 				dragAndDropController.clearDraggables();
-				dragAndDropController.setDraggingProperties(new Point(point.x, point.y), "PerspectiveDrag");
+				dragAndDropController.setDraggingProperties(new Vec2f(point.x(), point.y()), "PerspectiveDrag");
 
 				dragAndDropController.addDraggable(perspectiveRenderer);
 				view.setDisplayListDirty();

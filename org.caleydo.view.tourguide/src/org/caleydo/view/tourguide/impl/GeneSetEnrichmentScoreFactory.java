@@ -162,7 +162,7 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 		private final boolean createGSEA;
 
 		public CreateGSEAState(BrowsePathwayState target, boolean createGSEA) {
-			super("Select query group by clicking on a brick of one of the displayed columns");
+			super("Select query group by clicking on a block of one of the displayed columns");
 			this.target = target;
 			this.createGSEA = createGSEA;
 		}
@@ -194,7 +194,7 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 	// private final boolean createGSEA;
 	//
 	// public CreateAndBrowseGSEAState(BrowsePathwayState target, boolean createGSEA) {
-	// super("Select query stratification by clicking on the header brick of one of the displayed columns");
+	// super("Select query stratification by clicking on the header block of one of the displayed columns");
 	// this.target = target;
 	// this.createGSEA = createGSEA;
 	// }

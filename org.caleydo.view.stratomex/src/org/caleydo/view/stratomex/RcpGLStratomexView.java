@@ -37,7 +37,7 @@ public class RcpGLStratomexView extends ARcpGLViewPart {
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
 
-		GLStratomex stratomex = new GLStratomex(glCanvas, parentComposite, serializedView.getViewFrustum());
+		GLStratomex stratomex = new GLStratomex(glCanvas, serializedView.getViewFrustum());
 		view = stratomex;
 		initializeView();
 

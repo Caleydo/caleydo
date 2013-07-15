@@ -39,7 +39,7 @@ public class RcpGLRadialHierarchyView extends ARcpGLViewPart {
 
 		// minSizeComposite.setView(view);
 
-		view = new GLRadialHierarchy(glCanvas, parentComposite, serializedView.getViewFrustum());
+		view = new GLRadialHierarchy(glCanvas, serializedView.getViewFrustum());
 		initializeView();
 		createPartControlGL();
 	}

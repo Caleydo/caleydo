@@ -31,7 +31,7 @@ public class RcpBookmarkView extends ARcpGLViewPart {
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
 
-		view = new GLBookmarkView(glCanvas, parent, serializedView.getViewFrustum());
+		view = new GLBookmarkView(glCanvas, serializedView.getViewFrustum());
 		initializeView();
 		createPartControlGL();
 	}

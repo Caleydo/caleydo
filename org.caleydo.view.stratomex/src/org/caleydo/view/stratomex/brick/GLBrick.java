@@ -5,7 +5,8 @@
  ******************************************************************************/
 package org.caleydo.view.stratomex.brick;
 
-import java.awt.Point;
+import gleem.linalg.Vec2f;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -64,7 +65,6 @@ import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormViewSwitching
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
-import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
@@ -96,7 +96,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
@@ -249,8 +248,8 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	private final Collection<IContextMenuBrickFactory> contextMenuFactories;
 
-	public GLBrick(IGLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
-		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
+	public GLBrick(IGLCanvas glCanvas, ViewFrustum viewFrustum) {
+		super(glCanvas, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
 		contextMenuFactories = createContextMenuFactories();
 		textRenderer = new CaleydoTextRenderer(24);
@@ -343,7 +342,8 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 			@Override
 			public void run() {
-				String r = RenameNameDialog.show(getParentComposite().getShell(), "Rename '" + getLabel() + "' to",
+				String r = RenameNameDialog.show(getParentGLCanvas().asComposite().getShell(), "Rename '" + getLabel()
+						+ "' to",
 						getLabel());
 				if (r != null) {
 					label = r;
@@ -496,19 +496,16 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 			return;
 		}
 
-		Point currentPoint = glMouseListener.getPickedPoint();
-
-		float[] pointCordinates = GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x,
-				currentPoint.y);
+		Vec2f pointCordinates = pixelGLConverter.convertMouseCoord2GL(glMouseListener.getDIPPickedPoint());
 
 		if (Float.isNaN(previousXCoordinate)) {
-			previousXCoordinate = pointCordinates[0];
-			previousYCoordinate = pointCordinates[1];
+			previousXCoordinate = pointCordinates.x();
+			previousYCoordinate = pointCordinates.y();
 			return;
 		}
 
-		float changeX = pointCordinates[0] - previousXCoordinate;
-		float changeY = -(pointCordinates[1] - previousYCoordinate);
+		float changeX = pointCordinates.x() - previousXCoordinate;
+		float changeY = -(pointCordinates.y() - previousYCoordinate);
 
 		float width = wrappingLayout.getSizeScaledX();
 		float height = wrappingLayout.getSizeScaledY();
@@ -529,8 +526,8 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 			newHeight = minHeight;
 		}
 
-		previousXCoordinate = pointCordinates[0];
-		previousYCoordinate = pointCordinates[1];
+		previousXCoordinate = pointCordinates.x();
+		previousYCoordinate = pointCordinates.y();
 
 		wrappingLayout.setAbsoluteSizeX(newWidth);
 		wrappingLayout.setAbsoluteSizeY(newHeight);
@@ -822,11 +819,11 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 				selectElementsByGroup(select);
 
 				if (!isHeaderBrick && !(brickLayoutConfiguration instanceof DetailBrickLayoutTemplate)) {
-					Point point = pick.getPickedPoint();
+					Vec2f point = pick.getDIPPickedPoint();
 					DragAndDropController dragAndDropController = stratomex.getDragAndDropController();
 
 					dragAndDropController.clearDraggables();
-					dragAndDropController.setDraggingStartPosition(new Point(point.x, point.y));
+					dragAndDropController.setDraggingStartPosition(point.copy());
 					dragAndDropController.addDraggable(GLBrick.this);
 					dragAndDropController.setDraggingMode("BrickDrag" + brickColumn.getID());
 					stratomex.setDisplayListDirty();

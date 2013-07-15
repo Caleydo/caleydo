@@ -6,8 +6,8 @@
 package org.caleydo.view.histogram;
 
 import static org.caleydo.view.histogram.HistogramRenderStyle.SIDE_SPACING;
+import gleem.linalg.Vec2f;
 
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,9 +37,7 @@ import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
-import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
-import org.eclipse.swt.widgets.Composite;
 
 /**
  * Rendering the histogram.
@@ -84,9 +82,9 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 	 * @param viewLabel
 	 * @param viewFrustum
 	 */
-	public GLHistogram(IGLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+	public GLHistogram(IGLCanvas glCanvas, ViewFrustum viewFrustum) {
 
-		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
+		super(glCanvas, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
 		// registerEventListeners();
 
@@ -435,15 +433,12 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 		}
 
 		setDisplayListDirty();
-		Point currentPoint = glMouseListener.getPickedPoint();
-
-		float[] fArTargetWorldCoordinates = GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl,
-				currentPoint.x, currentPoint.y);
+		Vec2f pointCordinates = pixelGLConverter.convertMouseCoord2GL(glMouseListener.getDIPPickedPoint());
+		float fClickedPointX = pointCordinates.x();
 
 		List<ColorMarkerPoint> markerPoints = dataDomain.getTable().getColorMapper().getMarkerPoints();
 		ColorMarkerPoint markerPoint = markerPoints.get(iColorMappingPointMoved);
 
-		float fClickedPointX = fArTargetWorldCoordinates[0];
 
 		if (bIsFirstTimeUpdateColor && bUpdateColorPointPosition) {
 			bIsFirstTimeUpdateColor = false;

@@ -35,7 +35,7 @@ import com.jogamp.opengl.util.texture.TextureIO;
 
 public class HeatMapTextureRenderer extends AHeatMapRenderer {
 
-	private final static int MAX_ITEMS_PER_TEXTURE = 2048;
+	private final static int MAX_ITEMS_PER_TEXTURE = 1024;
 
 	private int numTexturesY = 0;
 	private int numTexturesX = 0;

@@ -6,6 +6,7 @@
 package org.caleydo.core.view.opengl.mouse;
 
 import gleem.linalg.Rotf;
+import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 
 import java.awt.Dimension;
@@ -30,8 +31,9 @@ public class GLMouseListener implements IGLMouseListener {
 	 */
 	private ArrayList<AGLView> glCanvasList = new ArrayList<AGLView>();
 
-	private Point pickedPointDragStart = new Point();
-	private Point pickedPointCurrent;
+	private Vec2f pickedPointDragStart = new Vec2f();
+	private Vec2f pickedPointCurrent;
+	private Point pickedRAWPointCurrent;
 
 	private boolean leftMouseButtonPressed = false;
 	private boolean rightMouseButtonPressed = false;
@@ -42,7 +44,7 @@ public class GLMouseListener implements IGLMouseListener {
 	private boolean mouseDoubleClick = false;
 	private boolean mouseInCanvas = false;
 
-	private int prevMouseX, prevMouseY;
+	private float prevMouseX, prevMouseY;
 
 	private float zoomScale = 0.072f;
 	private float panScale = 3.1f;
@@ -56,6 +58,7 @@ public class GLMouseListener implements IGLMouseListener {
 	 */
 	private float mouseSensitivityRotation = 1.0f;
 
+
 	@Override
 	public void mousePressed(IMouseEvent mouseEvent) {
 
@@ -63,10 +66,10 @@ public class GLMouseListener implements IGLMouseListener {
 		leftMouseButtonPressed = false;
 		rightMouseButtonPressed = false;
 
-		pickedPointDragStart.setLocation(mouseEvent.getPoint());
+		pickedPointDragStart.set(mouseEvent.getDIPPoint());
 
-		prevMouseX = mouseEvent.getPoint().x;
-		prevMouseY = mouseEvent.getPoint().y;
+		prevMouseX = mouseEvent.getDIPPoint().x();
+		prevMouseY = mouseEvent.getDIPPoint().y();
 
 		if (mouseEvent.getClickCount() > 1) {
 			mouseDoubleClick = true;
@@ -83,7 +86,8 @@ public class GLMouseListener implements IGLMouseListener {
 	@Override
 	public void mouseMoved(IMouseEvent mouseEvent) {
 		mouseMoved = true;
-		pickedPointCurrent = mouseEvent.getPoint();
+		pickedPointCurrent = mouseEvent.getDIPPoint();
+		pickedRAWPointCurrent = mouseEvent.getRAWPoint();
 	}
 
 	@Override
@@ -96,7 +100,8 @@ public class GLMouseListener implements IGLMouseListener {
 		mouseDragged = false;
 
 		if (mouseEvent.getButton() == 1) {
-			pickedPointCurrent = mouseEvent.getPoint();
+			pickedPointCurrent = mouseEvent.getDIPPoint();
+			pickedRAWPointCurrent = mouseEvent.getRAWPoint();
 		}
 
 		mouseReleased = true;
@@ -112,10 +117,11 @@ public class GLMouseListener implements IGLMouseListener {
 	public void mouseDragged(IMouseEvent mouseEvent) {
 
 		mouseDragged = true;
-		pickedPointCurrent = mouseEvent.getPoint();
+		pickedPointCurrent = mouseEvent.getDIPPoint();
+		pickedRAWPointCurrent = mouseEvent.getRAWPoint();
 
-		int x = mouseEvent.getPoint().x;
-		int y = mouseEvent.getPoint().y;
+		float x = pickedPointCurrent.x();
+		float y = pickedPointCurrent.y();
 		Dimension size = mouseEvent.getParentSize();
 
 		if (!rightMouseButtonPressed) {
@@ -127,8 +133,8 @@ public class GLMouseListener implements IGLMouseListener {
 				Rotf currentRotX = new Rotf();
 				Rotf currentRotY = new Rotf();
 
-				float fpercentX = (float) (x - prevMouseX) / (float) size.width * mouseSensitivityRotation;
-				float fpercentY = (float) (y - prevMouseY) / (float) size.height * mouseSensitivityRotation;
+				float fpercentX = (x - prevMouseX) / size.width * mouseSensitivityRotation;
+				float fpercentY = (y - prevMouseY) / size.height * mouseSensitivityRotation;
 
 				currentRotX.set(new Vec3f(0, 1, 0), fpercentX * (float) Math.PI);
 				currentRotY.set(new Vec3f(1, 0, 0), fpercentY * (float) Math.PI);
@@ -265,11 +271,15 @@ public class GLMouseListener implements IGLMouseListener {
 		return mouseDragged;
 	}
 
-	public final Point getPickedPoint() {
+	public final Vec2f getDIPPickedPoint() {
 		return pickedPointCurrent;
 	}
 
-	public final Point getPickedPointDragStart() {
+	public Point getRAWPickedPoint() {
+		return pickedRAWPointCurrent;
+	}
+
+	public final Vec2f getDIPPickedPointDragStart() {
 		return pickedPointDragStart;
 	}
 

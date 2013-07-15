@@ -5,10 +5,11 @@
  ******************************************************************************/
 package org.caleydo.core.view.opengl.canvas;
 
+import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 
-import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -208,10 +209,10 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	 * @param viewName
 	 *            TODO
 	 */
-	protected AGLView(IGLCanvas glCanvas, final Composite parentComposite, final ViewFrustum viewFrustum,
+	protected AGLView(IGLCanvas glCanvas, final ViewFrustum viewFrustum,
 			String viewType, String viewName) {
 
-		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.GL_VIEW), parentComposite, viewType,
+		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.GL_VIEW), viewType,
 				viewName);
 
 		parentGLCanvas = glCanvas;
@@ -261,6 +262,7 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	public void init(GLAutoDrawable drawable) {
 
 		final GLFPSKeyListener fpsKeyListener = new GLFPSKeyListener(this);
+		final Composite parentComposite = parentGLCanvas.asComposite();
 		parentComposite.getDisplay().asyncExec(new Runnable() {
 			@Override
 			public void run() {
@@ -381,7 +383,7 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	@Override
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
 
-		updateViewFrustum(width, height);
+		updateViewFrustum(parentGLCanvas.getDIPWidth(), parentGLCanvas.getDIPHeight());
 		// scrollX = x;
 		// scrollY = y;
 
@@ -414,10 +416,10 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	 * @param width
 	 * @param height
 	 */
-	protected void updateViewFrustum(int width, int height) {
+	protected void updateViewFrustum(float width, float height) {
 		viewFrustum.setLeft(0);
 		viewFrustum.setBottom(0);
-		float aspectRatio = (float) height / (float) width;
+		float aspectRatio = height / width;
 		viewFrustum.setTop(aspectRatio);
 		viewFrustum.setRight(1);
 	}
@@ -1259,7 +1261,7 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	 * @param wheelPosition
 	 */
 	@Override
-	public void handleMouseWheel(int wheelAmount, Point wheelPosition) {
+	public void handleMouseWheel(int wheelAmount, Vec2f wheelPosition) {
 		for (IMouseWheelHandler listener : mouseWheelListeners) {
 			listener.handleMouseWheel(wheelAmount, wheelPosition);
 		}
@@ -1354,14 +1356,15 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	public final void applyScrolling(GL2 gl) {
 		if (!System.getProperty("os.name").contains("Mac") || this.scrollRect.width <= 0 )
 			return;
-		int canvasWidth = parentGLCanvas.getWidth();
-		int canvasHeight = parentGLCanvas.getHeight();
-		int scrollWidth = scrollRect.width;
-		int scrollHeight = scrollRect.height;
+		float canvasWidth = parentGLCanvas.getDIPWidth();
+		float canvasHeight = parentGLCanvas.getDIPHeight();
+		Rectangle2D.Float scrollRect = parentGLCanvas.toDIP(this.scrollRect);
+		float scrollWidth = scrollRect.width;
+		float scrollHeight = scrollRect.height;
 		boolean needsScrollBarX = canvasWidth > scrollWidth;
 		boolean needsScrollBarY = canvasHeight > scrollHeight;
-		int offsetx = scrollRect.x;
-		int offsety = canvasHeight - scrollHeight - scrollRect.y;
+		float offsetx = scrollRect.x;
+		float offsety = canvasHeight - scrollHeight - scrollRect.y;
 		if (!needsScrollBarX)
 			offsetx = 0;
 		if (!needsScrollBarY)
@@ -1372,10 +1375,5 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 		//System.out.println("canvas: "+canvasWidth+"/"+canvasHeight+" real: "+scrollRect.width+"/"+scrollRect.height+ " offset: "+scrollRect.x+"/"+scrollRect.y+" "+offsetx+"/"+offsety);
 
 		gl.glTranslatef(-foffsetx, -foffsety, 0);
-	}
-
-	public Point applyScrolling(Point pickPoint) {
-		//the point is already in the right relative coordinates
-		return pickPoint;
 	}
 }

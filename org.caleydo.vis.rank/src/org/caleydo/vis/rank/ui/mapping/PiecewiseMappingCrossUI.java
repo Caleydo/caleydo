@@ -102,7 +102,7 @@ public class PiecewiseMappingCrossUI extends MappingCrossUI<PiecewiseMapping> im
 			break;
 		case MOUSE_OVER:
 			this.lineHovered = true;
-			this.linePoint = this.toRelative(pick.getPickedPoint());
+			this.linePoint = this.toRelative(pick.getDIPPickedPoint());
 			this.repaint();
 			break;
 		case MOUSE_OUT:
@@ -271,7 +271,7 @@ public class PiecewiseMappingCrossUI extends MappingCrossUI<PiecewiseMapping> im
 		fireCallback();
 	}
 
-	public void drag(Point point, int dx, int dy) {
+	public void drag(Point point, float dx, float dy) {
 		if (dx == 0 && dy == 0) // no change
 			return;
 		Vec2f size = getSize();

@@ -10,7 +10,7 @@ import org.eclipse.swt.widgets.Composite;
 
 /**
  * RCP Kaplan Meier view.
- * 
+ *
  * @author Marc Streit
  */
 public class RcpGLKaplanMeierView extends ARcpGLViewPart {
@@ -23,7 +23,7 @@ public class RcpGLKaplanMeierView extends ARcpGLViewPart {
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
 
-		view = new GLKaplanMeier(glCanvas, parentComposite, serializedView.getViewFrustum());
+		view = new GLKaplanMeier(glCanvas, serializedView.getViewFrustum());
 		initializeView();
 		createPartControlGL();
 	}

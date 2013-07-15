@@ -8,7 +8,6 @@ package org.caleydo.core.view.opengl.layout2;
 import gleem.linalg.Vec2f;
 
 import java.awt.Dimension;
-import java.awt.Point;
 import java.lang.reflect.InvocationTargetException;
 
 import javax.media.opengl.FPSCounter;
@@ -275,7 +274,6 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 		gl.glLoadIdentity();
 		gl.glTranslatef(0.375f, 0.375f, 0);
 
-
 		float paddedWidth = getWidth() - padding.left - padding.right;
 		float paddedHeight = getHeight() - padding.top - padding.bottom;
 		g.move(padding.left, padding.right);
@@ -294,10 +292,10 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 			}
 		};
 
-		Point mousePos = pickingManager.getCurrentMousePos();
+		Vec2f mousePos = pickingManager.getCurrentMousePos();
 		if (mousePos != null) {
-			root.getMouseLayer().setBounds(mousePos.x - padding.left, mousePos.y - padding.top,
-					getWidth() - mousePos.x, getHeight() - mousePos.y);
+			root.getMouseLayer().setBounds(mousePos.x() - padding.left, mousePos.y() - padding.top,
+					getWidth() - mousePos.x(), getHeight() - mousePos.y());
 			root.getMouseLayer().relayout();
 		}
 		pickingManager.doPicking(g.gl, toRender);
@@ -328,8 +326,8 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
 		GL2 gl = drawable.getGL().getGL2();
 
-		viewFrustum.setRight(width);
-		viewFrustum.setBottom(height);
+		viewFrustum.setRight(canvas.getDIPWidth());
+		viewFrustum.setBottom(canvas.getDIPHeight());
 
 		gl.glViewport(x, y, width, height);
 		gl.glMatrixMode(GLMatrixFunc.GL_PROJECTION);

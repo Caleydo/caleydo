@@ -6,7 +6,6 @@
 package org.caleydo.core.view.opengl.canvas;
 
 import org.caleydo.core.view.IView;
-import org.eclipse.swt.widgets.Composite;
 
 /**
  * abstraction between IView and {@link AGLView}
@@ -22,13 +21,6 @@ public interface IGLView extends IView {
 	 * @return
 	 */
 	IGLCanvas getParentGLCanvas();
-
-	/**
-	 * returns the top most composite
-	 * 
-	 * @return
-	 */
-	Composite getParentComposite();
 
 	/**
 	 * enables / disables this view

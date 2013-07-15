@@ -52,7 +52,6 @@ import org.caleydo.core.view.listener.AddTablePerspectivesListener;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
-import org.caleydo.core.view.opengl.canvas.GLMouseAdapter;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.IGLKeyListener;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
@@ -93,7 +92,7 @@ import org.caleydo.view.pathway.listener.SelectPathModeEventListener;
 import org.caleydo.view.pathway.listener.ShowPortalNodesEventListener;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.jgrapht.GraphPath;
 import org.jgrapht.alg.KShortestPaths;
 import org.jgrapht.graph.DefaultEdge;
@@ -111,9 +110,8 @@ import setvis.bubbleset.BubbleSet;
 public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedView, IViewCommandHandler,
 		IEventBasedSelectionManagerUser, IColorMappingUpdateListener, IPathwayRepresentation {
 
-	public static String VIEW_TYPE = "org.caleydo.view.pathway";
-
-	public static String VIEW_NAME = "Pathway";
+	public static final String VIEW_TYPE = "org.caleydo.view.pathway";
+	public static final String VIEW_NAME = "Pathway";
 
 	public static final String DEFAULT_PATHWAY_PATH_EVENT_SPACE = "pathwayPath";
 
@@ -246,8 +244,8 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 	/**
 	 * Constructor.
 	 */
-	public GLPathway(IGLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
-		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
+	public GLPathway(IGLCanvas glCanvas, ViewFrustum viewFrustum) {
+		super(glCanvas, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
 		pathwayManager = PathwayManager.get();
 		pathwayItemManager = PathwayItemManager.get();
@@ -384,13 +382,6 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 	}
 
 	protected void registerMouseListeners() {
-
-		parentGLCanvas.addMouseListener(new GLMouseAdapter() {
-			@Override
-			public void mouseWheelMoved(IMouseEvent e) {
-				// selectNextPath();
-			}
-		});
 	}
 
 	public void setSelectPathAction(SelectPathAction aSelectPathAction) {
@@ -405,7 +396,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 				// //comment_1/2:
 				if (e.isControlDown() && (e.isKey('o'))) { // ctrl +o
 					enablePathSelection(!isPathSelectionMode);
-					getParentComposite().getDisplay().asyncExec(new Runnable() {
+					Display.getDefault().asyncExec(new Runnable() {
 						@Override
 						public void run() {
 							if (selectPathAction != null) {
@@ -583,8 +574,8 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 				if (allPaths == null || allPaths.isEmpty())
 					return;
 
-				int pickX = (int) pick.getPickedPoint().getX();
-				int pickY = (int) pick.getPickedPoint().getY();
+				int pickX = (int) pick.getDIPPickedPoint().x();
+				int pickY = (int) pick.getDIPPickedPoint().y();
 
 				float pathwayTextureScaling = 1;
 
@@ -774,6 +765,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 
 		// //////////////////////////START 1/2 HIER NEU CHRISITIAN
 		if (!initShader) {
+			initShader = true;
 			try {
 				initShaders(gl);
 			} catch (IOException | GLException e) {

@@ -38,8 +38,7 @@ public class RcpGLTreeMapView extends ARcpGLViewPart {
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
 
-		view = new GLHierarchicalTreeMap(glCanvas, parentComposite,
-				serializedView.getViewFrustum());
+		view = new GLHierarchicalTreeMap(glCanvas, serializedView.getViewFrustum());
 		initializeView();
 		createPartControlGL();
 	}
