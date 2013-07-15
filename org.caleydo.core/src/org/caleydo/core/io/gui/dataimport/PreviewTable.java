@@ -21,6 +21,7 @@ import org.caleydo.core.io.gui.dataimport.widget.table.PreviewTableWidget;
 import org.caleydo.core.util.base.BooleanCallback;
 import org.caleydo.core.util.base.ICallback;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 
 /**
  * @author Samuel Gratzl
@@ -126,7 +127,8 @@ public class PreviewTable {
 	 *
 	 */
 	public void createDataPreviewTableFromFile() {
-		parser.parse(isTransposed ? transposedDataFile.getAbsolutePath() : spec.getDataSourcePath(),
+		parser.parseWithProgress(Display.getCurrent().getActiveShell(),
+				isTransposed ? transposedDataFile.getAbsolutePath() : spec.getDataSourcePath(),
 				spec.getDelimiter(), true, PreviewTableWidget.MAX_PREVIEW_TABLE_ROWS);
 		dataMatrix = parser.getDataMatrix();
 		totalNumberOfColumns = parser.getTotalNumberOfColumns();

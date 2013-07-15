@@ -620,7 +620,8 @@ public class LoadDataSetPageMediator {
 	// }
 
 	public void createDataPreviewTableFromFile() {
-		parser.parse(isTransposed ? transposedDataFile.getAbsolutePath() : dataSetDescription.getDataSourcePath(),
+		parser.parseWithProgress(page.getShell(), isTransposed ? transposedDataFile.getAbsolutePath()
+				: dataSetDescription.getDataSourcePath(),
 				dataSetDescription.getDelimiter(), true, -1);
 		dataMatrix = parser.getDataMatrix();
 		totalNumberOfColumns = parser.getTotalNumberOfColumns();
