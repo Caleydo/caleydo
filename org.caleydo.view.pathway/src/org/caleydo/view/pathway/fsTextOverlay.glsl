@@ -61,14 +61,20 @@ void main(void)
 	} else if (mode == 0) {//kegg
 		//rgb(191,255,191) or hsv(120,25,100) (hsv range: 360,100,100)
 		vec3 hsv = rgb2hsv(texValue.rgb);
-		float hDelta = abs(hsv.x - 120);
+		float hDelta = abs(hsv.x - 120.);
 		float sDelta = abs(hsv.y - 0.25);
-		float vDelta = abs(hsv.z - 1); 
-		if(hDelta < 5 && sDelta < 0.1 && vDelta < 0.2) //dicard matching ones
+		float vDelta = 1. - hsv.z;
+		if (hDelta < 5. && sDelta < 0.15 && vDelta < 0.1) //matching
 			discard;
-		else if (hDelta < 35 && sDelta < 0.15 && vDelta < 0.2) { //blend similar ones
-			vec3 rgb2 = hsv2rgb(vec3(hsv.x,0,hsv.z));
-			texValue.rgb = rgb2;
+		else if (hDelta < 5 && vDelta > 0.1) { //fade to black
+			texValue.rgb = vec3(0,0,0);
+			texValue.a = vDelta;
+		} else if (vDelta < 0.2 && sDelta < 0.2 && hsv.x < 120.) { //fade to red
+			texValue.rgb = hsv2rgb(vec3(0,hsv.y,1));
+			texValue.a = 1.-hsv.x/120.;
+		} else if (vDelta < 0.2 && sDelta < 0.2 && hsv.x > 120. && hsv.x < 220.) { //fade to blue
+			texValue.rgb = hsv2rgb(vec3(210,1,1));
+			texValue.a = (hsv.x-120.)/(210.-120.);
 		}
 	}
 		

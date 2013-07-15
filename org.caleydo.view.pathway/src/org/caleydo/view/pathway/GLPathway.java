@@ -21,6 +21,7 @@ import java.util.Set;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
+import javax.media.opengl.GL2ES2;
 import javax.media.opengl.GLException;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
@@ -99,6 +100,8 @@ import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.GraphPathImpl;
 
 import setvis.bubbleset.BubbleSet;
+
+import com.jogamp.opengl.util.glsl.ShaderUtil;
 
 /**
  * Single OpenGL2 pathway view
@@ -738,26 +741,51 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 	public int shaderProgramTextOverlay;
 
 	public void initShaders(GL2 gl) throws IOException {
-		int vs = gl.glCreateShader(GL2.GL_VERTEX_SHADER);
-		int fs = gl.glCreateShader(GL2.GL_FRAGMENT_SHADER);
+		initShader = true;
+		shaderProgramTextOverlay = -1;
+		if (!ShaderUtil.isShaderCompilerAvailable(gl)) {
+			System.err.println("no shader available");
+			return;
+		}
+		int vs = gl.glCreateShader(GL2ES2.GL_VERTEX_SHADER);
 		String vsrc = readFromStream(this.getClass().getResourceAsStream(
 				"/src/org/caleydo/view/pathway/vsTextOverlay.glsl"));
 		gl.glShaderSource(vs, 1, new String[] { vsrc }, (int[]) null, 0);
 		gl.glCompileShader(vs);
+		if (!ShaderUtil.isShaderStatusValid(gl, vs, GL2ES2.GL_COMPILE_STATUS, System.err)) {
+			gl.glDeleteShader(vs);
+			return;
+		} else {
+			System.out.println(ShaderUtil.getShaderInfoLog(gl, vs));
+		}
 
 		String fsrc = readFromStream(this.getClass().getResourceAsStream(
 				"/src/org/caleydo/view/pathway/fsTextOverlay.glsl"));
+		int fs = gl.glCreateShader(GL2ES2.GL_FRAGMENT_SHADER);
 		gl.glShaderSource(fs, 1, new String[] { fsrc }, (int[]) null, 0);
 		gl.glCompileShader(fs);
+		if (!ShaderUtil.isShaderStatusValid(gl, vs, GL2ES2.GL_COMPILE_STATUS, System.err)) {
+			gl.glDeleteShader(vs);
+			gl.glDeleteShader(fs);
+			return;
+		} else {
+			System.out.println(ShaderUtil.getShaderInfoLog(gl, fs));
+		}
 
 		shaderProgramTextOverlay = gl.glCreateProgram();
 		gl.glAttachShader(shaderProgramTextOverlay, vs);
 		gl.glAttachShader(shaderProgramTextOverlay, fs);
 		gl.glLinkProgram(shaderProgramTextOverlay);
 		gl.glValidateProgram(shaderProgramTextOverlay);
+		if (!ShaderUtil.isProgramLinkStatusValid(gl, shaderProgramTextOverlay, System.err)) {
+			gl.glDeleteShader(vs);
+			gl.glDeleteShader(fs);
+			gl.glDeleteProgram(shaderProgramTextOverlay);
+			shaderProgramTextOverlay = -1;
+			return;
+		}
 
 		// gl.glUseProgram(shaderprogramTextOutline);
-		initShader = true;
 
 	}
 
@@ -812,13 +840,17 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 					.getPickingID(uniqueID, EPickingType.PATHWAY_TEXTURE_SELECTION.name(), 0));
 			// //////////////////////////START 2/2 HIER NEU CHRISITIAN
 			// enable shader
-			gl.glUseProgram(shaderProgramTextOverlay);
-			// texture
-			gl.glUniform1i(gl.glGetUniformLocation(shaderProgramTextOverlay, "pathwayTex"), 0);
-			// which type
-			gl.glUniform1i(gl.glGetUniformLocation(shaderProgramTextOverlay, "mode"), this.pathway.getType().ordinal());
+			if (shaderProgramTextOverlay > 0) {
+				gl.glUseProgram(shaderProgramTextOverlay);
+				// texture
+				gl.glUniform1i(gl.glGetUniformLocation(shaderProgramTextOverlay, "pathwayTex"), 0);
+				// which type
+				gl.glUniform1i(gl.glGetUniformLocation(shaderProgramTextOverlay, "mode"), this.pathway.getType()
+						.ordinal());
+			}
 			pathwayTextureManager.renderPathway(gl, this, pathway, fPathwayTransparency, false);
-			gl.glUseProgram(0);
+			if (shaderProgramTextOverlay > 0)
+				gl.glUseProgram(0);
 
 			// disable shader
 			// //////////////////////////END 2/2 HIER NEU CHRISITIAN
