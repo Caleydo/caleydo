@@ -433,6 +433,14 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 
 	}
 
+	// private boolean isTablePerspectiveShownInView(TablePerspective tablePerspective) {
+	// for (ViewNode viewNode : view.getViewNodes()) {
+	// if (viewNode.getTablePerspectives().contains(tablePerspective))
+	// return true;
+	// }
+	// return false;
+	// }
+
 	@Override
 	public List<TablePerspective> getTablePerspectives() {
 
