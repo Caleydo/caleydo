@@ -18,6 +18,7 @@ import org.caleydo.core.event.EventListenerManager.DeepScan;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.util.base.ILabeled;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
@@ -156,14 +157,14 @@ public class AddWizardElement extends AAddWizardElement implements IReactions {
 		Collection<ITransition> transitions = stateMachine.getTransitions(current);
 
 		if (transitions.isEmpty()) {
-			drawMultiLineText(g, current, 0, 0, w, h);
+			drawMultiLineText(g, current, 0, 0, w, h, false);
 		} else {
 			boolean firstStep = stateMachine.getPrevious() == null;
 			Pair<Collection<ITransition>, Collection<ITransition>> split = splitInDependent(transitions);
 			if (split.getSecond().isEmpty() || split.getFirst().isEmpty())
 				firstStep = false;
 
-			drawMultiLineText(g, current, 0, h - h_header, w, h_header);
+			drawMultiLineText(g, current, 0, h - h_header, w, h_header, false);
 
 			if (firstStep) {
 				float hi = (h - h_header - transitions.size() * gap - 2 * h_category - 2 * gap - _1pxh * 3)
@@ -205,7 +206,6 @@ public class AddWizardElement extends AAddWizardElement implements IReactions {
 		g.incZ();
 		// if in the first step split in dependent and independent data
 		g.gl.glLineStipple(1, (short)0xAAAA);
-		g.gl.glEnable(GL2.GL_LINE_STIPPLE);
 
 		for (ITransition t : transitions) {
 			g.pushName(getPickingID(i));
@@ -218,13 +218,15 @@ public class AddWizardElement extends AAddWizardElement implements IReactions {
 
 			g.fillRect(gap, h - y - hi, w - 2 * gap, hi);
 			g.popName();
-			drawMultiLineText(g, t, gap, h - y - hi, w - 2 * gap, hi);
+			drawMultiLineText(g, t, gap, h - y - hi, w - 2 * gap, hi, !t.isEnabled());
 			if (!t.isEnabled())
-				g.drawRect(gap, h - y - hi, w - 2 * gap, hi);
+				g.gl.glEnable(GL2.GL_LINE_STIPPLE);
+			g.drawRect(gap, h - y - hi, w - 2 * gap, hi);
+			if (!t.isEnabled())
+				g.gl.glDisable(GL2.GL_LINE_STIPPLE);
 			y += hi + gap;
 			i++;
 		}
-		g.gl.glDisable(GL2.GL_LINE_STIPPLE);
 		g.decZ();
 	}
 
@@ -232,15 +234,18 @@ public class AddWizardElement extends AAddWizardElement implements IReactions {
 		return view.getPickingManager().getPickingID(view.getID(), PICKING_TYPE, i);
 	}
 
-	private void drawMultiLineText(GLGraphics g, ILabeled item, float x, float y, float w, float h) {
+	private void drawMultiLineText(GLGraphics g, ILabeled item, float x, float y, float w, float h, boolean grey) {
 		if (item.getLabel().isEmpty())
 			return;
 		final float lineHeight = view.getPixelGLConverter().getGLHeightForPixelHeight(14);
 
 		List<String> lines = TextUtils.wrap(g.text, item.getLabel(), w, lineHeight);
 
+		if (grey)
+			g.textColor(Color.GRAY);
 		g.drawText(lines, x, y + (h - lineHeight * lines.size()) * 0.5f, w, lineHeight * lines.size(), 0,
 				VAlign.CENTER, ETextStyle.PLAIN);
+		g.textColor(Color.BLACK);
 	}
 
 	@Override
