@@ -30,6 +30,7 @@ import org.caleydo.view.tourguide.api.state.IState;
 import org.caleydo.view.tourguide.api.state.IStateMachine;
 import org.caleydo.view.tourguide.api.state.SimpleState;
 import org.caleydo.view.tourguide.api.state.SimpleTransition;
+import org.caleydo.view.tourguide.api.util.PathwayOracle;
 import org.caleydo.view.tourguide.impl.algorithm.AGSEAAlgorithm;
 import org.caleydo.view.tourguide.impl.algorithm.AGSEAAlgorithm.GSEAAlgorithmPValue;
 import org.caleydo.view.tourguide.impl.algorithm.GSEAAlgorithm;
@@ -144,7 +145,7 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 	 */
 	private static boolean isGoodDataDomain(IDataDomain dataDomain) {
 		// FIXME hack
-		return dataDomain.getLabel().toLowerCase().contains("mrna");
+		return dataDomain.getLabel().toLowerCase().contains("mrna") && PathwayOracle.canBeUnderlying(dataDomain);
 	}
 
 	@Override
