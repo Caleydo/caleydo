@@ -8,20 +8,31 @@ package org.caleydo.view.tourguide.api.state;
 
 /**
  * simple implementation of an {@link ITransition}
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 
 public class SimpleTransition implements ITransition {
 	private final IState target;
 	private final String label;
+	private final String disabledReason;
 
-	public SimpleTransition(IState target, String label) {
+	public SimpleTransition(IState target, String label, String disabledReason) {
 		this.target = target;
 		this.label = label;
+		this.disabledReason = disabledReason;
 	}
 
+	@Override
+	public String getDisabledReason() {
+		return disabledReason;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return disabledReason == null;
+	}
 	/**
 	 * @return the target, see {@link #target}
 	 */

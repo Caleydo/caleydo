@@ -76,13 +76,15 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 		IState start = stateMachine.get(IStateMachine.ADD_PATHWAY);
 		BrowsePathwayState browse = (BrowsePathwayState) stateMachine.get(IStateMachine.BROWSE_PATHWAY);
 
-		if (!existing.isEmpty() && mode == EWizardMode.GLOBAL && hasGoodOnes(existing)) {
+		if (mode == EWizardMode.GLOBAL) {
+			String disabled = !hasGoodOnes(existing) ? "At least one valid stratification (e.g. mRNA, mRNAseq) must already be visible"
+					: null;
 			IState target = stateMachine.addState("GSEA", new CreateGSEAState(browse, true));
 			IState target2 = stateMachine.addState("PGSEA", new CreateGSEAState(browse, false));
 			stateMachine.addTransition(start, new SimpleTransition(target,
-					"Find with GSEA based on displayed stratification"));
+					"Find with GSEA based on displayed stratification", disabled));
 			stateMachine.addTransition(start, new SimpleTransition(target2,
-					"Find with PGSEA based on displayed stratification"));
+					"Find with PGSEA based on displayed stratification", disabled));
 		}
 
 		// auto mode

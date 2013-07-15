@@ -60,13 +60,15 @@ public class ClusterSimilarityScoreFactory implements IScoreFactory {
 	@Override
 	public void fillStateMachine(IStateMachine stateMachine, List<TablePerspective> existing, EWizardMode mode,
 			TablePerspective source) {
-		if (mode != EWizardMode.GLOBAL || existing.isEmpty()) // nothing to compare
+		if (mode != EWizardMode.GLOBAL) // nothing to compare
 			return;
 
+		String disabled = existing.isEmpty() ? "At least one stratification must already be visible" : null;
 		IState start = stateMachine.get(IStateMachine.ADD_STRATIFICATIONS);
 		IState browse = stateMachine.addState("JaccardIndexBrowse", new UpdateAndBrowseJaccardIndex());
 		IState target = stateMachine.addState("JaccardIndex", new CreateJaccardScoreState(browse));
-		stateMachine.addTransition(start, new SimpleTransition(target, "Based on overlap with displayed cluster"));
+		stateMachine.addTransition(start, new SimpleTransition(target, "Based on overlap with displayed cluster",
+				disabled));
 	}
 
 	private void createJaccardScore(TablePerspective tablePerspective, Group group, IReactions reactions) {
