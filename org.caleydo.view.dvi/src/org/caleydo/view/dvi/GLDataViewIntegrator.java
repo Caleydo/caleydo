@@ -207,7 +207,7 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 
 	@Override
 	public void initRemote(final GL2 gl, final AGLView glParentView, final GLMouseListener glMouseListener) {
-		this.glMouseListener = glMouseListener;
+		setMouseListener(glMouseListener);
 		init(gl);
 		pixelGLConverter = glParentView.getPixelGLConverter();
 	}
@@ -464,31 +464,31 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 
 		ApplySpecificGraphLayoutEventListener applySpecificGraphLayoutEventListener = new ApplySpecificGraphLayoutEventListener();
 		applySpecificGraphLayoutEventListener.setHandler(this);
-		eventPublisher.addListener(ApplySpecificGraphLayoutEvent.class, applySpecificGraphLayoutEventListener);
+		listeners.register(ApplySpecificGraphLayoutEvent.class, applySpecificGraphLayoutEventListener);
 
 		MinSizeAppliedEventListener minSizeAppliedEventListener = new MinSizeAppliedEventListener();
 		minSizeAppliedEventListener.setHandler(this);
-		eventPublisher.addListener(MinSizeAppliedEvent.class, minSizeAppliedEventListener);
+		listeners.register(MinSizeAppliedEvent.class, minSizeAppliedEventListener);
 
 		ShowDataConnectionsEventListener showDataConnectionsEventListener = new ShowDataConnectionsEventListener();
 		showDataConnectionsEventListener.setHandler(this);
-		eventPublisher.addListener(ShowDataConnectionsEvent.class, showDataConnectionsEventListener);
+		listeners.register(ShowDataConnectionsEvent.class, showDataConnectionsEventListener);
 
 		RecordVAUpdateEventListener recordVAUpdateEventListener = new RecordVAUpdateEventListener();
 		recordVAUpdateEventListener.setHandler(this);
-		eventPublisher.addListener(RecordVAUpdateEvent.class, recordVAUpdateEventListener);
+		listeners.register(RecordVAUpdateEvent.class, recordVAUpdateEventListener);
 
 		DimensionVAUpdateEventListener dimensionVAUpdateEventListener = new DimensionVAUpdateEventListener();
 		dimensionVAUpdateEventListener.setHandler(this);
-		eventPublisher.addListener(DimensionVAUpdateEvent.class, dimensionVAUpdateEventListener);
+		listeners.register(DimensionVAUpdateEvent.class, dimensionVAUpdateEventListener);
 
 		ShowViewWithoutDataEventListener showViewWithoutDataEventListener = new ShowViewWithoutDataEventListener();
 		showViewWithoutDataEventListener.setHandler(this);
-		eventPublisher.addListener(ShowViewWithoutDataEvent.class, showViewWithoutDataEventListener);
+		listeners.register(ShowViewWithoutDataEvent.class, showViewWithoutDataEventListener);
 
 		RenameLabelHolderEventListener renameLabelHolderEventListener = new RenameLabelHolderEventListener();
 		renameLabelHolderEventListener.setHandler(this);
-		eventPublisher.addListener(RenameLabelHolderEvent.class, renameLabelHolderEventListener);
+		listeners.register(RenameLabelHolderEvent.class, renameLabelHolderEventListener);
 	}
 
 	@Override

@@ -98,7 +98,7 @@ public abstract class AGLElementGLView extends AGLView implements IGLElementCont
 
 	@Override
 	public void initRemote(GL2 gl, AGLView glParentView, GLMouseListener glMouseListener) {
-		this.glMouseListener = glMouseListener;
+		setMouseListener(glMouseListener);
 		init(gl);
 	}
 

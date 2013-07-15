@@ -125,6 +125,9 @@ public abstract class CaleydoRCPViewPart extends ViewPart implements IListenerOw
 	public void dispose() {
 		unregisterEventListeners();
 		RCPViewManager.get().removeRCPView(this.getViewSite().getSecondaryId());
+		this.parentComposite = null;
+		this.toolBarManager = null;
+		this.view = null;
 		super.dispose();
 	}
 

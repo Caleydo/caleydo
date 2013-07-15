@@ -186,7 +186,7 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 			}
 		});
 
-		this.glMouseListener = glMouseListener;
+		setMouseListener(glMouseListener);
 
 		init(gl);
 	}

@@ -53,7 +53,7 @@ public class GLTexture extends AGLView implements IDataDomainBasedView<IDataDoma
 	@Override
 	public void initRemote(GL2 gl, AGLView glParentView, GLMouseListener glMouseListener) {
 
-		this.glMouseListener = glMouseListener;
+		setMouseListener(glMouseListener);
 		init(gl);
 	}
 

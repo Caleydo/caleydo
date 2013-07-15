@@ -248,7 +248,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 			}
 		});
 
-		this.glMouseListener = glMouseListener;
+		setMouseListener(glMouseListener);
 
 		init(gl);
 	}

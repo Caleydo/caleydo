@@ -365,7 +365,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 
 	@Override
 	public void initRemote(final GL2 gl, final AGLView glParentView, final GLMouseListener glMouseListener) {
-		this.glMouseListener = glMouseListener;
+		setMouseListener(glMouseListener);
 		init(gl);
 	}
 
@@ -391,46 +391,47 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		this.selectPathAction = aSelectPathAction;
 	}
 
-	protected void registerKeyListeners() {
-
-		parentGLCanvas.addKeyListener(new IGLKeyListener() {
-			@Override
-			public void keyPressed(IKeyEvent e) {
-				// //comment_1/2:
-				if (e.isControlDown() && (e.isKey('o'))) { // ctrl +o
-					enablePathSelection(!isPathSelectionMode);
-					Display.getDefault().asyncExec(new Runnable() {
-						@Override
-						public void run() {
-							if (selectPathAction != null) {
-								selectPathAction.setChecked(isPathSelectionMode);
-							}
+	final IGLKeyListener keyListener = new IGLKeyListener() {
+		@Override
+		public void keyPressed(IKeyEvent e) {
+			// //comment_1/2:
+			if (e.isControlDown() && (e.isKey('o'))) { // ctrl +o
+				enablePathSelection(!isPathSelectionMode);
+				Display.getDefault().asyncExec(new Runnable() {
+					@Override
+					public void run() {
+						if (selectPathAction != null) {
+							selectPathAction.setChecked(isPathSelectionMode);
 						}
-					});
-				}// if (e.isControlDown() && (e.getKeyCode() == 79))
-				isControlKeyDown = e.isControlDown();
-				isShiftKeyDown = e.isShiftDown();
+					}
+				});
+			}// if (e.isControlDown() && (e.getKeyCode() == 79))
+			isControlKeyDown = e.isControlDown();
+			isShiftKeyDown = e.isShiftDown();
 
-				if (e.isDownDown()) {
-					// System.out.println("isDownDown");
-					// selectedPathID--;
-					selectNextPath(false);
-				}
-
-				if (e.isUpDown()) {
-					// System.out.println("isUpDown");
-					// selectedPathID++;
-					selectNextPath(true);
-				}
-
+			if (e.isDownDown()) {
+				// System.out.println("isDownDown");
+				// selectedPathID--;
+				selectNextPath(false);
 			}
 
-			@Override
-			public void keyReleased(IKeyEvent e) {
-				isControlKeyDown = e.isControlDown();
-				isShiftKeyDown = e.isShiftDown();
+			if (e.isUpDown()) {
+				// System.out.println("isUpDown");
+				// selectedPathID++;
+				selectNextPath(true);
 			}
-		});
+
+		}
+
+		@Override
+		public void keyReleased(IKeyEvent e) {
+			isControlKeyDown = e.isControlDown();
+			isShiftKeyDown = e.isShiftDown();
+		}
+	};
+
+	protected void registerKeyListeners() {
+		parentGLCanvas.addKeyListener(keyListener);
 	}
 
 	protected void registerPickingListeners() {
@@ -1080,6 +1081,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 	@Override
 	public void destroyViewSpecificContent(GL2 gl) {
 		pathwayManager.setPathwayVisibilityState(pathway, false);
+		parentGLCanvas.removeKeyListener(keyListener);
 	}
 
 	@Override

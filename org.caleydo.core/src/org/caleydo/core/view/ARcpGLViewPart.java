@@ -110,9 +110,10 @@ public abstract class ARcpGLViewPart extends CaleydoRCPViewPart {
 
 	@Override
 	public void dispose() {
-		super.dispose();
 		GeneralManager.get().getViewManager().unregisterRCPView(this, view);
+		super.dispose();
 		view = null;
+		glCanvas = null;
 		minSizeComposite = null;
 		// getGLView().destroy();
 	}

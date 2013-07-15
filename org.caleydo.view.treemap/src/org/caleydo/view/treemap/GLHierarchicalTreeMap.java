@@ -150,7 +150,7 @@ public class GLHierarchicalTreeMap extends ATableBasedView implements IGLRemoteR
 			}
 		});
 
-		this.glMouseListener = glMouseListener;
+		setMouseListener(glMouseListener);
 
 		init(gl);
 

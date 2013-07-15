@@ -490,7 +490,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	@Override
 	public void initRemote(final GL2 gl, final AGLView glParentView, final GLMouseListener glMouseListener) {
 
-		this.glMouseListener = glMouseListener;
+		setMouseListener(glMouseListener);
 		init(gl);
 		initLayouts();
 	}
@@ -1139,6 +1139,9 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 			replaceTablePerspectiveListener = null;
 		}
 		listeners.unregisterAll();
+
+		if (recordSelectionManager != null)
+			recordSelectionManager.unregisterEventListeners();
 	}
 
 	@Override
