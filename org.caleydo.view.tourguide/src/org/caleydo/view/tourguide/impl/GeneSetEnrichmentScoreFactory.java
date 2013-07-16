@@ -146,8 +146,7 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 	 * @return
 	 */
 	private static boolean isGoodDataDomain(IDataDomain dataDomain) {
-		// FIXME hack
-		return dataDomain.getLabel().toLowerCase().contains("mrna") && PathwayOracle.canBeUnderlying(dataDomain);
+		return PathwayOracle.canBeUnderlying(dataDomain);
 	}
 
 	@Override
