@@ -161,15 +161,15 @@ public class PiecewiseMappingCrossUI extends MappingCrossUI<PiecewiseMapping> im
 		g.textColor(Color.GRAY);
 		if (isNormalLeft) {
 			g.drawPath(false, new Vec2f(-GAP, loc.y()), loc, new Vec2f(loc.x(), h + GAP));
-			g.drawText(Formatter.formatNumber(to), 1 - GAP, loc.y() + 1, 40, 11);
+			g.drawText(Formatter.formatNumber(to), 1 - GAP, loc.y() + 1, 40, 12);
 		} else {
 			g.drawPath(false, new Vec2f(w + GAP, loc.y()), loc, new Vec2f(loc.x(), h + GAP));
-			g.drawText(Formatter.formatNumber(to), w - 1 + GAP, loc.y() + 1, 40, 11);
+			g.drawText(Formatter.formatNumber(to), w - 1 + GAP, loc.y() + 1, 40, 12);
 		}
-		g.drawText(Formatter.formatNumber(from), loc.x() + 1, h - 12 + GAP, 40, 11);
+		g.drawText(Formatter.formatNumber(from), loc.x() + 1, h - 12 + GAP, 40, 12);
 
 		g.textColor(Color.BLACK).drawText("f(" + Formatter.formatNumber(from) + ") = " + Formatter.formatNumber(to),
-				loc.x() + 5, loc.y() - 4, 100, 11);
+				loc.x() + 5, loc.y() - 4, 100, 12);
 	}
 
 	@Override

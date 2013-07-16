@@ -79,7 +79,7 @@ public class ScoreRankColumnModel extends FloatRankColumnModel implements IGLRen
 			if (headerMode == EHeaderMode.STRAT || headerMode == EHeaderMode.STRAT_GROUP)
 				g.color(strat.getDataDomain().getColor()).fillRect((w - 10) * 0.5f, (h - 10) * 0.5f, 10, 10);
 		} else {
-			g.drawText(this.score.getLabel(), 1, 1, w - 1, 12, VAlign.CENTER);
+			g.drawText(this.score.getLabel(), 1, 1, w - 1, h - 1, VAlign.CENTER);
 		}
 	}
 

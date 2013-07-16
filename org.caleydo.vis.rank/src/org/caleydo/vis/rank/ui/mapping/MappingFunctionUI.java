@@ -109,11 +109,11 @@ public class MappingFunctionUI extends GLElementContainer implements GLButton.IS
 			@Override
 			public void render(GLGraphics g, float w, float h, GLElement parent) {
 				g.color(Color.BLACK).drawRect(0, 0, w, h);
-				g.drawText("Standard Mappings", 1, h * 0.25f, w - 2, h * 0.5f);
+				g.drawText("Standard Mappings", 1, h * 0.20f, w - 2, h * 0.6f);
 			}
 		});
 		mappings.setCallback(this);
-		mappings.setSize(RenderStyle.BUTTON_WIDTH * 4, Float.NaN);
+		mappings.setSize(RenderStyle.BUTTON_WIDTH * 5, Float.NaN);
 		mappings.setTooltip("Select a standard mapping function");
 		buttons.add(mappings);
 		buttons.addSpacer();
@@ -360,7 +360,7 @@ public class MappingFunctionUI extends GLElementContainer implements GLButton.IS
 			g.color(Color.BLACK).drawRect(0, 0, w, h);
 			String[] lines = model.toJavaScript().split("\n");
 			float y = 2;
-			float lineHeight = 10;
+			float lineHeight = 11;
 			for (String l : lines) {
 				if ((y + lineHeight) >= h)
 					break;

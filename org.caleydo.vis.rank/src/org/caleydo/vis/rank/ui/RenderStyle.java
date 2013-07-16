@@ -120,7 +120,7 @@ public class RenderStyle {
 	/**
 	 * height of the label above the hist
 	 */
-	public static final float LABEL_HEIGHT = 20;
+	public static final float LABEL_HEIGHT = 21;
 
 	public static final Color COLOR_SELECTED_ROW = new Color(180, 180, 180);
 	public static final Color COLOR_SELECTED_BORDER = new Color(128, 128, 128);
