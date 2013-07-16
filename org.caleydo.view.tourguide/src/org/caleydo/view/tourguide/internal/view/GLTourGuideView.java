@@ -89,7 +89,6 @@ import org.caleydo.vis.rank.model.MaxRankColumnModel;
 import org.caleydo.vis.rank.model.RankColumnModels;
 import org.caleydo.vis.rank.model.RankRankColumnModel;
 import org.caleydo.vis.rank.model.RankTableModel;
-import org.caleydo.vis.rank.model.StackedRankColumnModel;
 import org.caleydo.vis.rank.model.StringRankColumnModel;
 import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
 import org.caleydo.vis.rank.model.mixin.IAnnotatedColumnMixin;
@@ -621,16 +620,9 @@ public class GLTourGuideView extends AGLElementView {
 	}
 
 	private void invalidVisibleScores() {
-		Deque<ARankColumnModel> cols = new LinkedList<>(table.getColumns());
-		while (!cols.isEmpty()) {
-			ARankColumnModel model = cols.pollFirst();
+		for (ARankColumnModel model : RankColumnModels.flatten(table.getColumns())) {
 			if (model instanceof IScoreMixin) {
 				((IScoreMixin) model).dirty();
-			} else if (model instanceof StackedRankColumnModel) {
-				cols.addAll(((StackedRankColumnModel) model).getChildren());
-			} else if (model instanceof MaxRankColumnModel) {
-				MaxRankColumnModel max = (MaxRankColumnModel) model;
-				cols.addAll(max.getChildren());
 			}
 		}
 	}
