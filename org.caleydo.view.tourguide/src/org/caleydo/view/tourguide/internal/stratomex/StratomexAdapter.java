@@ -41,8 +41,6 @@ import org.caleydo.view.tourguide.spi.score.IGroupScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Predicates;
-import com.google.common.collect.Iterables;
 
 /**
  * facade / adapter to {@link GLStratomex} to hide the communication details
@@ -263,12 +261,16 @@ public class StratomexAdapter {
 	}
 
 	private void highlightBand(ITablePerspectiveScoreRow new_, Collection<IScore> visibleColumns, Group group) {
-		IScore first = Iterables.find(visibleColumns, Predicates.instanceOf(IGroupScore.class));
-		if (first == null)
+		IGroupScore s = null;
+		for (IScore score : visibleColumns)
+			if (score instanceof IGroupScore) {
+				s = (IGroupScore) score;
+				break;
+			}
+		if (s == null)
 			return;
 		Group bg = group;
 
-		IGroupScore s = (IGroupScore)first;
 		Group a_g = s.getGroup();
 		highlightBand(a_g, bg);
 	}
