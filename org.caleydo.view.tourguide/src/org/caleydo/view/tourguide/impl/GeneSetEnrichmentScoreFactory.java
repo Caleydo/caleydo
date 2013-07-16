@@ -300,13 +300,11 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 
 		@Override
 		public PiecewiseMapping createMapping() {
-			PiecewiseMapping m;
 			if (isPercentage) {
-				m = new PiecewiseMapping(0, 1);
+				return new PiecewiseMapping(0, 1);
 			} else {
-				m = new PiecewiseMapping(0, Float.NaN);
+				return null;
 			}
-			return m;
 		}
 	}
 

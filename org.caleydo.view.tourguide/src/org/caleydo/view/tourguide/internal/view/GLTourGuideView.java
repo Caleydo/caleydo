@@ -66,6 +66,8 @@ import org.caleydo.view.tourguide.internal.score.ScoreFactories;
 import org.caleydo.view.tourguide.internal.score.Scores;
 import org.caleydo.view.tourguide.internal.stratomex.StratomexAdapter;
 import org.caleydo.view.tourguide.internal.stratomex.event.WizardEndedEvent;
+import org.caleydo.view.tourguide.internal.view.col.IScoreMixin;
+import org.caleydo.view.tourguide.internal.view.col.ScoreIntegerRankColumnModel;
 import org.caleydo.view.tourguide.internal.view.col.ScoreRankColumnModel;
 import org.caleydo.view.tourguide.internal.view.col.SizeRankColumnModel;
 import org.caleydo.view.tourguide.internal.view.specific.DataDomainModeSpecifics;
@@ -89,6 +91,7 @@ import org.caleydo.vis.rank.model.RankRankColumnModel;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.StackedRankColumnModel;
 import org.caleydo.vis.rank.model.StringRankColumnModel;
+import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
 import org.caleydo.vis.rank.model.mixin.IAnnotatedColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 import org.caleydo.vis.rank.ui.RankTableKeyListener;
@@ -179,8 +182,8 @@ public class GLTourGuideView extends AGLElementView {
 			public void propertyChange(PropertyChangeEvent evt) {
 				if (evt.getNewValue() == null) { // removed aka destroyed
 					// destroy persistent scores
-					if (evt.getOldValue() instanceof ScoreRankColumnModel) {
-						ScoreRankColumnModel r = (ScoreRankColumnModel) evt.getOldValue();
+					if (evt.getOldValue() instanceof IScoreMixin) {
+						IScoreMixin r = (IScoreMixin) evt.getOldValue();
 						IScore score = r.getScore();
 						if (score instanceof ISerializeableScore)
 							Scores.get().removePersistentScore((ISerializeableScore) score);
@@ -216,10 +219,21 @@ public class GLTourGuideView extends AGLElementView {
 		for (IScore score : Scores.get().getPersistentScores()) {
 			if (!score.supports(mode))
 				continue;
-			ScoreRankColumnModel model = new ScoreRankColumnModel(score);
+			ARankColumnModel model = createColumnModel(score);
 			table.add(model);
 			model.hide();
 		}
+	}
+
+	/**
+	 * @param score
+	 * @return
+	 */
+	private static ARankColumnModel createColumnModel(IScore score) {
+		PiecewiseMapping mapping = score.createMapping();
+		if (mapping == null) // by conventions
+			return new ScoreIntegerRankColumnModel(score);
+		return new ScoreRankColumnModel(score);
 	}
 
 	@ListenTo
@@ -435,7 +449,7 @@ public class GLTourGuideView extends AGLElementView {
 				}
 				table.add(lastLabel + 1, combined);
 				for (IScore s2 : ((MultiScore) s)) {
-					combined.add(new ScoreRankColumnModel(s2));
+					combined.add(createColumnModel(s2));
 				}
 				if (combined instanceof IRankableColumnMixin)
 					((IRankableColumnMixin) combined).orderByMe();
@@ -447,9 +461,10 @@ public class GLTourGuideView extends AGLElementView {
 						}
 					}
 			} else {
-				ScoreRankColumnModel ss = new ScoreRankColumnModel(s);
+				ARankColumnModel ss = createColumnModel(s);
 				table.add(lastLabel + 1, ss);
-				ss.orderByMe();
+				if (ss instanceof IScoreMixin)
+					((IScoreMixin) ss).orderByMe();
 			}
 		}
 
@@ -551,8 +566,8 @@ public class GLTourGuideView extends AGLElementView {
 
 	private IScore getSortedByScore() {
 		IRankableColumnMixin orderBy = table.getMyRanker(null).getOrderBy();
-		if (orderBy instanceof ScoreRankColumnModel)
-			return ((ScoreRankColumnModel) orderBy).getScore();
+		if (orderBy instanceof IScoreMixin)
+			return ((IScoreMixin) orderBy).getScore();
 		return null;
 	}
 
@@ -584,8 +599,8 @@ public class GLTourGuideView extends AGLElementView {
 
 		while (!cols.isEmpty()) {
 			ARankColumnModel model = cols.pollFirst();
-			if (model instanceof ScoreRankColumnModel) {
-				r.add(((ScoreRankColumnModel) model).getScore());
+			if (model instanceof IScoreMixin) {
+				r.add(((IScoreMixin) model).getScore());
 			} else if (model instanceof MaxRankColumnModel) {
 				MaxRankColumnModel max = (MaxRankColumnModel) model;
 				if (row != null) {
@@ -609,8 +624,8 @@ public class GLTourGuideView extends AGLElementView {
 		Deque<ARankColumnModel> cols = new LinkedList<>(table.getColumns());
 		while (!cols.isEmpty()) {
 			ARankColumnModel model = cols.pollFirst();
-			if (model instanceof ScoreRankColumnModel) {
-				((ScoreRankColumnModel) model).dirty();
+			if (model instanceof IScoreMixin) {
+				((IScoreMixin) model).dirty();
 			} else if (model instanceof StackedRankColumnModel) {
 				cols.addAll(((StackedRankColumnModel) model).getChildren());
 			} else if (model instanceof MaxRankColumnModel) {
@@ -655,7 +670,7 @@ public class GLTourGuideView extends AGLElementView {
 		boolean hasOne = false;
 		Collection<ARankColumnModel> toremove = new ArrayList<>();
 		for (ARankColumnModel col : columns) {
-			if ((col instanceof ScoreRankColumnModel && !(((ScoreRankColumnModel) col).getScore() instanceof ISerializeableScore))
+			if ((col instanceof IScoreMixin && !(((IScoreMixin) col).getScore() instanceof ISerializeableScore))
 					|| (col instanceof ACompositeRankColumnModel && hasScore((ACompositeRankColumnModel) col))) {
 				hasOne = true;
 				toremove.add(col);
@@ -666,8 +681,7 @@ public class GLTourGuideView extends AGLElementView {
 			Set<ARankColumnModel> children = RankColumnModels.flatten(col);
 			// look in the children for things to persist i.e move to the memo pad, e.g. external scores
 			for (ARankColumnModel r : children) {
-				if (r instanceof ScoreRankColumnModel
-						&& ((ScoreRankColumnModel) r).getScore() instanceof ISerializeableScore)
+				if (r instanceof IScoreMixin && ((IScoreMixin) r).getScore() instanceof ISerializeableScore)
 					r.hide();
 			}
 			table.remove(col);
@@ -681,7 +695,7 @@ public class GLTourGuideView extends AGLElementView {
 	 */
 	private boolean hasScore(ACompositeRankColumnModel col) {
 		for (ARankColumnModel c : col) {
-			if (c instanceof ScoreRankColumnModel
+			if (c instanceof IScoreMixin
 					|| (c instanceof ACompositeRankColumnModel && hasScore((ACompositeRankColumnModel) c)))
 				return true;
 		}

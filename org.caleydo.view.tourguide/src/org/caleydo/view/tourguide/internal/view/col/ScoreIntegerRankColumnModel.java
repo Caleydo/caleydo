@@ -5,23 +5,28 @@
  ******************************************************************************/
 package org.caleydo.view.tourguide.internal.view.col;
 
+import java.text.NumberFormat;
+import java.util.Locale;
+
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
+import org.caleydo.view.tourguide.internal.model.IntCombinerAdapter;
 import org.caleydo.view.tourguide.internal.model.MaxGroupCombiner;
 import org.caleydo.view.tourguide.spi.score.IGroupScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
 import org.caleydo.view.tourguide.spi.score.IStratificationScore;
-import org.caleydo.vis.rank.data.FloatInferrers;
-import org.caleydo.vis.rank.model.FloatRankColumnModel;
+import org.caleydo.vis.rank.model.IRow;
+import org.caleydo.vis.rank.model.IntegerRankColumnModel;
+import org.caleydo.vis.rank.model.mixin.IMappedColumnMixin;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class ScoreRankColumnModel extends FloatRankColumnModel implements IGLRenderer, IScoreMixin {
+public class ScoreIntegerRankColumnModel extends IntegerRankColumnModel implements IGLRenderer, IScoreMixin {
 	private final IScore score;
 	private EHeaderMode headerMode;
 
@@ -29,9 +34,9 @@ public class ScoreRankColumnModel extends FloatRankColumnModel implements IGLRen
 		LABEL, STRAT, STRAT_GROUP
 	}
 
-	public ScoreRankColumnModel(IScore score) {
-		super(new MaxGroupCombiner(score), null, score.getColor(), score.getBGColor(), score.createMapping(),
-				FloatInferrers.fix(Float.NaN));
+	public ScoreIntegerRankColumnModel(IScore score) {
+		super(null, new IntCombinerAdapter(new MaxGroupCombiner(score)), score.getColor(), score.getBGColor(),
+				NumberFormat.getInstance(Locale.ENGLISH));
 		this.score = score;
 		this.headerMode = EHeaderMode.LABEL;
 		if (score instanceof IGroupScore) {// have a group and a common stratification
@@ -42,10 +47,9 @@ public class ScoreRankColumnModel extends FloatRankColumnModel implements IGLRen
 				this.headerMode = EHeaderMode.STRAT;
 		}
 		setHeaderRenderer(this);
-		setFilter(true, false, false);
 	}
 
-	public ScoreRankColumnModel(ScoreRankColumnModel copy) {
+	public ScoreIntegerRankColumnModel(ScoreIntegerRankColumnModel copy) {
 		super(copy);
 		this.score = copy.score;
 		this.headerMode = copy.headerMode;
@@ -53,8 +57,8 @@ public class ScoreRankColumnModel extends FloatRankColumnModel implements IGLRen
 	}
 
 	@Override
-	public ScoreRankColumnModel clone() {
-		return new ScoreRankColumnModel(this);
+	public ScoreIntegerRankColumnModel clone() {
+		return new ScoreIntegerRankColumnModel(this);
 	}
 
 	/**
@@ -62,7 +66,12 @@ public class ScoreRankColumnModel extends FloatRankColumnModel implements IGLRen
 	 */
 	@Override
 	public void dirty() {
-		propertySupport.firePropertyChange(PROP_MAPPING, null, data);
+		propertySupport.firePropertyChange(IMappedColumnMixin.PROP_MAPPING, null, score);
+	}
+
+	@Override
+	public int compare(IRow o1, IRow o2) {
+		return -super.compare(o1, o2);
 	}
 
 	/**
