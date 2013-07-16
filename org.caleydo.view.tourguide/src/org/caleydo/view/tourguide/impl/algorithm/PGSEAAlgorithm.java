@@ -118,6 +118,8 @@ public class PGSEAAlgorithm extends AGSEAAlgorithm {
 		if (Float.isNaN(z))
 			return Float.NaN;
 		int m = Sets.intersection(foldChanges.keySet(), geneSet).size();
+		if (m == 0)
+			return Float.NaN;
 		TDistributionImpl t = new TDistributionImpl(m);
 		float pValue = (float) t.density(z);
 		return pValue;

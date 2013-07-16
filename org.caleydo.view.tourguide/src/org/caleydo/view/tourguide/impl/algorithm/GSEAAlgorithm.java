@@ -28,11 +28,13 @@ public class GSEAAlgorithm extends AGSEAAlgorithm {
 	private final float p; // An exponent p to control the weight of the step.
 	private Map<Integer, Float> correlation;
 	private List<Map<Integer, Float>> permutations;
+	private final boolean withPValue;
 
 
-	public GSEAAlgorithm(Perspective perspective, Group group, float p) {
+	public GSEAAlgorithm(Perspective perspective, Group group, float p, boolean withPValue) {
 		super(perspective, group);
 		this.p = p;
+		this.withPValue = withPValue;
 
 	}
 
@@ -50,6 +52,9 @@ public class GSEAAlgorithm extends AGSEAAlgorithm {
 			correlation = null;
 			return;
 		}
+
+		if (!withPValue)
+			return;
 
 		int sampleSize = inA.size();
 		List<Integer> base = new ArrayList<>(perspective.getVirtualArray().getIDs());
@@ -175,6 +180,8 @@ public class GSEAAlgorithm extends AGSEAAlgorithm {
 
 	@Override
 	protected float computePValueImpl(Set<Integer> geneSet, IProgressMonitor monitor) {
+		if (!withPValue)
+			return Float.NaN;
 		float es = (float) enrichmentScore(correlation, geneSet);
 		if (Float.isNaN(es))
 			return Float.NaN;

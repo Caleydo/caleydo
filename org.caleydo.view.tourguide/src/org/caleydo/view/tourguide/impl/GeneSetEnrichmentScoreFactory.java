@@ -60,7 +60,7 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 	private IRegisteredScore createGSEA(String label, Perspective reference, Group group) {
 		if (label == null)
 			label = reference.getLabel() + " " + group.getLabel();
-		return new GeneSetScore(label, new GSEAAlgorithm(reference, group, 1.0f), false);
+		return new GeneSetScore(label, new GSEAAlgorithm(reference, group, 1.0f, false), false);
 	}
 
 	private IRegisteredScore createPGSEA(String label, Perspective reference, Group group) {
@@ -126,10 +126,10 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 		Collection<ScoreEntry> col = new ArrayList<>();
 
 		{
-			GSEAAlgorithm algorithm = new GSEAAlgorithm(strat.getRecordPerspective(), group, 1.0f);
+			GSEAAlgorithm algorithm = new GSEAAlgorithm(strat.getRecordPerspective(), group, 1.0f, false);
 			IScore gsea = new GeneSetScore(strat.getRecordPerspective().getLabel(), algorithm, false);
-			IScore pValue = new GeneSetScore(gsea.getLabel() + " (P-V)", algorithm.asPValue(), true);
-			col.add(new ScoreEntry("Gene Set Enrichment Analysis of group", gsea, pValue));
+			// IScore pValue = new GeneSetScore(gsea.getLabel() + " (P-V)", algorithm.asPValue(), true);
+			col.add(new ScoreEntry("Gene Set Enrichment Analysis of group", gsea));
 		}
 
 		{
@@ -332,17 +332,21 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 			Perspective perspective = strat.getRecordPerspective();
 			Perspective genes = strat.getDimensionPerspective();
 			String prefix = createGSEA ? "GSEA" : "PGSEA";
-			if (createGSEA)
-				algorithm = new GSEAAlgorithm(perspective, group, 1.0f);
-			else
-				algorithm = new PGSEAAlgorithm(perspective, group);
 			String label = String.format(prefix + " of %s", perspective.getLabel());
-			IScore gsea = new GeneSetScore(prefix, algorithm, false);
-			IScore pValue = new GeneSetScore(prefix + "P-Value", algorithm.asPValue(), true);
+			IScore s;
+			if (createGSEA) {
+				algorithm = new GSEAAlgorithm(perspective, group, 1.0f, false);
+				s = new GeneSetScore(label, algorithm, false);
+			} else {
+				algorithm = new PGSEAAlgorithm(perspective, group);
+				IScore gsea = new GeneSetScore(prefix, algorithm, false);
+				IScore pValue = new GeneSetScore(prefix + "P-Value", algorithm.asPValue(), true);
+				MultiScore s2 = new MultiScore(label, color, bgColor, RankTableConfigBase.NESTED_MODE);
+				s2.add(pValue);
+				s2.add(gsea);
+				s = s2;
+			}
 
-			MultiScore s = new MultiScore(label, color, bgColor, RankTableConfigBase.NESTED_MODE);
-			s.add(pValue);
-			s.add(gsea);
 			IScore matched = new GeneSetMatchedScore("# Mapped Genes", new GeneSetMappedAlgorithm(genes, false), false);
 			IScore matchedP = new GeneSetMatchedScore("% Mapped Genes", new GeneSetMappedAlgorithm(genes, true), true);
 			return new IScore[] { matchedP, matched, s };
