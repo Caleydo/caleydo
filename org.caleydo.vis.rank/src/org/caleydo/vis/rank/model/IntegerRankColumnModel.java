@@ -21,7 +21,7 @@ import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.ISWTLayer.ISWTLayerRunnable;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
-import org.caleydo.vis.rank.internal.event.SizeFilterEvent;
+import org.caleydo.vis.rank.internal.event.IntegerFilterEvent;
 import org.caleydo.vis.rank.internal.ui.IntegerFilterDialog;
 import org.caleydo.vis.rank.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
@@ -102,9 +102,10 @@ public class IntegerRankColumnModel extends ABasicFilterableRankColumnModel impl
 	 */
 	public void setFilter(Integer min2, Integer max2) {
 		invalidAllFilter();
+		Pair<Integer, Integer> old = Pair.make(min, max);
 		min = min2 == null ? 0 : min2.intValue();
 		max = max2 == null ? Integer.MAX_VALUE : max2.intValue();
-		propertySupport.firePropertyChange(PROP_FILTER, Pair.make(min, max), Pair.make(min2, max2));
+		propertySupport.firePropertyChange(PROP_FILTER, old, Pair.make(min, max));
 	}
 
 	@Override
@@ -174,7 +175,7 @@ public class IntegerRankColumnModel extends ABasicFilterableRankColumnModel impl
 		}
 
 		@ListenTo(sendToMe = true)
-		private void onSetFilter(SizeFilterEvent event) {
+		private void onSetFilter(IntegerFilterEvent event) {
 			setFilter(event.getMin(), event.getMax());
 		}
 

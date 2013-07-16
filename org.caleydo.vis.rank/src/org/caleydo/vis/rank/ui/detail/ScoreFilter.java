@@ -111,7 +111,7 @@ public class ScoreFilter extends PickableGLElement implements IPickingListener {
 	protected void onClicked(Pick pick) {
 		if (pick.isAnyDragging())
 			return;
-		float v = toRelative(pick.getPickedPoint()).x() / getSize().x();
+		float v = toRelative(pick.getDIPPickedPoint()).x() / getSize().x();
 		if (v < min || ((v - min) < (max - v)))
 			min = v;
 		else

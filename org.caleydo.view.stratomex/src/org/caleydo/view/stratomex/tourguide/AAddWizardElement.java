@@ -8,6 +8,7 @@ package org.caleydo.view.stratomex.tourguide;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
+import org.caleydo.core.view.opengl.picking.IPickingLabelProvider;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.stratomex.tourguide.event.UpdateNumericalPreviewEvent;
 import org.caleydo.view.stratomex.tourguide.event.UpdatePathwayPreviewEvent;
@@ -17,7 +18,7 @@ import org.caleydo.view.stratomex.tourguide.event.UpdateStratificationPreviewEve
  * @author Samuel Gratzl
  *
  */
-public abstract class AAddWizardElement extends ALayoutRenderer {
+public abstract class AAddWizardElement extends ALayoutRenderer implements IPickingLabelProvider {
 	public static final String PICKING_TYPE = "templateWizard";
 
 	protected final IStratomexAdapter adapter;

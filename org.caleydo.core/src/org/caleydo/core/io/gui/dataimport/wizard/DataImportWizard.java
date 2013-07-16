@@ -16,7 +16,8 @@ import java.util.Set;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.io.DataLoader;
 import org.caleydo.core.io.DataSetDescription;
-import org.caleydo.core.io.gui.dataimport.DatasetImportStatusDialog;
+import org.caleydo.core.io.gui.dataimport.DataImportStatusDialog;
+import org.caleydo.core.io.gui.dataimport.DataImportStatusDialogs;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -181,7 +182,7 @@ public class DataImportWizard extends Wizard {
 			MessageDialog.openError(getShell(), "Dataset Loading Failed", "An error has occurred during loading file "
 					+ dataSetDescription.getDataSourcePath());
 		} else {
-			DatasetImportStatusDialog d = new DatasetImportStatusDialog(getShell(), dataDomain);
+			DataImportStatusDialog d = DataImportStatusDialogs.createDatasetImportStatusDialog(getShell(), dataDomain);
 			d.open();
 		}
 

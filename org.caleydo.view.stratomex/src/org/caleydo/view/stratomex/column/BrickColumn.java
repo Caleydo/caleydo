@@ -5,7 +5,8 @@
  ******************************************************************************/
 package org.caleydo.view.stratomex.column;
 
-import java.awt.Point;
+import gleem.linalg.Vec2f;
+
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -42,7 +43,6 @@ import org.caleydo.core.view.opengl.layout.event.LayoutSizeCollisionEvent;
 import org.caleydo.core.view.opengl.layout.event.LayoutSizeCollisionListener;
 import org.caleydo.core.view.opengl.layout.util.ViewLayoutRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
-import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.view.stratomex.GLStratomex;
@@ -57,7 +57,6 @@ import org.caleydo.view.stratomex.brick.layout.DetailBrickLayoutTemplate;
 import org.caleydo.view.stratomex.brick.layout.HeaderBrickLayoutTemplate;
 import org.caleydo.view.stratomex.brick.ui.OverviewDetailBandRenderer;
 import org.caleydo.view.stratomex.event.SelectDimensionSelectionEvent;
-import org.eclipse.swt.widgets.Composite;
 
 import com.google.common.collect.Iterables;
 
@@ -175,8 +174,8 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 
 	private final EventListenerManager eventListeners = EventListenerManagers.wrap(this);
 
-	public BrickColumn(IGLCanvas canvas, Composite parentComposite, ViewFrustum viewFrustum) {
-		super(canvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
+	public BrickColumn(IGLCanvas canvas, ViewFrustum viewFrustum) {
+		super(canvas, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
 	}
 
@@ -460,7 +459,7 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 			Class<? extends ABrickLayoutConfiguration> layoutTemplateClass) {
 		ViewFrustum brickFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 0, 0, 0, -4, 4);
 		GLBrick brick = (GLBrick) GeneralManager.get().getViewManager()
-				.createGLView(GLBrick.class, parentGLCanvas, parentComposite, brickFrustum);
+				.createGLView(GLBrick.class, parentGLCanvas, brickFrustum);
 
 		brick.setDataDomain(dataDomain);
 		brick.setTablePerspective(tablePerspective);
@@ -740,18 +739,15 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 			return;
 		}
 
-		Point currentPoint = glMouseListener.getPickedPoint();
-
-		float[] pointCordinates = GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x,
-				currentPoint.y);
+		Vec2f pointCordinates = pixelGLConverter.convertMouseCoord2GL(glMouseListener.getDIPPickedPoint());
 
 		if (Float.isNaN(previousYCoordinate)) {
-			previousYCoordinate = pointCordinates[1];
+			previousYCoordinate = pointCordinates.y();
 			return;
 		}
 
-		float change = pointCordinates[1] - previousYCoordinate;
-		previousYCoordinate = pointCordinates[1];
+		float change = pointCordinates.y() - previousYCoordinate;
+		previousYCoordinate = pointCordinates.y();
 
 		// updateBrickSizes(topCol, topBricks, newSize);
 
@@ -1056,7 +1052,7 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 	}
 
 	public int getDetailBrickHeightPixels() {
-		return (int) (parentGLCanvas.getHeight() * 0.9f);
+		return (int) (parentGLCanvas.getDIPHeight() * 0.9f);
 	}
 
 	/**
@@ -1074,15 +1070,15 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 			otherDimensionGroupShowsDetail = otherDimensionGroup.isDetailBrickShown();
 			otherDimensionGroupColumnWidth = otherDimensionGroup.getGroupColumnWidthPixels();
 		}
-		int detailAreaWidth = parentGLCanvas.getWidth() - 2 * OVERVIEW_DETAIL_GAP_PIXEL - 2
+		float detailAreaWidth = parentGLCanvas.getDIPWidth() - 2 * OVERVIEW_DETAIL_GAP_PIXEL - 2
 				* GLStratomex.BRICK_COLUMN_SIDE_SPACING - getGroupColumnWidthPixels() - otherDimensionGroupColumnWidth;
 		int detailGapWidth = (int) (DETAIL_GAP_PORTION * detailAreaWidth);
 		detailGapWidth = (detailGapWidth < MIN_DETAIL_GAP_PIXEL) ? MIN_DETAIL_GAP_PIXEL : detailGapWidth;
 
-		int detailWidth = (otherDimensionGroupShowsDetail) ? (int) ((detailAreaWidth - detailGapWidth) / 2.0f)
+		float detailWidth = (otherDimensionGroupShowsDetail) ? (int) ((detailAreaWidth - detailGapWidth) / 2.0f)
 				: detailAreaWidth;
 
-		return detailWidth;
+		return (int) detailWidth;
 	}
 
 	/**

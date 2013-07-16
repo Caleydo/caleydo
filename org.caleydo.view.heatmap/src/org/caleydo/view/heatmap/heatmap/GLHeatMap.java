@@ -90,9 +90,9 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 	 * Constructor.
 	 *
 	 */
-	public GLHeatMap(IGLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+	public GLHeatMap(IGLCanvas glCanvas, ViewFrustum viewFrustum) {
 
-		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
+		super(glCanvas, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
 		glKeyListener = new GLHeatMapKeyListener(this);
 		renderStyle = new HeatMapRenderStyle(this, viewFrustum);
@@ -118,6 +118,7 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 	@Override
 	public void initLocal(GL2 gl) {
 		// Register keyboard listener to GL2 canvas
+		final Composite parentComposite = parentGLCanvas.asComposite();
 		Display.getCurrent().asyncExec(new Runnable() {
 			@Override
 			public void run() {
@@ -137,10 +138,12 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 		// renderStyle.setUseFishEye(false);
 
 		// Register keyboard listener to GL2 canvas
+
+		final Composite parentComposite = glParentView.getParentGLCanvas().asComposite();
 		parentComposite.getDisplay().asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				glParentView.getParentComposite().addKeyListener(glKeyListener);
+				parentComposite.addKeyListener(glKeyListener);
 			}
 		});
 

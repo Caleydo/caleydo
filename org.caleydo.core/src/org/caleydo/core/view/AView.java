@@ -15,7 +15,6 @@ import org.caleydo.core.event.data.SelectionCommandEvent;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.base.AUniqueObject;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
 /**
@@ -53,8 +52,6 @@ public abstract class AView extends AUniqueObject implements IView {
 
 	protected EventPublisher eventPublisher;
 
-	protected Composite parentComposite;
-
 	/**
 	 * The number that identifies the concrete view among all instances of its
 	 * class. This number is used among others int automatic view labels.
@@ -69,7 +66,7 @@ public abstract class AView extends AUniqueObject implements IView {
 	 * @param viewName
 	 *            TODO
 	 */
-	public AView(int viewID, Composite parentComposite, String viewType, String viewName) {
+	public AView(int viewID, String viewType, String viewName) {
 		super(viewID);
 
 		this.viewType = viewType;
@@ -81,7 +78,6 @@ public abstract class AView extends AUniqueObject implements IView {
 		label = viewName;
 		generalManager = GeneralManager.get();
 		eventPublisher = generalManager.getEventPublisher();
-		this.parentComposite = parentComposite;
 	}
 
 	/**
@@ -114,6 +110,7 @@ public abstract class AView extends AUniqueObject implements IView {
 	/**
 	 * @return A Copy of the datadomain set of this view.
 	 */
+	@Override
 	public Set<IDataDomain> getDataDomains() {
 		return new HashSet<IDataDomain>();
 	}
@@ -126,10 +123,6 @@ public abstract class AView extends AUniqueObject implements IView {
 	@Override
 	public boolean isDataView() {
 		return false;
-	}
-
-	public Composite getParentComposite() {
-		return parentComposite;
 	}
 
 	protected static void initViewType() {

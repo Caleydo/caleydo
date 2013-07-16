@@ -33,7 +33,7 @@ public class RcpGLDVIView extends ARcpGLViewPart {
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
 
-		view = new GLDataViewIntegrator(glCanvas, parentComposite, serializedView.getViewFrustum());
+		view = new GLDataViewIntegrator(glCanvas, serializedView.getViewFrustum());
 		initializeView();
 		minSizeComposite.setView((AGLView) view);
 		createPartControlGL();

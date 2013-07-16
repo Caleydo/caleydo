@@ -6,7 +6,7 @@
 package org.caleydo.data.importer;
 
 import org.caleydo.core.io.IDTypeParsingRules;
-import org.caleydo.core.io.parser.ascii.TabularDataParser;
+import org.caleydo.core.io.parser.ascii.ATextParser;
 import org.caleydo.datadomain.genetic.TCGADefinitions;
 
 /**
@@ -36,7 +36,7 @@ public class RegExTester {
 
 		int count = 1;
 		for (String id : TCGADefinitions.KNOWN_ID_EXAMPLES) {
-			String outputString = TabularDataParser.convertID(id, idTypeParsingRules);
+			String outputString = ATextParser.convertID(id, idTypeParsingRules);
 
 			System.out.println(count++ + ") source : " + id + ",\t converted: "
 					+ outputString);

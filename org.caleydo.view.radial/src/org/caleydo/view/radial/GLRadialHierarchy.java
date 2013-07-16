@@ -122,10 +122,9 @@ public class GLRadialHierarchy extends ATableBasedView {
 	/**
 	 * Constructor.
 	 */
-	public GLRadialHierarchy(IGLCanvas glCanvas, Composite parentComposite,
-			ViewFrustum viewFrustum) {
+	public GLRadialHierarchy(IGLCanvas glCanvas, ViewFrustum viewFrustum) {
 
-		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
+		super(glCanvas, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
 
 		ArrayList<SelectionType> alSelectionTypes = new ArrayList<SelectionType>();
@@ -168,6 +167,7 @@ public class GLRadialHierarchy extends ATableBasedView {
 	public void initLocal(GL2 gl) {
 
 		// Register keyboard listener to GL2 canvas
+		final Composite parentComposite = parentGLCanvas.asComposite();
 		parentComposite.getDisplay().asyncExec(new Runnable() {
 			@Override
 			public void run() {
@@ -183,10 +183,11 @@ public class GLRadialHierarchy extends ATableBasedView {
 			final GLMouseListener glMouseListener) {
 
 		// Register keyboard listener to GL2 canvas
-		glParentView.getParentComposite().getDisplay().asyncExec(new Runnable() {
+		final Composite parentComposite = glParentView.getParentGLCanvas().asComposite();
+		parentComposite.getDisplay().asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				glParentView.getParentComposite().addKeyListener(glKeyListener);
+				parentComposite.addKeyListener(glKeyListener);
 			}
 		});
 
@@ -373,7 +374,7 @@ public class GLRadialHierarchy extends ATableBasedView {
 
 		if (pdRealRootElement != null && pdCurrentRootElement != null) {
 
-			if (upwardNavigationSlider.handleDragging(gl, glMouseListener)) {
+			if (upwardNavigationSlider.handleDragging(gl, glMouseListener, pixelGLConverter)) {
 				updateHierarchyAccordingToNavigationSlider();
 			}
 			// clipToFrustum(gl);

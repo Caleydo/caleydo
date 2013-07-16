@@ -28,6 +28,7 @@ import org.caleydo.view.pathway.toolbar.DatasetSelectionBox;
 import org.caleydo.view.pathway.toolbar.PathwaySearchBox;
 import org.caleydo.view.pathway.toolbar.SampleSelectionMode;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 
 public class RcpGLPathwayView extends ARcpGLViewPart implements IListenerOwner, IPathwayHandler {
@@ -54,7 +55,7 @@ public class RcpGLPathwayView extends ARcpGLViewPart implements IListenerOwner, 
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
 
-		view = new GLPathway(glCanvas, parentComposite, serializedView.getViewFrustum());
+		view = new GLPathway(glCanvas, serializedView.getViewFrustum());
 		initializeView();
 		createPartControlGL();
 	}
@@ -108,8 +109,17 @@ public class RcpGLPathwayView extends ARcpGLViewPart implements IListenerOwner, 
 			return;
 		((GLPathway) view).setPathway(pathwayID);
 
-		PathwayGraph pathway = PathwayManager.get().getItem(pathwayID);
-		minSizeComposite.setMinSize(pathway.getWidth(), pathway.getHeight());
+		final PathwayGraph pathway = PathwayManager.get().getItem(pathwayID);
+		Display.getDefault().asyncExec(new Runnable() {
+
+			@Override
+			public void run() {
+				int w = glCanvas.toRawPixel(pathway.getWidth());
+				int h = glCanvas.toRawPixel(pathway.getHeight());
+				minSizeComposite.setMinSize(w, h);
+			}
+		});
+
 	}
 
 	@Override

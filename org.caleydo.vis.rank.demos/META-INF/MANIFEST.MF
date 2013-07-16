@@ -5,7 +5,7 @@ Bundle-SymbolicName: org.caleydo.vis.rank.demos; singleton:=true
 Bundle-Version: 3.0
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.caleydo.vis.rank;bundle-version="2.2.0",
- org.caleydo.core;bundle-version="2.2.0"
+ org.caleydo.vis.rank;bundle-version="3.0.0",
+ org.caleydo.core;bundle-version="3.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7

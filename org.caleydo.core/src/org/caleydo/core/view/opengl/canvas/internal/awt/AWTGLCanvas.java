@@ -28,7 +28,7 @@ import javax.swing.SwingUtilities;
 import org.caleydo.core.util.base.ILabeled;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.contextmenu.item.SeparatorMenuItem;
-import org.caleydo.core.view.opengl.canvas.IGLCanvas;
+import org.caleydo.core.view.opengl.canvas.AGLCanvas;
 import org.caleydo.core.view.opengl.canvas.IGLFocusListener;
 import org.caleydo.core.view.opengl.canvas.IGLKeyListener;
 import org.caleydo.core.view.opengl.canvas.IGLMouseListener;
@@ -40,11 +40,12 @@ import org.eclipse.swt.widgets.Composite;
  * @author Samuel Gratzl
  *
  */
-final class AWTGLCanvas implements IGLCanvas {
+final class AWTGLCanvas extends AGLCanvas {
 	private final GLCanvas canvas;
 	private final Composite composite;
 
 	AWTGLCanvas(GLCanvas canvas, Composite composite) {
+		super(canvas);
 		this.canvas = canvas;
 		this.composite = composite;
 	}
@@ -74,7 +75,7 @@ final class AWTGLCanvas implements IGLCanvas {
 
 	@Override
 	public void addMouseListener(IGLMouseListener listener) {
-		AWTMouseAdapter adapter = new AWTMouseAdapter(listener);
+		AWTMouseAdapter adapter = new AWTMouseAdapter(listener, this);
 		canvas.addMouseListener(adapter);
 		canvas.addMouseMotionListener(adapter);
 		canvas.addMouseWheelListener(adapter);
@@ -146,19 +147,6 @@ final class AWTGLCanvas implements IGLCanvas {
 	public void removeGLEventListener(GLEventListener listener) {
 		canvas.removeGLEventListener(listener);
 	}
-
-
-	@Override
-	public int getWidth() {
-		return canvas.getWidth();
-	}
-
-
-	@Override
-	public int getHeight() {
-		return canvas.getHeight();
-	}
-
 
 	@Override
 	public GLAutoDrawable asGLAutoDrawAble() {

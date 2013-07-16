@@ -7,8 +7,6 @@ package org.caleydo.core.view.opengl.layout2;
 
 import gleem.linalg.Vec2f;
 
-import java.awt.Point;
-
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
@@ -63,8 +61,7 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 	private final ISWTLayer swtLayer;
 
 	public AGLElementView(IGLCanvas glCanvas, String viewType, String viewName) {
-		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.GL_VIEW), glCanvas.asComposite(),
-				viewType,
+		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.GL_VIEW), viewType,
 				viewName);
 		this.canvas = glCanvas;
 		this.swtLayer = new SWTLayer(glCanvas);
@@ -131,7 +128,7 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 		IResourceLocator locator = createResourceLocator();
 		TextureManager textures = createTextureManager(locator);
 
-		local = new GLContextLocal(textures, locator);
+		local = new GLContextLocal(textures, locator, canvas);
 
 		AGLView.initGLContext(gl);
 
@@ -199,9 +196,10 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 		}
 
 		// 1. pass: picking
-		Point mousePos = pickingManager.getCurrentMousePos();
+		Vec2f mousePos = pickingManager.getCurrentMousePos();
 		if (mousePos != null) {
-			root.getMouseLayer().setBounds(mousePos.x, mousePos.y, getWidth() - mousePos.x, getHeight() - mousePos.y);
+			root.getMouseLayer().setBounds(mousePos.x(), mousePos.y(), getWidth() - mousePos.x(),
+					getHeight() - mousePos.y());
 			root.getMouseLayer().relayout();
 		}
 
@@ -233,8 +231,8 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 	public final void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
 		GL2 gl = drawable.getGL().getGL2();
 
-		viewFrustum.setRight(width);
-		viewFrustum.setBottom(height);
+		viewFrustum.setRight(canvas.getDIPWidth());
+		viewFrustum.setBottom(canvas.getDIPHeight());
 
 		gl.glViewport(x, y, width, height);
 		gl.glMatrixMode(GLMatrixFunc.GL_PROJECTION);

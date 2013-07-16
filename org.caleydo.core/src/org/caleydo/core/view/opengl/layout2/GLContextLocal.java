@@ -9,6 +9,7 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.GLContext;
 import javax.media.opengl.glu.GLU;
 
+import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.util.spline.TesselationRenderer;
 import org.caleydo.core.view.opengl.util.text.CompositeTextRenderer;
 import org.caleydo.core.view.opengl.util.text.ETextStyle;
@@ -39,12 +40,13 @@ public class GLContextLocal {
 
 	private final TimeDelta timeDelta = new TimeDelta();
 
-	public GLContextLocal(TextureManager textures, IResourceLocator loader) {
-		this(createText(ETextStyle.PLAIN), createText(ETextStyle.BOLD), createText(ETextStyle.ITALIC), textures, loader);
+	public GLContextLocal(TextureManager textures, IResourceLocator loader, IGLCanvas canvas) {
+		this(createText(ETextStyle.PLAIN, canvas), createText(ETextStyle.BOLD, canvas), createText(ETextStyle.ITALIC,
+				canvas), textures, loader);
 	}
 
-	private static ITextRenderer createText(ETextStyle style) {
-		return new CompositeTextRenderer(style, 8, 16, 24, 40);
+	private static ITextRenderer createText(ETextStyle style, IGLCanvas canvas) {
+		return new CompositeTextRenderer(canvas.toRawPixelFunction(), style, 8, 16, 24, 40);
 	}
 
 	public GLContextLocal(ITextRenderer text, TextureManager textures, IResourceLocator loader) {

@@ -5,10 +5,15 @@
  ******************************************************************************/
 package org.caleydo.view.tourguide.internal.model;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import org.caleydo.core.id.IDType;
+import org.caleydo.core.id.IIDTypeMapper;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
+import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.vis.rank.model.RankTableModel;
@@ -46,10 +51,19 @@ public class PathwayDataDomainQuery extends ADataDomainQuery {
 	@Override
 	protected List<AScoreRow> getAll() {
 		List<AScoreRow> r = Lists.newArrayList();
+		IDType david = getDataDomain().getDavidIDType();
+		IIDTypeMapper<Integer, Integer> mapper = getDataDomain().getGeneIDMappingManager().getIDTypeMapper(
+				PathwayVertexRep.getIdType(), david);
+		Set<Integer> idsInPathway = new HashSet<>();
 		for (PathwayGraph per : PathwayManager.get().getAllItems()) {
 			if (per.getType() != type)
 				continue;
-			r.add(new PathwayPerspectiveRow(per));
+			idsInPathway.clear();
+			for (PathwayVertexRep vertexRep : per.vertexSet()) {
+				idsInPathway.add(vertexRep.getID());
+			}
+			Set<Integer> davids = mapper.apply(idsInPathway);
+			r.add(new PathwayPerspectiveRow(per, david, davids));
 		}
 		return r;
 	}

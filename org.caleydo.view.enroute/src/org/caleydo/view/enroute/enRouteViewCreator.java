@@ -28,7 +28,6 @@ public class enRouteViewCreator implements IRemoteViewCreator {
 				.get()
 				.getViewManager()
 				.createGLView(GLEnRoutePathway.class, remoteRenderingView.getParentGLCanvas(),
-						remoteRenderingView.getParentComposite(),
 						new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1, -1, 1));
 
 		enRoute.setRemoteRenderingGLView((IGLRemoteRenderingView) remoteRenderingView);

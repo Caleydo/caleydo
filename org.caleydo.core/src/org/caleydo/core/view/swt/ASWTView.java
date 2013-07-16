@@ -10,7 +10,7 @@ import org.caleydo.core.event.AEventListener;
 import org.caleydo.core.event.IListenerOwner;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.AView;
-import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 
 public abstract class ASWTView
 	extends AView
@@ -21,8 +21,8 @@ public abstract class ASWTView
 	 * @param viewType TODO
 	 * @param viewName TODO
 	 */
-	public ASWTView(int viewID, Composite parentComposite, String viewType, String viewName) {
-		super(viewID, parentComposite, viewType, viewName);
+	public ASWTView(int viewID, String viewType, String viewName) {
+		super(viewID, viewType, viewName);
 		GeneralManager.get().getViewManager().registerItem(this);
 	}
 
@@ -31,7 +31,7 @@ public abstract class ASWTView
 	@Override
 	public synchronized void queueEvent(final AEventListener<? extends IListenerOwner> listener,
 		final AEvent event) {
-		parentComposite.getDisplay().asyncExec(new Runnable() {
+		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
 				listener.handleEvent(event);

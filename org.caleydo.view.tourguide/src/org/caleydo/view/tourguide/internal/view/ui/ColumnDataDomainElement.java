@@ -46,7 +46,9 @@ public class ColumnDataDomainElement extends ADataDomainElement {
 				}
 			});
 		} else {
-			this.setSelection((Set<EDataType>) payload);
+			@SuppressWarnings("unchecked")
+			Set<EDataType> p = (Set<EDataType>) payload;
+			this.setSelection(p);
 		}
 	}
 
@@ -66,7 +68,7 @@ public class ColumnDataDomainElement extends ADataDomainElement {
 		@Override
 		public void create() {
 			super.create();
-			getShell().setText("Edit filter of " + model.getDataDomain().getLabel());
+			getShell().setText("Edit Filter of " + model.getDataDomain().getLabel());
 			this.setBlockOnOpen(false);
 		}
 

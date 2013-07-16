@@ -82,7 +82,7 @@ public class InhomogenousDataDomainQuery extends ADataDomainQuery {
 			Integer dimensionID = p.getVirtualArray().get(0);
 			if (dataClass != d.getTable().getDataClass(dimensionID, 0))
 				continue;
-			r.add(new InhomogenousPerspectiveRow(asTablePerspective(p), this));
+			r.add(new InhomogenousPerspectiveRow(asTablePerspective(p)));
 		}
 		return r;
 	}
@@ -121,7 +121,7 @@ public class InhomogenousDataDomainQuery extends ADataDomainQuery {
 				continue;
 			// try to reuse old entries
 			// we have add some stuff
-			added.add(new InhomogenousPerspectiveRow(asTablePerspective(p), this));
+			added.add(new InhomogenousPerspectiveRow(asTablePerspective(p)));
 		}
 		updateFilter();
 

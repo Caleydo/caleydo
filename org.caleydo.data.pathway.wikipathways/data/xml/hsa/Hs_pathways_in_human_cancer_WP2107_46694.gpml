@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="pathways in human cancer" Author="Naresh Rambabu" Organism="Homo sapiens">
-  <Graphics BoardWidth="30.0" BoardHeight="30.0" />
-  <InfoBox CenterX="0.0" CenterY="0.0" />
-</Pathway>

@@ -53,7 +53,9 @@ import org.eclipse.nebula.widgets.nattable.viewport.ViewportLayer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 
 /**
  * Manager for NAT table to create and maintain preview tables for tabular data that draws one row of buttons for
@@ -91,6 +93,8 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 
 	private boolean isTransposeable = false;
 	private boolean isTransposed = false;
+
+	private Label tableDimensionsLabel;
 
 	private class TransposeDataProvider implements IDataProvider {
 
@@ -236,6 +240,9 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 	public PreviewTableWidget(Composite parent, IntegerCallback onColumnSelection, boolean isTransposeable,
 			INoArgumentCallback onTranspose) {
 		super(parent);
+		this.parent = new Composite(parent, SWT.NONE);
+		this.parent.setLayout(new GridLayout(1, true));
+		this.parent.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 		this.onColumnSelection = onColumnSelection;
 		this.isTransposeable = isTransposeable;
 		this.onTranspose = onTranspose;
@@ -285,7 +292,7 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 
 		GridLayer gridLayer = new GridLayer(bodyLayer, columnHeaderLayer, rowHeaderLayer, cornerLayer);
 		table = new NatTable(parent, gridLayer, false);
-		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1);
+		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
 
 		// gridData.heightHint = 100;
 		// gridData.widthHint = 800;
@@ -391,6 +398,10 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 
 		table.configure();
 
+		tableDimensionsLabel = new Label(parent, SWT.RIGHT);
+		tableDimensionsLabel.setText("Rows: " + bodyDataProvider.getRowCount() + " Columns: "
+				+ bodyDataProvider.getColumnCount());
+		tableDimensionsLabel.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 	}
 
 	/**
@@ -432,6 +443,8 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 		// buildTable(bodyDataProvider, new ColumnHeaderDataProvider(numColumns), new LineNumberRowHeaderDataProvider(
 		// dataMatrix.size()));
 		table.refresh();
+		tableDimensionsLabel.setText("Rows: " + bodyDataProvider.getRowCount() + " Columns: "
+				+ bodyDataProvider.getColumnCount());
 	}
 
 	public void setColumnIDTypeParsingRules(IDTypeParsingRules idTypeParsingRules) {

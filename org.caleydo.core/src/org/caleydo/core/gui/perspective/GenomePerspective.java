@@ -55,7 +55,7 @@ public class GenomePerspective
 		// bottomLayout.addPlaceholder("org.caleydo.view.filterpipeline");
 
 		// all the views that should be initially shown
-		List<String> initialViews = Arrays.asList("org.caleydo.view.dvi", "org.caleydo.view.stratomex");
+		List<String> initialViews = Arrays.asList("org.caleydo.view.dvi", "org.caleydo.view.stratomex:FIRST");
 		for (String initialView : initialViews) {
 			mainLayout.addView(initialView);
 		}

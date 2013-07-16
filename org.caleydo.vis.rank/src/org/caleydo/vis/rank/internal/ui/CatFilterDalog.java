@@ -6,6 +6,7 @@
 package org.caleydo.vis.rank.internal.ui;
 
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -42,14 +43,21 @@ import org.eclipse.swt.widgets.Tree;
 public class CatFilterDalog<CATEGORY_TYPE> extends AFilterDialog {
 	private final Map<CATEGORY_TYPE, ?> metaData;
 	private final Set<CATEGORY_TYPE> selection;
+	private final boolean filterNA;
+	private final String labelNA;
+
+	private static final Object NA = new Object();
 
 	private CheckboxTreeViewer fViewer;
 
 	public CatFilterDalog(Shell parentShell, String title, Object receiver, Map<CATEGORY_TYPE, ?> metaData,
-			Set<CATEGORY_TYPE> selection, boolean filterGlobally, boolean hasSnapshots, Point loc) {
+			Set<CATEGORY_TYPE> selection, boolean filterGlobally, boolean hasSnapshots, Point loc, boolean filterNA,
+			String labelNA) {
 		super(parentShell, "Filter " + title, receiver, filterGlobally, hasSnapshots, loc);
 		this.metaData = metaData;
 		this.selection = new LinkedHashSet<>(selection);
+		this.filterNA = filterNA;
+		this.labelNA = labelNA == null || labelNA.isEmpty() ? "<None>" : labelNA;
 	}
 
 	@Override
@@ -66,14 +74,14 @@ public class CatFilterDalog<CATEGORY_TYPE> extends AFilterDialog {
 		buttonComposite.setLayout(layout);
 		{
 			Label label = new Label(buttonComposite, SWT.WRAP);
-			label.setText("Selection items to include:");
+			label.setText("Selection Items to Include:");
 			data = new GridData(SWT.LEFT, SWT.CENTER, true, false);
 			data.horizontalSpan = 1;
 			label.setLayoutData(data);
 			label.setFont(composite.getFont());
 
 			Button selectButton = new Button(buttonComposite, SWT.PUSH);
-			selectButton.setText("Select &all");
+			selectButton.setText("Select &All");
 			SelectionListener listener = new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
@@ -84,7 +92,7 @@ public class CatFilterDalog<CATEGORY_TYPE> extends AFilterDialog {
 			selectButton.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false));
 			selectButton.addSelectionListener(listener);
 			Button deselectButton = new Button(buttonComposite, SWT.PUSH);
-			deselectButton.setText("Select &none");
+			deselectButton.setText("Select &None");
 			listener = new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
@@ -98,6 +106,7 @@ public class CatFilterDalog<CATEGORY_TYPE> extends AFilterDialog {
 
 		CheckboxTreeViewer treeViewer = createTreeViewer(composite);
 		treeViewer.setCheckedElements(selection.toArray());
+		treeViewer.setChecked(NA, !filterNA);
 		data = new GridData(GridData.FILL_BOTH);
 		data.widthHint = getCharWith(composite, 60);
 		data.heightHint = getCharHeight(composite) * 10;
@@ -113,15 +122,19 @@ public class CatFilterDalog<CATEGORY_TYPE> extends AFilterDialog {
 	@Override
 	protected void triggerEvent(boolean cancel) {
 		if (cancel) {
-			EventPublisher.trigger(new FilterEvent(selection, filterGlobally).to(receiver));
+			EventPublisher.trigger(new FilterEvent(selection, filterNA, filterGlobally).to(receiver));
 			return;
 		}
 		Object[] result = fViewer.getCheckedElements();
+		boolean filterNA = true;
 		Set<Object> r = new HashSet<>();
 		for (int i = 0; i < result.length; i++) {
-			r.add(result[i]);
+			if (result[i] == NA)
+				filterNA = false;
+			else
+				r.add(result[i]);
 		}
-		EventPublisher.trigger(new FilterEvent(r, isFilterGlobally()).to(receiver));
+		EventPublisher.trigger(new FilterEvent(r, filterNA, isFilterGlobally()).to(receiver));
 	}
 
 	/**
@@ -137,6 +150,8 @@ public class CatFilterDalog<CATEGORY_TYPE> extends AFilterDialog {
 		org.eclipse.jface.viewers.ILabelProvider label = new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
+				if (element == NA)
+					return labelNA;
 				@SuppressWarnings("unchecked")
 				CATEGORY_TYPE k = (CATEGORY_TYPE) element;
 				Object r = metaData.get(k);
@@ -145,6 +160,8 @@ public class CatFilterDalog<CATEGORY_TYPE> extends AFilterDialog {
 
 			@Override
 			public org.eclipse.swt.graphics.Color getBackground(Object element) {
+				if (element == NA)
+					return null;
 				@SuppressWarnings("unchecked")
 				CATEGORY_TYPE k = (CATEGORY_TYPE) element;
 				Object r = metaData.get(k);
@@ -161,7 +178,11 @@ public class CatFilterDalog<CATEGORY_TYPE> extends AFilterDialog {
 		};
 		fViewer.setLabelProvider(label);
 		fViewer.setComparator(new ViewerComparator());
-		fViewer.setInput(metaData.keySet());
+		Object[] data = metaData.keySet().toArray();
+		// hack in the NA
+		data = Arrays.copyOf(data, data.length + 1);
+		data[data.length - 1] = NA;
+		fViewer.setInput(data);
 		return fViewer;
 	}
 

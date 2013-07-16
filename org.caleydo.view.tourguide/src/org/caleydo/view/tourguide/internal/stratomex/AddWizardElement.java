@@ -96,7 +96,9 @@ public class AddWizardElement extends AAddWizardElement implements IReactions {
 		case CLICKED:
 			IState current = stateMachine.getCurrent();
 			List<ITransition> transitions = stateMachine.getTransitions(current);
-			transitions.get(pick.getObjectID()).apply(this);
+			ITransition transition = transitions.get(pick.getObjectID());
+			if (transition.isEnabled())
+				transition.apply(this);
 			repaint();
 			break;
 		case MOUSE_OVER:
@@ -110,7 +112,16 @@ public class AddWizardElement extends AAddWizardElement implements IReactions {
 		default:
 			break;
 		}
+	}
 
+	@Override
+	public String getLabel(Pick pick) {
+		if (hovered < 0)
+			return null;
+		IState current = stateMachine.getCurrent();
+		List<ITransition> transitions = stateMachine.getTransitions(current);
+		ITransition transition = transitions.get(pick.getObjectID());
+		return transition.getDisabledReason();
 	}
 
 	private void repaint() {
@@ -193,18 +204,27 @@ public class AddWizardElement extends AAddWizardElement implements IReactions {
 			Collection<ITransition> transitions, float hi, float y, int i) {
 		g.incZ();
 		// if in the first step split in dependent and independent data
+		g.gl.glLineStipple(1, (short)0xAAAA);
+		g.gl.glEnable(GL2.GL_LINE_STIPPLE);
+
 		for (ITransition t : transitions) {
 			g.pushName(getPickingID(i));
-			if (hovered == i)
+			if (!t.isEnabled())
+				g.color(0.95f);
+			else if(hovered == i)
 				g.color(0.85f);
 			else
 				g.color(0.90f);
+
 			g.fillRect(gap, h - y - hi, w - 2 * gap, hi);
 			g.popName();
 			drawMultiLineText(g, t, gap, h - y - hi, w - 2 * gap, hi);
+			if (!t.isEnabled())
+				g.drawRect(gap, h - y - hi, w - 2 * gap, hi);
 			y += hi + gap;
 			i++;
 		}
+		g.gl.glDisable(GL2.GL_LINE_STIPPLE);
 		g.decZ();
 	}
 

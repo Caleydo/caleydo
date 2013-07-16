@@ -16,6 +16,7 @@
    <extension-point id="org.caleydo.core.util.Clusterer" name="Clusterer" schema="schema/org.caleydo.core.util.Clusterer.exsd"/>
    <extension-point id="org.caleydo.core.StartupAddon" name="StartupAddon" schema="schema/org.caleydo.core.StartupAddon.exsd"/>
    <extension-point id="org.caleydo.core.SampleProject" name="Sample Project Description" schema="schema/org.caleydo.core.SampleProject.exsd"/>
+   <extension-point id="org.caleydo.core.CacheInitializer" name="CacheInitializer" schema="schema/org.caleydo.core.CacheInitializer.exsd"/>
 
    <extension
          id="application"
@@ -378,5 +379,11 @@
                name="Try Caleydo with CCLE Dataset"
                url="http://data.icg.tugraz.at/caleydo/download/3.0/samples/ccle.cal">
          </sample>
+      </extension>
+      <extension
+            point="org.eclipse.core.runtime.preferences">
+         <initializer
+               class="org.caleydo.core.internal.MyPreferences">
+         </initializer>
       </extension>
 </plugin>

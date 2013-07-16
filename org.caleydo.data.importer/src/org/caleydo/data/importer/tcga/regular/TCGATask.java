@@ -77,7 +77,7 @@ public class TCGATask extends ATCGATask {
 
 		log.info("Post Processing project file for tumor type " + tumorType + " for analysis run " + run);
 		for (TCGADataSet set : project) {
-			new TCGAPostprocessingTask(set, settings).invoke();
+			new TCGAPostprocessingTask(set).invoke();
 		}
 
 		final String projectOutputPath = runSpecificOutputPath + run + "_" + tumorType + ".cal";

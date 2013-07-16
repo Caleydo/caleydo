@@ -134,7 +134,7 @@ public class BaseCategoricalMappingFunctionUI<T> extends GLElementContainer impl
 		get(2).repaint();
 	}
 
-	public void drag(Point point, float y, int dv) {
+	public void drag(Point point, float y, float dv) {
 		if (dv == 0) // no change
 			return;
 		Vec2f size = getSize();
@@ -290,10 +290,10 @@ public class BaseCategoricalMappingFunctionUI<T> extends GLElementContainer impl
 		protected void onDragged(Pick pick) {
 			if (!pick.isDoDragging())
 				return;
-			int dv = pick.getDx();
+			float dv = pick.getDx();
 			if (dv == 0)
 				return;
-			drag(this, toRelative(pick.getPickedPoint()).y(), dv);
+			drag(this, toRelative(pick.getDIPPickedPoint()).y(), dv);
 			this.repaintAll();
 		}
 

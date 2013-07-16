@@ -45,29 +45,32 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 
 	private final String dataSetName;
 	private final EDataSetType dataSetType;
-	private boolean loadSampledGenes;
+	private boolean loadFullGenes;
 
 	private final FirehoseProvider fileFinder;
 
 	private final Settings settings;
 
 	private TCGADataSetBuilder(EDataSetType datasetType, String dataSetName,
-			FirehoseProvider fileProvider, boolean loadSampledGenes, Settings settings) {
+ FirehoseProvider fileProvider,
+			boolean loadSampledGenes, Settings settings) {
 		this.dataSetType = datasetType;
 		this.dataSetName = dataSetName;
-		this.loadSampledGenes = loadSampledGenes;
+		this.loadFullGenes = !loadSampledGenes;
 		this.fileFinder = fileProvider;
 		this.settings = settings;
 
 	}
 
 	public static ForkJoinTask<TCGADataSet> create(EDataSetType datasetType,
-			FirehoseProvider fileProvider, boolean loadSampledGenes, Settings settings) {
+ FirehoseProvider fileProvider,
+			boolean loadSampledGenes, Settings settings) {
 		return create(datasetType, datasetType.getName(), fileProvider, loadSampledGenes, settings);
 	}
 
 	public static ForkJoinTask<TCGADataSet> create(EDataSetType datasetType,
-			String dataSetName, FirehoseProvider fileProvider, boolean loadSampledGenes, Settings settings) {
+ String dataSetName,
+			FirehoseProvider fileProvider, boolean loadSampledGenes, Settings settings) {
 		return new TCGADataSetBuilder(datasetType, dataSetName, fileProvider, loadSampledGenes,
 				settings);
 	}
@@ -97,25 +100,27 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 		switch (dataSetType) {
 		case mRNA:
 			desc = setUpClusteredMatrixData(dataSetType, geneRowID, sampleID,
-					fileFinder.findmRNAMatrixFile(loadSampledGenes));
+					fileFinder.findmRNAMatrixFile(loadFullGenes));
 			break;
 		case mRNAseq:
 			desc =  setUpClusteredMatrixData(dataSetType, geneRowID, sampleID,
-					fileFinder.findmRNAseqMatrixFile(loadSampledGenes));
+					fileFinder.findmRNAseqMatrixFile(loadFullGenes));
 			break;
 		case microRNA:
 			desc =  setUpClusteredMatrixData(dataSetType, microRNARowID, sampleID,
-					fileFinder.findmicroRNAMatrixFile(loadSampledGenes));
+					fileFinder.findmicroRNAMatrixFile(loadFullGenes));
 			break;
 		case microRNAseq:
 			desc =  setUpClusteredMatrixData(dataSetType, microRNARowID, seqSampleID,
-					fileFinder.findmicroRNAseqMatrixFile(loadSampledGenes));
+					fileFinder.findmicroRNAseqMatrixFile(loadFullGenes));
 			break;
 		case methylation:
-			desc =  setUpClusteredMatrixData(dataSetType, geneRowID, sampleID, fileFinder.findMethylationMatrixFile());
+			desc = setUpClusteredMatrixData(dataSetType, geneRowID, sampleID,
+					fileFinder.findMethylationMatrixFile(loadFullGenes));
 			break;
 		case RPPA:
-			desc =  setUpClusteredMatrixData(dataSetType, proteinRowID, sampleID, fileFinder.findRPPAMatrixFile());
+			desc = setUpClusteredMatrixData(dataSetType, proteinRowID, sampleID,
+					fileFinder.findRPPAMatrixFile(loadFullGenes));
 			break;
 		case clinical:
 			desc =  setUpClinicalData(clinicalRowID, clinicalColumnID);
@@ -133,15 +138,18 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 	}
 
 	private DataSetDescription setUpClusteredMatrixData(EDataSetType type, IDSpecification rowIDSpecification,
-			IDSpecification columnIDSpecification, File matrixFile) {
-		if (matrixFile == null)
+			IDSpecification columnIDSpecification, Pair<File, Boolean> pair) {
+		if (pair == null || pair.getFirst() == null)
 			return null;
+		final File matrixFile = pair.getFirst();
+		final boolean loadFullGenes = pair.getSecond();
 
 		DataSetDescription dataSet = new DataSetDescription(ECreateDefaultProperties.NUMERICAL);
 		dataSet.setDataSetName(dataSetName);
 		dataSet.setColor(dataSetType.getColor());
 		dataSet.setDataSourcePath(matrixFile.getPath());
-		if (loadSampledGenes) {
+
+		if (!loadFullGenes) {
 			// the gct files have 3 header lines and are centered<
 			dataSet.setNumberOfHeaderLines(3);
 			dataSet.getDataDescription().getNumericalProperties().setDataCenter(0d);
@@ -149,7 +157,6 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 			// the files with all the genes have the ids in the first row, then a row with "signal" and then the data
 			dataSet.setNumberOfHeaderLines(2);
 			dataSet.setRowOfColumnIDs(0);
-
 		}
 
 		ParsingRule parsingRule = new ParsingRule();
@@ -198,7 +205,7 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 		}
 		dataSet.setDataProcessingDescription(dataProcessingDescription);
 
-		if (loadSampledGenes) {
+		if (!loadFullGenes) {
 			// here we turn on sampling to 1500
 			dataProcessingDescription.setNrRowsInSample(1500);
 		}

@@ -7,6 +7,7 @@ package org.caleydo.view.tourguide.internal.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -31,14 +32,22 @@ import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.id.IIDTypeMapper;
+import org.caleydo.core.util.base.Labels;
 import org.caleydo.core.util.color.Color;
+import org.caleydo.core.view.opengl.layout.Column.VAlign;
+import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.view.tourguide.internal.view.col.CategoricalPercentageRankColumnModel;
 import org.caleydo.vis.rank.model.ACompositeRankColumnModel;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.GroupRankColumnModel;
+import org.caleydo.vis.rank.model.IRow;
+import org.caleydo.vis.rank.model.MultiCategoricalRankColumnModel;
 import org.caleydo.vis.rank.model.RankTableModel;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 /**
  * @author Samuel Gratzl
@@ -147,7 +156,7 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 
 	/**
 	 * return the expected group count for a given dimension
-	 * 
+	 *
 	 * @param category
 	 * @return
 	 */
@@ -180,7 +189,7 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 
 	/**
 	 * builds a virtual array given a category and a label for it
-	 * 
+	 *
 	 * @param label
 	 * @param category
 	 * @return
@@ -260,7 +269,7 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 
 	/**
 	 * creates a {@link TablePerspective} out of the given data
-	 * 
+	 *
 	 * @param label
 	 * @param id
 	 *            the category
@@ -324,6 +333,45 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 		for (CategoryProperty<?> p : ctable.getCategoryDescriptions().getCategoryProperties()) {
 			group.add(CategoricalPercentageRankColumnModel.create(p.getCategory(), ctable, selected.contains(p)));
 		}
+		group = new GroupRankColumnModel(d.getLabel() + " Groupings", color, color.brighter());
+		for (String id : d.getDimensionPerspectiveIDs()) {
+			Perspective p = ctable.getDimensionPerspective(id);
+			if (p.isDefault() || p.getVirtualArray().size() <= 1 || p.getVirtualArray().getGroupList().size() <= 1)
+				continue;
+			//use the complex perspective over multiple genes with a group list as a categorical column
+			if (group.size() == 0)
+				table.add(group);
+			group.add(createCategoricalFromGroupList(p.getLabel(), p.getVirtualArray()));
+		}
+	}
+
+	/**
+	 * @param va
+	 * @return
+	 */
+	private ARankColumnModel createCategoricalFromGroupList(String label, final VirtualArray va) {
+		Collection<String> items = new ArrayList<>();
+		for (Group g : va.getGroupList()) {
+			items.add(g.getLabel());
+		}
+		Function<IRow, Set<String>> toGroup = new Function<IRow, Set<String>>() {
+			@Override
+			public Set<String> apply(IRow in) {
+				if (!(in instanceof CategoricalPerspectiveRow))
+					return null;
+				CategoricalPerspectiveRow r = (CategoricalPerspectiveRow) in;
+				if (r.getCategoryIDType() != va.getIdType())
+					return null;
+				List<Group> groups = va.getGroupOf(r.getDimensionID());
+				if (groups.isEmpty())
+					return null;
+				if (groups.size() == 1)
+					return Collections.singleton(groups.get(0).getLabel());
+				return Sets.newTreeSet(Iterables.transform(groups, Labels.TO_LABEL));
+			}
+		};
+		return MultiCategoricalRankColumnModel.createSimple(GLRenderers.drawText(label, VAlign.CENTER), toGroup, items,
+				"");
 	}
 
 	@Override
@@ -340,7 +388,7 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 		while (cols.hasNext()) {
 			ARankColumnModel col = cols.next();
 			if (col instanceof GroupRankColumnModel
-					&& ((GroupRankColumnModel) col).getTitle().startsWith(getDataDomain().getLabel())) {
+					&& ((GroupRankColumnModel) col).getTitle().startsWith(getDataDomain().getLabel() + " ")) {
 				toDestroy.add(col);
 			} else if (col instanceof ACompositeRankColumnModel) {
 				flat(((ACompositeRankColumnModel) col).iterator(), toDestroy);

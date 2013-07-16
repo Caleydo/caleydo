@@ -83,7 +83,6 @@ import org.caleydo.view.subgraph.ranking.PathwayFilters;
 import org.caleydo.view.subgraph.ranking.PathwayRankings;
 import org.caleydo.view.subgraph.ranking.RankingElement;
 import org.caleydo.view.subgraph.toolbar.ShowPortalsAction;
-import org.eclipse.swt.widgets.Composite;
 
 public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspectiveBasedView, IGLRemoteRenderingView,
 		IMultiFormChangeListener, IEventBasedSelectionManagerUser {
@@ -217,9 +216,9 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	 * @param viewLabel
 	 * @param viewFrustum
 	 */
-	public GLSubGraph(IGLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+	public GLSubGraph(IGLCanvas glCanvas, ViewFrustum viewFrustum) {
+		super(glCanvas, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
-		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
 		AnimatedGLElementContainer column = new AnimatedGLElementContainer(new GLSizeRestrictiveFlowLayout(false, 10,
 				GLPadding.ZERO));
 		column.add(baseContainer);
@@ -437,7 +436,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 
 			@Override
 			public void mouseMoved(IMouseEvent mouseEvent) {
-				Point mousePosition = mouseEvent.getPoint();
+				Point mousePosition = mouseEvent.getRAWPoint();
 				if (pathwayRow.getVisibility() != EVisibility.NONE) {
 					for (PathwayMultiFormInfo info : pathwayInfos) {
 						if (setWindowActive(mousePosition, info.window))

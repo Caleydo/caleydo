@@ -1,0 +1,9 @@
+# @title set workspace encoding and line endings LF
+# @description set workspace encoding and line endings LF
+# @task_type LASTMOD
+#
+# Created by the Workspace Mechanic Preference Recorder
+#Wed Jul 10 12:13:10 CEST 2013
+/instance/org.eclipse.core.resources/encoding=UTF-8
+file_export_version=3.0
+/instance/org.eclipse.core.runtime/line.separator=\n

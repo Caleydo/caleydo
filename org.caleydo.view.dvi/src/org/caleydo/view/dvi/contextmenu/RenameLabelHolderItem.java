@@ -22,7 +22,7 @@ import org.caleydo.view.dvi.event.RenameLabelHolderEvent;
 public class RenameLabelHolderItem extends AContextMenuItem {
 
 	public RenameLabelHolderItem(ILabelHolder labelHolder) {
-		setLabel("Rename " + labelHolder.getProviderName().toLowerCase());
+		setLabel("Rename " + labelHolder.getProviderName());
 
 		RenameLabelHolderEvent event = new RenameLabelHolderEvent(labelHolder);
 		event.setSender(this);

@@ -104,20 +104,25 @@ public abstract class ADataDomainElement extends GLButton implements GLButton.IS
 
 		Collection<Pair<String, ? extends AEvent>> collection = ExternalScoringDataDomainActionFactory.create(
 				model.getDataDomain(), context);
-		if (!collection.isEmpty()) {
-			creator.addAll(collection);
+		creator.addAll(collection);
+		boolean added = !collection.isEmpty();
+
+		added = model.addCustomDomainActions(creator, this) || added;
+		if (added)
 			creator.addSeparator();
-		}
+
 		DataDomainActions.add(creator, model.getDataDomain(), this, true);
 
 		context.getSWTLayer().showContextMenu(creator);
 	}
 
+
+
 	/**
 	 * @param creator
 	 */
 	protected void createContextMenu(ContextMenuCreator creator) {
-		creator.addContextMenuItem(new GenericContextMenuItem("Edit filter", new EditDataDomainFilterEvent().to(this)));
+		creator.addContextMenuItem(new GenericContextMenuItem("Edit Filter", new EditDataDomainFilterEvent().to(this)));
 		creator.addSeparator();
 	}
 
@@ -150,11 +155,14 @@ public abstract class ADataDomainElement extends GLButton implements GLButton.IS
 	protected void renderPickImpl(GLGraphics g, float w, float h) {
 		super.renderPickImpl(g, w, h);
 
-		g.incZ();
-		float tw = Math.min(g.text.getTextWidth(getLabel(), 14), w - 18 - 18);
-		g.pushName(filterPickingId);
-		g.fillRect(18 + tw + 2, 2, 12, 12);
-		g.popName();
-		g.decZ();
+		if (model.isFilteringPossible()) {
+			g.incZ();
+			float tw = Math.min(g.text.getTextWidth(getLabel(), 14), w - 18 - 18);
+			g.popName(); // remove outer picking
+			g.pushName(filterPickingId);
+			g.fillRect(18 + tw + 2, 2, 12, 12);
+			// g.popName(); // leave for the outer popName
+			g.decZ();
+		}
 	}
 }

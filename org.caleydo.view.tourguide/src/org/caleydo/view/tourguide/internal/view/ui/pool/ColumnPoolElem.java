@@ -8,7 +8,6 @@ package org.caleydo.view.tourguide.internal.view.ui.pool;
 import gleem.linalg.Vec2f;
 
 import org.caleydo.core.util.color.Color;
-
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IMouseLayer;
@@ -78,7 +77,7 @@ public class ColumnPoolElem extends APoolElem {
 		IMouseLayer l = context.getMouseLayer();
 		GLElement elem = new DraggedScoreHeaderItem();
 		elem.setSize(getSize().x(), getSize().y());
-		Vec2f loc = toRelative(pick.getPickedPoint());
+		Vec2f loc = toRelative(pick.getDIPPickedPoint());
 		elem.setLocation(-loc.x(), -loc.y());
 		isDragging = true;
 		l.addDraggable(elem, this.model);

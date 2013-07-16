@@ -78,7 +78,7 @@ public class RcpGLHistogramView
 
 		viewManager.registerGLCanvasToAnimator(glCanvas);
 
-		view = new GLHistogram(glCanvas, parentComposite, serializedView.getViewFrustum());
+		view = new GLHistogram(glCanvas, serializedView.getViewFrustum());
 		// ((GLHistogram) view).setRenderColorBars(false);
 		initializeView();
 		initialize();

@@ -136,7 +136,7 @@ public class CategoricalRankRankColumnModel<CATEGORY_TYPE> extends ABasicFiltera
 			public void run(Display display, Composite canvas) {
 				Point loc = canvas.toDisplay((int) location.x(), (int) location.y());
 				CatFilterDalog<CATEGORY_TYPE> dialog = new CatFilterDalog<>(canvas.getShell(), getTitle(), summary,
-						metaData, selection, isGlobalFilter, getTable().hasSnapshots(), loc);
+						metaData, selection, isGlobalFilter, getTable().hasSnapshots(), loc, false, "");
 				dialog.open();
 			}
 		});

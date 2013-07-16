@@ -5,7 +5,8 @@
  ******************************************************************************/
 package org.caleydo.view.dvi.tableperspective;
 
-import java.awt.Point;
+import gleem.linalg.Vec2f;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -71,9 +72,9 @@ public class TablePerspectivePickingListener extends APickingListener {
 		//
 		// draggedComparisonGroupRenderer
 		// .setSelectionType(SelectionType.SELECTION);
-		Point point = pick.getPickedPoint();
+		Vec2f point = pick.getDIPPickedPoint();
 		dragAndDropController.clearDraggables();
-		dragAndDropController.setDraggingProperties(new Point(point.x, point.y),
+		dragAndDropController.setDraggingProperties(new Vec2f(point.x(), point.y()),
 				"DimensionGroupDrag");
 		// dragAndDropController.setDraggingStartPosition(new Point(point.x,
 		// point.y));

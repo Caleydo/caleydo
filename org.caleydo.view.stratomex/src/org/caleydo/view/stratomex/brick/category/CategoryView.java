@@ -19,7 +19,6 @@ import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.core.view.opengl.picking.PickingType;
-import org.eclipse.swt.widgets.Composite;
 
 /**
  * Rendering the histogram.
@@ -40,9 +39,8 @@ public class CategoryView extends ATableBasedView {
 	 * @param label
 	 * @param viewFrustum
 	 */
-	public CategoryView(IGLCanvas glCanvas, Composite parentComposite,
-			final ViewFrustum viewFrustum) {
-		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
+	public CategoryView(IGLCanvas glCanvas, final ViewFrustum viewFrustum) {
+		super(glCanvas, viewFrustum, VIEW_TYPE, VIEW_NAME);
 	}
 
 	@Override

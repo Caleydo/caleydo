@@ -84,7 +84,7 @@ public final class SWTTooltipManager extends APickingListener {
 			@Override
 			public void run() {
 				actLabel = label.getLabel(pick);
-				control.setToolTipText(actLabel);
+				control.setToolTipText(actLabel == null ? "" : actLabel);
 			}
 		});
 	}

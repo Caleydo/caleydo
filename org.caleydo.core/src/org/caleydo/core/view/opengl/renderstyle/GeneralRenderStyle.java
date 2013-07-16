@@ -125,20 +125,8 @@ public class GeneralRenderStyle {
 		return minViewWidth;
 	}
 
-	public void setMinViewWidth(int minViewWidth, AGLView view) {
-		this.minViewWidth = minViewWidth;
-
-		sendSetMinSizeEvent(view);
-	}
-
 	public int getMinViewHeight() {
 		return minViewHeight;
-	}
-
-	public void setMinViewHeight(int minViewHeight, AGLView view) {
-		this.minViewHeight = minViewHeight;
-
-		sendSetMinSizeEvent(view);
 	}
 
 	public void setMinViewDimensions(int minViewWidth, int minViewHeight, AGLView view) {

@@ -75,10 +75,10 @@ public final class FirehoseProvider {
 	 * @return
 	 */
 	private static String guessTumorSample(TumorType tumor, Calendar cal, Settings settings) {
-		
+
 		if (settings.isAwgRun())
-			return tumor.toString();			
-		
+			return tumor.toString();
+
 		if (cal.get(Calendar.YEAR) >= 2013 && tumor.toString().equalsIgnoreCase("SKCM"))
 			return tumor + "-TM";
 		if (cal.get(Calendar.YEAR) >= 2013 && tumor.toString().equalsIgnoreCase("LAML"))
@@ -103,40 +103,54 @@ public final class FirehoseProvider {
 				+ tumor + System.getProperty("file.separator"));
 	}
 
-	private File findStandardClusteredFile(EDataSetType type) {
-		return extractAnalysisRunFile("outputprefix.expclu.gct", type.getTCGAAbbr() + "_Clustering_CNMF", LEVEL);
+	private Pair<File, Boolean> findStandardSampledClusteredFile(EDataSetType type) {
+		return Pair.make(
+				extractAnalysisRunFile("outputprefix.expclu.gct", type.getTCGAAbbr() + "_Clustering_CNMF", LEVEL),
+				false);
 	}
 
-	public File findRPPAMatrixFile() {
-		return findStandardClusteredFile(EDataSetType.RPPA);
+	public Pair<File, Boolean> findRPPAMatrixFile(boolean loadFullGenes) {
+		return findStandardSampledClusteredFile(EDataSetType.RPPA);
 	}
 
-	public File findMethylationMatrixFile() {
-		return findStandardClusteredFile(EDataSetType.methylation);
+	public Pair<File, Boolean> findMethylationMatrixFile(boolean loadFullGenes) {
+		return findStandardSampledClusteredFile(EDataSetType.methylation);
 	}
 
-	public File findmRNAMatrixFile(boolean loadSampledGenes) {
-		if (loadSampledGenes)
-			return findStandardClusteredFile(EDataSetType.mRNA);
-		return extractAnalysisRunFile(getFileName(".medianexp.txt"), "mRNA_Preprocess_Median", LEVEL);
+	public Pair<File, Boolean> findmRNAMatrixFile(boolean loadFullGenes) {
+		if (loadFullGenes) {
+			File r = extractAnalysisRunFile(getFileName(".medianexp.txt"), "mRNA_Preprocess_Median", LEVEL);
+			if (r != null)
+				return Pair.make(r, true);
+		}
+		return findStandardSampledClusteredFile(EDataSetType.mRNA);
 	}
 
-	public File findmRNAseqMatrixFile(boolean loadSampledGenes) {
-		if (loadSampledGenes)
-			return findStandardClusteredFile(EDataSetType.mRNAseq);
-		return extractAnalysisRunFile(getFileName(".mRNAseq_RPKM_log2.txt"), "mRNAseq_Preprocess", LEVEL);
+	public Pair<File, Boolean> findmRNAseqMatrixFile(boolean loadFullGenes) {
+		if (loadFullGenes) {
+			File r = extractAnalysisRunFile(getFileName(".mRNAseq_RPKM_log2.txt"), "mRNAseq_Preprocess", LEVEL);
+			if (r != null)
+				return Pair.make(r, true);
+		}
+		return findStandardSampledClusteredFile(EDataSetType.mRNAseq);
 	}
 
-	public File findmicroRNAMatrixFile(boolean loadSampledGenes) {
-		if (loadSampledGenes)
-			return findStandardClusteredFile(EDataSetType.microRNA);
-		return extractAnalysisRunFile(getFileName(".miR_expression.txt"), "miR_Preprocess", LEVEL);
+	public Pair<File, Boolean> findmicroRNAMatrixFile(boolean loadFullGenes) {
+		if (loadFullGenes) {
+			File r = extractAnalysisRunFile(getFileName(".miR_expression.txt"), "miR_Preprocess", LEVEL);
+			if (r != null)
+				return Pair.make(r, true);
+		}
+		return findStandardSampledClusteredFile(EDataSetType.microRNA);
 	}
 
-	public File findmicroRNAseqMatrixFile(boolean loadSampledGenes) {
-		if (loadSampledGenes)
-			return findStandardClusteredFile(EDataSetType.microRNAseq);
-		return extractAnalysisRunFile(getFileName(".miRseq_RPKM_log2.txt"), "miRseq_Preprocess", LEVEL);
+	public Pair<File, Boolean> findmicroRNAseqMatrixFile(boolean loadFullGenes) {
+		if (loadFullGenes) {
+			File r = extractAnalysisRunFile(getFileName(".miRseq_RPKM_log2.txt"), "miRseq_Preprocess", LEVEL);
+			if (r != null)
+				return Pair.make(r, true);
+		}
+		return findStandardSampledClusteredFile(EDataSetType.microRNAseq);
 	}
 
 	public File findHiearchicalGrouping(EDataSetType type) {
@@ -172,11 +186,11 @@ public final class FirehoseProvider {
 			File maf = null;
 			if ( !this.settings.isAwgRun() ) {
 				maf = extractAnalysisRunFile(tumor + "-TP.final_analysis_set.maf",
-						"MutSigNozzleReport2.0", LEVEL);				
+						"MutSigNozzleReport2.0", LEVEL);
 			}
 			else {
 				maf = extractAnalysisRunFile(tumor + ".final_analysis_set.maf",
-						"MutSigNozzleReport2.0", LEVEL);								
+						"MutSigNozzleReport2.0", LEVEL);
 			}
 			if (maf != null) {
 				mutationFile = parseMAF(maf);
@@ -194,14 +208,14 @@ public final class FirehoseProvider {
 	}
 
 	private File extractAnalysisRunFile(String fileName, String pipelineName, int level) {
-		return extractFile(fileName, pipelineName, level, true);
+		return extractFile(fileName, pipelineName, level, true, false);
 	}
 
 	private File extractDataRunFile(String fileName, String pipelineName, int level) {
-		return extractFile(fileName, pipelineName, level, false);
+		return extractFile(fileName, pipelineName, level, false, true);
 	}
 
-	private File extractFile(String fileName, String pipelineName, int level, boolean isAnalysisRun) {
+	private File extractFile(String fileName, String pipelineName, int level, boolean isAnalysisRun, boolean hasTumor) {
 		Date id = isAnalysisRun ? analysisRun : dataRun;
 
 		String label = "unknown";
@@ -217,13 +231,13 @@ public final class FirehoseProvider {
 			File outputDir = new File(isAnalysisRun ? tmpAnalysisDir : tmpDataDir, label);
 			outputDir.mkdirs();
 
-			return extractFileFromTarGzArchive(url, fileName, outputDir);
+			return extractFileFromTarGzArchive(url, fileName, outputDir, hasTumor);
 		} catch (MalformedURLException e) {
 			throw new RuntimeException("can't extract " + fileName + " from " + label, e);
 		}
 	}
 
-	private File extractFileFromTarGzArchive(URL inUrl, String fileToExtract, File outputDirectory) {
+	private File extractFileFromTarGzArchive(URL inUrl, String fileToExtract, File outputDirectory, boolean hasTumor) {
 		log.info("downloading: " + inUrl);
 		File targetFile = new File(outputDirectory, fileToExtract);
 
@@ -235,6 +249,10 @@ public final class FirehoseProvider {
 		if (notFound.exists() && !settings.isCleanCache()) {
 			log.warning("file not found in a previous run: " + inUrl);
 			return null;
+		}
+
+		if (hasTumor) {
+			fileToExtract = "/" + tumor + fileToExtract;
 		}
 
 		TarInputStream tarIn = null;

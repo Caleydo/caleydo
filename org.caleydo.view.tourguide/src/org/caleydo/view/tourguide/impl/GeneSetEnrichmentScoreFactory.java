@@ -30,9 +30,11 @@ import org.caleydo.view.tourguide.api.state.IState;
 import org.caleydo.view.tourguide.api.state.IStateMachine;
 import org.caleydo.view.tourguide.api.state.SimpleState;
 import org.caleydo.view.tourguide.api.state.SimpleTransition;
+import org.caleydo.view.tourguide.api.util.PathwayOracle;
 import org.caleydo.view.tourguide.impl.algorithm.AGSEAAlgorithm;
 import org.caleydo.view.tourguide.impl.algorithm.AGSEAAlgorithm.GSEAAlgorithmPValue;
 import org.caleydo.view.tourguide.impl.algorithm.GSEAAlgorithm;
+import org.caleydo.view.tourguide.impl.algorithm.GeneSetMappedAlgorithm;
 import org.caleydo.view.tourguide.impl.algorithm.PGSEAAlgorithm;
 import org.caleydo.view.tourguide.spi.IScoreFactory;
 import org.caleydo.view.tourguide.spi.algorithm.IStratificationAlgorithm;
@@ -74,16 +76,19 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 		IState start = stateMachine.get(IStateMachine.ADD_PATHWAY);
 		BrowsePathwayState browse = (BrowsePathwayState) stateMachine.get(IStateMachine.BROWSE_PATHWAY);
 
-		if (!existing.isEmpty() && mode == EWizardMode.GLOBAL && hasGoodOnes(existing)) {
+		if (mode == EWizardMode.GLOBAL) {
+			String disabled = !hasGoodOnes(existing) ? "At least one valid stratification (e.g. mRNA, mRNAseq) must already be visible"
+					: null;
 			IState target = stateMachine.addState("GSEA", new CreateGSEAState(browse, true));
-			// IState target2 = stateMachine.addState("PGSEA", new CreateGSEAState(browse, false));
+			IState target2 = stateMachine.addState("PGSEA", new CreateGSEAState(browse, false));
 			stateMachine.addTransition(start, new SimpleTransition(target,
-					"Find with GSEA based on displayed stratification"));
-			// stateMachine.addTransition(source, new SimpleTransition(target2,
-			// "Find with PGSEA based on displayed stratification"));
+					"Find with GSEA based on displayed stratification", disabled));
+			stateMachine.addTransition(start, new SimpleTransition(target2,
+					"Find with PGSEA based on displayed stratification", disabled));
 		}
 
-		// doesn't work as we have to browse for a group
+		// auto mode
+		// doesn't work as we have to browse for a group not a stratification
 		// {
 		// // Find with GSEA based on strat. not displayed -> n x n -> no
 		// // first select a stratification then a pathway
@@ -142,7 +147,7 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 	 */
 	private static boolean isGoodDataDomain(IDataDomain dataDomain) {
 		// FIXME hack
-		return dataDomain.getLabel().toLowerCase().contains("mrna");
+		return dataDomain.getLabel().toLowerCase().contains("mrna") && PathwayOracle.canBeUnderlying(dataDomain);
 	}
 
 	@Override
@@ -160,7 +165,7 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 		private final boolean createGSEA;
 
 		public CreateGSEAState(BrowsePathwayState target, boolean createGSEA) {
-			super("Select query stratification by clicking on the header brick of one of the displayed columns");
+			super("Select query group by clicking on a block of one of the displayed columns");
 			this.target = target;
 			this.createGSEA = createGSEA;
 		}
@@ -192,7 +197,7 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 	// private final boolean createGSEA;
 	//
 	// public CreateAndBrowseGSEAState(BrowsePathwayState target, boolean createGSEA) {
-	// super("Select query stratification by clicking on the header brick of one of the displayed columns");
+	// super("Select query stratification by clicking on the header block of one of the displayed columns");
 	// this.target = target;
 	// this.createGSEA = createGSEA;
 	// }
@@ -281,6 +286,31 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 		}
 	}
 
+	public static class GeneSetMatchedScore extends DefaultComputedStratificationScore {
+		private final boolean isPercentage;
+
+		public GeneSetMatchedScore(String label, IStratificationAlgorithm algorithm, boolean isPercentage) {
+			super(label, algorithm, ComputeScoreFilters.ALL, isPercentage ? color.darker() : color, bgColor);
+			this.isPercentage = isPercentage;
+		}
+
+		@Override
+		public boolean supports(EDataDomainQueryMode mode) {
+			return mode == EDataDomainQueryMode.PATHWAYS;
+		}
+
+		@Override
+		public PiecewiseMapping createMapping() {
+			PiecewiseMapping m;
+			if (isPercentage) {
+				m = new PiecewiseMapping(0, 1);
+			} else {
+				m = new PiecewiseMapping(0, Float.NaN);
+			}
+			return m;
+		}
+	}
+
 	public static Pair<Perspective, Group> resolve(IStratificationAlgorithm algorithm) {
 		if (algorithm instanceof GSEAAlgorithmPValue)
 			algorithm = ((GSEAAlgorithmPValue) algorithm).getUnderlying();
@@ -302,18 +332,23 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 		} else {
 			// now we have the data for the stuff
 			AGSEAAlgorithm algorithm;
+			Perspective perspective = strat.getRecordPerspective();
+			Perspective genes = strat.getDimensionPerspective();
+			String prefix = createGSEA ? "GSEA" : "PGSEA";
 			if (createGSEA)
-				algorithm = new GSEAAlgorithm(strat.getRecordPerspective(), group, 1.0f);
+				algorithm = new GSEAAlgorithm(perspective, group, 1.0f);
 			else
-				algorithm = new PGSEAAlgorithm(strat.getRecordPerspective(), group);
-			String label = String.format("GSEA of %s", strat.getRecordPerspective().getLabel());
-			IScore gsea = new GeneSetScore("GSEA", algorithm, false);
-			IScore pValue = new GeneSetScore("GSEA P-Value", algorithm.asPValue(), true);
+				algorithm = new PGSEAAlgorithm(perspective, group);
+			String label = String.format(prefix + " of %s", perspective.getLabel());
+			IScore gsea = new GeneSetScore(prefix, algorithm, false);
+			IScore pValue = new GeneSetScore(prefix + "P-Value", algorithm.asPValue(), true);
 
-			MultiScore s = new MultiScore(label, color, bgColor, RankTableConfigBase.GROUP_MODE);
-			s.add(gsea);
+			MultiScore s = new MultiScore(label, color, bgColor, RankTableConfigBase.NESTED_MODE);
 			s.add(pValue);
-			return new IScore[] {s};
+			s.add(gsea);
+			IScore matched = new GeneSetMatchedScore("# Mapped Genes", new GeneSetMappedAlgorithm(genes, false), false);
+			IScore matchedP = new GeneSetMatchedScore("% Mapped Genes", new GeneSetMappedAlgorithm(genes, true), true);
+			return new IScore[] { matchedP, matched, s };
 		}
 
 	}

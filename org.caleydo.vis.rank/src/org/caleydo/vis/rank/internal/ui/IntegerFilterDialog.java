@@ -6,7 +6,7 @@
 package org.caleydo.vis.rank.internal.ui;
 
 import org.caleydo.core.event.EventPublisher;
-import org.caleydo.vis.rank.internal.event.SizeFilterEvent;
+import org.caleydo.vis.rank.internal.event.IntegerFilterEvent;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
@@ -41,7 +41,7 @@ public class IntegerFilterDialog extends AFilterDialog {
 	@Override
 	public void create() {
 		super.create();
-		getShell().setText("Edit filter of size");
+		getShell().setText("Edit Filter of size");
 	}
 
 	@Override
@@ -86,13 +86,13 @@ public class IntegerFilterDialog extends AFilterDialog {
 	@Override
 	protected void triggerEvent(boolean cancel) {
 		if (cancel) {
-			EventPublisher.trigger(new SizeFilterEvent(min, max).to(receiver));
+			EventPublisher.trigger(new IntegerFilterEvent(min, max).to(receiver));
 			return;
 		}
 		String t = minUI.getText().trim();
 		Integer minV = t.length() > 0 ? new Integer(t) : null;
 		t = maxUI.getText().trim();
 		Integer maxV = t.length() > 0 ? new Integer(t) : null;
-		EventPublisher.trigger(new SizeFilterEvent(minV, maxV).to(receiver));
+		EventPublisher.trigger(new IntegerFilterEvent(minV, maxV).to(receiver));
 	}
 }

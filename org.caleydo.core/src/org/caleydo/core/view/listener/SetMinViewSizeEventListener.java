@@ -28,7 +28,12 @@ public class SetMinViewSizeEventListener
 		if (event instanceof SetMinViewSizeEvent) {
 			SetMinViewSizeEvent setMinViewSizeEvent = (SetMinViewSizeEvent) event;
 			if (setMinViewSizeEvent.getView() == view) {
-				handler.setMinSize(setMinViewSizeEvent.getMinWidth(), setMinViewSizeEvent.getMinHeight());
+				AGLView view = setMinViewSizeEvent.getView();
+				int minWidth = setMinViewSizeEvent.getMinWidth();
+				int minHeight = setMinViewSizeEvent.getMinHeight();
+				minWidth = view.getParentGLCanvas().toRawPixel(minWidth);
+				minHeight = view.getParentGLCanvas().toRawPixel(minHeight);
+				handler.setMinSize(minWidth, minHeight);
 				MinSizeAppliedEvent e = new MinSizeAppliedEvent();
 				e.setView(view);
 				e.setSender(this);

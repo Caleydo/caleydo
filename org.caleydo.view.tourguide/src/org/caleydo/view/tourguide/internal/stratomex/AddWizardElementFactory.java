@@ -28,6 +28,7 @@ import org.caleydo.view.tourguide.api.state.BrowseStratificationState;
 import org.caleydo.view.tourguide.api.state.EWizardMode;
 import org.caleydo.view.tourguide.api.state.IState;
 import org.caleydo.view.tourguide.api.state.IStateMachine;
+import org.caleydo.view.tourguide.api.state.ITransition;
 import org.caleydo.view.tourguide.api.state.SimpleTransition;
 import org.caleydo.view.tourguide.api.util.PathwayOracle;
 import org.caleydo.view.tourguide.internal.score.ScoreFactories;
@@ -35,6 +36,8 @@ import org.caleydo.view.tourguide.internal.stratomex.state.AlonePathwayState;
 import org.caleydo.view.tourguide.internal.stratomex.state.BrowseNumericalAndStratificationState;
 import org.caleydo.view.tourguide.internal.stratomex.state.BrowsePathwayAndStratificationState;
 import org.caleydo.view.tourguide.internal.stratomex.state.SelectStateState;
+
+import com.google.common.collect.Lists;
 
 /**
  * @author Samuel Gratzl
@@ -78,36 +81,35 @@ public class AddWizardElementFactory implements IAddWizardElementFactory {
 
 		switch (mode) {
 		case GLOBAL:
-			state.addTransition(addStratification, new SimpleTransition(browseStratification, "From list"));
+			state.addTransition(addStratification, new SimpleTransition(browseStratification, "From list", null));
 			state.addTransition(addNumerical, new SimpleTransition(browseNumerical,
-					"From list and display unstratified"));
+					"From list and display unstratified", null));
 			state.addState(ALONE_PATHWAY, new AlonePathwayState());
 
-			if (!existing.isEmpty()) {
-				// select pathway -> show preview -> select stratification -> show both
-				IState browseIntermediate = state.addState(BROWSE_AND_SELECT_PATHWAY,
-						new BrowsePathwayAndStratificationState());
-				state.addTransition(addPathway, new SimpleTransition(browseIntermediate,
-						"From list and stratify with a displayed stratification"));
-			}
-			if (!existing.isEmpty()) {
-				// select pathway -> show preview -> select stratification -> show both
-				IState browseIntermediate = state.addState(BROWSE_AND_SELECT_OTHER,
-						new BrowseNumericalAndStratificationState());
-				state.addTransition(addNumerical, new SimpleTransition(browseIntermediate,
-						"From list and stratify with a displayed stratification"));
-			}
+			// select pathway -> show preview -> select stratification -> show both
+			IState browseIntermediate = state.addState(BROWSE_AND_SELECT_PATHWAY,
+					new BrowsePathwayAndStratificationState());
+			state.addTransition(addPathway, new SimpleTransition(browseIntermediate,
+					"From list and stratify with a displayed stratification", !existing.isEmpty() ? null
+							: "At least one mappable stratification must be already visible"));
+			// select pathway -> show preview -> select stratification -> show both
+			IState browseOtherIntermediate = state.addState(BROWSE_AND_SELECT_OTHER,
+					new BrowseNumericalAndStratificationState());
+			state.addTransition(addNumerical, new SimpleTransition(browseOtherIntermediate,
+					"From list and stratify with a displayed stratification", !existing.isEmpty() ? null
+							: "At least one mappable stratification must already be visible"));
 			break;
 		case DEPENDENT:
 			browsePathway.setUnderlying(source.getRecordPerspective());
 			browseNumerical.setUnderlying(source.getRecordPerspective());
 
-			if (PathwayOracle.canBeUnderlying(source))
-				state.addTransition(addPathway, new SimpleTransition(browsePathway, "From list"));
-			state.addTransition(addNumerical, new SimpleTransition(browseNumerical, "From list"));
+			state.addTransition(addPathway,
+					new SimpleTransition(browsePathway, "From list", PathwayOracle.canBeUnderlying(source) ? null
+							: "The selected stratification can't be mapped to a pathway"));
+			state.addTransition(addNumerical, new SimpleTransition(browseNumerical, "From list", null));
 			break;
 		case INDEPENDENT:
-			state.addTransition(addStratification, new SimpleTransition(browseStratification, "From list"));
+			state.addTransition(addStratification, new SimpleTransition(browseStratification, "From list", null));
 			break;
 		}
 
@@ -160,8 +162,18 @@ public class AddWizardElementFactory implements IAddWizardElementFactory {
 	 */
 	private static void addStartTransition(StateMachineImpl state, String stateID) {
 		IState target = state.get(stateID);
-		if (!state.getTransitions(target).isEmpty())
-			state.addTransition(state.getCurrent(), new SimpleTransition(target, target.getLabel()));
+		List<ITransition> transitions = state.getTransitions(target);
+		if (transitions.isEmpty())
+			return;
+		String reason = "Unknown";
+		for (ITransition t : Lists.reverse(transitions)) {
+			if (t.isEnabled()) {
+				reason = null;
+				break;
+			}
+			reason = t.getDisabledReason();
+		}
+		state.addTransition(state.getCurrent(), new SimpleTransition(target, target.getLabel(), reason));
 	}
 	@Override
 	public AAddWizardElement createForStratification(IStratomexAdapter adapter, AGLView view) {

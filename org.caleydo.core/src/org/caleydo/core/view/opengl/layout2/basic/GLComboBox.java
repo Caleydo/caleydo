@@ -7,12 +7,11 @@ package org.caleydo.core.view.opengl.layout2.basic;
 
 import gleem.linalg.Vec2f;
 
-import org.caleydo.core.util.color.Color;
-import java.awt.Point;
 import java.util.List;
 import java.util.Objects;
 
 import org.caleydo.core.util.base.ILabeled;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
@@ -199,7 +198,7 @@ public class GLComboBox<T> extends AGLButton {
 	@Override
 	protected void onMouseMoved(Pick pick) {
 		if (this.hovered) {
-			setHoveredIndex(toIndex(pick.getPickedPoint()));
+			setHoveredIndex(toIndex(pick.getDIPPickedPoint()));
 		}
 		super.onMouseMoved(pick);
 	}
@@ -246,7 +245,7 @@ public class GLComboBox<T> extends AGLButton {
 	 * @param pickedPoint
 	 * @return -1 if none else the index
 	 */
-	private int toIndex(Point pickedPoint) {
+	private int toIndex(Vec2f pickedPoint) {
 		if (!isOpen)
 			return -1;
 		float y = toRelative(pickedPoint).y();

@@ -4,7 +4,7 @@
  * Licensed under the new BSD license, available at http://caleydo.org/license
  ******************************************************************************/
 /**
- * 
+ *
  */
 package org.caleydo.view.enroute.event;
 
@@ -13,11 +13,12 @@ import org.caleydo.core.event.AEvent;
 /**
  * Event that determines whether the width of enRoute's content should fit to
  * the width of the view.
- * 
+ *
  * @author Christian Partl
- * 
+ *
  */
 public class FitToViewWidthEvent extends AEvent {
+
 
 	/**
 	 * Determines whether the width of enRoute's content should fit to the width
@@ -25,7 +26,7 @@ public class FitToViewWidthEvent extends AEvent {
 	 */
 	private boolean fitToViewWidth;
 
-	
+
 	public FitToViewWidthEvent(boolean fitToViewWidth) {
 		this.fitToViewWidth = fitToViewWidth;
 	}
