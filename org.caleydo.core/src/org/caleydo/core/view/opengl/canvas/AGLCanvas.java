@@ -16,7 +16,6 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.GLRunnable;
 
-import org.caleydo.core.internal.Activator;
 import org.caleydo.core.internal.MyPreferences;
 import org.caleydo.core.util.function.AFloatFunction;
 import org.caleydo.core.util.function.IFloatFunction;
@@ -28,9 +27,14 @@ import org.eclipse.jface.util.PropertyChangeEvent;
  *
  */
 public abstract class AGLCanvas implements IGLCanvas {
-	private float scale = MyPreferences.getViewZoomFactor();
+	private float scale;
 
 	public AGLCanvas(GLAutoDrawable drawable) {
+		float s = MyPreferences.getViewZoomFactor();
+		if (s <= 0)
+			s = 1;
+		scale = s;
+
 		drawable.addGLEventListener(new ReshapeOnScaleChange());
 	}
 
@@ -55,7 +59,7 @@ public abstract class AGLCanvas implements IGLCanvas {
 	public final Vec2f toDIP(Point point) {
 		return new Vec2f(dip(point.x), dip(point.y));
 	}
-	
+
 	@Override
 	public Float toDIP(Rectangle viewArea_raw) {
 		return new Rectangle2D.Float(toDIP(viewArea_raw.x), toDIP(viewArea_raw.y), toDIP(viewArea_raw.width),
@@ -113,7 +117,7 @@ public abstract class AGLCanvas implements IGLCanvas {
 	private class ReshapeOnScaleChange implements GLEventListener, IPropertyChangeListener {
 		@Override
 		public void init(GLAutoDrawable drawable) {
-			Activator.getDefault().getPreferenceStore().addPropertyChangeListener(this);
+			MyPreferences.prefs().addPropertyChangeListener(this);
 		}
 
 		@Override
@@ -123,7 +127,7 @@ public abstract class AGLCanvas implements IGLCanvas {
 
 		@Override
 		public void dispose(GLAutoDrawable drawable) {
-			Activator.getDefault().getPreferenceStore().removePropertyChangeListener(this);
+			MyPreferences.prefs().removePropertyChangeListener(this);
 		}
 
 		@Override
