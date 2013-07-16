@@ -583,6 +583,9 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 
 		dataGraph.removeNode(viewNode);
 		viewNodes.remove(viewNode);
+		if (dragAndDropController.getDropArea() == viewNode)
+			dragAndDropController.setDropArea(null);
+		graphLayout.cleanupNode(viewNode);
 		viewNode.destroy();
 
 		if (viewNode == currentMouseOverNode)

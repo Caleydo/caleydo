@@ -73,6 +73,13 @@ public class DragAndDropController {
 
 	}
 
+	/**
+	 * @return the dropArea, see {@link #dropArea}
+	 */
+	public IDropArea getDropArea() {
+		return dropArea;
+	}
+
 	public void clearDraggables() {
 		draggables.clear();
 	}
