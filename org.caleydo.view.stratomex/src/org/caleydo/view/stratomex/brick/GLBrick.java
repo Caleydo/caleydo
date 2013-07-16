@@ -278,9 +278,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 	public void initialize() {
 		super.initialize();
 		tablePerspectiveSelectionManager = new EventBasedSelectionManager(this, TablePerspective.DATA_CONTAINER_IDTYPE);
-		tablePerspectiveSelectionManager.registerEventListeners();
 		recordGroupSelectionManager = new EventBasedSelectionManager(this, dataDomain.getRecordGroupIDType());
-		recordGroupSelectionManager.registerEventListeners();
 		// dataDomain.cloneRecordGroupSelectionManager().clone();
 
 		if (brickLayoutConfiguration == null) {
@@ -723,7 +721,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	@Override
 	public void unregisterEventListeners() {
-
+		super.unregisterEventListeners();
 		if (renameListener != null) {
 			eventPublisher.removeListener(renameListener);
 			renameListener = null;
@@ -757,6 +755,8 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 			eventPublisher.removeListener(exportBrickDataEventListener);
 			exportBrickDataEventListener = null;
 		}
+
+		listeners.unregisterAll();
 	}
 
 	private void registerPickingListeners() {

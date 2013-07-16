@@ -198,13 +198,13 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 	private boolean isBubbleTextureDirty;
 	private boolean isPathStartSelected = false;
 	private int selectedPathID;
-	
+
 	private boolean useBubbleSets = false;
 	private PathwayBubbleSet bubbleSet = null;//new PathwayBubbleSet();
 	private PathwayBubbleSet alternativeBubbleSet = null; //new PathwayBubbleSet();
 	private PathwayBubbleSet contextPathBubbleSet = null;//new PathwayBubbleSet();
 
-	
+
 	private boolean isControlKeyDown = false;
 	private boolean isShiftKeyDown = false;
 
@@ -258,7 +258,6 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		pathwayItemManager = PathwayItemManager.get();
 
 		metaboliteSelectionManager = new EventBasedSelectionManager(this, IDType.getIDType("METABOLITE"));
-		metaboliteSelectionManager.registerEventListeners();
 
 		pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get().getDataDomainByType(
 				"org.caleydo.datadomain.pathway");
@@ -377,7 +376,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 	public void init(final GL2 gl) {
 
 		displayListIndex = gl.glGenLists(1);
-		
+
 
 		// Check if pathway exists or if it's already loaded
 		if (pathway == null || !pathwayManager.hasItem(pathway.getID()))
@@ -595,12 +594,12 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 
 				pathwayTextureScaling = pathway.getHeight()
 						/ (float) pixelGLConverter.getPixelHeightForGLHeight(viewFrustum.getHeight());
-				
+
 				if(useBubbleSets)
-				{					
+				{
 					pickX = (int) ((pickX - pixelGLConverter.getPixelWidthForGLWidth(vecTranslation.x())) * pathwayTextureScaling);
 					pickY = (int) ((pickY - pixelGLConverter.getPixelHeightForGLHeight(vecTranslation.y())) * pathwayTextureScaling);
-	
+
 					// code adapted from documentation at
 					// http://docs.oracle.com/javase/6/docs/api/java/awt/image/PixelGrabber.html
 					int[] pixels = bubbleSet.getBubbleSetGLRenderer().getPxl(pickX, pickX);
@@ -867,9 +866,9 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 			gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_KEEP);
 			textureOffset -= 2f * PathwayRenderStyle.Z_OFFSET;
 			gl.glTranslatef(0.0f, 0.0f, textureOffset);
-			
+
 			if(useBubbleSets)
-			{			
+			{
 				if(bubbleSet == null){
 					bubbleSet= new PathwayBubbleSet();
 					bubbleSet.getBubbleSetGLRenderer().init(gl);
@@ -1812,7 +1811,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 	}
 
 	public void enablePathSelection(boolean isPathSelection) {
-		this.isPathSelectionMode = isPathSelection;		
+		this.isPathSelectionMode = isPathSelection;
 		isPathStartSelected = false;
 		if(isPathSelection)
 			this.useBubbleSets = true;

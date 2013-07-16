@@ -176,7 +176,7 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 
 	private HashSet<IMouseWheelHandler> mouseWheelListeners;
 
-	protected GLMouseWheelListener glMouseWheelListener;
+	protected final GLMouseWheelListener glMouseWheelListener;
 
 	private boolean focusGained = false;
 
@@ -1141,7 +1141,6 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 		Logger.log(new Status(IStatus.INFO, toString(), "Disposing view"));
 
 		parentGLCanvas.removeMouseListener(glMouseListener);
-		parentGLCanvas.removeMouseListener(glMouseWheelListener);
 
 		GL2 gl = drawable.getGL().getGL2();
 		// First, destroy the remote views, then unregister, otherwise the
@@ -1159,6 +1158,7 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	 */
 	public final void destroy(GL2 gl) {
 		System.out.println("destroy " + label);
+		parentGLCanvas.removeMouseListener(glMouseWheelListener);
 
 		pickingManager.removeViewSpecificData(uniqueID);
 		unregisterEventListeners();

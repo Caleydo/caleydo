@@ -1188,6 +1188,8 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 	protected void destroyViewSpecificContent(GL2 gl) {
 		if (mainRow != null)
 			mainRow.destroy(gl);
+		this.clusterBricks.clear();
+		this.detailBrick = null;
 	}
 
 	@ListenTo(sendToMe = true)
