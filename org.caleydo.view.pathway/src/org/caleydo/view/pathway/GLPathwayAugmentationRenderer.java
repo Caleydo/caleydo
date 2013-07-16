@@ -25,6 +25,7 @@ import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
+import org.caleydo.datadomain.genetic.EGeneIDTypes;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
@@ -887,19 +888,16 @@ public class GLPathwayAugmentationRenderer {
 
 		List<Integer> mappedDavidIds = pathwayItemManager.getDavidIDsByPathwayVertexRep(vertexRep);
 
-		Average average = null;
-		for (Integer davidID : mappedDavidIds) {
-			if (selectedSamplesVA == null) {
-				average = tablePerspective.getContainerStatistics().getAverage(IDType.getIDType("DAVID"), davidID);
-			} else {
-				average = TablePerspectiveStatistics.calculateAverage(selectedSamplesVA,
-						tablePerspective.getDataDomain(), IDType.getIDType("DAVID"), davidID);
-			}
-			return average;
-			// TODO: this has no multi-mapping
-		}
+		final IDType david = IDType.getIDType(EGeneIDTypes.DAVID.name());
 
-		return null;
+		Average average = null;
+		if (selectedSamplesVA == null) {
+			average = tablePerspective.getContainerStatistics().getAverage(david, mappedDavidIds);
+		} else {
+			average = TablePerspectiveStatistics.calculateAverage(selectedSamplesVA,
+					tablePerspective.getDataDomain(), david, mappedDavidIds);
+		}
+		return average;
 	}
 
 	/**
