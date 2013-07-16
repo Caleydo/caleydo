@@ -106,6 +106,8 @@ import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
+import com.google.common.collect.Lists;
+
 /**
  * @author Samuel Gratzl
  *
@@ -591,7 +593,7 @@ public class GLTourGuideView extends AGLElementView {
 		Collection<IScore> r = new ArrayList<>();
 		Deque<ARankColumnModel> cols = new LinkedList<>();
 		if (justSortingCriteria) {
-			cols.add((ARankColumnModel) table.getDefaultRanker().getOrderBy());
+			cols.addAll(Lists.newArrayList(table.getColumnsOf(table.getDefaultRanker())));
 		} else
 			cols.addAll(table.getColumns());
 
