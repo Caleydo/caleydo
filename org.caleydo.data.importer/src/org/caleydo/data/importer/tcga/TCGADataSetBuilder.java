@@ -87,7 +87,7 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 
 		final IDSpecification geneRowID = TCGADefinitions.createGeneIDSpecificiation();
 
-		final IDSpecification proteinRowID = new IDSpecification("protein", "protein");
+		final IDSpecification proteinRowID = geneRowID; // ticket #1497 new IDSpecification("protein", "protein");
 		final IDSpecification microRNARowID = new IDSpecification("microRNA", "microRNA");
 		final IDSpecification clinicalRowID = new IDSpecification("TCGA_SAMPLE", "TCGA_SAMPLE");
 
