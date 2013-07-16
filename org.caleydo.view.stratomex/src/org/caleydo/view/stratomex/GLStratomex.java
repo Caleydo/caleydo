@@ -15,6 +15,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
@@ -39,6 +40,7 @@ import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.events.SelectionCommandListener;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.events.RecordVAUpdateEvent;
+import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.similarity.RelationAnalyzer;
 import org.caleydo.core.event.EventListenerManager;
 import org.caleydo.core.event.EventListenerManager.DeepScan;
@@ -56,6 +58,7 @@ import org.caleydo.core.id.IDType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
 import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
@@ -100,6 +103,7 @@ import org.caleydo.view.stratomex.listener.AddGroupsToStratomexListener;
 import org.caleydo.view.stratomex.listener.GLStratomexKeyListener;
 import org.caleydo.view.stratomex.listener.ReplaceTablePerspectiveListener;
 import org.caleydo.view.stratomex.tourguide.TourguideAdapter;
+import org.caleydo.view.stratomex.tourguide.event.HighlightBandEvent;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
@@ -170,6 +174,11 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 
 	private ElementLayout leftBrickColumnSpacing;
 	private ElementLayout rightBrickColumnSpacing;
+
+	/**
+	 * set of extra highlights to bands
+	 */
+	private Map<String, Color> bandHighlights = new HashMap<>(2);
 
 	/**
 	 * The id category used to map between the records of the dimension groups. Only data with the same recordIDCategory
@@ -1668,6 +1677,36 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	@ListenTo(sendToMe = true)
 	private void onSelectElements(SelectElementsEvent event) {
 		selectElements(event.getIds(), event.getIdType(), event.getEventSpace(), event.getSelectionType());
+	}
+
+	@ListenTo(sendToMe = true)
+	private void onHighlightBand(HighlightBandEvent event) {
+		if (event.isClearAll()) {
+			bandHighlights.clear();
+		} else {
+			String key = toHighlightBandKey(event.getGroupA(), event.getGroupB());
+			String key2 = toHighlightBandKey(event.getGroupB(), event.getGroupA());
+			if (event.isHighlight()) {
+				bandHighlights.put(key, event.getColor());
+				bandHighlights.put(key2, event.getColor());
+			} else {
+				bandHighlights.remove(key);
+				bandHighlights.remove(key2);
+			}
+		}
+
+		setDisplayListDirty();
+	}
+
+	private static String toHighlightBandKey(Group ag, Group bg) {
+		return ag.getID() + "/" + bg.getID();
+	}
+
+	public Color isHighlightingBand(GLBrick a, GLBrick b) {
+		final TablePerspective at = a.getTablePerspective();
+		final TablePerspective bt = b.getTablePerspective();
+		String key = toHighlightBandKey(at.getRecordGroup(), bt.getRecordGroup());
+		return bandHighlights.get(key);
 	}
 
 	public void selectElements(Iterable<Integer> ids, IDType idType, String dataDomainID, SelectionType selectionType) {

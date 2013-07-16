@@ -20,7 +20,6 @@ import java.util.Set;
 import javax.media.opengl.GLAutoDrawable;
 
 import org.caleydo.core.data.datadomain.IDataDomain;
-import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.data.DataDomainUpdateEvent;
@@ -46,6 +45,7 @@ import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.score.ISerializeableScore;
 import org.caleydo.view.tourguide.api.score.MultiScore;
 import org.caleydo.view.tourguide.internal.SerializedTourGuideView;
+import org.caleydo.view.tourguide.internal.TourGuideRenderStyle;
 import org.caleydo.view.tourguide.internal.compute.ComputeAllOfJob;
 import org.caleydo.view.tourguide.internal.compute.ComputeExtrasJob;
 import org.caleydo.view.tourguide.internal.compute.ComputeForScoreJob;
@@ -105,8 +105,6 @@ import org.eclipse.core.runtime.jobs.IJobChangeListener;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-
-import com.google.common.collect.Lists;
 
 /**
  * @author Samuel Gratzl
@@ -593,7 +591,7 @@ public class GLTourGuideView extends AGLElementView {
 		Collection<IScore> r = new ArrayList<>();
 		Deque<ARankColumnModel> cols = new LinkedList<>();
 		if (justSortingCriteria) {
-			cols.addAll(Lists.newArrayList(table.getColumnsOf(table.getDefaultRanker())));
+			cols.add((ARankColumnModel) table.getDefaultRanker().getOrderBy());
 		} else
 			cols.addAll(table.getColumns());
 
@@ -783,7 +781,7 @@ public class GLTourGuideView extends AGLElementView {
 		public void renderRowBackground(GLGraphics g, float x, float y, float w, float h, boolean even, IRow row,
 				IRow selected) {
 			if (row == selected) {
-				g.color(SelectionType.SELECTION.getColor());
+				g.color(TourGuideRenderStyle.COLOR_SELECTED_ROW);
 				g.incZ();
 				g.fillRect(x, y, w, h);
 				g.color(RenderStyle.COLOR_SELECTED_BORDER);
@@ -791,7 +789,7 @@ public class GLTourGuideView extends AGLElementView {
 				g.drawLine(x, y + h, x + w, y + h);
 				g.decZ();
 			} else if (stratomex.isVisible((AScoreRow) row)) {
-				g.color(RenderStyle.COLOR_SELECTED_ROW);
+				g.color(TourGuideRenderStyle.COLOR_STRATOMEX_ROW);
 				g.fillRect(x, y, w, h);
 			} else if (!even) {
 				g.color(RenderStyle.COLOR_BACKGROUND_EVEN);

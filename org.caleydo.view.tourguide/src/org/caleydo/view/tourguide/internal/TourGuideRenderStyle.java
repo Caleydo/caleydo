@@ -21,14 +21,16 @@ public class TourGuideRenderStyle extends GeneralRenderStyle {
 
 	private static final String ICON_PREFIX = "resources/icons/view/tourguide/";
 
-	public static final Color STRATOMEX_FOUND_GROUP = SelectionType.SELECTION.getColor();
-
-	public static final Color COLOR_SELECTED_ROW = SelectionType.SELECTION.getColor();
 	public static final Color COLOR_STRATOMEX_ROW = RenderStyle.COLOR_SELECTED_ROW;
+	public static final Color COLOR_SELECTED_ROW = SelectionType.SELECTION.getColor();
+
+	public static final Color STRATOMEX_HIT_GROUP = new Color(220, 220, 220);
+	public static final Color STRATOMEX_HIT_BAND = Color.YELLOW; // TODO
 
 	public static final String ICON_FILTER = ICON_PREFIX + "filter.png";
 	public static final String ICON_FILTER_DISABLED = ICON_PREFIX + "filter_disabled.png";
 	public static final String ICON_ADD = ICON_PREFIX + "add.png";
 	public static final String ICON_ADD_COLOR = ICON_PREFIX + "add_color.png";
 	public static final String ICON_BASKET = ICON_PREFIX + "basket.png";
+
 }

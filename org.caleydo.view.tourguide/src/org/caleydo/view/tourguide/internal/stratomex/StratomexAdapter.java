@@ -5,6 +5,9 @@
  ******************************************************************************/
 package org.caleydo.view.tourguide.internal.stratomex;
 
+import static org.caleydo.view.tourguide.internal.TourGuideRenderStyle.STRATOMEX_HIT_BAND;
+import static org.caleydo.view.tourguide.internal.TourGuideRenderStyle.STRATOMEX_HIT_GROUP;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -22,21 +25,24 @@ import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.ITablePerspectiveBasedView;
 import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.stratomex.event.SelectElementsEvent;
+import org.caleydo.view.stratomex.tourguide.event.HighlightBandEvent;
 import org.caleydo.view.stratomex.tourguide.event.HighlightBrickEvent;
 import org.caleydo.view.stratomex.tourguide.event.UpdateNumericalPreviewEvent;
 import org.caleydo.view.stratomex.tourguide.event.UpdatePathwayPreviewEvent;
 import org.caleydo.view.stratomex.tourguide.event.UpdateStratificationPreviewEvent;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
-import org.caleydo.view.tourguide.internal.TourGuideRenderStyle;
 import org.caleydo.view.tourguide.internal.model.AScoreRow;
 import org.caleydo.view.tourguide.internal.model.ITablePerspectiveScoreRow;
 import org.caleydo.view.tourguide.internal.model.InhomogenousPerspectiveRow;
 import org.caleydo.view.tourguide.internal.model.MaxGroupCombiner;
 import org.caleydo.view.tourguide.internal.model.PathwayPerspectiveRow;
 import org.caleydo.view.tourguide.internal.stratomex.event.WizardEndedEvent;
+import org.caleydo.view.tourguide.spi.score.IGroupScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
 
 import com.google.common.base.Objects;
+import com.google.common.base.Predicates;
+import com.google.common.collect.Iterables;
 
 /**
  * facade / adapter to {@link GLStratomex} to hide the communication details
@@ -73,6 +79,7 @@ public class StratomexAdapter {
 			TablePerspective bak = currentPreview;
 			removePreview();
 			clearHighlightRows(bak.getRecordPerspective().getIdType(), bak.getDataDomain());
+			unhighlightBand(null, null);
 		}
 	}
 
@@ -81,6 +88,7 @@ public class StratomexAdapter {
 		// remove all temporary stuff
 		if (currentPreview != null) {
 			clearHighlightRows(currentPreview.getRecordPerspective().getIdType(), currentPreview.getDataDomain());
+			unhighlightBand(null, null);
 		}
 		this.currentPreview = null;
 		this.currentPreviewGroup = null;
@@ -195,13 +203,13 @@ public class StratomexAdapter {
 			if (currentPreview.equals(strat)) {
 				if (!Objects.equal(currentPreviewGroup, group)) {
 					unhighlightBrick(currentPreview, currentPreviewGroup);
-					hightlightBrick(currentPreview, group, true);
+					highlightBrick(currentPreview, group, true);
 					currentPreviewGroup = group;
 				}
 			} else { // not same stratification
 				if (contains(strat)) { // part of stratomex
 					unhighlightBrick(currentPreview, currentPreviewGroup);
-					hightlightBrick(strat, group, true);
+					highlightBrick(strat, group, true);
 				} else {
 					updatePreview(strat, group);
 				}
@@ -213,13 +221,15 @@ public class StratomexAdapter {
 		}
 
 		// highlight connection band
-		if (strat != null)
-			hightlightRows(new_, visibleColumns, group);
-		else if (old != null) {
+		if (strat != null) {
+			highlightRows(new_, visibleColumns, group);
+			unhighlightBand(null, null);
+			highlightBand(new_, visibleColumns, group);
+		} else if (old != null) {
 			clearHighlightRows(old.getIdType(), old.getDataDomain());
+			unhighlightBand(null, null);
 		}
 	}
-
 	private void updatePreview(TablePerspective strat, Group group) {
 		this.currentPreview = strat;
 		UpdateStratificationPreviewEvent event = new UpdateStratificationPreviewEvent(strat);
@@ -227,7 +237,7 @@ public class StratomexAdapter {
 		triggerEvent(event);
 
 		if (group != null) {
-			hightlightBrick(strat, group, false);
+			highlightBrick(strat, group, false);
 		}
 		currentPreviewGroup = group;
 	}
@@ -244,7 +254,7 @@ public class StratomexAdapter {
 		triggerEvent(event);
 	}
 
-	private void hightlightRows(ITablePerspectiveScoreRow new_, Collection<IScore> visibleColumns, Group new_g) {
+	private void highlightRows(ITablePerspectiveScoreRow new_, Collection<IScore> visibleColumns, Group new_g) {
 		Pair<Collection<Integer>, IDType> intersection = new_.getIntersection(visibleColumns, new_g);
 		AEvent event = new SelectElementsEvent(intersection.getFirst(), intersection.getSecond(),
 				SelectionType.SELECTION).to(receiver);
@@ -252,21 +262,45 @@ public class StratomexAdapter {
 		triggerEvent(event);
 	}
 
+	private void highlightBand(ITablePerspectiveScoreRow new_, Collection<IScore> visibleColumns, Group group) {
+		IScore first = Iterables.find(visibleColumns, Predicates.instanceOf(IGroupScore.class));
+		if (first == null)
+			return;
+		Group bg = group;
+
+		IGroupScore s = (IGroupScore)first;
+		Group a_g = s.getGroup();
+		highlightBand(a_g, bg);
+	}
+
 	private void unhighlightBrick(TablePerspective strat, Group g) {
 		if (g == null)
 			return;
 		triggerEvent(new HighlightBrickEvent(strat, g, null).to(receiver.getTourguide()));
+
 	}
 
-	private void hightlightBrick(TablePerspective strat, Group g, boolean now) {
+	private void highlightBrick(TablePerspective strat, Group g, boolean now) {
 		if (g == null)
 			return;
-		AEvent event = new HighlightBrickEvent(strat, g, TourGuideRenderStyle.COLOR_STRATOMEX_ROW).to(receiver
+		AEvent event = new HighlightBrickEvent(strat, g, STRATOMEX_HIT_GROUP).to(receiver
 				.getTourguide());
 		if (now)
 			triggerEvent(event);
 		else
 			triggerDelayedEvent(event);
+	}
+
+	private void unhighlightBand(Group g_a, Group g_b) {
+		if (STRATOMEX_HIT_BAND == null)
+			return;
+		triggerEvent(new HighlightBandEvent(g_a, g_b, null).to(receiver));
+	}
+
+	private void highlightBand(Group g_a, Group g_b) {
+		if (g_a == null || g_b == null || STRATOMEX_HIT_BAND == null)
+			return;
+		triggerEvent(new HighlightBandEvent(g_a, g_b, STRATOMEX_HIT_BAND).to(receiver));
 	}
 
 	private void triggerEvent(AEvent event) {
