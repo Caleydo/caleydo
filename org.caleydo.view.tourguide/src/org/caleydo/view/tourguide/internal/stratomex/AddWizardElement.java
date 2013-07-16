@@ -117,7 +117,7 @@ public class AddWizardElement extends AAddWizardElement implements IReactions {
 
 	@Override
 	public String getLabel(Pick pick) {
-		if (hovered < 0)
+		if (pick.getObjectID() < 0)
 			return null;
 		IState current = stateMachine.getCurrent();
 		List<ITransition> transitions = stateMachine.getTransitions(current);
