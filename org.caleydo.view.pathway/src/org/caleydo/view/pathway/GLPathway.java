@@ -802,6 +802,8 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		}
 		// //////////////////////////START 1/2 HIER NEU CHRISITIAN
 
+		gl.glEnable(GL.GL_BLEND);
+		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 		gl.glPushMatrix();
 		gl.glTranslatef(vecTranslation.x(), vecTranslation.y(), vecTranslation.z());
 		gl.glScalef(vecScaling.x(), vecScaling.y(), vecScaling.z());
@@ -809,13 +811,14 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		if (enablePathwayTexture) {
 			float fPathwayTransparency = 1.0f;
 
-			pathwayTextureManager.renderPathway(gl, this, pathway, fPathwayTransparency, false);
+			// pathwayTextureManager.renderPathway(gl, this, pathway, fPathwayTransparency, false);
 		}
 
 		float pathwayHeight = pixelGLConverter.getGLHeightForPixelHeight(pathway.getHeight());
 
 		// Pathway texture height is subtracted from Y to align pathways to
 		// front level
+
 		gl.glEnable(GL.GL_STENCIL_TEST);
 		gl.glClearStencil(0);
 		gl.glClear(GL.GL_STENCIL_BUFFER_BIT);
@@ -857,6 +860,8 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 			// pathwayTextureManager.renderPathway(gl, this, pathway, fPathwayTransparency, false);
 			gl.glPopName();
 
+			gl.glEnable(GL.GL_STENCIL_TEST);
+			gl.glDisable(GL.GL_DEPTH_TEST);
 			gl.glStencilFunc(GL.GL_GREATER, 1, 0xff);
 			gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_KEEP);
 			textureOffset -= 2f * PathwayRenderStyle.Z_OFFSET;
@@ -1054,7 +1059,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 
 	@ListenTo
 	public void onMapTablePerspective(PathwayMappingEvent event) {
-		if (event.getReceiver() != this)
+		if (event.getReceiver() != this && event.getEventSpace() != pathwayPathEventSpace)
 			return;
 		augmentationRenderer.setMappingPerspective(event.getTablePerspective());
 		setDisplayListDirty();

@@ -2,7 +2,6 @@ package org.caleydo.view.subgraph;
 
 import gleem.linalg.Vec2f;
 
-import java.awt.Point;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -436,7 +435,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 
 			@Override
 			public void mouseMoved(IMouseEvent mouseEvent) {
-				Point mousePosition = mouseEvent.getRAWPoint();
+				Vec2f mousePosition = mouseEvent.getDIPPoint();
 				if (pathwayRow.getVisibility() != EVisibility.NONE) {
 					for (PathwayMultiFormInfo info : pathwayInfos) {
 						if (setWindowActive(mousePosition, info.window))
@@ -451,11 +450,11 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 					return;
 			}
 
-			private boolean setWindowActive(Point mousePosition, GLWindow window) {
+			private boolean setWindowActive(Vec2f mousePosition, GLWindow window) {
 				Vec2f location = window.getAbsoluteLocation();
 				Vec2f size = window.getSize();
-				if ((mousePosition.x >= location.x() && mousePosition.x <= location.x() + size.x())
-						&& (mousePosition.y >= location.y() && mousePosition.y <= location.y() + size.y())) {
+				if ((mousePosition.x() >= location.x() && mousePosition.x() <= location.x() + size.x())
+						&& (mousePosition.y() >= location.y() && mousePosition.y() <= location.y() + size.y())) {
 					windowToSetActive = window;
 					return true;
 				}
