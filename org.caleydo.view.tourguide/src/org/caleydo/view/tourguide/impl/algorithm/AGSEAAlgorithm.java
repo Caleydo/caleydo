@@ -12,7 +12,9 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
+import org.caleydo.core.id.IIDTypeMapper;
 import org.caleydo.view.tourguide.spi.algorithm.IComputeElement;
 import org.caleydo.view.tourguide.spi.algorithm.IStratificationAlgorithm;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -20,10 +22,15 @@ import org.eclipse.core.runtime.IProgressMonitor;
 public abstract class AGSEAAlgorithm implements IStratificationAlgorithm {
 	protected final Perspective perspective;
 	protected final Group group;
+	protected final IIDTypeMapper<Integer, Integer> dim2primary;
 
 	public AGSEAAlgorithm(Perspective perspective, Group group) {
 		this.perspective = perspective;
 		this.group = group;
+		ATableBasedDataDomain d = (ATableBasedDataDomain) perspective.getDataDomain();
+		IDType target = d.getDimensionIDType().getIDCategory().getPrimaryMappingType();
+		dim2primary = IDMappingManagerRegistry.get().getIDMappingManager(target)
+				.getIDTypeMapper(d.getDimensionIDType(), target);
 	}
 
 	/**
@@ -43,7 +50,8 @@ public abstract class AGSEAAlgorithm implements IStratificationAlgorithm {
 	@Override
 	public final IDType getTargetType(IComputeElement a, IComputeElement b) {
 		IDataDomain dataDomain = perspective.getDataDomain();
-		return ((ATableBasedDataDomain) dataDomain).getDimensionIDType();
+		// convert to primary = DAVID
+		return ((ATableBasedDataDomain) dataDomain).getDimensionIDType().getIDCategory().getPrimaryMappingType();
 	}
 
 	public final float compute(Set<Integer> geneSet, IProgressMonitor monitor) {
