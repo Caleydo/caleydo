@@ -410,7 +410,7 @@ public class GLKaplanMeier extends AGLView implements ISingleTablePerspectiveBas
 		}
 
 		// gl.glColor4fv(color.getRGBA(), 0);
-		drawCurve(gl, dataVector, color, group.getLabel());
+		drawCurve(gl, dataVector, color, group);
 		gl.glPopName();
 
 	}
@@ -451,7 +451,7 @@ public class GLKaplanMeier extends AGLView implements ISingleTablePerspectiveBas
 
 	}
 
-	private void drawCurve(GL2 gl, ArrayList<Float> dataVector, Color color, String label) {
+	private void drawCurve(GL2 gl, ArrayList<Float> dataVector, Color color, Group group) {
 
 		float plotHeight = getPlotHeight();
 		float plotWidth = getPlotWidth();
@@ -491,15 +491,33 @@ public class GLKaplanMeier extends AGLView implements ISingleTablePerspectiveBas
 
 		ConnectionLineRenderer connectionLineRenderer = new ConnectionLineRenderer();
 		connectionLineRenderer.setLineColor(color.getRGBA());
+		float translationZ = 0;
 		if (detailLevel == EDetailLevel.HIGH) {
-			LineLabelRenderer lineLabelRenderer = new LineLabelRenderer(1f, pixelGLConverter, label, textRenderer);
+			LineLabelRenderer lineLabelRenderer = new LineLabelRenderer(1f, pixelGLConverter, group.getLabel(),
+					textRenderer);
+			SelectionType selectionType = recordGroupSelectionManager.getHighestSelectionType(group.getID());
+			if (selectionType == SelectionType.SELECTION) {
+				translationZ = 0.1f;
+				lineLabelRenderer.setBackGroundColor(new float[] { 1, 1, 1, 1f });
+				lineLabelRenderer.setTextColor(color.getRGBA());
+			} else if (selectionType == SelectionType.MOUSE_OVER) {
+				lineLabelRenderer.setBackGroundColor(new float[] { 1, 1, 1, 1f });
+				lineLabelRenderer.setTextColor(color.getRGBA());
+				translationZ = 0.2f;
+			} else {
+				lineLabelRenderer.setBackGroundColor(new float[] { 1, 1, 1, 0.5f });
+			}
+
 			lineLabelRenderer.setAlignmentX(EAlignmentX.RIGHT);
-			lineLabelRenderer.setBackGroundColor(new float[] { 1, 1, 1, 0.5f });
+
+
 			lineLabelRenderer.setLabelTranslation(10, 0);
 			connectionLineRenderer.addAttributeRenderer(lineLabelRenderer);
 		}
+		gl.glPushMatrix();
+		gl.glTranslatef(0, 0, translationZ);
 		connectionLineRenderer.renderLine(gl, linePoints);
-
+		gl.glPopMatrix();
 		// gl.glEnd();
 	}
 
