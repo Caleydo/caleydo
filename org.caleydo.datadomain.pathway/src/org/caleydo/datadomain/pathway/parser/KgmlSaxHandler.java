@@ -246,8 +246,13 @@ public class KgmlSaxHandler extends DefaultHandler {
 
 				IDMappingManager genomeIdManager = ((PathwayDataDomain) DataDomainManager.get().getDataDomainByType(
 						PathwayDataDomain.DATA_DOMAIN_TYPE)).getGeneIDMappingManager();
+				try {
 				davidIDs = genomeIdManager.getIDAsSet(IDType.getIDType("ENTREZ_GENE_ID"), IDType.getIDType("DAVID"),
 						Integer.valueOf(entrezID));
+				} catch (NumberFormatException e) {
+					Logger.log(new Status(IStatus.INFO, this.toString(), "Invalid Entrez ID: " + entrezID));
+					continue;
+				}
 
 				if (davidIDs == null) {
 					Logger.log(new Status(IStatus.INFO, this.toString(), "No david mapping for Entrez ID: " + entrezID));

@@ -614,6 +614,10 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 		Set<IDataDomain> dataDomainsOfView = view.getDataDomains();
 		if (dataDomainsOfView != null) {
 			viewNode.update();
+			// Update data nodes, which might hide tableperspectives now missing in the
+			for (ADataNode dataNode : dataNodes) {
+				dataNode.update();
+			}
 			updateGraphEdgesOfViewNode(viewNode);
 		}
 	}

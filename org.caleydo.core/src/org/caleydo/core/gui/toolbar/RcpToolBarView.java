@@ -20,9 +20,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.ui.ISizeProvider;
 import org.eclipse.ui.part.ViewPart;
@@ -93,25 +91,15 @@ public class RcpToolBarView extends ViewPart implements ISizeProvider {
 		alToolBarManager.add(toolBarManager2);
 
 		toolBarManager.add(new OpenProjectAction());
-		toolBarManager.add(new SaveProjectAction());
 		toolBarManager.add(new ImportDataAction());
 		toolBarManager.add(new ExportDataAction());
+
 		if (!System.getProperty("os.name").startsWith("Windows"))
 			toolBarManager.add(new TakeSnapshotAction());
 
-		// IToolBarItem startClustering = new StartClusteringDialogAction(targetViewID);
-		// actionList.add(startClustering);
-
-		// if (DataDomainManager.getInstance().getDataDomain("org.caleydo.datadomain.genetic") != null) {
-		// toolBarManager2.add(new OpenSearchViewAction());
-		// }
-
+		toolBarManager2.add(new SaveProjectAction());
 		toolBarManager2.add(new ClearSelectionsAction());
 		toolBarManager2.add(new StartClusteringAction());
-		// FIXME: removed because we need new concept for restoring data
-		// toolBarManager2.add(new RestoreOriginalDataAction());
-
-		// toolBarManager2.add(new SwitchDataRepresentationAction());
 
 		toolBarManager.update(true);
 
@@ -119,11 +107,6 @@ public class RcpToolBarView extends ViewPart implements ISizeProvider {
 			toolBarManager2.dispose();
 		else
 			toolBarManager2.update(true);
-
-		Label label = new Label(group, SWT.CENTER);
-		label.setText("General");
-		label.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		label.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
 	}
 
 	@Override
