@@ -117,7 +117,7 @@ public class MappingRenderer extends ColorRenderer {
 
 		if (highestAverage != null) {
 
-			gl.glColor3fv(highestAverage.getFirst().getDataDomain().getColor().getRGB(), 0);
+			gl.glColor3fv(highestAverage.getFirst().getDataDomain().getColor().darker().getRGB(), 0);
 			// gl.glColor3f(1, 0, 0);
 			gl.glBegin(GL2.GL_POLYGON);
 			gl.glVertex3f(x + 4 * onePxlWidth, 3 * onePxlHeight, z);

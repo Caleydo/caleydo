@@ -550,7 +550,12 @@ public class GLPathwayAugmentationRenderer {
 				nodeColor = null;
 			}
 			if (average != null && nodeColor != null) {
+				// System.out.println(pixelGLConverter.getPixelWidthForGLWidth(glPathwayView.getViewFrustum().getWidth()));
+				if (pixelGLConverter.getPixelWidthForGLWidth(glPathwayView.getViewFrustum().getWidth()) < 300
+						|| pixelGLConverter.getPixelHeightForGLHeight(glPathwayView.getViewFrustum().getHeight()) < 300) {
 
+					return;
+				}
 
 				gl.glColor4f(nodeColor[0], nodeColor[1], nodeColor[2], 0.8f);
 				if (glPathwayView.getDetailLevel() == EDetailLevel.HIGH) {
@@ -782,7 +787,7 @@ public class GLPathwayAugmentationRenderer {
 
 		if (highestAverage != null) {
 
-			gl.glColor3fv(highestAverage.getFirst().getDataDomain().getColor().getRGB(), 0);
+			gl.glColor3fv(highestAverage.getFirst().getDataDomain().getColor().darker().getRGB(), 0);
 			// gl.glColor3f(1, 0, 0);
 			gl.glBegin(GL2.GL_POLYGON);
 			gl.glVertex3f(width, height, PathwayRenderStyle.Z_OFFSET);
@@ -804,6 +809,7 @@ public class GLPathwayAugmentationRenderer {
 	}
 
 	private void renderStdDevBar(final GL2 gl, float nodeWidth, float nodeHeight, float stdDev) {
+
 		// ////////////////////////////// h bars
 		gl.glDisable(GL.GL_BLEND);
 
@@ -819,8 +825,8 @@ public class GLPathwayAugmentationRenderer {
 		gl.glEnd();
 
 		// the actual bar
-		// gl.glColor3fv(mappingPerspective.getDataDomain().getColor().getRGB(), 0);
-		gl.glColor3f(49f / 255f, 163f / 255, 84f / 255);
+		gl.glColor3fv(mappingPerspective.getDataDomain().getColor().darker().getRGB(), 0);
+		// gl.glColor3f(49f / 255f, 163f / 255, 84f / 255);
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glVertex3f(0, bottom, PathwayRenderStyle.Z_OFFSET);
 		gl.glVertex3f(0, top, PathwayRenderStyle.Z_OFFSET);

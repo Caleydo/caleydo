@@ -808,10 +808,10 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		gl.glTranslatef(vecTranslation.x(), vecTranslation.y(), vecTranslation.z());
 		gl.glScalef(vecScaling.x(), vecScaling.y(), vecScaling.z());
 		float textureOffset = 0.0f;// to avoid z fighting
-		if (enablePathwayTexture) {
+		if (enablePathwayTexture && pathway.getType() != EPathwayDatabaseType.KEGG) {
 			float fPathwayTransparency = 1.0f;
 
-			// pathwayTextureManager.renderPathway(gl, this, pathway, fPathwayTransparency, false);
+			pathwayTextureManager.renderPathway(gl, this, pathway, fPathwayTransparency, false);
 		}
 
 		float pathwayHeight = pixelGLConverter.getGLHeightForPixelHeight(pathway.getHeight());
@@ -826,7 +826,8 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		gl.glTranslatef(0, pathwayHeight, textureOffset);
 		// if (!this.highlightVertices)
 		// augmentationRenderer.setVisible(false);
-		augmentationRenderer.renderPathway(gl, pathway, false);
+		// setDisplayListDirty();
+			augmentationRenderer.renderPathway(gl, pathway, false);
 		gl.glTranslatef(0, -pathwayHeight, -textureOffset);
 
 		if (enablePathwayTexture) {
