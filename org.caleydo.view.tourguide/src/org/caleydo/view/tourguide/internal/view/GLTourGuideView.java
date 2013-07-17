@@ -7,9 +7,11 @@ package org.caleydo.view.tourguide.internal.view;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Deque;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -79,6 +81,7 @@ import org.caleydo.view.tourguide.internal.view.ui.pool.ScorePoolUI;
 import org.caleydo.view.tourguide.spi.IScoreFactory;
 import org.caleydo.view.tourguide.spi.score.IRegisteredScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
+import org.caleydo.view.tourguide.spi.score.IStratificationScore;
 import org.caleydo.vis.rank.config.RankTableConfigBase;
 import org.caleydo.vis.rank.config.RankTableUIConfigBase;
 import org.caleydo.vis.rank.layout.RowHeightLayouts;
@@ -141,6 +144,9 @@ public class GLTourGuideView extends AGLElementView {
 		}
 	};
 
+	/**
+	 * mode of this tour guide
+	 */
 	private final EDataDomainQueryMode mode;
 	private final IDataDomainQueryModeSpecfics modeSpecifics;
 
@@ -167,6 +173,12 @@ public class GLTourGuideView extends AGLElementView {
 	};
 	private final RankTableKeyListener tableKeyListener;
 	private RankTableUIMouseKeyListener tableUIListener = null; // lazy
+
+	/**
+	 * history of added score to select what was the last added score, see #1493, use a weak list to avoid creating
+	 * references
+	 */
+	private final Deque<WeakReference<IScore>> scoreHistory = new LinkedList<>();
 
 	public GLTourGuideView(IGLCanvas glCanvas, EDataDomainQueryMode mode) {
 		super(glCanvas, VIEW_TYPE, VIEW_NAME);
@@ -233,7 +245,8 @@ public class GLTourGuideView extends AGLElementView {
 	 * @param score
 	 * @return
 	 */
-	private static ARankColumnModel createColumnModel(IScore score) {
+	private ARankColumnModel createColumnModel(IScore score) {
+		this.scoreHistory.add(new WeakReference<>(score));
 		PiecewiseMapping mapping = score.createMapping();
 		if (mapping == null) // by conventions
 			return new ScoreIntegerRankColumnModel(score);
@@ -595,10 +608,10 @@ public class GLTourGuideView extends AGLElementView {
 	/**
 	 * @return
 	 */
-	private Collection<IScore> getVisibleScores(AScoreRow row, boolean justSortingCriteria) {
+	private Collection<IScore> getVisibleScores(AScoreRow row, boolean justLastStratificationOne) {
 		Collection<IScore> r = new ArrayList<>();
 		Deque<ARankColumnModel> cols = new LinkedList<>();
-		if (justSortingCriteria) {
+		if (justLastStratificationOne) {
 			cols.addAll(Lists.newArrayList(table.getColumnsOf(table.getDefaultRanker())));
 		} else
 			cols.addAll(table.getColumns());
@@ -622,6 +635,16 @@ public class GLTourGuideView extends AGLElementView {
 		for (Iterator<IScore> it = r.iterator(); it.hasNext();) {
 			if (!it.next().supports(mode))
 				it.remove();
+		}
+		if (justLastStratificationOne && !r.isEmpty()) {
+			// #1493 select just the last score
+			for (Iterator<WeakReference<IScore>> it = this.scoreHistory.descendingIterator(); it.hasNext();) {
+				IScore s = it.next().get();
+				if (s == null)
+					it.remove();
+				else if (r.contains(s) && s instanceof IStratificationScore)
+					return Collections.singleton(s);
+			}
 		}
 		return r;
 	}
@@ -682,7 +705,10 @@ public class GLTourGuideView extends AGLElementView {
 			for (ARankColumnModel r : children) {
 				if (r instanceof IScoreMixin && ((IScoreMixin) r).getScore() instanceof ISerializeableScore)
 					r.hide();
+				else if (r instanceof IScoreMixin)
+					scoreHistory.remove(((IScoreMixin) r).getScore());
 			}
+
 			table.remove(col);
 		}
 	}

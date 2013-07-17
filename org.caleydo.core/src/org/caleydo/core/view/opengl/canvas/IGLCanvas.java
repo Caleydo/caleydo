@@ -70,15 +70,22 @@ public interface IGLCanvas {
 	int toRawPixel(float dip);
 
 	/**
-	 * @param viewArea_dip
+	 * see {@link #toRawPixel(float)} for a {@link Rectangle2D}
+	 *
 	 * @return
 	 */
 	Rectangle toRawPixel(Rectangle2D.Float viewArea_dip);
 
+	/**
+	 * converts the given {@link Rectangle} in raw pixel into DIP units
+	 *
+	 * @param viewArea_raw
+	 * @return
+	 */
 	Rectangle2D.Float toDIP(Rectangle viewArea_raw);
 
 	/**
-	 * @return
+	 * @return a function that implements {@link #toRawPixel(float)}
 	 */
 	IFloatFunction toRawPixelFunction();
 
