@@ -13,6 +13,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.score.ISerializeableScore;
 import org.caleydo.view.tourguide.internal.external.ExternalLabelParseSpecification;
 import org.caleydo.view.tourguide.spi.algorithm.IComputeElement;
@@ -46,10 +47,16 @@ public final class ExternalLabelScore extends AExternalScore implements ISeriali
 	public final float apply(IComputeElement elem, Group g) {
 		if (!elem.getDataDomain().getDataDomainID().equals(dataDomainID))
 			return Float.NaN;
-		Float v = this.scores.get(elem.getLabel());
+		String label = elem.getLabel();
+		Float v = this.scores.get(label);
 		if (v == null)
 			return Float.NaN;
 		return v.floatValue();
+	}
+
+	@Override
+	public boolean supports(EDataDomainQueryMode mode) {
+		return true;
 	}
 
 	@Override

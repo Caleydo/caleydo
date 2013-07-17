@@ -279,7 +279,7 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 				m.put(0, 1);
 				m.put(1, 0);
 			} else {
-				m = new PiecewiseMapping(0, Float.NaN);
+				m = new PiecewiseMapping(-1, 1);
 			}
 			return m;
 		}

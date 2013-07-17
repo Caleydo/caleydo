@@ -152,7 +152,7 @@ public class GSEAAlgorithm extends AGSEAAlgorithm {
 
 		for (Integer col : cols) {
 
-			System.out.println(table.getDataDomain().getDimensionLabel(col));
+			// System.out.println(table.getDataDomain().getDimensionLabel(col));
 			for (Integer row : rows) {
 				Float v = table.getRaw(col, row);
 				if (v == null || v.isNaN() || v.isInfinite())
@@ -160,7 +160,7 @@ public class GSEAAlgorithm extends AGSEAAlgorithm {
 				inA.add(row, v);
 			}
 			inA.flush(col);
-			System.out.println(table.getDataDomain().getDimensionLabel(col) + " " + inA.correlation.get(col));
+			// System.out.println(table.getDataDomain().getDimensionLabel(col) + " " + inA.correlation.get(col));
 		}
 		System.out.println(w);
 		return inA.toSignal2Noise(dim2primary);
