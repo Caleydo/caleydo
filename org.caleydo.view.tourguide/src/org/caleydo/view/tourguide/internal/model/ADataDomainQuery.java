@@ -28,7 +28,6 @@ import com.google.common.base.Predicate;
 public abstract class ADataDomainQuery implements Predicate<AScoreRow> {
 	public static final String PROP_ACTIVE = "active";
 	public static final String PROP_MASK = "mask";
-
 	protected final PropertyChangeSupport propertySupport = new PropertyChangeSupport(this);
 
 	protected final IDataDomain dataDomain;

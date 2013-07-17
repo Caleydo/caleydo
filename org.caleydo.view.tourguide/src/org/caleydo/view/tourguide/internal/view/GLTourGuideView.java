@@ -61,6 +61,7 @@ import org.caleydo.view.tourguide.internal.event.ScoreQueryReadyEvent;
 import org.caleydo.view.tourguide.internal.external.ImportExternalScoreCommand;
 import org.caleydo.view.tourguide.internal.model.ADataDomainQuery;
 import org.caleydo.view.tourguide.internal.model.AScoreRow;
+import org.caleydo.view.tourguide.internal.model.CategoricalDataDomainQuery;
 import org.caleydo.view.tourguide.internal.model.CustomSubList;
 import org.caleydo.view.tourguide.internal.score.ScoreFactories;
 import org.caleydo.view.tourguide.internal.score.Scores;
@@ -132,7 +133,10 @@ public class GLTourGuideView extends AGLElementView {
 				onActiveChanged((ADataDomainQuery) evt.getSource(), (boolean) evt.getNewValue());
 				break;
 			case ADataDomainQuery.PROP_MASK:
-				updateMask();
+			case CategoricalDataDomainQuery.PROP_GROUP_SELECTION:
+				ADataDomainQuery s = (ADataDomainQuery) evt.getSource();
+				if (s.isActive())
+					scheduleAllOf(s);
 			}
 		}
 	};
@@ -198,6 +202,7 @@ public class GLTourGuideView extends AGLElementView {
 		for (ADataDomainQuery q : modeSpecifics.createDataDomainQueries()) {
 			q.addPropertyChangeListener(ADataDomainQuery.PROP_ACTIVE, listener);
 			q.addPropertyChangeListener(ADataDomainQuery.PROP_MASK, listener);
+			q.addPropertyChangeListener(CategoricalDataDomainQuery.PROP_GROUP_SELECTION, listener);
 			queries.add(q);
 		}
 
@@ -246,6 +251,7 @@ public class GLTourGuideView extends AGLElementView {
 			queries.add(query);
 			query.addPropertyChangeListener(ADataDomainQuery.PROP_ACTIVE, listener);
 			query.addPropertyChangeListener(ADataDomainQuery.PROP_MASK, listener);
+			query.addPropertyChangeListener(CategoricalDataDomainQuery.PROP_GROUP_SELECTION, listener);
 			getDataDomainQueryUI().add(query);
 		}
 	}
@@ -258,6 +264,7 @@ public class GLTourGuideView extends AGLElementView {
 				query.cleanup();
 				query.removePropertyChangeListener(ADataDomainQuery.PROP_ACTIVE, listener);
 				query.removePropertyChangeListener(ADataDomainQuery.PROP_MASK, listener);
+				query.removePropertyChangeListener(CategoricalDataDomainQuery.PROP_GROUP_SELECTION, listener);
 				queries.remove(query);
 				getDataDomainQueryUI().remove(query);
 				if (query.isActive())

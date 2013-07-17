@@ -45,6 +45,7 @@ import org.caleydo.vis.rank.model.MultiCategoricalRankColumnModel;
 import org.caleydo.vis.rank.model.RankTableModel;
 
 import com.google.common.base.Function;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -54,6 +55,8 @@ import com.google.common.collect.Sets;
  *
  */
 public class CategoricalDataDomainQuery extends ADataDomainQuery {
+	public static final String PROP_GROUP_SELECTION = "selection";
+
 	private Set<CategoryProperty<?>> selected = new HashSet<>();
 	private final IDType categoryIDType;
 	private final VirtualArray categories;
@@ -132,9 +135,14 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 	public void setSelection(Set<CategoryProperty<?>> selected) {
 		if (Objects.equals(selected, this.selected))
 			return;
+		Set<CategoryProperty<?>> bak = ImmutableSet.copyOf(this.selected);
 		this.selected.clear();
 		this.selected.addAll(selected);
-		updateFilter();
+		if (bak.isEmpty() || this.selected.isEmpty())
+			updateFilter();
+		else
+			propertySupport.firePropertyChange(PROP_GROUP_SELECTION, bak, this.selected);
+
 	}
 
 	/**
