@@ -553,7 +553,6 @@ public class GLPathwayAugmentationRenderer {
 				// System.out.println(pixelGLConverter.getPixelWidthForGLWidth(glPathwayView.getViewFrustum().getWidth()));
 				if (pixelGLConverter.getPixelWidthForGLWidth(glPathwayView.getViewFrustum().getWidth()) < 300
 						|| pixelGLConverter.getPixelHeightForGLHeight(glPathwayView.getViewFrustum().getHeight()) < 300) {
-
 					return;
 				}
 
