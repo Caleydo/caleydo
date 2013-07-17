@@ -144,8 +144,8 @@ public class MappingFunctionUI extends GLElementContainer implements GLButton.IS
 	@Override
 	public void doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
 		IGLLayoutElement buttons = children.get(MappingFunctionUI.BUTTONS);
-		buttons.setBounds(0, 0, w, RenderStyle.BUTTON_WIDTH);
-		float y = RenderStyle.BUTTON_WIDTH + 2;
+		buttons.setBounds(2, 2, w - 8, RenderStyle.BUTTON_WIDTH);
+		float y = RenderStyle.BUTTON_WIDTH + 2 + 2;
 		h -= y;
 
 		IGLLayoutElement text = children.get(MappingFunctionUI.TEXT);
