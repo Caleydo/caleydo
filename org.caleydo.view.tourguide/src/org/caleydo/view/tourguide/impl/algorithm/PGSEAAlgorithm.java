@@ -84,6 +84,8 @@ public class PGSEAAlgorithm extends AGSEAAlgorithm {
 			// now some kind of correlation between the two
 			float foldChange = Statistics.foldChange((asum / acount), (bsum / bcount));
 			Set<Integer> davids = dim2primary.apply(col);
+			if (davids == null)
+				continue;
 			sum += foldChange * davids.size();
 			squaredSum += (foldChange * foldChange) * davids.size();
 			for (Integer david : davids)

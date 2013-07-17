@@ -404,9 +404,15 @@ public class GSEAAlgorithm extends AGSEAAlgorithm {
 			return Float.NaN;
 
 		float N_R = 0;
+		int intersection = 0;
 		for(Integer g: geneS)
-			if (correlation.containsKey(g))
+			if (correlation.containsKey(g)) {
 				N_R += Math.abs(Math.pow(correlation.get(g), p));
+				intersection++;
+			}
+
+		if (intersection == 0)
+			return Float.NaN;
 
 		final double norm_tag = 1 / N_R;
 		final double norm_no_tag = 1. / (N - N_h); // watch out all integers!

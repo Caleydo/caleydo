@@ -69,15 +69,11 @@ testGSEA = function(input.ds, group_id, genesets, result) {
   #-----------------------------------------------------------------------------------------------------------------------------------------------
   
   #store result
-  a = r$report1$ES
-  a$ES = as.numeric(r$report1$ES)
-  b = r$report2$ES
-  b$ES = as.numeric(r$report2$ES)
-  combined = rbind(a,b)
-  combined$ES = -combined$ES #don't know why
-  write.table(combined,result,row.names=F,sep=";",quote=F)
+	cr=rbind(as.data.frame(r$report1),as.data.frame(r$report2))
+	cr$ES = -as.numeric(levels(cr$ES))[cr$ES]
+	write.table(cr,result,row.names=F,sep=";",quote=F)
   
-  r
+	r
 }
 
 r = testGSEA("mRNA_3CNMF.csv", "mRNA_3CNMF_g1.csv", "KEGG_db.gmt", "result.csv")
