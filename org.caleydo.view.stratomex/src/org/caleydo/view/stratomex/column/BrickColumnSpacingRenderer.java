@@ -5,6 +5,8 @@
  ******************************************************************************/
 package org.caleydo.view.stratomex.column;
 
+import gleem.linalg.Vec2f;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -527,35 +529,28 @@ public class BrickColumnSpacingRenderer extends ALayoutRenderer implements IDrop
 
 					float ratio = hashRatioToSelectionType.get(selectionType);
 					float trendRatio = 0;
-					float[] color = new float[] { 0, 0, 0, 1 };
-
 					if (selectionType == SelectionType.NORMAL && stratomex.isConnectionsShowOnlySelected()) {
 						continue;
 					}
 
-					color = selectionType.getColor().getRGBA();
+					Color color = selectionType.getColor().clone();
 
 					trendRatio = computeTrendRatio(subGroupMatch, selectionType);
 
 					// set the transparency of the band
-					color[3] = trendRatio;
+					color.a = trendRatio;
 
 					if (ratio == 0)
 						continue;
-					renderBand(gl, subGroupMatch, color, curveOffset, xStart, xEnd, ratio, trendRatio);
+					renderBand(gl, subGroupMatch, color, curveOffset, xStart, xEnd, ratio, trendRatio, false);
 				}
 
 				Color extraHighlight = stratomex.isHighlightingBand(brick, subBrick);
 				if (extraHighlight != null) {
 					float ratio = 1.0f;
-					float trendRatio = computeTrendRatio(subGroupMatch, SelectionType.SELECTION);
-					float[] color = extraHighlight.getRGBA();
-					// set the transparency of the band
-					color[3] = trendRatio;
-
 					if (ratio == 0)
 						continue;
-					renderBand(gl, subGroupMatch, color, curveOffset, xStart, xEnd, ratio, trendRatio);
+					renderBand(gl, subGroupMatch, extraHighlight, curveOffset, xStart, xEnd, ratio, 1.0f, true);
 				}
 
 				gl.glPopName();
@@ -564,42 +559,62 @@ public class BrickColumnSpacingRenderer extends ALayoutRenderer implements IDrop
 		}
 	}
 
-	private void renderBand(GL2 gl, SubGroupMatch subGroupMatch, float[] color, float curveOffset, float xStart,
-			float xEnd, float ratio, float trendRatio) {
+	private void renderBand(GL2 gl, SubGroupMatch subGroupMatch, Color c, float curveOffset, float xStart,
+			float xEnd, float ratio, float trendRatio, boolean justOutline) {
 		float leftYDiff = subGroupMatch.getLeftAnchorYTop() - subGroupMatch.getLeftAnchorYBottom();
 		float leftYDiffSelection = leftYDiff * ratio;
 
 		float rightYDiff = subGroupMatch.getRightAnchorYTop() - subGroupMatch.getRightAnchorYBottom();
 		float rightYDiffSelection = rightYDiff * ratio;
 
+		float[] color = c.getRGBA();
+
 		// gl.glPushMatrix();
 		// gl.glTranslatef(0, 0, 0.1f);
+		{
+			final Vec2f lt = new Vec2f(0, subGroupMatch.getLeftAnchorYTop());
+			final Vec2f lb = new Vec2f(0, subGroupMatch.getLeftAnchorYTop() - leftYDiffSelection);
+			final Vec2f rt = new Vec2f(x, subGroupMatch.getRightAnchorYTop());
+			final Vec2f rb = new Vec2f(x, subGroupMatch.getRightAnchorYTop() - rightYDiffSelection);
 
-		connectionRenderer.renderSingleBand(gl, new float[] { 0, subGroupMatch.getLeftAnchorYTop(), 0.0f },
-				new float[] { 0, subGroupMatch.getLeftAnchorYTop() - leftYDiffSelection, 0.0f }, new float[] { x,
-						subGroupMatch.getRightAnchorYTop(), 0.0f }, new float[] { x,
-						subGroupMatch.getRightAnchorYTop() - rightYDiffSelection, 0.0f }, true, curveOffset, 0, color);// 0.15f);
+			if (!justOutline)
+				connectionRenderer.renderSingleBand(gl, new float[] { lt.x(), lt.y(), 0 }, new float[] { lb.x(),
+						lb.y(), 0 }, new float[] { rt.x(), rt.y(), 0 }, new float[] { rb.x(), rb.y(), 0 }, true,
+						curveOffset, 0, color, justOutline);// 0.15f);
+			else
+				connectionRenderer.renderSingleBandOutline(gl, lt, lb, rt, rb, curveOffset, c);
+		}
 
 		// Render straight band connection from brick to dimension
 		// group on the LEFT. This is for the smaller bricks when
 		// the bricks are not of equal size
 		if (xStart != 0) {
-			connectionRenderer.renderStraightBand(gl, new float[] { xStart, subGroupMatch.getLeftAnchorYTop(), 0 },
-					new float[] { xStart, subGroupMatch.getLeftAnchorYTop() - leftYDiffSelection, 0 }, new float[] { 0,
-							subGroupMatch.getLeftAnchorYTop(), 0 }, new float[] { 0,
-							subGroupMatch.getLeftAnchorYTop() - leftYDiffSelection, 0 }, false, 0, color, trendRatio);// 0.5f);
+			final Vec2f lt = new Vec2f(xStart, subGroupMatch.getLeftAnchorYTop());
+			final Vec2f lb = new Vec2f(xStart, subGroupMatch.getLeftAnchorYTop() - leftYDiffSelection);
+			final Vec2f rt = new Vec2f(0, subGroupMatch.getLeftAnchorYTop());
+			final Vec2f rb = new Vec2f(0, subGroupMatch.getLeftAnchorYTop() - leftYDiffSelection);
+			if (!justOutline)
+				connectionRenderer.renderStraightBand(gl, new float[] { lt.x(), lt.y(), 0 },
+						new float[] { lb.x(), lb.y(), 0 }, new float[] { rt.x(), rt.y(), 0 },
+						new float[] { rb.x(), rb.y(), 0 }, false, 0, color, trendRatio, justOutline);// 0.5f);
+			else
+				connectionRenderer.renderStraightBandOutline(gl, lt, lb, rt, rb, c);
 		}
 
 		// Render straight band connection from brick to dimension
 		// group on the RIGHT. This is for the smaller bricks when
 		// the bricks are not of equal size
 		if (xEnd != 0) {
-
-			connectionRenderer.renderStraightBand(gl, new float[] { x, subGroupMatch.getRightAnchorYTop(), 0 },
-					new float[] { x, subGroupMatch.getRightAnchorYTop() - rightYDiffSelection, 0 }, new float[] { xEnd,
-							subGroupMatch.getRightAnchorYTop(), 0 },
-					new float[] { xEnd, subGroupMatch.getRightAnchorYTop() - rightYDiffSelection, 0 }, false, 0, color,
-					trendRatio);// 0.5f);
+			final Vec2f lt = new Vec2f(x, subGroupMatch.getRightAnchorYTop());
+			final Vec2f lb = new Vec2f(x, subGroupMatch.getRightAnchorYTop() - rightYDiffSelection);
+			final Vec2f rt = new Vec2f(xEnd, subGroupMatch.getRightAnchorYTop());
+			final Vec2f rb = new Vec2f(xEnd, subGroupMatch.getRightAnchorYTop() - rightYDiffSelection);
+			if (!justOutline)
+				connectionRenderer.renderStraightBand(gl, new float[] { lt.x(), lt.y(), 0 },
+						new float[] { lb.x(), lb.y(), 0 }, new float[] { rt.x(), rt.y(), 0 },
+						new float[] { rb.x(), rb.y(), 0 }, false, 0, color, trendRatio, justOutline);// 0.5f);
+			else
+				connectionRenderer.renderStraightBandOutline(gl, lt, lb, rt, rb, c);
 		}
 
 

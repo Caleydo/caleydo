@@ -5,8 +5,8 @@
  ******************************************************************************/
 package org.caleydo.view.tourguide.internal.stratomex;
 
-import static org.caleydo.view.tourguide.internal.TourGuideRenderStyle.STRATOMEX_HIT_BAND;
-import static org.caleydo.view.tourguide.internal.TourGuideRenderStyle.STRATOMEX_HIT_GROUP;
+import static org.caleydo.view.tourguide.internal.TourGuideRenderStyle.stratomexHitBand;
+import static org.caleydo.view.tourguide.internal.TourGuideRenderStyle.stratomexHitGroup;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -285,7 +285,7 @@ public class StratomexAdapter {
 	private void highlightBrick(TablePerspective strat, Group g, boolean now) {
 		if (g == null)
 			return;
-		AEvent event = new HighlightBrickEvent(strat, g, STRATOMEX_HIT_GROUP).to(receiver
+		AEvent event = new HighlightBrickEvent(strat, g, stratomexHitGroup()).to(receiver
 				.getTourguide());
 		if (now)
 			triggerEvent(event);
@@ -294,15 +294,15 @@ public class StratomexAdapter {
 	}
 
 	private void unhighlightBand(Group g_a, Group g_b) {
-		if (STRATOMEX_HIT_BAND == null)
+		if (stratomexHitBand() == null)
 			return;
 		triggerEvent(new HighlightBandEvent(g_a, g_b, null).to(receiver));
 	}
 
 	private void highlightBand(Group g_a, Group g_b) {
-		if (g_a == null || g_b == null || STRATOMEX_HIT_BAND == null)
+		if (g_a == null || g_b == null || stratomexHitBand() == null)
 			return;
-		triggerEvent(new HighlightBandEvent(g_a, g_b, STRATOMEX_HIT_BAND).to(receiver));
+		triggerEvent(new HighlightBandEvent(g_a, g_b, stratomexHitBand()).to(receiver));
 	}
 
 	private void triggerEvent(AEvent event) {

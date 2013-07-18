@@ -355,7 +355,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 
 	private void changeHighlight(GLBrick brick, Color color) {
 		if (brick.isHeaderBrick()) {
-			brick.getBrickColumn().setHighlightColor(color == null ? BrickColumn.REVERT_COLOR : color.getRGBA());
+			brick.getBrickColumn().setHighlightColor(color == null ? BrickColumn.REVERT_COLOR : color);
 		} else {
 			ElementLayout layout = brick.getLayout();
 			if (color == null)
@@ -364,11 +364,11 @@ public class TourguideAdapter implements IStratomexAdapter {
 				// select brick by changing highlight
 				for (FrameHighlightRenderer glow : Iterables.filter(layout.getBackgroundRenderer(),
 						FrameHighlightRenderer.class)) {
-					glow.setColor(color.getRGBA());
+					glow.setColor(color);
 					return;
 				}
 				// no yet there add one
-				layout.addBackgroundRenderer(new FrameHighlightRenderer(color.getRGBA(), true));
+				layout.addBackgroundRenderer(new FrameHighlightRenderer(color, true));
 			}
 		}
 	}

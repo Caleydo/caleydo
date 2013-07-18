@@ -167,16 +167,20 @@ public class MyAnimator implements GLAnimatorControl, Runnable {
 
 	@Override
 	public void run() {
-		for (GLAutoDrawable drawable : drawables) {
-			if (Thread.interrupted())
-				return;
-			try {
-				drawable.display();
-			} catch (RuntimeException e) {
-				log.error("display error: " + drawable, e);
+		try {
+			for (GLAutoDrawable drawable : drawables) {
+				if (Thread.interrupted())
+					return;
+				try {
+					drawable.display();
+				} catch (RuntimeException e) {
+					log.error("display error: " + drawable, e);
+				}
 			}
+			fpsCounter.tickFPS();
+		} catch (Throwable e) {
+			log.error("general display error: " + e.getMessage(), e);
 		}
-		fpsCounter.tickFPS();
 	}
 
 	@Override

@@ -9,6 +9,7 @@ package org.caleydo.view.tourguide.internal;
 
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.util.color.Color;
+import org.caleydo.core.util.color.StyledColor;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.vis.rank.ui.RenderStyle;
@@ -24,8 +25,9 @@ public class TourGuideRenderStyle extends GeneralRenderStyle {
 	public static final Color COLOR_STRATOMEX_ROW = RenderStyle.COLOR_SELECTED_ROW;
 	public static final Color COLOR_SELECTED_ROW = SelectionType.SELECTION.getColor();
 
-	public static final Color STRATOMEX_HIT_GROUP = new Color(220, 220, 220);
-	public static final Color STRATOMEX_HIT_BAND = Color.YELLOW; // TODO
+	private static final Color STRATOMEX_HIT_GROUP = new StyledColor(236, 112, 20).setLineWidth(5)
+			.setDashing(2, 0xAAAA);
+	private static final Color STRATOMEX_HIT_BAND = new StyledColor(236, 112, 20).setLineWidth(5);
 
 	public static final String ICON_FILTER = ICON_PREFIX + "filter.png";
 	public static final String ICON_FILTER_DISABLED = ICON_PREFIX + "filter_disabled.png";
@@ -33,4 +35,12 @@ public class TourGuideRenderStyle extends GeneralRenderStyle {
 	public static final String ICON_ADD_COLOR = ICON_PREFIX + "add_color.png";
 	public static final String ICON_BASKET = ICON_PREFIX + "basket.png";
 
+
+	public static Color stratomexHitGroup() {
+		return STRATOMEX_HIT_GROUP;
+	}
+
+	public static Color stratomexHitBand() {
+		return new StyledColor(236, 112, 20).setLineWidth(5).setDashing(2, 0xAAAA);
+	}
 }
