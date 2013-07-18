@@ -10,6 +10,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import org.caleydo.core.data.collection.table.NumericalTable;
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
@@ -60,14 +62,16 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 	private IRegisteredScore createGSEA(String label, Perspective reference, Group group) {
 		if (label == null)
 			label = reference.getLabel() + " " + group.getLabel();
-		return new GeneSetScore(label, new GSEAAlgorithm(reference, group, 1.0f, false), false);
+		return new GeneSetScore(label, new GSEAAlgorithm(reference, group, 1.0f, false), false, new PiecewiseMapping(
+				-1, 1));
 	}
 
 	private IRegisteredScore createPGSEA(String label, Perspective reference, Group group) {
 		if (label == null)
 			label = reference.getLabel() + " " + group.getLabel();
 		return new GeneSetScore(label, new PGSEAAlgorithm(reference, group),
-				false);
+ false, new PiecewiseMapping(Float.NaN,
+				Float.NaN));
 	}
 
 	@Override
@@ -77,7 +81,7 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 		BrowsePathwayState browse = (BrowsePathwayState) stateMachine.get(IStateMachine.BROWSE_PATHWAY);
 
 		if (mode == EWizardMode.GLOBAL) {
-			String disabled = !hasGoodOnes(existing) ? "At least one valid stratification (e.g. mRNA, mRNAseq) must already be visible"
+			String disabled = !hasGoodOnes(existing) ? "At least one valid numerical GENE stratification must already be visible"
 					: null;
 			IState target = stateMachine.addState("GSEA", new CreateGSEAState(browse, true));
 			IState target2 = stateMachine.addState("PGSEA", new CreateGSEAState(browse, false));
@@ -127,15 +131,20 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 
 		{
 			GSEAAlgorithm algorithm = new GSEAAlgorithm(strat.getRecordPerspective(), group, 1.0f, false);
-			IScore gsea = new GeneSetScore(strat.getRecordPerspective().getLabel(), algorithm, false);
+			IScore gsea = new GeneSetScore(strat.getRecordPerspective().getLabel(), algorithm, false,
+					new PiecewiseMapping(-1, +1));
 			// IScore pValue = new GeneSetScore(gsea.getLabel() + " (P-V)", algorithm.asPValue(), true);
 			col.add(new ScoreEntry("Gene Set Enrichment Analysis of group", gsea));
 		}
 
 		{
 			PGSEAAlgorithm algorithm = new PGSEAAlgorithm(strat.getRecordPerspective(), group);
-			IScore gsea = new GeneSetScore(strat.getRecordPerspective().getLabel(), algorithm, false);
-			IScore pValue = new GeneSetScore(gsea.getLabel() + " (P-V)", algorithm.asPValue(), true);
+			IScore gsea = new GeneSetScore(strat.getRecordPerspective().getLabel(), algorithm, false,
+					new PiecewiseMapping(Float.NaN, Float.NaN));
+			PiecewiseMapping m = new PiecewiseMapping(0, 1);
+			m.put(0, 1);
+			m.put(1, 0);
+			IScore pValue = new GeneSetScore(gsea.getLabel() + " (P-V)", algorithm.asPValue(), true, m);
 			col.add(new ScoreEntry("Parametric Gene Set Enrichment Analysis of group", gsea, pValue));
 		}
 		return col;
@@ -146,7 +155,10 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 	 * @return
 	 */
 	private static boolean isGoodDataDomain(IDataDomain dataDomain) {
-		return PathwayOracle.canBeUnderlying(dataDomain);
+		if (!PathwayOracle.canBeUnderlying(dataDomain) || !(dataDomain instanceof ATableBasedDataDomain))
+				return false;
+		ATableBasedDataDomain d = (ATableBasedDataDomain) dataDomain;
+		return d.getTable().isDataHomogeneous() && d.getTable() instanceof NumericalTable;
 	}
 
 	@Override
@@ -164,7 +176,7 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 		private final boolean createGSEA;
 
 		public CreateGSEAState(BrowsePathwayState target, boolean createGSEA) {
-			super("Select query group by clicking on a block of one of the displayed columns");
+			super("Select query group by clicking on a framed block of one of the displayed columns");
 			this.target = target;
 			this.createGSEA = createGSEA;
 		}
@@ -259,11 +271,11 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 	}
 
 	public static class GeneSetScore extends DefaultComputedStratificationScore {
-		private final boolean isPValue;
+		private final PiecewiseMapping mapping;
 
-		public GeneSetScore(String label, IStratificationAlgorithm algorithm, boolean isPValue) {
+		public GeneSetScore(String label, IStratificationAlgorithm algorithm, boolean isPValue, PiecewiseMapping mapping) {
 			super(label, algorithm, ComputeScoreFilters.ALL, isPValue ? color.darker() : color, bgColor);
-			this.isPValue = isPValue;
+			this.mapping = mapping;
 		}
 
 		@Override
@@ -273,15 +285,7 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 
 		@Override
 		public PiecewiseMapping createMapping() {
-			PiecewiseMapping m;
-			if (isPValue) {
-				m = new PiecewiseMapping(0, 1);
-				m.put(0, 1);
-				m.put(1, 0);
-			} else {
-				m = new PiecewiseMapping(Float.NaN, Float.NaN);
-			}
-			return m;
+			return mapping.clone();
 		}
 	}
 
@@ -336,11 +340,14 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 			IScore s;
 			if (createGSEA) {
 				algorithm = new GSEAAlgorithm(perspective, group, 1.0f, false);
-				s = new GeneSetScore(label, algorithm, false);
+				s = new GeneSetScore(label, algorithm, false, new PiecewiseMapping(-1, 1));
 			} else {
 				algorithm = new PGSEAAlgorithm(perspective, group);
-				IScore gsea = new GeneSetScore(prefix, algorithm, false);
-				IScore pValue = new GeneSetScore(prefix + "P-Value", algorithm.asPValue(), true);
+				IScore gsea = new GeneSetScore(prefix, algorithm, false, new PiecewiseMapping(Float.NaN, Float.NaN));
+				PiecewiseMapping m = new PiecewiseMapping(0, 1);
+				m.put(0, 1);
+				m.put(1, 0);
+				IScore pValue = new GeneSetScore(prefix + "P-Value", algorithm.asPValue(), true, m);
 				MultiScore s2 = new MultiScore(label, color, bgColor, RankTableConfigBase.NESTED_MODE);
 				s2.add(pValue);
 				s2.add(gsea);
