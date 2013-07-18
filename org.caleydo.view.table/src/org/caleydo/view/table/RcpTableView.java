@@ -17,7 +17,7 @@ import org.eclipse.swt.widgets.Composite;
 
 /**
  * a simple eclipse view for presenting the raw values of a table using a {@link NatTable}
- * 
+ *
  * @author Samuel Gratzl and Marc Streit
  */
 public class RcpTableView extends CaleydoRCPViewPart {
@@ -47,9 +47,9 @@ public class RcpTableView extends CaleydoRCPViewPart {
 
 	@Override
 	public void dispose() {
-		super.dispose();
 		((TableView) view).dispose();
 		GeneralManager.get().getViewManager().unregisterRCPView(this, view);
+		super.dispose();
 		view = null;
 	}
 
