@@ -40,9 +40,9 @@ public class BrowseOtherState extends ABrowseState {
 		if (underlying == null) { // stand alone
 			ClinicalDataConfigurer clinicalDataConfigurer = new ClinicalDataConfigurer();
 			clinicalDataConfigurer.setSortingStrategy(new NoSortingSortingStrategy());
-			adapter.replaceTemplate(numerical, clinicalDataConfigurer);
+			adapter.replaceTemplate(numerical, clinicalDataConfigurer, true);
 		} else { // dependent
-			adapter.replaceClinicalTemplate(underlying, numerical, false);
+			adapter.replaceClinicalTemplate(underlying, numerical, false, true);
 		}
 	}
 

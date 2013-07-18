@@ -37,6 +37,10 @@ public class StyledColor extends Color {
 		super(r, g, b);
 	}
 
+	public StyledColor(Color base) {
+		super(base.r, base.g, base.b, base.r);
+	}
+
 	public void set(GL2 gl) {
 		set(gl, false);
 	}

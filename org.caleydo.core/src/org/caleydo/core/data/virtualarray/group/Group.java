@@ -13,13 +13,14 @@ import javax.xml.bind.annotation.XmlTransient;
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.util.base.IDefaultLabelHolder;
+import org.caleydo.core.util.base.IUniqueObject;
 
 /**
  * @author Bernhard Schlegl
  * @author Alexander Lex
  * @author Marc Streit
  */
-public class Group implements IDefaultLabelHolder {
+public class Group implements IDefaultLabelHolder, IUniqueObject {
 
 	private static AtomicInteger GROUP_ID_COUNTER = new AtomicInteger();
 
@@ -87,7 +88,7 @@ public class Group implements IDefaultLabelHolder {
 	 * Initialize a clone of a group with the same size, ID and label. Start index may vary.
 	 *
 	 * TODO: this is not synchronous for changes
-	 * 
+	 *
 	 * @param clone
 	 */
 	public Group(Group clone) {
@@ -262,6 +263,7 @@ public class Group implements IDefaultLabelHolder {
 	/**
 	 * @return the id, see {@link #id}
 	 */
+	@Override
 	public int getID() {
 		return id;
 	}

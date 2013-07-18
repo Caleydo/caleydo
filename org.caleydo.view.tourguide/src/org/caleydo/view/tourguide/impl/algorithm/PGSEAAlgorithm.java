@@ -64,7 +64,7 @@ public class PGSEAAlgorithm extends AGSEAAlgorithm {
 			float bsum = 0;
 			int bcount = 0;
 			for (Integer row : rows) {
-				Float v = table.getNormalizedValue(col, row);
+				Float v = table.getRaw(col, row);
 				if (v == null || v.isNaN() || v.isInfinite())
 					continue;
 				if (inA.contains(row)) {

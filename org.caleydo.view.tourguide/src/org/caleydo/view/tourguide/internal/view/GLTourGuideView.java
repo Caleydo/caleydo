@@ -808,12 +808,19 @@ public class GLTourGuideView extends AGLElementView {
 		public void renderRowBackground(GLGraphics g, float x, float y, float w, float h, boolean even, IRow row,
 				IRow selected) {
 			if (row == selected) {
-				g.color(TourGuideRenderStyle.COLOR_SELECTED_ROW);
+				g.color(TourGuideRenderStyle.colorSelectedRow());
 				g.incZ();
 				g.fillRect(x, y, w, h);
-				g.color(RenderStyle.COLOR_SELECTED_BORDER);
-				g.drawLine(x, y, x + w, y);
-				g.drawLine(x, y + h, x + w, y + h);
+				if (stratomex.isPreviewed((AScoreRow) row)) {
+					TourGuideRenderStyle.COLOR_PREVIEW_BORDER_ROW.set(g.gl);
+					g.drawLine(x, y, x + w, y);
+					g.drawLine(x, y + h, x + w, y + h);
+					TourGuideRenderStyle.COLOR_PREVIEW_BORDER_ROW.clear(g.gl);
+				} else {
+					g.color(RenderStyle.COLOR_SELECTED_BORDER);
+					g.drawLine(x, y, x + w, y);
+					g.drawLine(x, y + h, x + w, y + h);
+				}
 				g.decZ();
 			} else if (stratomex.isVisible((AScoreRow) row)) {
 				g.color(TourGuideRenderStyle.COLOR_STRATOMEX_ROW);

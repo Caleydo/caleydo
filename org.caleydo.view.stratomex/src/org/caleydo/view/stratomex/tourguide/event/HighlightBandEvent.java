@@ -9,7 +9,9 @@ package org.caleydo.view.stratomex.tourguide.event;
 
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.ADirectedEvent;
+import org.caleydo.core.util.base.IUniqueObject;
 import org.caleydo.core.util.color.Color;
+import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 
 /**
  * triggers that a specific band (if existing) will be highlighted
@@ -19,12 +21,15 @@ import org.caleydo.core.util.color.Color;
  */
 public class HighlightBandEvent extends ADirectedEvent {
 	private final Group groupA;
-	private final Group groupB;
+	/**
+	 * either a {@link Group} or a {@link PathwayGraph}
+	 */
+	private final IUniqueObject groupB;
 
 	private final Color color;
 
 
-	public HighlightBandEvent(Group a_group, Group b_group, Color color) {
+	public HighlightBandEvent(Group a_group, IUniqueObject b_group, Color color) {
 		this.groupA = a_group;
 		this.groupB = b_group;
 		this.color = color;
@@ -44,7 +49,7 @@ public class HighlightBandEvent extends ADirectedEvent {
 	/**
 	 * @return the groupB, see {@link #groupB}
 	 */
-	public Group getGroupB() {
+	public IUniqueObject getGroupB() {
 		return groupB;
 	}
 

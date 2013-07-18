@@ -56,6 +56,7 @@ public class StratomexAdapter {
 	 */
 	private final List<AEvent> delayedEvents = new ArrayList<>();
 
+	private String currentPreviewRowID = null;
 	private TablePerspective currentPreview = null;
 	private Group currentPreviewGroup = null;
 
@@ -73,6 +74,7 @@ public class StratomexAdapter {
 	}
 
 	private void cleanupPreview() {
+		currentPreviewRowID = null;
 		if (currentPreview != null) {
 			TablePerspective bak = currentPreview;
 			removePreview();
@@ -90,6 +92,8 @@ public class StratomexAdapter {
 		}
 		this.currentPreview = null;
 		this.currentPreviewGroup = null;
+		currentPreviewRowID = null;
+
 	}
 
 	/**
@@ -107,7 +111,6 @@ public class StratomexAdapter {
 	}
 
 	public void attach() {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -144,6 +147,12 @@ public class StratomexAdapter {
 		return false;
 	}
 
+	public boolean isPreviewed(AScoreRow row) {
+		if (!hasOne())
+			return false;
+		return row.getPersistentID().equals(currentPreviewRowID);
+	}
+
 	/**
 	 * central point for updating the current preview in Stratomex
 	 *
@@ -171,6 +180,7 @@ public class StratomexAdapter {
 					sortedBy);
 			break;
 		}
+		currentPreviewRowID = new_.getPersistentID();
 	}
 
 	private void updateNumerical(InhomogenousPerspectiveRow old, InhomogenousPerspectiveRow new_,
@@ -205,17 +215,17 @@ public class StratomexAdapter {
 					currentPreviewGroup = group;
 				}
 			} else { // not same stratification
+				unhighlightBrick(currentPreview, currentPreviewGroup);
 				if (contains(strat)) { // part of stratomex
-					unhighlightBrick(currentPreview, currentPreviewGroup);
 					highlightBrick(strat, group, true);
 				} else {
-					updatePreview(strat, group);
+					updatePreview(strat, group, true);
 				}
 			}
 		} else if (currentPreview != null) { // last
 			removePreview();
 		} else if (strat != null) { // first
-			updatePreview(strat, group);
+			updatePreview(strat, group, true);
 		}
 
 		// highlight connection band
@@ -228,21 +238,23 @@ public class StratomexAdapter {
 			unhighlightBand(null, null);
 		}
 	}
-	private void updatePreview(TablePerspective strat, Group group) {
+
+	private void updatePreview(TablePerspective strat, Group group, boolean highlightBrick) {
 		this.currentPreview = strat;
 		UpdateStratificationPreviewEvent event = new UpdateStratificationPreviewEvent(strat);
 		event.to(receiver.getTourguide());
 		triggerEvent(event);
 
-		if (group != null) {
+		if (group != null || highlightBrick)
 			highlightBrick(strat, group, false);
-		}
 		currentPreviewGroup = group;
 	}
 
 	private void removePreview() {
 		this.currentPreview = null;
 		this.currentPreviewGroup = null;
+		currentPreviewRowID = null;
+
 	}
 
 	private void clearHighlightRows(IDType idType, IDataDomain dataDomain) {
@@ -276,15 +288,9 @@ public class StratomexAdapter {
 	}
 
 	private void unhighlightBrick(TablePerspective strat, Group g) {
-		if (g == null)
-			return;
 		triggerEvent(new HighlightBrickEvent(strat, g, null).to(receiver.getTourguide()));
-
 	}
-
 	private void highlightBrick(TablePerspective strat, Group g, boolean now) {
-		if (g == null)
-			return;
 		AEvent event = new HighlightBrickEvent(strat, g, stratomexHitGroup()).to(receiver
 				.getTourguide());
 		if (now)

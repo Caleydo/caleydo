@@ -25,6 +25,7 @@ import org.caleydo.core.data.virtualarray.similarity.SimilarityMap;
 import org.caleydo.core.data.virtualarray.similarity.VASimilarity;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
+import org.caleydo.core.id.IIDTypeMapper;
 import org.caleydo.core.id.object.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.color.Color;
@@ -237,6 +238,13 @@ public class BrickColumnSpacingRenderer extends ALayoutRenderer implements IDrop
 
 		SelectionManager recordSelectionManager = stratomex.getRecordSelectionManager();
 
+		IIDTypeMapper<Integer, Integer> mapper = null;
+		if (recordVA.getIdType() != recordSelectionManager.getIDType()) {
+			IDMappingManager mappingManager = IDMappingManagerRegistry.get().getIDMappingManager(
+					recordVA.getIdType().getIDCategory());
+			mapper = mappingManager.getIDTypeMapper(recordSelectionManager.getIDType(), recordVA.getIdType());
+		}
+
 		float ratio = 0;
 
 		// Iterate over all selection types
@@ -258,15 +266,12 @@ public class BrickColumnSpacingRenderer extends ALayoutRenderer implements IDrop
 			}
 
 			int intersectionCount = 0;
-			IDMappingManager mappingManager = IDMappingManagerRegistry.get().getIDMappingManager(
-					recordVA.getIdType().getIDCategory());
 
 			for (Integer selectedID : selectedByGroupSelections) {
 
-				if (recordVA.getIdType() != recordSelectionManager.getIDType()) {
+				if (mapper != null) {
 
-					Set<Integer> recordIDs = mappingManager.getIDAsSet(recordSelectionManager.getIDType(),
-							recordVA.getIdType(), selectedID);
+					Set<Integer> recordIDs = mapper.apply(selectedID);
 					if (recordIDs == null)
 						continue;
 					selectedID = recordIDs.iterator().next();
