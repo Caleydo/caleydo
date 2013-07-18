@@ -272,7 +272,16 @@ public class DifferenceplotElement extends GLElement implements TablePerspective
 					stat2_UseSelected = StatisticsUtils.computeStatistics(dataSelectionConf.getVisSpaceType().ordinal(), tablePerspective, null, EStatisticsType.valueOf(dataSelectionConf.getAxisLabels().get(1)), selectedIDs);
 					
 					int sampleSize1 = StatisticsUtils.computeSampleSize(dataSelectionConf.getVisSpaceType().ordinal(), tablePerspective, false);
-					int sampleSize2 = selectedIDs.size(); //StatisticsUtils.computeSampleSize(dataSelectionConf.getVisSpaceType().ordinal(), tablePerspective, false);
+					int sampleSize2 = 0 ;
+					if (selectedIDs == null)
+					{
+						sampleSize2 = StatisticsUtils.computeSampleSize(dataSelectionConf.getVisSpaceType().ordinal(), tablePerspective, false);
+					}
+					else
+					{
+						sampleSize2 = selectedIDs.size(); //StatisticsUtils.computeSampleSize(dataSelectionConf.getVisSpaceType().ordinal(), tablePerspective, false);
+					}
+					
 					
 					significanceDiffFlagMean = StatisticsUtils.computeSignificanceOnTwoSampleTtest(false, stat1_UseAll, stat1_UseSelected, stat2_UseAll, stat2_UseSelected, sampleSize1, sampleSize2);
 					significanceDiffFlagVariance = StatisticsUtils.computeSignificanceOnTwoSampleVarianceFTest(stat2_UseAll, stat2_UseSelected, sampleSize1, sampleSize2);
