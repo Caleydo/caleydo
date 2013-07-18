@@ -569,9 +569,9 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 		case MEDIUM:
 			return 100;
 		case LOW:
-			return 40;
+			return 80;
 		default:
-			return 40;
+			return 80;
 		}
 	}
 
