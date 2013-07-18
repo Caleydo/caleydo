@@ -303,7 +303,7 @@ public abstract class ABrickLayoutConfiguration extends LayoutConfiguration {
 	public void setSelected(boolean selected) {
 
 		if (brick.isHeaderBrick()) {
-			brickColumn.setHighlightColor(selected ? SelectionType.SELECTION.getColor().getRGBA() : null);
+			brickColumn.setHighlightColor(selected ? SelectionType.SELECTION.getColor() : null);
 			return;
 		} else {
 			if (selected) {

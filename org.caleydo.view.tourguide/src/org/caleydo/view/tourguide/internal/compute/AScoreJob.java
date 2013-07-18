@@ -37,9 +37,9 @@ import com.google.common.collect.Table;
 
 /**
  * basic score computation job which is just a utility class for the subclassed job instances
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public abstract class AScoreJob {
 	private final CachedIDTypeMapper mapper = new CachedIDTypeMapper();
@@ -157,6 +157,16 @@ public abstract class AScoreJob {
 	protected final IStatus computeStratificationScores(IProgressMonitor monitor, IComputeElement va,
 			Collection<IComputedStratificationScore> stratMetrics,
 			Collection<IComputedReferenceStratificationScore> stratScores) {
+
+		// if (va instanceof PathwayPerspectiveRow) {
+		// IIDTypeMapper<Integer, ?> m = mapper.get(va.getIdType(), IDType.getIDType("GENE_SYMBOL"));
+		// Set<?> r = m.apply(va);
+		// System.out.print(va.getLabel() + "\t" + va.getLabel());
+		// for (Object ri : r)
+		// System.out.print("\t" + ri);
+		// System.out.println();
+		// }
+
 		for (IComputedStratificationScore score : stratMetrics) {
 			IStratificationAlgorithm algorithm = score.getAlgorithm();
 			if (Thread.interrupted() || monitor.isCanceled())

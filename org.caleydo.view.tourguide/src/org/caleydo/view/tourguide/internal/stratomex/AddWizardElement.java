@@ -46,6 +46,7 @@ import org.caleydo.view.tourguide.api.state.SimpleTransition;
 import org.caleydo.view.tourguide.internal.Activator;
 import org.caleydo.view.tourguide.internal.OpenViewHandler;
 import org.caleydo.view.tourguide.internal.RcpGLTourGuideView;
+import org.caleydo.view.tourguide.internal.TourGuideRenderStyle;
 import org.caleydo.view.tourguide.internal.event.AddScoreColumnEvent;
 import org.caleydo.view.tourguide.internal.event.RemoveLeadingScoreColumnsEvent;
 import org.caleydo.view.tourguide.internal.stratomex.event.WizardEndedEvent;
@@ -356,21 +357,24 @@ public class AddWizardElement extends AAddWizardElement implements IReactions {
 	}
 
 	@Override
-	public void replaceTemplate(TablePerspective with, IBrickConfigurer configurer) {
+	public void replaceTemplate(TablePerspective with, IBrickConfigurer configurer, boolean highlight) {
 		canGoBack = false;
-		adapter.replaceTemplate(with, configurer, false);
+		adapter.replaceTemplate(with, configurer, false, highlight ? TourGuideRenderStyle.stratomexHitGroup() : null);
 	}
 
 	@Override
-	public void replaceClinicalTemplate(Perspective underlying, TablePerspective numerical, boolean extra) {
+	public void replaceClinicalTemplate(Perspective underlying, TablePerspective numerical, boolean extra,
+			boolean highlight) {
 		canGoBack = false;
-		adapter.replaceClinicalTemplate(underlying, numerical, extra);
+		adapter.replaceClinicalTemplate(underlying, numerical, extra,
+				highlight ? TourGuideRenderStyle.stratomexHitGroup() : null);
 	}
 
 	@Override
-	public void replacePathwayTemplate(Perspective underlying, PathwayGraph pathway, boolean extra) {
+	public void replacePathwayTemplate(Perspective underlying, PathwayGraph pathway, boolean extra, boolean highlight) {
 		canGoBack = false;
-		adapter.replacePathwayTemplate(underlying, pathway, extra);
+		adapter.replacePathwayTemplate(underlying, pathway, extra, highlight ? TourGuideRenderStyle.stratomexHitGroup()
+				: null);
 	}
 
 	@Override

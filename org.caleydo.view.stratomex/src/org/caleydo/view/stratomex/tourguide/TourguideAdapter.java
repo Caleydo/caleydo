@@ -27,6 +27,7 @@ import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.manager.GeneralManager;
@@ -124,8 +125,19 @@ public class TourguideAdapter implements IStratomexAdapter {
 
 	private String hoveredButton = "";
 
+	/**
+	 * events that has to be triggered one frame later
+	 */
+	private final List<AEvent> delayedEvents = new ArrayList<>();
+
 	public TourguideAdapter(GLStratomex stratomex) {
 		this.stratomex = stratomex;
+	}
+
+	public void sendDelayedEvents() {
+		for (AEvent event : delayedEvents)
+			EventPublisher.trigger(event);
+		delayedEvents.clear();
 	}
 
 	public boolean hasTourGuide() {
@@ -354,8 +366,10 @@ public class TourguideAdapter implements IStratomexAdapter {
 	}
 
 	private void changeHighlight(GLBrick brick, Color color) {
+		if (brick == null)
+			return;
 		if (brick.isHeaderBrick()) {
-			brick.getBrickColumn().setHighlightColor(color == null ? BrickColumn.REVERT_COLOR : color.getRGBA());
+			brick.getBrickColumn().setHighlightColor(color == null ? BrickColumn.REVERT_COLOR : color);
 		} else {
 			ElementLayout layout = brick.getLayout();
 			if (color == null)
@@ -364,11 +378,11 @@ public class TourguideAdapter implements IStratomexAdapter {
 				// select brick by changing highlight
 				for (FrameHighlightRenderer glow : Iterables.filter(layout.getBackgroundRenderer(),
 						FrameHighlightRenderer.class)) {
-					glow.setColor(color.getRGBA());
+					glow.setColor(color);
 					return;
 				}
 				// no yet there add one
-				layout.addBackgroundRenderer(new FrameHighlightRenderer(color.getRGBA(), true));
+				layout.addBackgroundRenderer(new FrameHighlightRenderer(color, true));
 			}
 		}
 	}
@@ -433,7 +447,6 @@ public class TourguideAdapter implements IStratomexAdapter {
 			}
 		}
 	}
-
 
 	private void repaint() {
 		stratomex.updateLayout();
@@ -745,9 +758,12 @@ public class TourguideAdapter implements IStratomexAdapter {
 	}
 
 	@Override
-	public void replaceTemplate(TablePerspective with, IBrickConfigurer config, boolean extra) {
+	public void replaceTemplate(TablePerspective with, IBrickConfigurer config, boolean extra, Color highlight) {
 		List<Pair<Integer, BrickColumn>> added;
 		final List<TablePerspective> withL = Collections.singletonList(with);
+
+		if (highlight != null)
+			delayedEvents.add(new HighlightBrickEvent(with, null, highlight).to(this));
 
 		if (wizardElement != null) {
 			assert !extra;
@@ -879,7 +895,8 @@ public class TourguideAdapter implements IStratomexAdapter {
 	}
 
 	@Override
-	public void replaceClinicalTemplate(Perspective underlying, TablePerspective numerical, boolean extra) {
+	public void replaceClinicalTemplate(Perspective underlying, TablePerspective numerical, boolean extra,
+			Color highlight) {
 		TablePerspective t = asPerspective(underlying, numerical);
 		TablePerspective underlyingTP = findTablePerspective(underlying);
 		if (underlyingTP == null)
@@ -887,16 +904,16 @@ public class TourguideAdapter implements IStratomexAdapter {
 
 		ClinicalDataConfigurer configurer = AddGroupsToStratomexListener.createKaplanConfigurer(stratomex,
 				underlyingTP, t);
-		replaceTemplate(t, configurer, extra);
+		replaceTemplate(t, configurer, extra, highlight);
 	}
 
 	@Override
-	public void replacePathwayTemplate(Perspective underlying, PathwayGraph pathway, boolean extra) {
+	public void replacePathwayTemplate(Perspective underlying, PathwayGraph pathway, boolean extra, Color highlight) {
 		if (underlying == null) {
 			replaceTemplate(new PrimitivePathwayRenderer(pathway, stratomex));
 		} else {
 			TablePerspective t = asPerspective(underlying, pathway);
-			replaceTemplate(t, new PathwayDataConfigurer(), extra);
+			replaceTemplate(t, new PathwayDataConfigurer(), extra, highlight);
 		}
 	}
 

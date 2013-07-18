@@ -134,7 +134,7 @@ public class ClusterSimilarityScoreFactory implements IScoreFactory {
 		private final IState target;
 
 		public CreateJaccardScoreState(IState target) {
-			super("Select query group by clicking on a block in one of the displayed columns\n"
+			super("Select query group by clicking on a framed block in one of the displayed columns\n"
 					+ "Change query by clicking on other block at any time");
 			this.target = target;
 		}

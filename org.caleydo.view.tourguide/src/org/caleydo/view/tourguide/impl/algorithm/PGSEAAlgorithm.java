@@ -64,7 +64,7 @@ public class PGSEAAlgorithm extends AGSEAAlgorithm {
 			float bsum = 0;
 			int bcount = 0;
 			for (Integer row : rows) {
-				Float v = table.getNormalizedValue(col, row);
+				Float v = table.getRaw(col, row);
 				if (v == null || v.isNaN() || v.isInfinite())
 					continue;
 				if (inA.contains(row)) {
@@ -83,10 +83,13 @@ public class PGSEAAlgorithm extends AGSEAAlgorithm {
 
 			// now some kind of correlation between the two
 			float foldChange = Statistics.foldChange((asum / acount), (bsum / bcount));
-			sum += foldChange;
-			squaredSum += foldChange * foldChange;
-
-			foldChanges.put(col, foldChange);
+			Set<Integer> davids = dim2primary.apply(col);
+			if (davids == null)
+				continue;
+			sum += foldChange * davids.size();
+			squaredSum += (foldChange * foldChange) * davids.size();
+			for (Integer david : davids)
+				foldChanges.put(david, foldChange);
 		}
 		foldChangesMean = sum / foldChanges.size();
 		foldChangesSD = (float) Math.sqrt(squaredSum / foldChanges.size() - foldChangesMean * foldChangesMean);

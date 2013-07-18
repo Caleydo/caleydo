@@ -18,6 +18,8 @@ import org.caleydo.core.serialize.ISerializationAddon;
 import org.caleydo.core.serialize.SerializationData;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.view.tourguide.api.score.ISerializeableScore;
+import org.caleydo.view.tourguide.internal.score.ExternalLabelScore;
+import org.caleydo.view.tourguide.internal.score.ExternalGroupLabelScore;
 import org.caleydo.view.tourguide.internal.score.ExternalIDTypeScore;
 import org.caleydo.view.tourguide.internal.score.Scores;
 
@@ -34,7 +36,8 @@ public class TourGuideSerializationAddon implements ISerializationAddon {
 
 	@Override
 	public Collection<Class<?>> getJAXBContextClasses() {
-		return Arrays.asList(ExternalIDTypeScore.class, PersistentScores.class);
+		return Arrays.asList(ExternalIDTypeScore.class, ExternalGroupLabelScore.class, ExternalLabelScore.class,
+				PersistentScores.class);
 	}
 
 	@Override

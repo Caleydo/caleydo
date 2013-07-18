@@ -17,7 +17,7 @@ import org.eclipse.swt.graphics.Device;
  * @author Christian Partl
  */
 @XmlType
-public class Color {
+public class Color implements Cloneable {
 
 	public static final Color TRANSPARENT = new Color(1f, 1, 1, 0);
 	public static final Color RED = new Color(1f, 0, 0, 1);
@@ -110,6 +110,17 @@ public class Color {
 	/** Creates an opaque gray color (a, g, b are set to intensity). */
 	public Color(float intensity) {
 		setRGBA(intensity, intensity, intensity, 1);
+	}
+
+	@Override
+	public Color clone() {
+		try {
+			Color c = (Color) super.clone();
+			c.intColor = null;
+			return c;
+		} catch (CloneNotSupportedException e) {
+			throw new IllegalStateException(e);
+		}
 	}
 
 	private void setRGBA(float r, float g, float b, float a) {

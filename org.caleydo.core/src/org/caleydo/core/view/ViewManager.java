@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.media.opengl.GL2;
+import javax.media.opengl.GLAnimatorControl;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.event.EventPublisher;
@@ -29,6 +30,7 @@ import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
+import org.caleydo.core.view.opengl.canvas.MyAnimator;
 import org.caleydo.core.view.opengl.canvas.internal.IGLCanvasFactory;
 import org.caleydo.core.view.opengl.canvas.internal.awt.AWTGLCanvasFactory;
 import org.caleydo.core.view.opengl.canvas.internal.newt.NEWTGLCanvasFactory;
@@ -55,7 +57,6 @@ import org.osgi.framework.Bundle;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
-import com.jogamp.opengl.util.FPSAnimator;
 
 /**
  * Manage all canvas, view and canvas objects.
@@ -82,7 +83,7 @@ public class ViewManager extends AManager<IView> {
 	 */
 	// private Map<AGLView, Set<AGLView>> hashTopLevelView2ViewsToBeDestroyed = new HashMap<AGLView, Set<AGLView>>();
 
-	private FPSAnimator fpsAnimator;
+	private GLAnimatorControl fpsAnimator;
 
 	private PickingManager pickingManager = new PickingManager();
 
@@ -483,15 +484,16 @@ public class ViewManager extends AManager<IView> {
 
 
 	public void startAnimator() {
-
-		if (fpsAnimator == null)
-			fpsAnimator = new FPSAnimator(30);
+		if (fpsAnimator == null) {
+			// FPSAnimator f = new FPSAnimator(30);
+			// f.setIgnoreExceptions(true);
+			// f.setPrintExceptions(true);
+			// fpsAnimator = f;
+			fpsAnimator = new MyAnimator(30);
+		}
 
 		if (!fpsAnimator.isAnimating())
 			fpsAnimator.start();
-
-		fpsAnimator.setIgnoreExceptions(true);
-		fpsAnimator.setPrintExceptions(true);
 
 		Logger.log(new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "Start animator"));
 	}

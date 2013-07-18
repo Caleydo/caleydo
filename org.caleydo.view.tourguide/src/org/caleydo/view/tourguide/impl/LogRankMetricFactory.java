@@ -156,10 +156,10 @@ public class LogRankMetricFactory implements IScoreFactory {
 		public void onUpdate(UpdateStratificationPreviewEvent event, IReactions adapter) {
 			TablePerspective tp = event.getTablePerspective();
 			if (DataDomainOracle.isCategoricalDataDomain(tp.getDataDomain()))
-				adapter.replaceTemplate(tp, new CategoricalDataConfigurer(tp));
+				adapter.replaceTemplate(tp, new CategoricalDataConfigurer(tp), true);
 			else
-				adapter.replaceTemplate(tp, null);
-			adapter.replaceClinicalTemplate(tp.getRecordPerspective(), numerical, true);
+				adapter.replaceTemplate(tp, null, true);
+			adapter.replaceClinicalTemplate(tp.getRecordPerspective(), numerical, true, true);
 		}
 	}
 

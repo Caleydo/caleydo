@@ -5,6 +5,7 @@
  ******************************************************************************/
 package org.caleydo.core.view.opengl.util.spline;
 
+import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 
 import java.awt.geom.Point2D;
@@ -18,6 +19,8 @@ import javax.media.opengl.glu.GLU;
 import javax.media.opengl.glu.GLUtessellator;
 
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.util.color.Color;
+import org.caleydo.core.util.color.StyledColor;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.util.vislink.NURBSCurve;
 
@@ -461,6 +464,28 @@ public class ConnectionBandRenderer {
 
 	}
 
+	public void renderStraightBandOutline(GL2 gl, Vec2f leftTopPos, Vec2f leftBottomPos, Vec2f rightTopPos, Vec2f rightBottomPos,
+			Color color) {
+		// Band border
+		if (color instanceof StyledColor) {
+			((StyledColor) color).set(gl);
+		} else {
+			gl.glLineWidth(1);
+			gl.glColor4f(color.r, color.g, color.b, color.a);
+		}
+
+		gl.glBegin(GL.GL_LINES);
+		gl.glVertex3f(leftTopPos.x(), leftTopPos.y(), 0);
+		gl.glVertex3f(rightTopPos.x(), rightTopPos.y(), 0);
+		gl.glVertex3f(rightBottomPos.x(), rightBottomPos.y(), 0);
+		gl.glVertex3f(leftBottomPos.x(), leftBottomPos.y(), 0);
+		gl.glEnd();
+
+		if (color instanceof StyledColor) {
+			((StyledColor) color).clear(gl);
+		}
+	}
+
 	/**
 	 * @param gl
 	 * @param leftTopPos
@@ -565,6 +590,53 @@ public class ConnectionBandRenderer {
 		if (!renderOnlyOutline)
 			render(gl, outputPoints);
 		// gl.glPopName();
+	}
+
+	public void renderSingleBandOutline(GL2 gl, Vec2f lt, Vec2f lb, Vec2f rt, Vec2f rb, float xOffset, Color color) {
+		float yCorrection = 0;
+		float z = 0.1f;
+
+		ArrayList<Vec3f> inputPoints = new ArrayList<Vec3f>();
+		inputPoints.add(new Vec3f(lt.x(), lt.y(), z));
+		inputPoints.add(new Vec3f(lt.x() + xOffset, lt.y() - yCorrection, z));
+		inputPoints.add(new Vec3f(rt.x() - xOffset, rt.y() + yCorrection, z));
+		inputPoints.add(new Vec3f(rt.x(), rt.y(), z));
+
+		NURBSCurve curve = new NURBSCurve(inputPoints, NUMBER_OF_SPLINE_POINTS);
+		ArrayList<Vec3f> outputPoints = curve.getCurvePoints();
+
+		// Band border
+		if (color instanceof StyledColor) {
+			((StyledColor) color).set(gl);
+		} else {
+			gl.glLineWidth(1);
+			gl.glColor4f(color.r, color.g, color.b, color.a);
+		}
+
+		gl.glBegin(GL.GL_LINE_STRIP);
+		for (int i = 0; i < outputPoints.size(); i++) {
+			gl.glVertex3f(outputPoints.get(i).x(), outputPoints.get(i).y(), outputPoints.get(i).z());
+		}
+		gl.glEnd();
+
+		inputPoints = new ArrayList<Vec3f>();
+		inputPoints.add(new Vec3f(lb.x(), lb.y(), z));
+		inputPoints.add(new Vec3f(lt.x() + xOffset, lb.y() - yCorrection, z));
+		inputPoints.add(new Vec3f(rb.x() - xOffset, rb.y() + yCorrection, z));
+		inputPoints.add(new Vec3f(rb.x(), rb.y(), z));
+
+		curve = new NURBSCurve(inputPoints, NUMBER_OF_SPLINE_POINTS);
+		ArrayList<Vec3f> points = curve.getCurvePoints();
+
+		gl.glBegin(GL.GL_LINE_STRIP);
+		for (int i = 0; i < points.size(); i++) {
+			gl.glVertex3f(points.get(i).x(), points.get(i).y(), points.get(i).z());
+		}
+		gl.glEnd();
+
+		if (color instanceof StyledColor) {
+			((StyledColor) color).clear(gl);
+		}
 	}
 
 	public void renderSingleBand(GL2 gl, float[] side1AnchorPos1,

@@ -40,7 +40,6 @@ import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.events.SelectionCommandListener;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.events.RecordVAUpdateEvent;
-import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.similarity.RelationAnalyzer;
 import org.caleydo.core.event.EventListenerManager;
 import org.caleydo.core.event.EventListenerManager.DeepScan;
@@ -57,6 +56,7 @@ import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.util.base.IUniqueObject;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.logging.Logger;
@@ -506,7 +506,6 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 
 	@Override
 	public void displayLocal(GL2 gl) {
-
 		pickingManager.handlePicking(this, gl);
 
 		display(gl);
@@ -514,6 +513,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		if (!lazyMode) {
 			checkForHits(gl);
 		}
+		tourguide.sendDelayedEvents();
 	}
 
 	@Override
@@ -1698,15 +1698,26 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		setDisplayListDirty();
 	}
 
-	private static String toHighlightBandKey(Group ag, Group bg) {
+	private static String toHighlightBandKey(IUniqueObject ag, IUniqueObject bg) {
+		if (ag == null || bg == null)
+			return ""; // dummy
 		return ag.getID() + "/" + bg.getID();
 	}
 
 	public Color isHighlightingBand(GLBrick a, GLBrick b) {
 		final TablePerspective at = a.getTablePerspective();
 		final TablePerspective bt = b.getTablePerspective();
-		String key = toHighlightBandKey(at.getRecordGroup(), bt.getRecordGroup());
-		return bandHighlights.get(key);
+		IUniqueObject i1 = at.getRecordGroup();
+		IUniqueObject i2 = bt.getRecordGroup();
+		Color c;
+		if ((c = bandHighlights.get(toHighlightBandKey(i1,i2))) != null)
+			return c;
+		if (at instanceof PathwayTablePerspective && (c = bandHighlights.get(toHighlightBandKey( ((PathwayTablePerspective) at).getPathway(),i2))) != null)
+			return c;
+		if (bt instanceof PathwayTablePerspective
+				&& (c = bandHighlights.get(toHighlightBandKey(i1, ((PathwayTablePerspective) bt).getPathway()))) != null)
+			return c;
+		return null;
 	}
 
 	public void selectElements(Iterable<Integer> ids, IDType idType, String dataDomainID, SelectionType selectionType) {
