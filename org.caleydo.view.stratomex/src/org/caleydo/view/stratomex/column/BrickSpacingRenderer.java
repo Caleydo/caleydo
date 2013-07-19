@@ -67,7 +67,7 @@ public class BrickSpacingRenderer
 			@Override
 			protected void clicked(Pick pick) {
 				SelectionCommands.clearSelections();
-				stratomex.hideAllBrickToolbars();
+				stratomex.hideAllBrickWidgets();
 			}
 
 		};

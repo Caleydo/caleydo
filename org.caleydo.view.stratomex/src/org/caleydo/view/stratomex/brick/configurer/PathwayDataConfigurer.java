@@ -99,7 +99,8 @@ public class PathwayDataConfigurer extends ABrickConfigurer {
 		pickingIDs.add(new Pair<String, Integer>(EPickingType.BRICK_TITLE.name(), layoutTemplate.getBrick().getID()));
 
 		toolBarElements.add(createCaptionLayout(layoutTemplate, layoutTemplate.getBrick(), pickingIDs,
-				layoutTemplate.getBrick()));
+ layoutTemplate
+				.getBrick().getBrickColumn().getStratomexView()));
 		toolBarElements.add(createSpacingLayout(layoutTemplate, true));
 
 		layoutTemplate.setToolBarElements(toolBarElements);
@@ -187,7 +188,8 @@ public class PathwayDataConfigurer extends ABrickConfigurer {
 
 		int compactRendererID = -1;
 		if (brick.isHeaderBrick()) {
-			ALayoutRenderer pathwaysSummaryCompactRenderer = new PathwaysSummaryRenderer(brick, label,
+			ALayoutRenderer pathwaysSummaryCompactRenderer = new PathwaysSummaryRenderer(brick.getBrickColumn()
+					.getStratomexView(), label,
 					EPickingType.BRICK.name(), brick.getID());
 			compactRendererID = multiFormRenderer.addLayoutRenderer(pathwaysSummaryCompactRenderer, null,
 					new DefaultVisInfo(), false);

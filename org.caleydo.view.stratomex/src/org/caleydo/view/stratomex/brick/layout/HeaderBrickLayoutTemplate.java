@@ -249,21 +249,22 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 		toolBar.append(greedyXLayout);
 
 		if (showClusterButton) {
-			Button clusterButton = new Button(EPickingType.DIMENSION_GROUP_CLUSTER_BUTTON.name(), CLUSTER_BUTTON_ID,
+			Button clusterButton = new Button(EPickingType.DIMENSION_GROUP_CLUSTER_BUTTON.name(), brick.getID(),
 					EIconTextures.CLUSTER_ICON);
 			ElementLayout clusterButtonLayout = new ElementLayout("clusterButton");
 			clusterButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
 			clusterButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
 			clusterButtonLayout
-					.setRenderer(new ButtonRenderer.Builder(brick, clusterButton)
+					.setRenderer(new ButtonRenderer.Builder(brick.getStratomex(), clusterButton)
 							.textureManager(brick.getTextureManager()).zCoordinate(DefaultBrickLayoutTemplate.BUTTON_Z)
 							.build());
 
 			toolBar.append(clusterButtonLayout);
 			toolBar.append(spacingLayoutX);
 
-			brick.removeAllTypePickingListeners(EPickingType.DIMENSION_GROUP_CLUSTER_BUTTON.name());
-			brick.addTypePickingListener(new APickingListener() {
+			brick.getStratomex().removeAllIDPickingListeners(EPickingType.DIMENSION_GROUP_CLUSTER_BUTTON.name(),
+					brick.getID());
+			brick.getStratomex().addIDPickingListener(new APickingListener() {
 
 				@Override
 				public void clicked(Pick pick) {
@@ -314,23 +315,24 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 						}
 					});
 				}
-			}, EPickingType.DIMENSION_GROUP_CLUSTER_BUTTON.name());
+			}, EPickingType.DIMENSION_GROUP_CLUSTER_BUTTON.name(), brick.getID());
 		}
-		brick.addTypePickingTooltipListener("Cluster", EPickingType.DIMENSION_GROUP_CLUSTER_BUTTON.name());
+		brick.getStratomex().addIDPickingTooltipListener("Cluster", EPickingType.DIMENSION_GROUP_CLUSTER_BUTTON.name(),
+				brick.getID());
 
-		Button removeColumnButton = new Button(EPickingType.REMOVE_COLUMN_BUTTON.name(), REMOVE_COLUMN_BUTTON_ID,
+		Button removeColumnButton = new Button(EPickingType.REMOVE_COLUMN_BUTTON.name(), brick.getID(),
 				EIconTextures.REMOVE);
 		ElementLayout removeColumnButtonLayout = new ElementLayout("removeColumnButton");
 		removeColumnButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
 		removeColumnButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
-		removeColumnButtonLayout.setRenderer(new ButtonRenderer.Builder(brick, removeColumnButton)
+		removeColumnButtonLayout.setRenderer(new ButtonRenderer.Builder(brick.getStratomex(), removeColumnButton)
 				.textureManager(brick.getTextureManager()).zCoordinate(DefaultBrickLayoutTemplate.BUTTON_Z).build());
 
 		toolBar.append(removeColumnButtonLayout);
 		toolBar.append(spacingLayoutX);
 
-		brick.removeAllTypePickingListeners(EPickingType.REMOVE_COLUMN_BUTTON.name());
-		brick.addTypePickingListener(new APickingListener() {
+		brick.getStratomex().removeAllIDPickingListeners(EPickingType.REMOVE_COLUMN_BUTTON.name(), brick.getID());
+		brick.getStratomex().addIDPickingListener(new APickingListener() {
 
 			@Override
 			public void clicked(Pick pick) {
@@ -345,8 +347,9 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 					}
 				});
 			}
-		}, EPickingType.REMOVE_COLUMN_BUTTON.name());
-		brick.addTypePickingTooltipListener("Remove column", EPickingType.REMOVE_COLUMN_BUTTON.name());
+		}, EPickingType.REMOVE_COLUMN_BUTTON.name(), brick.getID());
+		brick.getStratomex().addIDPickingTooltipListener("Remove column", EPickingType.REMOVE_COLUMN_BUTTON.name(),
+				brick.getID());
 
 		return toolBar;
 	}
@@ -365,7 +368,7 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 			}
 
 		}, EPickingType.BRICK_LOCK_RESIZING_BUTTON.name(), LOCK_RESIZING_BUTTON_ID);
-		brick.addIDPickingListener(new APickingListener() {
+		brick.getStratomex().addIDPickingListener(new APickingListener() {
 
 			@Override
 			public void clicked(Pick pick) {
@@ -374,9 +377,10 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 				brickColumn.showDetailedBrick(brick, false);
 			}
 		}, EPickingType.EXPAND_RIGHT_HANDLE.name(), brick.getID());
-		brick.addIDPickingTooltipListener("Show in detail", EPickingType.EXPAND_RIGHT_HANDLE.name(), brick.getID());
+		brick.getStratomex().addIDPickingTooltipListener("Show in detail", EPickingType.EXPAND_RIGHT_HANDLE.name(),
+				brick.getID());
 
-		brick.addIDPickingListener(new APickingListener() {
+		brick.getStratomex().addIDPickingListener(new APickingListener() {
 
 			@Override
 			public void clicked(Pick pick) {
@@ -385,7 +389,8 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 				brickColumn.showDetailedBrick(brick, true);
 			}
 		}, EPickingType.EXPAND_LEFT_HANDLE.name(), brick.getID());
-		brick.addIDPickingTooltipListener("Show in detail", EPickingType.EXPAND_LEFT_HANDLE.name(), brick.getID());
+		brick.getStratomex().addIDPickingTooltipListener("Show in detail", EPickingType.EXPAND_LEFT_HANDLE.name(),
+				brick.getID());
 	}
 
 	@Override

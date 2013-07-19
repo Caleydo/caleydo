@@ -40,6 +40,8 @@ public class ToolBarBackgroundRenderer extends ALayoutRenderer {
 
 		gl.glPushName(brick.getStratomex().getPickingManager()
 				.getPickingID(brick.getStratomex().getID(), EPickingType.BRICK.name(), brick.getID()));
+		gl.glPushName(brick.getStratomex().getPickingManager()
+				.getPickingID(brick.getStratomex().getID(), EPickingType.BRICK_PENETRATING.name(), brick.getID()));
 
 		gl.glColor3fv(Color.GRAY.getRGBA(), 0);
 		gl.glBegin(GL2.GL_QUADS);
@@ -51,6 +53,7 @@ public class ToolBarBackgroundRenderer extends ALayoutRenderer {
 
 		gl.glEnd();
 
+		gl.glPopName();
 		gl.glPopName();
 
 	}

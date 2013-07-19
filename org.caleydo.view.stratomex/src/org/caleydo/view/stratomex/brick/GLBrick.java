@@ -64,6 +64,7 @@ import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormRenderer;
 import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormViewSwitchingBar;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.APickingListener;
+import org.caleydo.core.view.opengl.picking.ATimedMouseOutPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
@@ -249,6 +250,8 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 	private final Collection<IContextMenuBrickFactory> contextMenuFactories;
 	private APickingListener pickingListener;
 
+	private ATimedMouseOutPickingListener brickPickingListener;
+
 	public GLBrick(IGLCanvas glCanvas, ViewFrustum viewFrustum) {
 		super(glCanvas, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
@@ -342,8 +345,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 			@Override
 			public void run() {
 				String r = RenameNameDialog.show(getParentGLCanvas().asComposite().getShell(), "Rename '" + getLabel()
-						+ "' to",
-						getLabel());
+						+ "' to", getLabel());
 				if (r != null) {
 					label = r;
 					tablePerspective.setLabel(label, false);
@@ -417,7 +419,9 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 		GLStratomex stratomex = getBrickColumn().getStratomexView();
 		gl.glPushName(stratomex.getPickingManager().getPickingID(stratomex.getID(), EPickingType.BRICK.name(), getID()));
-		gl.glPushName(getPickingManager().getPickingID(getID(), EPickingType.BRICK.name(), getID()));
+		gl.glPushName(stratomex.getPickingManager().getPickingID(stratomex.getID(),
+				EPickingType.BRICK_PENETRATING.name(), getID()));
+		// gl.glPushName(getPickingManager().getPickingID(getID(), EPickingType.BRICK.name(), getID()));
 		gl.glColor4f(1.0f, 0.0f, 0.0f, 0.5f);
 		gl.glTranslatef(0, 0, 0.1f);
 
@@ -760,11 +764,13 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 		}
 
 		listeners.unregisterAll();
+
+		unregisterPickingListeners();
 	}
 
 	private void registerPickingListeners() {
 
-		this.pickingListener = new APickingListener() {
+		APickingListener pickingListener = new APickingListener() {
 
 			@Override
 			public void clicked(Pick pick) {
@@ -903,24 +909,46 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 				isBrickResizeActive = true;
 			}
 		}, EPickingType.RESIZE_HANDLE_LOWER_RIGHT.name(), 1);
+
+		brickPickingListener = new ATimedMouseOutPickingListener() {
+
+			@Override
+			public void mouseOver(Pick pick) {
+				super.mouseOver(pick);
+				if (pick.getObjectID() == getID())
+					showWidgets(true);
+				else
+					showWidgets(false);
+			}
+
+			@Override
+			protected void timedMouseOut(Pick pick) {
+				// TODO Auto-generated method stub
+				if (pick.getObjectID() == getID())
+					showWidgets(false);
+			}
+		};
+
+		getStratomex().addTypePickingListener(brickPickingListener, EPickingType.BRICK_PENETRATING.name());
 	}
 
-	private void unregisterStratomexPickingListeners() {
-		stratomex.removeIDPickingListener(pickingListener, EPickingType.BRICK.name(), getID());
+	private void unregisterPickingListeners() {
+		stratomex.removeTypePickingListener(brickPickingListener, EPickingType.BRICK_PENETRATING.name());
+		stratomex.removeAllIDPickingListeners(EPickingType.BRICK.name(), getID());
 		if (isHeaderBrick) {
-			stratomex
-					.removeIDPickingListener(pickingListener, EPickingType.DIMENSION_GROUP.name(), brickColumn.getID());
+			stratomex.removeAllIDPickingListeners(EPickingType.DIMENSION_GROUP.name(), brickColumn.getID());
 		}
+		stratomex.removeAllIDPickingListeners(EPickingType.BRICK_TITLE.name(), getID());
 	}
 
-	public void hideToolBar() {
+	public void showWidgets(boolean show) {
 		ToolBar toolbar = brickLayoutConfiguration.getToolBar();
 		if (toolbar != null) {
-			toolbar.setHide(true);
+			toolbar.setHide(!show);
 		}
 		HandleRenderer handleRenderer = brickLayoutConfiguration.getHandleRenderer();
 		if (handleRenderer != null) {
-			handleRenderer.setHide(true);
+			handleRenderer.setHide(!show);
 		}
 		setDisplayListDirty();
 	}
@@ -1246,7 +1274,6 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 	protected void destroyViewSpecificContent(GL2 gl) {
 		if (layoutManager != null)
 			layoutManager.destroy(gl);
-		unregisterStratomexPickingListeners();
 	}
 
 	/**
