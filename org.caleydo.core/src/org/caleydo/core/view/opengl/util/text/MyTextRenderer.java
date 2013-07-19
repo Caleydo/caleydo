@@ -63,6 +63,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
@@ -73,6 +74,9 @@ import javax.media.opengl.fixedfunc.GLPointerFunc;
 
 import org.caleydo.core.util.color.Color;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
 import com.jogamp.common.nio.Buffers;
 import com.jogamp.opengl.GLExtensions;
 import com.jogamp.opengl.util.awt.TextRenderer;
@@ -208,6 +212,14 @@ public class MyTextRenderer {
 
 	public boolean isDirty;
 
+	private Cache<CharSequence, Rectangle2D> boundsCache = CacheBuilder.newBuilder().maximumSize(1000)
+			.build(new CacheLoader<CharSequence, Rectangle2D>() {
+				@Override
+				public Rectangle2D load(CharSequence arg0) throws Exception {
+					return getBoundsImpl(arg0);
+				}
+			});
+
     /** Creates a new TextRenderer with the given font, using no
         antialiasing or fractional metrics, and the default
         RenderDelegate. Equivalent to <code>TextRenderer(font, false,
@@ -310,8 +322,17 @@ public class MyTextRenderer {
         {@link java.awt.font.GlyphVector#getPixelBounds getPixelBounds},
         etc.) the returned bounds correspond to, although every effort
         is made to ensure an accurate bound. */
-    public Rectangle2D getBounds(CharSequence str) {
-        // FIXME: this should be more optimized and use the glyph cache
+	public Rectangle2D getBounds(CharSequence str) {
+		try {
+			return boundsCache.get(str);
+		} catch (ExecutionException e) {
+			return getBoundsImpl(str);
+		}
+	}
+
+	final Rectangle2D getBoundsImpl(CharSequence str) {
+
+		// FIXME: this should be more optimized and use the glyph cache
         Rect r = null;
 
         if ((r = stringLocations.get(str)) != null) {
@@ -553,7 +574,8 @@ public class MyTextRenderer {
         }
 
         // Push client attrib bits used by the pipelined quad renderer
-        gl.glPushClientAttrib((int) GL2.GL_ALL_CLIENT_ATTRIB_BITS);
+		// don't do that, as it will internally copy a whole fat hashmap
+		// gl.glPushClientAttrib((int) GL2.GL_ALL_CLIENT_ATTRIB_BITS);
 
         if (!haveMaxSize) {
             // Query OpenGL for the maximum texture size and set it in the
@@ -593,7 +615,11 @@ public class MyTextRenderer {
         GL2 gl = GLContext.getCurrentGL().getGL2();
 
         // Pop client attrib bits used by the pipelined quad renderer
-        gl.glPopClientAttrib();
+		// gl.glPopClientAttrib();
+		if (useVertexArrays) {
+			gl.glDisableClientState(GLPointerFunc.GL_VERTEX_ARRAY);
+			gl.glDisableClientState(GLPointerFunc.GL_TEXTURE_COORD_ARRAY);
+		}
 
         // The OpenGL spec is unclear about whether this changes the
         // buffer bindings, so preemptively zero out the GL_ARRAY_BUFFER
@@ -625,7 +651,7 @@ public class MyTextRenderer {
     }
 
     private void clearUnusedEntries() {
-		final java.util.List<Rect> deadRects = new ArrayList<>();
+		final java.util.List<Rect> deadRects = new ArrayList<>(2);
 
         // Iterate through the contents of the backing store, removing
         // text strings that haven't been used recently
