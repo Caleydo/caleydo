@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.view.ViewManager;
 
 public class BrickColumnManager {
 
@@ -107,8 +106,7 @@ public class BrickColumnManager {
 			BrickColumn brickColumn = brickColumnIterator.next();
 			if (brickColumn.getTablePerspective().getID() == tablePerspectiveID) {
 				// ViewManager.get().unregisterGLView(brickColumn);
-				ViewManager.get().destroyView(brickColumn.getParentGLCanvas().asGLAutoDrawAble().getGL().getGL2(),
-						brickColumn);
+				brickColumn.destroyView();
 				brickColumnIterator.remove();
 				if (count < centerColumnStartIndex) {
 					centerColumnStartIndex--;

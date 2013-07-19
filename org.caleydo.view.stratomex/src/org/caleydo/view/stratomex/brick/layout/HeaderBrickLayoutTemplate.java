@@ -8,6 +8,8 @@ package org.caleydo.view.stratomex.brick.layout;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.media.opengl.GLContext;
+
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
@@ -133,6 +135,8 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 			handles = DEFAULT_HANDLES;
 		}
 
+		if (this.handleRenderer != null)
+			this.handleRenderer.destroy(GLContext.getCurrentGL().getGL2());
 		handleRenderer = new HandleRenderer(brick, HANDLE_SIZE_PIXELS, brick.getTextureManager(), handles);
 		baseRow.addForeGroundRenderer(handleRenderer);
 
@@ -223,6 +227,10 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	 * @return
 	 */
 	protected ToolBar createToolBar() {
+		if (this.toolBar != null) {
+			this.toolBar.clear();
+			this.toolBar.destroy(GLContext.getCurrentGL().getGL2());
+		}
 		ToolBar toolBar = new ToolBar("ToolBarRow", brick);
 		toolBar.setPixelSizeY(0);
 
@@ -508,6 +516,11 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	@Override
 	public void destroy() {
 		super.destroy();
+		brick.getStratomex().removeAllIDPickingListeners(EPickingType.EXPAND_LEFT_HANDLE.name(), brick.getID());
+		brick.getStratomex().removeAllIDPickingListeners(EPickingType.EXPAND_RIGHT_HANDLE.name(), brick.getID());
+		brick.getStratomex().removeAllIDPickingListeners(EPickingType.DIMENSION_GROUP_CLUSTER_BUTTON.name(),
+				brick.getID());
+		brick.getStratomex().removeAllIDPickingListeners(EPickingType.REMOVE_COLUMN_BUTTON.name(), brick.getID());
 		brick.removeAllIDPickingListeners(EPickingType.BRICK_LOCK_RESIZING_BUTTON.name(), LOCK_RESIZING_BUTTON_ID);
 	}
 

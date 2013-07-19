@@ -89,12 +89,12 @@ public class MultiFormViewSwitchingBar extends Row implements IMultiFormChangeLi
 	 * @param rendererID
 	 */
 	public void addButtonPickingListener(IPickingListener pickingListener, int rendererID) {
-		if (buttons.keySet().contains(rendererID))
+		if (buttons.containsKey(rendererID))
 			view.addIDPickingListener(pickingListener, buttonPickingType, rendererID);
 	}
 
 	public void setToolTip(String text, int rendererID) {
-		if (buttons.keySet().contains(rendererID))
+		if (buttons.containsKey(rendererID))
 			view.addIDPickingTooltipListener(text, buttonPickingType, rendererID);
 	}
 

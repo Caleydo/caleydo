@@ -16,6 +16,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Queue;
 import java.util.Set;
 
@@ -376,6 +377,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 					this));
 			leftBrickColumnSpacing.setGrabX(true);
 			centerRowLayout.append(leftBrickColumnSpacing);
+			rightBrickColumnSpacing = null;
 			return;
 		}
 
@@ -1367,6 +1369,25 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 			if (it.next().getTablePerspective() == tablePerspective)
 				it.remove();
 		}
+		// cleanup band connections
+		for (Iterator<BrickConnection> it = hashConnectionBandIDToRecordVA.values().iterator(); it.hasNext();) {
+			BrickConnection next = it.next();
+			if (next.refersTo(tablePerspective))
+				it.remove();
+		}
+		for (Iterator<Map.Entry<Perspective, HashMap<Perspective, BrickConnection>>> it = hashRowPerspectivesToConnectionBandID
+				.entrySet().iterator(); it.hasNext();) {
+			Entry<Perspective, HashMap<Perspective, BrickConnection>> next = it.next();
+			for (Iterator<BrickConnection> it2 = next.getValue().values().iterator(); it2.hasNext();) {
+				BrickConnection next2 = it2.next();
+				if (next2.refersTo(tablePerspective))
+					it2.remove();
+			}
+			if (next.getValue().isEmpty())
+				it.remove();
+		}
+		eventPublisher.triggerEvent(new RelationsUpdatedEvent().from(this));
+
 		initLayouts();
 		TablePerspectivesChangedEvent event = new TablePerspectivesChangedEvent(this);
 		event.setSender(this);

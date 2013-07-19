@@ -373,7 +373,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 		} else {
 			ElementLayout layout = brick.getLayout();
 			if (color == null)
-				layout.clearBackgroundRenderers(FrameHighlightRenderer.class);
+				layout.clearBackgroundRenderers(FrameHighlightRenderer.class, GLContext.getCurrentGL().getGL2());
 			else {
 				// select brick by changing highlight
 				for (FrameHighlightRenderer glow : Iterables.filter(layout.getBackgroundRenderer(),
@@ -555,8 +555,8 @@ public class TourguideAdapter implements IStratomexAdapter {
 			if (!wizardPreviews.isEmpty()) {
 				BrickColumn wizardPreview = wizardPreviews.get(0);
 				final Row layout = wizardPreview.getLayout();
-				layout.clearForegroundRenderers(AddAttachedLayoutRenderer.class);
-				layout.clearForegroundRenderers(WizardActionsLayoutRenderer.class);
+				layout.clearForegroundRenderers(AddAttachedLayoutRenderer.class, GLContext.getCurrentGL().getGL2());
+				layout.clearForegroundRenderers(WizardActionsLayoutRenderer.class, GLContext.getCurrentGL().getGL2());
 				if (canHaveDependentColumns(wizardPreview))
 					layout.addForeGroundRenderer(new AddAttachedLayoutRenderer(wizardPreview, this,
 							false));
@@ -609,7 +609,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 	 * @param brickColumn
 	 */
 	public void addedBrickColumn(BrickColumn brickColumn) {
-		if (!hasTourGuide())
+		if (!hasTourGuide() || wizardPreviews.contains(brickColumn))
 			return;
 
 		Row layout = brickColumn.getLayout();
@@ -658,7 +658,8 @@ public class TourguideAdapter implements IStratomexAdapter {
 		for (BrickColumn col : stratomex.getBrickColumnManager().getBrickColumns()) {
 			col.setHighlightColor(BrickColumn.REVERT_COLOR);
 			for (GLBrick brick : col.getSegmentBricks()) {
-				brick.getLayout().clearBackgroundRenderers(FrameHighlightRenderer.class);
+				brick.getLayout().clearBackgroundRenderers(FrameHighlightRenderer.class,
+						GLContext.getCurrentGL().getGL2());
 			}
 		}
 
@@ -821,7 +822,8 @@ public class TourguideAdapter implements IStratomexAdapter {
 			}
 		}
 		if (added.size() > 0) {
-			wizardPreviews.get(0).getLayout().clearForegroundRenderers();
+			wizardPreviews.get(0).getLayout()
+					.clearForegroundRenderers(ALayoutRenderer.class, GLContext.getCurrentGL().getGL2());
 			wizardPreviews.get(0).getLayout().addForeGroundRenderer(new WizardActionsLayoutRenderer(stratomex, this));
 		}
 	}

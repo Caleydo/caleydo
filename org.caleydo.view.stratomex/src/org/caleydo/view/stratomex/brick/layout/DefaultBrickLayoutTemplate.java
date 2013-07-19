@@ -8,6 +8,8 @@ package org.caleydo.view.stratomex.brick.layout;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.media.opengl.GLContext;
+
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.Row;
@@ -144,6 +146,8 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 			handles = DEFAULT_HANDLES;
 		}
 
+		if (this.handleRenderer != null)
+			this.handleRenderer.destroy(GLContext.getCurrentGL().getGL2());
 		handleRenderer = new HandleRenderer(brick, HANDLE_SIZE_PIXELS, brick.getTextureManager(), handles);
 		baseRow.addForeGroundRenderer(handleRenderer);
 
@@ -207,6 +211,8 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	 */
 
 	protected ToolBar createToolBar() {
+		if (this.toolBar != null)
+			this.toolBar.destroy(GLContext.getCurrentGL().getGL2());
 
 		ElementLayout spacingLayoutX = new ElementLayout("spacingLayoutX");
 		spacingLayoutX.setPixelSizeX(SPACING_PIXELS);
@@ -426,8 +432,11 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 		brick.removeAllIDPickingListeners(EPickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON.name(),
  brick.getID());
+		brick.getStratomex().removeAllIDPickingListeners(EPickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON.name(),
+				brick.getID());
 
 		brick.removeAllIDPickingListeners(EPickingType.BRICK_COLLAPSE_BUTTON.name(), brick.getID());
+		brick.getStratomex().removeAllIDPickingListeners(EPickingType.BRICK_COLLAPSE_BUTTON.name(), brick.getID());
 
 		brick.getStratomex().removeAllIDPickingListeners(EPickingType.EXPAND_RIGHT_HANDLE.name(), brick.getID());
 

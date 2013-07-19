@@ -77,6 +77,8 @@ public class GLGraphics {
 	 */
 	private final GLContextLocal local;
 
+	private final Vec3f[] pool = { new Vec3f(), new Vec3f(), new Vec3f(), new Vec3f() };
+
 	public GLGraphics(GL2 gl, GLContextLocal local, boolean originInTopLeft, int deltaTimeMs) {
 		this.gl = gl;
 		this.local = local;
@@ -372,10 +374,15 @@ public class GLGraphics {
 		if (isInvalidOrZero(w) || isInvalidOrZero(h) || isInvalid(x) || isInvalid(y))
 			return this;
 		stats.incImage();
-		Vec3f lowerLeftCorner = new Vec3f(x, y, z);
-		Vec3f lowerRightCorner = new Vec3f(x + w, y, z);
-		Vec3f upperRightCorner = new Vec3f(x + w, y + h, z);
-		Vec3f upperLeftCorner = new Vec3f(x, y + h, z);
+
+		Vec3f lowerLeftCorner = pool[0];
+		lowerLeftCorner.set(x, y, z);
+		Vec3f lowerRightCorner = pool[1];
+		lowerRightCorner.set(x + w, y, z);
+		Vec3f upperRightCorner = pool[2];
+		upperRightCorner.set(x + w, y + h, z);
+		Vec3f upperLeftCorner = pool[3];
+		upperLeftCorner.set(x, y + h, z);
 
 		if (originInTopLeft)
 			local.getTextures().renderTexture(gl, texture, upperLeftCorner, upperRightCorner, lowerRightCorner,

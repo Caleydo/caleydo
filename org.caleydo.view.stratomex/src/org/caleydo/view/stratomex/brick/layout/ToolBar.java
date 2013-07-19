@@ -56,7 +56,6 @@ public class ToolBar extends Row {
 		//
 		// brick.getBrickColumn().getStratomexView()
 		// .addTypePickingListener(brickPickingListener, EPickingType.BRICK_PENETRATING.name());
-
 	}
 
 	@Override

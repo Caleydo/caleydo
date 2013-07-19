@@ -248,6 +248,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 	private IBrickConfigurer brickConfigurer;
 
 	private final Collection<IContextMenuBrickFactory> contextMenuFactories;
+	private APickingListener pickingListener;
 
 	private ATimedMouseOutPickingListener brickPickingListener;
 
@@ -591,6 +592,8 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	/**
 	 * Updates the width and height of the brick according to the specified renderer.
+	 *
+	 * @param gl
 	 *
 	 * @param viewType
 	 *            ID of the renderer in {@link #multiFormRenderer}.
@@ -936,6 +939,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 			stratomex.removeAllIDPickingListeners(EPickingType.DIMENSION_GROUP.name(), brickColumn.getID());
 		}
 		stratomex.removeAllIDPickingListeners(EPickingType.BRICK_TITLE.name(), getID());
+		stratomex.removeAllIDPickingListeners(EPickingType.MOVE_VERTICALLY_HANDLE.name(), getID());
 	}
 
 	public void showWidgets(boolean show) {
@@ -1271,6 +1275,11 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 	protected void destroyViewSpecificContent(GL2 gl) {
 		if (layoutManager != null)
 			layoutManager.destroy(gl);
+		if (this.viewSwitchingBar != null)
+			this.viewSwitchingBar.destroy(gl);
+		if (this.brickLayoutConfiguration != null) {
+			this.brickLayoutConfiguration.destroy();
+		}
 	}
 
 	/**

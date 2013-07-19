@@ -34,6 +34,7 @@ public class GLPathwayTextureManager {
 	 * Constructor.
 	 */
 	public GLPathwayTextureManager() {
+		System.out.println("CREATED" + hashCode());
 		hashPathwayToTexture = new HashMap<PathwayGraph, Texture>();
 	}
 

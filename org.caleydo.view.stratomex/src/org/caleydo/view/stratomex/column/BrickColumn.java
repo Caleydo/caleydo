@@ -515,12 +515,6 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 		clusterBricks.clear();
 	}
 
-	@Override
-	protected void finalize() throws Throwable {
-		super.finalize();
-		unregisterEventListeners();
-	}
-
 	/**
 	 * <p>
 	 * Set the spacing of the arch in pixel.
@@ -1215,5 +1209,14 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 		if (renderer != null)
 			renderer.setColor(color);
 		return;
+	}
+
+	/**
+	 *
+	 */
+	public void destroyView() {
+		GL2 gl = getParentGLCanvas().asGLAutoDrawAble().getGL().getGL2();
+		ViewManager.get().destroyView(gl, this);
+		// destroyOldBricks();
 	}
 }

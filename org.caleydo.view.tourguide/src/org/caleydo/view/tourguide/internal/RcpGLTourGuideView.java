@@ -112,7 +112,15 @@ public class RcpGLTourGuideView extends ARcpGLViewPart {
 
 		@Override
 		public void partClosed(IWorkbenchPartReference partRef) {
+			if (partRef == null)
+				return;
+			IWorkbenchPart part = partRef.getPart(false);
 
+			GLTourGuideView m = getView();
+
+			if (part instanceof RcpGLStratomexView && m != null) {
+				m.switchToStratomex(null);
+			}
 		}
 
 		@Override

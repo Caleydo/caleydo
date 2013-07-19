@@ -8,6 +8,7 @@ package org.caleydo.view.tourguide.internal.stratomex;
 import static org.caleydo.view.tourguide.internal.TourGuideRenderStyle.stratomexHitBand;
 import static org.caleydo.view.tourguide.internal.TourGuideRenderStyle.stratomexHitGroup;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -49,7 +50,7 @@ import com.google.common.base.Objects;
  *
  */
 public class StratomexAdapter {
-	private GLStratomex receiver;
+	private WeakReference<GLStratomex> receiver;
 
 	/**
 	 * events that has to be triggered one frame later
@@ -103,10 +104,10 @@ public class StratomexAdapter {
 	 * @return
 	 */
 	public boolean setStratomex(GLStratomex receiver) {
-		if (this.receiver == receiver)
+		if (this.receiver != null && this.receiver.get() == receiver)
 			return false;
 		this.cleanupPreview();
-		this.receiver = receiver;
+		this.receiver = new WeakReference<GLStratomex>(receiver);
 		return true;
 	}
 
@@ -131,7 +132,7 @@ public class StratomexAdapter {
 		if (!hasOne())
 			return false;
 
-		for (TablePerspective t : receiver.getTablePerspectives())
+		for (TablePerspective t : receiver.get().getTablePerspectives())
 			if (t.equals(stratification))
 				return true;
 		return false;
@@ -140,7 +141,7 @@ public class StratomexAdapter {
 	public boolean isVisible(AScoreRow row) {
 		if (!hasOne())
 			return false;
-		for (TablePerspective col : receiver.getTablePerspectives()) {
+		for (TablePerspective col : receiver.get().getTablePerspectives()) {
 			if (row.is(col))
 				return true;
 		}
@@ -185,18 +186,18 @@ public class StratomexAdapter {
 
 	private void updateNumerical(InhomogenousPerspectiveRow old, InhomogenousPerspectiveRow new_,
 			Collection<IScore> visibleColumns, IScore sortedBy) {
-		if (new_ != null) {
+		if (new_ != null && hasOne()) {
 			UpdateNumericalPreviewEvent event = new UpdateNumericalPreviewEvent(new_.asTablePerspective());
-			event.to(receiver.getTourguide());
+			event.to(receiver.get().getTourguide());
 			triggerEvent(event);
 		}
 	}
 
 	private void updatePathway(PathwayPerspectiveRow old, PathwayPerspectiveRow new_,
 			Collection<IScore> visibleColumns, IScore sortedBy) {
-		if (new_ != null) {
+		if (new_ != null && hasOne()) {
 			UpdatePathwayPreviewEvent event = new UpdatePathwayPreviewEvent(new_.getPathway());
-			event.to(receiver.getTourguide());
+			event.to(receiver.get().getTourguide());
 			triggerEvent(event);
 		}
 	}
@@ -240,9 +241,11 @@ public class StratomexAdapter {
 	}
 
 	private void updatePreview(TablePerspective strat, Group group, boolean highlightBrick) {
+		if (!hasOne())
+			return;
 		this.currentPreview = strat;
 		UpdateStratificationPreviewEvent event = new UpdateStratificationPreviewEvent(strat);
-		event.to(receiver.getTourguide());
+		event.to(receiver.get().getTourguide());
 		triggerEvent(event);
 
 		if (group != null || highlightBrick)
@@ -288,10 +291,14 @@ public class StratomexAdapter {
 	}
 
 	private void unhighlightBrick(TablePerspective strat, Group g) {
-		triggerEvent(new HighlightBrickEvent(strat, g, null).to(receiver.getTourguide()));
+		if (!hasOne())
+			return;
+		triggerEvent(new HighlightBrickEvent(strat, g, null).to(receiver.get().getTourguide()));
 	}
 	private void highlightBrick(TablePerspective strat, Group g, boolean now) {
-		AEvent event = new HighlightBrickEvent(strat, g, stratomexHitGroup()).to(receiver
+		if (!hasOne())
+			return;
+		AEvent event = new HighlightBrickEvent(strat, g, stratomexHitGroup()).to(receiver.get()
 				.getTourguide());
 		if (now)
 			triggerEvent(event);
@@ -328,27 +335,27 @@ public class StratomexAdapter {
 	 * @return whether this adapter is bound to a real stratomex
 	 */
 	public boolean hasOne() {
-		return this.receiver != null;
+		return this.receiver != null && this.receiver.get() != null;
 	}
 
 	/**
 	 * @return checks if the given receiver is the currently bound stratomex
 	 */
 	public boolean is(ITablePerspectiveBasedView receiver) {
-		return this.receiver == receiver && this.receiver != null;
+		return this.receiver != null && this.receiver.get() == receiver;
 	}
 
 	/**
 	 * @return checks if the given receiver is the currently bound stratomex
 	 */
 	public boolean is(Integer receiverID) {
-		return this.receiver != null && this.receiver.getID() == receiverID;
+		return hasOne() && this.receiver.get().getID() == receiverID;
 	}
 
 	/**
 	 * @return
 	 */
 	public boolean isWizardVisible() {
-		return receiver != null && receiver.getTourguide().isWizardActive();
+		return hasOne() && this.receiver.get().getTourguide().isWizardActive();
 	}
 }

@@ -91,6 +91,13 @@ public class HandleRenderer extends ALayoutRenderer {
 	}
 
 	@Override
+	public void destroy(GL2 gl) {
+		brick.getBrickColumn().getStratomexView()
+				.removeTypePickingListener(brickPickingListener, EPickingType.BRICK.name());
+		super.destroy(gl);
+	}
+
+	@Override
 	public void renderContent(GL2 gl) {
 
 		if (hide)

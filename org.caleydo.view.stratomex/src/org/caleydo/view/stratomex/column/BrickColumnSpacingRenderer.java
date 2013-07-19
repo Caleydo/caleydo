@@ -95,11 +95,6 @@ public class BrickColumnSpacingRenderer extends ALayoutRenderer implements IDrop
 		ID = GeneralManager.get().getIDCreator().createID(ManagedObjectType.DIMENSION_GROUP_SPACER);
 	}
 
-	@Override
-	protected void finalize() throws Throwable {
-		super.finalize();
-	}
-
 	public void init() {
 
 		if (relationAnalyzer == null || leftDimGroup == null || rightDimGroup == null)
