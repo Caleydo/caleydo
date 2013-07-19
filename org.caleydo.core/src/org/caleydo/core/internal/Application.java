@@ -5,6 +5,7 @@
  ******************************************************************************/
 package org.caleydo.core.internal;
 
+import java.io.File;
 import java.net.URL;
 import java.util.Collection;
 import java.util.Map;
@@ -173,9 +174,9 @@ public class Application implements IApplication {
 
 		final Location instanceLoc = Platform.getInstanceLocation();
 
-		String workspacePath = "file://" + GeneralManager.CALEYDO_HOME_PATH;
+		File workspacePath = new File(GeneralManager.CALEYDO_HOME_PATH);
 		try {
-			URL workspaceURL = new URL(workspacePath);
+			URL workspaceURL = workspacePath.toURI().toURL();
 			instanceLoc.set(workspaceURL, false);
 		} catch (Exception e) {
 			// throw new IllegalStateException

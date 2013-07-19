@@ -33,6 +33,10 @@ public class TDistributionLookup {
 		{
 			df = valueCount - 1;
 		}
+		else if ( df <= 0)
+		{
+			df = 0;
+		}
 		
 		
 		// For single sided test, use 0.95 confidence values,
