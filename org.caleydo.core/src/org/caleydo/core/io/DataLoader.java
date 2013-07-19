@@ -152,7 +152,7 @@ public class DataLoader {
 			Logger.log(new Status(IStatus.ERROR, "DataLoader", "Failed to load data for dataset "
 					+ dataSetDescription.getDataSetName(), e));
 			DataDomainManager.get().unregister(dataDomain);
-			return null;
+			throw new IllegalStateException(e.getMessage(), e);
 		}
 		if (monitor != null)
 			monitor.worked(1);

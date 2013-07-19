@@ -121,11 +121,15 @@ public abstract class ATCGATask extends RecursiveTask<JsonElement> {
 	protected static Collection<ATableBasedDataDomain> loadProject(TCGADataSets project) {
 		Collection<ATableBasedDataDomain> dataDomains = new ArrayList<>();
 		for (TCGADataSet desc : project) {
+			try {
 			ATableBasedDataDomain dataDomain = DataLoader.loadData(desc.getDescription(), new NullProgressMonitor());
 			if (dataDomain == null)
 				continue;
 			dataDomains.add(dataDomain);
 			desc.setDataDomain(dataDomain);
+			} catch (Exception e) {
+				continue;
+			}
 		}
 		return dataDomains;
 	}

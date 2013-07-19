@@ -241,6 +241,7 @@ public class TabularDataParser extends ATextParser {
 
 	@Override
 	protected void parseFile(BufferedReader reader) throws IOException {
+
 		SubMonitor monitor = GeneralManager.get().createSubProgressMonitor();
 		monitor.beginTask("Loading data for: " + dataSetDescription.getDataSetName(), calculateNumberOfLinesInFile());
 		initializTables();
