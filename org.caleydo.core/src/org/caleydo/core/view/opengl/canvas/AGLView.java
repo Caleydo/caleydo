@@ -1186,11 +1186,11 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 		return pickingManager;
 	}
 
-	@Override
-	protected void finalize() throws Throwable {
-		System.out.println("Finalizing " + this);
-		super.finalize();
-	}
+	// @Override
+	// protected void finalize() throws Throwable {
+	// System.out.println("Finalizing " + this);
+	// super.finalize();
+	// }
 
 	/**
 	 * @return The minimum height in pixels the view currently requires to show its content properly. The default

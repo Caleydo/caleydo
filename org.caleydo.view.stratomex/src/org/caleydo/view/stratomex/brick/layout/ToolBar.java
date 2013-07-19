@@ -55,7 +55,6 @@ public class ToolBar extends Row {
 					hide = true;
 			}
 		};
-
 		brick.getBrickColumn().getStratomexView()
 				.addTypePickingListener(brickPickingListener, EPickingType.BRICK.name());
 

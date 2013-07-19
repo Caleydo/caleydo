@@ -8,6 +8,8 @@ package org.caleydo.view.stratomex.brick.layout;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.media.opengl.GLContext;
+
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
@@ -133,6 +135,8 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 			handles = DEFAULT_HANDLES;
 		}
 
+		if (this.handleRenderer != null)
+			this.handleRenderer.destroy(GLContext.getCurrentGL().getGL2());
 		handleRenderer = new HandleRenderer(brick, HANDLE_SIZE_PIXELS, brick.getTextureManager(), handles);
 		baseRow.addForeGroundRenderer(handleRenderer);
 
@@ -202,6 +206,8 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	}
 
 	protected Row createHeaderBar() {
+		if (this.headerBar != null)
+			this.headerBar.destroy(GLContext.getCurrentGL().getGL2());
 		Row headerBar = new Row();
 		headerBar.setPixelSizeY(HEADER_BAR_HEIGHT_PIXELS);
 
@@ -223,6 +229,8 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	 * @return
 	 */
 	protected ToolBar createToolBar() {
+		if (this.toolBar != null)
+			this.toolBar.destroy(GLContext.getCurrentGL().getGL2());
 		ToolBar toolBar = new ToolBar("ToolBarRow", brick);
 		toolBar.setPixelSizeY(0);
 

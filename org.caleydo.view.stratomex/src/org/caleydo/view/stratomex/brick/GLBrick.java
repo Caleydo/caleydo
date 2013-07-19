@@ -247,6 +247,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 	private IBrickConfigurer brickConfigurer;
 
 	private final Collection<IContextMenuBrickFactory> contextMenuFactories;
+	private APickingListener pickingListener;
 
 	public GLBrick(IGLCanvas glCanvas, ViewFrustum viewFrustum) {
 		super(glCanvas, viewFrustum, VIEW_TYPE, VIEW_NAME);
@@ -588,6 +589,8 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 	/**
 	 * Updates the width and height of the brick according to the specified renderer.
 	 *
+	 * @param gl
+	 *
 	 * @param viewType
 	 *            ID of the renderer in {@link #multiFormRenderer}.
 	 */
@@ -761,7 +764,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	private void registerPickingListeners() {
 
-		APickingListener pickingListener = new APickingListener() {
+		this.pickingListener = new APickingListener() {
 
 			@Override
 			public void clicked(Pick pick) {
@@ -892,7 +895,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 			stratomex.addIDPickingListener(pickingListener, EPickingType.DIMENSION_GROUP.name(), brickColumn.getID());
 		}
 
-		stratomex.addIDPickingTooltipListener(this, EPickingType.BRICK_TITLE.name(), getID());
+		stratomex.addIDPickingTooltipListener(tablePerspective, EPickingType.BRICK_TITLE.name(), getID());
 
 		addIDPickingListener(new APickingListener() {
 			@Override
@@ -900,6 +903,14 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 				isBrickResizeActive = true;
 			}
 		}, EPickingType.RESIZE_HANDLE_LOWER_RIGHT.name(), 1);
+	}
+
+	private void unregisterStratomexPickingListeners() {
+		stratomex.removeIDPickingListener(pickingListener, EPickingType.BRICK.name(), getID());
+		if (isHeaderBrick) {
+			stratomex
+					.removeIDPickingListener(pickingListener, EPickingType.DIMENSION_GROUP.name(), brickColumn.getID());
+		}
 	}
 
 	public void hideToolBar() {
@@ -1235,6 +1246,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 	protected void destroyViewSpecificContent(GL2 gl) {
 		if (layoutManager != null)
 			layoutManager.destroy(gl);
+		unregisterStratomexPickingListeners();
 	}
 
 	/**

@@ -376,6 +376,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 					this));
 			leftBrickColumnSpacing.setGrabX(true);
 			centerRowLayout.append(leftBrickColumnSpacing);
+			rightBrickColumnSpacing = null;
 			return;
 		}
 

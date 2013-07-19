@@ -564,6 +564,39 @@ public class PickingManager {
 			addMouseOutForPicksOfSpecifiedViews(remoteRenderedViewIDs, glMouseListener, pickDIPPoint);
 
 		}
+
+		// FOR DEBUGGING:
+		// StringBuilder builder = new StringBuilder();
+		// boolean show = false;
+		// for (Entry<Integer, ViewSpecificHitListContainer> entry :
+		// hashViewIDToViewSpecificHitListContainer.entrySet()) {
+		// AGLView view = ViewManager.get().getGLView(entry.getKey());
+		// if (view == null)
+		// continue;
+		//
+		// StringBuilder tempBuilder = new StringBuilder();
+		// boolean showView = false;
+		// tempBuilder.append("=== View " + view.getLabel() + " ===\n");
+		// for (Entry<String, ArrayList<Pick>> pickEntry : entry.getValue().hashPickingTypeToPicks.entrySet()) {
+		// if (!pickEntry.getValue().isEmpty()) {
+		// tempBuilder.append(pickEntry.getKey() + ":\n");
+		// for (Pick pick : pickEntry.getValue()) {
+		// tempBuilder.append(pick.getPickingMode() + "\n");
+		// }
+		// show = true;
+		// showView = true;
+		// }
+		// }
+		// if (showView) {
+		// builder.append(tempBuilder.toString());
+		// }
+		// }
+		// if (show) {
+		// System.out.println("===================================");
+		// System.out.println(builder.toString());
+		// System.out.println("===================================");
+		// }
+
 	}
 
 	static boolean isParentViewOfView(int viewID, int parentViewID) {

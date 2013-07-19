@@ -46,7 +46,7 @@ import org.caleydo.core.util.color.ColorManager;
 import org.caleydo.core.util.color.mapping.IColorMappingUpdateListener;
 import org.caleydo.core.util.color.mapping.UpdateColorMappingEvent;
 import org.caleydo.core.util.color.mapping.UpdateColorMappingListener;
-import org.caleydo.core.util.execution.SafeCallable;
+import org.caleydo.core.util.execution.SafeCallables;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
 import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
@@ -169,12 +169,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 	 */
 	// private HashMap<GL, GLPathwayTextureManager> hashGLcontext2TextureManager;
 	private final GLContextLocal<GLPathwayTextureManager> pathwayTextureManager = GLContextLocal.getOrCreateShared(
-			"pathways", new SafeCallable<GLPathwayTextureManager>() {
-				@Override
-				public GLPathwayTextureManager call() {
-					return new GLPathwayTextureManager();
-				}
-			});
+			"pathways", SafeCallables.newInstance(GLPathwayTextureManager.class));
 
 	private Vec3f vecScaling;
 	private Vec3f vecTranslation;

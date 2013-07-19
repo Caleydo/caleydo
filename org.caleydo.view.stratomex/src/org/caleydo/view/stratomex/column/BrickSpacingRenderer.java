@@ -36,6 +36,7 @@ public class BrickSpacingRenderer
 	private int id;
 	private boolean renderDropIndicator = false;
 	private GLBrick lowerBrick;
+	private final APickingListener pickingListener;
 
 	public BrickSpacingRenderer(BrickColumn dimensionGroup, int id, GLBrick lowerBrick)
 	{
@@ -46,7 +47,7 @@ public class BrickSpacingRenderer
 
 		final GLStratomex stratomex = dimensionGroup.getStratomexView();
 
-		stratomex.addIDPickingListener(new APickingListener()
+		this.pickingListener = new APickingListener()
 		{
 			@Override
 			public void dragged(Pick pick)
@@ -69,7 +70,15 @@ public class BrickSpacingRenderer
 				stratomex.hideAllBrickToolbars();
 			}
 
-		}, EPickingType.BRICK_SPACER.name() + dimensionGroup.getID(), id);
+		};
+		stratomex.addIDPickingListener(pickingListener, EPickingType.BRICK_SPACER.name() + dimensionGroup.getID(), id);
+	}
+
+	@Override
+	public void destroy(GL2 gl) {
+		dimensionGroup.getStratomexView().removeIDPickingListener(pickingListener,
+				EPickingType.BRICK_SPACER.name() + dimensionGroup.getID(), id);
+		super.destroy(gl);
 	}
 
 	@Override

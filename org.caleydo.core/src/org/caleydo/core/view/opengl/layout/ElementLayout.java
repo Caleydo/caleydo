@@ -477,20 +477,30 @@ public class ElementLayout implements Comparable<ElementLayout> {
 		backgroundRenderers.clear();
 	}
 
-	public void clearBackgroundRenderers(Class<? extends ALayoutRenderer> ofType) {
-		for (Iterator<ALayoutRenderer> it = backgroundRenderers.iterator(); it.hasNext();)
-			if (ofType.isInstance(it.next()))
+	public void clearBackgroundRenderers(Class<? extends ALayoutRenderer> ofType, GL2 gl) {
+		for (Iterator<ALayoutRenderer> it = backgroundRenderers.iterator(); it.hasNext();) {
+			ALayoutRenderer next = it.next();
+			if (ofType.isInstance(next)) {
+				if (gl != null)
+					next.destroy(gl);
 				it.remove();
+			}
+		}
 	}
 
 	public void clearForegroundRenderers() {
 		foregroundRenderers.clear();
 	}
 
-	public void clearForegroundRenderers(Class<? extends ALayoutRenderer> ofType) {
-		for (Iterator<ALayoutRenderer> it = foregroundRenderers.iterator(); it.hasNext();)
-			if (ofType.isInstance(it.next()))
+	public void clearForegroundRenderers(Class<? extends ALayoutRenderer> ofType, GL2 gl) {
+		for (Iterator<ALayoutRenderer> it = foregroundRenderers.iterator(); it.hasNext();) {
+			ALayoutRenderer next = it.next();
+			if (ofType.isInstance(next)) {
+				if (gl != null)
+					next.destroy(gl);
 				it.remove();
+			}
+		}
 	}
 
 	/**
