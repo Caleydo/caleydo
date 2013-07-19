@@ -46,6 +46,7 @@ import org.caleydo.core.util.color.ColorManager;
 import org.caleydo.core.util.color.mapping.IColorMappingUpdateListener;
 import org.caleydo.core.util.color.mapping.UpdateColorMappingEvent;
 import org.caleydo.core.util.color.mapping.UpdateColorMappingListener;
+import org.caleydo.core.util.execution.SafeCallable;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
 import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
@@ -53,6 +54,7 @@ import org.caleydo.core.view.listener.AddTablePerspectivesListener;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.canvas.GLContextLocal;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.IGLKeyListener;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
@@ -166,7 +168,13 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 	 * Own texture manager is needed for each GL2 context, because textures cannot be bound to multiple GL2 contexts.
 	 */
 	// private HashMap<GL, GLPathwayTextureManager> hashGLcontext2TextureManager;
-	private GLPathwayTextureManager pathwayTextureManager;
+	private final GLContextLocal<GLPathwayTextureManager> pathwayTextureManager = GLContextLocal.getOrCreateShared(
+			"pathways", new SafeCallable<GLPathwayTextureManager>() {
+				@Override
+				public GLPathwayTextureManager call() {
+					return new GLPathwayTextureManager();
+				}
+			});
 
 	private Vec3f vecScaling;
 	private Vec3f vecTranslation;
@@ -717,7 +725,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		vertexSelectionManager.clearSelections();
 
 		// Create new pathway manager for GL2 context
-		pathwayTextureManager = new GLPathwayTextureManager();
+		// pathwayTextureManager = new GLPathwayTextureManager();
 
 		calculatePathwayScaling(gl, pathway);
 		pathwayManager.setPathwayVisibilityState(pathway, true);
@@ -814,7 +822,9 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		if (enablePathwayTexture) {
 			float fPathwayTransparency = 1.0f;
 
-			pathwayTextureManager.renderPathway(gl, this, pathway, fPathwayTransparency, false);
+			if (pathwayTextureManager == null)
+				System.err.println();
+			pathwayTextureManager.get().renderPathway(gl, this, pathway, fPathwayTransparency, false);
 		}
 
 		float pathwayHeight = pixelGLConverter.getGLHeightForPixelHeight(pathway.getHeight());
@@ -853,7 +863,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 				gl.glUniform1i(gl.glGetUniformLocation(shaderProgramTextOverlay, "mode"), this.pathway.getType()
 						.ordinal());
 			}
-			pathwayTextureManager.renderPathway(gl, this, pathway, fPathwayTransparency, false);
+			pathwayTextureManager.get().renderPathway(gl, this, pathway, fPathwayTransparency, false);
 			if (shaderProgramTextOverlay > 0)
 				gl.glUseProgram(0);
 
@@ -1180,6 +1190,9 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		metaboliteSelectionManager.unregisterEventListeners();
 		// pathwaySelectionManager.unregisterEventListeners();
 		vertexSelectionManager.unregisterEventListeners();
+
+		if (sampleSelectionManager != null)
+			sampleSelectionManager.unregisterEventListeners();
 
 	}
 

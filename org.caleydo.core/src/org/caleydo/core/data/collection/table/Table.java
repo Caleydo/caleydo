@@ -494,8 +494,9 @@ public class Table {
 	}
 
 	@Override
-	public void finalize() {
+	public void finalize() throws Throwable {
 		Logger.log(new Status(IStatus.INFO, this.toString(), "Data table  " + this + "destroyed"));
+		super.finalize();
 	}
 
 	@Override

@@ -515,12 +515,6 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 		clusterBricks.clear();
 	}
 
-	@Override
-	protected void finalize() throws Throwable {
-		super.finalize();
-		unregisterEventListeners();
-	}
-
 	/**
 	 * <p>
 	 * Set the spacing of the arch in pixel.

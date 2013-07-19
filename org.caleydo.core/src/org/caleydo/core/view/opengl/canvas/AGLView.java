@@ -1188,8 +1188,8 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 
 	@Override
 	protected void finalize() throws Throwable {
-		super.finalize();
 		System.out.println("Finalizing " + this);
+		super.finalize();
 	}
 
 	/**
