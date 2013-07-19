@@ -83,8 +83,8 @@ public class ClinicalDataConfigurer extends ABrickConfigurer {
 		pickingIDs.add(new Pair<String, Integer>(EPickingType.BRICK.name(), layoutTemplate.getBrick().getID()));
 		pickingIDs.add(new Pair<String, Integer>(EPickingType.BRICK_TITLE.name(), layoutTemplate.getBrick().getID()));
 
-		toolBarElements.add(createCaptionLayout(layoutTemplate, layoutTemplate.getBrick(), pickingIDs,
-				layoutTemplate.getBrick()));
+		toolBarElements.add(createCaptionLayout(layoutTemplate, pickingIDs, layoutTemplate.getBrick().getBrickColumn()
+				.getStratomexView()));
 		toolBarElements.add(createSpacingLayout(layoutTemplate, true));
 
 		layoutTemplate.setToolBarElements(toolBarElements);
@@ -114,12 +114,12 @@ public class ClinicalDataConfigurer extends ABrickConfigurer {
 				.getDimensionGroup().getID()));
 		pickingIDs.add(new Pair<String, Integer>(EPickingType.BRICK_TITLE.name(), layoutTemplate.getBrick().getID()));
 
-		headerBarElements.add(createCaptionLayout(layoutTemplate, layoutTemplate.getBrick(), pickingIDs, layoutTemplate
-				.getDimensionGroup().getStratomexView()));
+		headerBarElements.add(createCaptionLayout(layoutTemplate, pickingIDs, layoutTemplate.getDimensionGroup()
+				.getStratomexView()));
 		return headerBarElements;
 	}
 
-	private ElementLayout createCaptionLayout(ABrickLayoutConfiguration layoutTemplate, AGLView labelProvider,
+	private ElementLayout createCaptionLayout(ABrickLayoutConfiguration layoutTemplate,
 			List<Pair<String, Integer>> pickingIDs, AGLView view) {
 
 		ElementLayout captionLayout = new ElementLayout("caption1");
@@ -175,8 +175,8 @@ public class ClinicalDataConfigurer extends ABrickConfigurer {
 			brick.associateIDs(globalRendererID++, localRendererID);
 		}
 
-		ALayoutRenderer kaplanMeierSummaryRenderer = new KaplanMeierSummaryRenderer(brick, brick.getLabel(),
-				EPickingType.BRICK.name(), brick.getID());
+		ALayoutRenderer kaplanMeierSummaryRenderer = new KaplanMeierSummaryRenderer(brick.getBrickColumn()
+				.getStratomexView(), brick.getLabel(), EPickingType.BRICK.name(), brick.getID());
 
 		IEmbeddedVisualizationInfo visInfo = new DefaultVisInfo() {
 			@Override

@@ -9,8 +9,6 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.picking.APickingListener;
-import org.caleydo.core.view.opengl.picking.ATimedMouseOutPickingListener;
-import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.stratomex.EPickingType;
 import org.caleydo.view.stratomex.brick.GLBrick;
 import org.caleydo.view.stratomex.brick.ui.ToolBarBackgroundRenderer;
@@ -36,28 +34,28 @@ public class ToolBar extends Row {
 		super(layoutName);
 		this.brick = brick;
 		addBackgroundRenderer(new ToolBarBackgroundRenderer(brick));
-
-		brickPickingListener = new ATimedMouseOutPickingListener() {
-
-			@Override
-			public void mouseOver(Pick pick) {
-				super.mouseOver(pick);
-				if (pick.getObjectID() == brick.getID())
-					hide = false;
-				else
-					hide = true;
-			}
-
-			@Override
-			protected void timedMouseOut(Pick pick) {
-				// TODO Auto-generated method stub
-				if (pick.getObjectID() == brick.getID())
-					hide = true;
-			}
-		};
-
-		brick.getBrickColumn().getStratomexView()
-				.addTypePickingListener(brickPickingListener, EPickingType.BRICK.name());
+		//
+		// brickPickingListener = new ATimedMouseOutPickingListener() {
+		//
+		// @Override
+		// public void mouseOver(Pick pick) {
+		// super.mouseOver(pick);
+		// if (pick.getObjectID() == brick.getID())
+		// hide = false;
+		// else
+		// hide = true;
+		// }
+		//
+		// @Override
+		// protected void timedMouseOut(Pick pick) {
+		// // TODO Auto-generated method stub
+		// if (pick.getObjectID() == brick.getID())
+		// hide = true;
+		// }
+		// };
+		//
+		// brick.getBrickColumn().getStratomexView()
+		// .addTypePickingListener(brickPickingListener, EPickingType.BRICK_PENETRATING.name());
 
 	}
 
@@ -67,7 +65,10 @@ public class ToolBar extends Row {
 			float offset = layoutManager.getPixelGLConverter().getGLHeightForPixelHeight(
 					DefaultBrickLayoutTemplate.BUTTON_HEIGHT_PIXELS + 2);
 			gl.glTranslatef(0, -offset, 0);
+			gl.glPushName(brick.getStratomex().getPickingManager()
+					.getPickingID(brick.getStratomex().getID(), EPickingType.BRICK_PENETRATING.name(), brick.getID()));
 			super.render(gl);
+			gl.glPopName();
 			gl.glTranslatef(0, offset, 0);
 
 		}
@@ -75,8 +76,8 @@ public class ToolBar extends Row {
 
 	@Override
 	public void destroy(GL2 gl) {
-		brick.getBrickColumn().getStratomexView()
-				.removeTypePickingListener(brickPickingListener, EPickingType.BRICK.name());
+		// brick.getBrickColumn().getStratomexView()
+		// .removeTypePickingListener(brickPickingListener, EPickingType.BRICK_PENETRATING.name());
 		remove(brick.getViewSwitchingBar());
 		super.destroy(gl);
 	}

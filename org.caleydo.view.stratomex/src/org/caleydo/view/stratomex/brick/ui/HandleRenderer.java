@@ -67,7 +67,7 @@ public class HandleRenderer extends ALayoutRenderer {
 		this.textureManager = textureManager;
 		this.handles = handles;
 
-		brick.addIDPickingListener(new APickingListener() {
+		brick.getStratomex().addIDPickingListener(new APickingListener() {
 			@Override
 			public void clicked(Pick pick) {
 				brick.getBrickColumn().setVerticalMoveDraggingActive(true);
@@ -75,18 +75,18 @@ public class HandleRenderer extends ALayoutRenderer {
 
 		}, EPickingType.MOVE_VERTICALLY_HANDLE.name(), brick.getID());
 
-		brickPickingListener = new APickingListener() {
-			@Override
-			public void mouseOver(Pick pick) {
-				if (pick.getObjectID() == brick.getID())
-					hide = false;
-				else
-					hide = true;
-			}
-		};
-
-		brick.getBrickColumn().getStratomexView()
-				.addTypePickingListener(brickPickingListener, EPickingType.BRICK.name());
+		// brickPickingListener = new APickingListener() {
+		// @Override
+		// public void mouseOver(Pick pick) {
+		// if (pick.getObjectID() == brick.getID())
+		// hide = false;
+		// else
+		// hide = true;
+		// }
+		// };
+		//
+		// brick.getBrickColumn().getStratomexView()
+		// .addTypePickingListener(brickPickingListener, EPickingType.BRICK.name());
 
 	}
 
@@ -149,9 +149,10 @@ public class HandleRenderer extends ALayoutRenderer {
 		// gl.glEnd();
 		// gl.glPopName();
 		// }
-
+		gl.glPushName(brick.getPickingManager().getPickingID(brick.getStratomex().getID(),
+				EPickingType.BRICK_PENETRATING.name(), brick.getID()));
 		if ((handles & MOVE_VERTICALLY_HANDLE) > 0) {
-			gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
+			gl.glPushName(brick.getPickingManager().getPickingID(brick.getStratomex().getID(),
 					EPickingType.MOVE_VERTICALLY_HANDLE.name(), brick.getID()));
 			// gl.glColor4f(1f, 1f, 1f, 1);
 			Vec3f lowerLeftCorner = new Vec3f(-glHandleWidth, y / 2.0f - glHandleHeight, BUTTON_Z);
@@ -208,8 +209,8 @@ public class HandleRenderer extends ALayoutRenderer {
 		float offset = layoutManager.getPixelGLConverter().getGLHeightForPixelHeight(1);
 		BrickColumn brickColumn = brick.getBrickColumn();
 		if ((handles & EXPAND_HANDLE) > 0 && !(brickColumn.isDetailBrickShown() && !brickColumn.isExpandLeft())) {
-			gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(), EPickingType.EXPAND_LEFT_HANDLE.name(),
-					brick.getID()));
+			gl.glPushName(brick.getPickingManager().getPickingID(brick.getStratomex().getID(),
+					EPickingType.EXPAND_LEFT_HANDLE.name(), brick.getID()));
 
 			// gl.glBegin(GL2.GL_QUADS);
 			// gl.glVertex3f(-glHandleWidth, y, 1);
@@ -217,7 +218,6 @@ public class HandleRenderer extends ALayoutRenderer {
 			// gl.glVertex3f(0, y - 2 * glHandleHeight, 1);
 			// gl.glVertex3f(-glHandleWidth, y - 2 * glHandleHeight, 1);
 			// gl.glEnd();
-
 
 			Vec3f lowerLeftCorner = new Vec3f(-glHandleWidth, y + offset, BUTTON_Z);
 			Vec3f lowerRightCorner = new Vec3f(0, y + offset, BUTTON_Z);
@@ -230,7 +230,7 @@ public class HandleRenderer extends ALayoutRenderer {
 		}
 
 		if ((handles & EXPAND_HANDLE) > 0 && !(brickColumn.isDetailBrickShown() && brickColumn.isExpandLeft())) {
-			gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
+			gl.glPushName(brick.getPickingManager().getPickingID(brick.getStratomex().getID(),
 					EPickingType.EXPAND_RIGHT_HANDLE.name(), brick.getID()));
 
 			Vec3f lowerLeftCorner = new Vec3f(x, y + offset, BUTTON_Z);
@@ -242,7 +242,7 @@ public class HandleRenderer extends ALayoutRenderer {
 
 			gl.glPopName();
 		}
-
+		gl.glPopName();
 	}
 
 	@Override

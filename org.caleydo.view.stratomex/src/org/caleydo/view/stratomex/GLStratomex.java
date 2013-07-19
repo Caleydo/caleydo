@@ -1003,7 +1003,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 			@Override
 			protected void clicked(Pick pick) {
 				SelectionCommands.clearSelections();
-				hideAllBrickToolbars();
+				hideAllBrickWidgets();
 			}
 		}, EPickingType.DIMENSION_GROUP_SPACER.name());
 
@@ -1041,7 +1041,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 			@Override
 			protected void clicked(Pick pick) {
 				SelectionCommands.clearSelections();
-				hideAllBrickToolbars();
+				hideAllBrickWidgets();
 			}
 		}, EPickingType.DIMENSION_GROUP_SPACER_HEADER.name());
 
@@ -1084,11 +1084,11 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		tourguide.registerPickingListeners();
 	}
 
-	public void hideAllBrickToolbars() {
+	public void hideAllBrickWidgets() {
 		for (BrickColumn brickColumn : brickColumnManager.getBrickColumns()) {
-			brickColumn.getHeaderBrick().hideToolBar();
+			brickColumn.getHeaderBrick().showWidgets(false);
 			for (GLBrick brick : brickColumn.getSegmentBricks()) {
-				brick.hideToolBar();
+				brick.showWidgets(false);
 			}
 		}
 	}
