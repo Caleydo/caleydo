@@ -1210,4 +1210,13 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 			renderer.setColor(color);
 		return;
 	}
+
+	/**
+	 *
+	 */
+	public void destroyView() {
+		GL2 gl = getParentGLCanvas().asGLAutoDrawAble().getGL().getGL2();
+		ViewManager.get().destroyView(gl, this);
+		// destroyOldBricks();
+	}
 }

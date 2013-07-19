@@ -609,7 +609,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 	 * @param brickColumn
 	 */
 	public void addedBrickColumn(BrickColumn brickColumn) {
-		if (!hasTourGuide())
+		if (!hasTourGuide() || wizardPreviews.contains(brickColumn))
 			return;
 
 		Row layout = brickColumn.getLayout();
@@ -822,7 +822,8 @@ public class TourguideAdapter implements IStratomexAdapter {
 			}
 		}
 		if (added.size() > 0) {
-			wizardPreviews.get(0).getLayout().clearForegroundRenderers();
+			wizardPreviews.get(0).getLayout()
+					.clearForegroundRenderers(ALayoutRenderer.class, GLContext.getCurrentGL().getGL2());
 			wizardPreviews.get(0).getLayout().addForeGroundRenderer(new WizardActionsLayoutRenderer(stratomex, this));
 		}
 	}

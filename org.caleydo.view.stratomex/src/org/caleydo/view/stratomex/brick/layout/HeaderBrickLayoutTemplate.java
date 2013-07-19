@@ -206,8 +206,6 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	}
 
 	protected Row createHeaderBar() {
-		if (this.headerBar != null)
-			this.headerBar.destroy(GLContext.getCurrentGL().getGL2());
 		Row headerBar = new Row();
 		headerBar.setPixelSizeY(HEADER_BAR_HEIGHT_PIXELS);
 
@@ -229,8 +227,10 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	 * @return
 	 */
 	protected ToolBar createToolBar() {
-		if (this.toolBar != null)
+		if (this.toolBar != null) {
+			this.toolBar.clear();
 			this.toolBar.destroy(GLContext.getCurrentGL().getGL2());
+		}
 		ToolBar toolBar = new ToolBar("ToolBarRow", brick);
 		toolBar.setPixelSizeY(0);
 
@@ -516,6 +516,11 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	@Override
 	public void destroy() {
 		super.destroy();
+		brick.getStratomex().removeAllIDPickingListeners(EPickingType.EXPAND_LEFT_HANDLE.name(), brick.getID());
+		brick.getStratomex().removeAllIDPickingListeners(EPickingType.EXPAND_RIGHT_HANDLE.name(), brick.getID());
+		brick.getStratomex().removeAllIDPickingListeners(EPickingType.DIMENSION_GROUP_CLUSTER_BUTTON.name(),
+				brick.getID());
+		brick.getStratomex().removeAllIDPickingListeners(EPickingType.REMOVE_COLUMN_BUTTON.name(), brick.getID());
 		brick.removeAllIDPickingListeners(EPickingType.BRICK_LOCK_RESIZING_BUTTON.name(), LOCK_RESIZING_BUTTON_ID);
 	}
 

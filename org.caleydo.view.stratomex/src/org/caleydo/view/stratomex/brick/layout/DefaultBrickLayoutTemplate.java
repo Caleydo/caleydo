@@ -432,8 +432,11 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 		brick.removeAllIDPickingListeners(EPickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON.name(),
  brick.getID());
+		brick.getStratomex().removeAllIDPickingListeners(EPickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON.name(),
+				brick.getID());
 
 		brick.removeAllIDPickingListeners(EPickingType.BRICK_COLLAPSE_BUTTON.name(), brick.getID());
+		brick.getStratomex().removeAllIDPickingListeners(EPickingType.BRICK_COLLAPSE_BUTTON.name(), brick.getID());
 
 		brick.getStratomex().removeAllIDPickingListeners(EPickingType.EXPAND_RIGHT_HANDLE.name(), brick.getID());
 

@@ -39,14 +39,15 @@ public class CategoricalColumn<CATEGORY_TYPE extends Comparable<CATEGORY_TYPE>> 
 
 	@Override
 	public void normalize() {
-		super.normalize();
+		// super.normalize();
+		rawContainer.init();
 	}
 
 	@Override
 	public float getNormalizedValue(String dataTransformation, int index) {
 		// CATEGORY_TYPE raw = getRaw(index);
-		// rawContainer.normalize();
-		return super.getNormalizedValue(dataTransformation, index);
+		return rawContainer.getNormalized(index);
+		// return super.getNormalizedValue(dataTransformation, index);
 	}
 
 	/**

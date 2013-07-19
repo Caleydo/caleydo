@@ -192,7 +192,25 @@ public class CategoricalContainer<CATEGORY_TYPE extends Comparable<CATEGORY_TYPE
 	 */
 	@Override
 	public FloatContainer normalize() {
+		init();
+		float[] target = new float[container.length];
 
+		for (int count = 0; count < container.length; count++) {
+			Short categoryID = container[count];
+			if (hashCategoryKeyToNormalizedValue.containsKey(categoryID)) {
+				float normalized = hashCategoryKeyToNormalizedValue.get(categoryID);
+				assert (normalized <= 1 && normalized >= 0) || Float.isNaN(normalized) : "Normalization failed for "
+						+ this.toString() + ". Should produce value between 0 and 1 or NAN but was " + normalized;
+				target[count] = normalized;
+			} else {
+				throw new IllegalStateException("Unknown category ID: " + categoryID);
+			}
+		}
+
+		return new FloatContainer(target);
+	}
+
+	public void init() {
 		if (categoricalClassDescription == null) {
 			categoricalClassDescription = new CategoricalClassDescription<>(this.dataType);
 			categoricalClassDescription.autoInitialize(hashCategoryToIdentifier.keySet());
@@ -226,27 +244,26 @@ public class CategoricalContainer<CATEGORY_TYPE extends Comparable<CATEGORY_TYPE
 		short key = hashCategoryToIdentifier.get(unknownCategoryType);
 		hashCategoryKeyToNormalizedValue.put(key, Float.NaN);
 
-		float[] target = new float[container.length];
-
-		for (int count = 0; count < container.length; count++) {
-			Short categoryID = container[count];
-			if (hashCategoryKeyToNormalizedValue.containsKey(categoryID)) {
-				float normalized = hashCategoryKeyToNormalizedValue.get(categoryID);
-				assert (normalized <= 1 && normalized >= 0) || Float.isNaN(normalized) : "Normalization failed for "
-						+ this.toString() + ". Should produce value between 0 and 1 or NAN but was " + normalized;
-				target[count] = normalized;
-			} else {
-				throw new IllegalStateException("Unknown category ID: " + categoryID);
-			}
-		}
 
 		// set the unknown type in the description
 		if (categoricalClassDescription.getUnknownCategory() == null) {
 			categoricalClassDescription.setUnknownCategory(new CategoryProperty<CATEGORY_TYPE>(unknownCategoryType,
 					"Unknown", Color.NOT_A_NUMBER_COLOR));
 		}
+	}
 
-		return new FloatContainer(target);
+	/**
+	 * @param index
+	 * @return
+	 */
+	public float getNormalized(int index) {
+		try {
+			return hashCategoryKeyToNormalizedValue.get(container[index]);
+		} catch (NullPointerException npe) {
+			Logger.log(new Status(IStatus.ERROR, this.toString(), "Caught npe on accessing container with index: "
+					+ index, npe));
+			return Float.NaN;
+		}
 	}
 
 	/**

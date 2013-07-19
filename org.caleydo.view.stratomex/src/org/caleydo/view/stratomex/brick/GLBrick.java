@@ -901,7 +901,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 			stratomex.addIDPickingListener(pickingListener, EPickingType.DIMENSION_GROUP.name(), brickColumn.getID());
 		}
 
-		stratomex.addIDPickingTooltipListener(tablePerspective, EPickingType.BRICK_TITLE.name(), getID());
+		stratomex.addIDPickingTooltipListener(this, EPickingType.BRICK_TITLE.name(), getID());
 
 		addIDPickingListener(new APickingListener() {
 			@Override
@@ -939,6 +939,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 			stratomex.removeAllIDPickingListeners(EPickingType.DIMENSION_GROUP.name(), brickColumn.getID());
 		}
 		stratomex.removeAllIDPickingListeners(EPickingType.BRICK_TITLE.name(), getID());
+		stratomex.removeAllIDPickingListeners(EPickingType.MOVE_VERTICALLY_HANDLE.name(), getID());
 	}
 
 	public void showWidgets(boolean show) {
@@ -1274,6 +1275,11 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 	protected void destroyViewSpecificContent(GL2 gl) {
 		if (layoutManager != null)
 			layoutManager.destroy(gl);
+		if (this.viewSwitchingBar != null)
+			this.viewSwitchingBar.destroy(gl);
+		if (this.brickLayoutConfiguration != null) {
+			this.brickLayoutConfiguration.destroy();
+		}
 	}
 
 	/**
