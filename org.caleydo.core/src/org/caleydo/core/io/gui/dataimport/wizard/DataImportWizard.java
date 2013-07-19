@@ -107,6 +107,8 @@ public class DataImportWizard extends Wizard {
 
 	private ATableBasedDataDomain dataDomain;
 
+	private String error;
+
 	/**
 	 *
 	 */
@@ -168,11 +170,16 @@ public class DataImportWizard extends Wizard {
 		ProgressMonitorDialog dialog = new ProgressMonitorDialog(getShell());
 
 		try {
+
 			dialog.run(true, false, new IRunnableWithProgress() {
 
 				@Override
 				public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-					dataDomain = DataLoader.loadData(dataSetDescription, monitor);
+					try {
+						dataDomain = DataLoader.loadData(dataSetDescription, monitor);
+					} catch (Exception e) {
+						error = e.getMessage();
+					}
 				}
 			});
 		} catch (Exception e) {
@@ -180,7 +187,7 @@ public class DataImportWizard extends Wizard {
 		}
 		if (dataDomain == null) {
 			MessageDialog.openError(getShell(), "Dataset Loading Failed", "An error has occurred during loading file "
-					+ dataSetDescription.getDataSourcePath());
+					+ dataSetDescription.getDataSourcePath() + ". " + (error != null ? error : ""));
 		} else {
 			DataImportStatusDialog d = DataImportStatusDialogs.createDatasetImportStatusDialog(getShell(), dataDomain);
 			d.open();

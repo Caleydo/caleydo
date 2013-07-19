@@ -125,7 +125,7 @@ public abstract class ATextParser {
 			}
 		} catch (Exception e) {
 			Logger.log(new Status(IStatus.ERROR, this.toString(), "Could not read data file.", e));
-			throw new IllegalStateException("Could not read data file '" + filePath + "'", e);
+			throw new IllegalStateException(e.getMessage(), e);
 		}
 
 		Logger.log(new Status(IStatus.INFO, toString(), "File " + filePath + " successfully loaded."));
