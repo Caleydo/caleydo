@@ -182,7 +182,7 @@ public class DifferenceplotRenderUtils {
 	{	
 		buildIDList(differenceplotElement);
 		computeDataRangeConstants(differenceplotElement.getDataColumns());
-		this.labelText = "";
+		this.labelText = "DIFF: ";
 		this.labelText += differenceplotElement.getDataSelectionConf().getAxisLabels().get(0) + " - " + differenceplotElement.getDataSelectionConf().getAxisLabels().get(1);
 	}
 	
@@ -525,9 +525,9 @@ public class DifferenceplotRenderUtils {
 	 */
 	private void renderAxes(GL2 gl, float width, float height)
 	{
-		gl.glColor4f(0,0,0, 0.3f);
+		gl.glColor4f(0,0,0, 0.6f);
         gl.glEnable(GL2.GL_LINE_STIPPLE);
-        gl.glLineWidth(2.0f);
+        gl.glLineWidth(2.5f);
         gl.glLineStipple(8, (short) 0xAAAA);
         gl.glBegin(GL2.GL_LINES);
         
