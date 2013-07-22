@@ -39,6 +39,7 @@ public class RankTableModel implements IRankColumnParent {
 	public static final String PROP_SELECTED_ROW = "selectedRow";
 	public static final String PROP_COLUMNS = "columns";
 	public static final String PROP_POOL = "pool";
+	public static final String PROP_DESTROYED = "destroyed";
 	public static final String PROP_DATA = "data";
 	public static final String PROP_DATA_MASK = "datamask";
 	public static final String PROP_FILTER_INVALID = "invalidFilter";
@@ -306,7 +307,7 @@ public class RankTableModel implements IRankColumnParent {
 	public void remove(ARankColumnModel model) {
 		int index = columns.indexOf(model);
 		if (index < 0) { // maybe in the pool
-			removeFromPool(model);
+			removeFromPool(model, false);
 			return;
 		}
 		ColumnRanker r = findCorrespondingRanker(index);
@@ -328,19 +329,34 @@ public class RankTableModel implements IRankColumnParent {
 	}
 
 	public void removeFromPool(ARankColumnModel model) {
+		removeFromPool(model, true);
+	}
+
+	/**
+	 * @param model
+	 * @param b
+	 */
+	private void removeFromPool(ARankColumnModel model, boolean destroy) {
 		int index = pool.indexOf(model);
 		if (index < 0)
 			return;
 		pool.remove(index);
 		propertySupport.fireIndexedPropertyChange(PROP_POOL, index, model, null);
 		model.takeDown();
+		if (destroy) {
+			propertySupport.firePropertyChange(PROP_DESTROYED, model, null);
+		}
 	}
+
 
 	@Override
 	public boolean hide(ARankColumnModel model) {
 		remove(model);
 		if (!config.isDestroyOnHide(model))
 			addToPool(model);
+		else {
+			propertySupport.firePropertyChange(PROP_DESTROYED, model, null);
+		}
 		return true;
 	}
 
