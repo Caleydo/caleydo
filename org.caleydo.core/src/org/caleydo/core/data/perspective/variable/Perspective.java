@@ -124,6 +124,13 @@ public class Perspective implements IDefaultLabelHolder {
 	@XmlTransient
 	private ClusterTree tree;
 
+	/**
+	 * The number of elements that could not be converted from an original startification/perspective for this dataset.
+	 * An example is if a stratification is loaded for a larger dataset and later applied to a smaller dataset. Here
+	 * information is lost. How many elements are lost is stored in this integer.
+	 */
+	private int unmappedElements = 0;
+
 	/** Only for serialization */
 	public Perspective() {
 	}
@@ -189,6 +196,21 @@ public class Perspective implements IDefaultLabelHolder {
 	@Override
 	public boolean isLabelDefault() {
 		return isDefaultLabel;
+	}
+
+	/**
+	 * @param unMappedElements
+	 *            setter, see {@link unmappedElements}
+	 */
+	public void setUnmappedElements(int unmappedElements) {
+		this.unmappedElements = unmappedElements;
+	}
+
+	/**
+	 * @return the unmappedElements, see {@link #unmappedElements}
+	 */
+	public int getUnmappedElements() {
+		return unmappedElements;
 	}
 
 	/**

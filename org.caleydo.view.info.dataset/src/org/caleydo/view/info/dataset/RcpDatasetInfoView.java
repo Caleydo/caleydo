@@ -42,8 +42,9 @@ import org.eclipse.swt.widgets.Link;
 
 /**
  * Data meta view showing details about a data table.
- *
+ * 
  * @author Marc Streit
+ * @author Alexander Lex
  */
 public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomainBasedView<IDataDomain> {
 
@@ -57,8 +58,10 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 
 	private Label recordPerspectiveLabel;
 	private Label recordPerspectiveCount;
+	private Label unmappedRecordElements;
 	private Label dimensionPerspectiveLabel;
 	private Label dimensionPerspectiveCount;
+	private Label unmappedDimensionElements;
 
 	private Label recordLabel;
 	private Label recordCount;
@@ -147,12 +150,20 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 		recordPerspectiveCount.setText("");
 		recordPerspectiveCount.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false));
 
+		unmappedRecordElements = new Label(c, SWT.NONE);
+		unmappedRecordElements.setText("");
+		unmappedRecordElements.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 0));
+
 		dimensionPerspectiveLabel = new Label(c, SWT.NONE);
 		dimensionPerspectiveLabel.setText("");
 		dimensionPerspectiveLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
 		dimensionPerspectiveCount = new Label(c, SWT.NONE);
 		dimensionPerspectiveCount.setText("");
 		dimensionPerspectiveCount.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false));
+
+		unmappedDimensionElements = new Label(c, SWT.NONE);
+		unmappedDimensionElements.setText("");
+		unmappedDimensionElements.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 0));
 
 		tablePerspectiveItem.setControl(c);
 		tablePerspectiveItem.setHeight(c.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
@@ -249,11 +260,12 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 
 			int nrRecords = tableBasedDD.getTable().depth();
 			int nrDimensions = tableBasedDD.getTable().size();
-
-			recordLabel.setText(tableBasedDD.getRecordDenomination(true, true) + ":");
+			String recordName = tableBasedDD.getRecordDenomination(true, true);
+			recordLabel.setText(recordName + ":");
 			recordCount.setText("" + nrRecords);
 
-			dimensionLabel.setText(tableBasedDD.getDimensionDenomination(true, true) + ":");
+			String dimensionName = tableBasedDD.getDimensionDenomination(true, true);
+			dimensionLabel.setText(dimensionName + ":");
 			dimensionCount.setText("" + nrDimensions);
 
 			((Composite) dataSetItem.getControl()).layout();
@@ -264,13 +276,22 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 					tpLabel = tpLabel.substring(0, stringLength - 3) + "...";
 				tablePerspectiveItem.setText(tpLabel);
 				tablePerspectiveItem.setExpanded(true);
-				recordPerspectiveLabel.setText(tableBasedDD.getRecordDenomination(true, true) + ":");
+
+				recordPerspectiveLabel.setText(recordName + ":");
 				recordPerspectiveCount.setText("" + tablePerspective.getNrRecords() + " ("
 						+ String.format("%.2f", tablePerspective.getNrRecords() * 100f / nrRecords) + "%)");
+				unmappedRecordElements.setText("Unmapped: "
+						+ tablePerspective.getRecordPerspective().getUnmappedElements());
+				unmappedRecordElements.setToolTipText("The number of " + recordName
+						+ " that are in the original stratification but can't be mapped to this dataset");
 
-				dimensionPerspectiveLabel.setText(tableBasedDD.getDimensionDenomination(true, true) + ":");
+				dimensionPerspectiveLabel.setText(dimensionName + ":");
 				dimensionPerspectiveCount.setText("" + tablePerspective.getNrDimensions() + " ("
 						+ String.format("%.2f", tablePerspective.getNrDimensions() * 100f / nrDimensions) + "%)");
+				unmappedDimensionElements.setText("Unmapped: "
+						+ tablePerspective.getDimensionPerspective().getUnmappedElements());
+				unmappedDimensionElements.setToolTipText("The number of " + dimensionName
+						+ " that are in the original stratification but can't be mapped to this dataset");
 
 				((Composite) tablePerspectiveItem.getControl()).layout();
 			}
