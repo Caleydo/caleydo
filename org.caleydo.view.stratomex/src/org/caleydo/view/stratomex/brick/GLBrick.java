@@ -966,7 +966,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 			dims.add(table.getDimensionPerspective(id));
 		}
 		Perspective dim = column.getTablePerspective().getDimensionPerspective();
-		GroupContextMenuItem item = new GroupContextMenuItem("Used dimension perspective");
+		GroupContextMenuItem item = new GroupContextMenuItem("Used Dimension Perspective");
 
 		for (Perspective d : dims)
 			item.add(new GenericContextMenuItem(d.getLabel(), EContextMenuType.CHECK,

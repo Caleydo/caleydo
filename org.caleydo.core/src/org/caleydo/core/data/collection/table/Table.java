@@ -6,10 +6,12 @@
 package org.caleydo.core.data.collection.table;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang.NotImplementedException;
 import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.collection.column.AColumn;
@@ -23,11 +25,14 @@ import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.event.data.DataDomainUpdateEvent;
 import org.caleydo.core.io.NumericalProperties;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.util.collection.Algorithms;
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.color.mapping.ColorMapper;
+import org.caleydo.core.util.function.FloatStatistics;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+
+import com.google.common.primitives.Floats;
 
 /**
  * <p>
@@ -179,8 +184,7 @@ public class Table {
 	public Float getNormalizedValue(Integer dimensionID, Integer recordID) {
 		if (dimensionID == null || recordID == null) {
 			throw new IllegalArgumentException("Dimension ID or record ID was null. Dimension ID: " + dimensionID
-					+ ", Record ID: "
-					+ recordID);
+					+ ", Record ID: " + recordID);
 		}
 		try {
 			if (isColumnDimension) {
@@ -427,7 +431,6 @@ public class Table {
 		}
 	}
 
-
 	/**
 	 * @param sampled
 	 *            Determines whether the full or the sampled default dimension perspective is requested
@@ -596,6 +599,7 @@ public class Table {
 	void createDefaultRecordPerspectives() {
 
 		List<Integer> recordIDs;
+		List<Integer> sampleIDs;
 		Integer nrRecordsInSample = null;
 		if (isColumnDimension) {
 			if (dataDomain.getDataSetDescription().getDataProcessingDescription() != null) {
@@ -603,19 +607,22 @@ public class Table {
 						.getNrRowsInSample();
 			}
 			recordIDs = getRowIDList();
+			sampleIDs = getColumnIDList();
 		} else {
 			if (dataDomain.getDataSetDescription().getDataProcessingDescription() != null) {
 				nrRecordsInSample = dataDomain.getDataSetDescription().getDataProcessingDescription()
 						.getNrColumnsInSample();
 			}
 			recordIDs = getColumnIDList();
+			sampleIDs = getRowIDList();
 		}
 
 		defaultRecordPerspective = createDefaultRecordPerspective(false, recordIDs);
 
 		if (nrRecordsInSample != null) {
-			recordIDs = Algorithms.sampleList(nrRecordsInSample, recordIDs);
-			sampledRecordPerspective = createDefaultRecordPerspective(true, recordIDs);
+			// recordIDs = sampleMostVariableRecords(nrRecordsInSample, recordIDs, sampleIDs);
+			// sampledRecordPerspective = createDefaultRecordPerspective(true, recordIDs);
+			throw new NotImplementedException();
 		}
 
 		triggerUpdateEvent();
@@ -646,28 +653,61 @@ public class Table {
 		return recordPerspective;
 	}
 
+	List<Integer> sampleMostVariableDimensions(int sampleSize, List<Integer> recordIDs, List<Integer> dimensionIDs) {
+
+		if (dimensionIDs.size() <= sampleSize)
+			return dimensionIDs;
+
+		List<Pair<Float, Integer>> allDimVar = new ArrayList<Pair<Float, Integer>>();
+
+		for (Integer dimID : dimensionIDs) {
+			List<Float> allDimsPerRecordArray = new ArrayList<>();
+
+			for (Integer recordID : recordIDs) {
+
+				allDimsPerRecordArray.add(dataDomain.getNormalizedValue(dataDomain.getDimensionIDType(), dimID,
+						dataDomain.getRecordIDType(), recordID));
+			}
+			float[] allDimPerRecordArray = Floats.toArray(allDimsPerRecordArray);
+			allDimVar.add(new Pair<Float, Integer>(FloatStatistics.of(allDimPerRecordArray).getVar(), dimID));
+		}
+
+		Collections.sort(allDimVar, Pair.<Float> compareFirst());
+		allDimVar = allDimVar.subList(allDimVar.size() - sampleSize, allDimVar.size());
+
+		List<Integer> sampledRecordIDs = new ArrayList<>();
+		for (Pair<Float, Integer> recordVar : allDimVar) {
+			sampledRecordIDs.add(recordVar.getSecond());
+		}
+
+		return sampledRecordIDs;
+	}
+
 	void createDefaultDimensionPerspectives() {
 
 		List<Integer> dimensionIDs;
-		Integer nrDimensionsInsample = null;
+		List<Integer> recordIDs;
+		Integer nrDimensionsInSample = null;
 		if (isColumnDimension) {
 			if (dataDomain.getDataSetDescription().getDataProcessingDescription() != null) {
-				nrDimensionsInsample = dataDomain.getDataSetDescription().getDataProcessingDescription()
+				nrDimensionsInSample = dataDomain.getDataSetDescription().getDataProcessingDescription()
 						.getNrColumnsInSample();
 			}
 			dimensionIDs = getColumnIDList();
+			recordIDs = getRowIDList();
 		} else {
 			if (dataDomain.getDataSetDescription().getDataProcessingDescription() != null) {
-				nrDimensionsInsample = dataDomain.getDataSetDescription().getDataProcessingDescription()
+				nrDimensionsInSample = dataDomain.getDataSetDescription().getDataProcessingDescription()
 						.getNrRowsInSample();
 			}
 			dimensionIDs = getRowIDList();
+			recordIDs = getColumnIDList();
 		}
 
 		defaultDimensionPerspective = createDefaultDimensionPerspective(false, dimensionIDs);
 
-		if (nrDimensionsInsample != null) {
-			dimensionIDs = Algorithms.sampleList(nrDimensionsInsample, dimensionIDs);
+		if (nrDimensionsInSample != null) {
+			dimensionIDs = sampleMostVariableDimensions(nrDimensionsInSample, recordIDs, dimensionIDs);
 			sampledDimensionPerspective = createDefaultDimensionPerspective(true, dimensionIDs);
 		}
 

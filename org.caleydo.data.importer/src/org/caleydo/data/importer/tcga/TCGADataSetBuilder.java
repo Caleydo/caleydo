@@ -29,7 +29,7 @@ import org.caleydo.core.io.GroupingParseSpecification;
 import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.io.ParsingRule;
-import org.caleydo.core.util.clusterer.algorithm.kmeans.KMeansClusterConfiguration;
+import org.caleydo.core.util.clusterer.algorithm.affinity.AffinityClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
 import org.caleydo.core.util.collection.Pair;
@@ -198,9 +198,9 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 		{
 			ClusterConfiguration clusterConfiguration = new ClusterConfiguration();
 			clusterConfiguration.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
-			KMeansClusterConfiguration kMeansAlgo = new KMeansClusterConfiguration();
-			kMeansAlgo.setNumberOfClusters(5);
-			clusterConfiguration.setClusterAlgorithmConfiguration(kMeansAlgo);
+			AffinityClusterConfiguration affinityAlgo = new AffinityClusterConfiguration();
+			affinityAlgo.setClusterFactor(9);
+			clusterConfiguration.setClusterAlgorithmConfiguration(affinityAlgo);
 			dataProcessingDescription.addRowClusterConfiguration(clusterConfiguration);
 		}
 		dataSet.setDataProcessingDescription(dataProcessingDescription);
