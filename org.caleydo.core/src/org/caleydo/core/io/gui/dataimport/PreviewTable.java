@@ -107,6 +107,13 @@ public class PreviewTable {
 		// });
 	}
 
+	/**
+	 * @return the dataMatrix, see {@link #dataMatrix}
+	 */
+	public List<List<String>> getDataMatrix() {
+		return dataMatrix;
+	}
+
 	public Composite getTable() {
 		return this.previewTable.getTable();
 	}
