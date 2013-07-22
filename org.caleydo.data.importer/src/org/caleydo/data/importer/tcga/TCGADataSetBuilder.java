@@ -92,8 +92,8 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 		final IDSpecification clinicalRowID = new IDSpecification("TCGA_SAMPLE", "TCGA_SAMPLE");
 
 		IDTypeParsingRules clinicalSampleIDTypeParsingRules = new IDTypeParsingRules();
-		clinicalSampleIDTypeParsingRules.setSubStringExpression("tcga\\-");
-		clinicalSampleIDTypeParsingRules.setToLowerCase(true);
+		clinicalSampleIDTypeParsingRules.setSubStringExpression("TCGA\\-");
+		clinicalSampleIDTypeParsingRules.setToUpperCase(true);
 		clinicalRowID.setIdTypeParsingRules(clinicalSampleIDTypeParsingRules);
 
 		DataSetDescription desc = null;
