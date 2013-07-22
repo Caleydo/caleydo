@@ -183,8 +183,8 @@ public final class Zoomer implements IMouseWheelHandler, IScrollBarUpdateHandler
 
 		if (wasMouseWheeled) {
 
-			float viewPositionX = viewArea_dip.x;
-			float viewPositionY = viewArea_dip.y;
+			float viewPositionX = pixelGLConverter.getGLWidthForPixelWidth(viewArea_dip.x);
+			float viewPositionY = pixelGLConverter.getGLHeightForPixelHeight(viewArea_dip.y);
 			Vec2f wheelPosition = pixelGLConverter.convertMouseCoord2GL(mouseWheelPosition);
 
 			// viewTranslateX =
@@ -219,11 +219,11 @@ public final class Zoomer implements IMouseWheelHandler, IScrollBarUpdateHandler
 			relativeViewTranlateX = viewTranslateX / w;
 			relativeViewTranlateY = viewTranslateY / h;
 
-			System.out.println("=========================================");
-			// System.out.println("viewPos: " + viewPositionX + "," + viewPositionY + "\n zoomCenter: "
-			// + zoomCenterX + "," + zoomCenterY + "\n Frustum: " + viewFrustum.getWidth() + ","
-			// + viewFrustum.getHeight() + "\n Translate: " + viewTranlateX + "," + viewTranlateY
-			// + "\n currentZoom: " + currentZoomScale + "; prevZoom: " + previousZoomScale);
+			// System.out.println("=========================================");
+			// System.out.println("viewPos: " + viewPositionX + "," + viewPositionY + "\n zoomCenter: " + zoomCenterX
+			// + "," + zoomCenterY + "\n Frustum: " + viewFrustum.getWidth() + "," + viewFrustum.getHeight()
+			// + "\n Translate: " + viewTranslateX + "," + viewTranslateY + "\n currentZoom: " + currentZoomScale
+			// + "; prevZoom: " + previousZoomScale);
 		}
 
 		float relativeImageCenterX = (-viewTranslateX + w / 2.0f) / (w * currentZoomScale);
