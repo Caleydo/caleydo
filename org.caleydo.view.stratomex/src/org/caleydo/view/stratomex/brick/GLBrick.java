@@ -36,9 +36,9 @@ import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.EventListenerManager;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventListenerManagers;
-import org.caleydo.core.event.data.DataDomainUpdateEvent;
 import org.caleydo.core.event.data.RelationsUpdatedEvent;
 import org.caleydo.core.event.data.SelectionUpdateEvent;
+import org.caleydo.core.event.data.DataSetSelectedEvent;
 import org.caleydo.core.gui.util.RenameNameDialog;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
@@ -838,7 +838,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 					stratomex.setDisplayListDirty();
 				}
 
-				DataDomainUpdateEvent event = new DataDomainUpdateEvent(dataDomain);
+				DataSetSelectedEvent event = new DataSetSelectedEvent(tablePerspective);
 				event.setSender(this);
 				GeneralManager.get().getEventPublisher().triggerEvent(event);
 			}

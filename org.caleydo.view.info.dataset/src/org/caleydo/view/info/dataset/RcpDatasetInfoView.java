@@ -16,10 +16,11 @@ import javax.xml.bind.JAXBException;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.event.EventListenerManager;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventListenerManagers;
-import org.caleydo.core.event.data.DataDomainUpdateEvent;
+import org.caleydo.core.event.data.DataSetSelectedEvent;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedSingleTablePerspectiveBasedView;
 import org.caleydo.core.serialize.ProjectMetaData;
@@ -49,8 +50,16 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 	public static final String VIEW_TYPE = "org.caleydo.view.info.dataset";
 
 	private IDataDomain dataDomain;
+	private TablePerspective tablePerspective;
 
 	private ExpandItem dataSetItem;
+	private ExpandItem tablePerspectiveItem;
+
+	private Label recordPerspectiveLabel;
+	private Label recordPerspectiveCount;
+	private Label dimensionPerspectiveLabel;
+	private Label dimensionPerspectiveCount;
+
 	private Label recordLabel;
 	private Label recordCount;
 	private Label dimensionLabel;
@@ -87,6 +96,9 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 
 		createProjectInfos(expandBar);
 		createDataSetInfos(expandBar);
+
+		createTablePerspectiveInfos(expandBar);
+
 		createHistogramInfos(expandBar);
 
 		if (dataDomain == null) {
@@ -122,6 +134,31 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 		dataSetItem.setExpanded(false);
 	}
 
+	private void createTablePerspectiveInfos(ExpandBar expandBar) {
+		this.tablePerspectiveItem = new ExpandItem(expandBar, SWT.WRAP);
+		tablePerspectiveItem.setText("Perspective: <no selection>");
+		Composite c = new Composite(expandBar, SWT.NONE);
+		c.setLayout(new GridLayout(2, false));
+
+		recordPerspectiveLabel = new Label(c, SWT.NONE);
+		recordPerspectiveLabel.setText("");
+		recordPerspectiveLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
+		recordPerspectiveCount = new Label(c, SWT.NONE);
+		recordPerspectiveCount.setText("");
+		recordPerspectiveCount.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false));
+
+		dimensionPerspectiveLabel = new Label(c, SWT.NONE);
+		dimensionPerspectiveLabel.setText("");
+		dimensionPerspectiveLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
+		dimensionPerspectiveCount = new Label(c, SWT.NONE);
+		dimensionPerspectiveCount.setText("");
+		dimensionPerspectiveCount.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false));
+
+		tablePerspectiveItem.setControl(c);
+		tablePerspectiveItem.setHeight(c.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
+		tablePerspectiveItem.setExpanded(false);
+	}
+
 	private void createProjectInfos(ExpandBar expandBar) {
 		ProjectMetaData metaData = GeneralManager.get().getMetaData();
 		if (metaData.keys().isEmpty())
@@ -141,7 +178,7 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 
 		expandItem.setControl(g);
 		expandItem.setHeight(g.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
-		expandItem.setExpanded(true);
+		expandItem.setExpanded(false);
 	}
 
 	private void createHistogramInfos(ExpandBar expandBar) {
@@ -196,9 +233,11 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 	}
 
 	private void updateDataSetInfo() {
+		short stringLength = 28;
+
 		String dsLabel = "Dataset: " + dataDomain.getLabel();
-		if (dsLabel.length() > 25)
-			dsLabel = dsLabel.substring(0, 25 - 3) + "...";
+		if (dsLabel.length() > stringLength)
+			dsLabel = dsLabel.substring(0, stringLength - 3) + "...";
 
 		// dataSetItem.setText("Data Set: " + dataDomain.getLabel().substring(0, 15));
 		dataSetItem.setText(dsLabel);
@@ -208,13 +247,33 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 
 			dataSetItem.setExpanded(true);
 
+			int nrRecords = tableBasedDD.getTable().depth();
+			int nrDimensions = tableBasedDD.getTable().size();
+
 			recordLabel.setText(tableBasedDD.getRecordDenomination(true, true) + ":");
-			recordCount.setText("" + tableBasedDD.getTable().depth());
+			recordCount.setText("" + nrRecords);
 
 			dimensionLabel.setText(tableBasedDD.getDimensionDenomination(true, true) + ":");
-			dimensionCount.setText("" + tableBasedDD.getTable().size());
+			dimensionCount.setText("" + nrDimensions);
 
 			((Composite) dataSetItem.getControl()).layout();
+
+			if (tablePerspective != null) {
+				String tpLabel = "Persp.: " + tablePerspective.getLabel();
+				if (tpLabel.length() > stringLength)
+					tpLabel = tpLabel.substring(0, stringLength - 3) + "...";
+				tablePerspectiveItem.setText(tpLabel);
+				tablePerspectiveItem.setExpanded(true);
+				recordPerspectiveLabel.setText(tableBasedDD.getRecordDenomination(true, true) + ":");
+				recordPerspectiveCount.setText("" + tablePerspective.getNrRecords() + " ("
+						+ String.format("%.2f", tablePerspective.getNrRecords() * 100f / nrRecords) + "%)");
+
+				dimensionPerspectiveLabel.setText(tableBasedDD.getDimensionDenomination(true, true) + ":");
+				dimensionPerspectiveCount.setText("" + tablePerspective.getNrDimensions() + " ("
+						+ String.format("%.2f", tablePerspective.getNrDimensions() * 100f / nrDimensions) + "%)");
+
+				((Composite) tablePerspectiveItem.getControl()).layout();
+			}
 
 			if (!tableBasedDD.getTable().isDataHomogeneous()) {
 				histogramItem.getControl().setEnabled(false);
@@ -228,6 +287,9 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 			if (histogramView == null) {
 				histogramView = new RcpGLColorMapperHistogramView();
 				histogramView.setDataDomain(tableBasedDD);
+				if (tablePerspective != null)
+					histogramView.setTablePerspective(tablePerspective);
+
 				SerializedHistogramView serializedHistogramView = new SerializedHistogramView();
 				serializedHistogramView.setDataDomainID(dataDomain.getDataDomainID());
 				serializedHistogramView
@@ -255,6 +317,11 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 			}
 			histogramView.setDataDomain(tableBasedDD);
 			((GLHistogram) histogramView.getGLView()).setDataDomain(tableBasedDD);
+			if (tablePerspective != null) {
+
+				histogramView.setTablePerspective(tablePerspective);
+				((GLHistogram) histogramView.getGLView()).setTablePerspective(tablePerspective);
+			}
 			((GLHistogram) histogramView.getGLView()).setDisplayListDirty();
 			// }
 		} else {
@@ -288,7 +355,19 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 	}
 
 	@ListenTo
-	private void onDataDomainUpdate(DataDomainUpdateEvent event) {
+	private void onDataDomainUpdate(DataSetSelectedEvent event) {
+
+		IDataDomain dd = event.getDataDomain();
+		TablePerspective tp = event.getTablePerspective();
+		// Do nothing if new datadomain is the same as the current one, or if dd
+		// is null
+		if (dd == null || (dd == this.dataDomain && tp == this.tablePerspective))
+			return;
+
+		this.dataDomain = dd;
+		this.tablePerspective = tp;
+
+		updateDataSetInfo();
 		setDataDomain(event.getDataDomain());
 	}
 
