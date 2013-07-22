@@ -433,8 +433,9 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 		}
 
 		setDisplayListDirty();
+		Vec2f currentPixelPos = pixelGLConverter.getCurrentPixelPos(gl);
 		Vec2f pointCordinates = pixelGLConverter.convertMouseCoord2GL(glMouseListener.getDIPPickedPoint());
-		float fClickedPointX = pointCordinates.x();
+		float fClickedPointX = pointCordinates.x() - pixelGLConverter.getGLWidthForPixelWidth(currentPixelPos.x());
 
 		List<ColorMarkerPoint> markerPoints = dataDomain.getTable().getColorMapper().getMarkerPoints();
 		ColorMarkerPoint markerPoint = markerPoints.get(iColorMappingPointMoved);
