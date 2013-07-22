@@ -92,8 +92,8 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 		final IDSpecification clinicalRowID = new IDSpecification("TCGA_SAMPLE", "TCGA_SAMPLE");
 
 		IDTypeParsingRules clinicalSampleIDTypeParsingRules = new IDTypeParsingRules();
-		clinicalSampleIDTypeParsingRules.setSubStringExpression("tcga\\-");
-		clinicalSampleIDTypeParsingRules.setToLowerCase(true);
+		clinicalSampleIDTypeParsingRules.setSubStringExpression("TCGA\\-");
+		clinicalSampleIDTypeParsingRules.setToUpperCase(true);
 		clinicalRowID.setIdTypeParsingRules(clinicalSampleIDTypeParsingRules);
 
 		DataSetDescription desc = null;
@@ -205,10 +205,8 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 		}
 		dataSet.setDataProcessingDescription(dataProcessingDescription);
 
-		if (!loadFullGenes) {
-			// here we turn on sampling to 1500
-			dataProcessingDescription.setNrRowsInSample(1500);
-		}
+		// here we turn on sampling to 1500
+		dataProcessingDescription.setNrRowsInSample(1500);
 
 		return dataSet;
 	}

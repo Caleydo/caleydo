@@ -68,10 +68,10 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 
 		if (dataDomain.isColumnDimension()) {
 			this.categoryIDType = dataDomain.getRecordIDType();
-			this.categories = dataDomain.getTable().getDefaultRecordPerspective().getVirtualArray();
+			this.categories = dataDomain.getTable().getDefaultRecordPerspective(false).getVirtualArray();
 		} else {
 			this.categoryIDType = dataDomain.getDimensionIDType();
-			this.categories = dataDomain.getTable().getDefaultDimensionPerspective().getVirtualArray();
+			this.categories = dataDomain.getTable().getDefaultDimensionPerspective(false).getVirtualArray();
 		}
 	}
 

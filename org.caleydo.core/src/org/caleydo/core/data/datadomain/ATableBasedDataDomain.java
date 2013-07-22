@@ -314,8 +314,8 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 
 	/** Returns the data container made up of the default perspectives */
 	public TablePerspective getDefaultTablePerspective() {
-		return getTablePerspective(table.getDefaultRecordPerspective().getPerspectiveID(), table
-				.getDefaultDimensionPerspective().getPerspectiveID());
+		return getTablePerspective(table.getDefaultRecordPerspective(false).getPerspectiveID(), table
+				.getDefaultDimensionPerspective(false).getPerspectiveID());
 	}
 
 	/**

@@ -28,7 +28,7 @@ public class RestoreOriginalDataAction extends SimpleAction {
 
 		for (IDataDomain dataDomain : DataDomainManager.get().getDataDomains()) {
 			if (dataDomain instanceof ATableBasedDataDomain)
-				((ATableBasedDataDomain) dataDomain).getTable().getDefaultRecordPerspective();
+				((ATableBasedDataDomain) dataDomain).getTable().getDefaultRecordPerspective(false);
 			System.out.println("Reset not implemented" + recordPerspectiveID);
 		}
 	}

@@ -110,10 +110,10 @@ public class TableUtils {
 		table.normalize();
 
 		if (createDefaultDimensionPerspectives)
-			table.createDefaultDimensionPerspective();
+			table.createDefaultDimensionPerspectives();
 
 		if (createDefaultRecordPerspective)
-			table.createDefaultRecordPerspective();
+			table.createDefaultRecordPerspectives();
 	}
 
 	/**

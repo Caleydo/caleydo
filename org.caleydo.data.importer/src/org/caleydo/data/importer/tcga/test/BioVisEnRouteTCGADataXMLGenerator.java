@@ -72,6 +72,7 @@ public class BioVisEnRouteTCGADataXMLGenerator extends DataSetDescriptionSeriali
 		idTypeParsingRules.setReplacementExpression(TCGADefinitions.TCGA_REPLACEMENT_STRING,
 				TCGADefinitions.TCGA_REPLACING_EXPRESSIONS);
 		idTypeParsingRules.setSubStringExpression(TCGADefinitions.TCGA_ID_SUBSTRING_REGEX);
+		idTypeParsingRules.setToUpperCase(true);
 		idTypeParsingRules.setDefault(true);
 		sampleIDSpecification.setIdTypeParsingRules(idTypeParsingRules);
 

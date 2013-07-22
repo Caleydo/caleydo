@@ -160,6 +160,7 @@ public class GeneticDataDomainInitialization implements IDataDomainInitializatio
 		tcgaIDTypeParsingRules.setReplacementExpression(TCGADefinitions.TCGA_REPLACEMENT_STRING,
 				TCGADefinitions.TCGA_REPLACING_EXPRESSIONS);
 		tcgaIDTypeParsingRules.setSubStringExpression(TCGADefinitions.TCGA_ID_SUBSTRING_REGEX);
+		tcgaIDTypeParsingRules.setToUpperCase(true);
 		tcgaIDTypeParsingRules.setDefault(true);
 		tcgaSample.setIdTypeParsingRules(tcgaIDTypeParsingRules);
 

@@ -101,7 +101,7 @@ public class GSEAAlgorithm extends AGSEAAlgorithm {
 		Table table = dataDomain.getTable();
 
 		List<Integer> rows = perspective.getVirtualArray().getIDs();
-		List<Integer> cols = table.getDefaultDimensionPerspective().getVirtualArray().getIDs();
+		List<Integer> cols = table.getDefaultDimensionPerspective(false).getVirtualArray().getIDs();
 
 		// # Compute observed and random permutation gene rankings
 		//
@@ -173,7 +173,7 @@ public class GSEAAlgorithm extends AGSEAAlgorithm {
 		Table table = dataDomain.getTable();
 
 		List<Integer> rows = perspective.getVirtualArray().getIDs();
-		List<Integer> cols = table.getDefaultDimensionPerspective().getVirtualArray().getIDs();
+		List<Integer> cols = table.getDefaultDimensionPerspective(false).getVirtualArray().getIDs();
 		for (Integer col : cols) {
 			for (Integer row : rows) {
 				Float v = table.getRaw(col, row);

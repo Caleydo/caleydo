@@ -286,6 +286,7 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 							// intended to be used once the clustering is
 							// complete
 							Perspective newRecordPerspective = new Perspective(dataDomain, dataDomain.getRecordIDType());
+							newRecordPerspective.setLabel("Currently clustering...", false);
 
 							// we temporarily set the old va to the new
 							// perspective,
