@@ -190,6 +190,7 @@ Export-Package: org.caleydo.core.data.collection,
    org.caleydo.core.data.perspective.variable,
    org.caleydo.core.data.virtualarray,
    org.caleydo.core.util.clusterer.initialization",
+ org.caleydo.core.util.clusterer.algorithm.affinity,
  org.caleydo.core.util.clusterer.algorithm.kmeans;
   uses:="org.caleydo.core.util.clusterer.gui,
    org.caleydo.core.util.clusterer.algorithm,
