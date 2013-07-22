@@ -6,7 +6,6 @@
 package org.caleydo.vis.rank.model;
 
 import gleem.linalg.Vec2f;
-import gleem.linalg.Vec4f;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -27,6 +26,7 @@ import org.caleydo.core.util.function.IFloatList;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.ISWTLayer.ISWTLayerRunnable;
+import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.rank.config.IRankTableUIConfig;
 import org.caleydo.vis.rank.data.IFloatFunction;
@@ -150,7 +150,7 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 		m.setzDelta(0.5f);
 		Vec2f location = summary.getAbsoluteLocation();
 		Vec2f size = summary.getSize();
-		context.getPopupLayer().show(m, new Vec4f(location.x(), location.y() + size.y(), 260, 300));
+		context.getPopupLayer().show(m, new Rect(location.x(), location.y() + size.y(), 260, 300));
 	}
 
 	@Override

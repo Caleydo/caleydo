@@ -6,7 +6,6 @@
 package org.caleydo.vis.rank.model;
 
 import gleem.linalg.Vec2f;
-import gleem.linalg.Vec4f;
 
 import java.beans.PropertyChangeListener;
 import java.util.BitSet;
@@ -25,6 +24,7 @@ import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.IGLElementParent;
 import org.caleydo.core.view.opengl.layout2.ISWTLayer.ISWTLayerRunnable;
+import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.rank.config.IRankTableUIConfig;
 import org.caleydo.vis.rank.internal.event.FilterEvent;
@@ -329,6 +329,6 @@ public class CategoricalRankRankColumnModel<CATEGORY_TYPE> extends ABasicFiltera
 		m.setzDelta(0.5f);
 		Vec2f location = summary.getAbsoluteLocation();
 		Vec2f size = summary.getSize();
-		context.getPopupLayer().show(m, new Vec4f(location.x(), location.y() + size.y(), 260, 260));
+		context.getPopupLayer().show(m, new Rect(location.x(), location.y() + size.y(), 260, 260));
 	}
 }

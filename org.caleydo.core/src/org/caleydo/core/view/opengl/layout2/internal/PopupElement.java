@@ -11,7 +11,6 @@ import static org.caleydo.core.view.opengl.layout2.IPopupLayer.FLAG_COLLAPSABLE;
 import static org.caleydo.core.view.opengl.layout2.IPopupLayer.FLAG_MOVEABLE;
 import static org.caleydo.core.view.opengl.layout2.IPopupLayer.FLAG_RESIZEABLE;
 import gleem.linalg.Vec2f;
-import gleem.linalg.Vec4f;
 
 import java.util.List;
 
@@ -22,6 +21,7 @@ import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton;
+import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
@@ -52,7 +52,7 @@ class PopupElement extends GLElementContainer implements IGLLayout, IGLRenderer,
 
 	private Vec2f expandedSized;
 
-	public PopupElement(GLElement content, Vec4f bounds, int flags) {
+	public PopupElement(GLElement content, Rect bounds, int flags) {
 		this.content = content;
 		this.flags = flags;
 		setLayout(this);
@@ -72,7 +72,8 @@ class PopupElement extends GLElementContainer implements IGLLayout, IGLRenderer,
 		this.add(resize);
 
 		if (bounds != null)
-			this.setBounds(bounds.x(), bounds.y(), bounds.z(), bounds.w() + (isFlagSet(FLAG_HAS_HEADER) ? 8 : 0));
+			this.setBounds(bounds.x(), bounds.y(), bounds.width(), bounds.height()
+					+ (isFlagSet(FLAG_HAS_HEADER) ? 8 : 0));
 		setVisibility(EVisibility.PICKABLE); // as a barrier to the underlying
 	}
 
