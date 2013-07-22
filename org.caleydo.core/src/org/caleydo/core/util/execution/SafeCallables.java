@@ -11,12 +11,12 @@ package org.caleydo.core.util.execution;
  */
 public class SafeCallables {
 	public static <T> SafeCallable<T> newInstance(final Class<T> clazz) {
-		try {
-			assert clazz.getConstructor().isAccessible();
-		} catch (NoSuchMethodException | SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		// try {
+		// assert clazz.getConstructor().isAccessible();
+		// } catch (NoSuchMethodException | SecurityException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
 		return new SafeCallable<T>() {
 			@Override
 			public T call() {

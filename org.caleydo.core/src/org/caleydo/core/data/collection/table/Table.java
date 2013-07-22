@@ -168,7 +168,9 @@ public class Table {
 	 */
 	public Float getNormalizedValue(Integer dimensionID, Integer recordID) {
 		if (dimensionID == null || recordID == null) {
-			throw new IllegalArgumentException("Dimension or record was null " + dimensionID + ", " + recordID);
+			throw new IllegalArgumentException("Dimension ID or record ID was null. Dimension ID: " + dimensionID
+					+ ", Record ID: "
+					+ recordID);
 		}
 		try {
 			if (isColumnDimension) {
