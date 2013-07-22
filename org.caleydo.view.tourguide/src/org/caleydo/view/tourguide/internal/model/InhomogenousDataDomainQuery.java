@@ -137,7 +137,7 @@ public class InhomogenousDataDomainQuery extends ADataDomainQuery {
 	public TablePerspective asTablePerspective(Perspective p) {
 		ATableBasedDataDomain d = getDataDomain();
 
-		String rowPerspectiveID = d.getTable().getDefaultRecordPerspective().getPerspectiveID();
+		String rowPerspectiveID = d.getTable().getDefaultRecordPerspective(false).getPerspectiveID();
 		for (String recId : d.getTable().getRecordPerspectiveIDs()) {
 			Perspective recordPerspective = d.getTable().getRecordPerspective(recId);
 			if (recordPerspective.getLabel().equals(p.getLabel())) {

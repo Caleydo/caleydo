@@ -648,10 +648,10 @@ public final class RcpSearchView extends CaleydoRCPViewPart {
 		List<Perspective> dataDomainPerspectives = new ArrayList<>(dataDomains.size());
 		for (ATableBasedDataDomain dd : dataDomains) {
 			if (dd.getRecordIDCategory() == category)
-				dataDomainPerspectives.add(dd.getTable().getDefaultRecordPerspective());
+				dataDomainPerspectives.add(dd.getTable().getDefaultRecordPerspective(false));
 
 			if (dd.getDimensionIDCategory() == category)
-				dataDomainPerspectives.add(dd.getTable().getDefaultDimensionPerspective());
+				dataDomainPerspectives.add(dd.getTable().getDefaultDimensionPerspective(false));
 		}
 		Collections.sort(dataDomainPerspectives, byLabel);
 		return dataDomainPerspectives;

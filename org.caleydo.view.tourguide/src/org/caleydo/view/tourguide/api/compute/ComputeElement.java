@@ -18,11 +18,11 @@ import org.caleydo.core.id.IDType;
 import org.caleydo.view.tourguide.spi.algorithm.IComputeElement;
 
 /**
- * 
+ *
  * implementation of {@link IComputeElement} based on a {@link Perspective}
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public final class ComputeElement implements IComputeElement {
 	private final Perspective stratifation;
@@ -78,9 +78,9 @@ public final class ComputeElement implements IComputeElement {
 		ATableBasedDataDomain d = ((ATableBasedDataDomain) stratifation.getDataDomain());
 		Table table = d.getTable();
 		if (d.getRecordIDType() == getIdType())
-			return table.getDefaultDimensionPerspective().getVirtualArray();
+			return table.getDefaultDimensionPerspective(false).getVirtualArray();
 		else
-			return table.getDefaultRecordPerspective().getVirtualArray();
+			return table.getDefaultRecordPerspective(false).getVirtualArray();
 	}
 
 	public VirtualArray getVirtualArray() {

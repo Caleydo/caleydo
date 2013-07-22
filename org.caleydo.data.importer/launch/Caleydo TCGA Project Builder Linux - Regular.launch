@@ -12,7 +12,7 @@
 <booleanAttribute key="clearwslog" value="false"/>
 <stringAttribute key="configLocation" value="${workspace_loc}/.metadata/.plugins/org.eclipse.pde.core/Caleydo TCGA Project Builder Linux - Regular"/>
 <booleanAttribute key="default" value="false"/>
-<stringAttribute key="deselected_workspace_plugins" value="org.caleydo.data.pathway.kegg,org.caleydo.util.r,org.caleydo.view.bookmark,org.caleydo.view.dvi,org.caleydo.view.enroute,org.caleydo.view.filter,org.caleydo.view.filterpipeline,org.caleydo.view.histogram,org.caleydo.view.info.dataset,org.caleydo.view.info.selection,org.caleydo.view.kaplanmeier,org.caleydo.view.parcoords,org.caleydo.view.radial,org.caleydo.view.search,org.caleydo.view.selectionbrowser,org.caleydo.view.template,org.caleydo.view.treemap"/>
+<stringAttribute key="deselected_workspace_plugins" value="org.caleydo.data.pathway.kegg,org.caleydo.util.r,org.caleydo.view.bookmark,org.caleydo.view.dvi,org.caleydo.view.enroute,org.caleydo.view.filter,org.caleydo.view.filterpipeline,org.caleydo.view.histogram,org.caleydo.view.info.dataset,org.caleydo.view.info.selection,org.caleydo.view.kaplanmeier,org.caleydo.view.parcoords,org.caleydo.view.radial,org.caleydo.view.search,org.caleydo.view.selectionbrowser,org.caleydo.view.treemap"/>
 <booleanAttribute key="includeOptional" value="true"/>
 <stringAttribute key="location" value="${workspace_loc}/../runtime-org.caleydo.data.importer.tcga.product"/>
 <stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>

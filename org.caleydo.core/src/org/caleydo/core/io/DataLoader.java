@@ -282,8 +282,9 @@ public class DataLoader {
 					setUpRecordClustering(clusterConfiguration, dataDomain);
 				}
 				clusterConfiguration.setSourceDimensionPerspective(dataDomain.getTable()
-						.getDefaultDimensionPerspective());
-				clusterConfiguration.setSourceRecordPerspective(dataDomain.getTable().getDefaultRecordPerspective());
+						.getDefaultDimensionPerspective(true));
+				clusterConfiguration
+						.setSourceRecordPerspective(dataDomain.getTable().getDefaultRecordPerspective(true));
 
 				dataDomain.startClustering(clusterConfiguration);
 			}
@@ -300,8 +301,9 @@ public class DataLoader {
 					setUpRecordClustering(clusterConfiguration, dataDomain);
 				}
 				clusterConfiguration.setSourceDimensionPerspective(dataDomain.getTable()
-						.getDefaultDimensionPerspective());
-				clusterConfiguration.setSourceRecordPerspective(dataDomain.getTable().getDefaultRecordPerspective());
+						.getDefaultDimensionPerspective(true));
+				clusterConfiguration
+						.setSourceRecordPerspective(dataDomain.getTable().getDefaultRecordPerspective(true));
 
 				dataDomain.startClustering(clusterConfiguration);
 			}
@@ -336,7 +338,7 @@ public class DataLoader {
 			String recordPer;
 			if (dataClass == EDataClass.CATEGORICAL) {
 				// create a clustered record perspective
-				VirtualArray groupByCategory = groupByCategory(table, table.getDefaultRecordPerspective()
+				VirtualArray groupByCategory = groupByCategory(table, table.getDefaultRecordPerspective(false)
 						.getVirtualArray(), col);
 				Perspective rec = new Perspective(dataDomain, dataDomain.getRecordIDType());
 				data = new PerspectiveInitializationData();
@@ -348,7 +350,7 @@ public class DataLoader {
 				recordPer = rec.getPerspectiveID();
 			} else {
 				// default one
-				recordPer = table.getDefaultRecordPerspective().getPerspectiveID();
+				recordPer = table.getDefaultRecordPerspective(false).getPerspectiveID();
 			}
 
 			TablePerspective p = dataDomain.getTablePerspective(recordPer, dim.getPerspectiveID(), false);

@@ -97,6 +97,16 @@ public class Table {
 	private Perspective defaultDimensionPerspective;
 
 	/**
+	 * Sampled record perspective that only contains a subset of the full dataset. How big the sampled subset is, is
+	 * determined during the data loading. Will return the default record perspective if no sampled version is
+	 * available.
+	 */
+	private Perspective sampledRecordPerspective;
+
+	/** Same as {@link #defaultRecordPerspective} for dimensions */
+	private Perspective sampledDimensionPerspective;
+
+	/**
 	 * Flag telling whether the columns correspond to dimensions (false) or whether the columns correspond to records
 	 * (true)
 	 */
@@ -334,9 +344,15 @@ public class Table {
 	}
 
 	/**
+	 * @param sampled
+	 *            Determines whether the full or the sampled default record perspective is requested
 	 * @return the defaultRecordPerspective, see {@link #defaultRecordPerspective}
 	 */
-	public Perspective getDefaultRecordPerspective() {
+	public Perspective getDefaultRecordPerspective(boolean sampled) {
+
+		if (sampled && sampledRecordPerspective != null)
+			return sampledRecordPerspective;
+
 		return defaultRecordPerspective;
 	}
 
@@ -409,10 +425,17 @@ public class Table {
 		}
 	}
 
+
 	/**
+	 * @param sampled
+	 *            Determines whether the full or the sampled default dimension perspective is requested
 	 * @return the defaultDimensionPerspective, see {@link #defaultDimensionPerspective}
 	 */
-	public Perspective getDefaultDimensionPerspective() {
+	public Perspective getDefaultDimensionPerspective(boolean sampled) {
+
+		if (sampled && sampledDimensionPerspective != null)
+			return sampledDimensionPerspective;
+
 		return defaultDimensionPerspective;
 	}
 
@@ -568,12 +591,10 @@ public class Table {
 
 	// ---------------------- helper functions ------------------------------
 
-	void createDefaultRecordPerspective() {
-		defaultRecordPerspective = new Perspective(dataDomain, dataDomain.getRecordIDType());
-		defaultRecordPerspective.setDefault(true);
-		PerspectiveInitializationData data = new PerspectiveInitializationData();
-		Integer nrRecordsInSample = null;
+	void createDefaultRecordPerspectives() {
+
 		List<Integer> recordIDs;
+		Integer nrRecordsInSample = null;
 		if (isColumnDimension) {
 			if (dataDomain.getDataSetDescription().getDataProcessingDescription() != null) {
 				nrRecordsInSample = dataDomain.getDataSetDescription().getDataProcessingDescription()
@@ -588,21 +609,43 @@ public class Table {
 			recordIDs = getColumnIDList();
 		}
 
-		recordIDs = Algorithms.sampleList(nrRecordsInSample, recordIDs);
+		defaultRecordPerspective = createDefaultRecordPerspective(false, recordIDs);
 
-		data.setData(recordIDs);
-		defaultRecordPerspective.setLabel("Ungrouped", true);
-		defaultRecordPerspective.init(data);
-		hashRecordPerspectives.put(defaultRecordPerspective.getPerspectiveID(), defaultRecordPerspective);
+		if (nrRecordsInSample != null) {
+			recordIDs = Algorithms.sampleList(nrRecordsInSample, recordIDs);
+			sampledRecordPerspective = createDefaultRecordPerspective(true, recordIDs);
+		}
 
 		triggerUpdateEvent();
 	}
 
-	void createDefaultDimensionPerspective() {
+	Perspective createDefaultRecordPerspective(boolean sampled, List<Integer> recordIDs) {
 
-		defaultDimensionPerspective = new Perspective(dataDomain, dataDomain.getDimensionIDType());
-		defaultDimensionPerspective.setDefault(true);
+		Perspective recordPerspective = new Perspective(dataDomain, dataDomain.getRecordIDType());
+		recordPerspective.setDefault(!sampled);
+
+		String label = "";
+		if (sampled) {
+			sampledRecordPerspective = recordPerspective;
+			label = "Ungrouped Sampled";
+		} else {
+			defaultRecordPerspective = recordPerspective;
+			label = "Ungrouped Full";
+		}
+
+		recordPerspective.setLabel(label, true);
+
 		PerspectiveInitializationData data = new PerspectiveInitializationData();
+		data.setData(recordIDs);
+		recordPerspective.init(data);
+
+		hashRecordPerspectives.put(recordPerspective.getPerspectiveID(), recordPerspective);
+
+		return recordPerspective;
+	}
+
+	void createDefaultDimensionPerspectives() {
+
 		List<Integer> dimensionIDs;
 		Integer nrDimensionsInsample = null;
 		if (isColumnDimension) {
@@ -618,19 +661,40 @@ public class Table {
 			}
 			dimensionIDs = getRowIDList();
 		}
-		// here we sample the list of dimensions to avoid problems with the heat
-		// map TODO: we should probably move this to some better place
 
-		dimensionIDs = Algorithms.sampleList(nrDimensionsInsample, dimensionIDs);
+		defaultDimensionPerspective = createDefaultDimensionPerspective(false, dimensionIDs);
 
-		data.setData(dimensionIDs);
-		defaultDimensionPerspective.init(data);
-
-		defaultDimensionPerspective.setLabel("Ungrouped", true);
-
-		hashDimensionPerspectives.put(defaultDimensionPerspective.getPerspectiveID(), defaultDimensionPerspective);
+		if (nrDimensionsInsample != null) {
+			dimensionIDs = Algorithms.sampleList(nrDimensionsInsample, dimensionIDs);
+			sampledDimensionPerspective = createDefaultDimensionPerspective(true, dimensionIDs);
+		}
 
 		triggerUpdateEvent();
+	}
+
+	Perspective createDefaultDimensionPerspective(boolean sampled, List<Integer> dimensionIDs) {
+
+		Perspective dimensionPerspective = new Perspective(dataDomain, dataDomain.getDimensionIDType());
+		dimensionPerspective.setDefault(!sampled);
+
+		String label = "";
+		if (sampled) {
+			sampledDimensionPerspective = dimensionPerspective;
+			label = "Ungrouped Sampled";
+		} else {
+			sampledDimensionPerspective = dimensionPerspective;
+			label = "Ungrouped Full";
+		}
+
+		dimensionPerspective.setLabel(label, true);
+
+		PerspectiveInitializationData data = new PerspectiveInitializationData();
+		data.setData(dimensionIDs);
+		dimensionPerspective.init(data);
+
+		hashDimensionPerspectives.put(dimensionPerspective.getPerspectiveID(), dimensionPerspective);
+
+		return dimensionPerspective;
 	}
 
 	private void triggerUpdateEvent() {
