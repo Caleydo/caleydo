@@ -14,13 +14,13 @@ import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
  * @author Samuel Gratzl
  *
  */
-public abstract class AGLElementDecorator extends GLElement implements IGLElementParent {
+public class GLElementDecorator extends GLElement implements IGLElementParent {
 	protected GLElement content;
 
-	public AGLElementDecorator() {
+	public GLElementDecorator() {
 	}
 
-	public AGLElementDecorator(GLElement content) {
+	public GLElementDecorator(GLElement content) {
 		setContent(content);
 	}
 
@@ -87,7 +87,23 @@ public abstract class AGLElementDecorator extends GLElement implements IGLElemen
 		super.layoutImpl();
 	}
 
-	protected abstract void layoutContent(IGLLayoutElement content, float w, float h);
+	protected void layoutContent(IGLLayoutElement content, float w, float h) {
+		content.setBounds(0, 0, w, h);
+	}
+
+	@Override
+	protected void renderImpl(GLGraphics g, float w, float h) {
+		if (content != null)
+			content.render(g);
+		super.renderImpl(g, w, h);
+	}
+
+	@Override
+	protected void renderPickImpl(GLGraphics g, float w, float h) {
+		if (content != null)
+			content.renderPick(g);
+		super.renderPickImpl(g, w, h);
+	}
 
 	@Override
 	public boolean moved(GLElement child) {

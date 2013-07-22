@@ -9,7 +9,6 @@ import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -463,11 +462,45 @@ public class GLGraphics {
 			return this;
 		if (text == null || text.trim().isEmpty())
 			return this;
-		if (text.indexOf('\n') < 0)
-			return drawText(Collections.singletonList(text), x, y, w, h, 0, valign, style);
-		else {
+		if (text.indexOf('\n') < 0) {
+			return drawSingleTextLine(text, x, y, w, h, valign, style);
+		} else {
 			return drawText(Arrays.asList(text.split("\n")), x, y, w, h, 0, valign, style);
 		}
+	}
+
+	private GLGraphics drawSingleTextLine(String text, float x, float y, float w, float h, VAlign valign,
+			ETextStyle style) {
+		stats.incText(text.length());
+		if (isInvalidOrZero(w) || isInvalidOrZero(h) || isInvalid(x) || isInvalid(y))
+			return this;
+		ITextRenderer font = selectFont(style);
+		if (originInTopLeft && !font.isOriginTopLeft()) {
+			gl.glPushMatrix();
+			gl.glTranslatef(0, y + h, 0);
+			y = 0;
+			gl.glScalef(1, -1, 1);
+		}
+		float hi = h;
+		float xi = x;
+		switch (valign) {
+		case CENTER:
+			xi += w * 0.5f - Math.min(font.getTextWidth(text, hi), w) * 0.5f;
+			break;
+		case RIGHT:
+			xi += w - Math.min(font.getTextWidth(text, hi), w);
+			break;
+		default:
+			break;
+		}
+		font.renderTextInBounds(gl, text, xi, y, z + 0.25f, w, hi);
+
+		if (font.isDirty())
+			stats.dirtyTextTexture();
+
+		if (originInTopLeft && !font.isOriginTopLeft())
+			gl.glPopMatrix();
+		return this;
 	}
 
 	public GLGraphics drawText(List<String> lines, float x, float y, float w, float h, float lineSpace, VAlign valign,

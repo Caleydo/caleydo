@@ -60,6 +60,10 @@ public class RcpToolBarView extends ViewPart implements ISizeProvider {
 
 	@Override
 	public void dispose() {
+		for (int i = 0; i < 10; ++i) {
+			System.gc();
+			System.runFinalization();
+		}
 		super.dispose();
 	}
 

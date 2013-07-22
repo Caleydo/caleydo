@@ -6,7 +6,6 @@
 package org.caleydo.core.view.opengl.layout2.internal;
 
 import static org.caleydo.core.view.opengl.layout2.layout.GLLayouts.isDefault;
-import gleem.linalg.Vec4f;
 
 import java.util.List;
 
@@ -14,6 +13,7 @@ import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.IMouseLayer;
 import org.caleydo.core.view.opengl.layout2.IPopupLayer;
+import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 
@@ -41,8 +41,10 @@ public final class PopupLayer extends GLElementContainer implements IPopupLayer,
 			if (isDefault(child.getSetX()) && isDefault(child.getSetWidth())) {
 				x = 0;
 				wc = w;
-			} else if (isDefault(child.getSetX())) {
+			} else if (child.getSetX() < 0) {
 				x = w - wc;
+			} else if (isDefault(child.getSetX())) {
+				x = (w - wc) * 0.5f;
 			} else if (isDefault(child.getSetWidth())) {
 				wc = w - wc;
 			}
@@ -50,8 +52,10 @@ public final class PopupLayer extends GLElementContainer implements IPopupLayer,
 			if (isDefault(child.getSetY()) && isDefault(child.getSetHeight())) {
 				y = 0;
 				hc = h;
-			} else if (isDefault(child.getSetY())) {
+			} else if (child.getSetY() < 0) {
 				y = h - hc;
+			} else if (isDefault(child.getSetY())) {
+				y = (h - hc) * 0.5f;
 			} else if (isDefault(child.getSetHeight())) {
 				hc = h - hc;
 			}
@@ -61,7 +65,7 @@ public final class PopupLayer extends GLElementContainer implements IPopupLayer,
 	}
 
 	@Override
-	public void show(GLElement popup, Vec4f bounds) {
+	public void show(GLElement popup, Rect bounds) {
 		show(popup, bounds, FLAG_ALL);
 	}
 
@@ -76,7 +80,7 @@ public final class PopupLayer extends GLElementContainer implements IPopupLayer,
 	}
 
 	@Override
-	public void show(GLElement popup, Vec4f bounds, int flags) {
+	public void show(GLElement popup, Rect bounds, int flags) {
 		this.add(new PopupElement(popup, bounds, flags));
 	}
 

@@ -136,11 +136,15 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 
 		eventListeners.register(this);
 
+		initScene();
+
+		local.getTimeDelta().reset();
+	}
+
+	protected void initScene() {
 		this.root = new WindowGLElement(createRoot());
 		this.root.setParent(this);
 		this.root.init(this);
-
-		local.getTimeDelta().reset();
 	}
 
 	@Override
