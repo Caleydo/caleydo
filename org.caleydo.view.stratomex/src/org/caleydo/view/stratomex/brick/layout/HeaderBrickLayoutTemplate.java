@@ -35,6 +35,7 @@ import org.caleydo.view.stratomex.brick.GLBrick;
 import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
 import org.caleydo.view.stratomex.brick.ui.HandleRenderer;
 import org.caleydo.view.stratomex.column.BrickColumn;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
@@ -292,22 +293,21 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 							newRecordPerspective.setVirtualArray(oldTablePerspective.getRecordPerspective()
 									.getVirtualArray());
 
-							dataDomain.getTable().registerRecordPerspective(newRecordPerspective);
-
 							clusterConfiguration.setOptionalTargetRecordPerspective(newRecordPerspective);
 
-							TablePerspective newTablePerspective = dataDomain.getTablePerspective(newRecordPerspective
-									.getPerspectiveID(), oldTablePerspective.getDimensionPerspective()
-									.getPerspectiveID());
-
-							ReplaceTablePerspectiveEvent rEvent = new ReplaceTablePerspectiveEvent(brick
-									.getBrickColumn().getStratomexView().getID(), newTablePerspective,
-									oldTablePerspective);
-
-							GeneralManager.get().getEventPublisher().triggerEvent(rEvent);
 							ClusterDialog dialog = new ClusterDialog(new Shell(), brick.getDataDomain(),
 									clusterConfiguration);
-							dialog.open();
+							if (dialog.open() == Window.OK) {
+								dataDomain.getTable().registerRecordPerspective(newRecordPerspective);
+								TablePerspective newTablePerspective = dataDomain.getTablePerspective(
+										newRecordPerspective.getPerspectiveID(), oldTablePerspective
+												.getDimensionPerspective().getPerspectiveID());
+
+								ReplaceTablePerspectiveEvent rEvent = new ReplaceTablePerspectiveEvent(brick
+										.getBrickColumn().getStratomexView().getID(), newTablePerspective,
+										oldTablePerspective);
+								GeneralManager.get().getEventPublisher().triggerEvent(rEvent);
+							}
 							// clusterConfiguration =
 							// dialog.getClusterConfiguration();
 							// if (clusterConfiguration == null)
