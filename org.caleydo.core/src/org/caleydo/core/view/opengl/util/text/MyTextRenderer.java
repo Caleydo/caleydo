@@ -1103,7 +1103,7 @@ public class MyTextRenderer {
                 GL2 gl = GLContext.getCurrentGL().getGL2();
 
                 // Pop client attrib bits used by the pipelined quad renderer
-                gl.glPopClientAttrib();
+				// gl.glPopClientAttrib();
 
                 // The OpenGL spec is unclear about whether this changes the
                 // buffer bindings, so preemptively zero out the GL_ARRAY_BUFFER
@@ -1169,7 +1169,7 @@ public class MyTextRenderer {
 
                 // Push client attrib bits used by the pipelined quad renderer
                 GL2 gl = GLContext.getCurrentGL().getGL2();
-                gl.glPushClientAttrib((int) GL2.GL_ALL_CLIENT_ATTRIB_BITS);
+				// gl.glPushClientAttrib((int) GL2.GL_ALL_CLIENT_ATTRIB_BITS);
 
                 if (haveCachedColor) {
                     if (cachedColor == null) {
