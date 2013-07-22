@@ -84,7 +84,8 @@ public abstract class ATCGATask extends RecursiveTask<JsonElement> {
 				Perspective p = record ? table.getRecordPerspective(id) : table.getDimensionPerspective(id);
 				if (p.isPrivate())
 					continue;
-				if (p.equals(record ? table.getDefaultRecordPerspective() : table.getDefaultRecordPerspective()))
+				if (p.equals(record ? table.getDefaultRecordPerspective(false) : table
+						.getDefaultRecordPerspective(false)))
 					continue;
 				if (p.getLabel().equalsIgnoreCase("ungrouped"))
 					continue;

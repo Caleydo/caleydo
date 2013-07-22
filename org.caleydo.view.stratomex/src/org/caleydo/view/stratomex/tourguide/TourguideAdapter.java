@@ -849,7 +849,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 				configurer = new ClinicalDataConfigurer();
 				configurer.setSortingStrategy(new NoSortingSortingStrategy());
 				to = from.getDataDomain().getTablePerspective(
-						from.getDataDomain().getTable().getDefaultRecordPerspective().getPerspectiveID(),
+						from.getDataDomain().getTable().getDefaultRecordPerspective(false).getPerspectiveID(),
 						from.getDimensionPerspective().getPerspectiveID());
 			} else {
 				to = asPerspective(with.getRecordPerspective(), from);
@@ -953,7 +953,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 				PathwayDataDomain.DATA_DOMAIN_TYPE);
 
 		ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) record.getDataDomain();
-		Perspective dimension = dataDomain.getTable().getDefaultDimensionPerspective();
+		Perspective dimension = dataDomain.getTable().getDefaultDimensionPerspective(false);
 		for (PathwayTablePerspective p : pathwayDataDomain.getTablePerspectives()) {
 			if (p.getPathway().equals(pathway) && p.getRecordPerspective().equals(record)
 					&& p.getDimensionPerspective().equals(dimension))

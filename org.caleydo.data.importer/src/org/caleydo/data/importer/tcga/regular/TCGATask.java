@@ -201,7 +201,7 @@ public class TCGATask extends ATCGATask {
 
 		public ClinicalInfos(ATableBasedDataDomain dataDomain) {
 			count = dataDomain.getTable().depth();
-			VirtualArray dimensionVA = dataDomain.getTable().getDefaultDimensionPerspective().getVirtualArray();
+			VirtualArray dimensionVA = dataDomain.getTable().getDefaultDimensionPerspective(false).getVirtualArray();
 			for (int dimensionID : dimensionVA) {
 				parameters.add(dataDomain.getDimensionLabel(dimensionID));
 			}

@@ -50,7 +50,7 @@ public class PGSEAAlgorithm extends AGSEAAlgorithm {
 		Table table = dataDomain.getTable();
 
 		List<Integer> rows = perspective.getVirtualArray().getIDs();
-		List<Integer> cols = table.getDefaultDimensionPerspective().getVirtualArray().getIDs();
+		List<Integer> cols = table.getDefaultDimensionPerspective(false).getVirtualArray().getIDs();
 
 		Stopwatch w = new Stopwatch().start();
 

@@ -205,10 +205,8 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 		}
 		dataSet.setDataProcessingDescription(dataProcessingDescription);
 
-		if (!loadFullGenes) {
-			// here we turn on sampling to 1500
-			dataProcessingDescription.setNrRowsInSample(1500);
-		}
+		// here we turn on sampling to 1500
+		dataProcessingDescription.setNrRowsInSample(1500);
 
 		return dataSet;
 	}

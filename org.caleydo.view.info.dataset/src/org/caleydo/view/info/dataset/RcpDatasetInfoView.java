@@ -248,8 +248,9 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 			// If the default table perspective does not exist yet, we
 			// create it and set it to private so that it does not show up
 			// in the DVI
-			if (!tableBasedDD.hasTablePerspective(tableBasedDD.getTable().getDefaultRecordPerspective()
-					.getPerspectiveID(), tableBasedDD.getTable().getDefaultDimensionPerspective().getPerspectiveID())) {
+			if (!tableBasedDD.hasTablePerspective(tableBasedDD.getTable().getDefaultRecordPerspective(false)
+					.getPerspectiveID(), tableBasedDD.getTable().getDefaultDimensionPerspective(false)
+					.getPerspectiveID())) {
 				tableBasedDD.getDefaultTablePerspective().setPrivate(true);
 			}
 			histogramView.setDataDomain(tableBasedDD);
