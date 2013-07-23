@@ -26,6 +26,8 @@ import org.caleydo.core.view.opengl.layout2.AGLElementView;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementDecorator;
 
+import com.google.common.base.Objects;
+
 /**
  *
  * @author Samuel Gratzl
@@ -90,6 +92,8 @@ public abstract class ASingleTablePerspectiveElementView extends AGLElementView 
 
 	@Override
 	public final void setTablePerspective(TablePerspective tablePerspective) {
+		if (Objects.equal(this.tablePerspective, tablePerspective))
+			return;
 		this.tablePerspective = tablePerspective;
 		fireTablePerspectiveChanged();
 		GLElementDecorator root = getRootDecorator();
@@ -126,7 +130,7 @@ public abstract class ASingleTablePerspectiveElementView extends AGLElementView 
 
 	@ListenTo(sendToMe = true)
 	private void onRemoveTablePerspective(RemoveTablePerspectiveEvent event) {
-		if (tablePerspective == event.getTablePerspective())
+		if (Objects.equal(tablePerspective, event.getTablePerspective()))
 			setTablePerspective(null);
 	}
 }

@@ -89,6 +89,10 @@ public abstract class AMultiTablePerspectiveElementView extends AGLElementView i
 
 	@Override
 	public final void addTablePerspectives(List<TablePerspective> newTablePerspectives) {
+		// remove already part of
+		newTablePerspectives.removeAll(this.tablePerspectives);
+		if (newTablePerspectives.isEmpty())
+			return;
 		this.tablePerspectives.addAll(newTablePerspectives);
 		updateTablePerspectives(newTablePerspectives, NONE);
 	}
@@ -128,6 +132,7 @@ public abstract class AMultiTablePerspectiveElementView extends AGLElementView i
 	private void onAddTablePerspective(AddTablePerspectivesEvent event) {
 		List<TablePerspective> validTablePerspectives = getDataSupportDefinition().filter(
 				event.getTablePerspectives());
+		validTablePerspectives.removeAll(tablePerspectives);
 		if (validTablePerspectives.isEmpty()) {
 			// Make clear for (e.g. for DVI) that no perspectives have been added.
 			fireTablePerspectiveChanged();
