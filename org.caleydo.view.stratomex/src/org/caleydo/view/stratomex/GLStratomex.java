@@ -669,6 +669,13 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	}
 
 	/**
+	 * @return
+	 */
+	public boolean canShowDetailBrick() {
+		return !tourguide.isWizardActive();
+	}
+
+	/**
 	 * Switches to detail mode where the detail brick is on the right side of the specified column
 	 *
 	 * @param focusColumn
