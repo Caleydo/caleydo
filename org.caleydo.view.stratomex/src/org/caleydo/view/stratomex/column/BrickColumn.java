@@ -967,6 +967,8 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 	 *            Specifies, whether the detail brick shall be expanded on the left or on the right.
 	 */
 	public void showDetailedBrick(GLBrick brick, boolean expandLeft) {
+		if (!stratomex.canShowDetailBrick())
+			return;
 
 		if (detailBrick != null) {
 			// GeneralManager.get().getViewManager().unregisterGLView(detailBrick);

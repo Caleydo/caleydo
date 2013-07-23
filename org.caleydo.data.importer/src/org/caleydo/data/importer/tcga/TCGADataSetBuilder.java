@@ -200,6 +200,7 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 			clusterConfiguration.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
 			AffinityClusterConfiguration affinityAlgo = new AffinityClusterConfiguration();
 			affinityAlgo.setClusterFactor(9);
+			affinityAlgo.setCacheVectors(true);
 			clusterConfiguration.setClusterAlgorithmConfiguration(affinityAlgo);
 			dataProcessingDescription.addRowClusterConfiguration(clusterConfiguration);
 		}
