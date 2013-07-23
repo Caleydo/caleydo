@@ -469,7 +469,7 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 	 */
 	public void updateTableColors(int numberOfHeaderRows, int idRowIndex, int idColumnIndex) {
 
-		if (columnSelectionStatus != null && !columnSelectionStatus.isEmpty())
+		if (columnSelectionStatus != null && !columnSelectionStatus.isEmpty() && idColumnIndex >= 0)
 			columnSelectionStatus.set(idColumnIndex, true);
 
 		this.idRowIndex = idRowIndex;
