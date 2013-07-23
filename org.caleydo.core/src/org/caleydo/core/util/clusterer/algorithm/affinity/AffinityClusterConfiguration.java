@@ -15,10 +15,29 @@ public class AffinityClusterConfiguration extends AClusterAlgorithmConfiguration
 
 	private float clusterFactor;
 
+	/**
+	 * caching of data for more speed
+	 */
+	private boolean cacheVectors = false;
+
 	public AffinityClusterConfiguration() {
 		super("Affinty Propagation");
 	}
 
+	/**
+	 * @return the cacheVectors, see {@link #cacheVectors}
+	 */
+	public boolean isCacheVectors() {
+		return cacheVectors;
+	}
+
+	/**
+	 * @param cacheVectors
+	 *            setter, see {@link cacheVectors}
+	 */
+	public void setCacheVectors(boolean cacheVectors) {
+		this.cacheVectors = cacheVectors;
+	}
 	/**
 	 * @param clusterFactor
 	 *            setter, see {@link #clusterFactor}
