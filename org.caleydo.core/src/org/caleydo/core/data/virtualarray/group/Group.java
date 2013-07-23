@@ -5,13 +5,12 @@
  ******************************************************************************/
 package org.caleydo.core.data.virtualarray.group;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.id.IDCreator;
 import org.caleydo.core.util.base.IDefaultLabelHolder;
 import org.caleydo.core.util.base.IUniqueObject;
 
@@ -21,11 +20,9 @@ import org.caleydo.core.util.base.IUniqueObject;
  * @author Marc Streit
  */
 public class Group implements IDefaultLabelHolder, IUniqueObject {
-
-	private static AtomicInteger GROUP_ID_COUNTER = new AtomicInteger();
-
 	/** unique ID */
-	private int id = 0;
+	@XmlTransient
+	private int id = IDCreator.createVMUniqueID(Group.class);
 
 	/** number of elements in the group/cluster */
 	private int size = 0;
@@ -68,7 +65,7 @@ public class Group implements IDefaultLabelHolder, IUniqueObject {
 	private float[] meanValuesRepresentativeElement;
 
 
-	private String label;
+	private String label = "Group " + id;
 	@XmlElement
 	private boolean isDefaultLabel = true;
 
@@ -76,12 +73,10 @@ public class Group implements IDefaultLabelHolder, IUniqueObject {
 	 * Default Constructor
 	 */
 	public Group() {
-		init();
 	}
 
 	public Group(int size) {
 		this.setSize(size);
-		init();
 	}
 
 	/**
@@ -97,11 +92,6 @@ public class Group implements IDefaultLabelHolder, IUniqueObject {
 		this.label = clone.label;
 	}
 
-	private void init() {
-		id = GROUP_ID_COUNTER.getAndIncrement();
-		label = "Group " + id;
-	}
-
 	/**
 	 * Constructor
 	 *
@@ -112,7 +102,6 @@ public class Group implements IDefaultLabelHolder, IUniqueObject {
 	 *            this group (i.e. the most typical element)
 	 */
 	public Group(int size, int representativeElementIndex) {
-		init();
 		this.setSize(size);
 		this.setRepresentativeElementIndex(representativeElementIndex);
 	}
@@ -130,7 +119,6 @@ public class Group implements IDefaultLabelHolder, IUniqueObject {
 	 *            group
 	 */
 	public Group(int size, int representativeElementIndex, ClusterNode clusterNode) {
-		init();
 		this.setSize(size);
 		this.setRepresentativeElementIndex(representativeElementIndex);
 		this.setClusterNode(clusterNode);

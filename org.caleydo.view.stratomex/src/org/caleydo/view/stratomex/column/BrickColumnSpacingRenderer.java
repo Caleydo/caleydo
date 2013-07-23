@@ -23,11 +23,10 @@ import org.caleydo.core.data.virtualarray.similarity.GroupSimilarity;
 import org.caleydo.core.data.virtualarray.similarity.RelationAnalyzer;
 import org.caleydo.core.data.virtualarray.similarity.SimilarityMap;
 import org.caleydo.core.data.virtualarray.similarity.VASimilarity;
+import org.caleydo.core.id.IDCreator;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IIDTypeMapper;
-import org.caleydo.core.id.object.ManagedObjectType;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
@@ -92,7 +91,7 @@ public class BrickColumnSpacingRenderer extends ALayoutRenderer implements IDrop
 	}
 
 	{
-		ID = GeneralManager.get().getIDCreator().createID(ManagedObjectType.DIMENSION_GROUP_SPACER);
+		ID = IDCreator.createVMUniqueID(BrickColumnSpacingRenderer.class);
 	}
 
 	public void init() {

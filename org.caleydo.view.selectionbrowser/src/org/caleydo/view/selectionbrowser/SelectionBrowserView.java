@@ -88,7 +88,7 @@ public class SelectionBrowserView extends ASWTView implements ISelectionHandler,
 	 */
 	public SelectionBrowserView(Composite parentComposite) {
 
-		super(-1, "SelectionBrowser???", "Selection Browser");
+		super("SelectionBrowser???", "Selection Browser");
 		generalManager = GeneralManager.get();
 		eventPublisher = generalManager.getEventPublisher();
 		registerEventListeners();

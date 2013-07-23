@@ -30,7 +30,6 @@ import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
 import org.caleydo.core.event.IListenerOwner;
 import org.caleydo.core.event.view.ViewScrollEvent;
-import org.caleydo.core.id.object.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.base.ILabelProvider;
@@ -212,7 +211,7 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	protected AGLView(IGLCanvas glCanvas, final ViewFrustum viewFrustum,
 			String viewType, String viewName) {
 
-		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.GL_VIEW), viewType,
+		super(viewType,
 				viewName);
 
 		parentGLCanvas = glCanvas;

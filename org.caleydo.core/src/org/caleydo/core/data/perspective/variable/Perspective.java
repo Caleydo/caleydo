@@ -7,7 +7,6 @@ package org.caleydo.core.data.perspective.variable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementRef;
@@ -27,6 +26,7 @@ import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.GroupList;
+import org.caleydo.core.id.IDCreator;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.base.IDefaultLabelHolder;
 import org.caleydo.core.util.logging.Logger;
@@ -155,7 +155,7 @@ public class Perspective implements IDefaultLabelHolder {
 	private void init() {
 		// if this perspective is de-serialized the perspectiveID is already set.
 		if (perspectiveID == null)
-			perspectiveID = "Perspective_" + UUID.randomUUID();
+			perspectiveID = "Perspective_" + IDCreator.createPersistentID(Perspective.class);
 		filterManager = new FilterManager(dataDomain, this);
 
 	}

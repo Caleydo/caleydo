@@ -14,7 +14,6 @@ import java.io.File;
 
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.event.EventPublisher;
-import org.caleydo.core.id.object.IDCreator;
 import org.caleydo.core.internal.ConsoleFlags;
 import org.caleydo.core.serialize.ProjectMetaData;
 import org.caleydo.core.serialize.SerializationManager;
@@ -86,7 +85,6 @@ public class GeneralManager {
 
 	private ViewManager viewManager;
 	private EventPublisher eventPublisher;
-	private IDCreator idCreator;
 	private ResourceLoader resourceLoader;
 	private SerializationManager serializationManager;
 	private IStatisticsPerformer rStatisticsPerformer;
@@ -99,7 +97,6 @@ public class GeneralManager {
 	public void init() {
 		eventPublisher = EventPublisher.INSTANCE;
 		viewManager = ViewManager.get();
-		idCreator = new IDCreator();
 		serializationManager = SerializationManager.get();
 		resourceLoader = new ResourceLoader(chain(DATA_CLASSLOADER, FILE, URL));
 	}
@@ -152,10 +149,6 @@ public class GeneralManager {
 
 	public EventPublisher getEventPublisher() {
 		return eventPublisher;
-	}
-
-	public IDCreator getIDCreator() {
-		return idCreator;
 	}
 
 	public IStatisticsPerformer getRStatisticsPerformer() {

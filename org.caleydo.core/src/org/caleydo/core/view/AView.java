@@ -12,6 +12,7 @@ import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.data.SelectionCommandEvent;
+import org.caleydo.core.id.IDCreator;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.base.AUniqueObject;
@@ -66,8 +67,8 @@ public abstract class AView extends AUniqueObject implements IView {
 	 * @param viewName
 	 *            TODO
 	 */
-	public AView(int viewID, String viewType, String viewName) {
-		super(viewID);
+	public AView(String viewType, String viewName) {
+		super(IDCreator.createPersistentIntID(AView.class));
 
 		this.viewType = viewType;
 		this.viewName = viewName;

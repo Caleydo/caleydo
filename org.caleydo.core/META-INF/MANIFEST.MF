@@ -139,7 +139,6 @@ Export-Package: org.caleydo.core.data.collection,
    org.eclipse.swt.widgets,
    org.eclipse.jface.dialogs",
  org.caleydo.core.id;uses:="org.caleydo.core.data.collection,org.jgrapht.graph,org.caleydo.core.io",
- org.caleydo.core.id.object,
  org.caleydo.core.io;uses:="org.caleydo.core.util.color,org.caleydo.core.data.datadomain,org.caleydo.core.util.clusterer.initialization",
  org.caleydo.core.io.gui;
   uses:="org.caleydo.core.data.configuration,

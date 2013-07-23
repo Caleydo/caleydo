@@ -15,7 +15,6 @@ import javax.media.opengl.fixedfunc.GLMatrixFunc;
 
 import org.caleydo.core.event.EventListenerManagers;
 import org.caleydo.core.event.EventListenerManagers.QueuedEventListenerManager;
-import org.caleydo.core.id.object.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.AView;
@@ -61,7 +60,7 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 	private final ISWTLayer swtLayer;
 
 	public AGLElementView(IGLCanvas glCanvas, String viewType, String viewName) {
-		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.GL_VIEW), viewType,
+		super(viewType,
 				viewName);
 		this.canvas = glCanvas;
 		this.swtLayer = new SWTLayer(glCanvas);
