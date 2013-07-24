@@ -97,6 +97,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 
 	private static final String ADD_PICKING_TYPE = "templateAdd";
 	private static final String ADD_DEPENDENT_PICKING_TYPE = "templateDependentAdd";
+	private static final String ADD_INDEPENDENT_PICKING_TYPE = "templateInDependentAdd";
 	private static final String CONFIRM_PICKING_TYPE = "templateConfirm";
 	private static final String CANCEL_PICKING_TYPE = "templateAbort";
 	private static final String BACK_PICKING_TYPE = "templateBack";
@@ -164,6 +165,12 @@ public class TourguideAdapter implements IStratomexAdapter {
 		if (!hasTourGuide() || isWizardActive()) // not more than one at the same time
 			return;
 		renderButton(gl, x, y, w, h, 24, stratomex, ADD_DEPENDENT_PICKING_TYPE, id, "add.png");
+	}
+
+	public void renderAddInDependentButton(GL2 gl, float x, float y, float w, float h, int id) {
+		if (!hasTourGuide() || isWizardActive()) // not more than one at the same time
+			return;
+		renderButton(gl, x, y, w, h, 24, stratomex, ADD_INDEPENDENT_PICKING_TYPE, id, "add.png");
 	}
 
 	public void renderConfirmButton(GL2 gl, float x, float y, float w, float h) {
@@ -247,7 +254,8 @@ public class TourguideAdapter implements IStratomexAdapter {
 				switch (pick.getPickingMode()) {
 				case CLICKED:
 					log.debug("add new dependent column");
-					EventPublisher.trigger(new AddNewColumnEvent(pick.getObjectID() - 1, true).to(receiver).from(this));
+					EventPublisher.trigger(new AddNewColumnEvent(pick.getObjectID() - 1, EWizardMode.DEPENDENT).to(
+							receiver).from(this));
 					break;
 				case MOUSE_OVER:
 					hoveredButton = ADD_DEPENDENT_PICKING_TYPE + pick.getObjectID();
@@ -260,6 +268,28 @@ public class TourguideAdapter implements IStratomexAdapter {
 				}
 			}
 		}, ADD_DEPENDENT_PICKING_TYPE);
+		stratomex.addTypePickingTooltipListener("Add stratification column based on this column",
+				ADD_INDEPENDENT_PICKING_TYPE);
+		stratomex.addTypePickingListener(new IPickingListener() {
+			@Override
+			public void pick(Pick pick) {
+				switch (pick.getPickingMode()) {
+				case CLICKED:
+					log.debug("add new independent column");
+					EventPublisher.trigger(new AddNewColumnEvent(pick.getObjectID() - 1, EWizardMode.INDEPENDENT).to(
+							receiver).from(this));
+					break;
+				case MOUSE_OVER:
+					hoveredButton = ADD_DEPENDENT_PICKING_TYPE + pick.getObjectID();
+					break;
+				case MOUSE_OUT:
+					hoveredButton = null;
+					break;
+				default:
+					break;
+				}
+			}
+		}, ADD_INDEPENDENT_PICKING_TYPE);
 
 		class ActionPickingListener extends APickingListener {
 			private final String pickingType;
@@ -506,7 +536,8 @@ public class TourguideAdapter implements IStratomexAdapter {
 		int index = 0;
 		TablePerspective source = null;
 		BrickColumnManager brickColumnManager = stratomex.getBrickColumnManager();
-		if (event.isDependentOne()) {
+		switch (event.getMode()) {
+		case DEPENDENT:
 			for (BrickColumn col : brickColumnManager.getBrickColumns()) {
 				if (col.getID() == event.getObjectId()) {
 					source = col.getTablePerspective();
@@ -516,7 +547,8 @@ public class TourguideAdapter implements IStratomexAdapter {
 			}
 			if (source == null)
 				return;
-		} else if (event.isIndependentOne()) {
+			break;
+		case INDEPENDENT:
 			for (BrickColumn col : brickColumnManager.getBrickColumns()) {
 				if (col.getID() == event.getObjectId()) {
 					source = col.getTablePerspective();
@@ -527,7 +559,8 @@ public class TourguideAdapter implements IStratomexAdapter {
 			}
 			if (source == null)
 				return;
-		} else {
+			break;
+		default:
 			if (event.getObjectId() <= 0) {
 				// left or first
 				index = -1;
@@ -539,7 +572,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 		}
 
 		previewIndex = index;
-		wizardElement = createTemplateElement(source, event.isIndependentOne());
+		wizardElement = createTemplateElement(source, event.getMode() == EWizardMode.INDEPENDENT);
 
 		stratomex.relayout();
 	}

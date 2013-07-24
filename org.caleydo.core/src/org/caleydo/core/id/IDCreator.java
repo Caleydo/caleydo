@@ -36,8 +36,8 @@ public final class IDCreator {
 
 	static {
 		Random r = new SecureRandom();
-		int n = r.nextInt(0xFFFF);
-		salt = (n & 0xFFFF) << 16;
+		int n = r.nextInt(0x7FFF);
+		salt = (n & 0x7FFF) << 16;
 	}
 
 
