@@ -64,8 +64,8 @@ public class GeneralManager {
 			+ File.separator;
 	public static final String CALEYDO_LOG_PATH = CALEYDO_HOME_PATH + "logs" + File.separator;
 
-	public static final String DATA_URL_PREFIX = "http://data.icg.tugraz.at/caleydo/download/" + GeneralManager.VERSION
-			+ "/";
+	public static final String DATA_URL_PREFIX = "http://data.icg.tugraz.at/caleydo/download/"
+			+ GeneralManager.VERSION.substring(0, 3) + "/";
 
 	/**
 	 * General manager as a singleton
@@ -92,7 +92,6 @@ public class GeneralManager {
 	private ProjectMetaData metaData = ProjectMetaData.createDefault();
 
 	private Logger logger = Logger.create(GeneralManager.class);
-
 
 	public void init() {
 		eventPublisher = EventPublisher.INSTANCE;
@@ -206,7 +205,7 @@ public class GeneralManager {
 	public static boolean canLoadDataCreatedFor(String caleydoVersion) {
 		if (caleydoVersion == null)
 			return false;
-		return VERSION.equalsIgnoreCase(caleydoVersion);
+		return VERSION.substring(0, 3).equalsIgnoreCase(caleydoVersion);
 	}
 
 	public void setSplashProgressMonitor(IProgressMonitor splashProgressMonitor) {

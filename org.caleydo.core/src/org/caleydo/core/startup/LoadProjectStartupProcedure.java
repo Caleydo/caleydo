@@ -58,8 +58,9 @@ public class LoadProjectStartupProcedure implements IStartupProcedure {
 
 		if (!ProjectManager.checkCompatibility(this.unpackedProjectLocation)){
 			Logger.create(LoadProjectStartupProcedure.class).error(
-					"incompatible project: " + this.packedProjectLocation);
-			MessageDialog.openError(null, "Error incompatible project", "the project file:\n"+this.packedProjectLocation+"\n\nis not compatible with the this Caleydo version");
+					"Incompatible Project: " + this.packedProjectLocation);
+			MessageDialog.openError(null, "Error Incompatible Project", "The project file:\n"
+					+ this.packedProjectLocation + "\n\nis not compatible with this Caleydo version");
 			return false;
 		}
 
