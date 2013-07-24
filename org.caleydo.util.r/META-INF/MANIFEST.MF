@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: R Statistics Plug-in
 Bundle-SymbolicName: org.caleydo.util.r;singleton:=true
-Bundle-Version: 3.0
+Bundle-Version: 3.0.1
 Bundle-NativeCode: 
  lib/linux/x86/libjri.so;
  osname=linux;

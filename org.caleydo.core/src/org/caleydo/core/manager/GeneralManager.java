@@ -44,7 +44,7 @@ public class GeneralManager {
 	 * This is the current version of Caleydo. The value must be the same as specified in the plugin/bundle. We need to
 	 * access the version before the workbench is started. Therefore we have to set it hardcoded at this point.
 	 */
-	public static final String VERSION = "3.0";
+	public static final String VERSION = "3.0.1";
 
 	public static final String PLUGIN_ID = "org.caleydo.core";
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="Caleydo" uid="org.caleydo" id="org.caleydo.core.product" application="org.caleydo.core.application" version="3.0.0" useFeatures="true" includeLaunchers="true">
+<product name="Caleydo" uid="org.caleydo" id="org.caleydo.core.product" application="org.caleydo.core.application" version="3.0.1" useFeatures="true" includeLaunchers="true">
 
    <aboutInfo>
       <image path="resources/wizard/wizard.png"/>
@@ -36,7 +36,6 @@ Caleydo is open-source software licenced under the New BSD license.
          <bmp/>
       </win>
    </launcher>
-
 
    <vm>
    </vm>
@@ -111,7 +110,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&
    </plugins>
 
    <features>
-      <feature id="org.caleydo.rcp.feature" version="3.0"/>
+      <feature id="org.caleydo.rcp.feature" version="3.0.1"/>
       <feature id="org.eclipse.emf.ecore"/>
       <feature id="org.eclipse.e4.rcp"/>
       <feature id="org.eclipse.emf.common"/>

@@ -2,8 +2,8 @@
 <feature
       id="org.caleydo.rcp.feature"
       label="Caleydo"
-      version="3.0"
-      provider-name="The Caleydo Team"
+      version="3.0.1"
+      provider-name="www.caleydo.org"
       plugin="org.caleydo.core"
       os="linux,macosx,win32"
       ws="cocoa,gtk,win32"
@@ -39,11 +39,9 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&
 
    <requires>
       <import plugin="org.eclipse.core.runtime" version="3.8.0" match="greaterOrEqual"/>
-      <import plugin="org.caleydo.data" version="2.2.0" match="greaterOrEqual"/>
-      <import plugin="org.caleydo.util.gleem" version="2.2.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.e4.ui.model.workbench" version="0.10.1" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.resources" version="3.8.1" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.ui" version="3.103.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui" version="3.103.0.1" match="greaterOrEqual"/>
       <import plugin="org.caleydo.lib.args4j" version="2.0.16" match="greaterOrEqual"/>
       <import plugin="org.caleydo.lib.jgrapht" version="0.8.3" match="greaterOrEqual"/>
       <import plugin="org.caleydo.lib.jogl" version="2.0.0" match="greaterOrEqual"/>
@@ -86,6 +84,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&
       <import plugin="org.eclipse.core.databinding" version="1.2.0" match="compatible"/>
       <import plugin="org.eclipse.core.runtime" version="3.2.0" match="compatible"/>
       <import plugin="org.eclipse.ui.workbench" version="3.105.0" match="compatible"/>
+      <import plugin="org.eclipse.core.expressions" version="3.4.0" match="compatible"/>
       <import plugin="org.eclipse.equinox.preferences" version="3.2.0" match="compatible"/>
       <import plugin="org.eclipse.equinox.registry" version="3.2.0" match="compatible"/>
       <import plugin="org.eclipse.core.runtime" version="3.3.0" match="compatible"/>
@@ -94,9 +93,11 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&
       <import plugin="org.eclipse.core.jobs" version="3.2.0" match="compatible"/>
       <import plugin="org.eclipse.equinox.registry" version="3.4.0" match="compatible"/>
       <import plugin="org.eclipse.equinox.preferences" version="3.4.0" match="compatible"/>
+      <import plugin="org.eclipse.core.contenttype" version="3.3.0" match="compatible"/>
       <import plugin="org.eclipse.equinox.app" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.expressions" version="3.4.200" match="compatible"/>
       <import plugin="org.eclipse.swt" version="3.6.0" match="compatible"/>
+      <import plugin="org.eclipse.core.commands" version="3.4.0" match="compatible"/>
       <import plugin="org.eclipse.equinox.common" version="3.3.0" match="compatible"/>
       <import plugin="org.eclipse.rcp" version="4.2.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.swt" version="3.100.1" match="greaterOrEqual"/>
@@ -106,11 +107,10 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&
       <import plugin="org.eclipse.core.filesystem" version="1.3.0" match="compatible"/>
       <import plugin="org.eclipse.core.runtime" version="3.7.0" match="compatible"/>
       <import plugin="org.eclipse.osgi" version="3.2.0" match="compatible"/>
-      <import plugin="org.caleydo.core" version="3.0.0" match="greaterOrEqual"/>
-      <import plugin="org.caleydo.datadomain.pathway" version="3.0.0" match="greaterOrEqual"/>
-      <import plugin="org.caleydo.view.histogram" version="2.2.0" match="greaterOrEqual"/>
-      <import plugin="org.caleydo.datadomain.genetic" version="3.0.0" match="greaterOrEqual"/>
-      <import plugin="org.caleydo.view.pathway" version="3.0.0" match="greaterOrEqual"/>
+      <import plugin="org.caleydo.core" version="3.0.1" match="greaterOrEqual"/>
+      <import plugin="org.caleydo.datadomain.pathway" version="3.0.1" match="greaterOrEqual"/>
+      <import plugin="org.caleydo.datadomain.genetic" version="3.0.1" match="greaterOrEqual"/>
+      <import plugin="org.caleydo.view.pathway" version="3.0.1" match="greaterOrEqual"/>
       <import plugin="org.eclipse.e4.ui.model.workbench" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.e4.core.contexts" version="0.9.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.e4.core.di" version="0.9.0" match="greaterOrEqual"/>
@@ -127,25 +127,25 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&
       <import plugin="org.eclipse.core.runtime" version="3.5.0" match="compatible"/>
       <import plugin="org.eclipse.emf.common" version="2.9.0" match="compatible"/>
       <import plugin="org.eclipse.e4.core.services" version="0.9.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.core.commands" version="3.5.0" match="compatible"/>
       <import plugin="org.eclipse.e4.core.di" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.emf.ecore" version="2.9.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.emf.ecore" version="2.9.0" match="compatible"/>
-      <import plugin="org.caleydo.view.stratomex" version="2.2.0" match="greaterOrEqual"/>
       <import plugin="org.apache.commons.math" version="2.1.0" match="greaterOrEqual"/>
-      <import plugin="org.caleydo.vis.rank" version="3.0.0" match="greaterOrEqual"/>
+      <import plugin="org.caleydo.vis.rank" version="3.0.1" match="greaterOrEqual"/>
       <import plugin="org.eclipse.e4.ui.workbench" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.caleydo.lib.pathvisio" version="31.0.0" match="greaterOrEqual"/>
-      <import plugin="org.caleydo.datadomain.generic" version="3.0.0" match="greaterOrEqual"/>
+      <import plugin="org.caleydo.datadomain.generic" version="3.0.1" match="greaterOrEqual"/>
       <import plugin="org.apache.commons.logging" version="1.0.4" match="greaterOrEqual"/>
       <import plugin="org.eclipse.e4.core.commands" version="0.10.1" match="greaterOrEqual"/>
       <import plugin="com.google.gson" version="2.1.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.core.expressions" version="3.4.0" match="compatible"/>
-      <import plugin="org.eclipse.core.contenttype" version="3.3.0" match="compatible"/>
-      <import plugin="org.eclipse.core.commands" version="3.4.0" match="compatible"/>
+      <import plugin="org.caleydo.data" version="2.2.0" match="greaterOrEqual"/>
+      <import plugin="org.caleydo.util.gleem" version="2.2.0" match="greaterOrEqual"/>
       <import plugin="org.caleydo.core" version="2.2.0" match="greaterOrEqual"/>
       <import plugin="org.caleydo.datadomain.pathway" version="2.2.0" match="greaterOrEqual"/>
       <import plugin="org.caleydo.datadomain.genetic" version="2.2.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.core.commands" version="3.5.0" match="compatible"/>
+      <import plugin="org.caleydo.view.histogram" version="2.2.0" match="greaterOrEqual"/>
+      <import plugin="org.caleydo.view.stratomex" version="2.2.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin

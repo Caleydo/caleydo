@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Pathway Data Domain
 Bundle-SymbolicName: org.caleydo.datadomain.pathway;singleton:=true
-Bundle-Version: 3.0
+Bundle-Version: 3.0.1
 Bundle-Activator: org.caleydo.datadomain.pathway.Activator
 Bundle-Vendor: www.caleydo.org
 Require-Bundle: org.caleydo.core;bundle-version="2.2",
