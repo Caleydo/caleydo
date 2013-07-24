@@ -9,14 +9,13 @@ import gleem.linalg.Vec3f;
 
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 import java.util.Set;
 
 import javax.media.opengl.GL;
@@ -103,6 +102,7 @@ import org.jgrapht.graph.GraphPathImpl;
 
 import setvis.bubbleset.BubbleSet;
 
+import com.google.common.io.CharStreams;
 import com.jogamp.opengl.util.glsl.ShaderUtil;
 
 /**
@@ -729,22 +729,6 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		// iPathwayID);
 	}
 
-	public static String readFromStream(InputStream ins) throws IOException {
-		if (ins == null) {
-			throw new IOException("Could not read from stream.");
-		}
-		StringBuffer buffer = new StringBuffer();
-		Scanner scanner = new Scanner(ins);
-		try {
-			while (scanner.hasNextLine()) {
-				buffer.append(scanner.nextLine() + "\n");
-			}
-		} finally {
-			scanner.close();
-		}
-		return buffer.toString();
-	}
-
 	protected boolean initShader = false;
 	public int shaderProgramTextOverlay;
 
@@ -756,8 +740,8 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 			return;
 		}
 		int vs = gl.glCreateShader(GL2ES2.GL_VERTEX_SHADER);
-		String vsrc = readFromStream(this.getClass().getResourceAsStream(
-				"/src/org/caleydo/view/pathway/vsTextOverlay.glsl"));
+		String vsrc = CharStreams.toString(new InputStreamReader(this.getClass().getResourceAsStream(
+				"vsTextOverlay.glsl")));
 		gl.glShaderSource(vs, 1, new String[] { vsrc }, (int[]) null, 0);
 		gl.glCompileShader(vs);
 		if (!ShaderUtil.isShaderStatusValid(gl, vs, GL2ES2.GL_COMPILE_STATUS, System.err)) {
@@ -767,8 +751,8 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 			System.out.println(ShaderUtil.getShaderInfoLog(gl, vs));
 		}
 
-		String fsrc = readFromStream(this.getClass().getResourceAsStream(
-				"/src/org/caleydo/view/pathway/fsTextOverlay.glsl"));
+		String fsrc = CharStreams.toString(new InputStreamReader(this.getClass().getResourceAsStream(
+				"fsTextOverlay.glsl")));
 		int fs = gl.glCreateShader(GL2ES2.GL_FRAGMENT_SHADER);
 		gl.glShaderSource(fs, 1, new String[] { fsrc }, (int[]) null, 0);
 		gl.glCompileShader(fs);
