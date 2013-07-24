@@ -32,8 +32,6 @@ import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
-import com.google.common.primitives.Floats;
-
 /**
  * <p>
  * A table is the main container for matrix data in Caleydo. It is made up of {@link AColumn}s, where each column
@@ -661,26 +659,23 @@ public class Table {
 		List<Pair<Float, Integer>> allDimVar = new ArrayList<Pair<Float, Integer>>();
 
 		for (Integer dimID : dimensionIDs) {
-			List<Float> allDimsPerRecordArray = new ArrayList<>();
+			float[] allDimsPerRecordArray = new float[recordIDs.size()];
 
-			for (Integer recordID : recordIDs) {
-
-				allDimsPerRecordArray.add(dataDomain.getNormalizedValue(dataDomain.getDimensionIDType(), dimID,
-						dataDomain.getRecordIDType(), recordID));
+			for (int i = 0; i < recordIDs.size(); i++) {
+				allDimsPerRecordArray[i] = dataDomain.getNormalizedValue(dataDomain.getDimensionIDType(), dimID,
+						dataDomain.getRecordIDType(), recordIDs.get(i));
 			}
-			float[] allDimPerRecordArray = Floats.toArray(allDimsPerRecordArray);
-			allDimVar.add(new Pair<Float, Integer>(FloatStatistics.of(allDimPerRecordArray).getVar(), dimID));
+			allDimVar.add(new Pair<Float, Integer>(FloatStatistics.of(allDimsPerRecordArray).getVar(), dimID));
 		}
-
 		Collections.sort(allDimVar, Collections.reverseOrder(Pair.<Float> compareFirst()));
+
 		allDimVar = allDimVar.subList(0, sampleSize);
 
-		List<Integer> sampledRecordIDs = new ArrayList<>();
+		List<Integer> sampledDimensionIDs = new ArrayList<>();
 		for (Pair<Float, Integer> recordVar : allDimVar) {
-			sampledRecordIDs.add(recordVar.getSecond());
+			sampledDimensionIDs.add(recordVar.getSecond());
 		}
-
-		return sampledRecordIDs;
+		return sampledDimensionIDs;
 	}
 
 	void createDefaultDimensionPerspectives() {
