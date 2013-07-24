@@ -60,10 +60,10 @@ public class FrameHighlightRenderer extends ALayoutRenderer {
 
 		gl.glBegin(GL.GL_LINE_LOOP);
 		{
-			gl.glVertex3f(-xoffset, -yoffset, 0);
-			gl.glVertex3f(x + xoffset, -yoffset, 0);
-			gl.glVertex3f(x + xoffset, y + yoffset, 0);
-			gl.glVertex3f(-xoffset, y + yoffset, 0);
+			gl.glVertex3f(-xoffset, -yoffset, 1f);
+			gl.glVertex3f(x + xoffset, -yoffset, 1f);
+			gl.glVertex3f(x + xoffset, y + yoffset, 1f);
+			gl.glVertex3f(-xoffset, y + yoffset, 1f);
 		}
 		gl.glEnd();
 		gl.glPopAttrib();
