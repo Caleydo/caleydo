@@ -269,6 +269,8 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 			dimensionCount.setText("" + nrDimensions);
 
 			((Composite) dataSetItem.getControl()).layout();
+			recordPerspectiveLabel.setText(recordName + ":");
+			dimensionPerspectiveLabel.setText(dimensionName + ":");
 
 			if (tablePerspective != null) {
 				String tpLabel = "Persp.: " + tablePerspective.getLabel();
@@ -277,7 +279,6 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 				tablePerspectiveItem.setText(tpLabel);
 				tablePerspectiveItem.setExpanded(true);
 
-				recordPerspectiveLabel.setText(recordName + ":");
 				recordPerspectiveCount.setText("" + tablePerspective.getNrRecords() + " ("
 						+ String.format("%.2f", tablePerspective.getNrRecords() * 100f / nrRecords) + "%)");
 				if (tablePerspective.getRecordPerspective().getUnmappedElements() > 0) {
@@ -289,7 +290,6 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 					recordPerspectiveCount.setToolTipText("");
 				}
 
-				dimensionPerspectiveLabel.setText(dimensionName + ":");
 				dimensionPerspectiveCount.setText("" + tablePerspective.getNrDimensions() + " ("
 						+ String.format("%.2f", tablePerspective.getNrDimensions() * 100f / nrDimensions) + "%)");
 				if (tablePerspective.getDimensionPerspective().getUnmappedElements() > 1) {
@@ -302,6 +302,14 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 				}
 
 				((Composite) tablePerspectiveItem.getControl()).layout();
+			} else {
+
+				tablePerspectiveItem.setText("Perspective: <no selection>");
+				tablePerspectiveItem.setExpanded(false);
+				recordPerspectiveCount.setText("<no selection>");
+				recordPerspectiveCount.setToolTipText("");
+				dimensionPerspectiveCount.setText("<no selection>");
+				dimensionPerspectiveCount.setToolTipText("");
 			}
 
 			if (!tableBasedDD.getTable().isDataHomogeneous()) {
