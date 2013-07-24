@@ -312,7 +312,7 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 				dimensionPerspectiveCount.setToolTipText("");
 			}
 
-			if (!tableBasedDD.getTable().isDataHomogeneous()) {
+			if (!tableBasedDD.getTable().isDataHomogeneous() && tablePerspective == null) {
 				histogramItem.getControl().setEnabled(false);
 				histogramItem.setExpanded(false);
 				return;
@@ -342,7 +342,7 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 				GeneralManager.get().getViewManager().registerGLCanvasToAnimator(histogramView.getGLCanvas());
 				((Composite) histogramItem.getControl()).layout();
 			}
-			// else {
+
 
 			// If the default table perspective does not exist yet, we
 			// create it and set it to private so that it does not show up
@@ -354,13 +354,11 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 			}
 			histogramView.setDataDomain(tableBasedDD);
 			((GLHistogram) histogramView.getGLView()).setDataDomain(tableBasedDD);
-			if (tablePerspective != null) {
+			histogramView.setTablePerspective(tablePerspective);
+			((GLHistogram) histogramView.getGLView()).setTablePerspective(tablePerspective);
 
-				histogramView.setTablePerspective(tablePerspective);
-				((GLHistogram) histogramView.getGLView()).setTablePerspective(tablePerspective);
-			}
 			((GLHistogram) histogramView.getGLView()).setDisplayListDirty();
-			// }
+
 		} else {
 			dataSetItem.setExpanded(true);
 			histogramItem.setExpanded(false);

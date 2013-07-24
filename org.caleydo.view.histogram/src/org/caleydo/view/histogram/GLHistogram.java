@@ -211,6 +211,9 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 		CategoricalHistogram cHistogram = null;
 		if (histogram instanceof CategoricalHistogram) {
 			cHistogram = (CategoricalHistogram) histogram;
+			renderColorBars = false;
+		} else {
+			renderColorBars = true;
 		}
 
 		for (int bucketCount = 0; bucketCount < histogram.size(); bucketCount++) {
@@ -219,17 +222,8 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 			if (useColor) {
 				float[] color;
 
-				// if (dataDomain.getTable() instanceof CategoricalTable<?>) {
-				// CategoricalTable<?> cTable = (CategoricalTable<?>) dataDomain.getTable();
-				// color = cTable.getCategoryDescriptions().getCategoryProperties().get(bucketCount).getColor()
-				// .getRGBA();
-				// } else if (!dataDomain.getTable().isDataHomogeneous() && tablePerspective != null) {
-				if (cHistogram != null) {
-					// CategoricalClassDescription<?> specific = (CategoricalClassDescription<?>) dataDomain.getTable()
-					// .getDataClassSpecificDescription(
-					// tablePerspective.getDimensionPerspective().getVirtualArray().get(0),
-					// tablePerspective.getRecordPerspective().getVirtualArray().get(0));
 
+				if (cHistogram != null) {
 					color = cHistogram.getColor(bucketCount).getRGB();// specific.getCategoryProperties().get(bucketCount).getColor().getRGBA();
 				} else {
 					color = dataDomain.getTable().getColorMapper()
