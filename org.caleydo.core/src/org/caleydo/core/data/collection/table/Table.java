@@ -639,7 +639,7 @@ public class Table {
 			label = "Ungrouped Sampled";
 		} else {
 			defaultRecordPerspective = recordPerspective;
-			label = "Ungrouped Full";
+			label = "Ungrouped";
 		}
 
 		recordPerspective.setLabel(label, true);
@@ -672,8 +672,8 @@ public class Table {
 			allDimVar.add(new Pair<Float, Integer>(FloatStatistics.of(allDimPerRecordArray).getVar(), dimID));
 		}
 
-		Collections.sort(allDimVar, Pair.<Float> compareFirst());
-		allDimVar = allDimVar.subList(allDimVar.size() - sampleSize, allDimVar.size());
+		Collections.sort(allDimVar, Collections.reverseOrder(Pair.<Float> compareFirst()));
+		allDimVar = allDimVar.subList(0, sampleSize);
 
 		List<Integer> sampledRecordIDs = new ArrayList<>();
 		for (Pair<Float, Integer> recordVar : allDimVar) {
@@ -725,7 +725,7 @@ public class Table {
 			label = "Ungrouped Sampled";
 		} else {
 			sampledDimensionPerspective = dimensionPerspective;
-			label = "Ungrouped Full";
+			label = "Ungrouped";
 		}
 
 		dimensionPerspective.setLabel(label, true);

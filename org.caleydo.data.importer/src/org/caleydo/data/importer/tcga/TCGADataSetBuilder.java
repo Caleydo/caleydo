@@ -179,7 +179,7 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 			grouping.setGroupingName("CNMF Clustering");
 			dataSet.addColumnGroupingSpecification(grouping);
 		} else {
-			System.out.println("Warning can't find cnmf grouping file");
+			System.out.println("Warning: Can't find CNMF grouping file");
 		}
 
 		File hierarchicalGroupingFile = fileFinder.findHiearchicalGrouping(type);
@@ -191,7 +191,7 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 			grouping.setGroupingName("Hierarchical Clustering");
 			dataSet.addColumnGroupingSpecification(grouping);
 		} else {
-			System.out.println("Warning can't find hierarchical grouping file");
+			System.out.println("Warning: Can't find hierarchical grouping file");
 		}
 
 		DataProcessingDescription dataProcessingDescription = new DataProcessingDescription();
