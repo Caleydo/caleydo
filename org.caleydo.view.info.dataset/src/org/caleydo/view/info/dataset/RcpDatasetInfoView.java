@@ -42,7 +42,7 @@ import org.eclipse.swt.widgets.Link;
 
 /**
  * Data meta view showing details about a data table.
- * 
+ *
  * @author Marc Streit
  * @author Alexander Lex
  */
@@ -58,10 +58,10 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 
 	private Label recordPerspectiveLabel;
 	private Label recordPerspectiveCount;
-	private Label unmappedRecordElements;
+	// private Label unmappedRecordElements;
 	private Label dimensionPerspectiveLabel;
 	private Label dimensionPerspectiveCount;
-	private Label unmappedDimensionElements;
+	// private Label unmappedDimensionElements;
 
 	private Label recordLabel;
 	private Label recordCount;
@@ -150,9 +150,9 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 		recordPerspectiveCount.setText("");
 		recordPerspectiveCount.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false));
 
-		unmappedRecordElements = new Label(c, SWT.NONE);
-		unmappedRecordElements.setText("");
-		unmappedRecordElements.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 0));
+		// unmappedRecordElements = new Label(c, SWT.NONE);
+		// unmappedRecordElements.setText("");
+		// unmappedRecordElements.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 0));
 
 		dimensionPerspectiveLabel = new Label(c, SWT.NONE);
 		dimensionPerspectiveLabel.setText("");
@@ -161,9 +161,9 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 		dimensionPerspectiveCount.setText("");
 		dimensionPerspectiveCount.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false));
 
-		unmappedDimensionElements = new Label(c, SWT.NONE);
-		unmappedDimensionElements.setText("");
-		unmappedDimensionElements.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 0));
+		// unmappedDimensionElements = new Label(c, SWT.NONE);
+		// unmappedDimensionElements.setText("");
+		// unmappedDimensionElements.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 0));
 
 		tablePerspectiveItem.setControl(c);
 		tablePerspectiveItem.setHeight(c.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
@@ -280,18 +280,26 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 				recordPerspectiveLabel.setText(recordName + ":");
 				recordPerspectiveCount.setText("" + tablePerspective.getNrRecords() + " ("
 						+ String.format("%.2f", tablePerspective.getNrRecords() * 100f / nrRecords) + "%)");
-				unmappedRecordElements.setText("Unmapped: "
-						+ tablePerspective.getRecordPerspective().getUnmappedElements());
-				unmappedRecordElements.setToolTipText("The number of " + recordName
-						+ " that are in the original stratification but can't be mapped to this dataset");
+				if (tablePerspective.getRecordPerspective().getUnmappedElements() > 0) {
+					recordPerspectiveCount.setToolTipText("Unmapped: "
+							+ tablePerspective.getRecordPerspective().getUnmappedElements() + " - The number of "
+							+ recordName
+							+ " that are in the original stratification but can't be mapped to this dataset");
+				} else {
+					recordPerspectiveCount.setToolTipText("");
+				}
 
 				dimensionPerspectiveLabel.setText(dimensionName + ":");
 				dimensionPerspectiveCount.setText("" + tablePerspective.getNrDimensions() + " ("
 						+ String.format("%.2f", tablePerspective.getNrDimensions() * 100f / nrDimensions) + "%)");
-				unmappedDimensionElements.setText("Unmapped: "
-						+ tablePerspective.getDimensionPerspective().getUnmappedElements());
-				unmappedDimensionElements.setToolTipText("The number of " + dimensionName
-						+ " that are in the original stratification but can't be mapped to this dataset");
+				if (tablePerspective.getDimensionPerspective().getUnmappedElements() > 1) {
+					dimensionPerspectiveCount.setToolTipText("Unmapped: "
+							+ tablePerspective.getDimensionPerspective().getUnmappedElements() + " - The number of "
+							+ dimensionName
+							+ " that are in the original stratification but can't be mapped to this dataset");
+				} else {
+					dimensionPerspectiveCount.setToolTipText("");
+				}
 
 				((Composite) tablePerspectiveItem.getControl()).layout();
 			}
