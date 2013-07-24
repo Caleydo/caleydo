@@ -9,8 +9,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.apache.commons.lang.StringUtils;
 import org.caleydo.core.gui.util.FontUtil;
 import org.caleydo.core.internal.MyPreferences;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.startup.IStartupAddon;
 import org.caleydo.core.startup.IStartupProcedure;
 import org.caleydo.core.startup.LoadProjectStartupProcedure;
@@ -65,7 +67,8 @@ public class LoadSampleProjectStartupAddon implements IStartupAddon {
 		Button first = null;
 		for (IConfigurationElement elem : RegistryFactory.getRegistry().getConfigurationElementsFor(EXTENSION_POINT)) {
 			String name = elem.getAttribute("name");
-			String url = elem.getAttribute("url");
+			String url = elem.getAttribute("url").replace("DATA_URL_PREFIX",
+					StringUtils.removeEnd(GeneralManager.DATA_URL_PREFIX, "/"));
 			String description = elem.getAttribute("description");
 			if (first == null)
 				first = createSample(url, name, description, g, l, true);
