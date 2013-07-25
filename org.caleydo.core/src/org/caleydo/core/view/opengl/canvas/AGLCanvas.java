@@ -12,6 +12,7 @@ import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.Rectangle2D.Float;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.GLRunnable;
@@ -93,7 +94,21 @@ public abstract class AGLCanvas implements IGLCanvas {
 			return false;
 		// async not perfect as we have old state but better than blocking
 		display.asyncExec(updateVisibility);
-		return visible;
+		if (!visible)
+			return false;
+		//in addition check if the frame buffer is ok
+		GL gl = asGLAutoDrawAble().getGL();
+		if (gl != null && !isFrameBufferComplete(gl))
+			return false;
+		return true;
+	}
+	
+	private static boolean isFrameBufferComplete(GL gl) {
+		int frameBuffer = gl.glCheckFramebufferStatus(GL.GL_FRAMEBUFFER);
+		if (frameBuffer != GL.GL_FRAMEBUFFER_COMPLETE) {
+			return false;
+		}
+		return true;
 	}
 
 	@Override
