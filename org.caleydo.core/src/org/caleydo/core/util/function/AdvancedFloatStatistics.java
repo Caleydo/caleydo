@@ -8,10 +8,11 @@ package org.caleydo.core.util.function;
 import java.util.Arrays;
 
 /**
- * advanced version of {@link FloatStatistics} including median, and quartiles
- *
+ * advanced version of {@link FloatStatistics} including median, and quartiles but requires the full data so no line
+ * version
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
 public class AdvancedFloatStatistics extends FloatStatistics {
 	private final float median, quartile25, quartile75;
