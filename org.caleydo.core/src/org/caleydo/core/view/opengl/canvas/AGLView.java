@@ -321,8 +321,27 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	public final void display(GLAutoDrawable drawable) {
 		try {
 			processEvents();
+
 			if (!isVisible())
 				return;
+			// boolean r = DisplayUtils.syncExec(Display.getDefault(), new SafeCallable<Boolean>() {
+			// @Override
+			// public Boolean call() {
+			// Composite c = parentGLCanvas.asComposite();
+			// if (c.isDisposed())
+			// return false;
+			// while (c != null) {
+			// if (!c.isVisible())
+			// System.out.println(c.getClass().getSimpleName() + c.hashCode() + " " + c.isVisible());
+			// c = c.getParent();
+			// }
+			// return parentGLCanvas.asComposite().isVisible();
+			// }
+			// });
+			//
+			// if (!r)
+			// System.out.println(getClass().getSimpleName() + " " + r);
+
 
 			if (!focusGained) {
 				parentGLCanvas.requestFocus();
@@ -1091,7 +1110,11 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	 * @return true if it is visible
 	 */
 	protected boolean isVisible() {
-		return isVisible && parentGLCanvas.isVisible();
+		if (!isVisible)
+			return false;
+		if (!parentGLCanvas.isVisible())
+			return false;
+		return true;
 	}
 
 	/**

@@ -21,6 +21,11 @@ import org.caleydo.core.util.function.AFloatFunction;
 import org.caleydo.core.util.function.IFloatFunction;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 
 /**
  * @author Samuel Gratzl
@@ -29,6 +34,38 @@ import org.eclipse.jface.util.PropertyChangeEvent;
 public abstract class AGLCanvas implements IGLCanvas {
 	private float scale;
 
+	/**
+	 * volatile for better multi thread access
+	 */
+	protected volatile boolean visible = true;
+	private final Runnable updateVisibility = new Runnable() {
+		@Override
+		public void run() {
+			Composite c = asComposite();
+			boolean r = !c.isDisposed() && c.isVisible();
+			if (r != visible) {
+				System.out.println(AGLCanvas.this + " " + (r ? "show" : "hide"));
+				visible = r;
+			}
+		}
+	};
+	private final Listener showHide = new Listener() {
+		@Override
+		public void handleEvent(Event event) {
+			switch (event.type) {
+			case SWT.Hide:
+				visible = false;
+				System.out.println(event.widget.getClass().getSimpleName() + event.widget.hashCode() + " " + " hide");
+				break;
+			case SWT.Show:
+				visible = true;
+				System.out
+						.println(event.widget.getClass().getSimpleName() + event.widget.hashCode() + " " + " visible");
+				break;
+			}
+		}
+	};
+
 	public AGLCanvas(GLAutoDrawable drawable) {
 		float s = MyPreferences.getViewZoomFactor();
 		if (s <= 0)
@@ -36,6 +73,27 @@ public abstract class AGLCanvas implements IGLCanvas {
 		scale = s;
 
 		drawable.addGLEventListener(new ReshapeOnScaleChange());
+	}
+
+	protected void init(final Composite canvas) {
+		Composite c = canvas;
+		// add a listener to the whole chain to the top as setVisible doesn't propagate down
+		c.addListener(SWT.Show, showHide);
+		c.addListener(SWT.Hide, showHide);
+	}
+
+	/**
+	 * @return the visible, see {@link #visible}
+	 */
+	@Override
+	public boolean isVisible() {
+		Composite c = asComposite();
+		Display display = c.isDisposed() ? null : c.getDisplay();
+		if (display == null)
+			return false;
+		// async not perfect as we have old state but better than blocking
+		display.asyncExec(updateVisibility);
+		return visible;
 	}
 
 	@Override

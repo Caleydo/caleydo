@@ -74,6 +74,9 @@ public abstract class CaleydoRCPViewPart extends ViewPart {
 	}
 
 	protected final void fillToolBar() {
+		IViewSite s = getViewSite();
+		if (s == null)
+			return;
 		addToolBarContent(getViewSite().getActionBars().getToolBarManager());
 	}
 
