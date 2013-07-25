@@ -23,6 +23,8 @@ import org.eclipse.swt.widgets.Composite;
  *
  */
 public interface IGLCanvas {
+	boolean isVisible();
+
 	void addMouseListener(IGLMouseListener listener);
 
 	void removeMouseListener(IGLMouseListener listener);

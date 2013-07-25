@@ -15,7 +15,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.Callable;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import javax.media.opengl.GL;
@@ -31,7 +30,6 @@ import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
 import org.caleydo.core.event.IListenerOwner;
 import org.caleydo.core.event.view.ViewScrollEvent;
-import org.caleydo.core.gui.util.DisplayUtils;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.util.collection.Pair;
@@ -66,7 +64,6 @@ import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 
 import com.jogamp.opengl.util.texture.Texture;
@@ -1103,23 +1100,7 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	 * @return true if it is visible
 	 */
 	protected boolean isVisible() {
-		if (!isVisible)
-			return false;
-		Display d = Display.getDefault();
-		final Composite p = parentGLCanvas.asComposite();
-		boolean v;
-		try {
-			v = DisplayUtils.syncExec(d, new Callable<Boolean>() {
-				@Override
-				public Boolean call() throws Exception {
-					return !p.isDisposed() && p.isVisible();
-				}
-			});
-		} catch (Exception e) {
-			e.printStackTrace();
-			v = true;
-		}
-		return v;
+		return isVisible && parentGLCanvas.isVisible();
 	}
 
 	/**

@@ -8,8 +8,6 @@ package org.caleydo.core.view.opengl.layout2;
 import gleem.linalg.Vec2f;
 
 import java.util.Arrays;
-import java.util.concurrent.Callable;
-
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
@@ -18,7 +16,6 @@ import javax.media.opengl.fixedfunc.GLMatrixFunc;
 
 import org.caleydo.core.event.EventListenerManagers;
 import org.caleydo.core.event.EventListenerManagers.QueuedEventListenerManager;
-import org.caleydo.core.gui.util.DisplayUtils;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.color.Color;
@@ -38,8 +35,6 @@ import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.data.loader.ResourceLocators;
 import org.caleydo.data.loader.ResourceLocators.IResourceLocator;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 
 import com.google.common.base.Predicate;
 
@@ -246,22 +241,7 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 	 * @return
 	 */
 	private boolean isVisible() {
-		if (!visible)
-			return false;
-		Display d = Display.getDefault();
-		final Composite p = canvas.asComposite();
-		boolean v;
-		try {
-			v = DisplayUtils.syncExec(d, new Callable<Boolean>() {
-				@Override
-				public Boolean call() throws Exception {
-					return !p.isDisposed() && p.isVisible();
-				}
-			});
-		} catch (Exception e) {
-			v = true;
-		}
-		return v;
+		return visible && canvas.isVisible();
 	}
 
 	@Override
