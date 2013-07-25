@@ -155,6 +155,7 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	private BlockingQueue<Pair<AEventListener<? extends IListenerOwner>, AEvent>> queue = new LinkedBlockingQueue<Pair<AEventListener<? extends IListenerOwner>, AEvent>>();
 
 	private boolean isVisible = true;
+	private boolean wasVisible = true;
 
 	protected CaleydoTextRenderer textRenderer;
 
@@ -324,8 +325,10 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	public final void display(GLAutoDrawable drawable) {
 		try {
 			processEvents();
-			if (!isVisible())
+			if (!isVisible()) {
+				wasVisible = false;
 				return;
+			}
 
 			if (!focusGained) {
 				parentGLCanvas.requestFocus();
@@ -359,6 +362,12 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 			// System.out.println("focusable " + parentGLCanvas.isFocusable());
 
 			GL2 gl = drawable.getGL().getGL2();
+			
+			if (!wasVisible) {
+				//set the viewport again for mac bug 1476
+				gl.glViewport(0,0,parentGLCanvas.asGLAutoDrawAble().getWidth(), parentGLCanvas.asGLAutoDrawAble().getHeight());
+				wasVisible = true;
+			}
 
 			// ViewManager.get().executePendingRemoteViewDestruction(gl, this);
 
