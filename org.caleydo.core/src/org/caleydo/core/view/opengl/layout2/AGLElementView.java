@@ -236,7 +236,7 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 	private boolean isVisible() {
 		if (!visible)
 			return false;
-		Display d = Display.getCurrent();
+		Display d = Display.getDefault();
 		final Composite p = canvas.asComposite();
 		boolean v;
 		try {
