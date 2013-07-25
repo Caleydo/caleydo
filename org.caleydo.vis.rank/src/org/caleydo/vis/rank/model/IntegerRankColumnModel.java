@@ -122,7 +122,10 @@ public class IntegerRankColumnModel extends ABasicFilterableRankColumnModel impl
 	}
 
 	public int getInt(IRow prow) {
-		return data.apply(prow);
+		Integer r = data.apply(prow);
+		if (r == null)
+			return Integer.valueOf(-1);
+		return r.intValue();
 	}
 
 	@Override

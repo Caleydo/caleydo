@@ -62,6 +62,7 @@ import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
+import org.caleydo.core.view.ViewManager;
 import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
 import org.caleydo.core.view.listener.RemoveTablePerspectiveEvent;
 import org.caleydo.core.view.listener.RemoveTablePerspectiveListener;
@@ -971,7 +972,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 			public void clicked(Pick pick) {
 				dragAndDropController.clearDraggables();
 				dragAndDropController.setDraggingStartPosition(pick.getDIPPickedPoint());
-				dragAndDropController.addDraggable((BrickColumn) generalManager.getViewManager().getGLView(
+				dragAndDropController.addDraggable((BrickColumn) ViewManager.get().getGLView(
 						pick.getObjectID()));
 				dragAndDropController.setDraggingMode("DimensionGroupDrag");
 
@@ -1105,7 +1106,6 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	@Override
 	public ASerializedView getSerializableRepresentation() {
 		SerializedStratomexView serializedForm = new SerializedStratomexView(this);
-		serializedForm.setViewID(this.getID());
 		return serializedForm;
 	}
 

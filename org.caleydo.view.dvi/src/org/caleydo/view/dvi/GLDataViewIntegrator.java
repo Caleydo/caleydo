@@ -414,14 +414,7 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedDVIView serializedForm = new SerializedDVIView();
-		serializedForm.setViewID(this.getID());
-		return serializedForm;
-	}
-
-	@Override
-	public void initFromSerializableRepresentation(ASerializedView ser) {
-
+		return new SerializedDVIView(this);
 	}
 
 	@Override

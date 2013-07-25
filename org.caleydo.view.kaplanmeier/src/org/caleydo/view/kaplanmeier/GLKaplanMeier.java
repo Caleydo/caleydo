@@ -523,8 +523,7 @@ public class GLKaplanMeier extends AGLView implements ISingleTablePerspectiveBas
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedKaplanMeierView serializedForm = new SerializedKaplanMeierView();
-		serializedForm.setViewID(this.getID());
+		SerializedKaplanMeierView serializedForm = new SerializedKaplanMeierView(this);
 		return serializedForm;
 	}
 

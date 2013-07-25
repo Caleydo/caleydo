@@ -31,7 +31,6 @@ import org.caleydo.core.event.AEventListener;
 import org.caleydo.core.event.IListenerOwner;
 import org.caleydo.core.event.view.ViewScrollEvent;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.exception.ExceptionHandler;
@@ -230,7 +229,7 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 		this.viewFrustum = viewFrustum;
 		viewCamera = new ViewCameraBase(uniqueID);
 
-		pickingManager = generalManager.getViewManager().getPickingManager();
+		pickingManager = ViewManager.get().getPickingManager();
 		textureManager = new TextureManager();
 
 		glMouseWheelListener = new GLMouseWheelListener(this);
@@ -256,7 +255,6 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	public void initialize() {
 		ViewManager viewManager = GeneralManager.get().getViewManager();
 		viewManager.registerView(this, !isRenderedRemote());
-		setLabel(this.getDefaultLabel(), true);
 		registerEventListeners();
 
 		if (glRemoteRenderingView == null)
@@ -1054,10 +1052,6 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	// AEvent> getEvent() {
 	// return queue.poll();
 	// }
-
-	@Override
-	public void initFromSerializableRepresentation(ASerializedView serialzedView) {
-	}
 
 	@Override
 	public void registerEventListeners() {

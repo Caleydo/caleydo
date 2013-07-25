@@ -5,13 +5,11 @@
  ******************************************************************************/
 package org.caleydo.view.table;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.CaleydoRCPViewPart;
 import org.caleydo.view.table.action.SelectionOnlyAction;
 import org.caleydo.view.table.action.TableSettingsAction;
+import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.nebula.widgets.nattable.NatTable;
 import org.eclipse.swt.widgets.Composite;
 
@@ -26,12 +24,7 @@ public class RcpTableView extends CaleydoRCPViewPart {
 	 * Constructor.
 	 */
 	public RcpTableView() {
-		super();
-		try {
-			viewContext = JAXBContext.newInstance(SerializedTableView.class);
-		} catch (JAXBException ex) {
-			throw new RuntimeException("Could not create JAXBContext", ex);
-		}
+		super(SerializedTableView.class);
 	}
 
 	@Override
@@ -42,7 +35,7 @@ public class RcpTableView extends CaleydoRCPViewPart {
 
 		initializeView();
 		GeneralManager.get().getViewManager().registerRCPView(this, view);
-		addToolBarContent();
+		fillToolBar();
 	}
 
 	@Override
@@ -54,10 +47,10 @@ public class RcpTableView extends CaleydoRCPViewPart {
 	}
 
 	@Override
-	public void addToolBarContent() {
+	public void addToolBarContent(IToolBarManager toolBarManager) {
 		toolBarManager.add(new SelectionOnlyAction((TableView) view));
 		toolBarManager.add(new TableSettingsAction((TableView) view));
-		super.addToolBarContent();
+		super.addToolBarContent(toolBarManager);
 	}
 
 	@Override

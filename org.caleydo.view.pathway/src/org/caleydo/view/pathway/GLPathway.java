@@ -48,6 +48,7 @@ import org.caleydo.core.util.color.mapping.UpdateColorMappingListener;
 import org.caleydo.core.util.execution.SafeCallables;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
+import org.caleydo.core.view.ViewManager;
 import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
 import org.caleydo.core.view.listener.AddTablePerspectivesListener;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -830,7 +831,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 			// gl.glStencilFunc(GL2.GL_EQUAL, 0, 1);
 			gl.glStencilFunc(GL.GL_GREATER, 2, 0xff);
 			gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_KEEP);
-			gl.glPushName(generalManager.getViewManager().getPickingManager()
+			gl.glPushName(ViewManager.get().getPickingManager()
 					.getPickingID(uniqueID, EPickingType.PATHWAY_TEXTURE_SELECTION.name(), 0));
 			// //////////////////////////START 2/2 HIER NEU CHRISITIAN
 			// enable shader
@@ -975,7 +976,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 			isBubbleTextureDirty = false;
 		}
 
-		gl.glPushName(generalManager.getViewManager().getPickingManager()
+		gl.glPushName(ViewManager.get().getPickingManager()
 				.getPickingID(uniqueID, EPickingType.PATHWAY_TEXTURE_SELECTION.name(), 0));
 
 		this.alternativeBubbleSet.getBubbleSetGLRenderer().render(gl,

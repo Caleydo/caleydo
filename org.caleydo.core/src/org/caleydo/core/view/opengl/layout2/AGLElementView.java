@@ -98,11 +98,6 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 		return null;
 	}
 
-	@Override
-	public void initFromSerializableRepresentation(ASerializedView serializedView) {
-
-	}
-
 	protected IResourceLocator createResourceLocator() {
 		return ResourceLocators.chain(ResourceLocators.classLoader(getClass().getClassLoader()),
 				ResourceLocators.DATA_CLASSLOADER, ResourceLocators.FILE);

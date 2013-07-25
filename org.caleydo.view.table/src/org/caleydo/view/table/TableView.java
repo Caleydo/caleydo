@@ -416,14 +416,8 @@ public class TableView extends ASingleTablePerspectiveSWTView implements ILayerL
 	}
 
 	@Override
-	public void initFromSerializableRepresentation(ASerializedView serializedView) {
-
-	}
-
-	@Override
 	public ASerializedView getSerializableRepresentation() {
 		SerializedTableView serializedForm = new SerializedTableView(this);
-		serializedForm.setViewID(this.getID());
 		return serializedForm;
 	}
 

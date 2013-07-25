@@ -10,9 +10,6 @@ import java.net.URL;
 import java.text.DateFormat;
 import java.util.Locale;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
@@ -42,7 +39,7 @@ import org.eclipse.swt.widgets.Link;
 
 /**
  * Data meta view showing details about a data table.
- * 
+ *
  * @author Marc Streit
  * @author Alexander Lex
  */
@@ -71,22 +68,25 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 	private ExpandItem histogramItem;
 	private RcpGLColorMapperHistogramView histogramView;
 
-	private final EventListenerManager listeners = EventListenerManagers.wrap(this);
+	private final EventListenerManager listeners = EventListenerManagers.createSWTDirect();
 
 	/**
 	 * Constructor.
 	 */
 	public RcpDatasetInfoView() {
-		super();
+		super(SerializedDatasetInfoView.class);
+		listeners.register(this);
+	}
 
-		eventPublisher = GeneralManager.get().getEventPublisher();
-		isSupportView = true;
+	@Override
+	public void dispose() {
+		listeners.unregisterAll();
+		super.dispose();
+	}
 
-		try {
-			viewContext = JAXBContext.newInstance(SerializedDatasetInfoView.class);
-		} catch (JAXBException ex) {
-			throw new RuntimeException("Could not create JAXBContext", ex);
-		}
+	@Override
+	public boolean isSupportView() {
+		return true;
 	}
 
 	@Override
@@ -361,18 +361,6 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 	public void createDefaultSerializedView() {
 		serializedView = new SerializedDatasetInfoView();
 		determineDataConfiguration(serializedView, false);
-	}
-
-	@Override
-	public void registerEventListeners() {
-		super.registerEventListeners();
-		listeners.register(this);
-	}
-
-	@Override
-	public void unregisterEventListeners() {
-		super.unregisterEventListeners();
-		listeners.unregisterAll();
 	}
 
 	@ListenTo

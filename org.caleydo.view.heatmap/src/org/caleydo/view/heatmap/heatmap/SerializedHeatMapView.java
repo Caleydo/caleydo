@@ -31,17 +31,8 @@ public class SerializedHeatMapView extends ASerializedSingleTablePerspectiveBase
 		super(view);
 	}
 
-	public SerializedHeatMapView(int viewID, String dataDomainID, String tablePerspectiveKey) {
-		super(viewID, dataDomainID, tablePerspectiveKey);
-	}
-
 	@Override
 	public String getViewType() {
 		return GLHeatMap.VIEW_TYPE;
-	}
-
-	@Override
-	public String getViewClassType() {
-		return GLHeatMap.class.getName();
 	}
 }

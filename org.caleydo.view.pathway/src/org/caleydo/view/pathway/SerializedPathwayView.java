@@ -94,11 +94,6 @@ public class SerializedPathwayView
 		return GLPathway.VIEW_TYPE;
 	}
 
-	@Override
-	public String getViewClassType() {
-		return GLPathway.class.getName();
-	}
-
 	/**
 	 * @param isPathSelectionMode setter, see {@link #isPathSelectionMode}
 	 */

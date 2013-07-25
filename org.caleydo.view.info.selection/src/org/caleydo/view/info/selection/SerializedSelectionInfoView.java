@@ -29,9 +29,4 @@ public class SerializedSelectionInfoView extends ASerializedView {
 	public String getViewType() {
 		return RcpSelectionInfoView.VIEW_TYPE;
 	}
-
-	@Override
-	public String getViewClassType() {
-		return RcpSelectionInfoView.class.getName();
-	}
 }

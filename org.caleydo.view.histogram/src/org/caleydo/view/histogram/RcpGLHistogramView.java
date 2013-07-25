@@ -5,13 +5,9 @@
  ******************************************************************************/
 package org.caleydo.view.histogram;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataSupportDefinitions;
@@ -26,7 +22,6 @@ import org.caleydo.core.view.ISingleTablePerspectiveBasedView;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.MinimumSizeComposite;
 import org.caleydo.core.view.ViewManager;
-import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -45,14 +40,7 @@ public class RcpGLHistogramView
 	 * Constructor.
 	 */
 	public RcpGLHistogramView() {
-		super();
-
-		try {
-			viewContext = JAXBContext.newInstance(SerializedHistogramView.class);
-		}
-		catch (JAXBException ex) {
-			throw new RuntimeException("Could not create JAXBContext", ex);
-		}
+		super(SerializedHistogramView.class);
 	}
 
 	@Override
@@ -91,10 +79,6 @@ public class RcpGLHistogramView
 
 	}
 
-	public static void createToolBarItems(int viewID) {
-		alToolbar = new ArrayList<IAction>();
-	}
-
 	@Override
 	public void createDefaultSerializedView() {
 
@@ -104,11 +88,6 @@ public class RcpGLHistogramView
 			determineDataConfiguration(serializedView);
 		else
 			((ASerializedSingleTablePerspectiveBasedView) serializedView).setDataDomainID(dataDomain.getDataDomainID());
-	}
-
-	@Override
-	public String getViewGUIID() {
-		return GLHistogram.VIEW_TYPE;
 	}
 
 	@Override

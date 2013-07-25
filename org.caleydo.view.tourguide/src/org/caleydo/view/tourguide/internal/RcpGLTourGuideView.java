@@ -80,11 +80,6 @@ public class RcpGLTourGuideView extends ARcpGLViewPart {
 		determineDataConfiguration(serializedView, false);
 	}
 
-	@Override
-	public String getViewGUIID() {
-		return GLTourGuideView.VIEW_TYPE;
-	}
-
 	/**
 	 * listener that checks which stratomex is open and tell that the tour guide instance
 	 */

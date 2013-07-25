@@ -34,9 +34,4 @@ public class RcpGLKaplanMeierView extends ARcpGLViewPart {
 		determineDataConfiguration(serializedView);
 	}
 
-	@Override
-	public String getViewGUIID() {
-		return GLKaplanMeier.VIEW_TYPE;
-	}
-
 }

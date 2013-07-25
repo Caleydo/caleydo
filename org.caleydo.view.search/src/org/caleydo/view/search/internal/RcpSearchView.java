@@ -119,6 +119,13 @@ public final class RcpSearchView extends CaleydoRCPViewPart {
 	 */
 	private ControlDecoration nothingFound;
 
+	/**
+	 *
+	 */
+	public RcpSearchView() {
+		super(SerializedSearchView.class);
+	}
+
 	private static final Comparator<ILabelHolder> byLabel = new Comparator<ILabelHolder>() {
 		@Override
 		public int compare(ILabelHolder o1, ILabelHolder o2) {

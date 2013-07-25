@@ -231,7 +231,6 @@ public class FilterRepresentationFoldChange extends
 				histogramView.setDataDomain(dataDomain);
 				histogramView.setTablePerspective(tablePerspective1);
 				SerializedHistogramView serializedHistogramView = new SerializedHistogramView();
-				serializedHistogramView.setViewID(histogramView.getID());
 				serializedHistogramView.setDataDomainID(dataDomain.getDataDomainID());
 				serializedHistogramView.setTablePerspectiveKey(tablePerspective1
 						.getTablePerspectiveKey());

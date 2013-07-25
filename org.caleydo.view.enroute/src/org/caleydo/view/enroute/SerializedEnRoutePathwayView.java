@@ -9,16 +9,17 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.serialize.ASerializedMultiTablePerspectiveBasedView;
+import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
 
 /**
  * Serialized <INSERT VIEW NAME> view.
- * 
+ *
  * @author <INSERT_YOUR_NAME>
  */
 @XmlRootElement
 @XmlType
 public class SerializedEnRoutePathwayView extends ASerializedMultiTablePerspectiveBasedView {
-	
+
 	private boolean fitToViewWidth;
 
 	/**
@@ -28,23 +29,22 @@ public class SerializedEnRoutePathwayView extends ASerializedMultiTablePerspecti
 		setFitToViewWidth(true);
 	}
 
+	public SerializedEnRoutePathwayView(IMultiTablePerspectiveBasedView view) {
+		super(view);
+	}
+
 	@Override
 	public String getViewType() {
 		return GLEnRoutePathway.VIEW_TYPE;
 	}
-	
-	@Override
-	public String getViewClassType() {
-		return GLEnRoutePathway.class.getName();
-	}
-	
+
 	/**
 	 * @return the fitToViewWidth, see {@link #fitToViewWidth}
 	 */
 	public boolean isFitToViewWidth() {
 		return fitToViewWidth;
 	}
-	
+
 	/**
 	 * @param fitToViewWidth setter, see {@link #fitToViewWidth}
 	 */
