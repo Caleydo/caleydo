@@ -10,7 +10,9 @@
 
 
 source('GSEA.1.0.R')
-
+source("http://bioconductor.org/biocLite.R")
+biocLite("PGSEA")
+require(PGSEA)
 
 testGSEA = function(input.ds, group_id, genesets, result) {
   #data
@@ -76,4 +78,11 @@ testGSEA = function(input.ds, group_id, genesets, result) {
 	r
 }
 
-r = testGSEA("mRNA_3CNMF.csv", "mRNA_3CNMF_g1.csv", "KEGG_db.gmt", "result.csv")
+testPGSEA = function(input.ds, group_id, genesets, result) {
+  input.ds = read.table(input.ds,header=T,check.names=F)
+  rownames(input.ds) = input.ds[,1]
+  input.ds = input.ds[,-1]
+
+}
+
+r = testPGSEA("mRNA_3CNMF.csv", "mRNA_3CNMF_g1.csv", "KEGG_db.gmt", "result.csv")

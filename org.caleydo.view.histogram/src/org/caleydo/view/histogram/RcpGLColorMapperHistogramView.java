@@ -30,6 +30,7 @@ public class RcpGLColorMapperHistogramView extends RcpGLHistogramView {
 	private CLabel colorMappingPreview;
 
 	private ArrayList<CLabel> labels;
+	private Button changeColorButton;
 
 	/**
 	 *
@@ -74,9 +75,9 @@ public class RcpGLColorMapperHistogramView extends RcpGLHistogramView {
 			}
 		}
 
-		updateColorMappingPreview();
 
-		Button changeColorButton = new Button(histoComposite, SWT.PUSH);
+
+		changeColorButton = new Button(histoComposite, SWT.PUSH);
 		changeColorButton.setText("Colormap");
 		changeColorButton.setToolTipText("Choose a colormap for this dataset");
 		gridData = new GridData(GridData.FILL_HORIZONTAL);
@@ -90,6 +91,8 @@ public class RcpGLColorMapperHistogramView extends RcpGLHistogramView {
 				openColorMapDialog();
 			}
 		});
+
+		updateColorMappingPreview();
 	}
 
 	/**
@@ -108,8 +111,19 @@ public class RcpGLColorMapperHistogramView extends RcpGLHistogramView {
 
 		if (colorMappingPreview == null)
 			return;
-		if (!dataDomain.getTable().isDataHomogeneous())
-			return;
+		if (!dataDomain.getTable().isDataHomogeneous() || !(dataDomain.getTable() instanceof NumericalTable)) {
+			colorMappingPreview.setVisible(false);
+			changeColorButton.setVisible(false);
+			for (CLabel label : labels) {
+				label.setVisible(false);
+			}
+		} else {
+			colorMappingPreview.setVisible(true);
+			changeColorButton.setVisible(true);
+			for (CLabel label : labels) {
+				label.setVisible(true);
+			}
+		}
 		List<ColorMarkerPoint> markerPoints = dataDomain.getTable().getColorMapper().getMarkerPoints();
 
 		Color[] alColor = new Color[markerPoints.size()];

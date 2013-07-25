@@ -55,10 +55,10 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 
 	private Label recordPerspectiveLabel;
 	private Label recordPerspectiveCount;
-	private Label unmappedRecordElements;
+	// private Label unmappedRecordElements;
 	private Label dimensionPerspectiveLabel;
 	private Label dimensionPerspectiveCount;
-	private Label unmappedDimensionElements;
+	// private Label unmappedDimensionElements;
 
 	private Label recordLabel;
 	private Label recordCount;
@@ -150,9 +150,9 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 		recordPerspectiveCount.setText("");
 		recordPerspectiveCount.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false));
 
-		unmappedRecordElements = new Label(c, SWT.NONE);
-		unmappedRecordElements.setText("");
-		unmappedRecordElements.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 0));
+		// unmappedRecordElements = new Label(c, SWT.NONE);
+		// unmappedRecordElements.setText("");
+		// unmappedRecordElements.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 0));
 
 		dimensionPerspectiveLabel = new Label(c, SWT.NONE);
 		dimensionPerspectiveLabel.setText("");
@@ -161,9 +161,9 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 		dimensionPerspectiveCount.setText("");
 		dimensionPerspectiveCount.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false));
 
-		unmappedDimensionElements = new Label(c, SWT.NONE);
-		unmappedDimensionElements.setText("");
-		unmappedDimensionElements.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 0));
+		// unmappedDimensionElements = new Label(c, SWT.NONE);
+		// unmappedDimensionElements.setText("");
+		// unmappedDimensionElements.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 0));
 
 		tablePerspectiveItem.setControl(c);
 		tablePerspectiveItem.setHeight(c.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
@@ -269,6 +269,8 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 			dimensionCount.setText("" + nrDimensions);
 
 			((Composite) dataSetItem.getControl()).layout();
+			recordPerspectiveLabel.setText(recordName + ":");
+			dimensionPerspectiveLabel.setText(dimensionName + ":");
 
 			if (tablePerspective != null) {
 				String tpLabel = "Persp.: " + tablePerspective.getLabel();
@@ -277,26 +279,40 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 				tablePerspectiveItem.setText(tpLabel);
 				tablePerspectiveItem.setExpanded(true);
 
-				recordPerspectiveLabel.setText(recordName + ":");
 				recordPerspectiveCount.setText("" + tablePerspective.getNrRecords() + " ("
 						+ String.format("%.2f", tablePerspective.getNrRecords() * 100f / nrRecords) + "%)");
-				unmappedRecordElements.setText("Unmapped: "
-						+ tablePerspective.getRecordPerspective().getUnmappedElements());
-				unmappedRecordElements.setToolTipText("The number of " + recordName
-						+ " that are in the original stratification but can't be mapped to this dataset");
+				if (tablePerspective.getRecordPerspective().getUnmappedElements() > 0) {
+					recordPerspectiveCount.setToolTipText("Unmapped: "
+							+ tablePerspective.getRecordPerspective().getUnmappedElements() + " - The number of "
+							+ recordName
+							+ " that are in the original stratification but can't be mapped to this dataset");
+				} else {
+					recordPerspectiveCount.setToolTipText("");
+				}
 
-				dimensionPerspectiveLabel.setText(dimensionName + ":");
 				dimensionPerspectiveCount.setText("" + tablePerspective.getNrDimensions() + " ("
 						+ String.format("%.2f", tablePerspective.getNrDimensions() * 100f / nrDimensions) + "%)");
-				unmappedDimensionElements.setText("Unmapped: "
-						+ tablePerspective.getDimensionPerspective().getUnmappedElements());
-				unmappedDimensionElements.setToolTipText("The number of " + dimensionName
-						+ " that are in the original stratification but can't be mapped to this dataset");
+				if (tablePerspective.getDimensionPerspective().getUnmappedElements() > 1) {
+					dimensionPerspectiveCount.setToolTipText("Unmapped: "
+							+ tablePerspective.getDimensionPerspective().getUnmappedElements() + " - The number of "
+							+ dimensionName
+							+ " that are in the original stratification but can't be mapped to this dataset");
+				} else {
+					dimensionPerspectiveCount.setToolTipText("");
+				}
 
 				((Composite) tablePerspectiveItem.getControl()).layout();
+			} else {
+
+				tablePerspectiveItem.setText("Perspective: <no selection>");
+				tablePerspectiveItem.setExpanded(false);
+				recordPerspectiveCount.setText("<no selection>");
+				recordPerspectiveCount.setToolTipText("");
+				dimensionPerspectiveCount.setText("<no selection>");
+				dimensionPerspectiveCount.setToolTipText("");
 			}
 
-			if (!tableBasedDD.getTable().isDataHomogeneous()) {
+			if (!tableBasedDD.getTable().isDataHomogeneous() && tablePerspective == null) {
 				histogramItem.getControl().setEnabled(false);
 				histogramItem.setExpanded(false);
 				return;
@@ -326,7 +342,7 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 				GeneralManager.get().getViewManager().registerGLCanvasToAnimator(histogramView.getGLCanvas());
 				((Composite) histogramItem.getControl()).layout();
 			}
-			// else {
+
 
 			// If the default table perspective does not exist yet, we
 			// create it and set it to private so that it does not show up
@@ -338,13 +354,11 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 			}
 			histogramView.setDataDomain(tableBasedDD);
 			((GLHistogram) histogramView.getGLView()).setDataDomain(tableBasedDD);
-			if (tablePerspective != null) {
+			histogramView.setTablePerspective(tablePerspective);
+			((GLHistogram) histogramView.getGLView()).setTablePerspective(tablePerspective);
 
-				histogramView.setTablePerspective(tablePerspective);
-				((GLHistogram) histogramView.getGLView()).setTablePerspective(tablePerspective);
-			}
 			((GLHistogram) histogramView.getGLView()).setDisplayListDirty();
-			// }
+
 		} else {
 			dataSetItem.setExpanded(true);
 			histogramItem.setExpanded(false);
