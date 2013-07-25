@@ -50,6 +50,11 @@ final class AWTGLCanvas extends AGLCanvas {
 		this.composite = composite;
 	}
 
+	@Override
+	public boolean isVisible() {
+		return true;
+	}
+
 	/**
 	 * @return the canvas
 	 */

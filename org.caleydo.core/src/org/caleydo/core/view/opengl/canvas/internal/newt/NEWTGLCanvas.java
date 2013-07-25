@@ -40,6 +40,11 @@ final class NEWTGLCanvas extends AGLCanvas {
 		this.composite = canvas;
 	}
 
+	@Override
+	public boolean isVisible() {
+		return true;
+	}
+
 	/**
 	 * @return the canvas
 	 */
