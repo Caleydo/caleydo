@@ -17,12 +17,8 @@ import org.caleydo.core.view.opengl.canvas.IGLMouseListener;
 import org.caleydo.core.view.opengl.picking.IPickingLabelProvider;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
 
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
@@ -37,63 +33,10 @@ final class SWTGLCanvas extends AGLCanvas {
 
 	private final Table<Integer, Object, Object> listenerMapping = HashBasedTable.create();
 
-	/**
-	 * volatile for better multi thread access
-	 */
-	private volatile boolean visible;
-	private final Listener showHide = new Listener() {
-		@Override
-		public void handleEvent(Event event) {
-			switch (event.type) {
-			case SWT.Hide:
-				visible = false;
-				break;
-			case SWT.Show:
-				if (!visible) // schedule a visible update check
-					event.display.asyncExec(new Runnable() {
-						@Override
-						public void run() {
-							if (!visible) {
-								boolean r = canvas.isVisible();
-								visible = r;
-							}
-						}
-					});
-				break;
-			}
-		}
-	};
-
 	SWTGLCanvas(final GLCanvas canvas) {
 		super(canvas);
 		this.canvas = canvas;
-		Composite c = canvas;
-		// add a listener to the whole chain to the top as setVisible doesn't propagate down
-		while (c != null) {
-			c.addListener(SWT.Show, showHide);
-			c.addListener(SWT.Hide, showHide);
-			c = c.getParent();
-		}
-		// cleanup the hierarchy at the end
-		this.canvas.addDisposeListener(new DisposeListener() {
-			@Override
-			public void widgetDisposed(DisposeEvent e) {
-				Composite c = canvas;
-				while (c != null) {
-					c.removeListener(SWT.Show, showHide);
-					c.removeListener(SWT.Hide, showHide);
-					c = c.getParent();
-				}
-			}
-		});
-	}
-
-	/**
-	 * @return the visible, see {@link #visible}
-	 */
-	@Override
-	public boolean isVisible() {
-		return visible;
+		init(canvas);
 	}
 
 	@Override

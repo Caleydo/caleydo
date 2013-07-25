@@ -326,7 +326,7 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 				wasVisible = false;
 				return;
 			}
-
+			
 			if (!focusGained) {
 				parentGLCanvas.requestFocus();
 
@@ -1100,7 +1100,11 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	 * @return true if it is visible
 	 */
 	protected boolean isVisible() {
-		return isVisible && parentGLCanvas.isVisible();
+		if (!isVisible)
+			return false;
+		if (!parentGLCanvas.isVisible())
+			return false;
+		return true;
 	}
 
 	/**
