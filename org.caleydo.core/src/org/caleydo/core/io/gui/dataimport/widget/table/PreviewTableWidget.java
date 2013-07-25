@@ -92,7 +92,6 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 	private DataLayer bodyDataLayer;
 
 	private boolean isTransposeable = false;
-	private boolean isTransposed = false;
 
 	private Label tableDimensionsLabel;
 
