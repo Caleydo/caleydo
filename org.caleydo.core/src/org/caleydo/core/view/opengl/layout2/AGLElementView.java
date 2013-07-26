@@ -7,6 +7,7 @@ package org.caleydo.core.view.opengl.layout2;
 
 import gleem.linalg.Vec2f;
 
+import java.util.Arrays;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
@@ -17,6 +18,7 @@ import org.caleydo.core.event.EventListenerManagers;
 import org.caleydo.core.event.EventListenerManagers.QueuedEventListenerManager;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.AView;
 import org.caleydo.core.view.ViewManager;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
@@ -56,6 +58,7 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 	private boolean dirtyLayout = true;
 
 	private boolean visible = true;
+	private boolean wasVisible = true;
 	private GLContextLocal local;
 	private final ISWTLayer swtLayer;
 
@@ -167,11 +170,20 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 	public void display(GLAutoDrawable drawable) {
 		eventListeners.processEvents();
 
-		if (!visible)
+		if (!isVisible()) {
+			wasVisible = false;
 			return;
-
+		}
 		final int deltaTimeMs = local.getDeltaTimeMs();
 		GL2 gl = drawable.getGL().getGL2();
+		
+		if (!wasVisible) {
+			//set the viewport again for mac bug 1476
+			gl.glViewport(0,0,canvas.asGLAutoDrawAble().getWidth(), canvas.asGLAutoDrawAble().getHeight());
+			wasVisible = true;
+		}
+		
+		
 		// clear screen
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 
@@ -183,10 +195,10 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 
 		final GLGraphics g = new GLGraphics(gl, local, true, deltaTimeMs);
 		g.clearError();
-
+		
 		float paddedWidth = getWidth();
 		float paddedHeight = getHeight();
-
+		
 		if (dirtyLayout) {
 			root.setBounds(0, 0, paddedWidth, paddedHeight);
 			root.relayout();
@@ -224,6 +236,13 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 	}
 
 
+
+	/**
+	 * @return
+	 */
+	private boolean isVisible() {
+		return visible && canvas.isVisible();
+	}
 
 	@Override
 	public final void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {

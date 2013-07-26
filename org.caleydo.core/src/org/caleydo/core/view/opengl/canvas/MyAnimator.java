@@ -52,6 +52,7 @@ public class MyAnimator implements GLAnimatorControl, Runnable {
 			@Override
 			public void run() {
 				timerThread = Thread.currentThread();
+				timerThread.setName("MyAnimator GL Thread");
 			}
 		});
 	}

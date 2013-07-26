@@ -48,8 +48,8 @@ final class AWTGLCanvas extends AGLCanvas {
 		super(canvas);
 		this.canvas = canvas;
 		this.composite = composite;
+		init(composite);
 	}
-
 	/**
 	 * @return the canvas
 	 */

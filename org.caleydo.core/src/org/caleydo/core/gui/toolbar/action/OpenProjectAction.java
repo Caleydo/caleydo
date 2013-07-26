@@ -6,11 +6,8 @@
 package org.caleydo.core.gui.toolbar.action;
 
 import org.caleydo.core.gui.SimpleAction;
-import org.caleydo.core.internal.MyPreferences;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.FileDialog;
+import org.caleydo.core.internal.startup.OpenProjectCommand;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.PlatformUI;
 
 /**
  * Button to open a project
@@ -31,19 +28,6 @@ public class OpenProjectAction extends SimpleAction {
 
 	@Override
 	public void run() {
-		super.run();
-
-		FileDialog fileDialog = new FileDialog(new Shell(), SWT.OPEN);
-		fileDialog.setText("Load Project");
-		String[] filterExt = { "*.cal" };
-		fileDialog.setFilterExtensions(filterExt);
-
-		String fileName = fileDialog.open();
-		if (fileName != null) {
-			MyPreferences.setAutoLoadProject(fileName);
-
-			// restart
-			PlatformUI.getWorkbench().restart();
-		}
+		OpenProjectCommand.openProject(new Shell());
 	}
 }

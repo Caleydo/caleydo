@@ -49,6 +49,7 @@ import org.caleydo.core.view.opengl.canvas.listener.IResettableView;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.keyboard.GLFPSKeyListener;
 import org.caleydo.core.view.opengl.keyboard.GLKeyListener;
+import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.IPickingLabelProvider;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
@@ -152,6 +153,7 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	private BlockingQueue<Pair<AEventListener<? extends IListenerOwner>, AEvent>> queue = new LinkedBlockingQueue<Pair<AEventListener<? extends IListenerOwner>, AEvent>>();
 
 	private boolean isVisible = true;
+	private boolean wasVisible = true;
 
 	protected CaleydoTextRenderer textRenderer;
 
@@ -321,9 +323,11 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	public final void display(GLAutoDrawable drawable) {
 		try {
 			processEvents();
-			if (!isVisible())
+			if (!isVisible()) {
+				wasVisible = false;
 				return;
-
+			}
+			
 			if (!focusGained) {
 				parentGLCanvas.requestFocus();
 
@@ -356,7 +360,14 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 			// System.out.println("focusable " + parentGLCanvas.isFocusable());
 
 			GL2 gl = drawable.getGL().getGL2();
-
+			
+			
+			if (!wasVisible) {
+				//set the viewport again for mac bug 1476
+				gl.glViewport(0,0,parentGLCanvas.asGLAutoDrawAble().getWidth(), parentGLCanvas.asGLAutoDrawAble().getHeight());
+				wasVisible = true;
+			}
+			GLGraphics.checkError(gl);
 			// ViewManager.get().executePendingRemoteViewDestruction(gl, this);
 
 			// load identity matrix
@@ -368,7 +379,8 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 
 			// clear screen
 			gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
-
+			GLGraphics.checkError(gl);
+			
 			gl.glTranslatef(position.x(), position.y(), position.z());
 			gl.glRotatef(viewCamera.getCameraRotationGrad(rot_Vec3f), rot_Vec3f.x(), rot_Vec3f.y(), rot_Vec3f.z());
 
@@ -1087,11 +1099,16 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	/**
 	 * Check whether the view is visible. If not, it should not be rendered. Note that events should be processed
 	 * anyway.
+	 * @param drawable 
 	 *
 	 * @return true if it is visible
 	 */
 	protected boolean isVisible() {
-		return isVisible;
+		if (!isVisible)
+			return false;
+		if (!parentGLCanvas.isVisible())
+			return false;
+		return true;
 	}
 
 	/**

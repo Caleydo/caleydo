@@ -9,6 +9,7 @@ import java.lang.reflect.InvocationTargetException;
 
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.gui.perspective.GenomePerspective;
+import org.caleydo.core.gui.perspective.PartListener;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ProjectManager;
 import org.eclipse.jface.action.IContributionItem;
@@ -119,7 +120,7 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 			configurer.setShowCoolBar(false);
 			configurer.setShowStatusLine(false);
 			configurer.setShowFastViewBars(true);
-			// configurer.getWindow().getPartService().addPartListener(new PartListener());
+			configurer.getWindow().getPartService().addPartListener(new PartListener());
 		}
 
 		@Override

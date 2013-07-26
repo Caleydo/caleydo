@@ -33,9 +33,10 @@ final class SWTGLCanvas extends AGLCanvas {
 
 	private final Table<Integer, Object, Object> listenerMapping = HashBasedTable.create();
 
-	SWTGLCanvas(GLCanvas canvas) {
+	SWTGLCanvas(final GLCanvas canvas) {
 		super(canvas);
 		this.canvas = canvas;
+		init(canvas);
 	}
 
 	@Override

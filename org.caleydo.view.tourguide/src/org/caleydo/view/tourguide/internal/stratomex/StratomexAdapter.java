@@ -181,7 +181,7 @@ public class StratomexAdapter {
 					sortedBy);
 			break;
 		}
-		currentPreviewRowID = new_.getPersistentID();
+		currentPreviewRowID = new_ == null ? null : new_.getPersistentID();
 	}
 
 	private void updateNumerical(InhomogenousPerspectiveRow old, InhomogenousPerspectiveRow new_,
