@@ -9,8 +9,7 @@ import gleem.linalg.Vec2f;
 
 import java.util.List;
 
-import javax.media.opengl.GL2;
-
+import org.caleydo.core.data.collection.CategoricalHistogram;
 import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
@@ -40,7 +39,7 @@ import org.caleydo.view.histogram.HistogramRenderStyle;
  */
 public class HistogramElement extends GLElement implements
 		TablePerspectiveSelectionMixin.ITablePerspectiveMixinCallback {
-	private static float[] SPREAD_LINE_COLOR = { 0.5f, 0.5f, 0.5f };
+	private static Color SPREAD_LINE_COLOR = new Color(0.5f, 0.5f, 0.5f);
 
 	@DeepScan
 	protected final TablePerspectiveSelectionMixin mixin;
@@ -105,8 +104,19 @@ public class HistogramElement extends GLElement implements
 		repaintAll();
 	}
 
-	private TablePerspective getTablePerspective() {
+	public TablePerspective getTablePerspective() {
 		return mixin.getTablePerspective();
+	}
+
+	@Override
+	public <T> T getLayoutDataAs(Class<T> clazz, T default_) {
+		if (clazz.isInstance(mixin.getTablePerspective()))
+			return clazz.cast(mixin.getTablePerspective());
+		if (clazz.isInstance(getDataDomain()))
+			return clazz.cast(getDataDomain());
+		if (Vec2f.class.isAssignableFrom(clazz))
+			return clazz.cast(getMinSize());
+		return super.getLayoutDataAs(clazz, default_);
 	}
 
 	private ATableBasedDataDomain getDataDomain() {
@@ -119,11 +129,12 @@ public class HistogramElement extends GLElement implements
 		ATableBasedDataDomain dataDomain = getDataDomain();
 		g.save();
 		g.move(padding, padding);
-		renderHist(g, getTablePerspective().getContainerStatistics().getHistogram(), w - padding * 2, h - padding * 2,
+		Histogram hist = getTablePerspective().getContainerStatistics().getHistogram();
+		renderHist(g, hist, w - padding * 2, h - padding * 2,
 				dataDomain.getTable().getColorMapper());
 		g.restore();
 
-		if (detailLevel.ordinal() > EDetailLevel.LOW.ordinal())
+		if (detailLevel.ordinal() > EDetailLevel.LOW.ordinal() && !(hist instanceof CategoricalHistogram))
 			renderColorMapper(g, w, h, dataDomain.getTable().getColorMapper());
 	}
 
@@ -136,33 +147,35 @@ public class HistogramElement extends GLElement implements
 
 	public static void renderHist(GLGraphics g, Histogram hist, float w, float h, ColorMapper mapper) {
 
-		float factor = h / hist.getLargestValue();
-		float delta = w / hist.size();
-		float colorDelta = 1.f / (hist.size() - 1);
-		g.gl.glPushAttrib(GL2.GL_LINE_BIT);
+		final float factor = h / hist.getLargestValue();
+		final float delta = w / hist.size();
+		final float colorDelta = 1.f / (hist.size() - 1);
 
 		final float lineWidth = Math.min(delta - 1, 25);
 		final float lineWidthHalf = lineWidth * 0.5f;
-		if (lineWidth < 10)
-			g.lineWidth(lineWidth);
 		float x = delta / 2;
 
+		CategoricalHistogram colored_hist = null;
+		if (hist instanceof CategoricalHistogram) {
+			colored_hist = (CategoricalHistogram) hist;
+		}
+		g.lineWidth(0.3f);
 		g.color(Color.GRAY);
 		for (int i = 0; i < hist.size(); ++i) {
-			if (mapper != null) {
+			if (colored_hist != null) {
+				g.color(colored_hist.getColor(i));
+			} else if (mapper != null) {
 				g.color(mapper.getColor(i * colorDelta));
 			}
 			float v = -hist.get(i) * factor;
 
 			if (v <= -1) {
-				if (lineWidth < 10)
-					g.drawLine(x, 0, x, v);
-				else
-					g.fillRect(x - lineWidthHalf, 0, lineWidth, v);
+				g.fillRect(x - lineWidthHalf, 0, lineWidth, v);
+				g.color(Color.DARK_GRAY).drawRect(x - lineWidthHalf, 0, lineWidth, v);
 			}
 			x += delta;
 		}
-		g.gl.glPopAttrib();
+		g.lineWidth(1);
 	}
 
 	private float getPadding() {
@@ -333,12 +346,7 @@ public class HistogramElement extends GLElement implements
 		repaintAll();
 	}
 
-	@Override
-	public <T> T getLayoutDataAs(Class<T> clazz, T default_) {
-		if (Vec2f.class.isAssignableFrom(clazz))
-			return clazz.cast(getMinSize());
-		return super.getLayoutDataAs(clazz, default_);
-	}
+
 
 	public final Vec2f getMinSize() {
 		switch (detailLevel) {
@@ -346,10 +354,8 @@ public class HistogramElement extends GLElement implements
 			return new Vec2f(300, 300);
 		case MEDIUM:
 			return new Vec2f(100, 100);
-		case LOW:
-			return new Vec2f(40, 40);
 		default:
-			return new Vec2f(40, 40);
+			return new Vec2f(40, 80);
 		}
 	}
 }
