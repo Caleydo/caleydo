@@ -137,7 +137,7 @@ public class Logger {
 				b.append(String.format("%4d ", severity));
 				break;
 			}
-			b.append('[').append(Thread.currentThread()).append("] ");
+			b.append('[').append(Thread.currentThread().getName()).append("] ");
 			b.append(status.getPlugin()).append(" - ").append(status.getMessage());
 			if (severity >= IStatus.ERROR)
 				System.err.println(b);

@@ -50,8 +50,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
-import com.jogamp.opengl.util.FPSAnimator;
-
 /**
  * acts as a sandbox for elements, just use {@link GLSandBox#main(String[], GLElement)} and provide a element, and run the
  * application to open a window with the element shown, without the need of the whole caleydo / eclipse overhead
@@ -399,13 +397,10 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 			} catch (IllegalArgumentException | SecurityException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} catch (java.lang.NoClassDefFoundError e) {
-				// expected error as we aren't part of eclipse
-				System.exit(0);
 			} finally {
 				System.err.flush();
 				System.out.flush();
-				// System.exit(0);
+				System.exit(0);
 			}
 		}
 

@@ -176,6 +176,8 @@ public class MyAnimator implements GLAnimatorControl, Runnable {
 					drawable.display();
 				} catch (RuntimeException e) {
 					log.error("display error: " + drawable, e);
+					if (Thread.interrupted() || e.getCause() instanceof InterruptedException)
+						return;
 				}
 			}
 			fpsCounter.tickFPS();
