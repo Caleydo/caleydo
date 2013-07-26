@@ -27,6 +27,14 @@ import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureData;
 import com.jogamp.opengl.util.texture.TextureIO;
 
+/**
+ * helper class for generating a texture heat map
+ *
+ * TODO support tiling in X and Y direction
+ * 
+ * @author Samuel Gratzl
+ * 
+ */
 public class HeatMapTextureRenderer {
 	private final static int MAX_SAMPLES_PER_TEXTURE = 2048;
 

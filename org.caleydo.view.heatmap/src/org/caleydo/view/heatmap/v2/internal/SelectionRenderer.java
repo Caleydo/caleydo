@@ -21,6 +21,12 @@ import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.heatmap.v2.ISpacingStrategy.ISpacingLayout;
 
 
+/**
+ * utility class to render the selection of a heatmap as one ore more crosses
+ *
+ * @author Samuel Gratzl
+ *
+ */
 public class SelectionRenderer {
 	private final SelectionManager manager;
 	private final TablePerspective tablePerspective;
@@ -60,6 +66,7 @@ public class SelectionRenderer {
 		}
 
 		g.gl.glDisable(GL2.GL_LINE_STIPPLE);
+		g.lineWidth(1);
 	}
 
 	public void renderRecord(GLGraphics g, SelectionType selectionType, float w, ISpacingLayout layout) {
@@ -85,6 +92,7 @@ public class SelectionRenderer {
 
 			g.drawRect(0, y, w, fieldHeight);
 		}
+		g.lineWidth(1);
 	}
 
 	public void render(GLGraphics g, float w, float h, ISpacingLayout layout) {

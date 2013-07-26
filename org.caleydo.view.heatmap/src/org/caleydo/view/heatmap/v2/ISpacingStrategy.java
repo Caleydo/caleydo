@@ -9,15 +9,42 @@ import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.selection.SelectionManager;
 
 /**
+ * different spacing layouts for a heatmap, i.e. how to place within one dimension
+ *
  * @author Samuel Gratzl
  *
  */
 public interface ISpacingStrategy {
+	/**
+	 * apply the strategy and compute a {@link ISpacingLayout} given the arguments
+	 * 
+	 * @param perspective
+	 *            the data to show
+	 * @param manager
+	 *            the selection manager of this data to test, whether some items are selected
+	 * @param hideHidden
+	 *            should hidden selected items really be hidden
+	 * @param size
+	 *            avaiable dip size
+	 * @return
+	 */
 	ISpacingLayout apply(Perspective perspective, SelectionManager manager, boolean hideHidden, float size);
 
 	public interface ISpacingLayout {
+		/**
+		 * return the position of the given index
+		 *
+		 * @param index
+		 * @return
+		 */
 		float getPosition(int index);
 
+		/**
+		 * return the cell sice of the given index
+		 *
+		 * @param index
+		 * @return
+		 */
 		float getSize(int index);
 	}
 }
