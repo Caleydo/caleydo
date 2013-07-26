@@ -5,19 +5,19 @@
  ******************************************************************************/
 package org.caleydo.view.heatmap.v2.internal;
 
+import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.media.opengl.GL;
-import javax.media.opengl.GL2;
 import javax.media.opengl.GLContext;
 import javax.media.opengl.GLProfile;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.VirtualArray;
-import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
@@ -31,17 +31,16 @@ import com.jogamp.opengl.util.texture.TextureIO;
  * helper class for generating a texture heat map
  *
  * TODO support tiling in X and Y direction
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public class HeatMapTextureRenderer {
 	private final static int MAX_SAMPLES_PER_TEXTURE = 2048;
 
-	private int numberOfRecords = 0;
+	private Dimension dimension = null;
 
-	/** array of textures for holding the data samples */
-	private List<Pair<Texture, Integer>> textures = new ArrayList<>();
+	private List<Tile> tiles = new ArrayList<>();
 
 	private final TablePerspective tablePerspective;
 	private final IBlockColorer blockColorer;
@@ -61,68 +60,127 @@ public class HeatMapTextureRenderer {
 	public void init(IGLElementContext context) {
 		final GL gl = GLContext.getCurrentGL();
 
-		final VirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
-		final VirtualArray dimVA = tablePerspective.getDimensionPerspective().getVirtualArray();
-		final ATableBasedDataDomain dataDomain = tablePerspective.getDataDomain();
+		final int numberOfRecords = tablePerspective.getRecordPerspective().getVirtualArray().size();
+		final int numberOfDimensions = tablePerspective.getDimensionPerspective().getVirtualArray().size();
+		dimension = new Dimension(numberOfDimensions, numberOfRecords);
 
-		numberOfRecords = recordVA.size();
-		final int numberOfDimensions = dimVA.size();
+		final int maxSize = resolveMaxSize(gl);
 
-		int bufferSize = Math.min(numberOfRecords, MAX_SAMPLES_PER_TEXTURE);
-		FloatBuffer buffer = FloatBuffer.allocate(numberOfDimensions * bufferSize * 4); //w*h*rgba
+		boolean needXTiling = numberOfDimensions > maxSize;
+		boolean needYTiling = numberOfRecords > maxSize;
 
-		int actTexture = 0;
-		int actRecordInTexture = 0;
-
-		for (Integer recordID : recordVA) {
-			actRecordInTexture++;
-			//add row
-			for (Integer dimensionID : dimVA) {
-				Color color = blockColorer.apply(recordID, dimensionID, dataDomain, false);
-				buffer.put(color.getRGBA());
+		if (!needXTiling && !needYTiling) {
+			//single tile
+			FloatBuffer buffer = FloatBuffer.allocate(numberOfDimensions * numberOfRecords * 4); //w*h*rgba
+			Rectangle tile = new Rectangle(0,0,numberOfDimensions,numberOfRecords);
+			tiles.add(createTile(buffer,tile, gl));
+		} else if (needXTiling && !needYTiling){
+			//tile in x direction only
+			FloatBuffer buffer = FloatBuffer.allocate(maxSize * numberOfRecords * 4); //w*h*rgba
+			//fill full
+			int lastTile = numberOfDimensions - maxSize;
+			for (int i = 0; i < lastTile; i += maxSize) {
+				Rectangle tile = new Rectangle(i,0,maxSize,numberOfRecords);
+				tiles.add(createTile(buffer,tile, gl));
 			}
-
-			if (actRecordInTexture == MAX_SAMPLES_PER_TEXTURE) { // flush intermediate
-				createTexture(gl, numberOfDimensions, buffer, actTexture, actRecordInTexture, false);
-				actTexture++;
-				actRecordInTexture = 0;
+			{//create rest
+				int remaining = numberOfDimensions % maxSize;
+				Rectangle tile = new Rectangle(numberOfDimensions-remaining,0,remaining,numberOfRecords);
+				tiles.add(createTile(buffer,tile, gl));
 			}
-		}
-		if (actRecordInTexture > 0) { // flush last
-			assert (actRecordInTexture < MAX_SAMPLES_PER_TEXTURE);
-			createTexture(gl, numberOfDimensions, buffer, actTexture, actRecordInTexture, true);
-
-			actTexture++;
-			actRecordInTexture = 0;
-		}
-
-		// remove all texture that are not needed anymore
-		if (textures.size() > actTexture) {
-			List<Pair<Texture, Integer>> toremove = textures.subList(actTexture, textures.size());
-			for (Pair<Texture, Integer> entry : toremove) {
-				entry.getFirst().destroy(gl);
+		} else if (!needXTiling && needYTiling) {
+			//tile in y direction only
+			FloatBuffer buffer = FloatBuffer.allocate(numberOfDimensions * maxSize * 4); //w*h*rgba
+			//fill full
+			int lastTile = numberOfRecords - maxSize;
+			for (int i = 0; i < lastTile; i += maxSize) {
+				Rectangle tile = new Rectangle(0,i,numberOfDimensions,maxSize);
+				tiles.add(createTile(buffer,tile, gl));
 			}
-			toremove.clear();
+			{//create rest
+				int remaining = numberOfRecords % maxSize;
+				Rectangle tile = new Rectangle(0,numberOfRecords-remaining,numberOfDimensions,remaining);
+				tiles.add(createTile(buffer,tile, gl));
+			}
+		} else {
+			//tile in both directions
+			//tile in y direction only
+			FloatBuffer buffer = FloatBuffer.allocate(maxSize * maxSize * 4); //w*h*rgba
+			//fill full
+			int lastTileR = numberOfRecords - maxSize;
+			int lastTileD = numberOfDimensions - maxSize;
+			for (int i = 0; i < lastTileR; i += maxSize) {
+				for (int j = 0; j < lastTileD; j += maxSize) {
+					Rectangle tile = new Rectangle(j,i,maxSize,maxSize);
+					tiles.add(createTile(buffer,tile, gl));
+				}
+				{//create rest
+					int remaining = numberOfDimensions % maxSize;
+					Rectangle tile = new Rectangle(numberOfDimensions-remaining,i,remaining,maxSize);
+					tiles.add(createTile(buffer,tile, gl));
+				}
+			}
+			{//last line
+				int iremaining = numberOfRecords % maxSize;
+				int i = numberOfRecords - iremaining;
+				for (int j = 0; j < lastTileD; j += maxSize) {
+					Rectangle tile = new Rectangle(j,i,maxSize,iremaining);
+					tiles.add(createTile(buffer,tile, gl));
+				}
+				{//create rest
+					int remaining = numberOfDimensions % maxSize;
+					Rectangle tile = new Rectangle(numberOfDimensions-remaining,i,remaining,iremaining);
+					tiles.add(createTile(buffer,tile, gl));
+				}
+			}
 		}
 	}
 
-	protected void createTexture(final GL gl, final int width, FloatBuffer buffer, int actTexture, int height,
-			boolean exactMatch) {
+	/**
+	 * @param buffer
+	 * @param tile
+	 * @return
+	 */
+	private Tile createTile(FloatBuffer buffer, Rectangle tile, GL gl) {
+		final VirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
+		final VirtualArray dimVA = tablePerspective.getDimensionPerspective().getVirtualArray();
+		final ATableBasedDataDomain dataDomain = tablePerspective.getDataDomain();
+		final int ilast = tile.y+tile.height;
+		final int jlast = tile.x+tile.width;
+
+		//fill buffer
 		buffer.rewind();
-		Texture texture;
-		if (textures.size() > actTexture) { //try to reuse it
-			Pair<Texture, Integer> entry = textures.get(actTexture);
-			texture = entry.getFirst();
-			textures.set(actTexture, Pair.make(texture, height));
-		} else {
-			texture = TextureIO.newTexture(GL.GL_TEXTURE_2D);
-			textures.add(Pair.make(texture, height));
+		for(int i = tile.y; i < ilast; ++i) {
+			int recordID = recordVA.get(i);
+			for(int j = tile.x; j < jlast; ++j) {
+				int dimensionID = dimVA.get(j);
+				Color color = blockColorer.apply(recordID, dimensionID, dataDomain, false);
+				buffer.put(color.getRGBA());
+			}
 		}
 
-		TextureData texData = asTextureData(buffer, width, height);
+		//load to texture
+		buffer.rewind();
+		Texture texture = TextureIO.newTexture(GL.GL_TEXTURE_2D);
+		TextureData texData = asTextureData(buffer, tile.width, tile.height);
 		texture.updateImage(gl, texData);
 		gl.glFlush();
 		texData.destroy();
+
+		return new Tile(tile, texture);
+	}
+
+	/**
+	 * compute the max texture size to use
+	 *
+	 * @param gl
+	 * @return
+	 */
+	private static int resolveMaxSize(GL gl) {
+		int[] result = new int[1];
+		gl.glGetIntegerv(GL.GL_MAX_TEXTURE_SIZE, result, 0);
+		int maxTexSize = result[0];
+		return Math.min(maxTexSize, MAX_SAMPLES_PER_TEXTURE);
 	}
 
 	protected TextureData asTextureData(FloatBuffer buffer, int width, int height) {
@@ -135,31 +193,50 @@ public class HeatMapTextureRenderer {
 
 	public void takeDown() {
 		GL gl = GLContext.getCurrentGL();
-		for (Pair<Texture, Integer> entry : textures) {
-			entry.getFirst().destroy(gl);
+		for (Tile tile : tiles) {
+			tile.texture.destroy(gl);
 		}
-		textures.clear();
-		numberOfRecords = 0;
+		tiles.clear();
+		dimension = null;
 	}
 
 	public void render(GLGraphics g, float w, float h) {
-		float y = 0.0f;
-		float elementHeight = h / numberOfRecords;
+		float wScale = w / dimension.width;
+		float hScale = h / dimension.height;
 
-		g.color(1f, 1f, 0f, 1f);
+		g.save();
+		//scale to be able to use pixel rendering
+		g.gl.glScalef(wScale, hScale, 1.0f);
 
 		g.gl.glEnable(GL.GL_TEXTURE_2D);
-		g.gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_S, GL2.GL_CLAMP);
-		g.gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_T, GL2.GL_CLAMP);
-		g.gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_NEAREST);
-		g.gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_NEAREST);
+		for(Tile tile : tiles)
+			tile.render(g);
+		g.restore();
+	}
 
-		for (Pair<Texture, Integer> entry : textures) {
-			Texture tex = entry.getFirst();
-			int samples = entry.getSecond();
-			float hi = elementHeight * samples;
-			g.fillImage(tex, 0, y, w, hi);
-			y += hi;
+	private static class Tile {
+		private final Rectangle tile;
+		private final Texture texture;
+
+		public Tile(Rectangle tile, Texture texture) {
+			this.tile = tile;
+			this.texture = texture;
+		}
+		public void render(GLGraphics g) {
+
+			texture.bind(g.gl);
+			g.gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_S, GL.GL_CLAMP_TO_EDGE);
+			g.gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_T, GL.GL_CLAMP_TO_EDGE);
+			g.gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_NEAREST);
+			g.gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_NEAREST);
+
+			g.fillImage(texture, tile.x, tile.y, tile.width, tile.height);
 		}
 	}
+
+	// public static void main(String[] args) {
+	// MockDataDomain d = MockDataDomain.createNumerical(100, 50, new Random());
+	// GLSandBox.main(args, new HeatMapElement(d.getDefaultTablePerspective(), BasicBlockColorer.INSTANCE,
+	// EDetailLevel.LOW));
+	// }
 }
