@@ -122,6 +122,7 @@ public class HeatMapElement extends PickableGLElement implements
 
 		switch (detailLevel) {
 		case HIGH:
+		case MEDIUM:
 			setVisibility(EVisibility.PICKABLE); //pickable + no textures
 			textureRenderer = null;
 			break;

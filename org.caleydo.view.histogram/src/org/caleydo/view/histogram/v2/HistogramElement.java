@@ -60,7 +60,8 @@ public class HistogramElement extends GLElement implements
 		this.mixin = new TablePerspectiveSelectionMixin(tablePerspective, this);
 		this.detailLevel = detailLevel;
 		setPicker(null);
-		setVisibility(detailLevel.ordinal() > EDetailLevel.LOW.ordinal() ? EVisibility.PICKABLE : EVisibility.VISIBLE);
+		setVisibility(detailLevel.ordinal() > EDetailLevel.MEDIUM.ordinal() ? EVisibility.PICKABLE
+				: EVisibility.VISIBLE);
 	}
 
 	@Override

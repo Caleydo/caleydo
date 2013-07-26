@@ -7,4 +7,5 @@ Require-Bundle: org.caleydo.core;bundle-version="2.2"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.caleydo.view.histogram.Activator
-Export-Package: org.caleydo.view.histogram
+Export-Package: org.caleydo.view.histogram,
+ org.caleydo.view.histogram.v2
