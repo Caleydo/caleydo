@@ -46,7 +46,7 @@ import com.google.common.base.Preconditions;
 /**
  *
  * @author Samuel Gratzl
- * 
+ *
  */
 public class HeatMapElement extends PickableGLElement implements
 		TablePerspectiveSelectionMixin.ITablePerspectiveMixinCallback {
@@ -135,7 +135,6 @@ public class HeatMapElement extends PickableGLElement implements
 	@Override
 	protected void init(IGLElementContext context) {
 		super.init(context);
-		onVAUpdate(mixin.getTablePerspective());
 
 		recordPickingPool = new PickingPool(context, new IPickingListener() {
 			@Override
@@ -149,6 +148,7 @@ public class HeatMapElement extends PickableGLElement implements
 				onDimensionPick(pick.getObjectID(), pick);
 			}
 		});
+		onVAUpdate(mixin.getTablePerspective());
 	}
 
 	@Override
@@ -639,5 +639,4 @@ public class HeatMapElement extends PickableGLElement implements
 	public String toString() {
 		return "Heat map for " + mixin;
 	}
-
 }
