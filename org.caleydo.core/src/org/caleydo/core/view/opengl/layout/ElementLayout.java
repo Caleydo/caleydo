@@ -10,11 +10,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.id.IDCreator;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.util.Zoomer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
@@ -52,8 +52,6 @@ import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
  * @author Alexander Lex
  */
 public class ElementLayout implements Comparable<ElementLayout> {
-
-	private static AtomicInteger idCounter = new AtomicInteger();
 
 	private Integer id;
 
@@ -148,7 +146,7 @@ public class ElementLayout implements Comparable<ElementLayout> {
 	}
 
 	public ElementLayout(String layoutName) {
-		id = idCounter.incrementAndGet();
+		id = IDCreator.createVMUniqueID(ElementLayout.class);
 		this.layoutName = layoutName == null ? "" : layoutName;
 	}
 
