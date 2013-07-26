@@ -13,6 +13,7 @@ import java.lang.reflect.InvocationTargetException;
 import javax.media.opengl.FPSCounter;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
+import javax.media.opengl.GLAnimatorControl;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLEventListener;
@@ -26,6 +27,7 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.IGLKeyListener;
+import org.caleydo.core.view.opengl.canvas.MyAnimator;
 import org.caleydo.core.view.opengl.canvas.internal.IGLCanvasFactory;
 import org.caleydo.core.view.opengl.canvas.internal.swt.SWTGLCanvasFactory;
 import org.caleydo.core.view.opengl.layout2.internal.SWTLayer;
@@ -62,7 +64,7 @@ import com.jogamp.opengl.util.FPSAnimator;
  *
  */
 public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementContext {
-	private final FPSAnimator animator;
+	private final GLAnimatorControl animator;
 	private final WindowGLElement root;
 
 	private final ViewFrustum viewFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 100, 100, 0, -20, 20);
@@ -102,8 +104,8 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 		this.padding = padding;
 		canvas.addGLEventListener(this);
 
-		this.animator = new FPSAnimator(canvas.asGLAutoDrawAble(), 30);
-		animator.setPrintExceptions(true);
+		this.animator = new MyAnimator(30);
+		this.animator.add(canvas.asGLAutoDrawAble());
 		canvas.asGLAutoDrawAble().setAutoSwapBufferMode(true);
 
 		// ENABLE to print the fps to System.err

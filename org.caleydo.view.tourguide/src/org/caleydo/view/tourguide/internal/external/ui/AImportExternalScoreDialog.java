@@ -121,7 +121,7 @@ public abstract class AImportExternalScoreDialog<T extends AExternalScoreParseSp
 			public void on(String data) {
 				onSelectFile(data);
 			}
-		});
+		}, new GridData(SWT.FILL, SWT.FILL, true, false));
 
 		label = new LabelWidget(parentComposite, "External Score Name");
 
