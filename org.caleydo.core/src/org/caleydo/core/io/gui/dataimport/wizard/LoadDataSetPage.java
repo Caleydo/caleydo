@@ -203,7 +203,7 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 			public void on(String data) {
 				mediator.onSelectFile(data);
 			}
-		});
+		}, new GridData(SWT.FILL, SWT.FILL, true, false));
 
 		// label
 		label = new LabelWidget(parentComposite, "Dataset Name");

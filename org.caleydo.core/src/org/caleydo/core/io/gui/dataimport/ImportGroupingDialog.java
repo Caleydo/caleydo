@@ -18,7 +18,6 @@ import org.caleydo.core.id.IDType;
 import org.caleydo.core.io.GroupingParseSpecification;
 import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.io.gui.dataimport.PreviewTable.IPreviewCallback;
-import org.caleydo.core.io.gui.dataimport.widget.LabelWidget;
 import org.caleydo.core.io.gui.dataimport.widget.LoadFileWidget;
 import org.caleydo.core.io.gui.dataimport.widget.RowConfigWidget;
 import org.caleydo.core.util.base.ICallback;
@@ -28,6 +27,7 @@ import org.caleydo.core.util.execution.SafeCallable;
 import org.caleydo.core.util.system.BrowserUtils;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
+import org.eclipse.nebula.widgets.nattable.data.IDataProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -58,7 +58,7 @@ public class ImportGroupingDialog extends AHelpButtonDialog implements SafeCalla
 	/**
 	 * Textfield for the grouping name.
 	 */
-	private LabelWidget label;
+	// private LabelWidget label;
 
 	private LoadFileWidget loadFile;
 
@@ -86,6 +86,8 @@ public class ImportGroupingDialog extends AHelpButtonDialog implements SafeCalla
 
 	private int numRowsInFile = 0;
 
+	private List<String> customGroupingNames = new ArrayList<>();
+
 	/**
 	 * @param parentShell
 	 */
@@ -100,7 +102,7 @@ public class ImportGroupingDialog extends AHelpButtonDialog implements SafeCalla
 		if (existing == null) {
 			spec.setDelimiter("\t");
 			spec.setNumberOfHeaderLines(1);
-			spec.setRowOfColumnIDs(1);
+			spec.setRowOfColumnIDs(0);
 		} else {
 			this.spec.setColumnIDSpecification(existing.getColumnIDSpecification());
 			this.spec.setColumnOfRowIds(existing.getColumnOfRowIds());
@@ -138,18 +140,20 @@ public class ImportGroupingDialog extends AHelpButtonDialog implements SafeCalla
 			public void on(String data) {
 				onSelectFile(data);
 			}
-		});
+		}, new GridData(SWT.FILL, SWT.FILL, true, false, 2, 1));
 
-		label = new LabelWidget(parentComposite, "Grouping Name");
+		// label = new LabelWidget(parentComposite, "Grouping Name");
 
 		rowConfig = new RowConfigWidget(parentComposite, new IntegerCallback() {
 			@Override
 			public void on(int data) {
 				previewTable.onNumHeaderRowsChanged(data);
 				if (data == 0) {
-					onUseCustomGroupingNames();
-					useCustomGroupingNamesButton.setSelection(true);
-					useGroupingNamesFromRowButton.setSelection(false);
+					if (!useCustomGroupingNamesButton.getSelection()) {
+						onUseCustomGroupingNames();
+						useCustomGroupingNamesButton.setSelection(true);
+						useGroupingNamesFromRowButton.setSelection(false);
+					}
 				} else if (data < rowWithGroupingNamesSpinner.getSelection()) {
 					rowWithGroupingNamesSpinner.setSelection(data);
 				}
@@ -250,12 +254,49 @@ public class ImportGroupingDialog extends AHelpButtonDialog implements SafeCalla
 			previewTable.onNumHeaderRowsChanged(rowWithGroupingNames);
 			rowConfig.setNumHeaderRows(rowWithGroupingNames);
 		}
+		previewTable.clearCustomHeaderRows();
 	}
 
 	private void onUseCustomGroupingNames() {
 		groupingNamesRowLabel.setEnabled(false);
 		rowWithGroupingNamesSpinner.setEnabled(false);
 		previewTable.onRowOfColumnIDChanged(-1);
+		customGroupingNames.clear();
+		int groupingNumber = 1;
+		for (int i = 1; i <= previewTable.getNumColumns(); i++) {
+			if (i == rowConfig.getColumnOfRowID()) {
+				customGroupingNames.add("");
+			} else {
+				customGroupingNames.add("Grouping " + groupingNumber);
+				groupingNumber++;
+			}
+		}
+		previewTable.addCustomHeaderRow(new IDataProvider() {
+
+			@Override
+			public void setDataValue(int columnIndex, int rowIndex, Object newValue) {
+				if (columnIndex + 1 == rowConfig.getColumnOfRowID())
+					return;
+				customGroupingNames.set(columnIndex, newValue.toString());
+			}
+
+			@Override
+			public int getRowCount() {
+				return 1;
+			}
+
+			@Override
+			public Object getDataValue(int columnIndex, int rowIndex) {
+				if (columnIndex + 1 == rowConfig.getColumnOfRowID())
+					return "";
+				return customGroupingNames.get(columnIndex);
+			}
+
+			@Override
+			public int getColumnCount() {
+				return customGroupingNames.size();
+			}
+		}, true);
 	}
 
 	private void setGroupingNamesGroupEnabled(boolean enabled) {
@@ -294,8 +335,8 @@ public class ImportGroupingDialog extends AHelpButtonDialog implements SafeCalla
 	private void initWidgetsFromGroupParseSpecification() {
 		this.loadFile.setFileName(spec.getDataSourcePath());
 
-		this.label.setText(spec.getGroupingName());
-		this.label.setEnabled(true);
+		// this.label.setText(spec.getGroupingName());
+		// this.label.setEnabled(true);
 
 		this.rowConfig.setCategoryID(rowIDCategory);
 		this.rowConfig.setNumHeaderRows(spec.getNumberOfHeaderLines());
@@ -310,8 +351,8 @@ public class ImportGroupingDialog extends AHelpButtonDialog implements SafeCalla
 
 		this.loadFile.setFileName("");
 
-		this.label.setText("");
-		this.label.setEnabled(false);
+		// this.label.setText("");
+		// this.label.setEnabled(false);
 
 		this.rowConfig.setCategoryID(rowIDCategory);
 		this.rowConfig.setEnabled(false);
@@ -336,7 +377,9 @@ public class ImportGroupingDialog extends AHelpButtonDialog implements SafeCalla
 		spec.setColumns(selectedColumns);
 		spec.setRowIDSpecification(this.rowConfig.getIDSpecification());
 		spec.setContainsColumnIDs(false);
-		spec.setGroupingName(this.label.getText());
+		// TODO remove
+		spec.setGroupingName(spec.getDataSourcePath().substring(
+				spec.getDataSourcePath().lastIndexOf(File.separator) + 1, spec.getDataSourcePath().lastIndexOf(".")));
 		if (useGroupingNamesFromRowButton.getSelection()) {
 			// TODO fill grouping names
 		} else {
@@ -353,12 +396,12 @@ public class ImportGroupingDialog extends AHelpButtonDialog implements SafeCalla
 	}
 
 	public void onSelectFile(String inputFileName) {
-		this.label.setText(inputFileName.substring(inputFileName.lastIndexOf(File.separator) + 1,
-				inputFileName.lastIndexOf(".")));
+		// this.label.setText(inputFileName.substring(inputFileName.lastIndexOf(File.separator) + 1,
+		// inputFileName.lastIndexOf(".")));
 
 		spec.setDataSourcePath(inputFileName);
 
-		this.label.setEnabled(true);
+		// this.label.setEnabled(true);
 		this.rowConfig.setEnabled(true);
 		setGroupingNamesGroupEnabled(true);
 

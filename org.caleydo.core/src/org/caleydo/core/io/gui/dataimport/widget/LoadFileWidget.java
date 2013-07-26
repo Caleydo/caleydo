@@ -26,13 +26,13 @@ public class LoadFileWidget {
 	private final ICallback<String> callback;
 	private final Text label;
 
-	public LoadFileWidget(Composite parent, String label, ICallback<String> callback) {
+	public LoadFileWidget(Composite parent, String label, ICallback<String> callback, Object layoutData) {
 		this.callback = callback;
 
 		Group group = new Group(parent, SWT.SHADOW_ETCHED_IN);
 		group.setText("Input File");
 		group.setLayout(new GridLayout(2, false));
-		group.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		group.setLayoutData(layoutData);
 
 		Button openFileButton = new Button(group, SWT.PUSH);
 		openFileButton.setText(label);

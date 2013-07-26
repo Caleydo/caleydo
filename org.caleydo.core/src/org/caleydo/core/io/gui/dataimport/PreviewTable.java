@@ -20,6 +20,7 @@ import org.caleydo.core.io.gui.dataimport.widget.table.INoArgumentCallback;
 import org.caleydo.core.io.gui.dataimport.widget.table.PreviewTableWidget;
 import org.caleydo.core.util.base.BooleanCallback;
 import org.caleydo.core.util.base.ICallback;
+import org.eclipse.nebula.widgets.nattable.data.IDataProvider;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
@@ -116,6 +117,14 @@ public class PreviewTable {
 
 	public Composite getTable() {
 		return this.previewTable.getTable();
+	}
+
+	public void addCustomHeaderRow(IDataProvider dataProvider, boolean isEditable) {
+		previewTable.addCustomHeaderRows(dataProvider, isEditable);
+	}
+
+	public void clearCustomHeaderRows() {
+		previewTable.clearCustomHeaderRows();
 	}
 
 	private void loadTransposedFile() {
