@@ -5,10 +5,18 @@
  ******************************************************************************/
 package org.caleydo.core.util.logging;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import org.eclipse.core.runtime.ILog;
+import org.eclipse.core.runtime.ILogListener;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.osgi.framework.Bundle;
 
 /**
  * Convenience interface for the RCP logger
@@ -36,7 +44,13 @@ public class Logger {
 				// the
 				// time when singleton was getting instantiated
 				if (instance == null) {
-					instance = Platform.getLog(Platform.getBundle("org.caleydo.core"));
+					try {
+						instance = Platform.getLog(Platform.getBundle("org.caleydo.core"));
+					} catch (NullPointerException e) {
+						System.err.println("can't create log maybe running in sandbox");
+						e.printStackTrace();
+						instance = new DummyLog();
+					}
 					instance.addLogListener(new LogListener());
 
 				}
@@ -79,5 +93,64 @@ public class Logger {
 
 	public void log(int level, Throwable e, String msg, Object... args) {
 		log(new Status(level, this.source, String.format(msg, args), e));
+	}
+
+	private static class DummyLog implements ILog {
+		private final List<ILogListener> listeners = new ArrayList<>();
+		private final DateFormat dateformat = new SimpleDateFormat("hh:MM:ss,SSS");
+
+		@Override
+		public void addLogListener(ILogListener listener) {
+			this.listeners.add(listener);
+		}
+
+		@Override
+		public Bundle getBundle() {
+			return null;
+		}
+
+		@Override
+		public synchronized void log(IStatus status) {
+			for (ILogListener l : listeners) {
+				l.logging(status, status.getPlugin());
+			}
+			StringBuilder b = new StringBuilder();
+			b.append(dateformat.format(new Date()));
+			int severity = status.getSeverity();
+			switch(severity) {
+			case IStatus.OK:
+				b.append(" FINE  ");
+				break;
+			case IStatus.ERROR:
+				b.append(" ERROR ");
+				break;
+			case IStatus.WARNING:
+				b.append(" WARN  ");
+				break;
+			case IStatus.INFO:
+				b.append(" INFO  ");
+				break;
+			case IStatus.CANCEL:
+				b.append(" FATAL ");
+				break;
+			default:
+				b.append(String.format("%4d ", severity));
+				break;
+			}
+			b.append('[').append(Thread.currentThread()).append("] ");
+			b.append(status.getPlugin()).append(" - ").append(status.getMessage());
+			if (severity >= IStatus.ERROR)
+				System.err.println(b);
+			else
+				System.out.println(b);
+			if (status.getException() != null)
+				status.getException().printStackTrace();
+		}
+
+		@Override
+		public void removeLogListener(ILogListener listener) {
+			listeners.remove(listener);
+		}
+
 	}
 }
