@@ -49,6 +49,9 @@ public class HistogramElement extends GLElement implements
 
 	private final EDetailLevel detailLevel;
 
+	private int hoveredSpread = -1;
+	private boolean hoveredLeft = false;
+
 	public HistogramElement(TablePerspective tablePerspective) {
 		this(tablePerspective, EDetailLevel.HIGH);
 	}
@@ -161,6 +164,7 @@ public class HistogramElement extends GLElement implements
 		}
 		g.lineWidth(0.3f);
 		g.color(Color.GRAY);
+		g.save().move(0, h - 1);
 		for (int i = 0; i < hist.size(); ++i) {
 			if (colored_hist != null) {
 				g.color(colored_hist.getColor(i));
@@ -175,6 +179,7 @@ public class HistogramElement extends GLElement implements
 			}
 			x += delta;
 		}
+		g.restore();
 		g.lineWidth(1);
 	}
 
@@ -210,7 +215,7 @@ public class HistogramElement extends GLElement implements
 		for(int i = 0; i < markerPoints.size(); ++i) {
 			ColorMarkerPoint markerPoint = markerPoints.get(i);
 			// the left polygon between the central line and the spread
-			org.caleydo.core.util.color.Color color = markerPoint.getColor();
+			Color color = markerPoint.getColor();
 			g.color(color.r,color.g,color.b,0.3f);
 
 			final float v = markerPoint.getMappingValue();
@@ -226,7 +231,13 @@ public class HistogramElement extends GLElement implements
 				// the left spread line
 				g.color(SPREAD_LINE_COLOR);
 				g.incZ();
+				if (hoveredLeft && hoveredSpread == i) {
+					g.lineWidth(3.f);
+				}
 				g.drawLine(from,0,from,h);
+				if (hoveredLeft && hoveredSpread == i) {
+					g.lineWidth(1);
+				}
 				g.decZ();
 			}
 
@@ -241,7 +252,13 @@ public class HistogramElement extends GLElement implements
 				// the right spread line
 				g.color(SPREAD_LINE_COLOR);
 				g.incZ();
+				if (!hoveredLeft && hoveredSpread == i) {
+					g.lineWidth(3.f);
+				}
 				g.drawLine(to, 0, to, h);
+				if (!hoveredLeft && hoveredSpread == i) {
+					g.lineWidth(1);
+				}
 				g.decZ();
 			}
 		}
@@ -296,6 +313,16 @@ public class HistogramElement extends GLElement implements
 		case MOUSE_RELEASED:
 			EventPublisher.trigger(new UpdateColorMappingEvent().from(this));
 			break;
+		case MOUSE_OVER:
+			hoveredSpread = pick.getObjectID();
+			hoveredLeft = isLeftSpread;
+			repaint();
+			break;
+		case MOUSE_OUT:
+			hoveredSpread = -1;
+			hoveredLeft = isLeftSpread;
+			repaint();
+			break;
 		case CLICKED:
 			pick.setDoDragging(true);
 			break;
@@ -304,15 +331,18 @@ public class HistogramElement extends GLElement implements
 			final int selected = pick.getObjectID();
 			ColorMarkerPoint point = markers.get(selected);
 			final float dv = pick.getDx() / (getSize().x() - getPadding() * 2);
+			if (dv == 0)
+				break;
 			//clamp values in the neighbor range
 			float v = dv;
 			if (isLeftSpread) {
-				v += point.getLeftSpread();
+				v = -v + point.getLeftSpread();
 				if (v < 0.01f)
 					v = 0.01f;
 				if (selected > 0) {
 					ColorMarkerPoint prev = markers.get(selected-1);
-					v = Math.max(v, point.getMappingValue()-(prev.getMappingValue()+prev.getRightSpread()+0.01f));
+					float maxv = (prev.getMappingValue() + prev.getRightSpread() + 0.01f);
+					v = Math.min(v, point.getMappingValue() - maxv);
 				}
 				if (v != point.getLeftSpread()) {
 					point.setLeftSpread(v);
@@ -345,7 +375,6 @@ public class HistogramElement extends GLElement implements
 		EventPublisher.trigger(event);
 		repaintAll();
 	}
-
 
 
 	public final Vec2f getMinSize() {
