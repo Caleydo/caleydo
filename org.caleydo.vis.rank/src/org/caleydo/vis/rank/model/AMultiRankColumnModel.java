@@ -6,7 +6,6 @@
 package org.caleydo.vis.rank.model;
 
 import gleem.linalg.Vec2f;
-import gleem.linalg.Vec4f;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -24,6 +23,7 @@ import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
+import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.rank.internal.event.AnnotationEditEvent;
 import org.caleydo.vis.rank.internal.ui.TitleDescriptionDialog;
@@ -186,7 +186,7 @@ public abstract class AMultiRankColumnModel extends ACompositeRankColumnModel im
 		m.setzDelta(0.5f);
 		Vec2f location = summary.getAbsoluteLocation();
 		Vec2f size = summary.getSize();
-		context.getPopupLayer().show(m, new Vec4f(location.x(), location.y() + size.y(), 200, m.getSize().y()));
+		context.getPopupLayer().show(m, new Rect(location.x(), location.y() + size.y(), 200, m.getSize().y()));
 	}
 
 	protected GLElement createEditFilterPopup(IFloatList data, GLElement summary) {

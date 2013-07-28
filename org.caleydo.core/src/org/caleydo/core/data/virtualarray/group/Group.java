@@ -5,26 +5,24 @@
  ******************************************************************************/
 package org.caleydo.core.data.virtualarray.group;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.id.IDCreator;
 import org.caleydo.core.util.base.IDefaultLabelHolder;
+import org.caleydo.core.util.base.IUniqueObject;
 
 /**
  * @author Bernhard Schlegl
  * @author Alexander Lex
  * @author Marc Streit
  */
-public class Group implements IDefaultLabelHolder {
-
-	private static AtomicInteger GROUP_ID_COUNTER = new AtomicInteger();
-
+public class Group implements IDefaultLabelHolder, IUniqueObject {
 	/** unique ID */
-	private int id = 0;
+	@XmlTransient
+	private int id = IDCreator.createVMUniqueID(Group.class);
 
 	/** number of elements in the group/cluster */
 	private int size = 0;
@@ -67,7 +65,7 @@ public class Group implements IDefaultLabelHolder {
 	private float[] meanValuesRepresentativeElement;
 
 
-	private String label;
+	private String label = "Group " + id;
 	@XmlElement
 	private boolean isDefaultLabel = true;
 
@@ -75,30 +73,23 @@ public class Group implements IDefaultLabelHolder {
 	 * Default Constructor
 	 */
 	public Group() {
-		init();
 	}
 
 	public Group(int size) {
 		this.setSize(size);
-		init();
 	}
 
 	/**
 	 * Initialize a clone of a group with the same size, ID and label. Start index may vary.
 	 *
 	 * TODO: this is not synchronous for changes
-	 * 
+	 *
 	 * @param clone
 	 */
 	public Group(Group clone) {
 		this.id = clone.id;
 		this.size = clone.size;
 		this.label = clone.label;
-	}
-
-	private void init() {
-		id = GROUP_ID_COUNTER.getAndIncrement();
-		label = "Group " + id;
 	}
 
 	/**
@@ -111,7 +102,6 @@ public class Group implements IDefaultLabelHolder {
 	 *            this group (i.e. the most typical element)
 	 */
 	public Group(int size, int representativeElementIndex) {
-		init();
 		this.setSize(size);
 		this.setRepresentativeElementIndex(representativeElementIndex);
 	}
@@ -129,7 +119,6 @@ public class Group implements IDefaultLabelHolder {
 	 *            group
 	 */
 	public Group(int size, int representativeElementIndex, ClusterNode clusterNode) {
-		init();
 		this.setSize(size);
 		this.setRepresentativeElementIndex(representativeElementIndex);
 		this.setClusterNode(clusterNode);
@@ -262,6 +251,7 @@ public class Group implements IDefaultLabelHolder {
 	/**
 	 * @return the id, see {@link #id}
 	 */
+	@Override
 	public int getID() {
 		return id;
 	}

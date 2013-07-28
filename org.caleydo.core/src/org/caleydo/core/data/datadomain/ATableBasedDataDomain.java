@@ -314,8 +314,8 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 
 	/** Returns the data container made up of the default perspectives */
 	public TablePerspective getDefaultTablePerspective() {
-		return getTablePerspective(table.getDefaultRecordPerspective().getPerspectiveID(), table
-				.getDefaultDimensionPerspective().getPerspectiveID());
+		return getTablePerspective(table.getDefaultRecordPerspective(false).getPerspectiveID(), table
+				.getDefaultDimensionPerspective(false).getPerspectiveID());
 	}
 
 	/**
@@ -865,11 +865,14 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 		}
 
 		int count = 0;
+		int unmapped = 0;
 		IIDTypeMapper<Integer, Integer> mapper = idMappingManager.getIDTypeMapper(foreignVA.getIdType(), localIDType);
 		for (Integer foreignVAID : foreignVA) {
 			Set<Integer> localVAIDS = mapper.apply(foreignVAID);
-			if (localVAIDS == null)
+			if (localVAIDS == null) {
+				unmapped++;
 				continue;
+			}
 			for (Integer localVAID : localVAIDS) {
 				if (localVAID == null)
 					continue;
@@ -885,6 +888,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 		data.setData(indices, groupSizes, sampleElements, groupNames);
 
 		Perspective localPerspective = new Perspective(this, localIDType);
+		localPerspective.setUnmappedElements(unmapped);
 		localPerspective.setCrossDatasetID(foreignPerspective.getCrossDatasetID());
 		localPerspective.setIDType(localIDType);
 		localPerspective.init(data);

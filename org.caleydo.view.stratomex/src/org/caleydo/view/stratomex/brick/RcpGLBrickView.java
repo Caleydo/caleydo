@@ -5,9 +5,6 @@
  ******************************************************************************/
 package org.caleydo.view.stratomex.brick;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-
 import org.caleydo.core.view.ARcpGLViewPart;
 import org.eclipse.swt.widgets.Composite;
 
@@ -22,13 +19,7 @@ public class RcpGLBrickView extends ARcpGLViewPart {
 	 * Constructor.
 	 */
 	public RcpGLBrickView() {
-		super();
-
-		try {
-			viewContext = JAXBContext.newInstance(SerializedBrickView.class);
-		} catch (JAXBException ex) {
-			throw new RuntimeException("Could not create JAXBContext", ex);
-		}
+		super(SerializedBrickView.class);
 	}
 
 	@Override
@@ -44,11 +35,6 @@ public class RcpGLBrickView extends ARcpGLViewPart {
 	public void createDefaultSerializedView() {
 		serializedView = new SerializedBrickView();
 		determineDataConfiguration(serializedView);
-	}
-
-	@Override
-	public String getViewGUIID() {
-		return GLBrick.VIEW_TYPE;
 	}
 
 }

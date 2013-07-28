@@ -25,6 +25,7 @@ import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventListenerManagers;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.ViewManager;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -82,7 +83,7 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 	/**
 	 * marker color for {@link #setHighlightColor(float[])} to revert to the default color
 	 */
-	public final static float[] REVERT_COLOR = new float[] { 0, 0, 0, 0 };
+	public final static Color REVERT_COLOR = new Color(0, 0, 0, 0);
 
 	/**
 	 * The brick at the top that shows information about and provides tools for interaction with the whole dimension
@@ -512,12 +513,6 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 			// brick.unregisterEventListeners();
 		}
 		clusterBricks.clear();
-	}
-
-	@Override
-	protected void finalize() throws Throwable {
-		super.finalize();
-		unregisterEventListeners();
 	}
 
 	/**
@@ -972,6 +967,8 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 	 *            Specifies, whether the detail brick shall be expanded on the left or on the right.
 	 */
 	public void showDetailedBrick(GLBrick brick, boolean expandLeft) {
+		if (!stratomex.canShowDetailBrick())
+			return;
 
 		if (detailBrick != null) {
 			// GeneralManager.get().getViewManager().unregisterGLView(detailBrick);
@@ -1186,7 +1183,10 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 
 	@Override
 	protected void destroyViewSpecificContent(GL2 gl) {
-		// Nothing to do here
+		if (mainRow != null)
+			mainRow.destroy(gl);
+		this.clusterBricks.clear();
+		this.detailBrick = null;
 	}
 
 	@ListenTo(sendToMe = true)
@@ -1203,13 +1203,22 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 	/**
 	 * @param fs
 	 */
-	public void setHighlightColor(float[] color) {
+	public void setHighlightColor(Color color) {
 		if (color == REVERT_COLOR)
-			color = isActive() ? SelectionType.SELECTION.getColor().getRGBA() : null;
+			color = isActive() ? SelectionType.SELECTION.getColor() : null;
 		FrameHighlightRenderer renderer = Iterables.getFirst(
 				Iterables.filter(getLayout().getBackgroundRenderer(), FrameHighlightRenderer.class), null);
 		if (renderer != null)
 			renderer.setColor(color);
 		return;
+	}
+
+	/**
+	 *
+	 */
+	public void destroyView() {
+		GL2 gl = getParentGLCanvas().asGLAutoDrawAble().getGL().getGL2();
+		ViewManager.get().destroyView(gl, this);
+		// destroyOldBricks();
 	}
 }

@@ -413,7 +413,6 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	@Override
 	public ASerializedView getSerializableRepresentation() {
 		SerializedSubGraphView serializedForm = new SerializedSubGraphView();
-		serializedForm.setViewID(this.getID());
 		return serializedForm;
 	}
 

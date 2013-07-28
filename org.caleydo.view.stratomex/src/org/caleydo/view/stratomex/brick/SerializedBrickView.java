@@ -30,9 +30,4 @@ public class SerializedBrickView extends ASerializedSingleTablePerspectiveBasedV
 	public String getViewType() {
 		return GLBrick.VIEW_TYPE;
 	}
-
-	@Override
-	public String getViewClassType() {
-		return GLBrick.class.getName();
-	}
 }

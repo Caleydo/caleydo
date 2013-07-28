@@ -19,14 +19,12 @@
  *******************************************************************************/
 package org.caleydo.view.subgraph;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-
 import org.caleydo.core.gui.toolbar.action.OpenOnlineHelpAction;
 import org.caleydo.core.view.ARcpGLViewPart;
 import org.caleydo.datadomain.pathway.toolbar.ClearPathAction;
 import org.caleydo.datadomain.pathway.toolbar.SelectPathAction;
 import org.caleydo.view.subgraph.toolbar.ShowPortalsAction;
+import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -40,13 +38,13 @@ public class RcpGLSubGraphView extends ARcpGLViewPart {
 	 * Constructor.
 	 */
 	public RcpGLSubGraphView() {
-		super();
+		super(SerializedSubGraphView.class);
 
-		try {
-			viewContext = JAXBContext.newInstance(SerializedSubGraphView.class);
-		} catch (JAXBException ex) {
-			throw new RuntimeException("Could not create JAXBContext", ex);
-		}
+		// try {
+		// viewContext = JAXBContext.newInstance(SerializedSubGraphView.class);
+		// } catch (JAXBException ex) {
+		// throw new RuntimeException("Could not create JAXBContext", ex);
+		// }
 	}
 
 	@Override
@@ -61,7 +59,7 @@ public class RcpGLSubGraphView extends ARcpGLViewPart {
 	}
 
 	@Override
-	public void addToolBarContent() {
+	public void addToolBarContent(IToolBarManager toolBarManager) {
 
 		GLSubGraph subgraph = (GLSubGraph) view;
 
@@ -87,11 +85,6 @@ public class RcpGLSubGraphView extends ARcpGLViewPart {
 	public void createDefaultSerializedView() {
 		serializedView = new SerializedSubGraphView();
 		determineDataConfiguration(serializedView);
-	}
-
-	@Override
-	public String getViewGUIID() {
-		return GLSubGraph.VIEW_TYPE;
 	}
 
 }

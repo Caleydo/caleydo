@@ -61,7 +61,8 @@
          <attribute name="url" type="string" use="required">
             <annotation>
                <documentation>
-                  
+                  the url to the sample project you can use DATA_URL_PREFIX for the current version specific prefix.
+e.g. DATA_URL_PREFIX/samples/test.cal
                </documentation>
             </annotation>
          </attribute>

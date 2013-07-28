@@ -41,7 +41,7 @@ public class TCGADefinitions {
 		rule.setSubStringExpression(TCGA_ID_SUBSTRING_REGEX);
 		// replace all . and _ with -
 		rule.setReplacementExpression(TCGA_REPLACEMENT_STRING, TCGA_REPLACING_EXPRESSIONS);
-		rule.setToLowerCase(true);
+		rule.setToUpperCase(true);
 		rule.setDefault(isDefault);
 
 		IDSpecification id = new IDSpecification("TCGA_SAMPLE", "TCGA_SAMPLE");

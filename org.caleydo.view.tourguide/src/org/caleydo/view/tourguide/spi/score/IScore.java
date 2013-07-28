@@ -5,10 +5,9 @@
  ******************************************************************************/
 package org.caleydo.view.tourguide.spi.score;
 
-import org.caleydo.core.util.color.Color;
-
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.base.ILabeled;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.spi.algorithm.IComputeElement;
 import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
@@ -41,14 +40,14 @@ public interface IScore extends ILabeled {
 
 	/**
 	 * factory method for creating a {@link PiecewiseMapping} which is used by the mapping editor of the column
-	 * 
-	 * @return
+	 *
+	 * @return null if this score is integer based
 	 */
 	PiecewiseMapping createMapping();
 
 	/**
 	 * computes the score of the given {@link IComputeElement}
-	 * 
+	 *
 	 * @param elem
 	 * @param g
 	 *            optional depending whether this kind of score is based on groups or not

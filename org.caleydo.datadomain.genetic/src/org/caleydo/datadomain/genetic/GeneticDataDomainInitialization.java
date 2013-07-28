@@ -98,8 +98,8 @@ public class GeneticDataDomainInitialization implements IDataDomainInitializatio
 		IDMappingParser.loadMapping(toFile(base,"DAVID2GENE_SYMBOL.txt"), 0, -1, david,
 						IDType.getIDType(EGeneIDTypes.GENE_SYMBOL.name()), "\t", geneIDCategory, false, true, false,
 						null, null);
-		IDMappingParser.loadMapping(toFile(base,"DAVID2GENE_NAME.txt"), 0, -1, david,
-				IDType.getIDType(EGeneIDTypes.GENE_NAME.name()), "\t", geneIDCategory, false, true, false, null, null);
+		// IDMappingParser.loadMapping(toFile(base,"DAVID2GENE_NAME.txt"), 0, -1, david,
+		// IDType.getIDType(EGeneIDTypes.GENE_NAME.name()), "\t", geneIDCategory, false, true, false, null, null);
 
 		if (GeneticMetaData.getOrganism() == Organism.MUS_MUSCULUS) {
 			IDMappingParser.loadMapping(toFile(base, "DAVID2ENSEMBL_GENE_ID.txt"), 0, -1, david,
@@ -160,6 +160,7 @@ public class GeneticDataDomainInitialization implements IDataDomainInitializatio
 		tcgaIDTypeParsingRules.setReplacementExpression(TCGADefinitions.TCGA_REPLACEMENT_STRING,
 				TCGADefinitions.TCGA_REPLACING_EXPRESSIONS);
 		tcgaIDTypeParsingRules.setSubStringExpression(TCGADefinitions.TCGA_ID_SUBSTRING_REGEX);
+		tcgaIDTypeParsingRules.setToUpperCase(true);
 		tcgaIDTypeParsingRules.setDefault(true);
 		tcgaSample.setIdTypeParsingRules(tcgaIDTypeParsingRules);
 

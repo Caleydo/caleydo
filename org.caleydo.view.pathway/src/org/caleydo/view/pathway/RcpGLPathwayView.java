@@ -7,15 +7,14 @@ package org.caleydo.view.pathway;
 
 import java.util.Set;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
+import org.caleydo.core.event.EventListenerManager;
+import org.caleydo.core.event.EventListenerManagers;
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.IListenerOwner;
 import org.caleydo.core.gui.toolbar.action.OpenOnlineHelpAction;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.ARcpGLViewPart;
 import org.caleydo.datadomain.pathway.IPathwayHandler;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
@@ -27,28 +26,23 @@ import org.caleydo.datadomain.pathway.toolbar.SelectPathAction;
 import org.caleydo.view.pathway.toolbar.DatasetSelectionBox;
 import org.caleydo.view.pathway.toolbar.PathwaySearchBox;
 import org.caleydo.view.pathway.toolbar.SampleSelectionMode;
+import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 
-public class RcpGLPathwayView extends ARcpGLViewPart implements IListenerOwner, IPathwayHandler {
+public class RcpGLPathwayView extends ARcpGLViewPart implements IPathwayHandler {
 
 	private AddPathwayListener addPathwayListener;
+
+	private final EventListenerManager listeners = EventListenerManagers.createSWTDirect();
 
 	/**
 	 * Constructor.
 	 */
 	public RcpGLPathwayView() {
-		super();
-
-		try {
-			viewContext = JAXBContext.newInstance(SerializedPathwayView.class);
-		} catch (JAXBException ex) {
-			throw new RuntimeException("Could not create JAXBContext", ex);
-		}
-
-		eventPublisher = GeneralManager.get().getEventPublisher();
-		registerEventListeners();
+		super(SerializedPathwayView.class);
+		listeners.register(this);
 	}
 
 	@Override
@@ -68,11 +62,6 @@ public class RcpGLPathwayView extends ARcpGLViewPart implements IListenerOwner, 
 	}
 
 	@Override
-	public String getViewGUIID() {
-		return GLPathway.VIEW_TYPE;
-	}
-
-	@Override
 	public synchronized void queueEvent(final AEventListener<? extends IListenerOwner> listener, final AEvent event) {
 		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
 			@Override
@@ -86,13 +75,13 @@ public class RcpGLPathwayView extends ARcpGLViewPart implements IListenerOwner, 
 	public void registerEventListeners() {
 		addPathwayListener = new AddPathwayListener();
 		addPathwayListener.setHandler(this);
-		eventPublisher.addListener(LoadPathwayEvent.class, addPathwayListener);
+		EventPublisher.INSTANCE.addListener(LoadPathwayEvent.class, addPathwayListener);
 	}
 
 	@Override
 	public void unregisterEventListeners() {
 		if (addPathwayListener != null) {
-			eventPublisher.removeListener(addPathwayListener);
+			EventPublisher.INSTANCE.removeListener(addPathwayListener);
 			addPathwayListener = null;
 		}
 	}
@@ -123,7 +112,7 @@ public class RcpGLPathwayView extends ARcpGLViewPart implements IListenerOwner, 
 	}
 
 	@Override
-	public void addToolBarContent() {
+	public void addToolBarContent(IToolBarManager toolBarManager) {
 
 		SelectPathAction selectPathAction = new SelectPathAction(false, GLPathway.DEFAULT_PATHWAY_PATH_EVENT_SPACE);
 

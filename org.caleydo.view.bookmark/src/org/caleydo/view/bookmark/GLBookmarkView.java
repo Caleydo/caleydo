@@ -262,7 +262,6 @@ public class GLBookmarkView extends ATableBasedView {
 	@Override
 	public ASerializedView getSerializableRepresentation() {
 		SerializedBookmarkView serializedForm = new SerializedBookmarkView(this);
-		serializedForm.setViewID(this.getID());
 		return serializedForm;
 	}
 

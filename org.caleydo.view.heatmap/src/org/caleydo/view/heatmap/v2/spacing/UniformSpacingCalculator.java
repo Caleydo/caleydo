@@ -10,6 +10,12 @@ import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.heatmap.v2.ISpacingStrategy;
 
+/**
+ * uniform spacing strategy implementation
+ * 
+ * @author Samuel Gratzl
+ * 
+ */
 public class UniformSpacingCalculator implements ISpacingStrategy {
 
 	/**

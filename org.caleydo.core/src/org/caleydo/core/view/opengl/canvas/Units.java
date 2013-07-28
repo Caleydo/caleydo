@@ -7,6 +7,7 @@ package org.caleydo.core.view.opengl.canvas;
 
 import gleem.linalg.Vec2f;
 
+import org.apache.commons.lang.SystemUtils;
 import org.caleydo.core.gui.util.DisplayUtils;
 import org.caleydo.core.util.execution.SafeCallable;
 import org.caleydo.core.util.function.AFloatFunction;
@@ -24,13 +25,7 @@ public enum Units implements IFloatFunction {
 	PX, PT, EM, DIP;
 
 	private static final float base = 96;
-	private static final int dpi = DisplayUtils.syncExec(Display.getDefault(),new SafeCallable<Integer>() {
-		@Override
-		public Integer call() {
-			System.out.println("DPI: "+Display.getCurrent().getDPI());
-			return Display.getCurrent().getDPI().x;
-		}
-	});
+	private static final int dpi;
 
 	private static final float pt2dip;
 	private static final float px2dip;
@@ -43,6 +38,20 @@ public enum Units implements IFloatFunction {
 		// dip = px * base / dpi
 		// dip = pt * base / 72
 		// dip = em * base / 6
+
+		dpi = DisplayUtils.syncExec(Display.getDefault(), new SafeCallable<Integer>() {
+			@Override
+			public Integer call() {
+				Display display = Display.getCurrent();
+				int dpi;
+				if (SystemUtils.IS_OS_MAC_OSX) {
+					dpi = 96; // FIXME for retina displays
+				} else
+					dpi = display.getDPI().x;
+
+				return dpi;
+			}
+		});
 
 		px2dip = base / dpi;
 		pt2dip = base / 72.f;

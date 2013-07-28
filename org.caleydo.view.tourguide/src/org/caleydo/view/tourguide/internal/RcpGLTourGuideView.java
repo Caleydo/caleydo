@@ -58,7 +58,6 @@ public class RcpGLTourGuideView extends ARcpGLViewPart {
 	public void init(IViewSite site) throws PartInitException {
 		super.init(site);
 		this.mode = EDataDomainQueryMode.valueOfSafe(site.getSecondaryId());
-		this.setPartName(this.mode.getLabel() + " LineUp");
 		site.getPage().addPartListener(stratomexListener);
 	}
 
@@ -77,12 +76,9 @@ public class RcpGLTourGuideView extends ARcpGLViewPart {
 	@Override
 	public void createDefaultSerializedView() {
 		serializedView = new SerializedTourGuideView();
+		serializedView.setLabelDefault(false);
+		serializedView.setViewLabel(this.mode.getLabel() + " LineUp");
 		determineDataConfiguration(serializedView, false);
-	}
-
-	@Override
-	public String getViewGUIID() {
-		return GLTourGuideView.VIEW_TYPE;
 	}
 
 	/**
@@ -112,7 +108,15 @@ public class RcpGLTourGuideView extends ARcpGLViewPart {
 
 		@Override
 		public void partClosed(IWorkbenchPartReference partRef) {
+			if (partRef == null)
+				return;
+			IWorkbenchPart part = partRef.getPart(false);
 
+			GLTourGuideView m = getView();
+
+			if (part instanceof RcpGLStratomexView && m != null) {
+				m.switchToStratomex(null);
+			}
 		}
 
 		@Override

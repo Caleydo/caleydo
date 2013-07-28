@@ -7,9 +7,11 @@ package org.caleydo.view.tourguide.internal.view;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Deque;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -20,7 +22,6 @@ import java.util.Set;
 import javax.media.opengl.GLAutoDrawable;
 
 import org.caleydo.core.data.datadomain.IDataDomain;
-import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.data.DataDomainUpdateEvent;
@@ -46,6 +47,7 @@ import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.score.ISerializeableScore;
 import org.caleydo.view.tourguide.api.score.MultiScore;
 import org.caleydo.view.tourguide.internal.SerializedTourGuideView;
+import org.caleydo.view.tourguide.internal.TourGuideRenderStyle;
 import org.caleydo.view.tourguide.internal.compute.ComputeAllOfJob;
 import org.caleydo.view.tourguide.internal.compute.ComputeExtrasJob;
 import org.caleydo.view.tourguide.internal.compute.ComputeForScoreJob;
@@ -61,11 +63,14 @@ import org.caleydo.view.tourguide.internal.event.ScoreQueryReadyEvent;
 import org.caleydo.view.tourguide.internal.external.ImportExternalScoreCommand;
 import org.caleydo.view.tourguide.internal.model.ADataDomainQuery;
 import org.caleydo.view.tourguide.internal.model.AScoreRow;
+import org.caleydo.view.tourguide.internal.model.CategoricalDataDomainQuery;
 import org.caleydo.view.tourguide.internal.model.CustomSubList;
 import org.caleydo.view.tourguide.internal.score.ScoreFactories;
 import org.caleydo.view.tourguide.internal.score.Scores;
 import org.caleydo.view.tourguide.internal.stratomex.StratomexAdapter;
 import org.caleydo.view.tourguide.internal.stratomex.event.WizardEndedEvent;
+import org.caleydo.view.tourguide.internal.view.col.IScoreMixin;
+import org.caleydo.view.tourguide.internal.view.col.ScoreIntegerRankColumnModel;
 import org.caleydo.view.tourguide.internal.view.col.ScoreRankColumnModel;
 import org.caleydo.view.tourguide.internal.view.col.SizeRankColumnModel;
 import org.caleydo.view.tourguide.internal.view.specific.DataDomainModeSpecifics;
@@ -76,6 +81,7 @@ import org.caleydo.view.tourguide.internal.view.ui.pool.ScorePoolUI;
 import org.caleydo.view.tourguide.spi.IScoreFactory;
 import org.caleydo.view.tourguide.spi.score.IRegisteredScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
+import org.caleydo.view.tourguide.spi.score.IStratificationScore;
 import org.caleydo.vis.rank.config.RankTableConfigBase;
 import org.caleydo.vis.rank.config.RankTableUIConfigBase;
 import org.caleydo.vis.rank.layout.RowHeightLayouts;
@@ -87,8 +93,8 @@ import org.caleydo.vis.rank.model.MaxRankColumnModel;
 import org.caleydo.vis.rank.model.RankColumnModels;
 import org.caleydo.vis.rank.model.RankRankColumnModel;
 import org.caleydo.vis.rank.model.RankTableModel;
-import org.caleydo.vis.rank.model.StackedRankColumnModel;
 import org.caleydo.vis.rank.model.StringRankColumnModel;
+import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
 import org.caleydo.vis.rank.model.mixin.IAnnotatedColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 import org.caleydo.vis.rank.ui.RankTableKeyListener;
@@ -130,11 +136,17 @@ public class GLTourGuideView extends AGLElementView {
 				onActiveChanged((ADataDomainQuery) evt.getSource(), (boolean) evt.getNewValue());
 				break;
 			case ADataDomainQuery.PROP_MASK:
-				updateMask();
+			case CategoricalDataDomainQuery.PROP_GROUP_SELECTION:
+				ADataDomainQuery s = (ADataDomainQuery) evt.getSource();
+				if (s.isActive())
+					scheduleAllOf(s);
 			}
 		}
 	};
 
+	/**
+	 * mode of this tour guide
+	 */
 	private final EDataDomainQueryMode mode;
 	private final IDataDomainQueryModeSpecfics modeSpecifics;
 
@@ -162,6 +174,12 @@ public class GLTourGuideView extends AGLElementView {
 	private final RankTableKeyListener tableKeyListener;
 	private RankTableUIMouseKeyListener tableUIListener = null; // lazy
 
+	/**
+	 * history of added score to select what was the last added score, see #1493, use a weak list to avoid creating
+	 * references
+	 */
+	private final Deque<WeakReference<IScore>> scoreHistory = new LinkedList<>();
+
 	public GLTourGuideView(IGLCanvas glCanvas, EDataDomainQueryMode mode) {
 		super(glCanvas, VIEW_TYPE, VIEW_NAME);
 
@@ -179,8 +197,8 @@ public class GLTourGuideView extends AGLElementView {
 			public void propertyChange(PropertyChangeEvent evt) {
 				if (evt.getNewValue() == null) { // removed aka destroyed
 					// destroy persistent scores
-					if (evt.getOldValue() instanceof ScoreRankColumnModel) {
-						ScoreRankColumnModel r = (ScoreRankColumnModel) evt.getOldValue();
+					if (evt.getOldValue() instanceof IScoreMixin) {
+						IScoreMixin r = (IScoreMixin) evt.getOldValue();
 						IScore score = r.getScore();
 						if (score instanceof ISerializeableScore)
 							Scores.get().removePersistentScore((ISerializeableScore) score);
@@ -196,6 +214,7 @@ public class GLTourGuideView extends AGLElementView {
 		for (ADataDomainQuery q : modeSpecifics.createDataDomainQueries()) {
 			q.addPropertyChangeListener(ADataDomainQuery.PROP_ACTIVE, listener);
 			q.addPropertyChangeListener(ADataDomainQuery.PROP_MASK, listener);
+			q.addPropertyChangeListener(CategoricalDataDomainQuery.PROP_GROUP_SELECTION, listener);
 			queries.add(q);
 		}
 
@@ -216,10 +235,22 @@ public class GLTourGuideView extends AGLElementView {
 		for (IScore score : Scores.get().getPersistentScores()) {
 			if (!score.supports(mode))
 				continue;
-			ScoreRankColumnModel model = new ScoreRankColumnModel(score);
+			ARankColumnModel model = createColumnModel(score);
 			table.add(model);
 			model.hide();
 		}
+	}
+
+	/**
+	 * @param score
+	 * @return
+	 */
+	private ARankColumnModel createColumnModel(IScore score) {
+		this.scoreHistory.add(new WeakReference<>(score));
+		PiecewiseMapping mapping = score.createMapping();
+		if (mapping == null) // by conventions
+			return new ScoreIntegerRankColumnModel(score);
+		return new ScoreRankColumnModel(score);
 	}
 
 	@ListenTo
@@ -233,6 +264,7 @@ public class GLTourGuideView extends AGLElementView {
 			queries.add(query);
 			query.addPropertyChangeListener(ADataDomainQuery.PROP_ACTIVE, listener);
 			query.addPropertyChangeListener(ADataDomainQuery.PROP_MASK, listener);
+			query.addPropertyChangeListener(CategoricalDataDomainQuery.PROP_GROUP_SELECTION, listener);
 			getDataDomainQueryUI().add(query);
 		}
 	}
@@ -245,6 +277,7 @@ public class GLTourGuideView extends AGLElementView {
 				query.cleanup();
 				query.removePropertyChangeListener(ADataDomainQuery.PROP_ACTIVE, listener);
 				query.removePropertyChangeListener(ADataDomainQuery.PROP_MASK, listener);
+				query.removePropertyChangeListener(CategoricalDataDomainQuery.PROP_GROUP_SELECTION, listener);
 				queries.remove(query);
 				getDataDomainQueryUI().remove(query);
 				if (query.isActive())
@@ -435,7 +468,7 @@ public class GLTourGuideView extends AGLElementView {
 				}
 				table.add(lastLabel + 1, combined);
 				for (IScore s2 : ((MultiScore) s)) {
-					combined.add(new ScoreRankColumnModel(s2));
+					combined.add(createColumnModel(s2));
 				}
 				if (combined instanceof IRankableColumnMixin)
 					((IRankableColumnMixin) combined).orderByMe();
@@ -447,9 +480,10 @@ public class GLTourGuideView extends AGLElementView {
 						}
 					}
 			} else {
-				ScoreRankColumnModel ss = new ScoreRankColumnModel(s);
+				ARankColumnModel ss = createColumnModel(s);
 				table.add(lastLabel + 1, ss);
-				ss.orderByMe();
+				if (ss instanceof IScoreMixin)
+					((IScoreMixin) ss).orderByMe();
 			}
 		}
 
@@ -551,8 +585,8 @@ public class GLTourGuideView extends AGLElementView {
 
 	private IScore getSortedByScore() {
 		IRankableColumnMixin orderBy = table.getMyRanker(null).getOrderBy();
-		if (orderBy instanceof ScoreRankColumnModel)
-			return ((ScoreRankColumnModel) orderBy).getScore();
+		if (orderBy instanceof IScoreMixin)
+			return ((IScoreMixin) orderBy).getScore();
 		return null;
 	}
 
@@ -574,18 +608,18 @@ public class GLTourGuideView extends AGLElementView {
 	/**
 	 * @return
 	 */
-	private Collection<IScore> getVisibleScores(AScoreRow row, boolean justSortingCriteria) {
+	private Collection<IScore> getVisibleScores(AScoreRow row, boolean justLastStratificationOne) {
 		Collection<IScore> r = new ArrayList<>();
 		Deque<ARankColumnModel> cols = new LinkedList<>();
-		if (justSortingCriteria) {
+		if (justLastStratificationOne) {
 			cols.addAll(Lists.newArrayList(table.getColumnsOf(table.getDefaultRanker())));
 		} else
 			cols.addAll(table.getColumns());
 
 		while (!cols.isEmpty()) {
 			ARankColumnModel model = cols.pollFirst();
-			if (model instanceof ScoreRankColumnModel) {
-				r.add(((ScoreRankColumnModel) model).getScore());
+			if (model instanceof IScoreMixin) {
+				r.add(((IScoreMixin) model).getScore());
 			} else if (model instanceof MaxRankColumnModel) {
 				MaxRankColumnModel max = (MaxRankColumnModel) model;
 				if (row != null) {
@@ -602,20 +636,23 @@ public class GLTourGuideView extends AGLElementView {
 			if (!it.next().supports(mode))
 				it.remove();
 		}
+		if (justLastStratificationOne && !r.isEmpty()) {
+			// #1493 select just the last score
+			for (Iterator<WeakReference<IScore>> it = this.scoreHistory.descendingIterator(); it.hasNext();) {
+				IScore s = it.next().get();
+				if (s == null)
+					it.remove();
+				else if (r.contains(s) && s instanceof IStratificationScore)
+					return Collections.singleton(s);
+			}
+		}
 		return r;
 	}
 
 	private void invalidVisibleScores() {
-		Deque<ARankColumnModel> cols = new LinkedList<>(table.getColumns());
-		while (!cols.isEmpty()) {
-			ARankColumnModel model = cols.pollFirst();
-			if (model instanceof ScoreRankColumnModel) {
-				((ScoreRankColumnModel) model).dirty();
-			} else if (model instanceof StackedRankColumnModel) {
-				cols.addAll(((StackedRankColumnModel) model).getChildren());
-			} else if (model instanceof MaxRankColumnModel) {
-				MaxRankColumnModel max = (MaxRankColumnModel) model;
-				cols.addAll(max.getChildren());
+		for (ARankColumnModel model : RankColumnModels.flatten(table.getColumns())) {
+			if (model instanceof IScoreMixin) {
+				((IScoreMixin) model).dirty();
 			}
 		}
 	}
@@ -655,7 +692,7 @@ public class GLTourGuideView extends AGLElementView {
 		boolean hasOne = false;
 		Collection<ARankColumnModel> toremove = new ArrayList<>();
 		for (ARankColumnModel col : columns) {
-			if ((col instanceof ScoreRankColumnModel && !(((ScoreRankColumnModel) col).getScore() instanceof ISerializeableScore))
+			if ((col instanceof IScoreMixin && !(((IScoreMixin) col).getScore() instanceof ISerializeableScore))
 					|| (col instanceof ACompositeRankColumnModel && hasScore((ACompositeRankColumnModel) col))) {
 				hasOne = true;
 				toremove.add(col);
@@ -666,10 +703,12 @@ public class GLTourGuideView extends AGLElementView {
 			Set<ARankColumnModel> children = RankColumnModels.flatten(col);
 			// look in the children for things to persist i.e move to the memo pad, e.g. external scores
 			for (ARankColumnModel r : children) {
-				if (r instanceof ScoreRankColumnModel
-						&& ((ScoreRankColumnModel) r).getScore() instanceof ISerializeableScore)
+				if (r instanceof IScoreMixin && ((IScoreMixin) r).getScore() instanceof ISerializeableScore)
 					r.hide();
+				else if (r instanceof IScoreMixin)
+					scoreHistory.remove(((IScoreMixin) r).getScore());
 			}
+
 			table.remove(col);
 		}
 	}
@@ -681,7 +720,7 @@ public class GLTourGuideView extends AGLElementView {
 	 */
 	private boolean hasScore(ACompositeRankColumnModel col) {
 		for (ARankColumnModel c : col) {
-			if (c instanceof ScoreRankColumnModel
+			if (c instanceof IScoreMixin
 					|| (c instanceof ACompositeRankColumnModel && hasScore((ACompositeRankColumnModel) c)))
 				return true;
 		}
@@ -769,15 +808,22 @@ public class GLTourGuideView extends AGLElementView {
 		public void renderRowBackground(GLGraphics g, float x, float y, float w, float h, boolean even, IRow row,
 				IRow selected) {
 			if (row == selected) {
-				g.color(SelectionType.SELECTION.getColor());
+				g.color(TourGuideRenderStyle.colorSelectedRow());
 				g.incZ();
 				g.fillRect(x, y, w, h);
-				g.color(RenderStyle.COLOR_SELECTED_BORDER);
-				g.drawLine(x, y, x + w, y);
-				g.drawLine(x, y + h, x + w, y + h);
+				if (stratomex.isPreviewed((AScoreRow) row)) {
+					TourGuideRenderStyle.COLOR_PREVIEW_BORDER_ROW.set(g.gl);
+					g.drawLine(x, y, x + w, y);
+					g.drawLine(x, y + h, x + w, y + h);
+					TourGuideRenderStyle.COLOR_PREVIEW_BORDER_ROW.clear(g.gl);
+				} else {
+					g.color(RenderStyle.COLOR_SELECTED_BORDER);
+					g.drawLine(x, y, x + w, y);
+					g.drawLine(x, y + h, x + w, y + h);
+				}
 				g.decZ();
 			} else if (stratomex.isVisible((AScoreRow) row)) {
-				g.color(RenderStyle.COLOR_SELECTED_ROW);
+				g.color(TourGuideRenderStyle.COLOR_STRATOMEX_ROW);
 				g.fillRect(x, y, w, h);
 			} else if (!even) {
 				g.color(RenderStyle.COLOR_BACKGROUND_EVEN);
@@ -794,7 +840,8 @@ public class GLTourGuideView extends AGLElementView {
 		public void onRowClick(RankTableModel table, PickingMode pickingMode, IRow row, boolean isSelected) {
 			if (!isSelected && pickingMode == PickingMode.CLICKED) {
 				table.setSelectedRow(row);
-			} else if (pickingMode == PickingMode.DOUBLE_CLICKED && !stratomex.isWizardVisible()) {
+			} else if ((isSelected && pickingMode == PickingMode.CLICKED && stratomex.isWizardVisible())
+					|| (pickingMode == PickingMode.DOUBLE_CLICKED && !stratomex.isWizardVisible())) {
 				updatePreview(null, (AScoreRow) row);
 			}
 		}

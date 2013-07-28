@@ -66,7 +66,7 @@ void main(void)
 		float vDelta = 1. - hsv.z;
 		if (hDelta < 5. && sDelta < 0.15 && vDelta < 0.1) //matching
 			discard;
-		else if (hDelta < 5 && vDelta > 0.1) { //fade to black
+		else if (hDelta < 5. && vDelta > 0.1) { //fade to black
 			texValue.rgb = vec3(0,0,0);
 			texValue.a = vDelta;
 		} else if (vDelta < 0.2 && sDelta < 0.2 && hsv.x < 120.) { //fade to red

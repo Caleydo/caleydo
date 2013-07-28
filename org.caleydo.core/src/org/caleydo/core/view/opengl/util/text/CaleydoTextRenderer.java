@@ -28,6 +28,7 @@ public class CaleydoTextRenderer extends MyTextRenderer implements ITextRenderer
 	float fontScaling = GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR;
 
 	private final Rectangle2D referenceBounds;
+	private final double refHeight;
 
 	/**
 	 * Constructor.
@@ -39,6 +40,8 @@ public class CaleydoTextRenderer extends MyTextRenderer implements ITextRenderer
 	public CaleydoTextRenderer(Font font) {
 		super(font, true, true, new DefaultRenderDelegate());
 		referenceBounds = super.getBounds(REFERENCE_TEXT);
+
+		this.refHeight = super.getBounds("Sgfy").getHeight();
 	}
 
 	public CaleydoTextRenderer(int size) {
@@ -49,6 +52,7 @@ public class CaleydoTextRenderer extends MyTextRenderer implements ITextRenderer
 		super(new Font(FONT_NAME, style, size), true, true, new DefaultRenderDelegate());
 		referenceBounds = super.getBounds(REFERENCE_TEXT);
 		setUseVertexArrays(false);
+		this.refHeight = super.getBounds("Sgfy").getHeight();
 	}
 
 	@Override
@@ -174,7 +178,7 @@ public class CaleydoTextRenderer extends MyTextRenderer implements ITextRenderer
 
 		// we use the height of a standard string so we don't have varying
 		// height
-		double scaling = height / super.getBounds("Sgfy").getHeight();
+		double scaling = height / refHeight;
 
 		Rectangle2D boundsForWidth = super.getBounds(text);
 		double requiredWidth = boundsForWidth.getWidth() * scaling;
@@ -219,7 +223,7 @@ public class CaleydoTextRenderer extends MyTextRenderer implements ITextRenderer
 
 		// we use the height of a standard string so we don't have varying
 		// height
-		double scaling = height / super.getBounds("Sgfy").getHeight();
+		double scaling = height / refHeight;
 
 		Rectangle2D boundsForWidth = super.getBounds(text);
 		double requiredWidth = boundsForWidth.getWidth() * scaling;
@@ -257,7 +261,7 @@ public class CaleydoTextRenderer extends MyTextRenderer implements ITextRenderer
 
 		// we use the height of a standard string so we don't have varying
 		// height
-		double scaling = height / super.getBounds("Sgfy").getHeight();
+		double scaling = height / refHeight;
 
 		Rectangle2D boundsForWidth = super.getBounds(text);
 		// double requiredWidth = boundsForWidth.getWidth() * scaling;

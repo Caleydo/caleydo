@@ -70,7 +70,7 @@ public class DataMappingState {
 
 		Perspective convertedPerspective = dd.convertForeignPerspective(recordPerspective);
 		TablePerspective tablePerspective = new TablePerspective(dd, convertedPerspective, dd.getTable()
-				.getDefaultDimensionPerspective());
+				.getDefaultDimensionPerspective(false));
 		tablePerspective.setLabel(dd.getLabel() + " - " + recordPerspective.getLabel());
 
 		mappedTablePerspectives.add(tablePerspective);

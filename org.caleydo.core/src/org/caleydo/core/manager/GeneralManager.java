@@ -14,7 +14,6 @@ import java.io.File;
 
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.event.EventPublisher;
-import org.caleydo.core.id.object.IDCreator;
 import org.caleydo.core.internal.ConsoleFlags;
 import org.caleydo.core.serialize.ProjectMetaData;
 import org.caleydo.core.serialize.SerializationManager;
@@ -28,6 +27,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.SubMonitor;
+import org.osgi.framework.Version;
 
 /**
  * General manager that contains all module managers.
@@ -45,28 +45,25 @@ public class GeneralManager {
 	 * This is the current version of Caleydo. The value must be the same as specified in the plugin/bundle. We need to
 	 * access the version before the workbench is started. Therefore we have to set it hardcoded at this point.
 	 */
-	public static final String VERSION = "3.0";
+	private static final int VERSION_MAJOR = 3;
+	private static final int VERSION_MINOR = 0;
+	private static final int VERSION_PATCH = 1;
+	private static final String VERSION_CLASSIFIER = ""; // e.g. -SNAPSHOT, b2
+	private static final String VERSION_PRIMARY = VERSION_MAJOR + "." + VERSION_MINOR;
+	public static final String VERSION = VERSION_PRIMARY + "." + VERSION_PATCH + VERSION_CLASSIFIER;
 
 	public static final String PLUGIN_ID = "org.caleydo.core";
 
-	/**
-	 * The template for the concrete Caleydo folder, ie CALEYDO_FOLDER. This is used for example in XML files and is
-	 * then replaced with the concrete folder
-	 */
-	public static final String USER_HOME = "user.home";
-	public static final String CALEYDO_FOLDER_TEMPLATE = "caleydo.folder";
-
 	/** The major version number determines the name of the Caleydo folder **/
-	public static final String CALEYDO_FOLDER = ".caleydo_" + VERSION.substring(0, 3);
+	private static final String CALEYDO_FOLDER = ".caleydo_" + VERSION_PRIMARY;
 
 	// public static final String CALEYDO_HOME_PATH =
 	// Platform.getLocation().toOSString()+ File.separator;
-	public static final String CALEYDO_HOME_PATH = System.getProperty(USER_HOME) + File.separator + CALEYDO_FOLDER
+	public static final String CALEYDO_HOME_PATH = System.getProperty("user.home") + File.separator + CALEYDO_FOLDER
 			+ File.separator;
 	public static final String CALEYDO_LOG_PATH = CALEYDO_HOME_PATH + "logs" + File.separator;
 
-	public static final String DATA_URL_PREFIX = "http://data.icg.tugraz.at/caleydo/download/" + GeneralManager.VERSION
-			+ "/";
+	public static final String DATA_URL_PREFIX = "http://data.icg.tugraz.at/caleydo/download/" + VERSION_PRIMARY + "/";
 
 	/**
 	 * General manager as a singleton
@@ -86,7 +83,6 @@ public class GeneralManager {
 
 	private ViewManager viewManager;
 	private EventPublisher eventPublisher;
-	private IDCreator idCreator;
 	private ResourceLoader resourceLoader;
 	private SerializationManager serializationManager;
 	private IStatisticsPerformer rStatisticsPerformer;
@@ -95,11 +91,9 @@ public class GeneralManager {
 
 	private Logger logger = Logger.create(GeneralManager.class);
 
-
 	public void init() {
 		eventPublisher = EventPublisher.INSTANCE;
 		viewManager = ViewManager.get();
-		idCreator = new IDCreator();
 		serializationManager = SerializationManager.get();
 		resourceLoader = new ResourceLoader(chain(DATA_CLASSLOADER, FILE, URL));
 	}
@@ -152,10 +146,6 @@ public class GeneralManager {
 
 	public EventPublisher getEventPublisher() {
 		return eventPublisher;
-	}
-
-	public IDCreator getIDCreator() {
-		return idCreator;
 	}
 
 	public IStatisticsPerformer getRStatisticsPerformer() {
@@ -213,7 +203,8 @@ public class GeneralManager {
 	public static boolean canLoadDataCreatedFor(String caleydoVersion) {
 		if (caleydoVersion == null)
 			return false;
-		return VERSION.equalsIgnoreCase(caleydoVersion);
+		Version tocheck = Version.parseVersion(caleydoVersion);
+		return VERSION_MAJOR == tocheck.getMajor() && VERSION_MINOR == tocheck.getMinor();
 	}
 
 	public void setSplashProgressMonitor(IProgressMonitor splashProgressMonitor) {

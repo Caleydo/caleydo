@@ -147,7 +147,7 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 			}
 		});
 
-		this.glMouseListener = glMouseListener;
+		setMouseListener(glMouseListener);
 
 		init(gl);
 	}

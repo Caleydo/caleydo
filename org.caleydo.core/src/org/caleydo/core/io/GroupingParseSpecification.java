@@ -6,6 +6,7 @@
 package org.caleydo.core.io;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlType;
 
@@ -22,16 +23,16 @@ import org.caleydo.core.io.parser.ascii.GroupingParser;
  * The data is assumed to be available in a delimited text file and follow the
  * contract specified in the base class {@link MatrixDefinition}. Here is an
  * example for a valid grouping file, with a header line:
- * 
+ *
  * <pre>
- * {@code 
+ * {@code
  * ID    g1 g2
  * id_1  a  b
  * id_2  a  b
  * id_3  b  a
  *  }
  * </pre>
- * 
+ *
  * </p>
  * <p>
  * Groupings are based on the following assumptions:
@@ -44,7 +45,7 @@ import org.caleydo.core.io.parser.ascii.GroupingParser;
  * <li>If the group association for two IDs are identical (according to
  * {@link String#equals(Object)}), they belong to the same group</li>
  * </ul>
- * 
+ *
  * <p>
  * By default, it is assumed that the first column contains the row IDs and all
  * other columns contain groupings. If one of these assumptions does not hold,
@@ -54,13 +55,13 @@ import org.caleydo.core.io.parser.ascii.GroupingParser;
  * the default, you need to specify <b>both, the column of the ids and the ids
  * of all groupings.</b>
  * </p>
- * 
+ *
  * <p>
  * If the file contains multiple columns, all of them are loaded as a separate
  * grouping. This can be overridden to specific columns using the
  * {@link #columns} parameter.
  * </p>
- * 
+ *
  * <p>
  * By default, it is assumed that the groupings contain a header inkluding a
  * name for the group (see the {@link MatrixDefinition} for details. This can be
@@ -68,14 +69,14 @@ import org.caleydo.core.io.parser.ascii.GroupingParser;
  * case the group names area automatically generated based on the number of
  * groups.
  * </p>
- * 
+ *
  * <p>
  * In case of automatically created grouping names a global name can be
  * specified using
  * </p>
- * 
+ *
  * @author Alexander Lex
- * 
+ *
  */
 @XmlType
 public class GroupingParseSpecification
@@ -93,7 +94,7 @@ public class GroupingParseSpecification
 	 * grouping is this name supplemented by the number of groups (eg
 	 * "myName_8");
 	 */
-	private String groupingName;
+	private List<String> groupingNames;
 
 	/**
 	 * Default Constructor, use setters to specify data
@@ -110,7 +111,7 @@ public class GroupingParseSpecification
 
 	/**
 	 * Sets the columns to be parsed. Overwrites everything previously set
-	 * 
+	 *
 	 * @param columns setter, see {@link #columns}
 	 */
 	public void setColumns(ArrayList<Integer> columns) {
@@ -135,15 +136,15 @@ public class GroupingParseSpecification
 	/**
 	 * @param groupingName setter, see {@link #groupingName}
 	 */
-	public void setGroupingName(String groupingName) {
-		this.groupingName = groupingName;
+	public void setGroupingNames(List<String> groupingNames) {
+		this.groupingNames = groupingNames;
 	}
 
 	/**
 	 * @return the groupingName, see {@link #groupingName}
 	 */
-	public String getGroupingName() {
-		return groupingName;
+	public List<String> getGroupingNames() {
+		return groupingNames;
 	}
 
 }

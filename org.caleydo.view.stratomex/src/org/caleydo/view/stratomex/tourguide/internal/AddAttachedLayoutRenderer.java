@@ -41,8 +41,10 @@ public class AddAttachedLayoutRenderer extends ALayoutRenderer implements IPicki
 		float h1px = view.getPixelGLConverter().getGLHeightForPixelHeight(1);
 		float hi = h1px * 24;
 		float wi = w1px * 24;
-		tourguide.renderAddDependentButton(gl, left ? (-wi - w1px * 2) : (x + w1px * 2), y - hi * 2, wi, hi, id * 2
-				+ (left ? 1 : 0));
+		if (left) {
+			tourguide.renderAddInDependentButton(gl, -wi - w1px * 2, y - hi * 2, wi, hi, id);
+		} else
+			tourguide.renderAddDependentButton(gl, x + w1px * 2, y - hi * 2, wi, hi, id);
 	}
 
 	@Override

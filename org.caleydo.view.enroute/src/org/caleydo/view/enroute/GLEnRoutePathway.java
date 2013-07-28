@@ -183,7 +183,6 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		super(glCanvas, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
 		geneSelectionManager = new EventBasedSelectionManager(this, primaryRowIDType);
-		geneSelectionManager.registerEventListeners();
 
 		metaboliteSelectionManager = new EventBasedSelectionManager(this, IDType.getIDType("METABOLITE"));
 		metaboliteSelectionManager.registerEventListeners();
@@ -248,7 +247,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 			}
 		});
 
-		this.glMouseListener = glMouseListener;
+		setMouseListener(glMouseListener);
 
 		init(gl);
 	}
@@ -442,8 +441,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 	@Override
 	public ASerializedMultiTablePerspectiveBasedView getSerializableRepresentation() {
-		SerializedEnRoutePathwayView serializedForm = new SerializedEnRoutePathwayView();
-		serializedForm.setViewID(this.getID());
+		SerializedEnRoutePathwayView serializedForm = new SerializedEnRoutePathwayView(this);
 		serializedForm.setFitToViewWidth(fitToViewWidth);
 		return serializedForm;
 	}

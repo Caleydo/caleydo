@@ -15,13 +15,18 @@ import java.util.List;
 import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.io.parser.ascii.ATextParser;
 import org.caleydo.core.util.base.IntegerCallback;
+import org.caleydo.core.util.collection.Pair;
 import org.eclipse.nebula.widgets.nattable.NatTable;
 import org.eclipse.nebula.widgets.nattable.config.AbstractRegistryConfiguration;
 import org.eclipse.nebula.widgets.nattable.config.CellConfigAttributes;
 import org.eclipse.nebula.widgets.nattable.config.IConfigRegistry;
+import org.eclipse.nebula.widgets.nattable.config.IEditableRule;
 import org.eclipse.nebula.widgets.nattable.data.IDataProvider;
+import org.eclipse.nebula.widgets.nattable.data.convert.DefaultBooleanDisplayConverter;
 import org.eclipse.nebula.widgets.nattable.data.convert.IDisplayConverter;
-import org.eclipse.nebula.widgets.nattable.edit.action.ToggleCheckBoxColumnAction;
+import org.eclipse.nebula.widgets.nattable.edit.EditConfigAttributes;
+import org.eclipse.nebula.widgets.nattable.edit.action.MouseEditAction;
+import org.eclipse.nebula.widgets.nattable.edit.command.EditCellCommandHandler;
 import org.eclipse.nebula.widgets.nattable.grid.GridRegion;
 import org.eclipse.nebula.widgets.nattable.grid.data.DefaultCornerDataProvider;
 import org.eclipse.nebula.widgets.nattable.grid.layer.ColumnHeaderLayer;
@@ -29,12 +34,11 @@ import org.eclipse.nebula.widgets.nattable.grid.layer.CornerLayer;
 import org.eclipse.nebula.widgets.nattable.grid.layer.GridLayer;
 import org.eclipse.nebula.widgets.nattable.grid.layer.RowHeaderLayer;
 import org.eclipse.nebula.widgets.nattable.layer.DataLayer;
-import org.eclipse.nebula.widgets.nattable.layer.IUniqueIndexLayer;
 import org.eclipse.nebula.widgets.nattable.layer.LabelStack;
 import org.eclipse.nebula.widgets.nattable.layer.cell.IConfigLabelAccumulator;
 import org.eclipse.nebula.widgets.nattable.layer.cell.ILayerCell;
 import org.eclipse.nebula.widgets.nattable.painter.cell.ButtonCellPainter;
-import org.eclipse.nebula.widgets.nattable.painter.cell.ColumnHeaderCheckBoxPainter;
+import org.eclipse.nebula.widgets.nattable.painter.cell.CheckBoxPainter;
 import org.eclipse.nebula.widgets.nattable.painter.cell.ICellPainter;
 import org.eclipse.nebula.widgets.nattable.painter.cell.TextPainter;
 import org.eclipse.nebula.widgets.nattable.painter.cell.decorator.CellPainterDecorator;
@@ -75,11 +79,14 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 	private static final String COLUMN_ID = "COLUMN_ID";
 	private static final String ROW_ID = "ROW_ID";
 	private static final String DISABLED_CELL = "DISABLED_CELL";
+	private static final String EDITABLE = "EDITABLE";
+	private static final String COLUMN_HEADER_CHECKBOX = "COLUMN_HEADER_CHECKBOX";
 
 	private int numberOfHeaderRows = -1;
 	private int idRowIndex = -1;
 	private int idColumnIndex = -1;
 
+	private List<Pair<IDataProvider, Boolean>> customHeaderDataProviders = new ArrayList<>();
 	private List<Boolean> columnSelectionStatus = new ArrayList<>();
 	private RegExIDConverter columnIDConverter;
 	private RegExIDConverter rowIDConverter;
@@ -92,7 +99,6 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 	private DataLayer bodyDataLayer;
 
 	private boolean isTransposeable = false;
-	private boolean isTransposed = false;
 
 	private Label tableDimensionsLabel;
 
@@ -120,21 +126,21 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 
 	}
 
-	private class ColumnSelectionAction extends ToggleCheckBoxColumnAction {
+	private class ColumnSelectionAction implements IMouseAction {
 
 		/**
 		 * @param columnHeaderCheckBoxPainter
 		 * @param bodyDataLayer
 		 */
-		public ColumnSelectionAction(ColumnHeaderCheckBoxPainter columnHeaderCheckBoxPainter,
-				IUniqueIndexLayer bodyDataLayer) {
-			super(columnHeaderCheckBoxPainter, bodyDataLayer);
+		public ColumnSelectionAction() {
 		}
 
 		@Override
 		public void run(NatTable natTable, MouseEvent event) {
-			super.run(natTable, event);
-			int columnIndex = natTable.getColumnPositionByX(event.x) - 1;
+			int columnIndex = natTable.getColumnIndexByPosition(natTable.getColumnPositionByX(event.x));
+			int rowIndex = natTable.getRowIndexByPosition(natTable.getColumnPositionByX(event.y));
+			columnHeaderDataProvider.setDataValue(columnIndex, rowIndex,
+					!(Boolean) columnHeaderDataProvider.getDataValue(columnIndex, rowIndex));
 
 			if (columnIndex != -1 && onColumnSelection != null) {
 
@@ -202,18 +208,46 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 		@Override
 		public Object getDataValue(int columnIndex, int rowIndex) {
 			// return "" + (isColumnHeader ? columnIndex + 1 : rowIndex + 1);
-			if (columnSelectionStatus == null || columnSelectionStatus.size() == 0)
-				return false;
-			// return null;
-			return columnSelectionStatus.get(columnIndex);
+			if (rowIndex > 0) {
+				int pastRows = 1;
+				for (Pair<IDataProvider, Boolean> pair : customHeaderDataProviders) {
+					IDataProvider provider = pair.getFirst();
+					if (rowIndex - pastRows < provider.getRowCount()) {
+						return provider.getDataValue(columnIndex, rowIndex - pastRows);
+
+					}
+					pastRows += provider.getRowCount();
+				}
+				return null;
+			} else {
+				if (columnSelectionStatus == null || columnSelectionStatus.size() == 0)
+					return false;
+				// return null;
+				return columnSelectionStatus.get(columnIndex);
+			}
+
 		}
 
 		@Override
 		public void setDataValue(int columnIndex, int rowIndex, Object newValue) {
 			// prevent to disable the id column
-			if (columnSelectionStatus == null || columnSelectionStatus.size() == 0 || columnIndex == idColumnIndex)
-				return;
-			columnSelectionStatus.set(columnIndex, (Boolean) newValue);
+			if (rowIndex > 0) {
+				if (newValue instanceof Boolean)
+					return;
+				int pastRows = 1;
+				for (Pair<IDataProvider, Boolean> pair : customHeaderDataProviders) {
+					IDataProvider provider = pair.getFirst();
+					if (rowIndex - pastRows < provider.getRowCount()) {
+						provider.setDataValue(columnIndex, rowIndex - pastRows, newValue);
+						break;
+					}
+					pastRows += provider.getRowCount();
+				}
+			} else {
+				if (columnSelectionStatus == null || columnSelectionStatus.size() == 0 || columnIndex == idColumnIndex)
+					return;
+				columnSelectionStatus.set(columnIndex, (Boolean) newValue);
+			}
 			table.refresh();
 		}
 
@@ -224,7 +258,11 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 
 		@Override
 		public int getRowCount() {
-			return 1;
+			int numRows = 0;
+			for (Pair<IDataProvider, Boolean> provider : customHeaderDataProviders) {
+				numRows += provider.getFirst().getRowCount();
+			}
+			return numRows + 1;
 		}
 
 		/**
@@ -282,6 +320,7 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 
 		final DataLayer columnDataLayer = new DataLayer(columnDataProvider, 120, 25);
 		ColumnHeaderLayer columnHeaderLayer = new ColumnHeaderLayer(columnDataLayer, bodyLayer, selectionLayer);
+		columnHeaderLayer.registerCommandHandler(new EditCellCommandHandler());
 
 		DataLayer rowDataLayer = new DataLayer(rowDataProvider, isTransposeable ? 100 : 50, 20);
 		RowHeaderLayer rowHeaderLayer = new RowHeaderLayer(rowDataLayer, bodyLayer, selectionLayer);
@@ -321,6 +360,27 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 		};
 
 		bodyDataLayer.setConfigLabelAccumulator(cellLabelAccumulator);
+		columnDataLayer.setConfigLabelAccumulator(new IConfigLabelAccumulator() {
+
+			@Override
+			public void accumulateConfigLabels(LabelStack configLabels, int columnPosition, int rowPosition) {
+				if (rowPosition > 0) {
+					int currentMaxRowPosition = 1;
+					for (Pair<IDataProvider, Boolean> pair : customHeaderDataProviders) {
+						currentMaxRowPosition += pair.getFirst().getRowCount();
+						if (rowPosition <= currentMaxRowPosition) {
+							if (pair.getSecond()) {
+								configLabels.addLabel(EDITABLE);
+							}
+							return;
+						}
+					}
+				} else {
+					configLabels.addLabel(COLUMN_HEADER_CHECKBOX);
+				}
+
+			}
+		});
 		// ColumnOverrideLabelAccumulator acc = new ColumnOverrideLabelAccumulator(columnHeaderLayer);
 		// columnHeaderLayer.setConfigLabelAccumulator(acc);
 		// acc.registerColumnOverrides(9, ColumnLabelAccumulator.COLUMN_LABEL_PREFIX + 9);
@@ -331,7 +391,7 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 		if (rowIDConverter == null)
 			rowIDConverter = new RegExIDConverter(null);
 
-		final ColumnHeaderCheckBoxPainter columnHeaderCheckBoxPainter = new ColumnHeaderCheckBoxPainter(columnDataLayer);
+		final CheckBoxPainter columnHeaderCheckBoxPainter = new CheckBoxPainter();
 		final ICellPainter columnHeaderPainter = new GridLineCellPainterDecorator(new CellPainterDecorator(
 				new ColumnNumberCellPainter(), CellEdgeEnum.LEFT, columnHeaderCheckBoxPainter));
 
@@ -372,7 +432,17 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 						DISABLED_CELL);
 
 				configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_PAINTER, columnHeaderPainter,
-						DisplayMode.NORMAL, GridRegion.COLUMN_HEADER);
+						DisplayMode.NORMAL, COLUMN_HEADER_CHECKBOX);
+				configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_PAINTER, columnHeaderPainter,
+						DisplayMode.EDIT, COLUMN_HEADER_CHECKBOX);
+
+				configRegistry.registerConfigAttribute(CellConfigAttributes.DISPLAY_CONVERTER,
+						new DefaultBooleanDisplayConverter(), DisplayMode.NORMAL, COLUMN_HEADER_CHECKBOX);
+				configRegistry.registerConfigAttribute(EditConfigAttributes.CELL_EDITABLE_RULE,
+						IEditableRule.ALWAYS_EDITABLE, DisplayMode.EDIT, COLUMN_HEADER_CHECKBOX);
+
+				configRegistry.registerConfigAttribute(EditConfigAttributes.CELL_EDITABLE_RULE,
+						IEditableRule.ALWAYS_EDITABLE, DisplayMode.EDIT, EDITABLE);
 
 				if (isTransposeable) {
 					configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_PAINTER, transposeButton,
@@ -384,7 +454,9 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 			public void configureUiBindings(UiBindingRegistry uiBindingRegistry) {
 				uiBindingRegistry.registerFirstSingleClickBinding(new CellPainterMouseEventMatcher(
 						GridRegion.COLUMN_HEADER, MouseEventMatcher.LEFT_BUTTON, columnHeaderCheckBoxPainter),
-						new ColumnSelectionAction(columnHeaderCheckBoxPainter, columnDataLayer));
+						new ColumnSelectionAction());
+				uiBindingRegistry.registerFirstSingleClickBinding(new CellLabelMouseEventMatcher(
+						GridRegion.COLUMN_HEADER, MouseEventMatcher.LEFT_BUTTON, EDITABLE), new MouseEditAction());
 
 				if (isTransposeable) {
 					CellLabelMouseEventMatcher mouseEventMatcher = new CellLabelMouseEventMatcher(GridRegion.CORNER,
@@ -412,6 +484,7 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 		if (dataMatrix == null || dataMatrix.isEmpty())
 			return;
 
+		clearCustomHeaderRows();
 		columnSelectionStatus = new ArrayList<>(numColumns);
 		for (int i = 0; i < numColumns; i++) {
 			columnSelectionStatus.add(true);
@@ -469,7 +542,7 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 	 */
 	public void updateTableColors(int numberOfHeaderRows, int idRowIndex, int idColumnIndex) {
 
-		if (columnSelectionStatus != null && !columnSelectionStatus.isEmpty())
+		if (columnSelectionStatus != null && !columnSelectionStatus.isEmpty() && idColumnIndex >= 0)
 			columnSelectionStatus.set(idColumnIndex, true);
 
 		this.idRowIndex = idRowIndex;
@@ -533,6 +606,19 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 	 */
 	public Composite getTable() {
 		return this.table;
+	}
+
+	public void addCustomHeaderRows(IDataProvider headerDataProvider, boolean isEditable) {
+		if (headerDataProvider.getColumnCount() != this.columnHeaderDataProvider.getColumnCount())
+			throw new IllegalStateException(
+					"The number of columns of the specified dataprovider must be equal to the number of columns of this table.");
+
+		customHeaderDataProviders.add(Pair.make(headerDataProvider, isEditable));
+
+	}
+
+	public void clearCustomHeaderRows() {
+		customHeaderDataProviders.clear();
 	}
 
 }

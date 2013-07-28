@@ -20,6 +20,8 @@ import org.caleydo.vis.rank.model.IRow;
  *
  */
 public interface ITablePerspectiveScoreRow extends IRow {
+	String getPersistentID();
+
 	TablePerspective asTablePerspective();
 
 	IDataDomain getDataDomain();

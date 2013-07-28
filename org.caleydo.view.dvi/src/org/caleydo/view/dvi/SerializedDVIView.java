@@ -9,10 +9,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.view.IView;
 
 /**
  * Serialized DVI view.
- * 
+ *
  * @author Alexander Lex
  * @author Marc Streit
  */
@@ -26,13 +27,12 @@ public class SerializedDVIView extends ASerializedView {
 	public SerializedDVIView() {
 	}
 
-	@Override
-	public String getViewType() {
-		return GLDataViewIntegrator.VIEW_TYPE;
+	public SerializedDVIView(IView view) {
+		super(view);
 	}
 
 	@Override
-	public String getViewClassType() {
-		return GLDataViewIntegrator.class.getName();
+	public String getViewType() {
+		return GLDataViewIntegrator.VIEW_TYPE;
 	}
 }

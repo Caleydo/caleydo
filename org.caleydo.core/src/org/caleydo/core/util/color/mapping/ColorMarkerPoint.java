@@ -137,4 +137,20 @@ public class ColorMarkerPoint implements Comparable<ColorMarkerPoint> {
 	public int compareTo(ColorMarkerPoint colorMarkerPoint) {
 		return Float.compare(mappingValue, colorMarkerPoint.mappingValue);
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("ColorMarkerPoint [mappingValue=");
+		builder.append(mappingValue);
+		builder.append(", color=");
+		builder.append(color);
+		builder.append(", leftSpread=");
+		builder.append(leftSpread);
+		builder.append(", rightSpread=");
+		builder.append(rightSpread);
+		builder.append("]");
+		return builder.toString();
+	}
+
 }

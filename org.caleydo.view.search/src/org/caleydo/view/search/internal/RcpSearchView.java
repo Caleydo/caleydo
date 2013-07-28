@@ -119,6 +119,13 @@ public final class RcpSearchView extends CaleydoRCPViewPart {
 	 */
 	private ControlDecoration nothingFound;
 
+	/**
+	 *
+	 */
+	public RcpSearchView() {
+		super(SerializedSearchView.class);
+	}
+
 	private static final Comparator<ILabelHolder> byLabel = new Comparator<ILabelHolder>() {
 		@Override
 		public int compare(ILabelHolder o1, ILabelHolder o2) {
@@ -648,10 +655,10 @@ public final class RcpSearchView extends CaleydoRCPViewPart {
 		List<Perspective> dataDomainPerspectives = new ArrayList<>(dataDomains.size());
 		for (ATableBasedDataDomain dd : dataDomains) {
 			if (dd.getRecordIDCategory() == category)
-				dataDomainPerspectives.add(dd.getTable().getDefaultRecordPerspective());
+				dataDomainPerspectives.add(dd.getTable().getDefaultRecordPerspective(false));
 
 			if (dd.getDimensionIDCategory() == category)
-				dataDomainPerspectives.add(dd.getTable().getDefaultDimensionPerspective());
+				dataDomainPerspectives.add(dd.getTable().getDefaultDimensionPerspective(false));
 		}
 		Collections.sort(dataDomainPerspectives, byLabel);
 		return dataDomainPerspectives;

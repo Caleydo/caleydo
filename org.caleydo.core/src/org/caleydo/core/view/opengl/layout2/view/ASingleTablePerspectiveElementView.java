@@ -22,14 +22,16 @@ import org.caleydo.core.view.ISingleTablePerspectiveBasedView;
 import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
 import org.caleydo.core.view.listener.RemoveTablePerspectiveEvent;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
-import org.caleydo.core.view.opengl.layout2.AGLElementDecorator;
 import org.caleydo.core.view.opengl.layout2.AGLElementView;
 import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.core.view.opengl.layout2.GLElementDecorator;
+
+import com.google.common.base.Objects;
 
 /**
  *
  * @author Samuel Gratzl
- * 
+ *
  */
 public abstract class ASingleTablePerspectiveElementView extends AGLElementView implements
 		ISingleTablePerspectiveBasedView {
@@ -46,19 +48,19 @@ public abstract class ASingleTablePerspectiveElementView extends AGLElementView 
 		applyTablePerspective(getRootDecorator(), tablePerspective);
 	}
 
-	protected abstract void applyTablePerspective(AGLElementDecorator root, TablePerspective tablePerspective);
+	protected abstract void applyTablePerspective(GLElementDecorator root, TablePerspective tablePerspective);
 
 	@Override
-	protected final AGLElementDecorator createRoot() {
-		return new WrapperRoot();
+	protected final GLElementDecorator createRoot() {
+		return new GLElementDecorator();
 	}
 
-	protected final AGLElementDecorator getRootDecorator() {
-		return (AGLElementDecorator) getRoot();
+	protected final GLElementDecorator getRootDecorator() {
+		return (GLElementDecorator) getRoot();
 	}
 
 	protected GLElement getContent() {
-		AGLElementDecorator rootDecorator = getRootDecorator();
+		GLElementDecorator rootDecorator = getRootDecorator();
 		if (rootDecorator == null)
 			return null;
 		return rootDecorator.getContent();
@@ -90,9 +92,11 @@ public abstract class ASingleTablePerspectiveElementView extends AGLElementView 
 
 	@Override
 	public final void setTablePerspective(TablePerspective tablePerspective) {
+		if (Objects.equal(this.tablePerspective, tablePerspective))
+			return;
 		this.tablePerspective = tablePerspective;
 		fireTablePerspectiveChanged();
-		AGLElementDecorator root = getRootDecorator();
+		GLElementDecorator root = getRootDecorator();
 		if (root != null) {
 			applyTablePerspective(root, tablePerspective);
 		}
@@ -126,7 +130,7 @@ public abstract class ASingleTablePerspectiveElementView extends AGLElementView 
 
 	@ListenTo(sendToMe = true)
 	private void onRemoveTablePerspective(RemoveTablePerspectiveEvent event) {
-		if (tablePerspective == event.getTablePerspective())
+		if (Objects.equal(tablePerspective, event.getTablePerspective()))
 			setTablePerspective(null);
 	}
 }

@@ -15,6 +15,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Queue;
 import java.util.Set;
 
@@ -55,9 +57,12 @@ import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.util.base.IUniqueObject;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
+import org.caleydo.core.view.ViewManager;
 import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
 import org.caleydo.core.view.listener.RemoveTablePerspectiveEvent;
 import org.caleydo.core.view.listener.RemoveTablePerspectiveListener;
@@ -100,6 +105,7 @@ import org.caleydo.view.stratomex.listener.AddGroupsToStratomexListener;
 import org.caleydo.view.stratomex.listener.GLStratomexKeyListener;
 import org.caleydo.view.stratomex.listener.ReplaceTablePerspectiveListener;
 import org.caleydo.view.stratomex.tourguide.TourguideAdapter;
+import org.caleydo.view.stratomex.tourguide.event.HighlightBandEvent;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
@@ -170,6 +176,11 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 
 	private ElementLayout leftBrickColumnSpacing;
 	private ElementLayout rightBrickColumnSpacing;
+
+	/**
+	 * set of extra highlights to bands
+	 */
+	private Map<String, Color> bandHighlights = new HashMap<>(2);
 
 	/**
 	 * The id category used to map between the records of the dimension groups. Only data with the same recordIDCategory
@@ -367,6 +378,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 					this));
 			leftBrickColumnSpacing.setGrabX(true);
 			centerRowLayout.append(leftBrickColumnSpacing);
+			rightBrickColumnSpacing = null;
 			return;
 		}
 
@@ -490,14 +502,13 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	@Override
 	public void initRemote(final GL2 gl, final AGLView glParentView, final GLMouseListener glMouseListener) {
 
-		this.glMouseListener = glMouseListener;
+		setMouseListener(glMouseListener);
 		init(gl);
 		initLayouts();
 	}
 
 	@Override
 	public void displayLocal(GL2 gl) {
-
 		pickingManager.handlePicking(this, gl);
 
 		display(gl);
@@ -505,6 +516,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		if (!lazyMode) {
 			checkForHits(gl);
 		}
+		tourguide.sendDelayedEvents();
 	}
 
 	@Override
@@ -655,6 +667,13 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 
 	public boolean isDetailMode() {
 		return isLeftDetailShown || isRightDetailShown;
+	}
+
+	/**
+	 * @return
+	 */
+	public boolean canShowDetailBrick() {
+		return !tourguide.isWizardActive();
 	}
 
 	/**
@@ -953,7 +972,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 			public void clicked(Pick pick) {
 				dragAndDropController.clearDraggables();
 				dragAndDropController.setDraggingStartPosition(pick.getDIPPickedPoint());
-				dragAndDropController.addDraggable((BrickColumn) generalManager.getViewManager().getGLView(
+				dragAndDropController.addDraggable((BrickColumn) ViewManager.get().getGLView(
 						pick.getObjectID()));
 				dragAndDropController.setDraggingMode("DimensionGroupDrag");
 
@@ -994,7 +1013,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 			@Override
 			protected void clicked(Pick pick) {
 				SelectionCommands.clearSelections();
-				hideAllBrickToolbars();
+				hideAllBrickWidgets();
 			}
 		}, EPickingType.DIMENSION_GROUP_SPACER.name());
 
@@ -1032,7 +1051,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 			@Override
 			protected void clicked(Pick pick) {
 				SelectionCommands.clearSelections();
-				hideAllBrickToolbars();
+				hideAllBrickWidgets();
 			}
 		}, EPickingType.DIMENSION_GROUP_SPACER_HEADER.name());
 
@@ -1075,11 +1094,11 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		tourguide.registerPickingListeners();
 	}
 
-	public void hideAllBrickToolbars() {
+	public void hideAllBrickWidgets() {
 		for (BrickColumn brickColumn : brickColumnManager.getBrickColumns()) {
-			brickColumn.getHeaderBrick().hideToolBar();
+			brickColumn.getHeaderBrick().showWidgets(false);
 			for (GLBrick brick : brickColumn.getSegmentBricks()) {
-				brick.hideToolBar();
+				brick.showWidgets(false);
 			}
 		}
 	}
@@ -1087,7 +1106,6 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	@Override
 	public ASerializedView getSerializableRepresentation() {
 		SerializedStratomexView serializedForm = new SerializedStratomexView(this);
-		serializedForm.setViewID(this.getID());
 		return serializedForm;
 	}
 
@@ -1139,6 +1157,9 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 			replaceTablePerspectiveListener = null;
 		}
 		listeners.unregisterAll();
+
+		if (recordSelectionManager != null)
+			recordSelectionManager.unregisterEventListeners();
 	}
 
 	@Override
@@ -1355,6 +1376,25 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 			if (it.next().getTablePerspective() == tablePerspective)
 				it.remove();
 		}
+		// cleanup band connections
+		for (Iterator<BrickConnection> it = hashConnectionBandIDToRecordVA.values().iterator(); it.hasNext();) {
+			BrickConnection next = it.next();
+			if (next.refersTo(tablePerspective))
+				it.remove();
+		}
+		for (Iterator<Map.Entry<Perspective, HashMap<Perspective, BrickConnection>>> it = hashRowPerspectivesToConnectionBandID
+				.entrySet().iterator(); it.hasNext();) {
+			Entry<Perspective, HashMap<Perspective, BrickConnection>> next = it.next();
+			for (Iterator<BrickConnection> it2 = next.getValue().values().iterator(); it2.hasNext();) {
+				BrickConnection next2 = it2.next();
+				if (next2.refersTo(tablePerspective))
+					it2.remove();
+			}
+			if (next.getValue().isEmpty())
+				it.remove();
+		}
+		eventPublisher.triggerEvent(new RelationsUpdatedEvent().from(this));
+
 		initLayouts();
 		TablePerspectivesChangedEvent event = new TablePerspectivesChangedEvent(this);
 		event.setSender(this);
@@ -1665,6 +1705,47 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	@ListenTo(sendToMe = true)
 	private void onSelectElements(SelectElementsEvent event) {
 		selectElements(event.getIds(), event.getIdType(), event.getEventSpace(), event.getSelectionType());
+	}
+
+	@ListenTo(sendToMe = true)
+	private void onHighlightBand(HighlightBandEvent event) {
+		if (event.isClearAll()) {
+			bandHighlights.clear();
+		} else {
+			String key = toHighlightBandKey(event.getGroupA(), event.getGroupB());
+			String key2 = toHighlightBandKey(event.getGroupB(), event.getGroupA());
+			if (event.isHighlight()) {
+				bandHighlights.put(key, event.getColor());
+				bandHighlights.put(key2, event.getColor());
+			} else {
+				bandHighlights.remove(key);
+				bandHighlights.remove(key2);
+			}
+		}
+
+		setDisplayListDirty();
+	}
+
+	private static String toHighlightBandKey(IUniqueObject ag, IUniqueObject bg) {
+		if (ag == null || bg == null)
+			return ""; // dummy
+		return ag.getID() + "/" + bg.getID();
+	}
+
+	public Color isHighlightingBand(GLBrick a, GLBrick b) {
+		final TablePerspective at = a.getTablePerspective();
+		final TablePerspective bt = b.getTablePerspective();
+		IUniqueObject i1 = at.getRecordGroup();
+		IUniqueObject i2 = bt.getRecordGroup();
+		Color c;
+		if ((c = bandHighlights.get(toHighlightBandKey(i1,i2))) != null)
+			return c;
+		if (at instanceof PathwayTablePerspective && (c = bandHighlights.get(toHighlightBandKey( ((PathwayTablePerspective) at).getPathway(),i2))) != null)
+			return c;
+		if (bt instanceof PathwayTablePerspective
+				&& (c = bandHighlights.get(toHighlightBandKey(i1, ((PathwayTablePerspective) bt).getPathway()))) != null)
+			return c;
+		return null;
 	}
 
 	public void selectElements(Iterable<Integer> ids, IDType idType, String dataDomainID, SelectionType selectionType) {

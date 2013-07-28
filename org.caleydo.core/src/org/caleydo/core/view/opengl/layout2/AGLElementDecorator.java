@@ -5,6 +5,8 @@
  ******************************************************************************/
 package org.caleydo.core.view.opengl.layout2;
 
+import gleem.linalg.Vec2f;
+
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 
 /**
@@ -78,12 +80,14 @@ public abstract class AGLElementDecorator extends GLElement implements IGLElemen
 
 	@Override
 	protected void layoutImpl() {
-		if (content != null)
-			layoutContent(content.layoutElement);
+		if (content != null) {
+			Vec2f size = getSize();
+			layoutContent(content.layoutElement, size.x(), size.y());
+		}
 		super.layoutImpl();
 	}
 
-	protected abstract void layoutContent(IGLLayoutElement content);
+	protected abstract void layoutContent(IGLLayoutElement content, float w, float h);
 
 	@Override
 	public boolean moved(GLElement child) {

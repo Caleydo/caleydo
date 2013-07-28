@@ -239,8 +239,9 @@ public class TCGABrowserStartupAddon implements IStartupAddon {
 			return false;
 		// Try to download the file with interruption
 		RemoteFile file = RemoteFile.of(this.selectedChoice);
-		if (!file.inCache(false)) {
+		if (!file.inCache(true)) {
 			try {
+				file.delete();
 				new ProgressMonitorDialog(new Shell()).run(true, true, file);
 			} catch (InvocationTargetException | InterruptedException e) {
 				Status status = new Status(IStatus.ERROR, this.getClass().getSimpleName(), "Error during downloading: "

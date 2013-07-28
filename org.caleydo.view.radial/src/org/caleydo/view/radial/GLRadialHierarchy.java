@@ -191,7 +191,7 @@ public class GLRadialHierarchy extends ATableBasedView {
 			}
 		});
 
-		this.glMouseListener = glMouseListener;
+		setMouseListener(glMouseListener);
 
 		init(gl);
 

@@ -193,12 +193,9 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 
 		vertexSelectionManager = new EventBasedSelectionManager(this, IDType.getIDType(EGeneIDTypes.PATHWAY_VERTEX_REP
 				.name()));
-		vertexSelectionManager.registerEventListeners();
 		geneSelectionManager = new EventBasedSelectionManager(this, IDType.getIDType("DAVID"));
-		geneSelectionManager.registerEventListeners();
 
 		metaboliteSelectionManager = new EventBasedSelectionManager(this, IDType.getIDType("METABOLITE"));
-		metaboliteSelectionManager.registerEventListeners();
 
 		List<GeneticDataDomain> dataDomains = DataDomainManager.get().getDataDomainsByType(GeneticDataDomain.class);
 		if (dataDomains.size() != 0) {

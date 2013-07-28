@@ -30,9 +30,7 @@ import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
 import org.caleydo.core.event.IListenerOwner;
 import org.caleydo.core.event.view.ViewScrollEvent;
-import org.caleydo.core.id.object.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.exception.ExceptionHandler;
@@ -51,6 +49,7 @@ import org.caleydo.core.view.opengl.canvas.listener.IResettableView;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.keyboard.GLFPSKeyListener;
 import org.caleydo.core.view.opengl.keyboard.GLKeyListener;
+import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.IPickingLabelProvider;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
@@ -154,6 +153,7 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	private BlockingQueue<Pair<AEventListener<? extends IListenerOwner>, AEvent>> queue = new LinkedBlockingQueue<Pair<AEventListener<? extends IListenerOwner>, AEvent>>();
 
 	private boolean isVisible = true;
+	private boolean wasVisible = true;
 
 	protected CaleydoTextRenderer textRenderer;
 
@@ -176,7 +176,7 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 
 	private HashSet<IMouseWheelHandler> mouseWheelListeners;
 
-	protected GLMouseWheelListener glMouseWheelListener;
+	protected final GLMouseWheelListener glMouseWheelListener;
 
 	private boolean focusGained = false;
 
@@ -211,9 +211,11 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	 *            TODO
 	 */
 
+
 	protected AGLView(IGLCanvas glCanvas, final ViewFrustum viewFrustum, String viewType, String viewName) {
 
-		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.GL_VIEW), viewType, viewName);
+		super(viewType,
+				viewName);
 
 		parentGLCanvas = glCanvas;
 
@@ -231,7 +233,7 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 		this.viewFrustum = viewFrustum;
 		viewCamera = new ViewCameraBase(uniqueID);
 
-		pickingManager = generalManager.getViewManager().getPickingManager();
+		pickingManager = ViewManager.get().getPickingManager();
 		textureManager = new TextureManager();
 
 		glMouseWheelListener = new GLMouseWheelListener(this);
@@ -244,11 +246,19 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 
 	}
 
+	protected final void setMouseListener(GLMouseListener listener) {
+		if (this.glMouseListener == listener)
+			return;
+		// unregister existing
+		parentGLCanvas.removeMouseListener(this.glMouseListener);
+		this.glMouseListener = listener;
+	}
+
+
 	@Override
 	public void initialize() {
 		ViewManager viewManager = GeneralManager.get().getViewManager();
 		viewManager.registerView(this, !isRenderedRemote());
-		setLabel(this.getDefaultLabel(), true);
 		registerEventListeners();
 
 		if (glRemoteRenderingView == null)
@@ -315,8 +325,10 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	public final void display(GLAutoDrawable drawable) {
 		try {
 			processEvents();
-			if (!isVisible())
+			if (!isVisible()) {
+				wasVisible = false;
 				return;
+			}
 
 			if (!focusGained) {
 				parentGLCanvas.requestFocus();
@@ -351,6 +363,13 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 
 			GL2 gl = drawable.getGL().getGL2();
 
+
+			if (!wasVisible) {
+				//set the viewport again for mac bug 1476
+				gl.glViewport(0,0,parentGLCanvas.asGLAutoDrawAble().getWidth(), parentGLCanvas.asGLAutoDrawAble().getHeight());
+				wasVisible = true;
+			}
+			GLGraphics.checkError(gl);
 			// ViewManager.get().executePendingRemoteViewDestruction(gl, this);
 
 			// load identity matrix
@@ -362,6 +381,7 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 
 			// clear screen
 			gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
+			GLGraphics.checkError(gl);
 
 			gl.glTranslatef(position.x(), position.y(), position.z());
 			gl.glRotatef(viewCamera.getCameraRotationGrad(rot_Vec3f), rot_Vec3f.x(), rot_Vec3f.y(), rot_Vec3f.z());
@@ -1048,10 +1068,6 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	// }
 
 	@Override
-	public void initFromSerializableRepresentation(ASerializedView serialzedView) {
-	}
-
-	@Override
 	public void registerEventListeners() {
 		viewScrollEventListener = new ViewScrollEventListener();
 		viewScrollEventListener.setHandler(this);
@@ -1064,6 +1080,7 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 			eventPublisher.removeListener(viewScrollEventListener);
 			viewScrollEventListener = null;
 		}
+
 
 	}
 
@@ -1084,11 +1101,16 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	/**
 	 * Check whether the view is visible. If not, it should not be rendered. Note that events should be processed
 	 * anyway.
+	 * @param drawable
 	 *
 	 * @return true if it is visible
 	 */
 	protected boolean isVisible() {
-		return isVisible;
+		if (!isVisible)
+			return false;
+		if (!parentGLCanvas.isVisible())
+			return false;
+		return true;
 	}
 
 	/**
@@ -1130,6 +1152,8 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 			return;
 		Logger.log(new Status(IStatus.INFO, toString(), "Disposing view"));
 
+		parentGLCanvas.removeMouseListener(glMouseListener);
+
 		GL2 gl = drawable.getGL().getGL2();
 		// First, destroy the remote views, then unregister, otherwise the
 		// remote view destruction would not work
@@ -1146,9 +1170,11 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	 */
 	public final void destroy(GL2 gl) {
 		System.out.println("destroy " + label);
+		parentGLCanvas.removeMouseListener(glMouseWheelListener);
 
 		pickingManager.removeViewSpecificData(uniqueID);
 		unregisterEventListeners();
+		this.queue.clear(); // clear existing events
 		destroyViewSpecificContent(gl);
 		parentGLCanvas.removeFocusListener(focusListener);
 	}
@@ -1172,11 +1198,11 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 		return pickingManager;
 	}
 
-	@Override
-	protected void finalize() throws Throwable {
-		super.finalize();
-		System.out.println("Finalizing " + this);
-	}
+	// @Override
+	// protected void finalize() throws Throwable {
+	// System.out.println("Finalizing " + this);
+	// super.finalize();
+	// }
 
 	/**
 	 * @return The minimum height in pixels the view currently requires to show its content properly. The default

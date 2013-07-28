@@ -17,6 +17,7 @@ import java.util.List;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.util.base.ILabelProvider;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 
@@ -171,7 +172,7 @@ public class LineLabelRenderer extends ARelativeLinePositionRenderer {
 		gl.glVertex3f(xPosition + width, yPosition + height, relativePositionOnLine.z());
 		gl.glVertex3f(xPosition, yPosition + height, relativePositionOnLine.z());
 		gl.glEnd();
-		textRenderer.setColor(0, 0, 0, 1);
+		textRenderer.setColor(new Color(textColor));
 		textRenderer.renderTextInBounds(gl, text, xPosition + pixelGLConverter.getGLWidthForPixelWidth(2), yPosition
 				+ pixelGLConverter.getGLHeightForPixelHeight(2), relativePositionOnLine.z(), width, height);
 

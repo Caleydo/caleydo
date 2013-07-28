@@ -118,15 +118,21 @@ public class NURBSCurve {
 		int numberOfPoints = (numberOfSegments - 1);
 
 		for (int step = 0; step <= numberOfPoints; step++) {
-			Vec3f point = new Vec3f();
+			float x = 0;
+			float y = 0;
+			float z = 0;
 			for (int k = 0; k <= n; k++) {
 				this.u = this.u_min + this.step_length * step;
 				if (step == numberOfPoints) // because of rounding errors we call the last blending function
 					// with exact u_max to avoid u outside the definition
 					this.u = this.u_max;
-				point = point.addScaled(this.coxDeBoor(k, this.d), this.controlPoints.get(k));
+				float s = this.coxDeBoor(k, this.d);
+				Vec3f p = this.controlPoints.get(k);
+				x += s * p.x();
+				y += s * p.y();
+				z += s * p.z();
 			}
-			points.add(point);
+			points.add(new Vec3f(x, y, z));
 			// this.curvePoints.add(point);
 			// System.out.println("added point " + this.curvePoints[step].x() + ", " +
 			// this.curvePoints[step].y() + ", " + this.curvePoints[step].z());

@@ -17,7 +17,7 @@ import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
 
 /**
  * @author Alexander Lex
- * 
+ *
  */
 @XmlRootElement
 @XmlType
@@ -36,6 +36,7 @@ public abstract class ASerializedMultiTablePerspectiveBasedView extends ASeriali
 	}
 
 	public ASerializedMultiTablePerspectiveBasedView(IMultiTablePerspectiveBasedView view) {
+		super(view);
 		dataDomainAndTablePerspectiveKeys = new ArrayList<Pair<String, String>>();
 		for (TablePerspective tablePerspective : view.getTablePerspectives()) {
 			dataDomainAndTablePerspectiveKeys.add(new Pair<String, String>(tablePerspective
@@ -46,7 +47,7 @@ public abstract class ASerializedMultiTablePerspectiveBasedView extends ASeriali
 
 	/**
 	 * Sets the data domain associated with a view
-	 * 
+	 *
 	 * @param dataDomain
 	 */
 	public void setDataDomainID(String dataDomainID) {
@@ -55,7 +56,7 @@ public abstract class ASerializedMultiTablePerspectiveBasedView extends ASeriali
 
 	/**
 	 * Returns the data domain a view is associated with
-	 * 
+	 *
 	 * @return
 	 */
 	public String getDataDomainID() {

@@ -11,8 +11,7 @@ import java.io.Serializable;
 
 import javax.media.opengl.GLException;
 
-import org.caleydo.core.id.object.ManagedObjectType;
-import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.id.IDCreator;
 import org.caleydo.core.util.base.IUniqueObject;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
@@ -54,7 +53,7 @@ public class PathwayGraph extends DirectedMultigraph<PathwayVertexRep, DefaultEd
 
 		super(DefaultEdge.class);
 
-		id = GeneralManager.get().getIDCreator().createID(ManagedObjectType.PATHWAY);
+		id = IDCreator.createPersistentIntID(PathwayGraph.class);
 
 		this.type = type;
 		this.name = name;

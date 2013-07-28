@@ -9,10 +9,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.serialize.ASerializedSingleTablePerspectiveBasedView;
+import org.caleydo.core.view.ISingleTablePerspectiveBasedView;
 
 /**
  * Serialized Kaplan Meier view.
- * 
+ *
  * @author Marc Streit
  */
 @XmlRootElement
@@ -23,6 +24,10 @@ public class SerializedKaplanMeierView extends ASerializedSingleTablePerspective
 	 * Default constructor with default initialization
 	 */
 	public SerializedKaplanMeierView() {
+	}
+
+	public SerializedKaplanMeierView(ISingleTablePerspectiveBasedView view) {
+		super(view);
 	}
 
 	@Override

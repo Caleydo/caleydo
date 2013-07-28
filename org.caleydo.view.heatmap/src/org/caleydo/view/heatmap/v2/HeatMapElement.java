@@ -9,6 +9,8 @@ import gleem.linalg.Vec2f;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
@@ -29,6 +31,7 @@ import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
+import org.caleydo.core.view.opengl.layout2.util.PickingPool;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
@@ -39,8 +42,12 @@ import org.caleydo.view.heatmap.v2.internal.HeatMapTextureRenderer;
 import org.caleydo.view.heatmap.v2.internal.SelectionRenderer;
 
 import com.google.common.base.Preconditions;
-import com.jogamp.common.util.IntIntHashMap;
 
+/**
+ *
+ * @author Samuel Gratzl
+ *
+ */
 public class HeatMapElement extends PickableGLElement implements
 		TablePerspectiveSelectionMixin.ITablePerspectiveMixinCallback {
 	private static final int TEXT_OFFSET = 5;
@@ -51,6 +58,12 @@ public class HeatMapElement extends PickableGLElement implements
 
 	private final static int TEXT_WIDTH = 80; // [px]
 
+	/**
+	 * position of a the heat map text
+	 *
+	 * @author Samuel Gratzl
+	 *
+	 */
 	public enum EShowLabels {
 		NONE, LEFT, RIGHT;
 
@@ -65,22 +78,10 @@ public class HeatMapElement extends PickableGLElement implements
 	@DeepScan
 	private final TablePerspectiveSelectionMixin mixin;
 
-	private final IntIntHashMap recordPickingIds = new IntIntHashMap();
-	private final IPickingListener recordPickingListener = new IPickingListener() {
-		@Override
-		public void pick(Pick pick) {
-			onRecordPick(pick.getObjectID(), pick);
-		}
-	};
+	private PickingPool recordPickingPool;
 	private final SelectionRenderer recordSelectionRenderer;
 
-	private final IntIntHashMap dimensionPickingIds = new IntIntHashMap();
-	private final IPickingListener dimensionPickingListener = new IPickingListener() {
-		@Override
-		public void pick(Pick pick) {
-			onDimensionPick(pick.getObjectID(), pick);
-		}
-	};
+	private PickingPool dimensionPickingPool;
 	private final SelectionRenderer dimensionSelectionRenderer;
 
 	// helper as we have record and dimension need a central point when both is done
@@ -134,7 +135,31 @@ public class HeatMapElement extends PickableGLElement implements
 	@Override
 	protected void init(IGLElementContext context) {
 		super.init(context);
+
+		recordPickingPool = new PickingPool(context, new IPickingListener() {
+			@Override
+			public void pick(Pick pick) {
+				onRecordPick(pick.getObjectID(), pick);
+			}
+		});
+		dimensionPickingPool = new PickingPool(context, new IPickingListener() {
+			@Override
+			public void pick(Pick pick) {
+				onDimensionPick(pick.getObjectID(), pick);
+			}
+		});
 		onVAUpdate(mixin.getTablePerspective());
+	}
+
+	@Override
+	protected void takeDown() {
+		recordPickingPool.clear();
+		recordPickingPool = null;
+		dimensionPickingPool.clear();
+		dimensionPickingPool = null;
+		if (textureRenderer != null)
+			textureRenderer.takeDown();
+		super.takeDown();
 	}
 
 	@Override
@@ -163,9 +188,8 @@ public class HeatMapElement extends PickableGLElement implements
 		if (getVisibility() == EVisibility.PICKABLE && context != null) {
 			// we are pickable
 			TablePerspective tablePerspective = mixin.getTablePerspective();
-			ensureEnoughPickingIds(tablePerspective.getRecordPerspective(), recordPickingIds, recordPickingListener);
-			ensureEnoughPickingIds(tablePerspective.getDimensionPerspective(), dimensionPickingIds,
-				dimensionPickingListener);
+			ensureEnoughPickingIds(tablePerspective.getRecordPerspective(), recordPickingPool);
+			ensureEnoughPickingIds(tablePerspective.getDimensionPerspective(), dimensionPickingPool);
 		}
 	}
 
@@ -176,23 +200,19 @@ public class HeatMapElement extends PickableGLElement implements
 	 * @param map
 	 * @param listener
 	 */
-	private void ensureEnoughPickingIds(Perspective perspective, IntIntHashMap map, IPickingListener listener) {
-		if (map.size() == 0) { // just add
+	private void ensureEnoughPickingIds(Perspective perspective, PickingPool pool) {
+		if (pool.isEmpty()) { // just add
 			for (Integer recordID : perspective.getVirtualArray()) {
-				map.put(recordID, context.registerPickingListener(listener, recordID));
+				pool.get(recordID);
 			}
 		} else {// track changed and update picking ids
-			IntIntHashMap bak = new IntIntHashMap();
-			bak.putAll(map);
+			Set<Integer> bak = new TreeSet<>(pool.currentKeys());
 			for (Integer recordID : perspective.getVirtualArray()) {
 				bak.remove(recordID); // to track which one were removed
-				if (map.containsKey(recordID))
-					continue;
-				map.put(recordID, context.registerPickingListener(listener, recordID));
+				pool.get(recordID);
 			}
-			for (IntIntHashMap.Entry entry : bak) {
-				context.unregisterPickingListener(entry.value);
-				map.remove(entry.key); // update map
+			for (Integer freed : bak) {
+				pool.free(freed);
 			}
 		}
 	}
@@ -277,20 +297,6 @@ public class HeatMapElement extends PickableGLElement implements
 		repaintAll();
 	}
 
-
-	@Override
-	protected void takeDown() {
-		// free ids again
-		for (IntIntHashMap.Entry entry : recordPickingIds) {
-			context.unregisterPickingListener(entry.value);
-		}
-		for (IntIntHashMap.Entry entry : dimensionPickingIds) {
-			context.unregisterPickingListener(entry.value);
-		}
-		if (textureRenderer != null)
-			textureRenderer.takeDown();
-		super.takeDown();
-	}
 
 	@Override
 	protected void layoutImpl() {
@@ -425,7 +431,7 @@ public class HeatMapElement extends PickableGLElement implements
 				continue;
 
 			if (doPicking)
-				g.pushName(recordPickingIds.get(recordID));
+				g.pushName(recordPickingPool.get(recordID));
 
 			for (int j = 0; j < dimensionVA.size(); ++j) {
 				Integer dimensionID = dimensionVA.get(j);
@@ -434,7 +440,7 @@ public class HeatMapElement extends PickableGLElement implements
 				if (fieldWidth <= 0)
 					continue;
 				if (doPicking) {
-					g.pushName(dimensionPickingIds.get(dimensionID));
+					g.pushName(dimensionPickingPool.get(dimensionID));
 					g.fillRect(x, y, fieldWidth, fieldHeight);
 					g.popName();
 				} else {
@@ -633,5 +639,4 @@ public class HeatMapElement extends PickableGLElement implements
 	public String toString() {
 		return "Heat map for " + mixin;
 	}
-
 }

@@ -8,6 +8,7 @@
  */
 package org.caleydo.view.stratomex;
 
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
@@ -97,6 +98,22 @@ public class BrickConnection {
 	 */
 	public VirtualArray getSharedRecordVirtualArray() {
 		return sharedRecordVirtualArray;
+	}
+
+	/**
+	 * @param tablePerspective
+	 * @return
+	 */
+	public boolean refersTo(TablePerspective tablePerspective) {
+		if (leftBrick != null
+				&& (leftBrick.getTablePerspective().getParentTablePerspective() == tablePerspective || leftBrick
+						.getTablePerspective() == tablePerspective))
+			return true;
+		if (rightBrick != null
+				&& (rightBrick.getTablePerspective().getParentTablePerspective() == tablePerspective || rightBrick
+						.getTablePerspective() == tablePerspective))
+			return true;
+		return false;
 	}
 
 }

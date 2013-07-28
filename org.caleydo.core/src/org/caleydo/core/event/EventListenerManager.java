@@ -21,6 +21,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import org.caleydo.core.util.ClassUtils;
+import org.caleydo.core.util.logging.Logger;
 
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
@@ -42,6 +43,15 @@ public class EventListenerManager {
 
 	EventListenerManager(IListenerOwner owner) {
 		this.owner = owner;
+	}
+
+	@Override
+	protected void finalize() throws Throwable {
+		if (!listeners.isEmpty()) {
+			Logger.create(EventListenerManager.class).error("not empty listeners during finalize - auto unregister");
+			unregisterAll();
+		}
+		super.finalize();
 	}
 
 	/**

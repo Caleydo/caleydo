@@ -15,11 +15,10 @@ import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.table.TablePerspectiveStatistics;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.id.IDCategory;
+import org.caleydo.core.id.IDCreator;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
-import org.caleydo.core.id.object.ManagedObjectType;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.base.IUniqueObject;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.datadomain.genetic.EGeneIDTypes;
@@ -75,7 +74,7 @@ public class PathwayVertexRep implements Serializable, IUniqueObject {
 	 */
 	public PathwayVertexRep(final String name, final String shapeType, final String coords) {
 
-		id = GeneralManager.get().getIDCreator().createID(ManagedObjectType.PATHWAY_VERTEX_REP);
+		id = IDCreator.createVMUniqueID(PathwayVertexRep.class);
 
 		shape = EPathwayVertexShape.valueOf(shapeType);
 		this.name = name;
@@ -96,7 +95,7 @@ public class PathwayVertexRep implements Serializable, IUniqueObject {
 	public PathwayVertexRep(final String name, final String shapeType, final short x, final short y, final short width,
 			final short height) {
 
-		id = GeneralManager.get().getIDCreator().createID(ManagedObjectType.PATHWAY_VERTEX_REP);
+		id = IDCreator.createVMUniqueID(PathwayVertexRep.class);
 
 		if (shapeType == null || shapeType.isEmpty())
 			shape = EPathwayVertexShape.rectangle;

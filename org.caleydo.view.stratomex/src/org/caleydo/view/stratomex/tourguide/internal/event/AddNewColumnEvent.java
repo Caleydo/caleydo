@@ -6,48 +6,43 @@
 package org.caleydo.view.stratomex.tourguide.internal.event;
 
 import org.caleydo.core.event.ADirectedEvent;
+import org.caleydo.view.stratomex.tourguide.internal.EWizardMode;
 
 /**
  * @author Samuel Gratzl
  *
  */
 public class AddNewColumnEvent extends ADirectedEvent {
-
-	private int objectId;
-	private boolean attached;
+	private final int objectId;
+	private final EWizardMode mode;
 
 	/**
 	 * @param objectID
 	 */
 	public AddNewColumnEvent(int objectID) {
-		this(objectID, false);
+		this(objectID, EWizardMode.GLOBAL);
 	}
 
 	/**
 	 * @param objectID2
 	 * @param b
 	 */
-	public AddNewColumnEvent(int objectID, boolean attached) {
+	public AddNewColumnEvent(int objectID, EWizardMode mode) {
 		this.objectId = objectID;
-		this.attached = attached;
+		this.mode = mode;
 	}
 
 	/**
-	 * @return the dependentOne, see {@link #dependentOne}
+	 * @return the mode, see {@link #mode}
 	 */
-	public boolean isIndependentOne() {
-		return attached && objectId % 2 == 1;
+	public EWizardMode getMode() {
+		return mode;
 	}
-
-	public boolean isDependentOne() {
-		return attached && objectId % 2 == 0;
-	}
-
 	/**
 	 * @return the objectId, see {@link #objectId}
 	 */
 	public int getObjectId() {
-		return attached ? objectId / 2 : objectId;
+		return objectId;
 	}
 
 	@Override

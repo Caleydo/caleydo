@@ -85,7 +85,7 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 
 		public OverviewState() {
 			tablePerspectiveRenderer = new TablePerspectiveListRenderer(TableBasedDataNode.this, view,
-					dragAndDropController, getTablePerspectives());
+					dragAndDropController, getVisibleTablePerspectives());
 			List<Pair<String, Integer>> pickingIDsToBePushed = new ArrayList<Pair<String, Integer>>();
 			pickingIDsToBePushed.add(new Pair<String, Integer>(DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id));
 
@@ -101,8 +101,11 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 		@Override
 		public void apply() {
 			super.apply();
+
+			List<TablePerspective> visibleTablePerspectives = getVisibleTablePerspectives();
+			tablePerspectiveRenderer.setTablePerspectives(getVisibleTablePerspectives());
 			bodyRow.clearBackgroundRenderers();
-			if (getTablePerspectives().size() > 0) {
+			if (visibleTablePerspectives.size() > 0) {
 				bodyRow.addBackgroundRenderer(new ColorRenderer(new float[] { 1, 1, 1, 1 }));
 			}
 		}
@@ -187,7 +190,6 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 
 		}, DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id);
 	}
-
 
 	@Override
 	protected ElementLayout setupLayout() {
@@ -282,7 +284,11 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 			toggleTablePerspectiveButton.setVisible(true);
 		}
 		currentState.apply();
-		tablePerspectiveRenderer.setTablePerspectives(getTablePerspectives());
+		if (currentState == overviewState) {
+			tablePerspectiveRenderer.setTablePerspectives(getVisibleTablePerspectives());
+		} else {
+			tablePerspectiveRenderer.setTablePerspectives(getTablePerspectives());
+		}
 	}
 
 	@Override
@@ -324,8 +330,7 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 			GroupList groupList = perspective.getVirtualArray().getGroupList();
 
 			if (groupList != null) {
-				List<Pair<String, Perspective>> childList = new ArrayList<Pair<String, Perspective>>(
-						groupList.size());
+				List<Pair<String, Perspective>> childList = new ArrayList<Pair<String, Perspective>>(groupList.size());
 				for (int i = 0; i < groupList.size(); i++) {
 
 					Group group = groupList.get(i);
@@ -333,8 +338,7 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 
 						Perspective childPerspective = dataDomain.getTable().getRecordPerspective(
 								group.getPerspectiveID());
-						childList
-								.add(new Pair<String, Perspective>(childPerspective.getLabel(), childPerspective));
+						childList.add(new Pair<String, Perspective>(childPerspective.getLabel(), childPerspective));
 					}
 				}
 
@@ -372,14 +376,12 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 				continue;
 			}
 
-			parentDimensionPerspectives
-					.add(new Pair<String, Perspective>(perspective.getLabel(), perspective));
+			parentDimensionPerspectives.add(new Pair<String, Perspective>(perspective.getLabel(), perspective));
 
 			GroupList groupList = perspective.getVirtualArray().getGroupList();
 
 			if (groupList != null) {
-				List<Pair<String, Perspective>> childList = new ArrayList<Pair<String, Perspective>>(
-						groupList.size());
+				List<Pair<String, Perspective>> childList = new ArrayList<Pair<String, Perspective>>(groupList.size());
 				for (int i = 0; i < groupList.size(); i++) {
 
 					Group group = groupList.get(i);
@@ -387,8 +389,7 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 
 						Perspective childPerspective = dataDomain.getTable().getDimensionPerspective(
 								group.getPerspectiveID());
-						childList.add(new Pair<String, Perspective>(childPerspective.getLabel(),
-								childPerspective));
+						childList.add(new Pair<String, Perspective>(childPerspective.getLabel(), childPerspective));
 					}
 				}
 
@@ -405,8 +406,7 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 		for (Pair<String, Perspective> parentPair : parentDimensionPerspectives) {
 			sortedDimensionPerspectives.add(parentPair.getSecond());
 
-			List<Pair<String, Perspective>> childList = childDimensionPerspectiveLists.get(parentPair
-					.getSecond());
+			List<Pair<String, Perspective>> childList = childDimensionPerspectiveLists.get(parentPair.getSecond());
 
 			if (childList != null) {
 				for (Pair<String, Perspective> childPair : childList) {
@@ -433,13 +433,19 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 
 	}
 
-	// private boolean isTablePerspectiveShownInView(TablePerspective tablePerspective) {
-	// for (ViewNode viewNode : view.getViewNodes()) {
-	// if (viewNode.getTablePerspectives().contains(tablePerspective))
-	// return true;
-	// }
-	// return false;
-	// }
+	public List<TablePerspective> getVisibleTablePerspectives() {
+		List<TablePerspective> visibleTablePerspectives = new ArrayList<>();
+		for (TablePerspective tablePerspective : getTablePerspectives()) {
+			for (ViewNode viewNode : view.getViewNodes()) {
+				if (viewNode.getTablePerspectives().contains(tablePerspective)) {
+					visibleTablePerspectives.add(tablePerspective);
+					break;
+				}
+			}
+		}
+
+		return visibleTablePerspectives;
+	}
 
 	@Override
 	public List<TablePerspective> getTablePerspectives() {
@@ -469,8 +475,7 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 						Perspective recordPerspective = foreignDataDomain.getTable().getRecordPerspective(
 								perspectiveRenderer.getPerspectiveID());
 
-						Perspective convertedPerspective = this.dataDomain
-								.convertForeignPerspective(recordPerspective);
+						Perspective convertedPerspective = this.dataDomain.convertForeignPerspective(recordPerspective);
 						convertedPerspective.setDefault(false);
 						this.dataDomain.getTable().registerRecordPerspective(convertedPerspective);
 					}

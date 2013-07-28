@@ -21,7 +21,7 @@ import org.caleydo.vis.rank.model.FloatRankColumnModel;
  * @author Samuel Gratzl
  *
  */
-public class ScoreRankColumnModel extends FloatRankColumnModel implements IGLRenderer {
+public class ScoreRankColumnModel extends FloatRankColumnModel implements IGLRenderer, IScoreMixin {
 	private final IScore score;
 	private EHeaderMode headerMode;
 
@@ -60,6 +60,7 @@ public class ScoreRankColumnModel extends FloatRankColumnModel implements IGLRen
 	/**
 	 * dirty the mapping to indicate the values might have changed and to clear caches
 	 */
+	@Override
 	public void dirty() {
 		propertySupport.firePropertyChange(PROP_MAPPING, null, data);
 	}
@@ -67,6 +68,7 @@ public class ScoreRankColumnModel extends FloatRankColumnModel implements IGLRen
 	/**
 	 * @return the score, see {@link #score}
 	 */
+	@Override
 	public IScore getScore() {
 		return score;
 	}
@@ -77,7 +79,7 @@ public class ScoreRankColumnModel extends FloatRankColumnModel implements IGLRen
 			if (headerMode == EHeaderMode.STRAT || headerMode == EHeaderMode.STRAT_GROUP)
 				g.color(strat.getDataDomain().getColor()).fillRect((w - 10) * 0.5f, (h - 10) * 0.5f, 10, 10);
 		} else {
-			g.drawText(this.score.getLabel(), 1, 1, w - 1, 12, VAlign.CENTER);
+			g.drawText(this.score.getLabel(), 1, 1, w - 1, h - 1, VAlign.CENTER);
 		}
 	}
 
@@ -86,49 +88,6 @@ public class ScoreRankColumnModel extends FloatRankColumnModel implements IGLRen
 			return ((IStratificationScore) score).getStratification();
 		return null;
 	}
-
-	// private ElementLayout createValue(ScoringElement elem, int id) {
-//		Row row = new Row();
-//		row.setGrabY(true);
-//		row.setXDynamic(false);
-//		IScore underlyingScore = this.score;
-//		if (underlyingScore instanceof CollapseScore)
-//			underlyingScore = elem.getSelected((CollapseScore) underlyingScore);
-//		Perspective strat = resolveStratification(underlyingScore);
-//
-//		if (rank)
-//			addRankValue(row, elem);
-//		else
-//			addScoreValue(row, elem, strat);
-//
-//		if (valueMode != EValueMode.VALUE) {
-//			Group group = resolveGroup(underlyingScore);
-//			row.add(colSpacing);
-//			if (strat != null) {
-//				row.add(createColor(strat.getDataDomain().getColor(), DATADOMAIN_TYPE_WIDTH));
-//			} else
-//				row.add(createXSpacer(DATADOMAIN_TYPE_WIDTH));
-//			row.add(colSpacing);
-//
-//			switch (this.valueMode) {
-//			case VALUE_GROUP:
-//				row.add(createLabel(group, -1));
-//				break;
-//			case VALUE_STRAT:
-//				row.add(createLabel(strat, -1));
-//				break;
-//			case VALUE_STRAT_GROUP:
-//				row.add(createLabel(strat, stratWidth));
-//				row.add(colSpacing);
-//				row.add(createLabel(group, -1));
-//				break;
-//			default:
-//				break;
-//			}
-//		}
-//
-//		return row;
-//	}
 
 	@Override
 	public String toString() {

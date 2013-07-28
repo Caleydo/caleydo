@@ -20,6 +20,9 @@ import org.eclipse.ui.handlers.HandlerUtil;
  *
  */
 public abstract class AOpenViewHandler extends AbstractHandler implements IHandler {
+	protected static final boolean MULTIPLE = true;
+	protected static final boolean SINGLE = false;
+
 	private final String view;
 	private final boolean allowMultiple;
 

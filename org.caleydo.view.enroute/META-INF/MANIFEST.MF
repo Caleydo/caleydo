@@ -2,14 +2,14 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: enRoute Pathway
 Bundle-SymbolicName: org.caleydo.view.enroute;singleton:=true
-Bundle-Version: 3.0
+Bundle-Version: 3.0.1
 Bundle-Activator: org.caleydo.view.enroute.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.caleydo.core;bundle-version="2.2",
  org.caleydo.datadomain.pathway;bundle-version="2.2",
  org.caleydo.datadomain.genetic;bundle-version="2.2",
- org.caleydo.view.pathway;bundle-version="3.0.0",
+ org.caleydo.view.pathway;bundle-version="3.0.1",
  org.caleydo.util.bubblesets
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7

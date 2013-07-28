@@ -15,6 +15,12 @@ import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.heatmap.v2.ISpacingStrategy;
 import org.caleydo.view.heatmap.v2.spacing.UniformSpacingCalculator.UniformSpacingImpl;
 
+/**
+ * fish eye {@link ISpacingStrategy}
+ *
+ * @author Samuel Gratzl
+ *
+ */
 public class FishEyeSpacingCalculator implements ISpacingStrategy {
 
 	private final float minSelectionSize;
@@ -31,7 +37,7 @@ public class FishEyeSpacingCalculator implements ISpacingStrategy {
 			float size) {
 		VirtualArray va = perspective.getVirtualArray();
 		int nrRecordElements = perspective.getVirtualArray().size();
-		if (hideHidden) {
+		if (hideHidden) { // remove hidden
 			nrRecordElements -= selectionManager.getNumberOfElements(GLHeatMap.SELECTION_HIDDEN);
 		}
 
@@ -85,11 +91,18 @@ public class FishEyeSpacingCalculator implements ISpacingStrategy {
 		return new DeterminedSpacingImpl(positions, lastSize);
 	}
 
-	protected int computeSpread(float size) {
+	private int computeSpread(float size) {
 		return (int) (size / (minSelectionSize * 3));
 	}
 
-	protected BitSet getSelectedIndices(SelectionManager selectionManager, VirtualArray va) {
+	/**
+	 * returns a bitset containing the selected indices
+	 * 
+	 * @param selectionManager
+	 * @param va
+	 * @return
+	 */
+	private BitSet getSelectedIndices(SelectionManager selectionManager, VirtualArray va) {
 		BitSet selectedIndices = new BitSet();
 		for (Integer selected : selectionManager.getElements(SelectionType.SELECTION)) {
 			if (selectionManager.checkStatus(GLHeatMap.SELECTION_HIDDEN, selected))

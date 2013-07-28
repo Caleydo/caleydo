@@ -114,13 +114,13 @@ public class ScoreBarElement extends ValueElement {
 
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glTexCoord2f(0, 0);
-		gl.glVertex3f(0, 0, z);
+		gl.glVertex3f(x, y, z);
 		gl.glTexCoord2f(repeated, 0);
-		gl.glVertex3f(w, 0, z);
+		gl.glVertex3f(x + w, y, z);
 		gl.glTexCoord2f(repeated, 1);
-		gl.glVertex3f(w, h, z);
+		gl.glVertex3f(x + w, y + h, z);
 		gl.glTexCoord2f(0, 1);
-		gl.glVertex3f(0, h, z);
+		gl.glVertex3f(x, y + h, z);
 		gl.glEnd();
 
 		tex.disable(gl);
@@ -166,7 +166,7 @@ public class ScoreBarElement extends ValueElement {
 	}
 
 	static float getTextHeight(float h) {
-		float hi = Math.min(h * 0.45f, 12);
+		float hi = Math.min(h * 0.6f, 14);
 		return hi;
 	}
 

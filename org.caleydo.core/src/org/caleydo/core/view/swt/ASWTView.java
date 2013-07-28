@@ -21,8 +21,8 @@ public abstract class ASWTView
 	 * @param viewType TODO
 	 * @param viewName TODO
 	 */
-	public ASWTView(int viewID, String viewType, String viewName) {
-		super(viewID, viewType, viewName);
+	public ASWTView(String viewType, String viewName) {
+		super(viewType, viewName);
 		GeneralManager.get().getViewManager().registerItem(this);
 	}
 

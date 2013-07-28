@@ -10,6 +10,7 @@ import java.io.IOException;
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPersistentPreferenceStore;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.preference.PreferenceStore;
 
 /**
  * @author Samuel Gratzl
@@ -23,8 +24,11 @@ public class MyPreferences extends AbstractPreferenceInitializer {
 
 	public static final String VIEW_ZOOM_FACTOR = "view.zoomfactor";
 
-	private static IPreferenceStore prefs() {
-		return Activator.getDefault().getPreferenceStore();
+	public static IPreferenceStore prefs() {
+		Activator a = Activator.getDefault();
+		if (a == null)
+			return new PreferenceStore();
+		return a.getPreferenceStore();
 	}
 
 	@Override

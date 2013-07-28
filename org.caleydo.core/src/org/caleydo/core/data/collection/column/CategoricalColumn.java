@@ -37,9 +37,22 @@ public class CategoricalColumn<CATEGORY_TYPE extends Comparable<CATEGORY_TYPE>> 
 		return rawContainer.getCategories();
 	}
 
+	@Override
+	public void normalize() {
+		// super.normalize();
+		rawContainer.init();
+	}
+
+	@Override
+	public float getNormalizedValue(String dataTransformation, int index) {
+		// CATEGORY_TYPE raw = getRaw(index);
+		return rawContainer.getNormalized(index);
+		// return super.getNormalizedValue(dataTransformation, index);
+	}
+
 	/**
 	 * returns the number of matches
-	 * 
+	 *
 	 * @param category
 	 * @return
 	 */

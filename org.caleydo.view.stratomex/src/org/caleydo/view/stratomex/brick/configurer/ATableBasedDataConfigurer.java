@@ -192,7 +192,7 @@ public abstract class ATableBasedDataConfigurer extends ABrickConfigurer {
 		dimensionBarLaylout.setPixelSizeY(DIMENSION_BAR_HEIGHT_PIXELS);
 		dimensionBarLaylout.setRatioSizeX(1);
 		dimensionBarLaylout.setRenderer(new DimensionBarRenderer(brick.getDataDomain().getTable()
-				.getDefaultDimensionPerspective().getVirtualArray(), brick.getTablePerspective()
+				.getDefaultDimensionPerspective(true).getVirtualArray(), brick.getTablePerspective()
 				.getDimensionPerspective().getVirtualArray()));
 
 		footerBarElements.add(dimensionBarLaylout);

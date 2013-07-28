@@ -158,9 +158,10 @@ public abstract class ATableBasedView extends AGLView implements ISingleTablePer
 	}
 
 	@Override
-	public void initFromSerializableRepresentation(ASerializedView serialzedView) {
-		if (serialzedView instanceof ASerializedSingleTablePerspectiveBasedView) {
-			ASerializedSingleTablePerspectiveBasedView topSerializedView = (ASerializedSingleTablePerspectiveBasedView) serialzedView;
+	public void initFromSerializableRepresentation(ASerializedView serializedView) {
+		super.initFromSerializableRepresentation(serializedView);
+		if (serializedView instanceof ASerializedSingleTablePerspectiveBasedView) {
+			ASerializedSingleTablePerspectiveBasedView topSerializedView = (ASerializedSingleTablePerspectiveBasedView) serializedView;
 			tablePerspective = dataDomain.getTablePerspective(topSerializedView.getTablePerspectiveKey());
 		}
 	}

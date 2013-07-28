@@ -186,7 +186,7 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 			}
 		});
 
-		this.glMouseListener = glMouseListener;
+		setMouseListener(glMouseListener);
 
 		init(gl);
 	}
@@ -548,8 +548,7 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedFilterPipelineView serializedForm = new SerializedFilterPipelineView();
-		serializedForm.setViewID(this.getID());
+		SerializedFilterPipelineView serializedForm = new SerializedFilterPipelineView(this);
 		return serializedForm;
 	}
 

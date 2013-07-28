@@ -8,6 +8,8 @@ package org.caleydo.view.stratomex.column;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.util.color.Color;
+import org.caleydo.core.util.color.StyledColor;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 
@@ -17,11 +19,11 @@ public class FrameHighlightRenderer extends ALayoutRenderer {
 
 	private static final int OFFSET = 5;
 
-	private float[] color;
+	private Color color;
 
 	private final boolean topOffset;
 
-	public FrameHighlightRenderer(float[] color, boolean topOffset) {
+	public FrameHighlightRenderer(Color color, boolean topOffset) {
 		this.color = color;
 		this.topOffset = topOffset;
 	}
@@ -30,7 +32,7 @@ public class FrameHighlightRenderer extends ALayoutRenderer {
 	 * @param color
 	 *            setter, see {@link color}
 	 */
-	public void setColor(float[] color) {
+	public void setColor(Color color) {
 		if (Objects.equal(this.color, color))
 			return;
 		this.color = color;
@@ -50,13 +52,18 @@ public class FrameHighlightRenderer extends ALayoutRenderer {
 		gl.glLineWidth(3);
 		gl.glEnable(GL.GL_LINE_SMOOTH);
 
-		gl.glColor4f(color[0], color[1], color[2], 0.75f);
+		gl.glColor4f(color.r, color.g, color.b, 0.75f);
+
+		if (color instanceof StyledColor) {
+			((StyledColor) color).setClearManually(gl);
+		}
+
 		gl.glBegin(GL.GL_LINE_LOOP);
 		{
-			gl.glVertex3f(-xoffset, -yoffset, 0);
-			gl.glVertex3f(x + xoffset, -yoffset, 0);
-			gl.glVertex3f(x + xoffset, y + yoffset, 0);
-			gl.glVertex3f(-xoffset, y + yoffset, 0);
+			gl.glVertex3f(-xoffset, -yoffset, 1f);
+			gl.glVertex3f(x + xoffset, -yoffset, 1f);
+			gl.glVertex3f(x + xoffset, y + yoffset, 1f);
+			gl.glVertex3f(-xoffset, y + yoffset, 1f);
 		}
 		gl.glEnd();
 		gl.glPopAttrib();
@@ -66,5 +73,4 @@ public class FrameHighlightRenderer extends ALayoutRenderer {
 	protected boolean permitsWrappingDisplayLists() {
 		return true;
 	}
-
 }

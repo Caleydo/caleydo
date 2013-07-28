@@ -212,7 +212,7 @@ public class CategoricalClassDescription<CATEGORY_TYPE extends Comparable<CATEGO
 		// }
 		ColorBrewer cb = categoryType == ECategoryType.NOMINAL ? DEFAULT_QUALITATIVE_COLOR_SCHEME
 				: DEFAULT_SEQUENTIAL_COLOR_SCHEME;
-		Color default_ = Color.NEUTRAL_GREY;
+		Color default_ = new Color(200, 200, 200);
 
 		for (int i = 0; i < categories.size(); i++) {
 			addCategoryProperty(new CategoryProperty<>(categories.get(i), default_));

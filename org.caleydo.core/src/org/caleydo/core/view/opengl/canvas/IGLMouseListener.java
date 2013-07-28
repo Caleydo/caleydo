@@ -34,8 +34,18 @@ public interface IGLMouseListener {
 	public interface IMouseEvent {
 		Vec2f getPoint(Units unit);
 
+		/**
+		 * return the point in DIP units
+		 * 
+		 * @return
+		 */
 		Vec2f getDIPPoint();
 
+		/**
+		 * return the raw pixel point, just use in rare cases for picking
+		 * 
+		 * @return
+		 */
 		Point getRAWPoint();
 
 		int getClickCount();

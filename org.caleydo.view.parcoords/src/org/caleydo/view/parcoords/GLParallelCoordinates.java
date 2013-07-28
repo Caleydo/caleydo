@@ -206,7 +206,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 	@Override
 	public void initRemote(final GL2 gl, final AGLView glParentView, final GLMouseListener glMouseListener) {
 
-		this.glMouseListener = glMouseListener;
+		setMouseListener(glMouseListener);
 		init(gl);
 	}
 

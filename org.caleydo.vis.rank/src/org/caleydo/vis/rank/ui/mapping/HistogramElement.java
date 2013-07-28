@@ -44,8 +44,8 @@ class HistogramElement extends GLElement {
 			float texty = textBelowHist ? (h - LABEL_HEIGHT) : -LABEL_HEIGHT;
 			g.drawText(text, 0, texty, w, LABEL_HEIGHT - 5,
 					VAlign.CENTER);
-			g.drawText(Formatter.formatNumber(min), 0, texty + 3, w, 12, VAlign.LEFT);
-			g.drawText(Formatter.formatNumber(max), 0, texty + 3, w, 12, VAlign.RIGHT);
+			g.drawText(Formatter.formatNumber(min), 0, texty + 3, w, 13, VAlign.LEFT);
+			g.drawText(Formatter.formatNumber(max), 0, texty + 3, w, 13, VAlign.RIGHT);
 			RenderUtils.renderHist(g, hist, w, h - LABEL_HEIGHT, -1, color, Color.BLACK, findRenderInfo());
 
 			if (!Float.isNaN(minM)) {
@@ -58,8 +58,8 @@ class HistogramElement extends GLElement {
 		} else {
 			float texty = textBelowHist ? (h - LABEL_HEIGHT) : 0;
 			g.drawText(text, 0, texty, w, LABEL_HEIGHT - 5, VAlign.CENTER);
-			g.drawText(Formatter.formatNumber(min), 0, texty + 3, w, 12, VAlign.LEFT);
-			g.drawText(Formatter.formatNumber(max), 0, texty + 3, w, 12, VAlign.RIGHT);
+			g.drawText(Formatter.formatNumber(min), 0, texty + 3, w, 13, VAlign.LEFT);
+			g.drawText(Formatter.formatNumber(max), 0, texty + 3, w, 13, VAlign.RIGHT);
 			g.color(backgroundColor).fillRect(0, histy, w, h - LABEL_HEIGHT);
 			g.color(color).drawRect(0, histy, w, h - LABEL_HEIGHT);
 			g.move(0, histy);

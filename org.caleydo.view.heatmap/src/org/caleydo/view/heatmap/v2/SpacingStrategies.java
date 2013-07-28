@@ -10,13 +10,20 @@ import org.caleydo.view.heatmap.v2.spacing.UniformSpacingCalculator;
 
 /**
  * factory for different ISpacingStrategys
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public class SpacingStrategies {
 	public static final ISpacingStrategy UNIFORM = new UniformSpacingCalculator();
 
+	/**
+	 * fish eye implementation
+	 * 
+	 * @param minSelectionSize
+	 *            minimum selection sizes
+	 * @return
+	 */
 	public static final ISpacingStrategy fishEye(float minSelectionSize) {
 		return new FishEyeSpacingCalculator(minSelectionSize);
 	}

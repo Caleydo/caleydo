@@ -69,11 +69,6 @@ public class ColumnCaptionRenderer extends ALayoutRenderer implements ILabelProv
 	}
 
 	@Override
-	protected void finalize() throws Throwable {
-
-	}
-
-	@Override
 	public void renderContent(GL2 gl) {
 
 		// float sideSpacing = pixelGLConverter.getGLWidthForPixelWidth(8);

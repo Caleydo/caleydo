@@ -26,8 +26,8 @@ public abstract class ADirectedEvent extends AEvent {
 	}
 
 	/**
-	 * determines whether the reiver is equal to the given object
-	 *
+	 * determines whether the receiver is equal to the given object
+	 * 
 	 * @param obj
 	 * @return
 	 */

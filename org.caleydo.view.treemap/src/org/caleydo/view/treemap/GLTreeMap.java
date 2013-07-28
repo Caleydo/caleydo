@@ -145,7 +145,7 @@ public class GLTreeMap extends ATableBasedView {
 
 	@Override
 	public void initRemote(GL2 gl, AGLView glParentView, GLMouseListener glMouseListener) {
-		this.glMouseListener = glMouseListener;
+		setMouseListener(glMouseListener);
 		init(gl);
 	}
 

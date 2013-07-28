@@ -191,7 +191,7 @@ public class GLExperimentalDataMapping extends AnimatedGLElementContainer implem
 		}
 
 		if (defaultPerspective == null) {
-			defaultPerspective = mRNAdd.getTable().getDefaultRecordPerspective();
+			defaultPerspective = mRNAdd.getTable().getDefaultRecordPerspective(false);
 			// todo find default element
 		}
 		// Set default data

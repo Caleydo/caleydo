@@ -29,7 +29,7 @@ import org.caleydo.core.io.GroupingParseSpecification;
 import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.io.ParsingRule;
-import org.caleydo.core.util.clusterer.algorithm.kmeans.KMeansClusterConfiguration;
+import org.caleydo.core.util.clusterer.algorithm.affinity.AffinityClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
 import org.caleydo.core.util.collection.Pair;
@@ -87,13 +87,13 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 
 		final IDSpecification geneRowID = TCGADefinitions.createGeneIDSpecificiation();
 
-		final IDSpecification proteinRowID = new IDSpecification("protein", "protein");
+		final IDSpecification proteinRowID = geneRowID; // ticket #1497 new IDSpecification("protein", "protein");
 		final IDSpecification microRNARowID = new IDSpecification("microRNA", "microRNA");
 		final IDSpecification clinicalRowID = new IDSpecification("TCGA_SAMPLE", "TCGA_SAMPLE");
 
 		IDTypeParsingRules clinicalSampleIDTypeParsingRules = new IDTypeParsingRules();
-		clinicalSampleIDTypeParsingRules.setSubStringExpression("tcga\\-");
-		clinicalSampleIDTypeParsingRules.setToLowerCase(true);
+		clinicalSampleIDTypeParsingRules.setSubStringExpression("TCGA\\-");
+		clinicalSampleIDTypeParsingRules.setToUpperCase(true);
 		clinicalRowID.setIdTypeParsingRules(clinicalSampleIDTypeParsingRules);
 
 		DataSetDescription desc = null;
@@ -176,10 +176,10 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 					cnmfGroupingFile.getPath());
 			grouping.setContainsColumnIDs(false);
 			grouping.setRowIDSpecification(columnIDSpecification);
-			grouping.setGroupingName("CNMF Clustering");
+			// grouping.setGroupingName("CNMF Clustering");
 			dataSet.addColumnGroupingSpecification(grouping);
 		} else {
-			System.out.println("Warning can't find cnmf grouping file");
+			System.out.println("Warning: Can't find CNMF grouping file");
 		}
 
 		File hierarchicalGroupingFile = fileFinder.findHiearchicalGrouping(type);
@@ -188,27 +188,26 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 					hierarchicalGroupingFile.getPath());
 			grouping.setContainsColumnIDs(false);
 			grouping.setRowIDSpecification(columnIDSpecification);
-			grouping.setGroupingName("Hierarchical Clustering");
+			// grouping.setGroupingName("Hierarchical Clustering");
 			dataSet.addColumnGroupingSpecification(grouping);
 		} else {
-			System.out.println("Warning can't find hierarchical grouping file");
+			System.out.println("Warning: Can't find hierarchical grouping file");
 		}
 
 		DataProcessingDescription dataProcessingDescription = new DataProcessingDescription();
 		{
 			ClusterConfiguration clusterConfiguration = new ClusterConfiguration();
 			clusterConfiguration.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
-			KMeansClusterConfiguration kMeansAlgo = new KMeansClusterConfiguration();
-			kMeansAlgo.setNumberOfClusters(5);
-			clusterConfiguration.setClusterAlgorithmConfiguration(kMeansAlgo);
+			AffinityClusterConfiguration affinityAlgo = new AffinityClusterConfiguration();
+			affinityAlgo.setClusterFactor(9);
+			affinityAlgo.setCacheVectors(true);
+			clusterConfiguration.setClusterAlgorithmConfiguration(affinityAlgo);
 			dataProcessingDescription.addRowClusterConfiguration(clusterConfiguration);
 		}
 		dataSet.setDataProcessingDescription(dataProcessingDescription);
 
-		if (!loadFullGenes) {
-			// here we turn on sampling to 1500
-			dataProcessingDescription.setNrRowsInSample(1500);
-		}
+		// here we turn on sampling to 1500
+		dataProcessingDescription.setNrRowsInSample(1500);
 
 		return dataSet;
 	}

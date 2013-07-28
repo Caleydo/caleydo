@@ -5,12 +5,10 @@
  ******************************************************************************/
 package org.caleydo.view.stratomex;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-
 import org.caleydo.core.gui.toolbar.action.OpenOnlineHelpAction;
 import org.caleydo.core.view.ARcpGLViewPart;
 import org.caleydo.view.stratomex.toolbar.ConnectionsModeGUI;
+import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -24,13 +22,7 @@ public class RcpGLStratomexView extends ARcpGLViewPart {
 	 * Constructor.
 	 */
 	public RcpGLStratomexView() {
-		super();
-
-		try {
-			viewContext = JAXBContext.newInstance(SerializedStratomexView.class);
-		} catch (JAXBException ex) {
-			throw new RuntimeException("Could not create JAXBContext", ex);
-		}
+		super(SerializedStratomexView.class);
 	}
 
 	@Override
@@ -61,12 +53,7 @@ public class RcpGLStratomexView extends ARcpGLViewPart {
 	}
 
 	@Override
-	public String getViewGUIID() {
-		return GLStratomex.VIEW_TYPE;
-	}
-
-	@Override
-	public void addToolBarContent() {
+	public void addToolBarContent(IToolBarManager toolBarManager) {
 
 		toolBarManager.add(new ConnectionsModeGUI());
 		toolBarManager.add(new OpenOnlineHelpAction(

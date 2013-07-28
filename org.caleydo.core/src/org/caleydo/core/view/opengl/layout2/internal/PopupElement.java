@@ -11,7 +11,6 @@ import static org.caleydo.core.view.opengl.layout2.IPopupLayer.FLAG_COLLAPSABLE;
 import static org.caleydo.core.view.opengl.layout2.IPopupLayer.FLAG_MOVEABLE;
 import static org.caleydo.core.view.opengl.layout2.IPopupLayer.FLAG_RESIZEABLE;
 import gleem.linalg.Vec2f;
-import gleem.linalg.Vec4f;
 
 import java.util.List;
 
@@ -22,6 +21,7 @@ import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton;
+import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
@@ -52,7 +52,7 @@ class PopupElement extends GLElementContainer implements IGLLayout, IGLRenderer,
 
 	private Vec2f expandedSized;
 
-	public PopupElement(GLElement content, Vec4f bounds, int flags) {
+	public PopupElement(GLElement content, Rect bounds, int flags) {
 		this.content = content;
 		this.flags = flags;
 		setLayout(this);
@@ -62,7 +62,7 @@ class PopupElement extends GLElementContainer implements IGLLayout, IGLRenderer,
 		close.setCallback(this);
 		close.setTooltip("close this popup");
 		close.setHoverEffect(GLRenderers.drawRoundedRect(Color.WHITE));
-		close.setzDelta(0.5f);
+		close.setzDelta(1.f);
 		close.setVisibility(isFlagSet(FLAG_CLOSEABLE) ? EVisibility.PICKABLE : EVisibility.HIDDEN);
 		this.add(close);
 
@@ -72,7 +72,8 @@ class PopupElement extends GLElementContainer implements IGLLayout, IGLRenderer,
 		this.add(resize);
 
 		if (bounds != null)
-			this.setBounds(bounds.x(), bounds.y(), bounds.z(), bounds.w() + (isFlagSet(FLAG_HAS_HEADER) ? 8 : 0));
+			this.setBounds(bounds.x(), bounds.y(), bounds.width(), bounds.height()
+					+ (isFlagSet(FLAG_HAS_HEADER) ? 8 : 0));
 		setVisibility(EVisibility.PICKABLE); // as a barrier to the underlying
 	}
 
@@ -149,11 +150,11 @@ class PopupElement extends GLElementContainer implements IGLLayout, IGLRenderer,
 	public void doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
 		IGLLayoutElement body = children.get(0);
 		boolean hasHeader = isFlagSet(FLAG_HAS_HEADER);
-		float offset = isFlagSet(FLAG_BORDER) ? 1 : 0;
+		float offset = 0; // isFlagSet(FLAG_BORDER) ? 1 : 0;
 		if (collapsed)
 			body.hide();
 		else
-			body.setBounds(offset, (hasHeader ? 8 : offset), w - offset * 2, h - (hasHeader ? 8 : offset * 2));
+			body.setBounds(offset, (hasHeader ? 8 : offset), w - offset * 2, h - (hasHeader ? 8 : 0) - offset * 2);
 		IGLLayoutElement close = children.get(1);
 		close.setBounds(w - 8, -4, 14, 14);
 		IGLLayoutElement resize = children.get(2);
@@ -178,7 +179,9 @@ class PopupElement extends GLElementContainer implements IGLLayout, IGLRenderer,
 		if (isFlagSet(FLAG_BORDER)) {
 			// g.color(Color.LIGHT_GRAY).fillRoundedRect(0, 0, w, h, 3);
 			g.color(Color.BLACK);
+			g.incZ(1.f);
 			RoundedRectRenderer.render(g, 0, 0, w, h, 3, 2, RoundedRectRenderer.FLAG_TOP);
+			g.incZ(-1.f);
 		}
 	}
 

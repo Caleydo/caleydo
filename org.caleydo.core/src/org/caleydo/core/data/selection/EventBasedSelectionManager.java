@@ -58,8 +58,13 @@ public class EventBasedSelectionManager extends SelectionManager implements
 		}
 	}
 
+	/**
+	 * !!!! already called during constructor
+	 */
 	@Override
 	public synchronized void registerEventListeners() {
+		if (eventListeners != null) // already called
+			return;
 		eventListeners = EventListenerManagers.wrap(this);
 		SelectionUpdateListener selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
@@ -70,12 +75,15 @@ public class EventBasedSelectionManager extends SelectionManager implements
 		// selectionCommandListener.setDataDomainID(dataDomain.getDataDomainID());
 		eventListeners.register(SelectionCommandEvent.class, selectionCommandListener);
 
+		super.registerEventListeners();
+
 
 	}
 
 	@Override
 	public synchronized void unregisterEventListeners() {
 		eventListeners.unregisterAll();
+		super.unregisterEventListeners();
 	}
 
 	@Override

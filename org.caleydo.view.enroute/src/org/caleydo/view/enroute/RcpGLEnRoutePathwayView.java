@@ -5,13 +5,11 @@
  ******************************************************************************/
 package org.caleydo.view.enroute;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-
 import org.caleydo.core.gui.toolbar.action.OpenOnlineHelpAction;
 import org.caleydo.core.view.ARcpGLViewPart;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.view.enroute.toolbar.actions.FitToViewWidthAction;
+import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -25,13 +23,7 @@ public class RcpGLEnRoutePathwayView extends ARcpGLViewPart {
 	 * Constructor.
 	 */
 	public RcpGLEnRoutePathwayView() {
-		super();
-
-		try {
-			viewContext = JAXBContext.newInstance(SerializedEnRoutePathwayView.class);
-		} catch (JAXBException ex) {
-			throw new RuntimeException("Could not create JAXBContext", ex);
-		}
+		super(SerializedEnRoutePathwayView.class);
 	}
 
 	@Override
@@ -51,12 +43,7 @@ public class RcpGLEnRoutePathwayView extends ARcpGLViewPart {
 	}
 
 	@Override
-	public String getViewGUIID() {
-		return GLEnRoutePathway.VIEW_TYPE;
-	}
-
-	@Override
-	public void addToolBarContent() {
+	public void addToolBarContent(IToolBarManager toolBarManager) {
 
 		toolBarManager
 				.add(new FitToViewWidthAction(((SerializedEnRoutePathwayView) serializedView).isFitToViewWidth()));

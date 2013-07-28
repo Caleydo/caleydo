@@ -22,7 +22,7 @@ import org.caleydo.core.view.opengl.layout2.IGLElementParent;
 import org.caleydo.core.view.opengl.layout2.animation.MoveTransitions;
 import org.caleydo.core.view.opengl.layout2.animation.MoveTransitions.IMoveTransition;
 import org.caleydo.core.view.opengl.layout2.animation.Transitions;
-import org.caleydo.core.view.opengl.layout2.layout.CompositeGLLayoutData;
+import org.caleydo.core.view.opengl.layout2.layout.GLLayoutDatas;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -131,7 +131,7 @@ public class VerticalColumnHeaderUI extends AColumnHeaderUI {
 	private GLElement wrap(ARankColumnModel c) {
 		init(c);
 		GLElement elem = ColumnUIs.createHeader(c, RankTableUIConfigs.nonInteractive(config), false);
-		elem.setLayoutData(CompositeGLLayoutData.combine(c, move));
+		elem.setLayoutData(GLLayoutDatas.combine(c, move));
 		return elem;
 	}
 
