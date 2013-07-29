@@ -127,18 +127,26 @@ public class GLElementFactoryContext {
 	 * @return
 	 */
 	public boolean is(String key) {
-		Boolean r = get(key, Boolean.class, Boolean.FALSE);
+		return is(key, false);
+	}
+
+	public boolean is(String key, boolean default_) {
+		Boolean r = get(key, Boolean.class, default_);
 		return r == null ? false : r.booleanValue();
 	}
 
-	public int getInt(String key) {
-		Integer r = get(key, Integer.class, Integer.valueOf(-1));
-		return r == null ? -1 : r.intValue();
+	public int getInt(String key, int default_) {
+		Integer r = get(key, Integer.class, Integer.valueOf(default_));
+		return r == null ? default_ : r.intValue();
 	}
 
 	public float getFloat(String key) {
-		Float r = get(key, Float.class, Float.NaN);
-		return r == null ? Float.NaN : r.floatValue();
+		return getFloat(key, Float.NaN);
+	}
+
+	public float getFloat(String key, float default_) {
+		Float r = get(key, Float.class, default_);
+		return r == null ? default_ : r.floatValue();
 	}
 
 	/**

@@ -53,6 +53,7 @@ public class HistogramElement extends GLElement implements
 	private boolean hoveredLeft = false;
 
 	private boolean showColorMapper;
+	private boolean renderBackground = false;
 
 	public HistogramElement(TablePerspective tablePerspective) {
 		this(tablePerspective, EDetailLevel.HIGH);
@@ -80,6 +81,21 @@ public class HistogramElement extends GLElement implements
 	 */
 	public boolean isShowColorMapper() {
 		return showColorMapper;
+	}
+
+	/**
+	 * @param renderBackground
+	 *            setter, see {@link renderBackground}
+	 */
+	public void setRenderBackground(boolean renderBackground) {
+		this.renderBackground = renderBackground;
+	}
+
+	/**
+	 * @return the renderBackground, see {@link #renderBackground}
+	 */
+	public boolean isRenderBackground() {
+		return renderBackground;
 	}
 
 	@Override
@@ -147,6 +163,9 @@ public class HistogramElement extends GLElement implements
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
+		if (renderBackground)
+			g.color(Color.WHITE).fillRect(0, 0, w, h);
+
 		float padding = getPadding();
 		ATableBasedDataDomain dataDomain = getDataDomain();
 		g.save();
