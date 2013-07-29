@@ -88,6 +88,8 @@ public class ImportGroupingDialog extends AHelpButtonDialog implements SafeCalla
 
 	private List<String> customGroupingNames = new ArrayList<>();
 
+	private boolean useCustomGroupingNames = false;
+
 	/**
 	 * @param parentShell
 	 */
@@ -149,7 +151,7 @@ public class ImportGroupingDialog extends AHelpButtonDialog implements SafeCalla
 			public void on(int data) {
 				previewTable.onNumHeaderRowsChanged(data);
 				if (data == 0) {
-					if (!useCustomGroupingNamesButton.getSelection()) {
+					if (!useCustomGroupingNames) {
 						onUseCustomGroupingNames();
 						useCustomGroupingNamesButton.setSelection(true);
 						useGroupingNamesFromRowButton.setSelection(false);
@@ -246,6 +248,8 @@ public class ImportGroupingDialog extends AHelpButtonDialog implements SafeCalla
 	}
 
 	private void onUseGroupingNamesFromRows() {
+		if (!useCustomGroupingNames)
+			return;
 		groupingNamesRowLabel.setEnabled(true);
 		rowWithGroupingNamesSpinner.setEnabled(true);
 		int rowWithGroupingNames = rowWithGroupingNamesSpinner.getSelection();
@@ -255,9 +259,12 @@ public class ImportGroupingDialog extends AHelpButtonDialog implements SafeCalla
 			rowConfig.setNumHeaderRows(rowWithGroupingNames);
 		}
 		previewTable.clearCustomHeaderRows();
+		useCustomGroupingNames = false;
 	}
 
 	private void onUseCustomGroupingNames() {
+		if (useCustomGroupingNames)
+			return;
 		groupingNamesRowLabel.setEnabled(false);
 		rowWithGroupingNamesSpinner.setEnabled(false);
 		previewTable.onRowOfColumnIDChanged(-1);
@@ -297,6 +304,7 @@ public class ImportGroupingDialog extends AHelpButtonDialog implements SafeCalla
 				return customGroupingNames.size();
 			}
 		}, true);
+		useCustomGroupingNames = true;
 	}
 
 	private void setGroupingNamesGroupEnabled(boolean enabled) {
@@ -377,14 +385,22 @@ public class ImportGroupingDialog extends AHelpButtonDialog implements SafeCalla
 		spec.setColumns(selectedColumns);
 		spec.setRowIDSpecification(this.rowConfig.getIDSpecification());
 		spec.setContainsColumnIDs(false);
-		// TODO remove
-		// spec.setGroupingNames(spec.getDataSourcePath().substring(
-		// spec.getDataSourcePath().lastIndexOf(File.separator) + 1, spec.getDataSourcePath().lastIndexOf(".")));
-		if (useGroupingNamesFromRowButton.getSelection()) {
-			// TODO fill grouping names
+		List<String> groupingNames = new ArrayList<>();
+		if (useCustomGroupingNames) {
+			for (int i = 0; i < customGroupingNames.size(); i++) {
+				if (selectedColumns.contains(i)) {
+					groupingNames.add(customGroupingNames.get(i));
+				}
+			}
+
 		} else {
-			// TODO fill grouping names
+			for (int i = 0; i < previewTable.getNumColumns(); i++) {
+				if (selectedColumns.contains(i)) {
+					groupingNames.add(previewTable.getValue(spec.getRowOfColumnIDs(), i));
+				}
+			}
 		}
+		spec.setGroupingNames(groupingNames);
 	}
 
 	@Override
