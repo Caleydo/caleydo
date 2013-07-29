@@ -397,7 +397,7 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 	/**
 	 * calls this method to set the size of a child in a managed way, as if you set the size of an element the recording
 	 * can't restore the old value
-	 * 
+	 *
 	 * @param child
 	 * @param w
 	 * @param h
@@ -439,6 +439,14 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 		layoutAnimations.clear();
 	}
 
+	/**
+	 * repaints the children and ensures that the there is no repaint loop
+	 */
+	public final void repaintChildren() {
+		for (GLElement child : children)
+			GLElementAccessor.repaintDown(child);
+	}
+
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
 		super.renderImpl(g, w, h);
@@ -447,6 +455,14 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 		}
 		if (!layoutAnimations.isEmpty())
 			repaintAll();
+	}
+
+	/**
+	 * repaints the children and ensures that the there is no repaint loop
+	 */
+	public final void repaintPickChildren() {
+		for (GLElement child : children)
+			GLElementAccessor.repaintPickDown(child);
 	}
 
 	@Override

@@ -195,7 +195,7 @@ public class GLElementContainer extends GLElement implements IGLElementParent, I
 
 	/**
 	 * sorts the children according to the given comparator
-	 * 
+	 *
 	 * @param comparator
 	 */
 	public final void sortBy(Comparator<GLElement> comparator) {
@@ -256,6 +256,14 @@ public class GLElementContainer extends GLElement implements IGLElementParent, I
 		};
 	}
 
+	/**
+	 * repaints the children and ensures that the there is no repaint loop
+	 */
+	public final void repaintChildren() {
+		for (GLElement child : children)
+			GLElementAccessor.repaintDown(child);
+	}
+
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
 		super.renderImpl(g, w, h);
@@ -263,6 +271,14 @@ public class GLElementContainer extends GLElement implements IGLElementParent, I
 		for(GLElement child : children)
 			child.render(g);
 		g.decZ();
+	}
+
+	/**
+	 * repaints the children and ensures that the there is no repaint loop
+	 */
+	public final void repaintPickChildren() {
+		for (GLElement child : children)
+			GLElementAccessor.repaintPickDown(child);
 	}
 
 	@Override

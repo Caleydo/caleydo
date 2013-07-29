@@ -41,4 +41,32 @@ public class GLElementAccessor {
 		if (elem.context != null)
 			elem.takeDown();
 	}
+
+	/**
+	 * calls the repaint of the given element but prevent that the parent element will be repainted
+	 *
+	 * useful e.g. for repainting downwards
+	 * 
+	 * @param elem
+	 */
+	public static void repaintDown(GLElement elem) {
+		IGLElementParent parent = elem.getParent();
+		elem.setParent(null);
+		elem.repaint();
+		elem.setParent(parent);
+	}
+
+	/**
+	 * calls the repaint of the given element but prevent that the parent element will be repainted
+	 *
+	 * useful e.g. for repainting downwards
+	 * 
+	 * @param elem
+	 */
+	public static void repaintPickDown(GLElement elem) {
+		IGLElementParent parent = elem.getParent();
+		elem.setParent(null);
+		elem.repaintPick();
+		elem.setParent(parent);
+	}
 }

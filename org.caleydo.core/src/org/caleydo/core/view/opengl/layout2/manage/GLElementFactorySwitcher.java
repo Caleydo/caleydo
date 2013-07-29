@@ -91,6 +91,23 @@ public class GLElementFactorySwitcher extends GLElement implements IGLElementPar
 		return active;
 	}
 
+	@Override
+	public void repaint() {
+		super.repaint();
+		GLElement s = getSelected();
+		if (s != null) {
+			GLElementAccessor.repaintDown(s);
+		}
+	}
+
+	@Override
+	public void repaintPick() {
+		super.repaintPick();
+		GLElement s = getSelected();
+		if (s != null)
+			GLElementAccessor.repaintPickDown(s);
+	}
+
 	/**
 	 * @param active
 	 *            setter, see {@link active}

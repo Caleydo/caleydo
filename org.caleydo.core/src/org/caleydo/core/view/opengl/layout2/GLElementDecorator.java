@@ -67,6 +67,20 @@ public class GLElementDecorator extends GLElement implements IGLElementParent {
 	}
 
 	@Override
+	public void repaint() {
+		super.repaint();
+		if (content != null)
+			GLElementAccessor.repaintDown(content);
+	}
+
+	@Override
+	public void repaintPick() {
+		super.repaintPick();
+		if (content != null)
+			GLElementAccessor.repaintPickDown(content);
+	}
+
+	@Override
 	protected boolean hasPickAbles() {
 		return true;
 	}

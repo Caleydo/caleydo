@@ -203,8 +203,9 @@ public class HistogramElement extends GLElement implements
 			colored_hist = (CategoricalHistogram) hist;
 		}
 		g.lineWidth(0.3f);
-		g.color(Color.GRAY);
 		g.save().move(0, h - 1);
+		g.color(Color.DARK_GRAY).drawLine(0, 0, w, 0);
+		g.color(Color.GRAY);
 		for (int i = 0; i < hist.size(); ++i) {
 			if (colored_hist != null) {
 				g.color(colored_hist.getColor(i));
