@@ -505,6 +505,7 @@ public class HeatMapElement extends PickableGLElement implements
 		// clear all hovered elements
 		createSelection(mixin.getDimensionSelectionManager(), SelectionType.MOUSE_OVER, -1);
 		createSelection(mixin.getRecordSelectionManager(), SelectionType.MOUSE_OVER, -1);
+		repaint();
 	}
 
 	private boolean isHidden(Integer recordID) {

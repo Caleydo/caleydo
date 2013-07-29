@@ -55,6 +55,7 @@ public class GLElementFactorySwitcher extends GLElement implements IGLElementPar
 		if (lazy != ELazyiness.DESTROY) {
 			for (int i = 0; i < instances.length; ++i) {
 				instances[i] = children.get(i).get();
+				setup(instances[i]);
 				instances[i].setLayoutData(children.get(i));
 			}
 		}

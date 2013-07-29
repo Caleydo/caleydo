@@ -72,7 +72,12 @@ public final class TablePerspectiveSelectionMixin {
 			}
 			recordSelectionManager.setDelta(selectionDelta);
 			callback.onSelectionUpdate(recordSelectionManager);
-		} else if (selectionDelta.getIDType() == dimensionIDType) {
+		} else if (selectionDelta.getIDType().getIDCategory().equals(dimensionIDType.getIDCategory())) {
+			// Check for type that can be handled
+			if (selectionDelta.getIDType() != dimensionIDType) {
+				selectionDelta = DeltaConverter.convertDelta(getDataDomain().getDimensionIDMappingManager(),
+						dimensionIDType, selectionDelta);
+			}
 			dimensionSelectionManager.setDelta(selectionDelta);
 			callback.onSelectionUpdate(dimensionSelectionManager);
 		}
