@@ -79,8 +79,9 @@ final class PickingMouseListener implements IGLMouseListener {
 	}
 
 	@Override
-	public void mouseWheelMoved(IMouseEvent e) {
-
+	public void mouseWheelMoved(IMouseEvent mouseEvent) {
+		isMouseIn = true;
+		add(mouseEvent, PickingMode.MOUSE_WHEEL);
 	}
 
 	@Override

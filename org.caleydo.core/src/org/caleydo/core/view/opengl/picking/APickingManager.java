@@ -156,9 +156,7 @@ public abstract class APickingManager<T extends APickingEntry> {
 			return PickingMode.CLICKED;
 		if (type == PickingMode.CLICKED && event.getButton() == RIGHT_MOUSE_BUTTON)
 			return PickingMode.RIGHT_CLICKED;
-		if (type == PickingMode.MOUSE_MOVED)
-			return PickingMode.MOUSE_MOVED;
-		if (type == PickingMode.MOUSE_RELEASED)
+		if (type == PickingMode.MOUSE_MOVED || type == PickingMode.MOUSE_RELEASED || type == PickingMode.MOUSE_WHEEL)
 			return type;
 		return null;
 	}

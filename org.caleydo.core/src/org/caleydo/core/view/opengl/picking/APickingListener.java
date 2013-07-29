@@ -42,6 +42,9 @@ public abstract class APickingListener
 		case MOUSE_RELEASED:
 			mouseReleased(pick);
 			break;
+		case MOUSE_WHEEL:
+			mouseWheel(pick);
+			break;
 		}
 	}
 
@@ -114,6 +117,15 @@ public abstract class APickingListener
 	 * @param pick
 	 */
 	protected void mouseMoved(Pick pick) {
+
+	}
+
+	/**
+	 * Called, when the mouse wheel was moved within the object
+	 * 
+	 * @param pick
+	 */
+	protected void mouseWheel(Pick pick) {
 
 	}
 
