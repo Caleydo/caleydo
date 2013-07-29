@@ -64,6 +64,9 @@ public class HeatMapTextureRenderer {
 		final int numberOfDimensions = tablePerspective.getDimensionPerspective().getVirtualArray().size();
 		dimension = new Dimension(numberOfDimensions, numberOfRecords);
 
+		if (numberOfDimensions <= 0 || numberOfRecords <= 0)
+			return;
+
 		final int maxSize = resolveMaxSize(gl);
 
 		boolean needXTiling = numberOfDimensions > maxSize;

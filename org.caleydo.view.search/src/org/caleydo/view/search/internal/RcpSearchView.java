@@ -382,8 +382,11 @@ public final class RcpSearchView extends CaleydoRCPViewPart {
 	 * @return
 	 */
 	private static Pattern toPattern(String query, boolean caseSensitive, boolean regexSearch) {
-		if (!regexSearch)
+		if (!regexSearch) {
+			if (query.indexOf('*') < 0)
+				query = "*" + query + "*";
 			query = starToRegex(query);
+		}
 		return Pattern.compile(query, caseSensitive ? 0 : Pattern.CASE_INSENSITIVE);
 	}
 
@@ -452,7 +455,8 @@ public final class RcpSearchView extends CaleydoRCPViewPart {
 		group.setLayout(new FillLayout());
 		group.setText(category.getCategoryName());
 
-		final TableViewer viewer = new TableViewer(group, SWT.FULL_SELECTION | SWT.BORDER | SWT.VIRTUAL | SWT.NO_SCROLL);
+		final TableViewer viewer = new TableViewer(group, SWT.FULL_SELECTION | SWT.BORDER | SWT.VIRTUAL | SWT.NO_SCROLL
+				| SWT.MULTI);
 		viewer.getTable().setLinesVisible(true);
 		viewer.getTable().setHeaderVisible(true);
 		viewer.setContentProvider(ArrayContentProvider.getInstance());
