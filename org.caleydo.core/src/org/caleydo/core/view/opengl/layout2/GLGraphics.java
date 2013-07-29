@@ -8,6 +8,7 @@ package org.caleydo.core.view.opengl.layout2;
 import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 
+import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ListIterator;
@@ -354,6 +355,10 @@ public class GLGraphics {
 
 	public Texture getTexture(String texture) {
 		return local.getTextures().get(texture, new ResourceLoader(locator));
+	}
+
+	public Texture getTexture(URL texture) {
+		return local.getTextures().get(texture);
 	}
 
 	/**

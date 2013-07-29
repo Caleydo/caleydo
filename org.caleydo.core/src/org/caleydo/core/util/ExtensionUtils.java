@@ -5,16 +5,22 @@
  ******************************************************************************/
 package org.caleydo.core.util;
 
-import java.util.ArrayList;
+import java.io.IOException;
+import java.net.URL;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.RegistryFactory;
+import org.osgi.framework.Bundle;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableList.Builder;
 import com.google.common.collect.Maps;
 
 /**
@@ -40,9 +46,9 @@ public final class ExtensionUtils {
 	 * @return
 	 */
 	public static <T> Collection<T> findImplementation(String extensionPoint, String property, Class<T> type) {
-		Collection<T> factories = new ArrayList<>();
-		if (RegistryFactory.getRegistry() == null)
-			return factories;
+		if (noRegistry())
+			return ImmutableList.of();
+		Builder<T> factories = ImmutableList.builder();
 		try {
 
 			for (IConfigurationElement elem : RegistryFactory.getRegistry().getConfigurationElementsFor(extensionPoint)) {
@@ -53,7 +59,42 @@ public final class ExtensionUtils {
 		} catch (CoreException e) {
 			log.error("can't find implementations of " + extensionPoint + " : " + property, e);
 		}
-		return Collections.unmodifiableCollection(factories);
+		return factories.build();
+	}
+
+	/**
+	 * @return
+	 */
+	private static boolean noRegistry() {
+		return RegistryFactory.getRegistry() == null;
+	}
+
+	/**
+	 * custom loader script for loading extension
+	 *
+	 * @param extensionPoint
+	 * @param loader
+	 * @return
+	 */
+	public static <T> Collection<T> loadExtensions(String extensionPoint, IExtensionLoader<T> loader) {
+		if (noRegistry())
+			return ImmutableList.of();
+		Builder<T> factories = ImmutableList.builder();
+		try {
+
+			for (IConfigurationElement elem : RegistryFactory.getRegistry().getConfigurationElementsFor(extensionPoint)) {
+				T obj = loader.load(elem);
+				if (obj != null)
+					factories.add(obj);
+			}
+		} catch (CoreException e) {
+			log.error("can't find load plugins of " + extensionPoint, e);
+		}
+		return factories.build();
+	}
+
+	public interface IExtensionLoader<T> {
+		T load(IConfigurationElement elem) throws CoreException;
 	}
 
 	public static <T> T findFirstImplementation(String extensionPoint, String property, Class<T> type) {
@@ -96,5 +137,29 @@ public final class ExtensionUtils {
 			log.error("can't find implementations of " + extensionPoint + " : " + classAttr, e);
 		}
 		return Collections.unmodifiableMap(factories);
+	}
+
+	/**
+	 * returns the url for the resource reference in an attribute of the given {@link IConfigurationElement}
+	 *
+	 * @param elem
+	 * @param attribute
+	 * @return
+	 */
+	public static URL getResource(IConfigurationElement elem, String attribute) {
+		String v = elem.getAttribute(attribute);
+		if (v == null || v.trim().isEmpty()) {
+			return null;
+		}
+		Bundle bundle = Platform.getBundle(elem.getContributor().getName());
+		if (bundle == null)
+			return null;
+
+		URL url = bundle.getEntry(v);
+		try {
+			return FileLocator.toFileURL(url);
+		} catch (IOException e) {
+			return null;
+		}
 	}
 }

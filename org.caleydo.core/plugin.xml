@@ -17,6 +17,7 @@
    <extension-point id="org.caleydo.core.StartupAddon" name="StartupAddon" schema="schema/org.caleydo.core.StartupAddon.exsd"/>
    <extension-point id="org.caleydo.core.SampleProject" name="Sample Project Description" schema="schema/org.caleydo.core.SampleProject.exsd"/>
    <extension-point id="org.caleydo.core.CacheInitializer" name="CacheInitializer" schema="schema/org.caleydo.core.CacheInitializer.exsd"/>
+   <extension-point id="org.caleydo.ui.GLElementFactory" name="GLElementFactory" schema="schema/org.caleydo.ui.GLElementFactory.exsd"/>
 
    <extension
          id="application"

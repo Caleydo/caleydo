@@ -41,6 +41,7 @@ import org.caleydo.view.heatmap.v2.ISpacingStrategy.ISpacingLayout;
 import org.caleydo.view.heatmap.v2.internal.HeatMapTextureRenderer;
 import org.caleydo.view.heatmap.v2.internal.SelectionRenderer;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
 /**
@@ -108,11 +109,13 @@ public class HeatMapElement extends PickableGLElement implements
 	}
 
 	public HeatMapElement(TablePerspective tablePerspective, IBlockColorer blockColorer, EDetailLevel detailLevel) {
+		blockColorer = Objects.firstNonNull(blockColorer, BasicBlockColorer.INSTANCE);
+		detailLevel = Objects.firstNonNull(detailLevel, EDetailLevel.LOW);
+
 		this.mixin = new TablePerspectiveSelectionMixin(tablePerspective, this);
 		Preconditions.checkNotNull(blockColorer, "need a valid renderer");
 
 		this.blockColorer = blockColorer;
-
 		this.dimensionSelectionRenderer = new SelectionRenderer(tablePerspective, mixin.getDimensionSelectionManager(),
 				true);
 		this.recordSelectionRenderer = new SelectionRenderer(tablePerspective, mixin.getRecordSelectionManager(),

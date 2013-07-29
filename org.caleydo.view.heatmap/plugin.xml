@@ -43,4 +43,12 @@
             </ParentView>
          </EmbeddingInfo>
       </extension>
+      <extension
+            point="org.caleydo.ui.GLElementFactory">
+         <factory
+               factory="org.caleydo.view.heatmap.v2.internal.HeatMapElementFactory"
+               icon="resources/icons/heatmap.png"
+               name="Heatmap">
+         </factory>
+      </extension>
 </plugin>
