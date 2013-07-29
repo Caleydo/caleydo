@@ -122,13 +122,23 @@ public class GLElementFactoryContext {
 
 	/**
 	 * shortcut for setting if a named boolean argument is set
-	 * 
+	 *
 	 * @param key
 	 * @return
 	 */
 	public boolean is(String key) {
 		Boolean r = get(key, Boolean.class, Boolean.FALSE);
 		return r == null ? false : r.booleanValue();
+	}
+
+	public int getInt(String key) {
+		Integer r = get(key, Integer.class, Integer.valueOf(-1));
+		return r == null ? -1 : r.intValue();
+	}
+
+	public float getFloat(String key) {
+		Float r = get(key, Float.class, Float.NaN);
+		return r == null ? Float.NaN : r.floatValue();
 	}
 
 	/**
@@ -176,11 +186,24 @@ public class GLElementFactoryContext {
 		}
 
 		public Builder set(String key) {
-			return put(key, Boolean.TRUE);
+			return set(key, true);
+		}
+
+		public Builder set(String key, boolean value) {
+			return put(key, Boolean.valueOf(value));
+		}
+
+		public Builder set(String key, int value) {
+			return put(key, value);
+		}
+
+		public Builder set(String key, float value) {
+			return put(key, value);
 		}
 
 		public GLElementFactoryContext build() {
 			return new GLElementFactoryContext(datas.build(), prefix, objects.build(), namedObjects.build());
 		}
+
 	}
 }

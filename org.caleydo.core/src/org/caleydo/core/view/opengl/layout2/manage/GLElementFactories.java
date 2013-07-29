@@ -28,7 +28,7 @@ import com.google.common.collect.ImmutableSet.Builder;
  * @author Samuel Gratzl
  *
  */
-public class GLElementFactories {
+public final class GLElementFactories {
 	private static final Collection<ElementExtension> extensions = ExtensionUtils.loadExtensions(
 			"org.caleydo.ui.GLElementFactory", new IExtensionLoader<ElementExtension>() {
 				@Override
@@ -57,7 +57,7 @@ public class GLElementFactories {
 	 * @return
 	 */
 	public static ImmutableList<GLElementSupplier> getExtensions(GLElementFactoryContext context, String callerId,
-			Predicate<String> filter) {
+			Predicate<? super String> filter) {
 		ImmutableList.Builder<GLElementSupplier> builder = ImmutableList.builder();
 		for (ElementExtension elem : extensions) {
 			if (!filter.apply(elem.getId()) || !elem.canCreate(callerId, context))
@@ -98,6 +98,45 @@ public class GLElementFactories {
 		public String getLabel() {
 			return extension.getLabel();
 		}
+
+		@Override
+		public String toString() {
+			StringBuilder builder = new StringBuilder();
+			builder.append("GLElementSupplier[").append(getId()).append(" ").append(getLabel()).append(']');
+			return builder.toString();
+		}
+
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + ((context == null) ? 0 : context.hashCode());
+			result = prime * result + ((extension == null) ? 0 : extension.hashCode());
+			return result;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			GLElementSupplier other = (GLElementSupplier) obj;
+			if (context == null) {
+				if (other.context != null)
+					return false;
+			} else if (!context.equals(other.context))
+				return false;
+			if (extension == null) {
+				if (other.extension != null)
+					return false;
+			} else if (!extension.equals(other.extension))
+				return false;
+			return true;
+		}
+
 	}
 
 	private static class ElementExtension implements ILabeled {

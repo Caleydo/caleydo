@@ -108,4 +108,12 @@
          </dataDomain>
       </association>
    </extension>
+   <extension
+         point="org.caleydo.ui.GLElementFactory">
+      <factory
+            factory="org.caleydo.view.histogram.v2.internal.HistogramElementFactory"
+            icon="resources/icons/histogram.png"
+            name="Histogram">
+      </factory>
+   </extension>
 </plugin>

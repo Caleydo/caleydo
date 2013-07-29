@@ -52,6 +52,8 @@ public class HistogramElement extends GLElement implements
 	private int hoveredSpread = -1;
 	private boolean hoveredLeft = false;
 
+	private boolean showColorMapper;
+
 	public HistogramElement(TablePerspective tablePerspective) {
 		this(tablePerspective, EDetailLevel.HIGH);
 	}
@@ -62,6 +64,22 @@ public class HistogramElement extends GLElement implements
 		setPicker(null);
 		setVisibility(detailLevel.ordinal() > EDetailLevel.MEDIUM.ordinal() ? EVisibility.PICKABLE
 				: EVisibility.VISIBLE);
+		this.showColorMapper = detailLevel.ordinal() > EDetailLevel.LOW.ordinal();
+	}
+
+	/**
+	 * @param showColorMapper
+	 *            setter, see {@link showColorMapper}
+	 */
+	public void setShowColorMapper(boolean showColorMapper) {
+		this.showColorMapper = showColorMapper;
+	}
+
+	/**
+	 * @return the showColorMapper, see {@link #showColorMapper}
+	 */
+	public boolean isShowColorMapper() {
+		return showColorMapper;
 	}
 
 	@Override
@@ -136,15 +154,17 @@ public class HistogramElement extends GLElement implements
 		Histogram hist = getTablePerspective().getContainerStatistics().getHistogram();
 		renderHist(g, hist, w - padding * 2, h - padding * 2,
 				dataDomain.getTable().getColorMapper());
+		if (hist instanceof CategoricalHistogram)
+			showColorMapper = false;
 		g.restore();
 
-		if (detailLevel.ordinal() > EDetailLevel.LOW.ordinal() && !(hist instanceof CategoricalHistogram))
+		if (showColorMapper)
 			renderColorMapper(g, w, h, dataDomain.getTable().getColorMapper());
 	}
 
 	@Override
 	protected void renderPickImpl(GLGraphics g, float w, float h) {
-		if (detailLevel.ordinal() > EDetailLevel.LOW.ordinal() && getVisibility() == EVisibility.PICKABLE)
+		if (showColorMapper && getVisibility() == EVisibility.PICKABLE)
 			renderColorMapperPick(g, w, h, getDataDomain().getTable().getColorMapper());
 		super.renderPickImpl(g, w, h);
 	}

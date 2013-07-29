@@ -36,7 +36,7 @@ import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
  * @author Samuel Gratzl
  *
  */
-public class GLExtensionElement extends GLElement implements IGLElementParent, Iterable<GLElementSupplier> {
+public class GLElementFactorySwitcher extends GLElement implements IGLElementParent, Iterable<GLElementSupplier> {
 	private final List<GLElementSupplier> children;
 	private final GLElement[] instances;
 	private int active = 0;
@@ -48,19 +48,39 @@ public class GLExtensionElement extends GLElement implements IGLElementParent, I
 	 * @param instances
 	 * @param active
 	 */
-	public GLExtensionElement(List<GLElementSupplier> children, ELazyiness lazy) {
+	public GLElementFactorySwitcher(List<GLElementSupplier> children, ELazyiness lazy) {
 		this.children = children;
 		this.instances = new GLElement[children.size()];
 		this.lazy = lazy;
 		if (lazy != ELazyiness.DESTROY) {
 			for (int i = 0; i < instances.length; ++i) {
 				instances[i] = children.get(i).get();
+				instances[i].setLayoutData(children.get(i));
 			}
 		}
 	}
 
-	public GLElement createButtonBar() {
+	/**
+	 * creates a button bar able to switch between the different views
+	 *
+	 * @return
+	 */
+	public GLElementContainer createButtonBar() {
 		return new ButtonBar();
+	}
+
+	/**
+	 * return the cached instance of the given extension by id, may return null depending on the lazyiness
+	 *
+	 * @param id
+	 * @return
+	 */
+	public GLElement get(String id) {
+		for (int i = 0; i < instances.length; ++i) {
+			if (children.get(i).getId().equals(id))
+				return instances[i];
+		}
+		return null;
 	}
 
 	/**
@@ -89,6 +109,7 @@ public class GLExtensionElement extends GLElement implements IGLElementParent, I
 			instances[old] = null; // free element
 			if (new_ >= 0) {
 				instances[new_] = children.get(new_).get();
+				instances[new_].setLayoutData(children.get(new_));
 				if (context != null)
 					setup(instances[new_]);
 			}
@@ -251,18 +272,18 @@ public class GLExtensionElement extends GLElement implements IGLElementParent, I
 		private final RadioController controller = new RadioController(this);
 
 		public ButtonBar() {
-			setSize(Float.NaN, 16);
 			setLayout(GLLayouts.flowHorizontal(2));
+			setSize(Float.NaN, 16);
 
 			int i = 0;
-			for (GLElementSupplier sup : GLExtensionElement.this) {
+			for (GLElementSupplier sup : GLElementFactorySwitcher.this) {
 				GLButton b = new GLButton();
 				b.setPickingObjectId(i++);
 				b.setTooltip(sup.getLabel());
 				b.setLayoutData(sup);
 				b.setRenderer(this);
 				controller.add(b);
-				b.setSize(16, Float.NaN);
+				b.setSize(16, 16);
 				this.add(b);
 			}
 		}
@@ -273,29 +294,30 @@ public class GLExtensionElement extends GLElement implements IGLElementParent, I
 			g.fillImage(g.getTexture(sub.getIcon()), 0, 0, w, h);
 			if (((GLButton) parent).isSelected()) {
 				g.gl.glEnable(GL.GL_BLEND);
+				g.gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
 				g.gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 				g.gl.glEnable(GL.GL_LINE_SMOOTH);
 				g.color(1, 1, 1, 0.5f).fillRoundedRect(0, 0, w, h, Math.min(w, h) * 0.25f);
-				g.gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
+				g.gl.glPopAttrib();
 			}
 		}
 
 		@Override
 		protected void init(IGLElementContext context) {
 			super.init(context);
-			GLExtensionElement.this.onActiveChanged(this);
+			GLElementFactorySwitcher.this.onActiveChanged(this);
 			controller.setSelected(getActive());
 		}
 
 		@Override
 		protected void takeDown() {
-			GLExtensionElement.this.removeOnActiveChanged(this);
+			GLElementFactorySwitcher.this.removeOnActiveChanged(this);
 			super.takeDown();
 		}
 
 		@Override
 		public void onSelectionChanged(GLButton button, boolean selected) {
-			GLExtensionElement.this.setActive(button.getPickingObjectId());
+			GLElementFactorySwitcher.this.setActive(button.getPickingObjectId());
 		}
 
 		@Override
