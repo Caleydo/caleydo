@@ -18,6 +18,7 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 import javax.media.opengl.glu.GLUtessellator;
 
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 
 /**
@@ -118,22 +119,36 @@ public class Band implements ITesselatedPolygon {
 	protected void drawContour(GL2 gl) {
 		gl.glBegin(GL.GL_LINE_LOOP);
 		for (Vec3f v : curveTop) {
+			setOptionalColor(gl, v);
 			gl.glVertex3f(v.x(), v.y(), v.z());
 		}
 		for (Vec3f v : curveBottom) {
+			setOptionalColor(gl, v);
 			gl.glVertex3f(v.x(), v.y(), v.z());
 		}
 		gl.glEnd();
 	}
 
+	/**
+	 * @param v
+	 */
+	private void setOptionalColor(GL2 gl, Vec3f v) {
+		if (v instanceof ColoredVec3f) {
+			Color c = ((ColoredVec3f) v).getColor();
+			gl.glColor4f(c.r, c.g, c.b, c.a);
+		}
+	}
+
 	protected void drawBorders(GL2 gl) {
 		gl.glBegin(GL.GL_LINE_STRIP);
 		for (Vec3f v : curveTop) {
+			setOptionalColor(gl, v);
 			gl.glVertex3f(v.x(), v.y(), v.z());
 		}
 		gl.glEnd();
 		gl.glBegin(GL.GL_LINE_STRIP);
 		for (Vec3f v : curveBottom) {
+			setOptionalColor(gl, v);
 			gl.glVertex3f(v.x(), v.y(), v.z());
 		}
 		gl.glEnd();
