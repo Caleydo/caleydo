@@ -110,7 +110,7 @@ public class ImportGroupingDialog extends AHelpButtonDialog implements SafeCalla
 			this.spec.setContainsColumnIDs(existing.isContainsColumnIDs());
 			this.spec.setDataSourcePath(existing.getDataSourcePath());
 			this.spec.setDelimiter(existing.getDelimiter());
-			this.spec.setGroupingName(existing.getGroupingName());
+			this.spec.setGroupingNames(existing.getGroupingNames());
 			this.spec.setNumberOfHeaderLines(existing.getNumberOfHeaderLines());
 			this.spec.setRowIDSpecification(existing.getRowIDSpecification());
 			this.spec.setRowOfColumnIDs(existing.getRowOfColumnIDs());
@@ -378,8 +378,8 @@ public class ImportGroupingDialog extends AHelpButtonDialog implements SafeCalla
 		spec.setRowIDSpecification(this.rowConfig.getIDSpecification());
 		spec.setContainsColumnIDs(false);
 		// TODO remove
-		spec.setGroupingName(spec.getDataSourcePath().substring(
-				spec.getDataSourcePath().lastIndexOf(File.separator) + 1, spec.getDataSourcePath().lastIndexOf(".")));
+		// spec.setGroupingNames(spec.getDataSourcePath().substring(
+		// spec.getDataSourcePath().lastIndexOf(File.separator) + 1, spec.getDataSourcePath().lastIndexOf(".")));
 		if (useGroupingNamesFromRowButton.getSelection()) {
 			// TODO fill grouping names
 		} else {
