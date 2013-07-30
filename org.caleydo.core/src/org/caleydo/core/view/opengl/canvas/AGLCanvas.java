@@ -45,7 +45,6 @@ public abstract class AGLCanvas implements IGLCanvas {
 			Composite c = asComposite();
 			boolean r = !c.isDisposed() && c.isVisible();
 			if (r != visible) {
-				System.out.println(AGLCanvas.this + " " + (r ? "show" : "hide"));
 				visible = r;
 			}
 		}
@@ -56,12 +55,9 @@ public abstract class AGLCanvas implements IGLCanvas {
 			switch (event.type) {
 			case SWT.Hide:
 				visible = false;
-				System.out.println(event.widget.getClass().getSimpleName() + event.widget.hashCode() + " " + " hide");
 				break;
 			case SWT.Show:
 				visible = true;
-				System.out
-						.println(event.widget.getClass().getSimpleName() + event.widget.hashCode() + " " + " visible");
 				break;
 			}
 		}
@@ -102,8 +98,10 @@ public abstract class AGLCanvas implements IGLCanvas {
 			return false;
 		return true;
 	}
-	
+
 	private static boolean isFrameBufferComplete(GL gl) {
+		if (!gl.isFunctionAvailable("glCheckFramebufferStatus"))
+			return true;
 		int frameBuffer = gl.glCheckFramebufferStatus(GL.GL_FRAMEBUFFER);
 		if (frameBuffer != GL.GL_FRAMEBUFFER_COMPLETE) {
 			return false;

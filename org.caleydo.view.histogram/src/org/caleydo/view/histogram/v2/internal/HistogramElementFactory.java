@@ -28,10 +28,7 @@ public class HistogramElementFactory implements IGLElementFactory {
 	@Override
 	public boolean canCreate(GLElementFactoryContext context) {
 		TablePerspective data = context.getData();
-		if (DataSupportDefinitions.homogenousTables.asTablePerspectivePredicate().apply(data))
-			return true;
-		//inhomogenous just a single column
-		return data.getDimensionPerspective().getVirtualArray().size() == 1;
+		return DataSupportDefinitions.homogenousColumns.apply(data);
 	}
 
 	@Override

@@ -35,11 +35,16 @@ public abstract class ADataSupportDefinition implements IDataSupportDefinition {
 	}
 
 	@Override
+	public boolean apply(TablePerspective tablePerspective) {
+		return tablePerspective != null && apply(tablePerspective.getDataDomain());
+	}
+
+	@Override
 	public Predicate<TablePerspective> asTablePerspectivePredicate() {
 		return new Predicate<TablePerspective>() {
 			@Override
 			public boolean apply(TablePerspective in) {
-				return in != null && ADataSupportDefinition.this.apply(in.getDataDomain());
+				return ADataSupportDefinition.this.apply(in);
 			}
 		};
 	}

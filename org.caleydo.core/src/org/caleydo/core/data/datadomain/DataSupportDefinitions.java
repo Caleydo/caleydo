@@ -7,6 +7,9 @@ package org.caleydo.core.data.datadomain;
 
 import org.caleydo.core.data.collection.table.CategoricalTable;
 import org.caleydo.core.data.collection.table.NumericalTable;
+import org.caleydo.core.data.perspective.table.TablePerspective;
+
+import com.google.common.base.Predicate;
 
 /**
  * factory class for {@link IDataSupportDefinition}s
@@ -49,6 +52,17 @@ public final class DataSupportDefinitions {
 		public boolean apply(IDataDomain dataDomain) {
 			return (dataDomain instanceof ATableBasedDataDomain)
 					&& (((ATableBasedDataDomain) dataDomain).getTable() instanceof CategoricalTable);
+		}
+	};
+
+	/**
+	 * returns true if the datadomains is homogeneous or it is just a single column of an inhomogenous data domain
+	 */
+	public static final Predicate<TablePerspective> homogenousColumns = new Predicate<TablePerspective>() {
+		@Override
+		public boolean apply(TablePerspective in) {
+			return in != null
+					&& (homogenousTables.apply(in) || in.getDimensionPerspective().getVirtualArray().size() <= 1);
 		}
 	};
 

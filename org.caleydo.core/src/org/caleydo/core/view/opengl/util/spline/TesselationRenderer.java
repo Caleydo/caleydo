@@ -15,9 +15,9 @@ import javax.media.opengl.glu.GLUtessellatorCallback;
 
 /**
  * a tesselation renderer supporting: {@link Vec3f}, {@link ColoredVec3f}, double[] and {@link Vec2f}
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public class TesselationRenderer {
 	private GLUtessellator tesselator;
@@ -60,6 +60,7 @@ public class TesselationRenderer {
 		private GL2 gl;
 		@Override
 		public void begin(int type) {
+			// gl.glPolygonMode(gl.GL_FRONT, gl.GL_LINE);
 			gl.glBegin(type);
 		}
 

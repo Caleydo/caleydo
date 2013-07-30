@@ -18,6 +18,16 @@ import org.caleydo.core.util.color.Color;
 public class ColoredVec3f extends Vec3f {
 	private Color color = Color.NEUTRAL_GREY;
 
+	public ColoredVec3f() {
+	}
+	/**
+	 * @param color
+	 */
+	public ColoredVec3f(Vec3f v, Color color) {
+		super(v);
+		this.color = color;
+	}
+
 	/**
 	 * @param color
 	 *            setter, see {@link color}

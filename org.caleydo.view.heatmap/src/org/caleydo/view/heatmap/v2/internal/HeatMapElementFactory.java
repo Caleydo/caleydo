@@ -20,9 +20,9 @@ import org.caleydo.view.heatmap.v2.SpacingStrategies;
 
 /**
  * element factory for creating heatmaps
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public class HeatMapElementFactory implements IGLElementFactory {
 	@Override
@@ -33,7 +33,7 @@ public class HeatMapElementFactory implements IGLElementFactory {
 	@Override
 	public boolean canCreate(GLElementFactoryContext context) {
 		TablePerspective data = context.getData();
-		return DataSupportDefinitions.homogenousTables.asTablePerspectivePredicate().apply(data);
+		return DataSupportDefinitions.homogenousColumns.apply(data);
 	}
 
 	@Override
