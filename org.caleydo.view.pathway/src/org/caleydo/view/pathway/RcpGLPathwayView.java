@@ -43,6 +43,7 @@ public class RcpGLPathwayView extends ARcpGLViewPart implements IPathwayHandler 
 	public RcpGLPathwayView() {
 		super(SerializedPathwayView.class);
 		listeners.register(this);
+		registerEventListeners();
 	}
 
 	@Override
