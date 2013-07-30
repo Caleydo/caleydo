@@ -22,6 +22,8 @@ import java.util.Set;
 
 import org.caleydo.core.util.ClassUtils;
 import org.caleydo.core.util.logging.Logger;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
@@ -34,7 +36,7 @@ import com.google.common.collect.Multimap;
  * @author Samuel Gratzl
  *
  */
-public class EventListenerManager {
+public class EventListenerManager implements DisposeListener {
 	private final Set<AEventListener<?>> listeners = new HashSet<>();
 
 	protected final IListenerOwner owner;
@@ -214,6 +216,11 @@ public class EventListenerManager {
 		listeners.clear();
 	}
 
+	@Override
+	public void widgetDisposed(DisposeEvent e) {
+		unregisterAll();
+	}
+
 	/**
 	 * unregister all registered listeners for a given object
 	 *
@@ -314,6 +321,5 @@ public class EventListenerManager {
 			AnnotationBasedEventListener other = (AnnotationBasedEventListener) obj;
 			return Objects.equals(listener, other.listener) && Objects.equals(method, other.method);
 		}
-
 	}
 }
