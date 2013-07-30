@@ -48,7 +48,8 @@
          <factory
                factory="org.caleydo.view.heatmap.v2.internal.HeatMapElementFactory"
                icon="resources/icons/heatmap.png"
-               name="Heatmap">
+               name="Heatmap"
+               order="5">
          </factory>
       </extension>
 </plugin>

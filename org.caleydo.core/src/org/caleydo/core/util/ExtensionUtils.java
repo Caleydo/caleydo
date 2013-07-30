@@ -7,8 +7,8 @@ package org.caleydo.core.util;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import org.caleydo.core.util.logging.Logger;
@@ -45,7 +45,7 @@ public final class ExtensionUtils {
 	 *            the expected class type
 	 * @return
 	 */
-	public static <T> Collection<T> findImplementation(String extensionPoint, String property, Class<T> type) {
+	public static <T> List<T> findImplementation(String extensionPoint, String property, Class<T> type) {
 		if (noRegistry())
 			return ImmutableList.of();
 		Builder<T> factories = ImmutableList.builder();
@@ -76,7 +76,7 @@ public final class ExtensionUtils {
 	 * @param loader
 	 * @return
 	 */
-	public static <T> Collection<T> loadExtensions(String extensionPoint, IExtensionLoader<T> loader) {
+	public static <T> List<T> loadExtensions(String extensionPoint, IExtensionLoader<T> loader) {
 		if (noRegistry())
 			return ImmutableList.of();
 		Builder<T> factories = ImmutableList.builder();

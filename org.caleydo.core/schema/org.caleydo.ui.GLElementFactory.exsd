@@ -56,7 +56,7 @@
          <attribute name="name" type="string" use="required">
             <annotation>
                <documentation>
-                  
+                  label name of this type
                </documentation>
             </annotation>
          </attribute>
@@ -80,10 +80,24 @@
                </appInfo>
             </annotation>
          </attribute>
+         <attribute name="order" type="string">
+            <annotation>
+               <documentation>
+                  an optional integer used for order multiple extensions. The lower the earlier
+
+default: 10
+               </documentation>
+            </annotation>
+         </attribute>
       </complexType>
    </element>
 
    <element name="include">
+      <annotation>
+         <documentation>
+            just include this element dedicated at caller ids with the given id
+         </documentation>
+      </annotation>
       <complexType>
          <attribute name="id" type="string" use="required">
             <annotation>
@@ -96,6 +110,11 @@
    </element>
 
    <element name="exclude">
+      <annotation>
+         <documentation>
+            exclude this element from all caller ids with the given id
+         </documentation>
+      </annotation>
       <complexType>
          <attribute name="id" type="string" use="required">
             <annotation>

@@ -6,9 +6,12 @@
 package org.caleydo.core.view.opengl.layout2.manage;
 
 import java.net.URL;
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.caleydo.core.util.ExtensionUtils;
 import org.caleydo.core.util.ExtensionUtils.IExtensionLoader;
 import org.caleydo.core.util.base.ILabeled;
@@ -29,13 +32,21 @@ import com.google.common.collect.ImmutableSet.Builder;
  *
  */
 public final class GLElementFactories {
-	private static final Collection<ElementExtension> extensions = ExtensionUtils.loadExtensions(
-			"org.caleydo.ui.GLElementFactory", new IExtensionLoader<ElementExtension>() {
-				@Override
-				public ElementExtension load(IConfigurationElement elem) throws CoreException {
-					return new ElementExtension(elem);
-				}
-			});
+	private static final List<ElementExtension> extensions;
+
+	static {
+		List<ElementExtension> loadExtensions = ExtensionUtils.loadExtensions("org.caleydo.ui.GLElementFactory",
+				new IExtensionLoader<ElementExtension>() {
+					@Override
+					public ElementExtension load(IConfigurationElement elem) throws CoreException {
+						return new ElementExtension(elem);
+					}
+				});
+		loadExtensions = new ArrayList<>(loadExtensions);
+		// sort by order
+		Collections.sort(loadExtensions);
+		extensions = ImmutableList.copyOf(loadExtensions);
+	}
 	/**
 	 *
 	 */
@@ -139,10 +150,11 @@ public final class GLElementFactories {
 
 	}
 
-	private static class ElementExtension implements ILabeled {
+	private static class ElementExtension implements ILabeled, Comparable<ElementExtension> {
 		private final String label;
 		private final URL icon;
 		private final String id;
+		private final int order;
 		private final IGLElementFactory factory;
 		private final Set<String> excludes;
 		private final Set<String> includes;
@@ -158,6 +170,16 @@ public final class GLElementFactories {
 			id = factory.getId();
 			excludes = parseList(elem, "exclude");
 			includes = parseList(elem, "include");
+			String order = elem.getAttribute("order");
+			if (order == null || StringUtils.isBlank(order) || !StringUtils.isNumeric(order))
+				this.order = 10;
+			else
+				this.order = Integer.parseInt(order);
+		}
+
+		@Override
+		public int compareTo(ElementExtension o) {
+			return order - o.order;
 		}
 
 		private Set<String> parseList(IConfigurationElement elem, String key) {
