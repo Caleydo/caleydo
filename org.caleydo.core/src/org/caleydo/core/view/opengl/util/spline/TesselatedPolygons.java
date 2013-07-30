@@ -17,7 +17,7 @@ import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.GLSandBox;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
-import org.caleydo.core.view.opengl.util.vislink.NURBSCurve;
+import org.caleydo.core.view.opengl.util.vislink.Splines;
 
 import com.google.common.base.Function;
 import com.google.common.base.Preconditions;
@@ -49,17 +49,17 @@ public final class TesselatedPolygons {
 
 	public static Band band(List<Pair<Vec3f, Vec3f>> anchorPoints, int numberOfSplinePoints) {
 		List<Vec3f> top = Lists.transform(anchorPoints, Pair.<Vec3f, Vec3f> mapFirst());
-		top = NURBSCurve.spline3(top, numberOfSplinePoints);
+		top = Splines.spline3(top, numberOfSplinePoints);
 
 		List<Vec3f> bottom = Lists.transform(anchorPoints, Pair.<Vec3f, Vec3f> mapSecond());
-		bottom = NURBSCurve.spline3(bottom, numberOfSplinePoints);
+		bottom = Splines.spline3(bottom, numberOfSplinePoints);
 
 		return new Band(top, bottom);
 	}
 
 	/**
 	 * create a band based on a set of 2d curve points
-	 * 
+	 *
 	 * @param anchorPoints
 	 * @param z
 	 * @param radius
@@ -69,7 +69,7 @@ public final class TesselatedPolygons {
 	 */
 	public static Band band(List<Vec2f> anchorPoints, final float z, float radius, int numberOfSplinePoints) {
 		Preconditions.checkArgument(anchorPoints.size() >= 2, "at least two points");
-		List<Vec3f> curve = NURBSCurve.spline3(Lists.transform(anchorPoints, new Function<Vec2f, Vec3f>() {
+		List<Vec3f> curve = Splines.spline3(Lists.transform(anchorPoints, new Function<Vec2f, Vec3f>() {
 			@Override
 			public Vec3f apply(Vec2f in) {
 				return new Vec3f(in.x(), in.y(), z);
@@ -77,6 +77,11 @@ public final class TesselatedPolygons {
 		}), numberOfSplinePoints);
 
 		return toBand(curve, radius);
+	}
+
+	public static List<Vec2f> spline(List<Vec2f> anchorPoints, int numberOfSplinePoints) {
+		Preconditions.checkArgument(anchorPoints.size() >= 2, "at least two points");
+		return Splines.spline2(anchorPoints, numberOfSplinePoints);
 	}
 
 
