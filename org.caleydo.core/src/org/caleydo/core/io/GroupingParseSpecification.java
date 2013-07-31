@@ -88,13 +88,19 @@ public class GroupingParseSpecification
 	 */
 	private ArrayList<Integer> columns;
 
+
+
 	/**
-	 * Optional name for all groupings in the specification. Only has an effect
-	 * if {@link #isContainsColumnIDs()} is false. In this case the name of a
-	 * grouping is this name supplemented by the number of groups (eg
-	 * "myName_8");
+	 * Optional name for all groupings in the specification. Only has an effect if {@link #isContainsColumnIDs()} is
+	 * false. In this case the name of a grouping is this name supplemented by the number of groups (eg "myName_8");
 	 */
 	private List<String> groupingNames;
+
+	/**
+	 * Optional summary name for all groupings in a grouping file. If multiple groupings exist all groupings will have
+	 * the same name. Only used if {@link #groupingNames} is not null.
+	 */
+	private String groupingName;
 
 	/**
 	 * Default Constructor, use setters to specify data
@@ -134,7 +140,23 @@ public class GroupingParseSpecification
 	}
 
 	/**
-	 * @param groupingName setter, see {@link #groupingName}
+	 * @param groupingName
+	 *            setter, see {@link groupingName}
+	 */
+	public void setGroupingName(String groupingName) {
+		this.groupingName = groupingName;
+	}
+
+	/**
+	 * @return the groupingName, see {@link #groupingName}
+	 */
+	public String getGroupingName() {
+		return groupingName;
+	}
+
+	/**
+	 * @param groupingName
+	 *            setter, see {@link #groupingName}
 	 */
 	public void setGroupingNames(List<String> groupingNames) {
 		this.groupingNames = groupingNames;
