@@ -116,7 +116,7 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 	public void initialize() {
 		super.initialize();
 		GeneralManager.get().getViewManager().registerView(this, true);
-		// already here after we are registed and before the maybe first time view
+		// already here after we are registered and before the maybe first time view
 		eventListeners.register(this);
 	}
 
@@ -135,6 +135,8 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 		initScene();
 
 		local.getTimeDelta().reset();
+
+		canvas.requestFocus();
 	}
 
 	protected void initScene() {

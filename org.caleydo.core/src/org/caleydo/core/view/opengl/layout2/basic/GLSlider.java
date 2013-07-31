@@ -317,7 +317,7 @@ public class GLSlider extends PickableGLElement {
 
 	@Override
 	protected void onMouseWheel(Pick pick) {
-		setValue(unmapValue(mapValue(value) + ((IMouseEvent) (pick)).getWheelRotation() * wheelInc));
+		setValue(unmapValue(mapValue(getSize().x()) + ((IMouseEvent) (pick)).getWheelRotation() * wheelInc));
 		repaintAll();
 	}
 
