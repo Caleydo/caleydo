@@ -15,7 +15,6 @@ import javax.media.opengl.GL2;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
-import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
 import org.caleydo.core.view.opengl.util.button.Button;
 import org.caleydo.core.view.opengl.util.button.ButtonRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
@@ -33,14 +32,14 @@ class TopDownTablePerspectiveMatrixRenderingStrategy extends ATablePerspectiveMa
 	}
 
 	@Override
-	public void render(GL2 gl, Map<Integer, Pair<Point2D, Point2D>> bottomDimensionGroupPositions,
-			Map<Integer, Pair<Point2D, Point2D>> topDimensionGroupPositions, float x, float y, IDVINode node,
+	public void render(GL2 gl, Map<Object, Pair<Point2D, Point2D>> bottomObjectPositions,
+			Map<Object, Pair<Point2D, Point2D>> topObjectPositions, float x, float y, IDVINode node,
 			GLDataViewIntegrator view, List<Pair<String, Integer>> pickingIDsToBePushed, String rowsCaption,
 			String columnsCaption) {
 
 		List<CellContainer> rows = matrixRenderer.rows;
 		List<CellContainer> columns = matrixRenderer.columns;
-		Map<String, ColorRenderer> cells = matrixRenderer.cells;
+		Map<String, TablePerspectiveRenderer> cells = matrixRenderer.cells;
 		Map<String, PerspectiveRenderer> perspectiveRenderers = matrixRenderer.perspectiveRenderers;
 		CaleydoTextRenderer textRenderer = view.getTextRenderer();
 		PixelGLConverter pixelGLConverter = view.getPixelGLConverter();
@@ -308,14 +307,14 @@ class TopDownTablePerspectiveMatrixRenderingStrategy extends ATablePerspectiveMa
 
 				// boolean dimensionGroupExists = false;
 
-				ColorRenderer cell = cells.get(row.id + column.id);
+				TablePerspectiveRenderer cell = cells.get(row.id + column.id);
 
 				gl.glPushMatrix();
 				int pickingID = 0;
-				if (cell instanceof TablePerspectiveRenderer) {
-					pickingID = view.getPickingManager().getPickingID(view.getID(),
-							PickingType.DATA_CONTAINER.name() + node.getID(),
-							((TablePerspectiveRenderer) cell).getTablePerspective().getID());
+				if (cell.hasTablePerspective()) {
+					// pickingID = view.getPickingManager().getPickingID(view.getID(),
+					// PickingType.DATA_CONTAINER.name() + node.getID(),
+					// ((TablePerspectiveRenderer) cell).getTablePerspective().getID());
 
 					gl.glTranslatef(currentDimGroupPositionX + cellSpacingX, row.position - rowHeight + cellSpacingY, 0);
 
@@ -329,19 +328,21 @@ class TopDownTablePerspectiveMatrixRenderingStrategy extends ATablePerspectiveMa
 					Point2D topPosition2 = new Point2D.Float((float) bottomPosition2.getX(),
 							(float) topPosition1.getY());
 
-					bottomDimensionGroupPositions.put(((TablePerspectiveRenderer) cell).getTablePerspective().getID(),
+					bottomObjectPositions.put(cell.getTablePerspective(),
 							new Pair<Point2D, Point2D>(bottomPosition1, bottomPosition2));
-					topDimensionGroupPositions.put(((TablePerspectiveRenderer) cell).getTablePerspective().getID(),
+					topObjectPositions.put(cell.getTablePerspective(),
 							new Pair<Point2D, Point2D>(topPosition1, topPosition2));
 
 					currentDimGroupPositionX += columnWidth;
 				} else {
 
-					pickingID = view.getPickingManager().getPickingID(view.getID(),
-							PickingType.EMPTY_CELL.name() + node.getID(), ((EmptyCellRenderer) cell).getID());
+					// pickingID = view.getPickingManager().getPickingID(view.getID(),
+					// PickingType.EMPTY_CELL.name() + node.getID(), ((EmptyCellRenderer) cell).getID());
 
 					gl.glTranslatef(emptyCellPositionX + cellSpacingX, row.position - rowHeight + cellSpacingY, 0);
 				}
+				pickingID = view.getPickingManager().getPickingID(view.getID(),
+						PickingType.DATA_CONTAINER.name() + node.getID(), cell.getTablePerspective().getID());
 				cell.setLimits(pixelGLConverter.getGLWidthForPixelWidth(CELL_SIZE_PIXELS),
 						pixelGLConverter.getGLHeightForPixelHeight(CELL_SIZE_PIXELS));
 				gl.glPushName(pickingID);

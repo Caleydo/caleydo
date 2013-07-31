@@ -30,6 +30,7 @@ public class TablePerspectiveRenderer extends ADraggableColorRenderer {
 	protected boolean showText = true;
 	protected int textRotation = 0;
 	protected int textHeightPixels;
+	protected boolean isActive = false;
 
 	public TablePerspectiveRenderer(TablePerspective tablePerspective, AGLView view, IDVINode node, float[] color) {
 		super(color, new float[] { color[0] - 0.2f, color[1] - 0.2f, color[2] - 0.2f, 1f }, 2, view);
@@ -48,7 +49,7 @@ public class TablePerspectiveRenderer extends ADraggableColorRenderer {
 		super.renderContent(gl);
 		gl.glPopMatrix();
 
-		if (showText) {
+		if (showText && tablePerspective != null) {
 			float textPositionX = 0;
 			switch (textRotation) {
 			case TEXT_ROTATION_0:
@@ -96,9 +97,13 @@ public class TablePerspectiveRenderer extends ADraggableColorRenderer {
 		return tablePerspective;
 	}
 
+	public boolean hasTablePerspective() {
+		return tablePerspective != null;
+	}
+
 	@Override
 	protected Point2D getPosition() {
-		return node.getBottomTablePerspectiveAnchorPoints(tablePerspective).getFirst();
+		return node.getBottomObjectAnchorPoints(tablePerspective).getFirst();
 	}
 
 	public boolean isShowText() {
@@ -128,6 +133,23 @@ public class TablePerspectiveRenderer extends ADraggableColorRenderer {
 	@Override
 	protected boolean permitsWrappingDisplayLists() {
 		return false;
+	}
+
+	/**
+	 * @return the isActive, see {@link #isActive}
+	 */
+	public boolean isActive() {
+		return isActive;
+	}
+
+	/**
+	 * @param isActive
+	 *            setter, see {@link isActive}
+	 */
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
+
+		setColor(DEFAULT_COLOR);
 	}
 
 }

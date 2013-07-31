@@ -20,20 +20,15 @@ import javax.media.opengl.GL2;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
-import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.GroupList;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
-import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.view.dvi.GLDataViewIntegrator;
 import org.caleydo.view.dvi.PickingType;
-import org.caleydo.view.dvi.contextmenu.CreateTablePerspectiveItem;
 import org.caleydo.view.dvi.contextmenu.RenameLabelHolderItem;
-import org.caleydo.view.dvi.event.CreateTablePerspectiveEvent;
 import org.caleydo.view.dvi.node.IDVINode;
 import org.caleydo.view.dvi.tableperspective.AMultiTablePerspectiveRenderer;
 import org.caleydo.view.dvi.tableperspective.PerspectiveRenderer;
@@ -44,12 +39,13 @@ public class TablePerspectiveMatrixRenderer extends AMultiTablePerspectiveRender
 
 	protected ATableBasedDataDomain dataDomain;
 	// private List<ADimensionGroupData> dimensionGroupDatas;
-	protected Map<TablePerspectiveRenderer, Pair<CellContainer, CellContainer>> dimensionGroupRenderers = new HashMap<TablePerspectiveRenderer, Pair<CellContainer, CellContainer>>();
-	protected Map<EmptyCellRenderer, Pair<CellContainer, CellContainer>> emptyCellRenderers = new HashMap<EmptyCellRenderer, Pair<CellContainer, CellContainer>>();
+	protected Map<TablePerspectiveRenderer, Pair<CellContainer, CellContainer>> tablePerspectiveRenderers = new HashMap<TablePerspectiveRenderer, Pair<CellContainer, CellContainer>>();
+	// protected Map<EmptyCellRenderer, Pair<CellContainer, CellContainer>> emptyCellRenderers = new
+	// HashMap<EmptyCellRenderer, Pair<CellContainer, CellContainer>>();
 	/**
 	 * Map containing all cells of the table identified by the concatenation of the row.caption and column.caption
 	 */
-	protected Map<String, ColorRenderer> cells = new HashMap<String, ColorRenderer>();
+	protected Map<String, TablePerspectiveRenderer> cells = new HashMap<String, TablePerspectiveRenderer>();
 	protected List<CellContainer> rows = new ArrayList<CellContainer>();
 	protected List<CellContainer> columns = new ArrayList<CellContainer>();
 	protected Map<String, CellContainer> rowMap = new HashMap<String, CellContainer>();
@@ -80,125 +76,125 @@ public class TablePerspectiveMatrixRenderer extends AMultiTablePerspectiveRender
 		view.addTypePickingListener(new TablePerspectivePickingListener(view, dragAndDropController, this),
 				PickingType.DATA_CONTAINER.name() + node.getID());
 
-		view.addTypePickingListener(new APickingListener() {
-
-			@Override
-			public void mouseOver(Pick pick) {
-				EmptyCellRenderer emptyCellRenderer = getEmptyCellRenderer(pick.getObjectID());
-				if (emptyCellRenderer == null)
-					return;
-
-				emptyCellRenderer.setColor(emptyCellRenderer.getBorderColor());
-				view.setDisplayListDirty();
-				// System.out.println("over");
-			}
-
-			@Override
-			public void mouseOut(Pick pick) {
-				EmptyCellRenderer emptyCellRenderer = getEmptyCellRenderer(pick.getObjectID());
-				if (emptyCellRenderer == null)
-					return;
-
-				emptyCellRenderer.setColor(EmptyCellRenderer.DEFAULT_COLOR);
-				view.setDisplayListDirty();
-				// System.out.println("out");
-			}
-
-			@Override
-			public void rightClicked(Pick pick) {
-				triggerTablePerspectiveCreation(pick.getObjectID(), true);
-			}
-
-			@Override
-			public void clicked(Pick pick) {
-				triggerTablePerspectiveCreation(pick.getObjectID(), false);
-			}
-
-			private void triggerTablePerspectiveCreation(int id, boolean useContextMenu) {
-				Pair<CellContainer, CellContainer> rowAndColumn = null;
-
-				for (EmptyCellRenderer emptyCellRenderer : emptyCellRenderers.keySet()) {
-					if (emptyCellRenderer.getID() == id) {
-						rowAndColumn = emptyCellRenderers.get(emptyCellRenderer);
-						break;
-					}
-				}
-
-				if (rowAndColumn != null) {
-
-					CellContainer row = rowAndColumn.getFirst();
-					String recordPerspectiveID = row.id;
-					Group rowGroup = null;
-					VirtualArray recordVA = null;
-					boolean createRecordPerspective = false;
-
-					if (!dataDomain.getTable().containsRecordPerspective(recordPerspectiveID)) {
-						// FIXME: Check additionally if the group has a
-						// dimensionperspective
-
-						Perspective perspective = dataDomain.getTable().getRecordPerspective(row.parentContainer.id);
-
-						// This works because the child containers do net get
-						// sorted in a cellcontainer
-						int groupIndex = row.parentContainer.childContainers.indexOf(row);
-
-						recordVA = perspective.getVirtualArray();
-
-						GroupList groupList = recordVA.getGroupList();
-						rowGroup = groupList.get(groupIndex);
-
-						createRecordPerspective = true;
-
-					}
-
-					CellContainer column = rowAndColumn.getSecond();
-					String dimensionPerspectiveID = column.id;
-					Group columnGroup = null;
-					VirtualArray dimensionVA = null;
-					boolean createDimensionPerspective = false;
-
-					if (!dataDomain.getTable().containsDimensionPerspective(dimensionPerspectiveID)) {
-						// FIXME: Check additionally if the group has a
-						// dimensionperspective
-
-						Perspective perspective = dataDomain.getTable().getDimensionPerspective(
-								column.parentContainer.id);
-
-						// This works because the child containers do net get
-						// sorted in a cellcontainer
-						int groupIndex = column.parentContainer.childContainers.indexOf(column);
-
-						dimensionVA = perspective.getVirtualArray();
-
-						GroupList groupList = dimensionVA.getGroupList();
-						columnGroup = groupList.get(groupIndex);
-
-						createDimensionPerspective = true;
-
-					}
-
-					CreateTablePerspectiveEvent event = new CreateTablePerspectiveEvent(dataDomain,
-							recordPerspectiveID, createRecordPerspective, recordVA, rowGroup, dimensionPerspectiveID,
-							createDimensionPerspective, dimensionVA, columnGroup);
-					if (useContextMenu) {
-						view.getContextMenuCreator().addContextMenuItem(new CreateTablePerspectiveItem(event));
-					} else {
-						event.setSender(this);
-						GeneralManager.get().getEventPublisher().triggerEvent(event);
-					}
-				}
-			}
-
-			private EmptyCellRenderer getEmptyCellRenderer(int id) {
-				for (EmptyCellRenderer emptyCellRenderer : emptyCellRenderers.keySet()) {
-					if (emptyCellRenderer.getID() == id) {
-						return emptyCellRenderer;
-					}
-				}
-				return null;
-			}
-
-		}, PickingType.EMPTY_CELL.name() + node.getID());
+		// view.addTypePickingListener(new APickingListener() {
+		//
+		// @Override
+		// public void mouseOver(Pick pick) {
+		// EmptyCellRenderer emptyCellRenderer = getEmptyCellRenderer(pick.getObjectID());
+		// if (emptyCellRenderer == null)
+		// return;
+		//
+		// emptyCellRenderer.setColor(emptyCellRenderer.getBorderColor());
+		// view.setDisplayListDirty();
+		// // System.out.println("over");
+		// }
+		//
+		// @Override
+		// public void mouseOut(Pick pick) {
+		// EmptyCellRenderer emptyCellRenderer = getEmptyCellRenderer(pick.getObjectID());
+		// if (emptyCellRenderer == null)
+		// return;
+		//
+		// emptyCellRenderer.setColor(EmptyCellRenderer.DEFAULT_COLOR);
+		// view.setDisplayListDirty();
+		// // System.out.println("out");
+		// }
+		//
+		// @Override
+		// public void rightClicked(Pick pick) {
+		// triggerTablePerspectiveCreation(pick.getObjectID(), true);
+		// }
+		//
+		// @Override
+		// public void clicked(Pick pick) {
+		// triggerTablePerspectiveCreation(pick.getObjectID(), false);
+		// }
+		//
+		// private void triggerTablePerspectiveCreation(int id, boolean useContextMenu) {
+		// Pair<CellContainer, CellContainer> rowAndColumn = null;
+		//
+		// for (EmptyCellRenderer emptyCellRenderer : emptyCellRenderers.keySet()) {
+		// if (emptyCellRenderer.getID() == id) {
+		// rowAndColumn = emptyCellRenderers.get(emptyCellRenderer);
+		// break;
+		// }
+		// }
+		//
+		// if (rowAndColumn != null) {
+		//
+		// CellContainer row = rowAndColumn.getFirst();
+		// String recordPerspectiveID = row.id;
+		// Group rowGroup = null;
+		// VirtualArray recordVA = null;
+		// boolean createRecordPerspective = false;
+		//
+		// if (!dataDomain.getTable().containsRecordPerspective(recordPerspectiveID)) {
+		// // FIXME: Check additionally if the group has a
+		// // dimensionperspective
+		//
+		// Perspective perspective = dataDomain.getTable().getRecordPerspective(row.parentContainer.id);
+		//
+		// // This works because the child containers do net get
+		// // sorted in a cellcontainer
+		// int groupIndex = row.parentContainer.childContainers.indexOf(row);
+		//
+		// recordVA = perspective.getVirtualArray();
+		//
+		// GroupList groupList = recordVA.getGroupList();
+		// rowGroup = groupList.get(groupIndex);
+		//
+		// createRecordPerspective = true;
+		//
+		// }
+		//
+		// CellContainer column = rowAndColumn.getSecond();
+		// String dimensionPerspectiveID = column.id;
+		// Group columnGroup = null;
+		// VirtualArray dimensionVA = null;
+		// boolean createDimensionPerspective = false;
+		//
+		// if (!dataDomain.getTable().containsDimensionPerspective(dimensionPerspectiveID)) {
+		// // FIXME: Check additionally if the group has a
+		// // dimensionperspective
+		//
+		// Perspective perspective = dataDomain.getTable().getDimensionPerspective(
+		// column.parentContainer.id);
+		//
+		// // This works because the child containers do net get
+		// // sorted in a cellcontainer
+		// int groupIndex = column.parentContainer.childContainers.indexOf(column);
+		//
+		// dimensionVA = perspective.getVirtualArray();
+		//
+		// GroupList groupList = dimensionVA.getGroupList();
+		// columnGroup = groupList.get(groupIndex);
+		//
+		// createDimensionPerspective = true;
+		//
+		// }
+		//
+		// CreateTablePerspectiveEvent event = new CreateTablePerspectiveEvent(dataDomain,
+		// recordPerspectiveID, createRecordPerspective, recordVA, rowGroup, dimensionPerspectiveID,
+		// createDimensionPerspective, dimensionVA, columnGroup);
+		// if (useContextMenu) {
+		// view.getContextMenuCreator().addContextMenuItem(new CreateTablePerspectiveItem(event));
+		// } else {
+		// event.setSender(this);
+		// GeneralManager.get().getEventPublisher().triggerEvent(event);
+		// }
+		// }
+		// }
+		//
+		// private EmptyCellRenderer getEmptyCellRenderer(int id) {
+		// for (EmptyCellRenderer emptyCellRenderer : emptyCellRenderers.keySet()) {
+		// if (emptyCellRenderer.getID() == id) {
+		// return emptyCellRenderer;
+		// }
+		// }
+		// return null;
+		// }
+		//
+		// }, PickingType.EMPTY_CELL.name() + node.getID());
 
 		view.addTypePickingListener(new APickingListener() {
 
@@ -215,8 +211,8 @@ public class TablePerspectiveMatrixRenderer extends AMultiTablePerspectiveRender
 				for (CellContainer child : container.childContainers) {
 
 					boolean isAlwaysVisible = false;
-					for (TablePerspectiveRenderer dimensionGroupRenderer : dimensionGroupRenderers.keySet()) {
-						Pair<CellContainer, CellContainer> rowAndColumn = dimensionGroupRenderers
+					for (TablePerspectiveRenderer dimensionGroupRenderer : tablePerspectiveRenderers.keySet()) {
+						Pair<CellContainer, CellContainer> rowAndColumn = tablePerspectiveRenderers
 								.get(dimensionGroupRenderer);
 
 						if (child == rowAndColumn.getFirst() || child == rowAndColumn.getSecond()) {
@@ -514,8 +510,8 @@ public class TablePerspectiveMatrixRenderer extends AMultiTablePerspectiveRender
 		rowMap = newRowMap;
 		columnMap = newColumnMap;
 		cells.clear();
-		emptyCellRenderers.clear();
-		dimensionGroupRenderers.clear();
+		// emptyCellRenderers.clear();
+		tablePerspectiveRenderers.clear();
 
 		int emptyCellId = 0;
 		for (CellContainer column : columns) {
@@ -537,11 +533,12 @@ public class TablePerspectiveMatrixRenderer extends AMultiTablePerspectiveRender
 							numSubdivisions = rows.size();
 						}
 						dimensionGroupExists = true;
-						TablePerspectiveRenderer dimensionGroupRenderer = new TablePerspectiveRenderer(
+						TablePerspectiveRenderer tablePerspectiveRenderer = new TablePerspectiveRenderer(
 								tablePerspective, view, node, dataDomain.getColor().getRGBA());
-						dimensionGroupRenderer.setShowText(false);
-						cells.put(row.id + column.id, dimensionGroupRenderer);
-						dimensionGroupRenderers.put(dimensionGroupRenderer, new Pair<CellContainer, CellContainer>(row,
+						tablePerspectiveRenderer.setShowText(false);
+						cells.put(row.id + column.id, tablePerspectiveRenderer);
+						tablePerspectiveRenderers.put(tablePerspectiveRenderer, new Pair<CellContainer, CellContainer>(
+								row,
 								column));
 						row.isVisible = true;
 						column.isVisible = true;
@@ -549,9 +546,12 @@ public class TablePerspectiveMatrixRenderer extends AMultiTablePerspectiveRender
 					}
 				}
 				if (!dimensionGroupExists) {
-					EmptyCellRenderer emptyCellRenderer = new EmptyCellRenderer(emptyCellId++);
-					cells.put(row.id + column.id, emptyCellRenderer);
-					emptyCellRenderers.put(emptyCellRenderer, new Pair<CellContainer, CellContainer>(row, column));
+					TablePerspectiveRenderer tablePerspectiveRenderer = new TablePerspectiveRenderer(null, view, node,
+							dataDomain.getColor().getRGBA());
+					tablePerspectiveRenderer.setShowText(false);
+					cells.put(row.id + column.id, tablePerspectiveRenderer);
+					tablePerspectiveRenderers.put(tablePerspectiveRenderer, new Pair<CellContainer, CellContainer>(row,
+							column));
 				}
 			}
 			column.numSubdivisions = numSubdivisions;
@@ -564,7 +564,7 @@ public class TablePerspectiveMatrixRenderer extends AMultiTablePerspectiveRender
 		String columnsCaption = dataDomain.getDimensionDenomination(true, true);
 		String rowsCaption = dataDomain.getRecordDenomination(true, true);
 
-		renderingStrategy.render(gl, bottomDimensionGroupPositions, topDimensionGroupPositions, x, y, node, view,
+		renderingStrategy.render(gl, bottomObjectPositions, topObjectPositions, x, y, node, view,
 				pickingIDsToBePushed, rowsCaption, columnsCaption);
 
 	}
@@ -608,7 +608,7 @@ public class TablePerspectiveMatrixRenderer extends AMultiTablePerspectiveRender
 
 	@Override
 	protected Collection<TablePerspectiveRenderer> getDimensionGroupRenderers() {
-		return dimensionGroupRenderers.keySet();
+		return tablePerspectiveRenderers.keySet();
 	}
 
 	protected CellContainer getCellContainerWithHashID(int id) {

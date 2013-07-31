@@ -80,8 +80,8 @@ public class TablePerspectiveListRenderer extends AMultiTablePerspectiveRenderer
 				- pixelGLConverter.getGLWidthForPixelWidth(getDimensionGroupsWidthPixels() / 2 - SIDE_SPACING_PIXELS);
 		float step = pixelGLConverter.getGLWidthForPixelWidth(SPACING_PIXELS) + dimensionGroupWidth;
 
-		bottomDimensionGroupPositions.clear();
-		topDimensionGroupPositions.clear();
+		bottomObjectPositions.clear();
+		topObjectPositions.clear();
 
 		for (TablePerspectiveRenderer tablePerspectiveRenderer : dimensionGroupRenderers) {
 
@@ -115,9 +115,9 @@ public class TablePerspectiveListRenderer extends AMultiTablePerspectiveRenderer
 			Point2D bottomPosition2 = new Point2D.Float(currentPosX + dimensionGroupWidth, 0);
 			Point2D topPosition1 = new Point2D.Float(currentPosX, y);
 			Point2D topPosition2 = new Point2D.Float(currentPosX + dimensionGroupWidth, y);
-			bottomDimensionGroupPositions.put(tablePerspectiveRenderer.getTablePerspective().getID(),
+			bottomObjectPositions.put(tablePerspectiveRenderer.getTablePerspective(),
 					new Pair<Point2D, Point2D>(bottomPosition1, bottomPosition2));
-			topDimensionGroupPositions.put(tablePerspectiveRenderer.getTablePerspective().getID(),
+			topObjectPositions.put(tablePerspectiveRenderer.getTablePerspective(),
 					new Pair<Point2D, Point2D>(topPosition1, topPosition2));
 
 			currentPosX += step;

@@ -49,13 +49,13 @@ public class TablePerspectivePickingListener extends APickingListener {
 		this.tablePerspectiveRenderer = tablePerspectiveRenderer;
 	}
 
-	private TablePerspectiveRenderer getDimensionGroupRenderer(int id) {
+	private TablePerspectiveRenderer getTablePerspectiveRenderer(int id) {
 
 		Collection<TablePerspectiveRenderer> dimensionGroupRenderers = tablePerspectiveRenderer
 				.getDimensionGroupRenderers();
 
 		for (TablePerspectiveRenderer dimensionGroupRenderer : dimensionGroupRenderers) {
-			if (dimensionGroupRenderer.getTablePerspective().getID() == id) {
+			if (dimensionGroupRenderer.hashCode() == id) {
 				return dimensionGroupRenderer;
 			}
 		}
@@ -64,9 +64,8 @@ public class TablePerspectivePickingListener extends APickingListener {
 
 	@Override
 	public void clicked(Pick pick) {
-		int dimensionGroupID = pick.getObjectID();
 
-		TablePerspectiveRenderer draggedComparisonGroupRenderer = getDimensionGroupRenderer(dimensionGroupID);
+		TablePerspectiveRenderer draggedComparisonGroupRenderer = getTablePerspectiveRenderer(pick.getObjectID());
 		if (draggedComparisonGroupRenderer == null)
 			return;
 		//
@@ -86,7 +85,7 @@ public class TablePerspectivePickingListener extends APickingListener {
 
 	@Override
 	public void mouseOver(Pick pick) {
-		TablePerspectiveRenderer dimensionGroupRenderer = getDimensionGroupRenderer(pick
+		TablePerspectiveRenderer dimensionGroupRenderer = getTablePerspectiveRenderer(pick
 				.getObjectID());
 		if (dimensionGroupRenderer == null)
 			return;
@@ -97,7 +96,7 @@ public class TablePerspectivePickingListener extends APickingListener {
 
 	@Override
 	public void mouseOut(Pick pick) {
-		TablePerspectiveRenderer dimensionGroupRenderer = getDimensionGroupRenderer(pick
+		TablePerspectiveRenderer dimensionGroupRenderer = getTablePerspectiveRenderer(pick
 				.getObjectID());
 		if (dimensionGroupRenderer == null)
 			return;
@@ -129,8 +128,7 @@ public class TablePerspectivePickingListener extends APickingListener {
 	@Override
 	public void rightClicked(Pick pick) {
 
-		int dimensionGroupID = pick.getObjectID();
-		TablePerspectiveRenderer dimensionGroupRenderer = getDimensionGroupRenderer(dimensionGroupID);
+		TablePerspectiveRenderer dimensionGroupRenderer = getTablePerspectiveRenderer(pick.getObjectID());
 		if (dimensionGroupRenderer == null)
 			return;
 		TablePerspective tablePerspective = dimensionGroupRenderer.getTablePerspective();

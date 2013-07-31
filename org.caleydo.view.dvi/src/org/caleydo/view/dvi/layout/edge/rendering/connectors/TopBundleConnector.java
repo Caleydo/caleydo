@@ -363,7 +363,7 @@ public class TopBundleConnector extends ABundleConnector {
 				commonTablePerspectives.size());
 		for (TablePerspective tablePerspective : commonTablePerspectives) {
 			sortedTablePerspectives.add(new Pair<Double, TablePerspective>(node
-					.getTopTablePerspectiveAnchorPoints(tablePerspective).getFirst()
+					.getTopObjectAnchorPoints(tablePerspective).getFirst()
 					.getX(), tablePerspective));
 		}
 
@@ -374,7 +374,7 @@ public class TopBundleConnector extends ABundleConnector {
 					.getSecond();
 			anchorPoints = new ArrayList<Pair<Point2D, Point2D>>();
 			Pair<Point2D, Point2D> dimensionGroupAnchorPoints = node
-					.getTopTablePerspectiveAnchorPoints(tablePerspective);
+					.getTopObjectAnchorPoints(tablePerspective);
 			Pair<Point2D, Point2D> dimensionGroupAnchorOffsetPoints = new Pair<Point2D, Point2D>();
 			Pair<Point2D, Point2D> nodeTopAnchorPoints = node.getTopAnchorPoints();
 

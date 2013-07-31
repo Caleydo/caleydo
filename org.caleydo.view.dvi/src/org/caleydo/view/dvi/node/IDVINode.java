@@ -33,11 +33,11 @@ public interface IDVINode extends IDraggable, ILabelProvider {
 
 	public float getWidth();
 
-	public Pair<Point2D, Point2D> getBottomTablePerspectiveAnchorPoints(
-			TablePerspective tablePerspective);
+	public Pair<Point2D, Point2D> getBottomObjectAnchorPoints(
+Object containedObject);
 
-	public Pair<Point2D, Point2D> getTopTablePerspectiveAnchorPoints(
-			TablePerspective tablePerspective);
+	public Pair<Point2D, Point2D> getTopObjectAnchorPoints(
+Object containedObject);
 
 	public Pair<Point2D, Point2D> getTopAnchorPoints();
 
