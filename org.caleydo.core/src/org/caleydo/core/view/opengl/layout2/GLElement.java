@@ -8,6 +8,7 @@ package org.caleydo.core.view.opengl.layout2;
 import gleem.linalg.Vec2f;
 import gleem.linalg.Vec4f;
 
+import java.awt.geom.Rectangle2D;
 import java.util.Objects;
 
 import org.caleydo.core.view.opengl.layout2.geom.Rect;
@@ -508,6 +509,10 @@ public class GLElement implements IHasGLLayoutData {
 		return bounds_layout.bounds();
 	}
 
+	public final Rectangle2D getRectangleBounds() {
+		return bounds_layout.asRectangle2D();
+	}
+
 	/**
 	 * shortcut for {@link #setLocation(float, float)} and {@link #setSize(float, float)}
 	 *
@@ -546,9 +551,9 @@ public class GLElement implements IHasGLLayoutData {
 	 * triggers that me and my parents get repainted
 	 */
 	public void repaint() {
-		int bak = 0;
+		// int bak = 0;
 		if (context != null)
-			bak = cache.invalidate(context.getDisplayListPool());
+			cache.invalidate(context.getDisplayListPool());
 		if (parent != null /* && bak > 0 */)
 			parent.repaint();
 	}
@@ -557,9 +562,9 @@ public class GLElement implements IHasGLLayoutData {
 	 * triggers that me and my parents get repaint the picking representation
 	 */
 	public void repaintPick() {
-		int bak = 0;
+		// int bak = 0;
 		if (context != null)
-			bak = pickCache.invalidate(context.getDisplayListPool());
+			pickCache.invalidate(context.getDisplayListPool());
 		if (parent != null /* && bak > 0 */)
 			parent.repaintPick();
 	}

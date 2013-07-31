@@ -8,6 +8,7 @@ package org.caleydo.core.gui.preferences;
 import org.caleydo.core.internal.Activator;
 import org.caleydo.core.internal.MyPreferences;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
+import org.eclipse.jface.preference.IntegerFieldEditor;
 import org.eclipse.jface.preference.ScaleFieldEditor;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IWorkbench;
@@ -34,10 +35,10 @@ public class GeneralPreferencePage extends FieldEditorPreferencePage implements 
 	@Override
 	public void createFieldEditors() {
 		final Composite parent = getFieldEditorParent();
-		ScaleFieldEditor s = new ScaleFieldEditor(MyPreferences.VIEW_ZOOM_FACTOR, "View Scaling Factor:", parent, 20,
+		ScaleFieldEditor s = new ScaleFieldEditor(MyPreferences.VIEW_ZOOM_FACTOR, "View scaling factor:", parent, 20,
 				180, 10, 20);
-
 		addField(s);
+		addField(new IntegerFieldEditor(MyPreferences.FPS, "Target frames per seconds (FPS)", parent));
 	}
 
 	@Override

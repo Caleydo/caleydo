@@ -24,6 +24,7 @@ import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.view.NewViewEvent;
 import org.caleydo.core.event.view.ViewClosedEvent;
 import org.caleydo.core.internal.ConsoleFlags;
+import org.caleydo.core.internal.MyPreferences;
 import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.logging.Logger;
@@ -489,7 +490,7 @@ public class ViewManager extends AManager<IView> {
 			// f.setIgnoreExceptions(true);
 			// f.setPrintExceptions(true);
 			// fpsAnimator = f;
-			fpsAnimator = new MyAnimator(30);
+			fpsAnimator = new MyAnimator(MyPreferences.getFPS());
 		}
 
 		if (!fpsAnimator.isAnimating())

@@ -8,6 +8,8 @@ package org.caleydo.core.view.opengl.layout2.geom;
 import gleem.linalg.Vec2f;
 import gleem.linalg.Vec4f;
 
+import java.awt.geom.Rectangle2D;
+
 /**
  * a custom implementation of a rect to avoid awt
  *
@@ -132,6 +134,10 @@ public final class Rect implements Cloneable {
 		this.width = w;
 		this.height = h;
 		return this;
+	}
+
+	public Rectangle2D asRectangle2D() {
+		return new Rectangle2D.Float(x, y, width, height);
 	}
 
 	public Vec4f bounds() {

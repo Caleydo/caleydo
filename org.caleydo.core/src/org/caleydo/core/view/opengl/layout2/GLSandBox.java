@@ -22,6 +22,7 @@ import javax.media.opengl.fixedfunc.GLMatrixFunc;
 
 import org.caleydo.core.event.EventListenerManagers;
 import org.caleydo.core.event.EventListenerManagers.QueuedEventListenerManager;
+import org.caleydo.core.internal.MyPreferences;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -102,7 +103,7 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 		this.padding = padding;
 		canvas.addGLEventListener(this);
 
-		this.animator = new MyAnimator(30);
+		this.animator = new MyAnimator(MyPreferences.getFPS());
 		this.animator.add(canvas.asGLAutoDrawAble());
 		canvas.asGLAutoDrawAble().setAutoSwapBufferMode(true);
 
