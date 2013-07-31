@@ -6,6 +6,7 @@
 package org.caleydo.core.data.virtualarray;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -133,6 +134,11 @@ public class VirtualArray implements Iterable<Integer>, Cloneable, IUniqueObject
 	public synchronized void append(Integer newElementID) {
 		idMap.setDirty();
 		virtualArrayList.add(newElementID);
+	}
+
+	public synchronized void addAll(Collection<Integer> newElements) {
+		idMap.setDirty();
+		virtualArrayList.addAll(newElements);
 	}
 
 	/**
