@@ -8,6 +8,7 @@ package org.caleydo.core.view.opengl.layout2.basic;
 import java.util.Locale;
 
 import org.caleydo.core.util.color.Color;
+import org.caleydo.core.view.opengl.canvas.IGLMouseListener.IMouseEvent;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
@@ -52,6 +53,11 @@ public class GLSlider extends PickableGLElement {
 	 */
 	private float value = 0.5f;
 
+	/**
+	 * if the user uses the mouse wheel to manipulate the value, how many DIPs are one mouse wheel rotation
+	 */
+	private float wheelInc = 1f;
+
 	private boolean hovered = false;
 	private boolean dragged = false;
 
@@ -80,6 +86,15 @@ public class GLSlider extends PickableGLElement {
 		this.min = min;
 		this.max = max;
 		this.value = clamp(value);
+	}
+
+	/**
+	 * @param wheelInc
+	 *            setter, see {@link wheelInc}
+	 */
+	public GLSlider setWheelInc(float wheelInc) {
+		this.wheelInc = wheelInc;
+		return this;
 	}
 
 	/**
@@ -298,6 +313,12 @@ public class GLSlider extends PickableGLElement {
 		dragged = false;
 		hovered = false;
 		repaint();
+	}
+
+	@Override
+	protected void onMouseWheel(Pick pick) {
+		setValue(unmapValue(mapValue(value) + ((IMouseEvent) (pick)).getWheelRotation() * wheelInc));
+		repaintAll();
 	}
 
 	@Override
