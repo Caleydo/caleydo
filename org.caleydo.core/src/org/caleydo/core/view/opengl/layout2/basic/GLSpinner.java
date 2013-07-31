@@ -47,6 +47,8 @@ public class GLSpinner<T> extends PickableGLElement {
 	 */
 	private final ISpinnerModel<T> model;
 
+	private boolean isRenderingValue = false;
+
 	private boolean hovered;
 	private int armed = -1;
 
@@ -184,7 +186,7 @@ public class GLSpinner<T> extends PickableGLElement {
 
 	@Override
 	public <U> U getLayoutDataAs(Class<U> clazz, U default_) {
-		if (clazz.isInstance(value))
+		if (isRenderingValue && clazz.isInstance(value))
 			return clazz.cast(value);
 		return super.getLayoutDataAs(clazz, default_);
 	}
@@ -193,10 +195,10 @@ public class GLSpinner<T> extends PickableGLElement {
 	protected void renderImpl(GLGraphics g, float w, float h) {
 		super.renderImpl(g, w, h);
 		if (!hovered) {
-			valueRenderer.render(g, w, h, this);
+			renderValue(g, w, h);
 			return;
 		}
-		valueRenderer.render(g, w - BUTTON_SIZE, h, this);
+		renderValue(g, w - BUTTON_SIZE, h);
 
 		float hhalf = h * 0.5f;
 		float offset = w - BUTTON_SIZE;
@@ -216,6 +218,12 @@ public class GLSpinner<T> extends PickableGLElement {
 		g.drawLine(0, hhalf, BUTTON_SIZE, hhalf);
 		g.move(-offset, 0);
 
+	}
+
+	private void renderValue(GLGraphics g, float w, float h) {
+		isRenderingValue = true;
+		valueRenderer.render(g, w, h, this);
+		isRenderingValue = false;
 	}
 
 	/**
