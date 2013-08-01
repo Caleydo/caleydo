@@ -321,5 +321,14 @@ public class EventListenerManager implements DisposeListener {
 			AnnotationBasedEventListener other = (AnnotationBasedEventListener) obj;
 			return Objects.equals(listener, other.listener) && Objects.equals(method, other.method);
 		}
+
+		@Override
+		public String toString() {
+			StringBuilder b = new StringBuilder();
+			b.append("ListenTo ").append(method.getDeclaringClass().getSimpleName()).append('.')
+					.append(method.getName());
+			b.append('(').append(method.getParameterTypes()[0].getSimpleName()).append(')');
+			return b.toString();
+		}
 	}
 }

@@ -52,4 +52,13 @@
          </dataDomain>
       </association>
    </extension>
+   <extension
+         point="org.caleydo.ui.GLElementFactory">
+      <factory
+            factory="org.caleydo.view.info.dataset.ui.internal.InfoElementFactory"
+            icon="resources/icons/icon.png"
+            name="info"
+            order="20">
+      </factory>
+   </extension>
 </plugin>
