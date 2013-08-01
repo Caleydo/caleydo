@@ -138,4 +138,39 @@ public final class GLRenderers {
 		}
 	}
 
+	public static IGLRenderer drawHorLine(Color color, float lineWidth, float offset) {
+		return new LineRenderer(color, lineWidth, offset, true);
+	}
+
+	public static IGLRenderer drawVertLine(Color color, float lineWidth, float offset) {
+		return new LineRenderer(color, lineWidth, offset, true);
+	}
+
+	private static class LineRenderer implements IGLRenderer {
+		private final Color color;
+		private final float lineWidth;
+		private final float offset;
+		private final boolean hor;
+
+		public LineRenderer(Color color, float lineWidth, float offset, boolean hor) {
+			this.color = color;
+			this.lineWidth = lineWidth;
+			this.offset = offset;
+			this.hor = hor;
+		}
+
+		@Override
+		public void render(GLGraphics g, float w, float h, GLElement parent) {
+			g.color(color);
+			if (lineWidth != 1)
+				g.lineWidth(lineWidth);
+			if (hor)
+				g.drawLine(offset, h * 0.5f, w - offset, h * 0.5f);
+			else
+				g.drawLine(w * 0.5f, offset, w * 0.5f, h - offset);
+			if (lineWidth != 1)
+				g.lineWidth(1);
+		}
+	}
+
 }

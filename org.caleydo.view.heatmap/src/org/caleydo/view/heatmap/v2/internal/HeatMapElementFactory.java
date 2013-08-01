@@ -33,7 +33,7 @@ public class HeatMapElementFactory implements IGLElementFactory {
 	@Override
 	public boolean canCreate(GLElementFactoryContext context) {
 		TablePerspective data = context.getData();
-		return DataSupportDefinitions.homogenousColumns.apply(data);
+		return DataSupportDefinitions.homogenousTables.apply(data);
 	}
 
 	@Override

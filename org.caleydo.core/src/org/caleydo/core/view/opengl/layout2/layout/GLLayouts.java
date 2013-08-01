@@ -40,6 +40,14 @@ public class GLLayouts {
 		}
 	};
 
+	// common item cache
+	private static final IGLLayout FLOW_HORIZONTAL_0 = new GLFlowLayout(true, 0, GLPadding.ZERO);
+	private static final IGLLayout FLOW_HORIZONTAL_1 = new GLFlowLayout(true, 1, GLPadding.ZERO);
+	private static final IGLLayout FLOW_HORIZONTAL_2 = new GLFlowLayout(true, 2, GLPadding.ZERO);
+	private static final IGLLayout FLOW_VERTICAL_0 = new GLFlowLayout(false, 0, GLPadding.ZERO);
+	private static final IGLLayout FLOW_VERTICAL_1 = new GLFlowLayout(false, 1, GLPadding.ZERO);
+	private static final IGLLayout FLOW_VERTICAL_2 = new GLFlowLayout(false, 2, GLPadding.ZERO);
+
 	/**
 	 * horizontal flow layout, similar to the {@link RowLayout}
 	 *
@@ -49,6 +57,12 @@ public class GLLayouts {
 	 * @return
 	 */
 	public static IGLLayout flowHorizontal(float gap) {
+		if (gap == 0)
+			return FLOW_HORIZONTAL_0;
+		if (gap == 1)
+			return FLOW_HORIZONTAL_1;
+		if (gap == 2)
+			return FLOW_HORIZONTAL_2;
 		return new GLFlowLayout(true, gap, GLPadding.ZERO);
 	}
 
@@ -61,6 +75,12 @@ public class GLLayouts {
 	 * @return
 	 */
 	public static IGLLayout flowVertical(float gap) {
+		if (gap == 0)
+			return FLOW_VERTICAL_0;
+		if (gap == 1)
+			return FLOW_VERTICAL_1;
+		if (gap == 2)
+			return FLOW_VERTICAL_2;
 		return new GLFlowLayout(false, gap, GLPadding.ZERO);
 	}
 
@@ -81,7 +101,7 @@ public class GLLayouts {
 
 	/**
 	 * checks whether the given value is a default layout value
-	 * 
+	 *
 	 * @param v
 	 * @return
 	 */
