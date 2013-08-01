@@ -51,7 +51,7 @@ public class TablePerspectiveListRenderer extends AMultiTablePerspectiveRenderer
 	public void setTablePerspectives(List<TablePerspective> tablePerspectives) {
 		dimensionGroupRenderers.clear();
 		for (TablePerspective tablePerspective : tablePerspectives) {
-			if (tablePerspective.isPrivate())
+			if (tablePerspective.isPrivate() || !view.isTablePerspectiveShownByView(tablePerspective))
 				continue;
 
 			TablePerspectiveRenderer tablePerspectiveRenderer = new TablePerspectiveRenderer(tablePerspective, view,

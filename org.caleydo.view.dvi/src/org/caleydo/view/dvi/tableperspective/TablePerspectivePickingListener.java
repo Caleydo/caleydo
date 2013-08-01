@@ -17,6 +17,7 @@ import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
+import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
@@ -25,6 +26,7 @@ import org.caleydo.view.dvi.contextmenu.AddTablePerspectiveToViewsItemContainer;
 import org.caleydo.view.dvi.contextmenu.RemoveTablePerspectiveFromViewItem;
 import org.caleydo.view.dvi.contextmenu.RenameLabelHolderItem;
 import org.caleydo.view.dvi.contextmenu.ShowTablePerspectiveInViewsItemContainer;
+import org.caleydo.view.dvi.event.CreateAndRenameTablePerspectiveEvent;
 import org.caleydo.view.dvi.node.MultiTablePerspectiveViewNode;
 import org.caleydo.view.dvi.node.ViewNode;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -207,7 +209,10 @@ public class TablePerspectivePickingListener extends APickingListener {
 						new ShowTablePerspectiveInViewsItemContainer(renderer.getCreator(), finalViewTypes));
 				view.getContextMenuCreator().addContextMenuItem(
 						new AddTablePerspectiveToViewsItemContainer(multiTablePerspectiveViews, renderer.getCreator()));
-				view.getContextMenuCreator().addContextMenuItem(new RenameLabelHolderItem(renderer.getCreator()));
+				CreateAndRenameTablePerspectiveEvent event = new CreateAndRenameTablePerspectiveEvent(
+						renderer.getCreator());
+				view.getContextMenuCreator().addContextMenuItem(
+						new GenericContextMenuItem("Rename Table Perspective", event));
 			}
 		}
 

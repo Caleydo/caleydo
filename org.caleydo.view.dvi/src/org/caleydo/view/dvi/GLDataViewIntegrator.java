@@ -59,6 +59,8 @@ import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.view.dvi.event.ApplySpecificGraphLayoutEvent;
+import org.caleydo.view.dvi.event.CreateAndRenameTablePerspectiveEvent;
+import org.caleydo.view.dvi.event.CreateTablePerspectiveBeforeAddingEvent;
 import org.caleydo.view.dvi.event.CreateViewFromTablePerspectiveEvent;
 import org.caleydo.view.dvi.event.OpenViewEvent;
 import org.caleydo.view.dvi.event.RenameLabelHolderEvent;
@@ -68,6 +70,8 @@ import org.caleydo.view.dvi.layout.AGraphLayout;
 import org.caleydo.view.dvi.layout.TwoLayeredGraphLayout;
 import org.caleydo.view.dvi.layout.edge.rendering.AEdgeRenderer;
 import org.caleydo.view.dvi.listener.ApplySpecificGraphLayoutEventListener;
+import org.caleydo.view.dvi.listener.CreateAndAddTablePerspectiveEventListener;
+import org.caleydo.view.dvi.listener.CreateAndRenameTablePerspectiveEventListener;
 import org.caleydo.view.dvi.listener.CreateViewFromTablePerspectiveEventListener;
 import org.caleydo.view.dvi.listener.DataDomainChangedListener;
 import org.caleydo.view.dvi.listener.DataDomainEventListener;
@@ -471,6 +475,14 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 		RenameLabelHolderEventListener renameLabelHolderEventListener = new RenameLabelHolderEventListener();
 		renameLabelHolderEventListener.setHandler(this);
 		listeners.register(RenameLabelHolderEvent.class, renameLabelHolderEventListener);
+
+		CreateAndAddTablePerspectiveEventListener createAndAddTablePerspectiveEventListener = new CreateAndAddTablePerspectiveEventListener();
+		createAndAddTablePerspectiveEventListener.setHandler(this);
+		listeners.register(CreateTablePerspectiveBeforeAddingEvent.class, createAndAddTablePerspectiveEventListener);
+
+		CreateAndRenameTablePerspectiveEventListener createAndRenameTablePerspectiveEventListener = new CreateAndRenameTablePerspectiveEventListener();
+		createAndRenameTablePerspectiveEventListener.setHandler(this);
+		listeners.register(CreateAndRenameTablePerspectiveEvent.class, createAndRenameTablePerspectiveEventListener);
 	}
 
 	@Override
@@ -532,6 +544,10 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 					}
 				}
 			}
+			for (ADataNode dataNode : dataNodes) {
+				dataNode.update();
+			}
+
 			applyAutomaticLayout = true;
 			setDisplayListDirty();
 		}
@@ -572,6 +588,10 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 
 		if (viewNode == currentMouseOverNode)
 			currentMouseOverNode = null;
+
+		for (ADataNode dataNode : dataNodes) {
+			dataNode.update();
+		}
 
 		// applyAutomaticLayout = true;
 		setDisplayListDirty();
@@ -942,6 +962,14 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 				}
 			}
 		});
+	}
+
+	public boolean isTablePerspectiveShownByView(TablePerspective tablePerspective) {
+		for (ViewNode viewNode : viewNodes) {
+			if (viewNode.getTablePerspectives().contains(tablePerspective))
+				return true;
+		}
+		return false;
 	}
 
 }

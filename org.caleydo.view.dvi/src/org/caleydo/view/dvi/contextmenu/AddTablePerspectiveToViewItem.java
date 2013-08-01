@@ -6,7 +6,6 @@
 package org.caleydo.view.dvi.contextmenu;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
@@ -29,7 +28,7 @@ public class AddTablePerspectiveToViewItem extends AContextMenuItem {
 		AddTablePerspectivesEvent event = new AddTablePerspectivesEvent(tablePerspective);
 		event.setReceiver(view);
 		event.setSender(this);
-		EventPublisher.trigger(event);
+		registerEvent(event);
 	}
 
 	public AddTablePerspectiveToViewItem(TablePerspectiveCreator creator, IMultiTablePerspectiveBasedView view) {
@@ -38,7 +37,7 @@ public class AddTablePerspectiveToViewItem extends AContextMenuItem {
 		CreateTablePerspectiveBeforeAddingEvent event = new CreateTablePerspectiveBeforeAddingEvent(creator);
 		event.setReceiver(view);
 		event.setSender(this);
-		EventPublisher.trigger(event);
+		registerEvent(event);
 	}
 
 }

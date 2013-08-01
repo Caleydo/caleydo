@@ -142,9 +142,10 @@ class TopDownTablePerspectiveMatrixRenderingStrategy extends ATablePerspectiveMa
 				gl.glVertex3f(currentPositionX + captionColumnWidth + captionSpacingX, currentPositionY - rowHeight,
 						0.1f);
 				gl.glVertex3f(currentPositionX, currentPositionY - rowHeight, 0.1f);
+				gl.glEnd();
 
 				gl.glColor4fv(perspectiveColor, 0);
-
+				gl.glBegin(GL2.GL_QUADS);
 				gl.glVertex3f(currentPositionX, currentPositionY, 0.1f);
 				gl.glVertex3f(currentPositionX + childIndent, currentPositionY, 0.1f);
 				gl.glVertex3f(currentPositionX + childIndent, currentPositionY - rowHeight, 0.1f);
@@ -247,9 +248,10 @@ class TopDownTablePerspectiveMatrixRenderingStrategy extends ATablePerspectiveMa
 				gl.glVertex3f(currentPositionX + currentColumnWidth, y - captionRowHeight - captionSpacingY, 0.1f);
 				gl.glVertex3f(currentPositionX + currentColumnWidth, y, 0.1f);
 				gl.glVertex3f(currentPositionX, y, 0.1f);
+				gl.glEnd();
 
 				gl.glColor4fv(perspectiveColor, 0);
-
+				gl.glBegin(GL2.GL_QUADS);
 				gl.glVertex3f(currentPositionX, y - childIndent, 0.1f);
 				gl.glVertex3f(currentPositionX + currentColumnWidth, y - childIndent, 0.1f);
 				gl.glVertex3f(currentPositionX + currentColumnWidth, y, 0.1f);
@@ -312,37 +314,43 @@ class TopDownTablePerspectiveMatrixRenderingStrategy extends ATablePerspectiveMa
 				gl.glPushMatrix();
 				int pickingID = 0;
 
-				Point2D bottomPosition1 = new Point2D.Float(currentDimGroupPositionX + cellSpacingX, row.position
-						- rowHeight + cellSpacingY);
-				Point2D bottomPosition2 = new Point2D.Float((float) bottomPosition1.getX()
-						+ pixelGLConverter.getGLWidthForPixelWidth(CELL_SIZE_PIXELS), (float) bottomPosition1.getY());
-				Point2D topPosition1 = new Point2D.Float((float) bottomPosition1.getX(), row.position - cellSpacingY);
-				Point2D topPosition2 = new Point2D.Float((float) bottomPosition2.getX(), (float) topPosition1.getY());
-
-				// Add both, the cell and the table perspective to be accessible from the node
-				bottomObjectPositions.put(cell.getTablePerspective(), new Pair<Point2D, Point2D>(bottomPosition1,
-						bottomPosition2));
-				bottomObjectPositions.put(cell, new Pair<Point2D, Point2D>(bottomPosition1, bottomPosition2));
-				topObjectPositions.put(cell.getTablePerspective(), new Pair<Point2D, Point2D>(topPosition1,
-						topPosition2));
-				topObjectPositions.put(cell, new Pair<Point2D, Point2D>(topPosition1, topPosition2));
+				Point2D topPosition1;
+				Point2D topPosition2;
+				Point2D bottomPosition1;
+				Point2D bottomPosition2;
 
 				if (cell.isActive()) {
-					// pickingID = view.getPickingManager().getPickingID(view.getID(),
-					// PickingType.DATA_CONTAINER.name() + node.getID(),
-					// ((TablePerspectiveRenderer) cell).getTablePerspective().getID());
+					bottomPosition1 = new Point2D.Float(currentDimGroupPositionX + cellSpacingX, row.position
+							- rowHeight + cellSpacingY);
+					bottomPosition2 = new Point2D.Float((float) bottomPosition1.getX()
+							+ pixelGLConverter.getGLWidthForPixelWidth(CELL_SIZE_PIXELS),
+							(float) bottomPosition1.getY());
+					topPosition1 = new Point2D.Float((float) bottomPosition1.getX(), row.position - cellSpacingY);
+					topPosition2 = new Point2D.Float((float) bottomPosition2.getX(), (float) topPosition1.getY());
 
 					gl.glTranslatef(currentDimGroupPositionX + cellSpacingX, row.position - rowHeight + cellSpacingY, 0);
-
-
-
 					currentDimGroupPositionX += columnWidth;
 				} else {
 
-					// pickingID = view.getPickingManager().getPickingID(view.getID(),
-					// PickingType.EMPTY_CELL.name() + node.getID(), ((EmptyCellRenderer) cell).getID());
+					bottomPosition1 = new Point2D.Float(currentDimGroupPositionX + cellSpacingX, row.position
+							- rowHeight + cellSpacingY);
+					bottomPosition2 = new Point2D.Float((float) bottomPosition1.getX()
+							+ pixelGLConverter.getGLWidthForPixelWidth(CELL_SIZE_PIXELS),
+							(float) bottomPosition1.getY());
+					topPosition1 = new Point2D.Float((float) bottomPosition1.getX(), row.position - cellSpacingY);
+					topPosition2 = new Point2D.Float((float) bottomPosition2.getX(), (float) topPosition1.getY());
 
 					gl.glTranslatef(emptyCellPositionX + cellSpacingX, row.position - rowHeight + cellSpacingY, 0);
+				}
+
+				// Add both, the cell and the table perspective to be accessible from the node
+				bottomObjectPositions.put(cell, new Pair<Point2D, Point2D>(bottomPosition1, bottomPosition2));
+				topObjectPositions.put(cell, new Pair<Point2D, Point2D>(topPosition1, topPosition2));
+				if (cell.hasTablePerspective()) {
+					bottomObjectPositions.put(cell.getTablePerspective(), new Pair<Point2D, Point2D>(bottomPosition1,
+							bottomPosition2));
+					topObjectPositions.put(cell.getTablePerspective(), new Pair<Point2D, Point2D>(topPosition1,
+							topPosition2));
 				}
 
 				pickingID = view.getPickingManager().getPickingID(view.getID(),

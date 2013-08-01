@@ -15,7 +15,7 @@ import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.data.DataDomainUpdateEvent;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.util.base.ILabelHolder;
+import org.caleydo.core.util.base.ILabeled;
 
 /**
  * Class for creating {@link TablePerspective}s using initialization data. Also creates record- or dimension-
@@ -24,7 +24,7 @@ import org.caleydo.core.util.base.ILabelHolder;
  * @author Christian Partl
  *
  */
-public class TablePerspectiveCreator implements ILabelHolder {
+public class TablePerspectiveCreator implements ILabeled {
 
 	public static class Builder {
 		private final ATableBasedDataDomain dataDomain;
@@ -87,7 +87,6 @@ public class TablePerspectiveCreator implements ILabelHolder {
 	final private Group recordGroup;
 	final private VirtualArray dimensionVA;
 	final private Group dimensionGroup;
-	private String label;
 
 	private TablePerspectiveCreator(Builder builder) {
 		this.dataDomain = builder.dataDomain;
@@ -97,9 +96,6 @@ public class TablePerspectiveCreator implements ILabelHolder {
 		this.recordGroup = builder.recordGroup;
 		this.dimensionVA = builder.dimensionVA;
 		this.dimensionGroup = builder.dimensionGroup;
-		label = dataDomain.getLabel() + " - "
-				+ ((recordPerspective != null) ? recordPerspective.getLabel() : recordGroup.getLabel()) + "/"
-				+ ((dimensionPerspective != null) ? dimensionPerspective.getLabel() : dimensionGroup.getLabel());
 	}
 
 	public TablePerspective create() {
@@ -111,7 +107,7 @@ public class TablePerspectiveCreator implements ILabelHolder {
 
 		TablePerspective tablePerspective = dataDomain.getTablePerspective(recordPerspective.getPerspectiveID(),
 				dimensionPerspective.getPerspectiveID());
-		tablePerspective.setLabel(label, false);
+		tablePerspective.setLabel(getLabel(), false);
 
 		if (tablePerspective.isPrivate()) {
 			tablePerspective.setPrivate(false);
@@ -157,20 +153,10 @@ public class TablePerspectiveCreator implements ILabelHolder {
 	}
 
 	@Override
-	public String getProviderName() {
-		// We pretend to be a tablePerspective
-		return "Table Perspective";
-	}
-
-	@Override
 	public String getLabel() {
-		return label;
-	}
-
-	@Override
-	public void setLabel(String label) {
-		this.label = label;
-
+		return dataDomain.getLabel() + " - "
+				+ ((recordPerspective != null) ? recordPerspective.getLabel() : recordGroup.getLabel()) + "/"
+				+ ((dimensionPerspective != null) ? dimensionPerspective.getLabel() : dimensionGroup.getLabel());
 	}
 
 }

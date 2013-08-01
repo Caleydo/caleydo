@@ -31,7 +31,6 @@ import org.caleydo.view.dvi.GLDataViewIntegrator;
 import org.caleydo.view.dvi.PickingType;
 import org.caleydo.view.dvi.contextmenu.RenameLabelHolderItem;
 import org.caleydo.view.dvi.node.IDVINode;
-import org.caleydo.view.dvi.node.TableBasedDataNode;
 import org.caleydo.view.dvi.tableperspective.AMultiTablePerspectiveRenderer;
 import org.caleydo.view.dvi.tableperspective.PerspectiveRenderer;
 import org.caleydo.view.dvi.tableperspective.TablePerspectiveCreator;
@@ -79,126 +78,6 @@ public class TablePerspectiveMatrixRenderer extends AMultiTablePerspectiveRender
 		view.addTypePickingListener(new TablePerspectivePickingListener(view, dragAndDropController, this),
 				PickingType.DATA_CONTAINER.name() + node.getID());
 
-		// view.addTypePickingListener(new APickingListener() {
-		//
-		// @Override
-		// public void mouseOver(Pick pick) {
-		// EmptyCellRenderer emptyCellRenderer = getEmptyCellRenderer(pick.getObjectID());
-		// if (emptyCellRenderer == null)
-		// return;
-		//
-		// emptyCellRenderer.setColor(emptyCellRenderer.getBorderColor());
-		// view.setDisplayListDirty();
-		// // System.out.println("over");
-		// }
-		//
-		// @Override
-		// public void mouseOut(Pick pick) {
-		// EmptyCellRenderer emptyCellRenderer = getEmptyCellRenderer(pick.getObjectID());
-		// if (emptyCellRenderer == null)
-		// return;
-		//
-		// emptyCellRenderer.setColor(EmptyCellRenderer.DEFAULT_COLOR);
-		// view.setDisplayListDirty();
-		// // System.out.println("out");
-		// }
-		//
-		// @Override
-		// public void rightClicked(Pick pick) {
-		// triggerTablePerspectiveCreation(pick.getObjectID(), true);
-		// }
-		//
-		// @Override
-		// public void clicked(Pick pick) {
-		// triggerTablePerspectiveCreation(pick.getObjectID(), false);
-		// }
-		//
-		// private void triggerTablePerspectiveCreation(int id, boolean useContextMenu) {
-		// Pair<CellContainer, CellContainer> rowAndColumn = null;
-		//
-		// for (EmptyCellRenderer emptyCellRenderer : emptyCellRenderers.keySet()) {
-		// if (emptyCellRenderer.getID() == id) {
-		// rowAndColumn = emptyCellRenderers.get(emptyCellRenderer);
-		// break;
-		// }
-		// }
-		//
-		// if (rowAndColumn != null) {
-		//
-		// CellContainer row = rowAndColumn.getFirst();
-		// String recordPerspectiveID = row.id;
-		// Group rowGroup = null;
-		// VirtualArray recordVA = null;
-		// boolean createRecordPerspective = false;
-		//
-		// if (!dataDomain.getTable().containsRecordPerspective(recordPerspectiveID)) {
-		// // FIXME: Check additionally if the group has a
-		// // dimensionperspective
-		//
-		// Perspective perspective = dataDomain.getTable().getRecordPerspective(row.parentContainer.id);
-		//
-		// // This works because the child containers do net get
-		// // sorted in a cellcontainer
-		// int groupIndex = row.parentContainer.childContainers.indexOf(row);
-		//
-		// recordVA = perspective.getVirtualArray();
-		//
-		// GroupList groupList = recordVA.getGroupList();
-		// rowGroup = groupList.get(groupIndex);
-		//
-		// createRecordPerspective = true;
-		//
-		// }
-		//
-		// CellContainer column = rowAndColumn.getSecond();
-		// String dimensionPerspectiveID = column.id;
-		// Group columnGroup = null;
-		// VirtualArray dimensionVA = null;
-		// boolean createDimensionPerspective = false;
-		//
-		// if (!dataDomain.getTable().containsDimensionPerspective(dimensionPerspectiveID)) {
-		// // FIXME: Check additionally if the group has a
-		// // dimensionperspective
-		//
-		// Perspective perspective = dataDomain.getTable().getDimensionPerspective(
-		// column.parentContainer.id);
-		//
-		// // This works because the child containers do net get
-		// // sorted in a cellcontainer
-		// int groupIndex = column.parentContainer.childContainers.indexOf(column);
-		//
-		// dimensionVA = perspective.getVirtualArray();
-		//
-		// GroupList groupList = dimensionVA.getGroupList();
-		// columnGroup = groupList.get(groupIndex);
-		//
-		// createDimensionPerspective = true;
-		//
-		// }
-		//
-		// CreateTablePerspectiveEvent event = new CreateTablePerspectiveEvent(dataDomain,
-		// recordPerspectiveID, createRecordPerspective, recordVA, rowGroup, dimensionPerspectiveID,
-		// createDimensionPerspective, dimensionVA, columnGroup);
-		// if (useContextMenu) {
-		// view.getContextMenuCreator().addContextMenuItem(new CreateTablePerspectiveItem(event));
-		// } else {
-		// event.setSender(this);
-		// GeneralManager.get().getEventPublisher().triggerEvent(event);
-		// }
-		// }
-		// }
-		//
-		// private EmptyCellRenderer getEmptyCellRenderer(int id) {
-		// for (EmptyCellRenderer emptyCellRenderer : emptyCellRenderers.keySet()) {
-		// if (emptyCellRenderer.getID() == id) {
-		// return emptyCellRenderer;
-		// }
-		// }
-		// return null;
-		// }
-		//
-		// }, PickingType.EMPTY_CELL.name() + node.getID());
-
 		view.addTypePickingListener(new APickingListener() {
 
 			@Override
@@ -214,11 +93,12 @@ public class TablePerspectiveMatrixRenderer extends AMultiTablePerspectiveRender
 				for (CellContainer child : container.childContainers) {
 
 					boolean isAlwaysVisible = false;
-					for (TablePerspectiveRenderer dimensionGroupRenderer : tablePerspectiveRenderers.keySet()) {
+					for (TablePerspectiveRenderer tablePerspectiveRenderer : tablePerspectiveRenderers.keySet()) {
 						Pair<CellContainer, CellContainer> rowAndColumn = tablePerspectiveRenderers
-								.get(dimensionGroupRenderer);
+								.get(tablePerspectiveRenderer);
 
-						if (child == rowAndColumn.getFirst() || child == rowAndColumn.getSecond()) {
+						if (tablePerspectiveRenderer.isActive()
+								&& (child == rowAndColumn.getFirst() || child == rowAndColumn.getSecond())) {
 							isAlwaysVisible = true;
 							break;
 						}
@@ -531,22 +411,30 @@ public class TablePerspectiveMatrixRenderer extends AMultiTablePerspectiveRender
 
 					if (tablePerspective.getDimensionPerspective().getPerspectiveID().equals(dimensionPerspectiveID)
 							&& tablePerspective.getRecordPerspective().getPerspectiveID().equals(recordPerspectiveID)) {
-						numSubdivisions++;
-						if (numSubdivisions >= rows.size()) {
-							numSubdivisions = rows.size();
-						}
+
 						tablePerspectiveExists = true;
 						TablePerspectiveRenderer tablePerspectiveRenderer = new TablePerspectiveRenderer(
 								tablePerspective, view, node);
 						tablePerspectiveRenderer.setShowText(false);
-						TableBasedDataNode dataNode = (TableBasedDataNode) node;
-
-						tablePerspectiveRenderer.setActive(true);
+						if (view.isTablePerspectiveShownByView(tablePerspective)) {
+							numSubdivisions++;
+							if (numSubdivisions >= rows.size()) {
+								numSubdivisions = rows.size();
+							}
+							tablePerspectiveRenderer.setActive(true);
+							row.isVisible = true;
+							column.isVisible = true;
+						} else {
+							if (row.parentContainer != null && row.parentContainer.isCollapsed) {
+								row.isVisible = false;
+							}
+							if (column.parentContainer != null && column.parentContainer.isCollapsed) {
+								column.isVisible = false;
+							}
+						}
 						cells.put(row.id + column.id, tablePerspectiveRenderer);
 						tablePerspectiveRenderers.put(tablePerspectiveRenderer, new Pair<CellContainer, CellContainer>(
 								row, column));
-						row.isVisible = true;
-						column.isVisible = true;
 						break;
 					}
 				}
