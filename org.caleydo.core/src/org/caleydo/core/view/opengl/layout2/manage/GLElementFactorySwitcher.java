@@ -26,7 +26,10 @@ import org.caleydo.core.view.opengl.layout2.basic.GLButton.ISelectionCallback;
 import org.caleydo.core.view.opengl.layout2.basic.RadioController;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.manage.GLElementFactories.GLElementSupplier;
+import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
+
+import com.google.common.base.Objects;
 
 /**
  * a container of {@link GLElementFactories} results
@@ -43,12 +46,19 @@ public class GLElementFactorySwitcher extends GLElement implements IGLElementPar
 	private final Collection<IActiveChangedCallback> callbacks = new ArrayList<>(1);
 	private final ELazyiness lazy;
 
+	private final IGLRenderer missingRenderer;
+
 	/**
 	 * @param children
 	 * @param instances
 	 * @param active
 	 */
 	public GLElementFactorySwitcher(List<GLElementSupplier> children, ELazyiness lazy) {
+		this(children, lazy, null);
+	}
+
+	public GLElementFactorySwitcher(List<GLElementSupplier> children, ELazyiness lazy, IGLRenderer missingRenderer) {
+		this.missingRenderer = Objects.firstNonNull(missingRenderer, GLRenderers.DUMMY);
 		this.children = children;
 		this.instances = new GLElement[children.size()];
 		this.lazy = lazy;
@@ -225,6 +235,8 @@ public class GLElementFactorySwitcher extends GLElement implements IGLElementPar
 		GLElement selected = getActiveElement();
 		if (selected != null)
 			selected.render(g);
+		else
+			missingRenderer.render(g, w, h, this);
 	}
 
 	@Override
