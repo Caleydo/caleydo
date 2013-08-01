@@ -43,10 +43,10 @@ public class GLElementAccessor {
 	}
 
 	/**
-	 * calls the repaint of the given element but prevent that the parent element will be repainted
-	 *
-	 * useful e.g. for repainting downwards
+	 * calls repaint of the given element but prevent that the parent element will be called
 	 * 
+	 * useful e.g. for repainting downwards
+	 *
 	 * @param elem
 	 */
 	public static void repaintDown(GLElement elem) {
@@ -57,16 +57,30 @@ public class GLElementAccessor {
 	}
 
 	/**
-	 * calls the repaint of the given element but prevent that the parent element will be repainted
-	 *
-	 * useful e.g. for repainting downwards
+	 * calls repaintPick of the given element but prevent that the parent element will be called
 	 * 
+	 * useful e.g. for repainting downwards
+	 *
 	 * @param elem
 	 */
 	public static void repaintPickDown(GLElement elem) {
 		IGLElementParent parent = elem.getParent();
 		elem.setParent(null);
 		elem.repaintPick();
+		elem.setParent(parent);
+	}
+
+	/**
+	 * calls relayout of the given element but prevent that the parent element will be called
+	 * 
+	 * useful e.g. for repainting downwards
+	 *
+	 * @param elem
+	 */
+	public static void relayoutDown(GLElement elem) {
+		IGLElementParent parent = elem.getParent();
+		elem.setParent(null);
+		elem.relayout();
 		elem.setParent(parent);
 	}
 }

@@ -47,6 +47,10 @@ public final class ScrollingDecorator extends AGLElementDecorator implements ISc
 		}
 	}
 
+	public static ScrollingDecorator wrap(GLElement content, float scrollBarWidth) {
+		return new ScrollingDecorator(content, new ScrollBar(true), new ScrollBar(false), scrollBarWidth);
+	}
+
 	@Override
 	protected void init(IGLElementContext context) {
 		super.init(context);
@@ -250,9 +254,9 @@ public final class ScrollingDecorator extends AGLElementDecorator implements ISc
 
 	/**
 	 * contract for delivering a min size, alternative provide a Vec2f in the layout data
-	 * 
+	 *
 	 * @author Samuel Gratzl
-	 * 
+	 *
 	 */
 	public interface IHasMinSize {
 		Vec2f getMinSize();
