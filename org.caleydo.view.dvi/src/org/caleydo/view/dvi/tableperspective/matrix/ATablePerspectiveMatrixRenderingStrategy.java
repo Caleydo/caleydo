@@ -36,8 +36,8 @@ abstract class ATablePerspectiveMatrixRenderingStrategy {
 	}
 
 	public abstract void render(GL2 gl,
-			Map<Integer, Pair<Point2D, Point2D>> bottomDimensionGroupPositions,
-			Map<Integer, Pair<Point2D, Point2D>> topDimensionGroupPositions, float x,
+ Map<Object, Pair<Point2D, Point2D>> bottomObjectPositions,
+			Map<Object, Pair<Point2D, Point2D>> topObjectPositions, float x,
 			float y, IDVINode node, GLDataViewIntegrator view,
 			List<Pair<String, Integer>> pickingIDsToBePushed, String rowsCaption,
 			String columnsCaption);

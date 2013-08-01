@@ -17,7 +17,6 @@ import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
-import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
 import org.caleydo.view.dvi.GLDataViewIntegrator;
 import org.caleydo.view.dvi.PickingType;
 import org.caleydo.view.dvi.node.IDVINode;
@@ -52,20 +51,16 @@ public class TablePerspectiveListRenderer extends AMultiTablePerspectiveRenderer
 	public void setTablePerspectives(List<TablePerspective> tablePerspectives) {
 		dimensionGroupRenderers.clear();
 		for (TablePerspective tablePerspective : tablePerspectives) {
-			if (tablePerspective.isPrivate())
+			if (tablePerspective.isPrivate() || !view.isTablePerspectiveShownByView(tablePerspective))
 				continue;
-			float[] color = tablePerspective.getDataDomain().getColor().getRGBA();
 
-			if (tablePerspective instanceof PathwayTablePerspective) {
-				color = ((PathwayTablePerspective) tablePerspective).getPathwayDataDomain().getColor().getRGBA();
-			}
-
-			TablePerspectiveRenderer dimensionGroupRenderer = new TablePerspectiveRenderer(tablePerspective, view,
-					node, color);
-			dimensionGroupRenderer.setTextHeightPixels(TEXT_HEIGHT_PIXELS);
-			dimensionGroupRenderer.setTextRotation(isUpsideDown ? TablePerspectiveRenderer.TEXT_ROTATION_90
+			TablePerspectiveRenderer tablePerspectiveRenderer = new TablePerspectiveRenderer(tablePerspective, view,
+ node);
+			tablePerspectiveRenderer.setTextHeightPixels(TEXT_HEIGHT_PIXELS);
+			tablePerspectiveRenderer.setTextRotation(isUpsideDown ? TablePerspectiveRenderer.TEXT_ROTATION_90
 					: TablePerspectiveRenderer.TEXT_ROTATION_270);
-			dimensionGroupRenderers.add(dimensionGroupRenderer);
+			tablePerspectiveRenderer.setActive(true);
+			dimensionGroupRenderers.add(tablePerspectiveRenderer);
 		}
 	}
 
@@ -80,14 +75,14 @@ public class TablePerspectiveListRenderer extends AMultiTablePerspectiveRenderer
 				- pixelGLConverter.getGLWidthForPixelWidth(getDimensionGroupsWidthPixels() / 2 - SIDE_SPACING_PIXELS);
 		float step = pixelGLConverter.getGLWidthForPixelWidth(SPACING_PIXELS) + dimensionGroupWidth;
 
-		bottomDimensionGroupPositions.clear();
-		topDimensionGroupPositions.clear();
+		bottomObjectPositions.clear();
+		topObjectPositions.clear();
 
 		for (TablePerspectiveRenderer tablePerspectiveRenderer : dimensionGroupRenderers) {
 
 			int pickingID = view.getPickingManager().getPickingID(view.getID(),
 					PickingType.DATA_CONTAINER.name() + node.getID(),
-					tablePerspectiveRenderer.getTablePerspective().getID());
+ tablePerspectiveRenderer.hashCode());
 
 			gl.glPushName(pickingID);
 			if (pickingIDsToBePushed != null) {
@@ -115,9 +110,9 @@ public class TablePerspectiveListRenderer extends AMultiTablePerspectiveRenderer
 			Point2D bottomPosition2 = new Point2D.Float(currentPosX + dimensionGroupWidth, 0);
 			Point2D topPosition1 = new Point2D.Float(currentPosX, y);
 			Point2D topPosition2 = new Point2D.Float(currentPosX + dimensionGroupWidth, y);
-			bottomDimensionGroupPositions.put(tablePerspectiveRenderer.getTablePerspective().getID(),
+			bottomObjectPositions.put(tablePerspectiveRenderer.getTablePerspective(),
 					new Pair<Point2D, Point2D>(bottomPosition1, bottomPosition2));
-			topDimensionGroupPositions.put(tablePerspectiveRenderer.getTablePerspective().getID(),
+			topObjectPositions.put(tablePerspectiveRenderer.getTablePerspective(),
 					new Pair<Point2D, Point2D>(topPosition1, topPosition2));
 
 			currentPosX += step;
