@@ -20,6 +20,7 @@ import javax.media.opengl.GL2;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
+import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.util.collection.Pair;
@@ -32,6 +33,7 @@ import org.caleydo.view.dvi.contextmenu.RenameLabelHolderItem;
 import org.caleydo.view.dvi.node.IDVINode;
 import org.caleydo.view.dvi.tableperspective.AMultiTablePerspectiveRenderer;
 import org.caleydo.view.dvi.tableperspective.PerspectiveRenderer;
+import org.caleydo.view.dvi.tableperspective.TablePerspectiveCreator;
 import org.caleydo.view.dvi.tableperspective.TablePerspectivePickingListener;
 import org.caleydo.view.dvi.tableperspective.TablePerspectiveRenderer;
 
@@ -513,11 +515,11 @@ public class TablePerspectiveMatrixRenderer extends AMultiTablePerspectiveRender
 		// emptyCellRenderers.clear();
 		tablePerspectiveRenderers.clear();
 
-		int emptyCellId = 0;
+		// int emptyCellId = 0;
 		for (CellContainer column : columns) {
 			int numSubdivisions = 1;
 			for (CellContainer row : rows) {
-				boolean dimensionGroupExists = false;
+				boolean tablePerspectiveExists = false;
 				for (TablePerspective tablePerspective : tablePerspectives) {
 
 					if (tablePerspective.isPrivate())
@@ -532,22 +534,62 @@ public class TablePerspectiveMatrixRenderer extends AMultiTablePerspectiveRender
 						if (numSubdivisions >= rows.size()) {
 							numSubdivisions = rows.size();
 						}
-						dimensionGroupExists = true;
+						tablePerspectiveExists = true;
 						TablePerspectiveRenderer tablePerspectiveRenderer = new TablePerspectiveRenderer(
-								tablePerspective, view, node, dataDomain.getColor().getRGBA());
+								tablePerspective, view, node);
 						tablePerspectiveRenderer.setShowText(false);
+						tablePerspectiveRenderer.setActive(true);
 						cells.put(row.id + column.id, tablePerspectiveRenderer);
 						tablePerspectiveRenderers.put(tablePerspectiveRenderer, new Pair<CellContainer, CellContainer>(
-								row,
-								column));
+								row, column));
 						row.isVisible = true;
 						column.isVisible = true;
 						break;
 					}
 				}
-				if (!dimensionGroupExists) {
-					TablePerspectiveRenderer tablePerspectiveRenderer = new TablePerspectiveRenderer(null, view, node,
-							dataDomain.getColor().getRGBA());
+				if (!tablePerspectiveExists) {
+					TablePerspectiveCreator.Builder builder = new TablePerspectiveCreator.Builder(dataDomain);
+
+					Perspective recordPerspective = dataDomain.getTable().getRecordPerspective(row.id);
+					if (recordPerspective == null) {
+
+						Perspective parentPerspective = dataDomain.getTable().getRecordPerspective(
+								row.parentContainer.id);
+						// This works because the child containers do net get
+						// sorted in a cellcontainer
+						int groupIndex = row.parentContainer.childContainers.indexOf(row);
+
+						VirtualArray recordVA = parentPerspective.getVirtualArray();
+
+						GroupList groupList = recordVA.getGroupList();
+						Group recordGroup = groupList.get(groupIndex);
+						builder.recordVA(recordVA).recordGroup(recordGroup);
+
+					} else {
+						builder.recordPerspective(recordPerspective);
+					}
+
+					Perspective dimensionPerspective = dataDomain.getTable().getDimensionPerspective(column.id);
+					if (dimensionPerspective == null) {
+
+						Perspective parentPerspective = dataDomain.getTable().getDimensionPerspective(
+								column.parentContainer.id);
+
+						// This works because the child containers do net get
+						// sorted in a cellcontainer
+						int groupIndex = column.parentContainer.childContainers.indexOf(column);
+
+						VirtualArray dimensionVA = parentPerspective.getVirtualArray();
+						GroupList groupList = dimensionVA.getGroupList();
+						Group dimensionGroup = groupList.get(groupIndex);
+
+						builder.dimensionVA(dimensionVA).dimensionGroup(dimensionGroup);
+					} else {
+						builder.dimensionPerspective(dimensionPerspective);
+					}
+
+					TablePerspectiveRenderer tablePerspectiveRenderer = new TablePerspectiveRenderer(builder.build(),
+							view, node);
 					tablePerspectiveRenderer.setShowText(false);
 					cells.put(row.id + column.id, tablePerspectiveRenderer);
 					tablePerspectiveRenderers.put(tablePerspectiveRenderer, new Pair<CellContainer, CellContainer>(row,
@@ -564,8 +606,8 @@ public class TablePerspectiveMatrixRenderer extends AMultiTablePerspectiveRender
 		String columnsCaption = dataDomain.getDimensionDenomination(true, true);
 		String rowsCaption = dataDomain.getRecordDenomination(true, true);
 
-		renderingStrategy.render(gl, bottomObjectPositions, topObjectPositions, x, y, node, view,
-				pickingIDsToBePushed, rowsCaption, columnsCaption);
+		renderingStrategy.render(gl, bottomObjectPositions, topObjectPositions, x, y, node, view, pickingIDsToBePushed,
+				rowsCaption, columnsCaption);
 
 	}
 

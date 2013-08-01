@@ -17,7 +17,6 @@ import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
-import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
 import org.caleydo.view.dvi.GLDataViewIntegrator;
 import org.caleydo.view.dvi.PickingType;
 import org.caleydo.view.dvi.node.IDVINode;
@@ -54,18 +53,14 @@ public class TablePerspectiveListRenderer extends AMultiTablePerspectiveRenderer
 		for (TablePerspective tablePerspective : tablePerspectives) {
 			if (tablePerspective.isPrivate())
 				continue;
-			float[] color = tablePerspective.getDataDomain().getColor().getRGBA();
 
-			if (tablePerspective instanceof PathwayTablePerspective) {
-				color = ((PathwayTablePerspective) tablePerspective).getPathwayDataDomain().getColor().getRGBA();
-			}
-
-			TablePerspectiveRenderer dimensionGroupRenderer = new TablePerspectiveRenderer(tablePerspective, view,
-					node, color);
-			dimensionGroupRenderer.setTextHeightPixels(TEXT_HEIGHT_PIXELS);
-			dimensionGroupRenderer.setTextRotation(isUpsideDown ? TablePerspectiveRenderer.TEXT_ROTATION_90
+			TablePerspectiveRenderer tablePerspectiveRenderer = new TablePerspectiveRenderer(tablePerspective, view,
+ node);
+			tablePerspectiveRenderer.setTextHeightPixels(TEXT_HEIGHT_PIXELS);
+			tablePerspectiveRenderer.setTextRotation(isUpsideDown ? TablePerspectiveRenderer.TEXT_ROTATION_90
 					: TablePerspectiveRenderer.TEXT_ROTATION_270);
-			dimensionGroupRenderers.add(dimensionGroupRenderer);
+			tablePerspectiveRenderer.setActive(true);
+			dimensionGroupRenderers.add(tablePerspectiveRenderer);
 		}
 	}
 
@@ -87,7 +82,7 @@ public class TablePerspectiveListRenderer extends AMultiTablePerspectiveRenderer
 
 			int pickingID = view.getPickingManager().getPickingID(view.getID(),
 					PickingType.DATA_CONTAINER.name() + node.getID(),
-					tablePerspectiveRenderer.getTablePerspective().getID());
+ tablePerspectiveRenderer.hashCode());
 
 			gl.glPushName(pickingID);
 			if (pickingIDsToBePushed != null) {
