@@ -371,9 +371,6 @@ public class Table {
 		if (recordPerspectiveID == null)
 			throw new IllegalArgumentException("perspectiveID was null");
 		Perspective recordData = hashRecordPerspectives.get(recordPerspectiveID);
-		if (recordData == null)
-			throw new IllegalStateException("No Perspective registered for " + recordPerspectiveID
-					+ ", registered Perspectives: " + hashRecordPerspectives);
 		return recordData;
 	}
 
@@ -454,9 +451,6 @@ public class Table {
 		if (dimensionPerspectiveID == null)
 			throw new IllegalArgumentException("perspectiveID was null");
 		Perspective dimensionPerspective = hashDimensionPerspectives.get(dimensionPerspectiveID);
-		if (dimensionPerspective == null)
-			throw new IllegalStateException("No DimensionPerspective registered for " + dimensionPerspectiveID
-					+ ", registered Perspectives: " + hashDimensionPerspectives);
 		return dimensionPerspective;
 	}
 

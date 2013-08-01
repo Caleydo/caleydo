@@ -9,10 +9,12 @@ import java.awt.geom.Point2D;
 
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
+import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
 import org.caleydo.view.dvi.node.IDVINode;
 
 public class TablePerspectiveRenderer extends ADraggableColorRenderer {
@@ -24,16 +26,28 @@ public class TablePerspectiveRenderer extends ADraggableColorRenderer {
 	public final static int TEXT_ROTATION_180 = 180;
 	public final static int TEXT_ROTATION_270 = 270;
 
+	public static final float[] INACTIVE_COLOR = { 0.9f, 0.9f, 0.9f, 1f };
+	public static final float[] INACTIVE_BORDER_COLOR = { 0.7f, 0.7f, 0.7f, 1f };
+
 	private TablePerspective tablePerspective;
+	private TablePerspectiveCreator creator;
 
 	private IDVINode node;
 	protected boolean showText = true;
 	protected int textRotation = 0;
 	protected int textHeightPixels;
+	protected boolean isActive = false;
 
-	public TablePerspectiveRenderer(TablePerspective tablePerspective, AGLView view, IDVINode node, float[] color) {
-		super(color, new float[] { color[0] - 0.2f, color[1] - 0.2f, color[2] - 0.2f, 1f }, 2, view);
+	public TablePerspectiveRenderer(TablePerspective tablePerspective, AGLView view, IDVINode node) {
+		super(INACTIVE_COLOR, INACTIVE_BORDER_COLOR, 2, view);
 		this.setTablePerspective(tablePerspective);
+		this.view = view;
+		this.node = node;
+	}
+
+	public TablePerspectiveRenderer(TablePerspectiveCreator creator, AGLView view, IDVINode node) {
+		super(INACTIVE_COLOR, INACTIVE_BORDER_COLOR, 2, view);
+		this.creator = creator;
 		this.view = view;
 		this.node = node;
 	}
@@ -48,7 +62,7 @@ public class TablePerspectiveRenderer extends ADraggableColorRenderer {
 		super.renderContent(gl);
 		gl.glPopMatrix();
 
-		if (showText) {
+		if (showText && tablePerspective != null) {
 			float textPositionX = 0;
 			switch (textRotation) {
 			case TEXT_ROTATION_0:
@@ -96,9 +110,26 @@ public class TablePerspectiveRenderer extends ADraggableColorRenderer {
 		return tablePerspective;
 	}
 
+	public TablePerspective createOrGetTablePerspective() {
+		if (tablePerspective != null)
+			return tablePerspective;
+		return creator.create();
+	}
+
+	/**
+	 * @return the creator, see {@link #creator}
+	 */
+	public TablePerspectiveCreator getCreator() {
+		return creator;
+	}
+
+	public boolean hasTablePerspective() {
+		return tablePerspective != null;
+	}
+
 	@Override
 	protected Point2D getPosition() {
-		return node.getBottomTablePerspectiveAnchorPoints(tablePerspective).getFirst();
+		return node.getBottomObjectAnchorPoints(this).getFirst();
 	}
 
 	public boolean isShowText() {
@@ -130,4 +161,44 @@ public class TablePerspectiveRenderer extends ADraggableColorRenderer {
 		return false;
 	}
 
+	/**
+	 * @return the isActive, see {@link #isActive}
+	 */
+	public boolean isActive() {
+		return isActive;
+	}
+
+	/**
+	 * @param isActive
+	 *            setter, see {@link isActive}
+	 */
+	public void setActive(boolean isActive) {
+		if (isActive) {
+			if (tablePerspective == null)
+				return;
+			float[] color = getActiveColor();
+			float[] borderColor = new float[] { color[0] - 0.2f, color[1] - 0.2f, color[2] - 0.2f, 1f };
+			setColor(color);
+			setBorderColor(borderColor);
+		} else {
+			setColor(INACTIVE_COLOR);
+			setBorderColor(INACTIVE_BORDER_COLOR);
+		}
+		this.isActive = isActive;
+	}
+
+	public float[] getActiveColor() {
+
+		if (tablePerspective instanceof PathwayTablePerspective) {
+			return ((PathwayTablePerspective) tablePerspective).getPathwayDataDomain().getColor().getRGBA();
+		} else {
+			return tablePerspective.getDataDomain().getColor().getRGBA();
+		}
+	}
+
+	public ATableBasedDataDomain getDataDomain() {
+		if (tablePerspective != null)
+			return tablePerspective.getDataDomain();
+		return creator.getDataDomain();
+	}
 }

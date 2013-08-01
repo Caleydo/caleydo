@@ -167,7 +167,7 @@ public class MultiTablePerspectiveViewNode extends ViewNode implements IDropArea
 		for (IDraggable draggable : draggables) {
 			if (draggable instanceof TablePerspectiveRenderer) {
 				TablePerspectiveRenderer dimensionGroupRenderer = (TablePerspectiveRenderer) draggable;
-				tablePerspectives.add(dimensionGroupRenderer.getTablePerspective());
+				tablePerspectives.add(dimensionGroupRenderer.createOrGetTablePerspective());
 			}
 		}
 

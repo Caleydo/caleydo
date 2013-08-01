@@ -5,6 +5,7 @@
  ******************************************************************************/
 package org.caleydo.view.dvi.listener;
 
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
 import org.caleydo.view.dvi.GLDataViewIntegrator;
@@ -18,7 +19,11 @@ public class CreateViewFromTablePerspectiveEventListener extends AEventListener<
 		if (event instanceof CreateViewFromTablePerspectiveEvent) {
 
 			CreateViewFromTablePerspectiveEvent e = (CreateViewFromTablePerspectiveEvent) event;
-			handler.createView(e.getViewType(), e.getDataDomain(), e.getTablePerspective());
+			TablePerspective tablePerspective = e.getTablePerspective();
+			if (tablePerspective == null) {
+				tablePerspective = e.getCreator().create();
+			}
+			handler.createView(e.getViewType(), e.getDataDomain(), tablePerspective);
 
 		}
 

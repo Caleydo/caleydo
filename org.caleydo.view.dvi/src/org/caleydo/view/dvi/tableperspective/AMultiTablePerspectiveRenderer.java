@@ -23,8 +23,8 @@ public abstract class AMultiTablePerspectiveRenderer extends ALayoutRenderer {
 	protected IDVINode node;
 	protected GLDataViewIntegrator view;
 	protected DragAndDropController dragAndDropController;
-	protected Map<Integer, Pair<Point2D, Point2D>> bottomDimensionGroupPositions;
-	protected Map<Integer, Pair<Point2D, Point2D>> topDimensionGroupPositions;
+	protected Map<Object, Pair<Point2D, Point2D>> bottomObjectPositions;
+	protected Map<Object, Pair<Point2D, Point2D>> topObjectPositions;
 	protected List<Pair<String, Integer>> pickingIDsToBePushed;
 	protected boolean isUpsideDown = false;
 	protected boolean arePickingListenersRegistered = false;
@@ -34,20 +34,18 @@ public abstract class AMultiTablePerspectiveRenderer extends ALayoutRenderer {
 		this.node = node;
 		this.view = view;
 		this.dragAndDropController = dragAndDropController;
-		bottomDimensionGroupPositions = new HashMap<Integer, Pair<Point2D, Point2D>>();
-		topDimensionGroupPositions = new HashMap<Integer, Pair<Point2D, Point2D>>();
+		bottomObjectPositions = new HashMap<Object, Pair<Point2D, Point2D>>();
+		topObjectPositions = new HashMap<Object, Pair<Point2D, Point2D>>();
 	}
 
 	public abstract void setTablePerspectives(List<TablePerspective> tablePerspectives);
 
-	public Pair<Point2D, Point2D> getBottomAnchorPointsOfTablePerspective(
-			TablePerspective tablePerspective) {
-		return bottomDimensionGroupPositions.get(tablePerspective.getID());
+	public Pair<Point2D, Point2D> getBottomAnchorPointsOfObject(Object object) {
+		return bottomObjectPositions.get(object);
 	}
 
-	public Pair<Point2D, Point2D> getTopAnchorPointsOfTablePerspective(
-			TablePerspective tablePerspective) {
-		return topDimensionGroupPositions.get(tablePerspective.getID());
+	public Pair<Point2D, Point2D> getTopAnchorPointsOfObject(Object object) {
+		return topObjectPositions.get(object);
 	}
 
 	public void registerPickingListeners() {
