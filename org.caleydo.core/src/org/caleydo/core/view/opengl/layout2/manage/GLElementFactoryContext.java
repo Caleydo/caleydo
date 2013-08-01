@@ -57,7 +57,7 @@ public class GLElementFactoryContext {
 	 * @return
 	 */
 	public GLElementFactoryContext sub(String prefix) {
-		return new GLElementFactoryContext(datas, prefix + prefix, objects, namedObjects);
+		return new GLElementFactoryContext(datas, this.prefix + prefix, objects, namedObjects);
 	}
 
 	public TablePerspective getData() {

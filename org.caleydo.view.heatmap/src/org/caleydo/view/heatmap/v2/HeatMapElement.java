@@ -105,11 +105,14 @@ public class HeatMapElement extends PickableGLElement implements
 	private EShowLabels dimensionLabels = EShowLabels.NONE;
 	private EShowLabels recordLabels = EShowLabels.NONE;
 
+	private boolean hovered = false;
+
 	public HeatMapElement(TablePerspective tablePerspective) {
-		this(tablePerspective, BasicBlockColorer.INSTANCE, EDetailLevel.HIGH);
+		this(tablePerspective, BasicBlockColorer.INSTANCE, EDetailLevel.HIGH, false);
 	}
 
-	public HeatMapElement(TablePerspective tablePerspective, IBlockColorer blockColorer, EDetailLevel detailLevel) {
+	public HeatMapElement(TablePerspective tablePerspective, IBlockColorer blockColorer, EDetailLevel detailLevel,
+			boolean forceTextures) {
 		blockColorer = Objects.firstNonNull(blockColorer, BasicBlockColorer.INSTANCE);
 		detailLevel = Objects.firstNonNull(detailLevel, EDetailLevel.LOW);
 
@@ -128,12 +131,16 @@ public class HeatMapElement extends PickableGLElement implements
 		case HIGH:
 		case MEDIUM:
 			setVisibility(EVisibility.PICKABLE); //pickable + no textures
-			textureRenderer = null;
 			break;
 		default:
 			setVisibility(EVisibility.VISIBLE); // not pickable + textures
-			textureRenderer = new HeatMapTextureRenderer(tablePerspective, blockColorer);
 			break;
+		}
+		// force texture or low details
+		if (forceTextures || EDetailLevel.MEDIUM.compareTo(detailLevel) > 0) {
+			this.textureRenderer = new HeatMapTextureRenderer(tablePerspective, blockColorer);
+		} else {
+			this.textureRenderer = null;
 		}
 	}
 
@@ -189,6 +196,8 @@ public class HeatMapElement extends PickableGLElement implements
 			h += TEXT_WIDTH;
 		return new Vec2f(w, h);
 	}
+
+
 
 	private void ensureEnoughPickingIds() {
 		if (getVisibility() == EVisibility.PICKABLE && context != null) {
@@ -292,7 +301,7 @@ public class HeatMapElement extends PickableGLElement implements
 	public void onVAUpdate(TablePerspective tablePerspective) {
 		ensureEnoughPickingIds();
 		if (textureRenderer != null) {
-			textureRenderer.init(context);
+			textureRenderer.create(context);
 		}
 		repaintAll();
 		relayoutParent();
@@ -471,6 +480,8 @@ public class HeatMapElement extends PickableGLElement implements
 	protected void renderPickImpl(GLGraphics g, float w, float h) {
 		// ensureEnoughPickingIds();
 		super.renderPickImpl(g, w, h);
+		if (!hovered) // render the details only if the mouse is over the heatmap
+			return;
 		g.save();
 		switch (recordLabels) {
 		case LEFT:
@@ -503,11 +514,19 @@ public class HeatMapElement extends PickableGLElement implements
 	}
 
 	@Override
+	protected void onMouseOver(Pick pick) {
+		hovered = true;
+		repaintPick();
+	}
+
+	@Override
 	protected void onMouseOut(Pick pick) {
 		// clear all hovered elements
 		createSelection(mixin.getDimensionSelectionManager(), SelectionType.MOUSE_OVER, -1);
 		createSelection(mixin.getRecordSelectionManager(), SelectionType.MOUSE_OVER, -1);
 		repaint();
+		hovered = false;
+		repaintPick();
 	}
 
 	private boolean isHidden(Integer recordID) {
@@ -639,7 +658,7 @@ public class HeatMapElement extends PickableGLElement implements
 	private void onColorMappingUpdate(UpdateColorMappingEvent event) {
 		repaint();
 		if (textureRenderer != null && context != null)
-			textureRenderer.init(context);
+			textureRenderer.create(context);
 	}
 
 	@Override

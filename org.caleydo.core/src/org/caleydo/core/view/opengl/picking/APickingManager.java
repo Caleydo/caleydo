@@ -316,7 +316,7 @@ public abstract class APickingManager<T extends APickingEntry> {
 		final int pickingBuffer[] = new int[PICKING_SIZE];
 		pickingBufferNative.get(pickingBuffer);
 
-		List<PickHit> hits = new ArrayList<>(hitCount);
+		List<PickHit> hits = new ArrayList<>(Math.max(hitCount, 0));
 
 		int pos = 0;
 		for (int i = 0; i < hitCount; i++) {

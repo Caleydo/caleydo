@@ -9,6 +9,8 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.media.opengl.GL;
@@ -30,7 +32,6 @@ import com.jogamp.opengl.util.texture.TextureIO;
 /**
  * helper class for generating a texture heat map
  *
- * TODO support tiling in X and Y direction
  *
  * @author Samuel Gratzl
  *
@@ -54,29 +55,47 @@ public class HeatMapTextureRenderer {
 		this.blockColorer = blockColorer;
 	}
 
+	public void takeDown() {
+		GL gl = GLContext.getCurrentGL();
+		for (Tile tile : tiles) {
+			tile.texture.destroy(gl);
+		}
+		tiles.clear();
+		dimension = null;
+	}
+
 	/**
 	 * @param context
 	 */
-	public void init(IGLElementContext context) {
+	public void create(IGLElementContext context) {
 		final GL gl = GLContext.getCurrentGL();
 
 		final int numberOfRecords = tablePerspective.getRecordPerspective().getVirtualArray().size();
 		final int numberOfDimensions = tablePerspective.getDimensionPerspective().getVirtualArray().size();
 		dimension = new Dimension(numberOfDimensions, numberOfRecords);
 
-		if (numberOfDimensions <= 0 || numberOfRecords <= 0)
+		if (numberOfDimensions <= 0 || numberOfRecords <= 0) {
+			takeDown();
 			return;
+		}
 
 		final int maxSize = resolveMaxSize(gl);
 
 		boolean needXTiling = numberOfDimensions > maxSize;
 		boolean needYTiling = numberOfRecords > maxSize;
 
+		// pool of old texture which we might wanna reuse
+		final Deque<Texture> pool = new LinkedList<>();
+		for (Tile tile : tiles) {
+			pool.add(tile.texture);
+		}
+		tiles.clear();
+
 		if (!needXTiling && !needYTiling) {
 			//single tile
 			FloatBuffer buffer = FloatBuffer.allocate(numberOfDimensions * numberOfRecords * 4); //w*h*rgba
 			Rectangle tile = new Rectangle(0,0,numberOfDimensions,numberOfRecords);
-			tiles.add(createTile(buffer,tile, gl));
+			tiles.add(createTile(buffer, tile, gl, pool));
 		} else if (needXTiling && !needYTiling){
 			//tile in x direction only
 			FloatBuffer buffer = FloatBuffer.allocate(maxSize * numberOfRecords * 4); //w*h*rgba
@@ -84,12 +103,12 @@ public class HeatMapTextureRenderer {
 			int lastTile = numberOfDimensions - maxSize;
 			for (int i = 0; i < lastTile; i += maxSize) {
 				Rectangle tile = new Rectangle(i,0,maxSize,numberOfRecords);
-				tiles.add(createTile(buffer,tile, gl));
+				tiles.add(createTile(buffer, tile, gl, pool));
 			}
 			{//create rest
 				int remaining = numberOfDimensions % maxSize;
 				Rectangle tile = new Rectangle(numberOfDimensions-remaining,0,remaining,numberOfRecords);
-				tiles.add(createTile(buffer,tile, gl));
+				tiles.add(createTile(buffer, tile, gl, pool));
 			}
 		} else if (!needXTiling && needYTiling) {
 			//tile in y direction only
@@ -98,12 +117,12 @@ public class HeatMapTextureRenderer {
 			int lastTile = numberOfRecords - maxSize;
 			for (int i = 0; i < lastTile; i += maxSize) {
 				Rectangle tile = new Rectangle(0,i,numberOfDimensions,maxSize);
-				tiles.add(createTile(buffer,tile, gl));
+				tiles.add(createTile(buffer, tile, gl, pool));
 			}
 			{//create rest
 				int remaining = numberOfRecords % maxSize;
 				Rectangle tile = new Rectangle(0,numberOfRecords-remaining,numberOfDimensions,remaining);
-				tiles.add(createTile(buffer,tile, gl));
+				tiles.add(createTile(buffer, tile, gl, pool));
 			}
 		} else {
 			//tile in both directions
@@ -115,12 +134,12 @@ public class HeatMapTextureRenderer {
 			for (int i = 0; i < lastTileR; i += maxSize) {
 				for (int j = 0; j < lastTileD; j += maxSize) {
 					Rectangle tile = new Rectangle(j,i,maxSize,maxSize);
-					tiles.add(createTile(buffer,tile, gl));
+					tiles.add(createTile(buffer, tile, gl, pool));
 				}
 				{//create rest
 					int remaining = numberOfDimensions % maxSize;
 					Rectangle tile = new Rectangle(numberOfDimensions-remaining,i,remaining,maxSize);
-					tiles.add(createTile(buffer,tile, gl));
+					tiles.add(createTile(buffer, tile, gl, pool));
 				}
 			}
 			{//last line
@@ -128,23 +147,29 @@ public class HeatMapTextureRenderer {
 				int i = numberOfRecords - iremaining;
 				for (int j = 0; j < lastTileD; j += maxSize) {
 					Rectangle tile = new Rectangle(j,i,maxSize,iremaining);
-					tiles.add(createTile(buffer,tile, gl));
+					tiles.add(createTile(buffer, tile, gl, pool));
 				}
 				{//create rest
 					int remaining = numberOfDimensions % maxSize;
 					Rectangle tile = new Rectangle(numberOfDimensions-remaining,i,remaining,iremaining);
-					tiles.add(createTile(buffer,tile, gl));
+					tiles.add(createTile(buffer, tile, gl, pool));
 				}
 			}
 		}
+
+		// free remaining elements in pool
+		for (Texture tex : pool)
+			tex.destroy(gl);
+		pool.clear();
 	}
 
 	/**
 	 * @param buffer
 	 * @param tile
+	 * @param pool
 	 * @return
 	 */
-	private Tile createTile(FloatBuffer buffer, Rectangle tile, GL gl) {
+	private Tile createTile(FloatBuffer buffer, Rectangle tile, GL gl, Deque<Texture> pool) {
 		final VirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
 		final VirtualArray dimVA = tablePerspective.getDimensionPerspective().getVirtualArray();
 		final ATableBasedDataDomain dataDomain = tablePerspective.getDataDomain();
@@ -164,7 +189,12 @@ public class HeatMapTextureRenderer {
 
 		//load to texture
 		buffer.rewind();
-		Texture texture = TextureIO.newTexture(GL.GL_TEXTURE_2D);
+		Texture texture;
+		if (!pool.isEmpty())
+			texture = pool.poll();
+		else
+			texture = TextureIO.newTexture(GL.GL_TEXTURE_2D);
+
 		TextureData texData = asTextureData(buffer, tile.width, tile.height);
 		texture.updateImage(gl, texData);
 		gl.glFlush();
@@ -192,15 +222,6 @@ public class HeatMapTextureRenderer {
 				GL.GL_RGBA /* pixelFormat */, GL.GL_FLOAT /* pixelType */, false /* mipmap */,
 				false /* dataIsCompressed */, false /* mustFlipVertically */, buffer, null);
 		return texData;
-	}
-
-	public void takeDown() {
-		GL gl = GLContext.getCurrentGL();
-		for (Tile tile : tiles) {
-			tile.texture.destroy(gl);
-		}
-		tiles.clear();
-		dimension = null;
 	}
 
 	public void render(GLGraphics g, float w, float h) {

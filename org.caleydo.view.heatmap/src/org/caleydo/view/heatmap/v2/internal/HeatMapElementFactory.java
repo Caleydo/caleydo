@@ -42,7 +42,7 @@ public class HeatMapElementFactory implements IGLElementFactory {
 		IBlockColorer blockColorer = context.get(IBlockColorer.class, BasicBlockColorer.INSTANCE);
 		EDetailLevel detailLevel = context.get(EDetailLevel.class, EDetailLevel.LOW);
 
-		HeatMapElement elem = new HeatMapElement(data, blockColorer, detailLevel);
+		HeatMapElement elem = new HeatMapElement(data, blockColorer, detailLevel, context.is("forceTextures"));
 
 		EShowLabels default_ = context.get(EShowLabels.class, EShowLabels.NONE);
 		elem.setDimensionLabels(context.get("dimensionLabels", EShowLabels.class, default_));
