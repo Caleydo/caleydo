@@ -31,6 +31,7 @@ import org.caleydo.view.dvi.GLDataViewIntegrator;
 import org.caleydo.view.dvi.PickingType;
 import org.caleydo.view.dvi.contextmenu.RenameLabelHolderItem;
 import org.caleydo.view.dvi.node.IDVINode;
+import org.caleydo.view.dvi.node.TableBasedDataNode;
 import org.caleydo.view.dvi.tableperspective.AMultiTablePerspectiveRenderer;
 import org.caleydo.view.dvi.tableperspective.PerspectiveRenderer;
 import org.caleydo.view.dvi.tableperspective.TablePerspectiveCreator;
@@ -538,6 +539,8 @@ public class TablePerspectiveMatrixRenderer extends AMultiTablePerspectiveRender
 						TablePerspectiveRenderer tablePerspectiveRenderer = new TablePerspectiveRenderer(
 								tablePerspective, view, node);
 						tablePerspectiveRenderer.setShowText(false);
+						TableBasedDataNode dataNode = (TableBasedDataNode) node;
+
 						tablePerspectiveRenderer.setActive(true);
 						cells.put(row.id + column.id, tablePerspectiveRenderer);
 						tablePerspectiveRenderers.put(tablePerspectiveRenderer, new Pair<CellContainer, CellContainer>(
