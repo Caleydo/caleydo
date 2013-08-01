@@ -143,9 +143,9 @@ public enum AlexColorPalette implements IColorPalette {
 
 	/**
 	 * custom version of a color with special darker / brighter meaning
-	 * 
+	 *
 	 * @author Samuel Gratzl
-	 * 
+	 *
 	 */
 	@XmlType
 	public static class AlexColorPaletteColor extends Color {
@@ -171,7 +171,7 @@ public enum AlexColorPalette implements IColorPalette {
 		@Override
 		public Color darker() {
 			if (index <= 0)
-				return super.brighter();
+				return super.darker();
 			List<Color> set = getSet();
 			return set.get(index - 1);
 		}
@@ -179,8 +179,8 @@ public enum AlexColorPalette implements IColorPalette {
 		@Override
 		public Color brighter() {
 			List<Color> set = getSet();
-			if (index >= set.size())
-				return super.darker();
+			if (index >= set.size() - 1)
+				return super.brighter();
 			return set.get(index + 1);
 		}
 	}
