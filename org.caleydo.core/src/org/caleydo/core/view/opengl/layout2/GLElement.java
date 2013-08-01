@@ -599,6 +599,20 @@ public class GLElement implements IHasGLLayoutData {
 	}
 
 	/**
+	 * finds a parent in the hierarchy that is of the specific instance
+	 * 
+	 * @param satisfies
+	 * @return
+	 */
+	protected final <T> T findParent(Class<T> isInstanceOf) {
+		IGLElementParent act = parent;
+		while (act != null && !(isInstanceOf.isInstance(act))) {
+			act = parent.getParent();
+		}
+		return isInstanceOf.cast(act);
+	}
+
+	/**
 	 * setup method, when adding a child to a parent
 	 * @param context
 	 */

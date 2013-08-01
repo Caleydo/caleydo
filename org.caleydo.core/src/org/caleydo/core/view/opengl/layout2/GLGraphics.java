@@ -353,6 +353,13 @@ public class GLGraphics {
 		return fillImage(getTexture(texture), x, y, w, h);
 	}
 
+	/**
+	 * renders a texture within the given rect
+	 */
+	public GLGraphics fillImage(URL texture, float x, float y, float w, float h) {
+		return fillImage(getTexture(texture), x, y, w, h);
+	}
+
 	public Texture getTexture(String texture) {
 		return local.getTextures().get(texture, new ResourceLoader(locator));
 	}

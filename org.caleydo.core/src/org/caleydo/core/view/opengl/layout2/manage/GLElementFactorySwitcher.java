@@ -292,7 +292,6 @@ public class GLElementFactorySwitcher extends GLElement implements IGLElementPar
 
 		public ButtonBar() {
 			setLayout(GLLayouts.flowHorizontal(2));
-			setSize(Float.NaN, 16);
 
 			int i = 0;
 			for (GLElementSupplier sup : GLElementFactorySwitcher.this) {
@@ -305,6 +304,7 @@ public class GLElementFactorySwitcher extends GLElement implements IGLElementPar
 				b.setSize(16, 16);
 				this.add(b);
 			}
+			setSize(this.size() * (16 + 2), 16);
 		}
 
 		@Override

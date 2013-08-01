@@ -6,6 +6,8 @@
 package org.caleydo.core.view.opengl.layout2.renderer;
 
 
+import java.net.URL;
+
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
@@ -93,7 +95,15 @@ public final class GLRenderers {
 
 	public static IGLRenderer fillImage(final String image) {
 		return new IGLRenderer() {
+			@Override
+			public void render(GLGraphics g, float w, float h, GLElement parent) {
+				g.fillImage(image, 0, 0, w, h);
+			}
+		};
+	}
 
+	public static IGLRenderer fillImage(final URL image) {
+		return new IGLRenderer() {
 			@Override
 			public void render(GLGraphics g, float w, float h, GLElement parent) {
 				g.fillImage(image, 0, 0, w, h);

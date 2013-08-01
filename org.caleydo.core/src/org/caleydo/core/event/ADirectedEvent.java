@@ -27,7 +27,7 @@ public abstract class ADirectedEvent extends AEvent {
 
 	/**
 	 * determines whether the receiver is equal to the given object
-	 * 
+	 *
 	 * @param obj
 	 * @return
 	 */
@@ -40,5 +40,13 @@ public abstract class ADirectedEvent extends AEvent {
 	 */
 	public Object getReceiver() {
 		return receiver;
+	}
+
+	/**
+	 * dummy implementation
+	 */
+	@Override
+	public boolean checkIntegrity() {
+		return true;
 	}
 }

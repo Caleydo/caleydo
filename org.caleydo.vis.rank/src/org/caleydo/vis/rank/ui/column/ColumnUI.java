@@ -115,7 +115,7 @@ public class ColumnUI extends AnimatedGLElementContainer implements ITableColumn
 	}
 
 	@Override
-	protected ALayoutAnimation createMoveAnimation(IGLLayoutElement elem, Vec4f before, Vec4f after, int duration) {
+	protected ALayoutAnimation createMoveAnimation(IGLLayoutElement elem, Vec4f before, Vec4f after) {
 		int flag = ((ValueElement) elem.asElement()).getAnimationFlag();
 		switch (flag) {
 		case FLAG_NONE:
@@ -147,7 +147,7 @@ public class ColumnUI extends AnimatedGLElementContainer implements ITableColumn
 			d.init(before, after);
 			return d;
 		}
-		return super.createMoveAnimation(elem, before, after, duration);
+		return super.createMoveAnimation(elem, before, after);
 	}
 
 	/**
