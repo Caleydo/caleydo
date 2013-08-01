@@ -117,8 +117,8 @@ public class TCGATestDataXMLGenerator extends DataSetDescriptionSerializer {
 		mrnaData.setColumnIDSpecification(sampleIDSpecification);
 
 		GroupingParseSpecification firehoseClustering = new GroupingParseSpecification(MRNA_GROUPING);
-		firehoseClustering.setContainsColumnIDs(true);
-		// firehoseClustering.setGroupingName("hierarchical");
+		firehoseClustering.setContainsColumnIDs(false);
+		firehoseClustering.setGroupingName("hierarchical");
 		firehoseClustering.setRowIDSpecification(sampleIDSpecification);
 		mrnaData.addColumnGroupingSpecification(firehoseClustering);
 
