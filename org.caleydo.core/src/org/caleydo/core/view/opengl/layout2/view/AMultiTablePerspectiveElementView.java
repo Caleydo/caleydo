@@ -55,7 +55,13 @@ public abstract class AMultiTablePerspectiveElementView extends AGLElementView i
 
 	@Override
 	protected final GLElementDecorator createRoot() {
-		return new GLElementDecorator();
+		GLElementDecorator g = new GLElementDecorator();
+		g.setContent(createContent());
+		return g;
+	}
+
+	protected GLElement createContent() {
+		return null;
 	}
 
 	protected final GLElementDecorator getRootDecorator() {

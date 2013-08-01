@@ -71,7 +71,7 @@ public final class GLElementFactories {
 			Predicate<? super String> filter) {
 		ImmutableList.Builder<GLElementSupplier> builder = ImmutableList.builder();
 		for (ElementExtension elem : extensions) {
-			if (!filter.apply(elem.getId()) || !elem.canCreate(callerId, context))
+			if ((filter != null && !filter.apply(elem.getId())) || !elem.canCreate(callerId, context))
 				continue;
 			builder.add(new GLElementSupplier(elem, context));
 		}

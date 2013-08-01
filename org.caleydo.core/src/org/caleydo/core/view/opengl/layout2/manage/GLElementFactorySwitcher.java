@@ -39,7 +39,7 @@ import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 public class GLElementFactorySwitcher extends GLElement implements IGLElementParent, Iterable<GLElementSupplier> {
 	private final List<GLElementSupplier> children;
 	private final GLElement[] instances;
-	private int active = 0;
+	private int active = -1;
 	private final Collection<IActiveChangedCallback> callbacks = new ArrayList<>(1);
 	private final ELazyiness lazy;
 
@@ -59,6 +59,7 @@ public class GLElementFactorySwitcher extends GLElement implements IGLElementPar
 				instances[i].setLayoutData(children.get(i));
 			}
 		}
+		setActive(instances.length == 0 ? -1 : 0);
 	}
 
 	/**
@@ -94,7 +95,7 @@ public class GLElementFactorySwitcher extends GLElement implements IGLElementPar
 	@Override
 	public void repaint() {
 		super.repaint();
-		GLElement s = getSelected();
+		GLElement s = getActiveElement();
 		if (s != null) {
 			GLElementAccessor.repaintDown(s);
 		}
@@ -103,7 +104,7 @@ public class GLElementFactorySwitcher extends GLElement implements IGLElementPar
 	@Override
 	public void repaintPick() {
 		super.repaintPick();
-		GLElement s = getSelected();
+		GLElement s = getActiveElement();
 		if (s != null)
 			GLElementAccessor.repaintPickDown(s);
 	}
@@ -117,19 +118,19 @@ public class GLElementFactorySwitcher extends GLElement implements IGLElementPar
 			return;
 		int old = this.active;
 		int new_ = active;
-		GLElement oldv = getSelected();
+		GLElement oldv = getActiveElement();
 		switch(lazy) {
 		case NONE:
 			break;
 		case DESTROY:
 			if (context != null && oldv != null)
 				 GLElementAccessor.takeDown(oldv);
-			instances[old] = null; // free element
+			if (old >= 0)
+				instances[old] = null; // free element
 			if (new_ >= 0) {
 				instances[new_] = children.get(new_).get();
 				instances[new_].setLayoutData(children.get(new_));
-				if (context != null)
-					setup(instances[new_]);
+				setup(instances[new_]);
 			}
 			break;
 		case UNINITIALIZE:
@@ -163,7 +164,7 @@ public class GLElementFactorySwitcher extends GLElement implements IGLElementPar
 	/**
 	 * @return
 	 */
-	private GLElement getSelected() {
+	public GLElement getActiveElement() {
 		return active < 0 ? null : instances[active];
 	}
 
@@ -175,7 +176,7 @@ public class GLElementFactorySwitcher extends GLElement implements IGLElementPar
 				instance.layout(deltaTimeMs);
 			}
 		} else {
-			GLElement selected = getSelected();
+			GLElement selected = getActiveElement();
 			if (selected != null)
 				selected.layout(deltaTimeMs);
 		}
@@ -190,7 +191,7 @@ public class GLElementFactorySwitcher extends GLElement implements IGLElementPar
 				GLElementAccessor.asLayoutElement(instance).setBounds(0, 0, size.x(), size.y());
 			}
 		} else {
-			GLElement selected = getSelected();
+			GLElement selected = getActiveElement();
 			if (selected != null)
 				GLElementAccessor.asLayoutElement(selected).setBounds(0, 0, size.x(), size.y());
 		}
@@ -204,7 +205,7 @@ public class GLElementFactorySwitcher extends GLElement implements IGLElementPar
 				GLElementAccessor.init(instance, context);
 			}
 		} else {
-			GLElement selected = getSelected();
+			GLElement selected = getActiveElement();
 			if (selected != null)
 				GLElementAccessor.init(selected, context);
 		}
@@ -221,7 +222,7 @@ public class GLElementFactorySwitcher extends GLElement implements IGLElementPar
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
 		super.renderImpl(g, w, h);
-		GLElement selected = getSelected();
+		GLElement selected = getActiveElement();
 		if (selected != null)
 			selected.render(g);
 	}
@@ -229,14 +230,14 @@ public class GLElementFactorySwitcher extends GLElement implements IGLElementPar
 	@Override
 	protected void renderPickImpl(GLGraphics g, float w, float h) {
 		super.renderPickImpl(g, w, h);
-		GLElement selected = getSelected();
+		GLElement selected = getActiveElement();
 		if (selected != null)
 			selected.renderPick(g);
 	}
 
 	@Override
 	public <T> T getLayoutDataAs(Class<T> clazz, T default_) {
-		GLElement s = getSelected();
+		GLElement s = getActiveElement();
 		if (s != null) {
 			T v = s.getLayoutDataAs(clazz, null);
 			if (v != null)
