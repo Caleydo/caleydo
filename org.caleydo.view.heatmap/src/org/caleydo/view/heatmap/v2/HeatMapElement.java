@@ -9,12 +9,9 @@ import gleem.linalg.Vec2f;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.TablePerspectiveSelectionMixin;
@@ -22,6 +19,7 @@ import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.event.EventListenerManager.DeepScan;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.id.IDType;
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.color.mapping.UpdateColorMappingEvent;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
@@ -32,8 +30,6 @@ import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 import org.caleydo.core.view.opengl.layout2.basic.ScrollingDecorator.IHasMinSize;
-import org.caleydo.core.view.opengl.layout2.util.PickingPool;
-import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.pathway.contextmenu.container.GeneMenuItemContainer;
@@ -80,14 +76,9 @@ public class HeatMapElement extends PickableGLElement implements
 	@DeepScan
 	private final TablePerspectiveSelectionMixin mixin;
 
-	private PickingPool recordPickingPool;
 	private final SelectionRenderer recordSelectionRenderer;
 
-	private PickingPool dimensionPickingPool;
 	private final SelectionRenderer dimensionSelectionRenderer;
-
-	// helper as we have record and dimension need a central point when both is done
-	private List<AContextMenuItem> toShow = new ArrayList<>(2);
 
 	private ISpacingStrategy recordSpacingStrategy = SpacingStrategies.UNIFORM;
 	private ISpacingStrategy dimensionSpacingStrategy = SpacingStrategies.UNIFORM;
@@ -105,7 +96,8 @@ public class HeatMapElement extends PickableGLElement implements
 	private EShowLabels dimensionLabels = EShowLabels.NONE;
 	private EShowLabels recordLabels = EShowLabels.NONE;
 
-	private boolean hovered = false;
+	private Integer hoveredRecordID = null;
+	private Integer hoveredDimensionID = null;
 
 	public HeatMapElement(TablePerspective tablePerspective) {
 		this(tablePerspective, BasicBlockColorer.INSTANCE, EDetailLevel.HIGH, false);
@@ -124,8 +116,6 @@ public class HeatMapElement extends PickableGLElement implements
 				true);
 		this.recordSelectionRenderer = new SelectionRenderer(tablePerspective, mixin.getRecordSelectionManager(),
  false);
-
-		setPicker(null); // no overall picking
 
 		switch (detailLevel) {
 		case HIGH:
@@ -147,31 +137,18 @@ public class HeatMapElement extends PickableGLElement implements
 	@Override
 	protected void init(IGLElementContext context) {
 		super.init(context);
-
-		recordPickingPool = new PickingPool(context, new IPickingListener() {
-			@Override
-			public void pick(Pick pick) {
-				onRecordPick(pick.getObjectID(), pick);
-			}
-		});
-		dimensionPickingPool = new PickingPool(context, new IPickingListener() {
-			@Override
-			public void pick(Pick pick) {
-				onDimensionPick(pick.getObjectID(), pick);
-			}
-		});
 		onVAUpdate(mixin.getTablePerspective());
 	}
 
 	@Override
 	protected void takeDown() {
-		recordPickingPool.clear();
-		recordPickingPool = null;
-		dimensionPickingPool.clear();
-		dimensionPickingPool = null;
 		if (textureRenderer != null)
 			textureRenderer.takeDown();
 		super.takeDown();
+	}
+
+	public TablePerspective getTablePerspective() {
+		return mixin.getTablePerspective();
 	}
 
 	@Override
@@ -179,6 +156,8 @@ public class HeatMapElement extends PickableGLElement implements
 		if (clazz.isAssignableFrom(Vec2f.class)) {
 			return clazz.cast(getMinSize());
 		}
+		if (clazz.isInstance(getTablePerspective()))
+			return clazz.cast(getTablePerspective());
 		return super.getLayoutDataAs(clazz, default_);
 	}
 
@@ -195,46 +174,6 @@ public class HeatMapElement extends PickableGLElement implements
 		if (dimensionLabels.show())
 			h += TEXT_WIDTH;
 		return new Vec2f(w, h);
-	}
-
-
-
-	private void ensureEnoughPickingIds() {
-		if (getVisibility() == EVisibility.PICKABLE && context != null) {
-			// we are pickable
-			TablePerspective tablePerspective = mixin.getTablePerspective();
-			ensureEnoughPickingIds(tablePerspective.getRecordPerspective(), recordPickingPool);
-			ensureEnoughPickingIds(tablePerspective.getDimensionPerspective(), dimensionPickingPool);
-		}
-	}
-
-	/**
-	 * ensoures that we have registered picking is for our records and dimensions
-	 *
-	 * @param perspective
-	 * @param map
-	 * @param listener
-	 */
-	private void ensureEnoughPickingIds(Perspective perspective, PickingPool pool) {
-		if (pool.isEmpty()) { // just add
-			for (Integer recordID : perspective.getVirtualArray()) {
-				pool.get(recordID);
-			}
-		} else {// track changed and update picking ids
-			Set<Integer> bak = new TreeSet<>(pool.currentKeys());
-			for (Integer recordID : perspective.getVirtualArray()) {
-				bak.remove(recordID); // to track which one were removed
-				pool.get(recordID);
-			}
-			for (Integer freed : bak) {
-				pool.free(freed);
-			}
-		}
-	}
-
-	@Override
-	protected void onVisibilityChanged(EVisibility old, EVisibility new_) {
-		ensureEnoughPickingIds();
 	}
 
 	/**
@@ -299,7 +238,6 @@ public class HeatMapElement extends PickableGLElement implements
 
 	@Override
 	public void onVAUpdate(TablePerspective tablePerspective) {
-		ensureEnoughPickingIds();
 		if (textureRenderer != null) {
 			textureRenderer.create(context);
 		}
@@ -423,12 +361,24 @@ public class HeatMapElement extends PickableGLElement implements
 		if (textureRenderer != null)
 			textureRenderer.render(g, w, h);
 		else
-			render(g, w, h, false);
+			render(g, w, h);
+
+		g.incZ();
+		recordSelectionRenderer.render(g, w, h, recordSpacing);
+		dimensionSelectionRenderer.render(g, w, h, dimensionSpacing);
+		g.decZ();
+
 		g.restore();
 	}
 
-
-	private void render(GLGraphics g, float w, float h, boolean doPicking) {
+	/**
+	 * render the heatmap as blocks
+	 *
+	 * @param g
+	 * @param w
+	 * @param h
+	 */
+	private void render(GLGraphics g, float w, float h) {
 		final TablePerspective tablePerspective = mixin.getTablePerspective();
 		final VirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
 		final VirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
@@ -445,78 +395,62 @@ public class HeatMapElement extends PickableGLElement implements
 			if (fieldHeight <= 0)
 				continue;
 
-			if (doPicking)
-				g.pushName(recordPickingPool.get(recordID));
-
 			for (int j = 0; j < dimensionVA.size(); ++j) {
 				Integer dimensionID = dimensionVA.get(j);
 				float x = dimensionSpacing.getPosition(j);
 				float fieldWidth = dimensionSpacing.getSize(j);
 				if (fieldWidth <= 0)
 					continue;
-				if (doPicking) {
-					g.pushName(dimensionPickingPool.get(dimensionID));
-					g.fillRect(x, y, fieldWidth, fieldHeight);
-					g.popName();
-				} else {
-					boolean deSelected = isDeselected(recordID);
-					Color color = blockColorer.apply(recordID, dimensionID, dataDomain, deSelected);
-					g.color(color).fillRect(x, y, fieldWidth, fieldHeight);
-				}
+				boolean deSelected = isDeselected(recordID);
+				Color color = blockColorer.apply(recordID, dimensionID, dataDomain, deSelected);
+				g.color(color).fillRect(x, y, fieldWidth, fieldHeight);
 			}
-			if (doPicking)
-				g.popName();
-		}
-
-		if (!doPicking) {
-			g.incZ();
-			recordSelectionRenderer.render(g, w, h, recordSpacing);
-			dimensionSelectionRenderer.render(g, w, h, dimensionSpacing);
-			g.decZ();
 		}
 	}
 
 	@Override
-	protected void renderPickImpl(GLGraphics g, float w, float h) {
-		// ensureEnoughPickingIds();
-		super.renderPickImpl(g, w, h);
-		if (!hovered) // render the details only if the mouse is over the heatmap
-			return;
-		g.save();
-		switch (recordLabels) {
-		case LEFT:
-			w -= TEXT_WIDTH;
-			g.move(TEXT_WIDTH, 0);
-			break;
-		case RIGHT:
-			w -= TEXT_WIDTH;
-			break;
-		default:
-			break;
+	protected void onClicked(Pick pick) {
+		Pair<Integer, Integer> ids = toDimensionRecordIds(pick);
+		Integer dimensionID = ids.getFirst();
+		Integer recordID = ids.getSecond();
+		boolean repaint = false;
+		if (dimensionID != null) {
+			if (dimensionID != null)
+				createSelection(mixin.getDimensionSelectionManager(), SelectionType.SELECTION, dimensionID);
+			hoveredDimensionID = dimensionID;
+			repaint = true;
 		}
-		switch (dimensionLabels) {
-		case LEFT:
-			h -= TEXT_WIDTH;
-			g.move(0, TEXT_WIDTH);
-			break;
-		case RIGHT:
-			h -= TEXT_WIDTH;
-			break;
-		default:
-			break;
+		if (recordID != null) {
+			if (recordID != null)
+				createSelection(mixin.getRecordSelectionManager(), SelectionType.SELECTION, recordID);
+			hoveredRecordID = recordID;
+			repaint = true;
 		}
-
-		g.incZ();
-		render(g, w, h, true);
-		g.decZ();
-
-		g.restore();
+		if (repaint)
+			repaint();
 	}
 
 	@Override
-	protected void onMouseOver(Pick pick) {
-		hovered = true;
-		repaintPick();
+	protected void onMouseMoved(Pick pick) {
+		Pair<Integer, Integer> ids = toDimensionRecordIds(pick);
+		Integer dimensionID = ids.getFirst();
+		Integer recordID = ids.getSecond();
+
+		boolean repaint = false;
+		if (dimensionID != hoveredDimensionID) {
+			if (dimensionID != null)
+				createSelection(mixin.getDimensionSelectionManager(), SelectionType.MOUSE_OVER, dimensionID);
+			hoveredDimensionID = dimensionID;
+			repaint = true;
+		}
+		if (recordID != hoveredRecordID) {
+			if (recordID != null)
+				createSelection(mixin.getRecordSelectionManager(), SelectionType.MOUSE_OVER, recordID);
+			hoveredRecordID = recordID;
+			repaint = true;
+		}
+		if (repaint)
+			repaint();
 	}
 
 	@Override
@@ -525,72 +459,19 @@ public class HeatMapElement extends PickableGLElement implements
 		createSelection(mixin.getDimensionSelectionManager(), SelectionType.MOUSE_OVER, -1);
 		createSelection(mixin.getRecordSelectionManager(), SelectionType.MOUSE_OVER, -1);
 		repaint();
-		hovered = false;
-		repaintPick();
-	}
-
-	private boolean isHidden(Integer recordID) {
-		return isHideElements() && mixin.getRecordSelectionManager().checkStatus(GLHeatMap.SELECTION_HIDDEN, recordID);
-	}
-
-	private boolean isDeselected(int recordID) {
-		return mixin.getRecordSelectionManager().checkStatus(SelectionType.DESELECTED, recordID);
+		hoveredDimensionID = null;
+		hoveredRecordID = null;
 	}
 
 	@Override
-	public void layout(int deltaTimeMs) {
-		super.layout(deltaTimeMs);
+	protected void onRightClicked(Pick pick) {
+		Pair<Integer, Integer> ids = toDimensionRecordIds(pick);
+		Integer dimensionID = ids.getFirst();
+		Integer recordID = ids.getSecond();
 
-		if (!toShow.isEmpty()) { // show the context menu
-			context.getSWTLayer().showContextMenu(toShow);
-			toShow.clear();
-		}
-	}
-
-	protected void onDimensionPick(int dimensionID, Pick pick) {
-		SelectionManager dimensionSelectionManager = mixin.getDimensionSelectionManager();
-		switch (pick.getPickingMode()) {
-		case CLICKED:
-			createSelection(dimensionSelectionManager, SelectionType.SELECTION, dimensionID);
-			break;
-		case MOUSE_OVER:
-			createSelection(dimensionSelectionManager, SelectionType.MOUSE_OVER, dimensionID);
-			break;
-		case RIGHT_CLICKED:
-			createSelection(dimensionSelectionManager, SelectionType.SELECTION, dimensionID);
-
-			ATableBasedDataDomain dataDomain = mixin.getDataDomain();
-			if (dataDomain instanceof GeneticDataDomain && !dataDomain.isColumnDimension()) {
-				GeneMenuItemContainer contexMenuItemContainer = new GeneMenuItemContainer();
-				contexMenuItemContainer.setDataDomain(dataDomain);
-				contexMenuItemContainer.setData(dataDomain.getDimensionIDType(), dimensionID);
-				contexMenuItemContainer.addSeparator();
-				toShow.addAll(contexMenuItemContainer.getContextMenuItems());
-			} else {
-				IDType dimensionIDType = dataDomain.getDimensionIDType();
-				IDType recordIDType = dataDomain.getRecordIDType();
-				AContextMenuItem menuItem = new BookmarkMenuItem("Bookmark "
-						+ recordIDType.getIDCategory().getHumanReadableIDType() + ": "
-						+ dataDomain.getDimensionLabel(dimensionIDType, dimensionID), dimensionIDType, dimensionID);
-				toShow.add(menuItem);
-			}
-			break;
-		default:
-			break;
-		}
-	}
-
-	protected void onRecordPick(int recordID, Pick pick) {
-		SelectionManager recordSelectionManager = mixin.getRecordSelectionManager();
-		switch (pick.getPickingMode()) {
-		case CLICKED:
-			createSelection(recordSelectionManager, SelectionType.SELECTION, recordID);
-			break;
-		case MOUSE_OVER:
-			createSelection(recordSelectionManager, SelectionType.MOUSE_OVER, recordID);
-			break;
-		case RIGHT_CLICKED:
-			createSelection(recordSelectionManager, SelectionType.SELECTION, recordID);
+		List<AContextMenuItem> toShow = new ArrayList<>();
+		if (recordID != null) {
+			createSelection(mixin.getRecordSelectionManager(), SelectionType.SELECTION, recordID);
 
 			ATableBasedDataDomain dataDomain = mixin.getDataDomain();
 			if (dataDomain instanceof GeneticDataDomain && dataDomain.isColumnDimension()) {
@@ -602,14 +483,78 @@ public class HeatMapElement extends PickableGLElement implements
 			} else {
 				IDType recordIDType = dataDomain.getRecordIDType();
 				AContextMenuItem menuItem = new BookmarkMenuItem("Bookmark "
-						+ recordIDType.getIDCategory().getHumanReadableIDType() + ": "
+						+ recordIDType.getIDCategory().getHumanReadableIDType().getTypeName() + ": "
 						+ dataDomain.getRecordLabel(recordIDType, recordID), recordIDType, recordID);
 				toShow.add(menuItem);
 			}
+		}
+		if (dimensionID != null) {
+			createSelection(mixin.getDimensionSelectionManager(), SelectionType.SELECTION, dimensionID);
+
+			ATableBasedDataDomain dataDomain = mixin.getDataDomain();
+			if (dataDomain instanceof GeneticDataDomain && !dataDomain.isColumnDimension()) {
+				GeneMenuItemContainer contexMenuItemContainer = new GeneMenuItemContainer();
+				contexMenuItemContainer.setDataDomain(dataDomain);
+				contexMenuItemContainer.setData(dataDomain.getDimensionIDType(), dimensionID);
+				contexMenuItemContainer.addSeparator();
+				toShow.addAll(contexMenuItemContainer.getContextMenuItems());
+			} else {
+				IDType dimensionIDType = dataDomain.getDimensionIDType();
+				AContextMenuItem menuItem = new BookmarkMenuItem("Bookmark "
+						+ dimensionIDType.getIDCategory().getHumanReadableIDType().getTypeName() + ": "
+						+ dataDomain.getDimensionLabel(dimensionIDType, dimensionID), dimensionIDType, dimensionID);
+				toShow.add(menuItem);
+			}
+		}
+		if (!toShow.isEmpty())
+			context.getSWTLayer().showContextMenu(toShow);
+	}
+
+	/**
+	 * computes out of the given pick the correspondimg dimension and record picking ids
+	 *
+	 * @param pick
+	 * @return
+	 */
+	private Pair<Integer, Integer> toDimensionRecordIds(Pick pick) {
+		Vec2f point = toRelative(pick.getDIPPickedPoint());
+		float x = point.x();
+		float y = point.y();
+		switch (recordLabels) {
+		case LEFT:
+			x -= TEXT_WIDTH;
 			break;
 		default:
 			break;
 		}
+		switch (dimensionLabels) {
+		case LEFT:
+			y -= TEXT_WIDTH;
+			break;
+		default:
+			break;
+		}
+
+		int dindex = dimensionSpacing.getIndex(x);
+		int rindex = recordSpacing.getIndex(y);
+
+		Integer recordID = get(rindex, getTablePerspective().getRecordPerspective().getVirtualArray());
+		Integer dimensionID = get(dindex, getTablePerspective().getDimensionPerspective().getVirtualArray());
+		return Pair.make(dimensionID, recordID);
+	}
+
+	private static Integer get(int index, VirtualArray virtualArray) {
+		if (index < 0 || index >= virtualArray.size())
+			return null;
+		return virtualArray.get(index);
+	}
+
+	private boolean isHidden(Integer recordID) {
+		return isHideElements() && mixin.getRecordSelectionManager().checkStatus(GLHeatMap.SELECTION_HIDDEN, recordID);
+	}
+
+	private boolean isDeselected(int recordID) {
+		return mixin.getRecordSelectionManager().checkStatus(SelectionType.DESELECTED, recordID);
 	}
 
 	private void createSelection(SelectionManager manager, SelectionType selectionType, int recordID) {

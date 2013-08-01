@@ -57,6 +57,10 @@ public class GLElementFactoryContext {
 	 * @return
 	 */
 	public GLElementFactoryContext sub(String prefix) {
+		prefix = StringUtils.defaultString(prefix);
+		prefix = StringUtils.trimToEmpty(prefix);
+		if (!prefix.isEmpty())
+			prefix += ".";
 		return new GLElementFactoryContext(datas, this.prefix + prefix, objects, namedObjects);
 	}
 

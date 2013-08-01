@@ -12,9 +12,9 @@ import org.caleydo.view.heatmap.v2.ISpacingStrategy;
 
 /**
  * uniform spacing strategy implementation
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public class UniformSpacingCalculator implements ISpacingStrategy {
 
@@ -37,6 +37,14 @@ public class UniformSpacingCalculator implements ISpacingStrategy {
 		@Override
 		public float getSize(int index) {
 			return fieldHeight;
+		}
+
+		@Override
+		public int getIndex(float position) {
+			float pos = position / fieldHeight;
+			if (pos < 0)
+				return -1;
+			return (int) Math.round(Math.floor(pos));
 		}
 	}
 

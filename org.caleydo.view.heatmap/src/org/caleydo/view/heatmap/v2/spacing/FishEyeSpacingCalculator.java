@@ -97,7 +97,7 @@ public class FishEyeSpacingCalculator implements ISpacingStrategy {
 
 	/**
 	 * returns a bitset containing the selected indices
-	 * 
+	 *
 	 * @param selectionManager
 	 * @param va
 	 * @return
@@ -138,6 +138,17 @@ public class FishEyeSpacingCalculator implements ISpacingStrategy {
 			if (index == positions.length - 1)
 				return lastSize;
 			return positions[index + 1] - positions[index];
+		}
+
+		@Override
+		public int getIndex(float position) {
+			for (int i = 0; i < positions.length; ++i) {
+				if (position < positions[i])
+					return i - 1;
+			}
+			if (position < (positions[positions.length - 1] + lastSize))
+				return positions.length - 1;
+			return -1;
 		}
 	}
 }

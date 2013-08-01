@@ -17,7 +17,7 @@ import org.caleydo.core.data.selection.SelectionManager;
 public interface ISpacingStrategy {
 	/**
 	 * apply the strategy and compute a {@link ISpacingLayout} given the arguments
-	 * 
+	 *
 	 * @param perspective
 	 *            the data to show
 	 * @param manager
@@ -46,5 +46,13 @@ public interface ISpacingStrategy {
 		 * @return
 		 */
 		float getSize(int index);
+
+		/**
+		 * return the index at the given position or -1 for none
+		 *
+		 * @param position
+		 * @return
+		 */
+		int getIndex(float position);
 	}
 }
