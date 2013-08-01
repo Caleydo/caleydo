@@ -167,6 +167,8 @@ public class GLElement implements IHasGLLayoutData {
 
 	@Override
 	public <T> T getLayoutDataAs(Class<T> clazz, T default_) {
+		if (clazz.isInstance(this))
+			return clazz.cast(this);
 		return GLLayouts.resolveLayoutData(clazz, layoutData, default_);
 	}
 

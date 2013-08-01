@@ -67,7 +67,7 @@ public final class ScrollingDecorator extends AGLElementDecorator implements ISc
 
 	@Override
 	protected void layoutContent(IGLLayoutElement layout, float w, float h) {
-		Vec2f minSize = layout.getLayoutDataAs(Vec2f.class, new Vec2f(0, 0));
+		Vec2f minSize = getMinSize(layout);
 		Vec2f size = getSize();
 		Vec2f contentSize = new Vec2f();
 		Vec2f offset = content.getLocation();
@@ -112,6 +112,17 @@ public final class ScrollingDecorator extends AGLElementDecorator implements ISc
 		layout.setSize(contentSize.x(), contentSize.y());
 	}
 
+
+	/**
+	 * @param layout
+	 * @return
+	 */
+	private Vec2f getMinSize(IGLLayoutElement layout) {
+		IHasMinSize minSize = layout.getLayoutDataAs(IHasMinSize.class, null);
+		if (minSize != null)
+			return minSize.getMinSize();
+		return layout.getLayoutDataAs(Vec2f.class, new Vec2f(0, 0));
+	}
 
 	@Override
 	public float getHeight(IScrollBar scrollBar) {
@@ -237,4 +248,13 @@ public final class ScrollingDecorator extends AGLElementDecorator implements ISc
 		}
 	}
 
+	/**
+	 * contract for delivering a min size, alternative provide a Vec2f in the layout data
+	 * 
+	 * @author Samuel Gratzl
+	 * 
+	 */
+	public interface IHasMinSize {
+		Vec2f getMinSize();
+	}
 }

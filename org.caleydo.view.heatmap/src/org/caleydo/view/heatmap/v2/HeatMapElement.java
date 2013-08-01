@@ -31,6 +31,7 @@ import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
+import org.caleydo.core.view.opengl.layout2.basic.ScrollingDecorator.IHasMinSize;
 import org.caleydo.core.view.opengl.layout2.util.PickingPool;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -50,7 +51,7 @@ import com.google.common.base.Preconditions;
  *
  */
 public class HeatMapElement extends PickableGLElement implements
-		TablePerspectiveSelectionMixin.ITablePerspectiveMixinCallback {
+		TablePerspectiveSelectionMixin.ITablePerspectiveMixinCallback, IHasMinSize {
 	private static final int TEXT_OFFSET = 5;
 	/**
 	 * maximum pixel size of a text
@@ -177,6 +178,7 @@ public class HeatMapElement extends PickableGLElement implements
 	/**
 	 * @return the recommended min size of this heatmap
 	 */
+	@Override
 	public Vec2f getMinSize() {
 		TablePerspective tablePerspective = mixin.getTablePerspective();
 		float w = tablePerspective.getNrDimensions() * (dimensionLabels.show() ? 16 : 1);

@@ -27,6 +27,7 @@ import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
+import org.caleydo.core.view.opengl.layout2.basic.ScrollingDecorator.IHasMinSize;
 import org.caleydo.core.view.opengl.layout2.util.PickingPool;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -38,7 +39,7 @@ import org.caleydo.view.histogram.HistogramRenderStyle;
  * @author Samuel Gratzl
  */
 public class HistogramElement extends GLElement implements
-		TablePerspectiveSelectionMixin.ITablePerspectiveMixinCallback {
+		TablePerspectiveSelectionMixin.ITablePerspectiveMixinCallback, IHasMinSize {
 	private static Color SPREAD_LINE_COLOR = new Color(0.5f, 0.5f, 0.5f);
 
 	@DeepScan
@@ -418,6 +419,7 @@ public class HistogramElement extends GLElement implements
 	}
 
 
+	@Override
 	public final Vec2f getMinSize() {
 		switch (detailLevel) {
 		case HIGH:
