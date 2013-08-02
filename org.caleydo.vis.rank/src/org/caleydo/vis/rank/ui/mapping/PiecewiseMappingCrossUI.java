@@ -102,7 +102,7 @@ public class PiecewiseMappingCrossUI extends MappingCrossUI<PiecewiseMapping> im
 			break;
 		case MOUSE_OVER:
 			this.lineHovered = true;
-			this.linePoint = this.toRelative(pick.getDIPPickedPoint());
+			this.linePoint = this.toRelative(pick.getPickedPoint());
 			this.repaint();
 			break;
 		case MOUSE_OUT:

@@ -23,6 +23,6 @@ public class GLMouseWheelListener extends GLMouseAdapter {
 
 	@Override
 	public void mouseWheelMoved(IMouseEvent event) {
-		handler.handleMouseWheel(event.getWheelRotation(), event.getDIPPoint());
+		handler.handleMouseWheel(event.getWheelRotation(), event.getPoint());
 	}
 }

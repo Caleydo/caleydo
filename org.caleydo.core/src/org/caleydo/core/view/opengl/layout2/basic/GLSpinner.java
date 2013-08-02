@@ -129,7 +129,7 @@ public class GLSpinner<T> extends PickableGLElement {
 
 	@Override
 	protected void onClicked(Pick pick) {
-		Vec2f p = toRelative(pick.getDIPPickedPoint());
+		Vec2f p = toRelative(pick.getPickedPoint());
 		Vec2f size = getSize();
 		if (p.x() < size.x() - BUTTON_SIZE)
 			return;
@@ -139,7 +139,7 @@ public class GLSpinner<T> extends PickableGLElement {
 
 	@Override
 	protected void onDragged(Pick pick) {
-		Vec2f p = toRelative(pick.getDIPPickedPoint());
+		Vec2f p = toRelative(pick.getPickedPoint());
 		Vec2f size = getSize();
 		if (p.x() < size.x() - BUTTON_SIZE) {
 			if (armed >= 0)

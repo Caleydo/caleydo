@@ -828,7 +828,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 				selectElementsByGroup(select);
 
 				if (!isHeaderBrick && !(brickLayoutConfiguration instanceof DetailBrickLayoutTemplate)) {
-					Vec2f point = pick.getDIPPickedPoint();
+					Vec2f point = pick.getPickedPoint();
 					DragAndDropController dragAndDropController = stratomex.getDragAndDropController();
 
 					dragAndDropController.clearDraggables();

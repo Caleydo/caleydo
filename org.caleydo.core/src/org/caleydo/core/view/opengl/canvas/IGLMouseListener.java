@@ -39,7 +39,7 @@ public interface IGLMouseListener {
 		 * 
 		 * @return
 		 */
-		Vec2f getDIPPoint();
+		Vec2f getPoint();
 
 		/**
 		 * return the raw pixel point, just use in rare cases for picking

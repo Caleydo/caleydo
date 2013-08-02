@@ -65,7 +65,7 @@ public class ScrollBarRenderer
 			@Override
 			public void clicked(Pick pick) {
 				dragAndDropController.clearDraggables();
-				dragAndDropController.setDraggingProperties(pick.getDIPPickedPoint(), "ScrollbarDrag");
+				dragAndDropController.setDraggingProperties(pick.getPickedPoint(), "ScrollbarDrag");
 				dragAndDropController.addDraggable(ScrollBarRenderer.this);
 			}
 

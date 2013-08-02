@@ -48,7 +48,7 @@ abstract class APickingEntry {
 	 * @param depth
 	 */
 	public void fire(PickingMode mode, float depth, boolean isAnyDragging, IMouseEvent event) {
-		Vec2f mouse = event.getDIPPoint();
+		Vec2f mouse = event.getPoint();
 		if ((mode == PickingMode.CLICKED || mode == PickingMode.DRAGGED || mode == PickingMode.MOUSE_MOVED)
 				&& dragStart == null) {
 			dragStart = lastPoint = mouse.copy();

@@ -9,6 +9,7 @@ import org.caleydo.core.util.base.ILabeled;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.layout2.ISWTLayer;
+import org.caleydo.core.view.opengl.picking.IPickingLabelProvider;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -33,6 +34,11 @@ public class SWTLayer implements ISWTLayer {
 
 	@Override
 	public final IPickingListener createTooltip(ILabeled label) {
+		return canvas.createTooltip(label);
+	}
+
+	@Override
+	public final IPickingListener createTooltip(IPickingLabelProvider label) {
 		return canvas.createTooltip(label);
 	}
 

@@ -111,7 +111,7 @@ public class MultiSelectionManagerMixin implements Iterable<SelectionManager> {
 		return Iterators.unmodifiableIterator(selectionManagers.iterator());
 	}
 
-	protected final void fireSelectionDelta(SelectionManager manager) {
+	public final void fireSelectionDelta(SelectionManager manager) {
 		SelectionDelta selectionDelta = manager.getDelta();
 		SelectionUpdateEvent event = createEvent();
 		event.setSelectionDelta(selectionDelta);

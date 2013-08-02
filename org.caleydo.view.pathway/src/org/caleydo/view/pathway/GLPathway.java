@@ -583,8 +583,8 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 				if (allPaths == null || allPaths.isEmpty())
 					return;
 
-				int pickX = (int) pick.getDIPPickedPoint().x();
-				int pickY = (int) pick.getDIPPickedPoint().y();
+				int pickX = (int) pick.getPickedPoint().x();
+				int pickY = (int) pick.getPickedPoint().y();
 
 				float pathwayTextureScaling = 1;
 

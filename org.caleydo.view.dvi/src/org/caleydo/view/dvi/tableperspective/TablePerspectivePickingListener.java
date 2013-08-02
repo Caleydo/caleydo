@@ -70,7 +70,7 @@ public class TablePerspectivePickingListener extends APickingListener {
 		//
 		// draggedComparisonGroupRenderer
 		// .setSelectionType(SelectionType.SELECTION);
-		Vec2f point = pick.getDIPPickedPoint();
+		Vec2f point = pick.getPickedPoint();
 		dragAndDropController.clearDraggables();
 		dragAndDropController.setDraggingProperties(new Vec2f(point.x(), point.y()), "DimensionGroupDrag");
 		// dragAndDropController.setDraggingStartPosition(new Point(point.x,

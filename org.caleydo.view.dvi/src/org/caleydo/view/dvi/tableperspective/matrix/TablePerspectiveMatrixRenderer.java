@@ -122,7 +122,7 @@ public class TablePerspectiveMatrixRenderer extends AMultiTablePerspectiveRender
 				if (perspectiveRenderer == null)
 					return;
 
-				Vec2f point = pick.getDIPPickedPoint();
+				Vec2f point = pick.getPickedPoint();
 				dragAndDropController.clearDraggables();
 				dragAndDropController.setDraggingProperties(new Vec2f(point.x(), point.y()), "PerspectiveDrag");
 

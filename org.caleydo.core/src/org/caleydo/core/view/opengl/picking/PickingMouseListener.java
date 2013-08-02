@@ -36,7 +36,7 @@ final class PickingMouseListener implements IGLMouseListener {
 	public Vec2f getCurrentMousePos() {
 		if (event.isEmpty())
 			return null;
-		return event.getLast().getFirst().getDIPPoint();
+		return event.getLast().getFirst().getPoint();
 	}
 
 	public synchronized Deque<Pair<IMouseEvent, PickingMode>> fetchEvents() {

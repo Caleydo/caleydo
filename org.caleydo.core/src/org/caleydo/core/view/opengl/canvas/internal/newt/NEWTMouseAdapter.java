@@ -111,7 +111,7 @@ final class NEWTMouseAdapter implements MouseListener {
 		}
 
 		@Override
-		public Vec2f getDIPPoint() {
+		public Vec2f getPoint() {
 			return point;
 		}
 

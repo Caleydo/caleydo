@@ -146,7 +146,7 @@ public class PickingManager2 extends APickingManager<PickingManager2.PickingEntr
 		}
 
 		@Override
-		public Vec2f getDIPPoint() {
+		public Vec2f getPoint() {
 			return point;
 		}
 

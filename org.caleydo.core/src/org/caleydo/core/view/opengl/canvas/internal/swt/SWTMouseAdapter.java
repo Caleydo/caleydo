@@ -109,7 +109,7 @@ final class SWTMouseAdapter implements MouseListener, MouseMoveListener, MouseWh
 		}
 
 		@Override
-		public Vec2f getDIPPoint() {
+		public Vec2f getPoint() {
 			return point;
 		}
 

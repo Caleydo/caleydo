@@ -104,8 +104,8 @@ public class PiecewiseMappingParallelUI extends MappingParallelUI<PiecewiseMappi
 			return;
 		switch (pick.getPickingMode()) {
 		case CLICKED:
-			Vec2f r = toRelative(pick.getDIPPickedPoint());
-			onAddPoint(toDragMode(pick.getDIPPickedPoint()), isHorizontal ? r.x() : r.y());
+			Vec2f r = toRelative(pick.getPickedPoint());
+			onAddPoint(toDragMode(pick.getPickedPoint()), isHorizontal ? r.x() : r.y());
 			this.repaint();
 			break;
 		default:
@@ -338,7 +338,7 @@ public class PiecewiseMappingParallelUI extends MappingParallelUI<PiecewiseMappi
 			if (dv == 0)
 				return;
 			this.pseudo = false;
-			drag(this, toDragMode(pick.getDIPPickedPoint()), dv);
+			drag(this, toDragMode(pick.getPickedPoint()), dv);
 			this.repaintAll();
 		}
 

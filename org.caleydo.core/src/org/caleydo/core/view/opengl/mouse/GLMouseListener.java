@@ -66,10 +66,10 @@ public class GLMouseListener implements IGLMouseListener {
 		leftMouseButtonPressed = false;
 		rightMouseButtonPressed = false;
 
-		pickedPointDragStart.set(mouseEvent.getDIPPoint());
+		pickedPointDragStart.set(mouseEvent.getPoint());
 
-		prevMouseX = mouseEvent.getDIPPoint().x();
-		prevMouseY = mouseEvent.getDIPPoint().y();
+		prevMouseX = mouseEvent.getPoint().x();
+		prevMouseY = mouseEvent.getPoint().y();
 
 		if (mouseEvent.getClickCount() > 1) {
 			mouseDoubleClick = true;
@@ -86,7 +86,7 @@ public class GLMouseListener implements IGLMouseListener {
 	@Override
 	public void mouseMoved(IMouseEvent mouseEvent) {
 		mouseMoved = true;
-		pickedPointCurrent = mouseEvent.getDIPPoint();
+		pickedPointCurrent = mouseEvent.getPoint();
 		pickedRAWPointCurrent = mouseEvent.getRAWPoint();
 	}
 
@@ -100,7 +100,7 @@ public class GLMouseListener implements IGLMouseListener {
 		mouseDragged = false;
 
 		if (mouseEvent.getButton() == 1) {
-			pickedPointCurrent = mouseEvent.getDIPPoint();
+			pickedPointCurrent = mouseEvent.getPoint();
 			pickedRAWPointCurrent = mouseEvent.getRAWPoint();
 		}
 
@@ -117,7 +117,7 @@ public class GLMouseListener implements IGLMouseListener {
 	public void mouseDragged(IMouseEvent mouseEvent) {
 
 		mouseDragged = true;
-		pickedPointCurrent = mouseEvent.getDIPPoint();
+		pickedPointCurrent = mouseEvent.getPoint();
 		pickedRAWPointCurrent = mouseEvent.getRAWPoint();
 
 		float x = pickedPointCurrent.x();

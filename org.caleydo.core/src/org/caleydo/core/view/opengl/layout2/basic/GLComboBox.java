@@ -198,7 +198,7 @@ public class GLComboBox<T> extends AGLButton {
 	@Override
 	protected void onMouseMoved(Pick pick) {
 		if (this.hovered) {
-			setHoveredIndex(toIndex(pick.getDIPPickedPoint()));
+			setHoveredIndex(toIndex(pick.getPickedPoint()));
 		}
 		super.onMouseMoved(pick);
 	}

@@ -23,19 +23,19 @@ public class AdvancedPick extends Pick implements IMouseEvent {
 	public AdvancedPick(int objectID, PickingMode ePickingMode, Vec2f dragStartPoint, float depth,
  Vec2f dv,
 			boolean isAnyDragging, IMouseEvent event) {
-		super(objectID, ePickingMode, event.getDIPPoint(), dragStartPoint, depth, dv, isAnyDragging);
+		super(objectID, ePickingMode, event.getPoint(), dragStartPoint, depth, dv, isAnyDragging);
 		this.event = event;
 	}
 
 	public AdvancedPick(int objectID, PickingMode ePickingMode, Vec2f dragStartPoint, float depth,
 			IMouseEvent event) {
-		super(objectID, ePickingMode, event.getDIPPoint(), dragStartPoint, depth);
+		super(objectID, ePickingMode, event.getPoint(), dragStartPoint, depth);
 		this.event = event;
 	}
 
 	@Override
-	public Vec2f getDIPPoint() {
-		return event.getDIPPoint();
+	public Vec2f getPoint() {
+		return event.getPoint();
 	}
 
 	@Override

@@ -971,7 +971,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 			@Override
 			public void clicked(Pick pick) {
 				dragAndDropController.clearDraggables();
-				dragAndDropController.setDraggingStartPosition(pick.getDIPPickedPoint());
+				dragAndDropController.setDraggingStartPosition(pick.getPickedPoint());
 				dragAndDropController.addDraggable((BrickColumn) ViewManager.get().getGLView(
 						pick.getObjectID()));
 				dragAndDropController.setDraggingMode("DimensionGroupDrag");

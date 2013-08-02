@@ -401,7 +401,7 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 					selectionManager.addToType(SelectionType.SELECTION, externalID);
 				}
 
-				dragAndDropController.setDraggingStartPosition(pick.getDIPPickedPoint());
+				dragAndDropController.setDraggingStartPosition(pick.getPickedPoint());
 				dragAndDropController.addDraggable(filterList.get(externalID).getRepresentation());
 				break;
 			case RIGHT_CLICKED:

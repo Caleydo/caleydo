@@ -77,7 +77,7 @@ public class ColumnPoolElem extends APoolElem {
 		IMouseLayer l = context.getMouseLayer();
 		GLElement elem = new DraggedScoreHeaderItem();
 		elem.setSize(getSize().x(), getSize().y());
-		Vec2f loc = toRelative(pick.getDIPPickedPoint());
+		Vec2f loc = toRelative(pick.getPickedPoint());
 		elem.setLocation(-loc.x(), -loc.y());
 		isDragging = true;
 		l.addDraggable(elem, this.model);

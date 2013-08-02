@@ -119,7 +119,12 @@ public class Pick {
 		return ePickingMode;
 	}
 
-	public Vec2f getDIPPickedPoint() {
+	/**
+	 * return the point in DIPs
+	 * 
+	 * @return
+	 */
+	public Vec2f getPickedPoint() {
 		return new Vec2f(this.pickedPoint);
 	}
 	/**

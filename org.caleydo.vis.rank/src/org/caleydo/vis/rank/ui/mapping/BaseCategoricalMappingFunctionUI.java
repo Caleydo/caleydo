@@ -293,7 +293,7 @@ public class BaseCategoricalMappingFunctionUI<T> extends GLElementContainer impl
 			float dv = pick.getDx();
 			if (dv == 0)
 				return;
-			drag(this, toRelative(pick.getDIPPickedPoint()).y(), dv);
+			drag(this, toRelative(pick.getPickedPoint()).y(), dv);
 			this.repaintAll();
 		}
 

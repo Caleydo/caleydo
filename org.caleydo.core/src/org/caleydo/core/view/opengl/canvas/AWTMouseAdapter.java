@@ -105,7 +105,7 @@ final class AWTMouseAdapter implements MouseListener, MouseMotionListener, Mouse
 		}
 
 		@Override
-		public Vec2f getDIPPoint() {
+		public Vec2f getPoint() {
 			return point;
 		}
 

@@ -66,7 +66,7 @@ public abstract class ADraggableDataGraphNode implements IDVINode {
 				if(graphLayout.isLayoutFixed())
 					return;
 				dragAndDropController.clearDraggables();
-				dragAndDropController.setDraggingProperties(pick.getDIPPickedPoint(),
+				dragAndDropController.setDraggingProperties(pick.getPickedPoint(),
 						"NodeDrag");
 				dragAndDropController.addDraggable(ADraggableDataGraphNode.this);
 			}
