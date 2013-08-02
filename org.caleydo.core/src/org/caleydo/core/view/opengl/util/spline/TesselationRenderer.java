@@ -60,7 +60,7 @@ public class TesselationRenderer {
 		private GL2 gl;
 		@Override
 		public void begin(int type) {
-			// gl.glPolygonMode(gl.GL_FRONT, gl.GL_LINE);
+			// gl.glPolygonMode(gl.GL_FRONT_AND_BACK, gl.GL_LINE);
 			gl.glBegin(type);
 		}
 

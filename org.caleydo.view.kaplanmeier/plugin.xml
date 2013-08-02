@@ -59,4 +59,12 @@
          </dataDomain>
       </association>
    </extension>
+   <extension
+         point="org.caleydo.ui.GLElementFactory">
+      <factory
+            factory="org.caleydo.view.kaplanmeier.v2.internal.KaplanMaierElementFactory"
+            icon="resources/icons/icon.png"
+            name="Kaplan Maier Plot">
+      </factory>
+   </extension>
 </plugin>

@@ -14,9 +14,7 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.selection.TablePerspectiveSelectionMixin;
 import org.caleydo.core.data.virtualarray.VirtualArray;
-import org.caleydo.core.event.EventListenerManager.DeepScan;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.collection.Pair;
@@ -28,8 +26,7 @@ import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
-import org.caleydo.core.view.opengl.layout2.PickableGLElement;
-import org.caleydo.core.view.opengl.layout2.basic.ScrollingDecorator.IHasMinSize;
+import org.caleydo.core.view.opengl.layout2.view.ASingleTablePerspectiveElement;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.pathway.contextmenu.container.GeneMenuItemContainer;
@@ -46,8 +43,7 @@ import com.google.common.base.Preconditions;
  * @author Samuel Gratzl
  *
  */
-public class HeatMapElement extends PickableGLElement implements
-		TablePerspectiveSelectionMixin.ITablePerspectiveMixinCallback, IHasMinSize {
+public class HeatMapElement extends ASingleTablePerspectiveElement {
 	private static final int TEXT_OFFSET = 5;
 	/**
 	 * maximum pixel size of a text
@@ -72,9 +68,6 @@ public class HeatMapElement extends PickableGLElement implements
 
 	/** hide elements with the state {@link #SELECTION_HIDDEN} if this is true */
 	private boolean hideElements = true;
-
-	@DeepScan
-	private final TablePerspectiveSelectionMixin mixin;
 
 	private final SelectionRenderer recordSelectionRenderer;
 
@@ -105,16 +98,16 @@ public class HeatMapElement extends PickableGLElement implements
 
 	public HeatMapElement(TablePerspective tablePerspective, IBlockColorer blockColorer, EDetailLevel detailLevel,
 			boolean forceTextures) {
+		super(tablePerspective);
 		blockColorer = Objects.firstNonNull(blockColorer, BasicBlockColorer.INSTANCE);
 		detailLevel = Objects.firstNonNull(detailLevel, EDetailLevel.LOW);
 
-		this.mixin = new TablePerspectiveSelectionMixin(tablePerspective, this);
 		Preconditions.checkNotNull(blockColorer, "need a valid renderer");
 
 		this.blockColorer = blockColorer;
-		this.dimensionSelectionRenderer = new SelectionRenderer(tablePerspective, mixin.getDimensionSelectionManager(),
+		this.dimensionSelectionRenderer = new SelectionRenderer(tablePerspective, selections.getDimensionSelectionManager(),
 				true);
-		this.recordSelectionRenderer = new SelectionRenderer(tablePerspective, mixin.getRecordSelectionManager(),
+		this.recordSelectionRenderer = new SelectionRenderer(tablePerspective, selections.getRecordSelectionManager(),
  false);
 
 		switch (detailLevel) {
@@ -137,7 +130,7 @@ public class HeatMapElement extends PickableGLElement implements
 	@Override
 	protected void init(IGLElementContext context) {
 		super.init(context);
-		onVAUpdate(mixin.getTablePerspective());
+		onVAUpdate(selections.getTablePerspective());
 	}
 
 	@Override
@@ -147,26 +140,12 @@ public class HeatMapElement extends PickableGLElement implements
 		super.takeDown();
 	}
 
-	public TablePerspective getTablePerspective() {
-		return mixin.getTablePerspective();
-	}
-
-	@Override
-	public <T> T getLayoutDataAs(Class<T> clazz, T default_) {
-		if (clazz.isAssignableFrom(Vec2f.class)) {
-			return clazz.cast(getMinSize());
-		}
-		if (clazz.isInstance(getTablePerspective()))
-			return clazz.cast(getTablePerspective());
-		return super.getLayoutDataAs(clazz, default_);
-	}
-
 	/**
 	 * @return the recommended min size of this heatmap
 	 */
 	@Override
 	public Vec2f getMinSize() {
-		TablePerspective tablePerspective = mixin.getTablePerspective();
+		TablePerspective tablePerspective = selections.getTablePerspective();
 		float w = tablePerspective.getNrDimensions() * (dimensionLabels.show() ? 16 : 1);
 		float h = tablePerspective.getNrRecords() * (recordLabels.show() ? 16 : 1);
 		if (recordLabels.show())
@@ -246,12 +225,6 @@ public class HeatMapElement extends PickableGLElement implements
 	}
 
 	@Override
-	public void onSelectionUpdate(SelectionManager manager) {
-		repaintAll();
-	}
-
-
-	@Override
 	protected void layoutImpl() {
 		Vec2f size = getSize().copy();
 		if (recordLabels.show()) {
@@ -261,10 +234,10 @@ public class HeatMapElement extends PickableGLElement implements
 			size.setY(size.y() - TEXT_WIDTH);
 		}
 		// compute the layout
-		this.recordSpacing = recordSpacingStrategy.apply(mixin.getTablePerspective().getRecordPerspective(),
-				mixin.getRecordSelectionManager(), isHideElements(), size.y());
-		this.dimensionSpacing = dimensionSpacingStrategy.apply(mixin.getTablePerspective().getDimensionPerspective(),
-				mixin.getDimensionSelectionManager(), isHideElements(), size.x());
+		this.recordSpacing = recordSpacingStrategy.apply(selections.getTablePerspective().getRecordPerspective(),
+				selections.getRecordSelectionManager(), isHideElements(), size.y());
+		this.dimensionSpacing = dimensionSpacingStrategy.apply(selections.getTablePerspective().getDimensionPerspective(),
+				selections.getDimensionSelectionManager(), isHideElements(), size.x());
 	}
 
 	public CellSpace getDimensionCellSpace(int index) {
@@ -312,7 +285,7 @@ public class HeatMapElement extends PickableGLElement implements
 		}
 
 		if (recordLabels.show()) {
-			final TablePerspective tablePerspective = mixin.getTablePerspective();
+			final TablePerspective tablePerspective = selections.getTablePerspective();
 			final VirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
 			final ATableBasedDataDomain dataDomain = tablePerspective.getDataDomain();
 
@@ -335,7 +308,7 @@ public class HeatMapElement extends PickableGLElement implements
 		}
 
 		if (dimensionLabels.show()) {
-			final TablePerspective tablePerspective = mixin.getTablePerspective();
+			final TablePerspective tablePerspective = selections.getTablePerspective();
 			final VirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
 			final ATableBasedDataDomain dataDomain = tablePerspective.getDataDomain();
 
@@ -379,7 +352,7 @@ public class HeatMapElement extends PickableGLElement implements
 	 * @param h
 	 */
 	private void render(GLGraphics g, float w, float h) {
-		final TablePerspective tablePerspective = mixin.getTablePerspective();
+		final TablePerspective tablePerspective = selections.getTablePerspective();
 		final VirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
 		final VirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
 		final ATableBasedDataDomain dataDomain = tablePerspective.getDataDomain();
@@ -416,13 +389,13 @@ public class HeatMapElement extends PickableGLElement implements
 		boolean repaint = false;
 		if (dimensionID != null) {
 			if (dimensionID != null)
-				createSelection(mixin.getDimensionSelectionManager(), SelectionType.SELECTION, dimensionID);
+				createSelection(selections.getDimensionSelectionManager(), SelectionType.SELECTION, dimensionID);
 			hoveredDimensionID = dimensionID;
 			repaint = true;
 		}
 		if (recordID != null) {
 			if (recordID != null)
-				createSelection(mixin.getRecordSelectionManager(), SelectionType.SELECTION, recordID);
+				createSelection(selections.getRecordSelectionManager(), SelectionType.SELECTION, recordID);
 			hoveredRecordID = recordID;
 			repaint = true;
 		}
@@ -439,13 +412,13 @@ public class HeatMapElement extends PickableGLElement implements
 		boolean repaint = false;
 		if (dimensionID != hoveredDimensionID) {
 			if (dimensionID != null)
-				createSelection(mixin.getDimensionSelectionManager(), SelectionType.MOUSE_OVER, dimensionID);
+				createSelection(selections.getDimensionSelectionManager(), SelectionType.MOUSE_OVER, dimensionID);
 			hoveredDimensionID = dimensionID;
 			repaint = true;
 		}
 		if (recordID != hoveredRecordID) {
 			if (recordID != null)
-				createSelection(mixin.getRecordSelectionManager(), SelectionType.MOUSE_OVER, recordID);
+				createSelection(selections.getRecordSelectionManager(), SelectionType.MOUSE_OVER, recordID);
 			hoveredRecordID = recordID;
 			repaint = true;
 		}
@@ -456,8 +429,8 @@ public class HeatMapElement extends PickableGLElement implements
 	@Override
 	protected void onMouseOut(Pick pick) {
 		// clear all hovered elements
-		createSelection(mixin.getDimensionSelectionManager(), SelectionType.MOUSE_OVER, -1);
-		createSelection(mixin.getRecordSelectionManager(), SelectionType.MOUSE_OVER, -1);
+		createSelection(selections.getDimensionSelectionManager(), SelectionType.MOUSE_OVER, -1);
+		createSelection(selections.getRecordSelectionManager(), SelectionType.MOUSE_OVER, -1);
 		repaint();
 		hoveredDimensionID = null;
 		hoveredRecordID = null;
@@ -471,9 +444,9 @@ public class HeatMapElement extends PickableGLElement implements
 
 		List<AContextMenuItem> toShow = new ArrayList<>();
 		if (recordID != null) {
-			createSelection(mixin.getRecordSelectionManager(), SelectionType.SELECTION, recordID);
+			createSelection(selections.getRecordSelectionManager(), SelectionType.SELECTION, recordID);
 
-			ATableBasedDataDomain dataDomain = mixin.getDataDomain();
+			ATableBasedDataDomain dataDomain = selections.getDataDomain();
 			if (dataDomain instanceof GeneticDataDomain && dataDomain.isColumnDimension()) {
 				GeneMenuItemContainer contexMenuItemContainer = new GeneMenuItemContainer();
 				contexMenuItemContainer.setDataDomain(dataDomain);
@@ -489,9 +462,9 @@ public class HeatMapElement extends PickableGLElement implements
 			}
 		}
 		if (dimensionID != null) {
-			createSelection(mixin.getDimensionSelectionManager(), SelectionType.SELECTION, dimensionID);
+			createSelection(selections.getDimensionSelectionManager(), SelectionType.SELECTION, dimensionID);
 
-			ATableBasedDataDomain dataDomain = mixin.getDataDomain();
+			ATableBasedDataDomain dataDomain = selections.getDataDomain();
 			if (dataDomain instanceof GeneticDataDomain && !dataDomain.isColumnDimension()) {
 				GeneMenuItemContainer contexMenuItemContainer = new GeneMenuItemContainer();
 				contexMenuItemContainer.setDataDomain(dataDomain);
@@ -517,7 +490,7 @@ public class HeatMapElement extends PickableGLElement implements
 	 * @return
 	 */
 	private Pair<Integer, Integer> toDimensionRecordIds(Pick pick) {
-		Vec2f point = toRelative(pick.getDIPPickedPoint());
+		Vec2f point = toRelative(pick.getPickedPoint());
 		float x = point.x();
 		float y = point.y();
 		switch (recordLabels) {
@@ -550,11 +523,11 @@ public class HeatMapElement extends PickableGLElement implements
 	}
 
 	private boolean isHidden(Integer recordID) {
-		return isHideElements() && mixin.getRecordSelectionManager().checkStatus(GLHeatMap.SELECTION_HIDDEN, recordID);
+		return isHideElements() && selections.getRecordSelectionManager().checkStatus(GLHeatMap.SELECTION_HIDDEN, recordID);
 	}
 
 	private boolean isDeselected(int recordID) {
-		return mixin.getRecordSelectionManager().checkStatus(SelectionType.DESELECTED, recordID);
+		return selections.getRecordSelectionManager().checkStatus(SelectionType.DESELECTED, recordID);
 	}
 
 	private void createSelection(SelectionManager manager, SelectionType selectionType, int recordID) {
@@ -575,7 +548,7 @@ public class HeatMapElement extends PickableGLElement implements
 		if (recordID >= 0)
 			manager.addToType(selectionType, recordID);
 
-		mixin.fireSelectionDelta(manager.getIDType());
+		selections.fireSelectionDelta(manager.getIDType());
 		relayout();
 	}
 
@@ -608,6 +581,6 @@ public class HeatMapElement extends PickableGLElement implements
 
 	@Override
 	public String toString() {
-		return "Heat map for " + mixin;
+		return "Heat map for " + selections;
 	}
 }

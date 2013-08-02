@@ -9,14 +9,10 @@ import gleem.linalg.Vec2f;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.selection.SelectionManager;
-import org.caleydo.core.data.selection.TablePerspectiveSelectionMixin;
-import org.caleydo.core.event.EventListenerManager.DeepScan;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
-import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
-import org.caleydo.core.view.opengl.layout2.basic.ScrollingDecorator.IHasMinSize;
+import org.caleydo.core.view.opengl.layout2.view.ASingleTablePerspectiveElement;
 import org.caleydo.core.view.opengl.util.text.ETextStyle;
 
 /**
@@ -25,10 +21,7 @@ import org.caleydo.core.view.opengl.util.text.ETextStyle;
  * @author Samuel Gratzl
  *
  */
-public class InfoElement extends GLElement implements
-		TablePerspectiveSelectionMixin.ITablePerspectiveMixinCallback, IHasMinSize {
-	@DeepScan
-	protected final TablePerspectiveSelectionMixin mixin;
+public class InfoElement extends ASingleTablePerspectiveElement {
 	private final EDetailLevel detailLevel;
 
 	public InfoElement(TablePerspective tablePerspective) {
@@ -36,22 +29,8 @@ public class InfoElement extends GLElement implements
 	}
 
 	public InfoElement(TablePerspective tablePerspective, EDetailLevel detailLevel) {
-		this.mixin = new TablePerspectiveSelectionMixin(tablePerspective, this);
+		super(tablePerspective);
 		this.detailLevel = detailLevel;
-	}
-
-	public TablePerspective getTablePerspective() {
-		return mixin.getTablePerspective();
-	}
-
-	@Override
-	public void onVAUpdate(TablePerspective tablePerspective) {
-		repaint();
-	}
-
-	@Override
-	public void onSelectionUpdate(SelectionManager manager) {
-		repaint();
 	}
 
 	@Override
@@ -99,21 +78,6 @@ public class InfoElement extends GLElement implements
 		// TODO add more info about the number of current selected items,... depending on detail level
 
 		super.renderImpl(g, w, h);
-	}
-
-	@Override
-	public <T> T getLayoutDataAs(Class<T> clazz, T default_) {
-		if (clazz.isInstance(mixin.getTablePerspective()))
-			return clazz.cast(mixin.getTablePerspective());
-		if (clazz.isInstance(getDataDomain()))
-			return clazz.cast(getDataDomain());
-		if (Vec2f.class.isAssignableFrom(clazz))
-			return clazz.cast(getMinSize());
-		return super.getLayoutDataAs(clazz, default_);
-	}
-
-	private ATableBasedDataDomain getDataDomain() {
-		return getTablePerspective().getDataDomain();
 	}
 
 	@Override

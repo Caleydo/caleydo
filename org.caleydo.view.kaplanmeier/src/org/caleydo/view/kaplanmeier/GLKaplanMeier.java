@@ -56,13 +56,13 @@ public class GLKaplanMeier extends AGLView implements ISingleTablePerspectiveBas
 	public static final String VIEW_TYPE = "org.caleydo.view.kaplanmeier";
 	public static final String VIEW_NAME = "Kaplan-Meier Plot";
 
-	private static final int LEFT_AXIS_SPACING_PIXELS = 70;
-	private static final int BOTTOM_AXIS_SPACING_PIXELS = 50;
-	private static final int TOP_AXIS_SPACING_PIXELS = 8;
-	private static final int RIGHT_AXIS_SPACING_PIXELS = 20;
-	private static final int AXIS_LABEL_TEXT_HEIGHT_PIXELS = 20;
-	private static final int AXIS_LABEL_TEXT_SIDE_SPACING_PIXELS = 5;
-	private static final int AXIS_TICK_LABEL_SPACING_PIXELS = 12;
+	public static final int LEFT_AXIS_SPACING_PIXELS = 70;
+	public static final int BOTTOM_AXIS_SPACING_PIXELS = 50;
+	public static final int TOP_AXIS_SPACING_PIXELS = 8;
+	public static final int RIGHT_AXIS_SPACING_PIXELS = 20;
+	public static final int AXIS_LABEL_TEXT_HEIGHT_PIXELS = 20;
+	public static final int AXIS_LABEL_TEXT_SIDE_SPACING_PIXELS = 5;
+	public static final int AXIS_TICK_LABEL_SPACING_PIXELS = 12;
 
 	private EventBasedSelectionManager recordGroupSelectionManager;
 

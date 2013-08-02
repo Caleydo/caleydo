@@ -39,6 +39,10 @@ public final class TesselatedPolygons {
 		return new TesselatedPolygon(0, points);
 	}
 
+	public static ITesselatedPolygon polygon2(Collection<Vec2f> points) {
+		return new TesselatedPolygon2(0, points);
+	}
+
 	public static ITesselatedPolygon coloredPolygon3(Collection<ColoredVec3f> points) {
 		return new ColoredTesselatedPolygon(0, points);
 	}
