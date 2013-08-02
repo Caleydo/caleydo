@@ -7,6 +7,7 @@ package org.caleydo.core.view.opengl.layout2.basic;
 
 import gleem.linalg.Vec2f;
 
+import org.caleydo.core.view.opengl.canvas.IGLMouseListener.IMouseEvent;
 import org.caleydo.core.view.opengl.picking.Pick;
 
 /**
@@ -16,9 +17,15 @@ import org.caleydo.core.view.opengl.picking.Pick;
  *
  */
 public class ScrollBar extends AScrollBar {
+	private final float mouseWheelFactor;
 
 	public ScrollBar(boolean isHorizontal) {
+		this(isHorizontal, 3);
+	}
+
+	public ScrollBar(boolean isHorizontal, float mouseWheelFactor) {
 		super(isHorizontal);
+		this.mouseWheelFactor = mouseWheelFactor;
 	}
 
 	@Override
@@ -47,6 +54,9 @@ public class ScrollBar extends AScrollBar {
 		case MOUSE_OUT:
 			hovered = false;
 			callback.repaint();
+			break;
+		case MOUSE_WHEEL:
+			drag(-((IMouseEvent) pick).getWheelRotation() * mouseWheelFactor);
 			break;
 		default:
 			break;
