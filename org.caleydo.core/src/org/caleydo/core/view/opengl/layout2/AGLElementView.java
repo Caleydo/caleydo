@@ -26,6 +26,7 @@ import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.IGLView;
 import org.caleydo.core.view.opengl.layout2.animation.AnimatedGLElementContainer;
 import org.caleydo.core.view.opengl.layout2.internal.SWTLayer;
+import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.util.GLSanityCheck;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.SimplePickingManager;
@@ -68,6 +69,11 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 		this.canvas.addGLEventListener(this);
 		this.canvas.addMouseListener(pickingManager.getListener());
 		this.canvas.asComposite().addDisposeListener(eventListeners);
+	}
+
+	@Override
+	public <T> T getLayoutDataAs(Class<T> clazz, T default_) {
+		return GLLayouts.resolveLayoutDatas(clazz, default_, canvas, this.local);
 	}
 
 	protected final GLElement getRoot() {

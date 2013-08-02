@@ -515,6 +515,10 @@ public class GLElement implements IHasGLLayoutData {
 		return bounds_layout.asRectangle2D();
 	}
 
+	public final Rect getRectBounds() {
+		return bounds_layout.clone();
+	}
+
 	/**
 	 * shortcut for {@link #setLocation(float, float)} and {@link #setSize(float, float)}
 	 *
@@ -600,7 +604,7 @@ public class GLElement implements IHasGLLayoutData {
 
 	/**
 	 * finds a parent in the hierarchy that is of the specific instance
-	 * 
+	 *
 	 * @param satisfies
 	 * @return
 	 */

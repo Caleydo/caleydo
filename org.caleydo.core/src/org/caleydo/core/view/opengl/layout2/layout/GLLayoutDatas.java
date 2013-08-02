@@ -20,7 +20,7 @@ public class GLLayoutDatas {
 
 	/**
 	 * combines multiple elements to a single layout data composite object
-	 * 
+	 *
 	 * @param elems
 	 * @return
 	 */
@@ -55,12 +55,7 @@ public class GLLayoutDatas {
 
 		@Override
 		public <T> T getLayoutDataAs(Class<T> clazz, T default_) {
-			for (Object elem : elems) {
-				T v = GLLayouts.resolveLayoutData(clazz, elem, null);
-				if (v != null)
-					return v;
-			}
-			return default_;
+			return GLLayouts.resolveLayoutDatas(clazz, default_, elems);
 		}
 	}
 }

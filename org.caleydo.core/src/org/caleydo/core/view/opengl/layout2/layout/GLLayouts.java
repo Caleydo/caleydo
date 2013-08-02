@@ -128,4 +128,28 @@ public class GLLayouts {
 		}
 		return default_;
 	}
+
+	/**
+	 * utility to work with decorators for Layout data
+	 * 
+	 * @param clazz
+	 *            the desired type
+	 * @param value
+	 *            the current value
+	 * @param default_
+	 *            the default value
+	 * @return
+	 */
+	public static <T> T resolveLayoutDatas(Class<T> clazz, T default_, Object... values) {
+		for (Object value : values) {
+			if (clazz.isInstance(value))
+				return clazz.cast(value);
+			if (value instanceof IHasGLLayoutData) {
+				T r = ((IHasGLLayoutData) value).getLayoutDataAs(clazz, null);
+				if (r != null)
+					return r;
+			}
+		}
+		return default_;
+	}
 }

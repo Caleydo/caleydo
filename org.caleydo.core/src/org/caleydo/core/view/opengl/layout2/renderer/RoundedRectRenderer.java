@@ -12,9 +12,9 @@ import org.caleydo.core.view.opengl.layout2.GLGraphics;
 
 /**
  * Utility to render a rounded rect with various options
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public class RoundedRectRenderer {
 	public static final int FLAG_FILL = 1<<0;
@@ -24,6 +24,8 @@ public class RoundedRectRenderer {
 	public static final int FLAG_BOTTOM_RIGHT = 1<<5;
 
 	public static final int FLAG_TOP = FLAG_TOP_LEFT | FLAG_TOP_RIGHT;
+	public static final int FLAG_LEFT = FLAG_TOP_LEFT | FLAG_BOTTOM_LEFT;
+	public static final int FLAG_RIGHT = FLAG_BOTTOM_RIGHT | FLAG_TOP_RIGHT;
 	public static final int FLAG_BOTTOM = FLAG_BOTTOM_LEFT | FLAG_BOTTOM_RIGHT;
 	public static final int FLAG_ALL = FLAG_TOP | FLAG_BOTTOM;
 

@@ -19,6 +19,10 @@ import org.eclipse.swt.widgets.Display;
  */
 public class SWTLayer implements ISWTLayer {
 	private final IGLCanvas canvas;
+	/**
+	 * cache current cursor to avoid setting to the same value
+	 */
+	private int cursor = -1;
 
 	/**
 	 * @param asComposite
@@ -39,6 +43,9 @@ public class SWTLayer implements ISWTLayer {
 
 	@Override
 	public final void setCursor(final int swtCursorConst) {
+		if (cursor == swtCursorConst)
+			return;
+		cursor = swtCursorConst;
 		run(new ISWTLayerRunnable() {
 			@Override
 			public void run(Display display, Composite canvas) {

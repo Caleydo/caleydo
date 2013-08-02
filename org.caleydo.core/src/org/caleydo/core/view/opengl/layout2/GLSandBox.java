@@ -32,6 +32,7 @@ import org.caleydo.core.view.opengl.canvas.MyAnimator;
 import org.caleydo.core.view.opengl.canvas.internal.IGLCanvasFactory;
 import org.caleydo.core.view.opengl.canvas.internal.swt.SWTGLCanvasFactory;
 import org.caleydo.core.view.opengl.layout2.internal.SWTLayer;
+import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
@@ -135,6 +136,11 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 		caps.setDoubleBuffered(true);
 		caps.setAlphaBits(8);
 		return caps;
+	}
+
+	@Override
+	public <T> T getLayoutDataAs(Class<T> clazz, T default_) {
+		return GLLayouts.resolveLayoutDatas(clazz, default_, canvas, this.local);
 	}
 
 	/**

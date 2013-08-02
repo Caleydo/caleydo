@@ -18,6 +18,7 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.layout2.internal.SWTLayer;
+import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.data.loader.ResourceLocators.IResourceLocator;
 
@@ -66,6 +67,11 @@ public final class LayoutRendererAdapter extends ALayoutRenderer implements IGLE
 
 		this.root.setParent(this);
 		this.root.init(this);
+	}
+
+	@Override
+	public <T> T getLayoutDataAs(Class<T> clazz, T default_) {
+		return GLLayouts.resolveLayoutDatas(clazz, default_, view, this.local);
 	}
 
 	@Override
