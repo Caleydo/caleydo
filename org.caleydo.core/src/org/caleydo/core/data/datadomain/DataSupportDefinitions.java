@@ -74,6 +74,14 @@ public final class DataSupportDefinitions {
 		}
 	};
 
+	public static final Predicate<TablePerspective> categoricalColumns = new Predicate<TablePerspective>() {
+		@Override
+		public boolean apply(TablePerspective in) {
+			return in != null
+					&& (categoricalTables.apply(in) || getSingleColumnDataClass(in) == EDataClass.CATEGORICAL);
+		}
+	};
+
 	/**
 	 * Default definition that can be used if all {@link DataDomain}s are supported.
 	 */

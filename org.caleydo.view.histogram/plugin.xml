@@ -120,5 +120,10 @@
             icon="resources/icons/histogram.png"
             name="Average Bar">
       </factory>
+      <factory
+            factory="org.caleydo.view.histogram.v2.internal.DistributionElementFactory"
+            icon="resources/icons/histogram.png"
+            name="Distribution">
+      </factory>
    </extension>
 </plugin>
