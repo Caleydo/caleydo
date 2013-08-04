@@ -49,7 +49,9 @@ import org.caleydo.view.kaplanmeier.GLKaplanMeier;
  *
  */
 public class KaplanMeierElement extends ASingleTablePerspectiveElement {
-
+	/**
+	 * for listening to my group
+	 */
 	private final SelectionManager recordGroupSelections;
 
 	private int[] groupPickingIds;
@@ -97,7 +99,7 @@ public class KaplanMeierElement extends ASingleTablePerspectiveElement {
 
 	private GroupList getGroupList() {
 		TablePerspective table = getTablePerspective();
-		if (table.getParentTablePerspective() != null)
+		if (table.getParentTablePerspective() != null) // has a parent use its group list
 			table = table.getParentTablePerspective();
 		return table.getRecordPerspective().getVirtualArray().getGroupList();
 	}
@@ -134,7 +136,7 @@ public class KaplanMeierElement extends ASingleTablePerspectiveElement {
 	private void render(GLGraphics g, float w, float h) {
 		final TablePerspective tablePerspective = getTablePerspective();
 
-
+		// resolve data
 		Integer groupID = null;
 		VirtualArray recordVA;
 		if (tablePerspective.getParentTablePerspective() != null) {
@@ -210,7 +212,7 @@ public class KaplanMeierElement extends ASingleTablePerspectiveElement {
 
 		g.drawText(xAxisLabel, 0, h - AXIS_LABEL_TEXT_SIDE_SPACING_PIXELS - AXIS_LABEL_TEXT_HEIGHT_PIXELS, w,
 				AXIS_LABEL_TEXT_HEIGHT_PIXELS, VAlign.CENTER);
-		{
+		{// draw rotated text
 			g.save();
 			g.gl.glRotatef(-90, 0, 0, 1);
 			g.move(-h, 0);
@@ -256,10 +258,10 @@ public class KaplanMeierElement extends ASingleTablePerspectiveElement {
 		final TablePerspective tablePerspective = getTablePerspective();
 		VirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
 
-
 		final Table table = tablePerspective.getDataDomain().getTable();
 		final Integer dimensionID = dimensionVA.get(0);
 
+		// prepare data
 		float[] data = readData(recordIDs, table, dimensionID);
 
 		g.pushName(groupPickingIds[group.getGroupIndex()]);
@@ -292,6 +294,7 @@ public class KaplanMeierElement extends ASingleTablePerspectiveElement {
 				g.color(Color.MEDIUM_DARK_GRAY);
 			else
 				g.color(color.lessSaturated());
+			// add addition points to get a closed shape
 			linePoints.add(new Vec2f(w, h));
 			linePoints.add(new Vec2f(0, h)); // origin
 			g.fillPolygon(TesselatedPolygons.polygon2(linePoints));
@@ -313,6 +316,7 @@ public class KaplanMeierElement extends ASingleTablePerspectiveElement {
 				textColor = color;
 				translationZ = 0.2f;
 			}
+			// add a label to the end of the curve
 			Vec2f pos = linePoints.get(linePoints.size() - 1).copy();
 			float textWidth = g.text.getTextWidth(group.getLabel(), 13);
 			g.save();

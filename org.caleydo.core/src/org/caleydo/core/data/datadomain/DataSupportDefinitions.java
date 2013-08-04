@@ -5,6 +5,7 @@
  ******************************************************************************/
 package org.caleydo.core.data.datadomain;
 
+import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.data.collection.table.CategoricalTable;
 import org.caleydo.core.data.collection.table.NumericalTable;
 import org.caleydo.core.data.perspective.table.TablePerspective;
@@ -62,7 +63,14 @@ public final class DataSupportDefinitions {
 		@Override
 		public boolean apply(TablePerspective in) {
 			return in != null
-					&& (homogenousTables.apply(in) || in.getDimensionPerspective().getVirtualArray().size() <= 1);
+ && (homogenousTables.apply(in) || getSingleColumnDataClass(in) != null);
+		}
+	};
+
+	public static final Predicate<TablePerspective> numericalColumns = new Predicate<TablePerspective>() {
+		@Override
+		public boolean apply(TablePerspective in) {
+			return in != null && (numericalTables.apply(in) || getSingleColumnDataClass(in) == EDataClass.REAL_NUMBER);
 		}
 	};
 
@@ -85,5 +93,16 @@ public final class DataSupportDefinitions {
 		};
 	}
 
+	/**
+	 * @param in
+	 * @return
+	 */
+	protected static EDataClass getSingleColumnDataClass(TablePerspective in) {
+		if (in.getDimensionPerspective().getVirtualArray().size() > 1)
+			return null; // multi column
+		int dimensionId = in.getDimensionPerspective().getVirtualArray().get(0);
+		int recordId = in.getRecordPerspective().getVirtualArray().get(0);
+		return in.getDataDomain().getTable().getDataClass(dimensionId, recordId);
+	}
 
 }

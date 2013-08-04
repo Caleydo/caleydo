@@ -61,6 +61,15 @@ public abstract class AFloatList extends AbstractList<Float> implements IFloatLi
 	}
 
 	@Override
+	public float[] toPrimitiveArray() {
+		int s = size();
+		float[] data = new float[s];
+		for (int i = 0; i < s; ++i)
+			data[i] = getPrimitive(i);
+		return data;
+	}
+
+	@Override
 	public IFloatIterator iterator() {
 		return new IFloatIterator() {
 			int cursor = 0;
