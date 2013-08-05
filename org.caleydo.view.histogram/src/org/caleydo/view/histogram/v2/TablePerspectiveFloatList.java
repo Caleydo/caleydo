@@ -35,6 +35,7 @@ public class TablePerspectiveFloatList extends AFloatList {
 
 	@Override
 	public float getPrimitive(int index) {
+		// split in row / col
 		int nrCols = dim.size();
 		int recordIndex = index / nrCols;
 		int dimIndex = index % nrCols;

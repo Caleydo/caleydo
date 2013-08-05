@@ -18,8 +18,8 @@ import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.layout2.view.ASingleTablePerspectiveElement;
 
 /**
- * Rendering the average similar to enroute.
- *
+ * renders an average bar similar to enroute.
+ * 
  * @author Samuel Gratzl
  */
 public class AverageBarElement extends ASingleTablePerspectiveElement {
