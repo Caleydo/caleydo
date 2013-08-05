@@ -182,7 +182,8 @@ public class HistogramElement extends ASingleTablePerspectiveElement {
 
 			if (v <= -1) {
 				g.fillRect(x - lineWidthHalf, 0, lineWidth, v);
-				g.color(Color.DARK_GRAY).drawRect(x - lineWidthHalf, 0, lineWidth, v);
+				if (RenderStyle.COLOR_BORDER != null)
+					g.color(RenderStyle.COLOR_BORDER).drawRect(x - lineWidthHalf, 0, lineWidth, v);
 			}
 			x += delta;
 		}

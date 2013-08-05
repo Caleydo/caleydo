@@ -19,7 +19,7 @@ import org.caleydo.core.view.opengl.layout2.view.ASingleTablePerspectiveElement;
 
 /**
  * renders an average bar similar to enroute.
- * 
+ *
  * @author Samuel Gratzl
  */
 public class AverageBarElement extends ASingleTablePerspectiveElement {
@@ -34,8 +34,18 @@ public class AverageBarElement extends ASingleTablePerspectiveElement {
 	public AverageBarElement(TablePerspective tablePerspective, EDetailLevel detailLevel) {
 		super(tablePerspective);
 		this.detailLevel = detailLevel;
-		setPicker(null);
 		onVAUpdate(tablePerspective);
+	}
+
+	@Override
+	public String getTooltip() {
+		StringBuilder b = new StringBuilder();
+		b.append("Normalized ").append(getTablePerspective().getLabel()).append('\n');
+		b.append(String.format("   %s: %.3f\n", " mean", stats.getMean()));
+		b.append(String.format("   %s: %.3f\n", "   sd", stats.getSd()));
+		b.append(String.format("   %s: %.3f\n", "  min", stats.getMin()));
+		b.append(String.format("   %s: %.3f", "  max", stats.getMax()));
+		return b.toString();
 	}
 
 	@Override
@@ -64,7 +74,8 @@ public class AverageBarElement extends ASingleTablePerspectiveElement {
 		float v = w * stats.getMean();
 		g.color(getTablePerspective().getDataDomain().getColor());
 		g.fillRect(0, y, v, hi);
-		g.color(Color.DARK_GRAY).drawRect(0, y, v, hi);
+		if (RenderStyle.COLOR_BORDER != null)
+			g.color(RenderStyle.COLOR_BORDER).drawRect(0, y, v, hi);
 
 		float vd = w * stats.getSd();
 		g.color(Color.BLACK);

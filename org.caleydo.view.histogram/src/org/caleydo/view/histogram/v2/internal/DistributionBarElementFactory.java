@@ -11,6 +11,7 @@ import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.manage.GLElementFactoryContext;
 import org.caleydo.core.view.opengl.layout2.manage.IGLElementFactory;
 import org.caleydo.view.histogram.v2.DistributionElement;
+import org.caleydo.view.histogram.v2.DistributionElement.EDistributionMode;
 
 /**
  * element factory for creating distribution elements
@@ -18,10 +19,10 @@ import org.caleydo.view.histogram.v2.DistributionElement;
  * @author Samuel Gratzl
  *
  */
-public class DistributionElementFactory implements IGLElementFactory {
+public class DistributionBarElementFactory implements IGLElementFactory {
 	@Override
 	public String getId() {
-		return "distribution";
+		return "distribution.bar";
 	}
 
 	@Override
@@ -34,7 +35,9 @@ public class DistributionElementFactory implements IGLElementFactory {
 	public GLElement create(GLElementFactoryContext context) {
 		TablePerspective data = context.getData();
 		boolean vertical = data.getDimensionPerspective().getVirtualArray().size() == 1;
-		DistributionElement elem = new DistributionElement(data, context.is("vertical", vertical));
+		vertical = context.is("vertical", vertical);
+		DistributionElement elem = new DistributionElement(data, vertical ? EDistributionMode.VERTICAL_BAR
+				: EDistributionMode.HORIZONTAL_BAR);
 		return elem;
 	}
 
