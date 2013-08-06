@@ -185,6 +185,7 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	 * systems, as it currently requires manual translation of the view content since swt scroll bars are not working
 	 * properly.
 	 */
+
 	private Rectangle scrollRect = new Rectangle(0, 0);
 
 	private ViewScrollEventListener viewScrollEventListener;
@@ -209,8 +210,8 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	 * @param viewName
 	 *            TODO
 	 */
-	protected AGLView(IGLCanvas glCanvas, final ViewFrustum viewFrustum,
-			String viewType, String viewName) {
+
+	protected AGLView(IGLCanvas glCanvas, final ViewFrustum viewFrustum, String viewType, String viewName) {
 
 		super(viewType,
 				viewName);
@@ -327,7 +328,6 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 				wasVisible = false;
 				return;
 			}
-			
 			if (!focusGained) {
 				parentGLCanvas.requestFocus();
 
@@ -360,8 +360,7 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 			// System.out.println("focusable " + parentGLCanvas.isFocusable());
 
 			GL2 gl = drawable.getGL().getGL2();
-			
-			
+
 			if (!wasVisible) {
 				//set the viewport again for mac bug 1476
 				gl.glViewport(0,0,parentGLCanvas.asGLAutoDrawAble().getWidth(), parentGLCanvas.asGLAutoDrawAble().getHeight());
@@ -380,7 +379,7 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 			// clear screen
 			gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 			GLGraphics.checkError(gl);
-			
+
 			gl.glTranslatef(position.x(), position.y(), position.z());
 			gl.glRotatef(viewCamera.getCameraRotationGrad(rot_Vec3f), rot_Vec3f.x(), rot_Vec3f.y(), rot_Vec3f.z());
 
@@ -1099,7 +1098,11 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	/**
 	 * Check whether the view is visible. If not, it should not be rendered. Note that events should be processed
 	 * anyway.
+<<<<<<< HEAD
 	 * @param drawable 
+=======
+	 * @param drawable
+>>>>>>> refs/heads/entourage
 	 *
 	 * @return true if it is visible
 	 */
@@ -1377,7 +1380,7 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	}
 
 	public final void applyScrolling(GL2 gl) {
-		if (!System.getProperty("os.name").contains("Mac") || this.scrollRect.width <= 0 )
+		if (!System.getProperty("os.name").contains("Mac") || this.scrollRect.width <= 0)
 			return;
 		float canvasWidth = parentGLCanvas.getDIPWidth();
 		float canvasHeight = parentGLCanvas.getDIPHeight();
@@ -1394,8 +1397,9 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 			offsety = 0;
 		float foffsetx = pixelGLConverter.getGLWidthForPixelWidth(offsetx);
 		float foffsety = pixelGLConverter.getGLHeightForPixelHeight(offsety);
-		//as we start with 0,0 in the LOWER left corner, we have to adapt the y offset
-		//System.out.println("canvas: "+canvasWidth+"/"+canvasHeight+" real: "+scrollRect.width+"/"+scrollRect.height+ " offset: "+scrollRect.x+"/"+scrollRect.y+" "+offsetx+"/"+offsety);
+		// as we start with 0,0 in the LOWER left corner, we have to adapt the y offset
+		// System.out.println("canvas: "+canvasWidth+"/"+canvasHeight+" real: "+scrollRect.width+"/"+scrollRect.height+
+		// " offset: "+scrollRect.x+"/"+scrollRect.y+" "+offsetx+"/"+offsety);
 
 		gl.glTranslatef(-foffsetx, -foffsety, 0);
 	}

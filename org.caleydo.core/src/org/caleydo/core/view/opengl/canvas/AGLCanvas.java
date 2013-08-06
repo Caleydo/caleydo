@@ -58,6 +58,7 @@ public abstract class AGLCanvas implements IGLCanvas {
 				break;
 			case SWT.Show:
 				visible = true;
+
 				break;
 			}
 		}

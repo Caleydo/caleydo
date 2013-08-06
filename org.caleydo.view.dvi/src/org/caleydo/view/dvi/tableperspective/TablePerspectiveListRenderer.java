@@ -113,6 +113,7 @@ public class TablePerspectiveListRenderer extends AMultiTablePerspectiveRenderer
 			bottomObjectPositions.put(tablePerspectiveRenderer.getTablePerspective(),
 					new Pair<Point2D, Point2D>(bottomPosition1, bottomPosition2));
 			topObjectPositions.put(tablePerspectiveRenderer.getTablePerspective(),
+
 					new Pair<Point2D, Point2D>(topPosition1, topPosition2));
 
 			currentPosX += step;

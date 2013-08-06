@@ -21,6 +21,7 @@ import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.id.IDType;
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
@@ -321,29 +322,52 @@ public class GLPathwayAugmentationRenderer {
 			float nodeHeight = pixelGLConverter.getGLHeightForPixelHeight(vertexRep.getHeight());
 
 			// create mask to prevent redrawing
-			gl.glEnable(GL.GL_STENCIL_TEST);
-			gl.glColorMask(false, false, false, false);
-			gl.glDisable(GL.GL_DEPTH_TEST);
-			// gl.glStencilFunc(GL.GL_ALWAYS,2, 1);
-			gl.glStencilFunc(GL.GL_ALWAYS, 2, 0xff);
-			gl.glStencilOp(GL.GL_REPLACE, GL.GL_REPLACE, GL.GL_REPLACE);
-
-			renderQuad(gl, nodeWidth, nodeHeight);
-
-			gl.glStencilFunc(GL.GL_ALWAYS, 2, 0xff);
-			renderFrame(gl, nodeWidth, nodeHeight);
-
-			gl.glDisable(GL.GL_STENCIL_TEST);
-			gl.glColorMask(true, true, true, true);
-			gl.glEnable(GL.GL_DEPTH_TEST);
+			// gl.glEnable(GL.GL_STENCIL_TEST);
+			// gl.glColorMask(false, false, false, false);
+			// gl.glDisable(GL.GL_DEPTH_TEST);
+			// // gl.glStencilFunc(GL.GL_ALWAYS,2, 1);
+			// gl.glStencilFunc(GL.GL_ALWAYS, 2, 0xff);
+			// gl.glStencilOp(GL.GL_REPLACE, GL.GL_REPLACE, GL.GL_REPLACE);
+			// renderQuad(gl, nodeWidth, nodeHeight);
+			//
+			// gl.glStencilFunc(GL.GL_ALWAYS, 2, 0xff);
+			// renderFrame(gl, nodeWidth, nodeHeight);
+			// //
+			// gl.glDisable(GL.GL_STENCIL_TEST);
+			// gl.glColorMask(true, true, true, true);
+			// gl.glEnable(GL.GL_DEPTH_TEST);
 
 			tmpNodeColor = Color.TRANSPARENT;
 			gl.glColor4fv(tmpNodeColor.getRGBA(), 0);
 			renderQuad(gl, nodeWidth, nodeHeight);
 
+			gl.glEnable(GL.GL_STENCIL_TEST);
+			gl.glColorMask(false, false, false, false);
+			gl.glDisable(GL.GL_DEPTH_TEST);
+			// // gl.glStencilFunc(GL.GL_ALWAYS,2, 1);
+			gl.glStencilFunc(GL.GL_ALWAYS, 2, 0xff);
+			gl.glStencilOp(GL.GL_REPLACE, GL.GL_REPLACE, GL.GL_REPLACE);
+
 			// Handle selection highlighting of element
 			// PathwayGraph pathway = PathwayManager.get().getPathwayByTitle(vertexRep.getName(),
 			// EPathwayDatabaseType.KEGG);
+			if (vertexSelectionManager.checkStatus(SelectionType.SELECTION, vertexRep.getID())) {
+				// || (pathway != null && pathwaySelectionManager
+				// .checkStatus(SelectionType.SELECTION, pathway.getID()))) {
+				tmpNodeColor = SelectionType.SELECTION.getColor();
+				gl.glColor4fv(tmpNodeColor.getRGBA(), 0);
+				renderFrame(gl, nodeWidth, nodeHeight);
+			} else if (vertexSelectionManager.checkStatus(SelectionType.MOUSE_OVER, vertexRep.getID())) {
+				// || (pathway != null && pathwaySelectionManager.checkStatus(SelectionType.MOUSE_OVER,
+				// pathway.getID()))) {
+				tmpNodeColor = SelectionType.MOUSE_OVER.getColor();
+				gl.glColor4fv(tmpNodeColor.getRGBA(), 0);
+				renderFrame(gl, nodeWidth, nodeHeight);
+			}
+			gl.glDisable(GL.GL_STENCIL_TEST);
+			gl.glColorMask(true, true, true, true);
+			gl.glEnable(GL.GL_DEPTH_TEST);
+
 			if (vertexSelectionManager.checkStatus(SelectionType.SELECTION, vertexRep.getID())) {
 				// || (pathway != null && pathwaySelectionManager
 				// .checkStatus(SelectionType.SELECTION, pathway.getID()))) {
@@ -527,7 +551,11 @@ public class GLPathwayAugmentationRenderer {
 				nodeColor = null;
 			}
 			if (average != null && nodeColor != null) {
-
+				// System.out.println(pixelGLConverter.getPixelWidthForGLWidth(glPathwayView.getViewFrustum().getWidth()));
+				if (pixelGLConverter.getPixelWidthForGLWidth(glPathwayView.getViewFrustum().getWidth()) < 300
+						|| pixelGLConverter.getPixelHeightForGLHeight(glPathwayView.getViewFrustum().getHeight()) < 300) {
+					return;
+				}
 
 				gl.glColor4f(nodeColor[0], nodeColor[1], nodeColor[2], 0.8f);
 				if (glPathwayView.getDetailLevel() == EDetailLevel.HIGH) {
@@ -674,8 +702,8 @@ public class GLPathwayAugmentationRenderer {
 				// rectangle in order to indicate that we either do
 				// not have mapping or data
 
-				// transparent node for picking
-				gl.glColor4f(0, 0, 0, 0);
+				// make unmapped nodes white
+				gl.glColor4f(1, 1, 1, 1);
 				renderQuad(gl, width, height);
 				// gl.glCallList(enzymeNodeDisplayListId);
 
@@ -741,44 +769,47 @@ public class GLPathwayAugmentationRenderer {
 			}
 		}
 
-		// Pair<TablePerspective, Average> highestAverage = null;
-		// Average average;
-		// for (TablePerspective tablePerspective : glPathwayView.getTablePerspectives()) {
-		// average = getExpressionAverage(tablePerspective, vertexRep);
-		// if (average == null)
-		// continue;
-		// if (average.getStandardDeviation() > 0.1) {
-		// if (highestAverage == null
-		// || average.getStandardDeviation() > highestAverage.getSecond().getStandardDeviation()) {
-		// highestAverage = new Pair<>(tablePerspective, average);
-		// }
-		// }
-		// }
-		//
-		// if (highestAverage != null) {
-		//
-		// gl.glColor3fv(highestAverage.getFirst().getDataDomain().getColor().getRGB(), 0);
-		// // gl.glColor3f(1, 0, 0);
-		// gl.glBegin(GL2.GL_POLYGON);
-		// gl.glVertex3f(width, 0, PathwayRenderStyle.Z_OFFSET);
-		// gl.glVertex3f(width - 5 * onePxlWidth, 0, PathwayRenderStyle.Z_OFFSET);
-		// gl.glVertex3f(width - 4 * onePxlWidth, height + 7, PathwayRenderStyle.Z_OFFSET);
-		// gl.glVertex3f(width - 1 * onePxlWidth, height + 7, PathwayRenderStyle.Z_OFFSET);
-		// gl.glEnd();
-		//
-		// // gl.glColor3fv(tablePerspective.getDataDomain().getColor().getRGB(), 0);
-		// gl.glBegin(GL2.GL_POLYGON);
-		// gl.glVertex3f(width, height + 5, PathwayRenderStyle.Z_OFFSET);
-		// gl.glVertex3f(width - 5 * onePxlWidth, height + 5, PathwayRenderStyle.Z_OFFSET);
-		// gl.glVertex3f(width - 5 * onePxlWidth, height, PathwayRenderStyle.Z_OFFSET);
-		// gl.glVertex3f(width, height, PathwayRenderStyle.Z_OFFSET);
-		// gl.glEnd();
-		//
-		// }
+		Pair<TablePerspective, Average> highestAverage = null;
+		Average average;
+		for (TablePerspective tablePerspective : glPathwayView.getTablePerspectives()) {
+			// if (tablePerspective.getDataDomain().getLabel().contains("RNA"))
+			// continue;
+			average = getExpressionAverage(tablePerspective, vertexRep);
+			if (average == null)
+				continue;
+			if (average.getStandardDeviation() > 0.1) {
+				if (highestAverage == null
+						|| average.getStandardDeviation() > highestAverage.getSecond().getStandardDeviation()) {
+					highestAverage = new Pair<>(tablePerspective, average);
+				}
+			}
+		}
+
+		if (highestAverage != null) {
+
+			gl.glColor3fv(highestAverage.getFirst().getDataDomain().getColor().darker().getRGB(), 0);
+			// gl.glColor3f(1, 0, 0);
+			gl.glBegin(GL2.GL_POLYGON);
+			gl.glVertex3f(width, height, PathwayRenderStyle.Z_OFFSET);
+			gl.glVertex3f(width - 5 * onePxlWidth, height, PathwayRenderStyle.Z_OFFSET);
+			gl.glVertex3f(width - 4 * onePxlWidth, height - 10, PathwayRenderStyle.Z_OFFSET);
+			gl.glVertex3f(width - 1 * onePxlWidth, height - 10, PathwayRenderStyle.Z_OFFSET);
+			gl.glEnd();
+
+			// gl.glColor3fv(tablePerspective.getDataDomain().getColor().getRGB(), 0);
+			gl.glBegin(GL2.GL_POLYGON);
+			gl.glVertex3f(width, 0 + 5, PathwayRenderStyle.Z_OFFSET);
+			gl.glVertex3f(width - 5 * onePxlWidth, 0 + 5, PathwayRenderStyle.Z_OFFSET);
+			gl.glVertex3f(width - 5 * onePxlWidth, 0, PathwayRenderStyle.Z_OFFSET);
+			gl.glVertex3f(width, 0, PathwayRenderStyle.Z_OFFSET);
+			gl.glEnd();
+
+		}
 
 	}
 
 	private void renderStdDevBar(final GL2 gl, float nodeWidth, float nodeHeight, float stdDev) {
+
 		// ////////////////////////////// h bars
 		gl.glDisable(GL.GL_BLEND);
 
@@ -794,8 +825,8 @@ public class GLPathwayAugmentationRenderer {
 		gl.glEnd();
 
 		// the actual bar
-		// gl.glColor3fv(mappingPerspective.getDataDomain().getColor().getRGB(), 0);
-		gl.glColor3f(49f / 255f, 163f / 255, 84f / 255);
+		gl.glColor3fv(mappingPerspective.getDataDomain().getColor().darker().getRGB(), 0);
+		// gl.glColor3f(49f / 255f, 163f / 255, 84f / 255);
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glVertex3f(0, bottom, PathwayRenderStyle.Z_OFFSET);
 		gl.glVertex3f(0, top, PathwayRenderStyle.Z_OFFSET);

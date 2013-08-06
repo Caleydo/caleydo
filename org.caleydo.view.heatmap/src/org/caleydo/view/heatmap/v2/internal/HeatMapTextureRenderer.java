@@ -32,6 +32,10 @@ import com.jogamp.opengl.util.texture.TextureIO;
 /**
  * helper class for generating a texture heat map
  *
+<<<<<<< HEAD
+=======
+ * TODO support tiling in X and Y direction
+>>>>>>> refs/heads/entourage
  *
  * @author Samuel Gratzl
  *
@@ -175,6 +179,7 @@ public class HeatMapTextureRenderer {
 		final ATableBasedDataDomain dataDomain = tablePerspective.getDataDomain();
 		final int ilast = tile.y+tile.height;
 		final int jlast = tile.x+tile.width;
+
 
 		//fill buffer
 		buffer.rewind();

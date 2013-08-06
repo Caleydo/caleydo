@@ -105,6 +105,7 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 		canvas.addGLEventListener(this);
 
 		this.animator = new MyAnimator(MyPreferences.getFPS());
+
 		this.animator.add(canvas.asGLAutoDrawAble());
 		canvas.asGLAutoDrawAble().setAutoSwapBufferMode(true);
 

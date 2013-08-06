@@ -34,7 +34,9 @@ import org.caleydo.view.histogram.HistogramRenderStyle;
  *
  * @author Samuel Gratzl
  */
+
 public class HistogramElement extends ASingleTablePerspectiveElement {
+
 	private static Color SPREAD_LINE_COLOR = new Color(0.5f, 0.5f, 0.5f);
 
 
@@ -127,6 +129,7 @@ public class HistogramElement extends ASingleTablePerspectiveElement {
 	}
 
 
+
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
 		if (renderBackground)
@@ -142,6 +145,7 @@ public class HistogramElement extends ASingleTablePerspectiveElement {
 		if (hist instanceof CategoricalHistogram)
 			showColorMapper = false;
 		g.restore();
+
 
 		if (showColorMapper)
 			renderColorMapper(g, w, h, dataDomain.getTable().getColorMapper());
@@ -169,9 +173,11 @@ public class HistogramElement extends ASingleTablePerspectiveElement {
 			colored_hist = (CategoricalHistogram) hist;
 		}
 		g.lineWidth(0.3f);
+
 		g.save().move(0, h - 1);
 		g.color(Color.DARK_GRAY).drawLine(0, 0, w, 0);
 		g.color(Color.GRAY);
+		g.save().move(0, h - 1);
 		for (int i = 0; i < hist.size(); ++i) {
 			if (colored_hist != null) {
 				g.color(colored_hist.getColor(i));

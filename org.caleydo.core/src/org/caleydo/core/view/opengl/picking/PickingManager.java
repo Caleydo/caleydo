@@ -4,7 +4,6 @@
  * Licensed under the new BSD license, available at http://caleydo.org/license
  ******************************************************************************/
 package org.caleydo.core.view.opengl.picking;
-
 import gleem.linalg.Vec2f;
 
 import java.awt.Point;

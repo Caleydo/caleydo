@@ -44,6 +44,7 @@ import com.google.common.base.Preconditions;
  *
  */
 public class HeatMapElement extends ASingleTablePerspectiveElement {
+
 	private static final int TEXT_OFFSET = 5;
 	/**
 	 * maximum pixel size of a text
@@ -70,7 +71,6 @@ public class HeatMapElement extends ASingleTablePerspectiveElement {
 	private boolean hideElements = true;
 
 	private final SelectionRenderer recordSelectionRenderer;
-
 	private final SelectionRenderer dimensionSelectionRenderer;
 
 	private ISpacingStrategy recordSpacingStrategy = SpacingStrategies.UNIFORM;

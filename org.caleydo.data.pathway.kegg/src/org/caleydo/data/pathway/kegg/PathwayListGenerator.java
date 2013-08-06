@@ -5,16 +5,20 @@
  ******************************************************************************/
 package org.caleydo.data.pathway.kegg;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.PrintWriter;
 
 import javax.swing.ImageIcon;
 
 /**
- * FIXME adapt Helper tool can load a pathway list from a local folder. This is needed because the folder.listFiles
- * method does not work in deployed RCP applications.
- *
+ * Helper tool can load a pathway list from a local folder. This is needed
+ * because the folder.listFiles method does not work in deployed RCP
+ * applications.
+ * 
  * @author Marc Streit
  */
 public class PathwayListGenerator {

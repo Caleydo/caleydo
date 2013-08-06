@@ -97,7 +97,6 @@ public class FishEyeSpacingCalculator implements ISpacingStrategy {
 
 	/**
 	 * returns a bitset containing the selected indices
-	 *
 	 * @param selectionManager
 	 * @param va
 	 * @return

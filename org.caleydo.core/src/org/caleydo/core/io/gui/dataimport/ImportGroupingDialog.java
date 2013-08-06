@@ -87,7 +87,6 @@ public class ImportGroupingDialog extends AHelpButtonDialog implements SafeCalla
 	private int numRowsInFile = 0;
 
 	private List<String> customGroupingNames = new ArrayList<>();
-
 	private boolean useCustomGroupingNames = false;
 
 	/**
@@ -151,6 +150,7 @@ public class ImportGroupingDialog extends AHelpButtonDialog implements SafeCalla
 			public void on(int data) {
 				previewTable.onNumHeaderRowsChanged(data);
 				if (data == 0) {
+
 					if (!useCustomGroupingNames) {
 						onUseCustomGroupingNames();
 						useCustomGroupingNamesButton.setSelection(true);
@@ -401,6 +401,7 @@ public class ImportGroupingDialog extends AHelpButtonDialog implements SafeCalla
 			}
 		}
 		spec.setGroupingNames(groupingNames);
+
 	}
 
 	@Override

@@ -27,7 +27,11 @@ public abstract class ADirectedEvent extends AEvent {
 
 	/**
 	 * determines whether the receiver is equal to the given object
+<<<<<<< HEAD
 	 *
+=======
+	 * 
+>>>>>>> refs/heads/entourage
 	 * @param obj
 	 * @return
 	 */

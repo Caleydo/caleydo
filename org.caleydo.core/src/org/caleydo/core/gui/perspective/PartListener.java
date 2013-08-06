@@ -10,7 +10,6 @@ import org.caleydo.core.view.ARcpGLViewPart;
 import org.caleydo.core.view.CaleydoRCPViewPart;
 import org.caleydo.core.view.IDataDomainBasedView;
 import org.caleydo.core.view.IView;
-import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.IGLView;
 import org.eclipse.ui.IPartListener2;
 import org.eclipse.ui.IViewPart;
@@ -19,8 +18,7 @@ import org.eclipse.ui.IWorkbenchPartReference;
 import org.eclipse.ui.PlatformUI;
 
 /**
- * Listener for events that are related to view changes (detach, visible, hide,
- * activate, etc.)
+ * Listener for events that are related to view changes (detach, visible, hide, activate, etc.)
  *
  * @author Marc Streit
  */
@@ -111,11 +109,10 @@ public class PartListener implements IPartListener2 {
 	@SuppressWarnings({ "deprecation", "unchecked", "rawtypes" })
 	private void updateSupportViews(CaleydoRCPViewPart viewPart) {
 		if (viewPart.getView() instanceof IDataDomainBasedView) {
-			IDataDomain dataDomain = ((IDataDomainBasedView<?>) viewPart
-					.getView()).getDataDomain();
+			IDataDomain dataDomain = ((IDataDomainBasedView<?>) viewPart.getView()).getDataDomain();
 
-			for (IViewPart rcpViewPart : PlatformUI.getWorkbench()
-					.getActiveWorkbenchWindow().getActivePage().getViews()) {
+			for (IViewPart rcpViewPart : PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+					.getViews()) {
 
 				if (!(rcpViewPart instanceof CaleydoRCPViewPart))
 					continue;
@@ -124,12 +121,10 @@ public class PartListener implements IPartListener2 {
 
 				if (caleydoRCPViewPart.isSupportView()) {
 					if (caleydoRCPViewPart instanceof IDataDomainBasedView) {
-						((IDataDomainBasedView) caleydoRCPViewPart)
-								.setDataDomain(dataDomain);
+						((IDataDomainBasedView) caleydoRCPViewPart).setDataDomain(dataDomain);
 
 					} else if (caleydoRCPViewPart.getView() instanceof IDataDomainBasedView) {
-						((IDataDomainBasedView) (caleydoRCPViewPart.getView()))
-								.setDataDomain(dataDomain);
+						((IDataDomainBasedView) (caleydoRCPViewPart.getView())).setDataDomain(dataDomain);
 					}
 				}
 			}
