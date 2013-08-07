@@ -5,8 +5,7 @@ Bundle-SymbolicName: org.caleydo.view.heatmap;singleton:=true
 Bundle-Version: 3.0.1
 Require-Bundle: org.caleydo.core;bundle-version="2.2",
  org.caleydo.datadomain.genetic;bundle-version="2.2",
- org.caleydo.datadomain.pathway;bundle-version="2.2",
- org.caleydo.datadomain.mock;bundle-version="3.0.1"
+ org.caleydo.datadomain.pathway;bundle-version="2.2"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: org.caleydo.view.heatmap,
  org.caleydo.view.heatmap.command.handler,

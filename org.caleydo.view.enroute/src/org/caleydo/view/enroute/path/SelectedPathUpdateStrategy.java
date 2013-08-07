@@ -10,6 +10,7 @@ import java.util.List;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.view.MinSizeUpdateEvent;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
+import org.caleydo.datadomain.pathway.listener.EnableFreePathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.EnablePathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.PathwayPathSelectionEvent;
 
@@ -34,6 +35,12 @@ public class SelectedPathUpdateStrategy extends APathUpdateStrategy {
 	}
 
 	@Override
+	public void onEnableFreePathSelection(EnableFreePathSelectionEvent event) {
+		// Not possible within the selected path
+
+	}
+
+	@Override
 	public void onSelectedPathChanged(PathwayPathSelectionEvent event) {
 		renderer.setPath(event.getPathSegmentsAsVertexList());
 	}
@@ -55,5 +62,6 @@ public class SelectedPathUpdateStrategy extends APathUpdateStrategy {
 	public boolean isPathChangePermitted(List<List<PathwayVertexRep>> newPath) {
 		return true;
 	}
+
 
 }

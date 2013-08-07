@@ -22,6 +22,7 @@ package org.caleydo.view.entourage;
 import org.caleydo.core.gui.toolbar.action.OpenOnlineHelpAction;
 import org.caleydo.core.view.ARcpGLViewPart;
 import org.caleydo.datadomain.pathway.toolbar.ClearPathAction;
+import org.caleydo.datadomain.pathway.toolbar.SelectFreePathAction;
 import org.caleydo.datadomain.pathway.toolbar.SelectPathAction;
 import org.caleydo.view.entourage.toolbar.ShowPortalsAction;
 import org.eclipse.jface.action.IToolBarManager;
@@ -64,6 +65,9 @@ public class RcpGLSubGraphView extends ARcpGLViewPart {
 		GLEntourage subgraph = (GLEntourage) view;
 
 		SelectPathAction selectPathAction = new SelectPathAction(false, subgraph.getPathEventSpace());
+		SelectFreePathAction selectFreePathAction = new SelectFreePathAction(false, subgraph.getPathEventSpace());
+		selectPathAction.setSelectFreePathAction(selectFreePathAction);
+		selectFreePathAction.setSelectPathAction(selectPathAction);
 		ShowPortalsAction showPortalsAction = new ShowPortalsAction(subgraph.getPathEventSpace());
 		// HighlightAllPortalsAction highlightAllPortalsAction = new HighlightAllPortalsAction(subgraph);
 		// subgraph.setHighlightAllPortalsButton(highlightAllPortalsAction);
@@ -72,6 +76,7 @@ public class RcpGLSubGraphView extends ARcpGLViewPart {
 		// if (view instanceof GLSubGraph)
 		// ((GLSubGraph) view).setSelectPathAction(selectPathAction);
 		toolBarManager.add(selectPathAction);
+		toolBarManager.add(selectFreePathAction);
 		toolBarManager.add(new ClearPathAction(subgraph.getPathEventSpace()));
 		toolBarManager.add(showPortalsAction);
 		// toolBarManager.add(highlightAllPortalsAction);
