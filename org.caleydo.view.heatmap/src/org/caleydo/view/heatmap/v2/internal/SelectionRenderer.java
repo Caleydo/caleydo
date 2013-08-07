@@ -8,11 +8,14 @@ package org.caleydo.view.heatmap.v2.internal;
 import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.MOUSE_OVER_LINE_WIDTH;
 import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.SELECTED_LINE_WIDTH;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.VirtualArray;
@@ -29,16 +32,52 @@ import org.caleydo.view.heatmap.v2.ISpacingStrategy.ISpacingLayout;
  */
 public class SelectionRenderer {
 	private final SelectionManager manager;
-	private final TablePerspective tablePerspective;
+	private final Perspective perspective;
 	private final boolean isDimension;
 
-	public SelectionRenderer(TablePerspective tablePerspective, SelectionManager manager, boolean isDimension) {
-		this.tablePerspective = tablePerspective;
+	public SelectionRenderer(Perspective perspective, SelectionManager manager, boolean isDimension) {
+		this.perspective = perspective;
 		this.manager = manager;
 		this.isDimension = isDimension;
 	}
 
-	public void renderDimension(GLGraphics g, SelectionType selectionType, float h, ISpacingLayout layout) {
+	private void render(GLGraphics g, SelectionType selectionType, float w, float h, ISpacingLayout layout) {
+		List<Integer> indices = prepareRender(g, selectionType);
+
+		// dimension selection
+		if (isDimension) {
+			g.gl.glEnable(GL2.GL_LINE_STIPPLE);
+			g.gl.glLineStipple(2, (short) 0xAAAA);
+		}
+
+		int lastIndex = -1;
+		float x = 0;
+		float wi = 0;
+		for (int index : indices) {
+			// if (index != (lastIndex + 1)) //just the outsides
+			{
+				// flush previous
+				if (isDimension)
+					g.drawRect(x, 0, wi, h);
+				else
+					g.drawRect(0, x, w, wi);
+				x = layout.getPosition(index);
+				wi = 0;
+			}
+			wi += layout.getSize(index);
+			lastIndex = index;
+		}
+		if (wi > 0)
+			if (isDimension)
+				g.drawRect(x, 0, wi, h);
+			else
+				g.drawRect(0, x, w, wi);
+
+		if (isDimension)
+			g.gl.glDisable(GL2.GL_LINE_STIPPLE);
+	}
+
+	private List<Integer> prepareRender(GLGraphics g, SelectionType selectionType) {
 		Set<Integer> selectedSet = manager.getElements(selectionType);
 
 		g.color(selectionType.getColor());
@@ -47,61 +86,28 @@ public class SelectionRenderer {
 		} else if (selectionType == SelectionType.MOUSE_OVER) {
 			g.lineWidth(MOUSE_OVER_LINE_WIDTH);
 		}
+		List<Integer> indices = toIndices(selectedSet);
+		return indices;
+	}
 
-		// dimension selection
-		g.gl.glEnable(GL2.GL_LINE_STIPPLE);
-		g.gl.glLineStipple(2, (short) 0xAAAA);
-
-		VirtualArray va = tablePerspective.getDimensionPerspective().getVirtualArray();
+	private List<Integer> toIndices(Set<Integer> selectedSet) {
+		VirtualArray va = perspective.getVirtualArray();
+		List<Integer> indices = new ArrayList<>(selectedSet.size());
 		for (Integer selectedColumn : selectedSet) {
 			if (manager.checkStatus(GLHeatMap.SELECTION_HIDDEN, selectedColumn))
 				continue;
 			int i = va.indexOf(selectedColumn);
 			if (i < 0)
 				continue;
-			float x = layout.getPosition(i);
-			float fieldWidth = layout.getSize(i);
-
-			g.drawRect(x, 0, fieldWidth, h);
+			indices.add(i);
 		}
-
-		g.gl.glDisable(GL2.GL_LINE_STIPPLE);
-		g.lineWidth(1);
-	}
-
-	public void renderRecord(GLGraphics g, SelectionType selectionType, float w, ISpacingLayout layout) {
-		// content selection
-		Set<Integer> selectedSet = manager.getElements(selectionType);
-
-		g.color(selectionType.getColor());
-		if (selectionType == SelectionType.SELECTION) {
-			g.lineWidth(SELECTED_LINE_WIDTH);
-		} else if (selectionType == SelectionType.MOUSE_OVER) {
-			g.lineWidth(MOUSE_OVER_LINE_WIDTH);
-		}
-
-		VirtualArray va = tablePerspective.getRecordPerspective().getVirtualArray();
-		for (Integer selectedRow : selectedSet) {
-			if (manager.checkStatus(GLHeatMap.SELECTION_HIDDEN, selectedRow))
-				continue;
-			int i = va.indexOf(selectedRow);
-			if (i < 0)
-				continue;
-			float fieldHeight = layout.getSize(i);
-			float y = layout.getPosition(i);
-
-			g.drawRect(0, y, w, fieldHeight);
-		}
-		g.lineWidth(1);
+		Collections.sort(indices);
+		return indices;
 	}
 
 	public void render(GLGraphics g, float w, float h, ISpacingLayout layout) {
-		if (isDimension) {
-			renderDimension(g, SelectionType.SELECTION, h, layout);
-			renderDimension(g, SelectionType.MOUSE_OVER, h, layout);
-		} else {
-			renderRecord(g, SelectionType.SELECTION, w, layout);
-			renderRecord(g, SelectionType.MOUSE_OVER, w, layout);
-		}
+		render(g, SelectionType.SELECTION, w, h, layout);
+		render(g, SelectionType.MOUSE_OVER, w, h, layout);
+		g.lineWidth(1);
 	}
 }
