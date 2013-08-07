@@ -41,10 +41,10 @@ public class AverageBarElement extends ASingleTablePerspectiveElement {
 	public String getTooltip() {
 		StringBuilder b = new StringBuilder();
 		b.append("Normalized ").append(getTablePerspective().getLabel()).append('\n');
-		b.append(String.format("   %s: %.3f\n", " mean", stats.getMean()));
-		b.append(String.format("   %s: %.3f\n", "   sd", stats.getSd()));
-		b.append(String.format("   %s: %.3f\n", "  min", stats.getMin()));
-		b.append(String.format("   %s: %.3f", "  max", stats.getMax()));
+		b.append(String.format("%s:\t%.3f\n", "mean", stats.getMean()));
+		b.append(String.format("%s:\t%.3f\n", "sd", stats.getSd()));
+		b.append(String.format("%s:\t%.3f\n", "min", stats.getMin()));
+		b.append(String.format("%s:\t%.3f", "max", stats.getMax()));
 		return b.toString();
 	}
 
