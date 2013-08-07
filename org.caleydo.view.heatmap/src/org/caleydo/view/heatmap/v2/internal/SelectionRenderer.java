@@ -13,8 +13,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import javax.media.opengl.GL2;
-
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
@@ -45,17 +43,18 @@ public class SelectionRenderer {
 		List<Integer> indices = prepareRender(g, selectionType);
 
 		// dimension selection
-		if (isDimension) {
-			g.gl.glEnable(GL2.GL_LINE_STIPPLE);
-			g.gl.glLineStipple(2, (short) 0xAAAA);
-		}
+		// if (isDimension) {
+		// g.gl.glEnable(GL2.GL_LINE_STIPPLE);
+		// g.gl.glLineStipple(2, (short) 0xAAAA);
+		// }
 
 		int lastIndex = -1;
 		float x = 0;
 		float wi = 0;
 		for (int index : indices) {
-			// if (index != (lastIndex + 1)) //just the outsides
+			if (index != (lastIndex + 1)) // just the outsides
 			{
+				g.gl.glLineWidth(3);
 				// flush previous
 				if (isDimension)
 					g.drawRect(x, 0, wi, h);
@@ -73,8 +72,8 @@ public class SelectionRenderer {
 			else
 				g.drawRect(0, x, w, wi);
 
-		if (isDimension)
-			g.gl.glDisable(GL2.GL_LINE_STIPPLE);
+		// if (isDimension)
+		// g.gl.glDisable(GL2.GL_LINE_STIPPLE);
 	}
 
 	private List<Integer> prepareRender(GLGraphics g, SelectionType selectionType) {
