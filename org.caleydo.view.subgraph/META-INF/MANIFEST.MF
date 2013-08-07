@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Subgraph
-Bundle-SymbolicName: org.caleydo.view.subgraph;singleton:=true
+Bundle-SymbolicName: org.caleydo.view.entourage;singleton:=true
 Bundle-Version: 2.2
-Bundle-Activator: org.caleydo.view.subgraph.Activator
+Bundle-Activator: org.caleydo.view.entourage.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.caleydo.core;bundle-version="2.1.0",
@@ -13,10 +13,10 @@ Require-Bundle: org.eclipse.ui,
  org.caleydo.vis.rank;bundle-version="2.2.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Export-Package: org.caleydo.view.subgraph,
- org.caleydo.view.subgraph.command.handler,
- org.caleydo.view.subgraph.contextmenu,
- org.caleydo.view.subgraph.datamapping,
- org.caleydo.view.subgraph.event,
- org.caleydo.view.subgraph.ranking,
- org.caleydo.view.subgraph.toolbar
+Export-Package: org.caleydo.view.entourage,
+ org.caleydo.view.entourage.command.handler,
+ org.caleydo.view.entourage.contextmenu,
+ org.caleydo.view.entourage.datamapping,
+ org.caleydo.view.entourage.event,
+ org.caleydo.view.entourage.ranking,
+ org.caleydo.view.entourage.toolbar

@@ -6,7 +6,7 @@
       <view
             allowMultiple="true"
             category="org.caleydo.core.views"
-            class="org.caleydo.view.subgraph.RcpGLSubGraphView"
+            class="org.caleydo.view.entourage.RcpGLSubGraphView"
             icon="resources/icons/icon.png"
             id="org.caleydo.view.subgraph"
             name="Entourage">
@@ -35,7 +35,7 @@
    <extension
          point="org.eclipse.ui.commands">
       <command
-            defaultHandler="org.caleydo.view.subgraph.command.handler.OpenSubGraphHandler"
+            defaultHandler="org.caleydo.view.entourage.command.handler.OpenSubGraphHandler"
             id="org.caleydo.view.subgraph.command.opensubgraph"
             name="Entourage">
       </command>
@@ -97,7 +97,7 @@
                   isDefaultView="false"
                   visInfo="org.caleydo.core.view.opengl.layout.util.multiform.DefaultVisInfo">
                <RendererCreator
-                     class="org.caleydo.view.subgraph.Level4Creator">
+                     class="org.caleydo.view.entourage.Level4Creator">
                </RendererCreator>
             </Embedding>
          </ParentView>
