@@ -4,7 +4,7 @@ Bundle-Name: Table Demo View
 Bundle-SymbolicName: org.caleydo.view.table;singleton:=true
 Bundle-Version: 3.0.1
 Require-Bundle: org.caleydo.core;bundle-version="2.2",
- org.caleydo.lib.nattable;bundle-version="2.1.0"
+ org.eclipse.nebula.widgets.nattable.core;bundle-version="1.0.1"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-Vendor: www.caleydo.org
 Bundle-ActivationPolicy: lazy

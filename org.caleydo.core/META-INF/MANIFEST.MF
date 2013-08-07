@@ -374,12 +374,12 @@ Require-Bundle: org.eclipse.core.runtime;bundle-version="3.8.0";visibility:=reex
  org.eclipse.e4.ui.model.workbench;bundle-version="0.10.1",
  org.eclipse.core.resources;bundle-version="3.8.1",
  org.eclipse.ui;bundle-version="3.103.0.1";visibility:=reexport,
- org.caleydo.lib.args4j;bundle-version="2.0.16";visibility:=reexport,
- org.caleydo.lib.jgrapht;bundle-version="0.8.3";visibility:=reexport,
- org.caleydo.lib.jogl;bundle-version="2.0.0";visibility:=reexport,
  com.google.guava;bundle-version="10.0.1";visibility:=reexport,
- org.caleydo.lib.nattable;bundle-version="2.1.0",
- org.apache.commons.lang;bundle-version="2.6.0";visibility:=reexport
+ org.apache.commons.lang;bundle-version="2.6.0";visibility:=reexport,
+ net.sf.jgrapht;bundle-version="0.8.3";visibility:=reexport,
+ org.kohsuke.args4j;bundle-version="2.0.21";visibility:=reexport,
+ org.eclipse.nebula.widgets.nattable.core;bundle-version="1.0.1",
+ com.jogamp.jogl;bundle-version="2.0.2";visibility:=reexport
 Bundle-ClassPath: .
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
