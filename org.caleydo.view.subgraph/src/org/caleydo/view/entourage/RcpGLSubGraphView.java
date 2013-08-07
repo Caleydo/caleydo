@@ -66,6 +66,8 @@ public class RcpGLSubGraphView extends ARcpGLViewPart {
 
 		SelectPathAction selectPathAction = new SelectPathAction(false, subgraph.getPathEventSpace());
 		SelectFreePathAction selectFreePathAction = new SelectFreePathAction(false, subgraph.getPathEventSpace());
+		selectPathAction.setSelectFreePathAction(selectFreePathAction);
+		selectFreePathAction.setSelectPathAction(selectPathAction);
 		ShowPortalsAction showPortalsAction = new ShowPortalsAction(subgraph.getPathEventSpace());
 		// HighlightAllPortalsAction highlightAllPortalsAction = new HighlightAllPortalsAction(subgraph);
 		// subgraph.setHighlightAllPortalsButton(highlightAllPortalsAction);

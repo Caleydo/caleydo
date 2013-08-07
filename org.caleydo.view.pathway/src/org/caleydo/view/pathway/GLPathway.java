@@ -207,10 +207,9 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 	private int selectedPathID;
 
 	private boolean useBubbleSets = false;
-	private PathwayBubbleSet bubbleSet = null;//new PathwayBubbleSet();
-	private PathwayBubbleSet alternativeBubbleSet = null; //new PathwayBubbleSet();
-	private PathwayBubbleSet contextPathBubbleSet = null;//new PathwayBubbleSet();
-
+	private PathwayBubbleSet bubbleSet = null;// new PathwayBubbleSet();
+	private PathwayBubbleSet alternativeBubbleSet = null; // new PathwayBubbleSet();
+	private PathwayBubbleSet contextPathBubbleSet = null;// new PathwayBubbleSet();
 
 	private boolean isControlKeyDown = false;
 	private boolean isShiftKeyDown = false;
@@ -221,7 +220,6 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 	private boolean isPathSelectionMode = false;
 	private boolean isFreePathSelectionMode = false;
 	private SelectPathAction selectPathAction = null;
-	private boolean showPortals = false;
 
 	private int minHeightPixels = -1;
 	private int minWidthPixels = -1;
@@ -384,7 +382,6 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 	public void init(final GL2 gl) {
 
 		displayListIndex = gl.glGenLists(1);
-
 
 		// Check if pathway exists or if it's already loaded
 		if (pathway == null || !pathwayManager.hasItem(pathway.getID()))
@@ -603,8 +600,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 				pathwayTextureScaling = pathway.getHeight()
 						/ (float) pixelGLConverter.getPixelHeightForGLHeight(viewFrustum.getHeight());
 
-				if(useBubbleSets)
-				{
+				if (useBubbleSets) {
 					pickX = (int) ((pickX - pixelGLConverter.getPixelWidthForGLWidth(vecTranslation.x())) * pathwayTextureScaling);
 					pickY = (int) ((pickY - pixelGLConverter.getPixelHeightForGLHeight(vecTranslation.y())) * pathwayTextureScaling);
 
@@ -826,7 +822,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		// if (!this.highlightVertices)
 		// augmentationRenderer.setVisible(false);
 		// setDisplayListDirty();
-			augmentationRenderer.renderPathway(gl, pathway, false);
+		augmentationRenderer.renderPathway(gl, pathway, false);
 		gl.glTranslatef(0, -pathwayHeight, -textureOffset);
 
 		if (enablePathwayTexture) {
@@ -867,17 +863,16 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 			textureOffset -= 2f * PathwayRenderStyle.Z_OFFSET;
 			gl.glTranslatef(0.0f, 0.0f, textureOffset);
 
-			if(useBubbleSets)
-			{
-				if(bubbleSet == null){
-					bubbleSet= new PathwayBubbleSet();
+			if (useBubbleSets) {
+				if (bubbleSet == null) {
+					bubbleSet = new PathwayBubbleSet();
 					bubbleSet.getBubbleSetGLRenderer().init(gl);
 				}
-				if(contextPathBubbleSet==null){
+				if (contextPathBubbleSet == null) {
 					contextPathBubbleSet = new PathwayBubbleSet();
 					contextPathBubbleSet.getBubbleSetGLRenderer().init(gl);
 				}
-				if(alternativeBubbleSet==null){
+				if (alternativeBubbleSet == null) {
 					alternativeBubbleSet = new PathwayBubbleSet();
 					alternativeBubbleSet.getBubbleSetGLRenderer().init(gl);
 				}
@@ -1239,35 +1234,6 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		return true;
 	}
 
-	// @Override
-	// public void setDataDomain(ATableBasedDataDomain dataDomain) {
-	// if (dataDomain == null) {
-	// if (gLPathwayAugmentationRenderer != null) {
-	// gLPathwayAugmentationRenderer.enableGeneMapping(false);
-	// }
-	// return;
-	// }
-	// if (!(dataDomain instanceof GeneticDataDomain))
-	// throw new IllegalArgumentException("Pathway view can handle only genetic data domain, tried to set: "
-	// + dataDomain);
-	//
-	// this.dataDomain = (GeneticDataDomain) dataDomain;
-	//
-	// if (gLPathwayAugmentationRenderer != null) {
-	// gLPathwayAugmentationRenderer.enableGeneMapping(true);
-	// }
-	// // only make a new sample selection manager if necessary due to
-	// // different id category or because it wasn't initalized so far
-	// if (sampleSelectionManager == null
-	// || !sampleSelectionManager.getIDType().getIDCategory()
-	// .equals(this.dataDomain.getSampleIDType().getIDCategory())) {
-	// sampleSelectionManager = new EventBasedSelectionManager(this,
-	// ((GeneticDataDomain) dataDomain).getSampleIDType());
-	// }
-	// setDisplayListDirty();
-	//
-	// }
-
 	@Override
 	public void addTablePerspective(TablePerspective tablePerspective) {
 		if (tablePerspective == null || !tablePerspective.getDataDomain().hasIDCategory(geneIDType)) {
@@ -1483,6 +1449,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 						for (PathwayVertexRep portal : portalVertexReps) {
 							if (vertexRep == portal) {
 								isPortalNode = true;
+								break;
 							}
 						}
 					}
@@ -1542,6 +1509,41 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		}
 	}
 
+	private void addVertexToFreePath(PathwayVertexRep vertexRep) {
+		if(vertexRep.getType() == EPathwayVertexType.map)
+			return;
+		if (pathSegments.size() > 0) {
+			PathwayPath lastSegment = pathSegments.get(pathSegments.size() - 1);
+			PathwayVertexRep lastVertexRep = lastSegment.getNodes().get(lastSegment.getNodes().size() - 1);
+			PathwayVertexRep firstVertexRep = lastSegment.getNodes().get(0);
+			// Do not add the same node after each other
+			if (lastVertexRep == vertexRep)
+				return;
+			if (pathway.containsEdge(lastVertexRep, vertexRep)) {
+				List<DefaultEdge> edges = new ArrayList<>(lastSegment.getPath().getEdgeList());
+				edges.add(pathway.getEdge(lastVertexRep, vertexRep));
+				GraphPath<PathwayVertexRep, DefaultEdge> path = new GraphPathImpl<PathwayVertexRep, DefaultEdge>(
+						pathway, firstVertexRep, vertexRep, edges, 0);
+				if (allPaths == null) {
+					allPaths = new ArrayList<GraphPath<PathwayVertexRep, DefaultEdge>>();
+				} else
+					allPaths.clear();
+				allPaths.add(path);
+				allPathsList.add(new Pair<List<GraphPath<PathwayVertexRep, DefaultEdge>>, Integer>(allPaths, 0));
+				selectedPath = path;
+				selectedPathID = 0;
+				pathSegments.set(pathSegments.size() - 1, new PathwayPath(selectedPath));
+				triggerPathUpdate();
+				isBubbleTextureDirty = true;
+				return;
+			}
+		}
+		generateSingleNodePath(vertexRep);
+		pathSegments.add(new PathwayPath(selectedPath));
+		triggerPathUpdate();
+		isBubbleTextureDirty = true;
+	}
+
 	public void handlePathwayElementSelection(SelectionType selectionType, int externalID) {
 		setDisplayListDirty();
 		PathwayVertexRep vertexRep = pathwayItemManager.getPathwayVertexRep(externalID);
@@ -1554,6 +1556,10 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 				// .getElements(SelectionType.SELECTION).toArray()[0]);
 			}
 			selectPath(vertexRep, selectionType);
+		}
+
+		if (isFreePathSelectionMode && selectionType == SelectionType.SELECTION) {
+			addVertexToFreePath(vertexRep);
 		}
 
 		vertexSelectionManager.clearSelection(selectionType);
@@ -1576,46 +1582,12 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		event.setSelectionDelta(selectionDelta);
 		eventPublisher.triggerEvent(event);
 
-		// if (vertexRep.getType() == EPathwayVertexType.map) {
-		// PathwayGraph pathway = PathwayManager.get().getPathwayByTitle(vertexRep.getName(),
-		// EPathwayDatabaseType.KEGG);
-		// if (pathway != null) {
-		// pathwaySelectionManager.clearSelections();
-		// if (selectionType == SelectionType.SELECTION || selectionType == SelectionType.MOUSE_OVER) {
-		// pathwaySelectionManager.addToType(selectionType, pathway.getID());
-		// }
-		// pathwaySelectionManager.triggerSelectionUpdateEvent();
-		// }
-		// }
-
-		// TODO: make sure that this is the last vertex of the last path segment
-		// if (selectedPath != null && vertexRep == selectedPath.getEndVertex()
-		// && selectedPath.getEdgeList().size() > 0) {
-		// if(showPortals){
-		// ShowPortalNodesEvent e = new ShowPortalNodesEvent(vertexRep);
-		// e.setSender(this);
-		// e.setEventSpace(pathwayPathEventSpace);
-		// eventPublisher.triggerEvent(e);
-		// // the event will not be sent back to this pathway object, so highlight must be triggered here
-		// //updatePortalVertexReps(vertexRep);
-		// portalVertexReps = PathwayManager.get().getEquivalentVertexRepsInPathway(vertexRep, pathway);
-
-		// }
-
-		// }
 	}
 
 	private void triggerPathUpdate() {
 		// List<PathwayPath> pathSegments = new ArrayList<>(1);
 		PathwayPathSelectionEvent pathEvent = new PathwayPathSelectionEvent();
 
-		// for (PathwayPath pathSegment : pathSegmentList) {
-		// pathSegments.add(pathSegment);
-		// }
-		// if (selectedPath != null && pathSegments!=null && pathSegments.size()>0) {
-		// //pathSegments.get(pathSegments.size()-1).setPathway(selectedPath);
-		// //pathSegments.set(pathSeg, element)
-		// }
 		if (selectedPath != null) {
 			if (pathSegments.size() > 0)
 				pathSegments.set(pathSegments.size() - 1, new PathwayPath(selectedPath));
@@ -1907,29 +1879,5 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 	public void setDynamicDetail(boolean isDynamicDetail) {
 		this.isDynamicDetail = isDynamicDetail;
 	}
-
-	// /**
-	// * @return the portalNodes, see {@link #portalNodes}
-	// */
-	// public Set<PathwayVertexRep> getPortalHighlightNodes() {
-	// return portalHighlightNodes;
-	// }
-
-	// @ListenTo(restrictExclusiveToEventSpace = true)
-	// public void onHighlightPortalNodes(HighlightPortalsEvent event) {
-	// if (pathway == null)
-	// return;
-	// Set<PathwayVertexRep> allPortals = event.getPortals();
-	//
-	// boolean isPortalsLarger = allPortals.size() > pathway.vertexSet().size();
-	// Set<PathwayVertexRep> cloneSet = new HashSet<PathwayVertexRep>(isPortalsLarger ? pathway.vertexSet()
-	// : allPortals);
-	// cloneSet.retainAll(isPortalsLarger ? allPortals : pathway.vertexSet());
-	//
-	// if (portalHighlightNodes.size() != cloneSet.size() || !portalHighlightNodes.containsAll(cloneSet)) {
-	// portalHighlightNodes = cloneSet;
-	// setDisplayListDirty();
-	// }
-	// }
 
 }

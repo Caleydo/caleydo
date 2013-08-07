@@ -8,18 +8,20 @@ package org.caleydo.datadomain.pathway.toolbar;
 import org.caleydo.core.gui.SimpleAction;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.datadomain.pathway.listener.EnableFreePathSelectionEvent;
+import org.caleydo.datadomain.pathway.listener.EnablePathSelectionEvent;
 
 /**
  * Event to enable free selection of pathway nodes.
  *
  * @author Christian Partl
- * 
+ *
  */
 public class SelectFreePathAction extends SimpleAction {
 
 	public static final String LABEL = "Toggle free selection of nodes";
 	public static final String ICON = "resources/icons/view/pathway/path_selection.png";
 	private String eventSpace;
+	private SelectPathAction selectPathAction;
 
 	public SelectFreePathAction(boolean isChecked, String eventSpace) {
 		super(LABEL, ICON);
@@ -27,12 +29,35 @@ public class SelectFreePathAction extends SimpleAction {
 		this.eventSpace = eventSpace;
 	}
 
+	public SelectFreePathAction(boolean isChecked, String eventSpace, SelectPathAction selectPathAction) {
+		super(LABEL, ICON);
+		setChecked(isChecked);
+		this.eventSpace = eventSpace;
+		this.selectPathAction = selectPathAction;
+	}
+
 	@Override
 	public void run() {
 		super.run();
-		EnableFreePathSelectionEvent event = new EnableFreePathSelectionEvent(isChecked());
-		event.setEventSpace(eventSpace);
-		GeneralManager.get().getEventPublisher().triggerEvent(event);
+		if (isChecked()) {
+			EnablePathSelectionEvent event = new EnablePathSelectionEvent(false);
+			event.setEventSpace(eventSpace);
+			GeneralManager.get().getEventPublisher().triggerEvent(event);
+			if (selectPathAction != null)
+				selectPathAction.setChecked(false);
+		}
+
+		EnableFreePathSelectionEvent e = new EnableFreePathSelectionEvent(isChecked());
+		e.setEventSpace(eventSpace);
+		GeneralManager.get().getEventPublisher().triggerEvent(e);
+	}
+
+	/**
+	 * @param selectPathAction
+	 *            setter, see {@link selectPathAction}
+	 */
+	public void setSelectPathAction(SelectPathAction selectPathAction) {
+		this.selectPathAction = selectPathAction;
 	}
 
 }
