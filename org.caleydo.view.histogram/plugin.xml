@@ -130,5 +130,10 @@
             icon="resources/icons/chart_pie.png"
             name="Distribution (Pie)">
       </factory>
+      <factory
+            factory="org.caleydo.view.histogram.v2.internal.DistributionHistogramElementFactory"
+            icon="resources/icons/chart_bar.png"
+            name="Histogram">
+      </factory>
    </extension>
 </plugin>
