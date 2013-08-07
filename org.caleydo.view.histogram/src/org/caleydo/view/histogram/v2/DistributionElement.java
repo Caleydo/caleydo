@@ -24,9 +24,10 @@ import org.caleydo.core.view.opengl.picking.IPickingLabelProvider;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingListenerComposite;
+import org.caleydo.view.histogram.HistogramRenderStyle;
 
 /**
- * Rendering the distribution of a categorical element.
+ * Rendering the distribution of a categorical element in various forms
  *
  * @author Samuel Gratzl
  */
@@ -42,7 +43,7 @@ public class DistributionElement extends ASingleTablePerspectiveElement implemen
 	private int hovered = -1;
 
 	public enum EDistributionMode {
-		VERTICAL_BAR, HORIZONTAL_BAR, PIE
+		VERTICAL_BAR, HORIZONTAL_BAR, PIE, HISTOGRAM
 	}
 
 	public DistributionElement(TablePerspective tablePerspective, EDistributionMode mode) {
@@ -119,13 +120,19 @@ public class DistributionElement extends ASingleTablePerspectiveElement implemen
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
 		super.renderImpl(g, w, h);
+		render(g, w, h);
+	}
 
+	private void render(GLGraphics g, float w, float h) {
 		switch (mode) {
 		case HORIZONTAL_BAR:
 			renderBar(false, g, w, h);
 			break;
 		case VERTICAL_BAR:
 			renderBar(true, g, w, h);
+			break;
+		case HISTOGRAM:
+			renderHistogram(g, w, h);
 			break;
 		case PIE:
 			renderPie(g, w, h);
@@ -139,21 +146,12 @@ public class DistributionElement extends ASingleTablePerspectiveElement implemen
 
 		if (getVisibility() != EVisibility.PICKABLE)
 			return;
-		switch (mode) {
-		case HORIZONTAL_BAR:
-			renderBar(false, g, w, h);
-			break;
-		case VERTICAL_BAR:
-			renderBar(true, g, w, h);
-			break;
-		case PIE:
-			renderPie(g, w, h);
-			break;
-		}
+
+		render(g, w, h);
 	}
 
 	private void renderPie(GLGraphics g, float w, float h) {
-		final float r = Math.min(w,h)*0.5f;
+		final float r = Math.min(w, h) * 0.5f - HistogramRenderStyle.SIDE_SPACING_DETAIL_LOW;
 		g.save();
 		g.gl.glTranslatef(w * 0.5f, h * 0.5f, g.z());
 
@@ -183,6 +181,36 @@ public class DistributionElement extends ASingleTablePerspectiveElement implemen
 		}
 		glu.gluDeleteQuadric(quad);
 
+		g.restore();
+	}
+
+	private void renderHistogram(GLGraphics g, float w, float h) {
+		h -= HistogramRenderStyle.SIDE_SPACING_DETAIL_LOW * 2;
+		w -= HistogramRenderStyle.SIDE_SPACING_DETAIL_LOW * 2;
+		final float factor = h / hist.getLargestValue();
+		final float delta = w / hist.size();
+
+		final float lineWidth = Math.min(delta - 1, 25);
+		final float lineWidthHalf = lineWidth * 0.5f;
+		float x = delta / 2;
+
+		g.save().move(HistogramRenderStyle.SIDE_SPACING_DETAIL_LOW,
+				HistogramRenderStyle.SIDE_SPACING_DETAIL_LOW + h - 1);
+		g.color(Color.DARK_GRAY).drawLine(0, 0, w, 0);
+		g.color(Color.GRAY);
+		for (int i = 0; i < hist.size(); ++i) {
+			g.color(toHighlight(hist.getColor(i), i));
+			float v = -hist.get(i) * factor;
+
+			if (v <= -1) {
+				g.pushName(bucketPickingIds.get(i));
+				g.fillRect(x - lineWidthHalf, 0, lineWidth, v);
+				g.popName();
+				if (RenderStyle.COLOR_BORDER != null)
+					g.color(RenderStyle.COLOR_BORDER).drawRect(x - lineWidthHalf, 0, lineWidth, v);
+			}
+			x += delta;
+		}
 		g.restore();
 	}
 
@@ -243,6 +271,8 @@ public class DistributionElement extends ASingleTablePerspectiveElement implemen
 			return new Vec2f(20, size);
 		case HORIZONTAL_BAR:
 			return new Vec2f(size, 20);
+		case HISTOGRAM:
+			return new Vec2f(100, 100);
 		case PIE:
 			return new Vec2f(200, 200);
 		}
