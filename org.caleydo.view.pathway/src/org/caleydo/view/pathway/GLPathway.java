@@ -78,6 +78,7 @@ import org.caleydo.datadomain.pathway.graph.PathwayPath;
 import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertex;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
+import org.caleydo.datadomain.pathway.listener.EnableFreePathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.EnablePathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.LoadPathwayEvent;
 import org.caleydo.datadomain.pathway.listener.PathwayMappingEvent;
@@ -91,6 +92,7 @@ import org.caleydo.view.pathway.event.SampleMappingModeEvent;
 import org.caleydo.view.pathway.event.SampleMappingModeListener;
 import org.caleydo.view.pathway.listener.EnRoutePathEventListener;
 import org.caleydo.view.pathway.listener.EnableGeneMappingListener;
+import org.caleydo.view.pathway.listener.SelectFreePathModeEventListener;
 import org.caleydo.view.pathway.listener.SelectPathModeEventListener;
 import org.caleydo.view.pathway.listener.ShowPortalNodesEventListener;
 import org.eclipse.core.runtime.IStatus;
@@ -182,6 +184,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 	private SampleMappingModeListener sampleMappingModeListener;
 	private UpdateColorMappingListener updateColorMappingListener;
 	private ShowPortalNodesEventListener showPortalNodesEventListener;
+	private SelectFreePathModeEventListener selectFreePathModeEventListener;
 
 	private IPickingListener pathwayElementPickingListener;
 
@@ -216,6 +219,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 	 * Determines whether the paths should be selectable via mouse click.
 	 */
 	private boolean isPathSelectionMode = false;
+	private boolean isFreePathSelectionMode = false;
 	private SelectPathAction selectPathAction = null;
 	private boolean showPortals = false;
 
@@ -1134,6 +1138,11 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		showPortalNodesEventListener.setEventSpace(pathwayPathEventSpace);
 		listeners.register(ShowNodeContextEvent.class, showPortalNodesEventListener);
 
+		selectFreePathModeEventListener = new SelectFreePathModeEventListener();
+		selectFreePathModeEventListener.setHandler(this);
+		selectFreePathModeEventListener.setEventSpace(pathwayPathEventSpace);
+		listeners.register(EnableFreePathSelectionEvent.class, selectFreePathModeEventListener);
+
 		listeners.register(this);
 	}
 
@@ -1171,6 +1180,11 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		if (updateColorMappingListener != null) {
 			eventPublisher.removeListener(updateColorMappingListener);
 			updateColorMappingListener = null;
+		}
+
+		if (selectFreePathModeEventListener != null) {
+			eventPublisher.removeListener(selectFreePathModeEventListener);
+			selectFreePathModeEventListener = null;
 		}
 
 		metaboliteSelectionManager.unregisterEventListeners();
@@ -1812,8 +1826,18 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 	public void enablePathSelection(boolean isPathSelection) {
 		this.isPathSelectionMode = isPathSelection;
 		isPathStartSelected = false;
-		if(isPathSelection)
+		if (isPathSelection) {
 			this.useBubbleSets = true;
+			this.isFreePathSelectionMode = false;
+		}
+	}
+
+	public void enableFreePathSelection(boolean isFreePathSelection) {
+		this.isFreePathSelectionMode = isFreePathSelection;
+		if (isFreePathSelection) {
+			useBubbleSets = true;
+			isPathSelectionMode = false;
+		}
 	}
 
 	/**
