@@ -233,8 +233,8 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 	private APathwayPathRenderer addPath(List<List<PathwayVertexRep>> pathSegments) {
 		VerticalPathRenderer renderer = new VerticalPathRenderer(view, tablePerspectives);
 
-		renderer.setUpdateStrategy(new FixedPathUpdateStrategy(renderer, eventSpace, isPathSelectionMode, this,
-				selectedPathSegments));
+		renderer.setUpdateStrategy(new FixedPathUpdateStrategy(renderer, eventSpace, isPathSelectionMode,
+				isFreePathSelectionMode, this, selectedPathSegments));
 		renderer.pathwayPathEventSpace = eventSpace;
 		// renderer.setTablePerspectives(tablePerspectives);
 		renderer.setPathway(pathway);

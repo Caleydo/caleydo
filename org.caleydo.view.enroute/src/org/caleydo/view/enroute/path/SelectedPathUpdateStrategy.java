@@ -63,5 +63,9 @@ public class SelectedPathUpdateStrategy extends APathUpdateStrategy {
 		return true;
 	}
 
+	@Override
+	public boolean isInnerNodeRemovalAllowed() {
+		return true;
+	}
 
 }
