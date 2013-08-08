@@ -378,8 +378,7 @@ Require-Bundle: org.eclipse.core.runtime;bundle-version="3.8.0";visibility:=reex
  org.apache.commons.lang;bundle-version="2.6.0";visibility:=reexport,
  net.sf.jgrapht;bundle-version="0.8.3";visibility:=reexport,
  org.kohsuke.args4j;bundle-version="2.0.21";visibility:=reexport,
- org.eclipse.nebula.widgets.nattable.core;bundle-version="1.0.1",
- com.jogamp.jogl;bundle-version="2.0.2";visibility:=reexport
+ org.eclipse.nebula.widgets.nattable.core;bundle-version="1.0.1"
 Bundle-ClassPath: .
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
