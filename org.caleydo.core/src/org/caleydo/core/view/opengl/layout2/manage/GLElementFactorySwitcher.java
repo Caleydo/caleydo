@@ -178,6 +178,14 @@ public class GLElementFactorySwitcher extends GLElement implements IGLElementPar
 		return active < 0 ? null : instances[active];
 	}
 
+	public String getActiveId() {
+		return active < 0 ? null : children.get(active).getId();
+	}
+
+	public GLElementSupplier getActiveSupplier() {
+		return active < 0 ? null : children.get(active);
+	}
+
 	@Override
 	public void layout(int deltaTimeMs) {
 		super.layout(deltaTimeMs);

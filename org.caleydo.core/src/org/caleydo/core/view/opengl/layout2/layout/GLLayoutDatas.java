@@ -56,6 +56,7 @@ public class GLLayoutDatas {
 		@Override
 		public <T> T getLayoutDataAs(Class<T> clazz, T default_) {
 			return GLLayouts.resolveLayoutDatas(clazz, default_, elems);
+
 		}
 	}
 }

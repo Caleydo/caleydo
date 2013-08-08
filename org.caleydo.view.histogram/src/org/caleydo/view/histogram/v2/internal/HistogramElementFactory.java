@@ -28,7 +28,7 @@ public class HistogramElementFactory implements IGLElementFactory {
 	@Override
 	public boolean canCreate(GLElementFactoryContext context) {
 		TablePerspective data = context.getData();
-		return DataSupportDefinitions.homogenousColumns.apply(data);
+		return DataSupportDefinitions.numericalColumns.apply(data);
 	}
 
 	@Override
@@ -38,7 +38,6 @@ public class HistogramElementFactory implements IGLElementFactory {
 
 		HistogramElement elem = new HistogramElement(data, detailLevel);
 		elem.setShowColorMapper(context.is("showColorMapper"));
-		elem.setRenderBackground(context.is("renderBackground", true));
 		return elem;
 	}
 

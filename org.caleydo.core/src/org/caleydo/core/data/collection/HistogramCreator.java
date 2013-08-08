@@ -28,8 +28,6 @@ public class HistogramCreator {
 			else if (vector[count] < min)
 				min = vector[count];
 		}
-		histogram.setMax((float) max);
-		histogram.setMin((float) min);
 
 		for (double value : vector) {
 			if (Double.isNaN(value)) {
@@ -41,7 +39,7 @@ public class HistogramCreator {
 				histogram.add(iIndex, 0);
 			}
 		}
-		return histogram;
+		return histogram.optimize();
 	}
 
 	public static Histogram createHistogram(float[] vector) {
@@ -71,7 +69,7 @@ public class HistogramCreator {
 				histogram.add(iIndex, 0);
 			}
 		}
-		return histogram;
+		return histogram.optimize();
 	}
 
 	// private ArrayList<Integer>

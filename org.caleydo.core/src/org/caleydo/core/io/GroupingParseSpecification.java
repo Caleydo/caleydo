@@ -97,12 +97,6 @@ public class GroupingParseSpecification
 	private List<String> groupingNames;
 
 	/**
-	 * Optional summary name for all groupings in a grouping file. If multiple groupings exist all groupings will have
-	 * the same name. Only used if {@link #groupingNames} is not null.
-	 */
-	private String groupingName;
-
-	/**
 	 * Default Constructor, use setters to specify data
 	 */
 	public GroupingParseSpecification() {
@@ -137,21 +131,6 @@ public class GroupingParseSpecification
 	 */
 	public ArrayList<Integer> getColumns() {
 		return columns;
-	}
-
-	/**
-	 * @param groupingName
-	 *            setter, see {@link groupingName}
-	 */
-	public void setGroupingName(String groupingName) {
-		this.groupingName = groupingName;
-	}
-
-	/**
-	 * @return the groupingName, see {@link #groupingName}
-	 */
-	public String getGroupingName() {
-		return groupingName;
 	}
 
 	/**

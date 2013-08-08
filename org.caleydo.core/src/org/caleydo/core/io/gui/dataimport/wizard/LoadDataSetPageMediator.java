@@ -621,8 +621,7 @@ public class LoadDataSetPageMediator {
 
 	public void createDataPreviewTableFromFile() {
 		parser.parseWithProgress(page.getShell(), isTransposed ? transposedDataFile.getAbsolutePath()
-				: dataSetDescription.getDataSourcePath(),
-				dataSetDescription.getDelimiter(), true, -1);
+				: dataSetDescription.getDataSourcePath(), dataSetDescription.getDelimiter(), true, -1);
 		dataMatrix = parser.getDataMatrix();
 		totalNumberOfColumns = parser.getTotalNumberOfColumns();
 		totalNumberOfRows = parser.getTotalNumberOfRows();
@@ -630,7 +629,6 @@ public class LoadDataSetPageMediator {
 		updateWidgetsAccordingToTableChanges();
 		guessNumberOfHeaderRows();
 		determineIDTypes();
-
 
 		page.previewTable.updateTableColors(dataSetDescription.getNumberOfHeaderLines(),
 				dataSetDescription.getRowOfColumnIDs(), dataSetDescription.getColumnOfRowIds());

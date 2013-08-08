@@ -308,6 +308,13 @@ public class TablePerspective implements IDefaultLabelHolder, IUniqueObject {
 	}
 
 	/**
+	 * invalidate the statistics, e.g. if the underlying data have changed
+	 */
+	public void invalidateContainerStatistics() {
+		tablePerspectiveStatistics = new TablePerspectiveStatistics(this);
+	}
+
+	/**
 	 * Returns the size of the virtual array in the record perspective, i.e. the number of records
 	 */
 	public int getNrRecords() {

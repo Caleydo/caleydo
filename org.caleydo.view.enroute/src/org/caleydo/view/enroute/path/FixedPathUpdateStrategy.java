@@ -14,6 +14,7 @@ import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
+import org.caleydo.datadomain.pathway.listener.EnableFreePathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.EnablePathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.PathwayPathSelectionEvent;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
@@ -41,10 +42,14 @@ public class FixedPathUpdateStrategy extends APathUpdateStrategy {
 	protected boolean isSelectedPathContinuation = false;
 
 	/**
-	 * Determines whether the path will be selected by moving the mouse over nodes. This is only possible if
-	 * {@link #isPathSelectable} is ture.
+	 * Determines whether the path will be selected by moving the mouse over nodes.
 	 */
 	protected boolean isPathSelectionMode = false;
+
+	/**
+	 * Determines whether a free path can be selected by clicking on the nodes of the path.
+	 */
+	protected boolean isFreePathSelectionMode = false;
 
 	/**
 	 * The segments of the currently selected path.
@@ -80,6 +85,16 @@ public class FixedPathUpdateStrategy extends APathUpdateStrategy {
 	@Override
 	public void onEnablePathSelection(EnablePathSelectionEvent event) {
 		isPathSelectionMode = event.isPathSelectionMode();
+		if (isPathSelectionMode)
+			isFreePathSelectionMode = false;
+	}
+
+	@Override
+	public void onEnableFreePathSelection(EnableFreePathSelectionEvent event) {
+		isFreePathSelectionMode = event.isEnabled();
+		if (isFreePathSelectionMode)
+			isPathSelectionMode = false;
+
 	}
 
 	@Override
@@ -142,6 +157,19 @@ public class FixedPathUpdateStrategy extends APathUpdateStrategy {
 					triggerPathUpdate(selectedPathSegments);
 				}
 				createNewPathSelection = !createNewPathSelection;
+			} else if (isFreePathSelectionMode) {
+				PathwayVertexRep vertexRep = node.getVertexReps().get(node.getVertexReps().size() - 1);
+
+				if (selectedPathSegments.size() > 0) {
+					List<PathwayVertexRep> lastSegment = selectedPathSegments.get(selectedPathSegments.size() - 1);
+					// Do not add the same node after each other
+					if (lastSegment.get(lastSegment.size() - 1) == vertexRep)
+						return;
+				}
+				List<PathwayVertexRep> newSegment = new ArrayList<>(1);
+				newSegment.add(vertexRep);
+				selectedPathSegments.add(newSegment);
+				triggerPathUpdate(selectedPathSegments);
 			}
 		}
 

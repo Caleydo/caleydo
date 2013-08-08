@@ -771,10 +771,14 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 					}
 					correspondingIndex++;
 				}
-				// Decrement corresponding index, because a single node refers to two vertexReps at the beginning and
-				// the
-				// end of a segment
-				correspondingIndex--;
+
+				if (pathNodes.get(correspondingIndex).getVertexReps().size() > 1) {
+					// Decrement corresponding index, because a single node refers to two vertexReps at the beginning
+					// and
+					// the
+					// end of a segment
+					correspondingIndex--;
+				}
 			}
 		}
 		return null;

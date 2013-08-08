@@ -143,6 +143,7 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 		local.getTimeDelta().reset();
 
 		canvas.requestFocus();
+
 	}
 
 	protected void initScene() {
@@ -183,13 +184,11 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 		}
 		final int deltaTimeMs = local.getDeltaTimeMs();
 		GL2 gl = drawable.getGL().getGL2();
-
 		if (!wasVisible) {
 			//set the viewport again for mac bug 1476
 			gl.glViewport(0,0,canvas.asGLAutoDrawAble().getWidth(), canvas.asGLAutoDrawAble().getHeight());
 			wasVisible = true;
 		}
-
 
 		// clear screen
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
@@ -202,10 +201,10 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 
 		final GLGraphics g = new GLGraphics(gl, local, true, deltaTimeMs);
 		g.clearError();
-
+		
 		float paddedWidth = getWidth();
 		float paddedHeight = getHeight();
-
+		
 		if (dirtyLayout) {
 			root.setBounds(0, 0, paddedWidth, paddedHeight);
 			root.relayout();

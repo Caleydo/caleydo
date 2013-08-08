@@ -36,14 +36,14 @@ public interface IGLMouseListener {
 
 		/**
 		 * return the point in DIP units
-		 * 
+		 *
 		 * @return
 		 */
 		Vec2f getPoint();
 
 		/**
 		 * return the raw pixel point, just use in rare cases for picking
-		 * 
+		 *
 		 * @return
 		 */
 		Point getRAWPoint();

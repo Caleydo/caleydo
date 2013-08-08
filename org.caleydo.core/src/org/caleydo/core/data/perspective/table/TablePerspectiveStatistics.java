@@ -231,9 +231,8 @@ public class TablePerspectiveStatistics {
 						histogram.add(bucketIndex, recordID);
 					}
 				}
-
 			}
-			return histogram;
+			return histogram.optimize();
 		}
 
 	}

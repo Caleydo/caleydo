@@ -15,10 +15,10 @@ import java.net.URLConnection;
 import org.caleydo.core.util.system.UrlDownload;
 
 /**
- * FIXME adapt Class for downloading all KEGG pathways for a specific organism
- *
+ * Class for downloading all KEGG pathways for a specific organism
+ * 
  * @author Marc Streit
- *
+ * 
  */
 public class PathwayFetcher {
 

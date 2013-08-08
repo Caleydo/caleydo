@@ -7,29 +7,23 @@ package org.caleydo.view.heatmap.v2;
 
 import gleem.linalg.Vec2f;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
-import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.color.mapping.UpdateColorMappingEvent;
-import org.caleydo.core.view.contextmenu.AContextMenuItem;
-import org.caleydo.core.view.contextmenu.item.BookmarkMenuItem;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.canvas.IGLMouseListener.IMouseEvent;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.view.ASingleTablePerspectiveElement;
 import org.caleydo.core.view.opengl.picking.Pick;
-import org.caleydo.datadomain.genetic.GeneticDataDomain;
-import org.caleydo.datadomain.pathway.contextmenu.container.GeneMenuItemContainer;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.heatmap.v2.ISpacingStrategy.ISpacingLayout;
 import org.caleydo.view.heatmap.v2.internal.HeatMapTextureRenderer;
@@ -37,13 +31,16 @@ import org.caleydo.view.heatmap.v2.internal.SelectionRenderer;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
+import com.google.common.primitives.Ints;
 
 /**
+ * a generic heat map implemenation
  *
  * @author Samuel Gratzl
  *
  */
 public class HeatMapElement extends ASingleTablePerspectiveElement {
+
 	private static final int TEXT_OFFSET = 5;
 	/**
 	 * maximum pixel size of a text
@@ -70,7 +67,6 @@ public class HeatMapElement extends ASingleTablePerspectiveElement {
 	private boolean hideElements = true;
 
 	private final SelectionRenderer recordSelectionRenderer;
-
 	private final SelectionRenderer dimensionSelectionRenderer;
 
 	private ISpacingStrategy recordSpacingStrategy = SpacingStrategies.UNIFORM;
@@ -89,8 +85,8 @@ public class HeatMapElement extends ASingleTablePerspectiveElement {
 	private EShowLabels dimensionLabels = EShowLabels.NONE;
 	private EShowLabels recordLabels = EShowLabels.NONE;
 
-	private Integer hoveredRecordID = null;
-	private Integer hoveredDimensionID = null;
+	private IndexedId hoveredRecordID = null;
+	private IndexedId hoveredDimensionID = null;
 
 	public HeatMapElement(TablePerspective tablePerspective) {
 		this(tablePerspective, BasicBlockColorer.INSTANCE, EDetailLevel.HIGH, false);
@@ -105,9 +101,11 @@ public class HeatMapElement extends ASingleTablePerspectiveElement {
 		Preconditions.checkNotNull(blockColorer, "need a valid renderer");
 
 		this.blockColorer = blockColorer;
-		this.dimensionSelectionRenderer = new SelectionRenderer(tablePerspective, selections.getDimensionSelectionManager(),
+		this.dimensionSelectionRenderer = new SelectionRenderer(tablePerspective.getDimensionPerspective(),
+				selections.getDimensionSelectionManager(),
 				true);
-		this.recordSelectionRenderer = new SelectionRenderer(tablePerspective, selections.getRecordSelectionManager(),
+		this.recordSelectionRenderer = new SelectionRenderer(tablePerspective.getRecordPerspective(),
+				selections.getRecordSelectionManager(),
  false);
 
 		switch (detailLevel) {
@@ -383,20 +381,46 @@ public class HeatMapElement extends ASingleTablePerspectiveElement {
 
 	@Override
 	protected void onClicked(Pick pick) {
-		Pair<Integer, Integer> ids = toDimensionRecordIds(pick);
-		Integer dimensionID = ids.getFirst();
-		Integer recordID = ids.getSecond();
+		Pair<IndexedId, IndexedId> ids = toDimensionRecordIds(pick);
+		Integer dimensionID = ids.getFirst().id;
+		Integer recordID = ids.getSecond().id;
 		boolean repaint = false;
+		boolean isCTRLDown = ((IMouseEvent) pick).isCtrlDown();
 		if (dimensionID != null) {
 			if (dimensionID != null)
-				createSelection(selections.getDimensionSelectionManager(), SelectionType.SELECTION, dimensionID);
-			hoveredDimensionID = dimensionID;
+				select(selections.getDimensionSelectionManager(), SelectionType.SELECTION, !isCTRLDown, false,
+						dimensionID);
+			hoveredDimensionID = ids.getFirst();
 			repaint = true;
 		}
 		if (recordID != null) {
 			if (recordID != null)
-				createSelection(selections.getRecordSelectionManager(), SelectionType.SELECTION, recordID);
-			hoveredRecordID = recordID;
+				select(selections.getRecordSelectionManager(), SelectionType.SELECTION, !isCTRLDown, false, recordID);
+			hoveredRecordID = ids.getSecond();
+			repaint = true;
+		}
+		if (repaint)
+			repaint();
+		if (!pick.isAnyDragging())
+			pick.setDoDragging(true);
+	}
+
+	@Override
+	protected void onMouseMoved(Pick pick) {
+		Pair<IndexedId, IndexedId> ids = toDimensionRecordIds(pick);
+		Integer dimensionID = ids.getFirst().id;
+		Integer recordID = ids.getSecond().id;
+		boolean repaint = false;
+		if (!Objects.equal(ids.getFirst(), hoveredDimensionID)) {
+			if (dimensionID != null)
+				select(selections.getDimensionSelectionManager(), SelectionType.MOUSE_OVER, true, false, dimensionID);
+			hoveredDimensionID = ids.getFirst();
+			repaint = true;
+		}
+		if (!Objects.equal(ids.getSecond(), hoveredRecordID)) {
+			if (recordID != null)
+				select(selections.getRecordSelectionManager(), SelectionType.MOUSE_OVER, true, false, recordID);
+			hoveredRecordID = ids.getSecond();
 			repaint = true;
 		}
 		if (repaint)
@@ -404,83 +428,59 @@ public class HeatMapElement extends ASingleTablePerspectiveElement {
 	}
 
 	@Override
-	protected void onMouseMoved(Pick pick) {
-		Pair<Integer, Integer> ids = toDimensionRecordIds(pick);
-		Integer dimensionID = ids.getFirst();
-		Integer recordID = ids.getSecond();
+	protected void onMouseReleased(Pick pick) {
+		if (!pick.isDoDragging())
+			return;
+	}
+
+	@Override
+	protected void onDragged(Pick pick) {
+		if (!pick.isDoDragging())
+			return;
+		Pair<IndexedId, IndexedId> ids = toDimensionRecordIds(pick);
+		Integer dimensionID = ids.getFirst().id;
+		Integer recordID = ids.getSecond().id;
 
 		boolean repaint = false;
-		if (dimensionID != hoveredDimensionID) {
-			if (dimensionID != null)
-				createSelection(selections.getDimensionSelectionManager(), SelectionType.MOUSE_OVER, dimensionID);
-			hoveredDimensionID = dimensionID;
+		if (dimensionID != null && !Objects.equal(ids.getFirst(), hoveredDimensionID)) {
+			int[] range = toRange(hoveredDimensionID, ids.getFirst(), getTablePerspective().getDimensionPerspective());
+			boolean selected = selections.getDimensionSelectionManager().checkStatus(SelectionType.SELECTION, dimensionID);
+			select(selections.getDimensionSelectionManager(), SelectionType.SELECTION, false, selected, range);
+			hoveredDimensionID = ids.getFirst();
 			repaint = true;
 		}
-		if (recordID != hoveredRecordID) {
-			if (recordID != null)
-				createSelection(selections.getRecordSelectionManager(), SelectionType.MOUSE_OVER, recordID);
-			hoveredRecordID = recordID;
+		if (recordID != null && !Objects.equal(ids.getSecond(), hoveredRecordID)) {
+			int[] range = toRange(hoveredRecordID, ids.getSecond(), getTablePerspective().getRecordPerspective());
+			boolean selected = selections.getRecordSelectionManager().checkStatus(SelectionType.SELECTION, recordID);
+			select(selections.getRecordSelectionManager(), SelectionType.SELECTION, false, selected, range);
+			hoveredRecordID = ids.getSecond();
 			repaint = true;
 		}
 		if (repaint)
 			repaint();
+	}
+
+	private static int[] toRange(IndexedId from, IndexedId to, Perspective per) {
+		final VirtualArray va = per.getVirtualArray();
+		final int length = Math.abs(from.index - to.index);
+		int[] d = new int[length];
+		int delta = from.index < to.index ? +1 : -1;
+		int index = from.index;
+		for (int i = 0; i < length; ++i) {
+			d[i] = va.get(index);
+			index += delta;
+		}
+		return d;
 	}
 
 	@Override
 	protected void onMouseOut(Pick pick) {
 		// clear all hovered elements
-		createSelection(selections.getDimensionSelectionManager(), SelectionType.MOUSE_OVER, -1);
-		createSelection(selections.getRecordSelectionManager(), SelectionType.MOUSE_OVER, -1);
+		select(selections.getDimensionSelectionManager(), SelectionType.MOUSE_OVER, true, false);
+		select(selections.getRecordSelectionManager(), SelectionType.MOUSE_OVER, true, false);
 		repaint();
 		hoveredDimensionID = null;
 		hoveredRecordID = null;
-	}
-
-	@Override
-	protected void onRightClicked(Pick pick) {
-		Pair<Integer, Integer> ids = toDimensionRecordIds(pick);
-		Integer dimensionID = ids.getFirst();
-		Integer recordID = ids.getSecond();
-
-		List<AContextMenuItem> toShow = new ArrayList<>();
-		if (recordID != null) {
-			createSelection(selections.getRecordSelectionManager(), SelectionType.SELECTION, recordID);
-
-			ATableBasedDataDomain dataDomain = selections.getDataDomain();
-			if (dataDomain instanceof GeneticDataDomain && dataDomain.isColumnDimension()) {
-				GeneMenuItemContainer contexMenuItemContainer = new GeneMenuItemContainer();
-				contexMenuItemContainer.setDataDomain(dataDomain);
-				contexMenuItemContainer.setData(dataDomain.getRecordIDType(), recordID);
-				contexMenuItemContainer.addSeparator();
-				toShow.addAll(contexMenuItemContainer.getContextMenuItems());
-			} else {
-				IDType recordIDType = dataDomain.getRecordIDType();
-				AContextMenuItem menuItem = new BookmarkMenuItem("Bookmark "
-						+ recordIDType.getIDCategory().getHumanReadableIDType().getTypeName() + ": "
-						+ dataDomain.getRecordLabel(recordIDType, recordID), recordIDType, recordID);
-				toShow.add(menuItem);
-			}
-		}
-		if (dimensionID != null) {
-			createSelection(selections.getDimensionSelectionManager(), SelectionType.SELECTION, dimensionID);
-
-			ATableBasedDataDomain dataDomain = selections.getDataDomain();
-			if (dataDomain instanceof GeneticDataDomain && !dataDomain.isColumnDimension()) {
-				GeneMenuItemContainer contexMenuItemContainer = new GeneMenuItemContainer();
-				contexMenuItemContainer.setDataDomain(dataDomain);
-				contexMenuItemContainer.setData(dataDomain.getDimensionIDType(), dimensionID);
-				contexMenuItemContainer.addSeparator();
-				toShow.addAll(contexMenuItemContainer.getContextMenuItems());
-			} else {
-				IDType dimensionIDType = dataDomain.getDimensionIDType();
-				AContextMenuItem menuItem = new BookmarkMenuItem("Bookmark "
-						+ dimensionIDType.getIDCategory().getHumanReadableIDType().getTypeName() + ": "
-						+ dataDomain.getDimensionLabel(dimensionIDType, dimensionID), dimensionIDType, dimensionID);
-				toShow.add(menuItem);
-			}
-		}
-		if (!toShow.isEmpty())
-			context.getSWTLayer().showContextMenu(toShow);
 	}
 
 	/**
@@ -489,7 +489,7 @@ public class HeatMapElement extends ASingleTablePerspectiveElement {
 	 * @param pick
 	 * @return
 	 */
-	private Pair<Integer, Integer> toDimensionRecordIds(Pick pick) {
+	private Pair<IndexedId, IndexedId> toDimensionRecordIds(Pick pick) {
 		Vec2f point = toRelative(pick.getPickedPoint());
 		float x = point.x();
 		float y = point.y();
@@ -513,7 +513,7 @@ public class HeatMapElement extends ASingleTablePerspectiveElement {
 
 		Integer recordID = get(rindex, getTablePerspective().getRecordPerspective().getVirtualArray());
 		Integer dimensionID = get(dindex, getTablePerspective().getDimensionPerspective().getVirtualArray());
-		return Pair.make(dimensionID, recordID);
+		return Pair.make(new IndexedId(dindex, dimensionID), new IndexedId(rindex, recordID));
 	}
 
 	private static Integer get(int index, VirtualArray virtualArray) {
@@ -530,26 +530,19 @@ public class HeatMapElement extends ASingleTablePerspectiveElement {
 		return selections.getRecordSelectionManager().checkStatus(SelectionType.DESELECTED, recordID);
 	}
 
-	private void createSelection(SelectionManager manager, SelectionType selectionType, int recordID) {
-		if (manager.checkStatus(selectionType, recordID))
-			return;
+	private void select(SelectionManager manager, SelectionType selectionType, boolean clearExisting, boolean deSelect,
+			int... ids) {
+		if (clearExisting)
+			manager.clearSelection(selectionType);
 
-		// check if the mouse-overed element is already selected, and if it is,
-		// whether mouse over is clear.
-		// If that all is true we don't need to do anything
-		if (selectionType == SelectionType.MOUSE_OVER && manager.checkStatus(SelectionType.SELECTION, recordID)
-				&& manager.getElements(SelectionType.MOUSE_OVER).isEmpty())
-			return;
-
-		manager.clearSelection(selectionType);
-
-		// TODO: Integrate multi spotting support again
-
-		if (recordID >= 0)
-			manager.addToType(selectionType, recordID);
+		if (ids.length > 0) {
+			if (deSelect)
+				manager.removeFromType(selectionType, Ints.asList(ids));
+			else
+				manager.addToType(selectionType, Ints.asList(ids));
+		}
 
 		selections.fireSelectionDelta(manager.getIDType());
-		relayout();
 	}
 
 	/**
@@ -582,5 +575,43 @@ public class HeatMapElement extends ASingleTablePerspectiveElement {
 	@Override
 	public String toString() {
 		return "Heat map for " + selections;
+	}
+
+	private static final class IndexedId {
+		private final int index;
+		private final Integer id;
+
+		public IndexedId(int index, Integer id) {
+			this.index = index;
+			this.id = id;
+		}
+
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + ((id == null) ? 0 : id.hashCode());
+			result = prime * result + index;
+			return result;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			IndexedId other = (IndexedId) obj;
+			if (id == null) {
+				if (other.id != null)
+					return false;
+			} else if (!id.equals(other.id))
+				return false;
+			if (index != other.index)
+				return false;
+			return true;
+		}
 	}
 }

@@ -34,7 +34,9 @@ import org.caleydo.view.histogram.HistogramRenderStyle;
  *
  * @author Samuel Gratzl
  */
+
 public class HistogramElement extends ASingleTablePerspectiveElement {
+
 	private static Color SPREAD_LINE_COLOR = new Color(0.5f, 0.5f, 0.5f);
 
 
@@ -47,7 +49,6 @@ public class HistogramElement extends ASingleTablePerspectiveElement {
 	private boolean hoveredLeft = false;
 
 	private boolean showColorMapper;
-	private boolean renderBackground = false;
 
 	public HistogramElement(TablePerspective tablePerspective) {
 		this(tablePerspective, EDetailLevel.HIGH);
@@ -75,21 +76,6 @@ public class HistogramElement extends ASingleTablePerspectiveElement {
 	 */
 	public boolean isShowColorMapper() {
 		return showColorMapper;
-	}
-
-	/**
-	 * @param renderBackground
-	 *            setter, see {@link renderBackground}
-	 */
-	public void setRenderBackground(boolean renderBackground) {
-		this.renderBackground = renderBackground;
-	}
-
-	/**
-	 * @return the renderBackground, see {@link #renderBackground}
-	 */
-	public boolean isRenderBackground() {
-		return renderBackground;
 	}
 
 	@Override
@@ -127,11 +113,9 @@ public class HistogramElement extends ASingleTablePerspectiveElement {
 	}
 
 
+
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
-		if (renderBackground)
-			g.color(Color.WHITE).fillRect(0, 0, w, h);
-
 		float padding = getPadding();
 		ATableBasedDataDomain dataDomain = getDataDomain();
 		g.save();
@@ -142,6 +126,7 @@ public class HistogramElement extends ASingleTablePerspectiveElement {
 		if (hist instanceof CategoricalHistogram)
 			showColorMapper = false;
 		g.restore();
+
 
 		if (showColorMapper)
 			renderColorMapper(g, w, h, dataDomain.getTable().getColorMapper());
@@ -169,6 +154,7 @@ public class HistogramElement extends ASingleTablePerspectiveElement {
 			colored_hist = (CategoricalHistogram) hist;
 		}
 		g.lineWidth(0.3f);
+
 		g.save().move(0, h - 1);
 		g.color(Color.DARK_GRAY).drawLine(0, 0, w, 0);
 		g.color(Color.GRAY);
