@@ -47,6 +47,7 @@ public class HeatMapElementFactory implements IGLElementFactory {
 		EShowLabels default_ = context.get(EShowLabels.class, EShowLabels.NONE);
 		elem.setDimensionLabels(context.get("dimensionLabels", EShowLabels.class, default_));
 		elem.setRecordLabels(context.get("recordLabels", EShowLabels.class, default_));
+		elem.setTextWidth(context.getInt("textWidth", elem.getTextWidth()));
 
 		ISpacingStrategy defaults_ = context.get(ISpacingStrategy.class, SpacingStrategies.UNIFORM);
 		elem.setDimensionSpacingStrategy(context.get("dimensionSpacingStrategy", ISpacingStrategy.class, defaults_));
