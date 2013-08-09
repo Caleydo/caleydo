@@ -6,6 +6,7 @@
 	<artifactId>org.caleydo.parent</artifactId>
 	<version>3.0.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
+	<url>https://github.com/Caleydo/caleydo</url>
 
 	<prerequisites>
 		<maven>3.0</maven>
@@ -19,6 +20,41 @@
 		<tycho.test.jvmArgs>-Xmx512m -XX:MaxPermSize=256m</tycho.test.jvmArgs>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
+	
+	<issueManagement>
+		<url>${project.url}/issues</url>
+		<system>GitHub Issues</system>
+	</issueManagement>
+
+	<licenses>
+		<license>
+			<name>BSD License</name>
+			<url>http://www.opensource.org/licenses/bsd-license.php</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<scm>
+		<url>{project.url}</url>
+		<connection>scm:git:git://github.com/Caleydo/caleydo.git</connection>
+		<developerConnection>scm:git:git@github.com:Caleydo/caleydo.git</developerConnection>
+	</scm>
+	
+	<ciManagement>
+		<system>Jenkins</system>
+		<url>http://dev.caleydo.org/jenkins/job/caleydo</url>
+	</ciManagement>
+
+	<distributionManagement>
+		<repository>
+			<id>caleydo</id>
+			<url>http://dev.caleydo.org/nexus/content/repositories/thirdparty</url>
+		</repository>
+		<snapshotRepository>
+			<id>caleydo</id>
+			<url>http://dev.caleydo.org/nexus/content/repositories/snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
 
 	<repositories>
 		<repository>
