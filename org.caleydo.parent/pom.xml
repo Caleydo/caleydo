@@ -48,7 +48,7 @@
 	<distributionManagement>
 		<repository>
 			<id>caleydo</id>
-			<url>http://dev.caleydo.org/nexus/content/repositories/thirdparty</url>
+			<url>http://dev.caleydo.org/nexus/content/repositories/releases</url>
 		</repository>
 		<snapshotRepository>
 			<id>caleydo</id>
