@@ -23,9 +23,9 @@ import java.util.concurrent.ExecutionException;
 
 import org.caleydo.core.util.collection.Pair;
 
-import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import com.jogamp.opengl.util.awt.TextRenderer;
 
 /**
@@ -64,7 +64,7 @@ public abstract class ABitmapTextRenderer {
 	/**
 	 * cache of layouted text
 	 */
-	private final Cache<String, GlyphVector> cache = CacheBuilder.newBuilder().maximumSize(200)
+	private final LoadingCache<String, GlyphVector> cache = CacheBuilder.newBuilder().maximumSize(200)
 			.build(new CacheLoader<String, GlyphVector>() {
 				@Override
 				public GlyphVector load(String t) throws Exception {

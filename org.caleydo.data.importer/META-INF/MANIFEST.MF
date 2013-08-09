@@ -14,6 +14,6 @@ Require-Bundle: org.caleydo.core;bundle-version="3.0.2.qualifier",
  org.caleydo.datadomain.generic;bundle-version="3.0.2.qualifier",
  org.caleydo.datadomain.genetic;bundle-version="3.0.2.qualifier",
  org.caleydo.datadomain.pathway;bundle-version="3.0.2.qualifier",
- com.google.gson;bundle-version="2.1.0"
+ com.google.gson;bundle-version="2.1.0",
+ org.apache.commons.compress;bundle-version="1.4.1"
 Bundle-Activator: org.caleydo.data.importer.Activator
-Import-Package: org.apache.tools.tar

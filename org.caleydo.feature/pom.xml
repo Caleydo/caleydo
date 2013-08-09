@@ -8,7 +8,7 @@
 		<version>3.0.2-SNAPSHOT</version>
 		<relativePath>../org.caleydo.parent</relativePath>
 	</parent>
-	<artifactId>org.caleydo.rcp.feature</artifactId>
+	<artifactId>org.caleydo.feature</artifactId>
 	<packaging>eclipse-feature</packaging>
 	
 </project>

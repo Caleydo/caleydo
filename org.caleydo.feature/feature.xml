@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.caleydo.feature"
+      label="Caleydo"
+      version="3.0.2.qualifier"
+      provider-name="www.caleydo.org"
+      plugin="org.caleydo.core"
+      os="linux,macosx,win32"
+      ws="cocoa,gtk,win32"
+      nl="en_US"
+      arch="x86,x86_64">
+
+   <description url="http://caleydo.org">
+      Caleydo - Visualization for Molecular Biology.
+   </description>
+
+   <copyright url="http://caleydo.org">
+      Copyright (c) 2008-2013, The Caleydo Team. All rights reserved.
+   </copyright>
+
+   <license url="http://caleydo.org/license">
+      Copyright (c) 2008-2013, The Caleydo Team. All rights reserved. 
+      
+      Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met: Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. * Neither the name of the Caleydo Software nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE CALEYDO TEAM BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+   </license>
+
+   <url>
+      <discovery label="Caleydo" url="http://www.caleydo.org"/>
+      <discovery label="Graz University of Technology" url="http://www.icg.tugraz.at"/>
+      <discovery label="Johannes Kepler University Linz" url="http://www.jku.at/cg"/>
+   </url>
+
+   <includes
+         id="org.eclipse.rcp"
+         version="0.0.0"/>
+
+   <requires>
+      <import plugin="org.eclipse.core.runtime" version="3.8.0" match="greaterOrEqual"/>
+      <import plugin="org.caleydo.data" version="3.0.2.qualifier" match="greaterOrEqual"/>
+      <import plugin="org.caleydo.util.gleem" version="3.0.2.qualifier" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.e4.ui.model.workbench" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui" version="3.103.0.1" match="greaterOrEqual"/>
+      <import plugin="com.google.guava" version="10.0.1" match="greaterOrEqual"/>
+      <import plugin="org.apache.commons.lang" version="2.3.0" match="greaterOrEqual"/>
+      <import plugin="org.kohsuke.args4j" version="2.0.12" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.nebula.widgets.nattable.core" version="1.0.1" match="greaterOrEqual"/>
+      <import plugin="org.caleydo.thirdparty.jgrapht" version="0.8.3" match="greaterOrEqual"/>
+      <import plugin="org.caleydo.thirdparty.jogl" version="2.0.2" match="greaterOrEqual"/>
+      <import plugin="org.caleydo.core" version="3.0.2.qualifier" match="greaterOrEqual"/>
+      <import plugin="org.caleydo.datadomain.pathway" version="3.0.2.qualifier" match="greaterOrEqual"/>
+      <import plugin="org.caleydo.datadomain.generic" version="3.0.2.qualifier" match="greaterOrEqual"/>
+      <import plugin="org.caleydo.datadomain.genetic" version="3.0.2.qualifier" match="greaterOrEqual"/>
+      <import plugin="org.caleydo.thirdparty.pathvisio" version="31.0.0" match="greaterOrEqual"/>
+      <import plugin="com.google.gson" version="2.1.0" match="greaterOrEqual"/>
+      <import plugin="org.caleydo.view.pathway" version="3.0.2.qualifier" match="greaterOrEqual"/>
+      <import plugin="org.caleydo.util.bubblesets"/>
+      <import plugin="org.caleydo.core" version="2.1.0" match="greaterOrEqual"/>
+      <import plugin="org.caleydo.datadomain.genetic" version="2.1.0" match="greaterOrEqual"/>
+      <import plugin="org.caleydo.util.bubblesets" version="3.0.2.qualifier" match="greaterOrEqual"/>
+      <import plugin="org.caleydo.vis.rank" version="3.0.2.qualifier" match="greaterOrEqual"/>
+      <import plugin="org.caleydo.view.histogram" version="3.0.2.qualifier" match="greaterOrEqual"/>
+      <import plugin="org.caleydo.view.stratomex" version="3.0.2.qualifier" match="greaterOrEqual"/>
+      <import plugin="org.apache.commons.math" version="2.1.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.e4.ui.workbench" version="1.0.0" match="greaterOrEqual"/>
+   </requires>
+
+   <plugin
+         id="org.caleydo.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.caleydo.data.pathway.kegg"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.caleydo.data.pathway.wikipathways"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.caleydo.data.tcga"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.caleydo.datadomain.generic"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.caleydo.datadomain.genetic"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.caleydo.datadomain.pathway"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.caleydo.view.dvi"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.caleydo.view.enroute"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.caleydo.view.entourage"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.caleydo.view.heatmap"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.caleydo.view.histogram"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.caleydo.view.info.dataset"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.caleydo.view.info.selection"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.caleydo.view.kaplanmeier"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.caleydo.view.parcoords"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.caleydo.view.pathway"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.caleydo.view.search"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.caleydo.view.stratomex"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.caleydo.view.table"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.caleydo.view.tourguide"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.caleydo.view.treemap"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>
