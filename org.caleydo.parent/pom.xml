@@ -66,10 +66,11 @@
 					<!-- <target>
 				         <artifact>
 				            <groupId>${project.groupId}</groupId>
-				            <artifactId>org.caleydo.internal.assembly</artifactId>
+				            <artifactId>org.caleydo.internal</artifactId>
 				            <version>${project.version}</version>
 				         </artifact>
-      				</target> -->
+      				</target>
+      				 -->
 					<environments>
 						<environment>
 							<os>linux</os>

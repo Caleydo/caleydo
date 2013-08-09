@@ -4,14 +4,10 @@
       label="%featureName"
       version="3.0.2.qualifier"
       provider-name="%providerName"
-      plugin="org.caleydo.core"
-      os="linux,macosx,win32"
-      ws="cocoa,gtk,win32"
-      nl="en_US"
-      arch="x86,x86_64">
+      plugin="org.caleydo.core">
 
    <description url="%homeURL">
-       %description
+      %description
    </description>
 
    <copyright url="%homeURL">
@@ -23,13 +19,50 @@
    </license>
 
    <url>
-      <discovery label="Caleydo" url="%homeURL"/>
+      <discovery label="Caleydo" url="http://caleydo.org"/>
       <discovery label="Graz University of Technology" url="http://www.icg.tugraz.at"/>
       <discovery label="Johannes Kepler University Linz" url="http://www.jku.at/cg"/>
    </url>
 
+   <requires>
+      <import plugin="org.eclipse.core.runtime" version="3.8.0" match="greaterOrEqual"/>
+      <import plugin="org.caleydo.data" version="3.0.2.qualifier" match="greaterOrEqual"/>
+      <import plugin="org.caleydo.util.gleem" version="3.0.2.qualifier" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.e4.ui.model.workbench" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui" version="3.103.0.1" match="greaterOrEqual"/>
+      <import plugin="com.google.guava" version="12.0.0" match="greaterOrEqual"/>
+      <import plugin="org.apache.commons.lang" version="2.6.0" match="greaterOrEqual"/>
+      <import plugin="org.kohsuke.args4j" version="2.0.21" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.nebula.widgets.nattable.core" version="1.0.1" match="greaterOrEqual"/>
+      <import plugin="org.caleydo.thirdparty.jgrapht" version="0.8.3" match="greaterOrEqual"/>
+      <import plugin="org.caleydo.thirdparty.jogl" version="2.0.2" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.rcp" version="4.2.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.swt" version="3.100.1" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jface" version="3.8.101" match="greaterOrEqual"/>
+      <import plugin="org.caleydo.core" version="3.0.2.qualifier" match="greaterOrEqual"/>
+      <import plugin="org.caleydo.datadomain.pathway" version="3.0.2.qualifier" match="greaterOrEqual"/>
+      <import plugin="org.caleydo.datadomain.generic" version="3.0.2.qualifier" match="greaterOrEqual"/>
+      <import plugin="org.caleydo.datadomain.genetic" version="3.0.2.qualifier" match="greaterOrEqual"/>
+      <import plugin="org.caleydo.thirdparty.pathvisio" version="31.0.0" match="greaterOrEqual"/>
+      <import plugin="com.google.gson" version="2.1.0" match="greaterOrEqual"/>
+      <import plugin="org.caleydo.view.pathway" version="3.0.2.qualifier" match="greaterOrEqual"/>
+      <import plugin="org.caleydo.util.bubblesets" version="3.0.2.qualifier" match="greaterOrEqual"/>
+      <import plugin="org.caleydo.vis.rank" version="3.0.2.qualifier" match="greaterOrEqual"/>
+      <import plugin="org.caleydo.view.histogram" version="3.0.2.qualifier" match="greaterOrEqual"/>
+      <import plugin="org.caleydo.view.stratomex" version="3.0.2.qualifier" match="greaterOrEqual"/>
+      <import plugin="org.apache.commons.math" version="2.1.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.e4.ui.workbench" version="1.0.0" match="greaterOrEqual"/>
+   </requires>
+
    <plugin
          id="org.caleydo.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.caleydo.data"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -142,6 +175,13 @@
 
    <plugin
          id="org.caleydo.view.pathway"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.caleydo.view.radial"
          download-size="0"
          install-size="0"
          version="0.0.0"

@@ -8,7 +8,7 @@
 		<version>3.0.2-SNAPSHOT</version>
 		<relativePath>../org.caleydo.parent</relativePath>
 	</parent>
-	<artifactId>org.caleydo.internal.assembly</artifactId>
+	<artifactId>org.caleydo.internal</artifactId>
 	<packaging>eclipse-target-definition</packaging>
 	
 </project>

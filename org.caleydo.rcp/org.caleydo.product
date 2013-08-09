@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="Caleydo" uid="org.caleydo" id="org.caleydo.product" application="org.caleydo.core.application" version="3.0.2.qualifier" useFeatures="true" includeLaunchers="true">
+<product name="Caleydo" uid="org.caleydo" id="org.caleydo.core.product" application="org.caleydo.core.application" version="3.0.2.qualifier" useFeatures="true" includeLaunchers="true">
 
    <aboutInfo>
-      <image path="/org.caleydo.core/resources/wizard/wizard.png"/>
+      <image path="resources/wizard/wizard.png"/>
       <text>
          Caleydo - Visualization for Molecular Biology
 http:// caleydo.org
@@ -53,24 +53,20 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&
 
    <plugins>
    </plugins>
-   
+
    <features>
-      <feature id="org.caleydo.feature" version="0.0.0"/>
-      <feature id="org.eclipse.rcp" version="0.0.0"/>
-      <feature id="org.eclipse.equinox.p2.user.ui" version="0.0.0"/>
+      <feature id="org.caleydo.feature"/>
+      <feature id="org.eclipse.rcp"/>
    </features>
 
-  <configurations>
+   <configurations>
       <plugin id="org.eclipse.core.runtime" autoStart="true" startLevel="4" />
       <plugin id="org.eclipse.equinox.common" autoStart="true" startLevel="2" />
       <plugin id="org.eclipse.equinox.ds" autoStart="true" startLevel="2" />
       <plugin id="org.eclipse.equinox.p2.reconciler.dropins" autoStart="true" startLevel="4" />
       <plugin id="org.eclipse.equinox.simpleconfigurator" autoStart="true" startLevel="1" />
-
-      <!-- Disable update manager. It seems as if this could be achieved by the first line, but in 
-           fact the second line sets reconcile to false (see org.eclipse.equinox.p2.publisher.eclipse.ConfigCUsAction#publishBundleCUs) -->
+      <plugin id="org.eclipse.update.configurator" autoStart="true" startLevel="4" />
       <property name="org.eclipse.update.reconcile" value="false" />
-      <plugin id="org.eclipse.update.configurator" autoStart="true" startLevel="4"/>
-                                              
    </configurations>
+
 </product>
