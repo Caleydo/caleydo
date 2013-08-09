@@ -63,10 +63,12 @@ public class FixedPathUpdateStrategy extends APathUpdateStrategy {
 	 * @param pathwayPathEventSpace
 	 */
 	public FixedPathUpdateStrategy(APathwayPathRenderer renderer, String pathwayPathEventSpace,
-			boolean isPathSelectionMode, ContextualPathsRenderer contextualPathsRenderer,
+			boolean isPathSelectionMode, boolean isFreePathSelectionMode,
+			ContextualPathsRenderer contextualPathsRenderer,
 			List<List<PathwayVertexRep>> selectedPathSegments) {
 		super(renderer, pathwayPathEventSpace);
 		this.isPathSelectionMode = isPathSelectionMode;
+		this.isFreePathSelectionMode = isFreePathSelectionMode;
 		this.contextualPathsRenderer = contextualPathsRenderer;
 		setSelectedPathSegments(selectedPathSegments);
 	}

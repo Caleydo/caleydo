@@ -125,7 +125,6 @@ public abstract class APathUpdateStrategy implements IListenerOwner {
 		renderer.addTablePerspectives(event.getTablePerspectives());
 	}
 
-
 	@ListenTo
 	public void onRemoveTablePerspectives(RemoveTablePerspectiveEvent event) {
 		renderer.tablePerspectives.remove(event.getTablePerspective());
@@ -171,4 +170,12 @@ public abstract class APathUpdateStrategy implements IListenerOwner {
 	 */
 	public abstract boolean isPathChangePermitted(List<List<PathwayVertexRep>> newPath);
 
+	/**
+	 * Tells whether it is allowed to remove the nodes that are not the first or the last node of the path.
+	 *
+	 * @return
+	 */
+	public boolean isInnerNodeRemovalAllowed() {
+		return false;
+	}
 }
