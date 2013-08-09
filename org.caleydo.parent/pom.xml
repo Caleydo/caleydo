@@ -63,13 +63,13 @@
 				<artifactId>target-platform-configuration</artifactId>
 				<configuration>
 					<resolver>p2</resolver>
-					<target>
+					<!-- <target>
 				         <artifact>
 				            <groupId>${project.groupId}</groupId>
 				            <artifactId>org.caleydo.internal.assembly</artifactId>
 				            <version>${project.version}</version>
 				         </artifact>
-      				</target>
+      				</target> -->
 					<environments>
 						<environment>
 							<os>linux</os>

@@ -5,9 +5,6 @@ Bundle-SymbolicName: org.caleydo.view.selectionbrowser;singleton:=true
 Bundle-Version: 3.0.2.qualifier
 Require-Bundle: org.caleydo.core;bundle-version="3.0.2.qualifier"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Import-Package: gleem.linalg,
- javax.media.opengl,
- org.caleydo.data.loader
 Export-Package: org.caleydo.view.selectionbrowser
 Bundle-Vendor: www.caleydo.org
 Bundle-ActivationPolicy: lazy

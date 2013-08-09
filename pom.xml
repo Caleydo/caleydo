@@ -47,5 +47,6 @@
 		
 		<module>org.caleydo.feature</module>
 		<module>org.caleydo.rcp</module>
+		<module>org.caleydo.internal.assembly</module>
 	</modules>
 </project>
