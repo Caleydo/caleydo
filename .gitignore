@@ -2,3 +2,6 @@
 */target
 */tmp
 *.log
+.settings
+.project
+.classpath
