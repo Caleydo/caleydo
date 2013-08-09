@@ -32,7 +32,7 @@
 		<module>org.caleydo.view.entourage</module>
 		<module>org.caleydo.view.filter</module>
 		<module>org.caleydo.view.filterpipeline</module>
-		<module>org.caleydo.view.kaplanmaier</module>
+		<module>org.caleydo.view.kaplanmeier</module>
 		<module>org.caleydo.view.parcoords</module>
 		<module>org.caleydo.view.pathway</module>
 		<module>org.caleydo.view.radial</module>
