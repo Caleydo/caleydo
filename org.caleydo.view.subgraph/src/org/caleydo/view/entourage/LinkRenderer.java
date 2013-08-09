@@ -281,14 +281,6 @@ public class LinkRenderer extends PickableGLElement {
 						}
 				if(renderSrcStub){
 					renderStubLeftSide(gl,  loc1, loc2, isLocation1Window, info1, info2,true);
-				}else{
-//					bandColor[0]=.0f;
-//					bandColor[1]=1.0f;
-//					bandColor[2]=.0f;
-//					renderStubLeftSide(gl,  loc1, loc2, isLocation1Window, info1, info2,true);
-//					bandColor[0]=tmpR;
-//					bandColor[1]=tmpG;
-//					bandColor[2]=tmpB;
 				}
 				renderStubRightSide(gl, loc2, loc1, isLocation2Window, info2, info1,false);
 				break;
@@ -296,21 +288,10 @@ public class LinkRenderer extends PickableGLElement {
 				angle = getAngle(	(float) loc1.getX(), 	 (float) loc1.getY()+(float) loc1.getHeight()/2.0f,
 						(float) loc2.getX()+(float)loc2.getWidth(), (float) loc2.getY()+(float) loc2.getHeight()/2.0f);
 						if(angle<angleThreshold && angle > -angleThreshold) {
-//							bandColor[0]=.0f;
-//							bandColor[1]=1.0f;
-//							bandColor[2]=.0f;
 							isAngleTooSmall=true;
 						}
 				if(renderSrcStub){
 							renderStubRightSide(gl, loc1, loc2, isLocation1Window, info1, info2,true);
-				}else{
-//					bandColor[0]=.0f;
-//					bandColor[1]=1.0f;
-//					bandColor[2]=.0f;
-//					renderStubRightSide(gl, loc1, loc2, isLocation1Window, info1, info2,true);
-//					bandColor[0]=tmpR;
-//					bandColor[1]=tmpG;
-//					bandColor[2]=tmpB;
 				}
 				renderStubLeftSide(gl,  loc2, loc1, isLocation2Window, info2, info1,false);
 				break;
@@ -318,31 +299,18 @@ public class LinkRenderer extends PickableGLElement {
 				angle = getAngle((float) loc1.getX()+(float)loc1.getWidth(), 	 (float) loc1.getY()+(float) loc1.getHeight()/2.0f,
 								 (float) loc2.getX()+(float)loc2.getWidth(), (float) loc2.getY()+(float) loc2.getHeight()/2.0f);
 						if(angle<angleThreshold && angle > -angleThreshold) {
-//							bandColor[0]=.0f;
-//							bandColor[1]=1.0f;
-//							bandColor[2]=.0f;
 							isAngleTooSmall=true;
 						}
 					renderStubRight2RightSide(gl,  loc2, loc1, isLocation2Window, info2, info1,true);
 					if(renderSrcStub){
 						renderStubRight2RightSide(gl,  loc1, loc2, isLocation1Window, info1, info2,false);
-					}else{
-	//					bandColor[0]=.0f;
-	//					bandColor[1]=1.0f;
-	//					bandColor[2]=.0f;
-	//					renderStubRight2RightSide(gl,  loc2, loc1, isLocation2Window, info2, info1,true);
-	//					bandColor[0]=tmpR;
-	//					bandColor[1]=tmpG;
-	//					bandColor[2]=tmpB;
-				}
+			}
 				break;
 			case 4://Left/Left
 				angle = getAngle((float) loc1.getX(), 	 (float) loc1.getY()+(float) loc1.getHeight()/2.0f,
 						 		 (float) loc2.getX(), (float) loc2.getY()+(float) loc2.getHeight()/2.0f);
 				if(angle<angleThreshold && angle > -angleThreshold) {
-//					bandColor[0]=.0f;
-//					bandColor[1]=1.0f;
-//					bandColor[2]=.0f;
+
 					isAngleTooSmall=true;
 				}
 
@@ -350,48 +318,11 @@ public class LinkRenderer extends PickableGLElement {
 
 					if(renderSrcStub){
 						renderStubLeft2LeftSide(gl,  loc1, loc2, isLocation1Window, info1, info2,false);
-					}else{
-			//			bandColor[0]=.0f;
-			//			bandColor[1]=1.0f;
-			//			bandColor[2]=.0f;
-			//			renderStubLeft2LeftSide(gl,  loc2, loc1, isLocation2Window, info2, info1,true);
-			//			bandColor[0]=tmpR;
-			//			bandColor[1]=tmpG;
-			//			bandColor[2]=tmpB;
 					}
 				break;
 		}
 
-//			//LEFT / LEFT CONNECTOR
-////						if(topDownConnection) {
-////							renderLeftOffsetStub(gl,  loc1, loc2, isLocation1Window, info1, info2);
-////							renderLeftOffsetStub(gl,  loc2, loc1, isLocation2Window, info2, info1);
-////						}else{
-//							renderStubLeft2LeftSide(gl,  loc2, loc1, isLocation2Window, info2, info1,true);
-//							renderStubLeft2LeftSide(gl,  loc1, loc2, isLocation1Window, info1, info2,false);
-////						}
-//					}else{
-//			// RIGHT / RIGHT CONNECTOR
-//						float angle = getAngle(	(float) loc1.getX()+(float) loc1.getWidth(), (float) loc1.getY()+(float) loc1.getHeight()/2.0f,
-//										        (float) loc2.getX()+(float) loc2.getWidth(), (float) loc2.getY()+(float) loc2.getHeight()/2.0f);
-//						if(angle<angleThreshold && angle > -angleThreshold)
-//						{
-//							renderRightOffsetStub(gl,  loc1, loc2, isLocation1Window, info1, info2, true);
-//							renderRightOffsetStub(gl,  loc2, loc1, isLocation2Window, info2, info1, false);
-//						}
-//						else{
-//							renderStubRight2RightSide(gl,  loc2, loc1, isLocation2Window, info2, info1,true);
-//							renderStubRight2RightSide(gl,  loc1, loc2, isLocation1Window, info1, info2,false);
-//						}
-//
-//					}
-//			}// loc2 within bounds of loc1 || loc1 within bounds of loc2
-//		}
-//    	gl.glBegin(GL2.GL_LINES);
-//   		gl.glColor4f(0f, 0f, 1f, 1f);
-//   		gl.glVertex3f((float)loc1.getX(),(float)loc1.getY(),z);
-//    	gl.glVertex3f((float)loc2.getX(),(float)loc2.getY(),z);
-//	gl.glEnd();
+
 		//// clean up
 		gl.glDisable(GL2.GL_POLYGON_SMOOTH);
 	}
@@ -1179,7 +1110,7 @@ public class LinkRenderer extends PickableGLElement {
 		xS = (float)locTarget.getX()+(float)locTarget.getWidth();
 		yS = (float)locTarget.getY()+(float)locTarget.getHeight()/2.0f;
 
-		xE = (float)loc.getX();;
+		xE = (float) loc.getX();
 		yE = (float)loc.getY()+(float)loc.getHeight()/2.0f;
 
 //		float red=0.0f;//bandColor[0]
