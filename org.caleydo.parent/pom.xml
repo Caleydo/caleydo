@@ -20,7 +20,7 @@
 		<tycho.test.jvmArgs>-Xmx512m -XX:MaxPermSize=256m</tycho.test.jvmArgs>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
-	
+
 	<issueManagement>
 		<url>${project.url}/issues</url>
 		<system>GitHub Issues</system>
@@ -39,7 +39,7 @@
 		<connection>scm:git:git://github.com/Caleydo/caleydo.git</connection>
 		<developerConnection>scm:git:git@github.com:Caleydo/caleydo.git</developerConnection>
 	</scm>
-	
+
 	<ciManagement>
 		<system>Jenkins</system>
 		<url>http://dev.caleydo.org/jenkins/job/caleydo</url>
@@ -99,14 +99,8 @@
 				<artifactId>target-platform-configuration</artifactId>
 				<configuration>
 					<resolver>p2</resolver>
-					<!-- <target>
-				         <artifact>
-				            <groupId>${project.groupId}</groupId>
-				            <artifactId>org.caleydo.internal</artifactId>
-				            <version>${project.version}</version>
-				         </artifact>
-      				</target>
-      				 -->
+					<!-- <target> <artifact> <groupId>${project.groupId}</groupId> <artifactId>org.caleydo.internal</artifactId> 
+						<version>${project.version}</version> </artifact> </target> -->
 					<environments>
 						<environment>
 							<os>linux</os>
@@ -216,5 +210,15 @@
 			</plugins>
 		</pluginManagement>
 	</build>
+
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>findbugs-maven-plugin</artifactId>
+				<version>2.5.2</version>
+			</plugin>
+		</plugins>
+	</reporting>
 
 </project>
