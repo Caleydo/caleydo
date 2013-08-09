@@ -222,4 +222,44 @@
          version="0.0.0"
          unpack="false"/>
 
+   <plugin
+         id="org.caleydo.thirdparty.jogl-natives-linux-amd64"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.caleydo.thirdparty.jogl-natives-linux-i586"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.caleydo.thirdparty.jogl-natives-macosx-universal"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.caleydo.thirdparty.jogl-natives-windows-amd64"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.caleydo.thirdparty.jogl-natives-windows-i586"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"
+         unpack="false"/>
+
 </feature>
