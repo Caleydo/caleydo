@@ -32,7 +32,7 @@ Caleydo is open-source software licenced under the New BSD license.
       <macosx icon="/org.caleydo.core/resources/icons/caleydo.icns"/>
       <solaris/>
       <win useIco="true">
-         <ico path="/org.caleydo.core/resources/icons/caleydo.ico"/>
+         <ico path="../org.caleydo.core/resources/icons/caleydo.ico"/>
          <bmp/>
       </win>
    </launcher>
