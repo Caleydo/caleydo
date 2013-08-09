@@ -2,12 +2,12 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Subgraph
 Bundle-SymbolicName: org.caleydo.view.entourage;singleton:=true
-Bundle-Version: 2.2
+Bundle-Version: 3.0.2.qualifier
 Bundle-Activator: org.caleydo.view.entourage.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.caleydo.core;bundle-version="2.1.0",
- org.caleydo.datadomain.genetic;bundle-version="2.1.0",
+ org.caleydo.core;bundle-version="3.0.2.qualifier",
+ org.caleydo.datadomain.genetic;bundle-version="3.0.2.qualifier",
  org.caleydo.datadomain.pathway;bundle-version="3.0.2.qualifier",
  org.caleydo.util.bubblesets;bundle-version="3.0.2.qualifier",
  org.caleydo.vis.rank;bundle-version="3.0.2.qualifier"

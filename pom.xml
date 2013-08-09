@@ -13,34 +13,39 @@
 		<module>org.caleydo.util.gleem</module>
 		<module>org.caleydo.util.bubblesets</module>
 		
-		<!-- <module>org.caleydo.datadomain.generic</module>
+		<module>org.caleydo.datadomain.generic</module>
 		<module>org.caleydo.datadomain.genetic</module>
 		<module>org.caleydo.datadomain.pathway</module>
 		
 		<module>org.caleydo.data.tcga</module>
 		<module>org.caleydo.data.pathway.kegg</module>
 		<module>org.caleydo.data.pathway.wikipathways</module>
-		 -->
+		
+		<module>org.caleydo.view.info.dataset</module>
+		<module>org.caleydo.view.info.selection</module>
+
 		<module>org.caleydo.view.histogram</module>
-		<!-- <module>org.caleydo.view.heatmap</module>
+		<module>org.caleydo.view.heatmap</module>
 		<module>org.caleydo.view.bookmark</module>
 		<module>org.caleydo.view.dvi</module>
 		<module>org.caleydo.view.enroute</module>
-		<module>org.caleydo.view.subgraph</module>
+		<module>org.caleydo.view.entourage</module>
 		<module>org.caleydo.view.filter</module>
 		<module>org.caleydo.view.filterpipeline</module>
-		<module>org.caleydo.view.kaplanmeier</module>
+		<module>org.caleydo.view.kaplanmaier</module>
 		<module>org.caleydo.view.parcoords</module>
 		<module>org.caleydo.view.pathway</module>
 		<module>org.caleydo.view.radial</module>
 		<module>org.caleydo.view.selectionbrowser</module>
 		<module>org.caleydo.view.stratomex</module>
+		<module>org.caleydo.view.search</module>
 		<module>org.caleydo.view.table</module>
 		<module>org.caleydo.view.tourguide</module>
 		<module>org.caleydo.view.treemap</module>
 		
 		<module>org.caleydo.vis.rank</module>
 		
-		<module>org.caleydo.rcp.feature</module> -->
+		<module>org.caleydo.feature</module>
+		<module>org.caleydo.rcp</module>
 	</modules>
 </project>

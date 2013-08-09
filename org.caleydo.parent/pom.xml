@@ -63,8 +63,13 @@
 				<artifactId>target-platform-configuration</artifactId>
 				<configuration>
 					<resolver>p2</resolver>
-					<!--<pomDependencies>consider</pomDependencies>-->
-					<ignoreTychoRepositories>true</ignoreTychoRepositories>
+					<target>
+				         <artifact>
+				            <groupId>${project.groupId}</groupId>
+				            <artifactId>org.caleydo.internal.assembly</artifactId>
+				            <version>${project.version}</version>
+				         </artifact>
+      				</target>
 					<environments>
 						<environment>
 							<os>linux</os>
