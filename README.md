@@ -1,4 +1,4 @@
-Caleydo - Visualization for Molecular Biology
+Caleydo - Visualization for Molecular Biology [![Build Status](http://dev.caleydo.org/jenkins/buildStatus/icon?job=caleydo)](http://dev.caleydo.org/jenkins/job/caleydo/)
 =============================================
 
 Caleydo is a visualization framework for molecular biology data. It is targeted at analyzing multiple heterogeneous but related tabular datasets (e.g.,  mRNA expression, copy number status and clinical variables), stratifications or clusters in these datasets and their relationships to biological pathways.  
