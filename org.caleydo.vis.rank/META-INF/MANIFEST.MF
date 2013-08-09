@@ -2,8 +2,8 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: LineUp
 Bundle-SymbolicName: org.caleydo.vis.rank;singleton:=true
-Bundle-Version: 3.0.1
-Require-Bundle: org.caleydo.core;bundle-version="2.2"
+Bundle-Version: 3.0.2.qualifier
+Require-Bundle: org.caleydo.core;bundle-version="3.0.2.qualifier"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-Vendor: www.caleydo.org
 Bundle-ActivationPolicy: lazy

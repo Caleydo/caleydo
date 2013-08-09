@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?pde version="3.8"?><target name="Test" sequenceNumber="10">
+<locations>
+<location path="${eclipse_home}" type="Profile"/>
+<location path="${eclipse_home}/delta" type="Directory"/>
+<location path="http://dev.caleydo.org/nexus/content/groups/local-releases/.meta/p2/" type="
+</locations>
+<environment>
+<os>win32</os>
+<ws>win32</ws>
+<arch>x86_64</arch>
+<nl>en_US</nl>
+</environment>
+<launcherArgs>
+<vmArgs>-Duser.name=Samuel Gratzl -Dosgi.requiredJavaVersion=1.6 -Xms512m -Xmx2g</vmArgs>
+</launcherArgs>
+</target>
