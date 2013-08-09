@@ -13,16 +13,16 @@
 		<module>org.caleydo.util.gleem</module>
 		<module>org.caleydo.util.bubblesets</module>
 		
-		<module>org.caleydo.datadomain.generic</module>
+		<!-- <module>org.caleydo.datadomain.generic</module>
 		<module>org.caleydo.datadomain.genetic</module>
 		<module>org.caleydo.datadomain.pathway</module>
 		
 		<module>org.caleydo.data.tcga</module>
 		<module>org.caleydo.data.pathway.kegg</module>
 		<module>org.caleydo.data.pathway.wikipathways</module>
-		
+		 -->
 		<module>org.caleydo.view.histogram</module>
-		<module>org.caleydo.view.heatmap</module>
+		<!-- <module>org.caleydo.view.heatmap</module>
 		<module>org.caleydo.view.bookmark</module>
 		<module>org.caleydo.view.dvi</module>
 		<module>org.caleydo.view.enroute</module>
@@ -41,6 +41,6 @@
 		
 		<module>org.caleydo.vis.rank</module>
 		
-		<module>org.caleydo.rcp.feature</module>
+		<module>org.caleydo.rcp.feature</module> -->
 	</modules>
 </project>
