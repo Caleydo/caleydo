@@ -4,6 +4,7 @@
   !include "MUI2.nsh"
   !include "x64.nsh"
   !include "fileassoc.nsh"
+  !include "../target/project.nsh"
 
 ;--------------------------------
 ;General

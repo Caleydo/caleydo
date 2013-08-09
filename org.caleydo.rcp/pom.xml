@@ -10,12 +10,32 @@
 	</parent>
 	<artifactId>org.caleydo.rcp</artifactId>
 	<packaging>eclipse-repository</packaging>
+	
+	<properties>
+		<nsis.scriptfile>nsis/caleydo.nsi</nsis.scriptfile>
+	</properties>
 
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-p2-director-plugin</artifactId>
+				<configuration>
+					<formats>
+						<win32>zip</win32>
+						<linux>tar.gz</linux>
+						<macosx>zip</macosx>
+					</formats>
+					<products>
+						<product>
+							<id>org.caleydo</id>
+							<rootFolder>Caleydo</rootFolder>
+							<rootFolders>
+								<macosx>Caleydo.app</macosx>
+							</rootFolders>
+						</product>
+					</products>
+				</configuration>
 				<executions>
 					<execution>
 						<id>materialize-products</id>
@@ -27,6 +47,19 @@
 						<id>archive-products</id>
 						<goals>
 							<goal>archive-products</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>nsis-maven-plugin</artifactId>
+				<version>1.0-alpha-1</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>generate-headerfile</goal>
+							<goal>make</goal>
 						</goals>
 					</execution>
 				</executions>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/org.caleydo.feature_3.0.2.qualifier.jar" id="org.caleydo.feature" version="3.0.2.qualifier" os="linux,macosx,win32" ws="cocoa,gtk,win32" nl="en_US" arch="x86,x86_64">
+      <category name="caleydo"/>
+   </feature>
+   <category-def name="caleydo" label="Caleydo"/>
+</site>

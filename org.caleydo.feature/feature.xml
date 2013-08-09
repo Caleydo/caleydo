@@ -32,10 +32,6 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&
       <discovery label="Johannes Kepler University Linz" url="http://www.jku.at/cg"/>
    </url>
 
-   <includes
-         id="org.eclipse.rcp"
-         version="0.0.0"/>
-
    <requires>
       <import plugin="org.eclipse.core.runtime" version="3.8.0" match="greaterOrEqual"/>
       <import plugin="org.caleydo.data" version="3.0.2.qualifier" match="greaterOrEqual"/>

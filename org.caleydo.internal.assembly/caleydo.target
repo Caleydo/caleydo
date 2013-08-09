@@ -7,6 +7,7 @@
 <location id="org.eclipse.e4.rcp.source" path="${eclipse_home}" type="Feature"/>
 <location id="org.eclipse.emf.common" path="${eclipse_home}" type="Feature"/>
 <location id="org.eclipse.emf.ecore" path="${eclipse_home}" type="Feature"/>
+<location id="org.eclipse.equinox.p2.user.ui" path="${eclipse_home}" type="Feature"/>
 <location includeAllPlatforms="true" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.caleydo.thirdparty.jogl" version="2.0.2"/>
 <unit id="org.caleydo.thirdparty.jogl-natives-linux-amd64" version="2.0.2"/>
