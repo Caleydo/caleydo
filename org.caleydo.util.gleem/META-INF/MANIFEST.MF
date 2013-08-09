@@ -3,7 +3,6 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Gleem Plug-in
 Bundle-SymbolicName: org.caleydo.util.gleem;singleton:=true
 Bundle-Version: 3.0.2.qualifier
-Bundle-ClassPath: gleem.jar
 Export-Package: gleem,
  gleem.linalg,
  gleem.linalg.open
