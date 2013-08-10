@@ -23,19 +23,20 @@ Caleydo is open-source software licenced under the New BSD license.
       <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgsMac>
    </launcherArgs>
 
-   <windowImages i16="../../../icons/caleydo_16.png" i32="../../../icons/caleydo_32.png" i48="../../../icons/caleydo_48.png" i64="../../../icons/caleydo_64.png" i128="../../../icons/caleydo_128.png"/>
+   <windowImages i16="resources/icons/caleydo_16.png" i32="resources/icons/caleydo_32.png" i48="resources/icons/caleydo_48.png" i64="resources/icons/caleydo_64.png" i128="resources/icons/caleydo_128.png"/>
 
    <splash
       location="org.caleydo.core" />
    <launcher name="Caleydo">
-      <linux icon="../../../icons/caleydo_48.xpm"/>
-      <macosx icon="../../../icons/caleydo.icns"/>
+      <linux icon="../../../../org.caleydo.core/resources/icons/caleydo_48.xpm"/>
+      <macosx icon="../../../../org.caleydo.core/resources/icons/caleydo.icns"/>
       <solaris/>
       <win useIco="true">
-         <ico path="../../../icons/caleydo.ico"/>
+         <ico path="../../../../org.caleydo.core/resources/icons/caleydo.ico"/>
          <bmp/>
       </win>
    </launcher>
+
 
    <vm>
    </vm>
