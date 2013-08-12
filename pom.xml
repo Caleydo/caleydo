@@ -52,8 +52,6 @@
 		
 		<module>org.caleydo.vis.rank</module>
 
-		<module>org.caleydo.feature</module>
-		<module>org.caleydo.rcp</module>
 		<module>org.caleydo.internal</module>
 	</modules>
 </project>
