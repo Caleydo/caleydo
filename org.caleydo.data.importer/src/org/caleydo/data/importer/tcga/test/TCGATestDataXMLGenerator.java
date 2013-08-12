@@ -86,11 +86,11 @@ public class TCGATestDataXMLGenerator extends DataSetDescriptionSerializer {
 		projectDescription = new ProjectDescription();
 
 		projectDescription.add(setUpMRNAData());
-		projectDescription.add(setUpMutationData());
-		projectDescription.add(setUpMiRNAData());
-		projectDescription.add(setUpMethylationData());
-		projectDescription.add(setUpCopyNumberData());
-		projectDescription.add(setUpClinicalData());
+		// projectDescription.add(setUpMutationData());
+		// projectDescription.add(setUpMiRNAData());
+		// projectDescription.add(setUpMethylationData());
+		// projectDescription.add(setUpCopyNumberData());
+		// projectDescription.add(setUpClinicalData());
 
 	}
 
@@ -129,12 +129,14 @@ public class TCGATestDataXMLGenerator extends DataSetDescriptionSerializer {
 		mrnaData.addColumnGroupingSpecification(groundTruthGrouping);
 
 		DataProcessingDescription dataProcessingDescription = new DataProcessingDescription();
+		// dataProcessingDescription.setNrRowsInSample(15);
 		ClusterConfiguration clusterConfiguration = new ClusterConfiguration();
 		clusterConfiguration.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
 		KMeansClusterConfiguration kMeansAlgo = new KMeansClusterConfiguration();
 		kMeansAlgo.setNumberOfClusters(5);
 		clusterConfiguration.setClusterAlgorithmConfiguration(kMeansAlgo);
 		dataProcessingDescription.addRowClusterConfiguration(clusterConfiguration);
+
 
 		clusterConfiguration = new ClusterConfiguration();
 		clusterConfiguration.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
