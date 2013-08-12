@@ -157,19 +157,19 @@
 					<groupId>org.eclipse.tycho</groupId>
 					<artifactId>tycho-packaging-plugin</artifactId>
 					<version>${tycho.version}</version>
-					<dependencies>
+					<!-- <dependencies>
 						<dependency>
 							<groupId>org.eclipse.tycho.extras</groupId>
 							<artifactId>tycho-buildtimestamp-jgit</artifactId>
 							<version>${tycho-extras.version}</version>
 						</dependency>
-					</dependencies>
+					</dependencies> -->
 					<configuration>
 						<strictBinIncludes>false</strictBinIncludes>
 						<format>'v'yyyyMMdd-HHmm</format>
-						<timestampProvider>jgit</timestampProvider>
+						<!-- <timestampProvider>jgit</timestampProvider>
 						<jgit.ignore>
-						</jgit.ignore>
+						</jgit.ignore> -->
 					</configuration>
 				</plugin>
 				<plugin>
