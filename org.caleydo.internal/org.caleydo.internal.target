@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="org.caleydo.internal" sequenceNumber="4">
+<?pde version="3.8"?><target name="Caleydo Dev" sequenceNumber="5">
 <locations>
 <location id="org.eclipse.rcp" path="${eclipse_home}" type="Feature"/>
 <location id="org.eclipse.rcp.source" path="${eclipse_home}" type="Feature"/>
@@ -8,7 +8,7 @@
 <location id="org.eclipse.emf.common" path="${eclipse_home}" type="Feature"/>
 <location id="org.eclipse.emf.ecore" path="${eclipse_home}" type="Feature"/>
 <location id="org.eclipse.equinox.p2.user.ui" path="${eclipse_home}" type="Feature"/>
-<location includeAllPlatforms="true" includeConfigurePhase="false" includeSource="true" type="InstallableUnit">
+<location includeAllPlatforms="true" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.caleydo.thirdparty.jogl" version="2.0.2"/>
 <unit id="org.caleydo.thirdparty.jogl-natives-linux-amd64" version="2.0.2"/>
 <unit id="org.caleydo.thirdparty.jogl-natives-linux-i586" version="2.0.2"/>
@@ -19,7 +19,7 @@
 <unit id="org.caleydo.thirdparty.pathvisio" version="31.0.0"/>
 <repository location="http://dev.caleydo.org/nexus/content/repositories/thirdparty/.meta/p2"/>
 </location>
-<location includeAllPlatforms="true" includeConfigurePhase="false" includeSource="true" type="InstallableUnit">
+<location includeAllPlatforms="true" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.kohsuke.args4j" version="2.0.21.v201301150030"/>
 <unit id="org.eclipse.nebula.widgets.nattable.core.feature.feature.group" version="1.0.1.201307031725"/>
 <unit id="com.google.gson" version="2.1.0.v201303041604"/>
@@ -28,10 +28,11 @@
 <unit id="org.apache.commons.math" version="2.1.0.v201105210652"/>
 <unit id="org.apache.commons.compress" version="1.4.1.v201301140946"/>
 <unit id="org.eclipse.e4.ui.workbench.addons.swt" version="1.0.0.v20130515-1857"/>
+<unit id="javax.annotation" version="1.1.0.v201209060031"/>
 <repository location="http://dev.caleydo.org/nexus/content/groups/public-p2"/>
 <repository location="http://dev.caleydo.org/nexus/content/repositories/eclipse"/>
 </location>
-<location includeAllPlatforms="true" includeConfigurePhase="false" includeSource="true" type="InstallableUnit">
+<location includeAllPlatforms="true" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <repository location="http://dev.caleydo.org/nexus/content/groups/public-p2"/>
 </location>
 </locations>
