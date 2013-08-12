@@ -7,6 +7,7 @@ package org.caleydo.core.internal;
 
 import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Properties;
@@ -16,6 +17,7 @@ import org.caleydo.core.internal.gui.CaleydoProjectWizard;
 import org.caleydo.core.internal.startup.StartupAddons;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.startup.CacheInitializers;
+import org.caleydo.core.startup.IStartUpDocumentListener;
 import org.caleydo.core.startup.IStartupAddon;
 import org.caleydo.core.startup.IStartupProcedure;
 import org.caleydo.core.util.logging.Logger;
@@ -73,6 +75,19 @@ public class Application implements IApplication {
 
 			// create a select the startup pro
 			Display display = PlatformUI.createDisplay();
+			for (IStartupAddon addon : startups.values()) {
+				if (addon instanceof IStartUpDocumentListener) {
+					display.addListener(SWT.OpenDocument, (IStartUpDocumentListener) addon);
+				}
+			}
+			display.addListener(SWT.OpenDocument, new Listener() {
+				@Override
+				public void handleEvent(Event event) {
+					System.err.println("Openening: " + event.text);
+					log.error("Opening" + event.text);
+				}
+			});
+
 			startup = selectStartupProcedure(startups, display);
 			if (startup == null)
 				return EXIT_OK; // unstartable
@@ -259,5 +274,27 @@ public class Application implements IApplication {
 		startup.postWorkbenchOpen(windowConfigurer);
 		windowConfigurer.getWindow().getShell().setMaximized(true);
 		startup = null;
+	}
+
+	public class OpenDocumentEventProcessor implements Listener {
+		private ArrayList<String> filesToOpen = new ArrayList<String>(1);
+
+		@Override
+		public void handleEvent(Event event) {
+			if (event.text != null)
+				filesToOpen.add(event.text);
+		}
+
+		public void openFiles() {
+			if (filesToOpen.isEmpty())
+				return;
+
+			String[] filePaths = filesToOpen.toArray(new String[filesToOpen.size()]);
+			filesToOpen.clear();
+
+			for (String path : filePaths) {
+				// open the file path
+			}
+		}
 	}
 }
