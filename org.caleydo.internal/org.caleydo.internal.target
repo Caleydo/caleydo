@@ -17,6 +17,7 @@
 <unit id="org.caleydo.thirdparty.jogl-natives-windows-i586" version="2.0.2"/>
 <unit id="org.caleydo.thirdparty.jgrapht" version="0.8.3"/>
 <unit id="org.caleydo.thirdparty.pathvisio" version="31.0.0"/>
+<unit id="org.caleydo.thirdparty.jsr305" version="2.0.1"/>
 <repository location="http://dev.caleydo.org/nexus/content/repositories/thirdparty/.meta/p2"/>
 </location>
 <location includeAllPlatforms="true" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
@@ -28,7 +29,6 @@
 <unit id="org.apache.commons.math" version="2.1.0.v201105210652"/>
 <unit id="org.apache.commons.compress" version="1.4.1.v201301140946"/>
 <unit id="org.eclipse.e4.ui.workbench.addons.swt" version="1.0.0.v20130515-1857"/>
-<unit id="javax.annotation" version="1.1.0.v201209060031"/>
 <repository location="http://dev.caleydo.org/nexus/content/groups/public-p2"/>
 <repository location="http://dev.caleydo.org/nexus/content/repositories/eclipse"/>
 </location>
