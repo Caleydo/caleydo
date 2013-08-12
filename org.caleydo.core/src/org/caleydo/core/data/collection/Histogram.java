@@ -60,7 +60,7 @@ public class Histogram {
 		histogram = new int[numberOfBuckets + 1];
 		ids = new ArrayList<>(numberOfBuckets + 1);
 		nanIndex = numberOfBuckets;
-		for (int i = 0; i < ids.size(); i++) {
+		for (int i = 0; i < histogram.length; i++) {
 			ids.add(new TreeSet<Integer>());
 		}
 	}
