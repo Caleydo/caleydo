@@ -792,14 +792,14 @@ public class GLPathwayAugmentationRenderer {
 			gl.glBegin(GL2.GL_POLYGON);
 			gl.glVertex3f(width, height, PathwayRenderStyle.Z_OFFSET);
 			gl.glVertex3f(width - 5 * onePxlWidth, height, PathwayRenderStyle.Z_OFFSET);
-			gl.glVertex3f(width - 4 * onePxlWidth, height - 10, PathwayRenderStyle.Z_OFFSET);
-			gl.glVertex3f(width - 1 * onePxlWidth, height - 10, PathwayRenderStyle.Z_OFFSET);
+			gl.glVertex3f(width - 4 * onePxlWidth, height - 10 * onePxlWidth, PathwayRenderStyle.Z_OFFSET);
+			gl.glVertex3f(width - 1 * onePxlWidth, height - 10 * onePxlWidth, PathwayRenderStyle.Z_OFFSET);
 			gl.glEnd();
 
 			// gl.glColor3fv(tablePerspective.getDataDomain().getColor().getRGB(), 0);
 			gl.glBegin(GL2.GL_POLYGON);
-			gl.glVertex3f(width, 0 + 5, PathwayRenderStyle.Z_OFFSET);
-			gl.glVertex3f(width - 5 * onePxlWidth, 0 + 5, PathwayRenderStyle.Z_OFFSET);
+			gl.glVertex3f(width, 5 * onePxlWidth, PathwayRenderStyle.Z_OFFSET);
+			gl.glVertex3f(width - 5 * onePxlWidth, 5 * onePxlWidth, PathwayRenderStyle.Z_OFFSET);
 			gl.glVertex3f(width - 5 * onePxlWidth, 0, PathwayRenderStyle.Z_OFFSET);
 			gl.glVertex3f(width, 0, PathwayRenderStyle.Z_OFFSET);
 			gl.glEnd();
@@ -925,8 +925,8 @@ public class GLPathwayAugmentationRenderer {
 		if (selectedSamplesVA == null) {
 			average = tablePerspective.getContainerStatistics().getAverage(david, mappedDavidIds);
 		} else {
-			average = TablePerspectiveStatistics.calculateAverage(selectedSamplesVA,
-					tablePerspective.getDataDomain(), david, mappedDavidIds);
+			average = TablePerspectiveStatistics.calculateAverage(selectedSamplesVA, tablePerspective.getDataDomain(),
+					david, mappedDavidIds);
 		}
 		return average;
 	}

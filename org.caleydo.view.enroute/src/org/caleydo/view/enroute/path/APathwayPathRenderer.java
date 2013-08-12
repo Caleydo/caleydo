@@ -397,8 +397,8 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	 * @return True, if the nodes were merged, false otherwise.
 	 */
 	protected boolean mergeNodes(ALinearizableNode node1, ALinearizableNode node2) {
-		if (node1.getMappedDavidIDs().size() == node2.getMappedDavidIDs().size()
-				&& node1.getMappedDavidIDs().containsAll(node2.getMappedDavidIDs())) {
+		if (PathwayManager.get().areVerticesEquivalent(node1.getPrimaryPathwayVertexRep(),
+				node2.getPrimaryPathwayVertexRep())) {
 
 			for (PathwayVertexRep vertexRep : node2.getVertexReps()) {
 				node1.addPathwayVertexRep(vertexRep);
@@ -408,8 +408,8 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 				for (ALinearizableNode node1Child : nodesOfNode1) {
 					List<ALinearizableNode> nodesOfNode2 = ((ComplexNode) node2).getNodes();
 					for (ALinearizableNode node2Child : nodesOfNode2) {
-						if (node1Child.getMappedDavidIDs().size() == node2Child.getMappedDavidIDs().size()
-								&& node1Child.getMappedDavidIDs().containsAll(node2Child.getMappedDavidIDs())) {
+						if (PathwayManager.get().areVerticesEquivalent(node1Child.getPrimaryPathwayVertexRep(),
+								node2Child.getPrimaryPathwayVertexRep())) {
 							mergeNodes(node1Child, node2Child);
 						}
 					}
@@ -664,7 +664,7 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	}
 
 	/**
-	 * Removes the specified node from the path if it is at the start or the end of the path.
+	 * Removes the specified node from the path.
 	 *
 	 * @param node
 	 */
@@ -676,34 +676,80 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 			segments.add(new ArrayList<>(segment));
 		}
 
-		if (isFirstNode(node)) {
-			List<PathwayVertexRep> segment = segments.get(0);
-			segment.remove(0);
-			if (segment.size() == 0) {
-				if (segments.size() > 1) {
-					List<PathwayVertexRep> nextSegment = segments.get(1);
-					nextSegment.remove(0);
-				}
-				segments.remove(segment);
-			}
-		} else if (isLastNode(node)) {
-			List<PathwayVertexRep> segment = segments.get(segments.size() - 1);
-			segment.remove(segment.size() - 1);
-			if (segment.size() == 0) {
-				if (segments.size() > 1) {
-					List<PathwayVertexRep> prevSegment = segments.get(segments.size() - 2);
-					prevSegment.remove(prevSegment.size() - 1);
-				}
-				segments.remove(segment);
-			}
-
-		} else {
-			return;
-		}
-
+		Pair<Integer, Integer> indices = determinePathSegmentAndIndexOfPathNode(node, node.getPrimaryPathwayVertexRep());
+		removeVertexRep(segments, indices.getFirst(), indices.getSecond());
+		// if (isFirstNode(node)) {
+		// List<PathwayVertexRep> segment = segments.get(0);
+		// segment.remove(0);
+		// if (segment.size() == 0) {
+		// if (segments.size() > 1) {
+		// List<PathwayVertexRep> nextSegment = segments.get(1);
+		// nextSegment.remove(0);
+		// }
+		// segments.remove(segment);
+		// }
+		// } else if (isLastNode(node)) {
+		// List<PathwayVertexRep> segment = segments.get(segments.size() - 1);
+		// segment.remove(segment.size() - 1);
+		// if (segment.size() == 0) {
+		// if (segments.size() > 1) {
+		// List<PathwayVertexRep> prevSegment = segments.get(segments.size() - 2);
+		// prevSegment.remove(prevSegment.size() - 1);
+		// }
+		// segments.remove(segment);
+		// }
+		//
+		// } else {
+		// return;
+		// }
+		// System.out.println("segments:" + segments);
 		if (updateStrategy.isPathChangePermitted(segments)) {
 			setPath(segments);
 			updateStrategy.triggerPathUpdate();
+		}
+	}
+
+	private void removeVertexRep(List<List<PathwayVertexRep>> segments, int segmentIndex, int vertexIndex) {
+		List<PathwayVertexRep> segment = segments.get(segmentIndex);
+		PathwayVertexRep vertexRep = segment.get(vertexIndex);
+		if (segment.size() == 1) {
+			segment.remove(vertexIndex);
+			removeEquivalentVertexOfPreviousSegment(segments, segmentIndex, vertexRep);
+			removeEquivalentVertexOfNextSegment(segments, segmentIndex, vertexRep);
+			segments.remove(segment);
+		} else if (vertexIndex == 0) {
+			segment.remove(vertexIndex);
+			removeEquivalentVertexOfPreviousSegment(segments, segmentIndex, vertexRep);
+		} else if (vertexIndex == segment.size() - 1) {
+			segment.remove(vertexIndex);
+			removeEquivalentVertexOfNextSegment(segments, segmentIndex, vertexRep);
+		} else {
+			List<PathwayVertexRep> firstSegment = segment.subList(0, vertexIndex);
+			List<PathwayVertexRep> secondSegment = segment.subList(vertexIndex + 1, segment.size());
+			segments.set(segmentIndex, firstSegment);
+			segments.add(segmentIndex + 1, secondSegment);
+		}
+	}
+
+	private void removeEquivalentVertexOfNextSegment(List<List<PathwayVertexRep>> segments, int segmentIndex,
+			PathwayVertexRep vertexRep) {
+		if (segmentIndex < segments.size() - 1) {
+			List<PathwayVertexRep> nextSegment = segments.get(segmentIndex + 1);
+			PathwayVertexRep nextVertexRep = nextSegment.get(0);
+			if (PathwayManager.get().areVerticesEquivalent(nextVertexRep, vertexRep)) {
+				removeVertexRep(segments, segmentIndex + 1, 0);
+			}
+		}
+	}
+
+	private void removeEquivalentVertexOfPreviousSegment(List<List<PathwayVertexRep>> segments, int segmentIndex,
+			PathwayVertexRep vertexRep) {
+		if (segmentIndex > 0) {
+			List<PathwayVertexRep> previousSegment = segments.get(segmentIndex - 1);
+			PathwayVertexRep previousVertexRep = previousSegment.get(previousSegment.size() - 1);
+			if (PathwayManager.get().areVerticesEquivalent(previousVertexRep, vertexRep)) {
+				removeVertexRep(segments, segmentIndex - 1, previousSegment.size() - 1);
+			}
 		}
 	}
 
@@ -771,13 +817,16 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 					}
 					correspondingIndex++;
 				}
-
-				if (pathNodes.get(correspondingIndex).getVertexReps().size() > 1) {
-					// Decrement corresponding index, because a single node refers to two vertexReps at the beginning
-					// and
-					// the
-					// end of a segment
-					correspondingIndex--;
+				if (pathNodes.size() > correspondingIndex - 1) {
+					ALinearizableNode n = pathNodes.get(correspondingIndex - 1);
+					if (n.getVertexReps().size() > 1) {
+						// Decrement corresponding index, because a single node refers to two vertexReps at the
+						// beginning
+						// and
+						// the
+						// end of a segment
+						correspondingIndex--;
+					}
 				}
 			}
 		}
