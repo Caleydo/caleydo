@@ -208,6 +208,8 @@ public class GroupingParser extends ATextParser {
 					if (groupingSpecifications.getGroupingNames() != null) {
 						groupLabel = clusterSizes.size() + " "
 								+ groupingSpecifications.getGroupingNames().get(groupListCount);
+					} else if (groupingSpecifications.getGroupingName() != null) {
+						groupLabel = clusterSizes.size() + groupingSpecifications.getGroupingName();
 					} else {
 						groupLabel = clusterSizes.size() + " Clusters";
 					}
