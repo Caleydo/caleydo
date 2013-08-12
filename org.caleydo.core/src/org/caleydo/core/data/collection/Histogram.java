@@ -60,14 +60,14 @@ public class Histogram {
 		histogram = new int[numberOfBuckets + 1];
 		ids = new ArrayList<>(numberOfBuckets + 1);
 		nanIndex = numberOfBuckets;
-		for (int count = 0; count < numberOfBuckets; count++) {
+		for (int i = 0; i < ids.size(); i++) {
 			ids.add(new TreeSet<Integer>());
 		}
 	}
 
 	/**
 	 * optimize the data structure to be immutable
-	 * 
+	 *
 	 * @return
 	 */
 	public Histogram optimize() {
