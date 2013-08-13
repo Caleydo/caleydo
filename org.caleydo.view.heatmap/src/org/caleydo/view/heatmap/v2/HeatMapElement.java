@@ -35,7 +35,7 @@ public class HeatMapElement extends AHeatMapElement {
 		super(tablePerspective, blockColorer, detailLevel);
 
 		// force texture or low details
-		if (forceTextures || EDetailLevel.MEDIUM.compareTo(detailLevel) > 0) {
+		if (forceTextures || EDetailLevel.MEDIUM.compareTo(detailLevel) >= 0) {
 			this.textureRenderer = new HeatMapTextureRenderer(tablePerspective, blockColorer);
 		} else {
 			this.textureRenderer = null;

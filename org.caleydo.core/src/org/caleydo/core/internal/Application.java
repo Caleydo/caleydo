@@ -80,13 +80,6 @@ public class Application implements IApplication {
 					display.addListener(SWT.OpenDocument, (IStartUpDocumentListener) addon);
 				}
 			}
-			display.addListener(SWT.OpenDocument, new Listener() {
-				@Override
-				public void handleEvent(Event event) {
-					System.err.println("Openening: " + event.text);
-					log.error("Opening" + event.text);
-				}
-			});
 			while (!display.isDisposed() && display.readAndDispatch()) { // dispatch all pending
 				// dispatch events
 			}
