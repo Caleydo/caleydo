@@ -8,16 +8,13 @@ package org.caleydo.core.io;
 import java.util.ArrayList;
 
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
+import org.caleydo.core.util.function.AdvancedFloatStatistics;
 
 /**
  * <p>
  * This class contains information on how to process the loaded data. Common examples are clustering of rows or columns
  * or filtering, sampling.
  * </p>
- * <p>
- * Currently only clustering is implemented
- * </p>
- *
  *
  * @author Alexander Lex
  *
@@ -41,7 +38,9 @@ public class DataProcessingDescription {
 	private ArrayList<ClusterConfiguration> rowClusterConfigurations;
 
 	/**
-	 * The number of columns we want to keep in the random sample. If null no sampling is done.
+	 * Setting this variable triggers sampling of columns to the number of elements specified. If null no sampling is
+	 * done. Sampling uses the most variable elements, using Median Absolute Deviation (see
+	 * {@link AdvancedFloatStatistics})
 	 */
 	private Integer nrColumnsInSample = null;
 

@@ -27,7 +27,7 @@ import org.caleydo.core.io.NumericalProperties;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.color.mapping.ColorMapper;
-import org.caleydo.core.util.function.FloatStatistics;
+import org.caleydo.core.util.function.AdvancedFloatStatistics;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -656,11 +656,15 @@ public class Table {
 			float[] allDimsPerRecordArray = new float[recordIDs.size()];
 
 			for (int i = 0; i < recordIDs.size(); i++) {
-				allDimsPerRecordArray[i] = dataDomain.getNormalizedValue(dataDomain.getDimensionIDType(), dimID,
-						dataDomain.getRecordIDType(), recordIDs.get(i));
+				// allDimsPerRecordArray[i] = dataDomain.getNormalizedValue(dataDomain.getDimensionIDType(), dimID,
+				// dataDomain.getRecordIDType(), recordIDs.get(i));
+				allDimsPerRecordArray[i] = getRaw(dimID, recordIDs.get(i));
 			}
-			allDimVar.add(new Pair<Float, Integer>(FloatStatistics.of(allDimsPerRecordArray).getVar(), dimID));
+
+			allDimVar.add(new Pair<Float, Integer>(AdvancedFloatStatistics.of(allDimsPerRecordArray)
+					.getMedianAbsoluteDeviation(), dimID));
 		}
+
 		Collections.sort(allDimVar, Collections.reverseOrder(Pair.<Float> compareFirst()));
 
 		allDimVar = allDimVar.subList(0, sampleSize);

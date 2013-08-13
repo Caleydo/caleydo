@@ -10,17 +10,21 @@ import java.util.Arrays;
 /**
  * advanced version of {@link FloatStatistics} including median, and quartiles but requires the full data so no line
  * version
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public class AdvancedFloatStatistics extends FloatStatistics {
-	private final float median, quartile25, quartile75;
+	private final float median, quartile25, quartile75, medianAbsoluteDeviation;
 
-	public AdvancedFloatStatistics(float median, float quartile25, float quartile75) {
+	// http://stat.ethz.ch/R-manual/R-patched/library/stats/html/mad.html
+	public static final float MEDIAN_ABSOLUTE_DEVIATION_CONSTANT = 1.4826f;
+
+	public AdvancedFloatStatistics(float median, float quartile25, float quartile75, float medianAbsoluteDeviation) {
 		this.median = median;
 		this.quartile25 = quartile25;
 		this.quartile75 = quartile75;
+		this.medianAbsoluteDeviation = medianAbsoluteDeviation;
 	}
 
 	/**
@@ -28,6 +32,14 @@ public class AdvancedFloatStatistics extends FloatStatistics {
 	 */
 	public float getMedian() {
 		return median;
+	}
+
+	/**
+	 * @return the median absolute deviation as implemented in R:
+	 *         http://stat.ethz.ch/R-manual/R-patched/library/stats/html/mad.html, see {@link #medianAbsoluteDeviation}
+	 */
+	public float getMedianAbsoluteDeviation() {
+		return medianAbsoluteDeviation;
 	}
 
 	/**
@@ -58,25 +70,49 @@ public class AdvancedFloatStatistics extends FloatStatistics {
 
 	private static AdvancedFloatStatistics ofImpl(float[] data) {
 		Arrays.sort(data);
-		final int n = data.length;
 
-		int middle = n/2;
-
-		float median;
-        if (n % 2 == 1) {
-        	median = data[middle];
-        } else {
-        	median = (data[middle-1] + data[middle])*0.5f;
-        }
+		float median = median(data);
 
 		float quartile25 = percentile(data, 0.25f);
 		float quartile75 = percentile(data, 0.75f);
 
-		AdvancedFloatStatistics result = new AdvancedFloatStatistics(median, quartile25, quartile75);
+		float[] medianDeltas = new float[data.length];
+		float medianAbsoluteDeviation = 0;
+
+		for (int i = 0; i < data.length; i++) {
+			medianDeltas[i] = Math.abs(data[i] - median);
+		}
+		Arrays.sort(medianDeltas);
+
+		medianAbsoluteDeviation = AdvancedFloatStatistics.MEDIAN_ABSOLUTE_DEVIATION_CONSTANT * median(medianDeltas);
+
+		AdvancedFloatStatistics result = new AdvancedFloatStatistics(median, quartile25, quartile75,
+				medianAbsoluteDeviation);
 		result.add(data);
 		return result;
 	}
 
+	/*
+	 * assumes sorted data
+	 */
+	private static float median(float[] data) {
+		final int n = data.length;
+
+		int middle = n / 2;
+
+		float median;
+		if (n % 2 == 1) {
+			median = data[middle];
+		} else {
+			median = (data[middle - 1] + data[middle]) * 0.5f;
+		}
+
+		return median;
+	}
+
+	/*
+	 * assumes sorted data
+	 */
 	private static float percentile(float[] data, float percentile) {
 		final int n = data.length;
 

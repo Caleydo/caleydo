@@ -30,12 +30,28 @@ public interface IFloatList extends List<Float> {
 	 */
 	IFloatListView map(IFloatFunction f);
 
+	/**
+	 * return a {@link IFloatList} only with the elements matching the {@link IFloatPredicate}
+	 *
+	 * @param p
+	 * @return
+	 */
 	IFloatList filter(IFloatPredicate p);
 
+	/**
+	 * reduces/fold the data using the given start value and the given {@link IFloatReduction} function
+	 *
+	 * @param start
+	 * @param r
+	 * @return
+	 */
 	float reduce(float start, IFloatReduction r);
 
 	@Override
 	IFloatIterator iterator();
 
+	/**
+	 * @return a fresh copy of the data as primitive array
+	 */
 	float[] toPrimitiveArray();
 }

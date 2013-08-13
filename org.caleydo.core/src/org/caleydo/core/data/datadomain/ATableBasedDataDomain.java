@@ -874,14 +874,23 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 				continue;
 			}
 			for (Integer localVAID : localVAIDS) {
-				if (localVAID == null)
+				if (localVAID == null) {
+					unmapped++;
 					continue;
+				}
 				indices.add(localVAID);
 				int groupIndex = groupList.getGroupOfVAIndex(foreignVA.indexOf(foreignVAID)).getGroupIndex();
 				groupSizes.set(groupIndex, groupSizes.get(groupIndex) + 1);
 				sampleElements.set(groupIndex, count);
 				count++;
 			}
+
+		}
+
+		if (unmapped > 0) {
+			Logger.log(new Status(IStatus.INFO, this.toString(), "Failed to convert " + unmapped
+					+ " elements when converting " + foreignPerspective + " with size "
+					+ foreignPerspective.getVirtualArray().size() + " for this data domain."));
 
 		}
 

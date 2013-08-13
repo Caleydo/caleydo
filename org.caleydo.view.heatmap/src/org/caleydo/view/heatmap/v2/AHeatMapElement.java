@@ -74,6 +74,8 @@ abstract class AHeatMapElement extends ASingleTablePerspectiveElement {
 	protected EShowLabels dimensionLabels = EShowLabels.NONE;
 	protected EShowLabels recordLabels = EShowLabels.NONE;
 
+	private int textWidth = TEXT_WIDTH;
+
 	protected IndexedId hoveredRecordID = null;
 	protected IndexedId hoveredDimensionID = null;
 
@@ -120,10 +122,28 @@ abstract class AHeatMapElement extends ASingleTablePerspectiveElement {
 	public final Vec2f getMinSize() {
 		Vec2f v = getMinSizeImpl();
 		if (recordLabels.show())
-			v.setX(v.x() + TEXT_WIDTH);
+			v.setX(v.x() + textWidth);
 		if (dimensionLabels.show())
-			v.setY(v.y() + TEXT_WIDTH);
+			v.setY(v.y() + textWidth);
 		return v;
+	}
+
+	/**
+	 * @param textWidth
+	 *            setter, see {@link textWidth}
+	 */
+	public void setTextWidth(int textWidth) {
+		if (textWidth == this.textWidth)
+			return;
+		this.textWidth = textWidth;
+		relayout();
+	}
+
+	/**
+	 * @return the textWidth, see {@link #textWidth}
+	 */
+	public int getTextWidth() {
+		return textWidth;
 	}
 
 	/**
@@ -201,10 +221,10 @@ abstract class AHeatMapElement extends ASingleTablePerspectiveElement {
 	protected void layoutImpl() {
 		Vec2f size = getSize().copy();
 		if (recordLabels.show()) {
-			size.setX(size.x() - TEXT_WIDTH);
+			size.setX(size.x() - textWidth);
 		}
 		if (dimensionLabels.show()) {
-			size.setY(size.y() - TEXT_WIDTH);
+			size.setY(size.y() - textWidth);
 		}
 		// compute the layout
 		this.recordSpacing = recordSpacingStrategy.apply(selections.getTablePerspective().getRecordPerspective(),
@@ -218,7 +238,7 @@ abstract class AHeatMapElement extends ASingleTablePerspectiveElement {
 			return null;
 		float pos = dimensionSpacing.getPosition(index);
 		if (recordLabels == EShowLabels.LEFT)
-			pos += TEXT_WIDTH;
+			pos += textWidth;
 		return new CellSpace(pos, dimensionSpacing.getSize(index));
 	}
 
@@ -227,7 +247,7 @@ abstract class AHeatMapElement extends ASingleTablePerspectiveElement {
 			return null;
 		float pos = recordSpacing.getPosition(index);
 		if (dimensionLabels == EShowLabels.LEFT)
-			pos += TEXT_WIDTH;
+			pos += textWidth;
 		return new CellSpace(pos, recordSpacing.getSize(index));
 	}
 
@@ -236,22 +256,22 @@ abstract class AHeatMapElement extends ASingleTablePerspectiveElement {
 		g.save();
 		switch (recordLabels) {
 		case LEFT:
-			w -= TEXT_WIDTH;
-			g.move(TEXT_WIDTH, 0);
+			w -= textWidth;
+			g.move(textWidth, 0);
 			break;
 		case RIGHT:
-			w -= TEXT_WIDTH;
+			w -= textWidth;
 			break;
 		default:
 			break;
 		}
 		switch (dimensionLabels) {
 		case LEFT:
-			h -= TEXT_WIDTH;
-			g.move(0, TEXT_WIDTH);
+			h -= textWidth;
+			g.move(0, textWidth);
 			break;
 		case RIGHT:
-			h -= TEXT_WIDTH;
+			h -= textWidth;
 			break;
 		default:
 			break;
@@ -272,10 +292,10 @@ abstract class AHeatMapElement extends ASingleTablePerspectiveElement {
 				float textHeight = Math.min(fieldHeight, MAX_TEXT_HEIGHT);
 				String text = dataDomain.getRecordLabel(recordID);
 				if (recordLabels == EShowLabels.LEFT)
-					g.drawText(text, -TEXT_WIDTH, y + (fieldHeight - textHeight) * 0.5f, TEXT_WIDTH - TEXT_OFFSET,
+					g.drawText(text, -textWidth, y + (fieldHeight - textHeight) * 0.5f, textWidth - TEXT_OFFSET,
 							textHeight, VAlign.RIGHT);
 				else
-					g.drawText(text, w + TEXT_OFFSET, y + (fieldHeight - textHeight) * 0.5f, TEXT_WIDTH - TEXT_OFFSET,
+					g.drawText(text, w + TEXT_OFFSET, y + (fieldHeight - textHeight) * 0.5f, textWidth - TEXT_OFFSET,
 							textHeight, VAlign.LEFT);
 			}
 		}
@@ -295,10 +315,10 @@ abstract class AHeatMapElement extends ASingleTablePerspectiveElement {
 				float textWidth = Math.min(fieldWidth, MAX_TEXT_HEIGHT);
 
 				if (dimensionLabels == EShowLabels.LEFT)
-					g.drawText(label, TEXT_OFFSET, x + (fieldWidth - textWidth) * 0.5f, TEXT_WIDTH - TEXT_OFFSET,
+					g.drawText(label, TEXT_OFFSET, x + (fieldWidth - textWidth) * 0.5f, textWidth - TEXT_OFFSET,
 							textWidth, VAlign.LEFT);
 				else
-					g.drawText(label, -h - TEXT_WIDTH, x + (fieldWidth - textWidth) * 0.5f, TEXT_WIDTH - TEXT_OFFSET,
+					g.drawText(label, -h - textWidth, x + (fieldWidth - textWidth) * 0.5f, textWidth - TEXT_OFFSET,
 							textWidth, VAlign.RIGHT);
 			}
 			g.restore();
@@ -439,14 +459,14 @@ abstract class AHeatMapElement extends ASingleTablePerspectiveElement {
 		float y = point.y();
 		switch (recordLabels) {
 		case LEFT:
-			x -= TEXT_WIDTH;
+			x -= textWidth;
 			break;
 		default:
 			break;
 		}
 		switch (dimensionLabels) {
 		case LEFT:
-			y -= TEXT_WIDTH;
+			y -= textWidth;
 			break;
 		default:
 			break;
