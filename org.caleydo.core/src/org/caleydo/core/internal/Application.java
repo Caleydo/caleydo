@@ -87,8 +87,11 @@ public class Application implements IApplication {
 					log.error("Opening" + event.text);
 				}
 			});
+			while (!display.isDisposed() && display.readAndDispatch()) { // dispatch all pending
+				// dispatch events
+			}
 
-			startup = selectStartupProcedure(startups, display);
+			startup = selectStartupProcedure(startups, display, log);
 			if (startup == null)
 				return EXIT_OK; // unstartable
 			startups = null; // cleanup
@@ -121,11 +124,13 @@ public class Application implements IApplication {
 	 * @param display
 	 * @return
 	 */
-	private IStartupProcedure selectStartupProcedure(Map<String, IStartupAddon> startups, Display display) {
+	private IStartupProcedure selectStartupProcedure(Map<String, IStartupAddon> startups, Display display, Logger log) {
 		for (IStartupAddon startup : startups.values()) {
 			if (startup.init())
 				return startup.create();
 		}
+
+		log.info("creating wizard shell");
 		// not yet configured choose one
 		Shell shell = new Shell(display);
 		shell.moveAbove(null);
@@ -133,9 +138,12 @@ public class Application implements IApplication {
 		WizardDialog wizard = new WizardDialog(shell, wizardImpl);
 		wizard.setMinimumPageSize(750, 500);
 		shell.forceActive();
+
+		log.info("open wizard");
 		boolean ok = wizard.open() == Window.OK;
 		if (!shell.isDisposed())
 			shell.dispose();
+		log.info("wizard done");
 		return ok ? wizardImpl.getResult() : null;
 	}
 

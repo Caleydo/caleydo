@@ -500,7 +500,7 @@ public class ViewManager extends AManager<IView> {
 	}
 
 	public void stopAnimator() {
-		if (fpsAnimator != null && fpsAnimator.isAnimating())
+		if (fpsAnimator != null)
 			fpsAnimator.stop();
 
 		Logger.log(new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "Stop animator"));
