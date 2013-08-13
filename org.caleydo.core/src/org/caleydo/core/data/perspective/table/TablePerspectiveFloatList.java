@@ -3,12 +3,11 @@
  * Copyright (c) The Caleydo Team. All rights reserved.
  * Licensed under the new BSD license, available at http://caleydo.org/license
  *******************************************************************************/
-package org.caleydo.view.histogram.v2;
+package org.caleydo.core.data.perspective.table;
 
 import java.util.Iterator;
 
 import org.caleydo.core.data.collection.table.Table;
-import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.util.function.AFloatList;
 import org.caleydo.core.util.function.IFloatIterator;

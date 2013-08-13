@@ -8,6 +8,7 @@ package org.caleydo.core.view.opengl.layout2.manage;
 import gleem.linalg.Vec2f;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -30,6 +31,8 @@ import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 
 import com.google.common.base.Objects;
+import com.google.common.base.Predicates;
+import com.google.common.collect.Iterables;
 
 /**
  * a container of {@link GLElementFactories} results
@@ -368,6 +371,10 @@ public class GLElementFactorySwitcher extends GLElement implements IGLElementPar
 	@Override
 	public Iterator<GLElementSupplier> iterator() {
 		return children.iterator();
+	}
+
+	public Iterable<GLElement> getInstances() {
+		return Iterables.filter(Arrays.asList(instances), Predicates.notNull());
 	}
 
 	@Override

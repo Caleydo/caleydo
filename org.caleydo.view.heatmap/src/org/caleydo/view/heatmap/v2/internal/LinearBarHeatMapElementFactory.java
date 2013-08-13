@@ -38,10 +38,11 @@ public class LinearBarHeatMapElementFactory implements IGLElementFactory {
 	@Override
 	public GLElement create(GLElementFactoryContext context) {
 		TablePerspective data = context.getData();
-		IBlockColorer blockColorer = context.get(IBlockColorer.class, ConstantBlockColorer.NEUTRAL_GREY);
+		IBlockColorer blockColorer = context.get(IBlockColorer.class, ConstantBlockColorer.DEFAULT);
 		EDetailLevel detailLevel = context.get(EDetailLevel.class, EDetailLevel.LOW);
 
-		LinearBarHeatMapElement elem = new LinearBarHeatMapElement(data, blockColorer, detailLevel);
+		LinearBarHeatMapElement elem = new LinearBarHeatMapElement(data, blockColorer, detailLevel,
+				context.is("scaleLocally"));
 
 		EShowLabels default_ = context.get(EShowLabels.class, EShowLabels.NONE);
 		elem.setDimensionLabels(context.get("dimensionLabels", EShowLabels.class, default_));

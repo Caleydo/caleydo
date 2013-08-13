@@ -37,7 +37,7 @@ import com.google.common.primitives.Ints;
  * @author Samuel Gratzl
  *
  */
-abstract class AHeatMapElement extends ASingleTablePerspectiveElement {
+public abstract class AHeatMapElement extends ASingleTablePerspectiveElement {
 	private static final int TEXT_OFFSET = 5;
 	/**
 	 * maximum pixel size of a text

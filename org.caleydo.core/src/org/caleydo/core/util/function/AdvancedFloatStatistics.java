@@ -77,14 +77,12 @@ public class AdvancedFloatStatistics extends FloatStatistics {
 		float quartile75 = percentile(data, 0.75f);
 
 		float[] medianDeltas = new float[data.length];
-		float medianAbsoluteDeviation = 0;
-
 		for (int i = 0; i < data.length; i++) {
 			medianDeltas[i] = Math.abs(data[i] - median);
 		}
 		Arrays.sort(medianDeltas);
 
-		medianAbsoluteDeviation = AdvancedFloatStatistics.MEDIAN_ABSOLUTE_DEVIATION_CONSTANT * median(medianDeltas);
+		float medianAbsoluteDeviation = MEDIAN_ABSOLUTE_DEVIATION_CONSTANT * median(medianDeltas);
 
 		AdvancedFloatStatistics result = new AdvancedFloatStatistics(median, quartile25, quartile75,
 				medianAbsoluteDeviation);

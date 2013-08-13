@@ -14,7 +14,7 @@ import org.caleydo.view.heatmap.v2.IBlockColorer;
  *
  */
 public final class ConstantBlockColorer implements IBlockColorer {
-	public static final ConstantBlockColorer NEUTRAL_GREY = new ConstantBlockColorer(Color.NEUTRAL_GREY);
+	public static final ConstantBlockColorer DEFAULT = new ConstantBlockColorer(Color.GRAY);
 
 	private final Color color;
 
