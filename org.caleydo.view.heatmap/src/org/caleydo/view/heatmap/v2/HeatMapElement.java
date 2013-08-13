@@ -74,7 +74,7 @@ public class HeatMapElement extends AHeatMapElement {
 	 */
 	@Override
 	protected void render(GLGraphics g, float w, float h) {
-		if (textureRenderer != null) {
+		if (textureRenderer != null && isUniform()) {
 			textureRenderer.render(g, w, h);
 			return;
 		}

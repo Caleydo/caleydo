@@ -109,6 +109,7 @@ abstract class AHeatMapElement extends ASingleTablePerspectiveElement {
 		}
 	}
 
+
 	@Override
 	protected void init(IGLElementContext context) {
 		super.init(context);
@@ -128,6 +129,14 @@ abstract class AHeatMapElement extends ASingleTablePerspectiveElement {
 		return v;
 	}
 
+	/**
+	 *
+	 * @return whether in both dimension it is a unfirm rendering
+	 */
+	protected final boolean isUniform() {
+		return recordSpacingStrategy == SpacingStrategies.UNIFORM
+				&& dimensionSpacingStrategy == SpacingStrategies.UNIFORM;
+	}
 	/**
 	 * @param textWidth
 	 *            setter, see {@link textWidth}
@@ -312,14 +321,15 @@ abstract class AHeatMapElement extends ASingleTablePerspectiveElement {
 				String label = dataDomain.getDimensionLabel(dimensionID);
 				float x = dimensionSpacing.getPosition(i);
 				float fieldWidth = dimensionSpacing.getSize(i);
-				float textWidth = Math.min(fieldWidth, MAX_TEXT_HEIGHT);
-
+				float textHeight = Math.min(fieldWidth, MAX_TEXT_HEIGHT);
+				if (textHeight < 5)
+					continue;
 				if (dimensionLabels == EShowLabels.LEFT)
-					g.drawText(label, TEXT_OFFSET, x + (fieldWidth - textWidth) * 0.5f, textWidth - TEXT_OFFSET,
-							textWidth, VAlign.LEFT);
+					g.drawText(label, TEXT_OFFSET, x + (fieldWidth - textHeight) * 0.5f, textWidth - TEXT_OFFSET,
+							textHeight, VAlign.LEFT);
 				else
-					g.drawText(label, -h - textWidth, x + (fieldWidth - textWidth) * 0.5f, textWidth - TEXT_OFFSET,
-							textWidth, VAlign.RIGHT);
+					g.drawText(label, -h - textWidth, x + (fieldWidth - textHeight) * 0.5f, textWidth - TEXT_OFFSET,
+							textHeight, VAlign.RIGHT);
 			}
 			g.restore();
 		}
