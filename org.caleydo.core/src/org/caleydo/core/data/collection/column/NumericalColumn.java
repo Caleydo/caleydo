@@ -34,22 +34,6 @@ public class NumericalColumn<RawContainerType extends INumericalContainer<DataTy
 	}
 
 	/**
-	 * Same as {@link #normalizeWithExternalExtrema(double, double)}, but with an additional parameter letting you
-	 * specify the source of the normalization
-	 *
-	 * @param sourceRep
-	 * @param min
-	 * @param max
-	 */
-
-	// private void normalize() {
-	//
-	// dataRepToContainerMap.put(EDataTransformation.NONE,
-	// rawContainer.normalizeWithAtrificalExtrema(externalMin, externalMax));
-	//
-	// }
-
-	/**
 	 * @param externalMin
 	 *            setter, see {@link externalMin}
 	 */
@@ -87,8 +71,10 @@ public class NumericalColumn<RawContainerType extends INumericalContainer<DataTy
 	public void normalize() {
 		dataRepToContainerMap.put(Table.Transformation.NONE,
 				rawContainer.normalizeWithAtrificalExtrema(getMin(), getMax()));
-		log2();
-		log10();
+	}
+
+	public void setRaw(int index, DataType rawValue) {
+		rawContainer.set(index, rawValue);
 	}
 
 	/**
@@ -116,17 +102,6 @@ public class NumericalColumn<RawContainerType extends INumericalContainer<DataTy
 	}
 
 	/**
-	 * Calculates a raw value based on min and max from a normalized value.
-	 *
-	 * @param normalized
-	 *            a value between 0 and 1
-	 * @return a value between min and max
-	 */
-	// public DataType getRawForNormalized(float normalized) {
-	// return normalized * ((Number) getMax() - (Number) getMin());
-	// }
-
-	/**
 	 * Calculates the log10 of the raw data. Log data can be retrieved by using the get methods with
 	 * EDataRepresentation.LOG10. Call normalize after this operation if you want to display the result Normalize then
 	 * uses the log data instead of the raw data
@@ -147,31 +122,5 @@ public class NumericalColumn<RawContainerType extends INumericalContainer<DataTy
 		dataRepToContainerMap.put(NumericalTable.Transformation.LOG2,
 				logContainer.normalizeWithAtrificalExtrema(MathHelper.log(getMin(), 2), MathHelper.log(getMax(), 2)));
 	}
-
-	/**
-	 * Creates an empty container for the given {@link DataRepresentation} and stores it
-	 *
-	 * @param dataRepresentation
-	 */
-	// public void setNewRepresentation(String dataRepresentation, float[] representation) {
-	// if (representation.length != size())
-	// throw new IllegalArgumentException("The size of the dimension (" + size()
-	// + ") is not equal the size of the given new representation (" + representation.length + ")");
-	// if (dataRepToContainerMap.containsKey(dataRepresentation))
-	// throw new IllegalStateException("The data representation " + dataRepresentation + " already exists in "
-	// + this);
-	// FloatContainer container = new FloatContainer(representation);
-	// dataRepToContainerMap.put(dataRepresentation, container);
-	// }
-
-	/**
-	 * Switch the representation of the data. When this is called the data in normalized is replaced with data
-	 * calculated from the mode specified.
-	 *
-	 * @param dataRep
-	 */
-	// public void setDataTransformation(EDataTransformation dataTransformation) {
-	// this.dataTransformation = dataTransformation;
-	// }
 
 }

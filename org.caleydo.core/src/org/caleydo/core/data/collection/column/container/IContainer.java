@@ -69,6 +69,8 @@ public interface IContainer<DATA_TYPE> extends Iterable<DATA_TYPE> {
 	 */
 	public void add(DATA_TYPE value) throws IndexOutOfBoundsException;
 
+
+
 	/**
 	 * Add an entry of unknown value, e.g., due to a parsing error or a missing entry.
 	 *
@@ -79,7 +81,7 @@ public interface IContainer<DATA_TYPE> extends Iterable<DATA_TYPE> {
 
 	/**
 	 * returns whether the given is is the unknown value
-	 * 
+	 *
 	 * @param value
 	 * @return
 	 */

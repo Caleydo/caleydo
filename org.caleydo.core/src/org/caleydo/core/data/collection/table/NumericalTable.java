@@ -11,6 +11,8 @@ import org.caleydo.core.data.collection.column.AColumn;
 import org.caleydo.core.data.collection.column.NumericalColumn;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.io.DataSetDescription;
+import org.caleydo.core.io.NumericalProperties;
+import org.caleydo.core.util.function.FloatStatistics;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.math.MathHelper;
 import org.eclipse.core.runtime.IStatus;
@@ -27,6 +29,8 @@ public class NumericalTable extends Table {
 	public class Transformation extends Table.Transformation {
 		public static final String LOG2 = "Log2";
 		public static final String LOG10 = "Log10";
+		public static final String ZSCORE_ROWS = "ZSCORE_ROWS";
+		public static final String ZSCORE_COLUMNS = "ZSCORE_COLUMNS";
 	}
 
 	private boolean artificialMin = false;
@@ -38,11 +42,14 @@ public class NumericalTable extends Table {
 	/** same as {@link DataSetDescription#getDataCenter()} */
 	private Double dataCenter = null;
 
+	private final NumericalProperties numericalProperties;
+
 	/**
 	 * @param dataDomain
 	 */
 	public NumericalTable(ATableBasedDataDomain dataDomain) {
 		super(dataDomain);
+		numericalProperties = dataSetDescription.getDataDescription().getNumericalProperties();
 	}
 
 	/**
@@ -160,93 +167,6 @@ public class NumericalTable extends Table {
 		this.max = dMax;
 	}
 
-	/**
-	 * Gets the minimum value in the set in the specified data representation.
-	 *
-	 * @param dataRepresentation
-	 *            Data representation the minimum value shall be returned in.
-	 * @throws OperationNotSupportedException
-	 *             when executed on nominal data
-	 * @return The absolute minimum value in the set in the specified data representation.
-	 */
-	// public double getMinAs(String dataRepresentation) {
-	// if (min == Double.MAX_VALUE) {
-	// calculateGlobalExtrema();
-	// }
-	//
-	// double result = getRawFromExternalDataRep(min);
-	//
-	// return getDataRepFromRaw(result, dataRepresentation);
-	// }
-
-	/**
-	 * Gets the maximum value in the set in the specified data representation.
-	 *
-	 * @param dataRepresentation
-	 *            Data representation the maximum value shall be returned in.
-	 * @throws OperationNotSupportedException
-	 *             when executed on nominal data
-	 * @return The absolute maximum value in the set in the specified data representation.
-	 */
-	// public double getMaxAs(EDataTransformation dataRepresentation) {
-	// if (max == Double.MIN_VALUE) {
-	// calculateGlobalExtrema();
-	// }
-	// if (dataRepresentation == dataTransformation)
-	// return max;
-	// double result = getRawFromExternalDataRep(max);
-	//
-	// return getDataRepFromRaw(result, dataRepresentation);
-	// }
-
-	/**
-	 * Converts a raw value to the specified data representation.
-	 *
-	 * @param raw
-	 *            Raw value that shall be converted
-	 * @param dataRepresentation
-	 *            Data representation the raw value shall be converted to.
-	 * @return Value in the specified data representation converted from the raw value.
-	 */
-	// private double getDataRepFromRaw(double raw, String dataRepresentation) {
-	// switch (dataRepresentation) {
-	// case org.caleydo.core.data.collection.table.Table.Transformation.NONE:
-	// return raw;
-	// case Transformation.LOG2:
-	// return Math.log(raw) / Math.log(2);
-	// case Transformation.LOG10:
-	// return Math.log10(raw);
-	// default:
-	// throw new IllegalStateException("Conversion to data rep not implemented for data rep" + dataRepresentation);
-	// }
-	// }
-	//
-	// public double getRawForTransfomed(String dataTransformation, double raw)
-	// {
-	// getRawForNormalized(dataTransfomation, normalized)
-	//
-	// }
-
-	/**
-	 * Converts the specified value into raw using the current external data representation.
-	 *
-	 * @param dNumber
-	 *            Value in the current external data representation.
-	 * @return Raw value converted from the specified value.
-	 */
-	// private double getRawFromExternalDataRep(double dNumber) {
-	// switch (dataTransformation) {
-	// case NONE:
-	// return dNumber;
-	// case LOG2:
-	// return Math.pow(2, dNumber);
-	// case LOG10:
-	// return Math.pow(10, dNumber);
-	// default:
-	// throw new IllegalStateException("Conversion to raw not implemented for data rep" + dataTransformation);
-	// }
-	// }
-
 	private void calculateGlobalExtrema() {
 		double temp = 1.0;
 
@@ -341,16 +261,53 @@ public class NumericalTable extends Table {
 	 */
 	@Override
 	protected void normalize() {
+		FloatStatistics tempStats = new FloatStatistics();
+		FloatStatistics tempPreStats = new FloatStatistics();
+		// if(defaultDataTransformation.equals(Transformation.ZSCORE_ROWS))
+		if (true) {
+			for (int rowCount = 0; rowCount < getNrRows(); rowCount++) {
+				FloatStatistics stats = new FloatStatistics();
+				for (AColumn<?, ?> column : columns) {
+					NumericalColumn<?, ?> nColumn = (NumericalColumn<?, ?>) column;
+					stats.add((Float) nColumn.getRaw(rowCount));
+					tempPreStats.add((Float) nColumn.getRaw(rowCount));
+				}
+			}
+			// System.out.println(stats.toString());
+			for (int rowCount = 0; rowCount < getNrRows(); rowCount++) {
+
+				FloatStatistics stats = new FloatStatistics();
+				for (AColumn<?, ?> column : columns) {
+					NumericalColumn<?, ?> nColumn = (NumericalColumn<?, ?>) column;
+					stats.add((Float) nColumn.getRaw(rowCount));
+				}
+				for (AColumn<?, ?> column : columns) {
+					NumericalColumn<?, Float> nColumn = (NumericalColumn<?, Float>) column;
+					float rawValue = ((nColumn.getRaw(rowCount)) - stats.getMean()) / stats.getSd();
+					if (rawValue > tempPreStats.getMean() + 3 * tempPreStats.getSd()) {
+						rawValue = tempPreStats.getMean() + 3 * tempPreStats.getSd();
+					} else if (rawValue < tempPreStats.getMean() - 3 * tempPreStats.getSd()) {
+						rawValue = tempPreStats.getMean() - 3 * tempPreStats.getSd();
+					}
+					nColumn.setRaw(rowCount, rawValue);
+					tempStats.add(((nColumn.getRaw(rowCount)) - stats.getMean()) / stats.getSd());
+				}
+
+			}
+			System.out.println("pre: " + tempPreStats.toString());
+			System.out.println("post: " + tempStats.toString());
+		}
+
+		// FIXME - this is crazy to do
+		// log2();
+		// log10();
 
 		for (AColumn<?, ?> column : columns) {
-			if (column instanceof NumericalColumn) {
-				NumericalColumn<?, ?> nColumn = (NumericalColumn<?, ?>) column;
-				nColumn.setExternalMin(getMin());
-				nColumn.setExternalMax(getMax());
-				nColumn.normalize();
+			NumericalColumn<?, ?> nColumn = (NumericalColumn<?, ?>) column;
+			nColumn.setExternalMin(getMin());
+			nColumn.setExternalMax(getMax());
+			nColumn.normalize();
 
-			} else
-				throw new IllegalStateException("Non numerical dimension in numerical table: " + column);
 		}
 	}
 

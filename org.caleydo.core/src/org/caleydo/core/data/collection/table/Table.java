@@ -23,6 +23,7 @@ import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.event.data.DataDomainUpdateEvent;
+import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.NumericalProperties;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
@@ -68,7 +69,7 @@ public class Table {
 	}
 
 	/** The data domain holding this table */
-	private ATableBasedDataDomain dataDomain;
+	private final ATableBasedDataDomain dataDomain;
 
 	/** The color-mapper for this table */
 	private ColorMapper colorMapper;
@@ -77,7 +78,7 @@ public class Table {
 	 * The transformation delivered when calling the {@link #getNormalizedValue(Integer, Integer)} method without and
 	 * explicit transformation
 	 */
-	private String defaultDataTransformation = Table.Transformation.NONE;
+	protected String defaultDataTransformation = Table.Transformation.NONE;
 
 	/** The columns of the table hashed by their column ID */
 	protected List<AColumn<?, ?>> columns;
@@ -115,8 +116,7 @@ public class Table {
 	 */
 	protected boolean isColumnDimension = false;
 
-	/** The number of records in the table */
-	protected int depth = 0;
+	protected final DataSetDescription dataSetDescription;
 
 	/**
 	 * Constructor for the table. Creates and initializes members and registers the set whit the set manager. Also
@@ -124,7 +124,8 @@ public class Table {
 	 */
 	public Table(ATableBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
-		isColumnDimension = !dataDomain.getDataSetDescription().isTransposeMatrix();
+		this.dataSetDescription = dataDomain.getDataSetDescription();
+		isColumnDimension = !dataSetDescription.isTransposeMatrix();
 		columns = new ArrayList<>();
 		hashRecordPerspectives = new HashMap<String, Perspective>(6);
 		hashDimensionPerspectives = new HashMap<String, Perspective>(3);
@@ -527,7 +528,7 @@ public class Table {
 		else if (this instanceof CategoricalTable)
 			message = "Categorical ";
 
-		return message + "table for " + dataDomain.getDataSetDescription().getDataSetName() + "(" + size() + ","
+		return message + "table for " + dataSetDescription.getDataSetName() + "(" + size() + ","
 				+ depth() + ")";
 	}
 
@@ -594,15 +595,15 @@ public class Table {
 		List<Integer> sampleIDs;
 		Integer nrRecordsInSample = null;
 		if (isColumnDimension) {
-			if (dataDomain.getDataSetDescription().getDataProcessingDescription() != null) {
-				nrRecordsInSample = dataDomain.getDataSetDescription().getDataProcessingDescription()
+			if (dataSetDescription.getDataProcessingDescription() != null) {
+				nrRecordsInSample = dataSetDescription.getDataProcessingDescription()
 						.getNrRowsInSample();
 			}
 			recordIDs = getRowIDList();
 			sampleIDs = getColumnIDList();
 		} else {
-			if (dataDomain.getDataSetDescription().getDataProcessingDescription() != null) {
-				nrRecordsInSample = dataDomain.getDataSetDescription().getDataProcessingDescription()
+			if (dataSetDescription.getDataProcessingDescription() != null) {
+				nrRecordsInSample = dataSetDescription.getDataProcessingDescription()
 						.getNrColumnsInSample();
 			}
 			recordIDs = getColumnIDList();
@@ -682,15 +683,15 @@ public class Table {
 		List<Integer> recordIDs;
 		Integer nrDimensionsInSample = null;
 		if (isColumnDimension) {
-			if (dataDomain.getDataSetDescription().getDataProcessingDescription() != null) {
-				nrDimensionsInSample = dataDomain.getDataSetDescription().getDataProcessingDescription()
+			if (dataSetDescription.getDataProcessingDescription() != null) {
+				nrDimensionsInSample = dataSetDescription.getDataProcessingDescription()
 						.getNrColumnsInSample();
 			}
 			dimensionIDs = getColumnIDList();
 			recordIDs = getRowIDList();
 		} else {
-			if (dataDomain.getDataSetDescription().getDataProcessingDescription() != null) {
-				nrDimensionsInSample = dataDomain.getDataSetDescription().getDataProcessingDescription()
+			if (dataSetDescription.getDataProcessingDescription() != null) {
+				nrDimensionsInSample = dataSetDescription.getDataProcessingDescription()
 						.getNrRowsInSample();
 			}
 			dimensionIDs = getRowIDList();
@@ -749,12 +750,12 @@ public class Table {
 	}
 
 	/** Get the number of columns in the table */
-	private int getNrColumns() {
+	protected int getNrColumns() {
 		return columns.size();
 	}
 
 	/** Get the number of rows in the table */
-	private int getNrRows() {
+	protected int getNrRows() {
 		return columns.iterator().next().size();
 	}
 }

@@ -192,4 +192,10 @@ public class FloatContainer implements INumericalContainer<Float> {
 	public boolean isUnknown(Float value) {
 		return value == null || value.isNaN();
 	}
+
+	@Override
+	public void set(int index, Float value) {
+		container[index] = value;
+
+	}
 }
