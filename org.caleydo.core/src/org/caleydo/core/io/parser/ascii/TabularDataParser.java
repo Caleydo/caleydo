@@ -255,8 +255,8 @@ public class TabularDataParser extends ATextParser {
 		List<ColumnDescription> parsingPattern = dataSetDescription.getOrCreateParsingPattern();
 
 		int lineCounter = 0;
-		String numberParsingErrorMessage = "Could not parse a number in file " + dataSetDescription.getDataSetName()
-				+ " at path " + filePath + "\n at the following locations: \n";
+		StringBuffer numberParsingErrorMessage = new StringBuffer( "Could not parse a number in file " + dataSetDescription.getDataSetName()
+				+ " at path " + filePath + "\n at the following locations: \n" );
 		boolean parsingErrorOccured = false;
 
 		// ------------- ID parsing stuff ------------------------------
@@ -314,9 +314,9 @@ public class TabularDataParser extends ATextParser {
 							targetColumn.add(floatValue);
 						} catch (NumberFormatException nfe) {
 							parsingErrorOccured = true;
-							numberParsingErrorMessage += "column " + (columnDescription.getColumn()) + ", line "
+							numberParsingErrorMessage.append( "column " + (columnDescription.getColumn()) + ", line "
 									+ (lineCounter + dataSetDescription.getNumberOfHeaderLines())
-									+ ". Cell content was: " + cellContent + "\n";
+									+ ". Cell content was: " + cellContent + "\n" );
 							targetColumn.addUnknown();
 						}
 
@@ -331,9 +331,9 @@ public class TabularDataParser extends ATextParser {
 
 						} catch (NumberFormatException nfe) {
 							parsingErrorOccured = true;
-							numberParsingErrorMessage += "column " + (columnDescription.getColumn()) + ", line "
+							numberParsingErrorMessage.append( "column " + (columnDescription.getColumn()) + ", line "
 									+ (lineCounter + dataSetDescription.getNumberOfHeaderLines())
-									+ ". Cell content was: " + cellContent + "\n";
+									+ ". Cell content was: " + cellContent + "\n" );
 							targetIntColumn.addUnknown();
 						}
 
@@ -368,7 +368,7 @@ public class TabularDataParser extends ATextParser {
 		}
 
 		if (parsingErrorOccured) {
-			Logger.log(new Status(IStatus.ERROR, this.toString(), numberParsingErrorMessage));
+			Logger.log(new Status(IStatus.ERROR, this.toString(), numberParsingErrorMessage.toString()));
 		}
 		monitor.done();
 	}
