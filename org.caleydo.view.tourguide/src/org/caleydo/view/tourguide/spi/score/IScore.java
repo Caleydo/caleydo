@@ -10,7 +10,7 @@ import org.caleydo.core.util.base.ILabeled;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.spi.algorithm.IComputeElement;
-import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
+import org.caleydo.vis.lineup.model.mapping.PiecewiseMapping;
 
 /**
  * basic abstraction of a score

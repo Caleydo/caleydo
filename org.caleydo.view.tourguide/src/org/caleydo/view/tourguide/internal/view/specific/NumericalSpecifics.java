@@ -17,8 +17,8 @@ import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.internal.model.ADataDomainQuery;
 import org.caleydo.view.tourguide.internal.model.InhomogenousDataDomainQuery;
 import org.caleydo.view.tourguide.internal.view.col.DataDomainRankColumnModel;
-import org.caleydo.vis.rank.model.RankTableModel;
-import org.caleydo.vis.rank.model.StringRankColumnModel;
+import org.caleydo.vis.lineup.model.RankTableModel;
+import org.caleydo.vis.lineup.model.StringRankColumnModel;
 
 /**
  * @author Samuel Gratzl

@@ -42,19 +42,19 @@ import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.entourage.EEmbeddingID;
 import org.caleydo.view.entourage.GLEntourage;
 import org.caleydo.view.entourage.GLWindow;
-import org.caleydo.vis.rank.config.IRankTableUIConfig;
-import org.caleydo.vis.rank.config.RankTableConfigBase;
-import org.caleydo.vis.rank.config.RankTableUIConfigBase;
-import org.caleydo.vis.rank.data.FloatInferrers;
-import org.caleydo.vis.rank.layout.RowHeightLayouts;
-import org.caleydo.vis.rank.model.ARankColumnModel;
-import org.caleydo.vis.rank.model.FloatRankColumnModel;
-import org.caleydo.vis.rank.model.IRow;
-import org.caleydo.vis.rank.model.RankTableModel;
-import org.caleydo.vis.rank.model.StringRankColumnModel;
-import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
-import org.caleydo.vis.rank.ui.RenderStyle;
-import org.caleydo.vis.rank.ui.TableUI;
+import org.caleydo.vis.lineup.config.IRankTableUIConfig;
+import org.caleydo.vis.lineup.config.RankTableConfigBase;
+import org.caleydo.vis.lineup.config.RankTableUIConfigBase;
+import org.caleydo.vis.lineup.data.FloatInferrers;
+import org.caleydo.vis.lineup.layout.RowHeightLayouts;
+import org.caleydo.vis.lineup.model.ARankColumnModel;
+import org.caleydo.vis.lineup.model.FloatRankColumnModel;
+import org.caleydo.vis.lineup.model.IRow;
+import org.caleydo.vis.lineup.model.RankTableModel;
+import org.caleydo.vis.lineup.model.StringRankColumnModel;
+import org.caleydo.vis.lineup.model.mapping.PiecewiseMapping;
+import org.caleydo.vis.lineup.ui.RenderStyle;
+import org.caleydo.vis.lineup.ui.TableUI;
 
 /**
  * @author Samuel Gratzl

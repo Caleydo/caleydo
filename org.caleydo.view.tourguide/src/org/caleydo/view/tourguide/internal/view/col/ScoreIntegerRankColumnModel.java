@@ -18,9 +18,9 @@ import org.caleydo.view.tourguide.internal.model.MaxGroupCombiner;
 import org.caleydo.view.tourguide.spi.score.IGroupScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
 import org.caleydo.view.tourguide.spi.score.IStratificationScore;
-import org.caleydo.vis.rank.model.IRow;
-import org.caleydo.vis.rank.model.IntegerRankColumnModel;
-import org.caleydo.vis.rank.model.mixin.IMappedColumnMixin;
+import org.caleydo.vis.lineup.model.IRow;
+import org.caleydo.vis.lineup.model.IntegerRankColumnModel;
+import org.caleydo.vis.lineup.model.mixin.IMappedColumnMixin;
 
 /**
  * @author Samuel Gratzl

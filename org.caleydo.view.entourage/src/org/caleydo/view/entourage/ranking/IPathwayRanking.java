@@ -19,8 +19,8 @@
  *******************************************************************************/
 package org.caleydo.view.entourage.ranking;
 
-import org.caleydo.vis.rank.data.IFloatFunction;
-import org.caleydo.vis.rank.model.IRow;
+import org.caleydo.vis.lineup.data.IFloatFunction;
+import org.caleydo.vis.lineup.model.IRow;
 
 /**
  * Defines a ranking of pathways.

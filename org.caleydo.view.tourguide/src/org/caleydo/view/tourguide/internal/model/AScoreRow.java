@@ -22,8 +22,8 @@ import org.caleydo.view.tourguide.spi.algorithm.IComputeElement;
 import org.caleydo.view.tourguide.spi.score.IGroupScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
 import org.caleydo.view.tourguide.spi.score.IStratificationScore;
-import org.caleydo.vis.rank.model.ARow;
-import org.caleydo.vis.rank.model.IRow;
+import org.caleydo.vis.lineup.model.ARow;
+import org.caleydo.vis.lineup.model.IRow;
 
 import com.google.common.base.Function;
 

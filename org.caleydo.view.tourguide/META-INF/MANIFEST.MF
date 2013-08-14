@@ -7,7 +7,7 @@ Require-Bundle: org.caleydo.core;bundle-version="3.0.2.qualifier",
  org.caleydo.view.stratomex;bundle-version="3.0.2.qualifier",
  org.caleydo.datadomain.pathway;bundle-version="3.0.2.qualifier",
  org.apache.commons.math;bundle-version="2.1.0",
- org.caleydo.vis.rank;bundle-version="3.0.2.qualifier",
+ org.caleydo.vis.lineup;bundle-version="3.0.2.qualifier",
  org.eclipse.e4.ui.model.workbench;bundle-version="1.0.0",
  org.eclipse.e4.ui.workbench;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7

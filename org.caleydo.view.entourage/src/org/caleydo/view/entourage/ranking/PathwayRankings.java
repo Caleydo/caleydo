@@ -21,9 +21,9 @@ package org.caleydo.view.entourage.ranking;
 
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
-import org.caleydo.vis.rank.data.AFloatFunction;
-import org.caleydo.vis.rank.data.IFloatFunction;
-import org.caleydo.vis.rank.model.IRow;
+import org.caleydo.vis.lineup.data.AFloatFunction;
+import org.caleydo.vis.lineup.data.IFloatFunction;
+import org.caleydo.vis.lineup.model.IRow;
 
 /**
  * Common selectors.

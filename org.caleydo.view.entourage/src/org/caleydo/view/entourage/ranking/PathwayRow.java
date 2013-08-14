@@ -20,7 +20,7 @@
 package org.caleydo.view.entourage.ranking;
 
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
-import org.caleydo.vis.rank.model.ARow;
+import org.caleydo.vis.lineup.model.ARow;
 
 /**
  * @author Samuel Gratzl

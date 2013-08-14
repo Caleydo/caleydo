@@ -13,7 +13,7 @@ import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.view.tourguide.spi.score.IScore;
-import org.caleydo.vis.rank.model.IRow;
+import org.caleydo.vis.lineup.model.IRow;
 
 /**
  * @author Samuel Gratzl

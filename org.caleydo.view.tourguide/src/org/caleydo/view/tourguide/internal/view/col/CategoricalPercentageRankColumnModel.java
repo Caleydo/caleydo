@@ -11,12 +11,12 @@ import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.view.tourguide.internal.model.CategoricalPerspectiveRow;
-import org.caleydo.vis.rank.data.AFloatFunction;
-import org.caleydo.vis.rank.data.FloatInferrers;
-import org.caleydo.vis.rank.data.IFloatFunction;
-import org.caleydo.vis.rank.model.FloatRankColumnModel;
-import org.caleydo.vis.rank.model.IRow;
-import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
+import org.caleydo.vis.lineup.data.AFloatFunction;
+import org.caleydo.vis.lineup.data.FloatInferrers;
+import org.caleydo.vis.lineup.data.IFloatFunction;
+import org.caleydo.vis.lineup.model.FloatRankColumnModel;
+import org.caleydo.vis.lineup.model.IRow;
+import org.caleydo.vis.lineup.model.mapping.PiecewiseMapping;
 
 /**
  * @author Samuel Gratzl

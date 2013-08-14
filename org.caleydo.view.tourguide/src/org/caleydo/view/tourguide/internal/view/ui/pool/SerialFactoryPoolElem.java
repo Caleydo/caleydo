@@ -6,12 +6,11 @@
 package org.caleydo.view.tourguide.internal.view.ui.pool;
 
 import org.caleydo.core.util.color.Color;
-
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.tourguide.internal.TourGuideRenderStyle;
-import org.caleydo.vis.rank.model.RankTableModel;
-import org.caleydo.vis.rank.model.StackedRankColumnModel;
+import org.caleydo.vis.lineup.model.RankTableModel;
+import org.caleydo.vis.lineup.model.StackedRankColumnModel;
 
 /**
  * @author Samuel Gratzl

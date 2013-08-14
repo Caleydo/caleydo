@@ -6,6 +6,7 @@
 package org.caleydo.view.tourguide.api.score;
 
 import org.caleydo.core.util.color.Color;
+
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -13,7 +14,7 @@ import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.base.DefaultLabelProvider;
 import org.caleydo.view.tourguide.spi.algorithm.IComputeElement;
 import org.caleydo.view.tourguide.spi.score.IScore;
-import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
+import org.caleydo.vis.lineup.model.mapping.PiecewiseMapping;
 
 /**
  * @author Samuel Gratzl

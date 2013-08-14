@@ -14,9 +14,9 @@ import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.view.tourguide.internal.model.AScoreRow;
 import org.caleydo.view.tourguide.internal.model.GroupInfo;
-import org.caleydo.vis.rank.model.ARankColumnModel;
-import org.caleydo.vis.rank.model.IRow;
-import org.caleydo.vis.rank.ui.detail.ValueElement;
+import org.caleydo.vis.lineup.model.ARankColumnModel;
+import org.caleydo.vis.lineup.model.IRow;
+import org.caleydo.vis.lineup.ui.detail.ValueElement;
 
 /**
  * a column showing the group distributions

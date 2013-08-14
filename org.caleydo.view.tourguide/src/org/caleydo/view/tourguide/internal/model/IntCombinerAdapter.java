@@ -5,7 +5,7 @@
  ******************************************************************************/
 package org.caleydo.view.tourguide.internal.model;
 
-import org.caleydo.vis.rank.model.IRow;
+import org.caleydo.vis.lineup.model.IRow;
 
 import com.google.common.base.Function;
 

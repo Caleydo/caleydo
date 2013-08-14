@@ -6,7 +6,7 @@
 package org.caleydo.view.tourguide.api.score;
 
 import org.caleydo.core.util.base.ILabeled;
-import org.caleydo.vis.rank.model.mapping.JavaScriptFunctions;
+import org.caleydo.vis.lineup.model.mapping.JavaScriptFunctions;
 
 import com.google.common.base.Function;
 

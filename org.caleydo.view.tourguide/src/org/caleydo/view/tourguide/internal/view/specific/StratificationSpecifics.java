@@ -25,10 +25,10 @@ import org.caleydo.view.tourguide.internal.model.StratificationDataDomainQuery;
 import org.caleydo.view.tourguide.internal.view.col.DataDomainRankColumnModel;
 import org.caleydo.view.tourguide.internal.view.col.GroupDistributionRankColumnModel;
 import org.caleydo.view.tourguide.internal.view.col.SizeRankColumnModel;
-import org.caleydo.vis.rank.model.GroupRankColumnModel;
-import org.caleydo.vis.rank.model.IRow;
-import org.caleydo.vis.rank.model.RankTableModel;
-import org.caleydo.vis.rank.model.StringRankColumnModel;
+import org.caleydo.vis.lineup.model.GroupRankColumnModel;
+import org.caleydo.vis.lineup.model.IRow;
+import org.caleydo.vis.lineup.model.RankTableModel;
+import org.caleydo.vis.lineup.model.StringRankColumnModel;
 
 import com.google.common.base.Function;
 
