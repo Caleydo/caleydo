@@ -8,16 +8,9 @@ package org.caleydo.core.view.opengl.layout2;
 import gleem.linalg.Vec2f;
 
 import java.awt.Dimension;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.Arrays;
 
 import javax.media.opengl.FPSCounter;
 import javax.media.opengl.GL;
@@ -41,6 +34,7 @@ import org.caleydo.core.view.opengl.canvas.MyAnimator;
 import org.caleydo.core.view.opengl.canvas.internal.IGLCanvasFactory;
 import org.caleydo.core.view.opengl.canvas.internal.swt.SWTGLCanvasFactory;
 import org.caleydo.core.view.opengl.layout2.internal.SWTLayer;
+import org.caleydo.core.view.opengl.layout2.internal.SandBoxLibraryLoader;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
@@ -60,8 +54,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
-
-import com.google.common.io.ByteStreams;
 
 /**
  * acts as a sandbox for elements, just use {@link GLSandBox#main(String[], GLElement)} and provide a element, and run the
@@ -378,6 +370,8 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 		new SandBoxLauncher(args, toRun.getCanonicalName(), toRunArgs).run();
 	}
 
+
+
 	private static class SandBoxLauncher implements Runnable{
 		private final String[] args;
 		private final ClassLoader wrapper;
@@ -397,42 +391,10 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 			this.toRunArgs = toRunArgs;
 		}
 
-		/**
-		 *
-		 */
-		private void extractJOGLLibraries() {
-			final File dir = new File(".");
-			ClassLoader classLoader = SandBoxLauncher.class.getClassLoader();
-			for(String lib : Arrays.asList("gluegen-rt","jogl_desktop","jogl_mobile","nativewindow_awt","nativewindow_win32","newt") ) {
-				String nativeLib = System.mapLibraryName(lib);
-				File file = new File(dir,nativeLib);
-				try (InputStream in = classLoader.getResourceAsStream(nativeLib);
-						OutputStream to = new BufferedOutputStream(new FileOutputStream(file))) {
-					ByteStreams.copy(in, to);
-				} catch (IOException e) {
-					System.err.println("can't extract: " + nativeLib);
-					e.printStackTrace();
-				}
-				file.deleteOnExit();
-			}
-		}
-
-		private void deleteJOGLLibraries() {
-			final File dir = new File(".");
-			ClassLoader classLoader = SandBoxLauncher.class.getClassLoader();
-			for (String lib : Arrays.asList("gluegen-rt", "jogl_desktop", "jogl_mobile", "nativewindow_awt",
-					"nativewindow_win32", "newt")) {
-				String nativeLib = System.mapLibraryName(lib);
-				File file = new File(dir, nativeLib);
-				if (!file.delete()) {
-					System.err.println();
-				}
-			}
-		}
-
 		@Override
 		public void run() {
-			extractJOGLLibraries();
+			// use my class for library loading
+			System.setProperty("jnlp.launcher.class", SandBoxLibraryLoader.class.getCanonicalName());
 			try {
 				Display display = new Display();
 				final Shell splash = createSplash(display);
