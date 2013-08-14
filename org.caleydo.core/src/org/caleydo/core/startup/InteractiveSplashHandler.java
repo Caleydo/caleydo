@@ -41,7 +41,7 @@ public class InteractiveSplashHandler extends BasicSplashHandler {
 
 
 		idLabel.setForeground(getForeground());
-		idLabel.setBounds(new Rectangle(20, 180, 120, 18));
+		idLabel.setBounds(new Rectangle(20, 180, 200, 18));
 		idLabel.setText("Version " + GeneralManager.VERSION);
 
 
