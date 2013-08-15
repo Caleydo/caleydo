@@ -71,6 +71,7 @@ public class Settings {
 
 	@Argument(required = true, usage = "the dates on the analysis runs as argument list separated by spaces")
 	private List<String> analysisRuns = null;
+
 	@Option(name = "-d", required = false, usage = "the dates of the data runs to use default the same as the analysis runs")
 	private List<String> dataRuns = null;
 
@@ -87,6 +88,9 @@ public class Settings {
 
 	@Option(name = "-b", aliases = { "--batch" }, usage = "batch size of parallel top tasks default \"4\"")
 	private int batchSize = 4;
+
+	@Option(name = "-cg", required = false, aliases = { "--cluster" }, usage = "cluster genes with options {affinity (default)|none|kmeans} default \"affinity\"")
+	private String cluster = "affinity";
 
 	// create path of archive search directory
 	// 0 .. analysisRun
@@ -116,8 +120,6 @@ public class Settings {
 
 	private Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().setDateFormat("yyyy_MM_dd")
 			.create();
-
-
 
 
 	public boolean validate() {
@@ -261,6 +263,13 @@ public class Settings {
 
 	public int getBatchSize() {
 		return batchSize;
+	}
+
+	/**
+	 * @return the cluster, see {@link #cluster}
+	 */
+	public String getCluster() {
+		return cluster;
 	}
 
 	public URL getDataURL(Date run, TumorType tumor, String tumorSample, String pipelineName, int level)

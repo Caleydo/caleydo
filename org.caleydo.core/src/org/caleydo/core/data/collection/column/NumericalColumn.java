@@ -106,7 +106,7 @@ public class NumericalColumn<RawContainerType extends INumericalContainer<DataTy
 	 * EDataRepresentation.LOG10. Call normalize after this operation if you want to display the result Normalize then
 	 * uses the log data instead of the raw data
 	 */
-	private void log10() {
+	public void log10() {
 		FloatContainer logContainer = rawContainer.log(10);
 		dataRepToContainerMap.put(NumericalTable.Transformation.LOG10,
 				logContainer.normalizeWithAtrificalExtrema(MathHelper.log(getMin(), 10), MathHelper.log(getMax(), 10)));
@@ -117,7 +117,7 @@ public class NumericalColumn<RawContainerType extends INumericalContainer<DataTy
 	 * EDataRepresentation.LOG10. Call normalize after this operation if you want to display the result Normalize then
 	 * uses the log data instead of the raw data
 	 */
-	private void log2() {
+	public void log2() {
 		FloatContainer logContainer = rawContainer.log(2);
 		dataRepToContainerMap.put(NumericalTable.Transformation.LOG2,
 				logContainer.normalizeWithAtrificalExtrema(MathHelper.log(getMin(), 2), MathHelper.log(getMax(), 2)));

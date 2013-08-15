@@ -29,8 +29,6 @@ public class NumericalTable extends Table {
 	public class Transformation extends Table.Transformation {
 		public static final String LOG2 = "Log2";
 		public static final String LOG10 = "Log10";
-		public static final String ZSCORE_ROWS = "ZSCORE_ROWS";
-		public static final String ZSCORE_COLUMNS = "ZSCORE_COLUMNS";
 	}
 
 	private boolean artificialMin = false;
@@ -43,6 +41,8 @@ public class NumericalTable extends Table {
 	private Double dataCenter = null;
 
 	private final NumericalProperties numericalProperties;
+
+	private FloatStatistics datasetStatistics;
 
 	/**
 	 * @param dataDomain
@@ -261,52 +261,76 @@ public class NumericalTable extends Table {
 	 */
 	@Override
 	protected void normalize() {
-		FloatStatistics tempStats = new FloatStatistics();
-		FloatStatistics tempPreStats = new FloatStatistics();
-		// if(defaultDataTransformation.equals(Transformation.ZSCORE_ROWS))
-		if (true) {
+		FloatStatistics postStats = new FloatStatistics();
+		datasetStatistics = new FloatStatistics();
+		for (AColumn<?, ?> column : columns) {
+			NumericalColumn<?, ?> nColumn = (NumericalColumn<?, ?>) column;
 			for (int rowCount = 0; rowCount < getNrRows(); rowCount++) {
-				FloatStatistics stats = new FloatStatistics();
-				for (AColumn<?, ?> column : columns) {
-					NumericalColumn<?, ?> nColumn = (NumericalColumn<?, ?>) column;
-					stats.add((Float) nColumn.getRaw(rowCount));
-					tempPreStats.add((Float) nColumn.getRaw(rowCount));
-				}
+				datasetStatistics.add((Float) nColumn.getRaw(rowCount));
 			}
-			// System.out.println(stats.toString());
-			for (int rowCount = 0; rowCount < getNrRows(); rowCount++) {
-
-				FloatStatistics stats = new FloatStatistics();
-				for (AColumn<?, ?> column : columns) {
-					NumericalColumn<?, ?> nColumn = (NumericalColumn<?, ?>) column;
-					stats.add((Float) nColumn.getRaw(rowCount));
-				}
-				for (AColumn<?, ?> column : columns) {
-					NumericalColumn<?, Float> nColumn = (NumericalColumn<?, Float>) column;
-					float rawValue = ((nColumn.getRaw(rowCount)) - stats.getMean()) / stats.getSd();
-					if (rawValue > tempPreStats.getMean() + 3 * tempPreStats.getSd()) {
-						rawValue = tempPreStats.getMean() + 3 * tempPreStats.getSd();
-					} else if (rawValue < tempPreStats.getMean() - 3 * tempPreStats.getSd()) {
-						rawValue = tempPreStats.getMean() - 3 * tempPreStats.getSd();
-					}
-					nColumn.setRaw(rowCount, rawValue);
-					tempStats.add(((nColumn.getRaw(rowCount)) - stats.getMean()) / stats.getSd());
-				}
-
-			}
-			System.out.println("pre: " + tempPreStats.toString());
-			System.out.println("post: " + tempStats.toString());
 		}
 
-		// FIXME - this is crazy to do
-		// log2();
-		// log10();
+		if (numericalProperties.getzScoreNormalization() != null
+				&& numericalProperties.getzScoreNormalization().equals(NumericalProperties.ZSCORE_ROWS)) {
+			for (int rowCount = 0; rowCount < getNrRows(); rowCount++) {
+
+				FloatStatistics stats = new FloatStatistics();
+				for (AColumn<?, ?> column : columns) {
+					NumericalColumn<?, ?> nColumn = (NumericalColumn<?, ?>) column;
+					stats.add((Float) nColumn.getRaw(rowCount));
+				}
+				for (AColumn<?, ?> column : columns) {
+					@SuppressWarnings("unchecked")
+					NumericalColumn<?, Float> nColumn = (NumericalColumn<?, Float>) column;
+					float zScore = ((nColumn.getRaw(rowCount)) - stats.getMean()) / stats.getSd();
+
+					nColumn.setRaw(rowCount, zScore);
+					postStats.add(zScore);
+				}
+			}
+			datasetStatistics = postStats;
+		}
+
+		if (numericalProperties.getzScoreNormalization() != null
+				&& numericalProperties.getzScoreNormalization().equals(NumericalProperties.ZSCORE_COLUMNS)) {
+			for (AColumn<?, ?> column : columns) {
+				@SuppressWarnings("unchecked")
+				NumericalColumn<?, Float> nColumn = (NumericalColumn<?, Float>) column;
+				FloatStatistics stats = new FloatStatistics();
+
+				for (int rowCount = 0; rowCount < getNrRows(); rowCount++) {
+					stats.add(nColumn.getRaw(rowCount));
+				}
+				for (int rowCount = 0; rowCount < getNrRows(); rowCount++) {
+					float zScore = ((nColumn.getRaw(rowCount)) - stats.getMean()) / stats.getSd();
+					nColumn.setRaw(rowCount, zScore);
+					postStats.add(zScore);
+				}
+			}
+			datasetStatistics = postStats;
+		}
+
+		// TODO check for parameter to clip at std dev
+		if (numericalProperties.getClipToStdDevFactor() != null) {
+			float nrDevs = numericalProperties.getClipToStdDevFactor();
+			setMax(datasetStatistics.getMean() + nrDevs * datasetStatistics.getSd());
+			setMin(datasetStatistics.getMean() - nrDevs * datasetStatistics.getSd());
+			if (dataCenter == null) {
+				// in case we have data with both, positive and negative values
+				// we assume it to be centered.
+				if (min < 0 && max > 0)
+					dataCenter = 0d;
+			}
+		}
 
 		for (AColumn<?, ?> column : columns) {
 			NumericalColumn<?, ?> nColumn = (NumericalColumn<?, ?>) column;
 			nColumn.setExternalMin(getMin());
 			nColumn.setExternalMax(getMax());
 			nColumn.normalize();
+			// FIXME - need to rethink this
+			nColumn.log2();
+			nColumn.log10();
 
 		}
 	}
