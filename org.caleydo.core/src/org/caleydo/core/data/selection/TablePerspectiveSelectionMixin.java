@@ -13,8 +13,6 @@ import org.caleydo.core.event.EventListenerManager.DeepScan;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.data.SelectionUpdateEvent;
 
-import com.google.common.base.Preconditions;
-
 /**
  * a mixin container class for handling table perspective their updates and their selection in a single class
  *
@@ -25,14 +23,22 @@ import com.google.common.base.Preconditions;
  *
  */
 public final class TablePerspectiveSelectionMixin extends MultiSelectionManagerMixin {
-	private final TablePerspective tablePerspective;
+	private TablePerspective tablePerspective = null;
 
 	public TablePerspectiveSelectionMixin(TablePerspective tablePerspective, ITablePerspectiveMixinCallback callback) {
 		super(callback);
-		Preconditions.checkNotNull(tablePerspective, "have a valid tablePerspective");
+		setTablePerspective(tablePerspective);
+	}
+
+	public void setTablePerspective(TablePerspective tablePerspective) {
+		if (this.tablePerspective != null) {
+			this.clear();
+		}
 		this.tablePerspective = tablePerspective;
-		this.add(tablePerspective.getDataDomain().cloneRecordSelectionManager());
-		this.add(tablePerspective.getDataDomain().cloneDimensionSelectionManager());
+		if (tablePerspective != null) {
+			this.add(tablePerspective.getDataDomain().cloneRecordSelectionManager());
+			this.add(tablePerspective.getDataDomain().cloneDimensionSelectionManager());
+		}
 	}
 
 	/**
@@ -57,14 +63,14 @@ public final class TablePerspectiveSelectionMixin extends MultiSelectionManagerM
 	 * @return the recordSelectionManager, see {@link #recordSelectionManager}
 	 */
 	public SelectionManager getRecordSelectionManager() {
-		return get(0);
+		return tablePerspective != null ? get(0) : null;
 	}
 
 	/**
 	 * @return the dimensionSelectionManager, see {@link #dimensionSelectionManager}
 	 */
 	public SelectionManager getDimensionSelectionManager() {
-		return get(1);
+		return tablePerspective != null ? get(1) : null;
 	}
 
 	@Override
@@ -76,14 +82,14 @@ public final class TablePerspectiveSelectionMixin extends MultiSelectionManagerM
 
 	@ListenTo
 	private void onRecordVAUpdate(RecordVAUpdateEvent event) {
-		if (tablePerspective.hasRecordPerspective(event.getPerspectiveID())) {
+		if (tablePerspective != null && tablePerspective.hasRecordPerspective(event.getPerspectiveID())) {
 			((ITablePerspectiveMixinCallback) callback).onVAUpdate(tablePerspective);
 		}
 	}
 
 	@ListenTo
 	private void onDimensionVAUpdate(DimensionVAUpdateEvent event) {
-		if (tablePerspective.hasDimensionPerspective(event.getPerspectiveID())) {
+		if (tablePerspective != null && tablePerspective.hasDimensionPerspective(event.getPerspectiveID())) {
 			((ITablePerspectiveMixinCallback) callback).onVAUpdate(tablePerspective);
 		}
 	}

@@ -32,30 +32,22 @@ import com.jogamp.opengl.util.texture.TextureIO;
 /**
  * helper class for generating a texture heat map
  *
-<<<<<<< HEAD
-=======
- * TODO support tiling in X and Y direction
->>>>>>> refs/heads/entourage
- *
  * @author Samuel Gratzl
  *
  */
 public class HeatMapTextureRenderer {
 	private final static int MAX_SAMPLES_PER_TEXTURE = 2048;
 
-	private Dimension dimension = null;
-
-	private List<Tile> tiles = new ArrayList<>();
-
-	private final TablePerspective tablePerspective;
 	private final IBlockColorer blockColorer;
+
+	private Dimension dimension = null;
+	private final List<Tile> tiles = new ArrayList<>();
 
 	/**
 	 * @param tablePerspective
 	 * @param blockColorer
 	 */
-	public HeatMapTextureRenderer(TablePerspective tablePerspective, IBlockColorer blockColorer) {
-		this.tablePerspective = tablePerspective;
+	public HeatMapTextureRenderer(IBlockColorer blockColorer) {
 		this.blockColorer = blockColorer;
 	}
 
@@ -71,7 +63,7 @@ public class HeatMapTextureRenderer {
 	/**
 	 * @param context
 	 */
-	public void create(IGLElementContext context) {
+	public void create(IGLElementContext context, TablePerspective tablePerspective) {
 		final GL gl = GLContext.getCurrentGL();
 
 		final int numberOfRecords = tablePerspective.getRecordPerspective().getVirtualArray().size();
@@ -99,7 +91,7 @@ public class HeatMapTextureRenderer {
 			//single tile
 			FloatBuffer buffer = FloatBuffer.allocate(numberOfDimensions * numberOfRecords * 4); //w*h*rgba
 			Rectangle tile = new Rectangle(0,0,numberOfDimensions,numberOfRecords);
-			tiles.add(createTile(buffer, tile, gl, pool));
+			tiles.add(createTile(buffer, tile, gl, pool, tablePerspective));
 		} else if (needXTiling && !needYTiling){
 			//tile in x direction only
 			FloatBuffer buffer = FloatBuffer.allocate(maxSize * numberOfRecords * 4); //w*h*rgba
@@ -107,12 +99,12 @@ public class HeatMapTextureRenderer {
 			int lastTile = numberOfDimensions - maxSize;
 			for (int i = 0; i < lastTile; i += maxSize) {
 				Rectangle tile = new Rectangle(i,0,maxSize,numberOfRecords);
-				tiles.add(createTile(buffer, tile, gl, pool));
+				tiles.add(createTile(buffer, tile, gl, pool, tablePerspective));
 			}
 			{//create rest
 				int remaining = numberOfDimensions % maxSize;
 				Rectangle tile = new Rectangle(numberOfDimensions-remaining,0,remaining,numberOfRecords);
-				tiles.add(createTile(buffer, tile, gl, pool));
+				tiles.add(createTile(buffer, tile, gl, pool, tablePerspective));
 			}
 		} else if (!needXTiling && needYTiling) {
 			//tile in y direction only
@@ -121,12 +113,12 @@ public class HeatMapTextureRenderer {
 			int lastTile = numberOfRecords - maxSize;
 			for (int i = 0; i < lastTile; i += maxSize) {
 				Rectangle tile = new Rectangle(0,i,numberOfDimensions,maxSize);
-				tiles.add(createTile(buffer, tile, gl, pool));
+				tiles.add(createTile(buffer, tile, gl, pool, tablePerspective));
 			}
 			{//create rest
 				int remaining = numberOfRecords % maxSize;
 				Rectangle tile = new Rectangle(0,numberOfRecords-remaining,numberOfDimensions,remaining);
-				tiles.add(createTile(buffer, tile, gl, pool));
+				tiles.add(createTile(buffer, tile, gl, pool, tablePerspective));
 			}
 		} else {
 			//tile in both directions
@@ -138,12 +130,12 @@ public class HeatMapTextureRenderer {
 			for (int i = 0; i < lastTileR; i += maxSize) {
 				for (int j = 0; j < lastTileD; j += maxSize) {
 					Rectangle tile = new Rectangle(j,i,maxSize,maxSize);
-					tiles.add(createTile(buffer, tile, gl, pool));
+					tiles.add(createTile(buffer, tile, gl, pool, tablePerspective));
 				}
 				{//create rest
 					int remaining = numberOfDimensions % maxSize;
 					Rectangle tile = new Rectangle(numberOfDimensions-remaining,i,remaining,maxSize);
-					tiles.add(createTile(buffer, tile, gl, pool));
+					tiles.add(createTile(buffer, tile, gl, pool, tablePerspective));
 				}
 			}
 			{//last line
@@ -151,12 +143,12 @@ public class HeatMapTextureRenderer {
 				int i = numberOfRecords - iremaining;
 				for (int j = 0; j < lastTileD; j += maxSize) {
 					Rectangle tile = new Rectangle(j,i,maxSize,iremaining);
-					tiles.add(createTile(buffer, tile, gl, pool));
+					tiles.add(createTile(buffer, tile, gl, pool, tablePerspective));
 				}
 				{//create rest
 					int remaining = numberOfDimensions % maxSize;
 					Rectangle tile = new Rectangle(numberOfDimensions-remaining,i,remaining,iremaining);
-					tiles.add(createTile(buffer, tile, gl, pool));
+					tiles.add(createTile(buffer, tile, gl, pool, tablePerspective));
 				}
 			}
 		}
@@ -173,7 +165,8 @@ public class HeatMapTextureRenderer {
 	 * @param pool
 	 * @return
 	 */
-	private Tile createTile(FloatBuffer buffer, Rectangle tile, GL gl, Deque<Texture> pool) {
+	private Tile createTile(FloatBuffer buffer, Rectangle tile, GL gl, Deque<Texture> pool,
+			TablePerspective tablePerspective) {
 		final VirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
 		final VirtualArray dimVA = tablePerspective.getDimensionPerspective().getVirtualArray();
 		final ATableBasedDataDomain dataDomain = tablePerspective.getDataDomain();

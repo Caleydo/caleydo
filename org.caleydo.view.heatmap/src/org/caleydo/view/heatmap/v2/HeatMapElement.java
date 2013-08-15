@@ -36,7 +36,7 @@ public class HeatMapElement extends AHeatMapElement {
 
 		// force texture or low details
 		if (forceTextures || EDetailLevel.MEDIUM.compareTo(detailLevel) >= 0) {
-			this.textureRenderer = new HeatMapTextureRenderer(tablePerspective, blockColorer);
+			this.textureRenderer = new HeatMapTextureRenderer(blockColorer);
 		} else {
 			this.textureRenderer = null;
 		}
@@ -60,7 +60,7 @@ public class HeatMapElement extends AHeatMapElement {
 	@Override
 	public void onVAUpdate(TablePerspective tablePerspective) {
 		if (textureRenderer != null) {
-			textureRenderer.create(context);
+			textureRenderer.create(context, tablePerspective);
 		}
 		super.onVAUpdate(tablePerspective);
 	}
@@ -111,7 +111,7 @@ public class HeatMapElement extends AHeatMapElement {
 	@ListenTo
 	private void onColorMappingUpdate(UpdateColorMappingEvent event) {
 		if (textureRenderer != null && context != null)
-			textureRenderer.create(context);
+			textureRenderer.create(context, getTablePerspective());
 	}
 
 	@Override

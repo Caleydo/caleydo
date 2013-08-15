@@ -282,8 +282,7 @@ public class ViewNode extends ADefaultTemplateNode implements IDropArea {
 			// System.out.println("Drop");
 			TablePerspective tablePerspective = tablePerspectives.get(0);
 			AddTablePerspectivesEvent event = new AddTablePerspectivesEvent(tablePerspective);
-			event.setReceiver((ITablePerspectiveBasedView) representedView);
-			event.setSender(this);
+			event.to(representedView).from(this);
 			GeneralManager.get().getEventPublisher().triggerEvent(event);
 
 			if (tablePerspective instanceof PathwayTablePerspective) {

@@ -305,7 +305,7 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 												.getDimensionPerspective().getPerspectiveID());
 
 								ReplaceTablePerspectiveEvent rEvent = new ReplaceTablePerspectiveEvent(brick
-										.getBrickColumn().getStratomexView().getID(), newTablePerspective,
+										.getBrickColumn().getStratomexView(), newTablePerspective,
 										oldTablePerspective);
 								GeneralManager.get().getEventPublisher().triggerEvent(rEvent);
 							}

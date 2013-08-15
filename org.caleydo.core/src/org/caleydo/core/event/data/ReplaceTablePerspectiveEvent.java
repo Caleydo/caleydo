@@ -6,18 +6,18 @@
 package org.caleydo.core.event.data;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.event.AEvent;
+import org.caleydo.core.event.ADirectedEvent;
+import org.caleydo.core.view.IView;
 
 /**
  * Event signaling that an old {@link TablePerspective} should be replaced with
  * a new one in a view identified through it's id.
- * 
+ *
  * @author Alexander Lex
- * 
+ *
  */
-public class ReplaceTablePerspectiveEvent extends AEvent {
+public class ReplaceTablePerspectiveEvent extends ADirectedEvent {
 
-	private Integer viewID = null;
 	private TablePerspective oldPerspective;
 	private TablePerspective newPerspective;
 
@@ -25,26 +25,11 @@ public class ReplaceTablePerspectiveEvent extends AEvent {
 
 	}
 
-	public ReplaceTablePerspectiveEvent(Integer viewID, TablePerspective newPerspective,
+	public ReplaceTablePerspectiveEvent(IView viewID, TablePerspective newPerspective,
 			TablePerspective oldPerspective) {
-		this.viewID = viewID;
+		to(viewID);
 		this.oldPerspective = oldPerspective;
 		this.newPerspective = newPerspective;
-	}
-
-	/**
-	 * @param viewID
-	 *            setter, see {@link #viewID}
-	 */
-	public void setViewID(Integer viewID) {
-		this.viewID = viewID;
-	}
-
-	/**
-	 * @return the viewID, see {@link #viewID}
-	 */
-	public Integer getViewID() {
-		return viewID;
 	}
 
 	/**
@@ -79,9 +64,7 @@ public class ReplaceTablePerspectiveEvent extends AEvent {
 
 	@Override
 	public boolean checkIntegrity() {
-		if (oldPerspective != null && newPerspective != null && viewID != null)
-			return true;
-		return false;
+		return oldPerspective != null && newPerspective != null;
 	}
 
 }

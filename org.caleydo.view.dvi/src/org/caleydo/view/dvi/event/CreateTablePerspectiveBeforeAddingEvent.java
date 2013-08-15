@@ -5,15 +5,13 @@
  ******************************************************************************/
 package org.caleydo.view.dvi.event;
 
-import org.caleydo.core.event.AEvent;
+import org.caleydo.core.event.ADirectedEvent;
 import org.caleydo.core.view.ITablePerspectiveBasedView;
 import org.caleydo.view.dvi.tableperspective.TablePerspectiveCreator;
 
-public class CreateTablePerspectiveBeforeAddingEvent extends AEvent {
+public class CreateTablePerspectiveBeforeAddingEvent extends ADirectedEvent {
 
 	private TablePerspectiveCreator creator;
-	/** The view which is the receiver of the data containers */
-	private ITablePerspectiveBasedView receiver;
 
 	public CreateTablePerspectiveBeforeAddingEvent(TablePerspectiveCreator creator) {
 		this.creator = creator;
@@ -44,14 +42,15 @@ public class CreateTablePerspectiveBeforeAddingEvent extends AEvent {
 	 *            setter, see {@link receiver}
 	 */
 	public void setReceiver(ITablePerspectiveBasedView receiver) {
-		this.receiver = receiver;
+		to(receiver);
 	}
 
 	/**
 	 * @return the receiver, see {@link #receiver}
 	 */
+	@Override
 	public ITablePerspectiveBasedView getReceiver() {
-		return receiver;
+		return (ITablePerspectiveBasedView) super.getReceiver();
 	}
 
 }

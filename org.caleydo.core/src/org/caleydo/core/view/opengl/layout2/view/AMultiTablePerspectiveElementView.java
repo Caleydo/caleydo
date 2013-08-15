@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Set;
 
 import javax.media.opengl.GLAutoDrawable;
@@ -18,6 +19,7 @@ import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventPublisher;
+import org.caleydo.core.event.data.ReplaceTablePerspectiveEvent;
 import org.caleydo.core.event.view.TablePerspectivesChangedEvent;
 import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
 import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
@@ -28,9 +30,10 @@ import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementDecorator;
 
 /**
- *
+ * a {@link AGLElementView} for handling multiple {@link TablePerspective} using {@link IMultiTablePerspectiveBasedView}
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
 public abstract class AMultiTablePerspectiveElementView extends AGLElementView implements
 		IMultiTablePerspectiveBasedView {
@@ -134,7 +137,7 @@ public abstract class AMultiTablePerspectiveElementView extends AGLElementView i
 		EventPublisher.trigger(new TablePerspectivesChangedEvent(this).from(this));
 	}
 
-	@ListenTo
+	@ListenTo(sendToMe = true)
 	private void onAddTablePerspective(AddTablePerspectivesEvent event) {
 		List<TablePerspective> validTablePerspectives = getDataSupportDefinition().filter(
 				event.getTablePerspectives());
@@ -150,5 +153,28 @@ public abstract class AMultiTablePerspectiveElementView extends AGLElementView i
 	@ListenTo(sendToMe = true)
 	private void onRemoveTablePerspective(RemoveTablePerspectiveEvent event) {
 		removeTablePerspective(event.getTablePerspective());
+	}
+
+	@ListenTo(sendToMe = true)
+	private void onReplaceTablePerspective(ReplaceTablePerspectiveEvent event) {
+		TablePerspective oldPerspective = event.getOldPerspective();
+		TablePerspective newPerspective = event.getNewPerspective();
+		if (!getDataSupportDefinition().apply(newPerspective) || tablePerspectives.contains(newPerspective))
+			newPerspective = null;
+
+		boolean changed = false;
+		for (ListIterator<TablePerspective> it = tablePerspectives.listIterator(); it.hasNext();) {
+			if (it.next().equals(oldPerspective)) {
+				if (newPerspective != null)
+					it.set(newPerspective);
+				else
+					it.remove();
+				changed = true;
+			}
+		}
+
+		if (changed)
+			updateTablePerspectives(newPerspective == null ? NONE : Collections.singletonList(newPerspective),
+					Collections.singletonList(oldPerspective));
 	}
 }

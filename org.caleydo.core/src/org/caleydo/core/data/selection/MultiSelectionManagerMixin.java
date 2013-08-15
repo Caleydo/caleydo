@@ -47,6 +47,10 @@ public class MultiSelectionManagerMixin implements Iterable<SelectionManager> {
 		return selectionManagers.get(index);
 	}
 
+	public final void clear() {
+		this.selectionManagers.clear();
+	}
+
 	@ListenTo
 	private void onSelectionUpdate(SelectionUpdateEvent event) {
 		if (event.getSender() == this) // ignore event sent by myself
