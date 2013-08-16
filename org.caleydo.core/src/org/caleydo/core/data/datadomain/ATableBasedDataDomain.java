@@ -842,10 +842,11 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 		foreignPerspective.setCrossDatasetID(foreignPerspective.getPerspectiveID());
 
 		IDType localIDType = getPrimaryIDType(foreignPerspective.getIdType());
-		IDMappingManager idMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(localIDType);
-
 		if (foreignPerspective.getIdType() == localIDType)
 			return foreignPerspective;
+
+		IDMappingManager idMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(localIDType);
+
 
 		VirtualArray foreignVA = foreignPerspective.getVirtualArray();
 

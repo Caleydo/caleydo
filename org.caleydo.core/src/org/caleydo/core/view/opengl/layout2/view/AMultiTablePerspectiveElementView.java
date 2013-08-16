@@ -31,9 +31,9 @@ import org.caleydo.core.view.opengl.layout2.GLElementDecorator;
 
 /**
  * a {@link AGLElementView} for handling multiple {@link TablePerspective} using {@link IMultiTablePerspectiveBasedView}
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public abstract class AMultiTablePerspectiveElementView extends AGLElementView implements
 		IMultiTablePerspectiveBasedView {
@@ -133,7 +133,7 @@ public abstract class AMultiTablePerspectiveElementView extends AGLElementView i
 		return Collections.unmodifiableList(tablePerspectives);
 	}
 
-	private void fireTablePerspectiveChanged() {
+	protected final void fireTablePerspectiveChanged() {
 		EventPublisher.trigger(new TablePerspectivesChangedEvent(this).from(this));
 	}
 

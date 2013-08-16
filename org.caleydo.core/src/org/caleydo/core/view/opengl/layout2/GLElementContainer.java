@@ -127,7 +127,7 @@ public class GLElementContainer extends GLElement implements IGLElementParent, I
 			//internal move
 			children.remove(child);
 		} else if (ex != null) {
-			doInit = ex.moved(child);
+			doInit = !ex.moved(child);
 		}
 		child.setParent(this);
 		if (doInit && context != null)

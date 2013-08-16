@@ -294,7 +294,7 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 			// internal move
 			children.remove(child);
 		} else if (ex != null) {
-			doInit = ex.moved(child);
+			doInit = !ex.moved(child);
 		}
 		GLElementAccessor.setParent(child, this);
 		if (doInit && context != null)
