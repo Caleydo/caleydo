@@ -19,7 +19,6 @@ import org.caleydo.core.util.function.FloatStatistics;
 import org.caleydo.core.util.function.IFloatFunction;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
-import org.caleydo.view.heatmap.v2.internal.ConstantBlockColorer;
 
 /**
  * a visualization of the elements similar to enroute linear heatmap
@@ -37,7 +36,7 @@ public class LinearBarHeatMapElement extends AHeatMapElement {
 	private IFloatFunction normalize;
 
 	public LinearBarHeatMapElement(TablePerspective tablePerspective) {
-		this(tablePerspective, ConstantBlockColorer.DEFAULT, EDetailLevel.HIGH, false);
+		this(tablePerspective, BasicBlockColorer.INSTANCE, EDetailLevel.HIGH, false);
 	}
 
 	public LinearBarHeatMapElement(TablePerspective tablePerspective, IBlockColorer blockColorer,
@@ -75,7 +74,6 @@ public class LinearBarHeatMapElement extends AHeatMapElement {
 
 			float center = fieldHeight * (1 - normalizedCenter);
 			g.color(Color.GRAY).drawLine(0, y + center, w, y + center);
-			float max = 0;
 			for (int j = 0; j < dimensionVA.size(); ++j) {
 				Integer dimensionID = dimensionVA.get(j);
 				float x = dimensionSpacing.getPosition(j);

@@ -53,6 +53,8 @@ public class HeatMapElementFactory implements IGLElementFactory {
 		elem.setDimensionSpacingStrategy(context.get("dimensionSpacingStrategy", ISpacingStrategy.class, defaults_));
 		elem.setRecordSpacingStrategy(context.get("recordSpacingStrategy", ISpacingStrategy.class, defaults_));
 
+		elem.setRenderGroupHints(context.is("renderGroupHints", false));
+
 		return elem;
 	}
 

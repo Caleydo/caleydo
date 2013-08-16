@@ -11,6 +11,7 @@ import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.manage.GLElementFactoryContext;
 import org.caleydo.core.view.opengl.layout2.manage.IGLElementFactory;
+import org.caleydo.view.heatmap.v2.BasicBlockColorer;
 import org.caleydo.view.heatmap.v2.EShowLabels;
 import org.caleydo.view.heatmap.v2.IBlockColorer;
 import org.caleydo.view.heatmap.v2.ISpacingStrategy;
@@ -38,7 +39,7 @@ public class LinearBarHeatMapElementFactory implements IGLElementFactory {
 	@Override
 	public GLElement create(GLElementFactoryContext context) {
 		TablePerspective data = context.getData();
-		IBlockColorer blockColorer = context.get(IBlockColorer.class, ConstantBlockColorer.DEFAULT);
+		IBlockColorer blockColorer = context.get(IBlockColorer.class, BasicBlockColorer.INSTANCE);
 		EDetailLevel detailLevel = context.get(EDetailLevel.class, EDetailLevel.LOW);
 
 		LinearBarHeatMapElement elem = new LinearBarHeatMapElement(data, blockColorer, detailLevel,
@@ -52,6 +53,8 @@ public class LinearBarHeatMapElementFactory implements IGLElementFactory {
 		ISpacingStrategy defaults_ = context.get(ISpacingStrategy.class, SpacingStrategies.UNIFORM);
 		elem.setDimensionSpacingStrategy(context.get("dimensionSpacingStrategy", ISpacingStrategy.class, defaults_));
 		elem.setRecordSpacingStrategy(context.get("recordSpacingStrategy", ISpacingStrategy.class, defaults_));
+
+		elem.setRenderGroupHints(context.is("renderGroupHints", true));
 
 		return elem;
 	}

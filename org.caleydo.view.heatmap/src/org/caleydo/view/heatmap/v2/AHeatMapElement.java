@@ -13,8 +13,11 @@ import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.VirtualArray;
+import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.color.mapping.UpdateColorMappingEvent;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.IGLMouseListener.IMouseEvent;
@@ -75,6 +78,8 @@ public abstract class AHeatMapElement extends ASingleTablePerspectiveElement {
 	protected EShowLabels recordLabels = EShowLabels.NONE;
 
 	private int textWidth = TEXT_WIDTH;
+
+	private boolean renderGroupHints = false;
 
 	protected IndexedId hoveredRecordID = null;
 	protected IndexedId hoveredDimensionID = null;
@@ -334,6 +339,16 @@ public abstract class AHeatMapElement extends ASingleTablePerspectiveElement {
 			g.restore();
 		}
 
+		if (renderGroupHints) {
+			final TablePerspective tablePerspective = selections.getTablePerspective();
+
+			g.color(Color.LIGHT_GRAY).lineWidth(2);
+			renderGroupHints(g, tablePerspective.getRecordPerspective().getVirtualArray(), true, recordSpacing, w);
+			renderGroupHints(g, tablePerspective.getDimensionPerspective().getVirtualArray(), false, dimensionSpacing,
+					h);
+			g.lineWidth(1);
+		}
+
 		render(g, w, h);
 
 		g.incZ();
@@ -352,6 +367,27 @@ public abstract class AHeatMapElement extends ASingleTablePerspectiveElement {
 	 * @param h
 	 */
 	protected abstract void render(GLGraphics g, float w, float h);
+
+	private void renderGroupHints(GLGraphics g, VirtualArray va, boolean isRecord, ISpacingLayout spacing, float total) {
+		// indicate the grouping borders by shading
+		GroupList groupList = va.getGroupList();
+		if (groupList.size() <= 1)
+			return;
+
+		for (int i = 0; i < groupList.size(); ++i) {
+			Group group = groupList.get(i);
+			if (group.getSize() <= 0)
+				continue;
+			int start = group.getStartIndex();
+			if (start == 0) // no left border
+				continue;
+			float y = spacing.getPosition(start);
+			if (isRecord)
+				g.drawLine(0, y, total, y);
+			else
+				g.drawLine(y, 0, y, total);
+		}
+	}
 
 	@Override
 	protected final void onClicked(Pick pick) {
@@ -537,6 +573,16 @@ public abstract class AHeatMapElement extends ASingleTablePerspectiveElement {
 			return;
 		this.hideElements = hideElements;
 		relayout();
+	}
+
+	/**
+	 * @param b
+	 */
+	public void setRenderGroupHints(boolean renderGroupHints) {
+		if (this.renderGroupHints == renderGroupHints)
+			return;
+		this.renderGroupHints = renderGroupHints;
+		repaint();
 	}
 
 	@ListenTo
