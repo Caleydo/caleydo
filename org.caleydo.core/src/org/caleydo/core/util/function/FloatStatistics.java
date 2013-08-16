@@ -25,6 +25,7 @@ public class FloatStatistics {
 		return n > 1 ? var / (n-1) : 0;
 	}
 
+	/** Returns the standard deviation */
 	public final float getSd() {
 		return (float) Math.sqrt(getVar());
 	}
@@ -76,7 +77,7 @@ public class FloatStatistics {
 		return nans;
 	}
 
-	protected FloatStatistics add(float x) {
+	public FloatStatistics add(float x) {
 		if (Float.isNaN(x)) {
 			nans++;
 			return this;
