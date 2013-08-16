@@ -13,6 +13,7 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.NumericalProperties;
 import org.caleydo.core.util.function.FloatStatistics;
+import org.caleydo.core.util.function.IncrementalFloatStatistics;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.math.MathHelper;
 import org.eclipse.core.runtime.IStatus;
@@ -261,12 +262,14 @@ public class NumericalTable extends Table {
 	 */
 	@Override
 	protected void normalize() {
-		FloatStatistics postStats = new FloatStatistics();
-		datasetStatistics = new FloatStatistics();
+		IncrementalFloatStatistics dsStats = new IncrementalFloatStatistics();
+		IncrementalFloatStatistics postStats = new IncrementalFloatStatistics();
+		datasetStatistics = dsStats;
+
 		for (AColumn<?, ?> column : columns) {
 			NumericalColumn<?, ?> nColumn = (NumericalColumn<?, ?>) column;
 			for (int rowCount = 0; rowCount < getNrRows(); rowCount++) {
-				datasetStatistics.add((Float) nColumn.getRaw(rowCount));
+				dsStats.add((Float) nColumn.getRaw(rowCount));
 			}
 		}
 
@@ -274,7 +277,7 @@ public class NumericalTable extends Table {
 				&& numericalProperties.getzScoreNormalization().equals(NumericalProperties.ZSCORE_ROWS)) {
 			for (int rowCount = 0; rowCount < getNrRows(); rowCount++) {
 
-				FloatStatistics stats = new FloatStatistics();
+				IncrementalFloatStatistics stats = new IncrementalFloatStatistics();
 				for (AColumn<?, ?> column : columns) {
 					NumericalColumn<?, ?> nColumn = (NumericalColumn<?, ?>) column;
 					stats.add((Float) nColumn.getRaw(rowCount));
@@ -296,7 +299,7 @@ public class NumericalTable extends Table {
 			for (AColumn<?, ?> column : columns) {
 				@SuppressWarnings("unchecked")
 				NumericalColumn<?, Float> nColumn = (NumericalColumn<?, Float>) column;
-				FloatStatistics stats = new FloatStatistics();
+				IncrementalFloatStatistics stats = new IncrementalFloatStatistics();
 
 				for (int rowCount = 0; rowCount < getNrRows(); rowCount++) {
 					stats.add(nColumn.getRaw(rowCount));
@@ -310,7 +313,6 @@ public class NumericalTable extends Table {
 			datasetStatistics = postStats;
 		}
 
-		// TODO check for parameter to clip at std dev
 		if (numericalProperties.getClipToStdDevFactor() != null) {
 			float nrDevs = numericalProperties.getClipToStdDevFactor();
 			setMax(datasetStatistics.getMean() + nrDevs * datasetStatistics.getSd());

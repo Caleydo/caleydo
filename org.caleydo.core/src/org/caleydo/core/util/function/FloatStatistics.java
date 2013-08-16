@@ -6,6 +6,8 @@
 package org.caleydo.core.util.function;
 
 /**
+ * Statistics calculated over a set of floats.
+ *
  * @author Samuel Gratzl
  *
  */
@@ -22,7 +24,7 @@ public class FloatStatistics {
 	}
 
 	public final float getVar() {
-		return n > 1 ? var / (n-1) : 0;
+		return n > 1 ? var / (n - 1) : 0;
 	}
 
 	/** Returns the standard deviation */
@@ -77,7 +79,7 @@ public class FloatStatistics {
 		return nans;
 	}
 
-	public FloatStatistics add(float x) {
+	protected FloatStatistics add(float x) {
 		if (Float.isNaN(x)) {
 			nans++;
 			return this;
